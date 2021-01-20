@@ -17,6 +17,7 @@ import { lnrpc } from 'react-native-lightning/dist/rpc';
 
 const dispatch = getDispatch();
 
+
 /**
  * Starts the LND service
  * @param network
