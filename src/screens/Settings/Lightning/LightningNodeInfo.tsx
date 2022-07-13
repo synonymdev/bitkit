@@ -22,7 +22,7 @@ const LightningNodeInfo = ({
 	const [nodeId, setNodeId] = useState('');
 
 	useEffect(() => {
-		(async () => {
+		(async (): Promise<void> => {
 			const id = await getNodeId();
 			if (id.isOk()) {
 				setNodeId(id.value);
