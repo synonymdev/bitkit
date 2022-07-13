@@ -5,37 +5,57 @@ import {
 	Caption13Up,
 	BitcoinCircleIcon,
 	LightningIcon,
+	TetherCircleIcon,
 	Text01M,
 } from '../styles/components';
-import { getAssetNames } from '../utils/wallet';
+import { getAssetNames, getAssetTicker } from '../utils/wallet';
 import { capitalize } from '../utils/helpers';
 import NavigationHeader from './NavigationHeader';
 import Glow from './Glow';
 
-const Asset = memo(({ name, onPress }: { name: string; onPress(): void }) => {
-	const AssetIcon = useMemo(() => {
-		switch (name) {
-			case 'bitcoin':
-				return BitcoinCircleIcon;
-			case 'lightning':
-				return LightningIcon;
-			default:
-				return BitcoinCircleIcon;
-		}
-	}, [name]);
+const Asset = memo(
+	({
+		name,
+		onPress,
+		disabled,
+	}: {
+		name: string;
+		onPress(): void;
+		disabled?: boolean;
+	}) => {
+		const AssetIcon = useMemo(() => {
+			switch (name) {
+				case 'bitcoin':
+					return BitcoinCircleIcon;
+				case 'tether':
+					return TetherCircleIcon;
+				case 'lightning':
+					return LightningIcon;
+				default:
+					return BitcoinCircleIcon;
+			}
+		}, [name]);
 
-	return (
-		<TouchableOpacity style={styles.assertRoot} onPress={onPress}>
-			<View style={styles.assertName}>
-				<View style={styles.assertIcon}>
-					<AssetIcon />
+		const assertRoot = useMemo(
+			() => [styles.assertRoot, disabled && { opacity: 0.3 }],
+			[disabled],
+		);
+
+		return (
+			<TouchableOpacity style={assertRoot} onPress={onPress}>
+				<View style={styles.assertName}>
+					<View style={styles.assertIcon}>
+						<AssetIcon />
+					</View>
+					<Text01M>{capitalize(name)}</Text01M>
 				</View>
-				<Text01M>{capitalize(name)}</Text01M>
-			</View>
-			{/*<Text01M color="gray1">TODO show asset ticker</Text01M>*/}
-		</TouchableOpacity>
-	);
-});
+				<Text01M color="gray1">
+					{disabled ? 'Coming soon' : getAssetTicker(name)}
+				</Text01M>
+			</TouchableOpacity>
+		);
+	},
+);
 
 const AssetPickerList = ({
 	headerTitle,
@@ -67,6 +87,7 @@ const AssetPickerList = ({
 						onPress={(): void => onAssetPress(asset)}
 					/>
 				))}
+				<Asset name="tether" onPress={(): void => {}} disabled={true} />
 			</View>
 			<View style={styles.imageContainer}>
 				<Glow style={styles.glow} size={300} color="white" />
@@ -101,8 +122,8 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 	},
 	image: {
-		width: 150,
-		height: 150,
+		width: 220,
+		height: 220,
 	},
 	assertRoot: {
 		height: 80,

@@ -2,7 +2,12 @@ import React, { memo, ReactElement } from 'react';
 import { useSelector } from 'react-redux';
 import { LayoutAnimation, StyleSheet } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
-import { View, Subtitle, BitcoinCircleIcon } from '../../styles/components';
+import {
+	View,
+	Subtitle,
+	BitcoinCircleIcon,
+	TetherCircleIcon,
+} from '../../styles/components';
 import Header from './Header';
 import DetectSwipe from '../../components/DetectSwipe';
 import BalanceHeader from '../../components/BalanceHeader';
@@ -47,10 +52,20 @@ const Wallets = ({ navigation }): ReactElement => {
 					<View style={styles.content}>
 						<Subtitle style={styles.assetsTitle}>Assets</Subtitle>
 						<AssetCard
-							name={'Bitcoin'}
-							ticker={'BTC'}
+							name="Bitcoin"
+							ticker="BTC"
 							satoshis={satoshis}
 							icon={<BitcoinCircleIcon />}
+							onPress={(): void =>
+								navigation.navigate('WalletsDetail', { assetType: 'bitcoin' })
+							}
+						/>
+						<AssetCard
+							name="Tether"
+							ticker="USDT"
+							disabled={true}
+							satoshis={satoshis}
+							icon={<TetherCircleIcon />}
 							onPress={(): void =>
 								navigation.navigate('WalletsDetail', { assetType: 'bitcoin' })
 							}

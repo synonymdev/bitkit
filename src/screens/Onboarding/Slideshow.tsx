@@ -18,6 +18,7 @@ import {
 import SafeAreaInsets from '../../components/SafeAreaInsets';
 import GlowingBackground from '../../components/GlowingBackground';
 import Button from '../../components/Button';
+import ComingSoon from '../../components/ComingSoon';
 import { createNewWallet } from '../../utils/startup';
 import { showErrorNotification } from '../../utils/notifications';
 import { sleep } from '../../utils/helpers';
@@ -108,7 +109,7 @@ const Slideshow = ({
 						<View style={styles.textContent}>
 							<Display>
 								Lightning
-								<Display style={styles.headline2}> Fast.</Display>
+								<Display color="purple"> Fast.</Display>
 							</Display>
 							<Text01S color="gray1" style={styles.text}>
 								Send Bitcoin faster than ever. Enjoy instant transactions with
@@ -131,9 +132,13 @@ const Slideshow = ({
 							/>
 						</View>
 						<View style={styles.textContent}>
-							<Display>
-								Instant <Display style={styles.headline3}>Tether.</Display>
-							</Display>
+							<View style={styles.comingSoonContainer}>
+								<ComingSoon style={styles.comingSoon} />
+								<Display>
+									Instant{'\n'}
+									<Display color="green">Tether.</Display>
+								</Display>
+							</View>
 							<Text01S color="gray1" style={styles.text}>
 								Save and spend traditional currency, gifts, rewards, and digital
 								assets instantly and borderless.
@@ -319,15 +324,16 @@ const styles = StyleSheet.create({
 		marginRight: 4,
 		marginBottom: 30, // lift dot's up
 	},
-	headline2: {
-		color: 'rgba(172, 101, 225, 1)',
-		lineHeight: 48,
-	},
-	headline3: {
-		color: 'rgba(134, 188, 122, 1)',
-	},
 	text: {
 		marginTop: 8,
+	},
+	comingSoonContainer: {
+		position: 'relative',
+	},
+	comingSoon: {
+		position: 'absolute',
+		right: -48,
+		bottom: 0,
 	},
 });
 

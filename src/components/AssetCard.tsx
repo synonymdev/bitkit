@@ -1,6 +1,12 @@
-import React, { memo, ReactElement } from 'react';
+import React, { memo, ReactElement, useMemo } from 'react';
 import { StyleSheet } from 'react-native';
-import { View, Pressable, Text02M, Caption13M } from '../styles/components';
+import {
+	View,
+	Pressable,
+	Text02M,
+	Caption13M,
+	Text01M,
+} from '../styles/components';
 import Money from '../components/Money';
 
 const AssetCard = ({
@@ -9,15 +15,22 @@ const AssetCard = ({
 	icon,
 	satoshis,
 	onPress,
+	disabled,
 }: {
 	name: string;
 	ticker: string;
 	icon: ReactElement;
-	satoshis: number;
-	onPress: Function;
+	satoshis?: number;
+	onPress?: Function;
+	disabled?: boolean;
 }): ReactElement => {
+	const container = useMemo(
+		() => [styles.container, disabled && { opacity: 0.3 }],
+		[disabled],
+	);
+
 	return (
-		<Pressable style={styles.container} onPress={onPress} color="transparent">
+		<Pressable style={container} onPress={onPress} color="transparent">
 			<View color="transparent" style={styles.col1}>
 				{icon}
 				<View color="transparent" style={styles.titleContainer}>
@@ -27,20 +40,26 @@ const AssetCard = ({
 			</View>
 
 			<View color="transparent" style={styles.col2}>
-				<Money
-					sats={satoshis}
-					hide={true}
-					size="text01m"
-					style={styles.value}
-				/>
-				<Money
-					sats={satoshis}
-					hide={true}
-					size="caption13M"
-					showFiat={true}
-					color="gray1"
-					style={styles.value}
-				/>
+				{disabled || satoshis === undefined ? (
+					<Text01M>Coming soon</Text01M>
+				) : (
+					<>
+						<Money
+							sats={satoshis}
+							hide={true}
+							size="text01m"
+							style={styles.value}
+						/>
+						<Money
+							sats={satoshis}
+							hide={true}
+							size="caption13M"
+							showFiat={true}
+							color="gray1"
+							style={styles.value}
+						/>
+					</>
+				)}
 			</View>
 		</Pressable>
 	);

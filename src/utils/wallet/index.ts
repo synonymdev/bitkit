@@ -746,6 +746,8 @@ export const getAssetTicker = (asset = 'bitcoin'): string => {
 				return 'BTC';
 			case 'bitcoinTestnet':
 				return 'BTC';
+			case 'tether':
+				return 'USDT';
 			default:
 				return '';
 		}
