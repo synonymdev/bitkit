@@ -6,6 +6,14 @@ import { getLNURLParams, lnurlChannel } from '@synonymdev/react-native-lnurl';
 
 const dispatch = getDispatch();
 
+export const updateLightning = (payload): Result<string> => {
+	dispatch({
+		type: actions.UPDATE_LIGHTNING,
+		payload,
+	});
+	return ok('');
+};
+
 /**
  * Claims a lightning channel from a lnurl-channel string
  * @param lnurl

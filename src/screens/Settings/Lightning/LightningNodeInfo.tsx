@@ -1,93 +1,70 @@
-import React, { memo, ReactElement } from 'react';
-import { ScrollView, StyleSheet } from 'react-native';
+import React, { memo, ReactElement, useEffect, useState } from 'react';
+import { StyleSheet } from 'react-native';
 import {
+	Subtitle,
+	Title,
 	View,
-	Feather,
-	Text,
 	TouchableOpacity,
 } from '../../../styles/components';
-import { useSelector } from 'react-redux';
-import Store from '../../../store/types';
-import SafeAreaView from '../../../components/SafeAreaView';
+import NavigationHeader from '../../../components/NavigationHeader';
+import SafeAreaInsets from '../../../components/SafeAreaInsets';
+import { getNodeId } from '../../../utils/lightning';
+import Clipboard from '@react-native-clipboard/clipboard';
+import { showSuccessNotification } from '../../../utils/notifications';
 
-const LightningNodeInfo = ({ navigation }): ReactElement => {
-	const lightning = useSelector((state: Store) => state.lightning);
+const LightningNodeInfo = ({
+	title,
+	showBackNavigation = true,
+}: {
+	title: string;
+	showBackNavigation: boolean;
+}): ReactElement => {
+	const [nodeId, setNodeId] = useState('');
 
-	const { info } = lightning;
-
-	const {
-		blockHeight,
-		chains,
-		identityPubkey,
-		numActiveChannels,
-		numInactiveChannels,
-		numPeers,
-		syncedToChain,
-		version,
-		alias,
-		numPendingChannels,
-	} = info;
-
-	let output = [['Version', version]];
-	output.push(['State', 'NON_EXISTING']);
-	output.push(['Synced', `${syncedToChain ? '✅' : '❌'}`]);
-	output.push(['Block Height', blockHeight.toString()]);
-	output.push(['Identity Pubkey', identityPubkey]);
-	output.push(['Alias', alias]);
-	output.push(['Active Channels', numActiveChannels.toString()]);
-	output.push(['Inactive Channels', numInactiveChannels.toString()]);
-	output.push(['Pending Channels', numPendingChannels.toString()]);
-	output.push(['Peers', numPeers.toString()]);
-	output.push(['Network', `${chains[0].network}`]);
+	useEffect(() => {
+		(async () => {
+			const id = await getNodeId();
+			if (id.isOk()) {
+				setNodeId(id.value);
+			} else {
+				setNodeId(id.error.message);
+			}
+		})();
+	}, []);
 
 	return (
-		<SafeAreaView>
-			<TouchableOpacity
-				activeOpacity={0.7}
-				onPress={navigation.goBack}
-				style={styles.row}>
-				<Feather style={{}} name="arrow-left" size={30} />
-				<Text style={styles.backText}>Lightning node info</Text>
-			</TouchableOpacity>
-			<ScrollView>
-				<View style={styles.info}>
-					{output.map(([title, value]) => (
-						<View style={styles.item} key={title}>
-							<Text style={styles.itemTitle}>{title}:</Text>
-							<Text style={styles.itemValue}>{value}</Text>
-						</View>
-					))}
-				</View>
-			</ScrollView>
-		</SafeAreaView>
+		<View style={styles.container} color="black">
+			<SafeAreaInsets type="top" />
+			<NavigationHeader title={title} displayBackButton={showBackNavigation} />
+
+			<View style={styles.content} color="black">
+				<TouchableOpacity
+					onPress={(): void => {
+						Clipboard.setString(nodeId);
+						showSuccessNotification({
+							title: 'Copied LDK Node ID to Clipboard',
+							message: nodeId,
+						});
+					}}
+					color="black">
+					<Title>LDK Node ID:</Title>
+					<Subtitle>{nodeId}</Subtitle>
+				</TouchableOpacity>
+			</View>
+
+			<SafeAreaInsets type="bottom" />
+		</View>
 	);
 };
 
 const styles = StyleSheet.create({
-	row: {
-		flexDirection: 'row',
+	container: {
+		flex: 1,
+		backgroundColor: 'rgba(255, 255, 255, 0)',
 		alignItems: 'center',
-		paddingLeft: 10,
-		paddingVertical: 8,
 	},
-	backText: {
-		fontSize: 20,
-	},
-	info: {
-		margin: 20,
-		textAlign: 'center',
-	},
-	item: {
-		marginBottom: 20,
-	},
-	itemTitle: {
-		fontWeight: 'bold',
-		fontSize: 16,
-	},
-	itemValue: {
-		fontWeight: '300',
-		marginTop: 5,
-		fontSize: 14,
+	content: {
+		marginHorizontal: 20,
 	},
 });
 

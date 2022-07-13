@@ -1661,6 +1661,9 @@
   resolved "https://registry.yarnpkg.com/@synonymdev/blocktank-client/-/blocktank-client-0.0.4.tgz#9e33fd957ee855161f919840021bccad76057773"
   integrity sha512-3gmqX3Dkg2aO7Pvb/PJ1oMNpGOpJy8cj2Vnj2827ePh5Uz8jhJOuYIK5U01R6Y68ZDZdjAf8317GpVIXM3Ux3A==
 
+"@synonymdev/react-native-ldk@../react-native-ldk/lib":
+  version "0.0.48"
+
 "@synonymdev/react-native-lnurl@0.0.3":
   version "0.0.3"
   resolved "https://registry.yarnpkg.com/@synonymdev/react-native-lnurl/-/react-native-lnurl-0.0.3.tgz#ee8da8d1ad1b18e220fd49bf7cf303ddf4db56f8"

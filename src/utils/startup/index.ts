@@ -13,6 +13,8 @@ import { refreshServiceList } from '../../store/actions/blocktank';
 import { setupTodos } from '../todos';
 import { connectToElectrum, subscribeToHeader } from '../wallet/electrum';
 import { updateOnchainFeeEstimates } from '../../store/actions/fees';
+import { setupLdk } from '../lightning';
+import lm from '@synonymdev/react-native-ldk';
 
 /**
  * Checks if the specified wallet's phrase is saved to storage.
@@ -101,13 +103,27 @@ export const startWalletServices = async ({
 				await createWallet({ mnemonic });
 			}
 
-			if (onchain) {
-				updateOnchainFeeEstimates({ selectedNetwork }).then();
+			// We need to start Electrum if either onchain or lightning is true.
+			if (onchain || lightning) {
+				// Connect to Electrum
 				const electrumResponse = await connectToElectrum({ selectedNetwork });
 				if (electrumResponse.isOk()) {
+					let onReceive = (): void => {};
+					if (lightning) {
+						// Start LDK
+						const setupResponse = await setupLdk({ selectedNetwork });
+						if (setupResponse.isOk()) {
+							// Ensure LDK syncs when a new block is received/detected.
+							onReceive = lm.syncLdk;
+						} else {
+							showErrorNotification({
+								title: 'Unable to start LDK.',
+								message: setupResponse.error.message,
+							});
+						}
+					}
 					// Ensure we are subscribed to and save new header information.
-					subscribeToHeader({ selectedNetwork }).then();
-					refreshWallet().then();
+					subscribeToHeader({ selectedNetwork, onReceive }).then();
 				} else {
 					showErrorNotification({
 						title: 'Unable to connect to Electrum Server.',
@@ -118,8 +134,9 @@ export const startWalletServices = async ({
 				}
 			}
 
-			if (lightning) {
-				// TODO: Start LDK
+			if (onchain) {
+				updateOnchainFeeEstimates({ selectedNetwork }).then();
+				refreshWallet().then();
 			}
 
 			setupTodos();

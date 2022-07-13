@@ -26,6 +26,7 @@
     "@react-navigation/stack": "^6.2.1",
     "@shopify/react-native-skia": "^0.1.124",
     "@synonymdev/blocktank-client": "^0.0.4",
+    "@synonymdev/react-native-ldk": "../react-native-ldk/lib",
     "@synonymdev/react-native-lnurl": "0.0.3",
     "@synonymdev/slashtags-sdk": "^1.0.0-alpha.6",
     "assert": "^2.0.0",

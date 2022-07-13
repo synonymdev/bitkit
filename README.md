@@ -6,15 +6,24 @@ Bitkit includes backup and restore features utilizing [Backpack](https://github.
 [![Test status](https://github.com/synonymdev/bitkit/workflows/tests/badge.svg)](https://github.com/synonymdev/bitkit/actions)
 
 ### Installation
-1. Clone BitKit:
-   - `git clone git@github.com:synonymdev/bitkit.git`
+1. Clone & Build react-native-ldk:
+```bash
+git clone git@github.com:synonymdev/react-native-ldk.git && cd react-native-ldk/lib && yarn install && yarn build && cd ../../
+```
 
-2. Install Dependencies:
-   - `yarn install`
+2. Clone BitKit:
+```bash
+git clone git@github.com:synonymdev/bitkit.git && cd bitkit/
+```
 
-3. Start the project:
-   - iOS: `npx react-native run-ios`
-   - Android: `npx react-native run-android`
+3. Install Dependencies:
+```bash
+yarn install
+```
 
-### Download APK
-- APK's can be located for download in the `bitkit-mobile` Slack channel as PR's are merged.
+4. Start the project:
+```bash
+yarn ios
+#or
+yarn android
+```
