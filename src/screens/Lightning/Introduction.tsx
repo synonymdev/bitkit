@@ -23,7 +23,7 @@ const Introduction = ({ navigation }): ReactElement => {
 				</View>
 				<View color="transparent" style={styles.textContent}>
 					<Display>
-						Instant <Display style={styles.headline2}>payments.</Display>
+						Instant <Display color="purple">Payments.</Display>
 					</Display>
 					<Text01S color="gray1" style={styles.text}>
 						Open a Lightning connection and send or receive bitcoin instantly.
@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
 	},
 	imageContainer: {
 		display: 'flex',
-		flex: 1,
+		flex: 4,
 		alignItems: 'center',
 		paddingVertical: 50,
 		justifyContent: 'flex-end',
@@ -76,13 +76,9 @@ const styles = StyleSheet.create({
 		resizeMode: 'contain',
 	},
 	textContent: {
-		flex: 1,
+		flex: 3,
 		display: 'flex',
 		paddingHorizontal: 22,
-	},
-	headline2: {
-		color: 'rgba(172, 101, 225, 1)',
-		fontWeight: 'bold',
 	},
 	text: {
 		marginTop: 16,

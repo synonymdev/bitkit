@@ -6,9 +6,11 @@ import {
 	BIcon,
 	Caption13M,
 	Display,
+	Headline,
 	LightningIcon,
 	Text01M,
 	Text01S,
+	Text02M,
 	Text02S,
 	Title,
 } from '../styles/components';
@@ -20,7 +22,15 @@ interface IMoney {
 	sats: number;
 	showFiat?: boolean; // if true shows value in fiat, if false shows value in settings.bitcoinUnit. Can be overwritten by unit prop
 	unit?: 'fiat' | 'BTC' | 'satoshi'; // force value formatting
-	size?: 'display' | 'text01s' | 'text01m' | 'text02s' | 'caption13M' | 'title';
+	size?:
+		| 'display'
+		| 'text01s'
+		| 'text01m'
+		| 'text02s'
+		| 'text02m'
+		| 'caption13M'
+		| 'title'
+		| 'headline';
 	hightlight?: boolean; // grey last 3 chars in sats/bitcoin or decimal in fiat
 	symbol?: boolean; // show symbol icon
 	color?: string;
@@ -53,6 +63,8 @@ const Money = (props: IMoney): ReactElement => {
 
 	const [Text, iconHeight, iconWidth] = useMemo(() => {
 		switch (size) {
+			case 'headline':
+				return [Headline, 40, 20];
 			case 'title':
 				return [Title, 26, 12];
 			case 'text01s':
@@ -61,6 +73,8 @@ const Money = (props: IMoney): ReactElement => {
 				return [Text01M, 21, 10];
 			case 'text02s':
 				return [Text02S, 18, 9];
+			case 'text02m':
+				return [Text02M, 18, 9];
 			case 'caption13M':
 				return [Caption13M, 16, 8];
 			default:

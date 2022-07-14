@@ -10,16 +10,15 @@ import {
 	LightningIcon,
 	SavingsIcon,
 	Text01S,
-	Text02M,
 } from '../../styles/components';
 import SafeAreaInsets from '../../components/SafeAreaInsets';
 import GlowingBackground from '../../components/GlowingBackground';
 import NavigationHeader from '../../components/NavigationHeader';
 import Button from '../../components/Button';
+import Money from '../../components/Money';
 import useColors from '../../hooks/colors';
 import AmountToggle from '../../components/AmountToggle';
 import FancySlider from '../../components/FancySlider';
-import useDisplayValues from '../../hooks/displayValues';
 
 import NumberPadLightning from './NumberPadLightning';
 
@@ -54,8 +53,6 @@ const QuickSetup = ({ navigation }): ReactElement => {
 	const savingsAmount = total - spendingAmount;
 	const spendingPercentage = Math.round((spendingAmount / total) * 100);
 	const savingsPercentage = Math.round((savingsAmount / total) * 100);
-	const spendingDV = useDisplayValues(spendingAmount);
-	const savingsDV = useDisplayValues(savingsAmount);
 
 	const handleChange = useCallback((v) => {
 		setSpendingAmount(Math.round(v));
@@ -67,7 +64,11 @@ const QuickSetup = ({ navigation }): ReactElement => {
 			<NavigationHeader title="Add instant payments" />
 			<View style={styles.root}>
 				<View>
-					<Display color="purple">Spending balance.</Display>
+					{keybrd ? (
+						<Display color="purple">Spending money.</Display>
+					) : (
+						<Display color="purple">Spending &{'\u00A0'}saving.</Display>
+					)}
 					{keybrd ? (
 						<Text01S color="gray1" style={styles.text}>
 							Enter the amount of money you want to be able to spend instantly.
@@ -87,12 +88,18 @@ const QuickSetup = ({ navigation }): ReactElement => {
 							<Caption13Up color="purple">SAVINGS</Caption13Up>
 						</View>
 						<View style={styles.row}>
-							<Text02M>
-								{spendingDV.bitcoinSymbol} {spendingDV.bitcoinFormatted}
-							</Text02M>
-							<Text02M>
-								{savingsDV.bitcoinSymbol} {savingsDV.bitcoinFormatted}
-							</Text02M>
+							<Money
+								sats={spendingAmount}
+								size="text02m"
+								symbol={true}
+								color="white"
+							/>
+							<Money
+								sats={savingsAmount}
+								size="text02m"
+								symbol={true}
+								color="white"
+							/>
 						</View>
 						<View style={styles.sliderContainer}>
 							<FancySlider
@@ -112,9 +119,11 @@ const QuickSetup = ({ navigation }): ReactElement => {
 				<View>
 					<View style={styles.amountBig}>
 						<View>
-							<Caption13Up color="purple" style={styles.amountBigCaption}>
-								SPENDING BALANCE
-							</Caption13Up>
+							{!keybrd && (
+								<Caption13Up color="purple" style={styles.amountBigCaption}>
+									SPENDING BALANCE
+								</Caption13Up>
+							)}
 							<AmountToggle
 								sats={spendingAmount}
 								onPress={(): void => setKeybrd(true)}
@@ -152,6 +161,7 @@ const QuickSetup = ({ navigation }): ReactElement => {
 							}
 							setKeybrd(false);
 						}}
+						style={styles.numberpad}
 					/>
 				)}
 			</View>
@@ -200,6 +210,9 @@ const styles = StyleSheet.create({
 		justifyContent: 'space-between',
 		alignItems: 'center',
 		width: 100,
+	},
+	numberpad: {
+		marginHorizontal: -16,
 	},
 });
 

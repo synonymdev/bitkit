@@ -38,7 +38,7 @@ const AmountToggle = ({
 			<Money
 				key="small"
 				sats={sats}
-				size="caption13M"
+				size="text01m"
 				color="gray1"
 				{...{ ...(primary === 'fiat' ? btcProps : fiatProps) }}
 			/>,
