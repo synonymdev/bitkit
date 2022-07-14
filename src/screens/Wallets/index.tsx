@@ -66,9 +66,6 @@ const Wallets = ({ navigation }): ReactElement => {
 							disabled={true}
 							satoshis={satoshis}
 							icon={<TetherCircleIcon />}
-							onPress={(): void =>
-								navigation.navigate('WalletsDetail', { assetType: 'bitcoin' })
-							}
 						/>
 					</View>
 				</DetectSwipe>

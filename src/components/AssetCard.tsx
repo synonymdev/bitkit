@@ -30,7 +30,11 @@ const AssetCard = ({
 	);
 
 	return (
-		<Pressable style={container} onPress={onPress} color="transparent">
+		<Pressable
+			style={container}
+			onPress={onPress}
+			color="transparent"
+			disabled={disabled}>
 			<View color="transparent" style={styles.col1}>
 				{icon}
 				<View color="transparent" style={styles.titleContainer}>
