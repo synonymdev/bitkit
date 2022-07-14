@@ -115,6 +115,8 @@ export const getNetworkData = ({
 				return { abbreviation, label: 'Bitcoin', ticker: 'BTC' };
 			case 'bitcoinTestnet':
 				return { abbreviation, label: 'Bitcoin Testnet', ticker: 'tBTC' };
+			case 'bitcoinRegtest':
+				return { abbreviation, label: 'Bitcoin Regtest', ticker: 'tBTC' };
 			default:
 				return { abbreviation, label: 'Bitcoin', ticker: 'BTC' };
 		}

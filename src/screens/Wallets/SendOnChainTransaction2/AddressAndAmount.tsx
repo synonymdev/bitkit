@@ -126,6 +126,7 @@ const AddressAndAmount = ({ index = 0, navigation }): ReactElement => {
 			});
 			return;
 		}
+		data.replace('bitcoinRegtest:', '');
 		data.replace('bitcoinTestnet:', '');
 		data.replace('bitcoin:', '');
 		const addressIsValid = validate(data);

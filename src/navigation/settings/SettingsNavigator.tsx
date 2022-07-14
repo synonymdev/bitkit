@@ -24,6 +24,7 @@ import NetworksSettings from '../../screens/Settings/Networks';
 import AdvancedSettings from '../../screens/Settings/Advanced';
 import AboutSettings from '../../screens/Settings/About';
 import EasterEgg from '../../screens/Settings/EasterEgg';
+import BitcoinNetworkSelection from '../../screens/Settings/Bitcoin/BitcoinNetworkSelection';
 
 const Stack = createNativeStackNavigator();
 
@@ -75,6 +76,10 @@ const SettingsNavigator = (): ReactElement => {
 				<Stack.Screen
 					name="LightningChannelDetails"
 					component={LightningChannelDetails}
+				/>
+				<Stack.Screen
+					name="BitcoinNetworkSelection"
+					component={BitcoinNetworkSelection}
 				/>
 				<Stack.Screen name="LightningNodeInfo" component={LightningNodeInfo} />
 				<Stack.Screen name="ManageSeedPhrase" component={ManageSeedPhrase} />

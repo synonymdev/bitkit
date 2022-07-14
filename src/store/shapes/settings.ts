@@ -1,5 +1,4 @@
 import { ISettings } from '../types/settings';
-import { arrayTypeItems } from './wallet';
 import { EExchangeRateService } from '../../utils/exchange-rate/types';
 
 export const defaultSettingsShape: ISettings = {
@@ -16,7 +15,19 @@ export const defaultSettingsShape: ISettings = {
 	selectedCurrency: 'USD',
 	exchangeRateService: EExchangeRateService.bitfinex,
 	selectedLanguage: 'english',
-	customElectrumPeers: { ...arrayTypeItems },
+	customElectrumPeers: {
+		bitcoin: [],
+		bitcoinTestnet: [],
+		bitcoinRegtest: [
+			{
+				host: '35.233.47.252',
+				ssl: 18484,
+				tcp: 18483,
+				protocol: 'tcp',
+			},
+		],
+		timestamp: null,
+	},
 	coinSelectAuto: true,
 	coinSelectPreference: 'small',
 	unitPreference: 'asset',

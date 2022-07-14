@@ -23,7 +23,7 @@ export type TBalanceUnit = 'satoshi' | 'BTC' | 'fiat';
 
 export type TBitcoinAbbreviation = 'sats' | 'BTC';
 
-export type TBitcoinLabel = 'Bitcoin' | 'Bitcoin Testnet';
+export type TBitcoinLabel = 'Bitcoin' | 'Bitcoin Testnet' | 'Bitcoin Regtest';
 
 export type TTicker = 'BTC' | 'tBTC';
 
