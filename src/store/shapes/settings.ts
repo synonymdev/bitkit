@@ -20,5 +20,6 @@ export const defaultSettingsShape: ISettings = {
 	coinSelectAuto: true,
 	coinSelectPreference: 'small',
 	unitPreference: 'asset',
+	transactionSpeed: 'normal',
 	hideBalance: false,
 };

@@ -16,6 +16,7 @@ import LightningChannelDetails from '../../screens/Settings/Lightning/LightningC
 import LightningNodeInfo from '../../screens/Settings/Lightning/LightningNodeInfo';
 import TempSettings from '../../screens/Settings/TempSettings';
 import BitcoinUnitSettings from '../../screens/Settings/BitcoinUnit';
+import TransactionSpeedSettings from '../../screens/Settings/TransactionSpeed';
 import AuthCheck from '../../components/AuthCheck';
 import GeneralSettings from '../../screens/Settings/General';
 import SecuritySettings from '../../screens/Settings/Security';
@@ -55,6 +56,10 @@ const SettingsNavigator = (): ReactElement => {
 				<Stack.Screen
 					name="BitcoinUnitSettings"
 					component={BitcoinUnitSettings}
+				/>
+				<Stack.Screen
+					name="TransactionSpeedSettings"
+					component={TransactionSpeedSettings}
 				/>
 				<Stack.Screen name="ElectrumConfig" component={ElectrumConfig} />
 				<Stack.Screen name="TempSettings" component={TempSettings} />

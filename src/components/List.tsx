@@ -7,6 +7,7 @@ import {
 	ChevronRight,
 	Checkmark,
 	Switch,
+	Caption13S,
 } from '../styles/components';
 import { useNavigation } from '@react-navigation/native';
 import Card from './Card';
@@ -38,6 +39,8 @@ type ItemData = {
 	enabled?: boolean;
 	hide?: boolean;
 	Icon?: React.FC<SvgProps>;
+	iconColor?: string;
+	description?: string;
 };
 
 interface IItem extends ItemData {
@@ -55,6 +58,8 @@ const _Item = memo(
 		enabled = true,
 		hide = false,
 		Icon,
+		iconColor,
+		description,
 	}: IItem): ReactElement => {
 		if (hide) {
 			return <View />;
@@ -65,7 +70,9 @@ const _Item = memo(
 		const _onPress = (): void => onPress(navigation);
 		if (type === 'switch') {
 			return (
-				<View color="transparent" style={styles.row}>
+				<View
+					color="transparent"
+					style={description ? styles.descriptionRow : styles.row}>
 					<Card style={styles.card} onPress={_onPress}>
 						<View color="transparent" style={styles.leftColumn}>
 							{Icon && (
@@ -74,6 +81,7 @@ const _Item = memo(
 									viewBox="0 0 32 32"
 									height={32}
 									width={32}
+									color={iconColor !== '' ? iconColor : 'brand'}
 								/>
 							)}
 							<Text01S color="white">{title}</Text01S>
@@ -87,7 +95,9 @@ const _Item = memo(
 		}
 		if (type === 'textButton') {
 			return (
-				<View color="transparent" style={styles.row}>
+				<View
+					color="transparent"
+					style={description ? styles.descriptionRow : styles.row}>
 					<Card style={styles.card} onPress={enabled ? _onPress : undefined}>
 						<View color="transparent" style={styles.leftColumn}>
 							{Icon && (
@@ -96,9 +106,17 @@ const _Item = memo(
 									viewBox="0 0 32 32"
 									height={32}
 									width={32}
+									color={iconColor !== '' ? iconColor : 'brand'}
 								/>
 							)}
-							<Text01S color="white">{title}</Text01S>
+							<View>
+								<Text01S color="white">{title}</Text01S>
+								{description && (
+									<View>
+										<Caption13S color="gray1">{description}</Caption13S>
+									</View>
+								)}
+							</View>
 						</View>
 						<View color="transparent" style={styles.rightColumn}>
 							<Text01S color={'gray1'}>{value}</Text01S>
@@ -108,18 +126,29 @@ const _Item = memo(
 			);
 		}
 		return (
-			<View color="transparent" style={styles.row}>
+			<View
+				color="transparent"
+				style={description ? styles.descriptionRow : styles.row}>
 				<Card style={styles.card} onPress={enabled ? _onPress : undefined}>
 					<View color="transparent" style={styles.leftColumn}>
 						{Icon && (
-							<Icon
-								style={styles.icon}
-								viewBox="0 0 32 32"
-								height={32}
-								width={32}
-							/>
+							<View style={styles.icon}>
+								<Icon
+									viewBox="0 0 32 32"
+									height={32}
+									width={32}
+									color={iconColor !== '' ? iconColor : 'brand'}
+								/>
+							</View>
 						)}
-						<Text01S color="white">{title}</Text01S>
+						<View>
+							<Text01S color="white">{title}</Text01S>
+							{description && (
+								<View>
+									<Caption13S color="gray1">{description}</Caption13S>
+								</View>
+							)}
+						</View>
 					</View>
 					<View color="transparent" style={styles.rightColumn}>
 						{useCheckmark ? (
@@ -197,6 +226,9 @@ const styles = StyleSheet.create({
 	row: {
 		height: 55,
 	},
+	descriptionRow: {
+		height: 65,
+	},
 	card: {
 		flexDirection: 'row',
 		alignItems: 'center',
@@ -227,10 +259,8 @@ const styles = StyleSheet.create({
 	icon: {
 		borderRadius: 200,
 		marginRight: 8,
-		marginBottom: -8,
-		marginTop: -5,
-		width: 32,
-		height: 32,
+		justifyContent: 'center',
+		alignItems: 'center',
 	},
 });
 
