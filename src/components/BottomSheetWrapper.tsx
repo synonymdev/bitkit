@@ -85,6 +85,10 @@ const BottomSheetWrapper = forwardRef(
 			() => [styles.handle, { backgroundColor }],
 			[backgroundColor],
 		);
+		// https://github.com/gorhom/react-native-bottom-sheet/issues/770#issuecomment-1072113936
+		// do not activate BottomSheet if swipe horizontally, this allows using Swiper inside of it
+		const activeOffsetX = useMemo(() => [-999, 999], []);
+		const activeOffsetY = useMemo(() => [-5, 5], []);
 
 		useEffect(() => {
 			try {
@@ -176,7 +180,9 @@ const BottomSheetWrapper = forwardRef(
 				onChange={handleSheetChanges}
 				backdropComponent={renderBackdrop}
 				handleHeight={animatedHandleHeight}
-				snapPoints={_snapPoints}>
+				snapPoints={_snapPoints}
+				activeOffsetX={activeOffsetX}
+				activeOffsetY={activeOffsetY}>
 				<BottomSheetView
 					style={styles.container}
 					onLayout={handleContentLayout}>
