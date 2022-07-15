@@ -1,6 +1,7 @@
-import React, { memo, ReactElement, useMemo, useState } from 'react';
+import React, { memo, ReactElement, useMemo, useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { Modal, StyleSheet, Text, Pressable, View } from 'react-native';
+import ReactNativeBiometrics from 'react-native-biometrics';
 import Store from '../../../store/types';
 import { IListData } from '../../../components/List';
 import SettingsView from '../SettingsView';
@@ -9,14 +10,24 @@ import { IsSensorAvailableResult } from '../../../components/Biometrics';
 import { toggleView } from '../../../store/actions/user';
 import { updateSettings } from '../../../store/actions/settings';
 
+const rnBiometrics = new ReactNativeBiometrics();
+
 const SecuritySettings = ({ navigation }): ReactElement => {
 	const [modalVisible, setModalVisible] = useState(false);
-	const [biometryData] = useState<IsSensorAvailableResult | undefined>(
-		undefined,
-	);
+	const [biometryData, setBiometricData] = useState<
+		IsSensorAvailableResult | undefined
+	>(undefined);
 	const { pin, biometrics, pinOnLaunch, pinForPayments } = useSelector(
 		(state: Store) => state.settings,
 	);
+
+	useEffect(() => {
+		(async (): Promise<void> => {
+			const data: IsSensorAvailableResult =
+				await rnBiometrics.isSensorAvailable();
+			setBiometricData(data);
+		})();
+	}, []);
 
 	const SettingsListData: IListData[] = useMemo(
 		() => [
