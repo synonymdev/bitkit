@@ -1,84 +1,78 @@
 import React, { memo, ReactElement, useMemo } from 'react';
-import { ScrollView, StyleSheet } from 'react-native';
-import { Text, RadioButtonRN, View } from '../../../styles/components';
+
+import { IListData } from '../../../components/List';
+import SettingsView from '../SettingsView';
 import { useSelector } from 'react-redux';
 import Store from '../../../store/types';
 import { getSelectedAddressType } from '../../../utils/wallet';
-import { updateSelectedAddressType } from '../../../store/actions/wallet';
-import { RadioButtonItem } from '../../../store/types/settings';
-import { TAddressType } from '../../../store/types/wallet';
 import { capitalize } from '../../../utils/helpers';
-import NavigationHeader from '../../../components/NavigationHeader';
+import { updateSelectedAddressType } from '../../../store/actions/wallet';
+import { TAddressType } from '../../../store/types/wallet';
 
-const setAddressTypePreference = (preference: TAddressType): void => {
-	updateSelectedAddressType({
-		addressType: preference,
-	});
-};
+const AddressTypeSettings = (): ReactElement => {
+	const typesDescriptions = {
+		p2pkh: 'Pay-to-public-key-hash',
+		p2wpkh: 'Pay-to-witness-public-key-hash',
+		p2sh: 'Pay-to-Script-Hash',
+	};
 
-const AddressTypePreference = (): ReactElement => {
 	const selectedWallet = useSelector(
 		(state: Store) => state.wallet.selectedWallet,
 	);
+
 	const selectedNetwork = useSelector(
 		(state: Store) => state.wallet.selectedNetwork,
 	);
 
 	const addressTypes = useSelector((state: Store) => state.wallet.addressTypes);
 
-	const radioButtons: RadioButtonItem[] = useMemo(() => {
+	const addressTypesList = useMemo(() => {
 		return Object.values(addressTypes).map(({ label, type }) => {
 			return { label: capitalize(label), value: type };
 		});
 	}, [addressTypes]);
 
-	const selectedAddressType = getSelectedAddressType({
-		selectedWallet,
-		selectedNetwork,
-	});
+	const selectedAddressType = useMemo(
+		(): string =>
+			getSelectedAddressType({
+				selectedWallet,
+				selectedNetwork,
+			}),
+		[selectedNetwork, selectedWallet],
+	);
 
-	const initialIndex = useMemo((): number => {
-		let index = -1;
-		try {
-			radioButtons.map((button, i) => {
-				if (selectedAddressType === button.value) {
-					index = i + 1;
-				}
-			});
-			return index || -1;
-		} catch (e) {
-			return index;
-		}
+	const setAddressTypePreference = (preference: TAddressType): void => {
+		return updateSelectedAddressType({
+			addressType: preference,
+		});
+	};
+
+	const AddressTypeListData: IListData[] = useMemo(
+		() => [
+			{
+				title: 'Default Bitcoin address type',
+				data: addressTypesList.map((bitcoinUnit) => ({
+					useCheckmark: true,
+					value: selectedAddressType === bitcoinUnit.value,
+					description: typesDescriptions[bitcoinUnit.value],
+					title: `${bitcoinUnit.label}`,
+					type: 'button',
+					onPress: (): void => setAddressTypePreference(bitcoinUnit.value),
+					hide: false,
+				})),
+			},
+		],
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [selectedAddressType]);
+		[addressTypesList, selectedAddressType],
+	);
 
 	return (
-		<View style={styles.container}>
-			<NavigationHeader title="Address Type Preference" />
-			<ScrollView style={styles.content}>
-				<Text style={styles.titleText}>Address-Type Preference</Text>
-				<RadioButtonRN
-					data={radioButtons}
-					selectedBtn={(e): void => {
-						setAddressTypePreference(e.value);
-					}}
-					initial={initialIndex}
-				/>
-			</ScrollView>
-		</View>
+		<SettingsView
+			title={'Address types preference'}
+			listData={AddressTypeListData}
+			showBackNavigation
+		/>
 	);
 };
 
-const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-	},
-	content: {
-		paddingHorizontal: 20,
-	},
-	titleText: {
-		marginTop: 30,
-	},
-});
-
-export default memo(AddressTypePreference);
+export default memo(AddressTypeSettings);
