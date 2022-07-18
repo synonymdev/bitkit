@@ -1,10 +1,9 @@
-import React, { memo, ReactElement, useMemo } from 'react';
+import React, { memo, ReactElement, useMemo, useState } from 'react';
 
 import { IListData } from '../../../components/List';
 import SettingsView from '../SettingsView';
 import { useSelector } from 'react-redux';
 import Store from '../../../store/types';
-import { getSelectedAddressType } from '../../../utils/wallet';
 import { capitalize } from '../../../utils/helpers';
 import { updateSelectedAddressType } from '../../../store/actions/wallet';
 import { TAddressType } from '../../../store/types/wallet';
@@ -16,13 +15,8 @@ const AddressTypeSettings = (): ReactElement => {
 		p2sh: 'Pay-to-Script-Hash',
 	};
 
-	const selectedWallet = useSelector(
-		(state: Store) => state.wallet.selectedWallet,
-	);
-
-	const selectedNetwork = useSelector(
-		(state: Store) => state.wallet.selectedNetwork,
-	);
+	const [selectedAddressTypeState, setSelectedAddressTypeState] =
+		useState<TAddressType>('p2pkh');
 
 	const addressTypes = useSelector((state: Store) => state.wallet.addressTypes);
 
@@ -32,38 +26,32 @@ const AddressTypeSettings = (): ReactElement => {
 		});
 	}, [addressTypes]);
 
-	const selectedAddressType = useMemo(
-		(): string =>
-			getSelectedAddressType({
-				selectedWallet,
-				selectedNetwork,
-			}),
-		[selectedNetwork, selectedWallet],
-	);
-
 	const setAddressTypePreference = (preference: TAddressType): void => {
+		setSelectedAddressTypeState(preference);
 		return updateSelectedAddressType({
 			addressType: preference,
 		});
 	};
 
 	const AddressTypeListData: IListData[] = useMemo(
-		() => [
-			{
-				title: 'Default Bitcoin address type',
-				data: addressTypesList.map((bitcoinUnit) => ({
-					useCheckmark: true,
-					value: selectedAddressType === bitcoinUnit.value,
-					description: typesDescriptions[bitcoinUnit.value],
-					title: `${bitcoinUnit.label}`,
-					type: 'button',
-					onPress: (): void => setAddressTypePreference(bitcoinUnit.value),
-					hide: false,
-				})),
-			},
-		],
+		() => {
+			return [
+				{
+					title: 'Default Bitcoin address type',
+					data: addressTypesList.map((bitcoinUnit) => ({
+						useCheckmark: true,
+						value: selectedAddressTypeState === bitcoinUnit.value,
+						description: typesDescriptions[bitcoinUnit.value],
+						title: `${bitcoinUnit.label}`,
+						type: 'button',
+						onPress: (): void => setAddressTypePreference(bitcoinUnit.value),
+						hide: false,
+					})),
+				},
+			];
+		},
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-		[addressTypesList, selectedAddressType],
+		[selectedAddressTypeState],
 	);
 
 	return (
