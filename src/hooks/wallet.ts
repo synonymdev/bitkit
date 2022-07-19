@@ -39,3 +39,17 @@ export function useBalance({
 
 	return useDisplayValues(b);
 }
+
+/**
+ * Returs true, if current wallet has no transactions
+ */
+export function useNoTransactions(): boolean {
+	const empty = useSelector((store: Store) => {
+		const wallet = store.wallet.selectedWallet;
+		const network = store.wallet.selectedNetwork;
+		const transactions = store.wallet?.wallets[wallet]?.transactions[network];
+		return Object.keys(transactions).length === 0;
+	});
+
+	return empty;
+}

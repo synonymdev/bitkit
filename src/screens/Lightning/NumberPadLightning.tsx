@@ -9,7 +9,17 @@ import useDisplayValues from '../../hooks/displayValues';
 import { fiatToBitcoinUnit } from '../../utils/exchange-rate';
 import { updateSettings } from '../../store/actions/settings';
 
-const NumberPadLightning = ({ sats, onChange, onDone }): ReactElement => {
+const NumberPadLightning = ({
+	sats,
+	onChange,
+	onDone,
+	style,
+}: {
+	sats: number;
+	onChange: Function;
+	onDone: Function;
+	style?: object | Array<object>;
+}): ReactElement => {
 	const unitPreference = useSelector(
 		(store: Store) => store.settings.unitPreference,
 	);
@@ -74,7 +84,7 @@ const NumberPadLightning = ({ sats, onChange, onDone }): ReactElement => {
 
 	return (
 		<NumberPad
-			style={styles.numberpad}
+			style={[styles.numberpad, style]}
 			onPress={onPress}
 			onRemove={onRemove}
 			onClear={onClear}>

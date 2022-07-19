@@ -1,4 +1,4 @@
-import React, { memo, ReactElement } from 'react';
+import React, { memo, ReactElement, useMemo } from 'react';
 import { StyleSheet } from 'react-native';
 import { Text, TouchableOpacity, Ionicons, View } from '../styles/components';
 
@@ -11,7 +11,7 @@ interface NumberPad {
 	onPress: Function;
 	onRemove: Function;
 	onClear: Function;
-	style?: object;
+	style?: object | Array<object>;
 	children?: ReactElement;
 }
 
@@ -33,9 +33,13 @@ const NumberPad = ({
 	onPress,
 	onRemove,
 	onClear,
-	style = {},
+	style,
 	children,
 }: NumberPad): ReactElement => {
+	const container = useMemo(
+		() => StyleSheet.compose(styles.container, style),
+		[style],
+	);
 	const handleRemove = (): void => {
 		vibrate({});
 		onRemove();
@@ -53,7 +57,7 @@ const NumberPad = ({
 	};
 
 	return (
-		<View color={'background'} style={[styles.container, { ...style }]}>
+		<View color={'background'} style={container}>
 			{children}
 			<View style={styles.row}>
 				<Button onPress={(): void => handlePress(digits[0])} num={digits[0]} />

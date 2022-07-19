@@ -1,4 +1,7 @@
-export type TAvailableNetworks = 'bitcoin' | 'bitcoinTestnet';
+export type TAvailableNetworks =
+	| 'bitcoin'
+	| 'bitcoinTestnet'
+	| 'bitcoinRegtest';
 
 export enum EAvailableNetworks {
 	bitcoin = 'bitcoin',

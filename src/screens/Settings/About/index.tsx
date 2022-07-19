@@ -5,12 +5,14 @@ import { IListData } from '../../../components/List';
 import SettingsView from '../SettingsView';
 import GlowingBackground from '../../../components/GlowingBackground';
 
-import BitkitLogo from '../../../assets/icons/social-bitkit.svg';
-import SocialEmailLogo from '../../../assets/icons/social-email.svg';
-import SocialGithubLogo from '../../../assets/icons/social-github.svg';
-import SocialGlobeLogo from '../../../assets/icons/social-globe.svg';
-import SocialMediumLogo from '../../../assets/icons/social-medium.svg';
-import SocialTwitterLogo from '../../../assets/icons/social-twitter.svg';
+import {
+	BitkitIcon,
+	EmailIcon,
+	GithubIcon,
+	GlobeIcon,
+	MediumIcon,
+	TwitterIcon,
+} from '../../../styles/components';
 
 const AboutSettings = ({ navigation }): ReactElement => {
 	const SettingsListData: IListData[] = useMemo(
@@ -84,46 +86,41 @@ const AboutSettings = ({ navigation }): ReactElement => {
 	const footerComponent = (
 		<View style={styles.container}>
 			<View style={styles.containerLogo}>
-				<BitkitLogo />
+				<BitkitIcon height={64} width={184} />
 			</View>
 			<View style={styles.containerSocial}>
-				<SocialEmailLogo
+				<EmailIcon
 					onPress={(): void => {
 						Linking.openURL('mailto:info@synonym.to?subject=General Inquiry');
 					}}
-					viewBox="0 0 24 24"
 					height={24}
 					width={24}
 				/>
-				<SocialGlobeLogo
+				<GlobeIcon
 					onPress={(): void => {
 						Linking.openURL('https://synonym.to');
 					}}
-					viewBox="0 0 24 24"
 					height={24}
 					width={24}
 				/>
-				<SocialTwitterLogo
+				<TwitterIcon
 					onPress={(): void => {
 						Linking.openURL('https://twitter.com/synonym_to');
 					}}
-					viewBox="0 0 24 24"
 					height={24}
 					width={24}
 				/>
-				<SocialMediumLogo
+				<MediumIcon
 					onPress={(): void => {
 						Linking.openURL('https://medium.com/synonym-to');
 					}}
-					viewBox="0 0 24 24"
 					height={24}
 					width={24}
 				/>
-				<SocialGithubLogo
+				<GithubIcon
 					onPress={(): void => {
 						Linking.openURL('https://github.com/synonymdev');
 					}}
-					viewBox="0 0 24 24"
 					height={24}
 					width={24}
 				/>
@@ -159,6 +156,9 @@ const styles = StyleSheet.create({
 	},
 	containerLogo: {
 		marginBottom: 42,
+		justifyContent: 'center',
+		display: 'flex',
+		alignItems: 'center',
 	},
 	textIntro: {
 		fontStyle: 'normal',

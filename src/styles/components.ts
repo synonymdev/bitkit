@@ -67,6 +67,12 @@ import {
 	copyIcon,
 	faceIdIcon,
 	touchIdIcon,
+	bitkitIcon,
+	emailIcon,
+	githubIcon,
+	globeIcon,
+	mediumIcon,
+	twitterIcon,
 } from '../assets/icons/settings';
 import { logo } from '../assets/icons/onboarding';
 import _SafeAreaView from '../components/SafeAreaView';
@@ -443,6 +449,7 @@ export const Headline = styled.Text((props) => ({
 		? props.theme.fonts[props.font].fontFamily
 		: sanFranciscoWeights.bold.fontFamily,
 	fontSize: props.size ? props.size : '34px',
+	lineHeight: props.lineHeight ?? '34px',
 }));
 
 export const Title = styled.Text((props) => ({
@@ -802,5 +809,47 @@ export const BackIcon = styled(SvgXml).attrs((props) => ({
 	xml: backIcon(props?.color ? props.theme.colors[props.color] : 'white'),
 	height: props?.height ?? '32px',
 	width: props?.width ?? '32px',
+	color: undefined,
+}))({});
+
+export const BitkitIcon = styled(SvgXml).attrs((props) => ({
+	xml: bitkitIcon(props?.color ? props.theme.colors[props.color] : '#FF6600'),
+	height: props?.height ?? '184px',
+	width: props?.width ?? '64px',
+	color: undefined,
+}))({});
+
+export const EmailIcon = styled(SvgXml).attrs((props) => ({
+	xml: emailIcon(props?.color ? props.theme.colors[props.color] : '#FF6600'),
+	height: props?.height ?? '24px',
+	width: props?.width ?? '24px',
+	color: undefined,
+}))({});
+
+export const GithubIcon = styled(SvgXml).attrs((props) => ({
+	xml: githubIcon(props?.color ? props.theme.colors[props.color] : '#FF6600'),
+	height: props?.height ?? '24px',
+	width: props?.width ?? '24px',
+	color: undefined,
+}))({});
+
+export const GlobeIcon = styled(SvgXml).attrs((props) => ({
+	xml: globeIcon(props?.color ? props.theme.colors[props.color] : '#FF6600'),
+	height: props?.height ?? '24px',
+	width: props?.width ?? '24px',
+	color: undefined,
+}))({});
+
+export const MediumIcon = styled(SvgXml).attrs((props) => ({
+	xml: mediumIcon(props?.color ? props.theme.colors[props.color] : '#FF6600'),
+	height: props?.height ?? '24px',
+	width: props?.width ?? '25px',
+	color: undefined,
+}))({});
+
+export const TwitterIcon = styled(SvgXml).attrs((props) => ({
+	xml: twitterIcon(props?.color ? props.theme.colors[props.color] : '#FF6600'),
+	height: props?.height ?? '24px',
+	width: props?.width ?? '24px',
 	color: undefined,
 }))({});

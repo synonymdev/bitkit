@@ -19,14 +19,13 @@ import useColors from '../../hooks/colors';
 import AmountToggle from '../../components/AmountToggle';
 import Store from '../../store/types';
 import useDisplayValues from '../../hooks/displayValues';
-
 import NumberPadLightning from './NumberPadLightning';
 
 const PACKAGES_SPENDING = [
 	{
 		id: 'small',
 		usdAmount: 0,
-		img: null,
+		img: require('../../assets/illustrations/coin-transparent.png'),
 	},
 	{
 		id: 'medium',
@@ -113,8 +112,11 @@ const CustomSetup = ({ navigation, route }): ReactElement => {
 			<NavigationHeader title="Add instant payments" />
 			<View style={styles.root}>
 				<View>
-					<Display color="purple">
-						{spending ? 'Spending money.' : 'Receiving money.'}
+					<Display>
+						{spending ? '1) ' : '2) '}
+						<Display color="purple">
+							{spending ? 'Spending money.' : 'Receiving money.'}
+						</Display>
 					</Display>
 					{spending && !keybrd && (
 						<Text01S color="gray1" style={styles.text}>
@@ -162,11 +164,13 @@ const CustomSetup = ({ navigation, route }): ReactElement => {
 					</AnimatedView>
 				)}
 
+				<View />
+
 				<View>
 					<View style={styles.amountBig}>
 						<View>
 							{!keybrd && (
-								<Caption13Up color="purple">
+								<Caption13Up style={styles.amountTitle} color="purple">
 									{spending ? 'SPENDING BALANCE' : 'RECEIVING BANDWITH'}
 									{!spending && (
 										<Caption13Up color="gray2"> (COST: $ TODO)</Caption13Up>
@@ -204,6 +208,7 @@ const CustomSetup = ({ navigation, route }): ReactElement => {
 
 				{keybrd && (
 					<NumberPadLightning
+						style={styles.numberpad}
 						sats={amount}
 						onChange={setAmount}
 						onDone={(): void => setKeybrd(false)}
@@ -257,6 +262,12 @@ const styles = StyleSheet.create({
 		justifyContent: 'space-between',
 		alignItems: 'center',
 		marginBottom: 8,
+	},
+	amountTitle: {
+		marginBottom: 8,
+	},
+	numberpad: {
+		marginHorizontal: -16,
 	},
 });
 

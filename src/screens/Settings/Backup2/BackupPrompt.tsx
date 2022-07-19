@@ -8,6 +8,7 @@ import Glow from '../../../components/Glow';
 import Button from '../../../components/Button';
 import Store from '../../../store/types';
 import { toggleView, ignoreBackup } from '../../../store/actions/user';
+import { useNoTransactions } from '../../../hooks/wallet';
 
 const ASK_INTERVAL = 60_000; // how long this propt will be hidden if user taps Later
 const CHECK_INTERVAL = 10_000; // how long user needs to stay on Wallets screen before he will see this prompt
@@ -24,6 +25,7 @@ const BackupPrompt = ({ screen }: { screen: string }): ReactElement => {
 	const anyBottmSheetIsOpened = useSelector((state: Store) =>
 		Object.values(state.user.viewController).some(({ isOpen }) => isOpen),
 	);
+	const empty = useNoTransactions();
 
 	const handleBackup = (): void => {
 		toggleView({
@@ -44,13 +46,19 @@ const BackupPrompt = ({ screen }: { screen: string }): ReactElement => {
 		});
 	};
 
-	// if backup has not been verified and
-	// user on "Wallets" screen for CHECK_INTERVAL and
-	// not other bottom-sheets are shown and
-	// user has not seed this prompt for ASK_INTERVAL
-	// show it BackupPrompt
+	// if backup has not been verified
+	// and user on "Wallets" screen for CHECK_INTERVAL
+	// and not other bottom-sheets are shown
+	// and user has not seed this prompt for ASK_INTERVAL
+	// and wallet has transactions
+	// show BackupPrompt
 	useEffect(() => {
-		if (backupVerified || screen !== 'Wallets' || anyBottmSheetIsOpened) {
+		if (
+			backupVerified ||
+			screen !== 'Wallets' ||
+			anyBottmSheetIsOpened ||
+			empty
+		) {
 			return;
 		}
 
@@ -73,7 +81,13 @@ const BackupPrompt = ({ screen }: { screen: string }): ReactElement => {
 			});
 		}, CHECK_INTERVAL);
 		return (): void => clearInterval(timer);
-	}, [screen, ignoreBackupTimestamp, backupVerified, anyBottmSheetIsOpened]);
+	}, [
+		screen,
+		ignoreBackupTimestamp,
+		backupVerified,
+		anyBottmSheetIsOpened,
+		empty,
+	]);
 
 	return (
 		<BottomSheetWrapper

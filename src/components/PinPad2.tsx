@@ -122,60 +122,56 @@ const ChoosePIN = ({
 		return (): void => clearInterval(timer);
 	}, [pin, attemptsRemaining, onSuccess, reducePinAttemptsRemaining]);
 
-	const content = (
-		<View style={styles.container}>
-			<SafeAreaInsets type="top" />
+	return (
+		<GlowingBackground topLeft={brand}>
+			<View style={styles.container}>
+				<SafeAreaInsets type="top" />
 
-			<View />
-			{showLogoOnPIN && (
-				<View style={styles.logo}>
-					<BitKitLogo height={64} width={184} />
-				</View>
-			)}
-
-			<View />
-			<View />
-
-			<View>
-				<Subtitle style={styles.title}>Please enter your PIN code</Subtitle>
-				{attemptsRemaining !== Number(PIN_ATTEMPTS) && (
-					<Text02S style={styles.attempts} color="brand">
-						{attemptsRemaining} attempts remaining. Forgot your PIN?
-					</Text02S>
+				<View />
+				{showLogoOnPIN && (
+					<View style={styles.logo}>
+						<BitKitLogo height={64} width={184} />
+					</View>
 				)}
 
-				<View style={styles.dots}>
-					{Array(4)
-						.fill(null)
-						.map((_, i) => (
-							<View
-								key={i}
-								style={[
-									styles.dot,
-									{
-										borderColor: brand,
-										backgroundColor: pin[i] === undefined ? brand08 : brand,
-									},
-								]}
-							/>
-						))}
+				<View />
+				<View />
+
+				<View>
+					<Subtitle style={styles.title}>Please enter your PIN code</Subtitle>
+					{attemptsRemaining !== Number(PIN_ATTEMPTS) && (
+						<Text02S style={styles.attempts} color="brand">
+							{attemptsRemaining} attempts remaining. Forgot your PIN?
+						</Text02S>
+					)}
+
+					<View style={styles.dots}>
+						{Array(4)
+							.fill(null)
+							.map((_, i) => (
+								<View
+									key={i}
+									style={[
+										styles.dot,
+										{
+											borderColor: brand,
+											backgroundColor: pin[i] === undefined ? brand08 : brand,
+										},
+									]}
+								/>
+							))}
+					</View>
 				</View>
+
+				<NumberPad
+					style={styles.numberpad}
+					onPress={handleOnPress}
+					onRemove={handleOnRemove}
+					onClear={handleOnClear}
+				/>
 			</View>
-
-			<NumberPad
-				style={styles.numberpad}
-				onPress={handleOnPress}
-				onRemove={handleOnRemove}
-				onClear={handleOnClear}
-			/>
-		</View>
+		</GlowingBackground>
 	);
-
-	if (!showLogoOnPIN) {
-		return content;
-	}
-
-	return <GlowingBackground topLeft={brand}>{content}</GlowingBackground>;
 };
 
 const styles = StyleSheet.create({

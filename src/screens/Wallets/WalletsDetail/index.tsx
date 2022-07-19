@@ -83,7 +83,6 @@ const WalletsDetail = (props: Props): ReactElement => {
 	const { route } = props;
 	const { assetType } = route.params;
 	const { satoshis } = useBalance({ onchain: true, lightning: true });
-
 	const colors = useColors();
 
 	let title = '';

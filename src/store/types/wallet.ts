@@ -23,7 +23,7 @@ export type TBalanceUnit = 'satoshi' | 'BTC' | 'fiat';
 
 export type TBitcoinAbbreviation = 'sats' | 'BTC';
 
-export type TBitcoinLabel = 'Bitcoin' | 'Bitcoin Testnet';
+export type TBitcoinLabel = 'Bitcoin' | 'Bitcoin Testnet' | 'Bitcoin Regtest';
 
 export type TTicker = 'BTC' | 'tBTC';
 
@@ -58,12 +58,6 @@ export type TGetByteCountOutputs = {
 	[key in TGetByteCountOutput]?: number;
 };
 
-export enum EWallet {
-	selectedNetwork = 'bitcoin',
-	defaultWallet = 'wallet0',
-	addressType = 'p2wpkh',
-}
-
 export enum EOutput {
 	address = '',
 	value = 0,
@@ -77,6 +71,18 @@ export enum ETransactionDefaults {
 
 export enum EKeyDerivationAccount {
 	onchain = 0,
+}
+
+export enum EAddressTypeNames {
+	p2wpkh = 'Native Segwit',
+	p2sh = 'Legacy Bitcoin address',
+	p2pkh = 'Wrapped Segwit',
+}
+
+export enum EWallet {
+	selectedNetwork = 'bitcoin',
+	defaultWallet = 'wallet0',
+	addressType = 'p2wpkh',
 }
 
 export interface IAddressData {

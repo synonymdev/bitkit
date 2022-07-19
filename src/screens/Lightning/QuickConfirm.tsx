@@ -75,7 +75,9 @@ const QuickConfirm = ({ navigation, route }): ReactElement => {
 				<View>
 					<View style={styles.amountBig}>
 						<View>
-							<Caption13Up color="purple">SPENDING BALANCE</Caption13Up>
+							<Caption13Up style={styles.amountTitle} color="purple">
+								SPENDING BALANCE
+							</Caption13Up>
 							<AmountToggle
 								sats={spendingAmount}
 								onPress={(): void => setKeybrd(true)}
@@ -111,6 +113,7 @@ const QuickConfirm = ({ navigation, route }): ReactElement => {
 							}
 							setKeybrd(false);
 						}}
+						style={styles.numberpad}
 					/>
 				)}
 			</View>
@@ -135,6 +138,9 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		marginBottom: 32,
 	},
+	amountTitle: {
+		marginBottom: 8,
+	},
 	chartContainer: {
 		flexDirection: 'row',
 		alignItems: 'center',
@@ -149,6 +155,9 @@ const styles = StyleSheet.create({
 	percContainer: {
 		alignSelf: 'stretch',
 		justifyContent: 'space-around',
+	},
+	numberpad: {
+		marginHorizontal: -16,
 	},
 });
 

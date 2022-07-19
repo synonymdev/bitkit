@@ -1,24 +1,33 @@
-import React, { memo, ReactElement, useMemo, useState } from 'react';
+import React, { memo, ReactElement, useMemo, useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { Modal, StyleSheet, Text, Pressable, View } from 'react-native';
+import ReactNativeBiometrics from 'react-native-biometrics';
 import Store from '../../../store/types';
 import { IListData } from '../../../components/List';
 import SettingsView from '../SettingsView';
 import { removePin, toggleBiometrics } from '../../../utils/settings';
 import { IsSensorAvailableResult } from '../../../components/Biometrics';
 import { toggleView } from '../../../store/actions/user';
+import { updateSettings } from '../../../store/actions/settings';
 
-const SecuritySettings = (): ReactElement => {
+const rnBiometrics = new ReactNativeBiometrics();
+
+const SecuritySettings = ({ navigation }): ReactElement => {
 	const [modalVisible, setModalVisible] = useState(false);
-	const hasPin = useSelector((state: Store) => state.settings.pin);
-
-	const [biometryData] = useState<IsSensorAvailableResult | undefined>(
-		undefined,
+	const [biometryData, setBiometricData] = useState<
+		IsSensorAvailableResult | undefined
+	>(undefined);
+	const { pin, biometrics, pinOnLaunch, pinForPayments } = useSelector(
+		(state: Store) => state.settings,
 	);
 
-	const hasBiometrics = useSelector(
-		(state: Store) => state.settings.biometrics,
-	);
+	useEffect(() => {
+		(async (): Promise<void> => {
+			const data: IsSensorAvailableResult =
+				await rnBiometrics.isSensorAvailable();
+			setBiometricData(data);
+		})();
+	}, []);
 
 	const SettingsListData: IListData[] = useMemo(
 		() => [
@@ -26,18 +35,23 @@ const SecuritySettings = (): ReactElement => {
 				data: [
 					{
 						title: 'Swipe balance to hide',
-						value: hasPin ? 'Enabled' : 'Disabled',
+						value: true ? 'Enabled' : 'Disabled', // TODO
 						type: 'switch',
 						onPress: (): void => {},
 						hide: false,
 					},
 					{
-						title: 'Change PIN code',
-						value: hasPin ? 'Enabled' : 'Disabled',
+						title: 'Pin',
+						value: pin ? 'Enabled' : 'Disabled',
 						type: 'button',
 						onPress: (): void => {
-							if (hasPin) {
-								removePin().then();
+							if (pin) {
+								navigation.navigate('AuthCheck', {
+									onSuccess: () => {
+										navigation.pop();
+										removePin().then();
+									},
+								});
 							} else {
 								toggleView({
 									view: 'PINPrompt',
@@ -49,32 +63,59 @@ const SecuritySettings = (): ReactElement => {
 					},
 					{
 						title: 'Require PIN on launch',
-						value: hasPin ? 'Enabled' : 'Disabled',
 						type: 'switch',
-						onPress: (): void => {},
-						hide: false,
+						enabled: pinOnLaunch,
+						onPress: (): void => {
+							navigation.navigate('AuthCheck', {
+								onSuccess: () => {
+									navigation.pop();
+									updateSettings({ pinOnLaunch: !pinOnLaunch });
+								},
+							});
+						},
+						hide: !pin,
 					},
 					{
 						title: 'Require PIN for payments',
-						value: hasPin ? 'Enabled' : 'Disabled',
 						type: 'switch',
-						onPress: (): void => {},
-						hide: false,
+						enabled: pinForPayments,
+						onPress: (): void => {
+							navigation.navigate('AuthCheck', {
+								onSuccess: () => {
+									navigation.pop();
+									updateSettings({ pinForPayments: !pinForPayments });
+								},
+							});
+						},
+						hide: !pin,
 					},
 					{
-						title: 'Biometrics',
+						title: 'Use Biometrics instead',
 						type: 'switch',
-						enabled: hasBiometrics,
+						enabled: biometrics,
 						onPress: (): void => {
-							toggleBiometrics();
+							navigation.navigate('AuthCheck', {
+								onSuccess: () => {
+									navigation.pop();
+									toggleBiometrics();
+								},
+							});
 						},
-						hide: !biometryData?.available && !biometryData?.biometryType,
+						hide:
+							!pin || (!biometryData?.available && !biometryData?.biometryType),
 					},
 				],
 			},
 		],
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-		[hasPin],
+		[
+			biometryData?.available,
+			biometryData?.biometryType,
+			biometrics,
+			pin,
+			pinOnLaunch,
+			pinForPayments,
+			navigation,
+		],
 	);
 
 	return (
