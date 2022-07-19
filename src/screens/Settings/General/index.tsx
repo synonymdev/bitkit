@@ -4,10 +4,14 @@ import { Modal, StyleSheet, Text, Pressable, View } from 'react-native';
 import Store from './../../../store/types';
 import { IListData } from './../../../components/List';
 import SettingsView from './../SettingsView';
+import { updateSettings } from '../../../store/actions/settings';
 
 const General = ({ navigation }): ReactElement => {
 	const [modalVisible, setModalVisible] = useState(false);
-	const hasPin = useSelector((state: Store) => state.settings.pin);
+
+	const showSuggestions = useSelector(
+		(state: Store) => state.settings.showSuggestions,
+	);
 
 	const selectedCurrency = useSelector(
 		(state: Store) => state.settings.selectedCurrency,
@@ -49,9 +53,11 @@ const General = ({ navigation }): ReactElement => {
 					},
 					{
 						title: 'Display suggestions',
-						value: hasPin ? 'Enabled' : 'Disabled',
+						enabled: showSuggestions ? true : false,
 						type: 'switch',
-						onPress: (): void => {},
+						onPress: async (): Promise<void> => {
+							updateSettings({ showSuggestions: !showSuggestions });
+						},
 						hide: false,
 					},
 					{
@@ -66,7 +72,7 @@ const General = ({ navigation }): ReactElement => {
 			},
 		],
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-		[hasPin, selectedBitcoinUnit],
+		[showSuggestions, selectedBitcoinUnit],
 	);
 
 	return (

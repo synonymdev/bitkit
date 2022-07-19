@@ -36,6 +36,7 @@ export interface ISettings {
 	coinSelectAuto: boolean;
 	coinSelectPreference: TCoinSelectPreference;
 	unitPreference: 'asset' | 'fiat';
+	showSuggestions: boolean;
 	[key: string]: any;
 }
 

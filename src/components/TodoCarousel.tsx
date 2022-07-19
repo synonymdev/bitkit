@@ -13,6 +13,9 @@ const TodoCarousel = (): ReactElement => {
 	const { width } = useWindowDimensions();
 	const navigation = useNavigation();
 	const ref = useRef(null);
+	const showSuggestions = useSelector(
+		(state: Store) => state.settings.showSuggestions,
+	);
 	const todos = useSelector((state: Store) => state.todos.todos);
 	const carouselStyle = useMemo(() => ({ width }), [width]);
 
@@ -30,6 +33,10 @@ const TodoCarousel = (): ReactElement => {
 	);
 
 	if (!todos.length) {
+		return <></>;
+	}
+
+	if (!showSuggestions) {
 		return <></>;
 	}
 
