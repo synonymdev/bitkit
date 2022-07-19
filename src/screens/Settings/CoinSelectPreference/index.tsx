@@ -6,6 +6,7 @@ import { useSelector } from 'react-redux';
 import Store from '../../../store/types';
 import { updateSettings } from '../../../store/actions/settings';
 import { FlatList } from 'react-native';
+import { Result } from '../../../utils/result';
 
 const CoinSelectSettings = (): ReactElement => {
 	const selectedAutoPilot = useSelector(
@@ -51,7 +52,7 @@ const CoinSelectSettings = (): ReactElement => {
 						title: 'Consolidate',
 						value: coinSelectPreference === 'consolidate',
 						type: 'button',
-						onPress: async (): Promise<any> =>
+						onPress: (): Result<string> =>
 							updateSettings({
 								coinSelectAuto: true,
 								coinSelectPreference: 'consolidate',
@@ -62,7 +63,7 @@ const CoinSelectSettings = (): ReactElement => {
 						title: 'Maximum Privacy',
 						value: coinSelectPreference === 'large',
 						type: 'button',
-						onPress: async (): Promise<any> =>
+						onPress: (): Result<string> =>
 							updateSettings({
 								coinSelectAuto: true,
 								coinSelectPreference: 'large',
@@ -73,7 +74,7 @@ const CoinSelectSettings = (): ReactElement => {
 						title: 'Minimum UTXOs',
 						value: coinSelectPreference === 'small',
 						type: 'button',
-						onPress: async (): Promise<any> =>
+						onPress: (): Result<string> =>
 							updateSettings({
 								coinSelectAuto: true,
 								coinSelectPreference: 'small',
