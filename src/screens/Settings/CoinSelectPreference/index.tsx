@@ -39,8 +39,7 @@ const CoinSelectSettings = (): ReactElement => {
 				],
 			},
 		],
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-		[selectedAutoPilot, coinSelectPreference],
+		[selectedAutoPilot],
 	);
 
 	const AutoPilotMode: IListData[] = useMemo(
@@ -84,7 +83,6 @@ const CoinSelectSettings = (): ReactElement => {
 				],
 			},
 		],
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 		[coinSelectPreference, selectedAutoPilot],
 	);
 
