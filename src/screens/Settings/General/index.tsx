@@ -53,7 +53,7 @@ const General = ({ navigation }): ReactElement => {
 					},
 					{
 						title: 'Display suggestions',
-						enabled: showSuggestions ? true : false,
+						enabled: showSuggestions,
 						type: 'switch',
 						onPress: async (): Promise<void> => {
 							updateSettings({ showSuggestions: !showSuggestions });
