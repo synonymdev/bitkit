@@ -54,7 +54,7 @@ export const SlashtagsProvider = ({
 					// TODO: replace it with random access react native after m1 support
 					storage: RAWS,
 					// TODO: replace hardcoded relays with configurable relays
-					swarmOpts: { relays: ['ws://localhost:45475'] },
+					swarmOpts: { relays: ['ws://167.86.102.121:45475'] },
 				});
 
 				setState({ sdk });
