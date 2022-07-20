@@ -1,6 +1,7 @@
 import React, { ReactElement } from 'react';
 import { View, StyleSheet } from 'react-native';
 import App from './src/App';
+import ErrorBoundary from './src/ErrorBoundary';
 import store from './src/store';
 import { PersistGate } from 'redux-persist/integration/react';
 import { enableScreens, enableFreeze } from 'react-native-screens';
@@ -14,13 +15,15 @@ const persistor = persistStore(store);
 
 const Root = (): ReactElement => {
 	return (
-		<Provider store={store}>
-			<PersistGate
-				loading={<View style={styles.container} />}
-				persistor={persistor}>
-				<App />
-			</PersistGate>
-		</Provider>
+		<ErrorBoundary>
+			<Provider store={store}>
+				<PersistGate
+					loading={<View style={styles.container} />}
+					persistor={persistor}>
+					<App />
+				</PersistGate>
+			</Provider>
+		</ErrorBoundary>
 	);
 };
 
