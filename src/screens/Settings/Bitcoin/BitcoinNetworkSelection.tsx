@@ -15,7 +15,7 @@ import {
 	getSelectedAddressType,
 } from '../../../utils/wallet';
 
-const BitcoinNetworkSelection = (): ReactElement => {
+const BitcoinNetworkSelection = ({ navigation }): ReactElement => {
 	const selectedNetwork = useSelector(
 		(state: Store) => state.wallet.selectedNetwork,
 	);
@@ -30,6 +30,7 @@ const BitcoinNetworkSelection = (): ReactElement => {
 						value: network === selectedNetwork,
 						type: 'button',
 						onPress: async (): Promise<void> => {
+							navigation.goBack();
 							// Switch to new network.
 							await updateWallet({ selectedNetwork: network });
 							// Grab the selectedWallet.
@@ -54,7 +55,7 @@ const BitcoinNetworkSelection = (): ReactElement => {
 				}),
 			},
 		],
-		[selectedNetwork],
+		[navigation, selectedNetwork],
 	);
 
 	return (

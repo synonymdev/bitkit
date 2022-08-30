@@ -19,7 +19,7 @@ import SettingsView from './../SettingsView';
 import { resetSlashtagsStore } from '../../../store/actions/slashtags';
 import { clearSlashtagsStorage } from '../../../components/SlashtagsProvider';
 
-const SettingsMenu = ({ navigation }): ReactElement => {
+const SettingsMenu = (): ReactElement => {
 	const [throwError, setThrowError] = useState(false);
 	const selectedWallet = useSelector(
 		(state: Store) => state.wallet.selectedWallet,
@@ -32,12 +32,6 @@ const SettingsMenu = ({ navigation }): ReactElement => {
 			{
 				title: 'Dev Settings',
 				data: [
-					{
-						title: 'Bitcoin Network Selection',
-						type: 'button',
-						onPress: (): void => navigation.navigate('BitcoinNetworkSelection'),
-						hide: false,
-					},
 					{
 						title: 'Reset Current Wallet Store',
 						type: 'button',

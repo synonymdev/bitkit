@@ -112,16 +112,16 @@ export const getNetworkData = ({
 	try {
 		switch (selectedNetwork) {
 			case 'bitcoin':
-				return { abbreviation, label: 'Bitcoin', ticker: 'BTC' };
+				return { abbreviation, label: 'Bitcoin Mainnet', ticker: 'BTC' };
 			case 'bitcoinTestnet':
 				return { abbreviation, label: 'Bitcoin Testnet', ticker: 'tBTC' };
 			case 'bitcoinRegtest':
 				return { abbreviation, label: 'Bitcoin Regtest', ticker: 'tBTC' };
 			default:
-				return { abbreviation, label: 'Bitcoin', ticker: 'BTC' };
+				return { abbreviation, label: 'Bitcoin Mainnet', ticker: 'BTC' };
 		}
 	} catch {
-		return { abbreviation, label: 'Bitcoin', ticker: 'BTC' };
+		return { abbreviation, label: 'Bitcoin Mainnet', ticker: 'BTC' };
 	}
 };
 

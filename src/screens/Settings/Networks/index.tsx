@@ -1,12 +1,31 @@
 import React, { memo, ReactElement, useMemo } from 'react';
+import { useSelector } from 'react-redux';
 import { IListData } from '../../../components/List';
+import Store from '../../../store/types';
 import SettingsView from '../SettingsView';
 
 const NetworksSettings = ({ navigation }): ReactElement => {
+	const networkLabels = {
+		bitcoin: 'Mainnet',
+		bitcoinTestnet: 'Testnet',
+		bitcoinRegtest: 'Regtest',
+	};
+
+	const selectedNetwork = useSelector(
+		(state: Store) => state.wallet.selectedNetwork,
+	);
+
 	const SettingsListData: IListData[] = useMemo(
 		() => [
 			{
 				data: [
+					{
+						title: 'Bitcoin Network',
+						value: networkLabels[selectedNetwork],
+						type: 'button',
+						onPress: (): void => navigation.navigate('BitcoinNetworkSelection'),
+						hide: false,
+					},
 					{
 						title: 'Lightning Node Info',
 						type: 'button',
@@ -28,8 +47,7 @@ const NetworksSettings = ({ navigation }): ReactElement => {
 				],
 			},
 		],
-		//eslint-disable-next-line react-hooks/exhaustive-deps
-		[],
+		[navigation, networkLabels, selectedNetwork],
 	);
 
 	return (
