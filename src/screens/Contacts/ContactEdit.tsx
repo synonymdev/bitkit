@@ -121,6 +121,7 @@ const styles = StyleSheet.create({
 		display: 'flex',
 		flexDirection: 'row',
 		justifyContent: 'space-between',
+		backgroundColor: 'transparent',
 	},
 	buttonLeft: {
 		flex: 1,

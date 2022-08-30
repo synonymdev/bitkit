@@ -1,19 +1,23 @@
 import React, { useState } from 'react';
+import Clipboard from '@react-native-clipboard/clipboard';
+import { FadeIn, FadeOut } from 'react-native-reanimated';
+import { StyleSheet, useWindowDimensions, Share } from 'react-native';
+import { useSelector } from 'react-redux';
+import QR from 'react-native-qrcode-svg';
+
 import {
+	AnimatedView,
 	CopyIcon,
 	InfoIcon,
 	PencileIcon,
 	QrPage,
 	ShareIcon,
-	Text,
+	Text02S,
+	TouchableOpacity,
 	UsersIcon,
 	View,
-	AnimatedView,
 } from '../../styles/components';
 import NavigationHeader from '../../components/NavigationHeader';
-import { FadeIn, FadeOut } from 'react-native-reanimated';
-import { StyleSheet, useWindowDimensions, Share } from 'react-native';
-import { useSelector } from 'react-redux';
 import SafeAreaInsets from '../../components/SafeAreaInsets';
 import ProfileCard from '../../components/ProfileCard';
 import {
@@ -21,10 +25,7 @@ import {
 	PaymentsFromContacts,
 	OfflinePayments,
 } from './ProfileOnboarding';
-import QR from 'react-native-qrcode-svg';
 import { BasicProfile } from '../../store/types/slashtags';
-import { TouchableOpacity } from 'react-native';
-import Clipboard from '@react-native-clipboard/clipboard';
 import ProfileLinks from '../../components/ProfileLinks';
 import Tooltip from '../../components/Tooltip';
 import ProfileEdit from './ProfileEdit';
@@ -85,16 +86,16 @@ const ProfileScreen = ({ navigation }): JSX.Element => {
 					<View style={styles.bottomHeader}>
 						<IconButton onPress={switchView}>
 							{view === 'qr' ? (
-								<InfoIcon height={24} width={24} color="brand" />
+								<InfoIcon height={20} width={20} color="brand" />
 							) : (
-								<QrPage height={24} width={24} color="brand" />
+								<QrPage height={20} width={20} color="brand" />
 							)}
 						</IconButton>
 						<IconButton
 							onPress={(): void => {
 								url && handleCopyButton();
 							}}>
-							<CopyIcon height={24} width={24} color="brand" />
+							<CopyIcon height={20} width={20} color="brand" />
 						</IconButton>
 						<IconButton
 							onPress={(): void => {
@@ -104,19 +105,19 @@ const ProfileScreen = ({ navigation }): JSX.Element => {
 										message: url,
 									});
 							}}>
-							<ShareIcon height={24} width={24} color="brand" />
+							<ShareIcon height={20} width={20} color="brand" />
 						</IconButton>
 						<IconButton
 							onPress={(): void => {
 								navigation.navigate('ProfileEdit');
 							}}>
-							<PencileIcon height={24} width={24} color="brand" />
+							<PencileIcon height={20} width={20} color="brand" />
 						</IconButton>
 						<IconButton
 							onPress={(): void => {
 								navigation.navigate('Contacts');
 							}}>
-							<UsersIcon height={24} width={24} color="brand" />
+							<UsersIcon height={20} width={20} color="brand" />
 						</IconButton>
 					</View>
 					{view === 'details' ? (
@@ -151,6 +152,7 @@ const IconButton = ({
 }): JSX.Element => {
 	return (
 		<TouchableOpacity
+			color="white08"
 			activeOpacity={0.7}
 			onPress={onPress}
 			style={styles.iconContainer}>
@@ -181,7 +183,7 @@ const QRView = ({
 					quietZone={20}
 				/>
 			</View>
-			<Text style={styles.qrViewNote}>Scan to add {profile?.name}</Text>
+			<Text02S style={styles.qrViewNote}>Scan to add {profile?.name}</Text02S>
 		</View>
 	);
 };
@@ -200,7 +202,6 @@ const styles = StyleSheet.create({
 	divider: {
 		height: 2,
 		backgroundColor: 'rgba(255, 255, 255, 0.1)',
-
 		marginTop: 16,
 		marginBottom: 16,
 	},
@@ -213,7 +214,6 @@ const styles = StyleSheet.create({
 		width: 48,
 		height: 48,
 		borderRadius: 9999,
-		backgroundColor: 'rgba(255, 255, 255, 0.08)',
 		display: 'flex',
 		alignItems: 'center',
 		justifyContent: 'center',
@@ -237,8 +237,6 @@ const styles = StyleSheet.create({
 	},
 	qrViewNote: {
 		marginTop: 16,
-		fontSize: 15,
-		lineHeight: 20,
 	},
 	profileDetails: {
 		marginTop: 32,

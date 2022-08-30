@@ -1,15 +1,19 @@
 import React, { ReactElement, useCallback, useMemo, useState } from 'react';
+import { SectionList, StyleSheet, TouchableOpacity } from 'react-native';
+import { useSelector } from 'react-redux';
+import Clipboard from '@react-native-clipboard/clipboard';
+
 import {
+	Caption13Up,
 	ClipboardTextIcon,
 	CornersOutIcon,
 	PlusIcon,
 	Subtitle,
 	Text,
+	Text01S,
 	View,
 } from '../../styles/components';
 import NavigationHeader from '../../components/NavigationHeader';
-import { SectionList, StyleSheet, TouchableOpacity } from 'react-native';
-import { useSelector } from 'react-redux';
 import SafeAreaInsets from '../../components/SafeAreaInsets';
 import ContactsOnboarding from './ContactsOnboarding';
 import SearchInput from '../../components/SearchInput';
@@ -17,7 +21,6 @@ import ContactItem from '../../components/ContactItem';
 import BottomSheetWrapper from '../../components/BottomSheetWrapper';
 import LabeledInput from '../../components/LabeledInput';
 import { toggleView } from '../../store/actions/user';
-import Clipboard from '@react-native-clipboard/clipboard';
 import Store from '../../store/types';
 import { useSelectedSlashtag } from '../../hooks/slashtags';
 import { handleSlashtagURL } from '../../utils/slashtags';
@@ -136,7 +139,7 @@ const ContactsScreen = ({ navigation }): JSX.Element => {
 						)}
 						renderSectionHeader={({ section: { title } }): ReactElement => (
 							<View style={styles.sectionHeader}>
-								<Text style={styles.label}>{title}</Text>
+								<Caption13Up color="gray1">{title}</Caption13Up>
 							</View>
 						)}
 						renderItem={({ item: contact }): ReactElement => (
@@ -157,10 +160,10 @@ const ContactsScreen = ({ navigation }): JSX.Element => {
 				snapPoints={[400]}>
 				<View style={styles.modalContainer}>
 					<Subtitle style={styles.modalTitle}>Add a contact</Subtitle>
-					<Text color="gray1" style={styles.addContactNote}>
+					<Text01S color="gray1" style={styles.addContactNote}>
 						Add a new contact by scanning a QR or by pasting their Slashtags key
 						below.
-					</Text>
+					</Text01S>
 					<View style={styles.modalContent}>
 						<LabeledInput
 							bottomSheet={true}
@@ -208,11 +211,11 @@ const styles = StyleSheet.create({
 	searchRow: {
 		display: 'flex',
 		flexDirection: 'row',
-		marginBottom: 16,
+		alignItems: 'center',
+		marginBottom: 32,
 	},
 	searchInput: {
 		flex: 1,
-		marginBottom: 16,
 	},
 	addButton: {
 		display: 'flex',
@@ -225,13 +228,6 @@ const styles = StyleSheet.create({
 		backgroundColor: 'rgba(255, 255, 255, 0.08)',
 	},
 	sectionHeader: { height: 24 },
-	label: {
-		fontWeight: '500',
-		fontSize: 13,
-		lineHeight: 18,
-		textTransform: 'uppercase',
-		color: '#8E8E93',
-	},
 	contacts: {
 		flex: 1,
 	},
@@ -255,14 +251,14 @@ const styles = StyleSheet.create({
 		backgroundColor: 'transparent',
 	},
 	addContactNote: {
-		fontSize: 17,
-		lineHeight: 22,
 		padding: 16,
 	},
 	addContactsIconsContainer: {
 		display: 'flex',
 		flexDirection: 'row',
+		justifyContent: 'space-between',
 		backgroundColor: 'transparent',
+		width: 56,
 	},
 	addContactInvalid: {
 		height: 20,

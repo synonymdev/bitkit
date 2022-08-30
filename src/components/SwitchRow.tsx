@@ -16,16 +16,16 @@ const SwitchRow = ({
 			<TouchableOpacity
 				onPress={onPress}
 				activeOpacity={1}
-				color="onSurface"
+				color="transparent"
 				style={styles.container}>
-				<View color="onSurface" style={styles.leftColumn}>
+				<View color="transparent" style={styles.leftColumn}>
 					{children}
 				</View>
 				<View color="transparent" style={styles.rightColumn}>
 					<Switch onValueChange={onPress} value={isEnabled} />
 				</View>
 			</TouchableOpacity>
-			<View color={'gray4'} style={styles.divider} />
+			<View color="transparent" style={styles.divider} />
 		</>
 	);
 };
@@ -40,17 +40,17 @@ const styles = StyleSheet.create({
 	divider: {
 		height: 1,
 		marginVertical: 5,
+		borderBottomWidth: 1,
+		borderBottomColor: 'rgba(255, 255, 255, 0.1)',
 	},
 	leftColumn: {
 		flex: 1,
 		justifyContent: 'center',
-		paddingLeft: 16,
 	},
 	rightColumn: {
 		justifyContent: 'center',
 		alignItems: 'flex-end',
 		alignSelf: 'center',
-		paddingRight: 10,
 	},
 });
 

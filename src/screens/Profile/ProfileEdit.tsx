@@ -1,22 +1,23 @@
 import React, { useState, useMemo, useEffect, useCallback } from 'react';
+import { StyleSheet } from 'react-native';
+import { useSelector } from 'react-redux';
+
 import {
 	PlusIcon,
 	ScrollView,
 	Subtitle,
-	Text,
 	View,
+	Text02S,
 } from '../../styles/components';
 import NavigationHeader from '../../components/NavigationHeader';
 import Button from '../../components/Button';
 import SafeAreaInsets from '../../components/SafeAreaInsets';
 import { useSelectedSlashtag } from '../../hooks/slashtags';
-import { StyleSheet } from 'react-native';
 import LabeledInput from '../../components/LabeledInput';
 import BottomSheetWrapper from '../../components/BottomSheetWrapper';
 import { toggleView } from '../../store/actions/user';
 import ProfileCard from '../../components/ProfileCard';
 import ProfileLinks from '../../components/ProfileLinks';
-import { useSelector } from 'react-redux';
 import { setOnboardingProfileStep } from '../../store/actions/slashtags';
 import Store from '../../store/types';
 import { BasicProfile } from '../../store/types/slashtags';
@@ -100,10 +101,10 @@ export const ProfileEdit = ({ navigation }): JSX.Element => {
 						}
 					/>
 					<View style={styles.divider} />
-					<Text color="gray1" style={styles.note}>
+					<Text02S color="gray1" style={styles.note}>
 						Please note that all your profile information will be publicly
 						available.
-					</Text>
+					</Text02S>
 				</ScrollView>
 				<Button
 					style={styles.saveButton}
@@ -183,18 +184,15 @@ const styles = StyleSheet.create({
 	},
 	note: {
 		marginRight: 16,
-		fontSize: 17,
-		lineHeight: 22,
-		letterSpacing: -0.4,
 		flex: 1,
 		paddingRight: 20,
 	},
 	addLinkButton: {
-		height: 40,
-		maxWidth: 140,
+		alignSelf: 'flex-start',
 	},
 	editDataModal: {
 		flex: 1,
+		backgroundColor: 'transparent',
 	},
 	addLinkTitle: {
 		textAlign: 'center',
@@ -203,6 +201,7 @@ const styles = StyleSheet.create({
 	editLinkContent: {
 		display: 'flex',
 		padding: 16,
+		backgroundColor: 'transparent',
 	},
 	addLinkSave: {
 		marginTop: 8,
@@ -211,7 +210,7 @@ const styles = StyleSheet.create({
 		marginTop: 32,
 	},
 	divider: {
-		height: 2,
+		height: 1,
 		backgroundColor: 'rgba(255, 255, 255, 0.1)',
 		marginTop: 16,
 		marginBottom: 16,

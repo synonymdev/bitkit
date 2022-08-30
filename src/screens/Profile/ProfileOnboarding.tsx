@@ -1,17 +1,16 @@
 import React, { useState } from 'react';
-import { Text, View } from '../../styles/components';
+import { useSelector } from 'react-redux';
+import { StyleSheet, Image, ImageSourcePropType } from 'react-native';
+
+import { Display, View, Text01S } from '../../styles/components';
 import NavigationHeader from '../../components/NavigationHeader';
-import { Image, ImageSourcePropType } from 'react-native';
 import Button from '../../components/Button';
-import { Title } from '../../styles/components';
 import GlowingBackground from '../../components/GlowingBackground';
 import SafeAreaInsets from '../../components/SafeAreaInsets';
-import { StyleSheet } from 'react-native';
 import { setOnboardingProfileStep } from '../../store/actions/slashtags';
 import { ISlashtags, SlashPayConfig } from '../../store/types/slashtags';
 import SwitchRow from '../../components/SwitchRow';
 import { getReceiveAddress } from '../../utils/wallet';
-import { useSelector } from 'react-redux';
 import Store from '../../store/types';
 import { useSlashtagsSDK } from '../../components/SlashtagsProvider';
 import { getSelectedSlashtag } from '../../utils/slashtags';
@@ -22,7 +21,6 @@ export const ProfileIntro = ({ navigation }): JSX.Element => {
 			navigation={navigation}
 			backButton={false}
 			illustration={require('../../assets/illustrations/crown.png')}
-			illustrationStyle={styles.crown}
 			title="Own your"
 			highlighted="Social Profile"
 			text="Use Slashtags to control your public profile and links, so your
@@ -37,12 +35,11 @@ export const PaymentsFromContacts = ({ navigation }): JSX.Element => {
 		<Layout
 			navigation={navigation}
 			backButton={true}
-			illustration={require('../../assets/illustrations/coin-stack-2.png')}
-			illustrationStyle={styles.crown}
-			title="Payments"
-			subtitle="from "
-			highlighted="Contacts"
-			text="Contacts can pay you instantly viaLightning whenever you are online."
+			illustration={require('../../assets/illustrations/coins.png')}
+			title="Pay your"
+			subtitle=""
+			highlighted="Contacts."
+			text="You and your contacts can use Bitkit to send payments directly, without banks, anytime, anywhere."
 			nextStep="OfflinePayments"
 		/>
 	);
@@ -77,25 +74,18 @@ export const OfflinePayments = ({ navigation }): JSX.Element => {
 			navigation={navigation}
 			backButton={true}
 			illustration={require('../../assets/illustrations/switch.png')}
-			illustrationStyle={styles.swtich}
 			title="Offline"
 			highlighted="Payments."
 			text="Bitkit can also create a fixed Bitcoin address for you, so you’re able to receive payments even when you are offline."
 			nextStep="Done"
 			buttonText="Save Profile"
 			onNext={savePaymentConfig}>
-			<View>
-				<View style={styles.enableOfflineRow}>
-					<SwitchRow
-						isEnabled={enableOfflinePayment}
-						onPress={(): void =>
-							setEnableOfflinePayment(!enableOfflinePayment)
-						}>
-						<Text style={styles.enableOfflineLabel}>
-							Enable offline payments
-						</Text>
-					</SwitchRow>
-				</View>
+			<View style={styles.enableOfflineRow}>
+				<SwitchRow
+					isEnabled={enableOfflinePayment}
+					onPress={(): void => setEnableOfflinePayment(!enableOfflinePayment)}>
+					<Text01S>Enable offline payments</Text01S>
+				</SwitchRow>
 			</View>
 		</Layout>
 	);
@@ -105,7 +95,6 @@ const Layout = ({
 	navigation,
 	backButton = false,
 	illustration,
-	illustrationStyle,
 	title,
 	subtitle,
 	text,
@@ -118,7 +107,6 @@ const Layout = ({
 	navigation;
 	backButton: boolean;
 	illustration: ImageSourcePropType;
-	illustrationStyle;
 	title: string;
 	subtitle?: string;
 	text: string;
@@ -139,25 +127,21 @@ const Layout = ({
 				}}
 			/>
 			<View style={styles.content}>
-				<Image
-					source={illustration}
-					style={{ ...styles.illustration, ...illustrationStyle }}
-				/>
+				<View style={styles.imageContainer}>
+					<Image source={illustration} style={styles.illustration} />
+				</View>
 				<View style={styles.middleContainer}>
-					<Title style={styles.headline}>{title}</Title>
-					<Title style={styles.headline}>
+					<Display>{title}</Display>
+					<Display>
 						{subtitle}
-						<Title color="brand" style={styles.headline}>
-							{highlighted}
-						</Title>
-					</Title>
-					<Text color="gray1" style={styles.introText}>
+						<Display color="brand">{highlighted}</Display>
+					</Display>
+					<Text01S color="gray1" style={styles.introText}>
 						{text}
-					</Text>
+					</Text01S>
 					{children}
 				</View>
 				<Button
-					textStyle={styles.button}
 					text={buttonText}
 					size="large"
 					onPress={(): void => {
@@ -178,36 +162,28 @@ const styles = StyleSheet.create({
 		marginTop: 0,
 		backgroundColor: 'transparent',
 	},
+	imageContainer: {
+		alignSelf: 'center',
+		backgroundColor: 'transparent',
+		width: '100%',
+		flex: 1,
+		marginBottom: 16,
+	},
 	illustration: {
 		alignSelf: 'center',
-	},
-	crown: {
-		width: 332,
-		height: 332,
-	},
-	swtich: {
-		width: 190,
-		height: 332,
-	},
-	headline: {
-		fontSize: 48,
-		lineHeight: 48,
+		width: '100%',
+		height: '100%',
+		resizeMode: 'contain',
 	},
 	introText: {
 		marginTop: 8,
-		fontSize: 17,
-		lineHeight: 22,
 	},
-	button: {
-		fontWeight: '800',
+	middleContainer: {
+		flex: 1,
+		backgroundColor: 'transparent',
 	},
-	middleContainer: { flex: 1 },
 	enableOfflineRow: {
 		marginTop: 25,
-	},
-	enableOfflineLabel: {
 		backgroundColor: 'transparent',
-		fontSize: 17,
-		lineHeight: 22,
 	},
 });

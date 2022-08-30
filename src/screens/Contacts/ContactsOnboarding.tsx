@@ -1,12 +1,11 @@
 import React from 'react';
-import { Text, Text01B, View } from '../../styles/components';
+import { Image, StyleSheet } from 'react-native';
+
 import NavigationHeader from '../../components/NavigationHeader';
-import { Image } from 'react-native';
 import Button from '../../components/Button';
-import { Title } from '../../styles/components';
+import { Display, Text01S, View } from '../../styles/components';
 import GlowingBackground from '../../components/GlowingBackground';
 import SafeAreaInsets from '../../components/SafeAreaInsets';
-import { StyleSheet } from 'react-native';
 import { setOnboardedContacts } from '../../store/actions/slashtags';
 
 export const ContactsOnboarding = ({ navigation }): JSX.Element => {
@@ -25,16 +24,14 @@ export const ContactsOnboarding = ({ navigation }): JSX.Element => {
 					source={require('../../assets/illustrations/book.png')}
 					style={styles.illustration}
 				/>
-				<Title style={styles.headline}>Dynamic</Title>
-				<Title color="brand" style={styles.headline}>
-					Contacts.
-				</Title>
-				<Text color="gray1" style={styles.introText}>
+				<Display>Dynamic</Display>
+				<Display color="brand">Contacts.</Display>
+				<Text01S color="gray1" style={styles.introText}>
 					Use Slashtags to get automatic updates from your contacts, pay them,
 					and follow their public profiles
-				</Text>
+				</Text01S>
 				<Button
-					text={<Text01B>Add Your First Contact</Text01B>}
+					text="Add Your First Contact"
 					size="large"
 					onPress={(): void => {
 						setOnboardedContacts();
@@ -58,15 +55,8 @@ const styles = StyleSheet.create({
 		width: 332,
 		height: 332,
 	},
-	headline: {
-		fontSize: 48,
-		lineHeight: 48,
-	},
 	introText: {
 		marginTop: 8,
-		fontSize: 17,
-		lineHeight: 22,
-		flex: 1,
 	},
 });
 

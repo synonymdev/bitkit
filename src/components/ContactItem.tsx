@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text01B, View } from '../styles/components';
+import { Text01M, View } from '../styles/components';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import ProfileImage from './ProfileImage';
 import { SlashtagURL } from './SlashtagURL';
@@ -26,8 +26,8 @@ export const ContactItem = ({
 			<View style={styles.container}>
 				<ProfileImage url={url} image={remote?.profile?.image} size={48} />
 				<View style={styles.column}>
-					<Text01B style={styles.name}>{name}</Text01B>
-					<SlashtagURL style={styles.url} color="gray" url={url} />
+					<Text01M style={styles.name}>{name}</Text01M>
+					<SlashtagURL color="gray" url={url} />
 				</View>
 			</View>
 		</TouchableOpacity>
@@ -46,7 +46,6 @@ const styles = {
 		marginLeft: 16,
 	},
 	name: { marginBottom: 4 },
-	url: {},
 };
 
 export default ContactItem;
