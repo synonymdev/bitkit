@@ -15,7 +15,7 @@ import BlocktankPayment from '../../screens/Blocktank/Payment';
 import ActivityDetail from '../../screens/Activity/ActivityDetail';
 import ActivityFiltered from '../../screens/Activity/ActivityFiltered';
 import ActivityTagsPrompt from '../../screens/Activity/ActivityTagsPrompt';
-import ScannerScreen from '../../screens/Scanner';
+import ScannerScreen from '../../screens/Scanner/MainScanner';
 import WalletsDetail from '../../screens/Wallets/WalletsDetail';
 import SettingsNavigator from '../settings/SettingsNavigator';
 import SendNavigation from '../bottom-sheet/SendNavigation';

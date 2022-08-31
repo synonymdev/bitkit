@@ -13,6 +13,7 @@ import Tags from '../../screens/Wallets/SendOnChainTransaction/Tags';
 import ReviewAndSend from '../../screens/Wallets/SendOnChainTransaction/ReviewAndSend';
 import SendAssetPickerList from '../../screens/Wallets/SendOnChainTransaction/SendAssetPickerList';
 import Result from '../../screens/Wallets/SendOnChainTransaction/Result';
+import Scanner from '../../screens/Wallets/SendOnChainTransaction/Scanner';
 import CoinSelection from '../../screens/Wallets/SendOnChainTransaction/CoinSelection';
 import AuthCheck from '../../components/AuthCheck';
 import { NavigationContainer } from '../../styles/components';
@@ -33,6 +34,7 @@ export type SendStackParamList = {
 	Tags: undefined;
 	ReviewAndSend: undefined;
 	Result: undefined;
+	Scanner: undefined;
 	AuthCheck: { onSuccess: () => void };
 };
 
@@ -78,6 +80,7 @@ const SendNavigation = (): ReactElement => {
 						<Stack.Screen name="ReviewAndSend" component={ReviewAndSend} />
 						<Stack.Screen name="Result" component={Result} />
 						<Stack.Screen name="AuthCheck" component={AuthCheck} />
+						<Stack.Screen name="Scanner" component={Scanner} />
 					</Stack.Group>
 				</Stack.Navigator>
 			</NavigationContainer>

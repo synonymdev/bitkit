@@ -147,6 +147,21 @@ const AddressAndAmount = ({ index = 0, navigation }): ReactElement => {
 		}).then();
 	}, [index, selectedNetwork, selectedWallet, value]);
 
+	const handleScan = useCallback(async () => {
+		const onScan = (data): void => {
+			const newAddress = data.address ?? address;
+			const newValue = data.sats ?? value;
+			updateOnChainTransaction({
+				selectedWallet,
+				selectedNetwork,
+				transaction: {
+					outputs: [{ address: newAddress, value: newValue, index }],
+				},
+			}).then();
+		};
+		navigation.navigate('Scanner', { onScan });
+	}, [address, value, index, selectedNetwork, selectedWallet, navigation]);
+
 	const handleTagRemove = useCallback(
 		(tag) => {
 			const res = removeTxTag({ tag, selectedNetwork, selectedWallet });
@@ -221,26 +236,16 @@ const AddressAndAmount = ({ index = 0, navigation }): ReactElement => {
 						blurOnSubmit={true}
 					/>
 					<View style={styles.inputActions}>
-						<TouchableOpacity style={styles.inputAction}>
-							<ScanIcon
-								color="brand"
-								width={24}
-								onPress={(): void => Alert.alert('TODO')}
-							/>
+						<TouchableOpacity style={styles.inputAction} onPress={handleScan}>
+							<ScanIcon color="brand" width={24} />
 						</TouchableOpacity>
-						<TouchableOpacity style={styles.inputAction}>
-							<ClipboardTextIcon
-								color="brand"
-								width={24}
-								onPress={handlePaste}
-							/>
+						<TouchableOpacity style={styles.inputAction} onPress={handlePaste}>
+							<ClipboardTextIcon color="brand" width={24} />
 						</TouchableOpacity>
-						<TouchableOpacity style={styles.inputAction}>
-							<UserIcon
-								color="brand"
-								width={24}
-								onPress={(): void => Alert.alert('TODO')}
-							/>
+						<TouchableOpacity
+							style={styles.inputAction}
+							onPress={(): void => Alert.alert('TODO')}>
+							<UserIcon color="brand" width={24} />
 						</TouchableOpacity>
 					</View>
 				</View>

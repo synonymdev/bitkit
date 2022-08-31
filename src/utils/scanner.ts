@@ -4,15 +4,8 @@
 
 import bip21 from 'bip21';
 import { err, ok, Result } from '@synonymdev/result';
-import {
-	availableNetworks,
-	EAvailableNetworks,
-	networks,
-	TAvailableNetworks,
-} from './networks';
+import { Alert } from 'react-native';
 import { address as bitcoinJSAddress } from 'bitcoinjs-lib';
-import { parseOnChainPaymentRequest } from './wallet/transactions';
-import { getStore } from '../store/helpers';
 import {
 	getLNURLParams,
 	LNURLAuthParams,
@@ -21,6 +14,15 @@ import {
 	LNURLResponse,
 	LNURLWithdrawParams,
 } from '@synonymdev/react-native-lnurl';
+
+import {
+	availableNetworks,
+	EAvailableNetworks,
+	networks,
+	TAvailableNetworks,
+} from './networks';
+import { parseOnChainPaymentRequest } from './wallet/transactions';
+import { getStore } from '../store/helpers';
 import { showErrorNotification } from './notifications';
 import { updateOnChainTransaction } from '../store/actions/wallet';
 import { getSelectedNetwork, getSelectedWallet, refreshWallet } from './wallet';
@@ -208,15 +210,15 @@ export const decodeQRData = async (
 };
 
 export const handleData = async ({
-	data,
+	qrData,
 	selectedWallet,
 	selectedNetwork,
 }: {
-	data: QRData;
+	qrData: QRData[];
 	selectedWallet?: string;
 	selectedNetwork?: TAvailableNetworks;
 }): Promise<void> => {
-	if (!data) {
+	if (!qrData) {
 		return showErrorNotification(
 			{
 				title: 'No data provided',
@@ -225,6 +227,31 @@ export const handleData = async ({
 			'bottom',
 		);
 	}
+
+	// Multiple payment requests, like bitcoin and lightning in on QR. Show them the options they have and then handle the selected one.
+	let data: undefined | QRData;
+	if (qrData.length > 1) {
+		data = await new Promise((resolve) => {
+			Alert.alert('Which one to use?', '', [
+				{
+					text: 'Cancel',
+					onPress: (): void => resolve(undefined),
+					style: 'cancel',
+				},
+				...qrData.map((selectedOption) => ({
+					text: selectedOption.qrDataType,
+					onPress: (): void => resolve(selectedOption),
+				})),
+			]);
+		});
+	} else {
+		data = qrData[0];
+	}
+
+	if (data === undefined) {
+		return;
+	}
+
 	if (!selectedNetwork) {
 		selectedNetwork = getSelectedNetwork();
 	}
