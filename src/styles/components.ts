@@ -174,7 +174,7 @@ export const TimerIconAlt = styled(SvgXml).attrs((props) => ({
 
 export const MagnifyingGlassIcon = styled(SvgXml).attrs((props) => ({
 	xml: magnifyingGlassIcon(
-		props?.color ? props.theme.colors[props.color] : 'gray1',
+		props?.color ? props.theme.colors[props.color] : '#8E8E93',
 	),
 	height: props?.height ?? '20px',
 	width: props?.width ?? '20px',
