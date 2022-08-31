@@ -74,7 +74,7 @@ const TransactionSpeedSettings = ({ navigation }): ReactElement => {
 
 	return (
 		<SettingsView
-			title={'Default transaction speed'}
+			title={'Default Transaction Speed'}
 			listData={CurrencyListData}
 			showBackNavigation
 		/>

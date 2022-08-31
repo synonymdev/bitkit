@@ -48,7 +48,7 @@ const BackupMenu = ({ navigation }): ReactElement => {
 
 	return (
 		<SettingsView
-			title={'Backup or restore'}
+			title={'Back Up Or Restore'}
 			listData={SettingsListData}
 			showBackNavigation={true}
 		/>

@@ -114,7 +114,7 @@ const SecuritySettings = ({ navigation }): ReactElement => {
 	return (
 		<>
 			<SettingsView
-				title={'Security and Privacy'}
+				title={'Security And Privacy'}
 				listData={SettingsListData}
 				showBackNavigation={true}
 			/>

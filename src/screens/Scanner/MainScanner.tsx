@@ -41,7 +41,7 @@ const ScannerScreen = ({ navigation }): ReactElement => {
 			<SafeAreaInsets type="top" />
 			<NavigationHeader
 				style={styles.navigationHeader}
-				title="Scan any QR code"
+				title="Scan Any QR Code"
 			/>
 		</ScannerComponent>
 	);

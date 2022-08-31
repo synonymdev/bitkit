@@ -89,7 +89,7 @@ const CoinSelectSettings = (): ReactElement => {
 
 	const headerComponent = (
 		<SettingsView
-			title={'Coin selection'}
+			title={'Coin Selection'}
 			listData={SelectionMethod}
 			showBackNavigation
 		/>
