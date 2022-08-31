@@ -1,12 +1,13 @@
 import React, { memo, ReactElement, useMemo } from 'react';
+import { FlatList, StyleSheet } from 'react-native';
+import { useSelector } from 'react-redux';
+import { Result } from '@synonymdev/result';
 
+import { View as ThemedView } from '../../../styles/components';
 import { IListData } from '../../../components/List';
 import SettingsView from '../SettingsView';
-import { useSelector } from 'react-redux';
 import Store from '../../../store/types';
 import { updateSettings } from '../../../store/actions/settings';
-import { FlatList } from 'react-native';
-import { Result } from '@synonymdev/result';
 
 const CoinSelectSettings = (): ReactElement => {
 	const selectedAutoPilot = useSelector(
@@ -100,13 +101,21 @@ const CoinSelectSettings = (): ReactElement => {
 	);
 
 	return (
-		<FlatList
-			data={null}
-			renderItem={null}
-			ListHeaderComponent={headerComponent}
-			ListFooterComponent={footerComponent}
-		/>
+		<ThemedView color="black" style={styles.container}>
+			<FlatList
+				data={null}
+				renderItem={null}
+				ListHeaderComponent={headerComponent}
+				ListFooterComponent={footerComponent}
+			/>
+		</ThemedView>
 	);
 };
+
+const styles = StyleSheet.create({
+	container: {
+		flex: 1,
+	},
+});
 
 export default memo(CoinSelectSettings);
