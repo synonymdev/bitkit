@@ -12,6 +12,7 @@ import {
 import NavigationHeader from '../../../components/NavigationHeader';
 import Button from '../../../components/Button';
 import { getMnemonicPhrase } from '../../../utils/wallet';
+import { useBottomSheetBackPress } from '../../../hooks/bottomSheet';
 
 const Word = ({
 	number,
@@ -39,6 +40,8 @@ const ShowMnemonic = ({ navigation }): ReactElement => {
 		}),
 		[insets.bottom],
 	);
+
+	useBottomSheetBackPress('backupNavigation');
 
 	useEffect(() => {
 		getMnemonicPhrase().then((res) => {

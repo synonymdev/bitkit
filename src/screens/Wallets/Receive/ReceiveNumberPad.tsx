@@ -13,6 +13,7 @@ import {
 } from '../../../utils/exchange-rate';
 import { btcToSats } from '../../../utils/helpers';
 import { useExchangeRate } from '../../../hooks/displayValues';
+import { useBottomSheetBackPress } from '../../../hooks/bottomSheet';
 
 /**
  * Handles the number pad logic (add/remove/clear) for invoices.
@@ -28,6 +29,8 @@ const ReceiveNumberPad = (): ReactElement => {
 		(store: Store) => store.settings.selectedCurrency,
 	);
 	const exchangeRate = useExchangeRate(currency);
+
+	useBottomSheetBackPress('numberPadReceive');
 
 	// Add, shift and update the current invoice amount based on the provided fiat value or bitcoin unit.
 	const onPress = (key): void => {

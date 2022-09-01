@@ -23,6 +23,7 @@ import {
 } from '../../utils/notifications';
 import { btcToSats } from '../../utils/helpers';
 import { IActivityItem } from '../../store/types/activity';
+import { useBottomSheetBackPress } from '../../hooks/bottomSheet';
 
 const BoostForm = ({
 	activityItem,
@@ -176,11 +177,13 @@ const BoostForm = ({
 const BoostPrompt = (): ReactElement => {
 	const snapPoints = useMemo(() => [400], []);
 	const activityItem = useSelector(
-		(store: Store) => store.user.viewController?.boostPrompt?.activityItem,
+		(store: Store) => store.user.viewController.boostPrompt?.activityItem,
 	);
 	const isOpen = useSelector(
-		(store: Store) => store.user.viewController?.boostPrompt?.isOpen,
+		(store: Store) => store.user.viewController.boostPrompt?.isOpen,
 	);
+
+	useBottomSheetBackPress('boostPrompt');
 
 	const handleClose = (): void => {
 		toggleView({

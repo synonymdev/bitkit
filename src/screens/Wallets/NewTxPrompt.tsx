@@ -15,6 +15,7 @@ import AmountToggle from '../../components/AmountToggle';
 import SafeAreaInsets from '../../components/SafeAreaInsets';
 import Store from '../../store/types';
 import { toggleView } from '../../store/actions/user';
+import { useBottomSheetBackPress } from '../../hooks/bottomSheet';
 
 const NewTxPrompt = (): ReactElement => {
 	const snapPoints = useMemo(() => [600], []);
@@ -34,6 +35,8 @@ const NewTxPrompt = (): ReactElement => {
 		const network = store.wallet.selectedNetwork;
 		return store.wallet?.wallets[wallet]?.transactions[network]?.[txid];
 	});
+
+	useBottomSheetBackPress('newTxPrompt');
 
 	const handleClose = (): void => {
 		toggleView({

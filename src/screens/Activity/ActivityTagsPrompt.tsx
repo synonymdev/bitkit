@@ -12,6 +12,7 @@ import Tag from '../../components/Tag';
 import useColors from '../../hooks/colors';
 import { addMetaTxTag } from '../../store/actions/metadata';
 import { sleep } from '../../utils/helpers';
+import { useBottomSheetBackPress } from '../../hooks/bottomSheet';
 
 const Form = ({ id }: { id: string }): ReactElement => {
 	const [text, setText] = useState('');
@@ -99,6 +100,9 @@ const ActivityTagsPrompt = (): ReactElement => {
 	const id = useSelector(
 		(store: Store) => store.user.viewController?.activityTagsPrompt?.id,
 	);
+
+	useBottomSheetBackPress('activityTagsPrompt');
+
 	const handleClose = (): void => {
 		toggleView({
 			view: 'activityTagsPrompt',

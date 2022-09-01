@@ -39,6 +39,7 @@ import Button from '../../../components/Button';
 import Tooltip from '../../../components/Tooltip';
 import { generateNewReceiveAddress } from '../../../store/actions/wallet';
 import { showErrorNotification } from '../../../utils/notifications';
+import { useBottomSheetBackPress } from '../../../hooks/bottomSheet';
 
 const bitcoinLogo = require('../../../assets/bitcoin-logo.png');
 
@@ -62,6 +63,8 @@ const Receive = ({ navigation }): ReactElement => {
 	const [receiveAddress, setReceiveAddress] = useState('');
 	const [lightningInvoice, setLightningInvoice] = useState('');
 	const qrRef = useRef<object>(null);
+
+	useBottomSheetBackPress('receiveNavigation');
 
 	const getLightningInvoice = useCallback(async (): Promise<void> => {
 		if (!receiveNavigationIsOpen) {

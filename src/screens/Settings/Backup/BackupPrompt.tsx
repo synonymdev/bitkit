@@ -10,6 +10,7 @@ import SafeAreaInsets from '../../../components/SafeAreaInsets';
 import Store from '../../../store/types';
 import { toggleView, ignoreBackup } from '../../../store/actions/user';
 import { useNoTransactions } from '../../../hooks/wallet';
+import { useBottomSheetBackPress } from '../../../hooks/bottomSheet';
 
 const ASK_INTERVAL = 60_000; // how long this propt will be hidden if user taps Later
 const CHECK_INTERVAL = 10_000; // how long user needs to stay on Wallets screen before he will see this prompt
@@ -27,6 +28,8 @@ const BackupPrompt = ({ screen }: { screen: string }): ReactElement => {
 		Object.values(state.user.viewController).some(({ isOpen }) => isOpen),
 	);
 	const empty = useNoTransactions();
+
+	useBottomSheetBackPress('backupPrompt');
 
 	const handleBackup = (): void => {
 		toggleView({

@@ -9,6 +9,7 @@ import Store from '../../../store/types';
 import { useTransactionDetails } from '../../../hooks/transaction';
 import { updateFee } from '../../../utils/wallet/transactions';
 import { toggleView } from '../../../store/actions/user';
+import { useBottomSheetBackPress } from '../../../hooks/bottomSheet';
 
 /**
  * Handles the number pad logic (add/remove/clear) for on-chain fee.
@@ -23,6 +24,8 @@ const FeeNumberPad = (): ReactElement => {
 		(store: Store) => store.wallet.selectedNetwork,
 	);
 	const transaction = useTransactionDetails();
+
+	useBottomSheetBackPress('numberPadFee');
 
 	// Add, shift and update the current transaction amount based on the provided fiat value or bitcoin unit.
 	const onPress = (key): void => {

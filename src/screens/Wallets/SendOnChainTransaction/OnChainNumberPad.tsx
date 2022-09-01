@@ -17,6 +17,7 @@ import {
 } from '../../../utils/exchange-rate';
 import { btcToSats } from '../../../utils/helpers';
 import { useExchangeRate } from '../../../hooks/displayValues';
+import { useBottomSheetBackPress } from '../../../hooks/bottomSheet';
 
 /**
  * Handles the number pad logic (add/remove/clear) for on-chain transactions.
@@ -47,6 +48,8 @@ const OnChainNumberPad = (): ReactElement => {
 			store.wallet.wallets[selectedWallet]?.transaction[selectedNetwork] ||
 			defaultOnChainTransactionData,
 	);
+
+	useBottomSheetBackPress('numberPad');
 
 	/*
 	 * Retrieves total value of all outputs. Excludes change address.

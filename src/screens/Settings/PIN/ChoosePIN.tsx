@@ -20,6 +20,7 @@ import { vibrate, setKeychainValue } from '../../../utils/helpers';
 import { removeTodo } from '../../../store/actions/todos';
 import { updateSettings } from '../../../store/actions/settings';
 import { todoPresets } from '../../../utils/todos';
+import { useBottomSheetBackPress } from '../../../hooks/bottomSheet';
 
 const ChoosePIN = ({ navigation, route }): ReactElement => {
 	const [pin, setPin] = useState<string>('');
@@ -42,6 +43,8 @@ const ChoosePIN = ({ navigation, route }): ReactElement => {
 
 	// reset pin on back
 	useFocusEffect(useCallback(() => setPin(''), []));
+
+	useBottomSheetBackPress('PINNavigation');
 
 	useEffect(() => {
 		const timer = setTimeout(async () => {
