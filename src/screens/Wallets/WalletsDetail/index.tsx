@@ -181,7 +181,7 @@ const WalletsDetail = (props: Props): ReactElement => {
 									entering={FadeIn}
 									exiting={FadeOut}>
 									<TouchableOpacity onPress={handleSwitchUnit}>
-										<Money sats={satoshis} hightlight={true} size="title" />
+										<Money sats={satoshis} highlight={true} size="title" />
 									</TouchableOpacity>
 								</AnimatedView>
 							) : null}
@@ -196,7 +196,7 @@ const WalletsDetail = (props: Props): ReactElement => {
 									<TouchableOpacity
 										onPress={handleSwitchUnit}
 										style={styles.largeValueContainer}>
-										<Money sats={satoshis} hightlight={true} />
+										<Money sats={satoshis} highlight={true} />
 									</TouchableOpacity>
 								</View>
 								{assetType === 'bitcoin' ? <BitcoinBreakdown /> : null}

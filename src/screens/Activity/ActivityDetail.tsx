@@ -254,11 +254,7 @@ const ActivityDetail = (props: Props): ReactElement => {
 				showsVerticalScrollIndicator={false}>
 				<View style={styles.title}>
 					<View style={styles.titleBlock}>
-						<Money
-							sats={value}
-							hightlight={true}
-							sign={value > 0 ? '+' : '-'}
-						/>
+						<Money sats={value} highlight={true} sign={value > 0 ? '+' : '-'} />
 					</View>
 
 					<ThemedView

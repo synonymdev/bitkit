@@ -31,7 +31,7 @@ interface IMoney {
 		| 'caption13M'
 		| 'title'
 		| 'headline';
-	hightlight?: boolean; // grey last 3 chars in sats/bitcoin or decimal in fiat
+	highlight?: boolean; // grey last 3 chars in sats/bitcoin or decimal in fiat
 	symbol?: boolean; // show symbol icon
 	color?: string;
 	hide?: boolean; // if true and settings.hideBalance === true it will replace number with dots
@@ -44,7 +44,7 @@ const Money = (props: IMoney): ReactElement => {
 	const hideBalance = useSelector((state: Store) => state.settings.hideBalance);
 
 	let sats = props.sats ?? 0;
-	const hightlight = props.hightlight ?? false;
+	const highlight = props.highlight ?? false;
 	const size = props.size ?? 'display';
 	const showFiat = props.showFiat ?? false;
 	const unit = props.unit ?? (showFiat ? 'fiat' : bitcoinUnit);
@@ -116,11 +116,11 @@ const Money = (props: IMoney): ReactElement => {
 			case 'fiat':
 				if (dv.fiatWhole.length > 12) {
 					const { newValue, abbreviation } = abbreviateNumber(dv.fiatWhole);
-					return hightlight
+					return highlight
 						? [newValue, abbreviation]
 						: [newValue + abbreviation];
 				}
-				return hightlight
+				return highlight
 					? [dv.fiatWhole, dv.fiatDecimal + dv.fiatDecimalValue]
 					: [dv.fiatFormatted];
 			case 'satoshi': {
@@ -129,13 +129,13 @@ const Money = (props: IMoney): ReactElement => {
 			}
 			default: {
 				const value = dv.bitcoinFormatted;
-				if (!hightlight || !value.includes(dv.fiatDecimal) || sats < 999999) {
+				if (!highlight || !value.includes(dv.fiatDecimal) || sats < 999999) {
 					return [value];
 				}
 				return [value.slice(0, -3), value.slice(-3)];
 			}
 		}
-	}, [hightlight, dv, unit, sats]);
+	}, [highlight, dv, unit, sats]);
 
 	if (hide) {
 		prim = prim

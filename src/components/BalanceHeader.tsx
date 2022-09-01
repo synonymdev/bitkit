@@ -41,7 +41,7 @@ const BalanceHeader = (): ReactElement => {
 			<Money
 				sats={satoshis}
 				unit={balanceUnit}
-				hightlight={true}
+				highlight={true}
 				symbol={true}
 			/>
 		</TouchableOpacity>
