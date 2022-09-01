@@ -10,7 +10,6 @@ const digits = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0];
 interface NumberPad {
 	onPress: Function;
 	onRemove: Function;
-	onClear: Function;
 	style?: object | Array<object>;
 	children?: ReactElement;
 }
@@ -32,7 +31,6 @@ const Button = memo(
 const NumberPad = ({
 	onPress,
 	onRemove,
-	onClear,
 	style,
 	children,
 }: NumberPad): ReactElement => {
@@ -43,11 +41,6 @@ const NumberPad = ({
 	const handleRemove = (): void => {
 		vibrate({});
 		onRemove();
-	};
-
-	const handleClear = (): void => {
-		vibrate({});
-		onClear();
 	};
 
 	//Handle pin button press.
@@ -79,11 +72,11 @@ const NumberPad = ({
 
 			<View style={styles.row}>
 				<TouchableOpacity
-					onPress={handleClear}
+					onPress={(): void => handlePress('.')}
 					activeOpacity={ACTIVE_OPACITY}
 					style={styles.buttonContainer}
 					color={'transparent'}>
-					<Text style={styles.button}>C</Text>
+					<Text style={styles.button}>.</Text>
 				</TouchableOpacity>
 				<Button onPress={(): void => handlePress(digits[9])} num={digits[9]} />
 				<TouchableOpacity

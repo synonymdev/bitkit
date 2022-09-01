@@ -39,8 +39,6 @@ const ChoosePIN = ({ navigation, route }): ReactElement => {
 
 	const handleOnRemove = (): void => setPin((p) => p.slice(0, -1));
 
-	const handleOnClear = (): void => setPin('');
-
 	// reset pin on back
 	useFocusEffect(useCallback(() => setPin(''), []));
 
@@ -118,7 +116,6 @@ const ChoosePIN = ({ navigation, route }): ReactElement => {
 				style={styles.numberpad}
 				onPress={handleOnPress}
 				onRemove={handleOnRemove}
-				onClear={handleOnClear}
 			/>
 		</ThemedView>
 	);

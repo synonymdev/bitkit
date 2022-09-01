@@ -21,10 +21,6 @@ const NumberPadWeeks = ({ weeks, style, onChange, onDone }): ReactElement => {
 		onChange(amount);
 	};
 
-	const onClear = (): void => {
-		onChange(0);
-	};
-
 	const handleDone = (): void => {
 		if (weeks < 1) {
 			onChange(1);
@@ -36,8 +32,7 @@ const NumberPadWeeks = ({ weeks, style, onChange, onDone }): ReactElement => {
 		<NumberPad
 			style={[styles.numberpad, style]}
 			onPress={onPress}
-			onRemove={onRemove}
-			onClear={onClear}>
+			onRemove={onRemove}>
 			<View style={styles.topRow}>
 				<TouchableOpacity
 					style={styles.topRowButtons}

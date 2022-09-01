@@ -62,24 +62,12 @@ const FeeNumberPad = (): ReactElement => {
 		}
 	};
 
-	const onClear = (): void => {
-		const res = updateFee({
-			satsPerByte: 0,
-			selectedWallet,
-			selectedNetwork,
-			transaction,
-		});
-		if (res.isErr()) {
-			Alert.alert(res.error.message);
-		}
-	};
-
 	return (
 		<BottomSheetWrapper
 			snapPoints={snapPoints}
 			backdrop={false}
 			view="numberPadFee">
-			<NumberPad onPress={onPress} onRemove={onRemove} onClear={onClear}>
+			<NumberPad onPress={onPress} onRemove={onRemove}>
 				<View style={styles.topRow}>
 					<TouchableOpacity
 						style={styles.topRowButtons}

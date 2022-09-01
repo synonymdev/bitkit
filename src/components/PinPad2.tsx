@@ -39,11 +39,6 @@ const ChoosePIN = ({
 		setPin((p) => p.slice(0, -1));
 	};
 
-	const handleOnClear = (): void => {
-		vibrate({});
-		setPin('');
-	};
-
 	// Reduce the amount of pin attempts remaining.
 	const reducePinAttemptsRemaining = useCallback(async (): Promise<void> => {
 		const _attemptsRemaining = attemptsRemaining - 1;
@@ -167,7 +162,6 @@ const ChoosePIN = ({
 					style={styles.numberpad}
 					onPress={handleOnPress}
 					onRemove={handleOnRemove}
-					onClear={handleOnClear}
 				/>
 			</View>
 		</GlowingBackground>
