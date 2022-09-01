@@ -1,7 +1,8 @@
 import React, { ReactElement } from 'react';
 import { StyleSheet } from 'react-native';
 import { useSelector } from 'react-redux';
-import { decodeQRData } from '../../../utils/scanner';
+
+import { decodeQRData, EQRDataType } from '../../../utils/scanner';
 import Store from '../../../store/types';
 import NavigationHeader from '../../../components/NavigationHeader';
 import ScannerComponent from '../../Scanner/ScannerComponent';
@@ -16,16 +17,29 @@ const ScannerScreen = ({ navigation, route }): ReactElement => {
 
 	const onRead = async (data): Promise<void> => {
 		const res = await decodeQRData(data, selectedNetwork);
-		if (res.isErr() || (res.isOk() && res.value.length === 0)) {
+
+		if (res.isErr()) {
+			showErrorNotification({
+				title: 'Sorry. Bitkit can’t read this QR code.',
+				message: res.error.message,
+			});
+			return;
+		}
+
+		const bitcoinAddress = res.value.find(
+			({ qrDataType }) => qrDataType === EQRDataType.bitcoinAddress,
+		);
+
+		if (!bitcoinAddress) {
 			showErrorNotification({
 				title: 'QR code',
-				message: 'Sorry. Bitkit can’t read this QR code.',
+				message: "Sorry. We couldn't find Bitcoin address.",
 			});
 			return;
 		}
 
 		navigation.pop();
-		onScan(res.value[0]);
+		onScan(bitcoinAddress);
 	};
 
 	return (
