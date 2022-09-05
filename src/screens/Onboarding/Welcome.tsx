@@ -38,8 +38,8 @@ const OnboardingWelcomeScreen = ({
 						</Display>
 
 						<Text01S color="gray1" style={styles.text2}>
-							Bitkit puts you in control over your money, contacts, and web
-							accounts.
+							Bitkit hands you the keys to your money, profile, contacts, and
+							web services.
 						</Text01S>
 
 						<View style={styles.buttonsContainer} color={'transparent'}>
