@@ -254,7 +254,7 @@ const Receive = ({ navigation }): ReactElement => {
 			<View style={buttonContainer}>
 				<Button
 					size="lg"
-					text="Specify Amount or Add Note"
+					text="Specify Invoice"
 					onPress={(): void => navigation.navigate('ReceiveDetails')}
 				/>
 			</View>
