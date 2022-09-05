@@ -4,7 +4,9 @@ import { toggleView } from '../store/actions/user';
 import { TViewController } from '../store/types/user';
 import { useAppSelector } from './redux';
 
-export const useBottomSheetBackPress = (viewController: TViewController) => {
+export const useBottomSheetBackPress = (
+	viewController: TViewController,
+): void => {
 	const isBottomSheetOpen = useAppSelector(
 		(store) => store.user.viewController[viewController].isOpen,
 	);
@@ -30,5 +32,5 @@ export const useBottomSheetBackPress = (viewController: TViewController) => {
 			backHandlerSubscriptionRef.current?.remove();
 			backHandlerSubscriptionRef.current = null;
 		};
-	}, [isBottomSheetOpen]);
+	}, [isBottomSheetOpen, viewController]);
 };
