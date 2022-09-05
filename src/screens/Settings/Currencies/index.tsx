@@ -24,19 +24,15 @@ const Currencies = ({ navigation }): ReactElement => {
 		() => [
 			{
 				title: 'Most Used',
-				data: mostUsedExchangeTickers.map((ticker) => {
-					const currencySymbol = exchangeRates[ticker]
-						? `(${exchangeRates[ticker].currencySymbol})`
-						: '';
-
+				data: Object.values(mostUsedExchangeTickers).map((ticker) => {
 					return {
-						title: `${ticker} ${currencySymbol}`,
-						value: selectedCurrency === ticker,
+						title: `${ticker.quote} (${ticker.currencySymbol})`,
+						value: selectedCurrency === ticker.quote,
 						type: 'button',
 						hide: false,
 						onPress: (): void => {
 							navigation.goBack();
-							onSetCurrency(ticker);
+							onSetCurrency(ticker.quote);
 						},
 					};
 				}),

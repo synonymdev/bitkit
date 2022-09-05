@@ -374,6 +374,11 @@ const ReviewAndSend = ({ navigation, index = 0 }): ReactElement => {
 	const feeSats = getFee(satsPerByte);
 	const totalFeeDisplay = useDisplayValues(feeSats);
 
+	let feeAmount =
+		totalFeeDisplay.fiatFormatted !== '—'
+			? `(${totalFeeDisplay.fiatSymbol} ${totalFeeDisplay.fiatFormatted})`
+			: '';
+
 	return (
 		<ThemedView color="onSurface" style={styles.container}>
 			<NavigationHeader title="Review & Send" size="sm" />
@@ -403,9 +408,7 @@ const ReviewAndSend = ({ navigation, index = 0 }): ReactElement => {
 									<Text02M>
 										{' '}
 										{FeeText[selectedFeeId]?.title}
-										{' ('}
-										{totalFeeDisplay.fiatSymbol}
-										{totalFeeDisplay.fiatFormatted})
+										{feeAmount}
 									</Text02M>
 									<PenIcon height={16} width={20} />
 								</>
