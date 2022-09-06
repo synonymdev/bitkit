@@ -10,12 +10,10 @@ import {
 	LayoutAnimation,
 	NativeScrollEvent,
 	NativeSyntheticEvent,
-	Platform,
 	StyleSheet,
 	TouchableOpacity,
 } from 'react-native';
 import Animated, { EasingNode, FadeIn, FadeOut } from 'react-native-reanimated';
-import { BlurView } from '@react-native-community/blur';
 import {
 	Canvas,
 	RadialGradient,
@@ -36,14 +34,13 @@ import ActivityList from '../../Activity/ActivityList';
 import BitcoinBreakdown from './BitcoinBreakdown';
 import SafeAreaInsets from '../../../components/SafeAreaInsets';
 import Money from '../../../components/Money';
+import BlurView from '../../../components/BlurView';
 import { EActivityTypes } from '../../../store/types/activity';
 import Store from '../../../store/types';
 import { updateSettings } from '../../../store/actions/settings';
 import BitcoinLogo from '../../../assets/bitcoin-logo.svg';
 import { capitalize } from '../../../utils/helpers';
 import type { RootStackParamList } from '../../../navigation/types';
-
-const Blur = Platform.OS === 'ios' ? BlurView : View;
 
 const updateHeight = ({
 	height = new Animated.Value(0),
@@ -147,7 +144,7 @@ const WalletsDetail = (props: Props): ReactElement => {
 				/>
 			</View>
 			<View color={'transparent'} style={styles.radiusContainer}>
-				<Blur style={styles.blur} />
+				<BlurView style={styles.blur} />
 				<Canvas style={styles.glowCanvas}>
 					<Glow colors={colors} />
 				</Canvas>

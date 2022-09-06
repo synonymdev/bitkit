@@ -1,16 +1,9 @@
 import React, { ReactElement, useState } from 'react';
-import {
-	Platform,
-	StyleSheet,
-	View,
-	ViewProps,
-	useWindowDimensions,
-} from 'react-native';
+import { StyleSheet, View, useWindowDimensions } from 'react-native';
 import { useSelector } from 'react-redux';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Clipboard from '@react-native-clipboard/clipboard';
 import { FadeIn, FadeOut } from 'react-native-reanimated';
-import { BlurView } from '@react-native-community/blur';
 import { launchImageLibrary } from 'react-native-image-picker';
 import RNQRGenerator from 'rn-qr-generator';
 
@@ -23,12 +16,10 @@ import {
 } from '../../styles/components';
 import useColors from '../../hooks/colors';
 import Camera from '../../components/Camera';
+import BlurView from '../../components/BlurView';
 import { decodeQRData } from '../../utils/scanner';
 import Store from '../../store/types';
 import Button from '../../components/Button';
-
-const Blur = (props: ViewProps): ReactElement =>
-	Platform.OS === 'ios' ? <BlurView {...props} /> : <View {...props} />;
 
 const ScannerComponent = ({ onRead, children }): ReactElement => {
 	const { white08, white5 } = useColors();
@@ -94,9 +85,9 @@ const ScannerComponent = ({ onRead, children }): ReactElement => {
 			<>
 				{children}
 				<View style={StyleSheet.absoluteFill}>
-					<Blur style={styles.mask} />
+					<BlurView style={styles.mask} />
 					<View style={styles.maskCenter}>
-						<Blur style={styles.mask} />
+						<BlurView style={styles.mask} />
 						<View
 							style={{
 								height: dimensions.height / 2.4,
@@ -120,9 +111,9 @@ const ScannerComponent = ({ onRead, children }): ReactElement => {
 								</TouchableOpacity>
 							</View>
 						</View>
-						<Blur style={styles.mask} />
+						<BlurView style={styles.mask} />
 					</View>
-					<Blur style={[styles.mask, styles.bottom]}>
+					<BlurView style={[styles.mask, styles.bottom]}>
 						<Button
 							style={styles.pasteButton}
 							icon={<ClipboardTextIcon width={16} height={16} />}
@@ -144,7 +135,7 @@ const ScannerComponent = ({ onRead, children }): ReactElement => {
 								</Text02M>
 							</AnimatedView>
 						)}
-					</Blur>
+					</BlurView>
 				</View>
 			</>
 		</Camera>

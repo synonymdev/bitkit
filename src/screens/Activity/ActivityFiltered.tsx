@@ -5,13 +5,13 @@ import {
 	View,
 	GestureResponderEvent,
 } from 'react-native';
-import { BlurView } from '@react-native-community/blur';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { View as ThemedView, Caption13M } from '../../styles/components';
 import NavigationHeader from '../../components/NavigationHeader';
 import SearchInput from '../../components/SearchInput';
 import ActivityList from './ActivityList';
+import BlurView from '../../components/BlurView';
 import SafeAreaInsets from '../../components/SafeAreaInsets';
 import FilterAccessory from '../../components/FilterAccessory';
 import Tag from '../../components/Tag';

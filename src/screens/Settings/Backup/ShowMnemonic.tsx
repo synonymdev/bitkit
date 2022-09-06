@@ -1,7 +1,6 @@
 import React, { memo, ReactElement, useMemo, useState, useEffect } from 'react';
 import { StyleSheet, View, Alert } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { BlurView } from '@react-native-community/blur';
 
 import {
 	View as ThemedView,
@@ -11,6 +10,7 @@ import {
 } from '../../../styles/components';
 import NavigationHeader from '../../../components/NavigationHeader';
 import Button from '../../../components/Button';
+import BlurView from '../../../components/BlurView';
 import { getMnemonicPhrase } from '../../../utils/wallet';
 import { useBottomSheetBackPress } from '../../../hooks/bottomSheet';
 

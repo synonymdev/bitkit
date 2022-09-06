@@ -7,13 +7,13 @@ import {
 } from '@react-navigation/native-stack';
 import { SvgXml } from 'react-native-svg';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { BlurView } from '@react-native-community/blur';
 
 import WalletsScreen from '../../screens/Wallets';
 import WalletsDetail from '../../screens/Wallets/WalletsDetail';
 import BackupPrompt from '../../screens/Settings/Backup/BackupPrompt';
 import { ScanIcon, Text02M, View } from '../../styles/components';
 import AuthCheck from '../../components/AuthCheck';
+import BlurView from '../../components/BlurView';
 import { receiveIcon, sendIcon } from '../../assets/icons/tabs';
 import { toggleView } from '../../store/actions/user';
 import useColors from '../../hooks/colors';
