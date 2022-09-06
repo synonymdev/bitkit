@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react';
-import { View, StyleSheet, useWindowDimensions } from 'react-native';
+import { StyleSheet, useWindowDimensions } from 'react-native';
 import { ToastConfig, ToastConfigParams } from 'react-native-toast-message';
 
 import colors from '../styles/colors';
@@ -33,14 +33,13 @@ const Toast = ({
 	}
 
 	return (
-		<View style={[{ width: dimensions.width - 16 * 2 }, styles.container]}>
-			<BlurView style={styles.blur} />
+		<BlurView style={[{ width: dimensions.width - 16 * 2 }, styles.container]}>
 			<HorizontalGradient style={styles.gradient} color={gradientColor} />
 			<Text01M color={titleColor}>{text1}</Text01M>
 			<Text13S style={styles.description} color="gray1">
 				{text2}
 			</Text13S>
-		</View>
+		</BlurView>
 	);
 };
 
@@ -50,10 +49,6 @@ const styles = StyleSheet.create({
 		padding: 16,
 		position: 'relative',
 		overflow: 'hidden',
-	},
-	blur: {
-		...StyleSheet.absoluteFillObject,
-		padding: 16,
 	},
 	gradient: {
 		...StyleSheet.absoluteFillObject,

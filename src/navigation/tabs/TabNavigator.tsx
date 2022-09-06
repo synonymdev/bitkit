@@ -1,5 +1,5 @@
 import React, { ReactElement, useCallback, useMemo } from 'react';
-import { Platform, TouchableOpacity, StyleSheet } from 'react-native';
+import { TouchableOpacity, StyleSheet } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import {
 	createNativeStackNavigator,
@@ -118,12 +118,11 @@ export const TabBar = ({ navigation, state }): ReactElement => {
 	return (
 		<>
 			<View style={[styles.tabRoot, { bottom: Math.max(insets.bottom, 5) }]}>
-				<TouchableOpacity
-					onPress={onSendPress}
-					style={[styles.blurContainer, styles.send]}>
-					<BlurView style={styles.blur} />
-					<SvgXml xml={sendIcon('white')} width={13} height={13} />
-					<Text02M style={styles.tabText}>Send</Text02M>
+				<TouchableOpacity onPress={onSendPress} style={styles.blurContainer}>
+					<BlurView style={styles.send}>
+						<SvgXml xml={sendIcon('white')} width={13} height={13} />
+						<Text02M style={styles.tabText}>Send</Text02M>
+					</BlurView>
 				</TouchableOpacity>
 				<TouchableOpacity
 					onPress={openScanner}
@@ -131,12 +130,11 @@ export const TabBar = ({ navigation, state }): ReactElement => {
 					style={[styles.tabScan, { borderColor: white08 }]}>
 					<ScanIcon width={32} height={32} />
 				</TouchableOpacity>
-				<TouchableOpacity
-					onPress={onReceivePress}
-					style={[styles.blurContainer, styles.receive]}>
-					<BlurView style={styles.blur} />
-					<SvgXml xml={receiveIcon('white')} width={13} height={13} />
-					<Text02M style={styles.tabText}>Receive</Text02M>
+				<TouchableOpacity onPress={onReceivePress} style={styles.blurContainer}>
+					<BlurView style={styles.receive}>
+						<SvgXml xml={receiveIcon('white')} width={13} height={13} />
+						<Text02M style={styles.tabText}>Receive</Text02M>
+					</BlurView>
 				</TouchableOpacity>
 			</View>
 			<BackupPrompt screen={screen} />
@@ -175,23 +173,22 @@ const styles = StyleSheet.create({
 	blurContainer: {
 		height: 56,
 		flex: 1,
+	},
+	send: {
+		flex: 1,
 		alignItems: 'center',
 		justifyContent: 'center',
 		flexDirection: 'row',
-		overflow: 'hidden',
-		backgroundColor:
-			Platform.OS === 'android' ? 'rgba(255,255,255,0.1)' : undefined,
-	},
-	send: {
 		paddingRight: 30,
 		borderRadius: 30,
 	},
 	receive: {
+		flex: 1,
+		alignItems: 'center',
+		justifyContent: 'center',
+		flexDirection: 'row',
 		paddingLeft: 30,
 		borderRadius: 30,
-	},
-	blur: {
-		...StyleSheet.absoluteFillObject,
 	},
 	tabScan: {
 		height: 80,

@@ -79,15 +79,14 @@ const ShowMnemonic = ({ navigation }): ReactElement => {
 					</View>
 				</ThemedView>
 				{!show && (
-					<View style={styles.blurContainer}>
-						<BlurView style={styles.blur} />
+					<BlurView style={styles.blur}>
 						<Button
 							size="lg"
 							text="Tap To Reveal"
 							color="black5"
 							onPress={(): void => setShow(true)}
 						/>
-					</View>
+					</BlurView>
 				)}
 			</View>
 
@@ -129,7 +128,7 @@ const styles = StyleSheet.create({
 		marginHorizontal: 16,
 		flex: 1,
 	},
-	blurContainer: {
+	blur: {
 		position: 'absolute',
 		justifyContent: 'center',
 		alignItems: 'center',
@@ -138,9 +137,6 @@ const styles = StyleSheet.create({
 		left: 5,
 		bottom: 5,
 		borderRadius: 10,
-	},
-	blur: {
-		...StyleSheet.absoluteFillObject,
 	},
 	nextButtonContainer: {
 		width: '100%',

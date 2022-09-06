@@ -143,64 +143,65 @@ const WalletsDetail = (props: Props): ReactElement => {
 					filter={filter}
 				/>
 			</View>
-			<View color={'transparent'} style={styles.radiusContainer}>
-				<BlurView style={styles.blur} />
-				<Canvas style={styles.glowCanvas}>
-					<Glow colors={colors} />
-				</Canvas>
-				<View
-					style={styles.assetDetailContainer}
-					color="white01"
-					onLayout={(e): void => {
-						const hh = e.nativeEvent.layout.height;
-						setRadiusContainerHeight((h) => (h === 400 ? hh : h));
-					}}>
-					<SafeAreaInsets type={'top'} />
-
-					<NavigationHeader />
-
-					<AnimatedView
-						color={'transparent'}
-						style={[styles.header, { minHeight: height }]}
+			<View color="transparent" style={styles.radiusContainer}>
+				<BlurView>
+					<Canvas style={styles.glowCanvas}>
+						<Glow colors={colors} />
+					</Canvas>
+					<View
+						style={styles.assetDetailContainer}
+						color="white01"
 						onLayout={(e): void => {
 							const hh = e.nativeEvent.layout.height;
-							setHeaderHeight((h) => (h === 0 ? hh : h));
+							setRadiusContainerHeight((h) => (h === 400 ? hh : h));
 						}}>
-						<View color={'transparent'} style={styles.row}>
-							<View color={'transparent'} style={styles.cell}>
-								<BitcoinLogo viewBox="0 0 70 70" height={32} width={32} />
-								<Title style={styles.title}>{title}</Title>
+						<SafeAreaInsets type={'top'} />
+
+						<NavigationHeader />
+
+						<AnimatedView
+							color={'transparent'}
+							style={[styles.header, { minHeight: height }]}
+							onLayout={(e): void => {
+								const hh = e.nativeEvent.layout.height;
+								setHeaderHeight((h) => (h === 0 ? hh : h));
+							}}>
+							<View color={'transparent'} style={styles.row}>
+								<View color={'transparent'} style={styles.cell}>
+									<BitcoinLogo viewBox="0 0 70 70" height={32} width={32} />
+									<Title style={styles.title}>{title}</Title>
+								</View>
+								{!showDetails ? (
+									<AnimatedView
+										color={'transparent'}
+										style={styles.cell}
+										entering={FadeIn}
+										exiting={FadeOut}>
+										<TouchableOpacity onPress={handleSwitchUnit}>
+											<Money sats={satoshis} highlight={true} size="title" />
+										</TouchableOpacity>
+									</AnimatedView>
+								) : null}
 							</View>
-							{!showDetails ? (
+
+							{showDetails ? (
 								<AnimatedView
 									color={'transparent'}
-									style={styles.cell}
 									entering={FadeIn}
 									exiting={FadeOut}>
-									<TouchableOpacity onPress={handleSwitchUnit}>
-										<Money sats={satoshis} highlight={true} size="title" />
-									</TouchableOpacity>
+									<View color={'transparent'} style={styles.balanceContainer}>
+										<TouchableOpacity
+											onPress={handleSwitchUnit}
+											style={styles.largeValueContainer}>
+											<Money sats={satoshis} highlight={true} />
+										</TouchableOpacity>
+									</View>
+									{assetType === 'bitcoin' ? <BitcoinBreakdown /> : null}
 								</AnimatedView>
 							) : null}
-						</View>
-
-						{showDetails ? (
-							<AnimatedView
-								color={'transparent'}
-								entering={FadeIn}
-								exiting={FadeOut}>
-								<View color={'transparent'} style={styles.balanceContainer}>
-									<TouchableOpacity
-										onPress={handleSwitchUnit}
-										style={styles.largeValueContainer}>
-										<Money sats={satoshis} highlight={true} />
-									</TouchableOpacity>
-								</View>
-								{assetType === 'bitcoin' ? <BitcoinBreakdown /> : null}
-							</AnimatedView>
-						) : null}
-					</AnimatedView>
-				</View>
+						</AnimatedView>
+					</View>
+				</BlurView>
 			</View>
 			<SafeAreaInsets type={'bottom'} maxPaddingBottom={20} />
 		</AnimatedView>
@@ -256,9 +257,6 @@ const styles = StyleSheet.create({
 	},
 	title: {
 		marginLeft: 16,
-	},
-	blur: {
-		...StyleSheet.absoluteFillObject,
 	},
 });
 
