@@ -28,6 +28,7 @@ export interface IExchangeRates {
 		quote: string;
 		quoteName: string;
 		rate: number;
+		lastUpdatedAt: number;
 	};
 }
 
@@ -37,6 +38,7 @@ export interface IBitcoinDisplayValues {
 	bitcoinTicker: string; //BTC, mBTC, μBTC, Sats
 	satoshis: number;
 }
+
 export interface IFiatDisplayValues {
 	fiatFormatted: string;
 	fiatWhole: string; //Value before decimal point

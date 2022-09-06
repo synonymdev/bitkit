@@ -1,7 +1,10 @@
 import { default as bitcoinUnits } from 'bitcoin-units';
 import { ok, err, Result } from '@synonymdev/result';
+
 import { getStore } from '../../store/helpers';
 import { TBitcoinUnit } from '../../store/types/wallet';
+import { showErrorNotification } from '../notifications';
+import { timeAgo } from '../helpers';
 import {
 	defaultFiatDisplayValues,
 	defaultBitcoinDisplayValues,
@@ -11,9 +14,10 @@ import {
 	IFiatDisplayValues,
 	mostUsedExchangeTickers,
 } from './types';
-import { showErrorNotification } from '../notifications';
 
 export const getExchangeRates = async (): Promise<Result<IExchangeRates>> => {
+	const lastUpdatedAt = getStore().wallet.exchangeRates.USD?.lastUpdatedAt;
+
 	try {
 		// TODO: pull this out into .env
 		const response = await fetch('http://35.233.47.252:443/fx/rates/btc');
@@ -27,17 +31,29 @@ export const getExchangeRates = async (): Promise<Result<IExchangeRates>> => {
 					quote: ticker.quote,
 					quoteName: ticker.quoteName,
 					rate: Math.round(Number(ticker.lastPrice) * 100) / 100,
+					lastUpdatedAt: ticker.lastUpdatedAt,
 				},
 			};
 		}, {});
 
 		return ok(rates);
 	} catch (e) {
-		showErrorNotification({
-			title: 'Blocktank FX API Error',
-			message: 'Could not get exchange rate, using last known price.',
-		});
 		console.error(e);
+
+		if (lastUpdatedAt) {
+			const date = timeAgo(lastUpdatedAt);
+
+			showErrorNotification({
+				title: 'Blocktank FX API Error',
+				message: `Could not get exchange rate, using price from\n${date}`,
+			});
+		} else {
+			showErrorNotification({
+				title: 'Blocktank FX API Error',
+				message: 'Could not get exchange rate, please try again later.',
+			});
+		}
+
 		return err(e);
 	}
 };
