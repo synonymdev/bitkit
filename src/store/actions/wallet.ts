@@ -1242,3 +1242,14 @@ export const updateHeader = ({
 		payload,
 	});
 };
+
+/**
+ * This method will reset all exchange rate data to the default.
+ */
+export const resetExchangeRates = (): Result<string> => {
+	dispatch({
+		type: actions.RESET_EXCHANGE_RATES,
+	});
+
+	return ok('');
+};

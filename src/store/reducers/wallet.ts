@@ -201,6 +201,12 @@ const wallet = (state = { ...defaultWalletStoreShape }, action): IWallet => {
 				},
 			};
 
+		case actions.RESET_EXCHANGE_RATES:
+			return {
+				...state,
+				exchangeRates: defaultWalletStoreShape.exchangeRates,
+			};
+
 		case actions.UPDATE_ON_CHAIN_TRANSACTION:
 			const transaction = action.payload.transaction;
 			return {

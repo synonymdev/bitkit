@@ -1,11 +1,36 @@
 import { getStore } from '../src/store/helpers';
 import { updateExchangeRates } from '../src/store/actions/wallet';
 import { getDisplayValues } from '../src/utils/exchange-rate';
+import { resetExchangeRates } from '../src/store/actions/wallet';
 
 global.fetch = require('node-fetch');
 
 describe('Pulls latest fiat exchange rates and checks the wallet store for valid conversions', () => {
 	jest.setTimeout(10000);
+
+	beforeAll(() => resetExchangeRates());
+
+	it('handles missing exchange rate by returning the correct fiat fallback', () => {
+		const dv = getDisplayValues({
+			satoshis: 1010101,
+			bitcoinUnit: 'mBTC',
+		});
+
+		// expected fiat fallback
+		expect(dv.fiatFormatted).toBe('—');
+		expect(dv.fiatWhole).toBe('—');
+		expect(dv.fiatDecimal).toBe('');
+		expect(dv.fiatDecimalValue).toBe('');
+		expect(dv.fiatSymbol).toBe('$');
+		expect(dv.fiatTicker).toBe('USD');
+		expect(dv.fiatValue).toBe(0);
+
+		// expected mBTC conversion
+		expect(dv.bitcoinFormatted).toBe('10.10101000');
+		expect(dv.bitcoinSymbol).toBe('m₿');
+		expect(dv.bitcoinTicker).toBe('mBTC');
+		expect(dv.satoshis).toBe(1010101);
+	});
 
 	it('Blocktank FX rates with default selected currency', async () => {
 		const res = await updateExchangeRates();
@@ -32,7 +57,7 @@ describe('Pulls latest fiat exchange rates and checks the wallet store for valid
 		});
 	});
 
-	it('Formats all display values in USD formatted with correct locale', async () => {
+	it('Formats all display values in USD formatted with correct locale', () => {
 		//Testing the react hook
 		const dv = getDisplayValues({
 			satoshis: 1010101,
@@ -55,7 +80,7 @@ describe('Pulls latest fiat exchange rates and checks the wallet store for valid
 		expect(dv.satoshis).toBe(1010101);
 	});
 
-	it('Formats all display values in RUB formatted with correct locale', async () => {
+	it('Formats all display values in RUB formatted with correct locale', () => {
 		//Testing the react hook
 		const dv = getDisplayValues({
 			satoshis: 1010101,
