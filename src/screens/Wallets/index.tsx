@@ -13,6 +13,7 @@ import SafeAreaView from '../../components/SafeAreaView';
 import AssetCard from '../../components/AssetCard';
 import ActivityListShort from '../../screens/Activity/ActivityListShort';
 import EmptyWallet from '../../screens/Activity/EmptyWallet';
+import BetaWarning from '../../components/BetaWarning';
 import { useBalance, useNoTransactions } from '../../hooks/wallet';
 import useColors from '../../hooks/colors';
 import { updateSettings } from '../../store/actions/settings';
@@ -89,9 +90,8 @@ const Wallets = ({ navigation }): ReactElement => {
 										});
 									}}
 								/>
-							</View>
-							<View style={styles.content}>
 								<ActivityListShort />
+								<BetaWarning />
 							</View>
 						</>
 					)}

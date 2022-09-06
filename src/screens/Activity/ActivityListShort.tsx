@@ -44,8 +44,8 @@ const ActivityList = (): ReactElement => {
 	);
 
 	return (
-		<View style={styles.content} color={'transparent'}>
-			<View style={styles.header} color={'transparent'}>
+		<View style={styles.content} color="transparent">
+			<View style={styles.header} color="transparent">
 				<Subtitle>Activity</Subtitle>
 			</View>
 			{groupedItems.map((item) => renderItem({ item }))}
@@ -64,6 +64,7 @@ const ActivityList = (): ReactElement => {
 const styles = StyleSheet.create({
 	content: {
 		paddingTop: 30,
+		marginBottom: 16,
 	},
 	category: {
 		marginBottom: 16,

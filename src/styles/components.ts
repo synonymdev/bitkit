@@ -472,7 +472,7 @@ export const Headline = styled.Text((props) => ({
 		: props.theme.colors.text,
 	fontFamily: props.font
 		? props.theme.fonts[props.font].fontFamily
-		: sanFranciscoWeights.bold.fontFamily,
+		: 'NHaasGroteskDSW02-65Md',
 	fontSize: props.size ? props.size : '34px',
 	lineHeight: props.lineHeight ?? '34px',
 }));

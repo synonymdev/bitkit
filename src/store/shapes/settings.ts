@@ -33,5 +33,6 @@ export const defaultSettingsShape: ISettings = {
 	showSuggestions: true,
 	transactionSpeed: 'normal',
 	hideBalance: false,
+	hideBeta: false,
 	addressType: 'p2wpkh',
 };

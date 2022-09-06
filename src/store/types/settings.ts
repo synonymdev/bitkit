@@ -46,6 +46,7 @@ export interface ISettings {
 	transactionSpeed: TTransactionSpeed;
 	addressType: TAddressType;
 	hideBalance: boolean;
+	hideBeta: boolean;
 }
 
 export type RadioButtonItem = { label: string; value: string };
