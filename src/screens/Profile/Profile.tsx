@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import Clipboard from '@react-native-clipboard/clipboard';
 import { FadeIn, FadeOut } from 'react-native-reanimated';
 import { StyleSheet, useWindowDimensions, Share } from 'react-native';
@@ -74,7 +74,6 @@ const ProfileScreen = ({ navigation }): JSX.Element => {
 			<SafeAreaInsets type={'top'} />
 			<NavigationHeader
 				title="Profile"
-				displayBackButton={false}
 				onClosePress={(): void => {
 					navigation.navigate('Tabs');
 				}}
@@ -168,18 +167,32 @@ const QRView = ({
 	url: string;
 	profile?: BasicProfile;
 }): JSX.Element => {
-	const { height } = useWindowDimensions();
+	const dimensions = useWindowDimensions();
+
+	const qrMaxHeight = useMemo(
+		() => dimensions.height / 2.3,
+		[dimensions?.height],
+	);
+	const qrMaxWidth = useMemo(
+		() => dimensions.width - 16 * 2,
+		[dimensions?.width],
+	);
+	const qrSize = useMemo(
+		() => Math.min(qrMaxWidth, qrMaxHeight),
+		[qrMaxHeight, qrMaxWidth],
+	);
+
 	return (
 		<View style={styles.qrViewContainer}>
 			<View style={styles.qrContainer}>
 				<QR
 					value={url}
-					size={height / 3.25}
+					size={qrSize}
 					logo={{ uri: profile?.image || '' }}
 					logoBackgroundColor={profile?.image ? '#fff' : 'transparent'}
-					logoSize={70}
+					logoSize={50}
 					logoBorderRadius={999}
-					logoMargin={10}
+					logoMargin={9}
 					quietZone={20}
 				/>
 			</View>
@@ -195,7 +208,7 @@ const styles = StyleSheet.create({
 	content: {
 		flex: 1,
 		justifyContent: 'space-between',
-		margin: 20,
+		margin: 16,
 		marginTop: 0,
 		backgroundColor: 'transparent',
 	},
@@ -225,14 +238,12 @@ const styles = StyleSheet.create({
 	},
 	qrViewContainer: {
 		display: 'flex',
-		flexDirection: 'column',
 		alignItems: 'center',
-		justifyContent: 'center',
 		flex: 1,
 	},
 	qrContainer: {
-		borderRadius: 0,
-		marginTop: 20,
+		borderRadius: 10,
+		marginTop: 32,
 		overflow: 'hidden',
 	},
 	qrViewNote: {
