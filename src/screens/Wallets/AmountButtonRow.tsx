@@ -94,10 +94,11 @@ const styles = StyleSheet.create({
 		justifyContent: 'space-between',
 		paddingVertical: 5,
 		paddingHorizontal: 5,
+		paddingTop: 15,
 	},
 	topRowButtons: {
-		paddingVertical: 5,
-		paddingHorizontal: 8,
+		paddingVertical: 10,
+		paddingHorizontal: 36,
 		borderRadius: 8,
 		flexDirection: 'row',
 		justifyContent: 'center',
