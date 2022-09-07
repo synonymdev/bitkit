@@ -40,8 +40,17 @@ import Tooltip from '../../../components/Tooltip';
 import { generateNewReceiveAddress } from '../../../store/actions/wallet';
 import { showErrorNotification } from '../../../utils/notifications';
 import { useBottomSheetBackPress } from '../../../hooks/bottomSheet';
+import BitcoinLogo from '../../../assets/bitcoin-logo-small.svg';
 
-const bitcoinLogo = require('../../../assets/bitcoin-logo.png');
+const QrIcon = (): ReactElement => {
+	return (
+		<View style={styles.qrIconContainer}>
+			<View style={styles.qrIcon}>
+				<BitcoinLogo />
+			</View>
+		</View>
+	);
+};
 
 const Receive = ({ navigation }): ReactElement => {
 	const insets = useSafeAreaInsets();
@@ -208,11 +217,6 @@ const Receive = ({ navigation }): ReactElement => {
 						onPress={handleCopy}
 						style={styles.qrCode}>
 						<QRCode
-							logo={bitcoinLogo}
-							logoSize={70}
-							logoBackgroundColor="white"
-							logoBorderRadius={100}
-							logoMargin={11}
 							value={uri}
 							size={qrSize}
 							getRef={(c): void => {
@@ -225,6 +229,7 @@ const Receive = ({ navigation }): ReactElement => {
 								);
 							}}
 						/>
+						<QrIcon />
 					</TouchableOpacity>
 				)}
 
@@ -275,6 +280,16 @@ const styles = StyleSheet.create({
 		borderRadius: 10,
 		padding: 16,
 		position: 'relative',
+	},
+	qrIconContainer: {
+		...StyleSheet.absoluteFillObject,
+		justifyContent: 'center',
+		alignItems: 'center',
+	},
+	qrIcon: {
+		backgroundColor: 'white',
+		borderRadius: 50,
+		padding: 9,
 	},
 	tooltip: {
 		position: 'absolute',
