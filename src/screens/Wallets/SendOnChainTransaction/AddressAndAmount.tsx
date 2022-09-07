@@ -53,8 +53,11 @@ import {
 } from '../../../utils/lightning';
 import { TInvoice } from '@synonymdev/react-native-ldk';
 import { processInputData } from '../../../utils/scanner';
+import { useBottomSheetBackPress } from '../../../hooks/bottomSheet';
 
 const AddressAndAmount = ({ index = 0, navigation }): ReactElement => {
+	useBottomSheetBackPress('sendNavigation');
+
 	const insets = useSafeAreaInsets();
 	const colors = useColors();
 	const nextButtonContainer = useMemo(
