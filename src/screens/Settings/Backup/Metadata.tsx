@@ -34,9 +34,8 @@ const Result = (): ReactElement => {
 			/>
 
 			<Text01S color="gray1" style={styles.text}>
-				All other Bitkit metadata will be backed up automagically using
-				Slashtags. You can export specific seeds or metadata from the settings
-				menu.
+				Transactions, accounts, contacts and tags will be backed up
+				automagically. You can export data from the settings.
 			</Text01S>
 
 			<View style={styles.imageContainer}>

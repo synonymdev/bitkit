@@ -85,7 +85,7 @@ const ConfirmMnemonic = ({ navigation, route }): ReactElement => {
 
 	return (
 		<ThemedView color="onSurface" style={styles.container}>
-			<NavigationHeader title="Confirm your recovery phrase" size="sm" />
+			<NavigationHeader title="Confirm Recovery Phrase" size="sm" />
 
 			<Text01S color="gray1" style={styles.text}>
 				Tap the 12 words in the correct order.
@@ -126,7 +126,7 @@ const ConfirmMnemonic = ({ navigation, route }): ReactElement => {
 			<View style={nextButtonContainer}>
 				<Button
 					size="lg"
-					text="Continue"
+					text="Next"
 					disabled={disabled}
 					onPress={(): void => navigation.navigate('Result')}
 				/>
@@ -146,7 +146,7 @@ const styles = StyleSheet.create({
 		marginTop: 32,
 		flexDirection: 'row',
 		flexWrap: 'wrap',
-		justifyContent: 'center',
+		justifyContent: 'flex-start',
 	},
 	button: {
 		marginHorizontal: 4,

@@ -55,7 +55,7 @@ const ShowMnemonic = ({ navigation }): ReactElement => {
 	return (
 		<ThemedView color="onSurface" style={styles.container}>
 			<NavigationHeader
-				title="Your recovery phrase"
+				title="Your Recovery Phrase"
 				size="sm"
 				displayBackButton={false}
 			/>
@@ -92,15 +92,15 @@ const ShowMnemonic = ({ navigation }): ReactElement => {
 			</View>
 
 			<Text02S color="gray1">
-				<Text02S color="brand">We recommend</Text02S> writing your recovery
-				phrase down on paper and storing copies in various locations.
+				We recommend writing your recovery phrase down on paper and storing
+				copies in various locations.
 				<Text02S color="brand"> Never share</Text02S> your recovery phrase.
 			</Text02S>
 
 			<View style={nextButtonContainer}>
 				<Button
 					size="lg"
-					text="Next Step"
+					text="Next"
 					disabled={!show}
 					onPress={(): void => navigation.navigate('ConfirmMnemonic', { seed })}
 				/>

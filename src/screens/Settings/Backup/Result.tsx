@@ -29,15 +29,14 @@ const Result = ({ navigation }): ReactElement => {
 	return (
 		<ThemedView color="onSurface" style={styles.container}>
 			<NavigationHeader
-				title="Backed up recovery phrase"
+				title="Successful"
 				size="sm"
 				displayBackButton={false}
 			/>
 
 			<Text01S color="gray1" style={styles.text}>
-				You have successfully backed up your recovery phrase! Make sure you
-				store your backup in a secure place, as this is the only way to recover
-				your money.
+				Make sure you store your recovery phrase in a secure place, as this is
+				the only way to recover your money (!)
 			</Text01S>
 
 			<View style={styles.imageContainer}>
@@ -49,7 +48,7 @@ const Result = ({ navigation }): ReactElement => {
 			</View>
 
 			<View style={nextButtonContainer}>
-				<Button size="lg" text="Next" onPress={handleButtonPress} />
+				<Button size="lg" text="OK" onPress={handleButtonPress} />
 			</View>
 		</ThemedView>
 	);

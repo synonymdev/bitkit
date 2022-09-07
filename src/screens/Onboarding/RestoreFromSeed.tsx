@@ -195,7 +195,7 @@ const RestoreFromSeed = (): ReactElement => {
 				</View>
 				<Display style={styles.title}>Restore your Wallet</Display>
 				<Text01S color="white8">
-					Please type in your 12 seed words from any (paper) backup.
+					Please type in your recovery phrase from any (paper) backup.
 				</Text01S>
 				<View style={styles.inputsContainer}>
 					<View style={styles.inputsColumn}>
