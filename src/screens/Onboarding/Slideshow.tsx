@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unstable-nested-components */
 import React, { memo, ReactElement, useState, useRef, useMemo } from 'react';
 import {
 	Image,
@@ -142,8 +143,8 @@ const Slideshow = ({ navigation, route }: Props): ReactElement => {
 								<Display color="blue"> just a Tap.</Display>
 							</Display>
 							<Text01S color="gray1" style={styles.text}>
-								Experience the web without passwords. Use Slashtags to control
-								your profile, contacts & accounts.
+								Experience the web without passwords. Use Bitkit to control
+								profile, contacts & accounts.
 							</Text01S>
 						</View>
 						<SafeAreaInsets type="bottom" />
