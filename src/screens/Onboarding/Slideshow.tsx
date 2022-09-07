@@ -94,7 +94,7 @@ const Slideshow = ({ navigation, route }: Props): ReactElement => {
 							</Display>
 							<Text01S color="gray1" style={styles.text}>
 								Pay anyone, anywhere, any time and spend your Bitcoin on the
-								things that you value in life.
+								things you value in life.
 							</Text01S>
 						</View>
 						<SafeAreaInsets type="bottom" />
@@ -143,8 +143,8 @@ const Slideshow = ({ navigation, route }: Props): ReactElement => {
 								<Display color="blue"> just a Tap.</Display>
 							</Display>
 							<Text01S color="gray1" style={styles.text}>
-								Experience the web without passwords. Use Bitkit to control
-								profile, contacts & accounts.
+								Experience the web without limits: portable profiles & feeds,
+								dynamic contacts, passwordless accounts.
 							</Text01S>
 						</View>
 						<SafeAreaInsets type="bottom" />
