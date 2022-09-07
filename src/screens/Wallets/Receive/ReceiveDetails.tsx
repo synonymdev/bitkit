@@ -52,7 +52,7 @@ const ReceiveDetails = ({ navigation }): ReactElement => {
 	return (
 		<ThemedView color="onSurface" style={styles.container}>
 			<NavigationHeader
-				title="Invoice Details"
+				title="Specify Invoice"
 				size="sm"
 				displayBackButton={false}
 			/>
