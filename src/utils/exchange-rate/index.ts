@@ -45,12 +45,12 @@ export const getExchangeRates = async (): Promise<Result<IExchangeRates>> => {
 
 			showErrorNotification({
 				title: 'Blocktank FX API Error',
-				message: `Could not get exchange rate, using price from\n${date}`,
+				message: `Could not get exchange rate. Using price from\n${date}`,
 			});
 		} else {
 			showErrorNotification({
 				title: 'Blocktank FX API Error',
-				message: 'Could not get exchange rate, please try again later.',
+				message: 'Could not get exchange rate. Please try again later.',
 			});
 		}
 
