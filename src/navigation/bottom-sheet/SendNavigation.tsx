@@ -4,6 +4,10 @@ import {
 	NativeStackNavigationProp,
 } from '@react-navigation/native-stack';
 import { useSelector } from 'react-redux';
+import {
+	useSafeAreaFrame,
+	useSafeAreaInsets,
+} from 'react-native-safe-area-context';
 
 import BottomSheetWrapper from '../../components/BottomSheetWrapper';
 import AddressAndAmount from '../../screens/Wallets/SendOnChainTransaction/AddressAndAmount';
@@ -11,7 +15,6 @@ import FeeRate from '../../screens/Wallets/SendOnChainTransaction/FeeRate';
 import FeeCustom from '../../screens/Wallets/SendOnChainTransaction/FeeCustom';
 import Tags from '../../screens/Wallets/SendOnChainTransaction/Tags';
 import ReviewAndSend from '../../screens/Wallets/SendOnChainTransaction/ReviewAndSend';
-import SendAssetPickerList from '../../screens/Wallets/SendOnChainTransaction/SendAssetPickerList';
 import Result from '../../screens/Wallets/SendOnChainTransaction/Result';
 import Scanner from '../../screens/Wallets/SendOnChainTransaction/Scanner';
 import CoinSelection from '../../screens/Wallets/SendOnChainTransaction/CoinSelection';
@@ -26,7 +29,6 @@ import Store from '../../store/types';
 export type SendNavigationProp = NativeStackNavigationProp<SendStackParamList>;
 
 export type SendStackParamList = {
-	SendAssetPickerList: undefined;
 	AddressAndAmount: undefined;
 	CoinSelection: undefined;
 	FeeRate: undefined;
@@ -49,7 +51,12 @@ const SendNavigation = (): ReactElement => {
 	const { isOpen, initial } =
 		useSelector((store: Store) => store.user.viewController?.sendNavigation) ??
 		{};
-	const snapPoints = useMemo(() => [600], []);
+	const insets = useSafeAreaInsets();
+	const { height } = useSafeAreaFrame();
+	const snapPoints = useMemo(
+		() => [height - (60 + insets.top)],
+		[height, insets.top],
+	);
 
 	const initialRouteName = !isOpen ? undefined : initial;
 
@@ -65,10 +72,6 @@ const SendNavigation = (): ReactElement => {
 					// @ts-ignore TODO: fix type
 					initialRouteName={initialRouteName}>
 					<Stack.Group screenOptions={navOptions}>
-						<Stack.Screen
-							name="SendAssetPickerList"
-							component={SendAssetPickerList}
-						/>
 						<Stack.Screen
 							name="AddressAndAmount"
 							component={AddressAndAmount}
