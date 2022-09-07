@@ -51,49 +51,55 @@ const AmountButtonRow = ({
 
 	return (
 		<View style={styles.topRow}>
-			{showMaxButton && (
+			<View style={styles.buttonContainer}>
+				{showMaxButton && (
+					<TouchableOpacity
+						style={styles.topRowButtons}
+						color={'onSurface'}
+						disabled={balance <= 0}
+						onPress={sendMax}>
+						<Text02B size="12px" color={max ? 'orange' : 'brand'}>
+							MAX
+						</Text02B>
+					</TouchableOpacity>
+				)}
+
+				<TouchableOpacity
+					color={'onSurface'}
+					style={styles.topRowButtons}
+					onPress={onChangeUnit}>
+					<SwitchIcon color="brand" width={16.44} height={13.22} />
+					<Text02B size="12px" color="brand" style={styles.middleButtonText}>
+						{unitPreference === 'asset'
+							? displayValues.fiatTicker
+							: displayValues.bitcoinTicker}
+					</Text02B>
+				</TouchableOpacity>
+
 				<TouchableOpacity
 					style={styles.topRowButtons}
 					color={'onSurface'}
-					disabled={balance <= 0}
-					onPress={sendMax}>
-					<Text02B size="12px" color={max ? 'orange' : 'brand'}>
-						MAX
+					onPress={onDone}>
+					<Text02B size="12px" color="brand">
+						DONE
 					</Text02B>
 				</TouchableOpacity>
-			)}
-
-			<TouchableOpacity
-				color={'onSurface'}
-				style={styles.topRowButtons}
-				onPress={onChangeUnit}>
-				<SwitchIcon color="brand" width={16.44} height={13.22} />
-				<Text02B size="12px" color="brand" style={styles.middleButtonText}>
-					{unitPreference === 'asset'
-						? displayValues.fiatTicker
-						: displayValues.bitcoinTicker}
-				</Text02B>
-			</TouchableOpacity>
-
-			<TouchableOpacity
-				style={styles.topRowButtons}
-				color={'onSurface'}
-				onPress={onDone}>
-				<Text02B size="12px" color="brand">
-					DONE
-				</Text02B>
-			</TouchableOpacity>
+			</View>
 		</View>
 	);
 };
 
 const styles = StyleSheet.create({
+	buttonContainer: {
+		flexDirection: 'row',
+		flex: 1,
+		justifyContent: 'space-around',
+	},
 	topRow: {
 		flexDirection: 'row',
 		alignItems: 'center',
-		justifyContent: 'space-between',
-		paddingVertical: 5,
-		paddingHorizontal: 50,
+		paddingVertical: 10,
+		paddingHorizontal: 0,
 		paddingTop: 15,
 	},
 	topRowButtons: {
