@@ -91,7 +91,7 @@ export const ProfileEdit = ({ navigation }): JSX.Element => {
 					<View style={styles.topRow} />
 					<ProfileLinks links={profile?.links} setLink={setLink} />
 					<Button
-						text="Add Link Or Text"
+						text="Add Link"
 						style={styles.addLinkButton}
 						onPress={(): void => {
 							toggleView({
