@@ -1,9 +1,12 @@
 import React, { memo, ReactElement, useMemo, useState } from 'react';
 import { Alert, StyleSheet, View, Keyboard } from 'react-native';
 import { useSelector } from 'react-redux';
-import { BottomSheetTextInput } from '@gorhom/bottom-sheet';
 
-import { Subtitle, Text02S } from '../../styles/components';
+import {
+	Subtitle,
+	Text02S,
+	BottomSheetTextInput,
+} from '../../styles/components';
 import BottomSheetWrapper from '../../components/BottomSheetWrapper';
 import SafeAreaInsets from '../../components/SafeAreaInsets';
 import Store from '../../store/types';
@@ -77,8 +80,6 @@ const Form = ({ id }: { id: string }): ReactElement => {
 						borderColor: colors.text,
 					},
 				]}
-				selectionColor={colors.brand}
-				placeholderTextColor={colors.white5}
 				placeholder="Enter new tag"
 				blurOnSubmit={true}
 				value={text}

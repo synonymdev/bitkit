@@ -17,14 +17,14 @@ import { useSelector } from 'react-redux';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Clipboard from '@react-native-clipboard/clipboard';
 import { validate } from 'bitcoin-address-validation';
-import { BottomSheetTextInput } from '@gorhom/bottom-sheet';
 
 import {
-	ScanIcon,
+	BottomSheetTextInput,
 	Caption13Up,
 	ClipboardTextIcon,
-	UserIcon,
+	ScanIcon,
 	TagIcon,
+	UserIcon,
 	View as ThemedView,
 } from '../../../styles/components';
 import NavigationHeader from '../../../components/NavigationHeader';
@@ -323,8 +323,6 @@ const AddressAndAmount = ({ index = 0, navigation }): ReactElement => {
 								borderColor: colors.text,
 							},
 						]}
-						selectionColor={colors.brand}
-						placeholderTextColor={colors.white5}
 						selectTextOnFocus={true}
 						multiline={true}
 						placeholder="Paste or scan an address, invoice or select a contact"

@@ -676,6 +676,7 @@ export const ScrollView = styled.ScrollView((props) => ({
 }));
 
 export const TextInput = styled.TextInput.attrs((props) => ({
+	keyboardAppearance: props.theme.id,
 	selectionColor: colors.brand,
 	placeholderTextColor: props?.placeholderTextColor
 		? props.placeholderTextColor
@@ -694,6 +695,7 @@ export const TextInput = styled.TextInput.attrs((props) => ({
 
 export const BottomSheetTextInput = styled(_BottomSheetTextInput).attrs(
 	(props) => ({
+		keyboardAppearance: props.theme.id,
 		selectionColor: colors.brand,
 		placeholderTextColor: props?.placeholderTextColor
 			? props.placeholderTextColor

@@ -2,9 +2,9 @@ import React, { ReactElement, memo, useCallback, useMemo } from 'react';
 import { StyleSheet, View, Image, Keyboard } from 'react-native';
 import { useSelector } from 'react-redux';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { BottomSheetTextInput } from '@gorhom/bottom-sheet';
 
 import {
+	BottomSheetTextInput,
 	Caption13Up,
 	TagIcon,
 	View as ThemedView,
@@ -77,8 +77,6 @@ const ReceiveDetails = ({ navigation }): ReactElement => {
 								borderColor: colors.text,
 							},
 						]}
-						selectionColor={colors.brand}
-						placeholderTextColor={colors.white5}
 						selectTextOnFocus={true}
 						multiline={true}
 						placeholder="Optional note to payer"

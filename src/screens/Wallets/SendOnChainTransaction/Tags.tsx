@@ -1,9 +1,12 @@
 import React, { memo, ReactElement, useState } from 'react';
 import { StyleSheet, View, Alert } from 'react-native';
 import { useSelector } from 'react-redux';
-import { BottomSheetTextInput } from '@gorhom/bottom-sheet';
 
-import { Caption13Up, View as ThemedView } from '../../../styles/components';
+import {
+	BottomSheetTextInput,
+	Caption13Up,
+	View as ThemedView,
+} from '../../../styles/components';
 import NavigationHeader from '../../../components/NavigationHeader';
 import Tag from '../../../components/Tag';
 import Store from '../../../store/types';
@@ -75,8 +78,6 @@ const AddressAndAmount = ({ navigation }): ReactElement => {
 							borderColor: colors.text,
 						},
 					]}
-					selectionColor={colors.brand}
-					placeholderTextColor={colors.white5}
 					placeholder="Enter a new tag"
 					blurOnSubmit={true}
 					value={text}
