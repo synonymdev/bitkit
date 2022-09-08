@@ -28,8 +28,8 @@ export const ContactsOnboarding = ({ navigation }): JSX.Element => {
 					<Display>Dynamic</Display>
 					<Display color="brand">Contacts.</Display>
 					<Text01S color="gray1" style={styles.introText}>
-						Use Slashtags to get automatic updates from your contacts, pay them,
-						and follow their public profiles
+						Use Bitkit to get automatic updates from your contacts, pay them,
+						and follow their public profiles.
 					</Text01S>
 				</View>
 				<Button
