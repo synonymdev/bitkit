@@ -24,12 +24,14 @@ export const ContactsOnboarding = ({ navigation }): JSX.Element => {
 					source={require('../../assets/illustrations/book.png')}
 					style={styles.illustration}
 				/>
-				<Display>Dynamic</Display>
-				<Display color="brand">Contacts.</Display>
-				<Text01S color="gray1" style={styles.introText}>
-					Use Slashtags to get automatic updates from your contacts, pay them,
-					and follow their public profiles
-				</Text01S>
+				<View style={styles.text}>
+					<Display>Dynamic</Display>
+					<Display color="brand">Contacts.</Display>
+					<Text01S color="gray1" style={styles.introText}>
+						Use Slashtags to get automatic updates from your contacts, pay them,
+						and follow their public profiles
+					</Text01S>
+				</View>
 				<Button
 					text="Add Your First Contact"
 					size="large"
@@ -52,11 +54,15 @@ const styles = StyleSheet.create({
 	},
 	illustration: {
 		alignSelf: 'center',
-		width: 332,
-		height: 332,
+		width: 400,
+		height: 400,
 	},
 	introText: {
 		marginTop: 8,
+	},
+	text: {
+		flex: 1,
+		backgroundColor: 'transparent',
 	},
 });
 
