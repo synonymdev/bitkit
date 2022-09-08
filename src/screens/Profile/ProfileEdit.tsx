@@ -111,7 +111,7 @@ export const ProfileEdit = ({ navigation }): JSX.Element => {
 				</ScrollView>
 				<Button
 					style={styles.saveButton}
-					text={onboardedProfile ? 'Save Profile' : 'Continue'}
+					text={onboardedProfile ? 'Save Profile' : 'Next'}
 					size="large"
 					disabled={
 						!profile.name || profile.name.replace(/\s/g, '').length === 0

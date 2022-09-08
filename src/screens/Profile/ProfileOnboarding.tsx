@@ -37,6 +37,7 @@ export const PaymentsFromContacts = ({ navigation }): JSX.Element => {
 			backButton={true}
 			illustration={require('../../assets/illustrations/coins.png')}
 			title="Pay your"
+			header="Pay Contacts"
 			subtitle=""
 			highlighted="Contacts."
 			text="You and your contacts can use Bitkit to send payments directly, without banks, anytime, anywhere."
@@ -75,6 +76,7 @@ export const OfflinePayments = ({ navigation }): JSX.Element => {
 			backButton={true}
 			illustration={require('../../assets/illustrations/switch.png')}
 			title="Offline"
+			header="Offline payments"
 			highlighted="Payments."
 			text="Bitkit can also create a fixed Bitcoin address for you, so you’re able to receive payments even when you are offline."
 			nextStep="Done"
@@ -100,7 +102,8 @@ const Layout = ({
 	text,
 	highlighted,
 	nextStep,
-	buttonText = 'Continue',
+	buttonText = 'Next',
+	header = 'Profile',
 	children,
 	onNext,
 }: {
@@ -113,6 +116,7 @@ const Layout = ({
 	highlighted: string;
 	nextStep: ISlashtags['onboardingProfileStep'];
 	buttonText?: string;
+	header?: string;
 	children?;
 	onNext?;
 }): JSX.Element => {
@@ -120,7 +124,7 @@ const Layout = ({
 		<GlowingBackground topLeft="brand">
 			<SafeAreaInsets type={'top'} />
 			<NavigationHeader
-				title="Profile"
+				title={header}
 				displayBackButton={backButton}
 				onClosePress={(): void => {
 					navigation.navigate('Tabs');
