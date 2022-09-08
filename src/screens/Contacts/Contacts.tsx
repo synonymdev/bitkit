@@ -9,7 +9,6 @@ import {
 	CornersOutIcon,
 	PlusIcon,
 	Subtitle,
-	Text,
 	Text01S,
 	View,
 } from '../../styles/components';
@@ -164,15 +163,14 @@ const ContactsScreen = ({ navigation }): JSX.Element => {
 				<View style={styles.modalContainer}>
 					<Subtitle style={styles.modalTitle}>Add a contact</Subtitle>
 					<Text01S color="gray1" style={styles.addContactNote}>
-						Add a new contact by scanning a QR or by pasting their Slashtags key
-						below.
+						Add a new contact by scanning a QR or by pasting their key below.
 					</Text01S>
 					<View style={styles.modalContent}>
 						<LabeledInput
 							bottomSheet={true}
-							label="ADD SLASHTAGS CONTACT"
+							label="ADD CONTACT"
 							value={addContactURL}
-							placeholder="Paste a Slashtags key"
+							placeholder="Paste a key"
 							onChange={updateContactID}
 							rightIcon={
 								<View style={styles.addContactsIconsContainer}>
@@ -190,7 +188,9 @@ const ContactsScreen = ({ navigation }): JSX.Element => {
 						/>
 						<View style={styles.addContactInvalid}>
 							{addContacInvalid && (
-								<Text color="brand">This is not a valid Slashtags URL.</Text>
+								<Text01S color="brand">
+									This is not a valid Slashtags URL.
+								</Text01S>
 							)}
 						</View>
 					</View>
@@ -254,14 +254,15 @@ const styles = StyleSheet.create({
 		backgroundColor: 'transparent',
 	},
 	addContactNote: {
-		padding: 16,
+		marginHorizontal: 16,
+		marginVertical: 32,
 	},
 	addContactsIconsContainer: {
 		display: 'flex',
 		flexDirection: 'row',
 		justifyContent: 'space-between',
 		backgroundColor: 'transparent',
-		width: 56,
+		width: 64,
 	},
 	addContactInvalid: {
 		height: 20,
