@@ -161,7 +161,7 @@ const ContactsScreen = ({ navigation }): JSX.Element => {
 				view="addContactModal"
 				snapPoints={[400]}>
 				<View style={styles.modalContainer}>
-					<Subtitle style={styles.modalTitle}>Add a contact</Subtitle>
+					<Subtitle style={styles.modalTitle}>Add Contact</Subtitle>
 					<Text01S color="gray1" style={styles.addContactNote}>
 						Add a new contact by scanning a QR or by pasting their key below.
 					</Text01S>
