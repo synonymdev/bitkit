@@ -11,7 +11,7 @@ import { setOnboardedContacts } from '../../store/actions/slashtags';
 export const ContactsOnboarding = ({ navigation }): JSX.Element => {
 	return (
 		<GlowingBackground topLeft="brand">
-			<SafeAreaInsets type={'top'} />
+			<SafeAreaInsets type="top" />
 			<NavigationHeader
 				title="Contacts"
 				displayBackButton={false}
@@ -48,14 +48,16 @@ const styles = StyleSheet.create({
 	content: {
 		flex: 1,
 		justifyContent: 'space-between',
-		margin: 20,
-		marginTop: 0,
+		marginHorizontal: 16,
+		marginBottom: 16,
 		backgroundColor: 'transparent',
 	},
 	illustration: {
 		alignSelf: 'center',
 		width: 400,
 		height: 400,
+		maxHeight: '50%',
+		resizeMode: 'contain',
 	},
 	introText: {
 		marginTop: 8,
