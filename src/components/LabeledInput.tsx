@@ -47,25 +47,27 @@ export const Input = ({
 						ref={ref}
 						style={styles.inputText}
 						defaultValue={value}
-						color={'white'}
+						color="white"
 						autoCapitalize="none"
 						autoCorrect={false}
 						placeholder={placeholder}
 						onChangeText={onChange}
 						multiline={multiline || false}
 						editable={!!onChange}
+						returnKeyType="done"
 					/>
 				) : (
 					<TextInput
 						style={styles.inputText}
 						defaultValue={value}
-						color={'white'}
+						color="white"
 						autoCapitalize="none"
 						autoCorrect={false}
 						placeholder={placeholder}
 						onChangeText={onChange}
 						multiline={multiline || false}
 						editable={!!onChange}
+						returnKeyType="done"
 					/>
 				)}
 				{rightIcon && onRightIconPress ? (
@@ -87,8 +89,8 @@ const styles = StyleSheet.create({
 		justifyContent: 'space-between',
 		alignItems: 'center',
 		fontSize: 17,
-		padding: 16,
-		height: 52,
+		paddingHorizontal: 16,
+		height: 56,
 		borderRadius: 8,
 		backgroundColor: 'rgba(255, 255, 255, 0.08)',
 		boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.03)',
