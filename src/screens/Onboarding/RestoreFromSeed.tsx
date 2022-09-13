@@ -31,6 +31,7 @@ import SeedInput from '../../components/SeedInput';
 import SeedInputAccessory from '../../components/SeedInputAccessory';
 import VerticalShadow from '../../components/VerticalShadow';
 import Button from '../../components/Button';
+import { verifyBackup } from '../../store/actions/user';
 import { validateMnemonic } from '../../utils/wallet';
 import useColors from '../../hooks/colors';
 import { restoreWallet } from '../../utils/startup';
@@ -116,6 +117,7 @@ const RestoreFromSeed = (): ReactElement => {
 			return;
 		}
 
+		verifyBackup();
 		setShowRestored(true);
 	};
 
