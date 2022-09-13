@@ -1,4 +1,6 @@
 import React, { useCallback } from 'react';
+import { StyleSheet, Share } from 'react-native';
+
 import {
 	CoinsIcon,
 	PencileIcon,
@@ -7,7 +9,6 @@ import {
 	View,
 } from '../../styles/components';
 import NavigationHeader from '../../components/NavigationHeader';
-import { StyleSheet, Share } from 'react-native';
 import SafeAreaInsets from '../../components/SafeAreaInsets';
 import ProfileCard from '../../components/ProfileCard';
 import { TouchableOpacity } from 'react-native';
@@ -15,6 +16,9 @@ import ProfileLinks from '../../components/ProfileLinks';
 import { useContact } from '../../hooks/slashtags';
 import { deleteContact } from '../../utils/slashtags';
 import { useSlashtagsSDK } from '../../components/SlashtagsProvider';
+import { toggleView } from '../../store/actions/user';
+import { updateBitcoinTransaction } from '../../store/actions/wallet';
+import { sleep } from '../../utils/helpers';
 
 export const Contact = ({ navigation, route }): JSX.Element => {
 	const url = route.params?.url;
@@ -48,10 +52,33 @@ export const Contact = ({ navigation, route }): JSX.Element => {
 				<View style={styles.bottom}>
 					<View style={styles.bottomHeader}>
 						<IconButton
-							onPress={(): void => {
-								// TODO: do something with payment address
-								// eslint-disable-next-line no-alert
-								alert(JSON.stringify(contact?.payConfig || {}, null, 2));
+							onPress={async (): Promise<void> => {
+								navigation.popToTop();
+
+								// TODO: get address from payconfig and validate it
+
+								toggleView({
+									view: 'sendNavigation',
+									data: {
+										isOpen: true,
+										snapPoint: 0,
+										initial: 'AddressAndAmount',
+										assetName: 'Bitcoin',
+									},
+								});
+								await sleep(5); //This is only needed to prevent the view from briefly displaying the SendAssetList
+								await updateBitcoinTransaction({
+									transaction: {
+										outputs: [
+											{
+												address: 'bcrt1qqrgq9cfg6xagfel9gc0txfte9725l6qnpv3vm3',
+												value: 0,
+												index: 0,
+											},
+										],
+										slashTagsUrl: url,
+									},
+								});
 							}}>
 							<CoinsIcon height={24} width={24} color="brand" />
 						</IconButton>
