@@ -23,7 +23,7 @@ export type TUserViewController = {
 };
 
 export interface IViewControllerData {
-	isOpen?: boolean;
+	isOpen: boolean;
 	id?: string;
 	asset?: string;
 	assetNetwork?: TAssetNetwork;
@@ -40,6 +40,7 @@ export interface IUser {
 	isHydrated: boolean;
 	isOnline: boolean;
 	isConnectedToElectrum: boolean;
+	ignoreBackupTimestamp: number;
+	backupVerified: boolean;
 	viewController: TUserViewController;
-	[key: string]: any;
 }
