@@ -67,7 +67,7 @@ export const stringTypeItems: IWalletItem<string> = {
 	timestamp: null,
 };
 
-export const addressContent = {
+export const addressContent: IAddressContent = {
 	index: -1,
 	path: '',
 	address: '',
@@ -75,7 +75,9 @@ export const addressContent = {
 	publicKey: '',
 };
 
-export const getAddressTypeContent = (data: any): IAddressTypeContent<any> => {
+export const getAddressTypeContent = (
+	data: IAddressContent | IAddress,
+): IAddressTypeContent<IAddressContent> => {
 	let content = {};
 	Object.keys(addressTypes).map((addressType) => {
 		content[addressType] = data;

@@ -96,6 +96,7 @@ export const refreshWallet = async ({
 	updateAllAddressTypes?: boolean;
 }): Promise<Result<string>> => {
 	try {
+		const isConnectedToElectrum = getStore().user.isConnectedToElectrum;
 		const { selectedWallet, selectedNetwork } = getCurrentWallet({});
 		if (onchain) {
 			let addressType: TAddressType | undefined;
@@ -105,30 +106,33 @@ export const refreshWallet = async ({
 					selectedWallet,
 				});
 			}
-			await updateAddressIndexes({
+			if (isConnectedToElectrum) {
+				await updateAddressIndexes({
+					selectedWallet,
+					selectedNetwork,
+					addressType,
+				});
+				await Promise.all([
+					subscribeToAddresses({
+						selectedWallet,
+						selectedNetwork,
+					}),
+					updateUtxos({
+						selectedWallet,
+						selectedNetwork,
+					}),
+					updateTransactions({
+						selectedWallet,
+						selectedNetwork,
+					}),
+				]);
+			}
+
+			updateExchangeRates().then();
+			deleteBoostedTransactions({
 				selectedWallet,
 				selectedNetwork,
-				addressType,
-			});
-			await Promise.all([
-				subscribeToAddresses({
-					selectedWallet,
-					selectedNetwork,
-				}),
-				updateExchangeRates(),
-				updateUtxos({
-					selectedWallet,
-					selectedNetwork,
-				}),
-				updateTransactions({
-					selectedWallet,
-					selectedNetwork,
-				}),
-				deleteBoostedTransactions({
-					selectedWallet,
-					selectedNetwork,
-				}),
-			]);
+			}).then();
 		}
 
 		if (lightning) {
@@ -1040,6 +1044,18 @@ export const getNextAvailableAddress = async ({
 			let addressHasBeenUsed = false;
 			let changeAddressHasBeenUsed = false;
 
+			// If an error occurs, return last known/available indexes.
+			const lastKnownIndexes = () => {
+				return resolve(
+					ok({
+						addressIndex,
+						lastUsedAddressIndex,
+						changeAddressIndex,
+						lastUsedChangeAddressIndex,
+					}),
+				);
+			};
+
 			while (!foundLastUsedAddress || !foundLastUsedChangeAddress) {
 				//Check if transactions are pending in the mempool.
 				const addressHistory = await getAddressHistory({
@@ -1049,7 +1065,8 @@ export const getNextAvailableAddress = async ({
 				});
 
 				if (addressHistory.isErr()) {
-					return resolve(err(addressHistory.error.message));
+					console.log(addressHistory.error.message);
+					return lastKnownIndexes();
 				}
 
 				const txHashes: IGetAddressHistoryResponse[] = addressHistory.value;
@@ -1062,7 +1079,8 @@ export const getNextAvailableAddress = async ({
 					changeAddressIndex,
 				});
 				if (highestUsedIndex.isErr()) {
-					return resolve(err(highestUsedIndex.error));
+					console.log(highestUsedIndex.error.message);
+					return lastKnownIndexes();
 				}
 
 				addressIndex = highestUsedIndex.value.addressIndex;
@@ -1081,7 +1099,8 @@ export const getNextAvailableAddress = async ({
 				});
 
 				if (highestStoredIndex.isErr()) {
-					return resolve(err(highestStoredIndex.error));
+					console.log(highestStoredIndex.error.message);
+					return lastKnownIndexes();
 				}
 
 				const {

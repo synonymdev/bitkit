@@ -114,7 +114,10 @@ const Receive = ({ navigation }): ReactElement => {
 				setReceiveAddress(response.value.address);
 			}
 		} else {
-			const response = getReceiveAddress({});
+			const response = getReceiveAddress({
+				selectedNetwork,
+				selectedWallet,
+			});
 			if (response.isOk()) {
 				console.info(`reusing address ${response.value}`);
 				setReceiveAddress(response.value);

@@ -90,6 +90,10 @@ export const startWalletServices = async ({
 		InteractionManager.runAfterInteractions(async () => {
 			//Create wallet if none exists.
 			let { wallets, selectedNetwork } = getStore().wallet;
+			let isConnectedToElectrum = false;
+
+			setupTodos().then();
+			updateExchangeRates().then();
 
 			// Before we do anything we should connect to an Electrum server.
 			if (onchain || lightning) {
@@ -107,23 +111,22 @@ export const startWalletServices = async ({
 					customPeers,
 				});
 				if (electrumResponse.isErr()) {
-					updateUser({ isConnectedToElectrum: false });
 					showErrorNotification({
 						title: 'Unable to connect to Electrum Server.',
 						message:
 							electrumResponse?.error?.message ??
 							'Unable to connect to Electrum Server',
 					});
+				} else {
+					isConnectedToElectrum = true;
+					// Ensure the on-chain wallet & LDK syncs when a new block is detected.
+					const onReceive = (): void => {
+						refreshWallet({ onchain, lightning });
+					};
+					// Ensure we are subscribed to and save new header information.
+					await subscribeToHeader({ selectedNetwork, onReceive });
 				}
-
-				updateUser({ isConnectedToElectrum: true });
-
-				// Ensure the on-chain wallet & LDK syncs when a new block is detected.
-				const onReceive = (): void => {
-					refreshWallet({ onchain, lightning });
-				};
-				// Ensure we are subscribed to and save new header information.
-				await subscribeToHeader({ selectedNetwork, onReceive });
+				updateUser({ isConnectedToElectrum });
 			}
 
 			const walletExists = await checkWalletExists();
@@ -161,9 +164,6 @@ export const startWalletServices = async ({
 				}
 			}
 
-			setupTodos();
-
-			await updateExchangeRates();
 			if (lightning) {
 				await setupBlocktank(selectedNetwork);
 				await refreshServiceList();

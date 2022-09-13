@@ -105,7 +105,7 @@ export const setupLdk = async ({
 		if (genesisHash.isErr()) {
 			return err(genesisHash.error.message);
 		}
-		const account = await getAccount({});
+		const account = await getAccount({ selectedWallet });
 		if (account.isErr()) {
 			return err(account.error.message);
 		}
@@ -551,8 +551,4 @@ export const decodeLightningInvoice = ({
 }: TPaymentReq): Promise<Result<TInvoice>> => {
 	paymentRequest = paymentRequest.replace('lightning:', '').trim();
 	return ldk.decode({ paymentRequest });
-};
-
-export const milliSatoshisToSatoshis = (milliSatoshis = 0): number => {
-	return milliSatoshis * 0.001;
 };

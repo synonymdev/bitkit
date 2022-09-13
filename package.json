@@ -34,7 +34,7 @@
     "@sentry/react-native": "^4.2.2",
     "@shopify/react-native-skia": "^0.1.137",
     "@synonymdev/blocktank-client": "0.0.47",
-    "@synonymdev/react-native-ldk": "0.0.51",
+    "@synonymdev/react-native-ldk": "^0.0.53",
     "@synonymdev/react-native-lnurl": "0.0.3",
     "@synonymdev/result": "0.0.2",
     "@synonymdev/slashtags-sdk": "1.0.0-alpha.13",

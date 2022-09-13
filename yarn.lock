@@ -2037,10 +2037,10 @@
     cross-fetch "^3.1.4"
     node-fetch "3.1.1"
 
-"@synonymdev/react-native-ldk@0.0.51":
-  version "0.0.51"
-  resolved "https://registry.yarnpkg.com/@synonymdev/react-native-ldk/-/react-native-ldk-0.0.51.tgz#a8731998c0f1cb1dc047dc7afb5f7e5921a66902"
-  integrity sha512-RnknBp+lWP3atj1OxUTsRXbKXzCe1xQyxh0YP3Na2ZkCc6hfGbWjHsjU8J1YT8gg3uSPPWWpEwdacVBd7cEyPw==
+"@synonymdev/react-native-ldk@^0.0.53":
+  version "0.0.53"
+  resolved "https://registry.yarnpkg.com/@synonymdev/react-native-ldk/-/react-native-ldk-0.0.53.tgz#6d14de677187bdf6038b3e7b3dd17602ff796f3c"
+  integrity sha512-Ld8qXisG6PN/V4Cvf8RimdWMtLDJgXDLiyue0AizqfHMtO83s/BcwDARxQ2aB8tUA1UIrbcwxg/8QwsHiCxBWQ==
 
 "@synonymdev/react-native-lnurl@0.0.3":
   version "0.0.3"

@@ -30,7 +30,7 @@ import { getBalance, getSelectedNetwork, getSelectedWallet } from './wallet';
 import { toggleView } from '../store/actions/user';
 import { sleep } from './helpers';
 import { handleSlashtagURL } from './slashtags';
-import { decodeLightningInvoice, milliSatoshisToSatoshis } from './lightning';
+import { decodeLightningInvoice } from './lightning';
 
 const availableNetworksList = availableNetworks();
 
@@ -280,9 +280,7 @@ export const decodeQRData = async (
 					qrDataType: EQRDataType.lightningPaymentRequest,
 					lightningPaymentRequest: options.lightning,
 					network: selectedNetwork,
-					sats: milliSatoshisToSatoshis(
-						decodedInvoice.value?.amount_milli_satoshis ?? 0,
-					),
+					sats: decodedInvoice.value?.amount_satoshis ?? 0,
 					message: decodedInvoice.value?.description ?? '',
 				});
 				lightningInvoice = options.lightning;
@@ -299,9 +297,7 @@ export const decodeQRData = async (
 				qrDataType: EQRDataType.lightningPaymentRequest,
 				lightningPaymentRequest: data,
 				network: selectedNetwork,
-				sats: milliSatoshisToSatoshis(
-					decodedInvoice.value?.amount_milli_satoshis ?? 0,
-				),
+				sats: decodedInvoice.value?.amount_satoshis ?? 0,
 				message: decodedInvoice.value?.description ?? '',
 			});
 		}
@@ -377,9 +373,7 @@ export const processBitcoinTransactionData = async ({
 						// Ensure we can afford to pay the lightning invoice. If so, pass it through.
 						if (
 							lightningBalance.satoshis >
-							milliSatoshisToSatoshis(
-								decodedLightningInvoice.value?.amount_milli_satoshis ?? 0,
-							)
+							(decodedLightningInvoice.value?.amount_satoshis ?? 0)
 						) {
 							response = filteredLightningInvoice[0];
 						}
@@ -544,9 +538,7 @@ export const handleData = async ({
 					outputs: [
 						{
 							address: '',
-							value: milliSatoshisToSatoshis(
-								decodedInvoice.value?.amount_milli_satoshis ?? 0,
-							),
+							value: decodedInvoice.value?.amount_satoshis ?? 0,
 							index: 0,
 						},
 					],
