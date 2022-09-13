@@ -29,51 +29,53 @@ const ResetAndRestore = ({
 				}}
 			/>
 			<AuthCheck>
-				<View style={styles.container}>
-					<Text01S color="gray1">
-						Back up your wallet first to avoid loss of your funds and wallet
-						data. Resetting will overwrite your current Bitkit setup.
-					</Text01S>
+				<>
+					<View style={styles.container}>
+						<Text01S color="gray1">
+							Back up your wallet first to avoid loss of your funds and wallet
+							data. Resetting will overwrite your current Bitkit setup.
+						</Text01S>
 
-					<View style={styles.imageContainer}>
-						<Glow style={styles.glow} size={600} color="brand" />
-						<Image source={imageSrc} style={styles.image} />
+						<View style={styles.imageContainer}>
+							<Glow style={styles.glow} size={600} color="brand" />
+							<Image source={imageSrc} style={styles.image} />
+						</View>
+
+						<View style={styles.buttonContainer}>
+							<Button
+								size="lg"
+								variant="secondary"
+								style={styles.button}
+								text="Back Up First"
+								onPress={() => {
+									toggleView({
+										view: 'backupNavigation',
+										data: { isOpen: true },
+									});
+								}}
+							/>
+							<View style={styles.divider} />
+							<Button
+								size="lg"
+								style={styles.button}
+								text="Reset Wallet"
+								onPress={() => setShowDialog(true)}
+							/>
+						</View>
+						<SafeAreaInsets type="bottom" />
 					</View>
 
-					<View style={styles.buttonContainer}>
-						<Button
-							size="lg"
-							variant="secondary"
-							style={styles.button}
-							text="Back Up First"
-							onPress={() => {
-								toggleView({
-									view: 'backupNavigation',
-									data: { isOpen: true },
-								});
-							}}
-						/>
-						<View style={styles.divider} />
-						<Button
-							size="lg"
-							style={styles.button}
-							text="Reset Wallet"
-							onPress={() => setShowDialog(true)}
-						/>
-					</View>
-					<SafeAreaInsets type="bottom" />
-				</View>
-
-				<Dialog
-					visible={showDialog}
-					title="Reset Bitkit?"
-					description="Are you sure you want to reset your Bitkit Wallet? Do you have a backup of your recovery phrase and wallet data?"
-					onCancel={() => setShowDialog(false)}
-					onConfirm={() => {
-						wipeWallet({});
-						setShowDialog(false);
-					}}
-				/>
+					<Dialog
+						visible={showDialog}
+						title="Reset Bitkit?"
+						description="Are you sure you want to reset your Bitkit Wallet? Do you have a backup of your recovery phrase and wallet data?"
+						onCancel={() => setShowDialog(false)}
+						onConfirm={() => {
+							wipeWallet({});
+							setShowDialog(false);
+						}}
+					/>
+				</>
 			</AuthCheck>
 		</SafeAreaView>
 	);
