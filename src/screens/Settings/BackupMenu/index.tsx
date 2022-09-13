@@ -1,5 +1,4 @@
 import React, { memo, ReactElement, useMemo } from 'react';
-import { Alert } from 'react-native';
 import { IListData } from '../../../components/List';
 import SettingsView from './../SettingsView';
 import { toggleView } from '../../../store/actions/user';
@@ -13,7 +12,7 @@ const BackupMenu = ({
 			{
 				data: [
 					{
-						title: 'Backup your money',
+						title: 'Back up your money',
 						type: 'button',
 						onPress: (): void => {
 							toggleView({
@@ -28,7 +27,7 @@ const BackupMenu = ({
 						hide: false,
 					},
 					{
-						title: 'Backup your data',
+						title: 'Back up your data',
 						type: 'button',
 						onPress: (): void => navigation.navigate('BackupData'),
 						enabled: true,
@@ -37,9 +36,7 @@ const BackupMenu = ({
 					{
 						title: 'Reset and restore wallet',
 						type: 'button',
-						onPress: (): void => {
-							Alert.alert('Coming soon', '', []);
-						},
+						onPress: (): void => navigation.navigate('ResetAndRestore'),
 						enabled: true,
 						hide: false,
 					},
@@ -51,7 +48,7 @@ const BackupMenu = ({
 
 	return (
 		<SettingsView
-			title={'Back Up Or Restore'}
+			title="Back Up Or Restore"
 			listData={SettingsListData}
 			showBackNavigation={true}
 		/>

@@ -32,6 +32,7 @@ import CloseConnection from '../../screens/Settings/Lightning/CloseChannel';
 import AddConnection from '../../screens/Settings/Lightning/AddConnection';
 import AddConnectionResult from '../../screens/Settings/Lightning/AddConnectionResult';
 import ExportToPhone from '../../screens/Settings/Backup/ExportToPhone';
+import ResetAndRestore from '../../screens/Settings/Backup/ResetAndRestore';
 import LightningNavigator, {
 	LightningStackParamList,
 } from '../lightning/LightningNavigator';
@@ -59,6 +60,7 @@ export type SettingsStackParamList = {
 	DevSettings: undefined;
 	BackupData: undefined;
 	ExportToPhone: undefined;
+	ResetAndRestore: undefined;
 	BitcoinNetworkSelection: undefined;
 	LightningNodeInfo: undefined;
 	ManageSeedPhrase: undefined;
@@ -116,6 +118,7 @@ const SettingsNavigator = (): ReactElement => {
 				<Stack.Screen name="DevSettings" component={DevSettings} />
 				<Stack.Screen name="BackupData" component={BackupData} />
 				<Stack.Screen name="ExportToPhone" component={ExportToPhone} />
+				<Stack.Screen name="ResetAndRestore" component={ResetAndRestore} />
 				<Stack.Screen
 					name="BitcoinNetworkSelection"
 					component={BitcoinNetworkSelection}

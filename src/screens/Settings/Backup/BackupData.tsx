@@ -98,7 +98,7 @@ const BackupData = ({ navigation }): ReactElement => {
 
 	return (
 		<SettingsView
-			title={'Back Up Data'}
+			title="Back Up Data"
 			listData={SettingsListData}
 			showBackNavigation={true}
 			childrenPosition={'bottom'}
