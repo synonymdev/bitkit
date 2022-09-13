@@ -25,6 +25,7 @@ import {
 } from '@shopify/react-native-skia';
 import { useSelector } from 'react-redux';
 import type { StackScreenProps } from '@react-navigation/stack';
+import Clipboard from '@react-native-clipboard/clipboard';
 
 import {
 	Caption13M,
@@ -43,6 +44,7 @@ import {
 } from '../../styles/components';
 import Button from '../../components/Button';
 import Money from '../../components/Money';
+import ContactSmall from '../../components/ContactSmall';
 import NavigationHeader from '../../components/NavigationHeader';
 import { EActivityTypes, IActivityItem } from '../../store/types/activity';
 import {
@@ -56,12 +58,15 @@ import Tag from '../../components/Tag';
 import useColors from '../../hooks/colors';
 import Store from '../../store/types';
 import { toggleView } from '../../store/actions/user';
-import { deleteMetaTxTag } from '../../store/actions/metadata';
+import {
+	deleteMetaTxTag,
+	deleteMetaSlashTagsUrlTag,
+} from '../../store/actions/metadata';
 import { getTransactions } from '../../utils/wallet/electrum';
 import { ITransaction, ITxHash } from '../../utils/wallet';
 import type { RootStackParamList } from '../../navigation/types';
-import Clipboard from '@react-native-clipboard/clipboard';
 import { showInfoNotification } from '../../utils/notifications';
+import ActivityTagsPrompt from './ActivityTagsPrompt';
 
 const Section = memo(
 	({ title, value }: { title: string; value: React.ReactNode }) => {
@@ -137,6 +142,9 @@ const ActivityDetail = (props: Props): ReactElement => {
 	} = item;
 	const tags =
 		useSelector((store: Store) => store.metadata.tags[item.id]) ?? [];
+	const slashTagsUrl = useSelector(
+		(store: Store) => store.metadata.slashTagsUrls[item.id],
+	);
 
 	const [size, setSize] = useState({ width: 0, height: 0 });
 	const [txDetails, setTxDetails] = useState<
@@ -148,6 +156,7 @@ const ActivityDetail = (props: Props): ReactElement => {
 
 	const colors = useColors();
 	const extended = props.route.params?.extended ?? false;
+	const { navigation } = props;
 
 	const showBoost = useMemo(() => {
 		if (confirmed) {
@@ -183,6 +192,14 @@ const ActivityDetail = (props: Props): ReactElement => {
 		if (res.isErr()) {
 			Alert.alert(res.error.message);
 		}
+	};
+
+	const handleAssign = (): void => {
+		navigation.navigate('ActivityAssignContact', { txid: id });
+	};
+
+	const handleDetach = (): void => {
+		deleteMetaSlashTagsUrlTag(id);
 	};
 
 	useEffect(() => {
@@ -356,8 +373,14 @@ const ActivityDetail = (props: Props): ReactElement => {
 
 				{!extended ? (
 					<>
-						{tags.length !== 0 && (
+						{(tags.length !== 0 || slashTagsUrl) && (
 							<View style={styles.sectionContainer}>
+								{slashTagsUrl && (
+									<Section
+										title="CONTACT"
+										value={<ContactSmall url={slashTagsUrl} />}
+									/>
+								)}
 								<Section
 									title="TAGS"
 									value={
@@ -395,12 +418,21 @@ const ActivityDetail = (props: Props): ReactElement => {
 
 						<View>
 							<View style={styles.sectionContainer}>
-								<Button
-									style={styles.button}
-									text="Assign"
-									icon={<UserPlusIcon height={16} width={16} color="brand" />}
-									onPress={(): void => Alert.alert('TODO')}
-								/>
+								{slashTagsUrl ? (
+									<Button
+										style={styles.button}
+										text="Detatch"
+										icon={<UserPlusIcon height={16} width={16} color="brand" />}
+										onPress={handleDetach}
+									/>
+								) : (
+									<Button
+										style={styles.button}
+										text="Assign"
+										icon={<UserPlusIcon height={16} width={16} color="brand" />}
+										onPress={handleAssign}
+									/>
+								)}
 								<Button
 									style={styles.button}
 									text="Tag"
@@ -483,6 +515,7 @@ const ActivityDetail = (props: Props): ReactElement => {
 
 				<SafeAreaInsets type="bottom" />
 			</ScrollView>
+			<ActivityTagsPrompt />
 		</SafeAreaView>
 	);
 };

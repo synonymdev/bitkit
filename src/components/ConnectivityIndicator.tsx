@@ -38,7 +38,6 @@ const ConnectivityIndicator = (): ReactElement => {
 const styles = StyleSheet.create({
 	container: {
 		minHeight: 88,
-		display: 'flex',
 		flexDirection: 'row',
 		alignItems: 'center',
 		borderBottomColor: 'rgba(255, 255, 255, 0.1)',

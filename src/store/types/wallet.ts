@@ -204,6 +204,7 @@ export interface IBitcoinTransactionData {
 	minFee?: number; // (sats) Used for RBF/CPFP transactions where the fee needs to be greater than the original.
 	max?: boolean; // If the user intends to send the max amount.
 	tags?: string[];
+	slashTagsUrl?: string;
 	lightningInvoice?: string;
 }
 

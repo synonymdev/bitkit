@@ -117,3 +117,28 @@ export const moveMetaIncTxTags = (): Result<string> => {
 
 	return ok('Metadata tags resynced with transactions.');
 };
+
+/*
+ * This action adds transaction SlashTagsURL
+ */
+export const addMetaSlashTagsUrlTag = (
+	txid: string,
+	slashTagsUrl: string,
+): Result<string> => {
+	dispatch({
+		type: actions.ADD_META_TX_SLASH_TAGS_URL,
+		payload: { txid, slashTagsUrl },
+	});
+	return ok('');
+};
+
+/*
+ * This action removes transaction SlashTagsURL
+ */
+export const deleteMetaSlashTagsUrlTag = (txid: string): Result<string> => {
+	dispatch({
+		type: actions.DELETE_META_TX_SLASH_TAGS_URL,
+		payload: { txid },
+	});
+	return ok('');
+};

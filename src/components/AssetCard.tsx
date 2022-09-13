@@ -49,7 +49,6 @@ const AssetCard = ({
 const styles = StyleSheet.create({
 	container: {
 		minHeight: 88,
-		display: 'flex',
 		justifyContent: 'space-between',
 		alignItems: 'center',
 		flexDirection: 'row',
@@ -57,13 +56,11 @@ const styles = StyleSheet.create({
 		borderBottomWidth: 1,
 	},
 	col1: {
-		display: 'flex',
 		justifyContent: 'space-between',
 		alignItems: 'center',
 		flexDirection: 'row',
 	},
 	col2: {
-		display: 'flex',
 		alignContent: 'flex-end',
 	},
 	titleContainer: {

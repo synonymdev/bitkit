@@ -228,7 +228,6 @@ const styles = StyleSheet.create({
 		paddingLeft: 20,
 		paddingRight: 20,
 		flex: 1,
-		display: 'flex',
 		flexDirection: 'column',
 		justifyContent: 'space-between',
 	},

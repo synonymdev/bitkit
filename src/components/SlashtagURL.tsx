@@ -40,7 +40,6 @@ export const SlashtagURL = ({
 
 const styles = StyleSheet.create({
 	button: {
-		display: 'flex',
 		flexDirection: 'row',
 	},
 	url: {

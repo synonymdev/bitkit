@@ -101,6 +101,27 @@ const metadata = (
 			};
 		}
 
+		case actions.ADD_META_TX_SLASH_TAGS_URL: {
+			return {
+				...state,
+				slashTagsUrls: {
+					...state.slashTagsUrls,
+					[action.payload.txid]: action.payload.slashTagsUrl,
+				},
+			};
+		}
+
+		case actions.DELETE_META_TX_SLASH_TAGS_URL: {
+			const slashTagsUrls = removeKeysFromObject(
+				state.slashTagsUrls,
+				action.payload.txid,
+			);
+			return {
+				...state,
+				slashTagsUrls,
+			};
+		}
+
 		case actions.RESET_META_STORE:
 			return defaultMetadataShape;
 

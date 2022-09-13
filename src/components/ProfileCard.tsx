@@ -111,11 +111,9 @@ export const ProfileCard = ({
 
 const styles = StyleSheet.create({
 	container: {
-		display: 'flex',
 		flexDirection: 'column',
 	},
 	row: {
-		display: 'flex',
 		flexDirection: 'row',
 		alignItems: 'flex-start',
 		justifyContent: 'space-between',
@@ -135,7 +133,6 @@ const styles = StyleSheet.create({
 		marginTop: 16,
 	},
 	editImageButton: {
-		display: 'flex',
 		alignItems: 'center',
 		justifyContent: 'center',
 	},
@@ -145,7 +142,6 @@ const styles = StyleSheet.create({
 		backgroundColor: 'rgba(0,0,0,.4)',
 		width: '100%',
 		height: '100%',
-		display: 'flex',
 		justifyContent: 'center',
 		alignItems: 'center',
 	},

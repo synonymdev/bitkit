@@ -16,7 +16,7 @@ import BlocktankOrder from '../../screens/Blocktank/OrderService';
 import BlocktankPayment from '../../screens/Blocktank/Payment';
 import ActivityDetail from '../../screens/Activity/ActivityDetail';
 import ActivityFiltered from '../../screens/Activity/ActivityFiltered';
-import ActivityTagsPrompt from '../../screens/Activity/ActivityTagsPrompt';
+import ActivityAssignContact from '../../screens/Activity/ActivityAssignContact';
 import ScannerScreen from '../../screens/Scanner/MainScanner';
 import WalletsDetail from '../../screens/Wallets/WalletsDetail';
 import SettingsNavigator from '../settings/SettingsNavigator';
@@ -103,6 +103,10 @@ const RootNavigator = (): ReactElement => {
 					<Stack.Screen name="BlocktankPayment" component={BlocktankPayment} />
 					<Stack.Screen name="ActivityDetail" component={ActivityDetail} />
 					<Stack.Screen name="ActivityFiltered" component={ActivityFiltered} />
+					<Stack.Screen
+						name="ActivityAssignContact"
+						component={ActivityAssignContact}
+					/>
 					<Stack.Screen name="Scanner" component={ScannerScreen} />
 					<Stack.Screen name="WalletsDetail" component={WalletsDetail} />
 					<Stack.Screen name="LightningRoot" component={LightningNavigator} />
@@ -124,7 +128,6 @@ const RootNavigator = (): ReactElement => {
 			<PINNavigation />
 			<PINPrompt />
 			<BoostPrompt />
-			<ActivityTagsPrompt />
 			<NewTxPrompt />
 		</NavigationContainer>
 	);

@@ -121,7 +121,6 @@ const styles = StyleSheet.create({
 	},
 	bottom: {
 		flex: 1,
-		display: 'flex',
 		flexDirection: 'column',
 	},
 	iconContainer: {
@@ -129,13 +128,11 @@ const styles = StyleSheet.create({
 		height: 48,
 		borderRadius: 9999,
 		backgroundColor: 'rgba(255, 255, 255, 0.08)',
-		display: 'flex',
 		alignItems: 'center',
 		justifyContent: 'center',
 		marginRight: 16,
 	},
 	bottomHeader: {
-		display: 'flex',
 		flexDirection: 'row',
 	},
 	profileDetails: {

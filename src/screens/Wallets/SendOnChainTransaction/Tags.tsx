@@ -75,7 +75,6 @@ const AddressAndAmount = ({ navigation }): ReactElement => {
 						{
 							backgroundColor: colors.white08,
 							color: colors.text,
-							borderColor: colors.text,
 						},
 					]}
 					placeholder="Enter a new tag"

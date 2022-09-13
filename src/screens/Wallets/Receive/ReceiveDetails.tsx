@@ -1,5 +1,5 @@
 import React, { ReactElement, memo, useCallback, useMemo } from 'react';
-import { StyleSheet, View, Image, Keyboard } from 'react-native';
+import { StyleSheet, View, Keyboard } from 'react-native';
 import { useSelector } from 'react-redux';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -13,7 +13,6 @@ import NavigationHeader from '../../../components/NavigationHeader';
 import AmountToggle from '../../../components/AmountToggle';
 import Button from '../../../components/Button';
 import Tag from '../../../components/Tag';
-import Glow from '../../../components/Glow';
 import Store from '../../../store/types';
 import {
 	updateInvoice,
@@ -89,7 +88,6 @@ const ReceiveDetails = ({ navigation }): ReactElement => {
 							{
 								backgroundColor: colors.white08,
 								color: colors.text,
-								borderColor: colors.text,
 							},
 						]}
 						onFocus={closeNumberPad}
@@ -128,13 +126,6 @@ const ReceiveDetails = ({ navigation }): ReactElement => {
 							Keyboard.dismiss();
 							navigation.navigate('Tags');
 						}}
-					/>
-				</View>
-				<View style={styles.imageContainer} pointerEvents="none">
-					<Glow style={styles.glow} size={300} color="white" />
-					<Image
-						style={styles.image}
-						source={require('../../../assets/illustrations/coins.png')}
 					/>
 				</View>
 				<View style={buttonContainer}>
@@ -188,23 +179,6 @@ const styles = StyleSheet.create({
 	},
 	button: {
 		marginRight: 8,
-	},
-	imageContainer: {
-		position: 'absolute',
-		bottom: 150,
-		justifyContent: 'center',
-		alignItems: 'center',
-		alignSelf: 'center',
-		height: 200,
-		width: 300,
-		zIndex: -1,
-	},
-	glow: {
-		position: 'absolute',
-	},
-	image: {
-		height: 300,
-		width: 300,
 	},
 	buttonContainer: {
 		flex: 1,

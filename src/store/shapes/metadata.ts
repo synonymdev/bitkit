@@ -4,4 +4,5 @@ export const defaultMetadataShape: IMetadata = {
 	tags: {},
 	pendingTags: {},
 	lastUsedTags: [],
+	slashTagsUrls: {},
 };

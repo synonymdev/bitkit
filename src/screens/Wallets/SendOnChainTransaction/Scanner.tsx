@@ -7,6 +7,7 @@ import Store from '../../../store/types';
 import NavigationHeader from '../../../components/NavigationHeader';
 import ScannerComponent from '../../Scanner/ScannerComponent';
 import { showErrorNotification } from '../../../utils/notifications';
+import { updateBitcoinTransaction } from '../../../store/actions/wallet';
 
 const ScannerScreen = ({ navigation }): ReactElement => {
 	const selectedNetwork = useSelector(
@@ -25,6 +26,14 @@ const ScannerScreen = ({ navigation }): ReactElement => {
 			return;
 		}
 		navigation.pop();
+		// remove slashtagsurl on scan
+		await updateBitcoinTransaction({
+			selectedWallet,
+			selectedNetwork,
+			transaction: {
+				slashTagsUrl: undefined,
+			},
+		});
 		processInputData({
 			data,
 			selectedNetwork,

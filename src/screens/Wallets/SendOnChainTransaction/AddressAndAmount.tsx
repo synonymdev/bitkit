@@ -19,7 +19,6 @@ import Clipboard from '@react-native-clipboard/clipboard';
 import { validate } from 'bitcoin-address-validation';
 
 import {
-	BottomSheetTextInput,
 	Caption13Up,
 	ClipboardTextIcon,
 	ScanIcon,
@@ -44,7 +43,6 @@ import {
 	showInfoNotification,
 } from '../../../utils/notifications';
 import { useTransactionDetails } from '../../../hooks/transaction';
-import useColors from '../../../hooks/colors';
 import { updateOnchainFeeEstimates } from '../../../store/actions/fees';
 import { toggleView } from '../../../store/actions/user';
 import {
@@ -54,12 +52,12 @@ import {
 import { TInvoice } from '@synonymdev/react-native-ldk';
 import { processInputData } from '../../../utils/scanner';
 import { useBottomSheetBackPress } from '../../../hooks/bottomSheet';
+import AddressOrSlashpay from './AddressOrSlashpay';
 
 const AddressAndAmount = ({ index = 0, navigation }): ReactElement => {
 	useBottomSheetBackPress('sendNavigation');
 
 	const insets = useSafeAreaInsets();
-	const colors = useColors();
 	const nextButtonContainer = useMemo(
 		() => ({
 			...styles.nextButtonContainer,
@@ -196,6 +194,14 @@ const AddressAndAmount = ({ index = 0, navigation }): ReactElement => {
 			});
 			return;
 		}
+		// remove slashtagsurl on paste
+		await updateBitcoinTransaction({
+			selectedWallet,
+			selectedNetwork,
+			transaction: {
+				slashTagsUrl: undefined,
+			},
+		});
 		const result = await processInputData({
 			data: clipboardData,
 			selectedNetwork,
@@ -215,6 +221,10 @@ const AddressAndAmount = ({ index = 0, navigation }): ReactElement => {
 
 	const handleScan = useCallback(async () => {
 		navigation.navigate('Scanner');
+	}, [navigation]);
+
+	const handleSendToContact = useCallback(async () => {
+		navigation.navigate('Contacts');
 	}, [navigation]);
 
 	const handleTagRemove = useCallback(
@@ -328,41 +338,25 @@ const AddressAndAmount = ({ index = 0, navigation }): ReactElement => {
 				<Caption13Up color="gray1" style={styles.section}>
 					TO
 				</Caption13Up>
-				<View style={styles.inputWrapper}>
-					<BottomSheetTextInput
-						style={[
-							styles.input,
-							{
-								backgroundColor: colors.white08,
-								color: colors.text,
-								borderColor: colors.text,
-							},
-						]}
-						onFocus={closeNumberPad}
-						selectTextOnFocus={true}
-						multiline={true}
-						placeholder="Paste or scan an address, invoice or select a contact"
-						autoCapitalize="none"
-						autoCorrect={false}
-						onBlur={onBlur}
-						onChangeText={onChangeText}
-						value={lightningInvoice || address}
-						blurOnSubmit={true}
-					/>
-					<View style={styles.inputActions}>
-						<TouchableOpacity style={styles.inputAction} onPress={handleScan}>
-							<ScanIcon color="brand" width={24} />
-						</TouchableOpacity>
-						<TouchableOpacity style={styles.inputAction} onPress={handlePaste}>
-							<ClipboardTextIcon color="brand" width={24} />
-						</TouchableOpacity>
-						<TouchableOpacity
-							style={styles.inputAction}
-							onPress={(): void => Alert.alert('TODO')}>
-							<UserIcon color="brand" width={24} />
-						</TouchableOpacity>
-					</View>
-				</View>
+				<AddressOrSlashpay
+					style={styles.inputWrapper}
+					slashTagsUrl={transaction?.slashTagsUrl}
+					onBlur={onBlur}
+					onChangeText={onChangeText}
+					onFocus={closeNumberPad}
+					value={lightningInvoice || address}>
+					<TouchableOpacity style={styles.inputAction} onPress={handleScan}>
+						<ScanIcon color="brand" width={24} />
+					</TouchableOpacity>
+					<TouchableOpacity style={styles.inputAction} onPress={handlePaste}>
+						<ClipboardTextIcon color="brand" width={24} />
+					</TouchableOpacity>
+					<TouchableOpacity
+						style={styles.inputAction}
+						onPress={handleSendToContact}>
+						<UserIcon color="brand" width={24} />
+					</TouchableOpacity>
+				</AddressOrSlashpay>
 				<Caption13Up color="gray1" style={styles.section}>
 					TAGS
 				</Caption13Up>
@@ -426,25 +420,6 @@ const styles = StyleSheet.create({
 	},
 	inputWrapper: {
 		marginBottom: 16,
-		position: 'relative',
-	},
-	input: {
-		padding: 16,
-		paddingTop: 16,
-		paddingRight: 130,
-		borderRadius: 8,
-		fontSize: 15,
-		fontWeight: '600',
-		minHeight: 70,
-		maxHeight: 100,
-	},
-	inputActions: {
-		position: 'absolute',
-		top: 0,
-		bottom: 0,
-		right: 0,
-		flexDirection: 'row',
-		marginRight: 8,
 	},
 	inputAction: {
 		paddingHorizontal: 8,

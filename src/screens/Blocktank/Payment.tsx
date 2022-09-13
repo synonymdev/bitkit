@@ -240,7 +240,6 @@ const styles = StyleSheet.create({
 		flex: 1,
 		paddingRight: 20,
 		paddingLeft: 20,
-		display: 'flex',
 	},
 	feeHeading: {
 		marginTop: 20,

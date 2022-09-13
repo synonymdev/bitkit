@@ -9,6 +9,7 @@ import React, {
 import { StyleSheet, View, TouchableOpacity, Alert } from 'react-native';
 import { useSelector } from 'react-redux';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { TInvoice } from '@synonymdev/react-native-ldk';
 
 import {
 	Caption13Up,
@@ -23,6 +24,7 @@ import NavigationHeader from '../../../components/NavigationHeader';
 import SwipeToConfirm from '../../../components/SwipeToConfirm';
 import AmountToggle from '../../../components/AmountToggle';
 import Tag from '../../../components/Tag';
+import ContactSmall from '../../../components/ContactSmall';
 import Store from '../../../store/types';
 import { IOutput } from '../../../store/types/wallet';
 import { useTransactionDetails } from '../../../hooks/transaction';
@@ -37,7 +39,10 @@ import {
 	updateWalletBalance,
 	setupFeeForOnChainTransaction,
 } from '../../../store/actions/wallet';
-import { updateMetaTxTags } from '../../../store/actions/metadata';
+import {
+	updateMetaTxTags,
+	addMetaSlashTagsUrlTag,
+} from '../../../store/actions/metadata';
 import useColors from '../../../hooks/colors';
 import useDisplayValues from '../../../hooks/displayValues';
 import { FeeText } from '../../../store/shapes/fees';
@@ -49,7 +54,6 @@ import {
 	payLightningInvoice,
 } from '../../../utils/lightning';
 import { refreshWallet } from '../../../utils/wallet';
-import { TInvoice } from '@synonymdev/react-native-ldk';
 
 const Section = memo(
 	({
@@ -250,6 +254,13 @@ const ReviewAndSend = ({ navigation, index = 0 }): ReactElement => {
 
 		// save tags to metadata
 		updateMetaTxTags(transaction.lightningInvoice, transaction?.tags);
+		// save Slashtags contact to metadata
+		if (transaction?.slashTagsUrl) {
+			addMetaSlashTagsUrlTag(
+				transaction.lightningInvoice,
+				transaction?.slashTagsUrl,
+			);
+		}
 		refreshWallet({ onchain: false, lightning: true }).then();
 		navigation.navigate('Result', { success: true });
 		setIsLoading(false);
@@ -323,6 +334,10 @@ const ReviewAndSend = ({ navigation, index = 0 }): ReactElement => {
 
 		// save tags to metadata
 		updateMetaTxTags(rawTx?.id, transaction?.tags);
+		// save Slashtags contact to metadata
+		if (transaction?.slashTagsUrl) {
+			addMetaSlashTagsUrlTag(rawTx?.id, transaction.slashTagsUrl);
+		}
 
 		navigation.navigate('Result', { success: true });
 		setIsLoading(false);
@@ -389,11 +404,15 @@ const ReviewAndSend = ({ navigation, index = 0 }): ReactElement => {
 					<Section
 						title="TO"
 						value={
-							<Text02M numberOfLines={1} ellipsizeMode="middle">
-								{decodedInvoice
-									? decodedInvoice?.description ?? decodedInvoice?.to_str
-									: address}
-							</Text02M>
+							transaction?.slashTagsUrl ? (
+								<ContactSmall url={transaction?.slashTagsUrl} />
+							) : (
+								<Text02M numberOfLines={1} ellipsizeMode="middle">
+									{decodedInvoice
+										? decodedInvoice?.description ?? decodedInvoice?.to_str
+										: address}
+								</Text02M>
+							)
 						}
 					/>
 				</View>

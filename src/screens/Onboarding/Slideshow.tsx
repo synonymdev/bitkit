@@ -79,6 +79,7 @@ const Slideshow = ({ navigation, route }: Props): ReactElement => {
 		() => [
 			{
 				topLeftColor: colors.brand,
+
 				slide: (): ReactElement => (
 					<View style={styles.slide}>
 						<View style={styles.imageContainer}>
@@ -104,6 +105,7 @@ const Slideshow = ({ navigation, route }: Props): ReactElement => {
 
 			{
 				topLeftColor: colors.purple,
+
 				slide: (): ReactElement => (
 					<View style={styles.slide}>
 						<View style={styles.imageContainer}>
@@ -129,6 +131,7 @@ const Slideshow = ({ navigation, route }: Props): ReactElement => {
 
 			{
 				topLeftColor: colors.blue,
+
 				slide: (): ReactElement => (
 					<View style={styles.slide}>
 						<View style={styles.imageContainer}>
@@ -154,6 +157,7 @@ const Slideshow = ({ navigation, route }: Props): ReactElement => {
 
 			{
 				topLeftColor: colors.brand,
+
 				slide: (): ReactElement => (
 					<View style={styles.slide}>
 						<View style={styles.imageContainer}>

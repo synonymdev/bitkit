@@ -115,10 +115,8 @@ const styles = StyleSheet.create({
 	},
 	middleRow: {
 		flex: 1,
-		display: 'flex',
 	},
 	bottomRow: {
-		display: 'flex',
 		flexDirection: 'row',
 		justifyContent: 'space-between',
 		backgroundColor: 'transparent',

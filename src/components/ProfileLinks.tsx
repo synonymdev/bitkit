@@ -55,9 +55,7 @@ const ProfileLinks = ({
 };
 
 const styles = StyleSheet.create({
-	linksViewContainer: {
-		display: 'flex',
-	},
+	linksViewContainer: {},
 	linksViewNote: {
 		opacity: 0.5,
 	},
