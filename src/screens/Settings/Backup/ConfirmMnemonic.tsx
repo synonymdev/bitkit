@@ -7,9 +7,9 @@ import {
 	Text01S,
 	Text01M,
 } from '../../../styles/components';
-import NavigationHeader from '../../../components/NavigationHeader';
 import Button from '../../../components/Button';
 import { shuffleArray } from '../../../utils/helpers';
+import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
 
 const Word = ({
 	number,
@@ -38,7 +38,7 @@ const ConfirmMnemonic = ({ navigation, route }): ReactElement => {
 	const nextButtonContainer = useMemo(
 		() => ({
 			...styles.nextButtonContainer,
-			paddingBottom: insets.bottom + 10,
+			paddingBottom: insets.bottom + 16,
 		}),
 		[insets.bottom],
 	);
@@ -81,11 +81,11 @@ const ConfirmMnemonic = ({ navigation, route }): ReactElement => {
 		});
 	};
 
-	const disabled = seed.some((v, i) => origSeed[i] !== v);
+	const showButton = seed.some((v, i) => origSeed[i] !== v);
 
 	return (
 		<ThemedView color="onSurface" style={styles.container}>
-			<NavigationHeader title="Confirm Recovery Phrase" size="sm" />
+			<BottomSheetNavigationHeader title="Confirm Recovery Phrase" />
 
 			<Text01S color="gray1" style={styles.text}>
 				Tap the 12 words in the correct order.
@@ -124,12 +124,13 @@ const ConfirmMnemonic = ({ navigation, route }): ReactElement => {
 			</View>
 
 			<View style={nextButtonContainer}>
-				<Button
-					size="lg"
-					text="Next"
-					disabled={disabled}
-					onPress={(): void => navigation.navigate('Result')}
-				/>
+				{!showButton && (
+					<Button
+						size="lg"
+						text="Next"
+						onPress={(): void => navigation.navigate('Result')}
+					/>
+				)}
 			</View>
 		</ThemedView>
 	);
@@ -143,14 +144,16 @@ const styles = StyleSheet.create({
 		paddingHorizontal: 32,
 	},
 	buttons: {
-		marginTop: 32,
+		marginTop: 41,
+		paddingLeft: 32,
+		paddingRight: 28,
 		flexDirection: 'row',
 		flexWrap: 'wrap',
 		justifyContent: 'flex-start',
 	},
 	button: {
-		marginHorizontal: 4,
-		marginBottom: 5,
+		marginRight: 4,
+		marginTop: 5,
 		minWidth: 50,
 	},
 	seedContainer: {
@@ -163,11 +166,9 @@ const styles = StyleSheet.create({
 		flex: 1,
 	},
 	nextButtonContainer: {
-		width: '100%',
-		minHeight: 100,
-		flex: 1,
-		justifyContent: 'flex-end',
+		marginTop: 'auto',
 		paddingHorizontal: 32,
+		width: '100%',
 	},
 	word: {
 		marginBottom: 8,

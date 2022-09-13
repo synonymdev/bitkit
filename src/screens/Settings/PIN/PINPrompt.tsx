@@ -1,15 +1,27 @@
 import React, { memo, ReactElement, useMemo } from 'react';
 import { StyleSheet, Image, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { Subtitle, Text01S } from '../../../styles/components';
+import { Text01S } from '../../../styles/components';
 import BottomSheetWrapper from '../../../components/BottomSheetWrapper';
 import Glow from '../../../components/Glow';
 import Button from '../../../components/Button';
 import { toggleView } from '../../../store/actions/user';
 import { useBottomSheetBackPress } from '../../../hooks/bottomSheet';
+import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
+
+const imageSrc = require('../../../assets/illustrations/shield.png');
 
 const PINPrompt = (): ReactElement => {
-	const snapPoints = useMemo(() => [450], []);
+	const snapPoints = useMemo(() => [600], []);
+	const insets = useSafeAreaInsets();
+	const buttonContainerStyles = useMemo(
+		() => ({
+			...styles.buttonContainer,
+			paddingBottom: insets.bottom + 16,
+		}),
+		[insets.bottom],
+	);
 
 	useBottomSheetBackPress('PINPrompt');
 
@@ -37,20 +49,20 @@ const PINPrompt = (): ReactElement => {
 			backdrop={true}
 			onClose={handleLater}
 			view="PINPrompt">
-			<View style={styles.root}>
-				<Subtitle style={styles.title}>Increase security</Subtitle>
+			<View style={styles.container}>
+				<BottomSheetNavigationHeader
+					title="Increase Security"
+					displayBackButton={false}
+				/>
 				<Text01S color="white5">
-					To increase wallet security, you can set up a PIN code and Face ID.
+					To increase wallet security, you can set up a PIN code and Face ID to
+					unlock your wallet.
 				</Text01S>
 				<View style={styles.imageContainer}>
-					<Glow color="green" size={500} style={styles.glow} />
-					<Image
-						style={styles.image}
-						resizeMode="contain"
-						source={require('../../../assets/illustrations/shield.png')}
-					/>
+					<Glow color="green" style={styles.glow} />
+					<Image style={styles.image} resizeMode="contain" source={imageSrc} />
 				</View>
-				<View style={styles.buttons}>
+				<View style={buttonContainerStyles}>
 					<Button
 						style={styles.button}
 						size="lg"
@@ -72,20 +84,16 @@ const PINPrompt = (): ReactElement => {
 };
 
 const styles = StyleSheet.create({
-	root: {
-		alignItems: 'center',
+	container: {
 		flex: 1,
+		alignItems: 'center',
 		paddingHorizontal: 32,
 	},
-	title: {
-		marginBottom: 25,
-	},
 	imageContainer: {
+		flex: 1,
 		position: 'relative',
 		alignItems: 'center',
 		justifyContent: 'center',
-		height: 210,
-		width: 210,
 	},
 	image: {
 		width: 150,
@@ -94,7 +102,8 @@ const styles = StyleSheet.create({
 	glow: {
 		position: 'absolute',
 	},
-	buttons: {
+	buttonContainer: {
+		marginTop: 'auto',
 		flexDirection: 'row',
 		justifyContent: 'center',
 	},
@@ -102,7 +111,7 @@ const styles = StyleSheet.create({
 		flex: 1,
 	},
 	divider: {
-		flex: 0.3,
+		width: 16,
 	},
 });
 

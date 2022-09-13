@@ -9,7 +9,7 @@ import {
 	TagIcon,
 	View as ThemedView,
 } from '../../../styles/components';
-import NavigationHeader from '../../../components/NavigationHeader';
+import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
 import AmountToggle from '../../../components/AmountToggle';
 import Button from '../../../components/Button';
 import Tag from '../../../components/Tag';
@@ -22,6 +22,8 @@ import {
 import useColors from '../../../hooks/colors';
 import { toggleView } from '../../../store/actions/user';
 
+const imageSrc = require('../../../assets/illustrations/coins.png');
+
 const ReceiveDetails = ({ navigation }): ReactElement => {
 	const insets = useSafeAreaInsets();
 	const invoice = useSelector((store: Store) => store.receive);
@@ -29,10 +31,10 @@ const ReceiveDetails = ({ navigation }): ReactElement => {
 		(store: Store) => store.user.viewController?.numberPadReceive.isOpen,
 	);
 	const colors = useColors();
-	const buttonContainer = useMemo(
+	const buttonContainerStyles = useMemo(
 		() => ({
 			...styles.buttonContainer,
-			paddingBottom: insets.bottom + 10,
+			paddingBottom: insets.bottom + 16,
 		}),
 		[insets.bottom],
 	);
@@ -66,9 +68,8 @@ const ReceiveDetails = ({ navigation }): ReactElement => {
 
 	return (
 		<ThemedView color="onSurface" style={styles.container}>
-			<NavigationHeader
+			<BottomSheetNavigationHeader
 				title="Specify Invoice"
-				size="sm"
 				displayBackButton={false}
 			/>
 			<View style={styles.content}>
@@ -132,12 +133,9 @@ const ReceiveDetails = ({ navigation }): ReactElement => {
 				</View>
 				<View style={styles.imageContainer} pointerEvents="none">
 					<Glow style={styles.glow} size={300} color="white" />
-					<Image
-						style={styles.image}
-						source={require('../../../assets/illustrations/coins.png')}
-					/>
+					<Image style={styles.image} source={imageSrc} />
 				</View>
-				<View style={buttonContainer}>
+				<View style={buttonContainerStyles}>
 					<Button
 						size="lg"
 						text="Show QR Code"
@@ -156,7 +154,6 @@ const styles = StyleSheet.create({
 	content: {
 		flex: 1,
 		paddingHorizontal: 16,
-		marginTop: 16,
 	},
 	amountToggle: {
 		marginBottom: 32,
@@ -207,9 +204,7 @@ const styles = StyleSheet.create({
 		width: 300,
 	},
 	buttonContainer: {
-		flex: 1,
-		justifyContent: 'flex-end',
-		minHeight: 100,
+		marginTop: 'auto',
 	},
 });
 

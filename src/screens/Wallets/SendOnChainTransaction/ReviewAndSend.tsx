@@ -19,7 +19,7 @@ import {
 	TimerIcon,
 	View as ThemedView,
 } from '../../../styles/components';
-import NavigationHeader from '../../../components/NavigationHeader';
+import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
 import SwipeToConfirm from '../../../components/SwipeToConfirm';
 import AmountToggle from '../../../components/AmountToggle';
 import Tag from '../../../components/Tag';
@@ -85,7 +85,7 @@ const ReviewAndSend = ({ navigation, index = 0 }): ReactElement => {
 	const nextButtonContainer = useMemo(
 		() => ({
 			...styles.nextButtonContainer,
-			paddingBottom: insets.bottom + 10,
+			paddingBottom: insets.bottom + 16,
 		}),
 		[insets.bottom],
 	);
@@ -376,12 +376,12 @@ const ReviewAndSend = ({ navigation, index = 0 }): ReactElement => {
 
 	let feeAmount =
 		totalFeeDisplay.fiatFormatted !== '—'
-			? `(${totalFeeDisplay.fiatSymbol} ${totalFeeDisplay.fiatFormatted})`
+			? ` (${totalFeeDisplay.fiatSymbol} ${totalFeeDisplay.fiatFormatted})`
 			: '';
 
 	return (
 		<ThemedView color="onSurface" style={styles.container}>
-			<NavigationHeader title="Review & Send" size="sm" />
+			<BottomSheetNavigationHeader title="Review & Send" />
 			<View style={styles.content}>
 				<AmountToggle sats={amount} style={styles.amountToggle} />
 
@@ -464,12 +464,7 @@ const styles = StyleSheet.create({
 		paddingHorizontal: 16,
 	},
 	amountToggle: {
-		marginTop: 10,
 		marginBottom: 32,
-	},
-	nextButtonContainer: {
-		flex: 1,
-		justifyContent: 'flex-end',
 	},
 	sectionContainer: {
 		marginHorizontal: -4,
@@ -499,6 +494,9 @@ const styles = StyleSheet.create({
 	tag: {
 		marginRight: 8,
 		marginBottom: 8,
+	},
+	nextButtonContainer: {
+		marginTop: 'auto',
 	},
 });
 

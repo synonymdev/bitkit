@@ -8,7 +8,7 @@ import {
 	Subtitle,
 	Text01S,
 } from '../../../styles/components';
-import NavigationHeader from '../../../components/NavigationHeader';
+import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
 import Button from '../../../components/Button';
 import Glow from '../../../components/Glow';
 import { toggleView } from '../../../store/actions/user';
@@ -19,7 +19,7 @@ const Result = ({ navigation, route }): ReactElement => {
 	const nextButtonContainer = useMemo(
 		() => ({
 			...styles.nextButtonContainer,
-			paddingBottom: insets.bottom + 10,
+			paddingBottom: insets.bottom + 16,
 		}),
 		[insets.bottom],
 	);
@@ -51,9 +51,12 @@ const Result = ({ navigation, route }): ReactElement => {
 				/>
 			)}
 			{success ? (
-				<Subtitle>Bitcoin sent</Subtitle>
+				<BottomSheetNavigationHeader
+					title="Bitcoin Sent"
+					displayBackButton={false}
+				/>
 			) : (
-				<NavigationHeader title="Transaction failed" size="sm" />
+				<BottomSheetNavigationHeader title="Transaction Failed" />
 			)}
 
 			<View style={styles.error}>
@@ -88,8 +91,6 @@ const Result = ({ navigation, route }): ReactElement => {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		justifyContent: 'space-between',
-		alignItems: 'center',
 	},
 	error: {
 		marginHorizontal: 32,
@@ -98,9 +99,8 @@ const styles = StyleSheet.create({
 		marginBottom: 8,
 	},
 	imageContainer: {
+		flex: 1,
 		position: 'relative',
-		height: 300,
-		width: 300,
 		justifyContent: 'center',
 		alignItems: 'center',
 	},
@@ -112,9 +112,9 @@ const styles = StyleSheet.create({
 		position: 'absolute',
 	},
 	nextButtonContainer: {
-		width: '100%',
+		marginTop: 'auto',
 		paddingHorizontal: 16,
-		minHeight: 100,
+		width: '100%',
 	},
 });
 

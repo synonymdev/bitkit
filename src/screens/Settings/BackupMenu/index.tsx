@@ -1,10 +1,13 @@
 import React, { memo, ReactElement, useMemo } from 'react';
+import { Alert } from 'react-native';
 import { IListData } from '../../../components/List';
 import SettingsView from './../SettingsView';
 import { toggleView } from '../../../store/actions/user';
-import { Alert } from 'react-native';
+import { SettingsScreenProps } from '../../../navigation/types';
 
-const BackupMenu = ({ navigation }): ReactElement => {
+const BackupMenu = ({
+	navigation,
+}: SettingsScreenProps<'BackupMenu'>): ReactElement => {
 	const SettingsListData: IListData[] = useMemo(
 		() => [
 			{
@@ -12,7 +15,7 @@ const BackupMenu = ({ navigation }): ReactElement => {
 					{
 						title: 'Backup your money',
 						type: 'button',
-						onPress: async (): Promise<void> => {
+						onPress: (): void => {
 							toggleView({
 								view: 'backupPrompt',
 								data: { isOpen: false },

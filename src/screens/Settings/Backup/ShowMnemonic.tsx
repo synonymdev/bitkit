@@ -8,11 +8,11 @@ import {
 	Text01M,
 	Text02S,
 } from '../../../styles/components';
-import NavigationHeader from '../../../components/NavigationHeader';
 import Button from '../../../components/Button';
 import BlurView from '../../../components/BlurView';
 import { getMnemonicPhrase } from '../../../utils/wallet';
 import { useBottomSheetBackPress } from '../../../hooks/bottomSheet';
+import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
 
 const Word = ({
 	number,
@@ -36,7 +36,7 @@ const ShowMnemonic = ({ navigation }): ReactElement => {
 	const nextButtonContainer = useMemo(
 		() => ({
 			...styles.nextButtonContainer,
-			paddingBottom: insets.bottom + 10,
+			paddingBottom: insets.bottom + 16,
 		}),
 		[insets.bottom],
 	);
@@ -54,9 +54,8 @@ const ShowMnemonic = ({ navigation }): ReactElement => {
 
 	return (
 		<ThemedView color="onSurface" style={styles.container}>
-			<NavigationHeader
+			<BottomSheetNavigationHeader
 				title="Your Recovery Phrase"
-				size="sm"
 				displayBackButton={false}
 			/>
 
@@ -78,6 +77,7 @@ const ShowMnemonic = ({ navigation }): ReactElement => {
 						))}
 					</View>
 				</ThemedView>
+
 				{!show && (
 					<BlurView style={styles.blur}>
 						<Button
@@ -97,12 +97,15 @@ const ShowMnemonic = ({ navigation }): ReactElement => {
 			</Text02S>
 
 			<View style={nextButtonContainer}>
-				<Button
-					size="lg"
-					text="Next"
-					disabled={!show}
-					onPress={(): void => navigation.navigate('ConfirmMnemonic', { seed })}
-				/>
+				{show && (
+					<Button
+						size="lg"
+						text="Next"
+						onPress={(): void =>
+							navigation.navigate('ConfirmMnemonic', { seed })
+						}
+					/>
+				)}
 			</View>
 		</ThemedView>
 	);
@@ -139,10 +142,8 @@ const styles = StyleSheet.create({
 		borderRadius: 10,
 	},
 	nextButtonContainer: {
+		marginTop: 'auto',
 		width: '100%',
-		minHeight: 100,
-		flex: 1,
-		justifyContent: 'flex-end',
 	},
 	word: {
 		marginBottom: 8,

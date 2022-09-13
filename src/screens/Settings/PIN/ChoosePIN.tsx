@@ -13,7 +13,7 @@ import {
 	Text01S,
 	Text02S,
 } from '../../../styles/components';
-import NavigationHeader from '../../../components/NavigationHeader';
+import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
 import NumberPad from '../../../components/NumberPad';
 import useColors from '../../../hooks/colors';
 import { vibrate, setKeychainValue } from '../../../utils/helpers';
@@ -70,9 +70,8 @@ const ChoosePIN = ({ navigation, route }): ReactElement => {
 
 	return (
 		<ThemedView color="onSurface" style={styles.container}>
-			<NavigationHeader
-				title={origPIN ? 'Retype 4-digit PIN' : 'Choose 4-digit PIN'}
-				size="sm"
+			<BottomSheetNavigationHeader
+				title={origPIN ? 'Retype 4-Digit PIN' : 'Choose 4-Digit PIN'}
 				displayBackButton={origPIN ? true : false}
 			/>
 
@@ -124,16 +123,15 @@ const ChoosePIN = ({ navigation, route }): ReactElement => {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		justifyContent: 'space-between',
 	},
 	text: {
-		marginTop: 10,
 		paddingHorizontal: 32,
 	},
 	tryAgain: {
 		flexDirection: 'row',
 		justifyContent: 'center',
-		marginVertical: 16,
+		marginTop: 'auto',
+		marginBottom: 16,
 	},
 	dots: {
 		flexDirection: 'row',

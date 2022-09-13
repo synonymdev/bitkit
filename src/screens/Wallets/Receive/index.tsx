@@ -34,7 +34,7 @@ import { updateMetaIncTxTags } from '../../../store/actions/metadata';
 import { getReceiveAddress } from '../../../utils/wallet';
 import { getUnifiedUri } from '../../../utils/receive';
 import { createLightningInvoice } from '../../../utils/lightning';
-import NavigationHeader from '../../../components/NavigationHeader';
+import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
 import Button from '../../../components/Button';
 import Tooltip from '../../../components/Tooltip';
 import { generateNewReceiveAddress } from '../../../store/actions/wallet';
@@ -53,8 +53,16 @@ const QrIcon = (): ReactElement => {
 };
 
 const Receive = ({ navigation }): ReactElement => {
-	const insets = useSafeAreaInsets();
 	const dimensions = useWindowDimensions();
+	const insets = useSafeAreaInsets();
+	const buttonContainerStyles = useMemo(
+		() => ({
+			...styles.buttonContainer,
+			paddingBottom: insets.bottom + 16,
+		}),
+		[insets.bottom],
+	);
+
 	const { amount, message, tags } = useSelector(
 		(store: Store) => store.receive,
 	);
@@ -133,14 +141,6 @@ const Receive = ({ navigation }): ReactElement => {
 		setLoading(false);
 	}, [getAddress, getLightningInvoice, loading]);
 
-	const buttonContainer = useMemo(
-		() => ({
-			...styles.buttonContainer,
-			paddingBottom: insets.bottom + 10,
-		}),
-		[insets.bottom],
-	);
-
 	useEffect(() => {
 		resetInvoice();
 	}, []);
@@ -202,10 +202,9 @@ const Receive = ({ navigation }): ReactElement => {
 
 	return (
 		<ThemedView color="onSurface" style={styles.container}>
-			<NavigationHeader
-				displayBackButton={false}
+			<BottomSheetNavigationHeader
 				title="Receive Bitcoin"
-				size="sm"
+				displayBackButton={false}
 			/>
 			<View style={styles.qrCodeContainer}>
 				{loading && (
@@ -259,7 +258,7 @@ const Receive = ({ navigation }): ReactElement => {
 					onPress={handleShare}
 				/>
 			</View>
-			<View style={buttonContainer}>
+			<View style={buttonContainerStyles}>
 				<Button
 					size="lg"
 					text="Specify Invoice"
@@ -277,7 +276,7 @@ const styles = StyleSheet.create({
 	},
 	qrCodeContainer: {
 		alignItems: 'center',
-		marginVertical: 32,
+		marginBottom: 32,
 	},
 	qrCode: {
 		borderRadius: 10,
@@ -307,9 +306,7 @@ const styles = StyleSheet.create({
 		width: 16,
 	},
 	buttonContainer: {
-		flex: 1,
-		justifyContent: 'flex-end',
-		minHeight: 100,
+		marginTop: 'auto',
 	},
 	loading: {
 		justifyContent: 'center',

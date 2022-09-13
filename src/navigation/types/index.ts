@@ -12,7 +12,9 @@ import type { IService, IGetOrderResponse } from '@synonymdev/blocktank-client';
 import type { IActivityItem } from '../../store/types/activity';
 import type { TAssetType } from '../../store/types/wallet';
 import type { LightningStackParamList } from '../lightning/LightningNavigator';
-import { SettingsStackParamList } from '../settings/SettingsNavigator';
+import type { SettingsStackParamList } from '../settings/SettingsNavigator';
+import type { PinStackParamList } from '../bottom-sheet/PINNavigation';
+import type { BackupStackParamList } from '../bottom-sheet/BackupNavigation';
 
 // TODO: move all navigation related types here
 // https://reactnavigation.org/docs/typescript#organizing-types
@@ -46,9 +48,11 @@ export type RootStackParamList = {
 	Contact: undefined;
 };
 
+// Root Stack Navigator
 export type RootStackScreenProps<T extends keyof RootStackParamList> =
 	StackScreenProps<RootStackParamList, T>;
 
+// Nested Stack Navigators
 export type LightningScreenProps<T extends keyof LightningStackParamList> =
 	CompositeScreenProps<
 		NativeStackScreenProps<LightningStackParamList, T>,
@@ -60,3 +64,10 @@ export type SettingsScreenProps<T extends keyof SettingsStackParamList> =
 		NativeStackScreenProps<SettingsStackParamList, T>,
 		RootStackScreenProps<keyof RootStackParamList>
 	>;
+
+// BottomSheet Navigators
+export type PinScreenProps<T extends keyof PinStackParamList> =
+	StackScreenProps<PinStackParamList, T>;
+
+export type BackupScreenProps<T extends keyof BackupStackParamList> =
+	StackScreenProps<BackupStackParamList, T>;

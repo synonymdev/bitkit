@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { Caption13Up, View as ThemedView } from '../../../styles/components';
-import NavigationHeader from '../../../components/NavigationHeader';
+import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
 import Button from '../../../components/Button';
 import Store from '../../../store/types';
 import { EFeeIds } from '../../../store/types/fees';
@@ -22,7 +22,7 @@ const FeeRate = ({ navigation }): ReactElement => {
 	const nextButtonContainer = useMemo(
 		() => ({
 			...styles.nextButtonContainer,
-			paddingBottom: insets.bottom + 10,
+			paddingBottom: insets.bottom + 16,
 		}),
 		[insets.bottom],
 	);
@@ -136,7 +136,7 @@ const FeeRate = ({ navigation }): ReactElement => {
 
 	return (
 		<ThemedView color="onSurface" style={styles.container}>
-			<NavigationHeader title="Speed" size="sm" />
+			<BottomSheetNavigationHeader title="Speed" />
 			<View style={styles.content}>
 				<Caption13Up color="gray1" style={styles.title}>
 					SPEED AND FEE
@@ -209,17 +209,14 @@ const styles = StyleSheet.create({
 	},
 	content: {
 		flex: 1,
-		marginTop: 20,
 	},
 	title: {
 		marginBottom: 16,
 		marginLeft: 16,
 	},
 	nextButtonContainer: {
-		flex: 1,
-		justifyContent: 'flex-end',
+		marginTop: 'auto',
 		paddingHorizontal: 16,
-		minHeight: 100,
 	},
 });
 

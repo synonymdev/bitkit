@@ -34,7 +34,7 @@ const ScannerScreen = ({ navigation }): ReactElement => {
 
 	return (
 		<ScannerComponent onRead={onRead}>
-			<NavigationHeader style={styles.navigationHeader} title="Scan QR code" />
+			<NavigationHeader style={styles.navigationHeader} title="Scan QR Code" />
 		</ScannerComponent>
 	);
 };
