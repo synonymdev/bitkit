@@ -26,7 +26,7 @@ const imageSrc = require('../../../assets/illustrations/folder.png');
 
 const ExportToPhone = ({
 	navigation,
-}: SettingsScreenProps<'ResetAndRestore'>): ReactElement => {
+}: SettingsScreenProps<'ExportToPhone'>): ReactElement => {
 	const [isEncrypted, setIsEncrypted] = useState<boolean>(true);
 	const [isCreating, setIsCreating] = useState<boolean>(false);
 	const [password, setPassword] = useState<string>('');
