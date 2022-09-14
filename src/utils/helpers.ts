@@ -284,7 +284,7 @@ export const objectsMatch = (obj1, obj2): boolean => {
 export const removeKeysFromObject = (
 	object: object,
 	keysToRemove: string | string[],
-): object => {
+): {} => {
 	let condition;
 
 	if (typeof keysToRemove === 'string') {
