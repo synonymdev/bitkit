@@ -42,6 +42,17 @@ const AddButton = memo(
 	},
 );
 
+export type NavigationHeaderProps = {
+	title?: string;
+	displayBackButton?: boolean;
+	navigateBack?: boolean;
+	size?: 'lg' | 'sm';
+	style?: StyleProp<ViewStyle>;
+	onBackPress?: Function;
+	onClosePress?: Function;
+	onAddPress?: Function;
+};
+
 const NavigationHeader = ({
 	title = ' ',
 	displayBackButton = true,
@@ -51,16 +62,7 @@ const NavigationHeader = ({
 	onClosePress,
 	onAddPress,
 	style,
-}: {
-	title?: string;
-	displayBackButton?: boolean;
-	onBackPress?: Function;
-	navigateBack?: boolean;
-	size?: 'lg' | 'sm';
-	onClosePress?: Function;
-	onAddPress?: Function;
-	style?: StyleProp<ViewStyle>;
-}): ReactElement => {
+}: NavigationHeaderProps): ReactElement => {
 	const navigation = useNavigation<any>();
 
 	const handleBackPress = useCallback(() => {

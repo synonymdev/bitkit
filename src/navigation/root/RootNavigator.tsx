@@ -122,6 +122,7 @@ const RootNavigator = (): ReactElement => {
 					<Stack.Screen name="Contact" component={Contact} />
 				</Stack.Group>
 			</Stack.Navigator>
+
 			<SendNavigation />
 			<ReceiveNavigation />
 			<BackupNavigation />

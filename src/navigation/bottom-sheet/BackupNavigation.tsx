@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import {
 	createNativeStackNavigator,
 	NativeStackNavigationOptions,
+	NativeStackNavigationProp,
 } from '@react-navigation/native-stack';
 
 import BottomSheetWrapper from '../../components/BottomSheetWrapper';
@@ -13,7 +14,18 @@ import Metadata from '../../screens/Settings/Backup/Metadata';
 import { NavigationContainer } from '../../styles/components';
 import Store from '../../store/types';
 
-const Stack = createNativeStackNavigator();
+export type BackupNavigationProp =
+	NativeStackNavigationProp<BackupStackParamList>;
+
+export type BackupStackParamList = {
+	ShowMnemonic: undefined;
+	ConfirmMnemonic: undefined;
+	Result: undefined;
+	Metadata: undefined;
+};
+
+const Stack = createNativeStackNavigator<BackupStackParamList>();
+
 const navOptions: NativeStackNavigationOptions = {
 	headerShown: false,
 	gestureEnabled: true,
@@ -21,9 +33,9 @@ const navOptions: NativeStackNavigationOptions = {
 
 const BackupNavigation = (): ReactElement => {
 	const isOpen = useSelector(
-		(store: Store) => store.user.viewController?.backupNavigation?.isOpen,
+		(store: Store) => store.user.viewController.backupNavigation.isOpen,
 	);
-	const snapPoints = useMemo(() => [600], []);
+	const snapPoints = useMemo(() => [650], []);
 
 	return (
 		<BottomSheetWrapper view="backupNavigation" snapPoints={snapPoints}>

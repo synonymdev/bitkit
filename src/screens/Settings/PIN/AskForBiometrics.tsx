@@ -11,11 +11,11 @@ import {
 	TouchIdIcon,
 	View as ThemedView,
 } from '../../../styles/components';
-import NavigationHeader from '../../../components/NavigationHeader';
 import Button from '../../../components/Button';
 import Glow from '../../../components/Glow';
 import { toggleBiometrics } from '../../../utils/settings';
 import { IsSensorAvailableResult } from '../../../components/Biometrics';
+import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
 
 const rnBiometrics = new ReactNativeBiometrics();
 
@@ -25,10 +25,11 @@ const ChoosePIN = ({ navigation }): ReactElement => {
 	const [biometryData, setBiometricData] = useState<
 		IsSensorAvailableResult | undefined
 	>();
-	const nextButtonContainer = useMemo(
+
+	const buttonContainerStyles = useMemo(
 		() => ({
-			...styles.nextButtonContainer,
-			paddingBottom: insets.bottom + 10,
+			...styles.buttonContainer,
+			paddingBottom: insets.bottom + 16,
 		}),
 		[insets.bottom],
 	);
@@ -68,11 +69,14 @@ const ChoosePIN = ({ navigation }): ReactElement => {
 			? 'Touch ID'
 			: biometryData?.biometryType === 'FaceID'
 			? 'Face ID'
-			: biometryData?.biometryType ?? '';
+			: biometryData?.biometryType ?? 'Biometric';
 
 	return (
 		<ThemedView color="onSurface" style={styles.container}>
-			<NavigationHeader title={typeName} size="sm" onBackPress={handleOnBack} />
+			<BottomSheetNavigationHeader
+				title={typeName}
+				onBackPress={handleOnBack}
+			/>
 
 			<View style={styles.message}>
 				{!biometryData && <Text01S color="gray1">Loading...</Text01S>}
@@ -102,7 +106,7 @@ const ChoosePIN = ({ navigation }): ReactElement => {
 				</View>
 			)}
 
-			<View style={nextButtonContainer}>
+			<View style={buttonContainerStyles}>
 				{biometryData?.biometryType && (
 					<View style={styles.switchContainer}>
 						<Text01M>Use {typeName}</Text01M>
@@ -126,18 +130,13 @@ const ChoosePIN = ({ navigation }): ReactElement => {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		justifyContent: 'space-between',
-		alignItems: 'center',
 	},
 	message: {
-		marginTop: 10,
 		marginHorizontal: 32,
 	},
 	imageContainer: {
-		marginHorizontal: 32,
+		flex: 1,
 		position: 'relative',
-		height: 280,
-		width: 280,
 		justifyContent: 'center',
 		alignItems: 'center',
 	},
@@ -150,10 +149,10 @@ const styles = StyleSheet.create({
 		alighItems: 'center',
 		marginBottom: 32,
 	},
-	nextButtonContainer: {
+	buttonContainer: {
+		marginTop: 'auto',
 		paddingHorizontal: 32,
 		width: '100%',
-		minHeight: 100,
 	},
 });
 

@@ -4,7 +4,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useFocusEffect } from '@react-navigation/native';
 
 import { Caption13Up, View as ThemedView } from '../../../styles/components';
-import NavigationHeader from '../../../components/NavigationHeader';
+import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
 import Button from '../../../components/Button';
 import { useTransactionDetails } from '../../../hooks/transaction';
 import { toggleView } from '../../../store/actions/user';
@@ -16,7 +16,7 @@ const FeeRate = ({ navigation }): ReactElement => {
 	const nextButtonContainer = useMemo(
 		() => ({
 			...styles.nextButtonContainer,
-			paddingBottom: insets.bottom + 10,
+			paddingBottom: insets.bottom + 16,
 		}),
 		[insets.bottom],
 	);
@@ -46,10 +46,9 @@ const FeeRate = ({ navigation }): ReactElement => {
 
 	return (
 		<ThemedView color="onSurface" style={styles.container}>
-			<NavigationHeader
+			<BottomSheetNavigationHeader
+				title="Set Custom Fee"
 				displayBackButton={transaction.satsPerByte !== 0}
-				title="Set custom fee"
-				size="sm"
 			/>
 			<View style={styles.content}>
 				<Caption13Up color="gray1" style={styles.title}>
@@ -77,17 +76,14 @@ const styles = StyleSheet.create({
 	},
 	content: {
 		flex: 1,
-		marginTop: 20,
 		paddingHorizontal: 16,
 	},
 	title: {
 		marginBottom: 16,
 	},
 	nextButtonContainer: {
-		flex: 1,
-		justifyContent: 'flex-end',
+		marginTop: 'auto',
 		paddingHorizontal: 16,
-		minHeight: 100,
 	},
 });
 

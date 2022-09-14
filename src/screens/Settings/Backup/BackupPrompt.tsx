@@ -1,22 +1,33 @@
 import React, { memo, ReactElement, useMemo, useEffect } from 'react';
 import { StyleSheet, Image, View } from 'react-native';
 import { useSelector } from 'react-redux';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { Subtitle, Text01S } from '../../../styles/components';
+import { Text01S } from '../../../styles/components';
 import BottomSheetWrapper from '../../../components/BottomSheetWrapper';
 import Glow from '../../../components/Glow';
 import Button from '../../../components/Button';
-import SafeAreaInsets from '../../../components/SafeAreaInsets';
 import Store from '../../../store/types';
 import { toggleView, ignoreBackup } from '../../../store/actions/user';
 import { useNoTransactions } from '../../../hooks/wallet';
 import { useBottomSheetBackPress } from '../../../hooks/bottomSheet';
+import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
 
-const ASK_INTERVAL = 60_000; // how long this propt will be hidden if user taps Later
+const imageSrc = require('../../../assets/illustrations/safe.png');
+
+const ASK_INTERVAL = 1000 * 60 * 60 * 24; // 1 day - how long this prompt will be hidden if user taps Later
 const CHECK_INTERVAL = 10_000; // how long user needs to stay on Wallets screen before he will see this prompt
 
 const BackupPrompt = ({ screen }: { screen: string }): ReactElement => {
 	const snapPoints = useMemo(() => [600], []);
+	const insets = useSafeAreaInsets();
+	const buttonContainerStyles = useMemo(
+		() => ({
+			...styles.buttonContainer,
+			paddingBottom: insets.bottom + 16,
+		}),
+		[insets.bottom],
+	);
 
 	const ignoreBackupTimestamp = useSelector(
 		(state: Store) => state.user.ignoreBackupTimestamp,
@@ -99,39 +110,34 @@ const BackupPrompt = ({ screen }: { screen: string }): ReactElement => {
 			backdrop={true}
 			onClose={handleLater}
 			view="backupPrompt">
-			<View style={styles.root}>
-				<View>
-					<Subtitle style={styles.title}>Wallet Backup</Subtitle>
-					<Text01S color="white5">
-						Now that you have some funds in your wallet, it is time to back up
-						your money!
-					</Text01S>
-				</View>
+			<View style={styles.container}>
+				<BottomSheetNavigationHeader
+					title="Wallet Backup"
+					displayBackButton={false}
+				/>
+				<Text01S color="white5">
+					Now that you have some funds in your wallet, it is time to back up
+					your money!
+				</Text01S>
 				<View style={styles.imageContainer}>
-					<Glow color="blue" size={700} style={styles.glow} />
-					<Image
-						style={styles.image}
-						source={require('../../../assets/illustrations/safe.png')}
-					/>
+					<Glow color="blue" size={600} style={styles.glow} />
+					<Image style={styles.image} source={imageSrc} />
 				</View>
-				<View style={styles.center}>
-					<View style={styles.buttons}>
-						<Button
-							style={styles.button}
-							size="lg"
-							variant="secondary"
-							text="Later"
-							onPress={handleLater}
-						/>
-						<View style={styles.divider} />
-						<Button
-							style={styles.button}
-							size="lg"
-							text="Back Up"
-							onPress={handleBackup}
-						/>
-					</View>
-					<SafeAreaInsets type="bottom" />
+				<View style={buttonContainerStyles}>
+					<Button
+						style={styles.button}
+						size="lg"
+						variant="secondary"
+						text="Later"
+						onPress={handleLater}
+					/>
+					<View style={styles.divider} />
+					<Button
+						style={styles.button}
+						size="lg"
+						text="Back Up"
+						onPress={handleBackup}
+					/>
 				</View>
 			</View>
 		</BottomSheetWrapper>
@@ -139,25 +145,15 @@ const BackupPrompt = ({ screen }: { screen: string }): ReactElement => {
 };
 
 const styles = StyleSheet.create({
-	root: {
-		alignItems: 'center',
+	container: {
 		flex: 1,
 		marginHorizontal: 32,
-		justifyContent: 'space-between',
-	},
-	center: {
-		alignItems: 'center',
-	},
-	title: {
-		marginBottom: 25,
-		alignSelf: 'center',
 	},
 	imageContainer: {
+		flex: 1,
 		position: 'relative',
 		alignItems: 'center',
 		justifyContent: 'center',
-		height: 210,
-		width: 210,
 	},
 	image: {
 		width: 170,
@@ -166,10 +162,10 @@ const styles = StyleSheet.create({
 	glow: {
 		position: 'absolute',
 	},
-	buttons: {
+	buttonContainer: {
+		marginTop: 'auto',
 		flexDirection: 'row',
 		justifyContent: 'center',
-		marginBottom: 8,
 	},
 	button: {
 		flex: 1,

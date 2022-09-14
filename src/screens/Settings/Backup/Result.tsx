@@ -3,19 +3,20 @@ import { StyleSheet, View, Image } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { View as ThemedView, Text01S } from '../../../styles/components';
-import NavigationHeader from '../../../components/NavigationHeader';
 import Button from '../../../components/Button';
 import Glow from '../../../components/Glow';
 import { verifyBackup } from '../../../store/actions/user';
 import { removeTodo } from '../../../store/actions/todos';
 import { todoPresets } from '../../../utils/todos';
+import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
+import { BackupScreenProps } from '../../../navigation/types';
 
-const Result = ({ navigation }): ReactElement => {
+const Result = ({ navigation }: BackupScreenProps<'Result'>): ReactElement => {
 	const insets = useSafeAreaInsets();
 	const nextButtonContainer = useMemo(
 		() => ({
 			...styles.nextButtonContainer,
-			paddingBottom: insets.bottom + 10,
+			paddingBottom: insets.bottom + 16,
 		}),
 		[insets.bottom],
 	);
@@ -28,11 +29,7 @@ const Result = ({ navigation }): ReactElement => {
 
 	return (
 		<ThemedView color="onSurface" style={styles.container}>
-			<NavigationHeader
-				title="Successful"
-				size="sm"
-				displayBackButton={false}
-			/>
+			<BottomSheetNavigationHeader title="Successful" />
 
 			<Text01S color="gray1" style={styles.text}>
 				Make sure you store your recovery phrase in a secure place, as this is
@@ -40,7 +37,7 @@ const Result = ({ navigation }): ReactElement => {
 			</Text01S>
 
 			<View style={styles.imageContainer}>
-				<Glow style={styles.glow} size={300} color="green" />
+				<Glow style={styles.glow} size={500} color="green" />
 				<Image
 					source={require('../../../assets/illustrations/check.png')}
 					style={styles.image}
@@ -57,16 +54,13 @@ const Result = ({ navigation }): ReactElement => {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		justifyContent: 'space-between',
-		alignItems: 'center',
 	},
 	text: {
 		paddingHorizontal: 32,
 	},
 	imageContainer: {
+		flex: 1,
 		position: 'relative',
-		height: 300,
-		width: 300,
 		justifyContent: 'center',
 		alignItems: 'center',
 	},
@@ -78,9 +72,9 @@ const styles = StyleSheet.create({
 		position: 'absolute',
 	},
 	nextButtonContainer: {
-		width: '100%',
+		marginTop: 'auto',
 		paddingHorizontal: 32,
-		minHeight: 100,
+		width: '100%',
 	},
 });
 

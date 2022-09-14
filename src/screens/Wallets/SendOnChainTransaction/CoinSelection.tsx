@@ -12,7 +12,7 @@ import {
 	Text02M,
 	View as ThemedView,
 } from '../../../styles/components';
-import NavigationHeader from '../../../components/NavigationHeader';
+import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
 import Button from '../../../components/Button';
 import Tag from '../../../components/Tag';
 import Store from '../../../store/types';
@@ -75,10 +75,10 @@ const CoinSelection = ({ navigation }): ReactElement => {
 	const insets = useSafeAreaInsets();
 	const { gray4 } = useColors();
 
-	const nextButtonContainer = useMemo(
+	const buttonContainerStyles = useMemo(
 		() => ({
-			...styles.nextButtonContainer,
-			paddingBottom: insets.bottom + 10,
+			...styles.buttonContainer,
+			paddingBottom: insets.bottom + 16,
 		}),
 		[insets.bottom],
 	);
@@ -155,7 +155,7 @@ const CoinSelection = ({ navigation }): ReactElement => {
 
 	return (
 		<ThemedView color="onSurface" style={styles.container}>
-			<NavigationHeader title="Coin selection" size="sm" />
+			<BottomSheetNavigationHeader title="Coin Selection" />
 			<View style={styles.content}>
 				<BottomSheetScrollView style={styles.scroll}>
 					<View style={[styles.coinRoot, { borderBottomColor: gray4 }]}>
@@ -210,7 +210,7 @@ const CoinSelection = ({ navigation }): ReactElement => {
 					</View>
 				</View>
 
-				<View style={nextButtonContainer}>
+				<View style={buttonContainerStyles}>
 					<Button
 						size="lg"
 						text="Next"
@@ -230,9 +230,6 @@ const styles = StyleSheet.create({
 	content: {
 		flex: 1,
 		paddingHorizontal: 16,
-	},
-	nextButtonContainer: {
-		justifyContent: 'flex-end',
 	},
 	scroll: {
 		flex: 1,
@@ -264,6 +261,9 @@ const styles = StyleSheet.create({
 	},
 	totalBorder: {
 		borderBottomWidth: 1,
+	},
+	buttonContainer: {
+		marginTop: 'auto',
 	},
 });
 

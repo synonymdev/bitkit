@@ -1,9 +1,11 @@
 import React, { memo, ReactElement, useEffect, useState } from 'react';
-import { StyleSheet, Switch, TextInput } from 'react-native';
-import { View, Text } from '../../../styles/components';
+import { StyleSheet, Switch, Image } from 'react-native';
+import { useSelector } from 'react-redux';
+import Share from 'react-native-share';
+
+import { View, Text, TextInput, Text01S } from '../../../styles/components';
 import NavigationHeader from '../../../components/NavigationHeader';
 import Button from '../../../components/Button';
-import { useSelector } from 'react-redux';
 import Store from '../../../store/types';
 import themes from '../../../styles/themes';
 import {
@@ -14,11 +16,17 @@ import {
 	cleanupBackupFiles,
 	createBackupFile,
 } from '../../../utils/backup/fileBackup';
-import Share from 'react-native-share';
 import AuthCheck from '../../../components/AuthCheck';
 import SafeAreaView from '../../../components/SafeAreaView';
+import Glow from '../../../components/Glow';
+import SafeAreaInsets from '../../../components/SafeAreaInsets';
+import type { SettingsScreenProps } from '../../../navigation/types';
 
-const ExportToPhone = ({ navigation }): ReactElement => {
+const imageSrc = require('../../../assets/illustrations/folder.png');
+
+const ExportToPhone = ({
+	navigation,
+}: SettingsScreenProps<'ExportToPhone'>): ReactElement => {
 	const [isEncrypted, setIsEncrypted] = useState<boolean>(true);
 	const [isCreating, setIsCreating] = useState<boolean>(false);
 	const [password, setPassword] = useState<string>('');
@@ -45,14 +53,17 @@ const ExportToPhone = ({ navigation }): ReactElement => {
 			const res = await Share.open(shareOptions);
 
 			if (res.success) {
-				showSuccessNotification({ title: 'File saved', message: '' });
+				showSuccessNotification({
+					title: 'Backup exported',
+					message: 'Successfully exported file to phone.',
+				});
 				navigation.goBack();
 			}
 		} catch (error) {
 			if (JSON.stringify(error).indexOf('CANCELLED') < 0) {
 				showErrorNotification({
-					title: 'Error',
-					message: 'Failed to save backup file',
+					title: 'Backup failed',
+					message: 'Bitkit was not able to save the backup file.',
 				});
 			}
 		}
@@ -84,9 +95,19 @@ const ExportToPhone = ({ navigation }): ReactElement => {
 
 	return (
 		<SafeAreaView>
-			<NavigationHeader title="Backup Export" />
+			<NavigationHeader
+				title="Export To Phone"
+				onClosePress={(): void => {
+					navigation.navigate('Tabs');
+				}}
+			/>
 			<AuthCheck>
-				<View style={styles.content}>
+				<View style={styles.container}>
+					<Text01S color="gray1">
+						If you want, you can export a copy of all metadata to your phone. Be
+						aware, this .zip file will be encrypted with your PIN code.
+					</Text01S>
+
 					<View style={styles.row}>
 						<Text style={styles.text}>Encrypt backup</Text>
 						<Switch
@@ -96,8 +117,9 @@ const ExportToPhone = ({ navigation }): ReactElement => {
 						/>
 					</View>
 
-					{isEncrypted ? (
+					{isEncrypted && (
 						<View>
+							<Text style={styles.title}>Password</Text>
 							<TextInput
 								textAlignVertical={'center'}
 								underlineColorAndroid="transparent"
@@ -116,14 +138,23 @@ const ExportToPhone = ({ navigation }): ReactElement => {
 								(Default password is your Backpack password)
 							</Text>
 						</View>
-					) : null}
+					)}
 
-					<Button
-						disabled={isCreating}
-						style={styles.button}
-						text={'Create Backup File'}
-						onPress={onCreateBackup}
-					/>
+					<View style={styles.imageContainer}>
+						<Glow style={styles.glow} size={600} color="green" />
+						<Image source={imageSrc} style={styles.image} />
+					</View>
+
+					<View style={styles.buttonContainer}>
+						<Button
+							size="lg"
+							disabled={isCreating}
+							style={styles.button}
+							text="Export Wallet Data To Phone"
+							onPress={onCreateBackup}
+						/>
+					</View>
+					<SafeAreaInsets type="bottom" />
 				</View>
 			</AuthCheck>
 		</SafeAreaView>
@@ -131,12 +162,13 @@ const ExportToPhone = ({ navigation }): ReactElement => {
 };
 
 const styles = StyleSheet.create({
-	content: {
-		padding: 20,
+	container: {
+		flex: 1,
+		paddingHorizontal: 16,
 	},
 	row: {
 		flexDirection: 'row',
-
+		marginTop: 16,
 		paddingVertical: 10,
 		justifyContent: 'space-between',
 		display: 'flex',
@@ -147,12 +179,16 @@ const styles = StyleSheet.create({
 	text2: {
 		textAlign: 'center',
 	},
+	title: {
+		fontWeight: 'bold',
+		fontSize: 16,
+	},
 	textInput: {
 		minHeight: 50,
 		borderRadius: 5,
 		fontWeight: 'bold',
 		fontSize: 18,
-		textAlign: 'center',
+		textAlign: 'left',
 		color: 'gray',
 		borderBottomWidth: 1,
 		borderColor: 'gray',
@@ -160,9 +196,24 @@ const styles = StyleSheet.create({
 		backgroundColor: 'white',
 		marginVertical: 5,
 	},
-	button: {
-		marginTop: 40,
+	imageContainer: {
+		flex: 1,
+		position: 'relative',
+		justifyContent: 'center',
+		alignItems: 'center',
 	},
+	image: {
+		width: 230,
+		height: 230,
+	},
+	glow: {
+		position: 'absolute',
+	},
+	buttonContainer: {
+		marginTop: 'auto',
+		marginBottom: 16,
+	},
+	button: {},
 });
 
 export default memo(ExportToPhone);

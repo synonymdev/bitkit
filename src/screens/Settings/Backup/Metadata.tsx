@@ -3,17 +3,19 @@ import { StyleSheet, View, Image } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { View as ThemedView, Text01S } from '../../../styles/components';
-import NavigationHeader from '../../../components/NavigationHeader';
+import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
 import Button from '../../../components/Button';
 import Glow from '../../../components/Glow';
 import { toggleView } from '../../../store/actions/user';
 
+const imageSrc = require('../../../assets/illustrations/light-bulb.png');
+
 const Result = (): ReactElement => {
 	const insets = useSafeAreaInsets();
-	const nextButtonContainer = useMemo(
+	const buttonContainerStyles = useMemo(
 		() => ({
-			...styles.nextButtonContainer,
-			paddingBottom: insets.bottom + 10,
+			...styles.buttonContainer,
+			paddingBottom: insets.bottom + 16,
 		}),
 		[insets.bottom],
 	);
@@ -27,9 +29,8 @@ const Result = (): ReactElement => {
 
 	return (
 		<ThemedView color="onSurface" style={styles.container}>
-			<NavigationHeader
-				title="Wallet metadata"
-				size="sm"
+			<BottomSheetNavigationHeader
+				title="Wallet Metadata"
 				displayBackButton={false}
 			/>
 
@@ -40,13 +41,10 @@ const Result = (): ReactElement => {
 
 			<View style={styles.imageContainer}>
 				<Glow style={styles.glow} size={300} color="yellow" />
-				<Image
-					source={require('../../../assets/illustrations/light-bulb.png')}
-					style={styles.image}
-				/>
+				<Image source={imageSrc} style={styles.image} />
 			</View>
 
-			<View style={nextButtonContainer}>
+			<View style={buttonContainerStyles}>
 				<Button size="lg" text="OK" onPress={handleButtonPress} />
 			</View>
 		</ThemedView>
@@ -56,18 +54,15 @@ const Result = (): ReactElement => {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		justifyContent: 'space-between',
-		alignItems: 'center',
-	},
-	imageContainer: {
-		position: 'relative',
-		height: 300,
-		width: 300,
-		justifyContent: 'center',
-		alignItems: 'center',
 	},
 	text: {
 		paddingHorizontal: 32,
+	},
+	imageContainer: {
+		flex: 1,
+		position: 'relative',
+		justifyContent: 'center',
+		alignItems: 'center',
 	},
 	image: {
 		width: 200,
@@ -76,10 +71,10 @@ const styles = StyleSheet.create({
 	glow: {
 		position: 'absolute',
 	},
-	nextButtonContainer: {
-		width: '100%',
+	buttonContainer: {
+		marginTop: 'auto',
 		paddingHorizontal: 32,
-		minHeight: 100,
+		width: '100%',
 	},
 });
 

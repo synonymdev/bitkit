@@ -20,7 +20,6 @@ const user = (state: IUser = defaultUserShape, action): IUser => {
 						...action.payload.data,
 					},
 				},
-				// backupVerified: false,
 			};
 
 		case actions.RESET_USER_STORE:

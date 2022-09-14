@@ -157,6 +157,10 @@ export const processInputData = async ({
 				selectedNetwork,
 			});
 			if (processBitcoinTxResponse.isErr()) {
+				showErrorNotification({
+					title: 'Unable To Pay Invoice',
+					message: processBitcoinTxResponse.error.message,
+				});
 				return err(processBitcoinTxResponse.error.message);
 			}
 			dataToHandle = processBitcoinTxResponse.value;
@@ -421,7 +425,7 @@ export const processBitcoinTransactionData = async ({
 		if (response) {
 			return ok(response);
 		}
-		return err('Unable to pay provided invoice.');
+		return err('Unable to pay the provided invoice.');
 	} catch (e) {
 		console.log(e);
 		return err(e);

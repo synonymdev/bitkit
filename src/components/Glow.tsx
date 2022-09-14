@@ -15,12 +15,12 @@ import useColors from '../hooks/colors';
  */
 
 interface IGlow {
-	size: number;
 	color: string;
+	size?: number;
 	style?: object;
 }
 
-const Glow = memo(({ color, size, style }: IGlow): ReactElement => {
+const Glow = memo(({ color, size = 600, style }: IGlow): ReactElement => {
 	const opacity = useValue(0);
 	const cstyle = useMemo(
 		() => ({ width: size, height: size, ...style }),

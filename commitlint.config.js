@@ -25,4 +25,5 @@ module.exports = {
 			],
 		],
 	},
+	ignores: [(msg) => /\bWIP\b/i.test(msg)],
 };

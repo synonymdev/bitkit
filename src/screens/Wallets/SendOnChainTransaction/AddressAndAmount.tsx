@@ -26,7 +26,7 @@ import {
 	UserIcon,
 	View as ThemedView,
 } from '../../../styles/components';
-import NavigationHeader from '../../../components/NavigationHeader';
+import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
 import AmountToggle from '../../../components/AmountToggle';
 import Button from '../../../components/Button';
 import Tag from '../../../components/Tag';
@@ -55,10 +55,10 @@ const AddressAndAmount = ({ index = 0, navigation }): ReactElement => {
 	useBottomSheetBackPress('sendNavigation');
 
 	const insets = useSafeAreaInsets();
-	const nextButtonContainer = useMemo(
+	const buttonContainerStyles = useMemo(
 		() => ({
-			...styles.nextButtonContainer,
-			paddingBottom: insets.bottom + 10,
+			...styles.buttonContainer,
+			paddingBottom: insets.bottom + 16,
 		}),
 		[insets.bottom],
 	);
@@ -297,7 +297,7 @@ const AddressAndAmount = ({ index = 0, navigation }): ReactElement => {
 		updateOnchainFeeEstimates({ selectedNetwork }).then();
 	}, [selectedNetwork]);
 
-	const nextButtonIsDisabled = useCallback(() => {
+	const isInvalid = useCallback(() => {
 		if (
 			validate(address) &&
 			amount <= ETransactionDefaults.recommendedBaseFee
@@ -309,10 +309,9 @@ const AddressAndAmount = ({ index = 0, navigation }): ReactElement => {
 
 	return (
 		<ThemedView color="onSurface" style={styles.container}>
-			<NavigationHeader
+			<BottomSheetNavigationHeader
 				title="Send Bitcoin"
 				displayBackButton={displayBackButton}
-				size="sm"
 			/>
 			<View style={styles.content}>
 				<AmountToggle
@@ -369,7 +368,6 @@ const AddressAndAmount = ({ index = 0, navigation }): ReactElement => {
 				</View>
 				<View style={styles.tagsContainer}>
 					<Button
-						style={styles.button}
 						text="Add Tag"
 						icon={<TagIcon color="brand" width={16} />}
 						onPress={(): void => {
@@ -379,20 +377,21 @@ const AddressAndAmount = ({ index = 0, navigation }): ReactElement => {
 						}}
 					/>
 				</View>
-				<View style={nextButtonContainer}>
-					<Button
-						size="lg"
-						text="Next"
-						disabled={nextButtonIsDisabled()}
-						onPress={(): void => {
-							let view = 'ReviewAndSend';
-							// If coin select is enabled and there is no lightning invoice.
-							if (coinSelectAuto && !transaction?.lightningInvoice) {
-								view = 'CoinSelection';
-							}
-							navigation.navigate(view);
-						}}
-					/>
+				<View style={buttonContainerStyles}>
+					{!isInvalid() && (
+						<Button
+							size="lg"
+							text="Next"
+							onPress={(): void => {
+								let view = 'ReviewAndSend';
+								// If coin select is enabled and there is no lightning invoice.
+								if (coinSelectAuto && !transaction?.lightningInvoice) {
+									view = 'CoinSelection';
+								}
+								navigation.navigate(view);
+							}}
+						/>
+					)}
 				</View>
 			</View>
 			<OnChainNumberPad />
@@ -407,7 +406,6 @@ const styles = StyleSheet.create({
 	content: {
 		flex: 1,
 		paddingHorizontal: 16,
-		marginTop: 16,
 	},
 	amountToggle: {
 		marginBottom: 32,
@@ -428,17 +426,12 @@ const styles = StyleSheet.create({
 		flexWrap: 'wrap',
 		marginBottom: 8,
 	},
-	nextButtonContainer: {
-		flex: 1,
-		justifyContent: 'flex-end',
-		minHeight: 100,
-	},
 	tag: {
 		marginRight: 8,
 		marginBottom: 8,
 	},
-	button: {
-		marginRight: 8,
+	buttonContainer: {
+		marginTop: 'auto',
 	},
 });
 

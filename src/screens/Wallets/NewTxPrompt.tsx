@@ -1,24 +1,31 @@
 import React, { memo, ReactElement, useMemo } from 'react';
 import { Image, StyleSheet, View } from 'react-native';
 import { useSelector } from 'react-redux';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Lottie from 'lottie-react-native';
 
-import {
-	Subtitle,
-	Caption13Up,
-	Text02M,
-	ClockIcon,
-} from '../../styles/components';
+import { Caption13Up, Text02M, ClockIcon } from '../../styles/components';
 import BottomSheetWrapper from '../../components/BottomSheetWrapper';
 import Glow from '../../components/Glow';
 import AmountToggle from '../../components/AmountToggle';
-import SafeAreaInsets from '../../components/SafeAreaInsets';
 import Store from '../../store/types';
 import { toggleView } from '../../store/actions/user';
 import { useBottomSheetBackPress } from '../../hooks/bottomSheet';
+import BottomSheetNavigationHeader from '../../components/BottomSheetNavigationHeader';
+
+const confettiSrc = require('../../assets/lottie/confetti-orange.json');
+const imageSrc = require('../../assets/illustrations/coin-stack-x.png');
 
 const NewTxPrompt = (): ReactElement => {
 	const snapPoints = useMemo(() => [600], []);
+	const insets = useSafeAreaInsets();
+	const buttonContainerStyles = useMemo(
+		() => ({
+			...styles.confirming,
+			paddingBottom: insets.bottom + 16,
+		}),
+		[insets.bottom],
+	);
 
 	const txid = useSelector(
 		(store: Store) => store.user.viewController?.newTxPrompt?.txid,
@@ -45,22 +52,19 @@ const NewTxPrompt = (): ReactElement => {
 		});
 	};
 
-	const source = require('../../assets/illustrations/coin-stack-x.png');
-
 	return (
 		<BottomSheetWrapper
 			snapPoints={snapPoints}
 			backdrop={true}
 			onClose={handleClose}
 			view="newTxPrompt">
-			<View style={styles.root}>
-				<Lottie
-					source={require('../../assets/lottie/confetti-orange.json')}
-					autoPlay
-					loop
-				/>
+			<View style={styles.container}>
+				<Lottie source={confettiSrc} autoPlay loop />
 				<View>
-					<Subtitle style={styles.title}>Payment Received!</Subtitle>
+					<BottomSheetNavigationHeader
+						title="Payment Received!"
+						displayBackButton={false}
+					/>
 					<Caption13Up style={styles.received} color="gray1">
 						You just received
 					</Caption13Up>
@@ -72,20 +76,20 @@ const NewTxPrompt = (): ReactElement => {
 				<View>
 					<View style={styles.imageContainer}>
 						<Glow style={styles.glow} size={600} color="white32" />
-						<Image source={source} style={styles.image3} />
-						<Image source={source} style={styles.image2} />
-						<Image source={source} style={styles.image1} />
-						<Image source={source} style={styles.image4} />
+						<Image source={imageSrc} style={styles.image3} />
+						<Image source={imageSrc} style={styles.image2} />
+						<Image source={imageSrc} style={styles.image1} />
+						<Image source={imageSrc} style={styles.image4} />
 					</View>
+
 					{isOpen && transaction?.height === 0 && (
-						<View style={styles.confirming}>
+						<View style={buttonContainerStyles}>
 							<ClockIcon color="gray1" />
 							<Text02M color="gray1" style={styles.confirmingText}>
 								Confirming
 							</Text02M>
 						</View>
 					)}
-					<SafeAreaInsets type="bottom" />
 				</View>
 			</View>
 		</BottomSheetWrapper>
@@ -93,14 +97,10 @@ const NewTxPrompt = (): ReactElement => {
 };
 
 const styles = StyleSheet.create({
-	root: {
+	container: {
 		flex: 1,
 		paddingHorizontal: 16,
 		justifyContent: 'space-between',
-	},
-	title: {
-		marginBottom: 60,
-		alignSelf: 'center',
 	},
 	received: {
 		marginBottom: 8,
@@ -146,10 +146,9 @@ const styles = StyleSheet.create({
 		position: 'absolute',
 	},
 	confirming: {
-		alignSelf: 'center',
-		justifyContent: 'center',
+		marginTop: 'auto',
 		flexDirection: 'row',
-		marginBottom: 8,
+		justifyContent: 'center',
 	},
 	confirmingText: {
 		marginLeft: 8,

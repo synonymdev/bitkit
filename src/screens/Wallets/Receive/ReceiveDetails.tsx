@@ -9,7 +9,7 @@ import {
 	TagIcon,
 	View as ThemedView,
 } from '../../../styles/components';
-import NavigationHeader from '../../../components/NavigationHeader';
+import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
 import AmountToggle from '../../../components/AmountToggle';
 import Button from '../../../components/Button';
 import Tag from '../../../components/Tag';
@@ -28,10 +28,10 @@ const ReceiveDetails = ({ navigation }): ReactElement => {
 		(store: Store) => store.user.viewController?.numberPadReceive.isOpen,
 	);
 	const colors = useColors();
-	const buttonContainer = useMemo(
+	const buttonContainerStyles = useMemo(
 		() => ({
 			...styles.buttonContainer,
-			paddingBottom: insets.bottom + 10,
+			paddingBottom: insets.bottom + 16,
 		}),
 		[insets.bottom],
 	);
@@ -65,9 +65,8 @@ const ReceiveDetails = ({ navigation }): ReactElement => {
 
 	return (
 		<ThemedView color="onSurface" style={styles.container}>
-			<NavigationHeader
+			<BottomSheetNavigationHeader
 				title="Specify Invoice"
-				size="sm"
 				displayBackButton={false}
 			/>
 			<View style={styles.content}>
@@ -128,7 +127,7 @@ const ReceiveDetails = ({ navigation }): ReactElement => {
 						}}
 					/>
 				</View>
-				<View style={buttonContainer}>
+				<View style={buttonContainerStyles}>
 					<Button
 						size="lg"
 						text="Show QR Code"
@@ -147,7 +146,6 @@ const styles = StyleSheet.create({
 	content: {
 		flex: 1,
 		paddingHorizontal: 16,
-		marginTop: 16,
 	},
 	amountToggle: {
 		marginBottom: 32,
@@ -181,9 +179,7 @@ const styles = StyleSheet.create({
 		marginRight: 8,
 	},
 	buttonContainer: {
-		flex: 1,
-		justifyContent: 'flex-end',
-		minHeight: 100,
+		marginTop: 'auto',
 	},
 });
 
