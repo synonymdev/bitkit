@@ -39,6 +39,7 @@ import {
 	Text02M,
 	TimerIconAlt,
 	Title,
+	UserMinusIcon,
 	UserPlusIcon,
 	View as ThemedView,
 } from '../../styles/components';
@@ -422,7 +423,9 @@ const ActivityDetail = (props: Props): ReactElement => {
 									<Button
 										style={styles.button}
 										text="Detatch"
-										icon={<UserPlusIcon height={16} width={16} color="brand" />}
+										icon={
+											<UserMinusIcon height={16} width={16} color="brand" />
+										}
 										onPress={handleDetach}
 									/>
 								) : (
