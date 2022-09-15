@@ -1,5 +1,5 @@
 import React, { memo, ReactElement, useMemo } from 'react';
-import { FlatList, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { useSelector } from 'react-redux';
 import { Result } from '@synonymdev/result';
 
@@ -17,7 +17,7 @@ const CoinSelectSettings = (): ReactElement => {
 		(state: Store) => state.settings.coinSelectPreference,
 	);
 
-	const SelectionMethod: IListData[] = useMemo(
+	const settingsListData: IListData[] = useMemo(
 		() => [
 			{
 				title: 'Coin Selection Method',
@@ -26,26 +26,22 @@ const CoinSelectSettings = (): ReactElement => {
 						title: 'Manual',
 						value: !selectedAutoPilot,
 						type: 'button',
-						onPress: async (): Promise<any> =>
-							updateSettings({ coinSelectAuto: false }),
+						onPress: (): void => {
+							updateSettings({ coinSelectAuto: false });
+						},
 						hide: false,
 					},
 					{
 						title: 'Autopilot',
 						value: selectedAutoPilot,
 						type: 'button',
-						onPress: async (): Promise<any> =>
-							updateSettings({ coinSelectAuto: true }),
+						onPress: (): void => {
+							updateSettings({ coinSelectAuto: true });
+						},
 						hide: false,
 					},
 				],
 			},
-		],
-		[selectedAutoPilot],
-	);
-
-	const AutoPilotMode: IListData[] = useMemo(
-		() => [
 			{
 				title: selectedAutoPilot ? 'Autopilot Mode' : '',
 				data: [
@@ -85,28 +81,15 @@ const CoinSelectSettings = (): ReactElement => {
 				],
 			},
 		],
-		[coinSelectPreference, selectedAutoPilot],
-	);
-
-	const headerComponent = (
-		<SettingsView
-			title={'Coin Selection'}
-			listData={SelectionMethod}
-			showBackNavigation
-		/>
-	);
-
-	const footerComponent = (
-		<SettingsView listData={AutoPilotMode} showBackNavigation={false} />
+		[selectedAutoPilot, coinSelectPreference, selectedAutoPilot],
 	);
 
 	return (
 		<ThemedView color="black" style={styles.container}>
-			<FlatList
-				data={null}
-				renderItem={null}
-				ListHeaderComponent={headerComponent}
-				ListFooterComponent={footerComponent}
+			<SettingsView
+				title="Coin Selection"
+				listData={settingsListData}
+				showBackNavigation
 			/>
 		</ThemedView>
 	);
