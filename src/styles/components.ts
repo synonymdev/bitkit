@@ -81,6 +81,7 @@ import {
 	globeIcon,
 	mediumIcon,
 	twitterIcon,
+	listIcon,
 } from '../assets/icons/settings';
 import { logo } from '../assets/icons/onboarding';
 import _SafeAreaView from '../components/SafeAreaView';
@@ -456,6 +457,15 @@ export const Logo = styled(SvgXml).attrs((props) => ({
 
 export const ProfileIcon = styled(SvgXml).attrs((props) => ({
 	xml: profileIcon(props?.color ? props.theme.colors[props.color] : 'white'),
+	height: props?.height ?? '24px',
+	width: props?.width ?? '24px',
+	color: undefined,
+}))({});
+
+export const ListIcon = styled(SvgXml).attrs((props) => ({
+	xml: listIcon(
+		props?.color ? props.theme.colors[props.color] : props.theme.colors.gray1,
+	),
 	height: props?.height ?? '24px',
 	width: props?.width ?? '24px',
 	color: undefined,

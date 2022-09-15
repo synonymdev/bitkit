@@ -47,7 +47,7 @@ const ResetAndRestore = ({
 								variant="secondary"
 								style={styles.button}
 								text="Back Up First"
-								onPress={() => {
+								onPress={(): void => {
 									toggleView({
 										view: 'backupNavigation',
 										data: { isOpen: true },
@@ -59,7 +59,7 @@ const ResetAndRestore = ({
 								size="lg"
 								style={styles.button}
 								text="Reset Wallet"
-								onPress={() => setShowDialog(true)}
+								onPress={(): void => setShowDialog(true)}
 							/>
 						</View>
 						<SafeAreaInsets type="bottom" />
@@ -69,8 +69,8 @@ const ResetAndRestore = ({
 						visible={showDialog}
 						title="Reset Bitkit?"
 						description="Are you sure you want to reset your Bitkit Wallet? Do you have a backup of your recovery phrase and wallet data?"
-						onCancel={() => setShowDialog(false)}
-						onConfirm={() => {
+						onCancel={(): void => setShowDialog(false)}
+						onConfirm={(): void => {
 							wipeWallet({});
 							setShowDialog(false);
 						}}

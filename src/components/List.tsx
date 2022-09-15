@@ -1,5 +1,8 @@
 import React, { memo, ReactElement, useCallback } from 'react';
 import { SectionList, StyleProp, StyleSheet, ViewStyle } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { SvgProps } from 'react-native-svg';
+
 import {
 	Text01S,
 	Caption13Up,
@@ -9,9 +12,8 @@ import {
 	Switch,
 	Caption13S,
 } from '../styles/components';
-import { useNavigation } from '@react-navigation/native';
 import Card from './Card';
-import { SvgProps } from 'react-native-svg';
+import DraggableList from '../screens/Settings/PaymentPreference/DraggableList';
 
 const _ItemHeader = memo(({ title }: { title?: string }): ReactElement => {
 	if (!title) {
@@ -29,18 +31,24 @@ const ItemHeader = memo(_ItemHeader, (prevProps, nextProps) => {
 	return prevProps.title === nextProps.title;
 });
 
-type TItemType = 'switch' | 'button' | 'textButton';
+type TItemType = 'switch' | 'button' | 'textButton' | 'draggable';
+
+type TItemDraggable = {
+	key: string;
+	title: string;
+};
 
 type ItemData = {
 	title: string;
-	value?: string | boolean;
 	type: TItemType;
-	onPress: Function;
+	value?: string | boolean | TItemDraggable[];
 	enabled?: boolean;
 	hide?: boolean;
 	Icon?: React.FC<SvgProps>;
 	iconColor?: string;
 	description?: string;
+	onPress?: Function;
+	onDragEnd?: (data: TItemDraggable[]) => void;
 };
 
 interface IItem extends ItemData {
@@ -53,22 +61,22 @@ const _Item = memo(
 		type,
 		title,
 		value,
-		onPress,
 		navigation,
 		enabled = true,
 		hide = false,
 		Icon,
 		iconColor,
 		description,
+		onPress,
+		onDragEnd,
 	}: IItem): ReactElement => {
 		if (hide) {
-			return <View />;
+			return <></>;
 		}
 
-		const useCheckmark = typeof value === 'boolean';
-
-		const _onPress = (): void => onPress(navigation);
 		if (type === 'switch') {
+			const _onPress = (): void => onPress && onPress();
+
 			return (
 				<View
 					color="transparent"
@@ -94,6 +102,8 @@ const _Item = memo(
 			);
 		}
 		if (type === 'textButton') {
+			const _onPress = (): void => onPress && onPress(navigation);
+
 			return (
 				<View
 					color="transparent"
@@ -125,46 +135,63 @@ const _Item = memo(
 				</View>
 			);
 		}
-		return (
-			<View
-				color="transparent"
-				style={description ? styles.descriptionRow : styles.row}>
-				<Card style={styles.card} onPress={enabled ? _onPress : undefined}>
-					<View color="transparent" style={styles.leftColumn}>
-						{Icon && (
-							<View style={styles.icon}>
-								<Icon
-									viewBox="0 0 32 32"
-									height={32}
-									width={32}
-									color={iconColor !== '' ? iconColor : 'brand'}
-								/>
-							</View>
-						)}
-						<View>
-							<Text01S color="white">{title}</Text01S>
-							{description && (
-								<View>
-									<Caption13S color="gray1">{description}</Caption13S>
+
+		if (type === 'draggable') {
+			return (
+				<DraggableList
+					listData={value as TItemDraggable[]}
+					onDragEnd={onDragEnd}
+				/>
+			);
+		}
+
+		if (type === 'button') {
+			const useCheckmark = typeof value === 'boolean';
+			const _onPress = (): void => onPress && onPress(navigation);
+
+			return (
+				<View
+					color="transparent"
+					style={description ? styles.descriptionRow : styles.row}>
+					<Card style={styles.card} onPress={enabled ? _onPress : undefined}>
+						<View color="transparent" style={styles.leftColumn}>
+							{Icon && (
+								<View style={styles.icon}>
+									<Icon
+										viewBox="0 0 32 32"
+										height={32}
+										width={32}
+										color={iconColor !== '' ? iconColor : 'brand'}
+									/>
 								</View>
 							)}
+							<View>
+								<Text01S color="white">{title}</Text01S>
+								{description && (
+									<View>
+										<Caption13S color="gray1">{description}</Caption13S>
+									</View>
+								)}
+							</View>
 						</View>
-					</View>
-					<View color="transparent" style={styles.rightColumn}>
-						{useCheckmark ? (
-							value ? (
-								<Checkmark color="brand" height={22} width={22} />
-							) : null
-						) : (
-							<>
-								<Text01S style={styles.valueText}>{value}</Text01S>
-								<ChevronRight color={'gray1'} />
-							</>
-						)}
-					</View>
-				</Card>
-			</View>
-		);
+						<View color="transparent" style={styles.rightColumn}>
+							{useCheckmark ? (
+								value ? (
+									<Checkmark color="brand" height={22} width={22} />
+								) : null
+							) : (
+								<>
+									<Text01S style={styles.valueText}>{value}</Text01S>
+									<ChevronRight color={'gray1'} />
+								</>
+							)}
+						</View>
+					</Card>
+				</View>
+			);
+		}
+
+		return <></>;
 	},
 );
 const Item = memo(_Item, (prevProps, nextProps) => {

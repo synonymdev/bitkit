@@ -2,7 +2,7 @@ import React, { memo, ReactElement, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-import { View } from '../../styles/components';
+import { Text01S, Text02S, View } from '../../styles/components';
 import SearchInput from '../../components/SearchInput';
 import List, { IListData } from '../../components/List';
 import NavigationHeader from '../../components/NavigationHeader';
@@ -21,6 +21,8 @@ import { SettingsStackParamList } from '../../navigation/settings/SettingsNaviga
 const SettingsView = ({
 	title = ' ',
 	listData,
+	headerText,
+	footerText,
 	showBackNavigation = true,
 	showSearch = false,
 	fullHeight = true,
@@ -29,6 +31,8 @@ const SettingsView = ({
 }: {
 	title?: string;
 	listData?: IListData[];
+	headerText?: string;
+	footerText?: string;
 	showBackNavigation: boolean;
 	showSearch?: boolean;
 	fullHeight?: boolean;
@@ -63,19 +67,25 @@ const SettingsView = ({
 				}}
 			/>
 
-			{showSearch ? (
+			{showSearch && (
 				<SearchInput
 					style={styles.searchInput}
 					value={search}
 					onChangeText={setSearch}
 				/>
-			) : null}
+			)}
 
-			{children && childrenPosition === 'top' ? (
+			{headerText && (
+				<View style={styles.headerText}>
+					<Text01S color="gray1">{headerText}</Text01S>
+				</View>
+			)}
+
+			{children && childrenPosition === 'top' && (
 				<View color="black">{children}</View>
-			) : null}
+			)}
 
-			{listData ? (
+			{listData && (
 				<View
 					style={[
 						styles.listContent,
@@ -88,19 +98,32 @@ const SettingsView = ({
 						bounces={!!fullHeight}
 					/>
 				</View>
-			) : null}
+			)}
 
-			{children && childrenPosition === 'bottom' ? (
+			{footerText && (
+				<View style={styles.footerText}>
+					<Text02S color="gray1">{footerText}</Text02S>
+				</View>
+			)}
+
+			{children && childrenPosition === 'bottom' && (
 				<View style={styles.childrenContent} color="black">
 					{children}
 				</View>
-			) : null}
+			)}
 		</View>
 	);
 };
 
 const styles = StyleSheet.create({
 	searchInput: {
+		marginHorizontal: 16,
+	},
+	headerText: {
+		marginHorizontal: 16,
+	},
+	footerText: {
+		marginTop: 16,
 		marginHorizontal: 16,
 	},
 	listContent: {

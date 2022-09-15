@@ -10,6 +10,7 @@ import ManageSeedPhrase from '../../screens/Settings/ManageSeedPhrase';
 import CurrenciesSettings from '../../screens/Settings/Currencies';
 import ElectrumConfig from '../../screens/Settings/ElectrumConfig';
 import CoinSelectPreference from '../../screens/Settings/CoinSelectPreference';
+import PaymentPreference from '../../screens/Settings/PaymentPreference';
 import AddressTypePreference from '../../screens/Settings/AddressTypePreference';
 import DevSettings from '../../screens/Settings/DevSettings';
 import BackupData from '../../screens/Settings/Backup/BackupData';
@@ -56,6 +57,7 @@ export type SettingsStackParamList = {
 	ElectrumConfig: undefined;
 	TempSettings: undefined;
 	CoinSelectPreference: undefined;
+	PaymentPreference: undefined;
 	AddressTypePreference: undefined;
 	DevSettings: undefined;
 	BackupData: undefined;
@@ -111,6 +113,7 @@ const SettingsNavigator = (): ReactElement => {
 					name="CoinSelectPreference"
 					component={CoinSelectPreference}
 				/>
+				<Stack.Screen name="PaymentPreference" component={PaymentPreference} />
 				<Stack.Screen
 					name="AddressTypePreference"
 					component={AddressTypePreference}

@@ -101,6 +101,21 @@ const customElectrumPeers = {
 	timestamp: null,
 };
 
+const defaultReceivePreference = [
+	{
+		key: 'lightning',
+		title: 'Lightning (Bitkit)',
+	},
+	{
+		key: 'onchain',
+		title: 'On-chain (Bitkit)',
+	},
+	{
+		key: 'lnurlpay',
+		title: 'LNURL-pay',
+	},
+];
+
 export const defaultSettingsShape: ISettings = {
 	loading: false,
 	error: false,
@@ -118,6 +133,8 @@ export const defaultSettingsShape: ISettings = {
 	customElectrumPeers,
 	coinSelectAuto: true,
 	coinSelectPreference: 'small',
+	receivePreference: defaultReceivePreference,
+	enableOfflinePayments: false,
 	unitPreference: 'asset',
 	showSuggestions: true,
 	transactionSpeed: 'normal',

@@ -88,7 +88,7 @@ const General = ({ navigation }): ReactElement => {
 						title: 'Display suggestions',
 						enabled: showSuggestions,
 						type: 'switch',
-						onPress: async (): Promise<void> => {
+						onPress: (): void => {
 							updateSettings({ showSuggestions: !showSuggestions });
 						},
 						hide: false,
@@ -106,10 +106,8 @@ const General = ({ navigation }): ReactElement => {
 		],
 		[
 			selectedCurrency,
-			unitsBitcoin,
 			selectedBitcoinUnit,
 			selectedAddressType,
-			transactionSpeeds,
 			selectedTransactionSpeed,
 			showSuggestions,
 			navigation,

@@ -9196,6 +9196,11 @@ react-native-dotenv@^3.3.1:
   dependencies:
     dotenv "^10.0.0"
 
+react-native-draggable-flatlist@^3.1.2:
+  version "3.1.2"
+  resolved "https://registry.yarnpkg.com/react-native-draggable-flatlist/-/react-native-draggable-flatlist-3.1.2.tgz#b66538007f645ccd851c729d4b8a8f7e07666d3f"
+  integrity sha512-cqBR+lZktTqHY/J7V0aq+TZNkuqeILxwZ5bBXKndokwH4qvZl7ifijM7LlfWhfhU1/pzjketTsX7P2zyojfAaQ==
+
 react-native-flipper@^0.162.0:
   version "0.162.0"
   resolved "https://registry.yarnpkg.com/react-native-flipper/-/react-native-flipper-0.162.0.tgz#9919adb743dae50a80d914eaa3a53eb33eaf39ec"

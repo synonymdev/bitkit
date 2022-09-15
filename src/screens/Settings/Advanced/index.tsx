@@ -16,7 +16,7 @@ const AdvancedSettings = ({ navigation }): ReactElement => {
 					{
 						title: 'Payment preference',
 						type: 'button',
-						onPress: (): void => {},
+						onPress: (): void => navigation.navigate('PaymentPreference'),
 						hide: false,
 					},
 					{

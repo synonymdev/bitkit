@@ -23,6 +23,10 @@ export interface ICustomElectrumPeer {
 	tcp: number | undefined; //tcp port
 	protocol?: TProtocol;
 }
+type TReceiveOption = {
+	key: string;
+	title: string;
+};
 
 export interface ISettings {
 	loading: boolean;
@@ -41,6 +45,8 @@ export interface ISettings {
 	selectedNetwork: string;
 	coinSelectAuto: boolean;
 	coinSelectPreference: TCoinSelectPreference;
+	receivePreference: TReceiveOption[];
+	enableOfflinePayments: boolean;
 	unitPreference: 'asset' | 'fiat';
 	showSuggestions: boolean;
 	transactionSpeed: TTransactionSpeed;
