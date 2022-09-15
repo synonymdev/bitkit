@@ -19,6 +19,7 @@ import {
 	removeInvoiceTag,
 } from '../../../store/actions/receive';
 import useColors from '../../../hooks/colors';
+import useKeyboard from '../../../hooks/keyboard';
 import { toggleView } from '../../../store/actions/user';
 
 const ReceiveDetails = ({ navigation }): ReactElement => {
@@ -28,6 +29,7 @@ const ReceiveDetails = ({ navigation }): ReactElement => {
 		(store: Store) => store.user.viewController?.numberPadReceive.isOpen,
 	);
 	const colors = useColors();
+	const { keyboardShown } = useKeyboard();
 	const buttonContainerStyles = useMemo(
 		() => ({
 			...styles.buttonContainer,
@@ -127,13 +129,15 @@ const ReceiveDetails = ({ navigation }): ReactElement => {
 						}}
 					/>
 				</View>
-				<View style={buttonContainerStyles}>
-					<Button
-						size="lg"
-						text="Show QR Code"
-						onPress={(): void => navigation.navigate('Receive')}
-					/>
-				</View>
+				{!keyboardShown && (
+					<View style={buttonContainerStyles}>
+						<Button
+							size="lg"
+							text="Show QR Code"
+							onPress={(): void => navigation.navigate('Receive')}
+						/>
+					</View>
+				)}
 			</View>
 		</ThemedView>
 	);

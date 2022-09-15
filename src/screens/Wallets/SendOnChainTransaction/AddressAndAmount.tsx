@@ -49,11 +49,12 @@ import { decodeLightningInvoice } from '../../../utils/lightning';
 import { TInvoice } from '@synonymdev/react-native-ldk';
 import { processInputData } from '../../../utils/scanner';
 import { useBottomSheetBackPress } from '../../../hooks/bottomSheet';
+import useKeyboard from '../../../hooks/keyboard';
 import AddressOrSlashpay from './AddressOrSlashpay';
 
 const AddressAndAmount = ({ index = 0, navigation }): ReactElement => {
 	useBottomSheetBackPress('sendNavigation');
-
+	const { keyboardShown } = useKeyboard();
 	const insets = useSafeAreaInsets();
 	const buttonContainerStyles = useMemo(
 		() => ({
@@ -378,7 +379,7 @@ const AddressAndAmount = ({ index = 0, navigation }): ReactElement => {
 					/>
 				</View>
 				<View style={buttonContainerStyles}>
-					{!isInvalid() && (
+					{!keyboardShown && !isInvalid() && (
 						<Button
 							size="lg"
 							text="Next"
