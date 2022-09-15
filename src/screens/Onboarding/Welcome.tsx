@@ -5,7 +5,7 @@ import { Display, Text01S, View, AnimatedView } from '../../styles/components';
 import GlowingBackground from '../../components/GlowingBackground';
 import SafeAreaInsets from '../../components/SafeAreaInsets';
 import Button from '../../components/Button';
-import BitKitLogo from '../../assets/bitkit-logo.svg';
+import BitkitLogo from '../../assets/bitkit-logo.svg';
 import useColors from '../../hooks/colors';
 
 const OnboardingWelcomeScreen = ({
@@ -59,7 +59,7 @@ const OnboardingWelcomeScreen = ({
 						</View>
 
 						<View style={styles.logoContainer} color={'transparent'}>
-							<BitKitLogo width={72} />
+							<BitkitLogo width={72} />
 							<SafeAreaInsets type={'bottom'} />
 						</View>
 					</View>

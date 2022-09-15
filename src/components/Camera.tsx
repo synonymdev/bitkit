@@ -24,7 +24,7 @@ const Camera = ({
 		<View style={styles.notAuthorizedView}>
 			<EvilIcon name={'exclamation'} size={60} />
 			<Text style={styles.boldText}>
-				It appears BitKit does not have permission to access your camera.
+				It appears Bitkit does not have permission to access your camera.
 			</Text>
 			<Text style={styles.text}>
 				To utilize this feature in the future you will need to enable camera
@@ -35,7 +35,7 @@ const Camera = ({
 
 	const onMountError = (): void => {
 		console.error(
-			'An error was encountered when loading the camera. Please ensure BitKit has permission to use this feature in your phone settings.',
+			'An error was encountered when loading the camera. Please ensure Bitkit has permission to use this feature in your phone settings.',
 		);
 		showErrorNotification(
 			{
@@ -69,7 +69,7 @@ const Camera = ({
 					}
 					androidCameraPermissionOptions={{
 						title: 'Permission to use camera',
-						message: 'BitKit needs permission to use your camera',
+						message: 'Bitkit needs permission to use your camera',
 						buttonPositive: 'Okay',
 						buttonNegative: 'Cancel',
 					}}>
