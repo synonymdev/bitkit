@@ -82,7 +82,6 @@ export const TabBar = ({ navigation, state }): ReactElement => {
 			data: {
 				isOpen: true,
 				snapPoint: 0,
-				initial: 'Receive',
 			},
 		});
 	}, []);
@@ -93,7 +92,6 @@ export const TabBar = ({ navigation, state }): ReactElement => {
 			data: {
 				isOpen: true,
 				snapPoint: 0,
-				initial: 'AddressAndAmount',
 			},
 		});
 	}, []);

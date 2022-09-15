@@ -24,25 +24,20 @@ const navOptions: NativeStackNavigationOptions = {
 };
 
 const ReceiveNavigation = (): ReactElement => {
+	const isOpen = useSelector(
+		(store: Store) => store.user.viewController?.receiveNavigation,
+	)?.isOpen;
 	const insets = useSafeAreaInsets();
 	const { height } = useSafeAreaFrame();
 	const snapPoints = useMemo(
 		() => [height - (60 + insets.top)],
 		[height, insets.top],
 	);
-	const { isOpen, initial } =
-		useSelector(
-			(store: Store) => store.user.viewController?.receiveNavigation,
-		) ?? {};
-
-	const initialRouteName = !isOpen ? undefined : initial;
 
 	return (
 		<BottomSheetWrapper view="receiveNavigation" snapPoints={snapPoints}>
-			<NavigationContainer key={initialRouteName}>
-				<Stack.Navigator
-					screenOptions={navOptions}
-					initialRouteName={initialRouteName}>
+			<NavigationContainer key={isOpen}>
+				<Stack.Navigator screenOptions={navOptions}>
 					<Stack.Group screenOptions={navOptions}>
 						<Stack.Screen name="Receive" component={Receive} />
 						<Stack.Screen name="ReceiveDetails" component={ReceiveDetails} />

@@ -3,7 +3,6 @@ import { getDispatch } from '../helpers';
 import { ok, Result } from '@synonymdev/result';
 import { IViewControllerData, TViewController } from '../types/user';
 import { defaultViewController } from '../shapes/user';
-import { getAssetNetwork } from '../../utils/wallet';
 
 const dispatch = getDispatch();
 
@@ -26,10 +25,6 @@ export const toggleView = (payload: {
 	// Assign snapPoint to 0 if not set
 	if (payload.data?.isOpen && payload.data?.snapPoint === undefined) {
 		payload.data.snapPoint = 0;
-	}
-	// Assign the correct assetNetwork based on the provided assetName.
-	if (payload.data?.assetName) {
-		payload.data.assetNetwork = getAssetNetwork(payload.data?.assetName);
 	}
 
 	dispatch({

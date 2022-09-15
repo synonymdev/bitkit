@@ -69,9 +69,6 @@ const AddressAndAmount = ({ index = 0, navigation }): ReactElement => {
 	const selectedNetwork = useSelector(
 		(store: Store) => store.wallet.selectedNetwork,
 	);
-	const initial = useSelector(
-		(store: Store) => store.user.viewController?.sendNavigation?.initial,
-	);
 	const numberPadIsOpen = useSelector(
 		(store: Store) => store.user.viewController?.numberPad.isOpen,
 	);
@@ -83,7 +80,6 @@ const AddressAndAmount = ({ index = 0, navigation }): ReactElement => {
 		undefined,
 	);
 	const transaction = useTransactionDetails();
-	const displayBackButton = initial === 'SendAssetPickerList';
 
 	const getDecodeAndSetLightningInvoice = async (): Promise<void> => {
 		try {
@@ -310,10 +306,7 @@ const AddressAndAmount = ({ index = 0, navigation }): ReactElement => {
 
 	return (
 		<ThemedView color="onSurface" style={styles.container}>
-			<BottomSheetNavigationHeader
-				title="Send Bitcoin"
-				displayBackButton={displayBackButton}
-			/>
+			<BottomSheetNavigationHeader title="Send Bitcoin" />
 			<View style={styles.content}>
 				<AmountToggle
 					sats={amount}

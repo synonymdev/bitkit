@@ -27,9 +27,7 @@ export interface IViewControllerData {
 	id?: string;
 	asset?: string;
 	assetNetwork?: TAssetNetwork;
-	assetName?: string;
 	snapPoint?: number;
-	initial?: string;
 	activityItem?: IActivityItem;
 	txid?: string;
 }

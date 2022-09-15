@@ -50,9 +50,9 @@ const navOptions: NativeStackNavigationOptions = {
 };
 
 const SendNavigation = (): ReactElement => {
-	const { isOpen, initial } =
-		useSelector((store: Store) => store.user.viewController?.sendNavigation) ??
-		{};
+	const isOpen = useSelector(
+		(store: Store) => store.user.viewController?.sendNavigation,
+	)?.isOpen;
 	const insets = useSafeAreaInsets();
 	const { height } = useSafeAreaFrame();
 	const snapPoints = useMemo(
@@ -60,19 +60,14 @@ const SendNavigation = (): ReactElement => {
 		[height, insets.top],
 	);
 
-	const initialRouteName = !isOpen ? undefined : initial;
-
 	return (
 		<BottomSheetWrapper
 			view="sendNavigation"
 			onClose={resetOnChainTransaction}
 			onOpen={setupOnChainTransaction}
 			snapPoints={snapPoints}>
-			<NavigationContainer key={initialRouteName}>
-				<Stack.Navigator
-					screenOptions={navOptions}
-					// @ts-ignore TODO: fix type
-					initialRouteName={initialRouteName}>
+			<NavigationContainer key={isOpen}>
+				<Stack.Navigator screenOptions={navOptions}>
 					<Stack.Group screenOptions={navOptions}>
 						<Stack.Screen
 							name="AddressAndAmount"

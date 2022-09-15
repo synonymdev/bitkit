@@ -5,7 +5,6 @@ export const defaultViewController: IViewControllerData = {
 	id: '',
 	asset: '',
 	assetNetwork: undefined,
-	assetName: undefined,
 	snapPoint: -1,
 	txid: undefined,
 };

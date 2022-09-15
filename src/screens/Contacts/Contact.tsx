@@ -62,8 +62,6 @@ export const Contact = ({ navigation, route }): JSX.Element => {
 									data: {
 										isOpen: true,
 										snapPoint: 0,
-										initial: 'AddressAndAmount',
-										assetName: 'Bitcoin',
 									},
 								});
 								await sleep(5); //This is only needed to prevent the view from briefly displaying the SendAssetList
