@@ -51,8 +51,8 @@ const navOptions: NativeStackNavigationOptions = {
 
 const SendNavigation = (): ReactElement => {
 	const isOpen = useSelector(
-		(store: Store) => store.user.viewController?.sendNavigation,
-	)?.isOpen;
+		(store: Store) => store.user.viewController.sendNavigation.isOpen,
+	);
 	const insets = useSafeAreaInsets();
 	const { height } = useSafeAreaFrame();
 	const snapPoints = useMemo(
