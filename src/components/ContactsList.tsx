@@ -21,6 +21,10 @@ const ContactItem = ({
 }): JSX.Element => {
 	const { profile } = useProfile(contact.url);
 
+	const name = useMemo(() => {
+		return contact?.name ?? profile?.name ?? ' ';
+	}, [contact?.name, profile?.name]);
+
 	return (
 		<TouchableOpacity
 			activeOpacity={0.8}
@@ -30,7 +34,7 @@ const ContactItem = ({
 			<ThemedView style={cstyles.container}>
 				<ProfileImage url={contact.url} image={profile?.image} size={48} />
 				<View style={cstyles.column}>
-					<Text01M style={cstyles.name}>{contact.name || profile.name}</Text01M>
+					<Text01M style={cstyles.name}>{name}</Text01M>
 					<SlashtagURL color="gray" url={contact.url} />
 				</View>
 			</ThemedView>
@@ -70,10 +74,12 @@ const ContactsList = ({
 		const sections: { [char: string]: IContactRecord[] } = {};
 
 		filteredContacts.forEach((contact) => {
-			const char = contact.name?.slice(0, 1) || 'undefined';
-			sections[char]
-				? sections[char].push(contact)
-				: (sections[char] = [contact]);
+			const char = contact?.name ? contact.name.slice(0, 1) : 'undefined';
+			if (char) {
+				sections[char]
+					? sections[char].push(contact)
+					: (sections[char] = [contact]);
+			}
 		});
 
 		const result = Object.entries(sections).map(([title, data]) => ({
