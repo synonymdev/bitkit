@@ -41,6 +41,7 @@ const BalanceHeader = (): ReactElement => {
 			<Money
 				sats={satoshis}
 				unit={balanceUnit}
+				enableHide={true}
 				highlight={true}
 				symbol={true}
 			/>

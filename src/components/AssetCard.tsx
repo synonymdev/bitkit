@@ -29,13 +29,13 @@ const AssetCard = ({
 			<View color="transparent" style={styles.col2}>
 				<Money
 					sats={satoshis}
-					hide={true}
+					enableHide={true}
 					size="text01m"
 					style={styles.value}
 				/>
 				<Money
 					sats={satoshis}
-					hide={true}
+					enableHide={true}
 					size="caption13M"
 					showFiat={true}
 					color="gray1"

@@ -41,6 +41,7 @@ import { updateSettings } from '../../../store/actions/settings';
 import BitcoinLogo from '../../../assets/bitcoin-logo.svg';
 import { capitalize } from '../../../utils/helpers';
 import type { RootStackParamList } from '../../../navigation/types';
+import DetectSwipe from '../../../components/DetectSwipe';
 
 const updateHeight = ({
 	height = new Animated.Value(0),
@@ -81,6 +82,7 @@ const WalletsDetail = (props: Props): ReactElement => {
 	const { assetType } = route.params;
 	const { satoshis } = useBalance({ onchain: true, lightning: true });
 	const bitcoinUnit = useSelector((store: Store) => store.settings.bitcoinUnit);
+	const hideBalance = useSelector((state: Store) => state.settings.hideBalance);
 	const colors = useColors();
 	const filter = useMemo(() => {
 		const types =
@@ -126,6 +128,10 @@ const WalletsDetail = (props: Props): ReactElement => {
 		},
 		[showDetails, height, headerHeight],
 	);
+
+	const toggleHideBalance = (): void => {
+		updateSettings({ hideBalance: !hideBalance });
+	};
 
 	const handleSwitchUnit = useCallback(() => {
 		const nextUnit = bitcoinUnit === 'satoshi' ? 'BTC' : 'satoshi';
@@ -178,7 +184,12 @@ const WalletsDetail = (props: Props): ReactElement => {
 										entering={FadeIn}
 										exiting={FadeOut}>
 										<TouchableOpacity onPress={handleSwitchUnit}>
-											<Money sats={satoshis} highlight={true} size="title" />
+											<Money
+												sats={satoshis}
+												enableHide={true}
+												highlight={true}
+												size="title"
+											/>
 										</TouchableOpacity>
 									</AnimatedView>
 								) : null}
@@ -190,11 +201,19 @@ const WalletsDetail = (props: Props): ReactElement => {
 									entering={FadeIn}
 									exiting={FadeOut}>
 									<View color={'transparent'} style={styles.balanceContainer}>
-										<TouchableOpacity
-											onPress={handleSwitchUnit}
-											style={styles.largeValueContainer}>
-											<Money sats={satoshis} highlight={true} />
-										</TouchableOpacity>
+										<DetectSwipe
+											onSwipeLeft={toggleHideBalance}
+											onSwipeRight={toggleHideBalance}>
+											<TouchableOpacity
+												onPress={handleSwitchUnit}
+												style={styles.largeValueContainer}>
+												<Money
+													sats={satoshis}
+													enableHide={true}
+													highlight={true}
+												/>
+											</TouchableOpacity>
+										</DetectSwipe>
 									</View>
 									{assetType === 'bitcoin' ? <BitcoinBreakdown /> : null}
 								</AnimatedView>

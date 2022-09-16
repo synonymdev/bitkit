@@ -89,7 +89,7 @@ const ListItem = ({
 				<View style={styles.col2}>
 					<Money
 						sats={value}
-						hide={true}
+						enableHide={true}
 						size="text01m"
 						style={styles.value}
 						sign={txType === 'sent' ? '-' : '+'}
@@ -97,7 +97,7 @@ const ListItem = ({
 					/>
 					<Money
 						sats={value}
-						hide={true}
+						enableHide={true}
 						size="caption13M"
 						style={styles.value}
 						showFiat={true}

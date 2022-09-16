@@ -38,9 +38,10 @@ const NetworkRow = ({
 				</View>
 			</View>
 			<View color={'transparent'} style={styles.valueContainer}>
-				<Money sats={satoshis} size="text01m" />
+				<Money sats={satoshis} size="text01m" enableHide={true} />
 				<Money
 					sats={satoshis}
+					enableHide={true}
 					size="caption13M"
 					showFiat={true}
 					color="gray1"

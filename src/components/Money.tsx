@@ -34,7 +34,7 @@ interface IMoney {
 	highlight?: boolean; // grey last 3 chars in sats/bitcoin or decimal in fiat
 	symbol?: boolean; // show symbol icon
 	color?: string;
-	hide?: boolean; // if true and settings.hideBalance === true it will replace number with dots
+	enableHide?: boolean; // if true and settings.hideBalance === true it will replace number with dots
 	style?: object;
 	sign?: string;
 }
@@ -50,7 +50,7 @@ const Money = (props: IMoney): ReactElement => {
 	const unit = props.unit ?? (showFiat ? 'fiat' : bitcoinUnit);
 	const showSymbol = props.symbol ?? (unit === 'fiat' ? true : false);
 	const color = props.color;
-	const hide = (props.hide ?? true) && hideBalance;
+	const hide = (props.enableHide ?? false) && hideBalance;
 	const sign = props.sign;
 
 	sats = Math.abs(sats);
@@ -138,15 +138,8 @@ const Money = (props: IMoney): ReactElement => {
 	}, [highlight, dv, unit, sats]);
 
 	if (hide) {
-		prim = prim
-			.split('')
-			.map(() => ' •') // Narrow No-Break Space
-			.join('');
-
-		secd = secd
-			.split('')
-			.map(() => ' •') // Narrow No-Break Space
-			.join('');
+		prim = '• • • • • • • •';
+		secd = '';
 	}
 
 	return (
