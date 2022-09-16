@@ -306,7 +306,10 @@ const AddressAndAmount = ({ index = 0, navigation }): ReactElement => {
 
 	return (
 		<ThemedView color="onSurface" style={styles.container}>
-			<BottomSheetNavigationHeader title="Send Bitcoin" />
+			<BottomSheetNavigationHeader
+				title="Send Bitcoin"
+				displayBackButton={false}
+			/>
 			<View style={styles.content}>
 				<AmountToggle
 					sats={amount}

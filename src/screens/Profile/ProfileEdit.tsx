@@ -137,7 +137,7 @@ export const ProfileEdit = ({ navigation }): JSX.Element => {
 							bottomSheet={true}
 							label="Label"
 							value={addLinkForm.label}
-							placeholder="For example ÔWebsiteÕ"
+							placeholder="For example 'Website'"
 							onChange={(label: string): void => {
 								setAddLinkForm({ ...addLinkForm, label });
 							}}

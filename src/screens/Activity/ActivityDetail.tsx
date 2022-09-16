@@ -422,7 +422,7 @@ const ActivityDetail = (props: Props): ReactElement => {
 								{slashTagsUrl ? (
 									<Button
 										style={styles.button}
-										text="Detatch"
+										text="Detach"
 										icon={
 											<UserMinusIcon height={16} width={16} color="brand" />
 										}
