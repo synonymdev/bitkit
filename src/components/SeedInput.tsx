@@ -14,6 +14,7 @@ const SeedInput = forwardRef(
 					color={valid ? 'white' : 'red'}
 					autoCapitalize="none"
 					autoCorrect={false}
+					returnKeyType="done"
 					{...props}
 				/>
 				<View style={styles.index}>

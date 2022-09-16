@@ -1,5 +1,5 @@
 import React, { memo, ReactElement, useMemo } from 'react';
-import { Image, StyleSheet, View } from 'react-native';
+import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useSelector } from 'react-redux';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Lottie from 'lottie-react-native';
@@ -12,12 +12,13 @@ import Store from '../../store/types';
 import { toggleView } from '../../store/actions/user';
 import { useBottomSheetBackPress } from '../../hooks/bottomSheet';
 import BottomSheetNavigationHeader from '../../components/BottomSheetNavigationHeader';
+import { navigate } from '../../navigation/root/RootNavigator';
 
 const confettiSrc = require('../../assets/lottie/confetti-orange.json');
 const imageSrc = require('../../assets/illustrations/coin-stack-x.png');
 
 const NewTxPrompt = (): ReactElement => {
-	const snapPoints = useMemo(() => [600], []);
+	const snapPoints = useMemo(() => [700], []);
 	const insets = useSafeAreaInsets();
 	const buttonContainerStyles = useMemo(
 		() => ({
@@ -34,13 +35,11 @@ const NewTxPrompt = (): ReactElement => {
 		(store: Store) => store.user.viewController?.newTxPrompt?.isOpen,
 	);
 
-	const transaction = useSelector((store: Store) => {
+	const activityItem = useSelector((store: Store) => {
 		if (!txid) {
 			return undefined;
 		}
-		const wallet = store.wallet.selectedWallet;
-		const network = store.wallet.selectedNetwork;
-		return store.wallet?.wallets[wallet]?.transactions[network]?.[txid];
+		return store.activity.items.find(({ id }) => id === txid);
 	});
 
 	useBottomSheetBackPress('newTxPrompt');
@@ -50,6 +49,17 @@ const NewTxPrompt = (): ReactElement => {
 			view: 'newTxPrompt',
 			data: { isOpen: false },
 		});
+	};
+
+	const handlePress = (): void => {
+		if (!activityItem) {
+			return;
+		}
+		toggleView({
+			view: 'newTxPrompt',
+			data: { isOpen: false },
+		});
+		navigate('ActivityDetail', { activityItem });
 	};
 
 	return (
@@ -68,8 +78,8 @@ const NewTxPrompt = (): ReactElement => {
 					<Caption13Up style={styles.received} color="gray1">
 						You just received
 					</Caption13Up>
-					{isOpen && transaction && (
-						<AmountToggle sats={transaction.value * 10e7} />
+					{isOpen && activityItem && (
+						<AmountToggle sats={activityItem.value} onPress={handlePress} />
 					)}
 				</View>
 
@@ -82,13 +92,19 @@ const NewTxPrompt = (): ReactElement => {
 						<Image source={imageSrc} style={styles.image4} />
 					</View>
 
-					{isOpen && transaction?.height === 0 && (
-						<View style={buttonContainerStyles}>
-							<ClockIcon color="gray1" />
-							<Text02M color="gray1" style={styles.confirmingText}>
-								Confirming
-							</Text02M>
-						</View>
+					{isOpen && (
+						<TouchableOpacity
+							style={buttonContainerStyles}
+							onPress={handlePress}>
+							{activityItem?.confirmed !== true && (
+								<>
+									<ClockIcon color="gray1" />
+									<Text02M color="gray1" style={styles.confirmingText}>
+										Confirming
+									</Text02M>
+								</>
+							)}
+						</TouchableOpacity>
 					)}
 				</View>
 			</View>
@@ -149,6 +165,7 @@ const styles = StyleSheet.create({
 		marginTop: 'auto',
 		flexDirection: 'row',
 		justifyContent: 'center',
+		minHeight: 50,
 	},
 	confirmingText: {
 		marginLeft: 8,
