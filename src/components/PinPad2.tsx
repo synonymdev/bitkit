@@ -12,7 +12,7 @@ import NumberPad from './NumberPad';
 import SafeAreaInsets from './SafeAreaInsets';
 import GlowingBackground from './GlowingBackground';
 import useColors from '../hooks/colors';
-import { wipeWallet } from '../store/actions/settings';
+import { wipeApp } from '../store/actions/settings';
 import { setKeychainValue, getKeychainValue, vibrate } from '../utils/helpers';
 import BitkitLogo from '../assets/bitkit-logo.svg';
 
@@ -95,7 +95,7 @@ const ChoosePIN = ({
 						'Pin attempt threshold breached. Wiping device. Hope you made a backup, friend.',
 					);
 					vibrate({ type: 'default' });
-					await wipeWallet({});
+					await wipeApp({});
 					Alert.alert('All wallet data has been wiped');
 				} else {
 					await reducePinAttemptsRemaining();

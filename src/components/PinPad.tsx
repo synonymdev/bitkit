@@ -9,7 +9,7 @@ import React, {
 import { StyleSheet, LayoutAnimation } from 'react-native';
 import { systemWeights } from 'react-native-typography';
 import { Text, TouchableOpacity, EvilIcon, View } from '../styles/components';
-import { updateSettings, wipeWallet } from '../store/actions/settings';
+import { updateSettings, wipeApp } from '../store/actions/settings';
 import NavigationHeader from './NavigationHeader';
 import { RouteProp, useNavigation } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
@@ -114,9 +114,9 @@ const PinPad = ({
 
 	useEffect(() => LayoutAnimation.easeInEaseOut());
 
-	const _wipeWallet = async (): Promise<void> => {
+	const _wipeApp = async (): Promise<void> => {
 		await onFailure();
-		await wipeWallet({});
+		await wipeApp({});
 	};
 
 	const handleClear = (_vibrate = true): void => {
@@ -160,7 +160,7 @@ const PinPad = ({
 						'Pin attempt threshold breached. Wiping device. Hope you made a backup, friend.',
 					);
 					vibrate({ type: 'default' });
-					await _wipeWallet();
+					await _wipeApp();
 				} else {
 					await reducePinAttemptsRemaining();
 				}

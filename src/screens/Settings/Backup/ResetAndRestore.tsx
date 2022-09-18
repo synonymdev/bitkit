@@ -10,7 +10,7 @@ import SafeAreaView from '../../../components/SafeAreaView';
 import Glow from '../../../components/Glow';
 import SafeAreaInsets from '../../../components/SafeAreaInsets';
 import type { SettingsScreenProps } from '../../../navigation/types';
-import { wipeWallet } from '../../../store/actions/settings';
+import { wipeApp } from '../../../store/actions/settings';
 import { toggleView } from '../../../store/actions/user';
 
 const imageSrc = require('../../../assets/illustrations/restore.png');
@@ -71,7 +71,7 @@ const ResetAndRestore = ({
 						description="Are you sure you want to reset your Bitkit Wallet? Do you have a backup of your recovery phrase and wallet data?"
 						onCancel={(): void => setShowDialog(false)}
 						onConfirm={(): void => {
-							wipeWallet({});
+							wipeApp({});
 							setShowDialog(false);
 						}}
 					/>
