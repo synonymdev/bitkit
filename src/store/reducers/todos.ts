@@ -2,7 +2,7 @@ import actions from '../actions/actions';
 import { ITodos } from '../types/todos';
 import { defaultTodosShape } from '../shapes/todos';
 
-const todos = (state = defaultTodosShape, action): ITodos => {
+const todos = (state: ITodos = defaultTodosShape, action): ITodos => {
 	switch (action.type) {
 		case actions.ADD_TODO:
 			return {

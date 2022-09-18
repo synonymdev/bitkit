@@ -2,7 +2,7 @@ import actions from '../actions/actions';
 import { IReceive } from '../types/receive';
 import { defaultReceiveShape } from '../shapes/receive';
 
-const receive = (state = defaultReceiveShape, action): IReceive => {
+const receive = (state: IReceive = defaultReceiveShape, action): IReceive => {
 	switch (action.type) {
 		case actions.UPDATE_INVOICE:
 			const tags = action.payload.tags ?? [];

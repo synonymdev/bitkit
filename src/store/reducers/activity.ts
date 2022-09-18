@@ -4,7 +4,7 @@ import { defaultActivityShape } from '../shapes/activity';
 import { mergeActivityItems } from '../../utils/activity';
 
 const activity = (
-	state: IActivity = { ...defaultActivityShape },
+	state: IActivity = defaultActivityShape,
 	action,
 ): IActivity => {
 	switch (action.type) {

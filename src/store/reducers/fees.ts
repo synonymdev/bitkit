@@ -20,7 +20,7 @@ const fees = (state: IFees = defaultFeesShape, action): IFees => {
 				},
 			};
 
-		case actions.WIPE_WALLET:
+		case actions.RESET_FEES_STORE:
 			return { ...defaultFeesShape };
 
 		default:

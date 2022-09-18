@@ -5,9 +5,9 @@ import { getSelectedNetwork, getSelectedWallet } from '../../utils/wallet';
 import { resetKeychainValue } from '../../utils/helpers';
 import { wipeLdkStorage } from '../../utils/lightning';
 import { removePin } from '../../utils/settings';
-import { resetActivityStore } from './activity';
 import { TAvailableNetworks } from '../../utils/networks';
 import { ICustomElectrumPeer } from '../types/settings';
+import { showSuccessNotification } from '../../utils/notifications';
 
 const dispatch = getDispatch();
 
@@ -35,8 +35,8 @@ export const resetSettingsStore = (): Result<string> => {
  * @param {string} [selectedWallet]
  * @return {Promise<Result<string>>}
  */
-export const wipeWallet = async ({
-	selectedWallet = undefined,
+export const wipeApp = async ({
+	selectedWallet,
 }: {
 	selectedWallet?: string | undefined;
 }): Promise<Result<string>> => {
@@ -45,16 +45,21 @@ export const wipeWallet = async ({
 			selectedWallet = getSelectedWallet();
 		}
 
+		// Reset Redux stores & persisted storage
+		dispatch({ type: actions.WIPE_APP });
+
+		// Reset everything else
 		await Promise.all([
 			resetKeychainValue({ key: selectedWallet }),
 			resetKeychainValue({ key: `${selectedWallet}passphrase` }),
-			removePin(),
 			resetKeychainValue({ key: 'lndMnemonic' }),
+			removePin(),
 			wipeLdkStorage({ selectedWallet }),
-			resetActivityStore(),
 		]);
-		dispatch({
-			type: actions.WIPE_WALLET,
+
+		showSuccessNotification({
+			title: 'Bitkit wiped successfully',
+			message: 'All app data has been reset.',
 		});
 
 		return ok('');

@@ -62,7 +62,6 @@ const lightning = (
 				version: action.payload?.version,
 			};
 		case actions.RESET_LIGHTNING_STORE:
-		case actions.WIPE_WALLET:
 			return { ...defaultLightningStoreShape };
 		default:
 			return state;

@@ -1,4 +1,6 @@
-import { combineReducers } from 'redux';
+import { AnyAction, combineReducers } from 'redux';
+import { storage } from '../mmkv-storage';
+import actions from '../actions/actions';
 import user from './user';
 import wallet from './wallet';
 import receive from './receive';
@@ -12,7 +14,7 @@ import fees from './fees';
 import metadata from './metadata';
 import slashtags from './slashtags';
 
-const appReducers = combineReducers({
+const appReducer = combineReducers({
 	user,
 	wallet,
 	receive,
@@ -27,4 +29,19 @@ const appReducers = combineReducers({
 	slashtags,
 });
 
-export default appReducers;
+const rootReducer = (
+	state: ReturnType<typeof appReducer> | undefined,
+	action: AnyAction,
+) => {
+	if (action.type === actions.WIPE_APP) {
+		console.log('Wiping app data...');
+		// Clear mmkv persisted storage
+		storage.clearAll();
+		// Reset all stores
+		return appReducer(undefined, action);
+	}
+
+	return appReducer(state, action);
+};
+
+export default rootReducer;

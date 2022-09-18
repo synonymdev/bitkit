@@ -4,7 +4,7 @@ import { IBlocktank } from '../types/blocktank';
 import { IGetOrderResponse } from '@synonymdev/blocktank-client';
 
 const blocktank = (
-	state: IBlocktank = { ...defaultBlocktankShape },
+	state: IBlocktank = defaultBlocktankShape,
 	action,
 ): IBlocktank => {
 	switch (action.type) {

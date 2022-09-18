@@ -1,10 +1,8 @@
 import React, { memo, ReactElement, useMemo, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+
 import Store from '../../../store/types';
-import { useSelector } from 'react-redux';
-import {
-	resetSettingsStore,
-	wipeWallet,
-} from '../../../store/actions/settings';
+import { resetSettingsStore, wipeApp } from '../../../store/actions/settings';
 import { IListData } from '../../../components/List';
 import {
 	resetSelectedWallet,
@@ -12,13 +10,15 @@ import {
 } from '../../../store/actions/wallet';
 import { resetUserStore } from '../../../store/actions/user';
 import { resetActivityStore } from '../../../store/actions/activity';
-import { resetMetaStore } from '../../../store/actions/metadata';
 import { resetLightningStore } from '../../../store/actions/lightning';
 import { resetBlocktankStore } from '../../../store/actions/blocktank';
 import SettingsView from './../SettingsView';
 import { resetSlashtagsStore } from '../../../store/actions/slashtags';
+import actions from '../../../store/actions/actions';
+import { resetFeesStore } from '../../../store/actions/fees';
 
 const SettingsMenu = (): ReactElement => {
+	const dispatch = useDispatch();
 	const [throwError, setThrowError] = useState(false);
 	const selectedWallet = useSelector(
 		(state: Store) => state.wallet.selectedWallet,
@@ -29,7 +29,7 @@ const SettingsMenu = (): ReactElement => {
 	const SettingsListData: IListData[] = useMemo(
 		() => [
 			{
-				title: 'Dev Settings',
+				title: 'App Cache',
 				data: [
 					{
 						title: 'Reset Current Wallet Store',
@@ -49,6 +49,12 @@ const SettingsMenu = (): ReactElement => {
 						title: 'Reset Lightning Store',
 						type: 'button',
 						onPress: resetLightningStore,
+						hide: false,
+					},
+					{
+						title: 'Reset Fees Store',
+						type: 'button',
+						onPress: resetFeesStore,
 						hide: false,
 					},
 					{
@@ -76,34 +82,30 @@ const SettingsMenu = (): ReactElement => {
 						hide: false,
 					},
 					{
-						title: 'Reset Slashtags store',
+						title: 'Reset Slashtags Store',
 						type: 'button',
-						onPress: () => resetSlashtagsStore(),
+						onPress: resetSlashtagsStore,
 						hide: false,
 					},
 					{
 						title: 'Reset All Stores',
 						type: 'button',
-						onPress: async (): Promise<void> => {
-							await Promise.all([
-								resetWalletStore(),
-								resetLightningStore(),
-								resetMetaStore(),
-								resetSettingsStore(),
-								resetActivityStore(),
-								resetUserStore(),
-								resetBlocktankStore(),
-								resetSlashtagsStore(),
-							]);
+						onPress: (): void => {
+							dispatch({ type: actions.WIPE_APP });
 						},
 						hide: false,
 					},
 					{
-						title: 'Wipe Wallet Data',
+						title: 'Wipe App',
 						type: 'button',
-						onPress: wipeWallet,
+						onPress: wipeApp,
 						hide: false,
 					},
+				],
+			},
+			{
+				title: 'Debug',
+				data: [
 					{
 						title: 'Trigger exception in React render',
 						type: 'button',

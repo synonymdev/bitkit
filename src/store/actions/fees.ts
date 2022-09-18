@@ -1,3 +1,5 @@
+import { ok, Result } from '@synonymdev/result';
+
 import actions from './actions';
 import { getDispatch, getStore } from '../helpers';
 import { getSelectedNetwork } from '../../utils/wallet';
@@ -36,4 +38,14 @@ export const updateOnchainFeeEstimates = async ({
 		});
 	}
 	return fees;
+};
+
+/*
+ * This resets the fees store to the default shape
+ */
+export const resetFeesStore = (): Result<string> => {
+	dispatch({
+		type: actions.RESET_FEES_STORE,
+	});
+	return ok('');
 };

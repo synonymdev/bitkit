@@ -6,7 +6,7 @@ import {
 } from '../types/wallet';
 import { defaultWalletStoreShape } from '../shapes/wallet';
 
-const wallet = (state = { ...defaultWalletStoreShape }, action): IWallet => {
+const wallet = (state: IWallet = defaultWalletStoreShape, action): IWallet => {
 	let selectedWallet = state.selectedWallet;
 	let selectedNetwork = state.selectedNetwork;
 	if (action.payload?.selectedWallet) {
@@ -188,7 +188,6 @@ const wallet = (state = { ...defaultWalletStoreShape }, action): IWallet => {
 			};
 
 		case actions.RESET_WALLET_STORE:
-		case actions.WIPE_WALLET:
 			return { ...defaultWalletStoreShape };
 
 		case actions.RESET_SELECTED_WALLET:

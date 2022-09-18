@@ -2,7 +2,10 @@ import actions from '../actions/actions';
 import { ISettings } from '../types/settings';
 import { defaultSettingsShape } from '../shapes/settings';
 
-const settings = (state = defaultSettingsShape, action): ISettings => {
+const settings = (
+	state: ISettings = defaultSettingsShape,
+	action,
+): ISettings => {
 	let selectedNetwork = state.selectedNetwork;
 	if (action.payload?.selectedNetwork) {
 		selectedNetwork = action.payload.selectedNetwork;
@@ -25,7 +28,6 @@ const settings = (state = defaultSettingsShape, action): ISettings => {
 			};
 
 		case actions.RESET_SETTINGS_STORE:
-		case actions.WIPE_WALLET:
 			return { ...defaultSettingsShape };
 
 		default:

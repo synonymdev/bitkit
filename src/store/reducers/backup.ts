@@ -2,7 +2,7 @@ import actions from '../actions/actions';
 import { defaultBackupShape } from '../shapes/backup';
 import { IBackup } from '../types/backup';
 
-const backup = (state: IBackup, action): IBackup => {
+const backup = (state: IBackup = defaultBackupShape, action): IBackup => {
 	switch (action.type) {
 		case actions.BACKUP_UPDATE:
 			return {
@@ -10,7 +10,6 @@ const backup = (state: IBackup, action): IBackup => {
 				...action.payload,
 			};
 		case actions.RESET_BACKUP_STORE:
-		case actions.WIPE_WALLET:
 			return { ...defaultBackupShape };
 		default:
 			return {

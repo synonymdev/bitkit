@@ -14,7 +14,7 @@ const updateLastUsedTags = (
 };
 
 const metadata = (
-	state: IMetadata = { ...defaultMetadataShape },
+	state: IMetadata = defaultMetadataShape,
 	action,
 ): IMetadata => {
 	switch (action.type) {
