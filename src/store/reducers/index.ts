@@ -1,4 +1,4 @@
-import { AnyAction, combineReducers } from 'redux';
+import { AnyAction, CombinedState, combineReducers } from 'redux';
 import { storage } from '../mmkv-storage';
 import actions from '../actions/actions';
 import user from './user';
@@ -32,7 +32,7 @@ const appReducer = combineReducers({
 const rootReducer = (
 	state: ReturnType<typeof appReducer> | undefined,
 	action: AnyAction,
-) => {
+): CombinedState<ReturnType<typeof appReducer>> => {
 	if (action.type === actions.WIPE_APP) {
 		console.log('Wiping app data...');
 		// Clear mmkv persisted storage
