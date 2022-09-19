@@ -105,9 +105,9 @@ const ContactsList = ({
 			SectionSeparatorComponent={Divider}
 			ListEmptyComponent={Empty}
 			renderSectionHeader={({ section: { title } }): ReactElement => (
-				<View style={styles.sectionHeader}>
+				<ThemedView style={styles.sectionHeader}>
 					<Caption13Up color="gray1">{title}</Caption13Up>
-				</View>
+				</ThemedView>
 			)}
 			renderItem={({ item: contact }): ReactElement => (
 				<ContactItem contact={contact} onPress={onPress} />
