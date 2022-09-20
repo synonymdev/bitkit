@@ -35,7 +35,7 @@ const BalanceHeader = (): ReactElement => {
 
 	return (
 		<TouchableOpacity style={styles.container} onPress={handlePress}>
-			<Caption13Up style={styles.title} color="gray">
+			<Caption13Up style={styles.title} color="gray1">
 				TOTAL BALANCE
 			</Caption13Up>
 			<Money
@@ -53,7 +53,7 @@ export default memo(BalanceHeader);
 
 const styles = StyleSheet.create({
 	title: {
-		marginBottom: 4,
+		marginBottom: 9,
 	},
 	container: {
 		flex: 1,
