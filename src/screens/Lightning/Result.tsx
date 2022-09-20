@@ -8,16 +8,21 @@ import NavigationHeader from '../../components/NavigationHeader';
 import Button from '../../components/Button';
 import Glow from '../../components/Glow';
 import useColors from '../../hooks/colors';
+import type { LightningScreenProps } from '../../navigation/types';
 
-const Result = ({ navigation }): ReactElement => {
+const Result = ({
+	navigation,
+}: LightningScreenProps<'Result'>): ReactElement => {
 	const colors = useColors();
 
 	return (
 		<GlowingBackground topLeft={colors.purple}>
 			<SafeAreaInsets type="top" />
 			<NavigationHeader
-				title="Add instant payments"
-				displayBackButton={false}
+				title="Add Instant Payments"
+				onClosePress={(): void => {
+					navigation.navigate('Tabs');
+				}}
 			/>
 			<View style={styles.root}>
 				<View>

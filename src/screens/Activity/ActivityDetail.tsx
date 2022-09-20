@@ -225,15 +225,15 @@ const ActivityDetail = (props: Props): ReactElement => {
 	let status = '';
 	if (value < 0) {
 		if (confirmed) {
-			status = 'Sent bitcoin';
+			status = 'Sent Bitcoin';
 		} else {
-			status = 'Sending bitcoin...';
+			status = 'Sending Bitcoin...';
 		}
 	} else {
 		if (confirmed) {
-			status = 'Received bitcoin';
+			status = 'Received Bitcoin';
 		} else {
-			status = 'Receiving bitcoin...';
+			status = 'Receiving Bitcoin...';
 		}
 	}
 
