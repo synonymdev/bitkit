@@ -46,7 +46,6 @@ export const Contact = ({ navigation, route }): JSX.Element => {
 			<SafeAreaInsets type={'top'} />
 			<NavigationHeader
 				title="Contact"
-				displayBackButton={false}
 				onClosePress={(): void => {
 					navigation.navigate('Tabs');
 				}}

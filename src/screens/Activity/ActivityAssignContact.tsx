@@ -9,7 +9,7 @@ import { addMetaSlashTagsUrlTag } from '../../store/actions/metadata';
 
 const ActivityAssignContact = ({ navigation, route }): ReactElement => {
 	return (
-		<ThemedView color="onSurface" style={styles.container}>
+		<ThemedView style={styles.container}>
 			<SafeAreaInsets type="top" />
 			<NavigationHeader title="Assign Contact" size="sm" />
 			<View style={styles.content}>

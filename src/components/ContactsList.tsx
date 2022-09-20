@@ -52,10 +52,12 @@ const ContactsList = ({
 	onPress,
 	searchFilter = '',
 	includeMyProfile = false,
+	sectionBackgroundColor = 'black',
 }: {
 	onPress: (contact: IContactRecord) => void;
 	searchFilter?: string;
 	includeMyProfile?: boolean;
+	sectionBackgroundColor?: string;
 }): ReactElement => {
 	const contacts = useSlashtags().contacts;
 	const { url: myProfileURL } = useSelectedSlashtag();
@@ -105,7 +107,7 @@ const ContactsList = ({
 			SectionSeparatorComponent={Divider}
 			ListEmptyComponent={Empty}
 			renderSectionHeader={({ section: { title } }): ReactElement => (
-				<ThemedView style={styles.sectionHeader}>
+				<ThemedView color={sectionBackgroundColor} style={styles.sectionHeader}>
 					<Caption13Up color="gray1">{title}</Caption13Up>
 				</ThemedView>
 			)}

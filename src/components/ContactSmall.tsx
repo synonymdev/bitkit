@@ -1,18 +1,27 @@
 import React, { memo } from 'react';
 import { StyleSheet } from 'react-native';
 
-import { Text02M, View } from '../styles/components';
+import { Text02M, TouchableOpacity } from '../styles/components';
+import { useSlashtags } from '../components/SlashtagsProvider';
 import ProfileImage from './ProfileImage';
-import { useProfile } from '../hooks/slashtags';
 
-export const ContactSmall = ({ url }: { url: string }): JSX.Element => {
-	const { profile } = useProfile(url);
+export const ContactSmall = ({
+	url,
+	onPress,
+}: {
+	url: string;
+	onPress?: Function;
+}): JSX.Element => {
+	const profile = useSlashtags().contacts[url];
 
 	return (
-		<View color="white05" style={styles.container}>
+		<TouchableOpacity
+			onPress={onPress}
+			color="white05"
+			style={styles.container}>
 			<ProfileImage url={url} image={profile?.image} size={24} />
 			<Text02M style={styles.name}>{profile?.name}</Text02M>
-		</View>
+		</TouchableOpacity>
 	);
 };
 

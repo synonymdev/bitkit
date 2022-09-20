@@ -24,47 +24,50 @@ const Contacts = ({ navigation }): ReactElement => {
 
 	const { sdk } = useSlashtags();
 
+	const handlePress = async (contact): Promise<void> => {
+		const url = contact.url;
+		const payConfig = await getSlashPayConfig(sdk, url);
+
+		const onChainAddresses = payConfig
+			.filter((e) => {
+				return Object.keys(EAddressTypeNames).includes(e.type);
+			})
+			.map((config) => config.value);
+
+		const address = onChainAddresses.find(
+			(a) => validateAddress({ address: a }).isValid,
+		);
+
+		if (!address) {
+			Alert.alert('Error', 'No valid address found.');
+			return;
+		}
+
+		await updateBitcoinTransaction({
+			selectedWallet,
+			selectedNetwork,
+			transaction: {
+				outputs: [
+					{
+						address,
+						value: transaction.outputs?.[0]?.value ?? 0,
+						index: 0,
+					},
+				],
+				slashTagsUrl: url,
+			},
+		});
+
+		navigation.pop();
+	};
+
 	return (
 		<ThemedView color="onSurface" style={styles.container}>
 			<NavigationHeader title="Send to Contact" size="sm" />
 			<View style={styles.content}>
 				<ContactsList
-					onPress={async (contact): Promise<void> => {
-						const url = contact.url;
-						const payConfig = await getSlashPayConfig(sdk, url);
-
-						const onChainAddresses = payConfig
-							.filter((e) => {
-								return Object.keys(EAddressTypeNames).includes(e.type);
-							})
-							.map((config) => config.value);
-
-						const address = onChainAddresses.find(
-							(a) => validateAddress({ address: a }).isValid,
-						);
-
-						if (!address) {
-							Alert.alert('Error', 'No valid address found.');
-							return;
-						}
-
-						await updateBitcoinTransaction({
-							selectedWallet,
-							selectedNetwork,
-							transaction: {
-								outputs: [
-									{
-										address,
-										value: transaction.outputs?.[0]?.value ?? 0,
-										index: 0,
-									},
-								],
-								slashTagsUrl: url,
-							},
-						});
-
-						navigation.pop();
-					}}
+					onPress={handlePress}
+					sectionBackgroundColor="onSurface"
 				/>
 			</View>
 		</ThemedView>

@@ -203,6 +203,10 @@ const ActivityDetail = (props: Props): ReactElement => {
 		deleteMetaSlashTagsUrlTag(id);
 	};
 
+	const handleContact = (): void => {
+		navigation.navigate('Contact', { url: slashTagsUrl });
+	};
+
 	useEffect(() => {
 		if (txDetails || !extended) {
 			return;
@@ -296,7 +300,7 @@ const ActivityDetail = (props: Props): ReactElement => {
 			<Canvas style={[styles.canvas, size]}>
 				<Glow color={glowColor} size={size} />
 			</Canvas>
-			<NavigationHeader title={status} />
+			<NavigationHeader title={status} onClosePress={navigation.popToTop} />
 			<ScrollView
 				contentContainerStyle={styles.scrollContent}
 				showsVerticalScrollIndicator={false}>
@@ -379,7 +383,12 @@ const ActivityDetail = (props: Props): ReactElement => {
 								{slashTagsUrl && (
 									<Section
 										title="CONTACT"
-										value={<ContactSmall url={slashTagsUrl} />}
+										value={
+											<ContactSmall
+												url={slashTagsUrl}
+												onPress={handleContact}
+											/>
+										}
 									/>
 								)}
 								<Section
