@@ -45,7 +45,7 @@ const Result = ({ navigation }: BackupScreenProps<'Result'>): ReactElement => {
 			</View>
 
 			<View style={nextButtonContainer}>
-				<Button size="lg" text="OK" onPress={handleButtonPress} />
+				<Button size="large" text="OK" onPress={handleButtonPress} />
 			</View>
 		</ThemedView>
 	);

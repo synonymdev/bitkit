@@ -126,7 +126,7 @@ const BackupPrompt = ({ screen }: { screen: string }): ReactElement => {
 				<View style={buttonContainerStyles}>
 					<Button
 						style={styles.button}
-						size="lg"
+						size="large"
 						variant="secondary"
 						text="Later"
 						onPress={handleLater}
@@ -134,7 +134,7 @@ const BackupPrompt = ({ screen }: { screen: string }): ReactElement => {
 					<View style={styles.divider} />
 					<Button
 						style={styles.button}
-						size="lg"
+						size="large"
 						text="Back Up"
 						onPress={handleBackup}
 					/>

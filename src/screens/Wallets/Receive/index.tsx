@@ -263,7 +263,7 @@ const Receive = ({ navigation }): ReactElement => {
 			</View>
 			<View style={buttonContainerStyles}>
 				<Button
-					size="lg"
+					size="large"
 					text="Specify Invoice"
 					onPress={(): void => navigation.navigate('ReceiveDetails')}
 				/>

@@ -132,7 +132,7 @@ const ReceiveDetails = ({ navigation }): ReactElement => {
 				{!keyboardShown && (
 					<View style={buttonContainerStyles}>
 						<Button
-							size="lg"
+							size="large"
 							text="Show QR Code"
 							onPress={(): void => navigation.navigate('Receive')}
 						/>

@@ -43,7 +43,7 @@ const ResetAndRestore = ({
 
 						<View style={styles.buttonContainer}>
 							<Button
-								size="lg"
+								size="large"
 								variant="secondary"
 								style={styles.button}
 								text="Back Up First"
@@ -56,7 +56,7 @@ const ResetAndRestore = ({
 							/>
 							<View style={styles.divider} />
 							<Button
-								size="lg"
+								size="large"
 								style={styles.button}
 								text="Reset Wallet"
 								onPress={(): void => setShowDialog(true)}

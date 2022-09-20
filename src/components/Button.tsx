@@ -16,7 +16,7 @@ export interface IButton extends TouchableOpacityProps {
 	text: string | ReactElement;
 	color?: string;
 	variant?: 'primary' | 'secondary' | 'transparent';
-	size?: string;
+	size?: 'small' | 'large';
 	disabled?: boolean;
 	loading?: boolean;
 	icon?: ReactElement;
@@ -105,7 +105,7 @@ const styles = StyleSheet.create({
 	buttonLarge: {
 		height: 56,
 		borderRadius: 64,
-		paddingHorizontal: 28,
+		paddingHorizontal: 23,
 		minWidth: 110,
 	},
 	buttonPrimary: {},

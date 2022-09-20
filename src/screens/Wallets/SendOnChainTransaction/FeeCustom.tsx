@@ -58,7 +58,7 @@ const FeeRate = ({ navigation }): ReactElement => {
 
 				<View style={nextButtonContainer}>
 					<Button
-						size="lg"
+						size="large"
 						text="Done"
 						disabled={transaction.satsPerByte === 0}
 						onPress={(): void => navigation.navigate('ReviewAndSend')}

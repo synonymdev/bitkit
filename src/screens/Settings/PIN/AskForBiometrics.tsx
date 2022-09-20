@@ -117,7 +117,7 @@ const ChoosePIN = ({ navigation }): ReactElement => {
 					</View>
 				)}
 				<Button
-					size="lg"
+					size="large"
 					text={buttonText}
 					onPress={handleButtonPress}
 					disabled={!biometryData}

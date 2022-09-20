@@ -79,7 +79,7 @@ const Result = ({ navigation, route }): ReactElement => {
 
 			<View style={nextButtonContainer}>
 				<Button
-					size="lg"
+					size="large"
 					text={success ? 'Close' : 'Try Again'}
 					onPress={handleButtonPress}
 				/>

@@ -65,7 +65,7 @@ const PINPrompt = (): ReactElement => {
 				<View style={buttonContainerStyles}>
 					<Button
 						style={styles.button}
-						size="lg"
+						size="large"
 						variant="secondary"
 						text="Later"
 						onPress={handleLater}
@@ -73,7 +73,7 @@ const PINPrompt = (): ReactElement => {
 					<View style={styles.divider} />
 					<Button
 						style={styles.button}
-						size="lg"
+						size="large"
 						text="Secure Wallet"
 						onPress={handlePIN}
 					/>

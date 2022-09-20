@@ -147,7 +147,7 @@ const ExportToPhone = ({
 
 					<View style={styles.buttonContainer}>
 						<Button
-							size="lg"
+							size="large"
 							disabled={isCreating}
 							style={styles.button}
 							text="Export Wallet Data To Phone"

@@ -383,7 +383,7 @@ const AddressAndAmount = ({ index = 0, navigation }): ReactElement => {
 				<View style={buttonContainerStyles}>
 					{!keyboardShown && !isInvalid() && (
 						<Button
-							size="lg"
+							size="large"
 							text="Next"
 							onPress={(): void => {
 								let view = 'ReviewAndSend';
