@@ -83,6 +83,8 @@ import {
 	twitterIcon,
 	listIcon,
 } from '../assets/icons/settings';
+import { bitfinexIcon } from '../assets/icons/widgets';
+
 import { logo } from '../assets/icons/onboarding';
 import _SafeAreaView from '../components/SafeAreaView';
 
@@ -943,6 +945,13 @@ export const BrokenLinkIcon = styled(SvgXml).attrs((props) => ({
 	xml: brokenLinkIcon(
 		props?.color ? props.theme.colors[props.color] : '#FF6600',
 	),
+	height: props?.height ?? '32px',
+	width: props?.width ?? '32px',
+	color: undefined,
+}))({});
+
+export const BitfinexIcon = styled(SvgXml).attrs((props) => ({
+	xml: bitfinexIcon(),
 	height: props?.height ?? '32px',
 	width: props?.width ?? '32px',
 	color: undefined,

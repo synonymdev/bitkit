@@ -8,6 +8,7 @@ import Header from './Header';
 import DetectSwipe from '../../components/DetectSwipe';
 import BalanceHeader from '../../components/BalanceHeader';
 import TodoCarousel from '../../components/TodoCarousel';
+import Widgets from '../../components/Widgets';
 import ConnectivityIndicator from '../../components/ConnectivityIndicator';
 import SafeAreaView from '../../components/SafeAreaView';
 import AssetCard from '../../components/AssetCard';
@@ -76,6 +77,7 @@ const Wallets = ({ navigation }): ReactElement => {
 					) : (
 						<>
 							<TodoCarousel />
+							<Widgets />
 							<View style={styles.content}>
 								<ConnectivityIndicator />
 								<Subtitle style={styles.assetsTitle}>Assets</Subtitle>
