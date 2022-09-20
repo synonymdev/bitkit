@@ -1,19 +1,16 @@
-import React, { ReactElement, useMemo, memo } from 'react';
+import React, { ReactElement, memo } from 'react';
 import { useSelector } from 'react-redux';
 import {
 	createNativeStackNavigator,
 	NativeStackNavigationOptions,
 } from '@react-navigation/native-stack';
-import {
-	useSafeAreaFrame,
-	useSafeAreaInsets,
-} from 'react-native-safe-area-context';
 
 import BottomSheetWrapper from '../../components/BottomSheetWrapper';
 import Receive from '../../screens/Wallets/Receive';
 import ReceiveDetails from '../../screens/Wallets/Receive/ReceiveDetails';
 import ReceiveNumberPad from '../../screens/Wallets/Receive/ReceiveNumberPad';
 import Tags from '../../screens/Wallets/Receive/Tags';
+import { useSnapPoints } from '../../hooks/bottomSheet';
 import { NavigationContainer } from '../../styles/components';
 import Store from '../../store/types';
 
@@ -24,14 +21,9 @@ const navOptions: NativeStackNavigationOptions = {
 };
 
 const ReceiveNavigation = (): ReactElement => {
+	const snapPoints = useSnapPoints('large');
 	const isOpen = useSelector(
 		(store: Store) => store.user.viewController.receiveNavigation.isOpen,
-	);
-	const insets = useSafeAreaInsets();
-	const { height } = useSafeAreaFrame();
-	const snapPoints = useMemo(
-		() => [height - (60 + insets.top)],
-		[height, insets.top],
 	);
 
 	return (

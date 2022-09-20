@@ -1,8 +1,30 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import { BackHandler, NativeEventSubscription } from 'react-native';
+import {
+	useSafeAreaFrame,
+	useSafeAreaInsets,
+} from 'react-native-safe-area-context';
 import { toggleView } from '../store/actions/user';
 import { TViewController } from '../store/types/user';
 import { useAppSelector } from './redux';
+
+export const useSnapPoints = (size: 'small' | 'large'): number[] => {
+	const { height } = useSafeAreaFrame();
+	const insets = useSafeAreaInsets();
+
+	const snapPoints = useMemo(() => {
+		if (size === 'large') {
+			return [height - (60 + insets.top)];
+		}
+		if (size === 'small') {
+			return [460 + insets.bottom];
+		}
+
+		return [600];
+	}, [height, insets]);
+
+	return snapPoints;
+};
 
 export const useBottomSheetBackPress = (
 	viewController: TViewController,

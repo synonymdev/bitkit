@@ -51,7 +51,7 @@ export const Percentage = ({ value, type }): ReactElement => {
 				<SavingsIcon color="orange" height={32} width={32} />
 			)}
 
-			<Headline lineHeight="40px">
+			<Headline lineHeight="40px" style={styles.pText}>
 				{value}
 				<Text01S>%</Text01S>
 			</Headline>
@@ -354,7 +354,9 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		justifyContent: 'space-between',
 		alignItems: 'center',
-		width: 100,
+	},
+	pText: {
+		marginLeft: 8,
 	},
 	numberpad: {
 		marginHorizontal: -16,
