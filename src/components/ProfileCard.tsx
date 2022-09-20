@@ -1,12 +1,15 @@
 import React, { useRef } from 'react';
-import { useEffect } from 'react';
-import { TextInput as ITextInput, StyleSheet } from 'react-native';
-import { TouchableOpacity } from 'react-native';
-import { Text, Title, TextInput, View, CameraIcon } from '../styles/components';
+import { View, TouchableOpacity, TextInput, StyleSheet } from 'react-native';
+import { launchImageLibrary } from 'react-native-image-picker';
+import {
+	Text,
+	Title,
+	TextInputNoOutline,
+	CameraIcon,
+} from '../styles/components';
 import { profileNameMultiLine } from '../utils/helpers';
 import ProfileImage from './ProfileImage';
 import { SlashtagURL } from './SlashtagURL';
-import { launchImageLibrary } from 'react-native-image-picker';
 import { BasicProfile } from '../store/types/slashtags';
 
 export const ProfileCard = ({
@@ -27,21 +30,18 @@ export const ProfileCard = ({
 	const name = profile?.name;
 	const bio = profile?.bio?.slice?.(0, 160);
 
-	const nameRef = useRef<ITextInput | null>(null);
-	const bioRef = useRef<ITextInput | null>(null);
-
-	useEffect(() => nameRef.current?.focus(), [resolving]);
+	const bioRef = useRef<TextInput | null>(null);
 
 	return (
-		<View style={styles.container}>
+		<>
 			<View style={styles.row}>
-				<View>
+				<View style={styles.text}>
 					{editable && !resolving ? (
-						<TextInput
-							ref={nameRef}
-							autoFucus={true}
-							style={styles.name}
-							value={name?.replace(/\s+/g, '\n')}
+						<TextInputNoOutline
+							autoFocus={!name}
+							// placeholder doesn't like the lineHeight
+							style={[styles.name, name && styles.nameFilled]}
+							value={name}
 							placeholder={
 								contact ? "Contact's name" : 'Your public\nprofile name'
 							}
@@ -90,8 +90,7 @@ export const ProfileCard = ({
 			</View>
 
 			{editable && !contact ? (
-				<TextInput
-					color="gray1"
+				<TextInputNoOutline
 					ref={bioRef}
 					style={styles.bio}
 					value={bio}
@@ -105,32 +104,33 @@ export const ProfileCard = ({
 					{bio}
 				</Text>
 			)}
-		</View>
+		</>
 	);
 };
 
 const styles = StyleSheet.create({
-	container: {
-		flexDirection: 'column',
-	},
 	row: {
 		flexDirection: 'row',
 		alignItems: 'flex-start',
 		justifyContent: 'space-between',
 		marginBottom: 16,
 	},
+	text: {
+		flex: 1,
+	},
 	name: {
 		fontSize: 34,
 		fontFamily: 'NHaasGroteskDSW02-65Md',
-		backgroundColor: 'transparent',
+	},
+	nameFilled: {
+		lineHeight: 34,
+	},
+	url: {
+		marginTop: 8,
 	},
 	bio: {
 		fontSize: 22,
 		lineHeight: 26,
-		backgroundColor: 'transparent',
-	},
-	url: {
-		marginTop: 16,
 	},
 	editImageButton: {
 		alignItems: 'center',
@@ -139,7 +139,7 @@ const styles = StyleSheet.create({
 	cameraIconOverlay: {
 		position: 'absolute',
 		zIndex: 99999,
-		backgroundColor: 'rgba(0,0,0,.4)',
+		backgroundColor: 'rgba(0, 0, 0, 0.4)',
 		width: '100%',
 		height: '100%',
 		justifyContent: 'center',

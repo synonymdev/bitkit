@@ -1,6 +1,7 @@
 import { AnyAction, CombinedState, combineReducers } from 'redux';
 import { storage } from '../mmkv-storage';
 import actions from '../actions/actions';
+import ui from './ui';
 import user from './user';
 import wallet from './wallet';
 import receive from './receive';
@@ -15,6 +16,7 @@ import metadata from './metadata';
 import slashtags from './slashtags';
 
 const appReducer = combineReducers({
+	ui,
 	user,
 	wallet,
 	receive,

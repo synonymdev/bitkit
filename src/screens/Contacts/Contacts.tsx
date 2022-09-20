@@ -8,10 +8,10 @@ import {
 	ClipboardTextIcon,
 	CornersOutIcon,
 	PlusIcon,
-	Subtitle,
 	Text01S,
 	View,
 	TouchableOpacity as ThemedTouchableOpacity,
+	Text02S,
 } from '../../styles/components';
 import ContactsOnboarding from './ContactsOnboarding';
 import NavigationHeader from '../../components/NavigationHeader';
@@ -26,6 +26,7 @@ import { useSelectedSlashtag } from '../../hooks/slashtags';
 import { useBottomSheetBackPress } from '../../hooks/bottomSheet';
 import { handleSlashtagURL } from '../../utils/slashtags';
 import { RootStackParamList } from '../../navigation/types';
+import BottomSheetNavigationHeader from '../../components/BottomSheetNavigationHeader';
 
 type ContactsScreenProps = StackScreenProps<RootStackParamList, 'Contacts'>;
 
@@ -66,7 +67,6 @@ const ContactsScreen = ({ navigation }: ContactsScreenProps): JSX.Element => {
 			<SafeAreaInsets type="top" />
 			<NavigationHeader
 				title="Contacts"
-				displayBackButton={false}
 				onClosePress={(): void => {
 					navigation.navigate('Tabs');
 				}}
@@ -112,36 +112,34 @@ const ContactsScreen = ({ navigation }: ContactsScreenProps): JSX.Element => {
 				view="addContactModal"
 				snapPoints={[400]}>
 				<View style={styles.modalContainer}>
-					<Subtitle style={styles.modalTitle}>Add Contact</Subtitle>
+					<BottomSheetNavigationHeader
+						title="Add Contact"
+						displayBackButton={false}
+					/>
 					<Text01S color="gray1" style={styles.addContactNote}>
 						Add a new contact by scanning a QR or by pasting their key below.
 					</Text01S>
 					<View style={styles.modalContent}>
 						<LabeledInput
 							bottomSheet={true}
-							label="ADD CONTACT"
+							label="Add contact"
 							value={addContactURL}
 							placeholder="Paste a key"
-							onChange={updateContactID}
-							rightIcon={
-								<View style={styles.addContactsIconsContainer}>
-									<TouchableOpacity
-										onPress={(): void => {
-											navigation.navigate('Scanner');
-										}}>
-										<CornersOutIcon width={24} height={24} color="brand" />
-									</TouchableOpacity>
-									<TouchableOpacity onPress={pasteAddContact}>
-										<ClipboardTextIcon width={24} height={24} color="brand" />
-									</TouchableOpacity>
-								</View>
-							}
-						/>
+							multiline={true}
+							onChange={updateContactID}>
+							<TouchableOpacity
+								onPress={(): void => {
+									navigation.navigate('Scanner');
+								}}>
+								<CornersOutIcon width={24} height={24} color="brand" />
+							</TouchableOpacity>
+							<TouchableOpacity onPress={pasteAddContact}>
+								<ClipboardTextIcon width={24} height={24} color="brand" />
+							</TouchableOpacity>
+						</LabeledInput>
 						<View style={styles.addContactInvalid}>
 							{addContacInvalid && (
-								<Text01S color="brand">
-									This is not a valid Slashtags URL.
-								</Text01S>
+								<Text02S color="brand">This is not a valid key.</Text02S>
 							)}
 						</View>
 					</View>
@@ -187,10 +185,6 @@ const styles = StyleSheet.create({
 		flex: 1,
 		backgroundColor: 'transparent',
 	},
-	modalTitle: {
-		textAlign: 'center',
-		marginBottom: 16,
-	},
 	modalContent: {
 		display: 'flex',
 		padding: 16,
@@ -199,13 +193,6 @@ const styles = StyleSheet.create({
 	addContactNote: {
 		marginHorizontal: 16,
 		marginVertical: 32,
-	},
-	addContactsIconsContainer: {
-		display: 'flex',
-		flexDirection: 'row',
-		justifyContent: 'space-between',
-		backgroundColor: 'transparent',
-		width: 64,
 	},
 	addContactInvalid: {
 		height: 20,

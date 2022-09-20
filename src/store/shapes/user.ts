@@ -32,7 +32,7 @@ export const defaultUserShape = {
 		activityTagsPrompt: { ...defaultViewController },
 		newTxPrompt: { ...defaultViewController },
 		profileAddDataForm: { ...defaultViewController },
-		profileAddLinkForm: { ...defaultViewController },
+		profileAddLink: { ...defaultViewController },
 		addContactModal: { ...defaultViewController },
 	},
 };

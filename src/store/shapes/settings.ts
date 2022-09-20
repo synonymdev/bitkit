@@ -134,7 +134,7 @@ export const defaultSettingsShape: ISettings = {
 	coinSelectAuto: true,
 	coinSelectPreference: 'small',
 	receivePreference: defaultReceivePreference,
-	enableOfflinePayments: false,
+	enableOfflinePayments: true,
 	unitPreference: 'asset',
 	showSuggestions: true,
 	transactionSpeed: 'normal',

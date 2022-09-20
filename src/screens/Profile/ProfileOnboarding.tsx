@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
-import { StyleSheet, Image, ImageSourcePropType } from 'react-native';
+import React from 'react';
+import { View, StyleSheet, Image, ImageSourcePropType } from 'react-native';
+import { useSelector } from 'react-redux';
 
-import { Display, View, Text01S } from '../../styles/components';
+import { Display, Text01S } from '../../styles/components';
 import NavigationHeader from '../../components/NavigationHeader';
 import Button from '../../components/Button';
 import GlowingBackground from '../../components/GlowingBackground';
@@ -11,17 +12,22 @@ import { ISlashtags } from '../../store/types/slashtags';
 import SwitchRow from '../../components/SwitchRow';
 import { updateSlashPayConfig } from '../../utils/slashtags';
 import { useSlashtagsSDK } from '../../components/SlashtagsProvider';
+import Store from '../../store/types';
+import { updateSettings } from '../../store/actions/settings';
+
+const crownImageSrc = require('../../assets/illustrations/crown.png');
+const coinsImageSrc = require('../../assets/illustrations/coins.png');
+const switchImageSrc = require('../../assets/illustrations/switch.png');
 
 export const ProfileIntro = ({ navigation }): JSX.Element => {
 	return (
 		<Layout
 			navigation={navigation}
-			backButton={false}
-			illustration={require('../../assets/illustrations/crown.png')}
+			backButton={true}
+			illustration={crownImageSrc}
 			title="Own your"
-			highlighted="Social Profile"
-			text="Use Slashtags to control your public profile and links, so your
-contacts can reach you or pay you anytime."
+			highlighted="Social Profile."
+			text="Use Bitkit to control your public profile and links, so your contacts can reach you or pay you anytime."
 			nextStep="InitialEdit"
 		/>
 	);
@@ -32,7 +38,7 @@ export const PaymentsFromContacts = ({ navigation }): JSX.Element => {
 		<Layout
 			navigation={navigation}
 			backButton={true}
-			illustration={require('../../assets/illustrations/coins.png')}
+			illustration={coinsImageSrc}
 			title="Pay your"
 			header="Pay Contacts"
 			subtitle=""
@@ -44,19 +50,21 @@ export const PaymentsFromContacts = ({ navigation }): JSX.Element => {
 };
 
 export const OfflinePayments = ({ navigation }): JSX.Element => {
-	const [enableOfflinePayment, setEnableOfflinePayment] = useState(true);
+	const enableOfflinePayments = useSelector(
+		(state: Store) => state.settings.enableOfflinePayments,
+	);
 
 	const sdk = useSlashtagsSDK();
 
 	const savePaymentConfig = async (): Promise<void> => {
-		updateSlashPayConfig(sdk, { p2wpkh: enableOfflinePayment });
+		updateSlashPayConfig(sdk, { p2wpkh: enableOfflinePayments });
 	};
 
 	return (
 		<Layout
 			navigation={navigation}
 			backButton={true}
-			illustration={require('../../assets/illustrations/switch.png')}
+			illustration={switchImageSrc}
 			title="Offline"
 			header="Offline payments"
 			highlighted="Payments."
@@ -66,8 +74,10 @@ export const OfflinePayments = ({ navigation }): JSX.Element => {
 			onNext={savePaymentConfig}>
 			<View style={styles.enableOfflineRow}>
 				<SwitchRow
-					isEnabled={enableOfflinePayment}
-					onPress={(): void => setEnableOfflinePayment(!enableOfflinePayment)}>
+					isEnabled={enableOfflinePayments}
+					onPress={(): void => {
+						updateSettings({ enableOfflinePayments: !enableOfflinePayments });
+					}}>
 					<Text01S>Enable offline payments</Text01S>
 				</SwitchRow>
 			</View>
@@ -104,7 +114,7 @@ const Layout = ({
 }): JSX.Element => {
 	return (
 		<GlowingBackground topLeft="brand">
-			<SafeAreaInsets type={'top'} />
+			<SafeAreaInsets type="top" />
 			<NavigationHeader
 				title={header}
 				displayBackButton={backButton}
@@ -136,6 +146,7 @@ const Layout = ({
 					}}
 				/>
 			</View>
+			<SafeAreaInsets type="bottom" />
 		</GlowingBackground>
 	);
 };
@@ -144,13 +155,11 @@ const styles = StyleSheet.create({
 	content: {
 		flex: 1,
 		justifyContent: 'space-between',
-		margin: 20,
-		marginTop: 0,
-		backgroundColor: 'transparent',
+		paddingHorizontal: 16,
+		paddingBottom: 16,
 	},
 	imageContainer: {
 		alignSelf: 'center',
-		backgroundColor: 'transparent',
 		width: '100%',
 		flex: 1,
 		marginBottom: 16,
@@ -166,10 +175,8 @@ const styles = StyleSheet.create({
 	},
 	middleContainer: {
 		flex: 1,
-		backgroundColor: 'transparent',
 	},
 	enableOfflineRow: {
 		marginTop: 25,
-		backgroundColor: 'transparent',
 	},
 });

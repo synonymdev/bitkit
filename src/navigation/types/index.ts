@@ -15,6 +15,7 @@ import type { LightningStackParamList } from '../lightning/LightningNavigator';
 import type { SettingsStackParamList } from '../settings/SettingsNavigator';
 import type { PinStackParamList } from '../bottom-sheet/PINNavigation';
 import type { BackupStackParamList } from '../bottom-sheet/BackupNavigation';
+import { ProfileLinkStackParamList } from '../bottom-sheet/ProfileLinkNavigation';
 
 // TODO: move all navigation related types here
 // https://reactnavigation.org/docs/typescript#organizing-types
@@ -67,6 +68,9 @@ export type SettingsScreenProps<T extends keyof SettingsStackParamList> =
 	>;
 
 // BottomSheet Navigators
+export type ProfileLinkScreenProps<T extends keyof ProfileLinkStackParamList> =
+	StackScreenProps<ProfileLinkStackParamList, T>;
+
 export type PinScreenProps<T extends keyof PinStackParamList> =
 	StackScreenProps<PinStackParamList, T>;
 

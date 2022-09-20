@@ -539,6 +539,7 @@ export const Text01S = styled.Text((props) => ({
 		? props.theme.fonts[props.font].fontFamily
 		: sanFranciscoWeights.regular.fontFamily,
 	fontSize: props.size ? props.size : '17px',
+	lineHeight: '22px',
 }));
 
 export const Text01B = styled.Text((props) => ({
@@ -583,6 +584,7 @@ export const Text02S = styled.Text((props) => ({
 		? props.theme.fonts[props.font].fontFamily
 		: sanFranciscoWeights.regular.fontFamily,
 	fontSize: props.size ? props.size : '15px',
+	lineHeight: '20px',
 }));
 
 export const SubHeadM = styled.Text((props) => ({
@@ -628,6 +630,7 @@ export const Caption13Up = styled.Text((props) => ({
 		? props.theme.fonts[props.font].fontFamily
 		: sanFranciscoWeights.medium.fontFamily,
 	fontSize: props.size ? props.size : '13px',
+	lineHeight: '18px',
 	textTransform: 'uppercase',
 }));
 

@@ -1,3 +1,4 @@
+import { IUi } from './ui';
 import { IUser } from './user';
 import { IWallet } from './wallet';
 import { IReceive } from './receive';
@@ -12,6 +13,7 @@ import { IMetadata } from './metadata';
 import { ISlashtags } from './slashtags';
 
 export default interface Store {
+	ui: IUi;
 	user: IUser;
 	wallet: IWallet;
 	receive: IReceive;

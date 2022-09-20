@@ -1,56 +1,52 @@
-import React, { ReactElement } from 'react';
-import { StyleSheet } from 'react-native';
-import { TouchableOpacity } from 'react-native';
+import React from 'react';
+import { View, StyleSheet, ViewStyle, StyleProp } from 'react-native';
 import {
 	Caption13Up,
 	TextInput,
-	View,
 	BottomSheetTextInput,
 } from '../styles/components';
 
-export const Input = ({
+type LabeledInputProps = {
+	label: string;
+	children?: JSX.Element | JSX.Element[];
+	ref?;
+	multiline?: boolean;
+	value?: string;
+	bottomSheet?: boolean;
+	placeholder?: string;
+	style?: StyleProp<ViewStyle>;
+	onChange?: (value: string) => void;
+};
+
+const LabeledInput = ({
 	label,
+	children,
+	ref,
 	multiline,
 	value,
 	onChange,
-	rightIcon,
-	onRightIconPress,
 	bottomSheet,
 	placeholder,
-	ref,
-}: {
-	label: string;
-	multiline?: boolean;
-	value?: string;
-	onChange?: (value: string) => void;
-	rightIcon?: ReactElement;
-	onRightIconPress?: () => void;
-	bottomSheet?: boolean;
-	placeholder?: string;
-	ref?;
-}): JSX.Element => {
+	style,
+}: LabeledInputProps): JSX.Element => {
+	const numberOfChildren = React.Children.toArray(children).length;
+
 	return (
-		<View style={styles.inputContainer}>
+		<View style={style}>
 			<Caption13Up color="gray1" style={styles.label}>
 				{label}
 			</Caption13Up>
-			<View
-				style={
-					onChange
-						? multiline
-							? StyleSheet.compose<{}>(styles.input, styles.multiline)
-							: styles.input
-						: styles.readOnlyInput
-				}>
+			<View style={onChange ? styles.inputContainer : styles.readOnlyInput}>
 				{bottomSheet ? (
 					<BottomSheetTextInput
+						style={{ paddingRight: 60 * numberOfChildren }}
 						ref={ref}
-						style={styles.inputText}
 						defaultValue={value}
-						color="white"
+						backgroundColor="white08"
 						autoCapitalize="none"
 						autoCorrect={false}
 						placeholder={placeholder}
+						minHeight={multiline ? 72 : 52}
 						onChangeText={onChange}
 						multiline={multiline || false}
 						editable={!!onChange}
@@ -58,24 +54,30 @@ export const Input = ({
 					/>
 				) : (
 					<TextInput
-						style={styles.inputText}
+						style={{ paddingRight: 60 * numberOfChildren }}
 						defaultValue={value}
 						color="white"
 						autoCapitalize="none"
 						autoCorrect={false}
 						placeholder={placeholder}
+						minHeight={multiline ? 72 : 52}
 						onChangeText={onChange}
 						multiline={multiline || false}
 						editable={!!onChange}
 						returnKeyType="done"
 					/>
 				)}
-				{rightIcon && onRightIconPress ? (
-					<TouchableOpacity style={styles.rightIcon} onPress={onRightIconPress}>
-						{rightIcon}
-					</TouchableOpacity>
-				) : (
-					<View style={styles.rightIcon}>{rightIcon}</View>
+				{children && (
+					<View style={styles.inputActions}>
+						{React.Children.map(children, (child) =>
+							React.cloneElement(child, {
+								style: {
+									...styles.inputAction,
+									...child.props.style,
+								},
+							}),
+						)}
+					</View>
 				)}
 			</View>
 		</View>
@@ -83,51 +85,30 @@ export const Input = ({
 };
 
 const styles = StyleSheet.create({
-	input: {
-		flexDirection: 'row',
-		justifyContent: 'space-between',
-		alignItems: 'center',
-		fontSize: 17,
-		paddingHorizontal: 16,
-		height: 56,
-		borderRadius: 8,
-		backgroundColor: 'rgba(255, 255, 255, 0.08)',
-		boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.03)',
+	label: {
+		marginBottom: 8,
 	},
-	multiline: {
-		height: 96,
-		flexDirection: 'column',
-		alignItems: 'baseline',
+	inputContainer: {
+		position: 'relative',
 	},
 	readOnlyInput: {
-		borderRadius: 8,
 		paddingTop: 8,
 		paddingBottom: 32,
 		borderBottomWidth: 2,
 		borderBottomColor: 'rgba(255, 255, 255, 0.1)',
 	},
-	label: {
-		fontWeight: '500',
-		fontSize: 13,
-		lineHeight: 18,
-		textTransform: 'uppercase',
-		marginBottom: 8,
+	inputActions: {
+		position: 'absolute',
+		top: 0,
+		bottom: 0,
+		right: 8,
+		flexDirection: 'row',
+		alignItems: 'center',
+		justifyContent: 'space-between',
 	},
-	inputContainer: {
-		marginBottom: 16,
-		backgroundColor: 'transparent',
-	},
-	inputText: {
-		color: 'white',
-		backgroundColor: 'transparent',
-		flex: 1,
-		fontSize: 15,
-		fontWeight: '600',
-	},
-	rightIcon: {
-		backgroundColor: 'transparent',
-		marginLeft: 16,
+	inputAction: {
+		paddingHorizontal: 8,
 	},
 });
 
-export default Input;
+export default LabeledInput;

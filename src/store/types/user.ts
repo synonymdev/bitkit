@@ -15,7 +15,7 @@ export type TViewController =
 	| 'activityTagsPrompt'
 	| 'newTxPrompt'
 	| 'profileAddDataForm'
-	| 'profileAddLinkForm'
+	| 'profileAddLink'
 	| 'addContactModal';
 
 export type TUserViewController = {
