@@ -10,11 +10,9 @@ import {
 import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
 import Tag from '../../../components/Tag';
 import Store from '../../../store/types';
-import useColors from '../../../hooks/colors';
 import { addTxTag } from '../../../store/actions/wallet';
 
 const AddressAndAmount = ({ navigation }): ReactElement => {
-	const colors = useColors();
 	const [text, setText] = useState('');
 	const selectedWallet = useSelector(
 		(store: Store) => store.wallet.selectedWallet,
@@ -70,13 +68,6 @@ const AddressAndAmount = ({ navigation }): ReactElement => {
 					NEW TAG
 				</Caption13Up>
 				<BottomSheetTextInput
-					style={[
-						styles.input,
-						{
-							backgroundColor: colors.white08,
-							color: colors.text,
-						},
-					]}
 					placeholder="Enter a new tag"
 					blurOnSubmit={true}
 					value={text}
@@ -100,13 +91,6 @@ const styles = StyleSheet.create({
 	},
 	section: {
 		marginBottom: 16,
-	},
-	input: {
-		padding: 16,
-		borderRadius: 8,
-		fontSize: 15,
-		fontWeight: '600',
-		minHeight: 70,
 	},
 	tagsContainer: {
 		flexDirection: 'row',

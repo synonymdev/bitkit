@@ -12,14 +12,12 @@ import SafeAreaInsets from '../../components/SafeAreaInsets';
 import Store from '../../store/types';
 import { toggleView } from '../../store/actions/user';
 import Tag from '../../components/Tag';
-import useColors from '../../hooks/colors';
 import { addMetaTxTag } from '../../store/actions/metadata';
 import { sleep } from '../../utils/helpers';
 import { useBottomSheetBackPress } from '../../hooks/bottomSheet';
 
 const Form = ({ id }: { id: string }): ReactElement => {
 	const [text, setText] = useState('');
-	const colors = useColors();
 	const lastUsedTags = useSelector(
 		(store: Store) => store.metadata.lastUsedTags,
 	);
@@ -77,14 +75,9 @@ const Form = ({ id }: { id: string }): ReactElement => {
 				NEW TAG
 			</Text02S>
 			<BottomSheetTextInput
-				style={[
-					styles.input,
-					{
-						backgroundColor: colors.white08,
-						color: colors.text,
-					},
-				]}
-				placeholder="Enter new tag"
+				placeholder="Enter a new tag"
+				backgroundColor="white08"
+				minHeight={52}
 				blurOnSubmit={true}
 				value={text}
 				onChangeText={setText}
@@ -122,7 +115,7 @@ const ActivityTagsPrompt = (): ReactElement => {
 			onClose={handleClose}
 			view="activityTagsPrompt">
 			<View style={styles.root}>
-				<Subtitle style={styles.title}>Add tag</Subtitle>
+				<Subtitle style={styles.title}>Add Tag</Subtitle>
 
 				{isOpen && id && <Form id={id} />}
 
@@ -140,12 +133,6 @@ const styles = StyleSheet.create({
 	title: {
 		marginBottom: 25,
 		textAlign: 'center',
-	},
-	input: {
-		padding: 16,
-		borderRadius: 8,
-		fontSize: 15,
-		minHeight: 70,
 	},
 	tagsContainer: {
 		flexDirection: 'row',

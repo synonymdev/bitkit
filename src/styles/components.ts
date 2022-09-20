@@ -700,8 +700,9 @@ export const TextInput = styled.TextInput.attrs((props) => ({
 	selectionColor: colors.brand,
 	placeholderTextColor: props?.placeholderTextColor
 		? props.placeholderTextColor
-		: props.theme.colors.white5,
+		: props.theme.colors.gray1,
 }))((props) => ({
+	...sanFranciscoWeights.semibold,
 	backgroundColor: props.backgroundColor
 		? props.theme.colors[props.color]
 		: props.theme.colors.white08,
@@ -711,6 +712,24 @@ export const TextInput = styled.TextInput.attrs((props) => ({
 	borderColor: props.color
 		? props.theme.colors[props.color]
 		: props.theme.colors.text,
+	borderRadius: 8,
+	fontSize: '15px',
+	minHeight: props.minHeight ? props.minHeight : 52,
+	padding: 16,
+}));
+
+export const TextInputNoOutline = styled.TextInput.attrs((props) => ({
+	keyboardAppearance: props.theme.id,
+	selectionColor: colors.brand,
+	placeholderTextColor: props?.placeholderTextColor
+		? props.placeholderTextColor
+		: props.theme.colors.gray1,
+}))((props) => ({
+	...sanFranciscoWeights.semibold,
+	color: props.color
+		? props.theme.colors[props.color]
+		: props.theme.colors.text,
+	fontSize: '15px',
 }));
 
 export const BottomSheetTextInput = styled(_BottomSheetTextInput).attrs(
@@ -722,15 +741,20 @@ export const BottomSheetTextInput = styled(_BottomSheetTextInput).attrs(
 			: props.theme.colors.white5,
 	}),
 )((props) => ({
+	...sanFranciscoWeights.semibold,
 	backgroundColor: props.backgroundColor
-		? props.theme.colors[props.color]
-		: props.theme.colors.white08,
+		? props.theme.colors[props.backgroundColor]
+		: props.theme.colors.white04,
 	color: props.color
 		? props.theme.colors[props.color]
 		: props.theme.colors.text,
 	borderColor: props.color
 		? props.theme.colors[props.color]
 		: props.theme.colors.text,
+	borderRadius: 8,
+	fontSize: '15px',
+	minHeight: props.minHeight ? props.minHeight : 70,
+	padding: 16,
 }));
 
 export const RefreshControl = styled.RefreshControl.attrs((props) => ({

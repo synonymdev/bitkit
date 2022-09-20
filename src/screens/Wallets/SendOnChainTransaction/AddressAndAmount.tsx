@@ -371,6 +371,7 @@ const AddressAndAmount = ({ index = 0, navigation }): ReactElement => {
 				</View>
 				<View style={styles.tagsContainer}>
 					<Button
+						color="white04"
 						text="Add Tag"
 						icon={<TagIcon color="brand" width={16} />}
 						onPress={(): void => {

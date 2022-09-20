@@ -18,7 +18,6 @@ import {
 	updateInvoice,
 	removeInvoiceTag,
 } from '../../../store/actions/receive';
-import useColors from '../../../hooks/colors';
 import useKeyboard from '../../../hooks/keyboard';
 import { toggleView } from '../../../store/actions/user';
 
@@ -28,7 +27,6 @@ const ReceiveDetails = ({ navigation }): ReactElement => {
 	const numberPadReceiveIsOpen = useSelector(
 		(store: Store) => store.user.viewController?.numberPadReceive.isOpen,
 	);
-	const colors = useColors();
 	const { keyboardShown } = useKeyboard();
 	const buttonContainerStyles = useMemo(
 		() => ({
@@ -84,13 +82,7 @@ const ReceiveDetails = ({ navigation }): ReactElement => {
 				</Caption13Up>
 				<View style={styles.inputWrapper}>
 					<BottomSheetTextInput
-						style={[
-							styles.input,
-							{
-								backgroundColor: colors.white08,
-								color: colors.text,
-							},
-						]}
+						style={styles.input}
 						onFocus={closeNumberPad}
 						selectTextOnFocus={true}
 						multiline={true}
@@ -119,7 +111,7 @@ const ReceiveDetails = ({ navigation }): ReactElement => {
 				</View>
 				<View style={styles.tagsContainer}>
 					<Button
-						style={styles.button}
+						color="white04"
 						text="Add Tag"
 						icon={<TagIcon color="brand" width={16} />}
 						onPress={(): void => {
@@ -162,13 +154,7 @@ const styles = StyleSheet.create({
 		position: 'relative',
 	},
 	input: {
-		padding: 16,
-		paddingTop: 16,
-		paddingRight: 130,
-		borderRadius: 8,
-		fontSize: 15,
-		fontWeight: '600',
-		minHeight: 70,
+		minHeight: 74,
 	},
 	tagsContainer: {
 		flexDirection: 'row',
@@ -178,9 +164,6 @@ const styles = StyleSheet.create({
 	tag: {
 		marginRight: 8,
 		marginBottom: 8,
-	},
-	button: {
-		marginRight: 8,
 	},
 	buttonContainer: {
 		marginTop: 'auto',

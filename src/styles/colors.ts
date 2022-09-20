@@ -28,6 +28,7 @@ export interface IColors {
 	white84: string;
 	white08: string;
 	white05: string;
+	white04: string;
 	white01: string;
 	white1: string;
 	white5: string;
@@ -89,6 +90,7 @@ const colors: IColors = {
 	white84: 'rgba(255, 255, 255, 0.84)',
 	white08: 'rgba(255, 255, 255, 0.08)',
 	white05: 'rgba(255, 255, 255, 0.05)',
+	white04: 'rgba(255, 255, 255, 0.04)',
 	white01: 'rgba(255, 255, 255, 0.01)',
 	white1: 'rgba(255, 255, 255, 0.1)',
 	white5: 'rgba(255, 255, 255, 0.5)',

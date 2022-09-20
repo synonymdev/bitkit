@@ -36,13 +36,7 @@ const AddressOrSlashpay = ({
 	return (
 		<View style={[styles.root, style]}>
 			<BottomSheetTextInput
-				style={[
-					styles.input,
-					{
-						backgroundColor: colors.white08,
-						color: colors.text,
-					},
-				]}
+				style={styles.input}
 				selectionColor={colors.brand}
 				placeholderTextColor={colors.white5}
 				selectTextOnFocus={true}
@@ -63,13 +57,7 @@ const styles = StyleSheet.create({
 		position: 'relative',
 	},
 	input: {
-		padding: 16,
-		paddingTop: 16,
 		paddingRight: 130,
-		borderRadius: 8,
-		fontSize: 15,
-		fontWeight: '600',
-		minHeight: 70,
 		maxHeight: 100,
 	},
 	inputActions: {
