@@ -36,6 +36,7 @@ import { validateMnemonic } from '../../utils/wallet';
 import useColors from '../../hooks/colors';
 import { restoreWallet } from '../../utils/startup';
 import LoadingWalletScreen from './Loading';
+import NavigationHeader from '../../components/NavigationHeader';
 
 const Glow = ({ color }: { color: string }): ReactElement => {
 	const opacity = useValue(0);
@@ -187,6 +188,10 @@ const RestoreFromSeed = (): ReactElement => {
 
 	return (
 		<GlowingBackground topLeft={blue}>
+			<View style={styles.header}>
+				<SafeAreaInsets type="top" />
+				<NavigationHeader displayBackButton={true} />
+			</View>
 			<ScrollView
 				contentContainerStyle={styles.content}
 				showsVerticalScrollIndicator={false}
@@ -195,7 +200,10 @@ const RestoreFromSeed = (): ReactElement => {
 				<View style={styles.shadowContainer}>
 					<VerticalShadow />
 				</View>
-				<Display style={styles.title}>Restore your Wallet</Display>
+				<View style={styles.title}>
+					<Display>Restore</Display>
+					<Display>your Wallet</Display>
+				</View>
 				<Text01S color="white8">
 					Please type in your recovery phrase from any (paper) backup.
 				</Text01S>
@@ -250,6 +258,11 @@ const RestoreFromSeed = (): ReactElement => {
 };
 
 const styles = StyleSheet.create({
+	header: {
+		position: 'absolute',
+		top: 0,
+		zIndex: 1,
+	},
 	shadowContainer: {
 		height: 120,
 		marginHorizontal: -50,
