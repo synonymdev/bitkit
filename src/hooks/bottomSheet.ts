@@ -21,7 +21,7 @@ export const useSnapPoints = (size: 'small' | 'large'): number[] => {
 		}
 
 		return [600];
-	}, [height, insets]);
+	}, [size, height, insets]);
 
 	return snapPoints;
 };
