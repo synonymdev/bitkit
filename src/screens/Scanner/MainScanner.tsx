@@ -8,8 +8,13 @@ import SafeAreaInsets from '../../components/SafeAreaInsets';
 import NavigationHeader from '../../components/NavigationHeader';
 import { showErrorNotification } from '../../utils/notifications';
 import ScannerComponent from './ScannerComponent';
+import type { RootStackScreenProps } from '../../navigation/types';
 
-const ScannerScreen = ({ navigation }): ReactElement => {
+const ScannerScreen = ({
+	navigation,
+	route,
+}: RootStackScreenProps<'Scanner'>): ReactElement => {
+	const onScan = route.params?.onScan;
 	const selectedNetwork = useSelector(
 		(state: Store) => state.wallet.selectedNetwork,
 	);
@@ -25,7 +30,14 @@ const ScannerScreen = ({ navigation }): ReactElement => {
 			});
 			return;
 		}
+
 		navigation.pop();
+
+		if (onScan) {
+			onScan(data);
+			return;
+		}
+
 		processInputData({
 			data,
 			selectedNetwork,
@@ -34,7 +46,7 @@ const ScannerScreen = ({ navigation }): ReactElement => {
 	};
 
 	return (
-		<ScannerComponent onRead={onRead}>
+		<ScannerComponent onRead={onRead} shouldDecode={!onScan}>
 			<SafeAreaInsets type="top" />
 			<NavigationHeader
 				style={styles.navigationHeader}

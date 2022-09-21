@@ -1,11 +1,19 @@
 import React, { memo, ReactElement, useEffect, useMemo, useState } from 'react';
 import { StyleSheet, KeyboardAvoidingView, Platform } from 'react-native';
+import { useSelector } from 'react-redux';
+import { err, ok, Result } from '@synonymdev/result';
+import Url from 'url-parse';
+
 import {
 	Text,
 	View,
 	TextInput,
 	RadioButtonRN,
 	ScrollView,
+	Text01S,
+	Caption13Up,
+	ScanIcon,
+	TouchableOpacity,
 } from '../../../styles/components';
 import { addElectrumPeer } from '../../../store/actions/settings';
 import {
@@ -14,13 +22,11 @@ import {
 	TProtocol,
 } from '../../../store/types/settings';
 import { updateUser } from '../../../store/actions/user';
-import { useSelector } from 'react-redux';
 import Store from '../../../store/types';
 import { connectToElectrum } from '../../../utils/wallet/electrum';
 import NavigationHeader from '../../../components/NavigationHeader';
 import Button from '../../../components/Button';
 import { objectsMatch, shuffleArray } from '../../../utils/helpers';
-import { err, ok, Result } from '@synonymdev/result';
 import {
 	defaultElectrumPorts,
 	getDefaultPort,
@@ -33,6 +39,7 @@ import {
 } from '../../../utils/notifications';
 import { getConnectedPeer, IPeerData } from '../../../utils/wallet/electrum';
 import SafeAreaInsets from '../../../components/SafeAreaInsets';
+import type { SettingsScreenProps } from '../../../navigation/types';
 
 const radioButtons: RadioButtonItem[] = [
 	{ label: 'TCP', value: 'tcp' },
@@ -63,7 +70,9 @@ const validateInput = ({
 	return ok('');
 };
 
-const ElectrumConfig = (): ReactElement => {
+const ElectrumConfig = ({
+	navigation,
+}: SettingsScreenProps<'ElectrumConfig'>): ReactElement => {
 	const selectedNetwork = useSelector(
 		(state: Store) => state.wallet.selectedNetwork,
 	);
@@ -246,20 +255,44 @@ const ElectrumConfig = (): ReactElement => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
+	const navigateToScanner = (): void => {
+		navigation.navigate('Scanner', { onScan });
+	};
+
+	const onScan = (data: string): void => {
+		const url = new Url(data);
+		if (!url.hostname || !url.port) {
+			showErrorNotification({
+				title: 'No Data Detected',
+				message: 'Sorry, Bitkit is not able to read this QR code.',
+			});
+			return;
+		}
+		setHost(url.hostname);
+		setPort(url.port);
+	};
+
 	return (
 		<View style={styles.container}>
 			<SafeAreaInsets type="top" />
-			<NavigationHeader title="Electrum Config" />
+			<NavigationHeader
+				title="Electrum Server"
+				action={
+					<TouchableOpacity onPress={navigateToScanner}>
+						<ScanIcon color="white" width={20} height={20} />
+					</TouchableOpacity>
+				}
+			/>
 			<KeyboardAvoidingView
 				behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
 				style={styles.content}>
 				<ScrollView bounces={false}>
 					{!!connectedPeer?.host && (
 						<>
-							<Text style={styles.title}>Connected to:</Text>
+							<Text01S color="gray1">Currently connected to</Text01S>
 							<View style={styles.row}>
 								<View style={styles.connectedPeer}>
-									<Text>
+									<Text color="green">
 										{connectedPeer.host}:{connectedPeer.port}
 									</Text>
 								</View>
@@ -276,13 +309,9 @@ const ElectrumConfig = (): ReactElement => {
 						</>
 					)}
 
-					<View style={styles.divider} />
-
-					<Text style={styles.title}>Custom Peer:</Text>
-
-					<View style={styles.divider} />
-
-					<Text style={styles.title}>Host</Text>
+					<Caption13Up color="gray1" style={styles.label}>
+						HOST
+					</Caption13Up>
 					<TextInput
 						style={styles.textInput}
 						textAlignVertical={'center'}
@@ -296,9 +325,9 @@ const ElectrumConfig = (): ReactElement => {
 						returnKeyType="done"
 					/>
 
-					<View style={styles.divider} />
-
-					<Text style={styles.title}>Port</Text>
+					<Caption13Up color="gray1" style={styles.label}>
+						PORT
+					</Caption13Up>
 					<TextInput
 						style={styles.textInput}
 						textAlignVertical={'center'}
@@ -311,9 +340,9 @@ const ElectrumConfig = (): ReactElement => {
 						value={port.toString()}
 					/>
 
-					<View style={styles.divider} />
-
-					<Text style={styles.title}>Protocol</Text>
+					<Caption13Up color="gray1" style={styles.label}>
+						PROTOCOL
+					</Caption13Up>
 					<RadioButtonRN
 						data={radioButtons}
 						selectedBtn={(e): void => {
@@ -330,22 +359,25 @@ const ElectrumConfig = (): ReactElement => {
 						initial={initialIndex}
 					/>
 
-					<View style={styles.divider} />
-					<View style={styles.bottomRow}>
+					<View style={styles.buttons}>
 						<Button
-							text="Randomize Peer"
-							color="surface"
+							text="Reset To Default"
+							variant="secondary"
+							size="large"
 							onPress={getRandomPeer}
 						/>
 						{!peersMatch({ host, port, protocol }) && (
-							<Button
-								text="Save Peer"
-								color="surface"
-								loading={loading}
-								onPress={(): void => {
-									connectAndAddPeer({ host, port, protocol });
-								}}
-							/>
+							<>
+								<View style={styles.divider} />
+								<Button
+									text="Connect To Host"
+									size="large"
+									loading={loading}
+									onPress={(): void => {
+										connectAndAddPeer({ host, port, protocol });
+									}}
+								/>
+							</>
 						)}
 					</View>
 				</ScrollView>
@@ -359,27 +391,19 @@ const styles = StyleSheet.create({
 		flex: 1,
 	},
 	content: {
-		paddingHorizontal: 20,
+		paddingHorizontal: 16,
 		flex: 1,
 	},
 	row: {
 		flexDirection: 'row',
 		alignItems: 'flex-start',
-		paddingVertical: 8,
+		paddingTop: 5,
+		paddingBottom: 8,
 		justifyContent: 'center',
 	},
-	bottomRow: {
-		flexDirection: 'row',
-		alignItems: 'center',
-		paddingVertical: 8,
-		justifyContent: 'space-around',
-	},
-	divider: {
-		marginVertical: 10,
-	},
-	title: {
-		fontWeight: 'bold',
-		fontSize: 16,
+	label: {
+		marginTop: 16,
+		marginBottom: 8,
 	},
 	connectedPeer: {
 		flex: 1.5,
@@ -390,16 +414,15 @@ const styles = StyleSheet.create({
 	},
 	textInput: {
 		minHeight: 50,
-		borderRadius: 5,
-		fontWeight: 'bold',
-		fontSize: 18,
-		textAlign: 'left',
-		color: 'gray',
-		borderBottomWidth: 1,
-		borderColor: 'gray',
-		paddingHorizontal: 10,
-		backgroundColor: 'white',
 		marginVertical: 5,
+	},
+	buttons: {
+		marginTop: 16,
+		flexDirection: 'row',
+		justifyContent: 'center',
+	},
+	divider: {
+		width: 16,
 	},
 });
 

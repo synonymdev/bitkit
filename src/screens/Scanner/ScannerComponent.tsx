@@ -17,11 +17,22 @@ import {
 import useColors from '../../hooks/colors';
 import Camera from '../../components/Camera';
 import BlurView from '../../components/BlurView';
-import { decodeQRData } from '../../utils/scanner';
+import { decodeQRData, QRData } from '../../utils/scanner';
 import Store from '../../store/types';
 import Button from '../../components/Button';
+import { Result } from '@synonymdev/result';
 
-const ScannerComponent = ({ onRead, children }): ReactElement => {
+type ScannerComponentProps = {
+	onRead: (data: string | Result<QRData[]>) => void;
+	children: JSX.Element | JSX.Element[];
+	shouldDecode?: boolean;
+};
+
+const ScannerComponent = ({
+	onRead,
+	shouldDecode = true,
+	children,
+}: ScannerComponentProps): ReactElement => {
 	const { white08, white5 } = useColors();
 	const dimensions = useWindowDimensions();
 	const [flashMode, setFlashMode] = useState(false);
@@ -63,8 +74,13 @@ const ScannerComponent = ({ onRead, children }): ReactElement => {
 						return;
 					}
 
-					const res = await decodeQRData(values[0], selectedNetwork);
-					onRead(res);
+					if (shouldDecode) {
+						const res = await decodeQRData(values[0], selectedNetwork);
+						onRead(res);
+					} else {
+						// Leave handling data up to the component
+						onRead(values[0]);
+					}
 				} catch {
 					showError(
 						'Sorry. Bitkit wasn’t able to detect a QR code in this image.',

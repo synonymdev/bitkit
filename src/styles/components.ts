@@ -795,6 +795,7 @@ export const RadioButtonRN = styled(_RadioButtonRN).attrs((props) => ({
 	activeColor: props?.activeColor
 		? props.activeColor
 		: props.theme.colors.onBackground,
+	circleSize: 12,
 }))({});
 
 export const Feather = styled(_Feather).attrs((props) => ({

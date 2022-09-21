@@ -37,7 +37,7 @@ export type RootStackParamList = {
 	ActivityDetail: { activityItem: IActivityItem; extended?: boolean };
 	ActivityFiltered: undefined;
 	ActivityAssignContact: { txid: string };
-	Scanner: undefined;
+	Scanner: { onScan: (data: string) => void } | undefined;
 	WalletsDetail: {
 		assetType: TAssetType;
 	};

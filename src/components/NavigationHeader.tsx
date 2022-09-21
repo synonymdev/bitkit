@@ -46,6 +46,7 @@ export type NavigationHeaderProps = {
 	title?: string;
 	displayBackButton?: boolean;
 	navigateBack?: boolean;
+	action?: ReactElement;
 	size?: 'lg' | 'sm';
 	style?: StyleProp<ViewStyle>;
 	onBackPress?: Function;
@@ -61,6 +62,7 @@ const NavigationHeader = ({
 	size = 'lg',
 	onClosePress,
 	onAddPress,
+	action,
 	style,
 }: NavigationHeaderProps): ReactElement => {
 	const navigation = useNavigation<any>();
@@ -93,6 +95,7 @@ const NavigationHeader = ({
 				<Text style={styles.title}>{title}</Text>
 			</View>
 			<View style={styles.rightColumn}>
+				{action}
 				{onClosePress && <CloseButton onPress={onClosePress} />}
 				{onAddPress && <AddButton onPress={onAddPress} />}
 			</View>
@@ -109,7 +112,7 @@ const styles = StyleSheet.create({
 		width: 50,
 		justifyContent: 'center',
 		backgroundColor: 'transparent',
-		left: 15,
+		left: 16,
 	},
 	middleColumn: {
 		flex: 1,
@@ -122,7 +125,7 @@ const styles = StyleSheet.create({
 		justifyContent: 'center',
 		alignItems: 'flex-end',
 		backgroundColor: 'transparent',
-		right: 15,
+		right: 16,
 	},
 	title: {
 		textAlign: 'center',
