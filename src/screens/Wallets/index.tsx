@@ -20,8 +20,9 @@ import useColors from '../../hooks/colors';
 import { updateSettings } from '../../store/actions/settings';
 import Store from '../../store/types';
 import { refreshWallet } from '../../utils/wallet';
+import type { TabScreenProps } from '../../navigation/types';
 
-const Wallets = ({ navigation }): ReactElement => {
+const Wallets = ({ navigation }: TabScreenProps<'Wallets'>): ReactElement => {
 	const [refreshing, setRefreshing] = useState(false);
 	const hideBalance = useSelector((state: Store) => state.settings.hideBalance);
 	const empty = useNoTransactions();

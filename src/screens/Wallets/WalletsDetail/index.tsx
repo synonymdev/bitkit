@@ -24,7 +24,6 @@ import {
 	vec,
 } from '@shopify/react-native-skia';
 import { useSelector } from 'react-redux';
-import type { StackScreenProps } from '@react-navigation/stack';
 
 import { AnimatedView, Title, View } from '../../../styles/components';
 import NavigationHeader from '../../../components/NavigationHeader';
@@ -40,8 +39,8 @@ import Store from '../../../store/types';
 import { updateSettings } from '../../../store/actions/settings';
 import BitcoinLogo from '../../../assets/bitcoin-logo.svg';
 import { capitalize } from '../../../utils/helpers';
-import type { RootStackParamList } from '../../../navigation/types';
 import DetectSwipe from '../../../components/DetectSwipe';
+import type { TabScreenProps } from '../../../navigation/types';
 
 const updateHeight = ({
 	height = new Animated.Value(0),
@@ -56,8 +55,6 @@ const updateHeight = ({
 		}).start();
 	} catch {}
 };
-
-type Props = StackScreenProps<RootStackParamList, 'WalletsDetail'>;
 
 const Glow = ({ colors }): ReactElement => {
 	const { size } = useCanvas();
@@ -77,8 +74,9 @@ const Glow = ({ colors }): ReactElement => {
 	);
 };
 
-const WalletsDetail = (props: Props): ReactElement => {
-	const { route } = props;
+const WalletsDetail = ({
+	route,
+}: TabScreenProps<'WalletsDetail'>): ReactElement => {
 	const { assetType } = route.params;
 	const { satoshis } = useBalance({ onchain: true, lightning: true });
 	const bitcoinUnit = useSelector((store: Store) => store.settings.bitcoinUnit);

@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import {
 	createNativeStackNavigator,
 	NativeStackNavigationOptions,
+	NativeStackNavigationProp,
 } from '@react-navigation/native-stack';
 
 import BottomSheetWrapper from '../../components/BottomSheetWrapper';
@@ -14,7 +15,17 @@ import { useSnapPoints } from '../../hooks/bottomSheet';
 import { NavigationContainer } from '../../styles/components';
 import Store from '../../store/types';
 
-const Stack = createNativeStackNavigator();
+export type ReceiveNavigationProp =
+	NativeStackNavigationProp<ReceiveStackParamList>;
+
+export type ReceiveStackParamList = {
+	Receive: undefined;
+	ReceiveDetails: undefined;
+	Tags: undefined;
+};
+
+const Stack = createNativeStackNavigator<ReceiveStackParamList>();
+
 const navOptions: NativeStackNavigationOptions = {
 	headerShown: false,
 	gestureEnabled: true,

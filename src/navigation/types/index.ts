@@ -11,11 +11,15 @@ import type { IService, IGetOrderResponse } from '@synonymdev/blocktank-client';
 
 import type { IActivityItem } from '../../store/types/activity';
 import type { TAssetType } from '../../store/types/wallet';
+import type { OnboardingStackParamList } from '../onboarding/OnboardingNavigator';
+import type { TabStackParamList } from '../tabs/TabNavigator';
 import type { LightningStackParamList } from '../lightning/LightningNavigator';
 import type { SettingsStackParamList } from '../settings/SettingsNavigator';
-import type { PinStackParamList } from '../bottom-sheet/PINNavigation';
 import type { BackupStackParamList } from '../bottom-sheet/BackupNavigation';
-import { ProfileLinkStackParamList } from '../bottom-sheet/ProfileLinkNavigation';
+import type { PinStackParamList } from '../bottom-sheet/PINNavigation';
+import type { ProfileLinkStackParamList } from '../bottom-sheet/ProfileLinkNavigation';
+import type { ReceiveStackParamList } from '../bottom-sheet/ReceiveNavigation';
+import type { SendStackParamList } from '../bottom-sheet/SendNavigation';
 
 // TODO: move all navigation related types here
 // https://reactnavigation.org/docs/typescript#organizing-types
@@ -54,7 +58,17 @@ export type RootStackParamList = {
 export type RootStackScreenProps<T extends keyof RootStackParamList> =
 	StackScreenProps<RootStackParamList, T>;
 
+export type OnboardingStackScreenProps<
+	T extends keyof OnboardingStackParamList,
+> = NativeStackScreenProps<OnboardingStackParamList, T>;
+
 // Nested Stack Navigators
+export type TabScreenProps<T extends keyof TabStackParamList> =
+	CompositeScreenProps<
+		NativeStackScreenProps<TabStackParamList, T>,
+		RootStackScreenProps<keyof RootStackParamList>
+	>;
+
 export type LightningScreenProps<T extends keyof LightningStackParamList> =
 	CompositeScreenProps<
 		NativeStackScreenProps<LightningStackParamList, T>,
@@ -68,11 +82,17 @@ export type SettingsScreenProps<T extends keyof SettingsStackParamList> =
 	>;
 
 // BottomSheet Navigators
+export type BackupScreenProps<T extends keyof BackupStackParamList> =
+	NativeStackScreenProps<BackupStackParamList, T>;
+
+export type PinScreenProps<T extends keyof PinStackParamList> =
+	NativeStackScreenProps<PinStackParamList, T>;
+
 export type ProfileLinkScreenProps<T extends keyof ProfileLinkStackParamList> =
 	StackScreenProps<ProfileLinkStackParamList, T>;
 
-export type PinScreenProps<T extends keyof PinStackParamList> =
-	StackScreenProps<PinStackParamList, T>;
+export type ReceiveScreenProps<T extends keyof ReceiveStackParamList> =
+	NativeStackScreenProps<ReceiveStackParamList, T>;
 
-export type BackupScreenProps<T extends keyof BackupStackParamList> =
-	StackScreenProps<BackupStackParamList, T>;
+export type SendScreenProps<T extends keyof SendStackParamList> =
+	NativeStackScreenProps<SendStackParamList, T>;
