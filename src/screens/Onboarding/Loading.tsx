@@ -1,8 +1,10 @@
 import React, { ReactElement, useState, useEffect } from 'react';
-import { StyleSheet, Image } from 'react-native';
+import { View, StyleSheet, Image } from 'react-native';
 import { Keyframe, FadeOut } from 'react-native-reanimated';
-import { AnimatedView, Display, View } from '../../styles/components';
+import { AnimatedView, Display } from '../../styles/components';
 import SafeAreaInsets from '../../components/SafeAreaInsets';
+
+const imageSrc = require('../../assets/illustrations/rocket.png');
 
 const DURATION = 40_000;
 
@@ -46,24 +48,19 @@ const LoadingWalletScreen = (): ReactElement => {
 	}, []);
 
 	return (
-		<View color={'transparent'} style={styles.container}>
+		<View style={styles.container}>
 			<SafeAreaInsets type={'top'} />
-			<View color={'transparent'} style={styles.loadingText}>
-				<Display>
-					Setting up
-					<Display color="brand" style={styles.header}>
-						{' '}
-						your wallet.
-					</Display>
-				</Display>
+			<View style={styles.loadingText}>
+				<Display>Setting up</Display>
+				<Display color="brand">your Wallet.</Display>
 			</View>
-			<View color={'transparent'} style={styles.animationContainer}>
+			<View style={styles.animationContainer}>
 				<AnimatedView
 					key={key}
 					entering={enteringAnimation}
 					exiting={FadeOut}
 					color={'transparent'}>
-					<Image source={require('../../assets/illustrations/rocket.png')} />
+					<Image source={imageSrc} />
 				</AnimatedView>
 			</View>
 		</View>
@@ -78,9 +75,6 @@ const styles = StyleSheet.create({
 	loadingText: {
 		flex: 1,
 		justifyContent: 'center',
-	},
-	header: {
-		fontWeight: 'bold',
 	},
 	animationContainer: {
 		marginTop: 30,
