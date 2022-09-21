@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import Swiper from 'react-native-swiper';
 import { FadeIn, FadeOut } from 'react-native-reanimated';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import {
 	AnimatedView,
@@ -27,23 +27,28 @@ import { showErrorNotification } from '../../utils/notifications';
 import { sleep } from '../../utils/helpers';
 import useColors from '../../hooks/colors';
 import LoadingWalletScreen from './Loading';
-import { OnboardingStackParamList } from '../../navigation/onboarding/OnboardingNavigator';
+import type { OnboardingStackScreenProps } from '../../navigation/types';
 
-const Dot = ({ active }: { active?: boolean }): ReactElement => {
-	return (
-		<ThemedView color={active ? 'white' : 'gray2'} style={styles.pageDot} />
-	);
-};
+const shieldImageSrc = require('../../assets/illustrations/shield-b.png');
+const lightningImageSrc = require('../../assets/illustrations/lightning.png');
+const padlockImageSrc = require('../../assets/illustrations/padlock.png');
+const walletImageSrc = require('../../assets/illustrations/wallet.png');
 
-type Props = NativeStackScreenProps<OnboardingStackParamList, 'Slideshow'>;
+const Dot = ({ active }: { active?: boolean }): ReactElement => (
+	<ThemedView color={active ? 'white' : 'gray2'} style={styles.pageDot} />
+);
 
 /**
  * Slideshow for Welcome screen
  */
-const Slideshow = ({ navigation, route }: Props): ReactElement => {
+const Slideshow = ({
+	navigation,
+	route,
+}: OnboardingStackScreenProps<'Slideshow'>): ReactElement => {
 	const skipIntro = route.params?.skipIntro ?? false;
 	const swiperRef = useRef<Swiper>(null);
 	const [isCreatingWallet, setIsCreatingWallet] = useState(false);
+	const insets = useSafeAreaInsets();
 	const colors = useColors();
 	// because we can't properly scala image inside the <Swiper let's calculate with by hand
 	const dimensions = useWindowDimensions();
@@ -54,6 +59,11 @@ const Slideshow = ({ navigation, route }: Props): ReactElement => {
 			height: dimensions.width * 0.6,
 		}),
 		[dimensions.width],
+	);
+
+	const paginationStyles = useMemo(
+		() => ({ paddingBottom: insets.bottom }),
+		[insets.bottom],
 	);
 
 	const onNewWallet = async (): Promise<void> => {
@@ -83,19 +93,14 @@ const Slideshow = ({ navigation, route }: Props): ReactElement => {
 				slide: (): ReactElement => (
 					<View style={styles.slide}>
 						<View style={styles.imageContainer}>
-							<Image
-								style={illustrationStyles}
-								source={require('../../assets/illustrations/shield-b.png')}
-							/>
+							<Image style={illustrationStyles} source={shieldImageSrc} />
 						</View>
 						<View style={styles.textContent}>
-							<Display>
-								Bitcoin,
-								<Display color="brand"> Everywhere.</Display>
-							</Display>
+							<Display>Bitcoin,</Display>
+							<Display color="brand">Everywhere.</Display>
 							<Text01S color="gray1" style={styles.text}>
-								Pay anyone, anywhere, any time and spend your Bitcoin on the
-								things you value in life.
+								Pay anyone, anywhere, any time{'\n'}and spend your Bitcoin on
+								the{'\n'}things you value in life.
 							</Text01S>
 						</View>
 						<SafeAreaInsets type="bottom" />
@@ -109,19 +114,14 @@ const Slideshow = ({ navigation, route }: Props): ReactElement => {
 				slide: (): ReactElement => (
 					<View style={styles.slide}>
 						<View style={styles.imageContainer}>
-							<Image
-								style={illustrationStyles}
-								source={require('../../assets/illustrations/lightning.png')}
-							/>
+							<Image style={illustrationStyles} source={lightningImageSrc} />
 						</View>
 						<View style={styles.textContent}>
-							<Display>
-								Lightning
-								<Display style={styles.headline2}> Fast.</Display>
-							</Display>
+							<Display>Lightning</Display>
+							<Display color="purple">Fast.</Display>
 							<Text01S color="gray1" style={styles.text}>
 								Send Bitcoin faster than ever.{'\n'}Enjoy instant transactions
-								with friends, family and merchants.
+								with{'\n'}friends, family and merchants.
 							</Text01S>
 						</View>
 						<SafeAreaInsets type="bottom" />
@@ -135,19 +135,14 @@ const Slideshow = ({ navigation, route }: Props): ReactElement => {
 				slide: (): ReactElement => (
 					<View style={styles.slide}>
 						<View style={styles.imageContainer}>
-							<Image
-								style={illustrationStyles}
-								source={require('../../assets/illustrations/padlock.png')}
-							/>
+							<Image style={illustrationStyles} source={padlockImageSrc} />
 						</View>
 						<View style={styles.textContent}>
-							<Display>
-								Log in with
-								<Display color="blue"> just a Tap.</Display>
-							</Display>
+							<Display>Log in with</Display>
+							<Display color="blue">just a Tap.</Display>
 							<Text01S color="gray1" style={styles.text}>
-								Experience the web without limits: portable profiles & feeds,
-								dynamic contacts, passwordless accounts.
+								Experience the web without limits:{'\n'}portable profiles &
+								feeds, dynamic{'\n'}contacts, passwordless accounts.
 							</Text01S>
 						</View>
 						<SafeAreaInsets type="bottom" />
@@ -161,10 +156,7 @@ const Slideshow = ({ navigation, route }: Props): ReactElement => {
 				slide: (): ReactElement => (
 					<View style={styles.slide}>
 						<View style={styles.imageContainer}>
-							<Image
-								style={illustrationStyles}
-								source={require('../../assets/illustrations/wallet.png')}
-							/>
+							<Image style={illustrationStyles} source={walletImageSrc} />
 						</View>
 						<View style={styles.textContent}>
 							<Display>
@@ -172,9 +164,9 @@ const Slideshow = ({ navigation, route }: Props): ReactElement => {
 								<Display color="brand"> your Wallet.</Display>
 							</Display>
 							<Text01S color="gray1" style={styles.text}>
-								By tapping ‘New Wallet’ or ‘Restore’ you accept our{' '}
+								By tapping ‘New Wallet’ or ‘Restore’{'\n'}you accept our{' '}
 								<Text01S onPress={showTOS} color="brand">
-									terms of service
+									terms of use
 								</Text01S>
 								.
 							</Text01S>
@@ -235,6 +227,7 @@ const Slideshow = ({ navigation, route }: Props): ReactElement => {
 			<>
 				<Swiper
 					ref={swiperRef}
+					paginationStyle={paginationStyles}
 					dot={<Dot />}
 					activeDot={<Dot active />}
 					loop={false}
@@ -274,9 +267,29 @@ const styles = StyleSheet.create({
 	skipButton: {
 		backgroundColor: 'transparent',
 	},
+	slide: {
+		flex: 1,
+		paddingHorizontal: 48,
+	},
+	imageContainer: {
+		flex: 4,
+		alignItems: 'center',
+		marginBottom: 32,
+		justifyContent: 'flex-end',
+		position: 'relative', // for first slide background image
+	},
+	illustration: {
+		resizeMode: 'contain',
+	},
+	textContent: {
+		flex: 3.2,
+	},
+	text: {
+		marginTop: 8,
+	},
 	buttonsContainer: {
 		flexDirection: 'row',
-		marginTop: 32,
+		marginTop: 42,
 	},
 	button: {
 		flex: 1,
@@ -288,39 +301,12 @@ const styles = StyleSheet.create({
 	newButton: {
 		marginLeft: 6,
 	},
-	slide: {
-		flex: 1,
-		justifyContent: 'space-between',
-		alignItems: 'center',
-	},
-	imageContainer: {
-		flex: 3,
-		alignItems: 'center',
-		marginBottom: 25,
-		justifyContent: 'flex-end',
-		position: 'relative', // for first slide background image
-	},
-	illustration: {
-		resizeMode: 'contain',
-	},
-	textContent: {
-		flex: 3,
-		width: 280,
-	},
 	pageDot: {
 		width: 7,
 		height: 7,
 		borderRadius: 4,
 		marginLeft: 4,
 		marginRight: 4,
-		marginBottom: 30, // lift dot's up
-	},
-	headline2: {
-		color: 'rgba(172, 101, 225, 1)',
-		lineHeight: 48,
-	},
-	text: {
-		marginTop: 8,
 	},
 });
 
