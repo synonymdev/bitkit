@@ -1,5 +1,5 @@
 import React, { ReactElement, useCallback, useMemo } from 'react';
-import { TouchableOpacity, StyleSheet } from 'react-native';
+import { TouchableOpacity, StyleSheet, Platform } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import {
 	createNativeStackNavigator,
@@ -101,9 +101,21 @@ export const TabBar = ({ navigation, state }): ReactElement => {
 		[navigation],
 	);
 
+	const androidStyles = {
+		borderColor: white08,
+		borderTopColor: '#272727',
+		borderBottomColor: '#272727',
+	};
+
+	const iosStyles = {
+		borderColor: white08,
+	};
+
+	const borderStyles = Platform.OS === 'android' ? androidStyles : iosStyles;
+
 	return (
 		<>
-			<View style={[styles.tabRoot, { bottom: Math.max(insets.bottom, 5) }]}>
+			<View style={[styles.tabRoot, { bottom: Math.max(insets.bottom, 16) }]}>
 				<TouchableOpacity onPress={onSendPress} style={styles.blurContainer}>
 					<BlurView style={styles.send}>
 						<SvgXml xml={sendIcon('white')} width={13} height={13} />
@@ -113,7 +125,7 @@ export const TabBar = ({ navigation, state }): ReactElement => {
 				<TouchableOpacity
 					onPress={openScanner}
 					activeOpacity={0.8}
-					style={[styles.tabScan, { borderColor: white08 }]}>
+					style={[styles.tabScan, borderStyles]}>
 					<ScanIcon width={32} height={32} />
 				</TouchableOpacity>
 				<TouchableOpacity onPress={onReceivePress} style={styles.blurContainer}>
@@ -148,11 +160,10 @@ const TabNavigator = (): ReactElement => {
 
 const styles = StyleSheet.create({
 	tabRoot: {
+		position: 'absolute',
 		left: 16,
 		right: 16,
 		height: 80,
-		position: 'absolute',
-		backgroundColor: 'transparent',
 		flexDirection: 'row',
 		alignItems: 'center',
 	},
@@ -179,13 +190,13 @@ const styles = StyleSheet.create({
 	tabScan: {
 		height: 80,
 		width: 80,
-		borderRadius: 40,
 		backgroundColor: '#101010',
+		borderRadius: 40,
+		borderWidth: 2,
 		marginHorizontal: -40,
 		alignItems: 'center',
 		justifyContent: 'center',
 		zIndex: 1,
-		borderWidth: 2,
 	},
 	tabText: {
 		marginLeft: 6,
