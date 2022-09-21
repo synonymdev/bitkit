@@ -51,7 +51,7 @@ const ActivityList = (): ReactElement => {
 			{groupedItems.map((item) => renderItem({ item }))}
 			<Button
 				text={<Text01M color="white8">Show All Activity</Text01M>}
-				size="big"
+				size="large"
 				variant="transparent"
 				onPress={(): void => {
 					navigation.navigate('ActivityFiltered');
