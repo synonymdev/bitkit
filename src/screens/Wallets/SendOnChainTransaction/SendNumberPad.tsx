@@ -28,7 +28,7 @@ import { useBottomSheetBackPress } from '../../../hooks/bottomSheet';
 /**
  * Handles the number pad logic (add/remove/clear) for on-chain transactions.
  */
-const OnChainNumberPad = (): ReactElement => {
+const SendNumberPad = (): ReactElement => {
 	const snapPoints = useMemo(() => [375], []);
 	const [decimalMode, setDecimalMode] = useState(false);
 	const [prefixZeros, setPrefixZeros] = useState(0);
@@ -57,7 +57,7 @@ const OnChainNumberPad = (): ReactElement => {
 			defaultBitcoinTransactionData,
 	);
 
-	useBottomSheetBackPress('numberPad');
+	useBottomSheetBackPress('numberPadSend');
 
 	/*
 	 * Retrieves total value of all outputs. Excludes change address.
@@ -222,11 +222,11 @@ const OnChainNumberPad = (): ReactElement => {
 		<BottomSheetWrapper
 			snapPoints={snapPoints}
 			backdrop={false}
-			view="numberPad">
+			view="numberPadSend">
 			<NumberPad showDot={showDot} onPress={onPress} onRemove={onRemove}>
 				<AmountButtonRow
 					onDone={(): void => {
-						toggleView({ view: 'numberPad', data: { isOpen: false } });
+						toggleView({ view: 'numberPadSend', data: { isOpen: false } });
 					}}
 				/>
 			</NumberPad>
@@ -234,4 +234,4 @@ const OnChainNumberPad = (): ReactElement => {
 	);
 };
 
-export default memo(OnChainNumberPad);
+export default memo(SendNumberPad);

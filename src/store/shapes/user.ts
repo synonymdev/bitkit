@@ -25,7 +25,7 @@ export const defaultUserShape = {
 		backupNavigation: { ...defaultViewController },
 		PINPrompt: { ...defaultViewController },
 		PINNavigation: { ...defaultViewController },
-		numberPad: { ...defaultViewController },
+		numberPadSend: { ...defaultViewController },
 		numberPadFee: { ...defaultViewController },
 		numberPadReceive: { ...defaultViewController },
 		boostPrompt: { ...defaultViewController },
