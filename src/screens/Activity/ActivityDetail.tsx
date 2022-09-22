@@ -9,7 +9,6 @@ import React, {
 import {
 	ActivityIndicator,
 	Alert,
-	Linking,
 	ScrollView,
 	StyleSheet,
 	View,
@@ -67,6 +66,7 @@ import { getTransactions } from '../../utils/wallet/electrum';
 import { ITransaction, ITxHash } from '../../utils/wallet';
 import type { RootStackParamList } from '../../navigation/types';
 import { showInfoNotification } from '../../utils/notifications';
+import { openURL } from '../../utils/helpers';
 import ActivityTagsPrompt from './ActivityTagsPrompt';
 
 const Section = memo(
@@ -263,9 +263,7 @@ const ActivityDetail = (props: Props): ReactElement => {
 		activityType === 'onChain' ? getBlockExplorerLink(id) : '';
 
 	const handleBlockExplorerOpen = useCallback(async () => {
-		if (await Linking.canOpenURL(blockExplorerUrl)) {
-			await Linking.openURL(blockExplorerUrl);
-		}
+		await openURL(blockExplorerUrl);
 	}, [blockExplorerUrl]);
 
 	const copyTransactionId = useCallback(() => {

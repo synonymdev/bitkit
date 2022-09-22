@@ -5,10 +5,10 @@ import {
 	StyleProp,
 	StyleSheet,
 	ViewStyle,
-	Linking,
 } from 'react-native';
 import { Caption13Up, Text02S, TrashIcon } from '../styles/components';
 import { BasicProfile } from '../store/types/slashtags';
+import { openURL } from '../utils/helpers';
 import LabeledInput from './LabeledInput';
 
 const ProfileLinks = ({
@@ -23,17 +23,6 @@ const ProfileLinks = ({
 	links = links?.filter(({ url }) => url?.length > 0) ?? [];
 
 	const editable = setLink;
-
-	const openLink = async (url: string): Promise<void> => {
-		try {
-			const canOpen = await Linking.canOpenURL(url);
-			if (canOpen) {
-				await Linking.openURL(url);
-			}
-		} catch (err) {
-			console.log('Cannot open url: ', url);
-		}
-	};
 
 	return (
 		<View style={style}>
@@ -63,7 +52,7 @@ const ProfileLinks = ({
 						<TouchableOpacity
 							key={link.title}
 							onPress={(): void => {
-								openLink(link.url);
+								openURL(link.url);
 							}}>
 							<Caption13Up color="gray1" style={styles.label}>
 								{link.title}

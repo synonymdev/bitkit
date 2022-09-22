@@ -6,7 +6,6 @@ import {
 	TouchableOpacity,
 	useWindowDimensions,
 	View,
-	Linking,
 } from 'react-native';
 import Swiper from 'react-native-swiper';
 import { FadeIn, FadeOut } from 'react-native-reanimated';
@@ -24,7 +23,7 @@ import GlowingBackground from '../../components/GlowingBackground';
 import Button from '../../components/Button';
 import { createNewWallet } from '../../utils/startup';
 import { showErrorNotification } from '../../utils/notifications';
-import { sleep } from '../../utils/helpers';
+import { openURL, sleep } from '../../utils/helpers';
 import useColors from '../../hooks/colors';
 import LoadingWalletScreen from './Loading';
 import type { OnboardingStackScreenProps } from '../../navigation/types';
@@ -76,12 +75,6 @@ const Slideshow = ({
 				title: 'Wallet creation failed',
 				message: res.error.message,
 			});
-		}
-	};
-	const showTOS = async (): Promise<void> => {
-		const link = 'https://synonym.to/terms-of-use/';
-		if (await Linking.canOpenURL(link)) {
-			await Linking.openURL(link);
 		}
 	};
 
@@ -165,7 +158,11 @@ const Slideshow = ({
 							</Display>
 							<Text01S color="gray1" style={styles.text}>
 								By tapping ‘New Wallet’ or ‘Restore’{'\n'}you accept our{' '}
-								<Text01S onPress={showTOS} color="brand">
+								<Text01S
+									color="brand"
+									onPress={(): void => {
+										openURL('https://synonym.to/terms-of-use/');
+									}}>
 									terms of use
 								</Text01S>
 								.

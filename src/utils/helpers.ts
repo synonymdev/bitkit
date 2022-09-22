@@ -441,8 +441,16 @@ export const openURL = async (link: string): Promise<void> => {
 	if (!link) {
 		return;
 	}
-	if (await Linking.canOpenURL(link)) {
-		await Linking.openURL(link);
+
+	try {
+		if (await Linking.canOpenURL(link)) {
+			await Linking.openURL(link);
+		} else {
+			console.log('Cannot open url: ', link);
+		}
+	} catch (error) {
+		console.log('Cannot open url: ', link);
+		console.log(error);
 	}
 };
 
