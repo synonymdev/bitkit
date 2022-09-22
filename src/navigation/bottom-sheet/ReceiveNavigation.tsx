@@ -38,19 +38,20 @@ const ReceiveNavigation = (): ReactElement => {
 	);
 
 	return (
-		<BottomSheetWrapper view="receiveNavigation" snapPoints={snapPoints}>
-			<NavigationContainer key={isOpen}>
-				<Stack.Navigator screenOptions={navOptions}>
-					<Stack.Group screenOptions={navOptions}>
-						<Stack.Screen name="Receive" component={Receive} />
-						<Stack.Screen name="ReceiveDetails" component={ReceiveDetails} />
-						<Stack.Screen name="Tags" component={Tags} />
-					</Stack.Group>
-				</Stack.Navigator>
-
-				<ReceiveNumberPad />
-			</NavigationContainer>
-		</BottomSheetWrapper>
+		<>
+			<BottomSheetWrapper view="receiveNavigation" snapPoints={snapPoints}>
+				<NavigationContainer key={isOpen}>
+					<Stack.Navigator screenOptions={navOptions}>
+						<Stack.Group screenOptions={navOptions}>
+							<Stack.Screen name="Receive" component={Receive} />
+							<Stack.Screen name="ReceiveDetails" component={ReceiveDetails} />
+							<Stack.Screen name="Tags" component={Tags} />
+						</Stack.Group>
+					</Stack.Navigator>
+				</NavigationContainer>
+			</BottomSheetWrapper>
+			<ReceiveNumberPad />
+		</>
 	);
 };
 

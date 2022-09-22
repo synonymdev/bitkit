@@ -9,7 +9,6 @@ import Button from '../../../components/Button';
 import { useTransactionDetails } from '../../../hooks/transaction';
 import { toggleView } from '../../../store/actions/user';
 import FeeCustomToggle from './FeeCustomToggle';
-import FeeNumberPad from './FeeNumberPad';
 
 const FeeRate = ({ navigation }): ReactElement => {
 	const insets = useSafeAreaInsets();
@@ -65,7 +64,6 @@ const FeeRate = ({ navigation }): ReactElement => {
 					/>
 				</View>
 			</View>
-			<FeeNumberPad />
 		</ThemedView>
 	);
 };
