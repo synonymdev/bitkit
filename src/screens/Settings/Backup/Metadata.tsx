@@ -40,7 +40,7 @@ const Result = (): ReactElement => {
 			</Text01S>
 
 			<View style={styles.imageContainer}>
-				<Glow style={styles.glow} size={300} color="yellow" />
+				<Glow style={styles.glow} size={500} color="yellow" />
 				<Image source={imageSrc} style={styles.image} />
 			</View>
 

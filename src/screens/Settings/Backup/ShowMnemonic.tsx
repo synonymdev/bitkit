@@ -64,10 +64,16 @@ const ShowMnemonic = ({ navigation }): ReactElement => {
 				displayBackButton={false}
 			/>
 
-			<Text01S color="gray1">
-				Write down these {seedToShow.length} words in the right order and store
-				them in a safe place.
-			</Text01S>
+			{show ? (
+				<Text01S color="gray1">
+					Write down these {seedToShow.length} words in the right order and
+					store them in a safe place.
+				</Text01S>
+			) : (
+				<Text01S color="gray1">
+					Use the 12 words below to recover your money at a later date.
+				</Text01S>
+			)}
 
 			<View style={styles.seedContainer}>
 				<ThemedView color="gray324" style={styles.seed}>

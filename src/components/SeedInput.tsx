@@ -31,11 +31,11 @@ const styles = StyleSheet.create({
 	inputWrapper: {
 		position: 'relative',
 		marginHorizontal: 2,
-		marginBottom: 4,
+		marginBottom: 5,
 		minWidth: 100,
+		justifyContent: 'center',
 	},
 	input: {
-		height: 46,
 		paddingLeft: 45,
 		paddingRight: 6,
 		borderRadius: 8,

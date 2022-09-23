@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react';
 import { Keyboard, Platform } from 'react-native';
 
-const useKeyboard = (): any => {
+const useKeyboard = (): {
+	keyboardShown: boolean;
+} => {
 	const [keyboardShown, setKeyboardShown] = useState(false);
 
 	useEffect(() => {
