@@ -23,7 +23,12 @@ import {
 	updateFee,
 } from '../../utils/wallet/transactions';
 import { getNodeId, refreshLdk } from '../../utils/lightning';
-import { finalizeChannel, getOrder, watchOrder } from '../../utils/blocktank';
+import {
+	finalizeChannel,
+	getBlocktankInfo,
+	getOrder,
+	watchOrder,
+} from '../../utils/blocktank';
 import { addTodo, removeTodo } from './todos';
 import { showErrorNotification } from '../../utils/notifications';
 import { ITodo } from '../types/todos';
@@ -131,6 +136,20 @@ export const refreshOrder = async (
 		return ok(orderResponse);
 	} catch (error) {
 		return err(error);
+	}
+};
+
+/**
+ * Refreshes Blocktank Node Info
+ * @returns {Promise<void>}
+ */
+export const refreshBlocktankInfo = async (): Promise<void> => {
+	const infoResponse = await getBlocktankInfo();
+	if (infoResponse) {
+		dispatch({
+			type: actions.UPDATE_BLOCKTANK_INFO,
+			payload: infoResponse,
+		});
 	}
 };
 

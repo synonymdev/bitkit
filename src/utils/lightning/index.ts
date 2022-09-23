@@ -35,25 +35,6 @@ import {
 } from '../../store/actions/lightning';
 import { sleep } from '../helpers';
 
-export const defaultNodePubKey =
-	'034ecfd567a64f06742ac300a2985676abc0b1dc6345904a08bb52d5418e685f79';
-
-// TODO: Retrieve saved peers from LDK.
-export const PEERS = [
-	{
-		pubKey:
-			'02f61609212fd33845cb9688a3f8fec2a9355992ed8e3578d06bcb4a9b0ed6d1b1',
-		address: '35.233.47.252',
-		port: 9400,
-	},
-	{
-		pubKey:
-			'03b864f425a54e7d50e09cfda27c71d5414a08c6b36d91868a575b115ea2bf2a84',
-		address: '127.0.0.1',
-		port: 9836,
-	},
-];
-
 /**
  * Wipes LDK data from storage
  * @returns {Promise<Ok<string>>}
@@ -406,16 +387,55 @@ export const getNodeIdFromStorage = ({
 };
 
 /**
+ * Parses a lightning uri.
+ * @param {string} str
+ * @returns {{ publicKey: string; ip: string; port: number; }}
+ */
+const parseUri = (
+	str: string,
+): Result<{
+	publicKey: string;
+	ip: string;
+	port: number;
+}> => {
+	const uri = str.split('@');
+	const publicKey = uri[0];
+	if (uri.length !== 2) {
+		return err('Invalid URI.');
+	}
+	const parsed = uri[1].split(':');
+	if (parsed.length < 2) {
+		return err('Invalid URI.');
+	}
+	const ip = parsed[0];
+	const port = Number(parsed[1]);
+	return ok({
+		publicKey,
+		ip,
+		port,
+	});
+};
+
+/**
  * Adds default peers from the peers object.
  * @returns {Promise<Result<string[]>>}
  */
 export const addPeers = async (): Promise<Result<string[]>> => {
 	try {
+		const nodeUris = getStore().blocktank?.info?.node_info?.uris;
+		if (!nodeUris) {
+			return err('No peers available to add.');
+		}
 		const addPeerRes = await Promise.all(
-			Object.keys(PEERS).map(async (peer) => {
+			nodeUris.map(async (uri) => {
+				const parsedUri = parseUri(uri);
+				if (parsedUri.isErr()) {
+					return parsedUri.error.message;
+				}
 				const addPeer = await lm.addPeer({
-					...PEERS[peer],
-					port: Number(PEERS[peer].port),
+					pubKey: parsedUri.value.publicKey,
+					address: parsedUri.value.ip,
+					port: parsedUri.value.port,
 					timeout: 5000,
 				});
 				if (addPeer.isErr()) {

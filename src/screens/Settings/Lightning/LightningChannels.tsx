@@ -2,7 +2,6 @@ import React, { memo, ReactElement, useEffect, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import { Feather, Text, TouchableOpacity } from '../../../styles/components';
 import List from '../../../components/List';
-import { defaultNodePubKey } from '../../../utils/lightning';
 import { useSelector } from 'react-redux';
 import Store from '../../../store/types';
 import { truncate } from '../../../utils/helpers';
@@ -13,6 +12,9 @@ const LightningChannels = ({ navigation }): ReactElement => {
 	const [channelList] = useState<any[]>([]);
 
 	const [peerList] = useState<any[]>([]);
+	const nodeInfo = useSelector(
+		(state: Store) => state.blocktank.info?.node_info,
+	);
 
 	useEffect(() => {
 		(async (): Promise<void> => {
@@ -43,7 +45,7 @@ const LightningChannels = ({ navigation }): ReactElement => {
 			title: 'Peers',
 			data: peerList.map((p) => ({
 				title: `Pubkey: ${truncate(p.pubKey, 22)}${
-					p.pubKey === defaultNodePubKey ? ' (Default node)' : ''
+					p.pubKey === nodeInfo?.public_key ? ' (Default node)' : ''
 				}\nAddress: ${p.address}`,
 				type: 'button',
 				onPress: async (): Promise<void> => {},

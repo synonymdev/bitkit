@@ -9,7 +9,10 @@ import { InteractionManager } from 'react-native';
 import { getStore } from '../../store/helpers';
 //import { backupSetup, performFullBackup } from '../../store/actions/backup';
 import { showErrorNotification } from '../notifications';
-import { refreshServiceList } from '../../store/actions/blocktank';
+import {
+	refreshBlocktankInfo,
+	refreshServiceList,
+} from '../../store/actions/blocktank';
 import { setupTodos } from '../todos';
 import { connectToElectrum, subscribeToHeader } from '../wallet/electrum';
 import { updateOnchainFeeEstimates } from '../../store/actions/fees';
@@ -93,6 +96,7 @@ export const startWalletServices = async ({
 			let isConnectedToElectrum = false;
 
 			updateExchangeRates().then();
+			refreshBlocktankInfo().then();
 
 			// Before we do anything we should connect to an Electrum server.
 			if (onchain || lightning) {

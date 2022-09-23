@@ -1,10 +1,25 @@
 import { IBlocktank } from '../types/blocktank';
 import { IGetOrderResponse } from '@synonymdev/blocktank-client';
 
+export const defaultBlocktankInfoShape = {
+	capacity: {
+		local_balance: 0,
+		remote_balance: 0,
+	},
+	services: [],
+	node_info: {
+		alias: '',
+		active_channels_count: 0,
+		uris: [],
+		public_key: '',
+	},
+};
+
 export const defaultBlocktankShape: IBlocktank = {
 	serviceList: [],
 	serviceListLastUpdated: undefined,
 	orders: [],
+	info: defaultBlocktankInfoShape,
 };
 
 export const defaultOrderResponse: IGetOrderResponse = {

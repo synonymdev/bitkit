@@ -2,6 +2,7 @@ import bt, {
 	IBuyChannelRequest,
 	IBuyChannelResponse,
 	IFinalizeChannelResponse,
+	IGetInfoResponse,
 	IGetOrderResponse,
 	IService,
 } from '@synonymdev/blocktank-client';
@@ -26,6 +27,13 @@ export const setupBlocktank = (selectedNetwork: TAvailableNetworks): void => {
 	} else {
 		bt.setNetwork('mainnet');
 	}
+};
+
+/**
+ * @returns {Promise<IGetInfoResponse>}
+ */
+export const getBlocktankInfo = (): Promise<IGetInfoResponse> => {
+	return bt.getInfo();
 };
 
 /**

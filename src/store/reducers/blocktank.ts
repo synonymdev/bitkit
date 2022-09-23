@@ -8,6 +8,11 @@ const blocktank = (
 	action,
 ): IBlocktank => {
 	switch (action.type) {
+		case actions.UPDATE_BLOCKTANK_INFO:
+			return {
+				...state,
+				info: action.payload,
+			};
 		case actions.UPDATE_BLOCKTANK_SERVICE_LIST:
 			return {
 				...state,
