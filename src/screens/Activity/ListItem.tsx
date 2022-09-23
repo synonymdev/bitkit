@@ -33,9 +33,15 @@ const ListItem = ({
 	onPress: () => void;
 }): ReactElement => {
 	const { value, txType, confirmed, formattedDate, activityType, id } = item;
-	const slashTagsUrl = useSelector(
-		(state: Store) => state.metadata.slashTagsUrls,
-	)[id];
+	const slashTagsUrls = useSelector(
+		(state: Store) => state.metadata?.slashTagsUrls,
+	);
+	const slashTagsUrl = useMemo(() => {
+		if (slashTagsUrls && id in slashTagsUrls) {
+			return slashTagsUrls[id];
+		}
+		return '';
+	}, [id, slashTagsUrls]);
 
 	let title;
 	if (txType === 'sent') {
