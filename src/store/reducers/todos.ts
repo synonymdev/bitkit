@@ -7,7 +7,7 @@ const todos = (state: ITodos = defaultTodosShape, action): ITodos => {
 		case actions.ADD_TODO:
 			return {
 				...state,
-				todos: [...state.todos, action.payload],
+				todos: [action.payload, ...state.todos],
 			};
 
 		case actions.REMOVE_TODO:

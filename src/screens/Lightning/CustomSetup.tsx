@@ -149,6 +149,11 @@ const CustomSetup = ({
 		[fiatCurrencyRate, selectedCurrency],
 	);
 
+	const spendableFiatBalance = useMemo(() => {
+		//TODO: Add channel calculation from Blocktank to set the initial max spendableFiatBalance.
+		return Math.round(currentBalance.fiatValue / 1.5);
+	}, [currentBalance.fiatValue]);
+
 	useEffect(() => {
 		const rates = { small: 0, medium: 0, big: 0 };
 		const receiveRates = { small: 0, medium: 0, big: 0 };
@@ -158,8 +163,6 @@ const CustomSetup = ({
 		PACKAGES_SPENDING.every((p, i) => {
 			const { id, fiatAmount } = p;
 			// This ensures we have enough money to actually pay for the channel.
-			//TODO: Add channel calculation from Blocktank to set the initial max spendableFiatBalance.
-			const spendableFiatBalance = currentBalance.fiatValue / 1.5;
 			if (spendableFiatBalance > fiatAmount) {
 				rates[id] = fiatToSats(fiatAmount);
 				availPackages.push(p);
@@ -298,6 +301,24 @@ const CustomSetup = ({
 		spendingAmount,
 	]);
 
+	const onMaxPress = useCallback(() => {
+		if (spending) {
+			// Select highest available spend package.
+			const maxSpendPackage = availableSpendingPackages.reduce((a, b) =>
+				a.fiatAmount > b.fiatAmount ? a : b,
+			);
+			const spendRate = spendPkgRates[maxSpendPackage.id];
+			setSpendingAmount(spendRate);
+		} else {
+			// Select highest available receive package.
+			const maxReceivePackage = availableReceivingPackages.reduce((a, b) =>
+				a.fiatAmount > b.fiatAmount ? a : b,
+			);
+			const receiveRate = receivePkgRates[maxReceivePackage.id];
+			setReceivingAmount(receiveRate);
+		}
+	}, [availableSpendingPackages, receivePkgRates, spendPkgRates, spending]);
+
 	return (
 		<GlowingBackground topLeft={colors.purple}>
 			<SafeAreaInsets type="top" />
@@ -428,26 +449,20 @@ const CustomSetup = ({
 								setReceivingAmount(txt);
 							}
 						}}
-						onMaxPress={(): void => {
-							if (spending) {
-								setSpendingAmount(currentBalance.satoshis);
-							} else {
-								setReceivingAmount(blocktankService.max_chan_receiving);
-							}
-						}}
+						onMaxPress={onMaxPress}
 						onDone={(): void => {
 							let typedAmountInSats = amount;
 							if (unit === 'BTC') {
 								typedAmountInSats = btcToSats(typedAmountInSats);
 							}
 							if (spending && typedAmountInSats > currentBalance.satoshis) {
-								setSpendingAmount(currentBalance.satoshis);
+								onMaxPress();
 							}
 							if (
 								!spending &&
 								typedAmountInSats > blocktankService.max_chan_receiving
 							) {
-								setReceivingAmount(blocktankService.max_chan_receiving);
+								onMaxPress();
 							}
 							setKeybrd(false);
 						}}

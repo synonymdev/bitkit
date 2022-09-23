@@ -26,6 +26,7 @@ import { IGetOrderResponse } from '@synonymdev/blocktank-client';
 import { sleep } from '../../utils/helpers';
 import { defaultOrderResponse } from '../../store/shapes/blocktank';
 import { confirmChannelPurchase } from '../../store/actions/blocktank';
+import useDisplayValues from '../../hooks/displayValues';
 
 const PIE_SIZE = 140;
 const PIE_SHIFT = 70;
@@ -42,6 +43,9 @@ const QuickConfirm = ({
 	const selectedNetwork = useSelector(
 		(state: Store) => state.wallet.selectedNetwork,
 	);
+	const selectedWallet = useSelector(
+		(state: Store) => state.wallet.selectedWallet,
+	);
 	const orderId = useMemo(
 		() => route.params?.orderId ?? '',
 		[route.params?.orderId],
@@ -55,6 +59,16 @@ const QuickConfirm = ({
 		}
 		return defaultOrderResponse;
 	}, [orderId, orders]);
+	const blocktankPurchaseFee = useDisplayValues(order?.price ?? 0);
+	const transactionFee = useSelector(
+		(state: Store) =>
+			state.wallet.wallets[selectedWallet].transaction[selectedNetwork].fee,
+	);
+	const fiatTransactionFee = useDisplayValues(transactionFee ?? 0);
+	const channelOpenCost = useMemo(() => {
+		return blocktankPurchaseFee.fiatValue + fiatTransactionFee.fiatValue;
+	}, [fiatTransactionFee.fiatValue, blocktankPurchaseFee.fiatValue]);
+
 	const [keybrd, setKeybrd] = useState(false);
 	const [loading, setLoading] = useState(false);
 
@@ -86,8 +100,9 @@ const QuickConfirm = ({
 				<View>
 					<Display color="purple">Please {'\n'}confirm.</Display>
 					<Text01S color="gray1" style={styles.text}>
-						It costs <Text01S>{order.price} sats</Text01S> to connect you to
-						Lightning and set up your spending balance.
+						It costs
+						<Text01S>{` ${blocktankPurchaseFee.fiatSymbol}${channelOpenCost} `}</Text01S>
+						to connect you to Lightning and set up your spending balance.
 					</Text01S>
 				</View>
 

@@ -29,7 +29,12 @@ const valueToX = (
 	if (value > maximumValue) {
 		newValue = maximumValue;
 	}
-	return (width / (maximumValue - minimumValue)) * newValue;
+	const delta = maximumValue - minimumValue;
+	// Make sure we're not dividing by zero.
+	if (delta === 0) {
+		return 0;
+	}
+	return (width / delta) * newValue;
 };
 
 const xToValue = (
@@ -44,6 +49,10 @@ const xToValue = (
 	}
 	if (x > width) {
 		newX = width;
+	}
+	// Make sure we're not dividing by zero.
+	if (width === 0) {
+		return 0;
 	}
 	return ((maximumValue - minimumValue) / width) * newX;
 };

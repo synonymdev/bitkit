@@ -5,6 +5,7 @@ import { addTodo, removeTodo } from '../../store/actions/todos';
 import { toggleView } from '../../store/actions/user';
 import { getOpenChannels } from '../lightning';
 import { TChannel } from '@synonymdev/react-native-ldk';
+import { getBalance } from '../wallet';
 
 type TTodoPresets = { [key in TTodoType]: ITodo };
 export const todoPresets: TTodoPresets = {
@@ -93,6 +94,7 @@ export const setupTodos = async (): Promise<void> => {
 	 * Check for lightning.
 	 */
 	const lightning = todos.some((todo) => todo.type === 'lightning');
+	const lightningIsDismissed = 'lightning' in dismissedTodos;
 	const getLightningChannelsResponse = await getOpenChannels({
 		fromStorage: true,
 	});
@@ -102,15 +104,21 @@ export const setupTodos = async (): Promise<void> => {
 	} else {
 		lightningChannels = [];
 	}
-	// Add lightning if not included in the todos array, hasn't been previously dismissed and no channels exist.
-	if (!lightning && lightningChannels.length <= 0) {
+	const currentOnChainBalance = getBalance({ onchain: true });
+	// Add lightning if the user has an onchain balance, lightning is not included in the todos array, hasn't been previously dismissed and no channels exist.
+	if (
+		!lightning &&
+		!lightningIsDismissed &&
+		lightningChannels.length <= 0 &&
+		currentOnChainBalance.satoshis > 0
+	) {
 		addTodo(todoPresets.lightning);
 	}
 
-	// Remove lightning if status is true and hasn't been removed from the todos array.
-	// if (lightning.length) {
-	// 	removeTodo(lightning[0].id);
-	// }
+	// Remove lightning if it hasn't been removed from the todos array and channels exist.
+	if (lightning && lightningChannels.length > 0) {
+		removeTodo('lightning');
+	}
 
 	/*
 	 * Check for PIN.

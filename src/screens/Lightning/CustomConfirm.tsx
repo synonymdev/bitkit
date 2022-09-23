@@ -60,7 +60,15 @@ const CustomConfirm = ({
 		return defaultOrderResponse;
 	}, [orderId, orders]);
 
-	const cost = useDisplayValues(order?.price ?? 0);
+	const blocktankPurchaseFee = useDisplayValues(order?.price ?? 0);
+	const transactionFee = useSelector(
+		(state: Store) =>
+			state.wallet.wallets[selectedWallet].transaction[selectedNetwork].fee,
+	);
+	const fiatTransactionFee = useDisplayValues(transactionFee ?? 0);
+	const channelOpenCost = useMemo(() => {
+		return blocktankPurchaseFee.fiatValue + fiatTransactionFee.fiatValue;
+	}, [fiatTransactionFee.fiatValue, blocktankPurchaseFee.fiatValue]);
 
 	const handleConfirm = async (): Promise<void> => {
 		setLoading(true);
@@ -109,11 +117,9 @@ const CustomConfirm = ({
 						</Display>
 						<Text01S color="gray1" style={styles.text}>
 							It costs
-							<Text01S>
-								{' ' + cost.fiatSymbol + cost.fiatFormatted + ' '}
-							</Text01S>
-							to connect and setup your balance. Your Lightning connection will
-							stay open for at least
+							<Text01S>{` ${blocktankPurchaseFee.fiatSymbol}${channelOpenCost} `}</Text01S>
+							to connect you to Lightning and set up your spending balance. Your
+							Lightning connection will stay open for at least
 							<Text01S onPress={(): void => setKeybrd(true)}>
 								{' '}
 								{weeks} weeks <PenIcon height={18} width={18} />

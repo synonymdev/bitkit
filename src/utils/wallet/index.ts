@@ -86,6 +86,7 @@ import {
 } from './constants';
 import { moveMetaIncTxTags } from '../../store/actions/metadata';
 import { refreshOrdersList } from '../../store/actions/blocktank';
+import { setupTodos } from '../todos';
 
 export const refreshWallet = async ({
 	onchain = true,
@@ -145,6 +146,8 @@ export const refreshWallet = async ({
 			await updateActivityList();
 			await moveMetaIncTxTags();
 		}
+
+		setupTodos().then();
 
 		return ok('');
 	} catch (e) {

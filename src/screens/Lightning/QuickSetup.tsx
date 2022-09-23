@@ -58,7 +58,7 @@ const QuickSetup = ({
 	const colors = useColors();
 	const [keybrd, setKeybrd] = useState(false);
 	const [loading, setLoading] = useState(false);
-	const [totalBalance, setTotalBalance] = useState(20000);
+	const [totalBalance, setTotalBalance] = useState(0);
 	const [spendingAmount, setSpendingAmount] = useState(0);
 	const currentBalance = useBalance({ onchain: true });
 	const bitcoinUnit = useSelector((state: Store) => state.settings.bitcoinUnit);
@@ -96,12 +96,13 @@ const QuickSetup = ({
 	}, [bitcoinUnit, unitPreference]);
 
 	useEffect(() => {
-		let spendingLimit = currentBalance.satoshis;
-		if (blocktankService?.max_chan_spending < currentBalance.satoshis) {
+		let spendingLimit = Math.round(currentBalance.satoshis / 1.5);
+		if (blocktankService?.max_chan_spending < spendingLimit) {
 			spendingLimit = blocktankService?.max_chan_spending;
 		}
 		setTotalBalance(spendingLimit);
 	}, [blocktankService?.max_chan_spending, currentBalance.satoshis]);
+
 	useEffect(() => {
 		setupOnChainTransaction({ rbf: false }).then();
 	}, []);
