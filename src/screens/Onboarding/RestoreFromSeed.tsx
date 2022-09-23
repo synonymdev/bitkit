@@ -37,6 +37,7 @@ import useColors from '../../hooks/colors';
 import { restoreWallet } from '../../utils/startup';
 import LoadingWalletScreen from './Loading';
 import NavigationHeader from '../../components/NavigationHeader';
+import rnAndroidKeyboardAdjust from 'rn-android-keyboard-adjust';
 
 const Glow = ({ color }: { color: string }): ReactElement => {
 	const opacity = useValue(0);
@@ -91,6 +92,15 @@ const RestoreFromSeed = (): ReactElement => {
 			return [...items];
 		});
 	};
+
+	// Make sure SeedInputAccessory is showing on Android
+	useEffect(() => {
+		rnAndroidKeyboardAdjust.setAdjustResize();
+
+		return () => {
+			rnAndroidKeyboardAdjust.setAdjustPan();
+		};
+	}, []);
 
 	const handleFocus = (index): void => {
 		setFocused(index);

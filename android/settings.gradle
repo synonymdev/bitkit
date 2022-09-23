@@ -1,4 +1,6 @@
 rootProject.name = 'bitkit'
+include ':rn-android-keyboard-adjust'
+project(':rn-android-keyboard-adjust').projectDir = new File(rootProject.projectDir, '../node_modules/rn-android-keyboard-adjust/android')
 include ':rn-qr-generator'
 project(':rn-qr-generator').projectDir = new File(rootProject.projectDir, '../node_modules/rn-qr-generator/android')
 include ':react-native-fs'

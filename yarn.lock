@@ -9957,6 +9957,11 @@ ripemd160@^2.0.0, ripemd160@^2.0.1, ripemd160@^2.0.2:
     hash-base "^3.0.0"
     inherits "^2.0.1"
 
+rn-android-keyboard-adjust@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/rn-android-keyboard-adjust/-/rn-android-keyboard-adjust-2.0.0.tgz#bb1c9ffdd8f07df9a86e0c7a06962781ceecec4f"
+  integrity sha512-mLZ0Nkz6wZytiGxb9fK+GgVzg78y7w5CLyqCRW1C58Eg22pQ3NFqalylqPyTqnH6LuelibgT2xayMx8NiyuYbw==
+
 "rn-electrum-client@git+ssh://git@github.com/synonymdev/react-native-electrum-client#1515d57a61bcad5ee70e21cd1a1ca8054d4e34ca":
   version "0.0.8"
   resolved "git+ssh://git@github.com/synonymdev/react-native-electrum-client#1515d57a61bcad5ee70e21cd1a1ca8054d4e34ca"
