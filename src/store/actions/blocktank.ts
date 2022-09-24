@@ -143,14 +143,16 @@ export const refreshOrder = async (
  * Refreshes Blocktank Node Info
  * @returns {Promise<void>}
  */
-export const refreshBlocktankInfo = async (): Promise<void> => {
+export const refreshBlocktankInfo = async (): Promise<Result<string>> => {
 	const infoResponse = await getBlocktankInfo();
-	if (infoResponse) {
+	if (infoResponse && infoResponse?.node_info) {
 		dispatch({
 			type: actions.UPDATE_BLOCKTANK_INFO,
 			payload: infoResponse,
 		});
+		return ok('Blocktank info updated.');
 	}
+	return err('Unable to update Blocktank info.');
 };
 
 /**
