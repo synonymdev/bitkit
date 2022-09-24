@@ -57,9 +57,11 @@ export const setupTodos = async (): Promise<void> => {
 	 */
 	const backupTodo = todos.filter((todo) => todo.type === 'activateBackup');
 	const backupStatus = store.backup.remoteBackupsEnabled;
-	const activateBackupIsDismissed = 'activateBackup' in dismissedTodos;
+	const activateBackupIsDismissed = dismissedTodos.some(
+		(todo) => todo === 'activateBackup',
+	);
 	// Add backupTodo if status is false and is not included in the todos array.
-	if (!backupStatus && !backupTodo?.length && activateBackupIsDismissed) {
+	if (!backupStatus && !backupTodo?.length && !activateBackupIsDismissed) {
 		addTodo(todoPresets.activateBackup);
 	}
 	// Remove backupTodo if status is true and hasn't been removed from the todos array.
@@ -70,7 +72,7 @@ export const setupTodos = async (): Promise<void> => {
 	/*
 	 * Check for seed phrase backup.
 	 */
-	const seedPhraseDismissed = dismissedTodos.filter(
+	const seedPhraseDismissed = dismissedTodos.some(
 		(todo) => todo === 'backupSeedPhrase',
 	);
 	const seedPhraseTodo = todos.filter(
@@ -81,7 +83,7 @@ export const setupTodos = async (): Promise<void> => {
 	// and backup has not been verified
 	if (
 		!backupSeedPhraseStatus &&
-		!seedPhraseDismissed.length &&
+		!seedPhraseDismissed &&
 		!seedPhraseTodo.length
 	) {
 		addTodo(todoPresets.backupSeedPhrase);
@@ -94,7 +96,9 @@ export const setupTodos = async (): Promise<void> => {
 	 * Check for lightning.
 	 */
 	const lightning = todos.some((todo) => todo.type === 'lightning');
-	const lightningIsDismissed = 'lightning' in dismissedTodos;
+	const lightningIsDismissed = dismissedTodos.some(
+		(todo) => todo === 'lightning',
+	);
 	const getLightningChannelsResponse = await getOpenChannels({
 		fromStorage: true,
 	});
@@ -124,7 +128,7 @@ export const setupTodos = async (): Promise<void> => {
 	 * Check for PIN.
 	 */
 	const pin = todos.some((todo) => todo.type === 'pin');
-	const pinIsDismissed = 'pin' in dismissedTodos;
+	const pinIsDismissed = dismissedTodos.some((todo) => todo === 'pin');
 	// Add pin if status is false and is not included in the todos array.
 	if (!pin && !pinIsDismissed) {
 		addTodo(todoPresets.pin);
@@ -135,12 +139,14 @@ export const setupTodos = async (): Promise<void> => {
 	// }
 
 	/*
-	 * Check for PIN.
+	 * Check for Slashtags Profile.
 	 */
 	const slashtagsProfile = todos.some(
 		(todo) => todo.type === 'slashtagsProfile',
 	);
-	const slashtagsProfileIsDismissed = 'slashtagsProfile' in dismissedTodos;
+	const slashtagsProfileIsDismissed = dismissedTodos.some(
+		(todo) => todo === 'slashtagsProfile',
+	);
 	const slashtagsProfileStatus =
 		store.slashtags.onboardingProfileStep !== 'Intro';
 	// Add pin if status is false and is not included in the todos array.
