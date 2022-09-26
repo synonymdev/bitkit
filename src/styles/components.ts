@@ -178,7 +178,7 @@ export const TimerIcon = styled(SvgXml).attrs((props) => ({
 
 export const TimerIconAlt = styled(SvgXml).attrs((props) => ({
 	xml: timerIconAlt(props?.color ? props.theme.colors[props.color] : 'white'),
-	height: props?.height ?? '16px',
+	height: props?.height ?? '17px',
 	width: props?.width ?? '16px',
 	color: undefined,
 }))({});
