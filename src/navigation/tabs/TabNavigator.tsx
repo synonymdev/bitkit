@@ -1,5 +1,5 @@
 import React, { ReactElement, useCallback, useMemo } from 'react';
-import { TouchableOpacity, StyleSheet, Platform } from 'react-native';
+import { View, TouchableOpacity, StyleSheet, Platform } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import {
 	createNativeStackNavigator,
@@ -12,7 +12,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import WalletsScreen from '../../screens/Wallets';
 import WalletsDetail from '../../screens/Wallets/WalletsDetail';
 import BackupPrompt from '../../screens/Settings/Backup/BackupPrompt';
-import { ScanIcon, Text02M, View } from '../../styles/components';
+import { ScanIcon, Text02M } from '../../styles/components';
 import AuthCheck from '../../components/AuthCheck';
 import BlurView from '../../components/BlurView';
 import { receiveIcon, sendIcon } from '../../assets/icons/tabs';
