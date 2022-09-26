@@ -95,6 +95,7 @@ export const ProfileCard = ({
 					style={styles.bio}
 					value={bio}
 					placeholder={'Short bio. Tell a bit about yourself.'}
+					multiline={true}
 					onChangeText={(value): void => onChange?.('bio', value)}
 					blurOnSubmit
 					returnKeyType={'done'}
