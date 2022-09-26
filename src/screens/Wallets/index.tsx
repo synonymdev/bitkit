@@ -78,7 +78,6 @@ const Wallets = ({ navigation }: TabScreenProps<'Wallets'>): ReactElement => {
 					) : (
 						<>
 							<TodoCarousel />
-							<Widgets />
 							<View style={styles.content}>
 								<ConnectivityIndicator />
 								<Subtitle style={styles.assetsTitle}>Assets</Subtitle>
@@ -93,6 +92,7 @@ const Wallets = ({ navigation }: TabScreenProps<'Wallets'>): ReactElement => {
 										});
 									}}
 								/>
+								<Widgets />
 								<ActivityListShort />
 								<BetaWarning />
 							</View>

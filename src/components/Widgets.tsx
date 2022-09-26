@@ -14,7 +14,7 @@ const Widgets = (): ReactElement => {
 	return (
 		<>
 			<Subtitle style={styles.content}>Widgets</Subtitle>
-			<View style={styles.container}>
+			<View>
 				<BitfinexWidget />
 				<TouchableOpacity
 					onPress={(): void => Alert.alert('TODO')}
@@ -30,12 +30,9 @@ const Widgets = (): ReactElement => {
 };
 
 const styles = StyleSheet.create({
-	container: {
-		marginHorizontal: 16,
-	},
 	content: {
 		marginTop: 32,
-		marginLeft: 16,
+		marginBottom: 8,
 	},
 	add: {
 		height: 88,
