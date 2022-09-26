@@ -10,15 +10,18 @@ export const SlashtagURL = ({
 	url,
 	style,
 	color = 'brand',
+	onPress,
 }: {
 	url?: string;
 	style?: ViewStyle;
 	color?: string;
+	onPress?: () => void;
 }): JSX.Element => {
 	const id = url && SlashURL.parse(url).id;
 
 	return (
 		<TouchableOpacity
+			onPress={onPress}
 			onLongPress={(): void => {
 				if (url) {
 					Clipboard.setString(url);

@@ -17,7 +17,7 @@ const ContactItem = ({
 	onPress,
 }: {
 	contact: IContactRecord;
-	onPress: Function;
+	onPress: (contact: IContactRecord) => void;
 }): JSX.Element => {
 	const { profile } = useProfile(contact.url);
 
@@ -35,7 +35,13 @@ const ContactItem = ({
 				<ProfileImage url={contact.url} image={profile?.image} size={48} />
 				<View style={cstyles.column}>
 					<Text01M style={cstyles.name}>{name}</Text01M>
-					<SlashtagURL color="gray" url={contact.url} />
+					<SlashtagURL
+						color="gray"
+						url={contact.url}
+						onPress={(): void => {
+							onPress(contact);
+						}}
+					/>
 				</View>
 			</ThemedView>
 		</TouchableOpacity>
