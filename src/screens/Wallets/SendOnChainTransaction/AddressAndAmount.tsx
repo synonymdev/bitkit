@@ -69,7 +69,7 @@ const AddressAndAmount = ({ index = 0, navigation }): ReactElement => {
 		(store: Store) => store.wallet.selectedNetwork,
 	);
 	const numberPadIsOpen = useSelector(
-		(store: Store) => store.user.viewController?.numberPadSend.isOpen,
+		(store: Store) => store.user.viewController.numberPadSend.isOpen,
 	);
 	const coinSelectAuto = useSelector(
 		(state: Store) => state.settings.coinSelectAuto,
@@ -211,13 +211,14 @@ const AddressAndAmount = ({ index = 0, navigation }): ReactElement => {
 		}
 	}, [index, selectedNetwork, selectedWallet, value]);
 
-	const handleScan = useCallback(async () => {
+	const handleScan = (): void => {
 		navigation.navigate('Scanner');
-	}, [navigation]);
+	};
 
-	const handleSendToContact = useCallback(async () => {
+	const handleSendToContact = (): void => {
+		closeNumberPad();
 		navigation.navigate('Contacts');
-	}, [navigation]);
+	};
 
 	const handleTagRemove = useCallback(
 		(tag) => {
@@ -292,6 +293,8 @@ const AddressAndAmount = ({ index = 0, navigation }): ReactElement => {
 			// try to update fees on this screen, because they will be used on next one
 			updateOnchainFeeEstimates({ selectedNetwork }).then();
 			refreshLdk({ selectedWallet, selectedNetwork }).then();
+		} else {
+			closeNumberPad();
 		}
 	}, [selectedNetwork, selectedWallet, sendNavigationIsOpen]);
 

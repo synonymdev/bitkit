@@ -1,4 +1,10 @@
-import React, { ReactElement, memo, useCallback, useMemo } from 'react';
+import React, {
+	ReactElement,
+	memo,
+	useCallback,
+	useMemo,
+	useEffect,
+} from 'react';
 import { StyleSheet, View, Keyboard } from 'react-native';
 import { useSelector } from 'react-redux';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -24,9 +30,6 @@ import { toggleView } from '../../../store/actions/user';
 const ReceiveDetails = ({ navigation }): ReactElement => {
 	const insets = useSafeAreaInsets();
 	const invoice = useSelector((store: Store) => store.receive);
-	const numberPadReceiveIsOpen = useSelector(
-		(store: Store) => store.user.viewController?.numberPadReceive.isOpen,
-	);
 	const { keyboardShown } = useKeyboard();
 	const buttonContainerStyles = useMemo(
 		() => ({
@@ -51,17 +54,22 @@ const ReceiveDetails = ({ navigation }): ReactElement => {
 		removeInvoiceTag({ tag });
 	}, []);
 
-	const closeNumberPad = useCallback(() => {
-		if (numberPadReceiveIsOpen) {
-			toggleView({
-				view: 'numberPadReceive',
-				data: {
-					isOpen: false,
-					snapPoint: 0,
-				},
-			});
-		}
-	}, [numberPadReceiveIsOpen]);
+	// Close NumberPad on unmount
+	useEffect(() => {
+		return () => {
+			closeNumberPad();
+		};
+	}, []);
+
+	const closeNumberPad = (): void => {
+		toggleView({
+			view: 'numberPadReceive',
+			data: {
+				isOpen: false,
+				snapPoint: 0,
+			},
+		});
+	};
 
 	return (
 		<ThemedView color="onSurface" style={styles.container}>
