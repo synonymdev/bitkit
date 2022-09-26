@@ -25,13 +25,10 @@ const Camera = ({
 		console.error(
 			'An error was encountered when loading the camera. Please ensure Bitkit has permission to use this feature in your phone settings.',
 		);
-		showErrorNotification(
-			{
-				title: 'Error',
-				message: 'Error loading camera, please check permissions.',
-			},
-			'bottom',
-		);
+		showErrorNotification({
+			title: 'Error',
+			message: 'Error loading camera, please check permissions.',
+		});
 		onClose();
 	};
 
