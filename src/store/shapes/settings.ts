@@ -121,7 +121,7 @@ export const defaultSettingsShape: ISettings = {
 	error: false,
 	biometrics: false,
 	pin: false,
-	pinOnLaunch: false,
+	pinOnLaunch: true,
 	pinForPayments: false,
 	rbf: true,
 	theme: 'dark',
