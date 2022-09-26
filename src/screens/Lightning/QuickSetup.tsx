@@ -5,7 +5,7 @@ import React, {
 	useMemo,
 	useEffect,
 } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, Platform, View } from 'react-native';
 import { FadeIn, FadeOut } from 'react-native-reanimated';
 
 import {
@@ -299,6 +299,7 @@ const styles = StyleSheet.create({
 	},
 	pText: {
 		marginLeft: 8,
+		paddingTop: Platform.OS === 'android' ? 20 : 0,
 	},
 	numberpad: {
 		marginHorizontal: -16,
