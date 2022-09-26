@@ -25,7 +25,9 @@ const AddressOrSlashpay = ({
 	if (slashTagsUrl) {
 		return (
 			<View style={[styles.root, style]}>
-				<ThemedView color="white08" style={styles.input}>
+				<ThemedView
+					color="white08"
+					style={[styles.input, styles.inputSlashtags]}>
 					<ContactSmall url={slashTagsUrl} />
 				</ThemedView>
 				<View style={styles.inputActions}>{children}</View>
@@ -59,6 +61,11 @@ const styles = StyleSheet.create({
 	input: {
 		paddingRight: 130,
 		maxHeight: 100,
+	},
+	inputSlashtags: {
+		padding: 16,
+		borderRadius: 8,
+		minHeight: 70,
 	},
 	inputActions: {
 		position: 'absolute',

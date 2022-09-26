@@ -65,8 +65,6 @@ export const Contact = ({ navigation, route }): JSX.Element => {
 					<View style={styles.bottomHeader}>
 						<IconButton
 							onPress={async (): Promise<void> => {
-								navigation.popToTop();
-
 								const payConfig = await getSlashPayConfig(sdk, url);
 
 								const onChainAddresses = payConfig
@@ -84,6 +82,7 @@ export const Contact = ({ navigation, route }): JSX.Element => {
 									return;
 								}
 
+								navigation.popToTop();
 								toggleView({
 									view: 'sendNavigation',
 									data: {
