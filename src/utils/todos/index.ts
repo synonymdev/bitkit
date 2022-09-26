@@ -176,10 +176,9 @@ export const handleOnPress = ({
 				navigation.navigate('Settings', { screen: 'BackupSettings' });
 				break;
 			case 'pin':
-				// navigation.navigate('Settings', { screen: 'Pin' });
 				toggleView({
 					view: 'PINPrompt',
-					data: { isOpen: true },
+					data: { isOpen: true, showLaterButton: true },
 				});
 				break;
 			case 'lightning':

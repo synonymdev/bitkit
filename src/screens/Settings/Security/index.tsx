@@ -47,7 +47,7 @@ const SecuritySettings = ({ navigation }): ReactElement => {
 							} else {
 								toggleView({
 									view: 'PINPrompt',
-									data: { isOpen: true },
+									data: { isOpen: true, showLaterButton: false },
 								});
 							}
 						},

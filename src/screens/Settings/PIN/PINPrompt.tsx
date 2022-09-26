@@ -1,5 +1,6 @@
 import React, { memo, ReactElement, useMemo } from 'react';
 import { StyleSheet, Image, View } from 'react-native';
+import { useSelector } from 'react-redux';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { Text01S } from '../../../styles/components';
@@ -9,12 +10,17 @@ import Button from '../../../components/Button';
 import { toggleView } from '../../../store/actions/user';
 import { useBottomSheetBackPress } from '../../../hooks/bottomSheet';
 import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
+import Store from '../../../store/types';
 
 const imageSrc = require('../../../assets/illustrations/shield.png');
 
 const PINPrompt = (): ReactElement => {
 	const snapPoints = useMemo(() => [600], []);
 	const insets = useSafeAreaInsets();
+	const showLaterButton = useSelector(
+		(store: Store) => store.user.viewController.PINPrompt.showLaterButton,
+	);
+
 	const buttonContainerStyles = useMemo(
 		() => ({
 			...styles.buttonContainer,
@@ -63,14 +69,18 @@ const PINPrompt = (): ReactElement => {
 					<Image style={styles.image} resizeMode="contain" source={imageSrc} />
 				</View>
 				<View style={buttonContainerStyles}>
-					<Button
-						style={styles.button}
-						size="large"
-						variant="secondary"
-						text="Later"
-						onPress={handleLater}
-					/>
-					<View style={styles.divider} />
+					{showLaterButton && (
+						<>
+							<Button
+								style={styles.button}
+								size="large"
+								variant="secondary"
+								text="Later"
+								onPress={handleLater}
+							/>
+							<View style={styles.divider} />
+						</>
+					)}
 					<Button
 						style={styles.button}
 						size="large"

@@ -30,6 +30,7 @@ export interface IViewControllerData {
 	snapPoint?: number;
 	activityItem?: IActivityItem;
 	txid?: string;
+	showLaterButton?: boolean;
 }
 
 export interface IUser {
