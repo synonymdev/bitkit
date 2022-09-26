@@ -50,12 +50,12 @@ const AmountButtonRow = ({
 	};
 
 	return (
-		<View style={styles.topRow}>
+		<View style={styles.container}>
 			<View style={styles.buttonContainer}>
 				{showMaxButton && (
 					<TouchableOpacity
-						style={styles.topRowButtons}
-						color={'onSurface'}
+						style={styles.button}
+						color="white08"
 						disabled={balance <= 0}
 						onPress={sendMax}>
 						<Text02B size="12px" color={max ? 'orange' : 'brand'}>
@@ -63,10 +63,12 @@ const AmountButtonRow = ({
 						</Text02B>
 					</TouchableOpacity>
 				)}
+			</View>
 
+			<View style={styles.buttonContainer}>
 				<TouchableOpacity
-					color={'onSurface'}
-					style={styles.topRowButtons}
+					style={styles.button}
+					color="white08"
 					onPress={onChangeUnit}>
 					<SwitchIcon color="brand" width={16.44} height={13.22} />
 					<Text02B size="12px" color="brand" style={styles.middleButtonText}>
@@ -75,10 +77,12 @@ const AmountButtonRow = ({
 							: displayValues.bitcoinTicker}
 					</Text02B>
 				</TouchableOpacity>
+			</View>
 
+			<View style={styles.buttonContainer}>
 				<TouchableOpacity
-					style={styles.topRowButtons}
-					color={'onSurface'}
+					style={styles.button}
+					color="white08"
 					onPress={onDone}>
 					<Text02B size="12px" color="brand">
 						DONE
@@ -90,24 +94,21 @@ const AmountButtonRow = ({
 };
 
 const styles = StyleSheet.create({
-	buttonContainer: {
+	container: {
 		flexDirection: 'row',
-		flex: 1,
-		justifyContent: 'space-around',
-	},
-	topRow: {
-		flexDirection: 'row',
-		alignItems: 'center',
 		paddingVertical: 10,
-		paddingHorizontal: 0,
 		paddingTop: 15,
+		justifyContent: 'space-evenly',
 	},
-	topRowButtons: {
+	buttonContainer: {
+		flex: 1,
+		alignItems: 'center',
+	},
+	button: {
 		paddingVertical: 6,
 		paddingHorizontal: 8,
 		borderRadius: 8,
 		flexDirection: 'row',
-		justifyContent: 'space-between',
 		alignItems: 'center',
 	},
 	middleButtonText: {
