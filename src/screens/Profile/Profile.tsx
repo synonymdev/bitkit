@@ -31,38 +31,48 @@ import Tooltip from '../../components/Tooltip';
 import ProfileEdit from './ProfileEdit';
 import Store from '../../store/types';
 import { useProfile, useSelectedSlashtag } from '../../hooks/slashtags';
+import type { RootStackScreenProps } from '../../navigation/types';
+import DetectSwipe from '../../components/DetectSwipe';
 
-export const Profile = ({ navigation }): JSX.Element => {
+export const Profile = (
+	props: RootStackScreenProps<'Profile'>,
+): JSX.Element => {
 	const onboardingProfileStep = useSelector(
 		(state: Store) => state.slashtags.onboardingProfileStep,
 	);
 
 	switch (onboardingProfileStep) {
 		case 'Intro':
-			return <ProfileIntro navigation={navigation} />;
+			return <ProfileIntro {...props} />;
 		case 'InitialEdit':
-			return <ProfileEdit navigation={navigation} />;
+			return <ProfileEdit {...props} />;
 		case 'PaymentsFromContacts':
-			return <PaymentsFromContacts navigation={navigation} />;
+			return <PaymentsFromContacts {...props} />;
 		case 'OfflinePayments':
-			return <OfflinePayments navigation={navigation} />;
+			return <OfflinePayments {...props} />;
 		case 'Done':
-			return <ProfileScreen navigation={navigation} />;
+			return <ProfileScreen {...props} />;
 		default:
-			return <ProfileScreen navigation={navigation} />;
+			return <ProfileScreen {...props} />;
 	}
 };
 
-const ProfileScreen = ({ navigation }): JSX.Element => {
+const ProfileScreen = ({
+	navigation,
+}: RootStackScreenProps<'Profile'>): JSX.Element => {
 	const [showCopy, setShowCopy] = useState(false);
 	const { url } = useSelectedSlashtag();
 	const { profile } = useProfile(url);
 
 	const [view, setView] = useState('qr');
 
-	function switchView(): void {
+	const switchView = (): void => {
 		view === 'details' ? setView('qr') : setView('details');
-	}
+	};
+
+	const onSwipeLeft = (): void => {
+		navigation.navigate('Tabs');
+	};
 
 	const handleCopyButton = (): void => {
 		setShowCopy(() => true);
@@ -79,66 +89,68 @@ const ProfileScreen = ({ navigation }): JSX.Element => {
 					navigation.navigate('Tabs');
 				}}
 			/>
-			<View style={styles.content}>
-				<ProfileCard url={url} profile={profile} resolving={false} />
-				<View style={styles.divider} />
-				<View style={styles.bottom}>
-					<View style={styles.bottomHeader}>
-						<IconButton onPress={switchView}>
-							{view === 'qr' ? (
-								<InfoIcon height={20} width={20} color="brand" />
-							) : (
-								<QrPage height={20} width={20} color="brand" />
-							)}
-						</IconButton>
-						<IconButton
-							onPress={(): void => {
-								url && handleCopyButton();
-							}}>
-							<CopyIcon height={20} width={20} color="brand" />
-						</IconButton>
-						<IconButton
-							onPress={(): void => {
-								url &&
-									Share.share({
-										title: 'Share Slashtag url',
-										message: url,
-									});
-							}}>
-							<ShareIcon height={20} width={20} color="brand" />
-						</IconButton>
-						<IconButton
-							onPress={(): void => {
-								navigation.navigate('ProfileEdit');
-							}}>
-							<PencileIcon height={20} width={20} color="brand" />
-						</IconButton>
-						<IconButton
-							onPress={(): void => {
-								navigation.navigate('Contacts');
-							}}>
-							<UsersIcon height={20} width={20} color="brand" />
-						</IconButton>
+			<DetectSwipe onSwipeLeft={onSwipeLeft}>
+				<View style={styles.content}>
+					<ProfileCard url={url} profile={profile} resolving={false} />
+					<View style={styles.divider} />
+					<View style={styles.bottom}>
+						<View style={styles.bottomHeader}>
+							<IconButton onPress={switchView}>
+								{view === 'qr' ? (
+									<InfoIcon height={20} width={20} color="brand" />
+								) : (
+									<QrPage height={20} width={20} color="brand" />
+								)}
+							</IconButton>
+							<IconButton
+								onPress={(): void => {
+									url && handleCopyButton();
+								}}>
+								<CopyIcon height={20} width={20} color="brand" />
+							</IconButton>
+							<IconButton
+								onPress={(): void => {
+									url &&
+										Share.share({
+											title: 'Share Slashtag url',
+											message: url,
+										});
+								}}>
+								<ShareIcon height={20} width={20} color="brand" />
+							</IconButton>
+							<IconButton
+								onPress={(): void => {
+									navigation.navigate('ProfileEdit');
+								}}>
+								<PencileIcon height={20} width={20} color="brand" />
+							</IconButton>
+							<IconButton
+								onPress={(): void => {
+									navigation.navigate('Contacts');
+								}}>
+								<UsersIcon height={20} width={20} color="brand" />
+							</IconButton>
+						</View>
+						{view === 'details' ? (
+							<ProfileLinks
+								links={profile?.links}
+								style={styles.profileDetails}
+							/>
+						) : (
+							<QRView url={url} profile={profile} />
+						)}
+						{showCopy && (
+							<AnimatedView
+								entering={FadeIn.duration(500)}
+								exiting={FadeOut.duration(500)}
+								color="transparent"
+								style={styles.tooltip}>
+								<Tooltip text="Slashtags Key Copied To clipboard" />
+							</AnimatedView>
+						)}
 					</View>
-					{view === 'details' ? (
-						<ProfileLinks
-							links={profile?.links}
-							style={styles.profileDetails}
-						/>
-					) : (
-						<QRView url={url} profile={profile} />
-					)}
-					{showCopy && (
-						<AnimatedView
-							entering={FadeIn.duration(500)}
-							exiting={FadeOut.duration(500)}
-							color="transparent"
-							style={styles.tooltip}>
-							<Tooltip text="Slashtags Key Copied To clipboard" />
-						</AnimatedView>
-					)}
 				</View>
-			</View>
+			</DetectSwipe>
 		</View>
 	);
 };

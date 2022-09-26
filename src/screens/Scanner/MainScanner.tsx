@@ -9,6 +9,7 @@ import NavigationHeader from '../../components/NavigationHeader';
 import { showErrorNotification } from '../../utils/notifications';
 import ScannerComponent from './ScannerComponent';
 import type { RootStackScreenProps } from '../../navigation/types';
+import DetectSwipe from '../../components/DetectSwipe';
 
 const ScannerScreen = ({
 	navigation,
@@ -21,6 +22,10 @@ const ScannerScreen = ({
 	const selectedWallet = useSelector(
 		(state: Store) => state.wallet.selectedWallet,
 	);
+
+	const onSwipeRight = (): void => {
+		navigation.navigate('Tabs');
+	};
 
 	const onRead = async (data): Promise<void> => {
 		if (!data) {
@@ -46,13 +51,15 @@ const ScannerScreen = ({
 	};
 
 	return (
-		<ScannerComponent onRead={onRead} shouldDecode={!onScan}>
-			<SafeAreaInsets type="top" />
-			<NavigationHeader
-				style={styles.navigationHeader}
-				title="Scan Any QR Code"
-			/>
-		</ScannerComponent>
+		<DetectSwipe onSwipeRight={onSwipeRight}>
+			<ScannerComponent onRead={onRead} shouldDecode={!onScan}>
+				<SafeAreaInsets type="top" />
+				<NavigationHeader
+					style={styles.navigationHeader}
+					title="Scan Any QR Code"
+				/>
+			</ScannerComponent>
+		</DetectSwipe>
 	);
 };
 

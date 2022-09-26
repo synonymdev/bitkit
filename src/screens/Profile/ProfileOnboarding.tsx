@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, StyleSheet, Image, ImageSourcePropType } from 'react-native';
+import { StackNavigationProp } from '@react-navigation/stack';
 import { useSelector } from 'react-redux';
 
 import { Display, Text01S } from '../../styles/components';
@@ -14,12 +15,19 @@ import { updateSlashPayConfig } from '../../utils/slashtags';
 import { useSlashtagsSDK } from '../../components/SlashtagsProvider';
 import Store from '../../store/types';
 import { updateSettings } from '../../store/actions/settings';
+import DetectSwipe from '../../components/DetectSwipe';
+import type {
+	RootStackParamList,
+	RootStackScreenProps,
+} from '../../navigation/types';
 
 const crownImageSrc = require('../../assets/illustrations/crown.png');
 const coinsImageSrc = require('../../assets/illustrations/coins.png');
 const switchImageSrc = require('../../assets/illustrations/switch.png');
 
-export const ProfileIntro = ({ navigation }): JSX.Element => {
+export const ProfileIntro = ({
+	navigation,
+}: RootStackScreenProps<'Profile'>): JSX.Element => {
 	return (
 		<Layout
 			navigation={navigation}
@@ -99,7 +107,7 @@ const Layout = ({
 	children,
 	onNext,
 }: {
-	navigation;
+	navigation: StackNavigationProp<RootStackParamList, 'Profile'>;
 	backButton: boolean;
 	illustration: ImageSourcePropType;
 	title: string;
@@ -112,6 +120,10 @@ const Layout = ({
 	children?;
 	onNext?;
 }): JSX.Element => {
+	const onSwipeLeft = (): void => {
+		navigation.navigate('Tabs');
+	};
+
 	return (
 		<GlowingBackground topLeft="brand">
 			<SafeAreaInsets type="top" />
@@ -122,30 +134,32 @@ const Layout = ({
 					navigation.navigate('Tabs');
 				}}
 			/>
-			<View style={styles.content}>
-				<View style={styles.imageContainer}>
-					<Image source={illustration} style={styles.illustration} />
+			<DetectSwipe onSwipeLeft={onSwipeLeft}>
+				<View style={styles.content}>
+					<View style={styles.imageContainer}>
+						<Image source={illustration} style={styles.illustration} />
+					</View>
+					<View style={styles.middleContainer}>
+						<Display>{title}</Display>
+						<Display>
+							{subtitle}
+							<Display color="brand">{highlighted}</Display>
+						</Display>
+						<Text01S color="gray1" style={styles.introText}>
+							{text}
+						</Text01S>
+						{children}
+					</View>
+					<Button
+						text={buttonText}
+						size="large"
+						onPress={(): void => {
+							onNext?.();
+							setOnboardingProfileStep(nextStep);
+						}}
+					/>
 				</View>
-				<View style={styles.middleContainer}>
-					<Display>{title}</Display>
-					<Display>
-						{subtitle}
-						<Display color="brand">{highlighted}</Display>
-					</Display>
-					<Text01S color="gray1" style={styles.introText}>
-						{text}
-					</Text01S>
-					{children}
-				</View>
-				<Button
-					text={buttonText}
-					size="large"
-					onPress={(): void => {
-						onNext?.();
-						setOnboardingProfileStep(nextStep);
-					}}
-				/>
-			</View>
+			</DetectSwipe>
 			<SafeAreaInsets type="bottom" />
 		</GlowingBackground>
 	);
