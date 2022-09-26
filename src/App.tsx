@@ -67,7 +67,7 @@ const App = (): ReactElement => {
 				updateUser({ isConnectedToElectrum: isConnected });
 				showErrorNotification({
 					title: 'Electrum Connectivity Issues',
-					message: 'Lost connection to server, trying to reconnect..',
+					message: 'Lost connection to server, trying to reconnect...',
 				});
 			}
 		});

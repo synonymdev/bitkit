@@ -59,7 +59,7 @@ export const ProfileCard = ({
 					) : (
 						<Title style={styles.name}>
 							{resolving
-								? 'Retrieving\ncontact info..'
+								? 'Retrieving\ncontact info...'
 								: profileNameMultiLine(name)}
 						</Title>
 					)}
