@@ -179,7 +179,7 @@ const ReceiveNumberPad = (): ReactElement => {
 			backdrop={false}
 			backgroundStartColor="black">
 			<NumberPad showDot={showDot} onPress={onPress} onRemove={onRemove}>
-				<AmountButtonRow showMaxButton={false} onDone={onDone} />
+				<AmountButtonRow onDone={onDone} />
 			</NumberPad>
 		</BottomSheetWrapper>
 	);

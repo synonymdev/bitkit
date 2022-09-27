@@ -1,22 +1,23 @@
 import React, { memo, ReactElement } from 'react';
-import { StyleSheet, GestureResponderEvent } from 'react-native';
+import { View, StyleSheet, GestureResponderEvent } from 'react-native';
 import { useSelector } from 'react-redux';
 
-import { TouchableOpacity, View, SwitchIcon } from '../../styles/components';
+import { TouchableOpacity, SwitchIcon } from '../../styles/components';
 import Store from '../../store/types';
-import { sendMax } from '../../utils/wallet/transactions';
 import { Text02B } from '../../styles/components';
-import { getStore } from '../../store/helpers';
 import { updateSettings } from '../../store/actions/settings';
 import useDisplayValues from '../../hooks/displayValues';
+import { IColors } from '../../styles/colors';
 
 type AmountButtonRowProps = {
-	showMaxButton?: boolean;
+	color?: keyof IColors;
+	onMaxPress?: (event: GestureResponderEvent) => void;
 	onDone: (event: GestureResponderEvent) => void;
 };
 
 const AmountButtonRow = ({
-	showMaxButton = true,
+	color = 'brand',
+	onMaxPress,
 	onDone,
 }: AmountButtonRowProps): ReactElement => {
 	const selectedWallet = useSelector(
@@ -37,28 +38,27 @@ const AmountButtonRow = ({
 
 	const displayValues = useDisplayValues(balance);
 
-	const max = useSelector(
+	const isMaxSendAmount = useSelector(
 		(state: Store) =>
 			state.wallet.wallets[selectedWallet]?.transaction[selectedNetwork]?.max ??
 			false,
 	);
 
 	const onChangeUnit = (): void => {
-		const unit =
-			getStore().settings?.unitPreference === 'asset' ? 'fiat' : 'asset';
+		const unit = unitPreference === 'asset' ? 'fiat' : 'asset';
 		updateSettings({ unitPreference: unit });
 	};
 
 	return (
 		<View style={styles.container}>
 			<View style={styles.buttonContainer}>
-				{showMaxButton && (
+				{onMaxPress && (
 					<TouchableOpacity
 						style={styles.button}
 						color="white08"
 						disabled={balance <= 0}
-						onPress={sendMax}>
-						<Text02B size="12px" color={max ? 'orange' : 'brand'}>
+						onPress={onMaxPress}>
+						<Text02B size="12px" color={isMaxSendAmount ? 'orange' : color}>
 							MAX
 						</Text02B>
 					</TouchableOpacity>
@@ -70,8 +70,8 @@ const AmountButtonRow = ({
 					style={styles.button}
 					color="white08"
 					onPress={onChangeUnit}>
-					<SwitchIcon color="brand" width={16.44} height={13.22} />
-					<Text02B size="12px" color="brand" style={styles.middleButtonText}>
+					<SwitchIcon color={color} width={16.44} height={13.22} />
+					<Text02B size="12px" color={color} style={styles.middleButtonText}>
 						{unitPreference === 'asset'
 							? displayValues.fiatTicker
 							: displayValues.bitcoinTicker}
@@ -84,7 +84,7 @@ const AmountButtonRow = ({
 					style={styles.button}
 					color="white08"
 					onPress={onDone}>
-					<Text02B size="12px" color="brand">
+					<Text02B size="12px" color={color}>
 						DONE
 					</Text02B>
 				</TouchableOpacity>
@@ -105,7 +105,7 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 	},
 	button: {
-		paddingVertical: 6,
+		paddingVertical: 7,
 		paddingHorizontal: 8,
 		borderRadius: 8,
 		flexDirection: 'row',

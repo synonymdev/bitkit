@@ -7,14 +7,6 @@ import { vibrate } from '../utils/helpers';
 const ACTIVE_OPACITY = 0.2;
 const digits = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0];
 
-interface NumberPad {
-	onPress: (key: number | string) => void;
-	onRemove: Function;
-	style?: object | Array<object>;
-	children?: ReactElement;
-	showDot?: boolean;
-}
-
 const Button = memo(
 	({
 		num,
@@ -34,6 +26,14 @@ const Button = memo(
 		);
 	},
 );
+
+type NumberPad = {
+	style?: object | Array<object>;
+	children?: ReactElement;
+	showDot?: boolean;
+	onPress: (key: number | string) => void;
+	onRemove: () => void;
+};
 
 const NumberPad = ({
 	onPress,
@@ -112,6 +112,7 @@ const NumberPad = ({
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
+		paddingBottom: 16,
 	},
 	buttonContainer: {
 		flex: 1,

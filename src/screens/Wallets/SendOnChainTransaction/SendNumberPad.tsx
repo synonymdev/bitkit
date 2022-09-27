@@ -10,6 +10,7 @@ import { useSelector } from 'react-redux';
 import {
 	getTransactionOutputValue,
 	updateAmount,
+	sendMax,
 } from '../../../utils/wallet/transactions';
 import AmountButtonRow from '../AmountButtonRow';
 import NumberPad from '../../../components/NumberPad';
@@ -226,6 +227,9 @@ const SendNumberPad = (): ReactElement => {
 			backgroundStartColor="black">
 			<NumberPad showDot={showDot} onPress={onPress} onRemove={onRemove}>
 				<AmountButtonRow
+					onMaxPress={(): void => {
+						sendMax({});
+					}}
 					onDone={(): void => {
 						toggleView({ view: 'numberPadSend', data: { isOpen: false } });
 					}}
