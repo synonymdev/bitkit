@@ -1,22 +1,23 @@
-import React, { memo, ReactElement, useMemo } from 'react';
-import { StyleSheet, Alert } from 'react-native';
+import React, { memo, ReactElement } from 'react';
+import { Alert } from 'react-native';
 import { useSelector } from 'react-redux';
 
 import NumberPad from '../../../components/NumberPad';
-import { View, TouchableOpacity, Text02B } from '../../../styles/components';
-import BottomSheetWrapper from '../../../components/BottomSheetWrapper';
 import Store from '../../../store/types';
 import { useTransactionDetails } from '../../../hooks/transaction';
 import { updateFee } from '../../../utils/wallet/transactions';
-import { toggleView } from '../../../store/actions/user';
-import { useBottomSheetBackPress } from '../../../hooks/bottomSheet';
+import NumberPadButtons from '../NumberPadButtons';
 
 /**
  * Handles the number pad logic (add/remove/clear) for on-chain fee.
  */
-const FeeNumberPad = (): ReactElement => {
-	const snapPoints = useMemo(() => [375], []);
-
+const FeeNumberPad = ({
+	style,
+	onDone,
+}: {
+	style?: object | Array<object>;
+	onDone?: () => void;
+}): ReactElement => {
 	const selectedWallet = useSelector(
 		(store: Store) => store.wallet.selectedWallet,
 	);
@@ -24,8 +25,6 @@ const FeeNumberPad = (): ReactElement => {
 		(store: Store) => store.wallet.selectedNetwork,
 	);
 	const transaction = useTransactionDetails();
-
-	useBottomSheetBackPress('numberPadFee');
 
 	// Add, shift and update the current transaction amount based on the provided fiat value or bitcoin unit.
 	const onPress = (key): void => {
@@ -63,44 +62,14 @@ const FeeNumberPad = (): ReactElement => {
 	};
 
 	return (
-		<BottomSheetWrapper
-			snapPoints={snapPoints}
-			backdrop={false}
-			view="numberPadFee">
-			<NumberPad onPress={onPress} onRemove={onRemove}>
-				<View style={styles.topRow}>
-					<TouchableOpacity
-						style={styles.topRowButtons}
-						color="onSurface"
-						onPress={(): void => {
-							toggleView({ view: 'numberPadFee', data: { isOpen: false } });
-						}}>
-						<Text02B size="12px" color="brand">
-							DONE
-						</Text02B>
-					</TouchableOpacity>
-				</View>
-			</NumberPad>
-		</BottomSheetWrapper>
+		<NumberPad
+			style={style}
+			showDot={false}
+			onPress={onPress}
+			onRemove={onRemove}>
+			<NumberPadButtons showUnitButton={false} onDone={onDone} />
+		</NumberPad>
 	);
 };
-
-const styles = StyleSheet.create({
-	topRow: {
-		flexDirection: 'row',
-		alignItems: 'center',
-		justifyContent: 'flex-end',
-		paddingVertical: 5,
-		paddingHorizontal: 5,
-	},
-	topRowButtons: {
-		paddingVertical: 5,
-		paddingHorizontal: 8,
-		borderRadius: 8,
-		flexDirection: 'row',
-		justifyContent: 'center',
-		alignItems: 'center',
-	},
-});
 
 export default memo(FeeNumberPad);

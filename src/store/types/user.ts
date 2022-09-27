@@ -5,7 +5,6 @@ export type TViewController =
 	| 'sendNavigation'
 	| 'receiveNavigation'
 	| 'numberPadSend'
-	| 'numberPadFee'
 	| 'numberPadReceive'
 	| 'backupPrompt'
 	| 'backupNavigation'

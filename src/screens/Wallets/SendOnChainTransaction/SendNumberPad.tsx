@@ -12,7 +12,7 @@ import {
 	updateAmount,
 	sendMax,
 } from '../../../utils/wallet/transactions';
-import AmountButtonRow from '../AmountButtonRow';
+import NumberPadButtons from '../NumberPadButtons';
 import NumberPad from '../../../components/NumberPad';
 import BottomSheetWrapper from '../../../components/BottomSheetWrapper';
 import { toggleView } from '../../../store/actions/user';
@@ -226,7 +226,7 @@ const SendNumberPad = (): ReactElement => {
 			backdrop={false}
 			backgroundStartColor="black">
 			<NumberPad showDot={showDot} onPress={onPress} onRemove={onRemove}>
-				<AmountButtonRow
+				<NumberPadButtons
 					onMaxPress={(): void => {
 						sendMax({});
 					}}

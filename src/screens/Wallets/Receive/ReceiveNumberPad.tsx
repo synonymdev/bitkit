@@ -1,7 +1,7 @@
 import React, { memo, ReactElement, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
 
-import AmountButtonRow from '../AmountButtonRow';
+import NumberPadButtons from '../NumberPadButtons';
 import NumberPad from '../../../components/NumberPad';
 import BottomSheetWrapper from '../../../components/BottomSheetWrapper';
 import { toggleView } from '../../../store/actions/user';
@@ -179,7 +179,7 @@ const ReceiveNumberPad = (): ReactElement => {
 			backdrop={false}
 			backgroundStartColor="black">
 			<NumberPad showDot={showDot} onPress={onPress} onRemove={onRemove}>
-				<AmountButtonRow onDone={onDone} />
+				<NumberPadButtons onDone={onDone} />
 			</NumberPad>
 		</BottomSheetWrapper>
 	);

@@ -1,70 +1,38 @@
-import React, { ReactElement, memo, useMemo, useCallback } from 'react';
-import { StyleSheet, View, Keyboard } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useFocusEffect } from '@react-navigation/native';
+import React, { ReactElement, memo } from 'react';
+import { StyleSheet, View } from 'react-native';
 
-import { Caption13Up, View as ThemedView } from '../../../styles/components';
+import { Caption13Up } from '../../../styles/components';
 import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
-import Button from '../../../components/Button';
+import GradientView from '../../../components/GradientView';
 import { useTransactionDetails } from '../../../hooks/transaction';
-import { toggleView } from '../../../store/actions/user';
 import FeeCustomToggle from './FeeCustomToggle';
+import FeeNumberPad from './FeeNumberPad';
 
 const FeeRate = ({ navigation }): ReactElement => {
-	const insets = useSafeAreaInsets();
-	const nextButtonContainer = useMemo(
-		() => ({
-			...styles.nextButtonContainer,
-			paddingBottom: insets.bottom + 16,
-		}),
-		[insets.bottom],
-	);
+	const { satsPerByte } = useTransactionDetails();
 
-	const transaction = useTransactionDetails();
+	let onDone: (() => void) | undefined = undefined;
 
-	useFocusEffect(
-		useCallback(() => {
-			Keyboard.dismiss();
-			toggleView({
-				view: 'numberPadFee',
-				data: {
-					isOpen: true,
-					snapPoint: 0,
-				},
-			});
-			return (): void => {
-				toggleView({
-					view: 'numberPadFee',
-					data: {
-						isOpen: false,
-					},
-				});
-			};
-		}, []),
-	);
+	if (satsPerByte !== 0) {
+		onDone = (): void => {
+			navigation.navigate('ReviewAndSend');
+		};
+	}
 
 	return (
-		<ThemedView color="onSurface" style={styles.container}>
+		<GradientView style={styles.container}>
 			<BottomSheetNavigationHeader
 				title="Set Custom Fee"
-				displayBackButton={transaction.satsPerByte !== 0}
+				displayBackButton={satsPerByte !== 0}
 			/>
 			<View style={styles.content}>
 				<Caption13Up color="gray1" style={styles.title}>
 					SAT / VBYTE
 				</Caption13Up>
 				<FeeCustomToggle />
-
-				<View style={nextButtonContainer}>
-					<Button
-						size="large"
-						text="Done"
-						disabled={transaction.satsPerByte === 0}
-						onPress={(): void => navigation.navigate('ReviewAndSend')}
-					/>
-				</View>
+				<FeeNumberPad style={styles.numberPad} onDone={onDone} />
 			</View>
-		</ThemedView>
+		</GradientView>
 	);
 };
 
@@ -79,9 +47,9 @@ const styles = StyleSheet.create({
 	title: {
 		marginBottom: 16,
 	},
-	nextButtonContainer: {
+	numberPad: {
 		marginTop: 'auto',
-		paddingHorizontal: 16,
+		maxHeight: 350,
 	},
 });
 

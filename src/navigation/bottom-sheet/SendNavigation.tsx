@@ -21,7 +21,6 @@ import Scanner from '../../screens/Wallets/SendOnChainTransaction/Scanner';
 import Contacts from '../../screens/Wallets/SendOnChainTransaction/Contacts';
 import CoinSelection from '../../screens/Wallets/SendOnChainTransaction/CoinSelection';
 import SendNumberPad from '../../screens/Wallets/SendOnChainTransaction/SendNumberPad';
-import FeeNumberPad from '../../screens/Wallets/SendOnChainTransaction/FeeNumberPad';
 import AuthCheck from '../../components/AuthCheck';
 import { NavigationContainer } from '../../styles/components';
 import {
@@ -90,7 +89,6 @@ const SendNavigation = (): ReactElement => {
 				</NavigationContainer>
 			</BottomSheetWrapper>
 			<SendNumberPad />
-			<FeeNumberPad />
 		</>
 	);
 };

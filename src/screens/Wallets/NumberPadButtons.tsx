@@ -9,17 +9,19 @@ import { updateSettings } from '../../store/actions/settings';
 import useDisplayValues from '../../hooks/displayValues';
 import { IColors } from '../../styles/colors';
 
-type AmountButtonRowProps = {
+type NumberPadButtons = {
 	color?: keyof IColors;
+	showUnitButton?: boolean;
 	onMaxPress?: (event: GestureResponderEvent) => void;
-	onDone: (event: GestureResponderEvent) => void;
+	onDone?: (event: GestureResponderEvent) => void;
 };
 
-const AmountButtonRow = ({
+const NumberPadButtons = ({
 	color = 'brand',
+	showUnitButton = true,
 	onMaxPress,
 	onDone,
-}: AmountButtonRowProps): ReactElement => {
+}: NumberPadButtons): ReactElement => {
 	const selectedWallet = useSelector(
 		(store: Store) => store.wallet.selectedWallet,
 	);
@@ -66,28 +68,32 @@ const AmountButtonRow = ({
 			</View>
 
 			<View style={styles.buttonContainer}>
-				<TouchableOpacity
-					style={styles.button}
-					color="white08"
-					onPress={onChangeUnit}>
-					<SwitchIcon color={color} width={16.44} height={13.22} />
-					<Text02B size="12px" color={color} style={styles.middleButtonText}>
-						{unitPreference === 'asset'
-							? displayValues.fiatTicker
-							: displayValues.bitcoinTicker}
-					</Text02B>
-				</TouchableOpacity>
+				{showUnitButton && (
+					<TouchableOpacity
+						style={styles.button}
+						color="white08"
+						onPress={onChangeUnit}>
+						<SwitchIcon color={color} width={16.44} height={13.22} />
+						<Text02B size="12px" color={color} style={styles.middleButtonText}>
+							{unitPreference === 'asset'
+								? displayValues.fiatTicker
+								: displayValues.bitcoinTicker}
+						</Text02B>
+					</TouchableOpacity>
+				)}
 			</View>
 
 			<View style={styles.buttonContainer}>
-				<TouchableOpacity
-					style={styles.button}
-					color="white08"
-					onPress={onDone}>
-					<Text02B size="12px" color={color}>
-						DONE
-					</Text02B>
-				</TouchableOpacity>
+				{onDone && (
+					<TouchableOpacity
+						style={styles.button}
+						color="white08"
+						onPress={onDone}>
+						<Text02B size="12px" color={color}>
+							DONE
+						</Text02B>
+					</TouchableOpacity>
+				)}
 			</View>
 		</View>
 	);
@@ -103,6 +109,7 @@ const styles = StyleSheet.create({
 	buttonContainer: {
 		flex: 1,
 		alignItems: 'center',
+		minHeight: 28,
 	},
 	button: {
 		paddingVertical: 7,
@@ -116,4 +123,4 @@ const styles = StyleSheet.create({
 	},
 });
 
-export default memo(AmountButtonRow);
+export default memo(NumberPadButtons);

@@ -1,29 +1,17 @@
-import React, { memo, ReactElement, useCallback } from 'react';
-import { StyleSheet, Keyboard } from 'react-native';
+import React, { memo, ReactElement } from 'react';
+import { View, StyleSheet } from 'react-native';
 
-import { Display, Pressable, LightningIcon } from '../../../styles/components';
-import { toggleView } from '../../../store/actions/user';
+import { Display, LightningIcon } from '../../../styles/components';
 import { useTransactionDetails } from '../../../hooks/transaction';
 
 const FeeCustomToggle = ({ style }: { style?: object }): ReactElement => {
 	const transaction = useTransactionDetails();
 
-	const onTogglePress = useCallback(() => {
-		Keyboard.dismiss(); // in case it was opened by Address input
-		toggleView({
-			view: 'numberPadFee',
-			data: {
-				isOpen: true,
-				snapPoint: 0,
-			},
-		});
-	}, []);
-
 	return (
-		<Pressable onPress={onTogglePress} style={[styles.row, style]}>
+		<View style={[styles.row, style]}>
 			<LightningIcon height={38} style={styles.symbol} color="gray2" />
 			<Display>{transaction.satsPerByte}</Display>
-		</Pressable>
+		</View>
 	);
 };
 

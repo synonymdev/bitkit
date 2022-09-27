@@ -7,7 +7,7 @@ import Store from '../../store/types';
 import useDisplayValues, { useExchangeRate } from '../../hooks/displayValues';
 import { fiatToBitcoinUnit } from '../../utils/exchange-rate';
 import { btcToSats } from '../../utils/helpers';
-import AmountButtonRow from '../Wallets/AmountButtonRow';
+import NumberPadButtons from '../Wallets/NumberPadButtons';
 
 const NumberPadLightning = ({
 	sats,
@@ -174,7 +174,7 @@ const NumberPadLightning = ({
 			showDot={showDot}
 			onPress={onPress}
 			onRemove={onRemove}>
-			<AmountButtonRow color="white" onMaxPress={onMaxPress} onDone={onDone} />
+			<NumberPadButtons color="white" onMaxPress={onMaxPress} onDone={onDone} />
 		</NumberPad>
 	);
 };
