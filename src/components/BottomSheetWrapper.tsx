@@ -39,29 +39,33 @@ import themes from '../styles/themes';
 import { toggleView } from '../store/actions/user';
 import { defaultViewController } from '../store/shapes/user';
 import BottomSheetGradient from './BottomSheetGradient';
+import { IColors } from '../styles/colors';
 
-export interface IModalProps {
+export interface BottomSheetWrapperProps {
 	children: ReactElement;
 	view?: TViewController;
-	onOpen?: () => any;
-	onClose?: () => any;
 	snapPoints?: (string | number)[];
 	backdrop?: boolean;
+	backgroundStartColor?: keyof IColors;
+	onOpen?: () => void;
+	onClose?: () => void;
 }
+
 const BottomSheetWrapper = forwardRef(
 	(
 		{
 			children,
 			view,
-			onOpen = (): null => null,
-			onClose = (): null => null,
 			snapPoints = ['60%', '95%'],
 			backdrop = true,
-		}: IModalProps,
+			backgroundStartColor = 'gray6',
+			onOpen = (): void => {},
+			onClose = (): void => {},
+		}: BottomSheetWrapperProps,
 		ref,
 	): ReactElement => {
 		const data = useSelector((state: Store) =>
-			view ? state.user?.viewController[view] : defaultViewController,
+			view ? state.user.viewController[view] : defaultViewController,
 		);
 		const bottomSheetRef = useRef<BottomSheet>(null);
 
@@ -152,6 +156,7 @@ const BottomSheetWrapper = forwardRef(
 			({ style, ...props }: BottomSheetBackgroundProps) => (
 				<BottomSheetGradient
 					animatedContentHeight={animatedContentHeight}
+					startColor={backgroundStartColor}
 					style={style}
 					{...props}
 				/>

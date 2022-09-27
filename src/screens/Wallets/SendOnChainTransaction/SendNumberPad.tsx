@@ -29,7 +29,7 @@ import { useBottomSheetBackPress } from '../../../hooks/bottomSheet';
  * Handles the number pad logic (add/remove/clear) for on-chain transactions.
  */
 const SendNumberPad = (): ReactElement => {
-	const snapPoints = useMemo(() => [375], []);
+	const snapPoints = useMemo(() => [425], []);
 	const [decimalMode, setDecimalMode] = useState(false);
 	const [prefixZeros, setPrefixZeros] = useState(0);
 
@@ -220,9 +220,10 @@ const SendNumberPad = (): ReactElement => {
 
 	return (
 		<BottomSheetWrapper
+			view="numberPadSend"
 			snapPoints={snapPoints}
 			backdrop={false}
-			view="numberPadSend">
+			backgroundStartColor="black">
 			<NumberPad showDot={showDot} onPress={onPress} onRemove={onRemove}>
 				<AmountButtonRow
 					onDone={(): void => {

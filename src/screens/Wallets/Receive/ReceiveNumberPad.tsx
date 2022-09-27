@@ -19,7 +19,7 @@ import { useBottomSheetBackPress } from '../../../hooks/bottomSheet';
  * Handles the number pad logic (add/remove/clear) for invoices.
  */
 const ReceiveNumberPad = (): ReactElement => {
-	const snapPoints = useMemo(() => [375], []);
+	const snapPoints = useMemo(() => [425], []);
 	const [decimalMode, setDecimalMode] = useState(false);
 	const [prefixZeros, setPrefixZeros] = useState(0);
 	const invoice = useSelector((store: Store) => store.receive);
@@ -174,9 +174,10 @@ const ReceiveNumberPad = (): ReactElement => {
 
 	return (
 		<BottomSheetWrapper
+			view="numberPadReceive"
 			snapPoints={snapPoints}
 			backdrop={false}
-			view="numberPadReceive">
+			backgroundStartColor="black">
 			<NumberPad showDot={showDot} onPress={onPress} onRemove={onRemove}>
 				<AmountButtonRow showMaxButton={false} onDone={onDone} />
 			</NumberPad>

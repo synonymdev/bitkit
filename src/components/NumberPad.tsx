@@ -1,9 +1,8 @@
 import React, { memo, ReactElement, useMemo } from 'react';
-import { StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { GestureResponderEvent } from 'react-native-modal';
-import { Text, TouchableOpacity, Ionicons, View } from '../styles/components';
-
-const { vibrate } = require('../utils/helpers');
+import { Text, TouchableOpacity, Ionicons } from '../styles/components';
+import { vibrate } from '../utils/helpers';
 
 const ACTIVE_OPACITY = 0.2;
 const digits = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0];
@@ -59,7 +58,7 @@ const NumberPad = ({
 	};
 
 	return (
-		<View color={'background'} style={container}>
+		<View style={container}>
 			{children}
 			<View style={styles.row}>
 				<Button onPress={(): void => handlePress(digits[0])} num={digits[0]} />
