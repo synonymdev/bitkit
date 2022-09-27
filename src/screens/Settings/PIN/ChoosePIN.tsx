@@ -8,11 +8,7 @@ import React, {
 import { StyleSheet, View } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 
-import {
-	View as ThemedView,
-	Text01S,
-	Text02S,
-} from '../../../styles/components';
+import { Text01S, Text02S } from '../../../styles/components';
 import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
 import NumberPad from '../../../components/NumberPad';
 import useColors from '../../../hooks/colors';
@@ -69,7 +65,7 @@ const ChoosePIN = ({ navigation, route }): ReactElement => {
 	}, [pin, origPIN, navigation]);
 
 	return (
-		<ThemedView color="onSurface" style={styles.container}>
+		<View style={styles.container}>
 			<BottomSheetNavigationHeader
 				title={origPIN ? 'Retype 4-Digit PIN' : 'Choose 4-Digit PIN'}
 				displayBackButton={origPIN ? true : false}
@@ -116,7 +112,7 @@ const ChoosePIN = ({ navigation, route }): ReactElement => {
 				onPress={handleOnPress}
 				onRemove={handleOnRemove}
 			/>
-		</ThemedView>
+		</View>
 	);
 };
 
