@@ -29,14 +29,18 @@ const ChoosePIN = ({
 	const [attemptsRemaining, setAttemptsRemaining] = useState(0);
 	const { brand, brand08 } = useColors();
 
-	const handleOnPress = (n): void => {
-		vibrate({});
-		setPin((p) => (p.length === 4 ? '' : p + String(n)));
+	const handleOnPress = (number: number | string): void => {
+		if (pin.length !== 4) {
+			vibrate({});
+			setPin((p) => (p.length === 4 ? '' : p + String(number)));
+		}
 	};
 
 	const handleOnRemove = (): void => {
-		vibrate({});
-		setPin((p) => p.slice(0, -1));
+		if (pin.length !== 0) {
+			vibrate({});
+			setPin((p) => p.slice(0, -1));
+		}
 	};
 
 	// Reduce the amount of pin attempts remaining.
