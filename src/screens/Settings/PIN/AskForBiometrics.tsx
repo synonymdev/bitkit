@@ -95,7 +95,7 @@ const ChoosePIN = ({ navigation }): ReactElement => {
 				)}
 			</View>
 
-			{biometryData?.biometryType && (
+			{biometryData?.biometryType ? (
 				<View style={styles.imageContainer}>
 					<Glow style={styles.glow} size={600} color="brand" />
 					{biometryData?.biometryType === 'FaceID' ? (
@@ -104,6 +104,8 @@ const ChoosePIN = ({ navigation }): ReactElement => {
 						<TouchIdIcon />
 					)}
 				</View>
+			) : (
+				<></>
 			)}
 
 			<View style={buttonContainerStyles}>
