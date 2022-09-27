@@ -2,8 +2,8 @@ import React, { memo, ReactElement } from 'react';
 import { Alert, StyleSheet, View } from 'react-native';
 import { useSelector } from 'react-redux';
 
-import { View as ThemedView } from '../../../styles/components';
 import NavigationHeader from '../../../components/NavigationHeader';
+import GradientView from '../../../components/GradientView';
 import ContactsList from '../../../components/ContactsList';
 import { validateAddress } from '../../../utils/scanner';
 import { EAddressTypeNames } from '../../../store/types/wallet';
@@ -62,7 +62,7 @@ const Contacts = ({ navigation }): ReactElement => {
 	};
 
 	return (
-		<ThemedView color="onSurface" style={styles.container}>
+		<GradientView style={styles.container}>
 			<NavigationHeader title="Send to Contact" size="sm" />
 			<View style={styles.content}>
 				<ContactsList
@@ -70,7 +70,7 @@ const Contacts = ({ navigation }): ReactElement => {
 					sectionBackgroundColor="onSurface"
 				/>
 			</View>
-		</ThemedView>
+		</GradientView>
 	);
 };
 

@@ -2,11 +2,12 @@ import React, { memo, ReactElement, useMemo } from 'react';
 import { StyleSheet, View, Image } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { View as ThemedView, Text01S } from '../../../styles/components';
+import { Text01S } from '../../../styles/components';
 import Button from '../../../components/Button';
 import Glow from '../../../components/Glow';
 import { toggleView } from '../../../store/actions/user';
 import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
+import GradientView from '../../../components/GradientView';
 
 const imageSrc = require('../../../assets/illustrations/check.png');
 
@@ -28,7 +29,7 @@ const Result = ({ route }): ReactElement => {
 		});
 	};
 	return (
-		<ThemedView color="onSurface" style={styles.container}>
+		<GradientView style={styles.container}>
 			<BottomSheetNavigationHeader
 				title="Wallet Secured"
 				displayBackButton={false}
@@ -56,7 +57,7 @@ const Result = ({ route }): ReactElement => {
 			<View style={nextButtonContainer}>
 				<Button size="large" text="OK" onPress={handleButtonPress} />
 			</View>
-		</ThemedView>
+		</GradientView>
 	);
 };
 

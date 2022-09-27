@@ -22,7 +22,6 @@ import Clipboard from '@react-native-clipboard/clipboard';
 import Share from 'react-native-share';
 
 import {
-	View as ThemedView,
 	CopyIcon,
 	ShareIcon,
 	TouchableOpacity,
@@ -204,7 +203,7 @@ const Receive = ({ navigation }): ReactElement => {
 	);
 
 	return (
-		<ThemedView color="onSurface" style={styles.container}>
+		<View style={styles.container}>
 			<BottomSheetNavigationHeader
 				title="Receive Bitcoin"
 				displayBackButton={false}
@@ -268,7 +267,7 @@ const Receive = ({ navigation }): ReactElement => {
 					onPress={(): void => navigation.navigate('ReceiveDetails')}
 				/>
 			</View>
-		</ThemedView>
+		</View>
 	);
 };
 

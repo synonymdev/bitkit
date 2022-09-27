@@ -10,6 +10,7 @@ import { useFocusEffect } from '@react-navigation/native';
 
 import { Text01S, Text02S } from '../../../styles/components';
 import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
+import GradientView from '../../../components/GradientView';
 import NumberPad from '../../../components/NumberPad';
 import useColors from '../../../hooks/colors';
 import { vibrate, setKeychainValue } from '../../../utils/helpers';
@@ -65,7 +66,7 @@ const ChoosePIN = ({ navigation, route }): ReactElement => {
 	}, [pin, origPIN, navigation]);
 
 	return (
-		<View style={styles.container}>
+		<GradientView style={styles.container}>
 			<BottomSheetNavigationHeader
 				title={origPIN ? 'Retype 4-Digit PIN' : 'Choose 4-Digit PIN'}
 				displayBackButton={origPIN ? true : false}
@@ -112,7 +113,7 @@ const ChoosePIN = ({ navigation, route }): ReactElement => {
 				onPress={handleOnPress}
 				onRemove={handleOnRemove}
 			/>
-		</View>
+		</GradientView>
 	);
 };
 

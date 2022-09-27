@@ -4,8 +4,8 @@ import { View, StyleSheet } from 'react-native';
 import Button from '../../components/Button';
 import BottomSheetNavigationHeader from '../../components/BottomSheetNavigationHeader';
 import { ProfileLinkScreenProps } from '../../navigation/types';
-import { View as ThemedView } from '../../styles/components';
 import { updateProfileLink } from '../../store/actions/ui';
+import GradientView from '../../components/GradientView';
 
 const suggestions = [
 	'Email',
@@ -35,7 +35,7 @@ export const ProfileLinkSuggestions = ({
 	};
 
 	return (
-		<ThemedView color="onSurface" style={styles.container}>
+		<GradientView style={styles.container}>
 			<BottomSheetNavigationHeader title="Suggestions To Add" />
 			<View style={styles.buttons}>
 				{suggestions.map((suggestion) => (
@@ -48,7 +48,7 @@ export const ProfileLinkSuggestions = ({
 					/>
 				))}
 			</View>
-		</ThemedView>
+		</GradientView>
 	);
 };
 

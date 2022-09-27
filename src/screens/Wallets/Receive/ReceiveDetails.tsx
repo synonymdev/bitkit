@@ -13,7 +13,6 @@ import {
 	BottomSheetTextInput,
 	Caption13Up,
 	TagIcon,
-	View as ThemedView,
 } from '../../../styles/components';
 import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
 import AmountToggle from '../../../components/AmountToggle';
@@ -26,6 +25,7 @@ import {
 } from '../../../store/actions/receive';
 import useKeyboard from '../../../hooks/keyboard';
 import { toggleView } from '../../../store/actions/user';
+import GradientView from '../../../components/GradientView';
 
 const ReceiveDetails = ({ navigation }): ReactElement => {
 	const insets = useSafeAreaInsets();
@@ -72,7 +72,7 @@ const ReceiveDetails = ({ navigation }): ReactElement => {
 	};
 
 	return (
-		<ThemedView color="onSurface" style={styles.container}>
+		<GradientView style={styles.container}>
 			<BottomSheetNavigationHeader
 				title="Specify Invoice"
 				displayBackButton={false}
@@ -139,7 +139,7 @@ const ReceiveDetails = ({ navigation }): ReactElement => {
 					</View>
 				)}
 			</View>
-		</ThemedView>
+		</GradientView>
 	);
 };
 

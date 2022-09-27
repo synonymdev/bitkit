@@ -9,13 +9,13 @@ import {
 	Text01M,
 	Text01S,
 	TouchIdIcon,
-	View as ThemedView,
 } from '../../../styles/components';
 import Button from '../../../components/Button';
 import Glow from '../../../components/Glow';
 import { toggleBiometrics } from '../../../utils/settings';
 import { IsSensorAvailableResult } from '../../../components/Biometrics';
 import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
+import GradientView from '../../../components/GradientView';
 
 const rnBiometrics = ReactNativeBiometrics;
 
@@ -72,7 +72,7 @@ const ChoosePIN = ({ navigation }): ReactElement => {
 			: biometryData?.biometryType ?? 'Biometric';
 
 	return (
-		<ThemedView color="onSurface" style={styles.container}>
+		<GradientView style={styles.container}>
 			<BottomSheetNavigationHeader
 				title={typeName}
 				onBackPress={handleOnBack}
@@ -123,7 +123,7 @@ const ChoosePIN = ({ navigation }): ReactElement => {
 					disabled={!biometryData}
 				/>
 			</View>
-		</ThemedView>
+		</GradientView>
 	);
 };
 

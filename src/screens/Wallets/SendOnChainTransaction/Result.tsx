@@ -3,12 +3,9 @@ import { StyleSheet, View, Image } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Lottie from 'lottie-react-native';
 
-import {
-	View as ThemedView,
-	Subtitle,
-	Text01S,
-} from '../../../styles/components';
+import { Subtitle, Text01S } from '../../../styles/components';
 import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
+import GradientView from '../../../components/GradientView';
 import Button from '../../../components/Button';
 import Glow from '../../../components/Glow';
 import { toggleView } from '../../../store/actions/user';
@@ -42,7 +39,7 @@ const Result = ({ navigation, route }): ReactElement => {
 	};
 
 	return (
-		<ThemedView color="onSurface" style={styles.container}>
+		<GradientView style={styles.container}>
 			{success && (
 				<Lottie
 					source={require('../../../assets/lottie/confetti-green.json')}
@@ -84,7 +81,7 @@ const Result = ({ navigation, route }): ReactElement => {
 					onPress={handleButtonPress}
 				/>
 			</View>
-		</ThemedView>
+		</GradientView>
 	);
 };
 

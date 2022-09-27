@@ -3,8 +3,9 @@ import { StyleSheet, View, Alert } from 'react-native';
 import { useSelector } from 'react-redux';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { Caption13Up, View as ThemedView } from '../../../styles/components';
+import { Caption13Up } from '../../../styles/components';
 import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
+import GradientView from '../../../components/GradientView';
 import Button from '../../../components/Button';
 import Store from '../../../store/types';
 import { EFeeIds } from '../../../store/types/fees';
@@ -135,7 +136,7 @@ const FeeRate = ({ navigation }): ReactElement => {
 	}, [satsPerByte, navigation, onCardPress]);
 
 	return (
-		<ThemedView color="onSurface" style={styles.container}>
+		<GradientView style={styles.container}>
 			<BottomSheetNavigationHeader title="Speed" />
 			<View style={styles.content}>
 				<Caption13Up color="gray1" style={styles.title}>
@@ -199,7 +200,7 @@ const FeeRate = ({ navigation }): ReactElement => {
 					/>
 				</View>
 			</View>
-		</ThemedView>
+		</GradientView>
 	);
 };
 

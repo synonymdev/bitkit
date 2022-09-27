@@ -18,9 +18,9 @@ import {
 	PenIcon,
 	Text02M,
 	TimerIcon,
-	View as ThemedView,
 } from '../../../styles/components';
 import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
+import GradientView from '../../../components/GradientView';
 import SwipeToConfirm from '../../../components/SwipeToConfirm';
 import AmountToggle from '../../../components/AmountToggle';
 import Tag from '../../../components/Tag';
@@ -408,7 +408,7 @@ const ReviewAndSend = ({ navigation, index = 0 }): ReactElement => {
 	}, [customDescription, selectedFeeId]);
 
 	return (
-		<ThemedView color="onSurface" style={styles.container}>
+		<GradientView style={styles.container}>
 			<BottomSheetNavigationHeader title="Review & Send" />
 			<View style={styles.content}>
 				<AmountToggle sats={amount} style={styles.amountToggle} />
@@ -483,7 +483,7 @@ const ReviewAndSend = ({ navigation, index = 0 }): ReactElement => {
 					/>
 				</View>
 			</View>
-		</ThemedView>
+		</GradientView>
 	);
 };
 

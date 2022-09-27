@@ -2,12 +2,9 @@ import React, { memo, ReactElement, useState } from 'react';
 import { StyleSheet, View, Alert } from 'react-native';
 import { useSelector } from 'react-redux';
 
-import {
-	BottomSheetTextInput,
-	Caption13Up,
-	View as ThemedView,
-} from '../../../styles/components';
+import { BottomSheetTextInput, Caption13Up } from '../../../styles/components';
 import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
+import GradientView from '../../../components/GradientView';
 import Tag from '../../../components/Tag';
 import Store from '../../../store/types';
 import { addTxTag } from '../../../store/actions/wallet';
@@ -44,7 +41,7 @@ const AddressAndAmount = ({ navigation }): ReactElement => {
 	};
 
 	return (
-		<ThemedView color="onSurface" style={styles.container}>
+		<GradientView style={styles.container}>
 			<BottomSheetNavigationHeader title="Add Tag" />
 			<View style={styles.content}>
 				{lastUsedTags.length !== 0 && (
@@ -77,7 +74,7 @@ const AddressAndAmount = ({ navigation }): ReactElement => {
 					returnKeyType="done"
 				/>
 			</View>
-		</ThemedView>
+		</GradientView>
 	);
 };
 

@@ -24,7 +24,6 @@ import {
 	ScanIcon,
 	TagIcon,
 	UserIcon,
-	View as ThemedView,
 } from '../../../styles/components';
 import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
 import AmountToggle from '../../../components/AmountToggle';
@@ -309,7 +308,7 @@ const AddressAndAmount = ({ index = 0, navigation }): ReactElement => {
 	}, [address, amount, transaction?.lightningInvoice]);
 
 	return (
-		<ThemedView color="onSurface" style={styles.container}>
+		<View style={styles.container}>
 			<BottomSheetNavigationHeader
 				title="Send Bitcoin"
 				displayBackButton={false}
@@ -396,7 +395,7 @@ const AddressAndAmount = ({ index = 0, navigation }): ReactElement => {
 					)}
 				</View>
 			</View>
-		</ThemedView>
+		</View>
 	);
 };
 

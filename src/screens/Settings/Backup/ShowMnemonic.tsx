@@ -58,7 +58,7 @@ const ShowMnemonic = ({ navigation }): ReactElement => {
 	const seedToShow = Platform.OS === 'android' && !show ? dummySeed : seed;
 
 	return (
-		<ThemedView color="onSurface" style={styles.container}>
+		<View style={styles.container}>
 			<BottomSheetNavigationHeader
 				title="Your Recovery Phrase"
 				displayBackButton={false}
@@ -118,7 +118,7 @@ const ShowMnemonic = ({ navigation }): ReactElement => {
 					/>
 				)}
 			</View>
-		</ThemedView>
+		</View>
 	);
 };
 

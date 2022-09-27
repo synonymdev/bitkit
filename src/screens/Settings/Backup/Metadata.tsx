@@ -2,7 +2,8 @@ import React, { memo, ReactElement, useMemo } from 'react';
 import { StyleSheet, View, Image } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { View as ThemedView, Text01S } from '../../../styles/components';
+import { Text01S } from '../../../styles/components';
+import GradientView from '../../../components/GradientView';
 import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
 import Button from '../../../components/Button';
 import Glow from '../../../components/Glow';
@@ -28,7 +29,7 @@ const Result = (): ReactElement => {
 	};
 
 	return (
-		<ThemedView color="onSurface" style={styles.container}>
+		<GradientView style={styles.container}>
 			<BottomSheetNavigationHeader
 				title="Wallet Metadata"
 				displayBackButton={false}
@@ -47,7 +48,7 @@ const Result = (): ReactElement => {
 			<View style={buttonContainerStyles}>
 				<Button size="large" text="OK" onPress={handleButtonPress} />
 			</View>
-		</ThemedView>
+		</GradientView>
 	);
 };
 

@@ -2,14 +2,11 @@ import React, { memo, ReactElement, useMemo, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import {
-	View as ThemedView,
-	Text01S,
-	Text01M,
-} from '../../../styles/components';
+import { Text01S, Text01M } from '../../../styles/components';
 import Button from '../../../components/Button';
 import { shuffleArray } from '../../../utils/helpers';
 import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
+import GradientView from '../../../components/GradientView';
 
 const Word = ({
 	number,
@@ -84,7 +81,7 @@ const ConfirmMnemonic = ({ navigation, route }): ReactElement => {
 	const showButton = seed.some((v, i) => origSeed[i] !== v);
 
 	return (
-		<ThemedView color="onSurface" style={styles.container}>
+		<GradientView style={styles.container}>
 			<BottomSheetNavigationHeader title="Confirm Recovery Phrase" />
 
 			<Text01S color="gray1" style={styles.text}>
@@ -132,7 +129,7 @@ const ConfirmMnemonic = ({ navigation, route }): ReactElement => {
 					/>
 				)}
 			</View>
-		</ThemedView>
+		</GradientView>
 	);
 };
 
