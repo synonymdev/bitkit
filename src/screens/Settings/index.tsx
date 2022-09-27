@@ -25,7 +25,7 @@ const SettingsMenu = ({ navigation }): ReactElement => {
 					{
 						title: 'Back up or Restore',
 						type: 'button',
-						onPress: (): void => navigation.navigate('BackupMenu'),
+						onPress: (): void => navigation.navigate('BackupSettings'),
 						hide: false,
 					},
 					{

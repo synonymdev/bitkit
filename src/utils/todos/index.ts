@@ -173,7 +173,7 @@ export const handleOnPress = ({
 	try {
 		switch (type) {
 			case 'activateBackup':
-				navigation.navigate('Settings', { screen: 'BackupSettings' });
+				navigation.navigate('Settings', { screen: 'BackupData' });
 				break;
 			case 'pin':
 				toggleView({

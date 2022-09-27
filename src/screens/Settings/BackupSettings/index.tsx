@@ -4,9 +4,9 @@ import SettingsView from './../SettingsView';
 import { toggleView } from '../../../store/actions/user';
 import { SettingsScreenProps } from '../../../navigation/types';
 
-const BackupMenu = ({
+const BackupSettings = ({
 	navigation,
-}: SettingsScreenProps<'BackupMenu'>): ReactElement => {
+}: SettingsScreenProps<'BackupSettings'>): ReactElement => {
 	const SettingsListData: IListData[] = useMemo(
 		() => [
 			{
@@ -55,4 +55,4 @@ const BackupMenu = ({
 	);
 };
 
-export default memo(BackupMenu);
+export default memo(BackupSettings);

@@ -21,7 +21,7 @@ import TransactionSpeedSettings from '../../screens/Settings/TransactionSpeed';
 import AuthCheck from '../../components/AuthCheck';
 import GeneralSettings from '../../screens/Settings/General';
 import SecuritySettings from '../../screens/Settings/Security';
-import BackupMenu from '../../screens/Settings/BackupMenu';
+import BackupSettings from '../../screens/Settings/BackupSettings';
 import NetworksSettings from '../../screens/Settings/Networks';
 import AdvancedSettings from '../../screens/Settings/Advanced';
 import AboutSettings from '../../screens/Settings/About';
@@ -47,7 +47,7 @@ export type SettingsStackParamList = {
 	SettingsMenu: undefined;
 	GeneralSettings: undefined;
 	SecuritySettings: undefined;
-	BackupMenu: undefined;
+	BackupSettings: undefined;
 	NetworksSettings: undefined;
 	AdvancedSettings: undefined;
 	AboutSettings: undefined;
@@ -91,7 +91,7 @@ const SettingsNavigator = (): ReactElement => {
 				<Stack.Screen name="SettingsMenu" component={SettingsMenu} />
 				<Stack.Screen name="GeneralSettings" component={GeneralSettings} />
 				<Stack.Screen name="SecuritySettings" component={SecuritySettings} />
-				<Stack.Screen name="BackupMenu" component={BackupMenu} />
+				<Stack.Screen name="BackupSettings" component={BackupSettings} />
 				<Stack.Screen name="NetworksSettings" component={NetworksSettings} />
 				<Stack.Screen name="AdvancedSettings" component={AdvancedSettings} />
 				<Stack.Screen name="AboutSettings" component={AboutSettings} />
