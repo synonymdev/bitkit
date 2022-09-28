@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
 	},
 	numberPad: {
 		marginTop: 'auto',
-		maxHeight: 350,
+		maxHeight: 425,
 	},
 });
 
