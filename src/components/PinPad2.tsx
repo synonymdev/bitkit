@@ -32,7 +32,7 @@ const ChoosePIN = ({
 	const handleOnPress = (number: number | string): void => {
 		if (pin.length !== 4) {
 			vibrate({});
-			setPin((p) => (p.length === 4 ? '' : p + String(number)));
+			setPin((p) => p + String(number));
 		}
 	};
 
