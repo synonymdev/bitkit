@@ -382,8 +382,7 @@ const ReviewAndSend = ({ navigation, index = 0 }): ReactElement => {
 
 	const feeSats = getFee(satsPerByte);
 	const totalFeeDisplay = useDisplayValues(feeSats);
-
-	let feeAmount =
+	const feeAmount =
 		totalFeeDisplay.fiatFormatted !== '—'
 			? ` (${totalFeeDisplay.fiatSymbol} ${totalFeeDisplay.fiatFormatted})`
 			: '';

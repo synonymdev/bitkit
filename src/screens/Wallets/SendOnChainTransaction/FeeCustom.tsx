@@ -1,19 +1,39 @@
-import React, { ReactElement, memo } from 'react';
+import React, { ReactElement, memo, useCallback } from 'react';
 import { StyleSheet, View } from 'react-native';
 
-import { Caption13Up } from '../../../styles/components';
+import { Caption13Up, Text01M } from '../../../styles/components';
 import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
 import GradientView from '../../../components/GradientView';
 import { useTransactionDetails } from '../../../hooks/transaction';
 import FeeCustomToggle from './FeeCustomToggle';
 import FeeNumberPad from './FeeNumberPad';
+import { getTotalFee } from '../../../utils/wallet/transactions';
+import useDisplayValues from '../../../hooks/displayValues';
 
 const FeeRate = ({ navigation }): ReactElement => {
-	const { satsPerByte } = useTransactionDetails();
+	const transaction = useTransactionDetails();
+
+	const getFee = useCallback(
+		(_satsPerByte = 1) => {
+			const message = transaction?.message;
+			return getTotalFee({
+				satsPerByte: _satsPerByte,
+				message,
+			});
+		},
+		[transaction?.message],
+	);
+
+	const feeSats = getFee(transaction.satsPerByte);
+	const totalFeeDisplay = useDisplayValues(feeSats);
+	const feeAmount =
+		totalFeeDisplay.fiatFormatted !== '—'
+			? ` (${totalFeeDisplay.fiatSymbol} ${totalFeeDisplay.fiatFormatted})`
+			: '';
 
 	let onDone: (() => void) | undefined = undefined;
 
-	if (satsPerByte !== 0) {
+	if (transaction.satsPerByte !== 0) {
 		onDone = (): void => {
 			navigation.navigate('ReviewAndSend');
 		};
@@ -23,13 +43,16 @@ const FeeRate = ({ navigation }): ReactElement => {
 		<GradientView style={styles.container}>
 			<BottomSheetNavigationHeader
 				title="Set Custom Fee"
-				displayBackButton={satsPerByte !== 0}
+				displayBackButton={transaction.satsPerByte !== 0}
 			/>
 			<View style={styles.content}>
 				<Caption13Up color="gray1" style={styles.title}>
 					SAT / VBYTE
 				</Caption13Up>
 				<FeeCustomToggle />
+				<Text01M style={styles.text} color="white5">
+					{feeSats} sats for this transaction{feeAmount}
+				</Text01M>
 				<FeeNumberPad style={styles.numberPad} onDone={onDone} />
 			</View>
 		</GradientView>
@@ -46,6 +69,9 @@ const styles = StyleSheet.create({
 	},
 	title: {
 		marginBottom: 16,
+	},
+	text: {
+		marginTop: 8,
 	},
 	numberPad: {
 		marginTop: 'auto',
