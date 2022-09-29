@@ -34,8 +34,10 @@ const styles = StyleSheet.create({
 	input: {
 		height: 56,
 		fontSize: 17,
+		fontWeight: '400',
 		flex: 1,
 		backgroundColor: 'transparent',
+		paddingLeft: 0,
 	},
 	icon: {
 		marginHorizontal: 16,
