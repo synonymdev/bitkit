@@ -7,8 +7,11 @@ import { IListData } from '../../../components/List';
 import SettingsView from '../SettingsView';
 import Store from '../../../store/types';
 import { updateSettings } from '../../../store/actions/settings';
+import { useSlashtagsSDK } from '../../../components/SlashtagsProvider';
+import { updateSlashPayConfig } from '../../../utils/slashtags';
 
 const PaymentPreference = (): ReactElement => {
+	const sdk = useSlashtagsSDK();
 	const receivePreference = useSelector(
 		(state: Store) => state.settings.receivePreference,
 	);
@@ -42,6 +45,7 @@ const PaymentPreference = (): ReactElement => {
 						hide: false,
 						onPress: (): void => {
 							updateSettings({ enableOfflinePayments: !enableOfflinePayments });
+							updateSlashPayConfig(sdk, { p2wpkh: !enableOfflinePayments });
 						},
 					},
 				],
