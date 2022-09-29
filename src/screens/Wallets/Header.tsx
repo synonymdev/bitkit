@@ -37,20 +37,21 @@ const Header = (): ReactElement => {
 
 	return (
 		<View style={styles.container}>
-			<TouchableOpacity activeOpacity={1} onPress={openProfile}>
-				<View style={styles.leftColumn}>
-					<ProfileImage
-						size={32}
-						url={url}
-						image={profile?.image}
-						style={styles.profileImage}
-					/>
-					{profile?.name ? (
-						<Title>{truncate(profile?.name, 20)}</Title>
-					) : (
-						<Title>Your name</Title>
-					)}
-				</View>
+			<TouchableOpacity
+				style={styles.leftColumn}
+				activeOpacity={1}
+				onPress={openProfile}>
+				<ProfileImage
+					size={32}
+					url={url}
+					image={profile?.image}
+					style={styles.profileImage}
+				/>
+				{profile?.name ? (
+					<Title>{truncate(profile?.name, 20)}</Title>
+				) : (
+					<Title>Your name</Title>
+				)}
 			</TouchableOpacity>
 			<View style={styles.middleColumn} />
 			<View style={styles.rightColumn}>
@@ -76,27 +77,27 @@ const styles = StyleSheet.create({
 		justifyContent: 'flex-end',
 		alignItems: 'center',
 		marginTop: 15,
-		marginHorizontal: 16,
 		marginBottom: 10,
 	},
 	cogIcon: {
 		alignItems: 'center',
 		justifyContent: 'center',
 		minHeight: 32,
-		minWidth: 32,
+		paddingLeft: 10,
+		paddingRight: 16,
 	},
 	profileIcon: {
 		alignItems: 'center',
 		justifyContent: 'center',
-		marginRight: 10,
 		minHeight: 32,
-		minWidth: 32,
+		paddingRight: 10,
 	},
 	leftColumn: {
 		flex: 6,
 		display: 'flex',
 		flexDirection: 'row',
 		alignItems: 'center',
+		paddingLeft: 16,
 	},
 	middleColumn: {
 		flex: 1,

@@ -13,7 +13,6 @@ import {
 	Text01S,
 	Caption13Up,
 	ScanIcon,
-	TouchableOpacity,
 } from '../../../styles/components';
 import { addElectrumPeer } from '../../../store/actions/settings';
 import {
@@ -277,11 +276,8 @@ const ElectrumConfig = ({
 			<SafeAreaInsets type="top" />
 			<NavigationHeader
 				title="Electrum Server"
-				action={
-					<TouchableOpacity onPress={navigateToScanner}>
-						<ScanIcon color="white" width={20} height={20} />
-					</TouchableOpacity>
-				}
+				actionIcon={<ScanIcon color="white" width={20} height={20} />}
+				onActionPress={navigateToScanner}
 			/>
 			<KeyboardAvoidingView
 				behavior={Platform.OS === 'ios' ? 'padding' : 'height'}

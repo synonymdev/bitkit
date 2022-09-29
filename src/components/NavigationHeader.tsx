@@ -1,5 +1,12 @@
 import React, { memo, ReactElement, useCallback, useMemo } from 'react';
-import { StyleProp, StyleSheet, ViewStyle } from 'react-native';
+import {
+	View,
+	TouchableOpacity,
+	StyleProp,
+	StyleSheet,
+	ViewStyle,
+	GestureResponderEvent,
+} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 import {
@@ -7,36 +14,20 @@ import {
 	PlusIcon,
 	Subtitle,
 	Title,
-	TouchableOpacity,
-	View,
 	XIcon,
 } from '../styles/components';
 
-const BackButton = memo(
-	({ onPress = (): null => null }: { onPress: Function }): ReactElement => {
+const ActionButton = memo(
+	({
+		children,
+		onPress,
+	}: {
+		children: JSX.Element;
+		onPress: (event: GestureResponderEvent) => void;
+	}): ReactElement => {
 		return (
-			<TouchableOpacity onPress={onPress} style={styles.iconContainer}>
-				<BackIcon width={20} height={20} />
-			</TouchableOpacity>
-		);
-	},
-);
-
-const CloseButton = memo(
-	({ onPress = (): null => null }: { onPress: Function }): ReactElement => {
-		return (
-			<TouchableOpacity onPress={onPress} style={styles.iconContainer}>
-				<XIcon width={24} height={24} />
-			</TouchableOpacity>
-		);
-	},
-);
-
-const AddButton = memo(
-	({ onPress = (): null => null }: { onPress: Function }): ReactElement => {
-		return (
-			<TouchableOpacity onPress={onPress} style={styles.iconContainer}>
-				<PlusIcon width={24} height={24} />
+			<TouchableOpacity style={styles.action} onPress={onPress}>
+				{children}
 			</TouchableOpacity>
 		);
 	},
@@ -46,29 +37,31 @@ export type NavigationHeaderProps = {
 	title?: string;
 	displayBackButton?: boolean;
 	navigateBack?: boolean;
-	action?: ReactElement;
+	actionIcon?: ReactElement;
 	size?: 'lg' | 'sm';
 	style?: StyleProp<ViewStyle>;
-	onBackPress?: Function;
-	onClosePress?: Function;
-	onAddPress?: Function;
+	onBackPress?: () => void;
+	onClosePress?: () => void;
+	onAddPress?: () => void;
+	onActionPress?: () => void;
 };
 
 const NavigationHeader = ({
 	title = ' ',
 	displayBackButton = true,
-	onBackPress = (): null => null,
 	navigateBack = true,
 	size = 'lg',
+	actionIcon,
+	style,
+	onBackPress,
 	onClosePress,
 	onAddPress,
-	action,
-	style,
+	onActionPress,
 }: NavigationHeaderProps): ReactElement => {
 	const navigation = useNavigation<any>();
 
 	const handleBackPress = useCallback(() => {
-		onBackPress();
+		onBackPress && onBackPress();
 		if (navigateBack) {
 			navigation.goBack();
 		}
@@ -89,15 +82,29 @@ const NavigationHeader = ({
 	return (
 		<View style={[container, style]}>
 			<View style={styles.leftColumn}>
-				{displayBackButton && <BackButton onPress={handleBackPress} />}
+				{displayBackButton && (
+					<ActionButton onPress={handleBackPress}>
+						<BackIcon width={20} height={20} />
+					</ActionButton>
+				)}
 			</View>
 			<View style={styles.middleColumn}>
 				<Text style={styles.title}>{title}</Text>
 			</View>
 			<View style={styles.rightColumn}>
-				{action}
-				{onClosePress && <CloseButton onPress={onClosePress} />}
-				{onAddPress && <AddButton onPress={onAddPress} />}
+				{actionIcon && onActionPress && (
+					<ActionButton onPress={onActionPress}>{actionIcon}</ActionButton>
+				)}
+				{onClosePress && (
+					<ActionButton onPress={onClosePress}>
+						<XIcon width={24} height={24} />
+					</ActionButton>
+				)}
+				{onAddPress && (
+					<ActionButton onPress={onAddPress}>
+						<PlusIcon width={24} height={24} />
+					</ActionButton>
+				)}
 			</View>
 		</View>
 	);
@@ -106,34 +113,28 @@ const NavigationHeader = ({
 const styles = StyleSheet.create({
 	container: {
 		flexDirection: 'row',
-		backgroundColor: 'transparent',
 	},
 	leftColumn: {
 		width: 50,
 		justifyContent: 'center',
-		backgroundColor: 'transparent',
-		left: 16,
 	},
 	middleColumn: {
 		flex: 1,
 		justifyContent: 'center',
 		alignItems: 'center',
-		backgroundColor: 'transparent',
 	},
 	rightColumn: {
 		width: 50,
 		justifyContent: 'center',
 		alignItems: 'flex-end',
-		backgroundColor: 'transparent',
-		right: 16,
 	},
 	title: {
 		textAlign: 'center',
 	},
-	iconContainer: {
+	action: {
 		flexDirection: 'row',
 		alignItems: 'center',
-		backgroundColor: 'transparent',
+		paddingHorizontal: 16,
 	},
 });
 
