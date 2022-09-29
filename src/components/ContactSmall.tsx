@@ -2,7 +2,7 @@ import React, { memo } from 'react';
 import { StyleSheet } from 'react-native';
 
 import { Text02M, TouchableOpacity } from '../styles/components';
-import { useSlashtags } from '../components/SlashtagsProvider';
+import { useProfile } from '../hooks/slashtags';
 import ProfileImage from './ProfileImage';
 
 export const ContactSmall = ({
@@ -12,7 +12,7 @@ export const ContactSmall = ({
 	url: string;
 	onPress?: Function;
 }): JSX.Element => {
-	const profile = useSlashtags().contacts[url];
+	const { profile } = useProfile(url);
 
 	return (
 		<TouchableOpacity

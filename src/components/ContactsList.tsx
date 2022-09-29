@@ -21,10 +21,6 @@ const ContactItem = ({
 }): JSX.Element => {
 	const { profile } = useProfile(contact.url);
 
-	const name = useMemo(() => {
-		return contact?.name ?? profile?.name ?? ' ';
-	}, [contact?.name, profile?.name]);
-
 	return (
 		<TouchableOpacity
 			activeOpacity={0.8}
@@ -34,7 +30,7 @@ const ContactItem = ({
 			<ThemedView style={cstyles.container}>
 				<ProfileImage url={contact.url} image={profile?.image} size={48} />
 				<View style={cstyles.column}>
-					<Text01M style={cstyles.name}>{name}</Text01M>
+					<Text01M style={cstyles.name}>{profile?.name || ' '}</Text01M>
 					<SlashtagURL
 						color="gray"
 						url={contact.url}

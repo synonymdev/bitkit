@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { SDK, SlashURL } from '@synonymdev/slashtags-sdk';
 import c from 'compact-encoding';
 
@@ -23,6 +23,7 @@ export const useSelectedSlashtag = (): {
 
 /**
  * Watchs the public profile of a local or remote slashtag by its url.
+ * Overrides name property if it is saved as a contact record!
  */
 export const useProfile = (
 	url: string,
@@ -31,6 +32,13 @@ export const useProfile = (
 	const cached = useSlashtags().profiles[url];
 	const [profile, setProfile] = useState<BasicProfile>(cached || {});
 	const [resolving, setResolving] = useState(true);
+
+	const contactRecord = useSlashtags().contacts[url];
+	const withContactRecord = useMemo(() => {
+		return contactRecord?.name
+			? { ...profile, name: contactRecord.name }
+			: profile;
+	}, [profile, contactRecord]);
 
 	const sdk = useSlashtagsSDK();
 
@@ -82,7 +90,7 @@ export const useProfile = (
 
 	return {
 		resolving,
-		profile,
+		profile: withContactRecord,
 	};
 };
 
