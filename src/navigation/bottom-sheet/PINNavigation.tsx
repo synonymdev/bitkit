@@ -1,4 +1,4 @@
-import React, { ReactElement, useMemo, memo } from 'react';
+import React, { ReactElement, memo } from 'react';
 import { useSelector } from 'react-redux';
 import {
 	createNativeStackNavigator,
@@ -12,6 +12,7 @@ import Result from '../../screens/Settings/PIN/Result';
 import AskForBiometrics from '../../screens/Settings/PIN/AskForBiometrics';
 import { NavigationContainer } from '../../styles/components';
 import Store from '../../store/types';
+import { useSnapPoints } from '../../hooks/bottomSheet';
 
 export type PinNavigationProp = NativeStackNavigationProp<PinStackParamList>;
 
@@ -29,10 +30,10 @@ const navOptions: NativeStackNavigationOptions = {
 };
 
 const PINNavigation = (): ReactElement => {
+	const snapPoints = useSnapPoints('medium');
 	const isOpen = useSelector(
 		(store: Store) => store.user.viewController.PINNavigation.isOpen,
 	);
-	const snapPoints = useMemo(() => [600], []);
 
 	return (
 		<BottomSheetWrapper view="PINNavigation" snapPoints={snapPoints}>

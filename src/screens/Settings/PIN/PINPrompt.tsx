@@ -8,14 +8,17 @@ import BottomSheetWrapper from '../../../components/BottomSheetWrapper';
 import Glow from '../../../components/Glow';
 import Button from '../../../components/Button';
 import { toggleView } from '../../../store/actions/user';
-import { useBottomSheetBackPress } from '../../../hooks/bottomSheet';
+import {
+	useBottomSheetBackPress,
+	useSnapPoints,
+} from '../../../hooks/bottomSheet';
 import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
 import Store from '../../../store/types';
 
 const imageSrc = require('../../../assets/illustrations/shield.png');
 
 const PINPrompt = (): ReactElement => {
-	const snapPoints = useMemo(() => [600], []);
+	const snapPoints = useSnapPoints('medium');
 	const insets = useSafeAreaInsets();
 	const showLaterButton = useSelector(
 		(store: Store) => store.user.viewController.PINPrompt.showLaterButton,

@@ -34,10 +34,12 @@ const navOptions: NativeStackNavigationOptions = {
 };
 
 const BackupNavigation = (): ReactElement => {
+	// TODO: should use useSnapPoints('medium') but space not enough in ConfirmMnemonic
+	// const snapPoints = useSnapPoints('medium');
+	const snapPoints = useMemo(() => [650], []);
 	const isOpen = useSelector(
 		(store: Store) => store.user.viewController.backupNavigation.isOpen,
 	);
-	const snapPoints = useMemo(() => [650], []);
 
 	return (
 		<BottomSheetWrapper view="backupNavigation" snapPoints={snapPoints}>

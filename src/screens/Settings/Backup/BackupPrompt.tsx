@@ -10,8 +10,11 @@ import Button from '../../../components/Button';
 import Store from '../../../store/types';
 import { toggleView, ignoreBackup } from '../../../store/actions/user';
 import { useNoTransactions } from '../../../hooks/wallet';
-import { useBottomSheetBackPress } from '../../../hooks/bottomSheet';
 import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
+import {
+	useBottomSheetBackPress,
+	useSnapPoints,
+} from '../../../hooks/bottomSheet';
 
 const imageSrc = require('../../../assets/illustrations/safe.png');
 
@@ -19,7 +22,7 @@ const ASK_INTERVAL = 1000 * 60 * 60 * 24; // 1 day - how long this prompt will b
 const CHECK_INTERVAL = 10_000; // how long user needs to stay on Wallets screen before he will see this prompt
 
 const BackupPrompt = ({ screen }: { screen: string }): ReactElement => {
-	const snapPoints = useMemo(() => [600], []);
+	const snapPoints = useSnapPoints('medium');
 	const insets = useSafeAreaInsets();
 	const buttonContainerStyles = useMemo(
 		() => ({

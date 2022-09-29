@@ -8,13 +8,18 @@ import { toggleView } from '../store/actions/user';
 import { TViewController } from '../store/types/user';
 import { useAppSelector } from './redux';
 
-export const useSnapPoints = (size: 'small' | 'large'): number[] => {
+export const useSnapPoints = (size: 'small' | 'medium' | 'large'): number[] => {
 	const { height } = useSafeAreaFrame();
 	const insets = useSafeAreaInsets();
 
 	const snapPoints = useMemo(() => {
 		if (size === 'large') {
+			// only Header should be visible
 			return [height - (60 + insets.top)];
+		}
+		if (size === 'medium') {
+			// only Header + Balance should be visible
+			return [height - (180 + insets.top)];
 		}
 		if (size === 'small') {
 			return [460 + insets.bottom];
