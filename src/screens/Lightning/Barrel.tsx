@@ -1,8 +1,9 @@
 import React, { memo, ReactElement, useMemo } from 'react';
+import { Image, StyleSheet } from 'react-native';
+
 import useColors from '../../hooks/colors';
 import useDisplayValues from '../../hooks/displayValues';
 import { Subtitle, TouchableOpacity } from '../../styles/components';
-import { Image, StyleSheet } from 'react-native';
 
 const Barrel = ({ active, id, amount, img, onPress }): ReactElement => {
 	const colors = useColors();

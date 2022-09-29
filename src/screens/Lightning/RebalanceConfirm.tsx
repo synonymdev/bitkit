@@ -1,6 +1,5 @@
-import React, { ReactElement, useMemo, useState } from 'react';
+import React, { ReactElement, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { useSelector } from 'react-redux';
 import { FadeIn, FadeOut } from 'react-native-reanimated';
 
 import {
@@ -21,77 +20,42 @@ import type { LightningScreenProps } from '../../navigation/types';
 import { Percentage } from './QuickSetup';
 import PieChart from './PieChart';
 import NumberPadLightning from './NumberPadLightning';
-import Store from '../../store/types';
-import { IGetOrderResponse } from '@synonymdev/blocktank-client';
 import { sleep } from '../../utils/helpers';
-import { defaultOrderResponse } from '../../store/shapes/blocktank';
-import { confirmChannelPurchase } from '../../store/actions/blocktank';
-import useDisplayValues from '../../hooks/displayValues';
 
 const PIE_SIZE = 140;
 const PIE_SHIFT = 70;
 
-const QuickConfirm = ({
+const RebalanceConfirm = ({
 	navigation,
 	route,
-}: LightningScreenProps<'QuickConfirm'>): ReactElement => {
+}: LightningScreenProps<'RebalanceConfirm'>): ReactElement => {
 	const colors = useColors();
 	const { total } = route.params;
 	const [spendingAmount, setSpendingAmount] = useState(
 		route.params.spendingAmount,
 	);
-	const selectedNetwork = useSelector(
-		(state: Store) => state.wallet.selectedNetwork,
-	);
-	const selectedWallet = useSelector(
-		(state: Store) => state.wallet.selectedWallet,
-	);
-	const orderId = useMemo(
-		() => route.params?.orderId ?? '',
-		[route.params?.orderId],
-	);
-	const orders = useSelector((state: Store) => state.blocktank?.orders ?? []);
-
-	const order: IGetOrderResponse = useMemo(() => {
-		const filteredOrders = orders.filter((o) => o._id === orderId);
-		if (filteredOrders.length) {
-			return filteredOrders[0];
-		}
-		return defaultOrderResponse;
-	}, [orderId, orders]);
-	const blocktankPurchaseFee = useDisplayValues(order?.price ?? 0);
-	const transactionFee = useSelector(
-		(state: Store) =>
-			state.wallet.wallets[selectedWallet].transaction[selectedNetwork].fee,
-	);
-	const fiatTransactionFee = useDisplayValues(transactionFee ?? 0);
-	const channelOpenCost = useMemo(() => {
-		return blocktankPurchaseFee.fiatValue + fiatTransactionFee.fiatValue;
-	}, [fiatTransactionFee.fiatValue, blocktankPurchaseFee.fiatValue]);
-
 	const [keybrd, setKeybrd] = useState(false);
 	const [loading, setLoading] = useState(false);
 
 	const savingsAmount = total - spendingAmount;
 	const spendingPercentage = Math.round((spendingAmount / total) * 100);
+	const spendingInitialPercentage = 10;
 	const savingsPercentage = Math.round((savingsAmount / total) * 100);
 
 	const handleConfirm = async (): Promise<void> => {
 		setLoading(true);
-		await sleep(5);
-		const res = await confirmChannelPurchase({ orderId, selectedNetwork });
-		if (res.isErr()) {
-			setLoading(false);
-			return;
-		}
-		navigation.navigate('Result');
+		await sleep(1000);
+		navigation.navigate('RebalanceResult');
 	};
+
+	const channelOpenCost = 123;
+	const fiatSymbol = '$';
 
 	return (
 		<GlowingBackground topLeft={colors.purple}>
 			<SafeAreaInsets type="top" />
 			<NavigationHeader
-				title="Add Instant Payments"
+				title="Rebalance Funds"
 				onClosePress={(): void => {
 					navigation.navigate('Tabs');
 				}}
@@ -101,8 +65,8 @@ const QuickConfirm = ({
 					<Display color="purple">Please {'\n'}confirm.</Display>
 					<Text01S color="gray1" style={styles.text}>
 						It costs
-						<Text01S>{` ${blocktankPurchaseFee.fiatSymbol}${channelOpenCost} `}</Text01S>
-						to connect you to Lightning and set up your spending balance.
+						<Text01S>{` ${fiatSymbol}${channelOpenCost} `}</Text01S>
+						to transfer the additional savings to your spending balance.
 					</Text01S>
 				</View>
 
@@ -114,6 +78,7 @@ const QuickConfirm = ({
 									size={PIE_SIZE}
 									shift={PIE_SHIFT}
 									primary={spendingPercentage}
+									dashed={spendingInitialPercentage}
 								/>
 							</View>
 							<View style={styles.percContainer}>
@@ -217,4 +182,4 @@ const styles = StyleSheet.create({
 	},
 });
 
-export default QuickConfirm;
+export default RebalanceConfirm;

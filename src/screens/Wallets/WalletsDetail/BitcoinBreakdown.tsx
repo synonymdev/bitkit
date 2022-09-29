@@ -1,5 +1,7 @@
-import React, { memo, ReactElement } from 'react';
+import React, { memo, ReactElement, useEffect, useState } from 'react';
 import { StyleSheet, TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+
 import {
 	Caption13M,
 	Text01M,
@@ -10,8 +12,8 @@ import {
 } from '../../../styles/components';
 import { useBalance } from '../../../hooks/wallet';
 import Money from '../../../components/Money';
-import { useNavigation } from '@react-navigation/native';
 import { RootNavigationProp } from '../../../navigation/types';
+import { getOpenChannels } from '../../../utils/lightning';
 
 const NetworkRow = ({
 	title,
@@ -27,17 +29,17 @@ const NetworkRow = ({
 	satoshis: number;
 }): ReactElement => {
 	return (
-		<View color={'transparent'} style={styles.networkRow}>
-			<View color={'transparent'} style={styles.titleContainer}>
+		<View color="transparent" style={styles.networkRow}>
+			<View color="transparent" style={styles.titleContainer}>
 				<View style={[styles.networkIconContainer, { backgroundColor: color }]}>
 					{icon}
 				</View>
-				<View color={'transparent'}>
+				<View color="transparent">
 					<Text01M>{title}</Text01M>
-					<Caption13M color={'gray1'}>{subtitle}</Caption13M>
+					<Caption13M color="gray1">{subtitle}</Caption13M>
 				</View>
 			</View>
-			<View color={'transparent'} style={styles.valueContainer}>
+			<View color="transparent" style={styles.valueContainer}>
 				<Money sats={satoshis} size="text01m" enableHide={true} />
 				<Money
 					sats={satoshis}
@@ -55,37 +57,43 @@ const BitcoinBreakdown = (): ReactElement => {
 	const navigation = useNavigation<RootNavigationProp>();
 	const { satoshis: onchain } = useBalance({ onchain: true });
 	const { satoshis: lightning } = useBalance({ lightning: true });
+	const [hasLighning, setHasLightning] = useState<boolean>(false);
+
+	useEffect(() => {
+		getOpenChannels({ fromStorage: true }).then((res) => {
+			if (res.isOk() && res.value.length > 0) {
+				setHasLightning(true);
+			}
+		});
+	}, []);
 
 	return (
-		<View color={'transparent'} style={styles.container}>
+		<View color="transparent" style={styles.container}>
 			<NetworkRow
-				title={'Bitcoin savings'}
-				subtitle={'On-chain BTC'}
-				color={'rgba(247, 147, 26, 0.16)'}
+				title="Bitcoin savings"
+				subtitle="On-chain BTC"
+				color="rgba(247, 147, 26, 0.16)"
 				icon={<SavingsIcon color="orange" width={17} height={17} />}
 				satoshis={onchain}
 			/>
-			<View color={'transparent'} style={styles.transferRow}>
-				<View color={'gray4'} style={styles.line} />
+			<View color="transparent" style={styles.transferRow}>
+				<View color="gray4" style={styles.line} />
 				<TouchableOpacity
 					onPress={(): void => {
 						navigation.navigate('LightningRoot', {
-							screen: 'Introduction',
+							screen: hasLighning ? 'RebalanceSetup' : 'Introduction',
 						});
 					}}>
-					<View style={styles.transferButton} color={'white08'}>
-						<TransferIcon height={13} color={'white'} />
-						<Caption13M color={'white'} style={styles.transferButtonText}>
-							Transfer
-						</Caption13M>
+					<View style={styles.transferButton} color="white08">
+						<TransferIcon height={13} color="white" />
 					</View>
 				</TouchableOpacity>
-				<View color={'gray4'} style={styles.line} />
+				<View color="gray4" style={styles.line} />
 			</View>
 			<NetworkRow
-				title={'Spending balance'}
-				subtitle={'Lightning Network BTC'}
-				color={'rgba(185, 92, 232, 0.16)'}
+				title="Spending balance"
+				subtitle="Lightning Network BTC"
+				color="rgba(185, 92, 232, 0.16)"
 				icon={<LightningIcon height={15} />}
 				satoshis={lightning}
 			/>
@@ -133,9 +141,6 @@ const styles = StyleSheet.create({
 		justifyContent: 'center',
 		alignItems: 'center',
 		marginHorizontal: 16,
-	},
-	transferButtonText: {
-		paddingLeft: 10,
 	},
 	titleContainer: {
 		display: 'flex',

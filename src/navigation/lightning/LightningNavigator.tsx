@@ -11,6 +11,9 @@ import CustomConfirm from '../../screens/Lightning/CustomConfirm';
 import Result from '../../screens/Lightning/Result';
 import QuickSetup from '../../screens/Lightning/QuickSetup';
 import QuickConfirm from '../../screens/Lightning/QuickConfirm';
+import RebalanceSetup from '../../screens/Lightning/RebalanceSetup';
+import RebalanceConfirm from '../../screens/Lightning/RebalanceConfirm';
+import RebalanceResult from '../../screens/Lightning/RebalanceResult';
 
 export type LightningNavigationProp =
 	NativeStackNavigationProp<LightningStackParamList>;
@@ -33,6 +36,12 @@ export type LightningStackParamList = {
 		total: number;
 		orderId: string;
 	};
+	RebalanceSetup: undefined;
+	RebalanceConfirm: {
+		spendingAmount: number;
+		total: number;
+	};
+	RebalanceResult: undefined;
 };
 
 const Stack = createNativeStackNavigator<LightningStackParamList>();
@@ -52,6 +61,9 @@ const LightningStack = (): ReactElement => {
 				<Stack.Screen name="Result" component={Result} />
 				<Stack.Screen name="QuickSetup" component={QuickSetup} />
 				<Stack.Screen name="QuickConfirm" component={QuickConfirm} />
+				<Stack.Screen name="RebalanceSetup" component={RebalanceSetup} />
+				<Stack.Screen name="RebalanceConfirm" component={RebalanceConfirm} />
+				<Stack.Screen name="RebalanceResult" component={RebalanceResult} />
 			</Stack.Group>
 		</Stack.Navigator>
 	);

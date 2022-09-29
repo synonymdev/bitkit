@@ -31,7 +31,7 @@ const FeeRate = ({ navigation }): ReactElement => {
 			? ` (${totalFeeDisplay.fiatSymbol} ${totalFeeDisplay.fiatFormatted})`
 			: '';
 
-	let onDone: (() => void) | undefined = undefined;
+	let onDone: (() => void) | undefined;
 
 	if (transaction.satsPerByte !== 0) {
 		onDone = (): void => {

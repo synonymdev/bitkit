@@ -1,5 +1,6 @@
 import React, { memo, ReactElement } from 'react';
 import {
+	DashPathEffect,
 	BlurMask,
 	Canvas,
 	Circle,
@@ -14,10 +15,12 @@ const PieChart = ({
 	size,
 	shift,
 	primary,
+	dashed,
 }: {
 	size: number;
 	shift: number;
 	primary: number;
+	dashed?: number;
 }): ReactElement => {
 	const colors = useColors();
 	const whole = size + shift * 2;
@@ -88,12 +91,51 @@ const PieChart = ({
 		);
 	}
 
+	let dashedLine;
+	if (dashed !== undefined) {
+		// primary angle in radians
+		const pandgle = (2 * Math.PI * dashed) / 100;
+		// relative coordinations of breaking point
+		const x = r * Math.sin(pandgle);
+		const y = r * Math.cos(pandgle);
+		// abosolute coordinates of breaking point
+		const px = center + x;
+		const py = center - y;
+		dashedLine = (
+			<>
+				<Path
+					color={colors.black}
+					style="stroke"
+					strokeJoin="round"
+					strokeWidth={2}
+					path={`
+				    M ${cx} ${cy}
+				    L ${px} ${py}
+			    `}>
+					<Paint color={colors.black} />
+				</Path>
+				<Path
+					color={colors.purple}
+					style="stroke"
+					strokeJoin="round"
+					strokeWidth={2}
+					path={`
+				    M ${cx} ${cy}
+				    L ${px} ${py}
+			    `}>
+					<DashPathEffect intervals={[2, 2]} />
+				</Path>
+			</>
+		);
+	}
+
 	return (
 		<Canvas style={{ width: whole, height: whole }}>
 			<Circle c={vec(center)} r={r * 1.2} color={colors.purple} opacity={0.3}>
 				<BlurMask blur={60} style="normal" />
 			</Circle>
 			{content}
+			{dashedLine}
 		</Canvas>
 	);
 };

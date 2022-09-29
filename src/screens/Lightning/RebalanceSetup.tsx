@@ -28,12 +28,9 @@ import AmountToggle from '../../components/AmountToggle';
 import FancySlider from '../../components/FancySlider';
 import NumberPadLightning from './NumberPadLightning';
 import type { LightningScreenProps } from '../../navigation/types';
-
 import Store from '../../store/types';
 import { useBalance } from '../../hooks/wallet';
-import { setupOnChainTransaction } from '../../store/actions/wallet';
-import { startChannelPurchase } from '../../store/actions/blocktank';
-import { showErrorNotification } from '../../utils/notifications';
+import { sleep } from '../../utils/helpers';
 
 export const Percentage = ({ value, type }): ReactElement => {
 	return (
@@ -52,9 +49,9 @@ export const Percentage = ({ value, type }): ReactElement => {
 	);
 };
 
-const QuickSetup = ({
+const RebalanceSetup = ({
 	navigation,
-}: LightningScreenProps<'QuickSetup'>): ReactElement => {
+}: LightningScreenProps<'RebalanceSetup'>): ReactElement => {
 	const colors = useColors();
 	const [keybrd, setKeybrd] = useState(false);
 	const [loading, setLoading] = useState(false);
@@ -62,20 +59,8 @@ const QuickSetup = ({
 	const [spendingAmount, setSpendingAmount] = useState(0);
 	const currentBalance = useBalance({ onchain: true });
 	const bitcoinUnit = useSelector((state: Store) => state.settings.bitcoinUnit);
-	const productId = useSelector(
-		(state: Store) => state.blocktank?.serviceList[0]?.product_id ?? '',
-	);
 	const unitPreference = useSelector(
 		(state: Store) => state.settings.unitPreference,
-	);
-	const selectedNetwork = useSelector(
-		(state: Store) => state.wallet.selectedNetwork,
-	);
-	const selectedWallet = useSelector(
-		(state: Store) => state.wallet.selectedWallet,
-	);
-	const blocktankService = useSelector(
-		(state: Store) => state.blocktank.serviceList[0],
 	);
 	const savingsAmount = totalBalance - spendingAmount;
 	const spendingPercentage = Math.round((spendingAmount / totalBalance) * 100);
@@ -97,59 +82,24 @@ const QuickSetup = ({
 
 	useEffect(() => {
 		let spendingLimit = Math.round(currentBalance.satoshis / 1.5);
-		if (blocktankService?.max_chan_spending < spendingLimit) {
-			spendingLimit = blocktankService?.max_chan_spending;
-		}
 		setTotalBalance(spendingLimit);
-	}, [blocktankService?.max_chan_spending, currentBalance.satoshis]);
-
-	useEffect(() => {
-		setupOnChainTransaction({ rbf: false }).then();
-	}, []);
+	}, [currentBalance.satoshis]);
 
 	const onContinuePress = useCallback(async (): Promise<void> => {
 		setLoading(true);
-		const localBalance =
-			spendingAmount * 2 > blocktankService.min_channel_size
-				? spendingAmount * 2
-				: blocktankService.min_channel_size;
-		const purchaseResponse = await startChannelPurchase({
-			selectedNetwork,
-			selectedWallet,
-			productId,
-			remoteBalance: spendingAmount,
-			localBalance,
-			channelExpiry: 12,
-		});
-		if (purchaseResponse.isErr()) {
-			showErrorNotification({
-				title: 'Channel Purchase Error',
-				message: purchaseResponse.error.message,
-			});
-			setLoading(false);
-			return;
-		}
+		sleep(5000);
 		setLoading(false);
-		navigation.push('QuickConfirm', {
+		navigation.push('RebalanceConfirm', {
 			spendingAmount,
 			total: totalBalance,
-			orderId: purchaseResponse.value,
 		});
-	}, [
-		blocktankService.min_channel_size,
-		navigation,
-		productId,
-		selectedNetwork,
-		selectedWallet,
-		spendingAmount,
-		totalBalance,
-	]);
+	}, [navigation, spendingAmount, totalBalance]);
 
 	return (
 		<GlowingBackground topLeft={colors.purple}>
 			<SafeAreaInsets type="top" />
 			<NavigationHeader
-				title="Add Instant Payments"
+				title="Rebalance Funds"
 				onClosePress={(): void => {
 					navigation.navigate('Tabs');
 				}}
@@ -159,7 +109,7 @@ const QuickSetup = ({
 					{keybrd ? (
 						<Display color="purple">Spending Money.</Display>
 					) : (
-						<Display color="purple">Spending Balance.</Display>
+						<Display color="purple">Spending{'\n'}& saving.</Display>
 					)}
 					{keybrd ? (
 						<Text01S color="gray1" style={styles.text}>
@@ -306,4 +256,4 @@ const styles = StyleSheet.create({
 	},
 });
 
-export default QuickSetup;
+export default RebalanceSetup;

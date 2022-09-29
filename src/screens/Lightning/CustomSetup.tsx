@@ -8,6 +8,7 @@ import React, {
 } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { FadeIn, FadeOut } from 'react-native-reanimated';
+import { useSelector } from 'react-redux';
 
 import {
 	AnimatedView,
@@ -25,7 +26,6 @@ import { useExchangeRate } from '../../hooks/displayValues';
 import AmountToggle from '../../components/AmountToggle';
 import NumberPadLightning from './NumberPadLightning';
 import type { LightningScreenProps } from '../../navigation/types';
-import { useSelector } from 'react-redux';
 import Store from '../../store/types';
 import { useBalance } from '../../hooks/wallet';
 import { setupOnChainTransaction } from '../../store/actions/wallet';

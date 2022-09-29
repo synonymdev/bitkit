@@ -1,5 +1,6 @@
 import React, { ReactElement, useMemo, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
+import { useSelector } from 'react-redux';
 import { FadeIn, FadeOut } from 'react-native-reanimated';
 
 import {
@@ -21,7 +22,6 @@ import useDisplayValues from '../../hooks/displayValues';
 import NumberPadWeeks from './NumberPadWeeks';
 import { LightningScreenProps } from '../../navigation/types';
 import { sleep } from '../../utils/helpers';
-import { useSelector } from 'react-redux';
 import Store from '../../store/types';
 import { IGetOrderResponse } from '@synonymdev/blocktank-client';
 import { defaultOrderResponse } from '../../store/shapes/blocktank';
