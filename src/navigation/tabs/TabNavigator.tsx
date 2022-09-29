@@ -166,6 +166,7 @@ const styles = StyleSheet.create({
 		height: 80,
 		flexDirection: 'row',
 		alignItems: 'center',
+		zIndex: 0,
 	},
 	blurContainer: {
 		height: 56,
