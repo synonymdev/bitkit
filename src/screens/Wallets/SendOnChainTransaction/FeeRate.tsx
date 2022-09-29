@@ -192,7 +192,7 @@ const FeeRate = ({ navigation }): ReactElement => {
 				<View style={nextButtonContainer}>
 					<Button
 						size="large"
-						text="Next"
+						text="Continue"
 						disabled={
 							selectedFeeId === EFeeIds.none || selectedFeeId === EFeeIds.custom
 						}

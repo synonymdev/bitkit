@@ -213,7 +213,7 @@ const CoinSelection = ({ navigation }): ReactElement => {
 				<View style={buttonContainerStyles}>
 					<Button
 						size="large"
-						text="Next"
+						text="Continue"
 						disabled={txInputValue < txOutputValue}
 						onPress={(): void => navigation.navigate('ReviewAndSend')}
 					/>

@@ -111,7 +111,7 @@ const ShowMnemonic = ({ navigation }): ReactElement => {
 				{show && (
 					<Button
 						size="large"
-						text="Next"
+						text="Continue"
 						onPress={(): void =>
 							navigation.navigate('ConfirmMnemonic', { seed })
 						}

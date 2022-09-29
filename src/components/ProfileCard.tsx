@@ -1,5 +1,11 @@
 import React, { useRef } from 'react';
-import { View, TouchableOpacity, TextInput, StyleSheet } from 'react-native';
+import {
+	View,
+	TouchableOpacity,
+	TextInput,
+	StyleSheet,
+	Platform,
+} from 'react-native';
 import { launchImageLibrary } from 'react-native-image-picker';
 import {
 	Text,
@@ -93,6 +99,7 @@ export const ProfileCard = ({
 				<TextInputNoOutline
 					ref={bioRef}
 					style={styles.bio}
+					color="gray1"
 					value={bio}
 					placeholder={'Short bio. Tell a bit about yourself.'}
 					multiline={true}
@@ -114,7 +121,7 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		alignItems: 'flex-start',
 		justifyContent: 'space-between',
-		marginBottom: 16,
+		marginBottom: 12,
 	},
 	text: {
 		flex: 1,
@@ -125,6 +132,7 @@ const styles = StyleSheet.create({
 	},
 	nameFilled: {
 		lineHeight: 34,
+		marginBottom: Platform.OS === 'android' ? -27 : 0,
 	},
 	url: {
 		marginTop: 8,

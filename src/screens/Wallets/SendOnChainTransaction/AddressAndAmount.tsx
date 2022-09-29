@@ -209,6 +209,7 @@ const AddressAndAmount = ({ index = 0, navigation }): ReactElement => {
 	}, [index, value, selectedNetwork, selectedWallet, sdk]);
 
 	const handleScan = (): void => {
+		closeNumberPad();
 		navigation.navigate('Scanner');
 	};
 
@@ -393,7 +394,7 @@ const AddressAndAmount = ({ index = 0, navigation }): ReactElement => {
 					{!keyboardShown && !isInvalid() && (
 						<Button
 							size="large"
-							text="Next"
+							text="Continue"
 							onPress={(): void => {
 								let view = 'ReviewAndSend';
 								// If auto coin-select is disabled and there is no lightning invoice.

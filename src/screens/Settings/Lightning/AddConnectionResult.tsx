@@ -14,7 +14,7 @@ const AddConnectionResult = ({ navigation }): ReactElement => {
 			<NavigationHeader title="Connection opened" />
 			<View style={styles.content}>
 				<Text01S color="gray1" style={styles.text}>
-					You succesfully opened a connection with ‘LNBIG Lightning Node’. It
+					You successfully opened a connection with ‘LNBIG Lightning Node’. It
 					might take a while for the connection to become ready for use.
 				</Text01S>
 

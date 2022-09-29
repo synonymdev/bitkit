@@ -80,7 +80,7 @@ const BitfinexWidget = (): ReactElement => {
 			<View style={styles.chart}>
 				<Chart />
 			</View>
-			<View>
+			<View style={styles.numbers}>
 				<Text01M>$20,467</Text01M>
 				<Caption13M color="green">+3.5%</Caption13M>
 			</View>
@@ -105,6 +105,9 @@ const styles = StyleSheet.create({
 		flex: 1,
 		height: 50,
 		marginHorizontal: 16,
+	},
+	numbers: {
+		alignItems: 'flex-end',
 	},
 	canvas: {
 		flex: 1,

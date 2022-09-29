@@ -124,7 +124,7 @@ const ConfirmMnemonic = ({ navigation, route }): ReactElement => {
 				{!showButton && (
 					<Button
 						size="large"
-						text="Next"
+						text="Continue"
 						onPress={(): void => navigation.navigate('Result')}
 					/>
 				)}

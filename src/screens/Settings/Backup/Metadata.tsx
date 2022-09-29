@@ -30,7 +30,7 @@ const Metadata = (): ReactElement => {
 
 	return (
 		<GradientView style={styles.container}>
-			<BottomSheetNavigationHeader title="Wallet Metadata" />
+			<BottomSheetNavigationHeader title="Wallet Data" />
 
 			<Text01S color="gray1" style={styles.text}>
 				Transactions, accounts, contacts and tags will be backed up
