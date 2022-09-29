@@ -570,7 +570,7 @@ export const updateTransactions = ({
 			}),
 		);
 
-		let notificationTxid;
+		let notificationTxid: string | undefined;
 
 		Object.keys(formatTransactionsResponse.value).forEach((txid) => {
 			//If the tx is new or the tx now has a block height (state changed to confirmed)
