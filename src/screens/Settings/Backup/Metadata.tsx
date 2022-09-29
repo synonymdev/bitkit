@@ -9,9 +9,9 @@ import Button from '../../../components/Button';
 import Glow from '../../../components/Glow';
 import { toggleView } from '../../../store/actions/user';
 
-const imageSrc = require('../../../assets/illustrations/light-bulb.png');
+const imageSrc = require('../../../assets/illustrations/tag.png');
 
-const Result = (): ReactElement => {
+const Metadata = (): ReactElement => {
 	const insets = useSafeAreaInsets();
 	const buttonContainerStyles = useMemo(
 		() => ({
@@ -30,10 +30,7 @@ const Result = (): ReactElement => {
 
 	return (
 		<GradientView style={styles.container}>
-			<BottomSheetNavigationHeader
-				title="Wallet Metadata"
-				displayBackButton={false}
-			/>
+			<BottomSheetNavigationHeader title="Wallet Metadata" />
 
 			<Text01S color="gray1" style={styles.text}>
 				Transactions, accounts, contacts and tags will be backed up
@@ -41,7 +38,7 @@ const Result = (): ReactElement => {
 			</Text01S>
 
 			<View style={styles.imageContainer}>
-				<Glow style={styles.glow} size={500} color="yellow" />
+				<Glow style={styles.glow} color="brand" />
 				<Image source={imageSrc} style={styles.image} />
 			</View>
 
@@ -79,4 +76,4 @@ const styles = StyleSheet.create({
 	},
 });
 
-export default memo(Result);
+export default memo(Metadata);

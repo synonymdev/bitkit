@@ -10,6 +10,7 @@ import BottomSheetWrapper from '../../components/BottomSheetWrapper';
 import ShowMnemonic from '../../screens/Settings/Backup/ShowMnemonic';
 import ConfirmMnemonic from '../../screens/Settings/Backup/ConfirmMnemonic';
 import Result from '../../screens/Settings/Backup/Result';
+import Warning from '../../screens/Settings/Backup/Warning';
 import Metadata from '../../screens/Settings/Backup/Metadata';
 import { NavigationContainer } from '../../styles/components';
 import Store from '../../store/types';
@@ -21,6 +22,7 @@ export type BackupStackParamList = {
 	ShowMnemonic: undefined;
 	ConfirmMnemonic: undefined;
 	Result: undefined;
+	Warning: undefined;
 	Metadata: undefined;
 };
 
@@ -45,6 +47,7 @@ const BackupNavigation = (): ReactElement => {
 						<Stack.Screen name="ShowMnemonic" component={ShowMnemonic} />
 						<Stack.Screen name="ConfirmMnemonic" component={ConfirmMnemonic} />
 						<Stack.Screen name="Result" component={Result} />
+						<Stack.Screen name="Warning" component={Warning} />
 						<Stack.Screen name="Metadata" component={Metadata} />
 					</Stack.Group>
 				</Stack.Navigator>

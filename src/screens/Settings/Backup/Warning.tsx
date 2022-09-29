@@ -3,48 +3,46 @@ import { StyleSheet, View, Image } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { Text01S } from '../../../styles/components';
+import GradientView from '../../../components/GradientView';
+import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
 import Button from '../../../components/Button';
 import Glow from '../../../components/Glow';
-import { verifyBackup } from '../../../store/actions/user';
-import { removeTodo } from '../../../store/actions/todos';
-import { todoPresets } from '../../../utils/todos';
-import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
-import GradientView from '../../../components/GradientView';
-import { BackupScreenProps } from '../../../navigation/types';
+import type { BackupScreenProps } from '../../../navigation/types';
 
-const imageSrc = require('../../../assets/illustrations/check.png');
+const imageSrc = require('../../../assets/illustrations/exclamation-mark.png');
 
-const Result = ({ navigation }: BackupScreenProps<'Result'>): ReactElement => {
+const Warning = ({
+	navigation,
+}: BackupScreenProps<'Warning'>): ReactElement => {
 	const insets = useSafeAreaInsets();
-	const nextButtonContainer = useMemo(
+	const buttonContainerStyles = useMemo(
 		() => ({
-			...styles.nextButtonContainer,
+			...styles.buttonContainer,
 			paddingBottom: insets.bottom + 16,
 		}),
 		[insets.bottom],
 	);
 
 	const handleButtonPress = (): void => {
-		verifyBackup();
-		removeTodo(todoPresets.backupSeedPhrase.type);
-		navigation.navigate('Warning');
+		navigation.navigate('Metadata');
 	};
 
 	return (
 		<GradientView style={styles.container}>
-			<BottomSheetNavigationHeader title="Successful" />
+			<BottomSheetNavigationHeader title="Keep It Secret" />
 
 			<Text01S color="gray1" style={styles.text}>
-				Make sure you store your recovery phrase in a secure place, as this is
-				the only way to recover your money (!)
+				Remember, never share your recovery phrase with anyone! If someone has
+				access to your recovery phrase they can steal your money, profile and
+				other data.
 			</Text01S>
 
 			<View style={styles.imageContainer}>
-				<Glow style={styles.glow} color="green" />
+				<Glow style={styles.glow} color="yellow" />
 				<Image source={imageSrc} style={styles.image} />
 			</View>
 
-			<View style={nextButtonContainer}>
+			<View style={buttonContainerStyles}>
 				<Button size="large" text="OK" onPress={handleButtonPress} />
 			</View>
 		</GradientView>
@@ -71,11 +69,11 @@ const styles = StyleSheet.create({
 	glow: {
 		position: 'absolute',
 	},
-	nextButtonContainer: {
+	buttonContainer: {
 		marginTop: 'auto',
 		paddingHorizontal: 32,
 		width: '100%',
 	},
 });
 
-export default memo(Result);
+export default memo(Warning);
