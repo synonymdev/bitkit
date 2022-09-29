@@ -40,13 +40,6 @@ const NewTxPrompt = (): ReactElement => {
 
 	useBottomSheetBackPress('newTxPrompt');
 
-	const handleClose = (): void => {
-		toggleView({
-			view: 'newTxPrompt',
-			data: { isOpen: false },
-		});
-	};
-
 	const handlePress = (): void => {
 		toggleView({
 			view: 'newTxPrompt',
@@ -55,17 +48,11 @@ const NewTxPrompt = (): ReactElement => {
 		navigate('ActivityDetail', { activityItem });
 	};
 
-	// If for some reason we couldn't find the activityItem don't render anything
-	if (!activityItem) {
-		return <></>;
-	}
-
 	return (
 		<BottomSheetWrapper
 			view="newTxPrompt"
 			snapPoints={snapPoints}
-			backdrop={true}
-			onClose={handleClose}>
+			backdrop={true}>
 			<View style={styles.container}>
 				<Lottie source={confettiSrc} autoPlay loop />
 				<View>
@@ -76,7 +63,10 @@ const NewTxPrompt = (): ReactElement => {
 					<Caption13Up style={styles.received} color="gray1">
 						You just received
 					</Caption13Up>
-					<AmountToggle sats={activityItem.value} onPress={handlePress} />
+
+					{activityItem && (
+						<AmountToggle sats={activityItem.value} onPress={handlePress} />
+					)}
 				</View>
 
 				<View>
@@ -89,7 +79,7 @@ const NewTxPrompt = (): ReactElement => {
 					</View>
 
 					<TouchableOpacity style={buttonContainerStyles} onPress={handlePress}>
-						{!activityItem.confirmed && (
+						{!activityItem?.confirmed && (
 							<>
 								<ClockIcon color="gray1" />
 								<Text02M color="gray1" style={styles.confirmingText}>
