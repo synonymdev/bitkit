@@ -321,3 +321,15 @@ function checkClosed(slashtag: Slashtag): boolean {
 		return false;
 	}
 }
+
+export const validateSlashtagURL = (url: string): boolean => {
+	try {
+		const parsed = SlashURL.parse(url);
+		if (parsed.protocol === 'slash:') {
+			return true;
+		}
+		return false;
+	} catch (error) {
+		return false;
+	}
+};

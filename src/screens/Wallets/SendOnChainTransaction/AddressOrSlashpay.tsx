@@ -47,6 +47,7 @@ const AddressOrSlashpay = ({
 				autoCapitalize="none"
 				autoCorrect={false}
 				blurOnSubmit={true}
+				returnKeyType="done"
 				{...props}
 			/>
 			<View style={styles.inputActions}>{children}</View>

@@ -3,19 +3,9 @@
  */
 
 import bip21 from 'bip21';
-import { err, ok, Result } from '@synonymdev/result';
-import {
-	availableNetworks,
-	EAvailableNetworks,
-	networks,
-	TAvailableNetworks,
-} from './networks';
 import { address as bitcoinJSAddress } from 'bitcoinjs-lib';
-import {
-	getOnchainTransactionData,
-	parseOnChainPaymentRequest,
-} from './wallet/transactions';
-import { getStore } from '../store/helpers';
+import { err, ok, Result } from '@synonymdev/result';
+import SDK from '@synonymdev/slashtags-sdk';
 import {
 	getLNURLParams,
 	LNURLAuthParams,
@@ -24,6 +14,12 @@ import {
 	LNURLResponse,
 	LNURLWithdrawParams,
 } from '@synonymdev/react-native-lnurl';
+
+import {
+	getOnchainTransactionData,
+	parseOnChainPaymentRequest,
+} from './wallet/transactions';
+import { getStore } from '../store/helpers';
 import { showErrorNotification, showInfoNotification } from './notifications';
 import { updateBitcoinTransaction } from '../store/actions/wallet';
 import { getBalance, getSelectedNetwork, getSelectedWallet } from './wallet';
@@ -31,6 +27,13 @@ import { toggleView } from '../store/actions/user';
 import { sleep } from './helpers';
 import { handleSlashtagURL } from './slashtags';
 import { decodeLightningInvoice } from './lightning';
+import {
+	availableNetworks,
+	EAvailableNetworks,
+	networks,
+	TAvailableNetworks,
+} from './networks';
+import { getSlashPayConfig } from '../utils/slashtags';
 
 const availableNetworksList = availableNetworks();
 
@@ -58,6 +61,7 @@ export interface QRData {
 		| LNURLPayParams
 		| LNURLResponse;
 	url?: string;
+	slashTagsUrl?: string;
 }
 
 export const validateAddress = ({
@@ -107,13 +111,18 @@ export const validateAddress = ({
  */
 export const processInputData = async ({
 	data = '',
+	source = 'mainScanner',
+	sdk,
 	selectedNetwork,
 	selectedWallet,
 }: {
 	data: string;
+	source: 'mainScanner' | 'sendScanner';
 	selectedNetwork?: TAvailableNetworks;
 	selectedWallet?: string;
+	sdk: SDK;
 }): Promise<Result<EQRDataType>> => {
+	data = data.trim();
 	try {
 		if (!selectedNetwork) {
 			selectedNetwork = getSelectedNetwork();
@@ -153,6 +162,35 @@ export const processInputData = async ({
 			// Attempt to handle a unified Bitcoin transaction.
 			const processBitcoinTxResponse = await processBitcoinTransactionData({
 				data: decodeRes.value,
+				selectedWallet,
+				selectedNetwork,
+			});
+			if (processBitcoinTxResponse.isErr()) {
+				showErrorNotification({
+					title: 'Unable To Pay Invoice',
+					message: processBitcoinTxResponse.error.message,
+				});
+				return err(processBitcoinTxResponse.error.message);
+			}
+			dataToHandle = processBitcoinTxResponse.value;
+		} else if (
+			source === 'sendScanner' &&
+			decodeRes.value[0].qrDataType === 'slashURL'
+		) {
+			// Check if this is a slashtag url and we want to send funds to it
+			const url = decodeRes.value[0].url ?? '';
+			const response = await processSlashPayURL({ url, sdk });
+
+			if (response.isErr()) {
+				showErrorNotification({
+					title: 'Unable To Pay to this slashtag',
+					message: response.error.message,
+				});
+				return err(response.error.message);
+			}
+
+			const processBitcoinTxResponse = await processBitcoinTransactionData({
+				data: response.value,
 				selectedWallet,
 				selectedNetwork,
 			});
@@ -308,6 +346,47 @@ export const decodeQRData = async (
 	}
 
 	return ok(foundNetworksInQR);
+};
+
+export const processSlashPayURL = async ({
+	url,
+	sdk,
+}: {
+	url: string;
+	sdk: SDK;
+}): Promise<Result<QRData[]>> => {
+	try {
+		const payConfig = await getSlashPayConfig(sdk, url);
+		const res = payConfig
+			.map(({ type, value }) => {
+				switch (type) {
+					case 'p2wpkh':
+					case 'p2sh':
+					case 'p2pkh':
+						if (!validateAddress({ address: value }).isValid) {
+							return;
+						}
+						return {
+							qrDataType: 'bitcoinAddress',
+							address: value,
+							sats: 0,
+							slashTagsUrl: url,
+						};
+					case 'lightningInvoice':
+						return {
+							qrDataType: 'lightningPaymentRequest',
+							lightningPaymentRequest: value,
+							slashTagsUrl: url,
+						};
+				}
+			})
+			.filter((item) => !!item);
+
+		return ok(res as QRData[]);
+	} catch (e) {
+		console.log('processSlashPayURL error', e);
+		return err(e);
+	}
 };
 
 /**
@@ -482,6 +561,7 @@ export const handleData = async ({
 	const lightningPaymentRequest = data?.lightningPaymentRequest ?? '';
 	const amount = data?.sats ?? 0;
 	const message = data?.message ?? '';
+	const slashTagsUrl = data?.slashTagsUrl;
 
 	//TODO(slashtags): Handle contacts' urls
 	//TODO(slashtags): Register Bitkit to handle all slash?x:// protocols
@@ -505,6 +585,7 @@ export const handleData = async ({
 				transaction: {
 					label: message,
 					outputs: [{ address, value: amount, index: 0 }],
+					slashTagsUrl,
 				},
 			});
 			return ok(EQRDataType.bitcoinAddress);

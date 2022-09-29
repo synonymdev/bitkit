@@ -10,6 +10,7 @@ import { showErrorNotification } from '../../utils/notifications';
 import ScannerComponent from './ScannerComponent';
 import type { RootStackScreenProps } from '../../navigation/types';
 import DetectSwipe from '../../components/DetectSwipe';
+import { useSlashtagsSDK } from '../../components/SlashtagsProvider';
 
 const ScannerScreen = ({
 	navigation,
@@ -22,6 +23,7 @@ const ScannerScreen = ({
 	const selectedWallet = useSelector(
 		(state: Store) => state.wallet.selectedWallet,
 	);
+	const sdk = useSlashtagsSDK();
 
 	const onSwipeRight = (): void => {
 		navigation.navigate('Tabs');
@@ -45,6 +47,8 @@ const ScannerScreen = ({
 
 		processInputData({
 			data,
+			source: 'mainScanner',
+			sdk,
 			selectedNetwork,
 			selectedWallet,
 		}).then();

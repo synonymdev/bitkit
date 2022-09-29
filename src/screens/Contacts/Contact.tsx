@@ -1,49 +1,67 @@
-import React, { useCallback } from 'react';
-import { StyleSheet, Share, Alert } from 'react-native';
+import React, { useCallback, useMemo } from 'react';
+import { StyleSheet, Share } from 'react-native';
+import { useSelector } from 'react-redux';
 
 import {
 	CoinsIcon,
 	PencileIcon,
 	ShareIcon,
+	TouchableOpacity,
 	TrashIcon,
 	View,
 } from '../../styles/components';
 import NavigationHeader from '../../components/NavigationHeader';
 import SafeAreaInsets from '../../components/SafeAreaInsets';
 import ProfileCard from '../../components/ProfileCard';
-import { TouchableOpacity } from 'react-native';
 import ProfileLinks from '../../components/ProfileLinks';
-import { deleteContact, getSlashPayConfig } from '../../utils/slashtags';
-import { toggleView } from '../../store/actions/user';
-import { updateBitcoinTransaction } from '../../store/actions/wallet';
-import { sleep } from '../../utils/helpers';
-import { EAddressTypeNames } from '../../store/types/wallet';
-import { validateAddress } from '../../utils/scanner';
-import { useTransactionDetails } from '../../hooks/transaction';
+import { deleteContact } from '../../utils/slashtags';
+import { processInputData } from '../../utils/scanner';
 import { useProfile, useSelectedSlashtag } from '../../hooks/slashtags';
 import {
 	useSlashtags,
 	useSlashtagsSDK,
 } from '../../components/SlashtagsProvider';
+import Store from '../../store/types';
 
 export const Contact = ({ navigation, route }): JSX.Element => {
+	const selectedWallet = useSelector(
+		(store: Store) => store.wallet.selectedWallet,
+	);
+	const selectedNetwork = useSelector(
+		(store: Store) => store.wallet.selectedNetwork,
+	);
 	const url = route.params?.url;
 
 	const { profile } = useProfile(url);
 	const { slashtag } = useSelectedSlashtag();
 	const sdk = useSlashtagsSDK();
 	const contactRecord = useSlashtags().contacts[url];
+	const profileCard = useMemo(
+		() => ({ ...profile, ...contactRecord }),
+		[profile, contactRecord],
+	);
 
 	const onDelete = useCallback(() => {
 		deleteContact(slashtag, url);
 		navigation.navigate('Tabs');
 	}, [navigation, slashtag, url]);
 
-	const transaction = useTransactionDetails();
+	const handleSend = async (): Promise<void> => {
+		const res = await processInputData({
+			data: url,
+			source: 'sendScanner',
+			sdk,
+			selectedNetwork,
+			selectedWallet,
+		});
+		if (res.isOk()) {
+			navigation.popToTop();
+		}
+	};
 
 	return (
 		<View style={styles.container}>
-			<SafeAreaInsets type={'top'} />
+			<SafeAreaInsets type="top" />
 			<NavigationHeader
 				title="Contact"
 				onClosePress={(): void => {
@@ -53,57 +71,14 @@ export const Contact = ({ navigation, route }): JSX.Element => {
 			<View style={styles.content}>
 				<ProfileCard
 					url={url}
-					profile={{
-						...profile,
-						...contactRecord,
-					}}
+					profile={profileCard}
 					editable={false}
 					resolving={false}
 				/>
-				<View style={styles.divider} />
+				<View style={styles.divider} color="white1" />
 				<View style={styles.bottom}>
 					<View style={styles.bottomHeader}>
-						<IconButton
-							onPress={async (): Promise<void> => {
-								const payConfig = await getSlashPayConfig(sdk, url);
-
-								const onChainAddresses = payConfig
-									.filter((e) => {
-										return Object.keys(EAddressTypeNames).includes(e.type);
-									})
-									.map((config) => config.value);
-
-								const address = onChainAddresses.find(
-									(a) => validateAddress({ address: a }).isValid,
-								);
-
-								if (!address) {
-									Alert.alert('Error', 'No valid address found.');
-									return;
-								}
-
-								navigation.popToTop();
-								toggleView({
-									view: 'sendNavigation',
-									data: {
-										isOpen: true,
-										snapPoint: 0,
-									},
-								});
-								await sleep(5); //This is only needed to prevent the view from briefly displaying the SendAssetList
-								await updateBitcoinTransaction({
-									transaction: {
-										outputs: [
-											{
-												address,
-												value: transaction.outputs?.[0]?.value ?? 0,
-												index: 0,
-											},
-										],
-										slashTagsUrl: url,
-									},
-								});
-							}}>
+						<IconButton onPress={handleSend}>
 							<CoinsIcon height={24} width={24} color="brand" />
 						</IconButton>
 						<IconButton
@@ -143,6 +118,7 @@ const IconButton = ({
 		<TouchableOpacity
 			activeOpacity={0.7}
 			onPress={onPress}
+			color="white08"
 			style={styles.iconContainer}>
 			{children}
 		</TouchableOpacity>
@@ -162,8 +138,6 @@ const styles = StyleSheet.create({
 	},
 	divider: {
 		height: 2,
-		backgroundColor: 'rgba(255, 255, 255, 0.1)',
-
 		marginTop: 16,
 		marginBottom: 16,
 	},
@@ -175,7 +149,6 @@ const styles = StyleSheet.create({
 		width: 48,
 		height: 48,
 		borderRadius: 9999,
-		backgroundColor: 'rgba(255, 255, 255, 0.08)',
 		alignItems: 'center',
 		justifyContent: 'center',
 		marginRight: 16,

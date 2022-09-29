@@ -7,16 +7,17 @@ import React, {
 	useState,
 } from 'react';
 import {
-	StyleSheet,
-	View,
 	Alert,
-	TouchableOpacity,
 	Keyboard,
+	StyleSheet,
+	TouchableOpacity,
+	View,
 } from 'react-native';
 import { useSelector } from 'react-redux';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Clipboard from '@react-native-clipboard/clipboard';
 import { validate } from 'bitcoin-address-validation';
+import { TInvoice } from '@synonymdev/react-native-ldk';
 
 import {
 	Caption13Up,
@@ -44,10 +45,12 @@ import { useTransactionDetails } from '../../../hooks/transaction';
 import { updateOnchainFeeEstimates } from '../../../store/actions/fees';
 import { toggleView } from '../../../store/actions/user';
 import { decodeLightningInvoice, refreshLdk } from '../../../utils/lightning';
-import { TInvoice } from '@synonymdev/react-native-ldk';
 import { processInputData } from '../../../utils/scanner';
 import { useBottomSheetBackPress } from '../../../hooks/bottomSheet';
 import useKeyboard from '../../../hooks/keyboard';
+import { validateSlashtagURL } from '../../../utils/slashtags';
+import { useSlashtagsSDK } from '../../../components/SlashtagsProvider';
+
 import AddressOrSlashpay from './AddressOrSlashpay';
 
 const AddressAndAmount = ({ index = 0, navigation }): ReactElement => {
@@ -81,6 +84,7 @@ const AddressAndAmount = ({ index = 0, navigation }): ReactElement => {
 		undefined,
 	);
 	const transaction = useTransactionDetails();
+	const sdk = useSlashtagsSDK();
 
 	const getDecodeAndSetLightningInvoice = async (): Promise<void> => {
 		try {
@@ -185,16 +189,10 @@ const AddressAndAmount = ({ index = 0, navigation }): ReactElement => {
 			});
 			return;
 		}
-		// remove slashtagsurl on paste
-		await updateBitcoinTransaction({
-			selectedWallet,
-			selectedNetwork,
-			transaction: {
-				slashTagsUrl: undefined,
-			},
-		});
 		const result = await processInputData({
 			data: clipboardData,
+			source: 'sendScanner',
+			sdk,
 			selectedNetwork,
 			selectedWallet,
 		});
@@ -208,7 +206,7 @@ const AddressAndAmount = ({ index = 0, navigation }): ReactElement => {
 				},
 			}).then();
 		}
-	}, [index, selectedNetwork, selectedWallet, value]);
+	}, [index, value, selectedNetwork, selectedWallet, sdk]);
 
 	const handleScan = (): void => {
 		navigation.navigate('Scanner');
@@ -253,25 +251,38 @@ const AddressAndAmount = ({ index = 0, navigation }): ReactElement => {
 	}, [numberPadIsOpen]);
 
 	const onBlur = useCallback(async (): Promise<void> => {
+		const tAddress = address.trim();
+		// check if it is a slashtag url and try to get address from it
+		if (validateSlashtagURL(tAddress)) {
+			await processInputData({
+				data: tAddress,
+				source: 'sendScanner',
+				sdk,
+				selectedNetwork,
+				selectedWallet,
+			});
+			return;
+		}
+
 		// Continue updating the on-chain information as we would previously.
-		let tx = {
-			outputs: [{ address, value, index }],
+		const tx = {
+			outputs: [{ tAddress, value, index }],
 			lightningInvoice: '',
 		};
 		// Attempt to decode what may be a lightning invoice.
 		const decodeInvoiceResponse = await decodeLightningInvoice({
-			paymentRequest: address,
+			paymentRequest: tAddress,
 		});
 		// Set lightning invoice if successfully decoded.
 		if (decodeInvoiceResponse.isOk()) {
-			tx.lightningInvoice = address;
+			tx.lightningInvoice = tAddress;
 		}
 		updateBitcoinTransaction({
 			selectedWallet,
 			selectedNetwork,
 			transaction: tx,
 		}).then();
-	}, [address, index, selectedNetwork, selectedWallet, value]);
+	}, [address, index, selectedNetwork, selectedWallet, value, sdk]);
 
 	const onChangeText = useCallback(
 		(txt: string) => {
@@ -295,7 +306,7 @@ const AddressAndAmount = ({ index = 0, navigation }): ReactElement => {
 		} else {
 			closeNumberPad();
 		}
-	}, [selectedNetwork, selectedWallet, sendNavigationIsOpen]);
+	}, [selectedNetwork, selectedWallet, sendNavigationIsOpen, closeNumberPad]);
 
 	const isInvalid = useCallback(() => {
 		if (
