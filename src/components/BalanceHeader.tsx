@@ -1,8 +1,8 @@
 import React, { memo, ReactElement } from 'react';
-import { StyleSheet, TouchableOpacity } from 'react-native';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useSelector } from 'react-redux';
 
-import { Caption13Up } from '../styles/components';
+import { Caption13Up, EyeIcon } from '../styles/components';
 import Store from '../store/types';
 import { useBalance } from '../hooks/wallet';
 import { updateSettings } from '../store/actions/settings';
@@ -13,6 +13,7 @@ import Money from './Money';
  */
 const BalanceHeader = (): ReactElement => {
 	const balanceUnit = useSelector((store: Store) => store.settings.balanceUnit);
+	const hideBalance = useSelector((state: Store) => state.settings.hideBalance);
 	const { satoshis } = useBalance({
 		onchain: true,
 		lightning: true,
@@ -33,18 +34,29 @@ const BalanceHeader = (): ReactElement => {
 		updateSettings(payload);
 	};
 
+	const toggleHideBalance = (): void => {
+		updateSettings({ hideBalance: !hideBalance });
+	};
+
 	return (
 		<TouchableOpacity style={styles.container} onPress={handlePress}>
 			<Caption13Up style={styles.title} color="gray1">
-				TOTAL BALANCE
+				Total balance
 			</Caption13Up>
-			<Money
-				sats={satoshis}
-				unit={balanceUnit}
-				enableHide={true}
-				highlight={true}
-				symbol={true}
-			/>
+			<View style={styles.row}>
+				<Money
+					sats={satoshis}
+					unit={balanceUnit}
+					enableHide={true}
+					highlight={true}
+					symbol={true}
+				/>
+				{hideBalance && (
+					<TouchableOpacity style={styles.toggle} onPress={toggleHideBalance}>
+						<EyeIcon />
+					</TouchableOpacity>
+				)}
+			</View>
 		</TouchableOpacity>
 	);
 };
@@ -59,6 +71,15 @@ const styles = StyleSheet.create({
 		flex: 1,
 		justifyContent: 'flex-start',
 		marginTop: 32,
-		marginHorizontal: 16,
+		paddingLeft: 16,
+	},
+	row: {
+		flexDirection: 'row',
+		alignItems: 'center',
+		justifyContent: 'space-between',
+		height: 41,
+	},
+	toggle: {
+		paddingRight: 16,
 	},
 });

@@ -138,7 +138,7 @@ const Money = (props: IMoney): ReactElement => {
 	}, [highlight, dv, unit, sats]);
 
 	if (hide) {
-		prim = '• • • • • • • •';
+		prim = ' • • • • • • • • • • •';
 		secd = '';
 	}
 
@@ -149,7 +149,7 @@ const Money = (props: IMoney): ReactElement => {
 					{sign}
 				</Text>
 			)}
-			{showSymbol && !hide && symbol}
+			{showSymbol && symbol}
 			<Text color={color}>{prim}</Text>
 			{secd !== '' && <Text color="gray2">{secd}</Text>}
 		</View>
