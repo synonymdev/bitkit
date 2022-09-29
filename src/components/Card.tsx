@@ -1,12 +1,12 @@
 import React, { ReactElement } from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleProp, StyleSheet, ViewStyle } from 'react-native';
 import { View, TouchableOpacity } from '../styles/components';
 
 interface ICard {
-	style?: {};
+	style?: StyleProp<ViewStyle>;
 	children?: ReactElement | ReactElement[];
 	color?: string;
-	onPress?: Function;
+	onPress?: () => void;
 }
 const Card = ({
 	style = {},

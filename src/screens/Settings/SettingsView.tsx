@@ -118,12 +118,14 @@ const SettingsView = ({
 const styles = StyleSheet.create({
 	searchInput: {
 		marginHorizontal: 16,
+		marginBottom: 16,
 	},
 	headerText: {
 		marginHorizontal: 16,
+		marginBottom: 27,
 	},
 	footerText: {
-		marginTop: 16,
+		marginVertical: 16,
 		marginHorizontal: 16,
 	},
 	listContent: {

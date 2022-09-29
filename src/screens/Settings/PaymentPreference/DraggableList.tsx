@@ -1,5 +1,10 @@
 import React, { ReactElement, useState } from 'react';
-import { StyleSheet, TouchableOpacity } from 'react-native';
+import {
+	StyleProp,
+	StyleSheet,
+	TouchableOpacity,
+	ViewStyle,
+} from 'react-native';
 import DraggableFlatList, {
 	RenderItemParams,
 	ScaleDecorator,
@@ -14,11 +19,13 @@ type Item = {
 
 type DraggableListProps = {
 	listData: Item[];
+	style?: StyleProp<ViewStyle>;
 	onDragEnd?: (data: Item[]) => void;
 };
 
 const DraggableList = ({
 	listData,
+	style,
 	onDragEnd,
 }: DraggableListProps): ReactElement => {
 	const [data, setData] = useState(listData);
@@ -46,6 +53,7 @@ const DraggableList = ({
 
 	return (
 		<DraggableFlatList
+			style={style}
 			data={data}
 			keyExtractor={(item): string => item.key}
 			renderItem={renderItem}
@@ -62,7 +70,7 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		alignItems: 'center',
 		justifyContent: 'space-between',
-		minHeight: 54,
+		minHeight: 57,
 		borderBottomColor: 'rgba(255, 255, 255, 0.1)',
 		borderBottomWidth: 1,
 	},

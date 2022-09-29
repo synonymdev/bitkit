@@ -83,8 +83,8 @@ const styles = StyleSheet.create({
 		flexGrow: 1,
 	},
 	image: {
-		width: 150,
-		height: 150,
+		width: 200,
+		height: 200,
 	},
 	glow: {
 		position: 'absolute',

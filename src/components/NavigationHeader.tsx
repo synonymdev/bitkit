@@ -73,7 +73,7 @@ const NavigationHeader = ({
 		() => [
 			styles.container,
 			size === 'lg'
-				? { marginTop: 17, marginBottom: 20 }
+				? { marginTop: 17, paddingBottom: 35 }
 				: { marginTop: 2, marginBottom: 10 },
 		],
 		[size],
