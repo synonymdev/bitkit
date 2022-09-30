@@ -1,19 +1,26 @@
 import React, { memo, ReactElement, useMemo } from 'react';
 import { StyleSheet, View, Image } from 'react-native';
+import { useSelector } from 'react-redux';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { Text01S } from '../../../styles/components';
+import { Switch, Text01S, Text01M } from '../../../styles/components';
 import Button from '../../../components/Button';
 import Glow from '../../../components/Glow';
 import { toggleView } from '../../../store/actions/user';
 import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
 import GradientView from '../../../components/GradientView';
+import Store from '../../../store/types';
+import { updateSettings } from '../../../store/actions/settings';
 
 const imageSrc = require('../../../assets/illustrations/check.png');
 
 const Result = ({ route }): ReactElement => {
 	const { bio } = route?.params;
 	const insets = useSafeAreaInsets();
+	const pinForPayments = useSelector(
+		(state: Store) => state.settings.pinForPayments,
+	);
+
 	const nextButtonContainer = useMemo(
 		() => ({
 			...styles.nextButtonContainer,
@@ -22,12 +29,17 @@ const Result = ({ route }): ReactElement => {
 		[insets.bottom],
 	);
 
+	const handleTogglePress = (): void => {
+		updateSettings({ pinForPayments: !pinForPayments });
+	};
+
 	const handleButtonPress = (): void => {
 		toggleView({
 			view: 'PINNavigation',
 			data: { isOpen: false },
 		});
 	};
+
 	return (
 		<GradientView style={styles.container}>
 			<BottomSheetNavigationHeader
@@ -52,6 +64,11 @@ const Result = ({ route }): ReactElement => {
 			<View style={styles.imageContainer}>
 				<Glow style={styles.glow} size={600} color="green" />
 				<Image source={imageSrc} style={styles.image} />
+			</View>
+
+			<View style={styles.toggle}>
+				<Text01M>Also require for payments</Text01M>
+				<Switch onValueChange={handleTogglePress} value={pinForPayments} />
 			</View>
 
 			<View style={nextButtonContainer}>
@@ -81,6 +98,13 @@ const styles = StyleSheet.create({
 	},
 	glow: {
 		position: 'absolute',
+	},
+	toggle: {
+		flexDirection: 'row',
+		alignItems: 'center',
+		justifyContent: 'space-between',
+		paddingHorizontal: 32,
+		marginBottom: 32,
 	},
 	nextButtonContainer: {
 		marginTop: 'auto',
