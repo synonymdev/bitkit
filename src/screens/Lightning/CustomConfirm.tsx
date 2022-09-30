@@ -67,7 +67,9 @@ const CustomConfirm = ({
 	);
 	const fiatTransactionFee = useDisplayValues(transactionFee ?? 0);
 	const channelOpenCost = useMemo(() => {
-		return blocktankPurchaseFee.fiatValue + fiatTransactionFee.fiatValue;
+		return (
+			blocktankPurchaseFee.fiatValue + fiatTransactionFee.fiatValue
+		).toFixed(2);
 	}, [fiatTransactionFee.fiatValue, blocktankPurchaseFee.fiatValue]);
 
 	const handleConfirm = async (): Promise<void> => {
