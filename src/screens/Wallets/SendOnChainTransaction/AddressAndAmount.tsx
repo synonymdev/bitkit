@@ -83,6 +83,7 @@ const AddressAndAmount = ({ index = 0, navigation }): ReactElement => {
 	const [decodedInvoice, setDecodedInvoice] = useState<undefined | TInvoice>(
 		undefined,
 	);
+	const [handledOsPaste, setHandledOsPaste] = useState(false);
 	const transaction = useTransactionDetails();
 	const sdk = useSlashtagsSDK();
 
@@ -180,33 +181,39 @@ const AddressAndAmount = ({ index = 0, navigation }): ReactElement => {
 		}
 	}, [decodedInvoiceAmount, getOutput?.value, lightningInvoice]);
 
-	const handlePaste = useCallback(async () => {
-		const clipboardData = await Clipboard.getString();
-		if (!clipboardData) {
-			showErrorNotification({
-				title: 'Clipboard is empty',
-				message: 'No address data available.',
-			});
-			return;
-		}
-		const result = await processInputData({
-			data: clipboardData,
-			source: 'sendScanner',
-			sdk,
-			selectedNetwork,
-			selectedWallet,
-		});
-		if (result.isErr()) {
-			// Even though we're not able to interpret the data, pass it to the text input for editing.
-			updateBitcoinTransaction({
-				selectedWallet,
+	const handlePaste = useCallback(
+		async (txt) => {
+			let clipboardData = txt;
+			if (!clipboardData) {
+				clipboardData = await Clipboard.getString();
+			}
+			if (!clipboardData) {
+				showErrorNotification({
+					title: 'Clipboard is empty',
+					message: 'No address data available.',
+				});
+				return;
+			}
+			const result = await processInputData({
+				data: clipboardData,
+				source: 'sendScanner',
+				sdk,
 				selectedNetwork,
-				transaction: {
-					outputs: [{ address: clipboardData, value, index }],
-				},
-			}).then();
-		}
-	}, [index, value, selectedNetwork, selectedWallet, sdk]);
+				selectedWallet,
+			});
+			if (result.isErr()) {
+				// Even though we're not able to interpret the data, pass it to the text input for editing.
+				updateBitcoinTransaction({
+					selectedWallet,
+					selectedNetwork,
+					transaction: {
+						outputs: [{ address: clipboardData, value, index }],
+					},
+				}).then();
+			}
+		},
+		[index, value, selectedNetwork, selectedWallet, sdk],
+	);
 
 	const handleScan = (): void => {
 		closeNumberPad();
@@ -287,6 +294,20 @@ const AddressAndAmount = ({ index = 0, navigation }): ReactElement => {
 
 	const onChangeText = useCallback(
 		(txt: string) => {
+			const includesKeyword =
+				txt.includes(':') ||
+				txt.includes('?') ||
+				txt.includes('bitcoin') ||
+				txt.includes('lightning');
+			// Workaround for capturing an invoice from a potential OS paste.
+			if (!handledOsPaste && includesKeyword) {
+				handlePaste(txt).then();
+				setHandledOsPaste(true);
+				return;
+			} else if (handledOsPaste && includesKeyword) {
+				setHandledOsPaste(false);
+			}
+
 			updateBitcoinTransaction({
 				selectedWallet,
 				selectedNetwork,
