@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import { StyleSheet } from 'react-native';
 import { RefreshControl, ScrollView } from 'react-native-gesture-handler';
 
-import { BitcoinCircleIcon, Subtitle, View } from '../../styles/components';
+import { View } from '../../styles/components';
 import Header from './Header';
 import DetectSwipe from '../../components/DetectSwipe';
 import BalanceHeader from '../../components/BalanceHeader';
@@ -11,22 +11,24 @@ import TodoCarousel from '../../components/TodoCarousel';
 import Widgets from '../../components/Widgets';
 import ConnectivityIndicator from '../../components/ConnectivityIndicator';
 import SafeAreaView from '../../components/SafeAreaView';
-import AssetCard from '../../components/AssetCard';
 import ActivityListShort from '../../screens/Activity/ActivityListShort';
 import EmptyWallet from '../../screens/Activity/EmptyWallet';
 import BetaWarning from '../../components/BetaWarning';
-import { useBalance, useNoTransactions } from '../../hooks/wallet';
+import { useNoTransactions } from '../../hooks/wallet';
 import useColors from '../../hooks/colors';
 import { updateSettings } from '../../store/actions/settings';
 import Store from '../../store/types';
 import { refreshWallet } from '../../utils/wallet';
 import type { TabScreenProps } from '../../navigation/types';
+import Assets from '../../components/Assets';
 
 const Wallets = ({ navigation }: TabScreenProps<'Wallets'>): ReactElement => {
 	const [refreshing, setRefreshing] = useState(false);
 	const hideBalance = useSelector((state: Store) => state.settings.hideBalance);
+	const hideOnboardingSetting = useSelector(
+		(state: Store) => state.settings.hideOnboardingMessage,
+	);
 	const empty = useNoTransactions();
-	const { satoshis } = useBalance({ onchain: true, lightning: true });
 	const colors = useColors();
 
 	const toggleHideBalance = (): void => {
@@ -48,6 +50,8 @@ const Wallets = ({ navigation }: TabScreenProps<'Wallets'>): ReactElement => {
 		setRefreshing(false);
 	};
 
+	const hideOnboarding = hideOnboardingSetting || !empty;
+
 	return (
 		<SafeAreaView>
 			<Header />
@@ -55,7 +59,7 @@ const Wallets = ({ navigation }: TabScreenProps<'Wallets'>): ReactElement => {
 				onSwipeLeft={navigateToScanner}
 				onSwipeRight={navigateToProfile}>
 				<ScrollView
-					contentContainerStyle={!empty && styles.scrollview}
+					contentContainerStyle={!hideOnboarding && styles.scrollview}
 					disableScrollViewPanResponder={true}
 					showsVerticalScrollIndicator={false}
 					refreshControl={
@@ -73,30 +77,19 @@ const Wallets = ({ navigation }: TabScreenProps<'Wallets'>): ReactElement => {
 						</View>
 					</DetectSwipe>
 
-					{empty ? (
-						<EmptyWallet />
-					) : (
+					{hideOnboarding ? (
 						<>
 							<TodoCarousel />
 							<View style={styles.content}>
 								<ConnectivityIndicator />
-								<Subtitle style={styles.assetsTitle}>Assets</Subtitle>
-								<AssetCard
-									name={'Bitcoin'}
-									ticker={'BTC'}
-									satoshis={satoshis}
-									icon={<BitcoinCircleIcon />}
-									onPress={(): void => {
-										navigation.navigate('WalletsDetail', {
-											assetType: 'bitcoin',
-										});
-									}}
-								/>
+								<Assets navigation={navigation} />
 								<Widgets />
 								<ActivityListShort />
 								<BetaWarning />
 							</View>
 						</>
+					) : (
+						<EmptyWallet />
 					)}
 				</ScrollView>
 			</DetectSwipe>

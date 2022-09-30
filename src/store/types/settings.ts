@@ -52,6 +52,7 @@ export interface ISettings {
 	transactionSpeed: TTransactionSpeed;
 	addressType: TAddressType;
 	hideBalance: boolean;
+	hideOnboardingMessage: boolean;
 	hideBeta: boolean;
 }
 

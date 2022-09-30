@@ -1,15 +1,16 @@
 import React, { memo, ReactElement, useCallback, useMemo } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { useSelector } from 'react-redux';
 
-import { Caption13Up, Subtitle, Text01M, View } from '../../styles/components';
+import { Caption13Up, Subtitle, Text01M } from '../../styles/components';
 import Store from '../../store/types';
 import { groupActivityItems } from '../../utils/activity';
 import Button from '../../components/Button';
-import ListItem from './ListItem';
 import { RootNavigationProp } from '../../navigation/types';
+import { toggleView } from '../../store/actions/user';
 import { formatBoostedActivityItems } from '../../utils/boost';
+import ListItem, { EmptyItem } from './ListItem';
 
 const ActivityList = (): ReactElement => {
 	const navigation = useNavigation<RootNavigationProp>();
@@ -65,11 +66,26 @@ const ActivityList = (): ReactElement => {
 	);
 
 	return (
-		<View style={styles.content} color="transparent">
-			<View style={styles.header} color="transparent">
+		<View style={styles.content}>
+			<View style={styles.header}>
 				<Subtitle>Activity</Subtitle>
 			</View>
-			{groupedItems.map((item) => renderItem({ item }))}
+
+			{groupedItems.length > 0 ? (
+				groupedItems.map((item) => renderItem({ item }))
+			) : (
+				<EmptyItem
+					onPress={() => {
+						toggleView({
+							view: 'receiveNavigation',
+							data: {
+								isOpen: true,
+							},
+						});
+					}}
+				/>
+			)}
+
 			<Button
 				text={<Text01M color="white8">Show All Activity</Text01M>}
 				size="large"

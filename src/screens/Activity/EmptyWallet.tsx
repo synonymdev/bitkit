@@ -1,7 +1,13 @@
 import React, { memo, ReactElement, useMemo } from 'react';
-import { StyleSheet, View, useWindowDimensions } from 'react-native';
+import {
+	StyleSheet,
+	View,
+	useWindowDimensions,
+	TouchableOpacity,
+} from 'react-native';
 
-import { Headline } from '../../styles/components';
+import { Headline, XIcon } from '../../styles/components';
+import { updateSettings } from '../../store/actions/settings';
 import Arrow from '../../assets/dotted-arrow.svg';
 
 const EmptyWallet = (): ReactElement => {
@@ -14,8 +20,16 @@ const EmptyWallet = (): ReactElement => {
 		];
 	}, [height]);
 
+	const handleHide = (): void => {
+		updateSettings({ hideOnboardingMessage: true });
+	};
+
 	return (
 		<View style={root}>
+			<TouchableOpacity style={styles.closeButton} onPress={handleHide}>
+				<XIcon color="gray1" width={16} height={16} />
+			</TouchableOpacity>
+
 			<Headline>
 				To get started send <Headline color="brand">Bitcoin</Headline> to your
 				wallet.
@@ -33,6 +47,17 @@ const EmptyWallet = (): ReactElement => {
 const styles = StyleSheet.create({
 	root: {
 		paddingHorizontal: 16,
+		position: 'relative',
+	},
+	closeButton: {
+		height: 30,
+		width: 30,
+		alignItems: 'center',
+		justifyContent: 'center',
+		position: 'absolute',
+		top: -10,
+		right: 10,
+		zIndex: 1,
 	},
 	arrowContainer: {
 		flexDirection: 'row',

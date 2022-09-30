@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 
 import {
 	Caption13M,
+	HeartbeatIcon,
 	ReceiveIcon,
 	SendIcon,
 	Text01M,
@@ -24,6 +25,29 @@ const Avatar = ({ url }: { url: string }): ReactElement => {
 	const { profile } = useProfile(url);
 	return <ProfileImage url={url} image={profile?.image} size={32} />;
 };
+
+export const EmptyItem = ({
+	onPress,
+}: {
+	onPress: () => void;
+}): ReactElement => (
+	<TouchableOpacity onPress={onPress} style={styles.root}>
+		<View style={styles.item}>
+			<View style={styles.col1}>
+				<ThemedView color="yellow16" style={styles.iconCircle}>
+					<HeartbeatIcon height={13} color="yellow" />
+				</ThemedView>
+
+				<View style={styles.col1text}>
+					<Text01M>No Activity Yet</Text01M>
+					<Caption13M color="gray1" style={styles.date} numberOfLines={1}>
+						Receive some funds to get started
+					</Caption13M>
+				</View>
+			</View>
+		</View>
+	</TouchableOpacity>
+);
 
 const ListItem = ({
 	item,

@@ -65,6 +65,7 @@ import {
 	flashlightIcon,
 	brokenLinkIcon,
 	eyeIcon,
+	heartbeatIcon,
 } from '../assets/icons/wallet';
 import {
 	chevronRightIcon,
@@ -982,6 +983,13 @@ export const BrokenLinkIcon = styled(SvgXml).attrs((props) => ({
 export const EyeIcon = styled(SvgXml).attrs((props) => ({
 	xml: eyeIcon(props?.color ? props.theme.colors[props.color] : 'white'),
 	height: props?.height ?? '24px',
+	width: props?.width ?? '24px',
+	color: undefined,
+}))({});
+
+export const HeartbeatIcon = styled(SvgXml).attrs((props) => ({
+	xml: heartbeatIcon(props?.color ? props.theme.colors[props.color] : 'white'),
+	height: props?.height ?? '25px',
 	width: props?.width ?? '24px',
 	color: undefined,
 }))({});
