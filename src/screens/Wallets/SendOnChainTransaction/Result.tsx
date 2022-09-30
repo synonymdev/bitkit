@@ -75,7 +75,20 @@ const Result = ({ navigation, route }): ReactElement => {
 			</View>
 
 			<View style={nextButtonContainer}>
+				{success && (
+					<>
+						<Button
+							style={styles.button1}
+							variant="secondary"
+							size="large"
+							text="Transaction Details"
+							onPress={handleButtonPress}
+						/>
+						<View style={styles.divider} />
+					</>
+				)}
 				<Button
+					style={styles.button2}
 					size="large"
 					text={success ? 'Close' : 'Try Again'}
 					onPress={handleButtonPress}
@@ -109,9 +122,19 @@ const styles = StyleSheet.create({
 		position: 'absolute',
 	},
 	nextButtonContainer: {
-		marginTop: 'auto',
+		flexDirection: 'row',
+		justifyContent: 'center',
 		paddingHorizontal: 16,
-		width: '100%',
+		marginTop: 'auto',
+	},
+	button1: {
+		flex: 2,
+	},
+	button2: {
+		flex: 1,
+	},
+	divider: {
+		width: 16,
 	},
 });
 
