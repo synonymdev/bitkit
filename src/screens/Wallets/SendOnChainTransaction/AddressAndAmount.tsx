@@ -267,7 +267,7 @@ const AddressAndAmount = ({ index = 0, navigation }): ReactElement => {
 
 		// Continue updating the on-chain information as we would previously.
 		const tx = {
-			outputs: [{ tAddress, value, index }],
+			outputs: [{ address: tAddress, value, index }],
 			lightningInvoice: '',
 		};
 		// Attempt to decode what may be a lightning invoice.
