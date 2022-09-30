@@ -22,6 +22,7 @@ import {
 	useSlashtagsSDK,
 } from '../../components/SlashtagsProvider';
 import Store from '../../store/types';
+import { useBalance } from '../../hooks/wallet';
 
 export const Contact = ({ navigation, route }): JSX.Element => {
 	const selectedWallet = useSelector(
@@ -36,6 +37,11 @@ export const Contact = ({ navigation, route }): JSX.Element => {
 	const { slashtag } = useSelectedSlashtag();
 	const sdk = useSlashtagsSDK();
 	const contactRecord = useSlashtags().contacts[url];
+	const balance = useBalance({ onchain: true, lightning: true });
+
+	const canSend = useMemo(() => {
+		return balance.satoshis > 0;
+	}, [balance.satoshis]);
 	const profileCard = useMemo(
 		() => ({ ...profile, ...contactRecord }),
 		[profile, contactRecord],
@@ -78,9 +84,11 @@ export const Contact = ({ navigation, route }): JSX.Element => {
 				<View style={styles.divider} color="white1" />
 				<View style={styles.bottom}>
 					<View style={styles.bottomHeader}>
-						<IconButton onPress={handleSend}>
-							<CoinsIcon height={24} width={24} color="brand" />
-						</IconButton>
+						{canSend && (
+							<IconButton onPress={handleSend}>
+								<CoinsIcon height={24} width={24} color="brand" />
+							</IconButton>
+						)}
 						<IconButton
 							onPress={(): void => {
 								Share.share({
