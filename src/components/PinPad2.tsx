@@ -5,7 +5,13 @@ import React, {
 	useEffect,
 	useCallback,
 } from 'react';
-import { Alert, StyleSheet, View, LayoutAnimation } from 'react-native';
+import {
+	Alert,
+	StyleSheet,
+	View,
+	LayoutAnimation,
+	Pressable,
+} from 'react-native';
 
 import { Text02S, Subtitle } from '../styles/components';
 import NumberPad from './NumberPad';
@@ -15,6 +21,7 @@ import useColors from '../hooks/colors';
 import { wipeApp } from '../store/actions/settings';
 import { setKeychainValue, getKeychainValue, vibrate } from '../utils/helpers';
 import BitkitLogo from '../assets/bitkit-logo.svg';
+import { toggleView } from '../store/actions/user';
 
 export const PIN_ATTEMPTS = '10';
 
@@ -139,9 +146,22 @@ const ChoosePIN = ({
 				<View>
 					<Subtitle style={styles.title}>Please enter your PIN code</Subtitle>
 					{attemptsRemaining !== Number(PIN_ATTEMPTS) && (
-						<Text02S style={styles.attempts} color="brand">
-							{attemptsRemaining} attempts remaining. Forgot your PIN?
-						</Text02S>
+						<View style={styles.attempts}>
+							<Text02S color="brand">
+								{attemptsRemaining} attempts remaining.{' '}
+							</Text02S>
+							<Pressable
+								onPress={() => {
+									toggleView({
+										view: 'forgotPIN',
+										data: {
+											isOpen: true,
+										},
+									});
+								}}>
+								<Text02S color="brand">Forgot your PIN?</Text02S>
+							</Pressable>
+						</View>
 					)}
 
 					<View style={styles.dots}>
@@ -186,12 +206,14 @@ const styles = StyleSheet.create({
 		marginBottom: 32,
 	},
 	attempts: {
-		textAlign: 'center',
+		flexDirection: 'row',
+		flexWrap: 'wrap',
+		justifyContent: 'center',
 	},
 	dots: {
 		flexDirection: 'row',
 		justifyContent: 'center',
-		marginTop: 32,
+		marginTop: 16,
 	},
 	dot: {
 		width: 20,

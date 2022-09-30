@@ -1,14 +1,10 @@
-import React, { ReactElement, useMemo, memo } from 'react';
+import React, { ReactElement, memo } from 'react';
 import {
 	createNativeStackNavigator,
 	NativeStackNavigationOptions,
 	NativeStackNavigationProp,
 } from '@react-navigation/native-stack';
 import { useSelector } from 'react-redux';
-import {
-	useSafeAreaFrame,
-	useSafeAreaInsets,
-} from 'react-native-safe-area-context';
 
 import BottomSheetWrapper from '../../components/BottomSheetWrapper';
 import AddressAndAmount from '../../screens/Wallets/SendOnChainTransaction/AddressAndAmount';
@@ -28,6 +24,7 @@ import {
 	setupOnChainTransaction,
 } from '../../store/actions/wallet';
 import Store from '../../store/types';
+import { useSnapPoints } from '../../hooks/bottomSheet';
 
 export type SendNavigationProp = NativeStackNavigationProp<SendStackParamList>;
 
@@ -51,14 +48,9 @@ const navOptions: NativeStackNavigationOptions = {
 };
 
 const SendNavigation = (): ReactElement => {
+	const snapPoints = useSnapPoints('large');
 	const isOpen = useSelector(
 		(store: Store) => store.user.viewController.sendNavigation.isOpen,
-	);
-	const insets = useSafeAreaInsets();
-	const { height } = useSafeAreaFrame();
-	const snapPoints = useMemo(
-		() => [height - (60 + insets.top)],
-		[height, insets.top],
 	);
 
 	return (

@@ -23,6 +23,7 @@ export const defaultUserShape = {
 		receiveNavigation: { ...defaultViewController },
 		backupPrompt: { ...defaultViewController },
 		backupNavigation: { ...defaultViewController },
+		forgotPIN: { ...defaultViewController },
 		PINPrompt: { ...defaultViewController },
 		PINNavigation: { ...defaultViewController },
 		numberPadSend: { ...defaultViewController },

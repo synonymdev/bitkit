@@ -27,6 +27,7 @@ import PINNavigation from '../bottom-sheet/PINNavigation';
 import { NavigationContainer } from '../../styles/components';
 import LightningNavigator from '../lightning/LightningNavigator';
 import PINPrompt from '../../screens/Settings/PIN/PINPrompt';
+import ForgotPIN from '../../screens/Settings/PIN/ForgotPIN';
 import BoostPrompt from '../../screens/Wallets/BoostPrompt';
 import NewTxPrompt from '../../screens/Wallets/NewTxPrompt';
 import Profile from '../../screens/Profile/Profile';
@@ -128,6 +129,7 @@ const RootNavigator = (): ReactElement => {
 			<BackupNavigation />
 			<PINNavigation />
 			<PINPrompt />
+			<ForgotPIN />
 			<BoostPrompt />
 			<NewTxPrompt />
 		</NavigationContainer>

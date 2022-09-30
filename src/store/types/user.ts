@@ -8,6 +8,7 @@ export type TViewController =
 	| 'numberPadReceive'
 	| 'backupPrompt'
 	| 'backupNavigation'
+	| 'forgotPIN'
 	| 'PINPrompt'
 	| 'PINNavigation'
 	| 'boostPrompt'
