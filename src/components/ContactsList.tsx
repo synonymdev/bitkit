@@ -55,11 +55,13 @@ const ContactsList = ({
 	searchFilter = '',
 	includeMyProfile = false,
 	sectionBackgroundColor = 'black',
+	stickySectionHeadersEnabled,
 }: {
 	onPress: (contact: IContactRecord) => void;
 	searchFilter?: string;
 	includeMyProfile?: boolean;
 	sectionBackgroundColor?: string;
+	stickySectionHeadersEnabled?: boolean;
 }): ReactElement => {
 	const contacts = useSlashtags().contacts;
 	const { url: myProfileURL } = useSelectedSlashtag();
@@ -116,6 +118,7 @@ const ContactsList = ({
 			renderItem={({ item: contact }): ReactElement => (
 				<ContactItem contact={contact} onPress={onPress} />
 			)}
+			stickySectionHeadersEnabled={stickySectionHeadersEnabled}
 		/>
 	);
 };

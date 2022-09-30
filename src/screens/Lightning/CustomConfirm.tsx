@@ -16,7 +16,7 @@ import SafeAreaInsets from '../../components/SafeAreaInsets';
 import GlowingBackground from '../../components/GlowingBackground';
 import NavigationHeader from '../../components/NavigationHeader';
 import SwipeToConfirm from '../../components/SwipeToConfirm';
-import Money from '../../components/Money';
+import AmountToggle from '../../components/AmountToggle';
 import useColors from '../../hooks/colors';
 import useDisplayValues from '../../hooks/displayValues';
 import NumberPadWeeks from './NumberPadWeeks';
@@ -131,38 +131,14 @@ const CustomConfirm = ({
 							<Caption13Up color="purple" style={styles.space}>
 								SPENDING BALANCE
 							</Caption13Up>
-							<Money
-								sats={spendingAmount}
-								size="headline"
-								symbol={true}
-								style={styles.space}
-							/>
-							<Money
-								sats={spendingAmount}
-								size="text01m"
-								showFiat={true}
-								color="gray2"
-								style={styles.space}
-							/>
+							<AmountToggle sats={spendingAmount} />
 						</View>
 
 						<View style={styles.block}>
 							<Caption13Up color="purple" style={styles.space}>
 								Receiving capacity
 							</Caption13Up>
-							<Money
-								sats={receivingAmount}
-								size="headline"
-								symbol={true}
-								style={styles.space}
-							/>
-							<Money
-								sats={receivingAmount}
-								size="text01m"
-								showFiat={true}
-								color="gray2"
-								style={styles.space}
-							/>
+							<AmountToggle sats={receivingAmount} />
 						</View>
 					</AnimatedView>
 				)}
@@ -239,9 +215,8 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 	},
 	block: {
-		borderColor: 'rgba(255, 255, 255, 0.1)',
 		borderBottomWidth: 1,
-		marginBottom: 16,
+		marginBottom: 32,
 	},
 	weeks: {
 		alignSelf: 'flex-start',

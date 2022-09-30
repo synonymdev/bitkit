@@ -1,10 +1,4 @@
-import React, {
-	ReactElement,
-	useState,
-	useCallback,
-	useMemo,
-	useEffect,
-} from 'react';
+import React, { ReactElement, useCallback, useEffect, useState } from 'react';
 import { StyleSheet, Platform, View } from 'react-native';
 import { FadeIn, FadeOut } from 'react-native-reanimated';
 import { useSelector } from 'react-redux';
@@ -22,7 +16,6 @@ import SafeAreaInsets from '../../components/SafeAreaInsets';
 import GlowingBackground from '../../components/GlowingBackground';
 import NavigationHeader from '../../components/NavigationHeader';
 import Button from '../../components/Button';
-import Money from '../../components/Money';
 import useColors from '../../hooks/colors';
 import AmountToggle from '../../components/AmountToggle';
 import FancySlider from '../../components/FancySlider';
@@ -61,12 +54,8 @@ const QuickSetup = ({
 	const [totalBalance, setTotalBalance] = useState(0);
 	const [spendingAmount, setSpendingAmount] = useState(0);
 	const currentBalance = useBalance({ onchain: true });
-	const bitcoinUnit = useSelector((state: Store) => state.settings.bitcoinUnit);
 	const productId = useSelector(
 		(state: Store) => state.blocktank?.serviceList[0]?.product_id ?? '',
-	);
-	const unitPreference = useSelector(
-		(state: Store) => state.settings.unitPreference,
 	);
 	const selectedNetwork = useSelector(
 		(state: Store) => state.wallet.selectedNetwork,
@@ -84,16 +73,6 @@ const QuickSetup = ({
 	const handleChange = useCallback((v) => {
 		setSpendingAmount(Math.round(v));
 	}, []);
-
-	const unit = useMemo(() => {
-		if (unitPreference === 'fiat') {
-			return 'fiat';
-		}
-		if (bitcoinUnit === 'BTC') {
-			return 'BTC';
-		}
-		return 'satoshi';
-	}, [bitcoinUnit, unitPreference]);
 
 	useEffect(() => {
 		let spendingLimit = Math.round(currentBalance.satoshis / 1.5);
@@ -157,9 +136,9 @@ const QuickSetup = ({
 			<View style={styles.root}>
 				<View>
 					{keybrd ? (
-						<Display color="purple">Spending Money.</Display>
+						<Display color="purple">Spending{'\n'}Money.</Display>
 					) : (
-						<Display color="purple">Spending Balance.</Display>
+						<Display color="purple">Spending{'\n'}Balance.</Display>
 					)}
 					{keybrd ? (
 						<Text01S color="gray1" style={styles.text}>
@@ -174,40 +153,31 @@ const QuickSetup = ({
 				</View>
 
 				{!keybrd && (
-					<AnimatedView color="transparent" entering={FadeIn} exiting={FadeOut}>
-						<View style={styles.row}>
-							<Caption13Up color="purple">SPENDING</Caption13Up>
-							<Caption13Up color="purple">SAVINGS</Caption13Up>
-						</View>
-						<View style={styles.row}>
-							<Money
-								sats={spendingAmount}
-								size="text02m"
-								symbol={true}
-								color="white"
-								unit={unit}
-							/>
-							<Money
-								sats={savingsAmount}
-								size="text02m"
-								symbol={true}
-								color="white"
-								unit={unit}
-							/>
-						</View>
-						<View style={styles.sliderContainer}>
-							<FancySlider
-								minimumValue={0}
-								maximumValue={totalBalance}
-								value={spendingAmount}
-								onValueChange={handleChange}
-							/>
-						</View>
-						<View style={styles.row}>
-							<Percentage value={spendingPercentage} type="spendings" />
-							<Percentage value={savingsPercentage} type="savings" />
-						</View>
-					</AnimatedView>
+					<>
+						<View style={styles.grow1} />
+						<AnimatedView
+							color="transparent"
+							entering={FadeIn}
+							exiting={FadeOut}>
+							<View style={styles.row}>
+								<Caption13Up color="purple">SPENDING</Caption13Up>
+								<Caption13Up color="purple">SAVINGS</Caption13Up>
+							</View>
+							<View style={styles.sliderContainer}>
+								<FancySlider
+									minimumValue={0}
+									maximumValue={totalBalance}
+									value={spendingAmount}
+									onValueChange={handleChange}
+								/>
+							</View>
+							<View style={styles.row}>
+								<Percentage value={spendingPercentage} type="spendings" />
+								<Percentage value={savingsPercentage} type="savings" />
+							</View>
+						</AnimatedView>
+						<View style={styles.grow2} />
+					</>
 				)}
 
 				<View>
@@ -303,6 +273,12 @@ const styles = StyleSheet.create({
 	},
 	numberpad: {
 		marginHorizontal: -16,
+	},
+	grow1: {
+		flexGrow: 1,
+	},
+	grow2: {
+		flexGrow: 2,
 	},
 });
 

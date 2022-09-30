@@ -37,7 +37,8 @@ const Contacts = ({ navigation }): ReactElement => {
 			<View style={styles.content}>
 				<ContactsList
 					onPress={handlePress}
-					sectionBackgroundColor="onSurface"
+					sectionBackgroundColor="transparent"
+					stickySectionHeadersEnabled={false}
 				/>
 			</View>
 		</GradientView>
