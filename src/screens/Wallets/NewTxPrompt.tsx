@@ -54,7 +54,7 @@ const NewTxPrompt = (): ReactElement => {
 			snapPoints={snapPoints}
 			backdrop={true}>
 			<View style={styles.container}>
-				<Lottie source={confettiSrc} autoPlay loop />
+				<Lottie style={styles.confetti} source={confettiSrc} autoPlay loop />
 				<View>
 					<BottomSheetNavigationHeader
 						title="Payment Received!"
@@ -99,6 +99,10 @@ const styles = StyleSheet.create({
 		flex: 1,
 		paddingHorizontal: 16,
 		justifyContent: 'space-between',
+	},
+	confetti: {
+		height: '100%',
+		position: 'absolute',
 	},
 	received: {
 		marginTop: 28,

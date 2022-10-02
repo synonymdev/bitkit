@@ -59,7 +59,7 @@ const Wallets = ({ navigation }: TabScreenProps<'Wallets'>): ReactElement => {
 				onSwipeLeft={navigateToScanner}
 				onSwipeRight={navigateToProfile}>
 				<ScrollView
-					contentContainerStyle={!hideOnboarding && styles.scrollview}
+					contentContainerStyle={hideOnboarding && styles.scrollview}
 					disableScrollViewPanResponder={true}
 					showsVerticalScrollIndicator={false}
 					refreshControl={

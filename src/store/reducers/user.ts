@@ -1,6 +1,6 @@
 import actions from '../actions/actions';
 import { IUser } from '../types/user';
-import { defaultUserShape } from '../shapes/user';
+import { defaultUserShape, defaultViewControllers } from '../shapes/user';
 
 const user = (state: IUser = defaultUserShape, action): IUser => {
 	switch (action.type) {
@@ -22,6 +22,12 @@ const user = (state: IUser = defaultUserShape, action): IUser => {
 				},
 			};
 
+		case actions.CLOSE_VIEWS:
+			return {
+				...state,
+				viewController: defaultViewControllers,
+			};
+
 		case actions.RESET_USER_STORE:
 			return { ...defaultUserShape };
 
@@ -30,6 +36,14 @@ const user = (state: IUser = defaultUserShape, action): IUser => {
 				...state,
 				ignoreBackupTimestamp: action.payload,
 			};
+
+		case actions.USER_IGNORE_HIGH_BALANCE:
+			return {
+				...state,
+				ignoreHighBalanceCount: state.ignoreHighBalanceCount + 1,
+				ignoreHighBalanceTimestamp: action.payload,
+			};
+
 		case actions.USER_VERIFY_BACKUP:
 			return {
 				...state,

@@ -9,6 +9,25 @@ export const defaultViewController: IViewControllerData = {
 	txid: undefined,
 };
 
+export const defaultViewControllers = {
+	sendNavigation: { ...defaultViewController },
+	receiveNavigation: { ...defaultViewController },
+	backupPrompt: { ...defaultViewController },
+	backupNavigation: { ...defaultViewController },
+	forgotPIN: { ...defaultViewController },
+	PINPrompt: { ...defaultViewController },
+	PINNavigation: { ...defaultViewController },
+	numberPadSend: { ...defaultViewController },
+	numberPadReceive: { ...defaultViewController },
+	boostPrompt: { ...defaultViewController },
+	activityTagsPrompt: { ...defaultViewController },
+	newTxPrompt: { ...defaultViewController },
+	highBalance: { ...defaultViewController },
+	profileAddDataForm: { ...defaultViewController },
+	profileAddLink: { ...defaultViewController },
+	addContactModal: { ...defaultViewController },
+};
+
 export const defaultUserShape = {
 	loading: false,
 	error: false,
@@ -16,23 +35,9 @@ export const defaultUserShape = {
 	isOnline: true,
 	isConnectedToElectrum: true,
 	ignoreBackupTimestamp: 0,
+	ignoreHighBalanceCount: 0,
+	ignoreHighBalanceTimestamp: 0,
 	backupVerified: false,
 	// Used to control various views throughout the app. (Modals, bottom-sheets, etc.)
-	viewController: {
-		sendNavigation: { ...defaultViewController },
-		receiveNavigation: { ...defaultViewController },
-		backupPrompt: { ...defaultViewController },
-		backupNavigation: { ...defaultViewController },
-		forgotPIN: { ...defaultViewController },
-		PINPrompt: { ...defaultViewController },
-		PINNavigation: { ...defaultViewController },
-		numberPadSend: { ...defaultViewController },
-		numberPadReceive: { ...defaultViewController },
-		boostPrompt: { ...defaultViewController },
-		activityTagsPrompt: { ...defaultViewController },
-		newTxPrompt: { ...defaultViewController },
-		profileAddDataForm: { ...defaultViewController },
-		profileAddLink: { ...defaultViewController },
-		addContactModal: { ...defaultViewController },
-	},
+	viewController: defaultViewControllers,
 };

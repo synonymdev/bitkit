@@ -34,6 +34,11 @@ export const toggleView = (payload: {
 	return ok('');
 };
 
+export const closeAllViews = (): Result<string> => {
+	dispatch({ type: actions.CLOSE_VIEWS });
+	return ok('');
+};
+
 /*
  * This reset the user store to defaultUserShape
  */
@@ -47,6 +52,14 @@ export const resetUserStore = (): Result<string> => {
 export const ignoreBackup = (): Result<string> => {
 	dispatch({
 		type: actions.USER_IGNORE_BACKUP,
+		payload: Number(new Date()),
+	});
+	return ok('');
+};
+
+export const ignoreHighBalance = (): Result<string> => {
+	dispatch({
+		type: actions.USER_IGNORE_HIGH_BALANCE,
 		payload: Number(new Date()),
 	});
 	return ok('');

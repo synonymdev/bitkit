@@ -1,6 +1,10 @@
-import React, { ReactElement, useCallback, useMemo } from 'react';
+import React, { ReactElement, useCallback, useMemo, useState } from 'react';
 import { View, TouchableOpacity, StyleSheet, Platform } from 'react-native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { useFocusEffect } from '@react-navigation/native';
+import {
+	BottomTabBarProps,
+	createBottomTabNavigator,
+} from '@react-navigation/bottom-tabs';
 import {
 	createNativeStackNavigator,
 	NativeStackNavigationOptions,
@@ -12,6 +16,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import WalletsScreen from '../../screens/Wallets';
 import WalletsDetail from '../../screens/Wallets/WalletsDetail';
 import BackupPrompt from '../../screens/Settings/Backup/BackupPrompt';
+import HighBalanceWarning from '../bottom-sheet/HighBalanceWarning';
 import { ScanIcon, Text02M } from '../../styles/components';
 import AuthCheck from '../../components/AuthCheck';
 import BlurView from '../../components/BlurView';
@@ -62,18 +67,31 @@ const WalletsStack = (): ReactElement => {
 	);
 };
 
-export const TabBar = ({ navigation, state }): ReactElement => {
+export const TabBar = ({
+	navigation,
+	state,
+}: BottomTabBarProps): ReactElement => {
 	const { white08 } = useColors();
 	const insets = useSafeAreaInsets();
+	const [isFocused, setIsFocused] = useState(false);
 
-	const [screen] = useMemo(() => {
+	useFocusEffect(() => {
+		setIsFocused(true);
+
+		return (): void => {
+			setIsFocused(false);
+		};
+	});
+
+	const screen = useMemo(() => {
 		const wsState = state.routes.find((r) => r.name === 'WalletsStack')?.state;
+
 		// wsState is undefined on Wallets screen on initial render
-		if (wsState === undefined) {
-			return ['Wallets'];
+		if (!wsState?.index) {
+			return 'Wallets';
 		}
-		const s = wsState.routes[wsState.index];
-		return [s.name, s.params];
+
+		return wsState.routes[wsState.index].name;
 	}, [state]);
 
 	const onReceivePress = useCallback((): void => {
@@ -100,6 +118,8 @@ export const TabBar = ({ navigation, state }): ReactElement => {
 		() => navigation.navigate('Scanner'),
 		[navigation],
 	);
+
+	const isWalletScreenFocused = isFocused && screen === 'Wallets';
 
 	const androidStyles = {
 		borderColor: white08,
@@ -135,7 +155,13 @@ export const TabBar = ({ navigation, state }): ReactElement => {
 					</BlurView>
 				</TouchableOpacity>
 			</View>
-			<BackupPrompt screen={screen} />
+
+			{isWalletScreenFocused && (
+				<>
+					<BackupPrompt />
+					<HighBalanceWarning />
+				</>
+			)}
 		</>
 	);
 };

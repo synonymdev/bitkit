@@ -18,7 +18,7 @@ import { SafeAreaProvider } from './styles/components';
 import { StatusBar } from './styles/components';
 import RootNavigator from './navigation/root/RootNavigator';
 import Store from './store/types';
-import { updateUser } from './store/actions/user';
+import { closeAllViews, updateUser } from './store/actions/user';
 import themes from './styles/themes';
 import './utils/translations';
 import OnboardingNavigator from './navigation/onboarding/OnboardingNavigator';
@@ -43,7 +43,10 @@ const App = (): ReactElement => {
 	const theme = useSelector((state: Store) => state.settings.theme);
 
 	useEffect(() => {
-		// hide spash screen on android
+		// close all BottomSheets & Modals in case user closed the app while any were open
+		closeAllViews();
+
+		// hide splash screen on android
 		if (Platform.OS === 'android') {
 			setTimeout(NativeModules.SplashScreenModule.hide, 100);
 		}

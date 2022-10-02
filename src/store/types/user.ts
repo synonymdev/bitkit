@@ -14,6 +14,7 @@ export type TViewController =
 	| 'boostPrompt'
 	| 'activityTagsPrompt'
 	| 'newTxPrompt'
+	| 'highBalance'
 	| 'profileAddDataForm'
 	| 'profileAddLink'
 	| 'addContactModal';
@@ -40,6 +41,8 @@ export interface IUser {
 	isOnline: boolean;
 	isConnectedToElectrum: boolean;
 	ignoreBackupTimestamp: number;
+	ignoreHighBalanceCount: number;
+	ignoreHighBalanceTimestamp: number;
 	backupVerified: boolean;
 	viewController: TUserViewController;
 }
