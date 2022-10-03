@@ -24,6 +24,7 @@ import ProfileLinkNavigation from '../../navigation/bottom-sheet/ProfileLinkNavi
 export const ProfileEdit = ({ navigation }): JSX.Element => {
 	const [fields, setFields] = useState<Omit<BasicProfile, 'links'>>({});
 	const [links, setLinks] = useState<object>({});
+	const [hasEdited, setHasEdited] = useState(false);
 
 	const { url, slashtag } = useSelectedSlashtag();
 	const { profile: savedProfile } = useProfile(url);
@@ -39,10 +40,12 @@ export const ProfileEdit = ({ navigation }): JSX.Element => {
 	}, [savedProfile]);
 
 	const setField = (key: string, value: string | undefined): void => {
+		setHasEdited(true);
 		setFields({ ...fields, [key]: value });
 	};
 
 	const setLink = (title: string, _url: string | undefined): void => {
+		setHasEdited(true);
 		setLinks({ ...links, [title]: { title, url: _url } });
 	};
 
@@ -102,15 +105,19 @@ export const ProfileEdit = ({ navigation }): JSX.Element => {
 						available and visible.
 					</Text02S>
 				</ScrollView>
-				<Button
-					style={styles.saveButton}
-					text={onboardedProfile ? 'Save Profile' : 'Next'}
-					size="large"
-					disabled={
-						!profile.name || profile.name.replace(/\s/g, '').length === 0
-					}
-					onPress={save}
-				/>
+
+				{!onboardedProfile ||
+					(hasEdited && (
+						<Button
+							style={styles.saveButton}
+							text={onboardedProfile ? 'Save Profile' : 'Continue'}
+							size="large"
+							disabled={
+								!profile.name || profile.name.replace(/\s/g, '').length === 0
+							}
+							onPress={save}
+						/>
+					))}
 			</View>
 
 			<ProfileLinkNavigation />
