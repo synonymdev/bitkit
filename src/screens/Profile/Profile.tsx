@@ -1,7 +1,12 @@
 import React, { useMemo, useState } from 'react';
 import Clipboard from '@react-native-clipboard/clipboard';
 import { FadeIn, FadeOut } from 'react-native-reanimated';
-import { StyleSheet, useWindowDimensions, Share } from 'react-native';
+import {
+	StyleSheet,
+	useWindowDimensions,
+	Share,
+	ScrollView,
+} from 'react-native';
 import { useSelector } from 'react-redux';
 import QR from 'react-native-qrcode-svg';
 
@@ -82,7 +87,7 @@ const ProfileScreen = ({
 
 	return (
 		<View style={styles.container}>
-			<SafeAreaInsets type={'top'} />
+			<SafeAreaInsets type="top" />
 			<NavigationHeader
 				title="Profile"
 				onClosePress={(): void => {
@@ -90,66 +95,69 @@ const ProfileScreen = ({
 				}}
 			/>
 			<DetectSwipe onSwipeLeft={onSwipeLeft}>
-				<View style={styles.content}>
-					<ProfileCard url={url} profile={profile} resolving={false} />
-					<View style={styles.divider} />
-					<View style={styles.bottom}>
-						<View style={styles.bottomHeader}>
-							<IconButton onPress={switchView}>
-								{view === 'qr' ? (
-									<InfoIcon height={20} width={20} color="brand" />
-								) : (
-									<QrPage height={20} width={20} color="brand" />
-								)}
-							</IconButton>
-							<IconButton
-								onPress={(): void => {
-									url && handleCopyButton();
-								}}>
-								<CopyIcon height={20} width={20} color="brand" />
-							</IconButton>
-							<IconButton
-								onPress={(): void => {
-									url &&
-										Share.share({
-											title: 'Share Slashtag url',
-											message: url,
-										});
-								}}>
-								<ShareIcon height={20} width={20} color="brand" />
-							</IconButton>
-							<IconButton
-								onPress={(): void => {
-									navigation.navigate('ProfileEdit');
-								}}>
-								<PencileIcon height={20} width={20} color="brand" />
-							</IconButton>
-							<IconButton
-								onPress={(): void => {
-									navigation.navigate('Contacts');
-								}}>
-								<UsersIcon height={20} width={20} color="brand" />
-							</IconButton>
+				<ScrollView>
+					<View style={styles.content}>
+						<ProfileCard url={url} profile={profile} resolving={false} />
+						<View style={styles.divider} />
+						<View style={styles.bottom}>
+							<View style={styles.bottomHeader}>
+								<IconButton onPress={switchView}>
+									{view === 'qr' ? (
+										<InfoIcon height={20} width={20} color="brand" />
+									) : (
+										<QrPage height={20} width={20} color="brand" />
+									)}
+								</IconButton>
+								<IconButton
+									onPress={(): void => {
+										url && handleCopyButton();
+									}}>
+									<CopyIcon height={20} width={20} color="brand" />
+								</IconButton>
+								<IconButton
+									onPress={(): void => {
+										url &&
+											Share.share({
+												title: 'Share Slashtag url',
+												message: url,
+											});
+									}}>
+									<ShareIcon height={20} width={20} color="brand" />
+								</IconButton>
+								<IconButton
+									onPress={(): void => {
+										navigation.navigate('ProfileEdit');
+									}}>
+									<PencileIcon height={20} width={20} color="brand" />
+								</IconButton>
+								<IconButton
+									onPress={(): void => {
+										navigation.navigate('Contacts');
+									}}>
+									<UsersIcon height={20} width={20} color="brand" />
+								</IconButton>
+							</View>
+							{view === 'details' ? (
+								<ProfileLinks
+									links={profile?.links}
+									style={styles.profileDetails}
+								/>
+							) : (
+								<QRView url={url} profile={profile} />
+							)}
+							{showCopy && (
+								<AnimatedView
+									entering={FadeIn.duration(500)}
+									exiting={FadeOut.duration(500)}
+									color="transparent"
+									style={styles.tooltip}>
+									<Tooltip text="Slashtags Key Copied To clipboard" />
+								</AnimatedView>
+							)}
 						</View>
-						{view === 'details' ? (
-							<ProfileLinks
-								links={profile?.links}
-								style={styles.profileDetails}
-							/>
-						) : (
-							<QRView url={url} profile={profile} />
-						)}
-						{showCopy && (
-							<AnimatedView
-								entering={FadeIn.duration(500)}
-								exiting={FadeOut.duration(500)}
-								color="transparent"
-								style={styles.tooltip}>
-								<Tooltip text="Slashtags Key Copied To clipboard" />
-							</AnimatedView>
-						)}
 					</View>
-				</View>
+					<SafeAreaInsets type="bottom" />
+				</ScrollView>
 			</DetectSwipe>
 		</View>
 	);
