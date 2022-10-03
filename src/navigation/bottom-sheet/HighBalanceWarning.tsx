@@ -16,6 +16,7 @@ import {
 	useSnapPoints,
 } from '../../hooks/bottomSheet';
 import { getFiatDisplayValues } from '../../utils/exchange-rate';
+import { openURL } from '../../utils/helpers';
 
 const imageSrc = require('../../assets/illustrations/exclamation-mark.png');
 
@@ -114,7 +115,7 @@ const HighBalanceWarning = (): ReactElement => {
 	}, [showBottomSheet, ignoreTimestamp]);
 
 	const onMore = (): void => {
-		console.log('TODO: show more...');
+		openURL('https://en.bitcoin.it/wiki/Hardware_wallet');
 	};
 
 	const onDismiss = (): void => {
