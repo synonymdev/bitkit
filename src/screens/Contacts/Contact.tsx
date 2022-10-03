@@ -23,8 +23,12 @@ import {
 } from '../../components/SlashtagsProvider';
 import Store from '../../store/types';
 import { useBalance } from '../../hooks/wallet';
+import { RootStackScreenProps } from '../../navigation/types';
 
-export const Contact = ({ navigation, route }): JSX.Element => {
+export const Contact = ({
+	navigation,
+	route,
+}: RootStackScreenProps<'Contact'>): JSX.Element => {
 	const selectedWallet = useSelector(
 		(store: Store) => store.wallet.selectedWallet,
 	);
@@ -49,7 +53,7 @@ export const Contact = ({ navigation, route }): JSX.Element => {
 
 	const onDelete = useCallback(() => {
 		deleteContact(slashtag, url);
-		navigation.navigate('Tabs');
+		navigation.navigate('Contacts');
 	}, [navigation, slashtag, url]);
 
 	const handleSend = async (): Promise<void> => {
@@ -70,6 +74,10 @@ export const Contact = ({ navigation, route }): JSX.Element => {
 			<SafeAreaInsets type="top" />
 			<NavigationHeader
 				title="Contact"
+				navigateBack={false}
+				onBackPress={(): void => {
+					navigation.navigate('Contacts');
+				}}
 				onClosePress={(): void => {
 					navigation.navigate('Tabs');
 				}}

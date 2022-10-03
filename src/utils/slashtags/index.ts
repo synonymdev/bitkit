@@ -14,7 +14,8 @@ import { getStore } from '../../store/helpers';
  */
 export const handleSlashtagURL = (
 	url: string,
-	onError: (error: Error) => void = (): void => {},
+	onError?: (error: Error) => void,
+	onSuccess?: (url: string) => void,
 ): void => {
 	try {
 		// Validate URL
@@ -23,8 +24,10 @@ export const handleSlashtagURL = (
 		if (parsed.protocol === 'slash:') {
 			navigate('ContactEdit', { url });
 		}
+
+		onSuccess && onSuccess(url);
 	} catch (error) {
-		onError(error as Error);
+		onError && onError(error as Error);
 	}
 };
 
@@ -88,7 +91,7 @@ export const saveProfile = async (
 export const deleteContact = async (
 	slashtag: Slashtag,
 	url: string,
-): Promise<any> => {
+): Promise<void> => {
 	if (checkClosed(slashtag)) {
 		return;
 	}

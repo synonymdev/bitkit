@@ -102,7 +102,7 @@ const Layout = ({
 	text,
 	highlighted,
 	nextStep,
-	buttonText = 'Next',
+	buttonText = 'Continue',
 	header = 'Profile',
 	children,
 	onNext,
