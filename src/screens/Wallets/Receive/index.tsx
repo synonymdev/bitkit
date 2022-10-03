@@ -174,6 +174,10 @@ const Receive = ({ navigation }): ReactElement => {
 		Clipboard.setString(uri);
 	};
 
+	const handleCopyQrCode = (): void => {
+		console.log('TODO: copy QR code');
+	};
+
 	const handleShare = (): void => {
 		const url = `data:image/png;base64,${qrRef.current}`;
 
@@ -219,6 +223,7 @@ const Receive = ({ navigation }): ReactElement => {
 						color="white"
 						activeOpacity={1}
 						onPress={handleCopy}
+						onLongPress={handleCopyQrCode}
 						style={styles.qrCode}>
 						<QRCode
 							value={uri}

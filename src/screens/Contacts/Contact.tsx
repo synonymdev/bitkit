@@ -153,7 +153,7 @@ const styles = StyleSheet.create({
 		backgroundColor: 'transparent',
 	},
 	divider: {
-		height: 2,
+		height: 1,
 		marginTop: 16,
 		marginBottom: 16,
 	},

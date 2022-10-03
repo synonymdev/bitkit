@@ -1,8 +1,8 @@
 import React, { useState, useMemo } from 'react';
-import { View } from '../../styles/components';
-import { Image } from 'react-native';
+import { View, Image, StyleSheet } from 'react-native';
+
+import { View as ThemedView } from '../../styles/components';
 import NavigationHeader from '../../components/NavigationHeader';
-import { StyleSheet } from 'react-native';
 import SafeAreaInsets from '../../components/SafeAreaInsets';
 import ProfileCard from '../../components/ProfileCard';
 import Button from '../../components/Button';
@@ -39,8 +39,8 @@ export const ContactEdit = ({ navigation, route }): JSX.Element => {
 	};
 
 	return (
-		<View style={styles.container}>
-			<SafeAreaInsets type={'top'} />
+		<ThemedView style={styles.container}>
+			<SafeAreaInsets type="top" />
 			<NavigationHeader
 				title={(saved ? 'Edit' : 'Add') + ' Contact'}
 				displayBackButton={false}
@@ -89,8 +89,9 @@ export const ContactEdit = ({ navigation, route }): JSX.Element => {
 						onPress={saveContactRecord}
 					/>
 				</View>
+				<SafeAreaInsets type="bottom" />
 			</View>
-		</View>
+		</ThemedView>
 	);
 };
 
@@ -106,9 +107,8 @@ const styles = StyleSheet.create({
 		backgroundColor: 'transparent',
 	},
 	divider: {
-		height: 2,
+		height: 1,
 		backgroundColor: 'rgba(255, 255, 255, 0.1)',
-
 		marginTop: 16,
 		marginBottom: 16,
 	},
@@ -118,7 +118,6 @@ const styles = StyleSheet.create({
 	bottomRow: {
 		flexDirection: 'row',
 		justifyContent: 'space-between',
-		backgroundColor: 'transparent',
 	},
 	buttonLeft: {
 		flex: 1,

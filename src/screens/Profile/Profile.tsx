@@ -151,7 +151,7 @@ const ProfileScreen = ({
 									exiting={FadeOut.duration(500)}
 									color="transparent"
 									style={styles.tooltip}>
-									<Tooltip text="Slashtags Key Copied To clipboard" />
+									<Tooltip text="Slashtags Key Copied To Clipboard" />
 								</AnimatedView>
 							)}
 						</View>
@@ -189,6 +189,7 @@ const QRView = ({
 	profile?: BasicProfile;
 }): JSX.Element => {
 	const dimensions = useWindowDimensions();
+	const [showCopy, setShowCopy] = useState(false);
 
 	const qrMaxHeight = useMemo(
 		() => dimensions.height / 2.3,
@@ -203,19 +204,45 @@ const QRView = ({
 		[qrMaxHeight, qrMaxWidth],
 	);
 
+	const handleCopy = (): void => {
+		setShowCopy(() => true);
+		setTimeout(() => setShowCopy(() => false), 1200);
+		Clipboard.setString(url);
+	};
+
+	const handleCopyQrCode = (): void => {
+		console.log('TODO: copy QR code');
+	};
+
 	return (
 		<View style={styles.qrViewContainer}>
 			<View style={styles.qrContainer}>
-				<QR
-					value={url}
-					size={qrSize}
-					logo={{ uri: profile?.image || '' }}
-					logoBackgroundColor={profile?.image ? '#fff' : 'transparent'}
-					logoSize={50}
-					logoBorderRadius={999}
-					logoMargin={9}
-					quietZone={20}
-				/>
+				<TouchableOpacity
+					color="white"
+					activeOpacity={1}
+					onPress={handleCopy}
+					onLongPress={handleCopyQrCode}>
+					<QR
+						value={url}
+						size={qrSize}
+						logo={{ uri: profile?.image || '' }}
+						logoBackgroundColor={profile?.image ? '#fff' : 'transparent'}
+						logoSize={50}
+						logoBorderRadius={999}
+						logoMargin={9}
+						quietZone={20}
+					/>
+				</TouchableOpacity>
+
+				{showCopy && (
+					<AnimatedView
+						entering={FadeIn.duration(500)}
+						exiting={FadeOut.duration(500)}
+						color="transparent"
+						style={styles.tooltip}>
+						<Tooltip text="Slashtags Key Copied To Clipboard" />
+					</AnimatedView>
+				)}
 			</View>
 			<Text02S style={styles.qrViewNote}>Scan to add {profile?.name}</Text02S>
 		</View>
@@ -276,7 +303,7 @@ const styles = StyleSheet.create({
 	tooltip: {
 		position: 'absolute',
 		alignSelf: 'center',
-		bottom: -20,
+		top: '68%',
 	},
 });
 
