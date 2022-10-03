@@ -174,7 +174,8 @@ const styles = StyleSheet.create({
 		marginBottom: 8,
 	},
 	buttonContainer: {
-		marginTop: 'auto',
+		flexGrow: 1,
+		justifyContent: 'flex-end',
 	},
 });
 

@@ -12,7 +12,7 @@ import SafeAreaInsets from '../../components/SafeAreaInsets';
 import Store from '../../store/types';
 import { toggleView } from '../../store/actions/user';
 import Tag from '../../components/Tag';
-import { addMetaTxTag } from '../../store/actions/metadata';
+import { addMetaTxTag, addTag } from '../../store/actions/metadata';
 import { sleep } from '../../utils/helpers';
 import { useBottomSheetBackPress } from '../../hooks/bottomSheet';
 
@@ -28,6 +28,7 @@ const Form = ({ id }: { id: string }): ReactElement => {
 			Alert.alert(res.error.message);
 			return;
 		}
+		addTag(tag);
 		Keyboard.dismiss();
 		await sleep(500); // await for keyboard to close
 		toggleView({
@@ -45,6 +46,7 @@ const Form = ({ id }: { id: string }): ReactElement => {
 			Alert.alert(res.error.message);
 			return;
 		}
+		addTag(text);
 		await sleep(500); // await for keyboard to close
 		toggleView({
 			view: 'activityTagsPrompt',

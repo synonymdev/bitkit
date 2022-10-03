@@ -8,6 +8,7 @@ import GradientView from '../../../components/GradientView';
 import Tag from '../../../components/Tag';
 import Store from '../../../store/types';
 import { addTxTag } from '../../../store/actions/wallet';
+import { addTag } from '../../../store/actions/metadata';
 
 const AddressAndAmount = ({ navigation }): ReactElement => {
 	const [text, setText] = useState('');
@@ -29,6 +30,7 @@ const AddressAndAmount = ({ navigation }): ReactElement => {
 		if (res.isErr()) {
 			return Alert.alert(res.error.message);
 		}
+		addTag(text);
 		navigation.goBack();
 	};
 
@@ -37,6 +39,7 @@ const AddressAndAmount = ({ navigation }): ReactElement => {
 		if (res.isErr()) {
 			return Alert.alert(res.error.message);
 		}
+		addTag(tag);
 		navigation.goBack();
 	};
 

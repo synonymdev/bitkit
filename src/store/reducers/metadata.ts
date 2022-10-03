@@ -27,15 +27,9 @@ const metadata = (
 				tags = { ...state.tags, [action.payload.txid]: action.payload.tags };
 			}
 
-			const lastUsedTags = updateLastUsedTags(
-				state.lastUsedTags,
-				action.payload.tags,
-			);
-
 			return {
 				...state,
 				tags,
-				lastUsedTags,
 			};
 		}
 
@@ -44,17 +38,12 @@ const metadata = (
 			txTags = [...txTags, action.payload.tag];
 			txTags = [...new Set(txTags)]; // remove duplicates
 
-			const lastUsedTags = updateLastUsedTags(state.lastUsedTags, [
-				action.payload.tag,
-			]);
-
 			return {
 				...state,
 				tags: {
 					...state.tags,
 					[action.payload.txid]: txTags,
 				},
-				lastUsedTags,
 			};
 		}
 
@@ -76,11 +65,6 @@ const metadata = (
 		}
 
 		case actions.UPDATE_META_INC_TX_TAGS: {
-			const lastUsedTags = updateLastUsedTags(
-				state.lastUsedTags,
-				action.payload.tags,
-			);
-
 			return {
 				...state,
 				pendingTags: {
@@ -89,7 +73,6 @@ const metadata = (
 					// TODO: handle Lightning
 					// [action.payload.payReq]: action.payload.tags,
 				},
-				lastUsedTags,
 			};
 		}
 
@@ -119,6 +102,17 @@ const metadata = (
 			return {
 				...state,
 				slashTagsUrls,
+			};
+		}
+
+		case actions.ADD_TAG: {
+			const lastUsedTags = updateLastUsedTags(state.lastUsedTags, [
+				action.payload.tag,
+			]);
+
+			return {
+				...state,
+				lastUsedTags,
 			};
 		}
 

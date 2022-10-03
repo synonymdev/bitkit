@@ -8,6 +8,7 @@ import GradientView from '../../../components/GradientView';
 import Tag from '../../../components/Tag';
 import Store from '../../../store/types';
 import { updateInvoice } from '../../../store/actions/receive';
+import { addTag } from '../../../store/actions/metadata';
 
 const Tags = ({ navigation }): ReactElement => {
 	const [text, setText] = useState('');
@@ -20,11 +21,13 @@ const Tags = ({ navigation }): ReactElement => {
 			return;
 		}
 		updateInvoice({ tags: [text] });
+		addTag(text);
 		navigation.goBack();
 	};
 
 	const handleTagChoose = (tag: string): void => {
 		updateInvoice({ tags: [tag] });
+		addTag(tag);
 		navigation.goBack();
 	};
 

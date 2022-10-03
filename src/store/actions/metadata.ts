@@ -142,3 +142,14 @@ export const deleteMetaSlashTagsUrlTag = (txid: string): Result<string> => {
 	});
 	return ok('');
 };
+
+/*
+ * This action save new tag to the last used list
+ */
+export const addTag = (tag: string): Result<string> => {
+	dispatch({
+		type: actions.ADD_TAG,
+		payload: { tag },
+	});
+	return ok('');
+};
