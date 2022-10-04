@@ -16,7 +16,6 @@ export type TViewController =
 	| 'newTxPrompt'
 	| 'highBalance'
 	| 'profileAddDataForm'
-	| 'profileAddLink'
 	| 'addContactModal';
 
 export type TUserViewController = {

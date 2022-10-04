@@ -17,7 +17,6 @@ import type { LightningStackParamList } from '../lightning/LightningNavigator';
 import type { SettingsStackParamList } from '../settings/SettingsNavigator';
 import type { BackupStackParamList } from '../bottom-sheet/BackupNavigation';
 import type { PinStackParamList } from '../bottom-sheet/PINNavigation';
-import type { ProfileLinkStackParamList } from '../bottom-sheet/ProfileLinkNavigation';
 import type { ReceiveStackParamList } from '../bottom-sheet/ReceiveNavigation';
 import type { SendStackParamList } from '../bottom-sheet/SendNavigation';
 
@@ -49,6 +48,8 @@ export type RootStackParamList = {
 	Settings: undefined;
 	Profile: undefined;
 	ProfileEdit: undefined;
+	ProfileAddLink: undefined;
+	ProfileLinkSuggestions: undefined;
 	Contacts: undefined;
 	ContactEdit: { url: string };
 	Contact: { url: string };
@@ -87,9 +88,6 @@ export type BackupScreenProps<T extends keyof BackupStackParamList> =
 
 export type PinScreenProps<T extends keyof PinStackParamList> =
 	NativeStackScreenProps<PinStackParamList, T>;
-
-export type ProfileLinkScreenProps<T extends keyof ProfileLinkStackParamList> =
-	StackScreenProps<ProfileLinkStackParamList, T>;
 
 export type ReceiveScreenProps<T extends keyof ReceiveStackParamList> =
 	NativeStackScreenProps<ReceiveStackParamList, T>;

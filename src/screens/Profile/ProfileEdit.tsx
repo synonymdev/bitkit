@@ -12,16 +12,17 @@ import NavigationHeader from '../../components/NavigationHeader';
 import Button from '../../components/Button';
 import SafeAreaInsets from '../../components/SafeAreaInsets';
 import { useProfile, useSelectedSlashtag } from '../../hooks/slashtags';
-import { toggleView } from '../../store/actions/user';
 import ProfileCard from '../../components/ProfileCard';
 import ProfileLinks from '../../components/ProfileLinks';
 import { setOnboardingProfileStep } from '../../store/actions/slashtags';
 import Store from '../../store/types';
 import { BasicProfile } from '../../store/types/slashtags';
 import { saveProfile } from '../../utils/slashtags';
-import ProfileLinkNavigation from '../../navigation/bottom-sheet/ProfileLinkNavigation';
+import type { RootStackScreenProps } from '../../navigation/types';
 
-export const ProfileEdit = ({ navigation }): JSX.Element => {
+export const ProfileEdit = ({
+	navigation,
+}: RootStackScreenProps<'Profile' | 'ProfileEdit'>): JSX.Element => {
 	const [fields, setFields] = useState<Omit<BasicProfile, 'links'>>({});
 	const [links, setLinks] = useState<object>({});
 	const [hasEdited, setHasEdited] = useState(false);
@@ -39,7 +40,7 @@ export const ProfileEdit = ({ navigation }): JSX.Element => {
 		setLinks(Object.fromEntries(entries));
 	}, [savedProfile]);
 
-	const setField = (key: string, value: string | undefined): void => {
+	const setField = (key: string, value: string): void => {
 		setHasEdited(true);
 		setFields({ ...fields, [key]: value });
 	};
@@ -90,10 +91,7 @@ export const ProfileEdit = ({ navigation }): JSX.Element => {
 						text="Add Link"
 						style={styles.addLinkButton}
 						onPress={(): void => {
-							toggleView({
-								view: 'profileAddLink',
-								data: { isOpen: true },
-							});
+							navigation.navigate('ProfileAddLink');
 						}}
 						icon={
 							<PlusIcon color="brand" width={16} style={styles.addLinkButton} />
@@ -120,7 +118,6 @@ export const ProfileEdit = ({ navigation }): JSX.Element => {
 					))}
 			</View>
 
-			<ProfileLinkNavigation />
 			<SafeAreaInsets type="bottom" />
 		</ThemedView>
 	);

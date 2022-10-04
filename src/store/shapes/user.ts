@@ -24,7 +24,6 @@ export const defaultViewControllers = {
 	newTxPrompt: { ...defaultViewController },
 	highBalance: { ...defaultViewController },
 	profileAddDataForm: { ...defaultViewController },
-	profileAddLink: { ...defaultViewController },
 	addContactModal: { ...defaultViewController },
 };
 

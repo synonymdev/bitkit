@@ -1,11 +1,12 @@
 import React, { ReactElement } from 'react';
 import { View, StyleSheet } from 'react-native';
 
+import NavigationHeader from '../../components/NavigationHeader';
+import { View as ThemedView } from '../../styles/components';
 import Button from '../../components/Button';
-import BottomSheetNavigationHeader from '../../components/BottomSheetNavigationHeader';
-import { ProfileLinkScreenProps } from '../../navigation/types';
 import { updateProfileLink } from '../../store/actions/ui';
-import GradientView from '../../components/GradientView';
+import SafeAreaInsets from '../../components/SafeAreaInsets';
+import type { RootStackScreenProps } from '../../navigation/types';
 
 const suggestions = [
 	'Email',
@@ -28,15 +29,16 @@ const suggestions = [
 
 export const ProfileLinkSuggestions = ({
 	navigation,
-}: ProfileLinkScreenProps<'ProfileLinkSuggestions'>): ReactElement => {
+}: RootStackScreenProps<'ProfileLinkSuggestions'>): ReactElement => {
 	const handleChoose = (suggestion: string): void => {
 		updateProfileLink({ title: suggestion });
 		navigation.goBack();
 	};
 
 	return (
-		<GradientView style={styles.container}>
-			<BottomSheetNavigationHeader title="Suggestions To Add" />
+		<ThemedView style={styles.container}>
+			<SafeAreaInsets type="top" />
+			<NavigationHeader title="Suggestions To Add" />
 			<View style={styles.buttons}>
 				{suggestions.map((suggestion) => (
 					<Button
@@ -48,7 +50,7 @@ export const ProfileLinkSuggestions = ({
 					/>
 				))}
 			</View>
-		</GradientView>
+		</ThemedView>
 	);
 };
 

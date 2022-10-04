@@ -1,30 +1,27 @@
 import React, { useMemo, ReactElement, useCallback } from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
+import { useSelector } from 'react-redux';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import c from 'compact-encoding';
 
-import { Text02S, Text02B } from '../../styles/components';
+import { View as ThemedView, Text02S, Text02B } from '../../styles/components';
 import Button from '../../components/Button';
 import { useProfile, useSelectedSlashtag } from '../../hooks/slashtags';
 import LabeledInput from '../../components/LabeledInput';
-import { toggleView } from '../../store/actions/user';
-import { useBottomSheetBackPress } from '../../hooks/bottomSheet';
-import BottomSheetNavigationHeader from '../../components/BottomSheetNavigationHeader';
-import { ProfileLinkScreenProps } from '../../navigation/types';
+import { RootStackScreenProps } from '../../navigation/types';
 import { BasicProfile } from '../../store/types/slashtags';
-import { useSelector } from 'react-redux';
 import Store from '../../store/types';
 import { updateProfileLink } from '../../store/actions/ui';
+import NavigationHeader from '../../components/NavigationHeader';
+import SafeAreaInsets from '../../components/SafeAreaInsets';
 
 export const ProfileAddLinkForm = ({
 	navigation,
-}: ProfileLinkScreenProps<'ProfileAddLinkForm'>): ReactElement => {
+}: RootStackScreenProps<'ProfileAddLink'>): ReactElement => {
 	const insets = useSafeAreaInsets();
 	const form = useSelector((state: Store) => state.ui.profileLink);
 	const { url, slashtag } = useSelectedSlashtag();
 	const { profile } = useProfile(url);
-
-	useBottomSheetBackPress('profileAddLink');
 
 	const saveProfile = useCallback(
 		(data: BasicProfile) => {
@@ -50,66 +47,68 @@ export const ProfileAddLinkForm = ({
 		});
 
 		updateProfileLink({ title: '', url: '' });
-		toggleView({
-			view: 'profileAddLink',
-			data: { isOpen: false },
-		});
+		navigation.goBack();
 	};
 
 	const isValid = form.title?.length > 0 && form.url?.length > 0;
 
 	return (
-		<View style={styles.container}>
-			<BottomSheetNavigationHeader title="Add Link" displayBackButton={false} />
-			<LabeledInput
-				style={styles.input}
-				label="Label"
-				placeholder="For example 'Website'"
-				value={form.title}
-				bottomSheet={true}
-				onChange={(value: string): void => {
-					updateProfileLink({ ...form, title: value });
-				}}>
-				<TouchableOpacity
-					onPress={(): void => {
-						navigation.navigate('ProfileLinkSuggestions');
+		<ThemedView style={styles.container}>
+			<SafeAreaInsets type="top" />
+			<NavigationHeader title="Add Link" />
+			<View style={styles.content}>
+				<LabeledInput
+					style={styles.input}
+					label="Label"
+					placeholder="For example 'Website'"
+					value={form.title}
+					onChange={(value: string): void => {
+						updateProfileLink({ ...form, title: value });
 					}}>
-					<Text02B color="brand">Suggestions</Text02B>
-				</TouchableOpacity>
-			</LabeledInput>
-			<LabeledInput
-				style={styles.input}
-				label="Link or text"
-				placeholder="https://"
-				value={form.url}
-				bottomSheet={true}
-				multiline={true}
-				onChange={(value: string): void => {
-					updateProfileLink({ ...form, url: value });
-				}}
-			/>
-			<Text02S style={styles.note} color="gray1">
-				Note: Any link you add will be publicly visible.
-			</Text02S>
+					<TouchableOpacity
+						onPress={(): void => {
+							navigation.navigate('ProfileLinkSuggestions');
+						}}>
+						<Text02B color="brand">Suggestions</Text02B>
+					</TouchableOpacity>
+				</LabeledInput>
+				<LabeledInput
+					style={styles.input}
+					label="Link or text"
+					placeholder="https://"
+					value={form.url}
+					multiline={true}
+					returnKeyType="default"
+					onChange={(value: string): void => {
+						updateProfileLink({ ...form, url: value });
+					}}
+				/>
+				<Text02S style={styles.note} color="gray1">
+					Note: Any link you add will be publicly visible.
+				</Text02S>
 
-			{isValid && (
-				<View style={buttonContainerStyles}>
-					<Button
-						style={styles.button}
-						text="Save"
-						size="large"
-						onPress={(): void => saveLink()}
-					/>
-				</View>
-			)}
-		</View>
+				{isValid && (
+					<View style={buttonContainerStyles}>
+						<Button
+							style={styles.button}
+							text="Save"
+							size="large"
+							onPress={saveLink}
+						/>
+					</View>
+				)}
+			</View>
+		</ThemedView>
 	);
 };
 
 const styles = StyleSheet.create({
 	container: {
-		paddingHorizontal: 16,
 		flex: 1,
+	},
+	content: {
+		flex: 1,
+		paddingHorizontal: 16,
 	},
 	input: {
 		marginBottom: 16,
@@ -118,7 +117,7 @@ const styles = StyleSheet.create({
 		marginTop: 32,
 	},
 	buttonContainer: {
-		marginTop: 'auto',
+		marginTop: 16,
 		flexDirection: 'row',
 		justifyContent: 'center',
 	},

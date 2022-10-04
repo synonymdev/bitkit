@@ -39,9 +39,7 @@ import { useProfile, useSelectedSlashtag } from '../../hooks/slashtags';
 import type { RootStackScreenProps } from '../../navigation/types';
 import DetectSwipe from '../../components/DetectSwipe';
 
-export const Profile = (
-	props: RootStackScreenProps<'Profile'>,
-): JSX.Element => {
+const Profile = (props: RootStackScreenProps<'Profile'>): JSX.Element => {
 	const onboardingProfileStep = useSelector(
 		(state: Store) => state.slashtags.onboardingProfileStep,
 	);
