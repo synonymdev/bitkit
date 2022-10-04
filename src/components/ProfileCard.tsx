@@ -22,16 +22,16 @@ export const ProfileCard = ({
 	url,
 	profile,
 	editable,
-	onChange,
 	contact,
 	resolving,
+	onChange,
 }: {
 	url: string;
 	profile?: BasicProfile;
 	editable?: boolean;
 	contact?: boolean;
-	onChange?: (name, val) => void;
 	resolving: boolean;
+	onChange?: (name: string, value: string) => void;
 }): JSX.Element => {
 	const name = profile?.name;
 	const bio = profile?.bio?.slice?.(0, 160);
@@ -52,7 +52,7 @@ export const ProfileCard = ({
 								contact ? "Contact's name" : 'Your public\nprofile name'
 							}
 							multiline={true}
-							onChangeText={(value): void => {
+							onChangeText={(value: string): void => {
 								if (value.slice(-1) === '\t') {
 									bioRef.current?.focus();
 								} else {

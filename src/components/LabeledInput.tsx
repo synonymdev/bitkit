@@ -12,6 +12,7 @@ type LabeledInputProps = {
 	ref?;
 	multiline?: boolean;
 	value?: string;
+	returnKeyType?: 'default' | 'next' | 'done';
 	bottomSheet?: boolean;
 	placeholder?: string;
 	style?: StyleProp<ViewStyle>;
@@ -24,6 +25,7 @@ const LabeledInput = ({
 	ref,
 	multiline,
 	value,
+	returnKeyType = 'done',
 	onChange,
 	bottomSheet,
 	placeholder,
@@ -50,7 +52,7 @@ const LabeledInput = ({
 						onChangeText={onChange}
 						multiline={multiline || false}
 						editable={!!onChange}
-						returnKeyType="done"
+						returnKeyType={returnKeyType}
 					/>
 				) : (
 					<TextInput
@@ -64,7 +66,7 @@ const LabeledInput = ({
 						onChangeText={onChange}
 						multiline={multiline || false}
 						editable={!!onChange}
-						returnKeyType="done"
+						returnKeyType={returnKeyType}
 					/>
 				)}
 				{children && (

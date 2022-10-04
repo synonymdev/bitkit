@@ -37,14 +37,13 @@ import Store from '../store/types';
 import { TViewController } from '../store/types/user';
 import themes from '../styles/themes';
 import { toggleView } from '../store/actions/user';
-import { defaultViewController } from '../store/shapes/user';
 import BottomSheetGradient from './BottomSheetGradient';
 import { IColors } from '../styles/colors';
 
 export interface BottomSheetWrapperProps {
 	children: ReactElement;
-	view?: TViewController;
-	snapPoints?: (string | number)[];
+	view: TViewController;
+	snapPoints: (string | number)[];
 	backdrop?: boolean;
 	backgroundStartColor?: keyof IColors;
 	onOpen?: () => void;
@@ -59,60 +58,52 @@ const BottomSheetWrapper = forwardRef(
 			snapPoints = ['60%', '95%'],
 			backdrop = true,
 			backgroundStartColor = 'gray6',
-			onOpen = (): void => {},
-			onClose = (): void => {},
+			onOpen,
+			onClose,
 		}: BottomSheetWrapperProps,
 		ref,
 	): ReactElement => {
-		const data = useSelector((state: Store) =>
-			view ? state.user.viewController[view] : defaultViewController,
-		);
 		const bottomSheetRef = useRef<BottomSheet>(null);
-
+		const data = useSelector((state: Store) => state.user.viewController[view]);
 		const settingsTheme = useSelector((state: Store) => state.settings.theme);
 		const theme = useMemo(() => themes[settingsTheme], [settingsTheme]);
 		const handleIndicatorStyle = useMemo(
 			() => ({ backgroundColor: theme.colors.gray2 }),
 			[theme.colors.gray2],
 		);
+
 		// https://github.com/gorhom/react-native-bottom-sheet/issues/770#issuecomment-1072113936
 		// do not activate BottomSheet if swipe horizontally, this allows using Swiper inside of it
 		const activeOffsetX = useMemo(() => [-999, 999], []);
 		const activeOffsetY = useMemo(() => [-5, 5], []);
 
 		useEffect(() => {
-			try {
-				if (view) {
-					if (data?.isOpen) {
-						bottomSheetRef?.current?.snapToIndex(data?.snapPoint ?? -1);
-					} else {
-						bottomSheetRef?.current?.close();
-					}
-				}
-			} catch {}
-		}, [data, data?.isOpen, data?.snapPoint, view]);
+			if (data?.isOpen) {
+				bottomSheetRef.current?.snapToIndex(data?.snapPoint ?? -1);
+			} else {
+				bottomSheetRef.current?.close();
+			}
+		}, [data?.isOpen, data?.snapPoint]);
 
 		useImperativeHandle(ref, () => ({
 			snapToIndex(index: number = 0): void {
-				// @ts-ignore
-				bottomSheetRef.current.snapToIndex(index);
+				bottomSheetRef.current?.snapToIndex(index);
 			},
 			expand(): void {
-				// @ts-ignore
-				bottomSheetRef.current.snapToIndex(1);
+				bottomSheetRef.current?.snapToIndex(1);
 			},
 			close(): void {
-				// @ts-ignore
-				bottomSheetRef.current.close();
+				bottomSheetRef.current?.close();
 			},
 		}));
 
-		const _snapPoints = useMemo(() => snapPoints, [snapPoints]);
 		const initialSnapPoints = useMemo(() => ['60%', '95%'], []);
 		const { animatedHandleHeight, animatedContentHeight, handleContentLayout } =
 			useBottomSheetDynamicSnapPoints(initialSnapPoints);
 
-		const _onOpen = useCallback(() => onOpen(), [onOpen]);
+		const _onOpen = useCallback(() => {
+			onOpen?.();
+		}, [onOpen]);
 
 		const _onClose = useCallback(() => {
 			if (view) {
@@ -121,7 +112,7 @@ const BottomSheetWrapper = forwardRef(
 					data: { isOpen: false, id: data?.id },
 				});
 			}
-			onClose();
+			onClose?.();
 		}, [view, onClose, data?.id]);
 
 		// callbacks
@@ -182,7 +173,7 @@ const BottomSheetWrapper = forwardRef(
 				onChange={handleSheetChanges}
 				backdropComponent={renderBackdrop}
 				handleHeight={animatedHandleHeight}
-				snapPoints={_snapPoints}
+				snapPoints={snapPoints}
 				activeOffsetX={activeOffsetX}
 				activeOffsetY={activeOffsetY}>
 				<BottomSheetView

@@ -270,17 +270,9 @@ const ActivityDetail = (props: Props): ReactElement => {
 
 	let status = '';
 	if (value < 0) {
-		if (confirmed) {
-			status = 'Sent Bitcoin';
-		} else {
-			status = 'Sending Bitcoin...';
-		}
+		status = 'Sent Bitcoin';
 	} else {
-		if (confirmed) {
-			status = 'Received Bitcoin';
-		} else {
-			status = 'Receiving Bitcoin...';
-		}
+		status = 'Received Bitcoin';
 	}
 
 	let glowColor;

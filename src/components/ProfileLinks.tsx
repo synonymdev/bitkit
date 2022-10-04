@@ -40,7 +40,7 @@ const ProfileLinks = ({
 							style={styles.input}
 							label={link.title}
 							value={links?.filter((l) => l.title === link.title)[0].url}
-							onChange={(val): void => setLink(link.title, val)}>
+							onChange={(value: string): void => setLink(link.title, value)}>
 							<TouchableOpacity
 								onPress={(): void => {
 									setLink(link.title, undefined);
