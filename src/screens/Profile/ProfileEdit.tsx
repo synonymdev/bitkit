@@ -50,6 +50,17 @@ export const ProfileEdit = ({
 		setLinks({ ...links, [title]: { title, url: _url } });
 	};
 
+	const deleteLink = async (title: string): Promise<void> => {
+		const newLinks = Object.values(links).filter(
+			(link) => link.title !== title,
+		);
+		setLinks(newLinks);
+		await saveProfile(slashtag, {
+			...savedProfile,
+			links: newLinks,
+		});
+	};
+
 	const profile: BasicProfile = useMemo(() => {
 		return {
 			...savedProfile,
@@ -86,7 +97,11 @@ export const ProfileEdit = ({
 						onChange={setField}
 					/>
 					<View style={styles.divider} />
-					<ProfileLinks links={profile?.links} setLink={setLink} />
+					<ProfileLinks
+						links={profile?.links}
+						setLink={setLink}
+						deleteLink={deleteLink}
+					/>
 					<Button
 						text="Add Link"
 						style={styles.addLinkButton}

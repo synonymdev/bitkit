@@ -13,12 +13,14 @@ import LabeledInput from './LabeledInput';
 
 const ProfileLinks = ({
 	links,
-	style = {},
+	style,
 	setLink,
+	deleteLink,
 }: {
 	links?: BasicProfile['links'];
 	style?: StyleProp<ViewStyle>;
 	setLink?: (title: string, url: string | undefined) => void;
+	deleteLink?: (title: string) => void;
 }): JSX.Element => {
 	links = links?.filter(({ url }) => url?.length > 0) ?? [];
 
@@ -41,10 +43,7 @@ const ProfileLinks = ({
 							label={link.title}
 							value={links?.filter((l) => l.title === link.title)[0].url}
 							onChange={(value: string): void => setLink(link.title, value)}>
-							<TouchableOpacity
-								onPress={(): void => {
-									setLink(link.title, undefined);
-								}}>
+							<TouchableOpacity onPress={() => deleteLink?.(link.title)}>
 								<TrashIcon color="brand" width={16} />
 							</TouchableOpacity>
 						</LabeledInput>
