@@ -1,5 +1,6 @@
 import { Slashtag } from '@synonymdev/slashtags-sdk';
 import { ok, Result } from '@synonymdev/result';
+import { v4 as uuidv4 } from 'uuid';
 
 import actions from './actions';
 import { getDispatch, getStore } from '../helpers';
@@ -45,8 +46,15 @@ export const setLinks = (links: Link[]): Result<string> => {
 /**
  * Add a link to the profile
  */
-export const addLink = (link: Link): Result<string> => {
-	dispatch({ type: actions.ADD_LINK, payload: link });
+export const addLink = ({ title, url }: Omit<Link, 'id'>): Result<string> => {
+	dispatch({
+		type: actions.ADD_LINK,
+		payload: {
+			id: uuidv4(),
+			title,
+			url,
+		},
+	});
 	return ok('');
 };
 
@@ -61,8 +69,8 @@ export const editLink = (link: Link): Result<string> => {
 /**
  * Remove a link from the profile
  */
-export const removeLink = (title: string): Result<string> => {
-	dispatch({ type: actions.DELETE_LINK, payload: title });
+export const removeLink = (id: Link['id']): Result<string> => {
+	dispatch({ type: actions.DELETE_LINK, payload: id });
 	return ok('');
 };
 

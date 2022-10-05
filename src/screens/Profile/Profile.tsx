@@ -137,7 +137,7 @@ const ProfileScreen = ({
 							</View>
 							{view === 'details' ? (
 								<ProfileLinks
-									links={profile?.links}
+									links={profile?.links ?? []}
 									style={styles.profileDetails}
 								/>
 							) : (

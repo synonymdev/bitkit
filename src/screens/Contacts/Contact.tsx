@@ -116,7 +116,10 @@ export const Contact = ({
 							<TrashIcon height={24} width={24} color="brand" />
 						</IconButton>
 					</View>
-					<ProfileLinks links={profile?.links} style={styles.profileDetails} />
+					<ProfileLinks
+						links={profile?.links ?? []}
+						style={styles.profileDetails}
+					/>
 				</View>
 			</View>
 		</View>

@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo, useEffect, useCallback } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { useSelector } from 'react-redux';
 
@@ -60,7 +60,7 @@ export const ProfileEdit = ({
 		return {
 			...savedProfile,
 			...fields,
-			links: Object.values(links),
+			links,
 		};
 	}, [savedProfile, fields, links]);
 
@@ -72,6 +72,20 @@ export const ProfileEdit = ({
 			navigation.navigate('Profile');
 		}
 	};
+
+	const isValid = useCallback(() => {
+		const isAnyLinkEmpty = links.some((link) => link.url === '');
+
+		if (!profile.name || profile.name.replace(/\s/g, '').length === 0) {
+			return false;
+		}
+
+		if (isAnyLinkEmpty) {
+			return false;
+		}
+
+		return true;
+	}, [profile, links]);
 
 	return (
 		<ThemedView style={styles.container}>
@@ -92,7 +106,7 @@ export const ProfileEdit = ({
 						onChange={setField}
 					/>
 					<View style={styles.divider} />
-					<ProfileLinks links={profile?.links} editable={true} />
+					<ProfileLinks links={links} editable={true} />
 					<Button
 						text="Add Link"
 						style={styles.addLinkButton}
@@ -115,9 +129,7 @@ export const ProfileEdit = ({
 						style={styles.saveButton}
 						text={onboardedProfile ? 'Save Profile' : 'Continue'}
 						size="large"
-						disabled={
-							!profile.name || profile.name.replace(/\s/g, '').length === 0
-						}
+						disabled={!isValid()}
 						onPress={save}
 					/>
 				)}
