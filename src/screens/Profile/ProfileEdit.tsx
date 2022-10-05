@@ -119,18 +119,17 @@ export const ProfileEdit = ({
 					</Text02S>
 				</ScrollView>
 
-				{!onboardedProfile ||
-					(hasEdited && (
-						<Button
-							style={styles.saveButton}
-							text={onboardedProfile ? 'Save Profile' : 'Continue'}
-							size="large"
-							disabled={
-								!profile.name || profile.name.replace(/\s/g, '').length === 0
-							}
-							onPress={save}
-						/>
-					))}
+				{(!onboardedProfile || hasEdited) && (
+					<Button
+						style={styles.saveButton}
+						text={onboardedProfile ? 'Save Profile' : 'Continue'}
+						size="large"
+						disabled={
+							!profile.name || profile.name.replace(/\s/g, '').length === 0
+						}
+						onPress={save}
+					/>
+				)}
 			</View>
 
 			<SafeAreaInsets type="bottom" />
