@@ -5,7 +5,7 @@ import actions from './actions';
 const dispatch = getDispatch();
 
 export const updateProfileLink = (payload: {
-	title?: string;
+	title: string;
 	url?: string;
 }): Result<string> => {
 	dispatch({

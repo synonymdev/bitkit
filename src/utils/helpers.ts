@@ -254,6 +254,16 @@ export const capitalize = (str = ''): string => {
 };
 
 /**
+ * Determines if the two arrays passed as params match.
+ * @param arr1
+ * @param arr2
+ * @return boolean
+ */
+export const arraysMatch = (arr1: unknown[], arr2: unknown[]): boolean => {
+	return JSON.stringify(arr1) === JSON.stringify(arr2);
+};
+
+/**
  * Determines if the two objects passed as params match.
  * @param obj1
  * @param obj2

@@ -10,21 +10,18 @@ import { Caption13Up, Text02S, TrashIcon } from '../styles/components';
 import { BasicProfile } from '../store/types/slashtags';
 import { openURL } from '../utils/helpers';
 import LabeledInput from './LabeledInput';
+import { editLink, removeLink } from '../store/actions/slashtags';
 
 const ProfileLinks = ({
 	links,
+	editable = false,
 	style,
-	setLink,
-	deleteLink,
 }: {
 	links?: BasicProfile['links'];
+	editable?: boolean;
 	style?: StyleProp<ViewStyle>;
-	setLink?: (title: string, url: string | undefined) => void;
-	deleteLink?: (title: string) => void;
 }): JSX.Element => {
 	links = links?.filter(({ url }) => url?.length > 0) ?? [];
-
-	const editable = setLink;
 
 	return (
 		<View style={style}>
@@ -42,8 +39,13 @@ const ProfileLinks = ({
 							style={styles.input}
 							label={link.title}
 							value={links?.filter((l) => l.title === link.title)[0].url}
-							onChange={(value: string): void => setLink(link.title, value)}>
-							<TouchableOpacity onPress={() => deleteLink?.(link.title)}>
+							onChange={(value: string): void => {
+								editLink({ title: link.title, url: value });
+							}}>
+							<TouchableOpacity
+								onPress={(): void => {
+									removeLink(link.title);
+								}}>
 								<TrashIcon color="brand" width={16} />
 							</TouchableOpacity>
 						</LabeledInput>

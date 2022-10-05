@@ -1,9 +1,9 @@
 import { Slashtag } from '@synonymdev/slashtags-sdk';
+import { ok, Result } from '@synonymdev/result';
 
 import actions from './actions';
 import { getDispatch, getStore } from '../helpers';
-import { ok, Result } from '@synonymdev/result';
-import { ISlashtags } from '../types/slashtags';
+import { ISlashtags, Link } from '../types/slashtags';
 import { seedDrives } from '../../utils/slashtags';
 
 const dispatch = getDispatch();
@@ -32,6 +32,38 @@ export const setOnboardedContacts = (
 		onboardedContacts,
 	});
 	return ok('Set onboardedContacts to: ' + onboardedContacts);
+};
+
+/**
+ * Add a link to the profile
+ */
+export const setLinks = (links: Link[]): Result<string> => {
+	dispatch({ type: actions.SET_LINKS, payload: links });
+	return ok('');
+};
+
+/**
+ * Add a link to the profile
+ */
+export const addLink = (link: Link): Result<string> => {
+	dispatch({ type: actions.ADD_LINK, payload: link });
+	return ok('');
+};
+
+/**
+ * Edit a profile link
+ */
+export const editLink = (link: Link): Result<string> => {
+	dispatch({ type: actions.EDIT_LINK, payload: link });
+	return ok('');
+};
+
+/**
+ * Remove a link from the profile
+ */
+export const removeLink = (title: string): Result<string> => {
+	dispatch({ type: actions.DELETE_LINK, payload: title });
+	return ok('');
 };
 
 /**

@@ -29,6 +29,7 @@ export interface ISlashtags {
 		| 'PaymentsFromContacts'
 		| 'OfflinePayments'
 		| 'Done';
+	links: Link[];
 	seeder?: {
 		lastSent?: number;
 	};

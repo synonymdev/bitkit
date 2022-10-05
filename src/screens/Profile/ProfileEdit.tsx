@@ -14,17 +14,21 @@ import SafeAreaInsets from '../../components/SafeAreaInsets';
 import { useProfile, useSelectedSlashtag } from '../../hooks/slashtags';
 import ProfileCard from '../../components/ProfileCard';
 import ProfileLinks from '../../components/ProfileLinks';
-import { setOnboardingProfileStep } from '../../store/actions/slashtags';
+import {
+	setLinks,
+	setOnboardingProfileStep,
+} from '../../store/actions/slashtags';
 import Store from '../../store/types';
 import { BasicProfile } from '../../store/types/slashtags';
 import { saveProfile } from '../../utils/slashtags';
 import type { RootStackScreenProps } from '../../navigation/types';
+import { arraysMatch } from '../../utils/helpers';
 
 export const ProfileEdit = ({
 	navigation,
 }: RootStackScreenProps<'Profile' | 'ProfileEdit'>): JSX.Element => {
 	const [fields, setFields] = useState<Omit<BasicProfile, 'links'>>({});
-	const [links, setLinks] = useState<object>({});
+	const links = useSelector((state: Store) => state.slashtags.links);
 	const [hasEdited, setHasEdited] = useState(false);
 
 	const { url, slashtag } = useSelectedSlashtag();
@@ -36,29 +40,20 @@ export const ProfileEdit = ({
 
 	useEffect(() => {
 		const savedLinks = savedProfile?.links || [];
-		const entries = savedLinks?.map((l) => [l.title, l]);
-		setLinks(Object.fromEntries(entries));
+		setLinks(savedLinks);
 	}, [savedProfile]);
+
+	// show save button if links have changed
+	useEffect(() => {
+		const savedLinks = savedProfile?.links || [];
+		if (!arraysMatch(links, savedLinks)) {
+			setHasEdited(true);
+		}
+	}, [links, savedProfile?.links]);
 
 	const setField = (key: string, value: string): void => {
 		setHasEdited(true);
 		setFields({ ...fields, [key]: value });
-	};
-
-	const setLink = (title: string, _url: string | undefined): void => {
-		setHasEdited(true);
-		setLinks({ ...links, [title]: { title, url: _url } });
-	};
-
-	const deleteLink = async (title: string): Promise<void> => {
-		const newLinks = Object.values(links).filter(
-			(link) => link.title !== title,
-		);
-		setLinks(newLinks);
-		await saveProfile(slashtag, {
-			...savedProfile,
-			links: newLinks,
-		});
 	};
 
 	const profile: BasicProfile = useMemo(() => {
@@ -97,11 +92,7 @@ export const ProfileEdit = ({
 						onChange={setField}
 					/>
 					<View style={styles.divider} />
-					<ProfileLinks
-						links={profile?.links}
-						setLink={setLink}
-						deleteLink={deleteLink}
-					/>
+					<ProfileLinks links={profile?.links} editable={true} />
 					<Button
 						text="Add Link"
 						style={styles.addLinkButton}

@@ -27,6 +27,37 @@ const slashtags = (
 					lastSent: action.time,
 				},
 			};
+		case actions.SET_LINKS: {
+			return {
+				...state,
+				links: action.payload,
+			};
+		}
+		case actions.ADD_LINK: {
+			// currently we don't support multiple links with the same title
+			const prevLinks = state.links.filter(
+				(link) => link.title !== action.payload.title,
+			);
+			return {
+				...state,
+				links: [...prevLinks, action.payload],
+			};
+		}
+		case actions.EDIT_LINK: {
+			const prevLinks = state.links.filter(
+				(link) => link.title !== action.payload.title,
+			);
+			return {
+				...state,
+				links: [...prevLinks, action.payload],
+			};
+		}
+		case actions.DELETE_LINK: {
+			return {
+				...state,
+				links: state.links.filter((link) => link.title !== action.payload),
+			};
+		}
 		default:
 			return state;
 	}
