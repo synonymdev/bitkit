@@ -46,7 +46,9 @@ export const ProfileEdit = ({
 	// show save button if links have changed
 	useEffect(() => {
 		const savedLinks = savedProfile?.links || [];
-		if (!arraysMatch(links, savedLinks)) {
+		if (arraysMatch(links, savedLinks)) {
+			setHasEdited(false);
+		} else {
 			setHasEdited(true);
 		}
 	}, [links, savedProfile?.links]);
