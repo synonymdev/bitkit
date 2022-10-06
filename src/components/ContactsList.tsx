@@ -1,5 +1,5 @@
-import React, { ReactElement, useMemo } from 'react';
-import { SectionList, StyleSheet, TouchableOpacity, View } from 'react-native';
+import React, { ReactElement, useCallback, useMemo } from 'react';
+import { View, SectionList, StyleSheet, TouchableOpacity } from 'react-native';
 
 import { Caption13Up, Text01M, View as ThemedView } from '../styles/components';
 import ProfileImage from './ProfileImage';
@@ -7,10 +7,7 @@ import { SlashtagURL } from './SlashtagURL';
 import { useProfile, useSelectedSlashtag } from '../hooks/slashtags';
 import { IContactRecord } from '../store/types/slashtags';
 import { useSlashtags } from './SlashtagsProvider';
-
-export const Divider = (): ReactElement => (
-	<ThemedView color="white1" style={dstyles.divider} />
-);
+import Divider from './Divider';
 
 export const ContactItem = ({
 	contact,
@@ -21,10 +18,13 @@ export const ContactItem = ({
 	onPress?: (contact: IContactRecord) => void;
 	size?: 'small' | 'normal';
 }): JSX.Element => {
+	const { url: myProfileURL } = useSelectedSlashtag();
 	const { profile } = useProfile(contact.url);
 
 	const name = useMemo(() => {
-		return profile.name || contact.name || ' ';
+		const fallbackName =
+			contact.url === myProfileURL ? 'Your Name' : 'Contact Name';
+		return profile?.name || contact?.name || fallbackName;
 	}, [contact?.name, profile?.name]);
 
 	return (
@@ -33,7 +33,8 @@ export const ContactItem = ({
 			onPress={(): void => {
 				onPress?.(contact);
 			}}>
-			<ThemedView style={cstyles.container}>
+			<Divider />
+			<View style={cstyles.container}>
 				<ProfileImage
 					url={contact.url}
 					image={profile?.image}
@@ -49,7 +50,7 @@ export const ContactItem = ({
 						}}
 					/>
 				</View>
-			</ThemedView>
+			</View>
 		</TouchableOpacity>
 	);
 };
@@ -90,7 +91,8 @@ const ContactsList = ({
 		const sections: { [char: string]: IContactRecord[] } = {};
 
 		filteredContacts.forEach((contact) => {
-			const char = contact?.name ? contact.name.slice(0, 1) : 'undefined';
+			const name = contact?.name ?? 'Contact Name';
+			const char = name.slice(0, 1);
 			if (char) {
 				sections[char]
 					? sections[char].push(contact)
@@ -117,13 +119,19 @@ const ContactsList = ({
 		<SectionList
 			sections={sectionedContacts as any}
 			keyExtractor={(item: IContactRecord): string => item.url}
-			ItemSeparatorComponent={Divider}
-			SectionSeparatorComponent={Divider}
 			ListEmptyComponent={Empty}
-			renderSectionHeader={({ section: { title } }): ReactElement => (
-				<ThemedView color={sectionBackgroundColor} style={styles.sectionHeader}>
-					<Caption13Up color="gray1">{title}</Caption13Up>
-				</ThemedView>
+			renderSectionHeader={useCallback(
+				({ section: { title } }): ReactElement => {
+					const isFirst = title === sectionedContacts[0].title;
+					return (
+						<ThemedView
+							color={sectionBackgroundColor}
+							style={[styles.sectionHeader, !isFirst ? { marginTop: 40 } : {}]}>
+							<Caption13Up color="gray1">{title}</Caption13Up>
+						</ThemedView>
+					);
+				},
+				[],
 			)}
 			renderItem={({ item: contact }): ReactElement => (
 				<ContactItem contact={contact} onPress={onPress} />
@@ -133,21 +141,12 @@ const ContactsList = ({
 	);
 };
 
-const dstyles = {
-	divider: {
-		height: 1,
-		marginTop: 16,
-		marginBottom: 16,
-	},
-};
-
-const cstyles = {
+const cstyles = StyleSheet.create({
 	container: {
 		flexDirection: 'row',
 		alignItems: 'center',
 		marginTop: 10,
 		marginBottom: 10,
-		backgroundColor: 'transparent',
 	},
 	column: {
 		marginLeft: 16,
@@ -155,7 +154,7 @@ const cstyles = {
 	name: {
 		marginBottom: 4,
 	},
-};
+});
 
 const estyles = StyleSheet.create({
 	empty: {

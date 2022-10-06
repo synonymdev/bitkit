@@ -14,6 +14,8 @@ type DialogProps = ModalProps & {
 	visible: boolean;
 	title: string;
 	description: string;
+	cancelText?: string;
+	confirmText?: string;
 	onCancel?: () => void;
 	onConfirm?: () => void;
 };
@@ -22,6 +24,8 @@ const Dialog = ({
 	visible,
 	title,
 	description,
+	cancelText = 'No, Cancel',
+	confirmText = 'Yes, Reset',
 	onCancel,
 	onConfirm,
 	onRequestClose,
@@ -42,10 +46,10 @@ const Dialog = ({
 						<Pressable
 							style={[styles.button, styles.buttonLeft]}
 							onPress={onCancel}>
-							<Text style={styles.buttonText}>No, Cancel</Text>
+							<Text style={styles.buttonText}>{cancelText}</Text>
 						</Pressable>
 						<Pressable style={styles.button} onPress={onConfirm}>
-							<Text style={styles.buttonText}>Yes, Reset</Text>
+							<Text style={styles.buttonText}>{confirmText}</Text>
 						</Pressable>
 					</View>
 				</View>

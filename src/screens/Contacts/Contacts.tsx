@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { useSelector } from 'react-redux';
 
 import {
+	View as ThemedView,
 	PlusIcon,
-	View,
 	TouchableOpacity as ThemedTouchableOpacity,
 } from '../../styles/components';
 import ContactsOnboarding from './ContactsOnboarding';
@@ -39,7 +39,7 @@ const ContactsScreen = ({
 	const { url: myProfileURL } = useSelectedSlashtag();
 
 	return (
-		<View style={styles.container}>
+		<ThemedView style={styles.container}>
 			<SafeAreaInsets type="top" />
 			<NavigationHeader
 				title="Contacts"
@@ -84,7 +84,7 @@ const ContactsScreen = ({
 			</View>
 
 			<AddContact navigation={navigation} />
-		</View>
+		</ThemedView>
 	);
 };
 
@@ -112,8 +112,8 @@ const styles = StyleSheet.create({
 		display: 'flex',
 		alignItems: 'center',
 		justifyContent: 'center',
-		height: 56,
-		width: 56,
+		height: 48,
+		width: 48,
 		marginLeft: 8,
 		borderRadius: 999,
 	},

@@ -1,20 +1,20 @@
 import React, { PropsWithChildren, ReactElement } from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleProp, StyleSheet, ViewStyle } from 'react-native';
 import { View } from '../styles/components';
 
-interface Props extends PropsWithChildren<any> {
-	style?: {};
+interface DividerProps extends PropsWithChildren<any> {
+	style?: StyleProp<ViewStyle>;
 }
 
-const Divider = ({ style }: Props = { style: {} }): ReactElement => {
-	return <View color={'onBackground'} style={[styles.line, style]} />;
+const Divider = ({ style }: DividerProps): ReactElement => {
+	return <View color="white1" style={[styles.root, style]} />;
 };
 
 const styles = StyleSheet.create({
-	line: {
-		height: 0.5,
-		marginTop: 10,
-		marginBottom: 10,
+	root: {
+		height: 1,
+		marginTop: 16,
+		marginBottom: 16,
 	},
 });
 

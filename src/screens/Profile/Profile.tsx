@@ -2,6 +2,7 @@ import React, { useMemo, useState } from 'react';
 import Clipboard from '@react-native-clipboard/clipboard';
 import { FadeIn, FadeOut } from 'react-native-reanimated';
 import {
+	View,
 	StyleSheet,
 	useWindowDimensions,
 	Share,
@@ -20,7 +21,7 @@ import {
 	Text02S,
 	TouchableOpacity,
 	UsersIcon,
-	View,
+	View as ThemedView,
 } from '../../styles/components';
 import NavigationHeader from '../../components/NavigationHeader';
 import SafeAreaInsets from '../../components/SafeAreaInsets';
@@ -38,6 +39,7 @@ import Store from '../../store/types';
 import { useProfile, useSelectedSlashtag } from '../../hooks/slashtags';
 import type { RootStackScreenProps } from '../../navigation/types';
 import DetectSwipe from '../../components/DetectSwipe';
+import Divider from '../../components/Divider';
 
 const Profile = (props: RootStackScreenProps<'Profile'>): JSX.Element => {
 	const onboardingProfileStep = useSelector(
@@ -84,9 +86,10 @@ const ProfileScreen = ({
 	};
 
 	return (
-		<View style={styles.container}>
+		<ThemedView style={styles.container}>
 			<SafeAreaInsets type="top" />
 			<NavigationHeader
+				style={styles.header}
 				title="Profile"
 				onClosePress={(): void => {
 					navigation.navigate('Tabs');
@@ -96,7 +99,7 @@ const ProfileScreen = ({
 				<ScrollView>
 					<View style={styles.content}>
 						<ProfileCard url={url} profile={profile} resolving={false} />
-						<View style={styles.divider} />
+						<Divider />
 						<View style={styles.bottom}>
 							<View style={styles.bottomHeader}>
 								<IconButton onPress={switchView}>
@@ -149,7 +152,7 @@ const ProfileScreen = ({
 									exiting={FadeOut.duration(500)}
 									color="transparent"
 									style={styles.tooltip}>
-									<Tooltip text="Slashtags Key Copied To Clipboard" />
+									<Tooltip text="Copied To Clipboard" />
 								</AnimatedView>
 							)}
 						</View>
@@ -157,7 +160,7 @@ const ProfileScreen = ({
 					<SafeAreaInsets type="bottom" />
 				</ScrollView>
 			</DetectSwipe>
-		</View>
+		</ThemedView>
 	);
 };
 
@@ -251,18 +254,14 @@ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 	},
+	header: {
+		paddingBottom: 12,
+	},
 	content: {
 		flex: 1,
 		justifyContent: 'space-between',
-		margin: 16,
-		marginTop: 0,
-		backgroundColor: 'transparent',
-	},
-	divider: {
-		height: 1,
-		backgroundColor: 'rgba(255, 255, 255, 0.1)',
-		marginTop: 16,
-		marginBottom: 16,
+		paddingTop: 23,
+		paddingHorizontal: 16,
 	},
 	bottom: {
 		flex: 1,

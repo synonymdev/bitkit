@@ -46,7 +46,7 @@ export const ProfileCard = ({
 						<TextInputNoOutline
 							autoFocus={!name}
 							// placeholder doesn't like the lineHeight
-							style={[styles.name, name && styles.nameFilled]}
+							style={[styles.nameInput, name && styles.nameInputFilled]}
 							value={name}
 							placeholder={
 								contact ? "Contact's name" : 'Your public\nprofile name'
@@ -98,7 +98,7 @@ export const ProfileCard = ({
 			{editable && !contact ? (
 				<TextInputNoOutline
 					ref={bioRef}
-					style={styles.bio}
+					style={styles.bioInput}
 					color="gray1"
 					value={bio}
 					placeholder={'Short bio. Tell a bit about yourself.'}
@@ -127,12 +127,22 @@ const styles = StyleSheet.create({
 		flex: 1,
 	},
 	name: {
+		flexWrap: 'wrap',
+		fontSize: 34,
+		lineHeight: 34,
+		fontFamily: 'NHaasGroteskDSW02-65Md',
+	},
+	nameInput: {
+		flexWrap: 'wrap',
 		fontSize: 34,
 		fontFamily: 'NHaasGroteskDSW02-65Md',
 	},
-	nameFilled: {
+	nameInputFilled: {
+		fontSize: 34,
 		lineHeight: 34,
-		marginBottom: Platform.OS === 'android' ? -27 : 0,
+		// needed because of issues with this font on Android
+		marginTop: Platform.OS === 'android' ? -12 : 0,
+		marginBottom: Platform.OS === 'android' ? -24 : 0,
 	},
 	url: {
 		marginTop: 8,
@@ -140,6 +150,13 @@ const styles = StyleSheet.create({
 	bio: {
 		fontSize: 22,
 		lineHeight: 26,
+	},
+	bioInput: {
+		fontSize: 22,
+		lineHeight: 26,
+		// needed because of issues with this font on Android
+		marginTop: Platform.OS === 'android' ? -8 : 0,
+		marginBottom: Platform.OS === 'android' ? -12 : 0,
 	},
 	editImageButton: {
 		alignItems: 'center',

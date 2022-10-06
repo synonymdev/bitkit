@@ -23,6 +23,7 @@ import { BasicProfile } from '../../store/types/slashtags';
 import { saveProfile } from '../../utils/slashtags';
 import type { RootStackScreenProps } from '../../navigation/types';
 import { arraysMatch } from '../../utils/helpers';
+import Divider from '../../components/Divider';
 
 export const ProfileEdit = ({
 	navigation,
@@ -93,49 +94,50 @@ export const ProfileEdit = ({
 		<ThemedView style={styles.container}>
 			<SafeAreaInsets type="top" />
 			<NavigationHeader
+				style={styles.header}
 				title={onboardedProfile ? 'Edit Profile' : 'Create Profile'}
 				onClosePress={(): void => {
 					navigation.navigate(onboardedProfile ? 'Profile' : 'Tabs');
 				}}
 			/>
-			<View style={styles.content}>
-				<ScrollView>
-					<ProfileCard
-						url={url}
-						editable={true}
-						resolving={false}
-						profile={profile}
-						onChange={setField}
-					/>
-					<View style={styles.divider} />
-					<ProfileLinks links={links} editable={true} />
-					<Button
-						text="Add Link"
-						style={styles.addLinkButton}
-						onPress={(): void => {
-							navigation.navigate('ProfileAddLink');
-						}}
-						icon={
-							<PlusIcon color="brand" width={16} style={styles.addLinkButton} />
-						}
-					/>
-					<View style={styles.divider} />
-					<Text02S color="gray1">
-						Please note that all your profile information will be publicly
-						available and visible.
-					</Text02S>
-				</ScrollView>
+			<ScrollView contentContainerStyle={styles.content}>
+				<ProfileCard
+					url={url}
+					editable={true}
+					resolving={false}
+					profile={profile}
+					onChange={setField}
+				/>
+				<Divider />
+				<ProfileLinks links={links} editable={true} />
+				<Button
+					text="Add Link Or Text"
+					style={styles.addLinkButton}
+					onPress={(): void => {
+						navigation.navigate('ProfileAddLink');
+					}}
+					icon={
+						<PlusIcon color="brand" width={16} style={styles.addLinkButton} />
+					}
+				/>
+				<Divider />
+				<Text02S color="gray1">
+					Please note that all your profile information will be publicly
+					available and visible.
+				</Text02S>
 
 				{(!onboardedProfile || hasEdited) && (
-					<Button
-						style={styles.saveButton}
-						text={onboardedProfile ? 'Save Profile' : 'Continue'}
-						size="large"
-						disabled={!isValid()}
-						onPress={save}
-					/>
+					<View style={styles.buttonContainer}>
+						<Button
+							style={styles.button}
+							text={onboardedProfile ? 'Save Profile' : 'Continue'}
+							size="large"
+							disabled={!isValid()}
+							onPress={save}
+						/>
+					</View>
 				)}
-			</View>
+			</ScrollView>
 
 			<SafeAreaInsets type="bottom" />
 		</ThemedView>
@@ -146,22 +148,26 @@ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 	},
+	header: {
+		paddingBottom: 12,
+	},
 	content: {
-		flex: 1,
+		flexGrow: 1,
 		paddingHorizontal: 16,
 		paddingBottom: 16,
+		paddingTop: 23,
 	},
 	addLinkButton: {
 		alignSelf: 'flex-start',
 	},
-	divider: {
-		height: 1,
-		backgroundColor: 'rgba(255, 255, 255, 0.1)',
-		marginTop: 16,
-		marginBottom: 16,
-	},
-	saveButton: {
+	buttonContainer: {
+		flexDirection: 'row',
+		justifyContent: 'center',
 		marginTop: 'auto',
+	},
+	button: {
+		flex: 1,
+		marginTop: 32,
 	},
 });
 

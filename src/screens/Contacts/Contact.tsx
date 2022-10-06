@@ -1,9 +1,12 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { StyleSheet, Share } from 'react-native';
 import { useSelector } from 'react-redux';
+import Clipboard from '@react-native-clipboard/clipboard';
 
 import {
+	AnimatedView,
 	CoinsIcon,
+	CopyIcon,
 	PencileIcon,
 	ShareIcon,
 	TouchableOpacity,
@@ -24,11 +27,17 @@ import {
 import Store from '../../store/types';
 import { useBalance } from '../../hooks/wallet';
 import { RootStackScreenProps } from '../../navigation/types';
+import Dialog from '../../components/Dialog';
+import { FadeIn, FadeOut } from 'react-native-reanimated';
+import Tooltip from '../../components/Tooltip';
 
 export const Contact = ({
 	navigation,
 	route,
 }: RootStackScreenProps<'Contact'>): JSX.Element => {
+	const [showDialog, setShowDialog] = useState(false);
+	const [showCopy, setShowCopy] = useState(false);
+
 	const selectedWallet = useSelector(
 		(store: Store) => store.wallet.selectedWallet,
 	);
@@ -50,6 +59,12 @@ export const Contact = ({
 		() => ({ ...profile, ...contactRecord }),
 		[profile, contactRecord],
 	);
+
+	const onCopy = (): void => {
+		setShowCopy(() => true);
+		setTimeout(() => setShowCopy(() => false), 1200);
+		Clipboard.setString(url);
+	};
 
 	const onDelete = useCallback(() => {
 		deleteContact(slashtag, url);
@@ -99,6 +114,18 @@ export const Contact = ({
 						)}
 						<IconButton
 							onPress={(): void => {
+								navigation.navigate('ContactEdit', { url });
+							}}>
+							<PencileIcon height={24} width={24} color="brand" />
+						</IconButton>
+						<IconButton
+							onPress={(): void => {
+								url && onCopy();
+							}}>
+							<CopyIcon height={24} width={24} color="brand" />
+						</IconButton>
+						<IconButton
+							onPress={(): void => {
 								Share.share({
 									title: 'Share Slashtag url',
 									message: url,
@@ -106,13 +133,7 @@ export const Contact = ({
 							}}>
 							<ShareIcon height={24} width={24} color="brand" />
 						</IconButton>
-						<IconButton
-							onPress={(): void => {
-								navigation.navigate('ContactEdit', { url });
-							}}>
-							<PencileIcon height={24} width={24} color="brand" />
-						</IconButton>
-						<IconButton onPress={onDelete}>
+						<IconButton onPress={() => setShowDialog(true)}>
 							<TrashIcon height={24} width={24} color="brand" />
 						</IconButton>
 					</View>
@@ -120,8 +141,30 @@ export const Contact = ({
 						links={profile?.links ?? []}
 						style={styles.profileDetails}
 					/>
+
+					{showCopy && (
+						<AnimatedView
+							entering={FadeIn.duration(500)}
+							exiting={FadeOut.duration(500)}
+							color="transparent"
+							style={styles.tooltip}>
+							<Tooltip text="Copied To Clipboard" />
+						</AnimatedView>
+					)}
 				</View>
 			</View>
+
+			<Dialog
+				visible={showDialog}
+				title={`Delete ${profile?.name}?`}
+				description={`Are you sure you want to delete ${profile?.name} from your contacts?`}
+				confirmText="Yes, Delete"
+				onCancel={(): void => setShowDialog(false)}
+				onConfirm={(): void => {
+					onDelete();
+					setShowDialog(false);
+				}}
+			/>
 		</View>
 	);
 };
@@ -177,6 +220,11 @@ const styles = StyleSheet.create({
 	},
 	profileDetails: {
 		marginTop: 32,
+	},
+	tooltip: {
+		position: 'absolute',
+		alignSelf: 'center',
+		top: '68%',
 	},
 });
 

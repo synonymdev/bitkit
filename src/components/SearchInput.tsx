@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
 		overflow: 'hidden',
 	},
 	input: {
-		height: 56,
+		height: 48,
 		fontSize: 17,
 		fontWeight: '400',
 		flex: 1,

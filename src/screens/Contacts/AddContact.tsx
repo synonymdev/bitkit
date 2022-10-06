@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
 
 import BottomSheetWrapper from '../../components/BottomSheetWrapper';
@@ -7,14 +7,13 @@ import BottomSheetNavigationHeader from '../../components/BottomSheetNavigationH
 import { useBottomSheetBackPress } from '../../hooks/bottomSheet';
 import { handleSlashtagURL } from '../../utils/slashtags';
 import LabeledInput from '../../components/LabeledInput';
+import { toggleView } from '../../store/actions/user';
 import {
 	ClipboardTextIcon,
 	CornersOutIcon,
 	Text01S,
-	View,
 	Text02S,
 } from '../../styles/components';
-import { toggleView } from '../../store/actions/user';
 
 const AddContact = ({ navigation }): JSX.Element => {
 	const [addContactURL, setAddContactURL] = useState('');
@@ -90,21 +89,17 @@ const AddContact = ({ navigation }): JSX.Element => {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		backgroundColor: 'transparent',
 	},
 	content: {
 		display: 'flex',
-		padding: 16,
-		backgroundColor: 'transparent',
+		paddingHorizontal: 16,
 	},
 	addContactNote: {
 		marginHorizontal: 16,
-		marginVertical: 32,
+		marginBottom: 56,
 	},
 	addContactInvalid: {
-		height: 20,
 		marginTop: 16,
-		backgroundColor: 'transparent',
 	},
 });
 
