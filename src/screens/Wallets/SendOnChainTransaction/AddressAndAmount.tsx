@@ -396,7 +396,11 @@ const AddressAndAmount = ({ index = 0, navigation }): ReactElement => {
 					<TouchableOpacity style={styles.inputAction} onPress={handleScan}>
 						<ScanIcon color="brand" width={24} />
 					</TouchableOpacity>
-					<TouchableOpacity style={styles.inputAction} onPress={handlePaste}>
+					<TouchableOpacity
+						style={styles.inputAction}
+						onPress={(): void => {
+							handlePaste('').then();
+						}}>
 						<ClipboardTextIcon color="brand" width={24} />
 					</TouchableOpacity>
 					<TouchableOpacity
