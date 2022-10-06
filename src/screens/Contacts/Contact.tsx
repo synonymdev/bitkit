@@ -133,7 +133,10 @@ export const Contact = ({
 							}}>
 							<ShareIcon height={24} width={24} color="brand" />
 						</IconButton>
-						<IconButton onPress={() => setShowDialog(true)}>
+						<IconButton
+							onPress={(): void => {
+								setShowDialog(true);
+							}}>
 							<TrashIcon height={24} width={24} color="brand" />
 						</IconButton>
 					</View>

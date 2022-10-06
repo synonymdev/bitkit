@@ -105,10 +105,6 @@ const styles = StyleSheet.create({
 	scrollview: {
 		paddingBottom: 130,
 	},
-	assetsTitle: {
-		marginBottom: 8,
-		marginTop: 32,
-	},
 });
 
 export default memo(Wallets);

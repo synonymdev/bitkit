@@ -81,7 +81,7 @@ const CoinSelectSettings = (): ReactElement => {
 				],
 			},
 		],
-		[selectedAutoPilot, coinSelectPreference, selectedAutoPilot],
+		[selectedAutoPilot, coinSelectPreference],
 	);
 
 	return (

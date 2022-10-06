@@ -151,7 +151,7 @@ const ChoosePIN = ({
 								{attemptsRemaining} attempts remaining.{' '}
 							</Text02S>
 							<Pressable
-								onPress={() => {
+								onPress={(): void => {
 									toggleView({
 										view: 'forgotPIN',
 										data: {

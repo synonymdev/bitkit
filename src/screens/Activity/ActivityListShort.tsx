@@ -75,7 +75,7 @@ const ActivityList = (): ReactElement => {
 				groupedItems.map((item) => renderItem({ item }))
 			) : (
 				<EmptyItem
-					onPress={() => {
+					onPress={(): void => {
 						toggleView({
 							view: 'receiveNavigation',
 							data: {

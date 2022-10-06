@@ -249,11 +249,11 @@ const List = ({
 					return (
 						<ItemHeader
 							title={title}
-							style={!isFirst ? { marginTop: 27 } : {}}
+							style={!isFirst ? styles.sectionSpacing : {}}
 						/>
 					);
 				},
-				[],
+				[data],
 			)}
 			renderItem={useCallback(({ item }): ReactElement | null => {
 				if (item.hide === false) {
@@ -300,6 +300,9 @@ const styles = StyleSheet.create({
 	},
 	draggableList: {
 		marginTop: 14,
+	},
+	sectionSpacing: {
+		marginTop: 27,
 	},
 });
 

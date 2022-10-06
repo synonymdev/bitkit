@@ -25,7 +25,7 @@ export const ContactItem = ({
 		const fallbackName =
 			contact.url === myProfileURL ? 'Your Name' : 'Contact Name';
 		return profile?.name || contact?.name || fallbackName;
-	}, [contact?.name, profile?.name]);
+	}, [contact, profile?.name, myProfileURL]);
 
 	return (
 		<TouchableOpacity
@@ -126,12 +126,15 @@ const ContactsList = ({
 					return (
 						<ThemedView
 							color={sectionBackgroundColor}
-							style={[styles.sectionHeader, !isFirst ? { marginTop: 40 } : {}]}>
+							style={[
+								styles.sectionHeader,
+								!isFirst ? styles.sectionSpacing : {},
+							]}>
 							<Caption13Up color="gray1">{title}</Caption13Up>
 						</ThemedView>
 					);
 				},
-				[],
+				[sectionBackgroundColor, sectionedContacts],
 			)}
 			renderItem={({ item: contact }): ReactElement => (
 				<ContactItem contact={contact} onPress={onPress} />
@@ -166,6 +169,9 @@ const estyles = StyleSheet.create({
 const styles = StyleSheet.create({
 	sectionHeader: {
 		height: 24,
+	},
+	sectionSpacing: {
+		marginTop: 40,
 	},
 });
 

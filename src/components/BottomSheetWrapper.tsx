@@ -152,7 +152,7 @@ const BottomSheetWrapper = forwardRef(
 					{...props}
 				/>
 			),
-			[animatedContentHeight],
+			[animatedContentHeight, backgroundStartColor],
 		);
 
 		// Determine initial snapPoint index based on provided data.
