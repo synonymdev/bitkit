@@ -178,7 +178,7 @@ const RestoreFromSeed = (): ReactElement => {
 						<Text01S color="white8">{subtitle}</Text01S>
 					</View>
 
-					<View style={styles.imageContainer}>
+					<View style={styles.imageContainer} pointerEvents="none">
 						<View style={styles.canvasContainer}>
 							<Glow color={color} />
 						</View>

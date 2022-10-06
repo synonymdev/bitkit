@@ -18,7 +18,7 @@ const AddConnectionResult = ({ navigation }): ReactElement => {
 					might take a while for the connection to become ready for use.
 				</Text01S>
 
-				<View style={styles.imageContainer}>
+				<View style={styles.imageContainer} pointerEvents="none">
 					<Glow style={styles.glow} size={600} color="green" />
 					<Image
 						style={styles.image}

@@ -96,7 +96,7 @@ const ChoosePIN = ({ navigation }): ReactElement => {
 			</View>
 
 			{biometryData?.biometryType ? (
-				<View style={styles.imageContainer}>
+				<View style={styles.imageContainer} pointerEvents="none">
 					<Glow style={styles.glow} size={600} color="brand" />
 					{biometryData?.biometryType === 'FaceID' ? (
 						<FaceIdIcon />

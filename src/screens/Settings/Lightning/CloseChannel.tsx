@@ -48,7 +48,7 @@ const CloseChannel = ({ route, navigation }): ReactElement => {
 					</Text01S>
 				</View>
 
-				<View style={styles.imageContainer}>
+				<View style={styles.imageContainer} pointerEvents="none">
 					<Glow style={styles.glow} size={600} color="red" />
 					<Image
 						style={styles.image}

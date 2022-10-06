@@ -114,7 +114,7 @@ const BackupPrompt = (): ReactElement => {
 					Now that you have some funds in your wallet, it is time to back up
 					your money!
 				</Text01S>
-				<View style={styles.imageContainer}>
+				<View style={styles.imageContainer} pointerEvents="none">
 					<Glow color="blue" size={600} style={styles.glow} />
 					<Image style={styles.image} source={imageSrc} />
 				</View>

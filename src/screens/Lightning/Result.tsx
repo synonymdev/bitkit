@@ -32,7 +32,7 @@ const Result = ({
 						payments!
 					</Text01S>
 
-					<View style={styles.imageContainer}>
+					<View style={styles.imageContainer} pointerEvents="none">
 						<Glow style={styles.glow} size={700} color="purple" />
 						<Image
 							style={styles.image}

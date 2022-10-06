@@ -140,7 +140,7 @@ const ExportToPhone = ({
 						</View>
 					)}
 
-					<View style={styles.imageContainer}>
+					<View style={styles.imageContainer} pointerEvents="none">
 						<Glow style={styles.glow} size={600} color="green" />
 						<Image source={imageSrc} style={styles.image} />
 					</View>

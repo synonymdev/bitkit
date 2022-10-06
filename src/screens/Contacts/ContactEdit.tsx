@@ -91,7 +91,7 @@ export const ContactEdit = ({
 				/>
 
 				{resolving && (
-					<View style={styles.imageContainer}>
+					<View style={styles.imageContainer} pointerEvents="none">
 						<Glow color="brand" size={600} style={styles.glow} />
 						<Image source={imageSrc} style={styles.image} />
 					</View>

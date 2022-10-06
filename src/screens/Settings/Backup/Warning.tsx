@@ -37,7 +37,7 @@ const Warning = ({
 				other data.
 			</Text01S>
 
-			<View style={styles.imageContainer}>
+			<View style={styles.imageContainer} pointerEvents="none">
 				<Glow style={styles.glow} color="yellow" />
 				<Image source={imageSrc} style={styles.image} />
 			</View>

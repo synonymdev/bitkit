@@ -51,7 +51,7 @@ const ForgotPIN = (): ReactElement => {
 					Forgot your PIN? Reset and recover your Bitkit wallet with your
 					recovery phrase. Set a new PIN after completing recovery.
 				</Text01S>
-				<View style={styles.imageContainer}>
+				<View style={styles.imageContainer} pointerEvents="none">
 					<Glow color="brand" style={styles.glow} />
 					<Image style={styles.image} resizeMode="contain" source={imageSrc} />
 				</View>

@@ -70,7 +70,7 @@ const NewTxPrompt = (): ReactElement => {
 				</View>
 
 				<View>
-					<View style={styles.imageContainer}>
+					<View style={styles.imageContainer} pointerEvents="none">
 						<Glow style={styles.glow} size={600} color="white32" />
 						<Image source={imageSrc} style={styles.image3} />
 						<Image source={imageSrc} style={styles.image2} />

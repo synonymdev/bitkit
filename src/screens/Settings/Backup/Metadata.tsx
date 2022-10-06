@@ -37,7 +37,7 @@ const Metadata = (): ReactElement => {
 				automagically. You can export data from the settings.
 			</Text01S>
 
-			<View style={styles.imageContainer}>
+			<View style={styles.imageContainer} pointerEvents="none">
 				<Glow style={styles.glow} color="brand" />
 				<Image source={imageSrc} style={styles.image} />
 			</View>

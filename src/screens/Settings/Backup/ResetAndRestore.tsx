@@ -36,7 +36,7 @@ const ResetAndRestore = ({
 							data. Resetting will overwrite your current Bitkit setup.
 						</Text01S>
 
-						<View style={styles.imageContainer}>
+						<View style={styles.imageContainer} pointerEvents="none">
 							<Glow style={styles.glow} size={600} color="brand" />
 							<Image source={imageSrc} style={styles.image} />
 						</View>

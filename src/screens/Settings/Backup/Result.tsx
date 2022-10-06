@@ -39,7 +39,7 @@ const Result = ({ navigation }: BackupScreenProps<'Result'>): ReactElement => {
 				the only way to recover your money (!)
 			</Text01S>
 
-			<View style={styles.imageContainer}>
+			<View style={styles.imageContainer} pointerEvents="none">
 				<Glow style={styles.glow} color="green" />
 				<Image source={imageSrc} style={styles.image} />
 			</View>

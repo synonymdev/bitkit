@@ -99,7 +99,7 @@ const AssetPickerList = ({
 					/>
 				))}
 			</View>
-			<View style={styles.imageContainer}>
+			<View style={styles.imageContainer} pointerEvents="none">
 				<Glow style={styles.glow} size={300} color="white" />
 				<Image
 					style={styles.image}

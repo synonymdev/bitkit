@@ -69,7 +69,7 @@ const Result = ({ navigation, route }): ReactElement => {
 				{errorMessage && <Text01S color="red">{errorMessage}</Text01S>}
 			</View>
 
-			<View style={styles.imageContainer}>
+			<View style={styles.imageContainer} pointerEvents="none">
 				<Glow
 					style={styles.glow}
 					size={600}

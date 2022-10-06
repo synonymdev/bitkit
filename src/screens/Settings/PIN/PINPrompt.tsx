@@ -67,7 +67,7 @@ const PINPrompt = (): ReactElement => {
 					To increase wallet security, you can set up a PIN code and Face ID to
 					unlock your wallet.
 				</Text01S>
-				<View style={styles.imageContainer}>
+				<View style={styles.imageContainer} pointerEvents="none">
 					<Glow color="green" style={styles.glow} />
 					<Image style={styles.image} resizeMode="contain" source={imageSrc} />
 				</View>

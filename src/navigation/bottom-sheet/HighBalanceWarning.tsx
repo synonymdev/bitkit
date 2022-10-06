@@ -148,7 +148,7 @@ const HighBalanceWarning = (): ReactElement => {
 					offline cold wallet or multisig solution.
 				</Text02S>
 
-				<View style={styles.imageContainer}>
+				<View style={styles.imageContainer} pointerEvents="none">
 					<Glow style={styles.glow} size={500} color="yellow" />
 					<Image source={imageSrc} style={styles.image} />
 				</View>
