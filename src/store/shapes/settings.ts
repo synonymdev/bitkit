@@ -4,64 +4,10 @@ import { ISettings } from '../types/settings';
 const customElectrumPeers = {
 	bitcoin: [
 		{
-			host: 'kirsche.emzy.de',
-			ssl: 50002,
-			tcp: 50001,
-			protocol: 'ssl',
-		},
-		{
-			host: 'electrum.emzy.de',
-			ssl: 50002,
-			tcp: 50001,
-			protocol: 'ssl',
-		},
-		{
-			host: 'de.poiuty',
-			ssl: 50002,
-			tcp: 50001,
-			protocol: 'ssl',
-		},
-		{
-			host: 'electrum.coinext.com.br',
-			ssl: 50002,
-			tcp: 50001,
-			protocol: 'ssl',
-		},
-		{
-			host: 'fortress.qtornado.com',
-			ssl: 443,
-			tcp: 442,
-			protocol: 'ssl',
-		},
-		{
-			host: '157.245.172.236',
-			ssl: 50002,
-			tcp: 50001,
-			protocol: 'ssl',
-		},
-		{
-			host: 'electrumx.alexridevski.net',
-			ssl: 50002,
-			tcp: 50001,
-			protocol: 'ssl',
-		},
-		{
-			host: 'electrumx.info',
-			ssl: 50002,
-			tcp: 50001,
-			protocol: 'ssl',
-		},
-		{
-			host: '178.62.80.20',
-			ssl: 50002,
-			tcp: 50001,
-			protocol: 'ssl',
-		},
-		{
-			host: 'node1.btccuracao.com',
-			ssl: 50002,
-			tcp: 50001,
-			protocol: 'ssl',
+			host: '35.187.18.233',
+			ssl: 8912,
+			tcp: 8911,
+			protocol: 'tcp',
 		},
 	],
 	bitcoinTestnet: [
