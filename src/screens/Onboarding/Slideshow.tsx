@@ -2,6 +2,7 @@
 import React, { memo, ReactElement, useState, useRef, useMemo } from 'react';
 import {
 	Image,
+	Platform,
 	StyleSheet,
 	TouchableOpacity,
 	useWindowDimensions,
@@ -157,7 +158,8 @@ const Slideshow = ({
 								<Display color="brand"> your Wallet.</Display>
 							</Display>
 							<Text01S color="gray1" style={styles.text}>
-								By tapping ‘New Wallet’ or ‘Restore’{'\n'}you accept our{' '}
+								Please note Bitkit is beta software.{'\n'}By tapping ‘New
+								Wallet’ or ‘Restore’{'\n'}you accept our{' '}
 								<Text01S
 									color="brand"
 									onPress={(): void => {
@@ -279,14 +281,15 @@ const styles = StyleSheet.create({
 		resizeMode: 'contain',
 	},
 	textContent: {
-		flex: 3.2,
+		// line up Welcome screen content with Slideshow
+		flex: Platform.OS === 'ios' ? 3.2 : 3.5,
 	},
 	text: {
 		marginTop: 8,
 	},
 	buttonsContainer: {
 		flexDirection: 'row',
-		marginTop: 42,
+		marginTop: 20,
 	},
 	button: {
 		flex: 1,

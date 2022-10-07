@@ -83,7 +83,7 @@ const styles = StyleSheet.create({
 		top: 10,
 	},
 	textContent: {
-		flex: 3.2,
+		flex: 3.4,
 	},
 	text: {
 		marginTop: 8,
@@ -91,6 +91,7 @@ const styles = StyleSheet.create({
 	buttonsContainer: {
 		flexDirection: 'row',
 		marginTop: 20,
+		marginBottom: 50,
 	},
 	button: {
 		flex: 1,
