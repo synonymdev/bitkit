@@ -83,6 +83,7 @@ export const OfflinePayments = ({ navigation }): JSX.Element => {
 			<View style={styles.enableOfflineRow}>
 				<SwitchRow
 					isEnabled={enableOfflinePayments}
+					showDivider={false}
 					onPress={(): void => {
 						updateSettings({ enableOfflinePayments: !enableOfflinePayments });
 					}}>

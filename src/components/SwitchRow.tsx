@@ -1,31 +1,32 @@
 import React, { memo, ReactElement } from 'react';
-import { StyleSheet } from 'react-native';
-import { TouchableOpacity, View, Switch } from '../styles/components';
+import { View, TouchableOpacity, StyleSheet } from 'react-native';
+import { GestureResponderEvent } from 'react-native-modal';
+import { Switch } from '../styles/components';
+import Divider from './Divider';
 
 const SwitchRow = ({
-	onPress,
-	isEnabled,
 	children,
+	isEnabled,
+	showDivider = true,
+	onPress,
 }: {
-	onPress: (previousState: boolean) => any;
-	isEnabled: boolean;
 	children: ReactElement;
+	isEnabled: boolean;
+	showDivider?: boolean;
+	onPress: (event: GestureResponderEvent) => void;
 }): ReactElement => {
 	return (
 		<>
 			<TouchableOpacity
 				onPress={onPress}
 				activeOpacity={1}
-				color="transparent"
 				style={styles.container}>
-				<View color="transparent" style={styles.leftColumn}>
-					{children}
-				</View>
-				<View color="transparent" style={styles.rightColumn}>
+				<View style={styles.leftColumn}>{children}</View>
+				<View style={styles.rightColumn}>
 					<Switch onValueChange={onPress} value={isEnabled} />
 				</View>
 			</TouchableOpacity>
-			<View color="transparent" style={styles.divider} />
+			{showDivider && <Divider style={styles.divider} />}
 		</>
 	);
 };
@@ -33,15 +34,13 @@ const SwitchRow = ({
 const styles = StyleSheet.create({
 	container: {
 		flexDirection: 'row',
+		justifyContent: 'flex-start',
 		alignItems: 'flex-start',
 		paddingVertical: 8,
-		justifyContent: 'flex-start',
 	},
 	divider: {
-		height: 1,
-		marginVertical: 5,
-		borderBottomWidth: 1,
-		borderBottomColor: 'rgba(255, 255, 255, 0.1)',
+		marginTop: 5,
+		marginBottom: 5,
 	},
 	leftColumn: {
 		flex: 1,
