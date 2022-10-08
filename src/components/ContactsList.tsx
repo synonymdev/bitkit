@@ -126,10 +126,7 @@ const ContactsList = ({
 					return (
 						<ThemedView
 							color={sectionBackgroundColor}
-							style={[
-								styles.sectionHeader,
-								!isFirst ? styles.sectionSpacing : {},
-							]}>
+							style={[!isFirst && styles.sectionSpacing]}>
 							<Caption13Up color="gray1">{title}</Caption13Up>
 						</ThemedView>
 					);
@@ -167,11 +164,10 @@ const estyles = StyleSheet.create({
 });
 
 const styles = StyleSheet.create({
-	sectionHeader: {
-		height: 24,
-	},
 	sectionSpacing: {
-		marginTop: 40,
+		height: 60,
+		justifyContent: 'flex-end',
+		paddingBottom: 2,
 	},
 });
 

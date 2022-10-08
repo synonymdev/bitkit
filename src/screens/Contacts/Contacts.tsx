@@ -97,7 +97,6 @@ const styles = StyleSheet.create({
 		justifyContent: 'space-between',
 		margin: 20,
 		marginTop: 0,
-		backgroundColor: 'transparent',
 	},
 	searchRow: {
 		display: 'flex',
