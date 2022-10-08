@@ -39,6 +39,7 @@ const Contacts = ({ navigation }): ReactElement => {
 					onPress={handlePress}
 					sectionBackgroundColor="transparent"
 					stickySectionHeadersEnabled={false}
+					bottomSheet={true}
 				/>
 			</View>
 		</GradientView>
