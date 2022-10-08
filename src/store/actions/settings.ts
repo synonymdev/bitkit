@@ -58,7 +58,7 @@ export const wipeApp = async ({
 		]);
 
 		showSuccessNotification({
-			title: 'Bitkit wiped successfully',
+			title: 'Bitkit Wiped Successfully',
 			message: 'All app data has been reset.',
 		});
 

@@ -141,7 +141,7 @@ const styles = StyleSheet.create({
 		paddingHorizontal: 32,
 	},
 	buttons: {
-		marginTop: 41,
+		marginTop: 16,
 		paddingLeft: 32,
 		paddingRight: 28,
 		flexDirection: 'row',
@@ -154,7 +154,7 @@ const styles = StyleSheet.create({
 		minWidth: 50,
 	},
 	seedContainer: {
-		marginVertical: 32,
+		marginVertical: 22,
 		paddingHorizontal: 16,
 		flexDirection: 'row',
 	},

@@ -1,4 +1,4 @@
-import React, { ReactElement, useMemo, memo } from 'react';
+import React, { ReactElement, memo } from 'react';
 import { useSelector } from 'react-redux';
 import {
 	createNativeStackNavigator,
@@ -14,6 +14,7 @@ import Warning from '../../screens/Settings/Backup/Warning';
 import Metadata from '../../screens/Settings/Backup/Metadata';
 import { NavigationContainer } from '../../styles/components';
 import Store from '../../store/types';
+import { useSnapPoints } from '../../hooks/bottomSheet';
 
 export type BackupNavigationProp =
 	NativeStackNavigationProp<BackupStackParamList>;
@@ -34,9 +35,7 @@ const navOptions: NativeStackNavigationOptions = {
 };
 
 const BackupNavigation = (): ReactElement => {
-	// TODO: should use useSnapPoints('medium') but space not enough in ConfirmMnemonic
-	// const snapPoints = useSnapPoints('medium');
-	const snapPoints = useMemo(() => [650], []);
+	const snapPoints = useSnapPoints('medium');
 	const isOpen = useSelector(
 		(store: Store) => store.user.viewController.backupNavigation.isOpen,
 	);

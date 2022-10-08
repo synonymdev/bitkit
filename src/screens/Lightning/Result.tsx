@@ -10,6 +10,8 @@ import Glow from '../../components/Glow';
 import useColors from '../../hooks/colors';
 import type { LightningScreenProps } from '../../navigation/types';
 
+const imageSrc = require('../../assets/illustrations/switch.png');
+
 const Result = ({
 	navigation,
 }: LightningScreenProps<'Result'>): ReactElement => {
@@ -25,20 +27,15 @@ const Result = ({
 				}}
 			/>
 			<View style={styles.root}>
-				<View>
-					<Display color="purple">You’re Connected!</Display>
-					<Text01S color="gray1" style={styles.text}>
-						You are now connected to the Lightning network. Enjoy instant
-						payments!
-					</Text01S>
+				<Display color="purple">You’re Connected!</Display>
+				<Text01S color="gray1" style={styles.text}>
+					You are now connected to the Lightning network. Enjoy instant
+					payments!
+				</Text01S>
 
-					<View style={styles.imageContainer} pointerEvents="none">
-						<Glow style={styles.glow} size={700} color="purple" />
-						<Image
-							style={styles.image}
-							source={require('../../assets/illustrations/switch.png')}
-						/>
-					</View>
+				<View style={styles.imageContainer} pointerEvents="none">
+					<Glow style={styles.glow} size={600} color="purple" />
+					<Image style={styles.image} source={imageSrc} />
 				</View>
 
 				<View>
@@ -50,9 +47,9 @@ const Result = ({
 							navigation.goBack();
 						}}
 					/>
-					<SafeAreaInsets type="bottom" />
 				</View>
 			</View>
+			<SafeAreaInsets type="bottom" />
 		</GlowingBackground>
 	);
 };
@@ -60,30 +57,26 @@ const Result = ({
 const styles = StyleSheet.create({
 	root: {
 		flex: 1,
-		display: 'flex',
-		justifyContent: 'space-between',
 		marginTop: 8,
 		paddingHorizontal: 16,
 	},
 	text: {
-		marginTop: 16,
+		marginTop: 8,
 		marginBottom: 16,
 	},
 	imageContainer: {
-		height: 300,
-		width: 300,
+		flex: 1,
+		position: 'relative',
 		justifyContent: 'center',
 		alignItems: 'center',
-		position: 'relative',
-		alignSelf: 'center',
-	},
-	glow: {
-		position: 'absolute',
 	},
 	image: {
 		height: 200,
 		width: 200,
 		resizeMode: 'contain',
+	},
+	glow: {
+		position: 'absolute',
 	},
 });
 
