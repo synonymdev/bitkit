@@ -14,6 +14,8 @@ const Introduction = ({
 }: LightningScreenProps<'Introduction'>): ReactElement => {
 	const colors = useColors();
 
+	// TODO: add note for US users
+
 	return (
 		<GlowingBackground topLeft={colors.purple}>
 			<View color="transparent" style={styles.slide}>
@@ -34,7 +36,8 @@ const Introduction = ({
 						Instant <Display color="purple">Payments.</Display>
 					</Display>
 					<Text01S color="gray1" style={styles.text}>
-						Open a Lightning connection and send or receive bitcoin instantly.
+						Open a Lightning connection and{'\n'}send or receive bitcoin
+						instantly.
 					</Text01S>
 				</View>
 
@@ -89,7 +92,7 @@ const styles = StyleSheet.create({
 		paddingHorizontal: 22,
 	},
 	text: {
-		marginTop: 16,
+		marginTop: 8,
 	},
 	buttonsContainer: {
 		marginHorizontal: 16,

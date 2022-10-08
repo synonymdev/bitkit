@@ -174,7 +174,11 @@ const NumberPadLightning = ({
 			showDot={showDot}
 			onPress={onPress}
 			onRemove={onRemove}>
-			<NumberPadButtons color="white" onMaxPress={onMaxPress} onDone={onDone} />
+			<NumberPadButtons
+				color="purple"
+				onMaxPress={onMaxPress}
+				onDone={onDone}
+			/>
 		</NumberPad>
 	);
 };

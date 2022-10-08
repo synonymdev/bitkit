@@ -14,12 +14,14 @@ import {
 import { btcToSats } from '../../../utils/helpers';
 import { useExchangeRate } from '../../../hooks/displayValues';
 import { useBottomSheetBackPress } from '../../../hooks/bottomSheet';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 /**
  * Handles the number pad logic (add/remove/clear) for invoices.
  */
 const ReceiveNumberPad = (): ReactElement => {
-	const snapPoints = useMemo(() => [425], []);
+	const insets = useSafeAreaInsets();
+	const snapPoints = useMemo(() => [400 + insets.bottom], []);
 	const [decimalMode, setDecimalMode] = useState(false);
 	const [prefixZeros, setPrefixZeros] = useState(0);
 	const invoice = useSelector((store: Store) => store.receive);

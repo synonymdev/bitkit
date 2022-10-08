@@ -22,12 +22,10 @@ const Result = ({
 			<SafeAreaInsets type="top" />
 			<NavigationHeader
 				title="Add Instant Payments"
-				onClosePress={(): void => {
-					navigation.navigate('Tabs');
-				}}
+				displayBackButton={false}
 			/>
 			<View style={styles.root}>
-				<Display color="purple">You’re Connected!</Display>
+				<Display color="purple">You’re{'\n'}Connected!</Display>
 				<Text01S color="gray1" style={styles.text}>
 					You are now connected to the Lightning network. Enjoy instant
 					payments!

@@ -100,7 +100,7 @@ const QuickConfirm = ({
 			/>
 			<View style={styles.root}>
 				<View>
-					<Display color="purple">Please {'\n'}confirm.</Display>
+					<Display color="purple">Please {'\n'}Confirm.</Display>
 					<Text01S color="gray1" style={styles.text}>
 						It costs
 						<Text01S>{` ${blocktankPurchaseFee.fiatSymbol}${channelOpenCost} `}</Text01S>

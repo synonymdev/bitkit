@@ -333,7 +333,7 @@ const CustomSetup = ({
 					<Display>
 						{spending ? '1) ' : '2) '}
 						<Display color="purple">
-							{spending ? 'Spending money.' : 'Receiving money.'}
+							{spending ? 'Spending Money.' : 'Receiving Money.'}
 						</Display>
 					</Display>
 					{spending && !keybrd && (
@@ -371,21 +371,17 @@ const CustomSetup = ({
 					</AnimatedView>
 				)}
 
-				<View />
-
-				<View>
-					<View style={styles.amountBig}>
-						<View>
-							{!keybrd && (
-								<Caption13Up style={styles.amountTitle} color="purple">
-									{spending ? 'SPENDING BALANCE' : 'RECEIVING CAPACITY'}
-								</Caption13Up>
-							)}
-							<AmountToggle
-								onPress={(): void => setKeybrd((k) => !k)}
-								sats={amount}
-							/>
-						</View>
+				<View style={styles.amountBig}>
+					<View>
+						{!keybrd && (
+							<Caption13Up style={styles.amountTitle} color="purple">
+								{spending ? 'SPENDING BALANCE' : 'RECEIVING CAPACITY'}
+							</Caption13Up>
+						)}
+						<AmountToggle
+							onPress={(): void => setKeybrd((k) => !k)}
+							sats={amount}
+						/>
 					</View>
 				</View>
 
@@ -478,17 +474,17 @@ const styles = StyleSheet.create({
 	root: {
 		flex: 1,
 		display: 'flex',
-		justifyContent: 'space-between',
 		marginTop: 8,
 		paddingHorizontal: 16,
 	},
 	text: {
-		marginTop: 16,
+		marginTop: 8,
 	},
 	barrels: {
 		flexDirection: 'row',
 		marginHorizontal: -8,
-		marginBottom: 14,
+		marginTop: 32,
+		marginBottom: 16,
 	},
 	buttonCustom: {
 		alignSelf: 'flex-start',
@@ -497,7 +493,8 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		justifyContent: 'space-between',
 		alignItems: 'center',
-		marginBottom: 8,
+		marginTop: 'auto',
+		marginBottom: 32,
 	},
 	amountTitle: {
 		marginBottom: 8,

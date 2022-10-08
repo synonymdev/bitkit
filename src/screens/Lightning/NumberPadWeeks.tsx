@@ -1,10 +1,20 @@
 import React, { ReactElement } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet } from 'react-native';
 
-import { Text02B, TouchableOpacity } from '../../styles/components';
 import NumberPad from '../../components/NumberPad';
+import NumberPadButtons from '../Wallets/NumberPadButtons';
 
-const NumberPadWeeks = ({ weeks, style, onChange, onDone }): ReactElement => {
+const NumberPadWeeks = ({
+	weeks,
+	onChange,
+	onDone,
+	style,
+}: {
+	weeks: number;
+	onChange: (weeks: number) => void;
+	onDone: () => void;
+	style?: object | Array<object>;
+}): ReactElement => {
 	const onPress = (key): void => {
 		let amount = Number(`${weeks}${key}`);
 		// limit amount 12 weeks
@@ -22,9 +32,7 @@ const NumberPadWeeks = ({ weeks, style, onChange, onDone }): ReactElement => {
 	};
 
 	const handleDone = (): void => {
-		if (weeks < 1) {
-			onChange(1);
-		}
+		onChange(Math.max(weeks, 1));
 		onDone();
 	};
 
@@ -33,54 +41,21 @@ const NumberPadWeeks = ({ weeks, style, onChange, onDone }): ReactElement => {
 			style={[styles.numberpad, style]}
 			onPress={onPress}
 			onRemove={onRemove}>
-			<View style={styles.topRow}>
-				<TouchableOpacity
-					style={styles.topRowButtons}
-					color="onSurface"
-					onPress={(): void => {
-						onChange(12);
-					}}>
-					<Text02B size="12px" color="purple">
-						MAX
-					</Text02B>
-				</TouchableOpacity>
-				<TouchableOpacity
-					style={styles.topRowButtons}
-					color="onSurface"
-					onPress={handleDone}>
-					<Text02B size="12px" color="purple">
-						DONE
-					</Text02B>
-				</TouchableOpacity>
-			</View>
+			<NumberPadButtons
+				color="purple"
+				showUnitButton={false}
+				onMaxPress={(): void => {
+					onChange(12);
+				}}
+				onDone={handleDone}
+			/>
 		</NumberPad>
 	);
 };
 
 const styles = StyleSheet.create({
 	numberpad: {
-		maxHeight: 350,
-	},
-	topRow: {
-		flexDirection: 'row',
-		alignItems: 'center',
-		justifyContent: 'space-between',
-		paddingVertical: 5,
-		paddingHorizontal: 5,
-		// TODO: replace shadow with proper gradient
-		shadowColor: 'rgba(185, 92, 232, 0.36)',
-		shadowOpacity: 0.8,
-		elevation: 6,
-		shadowRadius: 15,
-		shadowOffset: { width: 1, height: 13 },
-	},
-	topRowButtons: {
-		paddingVertical: 5,
-		paddingHorizontal: 8,
-		borderRadius: 8,
-		flexDirection: 'row',
-		justifyContent: 'center',
-		alignItems: 'center',
+		maxHeight: 425,
 	},
 });
 

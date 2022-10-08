@@ -88,7 +88,7 @@ const CustomConfirm = ({
 			productId,
 			remoteBalance: order.remote_balance ?? 0,
 			localBalance: order.local_balance,
-			channelExpiry: weeks,
+			channelExpiry: Math.max(weeks, 1),
 			selectedWallet,
 			selectedNetwork,
 		});
@@ -115,13 +115,13 @@ const CustomConfirm = ({
 				{!keybrd && (
 					<AnimatedView color="transparent" entering={FadeIn} exiting={FadeOut}>
 						<Display>
-							3) <Display color="purple">Please{'\n'}confirm.</Display>
+							3) <Display color="purple">Please{'\n'}Confirm.</Display>
 						</Display>
 						<Text01S color="gray1" style={styles.text}>
 							It costs
 							<Text01S>{` ${blocktankPurchaseFee.fiatSymbol}${channelOpenCost} `}</Text01S>
-							to connect you to Lightning and set up your spending balance. Your
-							Lightning connection will stay open for at least
+							to connect you and set up your spending balance. Your Lightning
+							connection will stay open for at least
 							<Text01S onPress={(): void => setKeybrd(true)}>
 								{' '}
 								{weeks} weeks <PenIcon height={18} width={18} />
@@ -209,7 +209,7 @@ const styles = StyleSheet.create({
 		paddingHorizontal: 16,
 	},
 	text: {
-		marginTop: 16,
+		marginTop: 8,
 		marginBottom: 40,
 	},
 	space: {
