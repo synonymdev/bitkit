@@ -849,3 +849,27 @@ export const keepLdkSynced = async ({
 		await sleep(frequency);
 	}
 };
+
+/**
+ * Returns whether the user has any open lightning channels.
+ * @param {string} [selectedWallet]
+ * @param {TAvailableNetworks} [selectedNetwork]
+ * @returns {boolean}
+ */
+export const hasOpenLightningChannels = ({
+	selectedWallet,
+	selectedNetwork,
+}: {
+	selectedWallet?: string;
+	selectedNetwork?: TAvailableNetworks;
+}): boolean => {
+	if (!selectedWallet) {
+		selectedWallet = getSelectedWallet();
+	}
+	if (!selectedNetwork) {
+		selectedNetwork = getSelectedNetwork();
+	}
+	const availableChannels =
+		getStore().lightning.nodes[selectedWallet].openChannelIds[selectedNetwork];
+	return availableChannels.length > 0;
+};

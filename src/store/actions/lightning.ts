@@ -11,6 +11,7 @@ import {
 	getLightningChannels,
 	getNodeIdFromStorage,
 	getNodeVersion,
+	hasOpenLightningChannels,
 } from '../../utils/lightning';
 import { TChannel, TInvoice } from '@synonymdev/react-native-ldk';
 import {
@@ -210,6 +211,9 @@ export const createLightningInvoice = async ({
 	}
 	if (!selectedWallet) {
 		selectedWallet = getSelectedWallet();
+	}
+	if (!hasOpenLightningChannels({ selectedWallet, selectedNetwork })) {
+		return err('No lightning channels available to receive an invoice.');
 	}
 	const invoice = await createPaymentRequest({
 		amountSats,

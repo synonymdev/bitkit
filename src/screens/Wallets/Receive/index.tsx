@@ -37,7 +37,6 @@ import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigati
 import Button from '../../../components/Button';
 import Tooltip from '../../../components/Tooltip';
 import { generateNewReceiveAddress } from '../../../store/actions/wallet';
-import { showErrorNotification } from '../../../utils/notifications';
 import { useBottomSheetBackPress } from '../../../hooks/bottomSheet';
 import BitcoinLogo from '../../../assets/bitcoin-logo-small.svg';
 import { createLightningInvoice } from '../../../store/actions/lightning';
@@ -96,17 +95,12 @@ const Receive = ({ navigation }): ReactElement => {
 		});
 
 		if (response.isErr()) {
-			showErrorNotification({
-				title: 'Unable to generate lightning invoice.',
-				message: response.error.message,
-			});
+			console.log(response.error.message);
 			return;
 		}
 
-		if (response.isOk()) {
-			console.info(`lightning invoice: ${response.value.to_str}`);
-			setLightningInvoice(response.value.to_str);
-		}
+		console.info(`lightning invoice: ${response.value.to_str}`);
+		setLightningInvoice(response.value.to_str);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [amount, message]);
 
