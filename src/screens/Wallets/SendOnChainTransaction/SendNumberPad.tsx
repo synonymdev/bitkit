@@ -32,7 +32,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
  */
 const SendNumberPad = (): ReactElement => {
 	const insets = useSafeAreaInsets();
-	const snapPoints = useMemo(() => [400 + insets.bottom], []);
+	const snapPoints = useMemo(() => [400 + insets.bottom], [insets.bottom]);
 	const [decimalMode, setDecimalMode] = useState(false);
 	const [prefixZeros, setPrefixZeros] = useState(0);
 

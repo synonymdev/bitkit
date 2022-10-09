@@ -12,12 +12,12 @@ import { BottomSheetSectionList } from '@gorhom/bottom-sheet';
 
 export const ContactItem = ({
 	contact,
-	onPress,
 	size,
+	onPress,
 }: {
 	contact: IContactRecord;
-	onPress?: (contact: IContactRecord) => void;
 	size?: 'small' | 'normal';
+	onPress?: (contact: IContactRecord) => void;
 }): JSX.Element => {
 	const { url: myProfileURL } = useSelectedSlashtag();
 	const { profile } = useProfile(contact.url);
@@ -126,7 +126,7 @@ const ContactsList = ({
 			return (
 				<ThemedView
 					color={sectionBackgroundColor}
-					style={[!isFirst && styles.sectionSpacing]}>
+					style={!isFirst && styles.sectionSpacing}>
 					<Caption13Up color="gray1">{title}</Caption13Up>
 				</ThemedView>
 			);
@@ -135,10 +135,10 @@ const ContactsList = ({
 	);
 
 	const renderItem = useCallback(
-		({ item: contact }): ReactElement => (
-			<ContactItem contact={contact} onPress={onPress} />
+		({ item }): ReactElement => (
+			<ContactItem contact={item} onPress={onPress} />
 		),
-		[],
+		[onPress],
 	);
 
 	return (
