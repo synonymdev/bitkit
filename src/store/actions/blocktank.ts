@@ -111,7 +111,8 @@ export const refreshOrder = async (
 				const finalizeRes = await finalizeChannel(orderId);
 				if (finalizeRes.isOk()) {
 					setTimeout(() => refreshLdk({}), 15000);
-					await removeTodo('lightning');
+					removeTodo('lightning');
+					removeTodo('lightningSettingUp');
 					const getUpdatedOrderRes = await blocktank.getOrder(orderId);
 					if (getUpdatedOrderRes.isErr()) {
 						return err(getUpdatedOrderRes.error.message);
@@ -479,13 +480,13 @@ export const confirmChannelPurchase = async ({
 	resetOnChainTransaction({ selectedNetwork });
 
 	watchOrder(orderId).then();
-	await removeTodo('lightning');
+	removeTodo('lightning');
 	const todo: ITodo = {
-		id: 'lightning',
-		type: 'lightning',
+		id: 'lightningSettingUp',
+		type: 'lightningSettingUp',
 		title: 'Setting Up',
-		description: 'Ready in ~20min',
+		description: 'Ready in ±20min',
 	};
-	await addTodo(todo);
+	addTodo(todo);
 	return ok(broadcastResponse.value);
 };

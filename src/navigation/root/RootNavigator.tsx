@@ -17,6 +17,7 @@ import BlocktankPayment from '../../screens/Blocktank/Payment';
 import ActivityDetail from '../../screens/Activity/ActivityDetail';
 import ActivityFiltered from '../../screens/Activity/ActivityFiltered';
 import ActivityAssignContact from '../../screens/Activity/ActivityAssignContact';
+import BuyBitcoin from '../../screens/BuyBitcoin';
 import ScannerScreen from '../../screens/Scanner/MainScanner';
 import WalletsDetail from '../../screens/Wallets/WalletsDetail';
 import SettingsNavigator from '../settings/SettingsNavigator';
@@ -130,6 +131,7 @@ const RootNavigator = (): ReactElement => {
 					<Stack.Screen name="Contacts" component={Contacts} />
 					<Stack.Screen name="ContactEdit" component={ContactEdit} />
 					<Stack.Screen name="Contact" component={Contact} />
+					<Stack.Screen name="BuyBitcoin" component={BuyBitcoin} />
 					<Stack.Screen name="WidgetFeedEdit" component={WidgetFeedEdit} />
 				</Stack.Group>
 			</Stack.Navigator>

@@ -9,17 +9,6 @@ const dispatch = getDispatch();
  * Adds a single to-do item.
  */
 export const addTodo = (todo: ITodo): Result<string> => {
-	//Only allow one of certain to-do types in our to-do list
-	const thereCanOnlyBeOne = ['activateBackup', 'backupSeedPhrase'];
-	if (thereCanOnlyBeOne.includes(todo?.type)) {
-		const todos = getStore().todos.todos.filter(
-			(_todo) => _todo.type === todo.type,
-		);
-		if (todos.length) {
-			//A to-do of this type already exists in the list.
-			return err(`A to-do with a type of ${todo?.type} already exists.`);
-		}
-	}
 	dispatch({
 		type: actions.ADD_TODO,
 		payload: todo,

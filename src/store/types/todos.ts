@@ -1,10 +1,11 @@
 export type TTodoType =
-	| 'activateBackup'
 	| 'backupSeedPhrase'
 	| 'boost'
 	| 'pin'
 	| 'lightning'
-	| 'slashtagsProfile';
+	| 'lightningSettingUp'
+	| 'slashtagsProfile'
+	| 'buyBitcoin';
 
 export interface ITodo {
 	id: string;

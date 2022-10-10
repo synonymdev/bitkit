@@ -1,10 +1,10 @@
-import React, { ReactElement } from 'react';
+import React, { ReactElement, ReactNode } from 'react';
 import { StyleProp, StyleSheet, ViewStyle } from 'react-native';
 import { View, TouchableOpacity } from '../styles/components';
 
 interface ICard {
 	style?: StyleProp<ViewStyle>;
-	children?: ReactElement | ReactElement[];
+	children?: ReactNode;
 	color?: string;
 	onPress?: () => void;
 }

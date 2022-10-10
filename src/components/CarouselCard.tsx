@@ -1,4 +1,4 @@
-import React, { memo, ReactElement } from 'react';
+import React, { memo, ReactElement, useMemo } from 'react';
 import { LayoutAnimation, StyleSheet, Image, View } from 'react-native';
 import { Canvas, RadialGradient, Rect, vec } from '@shopify/react-native-skia';
 
@@ -8,10 +8,18 @@ import BitcoinLogo from '../assets/bitcoin-logo.svg';
 import { dismissTodo } from '../store/actions/todos';
 import useColors from '../hooks/colors';
 
-const Glow = memo(({ color }: { color: string }) => {
+const Glow = memo(({ color }: { color: string }): ReactElement => {
 	return (
 		<Rect x={0} y={0} width={160} height={160} opacity={0.3}>
 			<RadialGradient c={vec(0, 0)} r={250} colors={[color, 'black']} />
+		</Rect>
+	);
+});
+
+const InnerShadow = memo(({ color }: { color: string }): ReactElement => {
+	return (
+		<Rect x={0} y={0} width={160} height={160} opacity={0.3} color={color}>
+			<RadialGradient c={vec(80, 80)} r={110} colors={['black', color]} />
 		</Rect>
 	);
 });
@@ -30,10 +38,24 @@ const CarouselCard = ({
 	const colors = useColors();
 	LayoutAnimation.easeInEaseOut();
 
+	const inverted = id === 'lightningSettingUp';
+
+	const containerStyle = useMemo(
+		() => [
+			styles.container,
+			inverted && {
+				borderColor: colors.purple,
+				borderWidth: 1,
+			},
+		],
+		[inverted, colors.purple],
+	);
+
 	let icon;
 	let color;
 	switch (id) {
 		case 'lightning':
+		case 'lightningSettingUp':
 			icon = (
 				<Image
 					resizeMode="contain"
@@ -73,6 +95,16 @@ const CarouselCard = ({
 			);
 			color = 'brand';
 			break;
+		case 'buyBitcoin':
+			icon = (
+				<Image
+					resizeMode="contain"
+					style={styles.image}
+					source={require('../assets/illustrations/b-emboss.png')}
+				/>
+			);
+			color = 'orange';
+			break;
 		default:
 			// TODO: Swap out BitcoinLogo with the relevant image based on the provided id.
 			icon = (
@@ -84,9 +116,9 @@ const CarouselCard = ({
 	color = colors[color] ?? color;
 
 	return (
-		<Card style={styles.container}>
+		<Card style={containerStyle}>
 			<Canvas style={styles.canvas}>
-				<Glow color={color} />
+				{inverted ? <InnerShadow color={color} /> : <Glow color={color} />}
 			</Canvas>
 			<Pressable onPress={onPress} color="transparent" style={styles.pressable}>
 				<View style={styles.iconContainer}>{icon}</View>
@@ -95,12 +127,14 @@ const CarouselCard = ({
 					<Caption13M color="lightGray">{description}</Caption13M>
 				</View>
 			</Pressable>
-			<Pressable
-				color="transparent"
-				style={styles.dismiss}
-				onPress={(): any => dismissTodo(id)}>
-				<XIcon width={16} height={16} color="gray1" />
-			</Pressable>
+			{id !== 'lightningSettingUp' && (
+				<Pressable
+					color="transparent"
+					style={styles.dismiss}
+					onPress={(): any => dismissTodo(id)}>
+					<XIcon width={16} height={16} color="gray1" />
+				</Pressable>
+			)}
 		</Card>
 	);
 };

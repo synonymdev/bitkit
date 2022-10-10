@@ -1,20 +1,15 @@
 import { Alert } from 'react-native';
+import { TChannel } from '@synonymdev/react-native-ldk';
+
 import { ITodo, TTodoType } from '../../store/types/todos';
 import { getStore } from '../../store/helpers';
 import { addTodo, removeTodo } from '../../store/actions/todos';
 import { toggleView } from '../../store/actions/user';
 import { getOpenChannels } from '../lightning';
-import { TChannel } from '@synonymdev/react-native-ldk';
 import { getBalance } from '../wallet';
 
 type TTodoPresets = { [key in TTodoType]: ITodo };
 export const todoPresets: TTodoPresets = {
-	activateBackup: {
-		type: 'activateBackup',
-		title: 'Secure your wallet',
-		description: 'Activate online backups',
-		id: 'activateBackup',
-	},
 	backupSeedPhrase: {
 		type: 'backupSeedPhrase',
 		title: 'Back up',
@@ -33,6 +28,12 @@ export const todoPresets: TTodoPresets = {
 		description: 'Get on Lightning',
 		id: 'lightning',
 	},
+	lightningSettingUp: {
+		id: 'lightningSettingUp',
+		type: 'lightningSettingUp',
+		title: 'Setting Up',
+		description: 'Ready in ±20min',
+	},
 	pin: {
 		type: 'pin',
 		title: 'Better security',
@@ -45,29 +46,18 @@ export const todoPresets: TTodoPresets = {
 		description: 'Add your details',
 		id: 'slashtagsProfile',
 	},
+	buyBitcoin: {
+		type: 'buyBitcoin',
+		title: 'Get Bitcoin',
+		description: 'Stack some sats',
+		id: 'buyBitcoin',
+	},
 };
 
 export const setupTodos = async (): Promise<void> => {
 	const store = getStore();
 	const todos = store.todos.todos ?? [];
 	const dismissedTodos = store.todos.dismissedTodos ?? [];
-
-	/*
-	 * Check for backup status.
-	 */
-	const backupTodo = todos.filter((todo) => todo.type === 'activateBackup');
-	const backupStatus = store.backup.remoteBackupsEnabled;
-	const activateBackupIsDismissed = dismissedTodos.some(
-		(todo) => todo === 'activateBackup',
-	);
-	// Add backupTodo if status is false and is not included in the todos array.
-	if (!backupStatus && !backupTodo?.length && !activateBackupIsDismissed) {
-		addTodo(todoPresets.activateBackup);
-	}
-	// Remove backupTodo if status is true and hasn't been removed from the todos array.
-	if (backupStatus && backupTodo.length) {
-		removeTodo(backupTodo[0].id);
-	}
 
 	/*
 	 * Check for seed phrase backup.
@@ -95,7 +85,9 @@ export const setupTodos = async (): Promise<void> => {
 	/*
 	 * Check for lightning.
 	 */
-	const lightning = todos.some((todo) => todo.type === 'lightning');
+	const lightning = todos.some(
+		(todo) => todo.type === 'lightning' || todo.type === 'lightningSettingUp',
+	);
 	const lightningIsDismissed = dismissedTodos.some(
 		(todo) => todo === 'lightning',
 	);
@@ -161,6 +153,18 @@ export const setupTodos = async (): Promise<void> => {
 	if (slashtagsProfile && slashtagsProfileStatus) {
 		removeTodo('slashtagsProfile');
 	}
+
+	/*
+	 * Check for buyBitcoin.
+	 */
+	const buyBitcoin = todos.some((todo) => todo.type === 'buyBitcoin');
+	const buyBitcoinIsDismissed = dismissedTodos.some(
+		(todo) => todo === 'buyBitcoin',
+	);
+	// Add pin if status is false and is not included in the todos array.
+	if (!buyBitcoin && !buyBitcoinIsDismissed) {
+		addTodo(todoPresets.buyBitcoin);
+	}
 };
 
 export const handleOnPress = ({
@@ -172,9 +176,6 @@ export const handleOnPress = ({
 }): void => {
 	try {
 		switch (type) {
-			case 'activateBackup':
-				navigation.navigate('Settings', { screen: 'BackupData' });
-				break;
 			case 'pin':
 				toggleView({
 					view: 'PINPrompt',
@@ -192,6 +193,9 @@ export const handleOnPress = ({
 				break;
 			case 'slashtagsProfile':
 				navigation.navigate('Profile');
+				break;
+			case 'buyBitcoin':
+				navigation.navigate('BuyBitcoin');
 				break;
 			default:
 				Alert.alert('TODO: ' + type);

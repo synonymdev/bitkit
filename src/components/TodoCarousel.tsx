@@ -1,4 +1,12 @@
-import React, { useCallback, useRef, memo, ReactElement, useMemo } from 'react';
+import React, {
+	useCallback,
+	useRef,
+	memo,
+	ReactElement,
+	useMemo,
+	useEffect,
+	useState,
+} from 'react';
 import { StyleSheet, useWindowDimensions } from 'react-native';
 import { useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
@@ -10,6 +18,8 @@ import Store from '../store/types';
 import { handleOnPress } from '../utils/todos';
 
 const TodoCarousel = (): ReactElement => {
+	const [key, setKey] = useState(0);
+	const [index, setIndex] = useState(0);
 	const { width } = useWindowDimensions();
 	const navigation = useNavigation();
 	const ref = useRef(null);
@@ -22,6 +32,13 @@ const TodoCarousel = (): ReactElement => {
 		() => ({ activeOffsetX: [-10, 10] }),
 		[],
 	);
+
+	// hack to re-create Carousel if cards are not visible
+	useEffect(() => {
+		if (index + 1 > todos.length) {
+			setKey((k) => k + 1);
+		}
+	}, [todos.length, index]);
 
 	const renderItem = useCallback(
 		({ item }) => (
@@ -50,6 +67,7 @@ const TodoCarousel = (): ReactElement => {
 			<View style={styles.container}>
 				<Carousel
 					loop={false}
+					key={key}
 					ref={ref}
 					height={170}
 					width={170}
@@ -57,6 +75,7 @@ const TodoCarousel = (): ReactElement => {
 					renderItem={renderItem}
 					style={carouselStyle}
 					panGestureHandlerProps={panGestureHandlerProps}
+					onSnapToItem={setIndex}
 				/>
 			</View>
 		</>
