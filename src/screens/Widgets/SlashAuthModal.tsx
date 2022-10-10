@@ -4,20 +4,20 @@ import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Client } from '@synonymdev/slashtags-auth';
 import { SlashURL } from '@synonymdev/slashtags-sdk';
+import { useSelector } from 'react-redux';
 
 import BottomSheetWrapper from '../../components/BottomSheetWrapper';
 import Button from '../../components/Button';
 import BottomSheetNavigationHeader from '../../components/BottomSheetNavigationHeader';
 import { toggleView } from '../../store/actions/user';
 import { useBottomSheetBackPress } from '../../hooks/bottomSheet';
-import { useSelector } from 'react-redux';
 import Store from '../../store/types';
 import { useProfile, useSelectedSlashtag } from '../../hooks/slashtags';
 import { ContactItem } from '../../components/ContactsList';
 import { IContactRecord } from '../../store/types/slashtags';
 import ProfileImage from '../../components/ProfileImage';
 import { Checkmark } from '../../styles/components';
-import { Text01M, Text01S } from '../../styles/components';
+import { Title, Text01S } from '../../styles/components';
 import {
 	showErrorNotification,
 	showInfoNotification,
@@ -47,7 +47,7 @@ const Key = ({
 	return (
 		<TouchableOpacity onPress={onPress} activeOpacity={0.9}>
 			<View style={keyStyles.row}>
-				<ContactItem contact={contact} size={'small'} onPress={onPress} />
+				<ContactItem contact={contact} size="small" onPress={onPress} />
 				{active && <Checkmark color="brand" height={32} width={32} />}
 			</View>
 			<Divider />
@@ -87,9 +87,12 @@ const _SlashAuthModal = (): ReactElement => {
 	// }, [anonymousSlashtag]);
 
 	const explanation = useMemo(() => {
-		return `Do you want to sign in to ${
-			server.name || server.url
-		} with your profile?`;
+		const s = (server.name || server.url).trim?.();
+		if (s) {
+			return `Do you want to sign in to ${s} with your profile?`;
+		} else {
+			return 'Do you want to sign in with your profile?';
+		}
 	}, [server]);
 
 	const insets = useSafeAreaInsets();
@@ -152,7 +155,7 @@ const _SlashAuthModal = (): ReactElement => {
 					image={server?.image}
 					size={32}
 				/>
-				<Text01M style={styles.headerName}>{server.name}</Text01M>
+				<Title>{server.name}</Title>
 			</View>
 			<Text01S color="gray1" style={styles.explanation}>
 				{explanation}
@@ -175,7 +178,7 @@ const _SlashAuthModal = (): ReactElement => {
 };
 
 export const SlashAuthModal = (): ReactElement => {
-	const snapPoints = useMemo(() => [650], []);
+	const snapPoints = useMemo(() => [700], []);
 	useBottomSheetBackPress('slashauthModal');
 
 	const isOpen = useSelector(
@@ -192,7 +195,7 @@ export const SlashAuthModal = (): ReactElement => {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		paddingHorizontal: 32,
+		paddingHorizontal: 16,
 	},
 	header: {
 		display: 'flex',
@@ -203,12 +206,7 @@ const styles = StyleSheet.create({
 		marginRight: 16,
 		borderRadius: 8,
 	},
-	headerName: {
-		fontSize: 22,
-	},
 	explanation: {
-		fontSize: 17,
-		lineHeight: 22,
 		marginTop: 32,
 		marginBottom: 32,
 	},

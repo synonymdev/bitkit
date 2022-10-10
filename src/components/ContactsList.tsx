@@ -34,7 +34,7 @@ export const ContactItem = ({
 			onPress={(): void => {
 				onPress?.(contact);
 			}}>
-			<Divider />
+			{size !== 'small' && <Divider />}
 			<View style={cstyles.container}>
 				<ProfileImage
 					url={contact.url}
