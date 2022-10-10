@@ -24,6 +24,7 @@ import {
 } from '../../utils/notifications';
 import { setAuthWidget } from '../../store/actions/widgets';
 import Divider from '../../components/Divider';
+import { useSnapPoints } from '../../hooks/bottomSheet';
 
 export type BackupNavigationProp =
 	NativeStackNavigationProp<BackupStackParamList>;
@@ -178,7 +179,7 @@ const _SlashAuthModal = (): ReactElement => {
 };
 
 export const SlashAuthModal = (): ReactElement => {
-	const snapPoints = useMemo(() => [700], []);
+	const snapPoints = useSnapPoints('large');
 	useBottomSheetBackPress('slashauthModal');
 
 	const isOpen = useSelector(
