@@ -129,8 +129,9 @@ export const setupTodos = async (): Promise<void> => {
 	 */
 	const pin = todos.some((todo) => todo.type === 'pin');
 	const pinIsDismissed = dismissedTodos.some((todo) => todo === 'pin');
+	const pinIsSet = store.settings.pin;
 	// Add pin if status is false and is not included in the todos array.
-	if (!pin && !pinIsDismissed) {
+	if (!pin && !pinIsDismissed && !pinIsSet) {
 		addTodo(todoPresets.pin);
 	}
 	// Remove pin if status is true and hasn't been removed from the todos array.
