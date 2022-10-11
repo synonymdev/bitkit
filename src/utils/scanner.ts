@@ -590,10 +590,7 @@ export const handleData = async ({
 		case EQRDataType.bitcoinAddress: {
 			toggleView({
 				view: 'sendNavigation',
-				data: {
-					isOpen: true,
-					snapPoint: 0,
-				},
+				data: { isOpen: true },
 			});
 			await sleep(5); //This is only needed to prevent the view from briefly displaying the SendAssetList
 			await updateBitcoinTransaction({
@@ -623,10 +620,7 @@ export const handleData = async ({
 			}
 			toggleView({
 				view: 'sendNavigation',
-				data: {
-					isOpen: true,
-					snapPoint: 0,
-				},
+				data: { isOpen: true },
 			});
 			await sleep(5); //This is only needed to prevent the view from briefly displaying the SendAssetList
 			await updateBitcoinTransaction({

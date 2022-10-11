@@ -87,10 +87,7 @@ const BackupPrompt = (): ReactElement => {
 
 			toggleView({
 				view: 'backupPrompt',
-				data: {
-					isOpen: true,
-					snapPoint: 0,
-				},
+				data: { isOpen: true },
 			});
 		}, CHECK_INTERVAL);
 

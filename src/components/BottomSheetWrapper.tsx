@@ -78,12 +78,12 @@ const BottomSheetWrapper = forwardRef(
 		const activeOffsetY = useMemo(() => [-5, 5], []);
 
 		useEffect(() => {
-			if (data?.isOpen) {
-				bottomSheetRef.current?.snapToIndex(data?.snapPoint ?? -1);
+			if (data.isOpen) {
+				bottomSheetRef.current?.snapToIndex(data.snapPoint ?? -1);
 			} else {
 				bottomSheetRef.current?.close();
 			}
-		}, [data?.isOpen, data?.snapPoint]);
+		}, [data.isOpen, data.snapPoint]);
 
 		useImperativeHandle(ref, () => ({
 			snapToIndex(index: number = 0): void {
@@ -109,11 +109,11 @@ const BottomSheetWrapper = forwardRef(
 			if (view) {
 				toggleView({
 					view,
-					data: { isOpen: false, id: data?.id },
+					data: { isOpen: false, id: data.id },
 				});
 			}
 			onClose?.();
-		}, [view, onClose, data?.id]);
+		}, [view, onClose, data.id]);
 
 		// callbacks
 		const handleSheetChanges = useCallback(
@@ -157,8 +157,8 @@ const BottomSheetWrapper = forwardRef(
 
 		// Determine initial snapPoint index based on provided data.
 		let index = useMemo((): number => {
-			return data?.snapPoint && data?.snapPoint < 2 ? data.snapPoint : -1;
-		}, [data?.snapPoint]);
+			return data.snapPoint && data.snapPoint < 2 ? data.snapPoint : -1;
+		}, [data.snapPoint]);
 
 		return (
 			<BottomSheet
