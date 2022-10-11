@@ -4,8 +4,6 @@ import { IActivityItem } from './activity';
 export type TViewController =
 	| 'sendNavigation'
 	| 'receiveNavigation'
-	| 'numberPadSend'
-	| 'numberPadReceive'
 	| 'backupPrompt'
 	| 'backupNavigation'
 	| 'forgotPIN'

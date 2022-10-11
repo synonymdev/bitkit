@@ -9,7 +9,6 @@ import {
 import BottomSheetWrapper from '../../components/BottomSheetWrapper';
 import Receive from '../../screens/Wallets/Receive';
 import ReceiveDetails from '../../screens/Wallets/Receive/ReceiveDetails';
-import ReceiveNumberPad from '../../screens/Wallets/Receive/ReceiveNumberPad';
 import Tags from '../../screens/Wallets/Receive/Tags';
 import { useSnapPoints } from '../../hooks/bottomSheet';
 import { NavigationContainer } from '../../styles/components';
@@ -38,20 +37,17 @@ const ReceiveNavigation = (): ReactElement => {
 	);
 
 	return (
-		<>
-			<BottomSheetWrapper view="receiveNavigation" snapPoints={snapPoints}>
-				<NavigationContainer key={isOpen}>
-					<Stack.Navigator screenOptions={navOptions}>
-						<Stack.Group screenOptions={navOptions}>
-							<Stack.Screen name="Receive" component={Receive} />
-							<Stack.Screen name="ReceiveDetails" component={ReceiveDetails} />
-							<Stack.Screen name="Tags" component={Tags} />
-						</Stack.Group>
-					</Stack.Navigator>
-				</NavigationContainer>
-			</BottomSheetWrapper>
-			<ReceiveNumberPad />
-		</>
+		<BottomSheetWrapper view="receiveNavigation" snapPoints={snapPoints}>
+			<NavigationContainer key={isOpen}>
+				<Stack.Navigator screenOptions={navOptions}>
+					<Stack.Group screenOptions={navOptions}>
+						<Stack.Screen name="Receive" component={Receive} />
+						<Stack.Screen name="ReceiveDetails" component={ReceiveDetails} />
+						<Stack.Screen name="Tags" component={Tags} />
+					</Stack.Group>
+				</Stack.Navigator>
+			</NavigationContainer>
+		</BottomSheetWrapper>
 	);
 };
 

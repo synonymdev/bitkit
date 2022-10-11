@@ -15,11 +15,13 @@ import {
 } from 'react-native';
 import { useSelector } from 'react-redux';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { FadeIn, FadeOut } from 'react-native-reanimated';
 import Clipboard from '@react-native-clipboard/clipboard';
 import { validate } from 'bitcoin-address-validation';
 import { TInvoice } from '@synonymdev/react-native-ldk';
 
 import {
+	AnimatedView,
 	Caption13Up,
 	ClipboardTextIcon,
 	ScanIcon,
@@ -43,20 +45,22 @@ import {
 } from '../../../utils/notifications';
 import { useTransactionDetails } from '../../../hooks/transaction';
 import { updateOnchainFeeEstimates } from '../../../store/actions/fees';
-import { toggleView } from '../../../store/actions/user';
 import { decodeLightningInvoice, refreshLdk } from '../../../utils/lightning';
 import { processInputData } from '../../../utils/scanner';
 import { useBottomSheetBackPress } from '../../../hooks/bottomSheet';
 import useKeyboard from '../../../hooks/keyboard';
 import { validateSlashtagURL } from '../../../utils/slashtags';
 import { useSlashtagsSDK } from '../../../components/SlashtagsProvider';
-
 import AddressOrSlashpay from './AddressOrSlashpay';
+import SendNumberPad from './SendNumberPad';
 
 const AddressAndAmount = ({ index = 0, navigation }): ReactElement => {
-	useBottomSheetBackPress('sendNavigation');
-	const { keyboardShown } = useKeyboard();
 	const insets = useSafeAreaInsets();
+	const { keyboardShown } = useKeyboard();
+	const [showNumberPad, setShowNumberPad] = useState(false);
+
+	useBottomSheetBackPress('sendNavigation');
+
 	const buttonContainerStyles = useMemo(
 		() => ({
 			...styles.buttonContainer,
@@ -69,9 +73,6 @@ const AddressAndAmount = ({ index = 0, navigation }): ReactElement => {
 	);
 	const selectedNetwork = useSelector(
 		(store: Store) => store.wallet.selectedNetwork,
-	);
-	const numberPadIsOpen = useSelector(
-		(store: Store) => store.user.viewController.numberPadSend.isOpen,
 	);
 	const coinSelectAuto = useSelector(
 		(state: Store) => state.settings.coinSelectAuto,
@@ -216,12 +217,10 @@ const AddressAndAmount = ({ index = 0, navigation }): ReactElement => {
 	);
 
 	const handleScan = (): void => {
-		closeNumberPad();
 		navigation.navigate('Scanner');
 	};
 
 	const handleSendToContact = (): void => {
-		closeNumberPad();
 		navigation.navigate('Contacts');
 	};
 
@@ -237,26 +236,12 @@ const AddressAndAmount = ({ index = 0, navigation }): ReactElement => {
 
 	const onTogglePress = useCallback(() => {
 		Keyboard.dismiss(); // in case it was opened by Address input
-		toggleView({
-			view: 'numberPadSend',
-			data: {
-				isOpen: true,
-				snapPoint: 0,
-			},
-		});
+		setShowNumberPad(true);
 	}, []);
 
 	const closeNumberPad = useCallback(() => {
-		if (numberPadIsOpen) {
-			toggleView({
-				view: 'numberPadSend',
-				data: {
-					isOpen: false,
-					snapPoint: 0,
-				},
-			});
-		}
-	}, [numberPadIsOpen]);
+		setShowNumberPad(false);
+	}, []);
 
 	const onBlur = useCallback(async (): Promise<void> => {
 		//An OS Paste was triggered. No need to process onBlur data.
@@ -344,10 +329,8 @@ const AddressAndAmount = ({ index = 0, navigation }): ReactElement => {
 			// try to update fees on this screen, because they will be used on next one
 			updateOnchainFeeEstimates({ selectedNetwork }).then();
 			refreshLdk({ selectedWallet, selectedNetwork }).then();
-		} else {
-			closeNumberPad();
 		}
-	}, [selectedNetwork, selectedWallet, sendNavigationIsOpen, closeNumberPad]);
+	}, [selectedNetwork, selectedWallet, sendNavigationIsOpen]);
 
 	const isInvalid = useCallback(() => {
 		if (
@@ -409,47 +392,63 @@ const AddressAndAmount = ({ index = 0, navigation }): ReactElement => {
 						<UserIcon color="brand" width={24} />
 					</TouchableOpacity>
 				</AddressOrSlashpay>
-				<Caption13Up color="gray1" style={styles.section}>
-					TAGS
-				</Caption13Up>
-				<View style={styles.tagsContainer}>
-					{transaction?.tags?.map((tag) => (
-						<Tag
-							key={tag}
-							value={tag}
-							onClose={(): void => handleTagRemove(tag)}
-							style={styles.tag}
-						/>
-					))}
-				</View>
-				<View style={styles.tagsContainer}>
-					<Button
-						color="white04"
-						text="Add Tag"
-						icon={<TagIcon color="brand" width={16} />}
-						onPress={(): void => {
-							closeNumberPad();
-							Keyboard.dismiss();
-							navigation.navigate('Tags');
+
+				{!showNumberPad && (
+					<AnimatedView
+						style={styles.bottom}
+						color="transparent"
+						entering={FadeIn}
+						exiting={FadeOut}>
+						<Caption13Up color="gray1" style={styles.section}>
+							TAGS
+						</Caption13Up>
+						<View style={styles.tagsContainer}>
+							{transaction?.tags?.map((tag) => (
+								<Tag
+									key={tag}
+									value={tag}
+									onClose={(): void => handleTagRemove(tag)}
+									style={styles.tag}
+								/>
+							))}
+						</View>
+						<View style={styles.tagsContainer}>
+							<Button
+								color="white04"
+								text="Add Tag"
+								icon={<TagIcon color="brand" width={16} />}
+								onPress={(): void => {
+									Keyboard.dismiss();
+									navigation.navigate('Tags');
+								}}
+							/>
+						</View>
+						<View style={buttonContainerStyles}>
+							{!keyboardShown && !isInvalid() && (
+								<Button
+									size="large"
+									text="Continue"
+									onPress={(): void => {
+										let view = 'ReviewAndSend';
+										// If auto coin-select is disabled and there is no lightning invoice.
+										if (!coinSelectAuto && !transaction?.lightningInvoice) {
+											view = 'CoinSelection';
+										}
+										navigation.navigate(view);
+									}}
+								/>
+							)}
+						</View>
+					</AnimatedView>
+				)}
+
+				{showNumberPad && (
+					<SendNumberPad
+						onDone={(): void => {
+							setShowNumberPad(false);
 						}}
 					/>
-				</View>
-				<View style={buttonContainerStyles}>
-					{!keyboardShown && !isInvalid() && (
-						<Button
-							size="large"
-							text="Continue"
-							onPress={(): void => {
-								let view = 'ReviewAndSend';
-								// If auto coin-select is disabled and there is no lightning invoice.
-								if (!coinSelectAuto && !transaction?.lightningInvoice) {
-									view = 'CoinSelection';
-								}
-								navigation.navigate(view);
-							}}
-						/>
-					)}
-				</View>
+				)}
 			</View>
 		</View>
 	);
@@ -476,6 +475,9 @@ const styles = StyleSheet.create({
 		paddingHorizontal: 8,
 		justifyContent: 'center',
 		alignItems: 'center',
+	},
+	bottom: {
+		flex: 1,
 	},
 	tagsContainer: {
 		flexDirection: 'row',

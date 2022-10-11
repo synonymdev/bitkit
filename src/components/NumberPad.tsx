@@ -46,12 +46,12 @@ const NumberPad = ({
 		() => StyleSheet.compose(styles.container, style),
 		[style],
 	);
+
 	const handleRemove = (): void => {
 		vibrate({});
 		onRemove();
 	};
 
-	//Handle pin button press.
 	const handlePress = (key: number | string): void => {
 		vibrate({});
 		onPress(key);
@@ -84,7 +84,7 @@ const NumberPad = ({
 						onPress={(): void => handlePress('.')}
 						activeOpacity={ACTIVE_OPACITY}
 						style={styles.buttonContainer}
-						color={'transparent'}>
+						color="transparent">
 						<Text style={styles.button}>.</Text>
 					</TouchableOpacity>
 				) : (
@@ -92,7 +92,7 @@ const NumberPad = ({
 						onPress={(): void => handlePress('000')}
 						activeOpacity={ACTIVE_OPACITY}
 						style={styles.buttonContainer}
-						color={'transparent'}>
+						color="transparent">
 						<Text style={styles.button}>000</Text>
 					</TouchableOpacity>
 				)}
@@ -101,7 +101,7 @@ const NumberPad = ({
 					onPress={handleRemove}
 					activeOpacity={ACTIVE_OPACITY}
 					style={styles.buttonContainer}
-					color={'transparent'}>
+					color="transparent">
 					<Ionicons name={'ios-backspace-outline'} size={31} />
 				</TouchableOpacity>
 			</View>

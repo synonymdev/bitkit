@@ -17,8 +17,6 @@ export const defaultViewControllers: IUser['viewController'] = {
 	forgotPIN: { ...defaultViewController },
 	PINPrompt: { ...defaultViewController },
 	PINNavigation: { ...defaultViewController },
-	numberPadSend: { ...defaultViewController },
-	numberPadReceive: { ...defaultViewController },
 	boostPrompt: { ...defaultViewController },
 	activityTagsPrompt: { ...defaultViewController },
 	newTxPrompt: { ...defaultViewController },
