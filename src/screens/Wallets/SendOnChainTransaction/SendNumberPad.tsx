@@ -1,26 +1,38 @@
-import React, { memo, ReactElement, useCallback, useState } from 'react';
+import React, {
+	memo,
+	ReactElement,
+	useCallback,
+	useMemo,
+	useState,
+} from 'react';
 import { useSelector } from 'react-redux';
 
-import NumberPadButtons from '../NumberPadButtons';
-import NumberPad from '../../../components/NumberPad';
-import Store from '../../../store/types';
-import { defaultBitcoinTransactionData } from '../../../store/types/wallet';
-import { btcToSats } from '../../../utils/helpers';
-import { useExchangeRate } from '../../../hooks/displayValues';
 import {
 	getTransactionOutputValue,
 	updateAmount,
 	sendMax,
 } from '../../../utils/wallet/transactions';
+import NumberPadButtons from '../NumberPadButtons';
+import NumberPad from '../../../components/NumberPad';
+import BottomSheetWrapper from '../../../components/BottomSheetWrapper';
+import { toggleView } from '../../../store/actions/user';
+import Store from '../../../store/types';
+import { defaultBitcoinTransactionData } from '../../../store/types/wallet';
 import {
 	fiatToBitcoinUnit,
 	getDisplayValues,
 } from '../../../utils/exchange-rate';
+import { btcToSats } from '../../../utils/helpers';
+import { useExchangeRate } from '../../../hooks/displayValues';
+import { useBottomSheetBackPress } from '../../../hooks/bottomSheet';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 /**
  * Handles the number pad logic (add/remove/clear) for on-chain transactions.
  */
-const SendNumberPad = ({ onDone }: { onDone: () => void }): ReactElement => {
+const SendNumberPad = (): ReactElement => {
+	const insets = useSafeAreaInsets();
+	const snapPoints = useMemo(() => [400 + insets.bottom], [insets.bottom]);
 	const [decimalMode, setDecimalMode] = useState(false);
 	const [prefixZeros, setPrefixZeros] = useState(0);
 
@@ -47,6 +59,8 @@ const SendNumberPad = ({ onDone }: { onDone: () => void }): ReactElement => {
 			store.wallet.wallets[selectedWallet]?.transaction[selectedNetwork] ||
 			defaultBitcoinTransactionData,
 	);
+
+	useBottomSheetBackPress('numberPadSend');
 
 	/*
 	 * Retrieves total value of all outputs. Excludes change address.
@@ -208,14 +222,22 @@ const SendNumberPad = ({ onDone }: { onDone: () => void }): ReactElement => {
 	const showDot = !(unitPreference === 'asset' && bitcoinUnit === 'satoshi');
 
 	return (
-		<NumberPad showDot={showDot} onPress={onPress} onRemove={onRemove}>
-			<NumberPadButtons
-				onMaxPress={(): void => {
-					sendMax({});
-				}}
-				onDone={onDone}
-			/>
-		</NumberPad>
+		<BottomSheetWrapper
+			view="numberPadSend"
+			snapPoints={snapPoints}
+			backdrop={false}
+			backgroundStartColor="black">
+			<NumberPad showDot={showDot} onPress={onPress} onRemove={onRemove}>
+				<NumberPadButtons
+					onMaxPress={(): void => {
+						sendMax({});
+					}}
+					onDone={(): void => {
+						toggleView({ view: 'numberPadSend', data: { isOpen: false } });
+					}}
+				/>
+			</NumberPad>
+		</BottomSheetWrapper>
 	);
 };
 

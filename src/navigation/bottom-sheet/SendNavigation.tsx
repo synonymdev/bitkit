@@ -16,6 +16,7 @@ import Result from '../../screens/Wallets/SendOnChainTransaction/Result';
 import Scanner from '../../screens/Wallets/SendOnChainTransaction/Scanner';
 import Contacts from '../../screens/Wallets/SendOnChainTransaction/Contacts';
 import CoinSelection from '../../screens/Wallets/SendOnChainTransaction/CoinSelection';
+import SendNumberPad from '../../screens/Wallets/SendOnChainTransaction/SendNumberPad';
 import AuthCheck from '../../components/AuthCheck';
 import { NavigationContainer } from '../../styles/components';
 import {
@@ -53,31 +54,34 @@ const SendNavigation = (): ReactElement => {
 	);
 
 	return (
-		<BottomSheetWrapper
-			view="sendNavigation"
-			onClose={resetOnChainTransaction}
-			onOpen={setupOnChainTransaction}
-			snapPoints={snapPoints}>
-			<NavigationContainer key={isOpen}>
-				<Stack.Navigator screenOptions={navOptions}>
-					<Stack.Group screenOptions={navOptions}>
-						<Stack.Screen
-							name="AddressAndAmount"
-							component={AddressAndAmount}
-						/>
-						<Stack.Screen name="CoinSelection" component={CoinSelection} />
-						<Stack.Screen name="FeeRate" component={FeeRate} />
-						<Stack.Screen name="FeeCustom" component={FeeCustom} />
-						<Stack.Screen name="Tags" component={Tags} />
-						<Stack.Screen name="ReviewAndSend" component={ReviewAndSend} />
-						<Stack.Screen name="Result" component={Result} />
-						<Stack.Screen name="AuthCheck" component={AuthCheck} />
-						<Stack.Screen name="Scanner" component={Scanner} />
-						<Stack.Screen name="Contacts" component={Contacts} />
-					</Stack.Group>
-				</Stack.Navigator>
-			</NavigationContainer>
-		</BottomSheetWrapper>
+		<>
+			<BottomSheetWrapper
+				view="sendNavigation"
+				onClose={resetOnChainTransaction}
+				onOpen={setupOnChainTransaction}
+				snapPoints={snapPoints}>
+				<NavigationContainer key={isOpen}>
+					<Stack.Navigator screenOptions={navOptions}>
+						<Stack.Group screenOptions={navOptions}>
+							<Stack.Screen
+								name="AddressAndAmount"
+								component={AddressAndAmount}
+							/>
+							<Stack.Screen name="CoinSelection" component={CoinSelection} />
+							<Stack.Screen name="FeeRate" component={FeeRate} />
+							<Stack.Screen name="FeeCustom" component={FeeCustom} />
+							<Stack.Screen name="Tags" component={Tags} />
+							<Stack.Screen name="ReviewAndSend" component={ReviewAndSend} />
+							<Stack.Screen name="Result" component={Result} />
+							<Stack.Screen name="AuthCheck" component={AuthCheck} />
+							<Stack.Screen name="Scanner" component={Scanner} />
+							<Stack.Screen name="Contacts" component={Contacts} />
+						</Stack.Group>
+					</Stack.Navigator>
+				</NavigationContainer>
+			</BottomSheetWrapper>
+			<SendNumberPad />
+		</>
 	);
 };
 

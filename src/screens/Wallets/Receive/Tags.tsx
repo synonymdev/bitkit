@@ -8,7 +8,7 @@ import GradientView from '../../../components/GradientView';
 import Tag from '../../../components/Tag';
 import Store from '../../../store/types';
 import { updateInvoice } from '../../../store/actions/receive';
-import { addTag, deleteTag } from '../../../store/actions/metadata';
+import { addTag } from '../../../store/actions/metadata';
 
 const Tags = ({ navigation }): ReactElement => {
 	const [text, setText] = useState('');
@@ -46,12 +46,7 @@ const Tags = ({ navigation }): ReactElement => {
 									key={tag}
 									value={tag}
 									style={styles.tag}
-									onPress={(): void => {
-										handleTagChoose(tag);
-									}}
-									onClose={(): void => {
-										deleteTag(tag);
-									}}
+									onPress={(): void => handleTagChoose(tag)}
 								/>
 							))}
 						</View>
