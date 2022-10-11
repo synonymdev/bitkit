@@ -154,3 +154,14 @@ export const addTag = (tag: string): Result<string> => {
 	});
 	return ok('');
 };
+
+/*
+ * This action deletes a tag from the last used list
+ */
+export const deleteTag = (tag: string): Result<string> => {
+	dispatch({
+		type: actions.DELETE_TAG,
+		payload: tag,
+	});
+	return ok('');
+};

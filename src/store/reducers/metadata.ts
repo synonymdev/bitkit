@@ -116,6 +116,15 @@ const metadata = (
 			};
 		}
 
+		case actions.DELETE_TAG: {
+			return {
+				...state,
+				lastUsedTags: state.lastUsedTags.filter(
+					(tag) => tag !== action.payload,
+				),
+			};
+		}
+
 		case actions.RESET_META_STORE:
 			return defaultMetadataShape;
 
