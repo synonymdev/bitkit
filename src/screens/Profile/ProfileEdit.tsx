@@ -24,6 +24,8 @@ import { saveProfile } from '../../utils/slashtags';
 import type { RootStackScreenProps } from '../../navigation/types';
 import { arraysMatch } from '../../utils/helpers';
 import Divider from '../../components/Divider';
+import { removeTodo } from '../../store/actions/todos';
+import { todoPresets } from '../../utils/todos';
 
 export const ProfileEdit = ({
 	navigation,
@@ -71,6 +73,7 @@ export const ProfileEdit = ({
 		await saveProfile(slashtag, profile);
 		if (!onboardedProfile) {
 			setOnboardingProfileStep('PaymentsFromContacts');
+			removeTodo(todoPresets.slashtagsProfile.type);
 		} else {
 			navigation.navigate('Profile');
 		}
