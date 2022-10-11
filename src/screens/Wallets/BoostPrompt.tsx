@@ -23,7 +23,10 @@ import {
 } from '../../utils/notifications';
 import { btcToSats } from '../../utils/helpers';
 import { IActivityItem } from '../../store/types/activity';
-import { useBottomSheetBackPress } from '../../hooks/bottomSheet';
+import {
+	useBottomSheetBackPress,
+	useSnapPoints,
+} from '../../hooks/bottomSheet';
 
 const BoostForm = ({
 	activityItem,
@@ -171,7 +174,7 @@ const BoostForm = ({
 };
 
 const BoostPrompt = (): ReactElement => {
-	const snapPoints = useMemo(() => [400], []);
+	const snapPoints = useSnapPoints('small');
 	const activityItem = useSelector(
 		(store: Store) => store.user.viewController.boostPrompt?.activityItem,
 	);
@@ -190,10 +193,10 @@ const BoostPrompt = (): ReactElement => {
 
 	return (
 		<BottomSheetWrapper
+			view="boostPrompt"
 			snapPoints={snapPoints}
 			backdrop={true}
-			onClose={handleClose}
-			view="boostPrompt">
+			onClose={handleClose}>
 			<View style={styles.root}>
 				<Subtitle style={styles.title}>Boost transaction</Subtitle>
 				<Text02S color="gray1">
