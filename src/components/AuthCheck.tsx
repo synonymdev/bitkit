@@ -2,7 +2,7 @@ import React, { memo, ReactElement, useState } from 'react';
 import { RouteProp } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
 
-import PinPad2 from './PinPad2';
+import PinPad from './PinPad';
 import Biometrics from './Biometrics';
 import Store from '../store/types';
 
@@ -11,6 +11,7 @@ export interface IAuthCheck {
 	onSuccess?: Function;
 	onFailure?: Function;
 	showLogoOnPIN?: boolean;
+	showBackNavigation?: boolean;
 }
 export interface IAuthCheckParams extends IAuthCheck {
 	route?: RouteProp<{ params: IAuthCheck }, 'params'>;
@@ -28,6 +29,7 @@ const AuthCheck = ({
 	onSuccess = (): null => null,
 	onFailure = (): null => null,
 	showLogoOnPIN = false,
+	showBackNavigation = true,
 	route,
 }: IAuthCheckParams): ReactElement => {
 	const pin = useSelector((state: Store) => state.settings.pin);
@@ -58,7 +60,8 @@ const AuthCheck = ({
 
 	if (displayPin) {
 		return (
-			<PinPad2
+			<PinPad
+				showBackNavigation={showBackNavigation}
 				showLogoOnPIN={showLogoOnPIN}
 				onSuccess={(): void => {
 					setDisplayPin(false);

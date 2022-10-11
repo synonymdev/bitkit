@@ -74,6 +74,7 @@ const RootNavigator = (): ReactElement => {
 		return (
 			<AuthCheck
 				showLogoOnPIN={true}
+				showBackNavigation={false}
 				onSuccess={(): void => {
 					navigation.replace('Tabs');
 				}}

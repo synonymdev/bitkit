@@ -18,6 +18,7 @@ import { removeTodo } from '../../../store/actions/todos';
 import { updateSettings } from '../../../store/actions/settings';
 import { todoPresets } from '../../../utils/todos';
 import { useBottomSheetBackPress } from '../../../hooks/bottomSheet';
+import { PIN_ATTEMPTS } from '../../../components/PinPad';
 
 const ChoosePIN = ({ navigation, route }): ReactElement => {
 	const [pin, setPin] = useState<string>('');
@@ -53,6 +54,10 @@ const ChoosePIN = ({ navigation, route }): ReactElement => {
 			const pinsAreEqual = pin === origPIN;
 			if (pinsAreEqual) {
 				await setKeychainValue({ key: 'pin', value: pin });
+				await setKeychainValue({
+					key: 'pinAttemptsRemaining',
+					value: PIN_ATTEMPTS,
+				});
 				await updateSettings({ pin: true });
 				removeTodo(todoPresets.pin.type);
 				navigation.navigate('AskForBiometrics');

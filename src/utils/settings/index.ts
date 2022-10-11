@@ -1,7 +1,7 @@
 import { resetKeychainValue, setKeychainValue } from '../helpers';
 import { updateSettings } from '../../store/actions/settings';
 import { getStore } from '../../store/helpers';
-import { PIN_ATTEMPTS } from '../../components/PinPad2';
+import { PIN_ATTEMPTS } from '../../components/PinPad';
 
 /**
  * @async

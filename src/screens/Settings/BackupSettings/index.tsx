@@ -36,7 +36,13 @@ const BackupSettings = ({
 					{
 						title: 'Reset and restore wallet',
 						type: 'button',
-						onPress: (): void => navigation.navigate('ResetAndRestore'),
+						onPress: (): void => {
+							navigation.navigate('AuthCheck', {
+								onSuccess: () => {
+									navigation.replace('ResetAndRestore');
+								},
+							});
+						},
 						enabled: true,
 						hide: false,
 					},

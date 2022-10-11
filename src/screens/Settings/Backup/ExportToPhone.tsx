@@ -16,7 +16,6 @@ import {
 	cleanupBackupFiles,
 	createBackupFile,
 } from '../../../utils/backup/fileBackup';
-import AuthCheck from '../../../components/AuthCheck';
 import SafeAreaView from '../../../components/SafeAreaView';
 import Glow from '../../../components/Glow';
 import SafeAreaInsets from '../../../components/SafeAreaInsets';
@@ -101,62 +100,60 @@ const ExportToPhone = ({
 					navigation.navigate('Tabs');
 				}}
 			/>
-			<AuthCheck>
-				<View style={styles.container}>
-					<Text01S color="gray1">
-						If you want, you can export a copy of all metadata to your phone. Be
-						aware, this .zip file will be encrypted with your PIN code.
-					</Text01S>
+			<View style={styles.container}>
+				<Text01S color="gray1">
+					If you want, you can export a copy of all metadata to your phone. Be
+					aware, this .zip file will be encrypted with your PIN code.
+				</Text01S>
 
-					<View style={styles.row}>
-						<Text style={styles.text}>Encrypt backup</Text>
-						<Switch
-							ios_backgroundColor={themeColors.surface}
-							onValueChange={(): void => setIsEncrypted(!isEncrypted)}
-							value={isEncrypted}
-						/>
-					</View>
-
-					{isEncrypted && (
-						<View>
-							<Text style={styles.title}>Password</Text>
-							<TextInput
-								textAlignVertical={'center'}
-								underlineColorAndroid="transparent"
-								style={styles.textInput}
-								placeholder="Password"
-								autoCapitalize="none"
-								autoComplete={'off'}
-								autoCorrect={false}
-								onChangeText={setPassword}
-								value={password}
-								textContentType={'newPassword'}
-								secureTextEntry
-							/>
-
-							<Text style={styles.text2}>
-								(Default password is your Backpack password)
-							</Text>
-						</View>
-					)}
-
-					<View style={styles.imageContainer} pointerEvents="none">
-						<Glow style={styles.glow} size={600} color="green" />
-						<Image source={imageSrc} style={styles.image} />
-					</View>
-
-					<View style={styles.buttonContainer}>
-						<Button
-							size="large"
-							disabled={isCreating}
-							style={styles.button}
-							text="Export Wallet Data To Phone"
-							onPress={onCreateBackup}
-						/>
-					</View>
-					<SafeAreaInsets type="bottom" />
+				<View style={styles.row}>
+					<Text style={styles.text}>Encrypt backup</Text>
+					<Switch
+						ios_backgroundColor={themeColors.surface}
+						onValueChange={(): void => setIsEncrypted(!isEncrypted)}
+						value={isEncrypted}
+					/>
 				</View>
-			</AuthCheck>
+
+				{isEncrypted && (
+					<View>
+						<Text style={styles.title}>Password</Text>
+						<TextInput
+							textAlignVertical={'center'}
+							underlineColorAndroid="transparent"
+							style={styles.textInput}
+							placeholder="Password"
+							autoCapitalize="none"
+							autoComplete={'off'}
+							autoCorrect={false}
+							onChangeText={setPassword}
+							value={password}
+							textContentType={'newPassword'}
+							secureTextEntry
+						/>
+
+						<Text style={styles.text2}>
+							(Default password is your Backpack password)
+						</Text>
+					</View>
+				)}
+
+				<View style={styles.imageContainer} pointerEvents="none">
+					<Glow style={styles.glow} size={600} color="green" />
+					<Image source={imageSrc} style={styles.image} />
+				</View>
+
+				<View style={styles.buttonContainer}>
+					<Button
+						size="large"
+						disabled={isCreating}
+						style={styles.button}
+						text="Export Wallet Data To Phone"
+						onPress={onCreateBackup}
+					/>
+				</View>
+				<SafeAreaInsets type="bottom" />
+			</View>
 		</SafeAreaView>
 	);
 };

@@ -81,7 +81,13 @@ const BackupData = ({
 				{
 					title: 'Export to phone',
 					type: 'button',
-					onPress: (): void => navigation.navigate('ExportToPhone'),
+					onPress: (): void => {
+						navigation.navigate('AuthCheck', {
+							onSuccess: () => {
+								navigation.replace('ExportToPhone');
+							},
+						});
+					},
 					enabled: true,
 					hide: false,
 				},

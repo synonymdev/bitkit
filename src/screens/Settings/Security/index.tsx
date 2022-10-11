@@ -9,10 +9,13 @@ import { removePin, toggleBiometrics } from '../../../utils/settings';
 import { IsSensorAvailableResult } from '../../../components/Biometrics';
 import { toggleView } from '../../../store/actions/user';
 import { updateSettings } from '../../../store/actions/settings';
+import { SettingsScreenProps } from '../../../navigation/types';
 
 const rnBiometrics = ReactNativeBiometrics;
 
-const SecuritySettings = ({ navigation }): ReactElement => {
+const SecuritySettings = ({
+	navigation,
+}: SettingsScreenProps<'SecuritySettings'>): ReactElement => {
 	const [biometryData, setBiometricData] = useState<
 		IsSensorAvailableResult | undefined
 	>(undefined);
