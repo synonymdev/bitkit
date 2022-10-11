@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
 		position: 'relative',
 	},
 	input: {
-		paddingRight: 130,
+		paddingRight: 140,
 		maxHeight: 100,
 	},
 	inputSlashtags: {

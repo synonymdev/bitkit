@@ -8,7 +8,7 @@ import GradientView from '../../../components/GradientView';
 import Tag from '../../../components/Tag';
 import Store from '../../../store/types';
 import { addTxTag } from '../../../store/actions/wallet';
-import { addTag } from '../../../store/actions/metadata';
+import { addTag, deleteTag } from '../../../store/actions/metadata';
 
 const AddressAndAmount = ({ navigation }): ReactElement => {
 	const [text, setText] = useState('');
@@ -58,7 +58,12 @@ const AddressAndAmount = ({ navigation }): ReactElement => {
 									key={tag}
 									value={tag}
 									style={styles.tag}
-									onPress={(): void => handleTagChoose(tag)}
+									onPress={(): void => {
+										handleTagChoose(tag);
+									}}
+									onClose={(): void => {
+										deleteTag(tag);
+									}}
 								/>
 							))}
 						</View>

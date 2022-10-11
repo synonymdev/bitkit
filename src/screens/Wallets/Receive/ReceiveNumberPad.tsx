@@ -1,27 +1,21 @@
-import React, { memo, ReactElement, useMemo, useState } from 'react';
+import React, { memo, ReactElement, useState } from 'react';
 import { useSelector } from 'react-redux';
 
 import NumberPadButtons from '../NumberPadButtons';
 import NumberPad from '../../../components/NumberPad';
-import BottomSheetWrapper from '../../../components/BottomSheetWrapper';
-import { toggleView } from '../../../store/actions/user';
 import { updateInvoice } from '../../../store/actions/receive';
 import Store from '../../../store/types';
+import { btcToSats } from '../../../utils/helpers';
+import { useExchangeRate } from '../../../hooks/displayValues';
 import {
 	fiatToBitcoinUnit,
 	getDisplayValues,
 } from '../../../utils/exchange-rate';
-import { btcToSats } from '../../../utils/helpers';
-import { useExchangeRate } from '../../../hooks/displayValues';
-import { useBottomSheetBackPress } from '../../../hooks/bottomSheet';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 /**
  * Handles the number pad logic (add/remove/clear) for invoices.
  */
-const ReceiveNumberPad = (): ReactElement => {
-	const insets = useSafeAreaInsets();
-	const snapPoints = useMemo(() => [400 + insets.bottom], [insets.bottom]);
+const ReceiveNumberPad = ({ onDone }: { onDone: () => void }): ReactElement => {
 	const [decimalMode, setDecimalMode] = useState(false);
 	const [prefixZeros, setPrefixZeros] = useState(0);
 	const invoice = useSelector((store: Store) => store.receive);
@@ -33,8 +27,6 @@ const ReceiveNumberPad = (): ReactElement => {
 		(store: Store) => store.settings.selectedCurrency,
 	);
 	const exchangeRate = useExchangeRate(currency);
-
-	useBottomSheetBackPress('numberPadReceive');
 
 	// Add, shift and update the current invoice amount based on the provided fiat value or bitcoin unit.
 	const onPress = (key: number | string): void => {
@@ -168,22 +160,12 @@ const ReceiveNumberPad = (): ReactElement => {
 		updateInvoice({ amount: Number(newAmount) });
 	};
 
-	const onDone = (): void => {
-		toggleView({ view: 'numberPadReceive', data: { isOpen: false } });
-	};
-
 	const showDot = !(unitPreference === 'asset' && bitcoinUnit === 'satoshi');
 
 	return (
-		<BottomSheetWrapper
-			view="numberPadReceive"
-			snapPoints={snapPoints}
-			backdrop={false}
-			backgroundStartColor="black">
-			<NumberPad showDot={showDot} onPress={onPress} onRemove={onRemove}>
-				<NumberPadButtons onDone={onDone} />
-			</NumberPad>
-		</BottomSheetWrapper>
+		<NumberPad showDot={showDot} onPress={onPress} onRemove={onRemove}>
+			<NumberPadButtons onDone={onDone} />
+		</NumberPad>
 	);
 };
 

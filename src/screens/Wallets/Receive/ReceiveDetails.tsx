@@ -3,13 +3,14 @@ import React, {
 	memo,
 	useCallback,
 	useMemo,
-	useEffect,
+	useState,
 } from 'react';
 import { StyleSheet, View, Keyboard } from 'react-native';
 import { useSelector } from 'react-redux';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import {
+	AnimatedView,
 	BottomSheetTextInput,
 	Caption13Up,
 	TagIcon,
@@ -24,13 +25,16 @@ import {
 	removeInvoiceTag,
 } from '../../../store/actions/receive';
 import useKeyboard from '../../../hooks/keyboard';
-import { toggleView } from '../../../store/actions/user';
 import GradientView from '../../../components/GradientView';
+import ReceiveNumberPad from './ReceiveNumberPad';
+import { FadeIn, FadeOut } from 'react-native-reanimated';
 
 const ReceiveDetails = ({ navigation }): ReactElement => {
 	const insets = useSafeAreaInsets();
 	const invoice = useSelector((store: Store) => store.receive);
 	const { keyboardShown } = useKeyboard();
+	const [showNumberPad, setShowNumberPad] = useState(false);
+
 	const buttonContainerStyles = useMemo(
 		() => ({
 			...styles.buttonContainer,
@@ -41,35 +45,16 @@ const ReceiveDetails = ({ navigation }): ReactElement => {
 
 	const onTogglePress = useCallback(() => {
 		Keyboard.dismiss(); // in case it was opened by Address input
-		toggleView({
-			view: 'numberPadReceive',
-			data: {
-				isOpen: true,
-				snapPoint: 0,
-			},
-		});
+		setShowNumberPad(true);
 	}, []);
 
 	const handleTagRemove = useCallback((tag: string) => {
 		removeInvoiceTag({ tag });
 	}, []);
 
-	// Close NumberPad on unmount
-	useEffect(() => {
-		return () => {
-			closeNumberPad();
-		};
+	const closeNumberPad = useCallback(() => {
+		setShowNumberPad(false);
 	}, []);
-
-	const closeNumberPad = (): void => {
-		toggleView({
-			view: 'numberPadReceive',
-			data: {
-				isOpen: false,
-				snapPoint: 0,
-			},
-		});
-	};
 
 	return (
 		<GradientView style={styles.container}>
@@ -104,39 +89,56 @@ const ReceiveDetails = ({ navigation }): ReactElement => {
 						blurOnSubmit={true}
 					/>
 				</View>
-				<Caption13Up color="gray1" style={styles.section}>
-					TAGS
-				</Caption13Up>
-				<View style={styles.tagsContainer}>
-					{invoice?.tags?.map((tag) => (
-						<Tag
-							key={tag}
-							value={tag}
-							onClose={(): void => handleTagRemove(tag)}
-							style={styles.tag}
-						/>
-					))}
-				</View>
-				<View style={styles.tagsContainer}>
-					<Button
-						color="white04"
-						text="Add Tag"
-						icon={<TagIcon color="brand" width={16} />}
-						onPress={(): void => {
-							closeNumberPad();
-							Keyboard.dismiss();
-							navigation.navigate('Tags');
+
+				{!showNumberPad && (
+					<AnimatedView
+						style={styles.bottom}
+						color="transparent"
+						entering={FadeIn}
+						exiting={FadeOut}>
+						<Caption13Up color="gray1" style={styles.section}>
+							TAGS
+						</Caption13Up>
+						<View style={styles.tagsContainer}>
+							{invoice?.tags?.map((tag) => (
+								<Tag
+									key={tag}
+									value={tag}
+									onClose={(): void => handleTagRemove(tag)}
+									style={styles.tag}
+								/>
+							))}
+						</View>
+						<View style={styles.tagsContainer}>
+							<Button
+								color="white04"
+								text="Add Tag"
+								icon={<TagIcon color="brand" width={16} />}
+								onPress={(): void => {
+									Keyboard.dismiss();
+									navigation.navigate('Tags');
+								}}
+							/>
+						</View>
+
+						{!keyboardShown && (
+							<View style={buttonContainerStyles}>
+								<Button
+									size="large"
+									text="Show QR Code"
+									onPress={(): void => navigation.navigate('Receive')}
+								/>
+							</View>
+						)}
+					</AnimatedView>
+				)}
+
+				{showNumberPad && (
+					<ReceiveNumberPad
+						onDone={(): void => {
+							setShowNumberPad(false);
 						}}
 					/>
-				</View>
-				{!keyboardShown && (
-					<View style={buttonContainerStyles}>
-						<Button
-							size="large"
-							text="Show QR Code"
-							onPress={(): void => navigation.navigate('Receive')}
-						/>
-					</View>
 				)}
 			</View>
 		</GradientView>
@@ -163,6 +165,9 @@ const styles = StyleSheet.create({
 	},
 	input: {
 		minHeight: 74,
+	},
+	bottom: {
+		flex: 1,
 	},
 	tagsContainer: {
 		flexDirection: 'row',
