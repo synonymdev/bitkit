@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 
 import {
 	Subtitle,
-	Text13UP,
+	Text02S,
 	BottomSheetTextInput,
 } from '../../styles/components';
 import BottomSheetWrapper from '../../components/BottomSheetWrapper';
@@ -12,7 +12,7 @@ import SafeAreaInsets from '../../components/SafeAreaInsets';
 import Store from '../../store/types';
 import { toggleView } from '../../store/actions/user';
 import Tag from '../../components/Tag';
-import { addMetaTxTag, addTag, deleteTag } from '../../store/actions/metadata';
+import { addMetaTxTag, addTag } from '../../store/actions/metadata';
 import { sleep } from '../../utils/helpers';
 import {
 	useBottomSheetBackPress,
@@ -61,30 +61,24 @@ const Form = ({ id }: { id: string }): ReactElement => {
 		<>
 			{lastUsedTags.length !== 0 && (
 				<>
-					<Text13UP color="gray1" style={styles.label}>
+					<Text02S color="gray1" style={styles.label}>
 						PREVIOUSLY USED TAGS
-					</Text13UP>
+					</Text02S>
 					<View style={styles.tagsContainer}>
 						{lastUsedTags.map((tag) => (
 							<Tag
 								key={tag}
 								value={tag}
 								style={styles.tag}
-								onPress={(): void => {
-									handleTagChoose(tag);
-								}}
-								onClose={(): void => {
-									deleteTag(tag);
-								}}
+								onPress={(): Promise<void> => handleTagChoose(tag)}
 							/>
 						))}
 					</View>
 				</>
 			)}
-
-			<Text13UP color="gray1" style={styles.label}>
+			<Text02S color="gray1" style={styles.label}>
 				NEW TAG
-			</Text13UP>
+			</Text02S>
 			<BottomSheetTextInput
 				placeholder="Enter a new tag"
 				backgroundColor="white08"
@@ -148,7 +142,7 @@ const styles = StyleSheet.create({
 	tagsContainer: {
 		flexDirection: 'row',
 		flexWrap: 'wrap',
-		marginBottom: 32,
+		marginBottom: 16,
 	},
 	tag: {
 		marginRight: 8,
