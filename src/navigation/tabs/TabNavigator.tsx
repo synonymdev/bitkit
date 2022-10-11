@@ -97,20 +97,14 @@ export const TabBar = ({
 	const onReceivePress = useCallback((): void => {
 		toggleView({
 			view: 'receiveNavigation',
-			data: {
-				isOpen: true,
-				snapPoint: 0,
-			},
+			data: { isOpen: true },
 		});
 	}, []);
 
 	const onSendPress = useCallback((): void => {
 		toggleView({
 			view: 'sendNavigation',
-			data: {
-				isOpen: true,
-				snapPoint: 0,
-			},
+			data: { isOpen: true },
 		});
 	}, []);
 
