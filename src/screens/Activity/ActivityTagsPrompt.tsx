@@ -1,4 +1,4 @@
-import React, { memo, ReactElement, useState } from 'react';
+import React, { memo, ReactElement, useMemo, useState } from 'react';
 import { Alert, StyleSheet, View, Keyboard } from 'react-native';
 import { useSelector } from 'react-redux';
 
@@ -14,10 +14,7 @@ import { toggleView } from '../../store/actions/user';
 import Tag from '../../components/Tag';
 import { addMetaTxTag, addTag } from '../../store/actions/metadata';
 import { sleep } from '../../utils/helpers';
-import {
-	useBottomSheetBackPress,
-	useSnapPoints,
-} from '../../hooks/bottomSheet';
+import { useBottomSheetBackPress } from '../../hooks/bottomSheet';
 
 const Form = ({ id }: { id: string }): ReactElement => {
 	const [text, setText] = useState('');
@@ -96,7 +93,7 @@ const Form = ({ id }: { id: string }): ReactElement => {
 };
 
 const ActivityTagsPrompt = (): ReactElement => {
-	const snapPoints = useSnapPoints('small');
+	const snapPoints = useMemo(() => [400], []);
 	const isOpen = useSelector(
 		(store: Store) => store.user.viewController?.activityTagsPrompt?.isOpen,
 	);
@@ -115,10 +112,10 @@ const ActivityTagsPrompt = (): ReactElement => {
 
 	return (
 		<BottomSheetWrapper
-			view="activityTagsPrompt"
 			snapPoints={snapPoints}
 			backdrop={true}
-			onClose={handleClose}>
+			onClose={handleClose}
+			view="activityTagsPrompt">
 			<View style={styles.root}>
 				<Subtitle style={styles.title}>Add Tag</Subtitle>
 

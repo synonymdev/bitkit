@@ -21,9 +21,11 @@ export const useSnapPoints = (size: 'small' | 'medium' | 'large'): number[] => {
 			// only Header + Balance should be visible
 			return [height - (180 + insets.top)];
 		}
+		if (size === 'small') {
+			return [460 + insets.bottom];
+		}
 
-		// small / default
-		return [400 + insets.bottom];
+		return [600];
 	}, [size, height, insets]);
 
 	return snapPoints;
