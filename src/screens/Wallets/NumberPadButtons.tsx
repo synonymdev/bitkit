@@ -1,4 +1,4 @@
-import React, { memo, ReactElement } from 'react';
+import React, { memo, ReactElement, useMemo } from 'react';
 import { View, StyleSheet, GestureResponderEvent } from 'react-native';
 import { useSelector } from 'react-redux';
 
@@ -34,11 +34,11 @@ const NumberPadButtons = ({
 			store.wallet.wallets[selectedWallet]?.balance[selectedNetwork],
 	);
 
+	const displayValues = useDisplayValues(balance);
+	const bitcoinUnit = useSelector((state: Store) => state.settings.bitcoinUnit);
 	const unitPreference = useSelector(
 		(state: Store) => state.settings.unitPreference,
 	);
-
-	const displayValues = useDisplayValues(balance);
 
 	const isMaxSendAmount = useSelector(
 		(state: Store) =>
@@ -46,9 +46,19 @@ const NumberPadButtons = ({
 			false,
 	);
 
+	// BTC -> satoshi -> fiat
+	const nextUnit = useMemo(() => {
+		if (unitPreference === 'asset') {
+			return bitcoinUnit === 'BTC' ? 'satoshi' : 'fiat';
+		}
+		return 'BTC';
+	}, [bitcoinUnit, unitPreference]);
+
 	const onChangeUnit = (): void => {
-		const unit = unitPreference === 'asset' ? 'fiat' : 'asset';
-		updateSettings({ unitPreference: unit });
+		updateSettings({
+			unitPreference: nextUnit === 'fiat' ? 'fiat' : 'asset',
+			...(nextUnit !== 'fiat' && { bitcoinUnit: nextUnit }),
+		});
 	};
 
 	return (
@@ -75,9 +85,9 @@ const NumberPadButtons = ({
 						onPress={onChangeUnit}>
 						<SwitchIcon color={color} width={16.44} height={13.22} />
 						<Text02B size="12px" color={color} style={styles.middleButtonText}>
-							{unitPreference === 'asset'
-								? displayValues.fiatTicker
-								: displayValues.bitcoinTicker}
+							{nextUnit === 'BTC' && 'BTC'}
+							{nextUnit === 'satoshi' && 'sats'}
+							{nextUnit === 'fiat' && displayValues.fiatTicker}
 						</Text02B>
 					</TouchableOpacity>
 				)}
