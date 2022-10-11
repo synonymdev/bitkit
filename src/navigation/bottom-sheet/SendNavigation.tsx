@@ -17,7 +17,7 @@ import Scanner from '../../screens/Wallets/SendOnChainTransaction/Scanner';
 import Contacts from '../../screens/Wallets/SendOnChainTransaction/Contacts';
 import CoinSelection from '../../screens/Wallets/SendOnChainTransaction/CoinSelection';
 import SendNumberPad from '../../screens/Wallets/SendOnChainTransaction/SendNumberPad';
-import AuthCheck from '../../components/AuthCheck';
+import AuthCheck from '../../screens/Wallets/SendOnChainTransaction/SendAuthCheck';
 import { NavigationContainer } from '../../styles/components';
 import {
 	resetOnChainTransaction,
