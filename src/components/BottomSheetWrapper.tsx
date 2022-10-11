@@ -55,7 +55,7 @@ const BottomSheetWrapper = forwardRef(
 		{
 			children,
 			view,
-			snapPoints = ['60%', '95%'],
+			snapPoints,
 			backdrop = true,
 			backgroundStartColor = 'gray6',
 			onOpen,

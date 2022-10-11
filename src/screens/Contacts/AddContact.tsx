@@ -2,12 +2,15 @@ import React, { useState } from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
 
+import { toggleView } from '../../store/actions/user';
+import { handleSlashtagURL } from '../../utils/slashtags';
 import BottomSheetWrapper from '../../components/BottomSheetWrapper';
 import BottomSheetNavigationHeader from '../../components/BottomSheetNavigationHeader';
-import { useBottomSheetBackPress } from '../../hooks/bottomSheet';
-import { handleSlashtagURL } from '../../utils/slashtags';
 import LabeledInput from '../../components/LabeledInput';
-import { toggleView } from '../../store/actions/user';
+import {
+	useBottomSheetBackPress,
+	useSnapPoints,
+} from '../../hooks/bottomSheet';
 import {
 	ClipboardTextIcon,
 	CornersOutIcon,
@@ -16,6 +19,7 @@ import {
 } from '../../styles/components';
 
 const AddContact = ({ navigation }): JSX.Element => {
+	const snapPoints = useSnapPoints('small');
 	const [addContactURL, setAddContactURL] = useState('');
 	const [addContacInvalid, setAddContactInvalid] = useState(false);
 
@@ -46,9 +50,9 @@ const AddContact = ({ navigation }): JSX.Element => {
 
 	return (
 		<BottomSheetWrapper
-			backdrop={true}
 			view="addContactModal"
-			snapPoints={[400]}>
+			snapPoints={snapPoints}
+			backdrop={true}>
 			<View style={styles.container}>
 				<BottomSheetNavigationHeader
 					title="Add Contact"
