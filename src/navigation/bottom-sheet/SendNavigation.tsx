@@ -7,17 +7,17 @@ import {
 import { useSelector } from 'react-redux';
 
 import BottomSheetWrapper from '../../components/BottomSheetWrapper';
-import AddressAndAmount from '../../screens/Wallets/SendOnChainTransaction/AddressAndAmount';
-import FeeRate from '../../screens/Wallets/SendOnChainTransaction/FeeRate';
-import FeeCustom from '../../screens/Wallets/SendOnChainTransaction/FeeCustom';
-import Tags from '../../screens/Wallets/SendOnChainTransaction/Tags';
-import ReviewAndSend from '../../screens/Wallets/SendOnChainTransaction/ReviewAndSend';
-import Result from '../../screens/Wallets/SendOnChainTransaction/Result';
-import Scanner from '../../screens/Wallets/SendOnChainTransaction/Scanner';
-import Contacts from '../../screens/Wallets/SendOnChainTransaction/Contacts';
-import CoinSelection from '../../screens/Wallets/SendOnChainTransaction/CoinSelection';
-import SendNumberPad from '../../screens/Wallets/SendOnChainTransaction/SendNumberPad';
-import AuthCheck from '../../screens/Wallets/SendOnChainTransaction/SendAuthCheck';
+import AddressAndAmount from '../../screens/Wallets/Send/AddressAndAmount';
+import FeeRate from '../../screens/Wallets/Send/FeeRate';
+import FeeCustom from '../../screens/Wallets/Send/FeeCustom';
+import Tags from '../../screens/Wallets/Send/Tags';
+import ReviewAndSend from '../../screens/Wallets/Send/ReviewAndSend';
+import Result from '../../screens/Wallets/Send/Result';
+import Scanner from '../../screens/Wallets/Send/Scanner';
+import Contacts from '../../screens/Wallets/Send/Contacts';
+import CoinSelection from '../../screens/Wallets/Send/CoinSelection';
+import SendNumberPad from '../../screens/Wallets/Send/SendNumberPad';
+import AuthCheck from '../../screens/Wallets/Send/SendAuthCheck';
 import { NavigationContainer } from '../../styles/components';
 import {
 	resetOnChainTransaction,

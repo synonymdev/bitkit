@@ -24,7 +24,7 @@ import {
 } from '../../utils/notifications';
 import Store from '../../store/types';
 import AdjustValue from '../../components/AdjustValue';
-import FeeSummary from '../Wallets/SendOnChainTransaction/FeeSummary';
+import FeeSummary from '../Wallets/Send/FeeSummary';
 import useDisplayValues from '../../hooks/displayValues';
 import { hasEnabledAuthentication } from '../../utils/settings';
 import NavigationHeader from '../../components/NavigationHeader';
