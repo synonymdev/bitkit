@@ -45,13 +45,13 @@ import { EmitterSubscription } from 'react-native';
 import { EActivityTypes, IActivityItem } from '../../store/types/activity';
 import { addActivityItem } from '../../store/actions/activity';
 import { EPaymentType } from '../../store/types/wallet';
-import { showSuccessNotification } from '../notifications';
+import { toggleView } from '../../store/actions/user';
 
 let paymentSubscription: EmitterSubscription | undefined;
 
 /**
  * Wipes LDK data from storage
- * @returns {Promise<Ok<string>>}
+ * @returns {Promise<Result<string>>}
  */
 export const wipeLdkStorage = async ({
 	selectedWallet,
@@ -223,7 +223,7 @@ export const getPendingInvoice = ({
 	}
 };
 
-export const handleLightningPaymentSubscription = ({
+export const handleLightningPaymentSubscription = async ({
 	payment,
 	selectedWallet,
 	selectedNetwork,
@@ -231,24 +231,20 @@ export const handleLightningPaymentSubscription = ({
 	payment: TChannelManagerPayment;
 	selectedWallet?: string;
 	selectedNetwork?: TAvailableNetworks;
-}): void => {
+}): Promise<void> => {
 	if (!selectedWallet) {
 		selectedWallet = getSelectedWallet();
 	}
 	if (!selectedNetwork) {
 		selectedNetwork = getSelectedNetwork();
 	}
-	console.log('Receiving Payment...', payment);
+	console.log('Receiving Lightning Payment...', payment);
 	const invoice = getPendingInvoice({
 		paymentHash: payment.payment_hash,
 		selectedNetwork,
 		selectedWallet,
 	});
 	if (invoice.isOk()) {
-		showSuccessNotification({
-			title: `Received ${payment.amount_sat} sats.`,
-			message: 'Lightning payment received.',
-		});
 		const value = payment.amount_sat;
 		let activityItem: IActivityItem = {
 			id: invoice.value.payment_hash,
@@ -262,10 +258,17 @@ export const handleLightningPaymentSubscription = ({
 			timestamp: new Date().getTime(),
 		};
 		addActivityItem(activityItem);
-		addLightningPayment({
+		await addLightningPayment({
 			invoice: invoice.value,
 			selectedWallet,
 			selectedNetwork,
+		});
+		toggleView({
+			view: 'newTxPrompt',
+			data: {
+				isOpen: true,
+				txid: invoice.value.payment_hash,
+			},
 		});
 		refreshLdk({ selectedWallet, selectedNetwork }).then();
 	}
@@ -298,7 +301,7 @@ export const subscribeToLightningPayments = ({
 					payment: res,
 					selectedNetwork,
 					selectedWallet,
-				});
+				}).then();
 			},
 		);
 	}

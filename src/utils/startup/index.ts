@@ -155,8 +155,7 @@ export const startWalletServices = async ({
 				]);
 
 				// Setup LDK.
-				// TODO: Remove regtest condition once LDK is enabled for mainnet and testnet.
-				if (lightning && selectedNetwork === 'bitcoinRegtest') {
+				if (lightning) {
 					// Start LDK
 					const setupResponse = await setupLdk({ selectedNetwork });
 					if (setupResponse.isOk()) {
