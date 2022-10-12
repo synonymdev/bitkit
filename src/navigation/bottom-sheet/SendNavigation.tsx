@@ -39,6 +39,7 @@ export type SendStackParamList = {
 	ReviewAndSend: undefined;
 	Result: {
 		success: boolean;
+		txId?: string;
 		errorTitle?: string;
 		errorMessage?: string;
 	};

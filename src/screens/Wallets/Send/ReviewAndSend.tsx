@@ -260,6 +260,7 @@ const ReviewAndSend = ({
 			);
 		}
 		refreshWallet({ onchain: false, lightning: true }).then();
+		//TODO: pass txId to Result screen
 		navigation.navigate('Result', { success: true });
 		setIsLoading(false);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -311,7 +312,7 @@ const ReviewAndSend = ({
 			return;
 		}
 		const response = await broadcastTransaction({
-			rawTx: rawTx?.hex ?? '',
+			rawTx: rawTx.hex,
 			selectedNetwork,
 		});
 		if (response.isErr()) {
@@ -331,13 +332,13 @@ const ReviewAndSend = ({
 		});
 
 		// save tags to metadata
-		updateMetaTxTags(rawTx?.id, transaction?.tags);
+		updateMetaTxTags(rawTx.id, transaction?.tags);
 		// save Slashtags contact to metadata
-		if (transaction?.slashTagsUrl) {
-			addMetaSlashTagsUrlTag(rawTx?.id, transaction.slashTagsUrl);
+		if (transaction.slashTagsUrl) {
+			addMetaSlashTagsUrlTag(rawTx.id, transaction.slashTagsUrl);
 		}
 
-		navigation.navigate('Result', { success: true });
+		navigation.navigate('Result', { success: true, txId: rawTx.id });
 		setIsLoading(false);
 	}, [
 		balance,

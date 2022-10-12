@@ -1,6 +1,7 @@
 import React, { memo, ReactElement, useMemo } from 'react';
 import { StyleSheet, View, Image } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useSelector } from 'react-redux';
 import Lottie from 'lottie-react-native';
 
 import { Subtitle, Text01S } from '../../../styles/components';
@@ -10,6 +11,8 @@ import Button from '../../../components/Button';
 import Glow from '../../../components/Glow';
 import { toggleView } from '../../../store/actions/user';
 import type { SendScreenProps } from '../../../navigation/types';
+import { navigate } from '../../../navigation/root/RootNavigator';
+import Store from '../../../store/types';
 
 const confettiSrc = require('../../../assets/lottie/confetti-green.json');
 
@@ -17,8 +20,11 @@ const Result = ({
 	navigation,
 	route,
 }: SendScreenProps<'Result'>): ReactElement => {
-	const { success = true, errorTitle, errorMessage } = route.params;
+	const { success, txId, errorTitle, errorMessage } = route.params;
 	const insets = useSafeAreaInsets();
+	const activityItems = useSelector((state: Store) => state.activity.items);
+	const activityItem = activityItems.find((item) => item.id === txId);
+
 	const buttonContainer = useMemo(
 		() => ({
 			...styles.buttonContainer,
@@ -27,21 +33,28 @@ const Result = ({
 		[insets.bottom],
 	);
 
-	const source = success
+	const imageSrc = success
 		? require('../../../assets/illustrations/check.png')
 		: require('../../../assets/illustrations/cross.png');
 
 	const navigateToTxDetails = (): void => {
-		navigation.navigate('ReviewAndSend');
+		if (activityItem) {
+			toggleView({
+				view: 'sendNavigation',
+				data: { isOpen: false },
+			});
+			navigate('ActivityDetail', {
+				extended: true,
+				activityItem: activityItem,
+			});
+		}
 	};
 
 	const navigateToSend = (): void => {
 		if (success) {
 			toggleView({
 				view: 'sendNavigation',
-				data: {
-					isOpen: false,
-				},
+				data: { isOpen: false },
 			});
 		} else {
 			navigation.navigate('ReviewAndSend');
@@ -76,17 +89,17 @@ const Result = ({
 					size={600}
 					color={success ? 'green' : 'red'}
 				/>
-				<Image source={source} style={styles.image} />
+				<Image source={imageSrc} style={styles.image} />
 			</View>
 
 			<View style={buttonContainer}>
-				{success && (
+				{success && activityItem && (
 					<>
 						<Button
 							style={styles.button1}
 							variant="secondary"
 							size="large"
-							text="Transaction Details"
+							text="Show Details"
 							onPress={navigateToTxDetails}
 						/>
 						<View style={styles.divider} />
