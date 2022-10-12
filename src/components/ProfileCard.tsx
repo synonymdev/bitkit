@@ -125,6 +125,7 @@ const styles = StyleSheet.create({
 	},
 	text: {
 		flex: 1,
+		paddingRight: 16,
 	},
 	name: {
 		flexWrap: 'wrap',

@@ -97,28 +97,25 @@ export const ContactEdit = ({
 					</View>
 				)}
 
-				{!resolving && (
-					<>
-						<Divider />
-						<View style={buttonContainerStyles}>
-							<Button
-								style={styles.button}
-								text="Discard"
-								size="large"
-								variant="secondary"
-								onPress={onDiscard}
-							/>
-							<View style={styles.divider} />
-							<Button
-								text="Save"
-								size="large"
-								style={styles.button}
-								disabled={form.name?.length === 0}
-								onPress={onSaveContact}
-							/>
-						</View>
-					</>
-				)}
+				{!resolving && <Divider />}
+
+				<View style={buttonContainerStyles}>
+					<Button
+						style={styles.button}
+						text="Discard"
+						size="large"
+						variant="secondary"
+						onPress={onDiscard}
+					/>
+					<View style={styles.divider} />
+					<Button
+						text="Save"
+						size="large"
+						style={styles.button}
+						disabled={form.name?.length === 0}
+						onPress={onSaveContact}
+					/>
+				</View>
 			</KeyboardAvoidingView>
 			<SafeAreaInsets type="bottom" />
 		</ThemedView>
