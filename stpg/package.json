@@ -1,14 +1,15 @@
 {
-  "name": "stpg",
-  "type": "module",
-  "dependencies": {
-    "@ngneat/falso": "^6.0.3",
-    "@synonymdev/slashtags-sdk": "^1.0.0-alpha.17",
-    "@types/node-fetch": "^2.6.2",
-    "b4a": "^1.6.0",
-    "compact-encoding": "^2.11.0",
-    "inquirer": "^9.0.1",
-    "node-fetch": "^3.2.10",
-    "random-access-memory": "^5.0.1"
-  }
+	"name": "stpg",
+	"type": "module",
+	"dependencies": {
+		"@ngneat/falso": "^6.0.3",
+		"@synonymdev/slashtags-sdk": "^1.0.0-alpha.17",
+		"@types/node-fetch": "^2.6.2",
+		"b4a": "^1.6.0",
+		"compact-encoding": "^2.11.0",
+		"inquirer": "^9.0.1",
+		"node-fetch": "^3.2.10",
+		"random-access-memory": "^5.0.1",
+		"uuid": "^8.3.2"
+	}
 }
