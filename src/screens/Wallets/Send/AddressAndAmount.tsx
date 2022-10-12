@@ -368,9 +368,12 @@ const AddressAndAmount = ({
 				transaction.outputs[0].address) ||
 			showNumberPad
 		) {
+			if (onChainBalance.satoshis <= ETransactionDefaults.recommendedBaseFee) {
+				return 0;
+			}
 			return onChainBalance.satoshis - ETransactionDefaults.recommendedBaseFee;
 		}
-		return undefined;
+		return 0;
 	}, [
 		lightningBalance.satoshis,
 		onChainBalance.satoshis,
@@ -384,6 +387,10 @@ const AddressAndAmount = ({
 			...(unitPreference !== 'fiat' ? { symbol: true } : { showFiat: true }),
 		};
 	}, [unitPreference]);
+
+	const availableAmountColor = useMemo(() => {
+		return availableAmount ? 'gray1' : 'transparent';
+	}, [availableAmount]);
 
 	return (
 		<View style={styles.container}>
@@ -408,20 +415,16 @@ const AddressAndAmount = ({
 					style={styles.amountToggle}
 					reverse={true}
 					space={16}>
-					<>
-						{availableAmount && (
-							<View style={styles.availableAmount}>
-								<Caption13Up color="gray1">Available: </Caption13Up>
-								<Money
-									key="small"
-									sats={availableAmount}
-									size="caption13M"
-									color="gray1"
-									{...availableAmountProps}
-								/>
-							</View>
-						)}
-					</>
+					<View style={styles.availableAmount}>
+						<Caption13Up color={availableAmountColor}>Available: </Caption13Up>
+						<Money
+							key="small"
+							sats={availableAmount}
+							size="caption13M"
+							color={availableAmountColor}
+							{...availableAmountProps}
+						/>
+					</View>
 				</AmountToggle>
 				<Caption13Up color="gray1" style={styles.section}>
 					TO
