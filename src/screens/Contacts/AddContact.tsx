@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
+import { StackNavigationProp } from '@react-navigation/stack';
 import Clipboard from '@react-native-clipboard/clipboard';
 
 import { toggleView } from '../../store/actions/user';
@@ -17,21 +18,37 @@ import {
 	Text01S,
 	Text02S,
 } from '../../styles/components';
+import type { RootStackParamList } from '../../navigation/types';
+import { useSelectedSlashtag } from '../../hooks/slashtags';
 
-const AddContact = ({ navigation }): JSX.Element => {
+const AddContact = ({
+	navigation,
+}: {
+	navigation: StackNavigationProp<RootStackParamList, 'Contacts'>;
+}): JSX.Element => {
 	const snapPoints = useSnapPoints('small');
 	const [addContactURL, setAddContactURL] = useState('');
-	const [addContacInvalid, setAddContactInvalid] = useState(false);
+	const [error, setError] = useState<boolean | string>(false);
+	const { url: myProfileURL } = useSelectedSlashtag();
 
 	useBottomSheetBackPress('addContactModal');
 
 	const updateContactID = (url: string): void => {
 		setAddContactURL(url);
-		setAddContactInvalid(false);
+		setError(false);
+
+		if (url === '') {
+			return;
+		}
+
+		if (url === myProfileURL) {
+			setError('You cannot add yourself as a contact.');
+			return;
+		}
 
 		handleSlashtagURL(
 			url,
-			(_error) => setAddContactInvalid(true),
+			(_error) => setError('This is not a valid key.'),
 			(_url) => {
 				setAddContactURL('');
 				toggleView({
@@ -79,11 +96,12 @@ const AddContact = ({ navigation }): JSX.Element => {
 							<ClipboardTextIcon width={24} height={24} color="brand" />
 						</TouchableOpacity>
 					</LabeledInput>
-					<View style={styles.addContactInvalid}>
-						{addContacInvalid && (
-							<Text02S color="brand">This is not a valid key.</Text02S>
-						)}
-					</View>
+
+					{error && (
+						<View style={styles.error}>
+							<Text02S color="brand">{error}</Text02S>
+						</View>
+					)}
 				</View>
 			</View>
 		</BottomSheetWrapper>
@@ -102,7 +120,7 @@ const styles = StyleSheet.create({
 		marginHorizontal: 16,
 		marginBottom: 56,
 	},
-	addContactInvalid: {
+	error: {
 		marginTop: 16,
 	},
 });
