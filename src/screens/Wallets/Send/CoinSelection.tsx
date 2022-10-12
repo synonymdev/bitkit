@@ -26,6 +26,7 @@ import {
 } from '../../../utils/wallet/transactions';
 import { addTxInput, removeTxInput } from '../../../store/actions/wallet';
 import { IUtxo } from '../../../store/types/wallet';
+import type { SendScreenProps } from '../../../navigation/types';
 
 /**
  * Some UTXO's may contain the same tx_hash.
@@ -71,7 +72,9 @@ const UtxoRow = ({ item, isEnabled, onPress }): ReactElement => {
 	);
 };
 
-const CoinSelection = ({ navigation }): ReactElement => {
+const CoinSelection = ({
+	navigation,
+}: SendScreenProps<'CoinSelection'>): ReactElement => {
 	const insets = useSafeAreaInsets();
 	const { gray4 } = useColors();
 

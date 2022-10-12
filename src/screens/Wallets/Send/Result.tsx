@@ -9,8 +9,14 @@ import GradientView from '../../../components/GradientView';
 import Button from '../../../components/Button';
 import Glow from '../../../components/Glow';
 import { toggleView } from '../../../store/actions/user';
+import type { SendScreenProps } from '../../../navigation/types';
 
-const Result = ({ navigation, route }): ReactElement => {
+const confettiSrc = require('../../../assets/lottie/confetti-green.json');
+
+const Result = ({
+	navigation,
+	route,
+}: SendScreenProps<'Result'>): ReactElement => {
 	const { success = true, errorTitle, errorMessage } = route.params;
 	const insets = useSafeAreaInsets();
 	const buttonContainer = useMemo(
@@ -44,13 +50,8 @@ const Result = ({ navigation, route }): ReactElement => {
 
 	return (
 		<GradientView style={styles.container}>
-			{success && (
-				<Lottie
-					source={require('../../../assets/lottie/confetti-green.json')}
-					autoPlay
-					loop
-				/>
-			)}
+			<>{success && <Lottie source={confettiSrc} autoPlay loop />}</>
+
 			{success ? (
 				<BottomSheetNavigationHeader
 					title="Bitcoin Sent"

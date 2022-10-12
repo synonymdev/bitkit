@@ -28,16 +28,20 @@ import { useSnapPoints } from '../../hooks/bottomSheet';
 export type SendNavigationProp = NativeStackNavigationProp<SendStackParamList>;
 
 export type SendStackParamList = {
+	AuthCheck: { onSuccess: () => void };
 	AddressAndAmount: undefined;
+	Scanner: undefined;
+	Contacts: undefined;
+	Tags: undefined;
 	CoinSelection: undefined;
 	FeeRate: undefined;
 	FeeCustom: undefined;
-	Tags: undefined;
 	ReviewAndSend: undefined;
-	Result: undefined;
-	Scanner: undefined;
-	Contacts: undefined;
-	AuthCheck: { onSuccess: () => void };
+	Result: {
+		success: boolean;
+		errorTitle?: string;
+		errorMessage?: string;
+	};
 };
 
 const Stack = createNativeStackNavigator<SendStackParamList>();

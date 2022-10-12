@@ -53,6 +53,7 @@ import {
 	payLightningInvoice,
 } from '../../../utils/lightning';
 import { refreshWallet } from '../../../utils/wallet';
+import type { SendScreenProps } from '../../../navigation/types';
 
 const Section = memo(
 	({
@@ -78,13 +79,13 @@ const Section = memo(
 	},
 );
 
-const ReviewAndSend = ({ navigation, index = 0 }): ReactElement => {
+const ReviewAndSend = ({
+	navigation,
+}: SendScreenProps<'ReviewAndSend'>): ReactElement => {
 	const insets = useSafeAreaInsets();
 	const feeEstimates = useSelector((store: Store) => store.fees.onchain);
 	const [isLoading, setIsLoading] = useState(false);
-	const [rawTx, setRawTx] = useState<{ hex: string; id: string } | undefined>(
-		undefined,
-	);
+	const [rawTx, setRawTx] = useState<{ hex: string; id: string } | undefined>();
 	const [decodedInvoice, setDecodedInvoice] = useState<TInvoice>();
 	const nextButtonContainer = useMemo(
 		() => ({
@@ -152,6 +153,9 @@ const ReviewAndSend = ({ navigation, index = 0 }): ReactElement => {
 			return Number(totalFee);
 		}
 	}, [amount, totalFee]);
+
+	// TODO:
+	const index = 0;
 
 	/**
 	 * Returns the current output by index.

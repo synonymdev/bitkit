@@ -8,8 +8,11 @@ import NavigationHeader from '../../../components/NavigationHeader';
 import ScannerComponent from '../../Scanner/ScannerComponent';
 import { showErrorNotification } from '../../../utils/notifications';
 import { useSlashtagsSDK } from '../../../components/SlashtagsProvider';
+import type { SendScreenProps } from '../../../navigation/types';
 
-const ScannerScreen = ({ navigation }): ReactElement => {
+const ScannerScreen = ({
+	navigation,
+}: SendScreenProps<'Scanner'>): ReactElement => {
 	const selectedNetwork = useSelector(
 		(state: Store) => state.wallet.selectedNetwork,
 	);

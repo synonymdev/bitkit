@@ -9,8 +9,11 @@ import FeeCustomToggle from './FeeCustomToggle';
 import FeeNumberPad from './FeeNumberPad';
 import { getTotalFee } from '../../../utils/wallet/transactions';
 import useDisplayValues from '../../../hooks/displayValues';
+import type { SendScreenProps } from '../../../navigation/types';
 
-const FeeRate = ({ navigation }): ReactElement => {
+const FeeCustom = ({
+	navigation,
+}: SendScreenProps<'FeeCustom'>): ReactElement => {
 	const transaction = useTransactionDetails();
 
 	const getFee = useCallback(
@@ -79,4 +82,4 @@ const styles = StyleSheet.create({
 	},
 });
 
-export default memo(FeeRate);
+export default memo(FeeCustom);

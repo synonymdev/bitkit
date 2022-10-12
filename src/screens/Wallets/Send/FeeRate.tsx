@@ -17,8 +17,9 @@ import {
 	updateFee,
 } from '../../../utils/wallet/transactions';
 import FeeItem from './FeeItem';
+import type { SendScreenProps } from '../../../navigation/types';
 
-const FeeRate = ({ navigation }): ReactElement => {
+const FeeRate = ({ navigation }: SendScreenProps<'FeeRate'>): ReactElement => {
 	const insets = useSafeAreaInsets();
 	const nextButtonContainer = useMemo(
 		() => ({

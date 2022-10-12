@@ -9,8 +9,9 @@ import Tag from '../../../components/Tag';
 import Store from '../../../store/types';
 import { addTxTag } from '../../../store/actions/wallet';
 import { addTag, deleteTag } from '../../../store/actions/metadata';
+import type { SendScreenProps } from '../../../navigation/types';
 
-const AddressAndAmount = ({ navigation }): ReactElement => {
+const Tags = ({ navigation }: SendScreenProps<'Tags'>): ReactElement => {
 	const [text, setText] = useState('');
 	const selectedWallet = useSelector(
 		(store: Store) => store.wallet.selectedWallet,
@@ -108,4 +109,4 @@ const styles = StyleSheet.create({
 	},
 });
 
-export default memo(AddressAndAmount);
+export default memo(Tags);

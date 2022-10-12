@@ -53,8 +53,12 @@ import { validateSlashtagURL } from '../../../utils/slashtags';
 import { useSlashtagsSDK } from '../../../components/SlashtagsProvider';
 import AddressOrSlashpay from './AddressOrSlashpay';
 import SendNumberPad from './SendNumberPad';
+import type { SendScreenProps } from '../../../navigation/types';
+import type { SendStackParamList } from '../../../navigation/bottom-sheet/SendNavigation';
 
-const AddressAndAmount = ({ index = 0, navigation }): ReactElement => {
+const AddressAndAmount = ({
+	navigation,
+}: SendScreenProps<'AddressAndAmount'>): ReactElement => {
 	const insets = useSafeAreaInsets();
 	const { keyboardShown } = useKeyboard();
 	const [showNumberPad, setShowNumberPad] = useState(false);
@@ -81,9 +85,7 @@ const AddressAndAmount = ({ index = 0, navigation }): ReactElement => {
 		(store: Store) => store.user.viewController.sendNavigation.isOpen,
 	);
 
-	const [decodedInvoice, setDecodedInvoice] = useState<undefined | TInvoice>(
-		undefined,
-	);
+	const [decodedInvoice, setDecodedInvoice] = useState<TInvoice>();
 	const [handledOsPaste, setHandledOsPaste] = useState(false);
 	const transaction = useTransactionDetails();
 	const sdk = useSlashtagsSDK();
@@ -127,6 +129,9 @@ const AddressAndAmount = ({ index = 0, navigation }): ReactElement => {
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [transaction?.outputs, selectedNetwork, selectedWallet]);
+
+	// TODO:
+	const index = 0;
 
 	/**
 	 * Returns the current output by index.
@@ -429,7 +434,7 @@ const AddressAndAmount = ({ index = 0, navigation }): ReactElement => {
 									size="large"
 									text="Continue"
 									onPress={(): void => {
-										let view = 'ReviewAndSend';
+										let view: keyof SendStackParamList = 'ReviewAndSend';
 										// If auto coin-select is disabled and there is no lightning invoice.
 										if (!coinSelectAuto && !transaction?.lightningInvoice) {
 											view = 'CoinSelection';
