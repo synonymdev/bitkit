@@ -8,6 +8,7 @@ import {
 	Image,
 	Platform,
 	StyleSheet,
+	Pressable,
 } from 'react-native';
 
 import { IListData } from '../../../components/List';
@@ -139,28 +140,34 @@ const AboutSettings = ({ navigation }): ReactElement => {
 
 	const footerComponent = (
 		<View style={styles.container}>
-			<View style={styles.containerLogo}>
+			<View style={styles.logoContainer}>
+				<Pressable
+					style={styles.logoLink}
+					onPress={(): void => {
+						navigation.navigate('EasterEgg');
+					}}
+				/>
 				<BitkitIcon height={64} width={184} />
 				<Image style={styles.poweredBy} source={imageSrc} />
 			</View>
 			<View style={styles.containerSocial}>
 				<EmailIcon
 					onPress={(): void => {
-						openURL('mailto:info@synonym.to?subject=General Inquiry');
+						openURL('mailto:info@synonym.to?subject=Bitkit');
 					}}
 					height={24}
 					width={24}
 				/>
 				<GlobeIcon
 					onPress={(): void => {
-						openURL('https://synonym.to');
+						openURL('https://bitkit.to');
 					}}
 					height={24}
 					width={24}
 				/>
 				<TwitterIcon
 					onPress={(): void => {
-						openURL('https://twitter.com/synonym_to');
+						openURL('https://twitter.com/bitkitwallet');
 					}}
 					height={24}
 					width={24}
@@ -209,12 +216,19 @@ const styles = StyleSheet.create({
 		justifyContent: 'space-evenly',
 		marginBottom: 32,
 	},
-	containerLogo: {
+	logoContainer: {
 		position: 'relative',
 		marginBottom: 42,
 		justifyContent: 'center',
 		display: 'flex',
 		alignItems: 'center',
+	},
+	logoLink: {
+		position: 'absolute',
+		top: 0,
+		left: 0,
+		height: 65,
+		width: 65,
 	},
 	textIntro: {
 		fontStyle: 'normal',
