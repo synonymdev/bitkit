@@ -74,14 +74,20 @@ const NavigationHeader = ({
 			styles.container,
 			size === 'lg'
 				? { marginTop: 17, paddingBottom: 35 }
-				: { marginTop: 2, marginBottom: 10 },
+				: { marginTop: 2, paddingBottom: 10 },
 		],
+		[size],
+	);
+
+	// provide a bigger hitbox for action buttons
+	const buttonOffset = useMemo(
+		() => [size === 'lg' ? { top: -8 } : { top: -10 }],
 		[size],
 	);
 
 	return (
 		<View style={[container, style]}>
-			<View style={styles.leftColumn}>
+			<View style={[styles.leftColumn, buttonOffset]}>
 				{displayBackButton && (
 					<ActionButton onPress={handleBackPress}>
 						<BackIcon width={20} height={20} />
@@ -91,7 +97,7 @@ const NavigationHeader = ({
 			<View style={styles.middleColumn}>
 				<Text style={styles.title}>{title}</Text>
 			</View>
-			<View style={styles.rightColumn}>
+			<View style={[styles.rightColumn, buttonOffset]}>
 				{actionIcon && onActionPress && (
 					<ActionButton onPress={onActionPress}>{actionIcon}</ActionButton>
 				)}
@@ -115,8 +121,12 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 	},
 	leftColumn: {
+		position: 'absolute',
+		left: 0,
+		height: 42,
 		width: 50,
 		justifyContent: 'center',
+		zIndex: 1,
 	},
 	middleColumn: {
 		flex: 1,
@@ -124,14 +134,19 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 	},
 	rightColumn: {
+		position: 'absolute',
+		right: 0,
+		height: 42,
 		width: 50,
 		justifyContent: 'center',
 		alignItems: 'flex-end',
+		zIndex: 1,
 	},
 	title: {
 		textAlign: 'center',
 	},
 	action: {
+		flex: 1,
 		flexDirection: 'row',
 		alignItems: 'center',
 		paddingHorizontal: 16,

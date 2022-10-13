@@ -13,7 +13,7 @@ const BottomSheetNavigationHeader = (props: Props): ReactElement => (
 
 const styles = StyleSheet.create({
 	container: {
-		marginBottom: 32,
+		paddingBottom: 32,
 	},
 });
 
