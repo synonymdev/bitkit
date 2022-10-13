@@ -66,7 +66,20 @@ export const wipeLdkStorage = async ({
 	if (!selectedNetwork) {
 		selectedNetwork = getSelectedNetwork();
 	}
-	// TODO: Add wipe functionality to react-native-ldk.
+
+	const account = await getAccount({ selectedNetwork, selectedWallet });
+	if (account.isErr()) {
+		return err(account.error.message);
+	}
+
+	const path = `${RNFS.DocumentDirectoryPath}/ldk/${account.value.name}`;
+
+	try {
+		await RNFS.unlink(path);
+	} catch (e) {
+		return err(e.toString());
+	}
+
 	return ok(`${selectedNetwork}'s LDK directory wiped for ${selectedWallet}`);
 };
 
