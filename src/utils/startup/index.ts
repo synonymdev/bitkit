@@ -137,16 +137,20 @@ export const startWalletServices = async ({
 
 			const walletExists = await checkWalletExists();
 			const walletKeys = Object.keys(wallets);
-			if (
-				!walletExists ||
-				!wallets[walletKeys[0]] ||
-				!wallets[walletKeys[0]]?.id
-			) {
+			if (!walletExists) {
+				// generate new wallet if no exsits
 				const mnemonic = await generateMnemonic();
 				if (!mnemonic) {
 					return err('Unable to generate mnemonic.');
 				}
 				await createWallet({ mnemonic });
+			} else if (!wallets[walletKeys[0]]?.id) {
+				// if we have a mnemonic in store, but not in redux, we need to init it
+				const mnemonic = await getMnemonicPhrase();
+				if (mnemonic.isErr()) {
+					return err('Unable to get mnemonic.');
+				}
+				await createWallet({ mnemonic: mnemonic.value });
 			}
 
 			// We need to start Electrum if either onchain or lightning is true.
