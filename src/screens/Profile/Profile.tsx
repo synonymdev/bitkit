@@ -85,6 +85,12 @@ const ProfileScreen = ({
 		Clipboard.setString(url);
 	};
 
+	const profileLinks = profile?.links ?? [];
+	const profileLinksWithIds = profileLinks.map((link) => ({
+		...link,
+		id: `${link.title}:${link.url}`,
+	}));
+
 	return (
 		<ThemedView style={styles.container}>
 			<SafeAreaInsets type="top" />
@@ -140,7 +146,7 @@ const ProfileScreen = ({
 							</View>
 							{view === 'details' ? (
 								<ProfileLinks
-									links={profile?.links ?? []}
+									links={profileLinksWithIds}
 									style={styles.profileDetails}
 								/>
 							) : (

@@ -11,11 +11,18 @@ export type IContactRecord = { url: string; name: string } & BasicProfile;
 
 export type SlashPayConfig = { type: string; value: string }[];
 
-export interface Link {
+export type Link = {
+	// tell TS we don't want an id field in the remote Link
+	id?: never;
+	title: string;
+	url: string;
+};
+
+export type LocalLink = {
 	id: string;
 	title: string;
 	url: string;
-}
+};
 
 export interface IRemote {
 	profile?: BasicProfile;
@@ -30,7 +37,7 @@ export interface ISlashtags {
 		| 'PaymentsFromContacts'
 		| 'OfflinePayments'
 		| 'Done';
-	links: Link[];
+	links: LocalLink[];
 	seeder?: {
 		lastSent?: number;
 	};

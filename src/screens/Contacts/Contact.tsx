@@ -84,6 +84,12 @@ export const Contact = ({
 		}
 	};
 
+	const profileLinks = profile?.links ?? [];
+	const profileLinksWithIds = profileLinks.map((link) => ({
+		...link,
+		id: `${link.title}:${link.url}`,
+	}));
+
 	return (
 		<View style={styles.container}>
 			<SafeAreaInsets type="top" />
@@ -141,7 +147,7 @@ export const Contact = ({
 						</IconButton>
 					</View>
 					<ProfileLinks
-						links={profile?.links ?? []}
+						links={profileLinksWithIds}
 						style={styles.profileDetails}
 					/>
 
