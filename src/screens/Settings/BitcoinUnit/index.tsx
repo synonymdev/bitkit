@@ -51,7 +51,7 @@ const BitcoinUnitSettings = ({ navigation }): ReactElement => {
 
 	return (
 		<SettingsView
-			title={'Bitcoin Unit'}
+			title="Bitcoin Unit"
 			listData={CurrencyListData}
 			showBackNavigation
 		/>

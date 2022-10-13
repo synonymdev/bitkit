@@ -128,8 +128,8 @@ const BackupData = ({
 
 			<View style={styles.container}>
 				<Text01S color="gray1">
-					Back up your wallet first to avoid loss of your funds and wallet data.
-					Resetting will overwrite your current Bitkit setup.
+					Transactions, accounts, contacts and tags will be restored
+					automatically once you restore the wallet with your recovery phrase.
 				</Text01S>
 
 				<View style={styles.imageContainer} pointerEvents="none">
