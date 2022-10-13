@@ -1,6 +1,15 @@
 import React, { memo, ReactElement, useMemo } from 'react';
-import { Linking, Text, View, FlatList, Share } from 'react-native';
-import { StyleSheet } from 'react-native';
+import Rate, { AndroidMarket } from 'react-native-rate';
+import {
+	Text,
+	View,
+	FlatList,
+	Share,
+	Image,
+	Platform,
+	StyleSheet,
+} from 'react-native';
+
 import { IListData } from '../../../components/List';
 import SettingsView from '../SettingsView';
 import GlowingBackground from '../../../components/GlowingBackground';
@@ -13,8 +22,20 @@ import {
 	MediumIcon,
 	TwitterIcon,
 } from '../../../styles/components';
+import { openURL } from '../../../utils/helpers';
+
+const imageSrc = require('../../../assets/powered-by.png');
 
 const AboutSettings = ({ navigation }): ReactElement => {
+	// TODO: add correct store IDs and test
+	const appleAppID = '1634634088';
+	const androidPackageName = 'to.synonym.bitkit';
+
+	const appStoreUrl =
+		Platform.OS === 'ios'
+			? `https://apps.apple.com/us/app/bitkit/id${appleAppID}`
+			: `https://play.google.com/store/apps/details?id=${androidPackageName}`;
+
 	const SettingsListData: IListData[] = useMemo(
 		() => [
 			{
@@ -22,14 +43,39 @@ const AboutSettings = ({ navigation }): ReactElement => {
 					{
 						title: 'Leave a review',
 						type: 'button',
-						onPress: (): void => navigation.navigate('TempSettings'),
+						onPress: (): void => {
+							const options = {
+								AppleAppID: appleAppID,
+								GooglePackageName: androidPackageName,
+								// OtherAndroidURL: 'http://www.randomappstore.com/app/47172391',
+								preferredAndroidMarket: AndroidMarket.Google,
+								preferInApp: Platform.OS !== 'android',
+								openAppStoreIfInAppFails: true,
+								fallbackPlatformURL: 'https://www.synonym.to/',
+							};
+							Rate.rate(options, (success, _errorMessage) => {
+								if (success) {
+									// TODO: show thank you message
+								}
+							});
+						},
+						hide: false,
+					},
+					{
+						title: 'Frequently Asked Questions',
+						type: 'button',
+						onPress: (): void => {
+							// TODO: update with correct url
+							openURL('https://www.synonym.to/').then();
+						},
 						hide: false,
 					},
 					{
 						title: 'Report a bug or contribute',
 						type: 'button',
-						onPress: (): Promise<void> =>
-							Linking.openURL('https://github.com/synonymdev').then(),
+						onPress: (): void => {
+							openURL('https://github.com/synonymdev/bitkit').then();
+						},
 						hide: false,
 					},
 					{
@@ -38,7 +84,7 @@ const AboutSettings = ({ navigation }): ReactElement => {
 						onPress: async (): Promise<void> => {
 							await Share.share({
 								title: 'Bitkit',
-								message: 'TODO link to bitkit wallet goes here',
+								message: `Download Bitkit, Your Ultimate Bitcoin Toolkit. Handing you the keys to reshape your digital life. ${appStoreUrl}`,
 							});
 						},
 						hide: false,
@@ -46,14 +92,19 @@ const AboutSettings = ({ navigation }): ReactElement => {
 					{
 						title: 'Legal',
 						type: 'button',
-						onPress: (): void => navigation.navigate('TempSettings'),
+						onPress: (): void => {
+							// TODO: update with correct url
+							openURL('https://www.synonym.to/').then();
+						},
 						hide: false,
 					},
 					{
 						title: 'Version',
 						value: '1.0.0',
 						type: 'textButton',
-						onPress: (): void => {},
+						onPress: (): void => {
+							openURL('https://github.com/synonymdev/bitkit/releases').then();
+						},
 						hide: false,
 					},
 				],
@@ -64,21 +115,24 @@ const AboutSettings = ({ navigation }): ReactElement => {
 
 	const headerComponent = (
 		<SettingsView
-			title={'About Bitkit'}
+			title="About Bitkit"
 			listData={SettingsListData}
 			showBackNavigation={true}>
 			<Text style={styles.textIntro}>
-				Bitkit puts you in control over your money, contacts, and web accounts.
-				Your mobile toolkit for a new economy, based on Bitcoin.
+				Bitkit hands you the keys to your money, profile, contacts, and web
+				accounts.
 			</Text>
 			<Text style={styles.textIntro}>
 				This{' '}
-				<Text onPress={(): void => navigation.navigate('EasterEgg')}>
+				<Text
+					onPress={(): void => {
+						navigation.navigate('EasterEgg');
+					}}>
 					Orange Pill
 				</Text>{' '}
 				was carefully crafted by: John, Reza, Paulo, Corey, Jason, Gr0kchain,
-				Ar, Ivan, Instabot, Aldert, Sasha, Auwal, Miguel & Pavel from Synonym
-				Software Ltd.
+				Ar, Ivan, Instabot, Philipp, Miguel, Aldert, Sasha, Auwal, Pavel, and
+				Jan-Willem from Synonym Software Ltd.
 			</Text>
 		</SettingsView>
 	);
@@ -87,39 +141,40 @@ const AboutSettings = ({ navigation }): ReactElement => {
 		<View style={styles.container}>
 			<View style={styles.containerLogo}>
 				<BitkitIcon height={64} width={184} />
+				<Image style={styles.poweredBy} source={imageSrc} />
 			</View>
 			<View style={styles.containerSocial}>
 				<EmailIcon
 					onPress={(): void => {
-						Linking.openURL('mailto:info@synonym.to?subject=General Inquiry');
+						openURL('mailto:info@synonym.to?subject=General Inquiry');
 					}}
 					height={24}
 					width={24}
 				/>
 				<GlobeIcon
 					onPress={(): void => {
-						Linking.openURL('https://synonym.to');
+						openURL('https://synonym.to');
 					}}
 					height={24}
 					width={24}
 				/>
 				<TwitterIcon
 					onPress={(): void => {
-						Linking.openURL('https://twitter.com/synonym_to');
+						openURL('https://twitter.com/synonym_to');
 					}}
 					height={24}
 					width={24}
 				/>
 				<MediumIcon
 					onPress={(): void => {
-						Linking.openURL('https://medium.com/synonym-to');
+						openURL('https://medium.com/synonym-to');
 					}}
 					height={24}
 					width={24}
 				/>
 				<GithubIcon
 					onPress={(): void => {
-						Linking.openURL('https://github.com/synonymdev');
+						openURL('https://github.com/synonymdev');
 					}}
 					height={24}
 					width={24}
@@ -155,6 +210,7 @@ const styles = StyleSheet.create({
 		marginBottom: 32,
 	},
 	containerLogo: {
+		position: 'relative',
 		marginBottom: 42,
 		justifyContent: 'center',
 		display: 'flex',
@@ -173,6 +229,13 @@ const styles = StyleSheet.create({
 		paddingRight: 16,
 		paddingBottom: 12,
 		paddingTop: 12,
+	},
+	poweredBy: {
+		position: 'absolute',
+		bottom: -2,
+		right: -65,
+		height: 18,
+		width: 165,
 	},
 });
 
