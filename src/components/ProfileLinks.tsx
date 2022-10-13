@@ -7,7 +7,7 @@ import {
 	ViewStyle,
 } from 'react-native';
 import { Caption13Up, Text02S, TrashIcon } from '../styles/components';
-import { Link } from '../store/types/slashtags';
+import { LocalLink } from '../store/types/slashtags';
 import { openURL } from '../utils/helpers';
 import LabeledInput from './LabeledInput';
 import { editLink, removeLink } from '../store/actions/slashtags';
@@ -17,7 +17,7 @@ const ProfileLinks = ({
 	editable = false,
 	style,
 }: {
-	links: Link[];
+	links: LocalLink[];
 	editable?: boolean;
 	style?: StyleProp<ViewStyle>;
 }): JSX.Element => {

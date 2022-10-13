@@ -43,7 +43,12 @@ export const ProfileEdit = ({
 
 	useEffect(() => {
 		const savedLinks = savedProfile?.links || [];
-		setLinks(savedLinks);
+		// add id field before saving to redux
+		const localLinks = savedLinks.map((link) => ({
+			...link,
+			id: `${link.title}:${link.url}`,
+		}));
+		setLinks(localLinks);
 	}, [savedProfile?.links]);
 
 	// show save button if links have changed
@@ -65,7 +70,8 @@ export const ProfileEdit = ({
 		return {
 			...savedProfile,
 			...fields,
-			links,
+			// remove id field before saving to remote
+			links: links.map(({ id: _id, ...rest }) => rest),
 		};
 	}, [savedProfile, fields, links]);
 

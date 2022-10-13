@@ -1,10 +1,9 @@
 import { Slashtag } from '@synonymdev/slashtags-sdk';
 import { ok, Result } from '@synonymdev/result';
-import { v4 as uuidv4 } from 'uuid';
 
 import actions from './actions';
 import { getDispatch, getStore } from '../helpers';
-import { BasicProfile, ISlashtags, Link } from '../types/slashtags';
+import { BasicProfile, ISlashtags, Link, LocalLink } from '../types/slashtags';
 import { seedDrives } from '../../utils/slashtags';
 
 const dispatch = getDispatch();
@@ -38,7 +37,7 @@ export const setOnboardedContacts = (
 /**
  * Add a link to the profile
  */
-export const setLinks = (links: Link[]): Result<string> => {
+export const setLinks = (links: LocalLink[]): Result<string> => {
 	dispatch({ type: actions.SET_LINKS, payload: links });
 	return ok('');
 };
@@ -46,11 +45,11 @@ export const setLinks = (links: Link[]): Result<string> => {
 /**
  * Add a link to the profile
  */
-export const addLink = ({ title, url }: Omit<Link, 'id'>): Result<string> => {
+export const addLink = ({ title, url }: Link): Result<string> => {
 	dispatch({
 		type: actions.ADD_LINK,
 		payload: {
-			id: uuidv4(),
+			id: `${title}:${url}`,
 			title,
 			url,
 		},
@@ -61,7 +60,7 @@ export const addLink = ({ title, url }: Omit<Link, 'id'>): Result<string> => {
 /**
  * Edit a profile link
  */
-export const editLink = (link: Link): Result<string> => {
+export const editLink = (link: LocalLink): Result<string> => {
 	dispatch({ type: actions.EDIT_LINK, payload: link });
 	return ok('');
 };
@@ -69,7 +68,7 @@ export const editLink = (link: Link): Result<string> => {
 /**
  * Remove a link from the profile
  */
-export const removeLink = (id: Link['id']): Result<string> => {
+export const removeLink = (id: LocalLink['id']): Result<string> => {
 	dispatch({ type: actions.DELETE_LINK, payload: id });
 	return ok('');
 };
