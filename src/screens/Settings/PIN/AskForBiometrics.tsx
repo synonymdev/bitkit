@@ -1,5 +1,12 @@
 import React, { memo, ReactElement, useState, useEffect, useMemo } from 'react';
-import { Alert, StyleSheet, View } from 'react-native';
+import {
+	Alert,
+	Image,
+	Linking,
+	Platform,
+	StyleSheet,
+	View,
+} from 'react-native';
 import ReactNativeBiometrics from 'react-native-biometrics';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -16,6 +23,8 @@ import { toggleBiometrics } from '../../../utils/settings';
 import { IsSensorAvailableResult } from '../../../components/Biometrics';
 import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
 import GradientView from '../../../components/GradientView';
+
+const imageSrc = require('../../../assets/illustrations/cog.png');
 
 const rnBiometrics = ReactNativeBiometrics;
 
@@ -44,6 +53,12 @@ const ChoosePIN = ({ navigation }): ReactElement => {
 		navigation.goBack();
 	};
 
+	const goToSettings = (): void => {
+		Platform.OS === 'ios'
+			? Linking.openURL('App-Prefs:Settings')
+			: Linking.sendIntent('android.settings.SETTINGS');
+	};
+
 	const handleButtonPress = (): void => {
 		if (biometryData?.available === false || !enabled) {
 			navigation.navigate('Result', { bio: false });
@@ -69,7 +84,7 @@ const ChoosePIN = ({ navigation }): ReactElement => {
 			? 'Touch ID'
 			: biometryData?.biometryType === 'FaceID'
 			? 'Face ID'
-			: biometryData?.biometryType ?? 'Biometric';
+			: biometryData?.biometryType ?? 'Biometrics';
 
 	return (
 		<GradientView style={styles.container}>
@@ -78,52 +93,69 @@ const ChoosePIN = ({ navigation }): ReactElement => {
 				onBackPress={handleOnBack}
 			/>
 
-			<View style={styles.message}>
+			<View style={styles.content}>
 				{!biometryData && <Text01S color="gray1">Loading...</Text01S>}
 
-				{biometryData?.available === false && (
-					<Text01S color="gray1">
-						It appears that your device does not support Biometric security.
-					</Text01S>
+				{!biometryData?.available && (
+					<>
+						<Text01S color="gray1">
+							Looks like you haven’t set up biometric security for your device
+							yet (or it is not supported). You can try to enable biometric
+							security in the phone settings.
+						</Text01S>
+						<View style={styles.imageContainer} pointerEvents="none">
+							<Glow style={styles.glow} color="yellow" />
+							<Image source={imageSrc} style={styles.image} />
+						</View>
+					</>
 				)}
 
 				{biometryData?.biometryType && (
-					<Text01S color="gray1">
-						PIN code set. Would you like to use {typeName} instead of your PIN
-						code?
-					</Text01S>
+					<>
+						<Text01S color="gray1">
+							PIN code set. Would you like to use {typeName} instead of your PIN
+							code whenever possible?
+						</Text01S>
+						<View style={styles.imageContainer} pointerEvents="none">
+							<Glow style={styles.glow} size={600} color="brand" />
+							{biometryData?.biometryType === 'FaceID' ? (
+								<FaceIdIcon />
+							) : (
+								<TouchIdIcon />
+							)}
+						</View>
+						<View style={styles.switchContainer}>
+							<Text01M>Use {typeName}</Text01M>
+							<Switch
+								onValueChange={(): void => setEnabled((e) => !e)}
+								value={enabled}
+							/>
+						</View>
+					</>
 				)}
-			</View>
 
-			{biometryData?.biometryType ? (
-				<View style={styles.imageContainer} pointerEvents="none">
-					<Glow style={styles.glow} size={600} color="brand" />
-					{biometryData?.biometryType === 'FaceID' ? (
-						<FaceIdIcon />
-					) : (
-						<TouchIdIcon />
+				<View style={buttonContainerStyles}>
+					{!biometryData?.available && (
+						<>
+							<Button
+								style={styles.button}
+								size="large"
+								variant="secondary"
+								text="Phone Settings"
+								onPress={goToSettings}
+							/>
+							<View style={styles.divider} />
+						</>
 					)}
-				</View>
-			) : (
-				<></>
-			)}
 
-			<View style={buttonContainerStyles}>
-				{biometryData?.biometryType && (
-					<View style={styles.switchContainer}>
-						<Text01M>Use {typeName}</Text01M>
-						<Switch
-							onValueChange={(): void => setEnabled((e) => !e)}
-							value={enabled}
-						/>
-					</View>
-				)}
-				<Button
-					size="large"
-					text={buttonText}
-					onPress={handleButtonPress}
-					disabled={!biometryData}
-				/>
+					<Button
+						style={styles.button}
+						size="large"
+						text={buttonText}
+						onPress={handleButtonPress}
+						disabled={!biometryData}
+					/>
+				</View>
 			</View>
 		</GradientView>
 	);
@@ -133,14 +165,19 @@ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 	},
-	message: {
-		marginHorizontal: 32,
+	content: {
+		flex: 1,
+		paddingHorizontal: 32,
 	},
 	imageContainer: {
 		flex: 1,
 		position: 'relative',
 		justifyContent: 'center',
 		alignItems: 'center',
+	},
+	image: {
+		width: 200,
+		height: 200,
 	},
 	glow: {
 		position: 'absolute',
@@ -152,9 +189,16 @@ const styles = StyleSheet.create({
 		marginBottom: 32,
 	},
 	buttonContainer: {
+		flexDirection: 'row',
+		justifyContent: 'center',
 		marginTop: 'auto',
-		paddingHorizontal: 32,
-		width: '100%',
+	},
+	button: {
+		paddingHorizontal: 16,
+		flex: 1,
+	},
+	divider: {
+		width: 16,
 	},
 });
 
