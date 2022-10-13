@@ -203,7 +203,7 @@ const ElectrumConfig = ({
 			} else {
 				updateUser({ isConnectedToElectrum: false });
 				showErrorNotification({
-					title: 'Unable to connect to Electrum Server.',
+					title: 'Unable to connect to Electrum Server',
 					message: connectResponse.error.message,
 				});
 			}

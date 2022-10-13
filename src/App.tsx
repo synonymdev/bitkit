@@ -40,6 +40,9 @@ if (Platform.OS === 'android') {
 
 const App = (): ReactElement => {
 	const isOnline = useSelector((state: Store) => state.user.isOnline);
+	const isConnectedToElectrum = useSelector(
+		(state: Store) => state.user.isConnectedToElectrum,
+	);
 	const walletExists = useSelector((state: Store) => state.wallet.walletExists);
 	const theme = useSelector((state: Store) => state.settings.theme);
 
@@ -60,27 +63,34 @@ const App = (): ReactElement => {
 			}
 		})();
 
+		return () => {
+			unsubscribeFromLightningPayments();
+		};
+	}, []);
+
+	useEffect(() => {
 		const unsubscribeElectrum = electrumConnection.subscribe((isConnected) => {
-			if (isConnected) {
+			if (!isConnectedToElectrum && isConnected) {
 				updateUser({ isConnectedToElectrum: isConnected });
-				showSuccessNotification({
-					title: 'Electrum Server Reconnected',
-					message: 'Successfully reconnected to Electrum Server.',
-				});
-			} else {
+				// showSuccessNotification({
+				// 	title: 'Bitkit Connection Restored',
+				// 	message: 'Successfully reconnected to Electrum Server.',
+				// });
+			}
+
+			if (isConnectedToElectrum && !isConnected) {
 				updateUser({ isConnectedToElectrum: isConnected });
-				showErrorNotification({
-					title: 'Electrum Connectivity Issues',
-					message: 'Lost connection to server, trying to reconnect...',
-				});
+				// showErrorNotification({
+				// 	title: 'Bitkit Is Reconnecting',
+				// 	message: 'Lost connection to server, trying to reconnect...',
+				// });
 			}
 		});
 
 		return () => {
 			unsubscribeElectrum();
-			unsubscribeFromLightningPayments();
 		};
-	}, []);
+	}, [isConnectedToElectrum]);
 
 	useEffect(() => {
 		// subscribe to connection information

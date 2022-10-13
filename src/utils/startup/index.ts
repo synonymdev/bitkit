@@ -116,7 +116,7 @@ export const startWalletServices = async ({
 				});
 				if (electrumResponse.isErr()) {
 					showErrorNotification({
-						title: 'Unable to connect to Electrum Server.',
+						title: 'Unable to connect to Electrum Server',
 						message:
 							electrumResponse?.error?.message ??
 							'Unable to connect to Electrum Server',
