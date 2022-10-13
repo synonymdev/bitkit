@@ -285,8 +285,9 @@ const styles = StyleSheet.create({
 		marginRight: 15,
 	},
 	leftColumn: {
-		justifyContent: 'flex-end',
 		flexDirection: 'row',
+		justifyContent: 'flex-end',
+		alignItems: 'center',
 	},
 	rightColumn: {
 		alignItems: 'center',

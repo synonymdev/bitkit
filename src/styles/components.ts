@@ -323,7 +323,7 @@ export const TetherCircleIcon = styled(SvgXml).attrs((props) => ({
 
 export const UnitBitcoinIcon = styled(SvgXml).attrs((props) => ({
 	xml: unitBitcoinIcon(
-		props?.color ? props.theme.colors[props.color] : '#F7931A',
+		props?.color ? props.theme.colors[props.color] : props.theme.colors.brand,
 	),
 	height: props?.height ?? '32px',
 	width: props?.width ?? '32px',
@@ -332,7 +332,7 @@ export const UnitBitcoinIcon = styled(SvgXml).attrs((props) => ({
 
 export const UnitSatoshiIcon = styled(SvgXml).attrs((props) => ({
 	xml: unitSatoshiIcon(
-		props?.color ? props.theme.colors[props.color] : '#F7931A',
+		props?.color ? props.theme.colors[props.color] : props.theme.colors.brand,
 	),
 	height: props?.height ?? '32px',
 	width: props?.width ?? '32px',
