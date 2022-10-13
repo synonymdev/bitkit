@@ -451,6 +451,8 @@ PODS:
   - RNQrGenerator (1.2.0):
     - React
     - ZXingObjC
+  - RNRate (1.2.9):
+    - React-Core
   - RNReactNativeHapticFeedback (1.14.0):
     - React-Core
   - RNReanimated (2.10.0):
@@ -586,6 +588,7 @@ DEPENDENCIES:
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - RNKeychain (from `../node_modules/react-native-keychain`)
   - RNQrGenerator (from `../node_modules/rn-qr-generator`)
+  - RNRate (from `../node_modules/react-native-rate`)
   - RNReactNativeHapticFeedback (from `../node_modules/react-native-haptic-feedback`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
@@ -725,6 +728,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-keychain"
   RNQrGenerator:
     :path: "../node_modules/rn-qr-generator"
+  RNRate:
+    :path: "../node_modules/react-native-rate"
   RNReactNativeHapticFeedback:
     :path: "../node_modules/react-native-haptic-feedback"
   RNReanimated:
@@ -814,6 +819,7 @@ SPEC CHECKSUMS:
   RNGestureHandler: 920eb17f5b1e15dae6e5ed1904045f8f90e0b11e
   RNKeychain: ff836453cba46938e0e9e4c22e43d43fa2c90333
   RNQrGenerator: 34beaf1996de4a2f2122c7019dccd1717b22d8d7
+  RNRate: 94f57c773e155ca0d0aeeba9c10a32bce9030daf
   RNReactNativeHapticFeedback: 1e3efeca9628ff9876ee7cdd9edec1b336913f8c
   RNReanimated: 5bdcbcc3a72aedeee7bb099604262403aa75a1e5
   RNScreens: 0df01424e9e0ed7827200d6ed1087ddd06c493f9

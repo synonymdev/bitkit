@@ -15,7 +15,6 @@ import AddressTypePreference from '../../screens/Settings/AddressTypePreference'
 import DevSettings from '../../screens/Settings/DevSettings';
 import BackupData from '../../screens/Settings/Backup/BackupData';
 import LightningNodeInfo from '../../screens/Settings/Lightning/LightningNodeInfo';
-import TempSettings from '../../screens/Settings/TempSettings';
 import BitcoinUnitSettings from '../../screens/Settings/BitcoinUnit';
 import TransactionSpeedSettings from '../../screens/Settings/TransactionSpeed';
 import BlocktankOrders from '../../screens/Settings/BlocktankOrders';
@@ -61,7 +60,6 @@ export type SettingsStackParamList = {
 	BlocktankOrders: undefined;
 	BlocktankOrderDetails: undefined;
 	ElectrumConfig: undefined;
-	TempSettings: undefined;
 	CoinSelectPreference: undefined;
 	PaymentPreference: undefined;
 	AddressTypePreference: undefined;
@@ -119,8 +117,6 @@ const SettingsNavigator = (): ReactElement => {
 					component={BlocktankOrderDetails}
 				/>
 				<Stack.Screen name="ElectrumConfig" component={ElectrumConfig} />
-				<Stack.Screen name="TempSettings" component={TempSettings} />
-
 				<Stack.Screen
 					name="CoinSelectPreference"
 					component={CoinSelectPreference}
