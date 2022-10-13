@@ -8,6 +8,9 @@ import {
 	decodeJSON,
 	getSelectedSlashtag,
 } from '../utils/slashtags';
+import { useSelector } from 'react-redux';
+import Store from '../store/types';
+import { cacheProfile } from '../store/actions/slashtags';
 
 export type Slashtag = ReturnType<SDK['slashtag']>;
 
@@ -31,9 +34,9 @@ export const useSelectedSlashtag = (): {
 export const useProfile = (
 	url: string,
 ): { resolving: boolean; profile: BasicProfile } => {
-	// TODO (slashtags) remove this caching if it is too costly
-	const cached = useSlashtags().profiles[url];
-	const [profile, setProfile] = useState<BasicProfile>(cached || {});
+	const profile = useSelector((state: Store) => {
+		return state.slashtags.profiles?.[url]?.profile || {};
+	});
 	const [resolving, setResolving] = useState(true);
 
 	const contactRecord = useSlashtags().contacts[url];
@@ -58,24 +61,25 @@ export const useProfile = (
 			.ready()
 			.then(() => {
 				// Resolve immediatly
-				resolve();
+				resolve().finally(() => {
+					!unmounted && setResolving(false);
+				});
 				// Watch update
 				drive.core.on('append', resolve);
 			})
 			.catch(onError);
 
 		async function resolve(): Promise<void> {
+			const version = await drive.files
+				.get('/profile.json')
+				.then((node: any) => node && node.seq);
+
 			const _profile = await drive
 				.get('/profile.json')
 				.then(decodeJSON)
 				.catch(noop);
 
-			set(_profile);
-		}
-
-		function set(_profile: BasicProfile): void {
-			!unmounted && setResolving(false);
-			!unmounted && setProfile(_profile);
+			cacheProfile(url, drive.files.feed.fork, version, _profile);
 		}
 
 		return function cleanup(): void {

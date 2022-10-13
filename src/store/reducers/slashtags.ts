@@ -53,6 +53,19 @@ const slashtags = (
 				links: state.links.filter((link) => link.id !== action.payload),
 			};
 		}
+		case actions.CACHE_PROFILE: {
+			return {
+				...state,
+				profiles: {
+					...state.profiles,
+					[action.payload.url]: {
+						fork: action.payload.fork,
+						version: action.payload.version,
+						profile: action.payload.profile,
+					},
+				},
+			};
+		}
 		default:
 			return state;
 	}

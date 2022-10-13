@@ -6,7 +6,7 @@ import RAWSFactory from 'random-access-web-storage';
 import b4a from 'b4a';
 
 import { storage as mmkv } from '../store/mmkv-storage';
-import { BasicProfile, IContactRecord } from '../store/types/slashtags';
+import { IContactRecord } from '../store/types/slashtags';
 import { getSlashtagsPrimaryKey } from '../utils/wallet';
 import {
 	decodeJSON,
@@ -30,14 +30,11 @@ export const RAWS = RAWSFactory({
 
 export interface ISlashtagsContext {
 	sdk: SDK;
-	/** Cached local Slashtags profiles */
-	profiles: { [url: string]: BasicProfile };
 	contacts: { [url: string]: IContactRecord };
 }
 
 const SlashtagsContext = createContext<ISlashtagsContext>({
 	sdk: {} as SDK,
-	profiles: {},
 	contacts: {},
 });
 
@@ -50,7 +47,6 @@ const RECONNECT_DHT_RELAY_INTERVAL = 1000 * 2;
 export const SlashtagsProvider = ({ children }): JSX.Element => {
 	const [primaryKey, setPrimaryKey] = useState<string>();
 	const [opened, setOpened] = useState(false);
-	const [profiles, setProfiles] = useState<ISlashtagsContext['profiles']>({});
 	const [contacts, setContacts] = useState<ISlashtagsContext['contacts']>({});
 	const [sdk, setSDK] = useState<SDK>();
 
@@ -165,24 +161,6 @@ export const SlashtagsProvider = ({ children }): JSX.Element => {
 
 			const slashtag = getSelectedSlashtag(sdk);
 
-			// Cache local profiles
-			const publicDrive = slashtag.drivestore.get();
-			publicDrive
-				.ready()
-				.then(() => {
-					resolve();
-					publicDrive.core.on('append', resolve);
-				})
-				.catch(onError);
-
-			async function resolve(): Promise<void> {
-				const profile = await publicDrive
-					.get('/profile.json')
-					.then(decodeJSON)
-					.catch(onErrorRead);
-				!unmounted && setProfiles((p) => ({ ...p, [slashtag.url]: profile }));
-			}
-
 			// Send cores to seeder
 			updateSeederMaybe(slashtag).catch(onError);
 
@@ -232,7 +210,7 @@ export const SlashtagsProvider = ({ children }): JSX.Element => {
 
 	return (
 		// Do not render children (depending on the sdk) until the primary key is loaded and the sdk opened
-		<SlashtagsContext.Provider value={{ sdk: sdk as SDK, profiles, contacts }}>
+		<SlashtagsContext.Provider value={{ sdk: sdk as SDK, contacts }}>
 			{opened && children}
 		</SlashtagsContext.Provider>
 	);

@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 import actions from './actions';
 import { getDispatch, getStore } from '../helpers';
-import { ISlashtags, Link } from '../types/slashtags';
+import { BasicProfile, ISlashtags, Link } from '../types/slashtags';
 import { seedDrives } from '../../utils/slashtags';
 
 const dispatch = getDispatch();
@@ -103,6 +103,27 @@ export const updateSeederMaybe = async (slashtag: Slashtag): Promise<void> => {
 		dispatch({
 			type: actions.SET_LAST_SEEDER_REQUEST,
 			time: now,
+		});
+	}
+};
+
+export const cacheProfile = (
+	url: string,
+	fork: number,
+	version: number,
+	profile: BasicProfile,
+): void => {
+	if (!profile || fork === null || fork === undefined || !version) {
+		return;
+	}
+
+	const cached = getStore().slashtags.profiles?.[url];
+
+	// If there is a cache mess, cache!
+	if (!cached || (fork >= cached.fork && version > cached.version)) {
+		dispatch({
+			type: actions.CACHE_PROFILE,
+			payload: { url, fork, version, profile },
 		});
 	}
 };

@@ -34,4 +34,12 @@ export interface ISlashtags {
 	seeder?: {
 		lastSent?: number;
 	};
+	// cache seen profiles!
+	profiles?: {
+		[url: string]: {
+			fork: number;
+			version: number;
+			profile: BasicProfile;
+		};
+	};
 }
