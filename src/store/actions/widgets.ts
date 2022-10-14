@@ -39,3 +39,10 @@ export const deleteFeedWidget = (url: string): void => {
 export const resetWidgetsStore = (): void => {
 	dispatch({ type: actions.RESET_WIDGETS_STORE });
 };
+
+export const setWidgetsOnboarding = (onboardedWidgets: boolean): void => {
+	dispatch({
+		type: actions.SET_WIDGETS_ONBAORDING,
+		payload: { onboardedWidgets },
+	});
+};

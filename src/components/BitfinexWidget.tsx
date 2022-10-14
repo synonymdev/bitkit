@@ -9,7 +9,7 @@ import {
 } from '@shopify/react-native-skia';
 import b4a from 'b4a';
 
-import { View, BitfinexIcon, Text01M, Caption13M } from '../styles/components';
+import { View, Text01M, Caption13M, ChartLineIcon } from '../styles/components';
 import useColors from '../hooks/colors';
 import { BaseFeedWidget } from './FeedWidget';
 import { IWidget } from '../store/types/widgets';
@@ -46,7 +46,7 @@ const Chart = ({
 		return values.map((value: number) => {
 			return (value - min) / (max - min);
 		});
-	}, [values, height]);
+	}, [values]);
 
 	backgroud.moveTo(0, 0);
 	for (let i = 0; i < steps; i++) {
@@ -143,7 +143,7 @@ const BitfinexWidget = ({
 			}
 			label={widget.feed.field.name}
 			icon={
-				<BitfinexIcon />
+				<ChartLineIcon width={32} height={32} />
 				// Optionally use the feed icon!
 				//
 				// <ProfileImage

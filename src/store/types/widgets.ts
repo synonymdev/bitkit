@@ -2,6 +2,7 @@
 export interface SlashFeedJSON {
 	name: string;
 	type: string;
+	description: string;
 	icons: {
 		[size: string]: string;
 	};
@@ -24,4 +25,5 @@ export interface IWidget {
 
 export interface IWidgets {
 	widgets: { [url: string]: IWidget };
+	onboardedWidgets: boolean;
 }

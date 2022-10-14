@@ -3,6 +3,7 @@ import { SlashFeedJSON } from '../../store/types/widgets';
 
 export enum SUPPORTED_FEED_TYPES {
 	PRICE_FEED = 'exchange.price_history',
+	HEADLINES_FEED = 'news.headlines',
 }
 
 /**

@@ -56,6 +56,7 @@ export type RootStackParamList = {
 	BuyBitcoin: undefined;
 	BlocktankOrders: undefined;
 	WidgetFeedEdit: { url: string };
+	WidgetsRoot: undefined;
 };
 
 // Root Stack Navigator

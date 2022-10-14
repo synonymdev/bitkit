@@ -42,6 +42,7 @@ import SlashAuthModal from '../../screens/Widgets/SlashAuthModal';
 import type { RootStackParamList } from '../types';
 import WidgetFeedEdit from '../../screens/Widgets/WidgetFeedEdit';
 import BlocktankOrders from '../../screens/Settings/BlocktankOrders';
+import WidgetsNavigator from '../widgets/WidgetsNavigator';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -136,6 +137,7 @@ const RootNavigator = (): ReactElement => {
 					<Stack.Screen name="BuyBitcoin" component={BuyBitcoin} />
 					<Stack.Screen name="BlocktankOrders" component={BlocktankOrders} />
 					<Stack.Screen name="WidgetFeedEdit" component={WidgetFeedEdit} />
+					<Stack.Screen name="WidgetsRoot" component={WidgetsNavigator} />
 				</Stack.Group>
 			</Stack.Navigator>
 

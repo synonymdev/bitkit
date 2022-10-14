@@ -94,7 +94,7 @@ export const OfflinePayments = ({ navigation }): JSX.Element => {
 	);
 };
 
-const Layout = ({
+export const Layout = ({
 	navigation,
 	backButton = false,
 	illustration,
@@ -115,7 +115,7 @@ const Layout = ({
 	subtitle?: string;
 	text: string;
 	highlighted: string;
-	nextStep: ISlashtags['onboardingProfileStep'];
+	nextStep?: ISlashtags['onboardingProfileStep'];
 	buttonText?: string;
 	header?: string;
 	children?;
@@ -156,7 +156,7 @@ const Layout = ({
 						size="large"
 						onPress={(): void => {
 							onNext?.();
-							setOnboardingProfileStep(nextStep);
+							nextStep && setOnboardingProfileStep(nextStep);
 						}}
 					/>
 				</View>

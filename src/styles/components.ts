@@ -65,6 +65,8 @@ import {
 	brokenLinkIcon,
 	eyeIcon,
 	heartbeatIcon,
+	chartLineIcon,
+	newspaperIcon,
 } from '../assets/icons/wallet';
 import {
 	chevronRightIcon,
@@ -986,5 +988,19 @@ export const BitfinexIcon = styled(SvgXml).attrs((props) => ({
 	xml: bitfinexIcon(),
 	height: props?.height ?? '32px',
 	width: props?.width ?? '32px',
+	color: undefined,
+}))({});
+
+export const ChartLineIcon = styled(SvgXml).attrs((props) => ({
+	xml: chartLineIcon(props.theme.colors[props.color]),
+	height: props?.height ?? '64px',
+	width: props?.width ?? '64px',
+	color: undefined,
+}))({});
+
+export const NewspaperIcon = styled(SvgXml).attrs((props) => ({
+	xml: newspaperIcon(props.theme.colors[props.color]),
+	height: props?.height ?? '64px',
+	width: props?.width ?? '64px',
 	color: undefined,
 }))({});

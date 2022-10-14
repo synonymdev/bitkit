@@ -14,6 +14,7 @@ import {
 import BitfinexWidget from './BitfinexWidget';
 import AuthWidget from './AuthWidget';
 import FeedWidget from './FeedWidget';
+import HeadlinesWidget from './HeadlinesWidget';
 import { SUPPORTED_FEED_TYPES } from '../utils/widgets';
 
 export const Widgets = (): ReactElement => {
@@ -29,6 +30,10 @@ export const Widgets = (): ReactElement => {
 							switch (widget.feed.type) {
 								case SUPPORTED_FEED_TYPES.PRICE_FEED:
 									return <BitfinexWidget key={url} url={url} widget={widget} />;
+								case SUPPORTED_FEED_TYPES.HEADLINES_FEED:
+									return (
+										<HeadlinesWidget key={url} url={url} widget={widget} />
+									);
 								default:
 									return <FeedWidget key={url} url={url} widget={widget} />;
 							}
@@ -39,7 +44,7 @@ export const Widgets = (): ReactElement => {
 				)}
 				<TouchableOpacity
 					onPress={(): void => {
-						navigate('Scanner', {});
+						navigate('WidgetsRoot', {});
 					}}
 					style={styles.add}>
 					<View color="green16" style={styles.iconCircle}>

@@ -42,6 +42,12 @@ const slashtags = (state: IWidgets = defaultWidgetsShape, action): IWidgets => {
 
 			return { ...state, widgets };
 
+		case actions.SET_WIDGETS_ONBAORDING:
+			return {
+				...state,
+				onboardedWidgets: action.payload.onboardedWidgets,
+			};
+
 		default:
 			return state;
 	}
