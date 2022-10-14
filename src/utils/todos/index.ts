@@ -1,4 +1,3 @@
-import { Alert } from 'react-native';
 import { TChannel } from '@synonymdev/react-native-ldk';
 
 import { ITodo, TTodoType } from '../../store/types/todos';
@@ -198,8 +197,10 @@ export const handleOnPress = ({
 			case 'buyBitcoin':
 				navigation.navigate('BuyBitcoin');
 				break;
+			case 'lightningSettingUp':
+				navigation.navigate('BlocktankOrders');
+				break;
 			default:
-				Alert.alert('TODO: ' + type);
 				return;
 		}
 	} catch {}

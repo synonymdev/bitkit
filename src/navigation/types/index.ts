@@ -54,6 +54,7 @@ export type RootStackParamList = {
 	ContactEdit: { url: string };
 	Contact: { url: string };
 	BuyBitcoin: undefined;
+	BlocktankOrders: undefined;
 	WidgetFeedEdit: { url: string };
 };
 

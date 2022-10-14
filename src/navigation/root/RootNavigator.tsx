@@ -41,6 +41,7 @@ import ContactEdit from '../../screens/Contacts/ContactEdit';
 import SlashAuthModal from '../../screens/Widgets/SlashAuthModal';
 import type { RootStackParamList } from '../types';
 import WidgetFeedEdit from '../../screens/Widgets/WidgetFeedEdit';
+import BlocktankOrders from '../../screens/Settings/BlocktankOrders';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -133,6 +134,7 @@ const RootNavigator = (): ReactElement => {
 					<Stack.Screen name="ContactEdit" component={ContactEdit} />
 					<Stack.Screen name="Contact" component={Contact} />
 					<Stack.Screen name="BuyBitcoin" component={BuyBitcoin} />
+					<Stack.Screen name="BlocktankOrders" component={BlocktankOrders} />
 					<Stack.Screen name="WidgetFeedEdit" component={WidgetFeedEdit} />
 				</Stack.Group>
 			</Stack.Navigator>
