@@ -44,7 +44,7 @@ export const ProfileEdit = ({
 	useEffect(() => {
 		const savedLinks = savedProfile?.links || [];
 		setLinks(savedLinks);
-	}, [savedProfile]);
+	}, [savedProfile?.links]);
 
 	// show save button if links have changed
 	useEffect(() => {
@@ -114,7 +114,7 @@ export const ProfileEdit = ({
 				<Divider />
 				<ProfileLinks links={links} editable={true} />
 				<Button
-					text="Add Link Or Text"
+					text="Add Link"
 					style={styles.addLinkButton}
 					onPress={(): void => {
 						navigation.navigate('ProfileAddLink');
