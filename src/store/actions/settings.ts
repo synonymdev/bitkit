@@ -45,17 +45,15 @@ export const wipeApp = async ({
 			selectedWallet = getSelectedWallet();
 		}
 
-		// Reset Redux stores & persisted storage
-		dispatch({ type: actions.WIPE_APP });
-
 		// Reset everything else
 		await Promise.all([
-			resetKeychainValue({ key: selectedWallet }),
-			resetKeychainValue({ key: `${selectedWallet}passphrase` }),
-			resetKeychainValue({ key: 'lndMnemonic' }),
 			removePin(),
+			wipeKeychain({ selectedWallet }),
 			wipeLdkStorage({ selectedWallet }),
 		]);
+
+		// Reset Redux stores & persisted storage
+		dispatch({ type: actions.WIPE_APP });
 
 		showSuccessNotification({
 			title: 'Bitkit Wiped Successfully',
@@ -67,6 +65,24 @@ export const wipeApp = async ({
 		console.log(e);
 		return err(e);
 	}
+};
+
+/**
+ * Wipes all known device keychain data.
+ * @param {string} [selectedWallet]
+ * @returns {void}
+ */
+export const wipeKeychain = async ({
+	selectedWallet,
+}: {
+	selectedWallet: string;
+}): Promise<void> => {
+	await Promise.all([
+		resetKeychainValue({ key: selectedWallet }),
+		resetKeychainValue({ key: `${selectedWallet}passphrase` }),
+		resetKeychainValue({ key: 'pin' }),
+		resetKeychainValue({ key: 'pinAttemptsRemaining' }),
+	]);
 };
 
 /**
