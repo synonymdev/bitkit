@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Image } from 'react-native';
 import { useSelector } from 'react-redux';
 
 import {
@@ -14,7 +14,7 @@ import Button from '../../components/Button';
 import SafeAreaInsets from '../../components/SafeAreaInsets';
 import Store from '../../store/types';
 import type { RootStackScreenProps } from '../../navigation/types';
-import { SlashFeedJSON } from '../../store/types/widgets';
+import { IWidget, SlashFeedJSON } from '../../store/types/widgets';
 import { useSlashtagsSDK } from '../../components/SlashtagsProvider';
 import { SlashURL } from '@synonymdev/slashtags-sdk';
 import { decodeJSON, readAsDataURL } from '../../utils/slashtags';
@@ -24,6 +24,9 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import useColors from '../../hooks/colors';
 import { deleteFeedWidget, setFeedWidget } from '../../store/actions/widgets';
 import { decodeWidgetFieldValue } from '../../utils/widgets';
+import Glow from '../../components/Glow';
+
+const imageSrc = require('../../assets/illustrations/hourglass.png');
 
 export const WidgetFeedEdit = ({
 	navigation,
@@ -33,9 +36,13 @@ export const WidgetFeedEdit = ({
 
 	const url = route.params?.url;
 
-	const savedSelectedField = useSelector((state: Store) => {
-		return state.widgets.widgets[url]?.feed?.field?.name;
+	const savedWidget: IWidget | undefined = useSelector((state: Store) => {
+		return state.widgets.widgets[url];
 	});
+
+	const savedSelectedField = useMemo(() => {
+		return savedWidget?.feed?.field?.name;
+	}, [savedWidget]);
 
 	const [selectedField, setSelectedField] =
 		useState<string>(savedSelectedField);
@@ -44,8 +51,14 @@ export const WidgetFeedEdit = ({
 		return selectedField && selectedField !== savedSelectedField;
 	}, [selectedField, savedSelectedField]);
 
-	const [config, setConfig] = useState<SlashFeedJSON & { icon: string }>();
+	const [config, setConfig] = useState<
+		Partial<SlashFeedJSON> & { icon?: string }
+	>(savedWidget?.feed);
 	const [fields, setFields] = useState<{ [label: string]: string }>({});
+
+	const resolving = useMemo(() => {
+		return !config && !savedWidget;
+	}, [config, savedWidget]);
 
 	const sdk = useSlashtagsSDK();
 
@@ -82,6 +95,12 @@ export const WidgetFeedEdit = ({
 				.then(decodeJSON)
 				.then((_config: SlashFeedJSON) => {
 					saveConfig(_config).catch(noop);
+
+					// Save fields without values as soon as possible
+					!unmounted &&
+						setFields(
+							Object.fromEntries(_config.fields.map((f) => [f.name, ''])),
+						);
 
 					_config.fields.map((field) => {
 						drive
@@ -127,17 +146,18 @@ export const WidgetFeedEdit = ({
 	const save = (): void => {
 		config &&
 			setFeedWidget(url, {
-				name: config.name,
-				type: config.type,
-				icon: config.icon,
-				field: config.fields.filter((f) => f.name === selectedField)[0],
-			});
-		navigation.goBack();
+				name: config?.name,
+				type: config?.type,
+				description: config?.description,
+				icon: config?.icon,
+				field: config.fields?.filter((f) => f.name === selectedField)[0],
+			} as IWidget['feed']);
+		navigation.navigate('Tabs');
 	};
 
 	const deleteWidget = (): void => {
 		deleteFeedWidget(url);
-		navigation.goBack();
+		navigation.navigate('Tabs');
 	};
 
 	return (
@@ -149,73 +169,83 @@ export const WidgetFeedEdit = ({
 					navigation.navigate('Tabs');
 				}}
 			/>
-			<View style={styles.content}>
-				<View style={styles.header}>
-					<Title>{config?.name}</Title>
-					<ProfileImage
-						style={styles.headerImage}
-						url={url}
-						image={config?.icon}
-						size={32}
-					/>
+			{resolving ? (
+				<View style={styles.imageContainer} pointerEvents="none">
+					<Glow color="brand" size={600} style={styles.glow} />
+					<Image source={imageSrc} style={styles.image} />
 				</View>
-				<Text02S color="gray1" style={styles.explanation}>
-					Select the feed you want the widget to display in your wallet
-					overview.
-				</Text02S>
-				<ScrollView>
-					{Object.values(fields).length === 0 ? (
-						<Text02S color="gray1">No feeds to feature...</Text02S>
-					) : (
-						Object.entries(fields)
-							.sort((a, b) => (a[0] < b[0] ? -1 : 1))
-							.map(([label, value]) => {
-								return (
-									<TouchableOpacity
-										key={label}
-										activeOpacity={0.6}
-										onPress={(): void => setSelectedField(label)}>
-										<View style={styles.fieldContainer}>
-											<View>
-												<Caption13Up color="gray1" style={styles.fileLabel}>
-													{label}
-												</Caption13Up>
-												<Text02S style={styles.fileValue}>{value}</Text02S>
-											</View>
-											<View
-												style={[
-													styles.selectField,
-													selectedField === label
-														? { backgroundColor: brand, borderColor: white }
-														: {},
-												]}
-											/>
-										</View>
-										<View style={styles.divider} />
-									</TouchableOpacity>
-								);
-							})
-					)}
-				</ScrollView>
-				<View style={styles.buttonsContainer}>
-					{savedSelectedField && (
-						<Button
-							style={styles.deleteButton}
-							text="Delete"
-							size="large"
-							variant="secondary"
-							onPress={deleteWidget}
+			) : (
+				<View style={styles.content}>
+					<View style={styles.header}>
+						<Title>{config?.name}</Title>
+						<ProfileImage
+							style={styles.headerImage}
+							url={url}
+							image={config?.icon}
+							size={32}
 						/>
-					)}
-					<Button
-						style={styles.saveButton}
-						text="Save"
-						size="large"
-						disabled={!shouldSave}
-						onPress={save}
-					/>
+					</View>
+					<Text02S style={styles.explanation}>
+						{config?.description || ''}
+					</Text02S>
+					<Text02S color="gray1" style={styles.explanation}>
+						Select the feed you want the widget to display in your wallet
+						overview.
+					</Text02S>
+					<ScrollView>
+						{Object.values(fields).length === 0 ? (
+							<Text02S color="gray1">No feeds to feature...</Text02S>
+						) : (
+							Object.entries(fields)
+								.sort((a, b) => (a[0] < b[0] ? -1 : 1))
+								.map(([label, value]) => {
+									return (
+										<TouchableOpacity
+											key={label}
+											activeOpacity={0.6}
+											onPress={(): void => setSelectedField(label)}>
+											<View style={styles.fieldContainer}>
+												<View>
+													<Caption13Up color="gray1" style={styles.fileLabel}>
+														{label}
+													</Caption13Up>
+													<Text02S style={styles.fileValue}>{value}</Text02S>
+												</View>
+												<View
+													style={[
+														styles.selectField,
+														selectedField === label
+															? { backgroundColor: brand, borderColor: white }
+															: {},
+													]}
+												/>
+											</View>
+											<View style={styles.divider} />
+										</TouchableOpacity>
+									);
+								})
+						)}
+					</ScrollView>
+					<View style={styles.buttonsContainer}>
+						{savedSelectedField && (
+							<Button
+								style={styles.deleteButton}
+								text="Delete"
+								size="large"
+								variant="secondary"
+								onPress={deleteWidget}
+							/>
+						)}
+						<Button
+							style={styles.saveButton}
+							text="Save"
+							size="large"
+							disabled={!shouldSave}
+							onPress={save}
+						/>
+					</View>
 				</View>
-			</View>
+			)}
 			<SafeAreaInsets type="bottom" />
 		</ThemedView>
 	);
@@ -275,12 +305,24 @@ const styles = StyleSheet.create({
 		borderColor: '#3A3A3C',
 		borderWidth: 4,
 	},
-
 	buttonsContainer: {
 		paddingTop: 16,
 		display: 'flex',
 		flexDirection: 'row',
 		justifyContent: 'space-between',
+	},
+	imageContainer: {
+		flex: 1,
+		position: 'relative',
+		justifyContent: 'center',
+		alignItems: 'center',
+	},
+	glow: {
+		position: 'absolute',
+	},
+	image: {
+		width: 230,
+		height: 230,
 	},
 });
 
