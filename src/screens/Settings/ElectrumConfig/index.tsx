@@ -280,7 +280,7 @@ const ElectrumConfig = ({
 							)}
 						</View>
 
-						{!peersMatch(connectedPeer) && (
+						{!!connectedPeer.host && !peersMatch(connectedPeer) && (
 							<View style={styles.savePeer}>
 								<Button
 									text="Save This Peer"
