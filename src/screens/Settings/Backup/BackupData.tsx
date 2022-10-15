@@ -21,6 +21,7 @@ const BackupData = ({
 	navigation,
 }: SettingsScreenProps<'BackupData'>): ReactElement => {
 	const { remoteBackupsEnabled } = useSelector((state: Store) => state.backup);
+	const pin = useSelector((state: Store) => state.settings.pin);
 
 	const [isBackingUp, setIsBackingUp] = useState(false);
 
@@ -82,11 +83,15 @@ const BackupData = ({
 					title: 'Export to phone',
 					type: 'button',
 					onPress: (): void => {
-						navigation.navigate('AuthCheck', {
-							onSuccess: () => {
-								navigation.replace('ExportToPhone');
-							},
-						});
+						if (pin) {
+							navigation.navigate('AuthCheck', {
+								onSuccess: () => {
+									navigation.replace('ExportToPhone');
+								},
+							});
+						} else {
+							navigation.navigate('ExportToPhone');
+						}
 					},
 					enabled: true,
 					hide: false,

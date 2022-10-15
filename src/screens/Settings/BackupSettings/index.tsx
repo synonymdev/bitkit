@@ -1,12 +1,17 @@
 import React, { memo, ReactElement, useMemo } from 'react';
+import { useSelector } from 'react-redux';
+
 import { IListData } from '../../../components/List';
-import SettingsView from './../SettingsView';
+import SettingsView from '../SettingsView';
 import { toggleView } from '../../../store/actions/user';
 import { SettingsScreenProps } from '../../../navigation/types';
+import Store from '../../../store/types';
 
 const BackupSettings = ({
 	navigation,
 }: SettingsScreenProps<'BackupSettings'>): ReactElement => {
+	const pin = useSelector((state: Store) => state.settings.pin);
+
 	const SettingsListData: IListData[] = useMemo(
 		() => [
 			{
@@ -29,7 +34,9 @@ const BackupSettings = ({
 					{
 						title: 'Back up your data',
 						type: 'button',
-						onPress: (): void => navigation.navigate('BackupData'),
+						onPress: (): void => {
+							navigation.navigate('BackupData');
+						},
 						enabled: true,
 						hide: false,
 					},
@@ -37,11 +44,15 @@ const BackupSettings = ({
 						title: 'Reset and restore wallet',
 						type: 'button',
 						onPress: (): void => {
-							navigation.navigate('AuthCheck', {
-								onSuccess: () => {
-									navigation.replace('ResetAndRestore');
-								},
-							});
+							if (pin) {
+								navigation.navigate('AuthCheck', {
+									onSuccess: () => {
+										navigation.replace('ResetAndRestore');
+									},
+								});
+							} else {
+								navigation.navigate('ResetAndRestore');
+							}
 						},
 						enabled: true,
 						hide: false,
