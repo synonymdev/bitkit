@@ -30,7 +30,7 @@ const LightningNodeInfo = (): ReactElement => {
 			} else {
 				console.log('Error getting NodeId', response.error.message);
 				setNodeId('disconnected');
-				setError('Bitkit failed to establish a Lightning node connection.');
+				setError('Bitkit failed to initialze the Lightning node.');
 			}
 		})();
 	}, [selectedNetwork]);
