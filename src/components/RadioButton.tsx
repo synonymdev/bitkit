@@ -66,6 +66,7 @@ export const RadioButtonGroup = memo(
 					if (index === data.length - 1) {
 						return (
 							<RadioButton
+								key={item.value}
 								label={item.label}
 								checked={value === item.value}
 								onPress={(): void => onPress?.(item.value)}
@@ -75,6 +76,7 @@ export const RadioButtonGroup = memo(
 					} else {
 						return (
 							<RadioButton
+								key={item.value}
 								label={item.label}
 								checked={value === item.value}
 								onPress={(): void => onPress?.(item.value)}
