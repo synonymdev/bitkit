@@ -1,4 +1,4 @@
-import React, { memo, ReactElement, useMemo } from 'react';
+import React, { memo, ReactElement, useEffect, useMemo, useRef } from 'react';
 import { StyleSheet, View, Image } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useSelector } from 'react-redux';
@@ -22,6 +22,7 @@ const Result = ({
 }: SendScreenProps<'Result'>): ReactElement => {
 	const { success, txId, errorTitle, errorMessage } = route.params;
 	const insets = useSafeAreaInsets();
+	const animationRef = useRef<Lottie>(null);
 	const activityItems = useSelector((state: Store) => state.activity.items);
 	const activityItem = activityItems.find((item) => item.id === txId);
 
@@ -36,6 +37,11 @@ const Result = ({
 	const imageSrc = success
 		? require('../../../assets/illustrations/check.png')
 		: require('../../../assets/illustrations/cross.png');
+
+	// force autoPlay of the animation
+	useEffect(() => {
+		setTimeout(() => animationRef.current?.play(), 100);
+	}, []);
 
 	const navigateToTxDetails = (): void => {
 		if (activityItem) {
@@ -63,7 +69,11 @@ const Result = ({
 
 	return (
 		<GradientView style={styles.container}>
-			<>{success && <Lottie source={confettiSrc} autoPlay loop />}</>
+			<>
+				{success && (
+					<Lottie ref={animationRef} source={confettiSrc} autoPlay loop />
+				)}
+			</>
 
 			{success ? (
 				<BottomSheetNavigationHeader
