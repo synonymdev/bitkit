@@ -1,4 +1,4 @@
-import React, { memo, ReactElement, useMemo } from 'react';
+import React, { memo, ReactElement, useEffect, useMemo, useRef } from 'react';
 import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useSelector } from 'react-redux';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -23,6 +23,8 @@ const imageSrc = require('../../assets/illustrations/coin-stack-x.png');
 const NewTxPrompt = (): ReactElement => {
 	const snapPoints = useSnapPoints('large');
 	const insets = useSafeAreaInsets();
+	const animationRef = useRef<Lottie>(null);
+
 	const buttonContainerStyles = useMemo(
 		() => ({
 			...styles.confirming,
@@ -40,6 +42,11 @@ const NewTxPrompt = (): ReactElement => {
 
 	useBottomSheetBackPress('newTxPrompt');
 
+	// force autoPlay of the animation
+	useEffect(() => {
+		setTimeout(() => animationRef.current?.play(), 100);
+	}, []);
+
 	const handlePress = (): void => {
 		toggleView({
 			view: 'newTxPrompt',
@@ -54,7 +61,13 @@ const NewTxPrompt = (): ReactElement => {
 			snapPoints={snapPoints}
 			backdrop={true}>
 			<View style={styles.container}>
-				<Lottie style={styles.confetti} source={confettiSrc} autoPlay loop />
+				<Lottie
+					ref={animationRef}
+					style={styles.confetti}
+					source={confettiSrc}
+					autoPlay
+					loop
+				/>
 				<View>
 					<BottomSheetNavigationHeader
 						title="Payment Received!"
