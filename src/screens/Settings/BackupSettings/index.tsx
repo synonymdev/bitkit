@@ -60,7 +60,7 @@ const BackupSettings = ({
 				],
 			},
 		],
-		[navigation],
+		[navigation, pin],
 	);
 
 	return (

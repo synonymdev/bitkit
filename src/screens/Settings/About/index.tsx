@@ -111,7 +111,7 @@ const AboutSettings = ({ navigation }): ReactElement => {
 				],
 			},
 		],
-		[navigation],
+		[appStoreUrl],
 	);
 
 	const headerComponent = (
