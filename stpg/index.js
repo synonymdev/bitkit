@@ -8,7 +8,6 @@ import SDK, { SlashURL } from '@synonymdev/slashtags-sdk';
 import RAM from 'random-access-memory';
 import c from 'compact-encoding';
 import b4a from 'b4a';
-import { v4 as uuidv4 } from 'uuid';
 
 const cacheLocation = path.join(
 	import.meta.url.replace('file:/', ''),
@@ -240,17 +239,14 @@ async function generateContact(url) {
 			bio: falso.randPhrase().slice(0, 160),
 			links: [
 				{
-					id: uuidv4(),
 					title: 'Twitter',
 					url: 'https://www.twitter.com/' + falso.randWord(),
 				},
 				{
-					id: uuidv4(),
 					title: 'Website',
 					url: falso.randUrl(),
 				},
 				{
-					id: uuidv4(),
 					title: 'Phone',
 					url: falso.randPhoneNumber(),
 				},
