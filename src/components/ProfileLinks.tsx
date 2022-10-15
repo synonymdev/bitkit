@@ -28,7 +28,8 @@ const ProfileLinks = ({
 			) : (
 				links.map((link): JSX.Element => {
 					const trimmedUrl = link.url
-						.replace('https://www.', '')
+						.replace('https://', '')
+						.replace('www.', '')
 						.replace('twitter.com/', '@');
 
 					return editable ? (

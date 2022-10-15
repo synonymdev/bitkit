@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { ReactNode, useCallback, useMemo, useState } from 'react';
 import { StyleSheet, Share } from 'react-native';
 import { useSelector } from 'react-redux';
 import Clipboard from '@react-native-clipboard/clipboard';
@@ -55,6 +55,7 @@ export const Contact = ({
 	const canSend = useMemo(() => {
 		return balance.satoshis > 0;
 	}, [balance.satoshis]);
+
 	const profileCard = useMemo(
 		() => ({ ...profile, ...contactRecord }),
 		[profile, contactRecord],
@@ -113,11 +114,9 @@ export const Contact = ({
 				<View style={styles.divider} color="white1" />
 				<View style={styles.bottom}>
 					<View style={styles.bottomHeader}>
-						{canSend && (
-							<IconButton onPress={handleSend}>
-								<CoinsIcon height={24} width={24} color="brand" />
-							</IconButton>
-						)}
+						<IconButton disabled={!canSend} onPress={handleSend}>
+							<CoinsIcon height={24} width={24} color="brand" />
+						</IconButton>
 						<IconButton
 							onPress={(): void => {
 								navigation.navigate('ContactEdit', { url });
@@ -157,7 +156,7 @@ export const Contact = ({
 							exiting={FadeOut.duration(500)}
 							color="transparent"
 							style={styles.tooltip}>
-							<Tooltip text="Copied To Clipboard" />
+							<Tooltip text="Profile Key Copied To Clipboard" />
 						</AnimatedView>
 					)}
 				</View>
@@ -180,17 +179,28 @@ export const Contact = ({
 
 const IconButton = ({
 	children,
+	disabled = false,
 	onPress,
 }: {
-	children?: any;
+	children?: ReactNode;
+	disabled?: boolean;
 	onPress?: () => void;
 }): JSX.Element => {
+	const buttonStyles = useMemo(
+		() => ({
+			...styles.iconContainer,
+			opacity: disabled ? 0.7 : 1,
+		}),
+		[disabled],
+	);
+
 	return (
 		<TouchableOpacity
+			style={buttonStyles}
 			activeOpacity={0.7}
-			onPress={onPress}
 			color="white08"
-			style={styles.iconContainer}>
+			disabled={disabled}
+			onPress={onPress}>
 			{children}
 		</TouchableOpacity>
 	);
