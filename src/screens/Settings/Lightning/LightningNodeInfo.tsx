@@ -5,9 +5,9 @@ import Clipboard from '@react-native-clipboard/clipboard';
 
 import {
 	Subtitle,
-	Title,
 	View,
 	TouchableOpacity,
+	Caption13Up,
 } from '../../../styles/components';
 import NavigationHeader from '../../../components/NavigationHeader';
 import SafeAreaInsets from '../../../components/SafeAreaInsets';
@@ -16,18 +16,21 @@ import { showSuccessNotification } from '../../../utils/notifications';
 import Store from '../../../store/types';
 
 const LightningNodeInfo = (): ReactElement => {
+	const [nodeId, setNodeId] = useState('');
+	const [error, setError] = useState('');
 	const selectedNetwork = useSelector(
 		(state: Store) => state.wallet.selectedNetwork,
 	);
-	const [nodeId, setNodeId] = useState('');
 
 	useEffect(() => {
 		(async (): Promise<void> => {
-			const id = await getNodeId();
-			if (id.isOk()) {
-				setNodeId(id.value);
+			const response = await getNodeId();
+			if (response.isOk()) {
+				setNodeId(response.value);
 			} else {
-				setNodeId(id.error.message);
+				console.log('Error getting NodeId', response.error.message);
+				setNodeId('disconnected');
+				setError('Bitkit failed to establish a Lightning node connection.');
 			}
 		})();
 	}, [selectedNetwork]);
@@ -35,7 +38,7 @@ const LightningNodeInfo = (): ReactElement => {
 	return (
 		<View style={styles.container} color="black">
 			<SafeAreaInsets type="top" />
-			<NavigationHeader displayBackButton />
+			<NavigationHeader title="Lightning Node Info" displayBackButton />
 
 			<View style={styles.content} color="black">
 				<TouchableOpacity
@@ -45,11 +48,18 @@ const LightningNodeInfo = (): ReactElement => {
 							title: 'Copied LDK Node ID to Clipboard',
 							message: nodeId,
 						});
-					}}
-					color="black">
-					<Title>LDK Node ID:</Title>
-					<Subtitle>{nodeId}</Subtitle>
+					}}>
+					<Caption13Up style={styles.label} color="gray1">
+						LDK Node ID
+					</Caption13Up>
+					<Subtitle color={error && 'red'}>{nodeId}</Subtitle>
 				</TouchableOpacity>
+
+				{!!error && (
+					<View style={styles.error}>
+						<Subtitle>{error}</Subtitle>
+					</View>
+				)}
 			</View>
 
 			<SafeAreaInsets type="bottom" />
@@ -60,10 +70,16 @@ const LightningNodeInfo = (): ReactElement => {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		alignItems: 'center',
 	},
 	content: {
-		marginHorizontal: 20,
+		flex: 1,
+		paddingHorizontal: 16,
+	},
+	label: {
+		marginBottom: 8,
+	},
+	error: {
+		marginTop: 32,
 	},
 });
 
