@@ -1,4 +1,4 @@
-import React, { memo, ReactElement, useEffect, useMemo, useState } from 'react';
+import React, { memo, ReactElement, useEffect, useState } from 'react';
 import { StyleSheet, KeyboardAvoidingView, Platform } from 'react-native';
 import { useSelector } from 'react-redux';
 import { err, ok, Result } from '@synonymdev/result';
@@ -8,18 +8,13 @@ import {
 	Text,
 	View,
 	TextInput,
-	RadioButtonRN,
 	ScrollView,
 	Text01S,
 	Caption13Up,
 	ScanIcon,
 } from '../../../styles/components';
 import { addElectrumPeer } from '../../../store/actions/settings';
-import {
-	ICustomElectrumPeer,
-	RadioButtonItem,
-	TProtocol,
-} from '../../../store/types/settings';
+import { ICustomElectrumPeer, TProtocol } from '../../../store/types/settings';
 import { updateUser } from '../../../store/actions/user';
 import Store from '../../../store/types';
 import { connectToElectrum } from '../../../utils/wallet/electrum';
@@ -38,6 +33,10 @@ import {
 } from '../../../utils/notifications';
 import { getConnectedPeer, IPeerData } from '../../../utils/wallet/electrum';
 import SafeAreaInsets from '../../../components/SafeAreaInsets';
+import {
+	RadioButtonGroup,
+	RadioButtonItem,
+} from '../../../components/RadioButton';
 import type { SettingsScreenProps } from '../../../navigation/types';
 
 const radioButtons: RadioButtonItem[] = [
@@ -131,20 +130,6 @@ const ElectrumConfig = ({
 			console.log(e);
 		}
 	};
-
-	const initialIndex = useMemo((): number => {
-		let index = -1;
-		try {
-			radioButtons.map((button, i) => {
-				if (protocol === button.value) {
-					index = i + 1;
-				}
-			});
-			return index || -1;
-		} catch (e) {
-			return index;
-		}
-	}, [protocol]);
 
 	const connectAndAddPeer = async (peerData: {
 		host: string;
@@ -283,27 +268,28 @@ const ElectrumConfig = ({
 				behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
 				style={styles.content}>
 				<ScrollView bounces={false}>
-					{!!connectedPeer?.host && (
-						<>
-							<Text01S color="gray1">Currently connected to</Text01S>
-							<View style={styles.row}>
-								<View style={styles.connectedPeer}>
-									<Text color="green">
-										{connectedPeer.host}:{connectedPeer.port}
-									</Text>
-								</View>
-								{!peersMatch(connectedPeer) && (
-									<View style={styles.savePeer}>
-										<Button
-											text="Save This Peer"
-											color="surface"
-											onPress={saveConnectedPeer}
-										/>
-									</View>
-								)}
+					<Text01S color="gray1">Currently connected to</Text01S>
+					<View style={styles.row}>
+						<View style={styles.connectedPeer}>
+							{connectedPeer.host ? (
+								<Text color="green">
+									{connectedPeer.host}:{connectedPeer.port}
+								</Text>
+							) : (
+								<Text color="red">disconnected</Text>
+							)}
+						</View>
+
+						{!peersMatch(connectedPeer) && (
+							<View style={styles.savePeer}>
+								<Button
+									text="Save This Peer"
+									color="surface"
+									onPress={saveConnectedPeer}
+								/>
 							</View>
-						</>
-					)}
+						)}
+					</View>
 
 					<Caption13Up color="gray1" style={styles.label}>
 						HOST
@@ -339,20 +325,16 @@ const ElectrumConfig = ({
 					<Caption13Up color="gray1" style={styles.label}>
 						PROTOCOL
 					</Caption13Up>
-					<RadioButtonRN
+					<RadioButtonGroup
 						data={radioButtons}
-						selectedBtn={(e): void => {
-							let value = '';
-							try {
-								value = e.value;
-							} catch {}
+						value={protocol}
+						onPress={(value): void => {
 							setProtocol(value);
 							//Toggle the port if the protocol changes and the default ports are still set.
 							if (!port || defaultElectrumPorts.includes(port.toString())) {
 								setPort(getDefaultPort(selectedNetwork, value));
 							}
 						}}
-						initial={initialIndex}
 					/>
 
 					<View style={styles.buttons}>

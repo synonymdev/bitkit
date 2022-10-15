@@ -7,7 +7,6 @@ import _MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import _AntDesign from 'react-native-vector-icons/AntDesign';
 import Animated from 'react-native-reanimated';
 import colors from './colors';
-import _RadioButtonRN from 'radio-buttons-react-native';
 import { SvgXml } from 'react-native-svg';
 import {
 	DefaultTheme,
@@ -788,17 +787,6 @@ export const Text = styled.Text((props) => ({
 		? props.theme.fonts[props.font].fontWeight
 		: sanFranciscoWeights.medium.fontWeight,
 }));
-
-export const RadioButtonRN = styled(_RadioButtonRN).attrs((props) => ({
-	box: props?.box ? props.box : false,
-	textStyle: props?.textStyle
-		? props.textStyle
-		: { color: props.theme.colors.text },
-	activeColor: props?.activeColor
-		? props.activeColor
-		: props.theme.colors.onBackground,
-	circleSize: 12,
-}))({});
 
 export const Feather = styled(_Feather).attrs((props) => ({
 	color: props.color

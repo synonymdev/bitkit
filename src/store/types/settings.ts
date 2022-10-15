@@ -55,5 +55,3 @@ export interface ISettings {
 	hideBeta: boolean;
 	enableDevOptions: boolean;
 }
-
-export type RadioButtonItem = { label: string; value: string };
