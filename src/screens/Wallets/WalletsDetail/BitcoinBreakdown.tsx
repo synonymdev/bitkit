@@ -7,8 +7,8 @@ import {
 	Text01M,
 	View,
 	TransferIcon,
-	LightningIcon,
 	SavingsIcon,
+	CoinsIcon,
 } from '../../../styles/components';
 import { useBalance } from '../../../hooks/wallet';
 import Money from '../../../components/Money';
@@ -70,7 +70,7 @@ const BitcoinBreakdown = (): ReactElement => {
 	return (
 		<View color="transparent" style={styles.container}>
 			<NetworkRow
-				title="Bitcoin savings"
+				title="Bitcoin Savings"
 				subtitle="On-chain BTC"
 				color="rgba(247, 147, 26, 0.16)"
 				icon={<SavingsIcon color="orange" width={17} height={17} />}
@@ -91,10 +91,10 @@ const BitcoinBreakdown = (): ReactElement => {
 				<View color="gray4" style={styles.line} />
 			</View>
 			<NetworkRow
-				title="Spending balance"
-				subtitle="Lightning Network BTC"
+				title="Spending Balance"
+				subtitle="Instant BTC"
 				color="rgba(185, 92, 232, 0.16)"
-				icon={<LightningIcon height={15} />}
+				icon={<CoinsIcon color="purple" width={13} height={13} />}
 				satoshis={lightning}
 			/>
 		</View>

@@ -10,6 +10,7 @@ import {
 	LayoutAnimation,
 	NativeScrollEvent,
 	NativeSyntheticEvent,
+	Platform,
 	StyleSheet,
 	TouchableOpacity,
 } from 'react-native';
@@ -41,6 +42,7 @@ import BitcoinLogo from '../../../assets/bitcoin-logo.svg';
 import { capitalize } from '../../../utils/helpers';
 import DetectSwipe from '../../../components/DetectSwipe';
 import type { TabScreenProps } from '../../../navigation/types';
+import { IColors } from '../../../styles/colors';
 
 const updateHeight = ({
 	height = new Animated.Value(0),
@@ -56,7 +58,11 @@ const updateHeight = ({
 	} catch {}
 };
 
-const Glow = ({ colors }): ReactElement => {
+type GlowProps = {
+	colors: IColors;
+};
+
+const Glow = ({ colors }: GlowProps): ReactElement => {
 	const { size } = useCanvas();
 	const rct = useComputedValue(
 		() => rect(0, 0, size.current.width, size.current.height),
@@ -66,8 +72,8 @@ const Glow = ({ colors }): ReactElement => {
 	return (
 		<Rect rect={rct}>
 			<RadialGradient
-				c={vec(-250, 100)}
-				r={600}
+				c={vec(-450, 0)}
+				r={Platform.OS === 'ios' ? 1050 : 900}
 				colors={[colors.brand, 'transparent']}
 			/>
 		</Rect>
@@ -138,7 +144,7 @@ const WalletsDetail = ({
 
 	return (
 		<AnimatedView style={styles.container}>
-			<View color={'transparent'} style={styles.txListContainer}>
+			<View color="transparent" style={styles.txListContainer}>
 				<ActivityList
 					onScroll={onScroll}
 					style={styles.txList}
@@ -164,20 +170,21 @@ const WalletsDetail = ({
 						<NavigationHeader />
 
 						<AnimatedView
-							color={'transparent'}
+							color="transparent"
 							style={[styles.header, { minHeight: height }]}
 							onLayout={(e): void => {
 								const hh = e.nativeEvent.layout.height;
 								setHeaderHeight((h) => (h === 0 ? hh : h));
 							}}>
-							<View color={'transparent'} style={styles.row}>
-								<View color={'transparent'} style={styles.cell}>
+							<View color="transparent" style={styles.row}>
+								<View color="transparent" style={styles.cell}>
 									<BitcoinLogo viewBox="0 0 70 70" height={32} width={32} />
 									<Title style={styles.title}>{title}</Title>
 								</View>
-								{!showDetails ? (
+
+								{!showDetails && (
 									<AnimatedView
-										color={'transparent'}
+										color="transparent"
 										style={styles.cell}
 										entering={FadeIn}
 										exiting={FadeOut}>
@@ -190,15 +197,15 @@ const WalletsDetail = ({
 											/>
 										</TouchableOpacity>
 									</AnimatedView>
-								) : null}
+								)}
 							</View>
 
 							{showDetails ? (
 								<AnimatedView
-									color={'transparent'}
+									color="transparent"
 									entering={FadeIn}
 									exiting={FadeOut}>
-									<View color={'transparent'} style={styles.balanceContainer}>
+									<View color="transparent" style={styles.balanceContainer}>
 										<DetectSwipe
 											onSwipeLeft={toggleHideBalance}
 											onSwipeRight={toggleHideBalance}>
@@ -213,7 +220,8 @@ const WalletsDetail = ({
 											</TouchableOpacity>
 										</DetectSwipe>
 									</View>
-									{assetType === 'bitcoin' ? <BitcoinBreakdown /> : null}
+
+									{assetType === 'bitcoin' && <BitcoinBreakdown />}
 								</AnimatedView>
 							) : null}
 						</AnimatedView>
