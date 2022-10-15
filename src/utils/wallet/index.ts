@@ -2549,7 +2549,7 @@ export const getBalance = ({
 			getStore().lightning.nodes[selectedWallet]?.channels[selectedNetwork];
 		balance = Object.values(channels).reduce(
 			(previousValue, currentChannel) => {
-				if (currentChannel?.short_channel_id) {
+				if (currentChannel?.is_channel_ready) {
 					let reserveBalance = 0;
 					if (subtractReserveBalance) {
 						reserveBalance =

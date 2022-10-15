@@ -682,7 +682,7 @@ export const getPendingChannels = async ({
 		}
 	}
 	const pendingChannels = channels.value.filter(
-		(channel) => !channel?.short_channel_id,
+		(channel) => !channel?.is_channel_ready,
 	);
 	return ok(pendingChannels);
 };
@@ -719,7 +719,7 @@ export const getOpenChannels = async ({
 		channels = getChannelsResponse.value;
 	}
 	const openChannels = Object.values(channels).filter(
-		(channel) => channel?.short_channel_id !== undefined,
+		(channel) => channel?.is_channel_ready,
 	);
 	return ok(openChannels);
 };

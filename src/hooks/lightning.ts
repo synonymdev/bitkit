@@ -31,7 +31,7 @@ export const useLightningBalance = (
 
 	const openChannels = openChannelIds.filter((channelId) => {
 		const channel = channels[channelId];
-		return channel?.short_channel_id;
+		return channel?.is_channel_ready;
 	});
 
 	const localBalance = Object.values(channels).reduce((acc, cur) => {
@@ -128,17 +128,27 @@ export const useLightningChannelName = (channelId): string => {
 	const selectedNetwork = useSelector(
 		(store: Store) => store.wallet.selectedNetwork,
 	);
+	const paidBlocktankOrders = useSelector(
+		(store: Store) => store.blocktank.paidOrders,
+	);
 
-	const channel = useSelector(
+	const channel: TChannel = useSelector(
 		(store: Store) =>
 			store.lightning.nodes[selectedWallet].channels[selectedNetwork][
 				channelId
 			],
 	);
+	const paidBlocktankOrderId = Object.keys(paidBlocktankOrders).filter(
+		(blocktankId) => paidBlocktankOrders[blocktankId] === channel.funding_txo,
+	);
 
-	return channel?.inbound_scid_alias ?? channel?.short_channel_id
-		? channel?.short_channel_id
-		: channel?.channel_id ?? 'Unknown Channel';
+	if (paidBlocktankOrderId.length) {
+		return `Blocktank Channel ${paidBlocktankOrderId[0]}`;
+	} else {
+		return channel?.inbound_scid_alias ?? channel?.channel_id
+			? channel?.channel_id
+			: 'Unknown Channel';
+	}
 };
 
 /**

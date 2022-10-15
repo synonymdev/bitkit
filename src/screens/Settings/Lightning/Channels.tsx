@@ -121,14 +121,14 @@ const Channels = ({ navigation }): ReactElement => {
 	const openChannels = useMemo(() => {
 		return openChannelIds.filter((channelId) => {
 			const channel = channels[channelId];
-			return channel?.short_channel_id;
+			return channel?.is_channel_ready;
 		});
 	}, [channels, openChannelIds]);
 
 	const pendingChannels = useMemo(() => {
 		return openChannelIds.filter((channelId) => {
 			const channel = channels[channelId];
-			return !channel?.short_channel_id;
+			return !channel?.is_channel_ready;
 		});
 	}, [channels, openChannelIds]);
 

@@ -40,7 +40,7 @@ export function useBalance({
 			balance = Object.values(channels).reduce(
 				(previousValue, currentChannel) => {
 					if (
-						currentChannel?.short_channel_id &&
+						currentChannel?.is_channel_ready &&
 						openChannelIds.includes(currentChannel?.channel_id)
 					) {
 						let reserveBalance = 0;
