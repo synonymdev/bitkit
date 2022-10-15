@@ -158,7 +158,7 @@ const ProfileScreen = ({
 									exiting={FadeOut.duration(500)}
 									color="transparent"
 									style={styles.tooltip}>
-									<Tooltip text="Copied To Clipboard" />
+									<Tooltip text="Profile Key Copied To Clipboard" />
 								</AnimatedView>
 							)}
 						</View>
@@ -247,7 +247,7 @@ const QRView = ({
 						exiting={FadeOut.duration(500)}
 						color="transparent"
 						style={styles.tooltip}>
-						<Tooltip text="Slashtags Key Copied To Clipboard" />
+						<Tooltip text="Profile Key Copied To Clipboard" />
 					</AnimatedView>
 				)}
 			</View>

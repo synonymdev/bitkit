@@ -49,7 +49,7 @@ const LoadingWalletScreen = (): ReactElement => {
 
 	return (
 		<View style={styles.container}>
-			<SafeAreaInsets type={'top'} />
+			<SafeAreaInsets type="top" />
 			<View style={styles.loadingText}>
 				<Display>Setting up</Display>
 				<Display color="brand">your Wallet.</Display>
@@ -59,7 +59,7 @@ const LoadingWalletScreen = (): ReactElement => {
 					key={key}
 					entering={enteringAnimation}
 					exiting={FadeOut}
-					color={'transparent'}>
+					color="transparent">
 					<Image source={imageSrc} />
 				</AnimatedView>
 			</View>

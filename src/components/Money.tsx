@@ -138,7 +138,7 @@ const Money = (props: IMoney): ReactElement => {
 	}, [highlight, dv, unit, sats]);
 
 	if (hide) {
-		prim = ' • • • • • • • • • • •';
+		prim = ' • • • • • • • • • •';
 		secd = '';
 	}
 

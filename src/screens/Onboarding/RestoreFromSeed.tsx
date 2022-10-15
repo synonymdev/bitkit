@@ -153,7 +153,7 @@ const RestoreFromSeed = (): ReactElement => {
 
 	if (isRestoringWallet) {
 		return (
-			<GlowingBackground topLeft={green}>
+			<GlowingBackground topLeft="brand">
 				<LoadingWalletScreen />
 			</GlowingBackground>
 		);
