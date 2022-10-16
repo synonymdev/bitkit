@@ -57,7 +57,12 @@ const Channel = memo(
 		return (
 			<TouchableOpacity onPress={onPress} style={styles.nRoot}>
 				<View style={styles.nTitle}>
-					<Text01M>{name}</Text01M>
+					<Text01M
+						style={styles.nName}
+						numberOfLines={1}
+						ellipsizeMode="middle">
+						{name}
+					</Text01M>
 					<ChevronRight color="gray1" />
 				</View>
 				<LightningChannel channelId={channelId} disabled={disabled} />
@@ -422,6 +427,9 @@ const styles = StyleSheet.create({
 		justifyContent: 'space-between',
 		marginTop: 16,
 		marginBottom: 8,
+	},
+	nName: {
+		marginRight: 8,
 	},
 });
 

@@ -95,7 +95,9 @@ const NavigationHeader = ({
 				)}
 			</View>
 			<View style={styles.middleColumn}>
-				<Text style={styles.title}>{title}</Text>
+				<Text style={styles.title} numberOfLines={1} ellipsizeMode="middle">
+					{title}
+				</Text>
 			</View>
 			<View style={[styles.rightColumn, buttonOffset]}>
 				{actionIcon && onActionPress && (
@@ -144,6 +146,7 @@ const styles = StyleSheet.create({
 	},
 	title: {
 		textAlign: 'center',
+		marginHorizontal: 42,
 	},
 	action: {
 		flex: 1,
