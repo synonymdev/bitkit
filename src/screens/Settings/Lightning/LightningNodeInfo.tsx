@@ -23,16 +23,11 @@ const LightningNodeInfo = (): ReactElement => {
 
 	useEffect(() => {
 		(async (): Promise<void> => {
-			// TODO: Remove if condition once testnet and mainnet are enabled.
-			if (selectedNetwork === 'bitcoinRegtest') {
-				const id = await getNodeId();
-				if (id.isOk()) {
-					setNodeId(id.value);
-				} else {
-					setNodeId(id.error.message);
-				}
+			const id = await getNodeId();
+			if (id.isOk()) {
+				setNodeId(id.value);
 			} else {
-				setNodeId('LDK is only enabled for regtest at this time.');
+				setNodeId(id.error.message);
 			}
 		})();
 	}, [selectedNetwork]);
@@ -44,8 +39,6 @@ const LightningNodeInfo = (): ReactElement => {
 
 			<View style={styles.content} color="black">
 				<TouchableOpacity
-					// TODO: Remove disabled condition once testnet and mainnet are enabled.
-					disabled={selectedNetwork !== 'bitcoinRegtest'}
 					onPress={(): void => {
 						Clipboard.setString(nodeId);
 						showSuccessNotification({

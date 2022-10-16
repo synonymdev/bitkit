@@ -70,13 +70,13 @@ export const parseOnChainPaymentRequest = (
 		if (!data) {
 			return err(data);
 		}
+		if (!selectedNetwork) {
+			selectedNetwork = getSelectedNetwork();
+		}
 
 		let validateAddressResult = validateAddress({
 			address: data,
-			selectedNetwork:
-				selectedNetwork === 'bitcoinRegtest'
-					? EAvailableNetworks[selectedNetwork]
-					: undefined,
+			selectedNetwork: EAvailableNetworks[selectedNetwork],
 		});
 
 		if (

@@ -42,7 +42,6 @@ export interface ISettings {
 	customElectrumPeers: IWalletItem<ICustomElectrumPeer[]> | IWalletItem<[]>;
 	selectedCurrency: string;
 	selectedLanguage: string;
-	selectedNetwork: string;
 	coinSelectAuto: boolean;
 	coinSelectPreference: TCoinSelectPreference;
 	receivePreference: TReceiveOption[];
