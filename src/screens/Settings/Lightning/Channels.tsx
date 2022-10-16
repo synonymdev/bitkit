@@ -27,6 +27,7 @@ import {
 	getNodeId,
 	payLightningInvoice,
 	refreshLdk,
+	setupLdk,
 } from '../../../utils/lightning';
 import { TChannel } from '@synonymdev/react-native-ldk';
 import { useSelector } from 'react-redux';
@@ -97,6 +98,7 @@ const Channels = ({ navigation }): ReactElement => {
 	const [closed, setClosed] = useState<boolean>(false);
 	const [payingInvoice, setPayingInvoice] = useState<boolean>(false);
 	const [refreshingWallet, setRefreshingWallet] = useState<boolean>(false);
+	const [restartingLdk, setRestartingLdk] = useState<boolean>(false);
 
 	const colors = useColors();
 	const selectedWallet = useSelector(
@@ -109,11 +111,13 @@ const Channels = ({ navigation }): ReactElement => {
 		(state: Store) =>
 			state.lightning?.nodes[selectedWallet]?.channels[selectedNetwork] ?? {},
 	);
-
 	const openChannelIds = useSelector(
 		(state: Store) =>
 			state.lightning?.nodes[selectedWallet]?.openChannelIds[selectedNetwork] ??
 			[],
+	);
+	const enableDevOptions = useSelector(
+		(state: Store) => state.settings.enableDevOptions,
 	);
 
 	const { localBalance, remoteBalance } = useLightningBalance(false);
@@ -246,95 +250,111 @@ const Channels = ({ navigation }): ReactElement => {
 					</AnimatedView>
 				)}
 
-				<Caption13Up color="gray1" style={styles.sectionTitle}>
-					LDK Dev Testing
-				</Caption13Up>
-				<Button
-					text={'Refresh LDK'}
-					loading={refreshingWallet}
-					onPress={async (): Promise<void> => {
-						setRefreshingWallet(true);
-						await Promise.all([
-							refreshLdk({ selectedWallet, selectedNetwork }),
-						]);
-						setRefreshingWallet(false);
-					}}
-				/>
-				<Button
-					text={'Get Node ID'}
-					onPress={async (): Promise<void> => {
-						const nodeId = await getNodeId();
-						if (nodeId.isErr()) {
-							console.log(nodeId.error.message);
-							return;
-						}
-						console.log(nodeId.value);
-						Clipboard.setString(nodeId.value);
-						showSuccessNotification({
-							title: 'Copied Node ID to Clipboard',
-							message: nodeId.value,
-						});
-					}}
-				/>
-
-				{openChannelIds.length > 0 && (
-					<>
-						{remoteBalance > 100 && (
-							<Button
-								text={'Create Invoice: 100 sats'}
-								onPress={async (): Promise<void> => {
-									createInvoice(100).then();
-								}}
-							/>
-						)}
-						{remoteBalance > 5000 && (
-							<Button
-								text={'Create Invoice: 5000 sats'}
-								onPress={async (): Promise<void> => {
-									createInvoice(5000).then();
-								}}
-							/>
-						)}
-						{localBalance > 0 && (
-							<>
-								<Button
-									text={'Pay Invoice From Clipboard'}
-									loading={payingInvoice}
-									onPress={async (): Promise<void> => {
-										setPayingInvoice(true);
-										const invoice = await Clipboard.getString();
-										if (!invoice) {
-											showErrorNotification({
-												title: 'No Invoice Detected',
-												message:
-													'Unable to retrieve anything from the clipboard.',
-											});
-										}
-										const response = await payLightningInvoice(invoice);
-										if (response.isErr()) {
-											showErrorNotification({
-												title: 'Invoice Payment Failed',
-												message: response.error.message,
-											});
-											setPayingInvoice(false);
-											return;
-										}
-										await Promise.all([
-											refreshLdk({ selectedWallet, selectedNetwork }),
-										]);
-										setPayingInvoice(false);
-										showSuccessNotification({
-											title: 'Invoice Payment Success',
-											message: response.value,
-										});
-									}}
-								/>
-							</>
-						)}
-					</>
-				)}
-
 				<View style={styles.buttons}>
+					{enableDevOptions && (
+						<>
+							<Caption13Up color="gray1" style={styles.sectionTitle}>
+								Dev Options
+							</Caption13Up>
+							<Button
+								style={styles.button}
+								text={'Refresh LDK'}
+								loading={refreshingWallet}
+								onPress={async (): Promise<void> => {
+									setRefreshingWallet(true);
+									await Promise.all([
+										refreshLdk({ selectedWallet, selectedNetwork }),
+									]);
+									setRefreshingWallet(false);
+								}}
+							/>
+							<Button
+								style={styles.button}
+								text={'Restart LDK'}
+								loading={restartingLdk}
+								onPress={async (): Promise<void> => {
+									setRestartingLdk(true);
+									await setupLdk({ selectedWallet, selectedNetwork });
+									setRestartingLdk(false);
+								}}
+							/>
+							<Button
+								style={styles.button}
+								text={'Get Node ID'}
+								onPress={async (): Promise<void> => {
+									const nodeId = await getNodeId();
+									if (nodeId.isErr()) {
+										console.log(nodeId.error.message);
+										return;
+									}
+									console.log(nodeId.value);
+									Clipboard.setString(nodeId.value);
+									showSuccessNotification({
+										title: 'Copied Node ID to Clipboard',
+										message: nodeId.value,
+									});
+								}}
+							/>
+
+							{openChannelIds.length > 0 && (
+								<>
+									{remoteBalance > 100 && (
+										<Button
+											text={'Create Invoice: 100 sats'}
+											onPress={async (): Promise<void> => {
+												createInvoice(100).then();
+											}}
+										/>
+									)}
+									{remoteBalance > 5000 && (
+										<Button
+											text={'Create Invoice: 5000 sats'}
+											onPress={async (): Promise<void> => {
+												createInvoice(5000).then();
+											}}
+										/>
+									)}
+									{localBalance > 0 && (
+										<>
+											<Button
+												text={'Pay Invoice From Clipboard'}
+												loading={payingInvoice}
+												onPress={async (): Promise<void> => {
+													setPayingInvoice(true);
+													const invoice = await Clipboard.getString();
+													if (!invoice) {
+														showErrorNotification({
+															title: 'No Invoice Detected',
+															message:
+																'Unable to retrieve anything from the clipboard.',
+														});
+													}
+													const response = await payLightningInvoice(invoice);
+													if (response.isErr()) {
+														showErrorNotification({
+															title: 'Invoice Payment Failed',
+															message: response.error.message,
+														});
+														setPayingInvoice(false);
+														return;
+													}
+													await Promise.all([
+														refreshLdk({ selectedWallet, selectedNetwork }),
+													]);
+													setPayingInvoice(false);
+													showSuccessNotification({
+														title: 'Invoice Payment Success',
+														message: response.value,
+													});
+												}}
+											/>
+										</>
+									)}
+								</>
+							)}
+						</>
+					)}
+
 					{!closed && (
 						<Button
 							style={styles.button}

@@ -51,7 +51,7 @@ type TItemDraggable = {
 	title: string;
 };
 
-type ItemData = {
+export type ItemData = {
 	title: string;
 	type: TItemType;
 	value?: string | boolean | TItemDraggable[];

@@ -54,6 +54,7 @@ export interface ISettings {
 	hideBalance: boolean;
 	hideOnboardingMessage: boolean;
 	hideBeta: boolean;
+	enableDevOptions: boolean;
 }
 
 export type RadioButtonItem = { label: string; value: string };

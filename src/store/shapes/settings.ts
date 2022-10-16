@@ -88,4 +88,5 @@ export const defaultSettingsShape: ISettings = {
 	hideOnboardingMessage: false,
 	hideBeta: false,
 	addressType: 'p2wpkh',
+	enableDevOptions: false,
 };
