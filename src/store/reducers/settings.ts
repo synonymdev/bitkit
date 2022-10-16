@@ -6,7 +6,7 @@ const settings = (
 	state: ISettings = defaultSettingsShape,
 	action,
 ): ISettings => {
-	let selectedNetwork = state.selectedNetwork;
+	let selectedNetwork = 'bitcoin';
 	if (action.payload?.selectedNetwork) {
 		selectedNetwork = action.payload.selectedNetwork;
 	}
