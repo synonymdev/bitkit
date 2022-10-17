@@ -103,7 +103,12 @@ export const SlashtagsProvider = ({ children }): JSX.Element => {
 			// TODO(slashtags): find why and fix this issue
 			_sdk.slashtag().drivestore.get();
 
-			!unmounted && setSDK(_sdk);
+			if (unmounted) {
+				return;
+			}
+
+			setSDK(_sdk);
+			exportedSDK = _sdk;
 		}
 
 		async function reconnect(): Promise<void> {
@@ -220,6 +225,9 @@ export const useSlashtagsSDK = (): SDK => useContext(SlashtagsContext).sdk;
 
 export const useSlashtags = (): ISlashtagsContext =>
 	useContext(SlashtagsContext);
+
+let exportedSDK: SDK | undefined;
+export { exportedSDK as sdk };
 
 function onError(error: Error): void {
 	console.debug(

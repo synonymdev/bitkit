@@ -46,6 +46,8 @@ import { EActivityTypes, IActivityItem } from '../../store/types/activity';
 import { addActivityItem } from '../../store/actions/activity';
 import { EPaymentType } from '../../store/types/wallet';
 import { toggleView } from '../../store/actions/user';
+import { updateSlashPayConfig } from '../slashtags';
+import { sdk } from '../../components/SlashtagsProvider';
 
 let paymentSubscription: EmitterSubscription | undefined;
 
@@ -283,7 +285,8 @@ export const handleLightningPaymentSubscription = async ({
 				txid: invoice.value.payment_hash,
 			},
 		});
-		refreshLdk({ selectedWallet, selectedNetwork }).then();
+		await refreshLdk({ selectedWallet, selectedNetwork });
+		updateSlashPayConfig(sdk);
 	}
 };
 

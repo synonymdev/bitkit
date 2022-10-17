@@ -56,6 +56,8 @@ import {
 	GENERATE_ADDRESS_AMOUNT,
 } from '../../utils/wallet/constants';
 import { getBoostedTransactionParents } from '../../utils/boost';
+import { updateSlashPayConfig } from '../../utils/slashtags';
+import { sdk } from '../../components/SlashtagsProvider';
 
 const dispatch = getDispatch();
 
@@ -609,6 +611,7 @@ export const updateTransactions = ({
 			});
 		}
 
+		updateSlashPayConfig(sdk);
 		return resolve(ok(formattedTransactions));
 	});
 };
