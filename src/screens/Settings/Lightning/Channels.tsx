@@ -15,6 +15,7 @@ import {
 	DownArrow,
 	Text01M,
 	UpArrow,
+	RefreshControl,
 	View as ThemedView,
 } from '../../../styles/components';
 import SafeAreaInsets from '../../../components/SafeAreaInsets';
@@ -102,7 +103,7 @@ const ChannelList = memo(
 const Channels = ({ navigation }): ReactElement => {
 	const [closed, setClosed] = useState<boolean>(false);
 	const [payingInvoice, setPayingInvoice] = useState<boolean>(false);
-	const [refreshingWallet, setRefreshingWallet] = useState<boolean>(false);
+	const [refreshingLdk, setRefreshingLdk] = useState<boolean>(false);
 	const [restartingLdk, setRestartingLdk] = useState<boolean>(false);
 
 	const colors = useColors();
@@ -188,11 +189,21 @@ const Channels = ({ navigation }): ReactElement => {
 		});
 	};
 
+	const onRefreshLdk = useCallback(async (): Promise<void> => {
+		setRefreshingLdk(true);
+		await refreshLdk({ selectedWallet, selectedNetwork });
+		setRefreshingLdk(false);
+	}, [selectedNetwork, selectedWallet]);
+
 	return (
 		<ThemedView style={styles.root}>
 			<SafeAreaInsets type="top" />
 			<NavigationHeader title="Lightning connections" onAddPress={handleAdd} />
-			<ScrollView contentContainerStyle={styles.content}>
+			<ScrollView
+				contentContainerStyle={styles.content}
+				refreshControl={
+					<RefreshControl refreshing={refreshingLdk} onRefresh={onRefreshLdk} />
+				}>
 				<View style={styles.balances}>
 					<View style={styles.balance}>
 						<Caption13Up color="gray1">Spending balance</Caption13Up>
@@ -264,14 +275,8 @@ const Channels = ({ navigation }): ReactElement => {
 							<Button
 								style={styles.button}
 								text={'Refresh LDK'}
-								loading={refreshingWallet}
-								onPress={async (): Promise<void> => {
-									setRefreshingWallet(true);
-									await Promise.all([
-										refreshLdk({ selectedWallet, selectedNetwork }),
-									]);
-									setRefreshingWallet(false);
-								}}
+								loading={refreshingLdk}
+								onPress={onRefreshLdk}
 							/>
 							<Button
 								style={styles.button}
