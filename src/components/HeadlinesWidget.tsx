@@ -1,5 +1,5 @@
 import React, { memo, ReactElement, useEffect, useState } from 'react';
-import { Linking, StyleSheet, useWindowDimensions } from 'react-native';
+import { Linking, StyleSheet } from 'react-native';
 import { SlashURL } from '@synonymdev/slashtags-sdk';
 
 import {
@@ -31,10 +31,6 @@ const HeadlinesWidget = ({
 		link: string;
 		publisher: { title: string };
 	}>();
-
-	// A bit of a hack to use the width to truncate the name and link below,
-	// I am sure you can do better!
-	const { width } = useWindowDimensions();
 
 	const sdk = useSlashtagsSDK();
 
@@ -88,8 +84,6 @@ const HeadlinesWidget = ({
 		setShowButtons((b) => !b);
 	};
 
-	// return(<BaseFeedWidget url={url} name={article?.title} icon={<NewspaperIcon width={32} height={32}/>} />)
-
 	return (
 		<TouchableOpacity
 			style={styles.root}
@@ -99,21 +93,26 @@ const HeadlinesWidget = ({
 				{<NewspaperIcon width={32} height={32} />}
 			</View>
 			<View style={styles.infoContainer}>
-				<Text01M style={styles.name}>
-					{(article?.title || widget.feed.name).slice(0, width / 11)}
+				<Text01M style={styles.name} numberOfLines={1}>
+					{article?.title || widget.feed.name}
 				</Text01M>
 				<View style={styles.row}>
-					<TouchableOpacity
-						style={styles.linkButton}
-						activeOpacity={0.9}
-						onPress={(): void => {
-							article?.link && Linking.openURL(article.link);
-						}}>
-						<Caption13M style={styles.link} color="gray1">
-							{article?.link.slice(0, width / 14)}
-						</Caption13M>
-					</TouchableOpacity>
-					<Text02S style={styles.author}>{article?.publisher.title}</Text02S>
+					<View style={styles.linkContainer}>
+						<TouchableOpacity
+							activeOpacity={0.9}
+							onPress={(): void => {
+								article?.link && Linking.openURL(article.link);
+							}}>
+							<Caption13M color="gray1" numberOfLines={1}>
+								{article?.link}
+							</Caption13M>
+						</TouchableOpacity>
+					</View>
+					<View style={styles.authorContainer}>
+						<Text02S style={styles.author} numberOfLines={1}>
+							{article?.publisher.title}
+						</Text02S>
+					</View>
 				</View>
 				{showButtons && (
 					<View style={styles.button}>
@@ -152,18 +151,20 @@ const styles = StyleSheet.create({
 	},
 	row: {
 		display: 'flex',
+		alignItems: 'center',
 		flexDirection: 'row',
 	},
 	name: {
 		lineHeight: 22,
 	},
-	linkButton: {
-		flex: 1,
+	linkContainer: {
+		flex: 3,
 	},
-	link: {},
+	authorContainer: {
+		flex: 2,
+	},
 	author: {
-		flex: 1,
-		marginLeft: 16,
+		textAlign: 'right',
 	},
 	button: {
 		position: 'absolute',

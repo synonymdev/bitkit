@@ -9,12 +9,13 @@ const puzzleImageSrc = require('../../assets/illustrations/puzzle.png');
 export const GoodbyePasswords = ({ navigation }): JSX.Element => {
 	return (
 		<Layout
+			header=""
 			navigation={navigation}
 			backButton={true}
 			illustration={padlockImageSrc}
 			title="Goodbye,"
 			highlighted="Passwords."
-			text="Experience the web without passwords. Use Bitkit to log in?to your favorite web services."
+			text="Experience the web without passwords. Use Bitkit to log in to your favorite web services."
 			onNext={(): void => {
 				navigation.navigate('HelloWidgets', {});
 			}}
@@ -25,6 +26,7 @@ export const GoodbyePasswords = ({ navigation }): JSX.Element => {
 export const HelloWidgets = ({ navigation }): JSX.Element => {
 	return (
 		<Layout
+			header=""
 			navigation={navigation}
 			backButton={true}
 			illustration={puzzleImageSrc}
