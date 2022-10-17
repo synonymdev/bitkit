@@ -65,7 +65,7 @@ export const OfflinePayments = ({ navigation }): JSX.Element => {
 	const sdk = useSlashtagsSDK();
 
 	const savePaymentConfig = async (): Promise<void> => {
-		updateSlashPayConfig(sdk, { p2wpkh: enableOfflinePayments });
+		updateSlashPayConfig(sdk);
 	};
 
 	return (

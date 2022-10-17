@@ -45,7 +45,7 @@ const PaymentPreference = (): ReactElement => {
 						hide: false,
 						onPress: (): void => {
 							updateSettings({ enableOfflinePayments: !enableOfflinePayments });
-							updateSlashPayConfig(sdk, { p2wpkh: !enableOfflinePayments });
+							updateSlashPayConfig(sdk);
 						},
 					},
 				],

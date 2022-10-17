@@ -21,6 +21,8 @@ import { ICustomElectrumPeer } from '../../store/types/settings';
 import { updateUser } from '../../store/actions/user';
 import { setupBlocktank, watchPendingOrders } from '../blocktank';
 import { removeExpiredLightningInvoices } from '../../store/actions/lightning';
+import { updateSlashPayConfig } from '../../utils/slashtags';
+import { sdk } from '../../components/SlashtagsProvider';
 
 /**
  * Checks if the specified wallet's phrase is saved to storage.
@@ -181,6 +183,9 @@ export const startWalletServices = async ({
 					selectedNetwork,
 				}).then();
 			}
+
+			// refresh slashpay config
+			updateSlashPayConfig(sdk);
 
 			// This should be last so that we know all on-chain and lightning data is synced/up-to-date.
 			setupTodos().then();

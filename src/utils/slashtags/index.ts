@@ -2,11 +2,13 @@ import { SDK, SlashURL, Slashtag, Hyperdrive } from '@synonymdev/slashtags-sdk';
 import c from 'compact-encoding';
 import b4a from 'b4a';
 import mime from 'mime/lite';
+import debounce from 'lodash.debounce';
 
 import { navigate } from '../../navigation/root/RootNavigator';
 import { BasicProfile, SlashPayConfig } from '../../store/types/slashtags';
 import { showErrorNotification } from '../notifications';
 import { getReceiveAddress } from '../../utils/wallet';
+import { decodeLightningInvoice } from '../../utils/lightning';
 import { createLightningInvoice } from '../../store/actions/lightning';
 import { getStore } from '../../store/helpers';
 
@@ -149,69 +151,127 @@ export const onSDKError = (error: Error): void => {
 	});
 };
 
-/** Update slashpay.json */
-export const updateSlashPayConfig = async (
-	sdk: SDK,
-	options: {
-		/** Offline payments */
-		p2wpkh?: boolean;
-		expiryDeltaSeconds?: number;
-		lightningInvoiceDescription?: string;
-		lightningInvoiceSats?: number;
-	},
-): Promise<{
-	updated: boolean;
-	payConfig: SlashPayConfig;
-}> => {
-	if (sdk.closed) {
-		console.debug('updateSlashPayConfig: SKIP sdk is closed');
-		return { updated: false, payConfig: [] };
-	}
+export const updateSlashPayConfig = debounce(
+	async (sdk?: SDK): Promise<void> => {
+		if (!sdk) {
+			// sdk is not ready yet
+			return;
+		}
+		const slashtag = getSelectedSlashtag(sdk);
+		const drive = slashtag.drivestore.get();
+		const payConfig =
+			(await drive.get('/slashpay.json').then(decodeJSON).catch(noop)) || [];
 
-	const slashtag = getSelectedSlashtag(sdk);
-	const drive = slashtag.drivestore.get();
+		const store = getStore();
+		const { selectedWallet, selectedNetwork } = store.wallet;
+		const { enableOfflinePayments, addressType } = store.settings;
+		const invoices =
+			store.lightning.nodes[selectedWallet].invoices[selectedNetwork];
 
-	const payConfig: SlashPayConfig = [];
+		// if offline payments are disabled and payment config is empy then do nothing
+		if (!enableOfflinePayments && payConfig.length === 0) {
+			return;
+		}
 
-	{
-		// LN invoice first to prefer it over onchain, if possible.
-		const response = await createLightningInvoice({
-			amountSats: options.lightningInvoiceSats || 0,
-			description: options?.lightningInvoiceDescription || '',
-			expiryDeltaSeconds: options.expiryDeltaSeconds || 60 * 60 * 24 * 7, //Should be rather high (Days or Weeks).
-		});
+		// if offline payments are disabled and payment config is not empy then delete it
+		if (!enableOfflinePayments && payConfig.length > 0) {
+			const newPayConfig = [];
+			console.debug('Pushing new slashpay.json:', newPayConfig);
+			await drive
+				.put('/slashpay.json', encodeJSON(newPayConfig))
+				.then(() => {
+					console.debug('Updated slashpay.json:', newPayConfig);
+				})
+				.catch(noop);
+			return;
+		}
 
-		if (response.isOk()) {
-			payConfig.push({
-				type: 'lightningInvoice',
-				value: response.value.to_str,
+		let needToUpdate = false;
+		const newPayConfig: SlashPayConfig = [];
+
+		// check if we need to update onchain address
+		{
+			const currentAddress = payConfig.find(
+				({ type }) => type === addressType,
+			)?.value;
+			const newAddress = getReceiveAddress({ selectedWallet });
+			if (newAddress.isOk() && currentAddress !== newAddress.value) {
+				// use new address
+				needToUpdate = true;
+				newPayConfig.push({ type: addressType, value: newAddress.value });
+			} else if (currentAddress) {
+				// keep old address
+				newPayConfig.push({ type: addressType, value: currentAddress });
+			}
+		}
+
+		// check if we need to update LN invoice
+		{
+			const currentInvoice = payConfig.find(
+				({ type }) => type === 'lightningInvoice',
+			)?.value;
+
+			// if currentInvoice still in redux store, then we don't need to update it.
+			const currentInvoiceStillUnpaid =
+				currentInvoice &&
+				Object.values(invoices || {}).some((i) => i?.to_str === currentInvoice);
+
+			const decodedInvoice = await decodeLightningInvoice({
+				paymentRequest: currentInvoice,
 			});
+			const invoiceNeedsToBeUpdated =
+				!currentInvoice ||
+				!currentInvoiceStillUnpaid ||
+				decodedInvoice.isErr() ||
+				decodedInvoice.value.is_expired;
+
+			if (invoiceNeedsToBeUpdated) {
+				needToUpdate = true;
+				const response = await createLightningInvoice({
+					amountSats: 0,
+					description: '',
+					expiryDeltaSeconds: 60 * 60 * 24 * 7, // one week
+				});
+
+				if (response.isOk()) {
+					newPayConfig.push({
+						type: 'lightningInvoice',
+						value: response.value.to_str,
+					});
+				} else if (currentInvoice) {
+					// if we can't get new invoice, keep an old one
+					newPayConfig.push({
+						type: 'lightningInvoice',
+						value: currentInvoice,
+					});
+				}
+			} else {
+				// keeping old invoice
+				newPayConfig.push({
+					type: 'lightningInvoice',
+					value: currentInvoice,
+				});
+			}
 		}
-	}
 
-	if (options.p2wpkh) {
-		const selectedWallet = getStore().wallet.selectedWallet;
-		const response = getReceiveAddress({ selectedWallet });
-		if (response.isOk()) {
-			payConfig.push({ type: 'p2wpkh', value: response.value });
+		if (!needToUpdate) {
+			closeDriveSession(drive);
+			return;
 		}
-	}
 
-	await drive
-		.put('/slashpay.json', encodeJSON(payConfig))
-		.then(() => {
-			console.debug('Updated slashpay.json:', payConfig);
-		})
-		.catch(noop);
+		console.debug('Pushing new slashpay.json:', newPayConfig);
 
-	closeDriveSession(drive);
+		await drive
+			.put('/slashpay.json', encodeJSON(newPayConfig))
+			.then(() => {
+				console.debug('Updated slashpay.json:', newPayConfig);
+			})
+			.catch(noop);
 
-	return {
-		updated: true,
-		/** Saved config */
-		payConfig,
-	};
-};
+		closeDriveSession(drive);
+	},
+	5000,
+);
 
 /** Send hypercorse to seeder */
 export const seedDrives = async (slashtag: Slashtag): Promise<boolean> => {
