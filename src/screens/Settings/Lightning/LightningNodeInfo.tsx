@@ -1,11 +1,11 @@
 import React, { memo, ReactElement, useEffect, useState } from 'react';
-import { StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { useSelector } from 'react-redux';
 import Clipboard from '@react-native-clipboard/clipboard';
 
 import {
 	Subtitle,
-	View,
+	View as ThemedView,
 	TouchableOpacity,
 	Caption13Up,
 } from '../../../styles/components';
@@ -29,41 +29,50 @@ const LightningNodeInfo = (): ReactElement => {
 				setNodeId(response.value);
 			} else {
 				console.log('Error getting NodeId', response.error.message);
-				setNodeId('disconnected');
-				setError('Bitkit failed to initialze the Lightning node.');
+				setError('Bitkit failed to initialize the Lightning node.');
 			}
 		})();
 	}, [selectedNetwork]);
 
 	return (
-		<View style={styles.container} color="black">
+		<ThemedView style={styles.container}>
 			<SafeAreaInsets type="top" />
 			<NavigationHeader title="Lightning Node Info" displayBackButton />
 
-			<View style={styles.content} color="black">
-				<TouchableOpacity
-					onPress={(): void => {
-						Clipboard.setString(nodeId);
-						showSuccessNotification({
-							title: 'Copied LDK Node ID to Clipboard',
-							message: nodeId,
-						});
-					}}>
-					<Caption13Up style={styles.label} color="gray1">
-						LDK Node ID
-					</Caption13Up>
-					<Subtitle color={error && 'red'}>{nodeId}</Subtitle>
-				</TouchableOpacity>
+			<View style={styles.content}>
+				{!error && (
+					<TouchableOpacity
+						onPress={(): void => {
+							Clipboard.setString(nodeId);
+							showSuccessNotification({
+								title: 'Copied to Clipboard',
+								message: 'Successfully copied LDK Node ID to clipboard.',
+							});
+						}}>
+						<Caption13Up style={styles.label} color="gray1">
+							LDK Node ID
+						</Caption13Up>
+						<Subtitle>{nodeId}</Subtitle>
+					</TouchableOpacity>
+				)}
 
 				{!!error && (
-					<View style={styles.error}>
-						<Subtitle>{error}</Subtitle>
-					</View>
+					<>
+						<View>
+							<Caption13Up style={styles.label} color="gray1">
+								LDK Node ID
+							</Caption13Up>
+							<Subtitle color="red">disconnected</Subtitle>
+						</View>
+						<View style={styles.error}>
+							<Subtitle>{error}</Subtitle>
+						</View>
+					</>
 				)}
 			</View>
 
 			<SafeAreaInsets type="bottom" />
-		</View>
+		</ThemedView>
 	);
 };
 
