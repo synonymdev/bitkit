@@ -14,6 +14,7 @@ import type { TAssetType } from '../../store/types/wallet';
 import type { OnboardingStackParamList } from '../onboarding/OnboardingNavigator';
 import type { TabStackParamList } from '../tabs/TabNavigator';
 import type { LightningStackParamList } from '../lightning/LightningNavigator';
+import type { WidgetsStackParamList } from '../widgets/WidgetsNavigator';
 import type { SettingsStackParamList } from '../settings/SettingsNavigator';
 import type { BackupStackParamList } from '../bottom-sheet/BackupNavigation';
 import type { PinStackParamList } from '../bottom-sheet/PINNavigation';
@@ -77,6 +78,12 @@ export type TabScreenProps<T extends keyof TabStackParamList> =
 export type LightningScreenProps<T extends keyof LightningStackParamList> =
 	CompositeScreenProps<
 		NativeStackScreenProps<LightningStackParamList, T>,
+		RootStackScreenProps<keyof RootStackParamList>
+	>;
+
+export type WidgetsScreenProps<T extends keyof WidgetsStackParamList> =
+	CompositeScreenProps<
+		NativeStackScreenProps<WidgetsStackParamList, T>,
 		RootStackScreenProps<keyof RootStackParamList>
 	>;
 

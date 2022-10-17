@@ -20,7 +20,6 @@ import type {
 	RootStackParamList,
 	RootStackScreenProps,
 } from '../../navigation/types';
-import { navigate } from '../../navigation/root/RootNavigator';
 
 const crownImageSrc = require('../../assets/illustrations/crown.png');
 const coinsImageSrc = require('../../assets/illustrations/coins.png');
@@ -133,7 +132,7 @@ export const Layout = ({
 				title={header}
 				displayBackButton={backButton}
 				onClosePress={(): void => {
-					navigate('Tabs', {});
+					navigation.navigate('Tabs');
 				}}
 			/>
 			<DetectSwipe onSwipeLeft={onSwipeLeft}>

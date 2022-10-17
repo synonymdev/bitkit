@@ -1,5 +1,6 @@
 import React from 'react';
 import { StyleSheet, ScrollView } from 'react-native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 import {
 	ChartLineIcon,
@@ -9,34 +10,34 @@ import {
 } from '../../styles/components';
 import NavigationHeader from '../../components/NavigationHeader';
 import SafeAreaInsets from '../../components/SafeAreaInsets';
-import { navigate } from '../../navigation/root/RootNavigator';
 import DetectSwipe from '../../components/DetectSwipe';
 import Divider from '../../components/Divider';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 import Button from '../../components/Button';
 import { handleSlashtagURL } from '../../utils/slashtags';
+import type { WidgetsScreenProps } from '../../navigation/types';
 
 const PriceFeedURL =
 	'slashfeed:kgw7hqj4usek78smxczgrcxqn313s7qnpnc7so7guegziwjic6yy#encryptionKey=nds189gg3hgpei45y79f9ho6s6yh4sm3su1bw4yktt9gtggxtxty';
 const NewsFeedURL =
 	'slashfeed:jh7fzqcngzwq79e645x8p81kpn5ch8ybi6n4d571jyczd3qr1psy#encryptionKey=yrrfn8n3guaonho4oafgic7xcmbjwfhb6ihxguqjaqf1mwhpxeco';
 
-const WidgetsSuggetsions = (): JSX.Element => {
-	const onSwipeLeft = (): void => {
-		navigate('Tabs', {});
+const WidgetsSuggetsions = ({
+	navigation,
+}: WidgetsScreenProps<'WidgetsSuggestions'>): JSX.Element => {
+	const onSwipeRight = (): void => {
+		navigation.navigate('Tabs');
 	};
 
 	return (
 		<View style={styles.container}>
 			<SafeAreaInsets type="top" />
 			<NavigationHeader
-				style={styles.header}
 				title="Add Widget"
 				onClosePress={(): void => {
-					navigate('Tabs', {});
+					navigation.navigate('Tabs');
 				}}
 			/>
-			<DetectSwipe onSwipeLeft={onSwipeLeft}>
+			<DetectSwipe onSwipeRight={onSwipeRight}>
 				<View style={styles.content}>
 					<ScrollView>
 						<Feed
@@ -54,15 +55,16 @@ const WidgetsSuggetsions = (): JSX.Element => {
 					<View style={styles.buttonContainer}>
 						<Button
 							style={styles.button}
-							text="Scan QR To Add"
+							text="Or Scan QR"
 							size="large"
 							onPress={(): void => {
-								navigate('Scanner', {});
+								navigation.navigate('Scanner');
 							}}
 						/>
 					</View>
 				</View>
 			</DetectSwipe>
+			<SafeAreaInsets type="bottom" />
 		</View>
 	);
 };
@@ -79,15 +81,14 @@ const Feed = ({
 	return (
 		<TouchableOpacity
 			activeOpacity={0.9}
-			style={styles.feedContainer}
 			onPress={(): void => {
 				handleSlashtagURL(url);
 			}}>
-			<View style={styles.feedRow}>
+			<View style={styles.feed}>
 				<View style={styles.icon}>{icon}</View>
 				<Title>{title}</Title>
 			</View>
-			<Divider />
+			<Divider style={styles.divider} />
 		</TouchableOpacity>
 	);
 };
@@ -97,19 +98,16 @@ const styles = StyleSheet.create({
 		flex: 1,
 	},
 	content: {
+		flex: 1,
 		paddingHorizontal: 16,
-		paddingTop: 16,
 	},
-	header: {
-		paddingBottom: 12,
-	},
-	feedContainer: {
-		marginTop: 16,
-	},
-	feedRow: {
-		display: 'flex',
+	feed: {
 		flexDirection: 'row',
 		alignItems: 'center',
+	},
+	divider: {
+		marginTop: 24,
+		marginBottom: 24,
 	},
 	icon: {
 		marginRight: 16,
@@ -118,6 +116,7 @@ const styles = StyleSheet.create({
 	},
 	buttonContainer: {
 		flexDirection: 'row',
+		marginTop: 'auto',
 	},
 	button: {
 		flex: 1,

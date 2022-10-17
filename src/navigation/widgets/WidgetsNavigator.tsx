@@ -1,33 +1,32 @@
 import React, { ReactElement } from 'react';
+import { useSelector } from 'react-redux';
 import {
 	createNativeStackNavigator,
+	NativeStackNavigationOptions,
 	NativeStackNavigationProp,
 } from '@react-navigation/native-stack';
 
-import { NavigationContainer } from '../../styles/components';
 import {
 	GoodbyePasswords,
 	HelloWidgets,
 } from '../../screens/Widgets/WidgetsOnboarding';
-import WidgetsSuggetsions from '../../screens/Widgets/WidgetsSuggestions';
+import WidgetsSuggestions from '../../screens/Widgets/WidgetsSuggestions';
 import Store from '../../store/types';
-import { useSelector } from 'react-redux';
 
 export type WidgetsNavigationProp =
 	NativeStackNavigationProp<WidgetsStackParamList>;
 
 export type WidgetsStackParamList = {
-	GoodbyePasswods: undefined;
+	GoodbyePasswords: undefined;
 	HelloWidgets: undefined;
 	WidgetsSuggestions: undefined;
 };
 
 const Stack = createNativeStackNavigator<WidgetsStackParamList>();
 
-const navOptionHandler = {
+const navOptions: NativeStackNavigationOptions = {
 	headerShown: false,
 	gestureEnabled: true,
-	detachPreviousScreen: false,
 };
 
 const WidgetsNavigator = (): ReactElement => {
@@ -36,28 +35,19 @@ const WidgetsNavigator = (): ReactElement => {
 	);
 
 	return (
-		<NavigationContainer>
-			<Stack.Navigator
-				initialRouteName={
-					onboardedWidgets ? 'WidgetsSuggestions' : 'GoodbyePasswods'
-				}>
-				<Stack.Screen
-					name="GoodbyePasswods"
-					component={GoodbyePasswords}
-					options={navOptionHandler}
-				/>
-				<Stack.Screen
-					name="HelloWidgets"
-					component={HelloWidgets}
-					options={navOptionHandler}
-				/>
+		<Stack.Navigator
+			initialRouteName={
+				onboardedWidgets ? 'WidgetsSuggestions' : 'GoodbyePasswords'
+			}>
+			<Stack.Group screenOptions={navOptions}>
+				<Stack.Screen name="GoodbyePasswords" component={GoodbyePasswords} />
+				<Stack.Screen name="HelloWidgets" component={HelloWidgets} />
 				<Stack.Screen
 					name="WidgetsSuggestions"
-					component={WidgetsSuggetsions}
-					options={navOptionHandler}
+					component={WidgetsSuggestions}
 				/>
-			</Stack.Navigator>
-		</NavigationContainer>
+			</Stack.Group>
+		</Stack.Navigator>
 	);
 };
 
