@@ -871,7 +871,7 @@ export const broadcastTransaction = async ({
 		if (transaction.isErr()) {
 			return err(transaction.error.message);
 		}
-		const address = transaction.value.outputs?.[0].address;
+		const address = transaction.value.outputs?.[0]?.address;
 		if (address) {
 			const scriptHash = getScriptHash(address, selectedNetwork);
 			await subscribeToAddresses({
@@ -882,7 +882,6 @@ export const broadcastTransaction = async ({
 	}
 
 	const broadcastResponse = await electrum.broadcastTransaction({
-		id: 1,
 		rawTx,
 		network: selectedNetwork,
 	});

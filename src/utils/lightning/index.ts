@@ -145,6 +145,7 @@ export const setupLdk = async ({
 				rawTx,
 				selectedNetwork,
 				selectedWallet,
+				subscribeToOutputAddress: false,
 			});
 			if (res.isErr()) {
 				return '';
@@ -166,6 +167,7 @@ export const setupLdk = async ({
 			broadcastTransaction: _broadcastTransaction,
 			getTransactionData,
 			network,
+			feeRate: 0,
 		});
 
 		if (lmStart.isErr()) {

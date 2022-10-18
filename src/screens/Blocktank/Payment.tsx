@@ -30,6 +30,7 @@ import { hasEnabledAuthentication } from '../../utils/settings';
 import NavigationHeader from '../../components/NavigationHeader';
 import SafeAreaView from '../../components/SafeAreaView';
 import { RootStackParamList } from '../../navigation/types';
+import { refreshWallet } from '../../utils/wallet';
 
 type Props = StackScreenProps<RootStackParamList, 'BlocktankPayment'>;
 
@@ -140,6 +141,7 @@ const BlocktankPayment = (props: Props): ReactElement => {
 		const res = await broadcastTransaction({
 			rawTx,
 			selectedNetwork,
+			subscribeToOutputAddress: false,
 		});
 
 		if (res.isErr()) {
@@ -163,6 +165,7 @@ const BlocktankPayment = (props: Props): ReactElement => {
 
 		await resetStore();
 		onClose();
+		refreshWallet({ onchain: true, lightning: false }).then();
 	};
 
 	const resetStore = async (): Promise<void> => {
