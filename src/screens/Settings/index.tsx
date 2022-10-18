@@ -6,13 +6,17 @@ import React, {
 	useState,
 } from 'react';
 import { StyleSheet, Image, View, TouchableOpacity } from 'react-native';
-import { IListData, ItemData } from '../../components/List';
-import Glow from './../../components/Glow';
-import SettingsView from './SettingsView';
 import { useSelector } from 'react-redux';
+
+import { View as ThemedView } from '../../styles/components';
+import { IListData, ItemData } from '../../components/List';
+import Glow from '../../components/Glow';
+import SettingsView from './SettingsView';
 import Store from '../../store/types';
 import { updateSettings } from '../../store/actions/settings';
 import { showSuccessNotification } from '../../utils/notifications';
+
+const imageSrc = require('./../../assets/illustrations/cog.png');
 
 const SettingsMenu = ({ navigation }): ReactElement => {
 	const enableDevOptions = useSelector(
@@ -92,34 +96,29 @@ const SettingsMenu = ({ navigation }): ReactElement => {
 	}, [enableDevOptions, navigation]);
 
 	return (
-		<View style={styles.container}>
+		<ThemedView style={styles.container}>
 			<SettingsView
-				title={'Settings'}
+				title="Settings"
 				listData={SettingsListData}
 				showBackNavigation={true}
 				fullHeight={false}
 			/>
 			<TouchableOpacity
-				onPress={updateDevOptions}
 				style={styles.imageContainer}
-				activeOpacity={1}>
+				activeOpacity={1}
+				onPress={updateDevOptions}>
 				<View style={styles.imageContainer} pointerEvents="none">
 					<Glow color="brand" size={500} style={styles.glow} />
-					<Image
-						style={styles.image}
-						resizeMode="contain"
-						source={require('./../../assets/illustrations/cog.png')}
-					/>
+					<Image style={styles.image} source={imageSrc} resizeMode="contain" />
 				</View>
 			</TouchableOpacity>
-		</View>
+		</ThemedView>
 	);
 };
 
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		backgroundColor: '#000',
 	},
 	imageContainer: {
 		alignItems: 'center',

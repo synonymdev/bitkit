@@ -47,7 +47,10 @@ const BackupSettings = ({
 							if (pin) {
 								navigation.navigate('AuthCheck', {
 									onSuccess: () => {
-										navigation.replace('ResetAndRestore');
+										// hack needed for Android
+										setTimeout(() => {
+											navigation.replace('ResetAndRestore');
+										}, 100);
 									},
 								});
 							} else {

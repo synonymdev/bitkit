@@ -86,7 +86,10 @@ const BackupData = ({
 						if (pin) {
 							navigation.navigate('AuthCheck', {
 								onSuccess: () => {
-									navigation.replace('ExportToPhone');
+									// hack needed for Android
+									setTimeout(() => {
+										navigation.replace('ExportToPhone');
+									}, 100);
 								},
 							});
 						} else {
