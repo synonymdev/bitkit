@@ -1,9 +1,9 @@
 import React, { ReactElement } from 'react';
 import {
-	createNativeStackNavigator,
-	NativeStackNavigationOptions,
-	NativeStackNavigationProp,
-} from '@react-navigation/native-stack';
+	createStackNavigator,
+	StackNavigationOptions,
+	StackNavigationProp,
+} from '@react-navigation/stack';
 
 import SettingsMenu from '../../screens/Settings';
 import ManageSeedPhrase from '../../screens/Settings/ManageSeedPhrase';
@@ -46,7 +46,7 @@ import { NavigatorScreenParams } from '@react-navigation/native';
 import SlashtagsSettings from '../../screens/Settings/SlashtagsSettings';
 
 export type SettingsNavigationProp =
-	NativeStackNavigationProp<SettingsStackParamList>;
+	StackNavigationProp<SettingsStackParamList>;
 
 export type SettingsStackParamList = {
 	AuthCheck: { onSuccess: () => void };
@@ -87,9 +87,9 @@ export type SettingsStackParamList = {
 	SlashtagsSettings: undefined;
 };
 
-const Stack = createNativeStackNavigator<SettingsStackParamList>();
+const Stack = createStackNavigator<SettingsStackParamList>();
 
-const navOptions: NativeStackNavigationOptions = {
+const navOptions: StackNavigationOptions = {
 	headerShown: false,
 	gestureEnabled: true,
 };
