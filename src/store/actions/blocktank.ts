@@ -27,7 +27,7 @@ import {
 	getOnchainTransactionData,
 	updateFee,
 } from '../../utils/wallet/transactions';
-import { getNodeId, refreshLdk } from '../../utils/lightning';
+import { getNodeId } from '../../utils/lightning';
 import {
 	finalizeChannel,
 	getBlocktankInfo,
@@ -111,7 +111,6 @@ export const refreshOrder = async (
 			if (getOrderRes.value.state === 100) {
 				const finalizeRes = await finalizeChannel(orderId);
 				if (finalizeRes.isOk()) {
-					setTimeout(() => refreshLdk({}), 15000);
 					removeTodo('lightning');
 					removeTodo('lightningSettingUp');
 					const getUpdatedOrderRes = await blocktank.getOrder(orderId);

@@ -30,7 +30,7 @@ import {
 	showSuccessNotification,
 } from './utils/notifications';
 import { toastConfig } from './components/Toast';
-import { unsubscribeFromLightningPayments } from './utils/lightning';
+import { unsubscribeFromLightningSubscriptions } from './utils/lightning';
 
 if (Platform.OS === 'android') {
 	if (UIManager.setLayoutAnimationEnabledExperimental) {
@@ -64,7 +64,7 @@ const App = (): ReactElement => {
 		})();
 
 		return () => {
-			unsubscribeFromLightningPayments();
+			unsubscribeFromLightningSubscriptions();
 		};
 	}, []);
 

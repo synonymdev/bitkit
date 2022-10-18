@@ -50,7 +50,7 @@ import { updateSlashPayConfig } from '../slashtags';
 import { sdk } from '../../components/SlashtagsProvider';
 
 let paymentSubscription: EmitterSubscription | undefined;
-
+let onChannelSubscription: EmitterSubscription | undefined;
 /**
  * Wipes LDK data from storage
  * @returns {Promise<Result<string>>}
@@ -304,14 +304,13 @@ export const subscribeToLightningPayments = ({
 	selectedWallet?: string;
 	selectedNetwork?: TAvailableNetworks;
 }): void => {
+	if (!selectedWallet) {
+		selectedWallet = getSelectedWallet();
+	}
+	if (!selectedNetwork) {
+		selectedNetwork = getSelectedNetwork();
+	}
 	if (!paymentSubscription) {
-		if (!selectedWallet) {
-			selectedWallet = getSelectedWallet();
-		}
-		if (!selectedNetwork) {
-			selectedNetwork = getSelectedNetwork();
-		}
-		// @ts-ignore
 		paymentSubscription = ldk.onEvent(
 			EEventTypes.channel_manager_payment_claimed,
 			(res: TChannelManagerPayment) => {
@@ -323,10 +322,16 @@ export const subscribeToLightningPayments = ({
 			},
 		);
 	}
+	if (!onChannelSubscription) {
+		onChannelSubscription = ldk.onEvent(EEventTypes.new_channel, () => {
+			refreshLdk({ selectedWallet, selectedNetwork }).then();
+		});
+	}
 };
 
-export const unsubscribeFromLightningPayments = (): void => {
+export const unsubscribeFromLightningSubscriptions = (): void => {
 	paymentSubscription && paymentSubscription.remove();
+	onChannelSubscription && onChannelSubscription.remove();
 };
 
 /**
