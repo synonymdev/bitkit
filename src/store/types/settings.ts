@@ -23,6 +23,7 @@ export interface ICustomElectrumPeer {
 	tcp: number | undefined; //tcp port
 	protocol?: TProtocol;
 }
+
 type TReceiveOption = {
 	key: string;
 	title: string;
@@ -31,10 +32,12 @@ type TReceiveOption = {
 export interface ISettings {
 	loading: boolean;
 	error: boolean;
-	biometrics: boolean;
+	allowClipboard: boolean;
+	enableSendAmountWarning: boolean;
 	pin: boolean;
 	pinOnLaunch: boolean;
 	pinForPayments: boolean;
+	biometrics: boolean;
 	rbf: boolean;
 	theme: TTheme;
 	bitcoinUnit: TBitcoinUnit;

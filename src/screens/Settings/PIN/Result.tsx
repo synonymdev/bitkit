@@ -11,11 +11,12 @@ import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigati
 import GradientView from '../../../components/GradientView';
 import Store from '../../../store/types';
 import { updateSettings } from '../../../store/actions/settings';
+import type { PinScreenProps } from '../../../navigation/types';
 
 const imageSrc = require('../../../assets/illustrations/check.png');
 
-const Result = ({ route }): ReactElement => {
-	const { bio } = route?.params;
+const Result = ({ route }: PinScreenProps<'Result'>): ReactElement => {
+	const { bio } = route.params;
 	const insets = useSafeAreaInsets();
 	const pinForPayments = useSelector(
 		(state: Store) => state.settings.pinForPayments,

@@ -22,6 +22,10 @@ import BlocktankOrderDetails from '../../screens/Settings/BlocktankOrders/Blockt
 import AuthCheck from '../../components/AuthCheck';
 import GeneralSettings from '../../screens/Settings/General';
 import SecuritySettings from '../../screens/Settings/Security';
+import ChangePin from '../../screens/Settings/PIN/ChangePin';
+import ChangePin2 from '../../screens/Settings/PIN/ChangePin2';
+import PinChanged from '../../screens/Settings/PIN/PinChanged';
+import DisablePin from '../../screens/Settings/PIN/DisablePin';
 import BackupSettings from '../../screens/Settings/BackupSettings';
 import NetworksSettings from '../../screens/Settings/Networks';
 import AdvancedSettings from '../../screens/Settings/Advanced';
@@ -49,6 +53,10 @@ export type SettingsStackParamList = {
 	SettingsMenu: undefined;
 	GeneralSettings: undefined;
 	SecuritySettings: undefined;
+	ChangePin: undefined;
+	ChangePin2: { pin: string } | undefined;
+	PinChanged: undefined;
+	DisablePin: undefined;
 	BackupSettings: undefined;
 	NetworksSettings: undefined;
 	AdvancedSettings: undefined;
@@ -94,6 +102,10 @@ const SettingsNavigator = (): ReactElement => {
 				<Stack.Screen name="SettingsMenu" component={SettingsMenu} />
 				<Stack.Screen name="GeneralSettings" component={GeneralSettings} />
 				<Stack.Screen name="SecuritySettings" component={SecuritySettings} />
+				<Stack.Screen name="ChangePin" component={ChangePin} />
+				<Stack.Screen name="ChangePin2" component={ChangePin2} />
+				<Stack.Screen name="PinChanged" component={PinChanged} />
+				<Stack.Screen name="DisablePin" component={DisablePin} />
 				<Stack.Screen name="BackupSettings" component={BackupSettings} />
 				<Stack.Screen name="NetworksSettings" component={NetworksSettings} />
 				<Stack.Screen name="AdvancedSettings" component={AdvancedSettings} />

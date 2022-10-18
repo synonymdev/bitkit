@@ -256,10 +256,10 @@ const List = ({
 				[data],
 			)}
 			renderItem={useCallback(({ item }): ReactElement | null => {
-				if (item.hide === false) {
-					return <Item {...item} navigation={navigation} />;
+				if (item.hide) {
+					return null;
 				}
-				return null;
+				return <Item {...item} navigation={navigation} />;
 				// eslint-disable-next-line react-hooks/exhaustive-deps
 			}, [])}
 			stickySectionHeadersEnabled={false}
