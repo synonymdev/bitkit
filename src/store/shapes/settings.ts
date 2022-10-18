@@ -65,10 +65,12 @@ const defaultReceivePreference = [
 export const defaultSettingsShape: ISettings = {
 	loading: false,
 	error: false,
-	biometrics: false,
+	allowClipboard: false,
+	enableSendAmountWarning: false,
 	pin: false,
 	pinOnLaunch: true,
 	pinForPayments: false,
+	biometrics: false,
 	rbf: true,
 	theme: 'dark',
 	bitcoinUnit: 'satoshi', //BTC, mBTC, μBTC or satoshi

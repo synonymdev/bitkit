@@ -17,9 +17,9 @@ import { useSnapPoints } from '../../hooks/bottomSheet';
 export type PinNavigationProp = NativeStackNavigationProp<PinStackParamList>;
 
 export type PinStackParamList = {
-	ChoosePIN: undefined;
+	ChoosePIN: { pin: string } | undefined;
 	AskForBiometrics: undefined;
-	Result: undefined;
+	Result: { bio: boolean };
 };
 
 const Stack = createNativeStackNavigator<PinStackParamList>();

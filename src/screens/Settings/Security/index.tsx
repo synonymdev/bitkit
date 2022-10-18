@@ -1,27 +1,32 @@
 import React, { memo, ReactElement, useMemo, useState, useEffect } from 'react';
+import { StyleSheet } from 'react-native';
 import { useSelector } from 'react-redux';
 import ReactNativeBiometrics from 'react-native-biometrics';
 
+import { View as ThemedView } from '../../../styles/components';
 import Store from '../../../store/types';
 import { IListData } from '../../../components/List';
-import SettingsView from '../SettingsView';
-import { removePin, toggleBiometrics } from '../../../utils/settings';
+import { toggleBiometrics } from '../../../utils/settings';
 import { IsSensorAvailableResult } from '../../../components/Biometrics';
 import { toggleView } from '../../../store/actions/user';
 import { updateSettings } from '../../../store/actions/settings';
-import { SettingsScreenProps } from '../../../navigation/types';
+import SettingsView from '../SettingsView';
+import type { SettingsScreenProps } from '../../../navigation/types';
 
 const rnBiometrics = ReactNativeBiometrics;
 
 const SecuritySettings = ({
 	navigation,
 }: SettingsScreenProps<'SecuritySettings'>): ReactElement => {
-	const [biometryData, setBiometricData] = useState<
-		IsSensorAvailableResult | undefined
-	>(undefined);
-	const { pin, biometrics, pinOnLaunch, pinForPayments } = useSelector(
-		(state: Store) => state.settings,
-	);
+	const [biometryData, setBiometricData] = useState<IsSensorAvailableResult>();
+	const {
+		allowClipboard,
+		enableSendAmountWarning,
+		pin,
+		biometrics,
+		pinOnLaunch,
+		pinForPayments,
+	} = useSelector((state: Store) => state.settings);
 
 	useEffect(() => {
 		(async (): Promise<void> => {
@@ -31,22 +36,38 @@ const SecuritySettings = ({
 		})();
 	}, []);
 
+	const isBiometrySupported =
+		biometryData?.available && biometryData?.biometryType;
+
 	const SettingsListData: IListData[] = useMemo(
 		() => [
 			{
 				data: [
 					{
-						title: 'Pin',
+						title: 'Read clipboard for ease of use',
+						type: 'switch',
+						enabled: allowClipboard,
+						onPress: (): void => {
+							updateSettings({ allowClipboard: !allowClipboard });
+						},
+					},
+					{
+						title: 'Warning for sending over $100',
+						type: 'switch',
+						enabled: enableSendAmountWarning,
+						onPress: (): void => {
+							updateSettings({
+								enableSendAmountWarning: !enableSendAmountWarning,
+							});
+						},
+					},
+					{
+						title: 'PIN Code',
 						value: pin ? 'Enabled' : 'Disabled',
 						type: 'button',
 						onPress: (): void => {
 							if (pin) {
-								navigation.navigate('AuthCheck', {
-									onSuccess: () => {
-										navigation.pop();
-										removePin().then();
-									},
-								});
+								navigation.navigate('DisablePin');
 							} else {
 								toggleView({
 									view: 'PINPrompt',
@@ -54,7 +75,14 @@ const SecuritySettings = ({
 								});
 							}
 						},
-						hide: false,
+					},
+					{
+						title: 'Change PIN Code',
+						type: 'button',
+						onPress: (): void => {
+							navigation.navigate('ChangePin');
+						},
+						hide: !pin,
 					},
 					{
 						title: 'Require PIN on launch',
@@ -96,15 +124,15 @@ const SecuritySettings = ({
 								},
 							});
 						},
-						hide:
-							!pin || (!biometryData?.available && !biometryData?.biometryType),
+						hide: !pin || !isBiometrySupported,
 					},
 				],
 			},
 		],
 		[
-			biometryData?.available,
-			biometryData?.biometryType,
+			allowClipboard,
+			enableSendAmountWarning,
+			isBiometrySupported,
 			biometrics,
 			pin,
 			pinOnLaunch,
@@ -113,15 +141,28 @@ const SecuritySettings = ({
 		],
 	);
 
+	const footerText =
+		pin && isBiometrySupported
+			? 'When enabled, you can use Biometrics instead of your PIN code to unlock your wallet or send payments.'
+			: undefined;
+
 	return (
-		<>
+		<ThemedView style={styles.container}>
 			<SettingsView
-				title={'Security And Privacy'}
+				title="Security And Privacy"
 				listData={SettingsListData}
 				showBackNavigation={true}
+				fullHeight={false}
+				footerText={footerText}
 			/>
-		</>
+		</ThemedView>
 	);
 };
+
+const styles = StyleSheet.create({
+	container: {
+		flex: 1,
+	},
+});
 
 export default memo(SecuritySettings);

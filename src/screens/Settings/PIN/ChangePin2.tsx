@@ -1,30 +1,35 @@
 import React, {
 	memo,
 	ReactElement,
-	useState,
-	useEffect,
 	useCallback,
+	useEffect,
+	useState,
 } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 
-import { Text01S, Text02S } from '../../../styles/components';
-import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
-import GradientView from '../../../components/GradientView';
+import {
+	View as ThemedView,
+	Text01S,
+	Text02S,
+	AnimatedView,
+} from '../../../styles/components';
+import SafeAreaInsets from '../../../components/SafeAreaInsets';
+import NavigationHeader from '../../../components/NavigationHeader';
 import NumberPad from '../../../components/NumberPad';
 import useColors from '../../../hooks/colors';
 import { vibrate } from '../../../utils/helpers';
-import { useBottomSheetBackPress } from '../../../hooks/bottomSheet';
-import { addPin } from '../../../utils/settings';
-import type { PinScreenProps } from '../../../navigation/types';
+import type { SettingsScreenProps } from '../../../navigation/types';
+import { editPin } from '../../../utils/settings';
+import { FadeIn, FadeOut } from 'react-native-reanimated';
 
-const ChoosePIN = ({
+const ChangePin2 = ({
 	navigation,
 	route,
-}: PinScreenProps<'ChoosePIN'>): ReactElement => {
+}: SettingsScreenProps<'ChangePin2'>): ReactElement => {
 	const origPIN = route.params?.pin;
 	const [pin, setPin] = useState<string>('');
-	const [tryAgain, setTryAgain] = useState<boolean>(false);
+	const [wrongPin, setWrongPin] = useState<boolean>(false);
 	const { brand, brand08 } = useColors();
 
 	const handleOnPress = (n): void => {
@@ -41,25 +46,24 @@ const ChoosePIN = ({
 	// reset pin on back
 	useFocusEffect(useCallback(() => setPin(''), []));
 
-	useBottomSheetBackPress('PINNavigation');
-
+	// submit pin
 	useEffect(() => {
 		const timer = setTimeout(async () => {
 			if (pin.length !== 4) {
 				return;
 			}
 			if (!origPIN) {
-				navigation.push('ChoosePIN', { pin });
+				navigation.push('ChangePin2', { pin });
 				return;
 			}
 			const pinsAreEqual = pin === origPIN;
 			if (pinsAreEqual) {
-				addPin(pin);
-				navigation.navigate('AskForBiometrics');
+				editPin(pin);
+				navigation.navigate('PinChanged');
 			} else {
 				vibrate({ type: 'notificationWarning' });
 				setPin('');
-				setTryAgain(true);
+				setWrongPin(true);
 			}
 		}, 500);
 
@@ -67,10 +71,13 @@ const ChoosePIN = ({
 	}, [pin, origPIN, navigation]);
 
 	return (
-		<GradientView style={styles.container}>
-			<BottomSheetNavigationHeader
-				title={origPIN ? 'Retype 4-Digit PIN' : 'Choose 4-Digit PIN'}
-				displayBackButton={origPIN ? true : false}
+		<ThemedView style={styles.container}>
+			<SafeAreaInsets type="top" />
+			<NavigationHeader
+				title={origPIN ? 'Retype New PIN' : 'Set New PIN'}
+				onClosePress={(): void => {
+					navigation.navigate('Tabs');
+				}}
 			/>
 
 			{origPIN ? (
@@ -84,9 +91,13 @@ const ChoosePIN = ({
 				</Text01S>
 			)}
 
-			<View style={styles.tryAgain}>
-				{tryAgain ? (
-					<Text02S color="brand">Try again, this is not the same PIN.</Text02S>
+			<View style={styles.wrongPin}>
+				{wrongPin ? (
+					<AnimatedView color="transparent" entering={FadeIn} exiting={FadeOut}>
+						<Text02S color="brand">
+							Try again, this is not the same PIN.
+						</Text02S>
+					</AnimatedView>
 				) : (
 					<Text02S> </Text02S>
 				)}
@@ -114,7 +125,7 @@ const ChoosePIN = ({
 				onPress={handleOnPress}
 				onRemove={handleOnRemove}
 			/>
-		</GradientView>
+		</ThemedView>
 	);
 };
 
@@ -123,18 +134,19 @@ const styles = StyleSheet.create({
 		flex: 1,
 	},
 	text: {
-		paddingHorizontal: 32,
+		alignSelf: 'flex-start',
+		marginHorizontal: 32,
+		marginBottom: 32,
 	},
-	tryAgain: {
+	wrongPin: {
 		flexDirection: 'row',
 		justifyContent: 'center',
-		marginTop: 'auto',
 		marginBottom: 16,
 	},
 	dots: {
 		flexDirection: 'row',
 		justifyContent: 'center',
-		marginBottom: 32,
+		marginBottom: 'auto',
 	},
 	dot: {
 		width: 20,
@@ -148,4 +160,4 @@ const styles = StyleSheet.create({
 	},
 });
 
-export default memo(ChoosePIN);
+export default memo(ChangePin2);
