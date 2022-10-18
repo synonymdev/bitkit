@@ -121,9 +121,12 @@ const BetaSoftware = (): ReactElement => {
 			<Caption13M color="brand">
 				Don’t store all your money in Bitkit.
 			</Caption13M>
-			<TouchableOpacity onPress={handleHide} style={styles.button}>
-				<XIcon color="brand" width={17} height={17} />
-			</TouchableOpacity>
+			{/* TODO: allow hide it later */}
+			{false && (
+				<TouchableOpacity onPress={handleHide} style={styles.button}>
+					<XIcon color="brand" width={17} height={17} />
+				</TouchableOpacity>
+			)}
 		</AnimatedView>
 	);
 };
