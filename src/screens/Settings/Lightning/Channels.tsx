@@ -198,7 +198,7 @@ const Channels = ({ navigation }): ReactElement => {
 	return (
 		<ThemedView style={styles.root}>
 			<SafeAreaInsets type="top" />
-			<NavigationHeader title="Lightning connections" onAddPress={handleAdd} />
+			<NavigationHeader title="Lightning Connections" onAddPress={handleAdd} />
 			<ScrollView
 				contentContainerStyle={styles.content}
 				refreshControl={

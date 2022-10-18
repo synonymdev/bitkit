@@ -28,7 +28,7 @@ const ConnectivityIndicator = (): ReactElement => {
 		return <></>;
 	}
 
-	const onRetry = async () => {
+	const onRetry = async (): Promise<void> => {
 		setIsLoading(true);
 		const connectionResponse = await connectToElectrum({});
 		if (connectionResponse.isOk()) {
