@@ -132,6 +132,22 @@ const RestoreFromSeed = (): ReactElement => {
 		setShowRestored(true);
 	};
 
+	const handleSubmitEditing = (): void => {
+		if (focused === null || focused > numberOfWords - 2) {
+			// last input
+			return;
+		}
+		inputRefs.current[focused + 1].focus();
+	};
+
+	const handleKeyPress = ({ nativeEvent }): void => {
+		if (nativeEvent.key !== 'Backspace' || !focused || seed[focused]) {
+			return;
+		}
+
+		inputRefs.current[focused - 1].focus();
+	};
+
 	const renderInput = (word, index): ReactElement => {
 		// input is incorrect when it has been touched
 		const invalid = word !== undefined && !validWords[index];
@@ -147,6 +163,8 @@ const RestoreFromSeed = (): ReactElement => {
 				onChangeText={(text): void => onSeedChange(index, text)}
 				onFocus={(): void => handleFocus(index)}
 				onBlur={(): void => handleBlur(index)}
+				onSubmitEditing={handleSubmitEditing}
+				onKeyPress={handleKeyPress}
 			/>
 		);
 	};
