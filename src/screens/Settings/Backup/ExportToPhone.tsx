@@ -1,13 +1,12 @@
 import React, { memo, ReactElement, useEffect, useState } from 'react';
-import { StyleSheet, Switch, Image } from 'react-native';
+import { StyleSheet, Image } from 'react-native';
 import { useSelector } from 'react-redux';
 import Share from 'react-native-share';
 
-import { View, Text, TextInput, Text01S } from '../../../styles/components';
+import { View, Text01S } from '../../../styles/components';
 import NavigationHeader from '../../../components/NavigationHeader';
 import Button from '../../../components/Button';
 import Store from '../../../store/types';
-import themes from '../../../styles/themes';
 import {
 	showErrorNotification,
 	showSuccessNotification,
@@ -20,25 +19,21 @@ import SafeAreaView from '../../../components/SafeAreaView';
 import Glow from '../../../components/Glow';
 import SafeAreaInsets from '../../../components/SafeAreaInsets';
 import type { SettingsScreenProps } from '../../../navigation/types';
+import { getKeychainValue } from '../../../utils/helpers';
 
 const imageSrc = require('../../../assets/illustrations/folder.png');
 
 const ExportToPhone = ({
 	navigation,
 }: SettingsScreenProps<'ExportToPhone'>): ReactElement => {
-	const [isEncrypted, setIsEncrypted] = useState<boolean>(true);
+	const pinEnabled = useSelector((state: Store) => state.settings.pin);
 	const [isCreating, setIsCreating] = useState<boolean>(false);
-	const [password, setPassword] = useState<string>('');
 
 	useEffect(() => {
 		return (): void => {
 			cleanupBackupFiles().catch();
 		};
 	}, []);
-
-	const themeColors = useSelector(
-		(state: Store) => themes[state.settings.theme].colors,
-	);
 
 	const shareToFiles = async (filePath): Promise<void> => {
 		const shareOptions = {
@@ -69,16 +64,11 @@ const ExportToPhone = ({
 	};
 
 	const onCreateBackup = async (): Promise<void> => {
-		if (isEncrypted && !password) {
-			return showErrorNotification({
-				title: 'Unable to create backup',
-				message: 'Password must be set for encrypted backup',
-			});
-		}
-
 		setIsCreating(true);
 
-		const fileRes = await createBackupFile(isEncrypted ? password : undefined);
+		const { data: pin } = await getKeychainValue({ key: 'pin' });
+		const fileRes = await createBackupFile(pinEnabled ? pin : undefined);
+
 		if (fileRes.isErr()) {
 			setIsCreating(false);
 			return showErrorNotification({
@@ -103,40 +93,9 @@ const ExportToPhone = ({
 			<View style={styles.container}>
 				<Text01S color="gray1">
 					If you want, you can export a copy of all metadata to your phone. Be
-					aware, this .zip file will be encrypted with your PIN code.
+					aware, this .zip file will be encrypted with your PIN code if you have
+					set up a PIN code for Bitkit.
 				</Text01S>
-
-				<View style={styles.row}>
-					<Text style={styles.text}>Encrypt backup</Text>
-					<Switch
-						ios_backgroundColor={themeColors.surface}
-						onValueChange={(): void => setIsEncrypted(!isEncrypted)}
-						value={isEncrypted}
-					/>
-				</View>
-
-				{isEncrypted && (
-					<View>
-						<Text style={styles.title}>Password</Text>
-						<TextInput
-							textAlignVertical={'center'}
-							underlineColorAndroid="transparent"
-							style={styles.textInput}
-							placeholder="Password"
-							autoCapitalize="none"
-							autoComplete={'off'}
-							autoCorrect={false}
-							onChangeText={setPassword}
-							value={password}
-							textContentType={'newPassword'}
-							secureTextEntry
-						/>
-
-						<Text style={styles.text2}>
-							(Default password is your Backpack password)
-						</Text>
-					</View>
-				)}
 
 				<View style={styles.imageContainer} pointerEvents="none">
 					<Glow style={styles.glow} size={600} color="green" />
@@ -162,36 +121,6 @@ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		paddingHorizontal: 16,
-	},
-	row: {
-		flexDirection: 'row',
-		marginTop: 16,
-		paddingVertical: 10,
-		justifyContent: 'space-between',
-		display: 'flex',
-	},
-	text: {
-		flex: 1,
-	},
-	text2: {
-		textAlign: 'center',
-	},
-	title: {
-		fontWeight: 'bold',
-		fontSize: 16,
-	},
-	textInput: {
-		minHeight: 50,
-		borderRadius: 5,
-		fontWeight: 'bold',
-		fontSize: 18,
-		textAlign: 'left',
-		color: 'gray',
-		borderBottomWidth: 1,
-		borderColor: 'gray',
-		paddingHorizontal: 10,
-		backgroundColor: 'white',
-		marginVertical: 5,
 	},
 	imageContainer: {
 		flex: 1,
