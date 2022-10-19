@@ -30,7 +30,10 @@ import {
 import Store from '../../../store/types';
 import { resetInvoice } from '../../../store/actions/receive';
 import { updateMetaIncTxTags } from '../../../store/actions/metadata';
-import { getReceiveAddress } from '../../../utils/wallet';
+import {
+	getReceiveAddress,
+	getSelectedAddressType,
+} from '../../../utils/wallet';
 import { getUnifiedUri } from '../../../utils/receive';
 import { refreshLdk } from '../../../utils/lightning';
 import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
@@ -74,7 +77,14 @@ const Receive = ({ navigation }): ReactElement => {
 	const selectedNetwork = useSelector(
 		(store: Store) => store.wallet.selectedNetwork,
 	);
-	const addressType = useSelector((store: Store) => store.settings.addressType);
+	const addressType = useMemo(
+		(): string =>
+			getSelectedAddressType({
+				selectedWallet,
+				selectedNetwork,
+			}),
+		[selectedNetwork, selectedWallet],
+	);
 	const [loading, setLoading] = useState(true);
 	const [showCopy, setShowCopy] = useState(false);
 	const [receiveAddress, setReceiveAddress] = useState('');

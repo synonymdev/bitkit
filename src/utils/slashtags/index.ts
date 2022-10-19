@@ -7,7 +7,7 @@ import debounce from 'lodash.debounce';
 import { navigate } from '../../navigation/root/RootNavigator';
 import { BasicProfile, SlashPayConfig } from '../../store/types/slashtags';
 import { showErrorNotification } from '../notifications';
-import { getReceiveAddress } from '../../utils/wallet';
+import { getReceiveAddress, getSelectedAddressType } from '../../utils/wallet';
 import { decodeLightningInvoice } from '../../utils/lightning';
 import { createLightningInvoice } from '../../store/actions/lightning';
 import { getStore } from '../../store/helpers';
@@ -164,7 +164,11 @@ export const updateSlashPayConfig = debounce(
 
 		const store = getStore();
 		const { selectedWallet, selectedNetwork } = store.wallet;
-		const { enableOfflinePayments, addressType } = store.settings;
+		const { enableOfflinePayments } = store.settings;
+		const addressType = getSelectedAddressType({
+			selectedWallet,
+			selectedNetwork,
+		});
 		const invoices =
 			store.lightning.nodes[selectedWallet].invoices[selectedNetwork];
 
