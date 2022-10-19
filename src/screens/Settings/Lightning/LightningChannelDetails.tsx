@@ -1,15 +1,17 @@
-import React, { memo, PropsWithChildren, ReactElement } from 'react';
-import { Alert, ScrollView, StyleSheet } from 'react-native';
+import React, { memo, PropsWithChildren, ReactElement, useState } from 'react';
+import { ScrollView, StyleSheet } from 'react-native';
 import { View, Text } from '../../../styles/components';
 import NavigationHeader from '../../../components/NavigationHeader';
 import useDisplayValues from '../../../hooks/displayValues';
 import Button from '../../../components/Button';
+import Dialog from '../../../components/Dialog';
 
 interface Props extends PropsWithChildren<any> {
 	route: { params: { channel: any } };
 }
 
 const LightningChannelDetails = (props: Props): ReactElement => {
+	const [showDialog, setShowDialog] = useState(false);
 	const { channel } = props.route.params;
 	const {
 		chanId,
@@ -63,23 +65,7 @@ const LightningChannelDetails = (props: Props): ReactElement => {
 	output.push(['Close address', closeAddress]);
 
 	const onClose = async (): Promise<void> => {
-		Alert.alert(
-			'Close channel',
-			'Are you sure you want to close this channel?',
-			[
-				{
-					text: 'Yes, close',
-					onPress: (): void => {
-						//TODO: Close Channel
-					},
-				},
-				{
-					text: 'Cancel',
-					onPress: (): void => {},
-					style: 'cancel',
-				},
-			],
-		);
+		setShowDialog(true);
 	};
 
 	return (
@@ -97,6 +83,17 @@ const LightningChannelDetails = (props: Props): ReactElement => {
 					<Button text={'Close Channel'} onPress={onClose} />
 				</View>
 			</ScrollView>
+			<Dialog
+				visible={showDialog}
+				title="Close channel"
+				description="Are you sure you want to close this channel?"
+				confirmText="Yes, close"
+				onCancel={(): void => setShowDialog(false)}
+				onConfirm={(): void => {
+					//TODO: Close Channel
+					setShowDialog(false);
+				}}
+			/>
 		</View>
 	);
 };
