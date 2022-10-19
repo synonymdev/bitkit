@@ -85,46 +85,48 @@ const HeadlinesWidget = ({
 	};
 
 	return (
-		<TouchableOpacity
-			style={styles.root}
-			onPress={switchShowButtons}
-			activeOpacity={0.9}>
-			<View style={styles.icon}>
-				{<NewspaperIcon width={32} height={32} />}
-			</View>
-			<View style={styles.infoContainer}>
-				<Text01M style={styles.name} numberOfLines={1}>
-					{article?.title || widget.feed.name}
-				</Text01M>
-				<View style={styles.row}>
-					<View style={styles.linkContainer}>
-						<TouchableOpacity
-							activeOpacity={0.9}
-							onPress={(): void => {
-								article?.link && Linking.openURL(article.link);
-							}}>
-							<Caption13M color="gray1" numberOfLines={1}>
-								{article?.link}
-							</Caption13M>
-						</TouchableOpacity>
-					</View>
-					<View style={styles.authorContainer}>
-						<Text02S style={styles.author} numberOfLines={1}>
-							{article?.publisher.title}
-						</Text02S>
+		<View>
+			<TouchableOpacity
+				style={styles.root}
+				onPress={switchShowButtons}
+				activeOpacity={0.9}>
+				<View style={styles.icon}>
+					{<NewspaperIcon width={32} height={32} />}
+				</View>
+				<View style={styles.infoContainer}>
+					<Text01M style={styles.name} numberOfLines={1}>
+						{article?.title || widget.feed.name}
+					</Text01M>
+					<View style={styles.row}>
+						<View style={styles.linkContainer}>
+							<TouchableOpacity
+								activeOpacity={0.9}
+								onPress={(): void => {
+									article?.link && Linking.openURL(article.link);
+								}}>
+								<Caption13M color="gray1" numberOfLines={1}>
+									{article?.link}
+								</Caption13M>
+							</TouchableOpacity>
+						</View>
+						<View style={styles.authorContainer}>
+							<Text02S style={styles.author} numberOfLines={1}>
+								{article?.publisher.title}
+							</Text02S>
+						</View>
 					</View>
 				</View>
-				{showButtons && (
-					<View style={styles.button}>
-						<Button
-							text=""
-							icon={<GearIcon width={20} />}
-							onPress={(): void => navigate('WidgetFeedEdit', { url })}
-						/>
-					</View>
-				)}
-			</View>
-		</TouchableOpacity>
+			</TouchableOpacity>
+			{showButtons && (
+				<View style={styles.button}>
+					<Button
+						text=""
+						icon={<GearIcon width={20} />}
+						onPress={(): void => navigate('WidgetFeedEdit', { url })}
+					/>
+				</View>
+			)}
+		</View>
 	);
 };
 
@@ -168,9 +170,12 @@ const styles = StyleSheet.create({
 	},
 	button: {
 		position: 'absolute',
+		paddingLeft: 8,
 		right: 0,
 		top: 0,
-		paddingLeft: 8,
+		bottom: 1,
+		display: 'flex',
+		justifyContent: 'center',
 	},
 });
 
