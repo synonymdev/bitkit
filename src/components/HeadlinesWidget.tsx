@@ -122,7 +122,10 @@ const HeadlinesWidget = ({
 					<Button
 						text=""
 						icon={<GearIcon width={20} />}
-						onPress={(): void => navigate('WidgetFeedEdit', { url })}
+						onPress={(): void => {
+							setTimeout(() => setShowButtons(false), 0);
+							navigate('WidgetFeedEdit', { url });
+						}}
 					/>
 				</View>
 			)}
