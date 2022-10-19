@@ -163,7 +163,9 @@ export const updateAddressIndexes = async ({
 		);
 	}
 
-	addressTypesToCheck.map(async (addressTypeKey) => {
+	let updated = false;
+
+	const promises = addressTypesToCheck.map(async (addressTypeKey) => {
 		if (!selectedNetwork) {
 			selectedNetwork = getSelectedNetwork();
 		}
@@ -176,7 +178,7 @@ export const updateAddressIndexes = async ({
 			addressType: addressTypeKey,
 		});
 		if (response.isErr()) {
-			return err(response.error);
+			throw response.error;
 		}
 
 		const { type } = addressTypes[addressTypeKey];
@@ -226,10 +228,17 @@ export const updateAddressIndexes = async ({
 					addressType: addressTypeKey,
 				},
 			});
-			return ok('Successfully updated indexes.');
+			updated = true;
 		}
 	});
-	return ok('No update needed.');
+
+	try {
+		await Promise.all(promises);
+	} catch (e) {
+		return err(e);
+	}
+
+	return ok(updated ? 'Successfully updated indexes.' : 'No update needed.');
 };
 
 export const generateNewReceiveAddress = async ({
