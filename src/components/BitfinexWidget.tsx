@@ -107,7 +107,7 @@ const BitfinexWidget = ({
 			.get(widget.feed.field.files[period])
 			.then((buf: Uint8Array) => {
 				const string = buf && b4a.toString(buf);
-				const values = JSON.parse(string).map(JSON.parse);
+				const values = JSON.parse(string).map(Number);
 				!unmounted && values && setPastValues(values);
 			})
 			.catch(noop);
@@ -123,7 +123,7 @@ const BitfinexWidget = ({
 		}
 		const _change = pastValues[pastValues.length - 1] - pastValues[0];
 
-		const sign = _change >= 0 ? '+' : '-';
+		const sign = _change >= 0 ? '+' : '';
 		const color = _change >= 0 ? 'green' : 'red';
 
 		return {
