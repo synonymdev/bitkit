@@ -4,8 +4,9 @@ import {
 	ModalProps,
 	StyleSheet,
 	Text,
-	Pressable,
 	View,
+	Platform,
+	TouchableOpacity,
 } from 'react-native';
 
 import colors from '../styles/colors';
@@ -32,7 +33,7 @@ const Dialog = ({
 }: DialogProps): ReactElement => {
 	return (
 		<Modal
-			animationType="slide"
+			animationType="fade"
 			transparent={true}
 			visible={visible}
 			onRequestClose={onRequestClose}>
@@ -43,14 +44,14 @@ const Dialog = ({
 						<Text style={styles.description}>{description}</Text>
 					</View>
 					<View style={styles.buttons}>
-						<Pressable
+						<TouchableOpacity
 							style={[styles.button, styles.buttonLeft]}
 							onPress={onCancel}>
 							<Text style={styles.buttonText}>{cancelText}</Text>
-						</Pressable>
-						<Pressable style={styles.button} onPress={onConfirm}>
+						</TouchableOpacity>
+						<TouchableOpacity style={styles.button} onPress={onConfirm}>
 							<Text style={styles.buttonText}>{confirmText}</Text>
-						</Pressable>
+						</TouchableOpacity>
 					</View>
 				</View>
 			</View>
@@ -67,10 +68,8 @@ const styles = StyleSheet.create({
 	},
 	view: {
 		margin: 20,
-		width: 270,
 		backgroundColor: 'rgba(49, 49, 49, 1)',
 		backdropFilter: 'blur(27.1828px)',
-		borderRadius: 14,
 		alignItems: 'center',
 		shadowColor: colors.black,
 		color: colors.white,
@@ -81,6 +80,15 @@ const styles = StyleSheet.create({
 		shadowOpacity: 0.25,
 		shadowRadius: 4,
 		elevation: 5,
+		...Platform.select({
+			ios: {
+				borderRadius: 14,
+				width: 270,
+			},
+			android: {
+				width: '85%',
+			},
+		}),
 	},
 	text: {
 		padding: 16,
@@ -89,32 +97,61 @@ const styles = StyleSheet.create({
 		fontWeight: '600',
 		fontSize: 17,
 		lineHeight: 22,
-		textAlign: 'center',
 		letterSpacing: -0.41,
 		textTransform: 'capitalize',
 		color: colors.white,
 		marginBottom: 5,
+		...Platform.select({
+			ios: {
+				textAlign: 'center',
+			},
+		}),
 	},
 	description: {
 		fontWeight: '500',
 		fontSize: 13,
 		lineHeight: 18,
 		letterSpacing: -0.08,
-		textAlign: 'center',
 		color: colors.white,
+		...Platform.select({
+			ios: {
+				textAlign: 'center',
+			},
+		}),
 	},
 	buttons: {
-		flexDirection: 'row',
+		...Platform.select({
+			ios: {
+				flexDirection: 'row',
+			},
+			android: {
+				width: '100%',
+				flexDirection: 'row',
+				justifyContent: 'flex-end',
+				paddingHorizontal: 16,
+			},
+		}),
 	},
 	button: {
-		borderTopWidth: 1,
-		borderColor: colors.gray3,
-		padding: 16,
-		flex: 1,
+		...Platform.select({
+			ios: {
+				borderTopWidth: 1,
+				borderColor: colors.gray3,
+				padding: 16,
+				flex: 1,
+			},
+			android: {
+				padding: 16,
+			},
+		}),
 	},
 	buttonLeft: {
-		borderRightWidth: 1,
-		borderColor: colors.gray3,
+		...Platform.select({
+			ios: {
+				borderRightWidth: 1,
+				borderColor: colors.gray3,
+			},
+		}),
 	},
 	buttonText: {
 		fontWeight: '400',
