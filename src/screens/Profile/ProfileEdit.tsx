@@ -78,7 +78,7 @@ export const ProfileEdit = ({
 	const save = async (): Promise<void> => {
 		await saveProfile(slashtag, profile);
 		if (!onboardedProfile) {
-			setOnboardingProfileStep('PaymentsFromContacts');
+			setOnboardingProfileStep('OfflinePayments');
 			removeTodo(todoPresets.slashtagsProfile.type);
 		} else {
 			navigation.navigate('Profile');
