@@ -2464,7 +2464,24 @@ export const getReceiveAddress = ({
 		if (!receiveAddress) {
 			return err('No receive address available.');
 		}
-		return ok(receiveAddress);
+		const addresses: IAddress =
+			getStore().wallet?.wallets[selectedWallet].addresses[selectedNetwork][
+				addressType
+			];
+		// Check if addresses were generated, but the index has not been set yet.
+		if (
+			Object.keys(addresses).length > 0 &&
+			addressIndex[addressType]?.index < 0
+		) {
+			// Grab and return the address at index 0.
+			const address = Object.values(addresses).filter(
+				(addr) => addr.index === 0,
+			);
+			if (address.length > 0 && address[0]?.address) {
+				return ok(address[0].address);
+			}
+		}
+		return err('No receive address available.');
 	} catch (e) {
 		return err(e);
 	}
