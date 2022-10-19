@@ -6,13 +6,7 @@ import React, {
 	useMemo,
 	useState,
 } from 'react';
-import {
-	Alert,
-	Keyboard,
-	StyleSheet,
-	TouchableOpacity,
-	View,
-} from 'react-native';
+import { Keyboard, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useSelector } from 'react-redux';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { FadeIn, FadeOut } from 'react-native-reanimated';
@@ -241,7 +235,10 @@ const AddressAndAmount = ({
 		(tag) => {
 			const res = removeTxTag({ tag, selectedNetwork, selectedWallet });
 			if (res.isErr()) {
-				return Alert.alert(res.error.message);
+				showErrorNotification({
+					title: 'Error Removing Tag',
+					message: res.error.message,
+				});
 			}
 		},
 		[selectedWallet, selectedNetwork],

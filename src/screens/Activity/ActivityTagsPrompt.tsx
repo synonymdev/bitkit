@@ -1,5 +1,5 @@
 import React, { memo, ReactElement, useState } from 'react';
-import { Alert, StyleSheet, View, Keyboard } from 'react-native';
+import { StyleSheet, View, Keyboard } from 'react-native';
 import { useSelector } from 'react-redux';
 
 import {
@@ -18,6 +18,7 @@ import {
 	useBottomSheetBackPress,
 	useSnapPoints,
 } from '../../hooks/bottomSheet';
+import { showErrorNotification } from '../../utils/notifications';
 
 const Form = ({ id }: { id: string }): ReactElement => {
 	const [text, setText] = useState('');
@@ -28,7 +29,10 @@ const Form = ({ id }: { id: string }): ReactElement => {
 	const handleTagChoose = async (tag: string): Promise<void> => {
 		const res = addMetaTxTag(id, tag);
 		if (res.isErr()) {
-			Alert.alert(res.error.message);
+			showErrorNotification({
+				title: 'Error Adding Tag',
+				message: res.error.message,
+			});
 			return;
 		}
 		addTag(tag);
@@ -46,7 +50,10 @@ const Form = ({ id }: { id: string }): ReactElement => {
 		}
 		const res = addMetaTxTag(id, text);
 		if (res.isErr()) {
-			Alert.alert(res.error.message);
+			showErrorNotification({
+				title: 'Error Adding Tag',
+				message: res.error.message,
+			});
 			return;
 		}
 		addTag(text);

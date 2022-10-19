@@ -14,6 +14,10 @@ import Glow from '../../../components/Glow';
 import NavigationHeader from '../../../components/NavigationHeader';
 import type { SettingsScreenProps } from '../../../navigation/types';
 import SafeAreaView from '../../../components/SafeAreaView';
+import {
+	showErrorNotification,
+	showSuccessNotification,
+} from '../../../utils/notifications';
 
 const imageSrc = require('../../../assets/illustrations/folder.png');
 
@@ -56,9 +60,15 @@ const BackupData = ({
 		setIsBackingUp(true);
 		const res = await performFullBackup(slashtag);
 		if (res.isErr()) {
-			Alert.alert('Error backup up', res.error.message);
+			showErrorNotification({
+				title: 'Error Backing Up',
+				message: res.error.message,
+			});
 		} else {
-			Alert.alert('Success', 'Backup up successful');
+			showSuccessNotification({
+				title: 'Backup Successful',
+				message: 'Bitkit backed up your data.',
+			});
 		}
 
 		setIsBackingUp(false);
@@ -102,21 +112,21 @@ const BackupData = ({
 				{
 					title: 'Store on iCloud',
 					type: 'button',
-					onPress: (): void => Alert.alert('Coming soon'),
+					onPress: (): void => console.log('TODO:'),
 					enabled: true,
 					hide: false,
 				},
 				{
 					title: 'Store on Google Drive',
 					type: 'button',
-					onPress: (): void => Alert.alert('Coming soon'),
+					onPress: (): void => console.log('TODO:'),
 					enabled: true,
 					hide: false,
 				},
 				{
 					title: 'Store on Dropbox',
 					type: 'button',
-					onPress: (): void => Alert.alert('Coming soon'),
+					onPress: (): void => console.log('TODO:'),
 					enabled: true,
 					hide: false,
 				},

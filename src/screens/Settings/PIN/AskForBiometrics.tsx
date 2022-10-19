@@ -1,12 +1,5 @@
 import React, { memo, ReactElement, useState, useEffect, useMemo } from 'react';
-import {
-	Alert,
-	Image,
-	Linking,
-	Platform,
-	StyleSheet,
-	View,
-} from 'react-native';
+import { Image, Linking, Platform, StyleSheet, View } from 'react-native';
 import ReactNativeBiometrics from 'react-native-biometrics';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -23,6 +16,7 @@ import { toggleBiometrics } from '../../../utils/settings';
 import { IsSensorAvailableResult } from '../../../components/Biometrics';
 import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
 import GradientView from '../../../components/GradientView';
+import { showErrorNotification } from '../../../utils/notifications';
 import type { PinScreenProps } from '../../../navigation/types';
 
 const imageSrc = require('../../../assets/illustrations/cog.png');
@@ -72,13 +66,19 @@ const AskForBiometrics = ({
 			.simplePrompt({ promptMessage: 'Bitkit' })
 			.then(({ success }) => {
 				if (!success) {
-					return Alert.alert('Biometrics failed');
+					showErrorNotification({
+						title: 'Biometrics Failed',
+						message: 'Something went wrong.',
+					});
 				}
 				toggleBiometrics(true);
 				navigation.navigate('Result', { bio: true });
 			})
 			.catch(() => {
-				Alert.alert('Biometrics failed');
+				showErrorNotification({
+					title: 'Biometrics Failed',
+					message: 'Something went wrong.',
+				});
 			});
 	};
 

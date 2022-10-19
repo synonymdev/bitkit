@@ -8,8 +8,7 @@ import {
 	TTicker,
 } from '../store/types/wallet';
 import { TAvailableNetworks } from './networks';
-import Clipboard from '@react-native-clipboard/clipboard';
-import { Alert, Linking, Vibration } from 'react-native';
+import { Linking, Vibration } from 'react-native';
 import { default as bitcoinUnits } from 'bitcoin-units';
 import { err, ok, Result } from '@synonymdev/result';
 import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
@@ -123,23 +122,6 @@ export const getNetworkData = ({
 	} catch {
 		return { abbreviation, label: 'Bitcoin Mainnet', ticker: 'BTC' };
 	}
-};
-
-export const displayAlert = (msg = '', title = ''): void => {
-	try {
-		Alert.alert(
-			title,
-			msg,
-			[
-				{
-					text: 'Okay',
-					onPress: (): null => null,
-				},
-				{ text: 'Copy', onPress: (): void => Clipboard.setString(msg) },
-			],
-			{ cancelable: false },
-		);
-	} catch {}
 };
 
 export const btcToSats = (balance: number): number => {
