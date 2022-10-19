@@ -31,12 +31,7 @@ export interface IRemote {
 
 export interface ISlashtags {
 	onboardedContacts: boolean;
-	onboardingProfileStep:
-		| 'Intro'
-		| 'InitialEdit'
-		| 'PaymentsFromContacts'
-		| 'OfflinePayments'
-		| 'Done';
+	onboardingProfileStep: 'Intro' | 'InitialEdit' | 'OfflinePayments' | 'Done';
 	links: LocalLink[];
 	seeder?: {
 		lastSent?: number;

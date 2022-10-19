@@ -26,11 +26,7 @@ import {
 import NavigationHeader from '../../components/NavigationHeader';
 import SafeAreaInsets from '../../components/SafeAreaInsets';
 import ProfileCard from '../../components/ProfileCard';
-import {
-	ProfileIntro,
-	PaymentsFromContacts,
-	OfflinePayments,
-} from './ProfileOnboarding';
+import { ProfileIntro, OfflinePayments } from './ProfileOnboarding';
 import { BasicProfile } from '../../store/types/slashtags';
 import ProfileLinks from '../../components/ProfileLinks';
 import Tooltip from '../../components/Tooltip';
@@ -51,8 +47,6 @@ const Profile = (props: RootStackScreenProps<'Profile'>): JSX.Element => {
 			return <ProfileIntro {...props} />;
 		case 'InitialEdit':
 			return <ProfileEdit {...props} />;
-		case 'PaymentsFromContacts':
-			return <PaymentsFromContacts {...props} />;
 		case 'OfflinePayments':
 			return <OfflinePayments {...props} />;
 		case 'Done':
