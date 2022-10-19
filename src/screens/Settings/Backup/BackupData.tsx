@@ -1,6 +1,6 @@
 import React, { memo, ReactElement, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { StyleSheet, Image, Alert } from 'react-native';
+import { StyleSheet, Image } from 'react-native';
 
 import Store from '../../../store/types';
 import { View, Text01S } from '../../../styles/components';
@@ -18,6 +18,7 @@ import {
 	showErrorNotification,
 	showSuccessNotification,
 } from '../../../utils/notifications';
+import Dialog from '../../../components/Dialog';
 
 const imageSrc = require('../../../assets/illustrations/folder.png');
 
@@ -28,6 +29,7 @@ const BackupData = ({
 	const pin = useSelector((state: Store) => state.settings.pin);
 
 	const [isBackingUp, setIsBackingUp] = useState(false);
+	const [showDialog, setShowDialog] = useState(false);
 
 	const { slashtag } = useSelectedSlashtag(); //TODO this will backup using the current slashtag. Should we rather have a slashtag just for backups?
 
@@ -37,23 +39,8 @@ const BackupData = ({
 		}
 
 		if (remoteBackupsEnabled) {
-			return Alert.alert(
-				'Switch off automated backups?',
-				"Are you sure you want to stop automated backups? You won't be able to restore your data if your phone is lost or damaged.",
-				[
-					{
-						text: 'Yes, switch off',
-						onPress: (): void => {
-							setRemoteBackupsEnabled(false);
-						},
-					},
-					{
-						text: 'Cancel',
-						onPress: (): void => {},
-						style: 'cancel',
-					},
-				],
-			);
+			setShowDialog(true);
+			return;
 		}
 
 		setRemoteBackupsEnabled(true);
@@ -157,6 +144,18 @@ const BackupData = ({
 
 				<List style={styles.list} data={settingsListData} bounces={false} />
 			</View>
+
+			<Dialog
+				visible={showDialog}
+				title="Switch off automated backups?"
+				description="Are you sure you want to stop automated backups? You won't be able to restore your data if your phone is lost or damaged."
+				confirmText="Yes, switch off"
+				onCancel={(): void => setShowDialog(false)}
+				onConfirm={(): void => {
+					setRemoteBackupsEnabled(false);
+					setShowDialog(false);
+				}}
+			/>
 		</SafeAreaView>
 	);
 };
