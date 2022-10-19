@@ -1,6 +1,6 @@
 import { IWalletItem, TBitcoinUnit, TBalanceUnit } from './wallet';
 
-type TTheme = 'dark' | 'light' | 'blue';
+export type TTheme = 'dark' | 'light' | 'blue';
 export type TProtocol = 'ssl' | 'tcp' | string;
 
 type TTransactionSpeed = 'normal' | 'fast' | 'slow';
@@ -27,7 +27,7 @@ type TReceiveOption = {
 export interface ISettings {
 	loading: boolean;
 	error: boolean;
-	allowClipboard: boolean;
+	enableAutoReadClipboard: boolean;
 	enableSendAmountWarning: boolean;
 	pin: boolean;
 	pinOnLaunch: boolean;

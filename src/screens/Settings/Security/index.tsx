@@ -20,7 +20,7 @@ const SecuritySettings = ({
 }: SettingsScreenProps<'SecuritySettings'>): ReactElement => {
 	const [biometryData, setBiometricData] = useState<IsSensorAvailableResult>();
 	const {
-		allowClipboard,
+		enableAutoReadClipboard,
 		enableSendAmountWarning,
 		pin,
 		biometrics,
@@ -46,9 +46,11 @@ const SecuritySettings = ({
 					{
 						title: 'Read clipboard for ease of use',
 						type: 'switch',
-						enabled: allowClipboard,
+						enabled: enableAutoReadClipboard,
 						onPress: (): void => {
-							updateSettings({ allowClipboard: !allowClipboard });
+							updateSettings({
+								enableAutoReadClipboard: !enableAutoReadClipboard,
+							});
 						},
 					},
 					{
@@ -130,7 +132,7 @@ const SecuritySettings = ({
 			},
 		],
 		[
-			allowClipboard,
+			enableAutoReadClipboard,
 			enableSendAmountWarning,
 			isBiometrySupported,
 			biometrics,

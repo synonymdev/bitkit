@@ -58,7 +58,7 @@ const navigationRef =
 /**
  * Helper function to navigate from utils.
  */
-export const navigate = (name: keyof RootStackParamList, params): void => {
+export const navigate = (name: keyof RootStackParamList, params?): void => {
 	navigationRef.current?.navigate(name, params);
 };
 
