@@ -2436,7 +2436,9 @@ export const getReceiveAddress = ({
 			return ok(receiveAddress);
 		}
 		const addresses: IAddress =
-			getStore().wallet[selectedWallet].addresses[selectedNetwork][addressType];
+			getStore().wallet?.wallets[selectedWallet].addresses[selectedNetwork][
+				addressType
+			];
 		// Check if addresses were generated, but the index has not been set yet.
 		if (
 			Object.keys(addresses).length > 0 &&

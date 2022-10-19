@@ -235,7 +235,7 @@ export const updateAddressIndexes = async ({
 export const generateNewReceiveAddress = async ({
 	selectedWallet,
 	selectedNetwork,
-	addressType = EWallet.addressType,
+	addressType,
 	keyDerivationPath,
 }: {
 	selectedWallet?: string;
@@ -249,6 +249,9 @@ export const generateNewReceiveAddress = async ({
 		}
 		if (!selectedNetwork) {
 			selectedNetwork = getSelectedNetwork();
+		}
+		if (!addressType) {
+			addressType = getSelectedAddressType({ selectedNetwork, selectedWallet });
 		}
 		const addressTypes = getAddressTypes();
 		const { currentWallet } = getCurrentWallet({
@@ -361,7 +364,7 @@ export const addAddresses = async ({
 	addressIndex = 0,
 	changeAddressIndex = 0,
 	selectedNetwork,
-	addressType = EWallet.addressType,
+	addressType,
 	keyDerivationPath,
 }: IGenerateAddresses): Promise<Result<IGenerateAddressesResponse>> => {
 	if (!selectedWallet) {
@@ -369,6 +372,9 @@ export const addAddresses = async ({
 	}
 	if (!selectedNetwork) {
 		selectedNetwork = getSelectedNetwork();
+	}
+	if (!addressType) {
+		addressType = getSelectedAddressType({ selectedWallet, selectedNetwork });
 	}
 	const addressTypes = getAddressTypes();
 	const { path, type } = addressTypes[addressType];

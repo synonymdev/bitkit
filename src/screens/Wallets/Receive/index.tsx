@@ -74,6 +74,7 @@ const Receive = ({ navigation }): ReactElement => {
 	const selectedNetwork = useSelector(
 		(store: Store) => store.wallet.selectedNetwork,
 	);
+	const addressType = useSelector((store: Store) => store.settings.addressType);
 	const [loading, setLoading] = useState(true);
 	const [showCopy, setShowCopy] = useState(false);
 	const [receiveAddress, setReceiveAddress] = useState('');
@@ -113,6 +114,7 @@ const Receive = ({ navigation }): ReactElement => {
 			const response = await generateNewReceiveAddress({
 				selectedNetwork,
 				selectedWallet,
+				addressType,
 			});
 			if (response.isOk()) {
 				console.info(`generated fresh address ${response.value.address}`);
@@ -122,13 +124,20 @@ const Receive = ({ navigation }): ReactElement => {
 			const response = getReceiveAddress({
 				selectedNetwork,
 				selectedWallet,
+				addressType,
 			});
 			if (response.isOk()) {
 				console.info(`reusing address ${response.value}`);
 				setReceiveAddress(response.value);
 			}
 		}
-	}, [amount, receiveNavigationIsOpen, selectedNetwork, selectedWallet]);
+	}, [
+		amount,
+		receiveNavigationIsOpen,
+		selectedNetwork,
+		selectedWallet,
+		addressType,
+	]);
 
 	const setInvoiceDetails = useCallback(async (): Promise<void> => {
 		if (!loading) {
