@@ -1,5 +1,5 @@
 import React, { memo, ReactElement, useMemo, useCallback } from 'react';
-import { StyleSheet, View, Alert } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { useSelector } from 'react-redux';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -11,6 +11,7 @@ import Store from '../../../store/types';
 import { EFeeIds } from '../../../store/types/fees';
 import { useTransactionDetails } from '../../../hooks/transaction';
 import { getBalance } from '../../../utils/wallet';
+import { showErrorNotification } from '../../../utils/notifications';
 import {
 	getTotalFee,
 	getTransactionOutputValue,
@@ -83,7 +84,10 @@ const FeeRate = ({ navigation }: SendScreenProps<'FeeRate'>): ReactElement => {
 				selectedFeeId: feeId,
 			});
 			if (res.isErr()) {
-				return Alert.alert('Fee update error', res.error.message);
+				showErrorNotification({
+					title: 'Error Updating Fee',
+					message: res.error.message,
+				});
 			}
 		},
 		[selectedNetwork, selectedWallet, transaction],

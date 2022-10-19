@@ -1,6 +1,5 @@
 import React, { memo, ReactElement, useMemo } from 'react';
-import { View, StyleSheet } from 'react-native';
-import { GestureResponderEvent } from 'react-native-modal';
+import { View, StyleSheet, GestureResponderEvent } from 'react-native';
 import { Text, TouchableOpacity, Ionicons } from '../styles/components';
 import { vibrate } from '../utils/helpers';
 

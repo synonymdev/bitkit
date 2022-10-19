@@ -1,5 +1,5 @@
 import React, { memo, ReactElement, useState } from 'react';
-import { StyleSheet, View, Alert } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { useSelector } from 'react-redux';
 
 import { BottomSheetTextInput, Caption13Up } from '../../../styles/components';
@@ -9,6 +9,7 @@ import Tag from '../../../components/Tag';
 import Store from '../../../store/types';
 import { addTxTag } from '../../../store/actions/wallet';
 import { addTag, deleteTag } from '../../../store/actions/metadata';
+import { showErrorNotification } from '../../../utils/notifications';
 import type { SendScreenProps } from '../../../navigation/types';
 
 const Tags = ({ navigation }: SendScreenProps<'Tags'>): ReactElement => {
@@ -29,7 +30,11 @@ const Tags = ({ navigation }: SendScreenProps<'Tags'>): ReactElement => {
 		}
 		const res = addTxTag({ tag: text, selectedNetwork, selectedWallet });
 		if (res.isErr()) {
-			return Alert.alert(res.error.message);
+			showErrorNotification({
+				title: 'Error Adding Tag',
+				message: res.error.message,
+			});
+			return;
 		}
 		addTag(text);
 		navigation.goBack();
@@ -38,7 +43,11 @@ const Tags = ({ navigation }: SendScreenProps<'Tags'>): ReactElement => {
 	const handleTagChoose = (tag: string): void => {
 		const res = addTxTag({ tag, selectedNetwork, selectedWallet });
 		if (res.isErr()) {
-			return Alert.alert(res.error.message);
+			showErrorNotification({
+				title: 'Error Adding Tag',
+				message: res.error.message,
+			});
+			return;
 		}
 		addTag(tag);
 		navigation.goBack();

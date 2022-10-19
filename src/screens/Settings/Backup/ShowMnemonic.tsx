@@ -1,5 +1,5 @@
 import React, { memo, ReactElement, useMemo, useState, useEffect } from 'react';
-import { StyleSheet, View, Alert, Platform } from 'react-native';
+import { StyleSheet, View, Platform } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import {
@@ -13,6 +13,7 @@ import BlurView from '../../../components/BlurView';
 import { getMnemonicPhrase } from '../../../utils/wallet';
 import { useBottomSheetBackPress } from '../../../hooks/bottomSheet';
 import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
+import { showErrorNotification } from '../../../utils/notifications';
 
 // Android doesn't have blur so we put a dummy mnemonic
 const dummySeed = Array.from({ length: 12 }, () => 'secret');
@@ -49,7 +50,11 @@ const ShowMnemonic = ({ navigation }): ReactElement => {
 	useEffect(() => {
 		getMnemonicPhrase().then((res) => {
 			if (res.isErr()) {
-				return Alert.alert(res.error.message);
+				showErrorNotification({
+					title: 'Error Getting Mnemonic',
+					message: res.error.message,
+				});
+				return;
 			}
 			setSeed(res.value.split(' '));
 		});

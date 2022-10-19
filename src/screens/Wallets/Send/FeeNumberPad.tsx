@@ -1,5 +1,4 @@
 import React, { memo, ReactElement } from 'react';
-import { Alert } from 'react-native';
 import { useSelector } from 'react-redux';
 
 import NumberPad from '../../../components/NumberPad';
@@ -7,6 +6,7 @@ import Store from '../../../store/types';
 import { useTransactionDetails } from '../../../hooks/transaction';
 import { updateFee } from '../../../utils/wallet/transactions';
 import NumberPadButtons from '../NumberPadButtons';
+import { showErrorNotification } from '../../../utils/notifications';
 
 /**
  * Handles the number pad logic (add/remove/clear) for on-chain fee.
@@ -38,7 +38,10 @@ const FeeNumberPad = ({
 			transaction,
 		});
 		if (res.isErr()) {
-			Alert.alert(res.error.message);
+			showErrorNotification({
+				title: 'Error Updating Fee',
+				message: res.error.message,
+			});
 		}
 	};
 
@@ -57,7 +60,10 @@ const FeeNumberPad = ({
 			transaction,
 		});
 		if (res.isErr()) {
-			Alert.alert(res.error.message);
+			showErrorNotification({
+				title: 'Error Updating Fee',
+				message: res.error.message,
+			});
 		}
 	};
 

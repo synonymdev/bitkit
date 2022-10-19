@@ -1,6 +1,10 @@
 import React, { memo, ReactElement } from 'react';
-import { View, TouchableOpacity, StyleSheet } from 'react-native';
-import { GestureResponderEvent } from 'react-native-modal';
+import {
+	View,
+	TouchableOpacity,
+	StyleSheet,
+	GestureResponderEvent,
+} from 'react-native';
 import { Switch } from '../styles/components';
 import Divider from './Divider';
 

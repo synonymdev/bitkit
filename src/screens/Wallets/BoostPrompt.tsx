@@ -1,5 +1,5 @@
 import React, { memo, ReactElement, useEffect, useMemo, useState } from 'react';
-import { ActivityIndicator, Alert, StyleSheet, View } from 'react-native';
+import { ActivityIndicator, StyleSheet, View } from 'react-native';
 import { useSelector } from 'react-redux';
 
 import { Subtitle, Text02S, TimerIconAlt } from '../../styles/components';
@@ -89,7 +89,10 @@ const BoostForm = ({
 		const transactionIsValid = validateTransaction(transaction);
 		if (transactionIsValid.isErr()) {
 			setLoading(false);
-			Alert.alert(transactionIsValid.error.message);
+			showErrorNotification({
+				title: 'Transaction Invalid',
+				message: transactionIsValid.error.message,
+			});
 			return;
 		}
 
@@ -143,7 +146,10 @@ const BoostForm = ({
 							adjustBy: -1,
 						});
 						if (res.isErr()) {
-							Alert.alert(res.error.message);
+							showErrorNotification({
+								title: 'Error Updating Fee',
+								message: res.error.message,
+							});
 						}
 					}
 				}}
@@ -154,7 +160,10 @@ const BoostForm = ({
 						adjustBy: 1,
 					});
 					if (res.isErr()) {
-						Alert.alert(res.error.message);
+						showErrorNotification({
+							title: 'Error Updating Fee',
+							message: res.error.message,
+						});
 					}
 				}}
 			/>

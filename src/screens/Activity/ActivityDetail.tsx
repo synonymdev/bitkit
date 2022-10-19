@@ -8,7 +8,6 @@ import React, {
 } from 'react';
 import {
 	ActivityIndicator,
-	Alert,
 	ScrollView,
 	StyleSheet,
 	View,
@@ -65,7 +64,10 @@ import {
 import { getTransactions } from '../../utils/wallet/electrum';
 import { ITransaction, ITxHash } from '../../utils/wallet';
 import type { RootStackParamList } from '../../navigation/types';
-import { showInfoNotification } from '../../utils/notifications';
+import {
+	showErrorNotification,
+	showInfoNotification,
+} from '../../utils/notifications';
 import { openURL } from '../../utils/helpers';
 import ActivityTagsPrompt from './ActivityTagsPrompt';
 import {
@@ -220,22 +222,25 @@ const ActivityDetail = (props: Props): ReactElement => {
 		});
 	};
 
-	const handleTag = (): void => {
+	const handleLayout = (e): void => {
+		const { height, width } = e.nativeEvent.layout;
+		setSize((s) => (s.width === 0 ? { width, height } : s));
+	};
+
+	const handleAddTag = (): void => {
 		toggleView({
 			view: 'activityTagsPrompt',
 			data: { isOpen: true, id: item.id },
 		});
 	};
 
-	const handleLayout = (e): void => {
-		const { height, width } = e.nativeEvent.layout;
-		setSize((s) => (s.width === 0 ? { width, height } : s));
-	};
-
-	const handleTagClose = (tag: string): void => {
+	const handleRemoveTag = (tag: string): void => {
 		const res = deleteMetaTxTag(id, tag);
 		if (res.isErr()) {
-			Alert.alert(res.error.message);
+			showErrorNotification({
+				title: 'Error Deleting Tag',
+				message: res.error.message,
+			});
 		}
 	};
 
@@ -258,11 +263,19 @@ const ActivityDetail = (props: Props): ReactElement => {
 		getTransactions({ txHashes: [{ tx_hash: id }], selectedNetwork }).then(
 			(txResponse) => {
 				if (txResponse.isErr()) {
-					return Alert.alert(txResponse.error.message);
+					showErrorNotification({
+						title: 'Error Getting Transaction',
+						message: txResponse.error.message,
+					});
+					return;
 				}
 				const txData: ITransaction<ITxHash>[] = txResponse.value.data;
 				if (txData.length === 0) {
-					return Alert.alert('tx not found');
+					showErrorNotification({
+						title: 'Error Getting Transaction',
+						message: 'Transaction not found.',
+					});
+					return;
 				}
 				const data = txData[0].result;
 				setTxDetails(data);
@@ -434,7 +447,7 @@ const ActivityDetail = (props: Props): ReactElement => {
 													key={tag}
 													value={tag}
 													style={styles.tag}
-													onClose={(): void => handleTagClose(tag)}
+													onClose={(): void => handleRemoveTag(tag)}
 												/>
 											))}
 										</View>
@@ -483,7 +496,7 @@ const ActivityDetail = (props: Props): ReactElement => {
 									style={styles.button}
 									text="Tag"
 									icon={<TagIcon height={16} width={16} color="brand" />}
-									onPress={handleTag}
+									onPress={handleAddTag}
 								/>
 							</View>
 							<View style={styles.sectionContainer}>

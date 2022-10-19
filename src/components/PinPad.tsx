@@ -5,13 +5,7 @@ import React, {
 	useEffect,
 	useCallback,
 } from 'react';
-import {
-	Alert,
-	StyleSheet,
-	View,
-	LayoutAnimation,
-	Pressable,
-} from 'react-native';
+import { StyleSheet, View, LayoutAnimation, Pressable } from 'react-native';
 
 import { Text02S, Subtitle, AnimatedView } from '../styles/components';
 import NumberPad from './NumberPad';
@@ -24,6 +18,7 @@ import BitkitLogo from '../assets/bitkit-logo.svg';
 import { toggleView } from '../store/actions/user';
 import { FadeIn, FadeOut } from 'react-native-reanimated';
 import NavigationHeader from './NavigationHeader';
+import { showErrorNotification } from '../utils/notifications';
 
 export const PIN_ATTEMPTS = '8';
 
@@ -122,7 +117,10 @@ const PinPad = ({
 					);
 					vibrate({ type: 'default' });
 					await wipeApp({});
-					Alert.alert('All wallet data has been wiped');
+					showErrorNotification({
+						title: 'Bitkit Wiped',
+						message: 'All wallet data has been wiped.',
+					});
 				} else {
 					await reducePinAttemptsRemaining();
 				}
