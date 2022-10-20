@@ -139,7 +139,7 @@ const BitfinexWidget = ({
 				// Optionally use the feed name!
 				//
 				// widget.feed.name
-				'Bitfinex'
+				'Bitcoin Price'
 			}
 			label={widget.feed.field.name}
 			icon={

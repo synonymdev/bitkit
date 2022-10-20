@@ -67,6 +67,7 @@ import {
 	heartbeatIcon,
 	chartLineIcon,
 	newspaperIcon,
+	cubeIcon,
 } from '../assets/icons/wallet';
 import {
 	chevronRightIcon,
@@ -1000,6 +1001,13 @@ export const ChartLineIcon = styled(SvgXml).attrs((props) => ({
 
 export const NewspaperIcon = styled(SvgXml).attrs((props) => ({
 	xml: newspaperIcon(props.theme.colors[props.color]),
+	height: props?.height ?? '64px',
+	width: props?.width ?? '64px',
+	color: undefined,
+}))({});
+
+export const CubeIcon = styled(SvgXml).attrs((props) => ({
+	xml: cubeIcon(props.theme.colors[props.color]),
 	height: props?.height ?? '64px',
 	width: props?.width ?? '64px',
 	color: undefined,

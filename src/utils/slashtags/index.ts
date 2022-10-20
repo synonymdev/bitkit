@@ -435,5 +435,5 @@ export const readAsDataURL = async (
 
 	const mimeType = mime.getType(path);
 
-	return `data:${mimeType};base64,${base64}`;
+	return base64 && `data:${mimeType};base64,${base64}`;
 };

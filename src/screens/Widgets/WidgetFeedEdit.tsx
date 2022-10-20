@@ -8,6 +8,9 @@ import {
 	Text02S,
 	Title,
 	Caption13Up,
+	CubeIcon,
+	NewspaperIcon,
+	ChartLineIcon,
 } from '../../styles/components';
 import NavigationHeader from '../../components/NavigationHeader';
 import Button from '../../components/Button';
@@ -23,7 +26,10 @@ import ProfileImage from '../../components/ProfileImage';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import useColors from '../../hooks/colors';
 import { deleteFeedWidget, setFeedWidget } from '../../store/actions/widgets';
-import { decodeWidgetFieldValue } from '../../utils/widgets';
+import {
+	decodeWidgetFieldValue,
+	SUPPORTED_FEED_TYPES,
+} from '../../utils/widgets';
 import Glow from '../../components/Glow';
 
 const imageSrc = require('../../assets/illustrations/hourglass.png');
@@ -178,12 +184,22 @@ export const WidgetFeedEdit = ({
 				<View style={styles.content}>
 					<View style={styles.header}>
 						<Title>{config?.name}</Title>
-						<ProfileImage
-							style={styles.headerImage}
-							url={url}
-							image={config?.icon}
-							size={32}
-						/>
+						<View style={styles.headerImage}>
+							{(() => {
+								switch (config.type) {
+									case SUPPORTED_FEED_TYPES.PRICE_FEED:
+										return <ChartLineIcon width={32} height={32} />;
+									case SUPPORTED_FEED_TYPES.HEADLINES_FEED:
+										return <NewspaperIcon width={32} height={32} />;
+									case SUPPORTED_FEED_TYPES.BLOCKS_FEED:
+										return <CubeIcon width={32} height={32} />;
+									default:
+										return (
+											<ProfileImage url={url} image={config?.icon} size={32} />
+										);
+								}
+							})()}
+						</View>
 					</View>
 					<Text02S style={styles.explanation}>
 						{config?.description || ''}
@@ -205,7 +221,7 @@ export const WidgetFeedEdit = ({
 											activeOpacity={0.6}
 											onPress={(): void => setSelectedField(label)}>
 											<View style={styles.fieldContainer}>
-												<View>
+												<View style={styles.fieldLeftContainer}>
 													<Caption13Up color="gray1" style={styles.fileLabel}>
 														{label}
 													</Caption13Up>
@@ -268,6 +284,7 @@ const styles = StyleSheet.create({
 	},
 	headerImage: {
 		borderRadius: 8,
+		overflow: 'hidden',
 	},
 	explanation: {
 		marginBottom: 32,
@@ -292,11 +309,16 @@ const styles = StyleSheet.create({
 		justifyContent: 'space-between',
 		alignItems: 'center',
 	},
+	fieldLeftContainer: {
+		flex: 1,
+	},
 	fileLabel: {
 		marginBottom: 8,
 	},
 	fileValue: {
+		flex: 1,
 		lineHeight: 15,
+		paddingRight: 16,
 	},
 	selectField: {
 		width: 32,

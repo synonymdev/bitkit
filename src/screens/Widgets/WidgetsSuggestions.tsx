@@ -20,6 +20,8 @@ const PriceFeedURL =
 	'slashfeed:kgw7hqj4usek78smxczgrcxqn313s7qnpnc7so7guegziwjic6yy#encryptionKey=nds189gg3hgpei45y79f9ho6s6yh4sm3su1bw4yktt9gtggxtxty';
 const NewsFeedURL =
 	'slashfeed:jh7fzqcngzwq79e645x8p81kpn5ch8ybi6n4d571jyczd3qr1psy#encryptionKey=yrrfn8n3guaonho4oafgic7xcmbjwfhb6ihxguqjaqf1mwhpxeco';
+const BlocksFeedURL =
+	'slashfeed:gpjjokcczfyitc1phrr5x3t6ac5friifderx6ot51mtkjmn9seqo#encryptionKey=jo6nybw8f3hzwea8jzcoyiymgimhfo4ftao93jxcinurgfrcxaay';
 
 const WidgetsSuggetsions = ({
 	navigation,
@@ -49,6 +51,11 @@ const WidgetsSuggetsions = ({
 							icon={<NewspaperIcon />}
 							title="Bitcoin Headlines"
 							url={NewsFeedURL}
+						/>
+						<Feed
+							icon={<NewspaperIcon />}
+							title="Bitcoin Blocks"
+							url={BlocksFeedURL}
 						/>
 						<SafeAreaInsets type="bottom" />
 					</ScrollView>

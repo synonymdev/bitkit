@@ -4,6 +4,7 @@ import { SlashFeedJSON } from '../../store/types/widgets';
 export enum SUPPORTED_FEED_TYPES {
 	PRICE_FEED = 'exchange.price_history',
 	HEADLINES_FEED = 'news.headlines',
+	BLOCKS_FEED = 'simple.values',
 }
 
 /**
@@ -41,6 +42,9 @@ export const decodeWidgetFieldValue = (
 			} catch (error) {
 				return error.message;
 			}
+		case SUPPORTED_FEED_TYPES.BLOCKS_FEED:
+			return buf && JSON.parse(b4a.toString(buf));
+
 		default:
 			return buf && b4a.toString(buf).slice(0, 35);
 	}

@@ -21,25 +21,31 @@ const DefaultRightComponent = ({ value }: { value?: string }): ReactElement => {
 export const FeedWidget = ({
 	url,
 	widget,
+	icon,
+	name,
 }: {
 	url: string;
 	widget: IWidget;
+	icon?: ReactElement;
+	name?: string;
 }): ReactElement => {
 	const { value } = useFeedWidget({ url, feed: widget.feed });
 
 	return (
 		<BaseFeedWidget
 			url={url}
-			name={widget.feed.name}
+			name={name || widget.feed.name}
 			label={widget.feed.field.name}
 			right={<DefaultRightComponent value={value?.toString()} />}
 			icon={
-				<ProfileImage
-					style={styles.icon}
-					url={url}
-					image={widget.feed.icon}
-					size={32}
-				/>
+				icon || (
+					<ProfileImage
+						style={styles.icon}
+						url={url}
+						image={widget.feed.icon}
+						size={32}
+					/>
+				)
 			}
 		/>
 	);
