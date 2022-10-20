@@ -63,8 +63,10 @@ const RebalanceSetup = ({
 		(state: Store) => state.settings.unitPreference,
 	);
 	const savingsAmount = totalBalance - spendingAmount;
-	const spendingPercentage = Math.round((spendingAmount / totalBalance) * 100);
-	const savingsPercentage = Math.round((savingsAmount / totalBalance) * 100);
+	const spendingPercentage =
+		totalBalance > 0 ? Math.round((spendingAmount / totalBalance) * 100) : 0;
+	const savingsPercentage =
+		totalBalance > 0 ? Math.round((savingsAmount / totalBalance) * 100) : 0;
 
 	const handleChange = useCallback((v) => {
 		setSpendingAmount(Math.round(v));
