@@ -1,5 +1,5 @@
 import React, { memo, ReactElement, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { Keyboard, StyleSheet, View } from 'react-native';
 import { useSelector } from 'react-redux';
 
 import { BottomSheetTextInput, Caption13Up } from '../../../styles/components';
@@ -24,7 +24,16 @@ const Tags = ({ navigation }: SendScreenProps<'Tags'>): ReactElement => {
 		(store: Store) => store.metadata.lastUsedTags,
 	);
 
-	const handleInputBlur = (): void => {
+	const navigateBack = (): void => {
+		// wait for keyboard to close
+		const subscription = Keyboard.addListener('keyboardDidHide', (): void => {
+			navigation.goBack();
+			subscription.remove();
+		});
+		Keyboard.dismiss();
+	};
+
+	const handleSubmit = (): void => {
 		if (text.length === 0) {
 			return;
 		}
@@ -37,7 +46,7 @@ const Tags = ({ navigation }: SendScreenProps<'Tags'>): ReactElement => {
 			return;
 		}
 		addTag(text);
-		navigation.goBack();
+		navigateBack();
 	};
 
 	const handleTagChoose = (tag: string): void => {
@@ -50,7 +59,7 @@ const Tags = ({ navigation }: SendScreenProps<'Tags'>): ReactElement => {
 			return;
 		}
 		addTag(tag);
-		navigation.goBack();
+		navigateBack();
 	};
 
 	return (
@@ -84,10 +93,10 @@ const Tags = ({ navigation }: SendScreenProps<'Tags'>): ReactElement => {
 				</Caption13Up>
 				<BottomSheetTextInput
 					placeholder="Enter a new tag"
-					blurOnSubmit={true}
+					blurOnSubmit={false}
 					value={text}
 					onChangeText={setText}
-					onBlur={handleInputBlur}
+					onSubmitEditing={handleSubmit}
 					maxLength={15}
 					returnKeyType="done"
 				/>
