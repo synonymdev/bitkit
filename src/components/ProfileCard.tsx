@@ -79,8 +79,10 @@ export const ProfileCard = ({
 							const result = await launchImageLibrary({
 								mediaType: 'photo',
 								includeBase64: true,
-								quality: 0.1,
+								maxWidth: 1024,
+								maxHeight: 1024,
 							});
+							console.log(result);
 							const base64 = result.assets?.[0].base64;
 							const type = result.assets?.[0].type;
 							base64 && onChange?.('image', `data:${type};base64,` + base64);
