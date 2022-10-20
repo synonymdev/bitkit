@@ -97,7 +97,7 @@ export const BaseFeedWidget = ({
 				/>
 			) : (
 				<View style={styles.dataContainer}>
-					<View style={styles.middle}>{middle}</View>
+					{middle && <View style={styles.middle}>{middle}</View>}
 					<View style={styles.right}>{right}</View>
 				</View>
 			)}

@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo, useEffect, ReactElement } from 'react';
 import { View, StyleSheet, Image } from 'react-native';
 import { useSelector } from 'react-redux';
 
@@ -185,7 +185,7 @@ export const WidgetFeedEdit = ({
 					<View style={styles.header}>
 						<Title>{config?.name}</Title>
 						<View style={styles.headerImage}>
-							{(() => {
+							{((): ReactElement => {
 								switch (config.type) {
 									case SUPPORTED_FEED_TYPES.PRICE_FEED:
 										return <ChartLineIcon width={32} height={32} />;
