@@ -17,7 +17,6 @@ import { setupTodos } from '../todos';
 import { connectToElectrum, subscribeToHeader } from '../wallet/electrum';
 import { updateOnchainFeeEstimates } from '../../store/actions/fees';
 import { keepLdkSynced, setupLdk } from '../lightning';
-import { ICustomElectrumPeer } from '../../store/types/settings';
 import { updateUser } from '../../store/actions/user';
 import { setupBlocktank, watchPendingOrders } from '../blocktank';
 import { removeExpiredLightningInvoices } from '../../store/actions/lightning';
@@ -95,7 +94,6 @@ export const startWalletServices = async ({
 }): Promise<Result<string>> => {
 	try {
 		InteractionManager.runAfterInteractions(async () => {
-			//Create wallet if none exists.
 			const { wallets, selectedNetwork } = getStore().wallet;
 			let isConnectedToElectrum = false;
 
@@ -103,21 +101,9 @@ export const startWalletServices = async ({
 			refreshBlocktankInfo().then();
 			await setupNodejsMobile({});
 
-			// Before we do anything we should connect to an Electrum server.
+			// Before we do anything we should connect to an Electrum server
 			if (onchain || lightning) {
-				let customPeers: ICustomElectrumPeer[] | undefined;
-				/*customPeers = [
-					{
-						host: '192.168.50.35',
-						ssl: 50001,
-						tcp: 50001,
-						protocol: 'tcp',
-					},
-				];*/
-				const electrumResponse = await connectToElectrum({
-					selectedNetwork,
-					customPeers,
-				});
+				const electrumResponse = await connectToElectrum({ selectedNetwork });
 				if (electrumResponse.isErr()) {
 					showErrorNotification({
 						title: 'Unable to connect to Electrum Server',
@@ -140,14 +126,14 @@ export const startWalletServices = async ({
 			const walletExists = await checkWalletExists();
 			const walletKeys = Object.keys(wallets);
 			if (!walletExists) {
-				// generate new wallet if no exsits
+				// Generate new wallet if none exists
 				const mnemonic = await generateMnemonic();
 				if (!mnemonic) {
 					return err('Unable to generate mnemonic.');
 				}
 				await createWallet({ mnemonic });
 			} else if (!wallets[walletKeys[0]]?.id) {
-				// if we have a mnemonic in store, but not in redux, we need to init it
+				// If we have a mnemonic in store, but not in redux, we need to init it
 				const mnemonic = await getMnemonicPhrase();
 				if (mnemonic.isErr()) {
 					return err('Unable to get mnemonic.');
@@ -155,16 +141,14 @@ export const startWalletServices = async ({
 				await createWallet({ mnemonic: mnemonic.value });
 			}
 
-			// We need to start Electrum if either onchain or lightning is true.
 			if (onchain || lightning) {
 				await Promise.all([
 					updateOnchainFeeEstimates({ selectedNetwork }),
 					refreshWallet({ lightning }),
 				]);
 
-				// Setup LDK.
+				// Setup LDK
 				if (lightning) {
-					// Start LDK
 					const setupResponse = await setupLdk({ selectedNetwork });
 					if (setupResponse.isOk()) {
 						keepLdkSynced({ selectedNetwork }).then();
@@ -186,7 +170,7 @@ export const startWalletServices = async ({
 				}).then();
 			}
 
-			// refresh slashpay config
+			// Refresh slashpay config
 			updateSlashPayConfig(sdk);
 
 			// This should be last so that we know all on-chain and lightning data is synced/up-to-date.

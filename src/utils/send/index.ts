@@ -28,6 +28,7 @@ export const readClipboardInvoice = async ({
 
 	const result = await decodeQRData(clipboardData);
 
+	// TODO: refactor processInputData to be reused here
 	if (result.isOk() && result.value.length) {
 		const { qrDataType, address, network, sats } = result.value[0];
 
