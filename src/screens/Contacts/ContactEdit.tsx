@@ -10,7 +10,7 @@ import {
 import { View as ThemedView } from '../../styles/components';
 import NavigationHeader from '../../components/NavigationHeader';
 import SafeAreaInsets from '../../components/SafeAreaInsets';
-import ProfileCard from '../../components/ProfileCard';
+import ProfileCard, { MAX_NAME_LENGTH } from '../../components/ProfileCard';
 import Button from '../../components/Button';
 import { saveContact } from '../../utils/slashtags';
 import { useProfile, useSelectedSlashtag } from '../../hooks/slashtags';
@@ -47,6 +47,8 @@ export const ContactEdit = ({
 	const profile = useMemo(
 		() => ({
 			...contact.profile,
+			// Keep name length in contact record managable in cause user doesn't override the remote name
+			name: contact.profile.name?.slice(0, MAX_NAME_LENGTH),
 			...form,
 		}),
 		[contact.profile, form],

@@ -13,10 +13,13 @@ import {
 	TextInputNoOutline,
 	CameraIcon,
 } from '../styles/components';
-import { profileNameMultiLine } from '../utils/helpers';
 import ProfileImage from './ProfileImage';
 import { SlashtagURL } from './SlashtagURL';
 import { BasicProfile } from '../store/types/slashtags';
+import { truncate } from '../utils/helpers';
+
+export const MAX_NAME_LENGTH = 50;
+export const MAX_BIO_LENGTH = 160;
 
 export const ProfileCard = ({
 	url,
@@ -34,7 +37,7 @@ export const ProfileCard = ({
 	onChange?: (name: string, value: string) => void;
 }): JSX.Element => {
 	const name = profile?.name;
-	const bio = profile?.bio?.slice?.(0, 160);
+	const bio = profile?.bio;
 
 	const bioRef = useRef<TextInput | null>(null);
 
@@ -47,7 +50,7 @@ export const ProfileCard = ({
 							autoFocus={!name}
 							// placeholder doesn't like the lineHeight
 							style={[styles.nameInput, name && styles.nameInputFilled]}
-							value={name}
+							value={name?.slice(0, MAX_NAME_LENGTH)}
 							placeholder={
 								contact ? "Contact's name" : 'Your public\nprofile name'
 							}
@@ -61,13 +64,19 @@ export const ProfileCard = ({
 							}}
 							blurOnSubmit
 							returnKeyType={'done'}
+							maxLength={MAX_NAME_LENGTH}
 						/>
 					) : (
-						<Title style={styles.name}>
-							{resolving
-								? 'Retrieving\ncontact info...'
-								: profileNameMultiLine(name)}
-						</Title>
+						<View>
+							<Title numberOfLines={1} style={styles.name}>
+								{resolving
+									? 'Retrieving\ncontact info...'
+									: truncate(name?.split(/\s+/)[0], 30)}
+							</Title>
+							<Title numberOfLines={1} style={styles.name}>
+								{!resolving && truncate(name?.split(/\s+/)[1], 30)}
+							</Title>
+						</View>
 					)}
 					<SlashtagURL style={styles.url} url={url} />
 				</View>
@@ -82,7 +91,7 @@ export const ProfileCard = ({
 								maxWidth: 1024,
 								maxHeight: 1024,
 							});
-							console.log(result);
+
 							const base64 = result.assets?.[0].base64;
 							const type = result.assets?.[0].type;
 							base64 && onChange?.('image', `data:${type};base64,` + base64);
@@ -108,10 +117,11 @@ export const ProfileCard = ({
 					onChangeText={(value): void => onChange?.('bio', value)}
 					blurOnSubmit
 					returnKeyType={'done'}
+					maxLength={MAX_BIO_LENGTH}
 				/>
 			) : (
 				<Text color="gray1" style={styles.bio}>
-					{bio}
+					{bio?.slice(0, MAX_BIO_LENGTH)}
 				</Text>
 			)}
 		</>

@@ -20,7 +20,9 @@ export const ContactSmall = ({
 			color="white05"
 			style={styles.container}>
 			<ProfileImage url={url} image={profile?.image} size={24} />
-			<Text02M style={styles.name}>{profile?.name}</Text02M>
+			<Text02M numberOfLines={1} style={styles.name}>
+				{profile?.name}
+			</Text02M>
 		</TouchableOpacity>
 	);
 };

@@ -9,6 +9,7 @@ import { IContactRecord } from '../store/types/slashtags';
 import { useSlashtags } from './SlashtagsProvider';
 import Divider from './Divider';
 import { BottomSheetSectionList } from '@gorhom/bottom-sheet';
+import { truncate } from '../utils/helpers';
 
 export const ContactItem = ({
 	contact,
@@ -25,7 +26,7 @@ export const ContactItem = ({
 	const name = useMemo(() => {
 		const fallbackName =
 			contact.url === myProfileURL ? 'Your Name' : 'Contact Name';
-		return profile?.name || contact?.name || fallbackName;
+		return truncate(profile?.name || contact?.name || fallbackName, 30);
 	}, [contact, profile?.name, myProfileURL]);
 
 	return (
@@ -42,7 +43,11 @@ export const ContactItem = ({
 					size={size === 'small' ? 32 : 48}
 				/>
 				<View style={cstyles.column}>
-					<Text01M style={size !== 'small' ? cstyles.name : {}}>{name}</Text01M>
+					<Text01M
+						numerOfLines={1}
+						style={size !== 'small' ? cstyles.name : {}}>
+						{name}
+					</Text01M>
 					<SlashtagURL
 						color="gray"
 						url={contact.url}

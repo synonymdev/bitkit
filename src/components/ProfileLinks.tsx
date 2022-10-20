@@ -61,7 +61,9 @@ const ProfileLinks = ({
 							<Caption13Up color="gray1" style={styles.label}>
 								{link.title}
 							</Caption13Up>
-							<Text02S style={styles.url}>{trimmedUrl}</Text02S>
+							<Text02S numberOfLines={1} style={styles.url}>
+								{trimmedUrl}
+							</Text02S>
 							<View style={styles.divider} />
 						</TouchableOpacity>
 					);

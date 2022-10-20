@@ -224,8 +224,11 @@ export const shuffleArray = (array): any[] => {
  * @param n
  * @returns {any}
  */
-export const truncate = (str, n): string =>
-	str.length > n ? str.substr(0, n - 3) + '...' : str;
+export const truncate = (str, n): string | undefined =>
+	trimExtraSpaces(str.length > n ? str.substr(0, n - 3) + '...' : str);
+
+export const trimExtraSpaces = (str?: string): string | undefined =>
+	str?.trim().replace(/\s{2,}/g, ' ');
 
 /**
  * Capitalizes the first letter of every word.
@@ -466,22 +469,4 @@ export const applyAlpha = (hexColor: string, alpha: number): string => {
  */
 export const sleep = (ms = 1000): Promise<void> => {
 	return new Promise((resolve) => setTimeout(resolve, ms));
-};
-
-export const profileNameMultiLine = (name?: string): string => {
-	if (!name) {
-		return '';
-	}
-
-	const parts = name.split(' ');
-
-	return parts
-		.slice(0, 2)
-		.map(
-			(n, index) =>
-				`${truncate(n, 16)}${
-					index === 1 && parts && parts.length > 2 ? ' ...' : ''
-				}`,
-		)
-		.join('\n');
 };

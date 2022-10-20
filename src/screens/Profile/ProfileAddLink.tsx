@@ -45,6 +45,7 @@ export const ProfileAddLinkForm = ({
 					label="Label"
 					placeholder="For example 'Website'"
 					value={form.title}
+					maxLength={25}
 					onChange={(value: string): void => {
 						updateProfileLink({ ...form, title: value });
 					}}>
@@ -62,6 +63,7 @@ export const ProfileAddLinkForm = ({
 					value={form.url}
 					multiline={true}
 					returnKeyType="default"
+					maxLength={2048}
 					onChange={(value: string): void => {
 						updateProfileLink({ ...form, url: value });
 					}}

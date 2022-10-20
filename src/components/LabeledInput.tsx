@@ -17,6 +17,7 @@ type LabeledInputProps = {
 	placeholder?: string;
 	style?: StyleProp<ViewStyle>;
 	onChange?: (value: string) => void;
+	maxLength?: number;
 };
 
 const LabeledInput = ({
@@ -30,8 +31,12 @@ const LabeledInput = ({
 	bottomSheet,
 	placeholder,
 	style,
+	maxLength,
 }: LabeledInputProps): JSX.Element => {
 	const numberOfChildren = React.Children.toArray(children).length;
+
+	const textInputStyle =
+		numberOfChildren > 0 ? { paddingRight: 60 * numberOfChildren } : {};
 
 	return (
 		<View style={style}>
@@ -41,7 +46,7 @@ const LabeledInput = ({
 			<View style={onChange ? styles.inputContainer : styles.readOnlyInput}>
 				{bottomSheet ? (
 					<BottomSheetTextInput
-						style={{ paddingRight: 60 * numberOfChildren }}
+						style={textInputStyle}
 						ref={ref}
 						defaultValue={value}
 						backgroundColor="white08"
@@ -56,7 +61,7 @@ const LabeledInput = ({
 					/>
 				) : (
 					<TextInput
-						style={{ paddingRight: 60 * numberOfChildren }}
+						style={textInputStyle}
 						defaultValue={value}
 						color="white"
 						autoCapitalize="none"
@@ -67,6 +72,7 @@ const LabeledInput = ({
 						multiline={multiline || false}
 						editable={!!onChange}
 						returnKeyType={returnKeyType}
+						maxLength={maxLength}
 					/>
 				)}
 				{children && (
