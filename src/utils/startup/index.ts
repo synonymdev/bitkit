@@ -64,7 +64,7 @@ export const restoreWallet = async ({
 	if (res.isErr()) {
 		return res;
 	}
-	return await startWalletServices({});
+	return await startWalletServices({ restore: true });
 };
 
 /*
@@ -88,9 +88,11 @@ const ENABLE_SERVICES = true;
 export const startWalletServices = async ({
 	onchain = ENABLE_SERVICES,
 	lightning = ENABLE_SERVICES,
+	restore = false,
 }: {
 	onchain?: boolean;
 	lightning?: boolean;
+	restore?: boolean;
 }): Promise<Result<string>> => {
 	try {
 		InteractionManager.runAfterInteractions(async () => {
@@ -144,7 +146,8 @@ export const startWalletServices = async ({
 			if (onchain || lightning) {
 				await Promise.all([
 					updateOnchainFeeEstimates({ selectedNetwork }),
-					refreshWallet({ lightning }),
+					// if we restore wallet, we need to generate addresses for all types
+					refreshWallet({ lightning, updateAllAddressTypes: restore }),
 				]);
 
 				// Setup LDK
