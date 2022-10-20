@@ -425,7 +425,7 @@ export interface IGetAddressHistoryResponse
  * @param {string} [selectedWallet]
  */
 export const getAddressHistory = async ({
-	scriptHashes,
+	scriptHashes = [],
 	selectedNetwork,
 	selectedWallet,
 }: {
@@ -447,28 +447,27 @@ export const getAddressHistory = async ({
 		const currentAddresses = currentWallet.addresses[selectedNetwork];
 		const currentChangeAddresses =
 			currentWallet.changeAddresses[selectedNetwork];
-		if (!scriptHashes || scriptHashes?.length < 1) {
-			let paths: string[] = [];
+
+		if (scriptHashes.length < 1) {
 			const addressTypes = getAddressTypes();
-			await Promise.all(
-				Object.keys(addressTypes).map((addressType) => {
-					const addresses = currentAddresses[addressType];
-					const changeAddresses = currentChangeAddresses[addressType];
-					const addressValues: IAddressContent[] = Object.values(addresses);
-					const changeAddressValues: IAddressContent[] =
-						Object.values(changeAddresses);
-					scriptHashes = [...addressValues, ...changeAddressValues].filter(
-						(scriptHash) => {
-							if (!paths.includes(scriptHash?.path)) {
-								paths.push(scriptHash.path);
-								return scriptHash;
-							}
-						},
-					);
-				}),
-			);
+			Object.keys(addressTypes).forEach((addressType) => {
+				const addresses = currentAddresses[addressType];
+				const changeAddresses = currentChangeAddresses[addressType];
+				const addressValues: IAddressContent[] = Object.values(addresses);
+				const changeAddressValues: IAddressContent[] =
+					Object.values(changeAddresses);
+				scriptHashes = [
+					...scriptHashes,
+					...addressValues,
+					...changeAddressValues,
+				];
+			});
 		}
-		if (!scriptHashes || scriptHashes?.length < 1) {
+		// remove items with same path
+		scriptHashes = scriptHashes.filter((sh, index, arr) => {
+			return index === arr.findIndex((v) => sh.path === v.path);
+		});
+		if (scriptHashes.length < 1) {
 			return err('No scriptHashes available to check.');
 		}
 		const payload = {
