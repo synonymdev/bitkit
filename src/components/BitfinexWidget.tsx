@@ -156,7 +156,9 @@ const BitfinexWidget = ({
 			middle={<Chart color={change.color} values={pastValues} />}
 			right={
 				<View style={styles.numbers}>
-					<Text01M styles={styles.price}>{value}</Text01M>
+					<Text01M numberOfLines={1} styles={styles.price}>
+						{value}
+					</Text01M>
 					<Caption13M color={change.color} styles={styles.change}>
 						{change.formatted}
 					</Caption13M>

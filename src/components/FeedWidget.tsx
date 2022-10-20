@@ -15,7 +15,7 @@ import { IWidget } from '../store/types/widgets';
 import { useFeedWidget } from '../hooks/widgets';
 
 const DefaultRightComponent = ({ value }: { value?: string }): ReactElement => {
-	return <Text01M>{value}</Text01M>;
+	return <Text01M numberOfLines={1}>{value}</Text01M>;
 };
 
 export const FeedWidget = ({
@@ -115,7 +115,7 @@ const styles = StyleSheet.create({
 		width: 32,
 	},
 	infoContainer: {
-		flex: 1.2,
+		flex: 1,
 		display: 'flex',
 		flexDirection: 'row',
 		alignItems: 'center',
@@ -135,10 +135,10 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 	},
 	middle: {
-		flex: 1,
+		flex: 5,
 	},
 	right: {
-		flex: 1,
+		flex: 6,
 		display: 'flex',
 		flexDirection: 'row',
 		justifyContent: 'flex-end',
