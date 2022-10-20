@@ -873,11 +873,13 @@ export const broadcastTransaction = async ({
 		}
 		const address = transaction.value.outputs?.[0]?.address;
 		if (address) {
-			const scriptHash = getScriptHash(address, selectedNetwork);
-			await subscribeToAddresses({
-				selectedNetwork,
-				scriptHashes: [scriptHash],
-			});
+			const scriptHash = await getScriptHash(address, selectedNetwork);
+			if (scriptHash) {
+				await subscribeToAddresses({
+					selectedNetwork,
+					scriptHashes: [scriptHash],
+				});
+			}
 		}
 	}
 
@@ -893,10 +895,10 @@ export const broadcastTransaction = async ({
 
 /**
  * Returns total value of all outputs. Excludes any value that would be sent to the change address.
- * @param selectedWallet
- * @param selectedNetwork
- * @param outputs
- * @param includeChangeAddress
+ * @param {string} [selectedWallet]
+ * @param {TAvailableNetworks} [selectedNetwork]
+ * @param {IOutput[]} [outputs]
+ * @returns {number}
  */
 export const getTransactionOutputValue = ({
 	selectedWallet = undefined,
@@ -1919,6 +1921,7 @@ export const setupBoost = async ({
  * Sets up a CPFP transaction.
  * @param {string} [selectedWallet]
  * @param {TAvailableNetworks} [selectedNetwork]
+ * @param {string} [txid]
  * @param {number} [satsPerByte]
  */
 export const setupCpfp = async ({

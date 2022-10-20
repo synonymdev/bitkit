@@ -1,11 +1,10 @@
-import { TAvailableNetworks, INetwork } from '../networks';
+import { TAvailableNetworks } from '../networks';
 import {
 	TAddressType,
 	IAddress,
 	IKeyDerivationPath,
 	TKeyDerivationAccountType,
 } from '../../store/types/wallet';
-import { BIP32Interface } from 'bip32';
 
 export interface IResponse<T> {
 	error: boolean;
@@ -22,9 +21,15 @@ export interface IGetKeychainValue {
 }
 
 export interface IGetAddress {
-	keyPair: BIP32Interface | undefined;
-	network: INetwork | undefined;
+	path: string;
+	selectedNetwork?: TAvailableNetworks;
 	type?: TAddressType;
+}
+
+export interface IGetAddressResponse {
+	address: string;
+	path: string;
+	publicKey: string;
 }
 
 export interface IGetInfoFromAddressPath {

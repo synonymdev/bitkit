@@ -5,12 +5,15 @@ import { enableScreens, enableFreeze } from 'react-native-screens';
 import { persistStore } from 'redux-persist';
 import { Provider } from 'react-redux';
 import { EventEmitter } from 'events';
+import nodejs from 'nodejs-mobile-react-native';
 
 import App from './src/App';
 import ErrorBoundary from './src/ErrorBoundary';
 import store from './src/store';
 
 EventEmitter.defaultMaxListeners = 1000; // default is 10, but we need to listen a lot of address
+
+nodejs.start('main.js');
 enableScreens(true);
 enableFreeze(true);
 

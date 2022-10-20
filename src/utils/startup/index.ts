@@ -95,7 +95,7 @@ export const startWalletServices = async ({
 	try {
 		InteractionManager.runAfterInteractions(async () => {
 			//Create wallet if none exists.
-			let { wallets, selectedNetwork } = getStore().wallet;
+			const { wallets, selectedNetwork } = getStore().wallet;
 			let isConnectedToElectrum = false;
 
 			updateExchangeRates().then();

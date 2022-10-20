@@ -1,0 +1,16 @@
+{
+  "name": "bitkit-project",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Synonym",
+  "license": "MIT",
+  "dependencies": {
+    "bip32": "https://github.com/synonymdev/bip32",
+    "bip39": "^3.0.4",
+    "bitcoinjs-lib": "^6.0.1"
+  }
+}
