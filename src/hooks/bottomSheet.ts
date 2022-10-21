@@ -15,11 +15,14 @@ export const useSnapPoints = (size: 'small' | 'medium' | 'large'): number[] => {
 	const snapPoints = useMemo(() => {
 		if (size === 'large') {
 			// only Header should be visible
-			return [height - (60 + insets.top)];
+			const preferredHeight = height - (60 + insets.top);
+			return [preferredHeight];
 		}
 		if (size === 'medium') {
 			// only Header + Balance should be visible
-			return [height - (180 + insets.top)];
+			const preferredHeight = height - (180 + insets.top);
+			const minHeight = 600;
+			return [Math.max(preferredHeight, minHeight)];
 		}
 
 		// small / default

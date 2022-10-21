@@ -6,6 +6,7 @@
   "scripts": {
     "android": "react-native run-android",
     "ios": "react-native run-ios",
+    "ios:se": "react-native run-ios --simulator='iPhone SE (3rd generation)'",
     "start": "react-native start",
     "test": "jest",
     "test:coverage": "jest --coverage=true",

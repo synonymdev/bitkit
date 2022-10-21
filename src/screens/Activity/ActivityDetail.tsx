@@ -631,7 +631,7 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		alignItems: 'center',
 		justifyContent: 'space-between',
-		marginVertical: 32,
+		marginBottom: 32,
 	},
 	titleBlock: {
 		flexDirection: 'row',
@@ -674,6 +674,7 @@ const styles = StyleSheet.create({
 	buttonDetailsContainer: {
 		flex: 1,
 		justifyContent: 'flex-end',
+		marginBottom: 16,
 	},
 	button: {
 		marginHorizontal: 8,

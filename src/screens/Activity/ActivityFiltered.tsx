@@ -153,7 +153,8 @@ const styles = StyleSheet.create({
 	},
 	formContainer: {
 		paddingHorizontal: 16,
-		paddingVertical: 16,
+		paddingTop: 8,
+		paddingBottom: 16,
 	},
 	searchInput: {
 		marginBottom: 16,

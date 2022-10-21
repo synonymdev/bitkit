@@ -6,12 +6,16 @@ import NavigationHeader from '../../components/NavigationHeader';
 import ContactsList from '../../components/ContactsList';
 import SafeAreaInsets from '../../components/SafeAreaInsets';
 import { addMetaSlashTagsUrlTag } from '../../store/actions/metadata';
+import { RootStackScreenProps } from '../../navigation/types';
 
-const ActivityAssignContact = ({ navigation, route }): ReactElement => {
+const ActivityAssignContact = ({
+	navigation,
+	route,
+}: RootStackScreenProps<'ActivityAssignContact'>): ReactElement => {
 	return (
 		<ThemedView style={styles.container}>
 			<SafeAreaInsets type="top" />
-			<NavigationHeader title="Assign Contact" size="sm" />
+			<NavigationHeader title="Assign Contact" />
 			<View style={styles.content}>
 				<ContactsList
 					onPress={({ url }): void => {

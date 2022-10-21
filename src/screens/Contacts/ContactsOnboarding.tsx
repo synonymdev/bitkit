@@ -1,14 +1,16 @@
 import React from 'react';
-import { Image, StyleSheet } from 'react-native';
+import { View, Image, StyleSheet } from 'react-native';
 import { StackScreenProps } from '@react-navigation/stack';
 
 import NavigationHeader from '../../components/NavigationHeader';
 import Button from '../../components/Button';
-import { Display, Text01S, View } from '../../styles/components';
+import { Display, Text01S } from '../../styles/components';
 import GlowingBackground from '../../components/GlowingBackground';
 import SafeAreaInsets from '../../components/SafeAreaInsets';
 import { setOnboardedContacts } from '../../store/actions/slashtags';
 import { RootStackParamList } from '../../navigation/types';
+
+const imageSrc = require('../../assets/illustrations/book.png');
 
 type ContactsOnboardingProps = StackScreenProps<RootStackParamList, 'Contacts'>;
 
@@ -26,10 +28,9 @@ export const ContactsOnboarding = ({
 				}}
 			/>
 			<View style={styles.content}>
-				<Image
-					source={require('../../assets/illustrations/book.png')}
-					style={styles.illustration}
-				/>
+				<View style={styles.imageContainer}>
+					<Image style={styles.image} source={imageSrc} />
+				</View>
 				<View style={styles.text}>
 					<Display>Dynamic</Display>
 					<Display color="brand">Contacts.</Display>
@@ -38,14 +39,19 @@ export const ContactsOnboarding = ({
 						and follow their public profiles.
 					</Text01S>
 				</View>
-				<Button
-					text="Add Your First Contact"
-					size="large"
-					onPress={(): void => {
-						setOnboardedContacts();
-					}}
-				/>
+
+				<View style={styles.buttonContainer}>
+					<Button
+						style={styles.button}
+						text="Add Your First Contact"
+						size="large"
+						onPress={(): void => {
+							setOnboardedContacts();
+						}}
+					/>
+				</View>
 			</View>
+			<SafeAreaInsets type="bottom" />
 		</GlowingBackground>
 	);
 };
@@ -53,16 +59,15 @@ export const ContactsOnboarding = ({
 const styles = StyleSheet.create({
 	content: {
 		flex: 1,
-		justifyContent: 'space-between',
 		marginHorizontal: 16,
-		marginBottom: 16,
-		backgroundColor: 'transparent',
+		paddingBottom: 16,
 	},
-	illustration: {
-		alignSelf: 'center',
-		width: 400,
-		height: 400,
-		maxHeight: '50%',
+	imageContainer: {
+		flex: 1,
+		alignItems: 'center',
+	},
+	image: {
+		flex: 1,
 		resizeMode: 'contain',
 	},
 	introText: {
@@ -70,7 +75,14 @@ const styles = StyleSheet.create({
 	},
 	text: {
 		flex: 1,
-		backgroundColor: 'transparent',
+	},
+	buttonContainer: {
+		flexDirection: 'row',
+		justifyContent: 'center',
+		marginTop: 'auto',
+	},
+	button: {
+		flex: 1,
 	},
 });
 

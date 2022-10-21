@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View, StyleSheet, Image, ImageSourcePropType } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useSelector } from 'react-redux';
@@ -20,6 +20,7 @@ import type {
 	RootStackParamList,
 	RootStackScreenProps,
 } from '../../navigation/types';
+import { useScreenSize } from '../../hooks/screen';
 
 const crownImageSrc = require('../../assets/illustrations/crown.png');
 const coinsImageSrc = require('../../assets/illustrations/coins.png');
@@ -105,9 +106,18 @@ export const Layout = ({
 	children?;
 	onNext?;
 }): JSX.Element => {
+	const { isSmallScreen } = useScreenSize();
 	const onSwipeLeft = (): void => {
 		navigation.navigate('Tabs');
 	};
+
+	const imageContainerStyles = useMemo(
+		() => ({
+			...styles.imageContainer,
+			flex: isSmallScreen ? 0.7 : 1,
+		}),
+		[isSmallScreen],
+	);
 
 	return (
 		<GlowingBackground topLeft="brand">
@@ -121,8 +131,8 @@ export const Layout = ({
 			/>
 			<DetectSwipe onSwipeLeft={onSwipeLeft}>
 				<View style={styles.content}>
-					<View style={styles.imageContainer}>
-						<Image source={illustration} style={styles.illustration} />
+					<View style={imageContainerStyles}>
+						<Image source={illustration} style={styles.image} />
 					</View>
 					<View style={styles.middleContainer}>
 						<Display>{title}</Display>
@@ -158,20 +168,15 @@ const styles = StyleSheet.create({
 		paddingBottom: 16,
 	},
 	imageContainer: {
-		alignSelf: 'center',
-		width: '100%',
 		flex: 1,
-		marginBottom: 16,
+		alignItems: 'center',
 	},
-	illustration: {
-		alignSelf: 'center',
-		width: '100%',
-		height: '100%',
+	image: {
+		flex: 1,
 		resizeMode: 'contain',
 	},
 	introText: {
 		marginTop: 8,
-		width: 280,
 	},
 	middleContainer: {
 		flex: 1,

@@ -520,7 +520,7 @@ const styles = StyleSheet.create({
 		paddingHorizontal: 16,
 	},
 	amountToggle: {
-		marginBottom: 32,
+		marginBottom: 28,
 	},
 	section: {
 		marginBottom: 8,

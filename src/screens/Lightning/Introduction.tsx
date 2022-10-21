@@ -13,6 +13,8 @@ import Store from '../../store/types';
 import { useBalance } from '../../hooks/wallet';
 import { ETransactionDefaults } from '../../store/types/wallet';
 
+const imageSrc = require('../../assets/illustrations/lightning.png');
+
 const Introduction = ({
 	navigation,
 }: LightningScreenProps<'Introduction'>): ReactElement => {
@@ -47,10 +49,7 @@ const Introduction = ({
 					}}
 				/>
 				<View color="transparent" style={styles.imageContainer}>
-					<Image
-						style={styles.image2}
-						source={require('../../assets/illustrations/lightning.png')}
-					/>
+					<Image style={styles.image} source={imageSrc} />
 				</View>
 				<View color="transparent" style={styles.textContent}>
 					<Display>
@@ -61,7 +60,7 @@ const Introduction = ({
 					</Text01S>
 				</View>
 
-				<View color="transparent" style={styles.buttonsContainer}>
+				<View color="transparent" style={styles.buttonContainer}>
 					{!isGeoBlocked && (
 						<>
 							<Button
@@ -96,34 +95,33 @@ const Introduction = ({
 const styles = StyleSheet.create({
 	slide: {
 		flex: 1,
-		display: 'flex',
 		justifyContent: 'space-between',
 		alignItems: 'stretch',
+		marginBottom: 16,
 	},
 	imageContainer: {
-		display: 'flex',
 		flex: 4,
 		alignItems: 'center',
 		paddingVertical: 50,
 		justifyContent: 'flex-end',
 		width: '100%',
 	},
-	image2: {
+	image: {
 		flex: 1,
 		resizeMode: 'contain',
 	},
 	textContent: {
 		flex: 3,
-		display: 'flex',
 		paddingHorizontal: 22,
 	},
 	text: {
 		marginTop: 8,
 	},
-	buttonsContainer: {
-		marginHorizontal: 16,
+	buttonContainer: {
 		flexDirection: 'row',
-		marginTop: 70,
+		justifyContent: 'center',
+		marginTop: 'auto',
+		marginHorizontal: 16,
 	},
 	button: {
 		flex: 1,
