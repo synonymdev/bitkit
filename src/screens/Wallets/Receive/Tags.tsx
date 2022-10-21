@@ -1,5 +1,5 @@
 import React, { memo, ReactElement, useState } from 'react';
-import { Keyboard, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { useSelector } from 'react-redux';
 
 import { BottomSheetTextInput, Caption13Up } from '../../../styles/components';
@@ -9,6 +9,7 @@ import Tag from '../../../components/Tag';
 import Store from '../../../store/types';
 import { updateInvoice } from '../../../store/actions/receive';
 import { addTag, deleteTag } from '../../../store/actions/metadata';
+import { Keyboard } from '../../../hooks/keyboard';
 import { ReceiveScreenProps } from '../../../navigation/types';
 
 const Tags = ({ navigation }: ReceiveScreenProps<'Tags'>): ReactElement => {
@@ -17,29 +18,24 @@ const Tags = ({ navigation }: ReceiveScreenProps<'Tags'>): ReactElement => {
 		(store: Store) => store.metadata.lastUsedTags,
 	);
 
-	const navigateBack = (): void => {
-		// wait for keyboard to close
-		const subscription = Keyboard.addListener('keyboardDidHide', (): void => {
-			navigation.goBack();
-			subscription.remove();
-		});
-		Keyboard.dismiss();
-	};
-
-	const handleSubmit = (): void => {
+	const handleSubmit = async (): Promise<void> => {
 		if (text.length === 0) {
 			return;
 		}
 
 		updateInvoice({ tags: [text] });
 		addTag(text);
-		navigateBack();
+
+		await Keyboard.dismiss();
+		navigation.goBack();
 	};
 
-	const handleTagChoose = (tag: string): void => {
+	const handleTagChoose = async (tag: string): Promise<void> => {
 		updateInvoice({ tags: [tag] });
 		addTag(tag);
-		navigateBack();
+
+		await Keyboard.dismiss();
+		navigation.goBack();
 	};
 
 	return (

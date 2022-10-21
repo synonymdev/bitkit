@@ -1,5 +1,5 @@
 import React, { memo, ReactElement, useState } from 'react';
-import { Keyboard, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { useSelector } from 'react-redux';
 
 import { BottomSheetTextInput, Caption13Up } from '../../../styles/components';
@@ -10,6 +10,7 @@ import Store from '../../../store/types';
 import { addTxTag } from '../../../store/actions/wallet';
 import { addTag, deleteTag } from '../../../store/actions/metadata';
 import { showErrorNotification } from '../../../utils/notifications';
+import { Keyboard } from '../../../hooks/keyboard';
 import type { SendScreenProps } from '../../../navigation/types';
 
 const Tags = ({ navigation }: SendScreenProps<'Tags'>): ReactElement => {
@@ -24,16 +25,7 @@ const Tags = ({ navigation }: SendScreenProps<'Tags'>): ReactElement => {
 		(store: Store) => store.metadata.lastUsedTags,
 	);
 
-	const navigateBack = (): void => {
-		// wait for keyboard to close
-		const subscription = Keyboard.addListener('keyboardDidHide', (): void => {
-			navigation.goBack();
-			subscription.remove();
-		});
-		Keyboard.dismiss();
-	};
-
-	const handleSubmit = (): void => {
+	const handleSubmit = async (): Promise<void> => {
 		if (text.length === 0) {
 			return;
 		}
@@ -46,10 +38,12 @@ const Tags = ({ navigation }: SendScreenProps<'Tags'>): ReactElement => {
 			return;
 		}
 		addTag(text);
-		navigateBack();
+
+		await Keyboard.dismiss();
+		navigation.goBack();
 	};
 
-	const handleTagChoose = (tag: string): void => {
+	const handleTagChoose = async (tag: string): Promise<void> => {
 		const res = addTxTag({ tag, selectedNetwork, selectedWallet });
 		if (res.isErr()) {
 			showErrorNotification({
@@ -59,7 +53,9 @@ const Tags = ({ navigation }: SendScreenProps<'Tags'>): ReactElement => {
 			return;
 		}
 		addTag(tag);
-		navigateBack();
+
+		await Keyboard.dismiss();
+		navigation.goBack();
 	};
 
 	return (
