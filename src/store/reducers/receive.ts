@@ -9,7 +9,7 @@ const receive = (state: IReceive = defaultReceiveShape, action): IReceive => {
 			return {
 				...state,
 				...action.payload,
-				tags: [...state.tags, ...tags],
+				tags: [...new Set([...state.tags, ...tags])],
 			};
 
 		case actions.RESET_INVOICE:
