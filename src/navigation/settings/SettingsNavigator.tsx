@@ -1,4 +1,6 @@
 import React, { ReactElement } from 'react';
+import { Platform } from 'react-native';
+import { NavigatorScreenParams } from '@react-navigation/native';
 import {
 	createStackNavigator,
 	StackNavigationOptions,
@@ -42,7 +44,6 @@ import ResetAndRestore from '../../screens/Settings/Backup/ResetAndRestore';
 import LightningNavigator, {
 	LightningStackParamList,
 } from '../lightning/LightningNavigator';
-import { NavigatorScreenParams } from '@react-navigation/native';
 import SlashtagsSettings from '../../screens/Settings/SlashtagsSettings';
 
 export type SettingsNavigationProp =
@@ -89,76 +90,75 @@ export type SettingsStackParamList = {
 
 const Stack = createStackNavigator<SettingsStackParamList>();
 
-const navOptions: StackNavigationOptions = {
-	headerShown: false,
+const screenOptions: StackNavigationOptions = {
+	// prevent flickering issue on Android
+	presentation: Platform.OS === 'ios' ? 'card' : 'transparentModal',
 	gestureEnabled: true,
+	headerShown: false,
 };
 
 const SettingsNavigator = (): ReactElement => {
 	return (
-		<Stack.Navigator screenOptions={navOptions} initialRouteName="SettingsMenu">
-			<Stack.Group screenOptions={navOptions}>
-				<Stack.Screen name="AuthCheck" component={AuthCheck} />
-				<Stack.Screen name="SettingsMenu" component={SettingsMenu} />
-				<Stack.Screen name="GeneralSettings" component={GeneralSettings} />
-				<Stack.Screen name="SecuritySettings" component={SecuritySettings} />
-				<Stack.Screen name="ChangePin" component={ChangePin} />
-				<Stack.Screen name="ChangePin2" component={ChangePin2} />
-				<Stack.Screen name="PinChanged" component={PinChanged} />
-				<Stack.Screen name="DisablePin" component={DisablePin} />
-				<Stack.Screen name="BackupSettings" component={BackupSettings} />
-				<Stack.Screen name="NetworksSettings" component={NetworksSettings} />
-				<Stack.Screen name="AdvancedSettings" component={AdvancedSettings} />
-				<Stack.Screen name="AboutSettings" component={AboutSettings} />
-				<Stack.Screen name="EasterEgg" component={EasterEgg} />
-				<Stack.Screen
-					name="CurrenciesSettings"
-					component={CurrenciesSettings}
-				/>
-				<Stack.Screen
-					name="BitcoinUnitSettings"
-					component={BitcoinUnitSettings}
-				/>
-				<Stack.Screen
-					name="TransactionSpeedSettings"
-					component={TransactionSpeedSettings}
-				/>
-				<Stack.Screen name="BlocktankOrders" component={BlocktankOrders} />
-				<Stack.Screen
-					name="BlocktankOrderDetails"
-					component={BlocktankOrderDetails}
-				/>
-				<Stack.Screen name="ElectrumConfig" component={ElectrumConfig} />
-				<Stack.Screen
-					name="CoinSelectPreference"
-					component={CoinSelectPreference}
-				/>
-				<Stack.Screen name="PaymentPreference" component={PaymentPreference} />
-				<Stack.Screen
-					name="AddressTypePreference"
-					component={AddressTypePreference}
-				/>
-				<Stack.Screen name="DevSettings" component={DevSettings} />
-				<Stack.Screen name="BackupData" component={BackupData} />
-				<Stack.Screen name="ExportToPhone" component={ExportToPhone} />
-				<Stack.Screen name="ResetAndRestore" component={ResetAndRestore} />
-				<Stack.Screen
-					name="BitcoinNetworkSelection"
-					component={BitcoinNetworkSelection}
-				/>
-				<Stack.Screen name="LightningNodeInfo" component={LightningNodeInfo} />
-				<Stack.Screen name="ManageSeedPhrase" component={ManageSeedPhrase} />
-				<Stack.Screen name="Channels" component={Channels} />
-				<Stack.Screen name="ChannelDetails" component={ChannelDetails} />
-				<Stack.Screen name="CloseConnection" component={CloseConnection} />
-				<Stack.Screen name="LightningAddConnection" component={AddConnection} />
-				<Stack.Screen
-					name="LightningAddConnectionResult"
-					component={AddConnectionResult}
-				/>
-				<Stack.Screen name="LightningRoot" component={LightningNavigator} />
-				<Stack.Screen name="SlashtagsSettings" component={SlashtagsSettings} />
-			</Stack.Group>
+		<Stack.Navigator
+			screenOptions={screenOptions}
+			initialRouteName="SettingsMenu">
+			<Stack.Screen name="AuthCheck" component={AuthCheck} />
+			<Stack.Screen name="SettingsMenu" component={SettingsMenu} />
+			<Stack.Screen name="GeneralSettings" component={GeneralSettings} />
+			<Stack.Screen name="SecuritySettings" component={SecuritySettings} />
+			<Stack.Screen name="ChangePin" component={ChangePin} />
+			<Stack.Screen name="ChangePin2" component={ChangePin2} />
+			<Stack.Screen name="PinChanged" component={PinChanged} />
+			<Stack.Screen name="DisablePin" component={DisablePin} />
+			<Stack.Screen name="BackupSettings" component={BackupSettings} />
+			<Stack.Screen name="NetworksSettings" component={NetworksSettings} />
+			<Stack.Screen name="AdvancedSettings" component={AdvancedSettings} />
+			<Stack.Screen name="AboutSettings" component={AboutSettings} />
+			<Stack.Screen name="EasterEgg" component={EasterEgg} />
+			<Stack.Screen name="CurrenciesSettings" component={CurrenciesSettings} />
+			<Stack.Screen
+				name="BitcoinUnitSettings"
+				component={BitcoinUnitSettings}
+			/>
+			<Stack.Screen
+				name="TransactionSpeedSettings"
+				component={TransactionSpeedSettings}
+			/>
+			<Stack.Screen name="BlocktankOrders" component={BlocktankOrders} />
+			<Stack.Screen
+				name="BlocktankOrderDetails"
+				component={BlocktankOrderDetails}
+			/>
+			<Stack.Screen name="ElectrumConfig" component={ElectrumConfig} />
+			<Stack.Screen
+				name="CoinSelectPreference"
+				component={CoinSelectPreference}
+			/>
+			<Stack.Screen name="PaymentPreference" component={PaymentPreference} />
+			<Stack.Screen
+				name="AddressTypePreference"
+				component={AddressTypePreference}
+			/>
+			<Stack.Screen name="DevSettings" component={DevSettings} />
+			<Stack.Screen name="BackupData" component={BackupData} />
+			<Stack.Screen name="ExportToPhone" component={ExportToPhone} />
+			<Stack.Screen name="ResetAndRestore" component={ResetAndRestore} />
+			<Stack.Screen
+				name="BitcoinNetworkSelection"
+				component={BitcoinNetworkSelection}
+			/>
+			<Stack.Screen name="LightningNodeInfo" component={LightningNodeInfo} />
+			<Stack.Screen name="ManageSeedPhrase" component={ManageSeedPhrase} />
+			<Stack.Screen name="Channels" component={Channels} />
+			<Stack.Screen name="ChannelDetails" component={ChannelDetails} />
+			<Stack.Screen name="CloseConnection" component={CloseConnection} />
+			<Stack.Screen name="LightningAddConnection" component={AddConnection} />
+			<Stack.Screen
+				name="LightningAddConnectionResult"
+				component={AddConnectionResult}
+			/>
+			<Stack.Screen name="LightningRoot" component={LightningNavigator} />
+			<Stack.Screen name="SlashtagsSettings" component={SlashtagsSettings} />
 		</Stack.Navigator>
 	);
 };
