@@ -49,7 +49,6 @@ const Stack = createStackNavigator<RootStackParamList>();
 
 const navOptions: StackNavigationOptions = {
 	headerShown: false,
-	gestureEnabled: true,
 	...TransitionPresets.SlideFromRightIOS,
 };
 

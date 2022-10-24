@@ -93,7 +93,6 @@ const Stack = createStackNavigator<SettingsStackParamList>();
 const screenOptions: StackNavigationOptions = {
 	// prevent flickering issue on Android
 	presentation: Platform.OS === 'ios' ? 'card' : 'transparentModal',
-	gestureEnabled: true,
 	headerShown: false,
 };
 

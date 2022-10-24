@@ -27,7 +27,6 @@ const Stack = createNativeStackNavigator<ReceiveStackParamList>();
 
 const navOptions: NativeStackNavigationOptions = {
 	headerShown: false,
-	gestureEnabled: true,
 };
 
 const ReceiveNavigation = (): ReactElement => {

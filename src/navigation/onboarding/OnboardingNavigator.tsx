@@ -22,7 +22,6 @@ const Stack = createNativeStackNavigator<OnboardingStackParamList>();
 
 const navOptionHandler = {
 	headerShown: false,
-	gestureEnabled: true,
 	detachPreviousScreen: false,
 };
 

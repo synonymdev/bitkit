@@ -26,7 +26,6 @@ const Stack = createNativeStackNavigator<WidgetsStackParamList>();
 
 const navOptions: NativeStackNavigationOptions = {
 	headerShown: false,
-	gestureEnabled: true,
 };
 
 const WidgetsNavigator = (): ReactElement => {

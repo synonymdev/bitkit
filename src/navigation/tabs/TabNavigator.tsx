@@ -40,7 +40,6 @@ const Stack = createNativeStackNavigator<TabStackParamList>();
 
 const navOptions: NativeStackNavigationOptions = {
 	headerShown: false,
-	gestureEnabled: true,
 };
 
 const screenOptions = {

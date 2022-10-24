@@ -48,7 +48,6 @@ export type SendStackParamList = {
 const Stack = createNativeStackNavigator<SendStackParamList>();
 const navOptions: NativeStackNavigationOptions = {
 	headerShown: false,
-	gestureEnabled: true,
 };
 
 const SendNavigation = (): ReactElement => {

@@ -48,7 +48,6 @@ const Stack = createNativeStackNavigator<LightningStackParamList>();
 
 const navOptions: NativeStackNavigationOptions = {
 	headerShown: false,
-	gestureEnabled: true,
 };
 
 const LightningStack = (): ReactElement => {

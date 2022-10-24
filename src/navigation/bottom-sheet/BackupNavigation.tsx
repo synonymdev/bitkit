@@ -31,7 +31,6 @@ const Stack = createNativeStackNavigator<BackupStackParamList>();
 
 const navOptions: NativeStackNavigationOptions = {
 	headerShown: false,
-	gestureEnabled: true,
 };
 
 const BackupNavigation = (): ReactElement => {

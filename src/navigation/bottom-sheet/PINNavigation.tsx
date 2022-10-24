@@ -26,7 +26,6 @@ const Stack = createNativeStackNavigator<PinStackParamList>();
 
 const navOptions: NativeStackNavigationOptions = {
 	headerShown: false,
-	gestureEnabled: true,
 };
 
 const PINNavigation = (): ReactElement => {
