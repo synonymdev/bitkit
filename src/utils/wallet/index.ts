@@ -84,6 +84,7 @@ import { refreshLdk } from '../lightning';
 import {
 	BITKIT_WALLET_SEED_HASH_PREFIX,
 	GENERATE_ADDRESS_AMOUNT,
+	CHUNK_LIMIT,
 } from './constants';
 import { moveMetaIncTxTags } from '../../store/actions/metadata';
 import { refreshOrdersList } from '../../store/actions/blocktank';
@@ -1400,23 +1401,28 @@ export const getInputData = async ({
 		if (!selectedNetwork) {
 			selectedNetwork = getSelectedNetwork();
 		}
-		const getTransactionsResponse = await getTransactionsFromInputs({
-			txHashes: inputs,
-			selectedNetwork,
-		});
 		const inputData = {};
-		if (getTransactionsResponse.isErr()) {
-			return err(getTransactionsResponse.error.message);
+
+		for (let i = 0; i < inputs.length; i += CHUNK_LIMIT) {
+			const chunk = inputs.slice(i, i + CHUNK_LIMIT);
+
+			const getTransactionsResponse = await getTransactionsFromInputs({
+				txHashes: chunk,
+				selectedNetwork,
+			});
+			if (getTransactionsResponse.isErr()) {
+				return err(getTransactionsResponse.error.message);
+			}
+			getTransactionsResponse.value.data.map(({ data, result }) => {
+				const vout = result.vout[data.vout];
+				const addresses = vout.scriptPubKey?.addresses
+					? vout.scriptPubKey?.addresses
+					: [vout.scriptPubKey.address];
+				const value = vout.value;
+				const key = data.tx_hash;
+				inputData[key] = { addresses, value };
+			});
 		}
-		getTransactionsResponse.value.data.map(({ data, result }) => {
-			const vout = result.vout[data.vout];
-			const addresses = vout.scriptPubKey?.addresses
-				? vout.scriptPubKey?.addresses
-				: [vout.scriptPubKey.address];
-			const value = vout.value;
-			const key = data.tx_hash;
-			inputData[key] = { addresses, value };
-		});
 		return ok(inputData);
 	} catch (e) {
 		return err(e);

@@ -576,7 +576,6 @@ export const updateTransactions = ({
 		if (formatTransactionsResponse.isErr()) {
 			return resolve(err(formatTransactionsResponse.error.message));
 		}
-
 		const formattedTransactions: IFormattedTransaction = {};
 
 		const storedTransactions = currentWallet.transactions[selectedNetwork];

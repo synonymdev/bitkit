@@ -7,3 +7,6 @@ export const GENERATE_ADDRESS_AMOUNT = 5;
 
 // TODO: Add this as a settings for users to adjust when needed.
 export const GAP_LIMIT = 20;
+
+// TODO: remove chunk logic and move it to rn-electrum library
+export const CHUNK_LIMIT = 15;
