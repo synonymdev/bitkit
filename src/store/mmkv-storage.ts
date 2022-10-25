@@ -3,13 +3,15 @@ import { Storage } from 'redux-persist';
 import { initializeMMKVFlipper } from 'react-native-mmkv-flipper-plugin';
 import { ENABLE_MMKV_FLIPPER } from '@env';
 
+const __JEST__ = process.env.JEST_WORKER_ID !== undefined;
+
 export const storage = new MMKV();
 
 const __enableFlipperPlugin__ = ENABLE_MMKV_FLIPPER
 	? ENABLE_MMKV_FLIPPER === 'true'
 	: __DEV__;
 
-if (__enableFlipperPlugin__) {
+if (__enableFlipperPlugin__ && !__JEST__) {
 	initializeMMKVFlipper({ default: storage });
 }
 
