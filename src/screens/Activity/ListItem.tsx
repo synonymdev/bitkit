@@ -8,16 +8,12 @@ import {
 	ReceiveIcon,
 	SendIcon,
 	Text01M,
-	TimerIconAlt,
 	TouchableOpacity,
 	View as ThemedView,
 } from '../../styles/components';
-import Button from '../../components/Button';
 import Money from '../../components/Money';
 import ProfileImage from '../../components/ProfileImage';
-import { IActivityItem, EActivityTypes } from '../../store/types/activity';
-import { canBoost } from '../../utils/wallet/transactions';
-import { toggleView } from '../../store/actions/user';
+import { IActivityItem } from '../../store/types/activity';
 import Store from '../../store/types';
 import { useProfile } from '../../hooks/slashtags';
 import { EPaymentType } from '../../store/types/wallet';
@@ -57,17 +53,7 @@ const ListItem = ({
 	item: IActivityItem & { formattedDate: string };
 	onPress: () => void;
 }): ReactElement => {
-	const { value, txType, confirmed, formattedDate, activityType, id } = item;
-	const selectedWallet = useSelector(
-		(state: Store) => state.wallet.selectedWallet,
-	);
-	const selectedNetwork = useSelector(
-		(state: Store) => state.wallet.selectedNetwork,
-	);
-	const boostedTransactions = useSelector(
-		(state: Store) =>
-			state.wallet.wallets[selectedWallet].boostedTransactions[selectedNetwork],
-	);
+	const { value, txType, formattedDate, id } = item;
 	const slashTagsUrls = useSelector(
 		(state: Store) => state.metadata?.slashTagsUrls,
 	);
@@ -79,30 +65,6 @@ const ListItem = ({
 	}, [id, slashTagsUrls]);
 
 	const title = txType === EPaymentType.sent ? 'Sent' : 'Received';
-
-	const isBoosted = useMemo(() => {
-		return id in boostedTransactions;
-	}, [boostedTransactions, id]);
-
-	const showBoost = useMemo(() => {
-		if (confirmed) {
-			return false;
-		}
-		if (activityType !== EActivityTypes.onChain) {
-			return false;
-		}
-		if (isBoosted) {
-			return false;
-		}
-		return canBoost(id).canBoost;
-	}, [confirmed, activityType, isBoosted, id]);
-
-	const handleBoost = (): void => {
-		toggleView({
-			view: 'boostPrompt',
-			data: { isOpen: true, activityItem: item },
-		});
-	};
 
 	return (
 		<TouchableOpacity onPress={onPress} style={styles.root}>
@@ -148,16 +110,6 @@ const ListItem = ({
 					/>
 				</View>
 			</View>
-			{showBoost && (
-				<View style={styles.showBoost}>
-					<Button
-						text="Boost Transaction"
-						color="yellow08"
-						icon={<TimerIconAlt color="yellow" />}
-						onPress={handleBoost}
-					/>
-				</View>
-			)}
 		</TouchableOpacity>
 	);
 };
@@ -198,11 +150,6 @@ const styles = StyleSheet.create({
 	date: {
 		marginTop: 4,
 		overflow: 'hidden',
-	},
-	showBoost: {
-		marginTop: 8,
-		marginLeft: 48,
-		flexDirection: 'row',
 	},
 });
 
