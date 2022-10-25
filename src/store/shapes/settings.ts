@@ -88,5 +88,5 @@ export const defaultSettingsShape: ISettings = {
 	hideBalance: false,
 	hideOnboardingMessage: false,
 	hideBeta: false,
-	enableDevOptions: false,
+	enableDevOptions: __DEV__,
 };
