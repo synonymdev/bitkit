@@ -24,7 +24,7 @@ import GlowingBackground from '../../components/GlowingBackground';
 import Button from '../../components/Button';
 import { createNewWallet } from '../../utils/startup';
 import { showErrorNotification } from '../../utils/notifications';
-import { openURL, sleep } from '../../utils/helpers';
+import { sleep } from '../../utils/helpers';
 import useColors from '../../hooks/colors';
 import LoadingWalletScreen from './Loading';
 import type { OnboardingStackScreenProps } from '../../navigation/types';
@@ -161,16 +161,7 @@ const Slideshow = ({
 								<Display color="brand"> your Wallet.</Display>
 							</Display>
 							<Text01S color="gray1" style={styles.text}>
-								Please note Bitkit is beta software.{'\n'}By tapping ‘New
-								Wallet’ or ‘Restore’{'\n'}you accept our{' '}
-								<Text01S
-									color="brand"
-									onPress={(): void => {
-										openURL('https://synonym.to/terms-of-use/');
-									}}>
-									terms of use
-								</Text01S>
-								.
+								Please note: Bitkit is beta software.
 							</Text01S>
 
 							<View style={styles.buttonsContainer}>
@@ -288,6 +279,7 @@ const styles = StyleSheet.create({
 		flex: Platform.OS === 'ios' ? 3.2 : 3.5,
 	},
 	text: {
+		flex: 0.35,
 		marginTop: 8,
 	},
 	buttonsContainer: {

@@ -10,7 +10,7 @@ import {
 
 import { Text01S, Checkmark, Caption13S } from '../styles/components';
 
-type RadioButtonProps = {
+type CheckButtonProps = {
 	label: ReactNode;
 	checked: boolean;
 	description?: ReactNode;
@@ -18,14 +18,14 @@ type RadioButtonProps = {
 	onPress?: (event: GestureResponderEvent) => void;
 };
 
-export const RadioButton = memo(
+const CheckButton = memo(
 	({
 		label,
 		checked,
 		description,
 		style,
 		onPress,
-	}: RadioButtonProps): ReactElement => {
+	}: CheckButtonProps): ReactElement => {
 		return (
 			<TouchableOpacity
 				style={[styles.item, style]}
@@ -40,49 +40,9 @@ export const RadioButton = memo(
 					</View>
 				</View>
 				<View style={styles.rightColumn}>
-					{checked && <Checkmark color="brand" height={22} width={22} />}
+					{checked && <Checkmark color="brand" height={30} width={30} />}
 				</View>
 			</TouchableOpacity>
-		);
-	},
-);
-
-export type RadioButtonItem = { label: string; value: string };
-
-type RadioButtonGroupProps = {
-	data: RadioButtonItem[];
-	value: string;
-	onPress?: (value: string) => void;
-};
-
-export const RadioButtonGroup = memo(
-	({ data, value, onPress }: RadioButtonGroupProps): ReactElement => {
-		return (
-			<>
-				{data.map((item, index) => {
-					// remove borderBottom from last item
-					if (index === data.length - 1) {
-						return (
-							<RadioButton
-								key={item.value}
-								label={item.label}
-								checked={value === item.value}
-								onPress={(): void => onPress?.(item.value)}
-								style={styles.itemLast}
-							/>
-						);
-					} else {
-						return (
-							<RadioButton
-								key={item.value}
-								label={item.label}
-								checked={value === item.value}
-								onPress={(): void => onPress?.(item.value)}
-							/>
-						);
-					}
-				})}
-			</>
 		);
 	},
 );
@@ -96,9 +56,6 @@ const styles = StyleSheet.create({
 		borderBottomColor: 'rgba(255, 255, 255, 0.1)',
 		borderBottomWidth: 1,
 	},
-	itemLast: {
-		borderBottomWidth: 0,
-	},
 	leftColumn: {
 		flex: 2.6,
 		flexDirection: 'row',
@@ -111,3 +68,5 @@ const styles = StyleSheet.create({
 		marginLeft: 'auto',
 	},
 });
+
+export default CheckButton;
