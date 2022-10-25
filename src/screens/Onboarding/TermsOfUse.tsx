@@ -62,7 +62,7 @@ const TermsOfUse = ({
 								</Text02B>
 							}
 							checked={termsOfUse}
-							onPress={() => setTermsOfUse((prevState) => !prevState)}
+							onPress={(): void => setTermsOfUse((prevState) => !prevState)}
 						/>
 						<CheckButton
 							label={<Text01B>Privacy Policy</Text01B>}
@@ -72,9 +72,7 @@ const TermsOfUse = ({
 									<Text02B
 										color="brand"
 										onPress={(): void => {
-											{
-												/* TODO: update link */
-											}
+											/* TODO: update link */
 											openURL('https://synonym.to/terms-of-use/');
 										}}>
 										privacy policy.
@@ -82,7 +80,7 @@ const TermsOfUse = ({
 								</Text02B>
 							}
 							checked={privacyPolicy}
-							onPress={() => setPrivacyPolicy((prevState) => !prevState)}
+							onPress={(): void => setPrivacyPolicy((prevState) => !prevState)}
 						/>
 					</View>
 

@@ -64,7 +64,7 @@ module.exports = {
 		'require-atomic-updates': 0,
 		'no-async-promise-executor': 0,
 		'brace-style': [2, '1tbs', { allowSingleLine: true }],
-		'@typescript-eslint/explicit-function-return-type': 'warn',
+		'@typescript-eslint/explicit-function-return-type': 'error',
 		'jest/no-disabled-tests': 0,
 	},
 };
