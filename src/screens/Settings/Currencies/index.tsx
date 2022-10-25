@@ -1,8 +1,8 @@
 import React, { memo, ReactElement, useMemo } from 'react';
+import { useSelector } from 'react-redux';
 
 import { IListData } from '../../../components/List';
 import SettingsView from '../SettingsView';
-import { useSelector } from 'react-redux';
 import Store from '../../../store/types';
 import { mostUsedExchangeTickers } from '../../../utils/exchange-rate/types';
 import { updateSettings } from '../../../store/actions/settings';
@@ -53,16 +53,16 @@ const Currencies = ({ navigation }): ReactElement => {
 					})),
 			},
 		],
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-		[selectedCurrency],
+		[selectedCurrency, exchangeRates, navigation],
 	);
 
 	return (
 		<SettingsView
-			title={'Local Currency'}
+			title="Local Currency"
 			listData={CurrencyListData}
 			showBackNavigation
 			showSearch
+			footerText="Prices powered by Bitfinex & CoinGecko."
 		/>
 	);
 };
