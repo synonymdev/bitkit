@@ -111,10 +111,6 @@ const PinPad = ({
 			// in correct pin
 			if (pin !== realPIN?.data) {
 				if (attemptsRemaining <= 1) {
-					//Wipe device. Too many attempts
-					console.log(
-						'Pin attempt threshold breached. Wiping device. Hope you made a backup, friend.',
-					);
 					vibrate({ type: 'default' });
 					await wipeApp({});
 					showErrorNotification({
@@ -141,6 +137,8 @@ const PinPad = ({
 		return (): void => clearInterval(timer);
 	}, [pin, attemptsRemaining, onSuccess, reducePinAttemptsRemaining]);
 
+	const isLastAttempt = attemptsRemaining === 1;
+
 	return (
 		<GlowingBackground topLeft={brand}>
 			<View style={styles.header}>
@@ -166,20 +164,29 @@ const PinPad = ({
 								color="transparent"
 								entering={FadeIn}
 								exiting={FadeOut}>
-								<Text02S color="brand">
-									{attemptsRemaining} attempts remaining.{' '}
-								</Text02S>
-								<Pressable
-									onPress={(): void => {
-										toggleView({
-											view: 'forgotPIN',
-											data: {
-												isOpen: true,
-											},
-										});
-									}}>
-									<Text02S color="brand">Forgot your PIN?</Text02S>
-								</Pressable>
+								{isLastAttempt ? (
+									<Text02S style={styles.attemptsRemaining} color="brand">
+										Last attempt. Entering the wrong PIN again will reset your
+										wallet.
+									</Text02S>
+								) : (
+									<>
+										<Text02S style={styles.attemptsRemaining} color="brand">
+											{attemptsRemaining} attempts remaining.{' '}
+										</Text02S>
+										<Pressable
+											onPress={(): void => {
+												toggleView({
+													view: 'forgotPIN',
+													data: {
+														isOpen: true,
+													},
+												});
+											}}>
+											<Text02S color="brand">Forgot your PIN?</Text02S>
+										</Pressable>
+									</>
+								)}
 							</AnimatedView>
 						)}
 
@@ -239,6 +246,10 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		flexWrap: 'wrap',
 		justifyContent: 'center',
+		paddingHorizontal: 16,
+	},
+	attemptsRemaining: {
+		textAlign: 'center',
 	},
 	dots: {
 		flexDirection: 'row',
