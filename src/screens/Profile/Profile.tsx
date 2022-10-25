@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { ReactElement, useMemo, useState } from 'react';
 import Clipboard from '@react-native-clipboard/clipboard';
 import { FadeIn, FadeOut } from 'react-native-reanimated';
 import {
@@ -23,21 +23,22 @@ import {
 	UsersIcon,
 	View as ThemedView,
 } from '../../styles/components';
+import Store from '../../store/types';
+import { BasicProfile } from '../../store/types/slashtags';
+import { useProfile, useSelectedSlashtag } from '../../hooks/slashtags';
+import { truncate } from '../../utils/helpers';
 import NavigationHeader from '../../components/NavigationHeader';
 import SafeAreaInsets from '../../components/SafeAreaInsets';
 import ProfileCard from '../../components/ProfileCard';
-import { ProfileIntro, OfflinePayments } from './ProfileOnboarding';
-import { BasicProfile } from '../../store/types/slashtags';
 import ProfileLinks from '../../components/ProfileLinks';
 import Tooltip from '../../components/Tooltip';
-import ProfileEdit from './ProfileEdit';
-import Store from '../../store/types';
-import { useProfile, useSelectedSlashtag } from '../../hooks/slashtags';
-import type { RootStackScreenProps } from '../../navigation/types';
 import DetectSwipe from '../../components/DetectSwipe';
 import Divider from '../../components/Divider';
+import ProfileEdit from './ProfileEdit';
+import { ProfileIntro, OfflinePayments } from './ProfileOnboarding';
+import type { RootStackScreenProps } from '../../navigation/types';
 
-const Profile = (props: RootStackScreenProps<'Profile'>): JSX.Element => {
+const Profile = (props: RootStackScreenProps<'Profile'>): ReactElement => {
 	const onboardingProfileStep = useSelector(
 		(state: Store) => state.slashtags.onboardingProfileStep,
 	);
@@ -58,7 +59,7 @@ const Profile = (props: RootStackScreenProps<'Profile'>): JSX.Element => {
 
 const ProfileScreen = ({
 	navigation,
-}: RootStackScreenProps<'Profile'>): JSX.Element => {
+}: RootStackScreenProps<'Profile'>): ReactElement => {
 	const [showCopy, setShowCopy] = useState(false);
 	const { url } = useSelectedSlashtag();
 	const { profile } = useProfile(url);
@@ -170,7 +171,7 @@ const IconButton = ({
 }: {
 	children?: any;
 	onPress?: () => void;
-}): JSX.Element => {
+}): ReactElement => {
 	return (
 		<TouchableOpacity
 			color="white08"
@@ -188,7 +189,7 @@ const QRView = ({
 }: {
 	url: string;
 	profile?: BasicProfile;
-}): JSX.Element => {
+}): ReactElement => {
 	const dimensions = useWindowDimensions();
 	const [showCopy, setShowCopy] = useState(false);
 
@@ -214,6 +215,9 @@ const QRView = ({
 	const handleCopyQrCode = (): void => {
 		console.log('TODO: copy QR code');
 	};
+
+	const name = profile?.name ?? '';
+	const firstName = name.split(/\s+/)[0];
 
 	return (
 		<View style={styles.qrViewContainer}>
@@ -245,7 +249,9 @@ const QRView = ({
 					</AnimatedView>
 				)}
 			</View>
-			<Text02S style={styles.qrViewNote}>Scan to add {profile?.name}</Text02S>
+			<Text02S style={styles.qrViewNote}>
+				Scan to add {truncate(firstName, 30)}
+			</Text02S>
 		</View>
 	);
 };

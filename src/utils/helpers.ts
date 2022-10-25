@@ -220,22 +220,31 @@ export const shuffleArray = (array): any[] => {
 
 /**
  * Truncates strings with an ellipses
- * @param str
- * @param n
- * @returns {any}
+ * @param text
+ * @param length
+ * @returns {string}
  */
-export const truncate = (str, n): string | undefined =>
-	trimExtraSpaces(str.length > n ? str.substr(0, n - 3) + '...' : str);
+export const truncate = (text: string, length: number): string => {
+	return trimExtraSpaces(
+		text.length > length ? `${text.substring(0, length - 3)}...` : text,
+	);
+};
 
-export const trimExtraSpaces = (str?: string): string | undefined =>
-	str?.trim().replace(/\s{2,}/g, ' ');
+/**
+ * Trims multiple empty space characters down to one
+ * @param text
+ * @returns {string}
+ */
+export const trimExtraSpaces = (text: string): string => {
+	return text.trim().replace(/\s{2,}/g, ' ');
+};
 
 /**
  * Capitalizes the first letter of every word.
- * @param {string} str
+ * @param {string} text
  */
-export const capitalize = (str = ''): string => {
-	return str.charAt(0).toUpperCase() + str.slice(1);
+export const capitalize = (text = ''): string => {
+	return text.charAt(0).toUpperCase() + text.slice(1);
 };
 
 /**
