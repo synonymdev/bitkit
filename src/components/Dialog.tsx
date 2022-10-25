@@ -64,10 +64,8 @@ const styles = StyleSheet.create({
 		flex: 1,
 		justifyContent: 'center',
 		alignItems: 'center',
-		marginTop: 22,
 	},
 	view: {
-		margin: 20,
 		backgroundColor: 'rgba(49, 49, 49, 1)',
 		backdropFilter: 'blur(27.1828px)',
 		alignItems: 'center',
@@ -92,6 +90,7 @@ const styles = StyleSheet.create({
 	},
 	text: {
 		padding: 16,
+		width: '100%',
 	},
 	title: {
 		fontWeight: '600',
