@@ -887,7 +887,8 @@ export const broadcastTransaction = async ({
 		rawTx,
 		network: selectedNetwork,
 	});
-	if (broadcastResponse.error) {
+	// TODO: This needs to be resolved in rn-electrum-client
+	if (broadcastResponse.error || broadcastResponse.data.includes(' ')) {
 		return err(broadcastResponse.data);
 	}
 	return ok(broadcastResponse.data);
