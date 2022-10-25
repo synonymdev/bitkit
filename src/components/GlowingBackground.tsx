@@ -15,7 +15,7 @@ import { View } from '../styles/components';
 import Store from '../store/types';
 import themes from '../styles/themes';
 
-const DURATION = 1000;
+const DURATION = 500;
 
 const Glow = memo(
 	({
