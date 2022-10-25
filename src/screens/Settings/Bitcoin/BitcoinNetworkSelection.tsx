@@ -8,6 +8,7 @@ import {
 	updateAddressIndexes,
 	updateWallet,
 } from '../../../store/actions/wallet';
+import { resetActivityStore } from '../../../store/actions/activity';
 import { getNetworkData } from '../../../utils/helpers';
 import { startWalletServices } from '../../../utils/startup';
 import {
@@ -31,6 +32,8 @@ const BitcoinNetworkSelection = ({ navigation }): ReactElement => {
 						type: 'button',
 						onPress: async (): Promise<void> => {
 							navigation.goBack();
+							// Wipe existing activity
+							resetActivityStore();
 							// Switch to new network.
 							await updateWallet({ selectedNetwork: network });
 							// Grab the selectedWallet.
