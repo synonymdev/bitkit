@@ -1,5 +1,7 @@
-import React, { ReactElement, memo } from 'react';
+import React, { ReactElement, memo, useState, useEffect } from 'react';
 import { StyleSheet, View, ScrollView, TouchableOpacity } from 'react-native';
+import Clipboard from '@react-native-clipboard/clipboard';
+import { useSelector } from 'react-redux';
 
 import {
 	Caption13Up,
@@ -16,8 +18,10 @@ import {
 	useLightningChannelData,
 	useLightningChannelName,
 } from '../../../hooks/lightning';
-import Clipboard from '@react-native-clipboard/clipboard';
 import { showSuccessNotification } from '../../../utils/notifications';
+import { ITransaction, ITxHash } from '../../../utils/wallet';
+import { getTransactions } from '../../../utils/wallet/electrum';
+import Store from '../../../store/types';
 
 const Section = memo(
 	({
@@ -54,6 +58,30 @@ const ChannelDetails = ({ route, navigation }): ReactElement => {
 	const { spendingAvailable, receivingAvailable, capacity } =
 		useLightningChannelBalance(channelId);
 	const channel = useLightningChannelData(channelId);
+	const selectedNetwork = useSelector(
+		(store: Store) => store.wallet.selectedNetwork,
+	);
+	const [txTime, setTxTime] = useState<undefined | string>();
+
+	useEffect(() => {
+		if (!channel?.funding_txid) {
+			return;
+		}
+		getTransactions({
+			txHashes: [{ tx_hash: channel.funding_txid }],
+			selectedNetwork,
+		}).then((txResponse) => {
+			if (txResponse.isErr()) {
+				return;
+			}
+			const txData: ITransaction<ITxHash>[] = txResponse.value.data;
+			if (txData.length === 0) {
+				return;
+			}
+			const data = txData[0].result;
+			setTxTime(new Date(data.time * 1000).toLocaleString());
+		});
+	}, [selectedNetwork, channel?.funding_txid]);
 
 	return (
 		<ThemedView style={styles.root}>
@@ -147,10 +175,9 @@ const ChannelDetails = ({ route, navigation }): ReactElement => {
 				<View style={styles.sectionTitle}>
 					<Caption13Up color="gray1">Info</Caption13Up>
 				</View>
-				<Section
-					name="Opened on"
-					value={<Caption13M>May 26, 2022 - 12:16</Caption13M>}
-				/>
+				{txTime && (
+					<Section name="Opened on" value={<Caption13M>{txTime}</Caption13M>} />
+				)}
 				<Section
 					name="Node ID"
 					value={
