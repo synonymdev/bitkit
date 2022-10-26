@@ -386,8 +386,8 @@ const AddressAndAmount = ({
 	}, [unitPreference]);
 
 	const availableAmountColor = useMemo(() => {
-		return availableAmount ? 'gray1' : 'transparent';
-	}, [availableAmount]);
+		return availableAmount && showNumberPad ? 'gray1' : 'transparent';
+	}, [availableAmount, showNumberPad]);
 
 	return (
 		<View style={styles.container}>
@@ -423,80 +423,84 @@ const AddressAndAmount = ({
 						/>
 					</View>
 				</AmountToggle>
-				<Caption13Up color="gray1" style={styles.section}>
-					TO
-				</Caption13Up>
-				<AddressOrSlashpay
-					style={styles.inputWrapper}
-					slashTagsUrl={transaction?.slashTagsUrl}
-					onBlur={onBlur}
-					onChangeText={onChangeText}
-					onFocus={closeNumberPad}
-					value={lightningInvoice || address}>
-					<TouchableOpacity style={styles.inputAction} onPress={handleScan}>
-						<ScanIcon color="brand" width={24} />
-					</TouchableOpacity>
-					<TouchableOpacity
-						style={styles.inputAction}
-						onPress={(): void => {
-							handlePaste('').then();
-						}}>
-						<ClipboardTextIcon color="brand" width={24} />
-					</TouchableOpacity>
-					<TouchableOpacity
-						style={styles.inputAction}
-						onPress={handleSendToContact}>
-						<UserIcon color="brand" width={24} />
-					</TouchableOpacity>
-				</AddressOrSlashpay>
-
 				{!showNumberPad && (
-					<AnimatedView
-						style={styles.bottom}
-						color="transparent"
-						entering={FadeIn}
-						exiting={FadeOut}>
+					<>
 						<Caption13Up color="gray1" style={styles.section}>
-							TAGS
+							TO
 						</Caption13Up>
-						<View style={styles.tagsContainer}>
-							{transaction?.tags?.map((tag) => (
-								<Tag
-									key={tag}
-									value={tag}
-									onClose={(): void => handleTagRemove(tag)}
-									style={styles.tag}
-								/>
-							))}
-						</View>
-						<View style={styles.tagsContainer}>
-							<Button
-								color="white04"
-								text="Add Tag"
-								icon={<TagIcon color="brand" width={16} />}
+						<AddressOrSlashpay
+							style={styles.inputWrapper}
+							slashTagsUrl={transaction?.slashTagsUrl}
+							onBlur={onBlur}
+							onChangeText={onChangeText}
+							onFocus={closeNumberPad}
+							value={lightningInvoice || address}>
+							<TouchableOpacity style={styles.inputAction} onPress={handleScan}>
+								<ScanIcon color="brand" width={24} />
+							</TouchableOpacity>
+							<TouchableOpacity
+								style={styles.inputAction}
 								onPress={(): void => {
-									Keyboard.dismiss();
-									navigation.navigate('Tags');
-								}}
-							/>
-						</View>
-						<View style={buttonContainerStyles}>
-							{!keyboardShown && !isInvalid() && (
-								<Button
-									size="large"
-									text="Continue"
-									onPress={(): void => {
-										let view: keyof SendStackParamList = 'ReviewAndSend';
-										// If auto coin-select is disabled and there is no lightning invoice.
-										if (!coinSelectAuto && !transaction?.lightningInvoice) {
-											view = 'CoinSelection';
-										}
-										navigation.navigate(view);
-									}}
-								/>
-							)}
-						</View>
-					</AnimatedView>
+									handlePaste('').then();
+								}}>
+								<ClipboardTextIcon color="brand" width={24} />
+							</TouchableOpacity>
+							<TouchableOpacity
+								style={styles.inputAction}
+								onPress={handleSendToContact}>
+								<UserIcon color="brand" width={24} />
+							</TouchableOpacity>
+						</AddressOrSlashpay>
+
+						{!showNumberPad && (
+							<AnimatedView
+								style={styles.bottom}
+								color="transparent"
+								entering={FadeIn}
+								exiting={FadeOut}>
+								<Caption13Up color="gray1" style={styles.section}>
+									TAGS
+								</Caption13Up>
+								<View style={styles.tagsContainer}>
+									{transaction?.tags?.map((tag) => (
+										<Tag
+											key={tag}
+											value={tag}
+											onClose={(): void => handleTagRemove(tag)}
+											style={styles.tag}
+										/>
+									))}
+								</View>
+								<View style={styles.tagsContainer}>
+									<Button
+										color="white04"
+										text="Add Tag"
+										icon={<TagIcon color="brand" width={16} />}
+										onPress={(): void => {
+											Keyboard.dismiss();
+											navigation.navigate('Tags');
+										}}
+									/>
+								</View>
+								<View style={buttonContainerStyles}>
+									{!keyboardShown && !isInvalid() && (
+										<Button
+											size="large"
+											text="Continue"
+											onPress={(): void => {
+												let view: keyof SendStackParamList = 'ReviewAndSend';
+												// If auto coin-select is disabled and there is no lightning invoice.
+												if (!coinSelectAuto && !transaction?.lightningInvoice) {
+													view = 'CoinSelection';
+												}
+												navigation.navigate(view);
+											}}
+										/>
+									)}
+								</View>
+							</AnimatedView>
+						)}
+					</>
 				)}
 
 				{showNumberPad && (
