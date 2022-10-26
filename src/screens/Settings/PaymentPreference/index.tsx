@@ -36,10 +36,10 @@ const PaymentPreference = (): ReactElement => {
 				],
 			},
 			{
-				title: 'Offline payments',
+				title: 'Pay to/from contacts',
 				data: [
 					{
-						title: 'Enable offline payments',
+						title: 'Enable payments with contacts*',
 						type: 'switch',
 						enabled: enableOfflinePayments,
 						hide: false,
@@ -60,7 +60,7 @@ const PaymentPreference = (): ReactElement => {
 				title="Payment Preference"
 				listData={settingsListData}
 				headerText="Choose how you prefer to receive money when users send funds to your Slashtag."
-				footerText="Bitkit will create a fixed Bitcoin address for you, so you can receive payments from contacts, even when you are offline."
+				footerText="* This requires sharing payment data."
 				showBackNavigation
 				fullHeight={false}
 			/>
