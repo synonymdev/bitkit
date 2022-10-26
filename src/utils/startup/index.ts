@@ -101,7 +101,6 @@ export const startWalletServices = async ({
 			await setupBlocktank(selectedNetwork);
 			await refreshBlocktankInfo();
 			updateExchangeRates().then();
-			await setupNodejsMobile({});
 
 			// Before we do anything we should connect to an Electrum server
 			if (onchain || lightning) {
@@ -127,25 +126,33 @@ export const startWalletServices = async ({
 
 			const walletExists = await checkWalletExists();
 			const walletKeys = Object.keys(wallets);
+
+			let mnemonic;
 			if (!walletExists) {
 				// Generate new wallet if none exists
-				const mnemonic = await generateMnemonic();
+				mnemonic = await generateMnemonic();
 				if (!mnemonic) {
 					return err('Unable to generate mnemonic.');
 				}
-				await createWallet({ mnemonic });
 			} else if (!wallets[walletKeys[0]]?.id) {
 				// If we have a mnemonic in store, but not in redux, we need to init it
-				const mnemonic = await getMnemonicPhrase();
-				if (mnemonic.isErr()) {
+				const mnemonicRes = await getMnemonicPhrase();
+				if (mnemonicRes.isErr()) {
 					return err('Unable to get mnemonic.');
 				}
-				await createWallet({ mnemonic: mnemonic.value });
+				mnemonic = mnemonicRes.value;
 			}
 
+			await createWallet({ mnemonic });
+
+			await setupNodejsMobile({});
+
 			// Setup LDK
-			if (lightning) {
-				const setupResponse = await setupLdk({ selectedNetwork });
+			if (lightning && isConnectedToElectrum) {
+				const setupResponse = await setupLdk({
+					selectedNetwork,
+					shouldRefreshLdk: false,
+				});
 				if (setupResponse.isOk()) {
 					keepLdkSynced({ selectedNetwork }).then();
 				} else {
@@ -160,7 +167,11 @@ export const startWalletServices = async ({
 				await Promise.all([
 					updateOnchainFeeEstimates({ selectedNetwork }),
 					// if we restore wallet, we need to generate addresses for all types
-					refreshWallet({ lightning, updateAllAddressTypes: restore }),
+					refreshWallet({
+						onchain: isConnectedToElectrum,
+						lightning: isConnectedToElectrum,
+						updateAllAddressTypes: restore,
+					}),
 				]);
 			}
 

@@ -105,9 +105,11 @@ export const setLdkStoragePath = (): Promise<Result<string>> =>
 export const setupLdk = async ({
 	selectedWallet,
 	selectedNetwork,
+	shouldRefreshLdk = true,
 }: {
 	selectedWallet?: string;
 	selectedNetwork?: TAvailableNetworks;
+	shouldRefreshLdk?: boolean;
 }): Promise<Result<string>> => {
 	try {
 		if (!selectedWallet) {
@@ -197,8 +199,10 @@ export const setupLdk = async ({
 				selectedWallet,
 			}),
 			updateLightningNodeVersion(),
-			refreshLdk({ selectedWallet, selectedNetwork }),
 		]);
+		if (shouldRefreshLdk) {
+			await refreshLdk({ selectedWallet, selectedNetwork });
+		}
 
 		subscribeToLightningPayments({
 			selectedWallet,
