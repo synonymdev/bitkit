@@ -125,10 +125,12 @@ export const startWalletServices = async ({
 				if (!mnemonic) {
 					return err('Unable to generate mnemonic.');
 				}
+				const createRes = await createWallet({ mnemonic });
+				if (createRes.isErr()) {
+					return err(createRes.error.message);
+				}
 				await updateWallet({ walletExists: true });
 			}
-
-			await createWallet({ mnemonic });
 
 			await setupNodejsMobile({});
 
