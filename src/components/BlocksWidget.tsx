@@ -18,7 +18,7 @@ const BlocksWidget = ({
 	return (
 		<BaseFeedWidget
 			url={url}
-			name="Bitcoin Price"
+			name="Bitcoin Blocks"
 			label={value?.height}
 			icon={<CubeIcon width={32} height={32} />}
 			right={
