@@ -121,38 +121,23 @@ const BitfinexWidget = ({
 		if (!pastValues || pastValues.length < 2) {
 			return { color: 'green', formatted: '+0%' };
 		}
-		const _change = pastValues[pastValues.length - 1] - pastValues[0];
+		const _change = pastValues[pastValues.length - 1] / pastValues[0] - 1;
 
 		const sign = _change >= 0 ? '+' : '';
 		const color = _change >= 0 ? 'green' : 'red';
 
 		return {
 			color,
-			formatted: sign + _change / 100 + '%',
+			formatted: sign + (_change * 100).toFixed(2) + '%',
 		};
 	}, [pastValues]);
 
 	return (
 		<BaseFeedWidget
 			url={url}
-			name={
-				// Optionally use the feed name!
-				//
-				// widget.feed.name
-				'Bitcoin Price'
-			}
+			name={'Bitcoin Price'}
 			label={widget.feed.field.name}
-			icon={
-				<ChartLineIcon width={32} height={32} />
-				// Optionally use the feed icon!
-				//
-				// <ProfileImage
-				// 	style={styles.icon}
-				// 	url={url}
-				// 	image={widget.feed.icon}
-				// 	size={32}
-				// />
-			}
+			icon={<ChartLineIcon width={32} height={32} />}
 			middle={<Chart color={change.color} values={pastValues} />}
 			right={
 				<View style={styles.numbers}>
