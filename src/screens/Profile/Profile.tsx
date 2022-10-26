@@ -32,7 +32,7 @@ import SafeAreaInsets from '../../components/SafeAreaInsets';
 import ProfileCard from '../../components/ProfileCard';
 import ProfileLinks from '../../components/ProfileLinks';
 import Tooltip from '../../components/Tooltip';
-import DetectSwipe from '../../components/DetectSwipe';
+// import DetectSwipe from '../../components/DetectSwipe';
 import Divider from '../../components/Divider';
 import ProfileEdit from './ProfileEdit';
 import { ProfileIntro, OfflinePayments } from './ProfileOnboarding';
@@ -70,9 +70,9 @@ const ProfileScreen = ({
 		view === 'details' ? setView('qr') : setView('details');
 	};
 
-	const onSwipeLeft = (): void => {
-		navigation.navigate('Tabs');
-	};
+	// const onSwipeLeft = (): void => {
+	// 	navigation.navigate('Tabs');
+	// };
 
 	const handleCopyButton = (): void => {
 		setShowCopy(() => true);
@@ -96,71 +96,72 @@ const ProfileScreen = ({
 					navigation.navigate('Tabs');
 				}}
 			/>
-			<DetectSwipe onSwipeLeft={onSwipeLeft}>
-				<ScrollView>
-					<View style={styles.content}>
-						<ProfileCard url={url} profile={profile} resolving={false} />
-						<Divider />
-						<View style={styles.bottom}>
-							<View style={styles.bottomHeader}>
-								<IconButton onPress={switchView}>
-									{view === 'qr' ? (
-										<InfoIcon height={20} width={20} color="brand" />
-									) : (
-										<QrPage height={20} width={20} color="brand" />
-									)}
-								</IconButton>
-								<IconButton
-									onPress={(): void => {
-										url && handleCopyButton();
-									}}>
-									<CopyIcon height={20} width={20} color="brand" />
-								</IconButton>
-								<IconButton
-									onPress={(): void => {
-										url &&
-											Share.share({
-												title: 'Share Slashtag url',
-												message: url,
-											});
-									}}>
-									<ShareIcon height={20} width={20} color="brand" />
-								</IconButton>
-								<IconButton
-									onPress={(): void => {
-										navigation.navigate('ProfileEdit');
-									}}>
-									<PencileIcon height={20} width={20} color="brand" />
-								</IconButton>
-								<IconButton
-									onPress={(): void => {
-										navigation.navigate('Contacts');
-									}}>
-									<UsersIcon height={20} width={20} color="brand" />
-								</IconButton>
-							</View>
-							{view === 'details' ? (
-								<ProfileLinks
-									links={profileLinksWithIds}
-									style={styles.profileDetails}
-								/>
-							) : (
-								<QRView url={url} profile={profile} />
-							)}
-							{showCopy && (
-								<AnimatedView
-									entering={FadeIn.duration(500)}
-									exiting={FadeOut.duration(500)}
-									color="transparent"
-									style={styles.tooltip}>
-									<Tooltip text="Profile Key Copied To Clipboard" />
-								</AnimatedView>
-							)}
+			{/* Disable swipe detection because it causes ScrollView to be buggy */}
+			{/* <DetectSwipe onSwipeLeft={onSwipeLeft}> */}
+			<ScrollView>
+				<View style={styles.content}>
+					<ProfileCard url={url} profile={profile} resolving={false} />
+					<Divider />
+					<View style={styles.bottom}>
+						<View style={styles.bottomHeader}>
+							<IconButton onPress={switchView}>
+								{view === 'qr' ? (
+									<InfoIcon height={20} width={20} color="brand" />
+								) : (
+									<QrPage height={20} width={20} color="brand" />
+								)}
+							</IconButton>
+							<IconButton
+								onPress={(): void => {
+									url && handleCopyButton();
+								}}>
+								<CopyIcon height={20} width={20} color="brand" />
+							</IconButton>
+							<IconButton
+								onPress={(): void => {
+									url &&
+										Share.share({
+											title: 'Share Slashtag url',
+											message: url,
+										});
+								}}>
+								<ShareIcon height={20} width={20} color="brand" />
+							</IconButton>
+							<IconButton
+								onPress={(): void => {
+									navigation.navigate('ProfileEdit');
+								}}>
+								<PencileIcon height={20} width={20} color="brand" />
+							</IconButton>
+							<IconButton
+								onPress={(): void => {
+									navigation.navigate('Contacts');
+								}}>
+								<UsersIcon height={20} width={20} color="brand" />
+							</IconButton>
 						</View>
+						{view === 'details' ? (
+							<ProfileLinks
+								links={profileLinksWithIds}
+								style={styles.profileDetails}
+							/>
+						) : (
+							<QRView url={url} profile={profile} />
+						)}
+						{showCopy && (
+							<AnimatedView
+								entering={FadeIn.duration(500)}
+								exiting={FadeOut.duration(500)}
+								color="transparent"
+								style={styles.tooltip}>
+								<Tooltip text="Profile Key Copied To Clipboard" />
+							</AnimatedView>
+						)}
 					</View>
-					<SafeAreaInsets type="bottom" />
-				</ScrollView>
-			</DetectSwipe>
+				</View>
+				<SafeAreaInsets type="bottom" />
+			</ScrollView>
+			{/* </DetectSwipe> */}
 		</ThemedView>
 	);
 };
