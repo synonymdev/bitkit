@@ -28,20 +28,12 @@ import { performFullRestoreFromLatestBackup } from '../../store/actions/backup';
 /**
  * Checks if the specified wallet's phrase is saved to storage.
  */
-export const checkWalletExists = async (
-	wallet = 'wallet0',
-): Promise<boolean> => {
+const checkWalletExists = async (wallet = 'wallet0'): Promise<boolean> => {
 	try {
 		const response = await getMnemonicPhrase(wallet);
-		let walletExists = false;
-		if (response.isOk() && !!response.value) {
-			walletExists = true;
-		}
-		const _walletExists = getStore()?.wallet?.walletExists;
-		if (walletExists !== _walletExists) {
-			await updateWallet({ walletExists });
-		}
-		return walletExists;
+		const mnemonicExists = response.isOk() && !!response.value;
+		const walletExists = getStore()?.wallet?.walletExists;
+		return mnemonicExists && walletExists;
 	} catch (e) {
 		return false;
 	}
@@ -95,7 +87,7 @@ export const startWalletServices = async ({
 }): Promise<Result<string>> => {
 	try {
 		InteractionManager.runAfterInteractions(async () => {
-			const { wallets, selectedNetwork } = getStore().wallet;
+			const { selectedNetwork } = getStore().wallet;
 			let isConnectedToElectrum = false;
 
 			await setupBlocktank(selectedNetwork);
@@ -125,7 +117,6 @@ export const startWalletServices = async ({
 			}
 
 			const walletExists = await checkWalletExists();
-			const walletKeys = Object.keys(wallets);
 
 			let mnemonic;
 			if (!walletExists) {
@@ -134,13 +125,7 @@ export const startWalletServices = async ({
 				if (!mnemonic) {
 					return err('Unable to generate mnemonic.');
 				}
-			} else if (!wallets[walletKeys[0]]?.id) {
-				// If we have a mnemonic in store, but not in redux, we need to init it
-				const mnemonicRes = await getMnemonicPhrase();
-				if (mnemonicRes.isErr()) {
-					return err('Unable to get mnemonic.');
-				}
-				mnemonic = mnemonicRes.value;
+				await updateWallet({ walletExists: true });
 			}
 
 			await createWallet({ mnemonic });
