@@ -385,10 +385,6 @@ const AddressAndAmount = ({
 		};
 	}, [unitPreference]);
 
-	const availableAmountColor = useMemo(() => {
-		return availableAmount && showNumberPad ? 'gray1' : 'transparent';
-	}, [availableAmount, showNumberPad]);
-
 	return (
 		<View style={styles.container}>
 			<BottomSheetNavigationHeader
@@ -411,18 +407,23 @@ const AddressAndAmount = ({
 					}}
 					style={styles.amountToggle}
 					reverse={true}
-					space={16}>
+					space={16}
+				/>
+
+				{showNumberPad && (
 					<View style={styles.availableAmount}>
-						<Caption13Up color={availableAmountColor}>Available: </Caption13Up>
+						<Caption13Up style={styles.availableAmountText} color="gray1">
+							Available
+						</Caption13Up>
 						<Money
 							key="small"
 							sats={availableAmount}
 							size="caption13M"
-							color={availableAmountColor}
 							{...availableAmountProps}
 						/>
 					</View>
-				</AmountToggle>
+				)}
+
 				{!showNumberPad && (
 					<>
 						<Caption13Up color="gray1" style={styles.section}>
@@ -554,8 +555,14 @@ const styles = StyleSheet.create({
 		justifyContent: 'flex-end',
 	},
 	availableAmount: {
-		flexDirection: 'row',
-		alignItems: 'center',
+		borderBottomColor: 'rgba(255, 255, 255, 0.1)',
+		borderBottomWidth: 1,
+		marginTop: 42,
+		marginBottom: 5,
+		paddingBottom: 16,
+	},
+	availableAmountText: {
+		marginBottom: 5,
 	},
 });
 
