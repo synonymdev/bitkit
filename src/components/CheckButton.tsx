@@ -40,7 +40,11 @@ const CheckButton = memo(
 					</View>
 				</View>
 				<View style={styles.rightColumn}>
-					{checked && <Checkmark color="brand" height={30} width={30} />}
+					<Checkmark
+						color={checked ? 'brand' : 'white1'}
+						height={30}
+						width={30}
+					/>
 				</View>
 			</TouchableOpacity>
 		);

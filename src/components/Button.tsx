@@ -34,7 +34,7 @@ const Button = ({
 	icon,
 	...props
 }: IButton): ReactElement => {
-	const { white08 } = useColors();
+	const { white08, white32 } = useColors();
 
 	const buttonStyle = useMemo(() => {
 		const borderColor = variant === 'transparent' ? undefined : white08;
@@ -46,7 +46,7 @@ const Button = ({
 				...(variant === 'primary'
 					? styles.buttonPrimary
 					: { ...styles.buttonSecondary, borderColor }),
-				opacity: disabled ? 0.5 : 1,
+				...(disabled ? { backgroundColor: 'transparent' } : {}),
 			},
 			style,
 		);
@@ -59,6 +59,15 @@ const Button = ({
 		return variant === 'primary' ? 'white08' : 'transparent';
 	}, [color, variant]);
 
+	const textStyles = useMemo(() => {
+		if (textStyle) {
+			return {
+				...textStyle,
+				...(disabled ? { color: white32 } : {}),
+			};
+		}
+	}, [textStyle, disabled]);
+
 	const Text = size === 'small' ? Caption13M : Text02M;
 
 	return (
@@ -68,12 +77,12 @@ const Button = ({
 			style={buttonStyle}
 			disabled={loading || disabled}
 			{...props}>
-			{icon ? (
+			{icon && (
 				<View style={styles.iconContainer} color="transparent">
 					{icon}
 				</View>
-			) : null}
-			<Text style={textStyle} numberOfLines={1}>
+			)}
+			<Text style={textStyles} numberOfLines={1}>
 				{text}
 			</Text>
 			{loading && (

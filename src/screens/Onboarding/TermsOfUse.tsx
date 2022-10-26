@@ -1,21 +1,16 @@
 import React, { ReactElement, useState } from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
 
-import {
-	Caption13Up,
-	Display,
-	Text01B,
-	Text01S,
-	Text02B,
-} from '../../styles/components';
+import { Display, Text01B, Text01S, Text02B } from '../../styles/components';
 import GlowingBackground from '../../components/GlowingBackground';
 import SafeAreaInsets from '../../components/SafeAreaInsets';
 import Button from '../../components/Button';
 import CheckButton from '../../components/CheckButton';
-import BitkitLogo from '../../assets/bitkit-logo.svg';
 import useColors from '../../hooks/colors';
-import type { OnboardingStackScreenProps } from '../../navigation/types';
 import { openURL } from '../../utils/helpers';
+import type { OnboardingStackScreenProps } from '../../navigation/types';
+
+import termsOfUseText from '../../assets/tos';
 
 const TermsOfUse = ({
 	navigation,
@@ -30,74 +25,63 @@ const TermsOfUse = ({
 	return (
 		<GlowingBackground topLeft={colors.brand}>
 			<SafeAreaInsets type="top" />
-			<ScrollView>
-				<View style={styles.content}>
+			<View style={styles.content}>
+				<ScrollView style={styles.tos}>
 					<Display>Bitkit</Display>
 					<Display color="brand">Terms</Display>
 					<Display color="brand">of Use.</Display>
 
-					{/* TODO: update copy */}
 					<Text01S color="gray1" style={styles.text}>
-						The following Terms of Use (the "ToU") form a binding agreement
-						between you and Synonym (together with our affiliates, collectively
-						referred to herein as "Bitkit", "us", "we", "our"), that governs
-						your use of our services provided through the application Bitkit
-						Wallet ("Wallet") and the website synonym.to ("Website"), other
-						mobile apps, and other online areas owned or operated by us
-						("Services").{'\n\n'}The terms "you" and "customer" refer to the
-						person accessing or using the Services, or the entity or
-						organization on whose behalf such person accesses our Services...
-						etc
+						{termsOfUseText}
 					</Text01S>
+				</ScrollView>
 
-					<View style={styles.checkboxes}>
-						<Caption13Up style={styles.caption}>
-							Acknowledgements (tap to accept)
-						</Caption13Up>
-						<CheckButton
-							label={<Text01B>Terms of use</Text01B>}
-							description={
-								<Text02B color="gray1">
-									I declare that I have read and accept theterms of use.
+				<View style={styles.checkboxes}>
+					<CheckButton
+						label={<Text01B>Terms of use</Text01B>}
+						description={
+							<Text02B color="gray1">
+								I declare that I have read and accept the{' '}
+								<Text02B
+									color="brand"
+									onPress={(): void => {
+										openURL('https://bitkit.to/terms-of-use');
+									}}>
+									terms of use.
 								</Text02B>
-							}
-							checked={termsOfUse}
-							onPress={(): void => setTermsOfUse((prevState) => !prevState)}
-						/>
-						<CheckButton
-							label={<Text01B>Privacy Policy</Text01B>}
-							description={
-								<Text02B color="gray1">
-									I declare that I have read and accept the{' '}
-									<Text02B
-										color="brand"
-										onPress={(): void => {
-											/* TODO: update link */
-											openURL('https://synonym.to/terms-of-use/');
-										}}>
-										privacy policy.
-									</Text02B>
+							</Text02B>
+						}
+						checked={termsOfUse}
+						onPress={(): void => setTermsOfUse((prevState) => !prevState)}
+					/>
+					<CheckButton
+						label={<Text01B>Privacy Policy</Text01B>}
+						description={
+							<Text02B color="gray1">
+								I declare that I have read and accept the{' '}
+								<Text02B
+									color="brand"
+									onPress={(): void => {
+										openURL('https://bitkit.to/privacy-policy');
+									}}>
+									privacy policy.
 								</Text02B>
-							}
-							checked={privacyPolicy}
-							onPress={(): void => setPrivacyPolicy((prevState) => !prevState)}
-						/>
-					</View>
-
-					<View style={styles.buttonContainer}>
-						<Button
-							text="Continue"
-							size="large"
-							disabled={!isValid}
-							onPress={onPress}
-						/>
-					</View>
-
-					<View style={styles.logoContainer}>
-						<BitkitLogo height={30} width={72} />
-					</View>
+							</Text02B>
+						}
+						checked={privacyPolicy}
+						onPress={(): void => setPrivacyPolicy((prevState) => !prevState)}
+					/>
 				</View>
-			</ScrollView>
+
+				<View style={styles.buttonContainer}>
+					<Button
+						text="Continue"
+						size="large"
+						disabled={!isValid}
+						onPress={onPress}
+					/>
+				</View>
+			</View>
 			<SafeAreaInsets type="bottom" />
 		</GlowingBackground>
 	);
@@ -110,23 +94,18 @@ const styles = StyleSheet.create({
 		paddingBottom: 16,
 		paddingHorizontal: 48,
 	},
+	tos: {
+		flex: 1,
+	},
 	text: {
 		marginTop: 8,
 	},
 	checkboxes: {
-		marginTop: 48,
-	},
-	caption: {
-		marginBottom: 32,
+		paddingTop: 16,
+		marginTop: 'auto',
 	},
 	buttonContainer: {
-		marginTop: 32,
-		marginBottom: 50,
-	},
-	logoContainer: {
-		flex: 1,
-		flexDirection: 'row',
-		justifyContent: 'center',
+		marginTop: 24,
 	},
 });
 
