@@ -484,10 +484,11 @@ const AddressAndAmount = ({
 									/>
 								</View>
 								<View style={buttonContainerStyles}>
-									{!keyboardShown && !isInvalid() && (
+									{!keyboardShown && (
 										<Button
 											size="large"
 											text="Continue"
+											disabled={isInvalid()}
 											onPress={(): void => {
 												let view: keyof SendStackParamList = 'ReviewAndSend';
 												// If auto coin-select is disabled and there is no lightning invoice.
