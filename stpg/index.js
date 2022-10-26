@@ -88,7 +88,7 @@ async function resolveProfile() {
 	console.log('Resolving public drive ...');
 	console.time('-- resolved drive in');
 	await drive.ready();
-	await drive.getBlobs()
+	await drive.getBlobs();
 	console.timeEnd('-- resolved drive in');
 
 	const profile = await drive.get('/profile.json').then(decodeJSON);
