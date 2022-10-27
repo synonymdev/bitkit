@@ -6,11 +6,11 @@ import {
 	ScrollView,
 	View as ThemedView,
 	Text02S,
-	Title,
 	Caption13Up,
 	CubeIcon,
 	NewspaperIcon,
 	ChartLineIcon,
+	Headline,
 } from '../../styles/components';
 import NavigationHeader from '../../components/NavigationHeader';
 import Button from '../../components/Button';
@@ -61,6 +61,7 @@ export const WidgetFeedEdit = ({
 		Partial<SlashFeedJSON> & { icon?: string }
 	>(savedWidget?.feed);
 	const [fields, setFields] = useState<{ [label: string]: string }>({});
+	const [isLoading, setIsLoading] = useState(false);
 
 	const resolving = useMemo(() => {
 		return !config && !savedWidget;
@@ -96,6 +97,8 @@ export const WidgetFeedEdit = ({
 			});
 
 		function read(): void {
+			setIsLoading(true);
+
 			drive
 				.get('/slashfeed.json')
 				.then(decodeJSON)
@@ -119,8 +122,11 @@ export const WidgetFeedEdit = ({
 							)
 							.catch(noop);
 					});
+
+					setIsLoading(false);
 				})
 				.catch((e: Error) => {
+					setIsLoading(false);
 					showErrorNotification({
 						title: 'Could not resolve feed configuration file slashfeed.json',
 						message: e.message,
@@ -170,11 +176,12 @@ export const WidgetFeedEdit = ({
 		<ThemedView style={styles.container}>
 			<SafeAreaInsets type="top" />
 			<NavigationHeader
-				title={'Widget Feed'}
+				title="Widget Feed"
 				onClosePress={(): void => {
 					navigation.navigate('Tabs');
 				}}
 			/>
+
 			{resolving ? (
 				<View style={styles.imageContainer} pointerEvents="none">
 					<Glow color="brand" size={600} style={styles.glow} />
@@ -183,7 +190,7 @@ export const WidgetFeedEdit = ({
 			) : (
 				<View style={styles.content}>
 					<View style={styles.header}>
-						<Title>{config?.name}</Title>
+						<Headline>{config?.name}</Headline>
 						<View style={styles.headerImage}>
 							{((): ReactElement => {
 								switch (config.type) {
@@ -201,47 +208,59 @@ export const WidgetFeedEdit = ({
 							})()}
 						</View>
 					</View>
-					<Text02S style={styles.explanation}>
-						{config?.description || ''}
-					</Text02S>
-					<Text02S color="gray1" style={styles.explanation}>
-						Select the feed you want the widget to display in your wallet
-						overview.
-					</Text02S>
-					<ScrollView>
-						{Object.values(fields).length === 0 ? (
-							<Text02S color="gray1">No feeds to feature...</Text02S>
-						) : (
-							Object.entries(fields).map(([label, value]) => {
-								return (
-									<TouchableOpacity
-										key={label}
-										activeOpacity={0.6}
-										onPress={(): void => setSelectedField(label)}>
-										<View style={styles.fieldContainer}>
-											<View style={styles.fieldLeftContainer}>
-												<Caption13Up color="gray1" style={styles.fileLabel}>
-													{label}
-												</Caption13Up>
-												<Text02S style={styles.fileValue}>
-													{typeof value === 'string' ? value : ''}
-												</Text02S>
-											</View>
-											<View
-												style={[
-													styles.selectField,
-													selectedField === label
-														? { backgroundColor: brand, borderColor: white }
-														: {},
-												]}
-											/>
-										</View>
-										<View style={styles.divider} />
-									</TouchableOpacity>
-								);
-							})
-						)}
-					</ScrollView>
+
+					{config?.description && (
+						<Text02S style={styles.description}>{config.description}</Text02S>
+					)}
+
+					{isLoading && (
+						<Text02S color="gray1">Loading widget options...</Text02S>
+					)}
+
+					{!isLoading && (
+						<>
+							<Text02S color="gray1" style={styles.explanation}>
+								Select the feed you want this widget to display in your wallet
+								overview.
+							</Text02S>
+
+							<ScrollView>
+								{Object.values(fields).length === 0 ? (
+									<Text02S color="gray1">No feeds to feature...</Text02S>
+								) : (
+									Object.entries(fields).map(([label, value]) => {
+										return (
+											<TouchableOpacity
+												key={label}
+												activeOpacity={0.6}
+												onPress={(): void => setSelectedField(label)}>
+												<View style={styles.fieldContainer}>
+													<View style={styles.fieldLeftContainer}>
+														<Caption13Up color="gray1" style={styles.fileLabel}>
+															{label}
+														</Caption13Up>
+														<Text02S style={styles.fileValue}>
+															{typeof value === 'string' ? value : ''}
+														</Text02S>
+													</View>
+													<View
+														style={[
+															styles.selectField,
+															selectedField === label
+																? { backgroundColor: brand, borderColor: white }
+																: {},
+														]}
+													/>
+												</View>
+												<View style={styles.divider} />
+											</TouchableOpacity>
+										);
+									})
+								)}
+							</ScrollView>
+						</>
+					)}
+
 					<View style={styles.buttonsContainer}>
 						{savedSelectedField && (
 							<Button
@@ -277,7 +296,6 @@ const styles = StyleSheet.create({
 		paddingBottom: 16,
 	},
 	header: {
-		display: 'flex',
 		flexDirection: 'row',
 		justifyContent: 'space-between',
 		marginBottom: 16,
@@ -285,6 +303,9 @@ const styles = StyleSheet.create({
 	headerImage: {
 		borderRadius: 8,
 		overflow: 'hidden',
+	},
+	description: {
+		marginBottom: 42,
 	},
 	explanation: {
 		marginBottom: 32,
@@ -302,9 +323,7 @@ const styles = StyleSheet.create({
 		flex: 1,
 		marginRight: 16,
 	},
-
 	fieldContainer: {
-		display: 'flex',
 		flexDirection: 'row',
 		justifyContent: 'space-between',
 		alignItems: 'center',
@@ -329,9 +348,9 @@ const styles = StyleSheet.create({
 	},
 	buttonsContainer: {
 		paddingTop: 16,
-		display: 'flex',
 		flexDirection: 'row',
 		justifyContent: 'space-between',
+		marginTop: 'auto',
 	},
 	imageContainer: {
 		flex: 1,

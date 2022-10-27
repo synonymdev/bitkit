@@ -117,6 +117,7 @@ const HeadlinesWidget = ({
 					</View>
 				</View>
 			</TouchableOpacity>
+
 			{showButtons && (
 				<View style={styles.button}>
 					<Button

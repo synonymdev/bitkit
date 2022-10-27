@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { ReactElement } from 'react';
 import { StyleSheet, ScrollView } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 import {
 	ChartLineIcon,
+	CubeIcon,
 	NewspaperIcon,
 	Title,
 	View,
@@ -17,15 +18,15 @@ import { handleSlashtagURL } from '../../utils/slashtags';
 import type { WidgetsScreenProps } from '../../navigation/types';
 
 const PriceFeedURL =
-	'slashfeed:kgw7hqj4usek78smxczgrcxqn313s7qnpnc7so7guegziwjic6yy#encryptionKey=nds189gg3hgpei45y79f9ho6s6yh4sm3su1bw4yktt9gtggxtxty';
+	'slashfeed:9r6u4exhhdutkmmz9cqqz1rbyfadfck8c4ymoyko77amhcec31fo#encryptionKey=nds189gg3hgpei45y79f9ho6s6yh4sm3su1bw4yktt9gtggxtxty';
 const NewsFeedURL =
-	'slashfeed:jh7fzqcngzwq79e645x8p81kpn5ch8ybi6n4d571jyczd3qr1psy#encryptionKey=yrrfn8n3guaonho4oafgic7xcmbjwfhb6ihxguqjaqf1mwhpxeco';
+	'slashfeed:1bsxr8fa8997bc7nszrtr5ppqes9r9om9g43zwr967gprta6zngo#encryptionKey=yrrfn8n3guaonho4oafgic7xcmbjwfhb6ihxguqjaqf1mwhpxeco';
 const BlocksFeedURL =
-	'slashfeed:gpjjokcczfyitc1phrr5x3t6ac5friifderx6ot51mtkjmn9seqo#encryptionKey=jo6nybw8f3hzwea8jzcoyiymgimhfo4ftao93jxcinurgfrcxaay';
+	'slashfeed:itqhrdoafc173szfqarjjxqph5xcwbfrmb44yym8zw9owifki5co#encryptionKey=jo6nybw8f3hzwea8jzcoyiymgimhfo4ftao93jxcinurgfrcxaay';
 
 const WidgetsSuggetsions = ({
 	navigation,
-}: WidgetsScreenProps<'WidgetsSuggestions'>): JSX.Element => {
+}: WidgetsScreenProps<'WidgetsSuggestions'>): ReactElement => {
 	const onSwipeRight = (): void => {
 		navigation.navigate('Tabs');
 	};
@@ -53,12 +54,12 @@ const WidgetsSuggetsions = ({
 							url={NewsFeedURL}
 						/>
 						<Feed
-							icon={<NewspaperIcon />}
+							icon={<CubeIcon />}
 							title="Bitcoin Blocks"
 							url={BlocksFeedURL}
 						/>
-						<SafeAreaInsets type="bottom" />
 					</ScrollView>
+
 					<View style={styles.buttonContainer}>
 						<Button
 							style={styles.button}

@@ -135,7 +135,7 @@ const BitfinexWidget = ({
 	return (
 		<BaseFeedWidget
 			url={url}
-			name={'Bitcoin Price'}
+			name="Bitcoin Price"
 			label={widget.feed.field.name}
 			icon={<ChartLineIcon width={32} height={32} />}
 			middle={<Chart color={change.color} values={pastValues} />}
