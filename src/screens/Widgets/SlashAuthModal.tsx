@@ -129,12 +129,7 @@ const _SlashAuthModal = (): ReactElement => {
 				}`,
 			});
 
-			// Check for magic link functionality!
-			const magicLinkResponse = await client.magiclink(server.url).catch(noop);
-
-			if (magicLinkResponse) {
-				setAuthWidget(url, { magiclink: true });
-			}
+			setAuthWidget(url, { magiclink: true });
 		} else {
 			showErrorNotification({
 				title: 'Error while signing in',
@@ -229,5 +224,3 @@ const keyStyles = StyleSheet.create({
 });
 
 export default memo(SlashAuthModal);
-
-function noop(): void {}
