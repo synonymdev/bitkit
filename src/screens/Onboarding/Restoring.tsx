@@ -11,7 +11,10 @@ import Glow from '../../components/Glow';
 import { restoreRemoteBackups } from '../../utils/startup';
 import { Result } from '@synonymdev/result';
 
+const imageSrc = require('../../assets/illustrations/check.png');
+
 let attemptedAutoRestore = false;
+
 const RestoringScreen = (): ReactElement => {
 	const [showRestored, setShowRestored] = useState(false);
 	const [showFailed, setShowFailed] = useState(false);
@@ -65,10 +68,7 @@ const RestoringScreen = (): ReactElement => {
 						<View style={styles.canvasContainer}>
 							<Glow color={color} />
 						</View>
-						<Image
-							style={styles.image}
-							source={require('../../assets/illustrations/wallet.png')}
-						/>
+						<Image style={styles.image} source={imageSrc} />
 					</View>
 
 					<View>

@@ -679,10 +679,11 @@ export const getInfoFromAddressPath = (path = ''): IGetInfoFromAddressPath => {
  * @param {string} mnemonic - The mnemonic to validate.
  * @return {boolean}
  */
-export const validateMnemonic = (mnemonic = ''): boolean => {
+export const validateMnemonic = (mnemonic: string): boolean => {
 	try {
 		return bip39.validateMnemonic(mnemonic);
-	} catch {
+	} catch (error) {
+		console.error('error validating mnemonic', error);
 		return false;
 	}
 };
