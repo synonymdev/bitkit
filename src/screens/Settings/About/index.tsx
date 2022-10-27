@@ -4,9 +4,9 @@ import {
 	Text,
 	View,
 	FlatList,
-	// Share,
 	Image,
-	Platform,
+	// Share,
+	// Platform,
 	StyleSheet,
 	Pressable,
 } from 'react-native';
@@ -29,13 +29,13 @@ const imageSrc = require('../../../assets/powered-by.png');
 
 const AboutSettings = ({ navigation }): ReactElement => {
 	// TODO: add correct store IDs and test
-	const appleAppID = '1634634088';
-	const androidPackageName = 'to.synonym.bitkit';
+	// const appleAppID = '1634634088';
+	// const androidPackageName = 'to.synonym.bitkit';
 
-	const appStoreUrl =
-		Platform.OS === 'ios'
-			? `https://apps.apple.com/us/app/bitkit/id${appleAppID}`
-			: `https://play.google.com/store/apps/details?id=${androidPackageName}`;
+	// const appStoreUrl =
+	// 	Platform.OS === 'ios'
+	// 		? `https://apps.apple.com/us/app/bitkit/id${appleAppID}`
+	// 		: `https://play.google.com/store/apps/details?id=${androidPackageName}`;
 
 	// TODO: uncomment links after full launch
 
@@ -107,7 +107,7 @@ const AboutSettings = ({ navigation }): ReactElement => {
 				],
 			},
 		],
-		[appStoreUrl],
+		[],
 	);
 
 	const headerComponent = (
@@ -195,11 +195,6 @@ const AboutSettings = ({ navigation }): ReactElement => {
 };
 
 const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		alignItems: 'center',
-		marginTop: 48,
-	},
 	textIntro: {
 		fontStyle: 'normal',
 		fontWeight: '400',
