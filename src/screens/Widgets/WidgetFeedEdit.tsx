@@ -1,6 +1,7 @@
 import React, { useState, useMemo, useEffect, ReactElement } from 'react';
-import { View, StyleSheet, Image } from 'react-native';
+import { View, StyleSheet, Image, Pressable } from 'react-native';
 import { useSelector } from 'react-redux';
+import { SlashURL } from '@synonymdev/slashtags-sdk';
 
 import {
 	ScrollView,
@@ -11,6 +12,8 @@ import {
 	NewspaperIcon,
 	ChartLineIcon,
 	Headline,
+	Text01S,
+	Text02M,
 } from '../../styles/components';
 import NavigationHeader from '../../components/NavigationHeader';
 import Button from '../../components/Button';
@@ -19,11 +22,9 @@ import Store from '../../store/types';
 import type { RootStackScreenProps } from '../../navigation/types';
 import { IWidget, SlashFeedJSON } from '../../store/types/widgets';
 import { useSlashtagsSDK } from '../../components/SlashtagsProvider';
-import { SlashURL } from '@synonymdev/slashtags-sdk';
 import { decodeJSON, readAsDataURL } from '../../utils/slashtags';
 import { showErrorNotification } from '../../utils/notifications';
 import ProfileImage from '../../components/ProfileImage';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 import useColors from '../../hooks/colors';
 import { deleteFeedWidget, setFeedWidget } from '../../store/actions/widgets';
 import {
@@ -31,16 +32,17 @@ import {
 	SUPPORTED_FEED_TYPES,
 } from '../../utils/widgets';
 import Glow from '../../components/Glow';
+import Divider from '../../components/Divider';
 
 const imageSrc = require('../../assets/illustrations/hourglass.png');
 
 export const WidgetFeedEdit = ({
 	navigation,
 	route,
-}: RootStackScreenProps<'WidgetFeedEdit'>): JSX.Element => {
+}: RootStackScreenProps<'WidgetFeedEdit'>): ReactElement => {
+	const { url } = route.params;
 	const { white, brand } = useColors();
-
-	const url = route.params?.url;
+	const sdk = useSlashtagsSDK();
 
 	const savedWidget: IWidget | undefined = useSelector((state: Store) => {
 		return state.widgets.widgets[url];
@@ -50,24 +52,22 @@ export const WidgetFeedEdit = ({
 		return savedWidget?.feed?.field?.name;
 	}, [savedWidget]);
 
-	const [selectedField, setSelectedField] =
-		useState<string>(savedSelectedField);
-
-	const shouldSave = useMemo(() => {
-		return selectedField && selectedField !== savedSelectedField;
-	}, [selectedField, savedSelectedField]);
-
+	const [fields, setFields] = useState<{ [label: string]: string }>({});
+	const [isLoading, setIsLoading] = useState(false);
 	const [config, setConfig] = useState<
 		Partial<SlashFeedJSON> & { icon?: string }
 	>(savedWidget?.feed);
-	const [fields, setFields] = useState<{ [label: string]: string }>({});
-	const [isLoading, setIsLoading] = useState(false);
+
+	const [selectedField, setSelectedField] =
+		useState<string>(savedSelectedField);
 
 	const resolving = useMemo(() => {
 		return !config && !savedWidget;
 	}, [config, savedWidget]);
 
-	const sdk = useSlashtagsSDK();
+	const enableSave = useMemo(() => {
+		return selectedField && selectedField !== savedSelectedField;
+	}, [selectedField, savedSelectedField]);
 
 	useEffect(() => {
 		let unmounted = false;
@@ -106,10 +106,11 @@ export const WidgetFeedEdit = ({
 					saveConfig(_config).catch(noop);
 
 					// Save fields without values as soon as possible
-					!unmounted &&
+					if (!unmounted) {
 						setFields(
 							Object.fromEntries(_config.fields.map((f) => [f.name, ''])),
 						);
+					}
 
 					_config.fields.map((field) => {
 						drive
@@ -123,6 +124,8 @@ export const WidgetFeedEdit = ({
 							.catch(noop);
 					});
 
+					// pre-select first option
+					setSelectedField(_config.fields[0].name);
 					setIsLoading(false);
 				})
 				.catch((e: Error) => {
@@ -141,11 +144,9 @@ export const WidgetFeedEdit = ({
 				icon = await readAsDataURL(drive, icon);
 			}
 
-			!unmounted &&
-				setConfig({
-					..._config,
-					icon,
-				});
+			if (!unmounted) {
+				setConfig({ ..._config, icon });
+			}
 		}
 
 		function noop(): void {}
@@ -156,7 +157,7 @@ export const WidgetFeedEdit = ({
 	}, [sdk, url]);
 
 	const save = (): void => {
-		config &&
+		if (config) {
 			setFeedWidget(url, {
 				name: config?.name,
 				type: config?.type,
@@ -164,6 +165,8 @@ export const WidgetFeedEdit = ({
 				icon: config?.icon,
 				field: config.fields?.filter((f) => f.name === selectedField)[0],
 			} as IWidget['feed']);
+		}
+
 		navigation.navigate('Tabs');
 	};
 
@@ -171,6 +174,8 @@ export const WidgetFeedEdit = ({
 		deleteFeedWidget(url);
 		navigation.navigate('Tabs');
 	};
+
+	const buttonText = savedSelectedField ? 'Save' : 'Add Widget';
 
 	return (
 		<ThemedView style={styles.container}>
@@ -210,50 +215,62 @@ export const WidgetFeedEdit = ({
 					</View>
 
 					{config?.description && (
-						<Text02S style={styles.description}>{config.description}</Text02S>
+						<>
+							<Text01S style={styles.description}>{config.description}</Text01S>
+							<Divider />
+						</>
 					)}
 
 					{isLoading && (
-						<Text02S color="gray1">Loading widget options...</Text02S>
+						<Text01S color="gray1">Loading widget options...</Text01S>
 					)}
 
-					{!isLoading && (
+					{!isLoading && Object.entries(fields).length > 1 && (
 						<>
-							<Text02S color="gray1" style={styles.explanation}>
+							<Text01S color="gray1" style={styles.explanation}>
 								Select the feed you want this widget to display in your wallet
 								overview.
-							</Text02S>
-
+							</Text01S>
 							<ScrollView>
 								{Object.values(fields).length === 0 ? (
 									<Text02S color="gray1">No feeds to feature...</Text02S>
 								) : (
 									Object.entries(fields).map(([label, value]) => {
 										return (
-											<TouchableOpacity
+											<Pressable
 												key={label}
-												activeOpacity={0.6}
 												onPress={(): void => setSelectedField(label)}>
 												<View style={styles.fieldContainer}>
 													<View style={styles.fieldLeftContainer}>
-														<Caption13Up color="gray1" style={styles.fileLabel}>
-															{label}
-														</Caption13Up>
-														<Text02S style={styles.fileValue}>
-															{typeof value === 'string' ? value : ''}
-														</Text02S>
+														{typeof value === 'string' ? (
+															<>
+																<Caption13Up
+																	color="gray1"
+																	style={styles.fieldLabel}>
+																	{label}
+																</Caption13Up>
+																<Text02M style={styles.fieldValue}>
+																	{value}
+																</Text02M>
+															</>
+														) : (
+															<Text01S style={styles.fieldValue}>
+																{label}
+															</Text01S>
+														)}
 													</View>
 													<View
 														style={[
 															styles.selectField,
-															selectedField === label
-																? { backgroundColor: brand, borderColor: white }
-																: {},
+															selectedField === label && {
+																backgroundColor: brand,
+																borderColor: white,
+															},
 														]}
 													/>
 												</View>
-												<View style={styles.divider} />
-											</TouchableOpacity>
+												<Divider />
+											</Pressable>
 										);
 									})
 								)}
@@ -273,9 +290,9 @@ export const WidgetFeedEdit = ({
 						)}
 						<Button
 							style={styles.saveButton}
-							text="Save"
+							text={buttonText}
 							size="large"
-							disabled={!shouldSave}
+							disabled={!enableSave}
 							onPress={save}
 						/>
 					</View>
@@ -304,17 +321,9 @@ const styles = StyleSheet.create({
 		borderRadius: 8,
 		overflow: 'hidden',
 	},
-	description: {
-		marginBottom: 42,
-	},
+	description: {},
 	explanation: {
 		marginBottom: 32,
-	},
-	divider: {
-		height: 1,
-		backgroundColor: 'rgba(255, 255, 255, 0.1)',
-		marginTop: 16,
-		marginBottom: 16,
 	},
 	saveButton: {
 		flex: 1,
@@ -329,14 +338,14 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 	},
 	fieldLeftContainer: {
+		justifyContent: 'center',
 		flex: 1,
 	},
-	fileLabel: {
+	fieldLabel: {
 		marginBottom: 8,
 	},
-	fileValue: {
+	fieldValue: {
 		flex: 1,
-		lineHeight: 15,
 		paddingRight: 16,
 	},
 	selectField: {
