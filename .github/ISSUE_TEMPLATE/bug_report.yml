@@ -30,18 +30,16 @@ body:
   - type: textarea
     id: screenshots
     attributes:
-      label: Screenshots
-      description: If applicable, add screenshots to help explain your problem.
+      label: Screenshots / Recording
+      description: If applicable, add screenshots or a video recording to help explain your problem.
     validations:
       required: false
-  - type: dropdown
+  - type: input
     id: operating-system
     attributes:
       label: Operating system
-      description: What operating system (OS) is Bitkit running on?
-      options:
-        - iOS
-        - Android
+      description: What operating system (OS) and version is Bitkit running on?
+      placeholder: e.g. Android 12, iOS 16
     validations:
       required: true
   - type: input
