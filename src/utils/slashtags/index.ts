@@ -295,7 +295,7 @@ export const seedDrives = async (slashtag: Slashtag): Promise<boolean> => {
 			];
 
 			const firstResponse = await fetch(
-				'http://35.233.47.252:443/seeding/hypercore',
+				'https://blocktank.synonym.to/seeding/hypercore',
 				{
 					method: 'POST',
 					body: JSON.stringify({ publicKey: keys[0] }),
@@ -304,7 +304,7 @@ export const seedDrives = async (slashtag: Slashtag): Promise<boolean> => {
 			);
 
 			const secondResponse = await fetch(
-				'http://35.233.47.252:443/seeding/hypercore',
+				'https://blocktank.synonym.to/seeding/hypercore',
 				{
 					method: 'POST',
 					body: JSON.stringify({ publicKey: keys[1] }),

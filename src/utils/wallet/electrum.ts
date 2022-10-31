@@ -31,7 +31,7 @@ import {
 	IGetHeaderResponse,
 	TGetAddressHistory,
 } from '../types/electrum';
-import { GAP_LIMIT } from './constants';
+import { GAP_LIMIT, CHUNK_LIMIT } from './constants';
 
 export interface IGetUtxosResponse {
 	utxos: IUtxo[];
@@ -305,18 +305,33 @@ export const getTransactions = async ({
 				data: [],
 			});
 		}
-		const data = {
-			key: 'tx_hash',
-			data: txHashes,
-		};
-		const response = await electrum.getTransactions({
-			txHashes: data,
-			network: selectedNetwork,
-		});
-		if (response.error) {
-			return err(response);
+
+		const result: ITransaction<IUtxo>[] = [];
+
+		// split payload in chunks of 10 transactions per-request
+		for (let i = 0; i < txHashes.length; i += CHUNK_LIMIT) {
+			const chunk = txHashes.slice(i, i + CHUNK_LIMIT);
+
+			const data = {
+				key: 'tx_hash',
+				data: chunk,
+			};
+			const response = await electrum.getTransactions({
+				txHashes: data,
+				network: selectedNetwork,
+			});
+			if (response.error) {
+				return err(response);
+			}
+			result.push(...response.data);
 		}
-		return ok(response);
+		return ok({
+			error: false,
+			id: 0,
+			method: 'getTransactions',
+			network: selectedNetwork,
+			data: result,
+		});
 	} catch (e) {
 		return err(e);
 	}
@@ -470,29 +485,36 @@ export const getAddressHistory = async ({
 		if (scriptHashes.length < 1) {
 			return err('No scriptHashes available to check.');
 		}
-		const payload = {
-			key: 'scriptHash',
-			data: scriptHashes,
-		};
-		const response: IGetAddressScriptHashesHistoryResponse =
-			await electrum.getAddressScriptHashesHistory({
-				scriptHashes: payload,
-				network: selectedNetwork,
-			});
 
-		const mempoolResponse: IGetAddressScriptHashesHistoryResponse =
-			await electrum.getAddressScriptHashesMempool({
-				scriptHashes: payload,
-				network: selectedNetwork,
-			});
+		let combinedResponse: TTxResponse[] = [];
 
-		if (response.error || mempoolResponse.error) {
-			return err('Unable to get address history.');
+		// split payload in chunks of 10 addresses per-request
+		for (let i = 0; i < scriptHashes.length; i += CHUNK_LIMIT) {
+			const chunk = scriptHashes.slice(i, i + CHUNK_LIMIT);
+			const payload = {
+				key: 'scriptHash',
+				data: chunk,
+			};
+
+			const response: IGetAddressScriptHashesHistoryResponse =
+				await electrum.getAddressScriptHashesHistory({
+					scriptHashes: payload,
+					network: selectedNetwork,
+				});
+
+			const mempoolResponse: IGetAddressScriptHashesHistoryResponse =
+				await electrum.getAddressScriptHashesMempool({
+					scriptHashes: payload,
+					network: selectedNetwork,
+				});
+
+			if (response.error || mempoolResponse.error) {
+				return err('Unable to get address history.');
+			}
+			combinedResponse.push(...response.data, ...mempoolResponse.data);
 		}
 
-		const combinedResponse = [...response.data, ...mempoolResponse.data];
-
-		let history: IGetAddressHistoryResponse[] = [];
+		const history: IGetAddressHistoryResponse[] = [];
 		combinedResponse.map(
 			({
 				data,

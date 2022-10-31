@@ -17,6 +17,7 @@ import {
 	createDefaultWallet,
 	formatTransactions,
 	generateAddresses,
+	getAddressIndexInfo,
 	getAddressTypes,
 	getCurrentWallet,
 	getGapLimit,
@@ -58,6 +59,7 @@ import {
 import { getBoostedTransactionParents } from '../../utils/boost';
 import { updateSlashPayConfig } from '../../utils/slashtags';
 import { sdk } from '../../components/SlashtagsProvider';
+import { TAddressIndexInfo } from '../shapes/wallet';
 
 const dispatch = getDispatch();
 
@@ -576,7 +578,6 @@ export const updateTransactions = ({
 		if (formatTransactionsResponse.isErr()) {
 			return resolve(err(formatTransactionsResponse.error.message));
 		}
-
 		const formattedTransactions: IFormattedTransaction = {};
 
 		const storedTransactions = currentWallet.transactions[selectedNetwork];
@@ -1290,4 +1291,87 @@ export const resetExchangeRates = (): Result<string> => {
 	});
 
 	return ok('');
+};
+
+/**
+ * Will ensure that both address and change address indexes are set.
+ * @param {string} selectedWallet
+ * @param {TAvailableNetworks} selectedNetwork
+ * @param {TAddressType} addressType
+ */
+export const setZeroIndexAddresses = async ({
+	selectedWallet,
+	selectedNetwork,
+	addressType,
+	addressIndexInfo,
+}: {
+	selectedWallet?: string;
+	selectedNetwork?: TAvailableNetworks;
+	addressType?: TAddressType;
+	addressIndexInfo?: TAddressIndexInfo;
+}): Promise<Result<string>> => {
+	if (!selectedNetwork) {
+		selectedNetwork = getSelectedNetwork();
+	}
+	if (!selectedWallet) {
+		selectedWallet = getSelectedWallet();
+	}
+	if (!addressType) {
+		addressType = getSelectedAddressType({ selectedNetwork, selectedWallet });
+	}
+
+	if (!addressIndexInfo) {
+		addressIndexInfo = getAddressIndexInfo({
+			selectedNetwork,
+			selectedWallet,
+			addressType,
+		});
+	}
+
+	if (
+		addressIndexInfo.addressIndex.index >= 0 &&
+		addressIndexInfo.changeAddressIndex.index >= 0
+	) {
+		return ok('No need to set indexes.');
+	}
+
+	let addressIndex = addressIndexInfo.addressIndex;
+	let changeAddressIndex = addressIndexInfo.changeAddressIndex;
+
+	let payload: {
+		addressIndex?: IAddressContent;
+		changeAddressIndex?: IAddressContent;
+	} = {};
+
+	if (addressIndex.index < 0) {
+		const addresses: IAddress =
+			getStore().wallet.wallets[selectedWallet].addresses[selectedNetwork][
+				addressType
+			];
+		const filterRes = Object.values(addresses).filter((a) => a.index === 0);
+		if (filterRes.length) {
+			payload.addressIndex = filterRes[0];
+		}
+	}
+	if (changeAddressIndex.index < 0) {
+		const changeAddresses: IAddress =
+			getStore().wallet.wallets[selectedWallet].changeAddresses[
+				selectedNetwork
+			][addressType];
+		const filterRes = Object.values(changeAddresses).filter(
+			(a) => a.index === 0,
+		);
+		if (filterRes.length) {
+			payload.changeAddressIndex = filterRes[0];
+		}
+	}
+
+	await dispatch({
+		type: actions.UPDATE_ADDRESS_INDEX,
+		payload: {
+			...payload,
+			addressType,
+		},
+	});
+	return ok('Set Zero Index Addresses.');
 };

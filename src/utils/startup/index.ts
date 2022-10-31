@@ -7,7 +7,6 @@ import {
 import { err, ok, Result } from '@synonymdev/result';
 import { InteractionManager } from 'react-native';
 import { getStore } from '../../store/helpers';
-import { showErrorNotification } from '../notifications';
 import {
 	refreshBlocktankInfo,
 	refreshServiceList,
@@ -19,29 +18,21 @@ import { keepLdkSynced, setupLdk } from '../lightning';
 import { updateUser } from '../../store/actions/user';
 import { setupBlocktank, watchPendingOrders } from '../blocktank';
 import { removeExpiredLightningInvoices } from '../../store/actions/lightning';
-import { setupNodejsMobile } from '../nodejs-mobile';
 import { updateSlashPayConfig } from '../slashtags';
 import { sdk } from '../../components/SlashtagsProvider';
 import { Slashtag } from '../../hooks/slashtags';
 import { performFullRestoreFromLatestBackup } from '../../store/actions/backup';
+import { promiseTimeout } from '../helpers';
 
 /**
  * Checks if the specified wallet's phrase is saved to storage.
  */
-export const checkWalletExists = async (
-	wallet = 'wallet0',
-): Promise<boolean> => {
+const checkWalletExists = async (wallet = 'wallet0'): Promise<boolean> => {
 	try {
 		const response = await getMnemonicPhrase(wallet);
-		let walletExists = false;
-		if (response.isOk() && !!response.value) {
-			walletExists = true;
-		}
-		const _walletExists = getStore()?.wallet?.walletExists;
-		if (walletExists !== _walletExists) {
-			await updateWallet({ walletExists });
-		}
-		return walletExists;
+		const mnemonicExists = response.isOk() && !!response.value;
+		const walletExists = getStore()?.wallet?.walletExists;
+		return mnemonicExists && walletExists;
 	} catch (e) {
 		return false;
 	}
@@ -95,24 +86,23 @@ export const startWalletServices = async ({
 }): Promise<Result<string>> => {
 	try {
 		InteractionManager.runAfterInteractions(async () => {
-			const { wallets, selectedNetwork } = getStore().wallet;
+			const { selectedNetwork } = getStore().wallet;
 			let isConnectedToElectrum = false;
 
 			await setupBlocktank(selectedNetwork);
-			await refreshBlocktankInfo();
+			await promiseTimeout(2500, refreshBlocktankInfo());
 			updateExchangeRates().then();
-			await setupNodejsMobile({});
 
 			// Before we do anything we should connect to an Electrum server
 			if (onchain || lightning) {
 				const electrumResponse = await connectToElectrum({ selectedNetwork });
 				if (electrumResponse.isErr()) {
-					showErrorNotification({
-						title: 'Unable to connect to Electrum Server',
-						message:
-							electrumResponse?.error?.message ??
-							'Unable to connect to Electrum Server',
-					});
+					// showErrorNotification({
+					// 	title: 'Unable to connect to Electrum Server',
+					// 	message:
+					// 		electrumResponse?.error?.message ??
+					// 		'Unable to connect to Electrum Server',
+					// });
 				} else {
 					isConnectedToElectrum = true;
 					// Ensure the on-chain wallet & LDK syncs when a new block is detected.
@@ -126,33 +116,29 @@ export const startWalletServices = async ({
 			}
 
 			const walletExists = await checkWalletExists();
-			const walletKeys = Object.keys(wallets);
+
+			let mnemonic;
 			if (!walletExists) {
 				// Generate new wallet if none exists
-				const mnemonic = await generateMnemonic();
+				mnemonic = await generateMnemonic();
 				if (!mnemonic) {
 					return err('Unable to generate mnemonic.');
 				}
-				await createWallet({ mnemonic });
-			} else if (!wallets[walletKeys[0]]?.id) {
-				// If we have a mnemonic in store, but not in redux, we need to init it
-				const mnemonic = await getMnemonicPhrase();
-				if (mnemonic.isErr()) {
-					return err('Unable to get mnemonic.');
+				const createRes = await createWallet({ mnemonic });
+				if (createRes.isErr()) {
+					return err(createRes.error.message);
 				}
-				await createWallet({ mnemonic: mnemonic.value });
+				await updateWallet({ walletExists: true });
 			}
 
 			// Setup LDK
-			if (lightning) {
-				const setupResponse = await setupLdk({ selectedNetwork });
+			if (lightning && isConnectedToElectrum) {
+				const setupResponse = await setupLdk({
+					selectedNetwork,
+					shouldRefreshLdk: false,
+				});
 				if (setupResponse.isOk()) {
 					keepLdkSynced({ selectedNetwork }).then();
-				} else {
-					showErrorNotification({
-						title: 'Unable to start LDK.',
-						message: setupResponse.error.message,
-					});
 				}
 			}
 
@@ -160,7 +146,11 @@ export const startWalletServices = async ({
 				await Promise.all([
 					updateOnchainFeeEstimates({ selectedNetwork }),
 					// if we restore wallet, we need to generate addresses for all types
-					refreshWallet({ lightning, updateAllAddressTypes: restore }),
+					refreshWallet({
+						onchain: isConnectedToElectrum,
+						lightning: isConnectedToElectrum,
+						updateAllAddressTypes: restore,
+					}),
 				]);
 			}
 

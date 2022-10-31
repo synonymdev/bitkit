@@ -123,8 +123,8 @@ const QuickSetup = ({
 	const onContinuePress = useCallback(async (): Promise<void> => {
 		setLoading(true);
 		const localBalance =
-			spendingAmount * 2 > blocktankService.min_channel_size
-				? spendingAmount * 2
+			Math.round(spendingAmount * 1.1) > blocktankService.min_channel_size
+				? Math.round(spendingAmount * 1.1)
 				: blocktankService.min_channel_size;
 		const purchaseResponse = await startChannelPurchase({
 			selectedNetwork,

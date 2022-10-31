@@ -86,6 +86,7 @@ export const BaseFeedWidget = ({
 					</Caption13M>
 				</View>
 			</View>
+
 			{showButtons ? (
 				<Button
 					text=""
@@ -122,7 +123,6 @@ const styles = StyleSheet.create({
 	},
 	infoContainer: {
 		flex: 1,
-		display: 'flex',
 		flexDirection: 'row',
 		alignItems: 'center',
 	},
@@ -137,7 +137,6 @@ const styles = StyleSheet.create({
 	},
 	dataContainer: {
 		flex: 1,
-		display: 'flex',
 		flexDirection: 'row',
 	},
 	middle: {
@@ -145,7 +144,6 @@ const styles = StyleSheet.create({
 	},
 	right: {
 		flex: 6,
-		display: 'flex',
 		flexDirection: 'row',
 		justifyContent: 'flex-end',
 	},

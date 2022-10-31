@@ -23,7 +23,6 @@ import {
 	View,
 } from '../../styles/components';
 import Store from '../../store/types';
-import { updateActivityList } from '../../store/actions/activity';
 import { refreshWallet } from '../../utils/wallet';
 import { groupActivityItems, filterActivityItems } from '../../utils/activity';
 import ListItem from './ListItem';
@@ -116,9 +115,8 @@ const ActivityList = ({
 
 	const onRefresh = async (): Promise<void> => {
 		setRefreshing(true);
-		//Refresh wallet and then update activity list
-		await Promise.all([refreshWallet({})]);
-		await updateActivityList();
+		//Refresh wallet
+		await refreshWallet({});
 		setRefreshing(false);
 	};
 

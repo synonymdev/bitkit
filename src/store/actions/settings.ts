@@ -80,6 +80,7 @@ export const wipeKeychain = async ({
 	await Promise.all([
 		resetKeychainValue({ key: selectedWallet }),
 		resetKeychainValue({ key: `${selectedWallet}passphrase` }),
+		resetKeychainValue({ key: `${selectedWallet}ldkaccount` }),
 		resetKeychainValue({ key: 'pin' }),
 		resetKeychainValue({ key: 'pinAttemptsRemaining' }),
 	]);

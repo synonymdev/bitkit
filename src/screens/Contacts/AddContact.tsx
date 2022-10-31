@@ -113,7 +113,6 @@ const styles = StyleSheet.create({
 		flex: 1,
 	},
 	content: {
-		display: 'flex',
 		paddingHorizontal: 16,
 	},
 	addContactNote: {

@@ -34,6 +34,6 @@ export const defaultFeesShape: IFees = {
 		normal: 3, // 20-60 mins
 		slow: 2, // 1-2 hrs
 		minimum: 1,
-		timestamp: Date.now(),
+		timestamp: Date.now() - 60 * 30 * 1000 - 1,
 	},
 };

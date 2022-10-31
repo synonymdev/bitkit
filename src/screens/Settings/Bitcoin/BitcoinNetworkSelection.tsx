@@ -1,13 +1,16 @@
 import React, { memo, ReactElement, useMemo } from 'react';
+import { useSelector } from 'react-redux';
+
 import { IListData } from '../../../components/List';
 import SettingsView from '../SettingsView';
-import { useSelector } from 'react-redux';
 import Store from '../../../store/types';
 import { EAvailableNetworks } from '../../../utils/networks';
 import {
 	updateAddressIndexes,
 	updateWallet,
 } from '../../../store/actions/wallet';
+import { resetActivityStore } from '../../../store/actions/activity';
+import { updateOnchainFeeEstimates } from '../../../store/actions/fees';
 import { getNetworkData } from '../../../utils/helpers';
 import { startWalletServices } from '../../../utils/startup';
 import {
@@ -31,6 +34,8 @@ const BitcoinNetworkSelection = ({ navigation }): ReactElement => {
 						type: 'button',
 						onPress: async (): Promise<void> => {
 							navigation.goBack();
+							// Wipe existing activity
+							resetActivityStore();
 							// Switch to new network.
 							await updateWallet({ selectedNetwork: network });
 							// Grab the selectedWallet.
@@ -49,6 +54,10 @@ const BitcoinNetworkSelection = ({ navigation }): ReactElement => {
 							});
 							// Start wallet services with the newly selected network.
 							await startWalletServices({});
+							await updateOnchainFeeEstimates({
+								selectedNetwork: network,
+								forceUpdate: true,
+							});
 						},
 						hide: false,
 					};

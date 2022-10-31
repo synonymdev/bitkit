@@ -20,7 +20,7 @@ import { Checkmark } from '../../styles/components';
 import { Title, Text01S } from '../../styles/components';
 import {
 	showErrorNotification,
-	showInfoNotification,
+	showSuccessNotification,
 } from '../../utils/notifications';
 import { setAuthWidget } from '../../store/actions/widgets';
 import Divider from '../../components/Divider';
@@ -69,7 +69,7 @@ const _SlashAuthModal = (): ReactElement => {
 	const { profile } = useProfile(url);
 
 	const server: IContactRecord = useMemo(() => {
-		return { url, ...profile, name: profile?.name || ' ' };
+		return { url, ...profile, name: profile?.name || '' };
 	}, [url, profile]);
 
 	const rootContact: IContactRecord = useMemo(() => {
@@ -122,17 +122,14 @@ const _SlashAuthModal = (): ReactElement => {
 		});
 
 		if (response.status === 'ok') {
-			showInfoNotification({
-				title: 'Successfully signed in',
-				message: server.name,
+			showSuccessNotification({
+				title: 'You’re Signed In!',
+				message: `Successfully logged in${
+					server.name ? ` to ${server.name}.` : '.'
+				}`,
 			});
 
-			// Check for magic link functionality!
-			const magicLinkResponse = await client.magiclink(server.url).catch(noop);
-
-			if (magicLinkResponse) {
-				setAuthWidget(url, { magiclink: true });
-			}
+			setAuthWidget(url, { magiclink: true });
 		} else {
 			showErrorNotification({
 				title: 'Error while signing in',
@@ -227,5 +224,3 @@ const keyStyles = StyleSheet.create({
 });
 
 export default memo(SlashAuthModal);
-
-function noop(): void {}

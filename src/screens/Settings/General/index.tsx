@@ -9,7 +9,6 @@ import { updateSettings } from '../../../store/actions/settings';
 import { setupTodos } from '../../../utils/todos';
 import { resetTodo } from '../../../store/actions/todos';
 import colors from '../../../styles/colors';
-import { getSelectedAddressType } from '../../../utils/wallet';
 
 const typesDescriptions = {
 	p2wpkh: 'Bech32',
@@ -56,13 +55,9 @@ const General = ({ navigation }): ReactElement => {
 		(state: Store) => state.settings.bitcoinUnit,
 	);
 
-	const selectedAddressType = useMemo(
-		(): string =>
-			getSelectedAddressType({
-				selectedWallet,
-				selectedNetwork,
-			}),
-		[selectedNetwork, selectedWallet],
+	const selectedAddressType = useSelector(
+		(state: Store) =>
+			state.wallet.wallets[selectedWallet].addressType[selectedNetwork],
 	);
 
 	const SettingsListData: IListData[] = useMemo(

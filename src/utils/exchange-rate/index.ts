@@ -20,7 +20,7 @@ export const getExchangeRates = async (): Promise<Result<IExchangeRates>> => {
 
 	try {
 		// TODO: pull this out into .env
-		const response = await fetch('http://35.233.47.252:443/fx/rates/btc');
+		const response = await fetch('https://blocktank.synonym.to/fx/rates/btc/');
 		const { tickers } = await response.json();
 
 		const rates: IExchangeRates = tickers.reduce((acc, ticker) => {

@@ -27,6 +27,7 @@ import useColors from '../../../hooks/colors';
 import {
 	getNodeId,
 	payLightningInvoice,
+	rebroadcastAllKnownTransactions,
 	refreshLdk,
 	setupLdk,
 } from '../../../utils/lightning';
@@ -107,6 +108,7 @@ const Channels = ({ navigation }): ReactElement => {
 	const [payingInvoice, setPayingInvoice] = useState<boolean>(false);
 	const [refreshingLdk, setRefreshingLdk] = useState<boolean>(false);
 	const [restartingLdk, setRestartingLdk] = useState<boolean>(false);
+	const [rebroadcastingLdk, setRebroadcastingLdk] = useState(false);
 
 	const colors = useColors();
 	const balance = useBalance({ onchain: true });
@@ -297,6 +299,16 @@ const Channels = ({ navigation }): ReactElement => {
 									setRestartingLdk(true);
 									await setupLdk({ selectedWallet, selectedNetwork });
 									setRestartingLdk(false);
+								}}
+							/>
+							<Button
+								style={styles.button}
+								text={'Rebroadcast LDK TXS'}
+								loading={rebroadcastingLdk}
+								onPress={async (): Promise<void> => {
+									setRebroadcastingLdk(true);
+									await rebroadcastAllKnownTransactions();
+									setRebroadcastingLdk(false);
 								}}
 							/>
 							<Button

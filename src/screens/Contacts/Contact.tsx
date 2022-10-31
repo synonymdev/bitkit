@@ -30,6 +30,7 @@ import { RootStackScreenProps } from '../../navigation/types';
 import Dialog from '../../components/Dialog';
 import { FadeIn, FadeOut } from 'react-native-reanimated';
 import Tooltip from '../../components/Tooltip';
+import { truncate } from '../../utils/helpers';
 
 export const Contact = ({
 	navigation,
@@ -90,6 +91,9 @@ export const Contact = ({
 		...link,
 		id: `${link.title}:${link.url}`,
 	}));
+
+	const name = profile?.name ?? '';
+	const firstName = name.split(/\s+/)[0];
 
 	return (
 		<View style={styles.container}>
@@ -164,8 +168,11 @@ export const Contact = ({
 
 			<Dialog
 				visible={showDialog}
-				title={`Delete ${profile?.name}?`}
-				description={`Are you sure you want to delete ${profile?.name} from your contacts?`}
+				title={`Delete ${truncate(firstName, 30)}?`}
+				description={`Are you sure you want to delete ${truncate(
+					firstName,
+					30,
+				)} from your contacts?`}
 				confirmText="Yes, Delete"
 				onCancel={(): void => setShowDialog(false)}
 				onConfirm={(): void => {
@@ -189,7 +196,7 @@ const IconButton = ({
 	const buttonStyles = useMemo(
 		() => ({
 			...styles.iconContainer,
-			opacity: disabled ? 0.7 : 1,
+			opacity: disabled ? 0.6 : 1,
 		}),
 		[disabled],
 	);

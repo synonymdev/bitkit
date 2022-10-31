@@ -337,7 +337,7 @@ const AddressAndAmount = ({
 	useEffect(() => {
 		if (sendNavigationIsOpen) {
 			// try to update fees on this screen, because they will be used on next one
-			updateOnchainFeeEstimates({ selectedNetwork }).then();
+			updateOnchainFeeEstimates({ selectedNetwork, forceUpdate: true }).then();
 			refreshLdk({ selectedWallet, selectedNetwork }).then();
 		}
 	}, [selectedNetwork, selectedWallet, sendNavigationIsOpen]);
@@ -385,10 +385,6 @@ const AddressAndAmount = ({
 		};
 	}, [unitPreference]);
 
-	const availableAmountColor = useMemo(() => {
-		return availableAmount ? 'gray1' : 'transparent';
-	}, [availableAmount]);
-
 	return (
 		<View style={styles.container}>
 			<BottomSheetNavigationHeader
@@ -411,92 +407,102 @@ const AddressAndAmount = ({
 					}}
 					style={styles.amountToggle}
 					reverse={true}
-					space={16}>
+					space={16}
+				/>
+
+				{showNumberPad && (
 					<View style={styles.availableAmount}>
-						<Caption13Up color={availableAmountColor}>Available: </Caption13Up>
+						<Caption13Up style={styles.availableAmountText} color="gray1">
+							Available
+						</Caption13Up>
 						<Money
 							key="small"
 							sats={availableAmount}
 							size="caption13M"
-							color={availableAmountColor}
 							{...availableAmountProps}
 						/>
 					</View>
-				</AmountToggle>
-				<Caption13Up color="gray1" style={styles.section}>
-					TO
-				</Caption13Up>
-				<AddressOrSlashpay
-					style={styles.inputWrapper}
-					slashTagsUrl={transaction?.slashTagsUrl}
-					onBlur={onBlur}
-					onChangeText={onChangeText}
-					onFocus={closeNumberPad}
-					value={lightningInvoice || address}>
-					<TouchableOpacity style={styles.inputAction} onPress={handleScan}>
-						<ScanIcon color="brand" width={24} />
-					</TouchableOpacity>
-					<TouchableOpacity
-						style={styles.inputAction}
-						onPress={(): void => {
-							handlePaste('').then();
-						}}>
-						<ClipboardTextIcon color="brand" width={24} />
-					</TouchableOpacity>
-					<TouchableOpacity
-						style={styles.inputAction}
-						onPress={handleSendToContact}>
-						<UserIcon color="brand" width={24} />
-					</TouchableOpacity>
-				</AddressOrSlashpay>
+				)}
 
 				{!showNumberPad && (
-					<AnimatedView
-						style={styles.bottom}
-						color="transparent"
-						entering={FadeIn}
-						exiting={FadeOut}>
+					<>
 						<Caption13Up color="gray1" style={styles.section}>
-							TAGS
+							TO
 						</Caption13Up>
-						<View style={styles.tagsContainer}>
-							{transaction?.tags?.map((tag) => (
-								<Tag
-									key={tag}
-									value={tag}
-									onClose={(): void => handleTagRemove(tag)}
-									style={styles.tag}
-								/>
-							))}
-						</View>
-						<View style={styles.tagsContainer}>
-							<Button
-								color="white04"
-								text="Add Tag"
-								icon={<TagIcon color="brand" width={16} />}
+						<AddressOrSlashpay
+							style={styles.inputWrapper}
+							slashTagsUrl={transaction?.slashTagsUrl}
+							onBlur={onBlur}
+							onChangeText={onChangeText}
+							onFocus={closeNumberPad}
+							value={lightningInvoice || address}>
+							<TouchableOpacity style={styles.inputAction} onPress={handleScan}>
+								<ScanIcon color="brand" width={24} />
+							</TouchableOpacity>
+							<TouchableOpacity
+								style={styles.inputAction}
 								onPress={(): void => {
-									Keyboard.dismiss();
-									navigation.navigate('Tags');
-								}}
-							/>
-						</View>
-						<View style={buttonContainerStyles}>
-							{!keyboardShown && !isInvalid() && (
-								<Button
-									size="large"
-									text="Continue"
-									onPress={(): void => {
-										let view: keyof SendStackParamList = 'ReviewAndSend';
-										// If auto coin-select is disabled and there is no lightning invoice.
-										if (!coinSelectAuto && !transaction?.lightningInvoice) {
-											view = 'CoinSelection';
-										}
-										navigation.navigate(view);
-									}}
-								/>
-							)}
-						</View>
-					</AnimatedView>
+									handlePaste('').then();
+								}}>
+								<ClipboardTextIcon color="brand" width={24} />
+							</TouchableOpacity>
+							<TouchableOpacity
+								style={styles.inputAction}
+								onPress={handleSendToContact}>
+								<UserIcon color="brand" width={24} />
+							</TouchableOpacity>
+						</AddressOrSlashpay>
+
+						{!showNumberPad && (
+							<AnimatedView
+								style={styles.bottom}
+								color="transparent"
+								entering={FadeIn}
+								exiting={FadeOut}>
+								<Caption13Up color="gray1" style={styles.section}>
+									TAGS
+								</Caption13Up>
+								<View style={styles.tagsContainer}>
+									{transaction?.tags?.map((tag) => (
+										<Tag
+											key={tag}
+											value={tag}
+											onClose={(): void => handleTagRemove(tag)}
+											style={styles.tag}
+										/>
+									))}
+								</View>
+								<View style={styles.tagsContainer}>
+									<Button
+										color="white04"
+										text="Add Tag"
+										icon={<TagIcon color="brand" width={16} />}
+										onPress={(): void => {
+											Keyboard.dismiss();
+											navigation.navigate('Tags');
+										}}
+									/>
+								</View>
+								<View style={buttonContainerStyles}>
+									{!keyboardShown && (
+										<Button
+											size="large"
+											text="Continue"
+											disabled={isInvalid()}
+											onPress={(): void => {
+												let view: keyof SendStackParamList = 'ReviewAndSend';
+												// If auto coin-select is disabled and there is no lightning invoice.
+												if (!coinSelectAuto && !transaction?.lightningInvoice) {
+													view = 'CoinSelection';
+												}
+												navigation.navigate(view);
+											}}
+										/>
+									)}
+								</View>
+							</AnimatedView>
+						)}
+					</>
 				)}
 
 				{showNumberPad && (
@@ -550,8 +556,14 @@ const styles = StyleSheet.create({
 		justifyContent: 'flex-end',
 	},
 	availableAmount: {
-		flexDirection: 'row',
-		alignItems: 'center',
+		borderBottomColor: 'rgba(255, 255, 255, 0.1)',
+		borderBottomWidth: 1,
+		marginTop: 42,
+		marginBottom: 5,
+		paddingBottom: 16,
+	},
+	availableAmountText: {
+		marginBottom: 5,
 	},
 });
 

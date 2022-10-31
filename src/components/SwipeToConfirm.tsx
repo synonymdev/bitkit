@@ -18,6 +18,9 @@ import { View as ThemedView, Text02M, RightArrow } from '../styles/components';
 import useColors from '../hooks/colors';
 
 const CIRCLE_SIZE = 60;
+const GRAB_SIZE = 120;
+const INVISIBLE_BORDER = (GRAB_SIZE - CIRCLE_SIZE) / 2;
+const PADDING = 8;
 
 interface ISwipeToConfirm {
 	text?: string;
@@ -50,6 +53,7 @@ const SwipeToConfirm = ({
 		}
 
 		return PanResponder.create({
+			onStartShouldSetPanResponder: () => true,
 			onMoveShouldSetPanResponder: () => !confirmedInternal.current,
 			onPanResponderGrant: () => {
 				pan.setOffset({
@@ -150,12 +154,10 @@ const SwipeToConfirm = ({
 				</Animated.View>
 				<Animated.View
 					style={[
-						styles.circle,
+						styles.grab,
 						{
-							backgroundColor: kolor,
-							height: CIRCLE_SIZE,
-							width: CIRCLE_SIZE,
-							borderRadius: CIRCLE_SIZE,
+							height: GRAB_SIZE,
+							width: GRAB_SIZE,
 							transform: [
 								{
 									translateX: circleTranslateX,
@@ -164,14 +166,16 @@ const SwipeToConfirm = ({
 						},
 					]}
 					{...panResponder.panHandlers}>
-					<Animated.View style={[styles.icon, { opacity: startIconOpacity }]}>
-						<RightArrow color="black" />
-					</Animated.View>
-					<Animated.View style={[styles.icon, { opacity: endIconOpacity }]}>
-						{icon}
-					</Animated.View>
-					<Animated.View style={[styles.icon, { opacity: loadingOpacity }]}>
-						<ActivityIndicator color="black" />
+					<Animated.View style={[styles.circle, { backgroundColor: kolor }]}>
+						<Animated.View style={[styles.icon, { opacity: startIconOpacity }]}>
+							<RightArrow color="black" />
+						</Animated.View>
+						<Animated.View style={[styles.icon, { opacity: endIconOpacity }]}>
+							{icon}
+						</Animated.View>
+						<Animated.View style={[styles.icon, { opacity: loadingOpacity }]}>
+							<ActivityIndicator color="black" />
+						</Animated.View>
 					</Animated.View>
 				</Animated.View>
 			</View>
@@ -181,10 +185,10 @@ const SwipeToConfirm = ({
 
 const styles = StyleSheet.create({
 	root: {
-		borderRadius: 58,
-		height: 76,
+		borderRadius: CIRCLE_SIZE,
+		height: CIRCLE_SIZE + PADDING * 2,
 		flexDirection: 'row',
-		padding: 8,
+		padding: PADDING,
 	},
 	container: {
 		flexDirection: 'row',
@@ -195,19 +199,26 @@ const styles = StyleSheet.create({
 	},
 	shadow: {
 		flexDirection: 'row',
-		height: 60,
-		borderTopLeftRadius: 60,
-		borderBottomLeftRadius: 60,
+		height: CIRCLE_SIZE,
+		borderTopLeftRadius: CIRCLE_SIZE,
+		borderBottomLeftRadius: CIRCLE_SIZE,
 		flex: 1,
 		position: 'absolute',
 		left: 0,
 		top: 0,
 		bottom: 0,
 	},
-	circle: {
+	grab: {
 		position: 'absolute',
-		left: 0,
-		top: 0,
+		left: -INVISIBLE_BORDER,
+		top: -INVISIBLE_BORDER,
+		alignItems: 'center',
+		justifyContent: 'center',
+	},
+	circle: {
+		height: CIRCLE_SIZE,
+		width: CIRCLE_SIZE,
+		borderRadius: CIRCLE_SIZE,
 	},
 	icon: {
 		position: 'absolute',

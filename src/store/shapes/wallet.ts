@@ -89,6 +89,13 @@ export type IAddressTypeContent<T> = {
 	[key: string]: T;
 };
 
+export type TAddressIndexInfo = {
+	addressIndex: IAddressContent;
+	changeAddressIndex: IAddressContent;
+	lastUsedAddressIndex: IAddressContent;
+	lastUsedChangeAddressIndex: IAddressContent;
+};
+
 export const getAddressIndexShape = (): IWalletItem<IAddress> => {
 	return {
 		bitcoin: getAddressTypeContent(addressContent),

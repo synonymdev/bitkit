@@ -9,7 +9,6 @@ import { capitalize } from '../../../utils/helpers';
 import { updateSelectedAddressType } from '../../../store/actions/wallet';
 import { TAddressType } from '../../../store/types/wallet';
 import { updateSettings } from '../../../store/actions/settings';
-import { updateAddressIndexes } from '../../../store/actions/wallet';
 
 const AddressTypeSettings = ({ navigation }): ReactElement => {
 	const [addressTypeState, setAddressTypeState] = useState<TAddressType>('');
@@ -78,15 +77,11 @@ const AddressTypeSettings = ({ navigation }): ReactElement => {
 						typesDescriptions[bitcoinUnit.value].example
 					}`,
 					type: 'button',
-					onPress: (): void => {
+					onPress: async (): Promise<void> => {
 						navigation.goBack();
-						updateSettings({ addressType: bitcoinUnit.value });
-						setAddressTypePreference(bitcoinUnit.value);
-						updateAddressIndexes({
-							selectedWallet,
-							selectedNetwork,
-							addressType: bitcoinUnit.value,
-						}).then();
+						await updateSettings({ addressType: bitcoinUnit.value });
+						await setAddressTypePreference(bitcoinUnit.value);
+						await refreshWallet({ lightning: false, onchain: true });
 					},
 					hide: false,
 				})),

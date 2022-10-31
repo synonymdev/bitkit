@@ -120,7 +120,7 @@ const BackupData = ({
 			<View style={styles.container}>
 				<Text01S color="gray1">
 					Transactions, accounts, contacts and tags will be backed up
-					automagically. When you restore Bitkit with your recovery phrase, this
+					automagically. When you restore Bitkit with your recovery phrase, this
 					data will be restored.
 				</Text01S>
 

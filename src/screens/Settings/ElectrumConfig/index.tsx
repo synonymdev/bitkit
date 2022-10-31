@@ -17,16 +17,12 @@ import { addElectrumPeer } from '../../../store/actions/settings';
 import { ICustomElectrumPeer, TProtocol } from '../../../store/types/settings';
 import { updateUser } from '../../../store/actions/user';
 import Store from '../../../store/types';
+import { origCustomElectrumPeers } from '../../../store/shapes/settings';
 import { connectToElectrum } from '../../../utils/wallet/electrum';
 import NavigationHeader from '../../../components/NavigationHeader';
 import Button from '../../../components/Button';
-import { objectsMatch, shuffleArray } from '../../../utils/helpers';
-import {
-	defaultElectrumPorts,
-	getDefaultPort,
-	getPeers,
-	IFormattedPeerData,
-} from '../../../utils/electrum';
+import { objectsMatch } from '../../../utils/helpers';
+import { defaultElectrumPorts, getDefaultPort } from '../../../utils/electrum';
 import {
 	showErrorNotification,
 	showSuccessNotification,
@@ -87,7 +83,6 @@ const ElectrumConfig = ({
 			? savedPeer[savedPeer.protocol]
 			: getDefaultPort(selectedNetwork, protocol),
 	);
-	const [randomPeers, setRandomPeers] = useState<IFormattedPeerData[]>([]);
 
 	const [connectedPeer, setConnectedPeer] = useState<IPeerData>({
 		host: '',
@@ -103,10 +98,6 @@ const ElectrumConfig = ({
 				...peerInfo.value,
 				port: peerInfo.value.port.toString(),
 			});
-		}
-		const randomPeersResponse = await getPeers({ selectedNetwork });
-		if (randomPeersResponse.isOk()) {
-			setRandomPeers(randomPeersResponse.value);
 		}
 	};
 
@@ -181,16 +172,12 @@ const ElectrumConfig = ({
 					message: `Successfully connected to ${host}:${port}`,
 				});
 				getAndUpdateConnectedPeer();
-				const getPeersResult = await getPeers({ selectedNetwork });
-				if (getPeersResult.isOk()) {
-					setRandomPeers(getPeersResult.value);
-				}
 			} else {
 				updateUser({ isConnectedToElectrum: false });
-				showErrorNotification({
-					title: 'Unable to connect to Electrum Server',
-					message: connectResponse.error.message,
-				});
+				// showErrorNotification({
+				// 	title: 'Unable to connect to Electrum Server',
+				// 	message: connectResponse.error.message,
+				// });
 			}
 		} catch (e) {
 			console.log(e);
@@ -217,21 +204,11 @@ const ElectrumConfig = ({
 		}
 	};
 
-	const getRandomPeer = async (): Promise<void> => {
-		if (randomPeers?.length > 0) {
-			const shuffledArr = shuffleArray(randomPeers);
-			for (let i = 0; i < shuffledArr.length; i++) {
-				if (
-					host !== shuffledArr[i]?.host.toLowerCase() &&
-					connectedPeer.host !== shuffledArr[i]?.host.toLowerCase()
-				) {
-					const peer = shuffledArr[i];
-					setHost(peer.host.toLowerCase());
-					setPort(peer[protocol].toString().replace(/\D/g, ''));
-					break;
-				}
-			}
-		}
+	const resetToDefault = (): void => {
+		const peer = origCustomElectrumPeers[selectedNetwork][0];
+		setHost(peer.host);
+		setPort(peer[peer.protocol].toString());
+		setProtocol(peer.protocol);
 	};
 
 	useEffect(() => {
@@ -342,7 +319,7 @@ const ElectrumConfig = ({
 							text="Reset To Default"
 							variant="secondary"
 							size="large"
-							onPress={getRandomPeer}
+							onPress={resetToDefault}
 						/>
 						{!peersMatch({ host, port, protocol }) && (
 							<>

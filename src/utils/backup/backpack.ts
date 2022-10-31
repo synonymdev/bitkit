@@ -54,12 +54,14 @@ export const uploadBackup = async (
 	try {
 		const backups = await backupsFactory(slashtag);
 
+		const encryptedContent = backups.encrypt(content, slashtag.key);
+
 		// Prepare some data to back up
 		const data = {
 			appName,
 			appVersion,
 			category: categoryWithNetwork(category, network),
-			content,
+			content: encryptedContent,
 		};
 
 		const { error, results, success } = await backups.backupData(
@@ -115,7 +117,9 @@ export const fetchBackup = async (
 			return err(error);
 		}
 
-		return ok(results);
+		const decryptedContent = backups.decrypt(results.content, slashtag.key);
+
+		return ok({ ...results, content: decryptedContent });
 	} catch (e) {
 		return err(e);
 	}

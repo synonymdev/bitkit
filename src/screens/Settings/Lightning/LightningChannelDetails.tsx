@@ -1,17 +1,23 @@
-import React, { memo, PropsWithChildren, ReactElement, useState } from 'react';
+import React, {
+	memo,
+	PropsWithChildren,
+	ReactElement,
+	useMemo,
+	useState,
+} from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
 import { View, Text } from '../../../styles/components';
 import NavigationHeader from '../../../components/NavigationHeader';
 import useDisplayValues from '../../../hooks/displayValues';
 import Button from '../../../components/Button';
 import Dialog from '../../../components/Dialog';
+import { useAppSelector } from '../../../hooks/redux';
 
 interface Props extends PropsWithChildren<any> {
 	route: { params: { channel: any } };
 }
 
 const LightningChannelDetails = (props: Props): ReactElement => {
-	const [showDialog, setShowDialog] = useState(false);
 	const { channel } = props.route.params;
 	const {
 		chanId,
@@ -25,6 +31,21 @@ const LightningChannelDetails = (props: Props): ReactElement => {
 		totalSatoshisSent,
 		uptime,
 	} = channel;
+
+	const selectedWallet = useAppSelector((store) => store.wallet.selectedWallet);
+	const selectedNetwork = useAppSelector(
+		(store) => store.wallet.selectedNetwork,
+	);
+	const openChannelIds = useAppSelector(
+		(store) =>
+			store.lightning.nodes[selectedWallet].openChannelIds[selectedNetwork],
+	);
+
+	const isOpen = useMemo(() => {
+		return openChannelIds.includes(chanId);
+	}, [chanId, openChannelIds]);
+
+	const [showDialog, setShowDialog] = useState(false);
 
 	const capacityDisplay = useDisplayValues(Number(capacity));
 	const remoteBalanceDisplay = useDisplayValues(Number(remoteBalance));
@@ -80,7 +101,7 @@ const LightningChannelDetails = (props: Props): ReactElement => {
 						</View>
 					))}
 
-					<Button text={'Close Channel'} onPress={onClose} />
+					{isOpen && <Button text={'Close Channel'} onPress={onClose} />}
 				</View>
 			</ScrollView>
 			<Dialog

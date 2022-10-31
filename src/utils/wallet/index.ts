@@ -10,6 +10,7 @@ import {
 	assetNetworks,
 	defaultKeyDerivationPath,
 	defaultWalletShape,
+	TAddressIndexInfo,
 } from '../../store/shapes/wallet';
 import {
 	EPaymentType,
@@ -50,6 +51,7 @@ import {
 import { getStore } from '../../store/helpers';
 import {
 	addAddresses,
+	setZeroIndexAddresses,
 	updateAddressIndexes,
 	updateExchangeRates,
 	updateTransactions,
@@ -84,6 +86,7 @@ import { refreshLdk } from '../lightning';
 import {
 	BITKIT_WALLET_SEED_HASH_PREFIX,
 	GENERATE_ADDRESS_AMOUNT,
+	CHUNK_LIMIT,
 } from './constants';
 import { moveMetaIncTxTags } from '../../store/actions/metadata';
 import { refreshOrdersList } from '../../store/actions/blocktank';
@@ -109,12 +112,12 @@ export const refreshWallet = async ({
 					selectedWallet,
 				});
 			}
+			await updateAddressIndexes({
+				selectedWallet,
+				selectedNetwork,
+				addressType,
+			});
 			if (isConnectedToElectrum) {
-				await updateAddressIndexes({
-					selectedWallet,
-					selectedNetwork,
-					addressType,
-				});
 				await Promise.all([
 					subscribeToAddresses({
 						selectedWallet,
@@ -132,6 +135,13 @@ export const refreshWallet = async ({
 			}
 
 			updateExchangeRates().then();
+		}
+
+		if (onchain) {
+			await setZeroIndexAddresses({
+				selectedWallet,
+				selectedNetwork,
+			});
 		}
 
 		if (lightning) {
@@ -669,10 +679,11 @@ export const getInfoFromAddressPath = (path = ''): IGetInfoFromAddressPath => {
  * @param {string} mnemonic - The mnemonic to validate.
  * @return {boolean}
  */
-export const validateMnemonic = (mnemonic = ''): boolean => {
+export const validateMnemonic = (mnemonic: string): boolean => {
 	try {
 		return bip39.validateMnemonic(mnemonic);
-	} catch {
+	} catch (error) {
+		console.error('error validating mnemonic', error);
 		return false;
 	}
 };
@@ -1400,23 +1411,28 @@ export const getInputData = async ({
 		if (!selectedNetwork) {
 			selectedNetwork = getSelectedNetwork();
 		}
-		const getTransactionsResponse = await getTransactionsFromInputs({
-			txHashes: inputs,
-			selectedNetwork,
-		});
 		const inputData = {};
-		if (getTransactionsResponse.isErr()) {
-			return err(getTransactionsResponse.error.message);
+
+		for (let i = 0; i < inputs.length; i += CHUNK_LIMIT) {
+			const chunk = inputs.slice(i, i + CHUNK_LIMIT);
+
+			const getTransactionsResponse = await getTransactionsFromInputs({
+				txHashes: chunk,
+				selectedNetwork,
+			});
+			if (getTransactionsResponse.isErr()) {
+				return err(getTransactionsResponse.error.message);
+			}
+			getTransactionsResponse.value.data.map(({ data, result }) => {
+				const vout = result.vout[data.vout];
+				const addresses = vout.scriptPubKey?.addresses
+					? vout.scriptPubKey?.addresses
+					: [vout.scriptPubKey.address];
+				const value = vout.value;
+				const key = data.tx_hash;
+				inputData[key] = { addresses, value };
+			});
 		}
-		getTransactionsResponse.value.data.map(({ data, result }) => {
-			const vout = result.vout[data.vout];
-			const addresses = vout.scriptPubKey?.addresses
-				? vout.scriptPubKey?.addresses
-				: [vout.scriptPubKey.address];
-			const value = vout.value;
-			const key = data.tx_hash;
-			inputData[key] = { addresses, value };
-		});
 		return ok(inputData);
 	} catch (e) {
 		return err(e);
@@ -2030,9 +2046,14 @@ export const createDefaultWallet = async ({
 					return err(generatedAddresses.error);
 				}
 				const { addresses, changeAddresses } = generatedAddresses.value;
-				addressIndex[selectedNetwork][type] = Object.values(addresses)[0];
-				changeAddressIndex[selectedNetwork][type] =
-					Object.values(changeAddresses)[0];
+				const addressIndexFilter = Object.values(addresses).filter(
+					(a) => a.index === 0,
+				);
+				addressIndex[selectedNetwork][type] = addressIndexFilter[0];
+				const changeAddressIndexFilter = Object.values(changeAddresses).filter(
+					(a) => a.index === 0,
+				);
+				changeAddressIndex[selectedNetwork][type] = changeAddressIndexFilter[0];
 				addressesObj[selectedNetwork][type] = addresses;
 				changeAddressesObj[selectedNetwork][type] = changeAddresses;
 			}),
@@ -2619,4 +2640,47 @@ export const getAddressFromScriptPubKey = (scriptPubKey: string): string => {
 		Buffer.from(scriptPubKey, 'hex'),
 		network,
 	);
+};
+
+/**
+ * Returns current address index information.
+ * @param {string} [selectedWallet]
+ * @param {TAvailableNetworks} [selectedNetwork]
+ * @param {TAddressType} [addressType]
+ */
+export const getAddressIndexInfo = ({
+	selectedWallet,
+	selectedNetwork,
+	addressType,
+}: {
+	selectedWallet?: string;
+	selectedNetwork?: TAvailableNetworks;
+	addressType?: TAddressType;
+}): TAddressIndexInfo => {
+	if (!selectedNetwork) {
+		selectedNetwork = getSelectedNetwork();
+	}
+	if (!selectedWallet) {
+		selectedWallet = getSelectedWallet();
+	}
+	if (!addressType) {
+		addressType = getSelectedAddressType({ selectedNetwork, selectedWallet });
+	}
+	const { currentWallet } = getCurrentWallet({
+		selectedWallet,
+		selectedNetwork,
+	});
+	const addressIndex = currentWallet.addressIndex[selectedNetwork][addressType];
+	const changeAddressIndex =
+		currentWallet.addressIndex[selectedNetwork][addressType];
+	const lastUsedAddressIndex =
+		currentWallet.lastUsedAddressIndex[selectedNetwork][addressType];
+	const lastUsedChangeAddressIndex =
+		currentWallet.lastUsedChangeAddressIndex[selectedNetwork][addressType];
+	return {
+		addressIndex,
+		changeAddressIndex,
+		lastUsedAddressIndex,
+		lastUsedChangeAddressIndex,
+	};
 };

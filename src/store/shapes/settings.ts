@@ -1,7 +1,7 @@
 import { ISettings } from '../types/settings';
 
 //TODO: Remove the public Electrum servers below once we spin up our own.
-const customElectrumPeers = {
+export const origCustomElectrumPeers = {
 	bitcoin: [
 		{
 			host: '35.187.18.233',
@@ -77,7 +77,7 @@ export const defaultSettingsShape: ISettings = {
 	balanceUnit: 'satoshi', //BTC, mBTC, μBTC or satoshi
 	selectedCurrency: 'USD',
 	selectedLanguage: 'english',
-	customElectrumPeers,
+	customElectrumPeers: origCustomElectrumPeers,
 	coinSelectAuto: true,
 	coinSelectPreference: 'small',
 	receivePreference: defaultReceivePreference,

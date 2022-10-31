@@ -1,5 +1,5 @@
 import React, { ReactElement, useMemo, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { Alert, Platform, StyleSheet, View } from 'react-native';
 import { useSelector } from 'react-redux';
 import { FadeIn, FadeOut } from 'react-native-reanimated';
 
@@ -73,6 +73,15 @@ const CustomConfirm = ({
 	}, [fiatTransactionFee.fiatValue, blocktankPurchaseFee.fiatValue]);
 
 	const handleConfirm = async (): Promise<void> => {
+		if (Platform.OS === 'ios') {
+			setLoading(false);
+			Alert.alert(
+				'Temporarily Unavailable',
+				'Instant payment features are being rebuilt and will be back soon!',
+				[{ text: 'Okay', onPress: () => navigation.navigate('Tabs') }],
+			);
+			return;
+		}
 		setLoading(true);
 		await sleep(5);
 		const res = await confirmChannelPurchase({ orderId, selectedNetwork });

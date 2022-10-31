@@ -86,14 +86,14 @@ async function resolveProfile() {
 	const key = SlashURL.parse(url).key;
 	const drive = sdk.drive(key);
 	console.log('Resolving public drive ...');
+	console.time('-- resolved drive in');
 	await drive.ready();
+	await drive.getBlobs();
+	console.timeEnd('-- resolved drive in');
 
 	const profile = await drive.get('/profile.json').then(decodeJSON);
-	console.time('-- resolved drive in');
-	console.log('resolved profile');
 
 	const slashpay = await drive.get('/slashpay.json').then(decodeJSON);
-	console.timeEnd('-- resolved drive in');
 
 	console.dir(
 		{

@@ -131,8 +131,9 @@ const FeeRate = ({ navigation }: SendScreenProps<'FeeRate'>): ReactElement => {
 	const onCardPress = useCallback(
 		async (feeId: EFeeIds, fee = 1) => {
 			await _updateFee(feeId, fee);
+			navigation.goBack();
 		},
-		[_updateFee],
+		[_updateFee, navigation],
 	);
 
 	const onCustomPress = useCallback(async () => {

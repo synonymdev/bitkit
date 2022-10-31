@@ -39,7 +39,7 @@ import {
 	updateLightningNodeId,
 	updateLightningNodeVersion,
 } from '../../store/actions/lightning';
-import { sleep } from '../helpers';
+import { promiseTimeout, sleep } from '../helpers';
 import { broadcastTransaction } from '../wallet/transactions';
 import RNFS from 'react-native-fs';
 import { EmitterSubscription } from 'react-native';
@@ -49,6 +49,14 @@ import { EPaymentType, ETransactionDefaults } from '../../store/types/wallet';
 import { toggleView } from '../../store/actions/user';
 import { updateSlashPayConfig } from '../slashtags';
 import { sdk } from '../../components/SlashtagsProvider';
+
+export const DEFAULT_LIGHTNING_PEERS = [
+	'03cde60a6323f7122d5178255766e38114b4722ede08f7c9e0c5df9b912cc201d6@34.65.85.39:9745',
+	'033d8656219478701227199cbd6f670335c8d408a92ae88b962c49d4dc0e83e025@34.65.85.39:9735',
+	'035e4ff418fc8b5554c5d9eea66396c227bd429a3251c8cbc711002ba215bfc226@170.75.163.209:9735',
+	'03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f@3.33.236.230:9735',
+	'038fe1bd966b5cb0545963490c631eaa1924e2c4c0ea4e7dcb5d4582a1e7f2f1a5@144.76.24.71:9735',
+];
 
 let paymentSubscription: EmitterSubscription | undefined;
 let onChannelSubscription: EmitterSubscription | undefined;
@@ -98,9 +106,11 @@ export const setLdkStoragePath = (): Promise<Result<string>> =>
 export const setupLdk = async ({
 	selectedWallet,
 	selectedNetwork,
+	shouldRefreshLdk = true,
 }: {
 	selectedWallet?: string;
 	selectedNetwork?: TAvailableNetworks;
+	shouldRefreshLdk?: boolean;
 }): Promise<Result<string>> => {
 	try {
 		if (!selectedWallet) {
@@ -190,8 +200,10 @@ export const setupLdk = async ({
 				selectedWallet,
 			}),
 			updateLightningNodeVersion(),
-			refreshLdk({ selectedWallet, selectedNetwork }),
 		]);
+		if (shouldRefreshLdk) {
+			await refreshLdk({ selectedWallet, selectedNetwork });
+		}
 
 		subscribeToLightningPayments({
 			selectedWallet,
@@ -332,6 +344,10 @@ export const unsubscribeFromLightningSubscriptions = (): void => {
 	onChannelSubscription && onChannelSubscription.remove();
 };
 
+export const resetLdk = (): void => {
+	ldk.reset();
+};
+
 /**
  * This method syncs LDK, re-adds peers & updates lightning channels.
  * @param {string} [selectedWallet]
@@ -353,15 +369,25 @@ export const refreshLdk = async ({
 			selectedNetwork = getSelectedNetwork();
 		}
 
+		const nodeIdRes = await promiseTimeout<Result<string>>(2000, getNodeId());
+		if (nodeIdRes.isErr()) {
+			// Attempt to reset LDK.
+			const setupResponse = await setupLdk({
+				selectedNetwork,
+				selectedWallet,
+				shouldRefreshLdk: false,
+			});
+			if (setupResponse.isErr()) {
+				return err(setupResponse.error.message);
+			}
+			keepLdkSynced({ selectedNetwork }).then();
+		}
 		const syncRes = await lm.syncLdk();
 		if (syncRes.isErr()) {
 			return err(syncRes.error.message);
 		}
-
-		await Promise.all([
-			addPeers(),
-			updateLightningChannels({ selectedWallet, selectedNetwork }),
-		]);
+		await updateLightningChannels({ selectedWallet, selectedNetwork });
+		await addPeers();
 		return ok('');
 	} catch (e) {
 		console.log(e);
@@ -625,8 +651,9 @@ export const addPeers = async (): Promise<Result<string[]>> => {
 		if (!nodeUris) {
 			return err('No peers available to add.');
 		}
+		const peers = DEFAULT_LIGHTNING_PEERS.concat(nodeUris);
 		const addPeerRes = await Promise.all(
-			nodeUris.map(async (uri) => {
+			peers.map(async (uri) => {
 				const parsedUri = parseUri(uri);
 				if (parsedUri.isErr()) {
 					return parsedUri.error.message;
@@ -899,6 +926,10 @@ export const hasOpenLightningChannels = ({
 	const availableChannels =
 		getStore().lightning.nodes[selectedWallet].openChannelIds[selectedNetwork];
 	return availableChannels.length > 0;
+};
+
+export const rebroadcastAllKnownTransactions = async (): Promise<any> => {
+	return await lm.rebroadcastAllKnownTransactions();
 };
 
 export const getClaimableBalances = async (

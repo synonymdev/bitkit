@@ -31,6 +31,7 @@ import {
 	CheckCircleIcon,
 	ClockIcon,
 	GitBranchIcon,
+	LightningIcon,
 	ReceiveIcon,
 	SendIcon,
 	TagIcon,
@@ -148,10 +149,9 @@ const ActivityDetail = (props: Props): ReactElement => {
 		timestamp,
 		address,
 	} = item;
-	const tags =
-		useSelector((store: Store) => store.metadata.tags[item.id]) ?? [];
+	const tags = useSelector((store: Store) => store.metadata.tags[id]) ?? [];
 	const slashTagsUrl = useSelector(
-		(store: Store) => store.metadata.slashTagsUrls[item.id],
+		(store: Store) => store.metadata.slashTagsUrls[id],
 	);
 	const selectedWallet = useSelector(
 		(store: Store) => store.wallet.selectedWallet,
@@ -230,7 +230,7 @@ const ActivityDetail = (props: Props): ReactElement => {
 	const handleAddTag = (): void => {
 		toggleView({
 			view: 'activityTagsPrompt',
-			data: { isOpen: true, id: item.id },
+			data: { isOpen: true, id },
 		});
 	};
 
@@ -283,15 +283,9 @@ const ActivityDetail = (props: Props): ReactElement => {
 		);
 	}, [id, activityType, extended, selectedNetwork, txDetails]);
 
-	let status = '';
-	if (value < 0) {
-		status = 'Sent Bitcoin';
-	} else {
-		status = 'Received Bitcoin';
-	}
+	const title = value < 0 ? 'Sent Bitcoin' : 'Received Bitcoin';
 
 	let glowColor;
-
 	switch (activityType) {
 		case EActivityTypes.onChain:
 			glowColor = 'brand';
@@ -347,7 +341,7 @@ const ActivityDetail = (props: Props): ReactElement => {
 			<Canvas style={[styles.canvas, size]}>
 				<Glow color={glowColor} size={size} />
 			</Canvas>
-			<NavigationHeader title={status} onClosePress={navigation.popToTop} />
+			<NavigationHeader title={title} onClosePress={navigation.popToTop} />
 			<ScrollView
 				contentContainerStyle={styles.scrollContent}
 				showsVerticalScrollIndicator={false}>
@@ -383,13 +377,26 @@ const ActivityDetail = (props: Props): ReactElement => {
 						title="STATUS"
 						value={
 							<View style={styles.confStatus}>
-								{confirmed ? (
+								{activityType === EActivityTypes.lightning ? (
+									<LightningIcon color="purple" style={styles.checkmarkIcon} />
+								) : confirmed ? (
 									<CheckCircleIcon color="green" style={styles.checkmarkIcon} />
 								) : (
 									<ClockIcon color="white" style={styles.checkmarkIcon} />
 								)}
-								<Text02M color={confirmed ? 'green' : 'white'}>
-									{confirmed ? 'Confirmed' : 'Confirming'}
+								<Text02M
+									color={
+										activityType === EActivityTypes.lightning
+											? 'purple'
+											: confirmed
+											? 'green'
+											: 'white'
+									}>
+									{activityType === EActivityTypes.lightning
+										? 'Successful'
+										: confirmed
+										? 'Confirmed'
+										: 'Confirming'}
 								</Text02M>
 							</View>
 						}
@@ -499,22 +506,24 @@ const ActivityDetail = (props: Props): ReactElement => {
 									onPress={handleAddTag}
 								/>
 							</View>
-							<View style={styles.sectionContainer}>
-								<Button
-									style={styles.button}
-									text={isBoosted ? 'Already Boosted' : 'Boost'}
-									icon={<TimerIconAlt color="brand" />}
-									disabled={!showBoost}
-									onPress={handleBoost}
-								/>
-								<Button
-									style={styles.button}
-									text="Explore"
-									icon={<GitBranchIcon />}
-									disabled={!blockExplorerUrl}
-									onPress={handleBlockExplorerOpen}
-								/>
-							</View>
+							{activityType === EActivityTypes.onChain && (
+								<View style={styles.sectionContainer}>
+									<Button
+										style={styles.button}
+										text={isBoosted ? 'Already Boosted' : 'Boost'}
+										icon={<TimerIconAlt color="brand" />}
+										disabled={!showBoost}
+										onPress={handleBoost}
+									/>
+									<Button
+										style={styles.button}
+										text="Explore"
+										icon={<GitBranchIcon />}
+										disabled={!blockExplorerUrl}
+										onPress={handleBlockExplorerOpen}
+									/>
+								</View>
+							)}
 						</View>
 
 						<View style={styles.buttonDetailsContainer}>
@@ -540,12 +549,14 @@ const ActivityDetail = (props: Props): ReactElement => {
 						<View style={styles.sectionContainer}>
 							<Section
 								title={
-									item.activityType === 'lightning' ? 'INVOICE' : 'ADDRESS'
+									activityType === EActivityTypes.lightning
+										? 'INVOICE'
+										: 'ADDRESS'
 								}
 								value={<Text02M>{address}</Text02M>}
 							/>
 						</View>
-						{item.activityType === 'onChain' && (
+						{activityType === EActivityTypes.onChain && (
 							<>
 								{txDetails ? (
 									<>
@@ -598,7 +609,7 @@ const ActivityDetail = (props: Props): ReactElement => {
 								})}
 							</>
 						)}
-						{item.activityType === 'onChain' && (
+						{activityType === EActivityTypes.onChain && (
 							<View style={styles.buttonDetailsContainer}>
 								<Button
 									text="Open Block Explorer"

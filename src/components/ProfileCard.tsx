@@ -36,10 +36,13 @@ export const ProfileCard = ({
 	resolving: boolean;
 	onChange?: (name: string, value: string) => void;
 }): JSX.Element => {
-	const name = profile?.name;
+	const bioRef = useRef<TextInput | null>(null);
+
+	const name = profile?.name ?? '';
 	const bio = profile?.bio;
 
-	const bioRef = useRef<TextInput | null>(null);
+	// two lines max.
+	const nameParts = name.split(/\s+/).slice(0, 2);
 
 	return (
 		<>
@@ -63,19 +66,22 @@ export const ProfileCard = ({
 								}
 							}}
 							blurOnSubmit
-							returnKeyType={'done'}
+							returnKeyType="done"
 							maxLength={MAX_NAME_LENGTH}
 						/>
 					) : (
 						<View>
-							<Title numberOfLines={1} style={styles.name}>
-								{resolving
-									? 'Retrieving\ncontact info...'
-									: truncate(name?.split(/\s+/)[0], 30)}
-							</Title>
-							<Title numberOfLines={1} style={styles.name}>
-								{!resolving && truncate(name?.split(/\s+/)[1], 30)}
-							</Title>
+							{resolving ? (
+								<Title style={styles.name}>
+									Retrieving{'\n'}contact info...
+								</Title>
+							) : (
+								nameParts.map((part, index) => (
+									<Title key={index} numberOfLines={1} style={styles.name}>
+										{truncate(part, 30)}
+									</Title>
+								))
+							)}
 						</View>
 					)}
 					<SlashtagURL style={styles.url} url={url} />
@@ -112,11 +118,11 @@ export const ProfileCard = ({
 					style={styles.bioInput}
 					color="gray1"
 					value={bio}
-					placeholder={'Short bio. Tell a bit about yourself.'}
+					placeholder="Short bio. Tell a bit about yourself."
 					multiline={true}
 					onChangeText={(value): void => onChange?.('bio', value)}
 					blurOnSubmit
-					returnKeyType={'done'}
+					returnKeyType="done"
 					maxLength={MAX_BIO_LENGTH}
 				/>
 			) : (

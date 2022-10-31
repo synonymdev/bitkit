@@ -179,7 +179,7 @@ const Receive = ({ navigation }): ReactElement => {
 
 	const uri = useMemo((): string => {
 		return getUnifiedUri({
-			bitcoin: receiveAddress,
+			address: receiveAddress,
 			amount,
 			label: message,
 			message,

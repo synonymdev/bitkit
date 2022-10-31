@@ -1888,10 +1888,10 @@
     cross-fetch "^3.1.4"
     node-fetch "3.1.1"
 
-"@synonymdev/react-native-ldk@^0.0.62":
-  version "0.0.62"
-  resolved "https://registry.yarnpkg.com/@synonymdev/react-native-ldk/-/react-native-ldk-0.0.62.tgz#0f3fcde3ba38016581d5a91605f11d78cbf95163"
-  integrity sha512-mD7Q7HgKdB6wCgFgv98bikXCsZ0yz5sB7u1am1vgTZvtxyS6dGg59NFyIMf+sMpDCnrSlhyWIEVdxxDI7S/3qw==
+"@synonymdev/react-native-ldk@0.0.68":
+  version "0.0.68"
+  resolved "https://registry.yarnpkg.com/@synonymdev/react-native-ldk/-/react-native-ldk-0.0.68.tgz#950c542841e86c30dbd956c9223e22d48f8dbcd5"
+  integrity sha512-e1RS7ymCOQELM3FoHYerwvWy0k2ZWt2NteH0njI7e5JJxB+XRld4rQNmAge2bqz6fd5+UrVQV1HU+MMv7wjgUw==
   dependencies:
     bitcoinjs-lib "^6.0.2"
 
@@ -2945,9 +2945,9 @@ babel-preset-jest@^27.5.1:
     babel-plugin-jest-hoist "^27.5.1"
     babel-preset-current-node-syntax "^1.0.0"
 
-"backpack-client@git+ssh://git@github.com/synonymdev/backpack-client":
+"backpack-client@git+ssh://git@github.com/synonymdev/bitkit-backup-client":
   version "1.0.2"
-  resolved "git+ssh://git@github.com/synonymdev/backpack-client#80b3072b258c9fd86b0def23a477312cd08e0400"
+  resolved "git+ssh://git@github.com/synonymdev/bitkit-backup-client#f08fdb28529d8a3f8bfecc789443c43b966a7581"
   dependencies:
     "@synonymdev/slashtags-rpc" "^1.0.0-alpha.1"
     "@synonymdev/slashtags-sdk" "^1.0.0-alpha.19"

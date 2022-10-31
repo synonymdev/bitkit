@@ -47,7 +47,7 @@ export const ContactEdit = ({
 	const profile = useMemo(
 		() => ({
 			...contact.profile,
-			// Keep name length in contact record managable in cause user doesn't override the remote name
+			// Keep name length in contact record managable in case user doesn't override the remote name
 			name: contact.profile.name?.slice(0, MAX_NAME_LENGTH),
 			...form,
 		}),

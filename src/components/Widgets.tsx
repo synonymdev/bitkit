@@ -19,7 +19,7 @@ import { SUPPORTED_FEED_TYPES } from '../utils/widgets';
 import BlocksWidget from './BlocksWidget';
 
 export const Widgets = (): ReactElement => {
-	const widgets = useSelector((state: Store) => state.widgets?.widgets || {});
+	const widgets = useSelector((state: Store) => state.widgets.widgets);
 
 	return (
 		<>
@@ -46,10 +46,10 @@ export const Widgets = (): ReactElement => {
 					),
 				)}
 				<TouchableOpacity
+					style={styles.add}
 					onPress={(): void => {
-						navigate('WidgetsRoot', {});
-					}}
-					style={styles.add}>
+						navigate('WidgetsRoot');
+					}}>
 					<View color="green16" style={styles.iconCircle}>
 						<PlusIcon height={13} color="green" />
 					</View>

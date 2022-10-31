@@ -10,6 +10,8 @@ import { defaultFeesShape } from '../shapes/fees';
 
 const dispatch = getDispatch();
 
+export const REFRESH_INTERVAL = 60 * 30; // in seconds, 30 minutes
+
 export const updateFees = async (payload): Promise<void> => {
 	dispatch({
 		type: actions.UPDATE_FEES,
@@ -30,7 +32,7 @@ export const updateOnchainFeeEstimates = async ({
 	let fees = getStore().fees.onchain ?? defaultFeesShape.onchain;
 	const timestamp = getStore().fees.onchain?.timestamp;
 	const difference = Math.floor((Date.now() - timestamp) / 1000);
-	if (!forceUpdate && timestamp && difference > 5000) {
+	if (forceUpdate || (timestamp && difference > REFRESH_INTERVAL)) {
 		fees = await getFeeEstimates(selectedNetwork);
 		dispatch({
 			type: actions.UPDATE_ONCHAIN_FEE_ESTIMATES,

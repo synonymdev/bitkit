@@ -218,6 +218,7 @@ const RestoreFromSeed = (): ReactElement => {
 				<SafeAreaInsets type="top" />
 				<NavigationHeader displayBackButton={true} />
 			</View>
+
 			<ScrollView
 				contentContainerStyle={styles.content}
 				showsVerticalScrollIndicator={false}
@@ -272,6 +273,7 @@ const RestoreFromSeed = (): ReactElement => {
 				) : null}
 				<SafeAreaInsets type="bottom" />
 			</ScrollView>
+
 			<SeedInputAccessory
 				word={focused !== null ? seed[focused] : null}
 				setWord={(text): void => {
@@ -303,6 +305,7 @@ const styles = StyleSheet.create({
 	},
 	content: {
 		paddingHorizontal: 48,
+		paddingBottom: 16,
 	},
 	title: {
 		marginBottom: 8,
@@ -318,9 +321,6 @@ const styles = StyleSheet.create({
 	},
 	redExplanation: {
 		marginTop: 16,
-	},
-	buttonContainer: {
-		marginTop: 38,
 	},
 	contentResult: {
 		paddingHorizontal: 48,
@@ -349,6 +349,9 @@ const styles = StyleSheet.create({
 	canvas: {
 		width: 400,
 		height: 400,
+	},
+	buttonContainer: {
+		marginTop: 38,
 	},
 });
 
