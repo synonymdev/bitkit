@@ -15,6 +15,7 @@ import { View as ThemedView } from '../styles/components';
 import useColors from '../hooks/colors';
 
 const CIRCLE_SIZE = 32;
+const GRAB_SIZE = 64;
 
 const valueToX = (
 	value: number,
@@ -95,7 +96,6 @@ const FancySlider = ({
 	const active = useRef(false);
 	const colors = useColors();
 	const minTrackKolor = colors.purple;
-	const circleKolor = colors.purple;
 	const maxTrackKolor = colors.orange;
 	const [containerWidth, setContainerWidth] = useState(0);
 	const endPosition = containerWidth === 0 ? 1 : containerWidth - CIRCLE_SIZE;
@@ -123,6 +123,7 @@ const FancySlider = ({
 		}
 
 		return PanResponder.create({
+			onStartShouldSetPanResponder: () => true,
 			onMoveShouldSetPanResponder: () => true,
 			onPanResponderGrant: () => {
 				pan.setOffset({
@@ -209,12 +210,10 @@ const FancySlider = ({
 				/>
 				<Animated.View
 					style={[
-						styles.circle,
+						styles.grap,
 						{
-							backgroundColor: circleKolor,
-							height: CIRCLE_SIZE,
-							width: CIRCLE_SIZE,
-							borderRadius: CIRCLE_SIZE,
+							height: GRAB_SIZE,
+							width: GRAB_SIZE,
 							transform: [
 								{
 									translateX: circleTranslateX,
@@ -223,7 +222,9 @@ const FancySlider = ({
 						},
 					]}
 					{...panResponder.panHandlers}>
-					<ThemedView color="white" style={styles.circle2} />
+					<ThemedView color="purple" style={styles.circle1}>
+						<ThemedView color="white" style={styles.circle2} />
+					</ThemedView>
 				</Animated.View>
 			</View>
 		</View>
@@ -262,10 +263,17 @@ const styles = StyleSheet.create({
 		top: 12,
 		bottom: 0,
 	},
-	circle: {
+	grap: {
 		position: 'absolute',
-		left: 0,
-		top: 0,
+		left: (CIRCLE_SIZE - GRAB_SIZE) / 2,
+		top: (CIRCLE_SIZE - GRAB_SIZE) / 2,
+		alignItems: 'center',
+		justifyContent: 'center',
+	},
+	circle1: {
+		borderRadius: CIRCLE_SIZE,
+		height: CIRCLE_SIZE,
+		width: CIRCLE_SIZE,
 		alignItems: 'center',
 		justifyContent: 'center',
 	},
