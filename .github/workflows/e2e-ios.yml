@@ -1,0 +1,80 @@
+name: e2e-ios
+
+on:
+  pull_request:
+    branches:
+      - 'master'
+  push:
+    branches:
+      - 'master'
+
+jobs:
+  build:
+    runs-on: macos-12
+    # timeout-minutes: 15
+
+    # env:
+    #   DEVELOPER_DIR: /Applications/Xcode_11.2.app
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 1
+
+      # - name: Xcode
+      #   uses: devbotsxyz/xcode-select@v1
+
+      - name: Install SSH key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.TEST_USER_SSH_KEY }}
+          known_hosts: ${{ secrets.TEST_USER_KNOWN_HOSTS }}
+
+      - name: Use NPM Token with organization read access
+        uses: dkershner6/use-npm-token-action@v1
+        with:
+          token: '${{ secrets.NPMJS_READ }}'
+
+      - name: Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          cache: 'yarn' # cache packages, but not node_modules
+
+      - name: Cache node modules
+        uses: actions/cache@v3
+        id: cache-nm
+        with:
+          path: node_modules
+          key: node-modules-${{ hashFiles('**/yarn.lock') }}
+
+      - name: Rebuild detox
+        if: steps.cache-nm.outputs.cache-hit == 'true'
+        run: yarn detox clean-framework-cache && yarn detox build-framework-cache
+
+      - name: Install Dependencies
+        if: steps.cache-nm.outputs.cache-hit != 'true'
+        run: yarn install
+
+      - name: Cache Pods
+        uses: actions/cache@v3
+        id: podcache
+        with:
+          path: ios/Pods
+          key: pods-${{ hashFiles('**/Podfile.lock') }}
+
+      - name: Update Pods
+        run: |
+          gem update cocoapods xcodeproj
+          cd ios && pod install && cd ..
+      - run: brew tap wix/brew
+      - run: brew install applesimutils
+      - run: yarn detox build e2e --configuration ios.release
+      - run: yarn detox test e2e --configuration ios.release --cleanup --debug-synchronization 500 --record-videos all --take-screenshots all --record-logs all
+
+      - uses: actions/upload-artifact@v3
+        if: failure()
+        with:
+          name: e2e-test-videos
+          path: ./artifacts/

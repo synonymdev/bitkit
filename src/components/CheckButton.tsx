@@ -3,20 +3,16 @@ import {
 	View,
 	StyleSheet,
 	TouchableOpacity,
-	GestureResponderEvent,
-	StyleProp,
-	ViewStyle,
+	TouchableOpacityProps,
 } from 'react-native';
 
 import { Text01S, Checkmark, Caption13S } from '../styles/components';
 
-type CheckButtonProps = {
+interface CheckButtonProps extends TouchableOpacityProps {
 	label: ReactNode;
 	checked: boolean;
 	description?: ReactNode;
-	style?: StyleProp<ViewStyle>;
-	onPress?: (event: GestureResponderEvent) => void;
-};
+}
 
 const CheckButton = memo(
 	({
@@ -24,13 +20,13 @@ const CheckButton = memo(
 		checked,
 		description,
 		style,
-		onPress,
+		...props
 	}: CheckButtonProps): ReactElement => {
 		return (
 			<TouchableOpacity
 				style={[styles.item, style]}
 				activeOpacity={0.6}
-				onPress={onPress}>
+				{...props}>
 				<View style={styles.leftColumn}>
 					<View>
 						<Text01S color="white">{label}</Text01S>
