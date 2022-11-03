@@ -36,7 +36,7 @@ const slashtags = (state: IWidgets = defaultWidgetsShape, action): IWidgets => {
 				},
 			};
 
-		case actions.DELETE_SLASHTAGS_FEED_WIDGET:
+		case actions.DELETE_SLASHTAGS_WIDGET:
 			const widgets = { ...state.widgets };
 			delete widgets[action.payload.url];
 

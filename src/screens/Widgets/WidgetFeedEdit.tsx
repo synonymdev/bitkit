@@ -26,7 +26,7 @@ import { decodeJSON, readAsDataURL } from '../../utils/slashtags';
 import { showErrorNotification } from '../../utils/notifications';
 import ProfileImage from '../../components/ProfileImage';
 import useColors from '../../hooks/colors';
-import { deleteFeedWidget, setFeedWidget } from '../../store/actions/widgets';
+import { deleteWidget, setFeedWidget } from '../../store/actions/widgets';
 import {
 	decodeWidgetFieldValue,
 	SUPPORTED_FEED_TYPES,
@@ -170,8 +170,8 @@ export const WidgetFeedEdit = ({
 		navigation.navigate('Tabs');
 	};
 
-	const deleteWidget = (): void => {
-		deleteFeedWidget(url);
+	const onDelete = (): void => {
+		deleteWidget(url);
 		navigation.navigate('Tabs');
 	};
 
@@ -285,7 +285,7 @@ export const WidgetFeedEdit = ({
 								text="Delete"
 								size="large"
 								variant="secondary"
-								onPress={deleteWidget}
+								onPress={onDelete}
 							/>
 						)}
 						<Button

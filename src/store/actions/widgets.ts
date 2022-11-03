@@ -29,9 +29,9 @@ export const setFeedWidget = (url: string, feed: IWidget['feed']): void => {
 	});
 };
 
-export const deleteFeedWidget = (url: string): void => {
+export const deleteWidget = (url: string): void => {
 	dispatch({
-		type: actions.DELETE_SLASHTAGS_FEED_WIDGET,
+		type: actions.DELETE_SLASHTAGS_WIDGET,
 		payload: { url },
 	});
 };
