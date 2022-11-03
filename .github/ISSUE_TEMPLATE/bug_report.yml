@@ -11,7 +11,7 @@ body:
     id: describe-bug
     attributes:
       label: Describe the bug
-      description: A clear and concise description of what the bug is. Include screenshots if relevant.
+      description: A clear and concise description of what the bug is.
       placeholder: The bug happened when I opened the app...
     validations:
       required: true
