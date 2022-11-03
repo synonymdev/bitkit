@@ -20,6 +20,10 @@ export const ProfileImage = ({
 		if (image?.startsWith('data:image/svg+xml;base64,')) {
 			const base64 = image.replace('data:image/svg+xml;base64,', '');
 			return Buffer.from(base64, 'base64').toString();
+		} else if (image?.startsWith('data:image/svg+xml,')) {
+			const encoded = image.replace('data:image/svg+xml', '');
+			const decoded = decodeURIComponent(encoded);
+			return decoded;
 		}
 	}, [image]);
 
