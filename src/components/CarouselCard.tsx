@@ -132,7 +132,7 @@ const CarouselCard = ({
 					color="transparent"
 					style={styles.dismiss}
 					onPress={(): any => dismissTodo(id)}>
-					<XIcon width={16} height={16} color="gray1" />
+					<XIcon width={18} height={18} color="gray1" />
 				</Pressable>
 			)}
 		</Card>
@@ -145,6 +145,7 @@ const styles = StyleSheet.create({
 		height: 160,
 		borderRadius: 16,
 		paddingHorizontal: 16,
+		paddingBottom: 14,
 		overflow: 'hidden',
 	},
 	pressable: {
@@ -156,8 +157,8 @@ const styles = StyleSheet.create({
 	},
 	dismiss: {
 		position: 'absolute',
-		top: 3,
-		right: 3,
+		top: 0,
+		right: 0,
 		padding: 16,
 	},
 	image: {

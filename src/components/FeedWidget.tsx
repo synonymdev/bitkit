@@ -144,17 +144,17 @@ const styles = StyleSheet.create({
 		borderBottomColor: 'rgba(255, 255, 255, 0.1)',
 		borderBottomWidth: 1,
 	},
-	icon: {
-		marginRight: 8,
-		borderRadius: 6.4,
-		overflow: 'hidden',
-		height: 32,
-		width: 32,
-	},
 	infoContainer: {
 		flex: 1,
 		flexDirection: 'row',
 		alignItems: 'center',
+	},
+	icon: {
+		marginRight: 16,
+		borderRadius: 6.4,
+		overflow: 'hidden',
+		height: 32,
+		width: 32,
 	},
 	labelsContainer: {
 		flex: 1,

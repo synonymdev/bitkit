@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
 		alignContent: 'flex-end',
 	},
 	titleContainer: {
-		marginHorizontal: 12,
+		marginLeft: 16,
 	},
 	value: {
 		justifyContent: 'flex-end',

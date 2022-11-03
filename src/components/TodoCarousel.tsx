@@ -63,7 +63,7 @@ const TodoCarousel = (): ReactElement => {
 
 	return (
 		<>
-			<Subtitle style={styles.content}>Suggestions</Subtitle>
+			<Subtitle style={styles.title}>Suggestions</Subtitle>
 			<View style={styles.container}>
 				<Carousel
 					loop={false}
@@ -83,14 +83,15 @@ const TodoCarousel = (): ReactElement => {
 };
 
 const styles = StyleSheet.create({
+	title: {
+		marginTop: 32,
+		marginBottom: 1,
+		marginLeft: 16,
+	},
 	container: {
 		marginLeft: 16,
 		flexDirection: 'row',
 		justifyContent: 'center',
-	},
-	content: {
-		marginTop: 32,
-		marginLeft: 16,
 	},
 });
 

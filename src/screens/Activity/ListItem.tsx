@@ -132,7 +132,7 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 	},
 	col1text: {
-		marginLeft: 14,
+		marginLeft: 16,
 	},
 	col2: {
 		justifyContent: 'flex-end',
