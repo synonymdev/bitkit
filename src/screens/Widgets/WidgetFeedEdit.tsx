@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useEffect, ReactElement } from 'react';
-import { View, StyleSheet, Image, Pressable } from 'react-native';
+import { View, StyleSheet, Pressable } from 'react-native';
 import { useSelector } from 'react-redux';
 import { SlashURL } from '@synonymdev/slashtags-sdk';
 
@@ -31,10 +31,8 @@ import {
 	decodeWidgetFieldValue,
 	SUPPORTED_FEED_TYPES,
 } from '../../utils/widgets';
-import Glow from '../../components/Glow';
 import Divider from '../../components/Divider';
-
-const imageSrc = require('../../assets/illustrations/hourglass.png');
+import HourglassSpinner from '../../components/HourglassSpinner';
 
 export const WidgetFeedEdit = ({
 	navigation,
@@ -188,10 +186,7 @@ export const WidgetFeedEdit = ({
 			/>
 
 			{resolving ? (
-				<View style={styles.imageContainer} pointerEvents="none">
-					<Glow color="brand" size={600} style={styles.glow} />
-					<Image source={imageSrc} style={styles.image} />
-				</View>
+				<HourglassSpinner />
 			) : (
 				<View style={styles.content}>
 					<View style={styles.header}>
@@ -360,19 +355,6 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		justifyContent: 'space-between',
 		marginTop: 'auto',
-	},
-	imageContainer: {
-		flex: 1,
-		position: 'relative',
-		justifyContent: 'center',
-		alignItems: 'center',
-	},
-	glow: {
-		position: 'absolute',
-	},
-	image: {
-		width: 230,
-		height: 230,
 	},
 });
 

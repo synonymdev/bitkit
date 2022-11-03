@@ -1,11 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import {
-	View,
-	Image,
-	StyleSheet,
-	KeyboardAvoidingView,
-	Platform,
-} from 'react-native';
+import { View, StyleSheet, KeyboardAvoidingView, Platform } from 'react-native';
 
 import { View as ThemedView } from '../../styles/components';
 import NavigationHeader from '../../components/NavigationHeader';
@@ -15,13 +9,11 @@ import Button from '../../components/Button';
 import { saveContact } from '../../utils/slashtags';
 import { useProfile, useSelectedSlashtag } from '../../hooks/slashtags';
 import { BasicProfile } from '../../store/types/slashtags';
-import Glow from '../../components/Glow';
 import { useSlashtags } from '../../components/SlashtagsProvider';
 import { RootStackScreenProps } from '../../navigation/types';
 import Divider from '../../components/Divider';
 import useKeyboard from '../../hooks/keyboard';
-
-const imageSrc = require('../../assets/illustrations/hourglass.png');
+import HourglassSpinner from '../../components/HourglassSpinner';
 
 export const ContactEdit = ({
 	navigation,
@@ -92,13 +84,7 @@ export const ContactEdit = ({
 					}
 				/>
 
-				{resolving && (
-					<View style={styles.imageContainer} pointerEvents="none">
-						<Glow color="brand" size={600} style={styles.glow} />
-						<Image source={imageSrc} style={styles.image} />
-					</View>
-				)}
-
+				{resolving && <HourglassSpinner />}
 				{!resolving && <Divider />}
 
 				<View style={buttonContainerStyles}>
@@ -131,19 +117,6 @@ const styles = StyleSheet.create({
 	content: {
 		flex: 1,
 		paddingHorizontal: 16,
-	},
-	imageContainer: {
-		flex: 1,
-		position: 'relative',
-		justifyContent: 'center',
-		alignItems: 'center',
-	},
-	glow: {
-		position: 'absolute',
-	},
-	image: {
-		width: 230,
-		height: 230,
 	},
 	buttonContainer: {
 		flexDirection: 'row',
