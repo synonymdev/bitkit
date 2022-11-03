@@ -13,7 +13,7 @@ import {
 import useColors from '../hooks/colors';
 
 export interface IButton extends TouchableOpacityProps {
-	text: string | ReactElement;
+	text?: string | ReactElement;
 	color?: string;
 	variant?: 'primary' | 'secondary' | 'transparent';
 	size?: 'small' | 'large';
@@ -23,7 +23,7 @@ export interface IButton extends TouchableOpacityProps {
 	textStyle?: Object;
 }
 const Button = ({
-	text = '',
+	text,
 	color,
 	variant = 'primary',
 	size = 'small',
@@ -46,11 +46,12 @@ const Button = ({
 				...(variant === 'primary'
 					? styles.buttonPrimary
 					: { ...styles.buttonSecondary, borderColor }),
-				...(disabled ? { backgroundColor: 'transparent' } : {}),
+				...(disabled && !icon ? { backgroundColor: 'transparent' } : {}),
+				...(disabled && icon ? { opacity: disabled ? 0.5 : 1 } : {}),
 			},
 			style,
 		);
-	}, [variant, size, disabled, white08, style]);
+	}, [variant, size, icon, disabled, white08, style]);
 
 	const buttonColor = useMemo(() => {
 		if (color) {
@@ -60,13 +61,12 @@ const Button = ({
 	}, [color, variant]);
 
 	const textStyles = useMemo(() => {
-		if (textStyle) {
-			return {
-				...textStyle,
-				...(disabled ? { color: white32 } : {}),
-			};
-		}
-	}, [textStyle, disabled, white32]);
+		return {
+			...textStyle,
+			...(text && icon && { marginLeft: 8 }),
+			...(disabled && !icon && { color: white32 }),
+		};
+	}, [textStyle, text, icon, disabled, white32]);
 
 	const Text = size === 'small' ? Caption13M : Text02M;
 
@@ -78,19 +78,17 @@ const Button = ({
 			disabled={loading || disabled}
 			{...props}>
 			{icon && (
-				<View
-					style={
-						typeof text === 'string' && text.length > 0
-							? styles.iconContainer
-							: {}
-					}
-					color="transparent">
-					{icon}
+				<View color="transparent">
+					{React.cloneElement(icon, {
+						...{ ...(disabled && { color: 'white32' }) },
+					})}
 				</View>
 			)}
+
 			<Text style={textStyles} numberOfLines={1}>
 				{text}
 			</Text>
+
 			{loading && (
 				<View color="onSurface" style={styles.loading}>
 					<ActivityIndicator size="small" />
@@ -126,9 +124,6 @@ const styles = StyleSheet.create({
 	buttonPrimary: {},
 	buttonSecondary: {
 		borderWidth: 2,
-	},
-	iconContainer: {
-		marginRight: 8,
 	},
 	loading: {
 		...StyleSheet.absoluteFillObject,

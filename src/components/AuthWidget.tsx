@@ -86,10 +86,9 @@ const AuthWidget = ({
 						{widget.magiclink && (
 							<>
 								<Button
-									text=""
-									onPress={onDelete}
-									icon={<TrashIcon width={20} />}
 									style={styles.deleteButton}
+									icon={<TrashIcon width={20} />}
+									onPress={onDelete}
 								/>
 								<Button text="Log in" onPress={openMagicLink} />
 							</>

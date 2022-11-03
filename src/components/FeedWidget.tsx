@@ -98,15 +98,13 @@ export const BaseFeedWidget = ({
 			{showButtons ? (
 				<>
 					<Button
-						text=""
-						onPress={onDelete}
-						icon={<TrashIcon width={20} />}
 						style={styles.deleteButton}
+						icon={<TrashIcon width={20} />}
+						onPress={onDelete}
 					/>
 					<Button
-						text=""
-						icon={<GearIcon width={20} />}
 						style={styles.settingsButton}
+						icon={<GearIcon width={20} />}
 						onPress={(): void => {
 							setTimeout(() => setShowButtons(false), 0);
 							navigate('WidgetFeedEdit', { url });
