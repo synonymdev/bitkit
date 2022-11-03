@@ -25,6 +25,7 @@ import {
 import { setAuthWidget } from '../../store/actions/widgets';
 import Divider from '../../components/Divider';
 import { useSnapPoints } from '../../hooks/bottomSheet';
+import { navigate } from '../../navigation/root/RootNavigator';
 
 export type BackupNavigationProp =
 	NativeStackNavigationProp<BackupStackParamList>;
@@ -130,6 +131,7 @@ const _SlashAuthModal = (): ReactElement => {
 			});
 
 			setAuthWidget(url, { magiclink: true });
+			navigate('Tabs');
 		} else {
 			showErrorNotification({
 				title: 'Error while signing in',
