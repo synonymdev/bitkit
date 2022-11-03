@@ -1,4 +1,4 @@
-import React, { memo, ReactElement, useEffect, useState } from 'react';
+import React, { memo, ReactElement, useEffect, useMemo, useState } from 'react';
 import { Linking, StyleSheet } from 'react-native';
 import { SlashURL } from '@synonymdev/slashtags-sdk';
 
@@ -9,6 +9,7 @@ import {
 	NewspaperIcon,
 	Text02S,
 	GearIcon,
+	TrashIcon,
 } from '../styles/components';
 import { IWidget } from '../store/types/widgets';
 import { useSlashtagsSDK } from './SlashtagsProvider';
@@ -17,6 +18,8 @@ import { decodeJSON } from '../utils/slashtags';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { navigate } from '../navigation/root/RootNavigator';
 import Button from './Button';
+import Dialog from './Dialog';
+import { deleteWidget } from '../store/actions/widgets';
 
 const HeadlinesWidget = ({
 	url,
@@ -26,6 +29,7 @@ const HeadlinesWidget = ({
 	widget: IWidget;
 }): ReactElement => {
 	const [showButtons, setShowButtons] = useState(false);
+	const [showDialog, setShowDialog] = useState(false);
 	const [article, setArticle] = useState<{
 		title: string;
 		link: string;
@@ -84,6 +88,14 @@ const HeadlinesWidget = ({
 		setShowButtons((b) => !b);
 	};
 
+	const onDelete = (): void => {
+		setShowDialog(true);
+	};
+
+	const name = useMemo(() => {
+		return article?.title || widget.feed.name;
+	}, [article?.title, widget.feed.name]);
+
 	return (
 		<View>
 			<TouchableOpacity
@@ -95,7 +107,7 @@ const HeadlinesWidget = ({
 				</View>
 				<View style={styles.infoContainer}>
 					<Text01M style={styles.name} numberOfLines={1}>
-						{article?.title || widget.feed.name}
+						{name}
 					</Text01M>
 					<View style={styles.row}>
 						<View style={styles.linkContainer}>
@@ -119,10 +131,17 @@ const HeadlinesWidget = ({
 			</TouchableOpacity>
 
 			{showButtons && (
-				<View style={styles.button}>
+				<View style={styles.buttonsContainer}>
+					<Button
+						text=""
+						onPress={onDelete}
+						icon={<TrashIcon width={20} />}
+						style={styles.deleteButton}
+					/>
 					<Button
 						text=""
 						icon={<GearIcon width={20} />}
+						style={styles.settingsButton}
 						onPress={(): void => {
 							setTimeout(() => setShowButtons(false), 0);
 							navigate('WidgetFeedEdit', { url });
@@ -130,6 +149,19 @@ const HeadlinesWidget = ({
 					/>
 				</View>
 			)}
+			<Dialog
+				visible={showDialog}
+				title={`Delete ${name} widget?`}
+				description={`Are you sure you want to delete ${name} from your widgets?`}
+				confirmText="Yes, Delete"
+				onCancel={(): void => {
+					setShowDialog(false);
+				}}
+				onConfirm={(): void => {
+					deleteWidget(url);
+					setShowDialog(false);
+				}}
+			/>
 		</View>
 	);
 };
@@ -172,14 +204,22 @@ const styles = StyleSheet.create({
 	author: {
 		textAlign: 'right',
 	},
-	button: {
+	buttonsContainer: {
 		position: 'absolute',
-		paddingLeft: 8,
 		right: 0,
 		top: 0,
 		bottom: 1,
 		display: 'flex',
+		flexDirection: 'row',
 		justifyContent: 'center',
+		alignItems: 'center',
+	},
+	deleteButton: {
+		minWidth: 0,
+		marginHorizontal: 8,
+	},
+	settingsButton: {
+		minWidth: 0,
 	},
 });
 

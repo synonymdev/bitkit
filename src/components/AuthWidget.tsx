@@ -9,7 +9,12 @@ import { Linking, StyleSheet } from 'react-native';
 import { Client } from '@synonymdev/slashtags-auth';
 
 import { useProfile, useSelectedSlashtag } from '../hooks/slashtags';
-import { Text01M, TouchableOpacity, View } from '../styles/components';
+import {
+	Text01M,
+	TouchableOpacity,
+	TrashIcon,
+	View,
+} from '../styles/components';
 import { showErrorNotification } from '../utils/notifications';
 import Button from './Button';
 import ProfileImage from './ProfileImage';
@@ -80,7 +85,12 @@ const AuthWidget = ({
 					<View style={styles.buttonsContainer}>
 						{widget.magiclink && (
 							<>
-								<Button text="Delete" onPress={onDelete} />
+								<Button
+									text=""
+									onPress={onDelete}
+									icon={<TrashIcon width={20} />}
+									style={styles.deleteButton}
+								/>
 								<Button text="Log in" onPress={openMagicLink} />
 							</>
 						)}
@@ -95,7 +105,6 @@ const AuthWidget = ({
 				description={`Are you sure you want to delete ${profile.name} from your widgets?`}
 				confirmText="Yes, Delete"
 				onCancel={(): void => {
-					setShowButtons(false);
 					setShowDialog(false);
 				}}
 				onConfirm={(): void => {
@@ -134,12 +143,12 @@ const styles = StyleSheet.create({
 	buttonsContainer: {
 		position: 'absolute',
 		right: 0,
-		minWidth: 236, // (button min width) * 2 + margin
-		paddingLeft: 8,
-		display: 'flex',
 		flexDirection: 'row',
 		alignItems: 'center',
-		justifyContent: 'space-between',
+	},
+	deleteButton: {
+		minWidth: 0,
+		marginHorizontal: 8,
 	},
 });
 

@@ -78,7 +78,13 @@ const Button = ({
 			disabled={loading || disabled}
 			{...props}>
 			{icon && (
-				<View style={styles.iconContainer} color="transparent">
+				<View
+					style={
+						typeof text === 'string' && text.length > 0
+							? styles.iconContainer
+							: {}
+					}
+					color="transparent">
 					{icon}
 				</View>
 			)}
