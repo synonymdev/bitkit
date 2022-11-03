@@ -1,8 +1,8 @@
 import React, { memo, ReactElement, useMemo } from 'react';
+import { useSelector } from 'react-redux';
 
 import { IListData } from '../../../components/List';
 import SettingsView from '../SettingsView';
-import { useSelector } from 'react-redux';
 import Store from '../../../store/types';
 import { updateSettings } from '../../../store/actions/settings';
 
@@ -17,7 +17,7 @@ const BitcoinUnitSettings = ({ navigation }): ReactElement => {
 		{
 			label: 'Bitcoin',
 			unit: 'BTC',
-			labelExample: '(0.0001000)',
+			labelExample: '(0.0000100)',
 			Icon: UnitBitcoinIcon,
 		},
 		{

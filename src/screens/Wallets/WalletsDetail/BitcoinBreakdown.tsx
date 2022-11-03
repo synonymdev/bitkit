@@ -75,7 +75,7 @@ const BitcoinBreakdown = (): ReactElement => {
 	return (
 		<View color="transparent" style={styles.container}>
 			<NetworkRow
-				title="Bitcoin Savings"
+				title="Savings Balance"
 				subtitle="On-chain BTC"
 				color="rgba(247, 147, 26, 0.16)"
 				icon={<SavingsIcon color="orange" width={17} height={17} />}
