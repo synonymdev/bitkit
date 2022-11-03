@@ -96,8 +96,8 @@ const Slideshow = ({
 							<Display>Bitcoin,</Display>
 							<Display color="brand">Everywhere.</Display>
 							<Text01S color="gray1" style={styles.text}>
-								Pay anyone, anywhere, any time{'\n'}and spend your Bitcoin on
-								the{'\n'}things you value in life.
+								Pay anyone, anywhere, any time and spend your Bitcoin on the
+								things you value in life.
 							</Text01S>
 						</View>
 						<SafeAreaInsets type="bottom" />
@@ -117,8 +117,8 @@ const Slideshow = ({
 							<Display>Lightning</Display>
 							<Display color="purple">Fast.</Display>
 							<Text01S color="gray1" style={styles.text}>
-								Send Bitcoin faster than ever.{'\n'}Enjoy instant transactions
-								with{'\n'}friends, family and merchants.
+								Send Bitcoin faster than ever. Enjoy instant transactions with
+								friends, family and merchants.
 							</Text01S>
 						</View>
 						<SafeAreaInsets type="bottom" />
@@ -138,8 +138,8 @@ const Slideshow = ({
 							<Display>Log in with</Display>
 							<Display color="blue">just a Tap.</Display>
 							<Text01S color="gray1" style={styles.text}>
-								Experience the web without limits:{'\n'}portable profiles &
-								feeds, dynamic{'\n'}contacts, passwordless accounts.
+								Experience the web without limits: portable profiles & feeds,
+								dynamic contacts, passwordless accounts.
 							</Text01S>
 						</View>
 						<SafeAreaInsets type="bottom" />

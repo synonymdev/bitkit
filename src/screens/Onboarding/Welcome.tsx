@@ -36,8 +36,8 @@ const OnboardingWelcomeScreen = ({
 					</Display>
 
 					<Text01S color="gray1" style={styles.text}>
-						Bitkit hands you the keys to{'\n'}your money, profile, contacts,
-						{'\n'}and web accounts.
+						Bitkit hands you the keys to your money, profile, contacts, and web
+						accounts.
 					</Text01S>
 
 					<View style={styles.buttonsContainer}>
@@ -56,7 +56,7 @@ const OnboardingWelcomeScreen = ({
 						/>
 					</View>
 
-					<View style={styles.logoContainer}>
+					<View style={styles.logoContainer} pointerEvents="none">
 						<BitkitLogo height={30} width={72} />
 					</View>
 					<SafeAreaInsets type="bottom" />
