@@ -14,6 +14,8 @@ import { showErrorNotification } from '../utils/notifications';
 import Button from './Button';
 import ProfileImage from './ProfileImage';
 import { IWidget } from '../store/types/widgets';
+import { deleteWidget } from '../store/actions/widgets';
+import Dialog from './Dialog';
 
 const AuthWidget = ({
 	url,
@@ -23,6 +25,7 @@ const AuthWidget = ({
 	widget: IWidget;
 }): ReactElement => {
 	const [showButtons, setShowButtons] = useState(false);
+	const [showDialog, setShowDialog] = useState(false);
 
 	const { profile } = useProfile(url);
 	const { slashtag } = useSelectedSlashtag();
@@ -54,6 +57,10 @@ const AuthWidget = ({
 		});
 	}, [client, url]);
 
+	const onDelete = (): void => {
+		setShowDialog(true);
+	};
+
 	return (
 		<TouchableOpacity
 			style={styles.container}
@@ -72,13 +79,30 @@ const AuthWidget = ({
 				{showButtons ? (
 					<View style={styles.buttonsContainer}>
 						{widget.magiclink && (
-							<Button text="Log in" onPress={openMagicLink} />
+							<>
+								<Button text="Delete" onPress={onDelete} />
+								<Button text="Log in" onPress={openMagicLink} />
+							</>
 						)}
 					</View>
 				) : (
 					<View />
 				)}
 			</View>
+			<Dialog
+				visible={showDialog}
+				title={`Delete ${profile.name} auth widget?`}
+				description={`Are you sure you want to delete ${profile.name} from your widgets?`}
+				confirmText="Yes, Delete"
+				onCancel={(): void => {
+					setShowButtons(false);
+					setShowDialog(false);
+				}}
+				onConfirm={(): void => {
+					deleteWidget(url);
+					setShowDialog(false);
+				}}
+			/>
 		</TouchableOpacity>
 	);
 };
@@ -108,10 +132,14 @@ const styles = StyleSheet.create({
 		overflow: 'hidden',
 	},
 	buttonsContainer: {
+		position: 'absolute',
+		right: 0,
+		minWidth: 236, // (button min width) * 2 + margin
+		paddingLeft: 8,
 		display: 'flex',
 		flexDirection: 'row',
 		alignItems: 'center',
-		justifyContent: 'flex-end',
+		justifyContent: 'space-between',
 	},
 });
 
