@@ -1,4 +1,4 @@
-import React, { memo, ReactElement, useEffect, useMemo, useState } from 'react';
+import React, { memo, ReactElement, useEffect, useState } from 'react';
 import { Linking, StyleSheet } from 'react-native';
 import { SlashURL } from '@synonymdev/slashtags-sdk';
 
@@ -92,10 +92,6 @@ const HeadlinesWidget = ({
 		setShowDialog(true);
 	};
 
-	const name = useMemo(() => {
-		return article?.title || widget.feed.name;
-	}, [article?.title, widget.feed.name]);
-
 	return (
 		<View>
 			<TouchableOpacity
@@ -107,7 +103,7 @@ const HeadlinesWidget = ({
 				</View>
 				<View style={styles.infoContainer}>
 					<Text01M style={styles.name} numberOfLines={1}>
-						{name}
+						{article?.title || widget.feed.name}
 					</Text01M>
 					<View style={styles.row}>
 						<View style={styles.linkContainer}>
@@ -151,8 +147,8 @@ const HeadlinesWidget = ({
 			)}
 			<Dialog
 				visible={showDialog}
-				title={`Delete ${name} widget?`}
-				description={`Are you sure you want to delete ${name} from your widgets?`}
+				title="Delete Bitcoin Headlines widget?"
+				description="Are you sure you want to delete Bitcoin Headlines from your widgets?"
 				confirmText="Yes, Delete"
 				onCancel={(): void => {
 					setShowDialog(false);
