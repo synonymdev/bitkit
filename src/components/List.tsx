@@ -55,6 +55,7 @@ export type ItemData = {
 	title: string;
 	type: TItemType;
 	value?: string | boolean | TItemDraggable[];
+	disabled?: boolean;
 	enabled?: boolean;
 	hide?: boolean;
 	Icon?: React.FC<SvgProps>;
@@ -75,6 +76,7 @@ const _Item = memo(
 		title,
 		value,
 		navigation,
+		disabled = false,
 		enabled = true,
 		hide = false,
 		Icon,
@@ -166,6 +168,7 @@ const _Item = memo(
 				<TouchableOpacity
 					style={styles.item}
 					activeOpacity={0.6}
+					disabled={disabled}
 					onPress={enabled ? _onPress : undefined}>
 					<View style={styles.leftColumn}>
 						{Icon && (
@@ -209,6 +212,7 @@ const Item = memo(_Item, (prevProps, nextProps) => {
 		prevProps.title === nextProps.title &&
 		prevProps.value === nextProps.value &&
 		prevProps.type === nextProps.type &&
+		prevProps.disabled === nextProps.disabled &&
 		prevProps.enabled === nextProps.enabled &&
 		prevProps.Icon === nextProps.Icon
 	);

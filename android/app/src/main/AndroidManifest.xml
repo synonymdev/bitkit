@@ -44,5 +44,8 @@
         <intent>
             <data android:scheme="https"/>
         </intent>
+        <intent>
+            <data android:scheme="mailto"/>
+        </intent>
     </queries>
 </manifest>

@@ -441,20 +441,18 @@ export const timeAgo = (timestamp: number): string => {
 	return getFormattedDate(date); // 10. January 2017. at 10:20
 };
 
-export const openURL = async (link: string): Promise<void> => {
-	if (!link) {
-		return;
-	}
+export const openURL = async (url: string): Promise<void> => {
+	const supported = await Linking.canOpenURL(url);
 
 	try {
-		if (await Linking.canOpenURL(link)) {
-			await Linking.openURL(link);
+		if (supported) {
+			await Linking.openURL(url);
 		} else {
-			console.log('Cannot open url: ', link);
+			console.log('Cannot open url: ', url);
 		}
-	} catch (error) {
-		console.log('Cannot open url: ', link);
-		console.log(error);
+	} catch (e) {
+		console.log('Cannot open url: ', url);
+		console.error('Error open url: ', e);
 	}
 };
 
