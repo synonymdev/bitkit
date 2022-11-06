@@ -59,7 +59,7 @@ const PaymentPreference = (): ReactElement => {
 			<SettingsView
 				title="Payment Preference"
 				listData={settingsListData}
-				headerText="Choose how you prefer to receive money when users send funds to your Slashtag."
+				headerText="Choose how you prefer to receive money when users send funds to your profile key."
 				footerText="* This requires sharing payment data."
 				showBackNavigation
 				fullHeight={false}

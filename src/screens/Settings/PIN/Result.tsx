@@ -1,5 +1,5 @@
 import React, { memo, ReactElement, useMemo } from 'react';
-import { StyleSheet, View, Image } from 'react-native';
+import { StyleSheet, View, Image, Pressable } from 'react-native';
 import { useSelector } from 'react-redux';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -67,10 +67,10 @@ const Result = ({ route }: PinScreenProps<'Result'>): ReactElement => {
 				<Image source={imageSrc} style={styles.image} />
 			</View>
 
-			<View style={styles.toggle}>
+			<Pressable style={styles.toggle} onPress={handleTogglePress}>
 				<Text01M>Also require for payments</Text01M>
 				<Switch onValueChange={handleTogglePress} value={pinForPayments} />
-			</View>
+			</Pressable>
 
 			<View style={nextButtonContainer}>
 				<Button size="large" text="OK" onPress={handleButtonPress} />

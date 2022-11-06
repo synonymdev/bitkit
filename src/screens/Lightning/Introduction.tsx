@@ -1,5 +1,6 @@
 import React, { ReactElement, useMemo } from 'react';
 import { Image, StyleSheet } from 'react-native';
+import { useSelector } from 'react-redux';
 
 import { Display, Text01S, View } from '../../styles/components';
 import SafeAreaInsets from '../../components/SafeAreaInsets';
@@ -8,7 +9,6 @@ import NavigationHeader from '../../components/NavigationHeader';
 import Button from '../../components/Button';
 import useColors from '../../hooks/colors';
 import type { LightningScreenProps } from '../../navigation/types';
-import { useSelector } from 'react-redux';
 import Store from '../../store/types';
 import { useBalance } from '../../hooks/wallet';
 import { ETransactionDefaults } from '../../store/types/wallet';

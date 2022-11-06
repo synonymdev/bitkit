@@ -57,6 +57,7 @@ const styles = StyleSheet.create({
 		flex: 1,
 		marginTop: 8,
 		paddingHorizontal: 16,
+		paddingBottom: 16,
 	},
 	text: {
 		marginTop: 8,

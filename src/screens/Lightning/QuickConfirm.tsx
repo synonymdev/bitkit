@@ -191,10 +191,10 @@ const QuickConfirm = ({
 const styles = StyleSheet.create({
 	root: {
 		flex: 1,
-		display: 'flex',
 		justifyContent: 'space-between',
 		marginTop: 8,
 		paddingHorizontal: 16,
+		paddingBottom: 16,
 	},
 	text: {
 		marginTop: 8,
