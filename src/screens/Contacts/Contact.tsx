@@ -1,6 +1,7 @@
 import React, { ReactNode, useCallback, useMemo, useState } from 'react';
 import { StyleSheet, Share } from 'react-native';
 import { useSelector } from 'react-redux';
+import { FadeIn, FadeOut } from 'react-native-reanimated';
 import Clipboard from '@react-native-clipboard/clipboard';
 
 import {
@@ -28,7 +29,6 @@ import Store from '../../store/types';
 import { useBalance } from '../../hooks/wallet';
 import { RootStackScreenProps } from '../../navigation/types';
 import Dialog from '../../components/Dialog';
-import { FadeIn, FadeOut } from 'react-native-reanimated';
 import Tooltip from '../../components/Tooltip';
 import { truncate } from '../../utils/helpers';
 
@@ -119,13 +119,7 @@ export const Contact = ({
 				<View style={styles.bottom}>
 					<View style={styles.bottomHeader}>
 						<IconButton disabled={!canSend} onPress={handleSend}>
-							<CoinsIcon height={24} width={24} color="brand" />
-						</IconButton>
-						<IconButton
-							onPress={(): void => {
-								navigation.navigate('ContactEdit', { url });
-							}}>
-							<PencileIcon height={24} width={24} color="brand" />
+							<CoinsIcon height={22} width={22} color="brand" />
 						</IconButton>
 						<IconButton
 							onPress={(): void => {
@@ -141,6 +135,12 @@ export const Contact = ({
 								});
 							}}>
 							<ShareIcon height={24} width={24} color="brand" />
+						</IconButton>
+						<IconButton
+							onPress={(): void => {
+								navigation.navigate('ContactEdit', { url });
+							}}>
+							<PencileIcon height={20} width={20} color="brand" />
 						</IconButton>
 						<IconButton
 							onPress={(): void => {
