@@ -9,6 +9,7 @@ import Button from '../../components/Button';
 import BitkitLogo from '../../assets/bitkit-logo.svg';
 import useColors from '../../hooks/colors';
 import type { OnboardingStackScreenProps } from '../../navigation/types';
+import DetectSwipe from '../../components/DetectSwipe';
 
 const imageSrc = require('../../assets/illustrations/figures.png');
 
@@ -16,52 +17,64 @@ const OnboardingWelcomeScreen = ({
 	navigation,
 }: OnboardingStackScreenProps<'Welcome'>): ReactElement => {
 	const colors = useColors();
-	const onSkipIntro = (): void =>
+
+	const onGetStarted = (): void => {
+		navigation.navigate('Slideshow');
+	};
+
+	const onSkipIntro = (): void => {
 		navigation.navigate('Slideshow', { skipIntro: true });
-	const onGetStarted = (): void => navigation.navigate('Slideshow');
+	};
+
+	const onSwipeLeft = (): void => {
+		console.log('swiped');
+		navigation.navigate('Slideshow');
+	};
 
 	return (
 		<GlowingBackground topLeft={colors.brand}>
-			<View style={styles.content}>
-				<AnimatedView
-					style={styles.imageContainer}
-					color={'transparent'}
-					entering={FadeIn.duration(1000)}>
-					<Image style={styles.floatIllustraion} source={imageSrc} />
-				</AnimatedView>
+			<DetectSwipe onSwipeLeft={onSwipeLeft}>
+				<View style={styles.content}>
+					<AnimatedView
+						style={styles.imageContainer}
+						color="transparent"
+						entering={FadeIn.duration(1000)}>
+						<Image style={styles.floatIllustraion} source={imageSrc} />
+					</AnimatedView>
 
-				<View style={styles.textContent}>
-					<Display>
-						Your Bitcoin <Display color="brand">Toolkit.</Display>
-					</Display>
+					<View style={styles.textContent}>
+						<Display>
+							Your Bitcoin <Display color="brand">Toolkit.</Display>
+						</Display>
 
-					<Text01S color="gray1" style={styles.text}>
-						Bitkit hands you the keys to your money, profile, contacts, and web
-						accounts.
-					</Text01S>
+						<Text01S color="gray1" style={styles.text}>
+							Bitkit hands you the keys to your money, profile, contacts, and
+							web accounts.
+						</Text01S>
 
-					<View style={styles.buttonsContainer}>
-						<Button
-							size="large"
-							onPress={onGetStarted}
-							text="Get Started"
-							style={[styles.button, styles.restoreButton]}
-						/>
-						<Button
-							size="large"
-							variant="secondary"
-							onPress={onSkipIntro}
-							text="Skip Intro"
-							style={[styles.button, styles.skipButton]}
-						/>
+						<View style={styles.buttonsContainer}>
+							<Button
+								size="large"
+								onPress={onGetStarted}
+								text="Get Started"
+								style={[styles.button, styles.restoreButton]}
+							/>
+							<Button
+								size="large"
+								variant="secondary"
+								onPress={onSkipIntro}
+								text="Skip Intro"
+								style={[styles.button, styles.skipButton]}
+							/>
+						</View>
+
+						<View style={styles.logoContainer} pointerEvents="none">
+							<BitkitLogo height={30} width={72} />
+						</View>
+						<SafeAreaInsets type="bottom" />
 					</View>
-
-					<View style={styles.logoContainer} pointerEvents="none">
-						<BitkitLogo height={30} width={72} />
-					</View>
-					<SafeAreaInsets type="bottom" />
 				</View>
-			</View>
+			</DetectSwipe>
 		</GlowingBackground>
 	);
 };
