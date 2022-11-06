@@ -1,13 +1,9 @@
 import React, { useState, useMemo, useEffect, useCallback } from 'react';
-import { View, StyleSheet, KeyboardAvoidingView } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { useSelector } from 'react-redux';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
-import {
-	PlusIcon,
-	ScrollView,
-	View as ThemedView,
-	Text02S,
-} from '../../styles/components';
+import { PlusIcon, View as ThemedView, Text02S } from '../../styles/components';
 import NavigationHeader from '../../components/NavigationHeader';
 import Button from '../../components/Button';
 import SafeAreaInsets from '../../components/SafeAreaInsets';
@@ -104,52 +100,49 @@ export const ProfileEdit = ({
 			<SafeAreaInsets type="top" />
 			<NavigationHeader
 				style={styles.header}
-				title={onboardedProfile ? 'Edit Profile' : 'Create Profile'}
+				title={onboardedProfile ? 'Profile' : 'Create Profile'}
 				onClosePress={(): void => {
 					navigation.navigate(onboardedProfile ? 'Profile' : 'Tabs');
 				}}
 			/>
-			<KeyboardAvoidingView behavior="padding">
-				<ScrollView contentContainerStyle={styles.content}>
-					<ProfileCard
-						url={url}
-						editable={true}
-						resolving={false}
-						profile={profile}
-						onChange={setField}
-					/>
-					<Divider />
-					<ProfileLinks links={links} editable={true} />
-					<Button
-						text="Add Link"
-						style={styles.addLinkButton}
-						onPress={(): void => {
-							navigation.navigate('ProfileAddLink');
-						}}
-						icon={
-							<PlusIcon color="brand" width={16} style={styles.addLinkButton} />
-						}
-					/>
-					<Divider />
-					<Text02S color="gray1">
-						Please note that all your profile information will be publicly
-						available and visible.
-					</Text02S>
+			<KeyboardAwareScrollView contentContainerStyle={styles.content}>
+				<ProfileCard
+					url={url}
+					editable={true}
+					resolving={false}
+					profile={profile}
+					onChange={setField}
+				/>
+				<Divider />
+				<ProfileLinks links={links} editable={true} />
+				<Button
+					text="Add Link"
+					style={styles.addLinkButton}
+					onPress={(): void => {
+						navigation.navigate('ProfileAddLink');
+					}}
+					icon={
+						<PlusIcon color="brand" width={16} style={styles.addLinkButton} />
+					}
+				/>
+				<Divider />
+				<Text02S color="gray1">
+					Please note that all your profile information will be publicly
+					available and visible.
+				</Text02S>
 
-					{(!onboardedProfile || hasEdited) && (
-						<View style={styles.buttonContainer}>
-							<Button
-								style={styles.button}
-								text={onboardedProfile ? 'Save Profile' : 'Continue'}
-								size="large"
-								disabled={!isValid()}
-								onPress={save}
-							/>
-						</View>
-					)}
-				</ScrollView>
-			</KeyboardAvoidingView>
-
+				{(!onboardedProfile || hasEdited) && (
+					<View style={styles.buttonContainer}>
+						<Button
+							style={styles.button}
+							text={onboardedProfile ? 'Save Profile' : 'Continue'}
+							size="large"
+							disabled={!isValid()}
+							onPress={save}
+						/>
+					</View>
+				)}
+			</KeyboardAwareScrollView>
 			<SafeAreaInsets type="bottom" />
 		</ThemedView>
 	);
@@ -160,13 +153,12 @@ const styles = StyleSheet.create({
 		flex: 1,
 	},
 	header: {
-		paddingBottom: 12,
+		paddingBottom: 32,
 	},
 	content: {
 		flexGrow: 1,
 		paddingHorizontal: 16,
 		paddingBottom: 16,
-		paddingTop: 23,
 	},
 	addLinkButton: {
 		alignSelf: 'flex-start',
@@ -178,7 +170,7 @@ const styles = StyleSheet.create({
 	},
 	button: {
 		flex: 1,
-		marginTop: 32,
+		marginTop: 16,
 	},
 });
 

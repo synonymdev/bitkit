@@ -6,11 +6,13 @@ import {
 	StyleSheet,
 	ViewStyle,
 } from 'react-native';
-import { Caption13Up, Text02S, TrashIcon } from '../styles/components';
+
+import { Caption13Up, Text02M, Text02S, TrashIcon } from '../styles/components';
 import { LocalLink } from '../store/types/slashtags';
 import { openURL } from '../utils/helpers';
-import LabeledInput from './LabeledInput';
 import { editLink, removeLink } from '../store/actions/slashtags';
+import LabeledInput from './LabeledInput';
+import Divider from './Divider';
 
 const ProfileLinks = ({
 	links,
@@ -61,10 +63,10 @@ const ProfileLinks = ({
 							<Caption13Up color="gray1" style={styles.label}>
 								{link.title}
 							</Caption13Up>
-							<Text02S numberOfLines={1} style={styles.url}>
+							<Text02M numberOfLines={1} style={styles.url}>
 								{trimmedUrl}
-							</Text02S>
-							<View style={styles.divider} />
+							</Text02M>
+							<Divider />
 						</TouchableOpacity>
 					);
 				})
@@ -81,12 +83,6 @@ const styles = StyleSheet.create({
 		lineHeight: 15,
 	},
 	input: {
-		marginBottom: 16,
-	},
-	divider: {
-		height: 1,
-		backgroundColor: 'rgba(255, 255, 255, 0.1)',
-		marginTop: 16,
 		marginBottom: 16,
 	},
 });

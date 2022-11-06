@@ -72,16 +72,15 @@ export const ProfileAddLinkForm = ({
 					Note: Any link you add will be publicly visible.
 				</Text02S>
 
-				{isValid && (
-					<View style={buttonContainerStyles}>
-						<Button
-							style={styles.button}
-							text="Save"
-							size="large"
-							onPress={saveLink}
-						/>
-					</View>
-				)}
+				<View style={buttonContainerStyles}>
+					<Button
+						style={styles.button}
+						text="Save"
+						size="large"
+						disabled={!isValid}
+						onPress={saveLink}
+					/>
+				</View>
 			</View>
 		</ThemedView>
 	);

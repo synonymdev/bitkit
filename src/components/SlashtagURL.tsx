@@ -4,7 +4,7 @@ import { SlashURL } from '@synonymdev/slashtags-sdk';
 import { TouchableOpacity } from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
 
-import { Text } from '../styles/components';
+import { Text02M } from '../styles/components';
 
 export const SlashtagURL = ({
 	url,
@@ -31,12 +31,12 @@ export const SlashtagURL = ({
 			style={StyleSheet.compose(style, styles.button)}
 			activeOpacity={0.8}
 			delayLongPress={500}>
-			<Text style={styles.at} color={color}>
+			<Text02M style={styles.at} color={color}>
 				@
-			</Text>
-			<Text style={styles.url} color={color}>
+			</Text02M>
+			<Text02M style={styles.url} color={color}>
 				{id?.slice(0, 5)}...{url?.slice(url.length - 6)}
-			</Text>
+			</Text02M>
 		</TouchableOpacity>
 	);
 };

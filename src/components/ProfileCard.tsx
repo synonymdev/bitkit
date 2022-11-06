@@ -86,6 +86,7 @@ export const ProfileCard = ({
 					)}
 					<SlashtagURL style={styles.url} url={url} />
 				</View>
+
 				{editable && !contact ? (
 					<TouchableOpacity
 						activeOpacity={0.8}
@@ -160,18 +161,22 @@ const styles = StyleSheet.create({
 		fontSize: 34,
 		lineHeight: 34,
 		// needed because of issues with this font on Android
-		marginTop: Platform.OS === 'android' ? -12 : 0,
+		marginTop: Platform.OS === 'android' ? -12 : -5,
 		marginBottom: Platform.OS === 'android' ? -24 : 0,
 	},
 	url: {
 		marginTop: 8,
 	},
 	bio: {
+		fontFamily: 'NHaasGroteskDSW02-55Rg',
 		fontSize: 22,
+		letterSpacing: 0.4,
 		lineHeight: 26,
 	},
 	bioInput: {
+		fontFamily: 'NHaasGroteskDSW02-55Rg',
 		fontSize: 22,
+		letterSpacing: 0.4,
 		lineHeight: 26,
 		// needed because of issues with this font on Android
 		marginTop: Platform.OS === 'android' ? -8 : 0,
