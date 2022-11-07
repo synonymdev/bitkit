@@ -1,83 +1,122 @@
-import React, { ReactElement, useState } from 'react';
-import { StyleSheet } from 'react-native';
+import React, { ReactElement, useState, useEffect, useRef } from 'react';
+import { StyleSheet, Platform, View } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
-import { RNCamera } from 'react-native-camera';
+import {
+	Camera as CameraKit,
+	CameraApi,
+	CameraType,
+} from 'react-native-camera-kit';
 
-import { View } from '../styles/components';
 import { showErrorNotification } from '../utils/notifications';
 import CameraNoAuth from './CameraNoAuth';
+import GradientView from './GradientView';
+
+const STATUS = Object.freeze({
+	AUTHORIZED: 'AUTHORIZED',
+	NOT_AUTHORIZED: 'NOT_AUTHORIZED',
+	UNKNOWN: 'UNKNOWN',
+});
 
 const Camera = ({
 	onBarCodeRead = (): null => null,
 	onClose = (): null => null,
 	children = undefined,
-	flashMode = false,
+	torchMode = false,
 }: {
 	onBarCodeRead: Function;
 	onClose: Function;
 	children?: ReactElement;
-	flashMode?: boolean;
+	torchMode?: boolean;
 }): ReactElement => {
 	const isFocused = useIsFocused();
+	const ref = useRef<CameraApi | null>(null);
 	const [_data, setData] = useState('');
+	const [cameraStatus, setCameraStatus] = useState(STATUS.UNKNOWN);
 
-	const onMountError = (): void => {
-		console.error(
-			'An error was encountered when loading the camera. Please ensure Bitkit has permission to use this feature in your phone settings.',
-		);
-		showErrorNotification({
-			title: 'Error',
-			message: 'Error loading camera, please check permissions.',
-		});
-		onClose();
+	useEffect(() => {
+		if (Platform.OS !== 'ios') {
+			return;
+		}
+		(async (): Promise<void> => {
+			try {
+				const camera = ref.current;
+				if (!camera) {
+					return;
+				}
+
+				let isUserAuthorizedCamera;
+				const isCameraAuthorized =
+					await camera.checkDeviceCameraAuthorizationStatus();
+
+				switch (isCameraAuthorized) {
+					case true:
+						setCameraStatus(STATUS.AUTHORIZED);
+						break;
+					case false:
+						setCameraStatus(STATUS.NOT_AUTHORIZED);
+						isUserAuthorizedCamera =
+							await camera.requestDeviceCameraAuthorization();
+						if (isUserAuthorizedCamera) {
+							setCameraStatus(STATUS.AUTHORIZED);
+						}
+						break;
+					// @ts-ignore error in react-native-camera-kit
+					// camera.checkDeviceCameraAuthorizationStatus() can return -1
+					case -1:
+						setCameraStatus(STATUS.UNKNOWN);
+						isUserAuthorizedCamera =
+							await camera.requestDeviceCameraAuthorization();
+						if (isUserAuthorizedCamera) {
+							setCameraStatus(STATUS.AUTHORIZED);
+						}
+						break;
+				}
+			} catch (e) {
+				console.error('Camera error', e);
+				showErrorNotification({
+					title: 'Error',
+					message: 'Error loading camera, please check permissions.',
+				});
+				onClose();
+			}
+		})();
+	}, [onClose]);
+
+	const handleCodeRead = (event): void => {
+		const { codeStringValue } = event.nativeEvent;
+		if (_data !== codeStringValue) {
+			setData(codeStringValue);
+			onBarCodeRead(codeStringValue);
+		}
 	};
 
+	if (!isFocused) {
+		return <View style={styles.container} />;
+	}
+
 	return (
-		<View style={styles.container}>
-			{isFocused && (
-				<RNCamera
-					captureAudio={false}
-					style={styles.container}
-					onBarCodeRead={({ data }): void => {
-						if (_data !== data) {
-							setData(data);
-							onBarCodeRead(data);
-						}
-					}}
-					onMountError={onMountError}
-					notAuthorizedView={<CameraNoAuth />}
-					type={RNCamera.Constants.Type.back}
-					flashMode={
-						flashMode
-							? RNCamera.Constants.FlashMode.torch
-							: RNCamera.Constants.FlashMode.off
-					}
-					androidCameraPermissionOptions={{
-						title: 'Permission to use camera',
-						message: 'Bitkit needs permission to use your camera',
-						buttonPositive: 'Okay',
-						buttonNegative: 'Cancel',
-					}}>
-					<View color={'transparent'} style={styles.content}>
-						{children ?? <></>}
-					</View>
-				</RNCamera>
+		<GradientView style={styles.container}>
+			{cameraStatus !== STATUS.NOT_AUTHORIZED && (
+				<CameraKit
+					ref={ref}
+					style={styles.camera}
+					scanBarcode={true}
+					onReadCode={handleCodeRead}
+					torchMode={torchMode ? 'on' : 'off'}
+					cameraType={CameraType.Back}
+				/>
 			)}
-		</View>
+			{cameraStatus === STATUS.NOT_AUTHORIZED ? <CameraNoAuth /> : children}
+		</GradientView>
 	);
 };
 
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		backgroundColor: 'transparent',
-		position: 'absolute',
-		height: '100%',
-		width: '100%',
-		zIndex: 1000,
 	},
-	content: {
-		flex: 1,
+	camera: {
+		...StyleSheet.absoluteFillObject,
 	},
 });
 
