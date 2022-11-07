@@ -94,7 +94,6 @@ const styles = StyleSheet.create({
 	},
 	leftColumn: {
 		flex: 6,
-		display: 'flex',
 		flexDirection: 'row',
 		alignItems: 'center',
 		paddingLeft: 16,

@@ -212,7 +212,6 @@ const CustomConfirm = ({
 const styles = StyleSheet.create({
 	root: {
 		flex: 1,
-		display: 'flex',
 		justifyContent: 'space-between',
 		marginTop: 8,
 		paddingHorizontal: 16,

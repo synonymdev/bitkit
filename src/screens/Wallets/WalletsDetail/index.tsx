@@ -259,7 +259,6 @@ const styles = StyleSheet.create({
 		marginBottom: 30,
 	},
 	largeValueContainer: {
-		display: 'flex',
 		flexDirection: 'row',
 	},
 	txListContainer: {

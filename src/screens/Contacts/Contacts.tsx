@@ -100,7 +100,6 @@ const styles = StyleSheet.create({
 		marginTop: 0,
 	},
 	searchRow: {
-		display: 'flex',
 		flexDirection: 'row',
 		alignItems: 'center',
 		marginBottom: 32,
@@ -109,7 +108,6 @@ const styles = StyleSheet.create({
 		flex: 1,
 	},
 	addButton: {
-		display: 'flex',
 		alignItems: 'center',
 		justifyContent: 'center',
 		height: 48,

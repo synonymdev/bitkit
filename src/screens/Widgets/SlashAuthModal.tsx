@@ -223,7 +223,6 @@ const styles = StyleSheet.create({
 		paddingHorizontal: 16,
 	},
 	header: {
-		display: 'flex',
 		flexDirection: 'row',
 		alignItems: 'center',
 	},
@@ -243,7 +242,6 @@ const styles = StyleSheet.create({
 
 const keyStyles = StyleSheet.create({
 	row: {
-		display: 'flex',
 		flexDirection: 'row',
 		justifyContent: 'space-between',
 		alignItems: 'center',

@@ -7,6 +7,7 @@ import React, {
 } from 'react';
 import { StyleSheet, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { useSelector } from 'react-redux';
 
 import {
 	Caption13M,
@@ -20,7 +21,6 @@ import { useBalance } from '../../../hooks/wallet';
 import Money from '../../../components/Money';
 import { RootNavigationProp } from '../../../navigation/types';
 import { getOpenChannels } from '../../../utils/lightning';
-import { useSelector } from 'react-redux';
 import Store from '../../../store/types';
 
 const NetworkRow = ({
@@ -123,17 +123,13 @@ const BitcoinBreakdown = (): ReactElement => {
 };
 
 const styles = StyleSheet.create({
-	container: {
-		display: 'flex',
-	},
+	container: {},
 	networkRow: {
-		display: 'flex',
 		flexDirection: 'row',
 		alignItems: 'center',
 		justifyContent: 'space-between',
 	},
 	transferRow: {
-		display: 'flex',
 		flexDirection: 'row',
 		alignItems: 'center',
 		paddingVertical: 16,
@@ -149,7 +145,6 @@ const styles = StyleSheet.create({
 		height: 32,
 		width: 32,
 		marginRight: 14,
-		display: 'flex',
 		justifyContent: 'center',
 		alignItems: 'center',
 	},
@@ -157,19 +152,16 @@ const styles = StyleSheet.create({
 		paddingHorizontal: 15,
 		height: 36,
 		borderRadius: 34,
-		display: 'flex',
 		flexDirection: 'row',
 		justifyContent: 'center',
 		alignItems: 'center',
 		marginHorizontal: 16,
 	},
 	titleContainer: {
-		display: 'flex',
 		flexDirection: 'row',
 		alignItems: 'center',
 	},
 	valueContainer: {
-		display: 'flex',
 		alignItems: 'flex-end',
 	},
 });

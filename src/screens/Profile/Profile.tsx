@@ -273,24 +273,20 @@ const styles = StyleSheet.create({
 	},
 	bottom: {
 		flex: 1,
-		display: 'flex',
 		flexDirection: 'column',
 	},
 	iconContainer: {
 		width: 48,
 		height: 48,
 		borderRadius: 9999,
-		display: 'flex',
 		alignItems: 'center',
 		justifyContent: 'center',
 		marginRight: 16,
 	},
 	bottomHeader: {
-		display: 'flex',
 		flexDirection: 'row',
 	},
 	qrViewContainer: {
-		display: 'flex',
 		alignItems: 'center',
 		flex: 1,
 	},

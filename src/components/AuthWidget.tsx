@@ -125,12 +125,10 @@ const styles = StyleSheet.create({
 		borderBottomWidth: 1,
 	},
 	left: {
-		display: 'flex',
 		flexDirection: 'row',
 		alignItems: 'center',
 	},
 	right: {
-		display: 'flex',
 		flexDirection: 'row',
 		alignItems: 'center',
 	},
