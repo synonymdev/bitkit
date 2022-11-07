@@ -17,8 +17,11 @@ import {
 	getCurrentWallet,
 	getSelectedAddressType,
 } from '../../../utils/wallet';
+import { SettingsScreenProps } from '../../../navigation/types';
 
-const BitcoinNetworkSelection = ({ navigation }): ReactElement => {
+const BitcoinNetworkSelection = ({
+	navigation,
+}: SettingsScreenProps<'BitcoinNetworkSelection'>): ReactElement => {
 	const selectedNetwork = useSelector(
 		(state: Store) => state.wallet.selectedNetwork,
 	);
@@ -59,7 +62,6 @@ const BitcoinNetworkSelection = ({ navigation }): ReactElement => {
 								forceUpdate: true,
 							});
 						},
-						hide: false,
 					};
 				}),
 			},
@@ -69,7 +71,7 @@ const BitcoinNetworkSelection = ({ navigation }): ReactElement => {
 
 	return (
 		<SettingsView
-			title={'Bitcoin Networks'}
+			title="Bitcoin Networks"
 			listData={Networks}
 			showBackNavigation
 		/>

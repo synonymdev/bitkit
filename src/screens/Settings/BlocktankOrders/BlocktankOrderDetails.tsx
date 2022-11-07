@@ -1,4 +1,6 @@
 import React, { ReactElement, memo, useMemo } from 'react';
+import { useSelector } from 'react-redux';
+import Clipboard from '@react-native-clipboard/clipboard';
 import {
 	StyleSheet,
 	View,
@@ -8,6 +10,7 @@ import {
 	Linking,
 	Platform,
 } from 'react-native';
+
 import { version as appVersion } from '../../../../package.json';
 import {
 	Caption13Up,
@@ -18,13 +21,11 @@ import SafeAreaInsets from '../../../components/SafeAreaInsets';
 import Button from '../../../components/Button';
 import NavigationHeader from '../../../components/NavigationHeader';
 import Money from '../../../components/Money';
-import Clipboard from '@react-native-clipboard/clipboard';
 import { showSuccessNotification } from '../../../utils/notifications';
-import { IGetOrderResponse } from '@synonymdev/blocktank-client';
-import { useSelector } from 'react-redux';
 import Store from '../../../store/types';
 import { getBlockExplorerLink } from '../../../utils/wallet/transactions';
 import { openURL } from '../../../utils/helpers';
+import { SettingsScreenProps } from '../../../navigation/types';
 
 const Section = memo(
 	({
@@ -50,12 +51,10 @@ const Section = memo(
 	},
 );
 
-const BlocktankOrderDetails = ({ route }): ReactElement => {
-	const {
-		blocktankOrder,
-	}: {
-		blocktankOrder: IGetOrderResponse;
-	} = route.params;
+const BlocktankOrderDetails = ({
+	route,
+}: SettingsScreenProps<'BlocktankOrderDetails'>): ReactElement => {
+	const { blocktankOrder } = route.params;
 
 	const paidBlocktankOrders = useSelector(
 		(state: Store) => state.blocktank.paidOrders,

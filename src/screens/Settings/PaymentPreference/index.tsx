@@ -28,7 +28,6 @@ const PaymentPreference = (): ReactElement => {
 						title: 'Payment preference (drag to reorder)',
 						type: 'draggable',
 						value: receivePreference,
-						hide: false,
 						onDragEnd: (data): void => {
 							updateSettings({ receivePreference: data });
 						},
@@ -42,7 +41,6 @@ const PaymentPreference = (): ReactElement => {
 						title: 'Enable payments with contacts*',
 						type: 'switch',
 						enabled: enableOfflinePayments,
-						hide: false,
 						onPress: (): void => {
 							updateSettings({ enableOfflinePayments: !enableOfflinePayments });
 							updateSlashPayConfig(sdk);
@@ -55,7 +53,7 @@ const PaymentPreference = (): ReactElement => {
 	);
 
 	return (
-		<ThemedView color="black" style={styles.container}>
+		<ThemedView style={styles.container}>
 			<SettingsView
 				title="Payment Preference"
 				listData={settingsListData}

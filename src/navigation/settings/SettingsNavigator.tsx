@@ -7,7 +7,7 @@ import {
 	StackNavigationProp,
 } from '@react-navigation/stack';
 
-import SettingsMenu from '../../screens/Settings';
+import MainSettings from '../../screens/Settings';
 import ManageSeedPhrase from '../../screens/Settings/ManageSeedPhrase';
 import CurrenciesSettings from '../../screens/Settings/Currencies';
 import ElectrumConfig from '../../screens/Settings/ElectrumConfig';
@@ -45,13 +45,14 @@ import LightningNavigator, {
 	LightningStackParamList,
 } from '../lightning/LightningNavigator';
 import SlashtagsSettings from '../../screens/Settings/SlashtagsSettings';
+import { IGetOrderResponse } from '@synonymdev/blocktank-client';
 
 export type SettingsNavigationProp =
 	StackNavigationProp<SettingsStackParamList>;
 
 export type SettingsStackParamList = {
 	AuthCheck: { onSuccess: () => void };
-	SettingsMenu: undefined;
+	MainSettings: undefined;
 	GeneralSettings: undefined;
 	SecuritySettings: undefined;
 	ChangePin: undefined;
@@ -67,7 +68,7 @@ export type SettingsStackParamList = {
 	BitcoinUnitSettings: undefined;
 	TransactionSpeedSettings: undefined;
 	BlocktankOrders: undefined;
-	BlocktankOrderDetails: undefined;
+	BlocktankOrderDetails: { blocktankOrder: IGetOrderResponse };
 	ElectrumConfig: undefined;
 	CoinSelectPreference: undefined;
 	PaymentPreference: undefined;
@@ -100,9 +101,9 @@ const SettingsNavigator = (): ReactElement => {
 	return (
 		<Stack.Navigator
 			screenOptions={screenOptions}
-			initialRouteName="SettingsMenu">
+			initialRouteName="MainSettings">
 			<Stack.Screen name="AuthCheck" component={AuthCheck} />
-			<Stack.Screen name="SettingsMenu" component={SettingsMenu} />
+			<Stack.Screen name="MainSettings" component={MainSettings} />
 			<Stack.Screen name="GeneralSettings" component={GeneralSettings} />
 			<Stack.Screen name="SecuritySettings" component={SecuritySettings} />
 			<Stack.Screen name="ChangePin" component={ChangePin} />

@@ -29,20 +29,19 @@ const BackupSettings = ({
 								data: { isOpen: true },
 							});
 						},
-						hide: false,
 					},
 					{
 						title: 'Back up your data',
 						type: 'button',
+						enabled: true,
 						onPress: (): void => {
 							navigation.navigate('BackupData');
 						},
-						enabled: true,
-						hide: false,
 					},
 					{
 						title: 'Reset and restore wallet',
 						type: 'button',
+						enabled: true,
 						onPress: (): void => {
 							if (pin) {
 								navigation.navigate('AuthCheck', {
@@ -57,8 +56,6 @@ const BackupSettings = ({
 								navigation.navigate('ResetAndRestore');
 							}
 						},
-						enabled: true,
-						hide: false,
 					},
 				],
 			},

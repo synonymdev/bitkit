@@ -1,9 +1,9 @@
 import React, { memo, ReactElement, useState, useEffect, useMemo } from 'react';
+import { useSelector } from 'react-redux';
 import b4a from 'b4a';
 
 import { IListData } from '../../../components/List';
 import SettingsView from '../SettingsView';
-import { useSelector } from 'react-redux';
 import Store from '../../../store/types';
 import { useSelectedSlashtag } from '../../../hooks/slashtags';
 import { useSlashtagsSDK } from '../../../components/SlashtagsProvider';
@@ -78,13 +78,11 @@ const SlashtagsSettings = (): ReactElement => {
 					{
 						title: 'version',
 						value: driveVersion,
-						hide: false,
 						type: 'button',
 					},
 					{
 						title: 'last seeded',
 						value: lastSeed && new Date(lastSeed).toLocaleString(),
-						hide: false,
 						type: 'button',
 					},
 					{
@@ -92,13 +90,11 @@ const SlashtagsSettings = (): ReactElement => {
 						value: seederStatus.seeded
 							? 'behind by ' + seederStatus.diff + ' blocks'
 							: 'Not Found',
-						hide: false,
 						type: 'button',
 					},
 					{
 						title: 'corrupt',
 						value: profileError || 'false',
-						hide: false,
 						type: 'button',
 					},
 				],
@@ -110,7 +106,6 @@ const SlashtagsSettings = (): ReactElement => {
 						title: 'open',
 						value: !sdk.closed || 'false',
 						type: 'button',
-						hide: false,
 					},
 				],
 			},
@@ -120,18 +115,15 @@ const SlashtagsSettings = (): ReactElement => {
 					{
 						title: 'open',
 						value: sdk.swarm.dht._protocol._stream._socket.readyState === 1,
-						hide: false,
 						type: 'button',
 					},
 					{
 						title: 'url',
 						value: sdk.swarm.dht._protocol._stream._socket.url,
-						hide: false,
 						type: 'button',
 					},
 					{
 						title: 'close relay socket',
-						hide: false,
 						type: 'button',
 						onPress: () => sdk._relaySocket.close(),
 					},
@@ -143,13 +135,11 @@ const SlashtagsSettings = (): ReactElement => {
 					{
 						title: 'swarm NOT destroyed',
 						value: !sdk.swarm.destroyed || 'false',
-						hide: false,
 						type: 'button',
 					},
 					{
 						title: 'announced on publicDrive',
 						value: discoveryKey ? sdk.swarm.status(discoveryKey)?.isServer : '',
-						hide: false,
 						type: 'button',
 					},
 				],
@@ -160,10 +150,9 @@ const SlashtagsSettings = (): ReactElement => {
 
 	return (
 		<SettingsView
-			title={'Slashtags Settings'}
+			title="Slashtags Settings"
 			listData={list}
 			showBackNavigation
-			showSearch
 		/>
 	);
 };

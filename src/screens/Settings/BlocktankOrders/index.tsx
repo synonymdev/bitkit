@@ -5,13 +5,18 @@ import React, {
 	useEffect,
 	useState,
 } from 'react';
-import { StyleSheet, View } from 'react-native';
-import SettingsView from '../SettingsView';
+import { StyleSheet } from 'react-native';
 import { useSelector } from 'react-redux';
+
+import { View as ThemedView } from '../../../styles/components';
+import SettingsView from '../SettingsView';
 import Store from '../../../store/types';
 import { IListData } from '../../../components/List';
+import type { SettingsScreenProps } from '../../../navigation/types';
 
-const BlocktankOrders = ({ navigation }): ReactElement => {
+const BlocktankOrders = ({
+	navigation,
+}: SettingsScreenProps<'BlocktankOrders'>): ReactElement => {
 	const blocktankOrders = useSelector((state: Store) => state.blocktank.orders);
 
 	const [blocktankOrderList, setBlocktankOrderList] = useState<IListData[]>([]);
@@ -34,9 +39,7 @@ const BlocktankOrders = ({ navigation }): ReactElement => {
 					},
 				);
 				const onPress = (): void => {
-					navigation.push('BlocktankOrderDetails', {
-						blocktankOrder,
-					});
+					navigation.push('BlocktankOrderDetails', { blocktankOrder });
 				};
 				listData.data.push({
 					title: createdAt,
@@ -44,7 +47,6 @@ const BlocktankOrders = ({ navigation }): ReactElement => {
 					value: blocktankOrder.stateMessage,
 					type: 'textButton',
 					onPress,
-					hide: false,
 				});
 			}),
 		);
@@ -56,21 +58,20 @@ const BlocktankOrders = ({ navigation }): ReactElement => {
 	}, [setupBlocktankOrderList]);
 
 	return (
-		<View style={styles.container}>
+		<ThemedView style={styles.container}>
 			<SettingsView
-				title={'Blocktank Orders'}
+				title="Blocktank Orders"
 				listData={blocktankOrderList}
 				showBackNavigation={true}
 				fullHeight={false}
 			/>
-		</View>
+		</ThemedView>
 	);
 };
 
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		backgroundColor: '#000',
 	},
 });
 

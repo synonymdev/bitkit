@@ -15,10 +15,13 @@ import SettingsView from './SettingsView';
 import Store from '../../store/types';
 import { updateSettings } from '../../store/actions/settings';
 import { showSuccessNotification } from '../../utils/notifications';
+import { SettingsScreenProps } from '../../navigation/types';
 
 const imageSrc = require('./../../assets/illustrations/cog.png');
 
-const SettingsMenu = ({ navigation }): ReactElement => {
+const MainSettings = ({
+	navigation,
+}: SettingsScreenProps<'MainSettings'>): ReactElement => {
 	const enableDevOptions = useSelector(
 		(state: Store) => state.settings.enableDevOptions,
 	);
@@ -50,37 +53,31 @@ const SettingsMenu = ({ navigation }): ReactElement => {
 				title: 'General',
 				type: 'button',
 				onPress: (): void => navigation.navigate('GeneralSettings'),
-				hide: false,
 			},
 			{
 				title: 'Security and Privacy',
 				type: 'button',
 				onPress: (): void => navigation.navigate('SecuritySettings'),
-				hide: false,
 			},
 			{
 				title: 'Back up or Restore',
 				type: 'button',
 				onPress: (): void => navigation.navigate('BackupSettings'),
-				hide: false,
 			},
 			{
 				title: 'Networks',
 				type: 'button',
 				onPress: (): void => navigation.navigate('NetworksSettings'),
-				hide: false,
 			},
 			{
 				title: 'Advanced',
 				type: 'button',
 				onPress: (): void => navigation.navigate('AdvancedSettings'),
-				hide: false,
 			},
 			{
 				title: 'About Bitkit',
 				type: 'button',
 				onPress: (): void => navigation.navigate('AboutSettings'),
-				hide: false,
 			},
 		];
 
@@ -89,7 +86,6 @@ const SettingsMenu = ({ navigation }): ReactElement => {
 				title: 'Dev settings',
 				type: 'button',
 				onPress: (): void => navigation.navigate('DevSettings'),
-				hide: false,
 			});
 		}
 		return [{ data }];
@@ -134,4 +130,4 @@ const styles = StyleSheet.create({
 	},
 });
 
-export default memo(SettingsMenu);
+export default memo(MainSettings);

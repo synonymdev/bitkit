@@ -6,8 +6,11 @@ import SettingsView from '../SettingsView';
 import Store from '../../../store/types';
 import { mostUsedExchangeTickers } from '../../../utils/exchange-rate/types';
 import { updateSettings } from '../../../store/actions/settings';
+import type { SettingsScreenProps } from '../../../navigation/types';
 
-const Currencies = ({ navigation }): ReactElement => {
+const CurrenciesSettings = ({
+	navigation,
+}: SettingsScreenProps<'CurrenciesSettings'>): ReactElement => {
 	const exchangeRates = useSelector(
 		(state: Store) => state.wallet.exchangeRates,
 	);
@@ -29,7 +32,6 @@ const Currencies = ({ navigation }): ReactElement => {
 						title: `${ticker.quote} (${ticker.currencySymbol})`,
 						value: selectedCurrency === ticker.quote,
 						type: 'button',
-						hide: false,
 						onPress: (): void => {
 							navigation.goBack();
 							onSetCurrency(ticker.quote);
@@ -45,7 +47,6 @@ const Currencies = ({ navigation }): ReactElement => {
 						title: ticker,
 						value: selectedCurrency === ticker,
 						type: 'button',
-						hide: false,
 						onPress: (): void => {
 							navigation.goBack();
 							onSetCurrency(ticker);
@@ -67,4 +68,4 @@ const Currencies = ({ navigation }): ReactElement => {
 	);
 };
 
-export default memo(Currencies);
+export default memo(CurrenciesSettings);

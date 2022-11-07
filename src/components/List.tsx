@@ -189,7 +189,7 @@ const _Item = memo(
 					</View>
 					<View style={styles.rightColumn}>
 						{useCheckmark ? (
-							value && <Checkmark color="brand" height={22} width={22} />
+							value && <Checkmark color="brand" width={27} height={27} />
 						) : (
 							<>
 								<Text01S style={styles.valueText}>{value}</Text01S>

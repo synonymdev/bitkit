@@ -1,8 +1,9 @@
 import React, { memo, ReactElement, useEffect, useState } from 'react';
 import { StyleSheet } from 'react-native';
+import { useSelector } from 'react-redux';
+
 import { Feather, Text, TouchableOpacity } from '../../../styles/components';
 import List from '../../../components/List';
-import { useSelector } from 'react-redux';
 import Store from '../../../store/types';
 import { truncate } from '../../../utils/helpers';
 import SafeAreaView from '../../../components/SafeAreaView';
@@ -37,7 +38,6 @@ const LightningChannels = ({ navigation }): ReactElement => {
 					onPress: async (): Promise<void> => {
 						navigation.navigate('LightningChannelDetails', { channel });
 					},
-					hide: false,
 				};
 			}),
 		},
@@ -49,7 +49,6 @@ const LightningChannels = ({ navigation }): ReactElement => {
 				}\nAddress: ${p.address}`,
 				type: 'button',
 				onPress: async (): Promise<void> => {},
-				hide: false,
 			})),
 		},
 	];

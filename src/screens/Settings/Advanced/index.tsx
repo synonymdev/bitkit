@@ -1,8 +1,11 @@
 import React, { memo, ReactElement, useMemo } from 'react';
 import { IListData } from '../../../components/List';
 import SettingsView from '../SettingsView';
+import type { SettingsScreenProps } from '../../../navigation/types';
 
-const AdvancedSettings = ({ navigation }): ReactElement => {
+const AdvancedSettings = ({
+	navigation,
+}: SettingsScreenProps<'AdvancedSettings'>): ReactElement => {
 	const SettingsListData: IListData[] = useMemo(
 		() => [
 			{
@@ -11,13 +14,11 @@ const AdvancedSettings = ({ navigation }): ReactElement => {
 						title: 'Coin selection',
 						type: 'button',
 						onPress: (): void => navigation.navigate('CoinSelectPreference'),
-						hide: false,
 					},
 					{
 						title: 'Payment preference',
 						type: 'button',
 						onPress: (): void => navigation.navigate('PaymentPreference'),
-						hide: false,
 					},
 				],
 			},
@@ -27,7 +28,7 @@ const AdvancedSettings = ({ navigation }): ReactElement => {
 
 	return (
 		<SettingsView
-			title={'Advanced'}
+			title="Advanced"
 			listData={SettingsListData}
 			showBackNavigation={true}
 		/>

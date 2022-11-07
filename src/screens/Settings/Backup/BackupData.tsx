@@ -1,5 +1,6 @@
 import React, { memo, ReactElement } from 'react';
 import { StyleSheet, Image } from 'react-native';
+
 import { View, Text01S } from '../../../styles/components';
 import Glow from '../../../components/Glow';
 import NavigationHeader from '../../../components/NavigationHeader';
@@ -57,7 +58,6 @@ const BackupData = ({
 	// 				title: `Back up automatically ${isBackingUp ? '(Syncing...)' : ''}`,
 	// 				type: 'switch',
 	// 				onPress: toggleRemoteBackup,
-	// 				hide: false,
 	// 				enabled: remoteBackupsEnabled,
 	// 			},
 	// 		],
@@ -78,28 +78,24 @@ const BackupData = ({
 	// 				});
 	// 			},
 	// 			enabled: true,
-	// 			hide: false,
 	// 		},
 	// 		{
 	// 			title: 'Store on iCloud',
 	// 			type: 'button',
 	// 			onPress: (): void => Alert.alert('Coming soon'),
 	// 			enabled: true,
-	// 			hide: false,
 	// 		},
 	// 		{
 	// 			title: 'Store on Google Drive',
 	// 			type: 'button',
 	// 			onPress: (): void => Alert.alert('Coming soon'),
 	// 			enabled: true,
-	// 			hide: false,
 	// 		},
 	// 		{
 	// 			title: 'Store on Dropbox',
 	// 			type: 'button',
 	// 			onPress: (): void => Alert.alert('Coming soon'),
 	// 			enabled: true,
-	// 			hide: false,
 	// 		},
 	// 	],
 	// },

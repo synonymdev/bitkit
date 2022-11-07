@@ -1,9 +1,7 @@
 import React, { memo, ReactElement, useMemo } from 'react';
-import { StyleSheet } from 'react-native';
 import { useSelector } from 'react-redux';
 import { Result } from '@synonymdev/result';
 
-import { View as ThemedView } from '../../../styles/components';
 import { IListData } from '../../../components/List';
 import SettingsView from '../SettingsView';
 import Store from '../../../store/types';
@@ -29,7 +27,6 @@ const CoinSelectSettings = (): ReactElement => {
 						onPress: (): void => {
 							updateSettings({ coinSelectAuto: false });
 						},
-						hide: false,
 					},
 					{
 						title: 'Autopilot',
@@ -38,7 +35,6 @@ const CoinSelectSettings = (): ReactElement => {
 						onPress: (): void => {
 							updateSettings({ coinSelectAuto: true });
 						},
-						hide: false,
 					},
 				],
 			},
@@ -85,20 +81,12 @@ const CoinSelectSettings = (): ReactElement => {
 	);
 
 	return (
-		<ThemedView color="black" style={styles.container}>
-			<SettingsView
-				title="Coin Selection"
-				listData={settingsListData}
-				showBackNavigation
-			/>
-		</ThemedView>
+		<SettingsView
+			title="Coin Selection"
+			listData={settingsListData}
+			showBackNavigation
+		/>
 	);
 };
-
-const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-	},
-});
 
 export default memo(CoinSelectSettings);

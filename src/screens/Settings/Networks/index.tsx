@@ -1,6 +1,8 @@
 import React, { memo, ReactElement, useMemo } from 'react';
 import { useSelector } from 'react-redux';
+
 import { IListData, ItemData } from '../../../components/List';
+import { SettingsScreenProps } from '../../../navigation/types';
 import Store from '../../../store/types';
 import SettingsView from '../SettingsView';
 
@@ -10,7 +12,9 @@ const networkLabels = {
 	bitcoinRegtest: 'Regtest',
 };
 
-const NetworksSettings = ({ navigation }): ReactElement => {
+const NetworksSettings = ({
+	navigation,
+}: SettingsScreenProps<'NetworksSettings'>): ReactElement => {
 	const selectedNetwork = useSelector(
 		(state: Store) => state.wallet.selectedNetwork,
 	);
@@ -24,19 +28,16 @@ const NetworksSettings = ({ navigation }): ReactElement => {
 				title: 'Lightning Node Info',
 				type: 'button',
 				onPress: (): void => navigation.navigate('LightningNodeInfo'),
-				hide: false,
 			},
 			{
 				title: 'Lightning connections',
 				type: 'button',
 				onPress: (): void => navigation.navigate('Channels'),
-				hide: false,
 			},
 			{
 				title: 'Electrum Server',
 				type: 'button',
 				onPress: (): void => navigation.navigate('ElectrumConfig'),
-				hide: false,
 			},
 		];
 
@@ -46,7 +47,6 @@ const NetworksSettings = ({ navigation }): ReactElement => {
 				value: networkLabels[selectedNetwork],
 				type: 'button',
 				onPress: (): void => navigation.navigate('BitcoinNetworkSelection'),
-				hide: false,
 			});
 		}
 		return [{ data }];
@@ -54,7 +54,7 @@ const NetworksSettings = ({ navigation }): ReactElement => {
 
 	return (
 		<SettingsView
-			title={'Networks'}
+			title="Networks"
 			listData={SettingsListData}
 			showBackNavigation={true}
 		/>
