@@ -39,6 +39,7 @@ const NumberPadWeeks = ({
 	return (
 		<NumberPad
 			style={[styles.numberpad, style]}
+			type="simple"
 			onPress={onPress}
 			onRemove={onRemove}>
 			<NumberPadButtons

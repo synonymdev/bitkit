@@ -27,9 +27,9 @@ const Button = memo(
 );
 
 type NumberPad = {
+	type: 'simple' | 'integer' | 'decimal';
 	style?: object | Array<object>;
 	children?: ReactElement;
-	showDot?: boolean;
 	onPress: (key: number | string) => void;
 	onRemove: () => void;
 };
@@ -37,7 +37,7 @@ type NumberPad = {
 const NumberPad = ({
 	onPress,
 	onRemove,
-	showDot = true,
+	type,
 	style,
 	children,
 }: NumberPad): ReactElement => {
@@ -78,21 +78,23 @@ const NumberPad = ({
 			</View>
 
 			<View style={styles.row}>
-				{showDot ? (
-					<TouchableOpacity
-						onPress={(): void => handlePress('.')}
-						activeOpacity={ACTIVE_OPACITY}
-						style={styles.buttonContainer}
-						color="transparent">
-						<Text style={styles.button}>.</Text>
-					</TouchableOpacity>
-				) : (
+				{type === 'simple' && <View style={styles.buttonContainer} />}
+				{type === 'integer' && (
 					<TouchableOpacity
 						onPress={(): void => handlePress('000')}
 						activeOpacity={ACTIVE_OPACITY}
 						style={styles.buttonContainer}
 						color="transparent">
 						<Text style={styles.button}>000</Text>
+					</TouchableOpacity>
+				)}
+				{type === 'decimal' && (
+					<TouchableOpacity
+						onPress={(): void => handlePress('.')}
+						activeOpacity={ACTIVE_OPACITY}
+						style={styles.buttonContainer}
+						color="transparent">
+						<Text style={styles.button}>.</Text>
 					</TouchableOpacity>
 				)}
 				<Button onPress={(): void => handlePress(digits[9])} num={digits[9]} />

@@ -70,7 +70,7 @@ const FeeNumberPad = ({
 	return (
 		<NumberPad
 			style={style}
-			showDot={false}
+			type="integer"
 			onPress={onPress}
 			onRemove={onRemove}>
 			<NumberPadButtons showUnitButton={false} onDone={onDone} />

@@ -160,10 +160,13 @@ const ReceiveNumberPad = ({ onDone }: { onDone: () => void }): ReactElement => {
 		updateInvoice({ amount: Number(newAmount) });
 	};
 
-	const showDot = !(unitPreference === 'asset' && bitcoinUnit === 'satoshi');
+	const numberPadType =
+		unitPreference === 'asset' && bitcoinUnit === 'satoshi'
+			? 'integer'
+			: 'decimal';
 
 	return (
-		<NumberPad showDot={showDot} onPress={onPress} onRemove={onRemove}>
+		<NumberPad type={numberPadType} onPress={onPress} onRemove={onRemove}>
 			<NumberPadButtons onDone={onDone} />
 		</NumberPad>
 	);

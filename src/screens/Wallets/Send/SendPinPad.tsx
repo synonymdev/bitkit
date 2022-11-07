@@ -102,6 +102,7 @@ const SendPinPad = ({ onSuccess }: { onSuccess: () => void }): ReactElement => {
 
 				<NumberPad
 					style={styles.numberpad}
+					type="simple"
 					onPress={handleOnPress}
 					onRemove={handleOnRemove}
 				/>

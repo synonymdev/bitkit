@@ -122,6 +122,7 @@ const ChangePin2 = ({
 
 			<NumberPad
 				style={styles.numberpad}
+				type="simple"
 				onPress={handleOnPress}
 				onRemove={handleOnRemove}
 			/>

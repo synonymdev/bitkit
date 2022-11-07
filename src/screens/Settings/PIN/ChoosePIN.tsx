@@ -111,6 +111,7 @@ const ChoosePIN = ({
 
 			<NumberPad
 				style={styles.numberpad}
+				type="simple"
 				onPress={handleOnPress}
 				onRemove={handleOnRemove}
 			/>

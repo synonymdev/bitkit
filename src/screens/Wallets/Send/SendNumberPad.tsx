@@ -205,10 +205,13 @@ const SendNumberPad = ({ onDone }: { onDone: () => void }): ReactElement => {
 		}).then();
 	};
 
-	const showDot = !(unitPreference === 'asset' && bitcoinUnit === 'satoshi');
+	const numberPadType =
+		unitPreference === 'asset' && bitcoinUnit === 'satoshi'
+			? 'integer'
+			: 'decimal';
 
 	return (
-		<NumberPad showDot={showDot} onPress={onPress} onRemove={onRemove}>
+		<NumberPad type={numberPadType} onPress={onPress} onRemove={onRemove}>
 			<NumberPadButtons
 				onMaxPress={(): void => {
 					sendMax({ selectedWallet, selectedNetwork });

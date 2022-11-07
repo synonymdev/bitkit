@@ -166,12 +166,15 @@ const NumberPadLightning = ({
 		onChange(Number(newAmount));
 	};
 
-	const showDot = !(unitPreference === 'asset' && bitcoinUnit === 'satoshi');
+	const numberPadType =
+		unitPreference === 'asset' && bitcoinUnit === 'satoshi'
+			? 'integer'
+			: 'decimal';
 
 	return (
 		<NumberPad
 			style={[styles.numberpad, style]}
-			showDot={showDot}
+			type={numberPadType}
 			onPress={onPress}
 			onRemove={onRemove}>
 			<NumberPadButtons
