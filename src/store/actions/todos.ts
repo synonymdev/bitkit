@@ -34,7 +34,5 @@ export const removeTodo = (id: TTodoType): Result<string> => {
  */
 export const resetTodos = (): Result<string> => {
 	dispatch({ type: actions.RESET_TODOS });
-	// add timeout to avoid a bug
-	// setTimeout(() => setupTodos(), 2000);
 	return ok('Successfully reset todos');
 };
