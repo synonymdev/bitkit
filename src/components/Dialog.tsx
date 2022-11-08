@@ -34,7 +34,11 @@ const Dialog = ({
 	return (
 		<Modal
 			animationType="fade"
+			// on iOS transparent={true} leads to a bug
+			// use it with presentationStyle="fullScreen" to get a black background
+			// https://github.com/facebook/react-native/issues/34018
 			transparent={true}
+			presentationStyle="fullScreen"
 			visible={visible}
 			onRequestClose={onRequestClose}>
 			<View style={styles.centeredView}>
@@ -44,14 +48,18 @@ const Dialog = ({
 						<Text style={styles.description}>{description}</Text>
 					</View>
 					<View style={styles.buttons}>
-						<TouchableOpacity
-							style={[styles.button, styles.buttonLeft]}
-							onPress={onCancel}>
-							<Text style={styles.buttonText}>{cancelText}</Text>
-						</TouchableOpacity>
-						<TouchableOpacity style={styles.button} onPress={onConfirm}>
-							<Text style={styles.buttonText}>{confirmText}</Text>
-						</TouchableOpacity>
+						{onCancel && (
+							<TouchableOpacity
+								style={[styles.button, styles.buttonLeft]}
+								onPress={onCancel}>
+								<Text style={styles.buttonText}>{cancelText}</Text>
+							</TouchableOpacity>
+						)}
+						{onConfirm && (
+							<TouchableOpacity style={styles.button} onPress={onConfirm}>
+								<Text style={styles.buttonText}>{confirmText}</Text>
+							</TouchableOpacity>
+						)}
 					</View>
 				</View>
 			</View>
@@ -121,6 +129,8 @@ const styles = StyleSheet.create({
 	buttons: {
 		...Platform.select({
 			ios: {
+				borderTopWidth: 1,
+				borderColor: colors.gray3,
 				flexDirection: 'row',
 			},
 			android: {
@@ -134,8 +144,6 @@ const styles = StyleSheet.create({
 	button: {
 		...Platform.select({
 			ios: {
-				borderTopWidth: 1,
-				borderColor: colors.gray3,
 				padding: 16,
 				flex: 1,
 			},
