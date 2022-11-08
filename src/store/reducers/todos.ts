@@ -1,13 +1,12 @@
 import actions from '../actions/actions';
 import { ITodos } from '../types/todos';
-import { defaultTodosShape } from '../shapes/todos';
+import { allTodos, defaultTodosShape } from '../shapes/todos';
 
 const TODO_SORTING_ORDER = [
 	'backupSeedPhrase',
 	'lightning',
 	'lightningSettingUp',
 	'pin',
-	'boost',
 	'slashtagsProfile',
 	'buyBitcoin',
 ];
@@ -15,37 +14,24 @@ const TODO_SORTING_ORDER = [
 const todos = (state: ITodos = defaultTodosShape, action): ITodos => {
 	switch (action.type) {
 		case actions.ADD_TODO: {
-			const newTodos = [action.payload, ...state.todos].sort(
+			const newTodo = allTodos.find((todo) => todo.id === action.payload)!;
+			const newTodos = [...state, newTodo].sort(
 				(a, b) =>
-					TODO_SORTING_ORDER.indexOf(a.type) -
-					TODO_SORTING_ORDER.indexOf(b.type),
+					TODO_SORTING_ORDER.indexOf(a.id) - TODO_SORTING_ORDER.indexOf(b.id),
 			);
+			// make sure there are no duplicates
+			const uniqueTodos = [
+				...new Map(newTodos.map((item) => [item.id, item])).values(),
+			];
 
-			return {
-				...state,
-				todos: newTodos,
-			};
+			return uniqueTodos;
 		}
 
 		case actions.REMOVE_TODO:
-			const id = action.payload;
-			return {
-				...state,
-				todos: state.todos.filter((todo) => todo.id !== id),
-			};
+			return state.filter((todo) => todo.id !== action.payload);
 
-		case actions.DISMISS_TODO:
-			return {
-				...state,
-				dismissedTodos: [...state.dismissedTodos, action.payload],
-			};
-
-		case actions.RESET_TODO:
-			return {
-				...state,
-				dismissedTodos: [],
-				todos: [],
-			};
+		case actions.RESET_TODOS:
+			return defaultTodosShape;
 
 		default:
 			return state;

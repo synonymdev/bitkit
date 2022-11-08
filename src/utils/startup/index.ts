@@ -1,17 +1,17 @@
+import { InteractionManager } from 'react-native';
+import { err, ok, Result } from '@synonymdev/result';
+
 import { generateMnemonic, getMnemonicPhrase, refreshWallet } from '../wallet';
 import {
 	createWallet,
 	updateExchangeRates,
 	updateWallet,
 } from '../../store/actions/wallet';
-import { err, ok, Result } from '@synonymdev/result';
-import { InteractionManager } from 'react-native';
 import { getStore } from '../../store/helpers';
 import {
 	refreshBlocktankInfo,
 	refreshServiceList,
 } from '../../store/actions/blocktank';
-import { setupTodos } from '../todos';
 import { connectToElectrum, subscribeToHeader } from '../wallet/electrum';
 import { updateOnchainFeeEstimates } from '../../store/actions/fees';
 import { keepLdkSynced, setupLdk } from '../lightning';
@@ -165,9 +165,6 @@ export const startWalletServices = async ({
 
 			// Refresh slashpay config
 			updateSlashPayConfig(sdk);
-
-			// This should be last so that we know all on-chain and lightning data is synced/up-to-date.
-			setupTodos().then();
 		});
 
 		return ok('Wallet started');

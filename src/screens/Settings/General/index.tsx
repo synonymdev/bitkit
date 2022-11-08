@@ -5,8 +5,7 @@ import Store from './../../../store/types';
 import { IListData } from '../../../components/List';
 import SettingsView from './../SettingsView';
 import { updateSettings } from '../../../store/actions/settings';
-import { setupTodos } from '../../../utils/todos';
-import { resetTodo } from '../../../store/actions/todos';
+import { resetTodos } from '../../../store/actions/todos';
 import Dialog from '../../../components/Dialog';
 import type { SettingsScreenProps } from '../../../navigation/types';
 
@@ -141,9 +140,7 @@ const GeneralSettings = ({
 					setShowDialog(false);
 				}}
 				onConfirm={(): void => {
-					resetTodo();
-					// add timeout to avoid a bug
-					setTimeout(() => setupTodos(), 2000);
+					resetTodos();
 					setShowDialog(false);
 				}}
 			/>

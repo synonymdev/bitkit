@@ -46,7 +46,7 @@ export type RootStackParamList = {
 		assetType: TAssetType;
 	};
 	LightningRoot: NavigatorScreenParams<LightningStackParamList>;
-	Settings: undefined;
+	Settings: NavigatorScreenParams<SettingsStackParamList>;
 	Profile: undefined;
 	ProfileEdit: undefined;
 	ProfileAddLink: undefined;

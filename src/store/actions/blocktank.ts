@@ -36,7 +36,6 @@ import {
 } from '../../utils/blocktank';
 import { addTodo, removeTodo } from './todos';
 import { showErrorNotification } from '../../utils/notifications';
-import { ITodo } from '../types/todos';
 import { getDisplayValues } from '../../utils/exchange-rate';
 
 const dispatch = getDispatch();
@@ -505,13 +504,7 @@ export const confirmChannelPurchase = async ({
 
 	watchOrder(orderId).then();
 	removeTodo('lightning');
-	const todo: ITodo = {
-		id: 'lightningSettingUp',
-		type: 'lightningSettingUp',
-		title: 'Setting Up',
-		description: 'Ready in ±20min',
-	};
-	addTodo(todo);
+	addTodo('lightningSettingUp');
 	refreshWallet({ onchain: true, lightning: false }).then();
 	return ok(broadcastResponse.value);
 };

@@ -1,5 +1,4 @@
 import React, {
-	useCallback,
 	useRef,
 	memo,
 	ReactElement,
@@ -14,19 +13,68 @@ import Carousel from 'react-native-reanimated-carousel';
 
 import { View, Subtitle } from '../styles/components';
 import CarouselCard from './CarouselCard';
+import { TTodoType } from '../store/types/todos';
+import { toggleView } from '../store/actions/user';
+import { getStore } from '../store/helpers';
 import Store from '../store/types';
-import { handleOnPress } from '../utils/todos';
+import type { RootNavigationProp } from '../navigation/types';
+
+export const handleOnPress = ({
+	navigation,
+	id,
+}: {
+	navigation: RootNavigationProp;
+	id: TTodoType;
+}): void => {
+	const store = getStore();
+
+	if (id === 'backupSeedPhrase') {
+		toggleView({
+			view: 'backupPrompt',
+			data: { isOpen: true },
+		});
+	}
+
+	if (id === 'lightning') {
+		navigation.navigate('LightningRoot', { screen: 'Introduction' });
+	}
+
+	if (id === 'lightningSettingUp') {
+		navigation.navigate('BlocktankOrders');
+	}
+
+	if (id === 'pin') {
+		const pinTodoDone = store.settings.pin;
+		if (!pinTodoDone) {
+			toggleView({
+				view: 'PINPrompt',
+				data: { isOpen: true, showLaterButton: true },
+			});
+		} else {
+			navigation.navigate('Settings', { screen: 'DisablePin' });
+		}
+	}
+
+	if (id === 'slashtagsProfile') {
+		navigation.navigate('Profile');
+	}
+
+	if (id === 'buyBitcoin') {
+		navigation.navigate('BuyBitcoin');
+	}
+};
 
 const TodoCarousel = (): ReactElement => {
+	const navigation = useNavigation<RootNavigationProp>();
+	const { width } = useWindowDimensions();
+	const ref = useRef(null);
 	const [key, setKey] = useState(0);
 	const [index, setIndex] = useState(0);
-	const { width } = useWindowDimensions();
-	const navigation = useNavigation();
-	const ref = useRef(null);
+	const todos = useSelector((state: Store) => state.todos);
 	const showSuggestions = useSelector(
 		(state: Store) => state.settings.showSuggestions,
 	);
-	const todos = useSelector((state: Store) => state.todos.todos);
+
 	const carouselStyle = useMemo(() => ({ width }), [width]);
 	const panGestureHandlerProps = useMemo(
 		() => ({ activeOffsetX: [-10, 10] }),
@@ -39,19 +87,6 @@ const TodoCarousel = (): ReactElement => {
 			setKey((k) => k + 1);
 		}
 	}, [todos.length, index]);
-
-	const renderItem = useCallback(
-		({ item }) => (
-			<CarouselCard
-				id={item.id}
-				key={item.id}
-				title={item.title}
-				description={item.description}
-				onPress={(): void => handleOnPress({ navigation, type: item.type })}
-			/>
-		),
-		[navigation],
-	);
 
 	if (!todos.length) {
 		return <></>;
@@ -72,7 +107,15 @@ const TodoCarousel = (): ReactElement => {
 					height={170}
 					width={170}
 					data={todos}
-					renderItem={renderItem}
+					renderItem={({ item }): ReactElement => (
+						<CarouselCard
+							id={item.id}
+							key={item.id}
+							title={item.title}
+							description={item.description}
+							onPress={(): void => handleOnPress({ navigation, id: item.id })}
+						/>
+					)}
 					style={carouselStyle}
 					panGestureHandlerProps={panGestureHandlerProps}
 					onSnapToItem={setIndex}

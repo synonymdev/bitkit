@@ -31,7 +31,7 @@ const Header = (): ReactElement => {
 		[navigation],
 	);
 	const openSettings = useCallback(
-		() => navigation.navigate('Settings'),
+		() => navigation.navigate('Settings', { screen: 'SettingsMenu' }),
 		[navigation],
 	);
 

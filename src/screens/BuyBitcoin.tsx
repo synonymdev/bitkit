@@ -7,8 +7,9 @@ import GlowingBackground from '../components/GlowingBackground';
 import NavigationHeader from '../components/NavigationHeader';
 import Button from '../components/Button';
 import useColors from '../hooks/colors';
-import type { RootStackScreenProps } from '../navigation/types';
 import { openURL } from '../utils/helpers';
+import { removeTodo } from '../store/actions/todos';
+import type { RootStackScreenProps } from '../navigation/types';
 
 const imageSrc = require('../assets/illustrations/b-emboss.png');
 
@@ -42,10 +43,11 @@ const BuyBitcoin = ({
 
 				<View style={styles.buttonContainer}>
 					<Button
+						style={styles.button}
 						text="Buy Bitcoin"
 						size="large"
-						style={styles.button}
 						onPress={(): void => {
+							removeTodo('buyBitcoin');
 							openURL('https://bitcoin.org/en/exchanges');
 						}}
 					/>

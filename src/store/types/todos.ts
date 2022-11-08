@@ -8,13 +8,9 @@ export type TTodoType =
 	| 'buyBitcoin';
 
 export interface ITodo {
-	id: string;
-	type: TTodoType;
+	id: TTodoType;
 	title: string;
 	description: string;
 }
 
-export interface ITodos {
-	todos: ITodo[];
-	dismissedTodos: string[];
-}
+export type ITodos = ITodo[];

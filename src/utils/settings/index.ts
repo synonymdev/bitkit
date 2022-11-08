@@ -3,14 +3,13 @@ import { updateSettings } from '../../store/actions/settings';
 import { getStore } from '../../store/helpers';
 import { PIN_ATTEMPTS } from '../../components/PinPad';
 import { removeTodo } from '../../store/actions/todos';
-import { todoPresets } from '../todos';
 
 /**
  * @async
  * Set PIN keychain data, update settings state and remove todo item
  */
 export const addPin = async (newPin: string): Promise<void> => {
-	await Promise.all([editPin(newPin), removeTodo(todoPresets.pin.type)]);
+	await Promise.all([editPin(newPin), removeTodo('pin')]);
 };
 
 /**
@@ -34,6 +33,7 @@ export const removePin = async (): Promise<void> => {
 		updateSettings({ pin: false }),
 		setKeychainValue({ key: 'pinAttemptsRemaining', value: PIN_ATTEMPTS }),
 		resetKeychainValue({ key: 'pin' }),
+		removeTodo('pin'),
 	]);
 };
 

@@ -7,7 +7,6 @@ import Button from '../../../components/Button';
 import Glow from '../../../components/Glow';
 import { verifyBackup } from '../../../store/actions/user';
 import { removeTodo } from '../../../store/actions/todos';
-import { todoPresets } from '../../../utils/todos';
 import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
 import GradientView from '../../../components/GradientView';
 import { BackupScreenProps } from '../../../navigation/types';
@@ -26,7 +25,7 @@ const Result = ({ navigation }: BackupScreenProps<'Result'>): ReactElement => {
 
 	const handleButtonPress = (): void => {
 		verifyBackup();
-		removeTodo(todoPresets.backupSeedPhrase.type);
+		removeTodo('backupSeedPhrase');
 		navigation.navigate('Warning');
 	};
 
