@@ -15,6 +15,7 @@ import {
 	useBottomSheetBackPress,
 	useSnapPoints,
 } from '../../../hooks/bottomSheet';
+import { useBalance } from '../../../hooks/wallet';
 
 const imageSrc = require('../../../assets/illustrations/safe.png');
 
@@ -24,6 +25,8 @@ const CHECK_INTERVAL = 10000; // how long user needs to stay on Wallets screen b
 const BackupPrompt = (): ReactElement => {
 	const snapPoints = useSnapPoints('medium');
 	const insets = useSafeAreaInsets();
+	const { satoshis: balance } = useBalance({ onchain: true, lightning: true });
+
 	const buttonContainerStyles = useMemo(
 		() => ({
 			...styles.buttonContainer,
@@ -96,6 +99,11 @@ const BackupPrompt = (): ReactElement => {
 		};
 	}, [showBottomSheet, ignoreTimestamp]);
 
+	const text =
+		balance > 0
+			? 'Now that you have some funds in your wallet, it is time to back up your money!'
+			: 'There are no funds in your wallet yet, but you can create a backup if you wish.';
+
 	return (
 		<BottomSheetWrapper
 			view="backupPrompt"
@@ -107,10 +115,7 @@ const BackupPrompt = (): ReactElement => {
 					title="Wallet Backup"
 					displayBackButton={false}
 				/>
-				<Text01S color="white5">
-					Now that you have some funds in your wallet, it is time to back up
-					your money!
-				</Text01S>
+				<Text01S color="white5">{text}</Text01S>
 				<View style={styles.imageContainer} pointerEvents="none">
 					<Glow color="blue" size={600} style={styles.glow} />
 					<Image style={styles.image} source={imageSrc} />
