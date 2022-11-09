@@ -3,6 +3,7 @@ import createDebugger from 'redux-flipper';
 import logger from 'redux-logger';
 import {
 	persistReducer,
+	createMigrate,
 	FLUSH,
 	REHYDRATE,
 	PAUSE,
@@ -18,6 +19,7 @@ import {
 
 import mmkvStorage from './mmkv-storage';
 import reducers from './reducers';
+import migrations from './migrations';
 
 const __JEST__ = process.env.JEST_WORKER_ID !== undefined;
 const __enableDebugger__ = ENABLE_REDUX_FLIPPER
@@ -38,7 +40,13 @@ const devMiddleware = [
 
 const enhancers = [];
 
-const persistConfig = { key: 'root', storage: mmkvStorage };
+const persistConfig = {
+	key: 'root',
+	storage: mmkvStorage,
+	// increase version after store shape changes
+	version: 0,
+	migrate: createMigrate(migrations, { debug: false }),
+};
 const persistedReducer = persistReducer(persistConfig, reducers);
 
 const store = configureStore({
