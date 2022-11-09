@@ -8,9 +8,9 @@ import SafeAreaView from './SafeAreaView';
 
 const CameraNoAuth = (): ReactElement => {
 	return (
-		<SafeAreaView style={styles.root}>
+		<SafeAreaView>
 			<NavigationHeader title="Permission" />
-			<View style={styles.container} color="transparent">
+			<View style={styles.container} color="black">
 				<EvilIcon name="exclamation" size={60} />
 				<Text style={styles.boldText}>
 					It appears Bitkit does not have permission to access your camera.
@@ -25,9 +25,6 @@ const CameraNoAuth = (): ReactElement => {
 };
 
 const styles = StyleSheet.create({
-	root: {
-		backgroundColor: 'transparent',
-	},
 	container: {
 		flex: 1,
 		alignItems: 'center',

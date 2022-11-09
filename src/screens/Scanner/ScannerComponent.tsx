@@ -6,7 +6,6 @@ import Clipboard from '@react-native-clipboard/clipboard';
 import { FadeIn, FadeOut } from 'react-native-reanimated';
 import { launchImageLibrary } from 'react-native-image-picker';
 import RNQRGenerator from 'rn-qr-generator';
-import { Result } from '@synonymdev/result';
 
 import {
 	ClipboardTextIcon,
@@ -21,6 +20,7 @@ import BlurView from '../../components/BlurView';
 import { decodeQRData, QRData } from '../../utils/scanner';
 import Store from '../../store/types';
 import Button from '../../components/Button';
+import { Result } from '@synonymdev/result';
 
 type ScannerComponentProps = {
 	onRead: (data: string | Result<QRData[]>) => void;
@@ -35,7 +35,7 @@ const ScannerComponent = ({
 }: ScannerComponentProps): ReactElement => {
 	const { white08, white5 } = useColors();
 	const dimensions = useWindowDimensions();
-	const [torchMode, setTorchMode] = useState(false);
+	const [flashMode, setFlashMode] = useState(false);
 	const [error, setError] = useState('');
 
 	const selectedNetwork = useSelector(
@@ -97,10 +97,9 @@ const ScannerComponent = ({
 		<Camera
 			onBarCodeRead={onBarCodeRead}
 			onClose={(): void => {}}
-			torchMode={torchMode}>
+			flashMode={flashMode}>
 			<>
 				{children}
-
 				<View style={StyleSheet.absoluteFill}>
 					<BlurView style={styles.mask} />
 					<View style={styles.maskCenter}>
@@ -120,10 +119,10 @@ const ScannerComponent = ({
 								<TouchableOpacity
 									style={[
 										styles.actionButton,
-										{ backgroundColor: torchMode ? white5 : white08 },
+										{ backgroundColor: flashMode ? white5 : white08 },
 									]}
 									activeOpacity={1}
-									onPress={(): void => setTorchMode((prevState) => !prevState)}>
+									onPress={(): void => setFlashMode((prevState) => !prevState)}>
 									<FlashlightIcon width={24} height={24} />
 								</TouchableOpacity>
 							</View>
