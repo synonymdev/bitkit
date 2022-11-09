@@ -28,7 +28,12 @@ const todos = (state: ITodos = defaultTodosShape, action): ITodos => {
 		}
 
 		case actions.REMOVE_TODO:
-			return state.filter((todo) => todo.id !== action.payload);
+			if ('todos' in state) {
+				// @ts-ignore
+				return state.todos.filter((todo) => todo.id !== action.payload);
+			} else {
+				return state.filter((todo) => todo.id !== action.payload);
+			}
 
 		case actions.RESET_TODOS:
 			return defaultTodosShape;
