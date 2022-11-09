@@ -9337,10 +9337,10 @@ react-native-biometrics@^2.2.2:
   resolved "https://registry.yarnpkg.com/react-native-biometrics/-/react-native-biometrics-2.2.2.tgz#736033062ad575e07be135aa5e09bf3d632340e8"
   integrity sha512-gA4G8ADHupvW7NUNhElkse6R14EbSglr97FlMEdvZrEfB6BGl808/KSyDl7+d238qu3b2AqcARQMiC1FUgDT9Q==
 
-react-native-camera-kit@14.0.0-beta2:
-  version "14.0.0-beta2"
-  resolved "https://registry.yarnpkg.com/react-native-camera-kit/-/react-native-camera-kit-14.0.0-beta2.tgz#923baa34a7d5b17a16aabca6c3bdcd4e443aaafd"
-  integrity sha512-DSHOPlr58noz0dlU6cdw+L15m+ir0bepme9dEZxxYh2kCGW8iW13QM3Wh4e+sBbYluueqSf4D43MdcXEXMNQYg==
+react-native-camera-kit@13.0.0:
+  version "13.0.0"
+  resolved "https://registry.yarnpkg.com/react-native-camera-kit/-/react-native-camera-kit-13.0.0.tgz#983d9146cdeb0ec0cb0c0a86b7fa5f7690df08f6"
+  integrity sha512-fnkyivCG2xzS+14/doP8pCAYNafYaTyg5J0t+JJltJdgKSHf328OG44Rd+fnbbEOydZxgy/bcuLB24R0kCbynw==
   dependencies:
     lodash "^4.14.2"
 
@@ -9472,11 +9472,6 @@ react-native-modal@^13.0.1:
   dependencies:
     prop-types "^15.6.2"
     react-native-animatable "1.3.3"
-
-react-native-permissions@3.6.1:
-  version "3.6.1"
-  resolved "https://registry.yarnpkg.com/react-native-permissions/-/react-native-permissions-3.6.1.tgz#73adcc1cef8cd57a9ef167b4507405f4ff5749c4"
-  integrity sha512-fzPpPQXeD34inUccqtoResSwYubfrwUguP4qrVUUv8+KSMjYSaHGoS5HaIJLZHlN9gO+TvLJZ2L5ZljTsb6qnQ==
 
 react-native-qrcode-svg@^6.1.2:
   version "6.1.2"

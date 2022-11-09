@@ -94,7 +94,10 @@ const ScannerComponent = ({
 	};
 
 	return (
-		<Camera onBarCodeRead={onBarCodeRead} torchMode={torchMode}>
+		<Camera
+			onBarCodeRead={onBarCodeRead}
+			onClose={(): void => {}}
+			torchMode={torchMode}>
 			<>
 				{children}
 

@@ -84,8 +84,6 @@ PODS:
   - nodejs-mobile-react-native (0.7.0):
     - React-Core
   - OpenSSL-Universal (1.1.1100)
-  - Permission-Camera (3.6.1):
-    - RNPermissions
   - RCT-Folly (2021.06.28.00-v2):
     - boost
     - DoubleConversion
@@ -434,7 +432,7 @@ PODS:
     - React-jsi (= 0.68.4)
     - React-logger (= 0.68.4)
     - React-perflogger (= 0.68.4)
-  - ReactNativeCameraKit (14.0.0-beta2):
+  - ReactNativeCameraKit (13.0.0):
     - React-Core
   - RNCClipboard (1.11.0):
     - React-Core
@@ -443,8 +441,6 @@ PODS:
   - RNGestureHandler (2.6.0):
     - React-Core
   - RNKeychain (8.1.1):
-    - React-Core
-  - RNPermissions (3.6.1):
     - React-Core
   - RNQrGenerator (1.2.0):
     - React
@@ -539,7 +535,6 @@ DEPENDENCIES:
   - lottie-react-native (from `../node_modules/lottie-react-native`)
   - nodejs-mobile-react-native (from `../node_modules/nodejs-mobile-react-native`)
   - OpenSSL-Universal (= 1.1.1100)
-  - Permission-Camera (from `../node_modules/react-native-permissions/ios/Camera`)
   - RCT-Folly (from `../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec`)
   - RCTRequired (from `../node_modules/react-native/Libraries/RCTRequired`)
   - RCTTypeSafety (from `../node_modules/react-native/Libraries/TypeSafety`)
@@ -586,7 +581,6 @@ DEPENDENCIES:
   - RNFS (from `../node_modules/react-native-fs`)
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - RNKeychain (from `../node_modules/react-native-keychain`)
-  - RNPermissions (from `../node_modules/react-native-permissions`)
   - RNQrGenerator (from `../node_modules/rn-qr-generator`)
   - RNRate (from `../node_modules/react-native-rate`)
   - RNReactNativeHapticFeedback (from `../node_modules/react-native-haptic-feedback`)
@@ -638,8 +632,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/lottie-react-native"
   nodejs-mobile-react-native:
     :path: "../node_modules/nodejs-mobile-react-native"
-  Permission-Camera:
-    :path: "../node_modules/react-native-permissions/ios/Camera"
   RCT-Folly:
     :podspec: "../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec"
   RCTRequired:
@@ -728,8 +720,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-gesture-handler"
   RNKeychain:
     :path: "../node_modules/react-native-keychain"
-  RNPermissions:
-    :path: "../node_modules/react-native-permissions"
   RNQrGenerator:
     :path: "../node_modules/rn-qr-generator"
   RNRate:
@@ -778,7 +768,6 @@ SPEC CHECKSUMS:
   MMKVCore: 89f5c8a66bba2dcd551779dea4d412eeec8ff5bb
   nodejs-mobile-react-native: a30e24f07200254c0a3536be3a9f09c512610f6a
   OpenSSL-Universal: ebc357f1e6bc71fa463ccb2fe676756aff50e88c
-  Permission-Camera: bf6791b17c7f614b6826019fcfdcc286d3a107f6
   RCT-Folly: 4d8508a426467c48885f1151029bc15fa5d7b3b8
   RCTRequired: e6003505912d056f21f64465063cf4b79418f2b9
   RCTTypeSafety: d7ef4745c8d9c9faa65c26b4b6230fc5cd4c4424
@@ -818,12 +807,11 @@ SPEC CHECKSUMS:
   React-RCTVibration: a67beb7d2f3c73e9b74c4124ef61b84c601be649
   React-runtimeexecutor: 088723cf020113e64736a709f52719dbb359c73e
   ReactCommon: 1a4f19f3b4366feec03a98bdbb200b6085c5000f
-  ReactNativeCameraKit: 32e04877e57e0eeab26e45817e3fd532e7d302fb
+  ReactNativeCameraKit: 9d46a5d7dd544ca64aa9c03c150d2348faf437eb
   RNCClipboard: 4b8bec7c195e27bcec746f52dff7601161683249
   RNFS: 4ac0f0ea233904cb798630b3c077808c06931688
   RNGestureHandler: 920eb17f5b1e15dae6e5ed1904045f8f90e0b11e
   RNKeychain: ff836453cba46938e0e9e4c22e43d43fa2c90333
-  RNPermissions: dcdb7b99796bbeda6975a6e79ad519c41b251b1c
   RNQrGenerator: 34beaf1996de4a2f2122c7019dccd1717b22d8d7
   RNRate: 94f57c773e155ca0d0aeeba9c10a32bce9030daf
   RNReactNativeHapticFeedback: 1e3efeca9628ff9876ee7cdd9edec1b336913f8c
@@ -840,6 +828,6 @@ SPEC CHECKSUMS:
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
   ZXingObjC: fdbb269f25dd2032da343e06f10224d62f537bdb
 
-PODFILE CHECKSUM: 784c6e02c28154c0549ad3a940a4c2d528699d0d
+PODFILE CHECKSUM: 1ae9a63a687f85959de450190fd428149e466ae1
 
 COCOAPODS: 1.11.3
