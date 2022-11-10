@@ -1,4 +1,4 @@
-import React, { memo, ReactElement } from 'react';
+import React, { memo, ReactElement, ReactNode } from 'react';
 import { StyleProp, StyleSheet, ViewStyle } from 'react-native';
 import {
 	Canvas,
@@ -47,7 +47,7 @@ const GradientView = ({
 	startColor?: keyof IColors;
 	endColor?: keyof IColors;
 	style?: StyleProp<ViewStyle>;
-	children?: JSX.Element | JSX.Element[];
+	children?: ReactNode;
 }): ReactElement => {
 	return (
 		<ThemedView style={style}>
