@@ -7,7 +7,6 @@ import {
 	Text01M,
 	Caption13M,
 	NewspaperIcon,
-	Text02S,
 	GearIcon,
 	TrashIcon,
 } from '../styles/components';
@@ -118,9 +117,9 @@ const HeadlinesWidget = ({
 							</TouchableOpacity>
 						</View>
 						<View style={styles.authorContainer}>
-							<Text02S style={styles.author} numberOfLines={1}>
+							<Caption13M style={styles.author} color="gray1" numberOfLines={1}>
 								{article?.publisher.title}
-							</Text02S>
+							</Caption13M>
 						</View>
 					</View>
 				</View>
@@ -169,7 +168,7 @@ const styles = StyleSheet.create({
 		borderBottomWidth: 1,
 	},
 	icon: {
-		marginRight: 8,
+		marginRight: 16,
 		borderRadius: 6.4,
 		overflow: 'hidden',
 		height: 32,

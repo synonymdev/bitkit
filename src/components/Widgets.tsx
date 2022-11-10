@@ -51,7 +51,7 @@ export const Widgets = (): ReactElement => {
 						navigate('WidgetsRoot');
 					}}>
 					<View color="green16" style={styles.iconCircle}>
-						<PlusIcon height={13} color="green" />
+						<PlusIcon height={16} color="green" />
 					</View>
 					<Text01M>Add Widget</Text01M>
 				</TouchableOpacity>

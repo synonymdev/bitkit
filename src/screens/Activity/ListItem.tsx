@@ -32,7 +32,7 @@ export const EmptyItem = ({
 		<View style={styles.item}>
 			<View style={styles.col1}>
 				<ThemedView color="yellow16" style={styles.iconCircle}>
-					<HeartbeatIcon height={13} color="yellow" />
+					<HeartbeatIcon height={16} color="yellow" />
 				</ThemedView>
 
 				<View style={styles.col1text}>
