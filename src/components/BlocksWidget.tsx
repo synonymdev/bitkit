@@ -9,9 +9,11 @@ import { useFeedWidget } from '../hooks/widgets';
 const BlocksWidget = ({
 	url,
 	widget,
+	editable,
 }: {
 	url: string;
 	widget: IWidget;
+	editable?: boolean;
 }): ReactElement => {
 	const { value } = useFeedWidget({ url, feed: widget.feed });
 
@@ -21,6 +23,7 @@ const BlocksWidget = ({
 			name="Bitcoin Blocks"
 			label={value?.height}
 			icon={<CubeIcon width={32} height={32} />}
+			editable={editable}
 			right={
 				<View style={styles.numbers}>
 					<Text01M numberOfLines={1} styles={styles.price}>

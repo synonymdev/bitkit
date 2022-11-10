@@ -26,11 +26,13 @@ export const FeedWidget = ({
 	widget,
 	icon,
 	name,
+	editable = true,
 }: {
 	url: string;
 	widget: IWidget;
 	icon?: ReactElement;
 	name?: string;
+	editable?: boolean;
 }): ReactElement => {
 	const { value } = useFeedWidget({ url, feed: widget.feed });
 
@@ -39,6 +41,7 @@ export const FeedWidget = ({
 			url={url}
 			name={name || widget.feed.name}
 			label={widget.feed.field.name}
+			editable={editable}
 			right={<DefaultRightComponent value={value?.toString()} />}
 			icon={
 				icon || (
@@ -61,6 +64,7 @@ export const BaseFeedWidget = ({
 	label,
 	right = <View />,
 	middle,
+	editable = true,
 }: {
 	url: string;
 	name?: string;
@@ -68,6 +72,7 @@ export const BaseFeedWidget = ({
 	label?: string;
 	right?: ReactElement;
 	middle?: ReactElement;
+	editable?: boolean;
 }): ReactElement => {
 	const [showButtons, setShowButtons] = useState(false);
 	const [showDialog, setShowDialog] = useState(false);
@@ -95,7 +100,7 @@ export const BaseFeedWidget = ({
 				</View>
 			</View>
 
-			{showButtons ? (
+			{editable && showButtons ? (
 				<>
 					<Button
 						style={styles.deleteButton}

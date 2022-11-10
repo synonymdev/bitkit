@@ -292,6 +292,7 @@ export const WidgetFeedEdit = ({
 													url={url}
 													// @ts-ignore
 													widget={previewWidget}
+													editable={false}
 												/>
 											);
 										case SUPPORTED_FEED_TYPES.HEADLINES_FEED:
@@ -301,6 +302,7 @@ export const WidgetFeedEdit = ({
 													url={url}
 													// @ts-ignore
 													widget={previewWidget}
+													editable={false}
 												/>
 											);
 										case SUPPORTED_FEED_TYPES.BLOCKS_FEED:
@@ -310,6 +312,7 @@ export const WidgetFeedEdit = ({
 													url={url}
 													// @ts-ignore
 													widget={previewWidget}
+													editable={false}
 												/>
 											);
 										default:
@@ -319,6 +322,7 @@ export const WidgetFeedEdit = ({
 													url={url}
 													// @ts-ignore
 													widget={previewWidget}
+													editable={false}
 												/>
 											);
 									}

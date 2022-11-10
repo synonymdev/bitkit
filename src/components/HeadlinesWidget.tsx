@@ -23,9 +23,11 @@ import { deleteWidget } from '../store/actions/widgets';
 const HeadlinesWidget = ({
 	url,
 	widget,
+	editable = true,
 }: {
 	url: string;
 	widget: IWidget;
+	editable?: boolean;
 }): ReactElement => {
 	const [showButtons, setShowButtons] = useState(false);
 	const [showDialog, setShowDialog] = useState(false);
@@ -125,7 +127,7 @@ const HeadlinesWidget = ({
 				</View>
 			</TouchableOpacity>
 
-			{showButtons && (
+			{editable && showButtons && (
 				<View style={styles.buttonsContainer}>
 					<Button
 						style={styles.deleteButton}
