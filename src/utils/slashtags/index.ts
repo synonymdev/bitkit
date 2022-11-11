@@ -7,7 +7,12 @@ import debounce from 'lodash.debounce';
 import { navigate } from '../../navigation/root/RootNavigator';
 import { BasicProfile, SlashPayConfig } from '../../store/types/slashtags';
 import { showErrorNotification } from '../notifications';
-import { getReceiveAddress, getSelectedAddressType } from '../../utils/wallet';
+import {
+	getReceiveAddress,
+	getSelectedAddressType,
+	getSelectedNetwork,
+	getSelectedWallet,
+} from '../../utils/wallet';
 import { decodeLightningInvoice } from '../../utils/lightning';
 import { createLightningInvoice } from '../../store/actions/lightning';
 import { getStore } from '../../store/helpers';
@@ -162,22 +167,26 @@ export const updateSlashPayConfig = debounce(
 		const payConfig =
 			(await drive.get('/slashpay.json').then(decodeJSON).catch(noop)) || [];
 
-		const store = getStore();
-		const { selectedWallet, selectedNetwork } = store.wallet;
-		const { enableOfflinePayments } = store.settings;
+		const selectedWallet = getSelectedWallet();
+		const selectedNetwork = getSelectedNetwork();
+		const {
+			settings: { enableOfflinePayments },
+			lightning: { nodes },
+		} = getStore();
+		const node = nodes[selectedWallet];
+		const invoices = node.invoices[selectedNetwork];
+		const openChannelIds = node.openChannelIds[selectedNetwork];
 		const addressType = getSelectedAddressType({
 			selectedWallet,
 			selectedNetwork,
 		});
-		const invoices =
-			store.lightning.nodes[selectedWallet].invoices[selectedNetwork];
 
-		// if offline payments are disabled and payment config is empy then do nothing
+		// if offline payments are disabled and payment config is empty then do nothing
 		if (!enableOfflinePayments && payConfig.length === 0) {
 			return;
 		}
 
-		// if offline payments are disabled and payment config is not empy then delete it
+		// if offline payments are disabled and payment config is not empty then delete it
 		if (!enableOfflinePayments && payConfig.length > 0) {
 			const newPayConfig = [];
 			console.debug('Pushing new slashpay.json:', newPayConfig);
@@ -211,50 +220,54 @@ export const updateSlashPayConfig = debounce(
 
 		// check if we need to update LN invoice
 		{
-			const currentInvoice = payConfig.find(
-				({ type }) => type === 'lightningInvoice',
-			)?.value;
+			if (openChannelIds.length) {
+				const currentInvoice = payConfig.find(
+					({ type }) => type === 'lightningInvoice',
+				)?.value;
 
-			// if currentInvoice still in redux store, then we don't need to update it.
-			const currentInvoiceStillUnpaid =
-				currentInvoice &&
-				Object.values(invoices || {}).some((i) => i?.to_str === currentInvoice);
+				// if currentInvoice still in redux store, then we don't need to update it.
+				const currentInvoiceStillUnpaid =
+					currentInvoice &&
+					Object.values(invoices || {}).some(
+						(i) => i?.to_str === currentInvoice,
+					);
 
-			const decodedInvoice = await decodeLightningInvoice({
-				paymentRequest: currentInvoice,
-			});
-			const invoiceNeedsToBeUpdated =
-				!currentInvoice ||
-				!currentInvoiceStillUnpaid ||
-				decodedInvoice.isErr() ||
-				decodedInvoice.value.is_expired;
-
-			if (invoiceNeedsToBeUpdated) {
-				needToUpdate = true;
-				const response = await createLightningInvoice({
-					amountSats: 0,
-					description: '',
-					expiryDeltaSeconds: 60 * 60 * 24 * 7, // one week
+				const decodedInvoice = await decodeLightningInvoice({
+					paymentRequest: currentInvoice,
 				});
+				const invoiceNeedsToBeUpdated =
+					!currentInvoice ||
+					!currentInvoiceStillUnpaid ||
+					decodedInvoice.isErr() ||
+					decodedInvoice.value.is_expired;
 
-				if (response.isOk()) {
-					newPayConfig.push({
-						type: 'lightningInvoice',
-						value: response.value.to_str,
+				if (invoiceNeedsToBeUpdated) {
+					needToUpdate = true;
+					const response = await createLightningInvoice({
+						amountSats: 0,
+						description: '',
+						expiryDeltaSeconds: 60 * 60 * 24 * 7, // one week
 					});
-				} else if (currentInvoice) {
-					// if we can't get new invoice, keep an old one
+
+					if (response.isOk()) {
+						newPayConfig.push({
+							type: 'lightningInvoice',
+							value: response.value.to_str,
+						});
+					} else if (currentInvoice) {
+						// if we can't get new invoice, keep an old one
+						newPayConfig.push({
+							type: 'lightningInvoice',
+							value: currentInvoice,
+						});
+					}
+				} else {
+					// keeping old invoice
 					newPayConfig.push({
 						type: 'lightningInvoice',
 						value: currentInvoice,
 					});
 				}
-			} else {
-				// keeping old invoice
-				newPayConfig.push({
-					type: 'lightningInvoice',
-					value: currentInvoice,
-				});
 			}
 		}
 

@@ -96,7 +96,7 @@ const Receive = ({ navigation }): ReactElement => {
 		const response = await createLightningInvoice({
 			amountSats: amount,
 			description: message,
-			expiryDeltaSeconds: 180,
+			expiryDeltaSeconds: 3600,
 			selectedNetwork,
 			selectedWallet,
 		});

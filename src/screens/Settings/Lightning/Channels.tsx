@@ -440,7 +440,7 @@ const Channels = ({ navigation }): ReactElement => {
 													setPayingInvoice(false);
 													showSuccessNotification({
 														title: 'Invoice Payment Success',
-														message: response.value,
+														message: `Fee: ${response.value.fee_paid_sat} sat`,
 													});
 												}}
 											/>

@@ -43,12 +43,10 @@ export function useBalance({
 						currentChannel?.is_channel_ready &&
 						openChannelIds.includes(currentChannel?.channel_id)
 					) {
-						let reserveBalance = 0;
 						if (subtractReserveBalance) {
-							reserveBalance =
-								currentChannel?.unspendable_punishment_reserve ?? 0;
+							return previousValue + currentChannel.outbound_capacity_sat;
 						}
-						return previousValue + currentChannel.balance_sat - reserveBalance;
+						return previousValue + currentChannel.balance_sat;
 					}
 					return previousValue;
 				},

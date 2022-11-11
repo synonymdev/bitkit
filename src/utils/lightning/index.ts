@@ -56,6 +56,7 @@ import {
 import { toggleView } from '../../store/actions/user';
 import { updateSlashPayConfig } from '../slashtags';
 import { sdk } from '../../components/SlashtagsProvider';
+import { TChannelManagerPaymentSent } from '@synonymdev/react-native-ldk/dist/utils/types';
 
 export const DEFAULT_LIGHTNING_PEERS: IWalletItem<string[]> = {
 	bitcoin: [
@@ -909,7 +910,7 @@ export const createPaymentRequest = ldk.createPaymentRequest;
 export const payLightningInvoice = async (
 	invoice: string,
 	sats?: number,
-): Promise<Result<string>> => {
+): Promise<Result<TChannelManagerPaymentSent>> => {
 	try {
 		const addPeersResponse = await addPeers({});
 		if (addPeersResponse.isErr()) {
@@ -922,15 +923,13 @@ export const payLightningInvoice = async (
 			return err(decodedInvoice.error.message);
 		}
 
-		let payResponse: Result<string> | undefined;
+		let payResponse: Result<TChannelManagerPaymentSent> | undefined;
 		if (sats) {
-			// @ts-ignore
 			payResponse = await lm.payWithTimeout({
 				paymentRequest: invoice,
 				amountSats: sats,
 			});
 		} else {
-			// @ts-ignore
 			payResponse = await lm.payWithTimeout({
 				paymentRequest: invoice,
 			});
@@ -941,12 +940,9 @@ export const payLightningInvoice = async (
 		if (payResponse.isErr()) {
 			return err(payResponse.error.message);
 		}
-		const addLightningPaymentResponse = addLightningPayment({
+		addLightningPayment({
 			invoice: decodedInvoice.value,
 		});
-		if (addLightningPaymentResponse.isErr()) {
-			return err(addLightningPaymentResponse.error.message);
-		}
 		let value = decodedInvoice.value.amount_satoshis ?? 0;
 		if (sats) {
 			value = sats;
@@ -959,7 +955,7 @@ export const payLightningInvoice = async (
 			txType: EPaymentType.sent,
 			value: -value,
 			confirmed: true,
-			fee: 0,
+			fee: payResponse.value.fee_paid_sat,
 			timestamp: new Date().getTime(),
 		};
 		addActivityItem(activityItem);
