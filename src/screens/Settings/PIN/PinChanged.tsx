@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
 		flex: 1,
 	},
 	message: {
-		marginHorizontal: 32,
+		marginHorizontal: 16,
 		alignSelf: 'flex-start',
 	},
 	imageContainer: {
@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
 	},
 	buttonContainer: {
 		marginTop: 'auto',
-		paddingHorizontal: 32,
+		paddingHorizontal: 16,
 		width: '100%',
 	},
 });

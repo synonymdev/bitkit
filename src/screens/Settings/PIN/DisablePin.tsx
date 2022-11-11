@@ -49,8 +49,8 @@ const DisablePin = ({
 
 			<View style={styles.message}>
 				<Text01S color="gray1">
-					PIN code is currently enabled.{'\n\n'}You can disable your PIN, this
-					requires you to enter your current PIN code first.
+					PIN code is currently enabled. If you want to disable your PIN, you
+					need to enter your current PIN code first.
 				</Text01S>
 			</View>
 
@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
 		flex: 1,
 	},
 	message: {
-		marginHorizontal: 32,
+		marginHorizontal: 16,
 		alignSelf: 'flex-start',
 	},
 	imageContainer: {
@@ -89,7 +89,7 @@ const styles = StyleSheet.create({
 	},
 	buttonContainer: {
 		marginTop: 'auto',
-		paddingHorizontal: 32,
+		paddingHorizontal: 16,
 		width: '100%',
 	},
 });
