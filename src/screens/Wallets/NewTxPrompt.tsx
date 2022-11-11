@@ -42,9 +42,13 @@ const NewTxPrompt = (): ReactElement => {
 
 	useBottomSheetBackPress('newTxPrompt');
 
-	// force autoPlay of the animation
+	// TEMP: fix iOS animation autoPlay
+	// @see https://github.com/lottie-react-native/lottie-react-native/issues/832
 	useEffect(() => {
-		setTimeout(() => animationRef.current?.play(), 100);
+		animationRef.current?.reset();
+		setTimeout(() => {
+			animationRef.current?.play();
+		}, 0);
 	}, []);
 
 	const handlePress = (): void => {

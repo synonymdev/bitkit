@@ -38,9 +38,13 @@ const Result = ({
 		? require('../../../assets/illustrations/check.png')
 		: require('../../../assets/illustrations/cross.png');
 
-	// force autoPlay of the animation
+	// TEMP: fix iOS animation autoPlay
+	// @see https://github.com/lottie-react-native/lottie-react-native/issues/832
 	useEffect(() => {
-		setTimeout(() => animationRef.current?.play(), 100);
+		animationRef.current?.reset();
+		setTimeout(() => {
+			animationRef.current?.play();
+		}, 0);
 	}, []);
 
 	const navigateToTxDetails = (): void => {
