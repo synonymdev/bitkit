@@ -26,13 +26,15 @@ export const FeedWidget = ({
 	widget,
 	icon,
 	name,
-	editable = true,
+	isEditing = false,
+	onPress,
 }: {
 	url: string;
 	widget: IWidget;
 	icon?: ReactElement;
 	name?: string;
-	editable?: boolean;
+	isEditing?: boolean;
+	onPress?: () => void;
 }): ReactElement => {
 	const { value } = useFeedWidget({ url, feed: widget.feed });
 
@@ -41,7 +43,8 @@ export const FeedWidget = ({
 			url={url}
 			name={name || widget.feed.name}
 			label={widget.feed.field.name}
-			editable={editable}
+			isEditing={isEditing}
+			onPress={onPress}
 			right={<DefaultRightComponent value={value?.toString()} />}
 			icon={
 				icon || (
@@ -64,7 +67,8 @@ export const BaseFeedWidget = ({
 	label,
 	right = <View />,
 	middle,
-	editable = true,
+	isEditing = false,
+	onPress,
 }: {
 	url: string;
 	name?: string;
@@ -72,13 +76,13 @@ export const BaseFeedWidget = ({
 	label?: string;
 	right?: ReactElement;
 	middle?: ReactElement;
-	editable?: boolean;
+	isEditing?: boolean;
+	onPress?: () => void;
 }): ReactElement => {
-	const [showButtons, setShowButtons] = useState(false);
 	const [showDialog, setShowDialog] = useState(false);
 
-	const switchShowButtons = (): void => {
-		setShowButtons((b) => !b);
+	const onEdit = (): void => {
+		navigate('WidgetFeedEdit', { url });
 	};
 
 	const onDelete = (): void => {
@@ -86,10 +90,7 @@ export const BaseFeedWidget = ({
 	};
 
 	return (
-		<TouchableOpacity
-			style={styles.root}
-			onPress={switchShowButtons}
-			activeOpacity={0.9}>
+		<TouchableOpacity style={styles.root} activeOpacity={0.9} onPress={onPress}>
 			<View style={styles.infoContainer}>
 				<View style={styles.icon}>{icon}</View>
 				<View style={styles.labelsContainer}>
@@ -100,7 +101,7 @@ export const BaseFeedWidget = ({
 				</View>
 			</View>
 
-			{editable && showButtons ? (
+			{isEditing ? (
 				<>
 					<Button
 						style={styles.deleteButton}
@@ -110,10 +111,7 @@ export const BaseFeedWidget = ({
 					<Button
 						style={styles.settingsButton}
 						icon={<GearIcon width={20} />}
-						onPress={(): void => {
-							setTimeout(() => setShowButtons(false), 0);
-							navigate('WidgetFeedEdit', { url });
-						}}
+						onPress={onEdit}
 					/>
 				</>
 			) : (
@@ -122,6 +120,7 @@ export const BaseFeedWidget = ({
 					<View style={styles.right}>{right}</View>
 				</View>
 			)}
+
 			<Dialog
 				visible={showDialog}
 				title={`Delete ${name} widget?`}

@@ -23,13 +23,14 @@ import { deleteWidget } from '../store/actions/widgets';
 const HeadlinesWidget = ({
 	url,
 	widget,
-	editable = true,
+	isEditing = false,
+	onPress,
 }: {
 	url: string;
 	widget: IWidget;
-	editable?: boolean;
+	isEditing?: boolean;
+	onPress?: () => void;
 }): ReactElement => {
-	const [showButtons, setShowButtons] = useState(false);
 	const [showDialog, setShowDialog] = useState(false);
 	const [article, setArticle] = useState<{
 		title: string;
@@ -85,8 +86,8 @@ const HeadlinesWidget = ({
 		};
 	}, [sdk, url]);
 
-	const switchShowButtons = (): void => {
-		setShowButtons((b) => !b);
+	const onEdit = (): void => {
+		navigate('WidgetFeedEdit', { url });
 	};
 
 	const onDelete = (): void => {
@@ -97,8 +98,8 @@ const HeadlinesWidget = ({
 		<View>
 			<TouchableOpacity
 				style={styles.root}
-				onPress={switchShowButtons}
-				activeOpacity={0.9}>
+				activeOpacity={0.9}
+				onPress={onPress}>
 				<View style={styles.icon}>
 					{<NewspaperIcon width={32} height={32} />}
 				</View>
@@ -127,7 +128,7 @@ const HeadlinesWidget = ({
 				</View>
 			</TouchableOpacity>
 
-			{editable && showButtons && (
+			{isEditing && (
 				<View style={styles.buttonsContainer}>
 					<Button
 						style={styles.deleteButton}
@@ -137,10 +138,7 @@ const HeadlinesWidget = ({
 					<Button
 						style={styles.settingsButton}
 						icon={<GearIcon width={20} />}
-						onPress={(): void => {
-							setTimeout(() => setShowButtons(false), 0);
-							navigate('WidgetFeedEdit', { url });
-						}}
+						onPress={onEdit}
 					/>
 				</View>
 			)}
