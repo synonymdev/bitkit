@@ -20,7 +20,7 @@ export interface IWidget {
 		icon: string;
 		field: SlashFeedJSON['fields'][0];
 	};
-	magiclink: boolean;
+	magiclink?: boolean;
 }
 
 export interface IWidgets {

@@ -6,7 +6,6 @@ import { SlashURL } from '@synonymdev/slashtags-sdk';
 import {
 	ScrollView,
 	View as ThemedView,
-	Text02S,
 	Caption13Up,
 	CubeIcon,
 	NewspaperIcon,
@@ -60,16 +59,11 @@ export const WidgetFeedEdit = ({
 		Partial<SlashFeedJSON> & { icon?: string }
 	>(savedWidget?.feed);
 
-	const [selectedField, setSelectedField] =
-		useState<string>(savedSelectedField);
+	const [selectedField, setSelectedField] = useState(savedSelectedField);
 
 	const resolving = useMemo(() => {
 		return !config && !savedWidget;
 	}, [config, savedWidget]);
-
-	const enableSave = useMemo(() => {
-		return selectedField && selectedField !== savedSelectedField;
-	}, [selectedField, savedSelectedField]);
 
 	useEffect(() => {
 		let unmounted = false;
@@ -126,8 +120,11 @@ export const WidgetFeedEdit = ({
 							.catch(noop);
 					});
 
-					// pre-select first option
-					setSelectedField(_config.fields[0].name);
+					if (!savedWidget) {
+						// pre-select first option
+						setSelectedField(_config.fields[0].name);
+					}
+
 					setIsLoading(false);
 				})
 				.catch((e: Error) => {
@@ -156,15 +153,15 @@ export const WidgetFeedEdit = ({
 		return function cleanup() {
 			unmounted = true;
 		};
-	}, [sdk, url]);
+	}, [sdk, url, savedWidget]);
 
-	const save = (): void => {
-		if (config) {
+	const onSave = (): void => {
+		if (config && selectedField !== savedSelectedField) {
 			setFeedWidget(url, {
-				name: config?.name,
-				type: config?.type,
-				description: config?.description,
-				icon: config?.icon,
+				name: config.name,
+				type: config.type,
+				description: config.description,
+				icon: config.icon,
 				field: config.fields?.find((f) => f.name === selectedField),
 			} as IWidget['feed']);
 		}
@@ -179,10 +176,13 @@ export const WidgetFeedEdit = ({
 
 	const headerTitle = savedSelectedField ? 'Change Widget Feed' : 'Widget Feed';
 	const buttonText = savedSelectedField ? 'Save' : 'Save Widget';
-	const previewWidget = config?.fields && {
+	const previewWidget = config.fields && {
 		feed: {
-			...config,
-			field: config.fields?.find((f) => f.name === selectedField),
+			name: config.name ?? '',
+			description: config.description ?? '',
+			icon: config.icon ?? '',
+			type: config.type ?? '',
+			field: config.fields?.find((f) => f.name === selectedField)!,
 		},
 	};
 
@@ -202,7 +202,7 @@ export const WidgetFeedEdit = ({
 				<View style={styles.content}>
 					<View style={styles.header}>
 						<View style={styles.headerText}>
-							<Headline>{config?.name}</Headline>
+							<Headline>{config.name}</Headline>
 							<SlashtagURL style={styles.url} url={url} />
 						</View>
 						<View style={styles.headerImage}>
@@ -216,69 +216,65 @@ export const WidgetFeedEdit = ({
 										return <CubeIcon width={64} height={64} />;
 									default:
 										return (
-											<ProfileImage url={url} image={config?.icon} size={32} />
+											<ProfileImage url={url} image={config.icon} size={32} />
 										);
 								}
 							})()}
 						</View>
 					</View>
 
-					{config?.description && (
+					{config.description && (
 						<Text01S style={styles.description} color="gray1">
 							{config.description}
 						</Text01S>
 					)}
 
-					{isLoading && (
-						<Text01S color="gray1">Loading widget options...</Text01S>
-					)}
-
-					{!isLoading && Object.entries(fields).length > 1 && (
+					{Object.entries(fields).length > 1 && (
 						<ScrollView>
-							{Object.values(fields).length === 0 ? (
-								<Text02S color="gray1">No feeds to feature...</Text02S>
-							) : (
-								Object.entries(fields).map(([label, value]) => {
-									return (
-										<>
-											<Pressable
-												key={label}
-												onPress={(): void => setSelectedField(label)}>
-												<Divider />
-												<View style={styles.fieldContainer}>
-													<View style={styles.fieldLeftContainer}>
-														{typeof value === 'string' ? (
-															<>
-																<Caption13Up
-																	color="gray1"
-																	style={styles.fieldLabel}>
-																	{label}
-																</Caption13Up>
-																<Text02M style={styles.fieldValue}>
-																	{value}
-																</Text02M>
-															</>
-														) : (
-															<Text01S style={styles.fieldValue}>
+							{isLoading && (
+								<Text01S style={styles.loading} color="gray1">
+									Loading widget options...
+								</Text01S>
+							)}
+
+							{!isLoading && (
+								<View style={styles.fields}>
+									{Object.entries(fields).map(([label, value]) => (
+										<Pressable
+											key={label}
+											onPress={(): void => setSelectedField(label)}>
+											<Divider />
+											<View style={styles.fieldContainer}>
+												<View style={styles.fieldLeftContainer}>
+													{typeof value === 'string' ? (
+														<>
+															<Caption13Up
+																color="gray1"
+																style={styles.fieldLabel}>
 																{label}
-															</Text01S>
-														)}
-													</View>
-													{selectedField === label && (
-														<Checkmark color="brand" height={30} width={30} />
+															</Caption13Up>
+															<Text02M style={styles.fieldValue}>
+																{value}
+															</Text02M>
+														</>
+													) : (
+														<Text01S style={styles.fieldValue}>{label}</Text01S>
 													)}
 												</View>
-											</Pressable>
-										</>
-									);
-								})
+												{selectedField === label && (
+													<Checkmark color="brand" height={30} width={30} />
+												)}
+											</View>
+										</Pressable>
+									))}
+								</View>
 							)}
 						</ScrollView>
 					)}
 
 					<View style={styles.footer}>
 						{previewWidget && (
-							<View style={styles.preview}>
+							<>
 								<Caption13Up color="gray1" style={styles.fieldLabel}>
 									Widget preview
 								</Caption13Up>
@@ -290,7 +286,6 @@ export const WidgetFeedEdit = ({
 												<BitfinexWidget
 													key={url}
 													url={url}
-													// @ts-ignore
 													widget={previewWidget}
 												/>
 											);
@@ -299,7 +294,6 @@ export const WidgetFeedEdit = ({
 												<HeadlinesWidget
 													key={url}
 													url={url}
-													// @ts-ignore
 													widget={previewWidget}
 												/>
 											);
@@ -308,7 +302,6 @@ export const WidgetFeedEdit = ({
 												<BlocksWidget
 													key={url}
 													url={url}
-													// @ts-ignore
 													widget={previewWidget}
 												/>
 											);
@@ -317,13 +310,12 @@ export const WidgetFeedEdit = ({
 												<FeedWidget
 													key={url}
 													url={url}
-													// @ts-ignore
 													widget={previewWidget}
 												/>
 											);
 									}
 								})()}
-							</View>
+							</>
 						)}
 
 						<View style={styles.buttonsContainer}>
@@ -340,8 +332,7 @@ export const WidgetFeedEdit = ({
 								style={styles.saveButton}
 								text={buttonText}
 								size="large"
-								disabled={!enableSave}
-								onPress={save}
+								onPress={onSave}
 							/>
 						</View>
 					</View>
@@ -380,12 +371,11 @@ const styles = StyleSheet.create({
 		letterSpacing: 0.4,
 		lineHeight: 26,
 	},
-	saveButton: {
-		flex: 1,
+	loading: {
+		marginTop: 16,
 	},
-	deleteButton: {
-		flex: 1,
-		marginRight: 16,
+	fields: {
+		paddingBottom: 16,
 	},
 	fieldContainer: {
 		flexDirection: 'row',
@@ -407,11 +397,17 @@ const styles = StyleSheet.create({
 		paddingTop: 16,
 		marginTop: 'auto',
 	},
-	preview: {},
 	buttonsContainer: {
 		paddingTop: 16,
 		flexDirection: 'row',
 		justifyContent: 'space-between',
+	},
+	deleteButton: {
+		flex: 1,
+		marginRight: 16,
+	},
+	saveButton: {
+		flex: 1,
 	},
 });
 
