@@ -35,10 +35,6 @@ When you're finished with the changes, create a pull request, also known as a PR
 - As you update your PR and apply changes, mark each conversation as [resolved](https://docs.github.com/en/github/collaborating-with-issues-and-pull-requests/commenting-on-a-pull-request#resolving-conversations).
 - If you run into any merge issues, checkout this [git tutorial](https://github.com/skills/resolve-merge-conflicts) to help you resolve merge conflicts and other issues.
 
-## Windows
+## Development
 
-Bitkit can be developed on Windows for Android only, to get up and running follow these steps:
-
-1. Install nodejs, the latest security release is [Node v16.18.1 (LTS)](https://nodejs.org/en/blog/release/v16.18.1/).
-2. Install the java development kit, the simplest way is to download the [OpenJDK11](https://learn.microsoft.com/en-us/java/openjdk/download) MSI installer that creates the required environment variables. A reset of your machine may be required after.
-3. Follow the React Native CLI Quickstart [guide](https://reactnative.dev/docs/environment-setup) to install Android studio, you may ignore the step to install openjdk11 via choco.
+See [Development documentation](./DEVELOPMENT.md).
