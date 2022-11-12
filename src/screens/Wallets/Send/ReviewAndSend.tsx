@@ -56,6 +56,7 @@ import { refreshWallet } from '../../../utils/wallet';
 import type { SendScreenProps } from '../../../navigation/types';
 import Dialog from '../../../components/Dialog';
 import { getFiatDisplayValues } from '../../../utils/exchange-rate';
+import { useBalance } from '../../../hooks/wallet';
 
 const Section = memo(
 	({
@@ -110,10 +111,15 @@ const ReviewAndSend = ({
 	const selectedNetwork = useSelector(
 		(store: Store) => store.wallet.selectedNetwork,
 	);
-	const balance = useSelector(
+	const onChainBalance = useSelector(
 		(store: Store) =>
 			store.wallet.wallets[selectedWallet]?.balance[selectedNetwork],
 	);
+
+	const lightningBalance = useBalance({
+		onchain: false,
+		lightning: true,
+	});
 
 	const transaction = useTransactionDetails();
 
@@ -336,7 +342,7 @@ const ReviewAndSend = ({
 
 		//Temporarily update the balance until the Electrum mempool catches up in a few seconds.
 		updateWalletBalance({
-			balance: balance - transactionTotal,
+			balance: onChainBalance - transactionTotal,
 			selectedWallet,
 			selectedNetwork,
 		});
@@ -351,7 +357,7 @@ const ReviewAndSend = ({
 		navigation.navigate('Result', { success: true, txId: rawTx.id });
 		setIsLoading(false);
 	}, [
-		balance,
+		onChainBalance,
 		rawTx,
 		selectedNetwork,
 		selectedWallet,
@@ -415,9 +421,16 @@ const ReviewAndSend = ({
 		});
 
 		// amount > 50% of total balance
-		if (amount > balance / 2) {
-			setShowDialog2(true);
-			return;
+		if (transaction?.lightningInvoice) {
+			if (amount > lightningBalance.satoshis / 2) {
+				setShowDialog2(true);
+				return;
+			}
+		} else {
+			if (amount > onChainBalance / 2) {
+				setShowDialog2(true);
+				return;
+			}
 		}
 
 		// amount > 100$ and enableSendAmountWarning
@@ -438,8 +451,16 @@ const ReviewAndSend = ({
 			return;
 		}
 
-		confirmPayment();
-	}, [balance, amount, feeSats, enableSendAmountWarning, confirmPayment]);
+		confirmPayment().then();
+	}, [
+		amount,
+		feeSats,
+		transaction?.lightningInvoice,
+		enableSendAmountWarning,
+		confirmPayment,
+		lightningBalance.satoshis,
+		onChainBalance,
+	]);
 
 	const customDescription = useMemo(() => {
 		let desc = FeeText.custom.description;
