@@ -101,7 +101,7 @@ const FancySlider = ({
 	const endPosition = containerWidth === 0 ? 1 : containerWidth - CIRCLE_SIZE;
 
 	// eslint-disable-next-line react-hooks/exhaustive-deps
-	const throttledOnValueChange = useCallback(throttle(onValueChange, 100), [
+	const throttledOnValueChange = useCallback(throttle(onValueChange, 200), [
 		onValueChange,
 	]);
 
