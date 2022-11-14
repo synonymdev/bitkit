@@ -1,15 +1,17 @@
 import React, { ReactElement, useCallback, useEffect, useState } from 'react';
+import { StyleSheet, View, Image } from 'react-native';
+import { Result } from '@synonymdev/result';
+
 import { updateUser } from '../../store/actions/user';
 import { useSelectedSlashtag } from '../../hooks/slashtags';
-import { StyleSheet, View, Image } from 'react-native';
+import useColors from '../../hooks/colors';
 import GlowingBackground from '../../components/GlowingBackground';
 import { Display, Text01S } from '../../styles/components';
 import Button from '../../components/Button';
-import LoadingWalletScreen from './Loading';
-import useColors from '../../hooks/colors';
 import Glow from '../../components/Glow';
 import { restoreRemoteBackups } from '../../utils/startup';
-import { Result } from '@synonymdev/result';
+import { sleep } from '../../utils/helpers';
+import LoadingWalletScreen from './Loading';
 
 const imageSrc = require('../../assets/illustrations/check.png');
 
@@ -28,6 +30,7 @@ const RestoringScreen = (): ReactElement => {
 		setShowRestored(false);
 
 		const res = await restoreRemoteBackups(slashtag.slashtag);
+		await sleep(1000);
 		if (res.isErr()) {
 			return setShowFailed(true);
 		}
@@ -45,8 +48,11 @@ const RestoringScreen = (): ReactElement => {
 		})();
 	}, [onRemoteRestore]);
 
+	let color = 'brand';
+	let content = <LoadingWalletScreen />;
+
 	if (showRestored || showFailed) {
-		const color = showRestored ? green : red;
+		color = showRestored ? green : red;
 		const title = showRestored ? 'Wallet Restored.' : 'Failed to restore.';
 		const subtitle = showRestored
 			? 'You have successfully restored your wallet from backup. Enjoy Bitkit!'
@@ -56,35 +62,28 @@ const RestoringScreen = (): ReactElement => {
 			: (): Promise<void> => onRemoteRestore().then().catch(console.error);
 		const buttonText = showRestored ? 'Get Started' : 'Try Again';
 
-		return (
-			<GlowingBackground topLeft={color}>
-				<View style={styles.contentResult}>
-					<View>
-						<Display style={styles.title}>{title}</Display>
-						<Text01S color="white8">{subtitle}</Text01S>
-					</View>
-
-					<View style={styles.imageContainer} pointerEvents="none">
-						<View style={styles.canvasContainer}>
-							<Glow color={color} />
-						</View>
-						<Image style={styles.image} source={imageSrc} />
-					</View>
-
-					<View>
-						<Button onPress={onPress} size="large" text={buttonText} />
-					</View>
+		content = (
+			<View style={styles.contentResult}>
+				<View>
+					<Display style={styles.title}>{title}</Display>
+					<Text01S color="white8">{subtitle}</Text01S>
 				</View>
-			</GlowingBackground>
+
+				<View style={styles.imageContainer} pointerEvents="none">
+					<View style={styles.canvasContainer}>
+						<Glow color={color} />
+					</View>
+					<Image style={styles.image} source={imageSrc} />
+				</View>
+
+				<View>
+					<Button onPress={onPress} size="large" text={buttonText} />
+				</View>
+			</View>
 		);
 	}
 
-	//Busy restoring
-	return (
-		<GlowingBackground topLeft="brand">
-			<LoadingWalletScreen />
-		</GlowingBackground>
-	);
+	return <GlowingBackground topLeft={color}>{content}</GlowingBackground>;
 };
 
 const styles = StyleSheet.create({
