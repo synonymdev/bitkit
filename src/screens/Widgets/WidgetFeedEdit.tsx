@@ -176,13 +176,13 @@ export const WidgetFeedEdit = ({
 
 	const headerTitle = savedSelectedField ? 'Change Widget Feed' : 'Widget Feed';
 	const buttonText = savedSelectedField ? 'Save' : 'Save Widget';
-	const previewWidget = config.fields && {
+	const previewWidget = config?.fields && {
 		feed: {
 			name: config.name ?? '',
 			description: config.description ?? '',
 			icon: config.icon ?? '',
 			type: config.type ?? '',
-			field: config.fields?.find((f) => f.name === selectedField)!,
+			field: config.fields.find((f) => f.name === selectedField)!,
 		},
 	};
 
