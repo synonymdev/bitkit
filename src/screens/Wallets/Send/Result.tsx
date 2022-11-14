@@ -1,5 +1,5 @@
 import React, { memo, ReactElement, useEffect, useMemo, useRef } from 'react';
-import { StyleSheet, View, Image } from 'react-native';
+import { StyleSheet, View, Image, Platform } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useSelector } from 'react-redux';
 import Lottie from 'lottie-react-native';
@@ -41,10 +41,12 @@ const Result = ({
 	// TEMP: fix iOS animation autoPlay
 	// @see https://github.com/lottie-react-native/lottie-react-native/issues/832
 	useEffect(() => {
-		animationRef.current?.reset();
-		setTimeout(() => {
-			animationRef.current?.play();
-		}, 0);
+		if (Platform.OS === 'ios') {
+			animationRef.current?.reset();
+			setTimeout(() => {
+				animationRef.current?.play();
+			}, 0);
+		}
 	}, []);
 
 	const navigateToTxDetails = (): void => {
@@ -54,8 +56,8 @@ const Result = ({
 				data: { isOpen: false },
 			});
 			navigate('ActivityDetail', {
+				activityItem,
 				extended: true,
-				activityItem: activityItem,
 			});
 		}
 	};

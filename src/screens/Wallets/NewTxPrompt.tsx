@@ -1,5 +1,11 @@
 import React, { memo, ReactElement, useEffect, useMemo, useRef } from 'react';
-import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
+import {
+	Image,
+	Platform,
+	StyleSheet,
+	TouchableOpacity,
+	View,
+} from 'react-native';
 import { useSelector } from 'react-redux';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Lottie from 'lottie-react-native';
@@ -45,18 +51,22 @@ const NewTxPrompt = (): ReactElement => {
 	// TEMP: fix iOS animation autoPlay
 	// @see https://github.com/lottie-react-native/lottie-react-native/issues/832
 	useEffect(() => {
-		animationRef.current?.reset();
-		setTimeout(() => {
-			animationRef.current?.play();
-		}, 0);
+		if (Platform.OS === 'ios') {
+			animationRef.current?.reset();
+			setTimeout(() => {
+				animationRef.current?.play();
+			}, 0);
+		}
 	}, []);
 
 	const handlePress = (): void => {
-		toggleView({
-			view: 'newTxPrompt',
-			data: { isOpen: false },
-		});
-		navigate('ActivityDetail', { activityItem });
+		if (activityItem) {
+			toggleView({
+				view: 'newTxPrompt',
+				data: { isOpen: false },
+			});
+			navigate('ActivityDetail', { activityItem });
+		}
 	};
 
 	return (
