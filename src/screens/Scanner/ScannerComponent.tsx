@@ -1,7 +1,11 @@
 import React, { ReactElement, useState } from 'react';
-import { StyleSheet, View, useWindowDimensions } from 'react-native';
+import {
+	View,
+	TouchableOpacity,
+	StyleSheet,
+	useWindowDimensions,
+} from 'react-native';
 import { useSelector } from 'react-redux';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 import Clipboard from '@react-native-clipboard/clipboard';
 import { FadeIn, FadeOut } from 'react-native-reanimated';
 import { launchImageLibrary } from 'react-native-image-picker';

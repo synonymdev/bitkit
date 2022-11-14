@@ -1,6 +1,5 @@
 import React, { ReactElement } from 'react';
-import { StyleSheet, ScrollView } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { TouchableOpacity, ScrollView, StyleSheet } from 'react-native';
 
 import {
 	ChartLineIcon,

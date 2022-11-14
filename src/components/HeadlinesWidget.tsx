@@ -1,5 +1,5 @@
 import React, { memo, ReactElement, useEffect, useState } from 'react';
-import { Linking, StyleSheet } from 'react-native';
+import { TouchableOpacity, Linking, StyleSheet } from 'react-native';
 import { SlashURL } from '@synonymdev/slashtags-sdk';
 
 import {
@@ -14,7 +14,6 @@ import { IWidget } from '../store/types/widgets';
 import { useSlashtagsSDK } from './SlashtagsProvider';
 import { showErrorNotification } from '../utils/notifications';
 import { decodeJSON } from '../utils/slashtags';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 import { navigate } from '../navigation/root/RootNavigator';
 import Button from './Button';
 import Dialog from './Dialog';
