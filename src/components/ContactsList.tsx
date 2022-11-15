@@ -42,19 +42,13 @@ export const ContactItem = ({
 					image={profile?.image}
 					size={size === 'small' ? 32 : 48}
 				/>
-				<View style={cstyles.column}>
+				<View style={cstyles.column} pointerEvents="none">
 					<Text01M
 						numerOfLines={1}
 						style={size !== 'small' ? cstyles.name : {}}>
 						{name}
 					</Text01M>
-					<SlashtagURL
-						color="gray"
-						url={contact.url}
-						onPress={(): void => {
-							onPress?.(contact);
-						}}
-					/>
+					<SlashtagURL url={contact.url} color="gray1" bold={false} />
 				</View>
 			</View>
 		</TouchableOpacity>
