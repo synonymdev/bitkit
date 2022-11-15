@@ -1,6 +1,7 @@
-import React, { memo, ReactElement, useEffect, useMemo, useRef } from 'react';
+import React, { memo, ReactElement, useCallback, useMemo, useRef } from 'react';
 import { StyleSheet, View, Image, Platform } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useFocusEffect } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
 import Lottie from 'lottie-react-native';
 
@@ -40,14 +41,16 @@ const Result = ({
 
 	// TEMP: fix iOS animation autoPlay
 	// @see https://github.com/lottie-react-native/lottie-react-native/issues/832
-	useEffect(() => {
-		if (Platform.OS === 'ios') {
-			animationRef.current?.reset();
-			setTimeout(() => {
-				animationRef.current?.play();
-			}, 0);
-		}
-	}, []);
+	useFocusEffect(
+		useCallback(() => {
+			if (Platform.OS === 'ios') {
+				animationRef.current?.reset();
+				setTimeout(() => {
+					animationRef.current?.play();
+				}, 0);
+			}
+		}, []),
+	);
 
 	const navigateToTxDetails = (): void => {
 		if (activityItem) {
@@ -77,7 +80,13 @@ const Result = ({
 		<GradientView style={styles.container}>
 			<>
 				{success && (
-					<Lottie ref={animationRef} source={confettiSrc} autoPlay loop />
+					<Lottie
+						ref={animationRef}
+						style={styles.confetti}
+						source={confettiSrc}
+						autoPlay
+						loop
+					/>
 				)}
 			</>
 
@@ -135,6 +144,10 @@ const Result = ({
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
+	},
+	confetti: {
+		position: 'absolute',
+		height: '100%',
 	},
 	error: {
 		marginHorizontal: 32,

@@ -1,4 +1,4 @@
-import React, { memo, ReactElement, useEffect, useMemo, useRef } from 'react';
+import React, { memo, ReactElement, useCallback, useMemo, useRef } from 'react';
 import {
 	Image,
 	Platform,
@@ -7,6 +7,7 @@ import {
 	View,
 } from 'react-native';
 import { useSelector } from 'react-redux';
+import { useFocusEffect } from '@react-navigation/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Lottie from 'lottie-react-native';
 
@@ -50,14 +51,16 @@ const NewTxPrompt = (): ReactElement => {
 
 	// TEMP: fix iOS animation autoPlay
 	// @see https://github.com/lottie-react-native/lottie-react-native/issues/832
-	useEffect(() => {
-		if (Platform.OS === 'ios') {
-			animationRef.current?.reset();
-			setTimeout(() => {
-				animationRef.current?.play();
-			}, 0);
-		}
-	}, []);
+	useFocusEffect(
+		useCallback(() => {
+			if (Platform.OS === 'ios') {
+				animationRef.current?.reset();
+				setTimeout(() => {
+					animationRef.current?.play();
+				}, 0);
+			}
+		}, []),
+	);
 
 	const handlePress = (): void => {
 		if (activityItem) {
