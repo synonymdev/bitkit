@@ -101,27 +101,6 @@ const ElectrumConfig = ({
 		}
 	};
 
-	const saveConnectedPeer = (): void => {
-		try {
-			if (host !== connectedPeer?.host) {
-				setHost(connectedPeer?.host);
-			}
-			if (port !== connectedPeer?.port.toString()) {
-				setPort(connectedPeer?.port.toString());
-			}
-			if (protocol !== connectedPeer?.protocol) {
-				setProtocol(connectedPeer?.protocol);
-			}
-			connectAndAddPeer({
-				host: connectedPeer.host,
-				port: String(connectedPeer.port),
-				protocol: connectedPeer.protocol,
-			});
-		} catch (e) {
-			console.log(e);
-		}
-	};
-
 	const connectAndAddPeer = async (peerData: {
 		host: string;
 		port: number | string;
@@ -233,6 +212,8 @@ const ElectrumConfig = ({
 		setPort(url.port);
 	};
 
+	const isButtonDisabled = peersMatch({ host, port, protocol });
+
 	return (
 		<View style={styles.container}>
 			<SafeAreaInsets type="top" />
@@ -256,16 +237,6 @@ const ElectrumConfig = ({
 								<Text color="red">disconnected</Text>
 							)}
 						</View>
-
-						{!!connectedPeer.host && !peersMatch(connectedPeer) && (
-							<View style={styles.savePeer}>
-								<Button
-									text="Save This Peer"
-									color="surface"
-									onPress={saveConnectedPeer}
-								/>
-							</View>
-						)}
 					</View>
 
 					<Caption13Up color="gray1" style={styles.label}>
@@ -321,19 +292,16 @@ const ElectrumConfig = ({
 							size="large"
 							onPress={resetToDefault}
 						/>
-						{!peersMatch({ host, port, protocol }) && (
-							<>
-								<View style={styles.divider} />
-								<Button
-									text="Connect To Host"
-									size="large"
-									loading={loading}
-									onPress={(): void => {
-										connectAndAddPeer({ host, port, protocol });
-									}}
-								/>
-							</>
-						)}
+						<View style={styles.divider} />
+						<Button
+							text="Connect To Host"
+							size="large"
+							loading={loading}
+							disabled={isButtonDisabled}
+							onPress={(): void => {
+								connectAndAddPeer({ host, port, protocol });
+							}}
+						/>
 					</View>
 				</ScrollView>
 			</KeyboardAvoidingView>
@@ -363,10 +331,6 @@ const styles = StyleSheet.create({
 	connectedPeer: {
 		flex: 1.5,
 	},
-	savePeer: {
-		alignItems: 'center',
-		flex: 1,
-	},
 	textInput: {
 		minHeight: 50,
 		marginVertical: 5,
@@ -374,7 +338,6 @@ const styles = StyleSheet.create({
 	buttons: {
 		marginTop: 16,
 		flexDirection: 'row',
-		justifyContent: 'center',
 	},
 	divider: {
 		width: 16,
