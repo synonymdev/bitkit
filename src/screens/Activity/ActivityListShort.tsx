@@ -71,9 +71,7 @@ const ActivityList = (): ReactElement => {
 				<Subtitle>Activity</Subtitle>
 			</View>
 
-			{groupedItems.length > 0 ? (
-				groupedItems.map((item) => renderItem({ item }))
-			) : (
+			{groupedItems.length === 0 ? (
 				<EmptyItem
 					onPress={(): void => {
 						toggleView({
@@ -84,16 +82,19 @@ const ActivityList = (): ReactElement => {
 						});
 					}}
 				/>
+			) : (
+				<>
+					{groupedItems.map((item) => renderItem({ item }))}
+					<Button
+						text={<Text01M color="white8">Show All Activity</Text01M>}
+						size="large"
+						variant="transparent"
+						onPress={(): void => {
+							navigation.navigate('ActivityFiltered');
+						}}
+					/>
+				</>
 			)}
-
-			<Button
-				text={<Text01M color="white8">Show All Activity</Text01M>}
-				size="large"
-				variant="transparent"
-				onPress={(): void => {
-					navigation.navigate('ActivityFiltered');
-				}}
-			/>
 		</View>
 	);
 };
