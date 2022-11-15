@@ -90,7 +90,7 @@ const AuthWidget = ({
 									icon={<TrashIcon width={20} />}
 									onPress={onDelete}
 								/>
-								<Button text="Log in" onPress={openMagicLink} />
+								<Button text="Sign in" onPress={openMagicLink} />
 							</>
 						)}
 					</View>

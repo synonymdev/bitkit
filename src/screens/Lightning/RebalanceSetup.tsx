@@ -101,7 +101,7 @@ const RebalanceSetup = ({
 		<GlowingBackground topLeft={colors.purple}>
 			<SafeAreaInsets type="top" />
 			<NavigationHeader
-				title="Rebalance Funds"
+				title="Transfer Funds"
 				onClosePress={(): void => {
 					navigation.navigate('Tabs');
 				}}

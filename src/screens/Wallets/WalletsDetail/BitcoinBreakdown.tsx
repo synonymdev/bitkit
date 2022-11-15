@@ -83,7 +83,7 @@ const BitcoinBreakdown = (): ReactElement => {
 			navigation.navigate('LightningRoot', {
 				screen: 'QuickSetup',
 				params: {
-					headerTitle: 'Rebalance Funds',
+					headerTitle: 'Transfer Funds',
 				},
 			});
 		} else {
