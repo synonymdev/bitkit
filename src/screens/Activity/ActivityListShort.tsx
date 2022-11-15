@@ -1,9 +1,15 @@
-import React, { memo, ReactElement, useCallback, useMemo } from 'react';
+import React, {
+	memo,
+	ReactElement,
+	ReactNode,
+	useCallback,
+	useMemo,
+} from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { View, StyleSheet } from 'react-native';
 import { useSelector } from 'react-redux';
 
-import { Caption13Up, Subtitle, Text01M } from '../../styles/components';
+import { Subtitle, Text01M } from '../../styles/components';
 import Store from '../../store/types';
 import { groupActivityItems } from '../../utils/activity';
 import Button from '../../components/Button';
@@ -11,6 +17,8 @@ import { RootNavigationProp } from '../../navigation/types';
 import { toggleView } from '../../store/actions/user';
 import { formatBoostedActivityItems } from '../../utils/boost';
 import ListItem, { EmptyItem } from './ListItem';
+
+const MAX_ACTIVITY_ITEMS = 3;
 
 const ActivityList = (): ReactElement => {
 	const navigation = useNavigation<RootNavigationProp>();
@@ -36,20 +44,14 @@ const ActivityList = (): ReactElement => {
 	}, [boostedTransactions, items, selectedNetwork, selectedWallet]);
 
 	const groupedItems = useMemo(() => {
-		const activityItems = boostFilteredItems.slice(0, 3);
-		// group items by categories: today, yesterday, this month, this year, earlier
-		// and attach to them formattedDate
+		const activityItems = boostFilteredItems.slice(0, MAX_ACTIVITY_ITEMS);
 		return groupActivityItems(activityItems);
 	}, [boostFilteredItems]);
 
 	const renderItem = useCallback(
-		({ item }): ReactElement => {
+		({ item }): ReactNode => {
 			if (typeof item === 'string') {
-				return (
-					<Caption13Up color="gray1" style={styles.category} key={item}>
-						{item}
-					</Caption13Up>
-				);
+				return;
 			}
 
 			return (
@@ -102,9 +104,6 @@ const ActivityList = (): ReactElement => {
 const styles = StyleSheet.create({
 	content: {
 		paddingTop: 30,
-		marginBottom: 16,
-	},
-	category: {
 		marginBottom: 16,
 	},
 	header: {

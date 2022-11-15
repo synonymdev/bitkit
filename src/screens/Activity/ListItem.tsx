@@ -37,7 +37,10 @@ export const EmptyItem = ({
 
 				<View style={styles.col1text}>
 					<Text01M>No Activity Yet</Text01M>
-					<Caption13M color="gray1" style={styles.date} numberOfLines={1}>
+					<Caption13M
+						color="gray1"
+						style={styles.description}
+						numberOfLines={1}>
 						Receive some funds to get started
 					</Caption13M>
 				</View>
@@ -53,7 +56,7 @@ const ListItem = ({
 	item: IActivityItem & { formattedDate: string };
 	onPress: () => void;
 }): ReactElement => {
-	const { value, txType, formattedDate, id } = item;
+	const { id, txType, value, message, formattedDate } = item;
 	const slashTagsUrls = useSelector(
 		(state: Store) => state.metadata?.slashTagsUrls,
 	);
@@ -86,8 +89,11 @@ const ListItem = ({
 
 					<View style={styles.col1text}>
 						<Text01M>{title}</Text01M>
-						<Caption13M color="gray1" style={styles.date} numberOfLines={1}>
-							{formattedDate}
+						<Caption13M
+							color="gray1"
+							style={styles.description}
+							numberOfLines={1}>
+							{message || formattedDate}
 						</Caption13M>
 					</View>
 				</View>
@@ -147,7 +153,7 @@ const styles = StyleSheet.create({
 	value: {
 		justifyContent: 'flex-end',
 	},
-	date: {
+	description: {
 		marginTop: 4,
 		overflow: 'hidden',
 	},
