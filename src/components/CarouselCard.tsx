@@ -65,6 +65,16 @@ const CarouselCard = ({
 			);
 			color = 'purple';
 			break;
+		case 'transfer':
+			icon = (
+				<Image
+					resizeMode="contain"
+					style={styles.image}
+					source={require('../assets/illustrations/transfer.png')}
+				/>
+			);
+			color = 'purple';
+			break;
 		case 'pin':
 			icon = (
 				<Image

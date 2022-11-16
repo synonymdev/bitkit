@@ -19,6 +19,7 @@ module.exports = {
 				'security',
 				'send',
 				'settings',
+				'suggestions',
 				'tokens',
 				'ui',
 				'wallet',

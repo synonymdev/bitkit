@@ -4,6 +4,7 @@ export type TTodoType =
 	| 'pin'
 	| 'lightning'
 	| 'lightningSettingUp'
+	| 'transfer'
 	| 'slashtagsProfile'
 	| 'buyBitcoin';
 

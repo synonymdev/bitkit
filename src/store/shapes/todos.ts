@@ -15,6 +15,11 @@ const lightningSettingUpTodo: ITodo = {
 	title: 'Setting Up',
 	description: 'Ready in ±20min',
 };
+const transferTodo: ITodo = {
+	id: 'transfer',
+	title: 'Transfer',
+	description: 'Spend or save',
+};
 const pinTodo: ITodo = {
 	id: 'pin',
 	title: 'Better security',
@@ -35,6 +40,7 @@ export const allTodos = [
 	backupSeedPhraseTodo,
 	lightningTodo,
 	lightningSettingUpTodo,
+	transferTodo,
 	pinTodo,
 	slashtagsProfileTodo,
 	buyBitcoinTodo,

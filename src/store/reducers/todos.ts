@@ -1,11 +1,12 @@
 import actions from '../actions/actions';
-import { ITodos } from '../types/todos';
+import { ITodos, TTodoType } from '../types/todos';
 import { allTodos, defaultTodosShape } from '../shapes/todos';
 
-const TODO_SORTING_ORDER = [
+const TODO_SORTING_ORDER: TTodoType[] = [
 	'backupSeedPhrase',
 	'lightning',
 	'lightningSettingUp',
+	'transfer',
 	'pin',
 	'slashtagsProfile',
 	'buyBitcoin',

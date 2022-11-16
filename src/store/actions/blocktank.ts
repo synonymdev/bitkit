@@ -112,6 +112,7 @@ export const refreshOrder = async (
 				if (finalizeRes.isOk()) {
 					removeTodo('lightning');
 					removeTodo('lightningSettingUp');
+					addTodo('transfer');
 					const getUpdatedOrderRes = await blocktank.getOrder(orderId);
 					if (getUpdatedOrderRes.isErr()) {
 						return err(getUpdatedOrderRes.error.message);

@@ -73,6 +73,16 @@ const TodoCarousel = (): ReactElement => {
 				navigation.navigate('BlocktankOrders');
 			}
 
+			if (id === 'transfer') {
+				// TODO: navigate to Rebalance screen
+				navigation.navigate('LightningRoot', {
+					screen: 'QuickSetup',
+					params: {
+						headerTitle: 'Transfer Funds',
+					},
+				});
+			}
+
 			if (id === 'pin') {
 				if (!pinTodoDone) {
 					toggleView({
