@@ -123,6 +123,8 @@ const TodoCarousel = (): ReactElement => {
 							key={item.id}
 							title={item.title}
 							description={item.description}
+							color={item.color}
+							image={item.image}
 							onPress={(): void => handleOnPress(item.id)}
 						/>
 					)}

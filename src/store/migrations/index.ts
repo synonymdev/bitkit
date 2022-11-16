@@ -10,6 +10,12 @@ const migrations = {
 			todos: defaultTodosShape,
 		};
 	},
+	1: (state): PersistedState => {
+		return {
+			...state,
+			todos: defaultTodosShape,
+		};
+	},
 };
 
 export default migrations;

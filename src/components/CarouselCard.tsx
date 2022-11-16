@@ -1,5 +1,11 @@
 import React, { memo, ReactElement, useMemo } from 'react';
-import { LayoutAnimation, StyleSheet, Image, View } from 'react-native';
+import {
+	LayoutAnimation,
+	StyleSheet,
+	Image,
+	View,
+	ImageSourcePropType,
+} from 'react-native';
 import { Canvas, RadialGradient, Rect, vec } from '@shopify/react-native-skia';
 
 import { Caption13M, Pressable, Text01M, XIcon } from '../styles/components';
@@ -7,6 +13,7 @@ import Card from './Card';
 import { removeTodo } from '../store/actions/todos';
 import useColors from '../hooks/colors';
 import { TTodoType } from '../store/types/todos';
+import { IColors } from '../styles/colors';
 
 const Glow = memo(({ color }: { color: string }): ReactElement => {
 	return (
@@ -28,16 +35,20 @@ const CarouselCard = ({
 	id,
 	title,
 	description,
+	color,
+	image,
 	onPress,
 }: {
 	id: TTodoType;
 	title: string;
 	description: string;
+	color: keyof IColors;
+	image: ImageSourcePropType;
 	onPress: () => void;
 }): ReactElement => {
-	const colors = useColors();
 	LayoutAnimation.easeInEaseOut();
 
+	const colors = useColors();
 	const inverted = id === 'lightningSettingUp';
 
 	const containerStyle = useMemo(
@@ -51,83 +62,19 @@ const CarouselCard = ({
 		[inverted, colors.purple],
 	);
 
-	let icon;
-	let color;
-	switch (id) {
-		case 'lightning':
-		case 'lightningSettingUp':
-			icon = (
-				<Image
-					resizeMode="contain"
-					style={styles.image}
-					source={require('../assets/illustrations/lightning.png')}
-				/>
-			);
-			color = 'purple';
-			break;
-		case 'transfer':
-			icon = (
-				<Image
-					resizeMode="contain"
-					style={styles.image}
-					source={require('../assets/illustrations/transfer.png')}
-				/>
-			);
-			color = 'purple';
-			break;
-		case 'pin':
-			icon = (
-				<Image
-					resizeMode="contain"
-					style={styles.image}
-					source={require('../assets/illustrations/shield.png')}
-				/>
-			);
-			color = 'green';
-			break;
-		case 'backupSeedPhrase':
-			icon = (
-				<Image
-					resizeMode="contain"
-					style={styles.image}
-					source={require('../assets/illustrations/safe.png')}
-				/>
-			);
-			color = 'blue';
-			break;
-		case 'slashtagsProfile':
-			icon = (
-				<Image
-					resizeMode="contain"
-					style={styles.image}
-					source={require('../assets/illustrations/crown-no-margins.png')}
-				/>
-			);
-			color = 'brand';
-			break;
-		case 'buyBitcoin':
-			icon = (
-				<Image
-					resizeMode="contain"
-					style={styles.image}
-					source={require('../assets/illustrations/b-emboss.png')}
-				/>
-			);
-			color = 'orange';
-			break;
-		default:
-			return <></>;
-	}
-
-	color = colors[color] ?? color;
-
 	return (
 		<Card style={containerStyle}>
 			<Canvas style={styles.canvas}>
-				{inverted ? <InnerShadow color={color} /> : <Glow color={color} />}
+				{inverted ? (
+					<InnerShadow color={colors[color]} />
+				) : (
+					<Glow color={colors[color]} />
+				)}
 			</Canvas>
 			<Pressable onPress={onPress} color="transparent" style={styles.pressable}>
-				<View style={styles.iconContainer}>{icon}</View>
+				<View style={styles.iconContainer}>
+					<Image style={styles.image} resizeMode="contain" source={image} />
+				</View>
 				<View>
 					<Text01M>{title}</Text01M>
 					<Caption13M color="lightGray">{description}</Caption13M>
