@@ -1,6 +1,6 @@
 import React, { memo, ReactElement, useState, useEffect, useMemo } from 'react';
 import { Image, Linking, Platform, StyleSheet, View } from 'react-native';
-import ReactNativeBiometrics from 'react-native-biometrics';
+import rnBiometrics from 'react-native-biometrics';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import {
@@ -21,16 +21,12 @@ import type { PinScreenProps } from '../../../navigation/types';
 
 const imageSrc = require('../../../assets/illustrations/cog.png');
 
-const rnBiometrics = ReactNativeBiometrics;
-
 const AskForBiometrics = ({
 	navigation,
 }: PinScreenProps<'AskForBiometrics'>): ReactElement => {
 	const insets = useSafeAreaInsets();
 	const [enabled, setEnabled] = useState<boolean>(false);
-	const [biometryData, setBiometricData] = useState<
-		IsSensorAvailableResult | undefined
-	>();
+	const [biometryData, setBiometricData] = useState<IsSensorAvailableResult>();
 
 	const buttonContainerStyles = useMemo(
 		() => ({

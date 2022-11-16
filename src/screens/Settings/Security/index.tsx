@@ -1,7 +1,7 @@
 import React, { memo, ReactElement, useMemo, useState, useEffect } from 'react';
 import { StyleSheet } from 'react-native';
 import { useSelector } from 'react-redux';
-import ReactNativeBiometrics from 'react-native-biometrics';
+import rnBiometrics from 'react-native-biometrics';
 
 import { View as ThemedView } from '../../../styles/components';
 import Store from '../../../store/types';
@@ -12,8 +12,6 @@ import { toggleView } from '../../../store/actions/user';
 import { updateSettings } from '../../../store/actions/settings';
 import SettingsView from '../SettingsView';
 import type { SettingsScreenProps } from '../../../navigation/types';
-
-const rnBiometrics = ReactNativeBiometrics;
 
 const SecuritySettings = ({
 	navigation,
@@ -38,6 +36,12 @@ const SecuritySettings = ({
 
 	const isBiometrySupported =
 		biometryData?.available && biometryData?.biometryType;
+	const biometryTypeName =
+		biometryData?.biometryType === 'TouchID'
+			? 'Touch ID'
+			: biometryData?.biometryType === 'FaceID'
+			? 'Face ID'
+			: biometryData?.biometryType ?? 'Biometrics';
 
 	const SettingsListData: IListData[] = useMemo(
 		() => [
@@ -115,7 +119,7 @@ const SecuritySettings = ({
 						hide: !pin,
 					},
 					{
-						title: 'Use Biometrics instead',
+						title: `Use ${biometryTypeName} instead`,
 						type: 'switch',
 						enabled: biometrics,
 						onPress: (): void => {
@@ -135,6 +139,7 @@ const SecuritySettings = ({
 			enableAutoReadClipboard,
 			enableSendAmountWarning,
 			isBiometrySupported,
+			biometryTypeName,
 			biometrics,
 			pin,
 			pinOnLaunch,
