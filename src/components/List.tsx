@@ -281,6 +281,7 @@ const styles = StyleSheet.create({
 		paddingVertical: 14,
 		borderBottomColor: 'rgba(255, 255, 255, 0.1)',
 		borderBottomWidth: 1,
+		minHeight: 56,
 	},
 	itemHeader: {
 		justifyContent: 'center',
