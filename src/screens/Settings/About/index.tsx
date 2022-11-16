@@ -178,7 +178,7 @@ const About = ({
 					<Pressable
 						style={styles.socialLink}
 						onPress={(): void => {
-							openURL('mailto:info@synonym.to?subject=Bitkit');
+							openURL('mailto:support@synonym.to?subject=Bitkit');
 						}}>
 						<EmailIcon height={24} width={24} />
 					</Pressable>

@@ -187,7 +187,7 @@ const BlocktankOrderDetails = ({
 						text="Contact Support"
 						size="large"
 						onPress={(): void => {
-							let mailToStr = `mailto:info@synonym.to?subject=Blocktank Support: ${blocktankOrder._id}&body=Blocktank Order ID: ${blocktankOrder._id}\nPlatform: ${Platform.OS}\nBitkit Version: ${appVersion}`;
+							let mailToStr = `mailto:support@synonym.to?subject=Blocktank Support: ${blocktankOrder._id}&body=Blocktank Order ID: ${blocktankOrder._id}\nPlatform: ${Platform.OS}\nBitkit Version: ${appVersion}`;
 							if (paidOrderTxid) {
 								mailToStr += `\nTransaction ID: ${paidOrderTxid}`;
 							}
