@@ -3,13 +3,12 @@ import React, {
 	memo,
 	ReactElement,
 	useMemo,
-	useEffect,
 	useState,
 	useCallback,
 } from 'react';
 import { StyleSheet, useWindowDimensions } from 'react-native';
 import { useSelector } from 'react-redux';
-import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import Carousel from 'react-native-reanimated-carousel';
 
 import { View, Subtitle } from '../styles/components';
@@ -25,7 +24,6 @@ const TodoCarousel = (): ReactElement => {
 	const navigation = useNavigation<RootNavigationProp>();
 	const { width } = useWindowDimensions();
 	const ref = useRef(null);
-	const [key, setKey] = useState(0);
 	const [index, setIndex] = useState(0);
 	const [showDialog, setShowDialog] = useState(false);
 	const todos = useSelector((state: Store) => state.todos);
@@ -45,12 +43,8 @@ const TodoCarousel = (): ReactElement => {
 		[],
 	);
 
-	// hack to re-create Carousel if cards are not visible
-	useEffect(() => {
-		if (index + 1 > todos.length) {
-			setKey((k) => k + 1);
-		}
-	}, [todos.length, index]);
+	// reset index on mount
+	useFocusEffect(useCallback(() => setIndex(0), []));
 
 	const handleOnPress = useCallback(
 		(id: TTodoType): void => {
@@ -105,11 +99,7 @@ const TodoCarousel = (): ReactElement => {
 		[balance, navigation, pinTodoDone],
 	);
 
-	if (!todos.length) {
-		return <></>;
-	}
-
-	if (!showSuggestions) {
+	if (!todos.length || !showSuggestions) {
 		return <></>;
 	}
 
@@ -118,12 +108,15 @@ const TodoCarousel = (): ReactElement => {
 			<Subtitle style={styles.title}>Suggestions</Subtitle>
 			<View style={styles.container}>
 				<Carousel
-					loop={false}
-					key={key}
 					ref={ref}
+					style={carouselStyle}
+					data={todos}
+					defaultIndex={index}
+					loop={false}
 					height={170}
 					width={170}
-					data={todos}
+					panGestureHandlerProps={panGestureHandlerProps}
+					onSnapToItem={setIndex}
 					renderItem={({ item }): ReactElement => (
 						<CarouselCard
 							id={item.id}
@@ -133,9 +126,6 @@ const TodoCarousel = (): ReactElement => {
 							onPress={(): void => handleOnPress(item.id)}
 						/>
 					)}
-					style={carouselStyle}
-					panGestureHandlerProps={panGestureHandlerProps}
-					onSnapToItem={setIndex}
 				/>
 			</View>
 			<Dialog
