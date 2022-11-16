@@ -32,7 +32,7 @@ const BlocktankOrders = ({
 					undefined,
 					{
 						year: 'numeric',
-						month: 'long',
+						month: 'numeric',
 						day: 'numeric',
 						hour: 'numeric',
 						minute: 'numeric',

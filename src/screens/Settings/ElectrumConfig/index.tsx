@@ -326,7 +326,7 @@ const styles = StyleSheet.create({
 	},
 	label: {
 		marginTop: 16,
-		marginBottom: 8,
+		marginBottom: 4,
 	},
 	connectedPeer: {
 		flex: 1.5,

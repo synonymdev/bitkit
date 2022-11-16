@@ -7,7 +7,6 @@ import {
 	ScrollView,
 	TouchableOpacity,
 	ActivityIndicator,
-	Linking,
 	Platform,
 } from 'react-native';
 
@@ -82,7 +81,7 @@ const BlocktankOrderDetails = ({
 	return (
 		<ThemedView style={styles.root}>
 			<SafeAreaInsets type="top" />
-			<NavigationHeader title={'Blocktank Order'} />
+			<NavigationHeader title="Blocktank Order" />
 			<ScrollView contentContainerStyle={styles.content}>
 				<View style={styles.sectionTitle}>
 					<Caption13Up color="gray1">BALANCE</Caption13Up>
@@ -185,7 +184,6 @@ const BlocktankOrderDetails = ({
 
 				<View style={styles.buttons}>
 					<Button
-						style={styles.button}
 						text="Contact Support"
 						size="large"
 						onPress={(): void => {
@@ -193,12 +191,12 @@ const BlocktankOrderDetails = ({
 							if (paidOrderTxid) {
 								mailToStr += `\nTransaction ID: ${paidOrderTxid}`;
 							}
-							Linking.openURL(mailToStr).then();
+							openURL(mailToStr).then();
 						}}
 					/>
-					<SafeAreaInsets type="bottom" />
 				</View>
 			</ScrollView>
+			<SafeAreaInsets type="bottom" />
 		</ThemedView>
 	);
 };
@@ -206,18 +204,11 @@ const BlocktankOrderDetails = ({
 const styles = StyleSheet.create({
 	root: {
 		flex: 1,
-		justifyContent: 'space-between',
+		paddingBottom: 16,
 	},
 	content: {
 		paddingHorizontal: 16,
 		flexGrow: 1,
-	},
-	buttons: {
-		flex: 1,
-		justifyContent: 'flex-end',
-	},
-	button: {
-		marginTop: 8,
 	},
 	sectionTitle: {
 		height: 50,
@@ -241,6 +232,11 @@ const styles = StyleSheet.create({
 		flex: 1.5,
 		alignItems: 'flex-end',
 		justifyContent: 'center',
+	},
+	buttons: {
+		flex: 1,
+		justifyContent: 'flex-end',
+		marginTop: 16,
 	},
 });
 
