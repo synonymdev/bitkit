@@ -145,7 +145,7 @@ const Money = (props: IMoney): ReactElement => {
 	return (
 		<View style={style}>
 			{sign && (
-				<Text color={color ?? 'gray2'} style={styles.sign}>
+				<Text style={styles.sign} color={color ?? 'gray2'}>
 					{sign}
 				</Text>
 			)}
@@ -161,6 +161,7 @@ export default memo(Money);
 const styles = StyleSheet.create({
 	root: {
 		flexDirection: 'row',
+		alignItems: 'center',
 	},
 	sign: {
 		marginRight: 3,

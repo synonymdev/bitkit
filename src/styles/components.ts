@@ -486,7 +486,7 @@ export const Display = styled.Text((props) => ({
 		? props.theme.fonts[props.font].fontFamily
 		: 'NHaasGroteskDSW02-65Md',
 	fontSize: props.size ? props.size : '48px',
-	lineHeight: props.lineHeight ?? '48px',
+	lineHeight: props.lineHeight ?? '49px',
 }));
 
 export const Headline = styled.Text((props) => ({
