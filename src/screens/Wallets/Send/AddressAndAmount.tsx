@@ -420,15 +420,19 @@ const AddressAndAmount = ({
 
 				{showNumberPad && (
 					<View style={styles.availableAmount}>
-						<Caption13Up style={styles.availableAmountText} color="gray1">
-							Available
-						</Caption13Up>
-						<Money
-							key="small"
-							sats={availableAmount}
-							size="caption13M"
-							{...availableAmountProps}
-						/>
+						{(!!lightningInvoice || !!address) && (
+							<>
+								<Caption13Up style={styles.availableAmountText} color="gray1">
+									Available
+								</Caption13Up>
+								<Money
+									key="small"
+									sats={availableAmount}
+									size="caption13M"
+									{...availableAmountProps}
+								/>
+							</>
+						)}
 					</View>
 				)}
 

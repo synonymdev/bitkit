@@ -62,7 +62,7 @@ const BalanceHeader = (): ReactElement => {
 						<Caption13Up color="gray1"> (</Caption13Up>
 						<Money
 							color="gray1"
-							size={'caption13M'}
+							size="caption13M"
 							sats={claimableBalance}
 							unit={balanceUnit}
 							enableHide={true}
@@ -98,7 +98,6 @@ export default memo(BalanceHeader);
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		justifyContent: 'flex-start',
 		marginTop: 32,
 		paddingLeft: 16,
 	},
@@ -106,14 +105,10 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		alignItems: 'center',
 		justifyContent: 'space-between',
-		height: 41,
-		marginTop: 5,
 	},
 	totalBalanceRow: {
 		flexDirection: 'row',
 		alignItems: 'center',
-		justifyContent: 'flex-start',
-		marginBottom: 9,
 	},
 	toggle: {
 		paddingRight: 16,
