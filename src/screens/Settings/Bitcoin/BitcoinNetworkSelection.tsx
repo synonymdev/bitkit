@@ -9,7 +9,10 @@ import {
 	updateAddressIndexes,
 	updateWallet,
 } from '../../../store/actions/wallet';
-import { resetActivityStore } from '../../../store/actions/activity';
+import {
+	resetActivityStore,
+	updateActivityList,
+} from '../../../store/actions/activity';
 import { updateOnchainFeeEstimates } from '../../../store/actions/fees';
 import { getNetworkData } from '../../../utils/helpers';
 import { startWalletServices } from '../../../utils/startup';
@@ -61,6 +64,7 @@ const BitcoinNetworkSelection = ({
 								selectedNetwork: network,
 								forceUpdate: true,
 							});
+							await updateActivityList();
 						},
 					};
 				}),
