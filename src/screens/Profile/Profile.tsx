@@ -1,15 +1,22 @@
-import React, { ReactElement, useMemo, useState } from 'react';
+import React, {
+	MutableRefObject,
+	ReactElement,
+	useCallback,
+	useMemo,
+	useRef,
+	useState,
+} from 'react';
 import Clipboard from '@react-native-clipboard/clipboard';
 import { FadeIn, FadeOut } from 'react-native-reanimated';
 import {
 	View,
 	StyleSheet,
 	useWindowDimensions,
-	Share,
 	ScrollView,
 } from 'react-native';
 import { useSelector } from 'react-redux';
-import QR from 'react-native-qrcode-svg';
+import QRCode from 'react-native-qrcode-svg';
+import Share from 'react-native-share';
 
 import {
 	AnimatedView,
@@ -34,6 +41,7 @@ import ProfileLinks from '../../components/ProfileLinks';
 import Tooltip from '../../components/Tooltip';
 // import DetectSwipe from '../../components/DetectSwipe';
 import Divider from '../../components/Divider';
+import IconButton from '../../components/IconButton';
 import ProfileEdit from './ProfileEdit';
 import { ProfileIntro, OfflinePayments } from './ProfileOnboarding';
 import type { RootStackScreenProps } from '../../navigation/types';
@@ -63,8 +71,10 @@ const ProfileScreen = ({
 	const [showCopy, setShowCopy] = useState(false);
 	const { url } = useSelectedSlashtag();
 	const { profile } = useProfile(url);
+	const qrRef = useRef<object>();
 
 	const [view, setView] = useState('qr');
+	const [isSharing, setIsSharing] = useState(false);
 
 	const switchView = (): void => {
 		view === 'details' ? setView('qr') : setView('details');
@@ -74,11 +84,28 @@ const ProfileScreen = ({
 	// 	navigation.navigate('Tabs');
 	// };
 
-	const handleCopyButton = (): void => {
+	const handleCopy = (): void => {
 		setShowCopy(() => true);
 		setTimeout(() => setShowCopy(() => false), 1200);
 		Clipboard.setString(url);
 	};
+
+	const handleShare = useCallback(async (): Promise<void> => {
+		setIsSharing(true);
+		const image = `data:image/png;base64,${qrRef.current}`;
+		try {
+			await Share.open({
+				title: 'Share Profile Key',
+				message: url,
+				url: image,
+				type: 'image/png',
+			});
+		} catch (e) {
+			console.log(e);
+		} finally {
+			setIsSharing(false);
+		}
+	}, [url]);
 
 	const profileLinks = profile?.links ?? [];
 	const profileLinksWithIds = profileLinks.map((link) => ({
@@ -104,36 +131,31 @@ const ProfileScreen = ({
 					<Divider />
 					<View style={styles.bottom}>
 						<View style={styles.bottomHeader}>
-							<IconButton onPress={switchView}>
+							<IconButton style={styles.iconButton} onPress={switchView}>
 								{view === 'qr' ? (
 									<InfoIcon height={20} width={20} color="brand" />
 								) : (
 									<QrPage height={20} width={20} color="brand" />
 								)}
 							</IconButton>
-							<IconButton
-								onPress={(): void => {
-									url && handleCopyButton();
-								}}>
+							<IconButton style={styles.iconButton} onPress={handleCopy}>
 								<CopyIcon height={24} width={24} color="brand" />
 							</IconButton>
 							<IconButton
-								onPress={(): void => {
-									url &&
-										Share.share({
-											title: 'Share Slashtag url',
-											message: url,
-										});
-								}}>
+								style={styles.iconButton}
+								disabled={isSharing}
+								onPress={handleShare}>
 								<ShareIcon height={24} width={24} color="brand" />
 							</IconButton>
 							<IconButton
+								style={styles.iconButton}
 								onPress={(): void => {
 									navigation.navigate('ProfileEdit');
 								}}>
 								<PencileIcon height={20} width={20} color="brand" />
 							</IconButton>
 							<IconButton
+								style={styles.iconButton}
 								onPress={(): void => {
 									navigation.navigate('Contacts');
 								}}>
@@ -146,7 +168,7 @@ const ProfileScreen = ({
 								style={styles.profileDetails}
 							/>
 						) : (
-							<QRView url={url} profile={profile} />
+							<QRView url={url} profile={profile} qrRef={qrRef} />
 						)}
 						{showCopy && (
 							<AnimatedView
@@ -166,30 +188,14 @@ const ProfileScreen = ({
 	);
 };
 
-const IconButton = ({
-	children,
-	onPress,
-}: {
-	children?: any;
-	onPress?: () => void;
-}): ReactElement => {
-	return (
-		<TouchableOpacity
-			color="white08"
-			activeOpacity={0.7}
-			onPress={onPress}
-			style={styles.iconContainer}>
-			{children}
-		</TouchableOpacity>
-	);
-};
-
 const QRView = ({
 	url,
 	profile,
+	qrRef,
 }: {
 	url: string;
 	profile?: BasicProfile;
+	qrRef: MutableRefObject<any>;
 }): ReactElement => {
 	const dimensions = useWindowDimensions();
 	const [showCopy, setShowCopy] = useState(false);
@@ -213,11 +219,17 @@ const QRView = ({
 		Clipboard.setString(url);
 	};
 
-	const handleCopyQrCode = (): void => {
-		console.log('TODO: copy QR code');
-	};
+	const handleCopyQrCode = useCallback((): void => {
+		console.log('TODO: copy QR code as image');
+		// not implemented in upstream yet
+		// https://github.com/react-native-clipboard/clipboard/issues/6
+		// qrRef.current.toDataURL((base64) => {
+		// 	const image = `data:image/png;base64,${base64}`;
+		// 	// Clipboard.setString(image);
+		// });
+	}, []);
 
-	const name = profile?.name ?? '';
+	const name = profile?.name ?? 'Profile';
 	const firstName = name.split(/\s+/)[0];
 
 	return (
@@ -228,7 +240,7 @@ const QRView = ({
 					activeOpacity={1}
 					onPress={handleCopy}
 					onLongPress={handleCopyQrCode}>
-					<QR
+					<QRCode
 						value={url}
 						size={qrSize}
 						logo={{ uri: profile?.image || '' }}
@@ -237,6 +249,11 @@ const QRView = ({
 						logoBorderRadius={999}
 						logoMargin={9}
 						quietZone={20}
+						getRef={(c): void => {
+							if (c) {
+								c.toDataURL((data) => (qrRef.current = data));
+							}
+						}}
 					/>
 				</TouchableOpacity>
 
@@ -275,12 +292,7 @@ const styles = StyleSheet.create({
 		flex: 1,
 		flexDirection: 'column',
 	},
-	iconContainer: {
-		width: 48,
-		height: 48,
-		borderRadius: 9999,
-		alignItems: 'center',
-		justifyContent: 'center',
+	iconButton: {
 		marginRight: 16,
 	},
 	bottomHeader: {

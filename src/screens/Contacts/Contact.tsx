@@ -1,8 +1,9 @@
-import React, { ReactNode, useCallback, useMemo, useState } from 'react';
-import { StyleSheet, Share } from 'react-native';
+import React, { useCallback, useMemo, useState } from 'react';
+import { StyleSheet } from 'react-native';
 import { useSelector } from 'react-redux';
 import { FadeIn, FadeOut } from 'react-native-reanimated';
 import Clipboard from '@react-native-clipboard/clipboard';
+import Share from 'react-native-share';
 
 import {
 	AnimatedView,
@@ -10,7 +11,6 @@ import {
 	CopyIcon,
 	PencileIcon,
 	ShareIcon,
-	TouchableOpacity,
 	TrashIcon,
 	View,
 } from '../../styles/components';
@@ -27,17 +27,20 @@ import {
 } from '../../components/SlashtagsProvider';
 import Store from '../../store/types';
 import { useBalance } from '../../hooks/wallet';
+import { truncate } from '../../utils/helpers';
 import { RootStackScreenProps } from '../../navigation/types';
 import Dialog from '../../components/Dialog';
 import Tooltip from '../../components/Tooltip';
-import { truncate } from '../../utils/helpers';
+import IconButton from '../../components/IconButton';
 
 export const Contact = ({
 	navigation,
 	route,
 }: RootStackScreenProps<'Contact'>): JSX.Element => {
+	const { url } = route.params;
 	const [showDialog, setShowDialog] = useState(false);
 	const [showCopy, setShowCopy] = useState(false);
+	const [isSharing, setIsSharing] = useState(false);
 
 	const selectedWallet = useSelector(
 		(store: Store) => store.wallet.selectedWallet,
@@ -45,7 +48,6 @@ export const Contact = ({
 	const selectedNetwork = useSelector(
 		(store: Store) => store.wallet.selectedNetwork,
 	);
-	const url = route.params?.url;
 
 	const { profile } = useProfile(url);
 	const { slashtag } = useSelectedSlashtag();
@@ -86,13 +88,27 @@ export const Contact = ({
 		}
 	};
 
+	const handleShare = useCallback(async (): Promise<void> => {
+		setIsSharing(true);
+		try {
+			await Share.open({
+				title: 'Share Profile Key',
+				message: url,
+			});
+		} catch (e) {
+			console.log(e);
+		} finally {
+			setIsSharing(false);
+		}
+	}, [url]);
+
 	const profileLinks = profile?.links ?? [];
 	const profileLinksWithIds = profileLinks.map((link) => ({
 		...link,
 		id: `${link.title}:${link.url}`,
 	}));
 
-	const name = profile?.name ?? '';
+	const name = profile?.name ?? 'this contact';
 	const firstName = name.split(/\s+/)[0];
 
 	return (
@@ -118,31 +134,34 @@ export const Contact = ({
 				<View style={styles.divider} color="white1" />
 				<View style={styles.bottom}>
 					<View style={styles.bottomHeader}>
-						<IconButton disabled={!canSend} onPress={handleSend}>
+						<IconButton
+							style={styles.iconButton}
+							disabled={!canSend}
+							onPress={handleSend}>
 							<CoinsIcon height={22} width={22} color="brand" />
 						</IconButton>
 						<IconButton
+							style={styles.iconButton}
 							onPress={(): void => {
-								url && onCopy();
+								onCopy();
 							}}>
 							<CopyIcon height={24} width={24} color="brand" />
 						</IconButton>
 						<IconButton
-							onPress={(): void => {
-								Share.share({
-									title: 'Share Slashtag url',
-									message: url,
-								});
-							}}>
+							style={styles.iconButton}
+							disabled={isSharing}
+							onPress={handleShare}>
 							<ShareIcon height={24} width={24} color="brand" />
 						</IconButton>
 						<IconButton
+							style={styles.iconButton}
 							onPress={(): void => {
 								navigation.navigate('ContactEdit', { url });
 							}}>
 							<PencileIcon height={20} width={20} color="brand" />
 						</IconButton>
 						<IconButton
+							style={styles.iconButton}
 							onPress={(): void => {
 								setShowDialog(true);
 							}}>
@@ -184,35 +203,6 @@ export const Contact = ({
 	);
 };
 
-const IconButton = ({
-	children,
-	disabled = false,
-	onPress,
-}: {
-	children?: ReactNode;
-	disabled?: boolean;
-	onPress?: () => void;
-}): JSX.Element => {
-	const buttonStyles = useMemo(
-		() => ({
-			...styles.iconContainer,
-			opacity: disabled ? 0.6 : 1,
-		}),
-		[disabled],
-	);
-
-	return (
-		<TouchableOpacity
-			style={buttonStyles}
-			activeOpacity={0.7}
-			color="white08"
-			disabled={disabled}
-			onPress={onPress}>
-			{children}
-		</TouchableOpacity>
-	);
-};
-
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
@@ -233,12 +223,7 @@ const styles = StyleSheet.create({
 		flex: 1,
 		flexDirection: 'column',
 	},
-	iconContainer: {
-		width: 48,
-		height: 48,
-		borderRadius: 9999,
-		alignItems: 'center',
-		justifyContent: 'center',
+	iconButton: {
 		marginRight: 16,
 	},
 	bottomHeader: {

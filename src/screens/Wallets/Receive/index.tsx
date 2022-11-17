@@ -5,7 +5,6 @@ import React, {
 	useState,
 	useEffect,
 	useRef,
-	MutableRefObject,
 	useCallback,
 } from 'react';
 import { useSelector } from 'react-redux';
@@ -81,11 +80,12 @@ const Receive = ({ navigation }): ReactElement => {
 	);
 
 	const [loading, setLoading] = useState(true);
+	const [isSharing, setIsSharing] = useState(false);
 	const [showCopy, setShowCopy] = useState(false);
 	const [receiveAddress, setReceiveAddress] = useState('');
 	const [lightningInvoice, setLightningInvoice] = useState('');
 	const lightningBalance = useLightningBalance(false);
-	const qrRef = useRef<object>(null);
+	const qrRef = useRef<object>();
 
 	useBottomSheetBackPress('receiveNavigation');
 
@@ -217,21 +217,30 @@ const Receive = ({ navigation }): ReactElement => {
 		Clipboard.setString(uri);
 	};
 
-	const handleCopyQrCode = (): void => {
-		console.log('TODO: copy QR code');
-	};
+	const handleCopyQrCode = useCallback((): void => {
+		console.log('TODO: copy QR code as image');
+		// not implemented in upstream yet
+		// https://github.com/react-native-clipboard/clipboard/issues/6
+		// qrRef.current.toDataURL((base64) => {
+		// 	const image = `data:image/png;base64,${base64}`;
+		// 	// Clipboard.setString(image);
+		// });
+	}, []);
 
 	const handleShare = useCallback((): void => {
-		const url = `data:image/png;base64,${qrRef.current}`;
+		setIsSharing(true);
+		const image = `data:image/png;base64,${qrRef.current}`;
 		try {
 			Share.open({
 				title: 'Share receiving address',
 				message: uri,
-				url,
+				url: image,
 				type: 'image/png',
 			});
 		} catch (e) {
 			console.log(e);
+		} finally {
+			setIsSharing(true);
 		}
 	}, [uri]);
 
@@ -271,13 +280,9 @@ const Receive = ({ navigation }): ReactElement => {
 							value={uri}
 							size={qrSize}
 							getRef={(c): void => {
-								if (!c || !qrRef) {
-									return;
+								if (c) {
+									c.toDataURL((data) => (qrRef.current = data));
 								}
-								c.toDataURL(
-									(data) =>
-										((qrRef as MutableRefObject<object>).current = data),
-								);
 							}}
 						/>
 						<QrIcon />
@@ -304,6 +309,7 @@ const Receive = ({ navigation }): ReactElement => {
 				<Button
 					icon={<ShareIcon width={18} color="brand" />}
 					text="Share"
+					disabled={isSharing}
 					onPress={handleShare}
 				/>
 			</View>
