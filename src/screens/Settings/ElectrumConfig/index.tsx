@@ -203,7 +203,7 @@ const ElectrumConfig = ({
 		const url = new Url(data);
 		if (!url.hostname || !url.port) {
 			showErrorNotification({
-				title: 'No Data Detected',
+				title: 'No Connection Data Detected',
 				message: 'Sorry, Bitkit is not able to read this QR code.',
 			});
 			return;

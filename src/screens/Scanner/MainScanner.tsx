@@ -29,7 +29,7 @@ const ScannerScreen = ({
 		navigation.navigate('Tabs');
 	};
 
-	const onRead = async (data): Promise<void> => {
+	const onRead = async (data: string): Promise<void> => {
 		if (!data) {
 			showErrorNotification({
 				title: 'No Data Detected',
@@ -56,7 +56,7 @@ const ScannerScreen = ({
 
 	return (
 		<DetectSwipe onSwipeRight={onSwipeRight}>
-			<ScannerComponent onRead={onRead} shouldDecode={!onScan}>
+			<ScannerComponent onRead={onRead}>
 				<SafeAreaInsets type="top" />
 				<NavigationHeader
 					style={styles.navigationHeader}

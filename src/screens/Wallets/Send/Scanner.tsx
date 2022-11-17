@@ -21,7 +21,7 @@ const ScannerScreen = ({
 	);
 	const sdk = useSlashtagsSDK();
 
-	const onRead = async (data): Promise<void> => {
+	const onRead = async (data: string): Promise<void> => {
 		if (!data) {
 			showErrorNotification({
 				title: 'No Data Detected',

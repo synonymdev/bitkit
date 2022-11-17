@@ -1,16 +1,14 @@
-import React, { ReactElement, useState } from 'react';
+import React, { ReactElement, ReactNode, useState } from 'react';
 import {
 	View,
 	TouchableOpacity,
 	StyleSheet,
 	useWindowDimensions,
 } from 'react-native';
-import { useSelector } from 'react-redux';
 import Clipboard from '@react-native-clipboard/clipboard';
 import { FadeIn, FadeOut } from 'react-native-reanimated';
 import { launchImageLibrary } from 'react-native-image-picker';
 import RNQRGenerator from 'rn-qr-generator';
-import { Result } from '@synonymdev/result';
 
 import {
 	ClipboardTextIcon,
@@ -22,40 +20,34 @@ import {
 import useColors from '../../hooks/colors';
 import Camera from '../../components/Camera';
 import BlurView from '../../components/BlurView';
-import { decodeQRData, QRData } from '../../utils/scanner';
-import Store from '../../store/types';
 import Button from '../../components/Button';
 
 type ScannerComponentProps = {
-	onRead: (data: string | Result<QRData[]>) => void;
-	children: JSX.Element | JSX.Element[];
-	shouldDecode?: boolean;
+	onRead: (data: string) => void;
+	children: ReactNode;
 };
 
 const ScannerComponent = ({
 	onRead,
-	shouldDecode = true,
 	children,
 }: ScannerComponentProps): ReactElement => {
 	const { white08, white5 } = useColors();
 	const dimensions = useWindowDimensions();
 	const [torchMode, setTorchMode] = useState(false);
+	const [isChooingFile, setIsChoosingFile] = useState(false);
 	const [error, setError] = useState('');
-
-	const selectedNetwork = useSelector(
-		(state: Store) => state.wallet.selectedNetwork,
-	);
 
 	const showError = (text: string): void => {
 		setError(text);
 		setTimeout(() => setError(''), 5000);
 	};
 
-	const onBarCodeRead = (data): void => {
+	const onBarCodeRead = (data: string): void => {
 		onRead(data);
 	};
 
 	const onPickFile = async (): Promise<void> => {
+		setIsChoosingFile(true);
 		try {
 			const result = await launchImageLibrary({
 				// Use 'mixed' so the user can search folders other than "Photos"
@@ -78,13 +70,7 @@ const ScannerComponent = ({
 						return;
 					}
 
-					if (shouldDecode) {
-						const res = await decodeQRData(values[0], selectedNetwork);
-						onRead(res);
-					} else {
-						// Leave handling data up to the component
-						onRead(values[0]);
-					}
+					onRead(values[0]);
 				} catch {
 					showError(
 						'Sorry. Bitkit wasn’t able to detect a QR code in this image.',
@@ -94,6 +80,8 @@ const ScannerComponent = ({
 		} catch (err) {
 			console.error('Failed to open image file: ', err);
 			showError('Sorry. An error occured when trying to open this image file.');
+		} finally {
+			setIsChoosingFile(false);
 		}
 	};
 
@@ -115,6 +103,7 @@ const ScannerComponent = ({
 								<TouchableOpacity
 									style={[styles.actionButton, { backgroundColor: white08 }]}
 									activeOpacity={1}
+									disabled={isChooingFile}
 									onPress={onPickFile}>
 									<PictureIcon width={24} height={24} />
 								</TouchableOpacity>
@@ -138,7 +127,7 @@ const ScannerComponent = ({
 							text="Paste QR Code"
 							size="large"
 							onPress={async (): Promise<void> => {
-								let url = await Clipboard.getString();
+								const url = await Clipboard.getString();
 								onRead(url);
 							}}
 						/>

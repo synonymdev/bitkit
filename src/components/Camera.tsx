@@ -6,7 +6,6 @@ import { Camera as CameraKit, CameraType } from 'react-native-camera-kit';
 
 import CameraNoAuth from './CameraNoAuth';
 import GradientView from './GradientView';
-import { sleep } from '../utils/helpers';
 
 const STATUS = Object.freeze({
 	AUTHORIZED: 'AUTHORIZED',
@@ -19,7 +18,7 @@ const Camera = ({
 	children,
 	torchMode = false,
 }: {
-	onBarCodeRead: Function;
+	onBarCodeRead: (data: string) => void;
 	children?: ReactElement;
 	torchMode?: boolean;
 }): ReactElement => {
@@ -29,7 +28,6 @@ const Camera = ({
 
 	useEffect(() => {
 		(async (): Promise<void> => {
-			await sleep(200); // fix freezing on android
 			const cameraPermission =
 				Platform.OS === 'ios'
 					? PERMISSIONS.IOS.CAMERA

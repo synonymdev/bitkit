@@ -25,7 +25,6 @@ import { showErrorNotification, showInfoNotification } from './notifications';
 import { updateBitcoinTransaction } from '../store/actions/wallet';
 import { getBalance, getSelectedNetwork, getSelectedWallet } from './wallet';
 import { toggleView } from '../store/actions/user';
-import { sleep } from './helpers';
 import { handleSlashtagURL } from './slashtags';
 import { decodeLightningInvoice } from './lightning';
 import {
@@ -112,7 +111,7 @@ export const validateAddress = ({
  * @param {string} [selectedWallet]
  */
 export const processInputData = async ({
-	data = '',
+	data,
 	source = 'mainScanner',
 	sdk,
 	selectedNetwork,
@@ -536,13 +535,10 @@ export const handleData = async ({
 }): Promise<Result<EQRDataType>> => {
 	if (!data) {
 		const message = 'Unable to read or interpret the provided data.';
-		showErrorNotification(
-			{
-				title: 'No data provided',
-				message,
-			},
-			'bottom',
-		);
+		showErrorNotification({
+			title: 'No data provided',
+			message,
+		});
 		return err(message);
 	}
 
@@ -554,13 +550,10 @@ export const handleData = async ({
 	}
 	if (data?.network && data?.network !== selectedNetwork) {
 		const message = `App is currently set to ${selectedNetwork} but data is for ${data.network}.`;
-		showErrorNotification(
-			{
-				title: 'Incorrect network',
-				message,
-			},
-			'bottom',
-		);
+		showErrorNotification({
+			title: 'Incorrect Network',
+			message,
+		});
 		return err(message);
 	}
 
@@ -593,7 +586,6 @@ export const handleData = async ({
 				view: 'sendNavigation',
 				data: { isOpen: true },
 			});
-			await sleep(5); //This is only needed to prevent the view from briefly displaying the SendAssetList
 			// If no amount found in payment request, make sure that the user hasn't previously specified an amount from the send form.
 			if (!amount) {
 				const outputAmount = getTransactionOutputAmount({
@@ -622,20 +614,16 @@ export const handleData = async ({
 				paymentRequest: lightningPaymentRequest,
 			});
 			if (decodedInvoice.isErr()) {
-				showErrorNotification(
-					{
-						title: 'Unable To Decode Invoice',
-						message: decodedInvoice.error.message,
-					},
-					'bottom',
-				);
+				showErrorNotification({
+					title: 'Unable To Decode Invoice',
+					message: decodedInvoice.error.message,
+				});
 				return err(decodedInvoice.error.message);
 			}
 			toggleView({
 				view: 'sendNavigation',
 				data: { isOpen: true },
 			});
-			await sleep(5); //This is only needed to prevent the view from briefly displaying the SendAssetList
 			await updateBitcoinTransaction({
 				selectedWallet,
 				selectedNetwork,
@@ -695,6 +683,8 @@ export const handleData = async ({
 			});
 			return ok(EQRDataType.lnurlWithdraw);
 		}
+
+		default:
+			return err('Unable to read or interpret the provided data.');
 	}
-	return err('Unable to read or interpret the provided data.');
 };
