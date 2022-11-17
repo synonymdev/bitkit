@@ -42,7 +42,15 @@ const preferences = {
 	consolidate: "Consolidate: Combine all UTXO's.",
 };
 
-const UtxoRow = ({ item, isEnabled, onPress }): ReactElement => {
+const UtxoRow = ({
+	item,
+	isEnabled,
+	onPress,
+}: {
+	item: IUtxo;
+	isEnabled: boolean;
+	onPress: () => void;
+}): ReactElement => {
 	const displayValue = useDisplayValues(item.value);
 	const { gray4 } = useColors();
 	const tags = useSelector((store: Store) => store.metadata.tags[item.tx_hash]);

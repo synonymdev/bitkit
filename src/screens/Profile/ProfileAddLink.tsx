@@ -28,7 +28,7 @@ export const ProfileAddLinkForm = ({
 	);
 
 	const saveLink = useCallback((): void => {
-		addLink({ title: form.title, url: form.url });
+		addLink(form);
 		updateProfileLink({ title: '', url: '' });
 		navigation.goBack();
 	}, [form, navigation]);

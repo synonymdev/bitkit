@@ -1,6 +1,10 @@
+// Component currenlty unused
+
 import React, { memo, ReactElement, useCallback, useMemo } from 'react';
 import { LayoutAnimation, StyleSheet } from 'react-native';
 import { useSelector } from 'react-redux';
+import { useNavigation } from '@react-navigation/native';
+
 import Store from '../../store/types';
 import { EPaymentType, IFormattedTransaction } from '../../store/types/wallet';
 import {
@@ -14,7 +18,6 @@ import {
 import { btcToSats } from '../../utils/helpers';
 import { getDisplayValues } from '../../utils/exchange-rate';
 import { canBoost } from '../../utils/wallet/transactions';
-import { useNavigation } from '@react-navigation/native';
 import { RootNavigationProp } from '../../navigation/types';
 
 /**
@@ -42,20 +45,16 @@ const getBoostText = ({
 };
 
 const BoostCard = memo(
-	({ text = '', txid = '' }: { text: string; txid: string }): ReactElement => {
+	({ text, txid }: { text: string; txid: string }): ReactElement => {
 		const navigation = useNavigation<RootNavigationProp>();
-		const activityItems = useSelector((store: Store) => store.activity.items);
-		const activityItem = useMemo(
-			() => activityItems.filter((item) => item.id === txid),
-			[activityItems, txid],
+		const activityItem = useSelector((store: Store) =>
+			store.activity.items.find(({ id }) => id === txid),
 		);
-		const hasActivityItem = useMemo(() => {
-			return activityItem.length > 0;
-		}, [activityItem.length]);
 
-		if (!hasActivityItem) {
+		if (!activityItem) {
 			return <></>;
 		}
+
 		return (
 			<View style={styles.row}>
 				<View style={styles.col1}>
@@ -70,12 +69,10 @@ const BoostCard = memo(
 				</View>
 				<View style={styles.col3}>
 					<Pressable
+						style={styles.boostButton}
 						onPress={(): void =>
-							navigation.navigate('ActivityDetail', {
-								activityItem: activityItem[0],
-							})
-						}
-						style={styles.boostButton}>
+							navigation.navigate('ActivityDetail', { activityItem })
+						}>
 						<SubHeadM color="orange">Boost</SubHeadM>
 					</Pressable>
 				</View>

@@ -39,7 +39,7 @@ import Contacts from '../../screens/Contacts/Contacts';
 import Contact from '../../screens/Contacts/Contact';
 import ContactEdit from '../../screens/Contacts/ContactEdit';
 import SlashAuthModal from '../../screens/Widgets/SlashAuthModal';
-import type { RootStackParamList } from '../types';
+import type { RootStackParamList, RootStackScreenProps } from '../types';
 import WidgetFeedEdit from '../../screens/Widgets/WidgetFeedEdit';
 import BackupSubscriber from '../../utils/backup/backups-subscriber';
 import BlocktankOrders from '../../screens/Settings/BlocktankOrders';
@@ -72,27 +72,33 @@ const RootNavigator = (): ReactElement => {
 		[pin, pinOnLaunch],
 	);
 
-	const AuthCheckComponent = useCallback(({ navigation }): ReactElement => {
-		return (
-			<AuthCheck
-				showLogoOnPIN={true}
-				showBackNavigation={false}
-				onSuccess={(): void => {
-					navigation.replace('Tabs');
-				}}
-			/>
-		);
-	}, []);
+	const AuthCheckComponent = useCallback(
+		({ navigation }: RootStackScreenProps<'RootAuthCheck'>): ReactElement => {
+			return (
+				<AuthCheck
+					showLogoOnPIN={true}
+					showBackNavigation={false}
+					onSuccess={(): void => {
+						navigation.replace('Tabs');
+					}}
+				/>
+			);
+		},
+		[],
+	);
 
-	const BiometricsComponent = useCallback(({ navigation }): ReactElement => {
-		return (
-			<Biometrics
-				onSuccess={(): void => {
-					navigation.replace('Tabs');
-				}}
-			/>
-		);
-	}, []);
+	const BiometricsComponent = useCallback(
+		({ navigation }: RootStackScreenProps<'Biometrics'>): ReactElement => {
+			return (
+				<Biometrics
+					onSuccess={(): void => {
+						navigation.replace('Tabs');
+					}}
+				/>
+			);
+		},
+		[],
+	);
 
 	return (
 		<NavigationContainer ref={navigationRef}>
