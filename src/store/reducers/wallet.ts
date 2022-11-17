@@ -1,3 +1,5 @@
+import { produce } from 'immer';
+
 import actions from '../actions/actions';
 import {
 	defaultBitcoinTransactionData,
@@ -27,14 +29,13 @@ const wallet = (state: IWallet = defaultWalletStoreShape, action): IWallet => {
 			};
 
 		case actions.CREATE_WALLET:
-			return {
-				...state,
-				walletExists: true,
-				wallets: {
+			return produce(state, (draftState) => {
+				draftState.walletExists = true;
+				draftState.wallets = {
 					...state.wallets,
 					...action.payload,
-				},
-			};
+				};
+			});
 
 		case actions.UPDATE_ADDRESS_INDEX:
 			return {
