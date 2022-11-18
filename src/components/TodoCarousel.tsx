@@ -1,5 +1,4 @@
 import React, {
-	useRef,
 	memo,
 	ReactElement,
 	useMemo,
@@ -23,7 +22,6 @@ import type { RootNavigationProp } from '../navigation/types';
 const TodoCarousel = (): ReactElement => {
 	const navigation = useNavigation<RootNavigationProp>();
 	const { width } = useWindowDimensions();
-	const ref = useRef(null);
 	const [index, setIndex] = useState(0);
 	const [showDialog, setShowDialog] = useState(false);
 	const todos = useSelector((state: Store) => state.todos);
@@ -108,7 +106,6 @@ const TodoCarousel = (): ReactElement => {
 			<Subtitle style={styles.title}>Suggestions</Subtitle>
 			<View style={styles.container}>
 				<Carousel
-					ref={ref}
 					style={carouselStyle}
 					data={todos}
 					defaultIndex={index}

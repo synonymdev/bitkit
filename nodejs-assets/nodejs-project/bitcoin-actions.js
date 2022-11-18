@@ -11,7 +11,7 @@ const {
 class BitcoinActions {
     constructor() {
         this.mnemonic = '';
-        this.password = '';
+        this.bip39Passphrase = '';
         this.seed = '';
         this.root = '';
         this.selectedNetwork = '';
@@ -22,7 +22,7 @@ class BitcoinActions {
         method = 'setup',
         data: {
             mnemonic = this.mnemonic,
-            password = this.password,
+            bip39Passphrase = this.bip39Passphrase,
             selectedNetwork = this.selectedNetwork,
         }
     }) {
@@ -36,8 +36,8 @@ class BitcoinActions {
                 }
                 this.mnemonic = mnemonic;
                 this.selectedNetwork = selectedNetwork;
-                this.password = password;
-                this.seed = await bip39.mnemonicToSeed(mnemonic, password);
+                this.bip39Passphrase = bip39Passphrase;
+                this.seed = await bip39.mnemonicToSeed(mnemonic, bip39Passphrase);
                 const network = networks[selectedNetwork];
                 this.root = bip32.fromSeed(this.seed, network);
                 return resolve({ id, method, error: false, value: 'Successfully setup bitcoin-actions.' });
@@ -68,7 +68,7 @@ class BitcoinActions {
         method = 'getPrivateKey',
         data: {
             mnemonic = this.mnemonic,
-            password = this.password,
+            bip39Passphrase = this.bip39Passphrase,
             path = '',
             selectedNetwork = this.selectedNetwork,
         }}) {
@@ -77,7 +77,7 @@ class BitcoinActions {
                 if (!this.root || !this.seed) {
                     await this.setup({
                         selectedNetwork,
-                        data: { mnemonic , password }
+                        data: { mnemonic , bip39Passphrase }
                     });
                 }
 
@@ -104,7 +104,7 @@ class BitcoinActions {
             if (!this.root || !this.seed) {
                 await this.setup({
                     selectedNetwork: this.selectedNetwork,
-                    data: { mnemonic: this.mnemonic , password: this.password }
+                    data: { mnemonic: this.mnemonic , bip39Passphrase: this.bip39Passphrase }
                 });
             }
             if (!path) {

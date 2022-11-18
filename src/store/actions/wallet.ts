@@ -79,6 +79,7 @@ export const updateWallet = (payload): Promise<Result<string>> => {
  * @param {number} [addressAmount]
  * @param {number} [changeAddressAmount]
  * @param {string} [mnemonic]
+ * @param {string} [bip39Passphrase]
  * @param {IAddressType} [addressTypes]
  * @return {Promise<Result<string>>}
  */
@@ -87,6 +88,7 @@ export const createWallet = async ({
 	addressAmount = GENERATE_ADDRESS_AMOUNT,
 	changeAddressAmount = GENERATE_ADDRESS_AMOUNT,
 	mnemonic = '',
+	bip39Passphrase = '',
 	addressTypes,
 }: ICreateWallet): Promise<Result<string>> => {
 	if (!addressTypes) {
@@ -98,6 +100,7 @@ export const createWallet = async ({
 			addressAmount,
 			changeAddressAmount,
 			mnemonic,
+			bip39Passphrase,
 			addressTypes,
 		});
 		if (response.isErr()) {

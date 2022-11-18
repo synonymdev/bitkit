@@ -155,6 +155,7 @@ export interface IAddress {
 export interface ICreateWallet {
 	walletName?: string;
 	mnemonic?: string;
+	bip39Passphrase?: string;
 	addressAmount?: number;
 	changeAddressAmount?: number;
 	addressTypes?: IAddressType;

@@ -1,4 +1,10 @@
-import React, { memo, ReactElement, useState, useEffect } from 'react';
+import React, {
+	memo,
+	ReactElement,
+	ReactNode,
+	useState,
+	useEffect,
+} from 'react';
 import { StyleSheet } from 'react-native';
 import { useWindowDimensions } from 'react-native';
 import { useSelector } from 'react-redux';
@@ -65,7 +71,7 @@ const GlowingBackground = ({
 	topLeft,
 	bottomRight,
 }: {
-	children: ReactElement | ReactElement[];
+	children: ReactNode;
 	topLeft?: string;
 	bottomRight?: string;
 }): ReactElement => {

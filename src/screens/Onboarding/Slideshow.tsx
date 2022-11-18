@@ -1,22 +1,36 @@
 /* eslint-disable react/no-unstable-nested-components */
-import React, { memo, ReactElement, useState, useRef, useMemo } from 'react';
+import React, {
+	memo,
+	ReactElement,
+	useState,
+	useRef,
+	useMemo,
+	useEffect,
+	useCallback,
+} from 'react';
 import {
 	Image,
 	Platform,
+	Pressable,
 	StyleSheet,
-	TouchableOpacity,
-	useWindowDimensions,
 	View,
+	useWindowDimensions,
 } from 'react-native';
-import Swiper from 'react-native-swiper';
-import { FadeIn, FadeOut } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import Carousel, { ICarouselInstance } from 'react-native-reanimated-carousel';
+import Animated, {
+	interpolate,
+	useAnimatedStyle,
+	useSharedValue,
+} from 'react-native-reanimated';
 
 import {
 	AnimatedView,
+	Caption13M,
 	Display,
 	Text01M,
 	Text01S,
+	TouchableOpacity,
 	View as ThemedView,
 } from '../../styles/components';
 import SafeAreaInsets from '../../components/SafeAreaInsets';
@@ -35,10 +49,6 @@ const lightningImageSrc = require('../../assets/illustrations/lightning.png');
 const padlockImageSrc = require('../../assets/illustrations/padlock.png');
 const walletImageSrc = require('../../assets/illustrations/wallet.png');
 
-const Dot = ({ active }: { active?: boolean }): ReactElement => (
-	<ThemedView color={active ? 'white' : 'gray2'} style={styles.pageDot} />
-);
-
 /**
  * Slideshow for Welcome screen
  */
@@ -47,10 +57,12 @@ const Slideshow = ({
 	route,
 }: OnboardingStackScreenProps<'Slideshow'>): ReactElement => {
 	const skipIntro = route.params?.skipIntro ?? false;
-	const swiperRef = useRef<Swiper>(null);
+	const bip39Passphrase = route.params?.bip39Passphrase;
+	const ref = useRef<ICarouselInstance | null>(null);
 	const [isCreatingWallet, setIsCreatingWallet] = useState(false);
 	const insets = useSafeAreaInsets();
 	const colors = useColors();
+
 	// because we can't properly scala image inside the <Swiper let's calculate with by hand
 	const dimensions = useWindowDimensions();
 	const illustrationStyles = useMemo(
@@ -62,15 +74,10 @@ const Slideshow = ({
 		[dimensions.width],
 	);
 
-	const paginationStyles = useMemo(
-		() => ({ paddingBottom: insets.bottom }),
-		[insets.bottom],
-	);
-
-	const onNewWallet = async (): Promise<void> => {
+	const onNewWallet = useCallback(async (): Promise<void> => {
 		setIsCreatingWallet(true);
 		await sleep(500); // wait fot animation to be started
-		const res = await createNewWallet();
+		const res = await createNewWallet({ bip39Passphrase });
 		if (res.isErr()) {
 			setIsCreatingWallet(false);
 			showErrorNotification({
@@ -80,7 +87,7 @@ const Slideshow = ({
 		}
 
 		updateUser({ requiresRemoteRestore: false });
-	};
+	}, [bip39Passphrase]);
 
 	const slides = useMemo(
 		() => [
@@ -190,61 +197,150 @@ const Slideshow = ({
 		[],
 	);
 
-	const onScroll = (i): void => {
-		if (i > slides.length - 1) {
-			// react-native-swiper bug. on Andoid
-			// If you Skip to last slide and then try to swipe back
-			// it calls onScroll with index more that number of slides you have
-			i = slides.length - 2;
-		}
-		setIndex(i);
-	};
-	const onSkip = (): void => {
-		swiperRef.current?.scrollBy(slides.length - 1 - index);
-	};
-
 	const [index, setIndex] = useState(skipIntro ? slides.length - 1 : 0);
+	const progressValue = useSharedValue<number>(
+		skipIntro ? slides.length - 1 : 0,
+	);
 
-	if (isCreatingWallet) {
-		return (
-			<GlowingBackground topLeft={colors.brand}>
-				<LoadingWalletScreen />
-			</GlowingBackground>
+	// skip button should be visible on all slides, except the last one
+	const skipOpacity = useAnimatedStyle(() => {
+		const opacity = interpolate(
+			progressValue.value,
+			[0, slides.length - 2, slides.length - 1],
+			[1, 1, 0],
 		);
-	}
+		return { opacity };
+	}, [slides.length, progressValue]);
 
-	const glowColor = slides[index]?.topLeftColor ?? colors.brand;
+	// Advanced button should be visible only on last slide
+	const advOpacity = useAnimatedStyle(() => {
+		const opacity = interpolate(
+			progressValue.value,
+			[0, slides.length - 2, slides.length - 1],
+			[0, 0, 1],
+		);
+		return { opacity };
+	}, [slides.length, progressValue]);
+
+	const onSkip = (): void => {
+		ref.current?.scrollTo({ index: slides.length - 1, animated: true });
+	};
+
+	useEffect(() => {
+		if (skipIntro) {
+			progressValue.value = slides.length - 1;
+			ref.current?.scrollTo({ index: slides.length - 1, animated: false });
+		}
+	}, [skipIntro, slides.length, progressValue]);
+
+	useEffect(() => {
+		if (bip39Passphrase === undefined) {
+			return;
+		}
+		onNewWallet();
+	}, [bip39Passphrase, onNewWallet]);
+
+	const glowColor = isCreatingWallet
+		? colors.brand
+		: slides[index]?.topLeftColor ?? colors.brand;
 
 	return (
 		<GlowingBackground topLeft={glowColor}>
-			<>
-				<Swiper
-					ref={swiperRef}
-					paginationStyle={paginationStyles}
-					dot={<Dot />}
-					activeDot={<Dot active />}
-					loop={false}
-					index={index}
-					onIndexChanged={onScroll}>
-					{slides.map(({ slide: Slide }, i) => (
-						<Slide key={i} />
-					))}
-				</Swiper>
+			{isCreatingWallet ? (
+				<LoadingWalletScreen />
+			) : (
+				<>
+					<Carousel
+						ref={ref}
+						loop={false}
+						width={dimensions.width}
+						height={dimensions.height - 56 - (insets.bottom || 12)}
+						data={slides}
+						renderItem={({ index: i }): ReactElement => {
+							const Slide = slides[i].slide;
+							return <Slide key={i} />;
+						}}
+						onSnapToItem={setIndex}
+						onProgressChange={(_, absoluteProgress): void => {
+							progressValue.value = absoluteProgress;
+						}}
+					/>
 
-				{index !== slides.length - 1 && (
-					<AnimatedView
-						entering={FadeIn}
-						exiting={FadeOut}
-						color="transparent"
-						style={styles.headerButtonContainer}>
-						<TouchableOpacity style={styles.skipButton} onPress={onSkip}>
-							<SafeAreaInsets type="top" />
-							<Text01M color="gray1">Skip</Text01M>
+					<AnimatedView style={[styles.adv, advOpacity]}>
+						<TouchableOpacity
+							style={styles.advToucable}
+							onPress={(): void => {
+								if (index !== slides.length - 1) {
+									return;
+								}
+								navigation.navigate('Passphrase');
+							}}>
+							<Caption13M color="gray1">Advanced setup</Caption13M>
 						</TouchableOpacity>
 					</AnimatedView>
-				)}
-			</>
+
+					<View style={styles.dots}>
+						{slides.map((backgroundColor, i) => {
+							return (
+								<Dot
+									key={i}
+									index={i}
+									animValue={progressValue}
+									length={slides.length}
+								/>
+							);
+						})}
+					</View>
+
+					<AnimatedView
+						color="transparent"
+						style={[styles.headerButtonContainer, skipOpacity]}>
+						<Pressable style={styles.skipButton} onPress={onSkip}>
+							<SafeAreaInsets type="top" />
+							<Text01M color="gray1">Skip</Text01M>
+						</Pressable>
+					</AnimatedView>
+				</>
+			)}
 		</GlowingBackground>
+	);
+};
+
+const DOT_SIZE = 7;
+
+const Dot = ({
+	animValue,
+	index,
+	length,
+}: {
+	index: number;
+	length: number;
+	animValue: Animated.SharedValue<number>;
+}): ReactElement => {
+	const width = DOT_SIZE;
+
+	const animStyle = useAnimatedStyle(() => {
+		let inputRange = [index - 1, index, index + 1];
+		let outputRange = [-width, 0, width];
+
+		if (index === 0 && animValue?.value > length - 1) {
+			inputRange = [length - 1, length, length + 1];
+			outputRange = [-width, 0, width];
+		}
+
+		return {
+			transform: [
+				{
+					translateX: interpolate(animValue?.value, inputRange, outputRange),
+				},
+			],
+		};
+	}, [animValue, index, length]);
+
+	return (
+		<ThemedView color="gray2" style={styles.dotRoot}>
+			<Animated.View style={[styles.dotA, animStyle]} />
+		</ThemedView>
 	);
 };
 
@@ -296,12 +392,30 @@ const styles = StyleSheet.create({
 	newButton: {
 		marginLeft: 6,
 	},
-	pageDot: {
-		width: 7,
-		height: 7,
-		borderRadius: 4,
-		marginLeft: 4,
-		marginRight: 4,
+	dots: {
+		flexDirection: 'row',
+		justifyContent: 'space-between',
+		alignSelf: 'center',
+	},
+	dotRoot: {
+		width: DOT_SIZE,
+		height: DOT_SIZE,
+		borderRadius: 5,
+		overflow: 'hidden',
+		marginHorizontal: 4,
+	},
+	dotA: {
+		borderRadius: 5,
+		backgroundColor: 'white',
+		flex: 1,
+	},
+	adv: {
+		alignSelf: 'center',
+		backgroundColor: 'transparent',
+	},
+	advToucable: {
+		padding: 16,
+		backgroundColor: 'transparent',
 	},
 });
 

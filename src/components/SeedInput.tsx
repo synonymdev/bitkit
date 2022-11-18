@@ -1,27 +1,34 @@
-import React, { forwardRef } from 'react';
+import React, { forwardRef, useMemo } from 'react';
 import { StyleSheet, View, TextInputProps } from 'react-native';
 import { Text01S, TextInput } from '../styles/components';
 
-type SeedInputProps = TextInputProps & { index: number; valid: boolean };
+type SeedInputProps = TextInputProps & { index?: number; valid?: boolean };
 
 const SeedInput = forwardRef(
 	({ index, valid, ...props }: SeedInputProps, ref) => {
+		const inputStyle = useMemo(
+			() => [styles.input, { paddingLeft: index !== undefined ? 45 : 16 }],
+			[index],
+		);
+
 		return (
 			<View style={styles.inputWrapper}>
 				<TextInput
 					ref={ref}
-					style={styles.input}
+					style={inputStyle}
 					color={valid ? 'white' : 'red'}
 					autoCapitalize="none"
 					autoCorrect={false}
 					returnKeyType="done"
 					{...props}
 				/>
-				<View style={styles.index}>
-					<Text01S color={valid ? 'white5' : 'red'} style={styles.indexText}>
-						{index + 1}.
-					</Text01S>
-				</View>
+				{index !== undefined && (
+					<View style={styles.index}>
+						<Text01S color={valid ? 'white5' : 'red'} style={styles.indexText}>
+							{index + 1}.
+						</Text01S>
+					</View>
+				)}
 			</View>
 		);
 	},
