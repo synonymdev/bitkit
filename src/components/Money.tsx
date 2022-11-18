@@ -61,24 +61,26 @@ const Money = (props: IMoney): ReactElement => {
 		[props.style],
 	);
 
-	const [Text, iconHeight, iconWidth] = useMemo(() => {
+	const [Text, lineHeight, iconHeight, iconWidth] = useMemo(() => {
 		switch (size) {
 			case 'headline':
-				return [Headline, 40, 20];
+				// Override lineHeight for Display font
+				return [Headline, '41px', 40, 20];
 			case 'title':
-				return [Title, 26, 12];
+				return [Title, null, 26, 12];
 			case 'text01s':
-				return [Text01S, 21, 10];
+				return [Text01S, null, 21, 10];
 			case 'text01m':
-				return [Text01M, 21, 10];
+				return [Text01M, null, 21, 10];
 			case 'text02s':
-				return [Text02S, 18, 9];
+				return [Text02S, null, 18, 9];
 			case 'text02m':
-				return [Text02M, 18, 9];
+				return [Text02M, null, 18, 9];
 			case 'caption13M':
-				return [Caption13M, 16, 8];
+				return [Caption13M, null, 16, 8];
 			default:
-				return [Display, 39, 25];
+				// Override lineHeight for Display font
+				return [Display, '57px', 39, 25];
 		}
 	}, [size]);
 
@@ -86,7 +88,10 @@ const Money = (props: IMoney): ReactElement => {
 		switch (unit) {
 			case 'fiat':
 				return (
-					<Text color={color ?? 'gray2'} style={styles.symbol}>
+					<Text
+						lineHeight={lineHeight}
+						color={color ?? 'gray2'}
+						style={styles.symbol}>
 						{dv.fiatSymbol}
 					</Text>
 				);
@@ -145,13 +150,22 @@ const Money = (props: IMoney): ReactElement => {
 	return (
 		<View style={style}>
 			{sign && (
-				<Text style={styles.sign} color={color ?? 'gray2'}>
+				<Text
+					style={styles.sign}
+					lineHeight={lineHeight}
+					color={color ?? 'gray2'}>
 					{sign}
 				</Text>
 			)}
 			{showSymbol && symbol}
-			<Text color={color}>{prim}</Text>
-			{secd !== '' && <Text color="gray2">{secd}</Text>}
+			<Text style={styles.integer} lineHeight={lineHeight} color={color}>
+				{prim}
+			</Text>
+			{secd !== '' && (
+				<Text style={styles.decimal} lineHeight={lineHeight} color="gray2">
+					{secd}
+				</Text>
+			)}
 		</View>
 	);
 };
@@ -169,4 +183,6 @@ const styles = StyleSheet.create({
 	symbol: {
 		marginRight: 4,
 	},
+	integer: {},
+	decimal: {},
 });
