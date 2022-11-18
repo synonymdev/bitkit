@@ -4,80 +4,13 @@ import { Canvas, LinearGradient, Rect, vec } from '@shopify/react-native-skia';
 import { FadeOut } from 'react-native-reanimated';
 import { useSelector } from 'react-redux';
 
-import {
-	Caption13M,
-	Caption13Up,
-	Text01M,
-	View,
-	XIcon,
-	AnimatedView,
-} from '../styles/components';
+import { Caption13M, Text01M, XIcon, AnimatedView } from '../styles/components';
 import useColors from '../hooks/colors';
 import Store from '../store/types';
 import { updateSettings } from '../store/actions/settings';
+import Flag from '../components/Flag';
 
-const FLAG_HEIGHT = 26;
 const BETA_HEIGHT = 100;
-
-const Flag = ({
-	style,
-	text,
-}: {
-	style?: object;
-	text: string;
-}): ReactElement => {
-	return (
-		<View style={[stylesFlag.root, style]} color="transparent">
-			<View color="brand" style={[stylesFlag.box, stylesFlag.box3]} />
-			<View style={stylesFlag.row} color="transparent">
-				<View color="brand" style={[stylesFlag.box, stylesFlag.box1]} />
-				<View color="brand" style={[stylesFlag.box, stylesFlag.box2]} />
-				<View color="brand" style={stylesFlag.text}>
-					<Caption13Up>{text}</Caption13Up>
-				</View>
-			</View>
-		</View>
-	);
-};
-
-const stylesFlag = StyleSheet.create({
-	root: {
-		height: FLAG_HEIGHT * 1.5,
-		overflow: 'hidden',
-	},
-	row: {
-		height: FLAG_HEIGHT,
-		overflow: 'hidden',
-		paddingLeft: FLAG_HEIGHT / 2,
-		position: 'relative',
-	},
-	box: {
-		height: FLAG_HEIGHT,
-		width: FLAG_HEIGHT,
-		position: 'absolute',
-	},
-	box1: {
-		transform: [{ skewY: '45deg' }],
-		top: -FLAG_HEIGHT / 2,
-	},
-	box2: {
-		transform: [{ skewY: '-45deg' }],
-		top: +FLAG_HEIGHT / 2,
-	},
-	box3: {
-		transform: [{ skewY: '45deg' }],
-		right: -FLAG_HEIGHT / 2,
-		top: FLAG_HEIGHT / 2,
-		opacity: 0.5,
-	},
-	text: {
-		height: FLAG_HEIGHT,
-		paddingLeft: 6,
-		paddingRight: 12,
-		justifyContent: 'center',
-		alignItems: 'center',
-	},
-});
 
 const BetaSoftware = (): ReactElement => {
 	const colors = useColors();

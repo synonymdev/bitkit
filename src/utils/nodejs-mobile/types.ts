@@ -24,7 +24,7 @@ export interface INodeJsSetup {
 	method: ENodeJsMethods.setup;
 	data: {
 		mnemonic: string;
-		password?: string;
+		bip39Passphrase?: string;
 		selectedNetwork?: TAvailableNetworks;
 	};
 }
@@ -42,7 +42,7 @@ export interface INodeJsGetPrivateKey {
 	method: ENodeJsMethods.getPrivateKey;
 	data: {
 		mnemonic: string;
-		password: string;
+		bip39Passphrase: string;
 		path: string;
 		selectedNetwork?: TAvailableNetworks;
 	};

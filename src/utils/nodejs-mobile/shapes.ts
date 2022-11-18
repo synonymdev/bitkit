@@ -15,7 +15,7 @@ export const DefaultNodeJsMethodsShape = {
 			method: ENodeJsMethods.setup,
 			data: {
 				mnemonic: '',
-				password: '',
+				bip39Passphrase: '',
 				selectedNetwork: undefined,
 			},
 		};
@@ -45,7 +45,7 @@ export const DefaultNodeJsMethodsShape = {
 			method: ENodeJsMethods.getPrivateKey,
 			data: {
 				mnemonic: '',
-				password: '',
+				bip39Passphrase: '',
 				path: '',
 				selectedNetwork: undefined,
 			},

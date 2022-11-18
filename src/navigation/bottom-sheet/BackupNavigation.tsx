@@ -8,7 +8,9 @@ import {
 
 import BottomSheetWrapper from '../../components/BottomSheetWrapper';
 import ShowMnemonic from '../../screens/Settings/Backup/ShowMnemonic';
+import ShowPassphrase from '../../screens/Settings/Backup/ShowPassphrase';
 import ConfirmMnemonic from '../../screens/Settings/Backup/ConfirmMnemonic';
+import ConfirmPassphrase from '../../screens/Settings/Backup/ConfirmPassphrase';
 import Result from '../../screens/Settings/Backup/Result';
 import Warning from '../../screens/Settings/Backup/Warning';
 import Metadata from '../../screens/Settings/Backup/Metadata';
@@ -21,7 +23,9 @@ export type BackupNavigationProp =
 
 export type BackupStackParamList = {
 	ShowMnemonic: undefined;
-	ConfirmMnemonic: undefined;
+	ShowPassphrase: { seed: string[]; bip39Passphrase: string };
+	ConfirmMnemonic: { seed: string[]; bip39Passphrase: string };
+	ConfirmPassphrase: { bip39Passphrase: string };
 	Result: undefined;
 	Warning: undefined;
 	Metadata: undefined;
@@ -45,7 +49,12 @@ const BackupNavigation = (): ReactElement => {
 				<Stack.Navigator screenOptions={navOptions}>
 					<Stack.Group screenOptions={navOptions}>
 						<Stack.Screen name="ShowMnemonic" component={ShowMnemonic} />
+						<Stack.Screen name="ShowPassphrase" component={ShowPassphrase} />
 						<Stack.Screen name="ConfirmMnemonic" component={ConfirmMnemonic} />
+						<Stack.Screen
+							name="ConfirmPassphrase"
+							component={ConfirmPassphrase}
+						/>
 						<Stack.Screen name="Result" component={Result} />
 						<Stack.Screen name="Warning" component={Warning} />
 						<Stack.Screen name="Metadata" component={Metadata} />

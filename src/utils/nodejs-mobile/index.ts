@@ -3,6 +3,7 @@ import { TAvailableNetworks } from '../networks';
 import nodejs from 'nodejs-mobile-react-native';
 import {
 	getMnemonicPhrase,
+	getBip39Passphrase,
 	getSelectedNetwork,
 	getSelectedWallet,
 } from '../wallet';
@@ -118,6 +119,7 @@ export const setupNodejsMobile = async ({
 	let setupShape = DefaultNodeJsMethodsShape.setup();
 	setupShape.data.selectedNetwork = selectedNetwork;
 	setupShape.data.mnemonic = mnemonic;
+	setupShape.data.bip39Passphrase = await getBip39Passphrase();
 	await invokeNodeJsMethod(setupShape);
 	isSetup = true;
 	return ok('');

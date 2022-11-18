@@ -8,6 +8,7 @@ import TermsOfUse from '../../screens/Onboarding/TermsOfUse';
 import WelcomeScreen from '../../screens/Onboarding/Welcome';
 import SlideshowScreen from '../../screens/Onboarding/Slideshow';
 import RestoreFromSeed from '../../screens/Onboarding/RestoreFromSeed';
+import Passphrase from '../../screens/Onboarding/Passphrase';
 import { NavigationContainer } from '../../styles/components';
 
 export type OnboardingNavigationProp =
@@ -16,8 +17,9 @@ export type OnboardingNavigationProp =
 export type OnboardingStackParamList = {
 	TermsOfUse: undefined;
 	Welcome: undefined;
-	Slideshow: { skipIntro?: boolean } | undefined;
+	Slideshow: { skipIntro?: boolean; bip39Passphrase?: string } | undefined;
 	RestoreFromSeed: undefined;
+	Passphrase: undefined;
 };
 
 const Stack = createNativeStackNavigator<OnboardingStackParamList>();
@@ -49,6 +51,11 @@ const OnboardingNavigator = (): ReactElement => {
 				<Stack.Screen
 					name="RestoreFromSeed"
 					component={RestoreFromSeed}
+					options={navOptionHandler}
+				/>
+				<Stack.Screen
+					name="Passphrase"
+					component={Passphrase}
 					options={navOptionHandler}
 				/>
 			</Stack.Navigator>

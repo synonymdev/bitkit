@@ -10,10 +10,11 @@ import {
 } from '../../../styles/components';
 import Button from '../../../components/Button';
 import BlurView from '../../../components/BlurView';
-import { getMnemonicPhrase } from '../../../utils/wallet';
+import { getMnemonicPhrase, getBip39Passphrase } from '../../../utils/wallet';
 import { useBottomSheetBackPress } from '../../../hooks/bottomSheet';
 import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
 import { showErrorNotification } from '../../../utils/notifications';
+import type { BackupScreenProps } from '../../../navigation/types';
 
 // Android doesn't have blur so we put a dummy mnemonic
 const dummySeed = Array.from({ length: 12 }, () => 'secret');
@@ -33,9 +34,12 @@ const Word = ({
 	);
 };
 
-const ShowMnemonic = ({ navigation }): ReactElement => {
+const ShowMnemonic = ({
+	navigation,
+}: BackupScreenProps<'ShowMnemonic'>): ReactElement => {
 	const [show, setShow] = useState(false);
 	const [seed, setSeed] = useState<string[]>([]);
+	const [bip39Passphrase, setPassphrase] = useState<string>('');
 	const insets = useSafeAreaInsets();
 	const nextButtonContainer = useMemo(
 		() => ({
@@ -58,6 +62,7 @@ const ShowMnemonic = ({ navigation }): ReactElement => {
 			}
 			setSeed(res.value.split(' '));
 		});
+		getBip39Passphrase().then(setPassphrase);
 	}, []);
 
 	const seedToShow = Platform.OS === 'android' && !show ? dummySeed : seed;
@@ -117,9 +122,15 @@ const ShowMnemonic = ({ navigation }): ReactElement => {
 					<Button
 						size="large"
 						text="Continue"
-						onPress={(): void =>
-							navigation.navigate('ConfirmMnemonic', { seed })
-						}
+						onPress={(): void => {
+							navigation.navigate(
+								bip39Passphrase ? 'ShowPassphrase' : 'ConfirmMnemonic',
+								{
+									seed,
+									bip39Passphrase,
+								},
+							);
+						}}
 					/>
 				)}
 			</View>
