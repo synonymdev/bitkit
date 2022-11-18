@@ -9,12 +9,13 @@ jobs:
 
     steps:
       - name: Check out Git repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Set up Node.js
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v3
         with:
-          node-version: 14
+          node-version: 16
+          cache: 'yarn'
 
       - name: Install SSH key
         uses: shimataro/ssh-key-action@v2
@@ -25,7 +26,7 @@ jobs:
       - name: Use NPM Token with organization read access
         uses: dkershner6/use-npm-token-action@v1
         with:
-          token: "${{ secrets.NPMJS_READ }}"
+          token: '${{ secrets.NPMJS_READ }}'
 
       - name: Install Node.js dependencies
         run: yarn install

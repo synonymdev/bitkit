@@ -6,4 +6,7 @@ module.exports = {
 		'<rootDir>/jest.setup.js',
 		'./node_modules/react-native-gesture-handler/jestSetup.js',
 	],
+	moduleNameMapper: {
+		'\\.(jpg|jpeg|svg|png)$': '<rootDir>/__mocks__/fileMock.js',
+	},
 };
