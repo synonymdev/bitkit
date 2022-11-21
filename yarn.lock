@@ -9669,6 +9669,10 @@ react-native-share@^7.4.1:
   resolved "https://registry.yarnpkg.com/react-native-share/-/react-native-share-7.9.0.tgz#31f28d85201bada5e511c5f14d5935df2166fe93"
   integrity sha512-I9RPp7Ph7dusPwN+/TgFq2V9vLVCN12gwUzpgM1eCoqTMN54dVWI+9k0loCgANv3CdajiKSOrGh+DTnsmhG9VA==
 
+"react-native-skia-stub@git+ssh://git@github.com/limpbrains/react-native-skia-stub":
+  version "0.0.1"
+  resolved "git+ssh://git@github.com/limpbrains/react-native-skia-stub#a1539ef95fab349b7f81fd3e19c1fe421d7a763b"
+
 react-native-svg-transformer@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/react-native-svg-transformer/-/react-native-svg-transformer-1.0.0.tgz#7a707e5e95d20321b5f3dcfd0c3c8762ebd0221b"
