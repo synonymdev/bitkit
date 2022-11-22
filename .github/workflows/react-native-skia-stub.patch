@@ -1,0 +1,14 @@
+diff --git a/package.json b/package.json
+index 935e19e8..fa64a969 100644
+--- a/package.json
++++ b/package.json
+@@ -178,7 +178,8 @@
+     "stream": "stream-browserify",
+     "vm": "vm-browserify",
+     "sodium-native": "react-native-libsodium",
+-    "net": "react-native-tcp-socket"
++    "net": "react-native-tcp-socket",
++    "@shopify/react-native-skia": "react-native-skia-stub"
+   },
+   "browser": {
+     "crypto": "react-native-crypto",

@@ -53,6 +53,7 @@ const TermsOfUse = ({
 						}
 						checked={termsOfUse}
 						onPress={(): void => setTermsOfUse((prevState) => !prevState)}
+						testID="TestCheck1"
 					/>
 					<CheckButton
 						label={<Text01B>Privacy Policy</Text01B>}
@@ -70,6 +71,7 @@ const TermsOfUse = ({
 						}
 						checked={privacyPolicy}
 						onPress={(): void => setPrivacyPolicy((prevState) => !prevState)}
+						testID="TestCheck2"
 					/>
 				</View>
 
@@ -79,6 +81,7 @@ const TermsOfUse = ({
 						size="large"
 						disabled={!isValid}
 						onPress={onPress}
+						testID="TestContinue"
 					/>
 				</View>
 			</View>

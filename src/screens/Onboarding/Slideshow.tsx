@@ -177,6 +177,7 @@ const Slideshow = ({
 									style={[styles.button, styles.restoreButton]}
 									onPress={onNewWallet}
 									text="New Wallet"
+									testID="TestNewWallet"
 								/>
 
 								<Button

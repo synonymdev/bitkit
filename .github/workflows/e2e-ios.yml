@@ -1,0 +1,88 @@
+name: e2e-ios
+
+on:
+  pull_request:
+    branches:
+      - 'master'
+  push:
+    branches:
+      - 'master'
+
+jobs:
+  e2e:
+    runs-on: macos-12
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 1
+
+      - name: Install SSH key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.TEST_USER_SSH_KEY }}
+          known_hosts: ${{ secrets.TEST_USER_KNOWN_HOSTS }}
+
+      - name: Use NPM Token with organization read access
+        uses: dkershner6/use-npm-token-action@v1
+        with:
+          token: '${{ secrets.NPMJS_READ }}'
+
+      - name: Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          cache: 'yarn' # cache packages, but not node_modules
+
+      - name: Cache node modules
+        uses: actions/cache@v3
+        id: cache-nm
+        with:
+          path: node_modules
+          key: node-modules-${{ hashFiles('**/yarn.lock') }}
+
+      - name: Rebuild detox
+        if: steps.cache-nm.outputs.cache-hit == 'true'
+        run: yarn detox clean-framework-cache && yarn detox build-framework-cache
+
+      - name: Install Dependencies
+        if: steps.cache-nm.outputs.cache-hit != 'true'
+        run: yarn install
+
+      - name: Activate react-native-skia-stup
+        run: |
+          yarn add git+ssh://git@github.com/limpbrains/react-native-skia-stub
+          patch -p1 < .github/workflows/react-native-skia-stub.patch
+
+      - name: Cache Pods
+        uses: actions/cache@v3
+        id: podcache
+        with:
+          path: ios/Pods
+          key: pods-${{ hashFiles('**/Podfile.lock') }}
+
+      - name: Update Pods
+        run: |
+          gem update cocoapods xcodeproj
+          cd ios && pod install && cd ..
+
+      - name: Install applesimutils
+        run: |
+          brew tap wix/brew
+          brew install applesimutils
+
+      - name: Build
+        run: yarn e2e:build:ios-release
+
+      - name: Test
+        run: |
+          yarn e2e:test:ios-release --record-videos all --take-screenshots all --record-logs all || \
+          yarn e2e:test:ios-release --record-videos all --take-screenshots all --record-logs all || \
+          yarn e2e:test:ios-release --record-videos all --take-screenshots all --record-logs all
+
+      - uses: actions/upload-artifact@v3
+        if: failure()
+        with:
+          name: e2e-test-videos
+          path: ./artifacts/

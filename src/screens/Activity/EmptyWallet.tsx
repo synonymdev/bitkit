@@ -25,7 +25,7 @@ const EmptyWallet = (): ReactElement => {
 	};
 
 	return (
-		<View style={root}>
+		<View style={root} testID="TestToGetStarted">
 			<TouchableOpacity style={styles.closeButton} onPress={handleHide}>
 				<XIcon color="gray1" width={16} height={16} />
 			</TouchableOpacity>
