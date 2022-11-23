@@ -19,5 +19,4 @@ export interface IOnchainFees {
 
 export interface IFees {
 	onchain: IOnchainFees;
-	[key: string]: any;
 }

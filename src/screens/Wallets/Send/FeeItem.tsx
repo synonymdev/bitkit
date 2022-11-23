@@ -28,8 +28,8 @@ const FeeItem = ({
 }: {
 	id: EFeeIds;
 	sats: number;
-	onPress: (event: GestureResponderEvent) => void;
 	isSelected: boolean;
+	onPress: (event: GestureResponderEvent) => void;
 }): ReactElement => {
 	const colors = useColors();
 	const { title, description } = FeeText[id];
@@ -60,7 +60,7 @@ const FeeItem = ({
 				onPress={onPress}
 				style={[
 					styles.root,
-					isSelected ? { backgroundColor: colors.black } : null,
+					isSelected ? { backgroundColor: colors.white08 } : null,
 				]}>
 				<View style={styles.imageContainer}>{icon}</View>
 
@@ -73,7 +73,7 @@ const FeeItem = ({
 						</Text01M>
 					</View>
 					<View style={styles.cell}>
-						<Text02M color="gray1">± {description}</Text02M>
+						<Text02M color="gray1">{description}</Text02M>
 						<Text02M color="gray1">
 							{totalFeeDisplay.fiatSymbol} {totalFeeDisplay.fiatFormatted}
 						</Text02M>

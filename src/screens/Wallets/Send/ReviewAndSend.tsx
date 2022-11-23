@@ -484,7 +484,7 @@ const ReviewAndSend = ({
 	const feeDescription = useMemo(() => {
 		return selectedFeeId === EFeeIds.custom
 			? customDescription
-			: FeeText[selectedFeeId]?.description;
+			: FeeText[selectedFeeId].description;
 	}, [customDescription, selectedFeeId]);
 
 	return (
@@ -520,7 +520,7 @@ const ReviewAndSend = ({
 									<TimerIcon color="brand" />
 									<Text02M>
 										{' '}
-										{FeeText[selectedFeeId]?.title}
+										{FeeText[selectedFeeId].title}
 										{feeAmount}
 									</Text02M>
 									<PenIcon height={16} width={20} />

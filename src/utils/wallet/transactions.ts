@@ -1053,22 +1053,20 @@ export const getTransactionInputs = ({
  * @param {IBitcoinTransactionData} [transaction]
  */
 export const updateFee = ({
-	satsPerByte = 1,
+	satsPerByte,
 	selectedFeeId = EFeeIds.custom,
 	selectedWallet,
 	selectedNetwork,
+	index = 0,
 	transaction,
 }: {
-	satsPerByte?: number;
+	satsPerByte: number;
 	selectedFeeId?: EFeeIds;
 	selectedWallet?: string;
 	selectedNetwork?: TAvailableNetworks;
+	index?: number;
 	transaction?: IBitcoinTransactionData;
 }): Result<string> => {
-	// if (!satsPerByte || satsPerByte < 1) {
-	if (satsPerByte === undefined) {
-		return err('No satsPerByte provided.');
-	}
 	if (!selectedWallet) {
 		selectedWallet = getSelectedWallet();
 	}
@@ -1092,13 +1090,27 @@ export const updateFee = ({
 		inputs: transaction.inputs,
 	});
 
-	const newFee = getTotalFee({ satsPerByte });
+	const max = transaction.max;
+	const message = transaction.message ?? '';
+	const outputs = transaction.outputs ?? [];
+	let address = '';
+	if (outputs?.length > index) {
+		address = outputs[index]?.address ?? '';
+	}
+
+	//Check that the user has enough funds
+	const newFee = getTotalFee({
+		satsPerByte,
+		message,
+	});
+
 	//Return if the new fee exceeds half of the user's balance
 	if (Number(newFee) >= inputTotal / 2) {
 		return err(
 			'Unable to increase the fee any further. Otherwise, it will exceed half the current balance.',
 		);
 	}
+
 	const totalTransactionValue = getTransactionOutputValue({
 		selectedWallet,
 		selectedNetwork,
@@ -1109,7 +1121,13 @@ export const updateFee = ({
 		fee: newFee,
 		selectedFeeId,
 	};
-	if (newTotalAmount <= inputTotal) {
+
+	if (max) {
+		//Update the tx value with the new fee to continue sending the max amount.
+		_transaction.outputs = [{ address, value: inputTotal - newFee, index }];
+	}
+
+	if (max || newTotalAmount <= inputTotal) {
 		updateBitcoinTransaction({
 			selectedNetwork,
 			selectedWallet,
@@ -1914,17 +1932,14 @@ const runCoinSelect = async ({
  * @param {string} txid
  */
 export const setupBoost = async ({
+	txid,
 	selectedWallet,
 	selectedNetwork,
-	txid,
 }: {
 	txid: string;
 	selectedWallet?: string;
 	selectedNetwork?: TAvailableNetworks;
 }): Promise<Result<IBitcoinTransactionData>> => {
-	if (!txid) {
-		return err('No txid provided.');
-	}
 	if (!selectedNetwork) {
 		selectedNetwork = getSelectedNetwork();
 	}
@@ -1981,6 +1996,7 @@ export const setupCpfp = async ({
 		return err(receiveAddress.error.message);
 	}
 
+	// Construct the tx to send funds back to ourselves using the assigned inputs, receive address and fee.
 	const sendMaxResponse = await sendMax({
 		selectedWallet,
 		selectedNetwork,
@@ -2016,9 +2032,6 @@ export const setupRbf = async ({
 	selectedNetwork?: TAvailableNetworks;
 }): Promise<Result<IBitcoinTransactionData>> => {
 	try {
-		if (!txid) {
-			return err('No txid provided.');
-		}
 		if (!selectedNetwork) {
 			selectedNetwork = getSelectedNetwork();
 		}

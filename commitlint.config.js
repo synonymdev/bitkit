@@ -9,6 +9,7 @@ module.exports = {
 				'activity',
 				'assets',
 				'backup',
+				'boost',
 				'contacts',
 				'lang',
 				'lightning',

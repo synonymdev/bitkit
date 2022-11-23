@@ -10,8 +10,10 @@ import {
 	ActivityIndicator,
 	Animated,
 	PanResponder,
+	StyleProp,
 	StyleSheet,
 	View,
+	ViewStyle,
 } from 'react-native';
 
 import { View as ThemedView, Text02M, RightArrow } from '../styles/components';
@@ -29,6 +31,7 @@ interface ISwipeToConfirm {
 	icon?: ReactElement;
 	loading?: boolean;
 	confirmed: boolean;
+	style?: StyleProp<ViewStyle>;
 }
 const SwipeToConfirm = ({
 	text = 'Swipe To Confirm',
@@ -37,6 +40,7 @@ const SwipeToConfirm = ({
 	icon,
 	loading,
 	confirmed,
+	style,
 }: ISwipeToConfirm): ReactElement => {
 	const pan = useRef<any>(new Animated.ValueXY()).current;
 	const loadingOpacity = useRef(new Animated.Value(0)).current;
@@ -132,7 +136,7 @@ const SwipeToConfirm = ({
 	}, [confirmed, endPosition, pan]);
 
 	return (
-		<ThemedView color="white08" style={styles.root}>
+		<ThemedView color="white08" style={[styles.root, style]}>
 			<View
 				style={styles.container}
 				onLayout={(e): void => {

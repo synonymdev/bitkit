@@ -1,29 +1,50 @@
-import { IFees } from '../types/fees';
+import { EFeeIds, IFees } from '../types/fees';
 
-export const FeeText = {
+export type TFeeText = {
+	title: string;
+	description: string;
+	shortDescription: string;
+};
+
+type TFeeTexts = {
+	[key in EFeeIds]: TFeeText;
+};
+
+export const FeeText: TFeeTexts = {
 	instant: {
 		title: 'Instant',
-		description: '2-10 seconds',
+		description: '±2-10 seconds',
+		shortDescription: '±2s',
 	},
 	fast: {
 		title: 'Fast',
-		description: '10-20 minutes',
+		description: '±10-20 minutes',
+		shortDescription: '±10m',
 	},
 	normal: {
 		title: 'Normal',
-		description: '20-60 minutes',
+		description: '±20-60 minutes',
+		shortDescription: '±20m',
 	},
 	slow: {
 		title: 'Slow',
-		description: '1-2 hours',
+		description: '±1-2 hours',
+		shortDescription: '±1h',
+	},
+	minimum: {
+		title: 'Minimum',
+		description: '+2 hours',
+		shortDescription: '+2h',
 	},
 	custom: {
 		title: 'Custom',
 		description: 'Depends on the fee',
+		shortDescription: 'Depends on the fee',
 	},
 	none: {
 		title: '',
 		description: '',
+		shortDescription: '',
 	},
 };
 

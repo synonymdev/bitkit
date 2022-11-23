@@ -395,7 +395,9 @@ export const startChannelPurchase = async ({
 
 	// Set fee appropriately to open an instant channel.
 	const zero_conf_satvbyte = orderData.value.zero_conf_satvbyte;
-	await updateFee({ satsPerByte: zero_conf_satvbyte, selectedNetwork });
+	if (zero_conf_satvbyte) {
+		await updateFee({ satsPerByte: zero_conf_satvbyte, selectedNetwork });
+	}
 
 	const transactionDataRes = getOnchainTransactionData({
 		selectedWallet,
