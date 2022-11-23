@@ -131,19 +131,17 @@ const BoostForm = ({
 	};
 
 	const onDecreaseValue = (): void => {
-		if (satsPerByte - 1 >= minFee) {
-			const res = adjustFee({
-				selectedNetwork,
-				selectedWallet,
-				adjustBy: -1,
-				transaction,
+		const res = adjustFee({
+			selectedNetwork,
+			selectedWallet,
+			adjustBy: -1,
+			transaction,
+		});
+		if (res.isErr()) {
+			showErrorNotification({
+				title: 'Error Updating Fee',
+				message: res.error.message,
 			});
-			if (res.isErr()) {
-				showErrorNotification({
-					title: 'Error Updating Fee',
-					message: res.error.message,
-				});
-			}
 		}
 	};
 
@@ -238,7 +236,7 @@ const BoostForm = ({
 					description={Description}
 					decreaseValue={onDecreaseValue}
 					increaseValue={onIncreaseValue}
-					decreaseDisabled={satsPerByte < 2}
+					decreaseDisabled={satsPerByte <= minFee}
 				/>
 			) : (
 				<ImageText

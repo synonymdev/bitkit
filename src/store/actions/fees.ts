@@ -5,19 +5,18 @@ import { getDispatch, getFeesStore } from '../helpers';
 import { getSelectedNetwork } from '../../utils/wallet';
 import { getFeeEstimates } from '../../utils/wallet/transactions';
 import { TAvailableNetworks } from '../../utils/networks';
-import { IOnchainFees } from '../types/fees';
-import { defaultFeesShape } from '../shapes/fees';
 
 const dispatch = getDispatch();
 
 export const REFRESH_INTERVAL = 60 * 30; // in seconds, 30 minutes
 
-export const updateFees = async (payload): Promise<void> => {
-	dispatch({
-		type: actions.UPDATE_FEES,
-		payload,
-	});
-};
+// currently unused
+// export const updateFees = async (payload): Promise<void> => {
+// 	dispatch({
+// 		type: actions.UPDATE_FEES,
+// 		payload,
+// 	});
+// };
 
 export const updateOnchainFeeEstimates = async ({
 	selectedNetwork,
@@ -25,22 +24,24 @@ export const updateOnchainFeeEstimates = async ({
 }: {
 	selectedNetwork: TAvailableNetworks;
 	forceUpdate?: boolean;
-}): Promise<IOnchainFees> => {
+}): Promise<Result<string>> => {
 	if (!selectedNetwork) {
 		selectedNetwork = getSelectedNetwork();
 	}
+
 	const feesStore = getFeesStore();
-	let fees = feesStore.onchain ?? defaultFeesShape.onchain;
-	const timestamp = feesStore.onchain?.timestamp;
+	const timestamp = feesStore.onchain.timestamp;
 	const difference = Math.floor((Date.now() - timestamp) / 1000);
+
 	if (forceUpdate || (timestamp && difference > REFRESH_INTERVAL)) {
-		fees = await getFeeEstimates(selectedNetwork);
+		const feeEstimates = await getFeeEstimates(selectedNetwork);
 		dispatch({
 			type: actions.UPDATE_ONCHAIN_FEE_ESTIMATES,
-			payload: fees,
+			payload: feeEstimates,
 		});
 	}
-	return fees;
+
+	return ok('Successfully updated on-chain fee estimates.');
 };
 
 /*

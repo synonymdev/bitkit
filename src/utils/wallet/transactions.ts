@@ -1570,25 +1570,22 @@ export const sendMax = ({
 };
 
 /**
- * Increases the fee by a given sat per byte.
+ * Adjusts the fee by a given sat per byte.
+ * @param {number} [adjustBy]
  * @param {IBitcoinTransactionData} [transaction]
  * @param {TAvailableNetworks} [selectedNetwork]
  * @param {string} [selectedWallet]
- * @param {number} [index]
- * @param {number} [increaseBy]
  */
 export const adjustFee = ({
+	adjustBy,
 	transaction,
 	selectedNetwork,
 	selectedWallet,
-	index = 0,
-	adjustBy = 1,
 }: {
+	adjustBy: number;
 	transaction?: IBitcoinTransactionData;
 	selectedNetwork?: TAvailableNetworks;
 	selectedWallet?: string;
-	index?: number;
-	adjustBy?: number;
 }): Result<string> => {
 	try {
 		if (!selectedNetwork) {
@@ -1607,60 +1604,23 @@ export const adjustFee = ({
 			}
 			transaction = transactionDataResponse.value;
 		}
-		//const coinSelectPreference = getStore().settings.coinSelectPreference;
-		const max = transaction?.max;
-		const inputTotal = getTransactionInputValue({
-			selectedNetwork,
-			selectedWallet,
-			inputs: transaction.inputs,
-		});
+		// const coinSelectPreference = getStore().settings.coinSelectPreference;
 		const satsPerByte = transaction.satsPerByte ?? 1;
-		const message = transaction?.message ?? '';
-		const outputs = transaction?.outputs ?? [];
-		let address = '';
-		if (outputs?.length > index) {
-			address = outputs[index]?.address ?? '';
-		}
-		const newSatsPerByte = Number(satsPerByte) + adjustBy;
-		if (newSatsPerByte < 1) {
+		const newSatsPerByte = satsPerByte + adjustBy;
+		if (satsPerByte === 1) {
 			return ok('This is the lowest we can go. Returning...');
 		}
-		if (max) {
-			//Check that the user has enough funds
-			const newFee = getTotalFee({
-				satsPerByte: newSatsPerByte,
-				message,
-			});
-			//Return if the new fee exceeds half of the user's balance
-			if (Number(newFee) >= inputTotal / 2) {
-				return err(
-					'Unable to increase the fee any further. Otherwise, it will exceed half the current balance.',
-				);
-			}
-			const _transaction: IBitcoinTransactionData = {
-				satsPerByte: newSatsPerByte,
-				selectedFeeId: EFeeIds.custom,
-				fee: newFee,
-			};
-			//Update the tx value with the new fee to continue sending the max amount.
-			_transaction.outputs = [{ address, value: inputTotal - newFee, index }];
-			updateBitcoinTransaction({
-				selectedNetwork,
-				selectedWallet,
-				transaction: _transaction,
-			}).then();
-		} else {
-			updateFee({
-				selectedWallet,
-				selectedNetwork,
-				satsPerByte: Number(satsPerByte) + adjustBy,
-				selectedFeeId: EFeeIds.custom,
-			});
-			/*if (address && coinSelectPreference !== 'consolidate') {
-				runCoinSelect({ selectedWallet, selectedNetwork });
-			}*/
-		}
-		return ok('Successfully adjust fee.');
+		const response = updateFee({
+			transaction,
+			selectedWallet,
+			selectedNetwork,
+			satsPerByte: newSatsPerByte,
+			selectedFeeId: EFeeIds.custom,
+		});
+		// if (address && coinSelectPreference !== 'consolidate') {
+		// 	runCoinSelect({ selectedWallet, selectedNetwork });
+		// }
+		return response;
 	} catch (e) {
 		return err(e);
 	}
