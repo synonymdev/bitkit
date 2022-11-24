@@ -25,6 +25,9 @@
     "removeComments": true,
     "forceConsistentCasingInFileNames": true,
 
+    // TODO: add these rules & fix errors
+    // "noUncheckedIndexedAccess": true,
+
     // TODO: remove these rules & add types
     "noImplicitAny": false,
     "useUnknownInCatchVariables": false

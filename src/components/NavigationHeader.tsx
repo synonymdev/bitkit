@@ -16,6 +16,7 @@ import {
 	Title,
 	XIcon,
 } from '../styles/components';
+import { Keyboard } from '../hooks/keyboard';
 
 const ActionButton = memo(
 	({
@@ -60,13 +61,14 @@ const NavigationHeader = ({
 }: NavigationHeaderProps): ReactElement => {
 	const navigation = useNavigation<any>();
 
-	const handleBackPress = useCallback(() => {
+	const handleBackPress = useCallback(async () => {
 		onBackPress && onBackPress();
 		if (navigateBack) {
+			// make sure Keyboard is closed before navigating back to prevent layout bugs
+			await Keyboard.dismiss();
 			navigation.goBack();
 		}
-		//eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
+	}, [navigation, navigateBack, onBackPress]);
 
 	const Text = useMemo(() => (size === 'lg' ? Title : Subtitle), [size]);
 	const container = useMemo(

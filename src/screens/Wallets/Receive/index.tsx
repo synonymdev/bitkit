@@ -90,9 +90,14 @@ const Receive = ({ navigation }): ReactElement => {
 	useBottomSheetBackPress('receiveNavigation');
 
 	const getLightningInvoice = useCallback(async (): Promise<void> => {
-		if (!receiveNavigationIsOpen || lightningBalance.remoteBalance < amount) {
+		if (
+			!receiveNavigationIsOpen ||
+			!lightningBalance.remoteBalance ||
+			lightningBalance.remoteBalance < amount
+		) {
 			return;
 		}
+
 		const response = await createLightningInvoice({
 			amountSats: amount,
 			description: message,

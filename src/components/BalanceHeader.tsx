@@ -66,7 +66,6 @@ const BalanceHeader = (): ReactElement => {
 							sats={claimableBalance}
 							unit={balanceUnit}
 							enableHide={true}
-							highlight={true}
 							symbol={false}
 						/>
 						<Caption13Up color="gray1"> PENDING)</Caption13Up>

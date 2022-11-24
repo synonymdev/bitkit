@@ -51,6 +51,7 @@ import type { SendScreenProps } from '../../../navigation/types';
 import type { SendStackParamList } from '../../../navigation/bottom-sheet/SendNavigation';
 import { useBalance } from '../../../hooks/wallet';
 import Money from '../../../components/Money';
+import { useLightningBalance } from '../../../hooks/lightning';
 
 const AddressAndAmount = ({
 	navigation,
@@ -60,7 +61,7 @@ const AddressAndAmount = ({
 	const [showNumberPad, setShowNumberPad] = useState(false);
 
 	const onChainBalance = useBalance({ onchain: true });
-	const lightningBalance = useBalance({ lightning: true });
+	const lightningBalance = useLightningBalance(false);
 
 	useBottomSheetBackPress('sendNavigation');
 
@@ -348,7 +349,16 @@ const AddressAndAmount = ({
 		// try to update fees on this screen, because they will be used on next one
 		updateOnchainFeeEstimates({ selectedNetwork, forceUpdate: true }).then();
 		refreshLdk({ selectedWallet, selectedNetwork }).then();
-	}, [selectedNetwork, selectedWallet, sendNavigationIsOpen]);
+
+		if (lightningBalance.localBalance > 0) {
+			refreshLdk({ selectedWallet, selectedNetwork }).then();
+		}
+	}, [
+		sendNavigationIsOpen,
+		lightningBalance.localBalance,
+		selectedNetwork,
+		selectedWallet,
+	]);
 
 	const isInvalid = useCallback(() => {
 		if (
@@ -365,7 +375,7 @@ const AddressAndAmount = ({
 	 */
 	const availableAmount = useMemo(() => {
 		if (transaction.lightningInvoice) {
-			return lightningBalance.satoshis;
+			return lightningBalance.localBalance;
 		}
 		if (
 			(transaction?.outputs &&
@@ -380,7 +390,7 @@ const AddressAndAmount = ({
 		}
 		return 0;
 	}, [
-		lightningBalance.satoshis,
+		lightningBalance.localBalance,
 		onChainBalance.satoshis,
 		showNumberPad,
 		transaction.lightningInvoice,

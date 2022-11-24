@@ -74,13 +74,15 @@ export const TabBar = ({
 	const insets = useSafeAreaInsets();
 	const [isFocused, setIsFocused] = useState(false);
 
-	useFocusEffect(() => {
-		setIsFocused(true);
+	useFocusEffect(
+		useCallback(() => {
+			setIsFocused(true);
 
-		return (): void => {
-			setIsFocused(false);
-		};
-	});
+			return (): void => {
+				setIsFocused(false);
+			};
+		}, []),
+	);
 
 	const screen = useMemo(() => {
 		const wsState = state.routes.find((r) => r.name === 'WalletsStack')?.state;

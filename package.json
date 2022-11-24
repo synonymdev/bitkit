@@ -21,11 +21,10 @@
     "lint:check": "eslint . --ext .js,.jsx,.ts,.tsx",
     "lint:fix": "eslint . --fix --ext .js,.jsx,.ts,.tsx",
     "tsc:check": "tsc -p tsconfig.json --noEmit",
-    "clean": "rimraf node_modules nodejs-assets/nodejs-project/node_modules ios/Pods ios/Podfile.lock ios/build && yarn install && cd ios && pod deintegrate && pod install && cd ../",
+    "clean": "yarn clean:rn && yarn clean:ios && yarn clean:android && yarn start --reset-cache",
     "clean:rn": "watchman watch-del-all && rimraf node_modules nodejs-assets/nodejs-project/node_modules && yarn && rimraf /tmp/metro-*",
-    "clean:android": "cd android && rimraf build && ./gradlew clean",
+    "clean:android": "cd android && rimraf build app/build && ./gradlew clean",
     "clean:ios": "cd ios && rimraf Pods Podfile.lock build && pod deintegrate && pod install",
-    "clean:all": "yarn clean:rn && yarn clean:ios && yarn clean:android && yarn start --reset-cache",
     "bundle": "yarn clean:android && react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.jsbundle --assets-dest android/app/build/intermediates/res/merged/release/ && cd android && ./gradlew assembleRelease --no-daemon",
     "prepare": "husky install",
     "postinstall": "node postinstall.js"

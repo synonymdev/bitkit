@@ -1,6 +1,7 @@
+import { Dispatch } from 'redux';
+
 import store from '../store';
 import Store, { EStore } from './types';
-import { Dispatch } from 'redux';
 import { IWallet } from './types/wallet';
 import { ISettings } from './types/settings';
 import { IMetadata } from './types/metadata';

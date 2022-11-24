@@ -19,13 +19,12 @@ export const toggleView = (payload: {
 	view: TViewController;
 	data: IViewControllerData;
 }): Result<string> => {
-	// Reset viewController state for the provided view.
-	if (!payload.data?.isOpen) {
-		payload.data = { ...defaultViewController };
-	}
-	// Assign snapPoint to 0 if not set
-	if (payload.data?.isOpen && payload.data?.snapPoint === undefined) {
+	if (payload.data.isOpen) {
+		// Assign snapPoint to 0
 		payload.data.snapPoint = 0;
+	} else {
+		// Reset viewController state for the provided view.
+		payload.data = defaultViewController;
 	}
 
 	dispatch({

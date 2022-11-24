@@ -3,12 +3,14 @@
  * to more easily take advantage of it throughout the app.
  *
  * Implementation:
- * <BottomSheetWrapper view="viewName">
+ * const snapPoints = useSnapPoints('medium');
+ *
+ * <BottomSheetWrapper view="viewName" snapPoints={snapPoints}>
  *   <View>...</View>
  * </BottomSheetWrapper>
  *
  * Usage Throughout App:
- * toggleView({ view: 'viewName', data: { isOpen: true, snapPoint: 1 }});
+ * toggleView({ view: 'viewName', data: { isOpen: true }});
  * toggleView({ view: 'viewName', data: { isOpen: false }});
  *
  * Check if a given view is open:
@@ -106,14 +108,14 @@ const BottomSheetWrapper = forwardRef(
 		}, [onOpen]);
 
 		const _onClose = useCallback(() => {
-			if (view) {
+			if (data.isOpen) {
 				toggleView({
 					view,
 					data: { isOpen: false, id: data.id },
 				});
 			}
 			onClose?.();
-		}, [view, onClose, data.id]);
+		}, [data, view, onClose]);
 
 		// callbacks
 		const handleSheetChanges = useCallback(
