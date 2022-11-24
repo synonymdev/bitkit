@@ -348,7 +348,6 @@ const AddressAndAmount = ({
 		}
 		// try to update fees on this screen, because they will be used on next one
 		updateOnchainFeeEstimates({ selectedNetwork, forceUpdate: true }).then();
-		refreshLdk({ selectedWallet, selectedNetwork }).then();
 
 		if (lightningBalance.localBalance > 0) {
 			refreshLdk({ selectedWallet, selectedNetwork }).then();
