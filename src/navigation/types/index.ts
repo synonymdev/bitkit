@@ -35,9 +35,7 @@ export type RootStackParamList = {
 		service: IService;
 		existingOrderId: string;
 	};
-	BlocktankPayment: {
-		order: IGetOrderResponse;
-	};
+	BlocktankPayment: { order: IGetOrderResponse };
 	ActivityDetail: { activityItem: IActivityItem; extended?: boolean };
 	ActivityFiltered: undefined;
 	ActivityAssignContact: { txid: string };
@@ -56,6 +54,7 @@ export type RootStackParamList = {
 	Contact: { url: string };
 	BuyBitcoin: undefined;
 	BlocktankOrders: undefined;
+	BlocktankOrderDetails: { blocktankOrder: IGetOrderResponse };
 	WidgetFeedEdit: { url: string };
 	WidgetsRoot: undefined;
 };

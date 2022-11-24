@@ -43,6 +43,7 @@ import type { RootStackParamList, RootStackScreenProps } from '../types';
 import WidgetFeedEdit from '../../screens/Widgets/WidgetFeedEdit';
 import BackupSubscriber from '../../utils/backup/backups-subscriber';
 import BlocktankOrders from '../../screens/Settings/BlocktankOrders';
+import BlocktankOrderDetails from '../../screens/Settings/BlocktankOrders/BlocktankOrderDetails';
 import WidgetsNavigator from '../widgets/WidgetsNavigator';
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -142,6 +143,10 @@ const RootNavigator = (): ReactElement => {
 					<Stack.Screen name="Contact" component={Contact} />
 					<Stack.Screen name="BuyBitcoin" component={BuyBitcoin} />
 					<Stack.Screen name="BlocktankOrders" component={BlocktankOrders} />
+					<Stack.Screen
+						name="BlocktankOrderDetails"
+						component={BlocktankOrderDetails}
+					/>
 					<Stack.Screen name="WidgetFeedEdit" component={WidgetFeedEdit} />
 					<Stack.Screen name="WidgetsRoot" component={WidgetsNavigator} />
 				</Stack.Group>

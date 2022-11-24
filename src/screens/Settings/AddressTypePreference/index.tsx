@@ -9,7 +9,6 @@ import React, {
 import { IListData } from '../../../components/List';
 import SettingsView from '../SettingsView';
 import { getSelectedAddressType, refreshWallet } from '../../../utils/wallet';
-import { capitalize } from '../../../utils/helpers';
 import { updateSelectedAddressType } from '../../../store/actions/wallet';
 import { TAddressType } from '../../../store/types/wallet';
 import { updateSettings } from '../../../store/actions/settings';
@@ -20,10 +19,21 @@ const typesDescriptions = {
 	p2wpkh: {
 		description: 'Pay-to-witness-public-key-hash',
 		example: '(bc1x...)',
+		name: 'Native Segwit Bech32',
 	},
-	p2sh: { description: 'Pay-to-Script-Hash', example: '(3x...)' },
-	p2pkh: { description: 'Pay-to-public-key-hash', example: '(1x...)' },
+	p2sh: {
+		description: 'Pay-to-Script-Hash',
+		example: '(3x...)',
+		name: 'Wrapped Segwit',
+	},
+	p2pkh: {
+		description: 'Pay-to-public-key-hash',
+		example: '(1x...)',
+		name: 'Legacy',
+	},
 };
+
+const sortOrder = ['p2wpkh', 'p2sh', 'p2pkh'];
 
 const AddressTypeSettings = ({
 	navigation,
@@ -36,9 +46,15 @@ const AddressTypeSettings = ({
 	);
 
 	const addressTypesList = useMemo(() => {
-		return Object.values(addressTypes).map(({ label, type }) => {
-			return { label: capitalize(label), value: type };
-		});
+		return Object.values(addressTypes)
+			.map(({ type }) => {
+				return {
+					value: type,
+					label: `${typesDescriptions[type].name} ${typesDescriptions[type].example}`,
+					description: typesDescriptions[type].description,
+				};
+			})
+			.sort((a, b) => sortOrder.indexOf(a.value) - sortOrder.indexOf(b.value));
 	}, [addressTypes]);
 
 	const selectedAddressType = useMemo(
@@ -76,10 +92,8 @@ const AddressTypeSettings = ({
 				data: addressTypesList.map((bitcoinUnit) => ({
 					type: 'button',
 					value: checkAddressTypeListCheckmark(bitcoinUnit.value),
-					description: typesDescriptions[bitcoinUnit.value].description,
-					title: `${bitcoinUnit.label} ${
-						typesDescriptions[bitcoinUnit.value].example
-					}`,
+					description: bitcoinUnit.description,
+					title: bitcoinUnit.label,
 					useCheckmark: true,
 					onPress: async (): Promise<void> => {
 						navigation.goBack();

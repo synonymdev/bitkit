@@ -14,6 +14,7 @@ import { version as appVersion } from '../../../../package.json';
 import {
 	Caption13Up,
 	Caption13M,
+	Text01M,
 	View as ThemedView,
 } from '../../../styles/components';
 import SafeAreaInsets from '../../../components/SafeAreaInsets';
@@ -25,6 +26,7 @@ import Store from '../../../store/types';
 import { getBlockExplorerLink } from '../../../utils/wallet/transactions';
 import { openURL } from '../../../utils/helpers';
 import { SettingsScreenProps } from '../../../navigation/types';
+import { getIcon } from './index';
 
 const Section = memo(
 	({
@@ -51,6 +53,7 @@ const Section = memo(
 );
 
 const BlocktankOrderDetails = ({
+	navigation,
 	route,
 }: SettingsScreenProps<'BlocktankOrderDetails'>): ReactElement => {
 	const { blocktankOrder } = route.params;
@@ -70,7 +73,7 @@ const BlocktankOrderDetails = ({
 		return (
 			<ThemedView style={styles.root}>
 				<SafeAreaInsets type="top" />
-				<NavigationHeader title={'Blocktank Order'} />
+				<NavigationHeader title="Order details" />
 				<ScrollView contentContainerStyle={styles.content}>
 					<ActivityIndicator size="small" />
 				</ScrollView>
@@ -78,11 +81,36 @@ const BlocktankOrderDetails = ({
 		);
 	}
 
+	const Icon = getIcon(blocktankOrder.state);
+
 	return (
 		<ThemedView style={styles.root}>
 			<SafeAreaInsets type="top" />
-			<NavigationHeader title="Blocktank Order" />
+			<NavigationHeader
+				title="Order details"
+				onClosePress={(): void => {
+					navigation.navigate('Tabs');
+				}}
+			/>
 			<ScrollView contentContainerStyle={styles.content}>
+				<View style={styles.header}>
+					<Icon />
+					<View>
+						<Text01M>{blocktankOrder.stateMessage}</Text01M>
+						<View style={styles.headerIdDate}>
+							<Caption13M color="gray1">{blocktankOrder._id}</Caption13M>
+							<Caption13M color="gray1">
+								{new Date(blocktankOrder.created_at).toLocaleString(undefined, {
+									month: 'short',
+									day: 'numeric',
+									hour: 'numeric',
+									minute: 'numeric',
+								})}
+							</Caption13M>
+						</View>
+					</View>
+				</View>
+
 				<View style={styles.sectionTitle}>
 					<Caption13Up color="gray1">BALANCE</Caption13Up>
 				</View>
@@ -147,7 +175,7 @@ const BlocktankOrderDetails = ({
 				<Section
 					name="Order ID"
 					value={
-						<Caption13M ellipsizeMode={'middle'} numberOfLines={1}>
+						<Caption13M ellipsizeMode="middle" numberOfLines={1}>
 							{blocktankOrder._id}
 						</Caption13M>
 					}
@@ -163,7 +191,7 @@ const BlocktankOrderDetails = ({
 					<Section
 						name="Transaction ID"
 						value={
-							<Caption13M ellipsizeMode={'middle'} numberOfLines={1}>
+							<Caption13M ellipsizeMode="middle" numberOfLines={1}>
 								{paidOrderTxid}
 							</Caption13M>
 						}
@@ -173,14 +201,6 @@ const BlocktankOrderDetails = ({
 						}}
 					/>
 				)}
-				<Section
-					name="Status"
-					value={
-						<Caption13M ellipsizeMode={'middle'} numberOfLines={1}>
-							{blocktankOrder.stateMessage}
-						</Caption13M>
-					}
-				/>
 
 				<View style={styles.buttons}>
 					<Button
@@ -237,6 +257,15 @@ const styles = StyleSheet.create({
 		flex: 1,
 		justifyContent: 'flex-end',
 		marginTop: 16,
+	},
+	header: {
+		flexDirection: 'row',
+		alignItems: 'center',
+	},
+	headerIdDate: {
+		flexDirection: 'row',
+		justifyContent: 'space-between',
+		flex: 1,
 	},
 });
 

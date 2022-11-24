@@ -15,7 +15,7 @@ import { getNodeId } from '../../../utils/lightning';
 import { showSuccessNotification } from '../../../utils/notifications';
 import Store from '../../../store/types';
 
-const LightningNodeInfo = (): ReactElement => {
+const LightningNodeInfo = ({ navigation }): ReactElement => {
 	const [nodeId, setNodeId] = useState('');
 	const [error, setError] = useState('');
 	const selectedNetwork = useSelector(
@@ -37,7 +37,13 @@ const LightningNodeInfo = (): ReactElement => {
 	return (
 		<ThemedView style={styles.container}>
 			<SafeAreaInsets type="top" />
-			<NavigationHeader title="Lightning Node Info" displayBackButton />
+			<NavigationHeader
+				title="Lightning Node Info"
+				displayBackButton
+				onClosePress={(): void => {
+					navigation.navigate('Tabs');
+				}}
+			/>
 
 			<View style={styles.content}>
 				{!error && (

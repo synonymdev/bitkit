@@ -4,16 +4,9 @@ import { useSelector } from 'react-redux';
 import Store from './../../../store/types';
 import { IListData } from '../../../components/List';
 import SettingsView from './../SettingsView';
-import { updateSettings } from '../../../store/actions/settings';
 import { resetTodos } from '../../../store/actions/todos';
 import Dialog from '../../../components/Dialog';
 import type { SettingsScreenProps } from '../../../navigation/types';
-
-const typesDescriptions = {
-	p2wpkh: 'Bech32',
-	p2sh: 'Segwit',
-	p2pkh: 'Legacy',
-};
 
 const unitsBitcoin = {
 	satoshi: 'Satoshis',
@@ -36,14 +29,6 @@ const GeneralSettings = ({
 		(state: Store) => state.settings.showSuggestions,
 	);
 
-	const selectedWallet = useSelector(
-		(state: Store) => state.wallet.selectedWallet,
-	);
-
-	const selectedNetwork = useSelector(
-		(state: Store) => state.wallet.selectedNetwork,
-	);
-
 	const selectedTransactionSpeed = useSelector(
 		(state: Store) => state.settings.transactionSpeed,
 	);
@@ -54,11 +39,6 @@ const GeneralSettings = ({
 
 	const selectedBitcoinUnit = useSelector(
 		(state: Store) => state.settings.bitcoinUnit,
-	);
-
-	const selectedAddressType = useSelector(
-		(state: Store) =>
-			state.wallet.wallets[selectedWallet].addressType[selectedNetwork],
 	);
 
 	const SettingsListData: IListData[] = useMemo(
@@ -78,37 +58,22 @@ const GeneralSettings = ({
 						onPress: (): void => navigation.navigate('BitcoinUnitSettings'),
 					},
 					{
-						title: 'Bitcoin address type',
-						type: 'button',
-						value: typesDescriptions[selectedAddressType],
-						onPress: (): void => navigation.navigate('AddressTypePreference'),
-					},
-					{
-						title: 'Default transaction speed',
+						title: 'Transaction speed',
 						value: transactionSpeeds[selectedTransactionSpeed],
 						type: 'button',
 						onPress: (): void =>
 							navigation.navigate('TransactionSpeedSettings'),
 					},
 					{
-						title: 'Blocktank Orders',
+						title: 'Suggestions',
+						value: showSuggestions ? 'Visible' : 'Hidden',
 						type: 'button',
-						onPress: (): void => navigation.navigate('BlocktankOrders'),
+						onPress: (): void => navigation.navigate('SuggestionsSettings'),
 					},
 					{
-						title: 'Display suggestions',
-						enabled: showSuggestions,
-						type: 'switch',
-						onPress: (): void => {
-							updateSettings({ showSuggestions: !showSuggestions });
-						},
-					},
-					{
-						title: 'Reset suggestions',
+						title: 'About Bitkit',
 						type: 'button',
-						onPress: (): void => {
-							setShowDialog(true);
-						},
+						onPress: (): void => navigation.navigate('AboutSettings'),
 					},
 				],
 			},
@@ -116,7 +81,6 @@ const GeneralSettings = ({
 		[
 			selectedCurrency,
 			selectedBitcoinUnit,
-			selectedAddressType,
 			selectedTransactionSpeed,
 			showSuggestions,
 			navigation,

@@ -6,6 +6,7 @@ import {
 	StackNavigationOptions,
 	StackNavigationProp,
 } from '@react-navigation/stack';
+import { IGetOrderResponse } from '@synonymdev/blocktank-client';
 
 import MainSettings from '../../screens/Settings';
 import ManageSeedPhrase from '../../screens/Settings/ManageSeedPhrase';
@@ -29,7 +30,6 @@ import ChangePin2 from '../../screens/Settings/PIN/ChangePin2';
 import PinChanged from '../../screens/Settings/PIN/PinChanged';
 import DisablePin from '../../screens/Settings/PIN/DisablePin';
 import BackupSettings from '../../screens/Settings/BackupSettings';
-import NetworksSettings from '../../screens/Settings/Networks';
 import AdvancedSettings from '../../screens/Settings/Advanced';
 import AboutSettings from '../../screens/Settings/About';
 import EasterEgg from '../../screens/Settings/EasterEgg';
@@ -41,11 +41,11 @@ import AddConnection from '../../screens/Settings/Lightning/AddConnection';
 import AddConnectionResult from '../../screens/Settings/Lightning/AddConnectionResult';
 import ExportToPhone from '../../screens/Settings/Backup/ExportToPhone';
 import ResetAndRestore from '../../screens/Settings/Backup/ResetAndRestore';
+import SuggestionsSettings from '../../screens/Settings/Suggestions';
 import LightningNavigator, {
 	LightningStackParamList,
 } from '../lightning/LightningNavigator';
 import SlashtagsSettings from '../../screens/Settings/SlashtagsSettings';
-import { IGetOrderResponse } from '@synonymdev/blocktank-client';
 
 export type SettingsNavigationProp =
 	StackNavigationProp<SettingsStackParamList>;
@@ -60,7 +60,6 @@ export type SettingsStackParamList = {
 	PinChanged: undefined;
 	DisablePin: undefined;
 	BackupSettings: undefined;
-	NetworksSettings: undefined;
 	AdvancedSettings: undefined;
 	AboutSettings: undefined;
 	EasterEgg: undefined;
@@ -87,6 +86,7 @@ export type SettingsStackParamList = {
 	LightningAddConnectionResult: undefined;
 	LightningRoot: NavigatorScreenParams<LightningStackParamList>;
 	SlashtagsSettings: undefined;
+	SuggestionsSettings: undefined;
 };
 
 const Stack = createStackNavigator<SettingsStackParamList>();
@@ -111,7 +111,6 @@ const SettingsNavigator = (): ReactElement => {
 			<Stack.Screen name="PinChanged" component={PinChanged} />
 			<Stack.Screen name="DisablePin" component={DisablePin} />
 			<Stack.Screen name="BackupSettings" component={BackupSettings} />
-			<Stack.Screen name="NetworksSettings" component={NetworksSettings} />
 			<Stack.Screen name="AdvancedSettings" component={AdvancedSettings} />
 			<Stack.Screen name="AboutSettings" component={AboutSettings} />
 			<Stack.Screen name="EasterEgg" component={EasterEgg} />
@@ -159,6 +158,10 @@ const SettingsNavigator = (): ReactElement => {
 			/>
 			<Stack.Screen name="LightningRoot" component={LightningNavigator} />
 			<Stack.Screen name="SlashtagsSettings" component={SlashtagsSettings} />
+			<Stack.Screen
+				name="SuggestionsSettings"
+				component={SuggestionsSettings}
+			/>
 		</Stack.Navigator>
 	);
 };
