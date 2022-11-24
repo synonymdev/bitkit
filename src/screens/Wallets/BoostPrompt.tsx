@@ -79,11 +79,6 @@ const BoostForm = ({
 
 	const { description: duration } = useFeeText(satsPerByte);
 
-	// console.log({ transaction });
-	// console.log({ transactionFee, activityItemFee });
-	// console.log({ recommendedFee, boostFee });
-	// console.log({ duration });
-
 	useEffect(() => {
 		(async (): Promise<void> => {
 			const res = await setupBoost({
