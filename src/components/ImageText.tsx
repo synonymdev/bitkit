@@ -40,7 +40,7 @@ const ImageText = ({
 						symbol={true}
 						enableHide={true}
 					/>
-					<PenIcon height={14} width={14} />
+					<PenIcon style={styles.valueIcon} height={14} width={14} />
 				</View>
 				<Money
 					style={styles.value}
@@ -79,6 +79,9 @@ const styles = StyleSheet.create({
 	valueRow: {
 		flexDirection: 'row',
 		alignItems: 'center',
+	},
+	valueIcon: {
+		marginLeft: 2,
 	},
 });
 

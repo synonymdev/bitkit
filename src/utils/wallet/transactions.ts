@@ -1607,7 +1607,7 @@ export const adjustFee = ({
 		// const coinSelectPreference = getStore().settings.coinSelectPreference;
 		const satsPerByte = transaction.satsPerByte ?? 1;
 		const newSatsPerByte = satsPerByte + adjustBy;
-		if (satsPerByte === 1) {
+		if (newSatsPerByte < 1) {
 			return ok('This is the lowest we can go. Returning...');
 		}
 		const response = updateFee({
