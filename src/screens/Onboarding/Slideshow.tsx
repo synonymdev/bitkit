@@ -223,6 +223,16 @@ const Slideshow = ({
 		return { opacity };
 	}, [slides.length, progressValue]);
 
+	// Dots should not be visible on last slide
+	const dotsOpacity = useAnimatedStyle(() => {
+		const opacity = interpolate(
+			progressValue.value,
+			[1, slides.length - 2, slides.length - 1],
+			[1, 1, 0],
+		);
+		return { opacity };
+	}, [slides.length, progressValue]);
+
 	const onSkip = (): void => {
 		ref.current?.scrollTo({ index: slides.length - 1, animated: true });
 	};
@@ -267,30 +277,31 @@ const Slideshow = ({
 						}}
 					/>
 
-					<AnimatedView style={[styles.adv, advOpacity]}>
-						<TouchableOpacity
-							style={styles.advToucable}
-							onPress={(): void => {
-								if (index !== slides.length - 1) {
-									return;
-								}
-								navigation.navigate('Passphrase');
-							}}>
-							<Caption13M color="gray1">Advanced setup</Caption13M>
-						</TouchableOpacity>
-					</AnimatedView>
-
-					<View style={styles.dots}>
-						{slides.map((backgroundColor, i) => {
-							return (
+					<View style={styles.footer}>
+						<AnimatedView style={[styles.adv, advOpacity]}>
+							<TouchableOpacity
+								style={styles.advTouchable}
+								onPress={(): void => {
+									if (index !== slides.length - 1) {
+										return;
+									}
+									navigation.navigate('Passphrase');
+								}}>
+								<Caption13M color="gray1">Advanced Setup</Caption13M>
+							</TouchableOpacity>
+						</AnimatedView>
+						<AnimatedView
+							style={[styles.dots, dotsOpacity]}
+							pointerEvents="none">
+							{slides.map((_backgroundColor, i) => (
 								<Dot
 									key={i}
 									index={i}
 									animValue={progressValue}
 									length={slides.length}
 								/>
-							);
-						})}
+							))}
+						</AnimatedView>
 					</View>
 
 					<AnimatedView
@@ -393,7 +404,12 @@ const styles = StyleSheet.create({
 	newButton: {
 		marginLeft: 6,
 	},
+	footer: {
+		position: 'relative',
+		justifyContent: 'center',
+	},
 	dots: {
+		position: 'absolute',
 		flexDirection: 'row',
 		justifyContent: 'space-between',
 		alignSelf: 'center',
@@ -411,10 +427,11 @@ const styles = StyleSheet.create({
 		flex: 1,
 	},
 	adv: {
-		alignSelf: 'center',
 		backgroundColor: 'transparent',
+		position: 'absolute',
+		alignSelf: 'center',
 	},
-	advToucable: {
+	advTouchable: {
 		padding: 16,
 		backgroundColor: 'transparent',
 	},
