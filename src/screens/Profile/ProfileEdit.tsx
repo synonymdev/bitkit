@@ -1,7 +1,6 @@
 import React, { useState, useMemo, useEffect, useCallback } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, KeyboardAvoidingView, Platform } from 'react-native';
 import { useSelector } from 'react-redux';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 import { PlusIcon, View as ThemedView, Text02S } from '../../styles/components';
 import NavigationHeader from '../../components/NavigationHeader';
@@ -21,6 +20,7 @@ import type { RootStackScreenProps } from '../../navigation/types';
 import { arraysMatch } from '../../utils/helpers';
 import Divider from '../../components/Divider';
 import { removeTodo } from '../../store/actions/todos';
+import useKeyboard from '../../hooks/keyboard';
 
 export const ProfileEdit = ({
 	navigation,
@@ -28,6 +28,7 @@ export const ProfileEdit = ({
 	const [fields, setFields] = useState<Omit<BasicProfile, 'links'>>({});
 	const links = useSelector((state: Store) => state.slashtags.links);
 	const [hasEdited, setHasEdited] = useState(false);
+	const { keyboardShown } = useKeyboard();
 
 	const { url, slashtag } = useSelectedSlashtag();
 	const { profile: savedProfile } = useProfile(url);
@@ -35,6 +36,15 @@ export const ProfileEdit = ({
 	const onboardedProfile =
 		useSelector((state: Store) => state.slashtags.onboardingProfileStep) ===
 		'Done';
+
+	const buttonContainerStyles = useMemo(
+		() => ({
+			...styles.buttonContainer,
+			// extra padding needed because of KeyboardAvoidingView
+			paddingBottom: keyboardShown ? (Platform.OS === 'ios' ? 16 : 40) : 0,
+		}),
+		[keyboardShown],
+	);
 
 	useEffect(() => {
 		const savedLinks = savedProfile?.links || [];
@@ -104,7 +114,7 @@ export const ProfileEdit = ({
 					navigation.navigate(onboardedProfile ? 'Profile' : 'Tabs');
 				}}
 			/>
-			<KeyboardAwareScrollView contentContainerStyle={styles.content}>
+			<KeyboardAvoidingView behavior="padding" style={styles.content}>
 				<ProfileCard
 					url={url}
 					editable={true}
@@ -131,7 +141,7 @@ export const ProfileEdit = ({
 				</Text02S>
 
 				{(!onboardedProfile || hasEdited) && (
-					<View style={styles.buttonContainer}>
+					<View style={buttonContainerStyles}>
 						<Button
 							style={styles.button}
 							text={onboardedProfile ? 'Save Profile' : 'Continue'}
@@ -141,7 +151,7 @@ export const ProfileEdit = ({
 						/>
 					</View>
 				)}
-			</KeyboardAwareScrollView>
+			</KeyboardAvoidingView>
 			<SafeAreaInsets type="bottom" />
 		</ThemedView>
 	);
