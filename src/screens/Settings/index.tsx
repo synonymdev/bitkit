@@ -69,6 +69,11 @@ const MainSettings = ({
 				type: 'button',
 				onPress: (): void => navigation.navigate('AdvancedSettings'),
 			},
+			{
+				title: 'About Bitkit',
+				type: 'button',
+				onPress: (): void => navigation.navigate('AboutSettings'),
+			},
 		];
 
 		if (enableDevOptions) {

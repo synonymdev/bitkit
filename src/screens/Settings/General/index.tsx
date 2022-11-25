@@ -70,11 +70,6 @@ const GeneralSettings = ({
 						type: 'button',
 						onPress: (): void => navigation.navigate('SuggestionsSettings'),
 					},
-					{
-						title: 'About Bitkit',
-						type: 'button',
-						onPress: (): void => navigation.navigate('AboutSettings'),
-					},
 				],
 			},
 		],

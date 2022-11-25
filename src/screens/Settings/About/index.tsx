@@ -97,6 +97,13 @@ const About = ({
 					// 	},
 					// },
 					{
+						title: 'Support',
+						type: 'button',
+						onPress: (): void => {
+							openURL('mailto:support@synonym.to?subject=Bitkit').then();
+						},
+					},
+					{
 						title: 'Report a bug or contribute',
 						type: 'button',
 						onPress: (): void => {

@@ -57,7 +57,7 @@ const AdvancedSettings = ({
 				onPress: (): void => navigation.navigate('PaymentPreference'),
 			},
 			{
-				title: 'Instant Payments',
+				title: 'Blocktank Orders',
 				type: 'button',
 				onPress: (): void => navigation.navigate('BlocktankOrders'),
 			},

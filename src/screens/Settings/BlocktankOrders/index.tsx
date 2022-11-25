@@ -121,7 +121,7 @@ const BlocktankOrders = ({
 	return (
 		<ThemedView style={styles.container}>
 			<SettingsView
-				title="Instant Payments"
+				title="Blocktank Orders"
 				listData={blocktankOrderList}
 				headerText={title}
 				showBackNavigation={true}
