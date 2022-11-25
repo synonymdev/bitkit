@@ -112,9 +112,8 @@ const ShowMnemonic = ({
 			</View>
 
 			<Text02S color="gray1">
-				We recommend writing your recovery phrase down on paper and storing
-				copies in various locations.
-				<Text02S color="brand"> Never share</Text02S> your recovery phrase.
+				<Text02S color="brand">Never share</Text02S> your recovery phrase with
+				anyone as this may result in the loss of funds.
 			</Text02S>
 
 			<View style={nextButtonContainer}>

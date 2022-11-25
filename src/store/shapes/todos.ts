@@ -17,7 +17,7 @@ const lightningTodo: ITodo = {
 const lightningSettingUpTodo: ITodo = {
 	id: 'lightningSettingUp',
 	title: 'Setting Up',
-	description: 'Ready in ±20min',
+	description: 'Ready in ±10min',
 	color: 'purple',
 	image: require('../../assets/illustrations/lightning.png'),
 };

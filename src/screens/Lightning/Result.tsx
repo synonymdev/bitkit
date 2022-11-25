@@ -27,8 +27,8 @@ const Result = ({
 			<View style={styles.root}>
 				<Display color="purple">You’re{'\n'}Connected!</Display>
 				<Text01S color="gray1" style={styles.text}>
-					You are now connected to the Lightning network. Enjoy instant
-					payments!
+					Connection initiated. You will be able to use instant payments in ±10
+					minutes.
 				</Text01S>
 
 				<View style={styles.imageContainer} pointerEvents="none">

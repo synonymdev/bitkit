@@ -49,9 +49,8 @@ const ShowPassphrase = ({
 				</ThemedView>
 
 				<Text02S color="gray1">
-					We recommend remembering and/or writing down this passphrase.{' '}
 					<Text02S color="brand">Never share</Text02S> your passphrase with
-					anyone.
+					anyone as this may result in the loss of funds.
 				</Text02S>
 
 				<View style={nextButtonContainer}>
