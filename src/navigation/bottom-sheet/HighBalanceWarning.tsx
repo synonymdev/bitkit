@@ -122,7 +122,7 @@ const HighBalanceWarning = (): ReactElement => {
 	}, [showBottomSheet, ignoreTimestamp]);
 
 	const onMore = (): void => {
-		openURL('https://en.bitcoin.it/wiki/Hardware_wallet');
+		openURL('https://en.bitcoin.it/wiki/Storing_bitcoins');
 	};
 
 	const onDismiss = (): void => {
