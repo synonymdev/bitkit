@@ -31,7 +31,6 @@ const BitcoinNetworkSelection = ({
 	const Networks: IListData[] = useMemo(
 		() => [
 			{
-				title: 'Bitcoin Network Selection',
 				data: Object.values(EAvailableNetworks).map((network) => {
 					const networkData = getNetworkData({ selectedNetwork: network });
 					return {
@@ -75,7 +74,7 @@ const BitcoinNetworkSelection = ({
 
 	return (
 		<SettingsView
-			title="Bitcoin Networks"
+			title="Bitcoin Network"
 			listData={Networks}
 			showBackNavigation
 		/>

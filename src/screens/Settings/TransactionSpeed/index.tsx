@@ -54,7 +54,7 @@ const TransactionSpeedSettings = ({
 	const currencyListData: IListData[] = useMemo(
 		() => [
 			{
-				title: 'Default Speed',
+				title: 'Default Transaction Speed',
 				data: transactionSpeeds.map((txSpeed) => ({
 					title: `${txSpeed.label}`,
 					value: txSpeed.value === selectedTransactionSpeed,
@@ -74,7 +74,7 @@ const TransactionSpeedSettings = ({
 
 	return (
 		<SettingsView
-			title="Default Transaction Speed"
+			title="Transaction Speed"
 			listData={currencyListData}
 			showBackNavigation
 		/>

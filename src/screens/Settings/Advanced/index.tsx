@@ -7,7 +7,7 @@ import SettingsView from '../SettingsView';
 import type { SettingsScreenProps } from '../../../navigation/types';
 
 const typesDescriptions = {
-	p2wpkh: 'Bech32',
+	p2wpkh: 'Native Segwit',
 	p2sh: 'Segwit',
 	p2pkh: 'Legacy',
 };
@@ -41,23 +41,23 @@ const AdvancedSettings = ({
 	const SettingsListData: IListData[] = useMemo(() => {
 		const payments: ItemData[] = [
 			{
-				title: 'Bitcoin address type',
+				title: 'Bitcoin Address Type',
 				type: 'button',
 				value: typesDescriptions[selectedAddressType],
 				onPress: (): void => navigation.navigate('AddressTypePreference'),
 			},
 			{
-				title: 'Coin selection',
+				title: 'Coin Selection',
 				type: 'button',
 				onPress: (): void => navigation.navigate('CoinSelectPreference'),
 			},
 			{
-				title: 'Payment preference',
+				title: 'Payment Preference',
 				type: 'button',
 				onPress: (): void => navigation.navigate('PaymentPreference'),
 			},
 			{
-				title: 'Instant payments',
+				title: 'Instant Payments',
 				type: 'button',
 				onPress: (): void => navigation.navigate('BlocktankOrders'),
 			},
@@ -65,14 +65,14 @@ const AdvancedSettings = ({
 
 		const networks: ItemData[] = [
 			{
-				title: 'Lightning node',
-				type: 'button',
-				onPress: (): void => navigation.navigate('LightningNodeInfo'),
-			},
-			{
-				title: 'Lightning connections',
+				title: 'Lightning Connections',
 				type: 'button',
 				onPress: (): void => navigation.navigate('Channels'),
+			},
+			{
+				title: 'Lightning Node',
+				type: 'button',
+				onPress: (): void => navigation.navigate('LightningNodeInfo'),
 			},
 			{
 				title: 'Electrum Server',
