@@ -12,6 +12,7 @@ import FeeRate from '../../screens/Wallets/Send/FeeRate';
 import FeeCustom from '../../screens/Wallets/Send/FeeCustom';
 import Tags from '../../screens/Wallets/Send/Tags';
 import ReviewAndSend from '../../screens/Wallets/Send/ReviewAndSend';
+import AutoRebalance from '../../screens/Wallets/Send/AutoRebalance';
 import Result from '../../screens/Wallets/Send/Result';
 import Scanner from '../../screens/Wallets/Send/Scanner';
 import Contacts from '../../screens/Wallets/Send/Contacts';
@@ -37,6 +38,7 @@ export type SendStackParamList = {
 	FeeRate: undefined;
 	FeeCustom: undefined;
 	ReviewAndSend: undefined;
+	AutoRebalance: undefined;
 	Result: {
 		success: boolean;
 		txId?: string;
@@ -46,7 +48,7 @@ export type SendStackParamList = {
 };
 
 const Stack = createNativeStackNavigator<SendStackParamList>();
-const navOptions: NativeStackNavigationOptions = {
+const screenOptions: NativeStackNavigationOptions = {
 	headerShown: false,
 };
 
@@ -59,26 +61,22 @@ const SendNavigation = (): ReactElement => {
 	return (
 		<BottomSheetWrapper
 			view="sendNavigation"
+			snapPoints={snapPoints}
 			onClose={resetOnChainTransaction}
-			onOpen={setupOnChainTransaction}
-			snapPoints={snapPoints}>
+			onOpen={setupOnChainTransaction}>
 			<NavigationContainer key={isOpen}>
-				<Stack.Navigator screenOptions={navOptions}>
-					<Stack.Group screenOptions={navOptions}>
-						<Stack.Screen
-							name="AddressAndAmount"
-							component={AddressAndAmount}
-						/>
-						<Stack.Screen name="CoinSelection" component={CoinSelection} />
-						<Stack.Screen name="FeeRate" component={FeeRate} />
-						<Stack.Screen name="FeeCustom" component={FeeCustom} />
-						<Stack.Screen name="Tags" component={Tags} />
-						<Stack.Screen name="ReviewAndSend" component={ReviewAndSend} />
-						<Stack.Screen name="Result" component={Result} />
-						<Stack.Screen name="AuthCheck" component={AuthCheck} />
-						<Stack.Screen name="Scanner" component={Scanner} />
-						<Stack.Screen name="Contacts" component={Contacts} />
-					</Stack.Group>
+				<Stack.Navigator screenOptions={screenOptions}>
+					<Stack.Screen name="AddressAndAmount" component={AddressAndAmount} />
+					<Stack.Screen name="Scanner" component={Scanner} />
+					<Stack.Screen name="Contacts" component={Contacts} />
+					<Stack.Screen name="CoinSelection" component={CoinSelection} />
+					<Stack.Screen name="FeeRate" component={FeeRate} />
+					<Stack.Screen name="FeeCustom" component={FeeCustom} />
+					<Stack.Screen name="Tags" component={Tags} />
+					<Stack.Screen name="AuthCheck" component={AuthCheck} />
+					<Stack.Screen name="ReviewAndSend" component={ReviewAndSend} />
+					<Stack.Screen name="AutoRebalance" component={AutoRebalance} />
+					<Stack.Screen name="Result" component={Result} />
 				</Stack.Navigator>
 			</NavigationContainer>
 		</BottomSheetWrapper>

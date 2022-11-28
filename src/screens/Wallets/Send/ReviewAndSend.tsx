@@ -5,8 +5,9 @@ import React, {
 	useMemo,
 	useState,
 	useEffect,
+	ReactNode,
 } from 'react';
-import { StyleSheet, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, TouchableOpacity, Keyboard } from 'react-native';
 import { useSelector } from 'react-redux';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { TInvoice } from '@synonymdev/react-native-ldk';
@@ -16,6 +17,7 @@ import {
 	Checkmark,
 	ClockIcon,
 	PenIcon,
+	TagIcon,
 	Text02M,
 	TimerIcon,
 } from '../../../styles/components';
@@ -38,6 +40,7 @@ import {
 import {
 	updateWalletBalance,
 	setupFeeForOnChainTransaction,
+	removeTxTag,
 } from '../../../store/actions/wallet';
 import {
 	updateMetaTxTags,
@@ -57,6 +60,8 @@ import type { SendScreenProps } from '../../../navigation/types';
 import Dialog from '../../../components/Dialog';
 import { getFiatDisplayValues } from '../../../utils/exchange-rate';
 import { useLightningBalance } from '../../../hooks/lightning';
+import Button from '../../../components/Button';
+import { showErrorNotification } from '../../../utils/notifications';
 
 const Section = memo(
 	({
@@ -65,13 +70,14 @@ const Section = memo(
 		onPress,
 	}: {
 		title: string;
-		value: React.ReactNode;
+		value: ReactNode;
 		onPress?: () => void;
 	}) => {
-		const { gray4 } = useColors();
+		const { white1 } = useColors();
 		return (
 			<TouchableOpacity
-				style={[styles.sRoot, { borderBottomColor: gray4 }]}
+				style={[styles.sRoot, { borderBottomColor: white1 }]}
+				activeOpacity={onPress ? 0.6 : 1}
 				onPress={onPress}>
 				<View style={styles.sText}>
 					<Caption13Up color="gray1">{title}</Caption13Up>
@@ -405,6 +411,19 @@ const ReviewAndSend = ({
 		(state: Store) => state.wallet.exchangeRates,
 	);
 
+	const handleTagRemove = useCallback(
+		(tag) => {
+			const res = removeTxTag({ tag, selectedNetwork, selectedWallet });
+			if (res.isErr()) {
+				showErrorNotification({
+					title: 'Error Removing Tag',
+					message: res.error.message,
+				});
+			}
+		},
+		[selectedWallet, selectedNetwork],
+	);
+
 	const onSwipeToPay = useCallback(async () => {
 		setIsLoading(true);
 
@@ -491,7 +510,11 @@ const ReviewAndSend = ({
 		<GradientView style={styles.container}>
 			<BottomSheetNavigationHeader title="Review & Send" />
 			<View style={styles.content}>
-				<AmountToggle sats={amount} style={styles.amountToggle} />
+				<AmountToggle
+					style={styles.amountToggle}
+					sats={amount}
+					reverse={true}
+				/>
 
 				<View style={styles.sectionContainer}>
 					<Section
@@ -502,7 +525,7 @@ const ReviewAndSend = ({
 							) : (
 								<Text02M numberOfLines={1} ellipsizeMode="middle">
 									{decodedInvoice
-										? decodedInvoice?.description ?? decodedInvoice?.to_str
+										? decodedInvoice.description ?? decodedInvoice.to_str
 										: address}
 								</Text02M>
 							)
@@ -510,16 +533,15 @@ const ReviewAndSend = ({
 					/>
 				</View>
 
-				{!transaction.lightningInvoice && (
+				{!transaction.lightningInvoice ? (
 					<View style={styles.sectionContainer}>
 						<Section
-							title="SPEED AND FEE"
+							title="Speed and fee"
 							onPress={(): void => navigation.navigate('FeeRate')}
 							value={
 								<>
-									<TimerIcon color="brand" />
+									<TimerIcon style={styles.icon} color="brand" />
 									<Text02M>
-										{' '}
 										{FeeText[selectedFeeId].title}
 										{feeAmount}
 									</Text02M>
@@ -528,32 +550,83 @@ const ReviewAndSend = ({
 							}
 						/>
 						<Section
-							title="CONFIRMING IN"
+							title="Confirming in"
 							onPress={(): void => navigation.navigate('FeeRate')}
 							value={
 								<>
-									<ClockIcon color="brand" />
-									<Text02M> {feeDescription}</Text02M>
+									<ClockIcon style={styles.icon} color="brand" />
+									<Text02M>{feeDescription}</Text02M>
 								</>
 							}
 						/>
 					</View>
-				)}
-
-				{transaction.tags?.length ? (
+				) : (
 					<View style={styles.sectionContainer}>
 						<Section
-							title="TAGS"
+							title="Speed and fee"
+							onPress={(): void => navigation.navigate('FeeRate')}
 							value={
-								<View style={styles.tagsContainer}>
-									{transaction.tags?.map((tag) => (
-										<Tag key={tag} value={tag} style={styles.tag} />
-									))}
-								</View>
+								<>
+									<TimerIcon style={styles.icon} color="purple" />
+									<Text02M>{FeeText['instant'].title} (±$0.01)</Text02M>
+								</>
 							}
+						/>
+						{decodedInvoice?.expiry_time && (
+							<Section
+								title="Invoice expiration"
+								value={
+									<>
+										<ClockIcon style={styles.icon} color="purple" />
+										<Text02M>
+											{(decodedInvoice.expiry_time / 60).toFixed()} minutes
+										</Text02M>
+									</>
+								}
+							/>
+						)}
+					</View>
+				)}
+
+				{decodedInvoice?.description ? (
+					<View style={styles.sectionContainer}>
+						<Section
+							title="Note"
+							value={<Text02M>{decodedInvoice?.description}</Text02M>}
 						/>
 					</View>
 				) : null}
+
+				<View style={styles.sectionContainer}>
+					<Section
+						title="Tags"
+						value={
+							<View>
+								<View style={styles.tagsContainer}>
+									{transaction.tags?.map((tag) => (
+										<Tag
+											key={tag}
+											style={styles.tag}
+											value={tag}
+											onClose={(): void => handleTagRemove(tag)}
+										/>
+									))}
+								</View>
+								<View style={styles.tagsContainer}>
+									<Button
+										color="white04"
+										text="Add Tag"
+										icon={<TagIcon color="brand" width={16} />}
+										onPress={(): void => {
+											Keyboard.dismiss();
+											navigation.navigate('Tags');
+										}}
+									/>
+								</View>
+							</View>
+						}
+					/>
+				</View>
 
 				<View style={nextButtonContainer}>
 					<SwipeToConfirm
@@ -604,7 +677,6 @@ const ReviewAndSend = ({
 					setTimeout(() => navigation.goBack(), 100);
 				}}
 				onConfirm={(): void => {
-					// setIsLoading(false);
 					setShowDialog3(false);
 					confirmPayment();
 				}}
@@ -658,6 +730,9 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		alignItems: 'center',
 		marginBottom: 16,
+	},
+	icon: {
+		marginRight: 4,
 	},
 	tagsContainer: {
 		flexDirection: 'row',

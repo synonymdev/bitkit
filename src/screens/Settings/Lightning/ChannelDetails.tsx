@@ -235,6 +235,7 @@ const styles = StyleSheet.create({
 	buttons: {
 		flex: 1,
 		justifyContent: 'flex-end',
+		marginBottom: 16,
 	},
 	button: {
 		marginTop: 8,

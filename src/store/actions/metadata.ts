@@ -7,14 +7,6 @@ import { EPaymentType } from '../types/wallet';
 const dispatch = getDispatch();
 
 /*
- * This resets the metadata store to defaultMetadataShape
- */
-export const resetMetaStore = (): Result<string> => {
-	dispatch({ type: actions.RESET_META_STORE });
-	return ok('');
-};
-
-/*
  * This action updates transactions tags
  */
 export const updateMetaTxTags = (
@@ -161,5 +153,13 @@ export const deleteTag = (tag: string): Result<string> => {
 		type: actions.DELETE_TAG,
 		payload: tag,
 	});
+	return ok('');
+};
+
+/*
+ * This resets the metadata store to defaultMetadataShape
+ */
+export const resetMetaStore = (): Result<string> => {
+	dispatch({ type: actions.RESET_META_STORE });
 	return ok('');
 };
