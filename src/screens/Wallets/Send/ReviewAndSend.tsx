@@ -518,15 +518,15 @@ const ReviewAndSend = ({
 
 				<View style={styles.sectionContainer}>
 					<Section
-						title="TO"
+						title={
+							transaction.slashTagsUrl || !decodedInvoice ? 'To' : 'Invoice'
+						}
 						value={
 							transaction.slashTagsUrl ? (
 								<ContactSmall url={transaction.slashTagsUrl} />
 							) : (
 								<Text02M numberOfLines={1} ellipsizeMode="middle">
-									{decodedInvoice
-										? decodedInvoice.description ?? decodedInvoice.to_str
-										: address}
+									{decodedInvoice ? decodedInvoice.to_str : address}
 								</Text02M>
 							)
 						}
