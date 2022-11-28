@@ -564,7 +564,6 @@ const ReviewAndSend = ({
 					<View style={styles.sectionContainer}>
 						<Section
 							title="Speed and fee"
-							onPress={(): void => navigation.navigate('FeeRate')}
 							value={
 								<>
 									<TimerIcon style={styles.icon} color="purple" />
