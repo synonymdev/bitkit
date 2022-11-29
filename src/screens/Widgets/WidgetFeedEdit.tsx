@@ -33,7 +33,7 @@ import {
 import Divider from '../../components/Divider';
 import HourglassSpinner from '../../components/HourglassSpinner';
 import { SlashtagURL } from '../../components/SlashtagURL';
-import BitfinexWidget from '../../components/BitfinexWidget';
+import PriceWidget from '../../components/PriceWidget';
 import HeadlinesWidget from '../../components/HeadlinesWidget';
 import BlocksWidget from '../../components/BlocksWidget';
 import FeedWidget from '../../components/FeedWidget';
@@ -287,7 +287,7 @@ export const WidgetFeedEdit = ({
 									switch (config.type) {
 										case SUPPORTED_FEED_TYPES.PRICE_FEED:
 											return (
-												<BitfinexWidget
+												<PriceWidget
 													key={url}
 													url={url}
 													widget={previewWidget}

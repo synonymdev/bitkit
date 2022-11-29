@@ -85,16 +85,18 @@ const Chart = ({
 	);
 };
 
-const BitfinexWidget = ({
+const PriceWidget = ({
 	url,
 	widget,
 	isEditing = false,
-	onPress,
+	onLongPress,
+	onPressIn,
 }: {
 	url: string;
 	widget: IWidget;
 	isEditing?: boolean;
-	onPress?: () => void;
+	onLongPress?: () => void;
+	onPressIn?: () => void;
 }): ReactElement => {
 	const { value, drive } = useFeedWidget({ url, feed: widget.feed });
 	const [pastValues, setPastValues] = useState<number[]>([]);
@@ -143,7 +145,6 @@ const BitfinexWidget = ({
 			label={widget.feed.field.name}
 			icon={<ChartLineIcon width={32} height={32} />}
 			isEditing={isEditing}
-			onPress={onPress}
 			middle={<Chart color={change.color} values={pastValues} />}
 			right={
 				<View style={styles.numbers}>
@@ -155,6 +156,8 @@ const BitfinexWidget = ({
 					</Caption13M>
 				</View>
 			}
+			onLongPress={onLongPress}
+			onPressIn={onPressIn}
 		/>
 	);
 };
@@ -178,6 +181,6 @@ const styles = StyleSheet.create({
 	},
 });
 
-export default memo(BitfinexWidget);
+export default memo(PriceWidget);
 
 function noop(): void {}

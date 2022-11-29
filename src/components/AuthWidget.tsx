@@ -10,6 +10,8 @@ import { Client } from '@synonymdev/slashtags-auth';
 
 import { useProfile, useSelectedSlashtag } from '../hooks/slashtags';
 import {
+	KeyIcon,
+	ListIcon,
 	Text01M,
 	TouchableOpacity,
 	TrashIcon,
@@ -25,9 +27,15 @@ import Dialog from './Dialog';
 const AuthWidget = ({
 	url,
 	widget,
+	isEditing = false,
+	onLongPress,
+	onPressIn,
 }: {
 	url: string;
 	widget: IWidget;
+	isEditing?: boolean;
+	onLongPress?: () => void;
+	onPressIn?: () => void;
 }): ReactElement => {
 	const [showButtons, setShowButtons] = useState(false);
 	const [showDialog, setShowDialog] = useState(false);
@@ -72,6 +80,8 @@ const AuthWidget = ({
 		<TouchableOpacity
 			style={styles.container}
 			onPress={switchShowButtons}
+			onLongPress={onLongPress}
+			onPressIn={onPressIn}
 			activeOpacity={0.9}>
 			<View style={styles.left}>
 				<ProfileImage
@@ -83,21 +93,28 @@ const AuthWidget = ({
 				<Text01M>{profile?.name || ' '}</Text01M>
 			</View>
 			<View style={styles.right}>
-				{showButtons ? (
+				{showButtons && widget.magiclink && !isEditing && (
 					<View style={styles.buttonsContainer}>
-						{widget.magiclink && (
-							<>
-								<Button
-									style={styles.deleteButton}
-									icon={<TrashIcon width={20} />}
-									onPress={onDelete}
-								/>
-								<Button text="Sign in" onPress={openMagicLink} />
-							</>
-						)}
+						<Button
+							text="Sign in"
+							onPress={openMagicLink}
+							icon={<KeyIcon color="brand" width={20} height={20} />}
+						/>
 					</View>
-				) : (
-					<View />
+				)}
+				{isEditing && (
+					<View style={styles.buttonsContainer}>
+						<TouchableOpacity style={styles.actionButton} onPress={onDelete}>
+							<TrashIcon width={22} />
+						</TouchableOpacity>
+						<TouchableOpacity
+							style={styles.actionButton}
+							onLongPress={onLongPress}
+							onPressIn={onPressIn}
+							activeOpacity={0.9}>
+							<ListIcon color="white" width={24} />
+						</TouchableOpacity>
+					</View>
 				)}
 			</View>
 			<Dialog
@@ -145,9 +162,11 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		alignItems: 'center',
 	},
-	deleteButton: {
-		minWidth: 0,
-		marginHorizontal: 8,
+	actionButton: {
+		paddingHorizontal: 10,
+		height: '100%',
+		alignItems: 'center',
+		justifyContent: 'center',
 	},
 });
 

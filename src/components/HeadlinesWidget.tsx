@@ -3,19 +3,19 @@ import { TouchableOpacity, Linking, StyleSheet } from 'react-native';
 import { SlashURL } from '@synonymdev/slashtags-sdk';
 
 import {
-	View,
-	Text01M,
 	Caption13M,
-	NewspaperIcon,
 	GearIcon,
+	ListIcon,
+	NewspaperIcon,
+	Text01M,
 	TrashIcon,
+	View,
 } from '../styles/components';
 import { IWidget } from '../store/types/widgets';
 import { useSlashtagsSDK } from './SlashtagsProvider';
 import { showErrorNotification } from '../utils/notifications';
 import { decodeJSON } from '../utils/slashtags';
 import { navigate } from '../navigation/root/RootNavigator';
-import Button from './Button';
 import Dialog from './Dialog';
 import { deleteWidget } from '../store/actions/widgets';
 
@@ -23,12 +23,14 @@ const HeadlinesWidget = ({
 	url,
 	widget,
 	isEditing = false,
-	onPress,
+	onLongPress,
+	onPressIn,
 }: {
 	url: string;
 	widget: IWidget;
 	isEditing?: boolean;
-	onPress?: () => void;
+	onLongPress?: () => void;
+	onPressIn?: () => void;
 }): ReactElement => {
 	const [showDialog, setShowDialog] = useState(false);
 	const [article, setArticle] = useState<{
@@ -98,7 +100,11 @@ const HeadlinesWidget = ({
 			<TouchableOpacity
 				style={styles.root}
 				activeOpacity={0.9}
-				onPress={onPress}>
+				onPress={(): void => {
+					!isEditing && article?.link && Linking.openURL(article.link);
+				}}
+				onLongPress={onLongPress}
+				onPressIn={onPressIn}>
 				<View style={styles.icon}>
 					{<NewspaperIcon width={32} height={32} />}
 				</View>
@@ -108,15 +114,9 @@ const HeadlinesWidget = ({
 					</Text01M>
 					<View style={styles.row}>
 						<View style={styles.linkContainer}>
-							<TouchableOpacity
-								activeOpacity={0.9}
-								onPress={(): void => {
-									article?.link && Linking.openURL(article.link);
-								}}>
-								<Caption13M color="gray1" numberOfLines={1}>
-									{article?.link}
-								</Caption13M>
-							</TouchableOpacity>
+							<Caption13M color="gray1" numberOfLines={1}>
+								{article?.link}
+							</Caption13M>
 						</View>
 						<View style={styles.authorContainer}>
 							<Caption13M style={styles.author} color="gray1" numberOfLines={1}>
@@ -129,16 +129,19 @@ const HeadlinesWidget = ({
 
 			{isEditing && (
 				<View style={styles.buttonsContainer}>
-					<Button
-						style={styles.deleteButton}
-						icon={<TrashIcon width={20} />}
-						onPress={onDelete}
-					/>
-					<Button
-						style={styles.settingsButton}
-						icon={<GearIcon width={20} />}
-						onPress={onEdit}
-					/>
+					<TouchableOpacity style={styles.actionButton} onPress={onDelete}>
+						<TrashIcon width={22} />
+					</TouchableOpacity>
+					<TouchableOpacity style={styles.actionButton} onPress={onEdit}>
+						<GearIcon width={22} />
+					</TouchableOpacity>
+					<TouchableOpacity
+						style={styles.actionButton}
+						onLongPress={onLongPress}
+						onPressIn={onPressIn}
+						activeOpacity={0.9}>
+						<ListIcon color="white" width={24} />
+					</TouchableOpacity>
 				</View>
 			)}
 			<Dialog
@@ -203,12 +206,11 @@ const styles = StyleSheet.create({
 		justifyContent: 'center',
 		alignItems: 'center',
 	},
-	deleteButton: {
-		minWidth: 0,
-		marginHorizontal: 8,
-	},
-	settingsButton: {
-		minWidth: 0,
+	actionButton: {
+		paddingHorizontal: 10,
+		height: '100%',
+		alignItems: 'center',
+		justifyContent: 'center',
 	},
 });
 

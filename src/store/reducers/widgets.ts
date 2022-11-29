@@ -48,6 +48,12 @@ const slashtags = (state: IWidgets = defaultWidgetsShape, action): IWidgets => {
 				onboardedWidgets: action.payload.onboardedWidgets,
 			};
 
+		case actions.SET_WIDGETS_SORT_ORDER:
+			return {
+				...state,
+				sortOrder: action.payload.sortOrder,
+			};
+
 		default:
 			return state;
 	}

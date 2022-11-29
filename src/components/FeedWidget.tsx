@@ -3,14 +3,14 @@ import { StyleSheet } from 'react-native';
 
 import { navigate } from '../navigation/root/RootNavigator';
 import {
-	GearIcon,
-	TouchableOpacity,
-	View,
-	Text01M,
 	Caption13M,
+	GearIcon,
+	ListIcon,
+	Text01M,
+	TouchableOpacity,
 	TrashIcon,
+	View,
 } from '../styles/components';
-import Button from './Button';
 import ProfileImage from './ProfileImage';
 import { IWidget } from '../store/types/widgets';
 import { useFeedWidget } from '../hooks/widgets';
@@ -27,14 +27,14 @@ export const FeedWidget = ({
 	icon,
 	name,
 	isEditing = false,
-	onPress,
+	onLongPress,
 }: {
 	url: string;
 	widget: IWidget;
 	icon?: ReactElement;
 	name?: string;
 	isEditing?: boolean;
-	onPress?: () => void;
+	onLongPress?: () => void;
 }): ReactElement => {
 	const { value } = useFeedWidget({ url, feed: widget.feed });
 
@@ -44,7 +44,7 @@ export const FeedWidget = ({
 			name={name || widget.feed.name}
 			label={widget.feed.field.name}
 			isEditing={isEditing}
-			onPress={onPress}
+			onLongPress={onLongPress}
 			right={<DefaultRightComponent value={value?.toString()} />}
 			icon={
 				icon || (
@@ -67,8 +67,9 @@ export const BaseFeedWidget = ({
 	label,
 	right = <View />,
 	middle,
-	isEditing = false,
-	onPress,
+	isEditing,
+	onLongPress,
+	onPressIn,
 }: {
 	url: string;
 	name?: string;
@@ -77,7 +78,8 @@ export const BaseFeedWidget = ({
 	right?: ReactElement;
 	middle?: ReactElement;
 	isEditing?: boolean;
-	onPress?: () => void;
+	onLongPress?: () => void;
+	onPressIn?: () => void;
 }): ReactElement => {
 	const [showDialog, setShowDialog] = useState(false);
 
@@ -90,7 +92,11 @@ export const BaseFeedWidget = ({
 	};
 
 	return (
-		<TouchableOpacity style={styles.root} activeOpacity={0.9} onPress={onPress}>
+		<TouchableOpacity
+			style={styles.root}
+			activeOpacity={0.9}
+			onLongPress={onLongPress}
+			onPressIn={onPressIn}>
 			<View style={styles.infoContainer}>
 				<View style={styles.icon}>{icon}</View>
 				<View style={styles.labelsContainer}>
@@ -103,16 +109,19 @@ export const BaseFeedWidget = ({
 
 			{isEditing ? (
 				<>
-					<Button
-						style={styles.deleteButton}
-						icon={<TrashIcon width={20} />}
-						onPress={onDelete}
-					/>
-					<Button
-						style={styles.settingsButton}
-						icon={<GearIcon width={20} />}
-						onPress={onEdit}
-					/>
+					<TouchableOpacity style={styles.actionButton} onPress={onDelete}>
+						<TrashIcon width={22} />
+					</TouchableOpacity>
+					<TouchableOpacity style={styles.actionButton} onPress={onEdit}>
+						<GearIcon width={22} />
+					</TouchableOpacity>
+					<TouchableOpacity
+						style={styles.actionButton}
+						onLongPress={onLongPress}
+						onPressIn={onPressIn}
+						activeOpacity={0.9}>
+						<ListIcon color="white" width={24} />
+					</TouchableOpacity>
 				</>
 			) : (
 				<View style={styles.dataContainer}>
@@ -179,12 +188,11 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		justifyContent: 'flex-end',
 	},
-	deleteButton: {
-		minWidth: 0,
-		marginHorizontal: 8,
-	},
-	settingsButton: {
-		minWidth: 0,
+	actionButton: {
+		paddingHorizontal: 10,
+		height: '100%',
+		alignItems: 'center',
+		justifyContent: 'center',
 	},
 });
 

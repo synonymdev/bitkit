@@ -46,3 +46,10 @@ export const setWidgetsOnboarding = (onboardedWidgets: boolean): void => {
 		payload: { onboardedWidgets },
 	});
 };
+
+export const setWidgetsSortOrder = (sortOrder: Array<number>): void => {
+	dispatch({
+		type: actions.SET_WIDGETS_SORT_ORDER,
+		payload: { sortOrder },
+	});
+};

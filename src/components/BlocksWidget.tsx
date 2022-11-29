@@ -10,12 +10,14 @@ const BlocksWidget = ({
 	url,
 	widget,
 	isEditing = false,
-	onPress,
+	onLongPress,
+	onPressIn,
 }: {
 	url: string;
 	widget: IWidget;
 	isEditing?: boolean;
-	onPress?: () => void;
+	onLongPress?: () => void;
+	onPressIn?: () => void;
 }): ReactElement => {
 	const { value } = useFeedWidget({ url, feed: widget.feed });
 
@@ -26,7 +28,8 @@ const BlocksWidget = ({
 			label={value?.height}
 			icon={<CubeIcon width={32} height={32} />}
 			isEditing={isEditing}
-			onPress={onPress}
+			onLongPress={onLongPress}
+			onPressIn={onPressIn}
 			right={
 				<View style={styles.numbers}>
 					<Text01M numberOfLines={1} styles={styles.price}>

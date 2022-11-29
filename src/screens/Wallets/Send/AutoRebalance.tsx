@@ -61,7 +61,7 @@ const AutoRebalance = ({
 				<Button
 					style={styles.button2}
 					size="large"
-					text={`Yes (Cost: )`}
+					text="Yes (Cost: )"
 					onPress={onContinue}
 				/>
 			</View>

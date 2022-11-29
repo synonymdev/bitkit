@@ -72,6 +72,7 @@ import {
 	lightbulbIcon,
 	minusCircledIcon,
 	plusCircledIcon,
+	keyIcon,
 } from '../assets/icons/wallet';
 import {
 	chevronRightIcon,
@@ -1042,5 +1043,12 @@ export const PlusCircledIcon = styled(SvgXml).attrs((props) => ({
 	xml: plusCircledIcon(props.theme.colors[props.color]),
 	height: props?.height ?? '64px',
 	width: props?.width ?? '64px',
+	color: undefined,
+}))({});
+
+export const KeyIcon = styled(SvgXml).attrs((props) => ({
+	xml: keyIcon(props.theme.colors[props.color]),
+	height: props?.height ?? '24px',
+	width: props?.width ?? '24px',
 	color: undefined,
 }))({});

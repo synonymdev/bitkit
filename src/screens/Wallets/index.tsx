@@ -1,4 +1,4 @@
-import React, { memo, ReactElement, useState } from 'react';
+import React, { memo, ReactElement, useState, useCallback } from 'react';
 import { useSelector } from 'react-redux';
 import { StyleSheet } from 'react-native';
 import { RefreshControl, ScrollView } from 'react-native-gesture-handler';
@@ -24,11 +24,12 @@ import Assets from '../../components/Assets';
 
 const Wallets = ({ navigation }: TabScreenProps<'Wallets'>): ReactElement => {
 	const [refreshing, setRefreshing] = useState(false);
+	const [scrollEnabled, setScrollEnabled] = useState(true);
 	const hideBalance = useSelector((state: Store) => state.settings.hideBalance);
 	const hideOnboardingSetting = useSelector(
 		(state: Store) => state.settings.hideOnboardingMessage,
 	);
-	const widgets = useSelector((state: Store) => state.widgets?.widgets || {});
+	const widgets = useSelector((state: Store) => state.widgets.widgets);
 	const empty = useNoTransactions() && Object.values(widgets).length === 0;
 	const colors = useColors();
 
@@ -51,6 +52,9 @@ const Wallets = ({ navigation }: TabScreenProps<'Wallets'>): ReactElement => {
 		setRefreshing(false);
 	};
 
+	const handleWidgetsEditStart = useCallback(() => setScrollEnabled(false), []);
+	const handleWidgetsEditEnd = useCallback(() => setScrollEnabled(true), []);
+
 	const hideOnboarding = hideOnboardingSetting || !empty;
 
 	return (
@@ -69,7 +73,8 @@ const Wallets = ({ navigation }: TabScreenProps<'Wallets'>): ReactElement => {
 							onRefresh={onRefresh}
 							tintColor={colors.refreshControl}
 						/>
-					}>
+					}
+					scrollEnabled={scrollEnabled}>
 					<DetectSwipe
 						onSwipeLeft={toggleHideBalance}
 						onSwipeRight={toggleHideBalance}>
@@ -84,7 +89,10 @@ const Wallets = ({ navigation }: TabScreenProps<'Wallets'>): ReactElement => {
 							<View style={styles.content}>
 								<ConnectivityIndicator />
 								<Assets navigation={navigation} />
-								<Widgets />
+								<Widgets
+									onEditStart={handleWidgetsEditStart}
+									onEditEnd={handleWidgetsEditEnd}
+								/>
 								<ActivityListShort />
 								<BetaWarning />
 							</View>
