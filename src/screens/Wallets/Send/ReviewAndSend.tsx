@@ -567,7 +567,7 @@ const ReviewAndSend = ({
 							value={
 								<>
 									<TimerIcon style={styles.icon} color="purple" />
-									<Text02M>{FeeText['instant'].title} (±$0.01)</Text02M>
+									<Text02M>{FeeText.instant.title} (±$0.01)</Text02M>
 								</>
 							}
 						/>

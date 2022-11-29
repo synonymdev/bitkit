@@ -74,7 +74,7 @@ function transform() {
 		// in case of saving profile while relay socket is closing!
 		['autoClose: true', 'autoClose: false'],
 		// Sigh.. I don't know what is the point of Babel?
-		['let result = 0n', 'let result = BigInt(0)']
+		['let result = 0n', 'let result = BigInt(0)'],
 	].forEach(([prev, target]) => {
 		src = src.replace(prev, target);
 	});
