@@ -16,6 +16,17 @@ const migrations = {
 			todos: defaultTodosShape,
 		};
 	},
+	2: (state): PersistedState => {
+		const sortOrder = Object.keys(state.widgets.widgets);
+
+		return {
+			...state,
+			widgets: {
+				...state.widgets,
+				sortOrder,
+			},
+		};
+	},
 };
 
 export default migrations;

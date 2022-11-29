@@ -74,3 +74,7 @@ stpg/cache.json
 /nodejs-assets/nodejs-project/sample-main.js
 /nodejs-assets/nodejs-project/sample-package.json
 android/app/pepk.jar
+
+# sublime
+*.sublime-project
+*.sublime-workspace

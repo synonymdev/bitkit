@@ -38,9 +38,7 @@ import FactsWidget from './FactsWidget';
 
 export const Widgets = ({ onEditStart, onEditEnd }): ReactElement => {
 	const widgets = useSelector((state: Store) => state.widgets.widgets);
-	const sortOrder = useSelector(
-		(state: Store) => state.widgets.sortOrder ?? [],
-	);
+	const sortOrder = useSelector((state: Store) => state.widgets.sortOrder);
 	const widgetsArray = useMemo(
 		() =>
 			Object.entries(widgets).sort(

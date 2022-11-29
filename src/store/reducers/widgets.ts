@@ -19,6 +19,7 @@ const slashtags = (state: IWidgets = defaultWidgetsShape, action): IWidgets => {
 						magiclink: action.payload.magiclink,
 					},
 				},
+				sortOrder: [...state.sortOrder, action.payload.url],
 			};
 
 		case actions.SET_SLASHTAGS_FEED_WIDGET:
@@ -34,13 +35,16 @@ const slashtags = (state: IWidgets = defaultWidgetsShape, action): IWidgets => {
 						},
 					},
 				},
+				sortOrder: [...state.sortOrder, action.payload.url],
 			};
 
-		case actions.DELETE_SLASHTAGS_WIDGET:
+		case actions.DELETE_SLASHTAGS_WIDGET: {
 			const widgets = { ...state.widgets };
 			delete widgets[action.payload.url];
+			const sortOrder = state.sortOrder.filter((i) => i !== action.payload.url);
 
-			return { ...state, widgets };
+			return { ...state, widgets, sortOrder };
+		}
 
 		case actions.SET_WIDGETS_ONBAORDING:
 			return {
