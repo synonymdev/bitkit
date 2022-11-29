@@ -45,7 +45,7 @@
     "@synonymdev/react-native-lnurl": "0.0.3",
     "@synonymdev/result": "0.0.2",
     "@synonymdev/slashtags-auth": "^1.0.0-alpha.5",
-    "@synonymdev/slashtags-sdk": "^1.0.0-alpha.33",
+    "@synonymdev/slashtags-sdk": "^1.0.0-alpha.34",
     "assert": "^2.0.0",
     "backpack-client": "git+ssh://git@github.com/synonymdev/bitkit-backup-client",
     "bip21": "^2.0.3",
