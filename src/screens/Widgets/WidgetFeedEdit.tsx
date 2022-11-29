@@ -79,11 +79,6 @@ export const WidgetFeedEdit = ({
 
 		const drive = sdk.drive(key, { encryptionKey });
 
-		// TODO(slashtags): should not be needed after Hyperdrive actually support encryptionKey
-		// Manually awaiting peers
-		const done = drive.findingPeers();
-		sdk.swarm.flush().then(done, done);
-
 		drive
 			.ready()
 			.then(read)
@@ -154,6 +149,7 @@ export const WidgetFeedEdit = ({
 
 		return function cleanup() {
 			unmounted = true;
+			drive.close();
 		};
 	}, [sdk, url, savedWidget]);
 
