@@ -25,19 +25,26 @@ const BlocksWidget = ({
 		<BaseFeedWidget
 			url={url}
 			name="Bitcoin Blocks"
-			label={value?.height}
+			label={value?.height || ''}
 			icon={<CubeIcon width={32} height={32} />}
 			isEditing={isEditing}
 			onLongPress={onLongPress}
 			onPressIn={onPressIn}
 			right={
 				<View style={styles.numbers}>
-					<Text01M numberOfLines={1} styles={styles.price}>
-						{`${value?.transacionCount} / ${value?.size}`}
-					</Text01M>
-					<Caption13M styles={styles.change} color="gray1" numberOfLines={1}>
-						{value?.time}
-					</Caption13M>
+					{value && (
+						<>
+							<Text01M numberOfLines={1} styles={styles.price}>
+								{`${value?.transacionCount} / ${value?.size}`}
+							</Text01M>
+							<Caption13M
+								styles={styles.change}
+								color="gray1"
+								numberOfLines={1}>
+								{value?.time}
+							</Caption13M>
+						</>
+					)}
 				</View>
 			}
 		/>
