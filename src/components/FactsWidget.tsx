@@ -7,9 +7,9 @@ import {
 	View,
 	Text01M,
 	Caption13M,
-	NewspaperIcon,
 	GearIcon,
 	TrashIcon,
+	LightBulbIcon,
 } from '../styles/components';
 import { useSlashtagsSDK } from './SlashtagsProvider';
 import { showErrorNotification } from '../utils/notifications';
@@ -98,7 +98,7 @@ const FactsWidget = ({
 				activeOpacity={0.9}
 				onPress={onPress}>
 				<View style={styles.icon}>
-					{<NewspaperIcon width={32} height={32} />}
+					{<LightBulbIcon width={32} height={32} />}
 				</View>
 				<View style={styles.infoContainer}>
 					<Text01M style={styles.name} numberOfLines={1}>
