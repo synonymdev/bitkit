@@ -12,7 +12,7 @@ const imageSrc = require('../../../assets/illustrations/orange-pill.png');
 const EasterEgg = (): ReactElement => {
 	// TODO: add correct store IDs and test
 	const appleAppID = '1634634088';
-	const androidPackageName = 'to.synonym.bitkit';
+	const androidPackageName = 'to.synonym.bitkit.wallet';
 
 	const appStoreUrl =
 		Platform.OS === 'ios'
