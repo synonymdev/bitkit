@@ -124,41 +124,54 @@ export const Widgets = ({ onEditStart, onEditEnd }): ReactElement => {
 	}, []);
 
 	return (
-		<NestableScrollContainer>
-			<View style={styles.title}>
-				<Subtitle>Widgets</Subtitle>
-				<TouchableOpacity onPress={editing ? handleEditEnd : handleEditStart}>
-					{editing ? (
-						<XIcon width={24} height={24} color="gray1" />
-					) : (
-						<ListIcon color="gray1" />
-					)}
-				</TouchableOpacity>
+		<>
+			<View style={styles.titleRow}>
+				<Subtitle style={styles.title}>Widgets</Subtitle>
+				{widgetsArray.length > 0 && (
+					<TouchableOpacity
+						style={styles.edit}
+						onPress={editing ? handleEditEnd : handleEditStart}>
+						{editing ? (
+							<XIcon width={24} height={24} color="gray1" />
+						) : (
+							<ListIcon color="gray1" />
+						)}
+					</TouchableOpacity>
+				)}
 			</View>
-			<NestableDraggableFlatList
-				data={widgetsArray}
-				keyExtractor={(item): string => item[0]}
-				renderItem={renderItem}
-				onDragEnd={handleDragEnd}
-				{...(editing ? { activationDistance: 1 } : {})}
-			/>
+			<NestableScrollContainer>
+				<NestableDraggableFlatList
+					data={widgetsArray}
+					keyExtractor={(item): string => item[0]}
+					renderItem={renderItem}
+					onDragEnd={handleDragEnd}
+					{...(editing ? { activationDistance: 1 } : {})}
+				/>
+			</NestableScrollContainer>
 			<TouchableOpacity style={styles.add} onPress={onAdd}>
 				<View color="green16" style={styles.iconCircle}>
 					<PlusIcon height={16} color="green" />
 				</View>
 				<Text01M>Add Widget</Text01M>
 			</TouchableOpacity>
-		</NestableScrollContainer>
+		</>
 	);
 };
 
 const styles = StyleSheet.create({
-	title: {
-		marginTop: 32,
-		marginBottom: 8,
+	titleRow: {
 		flexDirection: 'row',
 		alignItems: 'center',
 		justifyContent: 'space-between',
+	},
+	title: {
+		paddingTop: 32,
+		paddingBottom: 8,
+	},
+	edit: {
+		paddingTop: 32,
+		paddingBottom: 8,
+		paddingLeft: 16,
 	},
 	add: {
 		height: 88,
