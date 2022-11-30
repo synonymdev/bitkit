@@ -1,18 +1,18 @@
 import React, { memo, ReactElement, useMemo } from 'react';
-import { StyleSheet, Image, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { useSelector } from 'react-redux';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { Text01S } from '../../../styles/components';
 import BottomSheetWrapper from '../../../components/BottomSheetWrapper';
-import Glow from '../../../components/Glow';
+import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
+import GlowImage from '../../../components/GlowImage';
 import Button from '../../../components/Button';
 import { toggleView } from '../../../store/actions/user';
 import {
 	useBottomSheetBackPress,
 	useSnapPoints,
 } from '../../../hooks/bottomSheet';
-import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
 import Store from '../../../store/types';
 
 const imageSrc = require('../../../assets/illustrations/shield.png');
@@ -67,10 +67,9 @@ const PINPrompt = (): ReactElement => {
 					To increase wallet security, you can set up a PIN code and Face ID to
 					unlock your wallet.
 				</Text01S>
-				<View style={styles.imageContainer} pointerEvents="none">
-					<Glow color="green" style={styles.glow} />
-					<Image style={styles.image} resizeMode="contain" source={imageSrc} />
-				</View>
+
+				<GlowImage image={imageSrc} imageSize={150} glowColor="green" />
+
 				<View style={buttonContainerStyles}>
 					{showLaterButton && (
 						<>
@@ -101,19 +100,6 @@ const styles = StyleSheet.create({
 		flex: 1,
 		alignItems: 'center',
 		paddingHorizontal: 32,
-	},
-	imageContainer: {
-		flex: 1,
-		position: 'relative',
-		alignItems: 'center',
-		justifyContent: 'center',
-	},
-	image: {
-		width: 150,
-		height: 150,
-	},
-	glow: {
-		position: 'absolute',
 	},
 	buttonContainer: {
 		marginTop: 'auto',

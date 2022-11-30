@@ -1,22 +1,22 @@
 import React, { memo, ReactElement, useEffect, useMemo } from 'react';
-import { Image, StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
+import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import { useSelector } from 'react-redux';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { Caption13Up, Display, Text02S } from '../../styles/components';
 import BottomSheetWrapper from '../../components/BottomSheetWrapper';
 import BottomSheetNavigationHeader from '../../components/BottomSheetNavigationHeader';
+import GlowImage from '../../components/GlowImage';
 import Button from '../../components/Button';
-import { ignoreHighBalance, toggleView } from '../../store/actions/user';
-import Glow from '../../components/Glow';
 import Store from '../../store/types';
+import { ignoreHighBalance, toggleView } from '../../store/actions/user';
 import { useBalance } from '../../hooks/wallet';
+import { getFiatDisplayValues } from '../../utils/exchange-rate';
+import { openURL } from '../../utils/helpers';
 import {
 	useBottomSheetBackPress,
 	useSnapPoints,
 } from '../../hooks/bottomSheet';
-import { getFiatDisplayValues } from '../../utils/exchange-rate';
-import { openURL } from '../../utils/helpers';
 
 const imageSrc = require('../../assets/illustrations/exclamation-mark.png');
 
@@ -155,10 +155,7 @@ const HighBalanceWarning = (): ReactElement => {
 					offline cold wallet or multisig solution.
 				</Text02S>
 
-				<View style={styles.imageContainer} pointerEvents="none">
-					<Glow style={styles.glow} size={500} color="yellow" />
-					<Image source={imageSrc} style={styles.image} />
-				</View>
+				<GlowImage image={imageSrc} imageSize={180} glowColor="yellow" />
 
 				<View style={buttonContainerStyles}>
 					<Button
@@ -194,19 +191,6 @@ const styles = StyleSheet.create({
 	},
 	text: {
 		marginTop: 16,
-	},
-	imageContainer: {
-		flex: 1,
-		position: 'relative',
-		justifyContent: 'center',
-		alignItems: 'center',
-	},
-	image: {
-		width: 180,
-		height: 180,
-	},
-	glow: {
-		position: 'absolute',
 	},
 	buttonContainer: {
 		flexDirection: 'row',

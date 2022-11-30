@@ -4,15 +4,12 @@ import { View, Image, StyleSheet, Share, Platform } from 'react-native';
 import Button from '../../../components/Button';
 import GlowingBackground from '../../../components/GlowingBackground';
 import SafeAreaInsets from '../../../components/SafeAreaInsets';
-import useColors from '../../../hooks/colors';
 import { Display } from '../../../styles/components';
 import SettingsView from './../SettingsView';
 
 const imageSrc = require('../../../assets/illustrations/orange-pill.png');
 
 const EasterEgg = (): ReactElement => {
-	const { brand } = useColors();
-
 	// TODO: add correct store IDs and test
 	const appleAppID = '1634634088';
 	const androidPackageName = 'to.synonym.bitkit';
@@ -29,7 +26,7 @@ const EasterEgg = (): ReactElement => {
 		});
 	};
 	return (
-		<GlowingBackground bottomRight={brand}>
+		<GlowingBackground bottomRight="brand">
 			<SettingsView title="Orange Pilled" showBackNavigation={true} />
 			<View style={styles.alignCenter}>
 				<Image source={imageSrc} />

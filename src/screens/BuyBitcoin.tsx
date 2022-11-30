@@ -6,7 +6,6 @@ import SafeAreaInsets from '../components/SafeAreaInsets';
 import GlowingBackground from '../components/GlowingBackground';
 import NavigationHeader from '../components/NavigationHeader';
 import Button from '../components/Button';
-import useColors from '../hooks/colors';
 import { openURL } from '../utils/helpers';
 import { removeTodo } from '../store/actions/todos';
 import type { RootStackScreenProps } from '../navigation/types';
@@ -16,10 +15,8 @@ const imageSrc = require('../assets/illustrations/b-emboss.png');
 const BuyBitcoin = ({
 	navigation,
 }: RootStackScreenProps<'BuyBitcoin'>): ReactElement => {
-	const colors = useColors();
-
 	return (
-		<GlowingBackground topLeft={colors.orange}>
+		<GlowingBackground topLeft="orange">
 			<SafeAreaInsets type="top" />
 			<NavigationHeader
 				onClosePress={(): void => {

@@ -39,15 +39,20 @@ import Button from '../../components/Button';
 import { createNewWallet } from '../../utils/startup';
 import { showErrorNotification } from '../../utils/notifications';
 import { sleep } from '../../utils/helpers';
-import useColors from '../../hooks/colors';
 import LoadingWalletScreen from './Loading';
-import type { OnboardingStackScreenProps } from '../../navigation/types';
 import { updateUser } from '../../store/actions/user';
+import { IColors } from '../../styles/colors';
+import type { OnboardingStackScreenProps } from '../../navigation/types';
 
 const shieldImageSrc = require('../../assets/illustrations/shield-b.png');
 const lightningImageSrc = require('../../assets/illustrations/lightning.png');
 const padlockImageSrc = require('../../assets/illustrations/padlock.png');
 const walletImageSrc = require('../../assets/illustrations/wallet.png');
+
+type Slide = {
+	topLeftColor: keyof IColors;
+	slide: () => ReactElement;
+};
 
 /**
  * Slideshow for Welcome screen
@@ -61,7 +66,6 @@ const Slideshow = ({
 	const ref = useRef<ICarouselInstance | null>(null);
 	const [isCreatingWallet, setIsCreatingWallet] = useState(false);
 	const insets = useSafeAreaInsets();
-	const colors = useColors();
 
 	// because we can't properly scala image inside the <Swiper let's calculate with by hand
 	const dimensions = useWindowDimensions();
@@ -90,10 +94,9 @@ const Slideshow = ({
 	}, [bip39Passphrase]);
 
 	const slides = useMemo(
-		() => [
+		(): Slide[] => [
 			{
-				topLeftColor: colors.brand,
-
+				topLeftColor: 'brand',
 				slide: (): ReactElement => (
 					<View style={styles.slide}>
 						<View style={styles.imageContainer}>
@@ -111,10 +114,8 @@ const Slideshow = ({
 					</View>
 				),
 			},
-
 			{
-				topLeftColor: colors.purple,
-
+				topLeftColor: 'purple',
 				slide: (): ReactElement => (
 					<View style={styles.slide}>
 						<View style={styles.imageContainer}>
@@ -132,10 +133,8 @@ const Slideshow = ({
 					</View>
 				),
 			},
-
 			{
-				topLeftColor: colors.blue,
-
+				topLeftColor: 'blue',
 				slide: (): ReactElement => (
 					<View style={styles.slide}>
 						<View style={styles.imageContainer}>
@@ -153,10 +152,8 @@ const Slideshow = ({
 					</View>
 				),
 			},
-
 			{
-				topLeftColor: colors.brand,
-
+				topLeftColor: 'brand',
 				slide: (): ReactElement => (
 					<View style={styles.slide}>
 						<View style={styles.imageContainer}>
@@ -194,8 +191,7 @@ const Slideshow = ({
 				),
 			},
 		],
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-		[],
+		[illustrationStyles, navigation, onNewWallet],
 	);
 
 	const [index, setIndex] = useState(skipIntro ? slides.length - 1 : 0);
@@ -251,9 +247,9 @@ const Slideshow = ({
 		onNewWallet();
 	}, [bip39Passphrase, onNewWallet]);
 
-	const glowColor = isCreatingWallet
-		? colors.brand
-		: slides[index]?.topLeftColor ?? colors.brand;
+	const glowColor: keyof IColors = isCreatingWallet
+		? 'brand'
+		: slides[index]?.topLeftColor ?? 'brand';
 
 	return (
 		<GlowingBackground topLeft={glowColor}>

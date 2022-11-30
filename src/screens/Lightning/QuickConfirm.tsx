@@ -13,7 +13,6 @@ import {
 import SafeAreaInsets from '../../components/SafeAreaInsets';
 import GlowingBackground from '../../components/GlowingBackground';
 import NavigationHeader from '../../components/NavigationHeader';
-import useColors from '../../hooks/colors';
 import AmountToggle from '../../components/AmountToggle';
 import SwipeToConfirm from '../../components/SwipeToConfirm';
 import type { LightningScreenProps } from '../../navigation/types';
@@ -35,7 +34,6 @@ const QuickConfirm = ({
 	navigation,
 	route,
 }: LightningScreenProps<'QuickConfirm'>): ReactElement => {
-	const colors = useColors();
 	const { total } = route.params;
 	const [spendingAmount, setSpendingAmount] = useState(
 		route.params.spendingAmount,
@@ -90,7 +88,7 @@ const QuickConfirm = ({
 	};
 
 	return (
-		<GlowingBackground topLeft={colors.purple}>
+		<GlowingBackground topLeft="purple">
 			<SafeAreaInsets type="top" />
 			<NavigationHeader
 				title="Add Instant Payments"

@@ -5,13 +5,13 @@ import React, {
 	useMemo,
 	useState,
 } from 'react';
-import { StyleSheet, Image, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, TouchableOpacity } from 'react-native';
 import { useSelector } from 'react-redux';
 
 import { View as ThemedView } from '../../styles/components';
 import { IListData, ItemData } from '../../components/List';
-import Glow from '../../components/Glow';
 import SettingsView from './SettingsView';
+import GlowImage from '../../components/GlowImage';
 import Store from '../../store/types';
 import { updateSettings } from '../../store/actions/settings';
 import { showSuccessNotification } from '../../utils/notifications';
@@ -98,10 +98,7 @@ const MainSettings = ({
 				style={styles.imageContainer}
 				activeOpacity={1}
 				onPress={updateDevOptions}>
-				<View style={styles.imageContainer} pointerEvents="none">
-					<Glow color="brand" size={500} style={styles.glow} />
-					<Image style={styles.image} source={imageSrc} resizeMode="contain" />
-				</View>
+				<GlowImage image={imageSrc} imageSize={200} />
 			</TouchableOpacity>
 		</ThemedView>
 	);
@@ -115,13 +112,6 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		justifyContent: 'center',
 		flexGrow: 1,
-	},
-	image: {
-		width: 200,
-		height: 200,
-	},
-	glow: {
-		position: 'absolute',
 	},
 });
 

@@ -1,5 +1,5 @@
 import React, { memo, ReactElement, useCallback, useMemo, useRef } from 'react';
-import { StyleSheet, View, Image, Platform } from 'react-native';
+import { StyleSheet, View, Platform } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useFocusEffect } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
@@ -8,12 +8,12 @@ import Lottie from 'lottie-react-native';
 import { Subtitle, Text01S } from '../../../styles/components';
 import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
 import GradientView from '../../../components/GradientView';
+import GlowImage from '../../../components/GlowImage';
 import Button from '../../../components/Button';
-import Glow from '../../../components/Glow';
 import { toggleView } from '../../../store/actions/user';
-import type { SendScreenProps } from '../../../navigation/types';
 import { navigate } from '../../../navigation/root/RootNavigator';
 import Store from '../../../store/types';
+import type { SendScreenProps } from '../../../navigation/types';
 
 const confettiSrc = require('../../../assets/lottie/confetti-green.json');
 
@@ -108,14 +108,11 @@ const Result = ({
 				{errorMessage && <Text01S color="red">{errorMessage}</Text01S>}
 			</View>
 
-			<View style={styles.imageContainer} pointerEvents="none">
-				<Glow
-					style={styles.glow}
-					size={600}
-					color={success ? 'green' : 'red'}
-				/>
-				<Image source={imageSrc} style={styles.image} />
-			</View>
+			<GlowImage
+				image={imageSrc}
+				imageSize={200}
+				glowColor={success ? 'green' : 'red'}
+			/>
 
 			<View style={buttonContainer}>
 				{success && activityItem && (
@@ -154,19 +151,6 @@ const styles = StyleSheet.create({
 	},
 	errorTitle: {
 		marginBottom: 8,
-	},
-	imageContainer: {
-		flex: 1,
-		position: 'relative',
-		justifyContent: 'center',
-		alignItems: 'center',
-	},
-	image: {
-		width: 200,
-		height: 200,
-	},
-	glow: {
-		position: 'absolute',
 	},
 	buttonContainer: {
 		flexDirection: 'row',

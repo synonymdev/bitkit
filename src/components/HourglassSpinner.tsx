@@ -1,9 +1,9 @@
 import React, { ReactElement } from 'react';
-import { StyleSheet, Image, StyleProp, ViewStyle } from 'react-native';
+import { StyleSheet, StyleProp, ViewStyle } from 'react-native';
 import { withRepeat, withTiming } from 'react-native-reanimated';
 
 import { AnimatedView } from '../styles/components';
-import Glow from './Glow';
+import GlowImage from './GlowImage';
 
 const imageSrc = require('../assets/illustrations/hourglass.png');
 
@@ -33,12 +33,10 @@ export const HourglassSpinner = ({
 
 	return (
 		<AnimatedView
-			entering={entering}
 			style={[styles.container, style]}
-			color="transparent"
-			pointerEvents="none">
-			<Glow color="brand" size={600} style={styles.glow} />
-			<Image source={imageSrc} style={styles.image} />
+			entering={entering}
+			color="transparent">
+			<GlowImage image={imageSrc} imageSize={230} />
 		</AnimatedView>
 	);
 };
@@ -46,16 +44,8 @@ export const HourglassSpinner = ({
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		position: 'relative',
 		justifyContent: 'center',
 		alignItems: 'center',
-	},
-	glow: {
-		position: 'absolute',
-	},
-	image: {
-		width: 230,
-		height: 230,
 	},
 });
 

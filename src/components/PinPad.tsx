@@ -140,7 +140,7 @@ const PinPad = ({
 	const isLastAttempt = attemptsRemaining === 1;
 
 	return (
-		<GlowingBackground topLeft={brand}>
+		<GlowingBackground topLeft="brand">
 			<View style={styles.header}>
 				<SafeAreaInsets type="top" />
 				<NavigationHeader displayBackButton={showBackNavigation} />

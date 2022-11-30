@@ -1,5 +1,5 @@
 import React, { memo, ReactElement, useEffect, useState } from 'react';
-import { StyleSheet, Image } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { useSelector } from 'react-redux';
 import Share from 'react-native-share';
 
@@ -16,10 +16,10 @@ import {
 	createBackupFile,
 } from '../../../utils/backup/fileBackup';
 import SafeAreaView from '../../../components/SafeAreaView';
-import Glow from '../../../components/Glow';
+import GlowImage from '../../../components/GlowImage';
 import SafeAreaInsets from '../../../components/SafeAreaInsets';
-import type { SettingsScreenProps } from '../../../navigation/types';
 import { getKeychainValue } from '../../../utils/helpers';
+import type { SettingsScreenProps } from '../../../navigation/types';
 
 const imageSrc = require('../../../assets/illustrations/folder.png');
 
@@ -97,16 +97,12 @@ const ExportToPhone = ({
 					set up a PIN code for Bitkit.
 				</Text01S>
 
-				<View style={styles.imageContainer} pointerEvents="none">
-					<Glow style={styles.glow} size={600} color="green" />
-					<Image source={imageSrc} style={styles.image} />
-				</View>
+				<GlowImage image={imageSrc} imageSize={230} glowColor="green" />
 
 				<View style={styles.buttonContainer}>
 					<Button
 						size="large"
 						disabled={isCreating}
-						style={styles.button}
 						text="Export Wallet Data To Phone"
 						onPress={onCreateBackup}
 					/>
@@ -122,24 +118,10 @@ const styles = StyleSheet.create({
 		flex: 1,
 		paddingHorizontal: 16,
 	},
-	imageContainer: {
-		flex: 1,
-		position: 'relative',
-		justifyContent: 'center',
-		alignItems: 'center',
-	},
-	image: {
-		width: 230,
-		height: 230,
-	},
-	glow: {
-		position: 'absolute',
-	},
 	buttonContainer: {
 		marginTop: 'auto',
 		marginBottom: 16,
 	},
-	button: {},
 });
 
 export default memo(ExportToPhone);

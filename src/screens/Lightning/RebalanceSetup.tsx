@@ -23,7 +23,6 @@ import GlowingBackground from '../../components/GlowingBackground';
 import NavigationHeader from '../../components/NavigationHeader';
 import Button from '../../components/Button';
 import Money from '../../components/Money';
-import useColors from '../../hooks/colors';
 import AmountToggle from '../../components/AmountToggle';
 import FancySlider from '../../components/FancySlider';
 import NumberPadLightning from './NumberPadLightning';
@@ -52,7 +51,6 @@ export const Percentage = ({ value, type }): ReactElement => {
 const RebalanceSetup = ({
 	navigation,
 }: LightningScreenProps<'RebalanceSetup'>): ReactElement => {
-	const colors = useColors();
 	const [keybrd, setKeybrd] = useState(false);
 	const [loading, setLoading] = useState(false);
 	const [totalBalance, setTotalBalance] = useState(0);
@@ -98,7 +96,7 @@ const RebalanceSetup = ({
 	}, [navigation, spendingAmount, totalBalance]);
 
 	return (
-		<GlowingBackground topLeft={colors.purple}>
+		<GlowingBackground topLeft="purple">
 			<SafeAreaInsets type="top" />
 			<NavigationHeader
 				title="Transfer Funds"
@@ -129,7 +127,7 @@ const RebalanceSetup = ({
 					<AnimatedView color="transparent" entering={FadeIn} exiting={FadeOut}>
 						<View style={styles.row}>
 							<Caption13Up color="purple">SPENDING</Caption13Up>
-							<Caption13Up color="purple">SAVINGS</Caption13Up>
+							<Caption13Up color="orange">SAVINGS</Caption13Up>
 						</View>
 						<View style={styles.row}>
 							<Money

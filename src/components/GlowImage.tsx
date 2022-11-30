@@ -13,17 +13,19 @@ import Glow from './Glow';
 
 export const GlowImage = ({
 	image,
+	imageSize = 220,
 	glowColor = 'brand',
 	style,
 }: {
 	image: ImageSourcePropType;
+	imageSize?: number;
 	glowColor?: keyof IColors;
 	style?: StyleProp<ViewStyle>;
 }): ReactElement => {
 	return (
 		<View style={[styles.container, style]} pointerEvents="none">
 			<Glow color={glowColor} size={600} style={styles.glow} />
-			<Image source={image} style={styles.image} />
+			<Image source={image} style={[styles.image, { height: imageSize }]} />
 		</View>
 	);
 };
@@ -39,7 +41,6 @@ const styles = StyleSheet.create({
 		position: 'absolute',
 	},
 	image: {
-		height: 220,
 		resizeMode: 'contain',
 	},
 });

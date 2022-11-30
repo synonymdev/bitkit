@@ -1,12 +1,12 @@
 import React, { memo, ReactElement, useMemo } from 'react';
-import { StyleSheet, View, Image } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { Text01S } from '../../../styles/components';
 import GradientView from '../../../components/GradientView';
 import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
+import GlowImage from '../../../components/GlowImage';
 import Button from '../../../components/Button';
-import Glow from '../../../components/Glow';
 import type { BackupScreenProps } from '../../../navigation/types';
 
 const imageSrc = require('../../../assets/illustrations/exclamation-mark.png');
@@ -37,10 +37,7 @@ const Warning = ({
 				other data.
 			</Text01S>
 
-			<View style={styles.imageContainer} pointerEvents="none">
-				<Glow style={styles.glow} color="yellow" />
-				<Image source={imageSrc} style={styles.image} />
-			</View>
+			<GlowImage image={imageSrc} imageSize={200} glowColor="yellow" />
 
 			<View style={buttonContainerStyles}>
 				<Button size="large" text="OK" onPress={handleButtonPress} />
@@ -55,19 +52,6 @@ const styles = StyleSheet.create({
 	},
 	text: {
 		paddingHorizontal: 32,
-	},
-	imageContainer: {
-		flex: 1,
-		position: 'relative',
-		justifyContent: 'center',
-		alignItems: 'center',
-	},
-	image: {
-		width: 200,
-		height: 200,
-	},
-	glow: {
-		position: 'absolute',
 	},
 	buttonContainer: {
 		marginTop: 'auto',

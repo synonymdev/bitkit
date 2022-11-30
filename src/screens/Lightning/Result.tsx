@@ -1,13 +1,12 @@
 import React, { ReactElement, memo } from 'react';
-import { StyleSheet, View, Image } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
 import { Display, Text01S } from '../../styles/components';
 import SafeAreaInsets from '../../components/SafeAreaInsets';
 import GlowingBackground from '../../components/GlowingBackground';
 import NavigationHeader from '../../components/NavigationHeader';
+import GlowImage from '../../components/GlowImage';
 import Button from '../../components/Button';
-import Glow from '../../components/Glow';
-import useColors from '../../hooks/colors';
 import type { LightningScreenProps } from '../../navigation/types';
 
 const imageSrc = require('../../assets/illustrations/switch.png');
@@ -15,10 +14,8 @@ const imageSrc = require('../../assets/illustrations/switch.png');
 const Result = ({
 	navigation,
 }: LightningScreenProps<'Result'>): ReactElement => {
-	const colors = useColors();
-
 	return (
-		<GlowingBackground topLeft={colors.purple}>
+		<GlowingBackground topLeft="purple">
 			<SafeAreaInsets type="top" />
 			<NavigationHeader
 				title="Add Instant Payments"
@@ -31,10 +28,7 @@ const Result = ({
 					minutes.
 				</Text01S>
 
-				<View style={styles.imageContainer} pointerEvents="none">
-					<Glow style={styles.glow} size={600} color="purple" />
-					<Image style={styles.image} source={imageSrc} />
-				</View>
+				<GlowImage image={imageSrc} glowColor="purple" />
 
 				<View>
 					<Button
@@ -62,20 +56,6 @@ const styles = StyleSheet.create({
 	text: {
 		marginTop: 8,
 		marginBottom: 16,
-	},
-	imageContainer: {
-		flex: 1,
-		position: 'relative',
-		justifyContent: 'center',
-		alignItems: 'center',
-	},
-	image: {
-		height: 200,
-		width: 200,
-		resizeMode: 'contain',
-	},
-	glow: {
-		position: 'absolute',
 	},
 });
 

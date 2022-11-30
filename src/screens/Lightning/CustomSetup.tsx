@@ -21,7 +21,6 @@ import Barrel from './Barrel';
 import GlowingBackground from '../../components/GlowingBackground';
 import NavigationHeader from '../../components/NavigationHeader';
 import Button from '../../components/Button';
-import useColors from '../../hooks/colors';
 import { useExchangeRate } from '../../hooks/displayValues';
 import AmountToggle from '../../components/AmountToggle';
 import NumberPadLightning from './NumberPadLightning';
@@ -95,7 +94,6 @@ const CustomSetup = ({
 	);
 
 	const spending = route.params?.spending;
-	const colors = useColors();
 	const [keybrd, setKeybrd] = useState(false);
 	const [keybrdWasEverOpened, setKeybrdWasEverOpened] = useState(false);
 	const [spendingAmount, setSpendingAmount] = useState(0);
@@ -390,7 +388,7 @@ const CustomSetup = ({
 	]);
 
 	return (
-		<GlowingBackground topLeft={colors.purple}>
+		<GlowingBackground topLeft="purple">
 			<SafeAreaInsets type="top" />
 			<NavigationHeader
 				title="Add Instant Payments"

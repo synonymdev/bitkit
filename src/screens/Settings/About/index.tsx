@@ -164,7 +164,7 @@ const About = ({
 	);
 
 	return (
-		<GlowingBackground bottomRight="#FF6600">
+		<GlowingBackground bottomRight="brand">
 			<FlatList
 				data={null}
 				renderItem={null}

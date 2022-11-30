@@ -1,5 +1,5 @@
 import React, { memo, ReactElement, useState, useEffect, useMemo } from 'react';
-import { Image, Linking, Platform, StyleSheet, View } from 'react-native';
+import { Linking, Platform, StyleSheet, View } from 'react-native';
 import rnBiometrics from 'react-native-biometrics';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -10,12 +10,13 @@ import {
 	Text01S,
 	TouchIdIcon,
 } from '../../../styles/components';
+import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
+import GradientView from '../../../components/GradientView';
+import GlowImage from '../../../components/GlowImage';
 import Button from '../../../components/Button';
 import Glow from '../../../components/Glow';
 import { toggleBiometrics } from '../../../utils/settings';
 import { IsSensorAvailableResult } from '../../../components/Biometrics';
-import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
-import GradientView from '../../../components/GradientView';
 import { showErrorNotification } from '../../../utils/notifications';
 import type { PinScreenProps } from '../../../navigation/types';
 
@@ -102,10 +103,7 @@ const AskForBiometrics = ({
 							yet (or it is not supported). You can try to enable biometric
 							security in the phone settings.
 						</Text01S>
-						<View style={styles.imageContainer} pointerEvents="none">
-							<Glow style={styles.glow} color="yellow" />
-							<Image source={imageSrc} style={styles.image} />
-						</View>
+						<GlowImage image={imageSrc} imageSize={200} glowColor="yellow" />
 					</>
 				)}
 
@@ -173,10 +171,6 @@ const styles = StyleSheet.create({
 		position: 'relative',
 		justifyContent: 'center',
 		alignItems: 'center',
-	},
-	image: {
-		width: 200,
-		height: 200,
 	},
 	glow: {
 		position: 'absolute',

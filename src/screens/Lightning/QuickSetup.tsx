@@ -22,7 +22,6 @@ import SafeAreaInsets from '../../components/SafeAreaInsets';
 import GlowingBackground from '../../components/GlowingBackground';
 import NavigationHeader from '../../components/NavigationHeader';
 import Button from '../../components/Button';
-import useColors from '../../hooks/colors';
 import AmountToggle from '../../components/AmountToggle';
 import FancySlider from '../../components/FancySlider';
 import NumberPadLightning from './NumberPadLightning';
@@ -61,7 +60,6 @@ const QuickSetup = ({
 	navigation,
 	route,
 }: LightningScreenProps<'QuickSetup'>): ReactElement => {
-	const colors = useColors();
 	const [keybrd, setKeybrd] = useState(false);
 	const [loading, setLoading] = useState(false);
 	const [totalBalance, setTotalBalance] = useState(0);
@@ -176,7 +174,7 @@ const QuickSetup = ({
 	]);
 
 	return (
-		<GlowingBackground topLeft={colors.purple}>
+		<GlowingBackground topLeft="purple">
 			<SafeAreaInsets type="top" />
 			<NavigationHeader
 				title={headerTitle}
@@ -212,7 +210,7 @@ const QuickSetup = ({
 							exiting={FadeOut}>
 							<View style={styles.row}>
 								<Caption13Up color="purple">SPENDING</Caption13Up>
-								<Caption13Up color="purple">SAVINGS</Caption13Up>
+								<Caption13Up color="orange">SAVINGS</Caption13Up>
 							</View>
 							<View style={styles.sliderContainer}>
 								<FancySlider

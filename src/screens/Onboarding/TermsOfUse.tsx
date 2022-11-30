@@ -6,7 +6,6 @@ import GlowingBackground from '../../components/GlowingBackground';
 import SafeAreaInsets from '../../components/SafeAreaInsets';
 import Button from '../../components/Button';
 import CheckButton from '../../components/CheckButton';
-import useColors from '../../hooks/colors';
 import { openURL } from '../../utils/helpers';
 import type { OnboardingStackScreenProps } from '../../navigation/types';
 
@@ -15,7 +14,6 @@ import termsOfUseText from '../../assets/tos';
 const TermsOfUse = ({
 	navigation,
 }: OnboardingStackScreenProps<'TermsOfUse'>): ReactElement => {
-	const colors = useColors();
 	const [termsOfUse, setTermsOfUse] = useState(false);
 	const [privacyPolicy, setPrivacyPolicy] = useState(false);
 	const onPress = (): void => navigation.navigate('Welcome');
@@ -23,7 +21,7 @@ const TermsOfUse = ({
 	const isValid = termsOfUse && privacyPolicy;
 
 	return (
-		<GlowingBackground topLeft={colors.brand}>
+		<GlowingBackground topLeft="brand">
 			<SafeAreaInsets type="top" />
 			<View style={styles.content}>
 				<ScrollView style={styles.tos}>

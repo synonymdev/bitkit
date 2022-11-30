@@ -17,7 +17,6 @@ import GlowingBackground from '../../components/GlowingBackground';
 import NavigationHeader from '../../components/NavigationHeader';
 import SwipeToConfirm from '../../components/SwipeToConfirm';
 import AmountToggle from '../../components/AmountToggle';
-import useColors from '../../hooks/colors';
 import useDisplayValues from '../../hooks/displayValues';
 import NumberPadWeeks from './NumberPadWeeks';
 import { LightningScreenProps } from '../../navigation/types';
@@ -42,7 +41,6 @@ const CustomConfirm = ({
 	const selectedWallet = useSelector(
 		(state: Store) => state.wallet.selectedWallet,
 	);
-	const colors = useColors();
 	const [keybrd, setKeybrd] = useState(false);
 	const [loading, setLoading] = useState(false);
 	const [weeks, setWeeks] = useState(6);
@@ -103,7 +101,7 @@ const CustomConfirm = ({
 	};
 
 	return (
-		<GlowingBackground topLeft={colors.purple}>
+		<GlowingBackground topLeft="purple">
 			<SafeAreaInsets type="top" />
 			<NavigationHeader
 				title="Add Instant Payments"

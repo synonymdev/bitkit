@@ -1,12 +1,12 @@
 import React, { memo, ReactElement, useMemo } from 'react';
-import { StyleSheet, View, Image } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { View as ThemedView, Text01S } from '../../../styles/components';
 import SafeAreaInsets from '../../../components/SafeAreaInsets';
 import NavigationHeader from '../../../components/NavigationHeader';
+import GlowImage from '../../../components/GlowImage';
 import Button from '../../../components/Button';
-import Glow from '../../../components/Glow';
 import type { SettingsScreenProps } from '../../../navigation/types';
 
 const imageSrc = require('../../../assets/illustrations/check.png');
@@ -39,10 +39,7 @@ const PinChanged = ({
 				</Text01S>
 			</View>
 
-			<View style={styles.imageContainer} pointerEvents="none">
-				<Glow style={styles.glow} size={600} color="green" />
-				<Image source={imageSrc} style={styles.image} />
-			</View>
+			<GlowImage image={imageSrc} imageSize={200} glowColor="green" />
 
 			<View style={buttonContainerStyles}>
 				<Button size="large" text="OK" onPress={handleButtonPress} />
@@ -58,19 +55,6 @@ const styles = StyleSheet.create({
 	message: {
 		marginHorizontal: 16,
 		alignSelf: 'flex-start',
-	},
-	imageContainer: {
-		flex: 1,
-		position: 'relative',
-		justifyContent: 'center',
-		alignItems: 'center',
-	},
-	image: {
-		width: 200,
-		height: 200,
-	},
-	glow: {
-		position: 'absolute',
 	},
 	buttonContainer: {
 		marginTop: 'auto',

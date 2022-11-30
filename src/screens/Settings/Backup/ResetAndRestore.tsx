@@ -1,16 +1,16 @@
 import React, { memo, ReactElement, useState } from 'react';
-import { StyleSheet, Image } from 'react-native';
+import { StyleSheet } from 'react-native';
 
 import { View, Text01S } from '../../../styles/components';
 import NavigationHeader from '../../../components/NavigationHeader';
-import Dialog from '../../../components/Dialog';
-import Button from '../../../components/Button';
-import SafeAreaView from '../../../components/SafeAreaView';
-import Glow from '../../../components/Glow';
 import SafeAreaInsets from '../../../components/SafeAreaInsets';
-import type { SettingsScreenProps } from '../../../navigation/types';
+import SafeAreaView from '../../../components/SafeAreaView';
+import Dialog from '../../../components/Dialog';
+import GlowImage from '../../../components/GlowImage';
+import Button from '../../../components/Button';
 import { wipeApp } from '../../../store/actions/settings';
 import { toggleView } from '../../../store/actions/user';
+import type { SettingsScreenProps } from '../../../navigation/types';
 
 const imageSrc = require('../../../assets/illustrations/restore.png');
 
@@ -33,10 +33,7 @@ const ResetAndRestore = ({
 					Resetting will overwrite your current Bitkit setup.
 				</Text01S>
 
-				<View style={styles.imageContainer} pointerEvents="none">
-					<Glow style={styles.glow} size={600} color="brand" />
-					<Image source={imageSrc} style={styles.image} />
-				</View>
+				<GlowImage image={imageSrc} imageSize={230} />
 
 				<View style={styles.buttonContainer}>
 					<Button
@@ -80,19 +77,6 @@ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		paddingHorizontal: 16,
-	},
-	imageContainer: {
-		flex: 1,
-		position: 'relative',
-		justifyContent: 'center',
-		alignItems: 'center',
-	},
-	image: {
-		width: 230,
-		height: 230,
-	},
-	glow: {
-		position: 'absolute',
 	},
 	buttonContainer: {
 		marginTop: 'auto',

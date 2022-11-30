@@ -7,7 +7,6 @@ import SafeAreaInsets from '../../components/SafeAreaInsets';
 import GlowingBackground from '../../components/GlowingBackground';
 import NavigationHeader from '../../components/NavigationHeader';
 import Button from '../../components/Button';
-import useColors from '../../hooks/colors';
 import type { LightningScreenProps } from '../../navigation/types';
 import Store from '../../store/types';
 import { useBalance } from '../../hooks/wallet';
@@ -18,11 +17,10 @@ const imageSrc = require('../../assets/illustrations/lightning.png');
 const Introduction = ({
 	navigation,
 }: LightningScreenProps<'Introduction'>): ReactElement => {
+	const balance = useBalance({ onchain: true });
 	const isGeoBlocked = useSelector(
 		(state: Store) => state.user?.isGeoBlocked ?? false,
 	);
-	const balance = useBalance({ onchain: true });
-	const colors = useColors();
 
 	const txt = useMemo(() => {
 		if (isGeoBlocked) {
@@ -40,7 +38,7 @@ const Introduction = ({
 	}, [balance.satoshis]);
 
 	return (
-		<GlowingBackground topLeft={colors.purple}>
+		<GlowingBackground topLeft="purple">
 			<View color="transparent" style={styles.slide}>
 				<SafeAreaInsets type="top" />
 				<NavigationHeader

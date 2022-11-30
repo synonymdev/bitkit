@@ -12,7 +12,6 @@ import {
 import SafeAreaInsets from '../../components/SafeAreaInsets';
 import GlowingBackground from '../../components/GlowingBackground';
 import NavigationHeader from '../../components/NavigationHeader';
-import useColors from '../../hooks/colors';
 import AmountToggle from '../../components/AmountToggle';
 import SwipeToConfirm from '../../components/SwipeToConfirm';
 import type { LightningScreenProps } from '../../navigation/types';
@@ -29,7 +28,6 @@ const RebalanceConfirm = ({
 	navigation,
 	route,
 }: LightningScreenProps<'RebalanceConfirm'>): ReactElement => {
-	const colors = useColors();
 	const { total } = route.params;
 	const [spendingAmount, setSpendingAmount] = useState(
 		route.params.spendingAmount,
@@ -52,7 +50,7 @@ const RebalanceConfirm = ({
 	const fiatSymbol = '$';
 
 	return (
-		<GlowingBackground topLeft={colors.purple}>
+		<GlowingBackground topLeft="purple">
 			<SafeAreaInsets type="top" />
 			<NavigationHeader
 				title="Transfer Funds"

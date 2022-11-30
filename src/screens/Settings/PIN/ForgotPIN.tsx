@@ -1,10 +1,11 @@
 import React, { memo, ReactElement, useMemo } from 'react';
-import { StyleSheet, Image, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { Text01S } from '../../../styles/components';
 import BottomSheetWrapper from '../../../components/BottomSheetWrapper';
-import Glow from '../../../components/Glow';
+import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
+import GlowImage from '../../../components/GlowImage';
 import Button from '../../../components/Button';
 import { toggleView } from '../../../store/actions/user';
 import { wipeApp } from '../../../store/actions/settings';
@@ -12,7 +13,6 @@ import {
 	useBottomSheetBackPress,
 	useSnapPoints,
 } from '../../../hooks/bottomSheet';
-import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
 
 const imageSrc = require('../../../assets/illustrations/restore.png');
 
@@ -51,10 +51,9 @@ const ForgotPIN = (): ReactElement => {
 					Forgot your PIN? Reset and recover your Bitkit wallet with your
 					recovery phrase. Set a new PIN after completing recovery.
 				</Text01S>
-				<View style={styles.imageContainer} pointerEvents="none">
-					<Glow color="brand" style={styles.glow} />
-					<Image style={styles.image} resizeMode="contain" source={imageSrc} />
-				</View>
+
+				<GlowImage image={imageSrc} imageSize={192} />
+
 				<View style={buttonContainerStyles}>
 					<Button
 						style={styles.button}
@@ -73,19 +72,6 @@ const styles = StyleSheet.create({
 		flex: 1,
 		alignItems: 'center',
 		paddingHorizontal: 32,
-	},
-	imageContainer: {
-		flex: 1,
-		position: 'relative',
-		alignItems: 'center',
-		justifyContent: 'center',
-	},
-	image: {
-		width: 192,
-		height: 192,
-	},
-	glow: {
-		position: 'absolute',
 	},
 	buttonContainer: {
 		marginTop: 'auto',

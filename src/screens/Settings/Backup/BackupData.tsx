@@ -1,11 +1,11 @@
 import React, { memo, ReactElement } from 'react';
-import { StyleSheet, Image } from 'react-native';
+import { StyleSheet } from 'react-native';
 
 import { View, Text01S } from '../../../styles/components';
-import Glow from '../../../components/Glow';
 import NavigationHeader from '../../../components/NavigationHeader';
-import type { SettingsScreenProps } from '../../../navigation/types';
 import SafeAreaView from '../../../components/SafeAreaView';
+import GlowImage from '../../../components/GlowImage';
+import type { SettingsScreenProps } from '../../../navigation/types';
 
 const imageSrc = require('../../../assets/illustrations/folder.png');
 
@@ -120,10 +120,7 @@ const BackupData = ({
 					data will be restored.
 				</Text01S>
 
-				<View style={styles.imageContainer} pointerEvents="none">
-					<Glow style={styles.glow} size={600} color="green" />
-					<Image source={imageSrc} style={styles.image} />
-				</View>
+				<GlowImage image={imageSrc} glowColor="green" />
 
 				{/*<List style={styles.list} data={settingsListData} bounces={false} />*/}
 			</View>
@@ -147,19 +144,6 @@ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		paddingHorizontal: 16,
-	},
-	imageContainer: {
-		flex: 1,
-		position: 'relative',
-		justifyContent: 'center',
-		alignItems: 'center',
-	},
-	image: {
-		width: 230,
-		height: 230,
-	},
-	glow: {
-		position: 'absolute',
 	},
 });
 

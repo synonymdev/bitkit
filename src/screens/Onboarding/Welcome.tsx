@@ -7,17 +7,14 @@ import GlowingBackground from '../../components/GlowingBackground';
 import SafeAreaInsets from '../../components/SafeAreaInsets';
 import Button from '../../components/Button';
 import BitkitLogo from '../../assets/bitkit-logo.svg';
-import useColors from '../../hooks/colors';
-import type { OnboardingStackScreenProps } from '../../navigation/types';
 import DetectSwipe from '../../components/DetectSwipe';
+import type { OnboardingStackScreenProps } from '../../navigation/types';
 
 const imageSrc = require('../../assets/illustrations/figures.png');
 
 const OnboardingWelcomeScreen = ({
 	navigation,
 }: OnboardingStackScreenProps<'Welcome'>): ReactElement => {
-	const colors = useColors();
-
 	const onGetStarted = (): void => {
 		navigation.navigate('Slideshow');
 	};
@@ -32,7 +29,7 @@ const OnboardingWelcomeScreen = ({
 	};
 
 	return (
-		<GlowingBackground topLeft={colors.brand}>
+		<GlowingBackground topLeft="brand">
 			<DetectSwipe onSwipeLeft={onSwipeLeft}>
 				<View style={styles.content}>
 					<AnimatedView

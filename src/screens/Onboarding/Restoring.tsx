@@ -4,7 +4,6 @@ import { Result } from '@synonymdev/result';
 
 import { updateUser } from '../../store/actions/user';
 import { useSelectedSlashtag } from '../../hooks/slashtags';
-import useColors from '../../hooks/colors';
 import GlowingBackground from '../../components/GlowingBackground';
 import { Display, Text01S } from '../../styles/components';
 import Button from '../../components/Button';
@@ -12,6 +11,7 @@ import Glow from '../../components/Glow';
 import { restoreRemoteBackups } from '../../utils/startup';
 import { sleep } from '../../utils/helpers';
 import LoadingWalletScreen from './Loading';
+import { IColors } from '../../styles/colors';
 
 const imageSrc = require('../../assets/illustrations/check.png');
 
@@ -20,8 +20,6 @@ let attemptedAutoRestore = false;
 const RestoringScreen = (): ReactElement => {
 	const [showRestored, setShowRestored] = useState(false);
 	const [showFailed, setShowFailed] = useState(false);
-
-	const { green, red } = useColors();
 	const slashtag = useSelectedSlashtag();
 
 	const onRemoteRestore = useCallback(async (): Promise<void> => {
@@ -48,11 +46,11 @@ const RestoringScreen = (): ReactElement => {
 		})();
 	}, [onRemoteRestore]);
 
-	let color = 'brand';
+	let color: keyof IColors = 'brand';
 	let content = <LoadingWalletScreen />;
 
 	if (showRestored || showFailed) {
-		color = showRestored ? green : red;
+		color = showRestored ? 'green' : 'red';
 		const title = showRestored ? 'Wallet Restored.' : 'Failed to restore.';
 		const subtitle = showRestored
 			? 'You have successfully restored your wallet from backup. Enjoy Bitkit!'

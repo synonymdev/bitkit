@@ -1,21 +1,21 @@
 import React, { memo, ReactElement, useMemo, useEffect } from 'react';
-import { StyleSheet, Image, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { useSelector } from 'react-redux';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { Text01S } from '../../../styles/components';
 import BottomSheetWrapper from '../../../components/BottomSheetWrapper';
-import Glow from '../../../components/Glow';
+import GlowImage from '../../../components/GlowImage';
 import Button from '../../../components/Button';
 import Store from '../../../store/types';
 import { toggleView, ignoreBackup } from '../../../store/actions/user';
 import { useNoTransactions } from '../../../hooks/wallet';
 import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
+import { useBalance } from '../../../hooks/wallet';
 import {
 	useBottomSheetBackPress,
 	useSnapPoints,
 } from '../../../hooks/bottomSheet';
-import { useBalance } from '../../../hooks/wallet';
 
 const imageSrc = require('../../../assets/illustrations/safe.png');
 
@@ -116,10 +116,7 @@ const BackupPrompt = (): ReactElement => {
 					displayBackButton={false}
 				/>
 				<Text01S color="white5">{text}</Text01S>
-				<View style={styles.imageContainer} pointerEvents="none">
-					<Glow color="blue" size={600} style={styles.glow} />
-					<Image style={styles.image} source={imageSrc} />
-				</View>
+				<GlowImage image={imageSrc} imageSize={170} glowColor="blue" />
 				<View style={buttonContainerStyles}>
 					<Button
 						style={styles.button}
@@ -145,19 +142,6 @@ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		marginHorizontal: 32,
-	},
-	imageContainer: {
-		flex: 1,
-		position: 'relative',
-		alignItems: 'center',
-		justifyContent: 'center',
-	},
-	image: {
-		width: 170,
-		height: 170,
-	},
-	glow: {
-		position: 'absolute',
 	},
 	buttonContainer: {
 		marginTop: 'auto',

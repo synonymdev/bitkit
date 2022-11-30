@@ -81,7 +81,7 @@ export type SettingsStackParamList = {
 	ManageSeedPhrase: undefined;
 	Channels: undefined;
 	ChannelDetails: undefined;
-	CloseConnection: undefined;
+	CloseConnection: { channelId: string };
 	LightningAddConnection: undefined;
 	LightningAddConnectionResult: undefined;
 	LightningRoot: NavigatorScreenParams<LightningStackParamList>;

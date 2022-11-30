@@ -20,6 +20,7 @@ import {
 import { View } from '../styles/components';
 import Store from '../store/types';
 import themes from '../styles/themes';
+import { IColors } from '../styles/colors';
 
 const DURATION = 500;
 
@@ -72,8 +73,8 @@ const GlowingBackground = ({
 	bottomRight,
 }: {
 	children: ReactNode;
-	topLeft?: string;
-	bottomRight?: string;
+	topLeft?: keyof IColors;
+	bottomRight?: keyof IColors;
 }): ReactElement => {
 	const colors = useSelector(
 		(state: Store) => themes[state.settings.theme].colors,

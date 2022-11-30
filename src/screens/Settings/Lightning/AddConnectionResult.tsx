@@ -1,13 +1,18 @@
 import React, { ReactElement, memo } from 'react';
-import { StyleSheet, View, Image } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
 import { Text01S, View as ThemedView } from '../../../styles/components';
 import SafeAreaInsets from '../../../components/SafeAreaInsets';
 import NavigationHeader from '../../../components/NavigationHeader';
+import GlowImage from '../../../components/GlowImage';
 import Button from '../../../components/Button';
-import Glow from '../../../components/Glow';
+import type { SettingsScreenProps } from '../../../navigation/types';
 
-const AddConnectionResult = ({ navigation }): ReactElement => {
+const imageSrc = require('../../../assets/illustrations/check.png');
+
+const AddConnectionResult = ({
+	navigation,
+}: SettingsScreenProps<'LightningAddConnectionResult'>): ReactElement => {
 	return (
 		<ThemedView style={styles.root}>
 			<SafeAreaInsets type="top" />
@@ -18,13 +23,7 @@ const AddConnectionResult = ({ navigation }): ReactElement => {
 					might take a while for the connection to become ready for use.
 				</Text01S>
 
-				<View style={styles.imageContainer} pointerEvents="none">
-					<Glow style={styles.glow} size={600} color="green" />
-					<Image
-						style={styles.image}
-						source={require('../../../assets/illustrations/check.png')}
-					/>
-				</View>
+				<GlowImage image={imageSrc} imageSize={200} glowColor="green" />
 
 				<View>
 					<Button
@@ -55,22 +54,6 @@ const styles = StyleSheet.create({
 	text: {
 		marginTop: 16,
 		marginBottom: 16,
-	},
-	imageContainer: {
-		height: 300,
-		width: 300,
-		justifyContent: 'center',
-		alignItems: 'center',
-		position: 'relative',
-		alignSelf: 'center',
-	},
-	glow: {
-		position: 'absolute',
-	},
-	image: {
-		height: 200,
-		width: 200,
-		resizeMode: 'contain',
 	},
 });
 

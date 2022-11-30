@@ -1,15 +1,15 @@
 import React, { memo, ReactElement, useMemo } from 'react';
-import { StyleSheet, View, Image, Pressable } from 'react-native';
+import { StyleSheet, View, Pressable } from 'react-native';
 import { useSelector } from 'react-redux';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { Switch, Text01S, Text01M } from '../../../styles/components';
-import Button from '../../../components/Button';
-import Glow from '../../../components/Glow';
-import { toggleView } from '../../../store/actions/user';
 import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
 import GradientView from '../../../components/GradientView';
+import GlowImage from '../../../components/GlowImage';
+import Button from '../../../components/Button';
 import Store from '../../../store/types';
+import { toggleView } from '../../../store/actions/user';
 import { updateSettings } from '../../../store/actions/settings';
 import type { PinScreenProps } from '../../../navigation/types';
 
@@ -62,10 +62,7 @@ const Result = ({ route }: PinScreenProps<'Result'>): ReactElement => {
 				)}
 			</View>
 
-			<View style={styles.imageContainer} pointerEvents="none">
-				<Glow style={styles.glow} size={600} color="green" />
-				<Image source={imageSrc} style={styles.image} />
-			</View>
+			<GlowImage image={imageSrc} imageSize={200} glowColor="green" />
 
 			<Pressable style={styles.toggle} onPress={handleTogglePress}>
 				<Text01M>Also require for payments</Text01M>
@@ -86,19 +83,6 @@ const styles = StyleSheet.create({
 	message: {
 		marginHorizontal: 32,
 		alignSelf: 'flex-start',
-	},
-	imageContainer: {
-		flex: 1,
-		position: 'relative',
-		justifyContent: 'center',
-		alignItems: 'center',
-	},
-	image: {
-		width: 200,
-		height: 200,
-	},
-	glow: {
-		position: 'absolute',
 	},
 	toggle: {
 		flexDirection: 'row',
