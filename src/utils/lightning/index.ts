@@ -337,7 +337,6 @@ export const subscribeToLightningPayments = ({
 		selectedNetwork = getSelectedNetwork();
 	}
 	if (!paymentSubscription) {
-		// @ts-ignore
 		paymentSubscription = ldk.onEvent(
 			EEventTypes.channel_manager_payment_claimed,
 			(res: TChannelManagerPayment) => {
@@ -350,7 +349,6 @@ export const subscribeToLightningPayments = ({
 		);
 	}
 	if (!onChannelSubscription) {
-		// @ts-ignore
 		onChannelSubscription = ldk.onEvent(EEventTypes.new_channel, () => {
 			showSuccessNotification({
 				title: 'Lightning Channel Opened',

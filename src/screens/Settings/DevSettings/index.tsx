@@ -2,7 +2,7 @@ import React, { memo, ReactElement, useMemo, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import Store from '../../../store/types';
-import { resetSettingsStore, wipeApp } from '../../../store/actions/settings';
+import actions from '../../../store/actions/actions';
 import { IListData } from '../../../components/List';
 import {
 	clearUtxos,
@@ -16,8 +16,9 @@ import { resetBlocktankStore } from '../../../store/actions/blocktank';
 import SettingsView from './../SettingsView';
 import { resetSlashtagsStore } from '../../../store/actions/slashtags';
 import { resetWidgetsStore } from '../../../store/actions/widgets';
-import actions from '../../../store/actions/actions';
 import { resetFeesStore } from '../../../store/actions/fees';
+import { resetTodos } from '../../../store/actions/todos';
+import { resetSettingsStore, wipeApp } from '../../../store/actions/settings';
 import type { SettingsScreenProps } from '../../../navigation/types';
 
 const DevSettings = ({
@@ -95,6 +96,11 @@ const DevSettings = ({
 						title: 'Reset Slashtags Store',
 						type: 'button',
 						onPress: resetSlashtagsStore,
+					},
+					{
+						title: 'Reset Todos Store',
+						type: 'button',
+						onPress: resetTodos,
 					},
 					{
 						title: 'Reset Widgets Store',

@@ -111,14 +111,19 @@ export const refreshOrder = async (
 				const finalizeRes = await finalizeChannel(orderId);
 				if (finalizeRes.isOk()) {
 					removeTodo('lightning');
-					removeTodo('lightningSettingUp');
-					addTodo('transfer');
 					const getUpdatedOrderRes = await blocktank.getOrder(orderId);
 					if (getUpdatedOrderRes.isErr()) {
 						return err(getUpdatedOrderRes.error.message);
 					}
 					orderResponse = getUpdatedOrderRes.value;
 				}
+			}
+
+			// If we have an open channel update suggestions cards
+			if (getOrderRes.value.state === 500) {
+				removeTodo('lightning');
+				removeTodo('lightningSettingUp');
+				addTodo('transfer');
 			}
 		}
 
