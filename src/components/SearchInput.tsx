@@ -1,11 +1,15 @@
-import React, { ReactElement, ReactNode, memo } from 'react';
-import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
+import React, { ReactElement, memo } from 'react';
+import {
+	StyleProp,
+	StyleSheet,
+	TextInputProps,
+	View,
+	ViewStyle,
+} from 'react-native';
 import { TextInput, MagnifyingGlassIcon } from '../styles/components';
 
-type SearchInputProps = {
+type SearchInputProps = TextInputProps & {
 	style?: StyleProp<ViewStyle>;
-	children?: ReactNode;
-	[x: string]: any;
 };
 
 const SearchInput = ({
@@ -29,10 +33,10 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		borderRadius: 32,
 		backgroundColor: 'rgba(255, 255, 255, 0.08)',
+		height: 48,
 		overflow: 'hidden',
 	},
 	input: {
-		height: 48,
 		fontSize: 17,
 		fontWeight: '400',
 		flex: 1,
