@@ -13,7 +13,7 @@ import { View } from '../../styles/components';
 import Header from './Header';
 import DetectSwipe from '../../components/DetectSwipe';
 import BalanceHeader from '../../components/BalanceHeader';
-import TodoCarousel from '../../components/TodoCarousel';
+import Suggestions from '../../components/Suggestions';
 import Widgets from '../../components/Widgets';
 import ConnectivityIndicator from '../../components/ConnectivityIndicator';
 import SafeAreaView from '../../components/SafeAreaView';
@@ -94,7 +94,7 @@ const Wallets = ({ navigation }: TabScreenProps<'Wallets'>): ReactElement => {
 
 					{hideOnboarding ? (
 						<>
-							<TodoCarousel />
+							<Suggestions />
 							<View style={styles.content}>
 								<ConnectivityIndicator />
 								<Assets navigation={navigation} />

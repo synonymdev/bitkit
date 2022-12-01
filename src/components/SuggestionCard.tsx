@@ -1,19 +1,12 @@
 import React, { memo, ReactElement, useMemo } from 'react';
-import {
-	LayoutAnimation,
-	StyleSheet,
-	Image,
-	View,
-	ImageSourcePropType,
-} from 'react-native';
+import { LayoutAnimation, StyleSheet, Image, View } from 'react-native';
 import { Canvas, RadialGradient, Rect, vec } from '@shopify/react-native-skia';
 
 import { Caption13M, Pressable, Text01M, XIcon } from '../styles/components';
-import Card from './Card';
+import { ITodo } from '../store/types/todos';
 import { removeTodo } from '../store/actions/todos';
 import useColors from '../hooks/colors';
-import { TTodoType } from '../store/types/todos';
-import { IColors } from '../styles/colors';
+import Card from './Card';
 
 const Glow = memo(({ color }: { color: string }): ReactElement => {
 	return (
@@ -31,44 +24,41 @@ const InnerShadow = memo(({ color }: { color: string }): ReactElement => {
 	);
 });
 
-const CarouselCard = ({
+type CardProps = ITodo & {
+	onPress: () => void;
+};
+
+const SuggestionCard = ({
 	id,
 	title,
 	description,
 	color,
 	image,
+	dismissable,
 	onPress,
-}: {
-	id: TTodoType;
-	title: string;
-	description: string;
-	color: keyof IColors;
-	image: ImageSourcePropType;
-	onPress: () => void;
-}): ReactElement => {
+}: CardProps): ReactElement => {
 	LayoutAnimation.easeInEaseOut();
 
 	const colors = useColors();
-	const inverted = id === 'lightningSettingUp';
 
 	const containerStyle = useMemo(
 		() => [
 			styles.container,
-			inverted && {
+			!dismissable && {
 				borderColor: colors.purple,
 				borderWidth: 1,
 			},
 		],
-		[inverted, colors.purple],
+		[dismissable, colors.purple],
 	);
 
 	return (
 		<Card style={containerStyle}>
 			<Canvas style={styles.canvas}>
-				{inverted ? (
-					<InnerShadow color={colors[color]} />
-				) : (
+				{dismissable ? (
 					<Glow color={colors[color]} />
+				) : (
+					<InnerShadow color={colors[color]} />
 				)}
 			</Canvas>
 			<Pressable onPress={onPress} color="transparent" style={styles.pressable}>
@@ -80,7 +70,8 @@ const CarouselCard = ({
 					<Caption13M color="lightGray">{description}</Caption13M>
 				</View>
 			</Pressable>
-			{id !== 'lightningSettingUp' && (
+
+			{dismissable && (
 				<Pressable
 					color="transparent"
 					style={styles.dismiss}
@@ -127,4 +118,4 @@ const styles = StyleSheet.create({
 	},
 });
 
-export default memo(CarouselCard);
+export default memo(SuggestionCard);

@@ -11,7 +11,7 @@ import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import Carousel from 'react-native-reanimated-carousel';
 
 import { View, Subtitle } from '../styles/components';
-import CarouselCard from './CarouselCard';
+import SuggestionCard from './SuggestionCard';
 import { TTodoType } from '../store/types/todos';
 import { toggleView } from '../store/actions/user';
 import Store from '../store/types';
@@ -19,7 +19,7 @@ import { useBalance } from '../hooks/wallet';
 import Dialog from './Dialog';
 import type { RootNavigationProp } from '../navigation/types';
 
-const TodoCarousel = (): ReactElement => {
+const Suggestions = (): ReactElement => {
 	const navigation = useNavigation<RootNavigationProp>();
 	const { width } = useWindowDimensions();
 	const [index, setIndex] = useState(0);
@@ -115,13 +115,14 @@ const TodoCarousel = (): ReactElement => {
 					panGestureHandlerProps={panGestureHandlerProps}
 					onSnapToItem={setIndex}
 					renderItem={({ item }): ReactElement => (
-						<CarouselCard
+						<SuggestionCard
 							id={item.id}
 							key={item.id}
 							title={item.title}
 							description={item.description}
 							color={item.color}
 							image={item.image}
+							dismissable={item.dismissable}
 							onPress={(): void => handleOnPress(item.id)}
 						/>
 					)}
@@ -153,4 +154,4 @@ const styles = StyleSheet.create({
 	},
 });
 
-export default memo(TodoCarousel);
+export default memo(Suggestions);
