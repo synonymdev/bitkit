@@ -10,6 +10,7 @@ export const defaultViewController: IViewControllerData = {
 };
 
 export const defaultViewControllers: IUser['viewController'] = {
+	appUpdatePrompt: defaultViewController,
 	sendNavigation: defaultViewController,
 	receiveNavigation: defaultViewController,
 	backupPrompt: defaultViewController,
@@ -36,6 +37,7 @@ export const defaultUserShape: IUser = {
 	ignoreBackupTimestamp: 0,
 	ignoreHighBalanceCount: 0,
 	ignoreHighBalanceTimestamp: 0,
+	ignoreAppUpdateTimestamp: 0,
 	startCoopCloseTimestamp: 0,
 	backupVerified: false,
 	requiresRemoteRestore: false,

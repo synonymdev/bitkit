@@ -28,9 +28,6 @@ const user = (state: IUser = defaultUserShape, action): IUser => {
 				viewController: defaultViewControllers,
 			};
 
-		case actions.RESET_USER_STORE:
-			return { ...defaultUserShape };
-
 		case actions.USER_IGNORE_BACKUP:
 			return {
 				...state,
@@ -50,11 +47,20 @@ const user = (state: IUser = defaultUserShape, action): IUser => {
 				startCoopCloseTimestamp: action.payload,
 			};
 
+		case actions.USER_IGNORE_APP_UPDATE:
+			return {
+				...state,
+				ignoreAppUpdateTimestamp: action.payload,
+			};
+
 		case actions.USER_VERIFY_BACKUP:
 			return {
 				...state,
 				backupVerified: true,
 			};
+
+		case actions.RESET_USER_STORE:
+			return defaultUserShape;
 
 		default:
 			return state;

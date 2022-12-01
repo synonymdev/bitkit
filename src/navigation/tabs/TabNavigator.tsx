@@ -17,6 +17,7 @@ import WalletsScreen from '../../screens/Wallets';
 import WalletsDetail from '../../screens/Wallets/WalletsDetail';
 import BackupPrompt from '../../screens/Settings/Backup/BackupPrompt';
 import HighBalanceWarning from '../bottom-sheet/HighBalanceWarning';
+import AppUpdatePrompt from '../bottom-sheet/AppUpdatePrompt';
 import { ScanIcon, Text02M } from '../../styles/components';
 import AuthCheck from '../../components/AuthCheck';
 import BlurView from '../../components/BlurView';
@@ -26,11 +27,11 @@ import useColors from '../../hooks/colors';
 import { TAssetType } from '../../store/types/wallet';
 
 export type TabStackParamList = {
+	AuthCheck: { onSuccess: () => void };
 	Wallets: undefined;
 	WalletsDetail: {
 		assetType: TAssetType;
 	};
-	AuthCheck: { onSuccess: () => void };
 };
 
 const Tab = createBottomTabNavigator();
@@ -161,6 +162,7 @@ export const TabBar = ({
 				<>
 					<BackupPrompt />
 					<HighBalanceWarning />
+					<AppUpdatePrompt />
 				</>
 			)}
 		</>

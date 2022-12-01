@@ -39,6 +39,16 @@ const migrations = {
 			},
 		};
 	},
+	4: (state): PersistedState => {
+		return {
+			...state,
+			user: {
+				...state.user,
+				viewController: defaultViewControllers,
+				ignoreAppUpdateTimestamp: 0,
+			},
+		};
+	},
 };
 
 export default migrations;

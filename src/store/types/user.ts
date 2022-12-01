@@ -2,6 +2,7 @@ import { TAssetNetwork } from './wallet';
 import { IActivityItem } from './activity';
 
 export type TViewController =
+	| 'appUpdatePrompt'
 	| 'sendNavigation'
 	| 'receiveNavigation'
 	| 'backupPrompt'
@@ -43,6 +44,7 @@ export interface IUser {
 	ignoreBackupTimestamp: number;
 	ignoreHighBalanceCount: number;
 	ignoreHighBalanceTimestamp: number;
+	ignoreAppUpdateTimestamp: number;
 	startCoopCloseTimestamp: number;
 	backupVerified: boolean;
 	requiresRemoteRestore: boolean;

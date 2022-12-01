@@ -65,6 +65,14 @@ export const ignoreHighBalance = (): Result<string> => {
 	return ok('');
 };
 
+export const ignoreAppUpdate = (): Result<string> => {
+	dispatch({
+		type: actions.USER_IGNORE_APP_UPDATE,
+		payload: Number(new Date()),
+	});
+	return ok('');
+};
+
 export const startCoopCloseTimer = (): Result<string> => {
 	dispatch({
 		type: actions.USER_START_COOP_CLOSE_TIMER,
