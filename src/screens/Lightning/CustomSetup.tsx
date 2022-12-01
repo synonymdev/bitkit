@@ -72,12 +72,12 @@ const PACKAGES_RECEIVING: TPackages[] = [
 	},
 	{
 		id: 'medium',
-		fiatAmount: 1000,
+		fiatAmount: 500,
 		img: require('../../assets/illustrations/coin-stack-2.png'),
 	},
 	{
 		id: 'big',
-		fiatAmount: 2500,
+		fiatAmount: 999,
 		img: require('../../assets/illustrations/coin-stack-3.png'),
 	},
 ];

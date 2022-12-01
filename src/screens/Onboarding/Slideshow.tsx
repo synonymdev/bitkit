@@ -46,7 +46,7 @@ import type { OnboardingStackScreenProps } from '../../navigation/types';
 
 const shieldImageSrc = require('../../assets/illustrations/shield-b.png');
 const lightningImageSrc = require('../../assets/illustrations/lightning.png');
-const padlockImageSrc = require('../../assets/illustrations/padlock.png');
+const sparkImageSrc = require('../../assets/illustrations/spark.png');
 const walletImageSrc = require('../../assets/illustrations/wallet.png');
 
 type Slide = {
@@ -106,7 +106,7 @@ const Slideshow = ({
 							<Display>Bitcoin,</Display>
 							<Display color="brand">Everywhere.</Display>
 							<Text01S color="gray1" style={styles.text}>
-								Pay anyone, anywhere, any time and spend your Bitcoin on the
+								Pay anyone, anywhere, any time, and spend your Bitcoin on the
 								things you value in life.
 							</Text01S>
 						</View>
@@ -126,7 +126,7 @@ const Slideshow = ({
 							<Display color="purple">Fast.</Display>
 							<Text01S color="gray1" style={styles.text}>
 								Send Bitcoin faster than ever. Enjoy instant transactions with
-								friends, family and merchants.
+								friends, family, and merchants.
 							</Text01S>
 						</View>
 						<SafeAreaInsets type="bottom" />
@@ -138,14 +138,14 @@ const Slideshow = ({
 				slide: (): ReactElement => (
 					<View style={styles.slide}>
 						<View style={styles.imageContainer}>
-							<Image style={illustrationStyles} source={padlockImageSrc} />
+							<Image style={illustrationStyles} source={sparkImageSrc} />
 						</View>
 						<View style={styles.textContent}>
-							<Display>Log in with</Display>
-							<Display color="blue">just a Tap.</Display>
+							<Display>Limitless</Display>
+							<Display color="blue">Web.</Display>
 							<Text01S color="gray1" style={styles.text}>
-								Experience the web without limits: portable profiles & feeds,
-								dynamic contacts, passwordless accounts.
+								Hold the keys to portable profiles, dynamic contacts,
+								distributed feeds, and passwordless accounts.
 							</Text01S>
 						</View>
 						<SafeAreaInsets type="bottom" />
@@ -165,7 +165,8 @@ const Slideshow = ({
 								<Display color="brand"> your Wallet.</Display>
 							</Display>
 							<Text01S color="gray1" style={styles.text}>
-								Please note: Bitkit is beta software.
+								Please note: Bitkit is <Text01S color="brand">beta </Text01S>
+								software.
 							</Text01S>
 
 							<View style={styles.buttonsContainer}>
