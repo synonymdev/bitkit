@@ -913,6 +913,98 @@ export const closeChannel = async ({
 };
 
 /**
+ * Attempts to close all known channels.
+ * It will always attempt to coop close channels first and only force close if set to true.
+ * Returns an array of channels it was not able to successfully close.
+ * @param {TChannel[]} [channels]
+ * @param {boolean} [force]
+ * @param {string} [selectedWallet]
+ * @param {TAvailableNetworks} [selectedNetwork]
+ * @returns {Promise<Result<TChannel[]>>}
+ */
+export const closeAllChannels = async ({
+	channels,
+	force = false,
+	selectedWallet,
+	selectedNetwork,
+}: {
+	channels?: TChannel[];
+	force?: boolean; // It will always try to coop close first and only force close if set to true.
+	selectedWallet?: string;
+	selectedNetwork?: TAvailableNetworks;
+}): Promise<Result<TChannel[]>> => {
+	try {
+		if (!selectedWallet) {
+			selectedWallet = getSelectedWallet();
+		}
+		if (!selectedNetwork) {
+			selectedNetwork = getSelectedNetwork();
+		}
+		if (!channels) {
+			const openChannelsRes = await getOpenChannels({
+				fromStorage: true,
+				selectedNetwork,
+				selectedWallet,
+			});
+			if (openChannelsRes.isErr()) {
+				return err(openChannelsRes.error.message);
+			}
+			channels = openChannelsRes.value;
+		}
+
+		// Ensure we're fully up-to-date.
+		const refreshRes = await refreshLdk({ selectedWallet, selectedNetwork });
+		if (refreshRes.isErr()) {
+			return err(refreshRes.error.message);
+		}
+
+		const channelsUnableToCoopClose: TChannel[] = [];
+		await Promise.all(
+			channels.map(async (channel) => {
+				const { channel_id, counterparty_node_id } = channel;
+				const closeResponse = await closeChannel({
+					channelId: channel_id,
+					counterPartyNodeId: counterparty_node_id,
+					force: false,
+				});
+				if (closeResponse.isErr()) {
+					channelsUnableToCoopClose.push(channel);
+				}
+			}),
+		);
+
+		if (!force && !channelsUnableToCoopClose.length) {
+			// Finished coop closing channels.
+			// Return channels we weren't able to close, if any.
+			return ok(channelsUnableToCoopClose);
+		}
+
+		// Attempt to force close the remaining channels
+		const channelsUnableToForceClose: TChannel[] = [];
+		await Promise.all(
+			channelsUnableToCoopClose.map(async (channel) => {
+				const { channel_id, counterparty_node_id } = channel;
+				const closeResponse = await closeChannel({
+					channelId: channel_id,
+					counterPartyNodeId: counterparty_node_id,
+					force: true,
+				});
+				if (closeResponse.isErr()) {
+					channelsUnableToForceClose.push(channel);
+				}
+			}),
+		);
+
+		// Finished force closing channels.
+		// Return channels we weren't able to force close, if any.
+		return ok(channelsUnableToForceClose);
+	} catch (e) {
+		console.log(e);
+		return err(e);
+	}
+};
+
+/**
  * Attempts to create a bolt11 invoice.
  * @param {TCreatePaymentReq}
  * @returns {Promise<Result<TInvoice>>}

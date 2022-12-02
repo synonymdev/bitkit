@@ -11,35 +11,43 @@ import Button from '../../components/Button';
 // import { showErrorNotification } from '../../utils/notifications';
 // import { addTodo } from '../../store/actions/todos';
 import type { TransferScreenProps } from '../../navigation/types';
+import { closeAllChannels } from '../../utils/lightning';
+import { showErrorNotification } from '../../utils/notifications';
+import { addTodo } from '../../store/actions/todos';
+import { useSelector } from 'react-redux';
+import Store from '../../store/types';
 
 const imageSrc = require('../../assets/illustrations/exclamation-mark.png');
 
 const Availability = ({
 	navigation,
 }: TransferScreenProps<'Availability'>): ReactElement => {
+	const selectedWallet = useSelector(
+		(state: Store) => state.wallet.selectedWallet,
+	);
+	const selectedNetwork = useSelector(
+		(state: Store) => state.wallet.selectedNetwork,
+	);
+
 	const onCancel = (): void => {
 		navigation.goBack();
 	};
 
 	const onContinue = async (): Promise<void> => {
-		// TODO: close channel
-		// // Attempt to close the channel.
-		// const closeResponse = await closeChannel({
-		// 	channelId: channel.channel_id,
-		// 	counterPartyNodeId: channel.counterparty_node_id,
-		// });
-
-		// If error, display error notification and return.
-		// if (closeResponse.isErr()) {
-		// 	// TODO: keep trying to close channel in the background for 30min
-		// 	showErrorNotification({
-		// 		title: 'Channel Close Error',
-		// 		message: closeResponse.error.message,
-		// 	});
-		// 	addTodo('transferClosingChannel');
-		// 	return;
-		// }
-
+		const closeResponse = await closeAllChannels({
+			force: false,
+			selectedNetwork,
+			selectedWallet,
+		});
+		if (closeResponse.isErr()) {
+			// TODO: keep trying to close channel in the background for 30min
+			showErrorNotification({
+				title: 'Channel Close Error',
+				message: closeResponse.error.message,
+			});
+			addTodo('transferClosingChannel');
+			return;
+		}
 		navigation.navigate('Success', { type: 'savings' });
 	};
 

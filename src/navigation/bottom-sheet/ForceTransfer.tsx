@@ -15,10 +15,21 @@ import {
 // import { closeChannel } from '../../utils/lightning';
 // import { showErrorNotification } from '../../utils/notifications';
 import { addTodo, removeTodo } from '../../store/actions/todos';
+import { closeAllChannels } from '../../utils/lightning';
+import { useSelector } from 'react-redux';
+import Store from '../../store/types';
+import { showErrorNotification } from '../../utils/notifications';
 
 const imageSrc = require('../../assets/illustrations/exclamation-mark.png');
 
 const ForceTransfer = (): ReactElement => {
+	const selectedWallet = useSelector(
+		(state: Store) => state.wallet.selectedWallet,
+	);
+	const selectedNetwork = useSelector(
+		(state: Store) => state.wallet.selectedNetwork,
+	);
+
 	const snapPoints = useSnapPoints('large');
 	const insets = useSafeAreaInsets();
 
@@ -39,23 +50,19 @@ const ForceTransfer = (): ReactElement => {
 		});
 	};
 
-	const onContinue = (): void => {
-		// TODO: force close channel
-		// const closeResponse = await closeChannel({
-		// 	channelId: channel.channel_id,
-		// 	counterPartyNodeId: channel.counterparty_node_id,
-		// 	force: true,
-		// });
-
-		// If error, display error notification and return.
-		// if (closeResponse.isErr()) {
-		// 	showErrorNotification({
-		// 		title: 'Channel Close Error',
-		// 		message: closeResponse.error.message,
-		// 	});
-		// 	return;
-		// }
-
+	const onContinue = async (): Promise<void> => {
+		const closeResponse = await closeAllChannels({
+			force: true,
+			selectedNetwork,
+			selectedWallet,
+		});
+		if (closeResponse.isErr()) {
+			showErrorNotification({
+				title: 'Channel Close Error',
+				message: closeResponse.error.message,
+			});
+			return;
+		}
 		removeTodo('transferClosingChannel');
 		addTodo('transferInProgress');
 
