@@ -973,7 +973,7 @@ export const closeAllChannels = async ({
 			}),
 		);
 
-		if (!force && !channelsUnableToCoopClose.length) {
+		if (!force) {
 			// Finished coop closing channels.
 			// Return channels we weren't able to close, if any.
 			return ok(channelsUnableToCoopClose);

@@ -35,7 +35,7 @@ const Availability = ({
 
 	const onContinue = async (): Promise<void> => {
 		const closeResponse = await closeAllChannels({
-			force: false,
+			force: true,
 			selectedNetwork,
 			selectedWallet,
 		});
