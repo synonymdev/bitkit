@@ -51,11 +51,12 @@ const xToValue = (
 	if (x > width) {
 		newX = width;
 	}
+	const delta = maximumValue - minimumValue;
 	// Make sure we're not dividing by zero.
 	if (width === 0) {
 		return 0;
 	}
-	return ((maximumValue - minimumValue) / width) * newX;
+	return (delta / width) * newX;
 };
 
 const Glow = ({ style, width }): ReactElement => {
@@ -84,12 +85,15 @@ interface IFancySlider {
 	minimumValue: number;
 	maximumValue: number;
 	value: number;
-	onValueChange: Function;
+	snapPoint?: number;
+	onValueChange: (value: number) => void;
 }
+
 const FancySlider = ({
 	minimumValue,
 	maximumValue,
 	value,
+	snapPoint,
 	onValueChange,
 }: IFancySlider): ReactElement => {
 	const pan = useRef<any>(new Animated.ValueXY()).current;
@@ -137,26 +141,66 @@ const FancySlider = ({
 			}),
 			onPanResponderRelease: () => {
 				pan.flattenOffset();
+
+				// snap to start
 				if (pan.x._value < 0) {
 					Animated.spring(pan, {
 						toValue: { x: 0, y: 0 },
 						useNativeDriver: false,
-					}).start();
-				} else if (pan.x._value > endPosition) {
+					}).start(() => {
+						active.current = false;
+					});
+				}
+
+				// snap to end
+				if (pan.x._value > endPosition) {
 					Animated.spring(pan, {
 						toValue: { x: endPosition, y: 0 },
 						useNativeDriver: false,
-					}).start();
+					}).start(() => {
+						active.current = false;
+					});
 				}
-				active.current = false;
+
+				// handle snapPoint
+				if (snapPoint) {
+					const delta = maximumValue - minimumValue;
+					const snapPointX = (endPosition / delta) * snapPoint;
+
+					if (pan.x._value < snapPointX * 0.8) {
+						Animated.spring(pan, {
+							toValue: { x: 0, y: 0 },
+							useNativeDriver: false,
+							overshootClamping: true,
+						}).start(() => {
+							pan.setValue({ x: 0, y: pan.y._value });
+							active.current = false;
+						});
+					}
+
+					if (pan.x._value < snapPointX && pan.x._value >= snapPointX * 0.8) {
+						Animated.spring(pan, {
+							toValue: { x: snapPointX, y: 0 },
+							useNativeDriver: false,
+							overshootClamping: true,
+						}).start(() => {
+							pan.setValue({ x: snapPointX, y: pan.y._value });
+							active.current = false;
+						});
+					}
+				}
 			},
 		});
-	}, [endPosition, pan]);
+	}, [endPosition, pan, snapPoint, minimumValue, maximumValue]);
 
 	const circleTranslateX = pan.x.interpolate({
 		inputRange: [0, endPosition],
 		outputRange: [0, endPosition],
 	});
+
+	const snapPointTranslateX = snapPoint
+		? (containerWidth / maximumValue - minimumValue) * snapPoint
+		: null;
 
 	const minTrackWidth = pan.x.interpolate({
 		inputRange: [0, endPosition],
@@ -208,6 +252,15 @@ const FancySlider = ({
 						},
 					]}
 				/>
+				{snapPointTranslateX ? (
+					<Animated.View
+						style={[
+							styles.snapPoint,
+							{ transform: [{ translateX: snapPointTranslateX }] },
+						]}>
+						<ThemedView color="white" style={styles.snapPoint} />
+					</Animated.View>
+				) : null}
 				<Animated.View
 					style={[
 						styles.grap,
@@ -281,6 +334,13 @@ const styles = StyleSheet.create({
 		borderRadius: 16,
 		height: 16,
 		width: 16,
+	},
+	snapPoint: {
+		borderRadius: 5,
+		position: 'absolute',
+		left: 0,
+		height: 16,
+		width: 5,
 	},
 	glow: {
 		position: 'absolute',

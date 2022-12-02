@@ -14,10 +14,8 @@ import SafeAreaInsets from '../../components/SafeAreaInsets';
 import GlowingBackground from '../../components/GlowingBackground';
 import NavigationHeader from '../../components/NavigationHeader';
 import AmountToggle from '../../components/AmountToggle';
+import Percentage from '../../components/Percentage';
 import SwipeToConfirm from '../../components/SwipeToConfirm';
-import type { LightningScreenProps } from '../../navigation/types';
-
-import { Percentage } from './QuickSetup';
 import PieChart from './PieChart';
 import NumberPadLightning from './NumberPadLightning';
 import Store from '../../store/types';
@@ -26,6 +24,7 @@ import { sleep } from '../../utils/helpers';
 import { defaultOrderResponse } from '../../store/shapes/blocktank';
 import { confirmChannelPurchase } from '../../store/actions/blocktank';
 import useDisplayValues from '../../hooks/displayValues';
+import type { LightningScreenProps } from '../../navigation/types';
 
 const PIE_SIZE = 140;
 const PIE_SHIFT = 70;
@@ -117,7 +116,7 @@ const QuickConfirm = ({
 								/>
 							</View>
 							<View style={styles.percContainer}>
-								<Percentage value={spendingPercentage} type="spendings" />
+								<Percentage value={spendingPercentage} type="spending" />
 								<Percentage value={savingsPercentage} type="savings" />
 							</View>
 						</View>

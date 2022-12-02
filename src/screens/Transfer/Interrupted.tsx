@@ -7,32 +7,32 @@ import GlowingBackground from '../../components/GlowingBackground';
 import NavigationHeader from '../../components/NavigationHeader';
 import GlowImage from '../../components/GlowImage';
 import Button from '../../components/Button';
-import type { LightningScreenProps } from '../../navigation/types';
+import type { TransferScreenProps } from '../../navigation/types';
 
-const imageSrc = require('../../assets/illustrations/transfer.png');
+const imageSrc = require('../../assets/illustrations/exclamation-mark.png');
 
-const RebalanceResult = ({
+const Interrupted = ({
 	navigation,
-}: LightningScreenProps<'RebalanceResult'>): ReactElement => {
+}: TransferScreenProps<'Interrupted'>): ReactElement => {
 	return (
 		<GlowingBackground topLeft="purple">
 			<SafeAreaInsets type="top" />
 			<NavigationHeader
-				title="Rebalance Successful"
+				title="Transfer Interrupted"
 				displayBackButton={false}
 			/>
 			<View style={styles.root}>
-				<Display color="purple">Funds{'\n'}Transferred.</Display>
+				<Display color="purple">Please keep Bitkit open.</Display>
 				<Text01S color="gray1" style={styles.text}>
-					You have successfully rebalanced your savings and instant spending
-					balance.
+					Funds were not transferred yet. Bitkit will try to initiate the
+					transfer during the next 30 minutes. Please keep your app open.
 				</Text01S>
 
 				<GlowImage image={imageSrc} glowColor="purple" />
 
 				<View>
 					<Button
-						text="Awesome!"
+						text="OK"
 						size="large"
 						onPress={(): void => {
 							navigation.popToTop();
@@ -58,4 +58,4 @@ const styles = StyleSheet.create({
 	},
 });
 
-export default memo(RebalanceResult);
+export default memo(Interrupted);

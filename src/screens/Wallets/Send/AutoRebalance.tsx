@@ -38,6 +38,9 @@ const AutoRebalance = ({
 		});
 	};
 
+	// TODO: get rebalance fee
+	const cost = 0.42;
+
 	return (
 		<GradientView style={styles.container}>
 			<BottomSheetNavigationHeader title="Auto Rebalance?" />
@@ -61,7 +64,7 @@ const AutoRebalance = ({
 				<Button
 					style={styles.button2}
 					size="large"
-					text="Yes (Cost: )"
+					text={`Yes (Cost: $${cost})`}
 					onPress={onContinue}
 				/>
 			</View>

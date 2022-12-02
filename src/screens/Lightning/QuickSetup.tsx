@@ -5,28 +5,25 @@ import React, {
 	useMemo,
 	useState,
 } from 'react';
-import { StyleSheet, Platform, View } from 'react-native';
-import { FadeIn, FadeOut } from 'react-native-reanimated';
+import { StyleSheet, View } from 'react-native';
 import { useSelector } from 'react-redux';
+import { useFocusEffect } from '@react-navigation/native';
+import { FadeIn, FadeOut } from 'react-native-reanimated';
 
 import {
 	AnimatedView,
 	Caption13Up,
 	Display,
-	Headline,
-	CoinsIcon,
-	SavingsIcon,
 	Text01S,
 } from '../../styles/components';
 import SafeAreaInsets from '../../components/SafeAreaInsets';
 import GlowingBackground from '../../components/GlowingBackground';
 import NavigationHeader from '../../components/NavigationHeader';
+import Percentage from '../../components/Percentage';
 import Button from '../../components/Button';
 import AmountToggle from '../../components/AmountToggle';
 import FancySlider from '../../components/FancySlider';
 import NumberPadLightning from './NumberPadLightning';
-import type { LightningScreenProps } from '../../navigation/types';
-
 import Store from '../../store/types';
 import { useBalance } from '../../hooks/wallet';
 import {
@@ -37,28 +34,10 @@ import { startChannelPurchase } from '../../store/actions/blocktank';
 import { showErrorNotification } from '../../utils/notifications';
 import { fiatToBitcoinUnit } from '../../utils/exchange-rate';
 import { convertCurrency } from '../../utils/blocktank';
-import { useFocusEffect } from '@react-navigation/native';
-
-export const Percentage = ({ value, type }): ReactElement => {
-	return (
-		<View style={styles.pRoot}>
-			{type === 'spendings' ? (
-				<CoinsIcon color="purple" height={26} width={26} />
-			) : (
-				<SavingsIcon color="orange" height={32} width={32} />
-			)}
-
-			<Headline lineHeight="40px" style={styles.pText}>
-				{value}
-				<Text01S>%</Text01S>
-			</Headline>
-		</View>
-	);
-};
+import type { LightningScreenProps } from '../../navigation/types';
 
 const QuickSetup = ({
 	navigation,
-	route,
 }: LightningScreenProps<'QuickSetup'>): ReactElement => {
 	const [keybrd, setKeybrd] = useState(false);
 	const [loading, setLoading] = useState(false);
@@ -79,11 +58,6 @@ const QuickSetup = ({
 	);
 	const selectedCurrency = useSelector(
 		(state: Store) => state.settings.selectedCurrency,
-	);
-
-	const headerTitle = useMemo(
-		() => route.params?.headerTitle ?? 'Add Instant Payments',
-		[route.params?.headerTitle],
 	);
 
 	const savingsAmount = totalBalance - spendingAmount;
@@ -177,7 +151,7 @@ const QuickSetup = ({
 		<GlowingBackground topLeft="purple">
 			<SafeAreaInsets type="top" />
 			<NavigationHeader
-				title={headerTitle}
+				title="Add Instant Payments"
 				onClosePress={(): void => {
 					navigation.navigate('Tabs');
 				}}
@@ -221,7 +195,7 @@ const QuickSetup = ({
 								/>
 							</View>
 							<View style={styles.row}>
-								<Percentage value={spendingPercentage} type="spendings" />
+								<Percentage value={spendingPercentage} type="spending" />
 								<Percentage value={savingsPercentage} type="savings" />
 							</View>
 						</AnimatedView>
@@ -311,15 +285,6 @@ const styles = StyleSheet.create({
 	},
 	amountBigCaption: {
 		marginBottom: 4,
-	},
-	pRoot: {
-		flexDirection: 'row',
-		justifyContent: 'space-between',
-		alignItems: 'center',
-	},
-	pText: {
-		marginLeft: 8,
-		paddingTop: Platform.OS === 'android' ? 20 : 0,
 	},
 	numberpad: {
 		marginHorizontal: -16,

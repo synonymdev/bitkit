@@ -80,16 +80,9 @@ const BitcoinBreakdown = (): ReactElement => {
 
 	const onRebalancePress = useCallback(() => {
 		if (hasLightning && !isGeoBlocked) {
-			navigation.navigate('LightningRoot', {
-				screen: 'QuickSetup',
-				params: {
-					headerTitle: 'Transfer Funds',
-				},
-			});
+			navigation.navigate('Transfer', { screen: 'Setup' });
 		} else {
-			navigation.navigate('LightningRoot', {
-				screen: 'Introduction',
-			});
+			navigation.navigate('LightningRoot', { screen: 'Introduction' });
 		}
 	}, [hasLightning, isGeoBlocked, navigation]);
 

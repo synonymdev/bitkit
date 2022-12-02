@@ -14,6 +14,7 @@ import type { TAssetType } from '../../store/types/wallet';
 import type { OnboardingStackParamList } from '../onboarding/OnboardingNavigator';
 import type { TabStackParamList } from '../tabs/TabNavigator';
 import type { LightningStackParamList } from '../lightning/LightningNavigator';
+import type { TransferStackParamList } from '../transfer/TransferNavigator';
 import type { WidgetsStackParamList } from '../widgets/WidgetsNavigator';
 import type { SettingsStackParamList } from '../settings/SettingsNavigator';
 import type { BackupStackParamList } from '../bottom-sheet/BackupNavigation';
@@ -44,6 +45,7 @@ export type RootStackParamList = {
 		assetType: TAssetType;
 	};
 	LightningRoot: NavigatorScreenParams<LightningStackParamList>;
+	Transfer: NavigatorScreenParams<TransferStackParamList>;
 	Settings: NavigatorScreenParams<SettingsStackParamList>;
 	Profile: undefined;
 	ProfileEdit: undefined;
@@ -56,7 +58,7 @@ export type RootStackParamList = {
 	BlocktankOrders: undefined;
 	BlocktankOrderDetails: { blocktankOrder: IGetOrderResponse };
 	WidgetFeedEdit: { url: string };
-	WidgetsRoot: undefined;
+	WidgetsRoot: NavigatorScreenParams<WidgetsStackParamList>;
 };
 
 // Root Stack Navigator
@@ -77,6 +79,12 @@ export type TabScreenProps<T extends keyof TabStackParamList> =
 export type LightningScreenProps<T extends keyof LightningStackParamList> =
 	CompositeScreenProps<
 		NativeStackScreenProps<LightningStackParamList, T>,
+		RootStackScreenProps<keyof RootStackParamList>
+	>;
+
+export type TransferScreenProps<T extends keyof TransferStackParamList> =
+	CompositeScreenProps<
+		NativeStackScreenProps<TransferStackParamList, T>,
 		RootStackScreenProps<keyof RootStackParamList>
 	>;
 

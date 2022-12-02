@@ -66,13 +66,7 @@ const Suggestions = (): ReactElement => {
 			}
 
 			if (id === 'transfer') {
-				// TODO: navigate to Rebalance screen
-				navigation.navigate('LightningRoot', {
-					screen: 'QuickSetup',
-					params: {
-						headerTitle: 'Transfer Funds',
-					},
-				});
+				navigation.navigate('Transfer', { screen: 'Setup' });
 			}
 
 			if (id === 'pin') {

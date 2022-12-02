@@ -1,16 +1,17 @@
 import React, { ReactElement, useCallback, useMemo, memo } from 'react';
 import { useSelector } from 'react-redux';
-import type { NavigationContainerRef } from '@react-navigation/native';
+import { createNavigationContainerRef } from '@react-navigation/native';
 import {
 	createStackNavigator,
 	StackNavigationOptions,
 	TransitionPresets,
 } from '@react-navigation/stack';
 
-import TabNavigator from '../tabs/TabNavigator';
-import Biometrics from '../../components/Biometrics';
+import { NavigationContainer } from '../../styles/components';
 import Store from '../../store/types';
 import AuthCheck from '../../components/AuthCheck';
+import Biometrics from '../../components/Biometrics';
+import TabNavigator from '../tabs/TabNavigator';
 import Blocktank from '../../screens/Blocktank';
 import BlocktankOrder from '../../screens/Blocktank/OrderService';
 import BlocktankPayment from '../../screens/Blocktank/Payment';
@@ -21,12 +22,8 @@ import BuyBitcoin from '../../screens/BuyBitcoin';
 import ScannerScreen from '../../screens/Scanner/MainScanner';
 import WalletsDetail from '../../screens/Wallets/WalletsDetail';
 import SettingsNavigator from '../settings/SettingsNavigator';
-import SendNavigation from '../bottom-sheet/SendNavigation';
-import ReceiveNavigation from '../bottom-sheet/ReceiveNavigation';
-import BackupNavigation from '../bottom-sheet/BackupNavigation';
-import PINNavigation from '../bottom-sheet/PINNavigation';
-import { NavigationContainer } from '../../styles/components';
 import LightningNavigator from '../lightning/LightningNavigator';
+import TransferNavigator from '../transfer/TransferNavigator';
 import PINPrompt from '../../screens/Settings/PIN/PINPrompt';
 import ForgotPIN from '../../screens/Settings/PIN/ForgotPIN';
 import BoostPrompt from '../../screens/Wallets/BoostPrompt';
@@ -39,12 +36,16 @@ import Contacts from '../../screens/Contacts/Contacts';
 import Contact from '../../screens/Contacts/Contact';
 import ContactEdit from '../../screens/Contacts/ContactEdit';
 import SlashAuthModal from '../../screens/Widgets/SlashAuthModal';
-import type { RootStackParamList, RootStackScreenProps } from '../types';
 import WidgetFeedEdit from '../../screens/Widgets/WidgetFeedEdit';
 import BackupSubscriber from '../../utils/backup/backups-subscriber';
 import BlocktankOrders from '../../screens/Settings/BlocktankOrders';
 import BlocktankOrderDetails from '../../screens/Settings/BlocktankOrders/BlocktankOrderDetails';
 import WidgetsNavigator from '../widgets/WidgetsNavigator';
+import SendNavigation from '../bottom-sheet/SendNavigation';
+import ReceiveNavigation from '../bottom-sheet/ReceiveNavigation';
+import BackupNavigation from '../bottom-sheet/BackupNavigation';
+import PINNavigation from '../bottom-sheet/PINNavigation';
+import type { RootStackParamList, RootStackScreenProps } from '../types';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -53,15 +54,11 @@ const navOptions: StackNavigationOptions = {
 	...TransitionPresets.SlideFromRightIOS,
 };
 
-const navigationRef =
-	React.createRef<NavigationContainerRef<RootStackParamList>>();
-
 /**
- * Helper function to navigate from utils.
+ * Helper function to navigate from outside components.
  */
-export const navigate = (name: keyof RootStackParamList, params?): void => {
-	navigationRef.current?.navigate(name, params);
-};
+export const navigationRef = createNavigationContainerRef<RootStackParamList>();
+export const navigate = navigationRef.navigate;
 
 export type TInitialRoutes = 'Tabs' | 'RootAuthCheck';
 
@@ -126,6 +123,7 @@ const RootNavigator = (): ReactElement => {
 					<Stack.Screen name="Scanner" component={ScannerScreen} />
 					<Stack.Screen name="WalletsDetail" component={WalletsDetail} />
 					<Stack.Screen name="LightningRoot" component={LightningNavigator} />
+					<Stack.Screen name="Transfer" component={TransferNavigator} />
 					<Stack.Screen name="Settings" component={SettingsNavigator} />
 					<Stack.Screen
 						name="Profile"

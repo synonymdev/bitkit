@@ -22,6 +22,7 @@ module.exports = {
 				'settings',
 				'suggestions',
 				'tokens',
+				'transfer',
 				'ui',
 				'wallet',
 				'widgets',
