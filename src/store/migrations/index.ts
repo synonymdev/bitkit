@@ -1,5 +1,6 @@
 import { PersistedState } from 'redux-persist';
 import { defaultTodosShape } from '../shapes/todos';
+import { defaultViewControllers } from '../shapes/user';
 
 // add migrations for every persisted store version change
 
@@ -24,6 +25,16 @@ const migrations = {
 			widgets: {
 				...state.widgets,
 				sortOrder,
+			},
+		};
+	},
+	3: (state): PersistedState => {
+		return {
+			...state,
+			todos: defaultTodosShape,
+			user: {
+				...state.user,
+				viewController: defaultViewControllers,
 			},
 		};
 	},

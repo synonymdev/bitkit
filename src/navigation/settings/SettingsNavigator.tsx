@@ -80,7 +80,7 @@ export type SettingsStackParamList = {
 	LightningNodeInfo: undefined;
 	ManageSeedPhrase: undefined;
 	Channels: undefined;
-	ChannelDetails: undefined;
+	ChannelDetails: { channelId: string };
 	CloseConnection: { channelId: string };
 	LightningAddConnection: undefined;
 	LightningAddConnectionResult: undefined;
