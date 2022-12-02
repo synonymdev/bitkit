@@ -10,20 +10,21 @@ export const defaultViewController: IViewControllerData = {
 };
 
 export const defaultViewControllers: IUser['viewController'] = {
-	sendNavigation: { ...defaultViewController },
-	receiveNavigation: { ...defaultViewController },
-	backupPrompt: { ...defaultViewController },
-	backupNavigation: { ...defaultViewController },
-	forgotPIN: { ...defaultViewController },
-	PINPrompt: { ...defaultViewController },
-	PINNavigation: { ...defaultViewController },
-	boostPrompt: { ...defaultViewController },
-	activityTagsPrompt: { ...defaultViewController },
-	newTxPrompt: { ...defaultViewController },
-	highBalance: { ...defaultViewController },
-	profileAddDataForm: { ...defaultViewController },
-	addContactModal: { ...defaultViewController },
-	slashauthModal: { ...defaultViewController },
+	sendNavigation: defaultViewController,
+	receiveNavigation: defaultViewController,
+	backupPrompt: defaultViewController,
+	backupNavigation: defaultViewController,
+	forceTransfer: defaultViewController,
+	forgotPIN: defaultViewController,
+	PINPrompt: defaultViewController,
+	PINNavigation: defaultViewController,
+	boostPrompt: defaultViewController,
+	activityTagsPrompt: defaultViewController,
+	newTxPrompt: defaultViewController,
+	highBalance: defaultViewController,
+	profileAddDataForm: defaultViewController,
+	addContactModal: defaultViewController,
+	slashauthModal: defaultViewController,
 };
 
 export const defaultUserShape: IUser = {

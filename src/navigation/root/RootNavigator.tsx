@@ -45,6 +45,7 @@ import SendNavigation from '../bottom-sheet/SendNavigation';
 import ReceiveNavigation from '../bottom-sheet/ReceiveNavigation';
 import BackupNavigation from '../bottom-sheet/BackupNavigation';
 import PINNavigation from '../bottom-sheet/PINNavigation';
+import ForceTransfer from '../bottom-sheet/ForceTransfer';
 import type { RootStackParamList, RootStackScreenProps } from '../types';
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -159,6 +160,7 @@ const RootNavigator = (): ReactElement => {
 			<BoostPrompt />
 			<NewTxPrompt />
 			<SlashAuthModal />
+			<ForceTransfer />
 			<BackupSubscriber />
 		</NavigationContainer>
 	);

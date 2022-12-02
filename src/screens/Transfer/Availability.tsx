@@ -29,8 +29,9 @@ const Availability = ({
 		// 	counterPartyNodeId: channel.counterparty_node_id,
 		// });
 
-		// // If error, display error notification and return.
+		// If error, display error notification and return.
 		// if (closeResponse.isErr()) {
+		// 	// TODO: keep trying to close channel in the background for 30min
 		// 	showErrorNotification({
 		// 		title: 'Channel Close Error',
 		// 		message: closeResponse.error.message,

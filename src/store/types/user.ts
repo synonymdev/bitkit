@@ -6,6 +6,7 @@ export type TViewController =
 	| 'receiveNavigation'
 	| 'backupPrompt'
 	| 'backupNavigation'
+	| 'forceTransfer'
 	| 'forgotPIN'
 	| 'PINPrompt'
 	| 'PINNavigation'

@@ -72,7 +72,7 @@ const RebalanceConfirm = ({
 				{fiatSymbol}
 				{channelCloseCost}
 			</Text01S>{' '}
-			to transfer the additionalfunds to your spending balance.
+			to transfer the additional funds to your spending balance.
 		</Text01S>
 	);
 
