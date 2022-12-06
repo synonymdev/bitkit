@@ -1,3 +1,9 @@
 TODO
 
-    "@synonymdev/blocktank-client": "0.0.47",
+    "@synonymdev/blocktank-client": "0.0.47", // fails ios build
+    "nodejs-mobile-react-native": "^0.7.0", // fails detox for android
+
+    // android detox build
+    "react-native-libsodium": "https://github.com/sodium-friends/react-native-libsodium#191a444f7fad92c0e825a8bd9ac357dea72793d4",
+
+    "@shopify/react-native-skia": "0.1.164", // android detox build

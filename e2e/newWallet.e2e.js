@@ -24,4 +24,9 @@ describe('New Wallet', () => {
 		// wat for wallet to be created
 		await waitFor(element(by.id('TestToGetStarted'))).toBeVisible();
 	});
+
+	it.only('it runs', async () => {
+		// TOS and PP
+		await waitFor(element(by.text('Step One'))).toBeVisible();
+	});
 });

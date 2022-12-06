@@ -82,8 +82,6 @@ PODS:
   - MMKV (1.2.14):
     - MMKVCore (~> 1.2.14)
   - MMKVCore (1.2.14)
-  - nodejs-mobile-react-native (0.7.0):
-    - React-Core
   - OpenSSL-Universal (1.1.1100)
   - Permission-Camera (3.6.1):
     - RNPermissions
@@ -325,8 +323,6 @@ PODS:
     - React-Core
   - react-native-ldk (0.0.76):
     - React
-  - react-native-libsodium (0.0.1):
-    - React-Core
   - react-native-mmkv (2.4.3):
     - MMKV (>= 1.2.13)
     - React-Core
@@ -340,35 +336,6 @@ PODS:
     - RCTTypeSafety
     - React-Core
     - ReactCommon/turbomodule/core
-  - react-native-skia (0.1.146):
-    - React
-    - React-callinvoker
-    - React-Core
-    - react-native-skia/Api (= 0.1.146)
-    - react-native-skia/Jsi (= 0.1.146)
-    - react-native-skia/RNSkia (= 0.1.146)
-    - react-native-skia/SkiaHeaders (= 0.1.146)
-    - react-native-skia/Utils (= 0.1.146)
-  - react-native-skia/Api (0.1.146):
-    - React
-    - React-callinvoker
-    - React-Core
-  - react-native-skia/Jsi (0.1.146):
-    - React
-    - React-callinvoker
-    - React-Core
-  - react-native-skia/RNSkia (0.1.146):
-    - React
-    - React-callinvoker
-    - React-Core
-  - react-native-skia/SkiaHeaders (0.1.146):
-    - React
-    - React-callinvoker
-    - React-Core
-  - react-native-skia/Utils (0.1.146):
-    - React
-    - React-callinvoker
-    - React-Core
   - react-native-tcp-socket (5.6.2):
     - CocoaAsyncSocket
     - React-Core
@@ -543,7 +510,6 @@ DEPENDENCIES:
   - hermes-engine (from `../node_modules/react-native/sdks/hermes/hermes-engine.podspec`)
   - libevent (~> 2.1.12)
   - lottie-react-native (from `../node_modules/lottie-react-native`)
-  - nodejs-mobile-react-native (from `../node_modules/nodejs-mobile-react-native`)
   - OpenSSL-Universal (= 1.1.1100)
   - Permission-Camera (from `../node_modules/react-native-permissions/ios/Camera`)
   - RCT-Folly (from `../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec`)
@@ -569,12 +535,10 @@ DEPENDENCIES:
   - react-native-flipper (from `../node_modules/react-native-flipper`)
   - react-native-image-picker (from `../node_modules/react-native-image-picker`)
   - "react-native-ldk (from `../node_modules/@synonymdev/react-native-ldk`)"
-  - react-native-libsodium (from `../node_modules/react-native-libsodium`)
   - react-native-mmkv (from `../node_modules/react-native-mmkv`)
   - "react-native-netinfo (from `../node_modules/@react-native-community/netinfo`)"
   - react-native-randombytes (from `../node_modules/react-native-randombytes`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
-  - "react-native-skia (from `../node_modules/@shopify/react-native-skia`)"
   - react-native-tcp-socket (from `../node_modules/react-native-tcp-socket`)
   - React-perflogger (from `../node_modules/react-native/ReactCommon/reactperflogger`)
   - React-RCTActionSheet (from `../node_modules/react-native/Libraries/ActionSheetIOS`)
@@ -645,8 +609,6 @@ EXTERNAL SOURCES:
     :podspec: "../node_modules/react-native/sdks/hermes/hermes-engine.podspec"
   lottie-react-native:
     :path: "../node_modules/lottie-react-native"
-  nodejs-mobile-react-native:
-    :path: "../node_modules/nodejs-mobile-react-native"
   Permission-Camera:
     :path: "../node_modules/react-native-permissions/ios/Camera"
   RCT-Folly:
@@ -691,8 +653,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-image-picker"
   react-native-ldk:
     :path: "../node_modules/@synonymdev/react-native-ldk"
-  react-native-libsodium:
-    :path: "../node_modules/react-native-libsodium"
   react-native-mmkv:
     :path: "../node_modules/react-native-mmkv"
   react-native-netinfo:
@@ -701,8 +661,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-randombytes"
   react-native-safe-area-context:
     :path: "../node_modules/react-native-safe-area-context"
-  react-native-skia:
-    :path: "../node_modules/@shopify/react-native-skia"
   react-native-tcp-socket:
     :path: "../node_modules/react-native-tcp-socket"
   React-perflogger:
@@ -789,7 +747,6 @@ SPEC CHECKSUMS:
   lottie-react-native: b702fab740cdb952a8e2354713d3beda63ff97b0
   MMKV: 9c4663aa7ca255d478ff10f2f5cb7d17c1651ccd
   MMKVCore: 89f5c8a66bba2dcd551779dea4d412eeec8ff5bb
-  nodejs-mobile-react-native: a30e24f07200254c0a3536be3a9f09c512610f6a
   OpenSSL-Universal: ebc357f1e6bc71fa463ccb2fe676756aff50e88c
   Permission-Camera: bf6791b17c7f614b6826019fcfdcc286d3a107f6
   RCT-Folly: 0080d0a6ebf2577475bda044aa59e2ca1f909cda
@@ -813,12 +770,10 @@ SPEC CHECKSUMS:
   react-native-flipper: 7eeb9b59b667dd0619372c7349cf7c78032d1de2
   react-native-image-picker: 4bc9ed38c8be255b515d8c88babbaf74973f91a8
   react-native-ldk: e042f888d7fa13cbbdde1a57fc0226867b7a15a1
-  react-native-libsodium: f4eba037c4ddf73f86b08075452cacb957256147
   react-native-mmkv: 1265a348a4711097ba29c8bcefd5971f48220f2b
   react-native-netinfo: 1a6035d3b9780221d407c277ebfb5722ace00658
   react-native-randombytes: 421f1c7d48c0af8dbcd471b0324393ebf8fe7846
   react-native-safe-area-context: b456e1c40ec86f5593d58b275bd0e9603169daca
-  react-native-skia: 424150f35cf310927ebc81739971491d87bf4c7b
   react-native-tcp-socket: c1b7297619616b4c9caae6889bcb0aba78086989
   React-perflogger: 8c79399b0500a30ee8152d0f9f11beae7fc36595
   React-RCTActionSheet: 7316773acabb374642b926c19aef1c115df5c466
