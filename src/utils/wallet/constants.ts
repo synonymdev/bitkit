@@ -10,3 +10,6 @@ export const GAP_LIMIT = 20;
 
 // TODO: remove chunk logic and move it to rn-electrum library
 export const CHUNK_LIMIT = 15;
+
+//How much of the users funds we allow to be used for Lightning.
+export const SPENDING_LIMIT_RATIO = 1.2;

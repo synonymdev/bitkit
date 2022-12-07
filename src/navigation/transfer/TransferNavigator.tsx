@@ -19,6 +19,7 @@ export type TransferStackParamList = {
 	Confirm: {
 		spendingAmount: number;
 		total: number;
+		orderId?: string;
 	};
 	Availability: undefined;
 	Success: { type: 'savings' | 'spending' };

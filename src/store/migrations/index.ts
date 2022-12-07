@@ -34,6 +34,7 @@ const migrations = {
 			todos: defaultTodosShape,
 			user: {
 				...state.user,
+				startCoopCloseTimestamp: 0,
 				viewController: defaultViewControllers,
 			},
 		};

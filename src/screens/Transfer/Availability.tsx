@@ -1,5 +1,6 @@
 import React, { ReactElement, memo } from 'react';
 import { StyleSheet, View } from 'react-native';
+import { useSelector } from 'react-redux';
 
 import { Display, Text01B, Text01S } from '../../styles/components';
 import SafeAreaInsets from '../../components/SafeAreaInsets';
@@ -7,15 +8,11 @@ import GlowingBackground from '../../components/GlowingBackground';
 import NavigationHeader from '../../components/NavigationHeader';
 import GlowImage from '../../components/GlowImage';
 import Button from '../../components/Button';
-// import { closeChannel } from '../../utils/lightning';
-// import { showErrorNotification } from '../../utils/notifications';
-// import { addTodo } from '../../store/actions/todos';
-import type { TransferScreenProps } from '../../navigation/types';
-import { closeAllChannels } from '../../utils/lightning';
-import { showErrorNotification } from '../../utils/notifications';
-import { addTodo } from '../../store/actions/todos';
-import { useSelector } from 'react-redux';
 import Store from '../../store/types';
+import { closeAllChannels } from '../../utils/lightning';
+import { startCoopCloseTimer } from '../../store/actions/user';
+import { addTodo } from '../../store/actions/todos';
+import type { TransferScreenProps } from '../../navigation/types';
 
 const imageSrc = require('../../assets/illustrations/exclamation-mark.png');
 
@@ -35,20 +32,24 @@ const Availability = ({
 
 	const onContinue = async (): Promise<void> => {
 		const closeResponse = await closeAllChannels({
-			force: true,
 			selectedNetwork,
 			selectedWallet,
 		});
 		if (closeResponse.isErr()) {
-			// TODO: keep trying to close channel in the background for 30min
-			showErrorNotification({
-				title: 'Channel Close Error',
-				message: closeResponse.error.message,
-			});
+			startCoopCloseTimer();
 			addTodo('transferClosingChannel');
+			navigation.navigate('Interrupted');
 			return;
 		}
-		navigation.navigate('Success', { type: 'savings' });
+		if (closeResponse.isOk()) {
+			if (closeResponse.value.length === 0) {
+				navigation.navigate('Success', { type: 'savings' });
+			} else {
+				startCoopCloseTimer();
+				addTodo('transferClosingChannel');
+				navigation.navigate('Interrupted');
+			}
+		}
 	};
 
 	return (

@@ -43,6 +43,7 @@ export interface IUser {
 	ignoreBackupTimestamp: number;
 	ignoreHighBalanceCount: number;
 	ignoreHighBalanceTimestamp: number;
+	startCoopCloseTimestamp: number;
 	backupVerified: boolean;
 	requiresRemoteRestore: boolean;
 	viewController: TUserViewController;

@@ -7,6 +7,8 @@ const TODO_SORTING_ORDER: TTodoType[] = [
 	'lightning',
 	'lightningSettingUp',
 	'transfer',
+	'transferInProgress',
+	'transferClosingChannel',
 	'pin',
 	'slashtagsProfile',
 	'buyBitcoin',

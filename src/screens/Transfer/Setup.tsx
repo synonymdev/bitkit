@@ -1,4 +1,4 @@
-import React, { ReactElement, useState, useCallback, useEffect } from 'react';
+import React, { ReactElement, useState, useCallback, useMemo } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { FadeIn, FadeOut } from 'react-native-reanimated';
 
@@ -17,46 +17,112 @@ import Percentage from '../../components/Percentage';
 import FancySlider from '../../components/FancySlider';
 import NumberPadLightning from '../Lightning/NumberPadLightning';
 import { useBalance } from '../../hooks/wallet';
-import { sleep } from '../../utils/helpers';
 import { useLightningBalance } from '../../hooks/lightning';
+import { showErrorNotification } from '../../utils/notifications';
+import { startChannelPurchase } from '../../store/actions/blocktank';
+import { useSelector } from 'react-redux';
+import Store from '../../store/types';
+import { SPENDING_LIMIT_RATIO } from '../../utils/wallet/constants';
+import { convertCurrency } from '../../utils/blocktank';
+import { fiatToBitcoinUnit } from '../../utils/exchange-rate';
 import type { TransferScreenProps } from '../../navigation/types';
 
 const Setup = ({ navigation }: TransferScreenProps<'Setup'>): ReactElement => {
-	const lightningBalance = useLightningBalance();
-	const currentBalance = useBalance({ onchain: true, lightning: true });
-	const currentSpendingAmount = lightningBalance.localBalance;
+	const balance = useBalance({ onchain: true, lightning: true });
+	const { localBalance: currentSpendingAmount } = useLightningBalance();
 	const [keybrd, setKeybrd] = useState(false);
 	const [loading, setLoading] = useState(false);
-	const [totalBalance, setTotalBalance] = useState(0);
 	const [spendingAmount, setSpendingAmount] = useState(currentSpendingAmount);
 
-	const savingsAmount = totalBalance - spendingAmount;
-	const spendingPercentage =
-		totalBalance > 0 ? Math.round((spendingAmount / totalBalance) * 100) : 0;
-	const savingsPercentage =
-		totalBalance > 0 ? Math.round((savingsAmount / totalBalance) * 100) : 0;
+	const selectedNetwork = useSelector(
+		(state: Store) => state.wallet.selectedNetwork,
+	);
+	const selectedWallet = useSelector(
+		(state: Store) => state.wallet.selectedWallet,
+	);
+	const blocktankService = useSelector(
+		(state: Store) => state.blocktank.serviceList[0],
+	);
+	const selectedCurrency = useSelector(
+		(state: Store) => state.settings.selectedCurrency,
+	);
 
-	useEffect(() => {
-		// let spendingLimit = Math.round(currentBalance.satoshis / 1.5);
-		let spendingLimit = Math.round(currentBalance.satoshis / 1.2);
-		setTotalBalance(spendingLimit);
-	}, [currentBalance.satoshis]);
+	const spendingLimit = useMemo(() => {
+		const spendableBalance = Math.round(
+			balance.satoshis / SPENDING_LIMIT_RATIO,
+		);
+
+		const convertedUnit = convertCurrency({
+			amount: 999,
+			from: 'USD',
+			to: selectedCurrency,
+		});
+		const maxSpendingLimit = fiatToBitcoinUnit({
+			fiatValue: convertedUnit.fiatValue,
+			bitcoinUnit: 'satoshi',
+		});
+
+		return Math.min(spendableBalance, maxSpendingLimit);
+	}, [balance.satoshis, selectedCurrency]);
+
+	const savingsAmount = spendingLimit - spendingAmount;
+	const spendingPercentage = Math.round((spendingAmount / spendingLimit) * 100);
+	const savingsPercentage = Math.round((savingsAmount / spendingLimit) * 100);
+	const isTransferringToSavings = spendingAmount < currentSpendingAmount;
+	const isButtonDisabled = spendingAmount === currentSpendingAmount;
 
 	const handleChange = useCallback((value: number) => {
 		setSpendingAmount(Math.round(value));
 	}, []);
 
 	const onContinuePress = useCallback(async (): Promise<void> => {
-		setLoading(true);
-		sleep(5000);
-		setLoading(false);
-		navigation.push('Confirm', {
-			spendingAmount,
-			total: totalBalance,
-		});
-	}, [navigation, spendingAmount, totalBalance]);
+		if (isTransferringToSavings) {
+			navigation.push('Confirm', {
+				spendingAmount,
+				total: spendingLimit,
+			});
+		} else {
+			// buy an additional channel from Blocktank with the difference
+			setLoading(true);
+			const remoteBalance = spendingAmount - currentSpendingAmount;
+			const localBalance =
+				Math.round(remoteBalance * 1.1) > blocktankService.min_channel_size
+					? Math.round(remoteBalance * 1.1)
+					: blocktankService.min_channel_size;
 
-	const isButtonDisabled = spendingAmount === lightningBalance.localBalance;
+			const purchaseResponse = await startChannelPurchase({
+				selectedNetwork,
+				selectedWallet,
+				productId: blocktankService.product_id,
+				remoteBalance,
+				localBalance,
+				channelExpiry: 12,
+			});
+			if (purchaseResponse.isErr()) {
+				showErrorNotification({
+					title: 'Channel Purchase Error',
+					message: purchaseResponse.error.message,
+				});
+				setLoading(false);
+				return;
+			}
+			setLoading(false);
+			navigation.push('Confirm', {
+				spendingAmount,
+				total: spendingLimit,
+				orderId: purchaseResponse.value,
+			});
+		}
+	}, [
+		blocktankService,
+		isTransferringToSavings,
+		currentSpendingAmount,
+		spendingAmount,
+		spendingLimit,
+		selectedNetwork,
+		selectedWallet,
+		navigation,
+	]);
 
 	return (
 		<GlowingBackground topLeft="purple">
@@ -96,7 +162,7 @@ const Setup = ({ navigation }: TransferScreenProps<'Setup'>): ReactElement => {
 								<View style={styles.sliderContainer}>
 									<FancySlider
 										minimumValue={0}
-										maximumValue={totalBalance}
+										maximumValue={spendingLimit}
 										value={spendingAmount}
 										snapPoint={currentSpendingAmount}
 										onValueChange={handleChange}
@@ -118,6 +184,7 @@ const Setup = ({ navigation }: TransferScreenProps<'Setup'>): ReactElement => {
 						)}
 						<AmountToggle
 							sats={spendingAmount}
+							unit="fiat"
 							onPress={(): void => setKeybrd(true)}
 						/>
 					</View>
@@ -142,18 +209,18 @@ const Setup = ({ navigation }: TransferScreenProps<'Setup'>): ReactElement => {
 
 				{keybrd && (
 					<NumberPadLightning
+						style={styles.numberpad}
 						sats={spendingAmount}
 						onChange={setSpendingAmount}
 						onMaxPress={(): void => {
-							setSpendingAmount(totalBalance);
+							setSpendingAmount(spendingLimit);
 						}}
 						onDone={(): void => {
-							if (spendingAmount > totalBalance) {
-								setSpendingAmount(totalBalance);
+							if (spendingAmount > spendingLimit) {
+								setSpendingAmount(spendingLimit);
 							}
 							setKeybrd(false);
 						}}
-						style={styles.numberpad}
 					/>
 				)}
 			</View>

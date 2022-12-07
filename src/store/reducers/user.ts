@@ -44,6 +44,12 @@ const user = (state: IUser = defaultUserShape, action): IUser => {
 				ignoreHighBalanceTimestamp: action.payload,
 			};
 
+		case actions.USER_START_COOP_CLOSE_TIMER:
+			return {
+				...state,
+				startCoopCloseTimestamp: action.payload,
+			};
+
 		case actions.USER_VERIFY_BACKUP:
 			return {
 				...state,

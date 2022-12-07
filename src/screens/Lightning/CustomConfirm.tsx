@@ -22,13 +22,12 @@ import NumberPadWeeks from './NumberPadWeeks';
 import { LightningScreenProps } from '../../navigation/types';
 import { sleep } from '../../utils/helpers';
 import Store from '../../store/types';
-import { IGetOrderResponse } from '@synonymdev/blocktank-client';
-import { defaultOrderResponse } from '../../store/shapes/blocktank';
 import {
 	confirmChannelPurchase,
 	startChannelPurchase,
 } from '../../store/actions/blocktank';
 import { showErrorNotification } from '../../utils/notifications';
+import { addTodo } from '../../store/actions/todos';
 
 const CustomConfirm = ({
 	navigation,
@@ -44,18 +43,15 @@ const CustomConfirm = ({
 	const [keybrd, setKeybrd] = useState(false);
 	const [loading, setLoading] = useState(false);
 	const [weeks, setWeeks] = useState(6);
-	const [orderId, setOrderId] = useState(route.params?.orderId ?? '');
-	const productId = useSelector(
-		(state: Store) => state.blocktank?.serviceList[0]?.product_id ?? '',
+	const [orderId, setOrderId] = useState(route.params.orderId);
+	const blocktankService = useSelector(
+		(state: Store) => state.blocktank.serviceList[0],
 	);
-	const orders = useSelector((state: Store) => state.blocktank?.orders ?? []);
 
-	const order: IGetOrderResponse = useMemo(() => {
-		const filteredOrders = orders.filter((o) => o._id === orderId);
-		if (filteredOrders.length) {
-			return filteredOrders[0];
-		}
-		return defaultOrderResponse;
+	const orders = useSelector((state: Store) => state.blocktank.orders);
+	const order = useMemo(() => {
+		// assume we found our order in store
+		return orders.find((o) => o._id === orderId)!;
 	}, [orderId, orders]);
 
 	const blocktankPurchaseFee = useDisplayValues(order?.price ?? 0);
@@ -78,13 +74,14 @@ const CustomConfirm = ({
 			setLoading(false);
 			return;
 		}
+		addTodo('lightningSettingUp');
 		navigation.navigate('Result');
 	};
 
 	const updateOrderExpiration = async (): Promise<void> => {
 		const purchaseResponse = await startChannelPurchase({
-			productId,
-			remoteBalance: order.remote_balance ?? 0,
+			productId: blocktankService.product_id,
+			remoteBalance: order.remote_balance,
 			localBalance: order.local_balance,
 			channelExpiry: Math.max(weeks, 1),
 			selectedWallet,
@@ -138,7 +135,7 @@ const CustomConfirm = ({
 							<Caption13Up color="purple" style={styles.space}>
 								Receiving capacity
 							</Caption13Up>
-							<AmountToggle sats={receivingAmount} />
+							<AmountToggle sats={receivingAmount} unit="fiat" />
 						</View>
 					</AnimatedView>
 				)}

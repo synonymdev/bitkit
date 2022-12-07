@@ -167,7 +167,7 @@ const FancySlider = ({
 					const delta = maximumValue - minimumValue;
 					const snapPointX = (endPosition / delta) * snapPoint;
 
-					if (pan.x._value < snapPointX * 0.8) {
+					if (pan.x._value < snapPointX * 0.65) {
 						Animated.spring(pan, {
 							toValue: { x: 0, y: 0 },
 							useNativeDriver: false,
@@ -178,7 +178,7 @@ const FancySlider = ({
 						});
 					}
 
-					if (pan.x._value < snapPointX && pan.x._value >= snapPointX * 0.8) {
+					if (pan.x._value < snapPointX && pan.x._value >= snapPointX * 0.65) {
 						Animated.spring(pan, {
 							toValue: { x: snapPointX, y: 0 },
 							useNativeDriver: false,
@@ -209,7 +209,7 @@ const FancySlider = ({
 
 	const maxTrackWidth = pan.x.interpolate({
 		inputRange: [0, endPosition],
-		outputRange: [endPosition + CIRCLE_SIZE, CIRCLE_SIZE / 2],
+		outputRange: [endPosition + CIRCLE_SIZE / 2, CIRCLE_SIZE / 2],
 	});
 
 	useEffect(() => {

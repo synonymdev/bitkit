@@ -1,5 +1,6 @@
-import React, { ReactElement, useState } from 'react';
+import React, { ReactElement, useMemo, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
+import { useSelector } from 'react-redux';
 
 import {
 	Caption13Up,
@@ -14,18 +15,21 @@ import AmountToggle from '../../components/AmountToggle';
 import Percentage from '../../components/Percentage';
 import SwipeToConfirm from '../../components/SwipeToConfirm';
 import PieChart from '../Lightning/PieChart';
-import { useLightningBalance } from '../../hooks/lightning';
+import Store from '../../store/types';
 import { addTodo } from '../../store/actions/todos';
+import { confirmChannelPurchase } from '../../store/actions/blocktank';
+import { useLightningBalance } from '../../hooks/lightning';
+import useDisplayValues from '../../hooks/displayValues';
 import type { TransferScreenProps } from '../../navigation/types';
 
 const PIE_SIZE = 140;
 const PIE_SHIFT = 70;
 
-const RebalanceConfirm = ({
+const Confirm = ({
 	navigation,
 	route,
 }: TransferScreenProps<'Confirm'>): ReactElement => {
-	const { total, spendingAmount } = route.params;
+	const { total, spendingAmount, orderId } = route.params;
 	const [loading, setLoading] = useState(false);
 	const lightningBalance = useLightningBalance();
 
@@ -39,38 +43,66 @@ const RebalanceConfirm = ({
 
 	const isTransferringToSavings = spendingAmount < currentSpendingAmount;
 
+	const selectedNetwork = useSelector(
+		(state: Store) => state.wallet.selectedNetwork,
+	);
+	const selectedWallet = useSelector(
+		(state: Store) => state.wallet.selectedWallet,
+	);
+	const orders = useSelector((state: Store) => state.blocktank.orders);
+	const order = useMemo(() => {
+		return orders.find((o) => o._id === orderId);
+	}, [orderId, orders]);
+
+	const blocktankPurchaseFee = useDisplayValues(order?.price ?? 0);
+	const transactionFee = useSelector(
+		(state: Store) =>
+			state.wallet.wallets[selectedWallet].transaction[selectedNetwork].fee,
+	);
+	const fiatTransactionFee = useDisplayValues(transactionFee ?? 0);
+	const channelOpenCost = useMemo(() => {
+		return (
+			blocktankPurchaseFee.fiatValue + fiatTransactionFee.fiatValue
+		).toFixed(2);
+	}, [blocktankPurchaseFee, fiatTransactionFee.fiatValue]);
+
 	const handleConfirm = async (): Promise<void> => {
 		setLoading(true);
 
-		if (isTransferringToSavings) {
-			navigation.navigate('Availability');
-		} else {
-			// TODO: open additional channel
+		if (orderId) {
+			// savings -> spending
+			setLoading(true);
+			const res = await confirmChannelPurchase({ orderId, selectedNetwork });
+			if (res.isErr()) {
+				setLoading(false);
+				return;
+			}
+			setLoading(false);
 			addTodo('transferInProgress');
 			navigation.navigate('Success', { type: 'spending' });
+		} else {
+			// spending -> savings
+			navigation.navigate('Availability');
 		}
 	};
 
-	// TODO: get rebalance fee
-	const channelOpenCost = 123;
-	const channelCloseCost = 123;
-	const fiatSymbol = '$';
+	const channelCloseCost = useMemo(() => {
+		// TODO: calculate channelCloseCost
+		return '$123';
+	}, []);
 
 	const text = isTransferringToSavings ? (
 		<Text01S color="gray1" style={styles.text}>
-			It costs{' '}
-			<Text01S>
-				{fiatSymbol}
-				{channelOpenCost}
-			</Text01S>{' '}
-			to transfer all funds from your spending balance back to your savings.
+			It costs <Text01S>{channelCloseCost}</Text01S> to transfer your full
+			spending balance back to your savings. The exact fee depends on network
+			conditions.
 		</Text01S>
 	) : (
 		<Text01S color="gray1" style={styles.text}>
 			It costs{' '}
 			<Text01S>
-				{fiatSymbol}
-				{channelCloseCost}
+				{blocktankPurchaseFee.fiatSymbol}
+				{channelOpenCost}
 			</Text01S>{' '}
 			to transfer the additional funds to your spending balance.
 		</Text01S>
@@ -109,7 +141,7 @@ const RebalanceConfirm = ({
 				<View>
 					<View style={styles.amountBig}>
 						<Caption13Up color="purple">Spending balance</Caption13Up>
-						<AmountToggle sats={spendingAmount} />
+						<AmountToggle sats={spendingAmount} unit="fiat" />
 					</View>
 
 					<View style={styles.buttonContainer}>
@@ -162,4 +194,4 @@ const styles = StyleSheet.create({
 	},
 });
 
-export default RebalanceConfirm;
+export default Confirm;

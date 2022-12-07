@@ -34,6 +34,7 @@ import { startChannelPurchase } from '../../store/actions/blocktank';
 import { showErrorNotification } from '../../utils/notifications';
 import { fiatToBitcoinUnit } from '../../utils/exchange-rate';
 import { convertCurrency } from '../../utils/blocktank';
+import { SPENDING_LIMIT_RATIO } from '../../utils/wallet/constants';
 import type { LightningScreenProps } from '../../navigation/types';
 
 const QuickSetup = ({
@@ -71,7 +72,9 @@ const QuickSetup = ({
 	}, []);
 
 	const spendingLimit = useMemo(() => {
-		const spendableBalance = Math.round(currentBalance.satoshis / 1.2);
+		const spendableBalance = Math.round(
+			currentBalance.satoshis / SPENDING_LIMIT_RATIO,
+		);
 		const convertedUnit = convertCurrency({
 			amount: 999,
 			from: 'USD',
@@ -85,9 +88,7 @@ const QuickSetup = ({
 		if (!maxSpendingLimit) {
 			return spendableBalance;
 		}
-		return spendableBalance < maxSpendingLimit
-			? spendableBalance
-			: maxSpendingLimit;
+		return Math.min(spendableBalance, maxSpendingLimit);
 	}, [currentBalance.satoshis, selectedCurrency]);
 
 	useEffect(() => {
@@ -213,6 +214,7 @@ const QuickSetup = ({
 							)}
 							<AmountToggle
 								sats={spendingAmount}
+								unit="fiat"
 								onPress={(): void => setKeybrd(true)}
 							/>
 						</View>

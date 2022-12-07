@@ -450,8 +450,9 @@ const CustomSetup = ({
 							</Caption13Up>
 						)}
 						<AmountToggle
-							onPress={(): void => setKeybrd((k) => !k)}
 							sats={amount}
+							unit="fiat"
+							onPress={(): void => setKeybrd((k) => !k)}
 						/>
 					</View>
 				</View>

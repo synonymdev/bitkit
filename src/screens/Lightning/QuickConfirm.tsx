@@ -1,10 +1,8 @@
 import React, { ReactElement, useMemo, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useSelector } from 'react-redux';
-import { FadeIn, FadeOut } from 'react-native-reanimated';
 
 import {
-	AnimatedView,
 	Caption13Up,
 	Display,
 	LightningIcon,
@@ -17,12 +15,10 @@ import AmountToggle from '../../components/AmountToggle';
 import Percentage from '../../components/Percentage';
 import SwipeToConfirm from '../../components/SwipeToConfirm';
 import PieChart from './PieChart';
-import NumberPadLightning from './NumberPadLightning';
 import Store from '../../store/types';
-import { IGetOrderResponse } from '@synonymdev/blocktank-client';
 import { sleep } from '../../utils/helpers';
-import { defaultOrderResponse } from '../../store/shapes/blocktank';
 import { confirmChannelPurchase } from '../../store/actions/blocktank';
+import { addTodo } from '../../store/actions/todos';
 import useDisplayValues from '../../hooks/displayValues';
 import type { LightningScreenProps } from '../../navigation/types';
 
@@ -33,28 +29,17 @@ const QuickConfirm = ({
 	navigation,
 	route,
 }: LightningScreenProps<'QuickConfirm'>): ReactElement => {
-	const { total } = route.params;
-	const [spendingAmount, setSpendingAmount] = useState(
-		route.params.spendingAmount,
-	);
+	const { spendingAmount, total, orderId } = route.params;
 	const selectedNetwork = useSelector(
 		(state: Store) => state.wallet.selectedNetwork,
 	);
 	const selectedWallet = useSelector(
 		(state: Store) => state.wallet.selectedWallet,
 	);
-	const orderId = useMemo(
-		() => route.params?.orderId ?? '',
-		[route.params?.orderId],
-	);
-	const orders = useSelector((state: Store) => state.blocktank?.orders ?? []);
 
-	const order: IGetOrderResponse = useMemo(() => {
-		const filteredOrders = orders.filter((o) => o._id === orderId);
-		if (filteredOrders.length) {
-			return filteredOrders[0];
-		}
-		return defaultOrderResponse;
+	const orders = useSelector((state: Store) => state.blocktank.orders);
+	const order = useMemo(() => {
+		return orders.find((o) => o._id === orderId);
 	}, [orderId, orders]);
 	const blocktankPurchaseFee = useDisplayValues(order?.price ?? 0);
 	const transactionFee = useSelector(
@@ -68,7 +53,6 @@ const QuickConfirm = ({
 		).toFixed(2);
 	}, [fiatTransactionFee.fiatValue, blocktankPurchaseFee.fiatValue]);
 
-	const [keybrd, setKeybrd] = useState(false);
 	const [loading, setLoading] = useState(false);
 
 	const savingsAmount = total - spendingAmount;
@@ -83,6 +67,7 @@ const QuickConfirm = ({
 			setLoading(false);
 			return;
 		}
+		addTodo('lightningSettingUp');
 		navigation.navigate('Result');
 	};
 
@@ -105,73 +90,39 @@ const QuickConfirm = ({
 					</Text01S>
 				</View>
 
-				{!keybrd && (
-					<AnimatedView color="transparent" entering={FadeIn} exiting={FadeOut}>
-						<View style={styles.chartContainer}>
-							<View style={styles.chart}>
-								<PieChart
-									size={PIE_SIZE}
-									shift={PIE_SHIFT}
-									primary={spendingPercentage}
-								/>
-							</View>
-							<View style={styles.percContainer}>
-								<Percentage value={spendingPercentage} type="spending" />
-								<Percentage value={savingsPercentage} type="savings" />
-							</View>
-						</View>
-					</AnimatedView>
-				)}
+				<View style={styles.chartContainer}>
+					<View style={styles.chart}>
+						<PieChart
+							size={PIE_SIZE}
+							shift={PIE_SHIFT}
+							primary={spendingPercentage}
+						/>
+					</View>
+					<View style={styles.percContainer}>
+						<Percentage value={spendingPercentage} type="spending" />
+						<Percentage value={savingsPercentage} type="savings" />
+					</View>
+				</View>
 
 				<View>
 					<View style={styles.amountBig}>
-						<View>
-							<Caption13Up style={styles.amountTitle} color="purple">
-								SPENDING BALANCE
-							</Caption13Up>
-							<AmountToggle
-								disable={true}
-								sats={spendingAmount}
-								onPress={(): void => setKeybrd(true)}
-							/>
-						</View>
+						<Caption13Up color="purple">Spending balance</Caption13Up>
+						<AmountToggle sats={spendingAmount} unit="fiat" />
 					</View>
 
-					{!keybrd && (
-						<AnimatedView
-							color="transparent"
-							entering={FadeIn}
-							exiting={FadeOut}>
-							<SwipeToConfirm
-								text="Swipe To Connect"
-								color="purple"
-								onConfirm={handleConfirm}
-								icon={<LightningIcon width={30} height={30} color="black" />}
-								loading={loading}
-								confirmed={loading}
-							/>
-							<SafeAreaInsets type="bottom" />
-						</AnimatedView>
-					)}
+					<View style={styles.buttonContainer}>
+						<SwipeToConfirm
+							text="Swipe To Connect"
+							color="purple"
+							icon={<LightningIcon width={30} height={30} color="black" />}
+							loading={loading}
+							confirmed={loading}
+							onConfirm={handleConfirm}
+						/>
+					</View>
 				</View>
-
-				{keybrd && (
-					<NumberPadLightning
-						sats={spendingAmount}
-						onChange={setSpendingAmount}
-						onMaxPress={(): void => {
-							setSpendingAmount(total);
-						}}
-						onDone={(): void => {
-							if (spendingAmount > total) {
-								setSpendingAmount(total);
-							}
-							setKeybrd(false);
-						}}
-						style={styles.numberpad}
-					/>
-				)}
 			</View>
+			<SafeAreaInsets type="bottom" />
 		</GlowingBackground>
 	);
 };
@@ -182,19 +133,12 @@ const styles = StyleSheet.create({
 		justifyContent: 'space-between',
 		marginTop: 8,
 		paddingHorizontal: 16,
-		paddingBottom: 16,
 	},
 	text: {
 		marginTop: 8,
 	},
 	amountBig: {
-		flexDirection: 'row',
-		justifyContent: 'space-between',
-		alignItems: 'center',
 		marginBottom: 32,
-	},
-	amountTitle: {
-		marginBottom: 8,
 	},
 	chartContainer: {
 		flexDirection: 'row',
@@ -211,8 +155,8 @@ const styles = StyleSheet.create({
 		alignSelf: 'stretch',
 		justifyContent: 'space-around',
 	},
-	numberpad: {
-		marginHorizontal: -16,
+	buttonContainer: {
+		marginBottom: 16,
 	},
 });
 

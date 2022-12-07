@@ -36,6 +36,7 @@ export const defaultUserShape: IUser = {
 	ignoreBackupTimestamp: 0,
 	ignoreHighBalanceCount: 0,
 	ignoreHighBalanceTimestamp: 0,
+	startCoopCloseTimestamp: 0,
 	backupVerified: false,
 	requiresRemoteRestore: false,
 	// Used to control various views throughout the app. (Modals, bottom-sheets, etc.)
