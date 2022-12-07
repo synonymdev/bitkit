@@ -21,5 +21,5 @@ if (os.type() === 'Darwin') {
 	postInstallLinWin();
 }
 
-postInstallSlashtags()
+// postInstallSlashtags()
 
