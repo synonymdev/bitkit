@@ -45,9 +45,6 @@ const QuickSetup = ({
 	const [totalBalance, setTotalBalance] = useState(0);
 	const [spendingAmount, setSpendingAmount] = useState(0);
 	const currentBalance = useBalance({ onchain: true });
-	const productId = useSelector(
-		(state: Store) => state.blocktank?.serviceList[0]?.product_id ?? '',
-	);
 	const selectedNetwork = useSelector(
 		(state: Store) => state.wallet.selectedNetwork,
 	);
@@ -62,10 +59,8 @@ const QuickSetup = ({
 	);
 
 	const savingsAmount = totalBalance - spendingAmount;
-	const spendingPercentage =
-		totalBalance > 0 ? Math.round((spendingAmount / totalBalance) * 100) : 0;
-	const savingsPercentage =
-		totalBalance > 0 ? Math.round((savingsAmount / totalBalance) * 100) : 0;
+	const spendingPercentage = Math.round((spendingAmount / totalBalance) * 100);
+	const savingsPercentage = Math.round((savingsAmount / totalBalance) * 100);
 
 	const handleChange = useCallback((v) => {
 		setSpendingAmount(Math.round(v));
@@ -99,6 +94,11 @@ const QuickSetup = ({
 		spendingLimit,
 	]);
 
+	// default spendingPercentage to 20%
+	useEffect(() => {
+		return setSpendingAmount(Math.round(totalBalance * 0.2));
+	}, [totalBalance]);
+
 	useFocusEffect(
 		useCallback(() => {
 			resetOnChainTransaction({ selectedNetwork, selectedWallet });
@@ -119,11 +119,12 @@ const QuickSetup = ({
 		const purchaseResponse = await startChannelPurchase({
 			selectedNetwork,
 			selectedWallet,
-			productId,
+			productId: blocktankService.product_id,
 			remoteBalance: spendingAmount,
 			localBalance,
 			channelExpiry: 12,
 		});
+
 		if (purchaseResponse.isErr()) {
 			showErrorNotification({
 				title: 'Channel Purchase Error',
@@ -139,9 +140,8 @@ const QuickSetup = ({
 			orderId: purchaseResponse.value,
 		});
 	}, [
-		blocktankService.min_channel_size,
+		blocktankService,
 		navigation,
-		productId,
 		selectedNetwork,
 		selectedWallet,
 		spendingAmount,

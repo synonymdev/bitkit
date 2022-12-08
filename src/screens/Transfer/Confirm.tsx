@@ -86,16 +86,10 @@ const Confirm = ({
 		}
 	};
 
-	const channelCloseCost = useMemo(() => {
-		// TODO: calculate channelCloseCost
-		return '$123';
-	}, []);
-
 	const text = isTransferringToSavings ? (
 		<Text01S color="gray1" style={styles.text}>
-			It costs <Text01S>{channelCloseCost}</Text01S> to transfer your full
-			spending balance back to your savings. The exact fee depends on network
-			conditions.
+			There is a small cost to transfer your full spending balance back to your
+			savings. The exact fee depends on network conditions.
 		</Text01S>
 	) : (
 		<Text01S color="gray1" style={styles.text}>
