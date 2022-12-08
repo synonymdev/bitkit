@@ -1,7 +1,6 @@
 import actions from '../actions/actions';
 import { defaultBlocktankShape } from '../shapes/blocktank';
 import { IBlocktank } from '../types/blocktank';
-import { IGetOrderResponse } from '@synonymdev/blocktank-client';
 
 const blocktank = (
 	state: IBlocktank = defaultBlocktankShape,
@@ -13,34 +12,41 @@ const blocktank = (
 				...state,
 				info: action.payload,
 			};
+
 		case actions.UPDATE_BLOCKTANK_SERVICE_LIST:
 			return {
 				...state,
 				serviceList: action.payload,
 				serviceListLastUpdated: new Date().getTime(),
 			};
-		case actions.UPDATE_BLOCKTANK_ORDER:
-			//Find existing order and update it if it exists, else append to list
-			const updatedOrder: IGetOrderResponse = action.payload;
 
-			let orders = state.orders;
-			let existingOrderIndex = -1;
-			orders.forEach((o, index) => {
-				if (o._id === updatedOrder._id) {
-					existingOrderIndex = index;
-				}
-			});
+		case actions.UPDATE_BLOCKTANK_ORDER: {
+			// Find existing order and update it if it exists, else append to list
+			const existingOrder = state.orders.find(
+				(order) => order._id === action.payload._id,
+			);
 
-			if (existingOrderIndex > -1) {
-				orders[existingOrderIndex] = updatedOrder;
+			if (existingOrder) {
+				const updatedOrders = state.orders.map((order) => {
+					if (order._id === action.payload._id) {
+						return action.payload;
+					}
+
+					return order;
+				});
+
+				return {
+					...state,
+					orders: updatedOrders,
+				};
 			} else {
-				orders.push(updatedOrder);
+				return {
+					...state,
+					orders: [...state.orders, action.payload],
+				};
 			}
+		}
 
-			return {
-				...state,
-				orders,
-			};
 		case actions.ADD_PAID_BLOCKTANK_ORDER:
 			return {
 				...state,
@@ -49,8 +55,10 @@ const blocktank = (
 					[action.payload.orderId]: action.payload.txid,
 				},
 			};
+
 		case actions.RESET_BLOCKTANK_STORE:
-			return { ...defaultBlocktankShape };
+			return defaultBlocktankShape;
+
 		default:
 			return state;
 	}
