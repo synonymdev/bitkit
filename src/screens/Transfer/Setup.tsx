@@ -1,5 +1,6 @@
 import React, { ReactElement, useState, useCallback, useMemo } from 'react';
 import { StyleSheet, View } from 'react-native';
+import { useFocusEffect } from '@react-navigation/native';
 import { FadeIn, FadeOut } from 'react-native-reanimated';
 
 import {
@@ -25,6 +26,10 @@ import Store from '../../store/types';
 import { SPENDING_LIMIT_RATIO } from '../../utils/wallet/constants';
 import { convertCurrency } from '../../utils/blocktank';
 import { fiatToBitcoinUnit } from '../../utils/exchange-rate';
+import {
+	resetOnChainTransaction,
+	setupOnChainTransaction,
+} from '../../store/actions/wallet';
 import type { TransferScreenProps } from '../../navigation/types';
 
 const Setup = ({ navigation }: TransferScreenProps<'Setup'>): ReactElement => {
@@ -45,6 +50,17 @@ const Setup = ({ navigation }: TransferScreenProps<'Setup'>): ReactElement => {
 	);
 	const selectedCurrency = useSelector(
 		(state: Store) => state.settings.selectedCurrency,
+	);
+
+	useFocusEffect(
+		useCallback(() => {
+			resetOnChainTransaction({ selectedNetwork, selectedWallet });
+			setupOnChainTransaction({
+				selectedNetwork,
+				selectedWallet,
+				rbf: false,
+			}).then();
+		}, [selectedNetwork, selectedWallet]),
 	);
 
 	const spendingLimit = useMemo(() => {
