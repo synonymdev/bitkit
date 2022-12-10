@@ -1,5 +1,6 @@
 import React, { memo, ReactElement } from 'react';
 import { View, Image, StyleSheet, Share, Platform } from 'react-native';
+import { getBundleId } from 'react-native-device-info';
 
 import Button from '../../../components/Button';
 import GlowingBackground from '../../../components/GlowingBackground';
@@ -8,12 +9,13 @@ import { Display } from '../../../styles/components';
 import SettingsView from './../SettingsView';
 
 const imageSrc = require('../../../assets/illustrations/orange-pill.png');
+
 // TODO: add correct store IDs and test
-const appleAppID = '1634634088';
-const androidPackageName = 'to.synonym.bitkit.wallet';
+// const appleAppID = '1634634088';
+const androidPackageName = getBundleId();
 const appStoreUrl =
 	Platform.OS === 'ios'
-		? `https://apps.apple.com/us/app/bitkit/id${appleAppID}`
+		? 'https://testflight.apple.com/join/lGXhnwcC'
 		: `https://play.google.com/store/apps/details?id=${androidPackageName}`;
 
 const onShare = async (): Promise<void> => {

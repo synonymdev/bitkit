@@ -1,9 +1,13 @@
+import { getReadableVersion } from 'react-native-device-info';
 import { ok, Result } from '@synonymdev/result';
+import semverDiff from 'semver/functions/diff';
 
 import { getDispatch } from '../helpers';
 import actions from './actions';
 import { IViewControllerData, TViewController } from '../types/ui';
 import { defaultViewController } from '../shapes/ui';
+
+const releaseUrl = 'https://api.github.com/repos/synonymdev/bitkit/releases';
 
 const dispatch = getDispatch();
 
@@ -37,6 +41,26 @@ export const updateProfileLink = (payload: {
 		payload,
 	});
 	return ok('');
+};
+
+export const checkForAppUpdate = async (): Promise<void> => {
+	const currentVersion = getReadableVersion();
+	const response = await fetch(releaseUrl);
+	const releases = await response.json();
+	const latestVersion = releases[0].tag_name;
+	const diff = semverDiff(currentVersion, latestVersion);
+
+	if (diff) {
+		const criticalReleaseTypes = ['major', 'premajor', 'minor', 'preminor'];
+		const updateType = criticalReleaseTypes.includes(diff)
+			? 'critical'
+			: 'optional';
+
+		dispatch({
+			type: actions.SET_APP_UPDATE_TYPE,
+			payload: updateType,
+		});
+	}
 };
 
 /*

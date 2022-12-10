@@ -4,6 +4,12 @@ import { defaultUiShape, defaultViewControllers } from '../shapes/ui';
 
 const ui = (state: IUi = defaultUiShape, action): IUi => {
 	switch (action.type) {
+		case actions.SET_APP_UPDATE_TYPE:
+			return {
+				...state,
+				availableUpdateType: action.payload,
+			};
+
 		case actions.TOGGLE_VIEW:
 			return {
 				...state,

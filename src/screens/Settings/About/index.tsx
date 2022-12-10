@@ -15,7 +15,11 @@ import {
 	StyleSheet,
 	Pressable,
 } from 'react-native';
-import { getBuildNumber, getVersion } from 'react-native-device-info';
+import {
+	getBuildNumber,
+	// getBundleId,
+	getVersion,
+} from 'react-native-device-info';
 
 import {
 	BitkitIcon,
@@ -35,21 +39,20 @@ import type { SettingsScreenProps } from '../../../navigation/types';
 
 const imageSrc = require('../../../assets/powered-by.png');
 
+// TODO: add correct store IDs and test
+// const appleAppID = '1634634088';
+// const androidPackageName = getBundleId();
+// const appStoreUrl =
+// 	Platform.OS === 'ios'
+// 		? `https://apps.apple.com/us/app/bitkit/id${appleAppID}`
+// 		: `https://play.google.com/store/apps/details?id=${androidPackageName}`;
+
 const About = ({
 	navigation,
 }: SettingsScreenProps<'AboutSettings'>): ReactElement => {
 	// TODO: uncomment links after full launch
 
 	// const [isReviewing, setIsReviewing] = useState(false);
-
-	// TODO: add correct store IDs and test
-	// const appleAppID = '1634634088';
-	// const androidPackageName = 'to.synonym.bitkit.wallet';
-
-	// const appStoreUrl =
-	// 	Platform.OS === 'ios'
-	// 		? `https://apps.apple.com/us/app/bitkit/id${appleAppID}`
-	// 		: `https://play.google.com/store/apps/details?id=${androidPackageName}`;
 
 	// const onReview = useCallback((): void => {
 	// 	setIsReviewing(true);

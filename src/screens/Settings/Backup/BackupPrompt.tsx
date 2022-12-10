@@ -8,10 +8,13 @@ import BottomSheetWrapper from '../../../components/BottomSheetWrapper';
 import GlowImage from '../../../components/GlowImage';
 import Button from '../../../components/Button';
 import Store from '../../../store/types';
-import { toggleView, ignoreBackup } from '../../../store/actions/user';
+import { ignoreBackup } from '../../../store/actions/user';
+import { toggleView } from '../../../store/actions/ui';
 import { useNoTransactions } from '../../../hooks/wallet';
 import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
 import { useBalance } from '../../../hooks/wallet';
+import { useAppSelector } from '../../../hooks/redux';
+import { viewControllersSelector } from '../../../store/reselect/ui';
 import {
 	useBottomSheetBackPress,
 	useSnapPoints,
@@ -20,7 +23,7 @@ import {
 const imageSrc = require('../../../assets/illustrations/safe.png');
 
 const ASK_INTERVAL = 1000 * 60 * 60 * 24; // 1 day - how long this prompt will be hidden if user taps Later
-const CHECK_INTERVAL = 10000; // how long user needs to stay on Wallets screen before he will see this prompt
+const CHECK_DELAY = 2000; // how long user needs to stay on Wallets screen before he will see this prompt
 
 const handleLater = (): void => {
 	ignoreBackup();
@@ -29,6 +32,7 @@ const handleLater = (): void => {
 		data: { isOpen: false },
 	});
 };
+
 const handleBackup = (): void => {
 	toggleView({
 		view: 'backupPrompt',
@@ -44,6 +48,22 @@ const BackupPrompt = (): ReactElement => {
 	const snapPoints = useSnapPoints('medium');
 	const insets = useSafeAreaInsets();
 	const { satoshis: balance } = useBalance({ onchain: true, lightning: true });
+	const empty = useNoTransactions();
+	const viewControllers = useAppSelector(viewControllersSelector);
+	const ignoreTimestamp = useSelector(
+		(state: Store) => state.user.ignoreBackupTimestamp,
+	);
+	const backupVerified = useSelector(
+		(state: Store) => state.user.backupVerified,
+	);
+
+	useBottomSheetBackPress('backupPrompt');
+
+	const anyBottomSheetIsOpen = useMemo(() => {
+		return Object.keys(viewControllers)
+			.filter((view) => view !== 'backupPrompt')
+			.some((view) => viewControllers[view].isOpen);
+	}, [viewControllers]);
 
 	const buttonContainerStyles = useMemo(
 		() => ({
@@ -53,55 +73,32 @@ const BackupPrompt = (): ReactElement => {
 		[insets.bottom],
 	);
 
-	const empty = useNoTransactions();
-	const ignoreTimestamp = useSelector(
-		(state: Store) => state.user.ignoreBackupTimestamp,
-	);
-	const backupVerified = useSelector(
-		(state: Store) => state.user.backupVerified,
-	);
-	const viewControllers = useSelector(
-		(state: Store) => state.user.viewController,
-	);
-
-	const anyBottomSheetIsOpen = useMemo(() => {
-		return Object.values(viewControllers).some(({ isOpen }) => isOpen);
-	}, [viewControllers]);
-
-	useBottomSheetBackPress('backupPrompt');
-
-	const showBottomSheet = useMemo(
-		() => !backupVerified && !empty && !anyBottomSheetIsOpen,
-		[anyBottomSheetIsOpen, backupVerified, empty],
-	);
-
 	// if backup has not been verified
-	// and user on "Wallets" screen for CHECK_INTERVAL
-	// and no other bottom-sheets are shown
-	// and user has not seen this prompt for ASK_INTERVAL
 	// and wallet has transactions
-	// show BackupPrompt
+	// and user has not seen this prompt for ASK_INTERVAL
+	// and no other bottom-sheets are shown
+	// and user on "Wallets" screen for CHECK_DELAY
+	const showBottomSheet = useMemo(() => {
+		const isTimeoutOver = Number(new Date()) - ignoreTimestamp > ASK_INTERVAL;
+		return !backupVerified && !empty && isTimeoutOver && !anyBottomSheetIsOpen;
+	}, [backupVerified, empty, ignoreTimestamp, anyBottomSheetIsOpen]);
+
 	useEffect(() => {
 		if (!showBottomSheet) {
 			return;
 		}
 
-		const timer = setInterval(() => {
-			const isTimeoutOver = Number(new Date()) - ignoreTimestamp > ASK_INTERVAL;
-			if (!isTimeoutOver) {
-				return;
-			}
-
+		const timer = setTimeout(() => {
 			toggleView({
 				view: 'backupPrompt',
 				data: { isOpen: true },
 			});
-		}, CHECK_INTERVAL);
+		}, CHECK_DELAY);
 
 		return (): void => {
 			clearInterval(timer);
 		};
-	}, [showBottomSheet, ignoreTimestamp]);
+	}, [showBottomSheet]);
 
 	const text = useMemo(
 		() =>

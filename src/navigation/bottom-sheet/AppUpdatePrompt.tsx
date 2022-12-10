@@ -1,17 +1,18 @@
-import React, { memo, ReactElement, useEffect, useMemo, useState } from 'react';
+import React, { memo, ReactElement, useEffect, useMemo } from 'react';
 import { Platform, StyleSheet, View } from 'react-native';
-import { useSelector } from 'react-redux';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { getBuildNumber } from 'react-native-device-info';
+import { getBundleId } from 'react-native-device-info';
 
 import { Text01S } from '../../styles/components';
 import BottomSheetWrapper from '../../components/BottomSheetWrapper';
 import BottomSheetNavigationHeader from '../../components/BottomSheetNavigationHeader';
 import Button from '../../components/Button';
-import { ignoreAppUpdate, toggleView } from '../../store/actions/user';
-import Store from '../../store/types';
+import { ignoreAppUpdate } from '../../store/actions/user';
+import { toggleView } from '../../store/actions/ui';
 import GlowImage from '../../components/GlowImage';
 import { openURL } from '../../utils/helpers';
+import { useAppSelector } from '../../hooks/redux';
+import { viewControllersSelector } from '../../store/reselect/ui';
 import {
 	useBottomSheetBackPress,
 	useSnapPoints,
@@ -19,30 +20,27 @@ import {
 
 const imageSrc = require('../../assets/illustrations/bitkit-logo.png');
 
-const ASK_INTERVAL = 1000 * 60 * 60 * 12; // 12h - how long this prompt will be hidden if user taps Later
-const CHECK_INTERVAL = 1000; // 1s - how long user needs to stay on Wallets screen before he will see this prompt
-
 // TODO: add correct store IDs and test
 // const appleAppID = '1634634088';
-const androidPackageName = 'to.synonym.bitkit.wallet';
-
+const androidPackageName = getBundleId();
 const appStoreUrl =
 	Platform.OS === 'ios'
 		? 'https://testflight.apple.com/join/lGXhnwcC'
 		: `https://play.google.com/store/apps/details?id=${androidPackageName}`;
 
+const ASK_INTERVAL = 1000 * 60 * 60 * 12; // 12h - how long this prompt will be hidden if user taps Later
+const CHECK_DELAY = 2500; // how long user needs to stay on Wallets screen before he will see this prompt
+
 const AppUpdatePrompt = (): ReactElement => {
 	const snapPoints = useSnapPoints('large');
 	const insets = useSafeAreaInsets();
-	const [latestBuildNumber, setLatestBuildNumber] = useState<number>(0);
-	const ignoreTimestamp = useSelector(
-		(state: Store) => state.user.ignoreAppUpdateTimestamp,
+	const viewControllers = useAppSelector(viewControllersSelector);
+	const updateType = useAppSelector((state) => state.ui.availableUpdateType);
+	const ignoreTimestamp = useAppSelector(
+		(state) => state.user.ignoreAppUpdateTimestamp,
 	);
-	const anyBottomSheetIsOpen = useSelector((state: Store) => {
-		return Object.values(state.user.viewController)
-			.filter(({ id }) => id !== 'appUpdatePrompt')
-			.some(({ isOpen }) => isOpen);
-	});
+
+	useBottomSheetBackPress('appUpdatePrompt');
 
 	const buttonContainerStyles = useMemo(
 		() => ({
@@ -52,56 +50,37 @@ const AppUpdatePrompt = (): ReactElement => {
 		[insets.bottom],
 	);
 
-	useBottomSheetBackPress('appUpdatePrompt');
+	const anyBottomSheetIsOpen = useMemo(() => {
+		return Object.keys(viewControllers)
+			.filter((view) => view !== 'appUpdatePrompt')
+			.some((view) => viewControllers[view].isOpen);
+	}, [viewControllers]);
 
-	useEffect(() => {
-		const getLatestRelease = async (): Promise<void> => {
-			try {
-				const response = await fetch(
-					'https://api.github.com/repos/synonymdev/bitkit/releases',
-				);
-				const releases = await response.json();
-				const tagName = releases[0].tag_name;
-				const buildNumber = Number(tagName.split('-beta').pop());
-				setLatestBuildNumber(buildNumber);
-			} catch (error) {
-				console.error(error);
-			}
-		};
-
-		getLatestRelease();
-	}, []);
-
-	const currentBuildNumber = Number(getBuildNumber());
-	const showBottomSheet =
-		latestBuildNumber > currentBuildNumber && !anyBottomSheetIsOpen;
-
-	// if app update available
-	// and user on "Wallets" screen for CHECK_INTERVAL
+	// if optional app update available
 	// and user has not seen this prompt for ASK_INTERVAL
 	// and no other bottom-sheets are shown
-	// show AppUpdatePrompt
+	// and user on "Wallets" screen for CHECK_DELAY
+	const showBottomSheet = useMemo(() => {
+		const isTimeoutOver = Number(new Date()) - ignoreTimestamp > ASK_INTERVAL;
+		return updateType === 'optional' && isTimeoutOver && !anyBottomSheetIsOpen;
+	}, [updateType, ignoreTimestamp, anyBottomSheetIsOpen]);
+
 	useEffect(() => {
 		if (!showBottomSheet) {
 			return;
 		}
 
-		const timer = setInterval(() => {
-			const isTimeoutOver = Number(new Date()) - ignoreTimestamp > ASK_INTERVAL;
-			if (!isTimeoutOver) {
-				return;
-			}
-
+		const timer = setTimeout(() => {
 			toggleView({
 				view: 'appUpdatePrompt',
 				data: { isOpen: true },
 			});
-		}, CHECK_INTERVAL);
+		}, CHECK_DELAY);
 
 		return (): void => {
-			clearInterval(timer);
+			clearTimeout(timer);
 		};
-	}, [showBottomSheet, ignoreTimestamp]);
+	}, [showBottomSheet]);
 
 	const onCancel = (): void => {
 		ignoreAppUpdate();
@@ -131,7 +110,6 @@ const AppUpdatePrompt = (): ReactElement => {
 					title="Update Available"
 					displayBackButton={false}
 				/>
-
 				<Text01S color="gray1">
 					Please update Bitkit to the latest version for new features and bug
 					fixes!

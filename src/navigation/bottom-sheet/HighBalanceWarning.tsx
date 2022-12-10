@@ -1,6 +1,5 @@
 import React, { memo, ReactElement, useEffect, useMemo } from 'react';
 import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
-import { useSelector } from 'react-redux';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { Caption13Up, Display, Text02S } from '../../styles/components';
@@ -8,9 +7,11 @@ import BottomSheetWrapper from '../../components/BottomSheetWrapper';
 import BottomSheetNavigationHeader from '../../components/BottomSheetNavigationHeader';
 import GlowImage from '../../components/GlowImage';
 import Button from '../../components/Button';
-import Store from '../../store/types';
-import { ignoreHighBalance, toggleView } from '../../store/actions/user';
+import { ignoreHighBalance } from '../../store/actions/user';
+import { toggleView } from '../../store/actions/ui';
+import { viewControllersSelector } from '../../store/reselect/ui';
 import { useBalance } from '../../hooks/wallet';
+import { useAppSelector } from '../../hooks/redux';
 import { getFiatDisplayValues } from '../../utils/exchange-rate';
 import { openURL } from '../../utils/helpers';
 import {
@@ -24,7 +25,7 @@ const BALANCE_THRESHOLD_USD = 1000; // how high the balance must be to show this
 const BALANCE_THRESHOLD_SATS = 5000000; // how high the balance must be to show this warning to the user (in Sats)
 const MAX_WARNINGS = 3; // how many times to show this warning to the user
 const ASK_INTERVAL = 1000 * 60 * 60 * 24; // 1 day - how long this prompt will be hidden if user taps Later
-const CHECK_INTERVAL = 3000; // how long user needs to stay on Wallets screen before he will see this prompt
+const CHECK_DELAY = 3000; // how long user needs to stay on Wallets screen before he will see this prompt
 
 const Amount = ({ style }: { style?: StyleProp<ViewStyle> }): ReactElement => {
 	return (
@@ -49,32 +50,29 @@ const aStyles = StyleSheet.create({
 const HighBalanceWarning = (): ReactElement => {
 	const snapPoints = useSnapPoints('medium');
 	const insets = useSafeAreaInsets();
+	const balance = useBalance({ onchain: true, lightning: true });
+	const count = useAppSelector((state) => state.user.ignoreHighBalanceCount);
+	const bitcoinUnit = useAppSelector((state) => state.settings.bitcoinUnit);
+	const exchangeRates = useAppSelector((state) => state.wallet.exchangeRates);
+	const viewControllers = useAppSelector(viewControllersSelector);
+	const ignoreTimestamp = useAppSelector(
+		(state) => state.user.ignoreHighBalanceTimestamp,
+	);
+
+	useBottomSheetBackPress('highBalance');
+
+	const anyBottomSheetIsOpen = useMemo(() => {
+		return Object.keys(viewControllers)
+			.filter((view) => view !== 'highBalance')
+			.some((view) => viewControllers[view].isOpen);
+	}, [viewControllers]);
+
 	const buttonContainerStyles = useMemo(
 		() => ({
 			...styles.buttonContainer,
 			paddingBottom: insets.bottom + 16,
 		}),
 		[insets.bottom],
-	);
-
-	const balance = useBalance({ onchain: true, lightning: true });
-	const count = useSelector(
-		(state: Store) => state.user.ignoreHighBalanceCount,
-	);
-	const ignoreTimestamp = useSelector(
-		(state: Store) => state.user.ignoreHighBalanceTimestamp,
-	);
-	const anyBottomSheetIsOpen = useSelector((state: Store) => {
-		return Object.values(state.user.viewController).some(
-			({ isOpen }) => isOpen,
-		);
-	});
-
-	useBottomSheetBackPress('highBalance');
-
-	const bitcoinUnit = useSelector((state: Store) => state.settings.bitcoinUnit);
-	const exchangeRates = useSelector(
-		(state: Store) => state.wallet.exchangeRates,
 	);
 
 	const { fiatValue } = getFiatDisplayValues({
@@ -84,49 +82,56 @@ const HighBalanceWarning = (): ReactElement => {
 		exchangeRates,
 	});
 
-	const thresholdReached =
-		// fallback in case exchange rates are not available
-		fiatValue !== 0
-			? fiatValue > BALANCE_THRESHOLD_USD
-			: balance.satoshis > BALANCE_THRESHOLD_SATS;
-
-	const showBottomSheet =
-		thresholdReached && count < MAX_WARNINGS && !anyBottomSheetIsOpen;
-
 	// if balance over BALANCE_THRESHOLD
-	// and user on "Wallets" screen for CHECK_INTERVAL
-	// and no other bottom-sheets are shown
-	// and user has not seen this prompt for ASK_INTERVAL
 	// and not more than MAX_WARNINGS times
-	// show HighBalanceWarning
+	// and user has not seen this prompt for ASK_INTERVAL
+	// and no other bottom-sheets are shown
+	// and user on "Wallets" screen for CHECK_DELAY
+	const showBottomSheet = useMemo(() => {
+		const thresholdReached =
+			// fallback in case exchange rates are not available
+			fiatValue !== 0
+				? fiatValue > BALANCE_THRESHOLD_USD
+				: balance.satoshis > BALANCE_THRESHOLD_SATS;
+		const belowMaxWarnings = count < MAX_WARNINGS;
+		const isTimeoutOver = Number(new Date()) - ignoreTimestamp > ASK_INTERVAL;
+		return (
+			thresholdReached &&
+			belowMaxWarnings &&
+			isTimeoutOver &&
+			!anyBottomSheetIsOpen
+		);
+	}, [
+		fiatValue,
+		balance.satoshis,
+		count,
+		ignoreTimestamp,
+		anyBottomSheetIsOpen,
+	]);
+
 	useEffect(() => {
 		if (!showBottomSheet) {
 			return;
 		}
 
-		const timer = setInterval(() => {
-			const isTimeoutOver = Number(new Date()) - ignoreTimestamp > ASK_INTERVAL;
-			if (!isTimeoutOver) {
-				return;
-			}
-
+		const timer = setTimeout(() => {
 			toggleView({
 				view: 'highBalance',
 				data: { isOpen: true },
 			});
-		}, CHECK_INTERVAL);
+		}, CHECK_DELAY);
 
 		return (): void => {
 			clearInterval(timer);
 		};
-	}, [showBottomSheet, ignoreTimestamp]);
+	}, [showBottomSheet]);
 
 	const onMore = (): void => {
 		openURL('https://en.bitcoin.it/wiki/Storing_bitcoins');
 	};
 
 	const onDismiss = (): void => {
-		ignoreHighBalance();
+		ignoreHighBalance(true);
 		toggleView({
 			view: 'highBalance',
 			data: { isOpen: false },
@@ -184,7 +189,7 @@ const styles = StyleSheet.create({
 		paddingHorizontal: 32,
 	},
 	amountContainer: {
-		marginTop: 30,
+		marginTop: 8,
 	},
 	amount: {
 		marginTop: 6,

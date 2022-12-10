@@ -9,18 +9,19 @@ import React, {
 	useCallback,
 } from 'react';
 import { Platform, UIManager, NativeModules } from 'react-native';
-import { useSelector } from 'react-redux';
 import Toast from 'react-native-toast-message';
 import { ThemeProvider } from 'styled-components/native';
 
 import { SafeAreaProvider, StatusBar } from './styles/components';
-import Store from './store/types';
 import themes from './styles/themes';
 import { TTheme } from './store/types/settings';
+import { checkForAppUpdate } from './store/actions/ui';
+import { useAppSelector } from './hooks/redux';
 import OnboardingNavigator from './navigation/onboarding/OnboardingNavigator';
 import { SlashtagsProvider } from './components/SlashtagsProvider';
 import { toastConfig } from './components/Toast';
 import RestoringScreen from './screens/Onboarding/Restoring';
+import AppUpdate from './screens/AppUpdate';
 import AppOnboarded from './AppOnboarded';
 
 import './utils/translations';
@@ -32,11 +33,14 @@ if (Platform.OS === 'android') {
 }
 
 const App = (): ReactElement => {
-	const walletExists = useSelector((state: Store) => state.wallet.walletExists);
-	const requiresRemoteRestore = useSelector(
-		(state: Store) => state.user.requiresRemoteRestore,
-	)!!;
-	const theme = useSelector((state: Store) => state.settings.theme);
+	const theme = useAppSelector((state) => state.settings.theme);
+	const walletExists = useAppSelector((state) => state.wallet.walletExists);
+	const requiresRemoteRestore = useAppSelector(
+		(state) => state.user.requiresRemoteRestore,
+	);
+	const availableUpdateType = useAppSelector(
+		(state) => state.ui.availableUpdateType,
+	);
 
 	// on App start
 	useEffect(() => {
@@ -44,19 +48,28 @@ const App = (): ReactElement => {
 		if (Platform.OS === 'android') {
 			setTimeout(NativeModules.SplashScreenModule.hide, 100);
 		}
+
+		// check for Bitkit update
+		checkForAppUpdate();
 	}, []);
 
 	const currentTheme: TTheme = useMemo(() => themes[theme], [theme]);
 
 	const RootComponent = useCallback((): ReactElement => {
-		return walletExists ? (
-			<SlashtagsProvider>
-				{requiresRemoteRestore ? <RestoringScreen /> : <AppOnboarded />}
-			</SlashtagsProvider>
-		) : (
-			<OnboardingNavigator />
-		);
-	}, [walletExists, requiresRemoteRestore]);
+		if (availableUpdateType === 'critical') {
+			return <AppUpdate />;
+		}
+
+		if (walletExists) {
+			return (
+				<SlashtagsProvider>
+					{requiresRemoteRestore ? <RestoringScreen /> : <AppOnboarded />}
+				</SlashtagsProvider>
+			);
+		}
+
+		return <OnboardingNavigator />;
+	}, [availableUpdateType, walletExists, requiresRemoteRestore]);
 
 	return (
 		<ThemeProvider theme={currentTheme}>
