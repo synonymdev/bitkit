@@ -28,7 +28,7 @@ const settings = (
 			};
 
 		case actions.RESET_SETTINGS_STORE:
-			return { ...defaultSettingsShape };
+			return defaultSettingsShape;
 
 		default:
 			return state;

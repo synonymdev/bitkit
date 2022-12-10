@@ -188,9 +188,6 @@ const wallet = (state: IWallet = defaultWalletStoreShape, action): IWallet => {
 				},
 			};
 
-		case actions.RESET_WALLET_STORE:
-			return { ...defaultWalletStoreShape };
-
 		case actions.RESET_SELECTED_WALLET:
 			const wallets = state.wallets;
 			delete wallets[selectedWallet];
@@ -345,6 +342,10 @@ const wallet = (state: IWallet = defaultWalletStoreShape, action): IWallet => {
 					[selectedNetwork]: action.payload.header,
 				},
 			};
+
+		case actions.RESET_WALLET_STORE:
+			return defaultWalletStoreShape;
+
 		default:
 			return state;
 	}

@@ -23,6 +23,7 @@ const lightning = (
 				...state,
 				...action.payload,
 			};
+
 		case actions.UPDATE_LIGHTNING_NODE_ID:
 			return {
 				...state,
@@ -37,6 +38,7 @@ const lightning = (
 					},
 				},
 			};
+
 		case actions.UPDATE_LIGHTNING_CHANNELS:
 			return {
 				...state,
@@ -58,11 +60,13 @@ const lightning = (
 					},
 				},
 			};
+
 		case actions.UPDATE_LIGHTNING_NODE_VERSION:
 			return {
 				...state,
 				version: action.payload?.version,
 			};
+
 		case actions.ADD_LIGHTNING_INVOICE:
 			return {
 				...state,
@@ -80,6 +84,7 @@ const lightning = (
 					},
 				},
 			};
+
 		case actions.REMOVE_LIGHTNING_INVOICE:
 			const invoices = state.nodes[selectedWallet].invoices[selectedNetwork];
 			const newInvoices = invoices.filter(
@@ -98,6 +103,7 @@ const lightning = (
 					},
 				},
 			};
+
 		case actions.ADD_LIGHTNING_PAYMENT:
 			return {
 				...state,
@@ -122,6 +128,7 @@ const lightning = (
 					},
 				},
 			};
+
 		case actions.REMOVE_EXPIRED_LIGHTNING_INVOICES:
 			const t = Math.floor(Date.now() / 1000);
 			const currentInvoices = state.nodes[selectedWallet].invoices[
@@ -140,6 +147,7 @@ const lightning = (
 					},
 				},
 			};
+
 		case actions.SAVE_LIGHTNING_PEER:
 			let peers = state.nodes[selectedWallet]?.peers[selectedNetwork] ?? [];
 			return {
@@ -155,6 +163,7 @@ const lightning = (
 					},
 				},
 			};
+
 		case actions.UPDATE_CLAIMABLE_BALANCE:
 			return {
 				...state,
@@ -169,8 +178,10 @@ const lightning = (
 					},
 				},
 			};
+
 		case actions.RESET_LIGHTNING_STORE:
-			return { ...defaultLightningStoreShape };
+			return defaultLightningStoreShape;
+
 		default:
 			return state;
 	}

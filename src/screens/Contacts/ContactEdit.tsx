@@ -34,7 +34,7 @@ export const ContactEdit = ({
 		[keyboardShown],
 	);
 
-	const [form, setForm] = useState<BasicProfile>({ ...saved });
+	const [form, setForm] = useState<BasicProfile>(saved);
 
 	const profile = useMemo(
 		() => ({

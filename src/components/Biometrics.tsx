@@ -126,7 +126,7 @@ const Biometrics = ({
 	);
 
 	return (
-		<View color="transparent" style={[styles.container, { ...style }]}>
+		<View color="transparent" style={[styles.container, style]}>
 			<TouchableOpacity
 				color="transparent"
 				activeOpacity={0.6}

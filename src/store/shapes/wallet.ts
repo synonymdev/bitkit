@@ -176,12 +176,12 @@ export const defaultWalletStoreShape: IWallet = {
 	error: false,
 	selectedNetwork: 'bitcoin',
 	selectedWallet: EWallet.defaultWallet,
-	addressTypes: { ...addressTypes },
+	addressTypes: addressTypes,
 	exchangeRates: {},
 	header: {
-		bitcoin: { ...header },
-		bitcoinTestnet: { ...header },
-		bitcoinRegtest: { ...header },
+		bitcoin: header,
+		bitcoinTestnet: header,
+		bitcoinRegtest: header,
 	},
 	wallets: {},
 };

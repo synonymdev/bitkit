@@ -32,7 +32,7 @@ const activity = (
 				items: replacedItems,
 			};
 		case actions.RESET_ACTIVITY_STORE:
-			return { ...defaultActivityShape };
+			return defaultActivityShape;
 		default:
 			return state;
 	}

@@ -296,7 +296,7 @@ const PinPad = ({
 	}, [pinSetup, pinSetupStep, attemptsRemaining, invalidPin]);
 
 	return (
-		<View color={'background'} style={[styles.container, { ...style }]}>
+		<View color={'background'} style={[styles.container, style]}>
 			<NavigationHeader title="Pin Authentication" />
 			<View style={styles.wideRow}>{getHeaderText()}</View>
 

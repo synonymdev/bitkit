@@ -21,7 +21,7 @@ const fees = (state: IFees = defaultFeesShape, action): IFees => {
 			};
 
 		case actions.RESET_FEES_STORE:
-			return { ...defaultFeesShape };
+			return defaultFeesShape;
 
 		default:
 			return state;

@@ -200,7 +200,7 @@ export const generateAddresses = async ({
 	addressIndex = 0,
 	changeAddressIndex = 0,
 	selectedNetwork = undefined,
-	keyDerivationPath = { ...defaultKeyDerivationPath },
+	keyDerivationPath = defaultKeyDerivationPath,
 	accountType = 'onchain',
 	addressType,
 }: IGenerateAddresses): Promise<Result<IGenerateAddressesResponse>> => {
@@ -477,7 +477,7 @@ export const getKeyDerivationPath = ({
 			selectedNetwork,
 		});
 		if (path.isErr()) {
-			return { ...defaultKeyDerivationPath };
+			return defaultKeyDerivationPath;
 		}
 		return path.value.pathObject;
 	} catch (e) {
@@ -2092,8 +2092,8 @@ export const createDefaultWallet = async ({
 				},
 				addressIndex,
 				changeAddressIndex,
-				addresses: { ...addressesObj },
-				changeAddresses: { ...changeAddressesObj },
+				addresses: addressesObj,
+				changeAddresses: changeAddressesObj,
 				lastUsedAddressIndex,
 				lastUsedChangeAddressIndex,
 				id: walletName,

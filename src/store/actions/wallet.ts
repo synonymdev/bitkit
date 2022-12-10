@@ -417,8 +417,8 @@ export const addAddresses = async ({
 	}
 
 	const removeDuplicateResponse = await removeDuplicateAddresses({
-		addresses: { ...generatedAddresses.value.addresses },
-		changeAddresses: { ...generatedAddresses.value.changeAddresses },
+		addresses: generatedAddresses.value.addresses,
+		changeAddresses: generatedAddresses.value.changeAddresses,
 		selectedWallet,
 		selectedNetwork,
 	});
