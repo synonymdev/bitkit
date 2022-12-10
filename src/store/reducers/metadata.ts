@@ -48,7 +48,7 @@ const metadata = (
 		}
 
 		case actions.DELETE_META_TX_TAG: {
-			const tags = state.tags;
+			const tags = { ...state.tags };
 			let txTags = tags[action.payload.txid] ?? [];
 			txTags = txTags.filter((t) => t !== action.payload.tag);
 
@@ -60,7 +60,7 @@ const metadata = (
 
 			return {
 				...state,
-				tags: { ...tags },
+				tags,
 			};
 		}
 

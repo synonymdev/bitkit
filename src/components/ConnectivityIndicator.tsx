@@ -59,7 +59,7 @@ const ConnectivityIndicator = (): ReactElement => {
 				<Caption13M color="gray1">It appears you’re disconnected</Caption13M>
 			</View>
 
-			{!isConnectedToElectrum && (
+			{isOnline && !isConnectedToElectrum && (
 				<Button
 					style={styles.button}
 					text="Retry"

@@ -10,14 +10,31 @@ Text.defaultProps.allowFontScaling = false;
 TextInput.defaultProps = TextInput.defaultProps || {};
 TextInput.defaultProps.allowFontScaling = false;
 
-LogBox.ignoreLogs([
-	'Require cycle',
-	// TEMP: ignore <Dialog /> warning on iOS
-	'Modal with',
-	// we have react-native-draggable-flatlist inside <ScrollView /> on main screen
-	// unfortunalty, there is not good way to hide this error yet
-	// https://github.com/computerjazz/react-native-draggable-flatlist/issues/422
-	'VirtualizedLists should never be nested inside plain ScrollViews',
-]);
+if (__DEV__) {
+	const ignoreList = [
+		'Require cycle',
+		// TEMP: ignore <Dialog /> warning on iOS
+		'Modal with',
+		// we have react-native-draggable-flatlist inside <ScrollView /> on main screen
+		// unfortunalty, there is not good way to hide this error yet
+		// https://github.com/computerjazz/react-native-draggable-flatlist/issues/422
+		'VirtualizedLists should never be nested inside plain ScrollViews',
+	];
+
+	// ignore warnings
+	LogBox.ignoreLogs(ignoreList);
+
+	// ignore errors
+	const errorWarn = global.console.error;
+	// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+	global.console.error = (...arg) => {
+		for (const error of ignoreList) {
+			if (arg[0].startsWith(error)) {
+				return;
+			}
+		}
+		errorWarn(...arg);
+	};
+}
 
 AppRegistry.registerComponent(appName, () => gestureHandlerRootHOC(Root));

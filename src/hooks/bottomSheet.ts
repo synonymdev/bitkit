@@ -23,7 +23,8 @@ export const useSnapPoints = (size: 'small' | 'medium' | 'large'): number[] => {
 		if (size === 'medium') {
 			// only Header + Balance should be visible
 			const preferredHeight = height - (180 + insets.top);
-			const minHeight = 600;
+			const maxHeight = height - (60 + insets.top);
+			const minHeight = Math.min(600, maxHeight);
 			return [Math.max(preferredHeight, minHeight)];
 		}
 
