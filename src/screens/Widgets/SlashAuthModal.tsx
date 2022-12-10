@@ -15,9 +15,8 @@ import { useSelector } from 'react-redux';
 import BottomSheetWrapper from '../../components/BottomSheetWrapper';
 import Button from '../../components/Button';
 import BottomSheetNavigationHeader from '../../components/BottomSheetNavigationHeader';
-import { toggleView } from '../../store/actions/user';
+import { toggleView } from '../../store/actions/ui';
 import { useBottomSheetBackPress } from '../../hooks/bottomSheet';
-import Store from '../../store/types';
 import { useProfile, useSelectedSlashtag } from '../../hooks/slashtags';
 import { ContactItem } from '../../components/ContactsList';
 import { IContactRecord } from '../../store/types/slashtags';
@@ -33,6 +32,11 @@ import Divider from '../../components/Divider';
 import { useSnapPoints } from '../../hooks/bottomSheet';
 import { navigate } from '../../navigation/root/RootNavigator';
 import HourglassSpinner from '../../components/HourglassSpinner';
+import { useAppSelector } from '../../hooks/redux';
+import {
+	viewControllerIsOpenSelector,
+	viewControllerSelector,
+} from '../../store/reselect/ui';
 
 export type BackupNavigationProp =
 	NativeStackNavigationProp<BackupStackParamList>;
@@ -68,9 +72,11 @@ const _SlashAuthModal = (): ReactElement => {
 	const [anonymous, setAnonymous] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
 
-	const _url = useSelector(
-		(state: Store) => state.user.viewController.slashauthModal,
-	).url as string;
+	const view = useAppSelector((state) =>
+		viewControllerSelector(state, 'slashauthModal'),
+	);
+	const _url = view.url as string;
+
 	const parsed = useMemo(() => SlashURL.parse(_url), [_url]);
 	const url = useMemo(() => SlashURL.format(parsed.key), [parsed.key]);
 
@@ -212,8 +218,8 @@ export const SlashAuthModal = (): ReactElement => {
 	const snapPoints = useSnapPoints('large');
 	useBottomSheetBackPress('slashauthModal');
 
-	const isOpen = useSelector(
-		(state: Store) => state.user.viewController.slashauthModal.isOpen,
+	const isOpen = useSelector((state) =>
+		viewControllerIsOpenSelector(state, 'slashauthModal'),
 	);
 
 	return (

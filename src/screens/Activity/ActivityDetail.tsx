@@ -57,7 +57,7 @@ import SafeAreaInsets from '../../components/SafeAreaInsets';
 import Tag from '../../components/Tag';
 import useColors from '../../hooks/colors';
 import Store from '../../store/types';
-import { toggleView } from '../../store/actions/user';
+import { toggleView } from '../../store/actions/ui';
 import {
 	deleteMetaTxTag,
 	deleteMetaSlashTagsUrlTag,

@@ -4,7 +4,7 @@ import NetInfo from '@react-native-community/netinfo';
 
 import RootNavigator from './navigation/root/RootNavigator';
 import { useSlashtagsSDK } from './components/SlashtagsProvider';
-import { closeAllViews, updateUser } from './store/actions/user';
+import { updateUser } from './store/actions/user';
 import { useAppSelector } from './hooks/redux';
 import { useBalance } from './hooks/wallet';
 import { startWalletServices } from './utils/startup';
@@ -28,16 +28,13 @@ const AppOnboarded = (): ReactElement => {
 	const selectedNetwork = useAppSelector(
 		(state) => state.wallet.selectedNetwork,
 	);
-	const isOnline = useAppSelector((state) => state.user.isOnline);
+	const isOnline = useAppSelector((state) => state.ui.isOnline);
 	const isConnectedToElectrum = useAppSelector(
-		(state) => state.user.isConnectedToElectrum,
+		(state) => state.ui.isConnectedToElectrum,
 	);
 
 	// on App start
 	useEffect(() => {
-		// close all BottomSheets & Modals in case user closed the app while any were open
-		closeAllViews();
-
 		// hide splash screen on android
 		if (Platform.OS === 'android') {
 			setTimeout(NativeModules.SplashScreenModule.hide, 100);

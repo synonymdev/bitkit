@@ -7,7 +7,7 @@ import BottomSheetWrapper from '../../../components/BottomSheetWrapper';
 import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
 import GlowImage from '../../../components/GlowImage';
 import Button from '../../../components/Button';
-import { toggleView } from '../../../store/actions/user';
+import { toggleView } from '../../../store/actions/ui';
 import { wipeApp } from '../../../store/actions/settings';
 import {
 	useBottomSheetBackPress,

@@ -20,7 +20,7 @@ import NavigationHeader from '../../../components/NavigationHeader';
 import NumberPad from '../../../components/NumberPad';
 import useColors from '../../../hooks/colors';
 import { getKeychainValue, vibrate } from '../../../utils/helpers';
-import { toggleView } from '../../../store/actions/user';
+import { toggleView } from '../../../store/actions/ui';
 import type { SettingsScreenProps } from '../../../navigation/types';
 
 const ChangePin = ({

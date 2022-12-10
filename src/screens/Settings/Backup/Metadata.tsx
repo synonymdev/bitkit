@@ -7,7 +7,7 @@ import GradientView from '../../../components/GradientView';
 import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
 import GlowImage from '../../../components/GlowImage';
 import Button from '../../../components/Button';
-import { toggleView } from '../../../store/actions/user';
+import { toggleView } from '../../../store/actions/ui';
 
 const imageSrc = require('../../../assets/illustrations/tag.png');
 

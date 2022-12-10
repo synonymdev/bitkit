@@ -63,8 +63,6 @@ const defaultReceivePreference = [
 ];
 
 export const defaultSettingsShape: ISettings = {
-	loading: false,
-	error: false,
 	enableAutoReadClipboard: false,
 	enableSendAmountWarning: false,
 	pin: false,

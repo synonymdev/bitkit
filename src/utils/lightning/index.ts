@@ -54,7 +54,7 @@ import { EmitterSubscription, InteractionManager } from 'react-native';
 import { EActivityTypes, IActivityItem } from '../../store/types/activity';
 import { addActivityItem } from '../../store/actions/activity';
 import { EPaymentType, IWalletItem } from '../../store/types/wallet';
-import { toggleView } from '../../store/actions/user';
+import { toggleView } from '../../store/actions/ui';
 import { updateSlashPayConfig } from '../slashtags';
 import { sdk } from '../../components/SlashtagsProvider';
 import { showSuccessNotification } from '../notifications';

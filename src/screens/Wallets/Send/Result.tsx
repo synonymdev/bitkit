@@ -10,7 +10,7 @@ import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigati
 import GradientView from '../../../components/GradientView';
 import GlowImage from '../../../components/GlowImage';
 import Button from '../../../components/Button';
-import { toggleView } from '../../../store/actions/user';
+import { toggleView } from '../../../store/actions/ui';
 import { navigate } from '../../../navigation/root/RootNavigator';
 import Store from '../../../store/types';
 import type { SendScreenProps } from '../../../navigation/types';

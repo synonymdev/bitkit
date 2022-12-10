@@ -9,7 +9,7 @@ import Dialog from '../../../components/Dialog';
 import GlowImage from '../../../components/GlowImage';
 import Button from '../../../components/Button';
 import { wipeApp } from '../../../store/actions/settings';
-import { toggleView } from '../../../store/actions/user';
+import { toggleView } from '../../../store/actions/ui';
 import type { SettingsScreenProps } from '../../../navigation/types';
 
 const imageSrc = require('../../../assets/illustrations/restore.png');

@@ -13,7 +13,7 @@ import Carousel from 'react-native-reanimated-carousel';
 import { View, Subtitle } from '../styles/components';
 import SuggestionCard from './SuggestionCard';
 import { TTodoType } from '../store/types/todos';
-import { toggleView } from '../store/actions/user';
+import { toggleView } from '../store/actions/ui';
 import Store from '../store/types';
 import { useBalance } from '../hooks/wallet';
 import Dialog from './Dialog';

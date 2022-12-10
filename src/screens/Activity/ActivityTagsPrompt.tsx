@@ -10,15 +10,17 @@ import {
 import BottomSheetWrapper from '../../components/BottomSheetWrapper';
 import SafeAreaInsets from '../../components/SafeAreaInsets';
 import Store from '../../store/types';
-import { toggleView } from '../../store/actions/user';
+import { toggleView } from '../../store/actions/ui';
 import Tag from '../../components/Tag';
 import { addMetaTxTag, addTag, deleteTag } from '../../store/actions/metadata';
 import { sleep } from '../../utils/helpers';
+import { showErrorNotification } from '../../utils/notifications';
+import { useAppSelector } from '../../hooks/redux';
+import { viewControllerSelector } from '../../store/reselect/ui';
 import {
 	useBottomSheetBackPress,
 	useSnapPoints,
 } from '../../hooks/bottomSheet';
-import { showErrorNotification } from '../../utils/notifications';
 
 const Form = ({ id }: { id: string }): ReactElement => {
 	const [text, setText] = useState('');
@@ -110,11 +112,8 @@ const Form = ({ id }: { id: string }): ReactElement => {
 
 const ActivityTagsPrompt = (): ReactElement => {
 	const snapPoints = useSnapPoints('small');
-	const isOpen = useSelector(
-		(store: Store) => store.user.viewController?.activityTagsPrompt?.isOpen,
-	);
-	const id = useSelector(
-		(store: Store) => store.user.viewController?.activityTagsPrompt?.id,
+	const { isOpen, id } = useAppSelector((state) =>
+		viewControllerSelector(state, 'activityTagsPrompt'),
 	);
 
 	useBottomSheetBackPress('activityTagsPrompt');

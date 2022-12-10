@@ -24,7 +24,7 @@ import { getLightningStore } from '../store/helpers';
 import { showErrorNotification, showInfoNotification } from './notifications';
 import { updateBitcoinTransaction } from '../store/actions/wallet';
 import { getBalance, getSelectedNetwork, getSelectedWallet } from './wallet';
-import { toggleView } from '../store/actions/user';
+import { toggleView } from '../store/actions/ui';
 import { handleSlashtagURL } from './slashtags';
 import { decodeLightningInvoice } from './lightning';
 import {

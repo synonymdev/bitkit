@@ -14,7 +14,7 @@ import Store from '../../store/types';
 import { groupActivityItems } from '../../utils/activity';
 import Button from '../../components/Button';
 import { RootNavigationProp } from '../../navigation/types';
-import { toggleView } from '../../store/actions/user';
+import { toggleView } from '../../store/actions/ui';
 import { formatBoostedActivityItems } from '../../utils/boost';
 import ListItem, { EmptyItem } from './ListItem';
 

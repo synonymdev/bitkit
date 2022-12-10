@@ -8,7 +8,7 @@ import Store from '../../../store/types';
 import { IListData } from '../../../components/List';
 import { toggleBiometrics } from '../../../utils/settings';
 import { IsSensorAvailableResult } from '../../../components/Biometrics';
-import { toggleView } from '../../../store/actions/user';
+import { toggleView } from '../../../store/actions/ui';
 import { updateSettings } from '../../../store/actions/settings';
 import SettingsView from '../SettingsView';
 import type { SettingsScreenProps } from '../../../navigation/types';

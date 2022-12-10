@@ -12,7 +12,7 @@ import NavigationHeader from '../../components/NavigationHeader';
 import SafeAreaInsets from '../../components/SafeAreaInsets';
 import SearchInput from '../../components/SearchInput';
 import ContactsList from '../../components/ContactsList';
-import { toggleView } from '../../store/actions/user';
+import { toggleView } from '../../store/actions/ui';
 import Store from '../../store/types';
 import { useSelectedSlashtag } from '../../hooks/slashtags';
 import { RootStackScreenProps } from '../../navigation/types';

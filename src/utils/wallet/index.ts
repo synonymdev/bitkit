@@ -51,7 +51,7 @@ import {
 import {
 	getLightningStore,
 	getSettingsStore,
-	getUserStore,
+	getUiStore,
 	getWalletStore,
 } from '../../store/helpers';
 import {
@@ -115,7 +115,7 @@ export const refreshWallet = async ({
 }): Promise<Result<string>> => {
 	try {
 		InteractionManager.runAfterInteractions(async () => {
-			const isConnectedToElectrum = getUserStore().isConnectedToElectrum;
+			const isConnectedToElectrum = getUiStore().isConnectedToElectrum;
 			if (!selectedWallet) {
 				selectedWallet = getSelectedWallet();
 			}

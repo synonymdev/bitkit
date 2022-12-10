@@ -41,6 +41,7 @@ import BitcoinLogo from '../../../assets/bitcoin-logo-small.svg';
 import { createLightningInvoice } from '../../../store/actions/lightning';
 import { useLightningBalance } from '../../../hooks/lightning';
 import { sleep } from '../../../utils/helpers';
+import { viewControllerIsOpenSelector } from '../../../store/reselect/ui';
 import {
 	selectedNetworkSelector,
 	selectedWalletSelector,
@@ -73,8 +74,8 @@ const Receive = ({ navigation }): ReactElement => {
 	const { amount, message, tags } = useSelector(
 		(store: Store) => store.receive,
 	);
-	const receiveNavigationIsOpen = useSelector(
-		(store: Store) => store.user.viewController.receiveNavigation.isOpen,
+	const receiveNavigationIsOpen = useSelector((state) =>
+		viewControllerIsOpenSelector(state, 'receiveNavigation'),
 	);
 	const selectedWallet = useSelector(selectedWalletSelector);
 	const selectedNetwork = useSelector(selectedNetworkSelector);

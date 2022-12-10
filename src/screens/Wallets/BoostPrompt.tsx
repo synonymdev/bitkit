@@ -13,7 +13,7 @@ import SwipeToConfirm from '../../components/SwipeToConfirm';
 import SafeAreaInsets from '../../components/SafeAreaInsets';
 import AdjustValue from '../../components/AdjustValue';
 import Store from '../../store/types';
-import { toggleView } from '../../store/actions/user';
+import { toggleView } from '../../store/actions/ui';
 import { resetOnChainTransaction } from '../../store/actions/wallet';
 import {
 	adjustFee,
@@ -39,6 +39,8 @@ import ImageText from '../../components/ImageText';
 import Money from '../../components/Money';
 import { useTransactionDetails } from '../../hooks/transaction';
 import { useFeeText } from '../../hooks/fees';
+import { useAppSelector } from '../../hooks/redux';
+import { viewControllerSelector } from '../../store/reselect/ui';
 
 const BoostForm = ({
 	activityItem,
@@ -271,8 +273,8 @@ const BoostForm = ({
 
 const BoostPrompt = (): ReactElement => {
 	const snapPoints = useSnapPoints('small');
-	const { isOpen, activityItem } = useSelector(
-		(store: Store) => store.user.viewController.boostPrompt,
+	const { isOpen, activityItem } = useAppSelector((state) =>
+		viewControllerSelector(state, 'boostPrompt'),
 	);
 
 	useBottomSheetBackPress('boostPrompt');

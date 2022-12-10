@@ -1,8 +1,10 @@
 import { PersistedState } from 'redux-persist';
 import { defaultTodosShape } from '../shapes/todos';
-import { defaultViewControllers } from '../shapes/user';
+import { defaultViewControllers } from '../shapes/ui';
 
 // add migrations for every persisted store version change
+// NOTE: state reconciliation works only 2 levels deep
+// see https://github.com/rt2zz/redux-persist#state-reconciler
 
 const migrations = {
 	0: (state): PersistedState => {
@@ -44,7 +46,6 @@ const migrations = {
 			...state,
 			user: {
 				...state.user,
-				viewController: defaultViewControllers,
 				ignoreAppUpdateTimestamp: 0,
 			},
 		};

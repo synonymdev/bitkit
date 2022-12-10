@@ -12,7 +12,7 @@ import ReceiveDetails from '../../screens/Wallets/Receive/ReceiveDetails';
 import Tags from '../../screens/Wallets/Receive/Tags';
 import { useSnapPoints } from '../../hooks/bottomSheet';
 import { NavigationContainer } from '../../styles/components';
-import Store from '../../store/types';
+import { viewControllerIsOpenSelector } from '../../store/reselect/ui';
 
 export type ReceiveNavigationProp =
 	NativeStackNavigationProp<ReceiveStackParamList>;
@@ -31,8 +31,8 @@ const navOptions: NativeStackNavigationOptions = {
 
 const ReceiveNavigation = (): ReactElement => {
 	const snapPoints = useSnapPoints('large');
-	const isOpen = useSelector(
-		(store: Store) => store.user.viewController.receiveNavigation.isOpen,
+	const isOpen = useSelector((state) =>
+		viewControllerIsOpenSelector(state, 'receiveNavigation'),
 	);
 
 	return (

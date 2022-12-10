@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 
 import { IListData } from '../../../components/List';
 import SettingsView from '../SettingsView';
-import { toggleView } from '../../../store/actions/user';
+import { toggleView } from '../../../store/actions/ui';
 import { SettingsScreenProps } from '../../../navigation/types';
 import Store from '../../../store/types';
 

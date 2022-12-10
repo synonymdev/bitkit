@@ -34,13 +34,14 @@ import BottomSheet, {
 	BottomSheetBackdrop,
 	BottomSheetBackgroundProps,
 } from '@gorhom/bottom-sheet';
-import { useSelector } from 'react-redux';
-import Store from '../store/types';
-import { TViewController } from '../store/types/user';
+
+import { TViewController } from '../store/types/ui';
 import themes from '../styles/themes';
-import { toggleView } from '../store/actions/user';
+import { toggleView } from '../store/actions/ui';
 import BottomSheetGradient from './BottomSheetGradient';
 import { IColors } from '../styles/colors';
+import { useAppSelector } from '../hooks/redux';
+import { viewControllerSelector } from '../store/reselect/ui';
 
 export interface BottomSheetWrapperProps {
 	children: ReactElement;
@@ -66,8 +67,8 @@ const BottomSheetWrapper = forwardRef(
 		ref,
 	): ReactElement => {
 		const bottomSheetRef = useRef<BottomSheet>(null);
-		const data = useSelector((state: Store) => state.user.viewController[view]);
-		const settingsTheme = useSelector((state: Store) => state.settings.theme);
+		const data = useAppSelector((state) => viewControllerSelector(state, view));
+		const settingsTheme = useAppSelector((state) => state.settings.theme);
 		const theme = useMemo(() => themes[settingsTheme], [settingsTheme]);
 		const handleIndicatorStyle = useMemo(
 			() => ({ backgroundColor: theme.colors.gray2 }),
@@ -81,11 +82,11 @@ const BottomSheetWrapper = forwardRef(
 
 		useEffect(() => {
 			if (data.isOpen) {
-				bottomSheetRef.current?.snapToIndex(data.snapPoint ?? -1);
+				bottomSheetRef.current?.snapToIndex(0);
 			} else {
 				bottomSheetRef.current?.close();
 			}
-		}, [data.isOpen, data.snapPoint]);
+		}, [data.isOpen]);
 
 		useImperativeHandle(ref, () => ({
 			snapToIndex(index: number = 0): void {
@@ -104,18 +105,20 @@ const BottomSheetWrapper = forwardRef(
 			useBottomSheetDynamicSnapPoints(initialSnapPoints);
 
 		const _onOpen = useCallback(() => {
-			onOpen?.();
-		}, [onOpen]);
+			if (!data.isOpen) {
+				onOpen?.();
+			}
+		}, [data.isOpen, onOpen]);
 
 		const _onClose = useCallback(() => {
 			if (data.isOpen) {
 				toggleView({
 					view,
-					data: { isOpen: false, id: data.id },
+					data: { isOpen: false },
 				});
+				onClose?.();
 			}
-			onClose?.();
-		}, [data, view, onClose]);
+		}, [data.isOpen, view, onClose]);
 
 		// callbacks
 		const handleSheetChanges = useCallback(
@@ -158,9 +161,7 @@ const BottomSheetWrapper = forwardRef(
 		);
 
 		// Determine initial snapPoint index based on provided data.
-		let index = useMemo((): number => {
-			return data.snapPoint && data.snapPoint < 2 ? data.snapPoint : -1;
-		}, [data.snapPoint]);
+		const index = useMemo((): number => (data.isOpen ? 0 : -1), [data.isOpen]);
 
 		return (
 			<BottomSheet

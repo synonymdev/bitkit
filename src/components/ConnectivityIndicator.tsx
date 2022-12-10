@@ -21,7 +21,7 @@ import Button from './Button';
 const ConnectivityIndicator = (): ReactElement => {
 	const [isLoading, setIsLoading] = useState(false);
 	const { isOnline, isConnectedToElectrum } = useAppSelector(
-		(state) => state.user,
+		(state) => state.ui,
 	);
 
 	if (isOnline && isConnectedToElectrum) {

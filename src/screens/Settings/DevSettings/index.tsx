@@ -18,6 +18,7 @@ import { resetSlashtagsStore } from '../../../store/actions/slashtags';
 import { resetWidgetsStore } from '../../../store/actions/widgets';
 import { resetFeesStore } from '../../../store/actions/fees';
 import { resetTodos } from '../../../store/actions/todos';
+import { resetUiStore } from '../../../store/actions/ui';
 import { resetSettingsStore, wipeApp } from '../../../store/actions/settings';
 import type { SettingsScreenProps } from '../../../navigation/types';
 
@@ -101,6 +102,11 @@ const DevSettings = ({
 						title: 'Reset Todos Store',
 						type: 'button',
 						onPress: resetTodos,
+					},
+					{
+						title: 'Reset UI Store',
+						type: 'button',
+						onPress: resetUiStore,
 					},
 					{
 						title: 'Reset Widgets Store',

@@ -15,7 +15,7 @@ import useColors from '../hooks/colors';
 import { wipeApp } from '../store/actions/settings';
 import { setKeychainValue, getKeychainValue, vibrate } from '../utils/helpers';
 import BitkitLogo from '../assets/bitkit-logo.svg';
-import { toggleView } from '../store/actions/user';
+import { toggleView } from '../store/actions/ui';
 import { FadeIn, FadeOut } from 'react-native-reanimated';
 import NavigationHeader from './NavigationHeader';
 import { showErrorNotification } from '../utils/notifications';

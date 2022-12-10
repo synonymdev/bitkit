@@ -22,7 +22,7 @@ import { ScanIcon, Text02M } from '../../styles/components';
 import AuthCheck from '../../components/AuthCheck';
 import BlurView from '../../components/BlurView';
 import { receiveIcon, sendIcon } from '../../assets/icons/tabs';
-import { toggleView } from '../../store/actions/user';
+import { toggleView } from '../../store/actions/ui';
 import useColors from '../../hooks/colors';
 import { TAssetType } from '../../store/types/wallet';
 

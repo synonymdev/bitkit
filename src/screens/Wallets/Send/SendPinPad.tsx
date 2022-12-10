@@ -4,7 +4,7 @@ import { StyleSheet, View, Pressable } from 'react-native';
 import { Text02S, AnimatedView } from '../../../styles/components';
 import useColors from '../../../hooks/colors';
 import { getKeychainValue, vibrate } from '../../../utils/helpers';
-import { toggleView } from '../../../store/actions/user';
+import { toggleView } from '../../../store/actions/ui';
 import { FadeIn, FadeOut } from 'react-native-reanimated';
 import NumberPad from '../../../components/NumberPad';
 

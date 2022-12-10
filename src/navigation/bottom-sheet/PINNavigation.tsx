@@ -11,8 +11,8 @@ import ChoosePIN from '../../screens/Settings/PIN/ChoosePIN';
 import Result from '../../screens/Settings/PIN/Result';
 import AskForBiometrics from '../../screens/Settings/PIN/AskForBiometrics';
 import { NavigationContainer } from '../../styles/components';
-import Store from '../../store/types';
 import { useSnapPoints } from '../../hooks/bottomSheet';
+import { viewControllerIsOpenSelector } from '../../store/reselect/ui';
 
 export type PinNavigationProp = NativeStackNavigationProp<PinStackParamList>;
 
@@ -30,8 +30,8 @@ const navOptions: NativeStackNavigationOptions = {
 
 const PINNavigation = (): ReactElement => {
 	const snapPoints = useSnapPoints('medium');
-	const isOpen = useSelector(
-		(store: Store) => store.user.viewController.PINNavigation.isOpen,
+	const isOpen = useSelector((state) =>
+		viewControllerIsOpenSelector(state, 'PINNavigation'),
 	);
 
 	return (

@@ -4,8 +4,10 @@ import {
 	useSafeAreaFrame,
 	useSafeAreaInsets,
 } from 'react-native-safe-area-context';
-import { toggleView } from '../store/actions/user';
-import { TViewController } from '../store/types/user';
+
+import { toggleView } from '../store/actions/ui';
+import { viewControllerIsOpenSelector } from '../store/reselect/ui';
+import { TViewController } from '../store/types/ui';
 import { useAppSelector } from './redux';
 
 export const useSnapPoints = (size: 'small' | 'medium' | 'large'): number[] => {
@@ -35,8 +37,8 @@ export const useSnapPoints = (size: 'small' | 'medium' | 'large'): number[] => {
 export const useBottomSheetBackPress = (
 	viewController: TViewController,
 ): void => {
-	const isBottomSheetOpen = useAppSelector(
-		(store) => store.user.viewController[viewController].isOpen,
+	const isBottomSheetOpen = useAppSelector((state) =>
+		viewControllerIsOpenSelector(state, viewController),
 	);
 
 	const backHandlerSubscriptionRef = useRef<NativeEventSubscription | null>(

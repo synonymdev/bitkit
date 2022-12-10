@@ -1,23 +1,23 @@
 import React, { useMemo, ReactElement, useCallback, memo } from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
-import { useSelector } from 'react-redux';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { View as ThemedView, Text02S, Text02B } from '../../styles/components';
 import Button from '../../components/Button';
 import LabeledInput from '../../components/LabeledInput';
 import { RootStackScreenProps } from '../../navigation/types';
-import Store from '../../store/types';
 import { updateProfileLink } from '../../store/actions/ui';
 import NavigationHeader from '../../components/NavigationHeader';
 import SafeAreaInsets from '../../components/SafeAreaInsets';
 import { addLink } from '../../store/actions/slashtags';
+import { useAppSelector } from '../../hooks/redux';
+import { profileLinkSelector } from '../../store/reselect/ui';
 
 export const ProfileAddLinkForm = ({
 	navigation,
 }: RootStackScreenProps<'ProfileAddLink'>): ReactElement => {
 	const insets = useSafeAreaInsets();
-	const form = useSelector((state: Store) => state.ui.profileLink);
+	const form = useAppSelector(profileLinkSelector);
 
 	const buttonContainerStyles = useMemo(
 		() => ({

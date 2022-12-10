@@ -1,6 +1,5 @@
 import React, { memo, ReactElement, useMemo } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { useSelector } from 'react-redux';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { Text01S } from '../../../styles/components';
@@ -8,21 +7,20 @@ import BottomSheetWrapper from '../../../components/BottomSheetWrapper';
 import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
 import GlowImage from '../../../components/GlowImage';
 import Button from '../../../components/Button';
-import { toggleView } from '../../../store/actions/user';
+import { toggleView } from '../../../store/actions/ui';
+import { useAppSelector } from '../../../hooks/redux';
+import { showLaterButtonSelector } from '../../../store/reselect/ui';
 import {
 	useBottomSheetBackPress,
 	useSnapPoints,
 } from '../../../hooks/bottomSheet';
-import Store from '../../../store/types';
 
 const imageSrc = require('../../../assets/illustrations/shield.png');
 
 const PINPrompt = (): ReactElement => {
 	const snapPoints = useSnapPoints('medium');
 	const insets = useSafeAreaInsets();
-	const showLaterButton = useSelector(
-		(store: Store) => store.user.viewController.PINPrompt.showLaterButton,
-	);
+	const showLaterButton = useAppSelector(showLaterButtonSelector);
 
 	const buttonContainerStyles = useMemo(
 		() => ({

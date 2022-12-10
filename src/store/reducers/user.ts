@@ -1,6 +1,6 @@
 import actions from '../actions/actions';
 import { IUser } from '../types/user';
-import { defaultUserShape, defaultViewControllers } from '../shapes/user';
+import { defaultUserShape } from '../shapes/user';
 
 const user = (state: IUser = defaultUserShape, action): IUser => {
 	switch (action.type) {
@@ -10,50 +10,34 @@ const user = (state: IUser = defaultUserShape, action): IUser => {
 				...action.payload,
 			};
 
-		case actions.TOGGLE_VIEW:
+		case actions.IGNORE_APP_UPDATE:
 			return {
 				...state,
-				viewController: {
-					...state.viewController,
-					[action.payload.view]: {
-						...state.viewController[action.payload.view],
-						...action.payload.data,
-					},
-				},
+				ignoreAppUpdateTimestamp: Number(new Date()),
 			};
 
-		case actions.CLOSE_VIEWS:
+		case actions.IGNORE_BACKUP:
 			return {
 				...state,
-				viewController: defaultViewControllers,
+				ignoreBackupTimestamp: Number(new Date()),
 			};
 
-		case actions.USER_IGNORE_BACKUP:
+		case actions.IGNORE_HIGH_BALANCE: {
+			const increment = action.payload.final ? 3 : 1;
 			return {
 				...state,
-				ignoreBackupTimestamp: action.payload,
+				ignoreHighBalanceCount: state.ignoreHighBalanceCount + increment,
+				ignoreHighBalanceTimestamp: Number(new Date()),
 			};
+		}
 
-		case actions.USER_IGNORE_HIGH_BALANCE:
+		case actions.START_COOP_CLOSE_TIMER:
 			return {
 				...state,
-				ignoreHighBalanceCount: state.ignoreHighBalanceCount + 1,
-				ignoreHighBalanceTimestamp: action.payload,
+				startCoopCloseTimestamp: Number(new Date()),
 			};
 
-		case actions.USER_START_COOP_CLOSE_TIMER:
-			return {
-				...state,
-				startCoopCloseTimestamp: action.payload,
-			};
-
-		case actions.USER_IGNORE_APP_UPDATE:
-			return {
-				...state,
-				ignoreAppUpdateTimestamp: action.payload,
-			};
-
-		case actions.USER_VERIFY_BACKUP:
+		case actions.VERIFY_BACKUP:
 			return {
 				...state,
 				backupVerified: true,

@@ -15,8 +15,8 @@ import Result from '../../screens/Settings/Backup/Result';
 import Warning from '../../screens/Settings/Backup/Warning';
 import Metadata from '../../screens/Settings/Backup/Metadata';
 import { NavigationContainer } from '../../styles/components';
-import Store from '../../store/types';
 import { useSnapPoints } from '../../hooks/bottomSheet';
+import { viewControllerIsOpenSelector } from '../../store/reselect/ui';
 
 export type BackupNavigationProp =
 	NativeStackNavigationProp<BackupStackParamList>;
@@ -39,8 +39,8 @@ const navOptions: NativeStackNavigationOptions = {
 
 const BackupNavigation = (): ReactElement => {
 	const snapPoints = useSnapPoints('medium');
-	const isOpen = useSelector(
-		(store: Store) => store.user.viewController.backupNavigation.isOpen,
+	const isOpen = useSelector((state) =>
+		viewControllerIsOpenSelector(state, 'backupNavigation'),
 	);
 
 	return (

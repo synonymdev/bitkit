@@ -2,7 +2,7 @@ import Clipboard from '@react-native-clipboard/clipboard';
 import SDK from '@synonymdev/slashtags-sdk';
 
 import { navigate } from '../../navigation/root/RootNavigator';
-import { toggleView } from '../../store/actions/user';
+import { toggleView } from '../../store/actions/ui';
 import { updateBitcoinTransaction } from '../../store/actions/wallet';
 import { showSuccessNotification } from '../notifications';
 import { decodeQRData } from '../scanner';

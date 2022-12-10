@@ -9,7 +9,7 @@ import GradientView from '../../../components/GradientView';
 import GlowImage from '../../../components/GlowImage';
 import Button from '../../../components/Button';
 import Store from '../../../store/types';
-import { toggleView } from '../../../store/actions/user';
+import { toggleView } from '../../../store/actions/ui';
 import { updateSettings } from '../../../store/actions/settings';
 import type { PinScreenProps } from '../../../navigation/types';
 

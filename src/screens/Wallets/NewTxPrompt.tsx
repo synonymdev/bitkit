@@ -16,13 +16,15 @@ import BottomSheetWrapper from '../../components/BottomSheetWrapper';
 import Glow from '../../components/Glow';
 import AmountToggle from '../../components/AmountToggle';
 import Store from '../../store/types';
-import { toggleView } from '../../store/actions/user';
+import { toggleView } from '../../store/actions/ui';
 import BottomSheetNavigationHeader from '../../components/BottomSheetNavigationHeader';
 import { navigate } from '../../navigation/root/RootNavigator';
 import {
 	useBottomSheetBackPress,
 	useSnapPoints,
 } from '../../hooks/bottomSheet';
+import { viewControllerSelector } from '../../store/reselect/ui';
+import { useAppSelector } from '../../hooks/redux';
 
 const confettiSrc = require('../../assets/lottie/confetti-orange.json');
 const imageSrc = require('../../assets/illustrations/coin-stack-x.png');
@@ -40,8 +42,8 @@ const NewTxPrompt = (): ReactElement => {
 		[insets.bottom],
 	);
 
-	const txid = useSelector(
-		(store: Store) => store.user.viewController.newTxPrompt.txid,
+	const { txid } = useAppSelector((state) =>
+		viewControllerSelector(state, 'newTxPrompt'),
 	);
 	const activityItem = useSelector((store: Store) =>
 		store.activity.items.find(({ id }) => id === txid),

@@ -1,8 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit';
 import createDebugger from 'redux-flipper';
 import logger from 'redux-logger';
+import autoMergeLevel2 from 'redux-persist/lib/stateReconciler/autoMergeLevel2';
 import {
 	persistReducer,
+	persistStore,
 	createMigrate,
 	FLUSH,
 	REHYDRATE,
@@ -15,10 +17,11 @@ import {
 	ENABLE_REDUX_FLIPPER,
 	ENABLE_REDUX_LOGGER,
 	ENABLE_REDUX_IMMUTABLE_CHECK,
+	ENABLE_MIGRATION_DEBUG,
 } from '@env';
 
 import mmkvStorage from './mmkv-storage';
-import reducers from './reducers';
+import reducers, { RootReducer } from './reducers';
 import migrations from './migrations';
 
 const __JEST__ = process.env.JEST_WORKER_ID !== undefined;
@@ -31,6 +34,9 @@ const __enableLogger__ = ENABLE_REDUX_LOGGER
 const __enableImmutableCheck__ = ENABLE_REDUX_IMMUTABLE_CHECK
 	? ENABLE_REDUX_IMMUTABLE_CHECK === 'true'
 	: true;
+const __enableMigrationDebug__ = ENABLE_MIGRATION_DEBUG
+	? ENABLE_MIGRATION_DEBUG === 'true'
+	: false;
 
 const middleware = [];
 const devMiddleware = [
@@ -44,10 +50,12 @@ const persistConfig = {
 	key: 'root',
 	storage: mmkvStorage,
 	// increase version after store shape changes
-	version: 3,
-	migrate: createMigrate(migrations, { debug: false }),
+	version: 4,
+	stateReconciler: autoMergeLevel2,
+	blacklist: ['ui'],
+	migrate: createMigrate(migrations, { debug: __enableMigrationDebug__ }),
 };
-const persistedReducer = persistReducer(persistConfig, reducers);
+const persistedReducer = persistReducer<RootReducer>(persistConfig, reducers);
 
 const store = configureStore({
 	reducer: persistedReducer,
@@ -71,6 +79,8 @@ const store = configureStore({
 		}
 	},
 });
+
+export const persistor = persistStore(store);
 
 // Infer the `RootState` and `AppDispatch` types from the store itself
 export type RootState = ReturnType<typeof store.getState>;

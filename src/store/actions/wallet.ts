@@ -51,7 +51,7 @@ import {
 } from '../../utils/wallet/electrum';
 import { EFeeIds } from '../types/fees';
 import { IHeader } from '../../utils/types/electrum';
-import { toggleView } from './user';
+import { toggleView } from './ui';
 import {
 	GAP_LIMIT,
 	GENERATE_ADDRESS_AMOUNT,

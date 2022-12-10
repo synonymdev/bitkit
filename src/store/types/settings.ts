@@ -31,8 +31,6 @@ export type TCustomElectrumPeers =
 	| IWalletItem<[]>;
 
 export interface ISettings {
-	loading: boolean;
-	error: boolean;
 	enableAutoReadClipboard: boolean;
 	enableSendAmountWarning: boolean;
 	pin: boolean;

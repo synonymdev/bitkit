@@ -57,6 +57,7 @@ import {
 	selectedNetworkSelector,
 	selectedWalletSelector,
 } from '../../../store/reselect/wallet';
+import { viewControllerIsOpenSelector } from '../../../store/reselect/ui';
 
 const AddressAndAmount = ({
 	navigation,
@@ -82,8 +83,8 @@ const AddressAndAmount = ({
 	const coinSelectAuto = useSelector(
 		(state: Store) => state.settings.coinSelectAuto,
 	);
-	const sendNavigationIsOpen = useSelector(
-		(store: Store) => store.user.viewController.sendNavigation.isOpen,
+	const sendNavigationIsOpen = useSelector((state) =>
+		viewControllerIsOpenSelector(state, 'sendNavigation'),
 	);
 	const unitPreference = useSelector(
 		(state: Store) => state.settings.unitPreference,

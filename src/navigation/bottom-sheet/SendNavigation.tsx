@@ -23,8 +23,8 @@ import {
 	resetOnChainTransaction,
 	setupOnChainTransaction,
 } from '../../store/actions/wallet';
-import Store from '../../store/types';
 import { useSnapPoints } from '../../hooks/bottomSheet';
+import { viewControllerIsOpenSelector } from '../../store/reselect/ui';
 
 export type SendNavigationProp = NativeStackNavigationProp<SendStackParamList>;
 
@@ -54,8 +54,8 @@ const screenOptions: NativeStackNavigationOptions = {
 
 const SendNavigation = (): ReactElement => {
 	const snapPoints = useSnapPoints('large');
-	const isOpen = useSelector(
-		(store: Store) => store.user.viewController.sendNavigation.isOpen,
+	const isOpen = useSelector((state) =>
+		viewControllerIsOpenSelector(state, 'sendNavigation'),
 	);
 
 	return (

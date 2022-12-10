@@ -10,6 +10,7 @@ import { ILightning } from './types/lightning';
 import { IBlocktank } from './types/blocktank';
 import { IFees } from './types/fees';
 import { ISlashtags } from './types/slashtags';
+import { IUi } from './types/ui';
 import { IUser } from './types/user';
 
 /*
@@ -41,6 +42,9 @@ export const getFeesStore = (): IFees =>
 
 export const getSlashtagsStore = (): ISlashtags =>
 	JSON.parse(JSON.stringify(store.getState()[EStore.slashtags]));
+
+export const getUiStore = (): IUi =>
+	JSON.parse(JSON.stringify(store.getState()[EStore.ui]));
 
 export const getUserStore = (): IUser =>
 	JSON.parse(JSON.stringify(store.getState()[EStore.user]));
