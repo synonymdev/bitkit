@@ -1,7 +1,7 @@
 {
   "name": "bitkit",
   "author": "Synonym",
-  "version": "0.0.1",
+  "version": "1.0.0-beta.23",
   "private": true,
   "scripts": {
     "android": "react-native run-android",
@@ -25,6 +25,7 @@
     "clean:rn": "watchman watch-del-all && rimraf node_modules nodejs-assets/nodejs-project/node_modules && yarn && rimraf /tmp/metro-*",
     "clean:android": "cd android && rimraf build app/build && ./gradlew clean",
     "clean:ios": "cd ios && rimraf Pods Podfile.lock build && pod deintegrate && pod install",
+    "bump": "./scripts/bump-version.sh",
     "bundle": "yarn clean:android && react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.jsbundle --assets-dest android/app/build/intermediates/res/merged/release/ && cd android && ./gradlew assembleRelease --no-daemon",
     "prepare": "husky install",
     "postinstall": "node postinstall.js"

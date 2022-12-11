@@ -142,8 +142,8 @@ android {
         applicationId "to.synonym.bitkit.wallet"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 16
-        versionName "1.0"
+        versionCode 23
+        versionName "1.0.0-beta"
         multiDexEnabled true
         missingDimensionStrategy 'react-native-camera', 'general'
         buildConfigField "boolean", "IS_NEW_ARCHITECTURE_ENABLED", isNewArchitectureEnabled().toString()
