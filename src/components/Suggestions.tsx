@@ -6,15 +6,15 @@ import React, {
 	useCallback,
 } from 'react';
 import { StyleSheet, useWindowDimensions } from 'react-native';
-import { useSelector } from 'react-redux';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import Carousel from 'react-native-reanimated-carousel';
 
 import { View, Subtitle } from '../styles/components';
 import SuggestionCard from './SuggestionCard';
+import { allTodos } from '../store/shapes/todos';
 import { TTodoType } from '../store/types/todos';
 import { toggleView } from '../store/actions/ui';
-import Store from '../store/types';
+import { useAppSelector } from '../hooks/redux';
 import { useBalance } from '../hooks/wallet';
 import Dialog from './Dialog';
 import type { RootNavigationProp } from '../navigation/types';
@@ -24,16 +24,12 @@ const Suggestions = (): ReactElement => {
 	const { width } = useWindowDimensions();
 	const [index, setIndex] = useState(0);
 	const [showDialog, setShowDialog] = useState(false);
-	const todos = useSelector((state: Store) => state.todos);
-	const showSuggestions = useSelector(
-		(state: Store) => state.settings.showSuggestions,
+	const { satoshis: balance } = useBalance({ onchain: true, lightning: true });
+	const todos = useAppSelector((state) => state.todos);
+	const pinTodoDone = useAppSelector((state) => state.settings.pin);
+	const showSuggestions = useAppSelector(
+		(state) => state.settings.showSuggestions,
 	);
-	const { satoshis: balance } = useBalance({
-		onchain: true,
-		lightning: true,
-	});
-
-	const pinTodoDone = useSelector((state: Store) => state.settings.pin);
 
 	const carouselStyle = useMemo(() => ({ width }), [width]);
 	const panGestureHandlerProps = useMemo(
@@ -95,13 +91,15 @@ const Suggestions = (): ReactElement => {
 		return <></>;
 	}
 
+	const todoItems = todos.map((id) => allTodos.find((todo) => todo.id === id)!);
+
 	return (
 		<>
 			<Subtitle style={styles.title}>Suggestions</Subtitle>
 			<View style={styles.container}>
 				<Carousel
 					style={carouselStyle}
-					data={todos}
+					data={todoItems}
 					defaultIndex={index}
 					loop={false}
 					height={170}

@@ -1,43 +1,30 @@
 import actions from '../actions/actions';
-import { ITodos, TTodoType } from '../types/todos';
-import { allTodos, defaultTodosShape } from '../shapes/todos';
-
-const TODO_SORTING_ORDER: TTodoType[] = [
-	'backupSeedPhrase',
-	'lightning',
-	'lightningSettingUp',
-	'transfer',
-	'transferInProgress',
-	'transferClosingChannel',
-	'pin',
-	'slashtagsProfile',
-	'buyBitcoin',
-];
+import { ITodos } from '../types/todos';
+import { allTodos, defaultTodosShape, todoSortinOrder } from '../shapes/todos';
 
 const todos = (state: ITodos = defaultTodosShape, action): ITodos => {
 	switch (action.type) {
 		case actions.ADD_TODO: {
-			const newTodo = allTodos.find((todo) => todo.id === action.payload)!;
-			const newTodos = [...state, newTodo].sort(
-				(a, b) =>
-					TODO_SORTING_ORDER.indexOf(a.id) - TODO_SORTING_ORDER.indexOf(b.id),
+			const newTodo = allTodos.find((todo) => todo.id === action.payload)!.id;
+			const uniqueTodos = [...new Set([...state, newTodo])];
+			const newTodos = uniqueTodos.sort(
+				(a, b) => todoSortinOrder.indexOf(a) - todoSortinOrder.indexOf(b),
 			);
-			// make sure there are no duplicates
-			const uniqueTodos = [
-				...new Map(newTodos.map((item) => [item.id, item])).values(),
-			];
 
-			return uniqueTodos;
+			return newTodos;
 		}
 
-		case actions.REMOVE_TODO:
-			return state.filter((todo) => todo.id !== action.payload);
+		case actions.REMOVE_TODO: {
+			return state.filter((todo) => todo !== action.payload);
+		}
 
-		case actions.RESET_TODOS:
+		case actions.RESET_TODOS: {
 			return defaultTodosShape;
+		}
 
-		default:
+		default: {
 			return state;
+		}
 	}
 };
 

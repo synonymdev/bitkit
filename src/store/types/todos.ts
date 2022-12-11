@@ -22,4 +22,4 @@ export interface ITodo {
 	dismissable: boolean;
 }
 
-export type ITodos = ITodo[];
+export type ITodos = TTodoType[];

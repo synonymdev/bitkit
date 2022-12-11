@@ -1,6 +1,7 @@
 import { PersistedState } from 'redux-persist';
 import { defaultTodosShape } from '../shapes/todos';
 import { defaultViewControllers } from '../shapes/ui';
+import { ITodo } from '../types/todos';
 
 // add migrations for every persisted store version change
 // NOTE: state reconciliation works only 2 levels deep
@@ -48,6 +49,12 @@ const migrations = {
 				...state.user,
 				ignoreAppUpdateTimestamp: 0,
 			},
+		};
+	},
+	5: (state): PersistedState => {
+		return {
+			...state,
+			todos: Object.values(state.todos as ITodo[]).map((todo) => todo.id),
 		};
 	},
 };

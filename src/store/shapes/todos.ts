@@ -1,4 +1,4 @@
-import { ITodo, ITodos } from '../types/todos';
+import { ITodo, TTodoType } from '../types/todos';
 
 const imageSafe = require('../../assets/illustrations/safe.png');
 const imageLightning = require('../../assets/illustrations/lightning.png');
@@ -93,11 +93,23 @@ export const allTodos = [
 ];
 
 const defaultTodos = [
-	backupSeedPhraseTodo,
-	lightningTodo,
-	pinTodo,
-	slashtagsProfileTodo,
-	buyBitcoinTodo,
+	backupSeedPhraseTodo.id,
+	lightningTodo.id,
+	pinTodo.id,
+	slashtagsProfileTodo.id,
+	buyBitcoinTodo.id,
 ];
 
-export const defaultTodosShape: ITodos = defaultTodos;
+export const todoSortinOrder: TTodoType[] = [
+	'backupSeedPhrase',
+	'lightning',
+	'lightningSettingUp',
+	'transfer',
+	'transferInProgress',
+	'transferClosingChannel',
+	'pin',
+	'slashtagsProfile',
+	'buyBitcoin',
+];
+
+export const defaultTodosShape: TTodoType[] = defaultTodos;
