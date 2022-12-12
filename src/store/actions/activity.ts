@@ -48,7 +48,7 @@ export const updateOnChainActivityList = (): Promise<Result<string>> => {
 			return resolve(ok(''));
 		}
 
-		await dispatch({
+		dispatch({
 			type: actions.UPDATE_ACTIVITY_ENTRIES,
 			payload: onChainTransactionsToActivityItems(
 				currentWallet.transactions[selectedNetwork],

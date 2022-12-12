@@ -1,6 +1,9 @@
+import RNRestart from 'react-native-restart';
+import { err, ok, Result } from '@synonymdev/result';
+import { Platform, BackHandler } from 'react-native';
+
 import actions from './actions';
 import { getDispatch } from '../helpers';
-import { err, ok, Result } from '@synonymdev/result';
 import { getSelectedNetwork, getSelectedWallet } from '../../utils/wallet';
 import { resetKeychainValue } from '../../utils/helpers';
 import { wipeLdkStorage } from '../../utils/lightning';
@@ -60,6 +63,13 @@ export const wipeApp = async ({
 			message: 'All app data has been reset.',
 		});
 
+		// BackHandler.exitApp() works fine on Android and closes the app
+		// for iOS we are using react-native-restart to restart the app
+		if (Platform.OS === 'android') {
+			BackHandler.exitApp();
+		} else {
+			RNRestart.Restart();
+		}
 		return ok('');
 	} catch (e) {
 		console.log(e);
