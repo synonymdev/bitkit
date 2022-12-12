@@ -79,6 +79,9 @@ PODS:
   - lottie-react-native (5.1.4):
     - lottie-ios (~> 3.4.0)
     - React-Core
+  - MMKV (1.2.14):
+    - MMKVCore (~> 1.2.14)
+  - MMKVCore (1.2.14)
   - OpenSSL-Universal (1.1.1100)
   - RCT-Folly (2021.07.22.00):
     - boost
@@ -314,8 +317,13 @@ PODS:
     - React-Core
   - react-native-flipper (0.162.0):
     - React-Core
+  - react-native-image-picker (4.10.2):
+    - React-Core
   - react-native-ldk (0.0.76):
     - React
+  - react-native-mmkv (2.5.1):
+    - MMKV (>= 1.2.13)
+    - React-Core
   - react-native-netinfo (8.3.1):
     - React-Core
   - React-perflogger (0.70.6)
@@ -390,9 +398,17 @@ PODS:
     - React-Core
   - RNDeviceInfo (10.3.0):
     - React-Core
+  - RNFS (2.20.0):
+    - React-Core
+  - RNGestureHandler (2.8.0):
+    - React-Core
+  - RNKeychain (8.1.1):
+    - React-Core
   - RNQrGenerator (1.2.0):
     - React
     - ZXingObjC
+  - RNReactNativeHapticFeedback (1.14.0):
+    - React-Core
   - SocketRocket (0.6.0)
   - Yoga (1.14.0)
   - YogaKit (1.18.1):
@@ -453,7 +469,9 @@ DEPENDENCIES:
   - "react-native-blur (from `../node_modules/@react-native-community/blur`)"
   - react-native-document-picker (from `../node_modules/react-native-document-picker`)
   - react-native-flipper (from `../node_modules/react-native-flipper`)
+  - react-native-image-picker (from `../node_modules/react-native-image-picker`)
   - "react-native-ldk (from `../node_modules/@synonymdev/react-native-ldk`)"
+  - react-native-mmkv (from `../node_modules/react-native-mmkv`)
   - "react-native-netinfo (from `../node_modules/@react-native-community/netinfo`)"
   - React-perflogger (from `../node_modules/react-native/ReactCommon/reactperflogger`)
   - React-RCTActionSheet (from `../node_modules/react-native/Libraries/ActionSheetIOS`)
@@ -470,7 +488,11 @@ DEPENDENCIES:
   - ReactNativeCameraKit (from `../node_modules/react-native-camera-kit`)
   - "RNCClipboard (from `../node_modules/@react-native-clipboard/clipboard`)"
   - RNDeviceInfo (from `../node_modules/react-native-device-info`)
+  - RNFS (from `../node_modules/react-native-fs`)
+  - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
+  - RNKeychain (from `../node_modules/react-native-keychain`)
   - RNQrGenerator (from `../node_modules/rn-qr-generator`)
+  - RNReactNativeHapticFeedback (from `../node_modules/react-native-haptic-feedback`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
@@ -488,6 +510,8 @@ SPEC REPOS:
     - fmt
     - libevent
     - lottie-ios
+    - MMKV
+    - MMKVCore
     - OpenSSL-Universal
     - SocketRocket
     - YogaKit
@@ -546,8 +570,12 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-document-picker"
   react-native-flipper:
     :path: "../node_modules/react-native-flipper"
+  react-native-image-picker:
+    :path: "../node_modules/react-native-image-picker"
   react-native-ldk:
     :path: "../node_modules/@synonymdev/react-native-ldk"
+  react-native-mmkv:
+    :path: "../node_modules/react-native-mmkv"
   react-native-netinfo:
     :path: "../node_modules/@react-native-community/netinfo"
   React-perflogger:
@@ -580,8 +608,16 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-clipboard/clipboard"
   RNDeviceInfo:
     :path: "../node_modules/react-native-device-info"
+  RNFS:
+    :path: "../node_modules/react-native-fs"
+  RNGestureHandler:
+    :path: "../node_modules/react-native-gesture-handler"
+  RNKeychain:
+    :path: "../node_modules/react-native-keychain"
   RNQrGenerator:
     :path: "../node_modules/rn-qr-generator"
+  RNReactNativeHapticFeedback:
+    :path: "../node_modules/react-native-haptic-feedback"
   Yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
@@ -606,6 +642,8 @@ SPEC CHECKSUMS:
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
   lottie-ios: 8f97d3271e155c2d688875c29cd3c74908aef5f8
   lottie-react-native: b702fab740cdb952a8e2354713d3beda63ff97b0
+  MMKV: 9c4663aa7ca255d478ff10f2f5cb7d17c1651ccd
+  MMKVCore: 89f5c8a66bba2dcd551779dea4d412eeec8ff5bb
   OpenSSL-Universal: ebc357f1e6bc71fa463ccb2fe676756aff50e88c
   RCT-Folly: 0080d0a6ebf2577475bda044aa59e2ca1f909cda
   RCTRequired: e1866f61af7049eb3d8e08e8b133abd38bc1ca7a
@@ -626,7 +664,9 @@ SPEC CHECKSUMS:
   react-native-blur: 50c9feabacbc5f49b61337ebc32192c6be7ec3c3
   react-native-document-picker: 958e2bc82e128be69055be261aeac8d872c8d34c
   react-native-flipper: 7eeb9b59b667dd0619372c7349cf7c78032d1de2
+  react-native-image-picker: bf34f3f516d139ed3e24c5f5a381a91819e349ea
   react-native-ldk: e042f888d7fa13cbbdde1a57fc0226867b7a15a1
+  react-native-mmkv: 69b9c003f10afdd01addf7c6ee784ce42ee2eff3
   react-native-netinfo: 1a6035d3b9780221d407c277ebfb5722ace00658
   React-perflogger: 8c79399b0500a30ee8152d0f9f11beae7fc36595
   React-RCTActionSheet: 7316773acabb374642b926c19aef1c115df5c466
@@ -643,7 +683,11 @@ SPEC CHECKSUMS:
   ReactNativeCameraKit: 32e04877e57e0eeab26e45817e3fd532e7d302fb
   RNCClipboard: 2834e1c4af68697089cdd455ee4a4cdd198fa7dd
   RNDeviceInfo: 4701f0bf2a06b34654745053db0ce4cb0c53ada7
+  RNFS: 4ac0f0ea233904cb798630b3c077808c06931688
+  RNGestureHandler: 62232ba8f562f7dea5ba1b3383494eb5bf97a4d3
+  RNKeychain: ff836453cba46938e0e9e4c22e43d43fa2c90333
   RNQrGenerator: 34beaf1996de4a2f2122c7019dccd1717b22d8d7
+  RNReactNativeHapticFeedback: 1e3efeca9628ff9876ee7cdd9edec1b336913f8c
   SocketRocket: fccef3f9c5cedea1353a9ef6ada904fde10d6608
   Yoga: 99caf8d5ab45e9d637ee6e0174ec16fbbb01bcfc
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
