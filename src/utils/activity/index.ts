@@ -76,7 +76,14 @@ export const mergeActivityItems = (
 			),
 	);
 	const mergedItems = reduced.concat(newItems);
-	const sortedItems = mergedItems.sort((a, b) => b.timestamp - a.timestamp);
+
+	// Receive should be before Sent if they have same timestamp
+	const sortOrder = ['received', 'sent'];
+	const sortedItems = mergedItems.sort(
+		(a, b) =>
+			b.timestamp - a.timestamp ||
+			sortOrder.indexOf(b.txType) - sortOrder.indexOf(a.txType),
+	);
 
 	return sortedItems;
 };
