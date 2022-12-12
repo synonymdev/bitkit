@@ -2,6 +2,10 @@ import { useSelector } from 'react-redux';
 import Store from '../store/types';
 import { IDisplayValues } from '../utils/exchange-rate/types';
 import useDisplayValues from './displayValues';
+import {
+	selectedNetworkSelector,
+	selectedWalletSelector,
+} from '../store/reselect/wallet';
 
 export interface IncludeBalances {
 	onchain?: boolean;
@@ -17,12 +21,8 @@ export function useBalance({
 	lightning = false,
 	subtractReserveBalance = true, // Will subtract any reserved sats from the balance total by default.
 }: IncludeBalances): IDisplayValues {
-	const selectedWallet = useSelector(
-		(store: Store) => store.wallet.selectedWallet,
-	);
-	const selectedNetwork = useSelector(
-		(store: Store) => store.wallet.selectedNetwork,
-	);
+	const selectedWallet = useSelector(selectedWalletSelector);
+	const selectedNetwork = useSelector(selectedNetworkSelector);
 
 	const b = useSelector((store: Store) => {
 		let balance = 0;

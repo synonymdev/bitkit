@@ -12,15 +12,15 @@ import { addTag, deleteTag } from '../../../store/actions/metadata';
 import { showErrorNotification } from '../../../utils/notifications';
 import { Keyboard } from '../../../hooks/keyboard';
 import type { SendScreenProps } from '../../../navigation/types';
+import {
+	selectedNetworkSelector,
+	selectedWalletSelector,
+} from '../../../store/reselect/wallet';
 
 const Tags = ({ navigation }: SendScreenProps<'Tags'>): ReactElement => {
 	const [text, setText] = useState('');
-	const selectedWallet = useSelector(
-		(store: Store) => store.wallet.selectedWallet,
-	);
-	const selectedNetwork = useSelector(
-		(store: Store) => store.wallet.selectedNetwork,
-	);
+	const selectedWallet = useSelector(selectedWalletSelector);
+	const selectedNetwork = useSelector(selectedNetworkSelector);
 	const lastUsedTags = useSelector(
 		(store: Store) => store.metadata.lastUsedTags,
 	);

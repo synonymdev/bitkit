@@ -7,17 +7,17 @@ import {
 } from '../store/types/wallet';
 import { reduceValue } from '../utils/helpers';
 import { EFeeIds } from '../store/types/fees';
+import {
+	selectedNetworkSelector,
+	selectedWalletSelector,
+} from '../store/reselect/wallet';
 
 /**
  * Current transaction object of the selectedWallet/Network.
  */
 export function useTransactionDetails(): IBitcoinTransactionData {
-	const selectedWallet = useSelector(
-		(store: Store) => store.wallet.selectedWallet,
-	);
-	const selectedNetwork = useSelector(
-		(store: Store) => store.wallet.selectedNetwork,
-	);
+	const selectedWallet = useSelector(selectedWalletSelector);
+	const selectedNetwork = useSelector(selectedNetworkSelector);
 
 	const transaction = useSelector(
 		(store: Store) =>
@@ -29,12 +29,8 @@ export function useTransactionDetails(): IBitcoinTransactionData {
 }
 
 export function useBalance(): number {
-	const selectedWallet = useSelector(
-		(store: Store) => store.wallet.selectedWallet,
-	);
-	const selectedNetwork = useSelector(
-		(store: Store) => store.wallet.selectedNetwork,
-	);
+	const selectedWallet = useSelector(selectedWalletSelector);
+	const selectedNetwork = useSelector(selectedNetworkSelector);
 
 	const transaction = useSelector(
 		(store: Store) =>
@@ -53,12 +49,8 @@ export function useBalance(): number {
 }
 
 export function useChangeAddress(): IAddressContent {
-	const selectedWallet = useSelector(
-		(store: Store) => store.wallet.selectedWallet,
-	);
-	const selectedNetwork = useSelector(
-		(store: Store) => store.wallet.selectedNetwork,
-	);
+	const selectedWallet = useSelector(selectedWalletSelector);
+	const selectedNetwork = useSelector(selectedNetworkSelector);
 
 	const changeAddress = useSelector(
 		(store: Store) =>
@@ -73,12 +65,8 @@ export function useChangeAddress(): IAddressContent {
  * Returns the selected fee id from the fee picker for the current transaction.
  */
 export function useSelectedFeeId(): EFeeIds {
-	const selectedWallet = useSelector(
-		(store: Store) => store.wallet.selectedWallet,
-	);
-	const selectedNetwork = useSelector(
-		(store: Store) => store.wallet.selectedNetwork,
-	);
+	const selectedWallet = useSelector(selectedWalletSelector);
+	const selectedNetwork = useSelector(selectedNetworkSelector);
 	return useSelector(
 		(store: Store) =>
 			store?.wallet?.wallets[selectedWallet]?.transaction[selectedNetwork]

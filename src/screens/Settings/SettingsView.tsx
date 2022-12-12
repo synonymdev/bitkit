@@ -1,4 +1,4 @@
-import React, { memo, ReactElement, useState } from 'react';
+import React, { memo, ReactElement, useMemo, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
@@ -45,16 +45,19 @@ const SettingsView = ({
 		>();
 
 	const [search, setSearch] = useState('');
-	const filteredListData =
-		listData?.map((section) => {
-			const filteredSectionData = section.data.filter((item) => {
-				return item.title.toLowerCase().includes(search.toLowerCase());
-			});
+	const filteredListData = useMemo(
+		() =>
+			listData?.map((section) => {
+				const filteredSectionData = section.data.filter((item) => {
+					return item.title.toLowerCase().includes(search.toLowerCase());
+				});
 
-			const filteredSection = filteredSectionData.length > 0 ? section : null;
+				const filteredSection = filteredSectionData.length > 0 ? section : null;
 
-			return { ...filteredSection, data: filteredSectionData };
-		}) ?? [];
+				return { ...filteredSection, data: filteredSectionData };
+			}) ?? [],
+		[listData, search],
+	);
 
 	return (
 		<View style={fullHeight && styles.fullHeight} color="black">

@@ -1,4 +1,10 @@
-import React, { memo, ReactElement, useMemo, useState } from 'react';
+import React, {
+	memo,
+	ReactElement,
+	useCallback,
+	useMemo,
+	useState,
+} from 'react';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -65,8 +71,8 @@ const _SlashAuthModal = (): ReactElement => {
 	const _url = useSelector(
 		(state: Store) => state.user.viewController.slashauthModal,
 	).url as string;
-	const parsed = SlashURL.parse(_url);
-	const url = SlashURL.format(parsed.key);
+	const parsed = useMemo(() => SlashURL.parse(_url), [_url]);
+	const url = useMemo(() => SlashURL.format(parsed.key), [parsed.key]);
 
 	const { slashtag } = useSelectedSlashtag();
 	const { profile } = useProfile(url);
@@ -116,7 +122,7 @@ const _SlashAuthModal = (): ReactElement => {
 		[insets.bottom],
 	);
 
-	const signIn = async (): Promise<void> => {
+	const signIn = useCallback(async (): Promise<void> => {
 		setIsLoading(true);
 
 		const client = new Client(slashtag);
@@ -157,7 +163,7 @@ const _SlashAuthModal = (): ReactElement => {
 			view: 'slashauthModal',
 			data: { isOpen: false },
 		});
-	};
+	}, [_url, server.name, slashtag, url]);
 
 	return (
 		<View style={styles.container}>

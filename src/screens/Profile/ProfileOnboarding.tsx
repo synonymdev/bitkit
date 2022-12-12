@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { memo, useCallback, useMemo } from 'react';
 import { View, StyleSheet, Image, ImageSourcePropType } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useSelector } from 'react-redux';
@@ -25,21 +25,21 @@ import { useScreenSize } from '../../hooks/screen';
 const crownImageSrc = require('../../assets/illustrations/crown.png');
 const coinsImageSrc = require('../../assets/illustrations/coins.png');
 
-export const ProfileIntro = ({
-	navigation,
-}: RootStackScreenProps<'Profile'>): JSX.Element => {
-	return (
-		<Layout
-			navigation={navigation}
-			backButton={true}
-			illustration={crownImageSrc}
-			title="Own your"
-			highlighted="Social Profile."
-			text="Use Bitkit to control your public profile and links, so your contacts can reach you or pay you anytime."
-			nextStep="InitialEdit"
-		/>
-	);
-};
+export const ProfileIntro = memo(
+	({ navigation }: RootStackScreenProps<'Profile'>): JSX.Element => {
+		return (
+			<Layout
+				navigation={navigation}
+				backButton={true}
+				illustration={crownImageSrc}
+				title="Own your"
+				highlighted="Social Profile."
+				text="Use Bitkit to control your public profile and links, so your contacts can reach you or pay you anytime."
+				nextStep="InitialEdit"
+			/>
+		);
+	},
+);
 
 export const OfflinePayments = ({ navigation }): JSX.Element => {
 	const enableOfflinePayments = useSelector(
@@ -54,9 +54,9 @@ export const OfflinePayments = ({ navigation }): JSX.Element => {
 
 	const sdk = useSlashtagsSDK();
 
-	const savePaymentConfig = async (): Promise<void> => {
+	const savePaymentConfig = useCallback(async (): Promise<void> => {
 		updateSlashPayConfig({ sdk, selectedWallet, selectedNetwork });
-	};
+	}, [sdk, selectedNetwork, selectedWallet]);
 
 	return (
 		<Layout
@@ -85,86 +85,88 @@ export const OfflinePayments = ({ navigation }): JSX.Element => {
 	);
 };
 
-export const Layout = ({
-	navigation,
-	backButton = false,
-	illustration,
-	title,
-	subtitle,
-	text,
-	highlighted,
-	nextStep,
-	buttonText = 'Continue',
-	header = 'Profile',
-	children,
-	onNext,
-}: {
-	navigation: StackNavigationProp<RootStackParamList, 'Profile'>;
-	backButton: boolean;
-	illustration: ImageSourcePropType;
-	title: string;
-	subtitle?: string;
-	text: string;
-	highlighted: string;
-	nextStep?: ISlashtags['onboardingProfileStep'];
-	buttonText?: string;
-	header?: string;
-	children?;
-	onNext?;
-}): JSX.Element => {
-	const { isSmallScreen } = useScreenSize();
-	const onSwipeLeft = (): void => {
-		navigation.navigate('Tabs');
-	};
+export const Layout = memo(
+	({
+		navigation,
+		backButton = false,
+		illustration,
+		title,
+		subtitle,
+		text,
+		highlighted,
+		nextStep,
+		buttonText = 'Continue',
+		header = 'Profile',
+		children,
+		onNext,
+	}: {
+		navigation: StackNavigationProp<RootStackParamList, 'Profile'>;
+		backButton: boolean;
+		illustration: ImageSourcePropType;
+		title: string;
+		subtitle?: string;
+		text: string;
+		highlighted: string;
+		nextStep?: ISlashtags['onboardingProfileStep'];
+		buttonText?: string;
+		header?: string;
+		children?;
+		onNext?;
+	}): JSX.Element => {
+		const { isSmallScreen } = useScreenSize();
+		const onSwipeLeft = (): void => {
+			navigation.navigate('Tabs');
+		};
 
-	const imageContainerStyles = useMemo(
-		() => ({
-			...styles.imageContainer,
-			flex: isSmallScreen ? 0.7 : 1,
-		}),
-		[isSmallScreen],
-	);
+		const imageContainerStyles = useMemo(
+			() => ({
+				...styles.imageContainer,
+				flex: isSmallScreen ? 0.7 : 1,
+			}),
+			[isSmallScreen],
+		);
 
-	return (
-		<GlowingBackground topLeft="brand">
-			<SafeAreaInsets type="top" />
-			<NavigationHeader
-				title={header}
-				displayBackButton={backButton}
-				onClosePress={(): void => {
-					navigation.navigate('Tabs');
-				}}
-			/>
-			<DetectSwipe onSwipeLeft={onSwipeLeft}>
-				<View style={styles.content}>
-					<View style={imageContainerStyles}>
-						<Image source={illustration} style={styles.image} />
+		return (
+			<GlowingBackground topLeft="brand">
+				<SafeAreaInsets type="top" />
+				<NavigationHeader
+					title={header}
+					displayBackButton={backButton}
+					onClosePress={(): void => {
+						navigation.navigate('Tabs');
+					}}
+				/>
+				<DetectSwipe onSwipeLeft={onSwipeLeft}>
+					<View style={styles.content}>
+						<View style={imageContainerStyles}>
+							<Image source={illustration} style={styles.image} />
+						</View>
+						<View style={styles.middleContainer}>
+							<Display>{title}</Display>
+							<Display>
+								{subtitle}
+								<Display color="brand">{highlighted}</Display>
+							</Display>
+							<Text01S color="gray1" style={styles.introText}>
+								{text}
+							</Text01S>
+							{children}
+						</View>
+						<Button
+							text={buttonText}
+							size="large"
+							onPress={(): void => {
+								onNext?.();
+								nextStep && setOnboardingProfileStep(nextStep);
+							}}
+						/>
 					</View>
-					<View style={styles.middleContainer}>
-						<Display>{title}</Display>
-						<Display>
-							{subtitle}
-							<Display color="brand">{highlighted}</Display>
-						</Display>
-						<Text01S color="gray1" style={styles.introText}>
-							{text}
-						</Text01S>
-						{children}
-					</View>
-					<Button
-						text={buttonText}
-						size="large"
-						onPress={(): void => {
-							onNext?.();
-							nextStep && setOnboardingProfileStep(nextStep);
-						}}
-					/>
-				</View>
-			</DetectSwipe>
-			<SafeAreaInsets type="bottom" />
-		</GlowingBackground>
-	);
-};
+				</DetectSwipe>
+				<SafeAreaInsets type="bottom" />
+			</GlowingBackground>
+		);
+	},
+);
 
 const styles = StyleSheet.create({
 	content: {

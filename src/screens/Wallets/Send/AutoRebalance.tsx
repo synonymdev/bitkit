@@ -9,8 +9,8 @@ import GradientView from '../../../components/GradientView';
 import GlowImage from '../../../components/GlowImage';
 import Button from '../../../components/Button';
 import { toggleView } from '../../../store/actions/user';
-import type { SendScreenProps } from '../../../navigation/types';
 import { Text01S } from '../../../styles/components';
+import type { SendScreenProps } from '../../../navigation/types';
 
 const imageSrc = require('../../../assets/illustrations/transfer.png');
 
@@ -38,6 +38,9 @@ const AutoRebalance = ({
 		});
 	};
 
+	// TODO: get rebalance fee
+	const cost = 0.42;
+
 	return (
 		<GradientView style={styles.container}>
 			<BottomSheetNavigationHeader title="Auto Rebalance?" />
@@ -61,7 +64,7 @@ const AutoRebalance = ({
 				<Button
 					style={styles.button2}
 					size="large"
-					text="Yes (Cost: )"
+					text={`Yes (Cost: $${cost})`}
 					onPress={onContinue}
 				/>
 			</View>

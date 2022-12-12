@@ -63,7 +63,10 @@ const BoostForm = ({
 	const transactionFee = transaction.fee ?? 0;
 	const minFee = transaction.minFee ?? 0;
 	const satsPerByte = transaction.satsPerByte ?? 0;
-	const activityItemFee = activityItem.fee ? btcToSats(activityItem.fee) : 0;
+	const activityItemFee = useMemo(
+		() => (activityItem.fee ? btcToSats(activityItem.fee) : 0),
+		[activityItem.fee],
+	);
 
 	const recommendedFee = feeEstimates.fast;
 

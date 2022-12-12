@@ -16,6 +16,10 @@ import {
 	fiatToBitcoinUnit,
 	getDisplayValues,
 } from '../../../utils/exchange-rate';
+import {
+	selectedNetworkSelector,
+	selectedWalletSelector,
+} from '../../../store/reselect/wallet';
 
 /**
  * Handles the number pad logic (add/remove/clear) for on-chain transactions.
@@ -24,12 +28,8 @@ const SendNumberPad = ({ onDone }: { onDone: () => void }): ReactElement => {
 	const [decimalMode, setDecimalMode] = useState(false);
 	const [prefixZeros, setPrefixZeros] = useState(0);
 
-	const selectedWallet = useSelector(
-		(store: Store) => store.wallet.selectedWallet,
-	);
-	const selectedNetwork = useSelector(
-		(store: Store) => store.wallet.selectedNetwork,
-	);
+	const selectedWallet = useSelector(selectedWalletSelector);
+	const selectedNetwork = useSelector(selectedNetworkSelector);
 
 	const bitcoinUnit = useSelector((store: Store) => store.settings.bitcoinUnit);
 

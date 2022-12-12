@@ -1,4 +1,4 @@
-import React, { ReactElement, useState } from 'react';
+import React, { memo, ReactElement, useCallback, useState } from 'react';
 import {
 	StyleProp,
 	StyleSheet,
@@ -50,6 +50,13 @@ const DraggableList = ({
 			</ScaleDecorator>
 		);
 	};
+	const _onDragEnd = useCallback(
+		(params): void => {
+			setData(params.data);
+			onDragEnd && onDragEnd(params.data);
+		},
+		[onDragEnd],
+	);
 
 	return (
 		<DraggableFlatList
@@ -57,10 +64,7 @@ const DraggableList = ({
 			data={data}
 			keyExtractor={(item): string => item.key}
 			renderItem={renderItem}
-			onDragEnd={(params): void => {
-				setData(params.data);
-				onDragEnd && onDragEnd(params.data);
-			}}
+			onDragEnd={_onDragEnd}
 		/>
 	);
 };
@@ -76,4 +80,4 @@ const styles = StyleSheet.create({
 	},
 });
 
-export default DraggableList;
+export default memo(DraggableList);

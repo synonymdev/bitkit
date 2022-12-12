@@ -8,6 +8,10 @@ import { Text02B } from '../../styles/components';
 import { updateSettings } from '../../store/actions/settings';
 import useDisplayValues from '../../hooks/displayValues';
 import { IColors } from '../../styles/colors';
+import {
+	selectedNetworkSelector,
+	selectedWalletSelector,
+} from '../../store/reselect/wallet';
 
 type NumberPadButtons = {
 	color?: keyof IColors;
@@ -22,12 +26,8 @@ const NumberPadButtons = ({
 	onMaxPress,
 	onDone,
 }: NumberPadButtons): ReactElement => {
-	const selectedWallet = useSelector(
-		(store: Store) => store.wallet.selectedWallet,
-	);
-	const selectedNetwork = useSelector(
-		(store: Store) => store.wallet.selectedNetwork,
-	);
+	const selectedWallet = useSelector(selectedWalletSelector);
+	const selectedNetwork = useSelector(selectedNetworkSelector);
 
 	const balance = useSelector(
 		(store: Store) =>

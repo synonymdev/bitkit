@@ -30,7 +30,7 @@ const LightningChannelDetails = (props: Props): ReactElement => {
 		totalSatoshisReceived,
 		totalSatoshisSent,
 		uptime,
-	} = channel;
+	} = useMemo(() => channel, [channel]);
 
 	const selectedWallet = useAppSelector((store) => store.wallet.selectedWallet);
 	const selectedNetwork = useAppSelector(
@@ -55,35 +55,64 @@ const LightningChannelDetails = (props: Props): ReactElement => {
 	);
 	const totalSatoshisSentDisplay = useDisplayValues(Number(totalSatoshisSent));
 
-	let output = [['Channel ID', chanId]];
-
-	output.push(['Active', `${active ? '✅' : '❌'}`]);
-	output.push(['Private', `${channelPrivate ? '✅' : '❌'}`]);
-	output.push([
-		'Capacity',
-		`${capacityDisplay.bitcoinSymbol}${capacityDisplay.bitcoinFormatted} (${capacityDisplay.fiatSymbol}${capacityDisplay.fiatFormatted})`,
+	const output = useMemo(() => {
+		let o;
+		o.push([['Channel ID', chanId]]);
+		o.push(['Active', `${active ? '✅' : '❌'}`]);
+		o.push(['Private', `${channelPrivate ? '✅' : '❌'}`]);
+		o.push([
+			'Capacity',
+			`${capacityDisplay.bitcoinSymbol}${capacityDisplay.bitcoinFormatted} (${capacityDisplay.fiatSymbol}${capacityDisplay.fiatFormatted})`,
+		]);
+		o.push([
+			'Uptime',
+			new Date(Number(uptime) * 1000).toISOString().substr(11, 8),
+		]);
+		o.push([
+			'Can receive',
+			`${remoteBalanceDisplay.bitcoinSymbol}${remoteBalanceDisplay.bitcoinFormatted} (${remoteBalanceDisplay.fiatSymbol}${remoteBalanceDisplay.fiatFormatted})`,
+		]);
+		o.push([
+			'Can send',
+			`${localBalanceDisplay.bitcoinSymbol}${localBalanceDisplay.bitcoinFormatted} (${localBalanceDisplay.fiatSymbol}${localBalanceDisplay.fiatFormatted})`,
+		]);
+		o.push([
+			'Total received',
+			`${totalSatoshisReceivedDisplay.bitcoinSymbol}${totalSatoshisReceivedDisplay.bitcoinFormatted} (${totalSatoshisReceivedDisplay.fiatSymbol}${totalSatoshisReceivedDisplay.fiatFormatted})`,
+		]);
+		o.push([
+			'Total sent',
+			`${totalSatoshisSentDisplay.bitcoinSymbol}${totalSatoshisSentDisplay.bitcoinFormatted} (${totalSatoshisSentDisplay.fiatSymbol}${totalSatoshisSentDisplay.fiatFormatted})`,
+		]);
+		o.push(['Close address', closeAddress]);
+		return o;
+	}, [
+		active,
+		capacityDisplay.bitcoinFormatted,
+		capacityDisplay.bitcoinSymbol,
+		capacityDisplay.fiatFormatted,
+		capacityDisplay.fiatSymbol,
+		chanId,
+		channelPrivate,
+		closeAddress,
+		localBalanceDisplay.bitcoinFormatted,
+		localBalanceDisplay.bitcoinSymbol,
+		localBalanceDisplay.fiatFormatted,
+		localBalanceDisplay.fiatSymbol,
+		remoteBalanceDisplay.bitcoinFormatted,
+		remoteBalanceDisplay.bitcoinSymbol,
+		remoteBalanceDisplay.fiatFormatted,
+		remoteBalanceDisplay.fiatSymbol,
+		totalSatoshisReceivedDisplay.bitcoinFormatted,
+		totalSatoshisReceivedDisplay.bitcoinSymbol,
+		totalSatoshisReceivedDisplay.fiatFormatted,
+		totalSatoshisReceivedDisplay.fiatSymbol,
+		totalSatoshisSentDisplay.bitcoinFormatted,
+		totalSatoshisSentDisplay.bitcoinSymbol,
+		totalSatoshisSentDisplay.fiatFormatted,
+		totalSatoshisSentDisplay.fiatSymbol,
+		uptime,
 	]);
-	output.push([
-		'Uptime',
-		new Date(Number(uptime) * 1000).toISOString().substr(11, 8),
-	]);
-	output.push([
-		'Can receive',
-		`${remoteBalanceDisplay.bitcoinSymbol}${remoteBalanceDisplay.bitcoinFormatted} (${remoteBalanceDisplay.fiatSymbol}${remoteBalanceDisplay.fiatFormatted})`,
-	]);
-	output.push([
-		'Can send',
-		`${localBalanceDisplay.bitcoinSymbol}${localBalanceDisplay.bitcoinFormatted} (${localBalanceDisplay.fiatSymbol}${localBalanceDisplay.fiatFormatted})`,
-	]);
-	output.push([
-		'Total received',
-		`${totalSatoshisReceivedDisplay.bitcoinSymbol}${totalSatoshisReceivedDisplay.bitcoinFormatted} (${totalSatoshisReceivedDisplay.fiatSymbol}${totalSatoshisReceivedDisplay.fiatFormatted})`,
-	]);
-	output.push([
-		'Total sent',
-		`${totalSatoshisSentDisplay.bitcoinSymbol}${totalSatoshisSentDisplay.bitcoinFormatted} (${totalSatoshisSentDisplay.fiatSymbol}${totalSatoshisSentDisplay.fiatFormatted})`,
-	]);
-	output.push(['Close address', closeAddress]);
 
 	const onClose = async (): Promise<void> => {
 		setShowDialog(true);

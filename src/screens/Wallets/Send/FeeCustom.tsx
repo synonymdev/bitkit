@@ -1,4 +1,4 @@
-import React, { ReactElement, memo, useCallback } from 'react';
+import React, { ReactElement, memo, useCallback, useMemo } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import { Caption13Up, Text01M } from '../../../styles/components';
@@ -27,12 +27,18 @@ const FeeCustom = ({
 		[transaction?.message],
 	);
 
-	const feeSats = getFee(transaction.satsPerByte);
+	const feeSats = useMemo(
+		() => getFee(transaction.satsPerByte),
+		[getFee, transaction.satsPerByte],
+	);
 	const totalFeeDisplay = useDisplayValues(feeSats);
-	const feeAmount =
-		totalFeeDisplay.fiatFormatted !== '—'
-			? ` (${totalFeeDisplay.fiatSymbol} ${totalFeeDisplay.fiatFormatted})`
-			: '';
+	const feeAmount = useMemo(
+		() =>
+			totalFeeDisplay.fiatFormatted !== '—'
+				? ` (${totalFeeDisplay.fiatSymbol} ${totalFeeDisplay.fiatFormatted})`
+				: '',
+		[totalFeeDisplay.fiatFormatted, totalFeeDisplay.fiatSymbol],
+	);
 
 	let onDone: (() => void) | undefined;
 

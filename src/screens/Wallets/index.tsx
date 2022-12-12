@@ -1,4 +1,10 @@
-import React, { memo, ReactElement, useState, useCallback } from 'react';
+import React, {
+	memo,
+	ReactElement,
+	useState,
+	useCallback,
+	useMemo,
+} from 'react';
 import { useSelector } from 'react-redux';
 import { StyleSheet } from 'react-native';
 import { RefreshControl, ScrollView } from 'react-native-gesture-handler';
@@ -7,7 +13,7 @@ import { View } from '../../styles/components';
 import Header from './Header';
 import DetectSwipe from '../../components/DetectSwipe';
 import BalanceHeader from '../../components/BalanceHeader';
-import TodoCarousel from '../../components/TodoCarousel';
+import Suggestions from '../../components/Suggestions';
 import Widgets from '../../components/Widgets';
 import ConnectivityIndicator from '../../components/ConnectivityIndicator';
 import SafeAreaView from '../../components/SafeAreaView';
@@ -30,7 +36,10 @@ const Wallets = ({ navigation }: TabScreenProps<'Wallets'>): ReactElement => {
 		(state: Store) => state.settings.hideOnboardingMessage,
 	);
 	const widgets = useSelector((state: Store) => state.widgets.widgets);
-	const empty = useNoTransactions() && Object.values(widgets).length === 0;
+	const noTransactions = useNoTransactions();
+	const empty = useMemo(() => {
+		return noTransactions && Object.values(widgets).length === 0;
+	}, [noTransactions, widgets]);
 	const colors = useColors();
 
 	const toggleHideBalance = (): void => {
@@ -85,7 +94,7 @@ const Wallets = ({ navigation }: TabScreenProps<'Wallets'>): ReactElement => {
 
 					{hideOnboarding ? (
 						<>
-							<TodoCarousel />
+							<Suggestions />
 							<View style={styles.content}>
 								<ConnectivityIndicator />
 								<Assets navigation={navigation} />

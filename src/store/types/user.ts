@@ -6,6 +6,7 @@ export type TViewController =
 	| 'receiveNavigation'
 	| 'backupPrompt'
 	| 'backupNavigation'
+	| 'forceTransfer'
 	| 'forgotPIN'
 	| 'PINPrompt'
 	| 'PINNavigation'
@@ -42,6 +43,7 @@ export interface IUser {
 	ignoreBackupTimestamp: number;
 	ignoreHighBalanceCount: number;
 	ignoreHighBalanceTimestamp: number;
+	startCoopCloseTimestamp: number;
 	backupVerified: boolean;
 	requiresRemoteRestore: boolean;
 	viewController: TUserViewController;

@@ -68,6 +68,10 @@ const BlocktankOrderDetails = ({
 		}
 		return '';
 	}, [blocktankOrder._id, paidBlocktankOrders]);
+	const Icon = useMemo(
+		() => getIcon(blocktankOrder.state),
+		[blocktankOrder?.state],
+	);
 
 	if (!blocktankOrder) {
 		return (
@@ -80,8 +84,6 @@ const BlocktankOrderDetails = ({
 			</ThemedView>
 		);
 	}
-
-	const Icon = getIcon(blocktankOrder.state);
 
 	return (
 		<ThemedView style={styles.root}>

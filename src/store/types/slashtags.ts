@@ -29,9 +29,15 @@ export interface IRemote {
 	payConfig?: SlashPayConfig;
 }
 
+export type TOnboardingProfileStep =
+	| 'Intro'
+	| 'InitialEdit'
+	| 'OfflinePayments'
+	| 'Done';
+
 export interface ISlashtags {
 	onboardedContacts: boolean;
-	onboardingProfileStep: 'Intro' | 'InitialEdit' | 'OfflinePayments' | 'Done';
+	onboardingProfileStep: TOnboardingProfileStep;
 	links: LocalLink[];
 	seeder?: {
 		lastSent?: number;

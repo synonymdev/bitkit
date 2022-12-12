@@ -22,6 +22,24 @@ const imageSrc = require('../../../assets/illustrations/safe.png');
 const ASK_INTERVAL = 1000 * 60 * 60 * 24; // 1 day - how long this prompt will be hidden if user taps Later
 const CHECK_INTERVAL = 10000; // how long user needs to stay on Wallets screen before he will see this prompt
 
+const handleLater = (): void => {
+	ignoreBackup();
+	toggleView({
+		view: 'backupPrompt',
+		data: { isOpen: false },
+	});
+};
+const handleBackup = (): void => {
+	toggleView({
+		view: 'backupPrompt',
+		data: { isOpen: false },
+	});
+	toggleView({
+		view: 'backupNavigation',
+		data: { isOpen: true },
+	});
+};
+
 const BackupPrompt = (): ReactElement => {
 	const snapPoints = useSnapPoints('medium');
 	const insets = useSafeAreaInsets();
@@ -42,34 +60,20 @@ const BackupPrompt = (): ReactElement => {
 	const backupVerified = useSelector(
 		(state: Store) => state.user.backupVerified,
 	);
-	const anyBottomSheetIsOpen = useSelector((state: Store) => {
-		return Object.values(state.user.viewController).some(
-			({ isOpen }) => isOpen,
-		);
-	});
+	const viewControllers = useSelector(
+		(state: Store) => state.user.viewController,
+	);
+
+	const anyBottomSheetIsOpen = useMemo(() => {
+		return Object.values(viewControllers).some(({ isOpen }) => isOpen);
+	}, [viewControllers]);
 
 	useBottomSheetBackPress('backupPrompt');
 
-	const handleBackup = (): void => {
-		toggleView({
-			view: 'backupPrompt',
-			data: { isOpen: false },
-		});
-		toggleView({
-			view: 'backupNavigation',
-			data: { isOpen: true },
-		});
-	};
-
-	const handleLater = (): void => {
-		ignoreBackup();
-		toggleView({
-			view: 'backupPrompt',
-			data: { isOpen: false },
-		});
-	};
-
-	const showBottomSheet = !backupVerified && !empty && !anyBottomSheetIsOpen;
+	const showBottomSheet = useMemo(
+		() => !backupVerified && !empty && !anyBottomSheetIsOpen,
+		[anyBottomSheetIsOpen, backupVerified, empty],
+	);
 
 	// if backup has not been verified
 	// and user on "Wallets" screen for CHECK_INTERVAL
@@ -99,10 +103,13 @@ const BackupPrompt = (): ReactElement => {
 		};
 	}, [showBottomSheet, ignoreTimestamp]);
 
-	const text =
-		balance > 0
-			? 'Now that you have some funds in your wallet, it is time to back up your money!'
-			: 'There are no funds in your wallet yet, but you can create a backup if you wish.';
+	const text = useMemo(
+		() =>
+			balance > 0
+				? 'Now that you have some funds in your wallet, it is time to back up your money!'
+				: 'There are no funds in your wallet yet, but you can create a backup if you wish.',
+		[balance],
+	);
 
 	return (
 		<BottomSheetWrapper

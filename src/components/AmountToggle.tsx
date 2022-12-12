@@ -1,6 +1,6 @@
 import React, { memo, ReactElement, useCallback, useMemo } from 'react';
 import { useSelector } from 'react-redux';
-import { LayoutAnimation, View } from 'react-native';
+import { LayoutAnimation, StyleProp, View, ViewStyle } from 'react-native';
 
 import { Pressable } from '../styles/components';
 import Store from '../store/types';
@@ -10,23 +10,29 @@ import Money from '../components/Money';
  * Displays the total amount of sats specified and it's corresponding fiat value.
  */
 const AmountToggle = ({
-	sats = 0,
-	style,
-	onPress,
-	reverse = false,
+	sats,
+	unit,
 	space = 0, // space between the rows
+	reverse = false,
 	disable = false,
 	children,
+	style,
+	onPress,
 }: {
 	sats: number;
-	style?: object;
-	onPress?: Function;
+	unit?: 'asset' | 'fiat';
 	reverse?: boolean;
 	space?: number;
 	disable?: boolean;
 	children?: ReactElement;
+	style?: StyleProp<ViewStyle>;
+	onPress?: () => void;
 }): ReactElement => {
-	const primary = useSelector((state: Store) => state.settings.unitPreference);
+	const unitPreference = useSelector(
+		(state: Store) => state.settings.unitPreference,
+	);
+
+	const primary = unit ?? unitPreference;
 
 	const components = useMemo(() => {
 		const btcProps = { symbol: true };

@@ -8,6 +8,8 @@ export type TTodoType =
 	| 'lightning'
 	| 'lightningSettingUp'
 	| 'transfer'
+	| 'transferInProgress'
+	| 'transferClosingChannel'
 	| 'slashtagsProfile'
 	| 'buyBitcoin';
 
@@ -17,6 +19,7 @@ export interface ITodo {
 	description: string;
 	color: keyof IColors;
 	image: ImageSourcePropType;
+	dismissable: boolean;
 }
 
 export type ITodos = ITodo[];

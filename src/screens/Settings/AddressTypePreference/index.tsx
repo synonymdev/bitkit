@@ -66,11 +66,14 @@ const AddressTypeSettings = ({
 		[selectedNetwork, selectedWallet],
 	);
 
-	const setAddressTypePreference = (preference: TAddressType): void => {
-		setAddressTypeState(preference);
-		updateSelectedAddressType({ addressType: preference });
-		refreshWallet({}).then();
-	};
+	const setAddressTypePreference = useCallback(
+		(preference: TAddressType): void => {
+			setAddressTypeState(preference);
+			updateSelectedAddressType({ addressType: preference });
+			refreshWallet({}).then();
+		},
+		[],
+	);
 
 	const checkAddressTypeListCheckmark = useCallback(
 		(type: TAddressType): boolean => {
@@ -104,7 +107,12 @@ const AddressTypeSettings = ({
 				})),
 			},
 		],
-		[addressTypesList, checkAddressTypeListCheckmark, navigation],
+		[
+			addressTypesList,
+			checkAddressTypeListCheckmark,
+			navigation,
+			setAddressTypePreference,
+		],
 	);
 
 	return (

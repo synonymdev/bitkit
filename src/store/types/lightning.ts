@@ -20,10 +20,12 @@ export type TLightningPayment = {
 	type: EPaymentType;
 };
 
+export type TOpenChannelIds = string[];
+
 export interface IDefaultLightningShape {
 	nodeId: IWalletItem<string>;
 	channels: IWalletItem<{ [key: string]: TChannel } | {}>;
-	openChannelIds: IWalletItem<string[]>;
+	openChannelIds: IWalletItem<TOpenChannelIds>;
 	info: IWalletItem<{}>;
 	invoices: IWalletItem<TInvoice[]> | IWalletItem<[]>;
 	payments: IWalletItem<{ [key: string]: TLightningPayment }> | IWalletItem<{}>;
@@ -31,11 +33,11 @@ export interface IDefaultLightningShape {
 	claimableBalance: IWalletItem<number>;
 }
 
+export type TNodes = { [key: string]: IDefaultLightningShape };
+
 export interface ILightning {
 	version: TLightningNodeVersion;
-	nodes: {
-		[key: string]: IDefaultLightningShape;
-	};
+	nodes: TNodes;
 }
 
 export type TLightningNodeVersion = {

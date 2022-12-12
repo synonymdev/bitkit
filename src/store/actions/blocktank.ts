@@ -119,10 +119,12 @@ export const refreshOrder = async (
 				}
 			}
 
-			// If we have an open channel update suggestions cards
-			if (getOrderRes.value.state === 500) {
-				removeTodo('lightning');
+			// update suggestions cards
+			if ([150, 300, 400, 410, 450, 500].includes(getOrderRes.value.state)) {
 				removeTodo('lightningSettingUp');
+			}
+
+			if (getOrderRes.value.state === 500) {
 				addTodo('transfer');
 			}
 		}
@@ -508,7 +510,6 @@ export const confirmChannelPurchase = async ({
 
 	watchOrder(orderId).then();
 	removeTodo('lightning');
-	addTodo('lightningSettingUp');
 	refreshWallet({ onchain: true, lightning: false }).then();
 	return ok(broadcastResponse.value);
 };

@@ -1,4 +1,11 @@
-import React, { memo, ReactElement, useState, useEffect, useMemo } from 'react';
+import React, {
+	memo,
+	ReactElement,
+	useState,
+	useEffect,
+	useMemo,
+	useCallback,
+} from 'react';
 import { Linking, Platform, StyleSheet, View } from 'react-native';
 import rnBiometrics from 'react-native-biometrics';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -21,6 +28,11 @@ import { showErrorNotification } from '../../../utils/notifications';
 import type { PinScreenProps } from '../../../navigation/types';
 
 const imageSrc = require('../../../assets/illustrations/cog.png');
+const goToSettings = (): void => {
+	Platform.OS === 'ios'
+		? Linking.openURL('App-Prefs:Settings')
+		: Linking.sendIntent('android.settings.SETTINGS');
+};
 
 const AskForBiometrics = ({
 	navigation,
@@ -41,19 +53,16 @@ const AskForBiometrics = ({
 		rnBiometrics.isSensorAvailable().then((data) => setBiometricData(data));
 	}, []);
 
-	const buttonText = biometryData?.available === false ? 'Skip' : 'Continue';
+	const buttonText = useMemo(
+		() => (biometryData?.available === false ? 'Skip' : 'Continue'),
+		[biometryData?.available],
+	);
 
 	const handleOnBack = (): void => {
 		navigation.goBack();
 	};
 
-	const goToSettings = (): void => {
-		Platform.OS === 'ios'
-			? Linking.openURL('App-Prefs:Settings')
-			: Linking.sendIntent('android.settings.SETTINGS');
-	};
-
-	const handleButtonPress = (): void => {
+	const handleButtonPress = useCallback((): void => {
 		if (biometryData?.available === false || !enabled) {
 			navigation.navigate('Result', { bio: false });
 			return;
@@ -77,14 +86,17 @@ const AskForBiometrics = ({
 					message: 'Something went wrong.',
 				});
 			});
-	};
+	}, [biometryData?.available, enabled, navigation]);
 
-	const typeName =
-		biometryData?.biometryType === 'TouchID'
-			? 'Touch ID'
-			: biometryData?.biometryType === 'FaceID'
-			? 'Face ID'
-			: biometryData?.biometryType ?? 'Biometrics';
+	const typeName = useMemo(
+		() =>
+			biometryData?.biometryType === 'TouchID'
+				? 'Touch ID'
+				: biometryData?.biometryType === 'FaceID'
+				? 'Face ID'
+				: biometryData?.biometryType ?? 'Biometrics',
+		[biometryData?.biometryType],
+	);
 
 	return (
 		<GradientView style={styles.container}>

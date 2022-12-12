@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import React, { memo, ReactElement } from 'react';
 import { View, StyleSheet } from 'react-native';
 
 import NavigationHeader from '../../components/NavigationHeader';
@@ -71,4 +71,4 @@ const styles = StyleSheet.create({
 	},
 });
 
-export default ProfileLinkSuggestions;
+export default memo(ProfileLinkSuggestions);

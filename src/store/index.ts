@@ -44,7 +44,7 @@ const persistConfig = {
 	key: 'root',
 	storage: mmkvStorage,
 	// increase version after store shape changes
-	version: 2,
+	version: 3,
 	migrate: createMigrate(migrations, { debug: false }),
 };
 const persistedReducer = persistReducer(persistConfig, reducers);

@@ -273,7 +273,7 @@ export const WidgetFeedEdit = ({
 					)}
 
 					<View style={styles.footer}>
-						{previewWidget && (
+						{!isLoading && previewWidget && (
 							<>
 								<Caption13Up color="gray1" style={styles.fieldLabel}>
 									Widget preview

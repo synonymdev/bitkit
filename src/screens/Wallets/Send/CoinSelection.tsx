@@ -27,6 +27,10 @@ import {
 import { addTxInput, removeTxInput } from '../../../store/actions/wallet';
 import { IUtxo } from '../../../store/types/wallet';
 import type { SendScreenProps } from '../../../navigation/types';
+import {
+	selectedNetworkSelector,
+	selectedWalletSelector,
+} from '../../../store/reselect/wallet';
 
 /**
  * Some UTXO's may contain the same tx_hash.
@@ -93,12 +97,8 @@ const CoinSelection = ({
 		}),
 		[insets.bottom],
 	);
-	const selectedWallet = useSelector(
-		(store: Store) => store.wallet.selectedWallet,
-	);
-	const selectedNetwork = useSelector(
-		(store: Store) => store.wallet.selectedNetwork,
-	);
+	const selectedWallet = useSelector(selectedWalletSelector);
+	const selectedNetwork = useSelector(selectedNetworkSelector);
 
 	const transaction = useTransactionDetails();
 	const utxos: IUtxo[] =

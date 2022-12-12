@@ -1,4 +1,4 @@
-import React, { useMemo, ReactElement, useCallback } from 'react';
+import React, { useMemo, ReactElement, useCallback, memo } from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { useSelector } from 'react-redux';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -33,7 +33,10 @@ export const ProfileAddLinkForm = ({
 		navigation.goBack();
 	}, [form, navigation]);
 
-	const isValid = form.title?.length > 0 && form.url?.length > 0;
+	const isValid = useMemo(
+		() => form.title?.length > 0 && form.url?.length > 0,
+		[form.title?.length, form.url?.length],
+	);
 
 	return (
 		<ThemedView style={styles.container}>
@@ -110,4 +113,4 @@ const styles = StyleSheet.create({
 	},
 });
 
-export default ProfileAddLinkForm;
+export default memo(ProfileAddLinkForm);

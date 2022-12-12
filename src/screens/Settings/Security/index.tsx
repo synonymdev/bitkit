@@ -34,14 +34,19 @@ const SecuritySettings = ({
 		})();
 	}, []);
 
-	const isBiometrySupported =
-		biometryData?.available && biometryData?.biometryType;
-	const biometryTypeName =
-		biometryData?.biometryType === 'TouchID'
-			? 'Touch ID'
-			: biometryData?.biometryType === 'FaceID'
-			? 'Face ID'
-			: biometryData?.biometryType ?? 'Biometrics';
+	const isBiometrySupported = useMemo(
+		() => biometryData?.available && biometryData?.biometryType,
+		[biometryData?.available, biometryData?.biometryType],
+	);
+	const biometryTypeName = useMemo(
+		() =>
+			biometryData?.biometryType === 'TouchID'
+				? 'Touch ID'
+				: biometryData?.biometryType === 'FaceID'
+				? 'Face ID'
+				: biometryData?.biometryType ?? 'Biometrics',
+		[biometryData?.biometryType],
+	);
 
 	const SettingsListData: IListData[] = useMemo(
 		() => [
@@ -148,10 +153,13 @@ const SecuritySettings = ({
 		],
 	);
 
-	const footerText =
-		pin && isBiometrySupported
-			? 'When enabled, you can use Biometrics instead of your PIN code to unlock your wallet or send payments.'
-			: undefined;
+	const footerText = useMemo(
+		() =>
+			pin && isBiometrySupported
+				? 'When enabled, you can use Biometrics instead of your PIN code to unlock your wallet or send payments.'
+				: undefined,
+		[isBiometrySupported, pin],
+	);
 
 	return (
 		<ThemedView style={styles.container}>

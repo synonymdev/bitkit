@@ -1,6 +1,8 @@
+export type TProfileLink = {
+	title: string;
+	url: string;
+};
+
 export interface IUi {
-	profileLink: {
-		title: string;
-		url: string;
-	};
+	profileLink: TProfileLink;
 }

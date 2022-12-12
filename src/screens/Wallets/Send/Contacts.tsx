@@ -6,20 +6,19 @@ import NavigationHeader from '../../../components/NavigationHeader';
 import GradientView from '../../../components/GradientView';
 import ContactsList from '../../../components/ContactsList';
 import { processInputData } from '../../../utils/scanner';
-import Store from '../../../store/types';
 import { useSlashtags } from '../../../components/SlashtagsProvider';
 import type { SendScreenProps } from '../../../navigation/types';
 import type { IContactRecord } from '../../../store/types/slashtags';
+import {
+	selectedNetworkSelector,
+	selectedWalletSelector,
+} from '../../../store/reselect/wallet';
 
 const Contacts = ({
 	navigation,
 }: SendScreenProps<'Contacts'>): ReactElement => {
-	const selectedWallet = useSelector(
-		(store: Store) => store.wallet.selectedWallet,
-	);
-	const selectedNetwork = useSelector(
-		(store: Store) => store.wallet.selectedNetwork,
-	);
+	const selectedWallet = useSelector(selectedWalletSelector);
+	const selectedNetwork = useSelector(selectedNetworkSelector);
 	const { sdk } = useSlashtags();
 
 	const handlePress = async (contact: IContactRecord): Promise<void> => {

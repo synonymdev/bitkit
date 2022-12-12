@@ -22,7 +22,6 @@ import {
 	showErrorNotification,
 	showSuccessNotification,
 } from '../../utils/notifications';
-import Store from '../../store/types';
 import AdjustValue from '../../components/AdjustValue';
 import FeeSummary from '../Wallets/Send/FeeSummary';
 import useDisplayValues from '../../hooks/displayValues';
@@ -31,6 +30,10 @@ import NavigationHeader from '../../components/NavigationHeader';
 import SafeAreaView from '../../components/SafeAreaView';
 import { RootStackParamList } from '../../navigation/types';
 import { refreshWallet } from '../../utils/wallet';
+import {
+	selectedNetworkSelector,
+	selectedWalletSelector,
+} from '../../store/reselect/wallet';
 
 type Props = StackScreenProps<RootStackParamList, 'BlocktankPayment'>;
 
@@ -38,12 +41,8 @@ const BlocktankPayment = (props: Props): ReactElement => {
 	const { navigation, route } = props;
 	const { order } = route.params;
 
-	const selectedWallet = useSelector(
-		(store: Store) => store.wallet.selectedWallet,
-	);
-	const selectedNetwork = useSelector(
-		(store: Store) => store.wallet.selectedNetwork,
-	);
+	const selectedWallet = useSelector(selectedWalletSelector);
+	const selectedNetwork = useSelector(selectedNetworkSelector);
 	const transaction = useTransactionDetails();
 	const balance = useBalance();
 

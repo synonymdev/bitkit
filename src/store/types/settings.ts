@@ -3,7 +3,7 @@ import { IWalletItem, TBitcoinUnit, TBalanceUnit } from './wallet';
 export type TTheme = 'dark' | 'light' | 'blue';
 export type TProtocol = 'ssl' | 'tcp' | string;
 
-type TTransactionSpeed = 'normal' | 'fast' | 'slow';
+export type TTransactionSpeed = 'normal' | 'fast' | 'slow';
 
 /**
  * large = Sort by and use largest UTXO first. Lowest fee, but reveals your largest UTXO's.
@@ -19,10 +19,16 @@ export interface ICustomElectrumPeer {
 	protocol?: TProtocol;
 }
 
-type TReceiveOption = {
+export type TReceiveOption = {
 	key: string;
 	title: string;
 };
+
+export type TUnitPreference = 'asset' | 'fiat';
+
+export type TCustomElectrumPeers =
+	| IWalletItem<ICustomElectrumPeer[]>
+	| IWalletItem<[]>;
 
 export interface ISettings {
 	loading: boolean;
@@ -37,14 +43,14 @@ export interface ISettings {
 	theme: TTheme;
 	bitcoinUnit: TBitcoinUnit;
 	balanceUnit: TBalanceUnit;
-	customElectrumPeers: IWalletItem<ICustomElectrumPeer[]> | IWalletItem<[]>;
+	customElectrumPeers: TCustomElectrumPeers;
 	selectedCurrency: string;
 	selectedLanguage: string;
 	coinSelectAuto: boolean;
 	coinSelectPreference: TCoinSelectPreference;
 	receivePreference: TReceiveOption[];
 	enableOfflinePayments: boolean;
-	unitPreference: 'asset' | 'fiat';
+	unitPreference: TUnitPreference;
 	showSuggestions: boolean;
 	transactionSpeed: TTransactionSpeed;
 	hideBalance: boolean;

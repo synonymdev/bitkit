@@ -246,7 +246,7 @@ const List = ({
 			// @ts-ignore section title is not optional but it works
 			sections={data}
 			extraData={data}
-			keyExtractor={(item): string => item.title}
+			keyExtractor={(item, index): string => `${item.title}-${index}`}
 			renderSectionHeader={useCallback(
 				({ section: { title } }): ReactElement => {
 					const isFirst = title === data[0].title;

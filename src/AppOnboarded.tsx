@@ -10,10 +10,7 @@ import { useBalance } from './hooks/wallet';
 import { startWalletServices } from './utils/startup';
 import { electrumConnection } from './utils/electrum';
 import { readClipboardInvoice } from './utils/send';
-import {
-	resetLdk,
-	unsubscribeFromLightningSubscriptions,
-} from './utils/lightning';
+import { unsubscribeFromLightningSubscriptions } from './utils/lightning';
 import {
 	showErrorNotification,
 	showSuccessNotification,
@@ -79,13 +76,7 @@ const AppOnboarded = (): ReactElement => {
 				appState.current.match(/inactive|background/) &&
 				nextAppState === 'active'
 			) {
-				// App came back to foreground, lets restart our services
-				startWalletServices({
-					lightning: true,
-					onchain: false,
-					selectedNetwork,
-					selectedWallet,
-				}).then();
+				// App came back to foreground
 
 				// check clipboard for payment data
 				if (enableAutoReadClipboard) {
@@ -103,10 +94,10 @@ const AppOnboarded = (): ReactElement => {
 			}
 
 			// on App to background
-			if (appState.current === 'active' && nextAppState === 'background') {
+			/*if (appState.current === 'active' && nextAppState === 'background') {
 				// do something when the app goes to background
-				resetLdk();
-			}
+				//resetLdk().then();
+			}*/
 
 			appState.current = nextAppState;
 		});

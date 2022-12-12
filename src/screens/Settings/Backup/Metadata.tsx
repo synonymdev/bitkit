@@ -1,4 +1,4 @@
-import React, { memo, ReactElement, useMemo } from 'react';
+import React, { memo, ReactElement, useCallback, useMemo } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -21,12 +21,12 @@ const Metadata = (): ReactElement => {
 		[insets.bottom],
 	);
 
-	const handleButtonPress = (): void => {
+	const handleButtonPress = useCallback((): void => {
 		toggleView({
 			view: 'backupNavigation',
 			data: { isOpen: false },
 		});
-	};
+	}, []);
 
 	return (
 		<GradientView style={styles.container}>

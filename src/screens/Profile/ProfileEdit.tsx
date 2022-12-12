@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect, useCallback } from 'react';
+import React, { useState, useMemo, useEffect, useCallback, memo } from 'react';
 import { View, StyleSheet, KeyboardAvoidingView, Platform } from 'react-native';
 import { useSelector } from 'react-redux';
 
@@ -66,10 +66,13 @@ export const ProfileEdit = ({
 		}
 	}, [links, savedProfile?.links]);
 
-	const setField = (key: string, value: string): void => {
-		setHasEdited(true);
-		setFields({ ...fields, [key]: value });
-	};
+	const setField = useCallback(
+		(key: string, value: string): void => {
+			setHasEdited(true);
+			setFields({ ...fields, [key]: value });
+		},
+		[fields],
+	);
 
 	const profile: BasicProfile = useMemo(() => {
 		return {
@@ -183,4 +186,4 @@ const styles = StyleSheet.create({
 	},
 });
 
-export default ProfileEdit;
+export default memo(ProfileEdit);

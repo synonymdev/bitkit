@@ -65,7 +65,10 @@ const ShowMnemonic = ({
 		getBip39Passphrase().then(setPassphrase);
 	}, []);
 
-	const seedToShow = Platform.OS === 'android' && !show ? dummySeed : seed;
+	const seedToShow = useMemo(
+		() => (Platform.OS === 'android' && !show ? dummySeed : seed),
+		[seed, show],
+	);
 
 	return (
 		<View style={styles.container}>

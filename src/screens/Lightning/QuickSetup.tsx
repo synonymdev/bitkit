@@ -5,28 +5,25 @@ import React, {
 	useMemo,
 	useState,
 } from 'react';
-import { StyleSheet, Platform, View } from 'react-native';
-import { FadeIn, FadeOut } from 'react-native-reanimated';
+import { StyleSheet, View } from 'react-native';
 import { useSelector } from 'react-redux';
+import { useFocusEffect } from '@react-navigation/native';
+import { FadeIn, FadeOut } from 'react-native-reanimated';
 
 import {
 	AnimatedView,
 	Caption13Up,
 	Display,
-	Headline,
-	CoinsIcon,
-	SavingsIcon,
 	Text01S,
 } from '../../styles/components';
 import SafeAreaInsets from '../../components/SafeAreaInsets';
 import GlowingBackground from '../../components/GlowingBackground';
 import NavigationHeader from '../../components/NavigationHeader';
+import Percentage from '../../components/Percentage';
 import Button from '../../components/Button';
 import AmountToggle from '../../components/AmountToggle';
 import FancySlider from '../../components/FancySlider';
 import NumberPadLightning from './NumberPadLightning';
-import type { LightningScreenProps } from '../../navigation/types';
-
 import Store from '../../store/types';
 import { useBalance } from '../../hooks/wallet';
 import {
@@ -37,37 +34,17 @@ import { startChannelPurchase } from '../../store/actions/blocktank';
 import { showErrorNotification } from '../../utils/notifications';
 import { fiatToBitcoinUnit } from '../../utils/exchange-rate';
 import { convertCurrency } from '../../utils/blocktank';
-import { useFocusEffect } from '@react-navigation/native';
-
-export const Percentage = ({ value, type }): ReactElement => {
-	return (
-		<View style={styles.pRoot}>
-			{type === 'spendings' ? (
-				<CoinsIcon color="purple" height={26} width={26} />
-			) : (
-				<SavingsIcon color="orange" height={32} width={32} />
-			)}
-
-			<Headline lineHeight="40px" style={styles.pText}>
-				{value}
-				<Text01S>%</Text01S>
-			</Headline>
-		</View>
-	);
-};
+import { SPENDING_LIMIT_RATIO } from '../../utils/wallet/constants';
+import type { LightningScreenProps } from '../../navigation/types';
 
 const QuickSetup = ({
 	navigation,
-	route,
 }: LightningScreenProps<'QuickSetup'>): ReactElement => {
 	const [keybrd, setKeybrd] = useState(false);
 	const [loading, setLoading] = useState(false);
 	const [totalBalance, setTotalBalance] = useState(0);
 	const [spendingAmount, setSpendingAmount] = useState(0);
 	const currentBalance = useBalance({ onchain: true });
-	const productId = useSelector(
-		(state: Store) => state.blocktank?.serviceList[0]?.product_id ?? '',
-	);
 	const selectedNetwork = useSelector(
 		(state: Store) => state.wallet.selectedNetwork,
 	);
@@ -81,23 +58,18 @@ const QuickSetup = ({
 		(state: Store) => state.settings.selectedCurrency,
 	);
 
-	const headerTitle = useMemo(
-		() => route.params?.headerTitle ?? 'Add Instant Payments',
-		[route.params?.headerTitle],
-	);
-
 	const savingsAmount = totalBalance - spendingAmount;
-	const spendingPercentage =
-		totalBalance > 0 ? Math.round((spendingAmount / totalBalance) * 100) : 0;
-	const savingsPercentage =
-		totalBalance > 0 ? Math.round((savingsAmount / totalBalance) * 100) : 0;
+	const spendingPercentage = Math.round((spendingAmount / totalBalance) * 100);
+	const savingsPercentage = Math.round((savingsAmount / totalBalance) * 100);
 
 	const handleChange = useCallback((v) => {
 		setSpendingAmount(Math.round(v));
 	}, []);
 
 	const spendingLimit = useMemo(() => {
-		const spendableBalance = Math.round(currentBalance.satoshis / 1.2);
+		const spendableBalance = Math.round(
+			currentBalance.satoshis / SPENDING_LIMIT_RATIO,
+		);
 		const convertedUnit = convertCurrency({
 			amount: 999,
 			from: 'USD',
@@ -111,9 +83,7 @@ const QuickSetup = ({
 		if (!maxSpendingLimit) {
 			return spendableBalance;
 		}
-		return spendableBalance < maxSpendingLimit
-			? spendableBalance
-			: maxSpendingLimit;
+		return Math.min(spendableBalance, maxSpendingLimit);
 	}, [currentBalance.satoshis, selectedCurrency]);
 
 	useEffect(() => {
@@ -123,6 +93,11 @@ const QuickSetup = ({
 		currentBalance.satoshis,
 		spendingLimit,
 	]);
+
+	// default spendingPercentage to 20%
+	useEffect(() => {
+		return setSpendingAmount(Math.round(totalBalance * 0.2));
+	}, [totalBalance]);
 
 	useFocusEffect(
 		useCallback(() => {
@@ -144,11 +119,12 @@ const QuickSetup = ({
 		const purchaseResponse = await startChannelPurchase({
 			selectedNetwork,
 			selectedWallet,
-			productId,
+			productId: blocktankService.product_id,
 			remoteBalance: spendingAmount,
 			localBalance,
 			channelExpiry: 12,
 		});
+
 		if (purchaseResponse.isErr()) {
 			showErrorNotification({
 				title: 'Channel Purchase Error',
@@ -164,9 +140,8 @@ const QuickSetup = ({
 			orderId: purchaseResponse.value,
 		});
 	}, [
-		blocktankService.min_channel_size,
+		blocktankService,
 		navigation,
-		productId,
 		selectedNetwork,
 		selectedWallet,
 		spendingAmount,
@@ -177,7 +152,7 @@ const QuickSetup = ({
 		<GlowingBackground topLeft="purple">
 			<SafeAreaInsets type="top" />
 			<NavigationHeader
-				title={headerTitle}
+				title="Add Instant Payments"
 				onClosePress={(): void => {
 					navigation.navigate('Tabs');
 				}}
@@ -221,7 +196,7 @@ const QuickSetup = ({
 								/>
 							</View>
 							<View style={styles.row}>
-								<Percentage value={spendingPercentage} type="spendings" />
+								<Percentage value={spendingPercentage} type="spending" />
 								<Percentage value={savingsPercentage} type="savings" />
 							</View>
 						</AnimatedView>
@@ -239,6 +214,7 @@ const QuickSetup = ({
 							)}
 							<AmountToggle
 								sats={spendingAmount}
+								unit="fiat"
 								onPress={(): void => setKeybrd(true)}
 							/>
 						</View>
@@ -311,15 +287,6 @@ const styles = StyleSheet.create({
 	},
 	amountBigCaption: {
 		marginBottom: 4,
-	},
-	pRoot: {
-		flexDirection: 'row',
-		justifyContent: 'space-between',
-		alignItems: 'center',
-	},
-	pText: {
-		marginLeft: 8,
-		paddingTop: Platform.OS === 'android' ? 20 : 0,
 	},
 	numberpad: {
 		marginHorizontal: -16,

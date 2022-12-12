@@ -1,4 +1,4 @@
-import React, { memo, ReactElement } from 'react';
+import React, { memo, ReactElement, useMemo } from 'react';
 import {
 	StyleSheet,
 	View,
@@ -35,24 +35,20 @@ const FeeItem = ({
 	const { title, description } = FeeText[id];
 	const totalFeeDisplay = useDisplayValues(sats);
 
-	let icon;
-	switch (id) {
-		case EFeeIds.instant:
-			icon = <SpeedFastIcon color="brand" />;
-			break;
-		case EFeeIds.fast:
-			icon = <SpeedFastIcon color="brand" />;
-			break;
-		case EFeeIds.normal:
-			icon = <SpeedNormalIcon color="brand" />;
-			break;
-		case EFeeIds.slow:
-			icon = <SpeedSlowIcon color="brand" />;
-			break;
-		case EFeeIds.custom:
-			icon = <SettingsIcon color="gray1" width={32} height={32} />;
-			break;
-	}
+	const icon = useMemo(() => {
+		switch (id) {
+			case EFeeIds.instant:
+				return <SpeedFastIcon color="brand" />;
+			case EFeeIds.fast:
+				return <SpeedFastIcon color="brand" />;
+			case EFeeIds.normal:
+				return <SpeedNormalIcon color="brand" />;
+			case EFeeIds.slow:
+				return <SpeedSlowIcon color="brand" />;
+			case EFeeIds.custom:
+				return <SettingsIcon color="gray1" width={32} height={32} />;
+		}
+	}, [id]);
 
 	return (
 		<>

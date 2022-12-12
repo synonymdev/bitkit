@@ -19,6 +19,10 @@ import {
 } from '../../../utils/wallet/transactions';
 import FeeItem from './FeeItem';
 import type { SendScreenProps } from '../../../navigation/types';
+import {
+	selectedNetworkSelector,
+	selectedWalletSelector,
+} from '../../../store/reselect/wallet';
 
 const FeeRate = ({ navigation }: SendScreenProps<'FeeRate'>): ReactElement => {
 	const insets = useSafeAreaInsets();
@@ -29,12 +33,8 @@ const FeeRate = ({ navigation }: SendScreenProps<'FeeRate'>): ReactElement => {
 		}),
 		[insets.bottom],
 	);
-	const selectedWallet = useSelector(
-		(store: Store) => store.wallet.selectedWallet,
-	);
-	const selectedNetwork = useSelector(
-		(store: Store) => store.wallet.selectedNetwork,
-	);
+	const selectedWallet = useSelector(selectedWalletSelector);
+	const selectedNetwork = useSelector(selectedNetworkSelector);
 	const feeEstimates = useSelector((store: Store) => store.fees.onchain);
 	const balance = useMemo(
 		() => getBalance({ selectedWallet, selectedNetwork, onchain: true }),

@@ -1,4 +1,4 @@
-import React, { memo, ReactElement, useState } from 'react';
+import React, { memo, ReactElement, useCallback, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useSelector } from 'react-redux';
 
@@ -18,25 +18,25 @@ const Tags = ({ navigation }: ReceiveScreenProps<'Tags'>): ReactElement => {
 		(store: Store) => store.metadata.lastUsedTags,
 	);
 
-	const handleSubmit = async (): Promise<void> => {
+	const handleSubmit = useCallback(async (): Promise<void> => {
 		if (text.length === 0) {
 			return;
 		}
-
 		updateInvoice({ tags: [text] });
 		addTag(text);
-
 		await Keyboard.dismiss();
 		navigation.goBack();
-	};
+	}, [navigation, text]);
 
-	const handleTagChoose = async (tag: string): Promise<void> => {
-		updateInvoice({ tags: [tag] });
-		addTag(tag);
-
-		await Keyboard.dismiss();
-		navigation.goBack();
-	};
+	const handleTagChoose = useCallback(
+		async (tag: string): Promise<void> => {
+			updateInvoice({ tags: [tag] });
+			addTag(tag);
+			await Keyboard.dismiss();
+			navigation.goBack();
+		},
+		[navigation],
+	);
 
 	return (
 		<GradientView style={styles.container}>

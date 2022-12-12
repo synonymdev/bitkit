@@ -76,6 +76,10 @@ import {
 	isTransactionBoosted,
 } from '../../utils/boost';
 import { EPaymentType } from '../../store/types/wallet';
+import {
+	selectedNetworkSelector,
+	selectedWalletSelector,
+} from '../../store/reselect/wallet';
 
 const Section = memo(
 	({ title, value }: { title: string; value: React.ReactNode }) => {
@@ -153,12 +157,8 @@ const ActivityDetail = (props: Props): ReactElement => {
 	const slashTagsUrl = useSelector(
 		(store: Store) => store.metadata.slashTagsUrls[id],
 	);
-	const selectedWallet = useSelector(
-		(store: Store) => store.wallet.selectedWallet,
-	);
-	const selectedNetwork = useSelector(
-		(store: Store) => store.wallet.selectedNetwork,
-	);
+	const selectedWallet = useSelector(selectedWalletSelector);
+	const selectedNetwork = useSelector(selectedNetworkSelector);
 	const activityItems = useSelector((store: Store) => store.activity.items);
 	const boostedTransactions = useSelector(
 		(store: Store) =>

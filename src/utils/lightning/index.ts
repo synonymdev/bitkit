@@ -50,7 +50,7 @@ import {
 import { promiseTimeout, reduceValue, sleep } from '../helpers';
 import { broadcastTransaction } from '../wallet/transactions';
 import RNFS from 'react-native-fs';
-import { EmitterSubscription } from 'react-native';
+import { EmitterSubscription, InteractionManager } from 'react-native';
 import { EActivityTypes, IActivityItem } from '../../store/types/activity';
 import { addActivityItem } from '../../store/actions/activity';
 import { EPaymentType, IWalletItem } from '../../store/types/wallet';
@@ -59,14 +59,10 @@ import { updateSlashPayConfig } from '../slashtags';
 import { sdk } from '../../components/SlashtagsProvider';
 import { showSuccessNotification } from '../notifications';
 
+let LDKIsStayingSynced = false;
+
 export const DEFAULT_LIGHTNING_PEERS: IWalletItem<string[]> = {
-	bitcoin: [
-		'03cde60a6323f7122d5178255766e38114b4722ede08f7c9e0c5df9b912cc201d6@34.65.85.39:9745',
-		'033d8656219478701227199cbd6f670335c8d408a92ae88b962c49d4dc0e83e025@34.65.85.39:9735',
-		'035e4ff418fc8b5554c5d9eea66396c227bd429a3251c8cbc711002ba215bfc226@170.75.163.209:9735',
-		'03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f@3.33.236.230:9735',
-		'038fe1bd966b5cb0545963490c631eaa1924e2c4c0ea4e7dcb5d4582a1e7f2f1a5@144.76.24.71:9735',
-	],
+	bitcoin: [],
 	bitcoinRegtest: [],
 	bitcoinTestnet: [],
 };
@@ -364,8 +360,12 @@ export const unsubscribeFromLightningSubscriptions = (): void => {
 	onChannelSubscription && onChannelSubscription.remove();
 };
 
-export const resetLdk = (): void => {
-	ldk.reset();
+export const resetLdk = async (): Promise<Result<string>> => {
+	return InteractionManager.runAfterInteractions(
+		async (): Promise<Result<string>> => {
+			return await ldk.reset();
+		},
+	);
 };
 
 /**
@@ -382,33 +382,37 @@ export const refreshLdk = async ({
 	selectedNetwork?: TAvailableNetworks;
 }): Promise<Result<string>> => {
 	try {
-		if (!selectedWallet) {
-			selectedWallet = getSelectedWallet();
-		}
-		if (!selectedNetwork) {
-			selectedNetwork = getSelectedNetwork();
-		}
-
-		const nodeIdRes = await promiseTimeout<Result<string>>(2000, getNodeId());
-		if (nodeIdRes.isErr()) {
-			// Attempt to reset LDK.
-			const setupResponse = await setupLdk({
-				selectedNetwork,
-				selectedWallet,
-				shouldRefreshLdk: false,
-			});
-			if (setupResponse.isErr()) {
-				return err(setupResponse.error.message);
+		InteractionManager.runAfterInteractions(async () => {
+			if (!selectedWallet) {
+				selectedWallet = getSelectedWallet();
 			}
-			keepLdkSynced({ selectedNetwork }).then();
-		}
-		const syncRes = await lm.syncLdk();
-		if (syncRes.isErr()) {
-			return err(syncRes.error.message);
-		}
-		await updateLightningChannels({ selectedWallet, selectedNetwork });
-		await updateClaimableBalance({ selectedNetwork, selectedWallet });
-		await addPeers({ selectedNetwork, selectedWallet });
+			if (!selectedNetwork) {
+				selectedNetwork = getSelectedNetwork();
+			}
+
+			const nodeIdRes = await promiseTimeout<Result<string>>(2000, getNodeId());
+			if (nodeIdRes.isErr()) {
+				// Attempt to reset LDK.
+				const setupResponse = await setupLdk({
+					selectedNetwork,
+					selectedWallet,
+					shouldRefreshLdk: false,
+				});
+				if (setupResponse.isErr()) {
+					return err(setupResponse.error.message);
+				}
+				keepLdkSynced({ selectedNetwork }).then();
+			}
+			const syncRes = await lm.syncLdk();
+			if (syncRes.isErr()) {
+				return err(syncRes.error.message);
+			}
+			await Promise.all([
+				updateLightningChannels({ selectedWallet, selectedNetwork }),
+				updateClaimableBalance({ selectedNetwork, selectedWallet }),
+				addPeers({ selectedNetwork, selectedWallet }),
+			]);
+		});
 		return ok('');
 	} catch (e) {
 		console.log(e);
@@ -909,6 +913,98 @@ export const closeChannel = async ({
 };
 
 /**
+ * Attempts to close all known channels.
+ * It will always attempt to coop close channels first and only force close if set to true.
+ * Returns an array of channels it was not able to successfully close.
+ * @param {TChannel[]} [channels]
+ * @param {boolean} [force]
+ * @param {string} [selectedWallet]
+ * @param {TAvailableNetworks} [selectedNetwork]
+ * @returns {Promise<Result<TChannel[]>>}
+ */
+export const closeAllChannels = async ({
+	channels,
+	force = false,
+	selectedWallet,
+	selectedNetwork,
+}: {
+	channels?: TChannel[];
+	force?: boolean; // It will always try to coop close first and only force close if set to true.
+	selectedWallet?: string;
+	selectedNetwork?: TAvailableNetworks;
+}): Promise<Result<TChannel[]>> => {
+	try {
+		if (!selectedWallet) {
+			selectedWallet = getSelectedWallet();
+		}
+		if (!selectedNetwork) {
+			selectedNetwork = getSelectedNetwork();
+		}
+		if (!channels) {
+			const openChannelsRes = await getOpenChannels({
+				fromStorage: true,
+				selectedNetwork,
+				selectedWallet,
+			});
+			if (openChannelsRes.isErr()) {
+				return err(openChannelsRes.error.message);
+			}
+			channels = openChannelsRes.value;
+		}
+
+		// Ensure we're fully up-to-date.
+		const refreshRes = await refreshLdk({ selectedWallet, selectedNetwork });
+		if (refreshRes.isErr()) {
+			return err(refreshRes.error.message);
+		}
+
+		const channelsUnableToCoopClose: TChannel[] = [];
+		await Promise.all(
+			channels.map(async (channel) => {
+				const { channel_id, counterparty_node_id } = channel;
+				const closeResponse = await closeChannel({
+					channelId: channel_id,
+					counterPartyNodeId: counterparty_node_id,
+					force: false,
+				});
+				if (closeResponse.isErr()) {
+					channelsUnableToCoopClose.push(channel);
+				}
+			}),
+		);
+
+		if (!force) {
+			// Finished coop closing channels.
+			// Return channels we weren't able to close, if any.
+			return ok(channelsUnableToCoopClose);
+		}
+
+		// Attempt to force close the remaining channels
+		const channelsUnableToForceClose: TChannel[] = [];
+		await Promise.all(
+			channelsUnableToCoopClose.map(async (channel) => {
+				const { channel_id, counterparty_node_id } = channel;
+				const closeResponse = await closeChannel({
+					channelId: channel_id,
+					counterPartyNodeId: counterparty_node_id,
+					force: true,
+				});
+				if (closeResponse.isErr()) {
+					channelsUnableToForceClose.push(channel);
+				}
+			}),
+		);
+
+		// Finished force closing channels.
+		// Return channels we weren't able to force close, if any.
+		return ok(channelsUnableToForceClose);
+	} catch (e) {
+		console.log(e);
+		return err(e);
+	}
+};
+
+/**
  * Attempts to create a bolt11 invoice.
  * @param {TCreatePaymentReq}
  * @returns {Promise<Result<TInvoice>>}
@@ -997,6 +1093,11 @@ export const keepLdkSynced = async ({
 	selectedWallet?: string;
 	selectedNetwork?: TAvailableNetworks;
 }): Promise<void> => {
+	if (LDKIsStayingSynced) {
+		return;
+	} else {
+		LDKIsStayingSynced = true;
+	}
 	if (!selectedWallet) {
 		selectedWallet = getSelectedWallet();
 	}
@@ -1009,6 +1110,7 @@ export const keepLdkSynced = async ({
 		const syncRes = await refreshLdk({ selectedNetwork, selectedWallet });
 		if (!syncRes) {
 			error = 'Unable to refresh LDK.';
+			LDKIsStayingSynced = false;
 			break;
 		}
 		await sleep(frequency);

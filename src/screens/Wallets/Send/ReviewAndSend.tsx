@@ -62,6 +62,10 @@ import { getFiatDisplayValues } from '../../../utils/exchange-rate';
 import { useLightningBalance } from '../../../hooks/lightning';
 import Button from '../../../components/Button';
 import { showErrorNotification } from '../../../utils/notifications';
+import {
+	selectedNetworkSelector,
+	selectedWalletSelector,
+} from '../../../store/reselect/wallet';
 
 const Section = memo(
 	({
@@ -111,12 +115,8 @@ const ReviewAndSend = ({
 		}),
 		[insets.bottom],
 	);
-	const selectedWallet = useSelector(
-		(store: Store) => store.wallet.selectedWallet,
-	);
-	const selectedNetwork = useSelector(
-		(store: Store) => store.wallet.selectedNetwork,
-	);
+	const selectedWallet = useSelector(selectedWalletSelector);
+	const selectedNetwork = useSelector(selectedNetworkSelector);
 	const onChainBalance = useSelector(
 		(store: Store) =>
 			store.wallet.wallets[selectedWallet]?.balance[selectedNetwork],

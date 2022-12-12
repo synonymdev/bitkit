@@ -25,13 +25,16 @@ import {
 	useSlashtags,
 	useSlashtagsSDK,
 } from '../../components/SlashtagsProvider';
-import Store from '../../store/types';
 import { useBalance } from '../../hooks/wallet';
 import { truncate } from '../../utils/helpers';
 import { RootStackScreenProps } from '../../navigation/types';
 import Dialog from '../../components/Dialog';
 import Tooltip from '../../components/Tooltip';
 import IconButton from '../../components/IconButton';
+import {
+	selectedNetworkSelector,
+	selectedWalletSelector,
+} from '../../store/reselect/wallet';
 
 export const Contact = ({
 	navigation,
@@ -42,12 +45,8 @@ export const Contact = ({
 	const [showCopy, setShowCopy] = useState(false);
 	const [isSharing, setIsSharing] = useState(false);
 
-	const selectedWallet = useSelector(
-		(store: Store) => store.wallet.selectedWallet,
-	);
-	const selectedNetwork = useSelector(
-		(store: Store) => store.wallet.selectedNetwork,
-	);
+	const selectedWallet = useSelector(selectedWalletSelector);
+	const selectedNetwork = useSelector(selectedNetworkSelector);
 
 	const { profile } = useProfile(url);
 	const { slashtag } = useSelectedSlashtag();

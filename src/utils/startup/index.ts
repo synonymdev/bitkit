@@ -127,7 +127,7 @@ export const startWalletServices = async ({
 						});
 					};
 					// Ensure we are subscribed to and save new header information.
-					await subscribeToHeader({ selectedNetwork, onReceive });
+					subscribeToHeader({ selectedNetwork, onReceive }).then();
 				}
 				updateUser({ isConnectedToElectrum });
 			}

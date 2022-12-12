@@ -1,4 +1,4 @@
-import React, { memo, ReactElement, useEffect, useState } from 'react';
+import React, { memo, ReactElement, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import { useSelector } from 'react-redux';
 
@@ -9,20 +9,12 @@ import { truncate } from '../../../utils/helpers';
 import SafeAreaView from '../../../components/SafeAreaView';
 
 const LightningChannels = ({ navigation }): ReactElement => {
-	const lightning = useSelector((state: Store) => state.lightning);
 	const [channelList] = useState<any[]>([]);
 
 	const [peerList] = useState<any[]>([]);
 	const nodeInfo = useSelector(
 		(state: Store) => state.blocktank.info?.node_info,
 	);
-
-	useEffect(() => {
-		(async (): Promise<void> => {
-			//TODO: Get & Set Channels
-			//TODO: Get & Set Peers
-		})();
-	}, [lightning]);
 
 	const ListData = [
 		{

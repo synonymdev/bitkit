@@ -2,6 +2,10 @@ import { useSelector } from 'react-redux';
 import Store from '../store/types';
 import { TChannel } from '@synonymdev/react-native-ldk';
 import { TUseChannelBalance } from '../store/types/lightning';
+import {
+	selectedNetworkSelector,
+	selectedWalletSelector,
+} from '../store/reselect/wallet';
 
 /**
  * Returns the lightning balance of all known open and pending channels.
@@ -14,12 +18,8 @@ export const useLightningBalance = (
 	localBalance: number;
 	remoteBalance: number;
 } => {
-	const selectedWallet = useSelector(
-		(store: Store) => store.wallet.selectedWallet,
-	);
-	const selectedNetwork = useSelector(
-		(store: Store) => store.wallet.selectedNetwork,
-	);
+	const selectedWallet = useSelector(selectedWalletSelector);
+	const selectedNetwork = useSelector(selectedNetworkSelector);
 	const openChannelIds = useSelector(
 		(store: Store) =>
 			store.lightning.nodes[selectedWallet].openChannelIds[selectedNetwork],
@@ -73,12 +73,8 @@ export const useLightningBalance = (
  * @returns {TUseChannelBalance}
  */
 export const useLightningChannelBalance = (channelId): TUseChannelBalance => {
-	const selectedWallet = useSelector(
-		(store: Store) => store.wallet.selectedWallet,
-	);
-	const selectedNetwork = useSelector(
-		(store: Store) => store.wallet.selectedNetwork,
-	);
+	const selectedWallet = useSelector(selectedWalletSelector);
+	const selectedNetwork = useSelector(selectedNetworkSelector);
 
 	const balance: TUseChannelBalance = {
 		spendingTotal: 0, // How many sats the user has reserved in the channel. (Outbound capacity + Punishment Reserve)
@@ -122,12 +118,8 @@ export const useLightningChannelBalance = (channelId): TUseChannelBalance => {
  * @returns {string}
  */
 export const useLightningChannelName = (channelId): string => {
-	const selectedWallet = useSelector(
-		(store: Store) => store.wallet.selectedWallet,
-	);
-	const selectedNetwork = useSelector(
-		(store: Store) => store.wallet.selectedNetwork,
-	);
+	const selectedWallet = useSelector(selectedWalletSelector);
+	const selectedNetwork = useSelector(selectedNetworkSelector);
 	const paidBlocktankOrders = useSelector(
 		(store: Store) => store.blocktank.paidOrders,
 	);
@@ -157,12 +149,8 @@ export const useLightningChannelName = (channelId): string => {
  * @returns {TChannel}
  */
 export const useLightningChannelData = (channelId): TChannel => {
-	const selectedWallet = useSelector(
-		(store: Store) => store.wallet.selectedWallet,
-	);
-	const selectedNetwork = useSelector(
-		(store: Store) => store.wallet.selectedNetwork,
-	);
+	const selectedWallet = useSelector(selectedWalletSelector);
+	const selectedNetwork = useSelector(selectedNetworkSelector);
 
 	return useSelector(
 		(store: Store) =>
@@ -173,12 +161,8 @@ export const useLightningChannelData = (channelId): TChannel => {
 };
 
 export const useClaimableBalance = (): number => {
-	const selectedWallet = useSelector(
-		(store: Store) => store.wallet.selectedWallet,
-	);
-	const selectedNetwork = useSelector(
-		(store: Store) => store.wallet.selectedNetwork,
-	);
+	const selectedWallet = useSelector(selectedWalletSelector);
+	const selectedNetwork = useSelector(selectedNetworkSelector);
 	const node = useSelector(
 		(store: Store) => store.lightning.nodes[selectedWallet],
 	);

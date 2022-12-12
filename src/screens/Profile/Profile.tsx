@@ -1,4 +1,5 @@
 import React, {
+	memo,
 	MutableRefObject,
 	ReactElement,
 	useCallback,
@@ -39,14 +40,13 @@ import SafeAreaInsets from '../../components/SafeAreaInsets';
 import ProfileCard from '../../components/ProfileCard';
 import ProfileLinks from '../../components/ProfileLinks';
 import Tooltip from '../../components/Tooltip';
-// import DetectSwipe from '../../components/DetectSwipe';
 import Divider from '../../components/Divider';
 import IconButton from '../../components/IconButton';
 import ProfileEdit from './ProfileEdit';
 import { ProfileIntro, OfflinePayments } from './ProfileOnboarding';
 import type { RootStackScreenProps } from '../../navigation/types';
 
-const Profile = (props: RootStackScreenProps<'Profile'>): ReactElement => {
+const Profile = memo((props: RootStackScreenProps<'Profile'>): ReactElement => {
 	const onboardingProfileStep = useSelector(
 		(state: Store) => state.slashtags.onboardingProfileStep,
 	);
@@ -63,7 +63,7 @@ const Profile = (props: RootStackScreenProps<'Profile'>): ReactElement => {
 		default:
 			return <ProfileScreen {...props} />;
 	}
-};
+});
 
 const ProfileScreen = ({
 	navigation,
@@ -76,19 +76,19 @@ const ProfileScreen = ({
 	const [view, setView] = useState('qr');
 	const [isSharing, setIsSharing] = useState(false);
 
-	const switchView = (): void => {
+	const switchView = useCallback((): void => {
 		view === 'details' ? setView('qr') : setView('details');
-	};
+	}, [view]);
 
 	// const onSwipeLeft = (): void => {
 	// 	navigation.navigate('Tabs');
 	// };
 
-	const handleCopy = (): void => {
+	const handleCopy = useCallback((): void => {
 		setShowCopy(() => true);
 		setTimeout(() => setShowCopy(() => false), 1200);
 		Clipboard.setString(url);
-	};
+	}, [url]);
 
 	const handleShare = useCallback(async (): Promise<void> => {
 		setIsSharing(true);
@@ -107,11 +107,15 @@ const ProfileScreen = ({
 		}
 	}, [url]);
 
-	const profileLinks = profile?.links ?? [];
-	const profileLinksWithIds = profileLinks.map((link) => ({
-		...link,
-		id: `${link.title}:${link.url}`,
-	}));
+	const profileLinks = useMemo(() => profile?.links ?? [], [profile?.links]);
+	const profileLinksWithIds = useMemo(
+		() =>
+			profileLinks.map((link) => ({
+				...link,
+				id: `${link.title}:${link.url}`,
+			})),
+		[profileLinks],
+	);
 
 	return (
 		<ThemedView style={styles.container}>
@@ -213,11 +217,11 @@ const QRView = ({
 		[qrMaxHeight, qrMaxWidth],
 	);
 
-	const handleCopy = (): void => {
+	const handleCopy = useCallback((): void => {
 		setShowCopy(() => true);
 		setTimeout(() => setShowCopy(() => false), 1200);
 		Clipboard.setString(url);
-	};
+	}, [url]);
 
 	const handleCopyQrCode = useCallback((): void => {
 		console.log('TODO: copy QR code as image');
@@ -229,8 +233,8 @@ const QRView = ({
 		// });
 	}, []);
 
-	const name = profile?.name ?? 'Profile';
-	const firstName = name.split(/\s+/)[0];
+	const name = useMemo(() => profile?.name ?? 'Profile', [profile?.name]);
+	const firstName = useMemo(() => name.split(/\s+/)[0], [name]);
 
 	return (
 		<View style={styles.qrViewContainer}>
@@ -320,4 +324,4 @@ const styles = StyleSheet.create({
 	},
 });
 
-export default Profile;
+export default memo(Profile);

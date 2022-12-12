@@ -53,6 +53,10 @@ import { useBalance } from '../../../hooks/wallet';
 import Money from '../../../components/Money';
 import { useLightningBalance } from '../../../hooks/lightning';
 import { sleep } from '../../../utils/helpers';
+import {
+	selectedNetworkSelector,
+	selectedWalletSelector,
+} from '../../../store/reselect/wallet';
 
 const AddressAndAmount = ({
 	navigation,
@@ -73,12 +77,8 @@ const AddressAndAmount = ({
 		}),
 		[insets.bottom],
 	);
-	const selectedWallet = useSelector(
-		(store: Store) => store.wallet.selectedWallet,
-	);
-	const selectedNetwork = useSelector(
-		(store: Store) => store.wallet.selectedNetwork,
-	);
+	const selectedWallet = useSelector(selectedWalletSelector);
+	const selectedNetwork = useSelector(selectedNetworkSelector);
 	const coinSelectAuto = useSelector(
 		(state: Store) => state.settings.coinSelectAuto,
 	);
