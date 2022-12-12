@@ -15,7 +15,7 @@ import { ThemeProvider } from 'styled-components/native';
 import { SafeAreaProvider, StatusBar } from './styles/components';
 import themes from './styles/themes';
 import { TTheme } from './store/types/settings';
-import { checkForAppUpdate } from './store/actions/ui';
+// import { checkForAppUpdate } from './store/actions/ui';
 import { useAppSelector } from './hooks/redux';
 import OnboardingNavigator from './navigation/onboarding/OnboardingNavigator';
 import { SlashtagsProvider } from './components/SlashtagsProvider';
@@ -50,7 +50,8 @@ const App = (): ReactElement => {
 		}
 
 		// check for Bitkit update
-		checkForAppUpdate();
+		// TEMP: disabled for now
+		// checkForAppUpdate();
 	}, []);
 
 	const currentTheme: TTheme = useMemo(() => themes[theme], [theme]);
