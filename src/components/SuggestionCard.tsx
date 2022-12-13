@@ -3,8 +3,7 @@ import { LayoutAnimation, StyleSheet, Image, View } from 'react-native';
 import { Canvas, RadialGradient, Rect, vec } from '@shopify/react-native-skia';
 
 import { Caption13M, Pressable, Text01M, XIcon } from '../styles/components';
-import { ITodo } from '../store/types/todos';
-import { removeTodo } from '../store/actions/todos';
+import { ITodo, TTodoType } from '../store/types/todos';
 import useColors from '../hooks/colors';
 import Card from './Card';
 
@@ -25,7 +24,8 @@ const InnerShadow = memo(({ color }: { color: string }): ReactElement => {
 });
 
 type CardProps = ITodo & {
-	onPress: () => void;
+	onPress: (id: TTodoType) => void;
+	onClose: (id: TTodoType) => void;
 };
 
 const SuggestionCard = ({
@@ -36,6 +36,7 @@ const SuggestionCard = ({
 	image,
 	dismissable,
 	onPress,
+	onClose,
 }: CardProps): ReactElement => {
 	LayoutAnimation.easeInEaseOut();
 
@@ -61,7 +62,10 @@ const SuggestionCard = ({
 					<InnerShadow color={colors[color]} />
 				)}
 			</Canvas>
-			<Pressable onPress={onPress} color="transparent" style={styles.pressable}>
+			<Pressable
+				onPress={(): void => onPress(id)}
+				color="transparent"
+				style={styles.pressable}>
 				<View style={styles.iconContainer}>
 					<Image style={styles.image} resizeMode="contain" source={image} />
 				</View>
@@ -75,9 +79,7 @@ const SuggestionCard = ({
 				<Pressable
 					color="transparent"
 					style={styles.dismiss}
-					onPress={(): void => {
-						removeTodo(id);
-					}}>
+					onPress={(): void => onClose(id)}>
 					<XIcon width={18} height={18} color="gray1" />
 				</Pressable>
 			)}

@@ -13,6 +13,7 @@ import { View, Subtitle } from '../styles/components';
 import SuggestionCard from './SuggestionCard';
 import { allTodos } from '../store/shapes/todos';
 import { TTodoType } from '../store/types/todos';
+import { removeTodo } from '../store/actions/todos';
 import { toggleView } from '../store/actions/ui';
 import { useAppSelector } from '../hooks/redux';
 import { useBalance } from '../hooks/wallet';
@@ -87,6 +88,18 @@ const Suggestions = (): ReactElement => {
 		[balance, navigation, pinTodoDone],
 	);
 
+	const handleOnClose = useCallback(
+		(id: TTodoType): void => {
+			const todoIndex = todos.findIndex((todo) => todo === id);
+			// avoid crash when deleting last item
+			if (todoIndex === todos.length - 1) {
+				setIndex(todos.length - 2);
+			}
+			removeTodo(id);
+		},
+		[todos],
+	);
+
 	if (!todos.length || !showSuggestions) {
 		return <></>;
 	}
@@ -115,7 +128,8 @@ const Suggestions = (): ReactElement => {
 							color={item.color}
 							image={item.image}
 							dismissable={item.dismissable}
-							onPress={(): void => handleOnPress(item.id)}
+							onPress={handleOnPress}
+							onClose={handleOnClose}
 						/>
 					)}
 				/>
