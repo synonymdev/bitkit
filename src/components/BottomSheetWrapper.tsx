@@ -104,11 +104,7 @@ const BottomSheetWrapper = forwardRef(
 		const { animatedHandleHeight, animatedContentHeight, handleContentLayout } =
 			useBottomSheetDynamicSnapPoints(initialSnapPoints);
 
-		const _onOpen = useCallback(() => {
-			if (!data.isOpen) {
-				onOpen?.();
-			}
-		}, [data.isOpen, onOpen]);
+		const _onOpen = useCallback(() => onOpen?.(), [onOpen]);
 
 		const _onClose = useCallback(() => {
 			if (data.isOpen) {
@@ -116,8 +112,8 @@ const BottomSheetWrapper = forwardRef(
 					view,
 					data: { isOpen: false },
 				});
-				onClose?.();
 			}
+			onClose?.();
 		}, [data.isOpen, view, onClose]);
 
 		// callbacks
