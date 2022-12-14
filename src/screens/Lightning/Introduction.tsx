@@ -43,7 +43,7 @@ const Introduction = ({
 				<SafeAreaInsets type="top" />
 				<NavigationHeader
 					onClosePress={(): void => {
-						navigation.navigate('Tabs');
+						navigation.navigate('Wallet');
 					}}
 				/>
 				<View color="transparent" style={styles.imageContainer}>

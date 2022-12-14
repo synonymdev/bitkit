@@ -91,7 +91,7 @@ const BlocktankOrderDetails = ({
 			<NavigationHeader
 				title="Order details"
 				onClosePress={(): void => {
-					navigation.navigate('Tabs');
+					navigation.navigate('Wallet');
 				}}
 			/>
 			<ScrollView contentContainerStyle={styles.content}>

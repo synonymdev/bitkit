@@ -76,7 +76,7 @@ const ChangePin2 = ({
 			<NavigationHeader
 				title={origPIN ? 'Retype New PIN' : 'Set New PIN'}
 				onClosePress={(): void => {
-					navigation.navigate('Tabs');
+					navigation.navigate('Wallet');
 				}}
 			/>
 

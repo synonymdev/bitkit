@@ -11,16 +11,11 @@ import { NavigationContainer } from '../../styles/components';
 import Store from '../../store/types';
 import AuthCheck from '../../components/AuthCheck';
 import Biometrics from '../../components/Biometrics';
-import TabNavigator from '../tabs/TabNavigator';
-import Blocktank from '../../screens/Blocktank';
-import BlocktankOrder from '../../screens/Blocktank/OrderService';
-import BlocktankPayment from '../../screens/Blocktank/Payment';
+import WalletNavigator from '../wallet/WalletNavigator';
 import ActivityDetail from '../../screens/Activity/ActivityDetail';
-import ActivityFiltered from '../../screens/Activity/ActivityFiltered';
 import ActivityAssignContact from '../../screens/Activity/ActivityAssignContact';
 import BuyBitcoin from '../../screens/BuyBitcoin';
 import ScannerScreen from '../../screens/Scanner/MainScanner';
-import WalletsDetail from '../../screens/Wallets/WalletsDetail';
 import SettingsNavigator from '../settings/SettingsNavigator';
 import LightningNavigator from '../lightning/LightningNavigator';
 import TransferNavigator from '../transfer/TransferNavigator';
@@ -61,13 +56,13 @@ const navOptions: StackNavigationOptions = {
 export const navigationRef = createNavigationContainerRef<RootStackParamList>();
 export const navigate = navigationRef.navigate;
 
-export type TInitialRoutes = 'Tabs' | 'RootAuthCheck';
+export type TInitialRoutes = 'Wallet' | 'RootAuthCheck';
 
 const RootNavigator = (): ReactElement => {
 	const pin = useSelector((state: Store) => state.settings.pin);
 	const pinOnLaunch = useSelector((state: Store) => state.settings.pinOnLaunch);
 	const initialRouteName: TInitialRoutes = useMemo(
-		() => (pin && pinOnLaunch ? 'RootAuthCheck' : 'Tabs'),
+		() => (pin && pinOnLaunch ? 'RootAuthCheck' : 'Wallet'),
 		[pin, pinOnLaunch],
 	);
 
@@ -78,7 +73,7 @@ const RootNavigator = (): ReactElement => {
 					showLogoOnPIN={true}
 					showBackNavigation={false}
 					onSuccess={(): void => {
-						navigation.replace('Tabs');
+						navigation.replace('Wallet');
 					}}
 				/>
 			);
@@ -91,7 +86,7 @@ const RootNavigator = (): ReactElement => {
 			return (
 				<Biometrics
 					onSuccess={(): void => {
-						navigation.replace('Tabs');
+						navigation.replace('Wallet');
 					}}
 				/>
 			);
@@ -110,19 +105,14 @@ const RootNavigator = (): ReactElement => {
 				initialRouteName={initialRouteName}>
 				<Stack.Group screenOptions={navOptions}>
 					<Stack.Screen name="RootAuthCheck" component={AuthCheckComponent} />
-					<Stack.Screen name="Tabs" component={TabNavigator} />
+					<Stack.Screen name="Wallet" component={WalletNavigator} />
 					<Stack.Screen name="Biometrics" component={BiometricsComponent} />
-					<Stack.Screen name="Blocktank" component={Blocktank} />
-					<Stack.Screen name="BlocktankOrder" component={BlocktankOrder} />
-					<Stack.Screen name="BlocktankPayment" component={BlocktankPayment} />
 					<Stack.Screen name="ActivityDetail" component={ActivityDetail} />
-					<Stack.Screen name="ActivityFiltered" component={ActivityFiltered} />
 					<Stack.Screen
 						name="ActivityAssignContact"
 						component={ActivityAssignContact}
 					/>
 					<Stack.Screen name="Scanner" component={ScannerScreen} />
-					<Stack.Screen name="WalletsDetail" component={WalletsDetail} />
 					<Stack.Screen name="LightningRoot" component={LightningNavigator} />
 					<Stack.Screen name="Transfer" component={TransferNavigator} />
 					<Stack.Screen name="Settings" component={SettingsNavigator} />

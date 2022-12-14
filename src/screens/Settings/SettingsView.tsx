@@ -66,7 +66,7 @@ const SettingsView = ({
 				title={title}
 				displayBackButton={showBackNavigation}
 				onClosePress={(): void => {
-					navigation.navigate('Tabs');
+					navigation.navigate('Wallet');
 				}}
 			/>
 

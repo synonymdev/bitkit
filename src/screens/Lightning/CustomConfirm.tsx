@@ -100,7 +100,7 @@ const CustomConfirm = ({
 			<NavigationHeader
 				title="Add Instant Payments"
 				onClosePress={(): void => {
-					navigation.navigate('Tabs');
+					navigation.navigate('Wallet');
 				}}
 			/>
 			<View style={styles.root}>

@@ -44,7 +44,7 @@ const ContactsScreen = ({
 			<NavigationHeader
 				title="Contacts"
 				onClosePress={(): void => {
-					navigation.navigate('Tabs');
+					navigation.navigate('Wallet');
 				}}
 			/>
 			<View style={styles.content}>

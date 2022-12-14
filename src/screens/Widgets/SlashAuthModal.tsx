@@ -155,7 +155,7 @@ const _SlashAuthModal = (): ReactElement => {
 			});
 
 			setAuthWidget(url, { magiclink: true });
-			navigate('Tabs');
+			navigate('Wallet');
 		} else {
 			showErrorNotification({
 				title: 'Error while signing in',

@@ -81,7 +81,7 @@ const ProfileScreen = ({
 	}, [view]);
 
 	// const onSwipeLeft = (): void => {
-	// 	navigation.navigate('Tabs');
+	// 	navigation.navigate('Wallet');
 	// };
 
 	const handleCopy = useCallback((): void => {
@@ -124,7 +124,7 @@ const ProfileScreen = ({
 				style={styles.header}
 				title="Profile"
 				onClosePress={(): void => {
-					navigation.navigate('Tabs');
+					navigation.navigate('Wallet');
 				}}
 			/>
 			{/* Disable swipe detection because it causes ScrollView to be buggy */}

@@ -107,7 +107,7 @@ const BackupData = ({
 				title="Back Up Data"
 				displayBackButton={true}
 				onClosePress={(): void => {
-					navigation.navigate('Tabs');
+					navigation.navigate('Wallet');
 				}}
 			/>
 

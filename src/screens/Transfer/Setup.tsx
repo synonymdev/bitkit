@@ -143,7 +143,7 @@ const Setup = ({ navigation }: TransferScreenProps<'Setup'>): ReactElement => {
 			<NavigationHeader
 				title="Transfer Funds"
 				onClosePress={(): void => {
-					navigation.navigate('Tabs');
+					navigation.navigate('Wallet');
 				}}
 			/>
 			<View style={styles.root}>

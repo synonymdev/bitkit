@@ -392,7 +392,7 @@ const CustomSetup = ({
 			<NavigationHeader
 				title="Add Instant Payments"
 				onClosePress={(): void => {
-					navigation.navigate('Tabs');
+					navigation.navigate('Wallet');
 				}}
 			/>
 

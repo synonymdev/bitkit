@@ -87,7 +87,7 @@ const ExportToPhone = ({
 			<NavigationHeader
 				title="Export To Phone"
 				onClosePress={(): void => {
-					navigation.navigate('Tabs');
+					navigation.navigate('Wallet');
 				}}
 			/>
 			<View style={styles.container}>

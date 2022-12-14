@@ -7,12 +7,11 @@ import type {
 	StackNavigationProp,
 	StackScreenProps,
 } from '@react-navigation/stack';
-import type { IService, IGetOrderResponse } from '@synonymdev/blocktank-client';
+import type { IGetOrderResponse } from '@synonymdev/blocktank-client';
 
 import type { IActivityItem } from '../../store/types/activity';
-import type { TAssetType } from '../../store/types/wallet';
 import type { OnboardingStackParamList } from '../onboarding/OnboardingNavigator';
-import type { TabStackParamList } from '../tabs/TabNavigator';
+import type { WalletStackParamList } from '../wallet/WalletNavigator';
 import type { LightningStackParamList } from '../lightning/LightningNavigator';
 import type { TransferStackParamList } from '../transfer/TransferNavigator';
 import type { WidgetsStackParamList } from '../widgets/WidgetsNavigator';
@@ -29,21 +28,11 @@ export type RootNavigationProp = StackNavigationProp<RootStackParamList>;
 
 export type RootStackParamList = {
 	RootAuthCheck: { onSuccess: () => void };
-	Tabs: undefined;
+	Wallet: NavigatorScreenParams<WalletStackParamList> | undefined;
 	Biometrics: undefined;
-	Blocktank: undefined;
-	BlocktankOrder: {
-		service: IService;
-		existingOrderId: string;
-	};
-	BlocktankPayment: { order: IGetOrderResponse };
 	ActivityDetail: { activityItem: IActivityItem; extended?: boolean };
-	ActivityFiltered: undefined;
 	ActivityAssignContact: { txid: string };
 	Scanner: { onScan: (data: string) => void } | undefined;
-	WalletsDetail: {
-		assetType: TAssetType;
-	};
 	LightningRoot: NavigatorScreenParams<LightningStackParamList>;
 	Transfer: NavigatorScreenParams<TransferStackParamList>;
 	Settings: NavigatorScreenParams<SettingsStackParamList>;
@@ -58,7 +47,7 @@ export type RootStackParamList = {
 	BlocktankOrders: undefined;
 	BlocktankOrderDetails: { blocktankOrder: IGetOrderResponse };
 	WidgetFeedEdit: { url: string };
-	WidgetsRoot: NavigatorScreenParams<WidgetsStackParamList>;
+	WidgetsRoot: NavigatorScreenParams<WidgetsStackParamList> | undefined;
 };
 
 // Root Stack Navigator
@@ -70,9 +59,9 @@ export type OnboardingStackScreenProps<
 > = NativeStackScreenProps<OnboardingStackParamList, T>;
 
 // Nested Stack Navigators
-export type TabScreenProps<T extends keyof TabStackParamList> =
+export type WalletScreenProps<T extends keyof WalletStackParamList> =
 	CompositeScreenProps<
-		NativeStackScreenProps<TabStackParamList, T>,
+		NativeStackScreenProps<WalletStackParamList, T>,
 		RootStackScreenProps<keyof RootStackParamList>
 	>;
 

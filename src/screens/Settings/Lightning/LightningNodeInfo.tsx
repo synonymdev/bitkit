@@ -41,7 +41,7 @@ const LightningNodeInfo = ({ navigation }): ReactElement => {
 				title="Lightning Node Info"
 				displayBackButton
 				onClosePress={(): void => {
-					navigation.navigate('Tabs');
+					navigation.navigate('Wallet');
 				}}
 			/>
 

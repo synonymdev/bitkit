@@ -25,7 +25,7 @@ const ScannerScreen = ({
 	const sdk = useSlashtagsSDK();
 
 	const onSwipeRight = (): void => {
-		navigation.navigate('Tabs');
+		navigation.navigate('Wallet');
 	};
 
 	const onRead = async (data: string): Promise<void> => {

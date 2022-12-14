@@ -24,7 +24,7 @@ export const ContactsOnboarding = ({
 				title="Contacts"
 				displayBackButton={false}
 				onClosePress={(): void => {
-					navigation.navigate('Tabs');
+					navigation.navigate('Wallet');
 				}}
 			/>
 			<View style={styles.content}>

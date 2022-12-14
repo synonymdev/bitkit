@@ -120,7 +120,7 @@ export const Widgets = ({ onEditStart, onEditEnd }): ReactElement => {
 	);
 
 	const onAdd = useCallback((): void => {
-		navigate('WidgetsRoot', { screen: 'WidgetsSuggestions' });
+		navigate('WidgetsRoot');
 	}, []);
 
 	return (

@@ -7,30 +7,38 @@ import React, {
 } from 'react';
 import { useSelector } from 'react-redux';
 import { StyleSheet } from 'react-native';
+import { useFocusEffect } from '@react-navigation/native';
 import { RefreshControl, ScrollView } from 'react-native-gesture-handler';
 
 import { View } from '../../styles/components';
-import Header from './Header';
+import { useNoTransactions } from '../../hooks/wallet';
+import useColors from '../../hooks/colors';
+import { updateSettings } from '../../store/actions/settings';
+import Store from '../../store/types';
+import { refreshWallet } from '../../utils/wallet';
+import ActivityListShort from '../../screens/Activity/ActivityListShort';
+import EmptyWallet from '../../screens/Activity/EmptyWallet';
+import BackupPrompt from '../../screens/Settings/Backup/BackupPrompt';
+import HighBalanceWarning from '../../navigation/bottom-sheet/HighBalanceWarning';
+import AppUpdatePrompt from '../../navigation/bottom-sheet/AppUpdatePrompt';
 import DetectSwipe from '../../components/DetectSwipe';
 import BalanceHeader from '../../components/BalanceHeader';
 import Suggestions from '../../components/Suggestions';
 import Widgets from '../../components/Widgets';
 import ConnectivityIndicator from '../../components/ConnectivityIndicator';
 import SafeAreaView from '../../components/SafeAreaView';
-import ActivityListShort from '../../screens/Activity/ActivityListShort';
-import EmptyWallet from '../../screens/Activity/EmptyWallet';
 import BetaWarning from '../../components/BetaWarning';
-import { useNoTransactions } from '../../hooks/wallet';
-import useColors from '../../hooks/colors';
-import { updateSettings } from '../../store/actions/settings';
-import Store from '../../store/types';
-import { refreshWallet } from '../../utils/wallet';
-import type { TabScreenProps } from '../../navigation/types';
 import Assets from '../../components/Assets';
+import Header from './Header';
+import type { WalletScreenProps } from '../../navigation/types';
 
-const Wallets = ({ navigation }: TabScreenProps<'Wallets'>): ReactElement => {
+const Wallets = ({
+	navigation,
+}: WalletScreenProps<'Wallets'>): ReactElement => {
 	const [refreshing, setRefreshing] = useState(false);
 	const [scrollEnabled, setScrollEnabled] = useState(true);
+	const [isFocused, setIsFocused] = useState(false);
+	const colors = useColors();
 	const hideBalance = useSelector((state: Store) => state.settings.hideBalance);
 	const hideOnboardingSetting = useSelector(
 		(state: Store) => state.settings.hideOnboardingMessage,
@@ -40,7 +48,16 @@ const Wallets = ({ navigation }: TabScreenProps<'Wallets'>): ReactElement => {
 	const empty = useMemo(() => {
 		return noTransactions && Object.values(widgets).length === 0;
 	}, [noTransactions, widgets]);
-	const colors = useColors();
+
+	useFocusEffect(
+		useCallback(() => {
+			setIsFocused(true);
+
+			return (): void => {
+				setIsFocused(false);
+			};
+		}, []),
+	);
 
 	const toggleHideBalance = (): void => {
 		updateSettings({ hideBalance: !hideBalance });
@@ -111,6 +128,14 @@ const Wallets = ({ navigation }: TabScreenProps<'Wallets'>): ReactElement => {
 					)}
 				</ScrollView>
 			</DetectSwipe>
+
+			{isFocused && (
+				<>
+					<BackupPrompt />
+					<HighBalanceWarning />
+					<AppUpdatePrompt />
+				</>
+			)}
 		</SafeAreaView>
 	);
 };

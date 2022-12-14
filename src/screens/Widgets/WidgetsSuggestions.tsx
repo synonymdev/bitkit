@@ -30,7 +30,7 @@ const WidgetsSuggetsions = ({
 	navigation,
 }: WidgetsScreenProps<'WidgetsSuggestions'>): ReactElement => {
 	const onSwipeRight = (): void => {
-		navigation.navigate('Tabs');
+		navigation.navigate('Wallet');
 	};
 
 	return (
@@ -39,7 +39,7 @@ const WidgetsSuggetsions = ({
 			<NavigationHeader
 				title="Add Widget"
 				onClosePress={(): void => {
-					navigation.navigate('Tabs');
+					navigation.navigate('Wallet');
 				}}
 			/>
 			<DetectSwipe onSwipeRight={onSwipeRight}>

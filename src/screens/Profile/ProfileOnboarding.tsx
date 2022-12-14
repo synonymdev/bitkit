@@ -113,7 +113,7 @@ export const Layout = memo(
 	}): JSX.Element => {
 		const { isSmallScreen } = useScreenSize();
 		const onSwipeLeft = (): void => {
-			navigation.navigate('Tabs');
+			navigation.navigate('Wallet');
 		};
 
 		const imageContainerStyles = useMemo(
@@ -131,7 +131,7 @@ export const Layout = memo(
 					title={header}
 					displayBackButton={backButton}
 					onClosePress={(): void => {
-						navigation.navigate('Tabs');
+						navigation.navigate('Wallet');
 					}}
 				/>
 				<DetectSwipe onSwipeLeft={onSwipeLeft}>

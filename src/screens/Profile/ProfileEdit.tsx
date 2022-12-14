@@ -114,7 +114,7 @@ export const ProfileEdit = ({
 				style={styles.header}
 				title={onboardedProfile ? 'Profile' : 'Create Profile'}
 				onClosePress={(): void => {
-					navigation.navigate(onboardedProfile ? 'Profile' : 'Tabs');
+					navigation.navigate(onboardedProfile ? 'Profile' : 'Wallet');
 				}}
 			/>
 			<KeyboardAvoidingView behavior="padding" style={styles.content}>

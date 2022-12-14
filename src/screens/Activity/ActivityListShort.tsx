@@ -90,7 +90,7 @@ const ActivityList = (): ReactElement => {
 						size="large"
 						variant="transparent"
 						onPress={(): void => {
-							navigation.navigate('ActivityFiltered');
+							navigation.navigate('Wallet', { screen: 'ActivityFiltered' });
 						}}
 					/>
 				</>

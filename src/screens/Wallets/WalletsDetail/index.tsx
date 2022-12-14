@@ -41,7 +41,7 @@ import { updateSettings } from '../../../store/actions/settings';
 import BitcoinLogo from '../../../assets/bitcoin-logo.svg';
 import { capitalize } from '../../../utils/helpers';
 import DetectSwipe from '../../../components/DetectSwipe';
-import type { TabScreenProps } from '../../../navigation/types';
+import type { WalletScreenProps } from '../../../navigation/types';
 import { IColors } from '../../../styles/colors';
 
 const updateHeight = ({
@@ -82,7 +82,7 @@ const Glow = ({ colors }: GlowProps): ReactElement => {
 
 const WalletsDetail = ({
 	route,
-}: TabScreenProps<'WalletsDetail'>): ReactElement => {
+}: WalletScreenProps<'WalletsDetail'>): ReactElement => {
 	const { assetType } = route.params;
 	const { satoshis } = useBalance({ onchain: true, lightning: true });
 	const bitcoinUnit = useSelector((store: Store) => store.settings.bitcoinUnit);

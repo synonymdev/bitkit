@@ -164,12 +164,12 @@ export const WidgetFeedEdit = ({
 			} as IWidget['feed']);
 		}
 
-		navigation.navigate('Tabs');
+		navigation.navigate('Wallet');
 	};
 
 	const onDelete = (): void => {
 		deleteWidget(url);
-		navigation.navigate('Tabs');
+		navigation.navigate('Wallet');
 	};
 
 	const headerTitle = savedSelectedField ? 'Change Widget Feed' : 'Widget Feed';
@@ -190,7 +190,7 @@ export const WidgetFeedEdit = ({
 			<NavigationHeader
 				title={headerTitle}
 				onClosePress={(): void => {
-					navigation.navigate('Tabs');
+					navigation.navigate('Wallet');
 				}}
 			/>
 

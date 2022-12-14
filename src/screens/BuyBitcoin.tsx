@@ -20,7 +20,7 @@ const BuyBitcoin = ({
 			<SafeAreaInsets type="top" />
 			<NavigationHeader
 				onClosePress={(): void => {
-					navigation.navigate('Tabs');
+					navigation.navigate('Wallet');
 				}}
 			/>
 			<View style={styles.content}>

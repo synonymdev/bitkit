@@ -84,7 +84,7 @@ const ChangePin = ({
 			<NavigationHeader
 				title="Change PIN"
 				onClosePress={(): void => {
-					navigation.navigate('Tabs');
+					navigation.navigate('Wallet');
 				}}
 			/>
 

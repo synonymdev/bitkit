@@ -1,7 +1,6 @@
 import React, { memo, ReactElement, useCallback, useEffect } from 'react';
 import { LayoutAnimation, StyleSheet } from 'react-native';
 import { useSelector } from 'react-redux';
-import { StackScreenProps } from '@react-navigation/stack';
 
 import { Text } from '../../styles/components';
 import {
@@ -28,16 +27,13 @@ import useDisplayValues from '../../hooks/displayValues';
 import { hasEnabledAuthentication } from '../../utils/settings';
 import NavigationHeader from '../../components/NavigationHeader';
 import SafeAreaView from '../../components/SafeAreaView';
-import { RootStackParamList } from '../../navigation/types';
 import { refreshWallet } from '../../utils/wallet';
 import {
 	selectedNetworkSelector,
 	selectedWalletSelector,
 } from '../../store/reselect/wallet';
 
-type Props = StackScreenProps<RootStackParamList, 'BlocktankPayment'>;
-
-const BlocktankPayment = (props: Props): ReactElement => {
+const BlocktankPayment = (props): ReactElement => {
 	const { navigation, route } = props;
 	const { order } = route.params;
 

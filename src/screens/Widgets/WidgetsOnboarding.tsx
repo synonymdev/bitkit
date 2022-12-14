@@ -79,7 +79,7 @@ export const Layout = ({
 	onNext?;
 }): JSX.Element => {
 	const onSwipeRight = (): void => {
-		navigation.getParent()?.navigate('Tabs');
+		navigation.getParent()?.navigate('Wallet');
 	};
 
 	return (
@@ -89,7 +89,7 @@ export const Layout = ({
 				title={header}
 				displayBackButton={backButton}
 				onClosePress={(): void => {
-					navigation.navigate('Tabs');
+					navigation.navigate('Wallet');
 				}}
 			/>
 			<DetectSwipe onSwipeRight={onSwipeRight}>

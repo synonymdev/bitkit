@@ -24,7 +24,7 @@ const ResetAndRestore = ({
 			<NavigationHeader
 				title="Reset And Restore"
 				onClosePress={(): void => {
-					navigation.navigate('Tabs');
+					navigation.navigate('Wallet');
 				}}
 			/>
 			<View style={styles.container}>

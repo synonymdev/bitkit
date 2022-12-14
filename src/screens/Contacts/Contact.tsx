@@ -120,7 +120,7 @@ export const Contact = ({
 					navigation.navigate('Contacts');
 				}}
 				onClosePress={(): void => {
-					navigation.navigate('Tabs');
+					navigation.navigate('Wallet');
 				}}
 			/>
 			<View style={styles.content}>

@@ -43,7 +43,7 @@ const DisablePin = ({
 			<NavigationHeader
 				title="Disable PIN"
 				onClosePress={(): void => {
-					navigation.navigate('Tabs');
+					navigation.navigate('Wallet');
 				}}
 			/>
 

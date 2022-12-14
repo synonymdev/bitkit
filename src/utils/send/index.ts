@@ -76,7 +76,7 @@ export const readClipboardInvoice = async ({
 			});
 		}
 
-		navigate('Tabs');
+		navigate('Wallet');
 		toggleView({
 			view: 'sendNavigation',
 			data: { isOpen: true },
