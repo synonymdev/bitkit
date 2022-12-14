@@ -18,9 +18,6 @@ import Store from '../../store/types';
 import { refreshWallet } from '../../utils/wallet';
 import ActivityListShort from '../../screens/Activity/ActivityListShort';
 import EmptyWallet from '../../screens/Activity/EmptyWallet';
-import BackupPrompt from '../../screens/Settings/Backup/BackupPrompt';
-import HighBalanceWarning from '../../navigation/bottom-sheet/HighBalanceWarning';
-import AppUpdatePrompt from '../../navigation/bottom-sheet/AppUpdatePrompt';
 import DetectSwipe from '../../components/DetectSwipe';
 import BalanceHeader from '../../components/BalanceHeader';
 import Suggestions from '../../components/Suggestions';
@@ -34,10 +31,11 @@ import type { WalletScreenProps } from '../../navigation/types';
 
 const Wallets = ({
 	navigation,
+	route,
 }: WalletScreenProps<'Wallets'>): ReactElement => {
+	const { onFocus } = route.params;
 	const [refreshing, setRefreshing] = useState(false);
 	const [scrollEnabled, setScrollEnabled] = useState(true);
-	const [isFocused, setIsFocused] = useState(false);
 	const colors = useColors();
 	const hideBalance = useSelector((state: Store) => state.settings.hideBalance);
 	const hideOnboardingSetting = useSelector(
@@ -49,14 +47,12 @@ const Wallets = ({
 		return noTransactions && Object.values(widgets).length === 0;
 	}, [noTransactions, widgets]);
 
+	// tell WalletNavigator that this screen is focused
 	useFocusEffect(
 		useCallback(() => {
-			setIsFocused(true);
-
-			return (): void => {
-				setIsFocused(false);
-			};
-		}, []),
+			onFocus(true);
+			return (): void => onFocus(false);
+		}, [onFocus]),
 	);
 
 	const toggleHideBalance = (): void => {
@@ -128,14 +124,6 @@ const Wallets = ({
 					)}
 				</ScrollView>
 			</DetectSwipe>
-
-			{isFocused && (
-				<>
-					<BackupPrompt />
-					<HighBalanceWarning />
-					<AppUpdatePrompt />
-				</>
-			)}
 		</SafeAreaView>
 	);
 };
