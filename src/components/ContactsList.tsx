@@ -76,7 +76,7 @@ const ContactsList = ({
 	stickySectionHeadersEnabled?: boolean;
 	bottomSheet?: boolean;
 }): ReactElement => {
-	const contacts = useSlashtags().contacts;
+	const contacts = useSlashtags().contacts as { [url: string]: IContactRecord };
 	const { url: myProfileURL } = useSelectedSlashtag();
 
 	const filteredContacts = useMemo(() => {
@@ -142,7 +142,7 @@ const ContactsList = ({
 
 	return (
 		<List
-			sections={sectionedContacts as any}
+			sections={sectionedContacts}
 			keyExtractor={(item: IContactRecord): string => item.url}
 			ListEmptyComponent={Empty}
 			renderSectionHeader={renderSectionHeader}

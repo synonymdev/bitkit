@@ -31,7 +31,7 @@ export const RAWS = RAWSFactory({
 
 export interface ISlashtagsContext {
 	sdk: SDK;
-	contacts: { [url: string]: IContactRecord };
+	contacts: { [url: string]: IContactRecord | undefined };
 }
 
 const SlashtagsContext = createContext<ISlashtagsContext>({
@@ -225,8 +225,9 @@ export const SlashtagsProvider = ({ children }): JSX.Element => {
 
 export const useSlashtagsSDK = (): SDK => useContext(SlashtagsContext).sdk;
 
-export const useSlashtags = (): ISlashtagsContext =>
-	useContext(SlashtagsContext);
+export const useSlashtags = (): ISlashtagsContext => {
+	return useContext(SlashtagsContext);
+};
 
 let exportedSDK: SDK | undefined;
 export { exportedSDK as sdk };

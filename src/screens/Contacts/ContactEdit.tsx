@@ -24,6 +24,7 @@ export const ContactEdit = ({
 	const { slashtag } = useSelectedSlashtag();
 	const contact = useProfile(url);
 	const { keyboardShown } = useKeyboard();
+	const [form, setForm] = useState<BasicProfile>(saved || {});
 
 	const buttonContainerStyles = useMemo(
 		() => ({
@@ -33,8 +34,6 @@ export const ContactEdit = ({
 		}),
 		[keyboardShown],
 	);
-
-	const [form, setForm] = useState<BasicProfile>(saved);
 
 	const profile = useMemo(
 		() => ({
