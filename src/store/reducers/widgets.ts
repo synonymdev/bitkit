@@ -4,10 +4,10 @@ import { defaultWidgetsShape } from '../shapes/widgets';
 import { IWidgets } from '../types/widgets';
 
 const slashtags = (state: IWidgets = defaultWidgetsShape, action): IWidgets => {
-	const existing = state.widgets[action?.payload?.url] || {};
-
 	switch (action.type) {
-		case actions.SET_SLASHTAGS_AUTH_WIDGET:
+		case actions.SET_SLASHTAGS_AUTH_WIDGET: {
+			const existing = state.widgets[action.payload.url] || { feed: {} };
+
 			return {
 				...state,
 				widgets: {
@@ -19,8 +19,11 @@ const slashtags = (state: IWidgets = defaultWidgetsShape, action): IWidgets => {
 				},
 				sortOrder: [...state.sortOrder, action.payload.url],
 			};
+		}
 
-		case actions.SET_SLASHTAGS_FEED_WIDGET:
+		case actions.SET_SLASHTAGS_FEED_WIDGET: {
+			const existing = state.widgets[action.payload.url] || { feed: {} };
+
 			return {
 				...state,
 				widgets: {
@@ -35,6 +38,7 @@ const slashtags = (state: IWidgets = defaultWidgetsShape, action): IWidgets => {
 				},
 				sortOrder: [...state.sortOrder, action.payload.url],
 			};
+		}
 
 		case actions.DELETE_SLASHTAGS_WIDGET: {
 			const widgets = removeKeysFromObject(state.widgets, action.payload.url);
@@ -47,23 +51,27 @@ const slashtags = (state: IWidgets = defaultWidgetsShape, action): IWidgets => {
 			};
 		}
 
-		case actions.SET_WIDGETS_ONBAORDING:
+		case actions.SET_WIDGETS_ONBAORDING: {
 			return {
 				...state,
 				onboardedWidgets: action.payload.onboardedWidgets,
 			};
+		}
 
-		case actions.SET_WIDGETS_SORT_ORDER:
+		case actions.SET_WIDGETS_SORT_ORDER: {
 			return {
 				...state,
 				sortOrder: action.payload.sortOrder,
 			};
+		}
 
-		case actions.RESET_WIDGETS_STORE:
+		case actions.RESET_WIDGETS_STORE: {
 			return defaultWidgetsShape;
+		}
 
-		default:
+		default: {
 			return state;
+		}
 	}
 };
 

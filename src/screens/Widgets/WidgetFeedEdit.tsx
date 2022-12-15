@@ -40,6 +40,8 @@ import FeedWidget from '../../components/FeedWidget';
 import type { RootStackScreenProps } from '../../navigation/types';
 import FactsWidget from '../../components/FactsWidget';
 
+type Config = Partial<SlashFeedJSON> & { icon?: string };
+
 export const WidgetFeedEdit = ({
 	navigation,
 	route,
@@ -47,25 +49,18 @@ export const WidgetFeedEdit = ({
 	const { url } = route.params;
 	const sdk = useSlashtagsSDK();
 
-	const savedWidget: IWidget | undefined = useSelector((state: Store) => {
+	const savedWidget = useSelector((state: Store) => {
 		return state.widgets.widgets[url];
 	});
 
 	const savedSelectedField = useMemo(() => {
-		return savedWidget?.feed?.field?.name;
+		return savedWidget?.feed.field?.name;
 	}, [savedWidget]);
 
 	const [fields, setFields] = useState<{ [label: string]: string }>({});
 	const [isLoading, setIsLoading] = useState(false);
-	const [config, setConfig] = useState<
-		Partial<SlashFeedJSON> & { icon?: string }
-	>(savedWidget?.feed);
-
+	const [config, setConfig] = useState<Config | undefined>(savedWidget?.feed);
 	const [selectedField, setSelectedField] = useState(savedSelectedField);
-
-	const resolving = useMemo(() => {
-		return !config && !savedWidget;
-	}, [config, savedWidget]);
 
 	useEffect(() => {
 		let unmounted = false;
@@ -117,7 +112,7 @@ export const WidgetFeedEdit = ({
 							.catch(noop);
 					});
 
-					if (!savedWidget) {
+					if (!savedWidget && _config.fields[0]) {
 						// pre-select first option
 						setSelectedField(_config.fields[0].name);
 					}
@@ -136,7 +131,7 @@ export const WidgetFeedEdit = ({
 		async function saveConfig(_config: SlashFeedJSON): Promise<void> {
 			let icon = _config.icons['32'] || Object.values(_config.icons)[0];
 
-			if (icon.startsWith('/')) {
+			if (icon?.startsWith('/')) {
 				icon = await readAsDataURL(drive, icon);
 			}
 
@@ -180,7 +175,7 @@ export const WidgetFeedEdit = ({
 			description: config.description ?? '',
 			icon: config.icon ?? '',
 			type: config.type ?? '',
-			field: config.fields.find((f) => f.name === selectedField)!,
+			field: config.fields?.find((f) => f.name === selectedField)!,
 		},
 	};
 
@@ -194,7 +189,7 @@ export const WidgetFeedEdit = ({
 				}}
 			/>
 
-			{resolving ? (
+			{!config ? (
 				<HourglassSpinner />
 			) : (
 				<View style={styles.content}>

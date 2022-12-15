@@ -24,7 +24,7 @@ export interface IWidget {
 }
 
 export interface IWidgets {
-	widgets: { [url: string]: IWidget };
+	widgets: { [url: string]: IWidget | undefined };
 	onboardedWidgets: boolean;
 	sortOrder: Array<string>;
 }
