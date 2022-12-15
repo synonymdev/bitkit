@@ -34,7 +34,7 @@ export const ContactEdit = ({
 		[keyboardShown],
 	);
 
-	const [form, setForm] = useState<BasicProfile>(saved);
+	const [form, setForm] = useState<BasicProfile | undefined>(saved);
 
 	const profile = useMemo(
 		() => ({
@@ -100,7 +100,7 @@ export const ContactEdit = ({
 						text="Save"
 						size="large"
 						style={styles.button}
-						disabled={form.name?.length === 0}
+						disabled={(profile?.name ?? '').length === 0}
 						onPress={onSaveContact}
 					/>
 				</View>
