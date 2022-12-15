@@ -11,7 +11,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Lottie from 'lottie-react-native';
 
-import { Caption13Up, Text02M, ClockIcon } from '../../styles/components';
+import { Text02M, ClockIcon } from '../../styles/components';
 import BottomSheetWrapper from '../../components/BottomSheetWrapper';
 import Glow from '../../components/Glow';
 import AmountToggle from '../../components/AmountToggle';
@@ -80,24 +80,20 @@ const NewTxPrompt = (): ReactElement => {
 			snapPoints={snapPoints}
 			backdrop={true}>
 			<View style={styles.container}>
-				<Lottie
-					ref={animationRef}
-					style={styles.confetti}
-					source={confettiSrc}
-					autoPlay
-					loop
-				/>
+				<View style={styles.confetti} pointerEvents="none">
+					<Lottie ref={animationRef} source={confettiSrc} autoPlay loop />
+				</View>
 				<View>
 					<BottomSheetNavigationHeader
 						title="Payment Received!"
 						displayBackButton={false}
 					/>
-					<Caption13Up style={styles.received} color="gray1">
-						You just received
-					</Caption13Up>
-
 					{activityItem && (
-						<AmountToggle sats={activityItem.value} onPress={handlePress} />
+						<AmountToggle
+							sats={activityItem.value}
+							reverse={true}
+							onPress={handlePress}
+						/>
 					)}
 				</View>
 
@@ -133,12 +129,8 @@ const styles = StyleSheet.create({
 		justifyContent: 'space-between',
 	},
 	confetti: {
-		height: '100%',
-		position: 'absolute',
-	},
-	received: {
-		marginTop: 28,
-		marginBottom: 8,
+		...StyleSheet.absoluteFillObject,
+		zIndex: 1,
 	},
 	imageContainer: {
 		alignSelf: 'center',

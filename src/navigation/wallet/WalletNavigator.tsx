@@ -2,6 +2,7 @@ import React, { ReactElement, useState } from 'react';
 import {
 	createStackNavigator,
 	StackNavigationOptions,
+	StackNavigationProp,
 	TransitionPresets,
 } from '@react-navigation/stack';
 
@@ -22,6 +23,8 @@ export type WalletStackParamList = {
 	WalletsDetail: { assetType: TAssetType };
 	ActivityFiltered: undefined;
 };
+
+export type WalletNavigationProp = StackNavigationProp<WalletStackParamList>;
 
 const Stack = createStackNavigator<WalletStackParamList>();
 const navOptions: StackNavigationOptions = { headerShown: false };

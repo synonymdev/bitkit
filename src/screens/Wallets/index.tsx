@@ -112,7 +112,7 @@ const Wallets = ({
 							<Suggestions />
 							<View style={styles.content}>
 								<ConnectivityIndicator />
-								<Assets navigation={navigation} />
+								<Assets />
 								<Widgets
 									onEditStart={handleWidgetsEditStart}
 									onEditEnd={handleWidgetsEditEnd}

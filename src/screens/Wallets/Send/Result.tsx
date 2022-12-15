@@ -80,13 +80,9 @@ const Result = ({
 		<GradientView style={styles.container}>
 			<>
 				{success && (
-					<Lottie
-						ref={animationRef}
-						style={styles.confetti}
-						source={confettiSrc}
-						autoPlay
-						loop
-					/>
+					<View style={styles.confetti} pointerEvents="none">
+						<Lottie ref={animationRef} source={confettiSrc} autoPlay loop />
+					</View>
 				)}
 			</>
 
@@ -143,8 +139,8 @@ const styles = StyleSheet.create({
 		flex: 1,
 	},
 	confetti: {
-		position: 'absolute',
-		height: '100%',
+		...StyleSheet.absoluteFillObject,
+		zIndex: 1,
 	},
 	error: {
 		marginHorizontal: 32,

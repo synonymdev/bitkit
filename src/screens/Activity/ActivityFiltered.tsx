@@ -17,6 +17,7 @@ import FilterAccessory from '../../components/FilterAccessory';
 import Tag from '../../components/Tag';
 import useColors from '../../hooks/colors';
 import { EPaymentType } from '../../store/types/wallet';
+import type { WalletScreenProps } from '../../navigation/types';
 
 const Tab = ({
 	text,
@@ -56,7 +57,9 @@ const filterTabsLabels = {
 	instant: 'Instant',
 };
 
-const ActivityFiltered = (): ReactElement => {
+const ActivityFiltered = ({
+	navigation,
+}: WalletScreenProps<'ActivityFiltered'>): ReactElement => {
 	const [tab, setTab] = useState<string>('all');
 	const [search, setSearch] = useState<string>('');
 	const [tags, setTags] = useState<Array<string>>([]);
@@ -95,7 +98,10 @@ const ActivityFiltered = (): ReactElement => {
 					}}>
 					<BlurView>
 						<SafeAreaInsets type="top" />
-						<NavigationHeader title="All Activity" />
+						<NavigationHeader
+							title="All Activity"
+							onClosePress={navigation.popToTop}
+						/>
 						<View style={styles.formContainer}>
 							<SearchInput
 								style={styles.searchInput}

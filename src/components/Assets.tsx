@@ -1,11 +1,14 @@
 import React, { memo, ReactElement } from 'react';
 import { StyleSheet } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 import { BitcoinCircleIcon, Subtitle } from '../styles/components';
 import { useBalance } from '../hooks/wallet';
 import AssetCard from './AssetCard';
+import type { WalletNavigationProp } from '../navigation/wallet/WalletNavigator';
 
-const Assets = ({ navigation }): ReactElement => {
+const Assets = (): ReactElement => {
+	const navigation = useNavigation<WalletNavigationProp>();
 	const { satoshis } = useBalance({ onchain: true, lightning: true });
 
 	return (
