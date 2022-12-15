@@ -77,8 +77,8 @@ const App = (): ReactElement => {
 			<SafeAreaProvider>
 				<StatusBar />
 				<RootComponent />
+				<Toast config={toastConfig} />
 			</SafeAreaProvider>
-			<Toast config={toastConfig} />
 		</ThemeProvider>
 	);
 };

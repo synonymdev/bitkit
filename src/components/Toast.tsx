@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import React, { ReactElement, useMemo } from 'react';
 import { StyleSheet, useWindowDimensions } from 'react-native';
 import { ToastConfig, ToastConfigParams } from 'react-native-toast-message';
 
@@ -6,6 +6,7 @@ import colors from '../styles/colors';
 import { Text01M, Text13S } from '../styles/components';
 import HorizontalGradient from '../components/HorizontalGradient';
 import BlurView from '../components/BlurView';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const Toast = ({
 	type,
@@ -13,6 +14,16 @@ const Toast = ({
 	text2,
 }: ToastConfigParams<any>): ReactElement => {
 	const dimensions = useWindowDimensions();
+
+	const insets = useSafeAreaInsets();
+	const containerStyles = useMemo(
+		() => ({
+			...styles.container,
+			// fix Toast overlapping with iPhone 14 Dynamic Island
+			...(insets.top > 47 ? { margin: 14 } : {}),
+		}),
+		[insets.bottom],
+	);
 
 	let titleColor = 'white';
 	let gradientColor = colors.black;
@@ -33,7 +44,7 @@ const Toast = ({
 	}
 
 	return (
-		<BlurView style={[{ width: dimensions.width - 16 * 2 }, styles.container]}>
+		<BlurView style={[{ width: dimensions.width - 16 * 2 }, containerStyles]}>
 			<HorizontalGradient style={styles.gradient} color={gradientColor} />
 			<Text01M color={titleColor}>{text1}</Text01M>
 			<Text13S style={styles.description} color="gray1">
