@@ -1,4 +1,5 @@
 import React, { ReactElement, useCallback, useMemo, memo } from 'react';
+import { Platform } from 'react-native';
 import { useSelector } from 'react-redux';
 import { createNavigationContainerRef } from '@react-navigation/native';
 import {
@@ -101,7 +102,7 @@ const RootNavigator = (): ReactElement => {
 				// adding this because we are using @react-navigation/stack instead of
 				// @react-navigation/native-stack header
 				// https://github.com/react-navigation/react-navigation/issues/9015#issuecomment-828700138
-				detachInactiveScreens={false}
+				detachInactiveScreens={Platform.OS !== 'ios'}
 				initialRouteName={initialRouteName}>
 				<Stack.Group screenOptions={navOptions}>
 					<Stack.Screen name="RootAuthCheck" component={AuthCheckComponent} />
