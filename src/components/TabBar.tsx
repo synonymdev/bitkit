@@ -93,6 +93,8 @@ const styles = StyleSheet.create({
 		height: 80,
 		flexDirection: 'row',
 		alignItems: 'center',
+		// fix TabBar zIndex on Android
+		zIndex: 0,
 	},
 	blurContainer: {
 		height: 56,

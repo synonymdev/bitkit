@@ -26,7 +26,7 @@ const BlocksFeedURL =
 const BitcoinFactsURL =
 	'slashfeed:53egeirg88ghrg9ssjqf6136dqra3ixdbsikx3rhaarrpjbox8oy#encryptionKey=5da9xnmn6wboyiu3zihzr9k3tc11t5p4d9ypaimuwk7sbo3k7u5o';
 
-const WidgetsSuggetsions = ({
+const WidgetsSuggestions = ({
 	navigation,
 }: WidgetsScreenProps<'WidgetsSuggestions'>): ReactElement => {
 	const onSwipeRight = (): void => {
@@ -139,4 +139,4 @@ const styles = StyleSheet.create({
 	},
 });
 
-export default WidgetsSuggetsions;
+export default WidgetsSuggestions;

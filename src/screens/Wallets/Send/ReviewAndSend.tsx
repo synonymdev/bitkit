@@ -392,6 +392,7 @@ const ReviewAndSend = ({
 		};
 
 		if (pin && pinForPayments) {
+			setIsLoading(false);
 			navigation.navigate('AuthCheck', {
 				onSuccess: () => {
 					navigation.pop();
