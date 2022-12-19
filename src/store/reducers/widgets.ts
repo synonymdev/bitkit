@@ -6,7 +6,7 @@ import { IWidgets } from '../types/widgets';
 const slashtags = (state: IWidgets = defaultWidgetsShape, action): IWidgets => {
 	switch (action.type) {
 		case actions.SET_SLASHTAGS_AUTH_WIDGET: {
-			const existing = state.widgets[action.payload.url] || { feed: {} };
+			const existing = state.widgets[action.payload.url] || {};
 
 			return {
 				...state,
