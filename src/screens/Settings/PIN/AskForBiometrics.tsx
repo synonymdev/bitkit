@@ -22,9 +22,9 @@ import GradientView from '../../../components/GradientView';
 import GlowImage from '../../../components/GlowImage';
 import Button from '../../../components/Button';
 import Glow from '../../../components/Glow';
-import { toggleBiometrics } from '../../../utils/settings';
 import { IsSensorAvailableResult } from '../../../components/Biometrics';
 import { showErrorNotification } from '../../../utils/notifications';
+import { updateSettings } from '../../../store/actions/settings';
 import type { PinScreenProps } from '../../../navigation/types';
 
 const imageSrc = require('../../../assets/illustrations/cog.png');
@@ -38,8 +38,12 @@ const AskForBiometrics = ({
 	navigation,
 }: PinScreenProps<'AskForBiometrics'>): ReactElement => {
 	const insets = useSafeAreaInsets();
-	const [enabled, setEnabled] = useState<boolean>(false);
 	const [biometryData, setBiometricData] = useState<IsSensorAvailableResult>();
+	const [shouldEnableBiometrics, setShouldEnableBiometrics] = useState(false);
+
+	useEffect(() => {
+		rnBiometrics.isSensorAvailable().then((data) => setBiometricData(data));
+	}, []);
 
 	const buttonContainerStyles = useMemo(
 		() => ({
@@ -49,44 +53,9 @@ const AskForBiometrics = ({
 		[insets.bottom],
 	);
 
-	useEffect(() => {
-		rnBiometrics.isSensorAvailable().then((data) => setBiometricData(data));
-	}, []);
-
-	const buttonText = useMemo(
-		() => (biometryData?.available === false ? 'Skip' : 'Continue'),
-		[biometryData?.available],
-	);
-
-	const handleOnBack = (): void => {
-		navigation.goBack();
-	};
-
-	const handleButtonPress = useCallback((): void => {
-		if (biometryData?.available === false || !enabled) {
-			navigation.navigate('Result', { bio: false });
-			return;
-		}
-
-		rnBiometrics
-			.simplePrompt({ promptMessage: 'Bitkit' })
-			.then(({ success }) => {
-				if (!success) {
-					showErrorNotification({
-						title: 'Biometrics Failed',
-						message: 'Something went wrong.',
-					});
-				}
-				toggleBiometrics(true);
-				navigation.navigate('Result', { bio: true });
-			})
-			.catch(() => {
-				showErrorNotification({
-					title: 'Biometrics Failed',
-					message: 'Something went wrong.',
-				});
-			});
-	}, [biometryData?.available, enabled, navigation]);
+	const buttonText = useMemo(() => {
+		return !biometryData?.available ? 'Skip' : 'Continue';
+	}, [biometryData?.available]);
 
 	const typeName = useMemo(
 		() =>
@@ -97,6 +66,32 @@ const AskForBiometrics = ({
 				: biometryData?.biometryType ?? 'Biometrics',
 		[biometryData?.biometryType],
 	);
+
+	const handleOnBack = (): void => {
+		navigation.goBack();
+	};
+
+	const handleButtonPress = useCallback((): void => {
+		if (!biometryData?.available || !shouldEnableBiometrics) {
+			navigation.navigate('Result', { bio: false });
+			return;
+		}
+
+		rnBiometrics
+			.simplePrompt({ promptMessage: `Confirm ${typeName}` })
+			.then(({ success }) => {
+				if (success) {
+					updateSettings({ biometrics: true });
+					navigation.navigate('Result', { bio: true });
+				}
+			})
+			.catch(() => {
+				showErrorNotification({
+					title: 'Biometrics Setup Failed',
+					message: "Bitkit wasn't able to setup biometrics for your device.",
+				});
+			});
+	}, [biometryData?.available, shouldEnableBiometrics, typeName, navigation]);
 
 	return (
 		<GradientView style={styles.container}>
@@ -136,8 +131,8 @@ const AskForBiometrics = ({
 						<View style={styles.switchContainer}>
 							<Text01M>Use {typeName}</Text01M>
 							<Switch
-								onValueChange={(): void => setEnabled((e) => !e)}
-								value={enabled}
+								onValueChange={(): void => setShouldEnableBiometrics((e) => !e)}
+								value={shouldEnableBiometrics}
 							/>
 						</View>
 					</>

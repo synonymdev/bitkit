@@ -30,35 +30,17 @@ export const editPin = async (newPin: string): Promise<void> => {
  */
 export const removePin = async (): Promise<void> => {
 	await Promise.all([
-		updateSettings({ pin: false }),
+		// reset to defaults
+		updateSettings({
+			pin: false,
+			pinOnLaunch: true,
+			pinForPayments: false,
+			biometrics: false,
+		}),
 		setKeychainValue({ key: 'pinAttemptsRemaining', value: PIN_ATTEMPTS }),
 		resetKeychainValue({ key: 'pin' }),
 		removeTodo('pin'),
 	]);
-};
-
-/**
- * Toggles biometric authentication.
- * @param {boolean} [biometrics]
- */
-export const toggleBiometrics = (
-	biometrics: boolean | undefined = undefined,
-): void => {
-	try {
-		const settings = getSettingsStore();
-		const currentBiometrics = settings.biometrics;
-		if (biometrics === undefined) {
-			updateSettings({
-				biometrics: !currentBiometrics,
-			});
-			return;
-		}
-		if (biometrics !== currentBiometrics) {
-			updateSettings({
-				biometrics: !settings.biometrics,
-			});
-		}
-	} catch {}
 };
 
 /**

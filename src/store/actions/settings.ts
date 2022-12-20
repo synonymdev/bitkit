@@ -9,13 +9,13 @@ import { resetKeychainValue } from '../../utils/helpers';
 import { wipeLdkStorage } from '../../utils/lightning';
 import { removePin } from '../../utils/settings';
 import { TAvailableNetworks } from '../../utils/networks';
-import { ICustomElectrumPeer } from '../types/settings';
+import { ICustomElectrumPeer, ISettings } from '../types/settings';
 import { showSuccessNotification } from '../../utils/notifications';
 import { TWalletName } from '../types/wallet';
 
 const dispatch = getDispatch();
 
-export const updateSettings = (payload): Result<string> => {
+export const updateSettings = (payload: Partial<ISettings>): Result<string> => {
 	dispatch({
 		type: actions.UPDATE_SETTINGS,
 		payload,
@@ -27,9 +27,7 @@ export const updateSettings = (payload): Result<string> => {
  * This resets the settings store to defaultSettingsShape
  */
 export const resetSettingsStore = (): Result<string> => {
-	dispatch({
-		type: actions.RESET_SETTINGS_STORE,
-	});
+	dispatch({ type: actions.RESET_SETTINGS_STORE });
 	return ok('');
 };
 

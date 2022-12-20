@@ -6,7 +6,6 @@ import rnBiometrics from 'react-native-biometrics';
 import { View as ThemedView } from '../../../styles/components';
 import Store from '../../../store/types';
 import { IListData } from '../../../components/List';
-import { toggleBiometrics } from '../../../utils/settings';
 import { IsSensorAvailableResult } from '../../../components/Biometrics';
 import { toggleView } from '../../../store/actions/ui';
 import { updateSettings } from '../../../store/actions/settings';
@@ -131,7 +130,7 @@ const SecuritySettings = ({
 							navigation.navigate('AuthCheck', {
 								onSuccess: () => {
 									navigation.pop();
-									toggleBiometrics();
+									updateSettings({ biometrics: !biometrics });
 								},
 							});
 						},

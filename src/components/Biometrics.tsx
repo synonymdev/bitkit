@@ -5,8 +5,8 @@ import React, {
 	useEffect,
 	useState,
 } from 'react';
-import { StyleSheet } from 'react-native';
-import ReactNativeBiometrics from 'react-native-biometrics';
+import { StyleProp, StyleSheet, ViewStyle } from 'react-native';
+import rnBiometrics from 'react-native-biometrics';
 
 import {
 	Subtitle,
@@ -15,10 +15,8 @@ import {
 	View,
 	TouchableOpacity,
 } from '../styles/components';
+import { updateSettings } from '../store/actions/settings';
 import { vibrate } from '../utils/helpers';
-import { toggleBiometrics } from '../utils/settings';
-
-const rnBiometrics = ReactNativeBiometrics;
 
 const getIcon = ({
 	biometryData,
@@ -51,20 +49,18 @@ export interface IsSensorAvailableResult {
 }
 
 interface BiometricsComponent {
-	onSuccess: Function;
-	onFailure?: Function;
-	style?: object;
+	onSuccess: () => void;
+	onFailure?: () => void;
+	style?: StyleProp<ViewStyle>;
 	children?: ReactElement;
 }
 const Biometrics = ({
-	onSuccess = (): null => null,
-	onFailure = (): null => null,
-	style = {},
-	children = <></>,
+	onSuccess,
+	onFailure,
+	style,
+	children,
 }: BiometricsComponent): ReactElement => {
-	const [biometryData, setBiometricData] = useState<
-		IsSensorAvailableResult | undefined
-	>(undefined);
+	const [biometryData, setBiometricData] = useState<IsSensorAvailableResult>();
 
 	useEffect(() => {
 		(async (): Promise<void> => {
@@ -96,7 +92,7 @@ const Biometrics = ({
 	}, [biometryData?.available, biometryData?.biometryType]);
 
 	const authenticate = useCallback(
-		(promptMessage: string | undefined = undefined): void => {
+		(promptMessage?: string): void => {
 			try {
 				if (!promptMessage) {
 					const biotmetryType = biometryData?.biometryType;
@@ -108,16 +104,16 @@ const Biometrics = ({
 					})
 					.then(({ success }) => {
 						if (success) {
-							toggleBiometrics(true);
+							updateSettings({ biometrics: true });
 							onSuccess();
 						} else {
 							vibrate({});
-							onFailure();
+							onFailure?.();
 						}
 					})
 					.catch(() => {
 						console.log('biometrics failed');
-						onFailure();
+						onFailure?.();
 					});
 			} catch {}
 		},
