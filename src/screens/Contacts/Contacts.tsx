@@ -17,16 +17,20 @@ import { useSelectedSlashtag } from '../../hooks/slashtags';
 import { RootStackScreenProps } from '../../navigation/types';
 import AddContact from './AddContact';
 import { onboardedContactsSelector } from '../../store/reselect/slashtags';
+import { useSlashtags } from '../../components/SlashtagsProvider';
+import { IContactRecord } from '../../store/types/slashtags';
 
 export const Contacts = (
 	props: RootStackScreenProps<'Contacts'>,
 ): JSX.Element => {
-	const onboardedContacts = useSelector(onboardedContactsSelector);
+	const onboarded = useSelector(onboardedContactsSelector);
+	const contacts = useSlashtags().contacts as { [url: string]: IContactRecord };
+	const showOnboarding = !onboarded && Object.keys(contacts).length === 0;
 
-	return onboardedContacts ? (
-		<ContactsScreen {...props} />
-	) : (
+	return showOnboarding ? (
 		<ContactsOnboarding {...props} />
+	) : (
+		<ContactsScreen {...props} />
 	);
 };
 
