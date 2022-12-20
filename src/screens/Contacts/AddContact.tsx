@@ -65,6 +65,10 @@ const AddContact = ({
 		updateContactID(url);
 	};
 
+	const navigateToScanner = (): void => {
+		navigation.navigate('Scanner');
+	};
+
 	return (
 		<BottomSheetWrapper
 			view="addContactModal"
@@ -86,10 +90,7 @@ const AddContact = ({
 						placeholder="Paste a key"
 						multiline={true}
 						onChange={updateContactID}>
-						<TouchableOpacity
-							onPress={(): void => {
-								navigation.navigate('Scanner');
-							}}>
+						<TouchableOpacity onPress={navigateToScanner}>
 							<CornersOutIcon width={24} height={24} color="brand" />
 						</TouchableOpacity>
 						<TouchableOpacity onPress={pasteAddContact}>

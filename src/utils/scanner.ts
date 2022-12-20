@@ -591,6 +591,10 @@ export const handleData = async ({
 	switch (qrDataType) {
 		case EQRDataType.slashtagURL: {
 			handleSlashtagURL(data.url as string);
+			toggleView({
+				view: 'addContactModal',
+				data: { isOpen: false },
+			});
 			return ok(EQRDataType.slashtagURL);
 		}
 		case EQRDataType.slashFeedURL: {
