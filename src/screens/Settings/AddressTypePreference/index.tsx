@@ -1,128 +1,66 @@
-import React, {
-	memo,
-	ReactElement,
-	useCallback,
-	useMemo,
-	useState,
-} from 'react';
+import React, { memo, ReactElement, useMemo } from 'react';
+import { useSelector } from 'react-redux';
 
 import { IListData } from '../../../components/List';
 import SettingsView from '../SettingsView';
-import { getSelectedAddressType, refreshWallet } from '../../../utils/wallet';
+import { refreshWallet } from '../../../utils/wallet';
 import { updateSelectedAddressType } from '../../../store/actions/wallet';
-import { TAddressType } from '../../../store/types/wallet';
-import { updateSettings } from '../../../store/actions/settings';
-import { useAppSelector } from '../../../hooks/redux';
+import { addressTypeSelector } from '../../../store/reselect/wallet';
+import { EAddressType } from '../../../store/types/wallet';
 import type { SettingsScreenProps } from '../../../navigation/types';
-import {
-	addressTypesSelector,
-	selectedNetworkSelector,
-	selectedWalletSelector,
-} from '../../../store/reselect/wallet';
 
-const typesDescriptions = {
-	p2wpkh: {
+const addressTypes = [
+	{
+		type: EAddressType.p2wpkh,
+		name: 'Native Segwit Bech32',
 		description: 'Pay-to-witness-public-key-hash',
 		example: '(bc1x...)',
-		name: 'Native Segwit Bech32',
 	},
-	p2sh: {
+	{
+		type: EAddressType.p2sh,
+		name: 'Wrapped Segwit',
 		description: 'Pay-to-Script-Hash',
 		example: '(3x...)',
-		name: 'Wrapped Segwit',
 	},
-	p2pkh: {
+	{
+		type: EAddressType.p2pkh,
+		name: 'Legacy',
 		description: 'Pay-to-public-key-hash',
 		example: '(1x...)',
-		name: 'Legacy',
 	},
-};
-
-const sortOrder = ['p2wpkh', 'p2sh', 'p2pkh'];
+];
 
 const AddressTypeSettings = ({
 	navigation,
 }: SettingsScreenProps<'AddressTypePreference'>): ReactElement => {
-	const [addressTypeState, setAddressTypeState] = useState<TAddressType>();
-	const addressTypes = useAppSelector(addressTypesSelector);
-	const selectedWallet = useAppSelector(selectedWalletSelector);
-	const selectedNetwork = useAppSelector(selectedNetworkSelector);
+	const selectedAddressType = useSelector(addressTypeSelector);
 
-	const addressTypesList = useMemo(() => {
-		return Object.values(addressTypes)
-			.map(({ type }) => {
-				return {
-					value: type,
-					label: `${typesDescriptions[type].name} ${typesDescriptions[type].example}`,
-					description: typesDescriptions[type].description,
-				};
-			})
-			.sort((a, b) => sortOrder.indexOf(a.value) - sortOrder.indexOf(b.value));
-	}, [addressTypes]);
-
-	const selectedAddressType = useMemo(
-		(): string =>
-			getSelectedAddressType({
-				selectedWallet,
-				selectedNetwork,
-			}),
-		[selectedNetwork, selectedWallet],
-	);
-
-	const setAddressTypePreference = useCallback(
-		(preference: TAddressType): void => {
-			setAddressTypeState(preference);
-			updateSelectedAddressType({ addressType: preference });
-			refreshWallet({}).then();
-		},
-		[],
-	);
-
-	const checkAddressTypeListCheckmark = useCallback(
-		(type: TAddressType): boolean => {
-			if (selectedAddressType === addressTypeState) {
-				return addressTypeState === type;
-			}
-			if (!addressTypeState) {
-				return selectedAddressType === type;
-			}
-			return addressTypeState === type;
-		},
-		[selectedAddressType, addressTypeState],
-	);
-
-	const AddressTypeListData: IListData[] = useMemo(
+	const listData: IListData[] = useMemo(
 		() => [
 			{
 				title: 'Bitcoin address type',
-				data: addressTypesList.map((addressType) => ({
+				data: addressTypes.map((addressType) => ({
 					type: 'button',
-					value: checkAddressTypeListCheckmark(addressType.value),
+					title: `${addressType.name} ${addressType.example}`,
 					description: addressType.description,
-					title: addressType.label,
+					value: addressType.type === selectedAddressType,
 					useCheckmark: true,
 					onPress: async (): Promise<void> => {
 						navigation.goBack();
-						updateSettings({ addressType: addressType.value });
-						setAddressTypePreference(addressType.value);
+						updateSelectedAddressType({ addressType: addressType.type });
 						await refreshWallet({ lightning: false, onchain: true });
 					},
 				})),
 			},
 		],
-		[
-			addressTypesList,
-			checkAddressTypeListCheckmark,
-			navigation,
-			setAddressTypePreference,
-		],
+		[selectedAddressType, navigation],
 	);
 
 	return (
 		<SettingsView
 			title="Bitcoin Address Type"
-			listData={AddressTypeListData}
-			showBackNavigation
+			listData={listData}
+			showBackNavigation={true}
 		/>
 	);
 };
