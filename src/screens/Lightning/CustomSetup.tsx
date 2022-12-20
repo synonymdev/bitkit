@@ -7,6 +7,7 @@ import React, {
 	useCallback,
 } from 'react';
 import { StyleSheet, View } from 'react-native';
+import { useFocusEffect } from '@react-navigation/native';
 import { FadeIn, FadeOut } from 'react-native-reanimated';
 import { useSelector } from 'react-redux';
 
@@ -39,7 +40,7 @@ import { btcToSats } from '../../utils/helpers';
 import { showErrorNotification } from '../../utils/notifications';
 import { startChannelPurchase } from '../../store/actions/blocktank';
 import { convertCurrency } from '../../utils/blocktank';
-import { useFocusEffect } from '@react-navigation/native';
+import { EBitcoinUnit } from '../../store/types/wallet';
 import {
 	selectedCurrencySelector,
 	unitPreferenceSelector,
@@ -148,7 +149,7 @@ const CustomSetup = ({
 				fiatValue,
 				exchangeRate: fiatCurrencyRate,
 				currency: selectedCurrency,
-				bitcoinUnit: 'satoshi',
+				bitcoinUnit: EBitcoinUnit.satoshi,
 			});
 		},
 		[fiatCurrencyRate, selectedCurrency],
@@ -164,11 +165,11 @@ const CustomSetup = ({
 		const maxSpendingLimitSats =
 			fiatToBitcoinUnit({
 				fiatValue: convertedUnit.fiatValue,
-				bitcoinUnit: 'satoshi',
+				bitcoinUnit: EBitcoinUnit.satoshi,
 			}) ?? 0;
 		const maxSpendingLimit = getFiatDisplayValues({
 			satoshis: maxSpendingLimitSats,
-			bitcoinUnit: 'satoshi',
+			bitcoinUnit: EBitcoinUnit.satoshi,
 			currency: selectedCurrency,
 		});
 		if (!maxSpendingLimit) {

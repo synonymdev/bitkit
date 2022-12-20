@@ -41,6 +41,7 @@ import {
 } from '../../store/reselect/wallet';
 import { blocktankServiceSelector } from '../../store/reselect/blocktank';
 import { selectedCurrencySelector } from '../../store/reselect/settings';
+import { EBitcoinUnit } from '../../store/types/wallet';
 
 const QuickSetup = ({
 	navigation,
@@ -75,7 +76,7 @@ const QuickSetup = ({
 		const maxSpendingLimit =
 			fiatToBitcoinUnit({
 				fiatValue: convertedUnit.fiatValue,
-				bitcoinUnit: 'satoshi',
+				bitcoinUnit: EBitcoinUnit.satoshi,
 			}) ?? 0;
 		if (!maxSpendingLimit) {
 			return spendableBalance;

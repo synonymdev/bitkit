@@ -8,6 +8,7 @@ import { useBalance } from '../hooks/wallet';
 import { updateSettings } from '../store/actions/settings';
 import Money from './Money';
 import { claimableBalanceSelector } from '../store/reselect/lightning';
+import { EBalanceUnit, EBitcoinUnit } from '../store/types/wallet';
 import {
 	selectedNetworkSelector,
 	selectedWalletSelector,
@@ -36,14 +37,17 @@ const BalanceHeader = (): ReactElement => {
 	const handlePress = (): void => {
 		// BTC -> satoshi -> fiat
 		const nextUnit =
-			balanceUnit === 'BTC'
-				? 'satoshi'
-				: balanceUnit === 'satoshi'
-				? 'fiat'
-				: 'BTC';
+			balanceUnit === EBalanceUnit.BTC
+				? EBalanceUnit.satoshi
+				: balanceUnit === EBalanceUnit.satoshi
+				? EBalanceUnit.fiat
+				: EBalanceUnit.BTC;
+
 		const payload = {
 			balanceUnit: nextUnit,
-			...(nextUnit !== 'fiat' && { bitcoinUnit: nextUnit }),
+			...(nextUnit !== EBalanceUnit.fiat && {
+				bitcoinUnit: nextUnit as unknown as EBitcoinUnit,
+			}),
 		};
 		updateSettings(payload);
 	};

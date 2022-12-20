@@ -101,7 +101,7 @@ export const filterActivityItems = (
 		search = '',
 		types = [],
 		tags = [],
-		txType = undefined,
+		txType,
 	}: {
 		search?: string;
 		types?: EActivityTypes[];

@@ -1,4 +1,5 @@
-import { ISettings } from '../types/settings';
+import { ETransactionSpeed, ISettings } from '../types/settings';
+import { EBalanceUnit, EBitcoinUnit } from '../types/wallet';
 
 //TODO: Remove the public Electrum servers below once we spin up our own.
 export const origCustomElectrumPeers = {
@@ -71,8 +72,8 @@ export const defaultSettingsShape: ISettings = {
 	biometrics: false,
 	rbf: false,
 	theme: 'dark',
-	bitcoinUnit: 'satoshi', //BTC, mBTC, μBTC or satoshi
-	balanceUnit: 'satoshi', //BTC, mBTC, μBTC or satoshi
+	bitcoinUnit: EBitcoinUnit.satoshi,
+	balanceUnit: EBalanceUnit.satoshi,
 	selectedCurrency: 'USD',
 	selectedLanguage: 'english',
 	customElectrumPeers: origCustomElectrumPeers,
@@ -82,7 +83,7 @@ export const defaultSettingsShape: ISettings = {
 	enableOfflinePayments: true,
 	unitPreference: 'asset',
 	showSuggestions: true,
-	transactionSpeed: 'normal',
+	transactionSpeed: ETransactionSpeed.normal,
 	hideBalance: false,
 	hideOnboardingMessage: false,
 	hideBeta: false,

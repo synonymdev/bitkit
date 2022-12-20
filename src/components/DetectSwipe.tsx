@@ -2,10 +2,10 @@ import React, { memo, ReactElement, useRef } from 'react';
 import { GestureDetector, Gesture } from 'react-native-gesture-handler';
 
 export interface IDetectSwipe {
-	onSwipeLeft?: Function | undefined;
-	onSwipeRight?: Function | undefined;
-	onSwipeUp?: Function | undefined;
-	onSwipeDown?: Function | undefined;
+	onSwipeLeft?: () => void;
+	onSwipeRight?: () => void;
+	onSwipeUp?: () => void;
+	onSwipeDown?: () => void;
 	swipeLeftSensitivity?: number;
 	swipeRightSensitivity?: number;
 	swipeUpSensitivity?: number;

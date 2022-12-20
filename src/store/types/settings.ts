@@ -1,9 +1,14 @@
-import { IWalletItem, TBitcoinUnit, TBalanceUnit } from './wallet';
+import { IWalletItem, EBitcoinUnit, EBalanceUnit } from './wallet';
 
 export type TTheme = 'dark' | 'light' | 'blue';
 export type TProtocol = 'ssl' | 'tcp' | string;
 
-export type TTransactionSpeed = 'normal' | 'fast' | 'slow';
+export enum ETransactionSpeed {
+	fast = 'fast',
+	normal = 'normal',
+	slow = 'slow',
+	custom = 'custom',
+}
 
 /**
  * large = Sort by and use largest UTXO first. Lowest fee, but reveals your largest UTXO's.
@@ -39,8 +44,8 @@ export interface ISettings {
 	biometrics: boolean;
 	rbf: boolean;
 	theme: TTheme;
-	bitcoinUnit: TBitcoinUnit;
-	balanceUnit: TBalanceUnit;
+	bitcoinUnit: EBitcoinUnit;
+	balanceUnit: EBalanceUnit;
 	customElectrumPeers: TCustomElectrumPeers;
 	selectedCurrency: string;
 	selectedLanguage: string;
@@ -50,7 +55,7 @@ export interface ISettings {
 	enableOfflinePayments: boolean;
 	unitPreference: TUnitPreference;
 	showSuggestions: boolean;
-	transactionSpeed: TTransactionSpeed;
+	transactionSpeed: ETransactionSpeed;
 	hideBalance: boolean;
 	hideOnboardingMessage: boolean;
 	hideBeta: boolean;

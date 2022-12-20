@@ -1,16 +1,18 @@
 import { v4 as uuidv4 } from 'uuid';
-import { TAvailableNetworks } from '../networks';
 import nodejs from 'nodejs-mobile-react-native';
+import { err, ok, Result } from '@synonymdev/result';
+
+import { TAvailableNetworks } from '../networks';
+import { ENodeJsMethods, TNodeJsMethodsData } from './types';
+import { DefaultNodeJsMethodsShape } from './shapes';
+import { TWalletName } from '../../store/types/wallet';
 import {
 	getMnemonicPhrase,
 	getBip39Passphrase,
 	getSelectedNetwork,
 	getSelectedWallet,
 } from '../wallet';
-import { err, ok, Result } from '@synonymdev/result';
-import { ENodeJsMethods, TNodeJsMethodsData } from './types';
 
-import { DefaultNodeJsMethodsShape } from './shapes';
 let isSetup = false;
 const methods = {
 	setup: {},
@@ -89,7 +91,7 @@ export const invokeNodeJsMethod = <T = string>(
 
 /**
  * Sets up nodejs-mobile to sign for the given wallet and network.
- * @param {string} [selectedWallet]
+ * @param {TWalletName} [selectedWallet]
  * @param {TAvailableNetworks} [selectedNetwork]
  * @param {string} [mnemonic]
  * @returns {Promise<{Result<{string}>}>}
@@ -99,7 +101,7 @@ export const setupNodejsMobile = async ({
 	selectedNetwork,
 	mnemonic,
 }: {
-	selectedWallet?: string;
+	selectedWallet?: TWalletName;
 	selectedNetwork?: TAvailableNetworks;
 	mnemonic?: string;
 }): Promise<Result<string>> => {

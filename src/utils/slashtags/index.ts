@@ -18,6 +18,7 @@ import { decodeLightningInvoice } from '../lightning';
 import { createLightningInvoice } from '../../store/actions/lightning';
 import { getSettingsStore } from '../../store/helpers';
 import { TAvailableNetworks } from '../networks';
+import { TWalletName } from '../../store/types/wallet';
 
 /**
  * Handles pasting or scanning a slash:// url
@@ -165,7 +166,7 @@ export const updateSlashPayConfig = debounce(
 		selectedNetwork,
 	}: {
 		sdk?: SDK;
-		selectedWallet?: string;
+		selectedWallet?: TWalletName;
 		selectedNetwork?: TAvailableNetworks;
 	}): Promise<void> => {
 		if (!sdk) {

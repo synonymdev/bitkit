@@ -6,6 +6,7 @@ import NumberPad from '../../../components/NumberPad';
 import Store from '../../../store/types';
 import { btcToSats } from '../../../utils/helpers';
 import { useExchangeRate } from '../../../hooks/displayValues';
+import { EBitcoinUnit } from '../../../store/types/wallet';
 import {
 	getTransactionOutputValue,
 	updateAmount,
@@ -144,7 +145,7 @@ const SendNumberPad = ({ onDone }: { onDone: () => void }): ReactElement => {
 			amount = String(
 				fiatToBitcoinUnit({
 					fiatValue: amount,
-					bitcoinUnit: 'satoshi',
+					bitcoinUnit: EBitcoinUnit.satoshi,
 					currency,
 					exchangeRate,
 				}),
@@ -185,7 +186,7 @@ const SendNumberPad = ({ onDone }: { onDone: () => void }): ReactElement => {
 
 			const fiatAmount = fiatToBitcoinUnit({
 				fiatValue: newAmount,
-				bitcoinUnit: 'satoshi',
+				bitcoinUnit: EBitcoinUnit.satoshi,
 				exchangeRate,
 				currency,
 			});
@@ -202,7 +203,7 @@ const SendNumberPad = ({ onDone }: { onDone: () => void }): ReactElement => {
 	};
 
 	const numberPadType =
-		unitPreference === 'asset' && bitcoinUnit === 'satoshi'
+		unitPreference === 'asset' && bitcoinUnit === EBitcoinUnit.satoshi
 			? 'integer'
 			: 'decimal';
 

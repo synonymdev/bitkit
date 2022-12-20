@@ -55,9 +55,9 @@ const ActivityList = ({
 	filter,
 }: {
 	onScroll?: (event: NativeSyntheticEvent<NativeScrollEvent>) => void;
-	style?: StyleProp<ViewStyle> | undefined;
-	contentContainerStyle?: StyleProp<ViewStyle> | undefined;
-	progressViewOffset?: number | undefined;
+	style?: StyleProp<ViewStyle>;
+	contentContainerStyle?: StyleProp<ViewStyle>;
+	progressViewOffset?: number;
 	showTitle?: boolean;
 	filter?: {};
 }): ReactElement => {

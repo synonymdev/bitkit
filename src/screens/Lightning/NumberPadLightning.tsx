@@ -7,6 +7,7 @@ import useDisplayValues, { useExchangeRate } from '../../hooks/displayValues';
 import { fiatToBitcoinUnit } from '../../utils/exchange-rate';
 import { btcToSats } from '../../utils/helpers';
 import NumberPadButtons from '../Wallets/NumberPadButtons';
+import { EBitcoinUnit } from '../../store/types/wallet';
 import {
 	bitcoinUnitSelector,
 	selectedCurrencySelector,
@@ -117,7 +118,7 @@ const NumberPadLightning = ({
 			// Convert new fiat amount to satoshis.
 			newAmount = fiatToBitcoinUnit({
 				fiatValue: amount,
-				bitcoinUnit: 'satoshi',
+				bitcoinUnit: EBitcoinUnit.satoshi,
 				currency,
 				exchangeRate,
 			});
@@ -155,7 +156,7 @@ const NumberPadLightning = ({
 
 			const fiatAmount = fiatToBitcoinUnit({
 				fiatValue: newAmount,
-				bitcoinUnit: 'satoshi',
+				bitcoinUnit: EBitcoinUnit.satoshi,
 				exchangeRate,
 				currency,
 			});
@@ -167,7 +168,7 @@ const NumberPadLightning = ({
 	};
 
 	const numberPadType =
-		unitPreference === 'asset' && bitcoinUnit === 'satoshi'
+		unitPreference === 'asset' && bitcoinUnit === EBitcoinUnit.satoshi
 			? 'integer'
 			: 'decimal';
 

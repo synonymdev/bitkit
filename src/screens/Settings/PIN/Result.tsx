@@ -10,8 +10,8 @@ import GlowImage from '../../../components/GlowImage';
 import Button from '../../../components/Button';
 import { toggleView } from '../../../store/actions/ui';
 import { updateSettings } from '../../../store/actions/settings';
-import type { PinScreenProps } from '../../../navigation/types';
 import { pinForPaymentsSelector } from '../../../store/reselect/settings';
+import type { PinScreenProps } from '../../../navigation/types';
 
 const imageSrc = require('../../../assets/illustrations/check.png');
 

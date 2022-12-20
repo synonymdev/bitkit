@@ -27,6 +27,7 @@ import { Slashtag } from '../../hooks/slashtags';
 import { performFullRestoreFromLatestBackup } from '../../store/actions/backup';
 import { promiseTimeout } from '../helpers';
 import { TAvailableNetworks } from '../networks';
+import { TWalletName } from '../../store/types/wallet';
 
 /**
  * Creates a new wallet from scratch
@@ -88,7 +89,7 @@ export const startWalletServices = async ({
 	onchain?: boolean;
 	lightning?: boolean;
 	restore?: boolean;
-	selectedWallet?: string;
+	selectedWallet?: TWalletName;
 	selectedNetwork?: TAvailableNetworks;
 }): Promise<Result<string>> => {
 	try {

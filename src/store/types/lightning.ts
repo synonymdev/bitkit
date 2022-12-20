@@ -1,4 +1,4 @@
-import { EPaymentType, IWalletItem } from './wallet';
+import { EPaymentType, IWalletItem, TWalletName } from './wallet';
 import {
 	TChannel,
 	TCreatePaymentReq,
@@ -12,7 +12,7 @@ export type IInvoice = {
 
 export type TCreateLightningInvoice = TCreatePaymentReq & {
 	selectedNetwork?: TAvailableNetworks;
-	selectedWallet?: string;
+	selectedWallet?: TWalletName;
 };
 
 export type TLightningPayment = {
@@ -33,7 +33,7 @@ export interface IDefaultLightningShape {
 	claimableBalance: IWalletItem<number>;
 }
 
-export type TNodes = { [key: string]: IDefaultLightningShape };
+export type TNodes = { [key: TWalletName]: IDefaultLightningShape };
 
 export interface ILightning {
 	version: TLightningNodeVersion;

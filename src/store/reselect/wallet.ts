@@ -2,7 +2,6 @@ import Store from '../types';
 import { createSelector } from '@reduxjs/toolkit';
 import {
 	defaultBitcoinTransactionData,
-	EWallet,
 	IAddressContent,
 	IAddressTypes,
 	IBitcoinTransactionData,
@@ -12,7 +11,8 @@ import {
 	IFormattedTransactionContent,
 	IUtxo,
 	IWallet,
-	TAddressType,
+	EAddressType,
+	TWalletName,
 } from '../types/wallet';
 import { TAvailableNetworks } from '../../utils/networks';
 import { IExchangeRates } from '../../utils/exchange-rate/types';
@@ -21,7 +21,7 @@ import { EFeeIds } from '../types/fees';
 export const walletState = (state: Store): IWallet => state.wallet;
 export const walletsState = (
 	state: Store,
-): { [key: string]: IDefaultWalletShape } => state.wallet.wallets;
+): { [key: TWalletName]: IDefaultWalletShape } => state.wallet.wallets;
 export const exchangeRatesState = (state: Store): IExchangeRates =>
 	state.wallet.exchangeRates;
 export const selectedWalletState = (state: Store): string =>
@@ -36,7 +36,7 @@ export const addressTypesState = (state: Store): IAddressTypes =>
  */
 export const selectedWalletSelector = createSelector(
 	[walletState],
-	(wallet): string => wallet.selectedWallet ?? EWallet.defaultWallet,
+	(wallet): TWalletName => wallet.selectedWallet,
 );
 
 /**
@@ -50,11 +50,14 @@ export const selectedNetworkSelector = createSelector(
 /**
  * Returns wallet data for the currently selected wallet.
  * @param {Store} state
- * @param {string} selectedWallet
+ * @param {TWalletName} selectedWallet
  * @returns {IDefaultWalletShape}
  */
 export const currentWalletSelector = createSelector(
-	[walletState, (wallet, selectedWallet: string): string => selectedWallet],
+	[
+		walletState,
+		(_wallet, selectedWallet: TWalletName): TWalletName => selectedWallet,
+	],
 	(wallet, selectedWallet): IDefaultWalletShape => {
 		return wallet.wallets[selectedWallet];
 	},
@@ -63,11 +66,11 @@ export const currentWalletSelector = createSelector(
 /**
  * Returns the selected address type for a given wallet and network.
  * @param {Store} state
- * @returns {TAddressType}
+ * @returns {EAddressType}
  */
 export const addressTypeSelector = createSelector(
 	[walletState],
-	(wallet): TAddressType => {
+	(wallet): EAddressType => {
 		const selectedWallet = wallet.selectedWallet;
 		const selectedNetwork = wallet.selectedNetwork;
 		return wallet.wallets[selectedWallet].addressType[selectedNetwork];

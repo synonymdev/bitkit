@@ -18,6 +18,7 @@ import { setGeoBlock, updateUser } from '../../store/actions/user';
 import { fiatToBitcoinUnit, getFiatDisplayValues } from '../exchange-rate';
 import { getBalance } from '../wallet';
 import { IDisplayValues, IFiatDisplayValues } from '../exchange-rate/types';
+import { EBitcoinUnit } from '../../store/types/wallet';
 
 /**
  * Sets the selectedNetwork for Blocktank.
@@ -285,7 +286,7 @@ export const getSpendingLimits = ({
 		spendableBalanceFiat < usdMax ? spendableBalanceFiat : usdMax;
 	const spendingLimitSats = fiatToBitcoinUnit({
 		fiatValue: usdSpendingLimitFiat,
-		bitcoinUnit: 'satoshi',
+		bitcoinUnit: EBitcoinUnit.satoshi,
 		currency: 'USD',
 	});
 	const selectedCurrencySpendingLimitFiat = getFiatDisplayValues({
@@ -293,7 +294,7 @@ export const getSpendingLimits = ({
 			spendableBalanceSats < spendingLimitSats
 				? spendableBalanceSats
 				: spendingLimitSats,
-		bitcoinUnit: 'satoshi',
+		bitcoinUnit: EBitcoinUnit.satoshi,
 		currency: selectedCurrency,
 	});
 	return {
@@ -318,12 +319,12 @@ export const convertCurrency = ({
 }): IFiatDisplayValues => {
 	const sats = fiatToBitcoinUnit({
 		fiatValue: amount,
-		bitcoinUnit: 'satoshi',
+		bitcoinUnit: EBitcoinUnit.satoshi,
 		currency: from,
 	});
 	return getFiatDisplayValues({
 		satoshis: sats,
-		bitcoinUnit: 'satoshi',
+		bitcoinUnit: EBitcoinUnit.satoshi,
 		currency: to,
 	});
 };

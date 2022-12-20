@@ -3,17 +3,18 @@ import { useSelector } from 'react-redux';
 
 import { IListData, ItemData } from '../../../components/List';
 import SettingsView from '../SettingsView';
-import type { SettingsScreenProps } from '../../../navigation/types';
+import { enableDevOptionsSelector } from '../../../store/reselect/settings';
+import { EAddressType } from '../../../store/types/wallet';
 import {
 	addressTypeSelector,
 	selectedNetworkSelector,
 } from '../../../store/reselect/wallet';
-import { enableDevOptionsSelector } from '../../../store/reselect/settings';
+import type { SettingsScreenProps } from '../../../navigation/types';
 
 const typesDescriptions = {
-	p2wpkh: 'Native Segwit',
-	p2sh: 'Segwit',
-	p2pkh: 'Legacy',
+	[EAddressType.p2wpkh]: 'Native Segwit',
+	[EAddressType.p2sh]: 'Segwit',
+	[EAddressType.p2pkh]: 'Legacy',
 };
 
 const networkLabels = {
@@ -26,9 +27,7 @@ const AdvancedSettings = ({
 	navigation,
 }: SettingsScreenProps<'AdvancedSettings'>): ReactElement => {
 	const selectedNetwork = useSelector(selectedNetworkSelector);
-
 	const selectedAddressType = useSelector(addressTypeSelector);
-
 	const enableDevOptions = useSelector(enableDevOptionsSelector);
 
 	const SettingsListData: IListData[] = useMemo(() => {

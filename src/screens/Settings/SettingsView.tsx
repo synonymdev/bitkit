@@ -36,7 +36,7 @@ const SettingsView = ({
 	showBackNavigation: boolean;
 	showSearch?: boolean;
 	fullHeight?: boolean;
-	children?: ReactElement | ReactElement[] | undefined;
+	children?: ReactElement | ReactElement[];
 	childrenPosition?: 'top' | 'bottom';
 }): ReactElement => {
 	const navigation =

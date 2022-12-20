@@ -44,7 +44,7 @@ export const performFullBackup = async (
 
 export const performRemoteLdkBackup = async (
 	slashtag: Slashtag,
-	backup: TAccountBackup | undefined = undefined,
+	backup?: TAccountBackup,
 ): Promise<Result<string>> => {
 	dispatch({
 		type: actions.BACKUP_UPDATE,

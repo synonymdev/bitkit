@@ -53,7 +53,11 @@ import RNFS from 'react-native-fs';
 import { EmitterSubscription, InteractionManager } from 'react-native';
 import { EActivityTypes, IActivityItem } from '../../store/types/activity';
 import { addActivityItem } from '../../store/actions/activity';
-import { EPaymentType, IWalletItem } from '../../store/types/wallet';
+import {
+	EPaymentType,
+	IWalletItem,
+	TWalletName,
+} from '../../store/types/wallet';
 import { toggleView } from '../../store/actions/ui';
 import { updateSlashPayConfig } from '../slashtags';
 import { sdk } from '../../components/SlashtagsProvider';
@@ -79,7 +83,7 @@ export const wipeLdkStorage = async ({
 	selectedWallet,
 	selectedNetwork,
 }: {
-	selectedWallet?: string;
+	selectedWallet?: TWalletName;
 	selectedNetwork?: TAvailableNetworks;
 }): Promise<Result<string>> => {
 	if (!selectedWallet) {
@@ -119,7 +123,7 @@ export const setupLdk = async ({
 	selectedNetwork,
 	shouldRefreshLdk = true,
 }: {
-	selectedWallet?: string;
+	selectedWallet?: TWalletName;
 	selectedNetwork?: TAvailableNetworks;
 	shouldRefreshLdk?: boolean;
 }): Promise<Result<string>> => {
@@ -233,7 +237,7 @@ export const setupLdk = async ({
 /**
  * Retrieves any pending/unpaid invoices from the invoices array via payment hash.
  * @param {string} paymentHash
- * @param {string} [selectedWallet]
+ * @param {TWalletName} [selectedWallet]
  * @param {TAvailableNetworks} [selectedNetwork]
  */
 export const getPendingInvoice = ({
@@ -242,7 +246,7 @@ export const getPendingInvoice = ({
 	selectedNetwork,
 }: {
 	paymentHash: string;
-	selectedWallet?: string;
+	selectedWallet?: TWalletName;
 	selectedNetwork?: TAvailableNetworks;
 }): Result<TInvoice> => {
 	try {
@@ -270,7 +274,7 @@ export const handleLightningPaymentSubscription = async ({
 	selectedNetwork,
 }: {
 	payment: TChannelManagerPayment;
-	selectedWallet?: string;
+	selectedWallet?: TWalletName;
 	selectedNetwork?: TAvailableNetworks;
 }): Promise<void> => {
 	if (!selectedWallet) {
@@ -318,14 +322,14 @@ export const handleLightningPaymentSubscription = async ({
 
 /**
  * Subscribes to incoming lightning payments.
- * @param {string} [selectedWallet]
+ * @param {TWalletName} [selectedWallet]
  * @param {TAvailableNetworks} [selectedNetwork]
  */
 export const subscribeToLightningPayments = ({
 	selectedWallet,
 	selectedNetwork,
 }: {
-	selectedWallet?: string;
+	selectedWallet?: TWalletName;
 	selectedNetwork?: TAvailableNetworks;
 }): void => {
 	if (!selectedWallet) {
@@ -372,7 +376,7 @@ export const resetLdk = async (): Promise<Result<string>> => {
 
 /**
  * This method syncs LDK, re-adds peers & updates lightning channels.
- * @param {string} [selectedWallet]
+ * @param {TWalletName} [selectedWallet]
  * @param {TAvailableNetworks} [selectedNetwork]
  * @returns {Promise<Result<string>>}
  */
@@ -380,7 +384,7 @@ export const refreshLdk = async ({
 	selectedWallet,
 	selectedNetwork,
 }: {
-	selectedWallet?: string;
+	selectedWallet?: TWalletName;
 	selectedNetwork?: TAvailableNetworks;
 }): Promise<Result<string>> => {
 	try {
@@ -458,14 +462,14 @@ export const setAccount = async ({
 
 /**
  * Retrieve LDK account info from storage.
- * @param {string} [selectedWallet]
+ * @param {TWalletName} [selectedWallet]
  * @param {TAvailableNetworks} [selectedNetwork]
  */
 export const getAccount = async ({
 	selectedWallet,
 	selectedNetwork,
 }: {
-	selectedWallet?: string;
+	selectedWallet?: TWalletName;
 	selectedNetwork?: TAvailableNetworks;
 }): Promise<Result<TAccount>> => {
 	if (!selectedWallet) {
@@ -648,7 +652,7 @@ export const getNodeId = async (): Promise<Result<string>> => {
 
 /**
  * Returns the current LDK node id.
- * @param {string} [selectedWallet]
+ * @param {TWalletName} [selectedWallet]
  * @param {TAvailableNetworks} [selectedNetwork]
  * @returns {Promise<Result<string>>}
  */
@@ -656,7 +660,7 @@ export const getNodeIdFromStorage = ({
 	selectedWallet,
 	selectedNetwork,
 }: {
-	selectedWallet?: string;
+	selectedWallet?: TWalletName;
 	selectedNetwork?: TAvailableNetworks;
 }): string => {
 	try {
@@ -730,14 +734,14 @@ export const addPeer = async ({
 
 /**
  * Returns previously saved lightning peers from storage. (Excludes Blocktank and other default lightning peers.)
- * @param {string} [selectedWallet]
+ * @param {TWalletName} [selectedWallet]
  * @param {TAvailableNetworks} [selectedNetwork]
  */
 export const getCustomLightningPeers = ({
 	selectedWallet,
 	selectedNetwork,
 }: {
-	selectedWallet?: string;
+	selectedWallet?: TWalletName;
 	selectedNetwork?: TAvailableNetworks;
 }): string[] => {
 	if (!selectedWallet) {
@@ -761,7 +765,7 @@ export const addPeers = async ({
 	selectedWallet,
 	selectedNetwork,
 }: {
-	selectedWallet?: string;
+	selectedWallet?: TWalletName;
 	selectedNetwork?: TAvailableNetworks;
 }): Promise<Result<string[]>> => {
 	try {
@@ -816,7 +820,7 @@ export const getLightningChannels = (): Promise<Result<TChannel[]>> =>
 /**
  * Returns an array of unconfirmed/pending lightning channels from either storage or directly from the LDK node.
  * @param {boolean} [fromStorage]
- * @param {string} [selectedWallet]
+ * @param {TWalletName} [selectedWallet]
  * @param {TAvailableNetworks} [selectedNetwork]
  * @returns {Promise<Result<TChannel[]>>}
  */
@@ -826,7 +830,7 @@ export const getPendingChannels = async ({
 	selectedNetwork,
 }: {
 	fromStorage?: boolean;
-	selectedWallet?: string;
+	selectedWallet?: TWalletName;
 	selectedNetwork?: TAvailableNetworks;
 }): Promise<Result<TChannel[]>> => {
 	let channels;
@@ -861,7 +865,7 @@ export const getOpenChannels = async ({
 	selectedNetwork,
 }: {
 	fromStorage?: boolean;
-	selectedWallet?: string;
+	selectedWallet?: TWalletName;
 	selectedNetwork?: TAvailableNetworks;
 }): Promise<Result<TChannel[]>> => {
 	let channels: TChannel[];
@@ -922,7 +926,7 @@ export const closeChannel = async ({
  * Returns an array of channels it was not able to successfully close.
  * @param {TChannel[]} [channels]
  * @param {boolean} [force]
- * @param {string} [selectedWallet]
+ * @param {TWalletName} [selectedWallet]
  * @param {TAvailableNetworks} [selectedNetwork]
  * @returns {Promise<Result<TChannel[]>>}
  */
@@ -934,7 +938,7 @@ export const closeAllChannels = async ({
 }: {
 	channels?: TChannel[];
 	force?: boolean; // It will always try to coop close first and only force close if set to true.
-	selectedWallet?: string;
+	selectedWallet?: TWalletName;
 	selectedNetwork?: TAvailableNetworks;
 }): Promise<Result<TChannel[]>> => {
 	try {
@@ -1087,7 +1091,7 @@ export const decodeLightningInvoice = ({
 /**
  * Attempts to keep LDK in sync every 2-minutes.
  * @param {number} frequency
- * @param {string} [selectedWallet]
+ * @param {TWalletName} [selectedWallet]
  * @param {TAvailableNetworks} [selectedNetwork]
  */
 export const keepLdkSynced = async ({
@@ -1096,7 +1100,7 @@ export const keepLdkSynced = async ({
 	selectedNetwork,
 }: {
 	frequency?: number;
-	selectedWallet?: string;
+	selectedWallet?: TWalletName;
 	selectedNetwork?: TAvailableNetworks;
 }): Promise<void> => {
 	if (LDKIsStayingSynced) {
@@ -1125,7 +1129,7 @@ export const keepLdkSynced = async ({
 
 /**
  * Returns whether the user has any open lightning channels.
- * @param {string} [selectedWallet]
+ * @param {TWalletName} [selectedWallet]
  * @param {TAvailableNetworks} [selectedNetwork]
  * @returns {boolean}
  */
@@ -1133,7 +1137,7 @@ export const hasOpenLightningChannels = ({
 	selectedWallet,
 	selectedNetwork,
 }: {
-	selectedWallet?: string;
+	selectedWallet?: TWalletName;
 	selectedNetwork?: TAvailableNetworks;
 }): boolean => {
 	if (!selectedWallet) {
@@ -1153,7 +1157,7 @@ export const rebroadcastAllKnownTransactions = async (): Promise<any> => {
 
 /**
  * Returns total reserve balance for all open lightning channels.
- * @param {string} [selectedWallet]
+ * @param {TWalletName} [selectedWallet]
  * @param {TAvailableNetworks} [selectedNetwork]
  * @returns {Promise<number>}
  */
@@ -1161,7 +1165,7 @@ export const getLightningReserveBalance = async ({
 	selectedWallet,
 	selectedNetwork,
 }: {
-	selectedWallet?: string;
+	selectedWallet?: TWalletName;
 	selectedNetwork?: TAvailableNetworks;
 }): Promise<number> => {
 	if (!selectedWallet) {
@@ -1189,7 +1193,7 @@ export const getLightningReserveBalance = async ({
 /**
  * Returns the claimable balance for all lightning channels.
  * @param {boolean} [ignoreOpenChannels]
- * @param {string} [selectedWallet]
+ * @param {TWalletName} [selectedWallet]
  * @param {TAvailableNetworks} [selectedNetwork]
  * @returns {Promise<number>}
  */
@@ -1199,7 +1203,7 @@ export const getClaimableBalance = async ({
 	selectedNetwork,
 }: {
 	ignoreOpenChannels?: boolean;
-	selectedWallet?: string;
+	selectedWallet?: TWalletName;
 	selectedNetwork?: TAvailableNetworks;
 }): Promise<number> => {
 	if (!selectedWallet) {

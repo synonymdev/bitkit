@@ -11,6 +11,7 @@ import { removePin } from '../../utils/settings';
 import { TAvailableNetworks } from '../../utils/networks';
 import { ICustomElectrumPeer } from '../types/settings';
 import { showSuccessNotification } from '../../utils/notifications';
+import { TWalletName } from '../types/wallet';
 
 const dispatch = getDispatch();
 
@@ -35,13 +36,13 @@ export const resetSettingsStore = (): Result<string> => {
 /**
  * This method will wipe all data for the specified wallet.
  * @async
- * @param {string} [selectedWallet]
+ * @param {TWalletName} [selectedWallet]
  * @return {Promise<Result<string>>}
  */
 export const wipeApp = async ({
 	selectedWallet,
 }: {
-	selectedWallet?: string | undefined;
+	selectedWallet?: TWalletName;
 }): Promise<Result<string>> => {
 	try {
 		if (!selectedWallet) {
@@ -79,7 +80,7 @@ export const wipeApp = async ({
 
 /**
  * Wipes all known device keychain data.
- * @param {string} [selectedWallet]
+ * @param {TWalletName} [selectedWallet]
  * @returns {void}
  */
 export const wipeKeychain = async ({

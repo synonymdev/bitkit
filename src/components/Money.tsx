@@ -17,6 +17,7 @@ import {
 import useDisplayValues from '../hooks/displayValues';
 import Store from '../store/types';
 import { abbreviateNumber } from '../utils/helpers';
+import { EBitcoinUnit } from '../store/types/wallet';
 
 interface IMoney {
 	sats: number;
@@ -54,7 +55,10 @@ const Money = (props: IMoney): ReactElement => {
 	const sign = props.sign;
 
 	sats = Math.abs(sats);
-	const dv = useDisplayValues(sats, unit === 'fiat' ? 'BTC' : unit);
+	const dv = useDisplayValues(
+		sats,
+		unit === 'fiat' ? EBitcoinUnit.BTC : (unit as EBitcoinUnit),
+	);
 
 	const style = useMemo(
 		() => StyleSheet.compose(styles.root, props.style),

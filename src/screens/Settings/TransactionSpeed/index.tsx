@@ -1,43 +1,44 @@
 import React, { memo, ReactElement, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 
-import { IListData } from '../../../components/List';
-import SettingsView from '../SettingsView';
-import { updateSettings } from '../../../store/actions/settings';
 import {
 	SpeedFastIcon,
 	SpeedNormalIcon,
 	SpeedSlowIcon,
 	SettingsIcon,
 } from '../../../styles/components';
-import type { SettingsScreenProps } from '../../../navigation/types';
+import { IListData } from '../../../components/List';
+import SettingsView from '../SettingsView';
+import { updateSettings } from '../../../store/actions/settings';
 import { transactionSpeedSelector } from '../../../store/reselect/settings';
+import { ETransactionSpeed } from '../../../store/types/settings';
+import type { SettingsScreenProps } from '../../../navigation/types';
 
 const transactionSpeeds = [
 	{
 		label: 'Fast',
-		value: 'fast',
+		value: ETransactionSpeed.fast,
 		description: '± 10-20 minutes',
 		Icon: SpeedFastIcon,
 		iconColor: 'brand',
 	},
 	{
 		label: 'Normal',
-		value: 'normal',
+		value: ETransactionSpeed.normal,
 		description: '± 20-60 minutes',
 		Icon: SpeedNormalIcon,
 		iconColor: 'brand',
 	},
 	{
 		label: 'Slow',
-		value: 'slow',
+		value: ETransactionSpeed.slow,
 		description: '± 1-2 hours',
 		Icon: SpeedSlowIcon,
 		iconColor: 'brand',
 	},
 	{
 		label: 'Custom',
-		value: 'custom',
+		value: ETransactionSpeed.custom,
 		description: 'Depends on fee',
 		Icon: SettingsIcon,
 		iconColor: 'gray1',

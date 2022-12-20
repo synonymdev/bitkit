@@ -9,8 +9,13 @@ export enum EPaymentType {
 	received = 'received',
 }
 
-export type TAddressType = 'p2wpkh' | 'p2sh' | 'p2pkh';
-export type TAddressFormat = 'p2wpkh' | 'p2sh' | 'p2pkh'; //"84" | "49" | "44";
+export enum EAddressType {
+	p2wpkh = 'p2wpkh',
+	p2sh = 'p2sh',
+	p2pkh = 'p2pkh',
+	// p2wsh = 'p2wsh',
+}
+
 export type TKeyDerivationAccountType = 'onchain';
 export type TKeyDerivationPurpose = '84' | '49' | '44' | string; //"p2wpkh" | "p2sh" | "p2pkh";
 export type TKeyDerivationCoinType = '0' | '1' | string; //"mainnet" | "testnet";
@@ -22,9 +27,18 @@ export type TAssetNetwork = 'bitcoin' | 'lightning';
 
 export type NetworkTypePath = '0' | '1'; //"mainnet" | "testnet"
 
-export type TBitcoinUnit = 'satoshi' | 'BTC' | 'mBTC' | 'μBTC';
+export enum EBitcoinUnit {
+	satoshi = 'satoshi',
+	BTC = 'BTC',
+	mBTC = 'mBTC',
+	μBTC = 'μBTC',
+}
 
-export type TBalanceUnit = 'satoshi' | 'BTC' | 'fiat';
+export enum EBalanceUnit {
+	satoshi = 'satoshi',
+	BTC = 'BTC',
+	fiat = 'fiat',
+}
 
 export type TBitcoinAbbreviation = 'sats' | 'BTC';
 
@@ -79,32 +93,19 @@ export enum EKeyDerivationAccount {
 	onchain = 0,
 }
 
-// currently not used
-export enum EAddressTypeNames {
-	p2wpkh = 'Native Segwit',
-	p2sh = 'Legacy Bitcoin address',
-	p2pkh = 'Wrapped Segwit',
-}
-
-export enum EWallet {
-	selectedNetwork = 'bitcoin',
-	defaultWallet = 'wallet0',
-	addressType = 'p2wpkh',
-}
-
 export enum EBoost {
 	rbf = 'rbf',
 	cpfp = 'cpfp',
 }
 
 export interface IAddressData {
-	type: TAddressType;
+	type: EAddressType;
 	path: string;
 	label: string;
 }
 
 export type IAddressTypes = {
-	[key in TAddressType]: IAddressData;
+	[key in EAddressType]: IAddressData;
 };
 
 // m / purpose' / coin_type' / account' / change / address_index
@@ -121,16 +122,16 @@ export interface IKeyDerivationPathData {
 	pathObject: IKeyDerivationPath;
 }
 
+export type TWalletName = `wallet${number}`;
+
 export interface IWallet {
-	loading: boolean;
 	walletExists: boolean;
-	error: boolean;
 	selectedNetwork: TAvailableNetworks;
-	selectedWallet: string;
+	selectedWallet: TWalletName;
 	addressTypes: IAddressTypes;
 	exchangeRates: IExchangeRates;
 	header: IWalletItem<IHeader>;
-	wallets: { [key: string]: IDefaultWalletShape };
+	wallets: { [key: TWalletName]: IDefaultWalletShape };
 }
 
 export interface IWalletItem<T> {
@@ -153,7 +154,7 @@ export interface IAddress {
 }
 
 export interface ICreateWallet {
-	walletName?: string;
+	walletName?: TWalletName;
 	mnemonic?: string;
 	bip39Passphrase?: string;
 	addressAmount?: number;
@@ -247,7 +248,7 @@ export interface IBoostedTransaction {
 }
 
 export interface IDefaultWalletShape {
-	id: string;
+	id: TWalletName;
 	name: string;
 	type: string;
 	seedHash?: string; // Help components/hooks recognize when a seed is set/updated for the same wallet id/name.
@@ -268,14 +269,14 @@ export interface IDefaultWalletShape {
 	keyDerivationPath: IWalletItem<IKeyDerivationPath>;
 	networkTypePath: IWalletItem<string>;
 	addressType: {
-		bitcoin: TAddressType;
-		bitcoinTestnet: TAddressType;
-		bitcoinRegtest: TAddressType;
+		bitcoin: EAddressType;
+		bitcoinTestnet: EAddressType;
+		bitcoinRegtest: EAddressType;
 	};
 	rbfData: IWalletItem<object>;
 	transaction: IWalletItem<IBitcoinTransactionData>;
 }
 
 export interface IDefaultWallet {
-	[key: string]: IDefaultWalletShape;
+	[key: TWalletName]: IDefaultWalletShape;
 }

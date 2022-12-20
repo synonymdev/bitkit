@@ -41,8 +41,9 @@ import { updateSettings } from '../../../store/actions/settings';
 import BitcoinLogo from '../../../assets/bitcoin-logo.svg';
 import { capitalize } from '../../../utils/helpers';
 import DetectSwipe from '../../../components/DetectSwipe';
-import type { WalletScreenProps } from '../../../navigation/types';
 import { IColors } from '../../../styles/colors';
+import { EBitcoinUnit } from '../../../store/types/wallet';
+import type { WalletScreenProps } from '../../../navigation/types';
 
 const updateHeight = ({
 	height = new Animated.Value(0),
@@ -138,7 +139,10 @@ const WalletsDetail = ({
 	};
 
 	const handleSwitchUnit = useCallback(() => {
-		const nextUnit = bitcoinUnit === 'satoshi' ? 'BTC' : 'satoshi';
+		const nextUnit =
+			bitcoinUnit === EBitcoinUnit.satoshi
+				? EBitcoinUnit.BTC
+				: EBitcoinUnit.satoshi;
 		updateSettings({ bitcoinUnit: nextUnit });
 	}, [bitcoinUnit]);
 

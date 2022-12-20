@@ -4,7 +4,7 @@ import { IGetKeychainValue, IResponse, ISetKeychainValue } from './types';
 import {
 	TBitcoinAbbreviation,
 	TBitcoinLabel,
-	TBitcoinUnit,
+	EBitcoinUnit,
 	TTicker,
 } from '../store/types/wallet';
 import { TAvailableNetworks } from './networks';
@@ -90,7 +90,7 @@ export const resetKeychainValue = async ({
 
 interface IGetNetworkData {
 	selectedNetwork?: TAvailableNetworks;
-	bitcoinUnit?: TBitcoinUnit;
+	bitcoinUnit?: EBitcoinUnit;
 }
 interface IGetNetworkDataResponse {
 	abbreviation: TBitcoinAbbreviation;
@@ -105,7 +105,7 @@ interface IGetNetworkDataResponse {
  */
 export const getNetworkData = ({
 	selectedNetwork = 'bitcoin',
-	bitcoinUnit = 'satoshi',
+	bitcoinUnit = EBitcoinUnit.satoshi,
 }: IGetNetworkData): IGetNetworkDataResponse => {
 	const abbreviation = bitcoinUnit === 'satoshi' ? 'sats' : 'BTC';
 	try {

@@ -37,6 +37,7 @@ import {
 import { addTodo, removeTodo } from './todos';
 import { showErrorNotification } from '../../utils/notifications';
 import { getDisplayValues } from '../../utils/exchange-rate';
+import { TWalletName } from '../types/wallet';
 
 const dispatch = getDispatch();
 
@@ -209,7 +210,7 @@ export const resetBlocktankStore = (): Result<string> => {
 /**
  * Attempts to auto-buy a channel from Blocktank while on regtest.
  * @param {TAvailableNetworks} [selectedNetwork]
- * @param {string} [selectedWallet]
+ * @param {TWalletName} [selectedWallet]
  * @param {number} [inboundLiquidity]
  * @param {number} [outboundLiquidity]
  * @param {number} [channelExpiry]
@@ -223,7 +224,7 @@ export const autoBuyChannel = async ({
 	channelExpiry = 12,
 }: {
 	selectedNetwork?: TAvailableNetworks;
-	selectedWallet?: string;
+	selectedWallet?: TWalletName;
 	inboundLiquidity?: number;
 	outboundLiquidity?: number;
 	channelExpiry?: number;
@@ -337,7 +338,7 @@ export const autoBuyChannel = async ({
  * @param {number} remoteBalance
  * @param {number} localBalance
  * @param {number} [channelExpiry]
- * @param {string} [selectedWallet]
+ * @param {TWalletName} [selectedWallet]
  * @param {TAvailableNetworks} [selectedNetwork]
  * @returns {Promise<Result<string>>}
  */
@@ -353,7 +354,7 @@ export const startChannelPurchase = async ({
 	remoteBalance: number;
 	localBalance: number;
 	channelExpiry?: number;
-	selectedWallet?: string;
+	selectedWallet?: TWalletName;
 	selectedNetwork?: TAvailableNetworks;
 }): Promise<Result<string>> => {
 	if (!selectedNetwork) {

@@ -2,7 +2,7 @@ import { default as bitcoinUnits } from 'bitcoin-units';
 import { ok, err, Result } from '@synonymdev/result';
 
 import { getSettingsStore, getWalletStore } from '../../store/helpers';
-import { TBitcoinUnit } from '../../store/types/wallet';
+import { EBitcoinUnit } from '../../store/types/wallet';
 import { showErrorNotification } from '../notifications';
 import { timeAgo } from '../helpers';
 import {
@@ -67,7 +67,7 @@ export const fiatToBitcoinUnit = ({
 	fiatValue: string | number;
 	exchangeRate?: number;
 	currency?: string;
-	bitcoinUnit?: TBitcoinUnit;
+	bitcoinUnit?: EBitcoinUnit;
 }): number => {
 	if (!currency) {
 		currency = getSettingsStore().selectedCurrency;
@@ -98,7 +98,7 @@ export const getBitcoinDisplayValues = ({
 	bitcoinUnit,
 }: {
 	satoshis: number;
-	bitcoinUnit?: TBitcoinUnit;
+	bitcoinUnit?: EBitcoinUnit;
 }): IBitcoinDisplayValues => {
 	try {
 		if (!bitcoinUnit) {
@@ -171,7 +171,7 @@ export const getFiatDisplayValues = ({
 	exchangeRates?: IExchangeRates;
 	currency?: string;
 	currencySymbol?: string;
-	bitcoinUnit?: TBitcoinUnit;
+	bitcoinUnit?: EBitcoinUnit;
 	locale?: string;
 }): IFiatDisplayValues => {
 	if (!exchangeRates) {
@@ -299,7 +299,7 @@ export const getDisplayValues = ({
 	exchangeRate?: number;
 	currency?: string;
 	currencySymbol?: string;
-	bitcoinUnit?: TBitcoinUnit;
+	bitcoinUnit?: EBitcoinUnit;
 	locale?: string;
 }): IDisplayValues => {
 	const bitcoinDisplayValues = getBitcoinDisplayValues({

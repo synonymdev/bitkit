@@ -1,7 +1,6 @@
 import actions from './actions';
 import {
 	EPaymentType,
-	EWallet,
 	IAddress,
 	IAddressContent,
 	ICreateWallet,
@@ -9,9 +8,10 @@ import {
 	IKeyDerivationPath,
 	IBitcoinTransactionData,
 	IUtxo,
-	TAddressType,
+	EAddressType,
 	IBoostedTransaction,
 	EBoost,
+	TWalletName,
 } from '../types/wallet';
 import {
 	createDefaultWallet,
@@ -59,7 +59,7 @@ import {
 import { getBoostedTransactionParents } from '../../utils/boost';
 import { updateSlashPayConfig } from '../../utils/slashtags';
 import { sdk } from '../../components/SlashtagsProvider';
-import { TAddressIndexInfo } from '../shapes/wallet';
+import { defaultWalletShape, TAddressIndexInfo } from '../shapes/wallet';
 
 const dispatch = getDispatch();
 
@@ -84,7 +84,7 @@ export const updateWallet = (payload): Promise<Result<string>> => {
  * @return {Promise<Result<string>>}
  */
 export const createWallet = async ({
-	walletName = EWallet.defaultWallet,
+	walletName = defaultWalletShape.id,
 	addressAmount = GENERATE_ADDRESS_AMOUNT,
 	changeAddressAmount = GENERATE_ADDRESS_AMOUNT,
 	mnemonic = '',
@@ -134,9 +134,9 @@ export const updateExchangeRates = async (): Promise<Result<string>> => {
 /**
  * This method updates the next available (zero-balance) address & changeAddress index.
  * @async
- * @param {string} [selectedWallet]
+ * @param {TWalletName} [selectedWallet]
  * @param {TAvailableNetworks} [selectedNetwork]
- * @param {TAddressType} [addressType]
+ * @param {EAddressType} [addressType]
  * @return {string}
  */
 export const updateAddressIndexes = async ({
@@ -144,9 +144,9 @@ export const updateAddressIndexes = async ({
 	selectedNetwork,
 	addressType, //If this param is left undefined it will update the indexes for all stored address types.
 }: {
-	selectedWallet?: string | undefined;
-	selectedNetwork?: TAvailableNetworks | undefined;
-	addressType?: TAddressType | undefined;
+	selectedWallet?: TWalletName;
+	selectedNetwork?: TAvailableNetworks;
+	addressType?: EAddressType;
 }): Promise<Result<string>> => {
 	if (!selectedNetwork) {
 		selectedNetwork = getSelectedNetwork();
@@ -159,7 +159,7 @@ export const updateAddressIndexes = async ({
 		selectedNetwork,
 	});
 	const addressTypes = getAddressTypes();
-	let addressTypesToCheck = Object.keys(addressTypes) as TAddressType[];
+	let addressTypesToCheck = Object.keys(addressTypes) as EAddressType[];
 	if (addressType) {
 		addressTypesToCheck = await Promise.all(
 			addressTypesToCheck.filter(
@@ -252,9 +252,9 @@ export const generateNewReceiveAddress = async ({
 	addressType,
 	keyDerivationPath,
 }: {
-	selectedWallet?: string;
+	selectedWallet?: TWalletName;
 	selectedNetwork?: TAvailableNetworks;
-	addressType?: TAddressType;
+	addressType?: EAddressType;
 	keyDerivationPath?: IKeyDerivationPath;
 }): Promise<Result<IAddressContent>> => {
 	try {
@@ -361,14 +361,14 @@ export const generateNewReceiveAddress = async ({
 /**
  * This method will generate addresses as specified and return an object of filtered addresses to ensure no duplicates are returned.
  * @async
- * @param {string} [selectedWallet]
+ * @param {TWalletName} [selectedWallet]
  * @param {number} [addressAmount]
  * @param {number} [changeAddressAmount]
  * @param {number} [addressIndex]
  * @param {number} [changeAddressIndex]
  * @param {TAvailableNetworks} [selectedNetwork]
  * @param {IKeyDerivationPath} [keyDerivationPath]
- * @param {TAddressType} [addressType]
+ * @param {EAddressType} [addressType]
  * @return {Promise<Result<IGenerateAddressesResponse>>}
  */
 export const addAddresses = async ({
@@ -455,7 +455,7 @@ export const updateUtxos = ({
 	selectedNetwork,
 	scanAllAddresses = false,
 }: {
-	selectedWallet?: string;
+	selectedWallet?: TWalletName;
 	selectedNetwork?: TAvailableNetworks;
 	scanAllAddresses?: boolean;
 }): Promise<Result<{ utxos: IUtxo[]; balance: number }>> => {
@@ -503,7 +503,7 @@ export const updateUtxos = ({
 
 /**
  * Clears the UTXO array and balance.
- * @param {string} [selectedWallet]
+ * @param {TWalletName} [selectedWallet]
  * @param {TAvailableNetworks} [selectedNetwork]
  * @returns {Promise<string>}
  */
@@ -511,7 +511,7 @@ export const clearUtxos = async ({
 	selectedWallet,
 	selectedNetwork,
 }: {
-	selectedWallet?: string;
+	selectedWallet?: TWalletName;
 	selectedNetwork?: TAvailableNetworks;
 }): Promise<string> => {
 	if (!selectedNetwork) {
@@ -535,12 +535,12 @@ export const clearUtxos = async ({
 
 export const updateWalletBalance = ({
 	balance,
-	selectedWallet = undefined,
-	selectedNetwork = undefined,
+	selectedWallet,
+	selectedNetwork,
 }: {
 	balance: number;
-	selectedWallet?: string | undefined;
-	selectedNetwork?: TAvailableNetworks | undefined;
+	selectedWallet?: TWalletName;
+	selectedNetwork?: TAvailableNetworks;
 }): Result<string> => {
 	try {
 		if (!selectedNetwork) {
@@ -581,7 +581,7 @@ export const updateTransactions = ({
 	selectedNetwork,
 	scanAllAddresses = false,
 }: {
-	selectedWallet?: string;
+	selectedWallet?: TWalletName;
 	selectedNetwork?: TAvailableNetworks;
 	scanAllAddresses?: boolean;
 }): Promise<Result<IFormattedTransaction>> => {
@@ -690,16 +690,16 @@ export const updateTransactions = ({
 /**
  * Deletes a given on-chain trnsaction by id.
  * @param {string} txid
- * @param {string} [selectedWallet]
+ * @param {TWalletName} [selectedWallet]
  * @param {TAvailableNetworks} [selectedNetwork]
  */
 export const deleteOnChainTransactionById = async ({
 	txid,
-	selectedWallet = undefined,
-	selectedNetwork = undefined,
+	selectedWallet,
+	selectedNetwork,
 }: {
 	txid: string;
-	selectedWallet?: string;
+	selectedWallet?: TWalletName;
 	selectedNetwork?: TAvailableNetworks;
 }): Promise<void> => {
 	try {
@@ -727,7 +727,7 @@ export const deleteOnChainTransactionById = async ({
  * @param {string} oldTxId
  * @param {EBoost} [type]
  * @param {number} fee
- * @param {string} [selectedWallet]
+ * @param {TWalletName} [selectedWallet]
  * @param {TAvailableNetworks} [selectedNetwork]
  */
 export const addBoostedTransaction = async ({
@@ -742,7 +742,7 @@ export const addBoostedTransaction = async ({
 	oldTxId: string;
 	type?: EBoost;
 	fee: number;
-	selectedWallet?: string;
+	selectedWallet?: TWalletName;
 	selectedNetwork?: TAvailableNetworks;
 }): Promise<void> => {
 	try {
@@ -786,9 +786,9 @@ export const addBoostedTransaction = async ({
  * This resets a given wallet to defaultWalletShape
  */
 export const resetSelectedWallet = async ({
-	selectedWallet = undefined,
+	selectedWallet,
 }: {
-	selectedWallet?: string;
+	selectedWallet?: TWalletName;
 }): Promise<void> => {
 	if (!selectedWallet) {
 		selectedWallet = getSelectedWallet();
@@ -824,9 +824,9 @@ export const setupOnChainTransaction = async ({
 	rbf = true,
 	submitDispatch = true,
 }: {
-	selectedWallet?: string;
+	selectedWallet?: TWalletName;
 	selectedNetwork?: TAvailableNetworks;
-	addressType?: TAddressType; // Preferred address type for change address.
+	addressType?: EAddressType; // Preferred address type for change address.
 	inputTxHashes?: string[]; // Used to pre-specify inputs to use by tx_hash
 	rbf?: boolean; // Enable or disable rbf.
 	submitDispatch?: boolean; //Should we dispatch this and update the store.
@@ -966,7 +966,7 @@ export const updateBitcoinTransaction = async ({
 	selectedNetwork,
 }: {
 	transaction: IBitcoinTransactionData;
-	selectedWallet?: string;
+	selectedWallet?: TWalletName;
 	selectedNetwork?: TAvailableNetworks;
 }): Promise<void> => {
 	try {
@@ -1010,7 +1010,7 @@ export const updateSelectedFeeId = async ({
 	selectedNetwork,
 }: {
 	feeId?: EFeeIds;
-	selectedWallet?: string;
+	selectedWallet?: TWalletName;
 	selectedNetwork?: TAvailableNetworks;
 }): Promise<void> => {
 	try {
@@ -1037,7 +1037,7 @@ export const resetOnChainTransaction = ({
 	selectedWallet,
 	selectedNetwork,
 }: {
-	selectedWallet?: string;
+	selectedWallet?: TWalletName;
 	selectedNetwork?: TAvailableNetworks;
 } = {}): void => {
 	try {
@@ -1060,38 +1060,35 @@ export const resetOnChainTransaction = ({
 };
 
 export const updateSelectedAddressType = ({
-	addressType = EWallet.addressType,
-	selectedWallet = undefined,
-	selectedNetwork = undefined,
+	addressType,
+	selectedWallet,
+	selectedNetwork,
 }: {
-	addressType?: TAddressType;
-	selectedWallet?: string | undefined;
-	selectedNetwork?: TAvailableNetworks | undefined;
+	addressType: EAddressType;
+	selectedWallet?: TWalletName;
+	selectedNetwork?: TAvailableNetworks;
 }): void => {
-	try {
-		if (!selectedNetwork) {
-			selectedNetwork = getSelectedNetwork();
-		}
-		if (!selectedWallet) {
-			selectedWallet = getSelectedWallet();
-		}
+	if (!selectedNetwork) {
+		selectedNetwork = getSelectedNetwork();
+	}
+	if (!selectedWallet) {
+		selectedWallet = getSelectedWallet();
+	}
 
-		const payload = {
+	dispatch({
+		type: actions.UPDATE_SELECTED_ADDRESS_TYPE,
+		payload: {
 			addressType,
 			selectedNetwork,
 			selectedWallet,
-		};
-		dispatch({
-			type: actions.UPDATE_SELECTED_ADDRESS_TYPE,
-			payload,
-		});
-	} catch {}
+		},
+	});
 };
 
 /**
  * Removes the specified input from the current transaction.
  * @param {IUtxo} input
- * @param {string} [selectedWallet]
+ * @param {TWalletName} [selectedWallet]
  * @param {TAvailableNetworks} [selectedNetwork]
  */
 export const removeTxInput = ({
@@ -1100,7 +1097,7 @@ export const removeTxInput = ({
 	selectedNetwork,
 }: {
 	input: IUtxo;
-	selectedWallet?: string;
+	selectedWallet?: TWalletName;
 	selectedNetwork?: TAvailableNetworks;
 }): Result<IUtxo[]> => {
 	try {
@@ -1140,7 +1137,7 @@ export const removeTxInput = ({
 /**
  * Adds a specified input to the current transaction.
  * @param {IUtxo} input
- * @param {string} [selectedWallet]
+ * @param {TWalletName} [selectedWallet]
  * @param {TAvailableNetworks} [selectedNetwork]
  */
 export const addTxInput = ({
@@ -1149,7 +1146,7 @@ export const addTxInput = ({
 	selectedNetwork,
 }: {
 	input: IUtxo;
-	selectedWallet?: string;
+	selectedWallet?: TWalletName;
 	selectedNetwork?: TAvailableNetworks;
 }): Result<IUtxo[]> => {
 	try {
@@ -1185,7 +1182,7 @@ export const addTxInput = ({
 /**
  * Adds a specified tag to the current transaction.
  * @param {string} tag
- * @param {string} [selectedWallet]
+ * @param {TWalletName} [selectedWallet]
  * @param {TAvailableNetworks} [selectedNetwork]
  */
 export const addTxTag = ({
@@ -1194,7 +1191,7 @@ export const addTxTag = ({
 	selectedNetwork,
 }: {
 	tag: string;
-	selectedWallet?: string;
+	selectedWallet?: TWalletName;
 	selectedNetwork?: TAvailableNetworks;
 }): Result<string> => {
 	try {
@@ -1233,7 +1230,7 @@ export const addTxTag = ({
 /**
  * Removes a specified tag to the current transaction.
  * @param {string} tag
- * @param {string} [selectedWallet]
+ * @param {TWalletName} [selectedWallet]
  * @param {TAvailableNetworks} [selectedNetwork]
  */
 export const removeTxTag = ({
@@ -1242,7 +1239,7 @@ export const removeTxTag = ({
 	selectedNetwork,
 }: {
 	tag: string;
-	selectedWallet?: string;
+	selectedWallet?: TWalletName;
 	selectedNetwork?: TAvailableNetworks;
 }): Result<string> => {
 	try {
@@ -1282,7 +1279,7 @@ export const setupFeeForOnChainTransaction = async ({
 	selectedWallet,
 	selectedNetwork,
 }: {
-	selectedWallet?: string;
+	selectedWallet?: TWalletName;
 	selectedNetwork?: TAvailableNetworks;
 } = {}): Promise<Result<string>> => {
 	try {
@@ -1315,7 +1312,7 @@ export const setupFeeForOnChainTransaction = async ({
 /**
  * Saves block header information to storage.
  * @param {IHeader} header
- * @param {TAvailableNetworks} selectedNetwork
+ * @param {TAvailableNetworks} [selectedNetwork]
  */
 export const updateHeader = ({
 	header,
@@ -1350,9 +1347,10 @@ export const resetExchangeRates = (): Result<string> => {
 
 /**
  * Will ensure that both address and change address indexes are set.
- * @param {string} selectedWallet
- * @param {TAvailableNetworks} selectedNetwork
- * @param {TAddressType} addressType
+ * @param {TWalletName} [selectedWallet]
+ * @param {TAvailableNetworks} [selectedNetwork]
+ * @param {EAddressType} [addressType]
+ * @param {TAddressIndexInfo} [addressIndexInfo]
  */
 export const setZeroIndexAddresses = async ({
 	selectedWallet,
@@ -1360,9 +1358,9 @@ export const setZeroIndexAddresses = async ({
 	addressType,
 	addressIndexInfo,
 }: {
-	selectedWallet?: string;
+	selectedWallet?: TWalletName;
 	selectedNetwork?: TAvailableNetworks;
-	addressType?: TAddressType;
+	addressType?: EAddressType;
 	addressIndexInfo?: TAddressIndexInfo;
 }): Promise<Result<string>> => {
 	if (!selectedNetwork) {

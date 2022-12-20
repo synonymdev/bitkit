@@ -1,7 +1,6 @@
 import {
 	IWalletItem,
 	IDefaultWalletShape,
-	EWallet,
 	IWallet,
 	IBitcoinTransactionData,
 	defaultBitcoinTransactionData,
@@ -10,25 +9,26 @@ import {
 	TAssetNetwork,
 	IAddress,
 	IAddressContent,
+	EAddressType,
 } from '../types/wallet';
 import { IHeader } from '../../utils/types/electrum';
 
 export const assetNetworks: TAssetNetwork[] = ['bitcoin', 'lightning'];
 
 export const addressTypes: IAddressTypes = {
-	p2pkh: {
+	[EAddressType.p2pkh]: {
 		path: "m/44'/0'/0'/0/0",
-		type: 'p2pkh',
+		type: EAddressType.p2pkh,
 		label: 'legacy',
 	},
-	p2sh: {
+	[EAddressType.p2sh]: {
 		path: "m/49'/0'/0'/0/0",
-		type: 'p2sh',
+		type: EAddressType.p2sh,
 		label: 'segwit',
 	},
-	p2wpkh: {
+	[EAddressType.p2wpkh]: {
 		path: "m/84'/0'/0'/0/0",
-		type: 'p2wpkh',
+		type: EAddressType.p2wpkh,
 		label: 'bech32',
 	},
 };
@@ -131,7 +131,7 @@ export const header: IHeader = {
 };
 
 export const defaultWalletShape: IDefaultWalletShape = {
-	id: '',
+	id: 'wallet0',
 	name: '',
 	type: 'default',
 	addresses: getAddressesShape(),
@@ -162,20 +162,18 @@ export const defaultWalletShape: IDefaultWalletShape = {
 		bitcoinRegtest: '0',
 	},
 	addressType: {
-		bitcoin: EWallet.addressType,
-		bitcoinTestnet: EWallet.addressType,
-		bitcoinRegtest: EWallet.addressType,
+		bitcoin: EAddressType.p2wpkh,
+		bitcoinTestnet: EAddressType.p2wpkh,
+		bitcoinRegtest: EAddressType.p2wpkh,
 	},
 	rbfData: objectTypeItems,
 	transaction: bitcoinTransaction,
 };
 
 export const defaultWalletStoreShape: IWallet = {
-	loading: true,
 	walletExists: false,
-	error: false,
 	selectedNetwork: 'bitcoin',
-	selectedWallet: EWallet.defaultWallet,
+	selectedWallet: 'wallet0',
 	addressTypes: addressTypes,
 	exchangeRates: {},
 	header: {

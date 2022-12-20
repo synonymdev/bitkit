@@ -21,13 +21,14 @@ import {
 	TCreateLightningInvoice,
 	TLightningNodeVersion,
 } from '../types/lightning';
+import { TWalletName } from '../types/wallet';
 
 const dispatch = getDispatch();
 
 /**
  * Attempts to update the node id for the given wallet and network.
  * @param {string} nodeId
- * @param {string} [selectedWallet]
+ * @param {TWalletName} [selectedWallet]
  * @param {TAvailableNetworks} [selectedNetwork]
  */
 export const updateLightningNodeId = async ({
@@ -36,7 +37,7 @@ export const updateLightningNodeId = async ({
 	selectedNetwork,
 }: {
 	nodeId: string;
-	selectedWallet?: string;
+	selectedWallet?: TWalletName;
 	selectedNetwork?: TAvailableNetworks;
 }): Promise<Result<string>> => {
 	if (!selectedNetwork) {
@@ -66,14 +67,14 @@ export const updateLightningNodeId = async ({
 /**
  * Attempts to update the lightning channels for the given wallet and network.
  * This method will save all channels (both pending, open & closed) to redux and update openChannelIds to reference channels that are currently open.
- * @param {string} [selectedWallet]
+ * @param {TWalletName} [selectedWallet]
  * @param {TAvailableNetworks} [selectedNetwork]
  */
 export const updateLightningChannels = async ({
 	selectedWallet,
 	selectedNetwork,
 }: {
-	selectedWallet?: string;
+	selectedWallet?: TWalletName;
 	selectedNetwork?: TAvailableNetworks;
 }): Promise<Result<TChannel[]>> => {
 	if (!selectedNetwork) {
@@ -190,7 +191,7 @@ export const claimChannel = (
  * @param {string} [description]
  * @param {number} [expiryDeltaSeconds]
  * @param {TAvailableNetworks} [selectedNetwork]
- * @param {string} [selectedWallet]
+ * @param {TWalletName} [selectedWallet]
  */
 export const createLightningInvoice = async ({
 	amountSats,
@@ -234,7 +235,7 @@ export const createLightningInvoice = async ({
 /**
  * Filters out and removes expired invoices from the invoices array
  * @param {TAvailableNetworks} [selectedNetwork]
- * @param {string} [selectedWallet]
+ * @param {TWalletName} [selectedWallet]
  * @returns {Promise<Result<string>>}
  */
 export const removeExpiredLightningInvoices = async ({
@@ -242,7 +243,7 @@ export const removeExpiredLightningInvoices = async ({
 	selectedWallet,
 }: {
 	selectedNetwork?: TAvailableNetworks;
-	selectedWallet?: string;
+	selectedWallet?: TWalletName;
 }): Promise<Result<string>> => {
 	if (!selectedNetwork) {
 		selectedNetwork = getSelectedNetwork();
@@ -265,7 +266,7 @@ export const removeExpiredLightningInvoices = async ({
  * Removes a lightning invoice from the invoices array via its payment hash.
  * @param {string} paymentHash
  * @param {TAvailableNetworks} [selectedNetwork]
- * @param {string} [selectedWallet]
+ * @param {TWalletName} [selectedWallet]
  * @returns {Promise<Result<string>>}
  */
 export const removeLightningInvoice = async ({
@@ -275,7 +276,7 @@ export const removeLightningInvoice = async ({
 }: {
 	paymentHash: string;
 	selectedNetwork?: TAvailableNetworks;
-	selectedWallet?: string;
+	selectedWallet?: TWalletName;
 }): Promise<Result<string>> => {
 	if (!paymentHash) {
 		return err('No payment hash provided.');
@@ -302,7 +303,7 @@ export const removeLightningInvoice = async ({
  * Adds a paid lightning invoice to the payments object for future reference.
  * @param {TInvoice} invoice
  * @param {TAvailableNetworks} [selectedNetwork]
- * @param {string} [selectedWallet]
+ * @param {TWalletName} [selectedWallet]
  * @returns {Result<string>}
  */
 export const addLightningPayment = ({
@@ -312,7 +313,7 @@ export const addLightningPayment = ({
 }: {
 	invoice: TInvoice;
 	selectedNetwork?: TAvailableNetworks;
-	selectedWallet?: string;
+	selectedWallet?: TWalletName;
 }): Result<string> => {
 	if (!invoice) {
 		return err('No payment invoice provided.');
@@ -360,7 +361,7 @@ export const resetLightningStore = (): Result<string> => {
 
 /**
  * Attempts to save a custom lightning peer to storage.
- * @param {string} [selectedWallet]
+ * @param {TWalletName} [selectedWallet]
  * @param {TAvailableNetworks} [selectedNetwork]
  * @param {string} peer
  */
@@ -369,7 +370,7 @@ export const savePeer = ({
 	selectedNetwork,
 	peer,
 }: {
-	selectedWallet?: string;
+	selectedWallet?: TWalletName;
 	selectedNetwork?: TAvailableNetworks;
 	peer: string;
 }): Result<string> => {
@@ -412,7 +413,7 @@ export const updateClaimableBalance = async ({
 	selectedWallet,
 	selectedNetwork,
 }: {
-	selectedWallet?: string;
+	selectedWallet?: TWalletName;
 	selectedNetwork?: TAvailableNetworks;
 }): Promise<Result<string>> => {
 	if (!selectedWallet) {

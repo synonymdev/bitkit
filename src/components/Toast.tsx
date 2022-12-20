@@ -22,7 +22,7 @@ const Toast = ({
 			// fix Toast overlapping with iPhone 14 Dynamic Island
 			...(insets.top > 47 ? { margin: 14 } : {}),
 		}),
-		[insets.bottom],
+		[insets.top],
 	);
 
 	let titleColor = 'white';

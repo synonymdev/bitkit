@@ -30,8 +30,7 @@ const FactsWidget = ({
 	onPressIn?: () => void;
 }): ReactElement => {
 	const [showDialog, setShowDialog] = useState(false);
-	const [fact, setFact] = useState<string | undefined>();
-
+	const [fact, setFact] = useState<string>();
 	const sdk = useSlashtagsSDK();
 
 	useEffect(() => {

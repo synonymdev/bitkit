@@ -21,9 +21,9 @@ import { toggleBiometrics } from '../utils/settings';
 const rnBiometrics = ReactNativeBiometrics;
 
 const getIcon = ({
-	biometryData = undefined,
+	biometryData,
 }: {
-	biometryData: IsSensorAvailableResult | undefined;
+	biometryData?: IsSensorAvailableResult;
 }): ReactElement => {
 	try {
 		if (!biometryData || !biometryData?.available) {

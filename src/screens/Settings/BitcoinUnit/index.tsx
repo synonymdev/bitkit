@@ -5,19 +5,20 @@ import { IListData } from '../../../components/List';
 import SettingsView from '../SettingsView';
 import { updateSettings } from '../../../store/actions/settings';
 import { UnitBitcoinIcon, UnitSatoshiIcon } from '../../../styles/components';
-import type { SettingsScreenProps } from '../../../navigation/types';
 import { bitcoinUnitSelector } from '../../../store/reselect/settings';
+import { EBitcoinUnit } from '../../../store/types/wallet';
+import type { SettingsScreenProps } from '../../../navigation/types';
 
 const bitcoinUnits = [
 	{
 		label: 'Bitcoin',
-		unit: 'BTC',
+		unit: EBitcoinUnit.BTC,
 		labelExample: '(0.0000100)',
 		Icon: UnitBitcoinIcon,
 	},
 	{
 		label: 'Satoshis',
-		unit: 'satoshi',
+		unit: EBitcoinUnit.satoshi,
 		labelExample: '(1 000)',
 		Icon: UnitSatoshiIcon,
 	},

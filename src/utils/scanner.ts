@@ -39,6 +39,7 @@ import {
 } from './networks';
 import { getSlashPayConfig } from '../utils/slashtags';
 import { savePeer } from '../store/actions/lightning';
+import { TWalletName } from '../store/types/wallet';
 
 const availableNetworksList = availableNetworks();
 
@@ -73,7 +74,7 @@ export interface QRData {
 
 export const validateAddress = ({
 	address = '',
-	selectedNetwork = undefined,
+	selectedNetwork,
 }: {
 	address: string;
 	selectedNetwork?: EAvailableNetworks;
@@ -116,7 +117,7 @@ export const validateAddress = ({
  * @param {'mainScanner' | 'sendScanner'} [source]
  * @param {SDK} sdk
  * @param {TAvailableNetworks} [selectedNetwork]
- * @param {string} [selectedWallet]
+ * @param {TWalletName} [selectedWallet]
  */
 export const processInputData = async ({
 	data,
@@ -128,7 +129,7 @@ export const processInputData = async ({
 	data: string;
 	source: 'mainScanner' | 'sendScanner';
 	selectedNetwork?: TAvailableNetworks;
-	selectedWallet?: string;
+	selectedWallet?: TWalletName;
 	sdk: SDK;
 }): Promise<Result<EQRDataType>> => {
 	data = data.trim();
@@ -426,7 +427,7 @@ export const processSlashPayURL = async ({
  * If unable to pay the requested on-chain amount it will return only the on-chain address and set sats to zero.
  * @param {QRData[]} data
  * @param {TAvailableNetworks} [selectedNetwork]
- * @param {string} [selectedWallet]
+ * @param {TWalletName} [selectedWallet]
  */
 export const processBitcoinTransactionData = async ({
 	data = [],
@@ -435,7 +436,7 @@ export const processBitcoinTransactionData = async ({
 }: {
 	data: QRData[];
 	selectedNetwork?: TAvailableNetworks;
-	selectedWallet?: string;
+	selectedWallet?: TWalletName;
 }): Promise<Result<QRData>> => {
 	try {
 		if (!selectedNetwork) {
@@ -543,7 +544,7 @@ export const processBitcoinTransactionData = async ({
 /**
  * This method will handle all actions required for each valid EQRDataType passed as data.
  * @param {QRData} data
- * @param {string} [selectedWallet]
+ * @param {TWalletName} [selectedWallet]
  * @param {TAvailableNetworks} [selectedNetwork]
  */
 export const handleData = async ({
@@ -552,7 +553,7 @@ export const handleData = async ({
 	selectedNetwork,
 }: {
 	data: QRData;
-	selectedWallet?: string;
+	selectedWallet?: TWalletName;
 	selectedNetwork?: TAvailableNetworks;
 }): Promise<Result<EQRDataType>> => {
 	if (!data) {

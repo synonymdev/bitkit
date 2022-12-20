@@ -15,6 +15,7 @@ import {
 	bitcoinUnitSelector,
 	unitPreferenceSelector,
 } from '../../store/reselect/settings';
+import { EBitcoinUnit } from '../../store/types/wallet';
 
 type NumberPadButtons = {
 	color?: keyof IColors;
@@ -39,9 +40,9 @@ const NumberPadButtons = ({
 	// BTC -> satoshi -> fiat
 	const nextUnit = useMemo(() => {
 		if (unitPreference === 'asset') {
-			return bitcoinUnit === 'BTC' ? 'satoshi' : 'fiat';
+			return bitcoinUnit === EBitcoinUnit.BTC ? EBitcoinUnit.satoshi : 'fiat';
 		}
-		return 'BTC';
+		return EBitcoinUnit.BTC;
 	}, [bitcoinUnit, unitPreference]);
 
 	const onChangeUnit = (): void => {

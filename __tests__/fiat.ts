@@ -2,6 +2,7 @@ import { getWalletStore } from '../src/store/helpers';
 import { updateExchangeRates } from '../src/store/actions/wallet';
 import { getDisplayValues } from '../src/utils/exchange-rate';
 import { resetExchangeRates } from '../src/store/actions/wallet';
+import { EBitcoinUnit } from '../src/store/types/wallet';
 
 global.fetch = require('node-fetch');
 
@@ -13,7 +14,7 @@ describe('Pulls latest fiat exchange rates and checks the wallet store for valid
 	it('handles missing exchange rate by returning the correct fiat fallback', () => {
 		const dv = getDisplayValues({
 			satoshis: 1010101,
-			bitcoinUnit: 'mBTC',
+			bitcoinUnit: EBitcoinUnit.mBTC,
 		});
 
 		// expected fiat fallback
@@ -63,7 +64,7 @@ describe('Pulls latest fiat exchange rates and checks the wallet store for valid
 			satoshis: 1010101,
 			exchangeRate: 100000,
 			currency: 'USD',
-			bitcoinUnit: 'BTC',
+			bitcoinUnit: EBitcoinUnit.BTC,
 			locale: 'en-US',
 		});
 
@@ -87,7 +88,7 @@ describe('Pulls latest fiat exchange rates and checks the wallet store for valid
 			exchangeRate: 100000,
 			currency: 'RUB',
 			currencySymbol: '₽',
-			bitcoinUnit: 'satoshi',
+			bitcoinUnit: EBitcoinUnit.satoshi,
 			locale: 'en-US',
 		});
 

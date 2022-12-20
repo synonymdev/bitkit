@@ -1,11 +1,11 @@
 import { IDefaultLightningShape, ILightning } from '../types/lightning';
 import {
 	arrayTypeItems,
+	defaultWalletShape,
 	numberTypeItems,
 	objectTypeItems,
 	stringTypeItems,
 } from './wallet';
-import { EWallet } from '../types/wallet';
 
 export const defaultLightningShape: IDefaultLightningShape = {
 	nodeId: stringTypeItems,
@@ -24,6 +24,6 @@ export const defaultLightningStoreShape: ILightning = {
 		c_bindings: '',
 	},
 	nodes: {
-		[EWallet.defaultWallet]: defaultLightningShape,
+		[defaultWalletShape.id]: defaultLightningShape,
 	},
 };

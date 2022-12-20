@@ -9,6 +9,7 @@ import {
 	IAddressContent,
 	IUtxo,
 	IWalletItem,
+	TWalletName,
 } from '../../store/types/wallet';
 import {
 	getAddressFromScriptPubKey,
@@ -40,7 +41,7 @@ export interface IGetUtxosResponse {
 
 /**
  * Returns utxos for a given wallet and network along with the available balance.
- * @param {string} [selectedWallet]
+ * @param {TWalletName} [selectedWallet]
  * @param {TAvailableNetworks} [selectedNetwork]
  * @param {boolean} [scanAllAddresses]
  */
@@ -49,7 +50,7 @@ export const getUtxos = async ({
 	selectedNetwork,
 	scanAllAddresses = false,
 }: {
-	selectedWallet?: string;
+	selectedWallet?: TWalletName;
 	selectedNetwork?: TAvailableNetworks;
 	scanAllAddresses?: boolean;
 }): Promise<Result<IGetUtxosResponse>> => {
@@ -171,7 +172,7 @@ export interface ISubscribeToAddress {
 /**
  * Subscribes to the next available addressScriptHash.
  * @param {TAvailableNetworks} [selectedNetwork]
- * @param {string} [selectedWallet]
+ * @param {TWalletName} [selectedWallet]
  * @param scriptHashes
  * @param onReceive
  * @return {Promise<Result<string>>}
@@ -183,7 +184,7 @@ export const subscribeToAddresses = async ({
 	onReceive = (): null => null,
 }: {
 	selectedNetwork?: TAvailableNetworks;
-	selectedWallet?: string;
+	selectedWallet?: TWalletName;
 	scriptHashes?: string[];
 	onReceive?: Function;
 }): Promise<Result<string>> => {
@@ -468,7 +469,7 @@ export interface IGetAddressHistoryResponse
  * Returns the available history for the provided address script hashes.
  * @param {IAddressContent[]} [scriptHashes]
  * @param {TAvailableNetworks} [selectedNetwork]
- * @param {string} [selectedWallet]
+ * @param {TWalletName} [selectedWallet]
  * @param {boolean} [scanAllAddresses]
  * @returns {Promise<Result<IGetAddressHistoryResponse[]>>}
  */
@@ -480,7 +481,7 @@ export const getAddressHistory = async ({
 }: {
 	scriptHashes?: IAddressContent[];
 	selectedNetwork?: TAvailableNetworks;
-	selectedWallet?: string;
+	selectedWallet?: TWalletName;
 	scanAllAddresses?: boolean;
 }): Promise<Result<IGetAddressHistoryResponse[]>> => {
 	try {

@@ -36,6 +36,7 @@ import {
 } from '../../store/reselect/wallet';
 import { blocktankServiceSelector } from '../../store/reselect/blocktank';
 import { selectedCurrencySelector } from '../../store/reselect/settings';
+import { EBitcoinUnit } from '../../store/types/wallet';
 
 const Setup = ({ navigation }: TransferScreenProps<'Setup'>): ReactElement => {
 	const balance = useBalance({ onchain: true, lightning: true });
@@ -72,7 +73,7 @@ const Setup = ({ navigation }: TransferScreenProps<'Setup'>): ReactElement => {
 		});
 		const maxSpendingLimit = fiatToBitcoinUnit({
 			fiatValue: convertedUnit.fiatValue,
-			bitcoinUnit: 'satoshi',
+			bitcoinUnit: EBitcoinUnit.satoshi,
 		});
 
 		return Math.min(spendableBalance, maxSpendingLimit);

@@ -8,6 +8,7 @@ import {
 import { createSelector } from '@reduxjs/toolkit';
 import { TAvailableNetworks } from '../../utils/networks';
 import { TChannel } from '@synonymdev/react-native-ldk';
+import { TWalletName } from '../types/wallet';
 
 export const lightningState = (state: Store): ILightning => state.lightning;
 export const nodesState = (state: Store): TNodes => state.lightning.nodes;
@@ -20,7 +21,7 @@ export const lightningSelector = createSelector(
 /**
  * Returns the current lightning balance for a given wallet.
  * @param {Store} state
- * @param {string} selectedWallet
+ * @param {TWalletName} selectedWallet
  * @param {TAvailableNetworks} selectedNetwork
  * @param {boolean} subtractReserveBalance
  * @returns {number}
@@ -28,7 +29,7 @@ export const lightningSelector = createSelector(
 export const lightningBalanceSelector = createSelector(
 	[
 		lightningState,
-		(lightning, selectedWallet: string): string => selectedWallet,
+		(lightning, selectedWallet: TWalletName): TWalletName => selectedWallet,
 		(
 			lightning,
 			selectedWallet,

@@ -7,6 +7,7 @@ import { updateInvoice } from '../../../store/actions/receive';
 import Store from '../../../store/types';
 import { btcToSats } from '../../../utils/helpers';
 import { useExchangeRate } from '../../../hooks/displayValues';
+import { EBitcoinUnit } from '../../../store/types/wallet';
 import {
 	fiatToBitcoinUnit,
 	getDisplayValues,
@@ -113,7 +114,7 @@ const ReceiveNumberPad = ({ onDone }: { onDone: () => void }): ReactElement => {
 			amount = String(
 				fiatToBitcoinUnit({
 					fiatValue: amount,
-					bitcoinUnit: 'satoshi',
+					bitcoinUnit: EBitcoinUnit.satoshi,
 					currency,
 					exchangeRate,
 				}),
@@ -149,7 +150,7 @@ const ReceiveNumberPad = ({ onDone }: { onDone: () => void }): ReactElement => {
 
 			const fiatAmount = fiatToBitcoinUnit({
 				fiatValue: newAmount,
-				bitcoinUnit: 'satoshi',
+				bitcoinUnit: EBitcoinUnit.satoshi,
 				exchangeRate,
 				currency,
 			});
@@ -161,7 +162,7 @@ const ReceiveNumberPad = ({ onDone }: { onDone: () => void }): ReactElement => {
 	};
 
 	const numberPadType =
-		unitPreference === 'asset' && bitcoinUnit === 'satoshi'
+		unitPreference === 'asset' && bitcoinUnit === EBitcoinUnit.satoshi
 			? 'integer'
 			: 'decimal';
 

@@ -8,6 +8,7 @@ import { showSuccessNotification } from '../notifications';
 import { decodeQRData } from '../scanner';
 import { getSelectedNetwork, getSelectedWallet } from '../wallet';
 import { TAvailableNetworks } from '../networks';
+import { TWalletName } from '../../store/types/wallet';
 
 export const readClipboardInvoice = async ({
 	onChainBalance,
@@ -19,7 +20,7 @@ export const readClipboardInvoice = async ({
 	onChainBalance: number;
 	lightningBalance: number;
 	sdk: SDK;
-	selectedWallet?: string;
+	selectedWallet?: TWalletName;
 	selectedNetwork?: TAvailableNetworks;
 }): Promise<void> => {
 	const clipboardData = await Clipboard.getString();

@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 
 import { getDisplayValues, getExchangeRate } from '../utils/exchange-rate';
 import { IDisplayValues } from '../utils/exchange-rate/types';
-import { TBitcoinUnit } from '../store/types/wallet';
+import { EBitcoinUnit } from '../store/types/wallet';
 import {
 	bitcoinUnitSelector,
 	selectedCurrencySelector,
@@ -12,7 +12,7 @@ import { exchangeRatesSelector } from '../store/reselect/wallet';
 
 export default function useDisplayValues(
 	satoshis: number,
-	bitcoinUnit?: TBitcoinUnit,
+	bitcoinUnit?: EBitcoinUnit,
 ): IDisplayValues {
 	const stateUnit = useSelector(bitcoinUnitSelector);
 	const selectedCurrency = useSelector(selectedCurrencySelector);
