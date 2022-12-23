@@ -58,14 +58,11 @@ const WalletsStack = ({
 
 			<TabBar navigation={navigation} />
 
-			{/* only render these when 'Wallets' screen is in focus so timers run correctly */}
-			{isWalletsScreenFocused && (
-				<>
-					<BackupPrompt />
-					<HighBalanceWarning />
-					<AppUpdatePrompt />
-				</>
-			)}
+			{/* Put these here so they appear above the TabBar (zIndex) */}
+			{/* Should only ever show when user is on the main wallet screen */}
+			<BackupPrompt enabled={isWalletsScreenFocused} />
+			<HighBalanceWarning enabled={isWalletsScreenFocused} />
+			<AppUpdatePrompt enabled={isWalletsScreenFocused} />
 		</>
 	);
 };

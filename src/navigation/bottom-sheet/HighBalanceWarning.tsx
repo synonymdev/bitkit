@@ -53,7 +53,11 @@ const aStyles = StyleSheet.create({
 	},
 });
 
-const HighBalanceWarning = (): ReactElement => {
+const HighBalanceWarning = ({
+	enabled,
+}: {
+	enabled: boolean;
+}): ReactElement => {
 	const snapPoints = useSnapPoints('medium');
 	const insets = useSafeAreaInsets();
 	const balance = useBalance({ onchain: true, lightning: true });
@@ -100,12 +104,14 @@ const HighBalanceWarning = (): ReactElement => {
 		const belowMaxWarnings = count < MAX_WARNINGS;
 		const isTimeoutOver = Number(new Date()) - ignoreTimestamp > ASK_INTERVAL;
 		return (
+			enabled &&
 			thresholdReached &&
 			belowMaxWarnings &&
 			isTimeoutOver &&
 			!anyBottomSheetIsOpen
 		);
 	}, [
+		enabled,
 		fiatValue,
 		balance.satoshis,
 		count,

@@ -35,7 +35,7 @@ const appStoreUrl =
 const ASK_INTERVAL = 1000 * 60 * 60 * 12; // 12h - how long this prompt will be hidden if user taps Later
 const CHECK_DELAY = 2500; // how long user needs to stay on Wallets screen before he will see this prompt
 
-const AppUpdatePrompt = (): ReactElement => {
+const AppUpdatePrompt = ({ enabled }: { enabled: boolean }): ReactElement => {
 	const snapPoints = useSnapPoints('large');
 	const insets = useSafeAreaInsets();
 	const viewControllers = useAppSelector(viewControllersSelector);
@@ -64,8 +64,13 @@ const AppUpdatePrompt = (): ReactElement => {
 	// and user on "Wallets" screen for CHECK_DELAY
 	const showBottomSheet = useMemo(() => {
 		const isTimeoutOver = Number(new Date()) - ignoreTimestamp > ASK_INTERVAL;
-		return updateType === 'optional' && isTimeoutOver && !anyBottomSheetIsOpen;
-	}, [updateType, ignoreTimestamp, anyBottomSheetIsOpen]);
+		return (
+			enabled &&
+			updateType === 'optional' &&
+			isTimeoutOver &&
+			!anyBottomSheetIsOpen
+		);
+	}, [enabled, updateType, ignoreTimestamp, anyBottomSheetIsOpen]);
 
 	useEffect(() => {
 		if (!showBottomSheet) {

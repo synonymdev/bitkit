@@ -47,7 +47,7 @@ const handleBackup = (): void => {
 	});
 };
 
-const BackupPrompt = (): ReactElement => {
+const BackupPrompt = ({ enabled }: { enabled: boolean }): ReactElement => {
 	const snapPoints = useSnapPoints('medium');
 	const insets = useSafeAreaInsets();
 	const { satoshis: balance } = useBalance({ onchain: true, lightning: true });
@@ -79,8 +79,14 @@ const BackupPrompt = (): ReactElement => {
 	// and user on "Wallets" screen for CHECK_DELAY
 	const showBottomSheet = useMemo(() => {
 		const isTimeoutOver = Number(new Date()) - ignoreTimestamp > ASK_INTERVAL;
-		return !backupVerified && !empty && isTimeoutOver && !anyBottomSheetIsOpen;
-	}, [backupVerified, empty, ignoreTimestamp, anyBottomSheetIsOpen]);
+		return (
+			enabled &&
+			!backupVerified &&
+			!empty &&
+			isTimeoutOver &&
+			!anyBottomSheetIsOpen
+		);
+	}, [enabled, backupVerified, empty, ignoreTimestamp, anyBottomSheetIsOpen]);
 
 	useEffect(() => {
 		if (!showBottomSheet) {
