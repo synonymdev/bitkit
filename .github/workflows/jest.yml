@@ -11,16 +11,19 @@ on:
 jobs:
   tests:
     name: Run jest unit tests
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
 
     steps:
       - name: Check out Git repository
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 1
 
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 16
+          cache: 'yarn'
 
       - name: Install SSH key
         uses: shimataro/ssh-key-action@v2
