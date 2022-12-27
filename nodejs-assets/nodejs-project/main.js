@@ -1,5 +1,5 @@
 const rn_bridge = require('rn-bridge');
-const { BitcoinActions } = require("./bitcoin-actions");
+const { BitcoinActions } = require('./bitcoin-actions');
 
 const bitcoinActions = new BitcoinActions();
 
@@ -19,9 +19,13 @@ rn_bridge.channel.on('message', (msg) => {
 				rn_bridge.channel.send(JSON.stringify(res));
 			});
 		} else {
-			rn_bridge.channel.send(JSON.stringify({ error: true, data: `Unknown method specified: ${method}` }));
+			rn_bridge.channel.send(
+				JSON.stringify({
+					error: true,
+					data: `Unknown method specified: ${method}`,
+				}),
+			);
 		}
-
 	} catch (e) {
 		rn_bridge.channel.send(e);
 	}

@@ -1,6 +1,5 @@
 import * as electrum from 'rn-electrum-client/helpers';
 import * as peers from 'rn-electrum-client/helpers/peers.json';
-import * as tls from '../electrum/tls';
 
 import { TAvailableNetworks } from '../networks';
 import { err, ok, Result } from '@synonymdev/result';
@@ -665,7 +664,8 @@ export const connectToElectrum = async ({
 	}
 	// @ts-ignore
 	const net = options.net ?? global?.net;
-	const _tls = options.tls ?? tls;
+	// const _tls = options.tls ?? tls;
+	const _tls = options.tls ?? global?.tls;
 
 	//Attempt to disconnect from any old/lingering connections
 	await electrum.stop({ network: selectedNetwork });

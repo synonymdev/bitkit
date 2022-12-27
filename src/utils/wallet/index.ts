@@ -115,66 +115,68 @@ export const refreshWallet = async ({
 	selectedNetwork?: TAvailableNetworks;
 }): Promise<Result<string>> => {
 	try {
-		InteractionManager.runAfterInteractions(async () => {
-			const isConnectedToElectrum = getUiStore().isConnectedToElectrum;
-			if (!selectedWallet) {
-				selectedWallet = getSelectedWallet();
+		// wait for interactions/animations to be completed
+		await new Promise((resolve) =>
+			InteractionManager.runAfterInteractions(() => resolve(null)),
+		);
+		const isConnectedToElectrum = getUiStore().isConnectedToElectrum;
+		if (!selectedWallet) {
+			selectedWallet = getSelectedWallet();
+		}
+		if (!selectedNetwork) {
+			selectedNetwork = getSelectedNetwork();
+		}
+		if (onchain) {
+			let addressType: EAddressType | undefined;
+			if (!updateAllAddressTypes) {
+				addressType = getSelectedAddressType({
+					selectedNetwork,
+					selectedWallet,
+				});
 			}
-			if (!selectedNetwork) {
-				selectedNetwork = getSelectedNetwork();
-			}
-			if (onchain) {
-				let addressType: EAddressType | undefined;
-				if (!updateAllAddressTypes) {
-					addressType = getSelectedAddressType({
-						selectedNetwork,
+			await updateAddressIndexes({
+				selectedWallet,
+				selectedNetwork,
+				addressType,
+			});
+			if (isConnectedToElectrum) {
+				await Promise.all([
+					subscribeToAddresses({
 						selectedWallet,
-					});
-				}
-				await updateAddressIndexes({
-					selectedWallet,
-					selectedNetwork,
-					addressType,
-				});
-				if (isConnectedToElectrum) {
-					await Promise.all([
-						subscribeToAddresses({
-							selectedWallet,
-							selectedNetwork,
-						}),
-						updateUtxos({
-							selectedWallet,
-							selectedNetwork,
-							scanAllAddresses,
-						}),
-						updateTransactions({
-							selectedWallet,
-							selectedNetwork,
-							scanAllAddresses,
-						}),
-					]);
-				}
-
-				updateExchangeRates().then();
+						selectedNetwork,
+					}),
+					updateUtxos({
+						selectedWallet,
+						selectedNetwork,
+						scanAllAddresses,
+					}),
+					updateTransactions({
+						selectedWallet,
+						selectedNetwork,
+						scanAllAddresses,
+					}),
+				]);
 			}
 
-			if (onchain) {
-				await setZeroIndexAddresses({
-					selectedWallet,
-					selectedNetwork,
-				});
-			}
+			updateExchangeRates().then();
+		}
 
-			if (lightning) {
-				await refreshLdk({ selectedWallet, selectedNetwork });
-				await refreshOrdersList();
-			}
+		if (onchain) {
+			await setZeroIndexAddresses({
+				selectedWallet,
+				selectedNetwork,
+			});
+		}
 
-			if (onchain || lightning) {
-				await updateActivityList();
-				await moveMetaIncTxTags();
-			}
-		});
+		if (lightning) {
+			await refreshLdk({ selectedWallet, selectedNetwork });
+			await refreshOrdersList();
+		}
+
+		if (onchain || lightning) {
+			await updateActivityList();
+			await moveMetaIncTxTags();
+		}
 		return ok('');
 	} catch (e) {
 		return err(e);

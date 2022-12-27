@@ -24,7 +24,7 @@ describe('LN URL', () => {
 
 		const params = lnurlRes.value as LNURLAuthParams;
 
-		const keysRes = await deriveLinkingKeys(
+		const keysRes = deriveLinkingKeys(
 			params.domain,
 			EAvailableNetworks.bitcoinTestnet,
 			mnemonic,

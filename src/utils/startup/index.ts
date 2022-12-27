@@ -93,96 +93,98 @@ export const startWalletServices = async ({
 	selectedNetwork?: TAvailableNetworks;
 }): Promise<Result<string>> => {
 	try {
-		InteractionManager.runAfterInteractions(async () => {
-			if (!selectedWallet) {
-				selectedWallet = getSelectedWallet();
-			}
-			if (!selectedNetwork) {
-				selectedNetwork = getSelectedNetwork();
-			}
-			let isConnectedToElectrum = false;
+		// wait for interactions/animations to be completed
+		await new Promise((resolve) =>
+			InteractionManager.runAfterInteractions(() => resolve(null)),
+		);
+		if (!selectedWallet) {
+			selectedWallet = getSelectedWallet();
+		}
+		if (!selectedNetwork) {
+			selectedNetwork = getSelectedNetwork();
+		}
+		let isConnectedToElectrum = false;
 
-			await setupBlocktank(selectedNetwork);
-			await promiseTimeout(2500, refreshBlocktankInfo());
-			updateExchangeRates().then();
+		await setupBlocktank(selectedNetwork);
+		await promiseTimeout(2500, refreshBlocktankInfo());
+		updateExchangeRates().then();
 
-			// Before we do anything we should connect to an Electrum server
-			if (onchain || lightning) {
-				const electrumResponse = await connectToElectrum({ selectedNetwork });
-				if (electrumResponse.isErr()) {
-					// showErrorNotification({
-					// 	title: 'Unable to connect to Electrum Server',
-					// 	message:
-					// 		electrumResponse?.error?.message ??
-					// 		'Unable to connect to Electrum Server',
-					// });
-				} else {
-					isConnectedToElectrum = true;
-					// Ensure the on-chain wallet & LDK syncs when a new block is detected.
-					const onReceive = (): void => {
-						refreshWallet({
-							onchain,
-							lightning,
-							selectedWallet,
-							selectedNetwork,
-						});
-					};
-					// Ensure we are subscribed to and save new header information.
-					subscribeToHeader({ selectedNetwork, onReceive }).then();
-				}
-				updateUser({ isConnectedToElectrum });
-			}
-
-			const mnemonicResponse = await getMnemonicPhrase();
-			if (mnemonicResponse.isErr()) {
-				return err(mnemonicResponse.error.message);
-			}
-			const mnemonic = mnemonicResponse.value;
-
-			const walletExists = getWalletStore()?.walletExists;
-			if (!walletExists) {
-				const bip39Passphrase = await getBip39Passphrase();
-				const createRes = await createWallet({ mnemonic, bip39Passphrase });
-				if (createRes.isErr()) {
-					return err(createRes.error.message);
-				}
-			}
-
-			// Setup LDK
-			if (lightning && isConnectedToElectrum) {
-				const setupResponse = await setupLdk({
-					selectedNetwork,
-					shouldRefreshLdk: false,
-				});
-				if (setupResponse.isOk()) {
-					keepLdkSynced({ selectedNetwork }).then();
-				}
-			}
-
-			if (onchain || lightning) {
-				await Promise.all([
-					updateOnchainFeeEstimates({ selectedNetwork }),
-					// if we restore wallet, we need to generate addresses for all types
+		// Before we do anything we should connect to an Electrum server
+		if (onchain || lightning) {
+			const electrumResponse = await connectToElectrum({ selectedNetwork });
+			if (electrumResponse.isErr()) {
+				// showErrorNotification({
+				// 	title: 'Unable to connect to Electrum Server',
+				// 	message:
+				// 		electrumResponse?.error?.message ??
+				// 		'Unable to connect to Electrum Server',
+				// });
+			} else {
+				isConnectedToElectrum = true;
+				// Ensure the on-chain wallet & LDK syncs when a new block is detected.
+				const onReceive = (): void => {
 					refreshWallet({
-						onchain: isConnectedToElectrum,
-						lightning: isConnectedToElectrum,
-						scanAllAddresses: restore,
-						updateAllAddressTypes: restore,
-					}),
-				]);
+						onchain,
+						lightning,
+						selectedWallet,
+						selectedNetwork,
+					});
+				};
+				// Ensure we are subscribed to and save new header information.
+				subscribeToHeader({ selectedNetwork, onReceive }).then();
 			}
+			updateUser({ isConnectedToElectrum });
+		}
 
-			if (lightning) {
-				await refreshServiceList();
-				watchPendingOrders();
-				removeExpiredLightningInvoices({
-					selectedNetwork,
-				}).then();
+		const mnemonicResponse = await getMnemonicPhrase();
+		if (mnemonicResponse.isErr()) {
+			return err(mnemonicResponse.error.message);
+		}
+		const mnemonic = mnemonicResponse.value;
+
+		const walletExists = getWalletStore()?.walletExists;
+		if (!walletExists) {
+			const bip39Passphrase = await getBip39Passphrase();
+			const createRes = await createWallet({ mnemonic, bip39Passphrase });
+			if (createRes.isErr()) {
+				return err(createRes.error.message);
 			}
+		}
 
-			// Refresh slashpay config
-			updateSlashPayConfig({ sdk, selectedNetwork });
-		});
+		// Setup LDK
+		if (lightning && isConnectedToElectrum) {
+			const setupResponse = await setupLdk({
+				selectedNetwork,
+				shouldRefreshLdk: false,
+			});
+			if (setupResponse.isOk()) {
+				keepLdkSynced({ selectedNetwork }).then();
+			}
+		}
+
+		if (onchain || lightning) {
+			await Promise.all([
+				updateOnchainFeeEstimates({ selectedNetwork }),
+				// if we restore wallet, we need to generate addresses for all types
+				refreshWallet({
+					onchain: isConnectedToElectrum,
+					lightning: isConnectedToElectrum,
+					scanAllAddresses: restore,
+					updateAllAddressTypes: restore,
+				}),
+			]);
+		}
+
+		if (lightning) {
+			await refreshServiceList();
+			watchPendingOrders();
+			removeExpiredLightningInvoices({
+				selectedNetwork,
+			}).then();
+		}
+
+		// Refresh slashpay config
+		updateSlashPayConfig({ sdk, selectedNetwork });
 
 		return ok('Wallet started');
 	} catch (e) {

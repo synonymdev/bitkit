@@ -40,6 +40,41 @@ On Android Emulator:
 yarn android
 ```
 
+## Testing
+
+Bitkit uses two types of testing: unit and end-to-end (E2E) tests.
+
+### 1. Unit tests
+
+Before running unit tests, you need to install Docker and run bitcoind and the electrum server in regtest mode. You can do this by using the docker-compose.yml file from the **tests** directory:
+
+```sh
+cd __tests__
+docker compose up
+```
+
+After that, you are ready to run the tests:
+
+```sh
+yarn test
+```
+
+### 2. End-to-end (E2E) tests
+
+End-to-end tests are powered by [Detox](https://github.com/wix/Detox). Currently, only the iOS Simulator is supported.
+
+To build the tests:
+
+```shell
+yarn e2e:build:ios-release
+```
+
+To run them:
+
+```shell
+yarn e2e:test:ios-release
+```
+
 ## Troubleshooting
 
 When running into issues there are a couple things to check.

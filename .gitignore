@@ -78,3 +78,7 @@ android/app/pepk.jar
 # sublime
 *.sublime-project
 *.sublime-workspace
+
+# tests
+coverage/
+__tests__/bitcoin_datadir/

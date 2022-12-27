@@ -1,0 +1,55 @@
+version: '3'
+services:
+  bitcoind:
+    restart: unless-stopped
+    container_name: btcpayserver_bitcoind
+    image: btcpayserver/bitcoin:24.0.1
+    environment:
+      BITCOIN_NETWORK: ${NBITCOIN_NETWORK:-regtest}
+      CREATE_WALLET: 'true'
+      BITCOIN_WALLETDIR: '/walletdata'
+      BITCOIN_EXTRA_ARGS: |
+        rpcport=43782
+        rpcbind=0.0.0.0:43782
+        rpcallowip=0.0.0.0/0
+        port=39388
+        whitelist=0.0.0.0/0
+        maxmempool=500
+        rpcauth=electrumx:7d8ee47c089e6072635f82b34796e878$$13649d99453ccdf78e85007286422599c00e6953289f41bf8e92961076ba14db
+        txindex=1
+    expose:
+      - '43782'
+      - '39388'
+    ports:
+      - '43782:43782'
+      - '39388:39388'
+    volumes:
+      - './bitcoin_datadir:/data'
+      - 'bitcoin_wallet_datadir:/walletdata'
+
+  electrs:
+    image: getumbrel/electrs:v0.9.9
+    restart: unless-stopped
+    depends_on:
+      - bitcoind
+    expose:
+      - '60001'
+    ports:
+      - '60001:60001'
+    volumes:
+      - './bitcoin_datadir:/data/.bitcoin'
+      - 'electrs_datadir:/data'
+    environment:
+      - ELECTRS_NETWORK=regtest
+      - ELECTRS_ELECTRUM_RPC_ADDR=electrs:60001
+      - ELECTRS_DAEMON_RPC_ADDR=bitcoind:43782
+      - ELECTRS_DAEMON_P2P_ADDR=bitcoind:39388
+      - ELECTRS_LOG_FILTERS=INFO
+
+volumes:
+  bitcoin_datadir:
+  bitcoin_wallet_datadir:
+  electrumx_datadir:
+  electrs_datadir:
+
+networks: {}

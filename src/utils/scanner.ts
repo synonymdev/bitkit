@@ -199,6 +199,14 @@ export const processInputData = async ({
 				return err(response.error.message);
 			}
 
+			if (!Array.isArray(response.value) || response.value.length === 0) {
+				showErrorNotification({
+					title: 'Unable To Pay to this slashtag',
+					message: 'Remote slashpay profile is empty',
+				});
+				return err('Remote slashpay profile is empty');
+			}
+
 			const processBitcoinTxResponse = await processBitcoinTransactionData({
 				data: response.value,
 				selectedWallet,
