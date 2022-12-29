@@ -1,11 +1,11 @@
 import React, { ReactElement, memo, useMemo, useState } from 'react';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import {
 	StyleSheet,
 	TouchableOpacity,
 	View,
 	GestureResponderEvent,
 } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { View as ThemedView } from '../../styles/components';
 import { Caption13M } from '../../styles/text';
@@ -18,7 +18,15 @@ import FilterAccessory from '../../components/FilterAccessory';
 import Tag from '../../components/Tag';
 import useColors from '../../hooks/colors';
 import { EPaymentType } from '../../store/types/wallet';
+import DetectSwipe from '../../components/DetectSwipe';
 import type { WalletScreenProps } from '../../navigation/types';
+
+const tabs = [
+	{ name: 'All', filter: {} },
+	{ name: 'Sent', filter: { txType: EPaymentType.sent } },
+	{ name: 'Received', filter: { txType: EPaymentType.received } },
+	{ name: 'Instant', filter: { types: ['lightning'] } },
+];
 
 const Tab = ({
 	text,
@@ -44,53 +52,41 @@ const Tab = ({
 	);
 };
 
-const filterTabs = {
-	all: {},
-	sent: { txType: EPaymentType.sent },
-	received: { txType: EPaymentType.received },
-	instant: { types: ['lightning'] },
-};
-
-const filterTabsLabels = {
-	all: 'All',
-	sent: 'Sent',
-	received: 'Received',
-	instant: 'Instant',
-};
-
 const ActivityFiltered = ({
 	navigation,
 }: WalletScreenProps<'ActivityFiltered'>): ReactElement => {
-	const [tab, setTab] = useState<string>('all');
-	const [search, setSearch] = useState<string>('');
-	const [tags, setTags] = useState<Array<string>>([]);
-	const filter = useMemo(
-		() => ({ ...filterTabs[tab], search, tags }),
-		[tab, search, tags],
-	);
 	const insets = useSafeAreaInsets();
 	const [radiusContainerHeight, setRadiusContainerHeight] = useState(0);
-	const activityPadding = useMemo(
-		() => ({ paddingTop: radiusContainerHeight, paddingBottom: insets.bottom }),
-		[radiusContainerHeight, insets.bottom],
-	);
+	const [currentTab, setCurrentTab] = useState(0);
+	const [search, setSearch] = useState('');
+	const [tags, setTags] = useState<string[]>([]);
+
+	const filter = useMemo(() => {
+		return { ...tabs[currentTab].filter, search, tags };
+	}, [currentTab, search, tags]);
+
+	const activityPadding = useMemo(() => {
+		return { paddingTop: radiusContainerHeight, paddingBottom: insets.bottom };
+	}, [radiusContainerHeight, insets.bottom]);
 
 	const addTag = (tag): void => setTags((t) => [...t, tag]);
 	const removeTag = (tag): void => setTags((t) => t.filter((x) => x !== tag));
 
+	const onSwipeLeft = (): void => {
+		if (currentTab < tabs.length - 1) {
+			setCurrentTab((prevState) => prevState + 1);
+		}
+	};
+
+	const onSwipeRight = (): void => {
+		if (currentTab > 0) {
+			setCurrentTab((prevState) => prevState - 1);
+		}
+	};
+
 	return (
 		<>
 			<ThemedView style={styles.container}>
-				<View style={styles.txListContainer}>
-					<ActivityList
-						style={styles.txList}
-						showTitle={false}
-						contentContainerStyle={activityPadding}
-						progressViewOffset={radiusContainerHeight + 10}
-						filter={filter}
-					/>
-				</View>
-
 				<View
 					style={styles.radiusContainer}
 					onLayout={(e): void => {
@@ -122,18 +118,30 @@ const ActivityFiltered = ({
 								)}
 							</SearchInput>
 							<View style={styles.tabContainer}>
-								{Object.entries(filterTabsLabels).map(([key, label]) => (
+								{tabs.map((tab, index) => (
 									<Tab
-										key={key}
-										text={label}
-										active={tab === key}
-										onPress={(): void => setTab(key)}
+										key={tab.name}
+										text={tab.name}
+										active={currentTab === index}
+										onPress={(): void => setCurrentTab(index)}
 									/>
 								))}
 							</View>
 						</View>
 					</BlurView>
 				</View>
+
+				<DetectSwipe onSwipeLeft={onSwipeLeft} onSwipeRight={onSwipeRight}>
+					<View style={styles.txListContainer}>
+						<ActivityList
+							style={styles.txList}
+							showTitle={false}
+							contentContainerStyle={activityPadding}
+							progressViewOffset={radiusContainerHeight + 10}
+							filter={filter}
+						/>
+					</View>
+				</DetectSwipe>
 			</ThemedView>
 			<FilterAccessory tags={tags} addTag={addTag} />
 		</>
@@ -148,6 +156,7 @@ const styles = StyleSheet.create({
 		overflow: 'hidden',
 		borderBottomRightRadius: 16,
 		borderBottomLeftRadius: 16,
+		zIndex: 1,
 	},
 	txListContainer: {
 		flex: 1,
