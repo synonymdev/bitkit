@@ -20,7 +20,7 @@ import {
 	ICreateWallet,
 	IDefaultWallet,
 	IDefaultWalletShape,
-	IFormattedTransaction,
+	IFormattedTransactions,
 	IKeyDerivationPath,
 	IBitcoinTransactionData,
 	IOutput,
@@ -1351,7 +1351,7 @@ export const getOnChainTransactions = ({
 }: {
 	selectedWallet: string;
 	selectedNetwork: TAvailableNetworks;
-}): IFormattedTransaction => {
+}): IFormattedTransactions => {
 	if (!selectedWallet) {
 		selectedWallet = getSelectedWallet();
 	}
@@ -1359,7 +1359,7 @@ export const getOnChainTransactions = ({
 		selectedNetwork = getSelectedNetwork();
 	}
 	return (
-		getWalletStore()?.wallets[selectedWallet]?.transactions[selectedNetwork] ??
+		getWalletStore().wallets[selectedWallet]?.transactions[selectedNetwork] ??
 		{}
 	);
 };
@@ -1470,7 +1470,7 @@ export const formatTransactions = async ({
 	selectedNetwork?: TAvailableNetworks;
 	selectedWallet?: TWalletName;
 	transactions: ITransaction<IUtxo>[];
-}): Promise<Result<IFormattedTransaction>> => {
+}): Promise<Result<IFormattedTransactions>> => {
 	if (transactions.length < 1) {
 		return ok({});
 	}
@@ -1540,7 +1540,7 @@ export const formatTransactions = async ({
 		}),
 	]);
 
-	let formattedTransactions: IFormattedTransaction = {};
+	const formattedTransactions: IFormattedTransactions = {};
 
 	transactions.map(({ data, result }) => {
 		let totalInputValue = 0; // Total value of all inputs.
@@ -1605,6 +1605,7 @@ export const formatTransactions = async ({
 		const value = Number(totalMatchedValue.toFixed(8));
 		const totalValue = totalInputValue - totalOutputValue;
 		const fee = Number(Math.abs(totalValue).toFixed(8));
+		const satsPerByte = btcToSats(fee) / result.vsize;
 		const { address, height, scriptHash } = data;
 		let timestamp = Date.now();
 
@@ -1621,6 +1622,7 @@ export const formatTransactions = async ({
 			totalOutputValue,
 			matchedOutputValue,
 			fee,
+			satsPerByte,
 			type,
 			value,
 			txid,
@@ -1742,10 +1744,9 @@ export const getRbfData = async ({
 	if (txResponse.isErr()) {
 		return err(txResponse.error.message);
 	}
-	const txData: ITransaction<ITxHash>[] = txResponse.value?.data ?? [];
+	const txData = txResponse.value.data;
 
 	const wallet = getWalletStore();
-
 	const addresses = wallet.wallets[selectedWallet].addresses[selectedNetwork];
 	const changeAddresses =
 		wallet.wallets[selectedWallet].changeAddresses[selectedNetwork];

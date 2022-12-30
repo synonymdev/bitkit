@@ -5,9 +5,9 @@ import {
 	IAddressContent,
 	IAddressTypes,
 	IBitcoinTransactionData,
-	IBoostedTransaction,
+	IBoostedTransactions,
 	IDefaultWalletShape,
-	IFormattedTransaction,
+	IFormattedTransactions,
 	IFormattedTransactionContent,
 	IUtxo,
 	IWallet,
@@ -24,7 +24,7 @@ export const walletsState = (
 ): { [key: TWalletName]: IDefaultWalletShape } => state.wallet.wallets;
 export const exchangeRatesState = (state: Store): IExchangeRates =>
 	state.wallet.exchangeRates;
-export const selectedWalletState = (state: Store): string =>
+export const selectedWalletState = (state: Store): TWalletName =>
 	state.wallet.selectedWallet;
 export const selectedNetworkState = (state: Store): TAvailableNetworks =>
 	state.wallet.selectedNetwork;
@@ -91,7 +91,7 @@ export const exchangeRatesSelector = createSelector([walletState], (wallet) => {
  */
 export const transactionsSelector = createSelector(
 	[walletState],
-	(wallet): IFormattedTransaction => {
+	(wallet): IFormattedTransactions => {
 		const selectedWallet = wallet.selectedWallet;
 		const selectedNetwork = wallet.selectedNetwork;
 		return wallet.wallets[selectedWallet].transactions[selectedNetwork] || {};
@@ -168,11 +168,11 @@ export const transactionMaxSelector = createSelector(
 /**
  * Returns boosted transactions for the currently selected wallet & network.
  * @param {Store} state
- * @returns {IBoostedTransaction}
+ * @returns {IBoostedTransactions}
  */
 export const boostedTransactionsSelector = createSelector(
 	[walletState],
-	(wallet): IBoostedTransaction => {
+	(wallet): IBoostedTransactions => {
 		const selectedWallet = wallet.selectedWallet;
 		const selectedNetwork = wallet.selectedNetwork;
 		return (
@@ -191,7 +191,7 @@ export const unconfirmedTransactionsSelector = createSelector(
 	(wallet): IFormattedTransactionContent[] => {
 		const selectedWallet = wallet.selectedWallet;
 		const selectedNetwork = wallet.selectedNetwork;
-		const transactions: IFormattedTransaction =
+		const transactions: IFormattedTransactions =
 			wallet.wallets[selectedWallet].transactions[selectedNetwork] || {};
 		return Object.values(transactions).filter((tx) => tx.height < 1);
 	},

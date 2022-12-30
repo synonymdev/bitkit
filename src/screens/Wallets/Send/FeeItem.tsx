@@ -21,14 +21,14 @@ import { FeeText } from '../../../store/shapes/fees';
 
 const FeeItem = ({
 	id,
-	isSelected,
 	sats,
+	isSelected = false,
 	onPress,
 }: {
 	id: EFeeIds;
 	sats: number;
-	isSelected: boolean;
-	onPress: (event: GestureResponderEvent) => void;
+	isSelected?: boolean;
+	onPress?: (event: GestureResponderEvent) => void;
 }): ReactElement => {
 	const colors = useColors();
 	const { title, description } = FeeText[id];
@@ -55,7 +55,7 @@ const FeeItem = ({
 				onPress={onPress}
 				style={[
 					styles.root,
-					isSelected ? { backgroundColor: colors.white08 } : null,
+					isSelected && { backgroundColor: colors.white08 },
 				]}>
 				<View style={styles.imageContainer}>{icon}</View>
 

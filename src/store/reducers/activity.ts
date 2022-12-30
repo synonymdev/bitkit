@@ -8,33 +8,44 @@ const activity = (
 	action,
 ): IActivity => {
 	switch (action.type) {
-		case actions.ADD_ACTIVITY_ITEM:
-			return {
-				...state,
-				items: [action.payload, ...state.items],
-			};
-		case actions.UPDATE_ACTIVITY_ENTRIES:
+		case actions.UPDATE_ACTIVITY_ENTRIES: {
 			const items = mergeActivityItems(state.items, action.payload);
+
 			return {
 				...state,
 				items,
 			};
-		case actions.REPLACE_ACTIVITY_ITEM:
-			const replacedItems = state.items.map((activityItem) => {
+		}
+
+		case actions.ADD_ACTIVITY_ITEM: {
+			return {
+				...state,
+				items: [action.payload, ...state.items],
+			};
+		}
+
+		case actions.UPDATE_ACTIVITY_ITEM: {
+			const newItems = state.items.map((activityItem) => {
 				if (activityItem.id === action.payload.id) {
-					return action.payload.newActivityItem;
+					return { ...activityItem, ...action.payload.data };
 				} else {
 					return activityItem;
 				}
 			});
+
 			return {
 				...state,
-				items: replacedItems,
+				items: newItems,
 			};
-		case actions.RESET_ACTIVITY_STORE:
+		}
+
+		case actions.RESET_ACTIVITY_STORE: {
 			return defaultActivityShape;
-		default:
+		}
+
+		default: {
 			return state;
+		}
 	}
 };
 

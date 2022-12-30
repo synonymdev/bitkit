@@ -1,5 +1,5 @@
 import { TAssetNetwork } from './wallet';
-import { IActivityItem } from './activity';
+import { TOnchainActivityItem } from './activity';
 
 export type TViewController =
 	| 'appUpdatePrompt'
@@ -28,7 +28,7 @@ export interface IViewControllerData {
 	id?: string;
 	asset?: string;
 	assetNetwork?: TAssetNetwork;
-	activityItem?: IActivityItem;
+	activityItem?: TOnchainActivityItem;
 	txid?: string;
 	showLaterButton?: boolean;
 	url?: string;

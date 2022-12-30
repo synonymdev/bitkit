@@ -1,12 +1,12 @@
-import Store from '../types';
 import { createSelector } from '@reduxjs/toolkit';
+import Store from '../types';
 import { IActivity, IActivityItem } from '../types/activity';
-import { defaultActivityItemShape } from '../shapes/activity';
 
 const activityState = (state: Store): IActivity => state.activity;
 
-const activityItemsState = (state: Store): IActivityItem[] =>
-	state.activity.items;
+export const activityItemsState = (state: Store): IActivityItem[] => {
+	return state.activity.items;
+};
 
 export const activityItemsSelector = createSelector(
 	[activityState],
@@ -22,11 +22,9 @@ export const activityItemsSelector = createSelector(
 export const activityItemSelector = createSelector(
 	[
 		activityItemsState,
-		(activityItems, activityId?: string): string => activityId ?? '',
+		(_activityItems, activityId: string): string => activityId,
 	],
 	(activityItems, activityId): IActivityItem | undefined => {
-		return activityItems.find(
-			(item) => item?.id === activityId ?? defaultActivityItemShape,
-		);
+		return activityItems.find((item) => item.id === activityId);
 	},
 );

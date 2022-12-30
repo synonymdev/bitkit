@@ -35,9 +35,10 @@ const Result = ({
 	const animationRef = useRef<Lottie>(null);
 	const selectedWallet = useSelector(selectedWalletSelector);
 	const selectedNetwork = useSelector(selectedNetworkSelector);
-	const activityItem = useSelector((state: Store) =>
-		activityItemSelector(state, txId),
-	);
+	const activityItem = useSelector((state: Store) => {
+		// TODO: make sure txId is always defined
+		return activityItemSelector(state, txId ?? '');
+	});
 
 	const buttonContainer = useMemo(
 		() => ({
@@ -71,13 +72,13 @@ const Result = ({
 				data: { isOpen: false },
 			});
 			navigate('ActivityDetail', {
-				activityItem,
+				id: activityItem.id,
 				extended: true,
 			});
 		}
 	};
 
-	const navigateToSend = async (): Promise<void> => {
+	const onContinue = async (): Promise<void> => {
 		if (success) {
 			toggleView({
 				view: 'sendNavigation',
@@ -152,7 +153,7 @@ const Result = ({
 					style={styles.button2}
 					size="large"
 					text={success ? 'Close' : 'Try Again'}
-					onPress={navigateToSend}
+					onPress={onContinue}
 				/>
 			</View>
 		</GradientView>

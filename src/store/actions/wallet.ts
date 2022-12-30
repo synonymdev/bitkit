@@ -4,12 +4,12 @@ import {
 	IAddress,
 	IAddressContent,
 	ICreateWallet,
-	IFormattedTransaction,
+	IFormattedTransactions,
 	IKeyDerivationPath,
 	IBitcoinTransactionData,
 	IUtxo,
 	EAddressType,
-	IBoostedTransaction,
+	IBoostedTransactions,
 	EBoost,
 	TWalletName,
 } from '../types/wallet';
@@ -26,7 +26,6 @@ import {
 	getSelectedAddressType,
 	getSelectedNetwork,
 	getSelectedWallet,
-	ITransaction,
 	refreshWallet,
 	removeDuplicateAddresses,
 } from '../../utils/wallet';
@@ -576,7 +575,7 @@ export interface ITransactionData {
 	value: number;
 }
 
-export const updateTransactions = ({
+export const updateTransactions = async ({
 	selectedWallet,
 	selectedNetwork,
 	scanAllAddresses = false,
@@ -584,107 +583,101 @@ export const updateTransactions = ({
 	selectedWallet?: TWalletName;
 	selectedNetwork?: TAvailableNetworks;
 	scanAllAddresses?: boolean;
-}): Promise<Result<IFormattedTransaction>> => {
-	return new Promise(async (resolve) => {
-		if (!selectedNetwork) {
-			selectedNetwork = getSelectedNetwork();
-		}
-		if (!selectedWallet) {
-			selectedWallet = getSelectedWallet();
-		}
-		const { currentWallet } = getCurrentWallet({
-			selectedWallet,
-			selectedNetwork,
-		});
-
-		const history = await getAddressHistory({
-			selectedNetwork,
-			selectedWallet,
-			scanAllAddresses,
-		});
-
-		if (history.isErr()) {
-			return resolve(err(history.error.message));
-		}
-
-		if (!history?.value?.length) {
-			return resolve(ok({}));
-		}
-
-		const getTransactionsResponse = await getTransactions({
-			txHashes: history.value || [],
-			selectedNetwork,
-		});
-		if (getTransactionsResponse.isErr()) {
-			return resolve(err(getTransactionsResponse.error.message));
-		}
-		let transactions: ITransaction<ITransactionData>[] =
-			getTransactionsResponse.value.data;
-
-		if (!Array.isArray(transactions)) {
-			return resolve(ok({}));
-		}
-
-		const formatTransactionsResponse = await formatTransactions({
-			selectedNetwork,
-			selectedWallet,
-			transactions,
-		});
-		if (formatTransactionsResponse.isErr()) {
-			return resolve(err(formatTransactionsResponse.error.message));
-		}
-		const formattedTransactions: IFormattedTransaction = {};
-
-		const storedTransactions = currentWallet.transactions[selectedNetwork];
-
-		let notificationTxid: string | undefined;
-
-		Object.keys(formatTransactionsResponse.value).forEach((txid) => {
-			//If the tx is new or the tx now has a block height (state changed to confirmed)
-			if (
-				!storedTransactions[txid] ||
-				storedTransactions[txid].height !==
-					formatTransactionsResponse.value[txid].height
-			) {
-				formattedTransactions[txid] = formatTransactionsResponse.value[txid];
-			}
-
-			// if the tx is new incoming - show notification
-			if (
-				!storedTransactions[txid] &&
-				formatTransactionsResponse.value[txid].type === EPaymentType.received
-			) {
-				notificationTxid = txid;
-			}
-		});
-
-		//No new or updated transactions
-		if (!Object.keys(formattedTransactions)?.length) {
-			return resolve(ok(storedTransactions));
-		}
-
-		const payload = {
-			transactions: formattedTransactions,
-			selectedNetwork,
-			selectedWallet,
-		};
-		await dispatch({
-			type: actions.UPDATE_TRANSACTIONS,
-			payload,
-		});
-		if (notificationTxid) {
-			toggleView({
-				view: 'newTxPrompt',
-				data: {
-					isOpen: true,
-					txid: notificationTxid,
-				},
-			});
-		}
-
-		updateSlashPayConfig({ sdk, selectedWallet, selectedNetwork });
-		return resolve(ok(formattedTransactions));
+}): Promise<Result<IFormattedTransactions>> => {
+	if (!selectedNetwork) {
+		selectedNetwork = getSelectedNetwork();
+	}
+	if (!selectedWallet) {
+		selectedWallet = getSelectedWallet();
+	}
+	const { currentWallet } = getCurrentWallet({
+		selectedWallet,
+		selectedNetwork,
 	});
+
+	const history = await getAddressHistory({
+		selectedNetwork,
+		selectedWallet,
+		scanAllAddresses,
+	});
+	if (history.isErr()) {
+		return err(history.error.message);
+	}
+	if (!history.value.length) {
+		return ok({});
+	}
+
+	const getTransactionsResponse = await getTransactions({
+		txHashes: history.value,
+		selectedNetwork,
+	});
+	if (getTransactionsResponse.isErr()) {
+		return err(getTransactionsResponse.error.message);
+	}
+	const transactions = getTransactionsResponse.value.data;
+
+	const formatTransactionsResponse = await formatTransactions({
+		selectedNetwork,
+		selectedWallet,
+		transactions,
+	});
+	if (formatTransactionsResponse.isErr()) {
+		return err(formatTransactionsResponse.error.message);
+	}
+	const formattedTransactions: IFormattedTransactions = {};
+	const storedTransactions = currentWallet.transactions[selectedNetwork];
+
+	let notificationTxid: string | undefined;
+
+	Object.keys(formatTransactionsResponse.value).forEach((txid) => {
+		//If the tx is new or the tx now has a block height (state changed to confirmed)
+		if (
+			!storedTransactions[txid] ||
+			storedTransactions[txid].height !==
+				formatTransactionsResponse.value[txid].height
+		) {
+			formattedTransactions[txid] = formatTransactionsResponse.value[txid];
+		}
+
+		// if the tx is new incoming - show notification
+		if (
+			!storedTransactions[txid] &&
+			formatTransactionsResponse.value[txid].type === EPaymentType.received
+		) {
+			notificationTxid = txid;
+		}
+	});
+
+	//No new or updated transactions
+	if (!Object.keys(formattedTransactions).length) {
+		return ok(storedTransactions);
+	}
+
+	const payload = {
+		transactions: formattedTransactions,
+		selectedNetwork,
+		selectedWallet,
+	};
+	dispatch({
+		type: actions.UPDATE_TRANSACTIONS,
+		payload,
+	});
+	if (notificationTxid) {
+		toggleView({
+			view: 'newTxPrompt',
+			data: {
+				isOpen: true,
+				txid: notificationTxid,
+			},
+		});
+		toggleView({
+			view: 'receiveNavigation',
+			data: { isOpen: false },
+		});
+	}
+
+	updateSlashPayConfig({ sdk, selectedWallet, selectedNetwork });
+	return ok(formattedTransactions);
 };
 
 /**
@@ -761,7 +754,7 @@ export const addBoostedTransaction = async ({
 			boostedTransactions,
 		});
 		parentTransactions.push(oldTxId);
-		const boostedTransaction: IBoostedTransaction = {
+		const boostedTransaction: IBoostedTransactions = {
 			[oldTxId]: {
 				parentTransactions: parentTransactions,
 				childTransaction: newTxId,
@@ -795,9 +788,7 @@ export const resetSelectedWallet = async ({
 	}
 	await dispatch({
 		type: actions.RESET_SELECTED_WALLET,
-		payload: {
-			selectedWallet,
-		},
+		payload: { selectedWallet },
 	});
 	await createWallet({ walletName: selectedWallet });
 	await refreshWallet({});

@@ -53,7 +53,10 @@ import { promiseTimeout, reduceValue, sleep } from '../helpers';
 import { broadcastTransaction } from '../wallet/transactions';
 import RNFS from 'react-native-fs';
 import { EmitterSubscription, InteractionManager } from 'react-native';
-import { EActivityTypes, IActivityItem } from '../../store/types/activity';
+import {
+	EActivityType,
+	TLightningActivityItem,
+} from '../../store/types/activity';
 import { addActivityItem } from '../../store/actions/activity';
 import {
 	EPaymentType,
@@ -293,15 +296,17 @@ export const handleLightningPaymentSubscription = async ({
 	});
 	if (invoice.isOk()) {
 		const value = payment.amount_sat;
-		let activityItem: IActivityItem = {
+		let activityItem: TLightningActivityItem = {
 			id: invoice.value.payment_hash,
-			message: invoice?.value.description ?? '',
-			address: invoice.value.to_str,
-			activityType: EActivityTypes.lightning,
+			activityType: EActivityType.lightning,
 			txType: EPaymentType.received,
+			txId: invoice.value.payment_hash,
+			message: invoice.value.description ?? '',
+			address: invoice.value.to_str,
 			value,
-			confirmed: true,
-			fee: 0,
+			// TODO: show fee?
+			// fee: 0,
+			// feeRate: 0,
 			timestamp: new Date().getTime(),
 		};
 		addActivityItem(activityItem);
@@ -316,6 +321,10 @@ export const handleLightningPaymentSubscription = async ({
 				isOpen: true,
 				txid: invoice.value.payment_hash,
 			},
+		});
+		toggleView({
+			view: 'receiveNavigation',
+			data: { isOpen: false },
 		});
 		await refreshLdk({ selectedWallet, selectedNetwork });
 		updateSlashPayConfig({ sdk, selectedWallet, selectedNetwork });
@@ -1066,15 +1075,17 @@ export const payLightningInvoice = async (
 		if (sats) {
 			value = sats;
 		}
-		let activityItem: IActivityItem = {
+		let activityItem: TLightningActivityItem = {
 			id: decodedInvoice.value.payment_hash,
+			activityType: EActivityType.lightning,
+			txType: EPaymentType.sent,
+			txId: decodedInvoice.value.payment_hash,
 			message: decodedInvoice?.value.description ?? '',
 			address: invoice,
-			activityType: EActivityTypes.lightning,
-			txType: EPaymentType.sent,
 			value: -value,
-			confirmed: true,
-			fee: payResponse.value.fee_paid_sat,
+			// TODO: show fee?
+			// fee: payResponse.value.fee_paid_sat,
+			// feeRate: 0,
 			timestamp: new Date().getTime(),
 		};
 		addActivityItem(activityItem);

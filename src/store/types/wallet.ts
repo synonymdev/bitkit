@@ -190,13 +190,15 @@ export interface IFormattedTransactionContent {
 	totalOutputValue: number;
 	matchedOutputValue: number;
 	fee: number;
+	satsPerByte: number;
 	type: EPaymentType;
 	value: number;
 	txid: string;
 	messages: string[];
 	timestamp: number;
 }
-export interface IFormattedTransaction {
+
+export interface IFormattedTransactions {
 	[key: string]: IFormattedTransactionContent;
 }
 
@@ -240,12 +242,14 @@ export const defaultBitcoinTransactionData: IBitcoinTransactionData = {
 };
 
 export interface IBoostedTransaction {
-	[key: string]: {
-		parentTransactions: string[]; // Array of parent txids to the currently boosted transaction.
-		childTransaction: string; // Child txid of the currently boosted transaction.
-		type: EBoost;
-		fee: number;
-	};
+	parentTransactions: string[]; // Array of parent txids to the currently boosted transaction.
+	childTransaction: string; // Child txid of the currently boosted transaction.
+	type: EBoost;
+	fee: number;
+}
+
+export interface IBoostedTransactions {
+	[key: string]: IBoostedTransaction;
 }
 
 export interface IDefaultWalletShape {
@@ -260,8 +264,8 @@ export interface IDefaultWalletShape {
 	changeAddressIndex: IWalletItem<IAddressTypeContent<IAddressContent>>;
 	lastUsedChangeAddressIndex: IWalletItem<IAddressTypeContent<IAddressContent>>;
 	utxos: IWalletItem<IUtxo[]>;
-	boostedTransactions: IWalletItem<IBoostedTransaction> | IWalletItem<{}>;
-	transactions: IWalletItem<IFormattedTransaction> | IWalletItem<{}>;
+	boostedTransactions: IWalletItem<IBoostedTransactions> | IWalletItem<{}>;
+	transactions: IWalletItem<IFormattedTransactions> | IWalletItem<{}>;
 	blacklistedUtxos: IWalletItem<[]>;
 	balance: IWalletItem<number>;
 	lastUpdated: IWalletItem<number>;

@@ -35,6 +35,7 @@ export interface IColors {
 	white8: string;
 	white32: string;
 	red16: string;
+	orange16: string;
 	green16: string;
 	blue03: string;
 	black5: string;
@@ -98,6 +99,7 @@ const colors: IColors = {
 	white8: 'rgba(255, 255, 255, 0.8)',
 	white32: 'rgba(255, 255, 255, 0.32)',
 	red16: 'rgba(233, 81, 100, 0.16)',
+	orange16: 'rgba(247, 147, 26, 0.16)',
 	green16: 'rgba(117, 191, 114, 0.16)',
 	blue03: 'rgba(0, 133, 255, 0.3)',
 	black5: 'rgba(0, 0, 0, 0.5)',

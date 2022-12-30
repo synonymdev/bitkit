@@ -1,4 +1,5 @@
 import { PersistedState } from 'redux-persist';
+import { defaultActivityShape } from '../shapes/activity';
 import { defaultTodosShape } from '../shapes/todos';
 import { defaultViewControllers } from '../shapes/ui';
 
@@ -54,6 +55,12 @@ const migrations = {
 		return {
 			...state,
 			todos: defaultTodosShape,
+		};
+	},
+	6: (state): PersistedState => {
+		return {
+			...state,
+			activity: defaultActivityShape,
 		};
 	},
 };

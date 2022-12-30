@@ -1,151 +1,259 @@
-import React, { memo, ReactElement } from 'react';
+import React, { memo, ReactElement, ReactNode } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { useSelector } from 'react-redux';
 
 import { TouchableOpacity, View as ThemedView } from '../../styles/components';
 import { Caption13M, Text01M } from '../../styles/text';
-import { HeartbeatIcon, ReceiveIcon, SendIcon } from '../../styles/icons';
+import {
+	HeartbeatIcon,
+	ReceiveIcon,
+	SendIcon,
+	TimerIconAlt,
+	TransferIcon,
+} from '../../styles/icons';
 import Money from '../../components/Money';
 import ProfileImage from '../../components/ProfileImage';
-import { IActivityItem } from '../../store/types/activity';
-import Store from '../../store/types';
+import {
+	EActivityType,
+	IActivityItemFormatted,
+	TLightningActivityItemFormatted,
+	TOnchainActivityItemFormatted,
+} from '../../store/types/activity';
+import { useAppSelector } from '../../hooks/redux';
 import { useProfile } from '../../hooks/slashtags';
+import { useFeeText } from '../../hooks/fees';
 import { EPaymentType } from '../../store/types/wallet';
 import { slashTagsUrlSelector } from '../../store/reselect/metadata';
 
-const Avatar = ({ url }: { url: string }): ReactElement => {
-	const { profile } = useProfile(url);
-	return <ProfileImage url={url} image={profile?.image} size={32} />;
+export const ListItem = ({
+	title,
+	description,
+	amount,
+	icon,
+	isSend,
+}: {
+	title: string;
+	description: string;
+	icon: ReactNode;
+	amount?: number;
+	isSend?: boolean;
+}): ReactElement => (
+	<>
+		<View style={styles.columnLeft}>
+			{icon}
+			<View>
+				<Text01M>{title}</Text01M>
+				<Caption13M style={styles.description} color="gray1" numberOfLines={1}>
+					{description}
+				</Caption13M>
+			</View>
+		</View>
+
+		{amount ? (
+			<View style={styles.columnRight}>
+				<Money
+					style={styles.value}
+					sats={amount}
+					enableHide={true}
+					size="text01m"
+					sign={isSend ? '-' : '+'}
+					highlight={true}
+				/>
+				<Money
+					style={styles.value}
+					sats={amount}
+					enableHide={true}
+					size="caption13M"
+					showFiat={true}
+					color="gray1"
+				/>
+			</View>
+		) : null}
+	</>
+);
+
+const OnchainListItem = ({
+	item,
+	icon,
+}: {
+	item: TOnchainActivityItemFormatted;
+	icon: JSX.Element;
+}): ReactElement => {
+	const {
+		txType,
+		value,
+		feeRate,
+		confirmed,
+		isBoosted,
+		isTransfer,
+		formattedDate,
+	} = item;
+	const { shortRange: feeRateDescription } = useFeeText(feeRate);
+
+	// TODO: check if transfer to savings or spending.
+	const isTransferringToSavings = false;
+
+	const isSend = txType === EPaymentType.sent;
+
+	let title = isSend ? 'Sent' : 'Received';
+	let description = confirmed
+		? formattedDate
+		: `Confirms in ${feeRateDescription}`;
+
+	if (isBoosted && !confirmed) {
+		description = `Boosting. ${description}`;
+		icon = (
+			<ThemedView style={styles.icon} color="yellow16">
+				<TimerIconAlt height={13} color="yellow" />
+			</ThemedView>
+		);
+	}
+
+	if (isTransfer) {
+		title = 'Transfer';
+
+		if (isTransferringToSavings) {
+			description = 'Moving to Savings';
+			icon = (
+				<ThemedView style={styles.icon} color="orange16">
+					<TransferIcon height={13} color="orange" />
+				</ThemedView>
+			);
+		} else {
+			description = 'Moved to Spending Balance';
+			icon = (
+				<ThemedView style={styles.icon} color="purple16">
+					<TransferIcon height={13} color="purple" />
+				</ThemedView>
+			);
+		}
+	}
+
+	return (
+		<ListItem
+			title={title}
+			description={description}
+			amount={value}
+			icon={icon}
+			isSend={isSend}
+		/>
+	);
+};
+
+const LightningListItem = ({
+	item,
+	icon,
+}: {
+	item: TLightningActivityItemFormatted;
+	icon: JSX.Element;
+}): ReactElement => {
+	const { txType, value, message, formattedDate } = item;
+	const title = txType === EPaymentType.sent ? 'Sent' : 'Received';
+	const description = message || formattedDate;
+	const isSend = txType === EPaymentType.sent;
+
+	return (
+		<ListItem
+			title={title}
+			description={description}
+			icon={icon}
+			amount={value}
+			isSend={isSend}
+		/>
+	);
 };
 
 export const EmptyItem = ({
 	onPress,
 }: {
 	onPress: () => void;
-}): ReactElement => (
-	<TouchableOpacity onPress={onPress} style={styles.root}>
-		<View style={styles.item}>
-			<View style={styles.col1}>
-				<ThemedView color="yellow16" style={styles.iconCircle}>
-					<HeartbeatIcon height={16} color="yellow" />
-				</ThemedView>
+}): ReactElement => {
+	const title = 'No Activity Yet';
+	const description = 'Receive some funds to get started';
+	const icon = (
+		<ThemedView color="yellow16" style={styles.icon}>
+			<HeartbeatIcon height={16} color="yellow" />
+		</ThemedView>
+	);
 
-				<View style={styles.col1text}>
-					<Text01M>No Activity Yet</Text01M>
-					<Caption13M
-						color="gray1"
-						style={styles.description}
-						numberOfLines={1}>
-						Receive some funds to get started
-					</Caption13M>
-				</View>
-			</View>
-		</View>
-	</TouchableOpacity>
-);
+	return (
+		<TouchableOpacity style={styles.root} onPress={onPress}>
+			<ListItem title={title} description={description} icon={icon} />
+		</TouchableOpacity>
+	);
+};
 
-const ListItem = ({
+const Avatar = ({ url }: { url: string }): ReactElement => {
+	const { profile } = useProfile(url);
+	return <ProfileImage url={url} image={profile.image} size={32} />;
+};
+
+const ActivityListItem = ({
 	item,
 	onPress,
 }: {
-	item: IActivityItem & { formattedDate: string };
+	item: IActivityItemFormatted;
 	onPress: () => void;
 }): ReactElement => {
-	const { id, txType, value, message, formattedDate } = item;
-	const slashTagsUrl = useSelector((state: Store) =>
-		slashTagsUrlSelector(state, id),
+	const { id, activityType, txType } = item;
+	const profileUrl = useAppSelector((state) => slashTagsUrlSelector(state, id));
+	const isSend = txType === EPaymentType.sent;
+
+	const icon = profileUrl ? (
+		<Avatar url={profileUrl} />
+	) : (
+		<ThemedView style={styles.icon} color={isSend ? 'red16' : 'green16'}>
+			{isSend ? (
+				<SendIcon height={13} color="red" />
+			) : (
+				<ReceiveIcon height={13} color="green" />
+			)}
+		</ThemedView>
 	);
 
-	const title = txType === EPaymentType.sent ? 'Sent' : 'Received';
-
 	return (
-		<TouchableOpacity onPress={onPress} style={styles.root}>
-			<View style={styles.item}>
-				<View style={styles.col1}>
-					{slashTagsUrl ? (
-						<Avatar url={slashTagsUrl} />
-					) : (
-						<ThemedView
-							color={txType === EPaymentType.sent ? 'red16' : 'green16'}
-							style={styles.iconCircle}>
-							{txType === EPaymentType.sent ? (
-								<SendIcon height={13} color="red" />
-							) : (
-								<ReceiveIcon height={13} color="green" />
-							)}
-						</ThemedView>
-					)}
-
-					<View style={styles.col1text}>
-						<Text01M>{title}</Text01M>
-						<Caption13M
-							color="gray1"
-							style={styles.description}
-							numberOfLines={1}>
-							{message || formattedDate}
-						</Caption13M>
-					</View>
-				</View>
-				<View style={styles.col2}>
-					<Money
-						sats={value}
-						enableHide={true}
-						size="text01m"
-						style={styles.value}
-						sign={txType === EPaymentType.sent ? '-' : '+'}
-						highlight={true}
-					/>
-					<Money
-						sats={value}
-						enableHide={true}
-						size="caption13M"
-						style={styles.value}
-						showFiat={true}
-						color="gray1"
-					/>
-				</View>
-			</View>
+		<TouchableOpacity style={styles.root} onPress={onPress}>
+			{activityType === EActivityType.onchain && (
+				<OnchainListItem item={item} icon={icon} />
+			)}
+			{activityType === EActivityType.lightning && (
+				<LightningListItem item={item} icon={icon} />
+			)}
 		</TouchableOpacity>
 	);
 };
 
 const styles = StyleSheet.create({
 	root: {
+		borderBottomColor: 'rgba(255, 255, 255, 0.1)',
+		borderBottomWidth: 1,
 		paddingBottom: 16,
 		marginBottom: 16,
-		borderBottomWidth: 1,
-		borderBottomColor: 'rgba(255, 255, 255, 0.1)',
-	},
-	item: {
 		flexDirection: 'row',
 		justifyContent: 'space-between',
 		alignItems: 'center',
-		backgroundColor: 'transparent',
 	},
-	col1: {
+	columnLeft: {
 		flexDirection: 'row',
 		alignItems: 'center',
 	},
-	col1text: {
-		marginLeft: 16,
-	},
-	col2: {
+	columnRight: {
 		justifyContent: 'flex-end',
 	},
-	iconCircle: {
+	icon: {
 		borderRadius: 20,
 		width: 32,
 		height: 32,
 		justifyContent: 'center',
 		alignItems: 'center',
-	},
-	value: {
-		justifyContent: 'flex-end',
+		marginRight: 16,
 	},
 	description: {
 		marginTop: 4,
 		overflow: 'hidden',
 	},
+	value: {
+		justifyContent: 'flex-end',
+	},
 });
 
-export default memo(ListItem);
+export default memo(ActivityListItem);

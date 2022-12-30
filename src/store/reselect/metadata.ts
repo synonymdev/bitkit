@@ -14,7 +14,7 @@ export const tagsSelector = createSelector(
 	(metadata): TTags => metadata.tags,
 );
 export const tagSelector = createSelector(
-	[metadataState, (metadata, id: string): string => id],
+	[metadataState, (_metadata, id: string): string => id],
 	(metadata, id): string[] => metadata.tags[id] ?? [],
 );
 export const lastUsedTagsSelector = createSelector(
@@ -26,8 +26,8 @@ export const slashTagsUrlsSelector = createSelector(
 	(metadata): TSlashTagsUrls => metadata?.slashTagsUrls,
 );
 export const slashTagsUrlSelector = createSelector(
-	[metadataState, (metadata, id: string): string => id],
-	(metadata, id): string => {
+	[metadataState, (_metadata, id: string): string => id],
+	(metadata, id): string | undefined => {
 		return metadata.slashTagsUrls[id];
 	},
 );

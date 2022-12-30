@@ -5,7 +5,6 @@ import React, {
 	useState,
 	useMemo,
 } from 'react';
-import { useNavigation } from '@react-navigation/native';
 import {
 	FlatList,
 	NativeScrollEvent,
@@ -15,29 +14,21 @@ import {
 	ViewStyle,
 } from 'react-native';
 import { useSelector } from 'react-redux';
+import { useNavigation } from '@react-navigation/native';
 
-import { View, RefreshControl } from '../../styles/components';
-import { Caption13Up, Subtitle } from '../../styles/text';
+import { RefreshControl } from '../../styles/components';
+import { Caption13Up, Subtitle, Text01S } from '../../styles/text';
 import { refreshWallet } from '../../utils/wallet';
 import { groupActivityItems, filterActivityItems } from '../../utils/activity';
 import ListItem from './ListItem';
 import { RootNavigationProp } from '../../navigation/types';
-import { formatBoostedActivityItems } from '../../utils/boost';
-import {
-	boostedTransactionsSelector,
-	selectedNetworkSelector,
-	selectedWalletSelector,
-} from '../../store/reselect/wallet';
 import { activityItemsSelector } from '../../store/reselect/activity';
 import { tagsSelector } from '../../store/reselect/metadata';
+import type { IActivityItemFormatted } from '../../store/types/activity';
 
 const ListHeaderComponent = memo(
 	(): ReactElement => {
-		return (
-			<View style={styles.header} color={'transparent'}>
-				<Subtitle>Activity</Subtitle>
-			</View>
-		);
+		return <Subtitle style={styles.title}>Activity</Subtitle>;
 	},
 	() => true,
 );
@@ -48,7 +39,7 @@ const ActivityList = ({
 	contentContainerStyle,
 	progressViewOffset,
 	showTitle = true,
-	filter,
+	filter = {},
 }: {
 	onScroll?: (event: NativeSyntheticEvent<NativeScrollEvent>) => void;
 	style?: StyleProp<ViewStyle>;
@@ -58,35 +49,21 @@ const ActivityList = ({
 	filter?: {};
 }): ReactElement => {
 	const navigation = useNavigation<RootNavigationProp>();
-	const selectedWallet = useSelector(selectedWalletSelector);
-	const selectedNetwork = useSelector(selectedNetworkSelector);
-	const boostedTransactions = useSelector(boostedTransactionsSelector);
 	const items = useSelector(activityItemsSelector);
 	const tags = useSelector(tagsSelector);
-	const formattedBoostItems = useMemo(() => {
-		return formatBoostedActivityItems({
-			items,
-			boostedTransactions,
-			selectedWallet,
-			selectedNetwork,
-		});
-	}, [boostedTransactions, items, selectedNetwork, selectedWallet]);
-	const groupedItems = useMemo(() => {
-		// If a filter is applied, pass all items through. Otherwise, remove boosted txs.
-		const activityItems = filterActivityItems(
-			formattedBoostItems,
-			tags,
-			filter ?? {},
-		);
-		// group items by categories: today, yesterday, this month, this year, earlier
-		// and attach to them formattedDate
-		return groupActivityItems(activityItems);
-	}, [filter, formattedBoostItems, tags]);
-
 	const [refreshing, setRefreshing] = useState(false);
 
+	const groupedItems = useMemo(() => {
+		// Apply search filter
+		const filterItems = filterActivityItems(items, tags, filter);
+		// Group items by categories: today, yesterday, this month, this year, earlier
+		// and attach to them formattedDate
+		return groupActivityItems(filterItems);
+	}, [filter, items, tags]);
+
 	const renderItem = useCallback(
-		({ item }): ReactElement => {
+		// eslint-disable-next-line react/no-unused-prop-types
+		({ item }: { item: string | IActivityItemFormatted }): ReactElement => {
 			if (typeof item === 'string') {
 				return (
 					<Caption13Up color="gray1" style={styles.category} key={item}>
@@ -99,9 +76,9 @@ const ActivityList = ({
 				<ListItem
 					key={item.id}
 					item={item}
-					onPress={(): void =>
-						navigation.navigate('ActivityDetail', { activityItem: item })
-					}
+					onPress={(): void => {
+						navigation.navigate('ActivityDetail', { id: item.id });
+					}}
 				/>
 			);
 		},
@@ -110,7 +87,6 @@ const ActivityList = ({
 
 	const onRefresh = async (): Promise<void> => {
 		setRefreshing(true);
-		//Refresh wallet
 		await refreshWallet({});
 		setRefreshing(false);
 	};
@@ -122,9 +98,9 @@ const ActivityList = ({
 			contentContainerStyle={contentContainerStyle}
 			data={groupedItems}
 			renderItem={renderItem}
-			keyExtractor={(item): string =>
-				typeof item === 'string' ? item : item.id
-			}
+			keyExtractor={(item): string => {
+				return typeof item === 'string' ? item : item.id;
+			}}
 			refreshControl={
 				<RefreshControl
 					refreshing={refreshing}
@@ -133,6 +109,7 @@ const ActivityList = ({
 				/>
 			}
 			ListHeaderComponent={showTitle ? ListHeaderComponent : undefined}
+			ListEmptyComponent={<Text01S color="gray1">No activity yet</Text01S>}
 		/>
 	);
 };
@@ -145,7 +122,7 @@ const styles = StyleSheet.create({
 	category: {
 		marginBottom: 16,
 	},
-	header: {
+	title: {
 		marginBottom: 23,
 	},
 });

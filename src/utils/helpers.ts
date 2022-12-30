@@ -134,6 +134,10 @@ export const btcToSats = (balance: number): number => {
 	}
 };
 
+export const satsToBtc = (balance: number): number => {
+	return bitcoinUnits(balance, 'sats').to('BTC').value();
+};
+
 export const getLastWordInString = (phrase = ''): string => {
 	try {
 		const n = phrase.split(' ');

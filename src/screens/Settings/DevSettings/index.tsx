@@ -1,8 +1,8 @@
 import React, { memo, ReactElement, useMemo, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { DISABLE_SLASHTAGS } from '@env';
 
 import actions from '../../../store/actions/actions';
-import { EItemType, IListData } from '../../../components/List';
 import {
 	clearUtxos,
 	resetSelectedWallet,
@@ -12,16 +12,17 @@ import { resetUserStore } from '../../../store/actions/user';
 import { resetActivityStore } from '../../../store/actions/activity';
 import { resetLightningStore } from '../../../store/actions/lightning';
 import { resetBlocktankStore } from '../../../store/actions/blocktank';
-import SettingsView from './../SettingsView';
 import { resetSlashtagsStore } from '../../../store/actions/slashtags';
 import { resetWidgetsStore } from '../../../store/actions/widgets';
 import { resetFeesStore } from '../../../store/actions/fees';
 import { resetTodos } from '../../../store/actions/todos';
 import { resetUiStore } from '../../../store/actions/ui';
 import { resetSettingsStore, wipeApp } from '../../../store/actions/settings';
-import type { SettingsScreenProps } from '../../../navigation/types';
 import { selectedWalletSelector } from '../../../store/reselect/wallet';
-import { DISABLE_SLASHTAGS } from '@env';
+import { resetMetaStore } from '../../../store/actions/metadata';
+import { EItemType, IListData } from '../../../components/List';
+import SettingsView from './../SettingsView';
+import type { SettingsScreenProps } from '../../../navigation/types';
 
 const DevSettings = ({
 	navigation,
@@ -69,6 +70,11 @@ const DevSettings = ({
 						title: 'Reset Lightning Store',
 						type: EItemType.button,
 						onPress: resetLightningStore,
+					},
+					{
+						title: 'Reset Metadata Store',
+						type: EItemType.button,
+						onPress: resetMetaStore,
 					},
 					{
 						title: 'Reset Fees Store',

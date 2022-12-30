@@ -11,6 +11,7 @@ const releaseUrl = 'https://api.github.com/repos/synonymdev/bitkit/releases';
 
 const dispatch = getDispatch();
 
+// TODO: improve typing for each view type
 export const toggleView = (payload: {
 	view: TViewController;
 	data: IViewControllerData;

@@ -6,7 +6,6 @@ import {
 	TouchableOpacity,
 	View,
 } from 'react-native';
-import { useSelector } from 'react-redux';
 import { useFocusEffect } from '@react-navigation/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Lottie from 'lottie-react-native';
@@ -16,16 +15,16 @@ import { ClockIcon } from '../../styles/icons';
 import BottomSheetWrapper from '../../components/BottomSheetWrapper';
 import Glow from '../../components/Glow';
 import AmountToggle from '../../components/AmountToggle';
-import Store from '../../store/types';
 import { toggleView } from '../../store/actions/ui';
 import BottomSheetNavigationHeader from '../../components/BottomSheetNavigationHeader';
 import { navigate } from '../../navigation/root/RootNavigator';
+import { useAppSelector } from '../../hooks/redux';
 import {
 	useBottomSheetBackPress,
 	useSnapPoints,
 } from '../../hooks/bottomSheet';
 import { viewControllerSelector } from '../../store/reselect/ui';
-import { useAppSelector } from '../../hooks/redux';
+import { EActivityType } from '../../store/types/activity';
 
 const confettiSrc = require('../../assets/lottie/confetti-orange.json');
 const imageSrc = require('../../assets/illustrations/coin-stack-x.png');
@@ -46,9 +45,9 @@ const NewTxPrompt = (): ReactElement => {
 	const { txid } = useAppSelector((state) =>
 		viewControllerSelector(state, 'newTxPrompt'),
 	);
-	const activityItem = useSelector((store: Store) =>
-		store.activity.items.find(({ id }) => id === txid),
-	);
+	const activityItem = useAppSelector((store) => {
+		return store.activity.items.find(({ id }) => id === txid);
+	});
 
 	useBottomSheetBackPress('newTxPrompt');
 
@@ -71,9 +70,11 @@ const NewTxPrompt = (): ReactElement => {
 				view: 'newTxPrompt',
 				data: { isOpen: false },
 			});
-			navigate('ActivityDetail', { activityItem });
+			navigate('ActivityDetail', { id: activityItem.id });
 		}
 	};
+
+	const isOnchainItem = activityItem?.activityType === EActivityType.onchain;
 
 	return (
 		<BottomSheetWrapper
@@ -108,7 +109,7 @@ const NewTxPrompt = (): ReactElement => {
 					</View>
 
 					<TouchableOpacity style={buttonContainerStyles} onPress={handlePress}>
-						{!activityItem?.confirmed && (
+						{isOnchainItem && !activityItem?.confirmed && (
 							<>
 								<ClockIcon color="gray1" />
 								<Text02M color="gray1" style={styles.confirmingText}>

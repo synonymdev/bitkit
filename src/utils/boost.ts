@@ -1,19 +1,18 @@
 import { getSelectedNetwork, getSelectedWallet } from './wallet';
+import { TAvailableNetworks } from './networks';
 import { getActivityStore, getWalletStore } from '../store/helpers';
+import { IActivityItem, TOnchainActivityItem } from '../store/types/activity';
 import {
 	EBoost,
-	IBoostedTransaction,
+	IBoostedTransactions,
 	TWalletName,
 } from '../store/types/wallet';
-import { TAvailableNetworks } from './networks';
-import { EActivityTypes, IActivityItem } from '../store/types/activity';
-import { defaultActivityItemShape } from '../store/shapes/activity';
 
 /**
  * Returns boosted transactions object.
  * @param {TWalletName} [selectedWallet]
  * @param {TAvailableNetworks} [selectedNetwork]
- * @returns {IBoostedTransaction}
+ * @returns {IBoostedTransactions}
  */
 export const getBoostedTransactions = ({
 	selectedWallet,
@@ -21,7 +20,7 @@ export const getBoostedTransactions = ({
 }: {
 	selectedWallet?: TWalletName;
 	selectedNetwork?: TAvailableNetworks;
-}): IBoostedTransaction => {
+}): IBoostedTransactions => {
 	if (!selectedWallet) {
 		selectedWallet = getSelectedWallet();
 	}
@@ -36,7 +35,7 @@ export const getBoostedTransactions = ({
 /**
  * Returns an array of parents for a boosted transaction id.
  * @param {string} txid
- * @param {IBoostedTransaction} [boostedTransactions]
+ * @param {IBoostedTransactions} [boostedTransactions]
  * @param {TWalletName} [selectedWallet]
  * @param {TAvailableNetworks} [selectedNetwork]
  * @returns {string[]}
@@ -48,7 +47,7 @@ export const getBoostedTransactionParents = ({
 	selectedNetwork,
 }: {
 	txid: string;
-	boostedTransactions?: IBoostedTransaction;
+	boostedTransactions?: IBoostedTransactions;
 	selectedWallet?: TWalletName;
 	selectedNetwork?: TAvailableNetworks;
 }): string[] => {
@@ -64,31 +63,30 @@ export const getBoostedTransactionParents = ({
 			selectedNetwork,
 		});
 	}
-	const boostObj = Object.values(boostedTransactions).filter((boostObject) => {
+	const boostObj = Object.values(boostedTransactions).find((boostObject) => {
 		return boostObject.childTransaction === txid;
 	});
-	if (boostObj.length) {
-		return boostObj[0]?.parentTransactions ?? [];
-	}
-	return [];
+
+	return boostObj?.parentTransactions ?? [];
 };
 
 /**
  * Determines if a given transaction was boosted via it's txid.
- * @param {string} [txid]
- * @param {IBoostedTransaction} [boostedTransactions]
+ * CURRENTLY UNUSED
+ * @param {string} txid
+ * @param {IBoostedTransactions} [boostedTransactions]
  * @param {TWalletName} [selectedWallet]
  * @param {TAvailableNetworks} [selectedNetwork]
  * @returns {boolean}
  */
 export const isTransactionBoosted = ({
-	txid = '',
+	txid,
 	boostedTransactions,
 	selectedWallet,
 	selectedNetwork,
 }: {
-	txid?: string;
-	boostedTransactions?: IBoostedTransaction;
+	txid: string;
+	boostedTransactions?: IBoostedTransactions;
 	selectedWallet?: TWalletName;
 	selectedNetwork?: TAvailableNetworks;
 }): boolean => {
@@ -110,19 +108,19 @@ export const isTransactionBoosted = ({
 /**
  * Determines if a given txid has any boosted parents.
  * @param {string} [txid]
- * @param {IBoostedTransaction} [boostedTransactions]
+ * @param {IBoostedTransactions} [boostedTransactions]
  * @param {TWalletName} [selectedWallet]
  * @param {TAvailableNetworks} [selectedNetwork]
  * @returns {boolean}
  */
 export const hasBoostedParents = ({
-	txid = '',
+	txid,
 	boostedTransactions,
 	selectedWallet,
 	selectedNetwork,
 }: {
-	txid?: string;
-	boostedTransactions?: IBoostedTransaction;
+	txid: string;
+	boostedTransactions?: IBoostedTransactions;
 	selectedWallet?: TWalletName;
 	selectedNetwork?: TAvailableNetworks;
 }): boolean => {
@@ -149,23 +147,24 @@ export const hasBoostedParents = ({
  * Returns the initially boosted transaction's activity item for a given txid.
  * @param {string} [txid]
  * @param {IActivityItem[]} [items]
- * @param {IBoostedTransaction} [boostedTransactions]
+ * @param {IBoostedTransactions} [boostedTransactions]
  * @param {TWalletName} [selectedWallet]
  * @param {TAvailableNetworks} [selectedNetwork]
+ * @returns {TOnchainActivityItem|undefined}
  */
 export const getRootParentActivity = ({
-	txid = '',
-	items = [],
+	txid,
+	items,
 	boostedTransactions,
 	selectedWallet,
 	selectedNetwork,
 }: {
-	txid?: string;
-	items?: IActivityItem[];
-	boostedTransactions?: IBoostedTransaction;
+	txid: string;
+	items: TOnchainActivityItem[];
+	boostedTransactions?: IBoostedTransactions;
 	selectedWallet?: TWalletName;
 	selectedNetwork?: TAvailableNetworks;
-}): IActivityItem | undefined => {
+}): TOnchainActivityItem | undefined => {
 	if (!boostedTransactions) {
 		if (!selectedWallet) {
 			selectedWallet = getSelectedWallet();
@@ -185,15 +184,13 @@ export const getRootParentActivity = ({
 	if (!boostedParents.length) {
 		return undefined;
 	}
-	const filteredItem = items.filter((i) => i.id === boostedParents[0]);
-	if (!filteredItem.length) {
-		return undefined;
-	}
-	return filteredItem[0];
+	const filteredItem = items.find((item) => item.txId === boostedParents[0]);
+	return filteredItem;
 };
 
 /**
  * Returns an array of activity items for the provided array of parent txids.
+ * CURRENTLY UNUSED
  * @param {string[]} [parents]
  * @param {IActivityItem[]} [items]
  */
@@ -211,51 +208,34 @@ export const getParentsActivity = ({
 };
 
 /**
- * This method will parse through and re-calculate boosted transaction values.
- * @param {IActivityItem[]} [items]
- * @param {IBoostedTransaction} [boostedTransactions]
+ * Loop through activity items and format them to be displayed as boosted if applicable.
+ * @param {TOnchainActivityItem[]} [items]
+ * @param {IBoostedTransactions} [boostedTransactions]
  * @param {TWalletName} [selectedWallet]
  * @param {TAvailableNetworks} [selectedNetwork]
+ * @returns {TOnchainActivityItem[]}
  */
 export const formatBoostedActivityItems = ({
-	items = [],
+	items,
 	boostedTransactions,
 	selectedWallet,
 	selectedNetwork,
 }: {
-	items?: IActivityItem[];
-	boostedTransactions?: IBoostedTransaction;
-	selectedWallet?: TWalletName;
-	selectedNetwork?: TAvailableNetworks;
-}): IActivityItem[] => {
-	let activityItems: IActivityItem[] = [];
-	if (!boostedTransactions || !items) {
-		if (!selectedWallet) {
-			selectedWallet = getSelectedWallet();
-		}
-		if (!selectedNetwork) {
-			selectedNetwork = getSelectedNetwork();
-		}
-		if (!boostedTransactions) {
-			boostedTransactions = getBoostedTransactions({
-				selectedWallet,
-				selectedNetwork,
-			});
-		}
-		if (!items) {
-			items = getActivityStore().items;
-		}
-	}
-	items.map((currentActivityItem) => {
-		if (currentActivityItem.activityType !== EActivityTypes.onChain) {
-			activityItems.push(currentActivityItem);
+	items: TOnchainActivityItem[];
+	boostedTransactions: IBoostedTransactions;
+	selectedWallet: TWalletName;
+	selectedNetwork: TAvailableNetworks;
+}): TOnchainActivityItem[] => {
+	const formattedItems: TOnchainActivityItem[] = [];
+
+	items.forEach((item) => {
+		const txid = item.id;
+
+		// if boosted tx don't add for now
+		if (item.id in boostedTransactions) {
 			return;
 		}
-		// @ts-ignore
-		if (currentActivityItem.id in boostedTransactions) {
-			return;
-		}
-		const txid = currentActivityItem.id;
+
 		const rootParent = getRootParentActivity({
 			txid,
 			items,
@@ -264,57 +244,65 @@ export const formatBoostedActivityItems = ({
 			selectedNetwork,
 		});
 
-		if (!rootParent?.id) {
-			activityItems.push(currentActivityItem);
+		// if we can't find a parent tx leave as is
+		if (!rootParent) {
+			formattedItems.push(item);
 			return;
 		}
 
-		// @ts-ignore
-		const parentBoostType = boostedTransactions[rootParent.id].type;
+		const parentBoostType = boostedTransactions[rootParent.txId].type;
 
+		// if not a CPFP tx leave as is
 		if (parentBoostType === EBoost.rbf) {
-			activityItems.push(currentActivityItem);
+			formattedItems.push(item);
 			return;
 		}
+
 		const value = calculateBoostTransactionValue({
-			currentActivityItem,
+			currentActivityItem: item,
 			items,
-			// @ts-ignore
 			boostedTransactions,
+			includeFee: false,
 		});
-		activityItems.push({
-			...defaultActivityItemShape,
-			...currentActivityItem,
-			value,
+
+		formattedItems.push({
+			...item,
+			// keep id from the parent tx
+			id: rootParent.id,
 			txType: rootParent.txType,
-			message: rootParent.message,
+			value,
 			address: rootParent.address,
-			timestamp: currentActivityItem.timestamp,
+			timestamp: item.timestamp,
+			isBoosted: true,
 		});
 	});
-	return activityItems;
+
+	return formattedItems;
 };
 
 /**
  * Returns the end value of a series of boost transactions.
- * @param {IActivityItem} currentActivityItem
+ * @param {TOnchainActivityItem} currentActivityItem
  * @param {string[]} parents
- * @param {IActivityItem[]} items
- * @param {IBoostedTransaction} boostedTransactions
+ * @param {TOnchainActivityItem[]} items
+ * @param {IBoostedTransactions} boostedTransactions
+ * @returns {number}
  */
 export const calculateBoostTransactionValue = ({
 	currentActivityItem,
 	items,
 	boostedTransactions,
+	includeFee = false,
 }: {
-	currentActivityItem: IActivityItem;
-	items: IActivityItem[];
-	boostedTransactions: IBoostedTransaction;
+	currentActivityItem: TOnchainActivityItem;
+	items: TOnchainActivityItem[];
+	boostedTransactions: IBoostedTransactions;
+	includeFee?: boolean;
 }): number => {
-	const boostedTransaction = Object.values(boostedTransactions).filter(
-		(bt) => bt.childTransaction === currentActivityItem.id,
+	const boostedTransaction = Object.values(boostedTransactions).find(
+		(tx) => tx.childTransaction === currentActivityItem.id,
 	);
-	if (!boostedTransaction.length) {
+	if (!boostedTransaction) {
 		return currentActivityItem.value;
 	}
 	const rootParent = getRootParentActivity({
@@ -325,13 +313,18 @@ export const calculateBoostTransactionValue = ({
 	if (!rootParent) {
 		return currentActivityItem.value;
 	}
+
 	// Set the beginning fee that we started with from root.
 	let value = rootParent.value;
-	const parents = boostedTransaction[0].parentTransactions;
-	// Subtract fee root value using each parent fee.
-	parents.forEach((parentTxid) => {
-		const parent = boostedTransactions[parentTxid];
-		value = value - parent.fee;
-	});
+
+	if (includeFee) {
+		// Subtract fee root value using each parent fee.
+		const parents = boostedTransaction.parentTransactions;
+		parents.forEach((parentTxid) => {
+			const parent = boostedTransactions[parentTxid];
+			value = value - parent.fee;
+		});
+	}
+
 	return value;
 };

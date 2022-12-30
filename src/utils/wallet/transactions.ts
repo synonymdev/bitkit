@@ -1,8 +1,24 @@
 import { err, ok, Result } from '@synonymdev/result';
+import * as bitcoin from 'bitcoinjs-lib';
+import * as bip21 from 'bip21';
+import * as bip32 from 'bip32';
+import { BIP32Interface } from 'bip32';
+import * as bip39 from 'bip39';
 import * as electrum from 'rn-electrum-client/helpers';
+import { Psbt } from 'bitcoinjs-lib';
+import validate, {
+	AddressInfo,
+	getAddressInfo,
+} from 'bitcoin-address-validation';
+
 import { validateAddress } from '../scanner';
 import { EAvailableNetworks, networks, TAvailableNetworks } from '../networks';
-import { btcToSats, getKeychainValue, reduceValue } from '../helpers';
+import {
+	btcToSats,
+	satsToBtc,
+	getKeychainValue,
+	reduceValue,
+} from '../helpers';
 import {
 	defaultBitcoinTransactionData,
 	EBoost,
@@ -31,12 +47,7 @@ import {
 	IVout,
 	refreshWallet,
 } from './index';
-import { Psbt } from 'bitcoinjs-lib';
 import { getSettingsStore, getWalletStore } from '../../store/helpers';
-import validate, {
-	AddressInfo,
-	getAddressInfo,
-} from 'bitcoin-address-validation';
 import {
 	addBoostedTransaction,
 	deleteOnChainTransactionById,
@@ -47,12 +58,7 @@ import {
 import { TCoinSelectPreference } from '../../store/types/settings';
 import { showErrorNotification } from '../notifications';
 import { getTransactions, subscribeToAddresses } from './electrum';
-import { EActivityTypes, IActivityItem } from '../../store/types/activity';
-import { BIP32Interface } from 'bip32';
-import * as bitcoin from 'bitcoinjs-lib';
-import * as bip21 from 'bip21';
-import * as bip32 from 'bip32';
-import * as bip39 from 'bip39';
+import { TOnchainActivityItem } from '../../store/types/activity';
 import { EFeeIds, IOnchainFees } from '../../store/types/fees';
 import { defaultFeesShape } from '../../store/shapes/fees';
 
@@ -1700,7 +1706,7 @@ export const adjustFee = ({
  * @param {boolean} [max]
  */
 export const updateAmount = async ({
-	amount = '',
+	amount,
 	index = 0,
 	transaction,
 	selectedNetwork,
@@ -1811,6 +1817,7 @@ export const updateAmount = async ({
 
 /**
  * Updates the OP_RETURN message.
+ * CURRENTLY UNUSED
  * @param {string} message
  * @param {IBitcoinTransactionData} [transaction]
  * @param {number} [index]
@@ -2174,7 +2181,7 @@ export const broadcastBoost = async ({
 	selectedWallet?: TWalletName;
 	selectedNetwork?: TAvailableNetworks;
 	oldTxId: string;
-}): Promise<Result<IActivityItem>> => {
+}): Promise<Result<Partial<TOnchainActivityItem>>> => {
 	try {
 		if (!selectedWallet) {
 			selectedWallet = getSelectedWallet();
@@ -2199,12 +2206,6 @@ export const broadcastBoost = async ({
 			return err(rawTx.error.message);
 		}
 
-		const activityItemValue = getTransactionOutputValue({
-			selectedWallet,
-			selectedNetwork,
-			outputs: transaction.outputs,
-		});
-
 		const broadcastResult = await broadcastTransaction({
 			rawTx: rawTx.value.hex,
 			selectedNetwork,
@@ -2216,7 +2217,7 @@ export const broadcastBoost = async ({
 		const newTxId = broadcastResult.value;
 		let transactions =
 			getWalletStore().wallets[selectedWallet].transactions[selectedNetwork];
-		const boostedFee = transaction?.fee ?? 0;
+		const boostedFee = transaction.fee ?? 0;
 		await addBoostedTransaction({
 			newTxId,
 			oldTxId,
@@ -2225,6 +2226,7 @@ export const broadcastBoost = async ({
 			selectedNetwork,
 			fee: boostedFee,
 		});
+
 		// Only delete the old transaction if it was an RBF, not a CPFP.
 		if (transaction.boostType === EBoost.rbf && oldTxId in transactions) {
 			await deleteOnChainTransactionById({
@@ -2233,19 +2235,17 @@ export const broadcastBoost = async ({
 				selectedWallet,
 			});
 		}
-		const newActivityItem: IActivityItem = {
-			id: newTxId,
-			message: transaction?.message || '',
-			address: transaction.changeAddress,
-			activityType: EActivityTypes.onChain,
-			txType: EPaymentType.sent,
-			value: activityItemValue,
-			confirmed: false,
-			fee: btcToSats(Number(transaction.fee)),
+
+		const updatedActivityItemData: Partial<TOnchainActivityItem> = {
+			txId: newTxId,
+			address: transaction.changeAddress ?? '',
+			fee: satsToBtc(Number(transaction.fee)),
+			isBoosted: true,
 			timestamp: new Date().getTime(),
 		};
+
 		await refreshWallet({});
-		return ok(newActivityItem);
+		return ok(updatedActivityItemData);
 	} catch (e) {
 		return err(e);
 	}

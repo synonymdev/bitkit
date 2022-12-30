@@ -3,10 +3,7 @@ import { IMetadata } from '../types/metadata';
 import { defaultMetadataShape } from '../shapes/metadata';
 import { removeKeysFromObject } from '../../utils/helpers';
 
-const updateLastUsedTags = (
-	oldTags: Array<string>,
-	newTags: Array<string>,
-): Array<string> => {
+const updateLastUsedTags = (oldTags: string[], newTags: string[]): string[] => {
 	let tags = [...newTags, ...oldTags];
 	tags = [...new Set(tags)];
 	tags = tags.slice(0, 10);

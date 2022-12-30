@@ -3,6 +3,8 @@ import actions from './actions';
 import { getDispatch, getMetaDataStore } from '../helpers';
 import { getCurrentWallet } from '../../utils/wallet';
 import { EPaymentType } from '../types/wallet';
+import { removeKeysFromObject } from '../../utils/helpers';
+import { TTags } from '../types/metadata';
 
 const dispatch = getDispatch();
 
@@ -69,41 +71,28 @@ export const moveMetaIncTxTags = (): Result<string> => {
 	}
 
 	const transactions = currentWallet.transactions[selectedNetwork];
-
-	const receivedTxs = Object.entries(transactions).filter(
-		([_, txContent]) => txContent.type === EPaymentType.received,
-	);
-
 	const { tags, pendingTags } = getMetaDataStore();
-	const pendingAddresses = Object.keys(pendingTags);
 
-	const matchedTxs = receivedTxs.filter(([_, txContent]) =>
-		pendingAddresses.find((address) => address === txContent.address),
+	// Find all incoming transactions that we have pending tags for
+	const matchedTxs = Object.values(transactions).filter(
+		(tx) => tx.type === EPaymentType.received && !!pendingTags[tx.address],
 	);
+	const matchedAddresses = matchedTxs.map((tx) => tx.address);
 
-	const matchedAddresses = matchedTxs.map(
-		([_, txContent]) => txContent.address,
-	);
-
-	const newPendingTags = pendingAddresses
-		.filter((key) => !matchedAddresses.includes(key))
-		.reduce((obj, key) => {
-			return Object.assign(obj, {
-				[key]: pendingTags[key],
-			});
-		}, {});
-
+	// move matched from pendingTags to tags
+	const newPendingTags = removeKeysFromObject(pendingTags, matchedAddresses);
 	const newTags = matchedTxs
-		.filter(([_, txContent]) => !Object.keys(tags).includes(txContent.txid))
-		.map(([_, txContent]) => ({
-			[txContent.txid]: pendingTags[txContent.address],
-		}));
+		.filter((tx) => !Object.keys(tags).includes(tx.txid))
+		.map((tx) => ({ [tx.txid]: pendingTags[tx.address] }));
 
-	const newTagsObj = Object.assign({}, ...newTags);
+	const newTagsObj: TTags = Object.assign({}, ...newTags);
 
 	dispatch({
 		type: actions.MOVE_META_INC_TX_TAG,
-		payload: { tags: newTagsObj, pendingTags: newPendingTags },
+		payload: {
+			tags: newTagsObj,
+			pendingTags: newPendingTags,
+		},
 	});
 
 	return ok('Metadata tags resynced with transactions.');

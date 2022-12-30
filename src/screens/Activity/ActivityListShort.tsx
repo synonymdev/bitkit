@@ -5,49 +5,33 @@ import React, {
 	useCallback,
 	useMemo,
 } from 'react';
-import { useNavigation } from '@react-navigation/native';
 import { View, StyleSheet } from 'react-native';
 import { useSelector } from 'react-redux';
+import { useNavigation } from '@react-navigation/native';
 
 import { Subtitle, Text01M } from '../../styles/text';
 import { groupActivityItems } from '../../utils/activity';
-import Button from '../../components/Button';
-import { RootNavigationProp } from '../../navigation/types';
 import { toggleView } from '../../store/actions/ui';
-import { formatBoostedActivityItems } from '../../utils/boost';
-import ListItem, { EmptyItem } from './ListItem';
-import {
-	boostedTransactionsSelector,
-	selectedNetworkSelector,
-	selectedWalletSelector,
-} from '../../store/reselect/wallet';
+import { IActivityItemFormatted } from '../../store/types/activity';
 import { activityItemsSelector } from '../../store/reselect/activity';
+import Button from '../../components/Button';
+import ListItem, { EmptyItem } from './ListItem';
+import type { RootNavigationProp } from '../../navigation/types';
 
 const MAX_ACTIVITY_ITEMS = 3;
 
-const ActivityList = (): ReactElement => {
+const ActivityListShort = (): ReactElement => {
 	const navigation = useNavigation<RootNavigationProp>();
-	const selectedWallet = useSelector(selectedWalletSelector);
-	const selectedNetwork = useSelector(selectedNetworkSelector);
-	const boostedTransactions = useSelector(boostedTransactionsSelector);
 	const items = useSelector(activityItemsSelector);
 
-	const boostFilteredItems = useMemo(() => {
-		return formatBoostedActivityItems({
-			items,
-			boostedTransactions,
-			selectedWallet,
-			selectedNetwork,
-		});
-	}, [boostedTransactions, items, selectedNetwork, selectedWallet]);
-
 	const groupedItems = useMemo(() => {
-		const activityItems = boostFilteredItems.slice(0, MAX_ACTIVITY_ITEMS);
+		const activityItems = items.slice(0, MAX_ACTIVITY_ITEMS);
 		return groupActivityItems(activityItems);
-	}, [boostFilteredItems]);
+	}, [items]);
 
 	const renderItem = useCallback(
-		({ item }): ReactNode => {
+		// eslint-disable-next-line react/no-unused-prop-types
+		({ item }: { item: string | IActivityItemFormatted }): ReactNode => {
 			if (typeof item === 'string') {
 				return;
 			}
@@ -57,7 +41,7 @@ const ActivityList = (): ReactElement => {
 					key={item.id}
 					item={item}
 					onPress={(): void =>
-						navigation.navigate('ActivityDetail', { activityItem: item })
+						navigation.navigate('ActivityDetail', { id: item.id })
 					}
 				/>
 			);
@@ -65,23 +49,23 @@ const ActivityList = (): ReactElement => {
 		[navigation],
 	);
 
+	const navigateToReceive = useCallback((): void => {
+		toggleView({
+			view: 'receiveNavigation',
+			data: { isOpen: true },
+		});
+	}, []);
+
+	const navigateToActivityFiltered = useCallback((): void => {
+		navigation.navigate('Wallet', { screen: 'ActivityFiltered' });
+	}, [navigation]);
+
 	return (
 		<View style={styles.content}>
-			<View style={styles.header}>
-				<Subtitle>Activity</Subtitle>
-			</View>
+			<Subtitle style={styles.title}>Activity</Subtitle>
 
 			{groupedItems.length === 0 ? (
-				<EmptyItem
-					onPress={(): void => {
-						toggleView({
-							view: 'receiveNavigation',
-							data: {
-								isOpen: true,
-							},
-						});
-					}}
-				/>
+				<EmptyItem onPress={navigateToReceive} />
 			) : (
 				<>
 					{groupedItems.map((item) => renderItem({ item }))}
@@ -89,9 +73,7 @@ const ActivityList = (): ReactElement => {
 						text={<Text01M color="white8">Show All Activity</Text01M>}
 						size="large"
 						variant="transparent"
-						onPress={(): void => {
-							navigation.navigate('Wallet', { screen: 'ActivityFiltered' });
-						}}
+						onPress={navigateToActivityFiltered}
 					/>
 				</>
 			)}
@@ -104,9 +86,9 @@ const styles = StyleSheet.create({
 		paddingTop: 30,
 		marginBottom: 16,
 	},
-	header: {
+	title: {
 		marginBottom: 23,
 	},
 });
 
-export default memo(ActivityList);
+export default memo(ActivityListShort);

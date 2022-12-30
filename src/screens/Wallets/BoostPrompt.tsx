@@ -24,7 +24,7 @@ import {
 	showSuccessNotification,
 } from '../../utils/notifications';
 import { btcToSats } from '../../utils/helpers';
-import { IActivityItem } from '../../store/types/activity';
+import { TOnchainActivityItem } from '../../store/types/activity';
 import {
 	useBottomSheetBackPress,
 	useSnapPoints,
@@ -37,6 +37,7 @@ import { useTransactionDetails } from '../../hooks/transaction';
 import { useFeeText } from '../../hooks/fees';
 import { useAppSelector } from '../../hooks/redux';
 import { viewControllerSelector } from '../../store/reselect/ui';
+import { updateActivityItem } from '../../store/actions/activity';
 import {
 	selectedNetworkSelector,
 	selectedWalletSelector,
@@ -45,7 +46,7 @@ import {
 const BoostForm = ({
 	activityItem,
 }: {
-	activityItem: IActivityItem;
+	activityItem: TOnchainActivityItem;
 }): ReactElement => {
 	const transaction = useTransactionDetails();
 	const feeEstimates = useSelector((store: Store) => store.fees.onchain);
@@ -61,12 +62,10 @@ const BoostForm = ({
 	const transactionFee = transaction.fee ?? 0;
 	const minFee = transaction.minFee ?? 0;
 	const satsPerByte = transaction.satsPerByte ?? 0;
-	const activityItemFee = useMemo(
-		() => (activityItem.fee ? btcToSats(activityItem.fee) : 0),
-		[activityItem.fee],
-	);
-
+	const activityItemFee = btcToSats(activityItem.fee);
 	const recommendedFee = feeEstimates.fast;
+
+	const { description: duration } = useFeeText(satsPerByte);
 
 	const boostFee = useMemo(() => {
 		if (!boostData.canBoost) {
@@ -77,8 +76,6 @@ const BoostForm = ({
 		}
 		return Math.abs(transactionFee - activityItemFee);
 	}, [boostData.canBoost, boostData.rbf, transactionFee, activityItemFee]);
-
-	const { description: duration } = useFeeText(satsPerByte);
 
 	useEffect(() => {
 		(async (): Promise<void> => {
@@ -172,12 +169,19 @@ const BoostForm = ({
 			const response = await broadcastBoost({
 				selectedWallet,
 				selectedNetwork,
-				oldTxId: activityItem.id,
+				oldTxId: activityItem.txId,
 			});
 			if (response.isOk()) {
+				// Optimistically/immediately update activity item
+				updateActivityItem(activityItem.id, response.value);
+
 				showSuccessNotification({
 					title: 'Boost Success',
 					message: 'Successfully boosted this transaction.',
+				});
+				toggleView({
+					view: 'boostPrompt',
+					data: { isOpen: false },
 				});
 			} else {
 				showErrorNotification({
@@ -185,10 +189,6 @@ const BoostForm = ({
 					message: 'Unable to boost this transaction.',
 				});
 			}
-			toggleView({
-				view: 'boostPrompt',
-				data: { isOpen: false },
-			});
 		} catch (e) {
 			console.log(e);
 		} finally {

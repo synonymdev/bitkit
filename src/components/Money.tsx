@@ -44,7 +44,7 @@ const Money = (props: IMoney): ReactElement => {
 	const bitcoinUnit = useSelector((state: Store) => state.settings.bitcoinUnit);
 	const hideBalance = useSelector((state: Store) => state.settings.hideBalance);
 
-	let sats = props.sats ?? 0;
+	const sats = Math.abs(props.sats);
 	const highlight = props.highlight ?? false;
 	const size = props.size ?? 'display';
 	const showFiat = props.showFiat ?? false;
@@ -54,7 +54,6 @@ const Money = (props: IMoney): ReactElement => {
 	const hide = (props.enableHide ?? false) && hideBalance;
 	const sign = props.sign;
 
-	sats = Math.abs(sats);
 	const dv = useDisplayValues(
 		sats,
 		unit === 'fiat' ? EBitcoinUnit.BTC : (unit as EBitcoinUnit),

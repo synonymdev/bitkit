@@ -10,7 +10,7 @@ import GlowImage from '../../components/GlowImage';
 import Button from '../../components/Button';
 import { closeAllChannels } from '../../utils/lightning';
 import { startCoopCloseTimer } from '../../store/actions/user';
-import { addTodo } from '../../store/actions/todos';
+import { addTodo, removeTodo } from '../../store/actions/todos';
 import type { TransferScreenProps } from '../../navigation/types';
 import {
 	selectedNetworkSelector,
@@ -45,6 +45,7 @@ const Availability = ({
 				navigation.navigate('Success', { type: 'savings' });
 			} else {
 				startCoopCloseTimer();
+				removeTodo('transfer');
 				addTodo('transferClosingChannel');
 				navigation.navigate('Interrupted');
 			}

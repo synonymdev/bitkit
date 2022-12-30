@@ -1,9 +1,11 @@
-import actions from './actions';
 import { ok, Result } from '@synonymdev/result';
+
+import actions from './actions';
 import { IActivityItem } from '../types/activity';
-import { getDispatch } from '../helpers';
-import { onChainTransactionsToActivityItems } from '../../utils/activity';
+import { getBlocktankStore, getDispatch } from '../helpers';
+import { onChainTransactionToActivityItem } from '../../utils/activity';
 import { getCurrentWallet } from '../../utils/wallet';
+import { formatBoostedActivityItems } from '../../utils/boost';
 
 const dispatch = getDispatch();
 
@@ -23,66 +25,74 @@ export const addActivityItem = (
 };
 
 /**
- * Updates activity list with all wallet stores
- * @returns {Promise<Result<string>>}
+ * @param {string} id
+ * @param {IActivityItem} newActivityItem
  */
-export const updateActivityList = (): Promise<Result<string>> => {
-	return new Promise(async (resolve) => {
-		await Promise.all([updateOnChainActivityList()]);
-
-		resolve(ok('Activity items updated'));
+export const updateActivityItem = (
+	id: string,
+	data: Partial<IActivityItem>,
+): void => {
+	dispatch({
+		type: actions.UPDATE_ACTIVITY_ITEM,
+		payload: { id, data },
 	});
 };
 
 /**
- * Updates activity list store with just on chain wallet transactions store
+ * Updates activity list with all wallet stores
  * @returns {Promise<Result<string>>}
  */
-export const updateOnChainActivityList = (): Promise<Result<string>> => {
-	return new Promise(async (resolve) => {
-		const { selectedNetwork, currentWallet } = getCurrentWallet({});
-		if (!currentWallet) {
-			console.warn(
-				'No wallet found. Cannot update activity list with transactions.',
-			);
-			return resolve(ok(''));
-		}
+export const updateActivityList = (): Result<string> => {
+	updateOnChainActivityList();
+	return ok('Activity items updated');
+};
 
-		dispatch({
-			type: actions.UPDATE_ACTIVITY_ENTRIES,
-			payload: onChainTransactionsToActivityItems(
-				currentWallet.transactions[selectedNetwork],
-			),
+/**
+ * Converts on-chain transactions to activity items and saves them to store
+ * @returns {Promise<Result<string>>}
+ */
+export const updateOnChainActivityList = (): Result<string> => {
+	const { currentWallet, selectedNetwork, selectedWallet } = getCurrentWallet(
+		{},
+	);
+	const blocktankTransactions = getBlocktankStore().paidOrders;
+	const boostedTransactions =
+		currentWallet.boostedTransactions[selectedNetwork];
+
+	if (!currentWallet) {
+		console.warn(
+			'No wallet found. Cannot update activity list with transactions.',
+		);
+		return ok('');
+	}
+
+	const transactions = currentWallet.transactions[selectedNetwork];
+	const activityItems = Object.values(transactions).map((tx) => {
+		return onChainTransactionToActivityItem({
+			transaction: tx,
+			blocktankTransactions,
 		});
-
-		resolve(ok('On chain transaction activity items updated'));
 	});
+
+	const boostFormattedItems = formatBoostedActivityItems({
+		items: activityItems,
+		boostedTransactions,
+		selectedWallet,
+		selectedNetwork,
+	});
+
+	dispatch({
+		type: actions.UPDATE_ACTIVITY_ENTRIES,
+		payload: boostFormattedItems,
+	});
+
+	return ok('On chain transaction activity items updated');
 };
 
 /*
  * This resets the activity store to defaultActivityShape
  */
 export const resetActivityStore = (): Result<string> => {
-	dispatch({
-		type: actions.RESET_ACTIVITY_STORE,
-	});
+	dispatch({ type: actions.RESET_ACTIVITY_STORE });
 	return ok('');
-};
-
-/**
- * @param {string} id
- * @param {IActivityItem} newActivityItem
- * @param {IActivityItem[]} activityItems
- */
-export const replaceActivityItemById = ({
-	id,
-	newActivityItem,
-}: {
-	id: string;
-	newActivityItem: IActivityItem;
-}): void => {
-	dispatch({
-		type: actions.REPLACE_ACTIVITY_ITEM,
-		payload: { id, newActivityItem },
-	});
 };

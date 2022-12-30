@@ -5,6 +5,7 @@ import React, {
 	useEffect,
 	useMemo,
 	useState,
+	ReactNode,
 } from 'react';
 import {
 	ActivityIndicator,
@@ -22,7 +23,6 @@ import {
 	vec,
 } from '@shopify/react-native-skia';
 import { useSelector } from 'react-redux';
-import type { StackScreenProps } from '@react-navigation/stack';
 import Clipboard from '@react-native-clipboard/clipboard';
 
 import { View as ThemedView } from '../../styles/components';
@@ -35,6 +35,7 @@ import {
 	ReceiveIcon,
 	SendIcon,
 	TagIcon,
+	TimerIcon,
 	TimerIconAlt,
 	UserMinusIcon,
 	UserPlusIcon,
@@ -43,36 +44,43 @@ import Button from '../../components/Button';
 import Money from '../../components/Money';
 import ContactSmall from '../../components/ContactSmall';
 import NavigationHeader from '../../components/NavigationHeader';
-import { EActivityTypes, IActivityItem } from '../../store/types/activity';
+import {
+	EActivityType,
+	TLightningActivityItem,
+	TOnchainActivityItem,
+} from '../../store/types/activity';
 import {
 	canBoost,
 	getBlockExplorerLink,
 } from '../../utils/wallet/transactions';
-import useDisplayValues from '../../hooks/displayValues';
 import SafeAreaView from '../../components/SafeAreaView';
 import SafeAreaInsets from '../../components/SafeAreaInsets';
 import Tag from '../../components/Tag';
 import useColors from '../../hooks/colors';
+import { useAppSelector } from '../../hooks/redux';
+import useDisplayValues from '../../hooks/displayValues';
+import { useFeeText } from '../../hooks/fees';
 import Store from '../../store/types';
 import { toggleView } from '../../store/actions/ui';
+import { EPaymentType } from '../../store/types/wallet';
+import {
+	activityItemSelector,
+	activityItemsSelector,
+} from '../../store/reselect/activity';
+import { FeeText } from '../../store/shapes/fees';
 import {
 	deleteMetaTxTag,
 	deleteMetaSlashTagsUrlTag,
 } from '../../store/actions/metadata';
 import { getTransactions } from '../../utils/wallet/electrum';
 import { ITransaction, ITxHash } from '../../utils/wallet';
-import type { RootStackParamList } from '../../navigation/types';
+import { btcToSats, openURL } from '../../utils/helpers';
+import { getBoostedTransactionParents } from '../../utils/boost';
 import {
 	showErrorNotification,
 	showInfoNotification,
 } from '../../utils/notifications';
-import { openURL } from '../../utils/helpers';
 import ActivityTagsPrompt from './ActivityTagsPrompt';
-import {
-	getBoostedTransactionParents,
-	isTransactionBoosted,
-} from '../../utils/boost';
-import { EPaymentType } from '../../store/types/wallet';
 import {
 	boostedTransactionsSelector,
 	selectedNetworkSelector,
@@ -81,10 +89,13 @@ import {
 	slashTagsUrlSelector,
 	tagSelector,
 } from '../../store/reselect/metadata';
-import { activityItemsSelector } from '../../store/reselect/activity';
+import type {
+	RootNavigationProp,
+	RootStackScreenProps,
+} from '../../navigation/types';
 
 const Section = memo(
-	({ title, value }: { title: string; value: React.ReactNode }) => {
+	({ title, value }: { title: string; value: ReactNode }) => {
 		const { white1 } = useColors();
 
 		return (
@@ -127,137 +138,44 @@ const ZigZag = ({ color }): ReactElement => {
 	return <Path path={path} color={color} />;
 };
 
-type Props = StackScreenProps<RootStackParamList, 'ActivityDetail'>;
-
-const emptyActivityItem: IActivityItem = {
-	id: '',
-	message: '',
-	address: '',
-	activityType: EActivityTypes.onChain,
-	txType: EPaymentType.sent,
-	value: 0,
-	confirmed: false,
-	fee: 0,
-	timestamp: 0,
-};
-
-const ActivityDetail = (props: Props): ReactElement => {
-	const [item] = useState<IActivityItem>(
-		props.route.params?.activityItem ?? emptyActivityItem,
-	);
+const OnchainActivityDetail = ({
+	item,
+	navigation,
+	extended,
+}: {
+	item: TOnchainActivityItem;
+	navigation: RootNavigationProp;
+	extended?: boolean;
+}): ReactElement => {
 	const {
 		id,
-		message,
 		activityType,
 		txType,
 		value,
+		fee,
+		feeRate,
 		confirmed,
 		timestamp,
+		isBoosted,
 		address,
 	} = item;
-	const tags = useSelector((state: Store) => tagSelector(state, id));
-	const slashTagsUrl = useSelector((state: Store) =>
-		slashTagsUrlSelector(state, id),
-	);
+
+	const tags = useAppSelector((state) => tagSelector(state, id));
 	const selectedNetwork = useSelector(selectedNetworkSelector);
 	const activityItems = useSelector(activityItemsSelector);
 	const boostedTransactions = useSelector(boostedTransactionsSelector);
-
-	const boostedParents = useMemo(() => {
-		return getBoostedTransactionParents({
-			txid: id,
-			boostedTransactions,
-		});
-	}, [boostedTransactions, id]);
-
-	const isBoosted = useMemo(() => {
-		return isTransactionBoosted({ txid: id, boostedTransactions });
-	}, [boostedTransactions, id]);
-
-	const hasBoostedParents = useMemo(() => {
-		return boostedParents.length > 0;
-	}, [boostedParents.length]);
-
-	const handleBoostParentPress = useCallback(
-		(parentTxId) => {
-			const activityItem = activityItems.filter((i) => i.id === parentTxId);
-			if (activityItem.length) {
-				navigation.push('ActivityDetail', {
-					activityItem: activityItem[0],
-				});
-			}
-		},
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-		[activityItems],
-	);
-
-	const [size, setSize] = useState({ width: 0, height: 0 });
-	const [txDetails, setTxDetails] = useState<
-		null | ITransaction<ITxHash>['result']
-	>(null);
-
-	const colors = useColors();
-	const extended = props.route.params?.extended ?? false;
-	const { navigation } = props;
-
-	const showBoost = useMemo(() => {
-		if (confirmed) {
-			return false;
-		}
-		if (activityType !== EActivityTypes.onChain) {
-			return false;
-		}
-		if (isBoosted) {
-			return false;
-		}
-		return canBoost(id).canBoost;
-	}, [isBoosted, confirmed, activityType, id]);
-
-	const handleBoost = (): void => {
-		toggleView({
-			view: 'boostPrompt',
-			data: { isOpen: true, activityItem: item },
-		});
-	};
-
-	const handleLayout = (e): void => {
-		const { height, width } = e.nativeEvent.layout;
-		setSize((s) => (s.width === 0 ? { width, height } : s));
-	};
-
-	const handleAddTag = (): void => {
-		toggleView({
-			view: 'activityTagsPrompt',
-			data: { isOpen: true, id },
-		});
-	};
-
-	const handleRemoveTag = (tag: string): void => {
-		const res = deleteMetaTxTag(id, tag);
-		if (res.isErr()) {
-			showErrorNotification({
-				title: 'Error Deleting Tag',
-				message: res.error.message,
-			});
-		}
-	};
-
-	const handleAssign = (): void => {
-		navigation.navigate('ActivityAssignContact', { txid: id });
-	};
-
-	const handleDetach = (): void => {
-		deleteMetaSlashTagsUrlTag(id);
-	};
-
-	const handleContact = (): void => {
-		navigation.navigate('Contact', { url: slashTagsUrl });
-	};
+	const feeText = useFeeText(feeRate);
+	const feeDisplay = useDisplayValues(btcToSats(fee));
+	const [txDetails, setTxDetails] = useState<ITransaction<ITxHash>['result']>();
+	const slashTagsUrl = useAppSelector((state) => {
+		return slashTagsUrlSelector(state, id);
+	});
 
 	useEffect(() => {
 		if (txDetails || !extended) {
 			return;
 		}
+
 		getTransactions({ txHashes: [{ tx_hash: id }], selectedNetwork }).then(
 			(txResponse) => {
 				if (txResponse.isErr()) {
@@ -281,27 +199,65 @@ const ActivityDetail = (props: Props): ReactElement => {
 		);
 	}, [id, activityType, extended, selectedNetwork, txDetails]);
 
-	const title = value < 0 ? 'Sent Bitcoin' : 'Received Bitcoin';
+	const showBoost = useMemo(() => {
+		if (confirmed || isBoosted) {
+			return false;
+		}
+		return canBoost(id).canBoost;
+	}, [confirmed, isBoosted, id]);
 
-	let glowColor;
-	switch (activityType) {
-		case EActivityTypes.onChain:
-			glowColor = 'brand';
-			break;
-		case EActivityTypes.lightning:
-			glowColor = 'purple';
-			break;
-		case EActivityTypes.tether:
-			glowColor = 'green';
-			break;
-	}
+	const boostedParents = useMemo(() => {
+		return getBoostedTransactionParents({
+			txid: id,
+			boostedTransactions,
+		});
+	}, [boostedTransactions, id]);
 
-	glowColor = colors[glowColor] ?? glowColor;
+	const hasBoostedParents = useMemo(() => {
+		return boostedParents.length > 0;
+	}, [boostedParents.length]);
 
-	const { fiatSymbol } = useDisplayValues(1);
+	const handleBoostParentPress = useCallback(
+		(parentTxId) => {
+			const activityItem = activityItems.find((i) => i.id === parentTxId);
+			if (activityItem) {
+				navigation.push('ActivityDetail', { id: activityItem.id });
+			}
+		},
+		[activityItems, navigation],
+	);
 
-	const blockExplorerUrl =
-		activityType === 'onChain' ? getBlockExplorerLink(id) : '';
+	const handleBoost = (): void => {
+		toggleView({
+			view: 'boostPrompt',
+			data: { isOpen: true, activityItem: item },
+		});
+	};
+
+	const handleAddTag = (): void => {
+		toggleView({
+			view: 'activityTagsPrompt',
+			data: { isOpen: true, id },
+		});
+	};
+
+	const handleRemoveTag = (tag: string): void => {
+		deleteMetaTxTag(id, tag);
+	};
+
+	const handleAssign = (): void => {
+		navigation.navigate('ActivityAssignContact', { txid: id });
+	};
+
+	const handleDetach = (): void => {
+		deleteMetaSlashTagsUrlTag(id);
+	};
+
+	const navigateToContact = (url: string): void => {
+		navigation.navigate('Contact', { url });
+	};
+
+	const blockExplorerUrl = getBlockExplorerLink(id);
 
 	const handleBlockExplorerOpen = useCallback(async () => {
 		await openURL(blockExplorerUrl);
@@ -334,6 +290,513 @@ const ActivityDetail = (props: Props): ReactElement => {
 		return <View />;
 	}, [txDetails]);
 
+	const isSend = txType === EPaymentType.sent;
+
+	let status = (
+		<View style={styles.row}>
+			<ClockIcon style={styles.rowIcon} color="brand" />
+			<Text02M color="white">Confirming</Text02M>
+		</View>
+	);
+
+	if (isBoosted) {
+		status = (
+			<View style={styles.row}>
+				<TimerIconAlt style={styles.rowIcon} color="yellow" height={14} />
+				<Text02M color="yellow">Boosting</Text02M>
+			</View>
+		);
+	}
+
+	if (confirmed) {
+		status = (
+			<View style={styles.row}>
+				<CheckCircleIcon style={styles.rowIcon} color="green" />
+				<Text02M color="green">Confirmed</Text02M>
+			</View>
+		);
+	}
+
+	return (
+		<>
+			<Money sats={value} unit="fiat" size="caption13M" color="gray1" />
+			<View style={styles.title}>
+				<View style={styles.titleBlock}>
+					<Money sats={value} sign={isSend ? '- ' : '+ '} />
+				</View>
+
+				<ThemedView
+					color={isSend ? 'red16' : 'green16'}
+					style={styles.iconContainer}>
+					{isSend ? (
+						<SendIcon height={19} color="red" />
+					) : (
+						<ReceiveIcon height={19} color="green" />
+					)}
+				</ThemedView>
+			</View>
+
+			<View style={styles.sectionContainer}>
+				<Section
+					title="Speed and fee"
+					value={
+						<View style={styles.row}>
+							<TimerIcon style={styles.rowIcon} color="brand" />
+							<Text02M>
+								{feeText.title} ({feeDisplay.fiatSymbol}
+								{feeDisplay.fiatFormatted})
+							</Text02M>
+						</View>
+					}
+				/>
+				<Section title="Status" value={status} />
+			</View>
+
+			<View style={styles.sectionContainer}>
+				<Section
+					title="Date"
+					value={
+						<Text02M>
+							{new Date(timestamp).toLocaleString(undefined, {
+								month: 'long',
+								day: 'numeric',
+							})}
+						</Text02M>
+					}
+				/>
+				<Section
+					title="Time"
+					value={
+						<Text02M>
+							{new Date(timestamp).toLocaleString(undefined, {
+								hour: 'numeric',
+								minute: 'numeric',
+								hour12: false,
+							})}
+						</Text02M>
+					}
+				/>
+			</View>
+
+			{!extended ? (
+				<>
+					{(tags.length !== 0 || slashTagsUrl) && (
+						<View style={styles.sectionContainer}>
+							{/* ContactSection */}
+							{slashTagsUrl && (
+								<Section
+									title="Contact"
+									value={
+										<ContactSmall
+											url={slashTagsUrl}
+											onPress={(): void => navigateToContact(slashTagsUrl)}
+										/>
+									}
+								/>
+							)}
+							<Section
+								title="Tags"
+								value={
+									<View style={styles.tagsContainer}>
+										{tags.map((tag) => (
+											<Tag
+												key={tag}
+												value={tag}
+												style={styles.tag}
+												onClose={(): void => handleRemoveTag(tag)}
+											/>
+										))}
+									</View>
+								}
+							/>
+						</View>
+					)}
+
+					<View>
+						<View style={styles.sectionContainer}>
+							{slashTagsUrl ? (
+								<Button
+									style={styles.button}
+									text="Detach"
+									icon={<UserMinusIcon height={16} width={16} color="brand" />}
+									onPress={handleDetach}
+								/>
+							) : (
+								<Button
+									style={styles.button}
+									text="Assign"
+									icon={<UserPlusIcon height={16} width={16} color="brand" />}
+									onPress={handleAssign}
+								/>
+							)}
+							<Button
+								style={styles.button}
+								text="Tag"
+								icon={<TagIcon height={16} width={16} color="brand" />}
+								onPress={handleAddTag}
+							/>
+						</View>
+						<View style={styles.sectionContainer}>
+							<Button
+								style={styles.button}
+								text={isBoosted ? 'Already Boosted' : 'Boost'}
+								icon={<TimerIconAlt color="brand" />}
+								disabled={!showBoost}
+								onPress={handleBoost}
+							/>
+							<Button
+								style={styles.button}
+								text="Explore"
+								icon={<GitBranchIcon />}
+								disabled={!blockExplorerUrl}
+								onPress={handleBlockExplorerOpen}
+							/>
+						</View>
+					</View>
+
+					<View style={styles.buttonDetailsContainer}>
+						<Button
+							text="Transaction Details"
+							size="large"
+							onPress={(): void =>
+								navigation.push('ActivityDetail', {
+									id: item.id,
+									extended: true,
+								})
+							}
+						/>
+					</View>
+				</>
+			) : (
+				<>
+					<TouchableOpacity
+						onPress={copyTransactionId}
+						style={styles.sectionContainer}>
+						<Section title="Transaction ID" value={<Text02M>{id}</Text02M>} />
+					</TouchableOpacity>
+					<View style={styles.sectionContainer}>
+						<Section title="Address" value={<Text02M>{address}</Text02M>} />
+					</View>
+					{txDetails ? (
+						<>
+							<View style={styles.sectionContainer}>
+								<Section
+									title={`INPUTS (${txDetails?.vin?.length ?? 0})`}
+									value={txDetails.vin.map((v) => {
+										const txid = v?.txid ?? '';
+										const vout = v?.vout ?? '';
+										const i = txid + ':' + vout;
+										return <Text02M key={i}>{i}</Text02M>;
+									})}
+								/>
+							</View>
+							<View style={styles.sectionContainer}>
+								<Section
+									title={`OUTPUTS (${txDetails.vout.length})`}
+									value={getOutputAddresses()}
+								/>
+							</View>
+						</>
+					) : (
+						<ActivityIndicator size="small" />
+					)}
+
+					{hasBoostedParents && (
+						<>
+							{boostedParents.map((parent, i) => {
+								const parentActivityType = boostedTransactions[parent].type;
+								return (
+									<View key={parent} style={styles.sectionContainer}>
+										<Section
+											title={`BOOSTED TRANSACTION ${
+												i + 1
+											} (${parentActivityType})`}
+											value={
+												<TouchableOpacity
+													onPress={(): void => {
+														handleBoostParentPress(parent);
+													}}>
+													<Text02M numberOfLines={1} ellipsizeMode={'middle'}>
+														{parent}
+													</Text02M>
+												</TouchableOpacity>
+											}
+										/>
+									</View>
+								);
+							})}
+						</>
+					)}
+
+					<View style={styles.buttonDetailsContainer}>
+						<Button
+							text="Open Block Explorer"
+							size="large"
+							disabled={!blockExplorerUrl}
+							onPress={handleBlockExplorerOpen}
+						/>
+					</View>
+				</>
+			)}
+		</>
+	);
+};
+
+const LightningActivityDetail = ({
+	item,
+	navigation,
+	extended,
+}: {
+	item: TLightningActivityItem;
+	navigation: RootNavigationProp;
+	extended?: boolean;
+}): ReactElement => {
+	const colors = useColors();
+	const { id, txType, value, message, timestamp, address } = item;
+	const tags = useSelector((state: Store) => tagSelector(state, id));
+	const slashTagsUrl = useSelector((state: Store) => {
+		return slashTagsUrlSelector(state, id);
+	});
+
+	const handleAddTag = (): void => {
+		toggleView({
+			view: 'activityTagsPrompt',
+			data: { isOpen: true, id },
+		});
+	};
+
+	const handleRemoveTag = (tag: string): void => {
+		deleteMetaTxTag(id, tag);
+	};
+
+	const handleAssign = (): void => {
+		navigation.navigate('ActivityAssignContact', { txid: id });
+	};
+
+	const handleDetach = (): void => {
+		deleteMetaSlashTagsUrlTag(id);
+	};
+
+	const navigateToContact = (url: string): void => {
+		navigation.navigate('Contact', { url });
+	};
+
+	const copyTransactionId = useCallback(() => {
+		Clipboard.setString(id);
+		showInfoNotification({
+			title: 'Copied Transaction ID',
+			message: 'Transaction ID copied to clipboard.',
+		});
+	}, [id]);
+
+	const isSend = txType === EPaymentType.sent;
+
+	const status = (
+		<View style={styles.row}>
+			<LightningIcon style={styles.rowIcon} color="purple" />
+			<Text02M color="purple">Successful</Text02M>
+		</View>
+	);
+
+	return (
+		<>
+			<Money sats={value} unit="fiat" size="caption13M" color="gray1" />
+			<View style={styles.title}>
+				<View style={styles.titleBlock}>
+					<Money sats={value} sign={isSend ? '- ' : '+ '} />
+				</View>
+
+				<ThemedView
+					color={isSend ? 'red16' : 'green16'}
+					style={styles.iconContainer}>
+					{isSend ? (
+						<SendIcon height={19} color="red" />
+					) : (
+						<ReceiveIcon height={19} color="green" />
+					)}
+				</ThemedView>
+			</View>
+
+			<View style={styles.sectionContainer}>
+				<Section
+					title="Speed and fee"
+					value={
+						<View style={styles.row}>
+							<TimerIcon style={styles.rowIcon} color="purple" />
+							<Text02M>{FeeText.instant.title} ($0.01)</Text02M>
+						</View>
+					}
+				/>
+				<Section title="Status" value={status} />
+			</View>
+
+			<View style={styles.sectionContainer}>
+				<Section
+					title="Date"
+					value={
+						<Text02M>
+							{new Date(timestamp).toLocaleString(undefined, {
+								month: 'long',
+								day: 'numeric',
+							})}
+						</Text02M>
+					}
+				/>
+				<Section
+					title="Time"
+					value={
+						<Text02M>
+							{new Date(timestamp).toLocaleString(undefined, {
+								hour: 'numeric',
+								minute: 'numeric',
+								hour12: false,
+							})}
+						</Text02M>
+					}
+				/>
+			</View>
+
+			{!extended ? (
+				<>
+					{(tags.length !== 0 || slashTagsUrl) && (
+						<View style={styles.sectionContainer}>
+							{/* ContactSection */}
+							{slashTagsUrl && (
+								<Section
+									title="Contact"
+									value={
+										<ContactSmall
+											url={slashTagsUrl}
+											onPress={(): void => navigateToContact(slashTagsUrl)}
+										/>
+									}
+								/>
+							)}
+							<Section
+								title="Tags"
+								value={
+									<View style={styles.tagsContainer}>
+										{tags.map((tag) => (
+											<Tag
+												key={tag}
+												value={tag}
+												style={styles.tag}
+												onClose={(): void => handleRemoveTag(tag)}
+											/>
+										))}
+									</View>
+								}
+							/>
+						</View>
+					)}
+
+					{message ? (
+						<View style={styles.invoiceNote}>
+							<Caption13M style={styles.sText} color="gray1">
+								INVOICE NOTE
+							</Caption13M>
+							<ThemedView color="gray5">
+								<Canvas style={styles.zRoot}>
+									<ZigZag color={colors.background} />
+								</Canvas>
+								<View style={styles.note}>
+									<Title>{message}</Title>
+								</View>
+							</ThemedView>
+						</View>
+					) : null}
+
+					<View>
+						<View style={styles.sectionContainer}>
+							{slashTagsUrl ? (
+								<Button
+									style={styles.button}
+									text="Detach"
+									icon={<UserMinusIcon height={16} width={16} color="brand" />}
+									onPress={handleDetach}
+								/>
+							) : (
+								<Button
+									style={styles.button}
+									text="Assign"
+									icon={<UserPlusIcon height={16} width={16} color="brand" />}
+									onPress={handleAssign}
+								/>
+							)}
+							<Button
+								style={styles.button}
+								text="Tag"
+								icon={<TagIcon height={16} width={16} color="brand" />}
+								onPress={handleAddTag}
+							/>
+						</View>
+					</View>
+
+					<View style={styles.buttonDetailsContainer}>
+						<Button
+							text="Transaction Details"
+							size="large"
+							onPress={(): void =>
+								navigation.push('ActivityDetail', {
+									id: item.id,
+									extended: true,
+								})
+							}
+						/>
+					</View>
+				</>
+			) : (
+				<>
+					<TouchableOpacity
+						onPress={copyTransactionId}
+						style={styles.sectionContainer}>
+						<Section title="Transaction ID" value={<Text02M>{id}</Text02M>} />
+					</TouchableOpacity>
+					<View style={styles.sectionContainer}>
+						<Section title="Invoice" value={<Text02M>{address}</Text02M>} />
+					</View>
+				</>
+			)}
+		</>
+	);
+};
+
+const ActivityDetail = ({
+	navigation,
+	route,
+}: RootStackScreenProps<'ActivityDetail'>): ReactElement => {
+	const extended = route.params.extended ?? false;
+	const colors = useColors();
+	const [size, setSize] = useState({ width: 0, height: 0 });
+
+	const item = useAppSelector((state) => {
+		return activityItemSelector(state, route.params.id)!;
+	});
+
+	// if (!item) {
+	// 	return <></>;
+	// }
+
+	const { activityType, txType } = item;
+	const isSend = txType === EPaymentType.sent;
+
+	const handleLayout = (e): void => {
+		const { height, width } = e.nativeEvent.layout;
+		setSize((s) => (s.width === 0 ? { width, height } : s));
+	};
+
+	let title = isSend ? 'Sent Bitcoin' : 'Received Bitcoin';
+	let glowColor = colors.brand;
+
+	if (activityType === EActivityType.lightning) {
+		glowColor = colors.purple;
+	}
+
+	if (activityType === EActivityType.tether) {
+		title = isSend ? 'Sent Tether' : 'Received Teth‰er';
+		glowColor = colors.green;
+	}
+
 	return (
 		<SafeAreaView onLayout={handleLayout}>
 			<Canvas style={[styles.canvas, size]}>
@@ -343,283 +806,23 @@ const ActivityDetail = (props: Props): ReactElement => {
 			<ScrollView
 				contentContainerStyle={styles.scrollContent}
 				showsVerticalScrollIndicator={false}>
-				<View style={styles.title}>
-					<View style={styles.titleBlock}>
-						<Money sats={value} highlight={true} sign={value > 0 ? '+' : '-'} />
-					</View>
-
-					<ThemedView
-						color={txType === EPaymentType.sent ? 'red16' : 'green16'}
-						style={styles.iconContainer}>
-						{txType === EPaymentType.sent ? (
-							<SendIcon height={19} color="red" />
-						) : (
-							<ReceiveIcon height={19} color="green" />
-						)}
-					</ThemedView>
-				</View>
-
-				<View style={styles.sectionContainer}>
-					<Section
-						title={`VALUE (${fiatSymbol})`}
-						value={
-							<Money
-								sats={value}
-								showFiat={true}
-								size="text02m"
-								color="white"
-							/>
-						}
+				{activityType === EActivityType.onchain && (
+					<OnchainActivityDetail
+						item={item}
+						navigation={navigation}
+						extended={extended}
 					/>
-					<Section
-						title="STATUS"
-						value={
-							<View style={styles.confStatus}>
-								{activityType === EActivityTypes.lightning ? (
-									<LightningIcon color="purple" style={styles.checkmarkIcon} />
-								) : confirmed ? (
-									<CheckCircleIcon color="green" style={styles.checkmarkIcon} />
-								) : (
-									<ClockIcon color="white" style={styles.checkmarkIcon} />
-								)}
-								<Text02M
-									color={
-										activityType === EActivityTypes.lightning
-											? 'purple'
-											: confirmed
-											? 'green'
-											: 'white'
-									}>
-									{activityType === EActivityTypes.lightning
-										? 'Successful'
-										: confirmed
-										? 'Confirmed'
-										: 'Confirming'}
-								</Text02M>
-							</View>
-						}
-					/>
-				</View>
-
-				<View style={styles.sectionContainer}>
-					<Section
-						title="DATE"
-						value={
-							<Text02M>
-								{new Date(timestamp).toLocaleString(undefined, {
-									year: 'numeric',
-									month: 'long',
-									day: 'numeric',
-								})}
-							</Text02M>
-						}
-					/>
-					<Section
-						title="TIME"
-						value={
-							<Text02M>
-								{new Date(timestamp).toLocaleString(undefined, {
-									hour: 'numeric',
-									minute: 'numeric',
-									hour12: false,
-								})}
-							</Text02M>
-						}
-					/>
-				</View>
-
-				{!extended ? (
-					<>
-						{(tags.length !== 0 || slashTagsUrl) && (
-							<View style={styles.sectionContainer}>
-								{slashTagsUrl && (
-									<Section
-										title="CONTACT"
-										value={
-											<ContactSmall
-												url={slashTagsUrl}
-												onPress={handleContact}
-											/>
-										}
-									/>
-								)}
-								<Section
-									title="TAGS"
-									value={
-										<View style={styles.tagsContainer}>
-											{tags.map((tag) => (
-												<Tag
-													key={tag}
-													value={tag}
-													style={styles.tag}
-													onClose={(): void => handleRemoveTag(tag)}
-												/>
-											))}
-										</View>
-									}
-								/>
-							</View>
-						)}
-
-						{message ? (
-							<View>
-								<Caption13M color="brand" style={styles.sText}>
-									NOTE
-								</Caption13M>
-								<ThemedView color="gray5">
-									<Canvas style={styles.zRoot}>
-										<ZigZag color={colors.background} />
-									</Canvas>
-
-									<View style={styles.note}>
-										<Title>{message}</Title>
-									</View>
-								</ThemedView>
-							</View>
-						) : null}
-
-						<View>
-							<View style={styles.sectionContainer}>
-								{slashTagsUrl ? (
-									<Button
-										style={styles.button}
-										text="Detach"
-										icon={
-											<UserMinusIcon height={16} width={16} color="brand" />
-										}
-										onPress={handleDetach}
-									/>
-								) : (
-									<Button
-										style={styles.button}
-										text="Assign"
-										icon={<UserPlusIcon height={16} width={16} color="brand" />}
-										onPress={handleAssign}
-									/>
-								)}
-								<Button
-									style={styles.button}
-									text="Tag"
-									icon={<TagIcon height={16} width={16} color="brand" />}
-									onPress={handleAddTag}
-								/>
-							</View>
-							{activityType === EActivityTypes.onChain && (
-								<View style={styles.sectionContainer}>
-									<Button
-										style={styles.button}
-										text={isBoosted ? 'Already Boosted' : 'Boost'}
-										icon={<TimerIconAlt color="brand" />}
-										disabled={!showBoost}
-										onPress={handleBoost}
-									/>
-									<Button
-										style={styles.button}
-										text="Explore"
-										icon={<GitBranchIcon />}
-										disabled={!blockExplorerUrl}
-										onPress={handleBlockExplorerOpen}
-									/>
-								</View>
-							)}
-						</View>
-
-						<View style={styles.buttonDetailsContainer}>
-							<Button
-								text="Transaction Details"
-								size="large"
-								onPress={(): void =>
-									props.navigation.push('ActivityDetail', {
-										extended: true,
-										activityItem: props.route.params.activityItem,
-									})
-								}
-							/>
-						</View>
-					</>
-				) : (
-					<>
-						<TouchableOpacity
-							onPress={copyTransactionId}
-							style={styles.sectionContainer}>
-							<Section title="TRANSACTION ID" value={<Text02M>{id}</Text02M>} />
-						</TouchableOpacity>
-						<View style={styles.sectionContainer}>
-							<Section
-								title={
-									activityType === EActivityTypes.lightning
-										? 'INVOICE'
-										: 'ADDRESS'
-								}
-								value={<Text02M>{address}</Text02M>}
-							/>
-						</View>
-						{activityType === EActivityTypes.onChain && (
-							<>
-								{txDetails ? (
-									<>
-										<View style={styles.sectionContainer}>
-											<Section
-												title={`INPUTS (${txDetails?.vin?.length ?? 0})`}
-												value={txDetails?.vin.map((v) => {
-													const txid = v?.txid ?? '';
-													const vout = v?.vout ?? '';
-													const i = txid + ':' + vout;
-													return <Text02M key={i}>{i}</Text02M>;
-												})}
-											/>
-										</View>
-										<View style={styles.sectionContainer}>
-											<Section
-												title={`OUTPUTS (${txDetails.vout.length})`}
-												value={getOutputAddresses()}
-											/>
-										</View>
-									</>
-								) : (
-									<ActivityIndicator size="small" />
-								)}
-							</>
-						)}
-						{hasBoostedParents && (
-							<>
-								{boostedParents.map((parent, i) => {
-									const parentActivityType = boostedTransactions[parent].type;
-									return (
-										<View key={parent} style={styles.sectionContainer}>
-											<Section
-												title={`BOOSTED TRANSACTION ${
-													i + 1
-												} (${parentActivityType})`}
-												value={
-													<TouchableOpacity
-														onPress={(): void => {
-															handleBoostParentPress(parent);
-														}}>
-														<Text02M numberOfLines={1} ellipsizeMode={'middle'}>
-															{parent}
-														</Text02M>
-													</TouchableOpacity>
-												}
-											/>
-										</View>
-									);
-								})}
-							</>
-						)}
-						{activityType === EActivityTypes.onChain && (
-							<View style={styles.buttonDetailsContainer}>
-								<Button
-									text="Open Block Explorer"
-									size="large"
-									disabled={!blockExplorerUrl}
-									onPress={handleBlockExplorerOpen}
-								/>
-							</View>
-						)}
-					</>
 				)}
-
+				{activityType === EActivityType.lightning && (
+					<LightningActivityDetail
+						item={item}
+						navigation={navigation}
+						extended={extended}
+					/>
+				)}
+				{/* {activityType === EActivityType.tether && (
+					<TetherActivityDetail item={item} />
+				)} */}
 				<SafeAreaInsets type="bottom" />
 			</ScrollView>
 			<ActivityTagsPrompt />
@@ -645,7 +848,7 @@ const styles = StyleSheet.create({
 	titleBlock: {
 		flexDirection: 'row',
 		alignItems: 'center',
-		paddingTop: 10,
+		paddingTop: 3,
 	},
 	iconContainer: {
 		borderRadius: 30,
@@ -655,12 +858,12 @@ const styles = StyleSheet.create({
 		justifyContent: 'center',
 		alignItems: 'center',
 	},
-	confStatus: {
+	row: {
 		flexDirection: 'row',
 		alignItems: 'center',
 	},
-	checkmarkIcon: {
-		marginRight: 10,
+	rowIcon: {
+		marginRight: 9,
 	},
 	sectionContainer: {
 		marginHorizontal: -8,
@@ -676,6 +879,9 @@ const styles = StyleSheet.create({
 	},
 	sText: {
 		marginBottom: 8,
+	},
+	invoiceNote: {
+		marginBottom: 16,
 	},
 	note: {
 		padding: 24,

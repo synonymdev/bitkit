@@ -71,6 +71,7 @@ import {
 	enableSendAmountWarningSelector,
 } from '../../../store/reselect/settings';
 import { onChainFeesSelector } from '../../../store/reselect/fees';
+import { updateOnChainActivityList } from '../../../store/actions/activity';
 
 const Section = memo(
 	({
@@ -268,6 +269,7 @@ const ReviewAndSend = ({
 
 		// save tags to metadata
 		updateMetaTxTags(transaction.lightningInvoice, transaction.tags);
+
 		// save Slashtags contact to metadata
 		if (transaction.slashTagsUrl) {
 			addMetaSlashTagsUrlTag(
@@ -275,10 +277,14 @@ const ReviewAndSend = ({
 				transaction.slashTagsUrl,
 			);
 		}
+
 		refreshWallet({ onchain: false, lightning: true }).then();
-		//TODO: pass txId to Result screen
-		navigation.navigate('Result', { success: true });
 		setIsLoading(false);
+
+		navigation.navigate('Result', {
+			success: true,
+			txId: payInvoiceResponse.value.payment_hash,
+		});
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [
 		_onError,
@@ -354,8 +360,10 @@ const ReviewAndSend = ({
 			addMetaSlashTagsUrlTag(rawTx.id, transaction.slashTagsUrl);
 		}
 
-		navigation.navigate('Result', { success: true, txId: rawTx.id });
+		updateOnChainActivityList();
 		setIsLoading(false);
+
+		navigation.navigate('Result', { success: true, txId: rawTx.id });
 	}, [
 		onChainBalance,
 		rawTx,

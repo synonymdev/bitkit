@@ -1,66 +1,59 @@
+import { btcToSats } from '../helpers';
+import { TPaidBlocktankOrders } from '../../store/types/blocktank';
 import {
-	EActivityTypes,
+	EActivityType,
 	IActivityItem,
 	IActivityItemFormatted,
+	TOnchainActivityItem,
 } from '../../store/types/activity';
 import {
 	EPaymentType,
-	IFormattedTransaction,
 	IFormattedTransactionContent,
 } from '../../store/types/wallet';
-import { defaultActivityItemShape } from '../../store/shapes/activity';
 
 /**
- * Converts list of formatted transactions to array of activity items
- * @param transactions
- */
-export const onChainTransactionsToActivityItems = (
-	transactions: IFormattedTransaction,
-): IActivityItem[] => {
-	let items: IActivityItem[] = [];
-	Object.keys(transactions).forEach((txid) => {
-		const activityItem = onChainTransactionToActivityItem(transactions[txid]);
-		items.push(activityItem);
-	});
-	return items;
-};
-
-/**
- * Converts a formatted transaction to an activity items
+ * Converts a formatted transaction to an activity item
  * @param {IFormattedTransactionContent} transaction
- * @return IActivityItem
+ * @returns {TOnchainActivityItem} activityItem
  */
-export const onChainTransactionToActivityItem = (
-	transaction: IFormattedTransactionContent,
-): IActivityItem => {
-	const {
-		value,
-		fee,
-		type: txType,
-		address,
-		height,
-		timestamp,
-		messages,
-	} = transaction;
+export const onChainTransactionToActivityItem = ({
+	transaction,
+	blocktankTransactions,
+}: {
+	transaction: IFormattedTransactionContent;
+	blocktankTransactions: TPaidBlocktankOrders;
+}): TOnchainActivityItem => {
+	// subtract fee from amount if applicable
+	const amount =
+		transaction.type === 'sent'
+			? transaction.value + transaction.fee
+			: transaction.value;
+
+	// check if tx is a payment to Blocktank (i.e. transfer to spending)
+	const isTransferTx = !!Object.values(blocktankTransactions).find(
+		(txId) => transaction.txid === txId,
+	);
 
 	return {
-		...defaultActivityItemShape,
 		id: transaction.txid,
-		activityType: EActivityTypes.onChain,
-		txType,
-		confirmed: height > 0,
-		value: Math.round(value * 100000000),
-		fee,
-		message: messages.length > 0 ? messages[0] : '',
-		address,
-		timestamp,
+		activityType: EActivityType.onchain,
+		txType: transaction.type,
+		txId: transaction.txid,
+		value: btcToSats(Math.abs(amount)),
+		fee: transaction.fee,
+		feeRate: transaction.satsPerByte,
+		address: transaction.address,
+		confirmed: transaction.height > 0,
+		isBoosted: false,
+		isTransfer: isTransferTx,
+		timestamp: transaction.timestamp,
 	};
 };
 
 /**
- * Appends any new activity items while updating existing ones
- * @param oldItems
- * @param newItems
+ * Appends any new activity items while leaving known ones
+ * @param {IActivityItem[]} oldItems
+ * @param {IActivityItem[]} newItems
  * @returns {IActivityItem[]}
  */
 export const mergeActivityItems = (
@@ -77,7 +70,7 @@ export const mergeActivityItems = (
 	);
 	const mergedItems = reduced.concat(newItems);
 
-	// Receive should be before Sent if they have same timestamp
+	// 'Received' should be before 'Sent' if they have same timestamp
 	const sortOrder = ['received', 'sent'];
 	const sortedItems = mergedItems.sort(
 		(a, b) =>
@@ -96,7 +89,7 @@ export const mergeActivityItems = (
  */
 export const filterActivityItems = (
 	items: IActivityItem[],
-	metaTags: { [txid: string]: Array<string> },
+	metaTags: { [txid: string]: string[] },
 	{
 		search = '',
 		types = [],
@@ -104,21 +97,25 @@ export const filterActivityItems = (
 		txType,
 	}: {
 		search?: string;
-		types?: EActivityTypes[];
-		tags?: Array<string>;
+		types?: EActivityType[];
+		tags?: string[];
 		txType?: EPaymentType;
 	},
 ): IActivityItem[] => {
 	const lowerSearch = search.toLowerCase();
 	return items.filter((item) => {
+		const isOnchain = item.activityType === EActivityType.onchain;
+		const isLightning = item.activityType === EActivityType.lightning;
+
 		// If there is a search set and it's not found in the message, txid, address or value
 		// then don't bother continuing
 		if (
 			search &&
 			!(
-				item.message.toLowerCase().includes(lowerSearch) ||
-				item.id?.toLowerCase().includes(lowerSearch) ||
-				item.address?.toLowerCase().includes(lowerSearch) ||
+				(isLightning && item.message.toLowerCase().includes(lowerSearch)) ||
+				item.id.toLowerCase().includes(lowerSearch) ||
+				((isOnchain || isLightning) &&
+					item.address.toLowerCase().includes(lowerSearch)) ||
 				item.value.toString().includes(lowerSearch)
 			)
 		) {
@@ -153,7 +150,7 @@ export const filterActivityItems = (
 
 export const groupActivityItems = (
 	activityItems: IActivityItem[],
-): IActivityItemFormatted[] => {
+): Array<string | IActivityItemFormatted> => {
 	const date = new Date();
 	const beginningOfDay = +new Date(
 		date.getFullYear(),
@@ -168,11 +165,11 @@ export const groupActivityItems = (
 	const beginningOfMonth = +new Date(date.getFullYear(), date.getMonth());
 	const beginningOfYear = +new Date(date.getFullYear());
 
-	const today: Array<any> = [];
-	const yesterday: Array<any> = [];
-	const month: Array<any> = [];
-	const year: Array<any> = [];
-	const earlier: Array<any> = [];
+	const today: IActivityItemFormatted[] = [];
+	const yesterday: IActivityItemFormatted[] = [];
+	const month: IActivityItemFormatted[] = [];
+	const year: IActivityItemFormatted[] = [];
+	const earlier: IActivityItemFormatted[] = [];
 
 	for (let item of activityItems) {
 		if (item.timestamp >= beginningOfDay) {
@@ -234,7 +231,7 @@ export const groupActivityItems = (
 		}
 	}
 
-	let result: Array<any> = [];
+	let result: Array<string | IActivityItemFormatted> = [];
 	if (today.length > 0) {
 		result = [...result, 'TODAY', ...today];
 	}
@@ -252,14 +249,4 @@ export const groupActivityItems = (
 	}
 
 	return result;
-};
-
-export const updateLastUsedTags = (
-	oldTags: Array<string>,
-	newTags: Array<string>,
-): Array<string> => {
-	let tags = [...newTags, ...oldTags];
-	tags = [...new Set(tags)];
-	tags = tags.slice(0, 10);
-	return tags;
 };

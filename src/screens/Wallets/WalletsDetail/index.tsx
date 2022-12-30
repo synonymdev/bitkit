@@ -36,13 +36,12 @@ import BitcoinBreakdown from './BitcoinBreakdown';
 import SafeAreaInsets from '../../../components/SafeAreaInsets';
 import Money from '../../../components/Money';
 import BlurView from '../../../components/BlurView';
-import { EActivityTypes } from '../../../store/types/activity';
+import { EActivityType } from '../../../store/types/activity';
 import Store from '../../../store/types';
 import { updateSettings } from '../../../store/actions/settings';
 import BitcoinLogo from '../../../assets/bitcoin-logo.svg';
 import { capitalize } from '../../../utils/helpers';
 import DetectSwipe from '../../../components/DetectSwipe';
-import { IColors } from '../../../styles/colors';
 import { EBitcoinUnit } from '../../../store/types/wallet';
 import type { WalletScreenProps } from '../../../navigation/types';
 
@@ -60,11 +59,7 @@ const updateHeight = ({
 	} catch {}
 };
 
-type GlowProps = {
-	colors: IColors;
-};
-
-const Glow = ({ colors }: GlowProps): ReactElement => {
+const Glow = ({ color }: { color: string }): ReactElement => {
 	const { size } = useCanvas();
 	const rct = useComputedValue(
 		() => rect(0, 0, size.current.width, size.current.height),
@@ -76,7 +71,7 @@ const Glow = ({ colors }: GlowProps): ReactElement => {
 			<RadialGradient
 				c={vec(-450, 0)}
 				r={Platform.OS === 'ios' ? 1050 : 900}
-				colors={[colors.brand, 'transparent']}
+				colors={[color, 'transparent']}
 			/>
 		</Rect>
 	);
@@ -90,23 +85,24 @@ const WalletsDetail = ({
 	const bitcoinUnit = useSelector((store: Store) => store.settings.bitcoinUnit);
 	const hideBalance = useSelector((state: Store) => state.settings.hideBalance);
 	const colors = useColors();
-	const filter = useMemo(() => {
-		const types =
-			assetType === 'bitcoin'
-				? [EActivityTypes.onChain, EActivityTypes.lightning]
-				: [EActivityTypes.tether];
-		return { types };
-	}, [assetType]);
 	const title = capitalize(assetType);
 	const [showDetails, setShowDetails] = useState(true);
 	const [radiusContainerHeight, setRadiusContainerHeight] = useState(400);
 	const [headerHeight, setHeaderHeight] = useState(0);
+	const [height] = useState(new Animated.Value(0));
+
+	const filter = useMemo(() => {
+		const types =
+			assetType === 'bitcoin'
+				? [EActivityType.onchain, EActivityType.lightning]
+				: [EActivityType.tether];
+		return { types };
+	}, [assetType]);
 
 	const activityPadding = useMemo(
 		() => ({ paddingTop: radiusContainerHeight, paddingBottom: 230 }),
 		[radiusContainerHeight],
 	);
-	const [height] = useState(new Animated.Value(0));
 
 	useEffect(() => {
 		updateHeight({ height, toValue: headerHeight });
@@ -161,7 +157,7 @@ const WalletsDetail = ({
 			<View color="transparent" style={styles.radiusContainer}>
 				<BlurView>
 					<Canvas style={styles.glowCanvas}>
-						<Glow colors={colors} />
+						<Glow color={colors.brand} />
 					</Canvas>
 					<View
 						style={styles.assetDetailContainer}
@@ -170,8 +166,7 @@ const WalletsDetail = ({
 							const hh = e.nativeEvent.layout.height;
 							setRadiusContainerHeight((h) => (h === 400 ? hh : h));
 						}}>
-						<SafeAreaInsets type={'top'} />
-
+						<SafeAreaInsets type="top" />
 						<NavigationHeader />
 
 						<AnimatedView
@@ -233,7 +228,7 @@ const WalletsDetail = ({
 					</View>
 				</BlurView>
 			</View>
-			<SafeAreaInsets type={'bottom'} maxPaddingBottom={20} />
+			<SafeAreaInsets type="bottom" maxPaddingBottom={20} />
 		</AnimatedView>
 	);
 };

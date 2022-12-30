@@ -1,7 +1,7 @@
-export type TTags = { [name: string]: Array<string> };
-export type TPendingTags = { [name: string]: Array<string> };
-export type TLastUsedTags = Array<string>;
-export type TSlashTagsUrls = { [txId: string]: string };
+export type TTags = { [txId: string]: string[] };
+export type TPendingTags = { [address: string]: string[] };
+export type TLastUsedTags = string[];
+export type TSlashTagsUrls = { [txId: string]: string | undefined };
 
 export interface IMetadata {
 	tags: TTags;

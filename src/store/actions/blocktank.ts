@@ -64,25 +64,20 @@ export const refreshServiceList = async (): Promise<Result<string>> => {
 };
 
 /**
- * Retrieves & Updates the status of all stored orders.
+ * Retrieves & updates the status of stored orders that may have changed.
  * @returns {Promise<Result<string>>}
  */
 export const refreshOrdersList = async (): Promise<Result<string>> => {
+	const orders = getBlocktankStore().orders;
+	// https://github.com/synonymdev/blocktank-server/blob/master/src/Orders/Order.js#L27
+	const unsettledStatuses = [0, 100, 150, 200, 300, 350, 400, 500];
+	const unsettledOrders = orders.filter((order) => {
+		return unsettledStatuses.includes(order.state);
+	});
+
 	try {
-		const orders = getBlocktankStore().orders;
-		let ordersThatNeedUpdating: string[] = [];
-		await Promise.all(
-			orders.map((order) => {
-				if (order.state < 410) {
-					ordersThatNeedUpdating.push(order._id);
-				}
-			}),
-		);
-		await Promise.all(
-			ordersThatNeedUpdating.map(async (orderId) => {
-				await refreshOrder(orderId);
-			}),
-		);
+		const promises = unsettledOrders.map((order) => refreshOrder(order._id));
+		await Promise.all(promises);
 		return ok('Orders list updated');
 	} catch (e) {
 		return err(e);
@@ -120,10 +115,12 @@ export const refreshOrder = async (
 				}
 			}
 
-			// blocktank-client code reference: https://github.com/synonymdev/blocktank-client/blob/f8a20c35a4953435cecf8f718ee555e311e1db9b/src/services/client.ts#L15
 			// update suggestions cards
-			if ([150, 300, 400, 410, 450, 500].includes(getOrderRes.value.state)) {
+			// TODO: fix for multiple channels
+			// blocktank-client code reference: https://github.com/synonymdev/blocktank-client/blob/f8a20c35a4953435cecf8f718ee555e311e1db9b/src/services/client.ts#L15
+			if ([150, 350, 400, 410, 450, 500].includes(getOrderRes.value.state)) {
 				removeTodo('lightningSettingUp');
+				removeTodo('transferInProgress');
 			}
 
 			if (getOrderRes.value.state === 500) {
