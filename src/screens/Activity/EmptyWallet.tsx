@@ -1,4 +1,5 @@
 import React, { memo, ReactElement, useMemo } from 'react';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import {
 	StyleSheet,
 	View,
@@ -12,13 +13,15 @@ import Arrow from '../../assets/dotted-arrow.svg';
 
 const EmptyWallet = (): ReactElement => {
 	const { height } = useWindowDimensions();
+	const insets = useSafeAreaInsets();
+
 	const [root, arrowContainer, arrow] = useMemo(() => {
 		return [
-			[styles.root, { marginTop: height * 0.17 }],
+			[styles.root, { marginBottom: 110 + insets.bottom }],
 			[styles.arrowContainer, { marginTop: height * 0.04 }],
 			{ maxHeight: height * 0.28 },
 		];
-	}, [height]);
+	}, [height, insets.bottom]);
 
 	const handleHide = (): void => {
 		updateSettings({ hideOnboardingMessage: true });
@@ -48,6 +51,7 @@ const styles = StyleSheet.create({
 	root: {
 		paddingHorizontal: 16,
 		position: 'relative',
+		marginTop: 'auto',
 	},
 	closeButton: {
 		height: 30,
@@ -63,7 +67,7 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 	},
 	spaceLeft: {
-		flex: 6,
+		flex: 7,
 	},
 	spaceRight: {
 		flex: 3,

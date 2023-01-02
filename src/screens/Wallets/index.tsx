@@ -71,8 +71,7 @@ const Wallets = ({
 
 	const onRefresh = async (): Promise<void> => {
 		setRefreshing(true);
-		//Refresh wallet and then update activity list
-		await Promise.all([refreshWallet({ scanAllAddresses: true })]);
+		await refreshWallet({ scanAllAddresses: true });
 		setRefreshing(false);
 	};
 
@@ -88,7 +87,10 @@ const Wallets = ({
 				onSwipeLeft={navigateToScanner}
 				onSwipeRight={navigateToProfile}>
 				<ScrollView
-					contentContainerStyle={hideOnboarding && styles.scrollview}
+					contentContainerStyle={[
+						styles.content,
+						hideOnboarding && styles.scrollView,
+					]}
 					disableScrollViewPanResponder={true}
 					showsVerticalScrollIndicator={false}
 					refreshControl={
@@ -110,7 +112,7 @@ const Wallets = ({
 					{hideOnboarding ? (
 						<>
 							<Suggestions />
-							<View style={styles.content}>
+							<View style={styles.contentPadding}>
 								<ConnectivityIndicator />
 								<Assets />
 								<Widgets
@@ -132,10 +134,13 @@ const Wallets = ({
 
 const styles = StyleSheet.create({
 	content: {
-		paddingHorizontal: 16,
+		flexGrow: 1,
 	},
-	scrollview: {
+	scrollView: {
 		paddingBottom: 130,
+	},
+	contentPadding: {
+		paddingHorizontal: 16,
 	},
 });
 
