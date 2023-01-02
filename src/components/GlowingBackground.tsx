@@ -7,7 +7,6 @@ import React, {
 } from 'react';
 import { StyleSheet } from 'react-native';
 import { useWindowDimensions } from 'react-native';
-import { useSelector } from 'react-redux';
 import {
 	Canvas,
 	RadialGradient,
@@ -19,7 +18,7 @@ import {
 
 import { View } from '../styles/components';
 import { IColors } from '../styles/colors';
-import { themeColorsSelector } from '../store/reselect/settings';
+import useColors from '../hooks/colors';
 
 const DURATION = 500;
 
@@ -75,35 +74,38 @@ const GlowingBackground = ({
 	topLeft?: keyof IColors;
 	bottomRight?: keyof IColors;
 }): ReactElement => {
-	const colors = useSelector(themeColorsSelector);
-	topLeft = topLeft ? colors[topLeft] || topLeft : colors.background;
-	bottomRight = bottomRight ?? colors.background;
-	const [topLeftItems, setTopLeftItems] = useState([{ color: topLeft, id: 0 }]);
-	const [bottomRightItems, setBottomRightItems] = useState([
-		{ color: bottomRight, id: 0 },
-	]);
-
 	const { height, width } = useWindowDimensions();
+	const colors = useColors();
+	const topLeftColor = topLeft ? colors[topLeft] : colors.background;
+	const bottomRightColor = bottomRight
+		? colors[bottomRight]
+		: colors.background;
+	const [topLeftItems, setTopLeftItems] = useState([
+		{ color: topLeftColor, id: 0 },
+	]);
+	const [bottomRightItems, setBottomRightItems] = useState([
+		{ color: bottomRightColor, id: 0 },
+	]);
 
 	useEffect(() => {
 		setTopLeftItems((items) => {
-			if (items[items.length - 1].color === topLeft) {
+			if (items[items.length - 1].color === topLeftColor) {
 				return items;
 			}
 			const id = items[items.length - 1].id + 1;
-			return [...items.splice(-4), { color: topLeft, id }];
+			return [...items.splice(-4), { color: topLeftColor, id }];
 		});
-	}, [topLeft]);
+	}, [topLeftColor]);
 
 	useEffect(() => {
 		setBottomRightItems((items) => {
-			if (items[items.length - 1].color === bottomRight) {
+			if (items[items.length - 1].color === bottomRightColor) {
 				return items;
 			}
 			const id = items[items.length - 1].id + 1;
-			return [...items.splice(-4), { color: bottomRight, id }];
+			return [...items.splice(-4), { color: bottomRightColor, id }];
 		});
-	}, [bottomRight]);
+	}, [bottomRightColor]);
 
 	return (
 		<View style={styles.container}>

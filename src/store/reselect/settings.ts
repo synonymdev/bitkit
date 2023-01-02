@@ -12,7 +12,7 @@ import {
 	TUnitPreference,
 } from '../types/settings';
 import { TAvailableNetworks } from '../../utils/networks';
-import themes from '../../styles/themes';
+import themes, { IThemeColors } from '../../styles/themes';
 
 export const settingsState = (state: Store): ISettings => state.settings;
 const customElectrumPeersState = (state: Store): TCustomElectrumPeers =>
@@ -105,7 +105,7 @@ export const themeSelector = createSelector(
 );
 export const themeColorsSelector = createSelector(
 	[settingsState],
-	(settings): any => themes[settings.theme].colors,
+	(settings): IThemeColors => themes[settings.theme].colors,
 );
 export const selectedLanguageSelector = createSelector(
 	[settingsState],
