@@ -8,7 +8,7 @@ import React, {
 // import Rate, { AndroidMarket } from 'react-native-rate';
 import {
 	View,
-	FlatList,
+	ScrollView,
 	Image,
 	// Share,
 	// Platform,
@@ -35,8 +35,8 @@ import GlowingBackground from '../../../components/GlowingBackground';
 import { openURL } from '../../../utils/helpers';
 import SafeAreaInsets from '../../../components/SafeAreaInsets';
 import SettingsView from '../SettingsView';
-import type { SettingsScreenProps } from '../../../navigation/types';
 import { createSupportLink } from '../../../utils/support';
+import type { SettingsScreenProps } from '../../../navigation/types';
 
 const imageSrc = require('../../../assets/powered-by.png');
 
@@ -144,98 +144,100 @@ const About = ({
 		[],
 	);
 
-	const headerComponent = (
-		<SettingsView
-			title="About Bitkit"
-			listData={SettingsListData}
-			showBackNavigation={true}>
-			<Text01S style={styles.text} color="gray1">
-				Bitkit hands you the keys to your money, profile, contacts, and web
-				accounts.{'\n'}
-				{'\n'}This{' '}
-				<Text01S
-					color="gray1"
-					onPress={(): void => {
-						navigation.navigate('EasterEgg');
-					}}>
-					Orange Pill
-				</Text01S>{' '}
-				was carefully crafted by:{'\n'}John, Reza, Paulo, Corey, Jason,
-				Gr0kchain, Ar, Ivan, Instabot, Philipp, Miguel, Aldert, Sasha, Auwal,
-				Pavel, and Jan-Willem from Synonym Software Ltd.
-			</Text01S>
-		</SettingsView>
-	);
-
 	return (
 		<GlowingBackground bottomRight="brand">
-			<FlatList
-				data={null}
-				renderItem={null}
-				ListHeaderComponent={headerComponent}
-			/>
-			<View style={styles.footer}>
-				<View style={styles.logoContainer}>
-					<Pressable
-						style={styles.logoLink}
-						onPress={(): void => {
-							navigation.navigate('EasterEgg');
-						}}
-					/>
-					<BitkitIcon height={64} width={184} />
-					<Image style={styles.poweredBy} source={imageSrc} />
+			<ScrollView
+				contentContainerStyle={styles.content}
+				showsVerticalScrollIndicator={false}>
+				<SettingsView
+					style={styles.list}
+					title="About Bitkit"
+					listData={SettingsListData}
+					fullHeight={false}>
+					<Text01S style={styles.text} color="gray1">
+						Bitkit hands you the keys to your money, profile, contacts, and web
+						accounts.{'\n'}
+						{'\n'}This{' '}
+						<Text01S
+							color="gray1"
+							onPress={(): void => {
+								navigation.navigate('EasterEgg');
+							}}>
+							Orange Pill
+						</Text01S>{' '}
+						was carefully crafted by:{'\n'}John, Reza, Paulo, Corey, Jason,
+						Gr0kchain, Ar, Ivan, Instabot, Philipp, Miguel, Aldert, Sasha,
+						Auwal, Pavel, and Jan-Willem from Synonym Software Ltd.
+					</Text01S>
+				</SettingsView>
+				<View style={styles.footer}>
+					<View style={styles.logoContainer}>
+						<Pressable
+							style={styles.logoLink}
+							onPress={(): void => {
+								navigation.navigate('EasterEgg');
+							}}
+						/>
+						<BitkitIcon height={64} width={184} />
+						<Image style={styles.poweredBy} source={imageSrc} />
+					</View>
+					<View style={styles.socialLinks}>
+						<Pressable
+							style={styles.socialLink}
+							onPress={async (): Promise<void> => {
+								await openURL(await createSupportLink());
+							}}>
+							<EmailIcon height={24} width={24} />
+						</Pressable>
+						<Pressable
+							style={styles.socialLink}
+							onPress={(): void => {
+								openURL('https://www.bitkit.to');
+							}}>
+							<GlobeIcon height={24} width={24} />
+						</Pressable>
+						<Pressable
+							style={styles.socialLink}
+							onPress={(): void => {
+								openURL('https://www.twitter.com/bitkitwallet');
+							}}>
+							<TwitterIcon height={24} width={24} />
+						</Pressable>
+						<Pressable
+							style={styles.socialLink}
+							onPress={(): void => {
+								openURL('https://www.medium.com/synonym-to');
+							}}>
+							<MediumIcon height={24} width={24} />
+						</Pressable>
+						<Pressable
+							style={styles.socialLink}
+							onPress={(): void => {
+								openURL('https://www.github.com/synonymdev');
+							}}>
+							<GithubIcon height={24} width={24} />
+						</Pressable>
+					</View>
 				</View>
-				<View style={styles.socialLinks}>
-					<Pressable
-						style={styles.socialLink}
-						onPress={async (): Promise<void> => {
-							await openURL(await createSupportLink());
-						}}>
-						<EmailIcon height={24} width={24} />
-					</Pressable>
-					<Pressable
-						style={styles.socialLink}
-						onPress={(): void => {
-							openURL('https://www.bitkit.to');
-						}}>
-						<GlobeIcon height={24} width={24} />
-					</Pressable>
-					<Pressable
-						style={styles.socialLink}
-						onPress={(): void => {
-							openURL('https://www.twitter.com/bitkitwallet');
-						}}>
-						<TwitterIcon height={24} width={24} />
-					</Pressable>
-					<Pressable
-						style={styles.socialLink}
-						onPress={(): void => {
-							openURL('https://www.medium.com/synonym-to');
-						}}>
-						<MediumIcon height={24} width={24} />
-					</Pressable>
-					<Pressable
-						style={styles.socialLink}
-						onPress={(): void => {
-							openURL('https://www.github.com/synonymdev');
-						}}>
-						<GithubIcon height={24} width={24} />
-					</Pressable>
-				</View>
-			</View>
 
-			<SafeAreaInsets type="bottom" />
+				<SafeAreaInsets type="bottom" />
+			</ScrollView>
 		</GlowingBackground>
 	);
 };
 
 const styles = StyleSheet.create({
+	content: {
+		flexGrow: 1,
+	},
 	text: {
 		paddingHorizontal: 16,
 		paddingBottom: 32,
 	},
+	list: {
+		marginBottom: 32,
+	},
 	footer: {
-		flex: 1,
 		alignItems: 'center',
 		justifyContent: 'flex-end',
 		marginTop: 'auto',

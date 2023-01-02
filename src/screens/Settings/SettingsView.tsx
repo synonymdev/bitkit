@@ -1,8 +1,8 @@
 import React, { memo, ReactElement, useMemo, useState } from 'react';
-import { StyleSheet } from 'react-native';
+import { View, StyleSheet, StyleProp, ViewStyle } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-import { Text01S, Text02S, View } from '../../styles/components';
+import { View as ThemedView, Text01S, Text02S } from '../../styles/components';
 import SearchInput from '../../components/SearchInput';
 import List, { IListData } from '../../components/List';
 import NavigationHeader from '../../components/NavigationHeader';
@@ -10,14 +10,6 @@ import SafeAreaInsets from '../../components/SafeAreaInsets';
 import { SettingsScreenProps } from '../../navigation/types';
 import { SettingsStackParamList } from '../../navigation/settings/SettingsNavigator';
 
-/**
- * Generic settings view
- * @param title
- * @param data
- * @param showBackNavigation
- * @returns {JSX.Element}
- * @constructor
- */
 const SettingsView = ({
 	title = ' ',
 	listData,
@@ -28,16 +20,18 @@ const SettingsView = ({
 	fullHeight = true,
 	children,
 	childrenPosition = 'top',
+	style,
 }: {
 	title?: string;
 	listData?: IListData[];
 	headerText?: string;
 	footerText?: string;
-	showBackNavigation: boolean;
+	showBackNavigation?: boolean;
 	showSearch?: boolean;
 	fullHeight?: boolean;
 	children?: ReactElement | ReactElement[];
 	childrenPosition?: 'top' | 'bottom';
+	style?: StyleProp<ViewStyle>;
 }): ReactElement => {
 	const navigation =
 		useNavigation<
@@ -60,7 +54,9 @@ const SettingsView = ({
 	);
 
 	return (
-		<View style={fullHeight && styles.fullHeight} color="black">
+		<ThemedView
+			style={[fullHeight && styles.fullHeight, style]}
+			color={fullHeight ? 'black' : 'transparent'}>
 			<SafeAreaInsets type="top" />
 			<NavigationHeader
 				title={title}
@@ -84,17 +80,14 @@ const SettingsView = ({
 				</View>
 			)}
 
-			{children && childrenPosition === 'top' && (
-				<View color="black">{children}</View>
-			)}
+			{children && childrenPosition === 'top' && <View>{children}</View>}
 
 			{listData && (
 				<View
 					style={[
 						styles.listContent,
 						fullHeight && styles.listContentFullHeight,
-					]}
-					color="black">
+					]}>
 					<List
 						style={fullHeight && styles.listFullHeight}
 						data={filteredListData}
@@ -110,11 +103,11 @@ const SettingsView = ({
 			)}
 
 			{children && childrenPosition === 'bottom' && (
-				<View style={styles.childrenContent} color="black">
-					{children}
-				</View>
+				<View style={styles.childrenContent}>{children}</View>
 			)}
-		</View>
+
+			<SafeAreaInsets type="bottom" />
+		</ThemedView>
 	);
 };
 

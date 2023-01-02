@@ -33,7 +33,7 @@ const BitcoinNetworkSelection = ({
 				data: Object.values(EAvailableNetworks).map((network) => {
 					const networkData = getNetworkData({ selectedNetwork: network });
 					return {
-						title: `${networkData.label}`,
+						title: networkData.label,
 						value: network === selectedNetwork,
 						type: 'button',
 						onPress: async (): Promise<void> => {
