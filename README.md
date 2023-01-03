@@ -8,7 +8,9 @@
 
 ---
 
-**⚠️ Bitkit is still in beta. Please use at your own risk.⚠️**
+**⚠️ Bitkit is still in beta. Please use at your own risk.**
+
+[⬇ Download latest APK](https://github.com/synonymdev/bitkit/releases)
 
 ---
 
