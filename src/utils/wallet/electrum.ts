@@ -370,8 +370,8 @@ export const getTransactions = async ({
 
 export interface IPeerData {
 	host: string;
-	port: string | number;
-	protocol: 'tcp' | 'ssl' | string;
+	port: string;
+	protocol: 'tcp' | 'ssl';
 }
 
 /**
@@ -387,7 +387,7 @@ export const getConnectedPeer = async (
 			selectedNetwork = getSelectedNetwork();
 		}
 		const response = await electrum.getConnectedPeer(selectedNetwork);
-		if (response && response?.host && response?.port && response?.protocol) {
+		if (response?.host && response?.port && response?.protocol) {
 			return ok(response);
 		}
 		return err('No peer available.');
@@ -634,11 +634,18 @@ export const getScriptPubKeyHistory = async (
 	return history;
 };
 
-const tempElectrumServers: IWalletItem<ICustomElectrumPeer[]> = {
-	bitcoin: peers.bitcoin,
-	bitcoinTestnet: peers.bitcoinTestnet,
-	bitcoinRegtest: [],
-};
+type PartialBy<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;
+type TCustomElectrumPeerOptionalProtocol = PartialBy<
+	ICustomElectrumPeer,
+	'protocol'
+>;
+
+const tempElectrumServers: IWalletItem<TCustomElectrumPeerOptionalProtocol[]> =
+	{
+		bitcoin: peers.bitcoin,
+		bitcoinTestnet: peers.bitcoinTestnet,
+		bitcoinRegtest: [],
+	};
 
 /**
  * Connects to the provided electrum peer. Otherwise, it will attempt to connect to a set of default peers.
@@ -656,13 +663,12 @@ export const connectToElectrum = async ({
 }: {
 	selectedNetwork?: TAvailableNetworks;
 	retryAttempts?: number;
-	customPeers?: ICustomElectrumPeer[];
+	customPeers?: TCustomElectrumPeerOptionalProtocol[];
 	options?: { net?: any; tls?: any };
 }): Promise<Result<string>> => {
 	if (!selectedNetwork) {
 		selectedNetwork = getSelectedNetwork();
 	}
-	// @ts-ignore
 	const net = options.net ?? global?.net;
 	// const _tls = options.tls ?? tls;
 	const _tls = options.tls ?? global?.tls;
@@ -677,6 +683,7 @@ export const connectToElectrum = async ({
 	if (customPeers.length < 1) {
 		customPeers = tempElectrumServers[selectedNetwork];
 	}
+
 	let startResponse = { error: true, data: '' };
 	for (let i = 0; i < retryAttempts; i++) {
 		startResponse = await electrum.start({
@@ -699,7 +706,8 @@ export const connectToElectrum = async ({
 			tls: _tls,
 		});
 		if (error) {
-			return err(data);
+			const msg = data || 'An unknown error occurred.';
+			return err(msg);
 		}
 		return ok(data);
 	}

@@ -76,7 +76,7 @@ export const customElectrumPeersSelector = createSelector(
 	[
 		customElectrumPeersState,
 		(
-			customElectrumPeers,
+			_customElectrumPeers,
 			selectedNetwork: TAvailableNetworks,
 		): TAvailableNetworks => selectedNetwork,
 	],

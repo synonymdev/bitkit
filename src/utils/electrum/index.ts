@@ -1,9 +1,11 @@
-import { TAvailableNetworks } from '../networks';
-import { getSelectedNetwork } from '../wallet';
 import * as electrum from 'rn-electrum-client/helpers';
 const hardcodedPeers = require('rn-electrum-client/helpers/peers.json');
 import { err, ok, Result } from '@synonymdev/result';
+
+import { TAvailableNetworks } from '../networks';
+import { getSelectedNetwork } from '../wallet';
 import { connectToElectrum } from '../wallet/electrum';
+import { TProtocol } from '../../store/types/settings';
 
 export const defaultElectrumPorts = ['51002', '50002', '51001', '50001'];
 
@@ -13,26 +15,34 @@ export const defaultElectrumPorts = ['51002', '50002', '51001', '50001'];
  * @param {string} [protocol]
  */
 export const getDefaultPort = (
-	selectedNetwork: TAvailableNetworks = 'bitcoin',
-	protocol = 'ssl',
+	selectedNetwork: TAvailableNetworks,
+	protocol: TProtocol,
 ): string => {
 	if (protocol === 'ssl') {
-		try {
-			return selectedNetwork.toLowerCase().includes('testnet')
-				? '51002'
-				: '50002';
-		} catch (e) {
-			return '50002';
-		}
+		return selectedNetwork === 'bitcoinTestnet' ? '51002' : '50002';
 	} else {
-		try {
-			return selectedNetwork.toLowerCase().includes('testnet')
-				? '51001'
-				: '50001';
-		} catch (e) {
-			return '50001';
-		}
+		return selectedNetwork === 'bitcoinTestnet' ? '51001' : '50001';
 	}
+};
+
+/**
+ * Returns the protocol for the given network and default port.
+ * @param {string} [port]
+ * @param {TAvailableNetworks} [selectedNetwork]
+ */
+export const getProtocolForPort = (
+	port: string,
+	selectedNetwork?: TAvailableNetworks,
+): TProtocol | undefined => {
+	if (port === '443') {
+		return 'ssl';
+	}
+
+	if (selectedNetwork === 'bitcoinTestnet') {
+		return port === '51002' ? 'ssl' : 'tcp';
+	}
+
+	return port === '50002' ? 'ssl' : 'tcp';
 };
 
 export interface IFormattedPeerData {

@@ -14,7 +14,7 @@ import {
 	ScanIcon,
 } from '../../../styles/components';
 import { addElectrumPeer } from '../../../store/actions/settings';
-import { ICustomElectrumPeer, TProtocol } from '../../../store/types/settings';
+import { TProtocol } from '../../../store/types/settings';
 import { updateUser } from '../../../store/actions/user';
 import Store from '../../../store/types';
 import { origCustomElectrumPeers } from '../../../store/shapes/settings';
@@ -22,46 +22,72 @@ import { connectToElectrum } from '../../../utils/wallet/electrum';
 import NavigationHeader from '../../../components/NavigationHeader';
 import Button from '../../../components/Button';
 import { objectsMatch } from '../../../utils/helpers';
-import { defaultElectrumPorts, getDefaultPort } from '../../../utils/electrum';
+import {
+	defaultElectrumPorts,
+	getDefaultPort,
+	getProtocolForPort,
+} from '../../../utils/electrum';
 import {
 	showErrorNotification,
 	showSuccessNotification,
 } from '../../../utils/notifications';
 import { getConnectedPeer, IPeerData } from '../../../utils/wallet/electrum';
 import SafeAreaInsets from '../../../components/SafeAreaInsets';
-import {
-	RadioButtonGroup,
-	RadioButtonItem,
-} from '../../../components/RadioButton';
-import type { SettingsScreenProps } from '../../../navigation/types';
+import { RadioButtonGroup } from '../../../components/RadioButton';
 import { selectedNetworkSelector } from '../../../store/reselect/wallet';
 import { customElectrumPeersSelector } from '../../../store/reselect/settings';
+import type { SettingsScreenProps } from '../../../navigation/types';
+
+type RadioButtonItem = { label: string; value: TProtocol };
 
 const radioButtons: RadioButtonItem[] = [
 	{ label: 'TCP', value: 'tcp' },
 	{ label: 'TLS', value: 'ssl' },
 ];
 
+const isValidURL = (data: string): boolean => {
+	const pattern = new RegExp(
+		'^(https?:\\/\\/)?' + // protocol
+			'((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // domain name
+			'((\\d{1,3}\\.){3}\\d{1,3}))' + // IP (v4) address
+			'(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*', // port and path
+		'i',
+	);
+
+	// wave through everything 'localhost' for development
+	if (__DEV__ && data.includes('localhost')) {
+		return true;
+	}
+
+	return !!pattern.test(data);
+};
+
 const validateInput = ({
-	host = '',
-	port = '',
+	host,
+	port,
 }: {
 	host: string;
-	port: string | number;
+	port: string;
 }): Result<string> => {
 	//Ensure the user passed in a host & port to test.
-	let data;
+	let error;
 	if (host === '' && port === '') {
-		data = 'Please specify a host and port to connect to.';
+		error = 'Please specify a host and port to connect to.';
 	} else if (host === '') {
-		data = 'Please specify a host to connect to.';
+		error = 'Please specify a host to connect to.';
 	} else if (port === '') {
-		data = 'Please specify a port to connect to.';
+		error = 'Please specify a port to connect to.';
 	} else if (isNaN(Number(port))) {
-		data = 'Invalid port.';
+		error = 'Invalid port.';
 	}
-	if (data) {
-		return err(data);
+
+	const url = `${host}:${port}`;
+	if (!isValidURL(url)) {
+		error = 'Not a valid HTTP url.';
+	}
+
+	if (error) {
+		return err(error);
 	}
 	return ok('');
 };
@@ -74,50 +100,34 @@ const ElectrumConfig = ({
 		customElectrumPeersSelector(state, selectedNetwork),
 	);
 	const savedPeer = customElectrumPeers[0];
-	const [host, setHost] = useState(savedPeer?.host || '');
-	const [protocol, setProtocol] = useState<TProtocol>(
-		savedPeer?.protocol ? savedPeer.protocol : 'ssl',
-	);
-	const [port, setPort] = useState(
-		savedPeer?.protocol
-			? savedPeer[savedPeer.protocol]
-			: getDefaultPort(selectedNetwork, protocol),
+	const [connectedPeer, setConnectedPeer] = useState<IPeerData>();
+	const [loading, setLoading] = useState(false);
+	const [host, setHost] = useState(savedPeer.host);
+	const [protocol, setProtocol] = useState<TProtocol>(savedPeer.protocol);
+	const [port, setPort] = useState<string>(
+		savedPeer[savedPeer.protocol].toString(),
 	);
 
-	const [connectedPeer, setConnectedPeer] = useState<IPeerData>({
-		host: '',
-		port: '',
-		protocol: '',
-	});
-	const [loading, setLoading] = useState(false);
+	useEffect(() => {
+		getAndUpdateConnectedPeer();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
 
 	const getAndUpdateConnectedPeer = async (): Promise<void> => {
 		const peerInfo = await getConnectedPeer(selectedNetwork);
 		if (peerInfo.isOk()) {
-			setConnectedPeer({
-				...peerInfo.value,
-				port: peerInfo.value.port.toString(),
-			});
+			setConnectedPeer(peerInfo.value);
 		}
 	};
 
 	const connectAndAddPeer = async (peerData: {
 		host: string;
-		port: number | string;
+		port: string;
 		protocol: TProtocol;
 	}): Promise<void> => {
-		try {
-			if (loading) {
-				return;
-			}
-			if (!peerData) {
-				peerData = { host, port, protocol };
-			}
-			if (typeof port === 'number') {
-				peerData.port.toString();
-			}
+		setLoading(true);
 
-			setLoading(true);
+		try {
 			const validityCheck = validateInput(peerData);
 			if (validityCheck.isErr()) {
 				showErrorNotification({
@@ -126,23 +136,20 @@ const ElectrumConfig = ({
 				});
 				return;
 			}
-			const customPeer: ICustomElectrumPeer = {
-				host: '',
-				protocol: '',
+			const defaultPorts = {
 				ssl: Number(getDefaultPort(selectedNetwork, 'ssl')),
 				tcp: Number(getDefaultPort(selectedNetwork, 'tcp')),
 			};
 			const connectData = {
-				...customPeer,
+				...defaultPorts,
 				host: peerData.host.trim(),
-				protocol: peerData.protocol.trim(),
-				[protocol]: peerData.port.toString().trim(),
+				protocol: peerData.protocol,
+				[protocol]: Number(peerData.port),
 			};
 			const connectResponse = await connectToElectrum({
 				selectedNetwork,
 				customPeers: [connectData],
 			});
-			setLoading(false);
 			if (connectResponse.isOk()) {
 				addElectrumPeer({ selectedNetwork, peer: connectData });
 				updateUser({ isConnectedToElectrum: true });
@@ -150,36 +157,18 @@ const ElectrumConfig = ({
 					title: 'Electrum Server Updated',
 					message: `Successfully connected to ${host}:${port}`,
 				});
-				getAndUpdateConnectedPeer();
+				await getAndUpdateConnectedPeer();
 			} else {
 				updateUser({ isConnectedToElectrum: false });
-				// showErrorNotification({
-				// 	title: 'Unable to connect to Electrum Server',
-				// 	message: connectResponse.error.message,
-				// });
+				showErrorNotification({
+					title: 'Unable to connect to Electrum Server',
+					message: connectResponse.error.message,
+				});
 			}
 		} catch (e) {
 			console.log(e);
+		} finally {
 			setLoading(false);
-		}
-	};
-
-	/**
-	 * Compare against the currently saved peer.
-	 * @param _peer
-	 */
-	const peersMatch = (_peer: IPeerData): boolean => {
-		try {
-			if (!savedPeer.protocol) {
-				return false;
-			}
-			return objectsMatch(_peer, {
-				host: savedPeer.host.toLowerCase(),
-				port: savedPeer[savedPeer.protocol],
-				protocol: savedPeer.protocol,
-			});
-		} catch (e) {
-			return false;
 		}
 	};
 
@@ -190,29 +179,51 @@ const ElectrumConfig = ({
 		setProtocol(peer.protocol);
 	};
 
-	useEffect(() => {
-		getAndUpdateConnectedPeer();
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
-
 	const navigateToScanner = (): void => {
 		navigation.navigate('Scanner', { onScan });
 	};
 
 	const onScan = (data: string): void => {
-		const url = new Url(data);
-		if (!url.hostname || !url.port) {
+		try {
+			// manually prefix protocol if missing
+			if (!data.startsWith('http') && !data.startsWith('https')) {
+				const url = new Url(data);
+				const _protocol = getProtocolForPort(url.pathname, selectedNetwork);
+				const prefix = `${_protocol === 'ssl' ? 'https://' : 'http://'}`;
+				data = `${prefix}${data}`;
+			}
+
+			// parse
+			const url = new Url(data);
+			const connectData: IPeerData = {
+				host: url.hostname,
+				port: url.port,
+				protocol: url.protocol === 'https:' ? 'ssl' : 'tcp',
+			};
+
+			// Add default port back in
+			// https://github.com/unshiftio/url-parse/issues/132
+			if (!connectData.port) {
+				connectData.port = connectData.protocol === 'ssl' ? '443' : '80';
+			}
+
+			// Update form
+			setHost(connectData.host);
+			setPort(connectData.port);
+			setProtocol(connectData.protocol);
+
+			// Try to connect
+			connectAndAddPeer(connectData);
+		} catch {
 			showErrorNotification({
 				title: 'No Connection Data Detected',
 				message: 'Sorry, Bitkit is not able to read this QR code.',
 			});
-			return;
 		}
-		setHost(url.hostname);
-		setPort(url.port);
 	};
 
-	const isButtonDisabled = peersMatch({ host, port, protocol });
+	// Compare against the currently connected peer
+	const hasEdited = !objectsMatch({ host, port, protocol }, connectedPeer);
 
 	return (
 		<View style={styles.container}>
@@ -229,7 +240,7 @@ const ElectrumConfig = ({
 					<Text01S color="gray1">Currently connected to</Text01S>
 					<View style={styles.row}>
 						<View style={styles.connectedPeer}>
-							{connectedPeer.host ? (
+							{connectedPeer ? (
 								<Text color="green">
 									{connectedPeer.host}:{connectedPeer.port}
 								</Text>
@@ -240,11 +251,11 @@ const ElectrumConfig = ({
 					</View>
 
 					<Caption13Up color="gray1" style={styles.label}>
-						HOST
+						Host
 					</Caption13Up>
 					<TextInput
 						style={styles.textInput}
-						textAlignVertical={'center'}
+						textAlignVertical="center"
 						underlineColorAndroid="transparent"
 						autoCapitalize="none"
 						autoCompleteType="off"
@@ -256,7 +267,7 @@ const ElectrumConfig = ({
 					/>
 
 					<Caption13Up color="gray1" style={styles.label}>
-						PORT
+						Port
 					</Caption13Up>
 					<TextInput
 						style={styles.textInput}
@@ -271,16 +282,17 @@ const ElectrumConfig = ({
 					/>
 
 					<Caption13Up color="gray1" style={styles.label}>
-						PROTOCOL
+						Protocol
 					</Caption13Up>
 					<RadioButtonGroup
 						data={radioButtons}
 						value={protocol}
 						onPress={(value): void => {
-							setProtocol(value);
+							const radioValue = value as TProtocol;
+							setProtocol(radioValue);
 							//Toggle the port if the protocol changes and the default ports are still set.
 							if (!port || defaultElectrumPorts.includes(port.toString())) {
-								setPort(getDefaultPort(selectedNetwork, value));
+								setPort(getDefaultPort(selectedNetwork, radioValue));
 							}
 						}}
 					/>
@@ -297,7 +309,7 @@ const ElectrumConfig = ({
 							text="Connect To Host"
 							size="large"
 							loading={loading}
-							disabled={isButtonDisabled}
+							disabled={!hasEdited}
 							onPress={(): void => {
 								connectAndAddPeer({ host, port, protocol });
 							}}

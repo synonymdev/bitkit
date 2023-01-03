@@ -1,8 +1,16 @@
-import { ETransactionSpeed, ISettings } from '../types/settings';
+import { TAvailableNetworks } from '@synonymdev/react-native-ldk';
+import {
+	ETransactionSpeed,
+	ICustomElectrumPeer,
+	ISettings,
+} from '../types/settings';
 import { EBalanceUnit, EBitcoinUnit } from '../types/wallet';
 
 //TODO: Remove the public Electrum servers below once we spin up our own.
-export const origCustomElectrumPeers = {
+export const origCustomElectrumPeers: Record<
+	TAvailableNetworks,
+	ICustomElectrumPeer[]
+> = {
 	bitcoin: [
 		{
 			host: '35.187.18.233',
@@ -45,7 +53,6 @@ export const origCustomElectrumPeers = {
 			protocol: 'tcp',
 		},
 	],
-	timestamp: null,
 };
 
 const defaultReceivePreference = [

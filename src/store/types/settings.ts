@@ -1,7 +1,7 @@
 import { IWalletItem, EBitcoinUnit, EBalanceUnit } from './wallet';
 
 export type TTheme = 'dark' | 'light' | 'blue';
-export type TProtocol = 'ssl' | 'tcp' | string;
+export type TProtocol = 'ssl' | 'tcp';
 
 export enum ETransactionSpeed {
 	fast = 'fast',
@@ -19,9 +19,9 @@ export type TCoinSelectPreference = 'small' | 'large' | 'consolidate';
 
 export interface ICustomElectrumPeer {
 	host: string;
-	ssl: number | undefined; //ssl port
-	tcp: number | undefined; //tcp port
-	protocol?: TProtocol;
+	ssl: number; //ssl port
+	tcp: number; //tcp port
+	protocol: TProtocol;
 }
 
 export type TReceiveOption = {
