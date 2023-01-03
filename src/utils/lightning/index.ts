@@ -369,11 +369,12 @@ export const unsubscribeFromLightningSubscriptions = (): void => {
 };
 
 export const resetLdk = async (): Promise<Result<string>> => {
-	return InteractionManager.runAfterInteractions(
-		async (): Promise<Result<string>> => {
-			return await ldk.reset();
-		},
+	// wait for interactions/animations to be completed
+	await new Promise((resolve) =>
+		InteractionManager.runAfterInteractions(() => resolve(null)),
 	);
+
+	return await ldk.reset();
 };
 
 /**
@@ -390,36 +391,38 @@ export const refreshLdk = async ({
 	selectedNetwork?: TAvailableNetworks;
 }): Promise<Result<string>> => {
 	try {
-		InteractionManager.runAfterInteractions(async () => {
-			if (!selectedWallet) {
-				selectedWallet = getSelectedWallet();
-			}
-			if (!selectedNetwork) {
-				selectedNetwork = getSelectedNetwork();
-			}
+		// wait for interactions/animations to be completed
+		await new Promise((resolve) =>
+			InteractionManager.runAfterInteractions(() => resolve(null)),
+		);
+		if (!selectedWallet) {
+			selectedWallet = getSelectedWallet();
+		}
+		if (!selectedNetwork) {
+			selectedNetwork = getSelectedNetwork();
+		}
 
-			const nodeIdRes = await promiseTimeout<Result<string>>(2000, getNodeId());
-			if (nodeIdRes.isErr()) {
-				// Attempt to reset LDK.
-				const setupResponse = await setupLdk({
-					selectedNetwork,
-					selectedWallet,
-					shouldRefreshLdk: false,
-				});
-				if (setupResponse.isErr()) {
-					return err(setupResponse.error.message);
-				}
-				keepLdkSynced({ selectedNetwork }).then();
+		const nodeIdRes = await promiseTimeout<Result<string>>(2000, getNodeId());
+		if (nodeIdRes.isErr()) {
+			// Attempt to reset LDK.
+			const setupResponse = await setupLdk({
+				selectedNetwork,
+				selectedWallet,
+				shouldRefreshLdk: false,
+			});
+			if (setupResponse.isErr()) {
+				return err(setupResponse.error.message);
 			}
-			const syncRes = await lm.syncLdk();
-			if (syncRes.isErr()) {
-				return err(syncRes.error.message);
-			}
-			await Promise.all([
-				updateLightningChannels({ selectedWallet, selectedNetwork }),
-				updateClaimableBalance({ selectedNetwork, selectedWallet }),
-			]);
-		});
+			keepLdkSynced({ selectedNetwork }).then();
+		}
+		const syncRes = await lm.syncLdk();
+		if (syncRes.isErr()) {
+			return err(syncRes.error.message);
+		}
+		await Promise.all([
+			updateLightningChannels({ selectedWallet, selectedNetwork }),
+			updateClaimableBalance({ selectedNetwork, selectedWallet }),
+		]);
 		return ok('');
 	} catch (e) {
 		console.log(e);

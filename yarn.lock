@@ -3025,9 +3025,9 @@ babel-preset-jest@^28.1.3:
     babel-plugin-jest-hoist "^28.1.3"
     babel-preset-current-node-syntax "^1.0.0"
 
-"backpack-client@git+ssh://git@github.com/synonymdev/bitkit-backup-client":
+"backpack-client@github:synonymdev/bitkit-backup-client#f08fdb28529d8a3f8bfecc789443c43b966a7581":
   version "1.0.2"
-  resolved "git+ssh://git@github.com/synonymdev/bitkit-backup-client#f08fdb28529d8a3f8bfecc789443c43b966a7581"
+  resolved "https://codeload.github.com/synonymdev/bitkit-backup-client/tar.gz/f08fdb28529d8a3f8bfecc789443c43b966a7581"
   dependencies:
     "@synonymdev/slashtags-rpc" "^1.0.0-alpha.1"
     "@synonymdev/slashtags-sdk" "^1.0.0-alpha.19"
@@ -3166,10 +3166,10 @@ bitcoin-address-validation@^2.2.1:
     bech32 "^2.0.0"
     sha256-uint8array "^0.10.3"
 
-bitcoin-json-rpc@1.2.2:
-  version "1.2.2"
-  resolved "https://registry.yarnpkg.com/bitcoin-json-rpc/-/bitcoin-json-rpc-1.2.2.tgz#369769c973459090bfc4f39c7fa3e430b0f0d36a"
-  integrity sha512-hTDpI7TOydtoGjPmbEfYI2LlyKbru0kgVa5H/20M/PgRV6rffZEAXI5CNfWxpBw+a4grYEaIcT65ajBb9kjJYw==
+bitcoin-json-rpc@1.2.3:
+  version "1.2.3"
+  resolved "https://registry.yarnpkg.com/bitcoin-json-rpc/-/bitcoin-json-rpc-1.2.3.tgz#13a4bbbc2d60a4763e53654011baa5c7cd585e1e"
+  integrity sha512-IqlBKzaEQRTuUHhPJgvnLwqr3KxYoZqguRlTx3Zp025JrA+jUr4j/SpmX2nlXQrp05Bp3vUXkkYQilmLZkjaVQ==
   dependencies:
     axios "0.21.1"
     debug "4.1.1"
@@ -4652,6 +4652,10 @@ electron-to-chromium@^1.4.202:
   version "1.4.230"
   resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.4.230.tgz#666909fdf5765acb1348b69752ee9955dc1664b7"
   integrity sha512-3pwjAK0qHSDN9+YAF4fJknsSruP7mpjdWzUSruIJD/JCH77pEh0SorEyb3xVaKkfwk2tzjOt2D8scJ0KAdfXLA==
+
+"electrum-client@github:BlueWallet/rn-electrum-client#76c0ea35e1a50c47f3a7f818d529ebd100161496":
+  version "2.0.0"
+  resolved "https://codeload.github.com/BlueWallet/rn-electrum-client/tar.gz/76c0ea35e1a50c47f3a7f818d529ebd100161496"
 
 elliptic@^6.4.0, elliptic@^6.5.2, elliptic@^6.5.3, elliptic@^6.5.4:
   version "6.5.4"
@@ -9473,9 +9477,9 @@ react-native-keychain@^8.0.0:
   resolved "https://registry.yarnpkg.com/react-native-keychain/-/react-native-keychain-8.1.1.tgz#3bb5e37946b964a7bcf7df2fe470dd244e01a340"
   integrity sha512-8fxgeHKwGcL657eAYpdBTkDIxNhbIHI+kyyO0Yac2dgVAN184JoIwQcW2z6snahwDaCObQOu0biLFHnsH+4KSg==
 
-"react-native-libsodium@https://github.com/sodium-friends/react-native-libsodium#191a444f7fad92c0e825a8bd9ac357dea72793d4":
+"react-native-libsodium@github:sodium-friends/react-native-libsodium#191a444f7fad92c0e825a8bd9ac357dea72793d4":
   version "0.0.1"
-  resolved "https://github.com/sodium-friends/react-native-libsodium#191a444f7fad92c0e825a8bd9ac357dea72793d4"
+  resolved "https://codeload.github.com/sodium-friends/react-native-libsodium/tar.gz/191a444f7fad92c0e825a8bd9ac357dea72793d4"
 
 react-native-mmkv-flipper-plugin@^1.0.0:
   version "1.0.0"
@@ -10115,9 +10119,9 @@ rn-android-keyboard-adjust@^2.0.0:
   resolved "https://registry.yarnpkg.com/rn-android-keyboard-adjust/-/rn-android-keyboard-adjust-2.0.0.tgz#bb1c9ffdd8f07df9a86e0c7a06962781ceecec4f"
   integrity sha512-mLZ0Nkz6wZytiGxb9fK+GgVzg78y7w5CLyqCRW1C58Eg22pQ3NFqalylqPyTqnH6LuelibgT2xayMx8NiyuYbw==
 
-"rn-electrum-client@git+ssh://git@github.com/synonymdev/react-native-electrum-client#a32a292d4e4918a04d280137e24e5961c74c543f":
+"rn-electrum-client@github:synonymdev/react-native-electrum-client#a32a292d4e4918a04d280137e24e5961c74c543f":
   version "0.0.8"
-  resolved "git+ssh://git@github.com/synonymdev/react-native-electrum-client#a32a292d4e4918a04d280137e24e5961c74c543f"
+  resolved "https://codeload.github.com/synonymdev/react-native-electrum-client/tar.gz/a32a292d4e4918a04d280137e24e5961c74c543f"
 
 rn-nodeify@^10.3.0:
   version "10.3.0"

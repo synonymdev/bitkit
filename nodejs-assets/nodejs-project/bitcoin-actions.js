@@ -161,7 +161,7 @@ class BitcoinActions {
                 const network = networks[selectedNetwork];
                 const script = bitcoin.address.toOutputScript(address, network);
                 const hash = sha256(script);
-                const reversedHash = new Buffer(hash.reverse());
+                const reversedHash = Buffer.from(hash.reverse());
                 const value = reversedHash.toString('hex');
                 return resolve({ id, method, error: false, value });
             } catch (e) {

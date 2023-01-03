@@ -1648,7 +1648,7 @@ export const decodeOpReturnMessage = (opReturn = ''): string[] => {
 			try {
 				//Ensure the message is in fact a hex
 				if (regex.test(msg)) {
-					const message = new Buffer(msg, 'hex').toString();
+					const message = Buffer.from(msg, 'hex').toString();
 					messages.push(message);
 				}
 			} catch {}

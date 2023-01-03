@@ -716,7 +716,7 @@ export const createTransaction = ({
 				selectedNetwork,
 			);
 			if (bip32InterfaceRes.isErr()) {
-				return err(bip32InterfaceRes.error.message);
+				return resolve(err(bip32InterfaceRes.error.message));
 			}
 
 			//Create PSBT before signing inputs
@@ -1952,7 +1952,7 @@ export const setupCpfp = async ({
 	}
 
 	// Construct the tx to send funds back to ourselves using the assigned inputs, receive address and fee.
-	const sendMaxResponse = await sendMax({
+	const sendMaxResponse = sendMax({
 		selectedWallet,
 		selectedNetwork,
 		transaction: {

@@ -10,8 +10,11 @@ import { mnemonic, walletState } from './utils/dummy-wallet';
 import { createTransaction } from '../src/utils/wallet/transactions';
 
 const selectedNetwork: TAvailableNetworks = 'bitcoinTestnet';
+
 describe('On chain transactions', () => {
 	beforeAll(async () => {
+		require('../nodejs-assets/nodejs-project/main.js');
+
 		//Seed wallet data including utxo and transaction data
 		await createWallet({
 			mnemonic,
@@ -32,6 +35,7 @@ describe('On chain transactions', () => {
 			selectedNetwork,
 			selectedWallet,
 			transaction: {
+				rbf: true,
 				outputs: [
 					{
 						value: 10001,
