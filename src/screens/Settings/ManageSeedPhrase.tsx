@@ -1,11 +1,11 @@
 import React, { ReactElement, useEffect, useState } from 'react';
 import {
-	Text,
 	TouchableOpacity,
 	View,
 	TextInput,
 	Pressable,
 } from '../../styles/components';
+import { Text } from '../../styles/text';
 import NavigationHeader from '../../components/NavigationHeader';
 import { Keyboard, StyleSheet, FlatList } from 'react-native';
 import {

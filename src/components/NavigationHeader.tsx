@@ -9,13 +9,8 @@ import {
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-import {
-	BackIcon,
-	PlusIcon,
-	Subtitle,
-	Title,
-	XIcon,
-} from '../styles/components';
+import { Subtitle, Title } from '../styles/text';
+import { BackIcon, PlusIcon, XIcon } from '../styles/icons';
 import { Keyboard } from '../hooks/keyboard';
 
 const ActionButton = memo(

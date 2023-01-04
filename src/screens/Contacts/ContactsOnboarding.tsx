@@ -4,7 +4,7 @@ import { StackScreenProps } from '@react-navigation/stack';
 
 import NavigationHeader from '../../components/NavigationHeader';
 import Button from '../../components/Button';
-import { Display, Text01S } from '../../styles/components';
+import { Display, Text01S } from '../../styles/text';
 import GlowingBackground from '../../components/GlowingBackground';
 import SafeAreaInsets from '../../components/SafeAreaInsets';
 import { setOnboardedContacts } from '../../store/actions/slashtags';

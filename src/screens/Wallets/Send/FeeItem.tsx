@@ -6,15 +6,14 @@ import {
 	GestureResponderEvent,
 } from 'react-native';
 
+import { Text01M, Text02M } from '../../../styles/text';
 import {
 	LightningIcon,
 	SettingsIcon,
 	SpeedFastIcon,
 	SpeedNormalIcon,
 	SpeedSlowIcon,
-	Text01M,
-	Text02M,
-} from '../../../styles/components';
+} from '../../../styles/icons';
 import { EFeeIds } from '../../../store/types/fees';
 import useColors from '../../../hooks/colors';
 import useDisplayValues from '../../../hooks/displayValues';

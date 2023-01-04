@@ -10,13 +10,9 @@ import { Linking, Platform, StyleSheet, View } from 'react-native';
 import rnBiometrics from 'react-native-biometrics';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import {
-	FaceIdIcon,
-	Switch,
-	Text01M,
-	Text01S,
-	TouchIdIcon,
-} from '../../../styles/components';
+import { Switch } from '../../../styles/components';
+import { Text01M, Text01S } from '../../../styles/text';
+import { FaceIdIcon, TouchIdIcon } from '../../../styles/icons';
 import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
 import GradientView from '../../../components/GradientView';
 import GlowImage from '../../../components/GlowImage';

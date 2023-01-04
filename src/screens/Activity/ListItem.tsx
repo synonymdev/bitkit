@@ -2,15 +2,9 @@ import React, { memo, ReactElement } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useSelector } from 'react-redux';
 
-import {
-	Caption13M,
-	HeartbeatIcon,
-	ReceiveIcon,
-	SendIcon,
-	Text01M,
-	TouchableOpacity,
-	View as ThemedView,
-} from '../../styles/components';
+import { TouchableOpacity, View as ThemedView } from '../../styles/components';
+import { Caption13M, Text01M } from '../../styles/text';
+import { HeartbeatIcon, ReceiveIcon, SendIcon } from '../../styles/icons';
 import Money from '../../components/Money';
 import ProfileImage from '../../components/ProfileImage';
 import { IActivityItem } from '../../store/types/activity';

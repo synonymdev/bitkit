@@ -2,7 +2,7 @@ import React, { memo, ReactElement, useCallback, useEffect } from 'react';
 import { LayoutAnimation, StyleSheet } from 'react-native';
 import { useSelector } from 'react-redux';
 
-import { Text } from '../../styles/components';
+import { Text } from '../../styles/text';
 import {
 	resetOnChainTransaction,
 	setupOnChainTransaction,

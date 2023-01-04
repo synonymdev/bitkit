@@ -7,12 +7,10 @@ import {
 	Platform,
 } from 'react-native';
 import { launchImageLibrary } from 'react-native-image-picker';
-import {
-	Text,
-	Title,
-	TextInputNoOutline,
-	CameraIcon,
-} from '../styles/components';
+
+import { TextInputNoOutline } from '../styles/components';
+import { Text, Title } from '../styles/text';
+import { CameraIcon } from '../styles/icons';
 import ProfileImage from './ProfileImage';
 import { SlashtagURL } from './SlashtagURL';
 import { BasicProfile } from '../store/types/slashtags';

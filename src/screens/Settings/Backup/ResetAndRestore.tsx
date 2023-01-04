@@ -1,7 +1,8 @@
 import React, { memo, ReactElement, useState } from 'react';
 import { StyleSheet } from 'react-native';
 
-import { View, Text01S } from '../../../styles/components';
+import { View } from '../../../styles/components';
+import { Text01S } from '../../../styles/text';
 import NavigationHeader from '../../../components/NavigationHeader';
 import SafeAreaInsets from '../../../components/SafeAreaInsets';
 import SafeAreaView from '../../../components/SafeAreaView';

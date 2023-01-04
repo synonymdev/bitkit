@@ -3,7 +3,8 @@ import { StyleSheet, View, Pressable } from 'react-native';
 import { useSelector } from 'react-redux';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { Switch, Text01S, Text01M } from '../../../styles/components';
+import { Switch } from '../../../styles/components';
+import { Text01S, Text01M } from '../../../styles/text';
 import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
 import GradientView from '../../../components/GradientView';
 import GlowImage from '../../../components/GlowImage';

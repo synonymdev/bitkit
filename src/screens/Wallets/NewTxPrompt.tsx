@@ -11,7 +11,8 @@ import { useFocusEffect } from '@react-navigation/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Lottie from 'lottie-react-native';
 
-import { Text02M, ClockIcon } from '../../styles/components';
+import { Text02M } from '../../styles/text';
+import { ClockIcon } from '../../styles/icons';
 import BottomSheetWrapper from '../../components/BottomSheetWrapper';
 import Glow from '../../components/Glow';
 import AmountToggle from '../../components/AmountToggle';

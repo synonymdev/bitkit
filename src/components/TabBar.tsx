@@ -6,7 +6,8 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { receiveIcon, sendIcon } from '../assets/icons/tabs';
 import { toggleView } from '../store/actions/ui';
 import useColors from '../hooks/colors';
-import { ScanIcon, Text02M } from '../styles/components';
+import { Text02M } from '../styles/text';
+import { ScanIcon } from '../styles/icons';
 import BlurView from '../components/BlurView';
 import type { RootNavigationProp } from '../navigation/types';
 

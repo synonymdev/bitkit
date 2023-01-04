@@ -7,7 +7,8 @@ import React, {
 } from 'react';
 import { StyleSheet, View, LayoutAnimation, Pressable } from 'react-native';
 
-import { Text02S, Subtitle, AnimatedView } from '../styles/components';
+import { AnimatedView } from '../styles/components';
+import { Text02S, Subtitle } from '../styles/text';
 import NumberPad from './NumberPad';
 import SafeAreaInsets from './SafeAreaInsets';
 import GlowingBackground from './GlowingBackground';

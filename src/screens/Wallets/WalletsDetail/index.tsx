@@ -26,7 +26,8 @@ import {
 } from '@shopify/react-native-skia';
 import { useSelector } from 'react-redux';
 
-import { AnimatedView, Title, View } from '../../../styles/components';
+import { AnimatedView, View } from '../../../styles/components';
+import { Title } from '../../../styles/text';
 import NavigationHeader from '../../../components/NavigationHeader';
 import { useBalance } from '../../../hooks/wallet';
 import useColors from '../../../hooks/colors';

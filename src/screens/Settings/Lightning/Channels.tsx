@@ -12,15 +12,12 @@ import { FadeIn, FadeOut } from 'react-native-reanimated';
 
 import {
 	AnimatedView,
-	Caption13Up,
-	ChevronRight,
-	DownArrow,
-	Text01M,
-	UpArrow,
 	RefreshControl,
 	View as ThemedView,
 	TextInput,
 } from '../../../styles/components';
+import { Caption13Up, Text01M } from '../../../styles/text';
+import { ChevronRight, DownArrow, UpArrow } from '../../../styles/icons';
 import SafeAreaInsets from '../../../components/SafeAreaInsets';
 import Button from '../../../components/Button';
 import NavigationHeader from '../../../components/NavigationHeader';

@@ -3,13 +3,9 @@ import { StyleSheet } from 'react-native';
 import { FadeIn, FadeOut } from 'react-native-reanimated';
 
 import { updateUser } from '../store/actions/user';
-import {
-	View,
-	AnimatedView,
-	Text01M,
-	Caption13M,
-	BrokenLinkIcon,
-} from '../styles/components';
+import { View, AnimatedView } from '../styles/components';
+import { Text01M, Caption13M } from '../styles/text';
+import { BrokenLinkIcon } from '../styles/icons';
 import {
 	showErrorNotification,
 	showSuccessNotification,

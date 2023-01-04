@@ -2,15 +2,9 @@ import React, { memo, ReactElement, useEffect, useState } from 'react';
 import { TouchableOpacity, Linking, StyleSheet } from 'react-native';
 import { SlashURL } from '@synonymdev/slashtags-sdk';
 
-import {
-	Caption13M,
-	GearIcon,
-	ListIcon,
-	NewspaperIcon,
-	Text01M,
-	TrashIcon,
-	View,
-} from '../styles/components';
+import { View } from '../styles/components';
+import { Caption13M, Text01M } from '../styles/text';
+import { GearIcon, ListIcon, NewspaperIcon, TrashIcon } from '../styles/icons';
 import { IWidget } from '../store/types/widgets';
 import { useSlashtagsSDK } from './SlashtagsProvider';
 import { showErrorNotification } from '../utils/notifications';

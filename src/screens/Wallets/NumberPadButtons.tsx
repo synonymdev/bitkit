@@ -2,8 +2,9 @@ import React, { memo, ReactElement, useMemo } from 'react';
 import { View, StyleSheet, GestureResponderEvent } from 'react-native';
 import { useSelector } from 'react-redux';
 
-import { TouchableOpacity, SwitchIcon } from '../../styles/components';
-import { Text02B } from '../../styles/components';
+import { TouchableOpacity } from '../../styles/components';
+import { Text02B } from '../../styles/text';
+import { SwitchIcon } from '../../styles/icons';
 import { updateSettings } from '../../store/actions/settings';
 import useDisplayValues from '../../hooks/displayValues';
 import { IColors } from '../../styles/colors';

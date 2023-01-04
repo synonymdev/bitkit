@@ -7,18 +7,18 @@ import React, {
 } from 'react';
 import { StyleSheet } from 'react-native';
 import { useSelector } from 'react-redux';
+import type { SvgProps } from 'react-native-svg';
 
+import { View as ThemedView } from '../../../styles/components';
 import {
 	ClockIcon,
 	LightningIcon,
 	TimerSpeedIcon,
-	View as ThemedView,
-} from '../../../styles/components';
+} from '../../../styles/icons';
 import SettingsView from '../SettingsView';
 import Store from '../../../store/types';
 import { IListData } from '../../../components/List';
 import type { SettingsScreenProps } from '../../../navigation/types';
-import type { SvgProps } from 'react-native-svg';
 
 const title =
 	'Bitkit Instant Payments are powered by Blocktank Lightning Service Provider.\n\n' +

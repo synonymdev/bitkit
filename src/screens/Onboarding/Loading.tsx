@@ -1,7 +1,8 @@
 import React, { ReactElement, useState, useEffect } from 'react';
 import { View, StyleSheet, Image } from 'react-native';
 import { Keyframe, FadeOut } from 'react-native-reanimated';
-import { AnimatedView, Display } from '../../styles/components';
+import { AnimatedView } from '../../styles/components';
+import { Display } from '../../styles/text';
 import SafeAreaInsets from '../../components/SafeAreaInsets';
 
 const imageSrc = require('../../assets/illustrations/rocket.png');

@@ -6,7 +6,8 @@ import {
 	View,
 	ViewStyle,
 } from 'react-native';
-import { TextInput, MagnifyingGlassIcon } from '../styles/components';
+import { TextInput } from '../styles/components';
+import { MagnifyingGlassIcon } from '../styles/icons';
 
 type SearchInputProps = TextInputProps & {
 	style?: StyleProp<ViewStyle>;

@@ -4,9 +4,9 @@ import { useSelector } from 'react-redux';
 
 import {
 	View as ThemedView,
-	PlusIcon,
 	TouchableOpacity as ThemedTouchableOpacity,
 } from '../../styles/components';
+import { PlusIcon } from '../../styles/icons';
 import ContactsOnboarding from './ContactsOnboarding';
 import NavigationHeader from '../../components/NavigationHeader';
 import SafeAreaInsets from '../../components/SafeAreaInsets';

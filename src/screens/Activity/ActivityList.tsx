@@ -16,12 +16,8 @@ import {
 } from 'react-native';
 import { useSelector } from 'react-redux';
 
-import {
-	Caption13Up,
-	RefreshControl,
-	Subtitle,
-	View,
-} from '../../styles/components';
+import { View, RefreshControl } from '../../styles/components';
+import { Caption13Up, Subtitle } from '../../styles/text';
 import { refreshWallet } from '../../utils/wallet';
 import { groupActivityItems, filterActivityItems } from '../../utils/activity';
 import ListItem from './ListItem';

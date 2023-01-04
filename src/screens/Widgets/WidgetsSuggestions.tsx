@@ -1,14 +1,14 @@
 import React, { ReactElement } from 'react';
 import { TouchableOpacity, ScrollView, StyleSheet } from 'react-native';
 
+import { View } from '../../styles/components';
+import { Title } from '../../styles/text';
 import {
 	ChartLineIcon,
 	CubeIcon,
 	LightBulbIcon,
 	NewspaperIcon,
-	Title,
-	View,
-} from '../../styles/components';
+} from '../../styles/icons';
 import NavigationHeader from '../../components/NavigationHeader';
 import SafeAreaInsets from '../../components/SafeAreaInsets';
 import DetectSwipe from '../../components/DetectSwipe';

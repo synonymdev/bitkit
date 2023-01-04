@@ -1,7 +1,8 @@
 import React, { ReactElement, memo, useMemo } from 'react';
 import { StyleSheet, View } from 'react-native';
 
-import { DownArrow, UpArrow, View as ThemedView } from '../styles/components';
+import { View as ThemedView } from '../styles/components';
+import { DownArrow, UpArrow } from '../styles/icons';
 import Money from './Money';
 import { useLightningChannelBalance } from '../hooks/lightning';
 

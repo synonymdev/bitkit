@@ -25,9 +25,9 @@ import { useSelector } from 'react-redux';
 import type { StackScreenProps } from '@react-navigation/stack';
 import Clipboard from '@react-native-clipboard/clipboard';
 
+import { View as ThemedView } from '../../styles/components';
+import { Caption13M, Caption13Up, Text02M, Title } from '../../styles/text';
 import {
-	Caption13M,
-	Caption13Up,
 	CheckCircleIcon,
 	ClockIcon,
 	GitBranchIcon,
@@ -35,13 +35,10 @@ import {
 	ReceiveIcon,
 	SendIcon,
 	TagIcon,
-	Text02M,
 	TimerIconAlt,
-	Title,
 	UserMinusIcon,
 	UserPlusIcon,
-	View as ThemedView,
-} from '../../styles/components';
+} from '../../styles/icons';
 import Button from '../../components/Button';
 import Money from '../../components/Money';
 import ContactSmall from '../../components/ContactSmall';

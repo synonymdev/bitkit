@@ -20,12 +20,8 @@ import { FadeIn, FadeOut } from 'react-native-reanimated';
 import Clipboard from '@react-native-clipboard/clipboard';
 import Share from 'react-native-share';
 
-import {
-	CopyIcon,
-	ShareIcon,
-	TouchableOpacity,
-	AnimatedView,
-} from '../../../styles/components';
+import { TouchableOpacity, AnimatedView } from '../../../styles/components';
+import { CopyIcon, ShareIcon } from '../../../styles/icons';
 import { resetInvoice } from '../../../store/actions/receive';
 import { updateMetaIncTxTags } from '../../../store/actions/metadata';
 import { getReceiveAddress } from '../../../utils/wallet';

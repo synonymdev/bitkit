@@ -7,7 +7,8 @@ import {
 	ViewStyle,
 } from 'react-native';
 
-import { Caption13Up, Text02M, Text02S, TrashIcon } from '../styles/components';
+import { Caption13Up, Text02M, Text02S } from '../styles/text';
+import { TrashIcon } from '../styles/icons';
 import { LocalLink } from '../store/types/slashtags';
 import { openURL } from '../utils/helpers';
 import { editLink, removeLink } from '../store/actions/slashtags';

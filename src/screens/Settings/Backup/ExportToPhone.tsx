@@ -3,7 +3,8 @@ import { StyleSheet } from 'react-native';
 import { useSelector } from 'react-redux';
 import Share from 'react-native-share';
 
-import { View, Text01S } from '../../../styles/components';
+import { View } from '../../../styles/components';
+import { Text01S } from '../../../styles/text';
 import NavigationHeader from '../../../components/NavigationHeader';
 import Button from '../../../components/Button';
 import Store from '../../../store/types';

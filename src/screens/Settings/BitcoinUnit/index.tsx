@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import { IListData } from '../../../components/List';
 import SettingsView from '../SettingsView';
 import { updateSettings } from '../../../store/actions/settings';
-import { UnitBitcoinIcon, UnitSatoshiIcon } from '../../../styles/components';
+import { UnitBitcoinIcon, UnitSatoshiIcon } from '../../../styles/icons';
 import { bitcoinUnitSelector } from '../../../store/reselect/settings';
 import { EBitcoinUnit } from '../../../store/types/wallet';
 import type { SettingsScreenProps } from '../../../navigation/types';

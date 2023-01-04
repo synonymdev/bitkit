@@ -7,7 +7,8 @@ import {
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { View as ThemedView, Caption13M } from '../../styles/components';
+import { View as ThemedView } from '../../styles/components';
+import { Caption13M } from '../../styles/text';
 import NavigationHeader from '../../components/NavigationHeader';
 import SearchInput from '../../components/SearchInput';
 import ActivityList from './ActivityList';

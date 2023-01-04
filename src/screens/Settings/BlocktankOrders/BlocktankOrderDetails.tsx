@@ -9,12 +9,8 @@ import {
 	ActivityIndicator,
 } from 'react-native';
 
-import {
-	Caption13Up,
-	Caption13M,
-	Text01M,
-	View as ThemedView,
-} from '../../../styles/components';
+import { View as ThemedView } from '../../../styles/components';
+import { Caption13Up, Caption13M, Text01M } from '../../../styles/text';
 import SafeAreaInsets from '../../../components/SafeAreaInsets';
 import Button from '../../../components/Button';
 import NavigationHeader from '../../../components/NavigationHeader';

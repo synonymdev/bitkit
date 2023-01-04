@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 
-import { EvilIcon } from '../../styles/components';
+import { EvilIcon } from '../../styles/icons';
 
 interface Props {
 	direction: 'up' | 'down';

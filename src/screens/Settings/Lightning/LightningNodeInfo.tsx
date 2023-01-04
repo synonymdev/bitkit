@@ -4,11 +4,10 @@ import { useSelector } from 'react-redux';
 import Clipboard from '@react-native-clipboard/clipboard';
 
 import {
-	Subtitle,
 	View as ThemedView,
 	TouchableOpacity,
-	Caption13Up,
 } from '../../../styles/components';
+import { Subtitle, Caption13Up } from '../../../styles/text';
 import NavigationHeader from '../../../components/NavigationHeader';
 import SafeAreaInsets from '../../../components/SafeAreaInsets';
 import { getNodeId } from '../../../utils/lightning';

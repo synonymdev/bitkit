@@ -10,7 +10,9 @@ import DraggableFlatList, {
 	ScaleDecorator,
 } from 'react-native-draggable-flatlist';
 
-import { View, Text01S, ListIcon } from '../../../styles/components';
+import { View } from '../../../styles/components';
+import { Text01S } from '../../../styles/text';
+import { ListIcon } from '../../../styles/icons';
 
 type Item = {
 	key: string;

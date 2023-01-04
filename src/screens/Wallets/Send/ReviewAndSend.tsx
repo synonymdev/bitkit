@@ -12,15 +12,14 @@ import { useSelector } from 'react-redux';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { TInvoice } from '@synonymdev/react-native-ldk';
 
+import { Caption13Up, Text02M } from '../../../styles/text';
 import {
-	Caption13Up,
 	Checkmark,
 	ClockIcon,
 	PenIcon,
 	TagIcon,
-	Text02M,
 	TimerIcon,
-} from '../../../styles/components';
+} from '../../../styles/icons';
 import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
 import GradientView from '../../../components/GradientView';
 import SwipeToConfirm from '../../../components/SwipeToConfirm';

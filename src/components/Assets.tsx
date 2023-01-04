@@ -2,7 +2,8 @@ import React, { memo, ReactElement } from 'react';
 import { StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-import { BitcoinCircleIcon, Subtitle } from '../styles/components';
+import { Subtitle } from '../styles/text';
+import { BitcoinCircleIcon } from '../styles/icons';
 import { useBalance } from '../hooks/wallet';
 import AssetCard from './AssetCard';
 import type { WalletNavigationProp } from '../navigation/wallet/WalletNavigator';

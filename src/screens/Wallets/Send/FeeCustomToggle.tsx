@@ -1,7 +1,8 @@
 import React, { memo, ReactElement } from 'react';
 import { View, StyleSheet } from 'react-native';
 
-import { Display, LightningIcon } from '../../../styles/components';
+import { Display } from '../../../styles/text';
+import { LightningIcon } from '../../../styles/icons';
 import { useTransactionDetails } from '../../../hooks/transaction';
 
 const FeeCustomToggle = ({ style }: { style?: object }): ReactElement => {

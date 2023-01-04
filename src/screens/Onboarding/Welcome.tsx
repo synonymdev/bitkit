@@ -2,7 +2,8 @@ import React, { ReactElement } from 'react';
 import { View, StyleSheet, Image } from 'react-native';
 import { FadeIn } from 'react-native-reanimated';
 
-import { Display, Text01S, AnimatedView } from '../../styles/components';
+import { AnimatedView } from '../../styles/components';
+import { Display, Text01S } from '../../styles/text';
 import GlowingBackground from '../../components/GlowingBackground';
 import SafeAreaInsets from '../../components/SafeAreaInsets';
 import Button from '../../components/Button';

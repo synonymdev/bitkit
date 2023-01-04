@@ -2,7 +2,9 @@ import React, { ReactElement } from 'react';
 import { StyleSheet } from 'react-native';
 import { systemWeights } from 'react-native-typography';
 
-import { EvilIcon, Text, View } from '../styles/components';
+import { View } from '../styles/components';
+import { Text } from '../styles/text';
+import { EvilIcon } from '../styles/icons';
 import NavigationHeader from './NavigationHeader';
 import SafeAreaView from './SafeAreaView';
 

@@ -7,7 +7,8 @@ import {
 	TouchableOpacity,
 } from 'react-native';
 
-import { Headline, XIcon } from '../../styles/components';
+import { Headline } from '../../styles/text';
+import { XIcon } from '../../styles/icons';
 import { updateSettings } from '../../store/actions/settings';
 import Arrow from '../../assets/dotted-arrow.svg';
 

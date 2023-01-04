@@ -4,15 +4,9 @@ import { useSelector } from 'react-redux';
 import { err, ok, Result } from '@synonymdev/result';
 import Url from 'url-parse';
 
-import {
-	Text,
-	View,
-	TextInput,
-	ScrollView,
-	Text01S,
-	Caption13Up,
-	ScanIcon,
-} from '../../../styles/components';
+import { View, TextInput, ScrollView } from '../../../styles/components';
+import { Text, Text01S, Caption13Up } from '../../../styles/text';
+import { ScanIcon } from '../../../styles/icons';
 import { addElectrumPeer } from '../../../store/actions/settings';
 import { TProtocol } from '../../../store/types/settings';
 import { updateUser } from '../../../store/actions/user';

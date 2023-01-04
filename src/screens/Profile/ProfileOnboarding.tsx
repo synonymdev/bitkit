@@ -3,7 +3,7 @@ import { View, StyleSheet, Image, ImageSourcePropType } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useSelector } from 'react-redux';
 
-import { Display, Text01S, Text02S } from '../../styles/components';
+import { Display, Text01S, Text02S } from '../../styles/text';
 import NavigationHeader from '../../components/NavigationHeader';
 import Button from '../../components/Button';
 import GlowingBackground from '../../components/GlowingBackground';

@@ -2,7 +2,8 @@ import React, { useMemo, ReactElement, useCallback, memo } from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { View as ThemedView, Text02S, Text02B } from '../../styles/components';
+import { View as ThemedView } from '../../styles/components';
+import { Text02S, Text02B } from '../../styles/text';
 import Button from '../../components/Button';
 import LabeledInput from '../../components/LabeledInput';
 import { RootStackScreenProps } from '../../navigation/types';

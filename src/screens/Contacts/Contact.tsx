@@ -5,15 +5,14 @@ import { FadeIn, FadeOut } from 'react-native-reanimated';
 import Clipboard from '@react-native-clipboard/clipboard';
 import Share from 'react-native-share';
 
+import { AnimatedView, View } from '../../styles/components';
 import {
-	AnimatedView,
 	CoinsIcon,
 	CopyIcon,
 	PencileIcon,
 	ShareIcon,
 	TrashIcon,
-	View,
-} from '../../styles/components';
+} from '../../styles/icons';
 import NavigationHeader from '../../components/NavigationHeader';
 import SafeAreaInsets from '../../components/SafeAreaInsets';
 import ProfileCard from '../../components/ProfileCard';

@@ -7,7 +7,7 @@ import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigati
 import GradientView from '../../../components/GradientView';
 import { SendScreenProps } from '../../../navigation/types';
 import Store from '../../../store/types';
-import { Text01S } from '../../../styles/components';
+import { Text01S } from '../../../styles/text';
 import PinPad from './SendPinPad';
 
 const SendAuthCheck = ({

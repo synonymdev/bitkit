@@ -2,13 +2,9 @@ import React, { memo, ReactElement, useCallback } from 'react';
 import { StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-import {
-	View,
-	SettingsIcon,
-	TouchableOpacity,
-	Title,
-	ProfileIcon,
-} from '../../styles/components';
+import { View, TouchableOpacity } from '../../styles/components';
+import { Title } from '../../styles/text';
+import { ProfileIcon, SettingsIcon } from '../../styles/icons';
 import ProfileImage from '../../components/ProfileImage';
 import { truncate } from '../../utils/helpers';
 import { useProfile, useSelectedSlashtag } from '../../hooks/slashtags';

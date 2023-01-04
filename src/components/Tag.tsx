@@ -1,6 +1,8 @@
 import React, { ReactElement, memo, useMemo } from 'react';
 import { StyleSheet } from 'react-native';
-import { TouchableOpacity, Text02M, XIcon } from '../styles/components';
+import { TouchableOpacity } from '../styles/components';
+import { Text02M } from '../styles/text';
+import { XIcon } from '../styles/icons';
 
 interface ITag {
 	value: string;

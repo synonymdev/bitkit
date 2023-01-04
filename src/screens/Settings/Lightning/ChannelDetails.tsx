@@ -3,11 +3,8 @@ import { StyleSheet, View, ScrollView, TouchableOpacity } from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
 import { useSelector } from 'react-redux';
 
-import {
-	Caption13Up,
-	Caption13M,
-	View as ThemedView,
-} from '../../../styles/components';
+import { View as ThemedView } from '../../../styles/components';
+import { Caption13Up, Caption13M } from '../../../styles/text';
 import SafeAreaInsets from '../../../components/SafeAreaInsets';
 import Button from '../../../components/Button';
 import NavigationHeader from '../../../components/NavigationHeader';

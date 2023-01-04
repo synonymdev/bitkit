@@ -6,7 +6,7 @@ import {
 	SpeedNormalIcon,
 	SpeedSlowIcon,
 	SettingsIcon,
-} from '../../../styles/components';
+} from '../../../styles/icons';
 import { IListData } from '../../../components/List';
 import SettingsView from '../SettingsView';
 import { updateSettings } from '../../../store/actions/settings';

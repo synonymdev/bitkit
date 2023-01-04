@@ -2,7 +2,9 @@ import React, { memo, ReactElement, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import { useSelector } from 'react-redux';
 
-import { Feather, Text, TouchableOpacity } from '../../../styles/components';
+import { TouchableOpacity } from '../../../styles/components';
+import { Text } from '../../../styles/text';
+import { Feather } from '../../../styles/icons';
 import List from '../../../components/List';
 import { truncate } from '../../../utils/helpers';
 import SafeAreaView from '../../../components/SafeAreaView';

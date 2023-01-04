@@ -1,7 +1,8 @@
 import React, { ReactElement, useCallback, useMemo } from 'react';
 import { View, SectionList, StyleSheet, TouchableOpacity } from 'react-native';
 
-import { Caption13Up, Text01M, View as ThemedView } from '../styles/components';
+import { View as ThemedView } from '../styles/components';
+import { Caption13Up, Text01M } from '../styles/text';
 import ProfileImage from './ProfileImage';
 import { SlashtagURL } from './SlashtagURL';
 import { useProfile, useSelectedSlashtag } from '../hooks/slashtags';

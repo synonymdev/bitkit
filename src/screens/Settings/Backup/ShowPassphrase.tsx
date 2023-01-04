@@ -3,12 +3,8 @@ import { StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { BottomSheetScrollView } from '@gorhom/bottom-sheet';
 
-import {
-	View as ThemedView,
-	Text01S,
-	Text01M,
-	Text02S,
-} from '../../../styles/components';
+import { View as ThemedView } from '../../../styles/components';
+import { Text01S, Text01M, Text02S } from '../../../styles/text';
 import Button from '../../../components/Button';
 import { useBottomSheetBackPress } from '../../../hooks/bottomSheet';
 import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';

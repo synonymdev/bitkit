@@ -1,6 +1,8 @@
 import React, { memo, ReactElement, useMemo } from 'react';
 import { View, StyleSheet, GestureResponderEvent } from 'react-native';
-import { Text, TouchableOpacity, Ionicons } from '../styles/components';
+import { TouchableOpacity } from '../styles/components';
+import { Text } from '../styles/text';
+import { Ionicons } from '../styles/icons';
 import { vibrate } from '../utils/helpers';
 
 const ACTIVE_OPACITY = 0.2;

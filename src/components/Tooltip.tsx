@@ -1,6 +1,7 @@
 import React, { memo, ReactElement, useMemo } from 'react';
 import { StyleSheet, TouchableOpacityProps, View } from 'react-native';
-import { Caption13M, View as ThemedView } from '../styles/components';
+import { View as ThemedView } from '../styles/components';
+import { Caption13M } from '../styles/text';
 
 const BOX_SIZE = 32;
 

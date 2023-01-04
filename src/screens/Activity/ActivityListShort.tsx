@@ -9,7 +9,7 @@ import { useNavigation } from '@react-navigation/native';
 import { View, StyleSheet } from 'react-native';
 import { useSelector } from 'react-redux';
 
-import { Subtitle, Text01M } from '../../styles/components';
+import { Subtitle, Text01M } from '../../styles/text';
 import { groupActivityItems } from '../../utils/activity';
 import Button from '../../components/Button';
 import { RootNavigationProp } from '../../navigation/types';

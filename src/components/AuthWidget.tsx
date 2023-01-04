@@ -9,14 +9,9 @@ import { Linking, StyleSheet } from 'react-native';
 import { Client } from '@synonymdev/slashtags-auth';
 
 import { useProfile, useSelectedSlashtag } from '../hooks/slashtags';
-import {
-	KeyIcon,
-	ListIcon,
-	Text01M,
-	TouchableOpacity,
-	TrashIcon,
-	View,
-} from '../styles/components';
+import { TouchableOpacity, View } from '../styles/components';
+import { Text01M } from '../styles/text';
+import { KeyIcon, ListIcon, TrashIcon } from '../styles/icons';
 import { showErrorNotification } from '../utils/notifications';
 import Button from './Button';
 import ProfileImage from './ProfileImage';

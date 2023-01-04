@@ -21,16 +21,18 @@ import Share from 'react-native-share';
 
 import {
 	AnimatedView,
+	TouchableOpacity,
+	View as ThemedView,
+} from '../../styles/components';
+import { Text02S } from '../../styles/text';
+import {
 	CopyIcon,
 	InfoIcon,
 	PencileIcon,
 	QrPage,
 	ShareIcon,
-	Text02S,
-	TouchableOpacity,
 	UsersIcon,
-	View as ThemedView,
-} from '../../styles/components';
+} from '../../styles/icons';
 import { BasicProfile } from '../../store/types/slashtags';
 import { useProfile, useSelectedSlashtag } from '../../hooks/slashtags';
 import { truncate } from '../../utils/helpers';

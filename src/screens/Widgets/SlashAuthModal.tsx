@@ -21,8 +21,8 @@ import { useProfile, useSelectedSlashtag } from '../../hooks/slashtags';
 import { ContactItem } from '../../components/ContactsList';
 import { IContactRecord } from '../../store/types/slashtags';
 import ProfileImage from '../../components/ProfileImage';
-import { Checkmark } from '../../styles/components';
-import { Title, Text01S } from '../../styles/components';
+import { Title, Text01S } from '../../styles/text';
+import { Checkmark } from '../../styles/icons';
 import {
 	showErrorNotification,
 	showSuccessNotification,

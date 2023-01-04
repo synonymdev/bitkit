@@ -3,15 +3,9 @@ import { TouchableOpacity, StyleSheet } from 'react-native';
 import { SlashURL } from '@synonymdev/slashtags-sdk';
 import b4a from 'b4a';
 
-import {
-	Caption13M,
-	GearIcon,
-	LightBulbIcon,
-	ListIcon,
-	Text01M,
-	TrashIcon,
-	View,
-} from '../styles/components';
+import { View } from '../styles/components';
+import { Caption13M, Text01M } from '../styles/text';
+import { GearIcon, LightBulbIcon, ListIcon, TrashIcon } from '../styles/icons';
 import { useSlashtagsSDK } from './SlashtagsProvider';
 import { showErrorNotification } from '../utils/notifications';
 import { navigate } from '../navigation/root/RootNavigator';

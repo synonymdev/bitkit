@@ -4,7 +4,7 @@ import { SlashURL } from '@synonymdev/slashtags-sdk';
 import { TouchableOpacity } from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
 
-import { Caption13S, Text02M } from '../styles/components';
+import { Caption13S, Text02M } from '../styles/text';
 
 export const SlashtagURL = ({
 	url,

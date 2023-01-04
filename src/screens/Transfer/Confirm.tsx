@@ -2,12 +2,8 @@ import React, { ReactElement, useMemo, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useSelector } from 'react-redux';
 
-import {
-	Caption13Up,
-	Display,
-	LightningIcon,
-	Text01S,
-} from '../../styles/components';
+import { Caption13Up, Display, Text01S } from '../../styles/text';
+import { LightningIcon } from '../../styles/icons';
 import SafeAreaInsets from '../../components/SafeAreaInsets';
 import GlowingBackground from '../../components/GlowingBackground';
 import NavigationHeader from '../../components/NavigationHeader';

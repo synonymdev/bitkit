@@ -5,7 +5,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
 import Lottie from 'lottie-react-native';
 
-import { Subtitle, Text01S } from '../../../styles/components';
+import { Subtitle, Text01S } from '../../../styles/text';
 import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
 import GradientView from '../../../components/GradientView';
 import GlowImage from '../../../components/GlowImage';

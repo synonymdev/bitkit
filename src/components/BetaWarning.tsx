@@ -4,7 +4,9 @@ import { Canvas, LinearGradient, Rect, vec } from '@shopify/react-native-skia';
 import { FadeOut } from 'react-native-reanimated';
 import { useSelector } from 'react-redux';
 
-import { Caption13M, Text01M, XIcon, AnimatedView } from '../styles/components';
+import { AnimatedView } from '../styles/components';
+import { Caption13M, Text01M } from '../styles/text';
+import { XIcon } from '../styles/icons';
 import useColors from '../hooks/colors';
 import Store from '../store/types';
 import { updateSettings } from '../store/actions/settings';

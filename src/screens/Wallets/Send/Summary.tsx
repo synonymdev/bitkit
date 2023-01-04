@@ -1,6 +1,7 @@
 import React, { ReactElement } from 'react';
-import { Text, View } from '../../../styles/components';
 import { StyleSheet } from 'react-native';
+import { View } from '../../../styles/components';
+import { Text } from '../../../styles/text';
 
 const Summary = ({
 	leftText = ' ',

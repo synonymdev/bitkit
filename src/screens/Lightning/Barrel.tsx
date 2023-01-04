@@ -3,7 +3,8 @@ import { Image, StyleSheet } from 'react-native';
 
 import useColors from '../../hooks/colors';
 import useDisplayValues from '../../hooks/displayValues';
-import { Subtitle, TouchableOpacity } from '../../styles/components';
+import { TouchableOpacity } from '../../styles/components';
+import { Subtitle } from '../../styles/text';
 
 const Barrel = ({ active, id, amount, img, onPress }): ReactElement => {
 	const colors = useColors();

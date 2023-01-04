@@ -9,12 +9,8 @@ import { Pressable, StyleSheet, View } from 'react-native';
 import { FadeIn, FadeOut } from 'react-native-reanimated';
 import { useFocusEffect } from '@react-navigation/native';
 
-import {
-	View as ThemedView,
-	Text01S,
-	Text02S,
-	AnimatedView,
-} from '../../../styles/components';
+import { View as ThemedView, AnimatedView } from '../../../styles/components';
+import { Text01S, Text02S } from '../../../styles/text';
 import SafeAreaInsets from '../../../components/SafeAreaInsets';
 import NavigationHeader from '../../../components/NavigationHeader';
 import NumberPad from '../../../components/NumberPad';

@@ -10,13 +10,13 @@ import { FadeIn, FadeOut } from 'react-native-reanimated';
 import { launchImageLibrary } from 'react-native-image-picker';
 import RNQRGenerator from 'rn-qr-generator';
 
+import { AnimatedView } from '../../styles/components';
+import { Text02M } from '../../styles/text';
 import {
 	ClipboardTextIcon,
 	PictureIcon,
 	FlashlightIcon,
-	AnimatedView,
-	Text02M,
-} from '../../styles/components';
+} from '../../styles/icons';
 import useColors from '../../hooks/colors';
 import Camera from '../../components/Camera';
 import BlurView from '../../components/BlurView';

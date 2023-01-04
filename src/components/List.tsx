@@ -10,14 +10,9 @@ import {
 import { useNavigation } from '@react-navigation/native';
 import { SvgProps } from 'react-native-svg';
 
-import {
-	Text01S,
-	Caption13Up,
-	ChevronRight,
-	Checkmark,
-	Switch,
-	Caption13S,
-} from '../styles/components';
+import { Switch } from '../styles/components';
+import { Text01S, Caption13Up, Caption13S } from '../styles/text';
+import { ChevronRight, Checkmark } from '../styles/icons';
 import DraggableList from '../screens/Settings/PaymentPreference/DraggableList';
 
 const _ItemHeader = memo(

@@ -1,11 +1,7 @@
 import React, { ReactElement } from 'react';
 import { Platform, StyleSheet, View } from 'react-native';
-import {
-	CoinsIcon,
-	Headline,
-	SavingsIcon,
-	Text01S,
-} from '../styles/components';
+import { Headline, Text01S } from '../styles/text';
+import { CoinsIcon, SavingsIcon } from '../styles/icons';
 
 type PercentageProps = {
 	value: number;

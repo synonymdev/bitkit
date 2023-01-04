@@ -1,13 +1,8 @@
 import React, { memo, ReactElement, useMemo } from 'react';
 import { StyleSheet, Image, View, TouchableOpacity } from 'react-native';
 
-import {
-	Caption13Up,
-	Text01M,
-	SubHeadM,
-	SpeedFastIcon,
-	SpeedNormalIcon,
-} from '../styles/components';
+import { Caption13Up, Text01M, SubHeadM } from '../styles/text';
+import { SpeedFastIcon, SpeedNormalIcon } from '../styles/icons';
 import { getAssetNames } from '../utils/wallet';
 import { capitalize } from '../utils/helpers';
 import NavigationHeader from './NavigationHeader';

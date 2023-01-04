@@ -7,7 +7,7 @@ import GlowingBackground from '../../components/GlowingBackground';
 import NavigationHeader from '../../components/NavigationHeader';
 import SafeAreaInsets from '../../components/SafeAreaInsets';
 import { setWidgetsOnboarding } from '../../store/actions/widgets';
-import { Display, Text01S } from '../../styles/components';
+import { Display, Text01S } from '../../styles/text';
 import type { WidgetsScreenProps } from '../../navigation/types';
 
 const padlockImageSrc = require('../../assets/illustrations/padlock.png');

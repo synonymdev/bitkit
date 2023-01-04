@@ -9,7 +9,8 @@ import { StyleSheet, useWindowDimensions } from 'react-native';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import Carousel from 'react-native-reanimated-carousel';
 
-import { View, Subtitle } from '../styles/components';
+import { View } from '../styles/components';
+import { Subtitle } from '../styles/text';
 import SuggestionCard from './SuggestionCard';
 import { allTodos } from '../store/shapes/todos';
 import { TTodoType } from '../store/types/todos';

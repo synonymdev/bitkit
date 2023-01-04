@@ -6,7 +6,9 @@ import React, {
 	useState,
 } from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
-import { View, Text } from '../../../styles/components';
+
+import { View } from '../../../styles/components';
+import { Text } from '../../../styles/text';
 import NavigationHeader from '../../../components/NavigationHeader';
 import useDisplayValues from '../../../hooks/displayValues';
 import Button from '../../../components/Button';

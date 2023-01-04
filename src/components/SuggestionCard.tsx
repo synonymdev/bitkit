@@ -2,7 +2,9 @@ import React, { memo, ReactElement, useMemo } from 'react';
 import { LayoutAnimation, StyleSheet, Image, View } from 'react-native';
 import { Canvas, RadialGradient, Rect, vec } from '@shopify/react-native-skia';
 
-import { Caption13M, Pressable, Text01M, XIcon } from '../styles/components';
+import { Pressable } from '../styles/components';
+import { Caption13M, Text01M } from '../styles/text';
+import { XIcon } from '../styles/icons';
 import { ITodo, TTodoType } from '../store/types/todos';
 import useColors from '../hooks/colors';
 import Card from './Card';

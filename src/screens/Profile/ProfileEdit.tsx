@@ -2,7 +2,9 @@ import React, { useState, useMemo, useEffect, useCallback, memo } from 'react';
 import { View, StyleSheet, KeyboardAvoidingView, Platform } from 'react-native';
 import { useSelector } from 'react-redux';
 
-import { PlusIcon, View as ThemedView, Text02S } from '../../styles/components';
+import { View as ThemedView } from '../../styles/components';
+import { Text02S } from '../../styles/text';
+import { PlusIcon } from '../../styles/icons';
 import NavigationHeader from '../../components/NavigationHeader';
 import Button from '../../components/Button';
 import SafeAreaInsets from '../../components/SafeAreaInsets';

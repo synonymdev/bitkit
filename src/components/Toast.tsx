@@ -3,7 +3,7 @@ import { StyleSheet, useWindowDimensions } from 'react-native';
 import { ToastConfig, ToastConfigParams } from 'react-native-toast-message';
 
 import colors from '../styles/colors';
-import { Text01M, Text13S } from '../styles/components';
+import { Text01M, Text13S } from '../styles/text';
 import HorizontalGradient from '../components/HorizontalGradient';
 import BlurView from '../components/BlurView';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';

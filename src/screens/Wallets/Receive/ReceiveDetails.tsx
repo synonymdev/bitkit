@@ -9,12 +9,9 @@ import { StyleSheet, View, Keyboard } from 'react-native';
 import { useSelector } from 'react-redux';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import {
-	AnimatedView,
-	BottomSheetTextInput,
-	Caption13Up,
-	TagIcon,
-} from '../../../styles/components';
+import { AnimatedView, BottomSheetTextInput } from '../../../styles/components';
+import { Caption13Up } from '../../../styles/text';
+import { TagIcon } from '../../../styles/icons';
 import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
 import AmountToggle from '../../../components/AmountToggle';
 import Button from '../../../components/Button';

@@ -2,7 +2,8 @@ import React, { memo, ReactElement, useCallback, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useSelector } from 'react-redux';
 
-import { BottomSheetTextInput, Caption13Up } from '../../../styles/components';
+import { BottomSheetTextInput } from '../../../styles/components';
+import { Caption13Up } from '../../../styles/text';
 import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
 import GradientView from '../../../components/GradientView';
 import Tag from '../../../components/Tag';

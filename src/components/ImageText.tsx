@@ -1,6 +1,7 @@
 import React, { memo, ReactElement } from 'react';
 import { View, TouchableOpacity, StyleSheet } from 'react-native';
-import { Text01M, Caption13M, PenIcon } from '../styles/components';
+import { Text01M, Caption13M } from '../styles/text';
+import { PenIcon } from '../styles/icons';
 import Money from '../components/Money';
 
 const ImageText = ({

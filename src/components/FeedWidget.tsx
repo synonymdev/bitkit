@@ -2,15 +2,9 @@ import React, { memo, ReactElement, useState } from 'react';
 import { StyleSheet } from 'react-native';
 
 import { navigate } from '../navigation/root/RootNavigator';
-import {
-	Caption13M,
-	GearIcon,
-	ListIcon,
-	Text01M,
-	TouchableOpacity,
-	TrashIcon,
-	View,
-} from '../styles/components';
+import { TouchableOpacity, View } from '../styles/components';
+import { Caption13M, Text01M } from '../styles/text';
+import { GearIcon, ListIcon, TrashIcon } from '../styles/icons';
 import ProfileImage from './ProfileImage';
 import { IWidget } from '../store/types/widgets';
 import { useFeedWidget } from '../hooks/widgets';

@@ -4,14 +4,8 @@ import { useSelector } from 'react-redux';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { BottomSheetScrollView } from '@gorhom/bottom-sheet';
 
-import {
-	Caption13Up,
-	Subtitle,
-	Switch,
-	Text01M,
-	Text02M,
-	View as ThemedView,
-} from '../../../styles/components';
+import { Switch, View as ThemedView } from '../../../styles/components';
+import { Subtitle, Text01M, Text02M, Caption13Up } from '../../../styles/text';
 import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
 import Button from '../../../components/Button';
 import Tag from '../../../components/Tag';

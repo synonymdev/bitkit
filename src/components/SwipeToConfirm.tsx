@@ -16,7 +16,9 @@ import {
 	ViewStyle,
 } from 'react-native';
 
-import { View as ThemedView, Text02M, RightArrow } from '../styles/components';
+import { View as ThemedView } from '../styles/components';
+import { Text02M } from '../styles/text';
+import { RightArrow } from '../styles/icons';
 import useColors from '../hooks/colors';
 
 const CIRCLE_SIZE = 60;

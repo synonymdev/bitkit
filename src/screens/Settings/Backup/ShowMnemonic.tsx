@@ -2,12 +2,8 @@ import React, { memo, ReactElement, useMemo, useState, useEffect } from 'react';
 import { StyleSheet, View, Platform } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import {
-	View as ThemedView,
-	Text01S,
-	Text01M,
-	Text02S,
-} from '../../../styles/components';
+import { View as ThemedView } from '../../../styles/components';
+import { Text01S, Text01M, Text02S } from '../../../styles/text';
 import Button from '../../../components/Button';
 import BlurView from '../../../components/BlurView';
 import { getMnemonicPhrase, getBip39Passphrase } from '../../../utils/wallet';

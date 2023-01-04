@@ -2,7 +2,8 @@ import React, { ReactElement } from 'react';
 import { Platform, StyleSheet, View } from 'react-native';
 import { getBundleId } from 'react-native-device-info';
 
-import { View as ThemedView, Text01S, Title } from '../styles/components';
+import { View as ThemedView } from '../styles/components';
+import { Text01S, Title } from '../styles/text';
 import SafeAreaInsets from '../components/SafeAreaInsets';
 import GlowImage from '../components/GlowImage';
 import Button from '../components/Button';

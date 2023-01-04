@@ -1,7 +1,8 @@
 import React, { memo, ReactElement } from 'react';
 import { StyleSheet } from 'react-native';
 
-import { View, Text01S } from '../../../styles/components';
+import { View } from '../../../styles/components';
+import { Text01S } from '../../../styles/text';
 import NavigationHeader from '../../../components/NavigationHeader';
 import SafeAreaView from '../../../components/SafeAreaView';
 import GlowImage from '../../../components/GlowImage';

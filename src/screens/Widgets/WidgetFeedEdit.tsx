@@ -3,19 +3,15 @@ import { View, StyleSheet, Pressable } from 'react-native';
 import { useSelector } from 'react-redux';
 import { SlashURL } from '@synonymdev/slashtags-sdk';
 
+import { ScrollView, View as ThemedView } from '../../styles/components';
+import { Text01S, Text02M, Headline, Caption13Up } from '../../styles/text';
 import {
-	ScrollView,
-	View as ThemedView,
-	Caption13Up,
 	CubeIcon,
 	NewspaperIcon,
 	ChartLineIcon,
-	Headline,
-	Text01S,
-	Text02M,
 	Checkmark,
 	LightBulbIcon,
-} from '../../styles/components';
+} from '../../styles/icons';
 import NavigationHeader from '../../components/NavigationHeader';
 import Button from '../../components/Button';
 import SafeAreaInsets from '../../components/SafeAreaInsets';

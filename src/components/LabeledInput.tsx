@@ -1,10 +1,7 @@
 import React from 'react';
 import { View, StyleSheet, ViewStyle, StyleProp } from 'react-native';
-import {
-	Caption13Up,
-	TextInput,
-	BottomSheetTextInput,
-} from '../styles/components';
+import { TextInput, BottomSheetTextInput } from '../styles/components';
+import { Caption13Up } from '../styles/text';
 
 type LabeledInputProps = {
 	label: string;

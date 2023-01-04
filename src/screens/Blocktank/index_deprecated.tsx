@@ -1,10 +1,10 @@
 import React, { ReactElement, useEffect, useState } from 'react';
 import {
 	RefreshControl,
-	Text,
 	TouchableOpacity,
 	View,
 } from '../../styles/components';
+import { Text } from '../../styles/text';
 import NavigationHeader from '../../components/NavigationHeader';
 import { FlatList, StyleSheet } from 'react-native';
 import { useSelector } from 'react-redux';

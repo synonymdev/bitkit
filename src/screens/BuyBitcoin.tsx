@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
 import { Image, StyleSheet, View } from 'react-native';
 
-import { Display, Text01S } from '../styles/components';
+import { Display, Text01S } from '../styles/text';
 import SafeAreaInsets from '../components/SafeAreaInsets';
 import GlowingBackground from '../components/GlowingBackground';
 import NavigationHeader from '../components/NavigationHeader';

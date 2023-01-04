@@ -11,12 +11,8 @@ import { useFocusEffect } from '@react-navigation/native';
 import { FadeIn, FadeOut } from 'react-native-reanimated';
 import { useSelector } from 'react-redux';
 
-import {
-	AnimatedView,
-	Caption13Up,
-	Display,
-	Text01S,
-} from '../../styles/components';
+import { AnimatedView } from '../../styles/components';
+import { Caption13Up, Display, Text01S } from '../../styles/text';
 import SafeAreaInsets from '../../components/SafeAreaInsets';
 import Barrel from './Barrel';
 import GlowingBackground from '../../components/GlowingBackground';

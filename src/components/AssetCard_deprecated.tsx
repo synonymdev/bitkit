@@ -5,7 +5,8 @@
 
 import React, { memo, ReactElement } from 'react';
 import { LayoutAnimation, StyleSheet } from 'react-native';
-import { View, Text, Pressable } from '../styles/components';
+import { View, Pressable } from '../styles/components';
+import { Text } from '../styles/text';
 import Card from './Card';
 import BitcoinLogo from '../assets/bitcoin-logo.svg';
 import LightningLogo from '../assets/lightning-logo.svg';

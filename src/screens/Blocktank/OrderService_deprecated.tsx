@@ -3,7 +3,8 @@ import { StyleSheet, TouchableOpacity } from 'react-native';
 import { useSelector } from 'react-redux';
 import Clipboard from '@react-native-clipboard/clipboard';
 
-import { Text, TextInput, View } from '../../styles/components';
+import { TextInput, View } from '../../styles/components';
+import { Text } from '../../styles/text';
 import NavigationHeader from '../../components/NavigationHeader';
 import Divider from '../../components/Divider';
 import useDisplayValues from '../../hooks/displayValues';

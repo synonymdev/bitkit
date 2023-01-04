@@ -2,7 +2,8 @@ import React, { memo, ReactElement, useMemo } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { View as ThemedView, Text01S } from '../../../styles/components';
+import { View as ThemedView } from '../../../styles/components';
+import { Text01S } from '../../../styles/text';
 import SafeAreaInsets from '../../../components/SafeAreaInsets';
 import NavigationHeader from '../../../components/NavigationHeader';
 import GlowImage from '../../../components/GlowImage';

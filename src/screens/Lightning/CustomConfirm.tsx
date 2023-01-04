@@ -3,15 +3,9 @@ import { StyleSheet, View } from 'react-native';
 import { useSelector } from 'react-redux';
 import { FadeIn, FadeOut } from 'react-native-reanimated';
 
-import {
-	AnimatedView,
-	Caption13Up,
-	Display,
-	Text01S,
-	Text01M,
-	LightningIcon,
-	PenIcon,
-} from '../../styles/components';
+import { AnimatedView } from '../../styles/components';
+import { Caption13Up, Display, Text01S, Text01M } from '../../styles/text';
+import { LightningIcon, PenIcon } from '../../styles/icons';
 import SafeAreaInsets from '../../components/SafeAreaInsets';
 import GlowingBackground from '../../components/GlowingBackground';
 import NavigationHeader from '../../components/NavigationHeader';

@@ -5,7 +5,7 @@ import { getBundleId } from 'react-native-device-info';
 import Button from '../../../components/Button';
 import GlowingBackground from '../../../components/GlowingBackground';
 import SafeAreaInsets from '../../../components/SafeAreaInsets';
-import { Display } from '../../../styles/components';
+import { Display } from '../../../styles/text';
 import SettingsView from './../SettingsView';
 
 const imageSrc = require('../../../assets/illustrations/orange-pill.png');

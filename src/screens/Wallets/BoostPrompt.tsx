@@ -2,12 +2,8 @@ import React, { memo, ReactElement, useEffect, useMemo, useState } from 'react';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
 import { useSelector } from 'react-redux';
 
-import {
-	Text01M,
-	Text02M,
-	Text02S,
-	TimerIconAlt,
-} from '../../styles/components';
+import { Text01M, Text02M, Text02S } from '../../styles/text';
+import { TimerIconAlt } from '../../styles/icons';
 import BottomSheetWrapper from '../../components/BottomSheetWrapper';
 import SwipeToConfirm from '../../components/SwipeToConfirm';
 import SafeAreaInsets from '../../components/SafeAreaInsets';

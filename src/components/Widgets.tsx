@@ -17,15 +17,9 @@ import { useFocusEffect } from '@react-navigation/native';
 
 import { navigate } from '../navigation/root/RootNavigator';
 import Store from '../store/types';
-import {
-	PlusIcon,
-	Subtitle,
-	Text01M,
-	TouchableOpacity,
-	View,
-	ListIcon,
-	XIcon,
-} from '../styles/components';
+import { View, TouchableOpacity } from '../styles/components';
+import { Subtitle, Text01M } from '../styles/text';
+import { PlusIcon, ListIcon, XIcon } from '../styles/icons';
 import { SUPPORTED_FEED_TYPES } from '../utils/widgets';
 import { setWidgetsSortOrder } from '../store/actions/widgets';
 

@@ -3,17 +3,16 @@ import { StyleSheet, View } from 'react-native';
 import { useSelector } from 'react-redux';
 
 import {
-	BIcon,
 	Caption13M,
 	Display,
 	Headline,
-	LightningIcon,
 	Text01M,
 	Text01S,
 	Text02M,
 	Text02S,
 	Title,
-} from '../styles/components';
+} from '../styles/text';
+import { BIcon, LightningIcon } from '../styles/icons';
 import useDisplayValues from '../hooks/displayValues';
 import Store from '../store/types';
 import { abbreviateNumber } from '../utils/helpers';

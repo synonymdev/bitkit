@@ -2,11 +2,8 @@ import React, { memo, ReactElement, useState } from 'react';
 import { StyleSheet, View, Keyboard } from 'react-native';
 import { useSelector } from 'react-redux';
 
-import {
-	Subtitle,
-	Text13UP,
-	BottomSheetTextInput,
-} from '../../styles/components';
+import { BottomSheetTextInput } from '../../styles/components';
+import { Subtitle, Text13UP } from '../../styles/text';
 import BottomSheetWrapper from '../../components/BottomSheetWrapper';
 import SafeAreaInsets from '../../components/SafeAreaInsets';
 import { toggleView } from '../../store/actions/ui';

@@ -4,12 +4,8 @@ import {
 	ActivityIndicator,
 	TouchableOpacityProps,
 } from 'react-native';
-import {
-	Caption13M,
-	Text02M,
-	TouchableOpacity,
-	View,
-} from '../styles/components';
+import { View, TouchableOpacity } from '../styles/components';
+import { Caption13M, Text02M } from '../styles/text';
 import useColors from '../hooks/colors';
 
 export interface IButton extends TouchableOpacityProps {

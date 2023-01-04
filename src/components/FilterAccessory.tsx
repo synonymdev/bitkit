@@ -4,7 +4,8 @@ import { useSelector } from 'react-redux';
 import { KeyboardAccessoryView } from 'react-native-keyboard-accessory';
 
 import Tag from './Tag';
-import { Text13UP, View as ThemedView } from '../styles/components';
+import { View as ThemedView } from '../styles/components';
+import { Text13UP } from '../styles/text';
 import Store from '../store/types';
 
 const FilterAccessory = ({ tags, addTag }): ReactElement => {

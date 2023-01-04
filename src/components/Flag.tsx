@@ -1,7 +1,8 @@
 import React, { memo, ReactElement } from 'react';
 import { StyleSheet } from 'react-native';
 
-import { Caption13Up, View } from '../styles/components';
+import { View } from '../styles/components';
+import { Caption13Up } from '../styles/text';
 
 const FLAG_HEIGHT = 26;
 

@@ -26,13 +26,10 @@ import Animated, {
 
 import {
 	AnimatedView,
-	Caption13M,
-	Display,
-	Text01M,
-	Text01S,
 	TouchableOpacity,
 	View as ThemedView,
 } from '../../styles/components';
+import { Caption13M, Display, Text01M, Text01S } from '../../styles/text';
 import SafeAreaInsets from '../../components/SafeAreaInsets';
 import GlowingBackground from '../../components/GlowingBackground';
 import Button from '../../components/Button';

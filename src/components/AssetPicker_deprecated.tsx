@@ -1,11 +1,13 @@
 import React, { memo, ReactElement, useCallback, useMemo } from 'react';
-import { View, Text02M, Caption13M, EvilIcon } from '../styles/components';
 import { StyleSheet } from 'react-native';
+
+import { View } from '../styles/components';
+import { Text02M, Caption13M } from '../styles/text';
+import { BitcoinCircleIcon, LightningIcon, EvilIcon } from '../styles/icons';
 import useDisplayValues from '../hooks/displayValues';
 import Card from './Card';
 import { TAssetNetwork } from '../store/types/wallet';
 import { capitalize } from '../utils/helpers';
-import { BitcoinCircleIcon, LightningIcon } from '../styles/components';
 
 const AssetPicker = ({
 	assetName = 'Bitcoin',

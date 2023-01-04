@@ -2,15 +2,16 @@ import React, { ReactElement, useMemo } from 'react';
 import { Image, StyleSheet } from 'react-native';
 import { useSelector } from 'react-redux';
 
-import { Display, Text01S, View } from '../../styles/components';
+import { View } from '../../styles/components';
+import { Display, Text01S } from '../../styles/text';
 import SafeAreaInsets from '../../components/SafeAreaInsets';
 import GlowingBackground from '../../components/GlowingBackground';
 import NavigationHeader from '../../components/NavigationHeader';
 import Button from '../../components/Button';
-import type { LightningScreenProps } from '../../navigation/types';
 import { useBalance } from '../../hooks/wallet';
 import { ETransactionDefaults } from '../../store/types/wallet';
 import { isGeoBlockedSelector } from '../../store/reselect/user';
+import type { LightningScreenProps } from '../../navigation/types';
 
 const imageSrc = require('../../assets/illustrations/lightning.png');
 

@@ -21,15 +21,15 @@ import {
 	getVersion,
 } from 'react-native-device-info';
 
+import { Text01S } from '../../../styles/text';
 import {
 	BitkitIcon,
 	EmailIcon,
 	GithubIcon,
 	GlobeIcon,
 	MediumIcon,
-	Text01S,
 	TwitterIcon,
-} from '../../../styles/components';
+} from '../../../styles/icons';
 import { IListData } from '../../../components/List';
 import GlowingBackground from '../../../components/GlowingBackground';
 import { openURL } from '../../../utils/helpers';

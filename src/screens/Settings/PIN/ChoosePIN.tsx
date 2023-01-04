@@ -8,7 +8,7 @@ import React, {
 import { StyleSheet, View } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 
-import { Text01S, Text02S } from '../../../styles/components';
+import { Text01S, Text02S } from '../../../styles/text';
 import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
 import GradientView from '../../../components/GradientView';
 import NumberPad from '../../../components/NumberPad';

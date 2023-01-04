@@ -8,7 +8,8 @@ import {
 	ViewStyle,
 } from 'react-native';
 
-import { Text01S, Checkmark, Caption13S } from '../styles/components';
+import { Text01S, Caption13S } from '../styles/text';
+import { Checkmark } from '../styles/icons';
 
 type RadioButtonProps = {
 	label: ReactNode;

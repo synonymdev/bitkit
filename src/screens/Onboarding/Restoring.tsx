@@ -5,7 +5,7 @@ import { Result } from '@synonymdev/result';
 import { updateUser } from '../../store/actions/user';
 import { useSelectedSlashtag } from '../../hooks/slashtags';
 import GlowingBackground from '../../components/GlowingBackground';
-import { Display, Text01S } from '../../styles/components';
+import { Display, Text01S } from '../../styles/text';
 import Button from '../../components/Button';
 import Glow from '../../components/Glow';
 import { restoreRemoteBackups } from '../../utils/startup';

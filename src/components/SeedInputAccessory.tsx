@@ -4,7 +4,7 @@ import * as bip39 from 'bip39';
 import { KeyboardAccessoryView } from 'react-native-keyboard-accessory';
 
 import Button, { IButton } from './Button';
-import { Text13UP } from '../styles/components';
+import { Text13UP } from '../styles/text';
 import seedSuggestions from '../utils/seed-suggestions';
 
 const Word = (props: IButton): ReactElement => {

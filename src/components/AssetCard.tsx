@@ -1,6 +1,7 @@
 import React, { memo, ReactElement } from 'react';
 import { StyleSheet } from 'react-native';
-import { View, Pressable, Text01M, Caption13M } from '../styles/components';
+import { View, Pressable } from '../styles/components';
+import { Text01M, Caption13M } from '../styles/text';
 import Money from '../components/Money';
 
 const AssetCard = ({

@@ -8,7 +8,10 @@ import React, {
 } from 'react';
 import { StyleSheet, LayoutAnimation } from 'react-native';
 import { systemWeights } from 'react-native-typography';
-import { Text, TouchableOpacity, EvilIcon, View } from '../styles/components';
+
+import { TouchableOpacity, View } from '../styles/components';
+import { Text } from '../styles/text';
+import { EvilIcon } from '../styles/icons';
 import { updateSettings, wipeApp } from '../store/actions/settings';
 import NavigationHeader from './NavigationHeader';
 import { RouteProp, useNavigation } from '@react-navigation/native';

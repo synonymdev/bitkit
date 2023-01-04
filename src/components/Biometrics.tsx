@@ -8,13 +8,9 @@ import React, {
 import { StyleProp, StyleSheet, ViewStyle } from 'react-native';
 import rnBiometrics from 'react-native-biometrics';
 
-import {
-	Subtitle,
-	Ionicons,
-	MaterialIcons,
-	View,
-	TouchableOpacity,
-} from '../styles/components';
+import { View, TouchableOpacity } from '../styles/components';
+import { Subtitle } from '../styles/text';
+import { Ionicons, MaterialIcons } from '../styles/icons';
 import { updateSettings } from '../store/actions/settings';
 import { vibrate } from '../utils/helpers';
 

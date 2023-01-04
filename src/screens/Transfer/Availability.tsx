@@ -2,7 +2,7 @@ import React, { ReactElement, memo } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useSelector } from 'react-redux';
 
-import { Display, Text01B, Text01S } from '../../styles/components';
+import { Display, Text01B, Text01S } from '../../styles/text';
 import SafeAreaInsets from '../../components/SafeAreaInsets';
 import GlowingBackground from '../../components/GlowingBackground';
 import NavigationHeader from '../../components/NavigationHeader';

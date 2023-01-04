@@ -16,7 +16,7 @@ import * as bip39 from 'bip39';
 import rnAndroidKeyboardAdjust from 'rn-android-keyboard-adjust';
 import { KeyboardAccessoryView } from 'react-native-keyboard-accessory';
 
-import { Display, Text01S, Text02S } from '../../styles/components';
+import { Display, Text01S, Text02S } from '../../styles/text';
 import GlowingBackground from '../../components/GlowingBackground';
 import SafeAreaInsets from '../../components/SafeAreaInsets';
 import SeedInput from '../../components/SeedInput';

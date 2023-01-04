@@ -12,12 +12,8 @@ import {
 	useBottomSheetBackPress,
 	useSnapPoints,
 } from '../../hooks/bottomSheet';
-import {
-	ClipboardTextIcon,
-	CornersOutIcon,
-	Text01S,
-	Text02S,
-} from '../../styles/components';
+import { Text01S, Text02S } from '../../styles/text';
+import { ClipboardTextIcon, CornersOutIcon } from '../../styles/icons';
 import type { RootStackParamList } from '../../navigation/types';
 import { useSelectedSlashtag } from '../../hooks/slashtags';
 

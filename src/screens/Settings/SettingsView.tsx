@@ -2,7 +2,8 @@ import React, { memo, ReactElement, useMemo, useState } from 'react';
 import { View, StyleSheet, StyleProp, ViewStyle } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-import { View as ThemedView, Text01S, Text02S } from '../../styles/components';
+import { View as ThemedView } from '../../styles/components';
+import { Text01S, Text02S } from '../../styles/text';
 import SearchInput from '../../components/SearchInput';
 import List, { IListData } from '../../components/List';
 import NavigationHeader from '../../components/NavigationHeader';

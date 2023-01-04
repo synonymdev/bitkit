@@ -1,6 +1,7 @@
 import React, { forwardRef, useMemo } from 'react';
 import { StyleSheet, View, TextInputProps } from 'react-native';
-import { Text01S, TextInput } from '../styles/components';
+import { TextInput } from '../styles/components';
+import { Text01S } from '../styles/text';
 
 type SeedInputProps = TextInputProps & { index?: number; valid?: boolean };
 

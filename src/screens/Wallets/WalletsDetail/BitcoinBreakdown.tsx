@@ -9,14 +9,9 @@ import { StyleSheet, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
 
-import {
-	Caption13M,
-	Text01M,
-	View,
-	TransferIcon,
-	SavingsIcon,
-	CoinsIcon,
-} from '../../../styles/components';
+import { View } from '../../../styles/components';
+import { Caption13M, Text01M } from '../../../styles/text';
+import { TransferIcon, SavingsIcon, CoinsIcon } from '../../../styles/icons';
 import { useBalance } from '../../../hooks/wallet';
 import Money from '../../../components/Money';
 import { RootNavigationProp } from '../../../navigation/types';

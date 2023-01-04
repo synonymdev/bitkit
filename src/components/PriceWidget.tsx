@@ -9,7 +9,9 @@ import {
 } from '@shopify/react-native-skia';
 import b4a from 'b4a';
 
-import { View, Text01M, Caption13M, ChartLineIcon } from '../styles/components';
+import { View } from '../styles/components';
+import { Text01M, Caption13M } from '../styles/text';
+import { ChartLineIcon } from '../styles/icons';
 import useColors from '../hooks/colors';
 import { BaseFeedWidget } from './FeedWidget';
 import { IWidget } from '../store/types/widgets';

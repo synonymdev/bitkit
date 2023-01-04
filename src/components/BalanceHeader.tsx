@@ -2,7 +2,8 @@ import React, { memo, ReactElement, useMemo } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useSelector } from 'react-redux';
 
-import { Caption13Up, EyeIcon } from '../styles/components';
+import { Caption13Up } from '../styles/text';
+import { EyeIcon } from '../styles/icons';
 import Store from '../store/types';
 import { useBalance } from '../hooks/wallet';
 import { updateSettings } from '../store/actions/settings';

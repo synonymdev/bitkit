@@ -3,7 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import { useSelector } from 'react-redux';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { Text01S } from '../../../styles/components';
+import { Text01S } from '../../../styles/text';
 import BottomSheetWrapper from '../../../components/BottomSheetWrapper';
 import GlowImage from '../../../components/GlowImage';
 import Button from '../../../components/Button';

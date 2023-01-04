@@ -2,7 +2,8 @@ import React, { memo, ReactElement, useMemo, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { Text01S, BottomSheetTextInput } from '../../../styles/components';
+import { BottomSheetTextInput } from '../../../styles/components';
+import { Text01S } from '../../../styles/text';
 import Button from '../../../components/Button';
 import { useBottomSheetBackPress } from '../../../hooks/bottomSheet';
 import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';

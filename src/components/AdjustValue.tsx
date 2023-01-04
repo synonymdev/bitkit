@@ -6,12 +6,8 @@ import {
 	StyleProp,
 	ViewStyle,
 } from 'react-native';
-import {
-	MinusCircledIcon,
-	PlusCircledIcon,
-	Text01M,
-	Text02M,
-} from '../styles/components';
+import { Text01M, Text02M } from '../styles/text';
+import { MinusCircledIcon, PlusCircledIcon } from '../styles/icons';
 
 type AdjustValueProps = {
 	value: ReactNode;

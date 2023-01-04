@@ -4,7 +4,8 @@
  */
 import React, { ReactElement } from 'react';
 import { StyleSheet, ScrollView, Share } from 'react-native';
-import { View, Text } from '../styles/components';
+import { View } from '../styles/components';
+import { Text } from '../styles/text';
 import Button from './Button';
 
 let scrollView;

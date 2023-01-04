@@ -1,11 +1,12 @@
 import React, { memo, ReactElement, useState, useEffect } from 'react';
 import { StyleSheet, View, Pressable } from 'react-native';
+import { FadeIn, FadeOut } from 'react-native-reanimated';
 
-import { Text02S, AnimatedView } from '../../../styles/components';
+import { AnimatedView } from '../../../styles/components';
+import { Text02S } from '../../../styles/text';
 import useColors from '../../../hooks/colors';
 import { getKeychainValue, vibrate } from '../../../utils/helpers';
 import { toggleView } from '../../../store/actions/ui';
-import { FadeIn, FadeOut } from 'react-native-reanimated';
 import NumberPad from '../../../components/NumberPad';
 
 const SendPinPad = ({ onSuccess }: { onSuccess: () => void }): ReactElement => {

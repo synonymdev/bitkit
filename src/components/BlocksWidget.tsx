@@ -1,7 +1,8 @@
 import React, { memo, ReactElement } from 'react';
 import { View, StyleSheet } from 'react-native';
 
-import { Text01M, Caption13M, CubeIcon } from '../styles/components';
+import { Text01M, Caption13M } from '../styles/text';
+import { CubeIcon } from '../styles/icons';
 import { BaseFeedWidget } from './FeedWidget';
 import { IWidget } from '../store/types/widgets';
 import { useFeedWidget } from '../hooks/widgets';

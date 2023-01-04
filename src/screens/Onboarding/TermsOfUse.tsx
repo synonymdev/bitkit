@@ -1,7 +1,7 @@
 import React, { ReactElement, useState } from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
 
-import { Display, Text01B, Text01S, Text02B } from '../../styles/components';
+import { Display, Text01B, Text01S, Text02B } from '../../styles/text';
 import GlowingBackground from '../../components/GlowingBackground';
 import SafeAreaInsets from '../../components/SafeAreaInsets';
 import Button from '../../components/Button';

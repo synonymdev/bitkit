@@ -1,7 +1,7 @@
 import React, { ReactElement, memo, useCallback, useMemo } from 'react';
 import { StyleSheet, View } from 'react-native';
 
-import { Caption13Up, Text01M } from '../../../styles/components';
+import { Caption13Up, Text01M } from '../../../styles/text';
 import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
 import GradientView from '../../../components/GradientView';
 import { useTransactionDetails } from '../../../hooks/transaction';

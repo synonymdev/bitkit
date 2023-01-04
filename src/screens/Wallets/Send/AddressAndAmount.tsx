@@ -14,14 +14,14 @@ import Clipboard from '@react-native-clipboard/clipboard';
 import { validate } from 'bitcoin-address-validation';
 import { TInvoice } from '@synonymdev/react-native-ldk';
 
+import { AnimatedView } from '../../../styles/components';
+import { Caption13Up } from '../../../styles/text';
 import {
-	AnimatedView,
-	Caption13Up,
 	ClipboardTextIcon,
 	ScanIcon,
 	TagIcon,
 	UserIcon,
-} from '../../../styles/components';
+} from '../../../styles/icons';
 import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
 import AmountToggle from '../../../components/AmountToggle';
 import Button from '../../../components/Button';
@@ -214,6 +214,7 @@ const AddressAndAmount = ({
 				});
 				return;
 			}
+			console.log({ clipboardData });
 			const result = await processInputData({
 				data: clipboardData,
 				source: 'sendScanner',
@@ -221,6 +222,7 @@ const AddressAndAmount = ({
 				selectedNetwork,
 				selectedWallet,
 			});
+			console.log({ result });
 			if (result.isErr()) {
 				// Even though we're not able to interpret the data, pass it to the text input for editing.
 				updateBitcoinTransaction({

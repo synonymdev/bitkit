@@ -1,7 +1,8 @@
 import React, { memo } from 'react';
 import { StyleSheet } from 'react-native';
 
-import { Text02M, TouchableOpacity } from '../styles/components';
+import { TouchableOpacity } from '../styles/components';
+import { Text02M } from '../styles/text';
 import { useProfile } from '../hooks/slashtags';
 import ProfileImage from './ProfileImage';
 
