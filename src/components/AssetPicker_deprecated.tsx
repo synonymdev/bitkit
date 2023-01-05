@@ -12,28 +12,28 @@ import { capitalize } from '../utils/helpers';
 const AssetPicker = ({
 	assetName = 'Bitcoin',
 	sats = 0,
-	onPress = (): null => null,
+	onPress,
 	hideArrow = true,
 }: {
 	assetName?: TAssetNetwork | string;
 	sats?: number;
-	onPress?: Function;
+	onPress?: (assetName: string) => void;
 	hideArrow?: boolean;
 }): ReactElement => {
 	const balances = useDisplayValues(sats);
 	const handleOnPress = useCallback(() => {
-		onPress(assetName);
+		onPress?.(assetName);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [assetName]);
 
 	const AssetIcon: ReactElement = useMemo(() => {
 		switch (assetName) {
 			case 'bitcoin':
-				return BitcoinCircleIcon;
+				return <BitcoinCircleIcon />;
 			case 'lightning':
-				return LightningIcon;
+				return <LightningIcon />;
 			default:
-				return BitcoinCircleIcon;
+				return <BitcoinCircleIcon />;
 		}
 	}, [assetName]);
 

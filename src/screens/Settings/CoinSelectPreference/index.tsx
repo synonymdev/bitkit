@@ -2,7 +2,7 @@ import React, { memo, ReactElement, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { Result } from '@synonymdev/result';
 
-import { IListData } from '../../../components/List';
+import { EItemType, IListData } from '../../../components/List';
 import SettingsView from '../SettingsView';
 import { updateSettings } from '../../../store/actions/settings';
 import {
@@ -22,7 +22,7 @@ const CoinSelectSettings = (): ReactElement => {
 					{
 						title: 'Manual',
 						value: !selectedAutoPilot,
-						type: 'button',
+						type: EItemType.button,
 						onPress: (): void => {
 							updateSettings({ coinSelectAuto: false });
 						},
@@ -30,7 +30,7 @@ const CoinSelectSettings = (): ReactElement => {
 					{
 						title: 'Autopilot',
 						value: selectedAutoPilot,
-						type: 'button',
+						type: EItemType.button,
 						onPress: (): void => {
 							updateSettings({ coinSelectAuto: true });
 						},
@@ -43,7 +43,7 @@ const CoinSelectSettings = (): ReactElement => {
 					{
 						title: 'Consolidate',
 						value: coinSelectPreference === 'consolidate',
-						type: 'button',
+						type: EItemType.button,
 						onPress: (): Result<string> =>
 							updateSettings({
 								coinSelectAuto: true,
@@ -54,7 +54,7 @@ const CoinSelectSettings = (): ReactElement => {
 					{
 						title: 'Maximum Privacy',
 						value: coinSelectPreference === 'large',
-						type: 'button',
+						type: EItemType.button,
 						onPress: (): Result<string> =>
 							updateSettings({
 								coinSelectAuto: true,
@@ -65,7 +65,7 @@ const CoinSelectSettings = (): ReactElement => {
 					{
 						title: 'Minimum UTXOs',
 						value: coinSelectPreference === 'small',
-						type: 'button',
+						type: EItemType.button,
 						onPress: (): Result<string> =>
 							updateSettings({
 								coinSelectAuto: true,
@@ -83,7 +83,7 @@ const CoinSelectSettings = (): ReactElement => {
 		<SettingsView
 			title="Coin Selection"
 			listData={settingsListData}
-			showBackNavigation
+			showBackNavigation={true}
 		/>
 	);
 };

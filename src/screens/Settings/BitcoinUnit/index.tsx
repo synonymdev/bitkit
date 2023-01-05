@@ -1,7 +1,7 @@
 import React, { memo, ReactElement, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 
-import { IListData } from '../../../components/List';
+import { EItemType, IListData } from '../../../components/List';
 import SettingsView from '../SettingsView';
 import { updateSettings } from '../../../store/actions/settings';
 import { UnitBitcoinIcon, UnitSatoshiIcon } from '../../../styles/icons';
@@ -36,7 +36,7 @@ const BitcoinUnitSettings = ({
 				data: bitcoinUnits.map((bitcoinUnit) => ({
 					title: `${bitcoinUnit.label} ${bitcoinUnit.labelExample}`,
 					value: bitcoinUnit.unit === selectedBitcoinUnit,
-					type: 'button',
+					type: EItemType.button,
 					Icon: bitcoinUnit.Icon,
 					onPress: (): void => {
 						navigation.goBack();
@@ -52,7 +52,7 @@ const BitcoinUnitSettings = ({
 		<SettingsView
 			title="Bitcoin Unit"
 			listData={currencyListData}
-			showBackNavigation
+			showBackNavigation={true}
 		/>
 	);
 };

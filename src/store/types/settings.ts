@@ -1,6 +1,6 @@
 import { IWalletItem, EBitcoinUnit, EBalanceUnit } from './wallet';
 
-export type TTheme = 'dark' | 'light' | 'blue';
+export type TTheme = 'dark' | 'light';
 export type TProtocol = 'ssl' | 'tcp';
 
 export enum ETransactionSpeed {

@@ -1,7 +1,7 @@
 import React, { memo, ReactElement, useMemo } from 'react';
 import { StyleSheet, Image, View, TouchableOpacity } from 'react-native';
 
-import { Caption13Up, Text01M, SubHeadM } from '../styles/text';
+import { Caption13Up, Text01M, Subtitle } from '../styles/text';
 import { SpeedFastIcon, SpeedNormalIcon } from '../styles/icons';
 import { getAssetNames } from '../utils/wallet';
 import { capitalize } from '../utils/helpers';
@@ -52,7 +52,7 @@ const Asset = memo(
 				</View>
 				<View style={styles.rightColumn}>
 					<Text01M>{capitalize(assetsInfo[name].title)}</Text01M>
-					<SubHeadM color="gray1">{assetsInfo[name].description}</SubHeadM>
+					<Subtitle color="gray1">{assetsInfo[name].description}</Subtitle>
 				</View>
 			</TouchableOpacity>
 		);

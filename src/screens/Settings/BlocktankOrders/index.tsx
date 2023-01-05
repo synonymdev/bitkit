@@ -17,7 +17,7 @@ import {
 } from '../../../styles/icons';
 import SettingsView from '../SettingsView';
 import Store from '../../../store/types';
-import { IListData } from '../../../components/List';
+import { EItemType, IListData } from '../../../components/List';
 import type { SettingsScreenProps } from '../../../navigation/types';
 
 const title =
@@ -105,7 +105,7 @@ const BlocktankOrders = ({
 					title: blocktankOrder.stateMessage,
 					description: blocktankOrder._id,
 					value: createdAt,
-					type: 'textButton',
+					type: EItemType.textButton,
 					onPress,
 					Icon: getIcon(blocktankOrder.state),
 				});

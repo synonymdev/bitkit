@@ -36,7 +36,7 @@ const PINNavigation = (): ReactElement => {
 
 	return (
 		<BottomSheetWrapper view="PINNavigation" snapPoints={snapPoints}>
-			<NavigationContainer key={isOpen}>
+			<NavigationContainer key={isOpen.toString()}>
 				<Stack.Navigator screenOptions={navOptions}>
 					<Stack.Group screenOptions={navOptions}>
 						<Stack.Screen name="ChoosePIN" component={ChoosePIN} />

@@ -2,7 +2,7 @@ import React, { memo, ReactElement, useMemo, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import actions from '../../../store/actions/actions';
-import { IListData } from '../../../components/List';
+import { EItemType, IListData } from '../../../components/List';
 import {
 	clearUtxos,
 	resetSelectedWallet,
@@ -36,7 +36,7 @@ const DevSettings = ({
 				data: [
 					{
 						title: 'Slashtags Settings',
-						type: 'button',
+						type: EItemType.button,
 						onPress: (): void => navigation.navigate('SlashtagsSettings'),
 					},
 				],
@@ -46,81 +46,81 @@ const DevSettings = ({
 				data: [
 					{
 						title: 'Reset Current Wallet Store',
-						type: 'button',
+						type: EItemType.button,
 						onPress: async (): Promise<void> => {
 							await resetSelectedWallet({ selectedWallet });
 						},
 					},
 					{
 						title: 'Reset Entire Wallet Store',
-						type: 'button',
+						type: EItemType.button,
 						onPress: resetWalletStore,
 					},
 					{
 						title: "Clear UTXO's",
-						type: 'button',
+						type: EItemType.button,
 						onPress: clearUtxos,
 					},
 					{
 						title: 'Reset Lightning Store',
-						type: 'button',
+						type: EItemType.button,
 						onPress: resetLightningStore,
 					},
 					{
 						title: 'Reset Fees Store',
-						type: 'button',
+						type: EItemType.button,
 						onPress: resetFeesStore,
 					},
 					{
 						title: 'Reset Settings Store',
-						type: 'button',
+						type: EItemType.button,
 						onPress: resetSettingsStore,
 					},
 					{
 						title: 'Reset Activity Store',
-						type: 'button',
+						type: EItemType.button,
 						onPress: resetActivityStore,
 					},
 					{
 						title: 'Reset User Store',
-						type: 'button',
+						type: EItemType.button,
 						onPress: resetUserStore,
 					},
 					{
 						title: 'Reset Blocktank Store',
-						type: 'button',
+						type: EItemType.button,
 						onPress: resetBlocktankStore,
 					},
 					{
 						title: 'Reset Slashtags Store',
-						type: 'button',
+						type: EItemType.button,
 						onPress: resetSlashtagsStore,
 					},
 					{
 						title: 'Reset Todos Store',
-						type: 'button',
+						type: EItemType.button,
 						onPress: resetTodos,
 					},
 					{
 						title: 'Reset UI Store',
-						type: 'button',
+						type: EItemType.button,
 						onPress: resetUiStore,
 					},
 					{
 						title: 'Reset Widgets Store',
-						type: 'button',
+						type: EItemType.button,
 						onPress: resetWidgetsStore,
 					},
 					{
 						title: 'Reset All Stores',
-						type: 'button',
+						type: EItemType.button,
 						onPress: (): void => {
 							dispatch({ type: actions.WIPE_APP });
 						},
 					},
 					{
 						title: 'Wipe App',
-						type: 'button',
+						type: EItemType.button,
 						onPress: wipeApp,
 					},
 				],
@@ -130,21 +130,21 @@ const DevSettings = ({
 				data: [
 					{
 						title: 'Trigger exception in React render',
-						type: 'button',
+						type: EItemType.button,
 						onPress: (): void => {
 							setThrowError(true);
 						},
 					},
 					{
 						title: 'Trigger exception in action handler',
-						type: 'button',
+						type: EItemType.button,
 						onPress: (): void => {
 							throw new Error('test action error');
 						},
 					},
 					{
 						title: 'Trigger unhandled async exception',
-						type: 'button',
+						type: EItemType.button,
 						onPress: async (): Promise<void> => {
 							throw new Error('test async error');
 						},

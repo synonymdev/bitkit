@@ -1,7 +1,7 @@
 import React, { memo, ReactElement, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 
-import { IListData } from '../../../components/List';
+import { EItemType, IListData } from '../../../components/List';
 import SettingsView from '../SettingsView';
 import { refreshWallet } from '../../../utils/wallet';
 import { updateSelectedAddressType } from '../../../store/actions/wallet';
@@ -40,7 +40,7 @@ const AddressTypeSettings = ({
 			{
 				title: 'Bitcoin address type',
 				data: addressTypes.map((addressType) => ({
-					type: 'button',
+					type: EItemType.button,
 					title: `${addressType.name} ${addressType.example}`,
 					description: addressType.description,
 					value: addressType.type === selectedAddressType,

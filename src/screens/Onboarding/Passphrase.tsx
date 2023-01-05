@@ -70,6 +70,7 @@ const Passphrase = ({
 							onChangeText={setPassphrase}
 							returnKeyType="done"
 							autoCapitalize="none"
+							// @ts-ignore autoCompleteType -> autoComplete in newer version
 							autoCompleteType="off"
 							autoCorrect={false}
 							placeholder="Passphrase"

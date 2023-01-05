@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { SvgProps } from 'react-native-svg';
+import isEqual from 'lodash.isequal';
 
 import { Switch } from '../styles/components';
 import { Text01S, Caption13Up, Caption13S } from '../styles/text';
@@ -39,178 +40,222 @@ const ItemHeader = memo(_ItemHeader, (prevProps, nextProps) => {
 	return prevProps.title === nextProps.title;
 });
 
-type TItemType = 'switch' | 'button' | 'textButton' | 'draggable';
+export enum EItemType {
+	switch = 'switch',
+	button = 'button',
+	textButton = 'textButton',
+	draggable = 'draggable',
+}
 
 type TItemDraggable = {
 	key: string;
 	title: string;
 };
 
-export type ItemData = {
+export type ItemData = SwitchItem | ButtonItem | TextButtonItem | DraggableItem;
+
+export type SwitchItem = {
+	type: EItemType.switch;
 	title: string;
-	type: TItemType;
-	value?: string | boolean | TItemDraggable[];
+	Icon?: React.FC<SvgProps>;
+	iconColor?: string;
+	enabled?: boolean;
+	hide?: boolean;
+	onPress?: Function;
+};
+
+export type ButtonItem = {
+	type: EItemType.button;
+	value?: string | boolean;
+	title: string;
+	description?: string;
+	Icon?: React.FC<SvgProps>;
+	iconColor?: string;
 	disabled?: boolean;
 	enabled?: boolean;
 	hide?: boolean;
+	onPress?: Function;
+};
+
+export type TextButtonItem = {
+	type: EItemType.textButton;
+	value: string;
+	title: string;
+	description?: string;
 	Icon?: React.FC<SvgProps>;
 	iconColor?: string;
-	description?: string;
+	enabled?: boolean;
+	hide?: boolean;
 	onPress?: Function;
+};
+
+export type DraggableItem = {
+	type: EItemType.draggable;
+	value: TItemDraggable[];
+	title: string;
+	hide?: boolean;
 	onDragEnd?: (data: TItemDraggable[]) => void;
 };
 
-interface IItem extends ItemData {
-	navigation: Object;
-	type: TItemType;
-}
+const _Item = memo((item: ItemData): ReactElement => {
+	const navigation = useNavigation();
+	const type = item.type;
+	const hide = item.hide ?? false;
 
-const _Item = memo(
-	({
-		type,
-		title,
-		value,
-		navigation,
-		disabled = false,
-		enabled = true,
-		hide = false,
-		Icon,
-		iconColor,
-		description,
-		onPress,
-		onDragEnd,
-	}: IItem): ReactElement => {
-		if (hide) {
-			return <></>;
-		}
+	if (hide) {
+		return <></>;
+	}
 
-		if (type === 'switch') {
-			const _onPress = (): void => onPress && onPress();
+	if (type === 'switch') {
+		const {
+			title,
+			enabled = true,
+			Icon,
+			iconColor,
+			onPress,
+		} = item as SwitchItem;
 
-			return (
-				<TouchableOpacity
-					style={styles.item}
-					activeOpacity={0.6}
-					onPress={_onPress}>
-					<View style={styles.leftColumn}>
-						{Icon && (
-							<Icon
-								style={styles.icon}
-								viewBox="0 0 32 32"
-								height={32}
-								width={32}
-								color={iconColor !== '' ? iconColor : 'brand'}
-							/>
-						)}
+		const _onPress = (): void => onPress?.();
+
+		return (
+			<TouchableOpacity
+				style={styles.item}
+				activeOpacity={0.6}
+				onPress={_onPress}>
+				<View style={styles.leftColumn}>
+					{Icon && (
+						<Icon
+							style={styles.icon}
+							viewBox="0 0 32 32"
+							height={32}
+							width={32}
+							color={iconColor ? iconColor : 'brand'}
+						/>
+					)}
+					<Text01S color="white">{title}</Text01S>
+				</View>
+				<View style={styles.rightColumn}>
+					<Switch onValueChange={_onPress} value={enabled} />
+				</View>
+			</TouchableOpacity>
+		);
+	}
+
+	if (type === 'textButton') {
+		const {
+			title,
+			description,
+			value,
+			enabled = true,
+			Icon,
+			iconColor,
+			onPress,
+		} = item as TextButtonItem;
+
+		const _onPress = (): void => onPress?.(navigation);
+
+		return (
+			<TouchableOpacity
+				style={styles.item}
+				activeOpacity={0.6}
+				onPress={enabled ? _onPress : undefined}>
+				<View style={styles.leftColumn}>
+					{Icon && (
+						<Icon
+							style={styles.icon}
+							viewBox="0 0 32 32"
+							height={32}
+							width={32}
+							color={iconColor !== '' ? iconColor : 'brand'}
+						/>
+					)}
+					<View>
 						<Text01S color="white">{title}</Text01S>
-					</View>
-					<View style={styles.rightColumn}>
-						<Switch onValueChange={_onPress} value={enabled} />
-					</View>
-				</TouchableOpacity>
-			);
-		}
-
-		if (type === 'textButton') {
-			const _onPress = (): void => onPress && onPress(navigation);
-
-			return (
-				<TouchableOpacity
-					style={styles.item}
-					activeOpacity={0.6}
-					onPress={enabled ? _onPress : undefined}>
-					<View style={styles.leftColumn}>
-						{Icon && (
-							<Icon
-								style={styles.icon}
-								viewBox="0 0 32 32"
-								height={32}
-								width={32}
-								color={iconColor !== '' ? iconColor : 'brand'}
-							/>
-						)}
-						<View>
-							<Text01S color="white">{title}</Text01S>
-							{description && (
-								<View>
-									<Caption13S color="gray1">{description}</Caption13S>
-								</View>
-							)}
-						</View>
-					</View>
-					<View style={styles.rightColumn}>
-						<Text01S color="gray1">{value}</Text01S>
-					</View>
-				</TouchableOpacity>
-			);
-		}
-
-		if (type === 'draggable') {
-			return (
-				<DraggableList
-					style={styles.draggableList}
-					listData={value as TItemDraggable[]}
-					onDragEnd={onDragEnd}
-				/>
-			);
-		}
-
-		if (type === 'button') {
-			const useCheckmark = typeof value === 'boolean';
-			const _onPress = (): void => onPress && onPress(navigation);
-
-			return (
-				<TouchableOpacity
-					style={styles.item}
-					activeOpacity={0.6}
-					disabled={disabled}
-					onPress={enabled ? _onPress : undefined}>
-					<View style={styles.leftColumn}>
-						{Icon && (
-							<View style={styles.icon}>
-								<Icon
-									viewBox="0 0 32 32"
-									height={32}
-									width={32}
-									color={iconColor !== '' ? iconColor : 'brand'}
-								/>
+						{description && (
+							<View>
+								<Caption13S color="gray1">{description}</Caption13S>
 							</View>
 						)}
-						<View>
-							<Text01S color="white">{title}</Text01S>
-							{description && (
-								<View>
-									<Caption13S color="gray1">{description}</Caption13S>
-								</View>
-							)}
-						</View>
 					</View>
-					<View style={styles.rightColumn}>
-						{useCheckmark ? (
-							value && <Checkmark color="brand" width={27} height={27} />
-						) : (
-							<>
-								<Text01S style={styles.valueText}>{value}</Text01S>
-								<ChevronRight color="gray1" width={24} height={15} />
-							</>
+				</View>
+				<View style={styles.rightColumn}>
+					<Text01S color="gray1">{value}</Text01S>
+				</View>
+			</TouchableOpacity>
+		);
+	}
+
+	if (type === 'draggable') {
+		const { value, onDragEnd } = item as DraggableItem;
+		return (
+			<DraggableList
+				style={styles.draggableList}
+				listData={value}
+				onDragEnd={onDragEnd}
+			/>
+		);
+	}
+
+	if (type === 'button') {
+		const {
+			value,
+			title,
+			description,
+			disabled = false,
+			enabled = true,
+			Icon,
+			iconColor,
+			onPress,
+		} = item as ButtonItem;
+
+		const useCheckmark = typeof value === 'boolean';
+		const _onPress = (): void => onPress?.(navigation);
+
+		return (
+			<TouchableOpacity
+				style={styles.item}
+				activeOpacity={0.6}
+				disabled={disabled}
+				onPress={enabled ? _onPress : undefined}>
+				<View style={styles.leftColumn}>
+					{Icon && (
+						<View style={styles.icon}>
+							<Icon
+								viewBox="0 0 32 32"
+								height={32}
+								width={32}
+								color={iconColor !== '' ? iconColor : 'brand'}
+							/>
+						</View>
+					)}
+					<View>
+						<Text01S color="white">{title}</Text01S>
+						{description && (
+							<View>
+								<Caption13S color="gray1">{description}</Caption13S>
+							</View>
 						)}
 					</View>
-				</TouchableOpacity>
-			);
-		}
+				</View>
+				<View style={styles.rightColumn}>
+					{useCheckmark ? (
+						value && <Checkmark color="brand" width={27} height={27} />
+					) : (
+						<>
+							<Text01S style={styles.valueText}>{value}</Text01S>
+							<ChevronRight color="gray1" width={24} height={15} />
+						</>
+					)}
+				</View>
+			</TouchableOpacity>
+		);
+	}
 
-		return <></>;
-	},
-);
+	return <></>;
+});
+
 const Item = memo(_Item, (prevProps, nextProps) => {
-	return (
-		prevProps.title === nextProps.title &&
-		prevProps.value === nextProps.value &&
-		prevProps.type === nextProps.type &&
-		prevProps.disabled === nextProps.disabled &&
-		prevProps.enabled === nextProps.enabled &&
-		prevProps.Icon === nextProps.Icon
-	);
+	return isEqual(prevProps, nextProps);
 });
 
 export interface IListData {
@@ -229,8 +274,6 @@ const List = ({
 	bounces?: boolean;
 	onScrollDownChange?: (boolean) => void;
 }): ReactElement => {
-	const navigation = useNavigation();
-
 	return (
 		<SectionList
 			onScroll={
@@ -255,11 +298,7 @@ const List = ({
 				[data],
 			)}
 			renderItem={useCallback(({ item }): ReactElement | null => {
-				if (item.hide) {
-					return null;
-				}
-				return <Item {...item} navigation={navigation} />;
-				// eslint-disable-next-line react-hooks/exhaustive-deps
+				return item.hide ? null : <Item {...item} />;
 			}, [])}
 			stickySectionHeadersEnabled={false}
 			contentContainerStyle={style}

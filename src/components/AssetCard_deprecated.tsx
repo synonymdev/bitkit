@@ -1,11 +1,11 @@
-/**
- * @format
- * @flow strict-local
- */
-
 import React, { memo, ReactElement } from 'react';
-import { LayoutAnimation, StyleSheet } from 'react-native';
-import { View, Pressable } from '../styles/components';
+import {
+	Pressable,
+	LayoutAnimation,
+	StyleSheet,
+	GestureResponderEvent,
+} from 'react-native';
+import { View } from '../styles/components';
 import { Text } from '../styles/text';
 import Card from './Card';
 import BitcoinLogo from '../assets/bitcoin-logo.svg';
@@ -32,7 +32,7 @@ const AssetCard_deprecated = ({
 	description = '',
 	assetBalanceLabel = '0 BTC',
 	fiatBalanceLabel = '$0',
-	onPress = (): null => null,
+	onPress,
 	children = <View />,
 }: {
 	asset: string;
@@ -40,7 +40,7 @@ const AssetCard_deprecated = ({
 	description?: string;
 	assetBalanceLabel: string;
 	fiatBalanceLabel: string;
-	onPress?: Function;
+	onPress?: (event: GestureResponderEvent) => void;
 	children?: ReactElement | false;
 }): ReactElement => {
 	LayoutAnimation.easeInEaseOut();
@@ -48,7 +48,7 @@ const AssetCard_deprecated = ({
 	return (
 		<Card>
 			<>
-				<Pressable onPress={onPress} color="transparent" style={styles.row}>
+				<Pressable style={styles.row} onPress={onPress}>
 					<View color="transparent" style={styles.col1}>
 						<HeaderIcon id={asset} />
 					</View>

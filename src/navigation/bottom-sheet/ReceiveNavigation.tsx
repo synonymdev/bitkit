@@ -37,7 +37,7 @@ const ReceiveNavigation = (): ReactElement => {
 
 	return (
 		<BottomSheetWrapper view="receiveNavigation" snapPoints={snapPoints}>
-			<NavigationContainer key={isOpen}>
+			<NavigationContainer key={isOpen.toString()}>
 				<Stack.Navigator screenOptions={navOptions}>
 					<Stack.Group screenOptions={navOptions}>
 						<Stack.Screen name="Receive" component={Receive} />

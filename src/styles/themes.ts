@@ -1,5 +1,9 @@
+import { ThemedStyledInterface } from 'styled-components';
+import baseStyled from 'styled-components/native';
+
 import configureFonts, { IFont } from './fonts';
 import colors, { IColors } from './colors';
+import { TTheme } from '../store/types/settings';
 
 export interface IDefaultColors extends IColors {
 	accent: string;
@@ -21,7 +25,7 @@ export interface IThemeColors extends IDefaultColors {
 }
 
 export interface ITheme {
-	id: string;
+	id: TTheme;
 	colors: IThemeColors;
 	fonts: IFont;
 }
@@ -77,3 +81,4 @@ const dark: ITheme = {
 };
 
 export default { light, dark };
+export const styled = baseStyled as unknown as ThemedStyledInterface<ITheme>;

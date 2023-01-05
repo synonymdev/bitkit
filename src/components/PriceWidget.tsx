@@ -150,10 +150,10 @@ const PriceWidget = ({
 			middle={<Chart color={change.color} values={pastValues} />}
 			right={
 				<View style={styles.numbers}>
-					<Text01M numberOfLines={1} styles={styles.price}>
+					<Text01M style={styles.price} numberOfLines={1}>
 						{value}
 					</Text01M>
-					<Caption13M color={change.color} styles={styles.change}>
+					<Caption13M style={styles.change} color={change.color}>
 						{change.formatted}
 					</Caption13M>
 				</View>

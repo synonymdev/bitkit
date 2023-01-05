@@ -1,7 +1,7 @@
 import React, { memo, ReactElement, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 
-import { IListData } from '../../../components/List';
+import { EItemType, IListData } from '../../../components/List';
 import SettingsView from '../SettingsView';
 import { toggleView } from '../../../store/actions/ui';
 import { SettingsScreenProps } from '../../../navigation/types';
@@ -12,13 +12,13 @@ const BackupSettings = ({
 }: SettingsScreenProps<'BackupSettings'>): ReactElement => {
 	const pin = useSelector((state: Store) => state.settings.pin);
 
-	const SettingsListData: IListData[] = useMemo(
+	const settingsListData: IListData[] = useMemo(
 		() => [
 			{
 				data: [
 					{
 						title: 'Back up your money',
-						type: 'button',
+						type: EItemType.button,
 						onPress: (): void => {
 							toggleView({
 								view: 'backupPrompt',
@@ -32,7 +32,7 @@ const BackupSettings = ({
 					},
 					{
 						title: 'Back up your data',
-						type: 'button',
+						type: EItemType.button,
 						enabled: true,
 						onPress: (): void => {
 							navigation.navigate('BackupData');
@@ -40,7 +40,7 @@ const BackupSettings = ({
 					},
 					{
 						title: 'Reset and restore wallet',
-						type: 'button',
+						type: EItemType.button,
 						enabled: true,
 						onPress: (): void => {
 							if (pin) {
@@ -66,7 +66,7 @@ const BackupSettings = ({
 	return (
 		<SettingsView
 			title="Back Up Or Restore"
-			listData={SettingsListData}
+			listData={settingsListData}
 			showBackNavigation={true}
 		/>
 	);

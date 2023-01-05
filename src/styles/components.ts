@@ -1,7 +1,6 @@
-import { Platform, Switch as _Switch } from 'react-native';
-import styled from 'styled-components/native';
+import { ColorValue, Platform, Switch as RNSwitch } from 'react-native';
 import Animated from 'react-native-reanimated';
-import { sanFranciscoWeights } from 'react-native-typography';
+import { robotoWeights, sanFranciscoWeights } from 'react-native-typography';
 import { SafeAreaProvider as _SafeAreaProvider } from 'react-native-safe-area-context';
 import { BottomSheetTextInput as _BottomSheetTextInput } from '@gorhom/bottom-sheet';
 import {
@@ -9,8 +8,20 @@ import {
 	NavigationContainer as _NavigationContainer,
 } from '@react-navigation/native';
 
-import colors from './colors';
 import _SafeAreaView from '../components/SafeAreaView';
+import styled from './styled-components';
+import colors from './colors';
+import { IThemeColors } from './themes';
+
+type ComponentProps = {
+	color?: keyof IThemeColors;
+};
+
+type TextInputProps = ComponentProps & {
+	backgroundColor?: keyof IThemeColors;
+	minHeight?: number;
+	placeholderTextColor?: ColorValue;
+};
 
 export const SafeAreaProvider = styled(_SafeAreaProvider)`
 	flex: 1;
@@ -22,10 +33,10 @@ export const SafeAreaView = styled(_SafeAreaView)`
 	background-color: ${(props): string => props.theme.colors.background};
 `;
 
-export const Container = styled.View((props) => ({
-	flex: 1,
-	backgroundColor: props.theme.colors.background,
-}));
+export const Container = styled.View`
+	flex: 1;
+	background-color: ${(props): string => props.theme.colors.background};
+`;
 
 export const NavigationContainer = styled(_NavigationContainer).attrs(
 	(props) => ({
@@ -44,47 +55,65 @@ export const NavigationContainer = styled(_NavigationContainer).attrs(
 	}),
 )({});
 
-export const View = styled.View((props) => ({
+export const View = styled.View<ComponentProps>((props) => ({
 	backgroundColor: props.color
 		? props.theme.colors[props.color]
 		: props.theme.colors.background,
 }));
 
-export const AnimatedView = styled(Animated.View)((props) => ({
+export const AnimatedView = styled(Animated.View)<ComponentProps>((props) => ({
 	backgroundColor: props.color
 		? props.theme.colors[props.color]
 		: props.theme.colors.background,
 }));
 
-export const TouchableOpacity = styled.TouchableOpacity((props) => ({
+export const ScrollView = styled.ScrollView<ComponentProps>((props) => ({
 	backgroundColor: props.color
 		? props.theme.colors[props.color]
 		: props.theme.colors.background,
 }));
 
-export const Pressable = styled.Pressable((props) => ({
+export const TouchableOpacity = styled.TouchableOpacity<ComponentProps>(
+	(props) => ({
+		backgroundColor: props.color
+			? props.theme.colors[props.color]
+			: props.theme.colors.background,
+	}),
+);
+
+export const Pressable = styled.Pressable<ComponentProps>((props) => ({
 	backgroundColor: props.color
 		? props.theme.colors[props.color]
 		: props.theme.colors.background,
 	opacity: props.disabled ? 0.4 : 1,
 }));
 
-export const ScrollView = styled.ScrollView((props) => ({
-	backgroundColor: props.color
-		? props.theme.colors[props.color]
-		: props.theme.colors.background,
-}));
+export const Switch = styled(RNSwitch).attrs((props) => ({
+	trackColor: { false: '#767577', true: props.theme.colors.brand },
+	thumbColor: 'white',
+	ios_backgroundColor: '#3e3e3e',
+	...props,
+}))({});
 
-export const TextInput = styled.TextInput.attrs((props) => ({
+export const TextInput = styled.TextInput.attrs<TextInputProps>((props) => ({
 	keyboardAppearance: props.theme.id,
 	selectionColor: colors.brand,
-	placeholderTextColor: props?.placeholderTextColor
+	placeholderTextColor: props.placeholderTextColor
 		? props.placeholderTextColor
 		: props.theme.colors.gray1,
-}))((props) => ({
-	...sanFranciscoWeights.semibold,
+}))<TextInputProps>((props) => ({
+	...Platform.select({
+		ios: {
+			fontFamily: sanFranciscoWeights.semibold.fontFamily,
+			fontWeight: sanFranciscoWeights.semibold.fontWeight,
+		},
+		android: {
+			fontFamily: robotoWeights.medium.fontFamily,
+			fontWeight: robotoWeights.medium.fontWeight,
+		},
+	}),
 	backgroundColor: props.backgroundColor
-		? props.theme.colors[props.color]
+		? props.theme.colors[props.backgroundColor]
 		: props.theme.colors.white08,
 	color: props.color
 		? props.theme.colors[props.color]
@@ -98,30 +127,50 @@ export const TextInput = styled.TextInput.attrs((props) => ({
 	padding: 16,
 }));
 
-export const TextInputNoOutline = styled.TextInput.attrs((props) => ({
-	keyboardAppearance: props.theme.id,
-	selectionColor: colors.brand,
-	placeholderTextColor: props?.placeholderTextColor
-		? props.placeholderTextColor
-		: props.theme.colors.gray1,
-}))((props) => ({
-	...sanFranciscoWeights.semibold,
-	color: props.color
-		? props.theme.colors[props.color]
-		: props.theme.colors.text,
-	fontSize: '15px',
-}));
-
-export const BottomSheetTextInput = styled(_BottomSheetTextInput).attrs(
+export const TextInputNoOutline = styled.TextInput.attrs<TextInputProps>(
 	(props) => ({
 		keyboardAppearance: props.theme.id,
 		selectionColor: colors.brand,
-		placeholderTextColor: props?.placeholderTextColor
+		placeholderTextColor: props.placeholderTextColor
 			? props.placeholderTextColor
-			: props.theme.colors.white5,
+			: props.theme.colors.gray1,
 	}),
-)((props) => ({
-	...sanFranciscoWeights.semibold,
+)<TextInputProps>((props) => ({
+	...Platform.select({
+		ios: {
+			fontFamily: sanFranciscoWeights.semibold.fontFamily,
+			fontWeight: sanFranciscoWeights.semibold.fontWeight,
+		},
+		android: {
+			fontFamily: robotoWeights.medium.fontFamily,
+			fontWeight: robotoWeights.medium.fontWeight,
+		},
+	}),
+	fontSize: '15px',
+	color: props.color
+		? props.theme.colors[props.color]
+		: props.theme.colors.text,
+}));
+
+export const BottomSheetTextInput = styled(
+	_BottomSheetTextInput,
+).attrs<TextInputProps>((props) => ({
+	keyboardAppearance: props.theme.id,
+	selectionColor: colors.brand,
+	placeholderTextColor: props.placeholderTextColor
+		? props.placeholderTextColor
+		: props.theme.colors.white5,
+}))<TextInputProps>((props) => ({
+	...Platform.select({
+		ios: {
+			fontFamily: sanFranciscoWeights.semibold.fontFamily,
+			fontWeight: sanFranciscoWeights.semibold.fontWeight,
+		},
+		android: {
+			fontFamily: robotoWeights.medium.fontFamily,
+			fontWeight: robotoWeights.medium.fontWeight,
+		},
+	}),
 	backgroundColor: props.backgroundColor
 		? props.theme.colors[props.backgroundColor]
 		: props.theme.colors.white04,
@@ -143,17 +192,12 @@ export const RefreshControl = styled.RefreshControl.attrs((props) => ({
 
 export const StatusBar = styled.StatusBar.attrs((props) => ({
 	animated: true,
-	barStyle:
-		Platform.OS === 'android'
-			? 'light-content'
-			: props.theme.id === 'light'
-			? 'dark-content'
-			: 'light-content',
-}))({});
-
-export const Switch = styled(_Switch).attrs((props) => ({
-	trackColor: { false: '#767577', true: props.theme.colors.brand },
-	thumbColor: 'white',
-	ios_backgroundColor: '#3e3e3e',
-	...props,
+	...Platform.select({
+		ios: {
+			barStyle: props.theme.id === 'light' ? 'dark-content' : 'light-content',
+		},
+		android: {
+			barStyle: 'light-content',
+		},
+	}),
 }))({});

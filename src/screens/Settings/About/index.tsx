@@ -30,7 +30,7 @@ import {
 	MediumIcon,
 	TwitterIcon,
 } from '../../../styles/icons';
-import { IListData } from '../../../components/List';
+import { EItemType, IListData } from '../../../components/List';
 import GlowingBackground from '../../../components/GlowingBackground';
 import { openURL } from '../../../utils/helpers';
 import SafeAreaInsets from '../../../components/SafeAreaInsets';
@@ -82,19 +82,19 @@ const About = ({
 	// 	});
 	// }, []);
 
-	const SettingsListData: IListData[] = useMemo(
+	const settingsListData: IListData[] = useMemo(
 		() => [
 			{
 				data: [
 					// {
 					// 	title: 'Leave a review',
-					// 	type: 'button',
+					// 	type: EItemType.button,
 					// 	disabled: isReviewing,
 					// 	onPress: onReview,
 					// },
 					// {
 					// 	title: 'Frequently Asked Questions',
-					// 	type: 'button',
+					// 	type: EItemType.button,
 					// 	onPress: (): void => {
 					// 		// TODO: update with correct url
 					// 		openURL('https://www.synonym.to/').then();
@@ -102,26 +102,26 @@ const About = ({
 					// },
 					{
 						title: 'Support',
-						type: 'button',
+						type: EItemType.button,
 						onPress: async (): Promise<void> => {
 							await openURL(await createSupportLink());
 						},
 					},
 					{
 						title: 'Report a bug or contribute',
-						type: 'button',
+						type: EItemType.button,
 						onPress: (): void => {
 							openURL('https://www.github.com/synonymdev/bitkit').then();
 						},
 					},
 					// {
 					// 	title: 'Share Bitkit with a friend',
-					// 	type: 'button',
+					// 	type: EItemType.button,
 					// 	onPress: onShare,
 					// },
 					{
 						title: 'Legal',
-						type: 'button',
+						type: EItemType.button,
 						onPress: (): void => {
 							// TODO: update with correct url
 							openURL('https://www.bitkit.to/terms-of-use').then();
@@ -130,7 +130,7 @@ const About = ({
 					{
 						title: 'Version',
 						value: `${getVersion()} (${getBuildNumber()})`,
-						type: 'textButton',
+						type: EItemType.textButton,
 						onPress: (): void => {
 							openURL(
 								'https://www.github.com/synonymdev/bitkit/releases',
@@ -152,7 +152,7 @@ const About = ({
 				<SettingsView
 					style={styles.list}
 					title="About Bitkit"
-					listData={SettingsListData}
+					listData={settingsListData}
 					fullHeight={false}>
 					<Text01S style={styles.text} color="gray1">
 						Bitkit hands you the keys to your money, profile, contacts, and web

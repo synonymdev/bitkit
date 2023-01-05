@@ -7,7 +7,7 @@ import {
 	SpeedSlowIcon,
 	SettingsIcon,
 } from '../../../styles/icons';
-import { IListData } from '../../../components/List';
+import { EItemType, IListData } from '../../../components/List';
 import SettingsView from '../SettingsView';
 import { updateSettings } from '../../../store/actions/settings';
 import { transactionSpeedSelector } from '../../../store/reselect/settings';
@@ -55,9 +55,9 @@ const TransactionSpeedSettings = ({
 			{
 				title: 'Default Transaction Speed',
 				data: transactionSpeeds.map((txSpeed) => ({
-					title: `${txSpeed.label}`,
+					title: txSpeed.label,
 					value: txSpeed.value === selectedTransactionSpeed,
-					type: 'button',
+					type: EItemType.button,
 					Icon: txSpeed.Icon,
 					iconColor: txSpeed.iconColor,
 					description: txSpeed.description,

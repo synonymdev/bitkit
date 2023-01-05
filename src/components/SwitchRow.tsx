@@ -1,10 +1,5 @@
 import React, { memo, ReactElement } from 'react';
-import {
-	View,
-	TouchableOpacity,
-	StyleSheet,
-	GestureResponderEvent,
-} from 'react-native';
+import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import { Switch } from '../styles/components';
 import Divider from './Divider';
 
@@ -17,7 +12,7 @@ const SwitchRow = ({
 	children: ReactElement;
 	isEnabled: boolean;
 	showDivider?: boolean;
-	onPress: (event: GestureResponderEvent) => void;
+	onPress: () => void;
 }): ReactElement => {
 	return (
 		<>

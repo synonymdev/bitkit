@@ -1,199 +1,232 @@
-import styled from 'styled-components/native';
-import { sanFranciscoWeights } from 'react-native-typography';
+import { Platform } from 'react-native';
+import { robotoWeights, sanFranciscoWeights } from 'react-native-typography';
+import styled from './styled-components';
 
-export const Text = styled.Text((props) => ({
-	...sanFranciscoWeights.medium,
-	color: props.color
-		? props.theme.colors[props.color]
-		: props.theme.colors.text,
-	fontFamily: props.font
-		? props.theme.fonts[props.font].fontFamily
-		: sanFranciscoWeights.medium.fontFamily,
-	fontWeight: props.font
-		? props.theme.fonts[props.font].fontWeight
-		: sanFranciscoWeights.medium.fontWeight,
+type TextProps = {
+	color?: string;
+};
+
+export const Display = styled.Text<TextProps & { lineHeight?: string }>(
+	({ theme, color, lineHeight }) => ({
+		fontFamily: 'NHaasGroteskDSW02-65Md',
+		fontSize: '48px',
+		lineHeight: lineHeight ?? '48px',
+		color: theme.colors[color ?? 'text'],
+	}),
+);
+
+export const Headline = styled.Text<TextProps & { lineHeight?: string }>(
+	({ theme, color, lineHeight }) => ({
+		fontFamily: 'NHaasGroteskDSW02-65Md',
+		fontSize: '34px',
+		lineHeight: lineHeight ?? '34px',
+		color: theme.colors[color ?? 'text'],
+	}),
+);
+
+export const Title = styled.Text<TextProps>(({ theme, color }) => ({
+	fontFamily: 'NHaasGroteskDSW02-65Md',
+	fontSize: '22px',
+	color: theme.colors[color ?? 'text'],
 }));
 
-export const Text01S = styled.Text((props) => ({
-	...sanFranciscoWeights.regular,
-	color: props.color
-		? props.theme.colors[props.color]
-		: props.theme.colors.text,
-	fontFamily: props.font
-		? props.theme.fonts[props.font].fontFamily
-		: sanFranciscoWeights.regular.fontFamily,
-	fontSize: props.size ? props.size : '17px',
+export const Subtitle = styled.Text<TextProps>(({ theme, color }) => ({
+	...Platform.select({
+		ios: {
+			fontFamily: sanFranciscoWeights.bold.fontFamily,
+			fontWeight: sanFranciscoWeights.bold.fontWeight,
+		},
+		android: {
+			fontFamily: robotoWeights.bold.fontFamily,
+			fontWeight: robotoWeights.bold.fontWeight,
+		},
+	}),
+	fontSize: '17px',
+	color: theme.colors[color ?? 'text'],
+}));
+
+export const Text = styled.Text<TextProps>(({ theme, color }) => ({
+	...Platform.select({
+		ios: {
+			fontFamily: sanFranciscoWeights.medium.fontFamily,
+			fontWeight: sanFranciscoWeights.medium.fontWeight,
+		},
+		android: {
+			fontFamily: robotoWeights.medium.fontFamily,
+			fontWeight: robotoWeights.medium.fontWeight,
+		},
+	}),
+	color: theme.colors[color ?? 'text'],
+}));
+
+export const Text01S = styled.Text<TextProps>(({ theme, color }) => ({
+	...Platform.select({
+		ios: {
+			fontFamily: sanFranciscoWeights.regular.fontFamily,
+			fontWeight: sanFranciscoWeights.regular.fontWeight,
+		},
+		android: {
+			fontFamily: robotoWeights.regular.fontFamily,
+			fontWeight: robotoWeights.regular.fontWeight,
+		},
+	}),
+	fontSize: '17px',
 	lineHeight: '22px',
+	color: theme.colors[color ?? 'text'],
 }));
 
-export const Text01M = styled.Text((props) => ({
-	...sanFranciscoWeights.semibold,
-	color: props.color
-		? props.theme.colors[props.color]
-		: props.theme.colors.text,
-	fontFamily: props.font
-		? props.theme.fonts[props.font].fontFamily
-		: sanFranciscoWeights.semibold.fontFamily,
-	fontSize: props.size ? props.size : '17px',
+export const Text01M = styled.Text<TextProps>(({ theme, color }) => ({
+	...Platform.select({
+		ios: {
+			fontFamily: sanFranciscoWeights.semibold.fontFamily,
+			fontWeight: sanFranciscoWeights.semibold.fontWeight,
+		},
+		android: {
+			fontFamily: robotoWeights.medium.fontFamily,
+			fontWeight: robotoWeights.medium.fontWeight,
+		},
+	}),
+	fontSize: '17px',
+	color: theme.colors[color ?? 'text'],
 }));
 
-export const Text01B = styled.Text((props) => ({
-	...sanFranciscoWeights.bold,
-	color: props.color
-		? props.theme.colors[props.color]
-		: props.theme.colors.text,
-	fontFamily: props.font
-		? props.theme.fonts[props.font].fontFamily
-		: sanFranciscoWeights.bold.fontFamily,
-	fontSize: props.size ? props.size : '17px',
+export const Text01B = styled.Text<TextProps>(({ theme, color }) => ({
+	...Platform.select({
+		ios: {
+			fontFamily: sanFranciscoWeights.bold.fontFamily,
+			fontWeight: sanFranciscoWeights.bold.fontWeight,
+		},
+		android: {
+			fontFamily: robotoWeights.bold.fontFamily,
+			fontWeight: robotoWeights.bold.fontWeight,
+		},
+	}),
+	fontSize: '17px',
+	color: theme.colors[color ?? 'text'],
 }));
 
-export const Text02S = styled.Text((props) => ({
-	...sanFranciscoWeights.regular,
-	color: props.color
-		? props.theme.colors[props.color]
-		: props.theme.colors.text,
-	fontFamily: props.font
-		? props.theme.fonts[props.font].fontFamily
-		: sanFranciscoWeights.regular.fontFamily,
-	fontSize: props.size ? props.size : '15px',
+export const Text02S = styled.Text<TextProps>(({ theme, color }) => ({
+	...Platform.select({
+		ios: {
+			fontFamily: sanFranciscoWeights.regular.fontFamily,
+			fontWeight: sanFranciscoWeights.regular.fontWeight,
+		},
+		android: {
+			fontFamily: robotoWeights.regular.fontFamily,
+			fontWeight: robotoWeights.regular.fontWeight,
+		},
+	}),
+	fontSize: '15px',
 	lineHeight: '20px',
+	color: theme.colors[color ?? 'text'],
 }));
 
-export const Text02M = styled.Text((props) => ({
-	...sanFranciscoWeights.semibold,
-	color: props.color
-		? props.theme.colors[props.color]
-		: props.theme.colors.text,
-	fontFamily: props.font
-		? props.theme.fonts[props.font].fontFamily
-		: sanFranciscoWeights.semibold.fontFamily,
-	fontSize: props.size ? props.size : '15px',
+export const Text02M = styled.Text<TextProps>(({ theme, color }) => ({
+	...Platform.select({
+		ios: {
+			fontFamily: sanFranciscoWeights.semibold.fontFamily,
+			fontWeight: sanFranciscoWeights.semibold.fontWeight,
+		},
+		android: {
+			fontFamily: robotoWeights.medium.fontFamily,
+			fontWeight: robotoWeights.medium.fontWeight,
+		},
+	}),
+	fontSize: '15px',
+	color: theme.colors[color ?? 'text'],
 }));
 
-export const Text02B = styled.Text((props) => ({
-	...sanFranciscoWeights.bold,
-	color: props.color
-		? props.theme.colors[props.color]
-		: props.theme.colors.text,
-	fontFamily: props.font
-		? props.theme.fonts[props.font].fontFamily
-		: sanFranciscoWeights.medium.fontFamily,
-	fontSize: props.size ? props.size : '15px',
+export const Text02B = styled.Text<TextProps & { size?: string }>(
+	({ theme, color, size }) => ({
+		...Platform.select({
+			ios: {
+				fontFamily: sanFranciscoWeights.bold.fontFamily,
+				fontWeight: sanFranciscoWeights.bold.fontWeight,
+			},
+			android: {
+				fontFamily: robotoWeights.bold.fontFamily,
+				fontWeight: robotoWeights.bold.fontWeight,
+			},
+		}),
+		fontSize: size ? size : '15px',
+		color: theme.colors[color ?? 'text'],
+	}),
+);
+
+export const Text13S = styled.Text<TextProps>(({ theme, color }) => ({
+	...Platform.select({
+		ios: {
+			fontFamily: sanFranciscoWeights.regular.fontFamily,
+			fontWeight: sanFranciscoWeights.regular.fontWeight,
+		},
+		android: {
+			fontFamily: robotoWeights.regular.fontFamily,
+			fontWeight: robotoWeights.regular.fontWeight,
+		},
+	}),
+	fontSize: '13px',
+	color: theme.colors[color ?? 'text'],
 }));
 
-export const Text13S = styled.Text((props) => ({
-	...sanFranciscoWeights.regular,
-	color: props.color
-		? props.theme.colors[props.color]
-		: props.theme.colors.text,
-	fontFamily: props.font
-		? props.theme.fonts[props.font].fontFamily
-		: sanFranciscoWeights.regular.fontFamily,
-	fontSize: props.size ? props.size : '13px',
-}));
-
-export const Text13UP = styled.Text((props) => ({
-	...sanFranciscoWeights.medium,
-	color: props.color
-		? props.theme.colors[props.color]
-		: props.theme.colors.text,
-	fontFamily: props.font
-		? props.theme.fonts[props.font].fontFamily
-		: sanFranciscoWeights.medium.fontFamily,
-	fontSize: props.size ? props.size : '13px',
+export const Text13UP = styled.Text<TextProps>(({ theme, color }) => ({
+	...Platform.select({
+		ios: {
+			fontFamily: sanFranciscoWeights.medium.fontFamily,
+			fontWeight: sanFranciscoWeights.medium.fontWeight,
+		},
+		android: {
+			fontFamily: robotoWeights.medium.fontFamily,
+			fontWeight: robotoWeights.medium.fontWeight,
+		},
+	}),
+	fontSize: '13px',
 	textTransform: 'uppercase',
+	color: theme.colors[color ?? 'text'],
 }));
 
-export const Display = styled.Text((props) => ({
-	...sanFranciscoWeights.semibold,
-	color: props.color
-		? props.theme.colors[props.color]
-		: props.theme.colors.text,
-	fontFamily: props.font
-		? props.theme.fonts[props.font].fontFamily
-		: 'NHaasGroteskDSW02-65Md',
-	fontSize: props.size ? props.size : '48px',
-	lineHeight: props.lineHeight ?? '48px',
+export const Caption13S = styled.Text<TextProps>(({ theme, color }) => ({
+	...Platform.select({
+		ios: {
+			fontFamily: sanFranciscoWeights.regular.fontFamily,
+			fontWeight: sanFranciscoWeights.regular.fontWeight,
+		},
+		android: {
+			fontFamily: robotoWeights.regular.fontFamily,
+			fontWeight: robotoWeights.regular.fontWeight,
+		},
+	}),
+	fontSize: '13px',
+	color: theme.colors[color ?? 'text'],
 }));
 
-export const Headline = styled.Text((props) => ({
-	...sanFranciscoWeights.bold,
-	color: props.color
-		? props.theme.colors[props.color]
-		: props.theme.colors.text,
-	fontFamily: props.font
-		? props.theme.fonts[props.font].fontFamily
-		: 'NHaasGroteskDSW02-65Md',
-	fontSize: props.size ? props.size : '34px',
-	lineHeight: props.lineHeight ?? '34px',
+export const Caption13M = styled.Text<TextProps>(({ theme, color }) => ({
+	...Platform.select({
+		ios: {
+			fontFamily: sanFranciscoWeights.semibold.fontFamily,
+			fontWeight: sanFranciscoWeights.semibold.fontWeight,
+		},
+		android: {
+			fontFamily: robotoWeights.medium.fontFamily,
+			fontWeight: robotoWeights.medium.fontWeight,
+		},
+	}),
+	fontSize: '13px',
+	color: theme.colors[color ?? 'text'],
 }));
 
-export const Title = styled.Text((props) => ({
-	...sanFranciscoWeights.semibold,
-	color: props.color
-		? props.theme.colors[props.color]
-		: props.theme.colors.text,
-	fontFamily: props.font
-		? props.theme.fonts[props.font].fontFamily
-		: 'NHaasGroteskDSW02-65Md',
-	fontSize: props.size ? props.size : '22px',
-}));
-
-export const Subtitle = styled.Text((props) => ({
-	...sanFranciscoWeights.bold,
-	color: props.color
-		? props.theme.colors[props.color]
-		: props.theme.colors.text,
-	fontFamily: props.font
-		? props.theme.fonts[props.font].fontFamily
-		: sanFranciscoWeights.bold.fontFamily,
-	fontSize: props.size ? props.size : '17px',
-}));
-
-export const SubHeadM = styled.Text((props) => ({
-	...sanFranciscoWeights.medium,
-	color: props.color
-		? props.theme.colors[props.color]
-		: props.theme.colors.text,
-	fontFamily: props.font
-		? props.theme.fonts[props.font].fontFamily
-		: sanFranciscoWeights.medium.fontFamily,
-	fontWeight: 500,
-	fontSize: props.size ? props.size : '14px',
-}));
-
-export const Caption13S = styled.Text((props) => ({
-	...sanFranciscoWeights.regular,
-	color: props.color
-		? props.theme.colors[props.color]
-		: props.theme.colors.text,
-	fontFamily: props.font
-		? props.theme.fonts[props.font].fontFamily
-		: sanFranciscoWeights.regular.fontFamily,
-	fontSize: props.size ? props.size : '13px',
-}));
-
-export const Caption13M = styled.Text.attrs((props) => props)((props) => ({
-	...sanFranciscoWeights.semibold,
-	color: props.color
-		? props.theme.colors[props.color]
-		: props.theme.colors.text,
-	fontFamily: props.font
-		? props.theme.fonts[props.font].fontFamily
-		: sanFranciscoWeights.semibold.fontFamily,
-	fontSize: props.size ? props.size : '13px',
-}));
-
-export const Caption13Up = styled.Text((props) => ({
-	...sanFranciscoWeights.medium,
-	color: props.color
-		? props.theme.colors[props.color]
-		: props.theme.colors.text,
-	fontFamily: props.font
-		? props.theme.fonts[props.font].fontFamily
-		: sanFranciscoWeights.medium.fontFamily,
-	fontSize: props.size ? props.size : '13px',
+export const Caption13Up = styled.Text<TextProps>(({ theme, color }) => ({
+	...Platform.select({
+		ios: {
+			fontFamily: sanFranciscoWeights.medium.fontFamily,
+			fontWeight: sanFranciscoWeights.medium.fontWeight,
+		},
+		android: {
+			fontFamily: robotoWeights.medium.fontFamily,
+			fontWeight: robotoWeights.medium.fontWeight,
+		},
+	}),
+	fontSize: '13px',
 	lineHeight: '18px',
 	textTransform: 'uppercase',
+	color: theme.colors[color ?? 'text'],
 }));

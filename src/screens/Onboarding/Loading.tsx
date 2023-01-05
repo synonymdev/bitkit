@@ -57,7 +57,7 @@ const LoadingWalletScreen = (): ReactElement => {
 			</View>
 			<View style={styles.animationContainer}>
 				<AnimatedView
-					key={key}
+					key={key.toString()}
 					entering={enteringAnimation}
 					exiting={FadeOut}
 					color="transparent">

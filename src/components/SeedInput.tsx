@@ -5,15 +5,16 @@ import { Text01S } from '../styles/text';
 
 type SeedInputProps = TextInputProps & { index?: number; valid?: boolean };
 
-const SeedInput = forwardRef(
+const SeedInput = forwardRef<any, SeedInputProps>(
 	({ index, valid, ...props }: SeedInputProps, ref) => {
 		const inputStyle = useMemo(
-			() => [styles.input, { paddingLeft: index !== undefined ? 45 : 16 }],
+			() => [styles.input, { paddingLeft: index ? 45 : 16 }],
 			[index],
 		);
 
 		return (
 			<View style={styles.inputWrapper}>
+				{/* @ts-ignore @types/styled-components-react-native onBlur types clashing */}
 				<TextInput
 					ref={ref}
 					style={inputStyle}

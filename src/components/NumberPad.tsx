@@ -1,5 +1,5 @@
 import React, { memo, ReactElement, useMemo } from 'react';
-import { View, StyleSheet, GestureResponderEvent } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { TouchableOpacity } from '../styles/components';
 import { Text } from '../styles/text';
 import { Ionicons } from '../styles/icons';
@@ -9,13 +9,7 @@ const ACTIVE_OPACITY = 0.2;
 const digits = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0];
 
 const Button = memo(
-	({
-		num,
-		onPress,
-	}: {
-		num: number;
-		onPress: (event: GestureResponderEvent) => void;
-	}): ReactElement => {
+	({ num, onPress }: { num: number; onPress: () => void }): ReactElement => {
 		return (
 			<TouchableOpacity
 				onPress={onPress}

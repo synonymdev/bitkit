@@ -44,6 +44,7 @@ const ConfirmPassphrase = ({
 						returnKeyType="done"
 						onChangeText={setPassphrase}
 						autoCapitalize="none"
+						// @ts-ignore autoCompleteType -> autoComplete in newer version
 						autoCompleteType="off"
 						autoCorrect={false}
 					/>

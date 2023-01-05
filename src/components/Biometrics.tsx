@@ -60,10 +60,9 @@ const Biometrics = ({
 
 	useEffect(() => {
 		(async (): Promise<void> => {
-			const data: IsSensorAvailableResult =
-				await rnBiometrics.isSensorAvailable();
+			const data = await rnBiometrics.isSensorAvailable();
 			setBiometricData(data);
-			authenticate(`Confirm ${data?.biometryType || ''}`);
+			authenticate(`Confirm ${data.biometryType || 'Biometrics'}`);
 		})();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
@@ -73,7 +72,8 @@ const Biometrics = ({
 		//eslint-disable-next-line react-hooks/exhaustive-deps
 		[biometryData?.biometryType],
 	);
-	const text = useCallback((): string => {
+
+	const getText = useCallback((): string => {
 		try {
 			if (!biometryData?.available || !biometryData?.biometryType) {
 				return 'Loading Biometrics...';
@@ -120,12 +120,12 @@ const Biometrics = ({
 	return (
 		<View color="transparent" style={[styles.container, style]}>
 			<TouchableOpacity
+				style={styles.container}
 				color="transparent"
 				activeOpacity={0.6}
-				onPress={authenticate}
-				style={styles.container}>
+				onPress={(): void => authenticate()}>
 				<Icon />
-				<Subtitle style={styles.text}>{text()}</Subtitle>
+				<Subtitle style={styles.text}>{getText()}</Subtitle>
 			</TouchableOpacity>
 			{children}
 		</View>

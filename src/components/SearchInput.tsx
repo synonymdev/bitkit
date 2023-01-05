@@ -21,6 +21,7 @@ const SearchInput = ({
 	return (
 		<View style={[styles.root, style]}>
 			<MagnifyingGlassIcon style={styles.icon} />
+			{/* @ts-ignore react-native and styled-components types clashing */}
 			<TextInput style={styles.input} placeholder="Search" {...props} />
 			{children && <View style={styles.tags}>{children}</View>}
 		</View>

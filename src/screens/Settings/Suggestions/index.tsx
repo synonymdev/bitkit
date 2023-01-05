@@ -1,7 +1,7 @@
 import React, { memo, ReactElement, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
 
-import { IListData } from '../../../components/List';
+import { EItemType, IListData } from '../../../components/List';
 import SettingsView from './../SettingsView';
 import { updateSettings } from '../../../store/actions/settings';
 import { resetTodos } from '../../../store/actions/todos';
@@ -9,25 +9,24 @@ import Dialog from '../../../components/Dialog';
 import { showSuggestionsSelector } from '../../../store/reselect/settings';
 
 const SuggestionsSettings = (): ReactElement => {
+	const showSuggestions = useSelector(showSuggestionsSelector);
 	const [showDialog, setShowDialog] = useState(false);
 
-	const showSuggestions = useSelector(showSuggestionsSelector);
-
-	const SettingsListData: IListData[] = useMemo(
+	const settingsListData: IListData[] = useMemo(
 		() => [
 			{
 				data: [
 					{
 						title: 'Display suggestions',
 						enabled: showSuggestions,
-						type: 'switch',
+						type: EItemType.switch,
 						onPress: (): void => {
 							updateSettings({ showSuggestions: !showSuggestions });
 						},
 					},
 					{
 						title: 'Reset suggestions',
-						type: 'button',
+						type: EItemType.button,
 						onPress: (): void => {
 							setShowDialog(true);
 						},
@@ -42,7 +41,7 @@ const SuggestionsSettings = (): ReactElement => {
 		<>
 			<SettingsView
 				title="Suggestions"
-				listData={SettingsListData}
+				listData={settingsListData}
 				showBackNavigation={true}
 			/>
 			<Dialog

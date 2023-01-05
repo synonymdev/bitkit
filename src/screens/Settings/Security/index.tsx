@@ -5,7 +5,7 @@ import rnBiometrics from 'react-native-biometrics';
 
 import { View as ThemedView } from '../../../styles/components';
 import Store from '../../../store/types';
-import { IListData } from '../../../components/List';
+import { EItemType, IListData } from '../../../components/List';
 import { IsSensorAvailableResult } from '../../../components/Biometrics';
 import { toggleView } from '../../../store/actions/ui';
 import { updateSettings } from '../../../store/actions/settings';
@@ -47,13 +47,13 @@ const SecuritySettings = ({
 		[biometryData?.biometryType],
 	);
 
-	const SettingsListData: IListData[] = useMemo(
+	const settingsListData: IListData[] = useMemo(
 		() => [
 			{
 				data: [
 					{
 						title: 'Read clipboard for ease of use',
-						type: 'switch',
+						type: EItemType.switch,
 						enabled: enableAutoReadClipboard,
 						onPress: (): void => {
 							updateSettings({
@@ -63,7 +63,7 @@ const SecuritySettings = ({
 					},
 					{
 						title: 'Warning for sending over $100',
-						type: 'switch',
+						type: EItemType.switch,
 						enabled: enableSendAmountWarning,
 						onPress: (): void => {
 							updateSettings({
@@ -74,7 +74,7 @@ const SecuritySettings = ({
 					{
 						title: 'PIN Code',
 						value: pin ? 'Enabled' : 'Disabled',
-						type: 'button',
+						type: EItemType.button,
 						onPress: (): void => {
 							if (pin) {
 								navigation.navigate('DisablePin');
@@ -88,7 +88,7 @@ const SecuritySettings = ({
 					},
 					{
 						title: 'Change PIN Code',
-						type: 'button',
+						type: EItemType.button,
 						onPress: (): void => {
 							navigation.navigate('ChangePin');
 						},
@@ -96,7 +96,7 @@ const SecuritySettings = ({
 					},
 					{
 						title: 'Require PIN on launch',
-						type: 'switch',
+						type: EItemType.switch,
 						enabled: pinOnLaunch,
 						onPress: (): void => {
 							navigation.navigate('AuthCheck', {
@@ -110,7 +110,7 @@ const SecuritySettings = ({
 					},
 					{
 						title: 'Require PIN for payments',
-						type: 'switch',
+						type: EItemType.switch,
 						enabled: pinForPayments,
 						onPress: (): void => {
 							navigation.navigate('AuthCheck', {
@@ -124,7 +124,7 @@ const SecuritySettings = ({
 					},
 					{
 						title: `Use ${biometryTypeName} instead`,
-						type: 'switch',
+						type: EItemType.switch,
 						enabled: biometrics,
 						onPress: (): void => {
 							navigation.navigate('AuthCheck', {
@@ -164,7 +164,7 @@ const SecuritySettings = ({
 		<ThemedView style={styles.container}>
 			<SettingsView
 				title="Security And Privacy"
-				listData={SettingsListData}
+				listData={settingsListData}
 				showBackNavigation={true}
 				fullHeight={false}
 				footerText={footerText}

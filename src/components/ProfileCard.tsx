@@ -34,7 +34,7 @@ export const ProfileCard = ({
 	resolving: boolean;
 	onChange?: (name: string, value: string) => void;
 }): JSX.Element => {
-	const bioRef = useRef<TextInput | null>(null);
+	const bioRef = useRef<TextInput>(null);
 
 	const name = profile?.name ?? '';
 	const bio = profile?.bio;
@@ -50,7 +50,7 @@ export const ProfileCard = ({
 						<TextInputNoOutline
 							autoFocus={!name}
 							// placeholder doesn't like the lineHeight
-							style={[styles.nameInput, name && styles.nameInputFilled]}
+							style={[styles.nameInput, name ? styles.nameInputFilled : {}]}
 							value={name?.slice(0, MAX_NAME_LENGTH)}
 							placeholder={
 								contact ? "Contact's name" : 'Your public\nprofile name'
@@ -113,6 +113,7 @@ export const ProfileCard = ({
 
 			{editable && !contact ? (
 				<TextInputNoOutline
+					// @ts-ignore react-native and styled-components types clashing
 					ref={bioRef}
 					style={styles.bioInput}
 					color="gray1"

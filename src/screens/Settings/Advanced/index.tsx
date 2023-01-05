@@ -1,7 +1,7 @@
 import React, { memo, ReactElement, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 
-import { IListData, ItemData } from '../../../components/List';
+import { EItemType, IListData, ItemData } from '../../../components/List';
 import SettingsView from '../SettingsView';
 import { enableDevOptionsSelector } from '../../../store/reselect/settings';
 import { EAddressType } from '../../../store/types/wallet';
@@ -34,23 +34,23 @@ const AdvancedSettings = ({
 		const payments: ItemData[] = [
 			{
 				title: 'Bitcoin Address Type',
-				type: 'button',
+				type: EItemType.button,
 				value: typesDescriptions[selectedAddressType],
 				onPress: (): void => navigation.navigate('AddressTypePreference'),
 			},
 			{
 				title: 'Coin Selection',
-				type: 'button',
+				type: EItemType.button,
 				onPress: (): void => navigation.navigate('CoinSelectPreference'),
 			},
 			{
 				title: 'Payment Preference',
-				type: 'button',
+				type: EItemType.button,
 				onPress: (): void => navigation.navigate('PaymentPreference'),
 			},
 			{
 				title: 'Blocktank Orders',
-				type: 'button',
+				type: EItemType.button,
 				onPress: (): void => navigation.navigate('BlocktankOrders'),
 			},
 		];
@@ -58,17 +58,17 @@ const AdvancedSettings = ({
 		const networks: ItemData[] = [
 			{
 				title: 'Lightning Connections',
-				type: 'button',
+				type: EItemType.button,
 				onPress: (): void => navigation.navigate('Channels'),
 			},
 			{
 				title: 'Lightning Node',
-				type: 'button',
+				type: EItemType.button,
 				onPress: (): void => navigation.navigate('LightningNodeInfo'),
 			},
 			{
 				title: 'Electrum Server',
-				type: 'button',
+				type: EItemType.button,
 				onPress: (): void => navigation.navigate('ElectrumConfig'),
 			},
 		];
@@ -77,7 +77,7 @@ const AdvancedSettings = ({
 			networks.push({
 				title: 'Bitcoin Network',
 				value: networkLabels[selectedNetwork],
-				type: 'button',
+				type: EItemType.button,
 				onPress: (): void => navigation.navigate('BitcoinNetworkSelection'),
 			});
 		}

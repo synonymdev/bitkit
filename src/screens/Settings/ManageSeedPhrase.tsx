@@ -133,6 +133,7 @@ const ManageSeedPhrase = (): ReactElement => {
 						style={styles.textInput}
 						selectionColor={'orange'}
 						autoCapitalize="none"
+						// @ts-ignore autoCompleteType -> autoComplete in newer version
 						autoCompleteType="off"
 						autoCorrect={false}
 						onChangeText={(txt): void => updateMnemonic(txt)}

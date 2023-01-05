@@ -1,7 +1,7 @@
 import React, { memo, ReactElement, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 
-import { IListData } from '../../../components/List';
+import { EItemType, IListData } from '../../../components/List';
 import SettingsView from '../SettingsView';
 import { EAvailableNetworks } from '../../../utils/networks';
 import {
@@ -27,7 +27,7 @@ const BitcoinNetworkSelection = ({
 	navigation,
 }: SettingsScreenProps<'BitcoinNetworkSelection'>): ReactElement => {
 	const selectedNetwork = useSelector(selectedNetworkSelector);
-	const Networks: IListData[] = useMemo(
+	const settingsListData: IListData[] = useMemo(
 		() => [
 			{
 				data: Object.values(EAvailableNetworks).map((network) => {
@@ -35,7 +35,7 @@ const BitcoinNetworkSelection = ({
 					return {
 						title: networkData.label,
 						value: network === selectedNetwork,
-						type: 'button',
+						type: EItemType.button,
 						onPress: async (): Promise<void> => {
 							navigation.goBack();
 							// Wipe existing activity
@@ -76,8 +76,8 @@ const BitcoinNetworkSelection = ({
 	return (
 		<SettingsView
 			title="Bitcoin Network"
-			listData={Networks}
-			showBackNavigation
+			listData={settingsListData}
+			showBackNavigation={true}
 		/>
 	);
 };

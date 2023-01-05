@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native';
 import { useSelector } from 'react-redux';
 
 import { View as ThemedView } from '../../../styles/components';
-import { IListData } from '../../../components/List';
+import { EItemType, IListData } from '../../../components/List';
 import SettingsView from '../SettingsView';
 import { updateSettings } from '../../../store/actions/settings';
 import { useSlashtagsSDK } from '../../../components/SlashtagsProvider';
@@ -31,7 +31,7 @@ const PaymentPreference = (): ReactElement => {
 				data: [
 					{
 						title: 'Payment preference (drag to reorder)',
-						type: 'draggable',
+						type: EItemType.draggable,
 						value: receivePreference,
 						onDragEnd: (data): void => {
 							updateSettings({ receivePreference: data });
@@ -44,7 +44,7 @@ const PaymentPreference = (): ReactElement => {
 				data: [
 					{
 						title: 'Enable payments with contacts*',
-						type: 'switch',
+						type: EItemType.switch,
 						enabled: enableOfflinePayments,
 						onPress: (): void => {
 							updateSettings({ enableOfflinePayments: !enableOfflinePayments });

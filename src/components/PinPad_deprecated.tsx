@@ -37,8 +37,8 @@ const makeDots = (num): string => {
 };
 
 interface PinComponent {
-	onSuccess: Function;
-	onFailure?: Function;
+	onSuccess: () => void;
+	onFailure?: () => void;
 	pinSetup?: boolean; //true pushes the user through the pin setup process.
 	style?: object;
 	children?: ReactElement;
@@ -49,7 +49,7 @@ interface PinComponent {
 }
 
 const PinPadButton = memo(
-	({ num, onPress }: { num: number; onPress: Function }): ReactElement => {
+	({ num, onPress }: { num: number; onPress: () => void }): ReactElement => {
 		return (
 			<TouchableOpacity
 				onPress={onPress}

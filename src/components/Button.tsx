@@ -7,10 +7,11 @@ import {
 import { View, TouchableOpacity } from '../styles/components';
 import { Caption13M, Text02M } from '../styles/text';
 import useColors from '../hooks/colors';
+import { IThemeColors } from '../styles/themes';
 
 export interface IButton extends TouchableOpacityProps {
 	text?: string | ReactElement;
-	color?: string;
+	color?: keyof IThemeColors;
 	variant?: 'primary' | 'secondary' | 'transparent';
 	size?: 'small' | 'large';
 	disabled?: boolean;
@@ -18,6 +19,7 @@ export interface IButton extends TouchableOpacityProps {
 	icon?: ReactElement;
 	textStyle?: Object;
 }
+
 const Button = ({
 	text,
 	color,
@@ -67,6 +69,7 @@ const Button = ({
 	const Text = size === 'small' ? Caption13M : Text02M;
 
 	return (
+		// @ts-ignore react-native and styled-components types clashing
 		<TouchableOpacity
 			activeOpacity={0.6}
 			color={buttonColor}

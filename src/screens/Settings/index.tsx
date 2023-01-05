@@ -9,7 +9,7 @@ import { StyleSheet, TouchableOpacity } from 'react-native';
 import { useSelector } from 'react-redux';
 
 import { View as ThemedView } from '../../styles/components';
-import { IListData, ItemData } from '../../components/List';
+import { EItemType, IListData, ItemData } from '../../components/List';
 import SettingsView from './SettingsView';
 import GlowImage from '../../components/GlowImage';
 import { updateSettings } from '../../store/actions/settings';
@@ -45,31 +45,31 @@ const MainSettings = ({
 		}
 	}, [enableDevOptions, enableDevOptionsCount]);
 
-	const SettingsListData: IListData[] = useMemo(() => {
+	const settingsListData: IListData[] = useMemo(() => {
 		const data: ItemData[] = [
 			{
 				title: 'General',
-				type: 'button',
+				type: EItemType.button,
 				onPress: (): void => navigation.navigate('GeneralSettings'),
 			},
 			{
 				title: 'Security and Privacy',
-				type: 'button',
+				type: EItemType.button,
 				onPress: (): void => navigation.navigate('SecuritySettings'),
 			},
 			{
 				title: 'Back up or Restore',
-				type: 'button',
+				type: EItemType.button,
 				onPress: (): void => navigation.navigate('BackupSettings'),
 			},
 			{
 				title: 'Advanced',
-				type: 'button',
+				type: EItemType.button,
 				onPress: (): void => navigation.navigate('AdvancedSettings'),
 			},
 			{
 				title: 'About Bitkit',
-				type: 'button',
+				type: EItemType.button,
 				onPress: (): void => navigation.navigate('AboutSettings'),
 			},
 		];
@@ -77,7 +77,7 @@ const MainSettings = ({
 		if (enableDevOptions) {
 			data.push({
 				title: 'Dev settings',
-				type: 'button',
+				type: EItemType.button,
 				onPress: (): void => navigation.navigate('DevSettings'),
 			});
 		}
@@ -88,7 +88,7 @@ const MainSettings = ({
 		<ThemedView style={styles.container}>
 			<SettingsView
 				title="Settings"
-				listData={SettingsListData}
+				listData={settingsListData}
 				showBackNavigation={true}
 				fullHeight={false}
 			/>

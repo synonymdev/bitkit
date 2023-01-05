@@ -160,7 +160,7 @@ const Order = (props): ReactElement => {
 							style={styles.textInput}
 							placeholder="Can receive"
 							autoCapitalize="none"
-							autoCompleteType="off"
+							// autoCompleteType="off"
 							keyboardType="number-pad"
 							autoCorrect={false}
 							onChangeText={setLocalBalance}
@@ -174,7 +174,7 @@ const Order = (props): ReactElement => {
 							style={styles.textInput}
 							placeholder="Can send"
 							autoCapitalize="none"
-							autoCompleteType="off"
+							// autoCompleteType="off"
 							keyboardType="number-pad"
 							autoCorrect={false}
 							onChangeText={setRemoteBalance}

@@ -11,6 +11,7 @@ import { useSlashtags } from './SlashtagsProvider';
 import Divider from './Divider';
 import { BottomSheetSectionList } from '@gorhom/bottom-sheet';
 import { truncate } from '../utils/helpers';
+import { IThemeColors } from '../styles/themes';
 
 export const ContactItem = ({
 	contact,
@@ -45,7 +46,7 @@ export const ContactItem = ({
 				/>
 				<View style={cstyles.column} pointerEvents="none">
 					<Text01M
-						numerOfLines={1}
+						numberOfLines={1}
 						style={size !== 'small' ? cstyles.name : {}}>
 						{name}
 					</Text01M>
@@ -73,7 +74,7 @@ const ContactsList = ({
 	onPress: (contact: IContactRecord) => void;
 	searchFilter?: string;
 	includeMyProfile?: boolean;
-	sectionBackgroundColor?: string;
+	sectionBackgroundColor?: keyof IThemeColors;
 	stickySectionHeadersEnabled?: boolean;
 	bottomSheet?: boolean;
 }): ReactElement => {

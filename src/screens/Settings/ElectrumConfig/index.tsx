@@ -252,6 +252,7 @@ const ElectrumConfig = ({
 						textAlignVertical="center"
 						underlineColorAndroid="transparent"
 						autoCapitalize="none"
+						// @ts-ignore autoCompleteType -> autoComplete in newer version
 						autoCompleteType="off"
 						keyboardType="default"
 						autoCorrect={false}
@@ -268,6 +269,7 @@ const ElectrumConfig = ({
 						textAlignVertical={'center'}
 						underlineColorAndroid="transparent"
 						autoCapitalize="none"
+						// @ts-ignore autoCompleteType -> autoComplete in newer version
 						autoCompleteType="off"
 						keyboardType="number-pad"
 						autoCorrect={false}

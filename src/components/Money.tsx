@@ -17,6 +17,7 @@ import useDisplayValues from '../hooks/displayValues';
 import Store from '../store/types';
 import { abbreviateNumber } from '../utils/helpers';
 import { EBitcoinUnit } from '../store/types/wallet';
+import { IColors } from '../styles/colors';
 
 interface IMoney {
 	sats: number;
@@ -33,7 +34,7 @@ interface IMoney {
 		| 'headline';
 	highlight?: boolean; // grey last 3 chars in sats/bitcoin or decimal in fiat
 	symbol?: boolean; // show symbol icon
-	color?: string;
+	color?: keyof IColors;
 	enableHide?: boolean; // if true and settings.hideBalance === true it will replace number with dots
 	style?: object;
 	sign?: string;
@@ -70,17 +71,17 @@ const Money = (props: IMoney): ReactElement => {
 				// Override lineHeight for Display font
 				return [Headline, '41px', 40, 20];
 			case 'title':
-				return [Title, null, 26, 12];
+				return [Title, undefined, 26, 12];
 			case 'text01s':
-				return [Text01S, null, 21, 10];
+				return [Text01S, undefined, 21, 10];
 			case 'text01m':
-				return [Text01M, null, 21, 10];
+				return [Text01M, undefined, 21, 10];
 			case 'text02s':
-				return [Text02S, null, 18, 9];
+				return [Text02S, undefined, 18, 9];
 			case 'text02m':
-				return [Text02M, null, 18, 9];
+				return [Text02M, undefined, 18, 9];
 			case 'caption13M':
-				return [Caption13M, null, 16, 8];
+				return [Caption13M, undefined, 16, 8];
 			default:
 				// Override lineHeight for Display font
 				return [Display, '57px', 39, 25];

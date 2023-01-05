@@ -7,8 +7,8 @@ import { XIcon } from '../styles/icons';
 interface ITag {
 	value: string;
 	style?: {};
-	onPress?: Function;
-	onClose?: Function;
+	onPress?: () => void;
+	onClose?: () => void;
 }
 const Tag = ({ value, style, onPress, onClose }: ITag): ReactElement => {
 	const tagStyle = useMemo(

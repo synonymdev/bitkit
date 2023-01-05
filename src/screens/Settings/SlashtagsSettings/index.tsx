@@ -2,7 +2,7 @@ import React, { memo, ReactElement, useState, useEffect, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import b4a from 'b4a';
 
-import { IListData } from '../../../components/List';
+import { EItemType, IListData } from '../../../components/List';
 import SettingsView from '../SettingsView';
 import { useSelectedSlashtag } from '../../../hooks/slashtags';
 import { useSlashtagsSDK } from '../../../components/SlashtagsProvider';
@@ -68,7 +68,7 @@ const SlashtagsSettings = (): ReactElement => {
 		};
 	}, [slashtag.drivestore]);
 
-	const list: IListData[] = useMemo(
+	const settingsListData: IListData[] = useMemo(
 		() => [
 			{
 				title: 'PublicDrive',
@@ -76,24 +76,24 @@ const SlashtagsSettings = (): ReactElement => {
 					{
 						title: 'version',
 						value: driveVersion,
-						type: 'button',
+						type: EItemType.button,
 					},
 					{
 						title: 'last seeded',
 						value: lastSeed && new Date(lastSeed).toLocaleString(),
-						type: 'button',
+						type: EItemType.button,
 					},
 					{
 						title: 'seeder status',
 						value: seederStatus.seeded
 							? 'behind by ' + seederStatus.diff + ' blocks'
 							: 'Not Found',
-						type: 'button',
+						type: EItemType.button,
 					},
 					{
 						title: 'corrupt',
 						value: profileError || 'false',
-						type: 'button',
+						type: EItemType.button,
 					},
 				],
 			},
@@ -103,7 +103,7 @@ const SlashtagsSettings = (): ReactElement => {
 					{
 						title: 'open',
 						value: !sdk.closed || 'false',
-						type: 'button',
+						type: EItemType.button,
 					},
 				],
 			},
@@ -113,16 +113,16 @@ const SlashtagsSettings = (): ReactElement => {
 					{
 						title: 'open',
 						value: sdk.swarm.dht._protocol._stream._socket.readyState === 1,
-						type: 'button',
+						type: EItemType.button,
 					},
 					{
 						title: 'url',
 						value: sdk.swarm.dht._protocol._stream._socket.url,
-						type: 'button',
+						type: EItemType.button,
 					},
 					{
 						title: 'close relay socket',
-						type: 'button',
+						type: EItemType.button,
 						onPress: () => sdk._relaySocket.close(),
 					},
 				],
@@ -133,12 +133,12 @@ const SlashtagsSettings = (): ReactElement => {
 					{
 						title: 'swarm NOT destroyed',
 						value: !sdk.swarm.destroyed || 'false',
-						type: 'button',
+						type: EItemType.button,
 					},
 					{
 						title: 'announced on publicDrive',
 						value: discoveryKey ? sdk.swarm.status(discoveryKey)?.isServer : '',
-						type: 'button',
+						type: EItemType.button,
 					},
 				],
 			},
@@ -149,8 +149,8 @@ const SlashtagsSettings = (): ReactElement => {
 	return (
 		<SettingsView
 			title="Slashtags Settings"
-			listData={list}
-			showBackNavigation
+			listData={settingsListData}
+			showBackNavigation={true}
 		/>
 	);
 };

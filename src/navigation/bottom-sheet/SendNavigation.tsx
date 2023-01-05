@@ -64,7 +64,7 @@ const SendNavigation = (): ReactElement => {
 			snapPoints={snapPoints}
 			onClose={resetOnChainTransaction}
 			onOpen={setupOnChainTransaction}>
-			<NavigationContainer key={isOpen}>
+			<NavigationContainer key={isOpen.toString()}>
 				<Stack.Navigator screenOptions={screenOptions}>
 					<Stack.Screen name="AddressAndAmount" component={AddressAndAmount} />
 					<Stack.Screen name="Scanner" component={Scanner} />

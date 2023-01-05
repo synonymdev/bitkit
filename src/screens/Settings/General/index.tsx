@@ -1,7 +1,7 @@
 import React, { memo, ReactElement, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
 
-import { IListData } from '../../../components/List';
+import { EItemType, IListData } from '../../../components/List';
 import SettingsView from './../SettingsView';
 import { resetTodos } from '../../../store/actions/todos';
 import Dialog from '../../../components/Dialog';
@@ -35,33 +35,33 @@ const GeneralSettings = ({
 	const selectedCurrency = useSelector(selectedCurrencySelector);
 	const selectedBitcoinUnit = useSelector(bitcoinUnitSelector);
 
-	const SettingsListData: IListData[] = useMemo(
+	const settingsListData: IListData[] = useMemo(
 		() => [
 			{
 				data: [
 					{
 						title: 'Local currency',
 						value: selectedCurrency,
-						type: 'button',
+						type: EItemType.button,
 						onPress: (): void => navigation.navigate('CurrenciesSettings'),
 					},
 					{
 						title: 'Bitcoin unit',
 						value: unitsBitcoin[selectedBitcoinUnit],
-						type: 'button',
+						type: EItemType.button,
 						onPress: (): void => navigation.navigate('BitcoinUnitSettings'),
 					},
 					{
 						title: 'Transaction speed',
 						value: transactionSpeeds[selectedTransactionSpeed],
-						type: 'button',
+						type: EItemType.button,
 						onPress: (): void =>
 							navigation.navigate('TransactionSpeedSettings'),
 					},
 					{
 						title: 'Suggestions',
 						value: showSuggestions ? 'Visible' : 'Hidden',
-						type: 'button',
+						type: EItemType.button,
 						onPress: (): void => navigation.navigate('SuggestionsSettings'),
 					},
 				],
@@ -80,7 +80,7 @@ const GeneralSettings = ({
 		<>
 			<SettingsView
 				title="General"
-				listData={SettingsListData}
+				listData={settingsListData}
 				showBackNavigation={true}
 			/>
 			<Dialog

@@ -1,26 +1,25 @@
 import React, { memo, ReactElement, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 
-import { IListData } from '../../../components/List';
+import { EItemType, IListData } from '../../../components/List';
 import SettingsView from '../SettingsView';
 import { mostUsedExchangeTickers } from '../../../utils/exchange-rate/types';
 import { updateSettings } from '../../../store/actions/settings';
-import type { SettingsScreenProps } from '../../../navigation/types';
 import { exchangeRatesSelector } from '../../../store/reselect/wallet';
 import { selectedCurrencySelector } from '../../../store/reselect/settings';
+import type { SettingsScreenProps } from '../../../navigation/types';
 
 const CurrenciesSettings = ({
 	navigation,
 }: SettingsScreenProps<'CurrenciesSettings'>): ReactElement => {
 	const exchangeRates = useSelector(exchangeRatesSelector);
-
 	const selectedCurrency = useSelector(selectedCurrencySelector);
 
 	const onSetCurrency = (currency: string): void => {
 		updateSettings({ selectedCurrency: currency });
 	};
 
-	const CurrencyListData: IListData[] = useMemo(
+	const currencyListData: IListData[] = useMemo(
 		() => [
 			{
 				title: 'Most Used',
@@ -28,7 +27,7 @@ const CurrenciesSettings = ({
 					return {
 						title: `${ticker.quote} (${ticker.currencySymbol})`,
 						value: selectedCurrency === ticker.quote,
-						type: 'button',
+						type: EItemType.button,
 						onPress: (): void => {
 							navigation.goBack();
 							onSetCurrency(ticker.quote);
@@ -43,7 +42,7 @@ const CurrenciesSettings = ({
 					.map((ticker) => ({
 						title: ticker,
 						value: selectedCurrency === ticker,
-						type: 'button',
+						type: EItemType.button,
 						onPress: (): void => {
 							navigation.goBack();
 							onSetCurrency(ticker);
@@ -57,9 +56,9 @@ const CurrenciesSettings = ({
 	return (
 		<SettingsView
 			title="Local Currency"
-			listData={CurrencyListData}
-			showBackNavigation
-			showSearch
+			listData={currencyListData}
+			showBackNavigation={true}
+			showSearch={true}
 			footerText="Prices powered by Bitfinex & CoinGecko."
 		/>
 	);

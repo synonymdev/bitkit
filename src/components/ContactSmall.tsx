@@ -11,7 +11,7 @@ export const ContactSmall = ({
 	onPress,
 }: {
 	url: string;
-	onPress?: Function;
+	onPress?: () => void;
 }): JSX.Element => {
 	const { profile } = useProfile(url);
 

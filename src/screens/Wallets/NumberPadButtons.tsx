@@ -1,5 +1,5 @@
 import React, { memo, ReactElement, useMemo } from 'react';
-import { View, StyleSheet, GestureResponderEvent } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { useSelector } from 'react-redux';
 
 import { TouchableOpacity } from '../../styles/components';
@@ -21,8 +21,8 @@ import { EBitcoinUnit } from '../../store/types/wallet';
 type NumberPadButtons = {
 	color?: keyof IColors;
 	showUnitButton?: boolean;
-	onMaxPress?: (event: GestureResponderEvent) => void;
-	onDone?: (event: GestureResponderEvent) => void;
+	onMaxPress?: () => void;
+	onDone?: () => void;
 };
 
 const NumberPadButtons = ({

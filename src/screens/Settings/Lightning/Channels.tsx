@@ -318,14 +318,15 @@ const Channels = ({ navigation }): ReactElement => {
 								Dev Options
 							</Caption13Up>
 							<TextInput
-								selectionColor={'orange'}
+								selectionColor="orange"
 								autoCapitalize="none"
+								// @ts-ignore autoCompleteType -> autoComplete in newer version
 								autoCompleteType="off"
 								autoCorrect={false}
 								autoFocus={false}
 								style={styles.textInput}
 								value={peer}
-								placeholder={'publicKey@ip:port'}
+								placeholder="publicKey@ip:port"
 								multiline={true}
 								onChangeText={(txt: string): void => {
 									setPeer(txt);

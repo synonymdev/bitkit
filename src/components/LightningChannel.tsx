@@ -26,8 +26,8 @@ const LightningChannel = ({
 	const spendingTotalStyle = useMemo(
 		() => [
 			styles.bar,
+			styles.barLeft,
 			{
-				justifyContent: 'flex-end',
 				borderTopLeftRadius: spendingSize,
 				borderBottomLeftRadius: spendingSize,
 				marginRight: 1,
@@ -120,6 +120,9 @@ const styles = StyleSheet.create({
 	bar: {
 		flex: 1,
 		flexDirection: 'row',
+	},
+	barLeft: {
+		justifyContent: 'flex-end',
 	},
 });
 

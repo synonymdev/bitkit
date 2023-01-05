@@ -1,10 +1,5 @@
-/**
- * @format
- * @flow strict-local
- */
 import React, { ReactElement } from 'react';
-import { StyleSheet, ScrollView, Share } from 'react-native';
-import { View } from '../styles/components';
+import { View, StyleSheet, ScrollView, Share } from 'react-native';
 import { Text } from '../styles/text';
 import Button from './Button';
 
@@ -33,7 +28,7 @@ interface ILogBox {
 
 const LogBox = ({ data = [] }: ILogBox): ReactElement => {
 	return (
-		<View type="transparent" style={styles.logBoxContainer}>
+		<View style={styles.logBoxContainer}>
 			<ScrollView
 				ref={(ref): ScrollView | null => (scrollView = ref)}
 				onContentSizeChange={(): void => {

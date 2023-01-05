@@ -35,13 +35,10 @@ const BlocksWidget = ({
 				<View style={styles.numbers}>
 					{value && (
 						<>
-							<Text01M numberOfLines={1} styles={styles.price}>
+							<Text01M style={styles.price} numberOfLines={1}>
 								{`${value?.transacionCount} / ${value?.size}`}
 							</Text01M>
-							<Caption13M
-								styles={styles.change}
-								color="gray1"
-								numberOfLines={1}>
+							<Caption13M style={styles.change} color="gray1" numberOfLines={1}>
 								{value?.time}
 							</Caption13M>
 						</>
