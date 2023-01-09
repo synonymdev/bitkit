@@ -64,12 +64,8 @@ export const Widgets = ({ onEditStart, onEditEnd }): ReactElement => {
 		setWidgetsSortOrder(order);
 	}, []);
 
-	const renderItem = useCallback(
-		({
-			// isActive,
-			item,
-			drag,
-		}: RenderItemParams<Array<any>>): ReactElement => {
+	const renderEditing = useCallback(
+		({ item, drag }: RenderItemParams<Array<any>>): ReactElement => {
 			const [url, widget] = item;
 
 			if (!widget.feed) {
@@ -78,9 +74,9 @@ export const Widgets = ({ onEditStart, onEditEnd }): ReactElement => {
 						<AuthWidget
 							url={url}
 							widget={widget}
-							isEditing={editing}
-							onLongPress={editing ? drag : handleEditStart}
-							onPressIn={editing ? drag : undefined}
+							isEditing={true}
+							onLongPress={drag}
+							onPressIn={drag}
 						/>
 					</ScaleDecorator>
 				);
@@ -109,14 +105,61 @@ export const Widgets = ({ onEditStart, onEditEnd }): ReactElement => {
 					<Component
 						url={url}
 						widget={widget}
-						isEditing={editing}
-						onLongPress={editing ? drag : handleEditStart}
-						onPressIn={editing ? drag : undefined}
+						isEditing={true}
+						onLongPress={drag}
+						onPressIn={drag}
 					/>
 				</ScaleDecorator>
 			);
 		},
-		[editing, handleEditStart],
+		[],
+	);
+
+	const renderFlat = useCallback(
+		(item): ReactElement => {
+			const [url, widget] = item;
+
+			if (!widget.feed) {
+				return (
+					<AuthWidget
+						key={url}
+						url={url}
+						widget={widget}
+						isEditing={false}
+						onLongPress={handleEditStart}
+					/>
+				);
+			}
+
+			let Component;
+			switch (widget.feed.type) {
+				case SUPPORTED_FEED_TYPES.PRICE_FEED:
+					Component = PriceWidget;
+					break;
+				case SUPPORTED_FEED_TYPES.HEADLINES_FEED:
+					Component = HeadlinesWidget;
+					break;
+				case SUPPORTED_FEED_TYPES.BLOCKS_FEED:
+					Component = BlocksWidget;
+					break;
+				case SUPPORTED_FEED_TYPES.FACTS_FEED:
+					Component = FactsWidget;
+					break;
+				default:
+					Component = FeedWidget;
+			}
+
+			return (
+				<Component
+					key={url}
+					url={url}
+					widget={widget}
+					isEditing={false}
+					onLongPress={handleEditStart}
+				/>
+			);
+		},
+		[handleEditStart],
 	);
 
 	const onAdd = useCallback((): void => {
@@ -139,15 +182,19 @@ export const Widgets = ({ onEditStart, onEditEnd }): ReactElement => {
 					</TouchableOpacity>
 				)}
 			</View>
-			<NestableScrollContainer>
-				<NestableDraggableFlatList
-					data={widgetsArray}
-					keyExtractor={(item): string => item[0]}
-					renderItem={renderItem}
-					onDragEnd={handleDragEnd}
-					{...(editing ? { activationDistance: 1 } : {})}
-				/>
-			</NestableScrollContainer>
+			{editing ? (
+				<NestableScrollContainer>
+					<NestableDraggableFlatList
+						data={widgetsArray}
+						keyExtractor={(item): string => item[0]}
+						renderItem={renderEditing}
+						onDragEnd={handleDragEnd}
+						activationDistance={1}
+					/>
+				</NestableScrollContainer>
+			) : (
+				widgetsArray.map(renderFlat)
+			)}
 			<TouchableOpacity style={styles.add} onPress={onAdd}>
 				<View color="green16" style={styles.iconCircle}>
 					<PlusIcon height={16} color="green" />
