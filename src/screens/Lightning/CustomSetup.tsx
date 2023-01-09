@@ -186,7 +186,6 @@ const CustomSetup = ({
 			setupOnChainTransaction({
 				selectedNetwork,
 				selectedWallet,
-				rbf: false,
 			}).then();
 		}, [selectedNetwork, selectedWallet]),
 	);

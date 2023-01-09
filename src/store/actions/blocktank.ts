@@ -268,7 +268,6 @@ export const autoBuyChannel = async ({
 		return err(buyChannelResponse.error.message);
 	}
 	await setupOnChainTransaction({
-		rbf: false,
 		selectedNetwork,
 		selectedWallet,
 	});

@@ -1993,7 +1993,11 @@ export const setupRbf = async ({
 		if (!selectedWallet) {
 			selectedWallet = getSelectedWallet();
 		}
-		await setupOnChainTransaction({ selectedNetwork, selectedWallet });
+		await setupOnChainTransaction({
+			selectedNetwork,
+			selectedWallet,
+			rbf: true,
+		});
 		const response = await getRbfData({
 			txHash: { tx_hash: txid },
 			selectedNetwork,

@@ -56,7 +56,6 @@ const Setup = ({ navigation }: TransferScreenProps<'Setup'>): ReactElement => {
 			setupOnChainTransaction({
 				selectedNetwork,
 				selectedWallet,
-				rbf: false,
 			}).then();
 		}, [selectedNetwork, selectedWallet]),
 	);

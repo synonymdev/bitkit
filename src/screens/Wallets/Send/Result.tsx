@@ -89,7 +89,6 @@ const Result = ({
 			await setupOnChainTransaction({
 				selectedWallet,
 				selectedNetwork,
-				rbf: false,
 			});
 			navigation.navigate('ReviewAndSend');
 		}
