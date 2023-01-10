@@ -1,7 +1,6 @@
 import { ThemedStyledInterface } from 'styled-components';
 import baseStyled from 'styled-components/native';
 
-import configureFonts, { IFont } from './fonts';
 import colors, { IColors } from './colors';
 import { TTheme } from '../store/types/settings';
 
@@ -27,12 +26,10 @@ export interface IThemeColors extends IDefaultColors {
 export interface ITheme {
 	id: TTheme;
 	colors: IThemeColors;
-	fonts: IFont;
 }
 
 interface IDefaultThemeValues {
 	colors: IDefaultColors;
-	fonts: IFont;
 }
 
 const defaultThemeValues: IDefaultThemeValues = {
@@ -43,7 +40,6 @@ const defaultThemeValues: IDefaultThemeValues = {
 		error: '#D87682',
 		transparent: 'transparent',
 	},
-	fonts: configureFonts(),
 };
 
 const light: ITheme = {
