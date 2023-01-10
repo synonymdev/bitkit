@@ -6,6 +6,7 @@ import NavigationHeader from '../../../components/NavigationHeader';
 import GradientView from '../../../components/GradientView';
 import ContactsList from '../../../components/ContactsList';
 import { processInputData } from '../../../utils/scanner';
+import { showErrorNotification } from '../../../utils/notifications';
 import { useSlashtags } from '../../../components/SlashtagsProvider';
 import type { SendScreenProps } from '../../../navigation/types';
 import type { IContactRecord } from '../../../store/types/slashtags';
@@ -31,7 +32,12 @@ const Contacts = ({
 		});
 		if (res.isOk()) {
 			navigation.pop();
+			return;
 		}
+		showErrorNotification({
+			title: 'Unable To Pay to this contact',
+			message: res.error.message,
+		});
 	};
 
 	return (

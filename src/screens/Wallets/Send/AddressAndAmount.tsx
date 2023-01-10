@@ -369,13 +369,22 @@ const AddressAndAmount = ({
 	]);
 
 	const isInvalid = useCallback(() => {
+		// onchain transaction, but amount is below dust limit
 		if (
 			validate(address) &&
 			amount <= ETransactionDefaults.recommendedBaseFee
 		) {
 			return true;
 		}
-		return !validate(address) && !transaction?.lightningInvoice;
+		// no valid address or lightning invoice
+		if (!validate(address) && !transaction?.lightningInvoice) {
+			return true;
+		}
+		// valid lightning invoice, but amount is 0
+		if (!validate(address) && transaction?.lightningInvoice && amount === 0) {
+			return true;
+		}
+		return false;
 	}, [address, amount, transaction?.lightningInvoice]);
 
 	/**

@@ -34,6 +34,7 @@ import {
 	selectedNetworkSelector,
 	selectedWalletSelector,
 } from '../../store/reselect/wallet';
+import { showErrorNotification } from '../../utils/notifications';
 
 export const Contact = ({
 	navigation,
@@ -83,7 +84,12 @@ export const Contact = ({
 		});
 		if (res.isOk()) {
 			navigation.popToTop();
+			return;
 		}
+		showErrorNotification({
+			title: 'Unable To Pay to this contact',
+			message: res.error.message,
+		});
 	};
 
 	const handleShare = useCallback(async (): Promise<void> => {

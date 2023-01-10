@@ -253,7 +253,6 @@ export const updateSlashPayConfig = debounce(
 				decodedInvoice.value.is_expired;
 
 			if (invoiceNeedsToBeUpdated) {
-				needToUpdate = true;
 				const response = await createLightningInvoice({
 					amountSats: 0,
 					description: '',
@@ -263,6 +262,7 @@ export const updateSlashPayConfig = debounce(
 				});
 
 				if (response.isOk()) {
+					needToUpdate = true;
 					newPayConfig.push({
 						type: 'lightningInvoice',
 						value: response.value.to_str,
