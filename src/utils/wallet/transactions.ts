@@ -17,6 +17,7 @@ import {
 	TWalletName,
 } from '../../store/types/wallet';
 import {
+	getBalance,
 	getCurrentWallet,
 	getMnemonicPhrase,
 	getOnChainBalance,
@@ -1696,29 +1697,51 @@ export const updateAmount = async ({
 		}
 		transaction = transactionDataResponse.value;
 	}
-	const satsPerByte = transaction?.satsPerByte ?? 1;
-	const message = transaction?.message;
-	const outputs = transaction?.outputs ?? [];
+
 	let newAmount = Number(amount);
+	let inputTotal = 0;
+	const outputs = transaction?.outputs ?? [];
 
-	let totalNewAmount = 0;
-	const totalFee = getTotalFee({
-		satsPerByte,
-		message,
-		selectedWallet,
-		selectedNetwork,
-	});
+	if (transaction?.lightningInvoice) {
+		// lightning transaction
+		const { satoshis } = getBalance({ lightning: true });
+		inputTotal = satoshis;
 
-	const inputTotal = getTransactionInputValue({
-		selectedNetwork,
-		selectedWallet,
-		inputs: transaction.inputs,
-	});
+		if (newAmount === inputTotal) {
+			max = true;
+		}
+	} else {
+		// onchain transaction
+		const satsPerByte = transaction?.satsPerByte ?? 1;
+		const message = transaction?.message;
 
-	if (newAmount !== 0) {
-		totalNewAmount = newAmount + totalFee;
-		if (totalNewAmount > inputTotal && inputTotal - totalFee < 0) {
-			newAmount = 0;
+		let totalNewAmount = 0;
+		const totalFee = getTotalFee({
+			satsPerByte,
+			message,
+			selectedWallet,
+			selectedNetwork,
+		});
+
+		inputTotal = getTransactionInputValue({
+			selectedNetwork,
+			selectedWallet,
+			inputs: transaction.inputs,
+		});
+
+		if (newAmount !== 0) {
+			totalNewAmount = newAmount + totalFee;
+			if (totalNewAmount > inputTotal && inputTotal - totalFee < 0) {
+				newAmount = 0;
+			}
+		}
+
+		if (totalNewAmount > inputTotal) {
+			return err('New amount exceeds the current balance.');
+		}
+
+		if (totalNewAmount === inputTotal) {
+			max = true;
 		}
 	}
 
@@ -1733,16 +1756,8 @@ export const updateAmount = async ({
 	if (newAmount === value) {
 		return ok('No change detected. No need to update.');
 	}
-	if (
-		newAmount === value ||
-		newAmount > inputTotal ||
-		totalNewAmount > inputTotal
-	) {
+	if (newAmount > inputTotal) {
 		return err('New amount exceeds the current balance.');
-	}
-
-	if (totalNewAmount === inputTotal) {
-		max = true;
 	}
 
 	const output = { address, value: newAmount, index };
