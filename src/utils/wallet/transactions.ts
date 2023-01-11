@@ -1561,39 +1561,72 @@ export const sendMax = ({
 			address = outputs[index]?.address ?? '';
 		}
 
-		const inputTotal = getTransactionInputValue({
-			selectedNetwork,
-			selectedWallet,
-			inputs: transaction.inputs,
-		});
+		let inputTotal = 0;
 		const max = transaction?.max;
-		if (
-			!max &&
-			inputTotal > 0 &&
-			transaction?.fee &&
-			inputTotal / 2 > transaction.fee
-		) {
-			const newFee = getTotalFee({
-				satsPerByte: transaction.satsPerByte ?? 1,
-				message: transaction.message,
+
+		if (transaction?.lightningInvoice) {
+			// lightning transaction
+			const { satoshis } = getBalance({
+				lightning: true,
+				selectedWallet,
+				selectedNetwork,
 			});
-			const _transaction: IBitcoinTransactionData = {
-				fee: newFee,
-				outputs: [{ address, value: inputTotal - newFee, index }],
-				max: !max,
-			};
-			updateBitcoinTransaction({
-				selectedWallet,
-				selectedNetwork,
-				transaction: _transaction,
-			}).then();
+			inputTotal = satoshis;
+
+			if (!max && inputTotal > 0) {
+				const _transaction: IBitcoinTransactionData = {
+					outputs: [{ address, value: inputTotal, index }],
+					max: !max,
+				};
+				updateBitcoinTransaction({
+					selectedWallet,
+					selectedNetwork,
+					transaction: _transaction,
+				}).then();
+			} else {
+				updateBitcoinTransaction({
+					selectedWallet,
+					selectedNetwork,
+					transaction: { max: !max },
+				}).then();
+			}
 		} else {
-			updateBitcoinTransaction({
-				selectedWallet,
+			// onchain transaction
+			inputTotal = getTransactionInputValue({
 				selectedNetwork,
-				transaction: { max: !max },
-			}).then();
+				selectedWallet,
+				inputs: transaction.inputs,
+			});
+
+			if (
+				!max &&
+				inputTotal > 0 &&
+				transaction?.fee &&
+				inputTotal / 2 > transaction.fee
+			) {
+				const newFee = getTotalFee({
+					satsPerByte: transaction.satsPerByte ?? 1,
+					message: transaction.message,
+				});
+				const _transaction: IBitcoinTransactionData = {
+					fee: newFee,
+					outputs: [{ address, value: inputTotal - newFee, index }],
+					max: !max,
+				};
+				updateBitcoinTransaction({
+					selectedWallet,
+					selectedNetwork,
+					transaction: _transaction,
+				}).then();
+			} else {
+				updateBitcoinTransaction({
+					selectedWallet,
+					selectedNetwork,
+					transaction: { max: !max },
+				}).then();
+			}
 		}
+
 		return ok('Successfully setup max send transaction.');
 	} catch (e) {
 		return err(e);
@@ -1704,7 +1737,11 @@ export const updateAmount = async ({
 
 	if (transaction?.lightningInvoice) {
 		// lightning transaction
-		const { satoshis } = getBalance({ lightning: true });
+		const { satoshis } = getBalance({
+			lightning: true,
+			selectedWallet,
+			selectedNetwork,
+		});
 		inputTotal = satoshis;
 
 		if (newAmount === inputTotal) {
@@ -2002,7 +2039,7 @@ export const setupCpfp = async ({
 	}
 
 	// Construct the tx to send funds back to ourselves using the assigned inputs, receive address and fee.
-	const sendMaxResponse = await sendMax({
+	const sendMaxResponse = sendMax({
 		selectedWallet,
 		selectedNetwork,
 		transaction: {

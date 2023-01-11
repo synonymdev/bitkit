@@ -8,15 +8,13 @@ import { SwitchIcon } from '../../styles/icons';
 import { updateSettings } from '../../store/actions/settings';
 import useDisplayValues from '../../hooks/displayValues';
 import { IColors } from '../../styles/colors';
-import {
-	onChainBalanceSelector,
-	transactionMaxSelector,
-} from '../../store/reselect/wallet';
+import { transactionMaxSelector } from '../../store/reselect/wallet';
 import {
 	bitcoinUnitSelector,
 	unitPreferenceSelector,
 } from '../../store/reselect/settings';
 import { EBitcoinUnit } from '../../store/types/wallet';
+import { useBalance } from '../../hooks/wallet';
 
 type NumberPadButtons = {
 	color?: keyof IColors;
@@ -31,12 +29,12 @@ const NumberPadButtons = ({
 	onMaxPress,
 	onDone,
 }: NumberPadButtons): ReactElement => {
-	const balance = useSelector(onChainBalanceSelector);
+	const { satoshis } = useBalance({ onchain: true, lightning: true });
 	const bitcoinUnit = useSelector(bitcoinUnitSelector);
 	const unitPreference = useSelector(unitPreferenceSelector);
 	const isMaxSendAmount = useSelector(transactionMaxSelector);
 
-	const displayValues = useDisplayValues(balance);
+	const displayValues = useDisplayValues(satoshis);
 
 	// BTC -> satoshi -> fiat
 	const nextUnit = useMemo(() => {
@@ -60,7 +58,7 @@ const NumberPadButtons = ({
 					<TouchableOpacity
 						style={styles.button}
 						color="white08"
-						disabled={balance <= 0}
+						disabled={satoshis <= 0}
 						onPress={onMaxPress}>
 						<Text02B size="12px" color={isMaxSendAmount ? 'orange' : color}>
 							MAX
