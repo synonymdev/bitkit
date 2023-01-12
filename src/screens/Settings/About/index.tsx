@@ -30,12 +30,12 @@ import {
 	MediumIcon,
 	TwitterIcon,
 } from '../../../styles/icons';
-import { EItemType, IListData } from '../../../components/List';
-import GlowingBackground from '../../../components/GlowingBackground';
 import { openURL } from '../../../utils/helpers';
-import SafeAreaInsets from '../../../components/SafeAreaInsets';
-import SettingsView from '../SettingsView';
 import { createSupportLink } from '../../../utils/support';
+import NavigationHeader from '../../../components/NavigationHeader';
+import List, { EItemType, IListData } from '../../../components/List';
+import GlowingBackground from '../../../components/GlowingBackground';
+import SafeAreaInsets from '../../../components/SafeAreaInsets';
 import type { SettingsScreenProps } from '../../../navigation/types';
 
 const imageSrc = require('../../../assets/powered-by.png');
@@ -146,28 +146,32 @@ const About = ({
 
 	return (
 		<GlowingBackground bottomRight="brand">
+			<SafeAreaInsets type="top" />
+			<NavigationHeader
+				title="About Bitkit"
+				onClosePress={(): void => {
+					navigation.navigate('Wallet');
+				}}
+			/>
 			<ScrollView
 				contentContainerStyle={styles.content}
 				showsVerticalScrollIndicator={false}>
-				<SettingsView
-					style={styles.list}
-					title="About Bitkit"
-					listData={settingsListData}
-					fullHeight={false}>
-					<Text01S style={styles.text} color="gray1">
-						Bitkit hands you the keys to your money, profile, contacts, and web
-						accounts.{'\n'}
-						{'\n'}This{' '}
-						<Text01S
-							color="gray1"
-							onPress={(): void => {
-								navigation.navigate('EasterEgg');
-							}}>
-							Orange Pill
-						</Text01S>{' '}
-						was carefully crafted by Synonym Software Ltd.
-					</Text01S>
-				</SettingsView>
+				<Text01S style={styles.text} color="gray1">
+					Bitkit hands you the keys to your money, profile, contacts, and web
+					accounts.{'\n'}
+					{'\n'}This{' '}
+					<Text01S
+						color="gray1"
+						onPress={(): void => {
+							navigation.navigate('EasterEgg');
+						}}>
+						Orange Pill
+					</Text01S>{' '}
+					was carefully crafted by Synonym Software Ltd.
+				</Text01S>
+
+				<List style={styles.list} data={settingsListData} bounces={false} />
+
 				<View style={styles.footer}>
 					<View style={styles.logoContainer}>
 						<Pressable
@@ -227,9 +231,9 @@ const About = ({
 const styles = StyleSheet.create({
 	content: {
 		flexGrow: 1,
+		paddingHorizontal: 16,
 	},
 	text: {
-		paddingHorizontal: 16,
 		paddingBottom: 32,
 	},
 	list: {

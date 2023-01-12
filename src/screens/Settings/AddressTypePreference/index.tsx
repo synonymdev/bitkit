@@ -18,7 +18,7 @@ const addressTypes = [
 	},
 	{
 		type: EAddressType.p2sh,
-		name: 'Wrapped Segwit',
+		name: 'Nested Segwit',
 		description: 'Pay-to-Script-Hash',
 		example: '(3x...)',
 	},
