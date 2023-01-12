@@ -1,13 +1,14 @@
-import React, { memo, ReactElement, useEffect, useState } from 'react';
-import { StyleSheet } from 'react-native';
-import { useSelector } from 'react-redux';
-import Share from 'react-native-share';
+import React, { memo, ReactElement, useEffect, useMemo, useState } from 'react';
+import { KeyboardAvoidingView, Platform, StyleSheet } from 'react-native';
+import Share, { ShareOptions } from 'react-native-share';
 
-import { View } from '../../../styles/components';
+import { TextInput, View } from '../../../styles/components';
 import { Text01S } from '../../../styles/text';
+import useKeyboard from '../../../hooks/keyboard';
+import SafeAreaView from '../../../components/SafeAreaView';
 import NavigationHeader from '../../../components/NavigationHeader';
 import Button from '../../../components/Button';
-import Store from '../../../store/types';
+import SafeAreaInsets from '../../../components/SafeAreaInsets';
 import {
 	showErrorNotification,
 	showSuccessNotification,
@@ -16,19 +17,14 @@ import {
 	cleanupBackupFiles,
 	createBackupFile,
 } from '../../../utils/backup/fileBackup';
-import SafeAreaView from '../../../components/SafeAreaView';
-import GlowImage from '../../../components/GlowImage';
-import SafeAreaInsets from '../../../components/SafeAreaInsets';
-import { getKeychainValue } from '../../../utils/helpers';
 import type { SettingsScreenProps } from '../../../navigation/types';
-
-const imageSrc = require('../../../assets/illustrations/folder.png');
 
 const ExportToPhone = ({
 	navigation,
 }: SettingsScreenProps<'ExportToPhone'>): ReactElement => {
-	const pinEnabled = useSelector((state: Store) => state.settings.pin);
-	const [isCreating, setIsCreating] = useState<boolean>(false);
+	const { keyboardShown } = useKeyboard();
+	const [password, setPassword] = useState('');
+	const [isCreating, setIsCreating] = useState(false);
 
 	useEffect(() => {
 		return (): void => {
@@ -36,8 +32,17 @@ const ExportToPhone = ({
 		};
 	}, []);
 
+	const buttonContainerStyles = useMemo(
+		() => ({
+			...styles.buttonContainer,
+			// extra padding needed because of KeyboardAvoidingView
+			paddingBottom: keyboardShown ? (Platform.OS === 'ios' ? 16 : 40) : 0,
+		}),
+		[keyboardShown],
+	);
+
 	const shareToFiles = async (filePath: string): Promise<void> => {
-		const shareOptions = {
+		const shareOptions: ShareOptions = {
 			title: 'Share backup file',
 			failOnCancel: false,
 			saveToFiles: true,
@@ -67,8 +72,7 @@ const ExportToPhone = ({
 	const onCreateBackup = async (): Promise<void> => {
 		setIsCreating(true);
 
-		const { data: pin } = await getKeychainValue({ key: 'pin' });
-		const fileRes = await createBackupFile(pinEnabled ? pin : undefined);
+		const fileRes = await createBackupFile(password);
 
 		if (fileRes.isErr()) {
 			setIsCreating(false);
@@ -91,37 +95,55 @@ const ExportToPhone = ({
 					navigation.navigate('Wallet');
 				}}
 			/>
-			<View style={styles.container}>
+			<KeyboardAvoidingView style={styles.content} behavior="padding">
 				<Text01S color="gray1">
-					If you want, you can export a copy of all metadata to your phone. Be
-					aware, this .zip file will be encrypted with your PIN code if you have
-					set up a PIN code for Bitkit.
+					You can export a copy of your wallet data as a .ZIP file. This file is
+					encrypted with the password you set below.
 				</Text01S>
+				<TextInput
+					style={styles.textField}
+					placeholder="Password"
+					value={password}
+					onChangeText={setPassword}
+					autoCapitalize="none"
+					// @ts-ignore autoCompleteType -> autoComplete in newer version
+					autoCompleteType="off"
+					autoCorrect={false}
+					returnKeyType="done"
+				/>
 
-				<GlowImage image={imageSrc} imageSize={230} glowColor="green" />
-
-				<View style={styles.buttonContainer}>
+				<View style={buttonContainerStyles}>
 					<Button
+						style={styles.button}
 						size="large"
-						disabled={isCreating}
-						text="Export Wallet Data To Phone"
+						disabled={!password || isCreating}
+						text="Export"
 						onPress={onCreateBackup}
 					/>
 				</View>
-				<SafeAreaInsets type="bottom" />
-			</View>
+			</KeyboardAvoidingView>
+			<SafeAreaInsets type="bottom" />
 		</SafeAreaView>
 	);
 };
 
 const styles = StyleSheet.create({
-	container: {
-		flex: 1,
+	content: {
+		flexGrow: 1,
 		paddingHorizontal: 16,
+		paddingBottom: 16,
+	},
+	textField: {
+		marginTop: 32,
 	},
 	buttonContainer: {
+		flexDirection: 'row',
+		justifyContent: 'center',
 		marginTop: 'auto',
-		marginBottom: 16,
+	},
+	button: {
+		flex: 1,
+		marginTop: 16,
 	},
 });
 

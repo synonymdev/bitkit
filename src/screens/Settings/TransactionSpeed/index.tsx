@@ -16,7 +16,7 @@ import type { SettingsScreenProps } from '../../../navigation/types';
 
 const transactionSpeeds = [
 	{
-		label: 'Fast',
+		label: 'Fast (more expensive)',
 		value: ETransactionSpeed.fast,
 		description: '± 10-20 minutes',
 		Icon: SpeedFastIcon,
@@ -30,7 +30,7 @@ const transactionSpeeds = [
 		iconColor: 'brand',
 	},
 	{
-		label: 'Slow',
+		label: 'Slow (cheaper)',
 		value: ETransactionSpeed.slow,
 		description: '± 1-2 hours',
 		Icon: SpeedSlowIcon,
@@ -75,7 +75,7 @@ const TransactionSpeedSettings = ({
 		<SettingsView
 			title="Transaction Speed"
 			listData={currencyListData}
-			showBackNavigation
+			showBackNavigation={true}
 		/>
 	);
 };

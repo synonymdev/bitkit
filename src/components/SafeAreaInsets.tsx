@@ -1,18 +1,16 @@
-import React, { PropsWithChildren, ReactElement } from 'react';
+import React, { ReactElement } from 'react';
+import { View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { View } from '../styles/components';
 
-interface Props extends PropsWithChildren<any> {
-	type: 'top' | 'bottom';
-	maxPaddingTop?: number;
-	maxPaddingBottom?: number;
-}
-
-const SafeAreaInsets = ({
+const SafeAreaInset = ({
 	type,
 	maxPaddingTop,
 	maxPaddingBottom,
-}: Props): ReactElement => {
+}: {
+	type: 'top' | 'bottom';
+	maxPaddingTop?: number;
+	maxPaddingBottom?: number;
+}): ReactElement => {
 	const insets = useSafeAreaInsets();
 
 	let paddingTop = 0;
@@ -26,15 +24,7 @@ const SafeAreaInsets = ({
 		paddingBottom = Math.max(insets.bottom, maxPaddingBottom || 0);
 	}
 
-	return (
-		<View
-			color={'transparent'}
-			style={{
-				paddingTop,
-				paddingBottom,
-			}}
-		/>
-	);
+	return <View style={{ paddingTop, paddingBottom }} />;
 };
 
-export default SafeAreaInsets;
+export default SafeAreaInset;
