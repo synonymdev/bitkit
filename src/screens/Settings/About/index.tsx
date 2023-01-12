@@ -165,9 +165,7 @@ const About = ({
 							}}>
 							Orange Pill
 						</Text01S>{' '}
-						was carefully crafted by:{'\n'}John, Reza, Paulo, Corey, Jason,
-						Gr0kchain, Ar, Ivan, Instabot, Philipp, Miguel, Aldert, Sasha,
-						Auwal, Pavel, and Jan-Willem from Synonym Software Ltd.
+						was carefully crafted by Synonym Software Ltd.
 					</Text01S>
 				</SettingsView>
 				<View style={styles.footer}>
