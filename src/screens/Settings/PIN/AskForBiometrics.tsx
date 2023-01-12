@@ -6,7 +6,7 @@ import React, {
 	useMemo,
 	useCallback,
 } from 'react';
-import { Linking, Platform, StyleSheet, View } from 'react-native';
+import { Linking, Platform, Pressable, StyleSheet, View } from 'react-native';
 import rnBiometrics from 'react-native-biometrics';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -67,6 +67,10 @@ const AskForBiometrics = ({
 		navigation.goBack();
 	};
 
+	const handleTogglePress = (): void => {
+		setShouldEnableBiometrics((prevState) => !prevState);
+	};
+
 	const handleButtonPress = useCallback((): void => {
 		if (!biometryData?.available || !shouldEnableBiometrics) {
 			navigation.navigate('Result', { bio: false });
@@ -124,13 +128,14 @@ const AskForBiometrics = ({
 								<TouchIdIcon />
 							)}
 						</View>
-						<View style={styles.switchContainer}>
+
+						<Pressable style={styles.toggle} onPress={handleTogglePress}>
 							<Text01M>Use {typeName}</Text01M>
 							<Switch
-								onValueChange={(): void => setShouldEnableBiometrics((e) => !e)}
+								onValueChange={handleTogglePress}
 								value={shouldEnableBiometrics}
 							/>
-						</View>
+						</Pressable>
 					</>
 				)}
 
@@ -178,10 +183,10 @@ const styles = StyleSheet.create({
 	glow: {
 		position: 'absolute',
 	},
-	switchContainer: {
+	toggle: {
 		flexDirection: 'row',
+		alignItems: 'center',
 		justifyContent: 'space-between',
-		alighItems: 'center',
 		marginBottom: 32,
 	},
 	buttonContainer: {
