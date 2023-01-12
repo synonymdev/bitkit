@@ -5,7 +5,12 @@ import b4a from 'b4a';
 
 import { View } from '../styles/components';
 import { Caption13M, Text01M } from '../styles/text';
-import { GearIcon, LightBulbIcon, ListIcon, TrashIcon } from '../styles/icons';
+import {
+	SettingsIcon,
+	LightBulbIcon,
+	ListIcon,
+	TrashIcon,
+} from '../styles/icons';
 import { useSlashtagsSDK } from './SlashtagsProvider';
 import { showErrorNotification } from '../utils/notifications';
 import { navigate } from '../navigation/root/RootNavigator';
@@ -116,7 +121,7 @@ const FactsWidget = ({
 						<TrashIcon width={22} />
 					</TouchableOpacity>
 					<TouchableOpacity style={styles.actionButton} onPress={onEdit}>
-						<GearIcon width={22} />
+						<SettingsIcon width={22} />
 					</TouchableOpacity>
 					<TouchableOpacity
 						style={styles.actionButton}

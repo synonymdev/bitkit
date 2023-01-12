@@ -4,7 +4,12 @@ import { SlashURL } from '@synonymdev/slashtags-sdk';
 
 import { View } from '../styles/components';
 import { Caption13M, Text01M } from '../styles/text';
-import { GearIcon, ListIcon, NewspaperIcon, TrashIcon } from '../styles/icons';
+import {
+	SettingsIcon,
+	ListIcon,
+	NewspaperIcon,
+	TrashIcon,
+} from '../styles/icons';
 import { IWidget } from '../store/types/widgets';
 import { useSlashtagsSDK } from './SlashtagsProvider';
 import { showErrorNotification } from '../utils/notifications';
@@ -127,7 +132,7 @@ const HeadlinesWidget = ({
 						<TrashIcon width={22} />
 					</TouchableOpacity>
 					<TouchableOpacity style={styles.actionButton} onPress={onEdit}>
-						<GearIcon width={22} />
+						<SettingsIcon width={22} />
 					</TouchableOpacity>
 					<TouchableOpacity
 						style={styles.actionButton}

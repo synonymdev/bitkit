@@ -4,7 +4,7 @@ import { StyleSheet } from 'react-native';
 import { navigate } from '../navigation/root/RootNavigator';
 import { TouchableOpacity, View } from '../styles/components';
 import { Caption13M, Text01M } from '../styles/text';
-import { GearIcon, ListIcon, TrashIcon } from '../styles/icons';
+import { SettingsIcon, ListIcon, TrashIcon } from '../styles/icons';
 import ProfileImage from './ProfileImage';
 import { IWidget } from '../store/types/widgets';
 import { useFeedWidget } from '../hooks/widgets';
@@ -107,7 +107,7 @@ export const BaseFeedWidget = ({
 						<TrashIcon width={22} />
 					</TouchableOpacity>
 					<TouchableOpacity style={styles.actionButton} onPress={onEdit}>
-						<GearIcon width={22} />
+						<SettingsIcon width={22} />
 					</TouchableOpacity>
 					<TouchableOpacity
 						style={styles.actionButton}

@@ -36,15 +36,8 @@ const Success = ({
 		);
 
 	const onContinue = (): void => {
-		// TODO: transfer and check for success
-		const success = true;
-
-		if (success) {
-			navigation.popToTop();
-			navigation.goBack();
-		} else {
-			navigation.navigate('Interrupted');
-		}
+		navigation.popToTop();
+		navigation.goBack();
 	};
 
 	return (
