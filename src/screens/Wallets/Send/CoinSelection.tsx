@@ -4,7 +4,8 @@ import { useSelector } from 'react-redux';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { BottomSheetScrollView } from '@gorhom/bottom-sheet';
 
-import { Switch, View as ThemedView } from '../../../styles/components';
+import GradientView from '../../../components/GradientView';
+import { Switch } from '../../../styles/components';
 import { Subtitle, Text01M, Text02M, Caption13Up } from '../../../styles/text';
 import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
 import Button from '../../../components/Button';
@@ -153,7 +154,7 @@ const CoinSelection = ({
 	};
 
 	return (
-		<ThemedView color="onSurface" style={styles.container}>
+		<GradientView style={styles.container}>
 			<BottomSheetNavigationHeader title="Coin Selection" />
 			<View style={styles.content}>
 				<BottomSheetScrollView style={styles.scroll}>
@@ -218,7 +219,7 @@ const CoinSelection = ({
 					/>
 				</View>
 			</View>
-		</ThemedView>
+		</GradientView>
 	);
 };
 

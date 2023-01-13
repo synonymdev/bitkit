@@ -201,6 +201,15 @@ const AddressAndAmount = ({
 		}
 	}, [decodedInvoiceAmount, getOutput?.value, lightningInvoice]);
 
+	const onContinue = useCallback((): void => {
+		let view: keyof SendStackParamList = 'ReviewAndSend';
+		// If auto coin-select is disabled and there is no lightning invoice.
+		if (!coinSelectAuto && !transaction?.lightningInvoice) {
+			view = 'CoinSelection';
+		}
+		navigation.navigate(view);
+	}, [coinSelectAuto, transaction?.lightningInvoice, navigation]);
+
 	const handlePaste = useCallback(
 		async (txt) => {
 			let clipboardData = txt;
@@ -214,7 +223,6 @@ const AddressAndAmount = ({
 				});
 				return;
 			}
-			console.log({ clipboardData });
 			const result = await processInputData({
 				data: clipboardData,
 				source: 'sendScanner',
@@ -222,7 +230,6 @@ const AddressAndAmount = ({
 				selectedNetwork,
 				selectedWallet,
 			});
-			console.log({ result });
 			if (result.isErr()) {
 				// Even though we're not able to interpret the data, pass it to the text input for editing.
 				updateBitcoinTransaction({
@@ -233,8 +240,11 @@ const AddressAndAmount = ({
 					},
 				}).then();
 			}
+			if (result.isOk() && result.value.amount) {
+				onContinue();
+			}
 		},
-		[index, value, selectedNetwork, selectedWallet, sdk],
+		[index, value, selectedNetwork, selectedWallet, sdk, onContinue],
 	);
 
 	const handleScan = (): void => {
@@ -528,14 +538,7 @@ const AddressAndAmount = ({
 											size="large"
 											text="Continue"
 											disabled={isInvalid()}
-											onPress={(): void => {
-												let view: keyof SendStackParamList = 'ReviewAndSend';
-												// If auto coin-select is disabled and there is no lightning invoice.
-												if (!coinSelectAuto && !transaction?.lightningInvoice) {
-													view = 'CoinSelection';
-												}
-												navigation.navigate(view);
-											}}
+											onPress={onContinue}
 										/>
 									)}
 								</View>

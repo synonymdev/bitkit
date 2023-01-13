@@ -114,6 +114,12 @@ export const validateAddress = ({
 	}
 };
 
+type ProcessedData = {
+	type: EQRDataType;
+	address?: string;
+	amount?: number;
+};
+
 /**
  * This method processes, decodes and handles all scanned/pasted information provided by the user.
  * @param {string} data
@@ -134,7 +140,7 @@ export const processInputData = async ({
 	selectedNetwork?: TAvailableNetworks;
 	selectedWallet?: TWalletName;
 	sdk?: SDK;
-}): Promise<Result<EQRDataType>> => {
+}): Promise<Result<ProcessedData>> => {
 	data = data.trim();
 	try {
 		if (!selectedNetwork) {
@@ -630,7 +636,7 @@ export const handleData = async ({
 	data: QRData;
 	selectedWallet?: TWalletName;
 	selectedNetwork?: TAvailableNetworks;
-}): Promise<Result<EQRDataType>> => {
+}): Promise<Result<ProcessedData>> => {
 	if (!data) {
 		const message = 'Unable to read or interpret the provided data.';
 		showErrorNotification({
@@ -670,18 +676,18 @@ export const handleData = async ({
 				view: 'addContactModal',
 				data: { isOpen: false },
 			});
-			return ok(EQRDataType.slashtagURL);
+			return ok({ type: EQRDataType.slashtagURL });
 		}
 		case EQRDataType.slashFeedURL: {
 			handleSlashtagURL(data.url as string);
-			return ok(EQRDataType.slashAuthURL);
+			return ok({ type: EQRDataType.slashAuthURL });
 		}
 		case EQRDataType.slashAuthURL: {
 			toggleView({
 				view: 'slashauthModal',
 				data: { isOpen: true, url: data.url },
 			});
-			return ok(EQRDataType.slashAuthURL);
+			return ok({ type: EQRDataType.slashAuthURL });
 		}
 		case EQRDataType.bitcoinAddress: {
 			toggleView({
@@ -709,7 +715,7 @@ export const handleData = async ({
 					slashTagsUrl,
 				},
 			});
-			return ok(EQRDataType.bitcoinAddress);
+			return ok({ type: EQRDataType.bitcoinAddress, address, amount });
 		}
 		case EQRDataType.lightningPaymentRequest: {
 			const decodedInvoice = await decodeLightningInvoice({
@@ -733,7 +739,7 @@ export const handleData = async ({
 					outputs: [
 						{
 							address: '',
-							value: decodedInvoice.value?.amount_satoshis ?? 0,
+							value: decodedInvoice.value.amount_satoshis ?? 0,
 							index: 0,
 						},
 					],
@@ -741,7 +747,11 @@ export const handleData = async ({
 					slashTagsUrl,
 				},
 			});
-			return ok(EQRDataType.lightningPaymentRequest);
+
+			return ok({
+				type: EQRDataType.lightningPaymentRequest,
+				amount: decodedInvoice.value.amount_satoshis,
+			});
 		}
 
 		case EQRDataType.lnurlPay: {
@@ -749,7 +759,7 @@ export const handleData = async ({
 				title: 'Not Supported',
 				message: 'LNURL-Pay is not yet supported.',
 			});
-			return ok(EQRDataType.lnurlPay);
+			return ok({ type: EQRDataType.lnurlPay });
 
 			/*const nodeId = await getNodeId();
 			if (nodeId.isErr()) {
@@ -793,7 +803,7 @@ export const handleData = async ({
 				title: 'Not Supported',
 				message: 'LNURL-Channel is not yet supported.',
 			});
-			return ok(EQRDataType.lnurlChannel);
+			return ok({ type: EQRDataType.lnurlChannel });
 
 			/*const params = data.lnUrlParams! as LNURLChannelParams;
 			const peer = params.uri;
@@ -865,7 +875,7 @@ export const handleData = async ({
 				title: 'Not Supported',
 				message: 'LNURL-Auth is not yet supported.',
 			});
-			return ok(EQRDataType.lnurlAuth);
+			return ok({ type: EQRDataType.lnurlAuth });
 
 			/*const getMnemonicPhraseResponse = await getMnemonicPhrase(selectedWallet);
 			if (getMnemonicPhraseResponse.isErr()) {
@@ -899,7 +909,7 @@ export const handleData = async ({
 				title: 'Not Supported',
 				message: 'LNURL-Withdraw is not yet supported.',
 			});
-			return ok(EQRDataType.lnurlWithdraw);
+			return ok({ type: EQRDataType.lnurlWithdraw });
 
 			/*let params = data.lnUrlParams as LNURLWithdrawParams;
 			const amountSats = params.maxWithdrawable / 1000; //Convert msats to sats.
@@ -997,7 +1007,7 @@ export const handleData = async ({
 				view: 'sendNavigation',
 				data: { isOpen: false },
 			});
-			return ok(EQRDataType.nodeId);
+			return ok({ type: EQRDataType.nodeId });
 		}
 
 		default:
