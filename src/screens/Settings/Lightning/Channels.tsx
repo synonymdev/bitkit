@@ -63,6 +63,7 @@ import {
 } from '../../../store/reselect/lightning';
 import { enableDevOptionsSelector } from '../../../store/reselect/settings';
 import { zipLogs } from '../../../utils/lightning/logs';
+import { SettingsScreenProps } from '../../../navigation/types';
 
 const Channel = memo(
 	({
@@ -120,7 +121,9 @@ const ChannelList = memo(
 	},
 );
 
-const Channels = ({ navigation }): ReactElement => {
+const Channels = ({
+	navigation,
+}: SettingsScreenProps<'Channels'>): ReactElement => {
 	const [closed, setClosed] = useState<boolean>(false);
 	const [payingInvoice, setPayingInvoice] = useState<boolean>(false);
 	const [refreshingLdk, setRefreshingLdk] = useState<boolean>(false);
@@ -166,7 +169,7 @@ const Channels = ({ navigation }): ReactElement => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
-	const onChannelPress = useCallback((channelId) => {
+	const onChannelPress = useCallback((channelId: string) => {
 		navigation.navigate('ChannelDetails', { channelId });
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);

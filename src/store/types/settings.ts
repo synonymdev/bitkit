@@ -47,6 +47,7 @@ export interface ISettings {
 	bitcoinUnit: EBitcoinUnit;
 	balanceUnit: EBalanceUnit;
 	customElectrumPeers: TCustomElectrumPeers;
+	// TODO: type available currencies
 	selectedCurrency: string;
 	selectedLanguage: string;
 	coinSelectAuto: boolean;

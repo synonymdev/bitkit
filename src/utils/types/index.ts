@@ -1,7 +1,7 @@
 import { TAvailableNetworks } from '../networks';
 import {
 	EAddressType,
-	IAddress,
+	IAddresses,
 	IKeyDerivationPath,
 	TKeyDerivationAccountType,
 	TWalletName,
@@ -49,11 +49,11 @@ export interface IGenerateAddresses {
 	selectedNetwork?: TAvailableNetworks;
 	keyDerivationPath?: IKeyDerivationPath;
 	accountType?: TKeyDerivationAccountType;
-	addressType?: string;
+	addressType?: EAddressType;
 	seed?: Buffer;
 }
 
 export interface IGenerateAddressesResponse {
-	addresses: IAddress;
-	changeAddresses: IAddress;
+	addresses: IAddresses;
+	changeAddresses: IAddresses;
 }

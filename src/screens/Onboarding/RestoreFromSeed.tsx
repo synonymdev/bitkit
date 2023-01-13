@@ -7,9 +7,11 @@ import React, {
 } from 'react';
 import {
 	Keyboard,
+	NativeSyntheticEvent,
 	ScrollView,
 	StyleSheet,
 	TextInput,
+	TextInputKeyPressEventData,
 	View,
 } from 'react-native';
 import * as bip39 from 'bip39';
@@ -35,7 +37,7 @@ const RestoreFromSeed = (): ReactElement => {
 	const [seed, setSeed] = useState(Array(numberOfWords).fill(undefined));
 	const [isRestoringWallet, setIsRestoringWallet] = useState(false);
 	const [validWords, setValidWords] = useState(Array(numberOfWords).fill(true));
-	const [focused, setFocused] = useState(null);
+	const [focused, setFocused] = useState<number | null>(null);
 	const [showPassphrase, setShowPassphrase] = useState(false);
 	const [bip39Passphrase, setPassphrase] = useState<string>('');
 	const inputRefs = useRef<Array<TextInput>>([]);
@@ -59,7 +61,7 @@ const RestoreFromSeed = (): ReactElement => {
 		[seed, validWords],
 	);
 
-	const onSeedChange = (index, text): void => {
+	const onSeedChange = (index: number, text: string): void => {
 		text = text.trim();
 		// detect if user pastes whole seed in first input
 		if (text.split(' ').length === numberOfWords) {
@@ -83,11 +85,11 @@ const RestoreFromSeed = (): ReactElement => {
 		};
 	}, []);
 
-	const handleFocus = (index): void => {
+	const handleFocus = (index: number): void => {
 		setFocused(index);
 	};
 
-	const handleBlur = (index): void => {
+	const handleBlur = (index: number): void => {
 		setFocused(null);
 		setValidWords((items) => {
 			items[index] = bip39.wordlists.english.includes(seed[index]);
@@ -128,7 +130,9 @@ const RestoreFromSeed = (): ReactElement => {
 		inputRefs.current[focused + 1].focus();
 	};
 
-	const handleKeyPress = ({ nativeEvent }): void => {
+	const handleKeyPress = ({
+		nativeEvent,
+	}: NativeSyntheticEvent<TextInputKeyPressEventData>): void => {
 		if (nativeEvent.key !== 'Backspace' || !focused || seed[focused]) {
 			return;
 		}
@@ -136,7 +140,7 @@ const RestoreFromSeed = (): ReactElement => {
 		inputRefs.current[focused - 1].focus();
 	};
 
-	const renderInput = (word, index): ReactElement => {
+	const renderInput = (word: string, index: number): ReactElement => {
 		// input is incorrect when it has been touched
 		const invalid = word !== undefined && !validWords[index];
 		return (

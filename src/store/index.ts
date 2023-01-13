@@ -1,4 +1,4 @@
-import { configureStore } from '@reduxjs/toolkit';
+import { configureStore, ConfigureStoreOptions } from '@reduxjs/toolkit';
 import createDebugger from 'redux-flipper';
 import logger from 'redux-logger';
 import autoMergeLevel2 from 'redux-persist/lib/stateReconciler/autoMergeLevel2';
@@ -39,13 +39,13 @@ const __enableMigrationDebug__ = ENABLE_MIGRATION_DEBUG
 	? ENABLE_MIGRATION_DEBUG === 'true'
 	: false;
 
-const middleware = [];
+const middleware: ConfigureStoreOptions['middleware'] = [];
 const devMiddleware = [
 	...(__enableDebugger__ ? [createDebugger()] : []),
 	...(__enableLogger__ ? [logger] : []),
 ];
 
-const enhancers = [];
+const enhancers: ConfigureStoreOptions['enhancers'] = [];
 
 const persistConfig = {
 	key: 'root',

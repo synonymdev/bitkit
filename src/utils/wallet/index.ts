@@ -1,4 +1,5 @@
-import { AddressInfo, getAddressInfo } from 'bitcoin-address-validation';
+import { InteractionManager } from 'react-native';
+import { getAddressInfo } from 'bitcoin-address-validation';
 import { constants } from '@synonymdev/slashtags-sdk';
 import * as bitcoin from 'bitcoinjs-lib';
 import * as bip39 from 'bip39';
@@ -15,12 +16,13 @@ import {
 } from '../../store/shapes/wallet';
 import {
 	EPaymentType,
+	IAddresses,
 	IAddress,
-	IAddressContent,
 	ICreateWallet,
-	IDefaultWallet,
-	IDefaultWalletShape,
+	IWallets,
+	IWallet,
 	IFormattedTransactions,
+	IFormattedTransaction,
 	IKeyDerivationPath,
 	IBitcoinTransactionData,
 	IOutput,
@@ -32,9 +34,10 @@ import {
 	IAddressTypes,
 	IKeyDerivationPathData,
 	ETransactionDefaults,
-	IFormattedTransactionContent,
 	TAssetNetwork,
 	TWalletName,
+	TKeyDerivationCoinType,
+	TKeyDerivationChange,
 } from '../../store/types/wallet';
 import {
 	IGetAddress,
@@ -84,8 +87,7 @@ import {
 import { getDisplayValues } from '../exchange-rate';
 import { IDisplayValues } from '../exchange-rate/types';
 import { IncludeBalances } from '../../hooks/wallet';
-import { EFeeIds } from '../../store/types/fees';
-
+import { EFeeId } from '../../store/types/fees';
 import { invokeNodeJsMethod } from '../nodejs-mobile';
 import { DefaultNodeJsMethodsShape } from '../nodejs-mobile/shapes';
 import { refreshLdk } from '../lightning';
@@ -97,7 +99,7 @@ import {
 import { moveMetaIncTxTags } from '../../store/actions/metadata';
 import { refreshOrdersList } from '../../store/actions/blocktank';
 import { IDefaultLightningShape } from '../../store/types/lightning';
-import { InteractionManager } from 'react-native';
+import { objectKeys } from '../objectKeys';
 
 export const refreshWallet = async ({
 	onchain = true,
@@ -221,8 +223,8 @@ export const generateAddresses = async ({
 		const { type } = addressTypes[addressType];
 
 		//Generate Addresses
-		let addresses: IAddress = {};
-		let changeAddresses: IAddress = {};
+		let addresses = {} as IAddresses;
+		let changeAddresses = {} as IAddresses;
 		let addressArray = new Array(addressAmount).fill(null);
 		let changeAddressArray = new Array(changeAddressAmount).fill(null);
 		await Promise.all(
@@ -265,7 +267,7 @@ export const generateAddresses = async ({
 			}),
 		);
 		await Promise.all(
-			changeAddressArray.map(async (item, i) => {
+			changeAddressArray.map(async (_item, i) => {
 				try {
 					const index = i + changeAddressIndex;
 					const changeAddressPath = formatKeyDerivationPath({
@@ -311,13 +313,13 @@ export const generateAddresses = async ({
 
 /**
  * Returns private key for the provided address data.
- * @param {IAddressContent} addressData
+ * @param {IAddress} addressData
  * @return {Promise<Result<string>>}
  */
 export const getPrivateKey = async ({
 	addressData,
 }: {
-	addressData: IAddressContent;
+	addressData: IAddress;
 }): Promise<Result<string>> => {
 	try {
 		if (!addressData) {
@@ -365,10 +367,11 @@ const setKeychainSlashtagsPrimaryKey = async (seed: Buffer): Promise<void> => {
 	});
 };
 
-export const seedHash = (seed: Buffer): string =>
-	bitcoin.crypto
+export const seedHash = (seed: Buffer): string => {
+	return bitcoin.crypto
 		.sha256(Buffer.concat([BITKIT_WALLET_SEED_HASH_PREFIX, seed]))
 		.toString('hex');
+};
 
 export const keyDerivationAccountTypes: {
 	onchain: TKeyDerivationAccount;
@@ -405,7 +408,7 @@ export const formatKeyDerivationPath = ({
 	addressIndex = '0',
 }: {
 	path: IKeyDerivationPath | string;
-	purpose?: TKeyDerivationPurpose | string;
+	purpose?: TKeyDerivationPurpose;
 	selectedNetwork?: TAvailableNetworks;
 	accountType?: TKeyDerivationAccountType;
 	changeAddress?: boolean;
@@ -762,10 +765,10 @@ export const getAssetTicker = (asset = 'bitcoin'): string => {
 
 /**
  * This method will compare a set of specified addresses to the currently stored addresses and remove any duplicates.
- * @param addresses
- * @param changeAddresses
- * @param selectedWallet
- * @param selectedNetwork
+ * @param {IAddresses} addresses
+ * @param {IAddresses} changeAddresses
+ * @param {selectedWallet} selectedWallet
+ * @param {selectedNetwork} selectedNetwork
  */
 export const removeDuplicateAddresses = async ({
 	addresses = {},
@@ -773,8 +776,8 @@ export const removeDuplicateAddresses = async ({
 	selectedWallet,
 	selectedNetwork,
 }: {
-	addresses?: IAddress | {};
-	changeAddresses?: IAddress | {};
+	addresses?: IAddresses;
+	changeAddresses?: IAddresses;
 	selectedWallet?: TWalletName;
 	selectedNetwork?: TAvailableNetworks;
 }): Promise<Result<IGenerateAddressesResponse>> => {
@@ -789,32 +792,33 @@ export const removeDuplicateAddresses = async ({
 			selectedWallet,
 			selectedNetwork,
 		});
-		const currentAddresses = currentWallet.addresses[selectedNetwork];
-		const currentChangeAddresses =
+		const currentAddressTypeContent = currentWallet.addresses[selectedNetwork];
+		const currentChangeAddressTypeContent =
 			currentWallet.changeAddresses[selectedNetwork];
 
 		//Remove any duplicate addresses.
 		await Promise.all([
-			Object.keys(currentAddresses).map(async (key) => {
+			objectKeys(currentAddressTypeContent).map(async (addressType) => {
 				await Promise.all(
-					Object.keys(addresses).map((scriptHash) => {
-						if (scriptHash in currentAddresses[key]) {
+					objectKeys(addresses).map((scriptHash) => {
+						if (scriptHash in currentAddressTypeContent[addressType]) {
 							delete addresses[scriptHash];
 						}
 					}),
 				);
 			}),
 
-			Object.keys(currentChangeAddresses).map(async (key) => {
+			objectKeys(currentChangeAddressTypeContent).map(async (addressType) => {
 				await Promise.all(
-					Object.keys(changeAddresses).map((scriptHash) => {
-						if (scriptHash in currentChangeAddresses[key]) {
+					objectKeys(changeAddresses).map((scriptHash) => {
+						if (scriptHash in currentChangeAddressTypeContent[addressType]) {
 							delete changeAddresses[scriptHash];
 						}
 					}),
 				);
 			}),
 		]);
+
 		return ok({ addresses, changeAddresses });
 	} catch (e) {
 		return err(e);
@@ -824,17 +828,20 @@ export const removeDuplicateAddresses = async ({
 interface ITxHashes extends TTxResult {
 	scriptHash: string;
 }
+
 interface IGetNextAvailableAddressResponse {
-	addressIndex: IAddressContent;
-	lastUsedAddressIndex: IAddressContent;
-	changeAddressIndex: IAddressContent;
-	lastUsedChangeAddressIndex: IAddressContent;
+	addressIndex: IAddress;
+	lastUsedAddressIndex: IAddress;
+	changeAddressIndex: IAddress;
+	lastUsedChangeAddressIndex: IAddress;
 }
+
 interface IGetNextAvailableAddress {
 	selectedWallet?: TWalletName;
 	selectedNetwork?: TAvailableNetworks;
 	addressType?: EAddressType;
 }
+
 export const getNextAvailableAddress = async ({
 	selectedWallet,
 	selectedNetwork,
@@ -919,9 +926,8 @@ export const getNextAvailableAddress = async ({
 					generatedChangeAddresses.value.changeAddresses[key];
 			}
 
-			let addresses: IAddress | {} =
-				currentWallet.addresses[selectedNetwork][addressType];
-			let changeAddresses: IAddress | {} =
+			let addresses = currentWallet.addresses[selectedNetwork][addressType];
+			let changeAddresses =
 				currentWallet.changeAddresses[selectedNetwork][addressType];
 
 			//How many addresses/changeAddresses are currently stored
@@ -971,13 +977,13 @@ export const getNextAvailableAddress = async ({
 			}
 
 			//Store all addresses that are to be searched and used in this method.
-			let allAddresses: IAddressContent[] = Object.values(addresses).filter(
+			let allAddresses: IAddress[] = Object.values(addresses).filter(
 				({ index }) => index >= addressIndex.index,
 			);
 			let addressesToScan = allAddresses;
 
 			//Store all change addresses that are to be searched and used in this method.
-			let allChangeAddresses: IAddressContent[] = Object.values(
+			let allChangeAddresses: IAddress[] = Object.values(
 				changeAddresses,
 			).filter(({ index }) => index >= changeAddressIndex.index);
 			let changeAddressesToScan = allChangeAddresses;
@@ -1177,11 +1183,12 @@ export const getNextAvailableAddress = async ({
 };
 
 interface IIndexes {
-	addressIndex: IAddressContent;
-	changeAddressIndex: IAddressContent;
+	addressIndex: IAddress;
+	changeAddressIndex: IAddress;
 	foundAddressIndex: boolean;
 	foundChangeAddressIndex: boolean;
 }
+
 export const getHighestUsedIndexFromTxHashes = async ({
 	txHashes = [],
 	addresses = {},
@@ -1190,10 +1197,10 @@ export const getHighestUsedIndexFromTxHashes = async ({
 	changeAddressIndex,
 }: {
 	txHashes: ITxHashes[];
-	addresses: IAddress | {};
-	changeAddresses: IAddress | {};
-	addressIndex: IAddressContent;
-	changeAddressIndex: IAddressContent;
+	addresses: IAddresses;
+	changeAddresses: IAddresses;
+	addressIndex: IAddress;
+	changeAddressIndex: IAddress;
 }): Promise<Result<IIndexes>> => {
 	try {
 		let foundAddressIndex = false;
@@ -1238,24 +1245,23 @@ export const getHighestStoredAddressIndex = ({
 }: {
 	selectedWallet: TWalletName;
 	selectedNetwork: TAvailableNetworks;
-	addressType: string;
+	addressType: EAddressType;
 }): Result<{
-	addressIndex: IAddressContent;
-	changeAddressIndex: IAddressContent;
+	addressIndex: IAddress;
+	changeAddressIndex: IAddress;
 }> => {
 	try {
 		const { currentWallet } = getCurrentWallet({
 			selectedWallet,
 			selectedNetwork,
 		});
-		const addresses: IAddress =
-			currentWallet.addresses[selectedNetwork][addressType];
-		const changeAddresses: IAddress =
+		const addresses = currentWallet.addresses[selectedNetwork][addressType];
+		const changeAddresses =
 			currentWallet.changeAddresses[selectedNetwork][addressType];
 
-		const addressIndex = Object.values(addresses).reduce((prev, current) =>
-			prev.index > current.index ? prev : current,
-		);
+		const addressIndex = Object.values(addresses).reduce((prev, current) => {
+			return prev.index > current.index ? prev : current;
+		});
 
 		const changeAddressIndex = Object.values(changeAddresses).reduce(
 			(prev, current) => (prev.index > current.index ? prev : current),
@@ -1313,7 +1319,7 @@ export const getSelectedWallet = (): TWalletName => {
  * Returns all state data for the currently selected wallet.
  * @param {TAvailableNetworks} [selectedNetwork]
  * @param {TWalletName} [selectedWallet]
- * @return {{ currentWallet: IDefaultWalletShape, currentLightningNode: IDefaultLightningShape, selectedWallet: TWalletName, selectedNetwork: TAvailableNetworks }}
+ * @return {{ currentWallet: IWallet, currentLightningNode: IDefaultLightningShape, selectedWallet: TWalletName, selectedNetwork: TAvailableNetworks }}
  */
 export const getCurrentWallet = ({
 	selectedNetwork,
@@ -1322,7 +1328,7 @@ export const getCurrentWallet = ({
 	selectedNetwork?: TAvailableNetworks;
 	selectedWallet?: TWalletName;
 }): {
-	currentWallet: IDefaultWalletShape;
+	currentWallet: IWallet;
 	currentLightningNode: IDefaultLightningShape;
 	selectedNetwork: TAvailableNetworks;
 	selectedWallet: TWalletName;
@@ -1349,7 +1355,7 @@ export const getOnChainTransactions = ({
 	selectedWallet,
 	selectedNetwork,
 }: {
-	selectedWallet: string;
+	selectedWallet: TWalletName;
 	selectedNetwork: TAvailableNetworks;
 }): IFormattedTransactions => {
 	if (!selectedWallet) {
@@ -1368,7 +1374,7 @@ export const getOnChainTransactions = ({
  * @param {string} txid
  * @param {TWalletName} [selectedWallet]
  * @param {TAvailableNetworks} [selectedNetwork]
- * @return {Result<IFormattedTransactionContent>}
+ * @return {Result<IFormattedTransaction>}
  */
 export const getTransactionById = ({
 	txid,
@@ -1378,7 +1384,7 @@ export const getTransactionById = ({
 	txid: string;
 	selectedWallet?: TWalletName;
 	selectedNetwork?: TAvailableNetworks;
-}): Result<IFormattedTransactionContent> => {
+}): Result<IFormattedTransaction> => {
 	if (!selectedWallet) {
 		selectedWallet = getSelectedWallet();
 	}
@@ -1423,18 +1429,25 @@ export interface ITxHash {
 	tx_hash: string;
 }
 
+type InputData = {
+	[key: string]: {
+		addresses: string[];
+		value: number;
+	};
+};
+
 export const getInputData = async ({
 	selectedNetwork,
 	inputs = [],
 }: {
 	inputs: { tx_hash: string; vout: number }[];
 	selectedNetwork?: TAvailableNetworks;
-}): Promise<Result<{ [key: string]: { addresses: []; value: number } }>> => {
+}): Promise<Result<InputData>> => {
 	try {
 		if (!selectedNetwork) {
 			selectedNetwork = getSelectedNetwork();
 		}
-		const inputData = {};
+		const inputData: InputData = {};
 
 		for (let i = 0; i < inputs.length; i += CHUNK_LIMIT) {
 			const chunk = inputs.slice(i, i + CHUNK_LIMIT);
@@ -1448,9 +1461,11 @@ export const getInputData = async ({
 			}
 			getTransactionsResponse.value.data.map(({ data, result }) => {
 				const vout = result.vout[data.vout];
-				const addresses = vout.scriptPubKey?.addresses
-					? vout.scriptPubKey?.addresses
-					: [vout.scriptPubKey.address];
+				const addresses = vout.scriptPubKey.addresses
+					? vout.scriptPubKey.addresses
+					: vout.scriptPubKey.address
+					? [vout.scriptPubKey.address]
+					: [];
 				const value = vout.value;
 				const key = data.tx_hash;
 				inputData[key] = { addresses, value };
@@ -1502,24 +1517,22 @@ export const formatTransactions = async ({
 	if (inputDataResponse.isErr()) {
 		return err(inputDataResponse.error.message);
 	}
-	const addressTypes = getAddressTypes();
-
+	const addressTypes = objectKeys(getAddressTypes());
 	const inputData = inputDataResponse.value;
-
 	const currentAddresses = currentWallet.addresses[selectedNetwork];
 	const currentChangeAddresses = currentWallet.changeAddresses[selectedNetwork];
 
-	let addresses = {};
-	let changeAddresses = {};
+	let addresses = {} as IAddresses;
+	let changeAddresses = {} as IAddresses;
 
 	await Promise.all([
-		Object.keys(addressTypes).map((addressType) => {
+		addressTypes.map((addressType) => {
 			// Check if addresses of this type have been generated. If not, skip.
 			if (Object.keys(currentAddresses[addressType])?.length > 0) {
 				addresses = { ...addresses, ...currentAddresses[addressType] };
 			}
 		}),
-		Object.keys(addressTypes).map((addressType) => {
+		addressTypes.map((addressType) => {
 			// Check if change addresses of this type have been generated. If not, skip.
 			if (Object.keys(currentChangeAddresses[addressType])?.length > 0) {
 				changeAddresses = {
@@ -1529,6 +1542,7 @@ export const formatTransactions = async ({
 			}
 		}),
 	]);
+
 	const addressScriptHashes = Object.keys(addresses);
 	const changeAddressScriptHashes = Object.keys(changeAddresses);
 	const [addressArray, changeAddressArray] = await Promise.all([
@@ -1577,9 +1591,11 @@ export const formatTransactions = async ({
 		//Iterate over each output
 		const vout = result?.vout || [];
 		vout.map(({ scriptPubKey, value }) => {
-			const _addresses = scriptPubKey?.addresses
+			const _addresses = scriptPubKey.addresses
 				? scriptPubKey.addresses
-				: [scriptPubKey.address];
+				: scriptPubKey.address
+				? [scriptPubKey.address]
+				: [];
 			totalOutputValue = totalOutputValue + value;
 			Array.isArray(_addresses) &&
 				_addresses.map((address) => {
@@ -1747,15 +1763,16 @@ export const getRbfData = async ({
 	const txData = txResponse.value.data;
 
 	const wallet = getWalletStore();
+	const addressTypes = objectKeys(getAddressTypes());
 	const addresses = wallet.wallets[selectedWallet].addresses[selectedNetwork];
 	const changeAddresses =
 		wallet.wallets[selectedWallet].changeAddresses[selectedNetwork];
 
-	const allAddressTypes = Object.keys(getAddressTypes());
-	let allAddresses = {};
-	let allChangeAddresses = {};
+	let allAddresses = {} as IAddresses;
+	let allChangeAddresses = {} as IAddresses;
+
 	await Promise.all(
-		allAddressTypes.map((addressType) => {
+		addressTypes.map((addressType) => {
 			allAddresses = {
 				...allAddresses,
 				...addresses[addressType],
@@ -1767,6 +1784,7 @@ export const getRbfData = async ({
 			};
 		}),
 	);
+
 	let changeAddressData: IOutput = {
 		address: '',
 		value: 0,
@@ -1917,6 +1935,7 @@ export const getRbfData = async ({
 
 /**
  * Converts IRbfData to IBitcoinTransactionData.
+ * CURRENTLY NOT USED
  * @param data
  */
 export const formatRbfData = async (
@@ -1927,7 +1946,7 @@ export const formatRbfData = async (
 
 	let changeAddress: undefined | string;
 	let satsPerByte = 1;
-	let selectedFeeId = EFeeIds.none;
+	let selectedFeeId = EFeeId.none;
 	let transactionSize = ETransactionDefaults.baseTransactionSize; //In bytes (250 is about normal)
 	let label = ''; // User set label for a given transaction.
 
@@ -1937,16 +1956,15 @@ export const formatRbfData = async (
 	});
 	const changeAddressesObj = currentWallet.changeAddresses[selectedNetwork];
 	const changeAddresses = Object.values(changeAddressesObj).map(
-		({ address }) => address,
+		({ address }) => address.address,
 	);
+
 	let newOutputs = outputs;
 	await Promise.all(
 		outputs.map(({ address }, index) => {
 			if (address && changeAddresses.includes(address)) {
-				if (address) {
-					changeAddress = address;
-					newOutputs.splice(index, 1);
-				}
+				changeAddress = address;
+				newOutputs.splice(index, 1);
 			}
 		}),
 	);
@@ -1987,7 +2005,7 @@ export const formatRbfData = async (
  * @param {string} [mnemonic]
  * @param {string} [bip39Passphrase]
  * @param {EAddressType} [addressTypes]
- * @return {Promise<Result<IDefaultWallet>>}
+ * @return {Promise<Result<IWallets>>}
  */
 export const createDefaultWallet = async ({
 	walletName = defaultWalletShape.id,
@@ -1997,7 +2015,7 @@ export const createDefaultWallet = async ({
 	bip39Passphrase = '',
 	addressTypes,
 	selectedNetwork,
-}: ICreateWallet): Promise<Result<IDefaultWallet>> => {
+}: ICreateWallet): Promise<Result<IWallets>> => {
 	try {
 		if (!addressTypes) {
 			// if nothing else specified use only Native Segwit by default
@@ -2072,7 +2090,7 @@ export const createDefaultWallet = async ({
 				changeAddressesObj[selectedNetwork][type] = changeAddresses;
 			}),
 		]);
-		const payload: IDefaultWallet = {
+		const payload: IWallets = {
 			[walletName]: {
 				...defaultWalletShape,
 				seedHash: seedHash(seed),
@@ -2199,13 +2217,14 @@ export const autoCoinSelect = async ({
 		}
 
 		// Get all input and output address types for fee calculation.
-		let addressTypes: IAddressIOTypes | { inputs: {}; outputs: {} } = {
+		const addressTypes = {
 			inputs: {},
 			outputs: {},
-		};
+		} as IAddressIOTypes;
+
 		await Promise.all([
 			newInputs.map(({ address }) => {
-				const validateResponse: AddressInfo = getAddressInfo(address);
+				const validateResponse = getAddressInfo(address);
 				if (!validateResponse) {
 					return;
 				}
@@ -2281,7 +2300,7 @@ export const getKeyDerivationPathString = ({
 	selectedNetwork,
 }: {
 	path: IKeyDerivationPath;
-	purpose?: TKeyDerivationPurpose | string;
+	purpose?: TKeyDerivationPurpose;
 	accountType?: TKeyDerivationAccountType;
 	changeAddress?: boolean;
 	addressIndex?: string;
@@ -2334,7 +2353,7 @@ export const getKeyDerivationPathObject = ({
 	selectedNetwork,
 }: {
 	path: string;
-	purpose?: TKeyDerivationPurpose | string;
+	purpose?: TKeyDerivationPurpose;
 	accountType?: TKeyDerivationAccountType;
 	changeAddress?: boolean;
 	addressIndex?: string;
@@ -2344,22 +2363,22 @@ export const getKeyDerivationPathObject = ({
 		const parsedPath = path.replace(/'/g, '').split('/');
 
 		if (!purpose) {
-			purpose = parsedPath[1];
+			purpose = parsedPath[1] as TKeyDerivationPurpose;
 		}
 
-		let coinType = parsedPath[2];
+		let coinType = parsedPath[2] as TKeyDerivationCoinType;
 		if (selectedNetwork) {
 			coinType = selectedNetwork.toLocaleLowerCase().includes('testnet')
 				? '1'
 				: '0';
 		}
 
-		let account = parsedPath[3];
+		let account = parsedPath[3] as TKeyDerivationAccount;
 		if (accountType) {
 			account = getKeyDerivationAccount(accountType);
 		}
 
-		let change = parsedPath[4];
+		let change = parsedPath[4] as TKeyDerivationChange;
 		if (changeAddress !== undefined) {
 			change = changeAddress ? '1' : '0';
 		}
@@ -2470,7 +2489,7 @@ export const getReceiveAddress = ({
 		if (receiveAddress) {
 			return ok(receiveAddress);
 		}
-		const addresses: IAddress = wallet.addresses[selectedNetwork][addressType];
+		const addresses = wallet?.addresses[selectedNetwork][addressType];
 
 		// Check if addresses were generated, but the index has not been set yet.
 		if (
@@ -2573,9 +2592,10 @@ export const getBalance = ({
 		const openChannelIds =
 			currentLightningNode?.openChannelIds[selectedNetwork];
 		const channels = currentLightningNode?.channels[selectedNetwork];
-		const openChannels = Object.values(channels).filter((channel) =>
-			openChannelIds.includes(channel.channel_id),
-		);
+		const openChannels = Object.values(channels).filter((channel) => {
+			return openChannelIds.includes(channel.channel_id);
+		});
+
 		balance = Object.values(openChannels).reduce(
 			(previousValue, currentChannel) => {
 				if (currentChannel?.is_channel_ready) {

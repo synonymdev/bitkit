@@ -11,7 +11,9 @@ import { ignoreAppUpdate } from '../../store/actions/user';
 import { toggleView } from '../../store/actions/ui';
 import GlowImage from '../../components/GlowImage';
 import { openURL } from '../../utils/helpers';
+import { objectKeys } from '../../utils/objectKeys';
 import { useAppSelector } from '../../hooks/redux';
+import { ignoreAppUpdateTimestampSelector } from '../../store/reselect/user';
 import {
 	availableUpdateTypeSelector,
 	viewControllersSelector,
@@ -20,7 +22,6 @@ import {
 	useBottomSheetBackPress,
 	useSnapPoints,
 } from '../../hooks/bottomSheet';
-import { ignoreAppUpdateTimestampSelector } from '../../store/reselect/user';
 
 const imageSrc = require('../../assets/illustrations/bitkit-logo.png');
 
@@ -53,7 +54,8 @@ const AppUpdatePrompt = ({ enabled }: { enabled: boolean }): ReactElement => {
 	);
 
 	const anyBottomSheetIsOpen = useMemo(() => {
-		return Object.keys(viewControllers)
+		const viewControllerKeys = objectKeys(viewControllers);
+		return viewControllerKeys
 			.filter((view) => view !== 'appUpdatePrompt')
 			.some((view) => viewControllers[view].isOpen);
 	}, [viewControllers]);

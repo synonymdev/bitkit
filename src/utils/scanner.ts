@@ -6,6 +6,7 @@ import bip21 from 'bip21';
 import { address as bitcoinJSAddress } from 'bitcoinjs-lib';
 import { err, ok, Result } from '@synonymdev/result';
 import SDK from '@synonymdev/slashtags-sdk';
+import { TInvoice } from '@synonymdev/react-native-ldk';
 import {
 	getLNURLParams,
 	LNURLAuthParams,
@@ -40,7 +41,6 @@ import {
 import { getSlashPayConfig } from './slashtags';
 import { savePeer } from '../store/actions/lightning';
 import { TWalletName } from '../store/types/wallet';
-import { TInvoice } from '@synonymdev/react-native-ldk';
 
 const availableNetworksList = availableNetworks();
 
@@ -350,7 +350,11 @@ export const decodeQRData = async (
 			error += `${onChainParseResponse.error.message} `;
 		}
 
-		const { options } = bip21.decode(data);
+		// types are wrong for package 'bip21'
+		const { options } = bip21.decode(data) as {
+			address: string;
+			options: { [key: string]: string };
+		};
 
 		//If a lightning invoice was passed as a param
 		if (options.lightning) {

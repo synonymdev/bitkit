@@ -4,12 +4,12 @@ import { LayoutAnimation, StyleSheet } from 'react-native';
 import { getTransactionOutputValue } from '../../../utils/wallet/transactions';
 import { useSelector } from 'react-redux';
 import { View } from '../../../styles/components';
-import { useTransactionDetails } from '../../../hooks/transaction';
 import useDisplayValues from '../../../hooks/displayValues';
 import { ETransactionDefaults } from '../../../store/types/wallet';
 import {
 	selectedNetworkSelector,
 	selectedWalletSelector,
+	transactionSelector,
 } from '../../../store/reselect/wallet';
 
 const FeeSummary = ({
@@ -21,8 +21,7 @@ const FeeSummary = ({
 }): ReactElement => {
 	const selectedWallet = useSelector(selectedWalletSelector);
 	const selectedNetwork = useSelector(selectedNetworkSelector);
-
-	const transaction = useTransactionDetails();
+	const transaction = useSelector(transactionSelector);
 
 	const totalFee = transaction?.fee || ETransactionDefaults.recommendedBaseFee;
 

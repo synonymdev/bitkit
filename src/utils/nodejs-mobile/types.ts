@@ -1,6 +1,6 @@
 import { TAvailableNetworks } from '../networks';
 
-export enum ENodeJsMethods {
+export enum ENodeJsMethod {
 	setup = 'setup',
 	generateMnemonic = 'generateMnemonic',
 	getPrivateKey = 'getPrivateKey',
@@ -21,7 +21,7 @@ export interface IInvokeNodeJsMethod {
 
 export interface INodeJsSetup {
 	id: string;
-	method: ENodeJsMethods.setup;
+	method: ENodeJsMethod.setup;
 	data: {
 		mnemonic: string;
 		bip39Passphrase?: string;
@@ -31,7 +31,7 @@ export interface INodeJsSetup {
 
 export interface INodeJsGenerateMnemonic {
 	id: string;
-	method: ENodeJsMethods.generateMnemonic;
+	method: ENodeJsMethod.generateMnemonic;
 	data: {
 		strength?: number;
 	};
@@ -39,7 +39,7 @@ export interface INodeJsGenerateMnemonic {
 
 export interface INodeJsGetPrivateKey {
 	id: string;
-	method: ENodeJsMethods.getPrivateKey;
+	method: ENodeJsMethod.getPrivateKey;
 	data: {
 		mnemonic: string;
 		bip39Passphrase: string;
@@ -50,7 +50,7 @@ export interface INodeJsGetPrivateKey {
 
 export interface INodeJsGetScriptHash {
 	id: string;
-	method: ENodeJsMethods.getScriptHash;
+	method: ENodeJsMethod.getScriptHash;
 	data: {
 		address: string;
 		selectedNetwork?: TAvailableNetworks;
@@ -59,7 +59,7 @@ export interface INodeJsGetScriptHash {
 
 export interface INodeJsGetAddress {
 	id: string;
-	method: ENodeJsMethods.getAddress;
+	method: ENodeJsMethod.getAddress;
 	data: {
 		path: string;
 		type: string;

@@ -42,7 +42,7 @@ export const zipLogs = async (limit = 10): Promise<Result<string>> => {
  * @param path
  * @returns {Promise<void>}
  */
-const rm = async (path): Promise<void> => {
+const rm = async (path: string): Promise<void> => {
 	try {
 		if (await exists(path)) {
 			await unlink(path);

@@ -56,7 +56,7 @@ const QuickSetup = ({
 	const spendingPercentage = Math.round((spendingAmount / totalBalance) * 100);
 	const savingsPercentage = Math.round((savingsAmount / totalBalance) * 100);
 
-	const handleChange = useCallback((v) => {
+	const handleChange = useCallback((v: number) => {
 		setSpendingAmount(Math.round(v));
 	}, []);
 

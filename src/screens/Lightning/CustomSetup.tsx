@@ -33,6 +33,7 @@ import {
 	getFiatDisplayValues,
 } from '../../utils/exchange-rate';
 import { btcToSats } from '../../utils/helpers';
+import { objectKeys } from '../../utils/objectKeys';
 import { showErrorNotification } from '../../utils/notifications';
 import { startChannelPurchase } from '../../store/actions/blocktank';
 import { convertCurrency } from '../../utils/blocktank';
@@ -50,11 +51,12 @@ import {
 	selectedWalletSelector,
 } from '../../store/reselect/wallet';
 
-type TPackages = {
-	id: string;
+export type TPackages = {
+	id: 'small' | 'medium' | 'big';
 	fiatAmount: number;
 	img: any;
 };
+
 const PACKAGES_SPENDING: TPackages[] = [
 	{
 		id: 'small',
@@ -204,7 +206,7 @@ const CustomSetup = ({
 				rates[id] = fiatToSats(convertedAmount.fiatValue);
 				availPackages.push({ ...p, fiatAmount: convertedAmount.fiatValue });
 			} else {
-				const key = Object.keys(rates)[i];
+				const key = objectKeys(rates)[i];
 				rates[key] = fiatToSats(spendableFiatBalance);
 				const convertedAmount = convertCurrency({
 					amount: PACKAGES_SPENDING[i].fiatAmount,
@@ -311,7 +313,7 @@ const CustomSetup = ({
 		}
 	}, [keybrd, keybrdWasEverOpened, spending]);
 
-	const handleBarrelPress = (id): void => {
+	const handleBarrelPress = (id: TPackages['id']): void => {
 		if (spending) {
 			setSpendingAmount(spendPkgRates[id]);
 		} else {

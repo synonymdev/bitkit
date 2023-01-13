@@ -41,7 +41,7 @@ const BitcoinNetworkSelection = ({
 							// Wipe existing activity
 							resetActivityStore();
 							// Switch to new network.
-							await updateWallet({ selectedNetwork: network });
+							updateWallet({ selectedNetwork: network });
 							// Grab the selectedWallet.
 							const { selectedWallet } = getCurrentWallet({
 								selectedNetwork: network,

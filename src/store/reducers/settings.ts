@@ -1,12 +1,13 @@
 import actions from '../actions/actions';
 import { ISettings } from '../types/settings';
 import { defaultSettingsShape } from '../shapes/settings';
+import { EAvailableNetworks } from '../../utils/networks';
 
 const settings = (
 	state: ISettings = defaultSettingsShape,
 	action,
 ): ISettings => {
-	let selectedNetwork = 'bitcoin';
+	let selectedNetwork = EAvailableNetworks.bitcoin;
 	if (action.payload?.selectedNetwork) {
 		selectedNetwork = action.payload.selectedNetwork;
 	}

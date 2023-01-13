@@ -13,8 +13,11 @@ import SafeAreaInsets from '../../../components/SafeAreaInsets';
 import { getNodeId } from '../../../utils/lightning';
 import { showSuccessNotification } from '../../../utils/notifications';
 import { selectedNetworkSelector } from '../../../store/reselect/wallet';
+import { SettingsScreenProps } from '../../../navigation/types';
 
-const LightningNodeInfo = ({ navigation }): ReactElement => {
+const LightningNodeInfo = ({
+	navigation,
+}: SettingsScreenProps<'LightningNodeInfo'>): ReactElement => {
 	const [nodeId, setNodeId] = useState('');
 	const [error, setError] = useState('');
 	const selectedNetwork = useSelector(selectedNetworkSelector);

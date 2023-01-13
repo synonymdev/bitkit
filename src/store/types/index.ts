@@ -1,6 +1,6 @@
 import { IUi } from './ui';
 import { IUser } from './user';
-import { IWallet } from './wallet';
+import { IWalletStore } from './wallet';
 import { IReceive } from './receive';
 import { ISettings } from './settings';
 import { ILightning } from './lightning';
@@ -11,7 +11,7 @@ import { ITodos } from './todos';
 import { IFees } from './fees';
 import { IMetadata } from './metadata';
 import { ISlashtags } from './slashtags';
-import { IWidgets } from './widgets';
+import { IWidgetsStore } from './widgets';
 
 export enum EStore {
 	ui = 'ui',
@@ -30,10 +30,10 @@ export enum EStore {
 	widgets = 'widgets',
 }
 
-export default interface Store {
+interface Store {
 	[EStore.ui]: IUi;
 	[EStore.user]: IUser;
-	[EStore.wallet]: IWallet;
+	[EStore.wallet]: IWalletStore;
 	[EStore.receive]: IReceive;
 	[EStore.settings]: ISettings;
 	[EStore.lightning]: ILightning;
@@ -44,5 +44,7 @@ export default interface Store {
 	[EStore.fees]: IFees;
 	[EStore.metadata]: IMetadata;
 	[EStore.slashtags]: ISlashtags;
-	[EStore.widgets]: IWidgets;
+	[EStore.widgets]: IWidgetsStore;
 }
+
+export default Store;

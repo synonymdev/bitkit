@@ -40,8 +40,8 @@ const SettingsView = ({
 		>();
 
 	const [search, setSearch] = useState('');
-	const filteredListData = useMemo(
-		() =>
+	const filteredListData = useMemo(() => {
+		return (
 			listData?.map((section) => {
 				const filteredSectionData = section.data.filter((item) => {
 					return item.title.toLowerCase().includes(search.toLowerCase());
@@ -50,9 +50,9 @@ const SettingsView = ({
 				const filteredSection = filteredSectionData.length > 0 ? section : null;
 
 				return { ...filteredSection, data: filteredSectionData };
-			}) ?? [],
-		[listData, search],
-	);
+			}) ?? []
+		);
+	}, [listData, search]);
 
 	return (
 		<ThemedView

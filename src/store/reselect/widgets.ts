@@ -1,15 +1,15 @@
 import { createSelector } from '@reduxjs/toolkit';
 import Store from '../types';
-import { IWidget, IWidgets } from '../types/widgets';
+import { IWidgetsStore, IWidget, IWidgets } from '../types/widgets';
 
-export const widgetsState = (state: Store): IWidgets => state.widgets;
+export const widgetsState = (state: Store): IWidgetsStore => state.widgets;
 
 /**
  * Returns all widgets.
  */
 export const widgetsSelector = createSelector(
 	[widgetsState],
-	(widgets): { [url: string]: IWidget | undefined } => widgets.widgets,
+	(widgets): IWidgets => widgets.widgets,
 );
 
 /**
@@ -17,7 +17,7 @@ export const widgetsSelector = createSelector(
  */
 export const widgetSelector = createSelector(
 	[widgetsState, (_widgets, url: string): string => url],
-	(widgets, url): IWidget => widgets[url],
+	(widgets, url): IWidget | undefined => widgets.widgets[url],
 );
 
 export const onboardedWidgetsSelector = createSelector(

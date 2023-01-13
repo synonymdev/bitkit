@@ -3,7 +3,7 @@ import { View, StyleSheet, ScrollView, Share } from 'react-native';
 import { Text } from '../styles/text';
 import Button from './Button';
 
-let scrollView;
+let scrollView: ScrollView | null;
 
 const onSharePress = ({
 	title = 'bitkit-lightning-logs',
@@ -32,9 +32,7 @@ const LogBox = ({ data = [] }: ILogBox): ReactElement => {
 			<ScrollView
 				ref={(ref): ScrollView | null => (scrollView = ref)}
 				onContentSizeChange={(): void => {
-					try {
-						scrollView.scrollToEnd({ animated: true });
-					} catch {}
+					scrollView?.scrollToEnd({ animated: true });
 				}}
 				contentContainerStyle={styles.logBox}>
 				{data.map((line, index) => (

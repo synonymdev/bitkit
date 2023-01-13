@@ -4,11 +4,14 @@ import actions from '../actions/actions';
 import {
 	defaultBitcoinTransactionData,
 	EOutput,
-	IWallet,
+	IWalletStore,
 } from '../types/wallet';
 import { defaultWalletStoreShape } from '../shapes/wallet';
 
-const wallet = (state: IWallet = defaultWalletStoreShape, action): IWallet => {
+const wallet = (
+	state: IWalletStore = defaultWalletStoreShape,
+	action,
+): IWalletStore => {
 	let selectedWallet = state.selectedWallet;
 	let selectedNetwork = state.selectedNetwork;
 	if (action.payload?.selectedWallet) {
@@ -21,6 +24,7 @@ const wallet = (state: IWallet = defaultWalletStoreShape, action): IWallet => {
 	if (action.payload?.addressType) {
 		addressType = action.payload.addressType;
 	}
+
 	switch (action.type) {
 		case actions.UPDATE_WALLET:
 			return {

@@ -33,13 +33,11 @@ export const decodeWidgetFieldValue = (
 						currency === 'EUT' ? 'EUR' : currency === 'UST' ? 'USD' : currency,
 				})
 					.formatToParts(value)
-					.reduce(
-						(prev, part) =>
-							['currency', 'integer', 'group'].includes(part.type)
-								? prev + part.value
-								: prev,
-						'',
-					);
+					.reduce((prev, part) => {
+						return ['currency', 'integer', 'group'].includes(part.type)
+							? prev + part.value
+							: prev;
+					}, '');
 			} catch (error) {
 				return error.message;
 			}

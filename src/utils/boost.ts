@@ -27,7 +27,7 @@ export const getBoostedTransactions = ({
 	if (!selectedNetwork) {
 		selectedNetwork = getSelectedNetwork();
 	}
-	return getWalletStore().wallets[selectedWallet].boostedTransactions[
+	return getWalletStore().wallets[selectedWallet]?.boostedTransactions[
 		selectedNetwork
 	];
 };
@@ -107,7 +107,7 @@ export const isTransactionBoosted = ({
 
 /**
  * Determines if a given txid has any boosted parents.
- * @param {string} [txid]
+ * @param {string} txid
  * @param {IBoostedTransactions} [boostedTransactions]
  * @param {TWalletName} [selectedWallet]
  * @param {TAvailableNetworks} [selectedNetwork]
@@ -145,7 +145,7 @@ export const hasBoostedParents = ({
 
 /**
  * Returns the initially boosted transaction's activity item for a given txid.
- * @param {string} [txid]
+ * @param {string} txid
  * @param {IActivityItem[]} [items]
  * @param {IBoostedTransactions} [boostedTransactions]
  * @param {TWalletName} [selectedWallet]

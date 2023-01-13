@@ -33,7 +33,6 @@ import BottomSheetNavigationHeader from '../../components/BottomSheetNavigationH
 import Button from '../../components/Button';
 import ImageText from '../../components/ImageText';
 import Money from '../../components/Money';
-import { useTransactionDetails } from '../../hooks/transaction';
 import { useFeeText } from '../../hooks/fees';
 import { useAppSelector } from '../../hooks/redux';
 import { viewControllerSelector } from '../../store/reselect/ui';
@@ -41,6 +40,7 @@ import { updateActivityItem } from '../../store/actions/activity';
 import {
 	selectedNetworkSelector,
 	selectedWalletSelector,
+	transactionSelector,
 } from '../../store/reselect/wallet';
 
 const BoostForm = ({
@@ -48,8 +48,8 @@ const BoostForm = ({
 }: {
 	activityItem: TOnchainActivityItem;
 }): ReactElement => {
-	const transaction = useTransactionDetails();
 	const feeEstimates = useSelector((store: Store) => store.fees.onchain);
+	const transaction = useSelector(transactionSelector);
 	const selectedNetwork = useSelector(selectedNetworkSelector);
 	const selectedWallet = useSelector(selectedWalletSelector);
 

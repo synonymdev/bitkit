@@ -27,7 +27,6 @@ import AmountToggle from '../../../components/AmountToggle';
 import Tag from '../../../components/Tag';
 import ContactSmall from '../../../components/ContactSmall';
 import { IOutput } from '../../../store/types/wallet';
-import { useTransactionDetails } from '../../../hooks/transaction';
 import {
 	broadcastTransaction,
 	createTransaction,
@@ -48,7 +47,7 @@ import useColors from '../../../hooks/colors';
 import useDisplayValues from '../../../hooks/displayValues';
 import { FeeText } from '../../../store/shapes/fees';
 import { hasEnabledAuthentication } from '../../../utils/settings';
-import { EFeeIds } from '../../../store/types/fees';
+import { EFeeId } from '../../../store/types/fees';
 import {
 	decodeLightningInvoice,
 	payLightningInvoice,
@@ -65,6 +64,7 @@ import {
 	onChainBalanceSelector,
 	selectedNetworkSelector,
 	selectedWalletSelector,
+	transactionSelector,
 } from '../../../store/reselect/wallet';
 import {
 	bitcoinUnitSelector,
@@ -122,9 +122,8 @@ const ReviewAndSend = ({
 	const selectedWallet = useSelector(selectedWalletSelector);
 	const selectedNetwork = useSelector(selectedNetworkSelector);
 	const onChainBalance = useSelector(onChainBalanceSelector);
-
+	const transaction = useSelector(transactionSelector);
 	const lightningBalance = useLightningBalance(false);
-	const transaction = useTransactionDetails();
 
 	const decodeAndSetLightningInvoice = async (): Promise<void> => {
 		try {
@@ -196,7 +195,7 @@ const ReviewAndSend = ({
 	}, [getOutput?.address]);
 
 	const selectedFeeId = useMemo(
-		() => transaction.selectedFeeId ?? EFeeIds.slow,
+		() => transaction.selectedFeeId ?? EFeeId.slow,
 		[transaction.selectedFeeId],
 	);
 
@@ -231,7 +230,7 @@ const ReviewAndSend = ({
 	}, []);
 
 	const _onError = useCallback(
-		(errorTitle, errorMessage) => {
+		(errorTitle: string, errorMessage: string) => {
 			navigation.navigate('Result', {
 				success: false,
 				errorTitle,
@@ -326,7 +325,7 @@ const ReviewAndSend = ({
 	}, [selectedNetwork, selectedWallet, transaction, _onError]);
 
 	const _broadcast = useCallback(async () => {
-		if (!rawTx || !rawTx?.id || !rawTx?.hex) {
+		if (!rawTx?.id || !rawTx?.hex) {
 			_onError(
 				'Error: No transaction is available to broadcast.',
 				'Please check your transaction info and try again.',
@@ -419,7 +418,7 @@ const ReviewAndSend = ({
 	const exchangeRates = useSelector(exchangeRatesSelector);
 
 	const handleTagRemove = useCallback(
-		(tag) => {
+		(tag: string) => {
 			const res = removeTxTag({ tag, selectedNetwork, selectedWallet });
 			if (res.isErr()) {
 				showErrorNotification({
@@ -496,7 +495,7 @@ const ReviewAndSend = ({
 
 	const customDescription = useMemo(() => {
 		let desc = FeeText.custom.description;
-		if (selectedFeeId === EFeeIds.custom) {
+		if (selectedFeeId === EFeeId.custom) {
 			for (const key of Object.keys(feeEstimates)) {
 				if (satsPerByte >= feeEstimates[key] && key in FeeText) {
 					desc = FeeText[key]?.description ?? '';
@@ -508,7 +507,7 @@ const ReviewAndSend = ({
 	}, [selectedFeeId, feeEstimates, satsPerByte]);
 
 	const feeDescription = useMemo(() => {
-		return selectedFeeId === EFeeIds.custom
+		return selectedFeeId === EFeeId.custom
 			? customDescription
 			: FeeText[selectedFeeId].description;
 	}, [customDescription, selectedFeeId]);

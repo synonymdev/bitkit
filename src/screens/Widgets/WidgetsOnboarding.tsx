@@ -65,8 +65,9 @@ export const Layout = ({
 	children,
 	onNext,
 }: {
-	// TODO: type this
-	navigation: any;
+	navigation:
+		| WidgetsScreenProps<'GoodbyePasswords'>['navigation']
+		| WidgetsScreenProps<'HelloWidgets'>['navigation'];
 	backButton: boolean;
 	illustration: ImageSourcePropType;
 	title: string;
@@ -75,8 +76,8 @@ export const Layout = ({
 	highlighted: string;
 	buttonText?: string;
 	header?: string;
-	children?;
-	onNext?;
+	children?: ReactElement;
+	onNext?: () => void;
 }): JSX.Element => {
 	const onSwipeRight = (): void => {
 		navigation.getParent()?.navigate('Wallet');

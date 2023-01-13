@@ -1,4 +1,4 @@
-import React, { ReactElement, Component } from 'react';
+import React, { ReactElement, Component, ErrorInfo } from 'react';
 import { Text, SafeAreaView, ScrollView, StyleSheet } from 'react-native';
 
 type State = {
@@ -14,11 +14,11 @@ export default class ErrorBoundary extends Component<Props, State> {
 		error: null,
 	};
 
-	static getDerivedStateFromError(error): { error: any } {
+	static getDerivedStateFromError(error: Error): { error: Error } {
 		return { error };
 	}
 
-	componentDidCatch(error, errorInfo): void {
+	componentDidCatch(error: Error, errorInfo: ErrorInfo): void {
 		console.error('ErrorBoundary componentDidCatch', error, errorInfo);
 	}
 

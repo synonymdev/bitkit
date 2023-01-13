@@ -1,5 +1,5 @@
 import React, { memo, ReactElement, useState } from 'react';
-import { StyleSheet, TouchableOpacity } from 'react-native';
+import { LayoutChangeEvent, StyleSheet, TouchableOpacity } from 'react-native';
 import { Canvas, LinearGradient, Rect, vec } from '@shopify/react-native-skia';
 import { FadeOut } from 'react-native-reanimated';
 import { useSelector } from 'react-redux';
@@ -23,7 +23,7 @@ const BetaSoftware = (): ReactElement => {
 		return <></>;
 	}
 
-	const handleLayout = (event): void => {
+	const handleLayout = (event: LayoutChangeEvent): void => {
 		setLayout({
 			width: event.nativeEvent.layout.width,
 			height: event.nativeEvent.layout.height,

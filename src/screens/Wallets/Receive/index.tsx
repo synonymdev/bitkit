@@ -43,6 +43,7 @@ import {
 	selectedWalletSelector,
 } from '../../../store/reselect/wallet';
 import { receiveSelector } from '../../../store/reselect/receive';
+import { ReceiveScreenProps } from '../../../navigation/types';
 
 const QrIcon = memo(
 	(): ReactElement => {
@@ -57,7 +58,9 @@ const QrIcon = memo(
 	() => true,
 );
 
-const Receive = ({ navigation }): ReactElement => {
+const Receive = ({
+	navigation,
+}: ReceiveScreenProps<'Receive'>): ReactElement => {
 	const dimensions = useWindowDimensions();
 	const insets = useSafeAreaInsets();
 	const buttonContainerStyles = useMemo(
@@ -82,7 +85,7 @@ const Receive = ({ navigation }): ReactElement => {
 	const [receiveAddress, setReceiveAddress] = useState('');
 	const [lightningInvoice, setLightningInvoice] = useState('');
 	const lightningBalance = useLightningBalance(false);
-	const qrRef = useRef<object>();
+	const qrRef = useRef<string>();
 
 	useBottomSheetBackPress('receiveNavigation');
 
@@ -294,7 +297,7 @@ const Receive = ({ navigation }): ReactElement => {
 							size={qrSize}
 							getRef={(c): void => {
 								if (c) {
-									c.toDataURL((data) => (qrRef.current = data));
+									c.toDataURL((data: string) => (qrRef.current = data));
 								}
 							}}
 						/>

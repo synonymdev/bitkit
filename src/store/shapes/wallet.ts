@@ -1,17 +1,19 @@
 import {
 	IWalletItem,
-	IDefaultWalletShape,
 	IWallet,
+	IWalletStore,
 	IBitcoinTransactionData,
 	defaultBitcoinTransactionData,
 	IKeyDerivationPath,
 	IAddressTypes,
 	TAssetNetwork,
+	IAddresses,
 	IAddress,
-	IAddressContent,
 	EAddressType,
 } from '../types/wallet';
 import { IHeader } from '../../utils/types/electrum';
+import { EAvailableNetworks } from '../../utils/networks';
+import { objectKeys } from '../../utils/objectKeys';
 
 export const assetNetworks: TAssetNetwork[] = ['bitcoin', 'lightning'];
 
@@ -53,7 +55,7 @@ export const arrayTypeItems: IWalletItem<[]> = {
 	timestamp: null,
 };
 
-export const objectTypeItems: IWalletItem<object> = {
+export const objectTypeItems = {
 	bitcoin: {},
 	bitcoinTestnet: {},
 	bitcoinRegtest: {},
@@ -67,7 +69,7 @@ export const stringTypeItems: IWalletItem<string> = {
 	timestamp: null,
 };
 
-export const addressContent: IAddressContent = {
+export const addressContent: IAddress = {
 	index: -1,
 	path: '',
 	address: '',
@@ -75,43 +77,49 @@ export const addressContent: IAddressContent = {
 	publicKey: '',
 };
 
-export const getAddressTypeContent = (
-	data: IAddressContent | IAddress,
-): IAddressTypeContent<IAddressContent> => {
-	let content = {};
-	Object.keys(addressTypes).map((addressType) => {
+export const getAddressTypeContent = <T>(data: T): IAddressTypeContent<T> => {
+	const addressTypeKeys = objectKeys(addressTypes);
+	const content = {} as IAddressTypeContent<T>;
+
+	addressTypeKeys.forEach((addressType) => {
 		content[addressType] = data;
 	});
+
 	return content;
 };
 
 export type IAddressTypeContent<T> = {
-	[key: string]: T;
+	[key in EAddressType]: T;
 };
 
 export type TAddressIndexInfo = {
-	addressIndex: IAddressContent;
-	changeAddressIndex: IAddressContent;
-	lastUsedAddressIndex: IAddressContent;
-	lastUsedChangeAddressIndex: IAddressContent;
+	addressIndex: IAddress;
+	changeAddressIndex: IAddress;
+	lastUsedAddressIndex: IAddress;
+	lastUsedChangeAddressIndex: IAddress;
 };
 
-export const getAddressIndexShape = (): IWalletItem<IAddress> => {
+export const getAddressIndexShape = (): IWalletItem<
+	IAddressTypeContent<IAddress>
+> => {
 	return {
-		bitcoin: getAddressTypeContent(addressContent),
-		bitcoinTestnet: getAddressTypeContent(addressContent),
-		bitcoinRegtest: getAddressTypeContent(addressContent),
+		[EAvailableNetworks.bitcoin]:
+			getAddressTypeContent<IAddress>(addressContent),
+		[EAvailableNetworks.bitcoinTestnet]:
+			getAddressTypeContent<IAddress>(addressContent),
+		[EAvailableNetworks.bitcoinRegtest]:
+			getAddressTypeContent<IAddress>(addressContent),
 		timestamp: null,
 	};
 };
 
 export const getAddressesShape = (): IWalletItem<
-	IAddressTypeContent<IAddressContent>
+	IAddressTypeContent<IAddresses>
 > => {
 	return {
-		bitcoin: getAddressTypeContent({}),
-		bitcoinTestnet: getAddressTypeContent({}),
-		bitcoinRegtest: getAddressTypeContent({}),
+		[EAvailableNetworks.bitcoin]: getAddressTypeContent<IAddresses>({}),
+		[EAvailableNetworks.bitcoinTestnet]: getAddressTypeContent<IAddresses>({}),
+		[EAvailableNetworks.bitcoinRegtest]: getAddressTypeContent<IAddresses>({}),
 		timestamp: null,
 	};
 };
@@ -130,7 +138,7 @@ export const header: IHeader = {
 	hex: '',
 };
 
-export const defaultWalletShape: IDefaultWalletShape = {
+export const defaultWalletShape: IWallet = {
 	id: 'wallet0',
 	name: '',
 	type: 'default',
@@ -170,9 +178,9 @@ export const defaultWalletShape: IDefaultWalletShape = {
 	transaction: bitcoinTransaction,
 };
 
-export const defaultWalletStoreShape: IWallet = {
+export const defaultWalletStoreShape: IWalletStore = {
 	walletExists: false,
-	selectedNetwork: 'bitcoin',
+	selectedNetwork: EAvailableNetworks.bitcoin,
 	selectedWallet: 'wallet0',
 	addressTypes: addressTypes,
 	exchangeRates: {},

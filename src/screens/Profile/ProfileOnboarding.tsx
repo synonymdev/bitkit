@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useMemo } from 'react';
+import React, { memo, ReactElement, useCallback, useMemo } from 'react';
 import { View, StyleSheet, Image, ImageSourcePropType } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useSelector } from 'react-redux';
@@ -45,7 +45,9 @@ export const ProfileIntro = memo(
 	},
 );
 
-export const OfflinePayments = ({ navigation }): JSX.Element => {
+export const OfflinePayments = ({
+	navigation,
+}: RootStackScreenProps<'Profile'>): JSX.Element => {
 	const enableOfflinePayments = useSelector(enableOfflinePaymentsSelector);
 	const selectedWallet = useSelector(selectedWalletSelector);
 	const selectedNetwork = useSelector(selectedNetworkSelector);
@@ -62,7 +64,7 @@ export const OfflinePayments = ({ navigation }): JSX.Element => {
 			backButton={true}
 			illustration={coinsImageSrc}
 			title="Pay your"
-			header="Pay Contacts"
+			header="Pay Your Contacts"
 			highlighted="Contacts."
 			text="You and your contacts can use Bitkit to send payments directly, without banks, anytime, anywhere."
 			nextStep="Done"
@@ -108,8 +110,8 @@ export const Layout = memo(
 		nextStep?: ISlashtags['onboardingProfileStep'];
 		buttonText?: string;
 		header?: string;
-		children?;
-		onNext?;
+		children?: ReactElement;
+		onNext?: () => void;
 	}): JSX.Element => {
 		const { isSmallScreen } = useScreenSize();
 		const onSwipeLeft = (): void => {

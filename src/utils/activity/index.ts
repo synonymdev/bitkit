@@ -1,26 +1,23 @@
 import { btcToSats } from '../helpers';
 import { TPaidBlocktankOrders } from '../../store/types/blocktank';
+import { EPaymentType, IFormattedTransaction } from '../../store/types/wallet';
 import {
 	EActivityType,
 	IActivityItem,
 	IActivityItemFormatted,
 	TOnchainActivityItem,
 } from '../../store/types/activity';
-import {
-	EPaymentType,
-	IFormattedTransactionContent,
-} from '../../store/types/wallet';
 
 /**
  * Converts a formatted transaction to an activity item
- * @param {IFormattedTransactionContent} transaction
+ * @param {IFormattedTransaction} transaction
  * @returns {TOnchainActivityItem} activityItem
  */
 export const onChainTransactionToActivityItem = ({
 	transaction,
 	blocktankTransactions,
 }: {
-	transaction: IFormattedTransactionContent;
+	transaction: IFormattedTransaction;
 	blocktankTransactions: TPaidBlocktankOrders;
 }): TOnchainActivityItem => {
 	// subtract fee from amount if applicable
@@ -62,11 +59,12 @@ export const mergeActivityItems = (
 ): IActivityItem[] => {
 	const reduced = oldItems.filter(
 		(oldItem) =>
-			!newItems.find(
-				(newItem) =>
+			!newItems.find((newItem) => {
+				return (
 					newItem.activityType === oldItem.activityType &&
-					newItem.id === oldItem.id,
-			),
+					newItem.id === oldItem.id
+				);
+			}),
 	);
 	const mergedItems = reduced.concat(newItems);
 

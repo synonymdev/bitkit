@@ -68,7 +68,7 @@ export const useProfile = (
 		async function resolve(): Promise<void> {
 			const version = await drive.files
 				.get('/profile.json')
-				.then((node: any) => node && node.seq);
+				.then((node: any) => node?.seq);
 
 			const _profile = await drive
 				.get('/profile.json')

@@ -14,6 +14,9 @@ import { useBalance } from '../../hooks/wallet';
 import { useAppSelector } from '../../hooks/redux';
 import { getFiatDisplayValues } from '../../utils/exchange-rate';
 import { openURL } from '../../utils/helpers';
+import { objectKeys } from '../../utils/objectKeys';
+import { bitcoinUnitSelector } from '../../store/reselect/settings';
+import { exchangeRatesSelector } from '../../store/reselect/wallet';
 import {
 	useBottomSheetBackPress,
 	useSnapPoints,
@@ -22,8 +25,6 @@ import {
 	ignoreHighBalanceCountSelector,
 	ignoreHighBalanceTimestampSelector,
 } from '../../store/reselect/user';
-import { bitcoinUnitSelector } from '../../store/reselect/settings';
-import { exchangeRatesSelector } from '../../store/reselect/wallet';
 
 const imageSrc = require('../../assets/illustrations/exclamation-mark.png');
 
@@ -70,7 +71,8 @@ const HighBalanceWarning = ({
 	useBottomSheetBackPress('highBalance');
 
 	const anyBottomSheetIsOpen = useMemo(() => {
-		return Object.keys(viewControllers)
+		const viewControllerKeys = objectKeys(viewControllers);
+		return viewControllerKeys
 			.filter((view) => view !== 'highBalance')
 			.some((view) => viewControllers[view].isOpen);
 	}, [viewControllers]);

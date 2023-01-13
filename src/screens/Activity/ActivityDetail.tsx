@@ -123,7 +123,7 @@ const Glow = ({
 	);
 };
 
-const ZigZag = ({ color }): ReactElement => {
+const ZigZag = ({ color }: { color: string }): ReactElement => {
 	const step = 12;
 	let n = 0;
 	const path = Skia.Path.Make();

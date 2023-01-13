@@ -1,12 +1,17 @@
 import React, { memo, ReactElement } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, StyleProp, ViewStyle } from 'react-native';
+import { useSelector } from 'react-redux';
 
 import { Display } from '../../../styles/text';
 import { LightningIcon } from '../../../styles/icons';
-import { useTransactionDetails } from '../../../hooks/transaction';
+import { transactionSelector } from '../../../store/reselect/wallet';
 
-const FeeCustomToggle = ({ style }: { style?: object }): ReactElement => {
-	const transaction = useTransactionDetails();
+const FeeCustomToggle = ({
+	style,
+}: {
+	style?: StyleProp<ViewStyle>;
+}): ReactElement => {
+	const transaction = useSelector(transactionSelector);
 
 	return (
 		<View style={[styles.row, style]}>

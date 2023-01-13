@@ -39,43 +39,39 @@ export const useLightningBalance = (
 		isChannelReadySelector(state, selectedWallet, selectedNetwork),
 	);
 
-	const localBalance = useMemo(
-		() =>
-			Object.values(channels).reduce((acc, cur) => {
-				if (openChannels.includes(cur.channel_id)) {
-					if (!includeReserveBalance) {
-						return acc + cur.outbound_capacity_sat;
-					} else {
-						return (
-							acc +
-							cur.outbound_capacity_sat +
-							(cur?.unspendable_punishment_reserve ?? 0)
-						);
-					}
+	const localBalance = useMemo(() => {
+		return Object.values(channels).reduce((acc, cur) => {
+			if (openChannels.includes(cur.channel_id)) {
+				if (!includeReserveBalance) {
+					return acc + cur.outbound_capacity_sat;
+				} else {
+					return (
+						acc +
+						cur.outbound_capacity_sat +
+						(cur?.unspendable_punishment_reserve ?? 0)
+					);
 				}
-				return acc;
-			}, 0),
-		[channels, includeReserveBalance, openChannels],
-	);
+			}
+			return acc;
+		}, 0);
+	}, [channels, includeReserveBalance, openChannels]);
 
-	const remoteBalance = useMemo(
-		() =>
-			Object.values(channels).reduce((acc, cur) => {
-				if (openChannelIds.includes(cur.channel_id)) {
-					if (!includeReserveBalance) {
-						return acc + cur.inbound_capacity_sat;
-					} else {
-						return (
-							acc +
-							cur.inbound_capacity_sat +
-							(cur?.unspendable_punishment_reserve ?? 0)
-						);
-					}
+	const remoteBalance = useMemo(() => {
+		return Object.values(channels).reduce((acc, cur) => {
+			if (openChannelIds.includes(cur.channel_id)) {
+				if (!includeReserveBalance) {
+					return acc + cur.inbound_capacity_sat;
+				} else {
+					return (
+						acc +
+						cur.inbound_capacity_sat +
+						(cur?.unspendable_punishment_reserve ?? 0)
+					);
 				}
-				return acc;
-			}, 0),
-		[channels, includeReserveBalance, openChannelIds],
-	);
+			}
+			return acc;
+		}, 0);
+	}, [channels, includeReserveBalance, openChannelIds]);
 
 	return { localBalance, remoteBalance };
 };
@@ -85,7 +81,9 @@ export const useLightningBalance = (
  * @param {string} channelId
  * @returns {TUseChannelBalance}
  */
-export const useLightningChannelBalance = (channelId): TUseChannelBalance => {
+export const useLightningChannelBalance = (
+	channelId: string,
+): TUseChannelBalance => {
 	const selectedWallet = useSelector(selectedWalletSelector);
 	const selectedNetwork = useSelector(selectedNetworkSelector);
 
@@ -97,9 +95,9 @@ export const useLightningChannelBalance = (channelId): TUseChannelBalance => {
 		capacity: 0, // Total capacity of the channel. (spendingTotal + receivingTotal)
 	};
 
-	const channel: TChannel = useSelector((state: Store) =>
-		channelSelector(state, selectedWallet, selectedNetwork, channelId),
-	);
+	const channel = useSelector((state: Store) => {
+		return channelSelector(state, selectedWallet, selectedNetwork, channelId);
+	});
 
 	if (!channelId || !channel) {
 		return balance;
@@ -127,13 +125,13 @@ export const useLightningChannelBalance = (channelId): TUseChannelBalance => {
  * @param {string} channelId
  * @returns {string}
  */
-export const useLightningChannelName = (channelId): string => {
+export const useLightningChannelName = (channelId: string): string => {
 	const selectedWallet = useSelector(selectedWalletSelector);
 	const selectedNetwork = useSelector(selectedNetworkSelector);
 	const paidBlocktankOrders = useSelector(blocktankPaidOrdersSelector);
-	const channel: TChannel = useSelector((state: Store) =>
-		channelSelector(state, selectedWallet, selectedNetwork, channelId),
-	);
+	const channel = useSelector((state: Store) => {
+		return channelSelector(state, selectedWallet, selectedNetwork, channelId);
+	});
 	const paidBlocktankOrderId = Object.keys(paidBlocktankOrders).filter(
 		(blocktankId) => paidBlocktankOrders[blocktankId] === channel.funding_txid,
 	);
@@ -152,21 +150,21 @@ export const useLightningChannelName = (channelId): string => {
  * @param {string} channelId
  * @returns {TChannel}
  */
-export const useLightningChannelData = (channelId): TChannel => {
+export const useLightningChannelData = (channelId: string): TChannel => {
 	const selectedWallet = useSelector(selectedWalletSelector);
 	const selectedNetwork = useSelector(selectedNetworkSelector);
 
-	return useSelector((state: Store) =>
-		channelSelector(state, selectedWallet, selectedNetwork, channelId),
-	);
+	return useSelector((state: Store) => {
+		return channelSelector(state, selectedWallet, selectedNetwork, channelId);
+	});
 };
 
 export const useClaimableBalance = (): number => {
 	const selectedWallet = useSelector(selectedWalletSelector);
 	const selectedNetwork = useSelector(selectedNetworkSelector);
-	const node = useSelector((state: Store) =>
-		nodeSelector(state, selectedWallet),
-	);
+	const node = useSelector((state: Store) => {
+		return nodeSelector(state, selectedWallet);
+	});
 
 	if ('claimableBalance' in node) {
 		return node?.claimableBalance[selectedNetwork] ?? 0;

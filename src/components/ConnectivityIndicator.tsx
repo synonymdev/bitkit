@@ -1,8 +1,9 @@
 import React, { memo, ReactElement, useState } from 'react';
 import { StyleSheet } from 'react-native';
+import { useSelector } from 'react-redux';
 import { FadeIn, FadeOut } from 'react-native-reanimated';
 
-import { updateUser } from '../store/actions/user';
+import { updateUi } from '../store/actions/ui';
 import { View, AnimatedView } from '../styles/components';
 import { Text01M, Caption13M } from '../styles/text';
 import { BrokenLinkIcon } from '../styles/icons';
@@ -16,7 +17,6 @@ import {
 	isConnectedToElectrumSelector,
 	isOnlineSelector,
 } from '../store/reselect/ui';
-import { useSelector } from 'react-redux';
 
 const ConnectivityIndicator = (): ReactElement => {
 	const [isLoading, setIsLoading] = useState(false);
@@ -32,13 +32,13 @@ const ConnectivityIndicator = (): ReactElement => {
 		setIsLoading(true);
 		const connectionResponse = await connectToElectrum({});
 		if (connectionResponse.isOk()) {
-			updateUser({ isConnectedToElectrum: true });
+			updateUi({ isConnectedToElectrum: true });
 			showSuccessNotification({
 				title: 'Bitkit Connection Restored',
 				message: 'Successfully reconnected to Electrum Server.',
 			});
 		} else {
-			updateUser({ isConnectedToElectrum: false });
+			updateUi({ isConnectedToElectrum: false });
 			showErrorNotification({
 				title: 'Bitkit Connection Lost',
 				message: 'Please check your settings.',

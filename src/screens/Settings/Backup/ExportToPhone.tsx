@@ -36,7 +36,7 @@ const ExportToPhone = ({
 		};
 	}, []);
 
-	const shareToFiles = async (filePath): Promise<void> => {
+	const shareToFiles = async (filePath: string): Promise<void> => {
 		const shareOptions = {
 			title: 'Share backup file',
 			failOnCancel: false,

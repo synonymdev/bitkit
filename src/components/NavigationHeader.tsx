@@ -57,7 +57,7 @@ const NavigationHeader = ({
 	const navigation = useNavigation<any>();
 
 	const handleBackPress = useCallback(async () => {
-		onBackPress && onBackPress();
+		onBackPress?.();
 		if (navigateBack) {
 			// make sure Keyboard is closed before navigating back to prevent layout bugs
 			await Keyboard.dismiss();

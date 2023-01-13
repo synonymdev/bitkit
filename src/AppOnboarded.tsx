@@ -4,13 +4,14 @@ import NetInfo from '@react-native-community/netinfo';
 
 import RootNavigator from './navigation/root/RootNavigator';
 import { useSlashtagsSDK } from './components/SlashtagsProvider';
-import { updateUser } from './store/actions/user';
+import { updateUi } from './store/actions/ui';
 import { useAppSelector } from './hooks/redux';
 import { useBalance } from './hooks/wallet';
 import { startWalletServices } from './utils/startup';
 import { electrumConnection } from './utils/electrum';
 import { readClipboardInvoice } from './utils/send';
 import { unsubscribeFromLightningSubscriptions } from './utils/lightning';
+import { enableAutoReadClipboardSelector } from './store/reselect/settings';
 import {
 	showErrorNotification,
 	showSuccessNotification,
@@ -23,7 +24,6 @@ import {
 	isConnectedToElectrumSelector,
 	isOnlineSelector,
 } from './store/reselect/ui';
-import { enableAutoReadClipboardSelector } from './store/reselect/settings';
 
 const AppOnboarded = (): ReactElement => {
 	const appState = useRef(AppState.currentState);
@@ -113,7 +113,7 @@ const AppOnboarded = (): ReactElement => {
 	useEffect(() => {
 		const unsubscribeElectrum = electrumConnection.subscribe((isConnected) => {
 			if (!isConnectedToElectrum && isConnected) {
-				updateUser({ isConnectedToElectrum: isConnected });
+				updateUi({ isConnectedToElectrum: isConnected });
 				// showSuccessNotification({
 				// 	title: 'Bitkit Connection Restored',
 				// 	message: 'Successfully reconnected to Electrum Server.',
@@ -121,7 +121,7 @@ const AppOnboarded = (): ReactElement => {
 			}
 
 			if (isConnectedToElectrum && !isConnected) {
-				updateUser({ isConnectedToElectrum: isConnected });
+				updateUi({ isConnectedToElectrum: isConnected });
 				// showErrorNotification({
 				// 	title: 'Bitkit Is Reconnecting',
 				// 	message: 'Lost connection to server, trying to reconnect...',
@@ -145,13 +145,13 @@ const AppOnboarded = (): ReactElement => {
 						message: 'Successfully reconnected to the Internet.',
 					});
 				}
-				updateUser({ isOnline: isConnected });
+				updateUi({ isOnline: true });
 			} else {
 				showErrorNotification({
 					title: 'Internet Connectivity Issues',
 					message: 'Please check your network connection.',
 				});
-				updateUser({ isOnline: isConnected });
+				updateUi({ isOnline: false });
 			}
 		});
 

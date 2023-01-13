@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { ReactElement, useContext, useEffect, useState } from 'react';
 import SDK from '@synonymdev/slashtags-sdk';
 import { createContext } from 'react';
 import { useSelector } from 'react-redux';
@@ -45,7 +45,11 @@ const RECONNECT_DHT_RELAY_INTERVAL = 1000 * 2;
  * All things Slashtags that needs to happen on start of Bitkit
  * or stay available and cached through the App.
  */
-export const SlashtagsProvider = ({ children }): JSX.Element => {
+export const SlashtagsProvider = ({
+	children,
+}: {
+	children: ReactElement;
+}): JSX.Element => {
 	const [primaryKey, setPrimaryKey] = useState<string>();
 	const [opened, setOpened] = useState(false);
 	const [contacts, setContacts] = useState<ISlashtagsContext['contacts']>({});

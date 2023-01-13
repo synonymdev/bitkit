@@ -27,7 +27,7 @@ const ChoosePIN = ({
 	const [tryAgain, setTryAgain] = useState<boolean>(false);
 	const { brand, brand08 } = useColors();
 
-	const handleOnPress = (n): void => {
+	const handleOnPress = (n: string | number): void => {
 		setPin((p) => {
 			if (p.length === 4) {
 				return p;

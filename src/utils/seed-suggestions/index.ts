@@ -1,7 +1,11 @@
 import fuzzysort from 'fuzzysort';
 import { patienceDiff } from './PatienceDiff';
 
-let cache = {};
+type Cache = {
+	[key: string]: number | undefined;
+};
+
+let cache: Cache = {};
 
 /**
  * Suggests options to complete the seed word. Steps:
@@ -10,8 +14,8 @@ let cache = {};
  * 3. custom patienceSort() function based on patienceDiff
  */
 export default function seedSuggestions(
-	origWord,
-	wordlist,
+	origWord: string,
+	wordlist: string[],
 	numberOfWords = 3,
 ): Array<string> {
 	const word = origWord.toLowerCase().trim();
@@ -50,7 +54,7 @@ export default function seedSuggestions(
 
 function compareWords(a: string, b: string): number {
 	if (a + b in cache) {
-		return cache[a + b];
+		return cache[a + b]!;
 	}
 	const res = patienceDiff(a.split(''), b.split(''));
 	const diff = res.lineCountDeleted + res.lineCountInserted;

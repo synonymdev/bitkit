@@ -1,12 +1,24 @@
+import {
+	getAddressIndexShape,
+	objectTypeItems,
+} from '../../src/store/shapes/wallet';
+import {
+	EAddressType,
+	EPaymentType,
+	IWallet,
+} from '../../src/store/types/wallet';
+
 test.skip('Workaround', () => {});
 
 export const mnemonic =
 	'soon engine text scissors ready twelve paper raven merge skate north park broccoli acquire result broom ozone rigid huge taxi celery history sudden anchor';
 
-export const walletState = {
+export const walletState: IWallet = {
 	id: 'wallet0',
 	name: '',
 	type: 'default',
+	lastUsedAddressIndex: getAddressIndexShape(),
+	lastUsedChangeAddressIndex: getAddressIndexShape(),
 	addresses: {
 		bitcoin: {
 			p2pkh: {
@@ -168,6 +180,68 @@ export const walletState = {
 				},
 			},
 		},
+		bitcoinRegtest: {
+			p2pkh: {
+				e52461cbe17018ab6cc84174fedc1d95dbe21b6aba9c6637316101fa1f3b2e21: {
+					index: 0,
+					path: "m/44'/0'/0'/0/0",
+					address: '1EGsGMJ6eMLKqkrJiXnPxvws83QZYKMWg3',
+					scriptHash:
+						'e52461cbe17018ab6cc84174fedc1d95dbe21b6aba9c6637316101fa1f3b2e21',
+					publicKey:
+						'030d10234b649efef13c85d322bc06b22703f717fb7d9edbb9b6c443e9ffc4f1b0',
+				},
+				'2cc344b0f405ba055c98e5696cb15a92fd0d2973b7d62e210143c10a4dbd2d23': {
+					index: 1,
+					path: "m/44'/0'/0'/0/1",
+					address: '1LaGBmgRVGHYjD3aJvQoMfbmemb1A4KEZn',
+					scriptHash:
+						'2cc344b0f405ba055c98e5696cb15a92fd0d2973b7d62e210143c10a4dbd2d23',
+					publicKey:
+						'0374a19738117858ec301343a21405d9da47f5ef0a3dbed6e39c8f6f508a53f34b',
+				},
+			},
+			p2sh: {
+				db351e0b3a1cc5660673065138332ad579a38f6b870faaf96684fe395659f5da: {
+					index: 0,
+					path: "m/49'/0'/0'/0/0",
+					address: '3LHfxaTFiEnQP4i7Ytcntxr9iMrY6fxC1c',
+					scriptHash:
+						'db351e0b3a1cc5660673065138332ad579a38f6b870faaf96684fe395659f5da',
+					publicKey:
+						'03073ec1f002c00f5f5c763f40651c78cef5ed6d4919f69646a96f822795f8617a',
+				},
+				b60df61a4de92cc8c3e09bee4767d3a0d1d2a59d19ed6700fe0a87499020eca7: {
+					index: 1,
+					path: "m/49'/0'/0'/0/1",
+					address: '36Y5AVhPo3yyCqAKN3spCAvJmpwSPqzEHh',
+					scriptHash:
+						'b60df61a4de92cc8c3e09bee4767d3a0d1d2a59d19ed6700fe0a87499020eca7',
+					publicKey:
+						'03332e1b2ea445a739a9d2380068d1ff089077f081a5548595015a13879a6447b4',
+				},
+			},
+			p2wpkh: {
+				'107c61ca18fd13fc44317328859caac9e842022710d4c9bb500730196784a979': {
+					index: 0,
+					path: "m/84'/0'/0'/0/0",
+					address: 'bc1qtfj25df4v4nthatcrav8j5n59y8qjurarg36ss',
+					scriptHash:
+						'107c61ca18fd13fc44317328859caac9e842022710d4c9bb500730196784a979',
+					publicKey:
+						'03cd4bb5a7b215224cbeae45ffa739fcb5b087f5a92278dd1791a4865d0a7e8363',
+				},
+				'5741d24048f83f33cf3e3672f0ef626db0f18dce1efd8d1e99b07f5b5f96723b': {
+					index: 1,
+					path: "m/84'/0'/0'/0/1",
+					address: 'bc1qvnm745vph2fh8j084mf3tct2jz6dqmhux5a3sq',
+					scriptHash:
+						'5741d24048f83f33cf3e3672f0ef626db0f18dce1efd8d1e99b07f5b5f96723b',
+					publicKey:
+						'021af2ebcef3a898c221b9a02390625b38f385e7dbe3ae73589dd4ebf6bb91cb65',
+				},
+			},
+		},
 		timestamp: null,
 	},
 	addressIndex: {
@@ -227,6 +301,35 @@ export const walletState = {
 					'9a426c2e93f29ddf39b71b3d0b39f65748a74b640315bec778418c65fea4980e',
 				publicKey:
 					'02c4c5fe83d11a1c65a44c6077b2c9e965ef08dced8afaa234686a99410035b1b1',
+			},
+		},
+		bitcoinRegtest: {
+			p2pkh: {
+				index: 0,
+				path: "m/44'/0'/0'/0/0",
+				address: '1EGsGMJ6eMLKqkrJiXnPxvws83QZYKMWg3',
+				scriptHash:
+					'e52461cbe17018ab6cc84174fedc1d95dbe21b6aba9c6637316101fa1f3b2e21',
+				publicKey:
+					'030d10234b649efef13c85d322bc06b22703f717fb7d9edbb9b6c443e9ffc4f1b0',
+			},
+			p2sh: {
+				index: 0,
+				path: "m/49'/0'/0'/0/0",
+				address: '3LHfxaTFiEnQP4i7Ytcntxr9iMrY6fxC1c',
+				scriptHash:
+					'db351e0b3a1cc5660673065138332ad579a38f6b870faaf96684fe395659f5da',
+				publicKey:
+					'03073ec1f002c00f5f5c763f40651c78cef5ed6d4919f69646a96f822795f8617a',
+			},
+			p2wpkh: {
+				index: 0,
+				path: "m/84'/0'/0'/0/0",
+				address: 'bc1qtfj25df4v4nthatcrav8j5n59y8qjurarg36ss',
+				scriptHash:
+					'107c61ca18fd13fc44317328859caac9e842022710d4c9bb500730196784a979',
+				publicKey:
+					'03cd4bb5a7b215224cbeae45ffa739fcb5b087f5a92278dd1791a4865d0a7e8363',
 			},
 		},
 		timestamp: null,
@@ -392,6 +495,11 @@ export const walletState = {
 				},
 			},
 		},
+		bitcoinRegtest: {
+			p2pkh: {},
+			p2sh: {},
+			p2wpkh: {},
+		},
 		timestamp: null,
 	},
 	changeAddressIndex: {
@@ -453,6 +561,31 @@ export const walletState = {
 					'036b0c48598b2fae77e3d3084758ec1f67d444e98892ed9c087e9926d5a845ae64',
 			},
 		},
+		bitcoinRegtest: {
+			p2pkh: {
+				scriptHash: '',
+				publicKey: '',
+				address: '',
+				index: -1,
+				path: '',
+			},
+			p2sh: {
+				scriptHash: '',
+				publicKey: '',
+				address: '',
+				index: -1,
+				path: '',
+			},
+			p2wpkh: {
+				address: 'bcrt1qzettvpw4uhd9uzj5x5fwdmjf9srxkqpp4lxgd4',
+				scriptHash:
+					'05a7da8399b1fffe8f5b1c93573aa5f1fac54110851e9a016444b1c4320ec8aa',
+				publicKey:
+					'03ee8ca6ab69fa3960c9e3c11f948c065c8aa155b25725fa009b69ffcd0527f7e7',
+				index: 0,
+				path: "m/84'/0'/0'/0/0",
+			},
+		},
 		timestamp: null,
 	},
 	utxos: {
@@ -464,8 +597,6 @@ export const walletState = {
 				address: 'tb1qnwvt9sj397tcnkv3p2gmgv2ty99ntxpjwydncv',
 				scriptHash:
 					'ec1711190e7525c3f01df2d20a0cb5fd6e7697776625c7e675d4529ac4b2e7ae',
-				publicKey:
-					'0318cb16a8e659f378002e75abe93f064c4ebcd62576bc15019281b635f96840a8',
 				tx_hash:
 					'71c61ef6dd1af0a06cb6040459c3b7b2cbe2ab8ec9f4d8abd73eba4931ab0e0c',
 				tx_pos: 0,
@@ -478,8 +609,6 @@ export const walletState = {
 				address: 'tb1qr3w9myz6qfmv4s688afnahwuxjwqtxjrl3vlk2',
 				scriptHash:
 					'373cf777ba9bab3500e5d7b49d542cb5b2ef8eada4c77c142059ae2f1b0aa9a9',
-				publicKey:
-					'02bb6083f2571ecd26f68edeae341c0700463349a84b2044c271e061e813e0cd03',
 				tx_hash:
 					'206962f8dcefbaf5a05c1dcc6cd0c214420c6be4e0e634bf71dbca518884bd51',
 				tx_pos: 0,
@@ -487,6 +616,7 @@ export const walletState = {
 				value: 4750,
 			},
 		],
+		bitcoinRegtest: [],
 		timestamp: null,
 	},
 	transactions: {
@@ -502,7 +632,8 @@ export const walletState = {
 				totalOutputValue: 0.00130189,
 				matchedOutputValue: 0,
 				fee: 0.0000025,
-				type: 'sent',
+				satsPerByte: 1,
+				type: EPaymentType.sent,
 				value: -0.00130439,
 				txid: '206962f8dcefbaf5a05c1dcc6cd0c214420c6be4e0e634bf71dbca518884bd51',
 				messages: [],
@@ -518,7 +649,8 @@ export const walletState = {
 				totalOutputValue: 6.027960129999999,
 				matchedOutputValue: 0.0001,
 				fee: 0.00000222,
-				type: 'received',
+				satsPerByte: 1,
+				type: EPaymentType.received,
 				value: 0.0001,
 				txid: '6927ef1dbc7afd90dde0969e8455411e8bf30303e5da470de2a2b37b8337e7d5',
 				messages: [],
@@ -534,7 +666,8 @@ export const walletState = {
 				totalOutputValue: 6.02585569,
 				matchedOutputValue: 0.00123456,
 				fee: 0.00000222,
-				type: 'received',
+				satsPerByte: 1,
+				type: EPaymentType.received,
 				value: 0.00123456,
 				txid: '83c9769fcf970ae8806b18549b18d7ad05e1f7c7e546bb4e355c638262977da2',
 				messages: [],
@@ -550,7 +683,8 @@ export const walletState = {
 				totalOutputValue: 0.00133206,
 				matchedOutputValue: 0.00132,
 				fee: 0.0000025,
-				type: 'sent',
+				satsPerByte: 1,
+				type: EPaymentType.sent,
 				value: -0.00001456,
 				txid: 'ac3f19029332cbd2f2d01544dea8e0d98dd41f3082b05ee24aa84f4f6168e929',
 				messages: [],
@@ -566,7 +700,8 @@ export const walletState = {
 				totalOutputValue: 0.0013175,
 				matchedOutputValue: 0.00130439,
 				fee: 0.0000025,
-				type: 'sent',
+				satsPerByte: 1,
+				type: EPaymentType.sent,
 				value: -0.00001561,
 				txid: 'bd08abb0fc42ea09fb53f12ba8286e753cf615a8665f9e23d995d4788489c610',
 				messages: [],
@@ -582,28 +717,34 @@ export const walletState = {
 				totalOutputValue: 0.15702089,
 				matchedOutputValue: 0.00123456,
 				fee: 0.00000141,
-				type: 'received',
+				satsPerByte: 1,
+				type: EPaymentType.received,
 				value: 0.00123456,
 				txid: '71c61ef6dd1af0a06cb6040459c3b7b2cbe2ab8ec9f4d8abd73eba4931ab0e0c',
 				messages: [],
 				timestamp: 1628558272000,
 			},
 		},
+		bitcoinRegtest: {},
 		timestamp: null,
 	},
+	boostedTransactions: objectTypeItems,
 	blacklistedUtxos: {
 		bitcoin: [],
 		bitcoinTestnet: [],
+		bitcoinRegtest: [],
 		timestamp: null,
 	},
 	balance: {
 		bitcoin: 0,
 		bitcoinTestnet: 128206,
+		bitcoinRegtest: 0,
 		timestamp: null,
 	},
 	lastUpdated: {
 		bitcoin: 0,
 		bitcoinTestnet: 0,
+		bitcoinRegtest: 0,
 		timestamp: null,
 	},
 	hasBackedUpWallet: false,
@@ -623,18 +764,28 @@ export const walletState = {
 			change: '0',
 			addressIndex: '0',
 		},
+		bitcoinRegtest: {
+			purpose: '84',
+			coinType: '0',
+			account: '0',
+			change: '0',
+			addressIndex: '0',
+		},
 	},
 	networkTypePath: {
 		bitcoin: '0',
 		bitcoinTestnet: '1',
+		bitcoinRegtest: '0',
 	},
 	addressType: {
-		bitcoin: 'p2wpkh',
-		bitcoinTestnet: 'p2wpkh',
+		bitcoin: EAddressType.p2wpkh,
+		bitcoinTestnet: EAddressType.p2wpkh,
+		bitcoinRegtest: EAddressType.p2wpkh,
 	},
 	rbfData: {
 		bitcoin: {},
 		bitcoinTestnet: {},
+		bitcoinRegtest: {},
 		timestamp: null,
 	},
 	transaction: {
@@ -645,7 +796,6 @@ export const walletState = {
 			fiatAmount: 0,
 			fee: 256,
 			satsPerByte: 1,
-			recommendedFee: 1,
 			transactionSize: 250,
 			message: '',
 			label: '',
@@ -657,7 +807,17 @@ export const walletState = {
 			fiatAmount: 0,
 			fee: 256,
 			satsPerByte: 1,
-			recommendedFee: 1,
+			transactionSize: 250,
+			message: '',
+			label: '',
+		},
+		bitcoinRegtest: {
+			outputs: [],
+			inputs: [],
+			changeAddress: '',
+			fiatAmount: 0,
+			fee: 256,
+			satsPerByte: 1,
 			transactionSize: 250,
 			message: '',
 			label: '',

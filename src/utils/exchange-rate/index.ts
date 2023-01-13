@@ -15,6 +15,18 @@ import {
 	mostUsedExchangeTickers,
 } from './types';
 
+type TTicker = {
+	symbol: string;
+	lastPrice: string;
+	base: string;
+	baseName: string;
+	quote: string;
+	quoteName: string;
+	currencySymbol: string;
+	currencyFlag: string;
+	lastUpdatedAt: number;
+};
+
 export const getExchangeRates = async (): Promise<Result<IExchangeRates>> => {
 	const lastUpdatedAt = getWalletStore().exchangeRates.USD?.lastUpdatedAt;
 
@@ -23,18 +35,21 @@ export const getExchangeRates = async (): Promise<Result<IExchangeRates>> => {
 		const response = await fetch('https://blocktank.synonym.to/fx/rates/btc/');
 		const { tickers } = await response.json();
 
-		const rates: IExchangeRates = tickers.reduce((acc, ticker) => {
-			return {
-				...acc,
-				[ticker.quote]: {
-					currencySymbol: ticker.currencySymbol,
-					quote: ticker.quote,
-					quoteName: ticker.quoteName,
-					rate: Math.round(Number(ticker.lastPrice) * 100) / 100,
-					lastUpdatedAt: ticker.lastUpdatedAt,
-				},
-			};
-		}, {});
+		const rates: IExchangeRates = tickers.reduce(
+			(acc: IExchangeRates, ticker: TTicker) => {
+				return {
+					...acc,
+					[ticker.quote]: {
+						currencySymbol: ticker.currencySymbol,
+						quote: ticker.quote,
+						quoteName: ticker.quoteName,
+						rate: Math.round(Number(ticker.lastPrice) * 100) / 100,
+						lastUpdatedAt: ticker.lastUpdatedAt,
+					},
+				};
+			},
+			{},
+		);
 
 		return ok(rates);
 	} catch (e) {
@@ -132,12 +147,6 @@ export const getBitcoinDisplayValues = ({
 		switch (bitcoinUnit) {
 			case 'BTC':
 				bitcoinSymbol = '₿';
-				break;
-			case 'mBTC':
-				bitcoinSymbol = 'm₿';
-				break;
-			case 'μBTC':
-				bitcoinSymbol = 'μ₿';
 				break;
 			case 'satoshi':
 				bitcoinSymbol = '⚡';

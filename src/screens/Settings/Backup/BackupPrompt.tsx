@@ -13,6 +13,7 @@ import { useNoTransactions } from '../../../hooks/wallet';
 import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
 import { useBalance } from '../../../hooks/wallet';
 import { useAppSelector } from '../../../hooks/redux';
+import { objectKeys } from '../../../utils/objectKeys';
 import { viewControllersSelector } from '../../../store/reselect/ui';
 import {
 	useBottomSheetBackPress,
@@ -59,7 +60,8 @@ const BackupPrompt = ({ enabled }: { enabled: boolean }): ReactElement => {
 	useBottomSheetBackPress('backupPrompt');
 
 	const anyBottomSheetIsOpen = useMemo(() => {
-		return Object.keys(viewControllers)
+		const viewControllerKeys = objectKeys(viewControllers);
+		return viewControllerKeys
 			.filter((view) => view !== 'backupPrompt')
 			.some((view) => viewControllers[view].isOpen);
 	}, [viewControllers]);

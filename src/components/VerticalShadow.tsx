@@ -1,5 +1,5 @@
 import React, { ReactElement, useState, useEffect } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { LayoutChangeEvent, StyleSheet, View } from 'react-native';
 import {
 	Canvas,
 	LinearGradient,
@@ -16,7 +16,7 @@ const VerticalShadow = (): ReactElement => {
 	const [layout, setLayout] = useState({ width: 1, height: 1 });
 	const opacity = useValue(0);
 
-	const handleLayout = (event): void => {
+	const handleLayout = (event: LayoutChangeEvent): void => {
 		setLayout({
 			width: event.nativeEvent.layout.width,
 			height: event.nativeEvent.layout.height,

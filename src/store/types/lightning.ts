@@ -24,16 +24,18 @@ export type TOpenChannelIds = string[];
 
 export interface IDefaultLightningShape {
 	nodeId: IWalletItem<string>;
-	channels: IWalletItem<{ [key: string]: TChannel } | {}>;
+	channels: IWalletItem<{ [key: string]: TChannel }>;
 	openChannelIds: IWalletItem<TOpenChannelIds>;
 	info: IWalletItem<{}>;
-	invoices: IWalletItem<TInvoice[]> | IWalletItem<[]>;
-	payments: IWalletItem<{ [key: string]: TLightningPayment }> | IWalletItem<{}>;
+	invoices: IWalletItem<TInvoice[]>;
+	payments: IWalletItem<{ [key: string]: TLightningPayment }>;
 	peers: IWalletItem<string[]>;
 	claimableBalance: IWalletItem<number>;
 }
 
-export type TNodes = { [key: TWalletName]: IDefaultLightningShape };
+export type TNodes = {
+	[key: TWalletName]: IDefaultLightningShape;
+};
 
 export interface ILightning {
 	version: TLightningNodeVersion;

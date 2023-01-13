@@ -44,7 +44,7 @@ const ConfirmMnemonic = ({
 		[insets.bottom],
 	);
 
-	const handleWordPress = (word, index): void => {
+	const handleWordPress = (word: string, index: number): void => {
 		// find index of the last filled word
 		const lastIndex = seed.findIndex(
 			(v, i, arr) => v !== undefined && arr[i + 1] === undefined,

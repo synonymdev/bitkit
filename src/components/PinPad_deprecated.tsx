@@ -27,7 +27,7 @@ const {
 
 const ACTIVE_OPACITY = 0.2;
 
-const makeDots = (num): string => {
+const makeDots = (num: number): string => {
 	let ret = '';
 	while (num > 0) {
 		ret += ' ○ ';

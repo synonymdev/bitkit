@@ -272,7 +272,7 @@ const List = ({
 	data: IListData[];
 	style?: StyleProp<ViewStyle>;
 	bounces?: boolean;
-	onScrollDownChange?: (boolean) => void;
+	onScrollDownChange?: (value: boolean) => void;
 }): ReactElement => {
 	return (
 		<SectionList
@@ -286,7 +286,11 @@ const List = ({
 			extraData={data}
 			keyExtractor={(item, index): string => `${item.title}-${index}`}
 			renderSectionHeader={useCallback(
-				({ section: { title } }): ReactElement => {
+				({
+					section: { title },
+				}: {
+					section: { title: string };
+				}): ReactElement => {
 					const isFirst = title === data[0].title;
 					return (
 						<ItemHeader
@@ -297,9 +301,12 @@ const List = ({
 				},
 				[data],
 			)}
-			renderItem={useCallback(({ item }): ReactElement | null => {
-				return item.hide ? null : <Item {...item} />;
-			}, [])}
+			renderItem={useCallback(
+				({ item }: { item: ItemData }): ReactElement | null => {
+					return item.hide ? null : <Item {...item} />;
+				},
+				[],
+			)}
 			stickySectionHeadersEnabled={false}
 			contentContainerStyle={style}
 			bounces={bounces}

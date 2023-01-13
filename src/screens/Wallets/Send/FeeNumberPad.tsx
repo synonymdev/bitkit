@@ -2,13 +2,13 @@ import React, { memo, ReactElement } from 'react';
 import { useSelector } from 'react-redux';
 
 import NumberPad from '../../../components/NumberPad';
-import { useTransactionDetails } from '../../../hooks/transaction';
 import { updateFee } from '../../../utils/wallet/transactions';
 import NumberPadButtons from '../NumberPadButtons';
 import { showErrorNotification } from '../../../utils/notifications';
 import {
 	selectedNetworkSelector,
 	selectedWalletSelector,
+	transactionSelector,
 } from '../../../store/reselect/wallet';
 
 /**
@@ -23,10 +23,10 @@ const FeeNumberPad = ({
 }): ReactElement => {
 	const selectedWallet = useSelector(selectedWalletSelector);
 	const selectedNetwork = useSelector(selectedNetworkSelector);
-	const transaction = useTransactionDetails();
+	const transaction = useSelector(transactionSelector);
 
 	// Add, shift and update the current transaction amount based on the provided fiat value or bitcoin unit.
-	const onPress = (key): void => {
+	const onPress = (key: string | number): void => {
 		let amount = String(transaction.satsPerByte);
 		amount = `${amount}${key}`;
 

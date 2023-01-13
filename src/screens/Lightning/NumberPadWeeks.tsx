@@ -15,7 +15,7 @@ const NumberPadWeeks = ({
 	onDone: () => void;
 	style?: object | Array<object>;
 }): ReactElement => {
-	const onPress = (key): void => {
+	const onPress = (key: string | number): void => {
 		let amount = Number(`${weeks}${key}`);
 		// limit amount 12 weeks
 		if (amount > 12) {

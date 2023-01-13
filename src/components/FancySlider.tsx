@@ -8,7 +8,14 @@ import React, {
 	useState,
 } from 'react';
 import { BlurMask, Canvas, Rect } from '@shopify/react-native-skia';
-import { Animated, PanResponder, StyleSheet, View } from 'react-native';
+import {
+	Animated,
+	PanResponder,
+	StyleProp,
+	StyleSheet,
+	View,
+	ViewStyle,
+} from 'react-native';
 import throttle from 'lodash.throttle';
 
 import { View as ThemedView } from '../styles/components';
@@ -59,7 +66,13 @@ const xToValue = (
 	return (delta / width) * newX;
 };
 
-const Glow = ({ style, width }): ReactElement => {
+const Glow = ({
+	style,
+	width,
+}: {
+	style: StyleProp<ViewStyle>;
+	width: number;
+}): ReactElement => {
 	const colors = useColors();
 	const cStyle = useMemo(
 		() => [style, { width: width + CIRCLE_SIZE * 2, height: CIRCLE_SIZE * 3 }],
@@ -110,7 +123,7 @@ const FancySlider = ({
 	]);
 
 	const handleValueChange = useCallback(
-		(x) => {
+		(x: number) => {
 			if (!active.current) {
 				return;
 			}
@@ -213,7 +226,7 @@ const FancySlider = ({
 	});
 
 	useEffect(() => {
-		const l = pan.addListener(({ x }) => handleValueChange(x));
+		const l = pan.addListener(({ x }: { x: number }) => handleValueChange(x));
 		return () => pan.removeListener(l);
 	}, [pan, handleValueChange]);
 

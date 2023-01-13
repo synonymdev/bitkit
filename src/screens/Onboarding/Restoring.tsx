@@ -13,7 +13,8 @@ import { sleep } from '../../utils/helpers';
 import LoadingWalletScreen from './Loading';
 import { IColors } from '../../styles/colors';
 
-const imageSrc = require('../../assets/illustrations/check.png');
+const checkImageSrc = require('../../assets/illustrations/check.png');
+const crossImageSrc = require('../../assets/illustrations/cross.png');
 
 let attemptedAutoRestore = false;
 
@@ -53,10 +54,11 @@ const RestoringScreen = (): ReactElement => {
 		const subtitle = showRestored
 			? 'You have successfully restored your wallet from backup. Enjoy Bitkit!'
 			: 'Failed to recover backed up data.';
+		const imageSrc = showRestored ? checkImageSrc : crossImageSrc;
+		const buttonText = showRestored ? 'Get Started' : 'Try Again';
 		const onPress = showRestored
 			? (): Result<string> => updateUser({ requiresRemoteRestore: false }) //App.tsx will show wallet now
 			: (): Promise<void> => onRemoteRestore().then().catch(console.error);
-		const buttonText = showRestored ? 'Get Started' : 'Try Again';
 
 		content = (
 			<View style={styles.contentResult}>

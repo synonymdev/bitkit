@@ -7,11 +7,11 @@ import { Camera as CameraKit, CameraType } from 'react-native-camera-kit';
 import CameraNoAuth from './CameraNoAuth';
 import GradientView from './GradientView';
 
-const STATUS = Object.freeze({
-	AUTHORIZED: 'AUTHORIZED',
-	NOT_AUTHORIZED: 'NOT_AUTHORIZED',
-	UNKNOWN: 'UNKNOWN',
-});
+enum Status {
+	AUTHORIZED = 'AUTHORIZED',
+	NOT_AUTHORIZED = 'NOT_AUTHORIZED',
+	UNKNOWN = 'UNKNOWN',
+}
 
 const Camera = ({
 	onBarCodeRead,
@@ -24,7 +24,7 @@ const Camera = ({
 }): ReactElement => {
 	const isFocused = useIsFocused();
 	const [_data, setData] = useState('');
-	const [cameraStatus, setCameraStatus] = useState(STATUS.UNKNOWN);
+	const [cameraStatus, setCameraStatus] = useState<Status>(Status.UNKNOWN);
 
 	useEffect(() => {
 		(async (): Promise<void> => {
@@ -36,7 +36,7 @@ const Camera = ({
 			switch (checkResponse) {
 				case RESULTS.UNAVAILABLE:
 				case RESULTS.BLOCKED:
-					setCameraStatus(STATUS.NOT_AUTHORIZED);
+					setCameraStatus(Status.NOT_AUTHORIZED);
 					break;
 				case RESULTS.DENIED:
 					const rationale = {
@@ -48,13 +48,13 @@ const Camera = ({
 					const requestResponse = await request(cameraPermission, rationale);
 					setCameraStatus(
 						requestResponse === RESULTS.GRANTED
-							? STATUS.AUTHORIZED
-							: STATUS.NOT_AUTHORIZED,
+							? Status.AUTHORIZED
+							: Status.NOT_AUTHORIZED,
 					);
 					break;
 				case RESULTS.LIMITED:
 				case RESULTS.GRANTED:
-					setCameraStatus(STATUS.AUTHORIZED);
+					setCameraStatus(Status.AUTHORIZED);
 					break;
 			}
 		})();
@@ -74,7 +74,7 @@ const Camera = ({
 
 	return (
 		<GradientView style={styles.container}>
-			{cameraStatus === STATUS.AUTHORIZED && (
+			{cameraStatus === Status.AUTHORIZED && (
 				<>
 					<CameraKit
 						style={styles.camera}
@@ -86,7 +86,7 @@ const Camera = ({
 					{children}
 				</>
 			)}
-			{cameraStatus === STATUS.NOT_AUTHORIZED && <CameraNoAuth />}
+			{cameraStatus === Status.NOT_AUTHORIZED && <CameraNoAuth />}
 		</GradientView>
 	);
 };

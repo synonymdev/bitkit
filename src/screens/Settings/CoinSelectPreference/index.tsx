@@ -1,6 +1,5 @@
 import React, { memo, ReactElement, useMemo } from 'react';
 import { useSelector } from 'react-redux';
-import { Result } from '@synonymdev/result';
 
 import { EItemType, IListData } from '../../../components/List';
 import SettingsView from '../SettingsView';
@@ -44,34 +43,37 @@ const CoinSelectSettings = (): ReactElement => {
 						title: 'Consolidate',
 						value: coinSelectPreference === 'consolidate',
 						type: EItemType.button,
-						onPress: (): Result<string> =>
+						hide: !selectedAutoPilot,
+						onPress: (): void => {
 							updateSettings({
 								coinSelectAuto: true,
 								coinSelectPreference: 'consolidate',
-							}),
-						hide: !selectedAutoPilot,
+							});
+						},
 					},
 					{
 						title: 'Maximum Privacy',
 						value: coinSelectPreference === 'large',
 						type: EItemType.button,
-						onPress: (): Result<string> =>
+						hide: !selectedAutoPilot,
+						onPress: (): void => {
 							updateSettings({
 								coinSelectAuto: true,
 								coinSelectPreference: 'large',
-							}),
-						hide: !selectedAutoPilot,
+							});
+						},
 					},
 					{
 						title: 'Minimum UTXOs',
 						value: coinSelectPreference === 'small',
 						type: EItemType.button,
-						onPress: (): Result<string> =>
+						hide: !selectedAutoPilot,
+						onPress: (): void => {
 							updateSettings({
 								coinSelectAuto: true,
 								coinSelectPreference: 'small',
-							}),
-						hide: !selectedAutoPilot,
+							});
+						},
 					},
 				],
 			},

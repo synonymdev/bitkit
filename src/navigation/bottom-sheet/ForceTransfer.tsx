@@ -51,7 +51,7 @@ const ForceTransfer = (): ReactElement => {
 
 	// try to cooperatively close the channel(s) for 30min
 	useEffect(() => {
-		let interval;
+		let interval: NodeJS.Timer;
 
 		if (!startTime) {
 			return;

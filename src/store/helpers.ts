@@ -2,7 +2,7 @@ import { Dispatch } from 'redux';
 
 import store from '../store';
 import Store, { EStore } from './types';
-import { IWallet } from './types/wallet';
+import { IWalletStore } from './types/wallet';
 import { ISettings } from './types/settings';
 import { IMetadata } from './types/metadata';
 import { IActivity } from './types/activity';
@@ -19,7 +19,7 @@ Used to retrieve the store outside of a component.
 export const getStore = (): Store =>
 	JSON.parse(JSON.stringify(store.getState()));
 
-export const getWalletStore = (): IWallet =>
+export const getWalletStore = (): IWalletStore =>
 	JSON.parse(JSON.stringify(store.getState()[EStore.wallet]));
 
 export const getSettingsStore = (): ISettings =>

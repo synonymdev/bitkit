@@ -25,8 +25,11 @@ import useKeyboard from '../../../hooks/keyboard';
 import GradientView from '../../../components/GradientView';
 import ReceiveNumberPad from './ReceiveNumberPad';
 import { FadeIn, FadeOut } from 'react-native-reanimated';
+import { ReceiveScreenProps } from '../../../navigation/types';
 
-const ReceiveDetails = ({ navigation }): ReactElement => {
+const ReceiveDetails = ({
+	navigation,
+}: ReceiveScreenProps<'ReceiveDetails'>): ReactElement => {
 	const insets = useSafeAreaInsets();
 	const invoice = useSelector((store: Store) => store.receive);
 	const { keyboardShown } = useKeyboard();

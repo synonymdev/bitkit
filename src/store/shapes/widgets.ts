@@ -1,6 +1,6 @@
-import { IWidgets } from '../types/widgets';
+import { IWidgetsStore } from '../types/widgets';
 
-export const defaultWidgetsShape: IWidgets = {
+export const defaultWidgetsShape: IWidgetsStore = {
 	widgets: {},
 	onboardedWidgets: false,
 	sortOrder: [],

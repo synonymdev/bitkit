@@ -65,7 +65,7 @@ describe('Wallet - wallet restore and receive', () => {
 		expect(store.getState().wallet.selectedWallet).toEqual('wallet0');
 
 		// switch to regtest
-		await updateWallet({ selectedNetwork: 'bitcoinRegtest' });
+		updateWallet({ selectedNetwork: 'bitcoinRegtest' });
 		expect(store.getState().wallet.selectedNetwork).toEqual('bitcoinRegtest');
 
 		res = await addElectrumPeer({

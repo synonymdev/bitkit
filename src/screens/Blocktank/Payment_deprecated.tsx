@@ -9,7 +9,7 @@ import {
 	updateBitcoinTransaction,
 	updateWalletBalance,
 } from '../../store/actions/wallet';
-import { useBalance, useTransactionDetails } from '../../hooks/transaction';
+import { useBalance } from '../../hooks/transaction';
 import Button from '../../components/Button';
 import {
 	broadcastTransaction,
@@ -31,15 +31,16 @@ import { refreshWallet } from '../../utils/wallet';
 import {
 	selectedNetworkSelector,
 	selectedWalletSelector,
+	transactionSelector,
 } from '../../store/reselect/wallet';
 
-const BlocktankPayment = (props): ReactElement => {
+const BlocktankPayment = (props: any): ReactElement => {
 	const { navigation, route } = props;
 	const { order } = route.params;
 
 	const selectedWallet = useSelector(selectedWalletSelector);
 	const selectedNetwork = useSelector(selectedNetworkSelector);
-	const transaction = useTransactionDetails();
+	const transaction = useSelector(transactionSelector);
 	const balance = useBalance();
 
 	const { bitcoinFormatted, bitcoinSymbol, fiatFormatted, fiatSymbol } =

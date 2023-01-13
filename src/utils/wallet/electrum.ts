@@ -1,11 +1,12 @@
 import * as electrum from 'rn-electrum-client/helpers';
 import * as peers from 'rn-electrum-client/helpers/peers.json';
+import { Block } from 'bitcoinjs-lib';
+import { err, ok, Result } from '@synonymdev/result';
 
 import { TAvailableNetworks } from '../networks';
-import { err, ok, Result } from '@synonymdev/result';
 import {
+	IAddresses,
 	IAddress,
-	IAddressContent,
 	IUtxo,
 	IWalletItem,
 	TWalletName,
@@ -22,7 +23,6 @@ import {
 	ITxHash,
 	refreshWallet,
 } from './index';
-import { Block } from 'bitcoinjs-lib';
 import { ICustomElectrumPeer } from '../../store/types/settings';
 import { updateHeader } from '../../store/actions/wallet';
 import { getWalletStore } from '../../store/helpers';
@@ -32,6 +32,7 @@ import {
 	TGetAddressHistory,
 } from '../types/electrum';
 import { GAP_LIMIT, CHUNK_LIMIT } from './constants';
+import { objectKeys } from '../objectKeys';
 
 export interface IGetUtxosResponse {
 	utxos: IUtxo[];
@@ -65,14 +66,14 @@ export const getUtxos = async ({
 			selectedWallet,
 		});
 
-		const addressTypes = getAddressTypes();
-		let addresses: IAddress = {};
-		let changeAddresses: IAddress = {};
+		const addressTypes = objectKeys(getAddressTypes());
+		let addresses = {} as IAddresses;
+		let changeAddresses = {} as IAddresses;
 		let utxos: IUtxo[] = [];
-		let existingUtxos = {};
+		let existingUtxos: { [key: string]: IUtxo } = {};
 		let balance = 0;
 
-		Object.keys(addressTypes).map(async (addressTypeKey) => {
+		addressTypes.map(async (addressType) => {
 			if (!selectedNetwork) {
 				selectedNetwork = getSelectedNetwork();
 			}
@@ -80,7 +81,7 @@ export const getUtxos = async ({
 				selectedWallet = getSelectedWallet();
 			}
 			const addressCount = Object.keys(
-				currentWallet.addresses[selectedNetwork][addressTypeKey],
+				currentWallet.addresses[selectedNetwork][addressType],
 			)?.length;
 			// Check if addresses of this type have been generated. If not, skip.
 			if (addressCount <= 0) {
@@ -89,31 +90,28 @@ export const getUtxos = async ({
 
 			// Grab the current index for both addresses and change addresses.
 			const addressIndex =
-				currentWallet.addressIndex[selectedNetwork][addressTypeKey]?.index;
+				currentWallet.addressIndex[selectedNetwork][addressType].index;
 			const changeAddressIndex =
-				currentWallet.changeAddressIndex[selectedNetwork][addressTypeKey]
-					?.index;
+				currentWallet.changeAddressIndex[selectedNetwork][addressType].index;
 
 			// Grab all addresses and change addresses.
-			const allAddresses: IAddress =
-				currentWallet.addresses[selectedNetwork][addressTypeKey];
-			const allChangeAddresses: IAddress =
-				currentWallet.changeAddresses[selectedNetwork][addressTypeKey];
+			const allAddresses =
+				currentWallet.addresses[selectedNetwork][addressType];
+			const allChangeAddresses =
+				currentWallet.changeAddresses[selectedNetwork][addressType];
 
 			// Instead of scanning all addresses, adhere to the gap limit.
 			if (!scanAllAddresses && addressIndex >= 0 && changeAddressIndex >= 0) {
-				await Promise.all([
-					Object.values(allAddresses).map((a) => {
-						if (Math.abs(a.index - addressIndex) <= GAP_LIMIT) {
-							addresses[a.scriptHash] = a;
-						}
-					}),
-					Object.values(allChangeAddresses).map((a) => {
-						if (Math.abs(a.index - changeAddressIndex) <= GAP_LIMIT) {
-							changeAddresses[a.scriptHash] = a;
-						}
-					}),
-				]);
+				Object.values(allAddresses).map((a) => {
+					if (Math.abs(a.index - addressIndex) <= GAP_LIMIT) {
+						addresses[a.scriptHash] = a;
+					}
+				});
+				Object.values(allChangeAddresses).map((a) => {
+					if (Math.abs(a.index - changeAddressIndex) <= GAP_LIMIT) {
+						changeAddresses[a.scriptHash] = a;
+					}
+				});
 			} else {
 				addresses = allAddresses;
 				changeAddresses = allChangeAddresses;
@@ -180,14 +178,13 @@ export const subscribeToAddresses = async ({
 	selectedNetwork,
 	selectedWallet,
 	scriptHashes = [],
-	onReceive = (): null => null,
+	onReceive,
 }: {
 	selectedNetwork?: TAvailableNetworks;
 	selectedWallet?: TWalletName;
 	scriptHashes?: string[];
-	onReceive?: Function;
+	onReceive?: () => void;
 }): Promise<Result<string>> => {
-	const addressTypes = getAddressTypes();
 	if (!selectedNetwork) {
 		selectedNetwork = getSelectedNetwork();
 	}
@@ -198,16 +195,17 @@ export const subscribeToAddresses = async ({
 		selectedNetwork,
 		selectedWallet,
 	});
+	const addressTypes = objectKeys(getAddressTypes());
+
 	// Gather the receiving address scripthash for each address type if no scripthashes were provided.
-	if (!scriptHashes?.length) {
-		for (const addressType of Object.keys(addressTypes)) {
+	if (!scriptHashes.length) {
+		for (const addressType of addressTypes) {
 			// Check if addresses of this type have been generated. If not, skip.
 			const addressCount = Object.keys(
 				currentWallet.addresses[selectedNetwork][addressType],
 			)?.length;
 			if (addressCount > 0) {
-				const addresses: IAddress =
-					currentWallet.addresses[selectedNetwork][addressType];
+				const addresses = currentWallet.addresses[selectedNetwork][addressType];
 				let addressIndex =
 					currentWallet.addressIndex[selectedNetwork][addressType]?.index;
 				addressIndex = addressIndex > 0 ? addressIndex : 0;
@@ -229,14 +227,14 @@ export const subscribeToAddresses = async ({
 
 	// Subscribe to all provided scriphashes.
 	await Promise.all(
-		scriptHashes?.map(async (addressScriptHash) => {
+		scriptHashes.map(async (addressScriptHash) => {
 			const subscribeAddressResponse: ISubscribeToAddress =
 				await electrum.subscribeAddress({
 					scriptHash: addressScriptHash,
 					network: selectedNetwork,
 					onReceive: (): void => {
 						refreshWallet({});
-						onReceive();
+						onReceive?.();
 					},
 				});
 			if (subscribeAddressResponse.error) {
@@ -265,10 +263,10 @@ interface ISubscribeToHeader {
  */
 export const subscribeToHeader = async ({
 	selectedNetwork,
-	onReceive = (): void => {},
+	onReceive,
 }: {
 	selectedNetwork?: TAvailableNetworks;
-	onReceive?: Function;
+	onReceive?: () => void;
 }): Promise<Result<IHeader>> => {
 	if (!selectedNetwork) {
 		selectedNetwork = getSelectedNetwork();
@@ -282,7 +280,7 @@ export const subscribeToHeader = async ({
 				selectedNetwork,
 				header: { ...data[0], hash },
 			});
-			onReceive();
+			onReceive?.();
 		},
 	});
 	if (subscribeResponse.error) {
@@ -380,7 +378,7 @@ export interface IPeerData {
  * @return {Promise<Result<IPeerData>>}
  */
 export const getConnectedPeer = async (
-	selectedNetwork,
+	selectedNetwork: TAvailableNetworks,
 ): Promise<Result<IPeerData>> => {
 	try {
 		if (!selectedNetwork) {
@@ -445,7 +443,7 @@ export interface TTxResult {
 }
 
 interface TTxResponse {
-	data: IAddressContent;
+	data: IAddress;
 	id: number;
 	jsonrpc: string;
 	param: string;
@@ -460,13 +458,11 @@ interface IGetAddressScriptHashesHistoryResponse {
 	network: string;
 }
 
-export interface IGetAddressHistoryResponse
-	extends TTxResult,
-		IAddressContent {}
+export interface IGetAddressHistoryResponse extends TTxResult, IAddress {}
 
 /**
  * Returns the available history for the provided address script hashes.
- * @param {IAddressContent[]} [scriptHashes]
+ * @param {IAddress[]} [scriptHashes]
  * @param {TAvailableNetworks} [selectedNetwork]
  * @param {TWalletName} [selectedWallet]
  * @param {boolean} [scanAllAddresses]
@@ -478,7 +474,7 @@ export const getAddressHistory = async ({
 	selectedWallet,
 	scanAllAddresses = false,
 }: {
-	scriptHashes?: IAddressContent[];
+	scriptHashes?: IAddress[];
 	selectedNetwork?: TAvailableNetworks;
 	selectedWallet?: TWalletName;
 	scanAllAddresses?: boolean;
@@ -503,13 +499,12 @@ export const getAddressHistory = async ({
 			currentWallet.changeAddressIndex[selectedNetwork];
 
 		if (scriptHashes.length < 1) {
-			const addressTypes = getAddressTypes();
-			Object.keys(addressTypes).forEach((addressType) => {
-				const addresses: IAddress = currentAddresses[addressType];
-				const changeAddresses: IAddress = currentChangeAddresses[addressType];
-				let addressValues: IAddressContent[] = Object.values(addresses);
-				let changeAddressValues: IAddressContent[] =
-					Object.values(changeAddresses);
+			const addressTypes = objectKeys(getAddressTypes());
+			addressTypes.forEach((addressType) => {
+				const addresses = currentAddresses[addressType];
+				const changeAddresses = currentChangeAddresses[addressType];
+				let addressValues = Object.values(addresses);
+				let changeAddressValues = Object.values(changeAddresses);
 
 				const addressIndex = addressIndexes[addressType].index;
 				const changeAddressIndex = changeAddressIndexes[addressType].index;
@@ -569,13 +564,7 @@ export const getAddressHistory = async ({
 
 		const history: IGetAddressHistoryResponse[] = [];
 		combinedResponse.map(
-			({
-				data,
-				result,
-			}: {
-				data: IAddressContent;
-				result: TTxResult[];
-			}): void => {
+			({ data, result }: { data: IAddress; result: TTxResult[] }): void => {
 				if (result && result?.length > 0) {
 					result.map((item) => {
 						history.push({ ...data, ...item });

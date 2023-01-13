@@ -18,7 +18,7 @@ import {
 import { connectToElectrum, subscribeToHeader } from '../wallet/electrum';
 import { updateOnchainFeeEstimates } from '../../store/actions/fees';
 import { keepLdkSynced, setupLdk } from '../lightning';
-import { updateUser } from '../../store/actions/user';
+import { updateUi } from '../../store/actions/ui';
 import { setupBlocktank, watchPendingOrders } from '../blocktank';
 import { removeExpiredLightningInvoices } from '../../store/actions/lightning';
 import { updateSlashPayConfig } from '../slashtags';
@@ -133,7 +133,7 @@ export const startWalletServices = async ({
 				// Ensure we are subscribed to and save new header information.
 				subscribeToHeader({ selectedNetwork, onReceive }).then();
 			}
-			updateUser({ isConnectedToElectrum });
+			updateUi({ isConnectedToElectrum });
 		}
 
 		const mnemonicResponse = await getMnemonicPhrase();

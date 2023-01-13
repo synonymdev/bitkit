@@ -1,4 +1,9 @@
+import { EmitterSubscription, InteractionManager } from 'react-native';
+import Keychain from 'react-native-keychain';
+import * as bitcoin from 'bitcoinjs-lib';
+import RNFS from 'react-native-fs';
 import { err, ok, Result } from '@synonymdev/result';
+import ldk from '@synonymdev/react-native-ldk/dist/ldk';
 import lm, {
 	DefaultTransactionDataShape,
 	EEventTypes,
@@ -16,7 +21,7 @@ import lm, {
 	TTransactionData,
 	TTransactionPosition,
 } from '@synonymdev/react-native-ldk';
-import ldk from '@synonymdev/react-native-ldk/dist/ldk';
+
 import {
 	getBlockHashFromHeight,
 	getBlockHeader,
@@ -32,14 +37,12 @@ import {
 	getSelectedNetwork,
 	getSelectedWallet,
 } from '../wallet';
-import Keychain from 'react-native-keychain';
 import { TAvailableNetworks } from '../networks';
 import {
 	getBlocktankStore,
 	getLightningStore,
 	getWalletStore,
 } from '../../store/helpers';
-import * as bitcoin from 'bitcoinjs-lib';
 import { header as defaultHeader } from '../../store/shapes/wallet';
 import {
 	addLightningPayment,
@@ -51,8 +54,6 @@ import {
 } from '../../store/actions/lightning';
 import { promiseTimeout, reduceValue, sleep } from '../helpers';
 import { broadcastTransaction } from '../wallet/transactions';
-import RNFS from 'react-native-fs';
-import { EmitterSubscription, InteractionManager } from 'react-native';
 import {
 	EActivityType,
 	TLightningActivityItem,
@@ -373,8 +374,8 @@ export const subscribeToLightningPayments = ({
 };
 
 export const unsubscribeFromLightningSubscriptions = (): void => {
-	paymentSubscription && paymentSubscription.remove();
-	onChannelSubscription && onChannelSubscription.remove();
+	paymentSubscription?.remove();
+	onChannelSubscription?.remove();
 };
 
 export const resetLdk = async (): Promise<Result<string>> => {
@@ -497,8 +498,8 @@ export const getAccount = async ({
 	}
 	const name = `${selectedWallet}${selectedNetwork}${LDK_ACCOUNT_SUFFIX}`;
 	try {
-		let result = await Keychain.getGenericPassword({ service: name });
-		if (result && result?.password) {
+		const result = await Keychain.getGenericPassword({ service: name });
+		if (!!result && result?.password) {
 			// Return existing account.
 			return ok(JSON.parse(result?.password));
 		} else {
@@ -517,7 +518,7 @@ export const getAccount = async ({
 		return ok(defaultAccount);
 	}
 };
-const _getDefaultAccount = (name, mnemonic): TAccount => {
+const _getDefaultAccount = (name: string, mnemonic: string): TAccount => {
 	// @ts-ignore
 	const ldkSeed = bitcoin.crypto.sha256(mnemonic).toString('hex');
 	return {
@@ -828,8 +829,9 @@ export const addPeers = async ({
  * Returns an array of pending and open channels
  * @returns Promise<Result<TChannel[]>>
  */
-export const getLightningChannels = (): Promise<Result<TChannel[]>> =>
-	ldk.listChannels();
+export const getLightningChannels = (): Promise<Result<TChannel[]>> => {
+	return ldk.listChannels();
+};
 
 /**
  * Returns an array of unconfirmed/pending lightning channels from either storage or directly from the LDK node.
@@ -847,7 +849,7 @@ export const getPendingChannels = async ({
 	selectedWallet?: TWalletName;
 	selectedNetwork?: TAvailableNetworks;
 }): Promise<Result<TChannel[]>> => {
-	let channels;
+	let channels: TChannel[];
 	if (fromStorage) {
 		if (!selectedWallet) {
 			selectedWallet = getSelectedWallet();
@@ -855,15 +857,17 @@ export const getPendingChannels = async ({
 		if (!selectedNetwork) {
 			selectedNetwork = getSelectedNetwork();
 		}
-		channels =
+		const channelsStore =
 			getLightningStore().nodes[selectedWallet].channels[selectedNetwork];
+		channels = Object.values(channelsStore);
 	} else {
-		channels = await getLightningChannels();
-		if (channels.isErr()) {
-			return err(channels.error.message);
+		const channelsResponse = await getLightningChannels();
+		if (channelsResponse.isErr()) {
+			return err(channelsResponse.error.message);
 		}
+		channels = channelsResponse.value;
 	}
-	const pendingChannels = channels.value.filter(
+	const pendingChannels = channels.filter(
 		(channel) => !channel?.is_channel_ready,
 	);
 	return ok(pendingChannels);
@@ -1098,7 +1102,7 @@ export const payLightningInvoice = async (
 };
 
 export const decodeLightningInvoice = ({
-	paymentRequest = '',
+	paymentRequest,
 }: TPaymentReq): Promise<Result<TInvoice>> => {
 	paymentRequest = paymentRequest.replace('lightning:', '').trim();
 	return ldk.decode({ paymentRequest });

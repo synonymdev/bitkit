@@ -8,7 +8,13 @@ import { View as ThemedView } from '../styles/components';
 import { Text13UP } from '../styles/text';
 import Store from '../store/types';
 
-const FilterAccessory = ({ tags, addTag }): ReactElement => {
+const FilterAccessory = ({
+	tags,
+	addTag,
+}: {
+	tags: string[];
+	addTag: (tag: string) => void;
+}): ReactElement => {
 	const suggestions = useSelector((store: Store) =>
 		store.metadata.lastUsedTags.filter((t) => !tags.includes(t)),
 	);

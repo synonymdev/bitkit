@@ -1,5 +1,5 @@
 import {
-	ENodeJsMethods,
+	ENodeJsMethod,
 	INodeJsGenerateMnemonic,
 	INodeJsGetAddress,
 	INodeJsGetPrivateKey,
@@ -12,7 +12,7 @@ export const DefaultNodeJsMethodsShape = {
 	setup: (): INodeJsSetup => {
 		return {
 			id: uuidv4(),
-			method: ENodeJsMethods.setup,
+			method: ENodeJsMethod.setup,
 			data: {
 				mnemonic: '',
 				bip39Passphrase: '',
@@ -23,7 +23,7 @@ export const DefaultNodeJsMethodsShape = {
 	generateMnemonic: (): INodeJsGenerateMnemonic => {
 		return {
 			id: uuidv4(),
-			method: ENodeJsMethods.generateMnemonic,
+			method: ENodeJsMethod.generateMnemonic,
 			data: {
 				strength: 256,
 			},
@@ -32,7 +32,7 @@ export const DefaultNodeJsMethodsShape = {
 	getScriptHash: (): INodeJsGetScriptHash => {
 		return {
 			id: uuidv4(),
-			method: ENodeJsMethods.getScriptHash,
+			method: ENodeJsMethod.getScriptHash,
 			data: {
 				address: '',
 				selectedNetwork: undefined,
@@ -42,7 +42,7 @@ export const DefaultNodeJsMethodsShape = {
 	getPrivateKey: (): INodeJsGetPrivateKey => {
 		return {
 			id: uuidv4(),
-			method: ENodeJsMethods.getPrivateKey,
+			method: ENodeJsMethod.getPrivateKey,
 			data: {
 				mnemonic: '',
 				bip39Passphrase: '',
@@ -54,7 +54,7 @@ export const DefaultNodeJsMethodsShape = {
 	getAddress: (): INodeJsGetAddress => {
 		return {
 			id: uuidv4(),
-			method: ENodeJsMethods.getAddress,
+			method: ENodeJsMethod.getAddress,
 			data: {
 				path: '',
 				type: '',

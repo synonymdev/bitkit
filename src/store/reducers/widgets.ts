@@ -1,9 +1,12 @@
 import { removeKeysFromObject } from '../../utils/helpers';
 import actions from '../actions/actions';
 import { defaultWidgetsShape } from '../shapes/widgets';
-import { IWidgets } from '../types/widgets';
+import { IWidgetsStore } from '../types/widgets';
 
-const slashtags = (state: IWidgets = defaultWidgetsShape, action): IWidgets => {
+const widgetsReducer = (
+	state: IWidgetsStore = defaultWidgetsShape,
+	action,
+): IWidgetsStore => {
 	switch (action.type) {
 		case actions.SET_SLASHTAGS_AUTH_WIDGET: {
 			const existing = state.widgets[action.payload.url] || {};
@@ -75,4 +78,4 @@ const slashtags = (state: IWidgets = defaultWidgetsShape, action): IWidgets => {
 	}
 };
 
-export default slashtags;
+export default widgetsReducer;

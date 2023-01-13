@@ -38,9 +38,9 @@ export const handleSlashtagURL = (
 			navigate('WidgetFeedEdit', { url });
 		}
 
-		onSuccess && onSuccess(url);
+		onSuccess?.(url);
 	} catch (error) {
-		onError && onError(error as Error);
+		onError?.(error as Error);
 	}
 };
 
@@ -109,12 +109,12 @@ export const deleteContact = async (
 
 	const drive = await slashtag.drivestore.get('contacts');
 	const id = SlashURL.parse(url).id;
-	await drive.del('/' + id).catch((error: Error) =>
+	await drive.del('/' + id).catch((error: Error) => {
 		showErrorNotification({
 			title: 'Error while deleting contact: ',
 			message: error.message,
-		}),
-	);
+		});
+	});
 
 	drive.close();
 };
@@ -181,7 +181,7 @@ export const updateSlashPayConfig = debounce(
 		}
 		const slashtag = getSelectedSlashtag(sdk);
 		const drive = slashtag.drivestore.get();
-		const payConfig =
+		const payConfig: SlashPayConfig =
 			(await drive.get('/slashpay.json').then(decodeJSON).catch(noop)) || [];
 
 		const { currentLightningNode } = getCurrentWallet({
@@ -204,7 +204,7 @@ export const updateSlashPayConfig = debounce(
 
 		// if offline payments are disabled and payment config is not empy then delete it
 		if (!enableOfflinePayments && payConfig.length > 0) {
-			const newPayConfig = [];
+			const newPayConfig: SlashPayConfig = [];
 			console.debug('Pushing new slashpay.json:', newPayConfig);
 			await drive
 				.put('/slashpay.json', encodeJSON(newPayConfig))
@@ -234,9 +234,8 @@ export const updateSlashPayConfig = debounce(
 
 		// check if we need to update LN invoice
 		if (openChannelIds.length) {
-			const currentInvoice = payConfig.find(
-				({ type }) => type === 'lightningInvoice',
-			)?.value;
+			const currentInvoice =
+				payConfig.find(({ type }) => type === 'lightningInvoice')?.value ?? '';
 
 			// if currentInvoice still in redux store, then we don't need to update it.
 			const currentInvoiceStillUnpaid =

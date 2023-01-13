@@ -6,6 +6,7 @@ import {
 	ViewStyle,
 } from 'react-native';
 import DraggableFlatList, {
+	DragEndParams,
 	RenderItemParams,
 	ScaleDecorator,
 } from 'react-native-draggable-flatlist';
@@ -53,9 +54,9 @@ const DraggableList = ({
 		);
 	};
 	const _onDragEnd = useCallback(
-		(params): void => {
+		(params: DragEndParams<Item>): void => {
 			setData(params.data);
-			onDragEnd && onDragEnd(params.data);
+			onDragEnd?.(params.data);
 		},
 		[onDragEnd],
 	);

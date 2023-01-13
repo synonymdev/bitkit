@@ -6,7 +6,7 @@ import _AntDesign from 'react-native-vector-icons/AntDesign';
 import { SvgXml } from 'react-native-svg';
 
 import styled from './styled-components';
-import { IColors } from './colors';
+import { IThemeColors } from './themes';
 import { settings, dismiss, boost, profileIcon } from '../assets/icons/header';
 import { bitfinexIcon } from '../assets/icons/widgets';
 import { logo } from '../assets/icons/onboarding';
@@ -87,7 +87,7 @@ import {
 } from '../assets/icons/settings';
 
 type IconProps = {
-	color?: keyof IColors;
+	color?: keyof IThemeColors;
 };
 
 export const DismissIcon = styled(SvgXml).attrs((props) => ({

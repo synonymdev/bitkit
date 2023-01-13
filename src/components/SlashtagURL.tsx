@@ -5,6 +5,7 @@ import { TouchableOpacity } from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
 
 import { Caption13S, Text02M } from '../styles/text';
+import { IThemeColors } from '../styles/themes';
 
 export const SlashtagURL = ({
 	url,
@@ -15,7 +16,7 @@ export const SlashtagURL = ({
 }: {
 	url: string;
 	style?: StyleProp<ViewStyle>;
-	color?: string;
+	color?: keyof IThemeColors;
 	bold?: boolean;
 	onPress?: () => void;
 }): JSX.Element => {

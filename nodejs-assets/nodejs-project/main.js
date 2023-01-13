@@ -6,7 +6,7 @@ const bitcoinActions = new BitcoinActions();
 /**
  * msg: {
  *     id: string;
- *     method: ENodeJsMethods;
+ *     method: ENodeJsMethod;
  *     data: TNodeJsMethodsData;
  * }
  */

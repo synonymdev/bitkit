@@ -36,7 +36,6 @@ import {
 	showErrorNotification,
 	showInfoNotification,
 } from '../../../utils/notifications';
-import { useTransactionDetails } from '../../../hooks/transaction';
 import { updateOnchainFeeEstimates } from '../../../store/actions/fees';
 import { decodeLightningInvoice, refreshLdk } from '../../../utils/lightning';
 import { processInputData } from '../../../utils/scanner';
@@ -55,6 +54,7 @@ import { sleep } from '../../../utils/helpers';
 import {
 	selectedNetworkSelector,
 	selectedWalletSelector,
+	transactionSelector,
 } from '../../../store/reselect/wallet';
 import { viewControllerIsOpenSelector } from '../../../store/reselect/ui';
 import {
@@ -84,6 +84,7 @@ const AddressAndAmount = ({
 	const selectedWallet = useSelector(selectedWalletSelector);
 	const selectedNetwork = useSelector(selectedNetworkSelector);
 	const coinSelectAuto = useSelector(coinSelectAutoSelector);
+	const transaction = useSelector(transactionSelector);
 	const sendNavigationIsOpen = useSelector((state) =>
 		viewControllerIsOpenSelector(state, 'sendNavigation'),
 	);
@@ -91,7 +92,6 @@ const AddressAndAmount = ({
 
 	const [decodedInvoice, setDecodedInvoice] = useState<TInvoice>();
 	const [handledOsPaste, setHandledOsPaste] = useState(false);
-	const transaction = useTransactionDetails();
 	const sdk = useSlashtagsSDK();
 
 	const getDecodeAndSetLightningInvoice =
@@ -202,7 +202,7 @@ const AddressAndAmount = ({
 	}, [decodedInvoiceAmount, getOutput?.value, lightningInvoice]);
 
 	const handlePaste = useCallback(
-		async (txt) => {
+		async (txt: string) => {
 			let clipboardData = txt;
 			if (!clipboardData) {
 				clipboardData = await Clipboard.getString();
@@ -246,7 +246,7 @@ const AddressAndAmount = ({
 	};
 
 	const handleTagRemove = useCallback(
-		(tag) => {
+		(tag: string) => {
 			const res = removeTxTag({ tag, selectedNetwork, selectedWallet });
 			if (res.isErr()) {
 				showErrorNotification({

@@ -1,7 +1,7 @@
+import { TInvoice } from '@synonymdev/react-native-ldk';
 import actions from '../actions/actions';
 import { ILightning } from '../types/lightning';
 import { defaultLightningStoreShape } from '../shapes/lightning';
-import { TInvoice } from '@synonymdev/react-native-ldk';
 import { EPaymentType } from '../types/wallet';
 
 const lightning = (

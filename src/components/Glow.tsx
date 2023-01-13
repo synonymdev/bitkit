@@ -9,18 +9,19 @@ import {
 } from '@shopify/react-native-skia';
 
 import useColors from '../hooks/colors';
+import { IThemeColors } from '../styles/themes';
 
 /**
  * This component draws round gradint
  */
 
-interface IGlow {
+type GlowProps = {
 	color: string;
 	size?: number;
 	style?: object;
-}
+};
 
-const Glow = memo(({ color, size = 600, style }: IGlow): ReactElement => {
+const Glow = memo(({ color, size = 600, style }: GlowProps): ReactElement => {
 	const opacity = useValue(0);
 	const cstyle = useMemo(
 		() => ({ width: size, height: size, ...style }),
@@ -44,7 +45,13 @@ const Glow = memo(({ color, size = 600, style }: IGlow): ReactElement => {
 	);
 });
 
-const GlowWrapper = ({ color, ...props }: IGlow): ReactElement => {
+type GlowWrapperProps = {
+	color: keyof IThemeColors;
+	size?: number;
+	style?: object;
+};
+
+const GlowWrapper = ({ color, ...props }: GlowWrapperProps): ReactElement => {
 	const colors = useColors();
 	const glowColor = colors[color] ?? color;
 

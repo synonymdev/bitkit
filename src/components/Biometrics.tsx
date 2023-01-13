@@ -20,7 +20,7 @@ const getIcon = ({
 	biometryData?: IsSensorAvailableResult;
 }): ReactElement => {
 	try {
-		if (!biometryData || !biometryData?.available) {
+		if (!biometryData?.available) {
 			return <View />;
 		}
 		const biometryType = biometryData?.biometryType;

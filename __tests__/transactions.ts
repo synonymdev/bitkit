@@ -23,7 +23,7 @@ describe('On chain transactions', () => {
 			selectedNetwork,
 		});
 
-		await updateWallet({ wallets: { wallet0: walletState } });
+		updateWallet({ wallets: { wallet0: walletState } });
 
 		await setupOnChainTransaction({ selectedNetwork });
 	});

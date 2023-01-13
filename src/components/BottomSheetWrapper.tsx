@@ -33,6 +33,7 @@ import BottomSheet, {
 	BottomSheetView,
 	BottomSheetBackdrop,
 	BottomSheetBackgroundProps,
+	BottomSheetBackdropProps,
 } from '@gorhom/bottom-sheet';
 
 import { TViewController } from '../store/types/ui';
@@ -130,7 +131,7 @@ const BottomSheetWrapper = forwardRef(
 		);
 
 		const renderBackdrop = useCallback(
-			(props) => {
+			(props: BottomSheetBackdropProps) => {
 				if (!backdrop) {
 					return null;
 				}

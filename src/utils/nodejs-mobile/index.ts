@@ -3,7 +3,7 @@ import nodejs from 'nodejs-mobile-react-native';
 import { err, ok, Result } from '@synonymdev/result';
 
 import { TAvailableNetworks } from '../networks';
-import { ENodeJsMethods, TNodeJsMethodsData } from './types';
+import { ENodeJsMethod, TNodeJsMethodsData } from './types';
 import { DefaultNodeJsMethodsShape } from './shapes';
 import { TWalletName } from '../../store/types/wallet';
 import {
@@ -15,17 +15,18 @@ import {
 
 let isSetup = false;
 const methods = {
-	setup: {},
-	getScriptHash: {},
-	generateMnemonic: {},
-	getAddress: {},
+	[ENodeJsMethod.setup]: {},
+	[ENodeJsMethod.generateMnemonic]: {},
+	[ENodeJsMethod.getPrivateKey]: {},
+	[ENodeJsMethod.getScriptHash]: {},
+	[ENodeJsMethod.getAddress]: {},
 };
 const listeners = {};
 
 /**
  * Sets up listeners for nodejs-mobile methods.
  * @param {string} [id]
- * @param {ENodeJsMethods} method
+ * @param {ENodeJsMethod} method
  * @param {(data: any) => void} resolve
  * @returns {Promise<void>}
  */
@@ -35,7 +36,7 @@ async function setupListener({
 	resolve,
 }: {
 	id?: string;
-	method: ENodeJsMethods;
+	method: ENodeJsMethod;
 	resolve: (data: any) => void;
 }): Promise<void> {
 	try {
@@ -57,15 +58,15 @@ async function setupListener({
 }
 
 /**
- * Used to invoke the methods provided in ENodeJsMethods
+ * Used to invoke the methods provided in ENodeJsMethod
  * @param {TNodeJsMethodsData} data
- * @returns {Promise<{id: string; method: ENodeJsMethods; error: boolean; value: string }>}
+ * @returns {Promise<{id: string; method: ENodeJsMethod; error: boolean; value: string }>}
  */
 export const invokeNodeJsMethod = <T = string>(
 	data: TNodeJsMethodsData,
 ): Promise<{
 	id: string;
-	method: ENodeJsMethods;
+	method: ENodeJsMethod;
 	error: boolean;
 	value: T;
 }> => {
@@ -73,7 +74,7 @@ export const invokeNodeJsMethod = <T = string>(
 		if (data.method !== 'setup' && !isSetup) {
 			await setupNodejsMobile({});
 		}
-		const parseAndResolve = (res): void => {
+		const parseAndResolve = (res: string): void => {
 			const parsedData = JSON.parse(res);
 			resolve(parsedData);
 		};

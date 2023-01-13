@@ -1,17 +1,18 @@
+import { Linking, Vibration } from 'react-native';
 import Keychain from 'react-native-keychain';
 import NetInfo from '@react-native-community/netinfo';
+import { default as bitcoinUnits } from 'bitcoin-units';
+import { err, ok, Result } from '@synonymdev/result';
+import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
+
 import { IGetKeychainValue, IResponse, ISetKeychainValue } from './types';
+import { TAvailableNetworks } from './networks';
 import {
 	TBitcoinAbbreviation,
 	TBitcoinLabel,
 	EBitcoinUnit,
 	TTicker,
 } from '../store/types/wallet';
-import { TAvailableNetworks } from './networks';
-import { Linking, Vibration } from 'react-native';
-import { default as bitcoinUnits } from 'bitcoin-units';
-import { err, ok, Result } from '@synonymdev/result';
-import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
 
 export const promiseTimeout = <T>(
 	ms: number,
@@ -210,10 +211,10 @@ export const vibrate = ({
 
 /**
  * Shuffles a given array.
- * @param {any[]} array
- * @return {any[]}
+ * @param {T[]} array
+ * @return {T[]}
  */
-export const shuffleArray = (array): any[] => {
+export const shuffleArray = <T>(array: T[]): T[] => {
 	const newArray = [...array];
 	for (let i = newArray.length - 1; i > 0; i--) {
 		const j = Math.floor(Math.random() * (i + 1));
@@ -296,9 +297,9 @@ export const removeKeysFromObject = (
 	let condition;
 
 	if (typeof keysToRemove === 'string') {
-		condition = (key): boolean => !key.includes(keysToRemove);
+		condition = (key: string): boolean => !key.includes(keysToRemove);
 	} else {
-		condition = (key): boolean => {
+		condition = (key: string): boolean => {
 			return !keysToRemove.some((keyToRemove) => key.includes(keyToRemove));
 		};
 	}
@@ -311,6 +312,16 @@ export const removeKeysFromObject = (
 			});
 		}, {});
 };
+
+/**
+ * Removes all duplicates from an array of objects
+ * @param {T[]} arr
+ * @param {string} key
+ * @return {T[]}
+ */
+export const getUniqueListBy = <T>(arr: T[], key: string): T[] => [
+	...new Map(arr.map((item: T) => [item[key], item])).values(),
+];
 
 /**
  * Returns the new value and abbreviation of the provided number for display.
@@ -359,7 +370,7 @@ export const abbreviateNumber = (
 	return { newValue: _newValue, abbreviation };
 };
 
-const monthName = (index): string => {
+const getMonthName = (index: number): string => {
 	//TODO translate these
 	const months = [
 		'January',
@@ -389,7 +400,7 @@ export const getFormattedDate = (
 	hideYear: boolean = false,
 ): string => {
 	const day = date.getDate();
-	const month = monthName(date.getMonth());
+	const month = getMonthName(date.getMonth());
 	const year = date.getFullYear();
 	const hours = date.getHours();
 	let minutes = date.getMinutes();

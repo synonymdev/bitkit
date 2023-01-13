@@ -1,20 +1,21 @@
 import React, { ReactElement, memo, useCallback, useMemo } from 'react';
 import { StyleSheet, View } from 'react-native';
+import { useSelector } from 'react-redux';
 
 import { Caption13Up, Text01M } from '../../../styles/text';
 import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
 import GradientView from '../../../components/GradientView';
-import { useTransactionDetails } from '../../../hooks/transaction';
 import FeeCustomToggle from './FeeCustomToggle';
 import FeeNumberPad from './FeeNumberPad';
 import { getTotalFee } from '../../../utils/wallet/transactions';
 import useDisplayValues from '../../../hooks/displayValues';
+import { transactionSelector } from '../../../store/reselect/wallet';
 import type { SendScreenProps } from '../../../navigation/types';
 
 const FeeCustom = ({
 	navigation,
 }: SendScreenProps<'FeeCustom'>): ReactElement => {
-	const transaction = useTransactionDetails();
+	const transaction = useSelector(transactionSelector);
 
 	const getFee = useCallback(
 		(_satsPerByte = 1) => {

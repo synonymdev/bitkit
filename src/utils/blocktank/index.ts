@@ -6,7 +6,7 @@ import bt, {
 	IGetOrderResponse,
 	IService,
 } from '@synonymdev/blocktank-client';
-import { TAvailableNetworks } from '../networks';
+import { EAvailableNetworks, TAvailableNetworks } from '../networks';
 import { err, ok, Result } from '@synonymdev/result';
 import { addPeers, getNodeId, refreshLdk } from '../lightning';
 import { refreshOrder } from '../../store/actions/blocktank';
@@ -30,9 +30,9 @@ import { EBitcoinUnit } from '../../store/types/wallet';
  * @returns {void}
  */
 export const setupBlocktank = (selectedNetwork: TAvailableNetworks): void => {
-	if (selectedNetwork === 'bitcoinTestnet') {
+	if (selectedNetwork === EAvailableNetworks.bitcoinTestnet) {
 		return;
-	} else if (selectedNetwork === 'bitcoinRegtest') {
+	} else if (selectedNetwork === EAvailableNetworks.bitcoinRegtest) {
 		updateUser({ isGeoBlocked: false });
 		bt.setNetwork('regtest');
 	} else {
@@ -53,7 +53,7 @@ export const getBlocktankInfo = async (
 	if (fromStorage) {
 		blocktankInfo = getBlocktankStore().info;
 	}
-	if (!blocktankInfo || !blocktankInfo?.node_info?.public_key) {
+	if (!blocktankInfo?.node_info?.public_key) {
 		blocktankInfo = await bt.getInfo();
 	}
 	return blocktankInfo;

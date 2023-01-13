@@ -9,7 +9,9 @@ export interface SlashFeedJSON {
 	fields: Array<{
 		name: string;
 		main: string;
-		files: Array<{ [key: string]: string }>;
+		files: {
+			[key: string]: string;
+		};
 		[key: string]: any;
 	}>;
 	[key: string]: any;
@@ -24,7 +26,11 @@ export interface IWidget {
 }
 
 export interface IWidgets {
-	widgets: { [url: string]: IWidget | undefined };
+	[url: string]: IWidget | undefined;
+}
+
+export interface IWidgetsStore {
+	widgets: IWidgets;
 	onboardedWidgets: boolean;
-	sortOrder: Array<string>;
+	sortOrder: string[];
 }

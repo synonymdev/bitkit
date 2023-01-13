@@ -1,4 +1,4 @@
-export enum EFeeIds {
+export enum EFeeId {
 	instant = 'instant',
 	fast = 'fast',
 	normal = 'normal',

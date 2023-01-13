@@ -14,7 +14,13 @@ const Word = (props: IButton): ReactElement => {
 /**
  * Show keyboad accessory with seed suggestions
  */
-const SeedInputAccessory = ({ word, setWord }): ReactElement => {
+const SeedInputAccessory = ({
+	word,
+	setWord,
+}: {
+	word: string;
+	setWord: (word: string) => void;
+}): ReactElement => {
 	const [suggestions, setSuggestions] = useState<string[]>([]);
 
 	useEffect(() => {

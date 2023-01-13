@@ -20,6 +20,7 @@ import { View as ThemedView } from '../styles/components';
 import { Text02M } from '../styles/text';
 import { RightArrow } from '../styles/icons';
 import useColors from '../hooks/colors';
+import { IThemeColors } from '../styles/themes';
 
 const CIRCLE_SIZE = 60;
 const GRAB_SIZE = 120;
@@ -28,13 +29,14 @@ const PADDING = 8;
 
 interface ISwipeToConfirm {
 	text?: string;
-	color?: string;
+	color?: keyof IThemeColors;
 	onConfirm?: Function;
 	icon?: ReactElement;
 	loading?: boolean;
 	confirmed: boolean;
 	style?: StyleProp<ViewStyle>;
 }
+
 const SwipeToConfirm = ({
 	text = 'Swipe To Confirm',
 	color,

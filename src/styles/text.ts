@@ -1,9 +1,10 @@
 import { Platform } from 'react-native';
 import { robotoWeights, sanFranciscoWeights } from 'react-native-typography';
 import styled from './styled-components';
+import { IThemeColors } from './themes';
 
 type TextProps = {
-	color?: string;
+	color?: keyof IThemeColors;
 };
 
 export const Display = styled.Text<TextProps & { lineHeight?: string }>(

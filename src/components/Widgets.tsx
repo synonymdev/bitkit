@@ -31,17 +31,22 @@ import BlocksWidget from './BlocksWidget';
 import FactsWidget from './FactsWidget';
 import { DISABLE_SLASHTAGS } from '@env';
 
-export const Widgets = ({ onEditStart, onEditEnd }): ReactElement => {
+export const Widgets = ({
+	onEditStart,
+	onEditEnd,
+}: {
+	onEditStart: () => void;
+	onEditEnd: () => void;
+}): ReactElement => {
 	const widgets = useSelector((state: Store) => state.widgets.widgets);
 	const sortOrder = useSelector((state: Store) => state.widgets.sortOrder);
-	const widgetsArray = useMemo(
-		() =>
-			Object.entries(widgets).sort(
-				([a], [b]) => sortOrder.indexOf(a) - sortOrder.indexOf(b),
-			),
-		[widgets, sortOrder],
-	);
-	const [editing, setEditing] = useState<boolean>(false);
+	const [editing, setEditing] = useState(false);
+
+	const widgetsArray = useMemo(() => {
+		return Object.entries(widgets).sort(
+			([a], [b]) => sortOrder.indexOf(a) - sortOrder.indexOf(b),
+		);
+	}, [widgets, sortOrder]);
 
 	const handleEditStart = useCallback((): void => {
 		setEditing(true);

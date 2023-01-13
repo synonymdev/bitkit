@@ -4,12 +4,20 @@ import semverDiff from 'semver/functions/diff';
 
 import { getDispatch } from '../helpers';
 import actions from './actions';
-import { IViewControllerData, TViewController } from '../types/ui';
+import { IUi, IViewControllerData, TViewController } from '../types/ui';
 import { defaultViewController } from '../shapes/ui';
 
 const releaseUrl = 'https://api.github.com/repos/synonymdev/bitkit/releases';
 
 const dispatch = getDispatch();
+
+export const updateUi = (payload: Partial<IUi>): Result<string> => {
+	dispatch({
+		type: actions.UPDATE_UI,
+		payload,
+	});
+	return ok('');
+};
 
 // TODO: improve typing for each view type
 export const toggleView = (payload: {

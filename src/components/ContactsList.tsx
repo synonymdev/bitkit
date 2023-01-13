@@ -122,7 +122,8 @@ const ContactsList = ({
 	const List = bottomSheet ? BottomSheetSectionList : SectionList;
 
 	const renderSectionHeader = useCallback(
-		({ section: { title } }): ReactElement => {
+		// eslint-disable-next-line react/no-unused-prop-types
+		({ section: { title } }: { section: { title: string } }): ReactElement => {
 			const isFirst = title === sectionedContacts[0].title;
 			return (
 				<ThemedView
@@ -136,7 +137,8 @@ const ContactsList = ({
 	);
 
 	const renderItem = useCallback(
-		({ item }): ReactElement => (
+		// eslint-disable-next-line react/no-unused-prop-types
+		({ item }: { item: IContactRecord }): ReactElement => (
 			<ContactItem contact={item} onPress={onPress} />
 		),
 		[onPress],

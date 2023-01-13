@@ -7,6 +7,7 @@ import { Text01M, Text13S } from '../styles/text';
 import HorizontalGradient from '../components/HorizontalGradient';
 import BlurView from '../components/BlurView';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { IThemeColors } from '../styles/themes';
 
 const Toast = ({
 	type,
@@ -25,7 +26,7 @@ const Toast = ({
 		[insets.top],
 	);
 
-	let titleColor = 'white';
+	let titleColor: keyof IThemeColors = 'white';
 	let gradientColor = colors.black;
 
 	if (type === 'success') {

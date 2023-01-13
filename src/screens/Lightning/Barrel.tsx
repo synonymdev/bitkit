@@ -1,12 +1,25 @@
 import React, { memo, ReactElement, useMemo } from 'react';
-import { Image, StyleSheet } from 'react-native';
+import { Image, ImageSourcePropType, StyleSheet } from 'react-native';
 
 import useColors from '../../hooks/colors';
 import useDisplayValues from '../../hooks/displayValues';
 import { TouchableOpacity } from '../../styles/components';
 import { Subtitle } from '../../styles/text';
+import { TPackages } from './CustomSetup';
 
-const Barrel = ({ active, id, amount, img, onPress }): ReactElement => {
+const Barrel = ({
+	active,
+	id,
+	amount,
+	img,
+	onPress,
+}: {
+	active: boolean;
+	id: TPackages['id'];
+	amount: number;
+	img: ImageSourcePropType;
+	onPress: (id: TPackages['id']) => void;
+}): ReactElement => {
 	const colors = useColors();
 	const style = useMemo(
 		() =>

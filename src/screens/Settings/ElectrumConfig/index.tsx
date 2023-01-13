@@ -9,7 +9,9 @@ import { Text, Text01S, Caption13Up } from '../../../styles/text';
 import { ScanIcon } from '../../../styles/icons';
 import { addElectrumPeer } from '../../../store/actions/settings';
 import { TProtocol } from '../../../store/types/settings';
-import { updateUser } from '../../../store/actions/user';
+import { updateUi } from '../../../store/actions/ui';
+import { selectedNetworkSelector } from '../../../store/reselect/wallet';
+import { customElectrumPeersSelector } from '../../../store/reselect/settings';
 import Store from '../../../store/types';
 import { origCustomElectrumPeers } from '../../../store/shapes/settings';
 import { connectToElectrum } from '../../../utils/wallet/electrum';
@@ -28,8 +30,6 @@ import {
 import { getConnectedPeer, IPeerData } from '../../../utils/wallet/electrum';
 import SafeAreaInsets from '../../../components/SafeAreaInsets';
 import { RadioButtonGroup } from '../../../components/RadioButton';
-import { selectedNetworkSelector } from '../../../store/reselect/wallet';
-import { customElectrumPeersSelector } from '../../../store/reselect/settings';
 import type { SettingsScreenProps } from '../../../navigation/types';
 
 type RadioButtonItem = { label: string; value: TProtocol };
@@ -146,14 +146,14 @@ const ElectrumConfig = ({
 			});
 			if (connectResponse.isOk()) {
 				addElectrumPeer({ selectedNetwork, peer: connectData });
-				updateUser({ isConnectedToElectrum: true });
+				updateUi({ isConnectedToElectrum: true });
 				showSuccessNotification({
 					title: 'Electrum Server Updated',
 					message: `Successfully connected to ${host}:${port}`,
 				});
 				await getAndUpdateConnectedPeer();
 			} else {
-				updateUser({ isConnectedToElectrum: false });
+				updateUi({ isConnectedToElectrum: false });
 				showErrorNotification({
 					title: 'Unable to connect to Electrum Server',
 					message: connectResponse.error.message,

@@ -14,7 +14,7 @@ describe('Pulls latest fiat exchange rates and checks the wallet store for valid
 	it('handles missing exchange rate by returning the correct fiat fallback', () => {
 		const dv = getDisplayValues({
 			satoshis: 1010101,
-			bitcoinUnit: EBitcoinUnit.mBTC,
+			bitcoinUnit: EBitcoinUnit.BTC,
 		});
 
 		// expected fiat fallback
@@ -26,10 +26,10 @@ describe('Pulls latest fiat exchange rates and checks the wallet store for valid
 		expect(dv.fiatTicker).toBe('USD');
 		expect(dv.fiatValue).toBe(0);
 
-		// expected mBTC conversion
-		expect(dv.bitcoinFormatted).toBe('10.10101000');
-		expect(dv.bitcoinSymbol).toBe('m₿');
-		expect(dv.bitcoinTicker).toBe('mBTC');
+		// expected BTC conversion
+		expect(dv.bitcoinFormatted).toBe('0.01010101');
+		expect(dv.bitcoinSymbol).toBe('₿');
+		expect(dv.bitcoinTicker).toBe('BTC');
 		expect(dv.satoshis).toBe(1010101);
 	});
 

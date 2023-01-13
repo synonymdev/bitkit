@@ -132,7 +132,7 @@ export const refreshOrder = async (
 			(o) =>
 				o._id === orderId || (orderResponse && orderResponse._id === o._id),
 		);
-		if (storedOrder && storedOrder.state === orderResponse.state) {
+		if (storedOrder?.state === orderResponse.state) {
 			return ok(orderResponse);
 		}
 
@@ -153,7 +153,7 @@ export const refreshOrder = async (
  */
 export const refreshBlocktankInfo = async (): Promise<Result<string>> => {
 	const infoResponse = await getBlocktankInfo();
-	if (infoResponse && infoResponse?.node_info) {
+	if (infoResponse?.node_info) {
 		dispatch({
 			type: actions.UPDATE_BLOCKTANK_INFO,
 			payload: infoResponse,

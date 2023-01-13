@@ -16,6 +16,7 @@ import useColors from '../hooks/colors';
 import { BaseFeedWidget } from './FeedWidget';
 import { IWidget } from '../store/types/widgets';
 import { useFeedWidget } from '../hooks/widgets';
+import { IThemeColors } from '../styles/themes';
 
 const Chart = ({
 	color,
@@ -125,7 +126,10 @@ const PriceWidget = ({
 		};
 	}, [drive, widget.feed.field.files, period]);
 
-	const change = useMemo(() => {
+	const change = useMemo((): {
+		color: keyof IThemeColors;
+		formatted: string;
+	} => {
 		if (!pastValues || pastValues.length < 2) {
 			return { color: 'green', formatted: '+0%' };
 		}

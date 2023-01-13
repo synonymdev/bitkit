@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { RefObject } from 'react';
 import { View, StyleSheet, ViewStyle, StyleProp } from 'react-native';
 import { TextInput, BottomSheetTextInput } from '../styles/components';
 import { Caption13Up } from '../styles/text';
@@ -6,7 +6,7 @@ import { Caption13Up } from '../styles/text';
 type LabeledInputProps = {
 	label: string;
 	children?: JSX.Element | JSX.Element[];
-	ref?;
+	ref?: RefObject<any>;
 	multiline?: boolean;
 	value?: string;
 	returnKeyType?: 'default' | 'next' | 'done';
@@ -74,14 +74,14 @@ const LabeledInput = ({
 				)}
 				{children && (
 					<View style={styles.inputActions}>
-						{React.Children.map(children, (child) =>
-							React.cloneElement(child, {
+						{React.Children.map(children, (child) => {
+							return React.cloneElement(child, {
 								style: {
 									...styles.inputAction,
 									...child.props.style,
 								},
-							}),
-						)}
+							});
+						})}
 					</View>
 				)}
 			</View>

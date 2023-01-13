@@ -8,6 +8,7 @@ import Button from '../../../components/Button';
 import NavigationHeader from '../../../components/NavigationHeader';
 import LightningChannel from '../../../components/LightningChannel';
 import Money from '../../../components/Money';
+import { SettingsScreenProps } from '../../../navigation/types';
 
 const Section = ({
 	name,
@@ -24,7 +25,9 @@ const Section = ({
 	);
 };
 
-const AddConnection = ({ navigation }): ReactElement => {
+const AddConnection = ({
+	navigation,
+}: SettingsScreenProps<'LightningAddConnection'>): ReactElement => {
 	return (
 		<ThemedView style={styles.root}>
 			<SafeAreaInsets type="top" />

@@ -71,7 +71,7 @@ const ProfileScreen = ({
 	const [showCopy, setShowCopy] = useState(false);
 	const { url } = useSelectedSlashtag();
 	const { profile } = useProfile(url);
-	const qrRef = useRef<object>();
+	const qrRef = useRef<string>();
 
 	const [view, setView] = useState('qr');
 	const [isSharing, setIsSharing] = useState(false);
@@ -108,14 +108,12 @@ const ProfileScreen = ({
 	}, [url]);
 
 	const profileLinks = useMemo(() => profile?.links ?? [], [profile?.links]);
-	const profileLinksWithIds = useMemo(
-		() =>
-			profileLinks.map((link) => ({
-				...link,
-				id: `${link.title}:${link.url}`,
-			})),
-		[profileLinks],
-	);
+	const profileLinksWithIds = useMemo(() => {
+		return profileLinks.map((link) => ({
+			...link,
+			id: `${link.title}:${link.url}`,
+		}));
+	}, [profileLinks]);
 
 	return (
 		<ThemedView style={styles.container}>
@@ -199,7 +197,7 @@ const QRView = ({
 }: {
 	url: string;
 	profile?: BasicProfile;
-	qrRef: MutableRefObject<any>;
+	qrRef: MutableRefObject<string | undefined>;
 }): ReactElement => {
 	const dimensions = useWindowDimensions();
 	const [showCopy, setShowCopy] = useState(false);
@@ -255,7 +253,7 @@ const QRView = ({
 						quietZone={20}
 						getRef={(c): void => {
 							if (c) {
-								c.toDataURL((data) => (qrRef.current = data));
+								c.toDataURL((data: string) => (qrRef.current = data));
 							}
 						}}
 					/>

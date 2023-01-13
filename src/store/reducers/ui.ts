@@ -4,6 +4,13 @@ import { defaultUiShape, defaultViewControllers } from '../shapes/ui';
 
 const ui = (state: IUi = defaultUiShape, action): IUi => {
 	switch (action.type) {
+		case actions.UPDATE_UI: {
+			return {
+				...state,
+				...action.payload,
+			};
+		}
+
 		case actions.SET_APP_UPDATE_TYPE:
 			return {
 				...state,
