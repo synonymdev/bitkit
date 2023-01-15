@@ -10,7 +10,8 @@
 
 **⚠️ Bitkit is still in beta. Please use at your own risk.**
 
-[⬇ Download latest APK](https://github.com/synonymdev/bitkit/releases)
+[⬇ Android - Download latest APK](https://github.com/synonymdev/bitkit/releases)
+[⬇ iPhone - Download latest TestFlight app](https://testflight.apple.com/join/lGXhnwcC)
 
 ---
 
