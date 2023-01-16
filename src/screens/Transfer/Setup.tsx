@@ -14,7 +14,6 @@ import Percentage from '../../components/Percentage';
 import FancySlider from '../../components/FancySlider';
 import NumberPadLightning from '../Lightning/NumberPadLightning';
 import { useBalance } from '../../hooks/wallet';
-import { useLightningBalance } from '../../hooks/lightning';
 import { showErrorNotification } from '../../utils/notifications';
 import { startChannelPurchase } from '../../store/actions/blocktank';
 import { useSelector } from 'react-redux';
@@ -35,11 +34,11 @@ import { selectedCurrencySelector } from '../../store/reselect/settings';
 import { EBitcoinUnit } from '../../store/types/wallet';
 
 const Setup = ({ navigation }: TransferScreenProps<'Setup'>): ReactElement => {
-	const balance = useBalance({ onchain: true, lightning: true });
-	const { localBalance: currentSpendingAmount } = useLightningBalance();
+	const { satoshis: onChainBalance } = useBalance({ onchain: true });
+	const { satoshis: lightningBalance } = useBalance({ lightning: true });
 	const [keybrd, setKeybrd] = useState(false);
 	const [loading, setLoading] = useState(false);
-	const [spendingAmount, setSpendingAmount] = useState(currentSpendingAmount);
+	const [spendingAmount, setSpendingAmount] = useState(lightningBalance);
 
 	const selectedNetwork = useSelector(selectedNetworkSelector);
 	const selectedWallet = useSelector(selectedWalletSelector);
@@ -58,9 +57,8 @@ const Setup = ({ navigation }: TransferScreenProps<'Setup'>): ReactElement => {
 	);
 
 	const spendingLimit = useMemo(() => {
-		const spendableBalance = Math.round(
-			balance.satoshis / SPENDING_LIMIT_RATIO,
-		);
+		const spendableBalance =
+			Math.round(onChainBalance / SPENDING_LIMIT_RATIO) + lightningBalance;
 
 		const convertedUnit = convertCurrency({
 			amount: 999,
@@ -72,14 +70,15 @@ const Setup = ({ navigation }: TransferScreenProps<'Setup'>): ReactElement => {
 			bitcoinUnit: EBitcoinUnit.satoshi,
 		});
 
-		return Math.min(spendableBalance, maxSpendingLimit);
-	}, [balance.satoshis, selectedCurrency]);
+		const min = Math.min(spendableBalance, maxSpendingLimit);
+		return min < lightningBalance ? lightningBalance : min;
+	}, [selectedCurrency, lightningBalance, onChainBalance]);
 
 	const savingsAmount = spendingLimit - spendingAmount;
 	const spendingPercentage = Math.round((spendingAmount / spendingLimit) * 100);
 	const savingsPercentage = Math.round((savingsAmount / spendingLimit) * 100);
-	const isTransferringToSavings = spendingAmount < currentSpendingAmount;
-	const isButtonDisabled = spendingAmount === currentSpendingAmount;
+	const isTransferringToSavings = spendingAmount < lightningBalance;
+	const isButtonDisabled = spendingAmount === lightningBalance;
 
 	const handleChange = useCallback((value: number) => {
 		setSpendingAmount(Math.round(value));
@@ -94,7 +93,7 @@ const Setup = ({ navigation }: TransferScreenProps<'Setup'>): ReactElement => {
 		} else {
 			// buy an additional channel from Blocktank with the difference
 			setLoading(true);
-			const remoteBalance = spendingAmount - currentSpendingAmount;
+			const remoteBalance = spendingAmount - lightningBalance;
 			const localBalance =
 				Math.round(remoteBalance * 1.1) > blocktankService.min_channel_size
 					? Math.round(remoteBalance * 1.1)
@@ -126,7 +125,7 @@ const Setup = ({ navigation }: TransferScreenProps<'Setup'>): ReactElement => {
 	}, [
 		blocktankService,
 		isTransferringToSavings,
-		currentSpendingAmount,
+		lightningBalance,
 		spendingAmount,
 		spendingLimit,
 		selectedNetwork,
@@ -174,7 +173,7 @@ const Setup = ({ navigation }: TransferScreenProps<'Setup'>): ReactElement => {
 										minimumValue={0}
 										maximumValue={spendingLimit}
 										value={spendingAmount}
-										snapPoint={currentSpendingAmount}
+										snapPoint={lightningBalance}
 										onValueChange={handleChange}
 									/>
 								</View>
