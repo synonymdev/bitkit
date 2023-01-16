@@ -7,8 +7,8 @@ import React, {
 } from 'react';
 import { StyleSheet, View, ScrollView, TouchableOpacity } from 'react-native';
 import Share from 'react-native-share';
-
 import { FadeIn, FadeOut } from 'react-native-reanimated';
+import { TChannel } from '@synonymdev/react-native-ldk';
 
 import {
 	AnimatedView,
@@ -32,7 +32,6 @@ import {
 	refreshLdk,
 	setupLdk,
 } from '../../../utils/lightning';
-import { TChannel } from '@synonymdev/react-native-ldk';
 import { useSelector } from 'react-redux';
 import Store from '../../../store/types';
 import Clipboard from '@react-native-clipboard/clipboard';
@@ -133,30 +132,29 @@ const Channels = ({
 
 	const colors = useColors();
 	const balance = useBalance({ onchain: true });
-
+	const { localBalance, remoteBalance } = useLightningBalance(false);
 	const selectedWallet = useSelector(selectedWalletSelector);
 	const selectedNetwork = useSelector(selectedNetworkSelector);
-	const channels = useSelector((state: Store) =>
-		channelsSelector(state, selectedWallet, selectedNetwork),
-	);
-	const openChannelIds = useSelector((state: Store) =>
-		openChannelIdsSelector(state, selectedWallet, selectedNetwork),
-	);
+
+	const channels = useSelector((state: Store) => {
+		return channelsSelector(state, selectedWallet, selectedNetwork);
+	});
+	const openChannelIds = useSelector((state: Store) => {
+		return openChannelIdsSelector(state, selectedWallet, selectedNetwork);
+	});
 	const enableDevOptions = useSelector(enableDevOptionsSelector);
 
-	const { localBalance, remoteBalance } = useLightningBalance(false);
+	const openChannels = useSelector((state: Store) => {
+		return isChannelReadySelector(state, selectedWallet, selectedNetwork);
+	});
 
-	const openChannels = useSelector((state: Store) =>
-		isChannelReadySelector(state, selectedWallet, selectedNetwork),
-	);
+	const pendingChannels = useSelector((state: Store) => {
+		return pendingChannelsSelector(state, selectedWallet, selectedNetwork);
+	});
 
-	const pendingChannels = useSelector((state: Store) =>
-		pendingChannelsSelector(state, selectedWallet, selectedNetwork),
-	);
-
-	const closedChannels = useSelector((state: Store) =>
-		closedChannelsSelector(state, selectedWallet, selectedNetwork),
-	);
+	const closedChannels = useSelector((state: Store) => {
+		return closedChannelsSelector(state, selectedWallet, selectedNetwork);
+	});
 
 	const handleAdd = useCallback((): void => {
 		navigation.navigate('LightningRoot', {
@@ -167,6 +165,23 @@ const Channels = ({
 		//navigation.navigate('LightningAddConnection');
 
 		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
+
+	const handleExportLogs = useCallback(async (): Promise<void> => {
+		const res = await zipLogs();
+		if (res.isErr()) {
+			return showErrorNotification({
+				title: 'Failed to share logs',
+				message: res.error.message,
+			});
+		}
+
+		// Share the zip file
+		await Share.open({
+			type: 'application/zip',
+			url: `file://${res.value}`,
+			title: 'Export Lightning Logs',
+		});
 	}, []);
 
 	const onChannelPress = useCallback((channelId: string) => {
@@ -282,7 +297,7 @@ const Channels = ({
 				{pendingChannels.length > 0 && (
 					<>
 						<Caption13Up color="gray1" style={styles.sectionTitle}>
-							PENDING CONNECTIONS
+							Pending connections
 						</Caption13Up>
 						<ChannelList
 							allChannels={channels}
@@ -293,7 +308,7 @@ const Channels = ({
 				)}
 
 				<Caption13Up color="gray1" style={styles.sectionTitle}>
-					OPEN CONNECTIONS
+					Open connections
 				</Caption13Up>
 				<ChannelList
 					allChannels={channels}
@@ -314,175 +329,163 @@ const Channels = ({
 					</AnimatedView>
 				)}
 
-				<View style={styles.buttons}>
-					{enableDevOptions && (
-						<>
-							<Caption13Up color="gray1" style={styles.sectionTitle}>
-								Dev Options
-							</Caption13Up>
-							<TextInput
-								selectionColor="orange"
-								autoCapitalize="none"
-								// @ts-ignore autoCompleteType -> autoComplete in newer version
-								autoCompleteType="off"
-								autoCorrect={false}
-								autoFocus={false}
-								style={styles.textInput}
-								value={peer}
-								placeholder="publicKey@ip:port"
-								multiline={true}
-								onChangeText={(txt: string): void => {
-									setPeer(txt);
-								}}
-								blurOnSubmit
-								returnKeyType="done"
-							/>
-							<Button
-								style={styles.button}
-								text={
-									peer
-										? 'Add Lightning Peer'
-										: 'Paste Lightning Peer From Clipboard'
-								}
-								onPress={onAddPeer}
-							/>
-							<Button
-								style={styles.button}
-								text={'Refresh LDK'}
-								loading={refreshingLdk}
-								onPress={onRefreshLdk}
-							/>
-							<Button
-								style={styles.button}
-								text={'Restart LDK'}
-								loading={restartingLdk}
-								onPress={async (): Promise<void> => {
-									setRestartingLdk(true);
-									await setupLdk({ selectedWallet, selectedNetwork });
-									setRestartingLdk(false);
-								}}
-							/>
-							<Button
-								style={styles.button}
-								text={'Rebroadcast LDK TXS'}
-								loading={rebroadcastingLdk}
-								onPress={async (): Promise<void> => {
-									setRebroadcastingLdk(true);
-									await rebroadcastAllKnownTransactions();
-									setRebroadcastingLdk(false);
-								}}
-							/>
-							<Button
-								style={styles.button}
-								text={'Get Node ID'}
-								onPress={async (): Promise<void> => {
-									const nodeId = await getNodeId();
-									if (nodeId.isErr()) {
-										console.log(nodeId.error.message);
-										return;
-									}
-									console.log(nodeId.value);
-									Clipboard.setString(nodeId.value);
-									showSuccessNotification({
-										title: 'Copied Node ID to Clipboard',
-										message: nodeId.value,
-									});
-								}}
-							/>
-
-							<Button
-								style={styles.button}
-								text={'Share logs'}
-								onPress={async (): Promise<void> => {
-									const res = await zipLogs();
-									if (res.isErr()) {
-										return showErrorNotification({
-											title: 'Failed to share logs',
-											message: res.error.message,
-										});
-									}
-
-									// Share the zip file
-									await Share.open({
-										type: 'application/zip',
-										url: `file://${res.value}`,
-										title: 'LDK logs',
-									});
-								}}
-							/>
-
-							{openChannelIds.length > 0 && (
-								<>
-									{remoteBalance > 100 && (
-										<Button
-											text={'Create Invoice: 100 sats'}
-											onPress={async (): Promise<void> => {
-												createInvoice(100).then();
-											}}
-										/>
-									)}
-									{remoteBalance > 5000 && (
-										<Button
-											text={'Create Invoice: 5000 sats'}
-											onPress={async (): Promise<void> => {
-												createInvoice(5000).then();
-											}}
-										/>
-									)}
-									{localBalance > 0 && (
-										<>
-											<Button
-												text={'Pay Invoice From Clipboard'}
-												loading={payingInvoice}
-												onPress={async (): Promise<void> => {
-													setPayingInvoice(true);
-													const invoice = await Clipboard.getString();
-													if (!invoice) {
-														showErrorNotification({
-															title: 'No Invoice Detected',
-															message:
-																'Unable to retrieve anything from the clipboard.',
-														});
-													}
-													const response = await payLightningInvoice(invoice);
-													if (response.isErr()) {
-														showErrorNotification({
-															title: 'Invoice Payment Failed',
-															message: response.error.message,
-														});
-														setPayingInvoice(false);
-														return;
-													}
-													await Promise.all([
-														refreshLdk({ selectedWallet, selectedNetwork }),
-													]);
-													setPayingInvoice(false);
-													showSuccessNotification({
-														title: 'Invoice Payment Success',
-														message: `Fee: ${response.value.fee_paid_sat} sats`,
-													});
-												}}
-											/>
-										</>
-									)}
-								</>
-							)}
-						</>
-					)}
-
-					{!closed && closedChannels.length > 0 && (
-						<Button
-							style={styles.button}
-							text="Show Closed Connections"
-							textStyle={{ color: colors.white8 }}
-							size="large"
-							variant="transparent"
-							onPress={(): void => setClosed((c) => !c)}
+				{enableDevOptions && (
+					<>
+						<Caption13Up color="gray1" style={styles.sectionTitle}>
+							Dev Options
+						</Caption13Up>
+						<TextInput
+							selectionColor="orange"
+							autoCapitalize="none"
+							// @ts-ignore autoCompleteType -> autoComplete in newer version
+							autoCompleteType="off"
+							autoCorrect={false}
+							autoFocus={false}
+							style={styles.textInput}
+							value={peer}
+							placeholder="publicKey@ip:port"
+							multiline={true}
+							onChangeText={(txt: string): void => {
+								setPeer(txt);
+							}}
+							blurOnSubmit
+							returnKeyType="done"
 						/>
-					)}
+						<Button
+							style={styles.devButton}
+							text={
+								peer
+									? 'Add Lightning Peer'
+									: 'Paste Lightning Peer From Clipboard'
+							}
+							onPress={onAddPeer}
+						/>
+						<Button
+							style={styles.devButton}
+							text="Refresh LDK"
+							loading={refreshingLdk}
+							onPress={onRefreshLdk}
+						/>
+						<Button
+							style={styles.devButton}
+							text="Restart LDK"
+							loading={restartingLdk}
+							onPress={async (): Promise<void> => {
+								setRestartingLdk(true);
+								await setupLdk({ selectedWallet, selectedNetwork });
+								setRestartingLdk(false);
+							}}
+						/>
+						<Button
+							style={styles.devButton}
+							text="Rebroadcast LDK TXS"
+							loading={rebroadcastingLdk}
+							onPress={async (): Promise<void> => {
+								setRebroadcastingLdk(true);
+								await rebroadcastAllKnownTransactions();
+								setRebroadcastingLdk(false);
+							}}
+						/>
+						<Button
+							style={styles.devButton}
+							text="Get Node ID"
+							onPress={async (): Promise<void> => {
+								const nodeId = await getNodeId();
+								if (nodeId.isErr()) {
+									console.log(nodeId.error.message);
+									return;
+								}
+								console.log(nodeId.value);
+								Clipboard.setString(nodeId.value);
+								showSuccessNotification({
+									title: 'Copied Node ID to Clipboard',
+									message: nodeId.value,
+								});
+							}}
+						/>
+
+						{openChannelIds.length > 0 && (
+							<>
+								{remoteBalance > 100 && (
+									<Button
+										text={'Create Invoice: 100 sats'}
+										onPress={async (): Promise<void> => {
+											createInvoice(100).then();
+										}}
+									/>
+								)}
+								{remoteBalance > 5000 && (
+									<Button
+										text="Create Invoice: 5000 sats"
+										onPress={async (): Promise<void> => {
+											createInvoice(5000).then();
+										}}
+									/>
+								)}
+								{localBalance > 0 && (
+									<>
+										<Button
+											text="Pay Invoice From Clipboard"
+											loading={payingInvoice}
+											onPress={async (): Promise<void> => {
+												setPayingInvoice(true);
+												const invoice = await Clipboard.getString();
+												if (!invoice) {
+													showErrorNotification({
+														title: 'No Invoice Detected',
+														message:
+															'Unable to retrieve anything from the clipboard.',
+													});
+												}
+												const response = await payLightningInvoice(invoice);
+												if (response.isErr()) {
+													showErrorNotification({
+														title: 'Invoice Payment Failed',
+														message: response.error.message,
+													});
+													setPayingInvoice(false);
+													return;
+												}
+												await Promise.all([
+													refreshLdk({ selectedWallet, selectedNetwork }),
+												]);
+												setPayingInvoice(false);
+												showSuccessNotification({
+													title: 'Invoice Payment Success',
+													message: `Fee: ${response.value.fee_paid_sat} sats`,
+												});
+											}}
+										/>
+									</>
+								)}
+							</>
+						)}
+					</>
+				)}
+
+				{!closed && closedChannels.length > 0 && (
 					<Button
 						style={styles.button}
-						text="Add New Connection"
+						text="Show Closed & Failed"
+						textStyle={{ color: colors.white8 }}
+						size="large"
+						variant="transparent"
+						onPress={(): void => setClosed((c) => !c)}
+					/>
+				)}
+
+				<View style={styles.buttons}>
+					<Button
+						style={styles.button}
+						text="Export Logs"
+						size="large"
+						variant="secondary"
+						onPress={handleExportLogs}
+					/>
+					<View style={styles.divider} />
+					<Button
+						style={styles.button}
+						text="Add Connection"
 						size="large"
 						disabled={addConnectionIsDisabled}
 						onPress={handleAdd}
@@ -517,14 +520,6 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		alignItems: 'center',
 	},
-	buttons: {
-		flex: 1,
-		justifyContent: 'flex-end',
-		marginBottom: 16,
-	},
-	button: {
-		marginTop: 8,
-	},
 	sectionTitle: {
 		marginTop: 16,
 	},
@@ -554,6 +549,20 @@ const styles = StyleSheet.create({
 		fontWeight: 'bold',
 		fontSize: 16,
 		marginTop: 8,
+	},
+	devButton: {
+		marginTop: 8,
+	},
+	buttons: {
+		flexDirection: 'row',
+		alignItems: 'center',
+		marginTop: 'auto',
+	},
+	button: {
+		flex: 1,
+	},
+	divider: {
+		width: 16,
 	},
 });
 

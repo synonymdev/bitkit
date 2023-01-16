@@ -49,11 +49,6 @@ const AdvancedSettings = ({
 				onPress: (): void => navigation.navigate('PaymentPreference'),
 			},
 			{
-				title: 'Blocktank Orders',
-				type: EItemType.button,
-				onPress: (): void => navigation.navigate('BlocktankOrders'),
-			},
-			{
 				title: 'Address Viewer',
 				type: EItemType.button,
 				onPress: (): void => navigation.navigate('AddressViewer'),

@@ -5,12 +5,16 @@ import { err, ok, Result } from '@synonymdev/result';
 
 /**
  * Zips up the newest LDK logs and returns base64 of zip file
- * @param limit
+ * @param {number} limit
  */
-export const zipLogs = async (limit = 10): Promise<Result<string>> => {
+export const zipLogs = async (limit: number = 10): Promise<Result<string>> => {
+	const logFilePrefix = 'bitkit_ldk_logs';
+	const time = new Date().getTime();
+	const fileName = `${logFilePrefix}_${time}`;
+
 	const logsPath = `${RNFS.DocumentDirectoryPath}/ldk/${lm.account.name}/logs`;
 	const tempPath = `${logsPath}/share`;
-	const zipPath = `${tempPath}/ldk-logs.zip`;
+	const zipPath = `${tempPath}/${fileName}.zip`;
 
 	const logs = await listLogs(logsPath, limit);
 

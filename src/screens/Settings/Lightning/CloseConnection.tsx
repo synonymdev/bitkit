@@ -3,7 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import { useSelector } from 'react-redux';
 
 import { View as ThemedView } from '../../../styles/components';
-import { Text01S } from '../../../styles/text';
+import { Text01B, Text01S } from '../../../styles/text';
 import SafeAreaInsets from '../../../components/SafeAreaInsets';
 import NavigationHeader from '../../../components/NavigationHeader';
 import GlowImage from '../../../components/GlowImage';
@@ -23,18 +23,16 @@ import {
 	selectedWalletSelector,
 } from '../../../store/reselect/wallet';
 
-const imageSrc = require('../../../assets/illustrations/switch.png');
+const imageSrc = require('../../../assets/illustrations/exclamation-mark.png');
 
-const CloseChannel = ({
+const CloseConnection = ({
 	route,
 	navigation,
 }: SettingsScreenProps<'CloseConnection'>): ReactElement => {
 	const { channelId } = route.params;
 	const [loading, setLoading] = useState<boolean>(false);
-
 	const selectedWallet = useSelector(selectedWalletSelector);
 	const selectedNetwork = useSelector(selectedNetworkSelector);
-
 	const channel = useLightningChannelData(channelId);
 	const name = useLightningChannelName(channelId);
 
@@ -57,8 +55,8 @@ const CloseChannel = ({
 			});
 			return;
 		}
-		// If success navigate back to "Channels" and display success notification.
-		navigation.navigate('Channels');
+
+		// TODO: remove and use CloseChannelSuccess bottom-sheet instead
 		showSuccessNotification({
 			title: 'Channel Close Success',
 			message: `Successfully closed ${name}`,
@@ -68,14 +66,23 @@ const CloseChannel = ({
 	return (
 		<ThemedView style={styles.root}>
 			<SafeAreaInsets type="top" />
-			<NavigationHeader title="Are you sure?" />
+			<NavigationHeader
+				title="Close Connection"
+				onClosePress={(): void => navigation.navigate('Wallet')}
+			/>
 			<View style={styles.content}>
 				<Text01S color="gray1">
-					If you close this Lightning connection the spending balance will be
-					transfered to your savings balance (minus closing fees).
+					There is a small cost to close this Lightning Connection and transfer
+					your full spending balance back to your savings. The exact fee depends
+					on network conditions.
+					{'\n'}
+					{'\n'}
+					Transferring funds to savings usually takes ±1 hour, but settlement
+					may take <Text01B color="white">14 days</Text01B> under certain
+					network conditions.
 				</Text01S>
 
-				<GlowImage image={imageSrc} imageSize={200} glowColor="red" />
+				<GlowImage image={imageSrc} imageSize={200} glowColor="yellow" />
 
 				<View style={styles.buttons}>
 					<Button
@@ -122,4 +129,4 @@ const styles = StyleSheet.create({
 	},
 });
 
-export default memo(CloseChannel);
+export default memo(CloseConnection);

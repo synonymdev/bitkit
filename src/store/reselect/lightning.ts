@@ -1,3 +1,4 @@
+import { TChannel } from '@synonymdev/react-native-ldk';
 import Store from '../types';
 import {
 	IDefaultLightningShape,
@@ -7,7 +8,6 @@ import {
 } from '../types/lightning';
 import { createSelector } from '@reduxjs/toolkit';
 import { TAvailableNetworks } from '../../utils/networks';
-import { TChannel } from '@synonymdev/react-native-ldk';
 import { TWalletName } from '../types/wallet';
 
 export const lightningState = (state: Store): ILightning => state.lightning;
@@ -137,12 +137,8 @@ export const channelsSelector = createSelector(
 			selectedNetwork: TAvailableNetworks,
 		): TAvailableNetworks => selectedNetwork,
 	],
-	(
-		lightning,
-		selectedWallet,
-		selectedNetwork,
-	): { [key: string]: TChannel } | {} =>
-		lightning.nodes[selectedWallet].channels[selectedNetwork] ?? {},
+	(lightning, selectedWallet, selectedNetwork): { [key: string]: TChannel } =>
+		lightning.nodes[selectedWallet]?.channels[selectedNetwork],
 );
 
 /**

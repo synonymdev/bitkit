@@ -1,6 +1,9 @@
+import { useMemo } from 'react';
 import { useSelector } from 'react-redux';
-import Store from '../store/types';
 import { TChannel } from '@synonymdev/react-native-ldk';
+
+import { ellipse } from '../utils/helpers';
+import Store from '../store/types';
 import { TUseChannelBalance } from '../store/types/lightning';
 import {
 	selectedNetworkSelector,
@@ -13,8 +16,6 @@ import {
 	nodeSelector,
 	openChannelIdsSelector,
 } from '../store/reselect/lightning';
-import { useMemo } from 'react';
-import { blocktankPaidOrdersSelector } from '../store/reselect/blocktank';
 
 /**
  * Returns the lightning balance of all known open and pending channels.
@@ -128,16 +129,18 @@ export const useLightningChannelBalance = (
 export const useLightningChannelName = (channelId: string): string => {
 	const selectedWallet = useSelector(selectedWalletSelector);
 	const selectedNetwork = useSelector(selectedNetworkSelector);
-	const paidBlocktankOrders = useSelector(blocktankPaidOrdersSelector);
 	const channel = useSelector((state: Store) => {
 		return channelSelector(state, selectedWallet, selectedNetwork, channelId);
 	});
-	const paidBlocktankOrderId = Object.keys(paidBlocktankOrders).filter(
-		(blocktankId) => paidBlocktankOrders[blocktankId] === channel.funding_txid,
-	);
+	const blocktankNodeKey = useSelector((state: Store) => {
+		return state.blocktank.info.node_info.public_key;
+	});
 
-	if (paidBlocktankOrderId.length) {
-		return `Blocktank Channel ${paidBlocktankOrderId[0]}`;
+	const isBlocktankChannel = channel.counterparty_node_id === blocktankNodeKey;
+	const shortChannelId = ellipse(channel?.channel_id, 13);
+
+	if (isBlocktankChannel) {
+		return `Blocktank ${channel?.inbound_scid_alias ?? shortChannelId}`;
 	} else {
 		return channel?.inbound_scid_alias ?? channel?.channel_id
 			? channel?.channel_id

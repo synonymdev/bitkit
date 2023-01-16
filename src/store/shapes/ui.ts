@@ -12,6 +12,7 @@ export const defaultViewController: IViewControllerData = {
 
 export const defaultViewControllers: IUi['viewControllers'] = {
 	appUpdatePrompt: defaultViewController,
+	closeChannelSuccess: defaultViewController,
 	sendNavigation: defaultViewController,
 	receiveNavigation: defaultViewController,
 	backupPrompt: defaultViewController,

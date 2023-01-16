@@ -224,7 +224,7 @@ export const shuffleArray = <T>(array: T[]): T[] => {
 };
 
 /**
- * Truncates strings with an ellipses
+ * Truncates strings with an ellipses at the end
  * @param text
  * @param length
  * @returns {string}
@@ -233,6 +233,21 @@ export const truncate = (text: string, length: number): string => {
 	return trimExtraSpaces(
 		text.length > length ? `${text.substring(0, length - 3)}...` : text,
 	);
+};
+
+/**
+ * Truncates strings with an ellipses in the middle
+ * @param text
+ * @param length
+ * @returns {string}
+ */
+export const ellipse = (text: string, length: number = 15): string => {
+	const leftLength = (length - 3) / 2;
+	const rightLength = (length - 3) / 2;
+
+	return `${text.slice(0, leftLength)}...${text.slice(
+		text.length - rightLength,
+	)}`;
 };
 
 /**

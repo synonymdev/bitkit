@@ -6,7 +6,6 @@ import {
 	StackNavigationOptions,
 	StackNavigationProp,
 } from '@react-navigation/stack';
-import { IGetOrderResponse } from '@synonymdev/blocktank-client';
 
 import MainSettings from '../../screens/Settings';
 import ManageSeedPhrase from '../../screens/Settings/ManageSeedPhrase';
@@ -21,8 +20,6 @@ import BackupData from '../../screens/Settings/Backup/BackupData';
 import LightningNodeInfo from '../../screens/Settings/Lightning/LightningNodeInfo';
 import BitcoinUnitSettings from '../../screens/Settings/BitcoinUnit';
 import TransactionSpeedSettings from '../../screens/Settings/TransactionSpeed';
-import BlocktankOrders from '../../screens/Settings/BlocktankOrders';
-import BlocktankOrderDetails from '../../screens/Settings/BlocktankOrders/BlocktankOrderDetails';
 import AuthCheck from '../../components/AuthCheck';
 import GeneralSettings from '../../screens/Settings/General';
 import SecuritySettings from '../../screens/Settings/Security';
@@ -37,7 +34,8 @@ import EasterEgg from '../../screens/Settings/EasterEgg';
 import BitcoinNetworkSelection from '../../screens/Settings/Bitcoin/BitcoinNetworkSelection';
 import Channels from '../../screens/Settings/Lightning/Channels';
 import ChannelDetails from '../../screens/Settings/Lightning/ChannelDetails';
-import CloseConnection from '../../screens/Settings/Lightning/CloseChannel';
+import CloseConnection from '../../screens/Settings/Lightning/CloseConnection';
+import OpenConnectionSuccess from '../../screens/Settings/Lightning/OpenConnectionSuccess';
 import AddConnection from '../../screens/Settings/Lightning/AddConnection';
 import AddConnectionResult from '../../screens/Settings/Lightning/AddConnectionResult';
 import ExportToPhone from '../../screens/Settings/Backup/ExportToPhone';
@@ -67,8 +65,6 @@ export type SettingsStackParamList = {
 	CurrenciesSettings: undefined;
 	BitcoinUnitSettings: undefined;
 	TransactionSpeedSettings: undefined;
-	BlocktankOrders: undefined;
-	BlocktankOrderDetails: { blocktankOrder: IGetOrderResponse };
 	ElectrumConfig: undefined;
 	CoinSelectPreference: undefined;
 	PaymentPreference: undefined;
@@ -83,6 +79,7 @@ export type SettingsStackParamList = {
 	Channels: undefined;
 	ChannelDetails: { channelId: string };
 	CloseConnection: { channelId: string };
+	OpenConnectionSuccess: { name: string };
 	LightningAddConnection: undefined;
 	LightningAddConnectionResult: undefined;
 	LightningRoot: NavigatorScreenParams<LightningStackParamList>;
@@ -125,11 +122,6 @@ const SettingsNavigator = (): ReactElement => {
 				name="TransactionSpeedSettings"
 				component={TransactionSpeedSettings}
 			/>
-			<Stack.Screen name="BlocktankOrders" component={BlocktankOrders} />
-			<Stack.Screen
-				name="BlocktankOrderDetails"
-				component={BlocktankOrderDetails}
-			/>
 			<Stack.Screen name="ElectrumConfig" component={ElectrumConfig} />
 			<Stack.Screen
 				name="CoinSelectPreference"
@@ -154,6 +146,10 @@ const SettingsNavigator = (): ReactElement => {
 			<Stack.Screen name="Channels" component={Channels} />
 			<Stack.Screen name="ChannelDetails" component={ChannelDetails} />
 			<Stack.Screen name="CloseConnection" component={CloseConnection} />
+			<Stack.Screen
+				name="OpenConnectionSuccess"
+				component={OpenConnectionSuccess}
+			/>
 			<Stack.Screen name="LightningAddConnection" component={AddConnection} />
 			<Stack.Screen
 				name="LightningAddConnectionResult"

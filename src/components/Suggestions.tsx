@@ -63,7 +63,7 @@ const Suggestions = (): ReactElement => {
 			}
 
 			if (id === 'lightningSettingUp') {
-				navigation.navigate('BlocktankOrders');
+				navigation.navigate('Settings', { screen: 'Channels' });
 			}
 
 			if (id === 'transfer') {

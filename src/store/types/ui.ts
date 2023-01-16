@@ -3,6 +3,7 @@ import { TOnchainActivityItem } from './activity';
 
 export type TViewController =
 	| 'appUpdatePrompt'
+	| 'closeChannelSuccess'
 	| 'sendNavigation'
 	| 'receiveNavigation'
 	| 'backupPrompt'

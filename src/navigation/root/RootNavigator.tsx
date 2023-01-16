@@ -34,14 +34,13 @@ import ContactEdit from '../../screens/Contacts/ContactEdit';
 import SlashAuthModal from '../../screens/Widgets/SlashAuthModal';
 import WidgetFeedEdit from '../../screens/Widgets/WidgetFeedEdit';
 import BackupSubscriber from '../../utils/backup/backups-subscriber';
-import BlocktankOrders from '../../screens/Settings/BlocktankOrders';
-import BlocktankOrderDetails from '../../screens/Settings/BlocktankOrders/BlocktankOrderDetails';
 import WidgetsNavigator from '../widgets/WidgetsNavigator';
 import SendNavigation from '../bottom-sheet/SendNavigation';
 import ReceiveNavigation from '../bottom-sheet/ReceiveNavigation';
 import BackupNavigation from '../bottom-sheet/BackupNavigation';
 import PINNavigation from '../bottom-sheet/PINNavigation';
 import ForceTransfer from '../bottom-sheet/ForceTransfer';
+import CloseChannelSuccess from '../bottom-sheet/CloseChannelSuccess';
 import type { RootStackParamList, RootStackScreenProps } from '../types';
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -132,11 +131,6 @@ const RootNavigator = (): ReactElement => {
 					<Stack.Screen name="ContactEdit" component={ContactEdit} />
 					<Stack.Screen name="Contact" component={Contact} />
 					<Stack.Screen name="BuyBitcoin" component={BuyBitcoin} />
-					<Stack.Screen name="BlocktankOrders" component={BlocktankOrders} />
-					<Stack.Screen
-						name="BlocktankOrderDetails"
-						component={BlocktankOrderDetails}
-					/>
 					<Stack.Screen name="WidgetFeedEdit" component={WidgetFeedEdit} />
 					<Stack.Screen name="WidgetsRoot" component={WidgetsNavigator} />
 				</Stack.Group>
@@ -152,6 +146,7 @@ const RootNavigator = (): ReactElement => {
 			<NewTxPrompt />
 			<SlashAuthModal />
 			<ForceTransfer />
+			<CloseChannelSuccess />
 			<BackupSubscriber />
 		</NavigationContainer>
 	);

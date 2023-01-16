@@ -7,7 +7,6 @@ import type {
 	StackNavigationProp,
 	StackScreenProps,
 } from '@react-navigation/stack';
-import type { IGetOrderResponse } from '@synonymdev/blocktank-client';
 
 import type { IActivityItem } from '../../store/types/activity';
 import type { OnboardingStackParamList } from '../onboarding/OnboardingNavigator';
@@ -44,8 +43,6 @@ export type RootStackParamList = {
 	ContactEdit: { url: string };
 	Contact: { url: string };
 	BuyBitcoin: undefined;
-	BlocktankOrders: undefined;
-	BlocktankOrderDetails: { blocktankOrder: IGetOrderResponse };
 	WidgetFeedEdit: { url: string };
 	WidgetsRoot: NavigatorScreenParams<WidgetsStackParamList> | undefined;
 };
