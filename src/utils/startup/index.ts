@@ -179,9 +179,9 @@ export const startWalletServices = async ({
 		if (lightning) {
 			await refreshServiceList();
 			watchPendingOrders();
-			removeExpiredLightningInvoices({
+			await removeExpiredLightningInvoices({
 				selectedNetwork,
-			}).then();
+			});
 		}
 
 		// Refresh slashpay config
