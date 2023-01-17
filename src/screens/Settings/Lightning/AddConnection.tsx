@@ -6,7 +6,7 @@ import { Caption13Up, Caption13M, Text01M } from '../../../styles/text';
 import SafeAreaInsets from '../../../components/SafeAreaInsets';
 import Button from '../../../components/Button';
 import NavigationHeader from '../../../components/NavigationHeader';
-import LightningChannel from '../../../components/LightningChannel';
+// import LightningChannel from '../../../components/LightningChannel';
 import Money from '../../../components/Money';
 import { SettingsScreenProps } from '../../../navigation/types';
 
@@ -40,7 +40,7 @@ const AddConnection = ({
 				<Text01M>LNBIG Lightning Node</Text01M>
 				<View style={styles.channel}>
 					{/* Example channel */}
-					<LightningChannel channelId="" />
+					{/* <LightningChannel channelId="" /> */}
 				</View>
 
 				<View style={styles.sectionTitle}>

@@ -226,31 +226,31 @@ export const watchOrder = async (
 };
 
 /**
- * @param code
+ * @param {number} code
  * @returns {string}
  */
 export const getStateMessage = (code: number): string => {
 	switch (code) {
 		case 0:
-			return 'Awaiting payment';
+			return 'Awaiting Payment';
 		case 100:
 			return 'Paid';
 		case 150:
-			return 'Payment refunded';
+			return 'Payment Refunded';
 		case 200:
-			return 'Queued for opening';
+			return 'Queued For Opening';
 		case 300:
-			return 'Channel opening';
+			return 'Opening Connection';
 		case 350:
-			return 'Channel closing';
+			return 'Connection Closing';
 		case 400:
-			return 'Given up';
+			return 'Given Up';
 		case 410:
-			return 'Order expired';
+			return 'Order Expired';
 		case 450:
-			return 'Channel closed';
+			return 'Connection Closed';
 		case 500:
-			return 'Channel open';
+			return 'Connection Open';
 	}
 
 	return `Unknown code: ${code}`;

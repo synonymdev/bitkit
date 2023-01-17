@@ -9,10 +9,9 @@ import NavigationHeader from '../../../components/NavigationHeader';
 import GlowImage from '../../../components/GlowImage';
 import Button from '../../../components/Button';
 import { closeChannel, refreshLdk } from '../../../utils/lightning';
-import {
-	useLightningChannelData,
-	useLightningChannelName,
-} from '../../../hooks/lightning';
+import { useLightningChannelName } from '../../../hooks/lightning';
+import { channelSelector } from '../../../store/reselect/lightning';
+import Store from '../../../store/types';
 import {
 	showErrorNotification,
 	showSuccessNotification,
@@ -33,8 +32,10 @@ const CloseConnection = ({
 	const [loading, setLoading] = useState<boolean>(false);
 	const selectedWallet = useSelector(selectedWalletSelector);
 	const selectedNetwork = useSelector(selectedNetworkSelector);
-	const channel = useLightningChannelData(channelId);
-	const name = useLightningChannelName(channelId);
+	const channel = useSelector((state: Store) => {
+		return channelSelector(state, selectedWallet, selectedNetwork, channelId);
+	});
+	const name = useLightningChannelName(channel);
 
 	const onContinue = async (): Promise<void> => {
 		setLoading(true);
@@ -61,6 +62,8 @@ const CloseConnection = ({
 			title: 'Channel Close Success',
 			message: `Successfully closed ${name}`,
 		});
+
+		navigation.navigate('Channels');
 	};
 
 	return (

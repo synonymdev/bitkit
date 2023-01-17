@@ -1,99 +1,82 @@
-import React, { ReactElement, memo, useMemo } from 'react';
+import React, { ReactElement, memo } from 'react';
 import { StyleSheet, View } from 'react-native';
+import { TChannel } from '@synonymdev/react-native-ldk';
 
+import { useLightningChannelBalance } from '../hooks/lightning';
 import { View as ThemedView } from '../styles/components';
 import { DownArrow, UpArrow } from '../styles/icons';
+import { IThemeColors } from '../styles/themes';
 import Money from './Money';
-import { useLightningChannelBalance } from '../hooks/lightning';
 
 const LightningChannel = ({
-	channelId,
-	spendingSize = 16,
-	receivingSize = 16,
-	disabled = false,
+	channel,
+	pending = false,
+	closed = false,
 }: {
-	channelId: string;
-	spendingSize?: number;
-	receivingSize?: number;
-	disabled?: boolean;
+	channel: TChannel;
+	pending?: boolean;
+	closed?: boolean;
 }): ReactElement => {
 	const { spendingAvailable, receivingAvailable, capacity } =
-		useLightningChannelBalance(channelId);
+		useLightningChannelBalance(channel);
 
-	const spendingWidth = `${100 * (spendingAvailable / capacity)}%`;
-	const receivingWidth = `${100 * (receivingAvailable / capacity)}%`;
+	let spendingColor: keyof IThemeColors = 'purple5';
+	let spendingAvailableColor: keyof IThemeColors = 'purple';
+	let receivingColor: keyof IThemeColors = 'white5';
+	let receivingAvailableColor: keyof IThemeColors = 'white';
 
-	const spendingTotalStyle = useMemo(
-		() => [
-			styles.bar,
-			styles.barLeft,
-			{
-				borderTopLeftRadius: spendingSize,
-				borderBottomLeftRadius: spendingSize,
-				marginRight: 1,
-			},
-		],
-		[spendingSize],
-	);
-	const spendingAvailableStyle = useMemo(
-		() => ({
-			width: spendingWidth,
-			height: spendingSize,
-			borderTopLeftRadius: spendingSize,
-			borderBottomLeftRadius: spendingSize,
-		}),
-		[spendingSize, spendingWidth],
-	);
+	if (closed) {
+		spendingColor = 'gray5';
+		spendingAvailableColor = 'gray3';
+		receivingColor = 'gray5';
+		receivingAvailableColor = 'gray3';
+	}
 
-	const receivingTotalStyle = useMemo(
-		() => [
-			styles.bar,
-			{
-				borderTopRightRadius: receivingSize,
-				borderBottomRightRadius: receivingSize,
-				marginLeft: 3,
-			},
-		],
-		[receivingSize],
-	);
-	const receivingAvailableStyle = useMemo(
-		() => ({
-			width: receivingWidth,
-			height: receivingSize,
-			borderTopRightRadius: receivingSize,
-			borderBottomRightRadius: receivingSize,
-		}),
-		[receivingSize, receivingWidth],
-	);
+	const spendingAvailableStyle = {
+		width: `${100 * (spendingAvailable / capacity)}%`,
+	};
+
+	const receivingAvailableStyle = {
+		width: `${100 * (receivingAvailable / capacity)}%`,
+	};
 
 	return (
-		<View style={disabled && styles.disabled}>
+		<View style={pending && styles.pending}>
 			<View style={styles.balances}>
 				<View style={styles.balance}>
-					<UpArrow color="purple" width={14} height={14} />
+					<UpArrow color={spendingAvailableColor} width={14} height={14} />
 					<Money
 						sats={spendingAvailable}
-						color="purple"
-						size="text02m"
+						color={spendingAvailableColor}
+						size="caption13M"
 						unit="satoshi"
 					/>
 				</View>
 				<View style={styles.balance}>
-					<DownArrow color="white" width={14} height={14} />
+					<DownArrow color={receivingAvailableColor} width={14} height={14} />
 					<Money
 						sats={receivingAvailable}
-						color="white"
-						size="text02m"
+						color={receivingAvailableColor}
+						size="caption13M"
 						unit="satoshi"
 					/>
 				</View>
 			</View>
 			<View style={styles.bars}>
-				<ThemedView color="purple5" style={spendingTotalStyle}>
-					<ThemedView color="purple" style={spendingAvailableStyle} />
+				<ThemedView color={spendingColor} style={[styles.bar, styles.barLeft]}>
+					<ThemedView
+						color={spendingAvailableColor}
+						style={[styles.barLeft, spendingAvailableStyle]}
+					/>
 				</ThemedView>
-				<ThemedView color="white5" style={receivingTotalStyle}>
-					<ThemedView color="white" style={receivingAvailableStyle} />
+				<View style={styles.divider} />
+				<ThemedView
+					color={receivingColor}
+					style={[styles.bar, styles.barRight]}>
+					<ThemedView
+						color={receivingAvailableColor}
+						style={[styles.barRight, receivingAvailableStyle]}
+					/>
 				</ThemedView>
 			</View>
 		</View>
@@ -105,7 +88,7 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		justifyContent: 'space-between',
 	},
-	disabled: {
+	pending: {
 		opacity: 0.5,
 	},
 	balance: {
@@ -120,9 +103,19 @@ const styles = StyleSheet.create({
 	bar: {
 		flex: 1,
 		flexDirection: 'row',
+		height: 16,
 	},
 	barLeft: {
+		borderTopLeftRadius: 16,
+		borderBottomLeftRadius: 16,
 		justifyContent: 'flex-end',
+	},
+	barRight: {
+		borderTopRightRadius: 16,
+		borderBottomRightRadius: 16,
+	},
+	divider: {
+		width: 4,
 	},
 });
 

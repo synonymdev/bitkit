@@ -6,6 +6,7 @@ import {
 	StackNavigationOptions,
 	StackNavigationProp,
 } from '@react-navigation/stack';
+import { TChannel } from '@synonymdev/react-native-ldk';
 
 import MainSettings from '../../screens/Settings';
 import ManageSeedPhrase from '../../screens/Settings/ManageSeedPhrase';
@@ -41,10 +42,10 @@ import AddConnectionResult from '../../screens/Settings/Lightning/AddConnectionR
 import ExportToPhone from '../../screens/Settings/Backup/ExportToPhone';
 import ResetAndRestore from '../../screens/Settings/Backup/ResetAndRestore';
 import SuggestionsSettings from '../../screens/Settings/Suggestions';
+import SlashtagsSettings from '../../screens/Settings/SlashtagsSettings';
 import LightningNavigator, {
 	LightningStackParamList,
 } from '../lightning/LightningNavigator';
-import SlashtagsSettings from '../../screens/Settings/SlashtagsSettings';
 
 export type SettingsNavigationProp =
 	StackNavigationProp<SettingsStackParamList>;
@@ -77,7 +78,7 @@ export type SettingsStackParamList = {
 	LightningNodeInfo: undefined;
 	ManageSeedPhrase: undefined;
 	Channels: undefined;
-	ChannelDetails: { channelId: string };
+	ChannelDetails: { channel: TChannel };
 	CloseConnection: { channelId: string };
 	OpenConnectionSuccess: { name: string };
 	LightningAddConnection: undefined;

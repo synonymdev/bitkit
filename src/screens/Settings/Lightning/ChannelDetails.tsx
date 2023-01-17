@@ -14,74 +14,120 @@ import LightningChannel from '../../../components/LightningChannel';
 import Money from '../../../components/Money';
 import {
 	useLightningChannelBalance,
-	useLightningChannelData,
 	useLightningChannelName,
 } from '../../../hooks/lightning';
 import { showSuccessNotification } from '../../../utils/notifications';
-import { ITransaction, ITxHash } from '../../../utils/wallet';
 import { getTransactions } from '../../../utils/wallet/electrum';
 import { getBlockExplorerLink } from '../../../utils/wallet/transactions';
 import { openURL } from '../../../utils/helpers';
 import { createSupportLink } from '../../../utils/support';
 import Store from '../../../store/types';
 import { selectedNetworkSelector } from '../../../store/reselect/wallet';
+import { getStateMessage } from '../../../utils/blocktank';
 import {
+	ArrowCounterClock,
+	Checkmark,
 	ClockIcon,
 	LightningIcon,
 	TimerSpeedIcon,
+	XIcon,
 } from '../../../styles/icons';
 import type { SettingsScreenProps } from '../../../navigation/types';
 
-// possible order states
-// https://github.com/synonymdev/blocktank-server/blob/master/src/Orders/Order.js
-// CREATED: 0,
-// PAID: 100,
-// REFUNDED: 150,
-// URI_SET: 200,
-// OPENING: 300,
-// CLOSING: 350,
-// GIVE_UP: 400,
-// EXPIRED: 410,
-// REJECTED: 450,
-// CLOSED: 450,
-// OPEN: 500
-export const getIcon = (state: number): React.FC<SvgProps> => {
+export const getStatus = (state: number): React.FC<SvgProps> => {
+	// possible order states
+	// https://github.com/synonymdev/blocktank-server/blob/master/src/Orders/Order.js
 	switch (state) {
 		case 0:
+			return (): ReactElement => (
+				<View style={styles.statusRow}>
+					<ThemedView color="white1" style={styles.statusIcon}>
+						<ClockIcon color="gray1" width={16} height={16} />
+					</ThemedView>
+					<Text01M>{getStateMessage(state)}</Text01M>
+				</View>
+			);
 		case 100:
+			return (): ReactElement => (
+				<View style={styles.statusRow}>
+					<ThemedView color="white1" style={styles.statusIcon}>
+						<Checkmark color="gray1" width={16} height={16} />
+					</ThemedView>
+					<Text01M>{getStateMessage(state)}</Text01M>
+				</View>
+			);
 		case 150:
+			return (): ReactElement => (
+				<View style={styles.statusRow}>
+					<ThemedView color="white1" style={styles.statusIcon}>
+						<ArrowCounterClock color="gray1" width={16} height={16} />
+					</ThemedView>
+					<Text01M>{getStateMessage(state)}</Text01M>
+				</View>
+			);
 		case 200:
 		case 300:
+			return (): ReactElement => (
+				<View style={styles.statusRow}>
+					<ThemedView color="yellow16" style={styles.statusIcon}>
+						<ClockIcon color="yellow" width={16} height={16} />
+					</ThemedView>
+					<Text01M>{getStateMessage(state)}</Text01M>
+				</View>
+			);
 		case 350:
 			return (): ReactElement => (
-				<ThemedView color="yellow16" style={styles.statusIcon}>
-					<ClockIcon color="yellow" width={16} height={16} />
-				</ThemedView>
+				<View style={styles.statusRow}>
+					<ThemedView color="white1" style={styles.statusIcon}>
+						<ClockIcon color="gray1" width={16} height={16} />
+					</ThemedView>
+					<Text01M>{getStateMessage(state)}</Text01M>
+				</View>
+			);
+		case 400:
+			return (): ReactElement => (
+				<View style={styles.statusRow}>
+					<ThemedView color="red16" style={styles.statusIcon}>
+						<XIcon color="red" width={16} height={16} />
+					</ThemedView>
+					<Text01M>{getStateMessage(state)}</Text01M>
+				</View>
 			);
 		case 410:
 			return (): ReactElement => (
-				<ThemedView color="red16" style={styles.statusIcon}>
-					<TimerSpeedIcon color="red" width={16} height={16} />
-				</ThemedView>
+				<View style={styles.statusRow}>
+					<ThemedView color="red16" style={styles.statusIcon}>
+						<TimerSpeedIcon color="red" width={16} height={16} />
+					</ThemedView>
+					<Text01M>{getStateMessage(state)}</Text01M>
+				</View>
 			);
 		case 450:
-		case 400:
 			return (): ReactElement => (
-				<ThemedView color="red16" style={styles.statusIcon}>
-					<LightningIcon color="red" width={16} height={16} />
-				</ThemedView>
+				<View style={styles.statusRow}>
+					<ThemedView color="white1" style={styles.statusIcon}>
+						<LightningIcon color="gray1" width={16} height={16} />
+					</ThemedView>
+					<Text01M>{getStateMessage(state)}</Text01M>
+				</View>
 			);
 		case 500:
 			return (): ReactElement => (
-				<ThemedView color="green16" style={styles.statusIcon}>
-					<LightningIcon color="green" width={16} height={16} />
-				</ThemedView>
+				<View style={styles.statusRow}>
+					<ThemedView color="green16" style={styles.statusIcon}>
+						<LightningIcon color="green" width={16} height={16} />
+					</ThemedView>
+					<Text01M>{getStateMessage(state)}</Text01M>
+				</View>
 			);
 		default:
 			return (): ReactElement => (
-				<ThemedView color="white1" style={styles.statusIcon}>
-					<LightningIcon color="gray1" width={16} height={16} />
-				</ThemedView>
+				<View style={styles.statusRow}>
+					<ThemedView color="white1" style={styles.statusIcon}>
+						<LightningIcon color="gray1" width={16} height={16} />
+					</ThemedView>
+					<Text01M>{getStateMessage(state)}</Text01M>
+				</View>
 			);
 	}
 };
@@ -114,12 +160,11 @@ const ChannelDetails = ({
 	navigation,
 	route,
 }: SettingsScreenProps<'ChannelDetails'>): ReactElement => {
-	const { channelId } = route.params;
+	const { channel } = route.params;
 
-	const name = useLightningChannelName(channelId);
+	const name = useLightningChannelName(channel);
 	const { spendingAvailable, receivingAvailable, capacity } =
-		useLightningChannelBalance(channelId);
-	const channel = useLightningChannelData(channelId);
+		useLightningChannelBalance(channel);
 	const selectedNetwork = useSelector(selectedNetworkSelector);
 	const [txTime, setTxTime] = useState<undefined | string>();
 
@@ -131,16 +176,17 @@ const ChannelDetails = ({
 		return order.channel_open_tx?.transaction_id === channel.funding_txid;
 	});
 
-	const StatusIcon = useMemo(() => {
+	// TODO: show status for non-blocktank channels
+	const Status = useMemo(() => {
 		if (blocktankOrder) {
-			return getIcon(blocktankOrder.state);
+			return getStatus(blocktankOrder.state);
 		}
 
 		return null;
 	}, [blocktankOrder]);
 
 	useEffect(() => {
-		if (!channel?.funding_txid) {
+		if (!channel.funding_txid) {
 			return;
 		}
 		getTransactions({
@@ -150,12 +196,15 @@ const ChannelDetails = ({
 			if (txResponse.isErr()) {
 				return;
 			}
-			const txData: ITransaction<ITxHash>[] = txResponse.value.data;
+			const txData = txResponse.value.data;
 			if (txData.length === 0) {
 				return;
 			}
-			const data = txData[0].result;
-			const formattedDate = new Date(data.time * 1000).toLocaleString(
+			const timestamp = txData[0].result.time;
+			if (!timestamp) {
+				return;
+			}
+			const formattedDate = new Date(timestamp * 1000).toLocaleString(
 				undefined,
 				{
 					year: 'numeric',
@@ -169,7 +218,7 @@ const ChannelDetails = ({
 
 			setTxTime(formattedDate);
 		});
-	}, [selectedNetwork, channel?.funding_txid]);
+	}, [selectedNetwork, channel.funding_txid]);
 
 	const openSupportLink = async (order: IGetOrderResponse): Promise<void> => {
 		await openURL(
@@ -191,7 +240,11 @@ const ChannelDetails = ({
 			/>
 			<ScrollView contentContainerStyle={styles.content}>
 				<View style={styles.channel}>
-					<LightningChannel channelId={channelId} />
+					<LightningChannel
+						channel={channel}
+						pending={channel.is_channel_ready && !channel.is_usable}
+						closed={!channel.is_channel_ready}
+					/>
 				</View>
 
 				{blocktankOrder && (
@@ -199,10 +252,7 @@ const ChannelDetails = ({
 						<View style={styles.sectionTitle}>
 							<Caption13Up color="gray1">Status</Caption13Up>
 						</View>
-						<View style={styles.statusRow}>
-							{StatusIcon && <StatusIcon />}
-							<Text01M>{blocktankOrder.stateMessage}</Text01M>
-						</View>
+						{Status && <Status />}
 					</View>
 				)}
 
@@ -211,13 +261,10 @@ const ChannelDetails = ({
 						<View style={styles.sectionTitle}>
 							<Caption13Up color="gray1">Order Details</Caption13Up>
 						</View>
-						{blocktankOrder && (
-							<Section
-								name="Order"
-								value={<Caption13M>{blocktankOrder._id}</Caption13M>}
-							/>
-						)}
-
+						<Section
+							name="Order"
+							value={<Caption13M>{blocktankOrder._id}</Caption13M>}
+						/>
 						<Section
 							name="Created on"
 							value={
@@ -236,23 +283,25 @@ const ChannelDetails = ({
 								</Caption13M>
 							}
 						/>
-						<Section
-							name="Transaction"
-							value={
-								<Caption13M ellipsizeMode="middle" numberOfLines={1}>
-									{channel.funding_txid}
-								</Caption13M>
-							}
-							onPress={(): void => {
-								if (channel?.funding_txid) {
-									const blockExplorerUrl = getBlockExplorerLink(
-										channel.funding_txid,
-									);
-									Clipboard.setString(channel.funding_txid);
-									openURL(blockExplorerUrl).then();
+						{channel.funding_txid && (
+							<Section
+								name="Transaction"
+								value={
+									<Caption13M ellipsizeMode="middle" numberOfLines={1}>
+										{channel.funding_txid}
+									</Caption13M>
 								}
-							}}
-						/>
+								onPress={(): void => {
+									if (channel.funding_txid) {
+										const blockExplorerUrl = getBlockExplorerLink(
+											channel.funding_txid,
+										);
+										Clipboard.setString(channel.funding_txid);
+										openURL(blockExplorerUrl).then();
+									}
+								}}
+							/>
+						)}
 						<Section
 							name="Order fee"
 							value={
@@ -265,22 +314,6 @@ const ChannelDetails = ({
 								/>
 							}
 						/>
-						{/* <Section
-						name="Is Channel Ready"
-						value={
-							<Caption13M ellipsizeMode="middle" numberOfLines={1}>
-								{channel.is_channel_ready ? 'Yes' : 'No'}
-							</Caption13M>
-						}
-					/>
-					<Section
-						name="Is Channel Usable"
-						value={
-							<Caption13M ellipsizeMode="middle" numberOfLines={1}>
-								{channel.is_usable ? 'Yes' : 'No'}
-							</Caption13M>
-						}
-					/> */}
 					</View>
 				)}
 
@@ -313,7 +346,6 @@ const ChannelDetails = ({
 						}
 					/>
 					<Section
-						// name="Reserve balance (not spendable)"
 						name="Reserve balance"
 						value={
 							<Money
@@ -339,6 +371,7 @@ const ChannelDetails = ({
 					/>
 				</View>
 
+				{/* TODO: show fees */}
 				{/* <View style={styles.section}>
 					<View style={styles.sectionTitle}>
 						<Caption13Up color="gray1">Fees</Caption13Up>
@@ -416,7 +449,9 @@ const ChannelDetails = ({
 						text="Close Connection"
 						size="large"
 						onPress={(): void =>
-							navigation.navigate('CloseConnection', { channelId })
+							navigation.navigate('CloseConnection', {
+								channelId: channel.channel_id,
+							})
 						}
 					/>
 				</View>

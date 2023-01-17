@@ -1422,13 +1422,13 @@ export interface ITransaction<T> {
 		hex: string;
 		locktime: number;
 		size: number;
-		time: number;
 		txid: string;
 		version: number;
 		vin: IVin[];
 		vout: IVout[];
 		vsize: number;
 		weight: number;
+		time?: number;
 	};
 }
 

@@ -358,7 +358,7 @@ interface IGetTransactions {
 	data: ITransaction<IUtxo>[];
 }
 /**
- * Returns available transaction from electrum based on the provided txHashes.
+ * Returns available transactions from electrum based on the provided txHashes.
  * @param {ITxHash[]} txHashes
  * @param {TAvailableNetworks} [selectedNetwork]
  * @return {Promise<Result<IGetTransactions>>}

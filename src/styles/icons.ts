@@ -84,6 +84,7 @@ import {
 	mediumIcon,
 	twitterIcon,
 	listIcon,
+	arrowCounterClock,
 } from '../assets/icons/settings';
 
 type IconProps = {
@@ -440,6 +441,16 @@ export const UpArrow = styled(SvgXml).attrs((props) => ({
 
 export const DownArrow = styled(SvgXml).attrs((props) => ({
 	xml: downArrowIcon(
+		props.color ? props.theme.colors[props.color] : props.theme.colors.white,
+	),
+	height: props.height ?? '24px',
+	width: props.width ?? '24px',
+}))<IconProps>((props) => ({
+	color: props.color ? props.theme.colors[props.color] : 'white',
+}));
+
+export const ArrowCounterClock = styled(SvgXml).attrs((props) => ({
+	xml: arrowCounterClock(
 		props.color ? props.theme.colors[props.color] : props.theme.colors.white,
 	),
 	height: props.height ?? '24px',

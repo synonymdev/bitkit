@@ -8,6 +8,7 @@ import React, {
 import { StyleSheet, View, ScrollView, TouchableOpacity } from 'react-native';
 import Share from 'react-native-share';
 import { FadeIn, FadeOut } from 'react-native-reanimated';
+import { IGetOrderResponse } from '@synonymdev/blocktank-client';
 import { TChannel } from '@synonymdev/react-native-ldk';
 
 import {
@@ -54,39 +55,86 @@ import {
 	selectedWalletSelector,
 } from '../../../store/reselect/wallet';
 import {
-	channelsSelector,
 	closedChannelsSelector,
-	openChannelIdsSelector,
-	isChannelReadySelector,
+	openChannelsSelector,
 	pendingChannelsSelector,
 } from '../../../store/reselect/lightning';
 import { enableDevOptionsSelector } from '../../../store/reselect/settings';
 import { zipLogs } from '../../../utils/lightning/logs';
 import { SettingsScreenProps } from '../../../navigation/types';
 
+/**
+ * Convert pending (non-channel) blocktank orders to (fake) channels.
+ * @param {IGetOrderResponse[]} orders
+ * @param {nodeKey} string
+ */
+const getPendingBlocktankChannels = (
+	orders: IGetOrderResponse[],
+	nodeKey: string,
+): {
+	pendingOrders: TChannel[];
+	failedOrders: TChannel[];
+} => {
+	const pendingOrders: TChannel[] = [];
+	const failedOrders: TChannel[] = [];
+
+	orders.forEach((order) => {
+		const fakeChannel = {
+			channel_id: order._id,
+			is_public: false,
+			is_usable: false,
+			is_channel_ready: false,
+			is_outbound: false,
+			balance_sat: order.local_balance,
+			counterparty_node_id: nodeKey,
+			funding_txid: order.channel_open_tx?.transaction_id,
+			// channel_type: string,
+			user_channel_id: 0,
+			// short_channel_id: number,
+			inbound_capacity_sat: order.local_balance,
+			outbound_capacity_sat: order.remote_balance,
+			channel_value_satoshis: order.local_balance + order.remote_balance,
+		};
+
+		if ([0, 100, 150, 200].includes(order.state)) {
+			pendingOrders.push(fakeChannel);
+		}
+		if ([400, 410].includes(order.state)) {
+			failedOrders.push(fakeChannel);
+		}
+	});
+
+	return { pendingOrders, failedOrders };
+};
+
 const Channel = memo(
 	({
-		channelId,
-		disabled,
+		channel,
+		pending,
+		closed,
 		onPress,
 	}: {
-		channelId: string;
-		disabled: boolean;
-		onPress: () => void;
+		channel: TChannel;
+		pending?: boolean;
+		closed?: boolean;
+		onPress: (channel: TChannel) => void;
 	}): ReactElement => {
-		const name = useLightningChannelName(channelId);
+		const name = useLightningChannelName(channel);
 		return (
-			<TouchableOpacity onPress={onPress} style={styles.nRoot}>
+			<TouchableOpacity
+				onPress={(): void => onPress(channel)}
+				style={styles.nRoot}>
 				<View style={styles.nTitle}>
 					<Text01M
 						style={styles.nName}
+						color={closed ? 'gray1' : 'white'}
 						numberOfLines={1}
 						ellipsizeMode="middle">
 						{name}
 					</Text01M>
 					<ChevronRight color="gray1" />
 				</View>
-				<LightningChannel channelId={channelId} disabled={disabled} />
+				<LightningChannel channel={channel} pending={pending} closed={closed} />
 			</TouchableOpacity>
 		);
 	},
@@ -94,27 +142,27 @@ const Channel = memo(
 
 const ChannelList = memo(
 	({
-		channelIds,
-		allChannels,
+		channels,
+		pending,
+		closed,
 		onChannelPress,
 	}: {
-		allChannels: { [key: string]: TChannel };
-		channelIds: string[];
-		onChannelPress: Function;
+		channels: TChannel[];
+		pending?: boolean;
+		closed?: boolean;
+		onChannelPress: (channel: TChannel) => void;
 	}): ReactElement => {
 		return (
 			<>
-				{channelIds.map((channelId) => {
-					const channel = allChannels[channelId];
-					return (
-						<Channel
-							key={channelId}
-							channelId={channelId}
-							disabled={!channel.is_usable}
-							onPress={(): void => onChannelPress(channelId)}
-						/>
-					);
-				})}
+				{channels.map((channel) => (
+					<Channel
+						key={channel.channel_id}
+						channel={channel}
+						pending={pending}
+						closed={closed}
+						onPress={onChannelPress}
+					/>
+				))}
 			</>
 		);
 	},
@@ -123,38 +171,41 @@ const ChannelList = memo(
 const Channels = ({
 	navigation,
 }: SettingsScreenProps<'Channels'>): ReactElement => {
-	const [closed, setClosed] = useState<boolean>(false);
-	const [payingInvoice, setPayingInvoice] = useState<boolean>(false);
-	const [refreshingLdk, setRefreshingLdk] = useState<boolean>(false);
-	const [restartingLdk, setRestartingLdk] = useState<boolean>(false);
+	const [showClosed, setShowClosed] = useState(false);
+	const [payingInvoice, setPayingInvoice] = useState(false);
+	const [refreshingLdk, setRefreshingLdk] = useState(false);
+	const [restartingLdk, setRestartingLdk] = useState(false);
 	const [rebroadcastingLdk, setRebroadcastingLdk] = useState(false);
-	const [peer, setPeer] = useState<string>('');
+	const [peer, setPeer] = useState('');
 
 	const colors = useColors();
 	const balance = useBalance({ onchain: true });
 	const { localBalance, remoteBalance } = useLightningBalance(false);
 	const selectedWallet = useSelector(selectedWalletSelector);
 	const selectedNetwork = useSelector(selectedNetworkSelector);
-
-	const channels = useSelector((state: Store) => {
-		return channelsSelector(state, selectedWallet, selectedNetwork);
-	});
-	const openChannelIds = useSelector((state: Store) => {
-		return openChannelIdsSelector(state, selectedWallet, selectedNetwork);
-	});
 	const enableDevOptions = useSelector(enableDevOptionsSelector);
 
-	const openChannels = useSelector((state: Store) => {
-		return isChannelReadySelector(state, selectedWallet, selectedNetwork);
+	const blocktankOrders = useSelector((state: Store) => {
+		return state.blocktank.orders;
 	});
-
+	const openChannels = useSelector((state: Store) => {
+		return openChannelsSelector(state, selectedWallet, selectedNetwork);
+	});
 	const pendingChannels = useSelector((state: Store) => {
 		return pendingChannelsSelector(state, selectedWallet, selectedNetwork);
 	});
-
 	const closedChannels = useSelector((state: Store) => {
 		return closedChannelsSelector(state, selectedWallet, selectedNetwork);
 	});
+	const blocktankNodeKey = useSelector((state: Store) => {
+		return state.blocktank.info.node_info.public_key;
+	});
+
+	const { pendingOrders, failedOrders } = getPendingBlocktankChannels(
+		blocktankOrders,
+		blocktankNodeKey,
+	);
+	const pendingConnections = [...pendingOrders, ...pendingChannels];
 
 	const handleAdd = useCallback((): void => {
 		navigation.navigate('LightningRoot', {
@@ -184,10 +235,12 @@ const Channels = ({
 		});
 	}, []);
 
-	const onChannelPress = useCallback((channelId: string) => {
-		navigation.navigate('ChannelDetails', { channelId });
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
+	const onChannelPress = useCallback(
+		(channel: TChannel) => {
+			navigation.navigate('ChannelDetails', { channel });
+		},
+		[navigation],
+	);
 
 	const createInvoice = async (amountSats = 100): Promise<void> => {
 		const createPaymentRequest = await createLightningInvoice({
@@ -294,14 +347,14 @@ const Channels = ({
 					</View>
 				</View>
 
-				{pendingChannels.length > 0 && (
+				{pendingConnections.length > 0 && (
 					<>
 						<Caption13Up color="gray1" style={styles.sectionTitle}>
 							Pending connections
 						</Caption13Up>
 						<ChannelList
-							allChannels={channels}
-							channelIds={pendingChannels}
+							channels={pendingConnections}
+							pending={true}
 							onChannelPress={onChannelPress}
 						/>
 					</>
@@ -310,23 +363,45 @@ const Channels = ({
 				<Caption13Up color="gray1" style={styles.sectionTitle}>
 					Open connections
 				</Caption13Up>
-				<ChannelList
-					allChannels={channels}
-					channelIds={openChannels}
-					onChannelPress={onChannelPress}
-				/>
+				<ChannelList channels={openChannels} onChannelPress={onChannelPress} />
 
-				{closed && (
+				{showClosed && (
 					<AnimatedView entering={FadeIn} exiting={FadeOut}>
-						<Caption13Up color="gray1" style={styles.sectionTitle}>
-							Closed connections
-						</Caption13Up>
-						<ChannelList
-							allChannels={channels}
-							channelIds={closedChannels}
-							onChannelPress={onChannelPress}
-						/>
+						{closedChannels.length > 0 && (
+							<>
+								<Caption13Up color="gray1" style={styles.sectionTitle}>
+									Closed connections
+								</Caption13Up>
+								<ChannelList
+									channels={closedChannels}
+									closed={true}
+									onChannelPress={onChannelPress}
+								/>
+							</>
+						)}
+						{failedOrders.length > 0 && (
+							<>
+								<Caption13Up color="gray1" style={styles.sectionTitle}>
+									Failed connections
+								</Caption13Up>
+								<ChannelList
+									channels={failedOrders}
+									closed={true}
+									onChannelPress={onChannelPress}
+								/>
+							</>
+						)}
 					</AnimatedView>
+				)}
+
+				{(closedChannels.length > 0 || failedOrders.length > 0) && (
+					<Button
+						text={`${showClosed ? 'Hide' : 'Show'} Closed & Failed`}
+						textStyle={{ color: colors.white8 }}
+						size="large"
+						variant="transparent"
+						onPress={(): void => setShowClosed((prevState) => !prevState)}
+					/>
 				)}
 
 				{enableDevOptions && (
@@ -404,11 +479,12 @@ const Channels = ({
 							}}
 						/>
 
-						{openChannelIds.length > 0 && (
+						{openChannels.length > 0 && (
 							<>
 								{remoteBalance > 100 && (
 									<Button
-										text={'Create Invoice: 100 sats'}
+										style={styles.devButton}
+										text="Create Invoice: 100 sats"
 										onPress={async (): Promise<void> => {
 											createInvoice(100).then();
 										}}
@@ -416,6 +492,7 @@ const Channels = ({
 								)}
 								{remoteBalance > 5000 && (
 									<Button
+										style={styles.devButton}
 										text="Create Invoice: 5000 sats"
 										onPress={async (): Promise<void> => {
 											createInvoice(5000).then();
@@ -425,6 +502,7 @@ const Channels = ({
 								{localBalance > 0 && (
 									<>
 										<Button
+											style={styles.devButton}
 											text="Pay Invoice From Clipboard"
 											loading={payingInvoice}
 											onPress={async (): Promise<void> => {
@@ -461,17 +539,6 @@ const Channels = ({
 							</>
 						)}
 					</>
-				)}
-
-				{!closed && closedChannels.length > 0 && (
-					<Button
-						style={styles.button}
-						text="Show Closed & Failed"
-						textStyle={{ color: colors.white8 }}
-						size="large"
-						variant="transparent"
-						onPress={(): void => setClosed((c) => !c)}
-					/>
 				)}
 
 				<View style={styles.buttons}>

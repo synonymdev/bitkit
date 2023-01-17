@@ -29,16 +29,16 @@ export const lightningSelector = createSelector(
 export const lightningBalanceSelector = createSelector(
 	[
 		lightningState,
-		(lightning, selectedWallet: TWalletName): TWalletName => selectedWallet,
+		(_lightning, selectedWallet: TWalletName): TWalletName => selectedWallet,
 		(
-			lightning,
-			selectedWallet,
+			_lightning,
+			_selectedWallet,
 			selectedNetwork: TAvailableNetworks,
 		): TAvailableNetworks => selectedNetwork,
 		(
-			lightning,
-			selectedWallet,
-			selectedNetwork,
+			_lightning,
+			_selectedWallet,
+			_selectedNetwork,
 			subtractReserveBalance: boolean,
 		): boolean => subtractReserveBalance,
 	],
@@ -101,7 +101,7 @@ export const openChannelIdsSelector = createSelector(
 		): TAvailableNetworks => selectedNetwork,
 	],
 	(lightning, selectedWallet, selectedNetwork): TOpenChannelIds =>
-		lightning?.nodes[selectedWallet]?.openChannelIds[selectedNetwork] ?? [],
+		lightning.nodes[selectedWallet]?.openChannelIds[selectedNetwork] ?? [],
 );
 
 export const channelIsOpenSelector = createSelector(
@@ -122,7 +122,7 @@ export const channelIsOpenSelector = createSelector(
 	],
 	(lightning, selectedWallet, selectedNetwork, channelId): boolean => {
 		const openChannelIds =
-			lightning?.nodes[selectedWallet]?.openChannelIds[selectedNetwork] ?? [];
+			lightning.nodes[selectedWallet]?.openChannelIds[selectedNetwork] ?? [];
 		return openChannelIds.includes(channelId);
 	},
 );
@@ -165,13 +165,13 @@ export const channelSelector = createSelector(
 );
 
 /**
- * Returns all open lightning channel ids that are ready.
+ * Returns all open lightning channels.
  * @param {Store} state
  * @param {TWalletName} selectedWallet
  * @param {TAvailableNetworks} selectedNetwork
- * @returns {TOpenChannelIds}
+ * @returns {TChannel[]}
  */
-export const isChannelReadySelector = createSelector(
+export const openChannelsSelector = createSelector(
 	[
 		lightningState,
 		(_lightning, selectedWallet: TWalletName): TWalletName => selectedWallet,
@@ -181,23 +181,25 @@ export const isChannelReadySelector = createSelector(
 			selectedNetwork: TAvailableNetworks,
 		): TAvailableNetworks => selectedNetwork,
 	],
-	(lightning, selectedWallet, selectedNetwork): string[] => {
+	(lightning, selectedWallet, selectedNetwork): TChannel[] => {
 		const node = lightning.nodes[selectedWallet];
 		const channels = node.channels[selectedNetwork];
 		const openChannelIds = node.openChannelIds[selectedNetwork] ?? [];
-		return openChannelIds.filter((channelId) => {
-			const channel = channels[channelId];
-			return channel?.is_channel_ready;
+
+		return Object.values(channels).filter((channel) => {
+			return (
+				openChannelIds.includes(channel.channel_id) && channel?.is_channel_ready
+			);
 		});
 	},
 );
 
 /**
- * Returns all pending lightning channel ids.
+ * Returns all pending lightning channels.
  * @param {Store} state
  * @param {TWalletName} selectedWallet
  * @param {TAvailableNetworks} selectedNetwork
- * @returns {string[]}
+ * @returns {TChannel[]}
  */
 export const pendingChannelsSelector = createSelector(
 	[
@@ -209,23 +211,26 @@ export const pendingChannelsSelector = createSelector(
 			selectedNetwork: TAvailableNetworks,
 		): TAvailableNetworks => selectedNetwork,
 	],
-	(lightning, selectedWallet, selectedNetwork): string[] => {
+	(lightning, selectedWallet, selectedNetwork): TChannel[] => {
 		const node = lightning.nodes[selectedWallet];
 		const channels = node.channels[selectedNetwork];
 		const openChannelIds = node.openChannelIds[selectedNetwork] ?? [];
-		return openChannelIds.filter((channelId) => {
-			const channel = channels[channelId];
-			return !channel?.is_channel_ready;
+
+		return Object.values(channels).filter((channel) => {
+			return (
+				openChannelIds.includes(channel.channel_id) &&
+				!channel?.is_channel_ready
+			);
 		});
 	},
 );
 
 /**
- * Returns all closed lightning channel ids.
+ * Returns all closed lightning channels.
  * @param {Store} state
  * @param {TWalletName} selectedWallet
  * @param {TAvailableNetworks} selectedNetwork
- * @returns {string[]}
+ * @returns {TChannel[]}
  */
 export const closedChannelsSelector = createSelector(
 	[
@@ -237,13 +242,13 @@ export const closedChannelsSelector = createSelector(
 			selectedNetwork: TAvailableNetworks,
 		): TAvailableNetworks => selectedNetwork,
 	],
-	(lightning, selectedWallet, selectedNetwork): string[] => {
+	(lightning, selectedWallet, selectedNetwork): TChannel[] => {
 		const node = lightning.nodes[selectedWallet];
 		const channels = node.channels[selectedNetwork];
-		const allChannelKeys = Object.keys(channels);
 		const openChannelIds = node.openChannelIds[selectedNetwork] ?? [];
-		return allChannelKeys.filter((key) => {
-			return !openChannelIds.includes(key);
+
+		return Object.values(channels).filter((channel) => {
+			return !openChannelIds.includes(channel.channel_id);
 		});
 	},
 );
