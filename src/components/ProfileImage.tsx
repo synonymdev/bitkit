@@ -1,8 +1,8 @@
 import React, { useMemo } from 'react';
 import { Image, View, ViewStyle } from 'react-native';
+import { SvgXml } from 'react-native-svg';
 import { BasicProfile } from '../store/types/slashtags';
 import { Jdenticon } from './Jdenticon';
-import { SvgXml } from 'react-native-svg';
 
 export const ProfileImage = ({
 	url,

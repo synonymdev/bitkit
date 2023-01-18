@@ -1,7 +1,7 @@
 import React, { memo, ReactElement, useCallback, useState } from 'react';
+import { StyleProp, ViewStyle } from 'react-native';
 import { useSelector } from 'react-redux';
 
-import NumberPadButtons from '../NumberPadButtons';
 import NumberPad from '../../../components/NumberPad';
 import Store from '../../../store/types';
 import { btcToSats } from '../../../utils/helpers';
@@ -10,7 +10,6 @@ import { EBitcoinUnit } from '../../../store/types/wallet';
 import {
 	getTransactionOutputValue,
 	updateAmount,
-	sendMax,
 } from '../../../utils/wallet/transactions';
 import {
 	fiatToBitcoinUnit,
@@ -29,7 +28,11 @@ import {
 /**
  * Handles the number pad logic (add/remove/clear) for on-chain transactions.
  */
-const SendNumberPad = ({ onDone }: { onDone: () => void }): ReactElement => {
+const SendNumberPad = ({
+	style,
+}: {
+	style?: StyleProp<ViewStyle>;
+}): ReactElement => {
 	const [decimalMode, setDecimalMode] = useState(false);
 	const [prefixZeros, setPrefixZeros] = useState(0);
 
@@ -208,14 +211,12 @@ const SendNumberPad = ({ onDone }: { onDone: () => void }): ReactElement => {
 			: 'decimal';
 
 	return (
-		<NumberPad type={numberPadType} onPress={onPress} onRemove={onRemove}>
-			<NumberPadButtons
-				onMaxPress={(): void => {
-					sendMax({ selectedWallet, selectedNetwork });
-				}}
-				onDone={onDone}
-			/>
-		</NumberPad>
+		<NumberPad
+			style={style}
+			type={numberPadType}
+			onPress={onPress}
+			onRemove={onRemove}
+		/>
 	);
 };
 

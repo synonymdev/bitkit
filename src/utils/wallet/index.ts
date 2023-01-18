@@ -2617,11 +2617,10 @@ export const getBalance = ({
 
 		balance = Object.values(openChannels).reduce(
 			(previousValue, currentChannel) => {
-				if (currentChannel?.is_channel_ready) {
+				if (currentChannel.is_channel_ready) {
 					let reserveBalance = 0;
 					if (subtractReserveBalance) {
-						reserveBalance =
-							currentChannel?.unspendable_punishment_reserve ?? 0;
+						reserveBalance = currentChannel.unspendable_punishment_reserve ?? 0;
 					}
 					return previousValue + currentChannel.balance_sat - reserveBalance;
 				}

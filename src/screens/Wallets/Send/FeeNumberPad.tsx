@@ -1,9 +1,9 @@
 import React, { memo, ReactElement } from 'react';
+import { StyleProp, ViewStyle } from 'react-native';
 import { useSelector } from 'react-redux';
 
 import NumberPad from '../../../components/NumberPad';
 import { updateFee } from '../../../utils/wallet/transactions';
-import NumberPadButtons from '../NumberPadButtons';
 import { showErrorNotification } from '../../../utils/notifications';
 import {
 	selectedNetworkSelector,
@@ -16,10 +16,8 @@ import {
  */
 const FeeNumberPad = ({
 	style,
-	onDone,
 }: {
-	style?: object | Array<object>;
-	onDone?: () => void;
+	style?: StyleProp<ViewStyle>;
 }): ReactElement => {
 	const selectedWallet = useSelector(selectedWalletSelector);
 	const selectedNetwork = useSelector(selectedNetworkSelector);
@@ -71,9 +69,8 @@ const FeeNumberPad = ({
 			style={style}
 			type="integer"
 			onPress={onPress}
-			onRemove={onRemove}>
-			<NumberPadButtons showUnitButton={false} onDone={onDone} />
-		</NumberPad>
+			onRemove={onRemove}
+		/>
 	);
 };
 

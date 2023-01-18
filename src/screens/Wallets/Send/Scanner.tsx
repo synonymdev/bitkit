@@ -15,7 +15,9 @@ import {
 
 const ScannerScreen = ({
 	navigation,
+	route,
 }: SendScreenProps<'Scanner'>): ReactElement => {
+	const onScan = route.params?.onScan;
 	const selectedNetwork = useSelector(selectedNetworkSelector);
 	const selectedWallet = useSelector(selectedWalletSelector);
 	const sdk = useSlashtagsSDK();
@@ -28,14 +30,20 @@ const ScannerScreen = ({
 			});
 			return;
 		}
+
 		navigation.pop();
-		processInputData({
+
+		const result = await processInputData({
 			data,
 			source: 'sendScanner',
 			sdk,
 			selectedNetwork,
 			selectedWallet,
 		}).then();
+
+		if (result.isOk()) {
+			onScan?.(result.value);
+		}
 	};
 
 	return (

@@ -41,6 +41,7 @@ import {
 import { getSlashPayConfig } from './slashtags';
 import { savePeer } from '../store/actions/lightning';
 import { TWalletName } from '../store/types/wallet';
+import { sendNavigation } from '../navigation/bottom-sheet/SendNavigation';
 
 const availableNetworksList = availableNetworks();
 
@@ -114,7 +115,7 @@ export const validateAddress = ({
 	}
 };
 
-type ProcessedData = {
+export type TProcessedData = {
 	type: EQRDataType;
 	address?: string;
 	amount?: number;
@@ -140,7 +141,7 @@ export const processInputData = async ({
 	selectedNetwork?: TAvailableNetworks;
 	selectedWallet?: TWalletName;
 	sdk?: SDK;
-}): Promise<Result<ProcessedData>> => {
+}): Promise<Result<TProcessedData>> => {
 	data = data.trim();
 	try {
 		if (!selectedNetwork) {
@@ -511,11 +512,11 @@ export const processBitcoinTransactionData = async ({
 		let decodedLightningInvoice: TInvoice | undefined;
 		if (filteredLightningInvoice) {
 			const decodeInvoiceRes = await decodeLightningInvoice({
-				paymentRequest: filteredLightningInvoice?.lightningPaymentRequest ?? '',
+				paymentRequest: filteredLightningInvoice.lightningPaymentRequest ?? '',
 			});
 			if (decodeInvoiceRes.isOk()) {
 				decodedLightningInvoice = decodeInvoiceRes.value;
-				requestedAmount = decodedLightningInvoice?.amount_satoshis ?? 0;
+				requestedAmount = decodedLightningInvoice.amount_satoshis ?? 0;
 				if (decodedLightningInvoice.is_expired) {
 					error = {
 						title: 'Lightning Invoice Expired',
@@ -533,8 +534,8 @@ export const processBitcoinTransactionData = async ({
 		if (
 			decodedLightningInvoice &&
 			!decodedLightningInvoice.is_expired &&
-			openLightningChannels?.length &&
-			lightningBalance?.satoshis
+			openLightningChannels.length &&
+			lightningBalance.satoshis
 		) {
 			// Ensure we can afford to pay the lightning invoice. If so, pass it through.
 			if (lightningBalance.satoshis >= requestedAmount) {
@@ -640,7 +641,7 @@ export const handleData = async ({
 	data: QRData;
 	selectedWallet?: TWalletName;
 	selectedNetwork?: TAvailableNetworks;
-}): Promise<Result<ProcessedData>> => {
+}): Promise<Result<TProcessedData>> => {
 	if (!data) {
 		const message = 'Unable to read or interpret the provided data.';
 		showErrorNotification({
@@ -656,7 +657,7 @@ export const handleData = async ({
 	if (!selectedWallet) {
 		selectedWallet = getSelectedWallet();
 	}
-	if (data?.network && data?.network !== selectedNetwork) {
+	if (data.network && data.network !== selectedNetwork) {
 		const message = `Bitkit is currently set to ${selectedNetwork} but data is for ${data.network}.`;
 		showErrorNotification({
 			title: 'Incorrect Network',
@@ -665,12 +666,12 @@ export const handleData = async ({
 		return err(message);
 	}
 
-	const qrDataType = data?.qrDataType;
-	const address = data?.address ?? '';
-	const lightningPaymentRequest = data?.lightningPaymentRequest ?? '';
-	let amount = data?.sats ?? 0;
-	const message = data?.message ?? '';
-	const slashTagsUrl = data?.slashTagsUrl;
+	const qrDataType = data.qrDataType;
+	const address = data.address ?? '';
+	const lightningPaymentRequest = data.lightningPaymentRequest ?? '';
+	let amount = data.sats ?? 0;
+	const message = data.message ?? '';
+	const slashTagsUrl = data.slashTagsUrl;
 
 	//TODO(slashtags): Register Bitkit to handle all slash?x:// protocols
 	switch (qrDataType) {
@@ -698,6 +699,7 @@ export const handleData = async ({
 				view: 'sendNavigation',
 				data: { isOpen: true },
 			});
+
 			// If no amount found in payment request, make sure that the user hasn't previously specified an amount from the send form.
 			if (!amount) {
 				const outputAmount = getTransactionOutputAmount({
@@ -710,6 +712,7 @@ export const handleData = async ({
 				}
 				amount = outputAmount.value;
 			}
+
 			await updateBitcoinTransaction({
 				selectedWallet,
 				selectedNetwork,
@@ -719,6 +722,11 @@ export const handleData = async ({
 					slashTagsUrl,
 				},
 			});
+
+			if (sendNavigation.isReady()) {
+				sendNavigation.navigate('Amount');
+			}
+
 			return ok({ type: EQRDataType.bitcoinAddress, address, amount });
 		}
 		case EQRDataType.lightningPaymentRequest: {
@@ -732,10 +740,13 @@ export const handleData = async ({
 				});
 				return err(decodedInvoice.error.message);
 			}
+
 			toggleView({
 				view: 'sendNavigation',
 				data: { isOpen: true },
 			});
+
+			const invoiceAmount = decodedInvoice.value.amount_satoshis ?? 0;
 			await updateBitcoinTransaction({
 				selectedWallet,
 				selectedNetwork,
@@ -743,7 +754,7 @@ export const handleData = async ({
 					outputs: [
 						{
 							address: '',
-							value: decodedInvoice.value.amount_satoshis ?? 0,
+							value: invoiceAmount,
 							index: 0,
 						},
 					],
@@ -752,9 +763,17 @@ export const handleData = async ({
 				},
 			});
 
+			if (sendNavigation.isReady()) {
+				if (invoiceAmount) {
+					sendNavigation.navigate('ReviewAndSend');
+				} else {
+					sendNavigation.navigate('Amount');
+				}
+			}
+
 			return ok({
 				type: EQRDataType.lightningPaymentRequest,
-				amount: decodedInvoice.value.amount_satoshis,
+				amount: invoiceAmount,
 			});
 		}
 

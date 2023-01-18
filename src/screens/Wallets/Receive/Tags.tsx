@@ -1,21 +1,44 @@
-import React, { memo, ReactElement, useCallback, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import React, {
+	memo,
+	ReactElement,
+	useCallback,
+	useMemo,
+	useState,
+} from 'react';
+import { Platform, StyleSheet, View } from 'react-native';
 import { useSelector } from 'react-redux';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { BottomSheetTextInput } from '../../../styles/components';
 import { Caption13Up } from '../../../styles/text';
-import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
 import GradientView from '../../../components/GradientView';
+import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
+import Button from '../../../components/Button';
 import Tag from '../../../components/Tag';
+import useKeyboard, { Keyboard } from '../../../hooks/keyboard';
+import { lastUsedTagsSelector } from '../../../store/reselect/metadata';
 import { updateInvoice } from '../../../store/actions/receive';
 import { addTag, deleteTag } from '../../../store/actions/metadata';
-import { Keyboard } from '../../../hooks/keyboard';
 import { ReceiveScreenProps } from '../../../navigation/types';
-import { lastUsedTagsSelector } from '../../../store/reselect/metadata';
 
 const Tags = ({ navigation }: ReceiveScreenProps<'Tags'>): ReactElement => {
+	const { keyboardShown } = useKeyboard();
+	const insets = useSafeAreaInsets();
 	const [text, setText] = useState('');
 	const lastUsedTags = useSelector(lastUsedTagsSelector);
+
+	const buttonContainerStyles = useMemo(
+		() => ({
+			...styles.buttonContainer,
+			// extra padding needed because of KeyboardAvoidingView
+			paddingBottom: keyboardShown
+				? Platform.OS === 'ios'
+					? 16
+					: 40
+				: insets.bottom + 16,
+		}),
+		[keyboardShown, insets.bottom],
+	);
 
 	const handleSubmit = useCallback(async (): Promise<void> => {
 		if (text.length === 0) {
@@ -44,7 +67,7 @@ const Tags = ({ navigation }: ReceiveScreenProps<'Tags'>): ReactElement => {
 				{lastUsedTags.length !== 0 && (
 					<>
 						<Caption13Up color="gray1" style={styles.section}>
-							PREVIOUSLY USED TAGS
+							Previously used tags
 						</Caption13Up>
 						<View style={styles.tagsContainer}>
 							{lastUsedTags.map((tag) => (
@@ -64,7 +87,7 @@ const Tags = ({ navigation }: ReceiveScreenProps<'Tags'>): ReactElement => {
 					</>
 				)}
 				<Caption13Up color="gray1" style={styles.section}>
-					NEW TAG
+					New tag
 				</Caption13Up>
 				<BottomSheetTextInput
 					placeholder="Enter a new tag"
@@ -75,6 +98,15 @@ const Tags = ({ navigation }: ReceiveScreenProps<'Tags'>): ReactElement => {
 					maxLength={15}
 					returnKeyType="done"
 				/>
+
+				<View style={buttonContainerStyles}>
+					<Button
+						text="Add"
+						size="large"
+						disabled={text.length === 0}
+						onPress={handleSubmit}
+					/>
+				</View>
 			</View>
 		</GradientView>
 	);
@@ -99,6 +131,11 @@ const styles = StyleSheet.create({
 	tag: {
 		marginRight: 8,
 		marginBottom: 8,
+	},
+	buttonContainer: {
+		marginTop: 'auto',
+		flex: 1,
+		justifyContent: 'flex-end',
 	},
 });
 

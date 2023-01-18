@@ -1,6 +1,6 @@
 import { ColorValue, Platform, Switch as RNSwitch } from 'react-native';
 import Animated from 'react-native-reanimated';
-import { robotoWeights, sanFranciscoWeights } from 'react-native-typography';
+import { sanFranciscoWeights } from 'react-native-typography';
 import { SafeAreaProvider as _SafeAreaProvider } from 'react-native-safe-area-context';
 import { BottomSheetTextInput as _BottomSheetTextInput } from '@gorhom/bottom-sheet';
 import {
@@ -108,8 +108,7 @@ export const TextInput = styled.TextInput.attrs<TextInputProps>((props) => ({
 			fontWeight: sanFranciscoWeights.semibold.fontWeight,
 		},
 		android: {
-			fontFamily: robotoWeights.medium.fontFamily,
-			fontWeight: robotoWeights.medium.fontWeight,
+			fontFamily: 'Roboto-Medium',
 		},
 	}),
 	backgroundColor: props.backgroundColor
@@ -142,8 +141,7 @@ export const TextInputNoOutline = styled.TextInput.attrs<TextInputProps>(
 			fontWeight: sanFranciscoWeights.semibold.fontWeight,
 		},
 		android: {
-			fontFamily: robotoWeights.medium.fontFamily,
-			fontWeight: robotoWeights.medium.fontWeight,
+			fontFamily: 'Roboto-Medium',
 		},
 	}),
 	fontSize: '15px',
@@ -167,8 +165,7 @@ export const BottomSheetTextInput = styled(
 			fontWeight: sanFranciscoWeights.semibold.fontWeight,
 		},
 		android: {
-			fontFamily: robotoWeights.medium.fontFamily,
-			fontWeight: robotoWeights.medium.fontWeight,
+			fontFamily: 'Roboto-Medium',
 		},
 	}),
 	backgroundColor: props.backgroundColor
@@ -182,8 +179,9 @@ export const BottomSheetTextInput = styled(
 		: props.theme.colors.text,
 	borderRadius: 8,
 	fontSize: '15px',
-	minHeight: props.minHeight ? props.minHeight : 70,
+	minHeight: props.minHeight ? props.minHeight : 52,
 	padding: 16,
+	textAlignVertical: 'top',
 }));
 
 export const RefreshControl = styled.RefreshControl.attrs((props) => ({

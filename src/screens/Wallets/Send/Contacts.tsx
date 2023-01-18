@@ -14,6 +14,10 @@ import {
 	selectedNetworkSelector,
 	selectedWalletSelector,
 } from '../../../store/reselect/wallet';
+import {
+	resetOnChainTransaction,
+	setupOnChainTransaction,
+} from '../../../store/actions/wallet';
 
 const Contacts = ({
 	navigation,
@@ -23,6 +27,16 @@ const Contacts = ({
 	const { sdk } = useSlashtags();
 
 	const handlePress = async (contact: IContactRecord): Promise<void> => {
+		// make sure we start with a clean transaction state
+		resetOnChainTransaction({
+			selectedWallet,
+			selectedNetwork,
+		});
+		await setupOnChainTransaction({
+			selectedNetwork,
+			selectedWallet,
+		});
+
 		const res = await processInputData({
 			data: contact.url,
 			source: 'sendScanner',
@@ -31,7 +45,7 @@ const Contacts = ({
 			selectedWallet,
 		});
 		if (res.isOk()) {
-			navigation.pop();
+			navigation.navigate('Amount');
 			return;
 		}
 		showErrorNotification({
@@ -42,7 +56,7 @@ const Contacts = ({
 
 	return (
 		<GradientView style={styles.container}>
-			<NavigationHeader title="Send to Contact" size="sm" />
+			<NavigationHeader title="Select Contact" size="sm" />
 			<View style={styles.content}>
 				<ContactsList
 					onPress={handlePress}

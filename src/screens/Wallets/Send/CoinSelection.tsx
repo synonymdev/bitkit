@@ -87,6 +87,12 @@ const CoinSelection = ({
 	const insets = useSafeAreaInsets();
 	const { gray4 } = useColors();
 
+	const selectedWallet = useSelector(selectedWalletSelector);
+	const selectedNetwork = useSelector(selectedNetworkSelector);
+	const transaction = useSelector(transactionSelector);
+	const utxos = useSelector(utxosSelector);
+	const coinSelectPreference = useSelector(coinSelectPreferenceSelector);
+
 	const buttonContainerStyles = useMemo(
 		() => ({
 			...styles.buttonContainer,
@@ -95,11 +101,6 @@ const CoinSelection = ({
 		[insets.bottom],
 	);
 
-	const selectedWallet = useSelector(selectedWalletSelector);
-	const selectedNetwork = useSelector(selectedNetworkSelector);
-	const transaction = useSelector(transactionSelector);
-	const utxos: IUtxo[] = useSelector(utxosSelector);
-	const coinSelectPreference = useSelector(coinSelectPreferenceSelector);
 	const preference = useMemo(
 		() => preferences[coinSelectPreference],
 		[coinSelectPreference],

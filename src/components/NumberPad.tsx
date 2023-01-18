@@ -1,5 +1,5 @@
-import React, { memo, ReactElement, useMemo } from 'react';
-import { View, StyleSheet } from 'react-native';
+import React, { memo, ReactElement } from 'react';
+import { View, StyleSheet, ViewStyle, StyleProp } from 'react-native';
 import { TouchableOpacity } from '../styles/components';
 import { Text } from '../styles/text';
 import { Ionicons } from '../styles/icons';
@@ -24,7 +24,7 @@ const Button = memo(
 
 type NumberPad = {
 	type: 'simple' | 'integer' | 'decimal';
-	style?: object | Array<object>;
+	style?: StyleProp<ViewStyle>;
 	children?: ReactElement;
 	onPress: (key: number | string) => void;
 	onRemove: () => void;
@@ -37,11 +37,6 @@ const NumberPad = ({
 	style,
 	children,
 }: NumberPad): ReactElement => {
-	const container = useMemo(
-		() => StyleSheet.compose(styles.container, style),
-		[style],
-	);
-
 	const handleRemove = (): void => {
 		vibrate({});
 		onRemove();
@@ -53,7 +48,7 @@ const NumberPad = ({
 	};
 
 	return (
-		<View style={container}>
+		<View style={[styles.container, style]}>
 			{children}
 			<View style={styles.row}>
 				<Button onPress={(): void => handlePress(digits[0])} num={digits[0]} />

@@ -529,7 +529,7 @@ const ReviewAndSend = ({
 						}
 						value={
 							transaction.slashTagsUrl ? (
-								<ContactSmall url={transaction.slashTagsUrl} />
+								<ContactSmall url={transaction.slashTagsUrl} size="large" />
 							) : (
 								<Text02M numberOfLines={1} ellipsizeMode="middle">
 									{decodedInvoice ? decodedInvoice.to_str : address}

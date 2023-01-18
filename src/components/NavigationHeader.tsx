@@ -19,10 +19,13 @@ const ActionButton = memo(
 		onPress,
 	}: {
 		children: JSX.Element;
-		onPress: (event: GestureResponderEvent) => void;
+		onPress?: (event: GestureResponderEvent) => void;
 	}): ReactElement => {
 		return (
-			<TouchableOpacity style={styles.action} onPress={onPress}>
+			<TouchableOpacity
+				style={styles.action}
+				activeOpacity={onPress ? 0.6 : 1}
+				onPress={onPress}>
 				{children}
 			</TouchableOpacity>
 		);
@@ -97,7 +100,7 @@ const NavigationHeader = ({
 				</Text>
 			</View>
 			<View style={[styles.rightColumn, buttonOffset]}>
-				{actionIcon && onActionPress && (
+				{actionIcon && (
 					<ActionButton onPress={onActionPress}>{actionIcon}</ActionButton>
 				)}
 				{onClosePress && (

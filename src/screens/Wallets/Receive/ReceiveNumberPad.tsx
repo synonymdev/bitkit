@@ -1,7 +1,7 @@
 import React, { memo, ReactElement, useState } from 'react';
+import { StyleProp, ViewStyle } from 'react-native';
 import { useSelector } from 'react-redux';
 
-import NumberPadButtons from '../NumberPadButtons';
 import NumberPad from '../../../components/NumberPad';
 import { updateInvoice } from '../../../store/actions/receive';
 import Store from '../../../store/types';
@@ -20,7 +20,11 @@ import {
 /**
  * Handles the number pad logic (add/remove/clear) for invoices.
  */
-const ReceiveNumberPad = ({ onDone }: { onDone: () => void }): ReactElement => {
+const ReceiveNumberPad = ({
+	style,
+}: {
+	style?: StyleProp<ViewStyle>;
+}): ReactElement => {
 	const [decimalMode, setDecimalMode] = useState(false);
 	const [prefixZeros, setPrefixZeros] = useState(0);
 	const invoice = useSelector((store: Store) => store.receive);
@@ -167,9 +171,12 @@ const ReceiveNumberPad = ({ onDone }: { onDone: () => void }): ReactElement => {
 			: 'decimal';
 
 	return (
-		<NumberPad type={numberPadType} onPress={onPress} onRemove={onRemove}>
-			<NumberPadButtons onDone={onDone} />
-		</NumberPad>
+		<NumberPad
+			style={style}
+			type={numberPadType}
+			onPress={onPress}
+			onRemove={onRemove}
+		/>
 	);
 };
 

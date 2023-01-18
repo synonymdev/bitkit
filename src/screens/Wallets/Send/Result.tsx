@@ -98,7 +98,7 @@ const Result = ({
 			});
 			// The transaction was reset due to an unknown broadcast or construction error.
 			// Navigate back to the main send screen to re-enter information.
-			navigation.navigate('AddressAndAmount');
+			navigation.navigate('Recipient');
 		}
 	};
 
@@ -140,17 +140,17 @@ const Result = ({
 				{success && activityItem && (
 					<>
 						<Button
-							style={styles.button1}
+							style={styles.button}
 							variant="secondary"
 							size="large"
-							text="Show Details"
+							text="Details"
 							onPress={navigateToTxDetails}
 						/>
 						<View style={styles.divider} />
 					</>
 				)}
 				<Button
-					style={styles.button2}
+					style={styles.button}
 					size="large"
 					text={success ? 'Close' : 'Try Again'}
 					onPress={onContinue}
@@ -186,10 +186,7 @@ const styles = StyleSheet.create({
 		paddingHorizontal: 16,
 		marginTop: 'auto',
 	},
-	button1: {
-		flex: 2,
-	},
-	button2: {
+	button: {
 		flex: 1,
 	},
 	divider: {

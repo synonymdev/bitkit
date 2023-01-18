@@ -1,10 +1,10 @@
 import { useEffect, useMemo, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { SDK, SlashURL } from '@synonymdev/slashtags-sdk';
 
 import { useSlashtags, useSlashtagsSDK } from '../components/SlashtagsProvider';
 import { BasicProfile, IRemote } from '../store/types/slashtags';
 import { decodeJSON, getSelectedSlashtag } from '../utils/slashtags';
-import { useSelector } from 'react-redux';
 import Store from '../store/types';
 import { cacheProfile } from '../store/actions/slashtags';
 
@@ -30,19 +30,18 @@ export const useSelectedSlashtag = (): {
 export const useProfile = (
 	url: string,
 ): { resolving: boolean; profile: BasicProfile } => {
+	const sdk = useSlashtagsSDK();
+	const contactRecord = useSlashtags().contacts[url];
+	const [resolving, setResolving] = useState(true);
 	const profile = useSelector((state: Store) => {
 		return state.slashtags.profiles?.[url]?.profile || {};
 	});
-	const [resolving, setResolving] = useState(true);
 
-	const contactRecord = useSlashtags().contacts[url];
 	const withContactRecord = useMemo(() => {
 		return contactRecord?.name
 			? { ...profile, name: contactRecord.name }
 			: profile;
 	}, [profile, contactRecord]);
-
-	const sdk = useSlashtagsSDK();
 
 	useEffect(() => {
 		let unmounted = false;

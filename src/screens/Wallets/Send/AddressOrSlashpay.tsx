@@ -1,5 +1,12 @@
 import React, { memo, ReactElement } from 'react';
-import { StyleSheet, View, ViewStyle, TextInputProps } from 'react-native';
+import { useSelector } from 'react-redux';
+import {
+	StyleSheet,
+	View,
+	ViewStyle,
+	TextInputProps,
+	StyleProp,
+} from 'react-native';
 
 import {
 	BottomSheetTextInput,
@@ -7,10 +14,17 @@ import {
 } from '../../../styles/components';
 import useColors from '../../../hooks/colors';
 import ContactSmall from '../../../components/ContactSmall';
+import {
+	resetOnChainTransaction,
+	setupOnChainTransaction,
+} from '../../../store/actions/wallet';
+import {
+	selectedNetworkSelector,
+	selectedWalletSelector,
+} from '../../../store/reselect/wallet';
 
 type Props = TextInputProps & {
-	children: ReactElement | ReactElement[];
-	style: ViewStyle;
+	style: StyleProp<ViewStyle>;
 	slashTagsUrl?: string;
 };
 
@@ -21,14 +35,25 @@ const AddressOrSlashpay = ({
 	...props
 }: Props): ReactElement => {
 	const colors = useColors();
+	const selectedWallet = useSelector(selectedWalletSelector);
+	const selectedNetwork = useSelector(selectedNetworkSelector);
+
+	const onRemoveContact = async (): Promise<void> => {
+		resetOnChainTransaction({
+			selectedWallet,
+			selectedNetwork,
+		});
+		await setupOnChainTransaction({
+			selectedNetwork,
+			selectedWallet,
+		});
+	};
 
 	if (slashTagsUrl) {
 		return (
 			<View style={[styles.root, style]}>
-				<ThemedView
-					color="white08"
-					style={[styles.input, styles.inputSlashtags]}>
-					<ContactSmall url={slashTagsUrl} />
+				<ThemedView style={styles.inputSlashtags} color="white08">
+					<ContactSmall url={slashTagsUrl} onDelete={onRemoveContact} />
 				</ThemedView>
 				<View style={styles.inputActions}>{children}</View>
 			</View>
@@ -41,9 +66,10 @@ const AddressOrSlashpay = ({
 				style={styles.input}
 				selectionColor={colors.brand}
 				placeholderTextColor={colors.white5}
+				minHeight={240}
 				selectTextOnFocus={true}
 				multiline={true}
-				placeholder="Paste or scan an address, invoice or select a contact"
+				placeholder="Scan QR, paste invoice or select contact"
 				autoCapitalize="none"
 				autoCorrect={false}
 				blurOnSubmit={true}
@@ -59,19 +85,18 @@ const styles = StyleSheet.create({
 	root: {
 		position: 'relative',
 	},
-	input: {
-		paddingRight: 140,
-		maxHeight: 100,
-	},
 	inputSlashtags: {
 		padding: 16,
 		borderRadius: 8,
-		minHeight: 70,
+		minHeight: 240,
+	},
+	input: {
+		maxHeight: 240,
+		paddingBottom: 80,
 	},
 	inputActions: {
 		position: 'absolute',
-		top: 0,
-		bottom: 0,
+		bottom: 16,
 		right: 0,
 		flexDirection: 'row',
 		marginRight: 8,

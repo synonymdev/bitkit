@@ -382,7 +382,6 @@ const OnchainActivityDetail = ({
 				<>
 					{(tags.length !== 0 || slashTagsUrl) && (
 						<View style={styles.sectionContainer}>
-							{/* ContactSection */}
 							{slashTagsUrl && (
 								<Section
 									title="Contact"

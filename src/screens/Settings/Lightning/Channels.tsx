@@ -25,6 +25,7 @@ import NavigationHeader from '../../../components/NavigationHeader';
 import LightningChannel from '../../../components/LightningChannel';
 import Money from '../../../components/Money';
 import useColors from '../../../hooks/colors';
+import { refreshOrdersList } from '../../../store/actions/blocktank';
 import {
 	addPeer,
 	getNodeId,
@@ -269,6 +270,7 @@ const Channels = ({
 	const onRefreshLdk = useCallback(async (): Promise<void> => {
 		setRefreshingLdk(true);
 		await refreshLdk({ selectedWallet, selectedNetwork });
+		await refreshOrdersList();
 		setRefreshingLdk(false);
 	}, [selectedNetwork, selectedWallet]);
 

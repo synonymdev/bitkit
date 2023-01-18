@@ -1,10 +1,12 @@
 import React, { ReactElement, memo, useCallback, useMemo } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useSelector } from 'react-redux';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { Caption13Up, Text01M } from '../../../styles/text';
+import { Caption13Up, Text01S } from '../../../styles/text';
 import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
 import GradientView from '../../../components/GradientView';
+import Button from '../../../components/Button';
 import FeeCustomToggle from './FeeCustomToggle';
 import FeeNumberPad from './FeeNumberPad';
 import { getTotalFee } from '../../../utils/wallet/transactions';
@@ -15,7 +17,16 @@ import type { SendScreenProps } from '../../../navigation/types';
 const FeeCustom = ({
 	navigation,
 }: SendScreenProps<'FeeCustom'>): ReactElement => {
+	const insets = useSafeAreaInsets();
 	const transaction = useSelector(transactionSelector);
+
+	const buttonContainerStyles = useMemo(
+		() => ({
+			...styles.buttonContainer,
+			paddingBottom: insets.bottom + 16,
+		}),
+		[insets.bottom],
+	);
 
 	const getFee = useCallback(
 		(_satsPerByte = 1) => {
@@ -41,29 +52,33 @@ const FeeCustom = ({
 		[totalFeeDisplay.fiatFormatted, totalFeeDisplay.fiatSymbol],
 	);
 
-	let onDone: (() => void) | undefined;
-
-	if (transaction.satsPerByte !== 0) {
-		onDone = (): void => {
-			navigation.navigate('ReviewAndSend');
-		};
-	}
+	const isValid = transaction.satsPerByte !== 0;
 
 	return (
 		<GradientView style={styles.container}>
 			<BottomSheetNavigationHeader
 				title="Set Custom Fee"
-				displayBackButton={transaction.satsPerByte !== 0}
+				displayBackButton={isValid}
 			/>
 			<View style={styles.content}>
 				<Caption13Up color="gray1" style={styles.title}>
-					SAT / VBYTE
+					Sat / vbyte
 				</Caption13Up>
 				<FeeCustomToggle />
-				<Text01M style={styles.text} color="white5">
+				<Text01S style={styles.text} color="white5">
 					{feeSats} sats for this transaction{feeAmount}
-				</Text01M>
-				<FeeNumberPad style={styles.numberPad} onDone={onDone} />
+				</Text01S>
+
+				<FeeNumberPad style={styles.numberPad} />
+
+				<View style={buttonContainerStyles}>
+					<Button
+						size="large"
+						text="Continue"
+						disabled={!isValid}
+						onPress={(): void => navigation.goBack()}
+					/>
+				</View>
 			</View>
 		</GradientView>
 	);
@@ -84,8 +99,12 @@ const styles = StyleSheet.create({
 		marginTop: 8,
 	},
 	numberPad: {
+		flex: 1,
 		marginTop: 'auto',
-		maxHeight: 425,
+		maxHeight: 360,
+	},
+	buttonContainer: {
+		justifyContent: 'flex-end',
 	},
 });
 
