@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo, useState } from 'react';
-import { StyleSheet } from 'react-native';
+import { ActivityIndicator, StyleSheet } from 'react-native';
 import { useSelector } from 'react-redux';
 import { FadeIn, FadeOut } from 'react-native-reanimated';
 import Clipboard from '@react-native-clipboard/clipboard';
@@ -44,6 +44,7 @@ export const Contact = ({
 	const [showDialog, setShowDialog] = useState(false);
 	const [showCopy, setShowCopy] = useState(false);
 	const [isSharing, setIsSharing] = useState(false);
+	const [loading, setLoading] = useState(false);
 
 	const selectedWallet = useSelector(selectedWalletSelector);
 	const selectedNetwork = useSelector(selectedNetworkSelector);
@@ -75,6 +76,7 @@ export const Contact = ({
 	}, [navigation, slashtag, url]);
 
 	const handleSend = async (): Promise<void> => {
+		setLoading(true);
 		const res = await processInputData({
 			data: url,
 			source: 'sendScanner',
@@ -82,6 +84,7 @@ export const Contact = ({
 			selectedNetwork,
 			selectedWallet,
 		});
+		setLoading(false);
 		if (res.isOk()) {
 			navigation.popToTop();
 			return;
@@ -142,7 +145,11 @@ export const Contact = ({
 							style={styles.iconButton}
 							disabled={!canSend}
 							onPress={handleSend}>
-							<CoinsIcon height={22} width={22} color="brand" />
+							{loading ? (
+								<ActivityIndicator />
+							) : (
+								<CoinsIcon height={22} width={22} color="brand" />
+							)}
 						</IconButton>
 						<IconButton
 							style={styles.iconButton}

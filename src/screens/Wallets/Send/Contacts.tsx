@@ -1,5 +1,5 @@
-import React, { memo, ReactElement } from 'react';
-import { StyleSheet, View } from 'react-native';
+import React, { memo, ReactElement, useState } from 'react';
+import { ActivityIndicator, StyleSheet, View } from 'react-native';
 import { useSelector } from 'react-redux';
 
 import NavigationHeader from '../../../components/NavigationHeader';
@@ -22,6 +22,7 @@ import {
 const Contacts = ({
 	navigation,
 }: SendScreenProps<'Contacts'>): ReactElement => {
+	const [loading, setLoading] = useState(false);
 	const selectedWallet = useSelector(selectedWalletSelector);
 	const selectedNetwork = useSelector(selectedNetworkSelector);
 	const { sdk } = useSlashtags();
@@ -36,7 +37,7 @@ const Contacts = ({
 			selectedNetwork,
 			selectedWallet,
 		});
-
+		setLoading(true);
 		const res = await processInputData({
 			data: contact.url,
 			source: 'sendScanner',
@@ -44,6 +45,7 @@ const Contacts = ({
 			selectedNetwork,
 			selectedWallet,
 		});
+		setLoading(false);
 		if (res.isOk()) {
 			navigation.navigate('Amount');
 			return;
@@ -58,12 +60,18 @@ const Contacts = ({
 		<GradientView style={styles.container}>
 			<NavigationHeader title="Select Contact" size="sm" />
 			<View style={styles.content}>
-				<ContactsList
-					onPress={handlePress}
-					sectionBackgroundColor="transparent"
-					stickySectionHeadersEnabled={false}
-					bottomSheet={true}
-				/>
+				{loading ? (
+					<View style={styles.loading}>
+						<ActivityIndicator />
+					</View>
+				) : (
+					<ContactsList
+						onPress={handlePress}
+						sectionBackgroundColor="transparent"
+						stickySectionHeadersEnabled={false}
+						bottomSheet={true}
+					/>
+				)}
 			</View>
 		</GradientView>
 	);
@@ -77,6 +85,11 @@ const styles = StyleSheet.create({
 		flex: 1,
 		paddingHorizontal: 16,
 		marginTop: 16,
+	},
+	loading: {
+		alignItems: 'center',
+		justifyContent: 'center',
+		flex: 1,
 	},
 });
 
