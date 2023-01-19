@@ -111,6 +111,8 @@ const ElectrumConfig = ({
 		const peerInfo = await getConnectedPeer(selectedNetwork);
 		if (peerInfo.isOk()) {
 			setConnectedPeer(peerInfo.value);
+		} else {
+			setConnectedPeer(undefined);
 		}
 	};
 
@@ -151,7 +153,6 @@ const ElectrumConfig = ({
 					title: 'Electrum Server Updated',
 					message: `Successfully connected to ${host}:${port}`,
 				});
-				await getAndUpdateConnectedPeer();
 			} else {
 				updateUi({ isConnectedToElectrum: false });
 				showErrorNotification({
@@ -159,6 +160,7 @@ const ElectrumConfig = ({
 					message: connectResponse.error.message,
 				});
 			}
+			await getAndUpdateConnectedPeer();
 		} catch (e) {
 			console.log(e);
 		} finally {

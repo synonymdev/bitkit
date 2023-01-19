@@ -128,7 +128,13 @@ const POLLING_INTERVAL = 1000 * 10;
 
 type ElectrumConnectionPubSub = {
 	publish: (isConnected: boolean) => void;
-	subscribe: (callback: (isConnected: boolean) => void) => () => void;
+	subscribe: (
+		callback: (isConnected: boolean) => void,
+	) => ElectrumConnectionSubscription;
+};
+
+type ElectrumConnectionSubscription = {
+	remove(): void;
 };
 
 /**
@@ -160,7 +166,9 @@ export const electrumConnection = ((): ElectrumConnectionPubSub => {
 		subscribers.forEach((callback) => callback(isConnected));
 	}
 
-	function subscribe(callback: (isConnected: boolean) => void): () => void {
+	function subscribe(
+		callback: (isConnected: boolean) => void,
+	): ElectrumConnectionSubscription {
 		// Create the subscribers array if not initialized yet
 		if (!Array.isArray(subscribers)) {
 			subscribers = [];
@@ -178,10 +186,11 @@ export const electrumConnection = ((): ElectrumConnectionPubSub => {
 			}
 		}, POLLING_INTERVAL);
 
-		// unsubscribe
-		return () => {
-			clearInterval(timerId);
-			subscribers = subscribers.filter((cb) => !(cb === callback));
+		return {
+			remove: (): void => {
+				clearInterval(timerId);
+				subscribers = subscribers.filter((cb) => !(cb === callback));
+			},
 		};
 	}
 

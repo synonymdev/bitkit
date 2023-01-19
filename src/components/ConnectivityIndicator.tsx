@@ -38,10 +38,9 @@ const ConnectivityIndicator = (): ReactElement => {
 				message: 'Successfully reconnected to Electrum Server.',
 			});
 		} else {
-			updateUi({ isConnectedToElectrum: false });
 			showErrorNotification({
 				title: 'Bitkit Connection Lost',
-				message: 'Please check your settings.',
+				message: 'Please check your Electrum Server settings.',
 			});
 		}
 		setIsLoading(false);
