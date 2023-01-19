@@ -54,7 +54,23 @@ const navOptions: StackNavigationOptions = {
  * Helper function to navigate from outside components.
  */
 export const navigationRef = createNavigationContainerRef<RootStackParamList>();
-export const navigate = navigationRef.navigate;
+export const rootNavigation = {
+	navigate<RouteName extends keyof RootStackParamList>(
+		...args: RouteName extends unknown
+			? undefined extends RootStackParamList[RouteName]
+				?
+						| [screen: RouteName]
+						| [screen: RouteName, params: RootStackParamList[RouteName]]
+				: [screen: RouteName, params: RootStackParamList[RouteName]]
+			: never
+	): void {
+		if (navigationRef.isReady()) {
+			navigationRef.navigate(...args);
+		} else {
+			// Decide what to do if react navigation is not ready
+		}
+	},
+};
 
 export type TInitialRoutes = 'Wallet' | 'RootAuthCheck';
 

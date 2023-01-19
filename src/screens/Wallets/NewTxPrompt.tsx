@@ -17,7 +17,7 @@ import Glow from '../../components/Glow';
 import AmountToggle from '../../components/AmountToggle';
 import { toggleView } from '../../store/actions/ui';
 import BottomSheetNavigationHeader from '../../components/BottomSheetNavigationHeader';
-import { navigate } from '../../navigation/root/RootNavigator';
+import { rootNavigation } from '../../navigation/root/RootNavigator';
 import { useAppSelector } from '../../hooks/redux';
 import {
 	useBottomSheetBackPress,
@@ -70,7 +70,7 @@ const NewTxPrompt = (): ReactElement => {
 				view: 'newTxPrompt',
 				data: { isOpen: false },
 			});
-			navigate('ActivityDetail', { id: activityItem.id });
+			rootNavigation.navigate('ActivityDetail', { id: activityItem.id });
 		}
 	};
 

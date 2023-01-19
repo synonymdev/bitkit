@@ -11,7 +11,7 @@ import GradientView from '../../../components/GradientView';
 import GlowImage from '../../../components/GlowImage';
 import Button from '../../../components/Button';
 import { toggleView } from '../../../store/actions/ui';
-import { navigate } from '../../../navigation/root/RootNavigator';
+import { rootNavigation } from '../../../navigation/root/RootNavigator';
 import Store from '../../../store/types';
 import type { SendScreenProps } from '../../../navigation/types';
 import {
@@ -71,7 +71,7 @@ const Result = ({
 				view: 'sendNavigation',
 				data: { isOpen: false },
 			});
-			navigate('ActivityDetail', {
+			rootNavigation.navigate('ActivityDetail', {
 				id: activityItem.id,
 				extended: true,
 			});

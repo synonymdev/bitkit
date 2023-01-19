@@ -1,7 +1,7 @@
 import React, { memo, ReactElement, useState } from 'react';
 import { StyleSheet } from 'react-native';
 
-import { navigate } from '../navigation/root/RootNavigator';
+import { rootNavigation } from '../navigation/root/RootNavigator';
 import { TouchableOpacity, View } from '../styles/components';
 import { Caption13M, Text01M } from '../styles/text';
 import { SettingsIcon, ListIcon, TrashIcon } from '../styles/icons';
@@ -78,7 +78,7 @@ export const BaseFeedWidget = ({
 	const [showDialog, setShowDialog] = useState(false);
 
 	const onEdit = (): void => {
-		navigate('WidgetFeedEdit', { url });
+		rootNavigation.navigate('WidgetFeedEdit', { url });
 	};
 
 	const onDelete = (): void => {

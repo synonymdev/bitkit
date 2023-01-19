@@ -1,7 +1,7 @@
 import Clipboard from '@react-native-clipboard/clipboard';
 import SDK from '@synonymdev/slashtags-sdk';
 
-import { navigate } from '../../navigation/root/RootNavigator';
+import { rootNavigation } from '../../navigation/root/RootNavigator';
 import { toggleView } from '../../store/actions/ui';
 import { updateBitcoinTransaction } from '../../store/actions/wallet';
 import { showSuccessNotification } from '../notifications';
@@ -77,7 +77,7 @@ export const readClipboardInvoice = async ({
 			});
 		}
 
-		navigate('Wallet');
+		rootNavigation.navigate('Wallet');
 		toggleView({
 			view: 'sendNavigation',
 			data: { isOpen: true },

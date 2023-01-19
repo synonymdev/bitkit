@@ -4,7 +4,7 @@ import mime from 'mime/lite';
 import debounce from 'lodash.debounce';
 import { DISABLE_SLASHTAGS, SLASHTAGS_SEEDER_BASE_URL } from '@env';
 
-import { navigate } from '../../navigation/root/RootNavigator';
+import { rootNavigation } from '../../navigation/root/RootNavigator';
 import { BasicProfile, SlashPayConfig } from '../../store/types/slashtags';
 import { showErrorNotification } from '../notifications';
 import {
@@ -33,9 +33,9 @@ export const handleSlashtagURL = (
 		const parsed = SlashURL.parse(url);
 
 		if (parsed.protocol === 'slash:') {
-			navigate('ContactEdit', { url });
+			rootNavigation.navigate('ContactEdit', { url });
 		} else if (parsed.protocol === 'slashfeed:') {
-			navigate('WidgetFeedEdit', { url });
+			rootNavigation.navigate('WidgetFeedEdit', { url });
 		}
 
 		onSuccess?.(url);

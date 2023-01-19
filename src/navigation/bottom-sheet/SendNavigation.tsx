@@ -61,8 +61,21 @@ const screenOptions: NativeStackNavigationOptions = {
  */
 export const navigationRef = createNavigationContainerRef<SendStackParamList>();
 export const sendNavigation = {
-	isReady: navigationRef.isReady,
-	navigate: navigationRef.navigate,
+	navigate<RouteName extends keyof SendStackParamList>(
+		...args: RouteName extends unknown
+			? undefined extends SendStackParamList[RouteName]
+				?
+						| [screen: RouteName]
+						| [screen: RouteName, params: SendStackParamList[RouteName]]
+				: [screen: RouteName, params: SendStackParamList[RouteName]]
+			: never
+	): void {
+		if (navigationRef.isReady()) {
+			navigationRef.navigate(...args);
+		} else {
+			// Decide what to do if react navigation is not ready
+		}
+	},
 };
 
 const SendNavigation = (): ReactElement => {

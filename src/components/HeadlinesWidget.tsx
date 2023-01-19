@@ -14,7 +14,7 @@ import { IWidget } from '../store/types/widgets';
 import { useSlashtagsSDK } from './SlashtagsProvider';
 import { showErrorNotification } from '../utils/notifications';
 import { decodeJSON } from '../utils/slashtags';
-import { navigate } from '../navigation/root/RootNavigator';
+import { rootNavigation } from '../navigation/root/RootNavigator';
 import Dialog from './Dialog';
 import { deleteWidget } from '../store/actions/widgets';
 
@@ -87,7 +87,7 @@ const HeadlinesWidget = ({
 	}, [sdk, url]);
 
 	const onEdit = (): void => {
-		navigate('WidgetFeedEdit', { url });
+		rootNavigation.navigate('WidgetFeedEdit', { url });
 	};
 
 	const onDelete = (): void => {

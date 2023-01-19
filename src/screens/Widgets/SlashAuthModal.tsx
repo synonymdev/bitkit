@@ -30,7 +30,7 @@ import {
 import { setAuthWidget } from '../../store/actions/widgets';
 import Divider from '../../components/Divider';
 import { useSnapPoints } from '../../hooks/bottomSheet';
-import { navigate } from '../../navigation/root/RootNavigator';
+import { rootNavigation } from '../../navigation/root/RootNavigator';
 import HourglassSpinner from '../../components/HourglassSpinner';
 import { useAppSelector } from '../../hooks/redux';
 import {
@@ -155,7 +155,7 @@ const _SlashAuthModal = (): ReactElement => {
 			});
 
 			setAuthWidget(url, { magiclink: true });
-			navigate('Wallet');
+			rootNavigation.navigate('Wallet');
 		} else {
 			showErrorNotification({
 				title: 'Error while signing in',

@@ -723,9 +723,7 @@ export const handleData = async ({
 				},
 			});
 
-			if (sendNavigation.isReady()) {
-				sendNavigation.navigate('Amount');
-			}
+			sendNavigation.navigate('Amount');
 
 			return ok({ type: EQRDataType.bitcoinAddress, address, amount });
 		}
@@ -763,12 +761,10 @@ export const handleData = async ({
 				},
 			});
 
-			if (sendNavigation.isReady()) {
-				if (invoiceAmount) {
-					sendNavigation.navigate('ReviewAndSend');
-				} else {
-					sendNavigation.navigate('Amount');
-				}
+			if (invoiceAmount) {
+				sendNavigation.navigate('ReviewAndSend');
+			} else {
+				sendNavigation.navigate('Amount');
 			}
 
 			return ok({

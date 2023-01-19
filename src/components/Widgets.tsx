@@ -15,7 +15,7 @@ import {
 } from 'react-native-draggable-flatlist';
 import { useFocusEffect } from '@react-navigation/native';
 
-import { navigate } from '../navigation/root/RootNavigator';
+import { rootNavigation } from '../navigation/root/RootNavigator';
 import Store from '../store/types';
 import { View, TouchableOpacity } from '../styles/components';
 import { Subtitle, Text, Text01M } from '../styles/text';
@@ -163,7 +163,7 @@ export const Widgets = ({
 	);
 
 	const onAdd = useCallback((): void => {
-		navigate('WidgetsRoot');
+		rootNavigation.navigate('WidgetsRoot');
 	}, []);
 
 	return isSlashtagsDisabled ? (
