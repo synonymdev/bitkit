@@ -8,7 +8,7 @@ import { sleep } from '../../src/utils/helpers';
 const initWaitForElectrumToSync = async (
 	elAddr: { port: number; host: string },
 	btcAddr: string,
-	timeout: number = 3_000,
+	timeout: number = 30_000,
 ): Promise<() => Promise<void>> => {
 	let height: number = 0;
 
@@ -40,9 +40,16 @@ const initWaitForElectrumToSync = async (
 			let count;
 			let running = true;
 
-			const timer = setTimeout(() => {
+			const timer = setTimeout(async () => {
 				running = false;
-				reject(new Error('Timeout error'));
+				// before timeout check block count once again
+				const b = await bitcoin.getBlockCount();
+				const e = await electrum.blockchainHeaders_subscribe();
+				if (b === e.height) {
+					resolve();
+				} else {
+					reject(new Error('Electrum sync Timeout error'));
+				}
 			}, timeout);
 
 			try {
