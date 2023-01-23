@@ -128,6 +128,7 @@ export type TProcessedData = {
  * @param {SDK} sdk
  * @param {TAvailableNetworks} [selectedNetwork]
  * @param {TWalletName} [selectedWallet]
+ * @param {Array} [skip]
  */
 export const processInputData = async ({
 	data,
@@ -135,12 +136,14 @@ export const processInputData = async ({
 	sdk,
 	selectedNetwork,
 	selectedWallet,
+	skip = [],
 }: {
 	data: string;
 	source?: 'mainScanner' | 'sendScanner';
 	selectedNetwork?: TAvailableNetworks;
 	selectedWallet?: TWalletName;
 	sdk?: SDK;
+	skip?: Array<string>;
 }): Promise<Result<TProcessedData>> => {
 	data = data.trim();
 	try {
@@ -220,8 +223,12 @@ export const processInputData = async ({
 				return err('Remote slashpay profile is empty');
 			}
 
+			const filteredData = response.value.filter(
+				({ qrDataType }) => !skip.includes(qrDataType),
+			);
+
 			const processBitcoinTxResponse = await processBitcoinTransactionData({
-				data: response.value,
+				data: filteredData,
 				selectedWallet,
 				selectedNetwork,
 			});

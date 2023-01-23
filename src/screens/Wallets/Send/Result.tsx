@@ -1,5 +1,12 @@
-import React, { memo, ReactElement, useCallback, useMemo, useRef } from 'react';
-import { StyleSheet, View, Platform } from 'react-native';
+import React, {
+	memo,
+	ReactElement,
+	useCallback,
+	useMemo,
+	useRef,
+	useState,
+} from 'react';
+import { StyleSheet, View, Platform, ActivityIndicator } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useFocusEffect } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
@@ -22,7 +29,11 @@ import { activityItemSelector } from '../../../store/reselect/activity';
 import {
 	selectedNetworkSelector,
 	selectedWalletSelector,
+	transactionSelector,
 } from '../../../store/reselect/wallet';
+import { useSlashtags } from '../../../components/SlashtagsProvider';
+import { processInputData } from '../../../utils/scanner';
+import { showErrorNotification } from '../../../utils/notifications';
 
 const confettiSrc = require('../../../assets/lottie/confetti-green.json');
 
@@ -35,10 +46,13 @@ const Result = ({
 	const animationRef = useRef<Lottie>(null);
 	const selectedWallet = useSelector(selectedWalletSelector);
 	const selectedNetwork = useSelector(selectedNetworkSelector);
+	const transaction = useSelector(transactionSelector);
 	const activityItem = useSelector((state: Store) => {
 		// TODO: make sure txId is always defined
 		return activityItemSelector(state, txId ?? '');
 	});
+	const { sdk } = useSlashtags();
+	const [loading, setLoading] = useState(false);
 
 	const buttonContainer = useMemo(
 		() => ({
@@ -48,9 +62,57 @@ const Result = ({
 		[insets.bottom],
 	);
 
-	const imageSrc = success
-		? require('../../../assets/illustrations/check.png')
-		: require('../../../assets/illustrations/cross.png');
+	let imageSrc;
+	let title;
+	let glowColor;
+	let closeText;
+	let retryText;
+	let error;
+
+	if (success) {
+		imageSrc = require('../../../assets/illustrations/check.png');
+		title = 'Bitcoin Sent';
+		glowColor = 'green';
+		closeText = 'Close';
+		error = <View style={styles.error} />;
+	} else if (transaction.lightningInvoice && transaction.slashTagsUrl) {
+		imageSrc = require('../../../assets/illustrations/exclamation-mark.png');
+		title = 'Instant Payment Failed';
+		glowColor = 'yellow';
+		closeText = 'Cancel';
+		retryText = loading ? (
+			<>
+				<ActivityIndicator />
+				Regular Payment
+			</>
+		) : (
+			'Regular Payment'
+		);
+		error = (
+			<View style={styles.error}>
+				<Text01S>
+					Unfortunately Anna Pleb could not be paid instantly. You can try a
+					regular payment (more expensive, slower).
+				</Text01S>
+			</View>
+		);
+	} else {
+		imageSrc = require('../../../assets/illustrations/cross.png');
+		title = 'Transaction Failed';
+		glowColor = 'red';
+		closeText = 'Cancel';
+		retryText = 'Try again';
+		error = (
+			<View style={styles.error}>
+				{errorTitle && (
+					<Subtitle style={styles.errorTitle} color="red">
+						{errorTitle}
+					</Subtitle>
+				)}
+				{errorMessage && <Text01S color="red">{errorMessage}</Text01S>}
+			</View>
+		);
+	}
 
 	// TEMP: fix iOS animation autoPlay
 	// @see https://github.com/lottie-react-native/lottie-react-native/issues/832
@@ -78,28 +140,59 @@ const Result = ({
 		}
 	};
 
-	const onContinue = async (): Promise<void> => {
-		if (success) {
-			toggleView({
-				view: 'sendNavigation',
-				data: { isOpen: false },
-			});
-		} else {
-			/*
-				TODO: Add ability to distinguish between errors sent to this component.
-				 If unable to connect to or broadcast through Electrum, attempt to broadcast using the Blocktank api.
-				 If unable to properly create a valid transaction for any reason, reset the tx state as done below.
-			*/
-			//If unable to broadcast for any reason, reset the transaction object and try again.
-			await resetOnChainTransaction({ selectedWallet, selectedNetwork });
-			await setupOnChainTransaction({
+	const handleClose = (): void => {
+		toggleView({
+			view: 'sendNavigation',
+			data: { isOpen: false },
+		});
+	};
+
+	const handleRetry = async (): Promise<void> => {
+		if (transaction.lightningInvoice && transaction.slashTagsUrl) {
+			setLoading(true);
+			resetOnChainTransaction({
 				selectedWallet,
 				selectedNetwork,
 			});
-			// The transaction was reset due to an unknown broadcast or construction error.
-			// Navigate back to the main send screen to re-enter information.
-			navigation.navigate('Recipient');
+			await setupOnChainTransaction({
+				selectedNetwork,
+				selectedWallet,
+			});
+			const res = await processInputData({
+				data: transaction.slashTagsUrl,
+				source: 'sendScanner',
+				sdk,
+				selectedNetwork,
+				selectedWallet,
+				skip: ['lightningPaymentRequest'],
+			});
+			setLoading(false);
+			if (res.isOk()) {
+				navigation.navigate('Amount');
+				return;
+			}
+			showErrorNotification({
+				title: 'Unable To Pay to this contact',
+				message: res.error.message,
+			});
+
+			return;
 		}
+
+		/*
+			TODO: Add ability to distinguish between errors sent to this component.
+			If unable to connect to or broadcast through Electrum, attempt to broadcast using the Blocktank api.
+			If unable to properly create a valid transaction for any reason, reset the tx state as done below.
+		*/
+		//If unable to broadcast for any reason, reset the transaction object and try again.
+		await resetOnChainTransaction({ selectedWallet, selectedNetwork });
+		await setupOnChainTransaction({
+			selectedWallet,
+			selectedNetwork,
+		});
+		// The transaction was reset due to an unknown broadcast or construction error.
+		// Navigate back to the main send screen to re-enter information.
+		navigation.navigate('Recipient');
 	};
 
 	return (
@@ -112,36 +205,18 @@ const Result = ({
 				)}
 			</>
 
-			{success ? (
-				<BottomSheetNavigationHeader
-					title="Bitcoin Sent"
-					displayBackButton={false}
-				/>
-			) : (
-				<BottomSheetNavigationHeader title="Transaction Failed" />
-			)}
+			<BottomSheetNavigationHeader title={title} displayBackButton={!success} />
 
-			<View style={styles.error}>
-				{errorTitle && (
-					<Subtitle style={styles.errorTitle} color="red">
-						{errorTitle}
-					</Subtitle>
-				)}
-				{errorMessage && <Text01S color="red">{errorMessage}</Text01S>}
-			</View>
+			{error}
 
-			<GlowImage
-				image={imageSrc}
-				imageSize={200}
-				glowColor={success ? 'green' : 'red'}
-			/>
+			<GlowImage image={imageSrc} imageSize={200} glowColor={glowColor} />
 
 			<View style={buttonContainer}>
 				{success && activityItem && (
 					<>
 						<Button
 							style={styles.button}
-							variant="secondary"
+							variant="primary"
 							size="large"
 							text="Details"
 							onPress={navigateToTxDetails}
@@ -151,10 +226,24 @@ const Result = ({
 				)}
 				<Button
 					style={styles.button}
+					variant="secondary"
 					size="large"
-					text={success ? 'Close' : 'Try Again'}
-					onPress={onContinue}
+					text={closeText}
+					onPress={handleClose}
 				/>
+				{!success && (
+					<>
+						<View style={styles.divider} />
+						<Button
+							style={styles.button}
+							variant="primary"
+							size="large"
+							text={retryText}
+							onPress={handleRetry}
+							disabled={loading}
+						/>
+					</>
+				)}
 			</View>
 		</GradientView>
 	);
