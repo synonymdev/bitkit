@@ -339,6 +339,8 @@ PODS:
     - RCTTypeSafety
     - React-Core
     - ReactCommon/turbomodule/core
+  - react-native-shake (5.1.1):
+    - React
   - react-native-skia (0.1.141):
     - React
     - React-callinvoker
@@ -444,7 +446,7 @@ PODS:
     - React-Core
   - RNFS (2.20.0):
     - React-Core
-  - RNGestureHandler (2.6.0):
+  - RNGestureHandler (2.9.0):
     - React-Core
   - RNKeychain (8.1.1):
     - React-Core
@@ -457,7 +459,7 @@ PODS:
     - React-Core
   - RNReactNativeHapticFeedback (1.14.0):
     - React-Core
-  - RNReanimated (2.12.0):
+  - RNReanimated (2.14.4):
     - DoubleConversion
     - FBLazyVector
     - FBReactNativeSpec
@@ -572,6 +574,7 @@ DEPENDENCIES:
   - react-native-randombytes (from `../node_modules/react-native-randombytes`)
   - react-native-restart (from `../node_modules/react-native-restart`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
+  - react-native-shake (from `../node_modules/react-native-shake`)
   - "react-native-skia (from `../node_modules/@shopify/react-native-skia`)"
   - react-native-tcp-socket (from `../node_modules/react-native-tcp-socket`)
   - React-perflogger (from `../node_modules/react-native/ReactCommon/reactperflogger`)
@@ -698,6 +701,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-restart"
   react-native-safe-area-context:
     :path: "../node_modules/react-native-safe-area-context"
+  react-native-shake:
+    :path: "../node_modules/react-native-shake"
   react-native-skia:
     :path: "../node_modules/@shopify/react-native-skia"
   react-native-tcp-socket:
@@ -815,6 +820,7 @@ SPEC CHECKSUMS:
   react-native-randombytes: 421f1c7d48c0af8dbcd471b0324393ebf8fe7846
   react-native-restart: 45c8dca02491980f2958595333cbccd6877cb57e
   react-native-safe-area-context: b456e1c40ec86f5593d58b275bd0e9603169daca
+  react-native-shake: 67d43d6af4abfc299400b17fea7d2ec0754c72ac
   react-native-skia: 0bd524b32fb96b4f7b7ceeddd90b7be14e64701d
   react-native-tcp-socket: c1b7297619616b4c9caae6889bcb0aba78086989
   React-perflogger: 0b0500685176e53ea582c45179a653aa82e4ae49
@@ -833,13 +839,13 @@ SPEC CHECKSUMS:
   RNCClipboard: 4b8bec7c195e27bcec746f52dff7601161683249
   RNDeviceInfo: 4701f0bf2a06b34654745053db0ce4cb0c53ada7
   RNFS: 4ac0f0ea233904cb798630b3c077808c06931688
-  RNGestureHandler: 920eb17f5b1e15dae6e5ed1904045f8f90e0b11e
+  RNGestureHandler: 071d7a9ad81e8b83fe7663b303d132406a7d8f39
   RNKeychain: ff836453cba46938e0e9e4c22e43d43fa2c90333
   RNPermissions: dcdb7b99796bbeda6975a6e79ad519c41b251b1c
   RNQrGenerator: 34beaf1996de4a2f2122c7019dccd1717b22d8d7
   RNRate: 94f57c773e155ca0d0aeeba9c10a32bce9030daf
   RNReactNativeHapticFeedback: 1e3efeca9628ff9876ee7cdd9edec1b336913f8c
-  RNReanimated: 0ff5e7f619a7524d237848ecb4c47650c4946f71
+  RNReanimated: 73afd1a9b4087e403163e0d300854cb99260c9b6
   RNScreens: 34cc502acf1b916c582c60003dc3089fa01dc66d
   RNShare: be91a5c149585affb02c25b351bd07ba927c7006
   RNSVG: ecd661f380a07ba690c9c5929c475a44f432d674

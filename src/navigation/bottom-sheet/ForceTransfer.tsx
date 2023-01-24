@@ -47,8 +47,6 @@ const ForceTransfer = (): ReactElement => {
 
 	useBottomSheetBackPress('forceTransfer');
 
-	console.log({ startTime });
-
 	// try to cooperatively close the channel(s) for 30min
 	useEffect(() => {
 		let interval: NodeJS.Timer;

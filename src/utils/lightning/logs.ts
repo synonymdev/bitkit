@@ -16,10 +16,10 @@ export const zipLogs = async (limit: number = 10): Promise<Result<string>> => {
 	const tempPath = `${logsPath}/share`;
 	const zipPath = `${tempPath}/${fileName}.zip`;
 
-	const logs = await listLogs(logsPath, limit);
-
-	//Copy to dir to be zipped
 	try {
+		const logs = await listLogs(logsPath, limit);
+
+		//Copy to dir to be zipped
 		await rm(tempPath);
 		await mkdir(tempPath);
 		for (let index = 0; index < logs.length; index++) {

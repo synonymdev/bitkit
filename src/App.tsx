@@ -7,10 +7,12 @@ import React, {
 	useMemo,
 	useEffect,
 	useCallback,
+	useState,
 } from 'react';
 import { Platform, UIManager, NativeModules } from 'react-native';
 import Toast from 'react-native-toast-message';
 import { ThemeProvider } from 'styled-components/native';
+import RNShake from 'react-native-shake';
 
 import { SafeAreaProvider, StatusBar } from './styles/components';
 import themes from './styles/themes';
@@ -20,10 +22,12 @@ import OnboardingNavigator from './navigation/onboarding/OnboardingNavigator';
 import { SlashtagsProvider } from './components/SlashtagsProvider';
 import { toastConfig } from './components/Toast';
 import RestoringScreen from './screens/Onboarding/Restoring';
+import Recovery from './screens/Recovery';
 import AppUpdate from './screens/AppUpdate';
 import AppOnboarded from './AppOnboarded';
 
 import './utils/translations';
+import { RECOVERY_DELAY } from './utils/startup/constants';
 import { themeSelector } from './store/reselect/settings';
 import { walletExistsSelector } from './store/reselect/wallet';
 import { requiresRemoteRestoreSelector } from './store/reselect/user';
@@ -36,6 +40,7 @@ if (Platform.OS === 'android') {
 }
 
 const App = (): ReactElement => {
+	const [hasShaken, setHasShaken] = useState(false);
 	const theme = useAppSelector(themeSelector);
 	const walletExists = useAppSelector(walletExistsSelector);
 	const requiresRemoteRestore = useAppSelector(requiresRemoteRestoreSelector);
@@ -51,11 +56,23 @@ const App = (): ReactElement => {
 		// check for Bitkit update
 		// TEMP: disabled for now
 		// checkForAppUpdate();
+
+		// Shake in the first 3s of startup to enter recovery
+		const subscription = RNShake.addListener((): void => setHasShaken(true));
+		setTimeout((): void => subscription.remove(), RECOVERY_DELAY);
+
+		return (): void => {
+			subscription.remove();
+		};
 	}, []);
 
 	const currentTheme = useMemo(() => themes[theme], [theme]);
 
 	const RootComponent = useCallback((): ReactElement => {
+		if (hasShaken) {
+			return <Recovery />;
+		}
+
 		if (availableUpdateType === 'critical') {
 			return <AppUpdate />;
 		}
@@ -69,7 +86,7 @@ const App = (): ReactElement => {
 		}
 
 		return <OnboardingNavigator />;
-	}, [availableUpdateType, walletExists, requiresRemoteRestore]);
+	}, [hasShaken, availableUpdateType, walletExists, requiresRemoteRestore]);
 
 	return (
 		<ThemeProvider theme={currentTheme}>

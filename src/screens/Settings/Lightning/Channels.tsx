@@ -233,18 +233,19 @@ const Channels = ({
 	}, []);
 
 	const handleExportLogs = useCallback(async (): Promise<void> => {
-		const res = await zipLogs();
-		if (res.isErr()) {
-			return showErrorNotification({
+		const result = await zipLogs();
+		if (result.isErr()) {
+			showErrorNotification({
 				title: 'Failed to share logs',
-				message: res.error.message,
+				message: result.error.message,
 			});
+			return;
 		}
 
 		// Share the zip file
 		await Share.open({
 			type: 'application/zip',
-			url: `file://${res.value}`,
+			url: `file://${result.value}`,
 			title: 'Export Lightning Logs',
 		});
 	}, []);

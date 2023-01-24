@@ -15,7 +15,7 @@ import type { BackupScreenProps } from '../../../navigation/types';
 // Android doesn't have blur so we put a dummy mnemonic
 const dummySeed = Array.from({ length: 12 }, () => 'secret');
 
-const Word = ({
+export const Word = ({
 	number,
 	word,
 }: {

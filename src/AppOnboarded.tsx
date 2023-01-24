@@ -8,6 +8,7 @@ import { useSlashtagsSDK } from './components/SlashtagsProvider';
 import { updateUi } from './store/actions/ui';
 import { useBalance } from './hooks/wallet';
 import { startWalletServices } from './utils/startup';
+import { RECOVERY_DELAY } from './utils/startup/constants';
 import { electrumConnection } from './utils/electrum';
 import { readClipboardInvoice } from './utils/send';
 import { unsubscribeFromLightningSubscriptions } from './utils/lightning';
@@ -43,9 +44,14 @@ const AppOnboarded = (): ReactElement => {
 			setTimeout(NativeModules.SplashScreenModule.hide, 100);
 		}
 
+		let timerId: NodeJS.Timeout;
+
 		// launch wallet services
-		(async (): Promise<void> => {
-			await startWalletServices({ selectedNetwork, selectedWallet });
+		((): void => {
+			// Delay service startup to make time for entering recovery
+			timerId = setTimeout(() => {
+				startWalletServices({ selectedNetwork, selectedWallet });
+			}, RECOVERY_DELAY);
 
 			// check clipboard for payment data
 			if (enableAutoReadClipboard) {
@@ -63,6 +69,7 @@ const AppOnboarded = (): ReactElement => {
 		})();
 
 		return () => {
+			clearTimeout(timerId);
 			unsubscribeFromLightningSubscriptions();
 		};
 		// onMount
