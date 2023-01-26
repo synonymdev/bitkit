@@ -21,8 +21,8 @@ import { useAppSelector } from './hooks/redux';
 import OnboardingNavigator from './navigation/onboarding/OnboardingNavigator';
 import { SlashtagsProvider } from './components/SlashtagsProvider';
 import { toastConfig } from './components/Toast';
+import RecoveryNavigator from './screens/Recovery/RecoveryNavigator';
 import RestoringScreen from './screens/Onboarding/Restoring';
-import Recovery from './screens/Recovery';
 import AppUpdate from './screens/AppUpdate';
 import AppOnboarded from './AppOnboarded';
 
@@ -70,7 +70,7 @@ const App = (): ReactElement => {
 
 	const RootComponent = useCallback((): ReactElement => {
 		if (hasShaken) {
-			return <Recovery />;
+			return <RecoveryNavigator />;
 		}
 
 		if (availableUpdateType === 'critical') {

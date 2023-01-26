@@ -10,6 +10,7 @@ import type {
 
 import type { IActivityItem } from '../../store/types/activity';
 import type { OnboardingStackParamList } from '../onboarding/OnboardingNavigator';
+import type { RecoveryStackParamList } from '../../screens/Recovery/RecoveryNavigator';
 import type { WalletStackParamList } from '../wallet/WalletNavigator';
 import type { LightningStackParamList } from '../lightning/LightningNavigator';
 import type { TransferStackParamList } from '../transfer/TransferNavigator';
@@ -54,6 +55,9 @@ export type RootStackScreenProps<T extends keyof RootStackParamList> =
 export type OnboardingStackScreenProps<
 	T extends keyof OnboardingStackParamList,
 > = NativeStackScreenProps<OnboardingStackParamList, T>;
+
+export type RecoveryStackScreenProps<T extends keyof RecoveryStackParamList> =
+	NativeStackScreenProps<RecoveryStackParamList, T>;
 
 // Nested Stack Navigators
 export type WalletScreenProps<T extends keyof WalletStackParamList> =
