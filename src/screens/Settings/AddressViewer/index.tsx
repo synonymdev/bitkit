@@ -932,7 +932,7 @@ const AddressViewer = ({
 						<Text02S style={styles.headerText}>
 							Index: {selectedAddress?.index}
 						</Text02S>
-						<Text02S style={styles.headerText}>
+						<Text02S style={styles.headerText} testID="Path">
 							Path: {selectedAddress?.path}
 						</Text02S>
 						<TouchableOpacity

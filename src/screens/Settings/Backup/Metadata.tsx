@@ -40,7 +40,12 @@ const Metadata = (): ReactElement => {
 			<GlowImage image={imageSrc} imageSize={200} />
 
 			<View style={buttonContainerStyles}>
-				<Button size="large" text="OK" onPress={handleButtonPress} />
+				<Button
+					size="large"
+					text="OK"
+					onPress={handleButtonPress}
+					testID="OK"
+				/>
 			</View>
 		</GradientView>
 	);

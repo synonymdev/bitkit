@@ -65,6 +65,7 @@ const TransactionSpeedSettings = ({
 						navigation.goBack();
 						updateSettings({ transactionSpeed: txSpeed.value });
 					},
+					testID: txSpeed.value,
 				})),
 			},
 		],

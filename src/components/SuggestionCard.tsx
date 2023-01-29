@@ -56,7 +56,7 @@ const SuggestionCard = ({
 	);
 
 	return (
-		<Card style={containerStyle}>
+		<Card style={containerStyle} testID={`Suggestion${id}`}>
 			<Canvas style={styles.canvas}>
 				{dismissable ? (
 					<Glow color={colors[color]} />
@@ -81,7 +81,8 @@ const SuggestionCard = ({
 				<Pressable
 					color="transparent"
 					style={styles.dismiss}
-					onPress={(): void => onClose(id)}>
+					onPress={(): void => onClose(id)}
+					testID="SuggestionDismiss">
 					<XIcon width={18} height={18} color="gray1" />
 				</Pressable>
 			)}

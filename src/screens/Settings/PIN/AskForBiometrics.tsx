@@ -129,7 +129,10 @@ const AskForBiometrics = ({
 							)}
 						</View>
 
-						<Pressable style={styles.toggle} onPress={handleTogglePress}>
+						<Pressable
+							style={styles.toggle}
+							onPress={handleTogglePress}
+							testID="ToggleBiometrics">
 							<Text01M>Use {typeName}</Text01M>
 							<Switch
 								onValueChange={handleTogglePress}
@@ -159,6 +162,7 @@ const AskForBiometrics = ({
 						text={buttonText}
 						onPress={handleButtonPress}
 						disabled={!biometryData}
+						testID="ContinueButton"
 					/>
 				</View>
 			</View>

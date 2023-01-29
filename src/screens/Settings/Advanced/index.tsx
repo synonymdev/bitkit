@@ -42,6 +42,7 @@ const AdvancedSettings = ({
 				type: EItemType.button,
 				value: typesDescriptions[selectedAddressType],
 				onPress: (): void => navigation.navigate('AddressTypePreference'),
+				testID: 'AddressTypePreference',
 			},
 			{
 				title: 'Coin Selection',
@@ -57,6 +58,7 @@ const AdvancedSettings = ({
 				title: 'Address Viewer',
 				type: EItemType.button,
 				onPress: (): void => navigation.navigate('AddressViewer'),
+				testID: 'AddressViewer',
 			},
 			{
 				title: 'Rescan Addresses',
@@ -75,16 +77,19 @@ const AdvancedSettings = ({
 				title: 'Lightning Connections',
 				type: EItemType.button,
 				onPress: (): void => navigation.navigate('Channels'),
+				testID: 'Channels',
 			},
 			{
 				title: 'Lightning Node',
 				type: EItemType.button,
 				onPress: (): void => navigation.navigate('LightningNodeInfo'),
+				testID: 'LightningNodeInfo',
 			},
 			{
 				title: 'Electrum Server',
 				type: EItemType.button,
 				onPress: (): void => navigation.navigate('ElectrumConfig'),
+				testID: 'ElectrumConfig',
 			},
 		];
 

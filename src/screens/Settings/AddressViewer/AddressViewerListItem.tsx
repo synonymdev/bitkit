@@ -31,7 +31,11 @@ const AddressViewerListItem = (props: ListItemProps): ReactElement => {
 			onPress={onItemRowPress}>
 			<View style={styles.contentRow}>
 				<View style={styles.container}>
-					<Text01M color={'white8'} numberOfLines={1} ellipsizeMode="middle">
+					<Text01M
+						color={'white8'}
+						numberOfLines={1}
+						ellipsizeMode="middle"
+						testID={`Address-${item.index}`}>
 						{item.index}: {item.address}
 					</Text01M>
 				</View>

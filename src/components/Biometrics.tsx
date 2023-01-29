@@ -123,7 +123,8 @@ const Biometrics = ({
 				style={styles.container}
 				color="transparent"
 				activeOpacity={0.6}
-				onPress={(): void => authenticate()}>
+				onPress={(): void => authenticate()}
+				testID="Biometrics">
 				<Icon />
 				<Subtitle style={styles.text}>{getText()}</Subtitle>
 			</TouchableOpacity>

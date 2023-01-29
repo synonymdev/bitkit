@@ -113,7 +113,7 @@ const Suggestions = (): ReactElement => {
 	return (
 		<>
 			<Subtitle style={styles.title}>Suggestions</Subtitle>
-			<View style={styles.container}>
+			<View style={styles.container} testID="Suggestions">
 				<Carousel
 					style={carouselStyle}
 					data={todoItems}

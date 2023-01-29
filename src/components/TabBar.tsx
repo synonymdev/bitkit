@@ -61,7 +61,8 @@ const TabBar = ({
 			<TouchableOpacity
 				activeOpacity={0.8}
 				onPress={onSendPress}
-				style={styles.blurContainer}>
+				style={styles.blurContainer}
+				testID="Send">
 				<BlurView style={styles.send}>
 					<SvgXml xml={sendXml} width={13} height={13} />
 					<Text02M style={styles.tabText}>Send</Text02M>
@@ -76,7 +77,8 @@ const TabBar = ({
 			<TouchableOpacity
 				activeOpacity={0.8}
 				onPress={onReceivePress}
-				style={styles.blurContainer}>
+				style={styles.blurContainer}
+				testID="Receive">
 				<BlurView style={styles.receive}>
 					<SvgXml xml={receiveXml} width={13} height={13} />
 					<Text02M style={styles.tabText}>Receive</Text02M>

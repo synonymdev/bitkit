@@ -235,13 +235,15 @@ const ElectrumConfig = ({
 				<ScrollView bounces={false}>
 					<Text01S color="gray1">Currently connected to</Text01S>
 					<View style={styles.row}>
-						<View style={styles.connectedPeer}>
+						<View style={styles.connectedPeer} testID="Status">
 							{connectedPeer ? (
-								<Text color="green">
+								<Text color="green" testID="Connected">
 									{connectedPeer.host}:{connectedPeer.port}
 								</Text>
 							) : (
-								<Text color="red">disconnected</Text>
+								<Text color="red" testID="Disconnected">
+									disconnected
+								</Text>
 							)}
 						</View>
 					</View>
@@ -261,6 +263,7 @@ const ElectrumConfig = ({
 						onChangeText={setHost}
 						value={host}
 						returnKeyType="done"
+						testID="HostInput"
 					/>
 
 					<Caption13Up color="gray1" style={styles.label}>
@@ -277,6 +280,7 @@ const ElectrumConfig = ({
 						autoCorrect={false}
 						onChangeText={setPort}
 						value={port.toString()}
+						testID="PortInput"
 					/>
 
 					<Caption13Up color="gray1" style={styles.label}>
@@ -301,6 +305,7 @@ const ElectrumConfig = ({
 							variant="secondary"
 							size="large"
 							onPress={resetToDefault}
+							testID="ResetToDefault"
 						/>
 						<View style={styles.divider} />
 						<Button
@@ -311,6 +316,7 @@ const ElectrumConfig = ({
 							onPress={(): void => {
 								connectAndAddPeer({ host, port, protocol });
 							}}
+							testID="ConnectToHost"
 						/>
 					</View>
 				</ScrollView>

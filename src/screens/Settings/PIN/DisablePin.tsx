@@ -58,7 +58,12 @@ const DisablePin = ({
 			<GlowImage image={imageSrc} imageSize={200} />
 
 			<View style={buttonContainerStyles}>
-				<Button size="large" text="Disable PIN" onPress={handleButtonPress} />
+				<Button
+					size="large"
+					text="Disable PIN"
+					onPress={handleButtonPress}
+					testID="DisablePin"
+				/>
 			</View>
 		</ThemedView>
 	);

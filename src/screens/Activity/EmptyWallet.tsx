@@ -1,4 +1,4 @@
-import React, { memo, ReactElement, useMemo } from 'react';
+import React, { memo, ReactElement, useMemo, useState, useEffect } from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import {
 	StyleSheet,
@@ -15,6 +15,12 @@ import Arrow from '../../assets/dotted-arrow.svg';
 const EmptyWallet = (): ReactElement => {
 	const { height } = useWindowDimensions();
 	const insets = useSafeAreaInsets();
+	const [showClose, setShowClose] = useState(false);
+
+	useEffect(() => {
+		// delay showning close button. this is handy for e2e testing
+		setTimeout(() => setShowClose(true), 2000);
+	}, []);
 
 	const [root, arrowContainer, arrow] = useMemo(() => {
 		return [
@@ -29,10 +35,15 @@ const EmptyWallet = (): ReactElement => {
 	};
 
 	return (
-		<View style={root} testID="TestToGetStarted">
-			<TouchableOpacity style={styles.closeButton} onPress={handleHide}>
-				<XIcon color="gray1" width={16} height={16} />
-			</TouchableOpacity>
+		<View style={root} testID="ToGetStarted">
+			{showClose && (
+				<TouchableOpacity
+					style={styles.closeButton}
+					onPress={handleHide}
+					testID="ToGetStartedClose">
+					<XIcon color="gray1" width={16} height={16} />
+				</TouchableOpacity>
+			)}
 
 			<Headline>
 				To get started send <Headline color="brand">Bitcoin</Headline> to your

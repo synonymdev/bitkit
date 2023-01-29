@@ -50,6 +50,7 @@ const AddressTypeSettings = ({
 						updateSelectedAddressType({ addressType: addressType.type });
 						await refreshWallet({ lightning: false, onchain: true });
 					},
+					testID: addressType.type,
 				})),
 			},
 		],

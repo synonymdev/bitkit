@@ -23,6 +23,7 @@ const SuggestionsSettings = (): ReactElement => {
 						onPress: (): void => {
 							updateSettings({ showSuggestions: !showSuggestions });
 						},
+						testID: 'DisplaySuggestions',
 					},
 					{
 						title: 'Reset suggestions',
@@ -30,6 +31,7 @@ const SuggestionsSettings = (): ReactElement => {
 						onPress: (): void => {
 							setShowDialog(true);
 						},
+						testID: 'ResetSuggestions',
 					},
 				],
 			},

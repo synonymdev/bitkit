@@ -51,21 +51,25 @@ const MainSettings = ({
 				title: 'General',
 				type: EItemType.button,
 				onPress: (): void => navigation.navigate('GeneralSettings'),
+				testID: 'GeneralSettings',
 			},
 			{
 				title: 'Security and Privacy',
 				type: EItemType.button,
 				onPress: (): void => navigation.navigate('SecuritySettings'),
+				testID: 'SecuritySettings',
 			},
 			{
 				title: 'Back up or Restore',
 				type: EItemType.button,
 				onPress: (): void => navigation.navigate('BackupSettings'),
+				testID: 'BackupSettings',
 			},
 			{
 				title: 'Advanced',
 				type: EItemType.button,
 				onPress: (): void => navigation.navigate('AdvancedSettings'),
+				testID: 'AdvancedSettings',
 			},
 			{
 				title: 'About Bitkit',
@@ -95,7 +99,8 @@ const MainSettings = ({
 			<TouchableOpacity
 				style={styles.imageContainer}
 				activeOpacity={1}
-				onPress={updateDevOptions}>
+				onPress={updateDevOptions}
+				testID="DevOptions">
 				<GlowImage image={imageSrc} imageSize={200} />
 			</TouchableOpacity>
 		</ThemedView>

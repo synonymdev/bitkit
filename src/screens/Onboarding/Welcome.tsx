@@ -63,7 +63,7 @@ const OnboardingWelcomeScreen = ({
 								onPress={onSkipIntro}
 								text="Skip Intro"
 								style={[styles.button, styles.skipButton]}
-								testID="TestSkipIntro"
+								testID="SkipIntro"
 							/>
 						</View>
 

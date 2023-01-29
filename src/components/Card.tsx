@@ -8,18 +8,21 @@ interface ICard {
 	children?: ReactNode;
 	color?: keyof IThemeColors;
 	onPress?: () => void;
+	testID?: string;
 }
 const Card = ({
 	style = {},
 	children = <View />,
 	color = 'surface',
 	onPress,
+	testID,
 }: ICard): ReactElement => (
 	<TouchableOpacity
 		onPress={onPress}
 		activeOpacity={onPress ? 0.6 : 1}
 		color={color}
-		style={[styles.container, style]}>
+		style={[styles.container, style]}
+		testID={testID}>
 		{children}
 	</TouchableOpacity>
 );

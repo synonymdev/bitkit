@@ -51,12 +51,16 @@ const Dialog = ({
 						{onCancel && (
 							<TouchableOpacity
 								style={[styles.button, styles.buttonLeft]}
-								onPress={onCancel}>
+								onPress={onCancel}
+								testID="DialogCancel">
 								<Text style={styles.buttonText}>{cancelText}</Text>
 							</TouchableOpacity>
 						)}
 						{onConfirm && (
-							<TouchableOpacity style={styles.button} onPress={onConfirm}>
+							<TouchableOpacity
+								style={styles.button}
+								onPress={onConfirm}
+								testID="DialogConfirm">
 								<Text style={styles.buttonText}>{confirmText}</Text>
 							</TouchableOpacity>
 						)}

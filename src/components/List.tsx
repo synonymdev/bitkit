@@ -62,6 +62,7 @@ export type SwitchItem = {
 	enabled?: boolean;
 	hide?: boolean;
 	onPress?: Function;
+	testID?: string;
 };
 
 export type ButtonItem = {
@@ -75,6 +76,7 @@ export type ButtonItem = {
 	enabled?: boolean;
 	hide?: boolean;
 	onPress?: Function;
+	testID?: string;
 };
 
 export type TextButtonItem = {
@@ -87,6 +89,7 @@ export type TextButtonItem = {
 	enabled?: boolean;
 	hide?: boolean;
 	onPress?: Function;
+	testID?: string;
 };
 
 export type DraggableItem = {
@@ -95,6 +98,7 @@ export type DraggableItem = {
 	title: string;
 	hide?: boolean;
 	onDragEnd?: (data: TItemDraggable[]) => void;
+	testID?: string;
 };
 
 const _Item = memo((item: ItemData): ReactElement => {
@@ -113,6 +117,7 @@ const _Item = memo((item: ItemData): ReactElement => {
 			Icon,
 			iconColor,
 			onPress,
+			testID,
 		} = item as SwitchItem;
 
 		const _onPress = (): void => onPress?.();
@@ -121,7 +126,8 @@ const _Item = memo((item: ItemData): ReactElement => {
 			<TouchableOpacity
 				style={styles.item}
 				activeOpacity={0.6}
-				onPress={_onPress}>
+				onPress={_onPress}
+				testID={testID}>
 				<View style={styles.leftColumn}>
 					{Icon && (
 						<Icon
@@ -150,6 +156,7 @@ const _Item = memo((item: ItemData): ReactElement => {
 			Icon,
 			iconColor,
 			onPress,
+			testID,
 		} = item as TextButtonItem;
 
 		const _onPress = (): void => onPress?.(navigation);
@@ -158,7 +165,8 @@ const _Item = memo((item: ItemData): ReactElement => {
 			<TouchableOpacity
 				style={styles.item}
 				activeOpacity={0.6}
-				onPress={enabled ? _onPress : undefined}>
+				onPress={enabled ? _onPress : undefined}
+				testID={testID}>
 				<View style={styles.leftColumn}>
 					{Icon && (
 						<Icon
@@ -206,6 +214,7 @@ const _Item = memo((item: ItemData): ReactElement => {
 			Icon,
 			iconColor,
 			onPress,
+			testID,
 		} = item as ButtonItem;
 
 		const useCheckmark = typeof value === 'boolean';
@@ -216,7 +225,8 @@ const _Item = memo((item: ItemData): ReactElement => {
 				style={styles.item}
 				activeOpacity={0.6}
 				disabled={disabled}
-				onPress={enabled ? _onPress : undefined}>
+				onPress={enabled ? _onPress : undefined}
+				testID={testID}>
 				<View style={styles.leftColumn}>
 					{Icon && (
 						<View style={styles.icon}>
@@ -242,7 +252,9 @@ const _Item = memo((item: ItemData): ReactElement => {
 						value && <Checkmark color="brand" width={27} height={27} />
 					) : (
 						<>
-							<Text01S style={styles.valueText}>{value}</Text01S>
+							<Text01S testID="Value" style={styles.valueText}>
+								{value}
+							</Text01S>
 							<ChevronRight color="gray1" width={24} height={15} />
 						</>
 					)}

@@ -54,7 +54,8 @@ const LightningNodeInfo = ({
 								title: 'Copied to Clipboard',
 								message: 'Successfully copied LDK Node ID to clipboard.',
 							});
-						}}>
+						}}
+						testID="LDKNodeID">
 						<Caption13Up style={styles.label} color="gray1">
 							LDK Node ID
 						</Caption13Up>

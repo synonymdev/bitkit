@@ -146,7 +146,7 @@ const PinPad = ({
 				<SafeAreaInsets type="top" />
 				<NavigationHeader displayBackButton={showBackNavigation} />
 			</View>
-			<View style={styles.container}>
+			<View style={styles.container} testID="PinPad">
 				<View style={styles.logo}>
 					{showLogoOnPIN && <BitkitLogo height={64} width={184} />}
 				</View>
@@ -172,7 +172,10 @@ const PinPad = ({
 									</Text02S>
 								) : (
 									<>
-										<Text02S style={styles.attemptsRemaining} color="brand">
+										<Text02S
+											style={styles.attemptsRemaining}
+											color="brand"
+											testID="AttemptsRemaining">
 											{attemptsRemaining} attempts remaining.{' '}
 										</Text02S>
 										<Pressable

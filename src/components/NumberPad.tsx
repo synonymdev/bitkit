@@ -9,13 +9,22 @@ const ACTIVE_OPACITY = 0.2;
 const digits = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0];
 
 const Button = memo(
-	({ num, onPress }: { num: number; onPress: () => void }): ReactElement => {
+	({
+		num,
+		onPress,
+		testID,
+	}: {
+		num: number;
+		onPress: () => void;
+		testID?: string;
+	}): ReactElement => {
 		return (
 			<TouchableOpacity
 				onPress={onPress}
 				activeOpacity={ACTIVE_OPACITY}
 				style={styles.buttonContainer}
-				color="transparent">
+				color="transparent"
+				testID={testID}>
 				<Text style={styles.button}>{num}</Text>
 			</TouchableOpacity>
 		);
@@ -51,21 +60,57 @@ const NumberPad = ({
 		<View style={[styles.container, style]}>
 			{children}
 			<View style={styles.row}>
-				<Button onPress={(): void => handlePress(digits[0])} num={digits[0]} />
-				<Button onPress={(): void => handlePress(digits[1])} num={digits[1]} />
-				<Button onPress={(): void => handlePress(digits[2])} num={digits[2]} />
+				<Button
+					onPress={(): void => handlePress(digits[0])}
+					num={digits[0]}
+					testID="N1"
+				/>
+				<Button
+					onPress={(): void => handlePress(digits[1])}
+					num={digits[1]}
+					testID="N2"
+				/>
+				<Button
+					onPress={(): void => handlePress(digits[2])}
+					num={digits[2]}
+					testID="N3"
+				/>
 			</View>
 
 			<View style={styles.row}>
-				<Button onPress={(): void => handlePress(digits[3])} num={digits[3]} />
-				<Button onPress={(): void => handlePress(digits[4])} num={digits[4]} />
-				<Button onPress={(): void => handlePress(digits[5])} num={digits[5]} />
+				<Button
+					onPress={(): void => handlePress(digits[3])}
+					num={digits[3]}
+					testID="N4"
+				/>
+				<Button
+					onPress={(): void => handlePress(digits[4])}
+					num={digits[4]}
+					testID="N5"
+				/>
+				<Button
+					onPress={(): void => handlePress(digits[5])}
+					num={digits[5]}
+					testID="N6"
+				/>
 			</View>
 
 			<View style={styles.row}>
-				<Button onPress={(): void => handlePress(digits[6])} num={digits[6]} />
-				<Button onPress={(): void => handlePress(digits[7])} num={digits[7]} />
-				<Button onPress={(): void => handlePress(digits[8])} num={digits[8]} />
+				<Button
+					onPress={(): void => handlePress(digits[6])}
+					num={digits[6]}
+					testID="N7"
+				/>
+				<Button
+					onPress={(): void => handlePress(digits[7])}
+					num={digits[7]}
+					testID="N8"
+				/>
+				<Button
+					onPress={(): void => handlePress(digits[8])}
+					num={digits[8]}
+					testID="N9"
+				/>
 			</View>
 
 			<View style={styles.row}>
@@ -88,7 +133,11 @@ const NumberPad = ({
 						<Text style={styles.button}>.</Text>
 					</TouchableOpacity>
 				)}
-				<Button onPress={(): void => handlePress(digits[9])} num={digits[9]} />
+				<Button
+					onPress={(): void => handlePress(digits[9])}
+					num={digits[9]}
+					testID="N0"
+				/>
 				<TouchableOpacity
 					onPress={handleRemove}
 					activeOpacity={ACTIVE_OPACITY}

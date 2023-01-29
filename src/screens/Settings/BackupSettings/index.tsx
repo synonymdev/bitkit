@@ -29,6 +29,7 @@ const BackupSettings = ({
 								data: { isOpen: true },
 							});
 						},
+						testID: 'BackupMoney',
 					},
 					{
 						title: 'Back up your data',
@@ -37,6 +38,7 @@ const BackupSettings = ({
 						onPress: (): void => {
 							navigation.navigate('BackupData');
 						},
+						testID: 'BackupData',
 					},
 					{
 						title: 'Reset and restore wallet',
@@ -56,6 +58,7 @@ const BackupSettings = ({
 								navigation.navigate('ResetAndRestore');
 							}
 						},
+						testID: 'ResetAndRestore',
 					},
 				],
 			},

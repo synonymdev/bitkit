@@ -101,6 +101,7 @@ const ConfirmMnemonic = ({
 							style={styles.button}
 							color={pressed[i] ? 'white32' : 'white08'}
 							onPress={(): void => handleWordPress(w, i)}
+							testID={`Word-${w}`}
 						/>
 					);
 				})}
@@ -136,6 +137,7 @@ const ConfirmMnemonic = ({
 								navigation.navigate('Result');
 							}
 						}}
+						testID="Continue"
 					/>
 				)}
 			</View>

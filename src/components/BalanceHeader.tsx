@@ -66,7 +66,10 @@ const BalanceHeader = (): ReactElement => {
 	}, [claimableBalance]);
 
 	return (
-		<TouchableOpacity style={styles.container} onPress={handlePress}>
+		<TouchableOpacity
+			style={styles.container}
+			onPress={handlePress}
+			testID="TotalBalance">
 			<View style={styles.totalBalanceRow}>
 				<Caption13Up color="gray1">Total balance</Caption13Up>
 				{showClaimableBalances && (

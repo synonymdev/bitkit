@@ -86,6 +86,7 @@ const PINPrompt = (): ReactElement => {
 						size="large"
 						text="Secure Wallet"
 						onPress={handlePIN}
+						testID="SecureWallet"
 					/>
 				</View>
 			</View>

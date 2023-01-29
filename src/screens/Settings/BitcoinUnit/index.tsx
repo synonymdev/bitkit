@@ -42,6 +42,7 @@ const BitcoinUnitSettings = ({
 						navigation.goBack();
 						updateSettings({ bitcoinUnit: bitcoinUnit.unit });
 					},
+					testID: bitcoinUnit.label,
 				})),
 			},
 		],

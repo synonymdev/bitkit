@@ -274,7 +274,7 @@ const Receive = ({
 	);
 
 	return (
-		<View style={styles.container}>
+		<View style={styles.container} testID="ReceiveScreen">
 			<BottomSheetNavigationHeader
 				title="Receive Bitcoin"
 				displayBackButton={false}
@@ -291,7 +291,9 @@ const Receive = ({
 						activeOpacity={1}
 						onPress={handleCopy}
 						onLongPress={handleCopyQrCode}
-						style={styles.qrCode}>
+						style={styles.qrCode}
+						testID="QRCode"
+						accessibilityLabel={uri}>
 						<QRCode
 							value={uri}
 							size={qrSize}

@@ -84,7 +84,10 @@ const ShowMnemonic = ({
 				</Text01S>
 			)}
 
-			<View style={styles.seedContainer}>
+			<View
+				style={styles.seedContainer}
+				testID="SeedContaider"
+				accessibilityLabel={seed.join(' ')}>
 				<ThemedView color="gray324" style={styles.seed}>
 					<View style={styles.col}>
 						{seedToShow.slice(0, seedToShow.length / 2).map((w, i) => (
@@ -105,6 +108,7 @@ const ShowMnemonic = ({
 							text="Tap To Reveal"
 							color="black5"
 							onPress={(): void => setShow(true)}
+							testID="TapToReveal"
 						/>
 					</BlurView>
 				)}
@@ -129,6 +133,7 @@ const ShowMnemonic = ({
 								},
 							);
 						}}
+						testID="Continue"
 					/>
 				)}
 			</View>

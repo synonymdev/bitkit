@@ -17,15 +17,18 @@ const ActionButton = memo(
 	({
 		children,
 		onPress,
+		testID,
 	}: {
 		children: JSX.Element;
 		onPress?: (event: GestureResponderEvent) => void;
+		testID?: string;
 	}): ReactElement => {
 		return (
 			<TouchableOpacity
 				style={styles.action}
 				activeOpacity={onPress ? 0.6 : 1}
-				onPress={onPress}>
+				onPress={onPress}
+				testID={testID}>
 				{children}
 			</TouchableOpacity>
 		);
@@ -89,12 +92,12 @@ const NavigationHeader = ({
 		<View style={[container, style]}>
 			<View style={[styles.leftColumn, buttonOffset]}>
 				{displayBackButton && (
-					<ActionButton onPress={handleBackPress}>
+					<ActionButton onPress={handleBackPress} testID="NavigationBack">
 						<BackIcon width={20} height={20} />
 					</ActionButton>
 				)}
 			</View>
-			<View style={styles.middleColumn}>
+			<View style={styles.middleColumn} testID="NavigationTitle">
 				<Text style={styles.title} numberOfLines={1} ellipsizeMode="middle">
 					{title}
 				</Text>
@@ -104,7 +107,7 @@ const NavigationHeader = ({
 					<ActionButton onPress={onActionPress}>{actionIcon}</ActionButton>
 				)}
 				{onClosePress && (
-					<ActionButton onPress={onClosePress}>
+					<ActionButton onPress={onClosePress} testID="NavigationClose">
 						<XIcon width={24} height={24} />
 					</ActionButton>
 				)}

@@ -82,7 +82,8 @@ const Header = (): ReactElement => {
 				<TouchableOpacity
 					style={styles.cogIcon}
 					activeOpacity={1}
-					onPress={openSettings}>
+					onPress={openSettings}
+					testID="Settings">
 					<SettingsIcon width={24} height={24} />
 				</TouchableOpacity>
 			</View>

@@ -63,13 +63,21 @@ const Result = ({ route }: PinScreenProps<'Result'>): ReactElement => {
 
 			<GlowImage image={imageSrc} imageSize={200} glowColor="green" />
 
-			<Pressable style={styles.toggle} onPress={handleTogglePress}>
+			<Pressable
+				style={styles.toggle}
+				onPress={handleTogglePress}
+				testID="ToggleBioForPayments">
 				<Text01M>Also require for payments</Text01M>
 				<Switch onValueChange={handleTogglePress} value={pinForPayments} />
 			</Pressable>
 
 			<View style={nextButtonContainer}>
-				<Button size="large" text="OK" onPress={handleButtonPress} />
+				<Button
+					size="large"
+					text="OK"
+					onPress={handleButtonPress}
+					testID="OK"
+				/>
 			</View>
 		</GradientView>
 	);

@@ -14,7 +14,9 @@ const Assets = (): ReactElement => {
 
 	return (
 		<>
-			<Subtitle style={styles.title}>Assets</Subtitle>
+			<Subtitle style={styles.title} testID="AssetsTitle">
+				Assets
+			</Subtitle>
 			<AssetCard
 				name="Bitcoin"
 				ticker="BTC"

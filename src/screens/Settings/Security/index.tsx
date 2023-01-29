@@ -85,6 +85,7 @@ const SecuritySettings = ({
 								});
 							}
 						},
+						testID: 'PINCode',
 					},
 					{
 						title: 'Change PIN Code',
@@ -135,6 +136,7 @@ const SecuritySettings = ({
 							});
 						},
 						hide: !pin || !isBiometrySupported,
+						testID: 'UseBiometryInstead',
 					},
 				],
 			},

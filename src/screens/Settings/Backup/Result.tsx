@@ -41,7 +41,12 @@ const Result = ({ navigation }: BackupScreenProps<'Result'>): ReactElement => {
 			<GlowImage image={imageSrc} imageSize={200} glowColor="green" />
 
 			<View style={nextButtonContainer}>
-				<Button size="large" text="OK" onPress={handleButtonPress} />
+				<Button
+					size="large"
+					text="OK"
+					onPress={handleButtonPress}
+					testID="OK"
+				/>
 			</View>
 		</GradientView>
 	);

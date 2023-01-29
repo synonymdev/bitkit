@@ -94,7 +94,8 @@ const Money = (props: IMoney): ReactElement => {
 					<Text
 						lineHeight={lineHeight}
 						color={color ?? 'gray2'}
-						style={styles.symbol}>
+						style={styles.symbol}
+						testID="MoneyCurrencySymbol">
 						{dv.fiatSymbol}
 					</Text>
 				);
@@ -105,6 +106,7 @@ const Money = (props: IMoney): ReactElement => {
 						height={iconHeight}
 						width={iconWidth}
 						style={styles.symbol}
+						testID="MoneyLightningSymbol"
 					/>
 				);
 			default:
@@ -114,6 +116,7 @@ const Money = (props: IMoney): ReactElement => {
 						height={iconHeight}
 						width={iconWidth}
 						style={styles.symbol}
+						testID="MoneyBitcoinSymbol"
 					/>
 				);
 		}
@@ -156,16 +159,25 @@ const Money = (props: IMoney): ReactElement => {
 				<Text
 					style={styles.sign}
 					lineHeight={lineHeight}
-					color={color ?? 'gray2'}>
+					color={color ?? 'gray2'}
+					testID="MoneySign">
 					{sign}
 				</Text>
 			)}
 			{showSymbol && symbol}
-			<Text style={styles.integer} lineHeight={lineHeight} color={color}>
+			<Text
+				style={styles.integer}
+				lineHeight={lineHeight}
+				color={color}
+				testID="MoneyPrimary">
 				{prim}
 			</Text>
 			{secd !== '' && (
-				<Text style={styles.decimal} lineHeight={lineHeight} color="gray2">
+				<Text
+					style={styles.decimal}
+					lineHeight={lineHeight}
+					color="gray2"
+					testID="MoneySecondary">
 					{secd}
 				</Text>
 			)}

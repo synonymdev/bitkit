@@ -86,7 +86,9 @@ const ChoosePIN = ({
 
 			<View style={styles.tryAgain}>
 				{tryAgain ? (
-					<Text02S color="brand">Try again, this is not the same PIN.</Text02S>
+					<Text02S color="brand" testID="WrongPIN">
+						Try again, this is not the same PIN.
+					</Text02S>
 				) : (
 					<Text02S> </Text02S>
 				)}

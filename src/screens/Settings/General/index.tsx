@@ -44,12 +44,14 @@ const GeneralSettings = ({
 						value: selectedCurrency,
 						type: EItemType.button,
 						onPress: (): void => navigation.navigate('CurrenciesSettings'),
+						testID: 'CurrenciesSettings',
 					},
 					{
 						title: 'Bitcoin unit',
 						value: unitsBitcoin[selectedBitcoinUnit],
 						type: EItemType.button,
 						onPress: (): void => navigation.navigate('BitcoinUnitSettings'),
+						testID: 'BitcoinUnitSettings',
 					},
 					{
 						title: 'Transaction speed',
@@ -57,12 +59,14 @@ const GeneralSettings = ({
 						type: EItemType.button,
 						onPress: (): void =>
 							navigation.navigate('TransactionSpeedSettings'),
+						testID: 'TransactionSpeedSettings',
 					},
 					{
 						title: 'Suggestions',
 						value: showSuggestions ? 'Visible' : 'Hidden',
 						type: EItemType.button,
 						onPress: (): void => navigation.navigate('SuggestionsSettings'),
+						testID: 'SuggestionsSettings',
 					},
 				],
 			},
