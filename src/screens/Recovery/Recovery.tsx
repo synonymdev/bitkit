@@ -71,9 +71,9 @@ const Recovery = ({
 			<NavigationHeader title="Recovery" displayBackButton={false} />
 			<View style={styles.content}>
 				<Text01S style={styles.text} color="gray1">
-					You've entered Bitkit's recovery mode by shaking your phone. Choose
-					one of the below actions to get debug information for your wallet.
-					Restart the app for a normal startup.
+					You've entered Bitkit's recovery mode by tapping twice during startup.
+					Here are some actions to perform when running into issues that prevent
+					the app from fully functioning. Restart the app for a normal startup.
 				</Text01S>
 
 				<View>

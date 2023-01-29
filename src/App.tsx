@@ -9,10 +9,15 @@ import React, {
 	useCallback,
 	useState,
 } from 'react';
-import { Platform, UIManager, NativeModules } from 'react-native';
+import {
+	Platform,
+	UIManager,
+	NativeModules,
+	Pressable,
+	StyleSheet,
+} from 'react-native';
 import Toast from 'react-native-toast-message';
 import { ThemeProvider } from 'styled-components/native';
-import RNShake from 'react-native-shake';
 
 import { SafeAreaProvider, StatusBar } from './styles/components';
 import themes from './styles/themes';
@@ -40,7 +45,8 @@ if (Platform.OS === 'android') {
 }
 
 const App = (): ReactElement => {
-	const [hasShaken, setHasShaken] = useState(false);
+	const [tapCount, setTapCount] = useState(0);
+	const [isListening, setIsListening] = useState(true);
 	const theme = useAppSelector(themeSelector);
 	const walletExists = useAppSelector(walletExistsSelector);
 	const requiresRemoteRestore = useAppSelector(requiresRemoteRestoreSelector);
@@ -57,19 +63,18 @@ const App = (): ReactElement => {
 		// TEMP: disabled for now
 		// checkForAppUpdate();
 
-		// Shake in the first 3s of startup to enter recovery
-		const subscription = RNShake.addListener((): void => setHasShaken(true));
-		setTimeout((): void => subscription.remove(), RECOVERY_DELAY);
-
-		return (): void => {
-			subscription.remove();
-		};
+		// Tap twice anywhere in the first 500ms of startup to enter recovery
+		setTimeout((): void => setIsListening(false), RECOVERY_DELAY);
 	}, []);
 
-	const currentTheme = useMemo(() => themes[theme], [theme]);
+	const onAppPress = useCallback(() => {
+		if (isListening) {
+			setTapCount((prevState) => prevState + 1);
+		}
+	}, [isListening]);
 
 	const RootComponent = useCallback((): ReactElement => {
-		if (hasShaken) {
+		if (tapCount >= 2) {
 			return <RecoveryNavigator />;
 		}
 
@@ -86,17 +91,27 @@ const App = (): ReactElement => {
 		}
 
 		return <OnboardingNavigator />;
-	}, [hasShaken, availableUpdateType, walletExists, requiresRemoteRestore]);
+	}, [tapCount, availableUpdateType, walletExists, requiresRemoteRestore]);
+
+	const currentTheme = useMemo(() => themes[theme], [theme]);
 
 	return (
 		<ThemeProvider theme={currentTheme}>
 			<SafeAreaProvider>
 				<StatusBar />
-				<RootComponent />
+				<Pressable style={styles.tapListener} onPress={onAppPress}>
+					<RootComponent />
+				</Pressable>
 				<Toast config={toastConfig} />
 			</SafeAreaProvider>
 		</ThemeProvider>
 	);
 };
+
+const styles = StyleSheet.create({
+	tapListener: {
+		flex: 1,
+	},
+});
 
 export default memo(App);

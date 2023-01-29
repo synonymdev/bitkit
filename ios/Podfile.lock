@@ -339,8 +339,6 @@ PODS:
     - RCTTypeSafety
     - React-Core
     - ReactCommon/turbomodule/core
-  - react-native-shake (5.1.1):
-    - React
   - react-native-skia (0.1.141):
     - React
     - React-callinvoker
@@ -574,7 +572,6 @@ DEPENDENCIES:
   - react-native-randombytes (from `../node_modules/react-native-randombytes`)
   - react-native-restart (from `../node_modules/react-native-restart`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
-  - react-native-shake (from `../node_modules/react-native-shake`)
   - "react-native-skia (from `../node_modules/@shopify/react-native-skia`)"
   - react-native-tcp-socket (from `../node_modules/react-native-tcp-socket`)
   - React-perflogger (from `../node_modules/react-native/ReactCommon/reactperflogger`)
@@ -701,8 +698,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-restart"
   react-native-safe-area-context:
     :path: "../node_modules/react-native-safe-area-context"
-  react-native-shake:
-    :path: "../node_modules/react-native-shake"
   react-native-skia:
     :path: "../node_modules/@shopify/react-native-skia"
   react-native-tcp-socket:
@@ -820,7 +815,6 @@ SPEC CHECKSUMS:
   react-native-randombytes: 421f1c7d48c0af8dbcd471b0324393ebf8fe7846
   react-native-restart: 45c8dca02491980f2958595333cbccd6877cb57e
   react-native-safe-area-context: b456e1c40ec86f5593d58b275bd0e9603169daca
-  react-native-shake: 67d43d6af4abfc299400b17fea7d2ec0754c72ac
   react-native-skia: 0bd524b32fb96b4f7b7ceeddd90b7be14e64701d
   react-native-tcp-socket: c1b7297619616b4c9caae6889bcb0aba78086989
   React-perflogger: 0b0500685176e53ea582c45179a653aa82e4ae49
