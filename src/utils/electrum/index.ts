@@ -1,11 +1,12 @@
 import * as electrum from 'rn-electrum-client/helpers';
-const hardcodedPeers = require('rn-electrum-client/helpers/peers.json');
 import { err, ok, Result } from '@synonymdev/result';
 
 import { TAvailableNetworks } from '../networks';
 import { getSelectedNetwork } from '../wallet';
 import { connectToElectrum } from '../wallet/electrum';
 import { TProtocol } from '../../store/types/settings';
+
+const hardcodedPeers = require('rn-electrum-client/helpers/peers.json');
 
 export const defaultElectrumPorts = ['51002', '50002', '51001', '50001'];
 
@@ -142,12 +143,12 @@ type ElectrumConnectionSubscription = {
  * If connection was lost this will try to reconnect in the specified interval
  */
 export const electrumConnection = ((): ElectrumConnectionPubSub => {
-	let subscribers: Array<(isConnected: boolean) => void> = [];
+	let subscribers: Set<(isConnected: boolean) => void> = new Set();
 	let latestState: boolean | null = null;
 
 	function publish(isConnected: boolean): void {
 		// Skip if no subscribers
-		if (!Array.isArray(subscribers)) {
+		if (subscribers.size === 0) {
 			return;
 		}
 
@@ -169,11 +170,7 @@ export const electrumConnection = ((): ElectrumConnectionPubSub => {
 	function subscribe(
 		callback: (isConnected: boolean) => void,
 	): ElectrumConnectionSubscription {
-		// Create the subscribers array if not initialized yet
-		if (!Array.isArray(subscribers)) {
-			subscribers = [];
-		}
-		subscribers.push(callback);
+		subscribers.add(callback);
 
 		const timerId = setInterval(async () => {
 			// Check the connection
@@ -189,7 +186,7 @@ export const electrumConnection = ((): ElectrumConnectionPubSub => {
 		return {
 			remove: (): void => {
 				clearInterval(timerId);
-				subscribers = subscribers.filter((cb) => !(cb === callback));
+				subscribers.delete(callback);
 			},
 		};
 	}

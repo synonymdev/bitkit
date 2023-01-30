@@ -13,6 +13,8 @@ import { electrumConnection } from './utils/electrum';
 import { readClipboardInvoice } from './utils/send';
 import { unsubscribeFromLightningSubscriptions } from './utils/lightning';
 import { enableAutoReadClipboardSelector } from './store/reselect/settings';
+import { getStore } from './store/helpers';
+import { isOnlineSelector } from './store/reselect/ui';
 import {
 	showErrorNotification,
 	showSuccessNotification,
@@ -21,10 +23,27 @@ import {
 	selectedNetworkSelector,
 	selectedWalletSelector,
 } from './store/reselect/wallet';
-import {
-	isConnectedToElectrumSelector,
-	isOnlineSelector,
-} from './store/reselect/ui';
+
+const onElectrumConnectionChange = (isConnected: boolean): void => {
+	// get state fresh from store everytime
+	const { isConnectedToElectrum } = getStore().ui;
+
+	if (!isConnectedToElectrum && isConnected) {
+		updateUi({ isConnectedToElectrum: isConnected });
+		showSuccessNotification({
+			title: 'Bitkit Connection Restored',
+			message: 'Successfully reconnected to Electrum Server.',
+		});
+	}
+
+	if (isConnectedToElectrum && !isConnected) {
+		updateUi({ isConnectedToElectrum: isConnected });
+		showErrorNotification({
+			title: 'Bitkit Is Reconnecting',
+			message: 'Lost connection to server, trying to reconnect...',
+		});
+	}
+};
 
 const AppOnboarded = (): ReactElement => {
 	const appState = useRef(AppState.currentState);
@@ -35,7 +54,6 @@ const AppOnboarded = (): ReactElement => {
 	const selectedWallet = useSelector(selectedWalletSelector);
 	const selectedNetwork = useSelector(selectedNetworkSelector);
 	const isOnline = useSelector(isOnlineSelector);
-	const isConnectedToElectrum = useSelector(isConnectedToElectrumSelector);
 
 	// on App start
 	useEffect(() => {
@@ -77,23 +95,9 @@ const AppOnboarded = (): ReactElement => {
 	}, []);
 
 	useEffect(() => {
-		const electrumSubscription = electrumConnection.subscribe((isConnected) => {
-			if (!isConnectedToElectrum && isConnected) {
-				updateUi({ isConnectedToElectrum: isConnected });
-				showSuccessNotification({
-					title: 'Bitkit Connection Restored',
-					message: 'Successfully reconnected to Electrum Server.',
-				});
-			}
-
-			if (isConnectedToElectrum && !isConnected) {
-				updateUi({ isConnectedToElectrum: isConnected });
-				showErrorNotification({
-					title: 'Bitkit Is Reconnecting',
-					message: 'Lost connection to server, trying to reconnect...',
-				});
-			}
-		});
+		let electrumSubscription = electrumConnection.subscribe(
+			onElectrumConnectionChange,
+		);
 
 		// on AppState change
 		const appStateSubscription = AppState.addEventListener(
@@ -104,6 +108,11 @@ const AppOnboarded = (): ReactElement => {
 					appState.current.match(/inactive|background/) &&
 					nextAppState === 'active'
 				) {
+					// resubscribe to electrum connection changes
+					electrumSubscription = electrumConnection.subscribe(
+						onElectrumConnectionChange,
+					);
+
 					// check clipboard for payment data
 					if (enableAutoReadClipboard) {
 						// timeout needed otherwise clipboard is empty
@@ -120,7 +129,10 @@ const AppOnboarded = (): ReactElement => {
 				}
 
 				// on App to background
-				if (appState.current === 'active' && nextAppState === 'background') {
+				if (
+					appState.current.match(/active|inactive/) &&
+					nextAppState === 'background'
+				) {
 					// resetLdk().then();
 					electrumSubscription.remove();
 				}
