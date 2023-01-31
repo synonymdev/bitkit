@@ -1,10 +1,11 @@
 import React, {
 	ReactElement,
-	useState,
+	memo,
 	useCallback,
 	useMemo,
 	useRef,
-	memo,
+	useState,
+	useEffect,
 } from 'react';
 import { StyleSheet, Modal } from 'react-native';
 import { useSelector } from 'react-redux';
@@ -12,7 +13,7 @@ import DraggableFlatList, {
 	RenderItemParams,
 	ScaleDecorator,
 } from 'react-native-draggable-flatlist';
-import { useFocusEffect } from '@react-navigation/native';
+import { useIsFocused } from '@react-navigation/native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { FadeIn, FadeOut } from 'react-native-reanimated';
 
@@ -47,6 +48,7 @@ export const Widgets = (): ReactElement => {
 	const [editing, setEditing] = useState(false);
 	const widgetsContainer = useRef<any>(null);
 	const [wcm, setwcm] = useState<undefined | WCM>();
+	const isFocused = useIsFocused();
 
 	const widgetsArray = useMemo(() => {
 		return Object.entries(widgets).sort(
@@ -67,7 +69,12 @@ export const Widgets = (): ReactElement => {
 		setEditing(false);
 	}, []);
 
-	useFocusEffect(useCallback(handleEditEnd, [handleEditEnd]));
+	useEffect(() => {
+		if (isFocused) {
+			return;
+		}
+		handleEditEnd();
+	}, [isFocused, handleEditEnd]);
 
 	const handleDragEnd = useCallback(({ data }) => {
 		const order = data.map((i): string => i[0]);
@@ -229,7 +236,6 @@ export const Widgets = (): ReactElement => {
 								left: wcm.pageX,
 								top: wcm.pageY,
 								width: wcm.width,
-								height: wcm.height,
 							},
 						]}>
 						{/* we need to wrap DraggableFlatList with GestureHandlerRootView, otherwise Gestures are not working in <Modal for Android */}
@@ -285,7 +291,7 @@ const styles = StyleSheet.create({
 		opacity: 0,
 	},
 	absolute: {
-		...StyleSheet.absoluteFillObject,
+		position: 'absolute',
 	},
 });
 
