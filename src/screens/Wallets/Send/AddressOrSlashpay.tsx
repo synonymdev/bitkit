@@ -62,21 +62,22 @@ const AddressOrSlashpay = ({
 
 	return (
 		<View style={[styles.root, style]}>
-			<BottomSheetTextInput
-				style={styles.input}
-				selectionColor={colors.brand}
-				placeholderTextColor={colors.white5}
-				minHeight={240}
-				selectTextOnFocus={true}
-				multiline={true}
-				placeholder="Scan QR, paste invoice or select contact"
-				autoCapitalize="none"
-				autoCorrect={false}
-				blurOnSubmit={true}
-				returnKeyType="done"
-				{...props}
-			/>
-			<View style={styles.inputActions}>{children}</View>
+			<ThemedView style={styles.inputWrapper} color="white04">
+				<BottomSheetTextInput
+					style={styles.input}
+					selectionColor={colors.brand}
+					placeholderTextColor={colors.white5}
+					selectTextOnFocus={true}
+					multiline={true}
+					placeholder="Scan QR, paste invoice or select contact"
+					autoCapitalize="none"
+					autoCorrect={false}
+					blurOnSubmit={true}
+					returnKeyType="done"
+					{...props}
+				/>
+				<View style={styles.inputActions}>{children}</View>
+			</ThemedView>
 		</View>
 	);
 };
@@ -84,22 +85,26 @@ const AddressOrSlashpay = ({
 const styles = StyleSheet.create({
 	root: {
 		position: 'relative',
+		flex: 1,
 	},
 	inputSlashtags: {
 		padding: 16,
 		borderRadius: 8,
 		minHeight: 240,
 	},
+	inputWrapper: {
+		flex: 1,
+		justifyContent: 'space-between',
+		borderRadius: 8,
+	},
 	input: {
-		maxHeight: 240,
-		paddingBottom: 80,
+		backgroundColor: 'transparent',
+		flex: 1,
 	},
 	inputActions: {
-		position: 'absolute',
-		bottom: 16,
-		right: 0,
 		flexDirection: 'row',
-		marginRight: 8,
+		justifyContent: 'flex-end',
+		padding: 16,
 	},
 });
 

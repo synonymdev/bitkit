@@ -24,11 +24,7 @@ import GlowImage from '../../../components/GlowImage';
 import Button from '../../../components/Button';
 import { decodeLightningInvoice, refreshLdk } from '../../../utils/lightning';
 import { validateSlashtagURL } from '../../../utils/slashtags';
-import {
-	EQRDataType,
-	processInputData,
-	TProcessedData,
-} from '../../../utils/scanner';
+import { processInputData } from '../../../utils/scanner';
 import { sleep } from '../../../utils/helpers';
 import { IBitcoinTransactionData, IOutput } from '../../../store/types/wallet';
 import { updateBitcoinTransaction } from '../../../store/actions/wallet';
@@ -172,16 +168,16 @@ const Recipient = ({
 		selectedWallet,
 	]);
 
-	const onScan = (data: TProcessedData): void => {
-		if (data.type === EQRDataType.lightningPaymentRequest && data.amount) {
-			navigation.navigate('ReviewAndSend');
+	useEffect(() => {
+		if (keyboardShown) {
+			setShowImage(false);
 		} else {
-			navigation.navigate('Amount');
+			setShowImage(true);
 		}
-	};
+	}, [keyboardShown]);
 
 	const handleScan = (): void => {
-		navigation.navigate('Scanner', { onScan });
+		navigation.navigate('Scanner');
 	};
 
 	const handleSendToContact = (): void => {
@@ -210,6 +206,7 @@ const Recipient = ({
 				});
 				return;
 			}
+			await Keyboard.dismiss();
 			const result = await processInputData({
 				data: clipboardData,
 				source: 'sendScanner',
@@ -227,20 +224,8 @@ const Recipient = ({
 					},
 				}).then();
 			}
-			if (result.isOk()) {
-				await Keyboard.dismiss();
-
-				if (
-					result.value.type === EQRDataType.lightningPaymentRequest &&
-					result.value.amount
-				) {
-					navigation.navigate('ReviewAndSend');
-				} else {
-					navigation.navigate('Amount');
-				}
-			}
 		},
-		[index, value, selectedNetwork, selectedWallet, sdk, navigation],
+		[index, value, selectedNetwork, selectedWallet, sdk],
 	);
 
 	const onFocus = useCallback((): void => {
@@ -350,7 +335,7 @@ const Recipient = ({
 				</Caption13Up>
 
 				<AddressOrSlashpay
-					style={styles.inputWrapper}
+					style={[styles.input, !showImage && styles.inputKeyboard]}
 					value={transaction.lightningInvoice || address}
 					slashTagsUrl={transaction.slashTagsUrl}
 					onChangeText={onChangeText}
@@ -371,7 +356,7 @@ const Recipient = ({
 					</IconButton>
 				</AddressOrSlashpay>
 
-				<View style={styles.bottom}>
+				<View style={[styles.bottom, !showImage && styles.bottomKeyboard]}>
 					{!keyboardShown && showImage && (
 						<AnimatedView
 							style={styles.image}
@@ -407,17 +392,24 @@ const styles = StyleSheet.create({
 	label: {
 		marginBottom: 8,
 	},
-	inputWrapper: {
+	input: {
+		marginBottom: 16,
+	},
+	inputKeyboard: {
+		flex: 1,
 		marginBottom: 16,
 	},
 	inputAction: {
-		marginHorizontal: 8,
+		marginLeft: 16,
 	},
 	bottom: {
 		position: 'relative',
 		marginTop: 'auto',
 		flex: 1,
 		justifyContent: 'flex-end',
+	},
+	bottomKeyboard: {
+		flex: 0,
 	},
 	image: {
 		flex: 1,

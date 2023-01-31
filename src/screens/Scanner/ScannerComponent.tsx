@@ -1,4 +1,4 @@
-import React, { ReactElement, ReactNode, useState } from 'react';
+import React, { ReactElement, ReactNode, useMemo, useState } from 'react';
 import {
 	View,
 	TouchableOpacity,
@@ -19,23 +19,40 @@ import {
 } from '../../styles/icons';
 import useColors from '../../hooks/colors';
 import Camera from '../../components/Camera';
+import GradientView from '../../components/GradientView';
 import BlurView from '../../components/BlurView';
 import Button from '../../components/Button';
 
 type ScannerComponentProps = {
-	onRead: (data: string) => void;
 	children: ReactNode;
+	transparent?: boolean;
+	onRead: (data: string) => void;
 };
 
 const ScannerComponent = ({
-	onRead,
 	children,
+	transparent = true,
+	onRead,
 }: ScannerComponentProps): ReactElement => {
 	const { white08, white5 } = useColors();
 	const dimensions = useWindowDimensions();
 	const [torchMode, setTorchMode] = useState(false);
 	const [isChooingFile, setIsChoosingFile] = useState(false);
 	const [error, setError] = useState('');
+
+	const backgroundStyles = useMemo(() => {
+		if (transparent) {
+			return {
+				...styles.background,
+				backgroundColor: 'rgba(0, 0, 0, 0.64)',
+			};
+		}
+
+		return {
+			...styles.background,
+			backgroundColor: 'black',
+		};
+	}, [transparent]);
 
 	const showError = (text: string): void => {
 		setError(text);
@@ -85,15 +102,18 @@ const ScannerComponent = ({
 		}
 	};
 
+	const TopBackground = transparent ? BlurView : GradientView;
+	const Background = transparent ? BlurView : View;
+
 	return (
 		<Camera onBarCodeRead={onBarCodeRead} torchMode={torchMode}>
 			<>
 				{children}
 
 				<View style={StyleSheet.absoluteFill}>
-					<BlurView style={styles.mask} />
+					<TopBackground style={backgroundStyles} />
 					<View style={styles.maskCenter}>
-						<BlurView style={styles.mask} />
+						<Background style={backgroundStyles} />
 						<View
 							style={{
 								height: dimensions.height / 2.4,
@@ -118,9 +138,9 @@ const ScannerComponent = ({
 								</TouchableOpacity>
 							</View>
 						</View>
-						<BlurView style={styles.mask} />
+						<Background style={backgroundStyles} />
 					</View>
-					<BlurView style={[styles.mask, styles.bottom]}>
+					<Background style={[backgroundStyles, styles.bottom]}>
 						<Button
 							style={styles.pasteButton}
 							icon={<ClipboardTextIcon width={16} height={16} />}
@@ -142,7 +162,7 @@ const ScannerComponent = ({
 								</Text02M>
 							</AnimatedView>
 						)}
-					</BlurView>
+					</Background>
 				</View>
 			</>
 		</Camera>
@@ -150,8 +170,7 @@ const ScannerComponent = ({
 };
 
 const styles = StyleSheet.create({
-	mask: {
-		backgroundColor: 'rgba(0, 0, 0, 0.64)',
+	background: {
 		flex: 1,
 		alignItems: 'center',
 	},
