@@ -169,82 +169,82 @@ export const updateAddressIndexes = async ({
 		);
 	}
 
-	let updated = false;
-
-	const promises = addressTypesToCheck.map(async (addressTypeKey) => {
-		if (!selectedNetwork) {
-			selectedNetwork = getSelectedNetwork();
-		}
-		if (!selectedWallet) {
-			selectedWallet = getSelectedWallet();
-		}
-		const response = await getNextAvailableAddress({
-			selectedWallet,
-			selectedNetwork,
-			addressType: addressTypeKey,
-		});
-		if (response.isErr()) {
-			throw response.error;
-		}
-
-		const { type } = addressTypes[addressTypeKey];
-		let addressIndex = currentWallet.addressIndex[selectedNetwork][type];
-		let changeAddressIndex =
-			currentWallet.changeAddressIndex[selectedNetwork][type];
-		let lastUsedAddressIndex =
-			currentWallet.lastUsedAddressIndex[selectedNetwork][type];
-		let lastUsedChangeAddressIndex =
-			currentWallet.lastUsedChangeAddressIndex[selectedNetwork][type];
-
-		if (
-			currentWallet.addressIndex[selectedNetwork][type]?.index < 0 ||
-			currentWallet.changeAddressIndex[selectedNetwork][type]?.index < 0 ||
-			response.value?.addressIndex?.index >
-				currentWallet.addressIndex[selectedNetwork][type]?.index ||
-			response.value?.changeAddressIndex?.index >
-				currentWallet.changeAddressIndex[selectedNetwork][type]?.index ||
-			response.value?.lastUsedAddressIndex?.index >
-				currentWallet.lastUsedAddressIndex[selectedNetwork][type]?.index ||
-			response.value?.lastUsedChangeAddressIndex?.index >
-				currentWallet.lastUsedChangeAddressIndex[selectedNetwork][type]?.index
-		) {
-			if (response.value?.addressIndex) {
-				addressIndex = response.value.addressIndex;
-			}
-
-			if (response.value?.changeAddressIndex) {
-				changeAddressIndex = response.value?.changeAddressIndex;
-			}
-
-			if (response.value?.lastUsedAddressIndex) {
-				lastUsedAddressIndex = response.value.lastUsedAddressIndex;
-			}
-
-			if (response.value?.lastUsedChangeAddressIndex) {
-				lastUsedChangeAddressIndex = response.value?.lastUsedChangeAddressIndex;
-			}
-
-			dispatch({
-				type: actions.UPDATE_ADDRESS_INDEX,
-				payload: {
-					addressIndex,
-					changeAddressIndex,
-					lastUsedAddressIndex,
-					lastUsedChangeAddressIndex,
-					addressType: addressTypeKey,
-				},
-			});
-			updated = true;
-		}
-	});
-
 	try {
-		await Promise.all(promises);
+		for await (const addressTypeKey of addressTypesToCheck) {
+			let updated = false;
+			const response = await getNextAvailableAddress({
+				selectedWallet,
+				selectedNetwork,
+				addressType: addressTypeKey,
+			});
+			if (response.isErr()) {
+				throw response.error;
+			}
+
+			const { type } = addressTypes[addressTypeKey];
+			let addressIndex = currentWallet.addressIndex[selectedNetwork][type];
+			let changeAddressIndex =
+				currentWallet.changeAddressIndex[selectedNetwork][type];
+			let lastUsedAddressIndex =
+				currentWallet.lastUsedAddressIndex[selectedNetwork][type];
+			let lastUsedChangeAddressIndex =
+				currentWallet.lastUsedChangeAddressIndex[selectedNetwork][type];
+
+			if (
+				response.value?.addressIndex &&
+				(currentWallet.addressIndex[selectedNetwork][type]?.index < 0 ||
+					response.value?.addressIndex?.index >
+						currentWallet.addressIndex[selectedNetwork][type]?.index)
+			) {
+				addressIndex = response.value.addressIndex;
+				updated = true;
+			}
+
+			if (
+				response.value?.changeAddressIndex &&
+				(currentWallet.changeAddressIndex[selectedNetwork][type]?.index < 0 ||
+					response.value?.changeAddressIndex?.index >
+						currentWallet.changeAddressIndex[selectedNetwork][type]?.index)
+			) {
+				changeAddressIndex = response.value?.changeAddressIndex;
+				updated = true;
+			}
+
+			if (
+				response.value?.lastUsedAddressIndex &&
+				response.value?.lastUsedAddressIndex?.index >
+					currentWallet.lastUsedAddressIndex[selectedNetwork][type]?.index
+			) {
+				lastUsedAddressIndex = response.value.lastUsedAddressIndex;
+				updated = true;
+			}
+
+			if (
+				response.value?.lastUsedChangeAddressIndex &&
+				response.value?.lastUsedChangeAddressIndex?.index >
+					currentWallet.lastUsedChangeAddressIndex[selectedNetwork][type]?.index
+			) {
+				lastUsedChangeAddressIndex = response.value?.lastUsedChangeAddressIndex;
+				updated = true;
+			}
+
+			if (updated) {
+				dispatch({
+					type: actions.UPDATE_ADDRESS_INDEX,
+					payload: {
+						addressIndex,
+						changeAddressIndex,
+						lastUsedAddressIndex,
+						lastUsedChangeAddressIndex,
+						addressType: addressTypeKey,
+					},
+				});
+			}
+		}
 	} catch (e) {
 		return err(e);
 	}
-
-	return ok(updated ? 'Successfully updated indexes.' : 'No update needed.');
+	return ok('Successfully updated indexes.');
 };
 
 /**
