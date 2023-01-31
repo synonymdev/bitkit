@@ -84,7 +84,7 @@
     "react-native-device-info": "^10.3.0",
     "react-native-document-picker": "^8.1.0",
     "react-native-dotenv": "3.4.6",
-    "react-native-draggable-flatlist": "^3.1.2",
+    "react-native-draggable-flatlist": "4.0.0",
     "react-native-fs": "^2.20.0",
     "react-native-gesture-handler": "^2.9.0",
     "react-native-haptic-feedback": "^1.13.1",

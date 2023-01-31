@@ -3,23 +3,24 @@ import React, {
 	useState,
 	useCallback,
 	useMemo,
+	useRef,
 	memo,
 } from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Modal } from 'react-native';
 import { useSelector } from 'react-redux';
-import {
-	NestableDraggableFlatList,
-	NestableScrollContainer,
+import DraggableFlatList, {
 	RenderItemParams,
 	ScaleDecorator,
 } from 'react-native-draggable-flatlist';
 import { useFocusEffect } from '@react-navigation/native';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { FadeIn, FadeOut } from 'react-native-reanimated';
 
 import { rootNavigation } from '../navigation/root/RootNavigator';
 import Store from '../store/types';
-import { View, TouchableOpacity } from '../styles/components';
+import { AnimatedView, TouchableOpacity, View } from '../styles/components';
 import { Subtitle, Text, Text01M } from '../styles/text';
-import { PlusIcon, ListIcon, XIcon } from '../styles/icons';
+import { PlusIcon, SortAscendingIcon, Checkmark } from '../styles/icons';
 import { SUPPORTED_FEED_TYPES } from '../utils/widgets';
 import { setWidgetsSortOrder } from '../store/actions/widgets';
 
@@ -31,16 +32,21 @@ import BlocksWidget from './BlocksWidget';
 import FactsWidget from './FactsWidget';
 import { isSlashtagsDisabled } from '../utils/slashtags';
 
-export const Widgets = ({
-	onEditStart,
-	onEditEnd,
-}: {
-	onEditStart: () => void;
-	onEditEnd: () => void;
-}): ReactElement => {
+type WCM = {
+	x: number;
+	y: number;
+	width: number;
+	height: number;
+	pageX: number;
+	pageY: number;
+};
+
+export const Widgets = (): ReactElement => {
 	const widgets = useSelector((state: Store) => state.widgets.widgets);
 	const sortOrder = useSelector((state: Store) => state.widgets.sortOrder);
 	const [editing, setEditing] = useState(false);
+	const widgetsContainer = useRef<any>(null);
+	const [wcm, setwcm] = useState<undefined | WCM>();
 
 	const widgetsArray = useMemo(() => {
 		return Object.entries(widgets).sort(
@@ -48,14 +54,18 @@ export const Widgets = ({
 		);
 	}, [widgets, sortOrder]);
 
-	const handleEditStart = useCallback((): void => {
+	const handleEditStart = useCallback(async (): Promise<void> => {
+		const res: WCM = await new Promise((resolve) => {
+			widgetsContainer.current?.measure((x, y, width, height, pageX, pageY) => {
+				resolve({ x, y, width, height, pageX, pageY });
+			});
+		});
+		setwcm(res);
 		setEditing(true);
-		onEditStart();
-	}, [onEditStart]);
+	}, []);
 	const handleEditEnd = useCallback((): void => {
 		setEditing(false);
-		onEditEnd();
-	}, [onEditEnd]);
+	}, []);
 
 	useFocusEffect(useCallback(handleEditEnd, [handleEditEnd]));
 
@@ -166,14 +176,18 @@ export const Widgets = ({
 		rootNavigation.navigate('WidgetsRoot');
 	}, []);
 
-	return isSlashtagsDisabled ? (
-		<>
-			<View style={styles.titleRow}>
-				<Subtitle style={styles.title}>Widgets</Subtitle>
-			</View>
-			<Text color="gray">SLASHTAGS DISABLED</Text>
-		</>
-	) : (
+	if (isSlashtagsDisabled) {
+		return (
+			<>
+				<View style={styles.titleRow}>
+					<Subtitle style={styles.title}>Widgets</Subtitle>
+				</View>
+				<Text color="gray">SLASHTAGS DISABLED</Text>
+			</>
+		);
+	}
+
+	return (
 		<>
 			<View style={styles.titleRow}>
 				<Subtitle style={styles.title}>Widgets</Subtitle>
@@ -182,32 +196,55 @@ export const Widgets = ({
 						style={styles.edit}
 						onPress={editing ? handleEditEnd : handleEditStart}>
 						{editing ? (
-							<XIcon width={24} height={24} color="gray1" />
+							<Checkmark width={24} height={24} color="gray1" />
 						) : (
-							<ListIcon color="gray1" />
+							<SortAscendingIcon color="gray1" />
 						)}
 					</TouchableOpacity>
 				)}
 			</View>
-			{editing ? (
-				<NestableScrollContainer>
-					<NestableDraggableFlatList
-						data={widgetsArray}
-						keyExtractor={(item): string => item[0]}
-						renderItem={renderEditing}
-						onDragEnd={handleDragEnd}
-						activationDistance={1}
-					/>
-				</NestableScrollContainer>
-			) : (
-				widgetsArray.map(renderFlat)
-			)}
+			<View ref={widgetsContainer}>{widgetsArray.map(renderFlat)}</View>
 			<TouchableOpacity style={styles.add} onPress={onAdd}>
 				<View color="green16" style={styles.iconCircle}>
 					<PlusIcon height={16} color="green" />
 				</View>
 				<Text01M>Add Widget</Text01M>
 			</TouchableOpacity>
+			<Modal
+				transparent={true}
+				visible={editing}
+				onRequestClose={handleEditEnd}>
+				<TouchableOpacity
+					style={styles.backdrop}
+					onPress={handleEditEnd}
+					activeOpacity={0}
+				/>
+				{editing && wcm && (
+					<AnimatedView
+						entering={FadeIn}
+						exiting={FadeOut}
+						style={[
+							styles.absolute,
+							{
+								left: wcm.pageX,
+								top: wcm.pageY,
+								width: wcm.width,
+								height: wcm.height,
+							},
+						]}>
+						{/* we need to wrap DraggableFlatList with GestureHandlerRootView, otherwise Gestures are not working in <Modal for Android */}
+						<GestureHandlerRootView>
+							<DraggableFlatList
+								data={widgetsArray}
+								keyExtractor={(item): string => item[0]}
+								renderItem={renderEditing}
+								onDragEnd={handleDragEnd}
+								activationDistance={1}
+							/>
+						</GestureHandlerRootView>
+					</AnimatedView>
+				)}
+			</Modal>
 		</>
 	);
 };
@@ -241,6 +278,14 @@ const styles = StyleSheet.create({
 		justifyContent: 'center',
 		alignItems: 'center',
 		marginRight: 16,
+	},
+	backdrop: {
+		width: '100%',
+		height: '100%',
+		opacity: 0,
+	},
+	absolute: {
+		...StyleSheet.absoluteFillObject,
 	},
 });
 

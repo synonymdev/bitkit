@@ -39,7 +39,6 @@ const Wallets = ({
 }: WalletScreenProps<'Wallets'>): ReactElement => {
 	const { onFocus } = route.params;
 	const [refreshing, setRefreshing] = useState(false);
-	const [scrollEnabled, setScrollEnabled] = useState(true);
 	const colors = useColors();
 	const hideBalance = useSelector(hideBalanceSelector);
 	const hideOnboardingSetting = useSelector(hideOnboardingMessageSelector);
@@ -75,9 +74,6 @@ const Wallets = ({
 		setRefreshing(false);
 	};
 
-	const handleWidgetsEditStart = useCallback(() => setScrollEnabled(false), []);
-	const handleWidgetsEditEnd = useCallback(() => setScrollEnabled(true), []);
-
 	const hideOnboarding = hideOnboardingSetting || !empty;
 
 	return (
@@ -99,8 +95,7 @@ const Wallets = ({
 							onRefresh={onRefresh}
 							tintColor={colors.refreshControl}
 						/>
-					}
-					scrollEnabled={scrollEnabled}>
+					}>
 					<DetectSwipe
 						onSwipeLeft={toggleHideBalance}
 						onSwipeRight={toggleHideBalance}>
@@ -115,10 +110,7 @@ const Wallets = ({
 							<View style={styles.contentPadding}>
 								<ConnectivityIndicator />
 								<Assets />
-								<Widgets
-									onEditStart={handleWidgetsEditStart}
-									onEditEnd={handleWidgetsEditEnd}
-								/>
+								<Widgets />
 								<ActivityListShort />
 								<BetaWarning />
 							</View>

@@ -86,6 +86,7 @@ import {
 	mediumIcon,
 	twitterIcon,
 	listIcon,
+	sortAscendingIcon,
 	arrowCounterClock,
 } from '../assets/icons/settings';
 
@@ -546,6 +547,16 @@ export const ProfileIcon = styled(SvgXml).attrs((props) => ({
 export const ListIcon = styled(SvgXml).attrs((props) => ({
 	xml: listIcon(
 		props.color ? props.theme.colors[props.color] : props.theme.colors.gray1,
+	),
+	height: props.height ?? '24px',
+	width: props.width ?? '24px',
+}))<IconProps>((props) => ({
+	color: props.color ? props.theme.colors[props.color] : 'white',
+}));
+
+export const SortAscendingIcon = styled(SvgXml).attrs((props) => ({
+	xml: sortAscendingIcon(
+		props.color ? props.theme.colors[props.color] : 'white',
 	),
 	height: props.height ?? '24px',
 	width: props.width ?? '24px',

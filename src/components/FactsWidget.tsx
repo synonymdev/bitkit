@@ -108,7 +108,7 @@ const FactsWidget = ({
 					<View style={styles.row}>
 						<View style={styles.linkContainer}>
 							<Caption13M color="gray1" numberOfLines={1}>
-								{fact}
+								{!isEditing ? fact : ' '}
 							</Caption13M>
 						</View>
 					</View>
