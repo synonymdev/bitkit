@@ -18,6 +18,9 @@ jobs:
         with:
           fetch-depth: 1
 
+      - name: Buildcache
+        uses: mikehardy/buildcache-action@v1
+
       - name: Install SSH key
         uses: shimataro/ssh-key-action@v2
         with:
