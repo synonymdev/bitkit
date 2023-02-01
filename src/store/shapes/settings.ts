@@ -1,5 +1,16 @@
 import { TAvailableNetworks } from '@synonymdev/react-native-ldk';
 import {
+	ELECTRUM_BITCOIN_HOST,
+	ELECTRUM_BITCOIN_SSL_PORT,
+	ELECTRUM_BITCOIN_TCP_PORT,
+	ELECTRUM_BITCOIN_PROTO,
+	ELECTRUM_REGTEST_HOST,
+	ELECTRUM_REGTEST_SSL_PORT,
+	ELECTRUM_REGTEST_TCP_PORT,
+	ELECTRUM_REGTEST_PROTO,
+} from '@env';
+
+import {
 	ETransactionSpeed,
 	ICustomElectrumPeer,
 	ISettings,
@@ -13,10 +24,10 @@ export const origCustomElectrumPeers: Record<
 > = {
 	bitcoin: [
 		{
-			host: '35.187.18.233',
-			ssl: 8912,
-			tcp: 8911,
-			protocol: 'tcp',
+			host: ELECTRUM_BITCOIN_HOST,
+			ssl: ELECTRUM_BITCOIN_SSL_PORT,
+			tcp: ELECTRUM_BITCOIN_TCP_PORT,
+			protocol: ELECTRUM_BITCOIN_PROTO,
 		},
 	],
 	bitcoinTestnet: [
@@ -47,10 +58,10 @@ export const origCustomElectrumPeers: Record<
 	],
 	bitcoinRegtest: [
 		{
-			host: '35.233.47.252',
-			ssl: 18484,
-			tcp: 18483,
-			protocol: 'tcp',
+			host: ELECTRUM_REGTEST_HOST,
+			ssl: ELECTRUM_REGTEST_SSL_PORT,
+			tcp: ELECTRUM_REGTEST_TCP_PORT,
+			protocol: ELECTRUM_REGTEST_PROTO,
 		},
 	],
 };

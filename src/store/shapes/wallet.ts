@@ -1,3 +1,5 @@
+import { WALLET_DEFAULT_SELECTED_NETWORK } from '@env';
+
 import {
 	IWalletItem,
 	IWallet,
@@ -180,7 +182,7 @@ export const defaultWalletShape: IWallet = {
 
 export const defaultWalletStoreShape: IWalletStore = {
 	walletExists: false,
-	selectedNetwork: EAvailableNetworks.bitcoin,
+	selectedNetwork: WALLET_DEFAULT_SELECTED_NETWORK,
 	selectedWallet: 'wallet0',
 	addressTypes: addressTypes,
 	exchangeRates: {},
