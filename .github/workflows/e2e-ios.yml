@@ -12,12 +12,19 @@ jobs:
   e2e:
     runs-on: macos-12
 
+    env:
+      BUILDCACHE_DEBUG: 2
+
     steps:
       - name: Checkout
-      - uses: actions/checkout@v2
-      - uses: mikehardy/buildcache-action@v1
+        uses: actions/checkout@v2
+        # with:
+        #   fetch-depth: 1
+
+      - name: Buildcache
+        uses: mikehardy/buildcache-action@v1
         with:
-          fetch-depth: 1
+          upload_buildcache_log: 'true'
 
       - name: Install SSH key
         uses: shimataro/ssh-key-action@v2
