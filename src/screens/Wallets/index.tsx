@@ -96,8 +96,10 @@ const Wallets = ({
 							tintColor={colors.refreshControl}
 						/>
 					}>
-					{/* prevent touch event propagating */}
-					<ThemedView onStartShouldSetResponder={(): boolean => true}>
+					<ThemedView
+						style={styles.content}
+						// prevent touch event propagating
+						onStartShouldSetResponder={(): boolean => true}>
 						<DetectSwipe
 							onSwipeLeft={toggleHideBalance}
 							onSwipeRight={toggleHideBalance}>
