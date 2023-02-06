@@ -36,14 +36,14 @@ import BottomSheet, {
 	BottomSheetBackdropProps,
 } from '@gorhom/bottom-sheet';
 
-import { TViewController } from '../store/types/ui';
 import themes from '../styles/themes';
-import { toggleView } from '../store/actions/ui';
-import BottomSheetGradient from './BottomSheetGradient';
 import { IColors } from '../styles/colors';
-import { useAppSelector } from '../hooks/redux';
-import { viewControllerSelector } from '../store/reselect/ui';
+import { toggleView } from '../store/actions/ui';
+import { TViewController } from '../store/types/ui';
 import { themeSelector } from '../store/reselect/settings';
+import { viewControllerSelector } from '../store/reselect/ui';
+import { useAppSelector } from '../hooks/redux';
+import BottomSheetBackground from './BottomSheetBackground';
 
 export interface BottomSheetWrapperProps {
 	children: ReactElement;
@@ -62,7 +62,6 @@ const BottomSheetWrapper = forwardRef(
 			view,
 			snapPoints,
 			backdrop = true,
-			backgroundStartColor = 'gray6',
 			onOpen,
 			onClose,
 		}: BottomSheetWrapperProps,
@@ -103,7 +102,7 @@ const BottomSheetWrapper = forwardRef(
 		}));
 
 		const initialSnapPoints = useMemo(() => ['60%', '95%'], []);
-		const { animatedHandleHeight, animatedContentHeight, handleContentLayout } =
+		const { animatedHandleHeight, handleContentLayout } =
 			useBottomSheetDynamicSnapPoints(initialSnapPoints);
 
 		const _onOpen = useCallback(() => onOpen?.(), [onOpen]);
@@ -147,15 +146,10 @@ const BottomSheetWrapper = forwardRef(
 		);
 
 		const backgroundComponent = useCallback(
-			({ style, ...props }: BottomSheetBackgroundProps) => (
-				<BottomSheetGradient
-					animatedContentHeight={animatedContentHeight}
-					startColor={backgroundStartColor}
-					style={style}
-					{...props}
-				/>
+			({ style }: BottomSheetBackgroundProps) => (
+				<BottomSheetBackground style={style} />
 			),
-			[animatedContentHeight, backgroundStartColor],
+			[],
 		);
 
 		// Determine initial snapPoint index based on provided data.
@@ -198,7 +192,6 @@ const styles = StyleSheet.create({
 		alignSelf: 'center',
 		height: 32,
 		width: 32,
-		// marginBottom: 12,
 	},
 });
 
