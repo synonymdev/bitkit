@@ -18,20 +18,17 @@ import {
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Carousel, { ICarouselInstance } from 'react-native-reanimated-carousel';
-import Animated, {
+import {
 	interpolate,
 	useAnimatedStyle,
 	useSharedValue,
 } from 'react-native-reanimated';
 
-import {
-	AnimatedView,
-	TouchableOpacity,
-	View as ThemedView,
-} from '../../styles/components';
+import { AnimatedView, TouchableOpacity } from '../../styles/components';
 import { Caption13M, Display, Text01M, Text01S } from '../../styles/text';
 import SafeAreaInsets from '../../components/SafeAreaInsets';
 import GlowingBackground from '../../components/GlowingBackground';
+import Dot from '../../components/SliderDots';
 import Button from '../../components/Button';
 import { createNewWallet } from '../../utils/startup';
 import { showErrorNotification } from '../../utils/notifications';
@@ -313,44 +310,6 @@ const Slideshow = ({
 	);
 };
 
-const DOT_SIZE = 7;
-
-const Dot = ({
-	animValue,
-	index,
-	length,
-}: {
-	index: number;
-	length: number;
-	animValue: Animated.SharedValue<number>;
-}): ReactElement => {
-	const width = DOT_SIZE;
-
-	const animStyle = useAnimatedStyle(() => {
-		let inputRange = [index - 1, index, index + 1];
-		let outputRange = [-width, 0, width];
-
-		if (index === 0 && animValue?.value > length - 1) {
-			inputRange = [length - 1, length, length + 1];
-			outputRange = [-width, 0, width];
-		}
-
-		return {
-			transform: [
-				{
-					translateX: interpolate(animValue?.value, inputRange, outputRange),
-				},
-			],
-		};
-	}, [animValue, index, length]);
-
-	return (
-		<ThemedView color="gray2" style={styles.dotRoot}>
-			<Animated.View style={[styles.dotA, animStyle]} />
-		</ThemedView>
-	);
-};
-
 const styles = StyleSheet.create({
 	headerButtonContainer: {
 		flexDirection: 'row',
@@ -408,18 +367,6 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		justifyContent: 'space-between',
 		alignSelf: 'center',
-	},
-	dotRoot: {
-		width: DOT_SIZE,
-		height: DOT_SIZE,
-		borderRadius: 5,
-		overflow: 'hidden',
-		marginHorizontal: 4,
-	},
-	dotA: {
-		borderRadius: 5,
-		backgroundColor: 'white',
-		flex: 1,
 	},
 	adv: {
 		backgroundColor: 'transparent',

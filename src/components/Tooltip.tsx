@@ -1,22 +1,19 @@
-import React, { memo, ReactElement, useMemo } from 'react';
-import { StyleSheet, TouchableOpacityProps, View } from 'react-native';
+import React, { memo, ReactElement } from 'react';
+import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import { View as ThemedView } from '../styles/components';
 import { Caption13M } from '../styles/text';
 
 const BOX_SIZE = 32;
 
-interface ITooltip extends TouchableOpacityProps {
+const Tooltip = ({
+	style,
+	text,
+}: {
 	text: string | ReactElement;
-	style?: object | Array<object>;
-}
-const Tooltip = ({ style, text = '' }: ITooltip): ReactElement => {
-	const rootStyle = useMemo(
-		() => StyleSheet.compose(styles.root, style),
-		[style],
-	);
-
+	style?: StyleProp<ViewStyle>;
+}): ReactElement => {
 	return (
-		<View style={rootStyle}>
+		<View style={[styles.root, style]}>
 			<View style={styles.boxContainer}>
 				<ThemedView color="black92" style={styles.box} />
 			</View>
@@ -42,6 +39,7 @@ const styles = StyleSheet.create({
 		marginTop: 5,
 	},
 	content: {
+		borderRadius: 8,
 		paddingVertical: 24,
 		paddingHorizontal: 32,
 	},

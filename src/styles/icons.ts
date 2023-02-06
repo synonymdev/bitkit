@@ -68,6 +68,7 @@ import {
 	plusCircledIcon,
 	keyIcon,
 	hourglassIcon,
+	bitcoinSlantedIcon,
 } from '../assets/icons/wallet';
 import {
 	chevronRightIcon,
@@ -350,6 +351,16 @@ export const BitcoinIcon = styled(SvgXml).attrs((props) => ({
 	xml: bitcoinIcon(props.color ? props.theme.colors[props.color] : '#ED8452'),
 	height: props.height ?? '19.8px',
 	width: props.width ?? '21.6px',
+}))<IconProps>((props) => ({
+	color: props.color ? props.theme.colors[props.color] : 'white',
+}));
+
+export const BitcoinSlantedIcon = styled(SvgXml).attrs((props) => ({
+	xml: bitcoinSlantedIcon(
+		props.color ? props.theme.colors[props.color] : '#ED8452',
+	),
+	height: props.height ?? '15px',
+	width: props.width ?? '12px',
 }))<IconProps>((props) => ({
 	color: props.color ? props.theme.colors[props.color] : 'white',
 }));

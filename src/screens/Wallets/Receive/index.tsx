@@ -16,27 +16,38 @@ import {
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import QRCode from 'react-native-qrcode-svg';
-import { FadeIn, FadeOut } from 'react-native-reanimated';
+import { FadeIn, useSharedValue } from 'react-native-reanimated';
 import Clipboard from '@react-native-clipboard/clipboard';
 import Share from 'react-native-share';
+import Carousel, { ICarouselInstance } from 'react-native-reanimated-carousel';
 
-import { TouchableOpacity, AnimatedView } from '../../../styles/components';
-import { CopyIcon, ShareIcon } from '../../../styles/icons';
+import {
+	View as ThemedView,
+	TouchableOpacity,
+	AnimatedView,
+} from '../../../styles/components';
+import {
+	BitcoinSlantedIcon,
+	CopyIcon,
+	LightningIcon,
+	ShareIcon,
+} from '../../../styles/icons';
+import { Caption13Up, Text02S } from '../../../styles/text';
 import { resetInvoice } from '../../../store/actions/receive';
 import { updateMetaIncTxTags } from '../../../store/actions/metadata';
-import { getReceiveAddress } from '../../../utils/wallet';
-import { getUnifiedUri } from '../../../utils/receive';
+import { createLightningInvoice } from '../../../store/actions/lightning';
+import { generateNewReceiveAddress } from '../../../store/actions/wallet';
+import { viewControllerIsOpenSelector } from '../../../store/reselect/ui';
+import { useLightningBalance } from '../../../hooks/lightning';
+import { useBottomSheetBackPress } from '../../../hooks/bottomSheet';
 import { refreshLdk } from '../../../utils/lightning';
+import { getUnifiedUri } from '../../../utils/receive';
+import { ellipse, sleep } from '../../../utils/helpers';
+import { getReceiveAddress } from '../../../utils/wallet';
 import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
 import Button from '../../../components/Button';
 import Tooltip from '../../../components/Tooltip';
-import { generateNewReceiveAddress } from '../../../store/actions/wallet';
-import { useBottomSheetBackPress } from '../../../hooks/bottomSheet';
-import BitcoinLogo from '../../../assets/bitcoin-logo-small.svg';
-import { createLightningInvoice } from '../../../store/actions/lightning';
-import { useLightningBalance } from '../../../hooks/lightning';
-import { sleep } from '../../../utils/helpers';
-import { viewControllerIsOpenSelector } from '../../../store/reselect/ui';
+import Dot from '../../../components/SliderDots';
 import {
 	addressTypeSelector,
 	selectedNetworkSelector,
@@ -44,6 +55,17 @@ import {
 } from '../../../store/reselect/wallet';
 import { receiveSelector } from '../../../store/reselect/receive';
 import { ReceiveScreenProps } from '../../../navigation/types';
+import BitcoinLogo from '../../../assets/bitcoin-logo-small.svg';
+
+type Slide = {
+	slide: () => ReactElement;
+};
+
+const defaultTooltips = {
+	unified: false,
+	onchain: false,
+	lightning: false,
+};
 
 const QrIcon = memo(
 	(): ReactElement => {
@@ -63,6 +85,27 @@ const Receive = ({
 }: ReceiveScreenProps<'Receive'>): ReactElement => {
 	const dimensions = useWindowDimensions();
 	const insets = useSafeAreaInsets();
+	const progressValue = useSharedValue(0);
+	const carouselRef = useRef<ICarouselInstance>(null);
+	const qrRef = useRef<string>();
+
+	const [loading, setLoading] = useState(true);
+	const [receiveAddress, setReceiveAddress] = useState('');
+	const [lightningInvoice, setLightningInvoice] = useState('');
+	const [showTooltip, setShowTooltip] = useState(defaultTooltips);
+	const [isSharing, setIsSharing] = useState(false);
+
+	const selectedWallet = useSelector(selectedWalletSelector);
+	const selectedNetwork = useSelector(selectedNetworkSelector);
+	const addressType = useSelector(addressTypeSelector);
+	const { amount, message, tags } = useSelector(receiveSelector);
+	const lightningBalance = useLightningBalance(false);
+	const receiveNavigationIsOpen = useSelector((state) =>
+		viewControllerIsOpenSelector(state, 'receiveNavigation'),
+	);
+
+	useBottomSheetBackPress('receiveNavigation');
+
 	const buttonContainerStyles = useMemo(
 		() => ({
 			...styles.buttonContainer,
@@ -70,24 +113,6 @@ const Receive = ({
 		}),
 		[insets.bottom],
 	);
-
-	const { amount, message, tags } = useSelector(receiveSelector);
-	const receiveNavigationIsOpen = useSelector((state) =>
-		viewControllerIsOpenSelector(state, 'receiveNavigation'),
-	);
-	const selectedWallet = useSelector(selectedWalletSelector);
-	const selectedNetwork = useSelector(selectedNetworkSelector);
-	const addressType = useSelector(addressTypeSelector);
-
-	const [loading, setLoading] = useState(true);
-	const [isSharing, setIsSharing] = useState(false);
-	const [showCopy, setShowCopy] = useState(false);
-	const [receiveAddress, setReceiveAddress] = useState('');
-	const [lightningInvoice, setLightningInvoice] = useState('');
-	const lightningBalance = useLightningBalance(false);
-	const qrRef = useRef<string>();
-
-	useBottomSheetBackPress('receiveNavigation');
 
 	const getLightningInvoice = useCallback(async (): Promise<void> => {
 		if (
@@ -111,7 +136,6 @@ const Receive = ({
 			return;
 		}
 
-		console.info(`lightning invoice: ${response.value.to_str}`);
 		setLightningInvoice(response.value.to_str);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [amount, message]);
@@ -227,10 +251,10 @@ const Receive = ({
 		receiveNavigationIsOpen,
 	]);
 
-	const handleCopy = (): void => {
-		setShowCopy(() => true);
-		setTimeout(() => setShowCopy(() => false), 1200);
-		Clipboard.setString(uri);
+	const handleCopy = (text: string, id: string): void => {
+		Clipboard.setString(text);
+		setShowTooltip((prevState) => ({ ...prevState, [id]: true }));
+		setTimeout(() => setShowTooltip(defaultTooltips), 1500);
 	};
 
 	const handleCopyQrCode = useCallback((): void => {
@@ -243,22 +267,33 @@ const Receive = ({
 		// });
 	}, []);
 
-	const handleShare = useCallback((): void => {
-		setIsSharing(true);
-		const image = `data:image/png;base64,${qrRef.current}`;
-		try {
-			Share.open({
-				title: 'Share receiving address',
-				message: uri,
-				url: image,
-				type: 'image/png',
-			});
-		} catch (e) {
-			console.log(e);
-		} finally {
+	const handleShare = useCallback(
+		async (text: string, imageData?: string): Promise<void> => {
 			setIsSharing(true);
-		}
-	}, [uri]);
+
+			try {
+				if (imageData) {
+					const image = `data:image/png;base64,${imageData}`;
+					await Share.open({
+						title: 'Share receiving address',
+						message: text,
+						url: image,
+						type: 'image/png',
+					});
+				} else {
+					await Share.open({
+						title: 'Share receiving address',
+						message: text,
+					});
+				}
+			} catch (error) {
+				console.log(error);
+			} finally {
+				setIsSharing(true);
+			}
+		},
+		[],
+	);
 
 	const qrMaxHeight = useMemo(
 		() => dimensions.height / 2.5,
@@ -273,64 +308,206 @@ const Receive = ({
 		[qrMaxHeight, qrMaxWidth],
 	);
 
+	const Slide1 = useCallback((): ReactElement => {
+		return (
+			<View style={styles.slide}>
+				<TouchableOpacity
+					color="white"
+					activeOpacity={1}
+					onPress={(): void => handleCopy(uri, 'unified')}
+					onLongPress={handleCopyQrCode}
+					style={styles.qrCode}
+					testID="QRCode"
+					accessibilityLabel={uri}>
+					<QRCode
+						value={uri}
+						size={qrSize}
+						getRef={(c): void => {
+							if (c) {
+								c.toDataURL((data: string) => (qrRef.current = data));
+							}
+						}}
+					/>
+					<QrIcon />
+				</TouchableOpacity>
+				<View style={styles.actions}>
+					<Button
+						style={styles.actionButton}
+						icon={<CopyIcon width={18} color="brand" />}
+						text="Copy"
+						onPress={(): void => handleCopy(uri, 'unified')}
+					/>
+					<View style={styles.buttonSpacer} />
+					<Button
+						style={styles.actionButton}
+						text="Share"
+						icon={<ShareIcon width={18} color="brand" />}
+						disabled={isSharing}
+						onPress={(): void => {
+							handleShare(uri, qrRef.current);
+						}}
+					/>
+				</View>
+			</View>
+		);
+	}, [uri, handleCopyQrCode, handleShare, isSharing, qrSize]);
+
+	const Slide2 = useCallback((): ReactElement => {
+		return (
+			<View style={styles.slide}>
+				<ThemedView style={styles.invoices} color="white04">
+					<View style={styles.invoice}>
+						<View style={styles.invoiceLabel}>
+							<Caption13Up color="gray1">Bitcoin invoice</Caption13Up>
+							<BitcoinSlantedIcon
+								style={styles.invoiceLabelIcon}
+								color="gray1"
+								height={14}
+								width={20}
+							/>
+						</View>
+						<View style={styles.invoiceText}>
+							<Text02S>{ellipse(receiveAddress, 35)}</Text02S>
+							{showTooltip.onchain && (
+								<AnimatedView
+									style={styles.tooltip}
+									color="transparent"
+									entering={FadeIn}>
+									<Tooltip text="Invoice Copied To Clipboard" />
+								</AnimatedView>
+							)}
+						</View>
+						<View style={styles.actions}>
+							<Button
+								style={styles.actionButton}
+								icon={<CopyIcon width={18} color="brand" />}
+								text="Copy"
+								onPress={(): void => {
+									handleCopy(receiveAddress, 'onchain');
+								}}
+							/>
+							<View style={styles.buttonSpacer} />
+							<Button
+								style={styles.actionButton}
+								text="Share"
+								icon={<ShareIcon width={18} color="brand" />}
+								disabled={isSharing}
+								onPress={(): void => {
+									handleShare(receiveAddress);
+								}}
+							/>
+						</View>
+					</View>
+
+					{lightningInvoice !== '' && (
+						<>
+							<View style={styles.divider} />
+							<View style={styles.invoice}>
+								<View style={styles.invoiceLabel}>
+									<Caption13Up color="gray1">Lightning invoice</Caption13Up>
+									<LightningIcon
+										style={styles.invoiceLabelIcon}
+										color="gray1"
+										height={14}
+										width={15}
+									/>
+								</View>
+								<View style={styles.invoiceText}>
+									<Text02S>{ellipse(lightningInvoice, 35)}</Text02S>
+									{showTooltip.lightning && (
+										<AnimatedView
+											style={styles.tooltip}
+											color="transparent"
+											entering={FadeIn}>
+											<Tooltip text="Invoice Copied To Clipboard" />
+										</AnimatedView>
+									)}
+								</View>
+								<View style={styles.actions}>
+									<Button
+										style={styles.actionButton}
+										icon={<CopyIcon width={18} color="brand" />}
+										text="Copy"
+										onPress={(): void => {
+											handleCopy(lightningInvoice, 'lightning');
+										}}
+									/>
+									<View style={styles.buttonSpacer} />
+									<Button
+										style={styles.actionButton}
+										text="Share"
+										icon={<ShareIcon width={18} color="brand" />}
+										disabled={isSharing}
+										onPress={(): void => {
+											handleShare(lightningInvoice);
+										}}
+									/>
+								</View>
+							</View>
+						</>
+					)}
+				</ThemedView>
+			</View>
+		);
+	}, [lightningInvoice, receiveAddress, showTooltip, handleShare, isSharing]);
+
+	const slides = useMemo((): Slide[] => {
+		return [{ slide: Slide1 }, { slide: Slide2 }];
+	}, [Slide1, Slide2]);
+
 	return (
 		<View style={styles.container} testID="ReceiveScreen">
 			<BottomSheetNavigationHeader
 				title="Receive Bitcoin"
 				displayBackButton={false}
 			/>
-			<View style={styles.qrCodeContainer}>
-				{loading && (
-					<View style={[styles.loading, { height: qrSize, width: qrSize }]}>
-						<ActivityIndicator color="white" />
-					</View>
-				)}
-				{!loading && (
-					<TouchableOpacity
-						color="white"
-						activeOpacity={1}
-						onPress={handleCopy}
-						onLongPress={handleCopyQrCode}
-						style={styles.qrCode}
-						testID="QRCode"
-						accessibilityLabel={uri}>
-						<QRCode
-							value={uri}
-							size={qrSize}
-							getRef={(c): void => {
-								if (c) {
-									c.toDataURL((data: string) => (qrRef.current = data));
-								}
-							}}
-						/>
-						<QrIcon />
-					</TouchableOpacity>
-				)}
 
-				{showCopy && (
-					<AnimatedView
-						entering={FadeIn.duration(500)}
-						exiting={FadeOut.duration(500)}
-						color="transparent"
-						style={styles.tooltip}>
-						<Tooltip text="Invoice Copied To Clipboard" />
-					</AnimatedView>
-				)}
-			</View>
-			<View style={styles.row}>
-				<Button
-					icon={<CopyIcon width={18} color="brand" />}
-					text="Copy"
-					onPress={handleCopy}
-				/>
-				<View style={styles.buttonSpacer} />
-				<Button
-					icon={<ShareIcon width={18} color="brand" />}
-					text="Share"
-					disabled={isSharing}
-					onPress={handleShare}
-				/>
-			</View>
+			{loading && (
+				<View style={[styles.loading, { height: qrSize }]}>
+					<ActivityIndicator color="white" />
+				</View>
+			)}
+
+			{!loading && (
+				<View style={styles.carouselWrapper}>
+					<Carousel
+						ref={carouselRef}
+						style={styles.carousel}
+						data={slides}
+						width={dimensions.width}
+						height={qrMaxHeight + 110}
+						loop={false}
+						panGestureHandlerProps={{ activeOffsetX: [-10, 10] }}
+						renderItem={({ index: i }): ReactElement => {
+							const Slide = slides[i].slide;
+							return <Slide key={i} />;
+						}}
+						onProgressChange={(_, absoluteProgress): void => {
+							progressValue.value = absoluteProgress;
+						}}
+					/>
+					<View style={styles.dots} pointerEvents="none">
+						{slides.map((_slide, index) => (
+							<Dot
+								key={index}
+								index={index}
+								animValue={progressValue}
+								length={slides.length}
+							/>
+						))}
+					</View>
+
+					{showTooltip.unified && (
+						<AnimatedView
+							style={styles.tooltipUnified}
+							color="transparent"
+							entering={FadeIn}>
+							<Tooltip text="Invoice Copied To Clipboard" />
+						</AnimatedView>
+					)}
+				</View>
+			)}
+
 			<View style={buttonContainerStyles}>
 				<Button
 					size="large"
@@ -345,16 +522,28 @@ const Receive = ({
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		paddingHorizontal: 16,
 	},
-	qrCodeContainer: {
+	loading: {
+		justifyContent: 'center',
+	},
+	carouselWrapper: {
+		flex: 1,
 		alignItems: 'center',
-		marginBottom: 32,
+	},
+	carousel: {
+		alignItems: 'center',
+	},
+	slide: {
+		paddingHorizontal: 16,
+		alignItems: 'center',
 	},
 	qrCode: {
 		borderRadius: 10,
 		padding: 16,
 		position: 'relative',
+		justifyContent: 'center',
+		alignItems: 'center',
+		marginBottom: 32,
 	},
 	qrIconContainer: {
 		...StyleSheet.absoluteFillObject,
@@ -366,24 +555,59 @@ const styles = StyleSheet.create({
 		borderRadius: 50,
 		padding: 9,
 	},
-	tooltip: {
-		position: 'absolute',
-		top: '68%',
-	},
-	row: {
+	actions: {
 		flexDirection: 'row',
 		alignItems: 'center',
-		justifyContent: 'center',
+	},
+	actionButton: {
+		paddingHorizontal: 16,
+		minWidth: 0,
 	},
 	buttonSpacer: {
 		width: 16,
 	},
-	buttonContainer: {
-		marginTop: 'auto',
+	invoices: {
+		backgroundColor: '#171717',
+		borderRadius: 9,
+		padding: 32,
+		width: '100%',
 	},
-	loading: {
-		justifyContent: 'center',
+	invoice: {},
+	invoiceLabel: {
+		flexDirection: 'row',
 		alignItems: 'center',
+	},
+	invoiceLabelIcon: {
+		marginLeft: 2,
+	},
+	invoiceText: {
+		position: 'relative',
+		marginVertical: 16,
+		zIndex: 1,
+	},
+	divider: {
+		height: 32,
+	},
+	dots: {
+		flexDirection: 'row',
+		justifyContent: 'space-between',
+		alignSelf: 'center',
+		marginTop: 16,
+		width: 27,
+	},
+	tooltip: {
+		position: 'absolute',
+		top: 18,
+		width: '100%',
+		alignSelf: 'center',
+	},
+	tooltipUnified: {
+		position: 'absolute',
+		top: '45%',
+	},
+	buttonContainer: {
+		paddingHorizontal: 16,
+		marginTop: 'auto',
 	},
 });
 
