@@ -421,11 +421,10 @@ const ReviewAndSend = ({
 
 	const confirmPayment = useCallback(async () => {
 		if (pin && pinForPayments) {
-			setIsLoading(false);
-
 			if (biometrics) {
 				setShowBiometrics(true);
 			} else {
+				setIsLoading(false);
 				navigateToPin();
 			}
 		} else {
@@ -726,6 +725,7 @@ const ReviewAndSend = ({
 						runCreateTxMethods();
 					}}
 					onFailure={(): void => {
+						setIsLoading(false);
 						setShowBiometrics(false);
 						navigateToPin();
 					}}

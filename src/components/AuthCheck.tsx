@@ -2,8 +2,9 @@ import React, { memo, ReactElement, useState } from 'react';
 import { RouteProp } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
 
-import PinPad from './PinPad';
+import GlowingBackground from './GlowingBackground';
 import Biometrics from './Biometrics';
+import PinPad from './PinPad';
 import Store from '../store/types';
 
 export interface IAuthCheck {
@@ -45,16 +46,18 @@ const AuthCheck = ({
 
 	if (displayPin && displayBiometrics) {
 		return (
-			<Biometrics
-				onSuccess={(): void => {
-					setDisplayBiometrics(false);
-					setDisplayPin(false);
-					authCheckParams?.onSuccess?.();
-				}}
-				onFailure={(): void => {
-					setDisplayBiometrics(false);
-				}}
-			/>
+			<GlowingBackground topLeft="brand">
+				<Biometrics
+					onSuccess={(): void => {
+						setDisplayBiometrics(false);
+						setDisplayPin(false);
+						authCheckParams?.onSuccess?.();
+					}}
+					onFailure={(): void => {
+						setDisplayBiometrics(false);
+					}}
+				/>
+			</GlowingBackground>
 		);
 	}
 

@@ -11,7 +11,7 @@ import rnBiometrics from 'react-native-biometrics';
 
 import { View, TouchableOpacity } from '../styles/components';
 import { Subtitle } from '../styles/text';
-import { Ionicons, MaterialIcons } from '../styles/icons';
+import { Ionicons } from '../styles/icons';
 import { updateSettings } from '../store/actions/settings';
 import { vibrate } from '../utils/helpers';
 
@@ -25,9 +25,6 @@ const getIcon = ({
 			return <View />;
 		}
 		const biometryType = biometryData?.biometryType;
-		if (biometryType === 'FaceID') {
-			return <MaterialIcons name="face" size={65} />;
-		}
 		if (biometryType === 'TouchID' || biometryType === 'Biometrics') {
 			return <Ionicons name="ios-finger-print" size={65} />;
 		}
@@ -78,7 +75,10 @@ const Biometrics = ({
 	const getText = useCallback((): string => {
 		try {
 			if (!biometryData?.available || !biometryData?.biometryType) {
-				return 'Loading Biometrics...';
+				return '';
+			}
+			if (biometryData?.biometryType === 'FaceID') {
+				return '';
 			}
 			if (biometryData?.available && biometryData?.biometryType) {
 				return `Authenticate with ${biometryData.biometryType}`;
