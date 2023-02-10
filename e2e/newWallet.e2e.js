@@ -1,3 +1,5 @@
+import { checkComplete, markComplete } from './helpers';
+
 describe('New Wallet', () => {
 	beforeAll(async () => {
 		await device.launchApp();
@@ -8,6 +10,10 @@ describe('New Wallet', () => {
 	// });
 
 	it('should create new wallet', async () => {
+		if (checkComplete('n1')) {
+			return;
+		}
+
 		// TOS and PP
 		await waitFor(element(by.id('Check1'))).toBeVisible();
 
@@ -20,5 +26,6 @@ describe('New Wallet', () => {
 
 		// wat for wallet to be created
 		await waitFor(element(by.id('ToGetStartedClose'))).toBeVisible();
+		markComplete('n1');
 	});
 });

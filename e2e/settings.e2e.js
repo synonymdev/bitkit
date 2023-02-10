@@ -1,4 +1,4 @@
-const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+import { sleep, checkComplete, markComplete } from './helpers';
 
 describe('Settings', () => {
 	beforeAll(async () => {
@@ -51,6 +51,10 @@ describe('Settings', () => {
 
 	describe('General', () => {
 		it('Can switch local currency', async () => {
+			if (checkComplete('s1')) {
+				return;
+			}
+
 			// switch to local currency
 			await element(by.id('TotalBalance')).tap();
 
@@ -78,9 +82,14 @@ describe('Settings', () => {
 			// switch back to sats
 			await element(by.id('TotalBalance')).tap();
 			await element(by.id('TotalBalance')).tap();
+			markComplete('s1');
 		});
 
 		it('Can switch Bitcoin Unit', async () => {
+			if (checkComplete('s2')) {
+				return;
+			}
+
 			// switch to Bitcoins
 			await element(by.id('Settings')).tap();
 			await element(by.id('GeneralSettings')).tap();
@@ -96,9 +105,14 @@ describe('Settings', () => {
 			await expect(
 				element(by.id('Value').withAncestor(by.id('BitcoinUnitSettings'))),
 			).toHaveText('Satoshis');
+			markComplete('s2');
 		});
 
 		it('Can switch choose transaction speed', async () => {
+			if (checkComplete('s3')) {
+				return;
+			}
+
 			await element(by.id('Settings')).tap();
 			await element(by.id('GeneralSettings')).tap();
 
@@ -122,9 +136,14 @@ describe('Settings', () => {
 			await expect(
 				element(by.id('Value').withAncestor(by.id('TransactionSpeedSettings'))),
 			).toHaveText('Normal');
+			markComplete('s3');
 		});
 
 		it('Can change hide and reset Suggestions', async () => {
+			if (checkComplete('s4')) {
+				return;
+			}
+
 			await expect(element(by.id('Suggestions'))).toBeVisible();
 
 			// hide backupSeedPhrase suggestion card
@@ -157,12 +176,12 @@ describe('Settings', () => {
 
 			// backupSeedPhrase should be visible again
 			await expect(element(by.id('SuggestionbackupSeedPhrase'))).toBeVisible();
+			markComplete('s4');
 		});
 	});
 
 	describe('Security and Privacy', () => {
 		it('Can setup PIN and Biometrics', async () => {
-			await device.setBiometricEnrollment(true);
 			// test plan:
 			// - set up PIN with Biometrics
 			// - try login with Biometrics and with PIN
@@ -170,6 +189,11 @@ describe('Settings', () => {
 			// - enable PIN without Biometrics
 			// - login with PIN
 			// - enter wrong PIN 10 times and reset the app
+			if (checkComplete('s5')) {
+				return;
+			}
+
+			await device.setBiometricEnrollment(true);
 
 			await element(by.id('Settings')).tap();
 			await element(by.id('SecuritySettings')).tap();
@@ -269,11 +293,16 @@ describe('Settings', () => {
 			// // app should show Licence agreement
 			// await device.launchApp({ newInstance: true });
 			// await waitFor(element(by.id('Check1'))).toBeVisible();
+			markComplete('s5');
 		});
 	});
 
 	describe('Backup or restore', () => {
 		it('Can show backup and validate it', async () => {
+			if (checkComplete('s6')) {
+				return;
+			}
+
 			await element(by.id('Settings')).tap();
 			await element(by.id('BackupSettings')).tap();
 			await element(by.id('BackupData')).tap(); // just check if this screen can be opened
@@ -288,7 +317,7 @@ describe('Settings', () => {
 			const { label: seed } = await element(
 				by.id('SeedContaider'),
 			).getAttributes();
-			await element(by.id('Continue')).tap();
+			await element(by.id('ContinueShowMnemonic')).tap();
 
 			// enter the seed
 			for (const word of seed.split(' ')) {
@@ -296,23 +325,28 @@ describe('Settings', () => {
 					.atIndex(0) // in case there are a few same words in the seed phrase
 					.tap();
 			}
-			await element(by.id('Continue')).tap();
+			await element(by.id('ContinueConfirmMnemonic')).tap();
 			await element(by.id('OK')).tap();
 			await element(by.id('OK')).tap();
 			await element(by.id('OK')).tap();
 			await sleep(1000);
+			markComplete('s6');
 		});
 	});
 
 	describe('Advanced', () => {
 		it('Can switch address types', async () => {
+			if (checkComplete('s7')) {
+				return;
+			}
+			// wallet be in regtest mode by default
 			// at first check if it is Native segwit by default
 			await element(by.id('Receive')).tap();
 			await sleep(1000); // animation
 			// get address from qrcode
 			const { label: address } = await element(by.id('QRCode')).getAttributes();
 			// because we can't use Jest expect in Detox tests, let's just throw an error if there is one
-			if (!address.startsWith('bitcoin:bc1')) {
+			if (!address.startsWith('bitcoin:bcrt1')) {
 				throw new Error('Wrong receiving address');
 			}
 			await element(by.id('ReceiveScreen')).swipe('down'); // close Receive screen
@@ -328,7 +362,7 @@ describe('Settings', () => {
 
 			let { text: text1 } = await element(by.id('Address-0')).getAttributes();
 			text1 = text1.replace('0: ', '');
-			if (!text1.startsWith('bc1')) {
+			if (!text1.startsWith('bcrt1')) {
 				throw new Error('Wrong address at index 0');
 			}
 
@@ -351,7 +385,7 @@ describe('Settings', () => {
 				.withTimeout(30000);
 			let { text: text2 } = await element(by.id('Address-0')).getAttributes();
 			text2 = text2.replace('0: ', '');
-			if (!text2.startsWith('1')) {
+			if (!text2.startsWith('m')) {
 				throw new Error('Wrong address at index 0');
 			}
 
@@ -368,7 +402,7 @@ describe('Settings', () => {
 			// get address from qrcode
 			const { label: addr } = await element(by.id('QRCode')).getAttributes();
 			// because we can't use Jest expect in Detox tests, let's just throw an error if there is one
-			if (!addr.startsWith('bitcoin:1')) {
+			if (!addr.startsWith('bitcoin:m')) {
 				throw new Error('Wrong receiving address');
 			}
 			await element(by.id('ReceiveScreen')).swipe('down'); // close Receive screen
@@ -381,9 +415,14 @@ describe('Settings', () => {
 			await element(by.id('p2wpkh')).tap();
 			await element(by.id('NavigationClose')).tap();
 			await sleep(1000);
+			markComplete('s7');
 		});
 
 		it('Can open LN settings screens', async () => {
+			if (checkComplete('s8')) {
+				return;
+			}
+
 			await element(by.id('Settings')).tap();
 			await element(by.id('DevOptions')).multiTap(5); // enable dev mode
 			await element(by.id('AdvancedSettings')).tap();
@@ -401,9 +440,14 @@ describe('Settings', () => {
 			await element(by.id('NavigationBack')).tap();
 			await element(by.id('DevOptions')).multiTap(5); // disable dev mode
 			await sleep(1000);
+			markComplete('s8');
 		});
 
 		it('Can enter wrong Electrum server and get an error message', async () => {
+			if (checkComplete('s9')) {
+				return;
+			}
+
 			await element(by.id('Settings')).tap();
 			await element(by.id('AdvancedSettings')).tap();
 			await element(by.id('ElectrumConfig')).tap();
@@ -423,6 +467,7 @@ describe('Settings', () => {
 			await element(by.id('ConnectToHost')).tap();
 			await waitFor(element(by.id('Connected'))).toBeVisible();
 			await sleep(1000);
+			markComplete('s9');
 		});
 	});
 });

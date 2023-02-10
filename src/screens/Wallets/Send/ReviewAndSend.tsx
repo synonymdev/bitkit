@@ -349,7 +349,7 @@ const ReviewAndSend = ({
 				// TODO: Add a backup method to broadcast via an api if unable to broadcast through Electrum.
 				_onError(
 					'Error: Unable to Broadcast Transaction',
-					'Please check your connection and try again.',
+					`Please check your connection and try again. \n ${response.error.message}`,
 				);
 			}
 			setIsLoading(false);
@@ -687,6 +687,7 @@ const ReviewAndSend = ({
 						setShowDialog2(false);
 						confirmPayment();
 					}}
+					visibleTestID="DialogSend50"
 				/>
 				<Dialog
 					visible={showDialog3}

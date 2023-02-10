@@ -17,6 +17,7 @@ type DialogProps = ModalProps & {
 	description: string;
 	cancelText?: string;
 	confirmText?: string;
+	visibleTestID?: string;
 	onCancel?: () => void;
 	onConfirm?: () => void;
 };
@@ -27,6 +28,7 @@ const Dialog = ({
 	description,
 	cancelText = 'No, Cancel',
 	confirmText = 'Yes, Reset',
+	visibleTestID,
 	onCancel,
 	onConfirm,
 	onRequestClose,
@@ -47,7 +49,9 @@ const Dialog = ({
 						<Text style={styles.title}>{title}</Text>
 						<Text style={styles.description}>{description}</Text>
 					</View>
-					<View style={styles.buttons}>
+					<View
+						style={styles.buttons}
+						testID={visible ? visibleTestID : undefined}>
 						{onCancel && (
 							<TouchableOpacity
 								style={[styles.button, styles.buttonLeft]}

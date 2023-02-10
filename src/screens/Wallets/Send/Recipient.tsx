@@ -330,7 +330,7 @@ const Recipient = ({
 				displayBackButton={false}
 			/>
 			<View style={styles.content}>
-				<Caption13Up color="gray1" style={styles.label}>
+				<Caption13Up color="gray1" style={styles.label} testID="Caption">
 					To
 				</Caption13Up>
 
@@ -340,7 +340,8 @@ const Recipient = ({
 					slashTagsUrl={transaction.slashTagsUrl}
 					onChangeText={onChangeText}
 					onFocus={onFocus}
-					onBlur={onBlur}>
+					onBlur={onBlur}
+					testID="AddressOrSlashpay">
 					<IconButton style={styles.inputAction} onPress={handleScan}>
 						<ScanIcon color="brand" width={24} />
 					</IconButton>
@@ -373,6 +374,7 @@ const Recipient = ({
 							size="large"
 							disabled={isInvalid()}
 							onPress={onContinue}
+							testID="ContinueRecipient"
 						/>
 					</View>
 				</View>

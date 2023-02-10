@@ -181,7 +181,8 @@ const Amount = ({ navigation }: SendScreenProps<'Amount'>): ReactElement => {
 									color="white08"
 									onPress={(): void => {
 										sendMax({ selectedWallet, selectedNetwork });
-									}}>
+									}}
+									testID="MAX">
 									<Text02B
 										size="12px"
 										color={isMaxSendAmount ? 'orange' : 'brand'}>
@@ -194,7 +195,8 @@ const Amount = ({ navigation }: SendScreenProps<'Amount'>): ReactElement => {
 								<TouchableOpacity
 									style={styles.actionButton}
 									color="white08"
-									onPress={onChangeUnit}>
+									onPress={onChangeUnit}
+									testID="ChangeUnit">
 									<SwitchIcon color="brand" width={16.44} height={13.22} />
 									<Text02B
 										style={styles.actionButtonText}
@@ -218,6 +220,7 @@ const Amount = ({ navigation }: SendScreenProps<'Amount'>): ReactElement => {
 						text="Continue"
 						disabled={isInvalid()}
 						onPress={onContinue}
+						testID="ContinueAmount"
 					/>
 				</View>
 			</View>

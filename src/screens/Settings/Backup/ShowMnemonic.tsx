@@ -133,7 +133,7 @@ const ShowMnemonic = ({
 								},
 							);
 						}}
-						testID="Continue"
+						testID="ContinueShowMnemonic"
 					/>
 				)}
 			</View>

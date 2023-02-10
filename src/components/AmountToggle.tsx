@@ -18,6 +18,7 @@ const AmountToggle = ({
 	children,
 	style,
 	onPress,
+	testID,
 }: {
 	sats: number;
 	unit?: 'asset' | 'fiat';
@@ -27,6 +28,7 @@ const AmountToggle = ({
 	children?: ReactElement;
 	style?: StyleProp<ViewStyle>;
 	onPress?: () => void;
+	testID?: string;
 }): ReactElement => {
 	const unitPreference = useSelector(unitPreferenceSelector);
 
@@ -64,7 +66,11 @@ const AmountToggle = ({
 	}, [disable, onPress]);
 
 	return (
-		<Pressable onPress={_onPress} color="transparent" style={style}>
+		<Pressable
+			onPress={_onPress}
+			color="transparent"
+			style={style}
+			testID={testID}>
 			{components}
 			{children}
 		</Pressable>

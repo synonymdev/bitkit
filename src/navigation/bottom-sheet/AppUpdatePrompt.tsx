@@ -2,6 +2,7 @@ import React, { memo, ReactElement, useEffect, useMemo } from 'react';
 import { Platform, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { getBundleId } from 'react-native-device-info';
+import { DISABLE_PERIODIC_REMINDERS } from '@env';
 
 import { Text01S } from '../../styles/text';
 import BottomSheetWrapper from '../../components/BottomSheetWrapper';
@@ -68,6 +69,7 @@ const AppUpdatePrompt = ({ enabled }: { enabled: boolean }): ReactElement => {
 		const isTimeoutOver = Number(new Date()) - ignoreTimestamp > ASK_INTERVAL;
 		return (
 			enabled &&
+			DISABLE_PERIODIC_REMINDERS !== 'true' &&
 			updateType === 'optional' &&
 			isTimeoutOver &&
 			!anyBottomSheetIsOpen

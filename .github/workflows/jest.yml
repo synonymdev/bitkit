@@ -22,13 +22,13 @@ jobs:
       - name: Run regtest setup
         run: cd __tests__ && docker compose up -d
 
-      - name: Wait for bitcoind and chmod 777 cookie file
-        # because bitcoind and electrs has different user ids and bitcoind creates cookie file with chmod 700
-        # electrum server can't read it, that is why we chmod 777 it
+      - name: Wait for bitcoind
         run: |
           sudo apt install wait-for-it
           wait-for-it -h 127.0.0.1 -p 43782 -t 60
-          sudo chmod 777 __tests__/bitcoin_datadir/regtest/.cookie
+
+      - name: Wait for electrum server
+        run: wait-for-it -h 127.0.0.1 -p 60001 -t 60
 
       - name: Set up Node.js
         uses: actions/setup-node@v3
@@ -50,8 +50,8 @@ jobs:
       - name: Install Node.js dependencies
         run: yarn install
 
-      - name: Wait for electrum server
-        run: wait-for-it -h 127.0.0.1 -p 60001 -t 60
+      - name: Activate enviroment variables
+        run: cp .env.development.template .env
 
       - name: Run Tests
         run: yarn test

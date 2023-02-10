@@ -173,6 +173,7 @@ const SwipeToConfirm = ({
 							],
 						},
 					]}
+					testID="GRAB"
 					{...panResponder.panHandlers}>
 					<Animated.View style={[styles.circle, { backgroundColor: kolor }]}>
 						<Animated.View style={[styles.icon, { opacity: startIconOpacity }]}>

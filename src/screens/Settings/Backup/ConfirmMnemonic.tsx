@@ -137,7 +137,7 @@ const ConfirmMnemonic = ({
 								navigation.navigate('Result');
 							}
 						}}
-						testID="Continue"
+						testID="ContinueConfirmMnemonic"
 					/>
 				)}
 			</View>
