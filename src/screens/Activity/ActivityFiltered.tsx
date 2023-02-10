@@ -1,5 +1,6 @@
-import React, { ReactElement, memo, useMemo, useState } from 'react';
+import React, { ReactElement, memo, useMemo, useState, useRef } from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { Gesture, GestureType } from 'react-native-gesture-handler';
 import {
 	StyleSheet,
 	TouchableOpacity,
@@ -56,6 +57,7 @@ const ActivityFiltered = ({
 	navigation,
 }: WalletScreenProps<'ActivityFiltered'>): ReactElement => {
 	const insets = useSafeAreaInsets();
+	const panGestureRef = useRef<GestureType>(Gesture.Pan());
 	const [radiusContainerHeight, setRadiusContainerHeight] = useState(0);
 	const [currentTab, setCurrentTab] = useState(0);
 	const [search, setSearch] = useState('');
@@ -135,10 +137,16 @@ const ActivityFiltered = ({
 					</BlurView>
 				</View>
 
-				<DetectSwipe onSwipeLeft={onSwipeLeft} onSwipeRight={onSwipeRight}>
+				<DetectSwipe
+					panGestureRef={panGestureRef}
+					swipeLeftSensitivity={1500}
+					swipeRightSensitivity={1500}
+					onSwipeLeft={onSwipeLeft}
+					onSwipeRight={onSwipeRight}>
 					<View style={styles.txListContainer}>
 						<ActivityList
 							style={styles.txList}
+							panGestureRef={panGestureRef}
 							showTitle={false}
 							contentContainerStyle={activityPadding}
 							progressViewOffset={radiusContainerHeight + 10}

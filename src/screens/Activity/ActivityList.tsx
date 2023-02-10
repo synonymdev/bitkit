@@ -4,9 +4,9 @@ import React, {
 	useCallback,
 	useState,
 	useMemo,
+	MutableRefObject,
 } from 'react';
 import {
-	FlatList,
 	NativeScrollEvent,
 	NativeSyntheticEvent,
 	StyleProp,
@@ -15,6 +15,7 @@ import {
 } from 'react-native';
 import { useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
+import { FlatList, GestureType } from 'react-native-gesture-handler';
 
 import { RefreshControl } from '../../styles/components';
 import { Caption13Up, Subtitle, Text01S } from '../../styles/text';
@@ -34,19 +35,21 @@ const ListHeaderComponent = memo(
 );
 
 const ActivityList = ({
-	onScroll,
 	style,
+	panGestureRef,
 	contentContainerStyle,
 	progressViewOffset,
 	showTitle = true,
 	filter = {},
+	onScroll,
 }: {
-	onScroll?: (event: NativeSyntheticEvent<NativeScrollEvent>) => void;
 	style?: StyleProp<ViewStyle>;
+	panGestureRef?: MutableRefObject<GestureType>;
 	contentContainerStyle?: StyleProp<ViewStyle>;
 	progressViewOffset?: number;
 	showTitle?: boolean;
 	filter?: {};
+	onScroll?: (event: NativeSyntheticEvent<NativeScrollEvent>) => void;
 }): ReactElement => {
 	const navigation = useNavigation<RootNavigationProp>();
 	const items = useSelector(activityItemsSelector);
@@ -91,13 +94,17 @@ const ActivityList = ({
 		setRefreshing(false);
 	};
 
+	const simultaneousHandlers = panGestureRef ? [panGestureRef] : [];
+
 	return (
 		<FlatList
-			onScroll={onScroll}
 			style={[styles.content, style]}
+			simultaneousHandlers={simultaneousHandlers}
 			contentContainerStyle={contentContainerStyle}
+			showsVerticalScrollIndicator={false}
 			data={groupedItems}
 			renderItem={renderItem}
+			onScroll={onScroll}
 			keyExtractor={(item): string => {
 				return typeof item === 'string' ? item : item.id;
 			}}

@@ -1,7 +1,12 @@
-import React, { memo, ReactElement, useRef } from 'react';
-import { GestureDetector, Gesture } from 'react-native-gesture-handler';
+import React, { memo, MutableRefObject, ReactElement, useRef } from 'react';
+import {
+	GestureDetector,
+	Gesture,
+	GestureType,
+} from 'react-native-gesture-handler';
 
 export interface IDetectSwipe {
+	panGestureRef?: MutableRefObject<GestureType>;
 	onSwipeLeft?: () => void;
 	onSwipeRight?: () => void;
 	onSwipeUp?: () => void;
@@ -14,6 +19,7 @@ export interface IDetectSwipe {
 }
 
 const DetectSwipe = ({
+	panGestureRef,
 	onSwipeLeft,
 	onSwipeRight,
 	onSwipeUp,
@@ -24,40 +30,40 @@ const DetectSwipe = ({
 	swipeDownSensitivity = 600,
 	children,
 }: IDetectSwipe): ReactElement => {
-	const acticated = useRef(false);
+	const activated = useRef(false);
 
-	const gesture = Gesture.Pan()
+	let gesture = Gesture.Pan()
 		.runOnJS(true)
 		.minDistance(10)
 		.onUpdate((event) => {
-			if (acticated.current) {
+			if (activated.current) {
 				return;
 			}
 
 			if (onSwipeLeft && event.velocityX <= -swipeLeftSensitivity) {
-				//Swiping left
 				onSwipeLeft();
-				acticated.current = true;
+				activated.current = true;
 			}
 			if (onSwipeRight && event.velocityX >= swipeRightSensitivity) {
-				//Swiping right.
 				onSwipeRight();
-				acticated.current = true;
+				activated.current = true;
 			}
 			if (onSwipeUp && event.velocityY <= -swipeUpSensitivity) {
-				//Swiping up
 				onSwipeUp();
-				acticated.current = true;
+				activated.current = true;
 			}
 			if (onSwipeDown && event.velocityY >= swipeDownSensitivity) {
-				//Swiping down.
 				onSwipeDown();
-				acticated.current = true;
+				activated.current = true;
 			}
 		})
 		.onFinalize(() => {
-			acticated.current = false;
+			activated.current = false;
 		});
+
+	if (panGestureRef) {
+		gesture = gesture.withRef(panGestureRef);
+	}
 
 	return <GestureDetector gesture={gesture}>{children}</GestureDetector>;
 };
