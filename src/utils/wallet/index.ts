@@ -2035,6 +2035,9 @@ export const createDefaultWallet = async ({
 	selectedNetwork,
 }: ICreateWallet): Promise<Result<IWallets>> => {
 	try {
+		if (!selectedNetwork) {
+			selectedNetwork = getSelectedNetwork();
+		}
 		if (!addressTypes) {
 			// if nothing else specified use only Native Segwit by default
 			addressTypes = { p2wpkh: getAddressTypes().p2wpkh };
@@ -2069,47 +2072,45 @@ export const createDefaultWallet = async ({
 		const lastUsedAddressIndex = defaultWalletShape.lastUsedAddressIndex;
 		const lastUsedChangeAddressIndex =
 			defaultWalletShape.lastUsedChangeAddressIndex;
-		await Promise.all([
-			setKeychainSlashtagsPrimaryKey(seed),
-			Object.values(addressTypes).map(async ({ type, path }) => {
-				if (!selectedNetwork) {
-					selectedNetwork = getSelectedNetwork();
-				}
-				const pathObject = getKeyDerivationPathObject({
-					path,
-					selectedNetwork,
-				});
-				if (pathObject.isErr()) {
-					return err(pathObject.error.message);
-				}
-				const generatedAddresses = await generateAddresses({
-					selectedWallet: walletName,
-					selectedNetwork,
-					addressAmount,
-					changeAddressAmount,
-					keyDerivationPath: pathObject.value,
-					addressType: type,
-				});
-				if (generatedAddresses.isErr()) {
-					return err(generatedAddresses.error);
-				}
-				const { addresses, changeAddresses } = generatedAddresses.value;
-				const addressIndexFilter = Object.values(addresses).find(
-					(a) => a.index === 0,
-				);
-				if (addressIndexFilter) {
-					addressIndex[selectedNetwork][type] = addressIndexFilter;
-				}
-				const changeAddressIndexFilter = Object.values(changeAddresses).find(
-					(a) => a.index === 0,
-				);
-				if (changeAddressIndexFilter) {
-					changeAddressIndex[selectedNetwork][type] = changeAddressIndexFilter;
-				}
-				addressesObj[selectedNetwork][type] = addresses;
-				changeAddressesObj[selectedNetwork][type] = changeAddresses;
-			}),
-		]);
+
+		await setKeychainSlashtagsPrimaryKey(seed);
+
+		for (const { type, path } of Object.values(addressTypes)) {
+			const pathObject = getKeyDerivationPathObject({
+				path,
+				selectedNetwork,
+			});
+			if (pathObject.isErr()) {
+				return err(pathObject.error.message);
+			}
+			const generatedAddresses = await generateAddresses({
+				selectedWallet: walletName,
+				selectedNetwork,
+				addressAmount,
+				changeAddressAmount,
+				keyDerivationPath: pathObject.value,
+				addressType: type,
+			});
+			if (generatedAddresses.isErr()) {
+				return err(generatedAddresses.error);
+			}
+			const { addresses, changeAddresses } = generatedAddresses.value;
+			const addressZeroIndex = Object.values(addresses).find(
+				(a) => a.index === 0,
+			);
+			const changeAddressZeroIndex = Object.values(changeAddresses).find(
+				(a) => a.index === 0,
+			);
+			if (addressZeroIndex) {
+				addressIndex[selectedNetwork][type] = addressZeroIndex;
+			}
+			if (changeAddressZeroIndex) {
+				changeAddressIndex[selectedNetwork][type] = changeAddressZeroIndex;
+			}
+			addressesObj[selectedNetwork][type] = addresses;
+			changeAddressesObj[selectedNetwork][type] = changeAddresses;
+		}
+
 		const payload: IWallets = {
 			[walletName]: {
 				...defaultWalletShape,
