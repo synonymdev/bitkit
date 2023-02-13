@@ -157,9 +157,9 @@ const SecuritySettings = ({
 	const footerText = useMemo(
 		() =>
 			pin && isBiometrySupported
-				? 'When enabled, you can use Biometrics instead of your PIN code to unlock your wallet or send payments.'
+				? `When enabled, you can use ${biometryTypeName} instead of your PIN code to unlock your wallet or send payments.`
 				: undefined,
-		[isBiometrySupported, pin],
+		[isBiometrySupported, pin, biometryTypeName],
 	);
 
 	return (

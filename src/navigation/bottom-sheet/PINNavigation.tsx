@@ -1,5 +1,6 @@
 import React, { ReactElement, memo } from 'react';
 import { useSelector } from 'react-redux';
+import { BiometryType } from 'react-native-biometrics';
 import {
 	createNativeStackNavigator,
 	NativeStackNavigationOptions,
@@ -19,7 +20,7 @@ export type PinNavigationProp = NativeStackNavigationProp<PinStackParamList>;
 export type PinStackParamList = {
 	ChoosePIN: { pin: string } | undefined;
 	AskForBiometrics: undefined;
-	Result: { bio: boolean };
+	Result: { bio: boolean; type: BiometryType };
 };
 
 const Stack = createNativeStackNavigator<PinStackParamList>();

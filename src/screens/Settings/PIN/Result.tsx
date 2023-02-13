@@ -17,7 +17,7 @@ import type { PinScreenProps } from '../../../navigation/types';
 const imageSrc = require('../../../assets/illustrations/check.png');
 
 const Result = ({ route }: PinScreenProps<'Result'>): ReactElement => {
-	const { bio } = route.params;
+	const { bio, type } = route.params;
 	const insets = useSafeAreaInsets();
 	const pinForPayments = useSelector(pinForPaymentsSelector);
 
@@ -50,8 +50,8 @@ const Result = ({ route }: PinScreenProps<'Result'>): ReactElement => {
 			<View style={styles.message}>
 				{bio ? (
 					<Text01S color="gray1">
-						You have successfully set up a PIN code and biometrics to improve
-						your wallet security.
+						You have successfully set up a PIN code and {type} to improve your
+						wallet security.
 					</Text01S>
 				) : (
 					<Text01S color="gray1">

@@ -28,6 +28,7 @@ const DisablePin = ({
 
 	const handleButtonPress = (): void => {
 		navigation.navigate('AuthCheck', {
+			requirePin: true,
 			onSuccess: () => {
 				// hack needed for Android
 				setTimeout(() => {

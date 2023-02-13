@@ -72,8 +72,10 @@ const AskForBiometrics = ({
 	};
 
 	const handleButtonPress = useCallback((): void => {
+		const bioType = biometryData?.biometryType ?? 'Biometrics';
+
 		if (!biometryData?.available || !shouldEnableBiometrics) {
-			navigation.navigate('Result', { bio: false });
+			navigation.navigate('Result', { bio: false, type: bioType });
 			return;
 		}
 
@@ -82,7 +84,7 @@ const AskForBiometrics = ({
 			.then(({ success }) => {
 				if (success) {
 					updateSettings({ biometrics: true });
-					navigation.navigate('Result', { bio: true });
+					navigation.navigate('Result', { bio: true, type: bioType });
 				}
 			})
 			.catch(() => {
@@ -91,7 +93,13 @@ const AskForBiometrics = ({
 					message: "Bitkit wasn't able to setup biometrics for your device.",
 				});
 			});
-	}, [biometryData?.available, shouldEnableBiometrics, typeName, navigation]);
+	}, [
+		biometryData?.available,
+		biometryData?.biometryType,
+		shouldEnableBiometrics,
+		typeName,
+		navigation,
+	]);
 
 	return (
 		<GradientView style={styles.container}>

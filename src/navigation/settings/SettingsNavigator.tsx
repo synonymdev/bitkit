@@ -50,7 +50,10 @@ export type SettingsNavigationProp =
 	StackNavigationProp<SettingsStackParamList>;
 
 export type SettingsStackParamList = {
-	AuthCheck: { onSuccess: () => void };
+	AuthCheck: {
+		requirePin?: boolean;
+		onSuccess: () => void;
+	};
 	MainSettings: undefined;
 	GeneralSettings: undefined;
 	SecuritySettings: undefined;
