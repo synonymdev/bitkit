@@ -29,7 +29,7 @@ import {
 } from './notifications';
 import { updateBitcoinTransaction } from '../store/actions/wallet';
 import { getBalance, getSelectedNetwork, getSelectedWallet } from './wallet';
-import { toggleView } from '../store/actions/ui';
+import { showBottomSheet, closeBottomSheet } from '../store/actions/ui';
 import { handleSlashtagURL } from './slashtags';
 import { addPeer, decodeLightningInvoice } from './lightning';
 import {
@@ -689,29 +689,20 @@ export const handleData = async ({
 	//TODO(slashtags): Register Bitkit to handle all slash?x:// protocols
 	switch (qrDataType) {
 		case EQRDataType.slashtagURL: {
-			handleSlashtagURL(data.url as string);
-			toggleView({
-				view: 'addContactModal',
-				data: { isOpen: false },
-			});
+			handleSlashtagURL(data.url!);
+			closeBottomSheet('addContactModal');
 			return ok({ type: EQRDataType.slashtagURL });
 		}
 		case EQRDataType.slashFeedURL: {
-			handleSlashtagURL(data.url as string);
-			return ok({ type: EQRDataType.slashAuthURL });
+			handleSlashtagURL(data.url!);
+			return ok({ type: EQRDataType.slashFeedURL });
 		}
 		case EQRDataType.slashAuthURL: {
-			toggleView({
-				view: 'slashauthModal',
-				data: { isOpen: true, url: data.url },
-			});
+			showBottomSheet('slashauthModal', { url: data.url! });
 			return ok({ type: EQRDataType.slashAuthURL });
 		}
 		case EQRDataType.bitcoinAddress: {
-			toggleView({
-				view: 'sendNavigation',
-				data: { isOpen: true },
-			});
+			showBottomSheet('sendNavigation');
 
 			// If no amount found in payment request, make sure that the user hasn't previously specified an amount from the send form.
 			if (!amount) {
@@ -740,6 +731,7 @@ export const handleData = async ({
 
 			return ok({ type: EQRDataType.bitcoinAddress, address, amount });
 		}
+
 		case EQRDataType.lightningPaymentRequest: {
 			const decodedInvoice = await decodeLightningInvoice({
 				paymentRequest: lightningPaymentRequest,
@@ -752,10 +744,7 @@ export const handleData = async ({
 				return err(decodedInvoice.error.message);
 			}
 
-			toggleView({
-				view: 'sendNavigation',
-				data: { isOpen: true },
-			});
+			showBottomSheet('sendNavigation');
 
 			const invoiceAmount = decodedInvoice.value.amount_satoshis ?? 0;
 			await updateBitcoinTransaction({
@@ -843,13 +832,10 @@ export const handleData = async ({
 				});
 				return err(savePeerRes.error.message);
 			}
+			closeBottomSheet('sendNavigation');
 			showSuccessNotification({
 				title: savePeerRes.value,
 				message: 'Lightning peer added & saved',
-			});
-			toggleView({
-				view: 'sendNavigation',
-				data: { isOpen: false },
 			});
 			return ok({ type: EQRDataType.nodeId });
 		}

@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 
 import { EItemType, IListData } from '../../../components/List';
 import SettingsView from '../SettingsView';
-import { toggleView } from '../../../store/actions/ui';
+import { closeBottomSheet, showBottomSheet } from '../../../store/actions/ui';
 import { SettingsScreenProps } from '../../../navigation/types';
 import Store from '../../../store/types';
 
@@ -20,14 +20,8 @@ const BackupSettings = ({
 						title: 'Back up your money',
 						type: EItemType.button,
 						onPress: (): void => {
-							toggleView({
-								view: 'backupPrompt',
-								data: { isOpen: false },
-							});
-							toggleView({
-								view: 'backupNavigation',
-								data: { isOpen: true },
-							});
+							closeBottomSheet('backupPrompt');
+							showBottomSheet('backupNavigation');
 						},
 						testID: 'BackupMoney',
 					},

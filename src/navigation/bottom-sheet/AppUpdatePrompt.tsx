@@ -8,7 +8,7 @@ import BottomSheetWrapper from '../../components/BottomSheetWrapper';
 import BottomSheetNavigationHeader from '../../components/BottomSheetNavigationHeader';
 import Button from '../../components/Button';
 import { ignoreAppUpdate } from '../../store/actions/user';
-import { toggleView } from '../../store/actions/ui';
+import { showBottomSheet, closeBottomSheet } from '../../store/actions/ui';
 import GlowImage from '../../components/GlowImage';
 import { openURL } from '../../utils/helpers';
 import { objectKeys } from '../../utils/objectKeys';
@@ -64,7 +64,7 @@ const AppUpdatePrompt = ({ enabled }: { enabled: boolean }): ReactElement => {
 	// and user has not seen this prompt for ASK_INTERVAL
 	// and no other bottom-sheets are shown
 	// and user on "Wallets" screen for CHECK_DELAY
-	const showBottomSheet = useMemo(() => {
+	const shouldShowBottomSheet = useMemo(() => {
 		const isTimeoutOver = Number(new Date()) - ignoreTimestamp > ASK_INTERVAL;
 		return (
 			enabled &&
@@ -75,37 +75,28 @@ const AppUpdatePrompt = ({ enabled }: { enabled: boolean }): ReactElement => {
 	}, [enabled, updateType, ignoreTimestamp, anyBottomSheetIsOpen]);
 
 	useEffect(() => {
-		if (!showBottomSheet) {
+		if (!shouldShowBottomSheet) {
 			return;
 		}
 
 		const timer = setTimeout(() => {
-			toggleView({
-				view: 'appUpdatePrompt',
-				data: { isOpen: true },
-			});
+			showBottomSheet('appUpdatePrompt');
 		}, CHECK_DELAY);
 
 		return (): void => {
 			clearTimeout(timer);
 		};
-	}, [showBottomSheet]);
+	}, [shouldShowBottomSheet]);
 
 	const onCancel = (): void => {
 		ignoreAppUpdate();
-		toggleView({
-			view: 'appUpdatePrompt',
-			data: { isOpen: false },
-		});
+		closeBottomSheet('appUpdatePrompt');
 	};
 
 	const onUpdate = async (): Promise<void> => {
 		ignoreAppUpdate();
 		await openURL(appStoreUrl);
-		toggleView({
-			view: 'appUpdatePrompt',
-			data: { isOpen: false },
-		});
+		closeBottomSheet('appUpdatePrompt');
 	};
 
 	return (

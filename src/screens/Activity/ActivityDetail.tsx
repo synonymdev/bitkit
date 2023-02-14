@@ -63,7 +63,7 @@ import useColors from '../../hooks/colors';
 import { useAppSelector } from '../../hooks/redux';
 import useDisplayValues from '../../hooks/displayValues';
 import Store from '../../store/types';
-import { toggleView } from '../../store/actions/ui';
+import { showBottomSheet } from '../../store/actions/ui';
 import { EPaymentType } from '../../store/types/wallet';
 import {
 	activityItemSelector,
@@ -227,17 +227,11 @@ const OnchainActivityDetail = ({
 	);
 
 	const handleBoost = (): void => {
-		toggleView({
-			view: 'boostPrompt',
-			data: { isOpen: true, activityItem: item },
-		});
+		showBottomSheet('boostPrompt', { activityItem: item });
 	};
 
 	const handleAddTag = (): void => {
-		toggleView({
-			view: 'activityTagsPrompt',
-			data: { isOpen: true, id },
-		});
+		showBottomSheet('activityTagsPrompt', { id });
 	};
 
 	const handleRemoveTag = (tag: string): void => {
@@ -563,10 +557,7 @@ const LightningActivityDetail = ({
 	});
 
 	const handleAddTag = (): void => {
-		toggleView({
-			view: 'activityTagsPrompt',
-			data: { isOpen: true, id },
-		});
+		showBottomSheet('activityTagsPrompt', { id });
 	};
 
 	const handleRemoveTag = (tag: string): void => {

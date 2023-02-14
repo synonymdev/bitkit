@@ -9,7 +9,7 @@ import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigati
 import GradientView from '../../../components/GradientView';
 import GlowImage from '../../../components/GlowImage';
 import Button from '../../../components/Button';
-import { toggleView } from '../../../store/actions/ui';
+import { closeBottomSheet } from '../../../store/actions/ui';
 import { updateSettings } from '../../../store/actions/settings';
 import { pinForPaymentsSelector } from '../../../store/reselect/settings';
 import type { PinScreenProps } from '../../../navigation/types';
@@ -34,10 +34,7 @@ const Result = ({ route }: PinScreenProps<'Result'>): ReactElement => {
 	};
 
 	const handleButtonPress = (): void => {
-		toggleView({
-			view: 'PINNavigation',
-			data: { isOpen: false },
-		});
+		closeBottomSheet('PINNavigation');
 	};
 
 	return (

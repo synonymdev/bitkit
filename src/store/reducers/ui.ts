@@ -17,22 +17,25 @@ const ui = (state: IUi = defaultUiShape, action): IUi => {
 				availableUpdateType: action.payload,
 			};
 
-		case actions.TOGGLE_VIEW:
+		case actions.SHOW_SHEET:
 			return {
 				...state,
 				viewControllers: {
 					...state.viewControllers,
 					[action.payload.view]: {
-						...state.viewControllers[action.payload.view],
-						...action.payload.data,
+						...action.payload.params,
+						isOpen: true,
 					},
 				},
 			};
 
-		case actions.CLOSE_VIEWS:
+		case actions.CLOSE_SHEET:
 			return {
 				...state,
-				viewControllers: defaultViewControllers,
+				viewControllers: {
+					...state.viewControllers,
+					[action.payload]: defaultViewControllers[action.payload],
+				},
 			};
 
 		case actions.UPDATE_PROFILE_LINK:

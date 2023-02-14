@@ -6,7 +6,7 @@ import { AnimatedView } from '../../../styles/components';
 import { Text02S } from '../../../styles/text';
 import useColors from '../../../hooks/colors';
 import { getKeychainValue, vibrate } from '../../../utils/helpers';
-import { toggleView } from '../../../store/actions/ui';
+import { showBottomSheet } from '../../../store/actions/ui';
 import NumberPad from '../../../components/NumberPad';
 
 const SendPinPad = ({ onSuccess }: { onSuccess: () => void }): ReactElement => {
@@ -72,12 +72,7 @@ const SendPinPad = ({ onSuccess }: { onSuccess: () => void }): ReactElement => {
 						exiting={FadeOut}>
 						<Pressable
 							onPress={(): void => {
-								toggleView({
-									view: 'forgotPIN',
-									data: {
-										isOpen: true,
-									},
-								});
+								showBottomSheet('forgotPIN');
 							}}>
 							<Text02S color="brand">Forgot your PIN?</Text02S>
 						</Pressable>

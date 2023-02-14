@@ -7,7 +7,7 @@ import { View as ThemedView } from '../../../styles/components';
 import Store from '../../../store/types';
 import { EItemType, IListData } from '../../../components/List';
 import { IsSensorAvailableResult } from '../../../components/Biometrics';
-import { toggleView } from '../../../store/actions/ui';
+import { showBottomSheet } from '../../../store/actions/ui';
 import { updateSettings } from '../../../store/actions/settings';
 import SettingsView from '../SettingsView';
 import type { SettingsScreenProps } from '../../../navigation/types';
@@ -79,10 +79,7 @@ const SecuritySettings = ({
 							if (pin) {
 								navigation.navigate('DisablePin');
 							} else {
-								toggleView({
-									view: 'PINPrompt',
-									data: { isOpen: true, showLaterButton: false },
-								});
+								showBottomSheet('PINPrompt', { showLaterButton: false });
 							}
 						},
 						testID: 'PINCode',

@@ -12,7 +12,7 @@ import NavigationHeader from '../../components/NavigationHeader';
 import SafeAreaInsets from '../../components/SafeAreaInsets';
 import SearchInput from '../../components/SearchInput';
 import ContactsList from '../../components/ContactsList';
-import { toggleView } from '../../store/actions/ui';
+import { showBottomSheet } from '../../store/actions/ui';
 import { useSelectedSlashtag } from '../../hooks/slashtags';
 import { RootStackScreenProps } from '../../navigation/types';
 import AddContact from './AddContact';
@@ -62,10 +62,7 @@ const ContactsScreen = ({
 						activeOpacity={0.8}
 						onPress={(): void => {
 							Keyboard.dismiss();
-							toggleView({
-								view: 'addContactModal',
-								data: { isOpen: true },
-							});
+							showBottomSheet('addContactModal');
 						}}>
 						<PlusIcon width={24} height={24} color="brand" />
 					</ThemedTouchableOpacity>

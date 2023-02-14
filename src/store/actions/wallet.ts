@@ -52,7 +52,7 @@ import {
 } from '../../utils/wallet/electrum';
 import { EFeeId } from '../types/fees';
 import { IHeader } from '../../utils/types/electrum';
-import { toggleView } from './ui';
+import { showBottomSheet, closeBottomSheet } from './ui';
 import {
 	GAP_LIMIT,
 	GENERATE_ADDRESS_AMOUNT,
@@ -711,17 +711,8 @@ export const updateTransactions = async ({
 		payload,
 	});
 	if (notificationTxid && showNotification) {
-		toggleView({
-			view: 'newTxPrompt',
-			data: {
-				isOpen: true,
-				txid: notificationTxid,
-			},
-		});
-		toggleView({
-			view: 'receiveNavigation',
-			data: { isOpen: false },
-		});
+		showBottomSheet('newTxPrompt', { txId: notificationTxid });
+		closeBottomSheet('receiveNavigation');
 	}
 
 	updateSlashPayConfig({ sdk, selectedWallet, selectedNetwork });

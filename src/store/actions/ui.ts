@@ -2,10 +2,9 @@ import { getReadableVersion } from 'react-native-device-info';
 import { ok, Result } from '@synonymdev/result';
 import semverDiff from 'semver/functions/diff';
 
+import { IUi, ViewControllerParamList } from '../types/ui';
 import { getDispatch } from '../helpers';
 import actions from './actions';
-import { IUi, IViewControllerData, TViewController } from '../types/ui';
-import { defaultViewController } from '../shapes/ui';
 
 const releaseUrl = 'https://api.github.com/repos/synonymdev/bitkit/releases';
 
@@ -19,26 +18,26 @@ export const updateUi = (payload: Partial<IUi>): Result<string> => {
 	return ok('');
 };
 
-// TODO: improve typing for each view type
-export const toggleView = (payload: {
-	view: TViewController;
-	data: IViewControllerData;
-}): Result<string> => {
-	if (!payload.data.isOpen) {
-		// close view and reset viewController state
-		payload.data = defaultViewController;
-	}
+export const showBottomSheet = <View extends keyof ViewControllerParamList>(
+	...args: undefined extends ViewControllerParamList[View]
+		? [view: View] | [view: View, params: ViewControllerParamList[View]]
+		: [view: View, params: ViewControllerParamList[View]]
+): Result<string> => {
+	const [view, params] = args;
 
 	dispatch({
-		type: actions.TOGGLE_VIEW,
-		payload,
+		type: actions.SHOW_SHEET,
+		payload: { view, params },
 	});
+
 	return ok('');
 };
 
-export const closeAllViews = (): Result<string> => {
-	dispatch({ type: actions.CLOSE_VIEWS });
-	return ok('');
+export const closeBottomSheet = (id: keyof ViewControllerParamList): void => {
+	dispatch({
+		type: actions.CLOSE_SHEET,
+		payload: id,
+	});
 };
 
 export const updateProfileLink = (payload: {

@@ -3,7 +3,7 @@ import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import Clipboard from '@react-native-clipboard/clipboard';
 
-import { toggleView } from '../../store/actions/ui';
+import { closeBottomSheet } from '../../store/actions/ui';
 import { handleSlashtagURL } from '../../utils/slashtags';
 import BottomSheetWrapper from '../../components/BottomSheetWrapper';
 import BottomSheetNavigationHeader from '../../components/BottomSheetNavigationHeader';
@@ -57,10 +57,7 @@ const AddContact = ({
 
 		function onContact(): void {
 			setAddContactURL('');
-			toggleView({
-				view: 'addContactModal',
-				data: { isOpen: false },
-			});
+			closeBottomSheet('addContactModal');
 		}
 	};
 

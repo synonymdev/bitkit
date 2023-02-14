@@ -9,7 +9,7 @@ import SwipeToConfirm from '../../components/SwipeToConfirm';
 import SafeAreaInsets from '../../components/SafeAreaInsets';
 import AdjustValue from '../../components/AdjustValue';
 import Store from '../../store/types';
-import { toggleView } from '../../store/actions/ui';
+import { closeBottomSheet } from '../../store/actions/ui';
 import { resetOnChainTransaction } from '../../store/actions/wallet';
 import {
 	adjustFee,
@@ -88,10 +88,7 @@ const BoostForm = ({
 
 			if (res.isErr()) {
 				console.log(res.error.message);
-				toggleView({
-					view: 'boostPrompt',
-					data: { isOpen: false },
-				});
+				closeBottomSheet('boostPrompt');
 			}
 		})();
 
@@ -175,14 +172,10 @@ const BoostForm = ({
 			if (response.isOk()) {
 				// Optimistically/immediately update activity item
 				updateActivityItem(activityItem.id, response.value);
-
+				closeBottomSheet('boostPrompt');
 				showSuccessNotification({
 					title: 'Boost Success',
 					message: 'Successfully boosted this transaction.',
-				});
-				toggleView({
-					view: 'boostPrompt',
-					data: { isOpen: false },
 				});
 			} else {
 				showErrorNotification({

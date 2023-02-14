@@ -11,7 +11,7 @@ import { useNavigation } from '@react-navigation/native';
 
 import { Subtitle, Text01M } from '../../styles/text';
 import { groupActivityItems } from '../../utils/activity';
-import { toggleView } from '../../store/actions/ui';
+import { showBottomSheet } from '../../store/actions/ui';
 import { IActivityItemFormatted } from '../../store/types/activity';
 import { activityItemsSelector } from '../../store/reselect/activity';
 import Button from '../../components/Button';
@@ -50,10 +50,7 @@ const ActivityListShort = (): ReactElement => {
 	);
 
 	const navigateToReceive = useCallback((): void => {
-		toggleView({
-			view: 'receiveNavigation',
-			data: { isOpen: true },
-		});
+		showBottomSheet('receiveNavigation');
 	}, []);
 
 	const navigateToActivityFiltered = useCallback((): void => {

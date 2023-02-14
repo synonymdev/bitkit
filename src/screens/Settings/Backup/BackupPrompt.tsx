@@ -8,7 +8,7 @@ import BottomSheetWrapper from '../../../components/BottomSheetWrapper';
 import GlowImage from '../../../components/GlowImage';
 import Button from '../../../components/Button';
 import { ignoreBackup } from '../../../store/actions/user';
-import { toggleView } from '../../../store/actions/ui';
+import { showBottomSheet, closeBottomSheet } from '../../../store/actions/ui';
 import { useNoTransactions } from '../../../hooks/wallet';
 import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
 import { useBalance } from '../../../hooks/wallet';
@@ -31,21 +31,12 @@ const CHECK_DELAY = 2000; // how long user needs to stay on Wallets screen befor
 
 const handleLater = (): void => {
 	ignoreBackup();
-	toggleView({
-		view: 'backupPrompt',
-		data: { isOpen: false },
-	});
+	closeBottomSheet('backupPrompt');
 };
 
 const handleBackup = (): void => {
-	toggleView({
-		view: 'backupPrompt',
-		data: { isOpen: false },
-	});
-	toggleView({
-		view: 'backupNavigation',
-		data: { isOpen: true },
-	});
+	closeBottomSheet('backupPrompt');
+	showBottomSheet('backupNavigation');
 };
 
 const BackupPrompt = ({ enabled }: { enabled: boolean }): ReactElement => {
@@ -79,7 +70,7 @@ const BackupPrompt = ({ enabled }: { enabled: boolean }): ReactElement => {
 	// and user has not seen this prompt for ASK_INTERVAL
 	// and no other bottom-sheets are shown
 	// and user on "Wallets" screen for CHECK_DELAY
-	const showBottomSheet = useMemo(() => {
+	const shouldShowBottomSheet = useMemo(() => {
 		const isTimeoutOver = Number(new Date()) - ignoreTimestamp > ASK_INTERVAL;
 		return (
 			enabled &&
@@ -91,21 +82,18 @@ const BackupPrompt = ({ enabled }: { enabled: boolean }): ReactElement => {
 	}, [enabled, backupVerified, empty, ignoreTimestamp, anyBottomSheetIsOpen]);
 
 	useEffect(() => {
-		if (!showBottomSheet) {
+		if (!shouldShowBottomSheet) {
 			return;
 		}
 
 		const timer = setTimeout(() => {
-			toggleView({
-				view: 'backupPrompt',
-				data: { isOpen: true },
-			});
+			showBottomSheet('backupPrompt');
 		}, CHECK_DELAY);
 
 		return (): void => {
 			clearInterval(timer);
 		};
-	}, [showBottomSheet]);
+	}, [shouldShowBottomSheet]);
 
 	const text = useMemo(
 		() =>

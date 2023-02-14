@@ -10,8 +10,9 @@
  * </BottomSheetWrapper>
  *
  * Usage Throughout App:
- * toggleView({ view: 'viewName', data: { isOpen: true }});
- * toggleView({ view: 'viewName', data: { isOpen: false }});
+ * showBottomSheet('viewName');
+ * showBottomSheet('viewName', { option1: 'value' });
+ * closeBottomSheet('viewName');
  *
  * Check if a given view is open:
  * getStore().user.viewController['viewName'].isOpen;
@@ -38,7 +39,7 @@ import BottomSheet, {
 
 import themes from '../styles/themes';
 import { IColors } from '../styles/colors';
-import { toggleView } from '../store/actions/ui';
+import { closeBottomSheet } from '../store/actions/ui';
 import { TViewController } from '../store/types/ui';
 import { themeSelector } from '../store/reselect/settings';
 import { viewControllerSelector } from '../store/reselect/ui';
@@ -109,10 +110,7 @@ const BottomSheetWrapper = forwardRef(
 
 		const _onClose = useCallback(() => {
 			if (data.isOpen) {
-				toggleView({
-					view,
-					data: { isOpen: false },
-				});
+				closeBottomSheet(view);
 			}
 			onClose?.();
 		}, [data.isOpen, view, onClose]);

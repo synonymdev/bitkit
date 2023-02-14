@@ -7,7 +7,7 @@ import { Text01S } from '../../styles/text';
 import BottomSheetWrapper from '../../components/BottomSheetWrapper';
 import BottomSheetNavigationHeader from '../../components/BottomSheetNavigationHeader';
 import Button from '../../components/Button';
-import { toggleView } from '../../store/actions/ui';
+import { closeBottomSheet, showBottomSheet } from '../../store/actions/ui';
 import GlowImage from '../../components/GlowImage';
 import { addTodo, removeTodo } from '../../store/actions/todos';
 import { closeAllChannels } from '../../utils/lightning';
@@ -82,10 +82,7 @@ const ForceTransfer = (): ReactElement => {
 			if (isTimeoutOver) {
 				console.log('giving up on coop close.');
 				clearInterval(interval);
-				toggleView({
-					view: 'forceTransfer',
-					data: { isOpen: true },
-				});
+				showBottomSheet('forceTransfer');
 				return;
 			}
 
@@ -98,10 +95,7 @@ const ForceTransfer = (): ReactElement => {
 	}, [selectedNetwork, selectedWallet, startTime]);
 
 	const onCancel = (): void => {
-		toggleView({
-			view: 'forceTransfer',
-			data: { isOpen: false },
-		});
+		closeBottomSheet('forceTransfer');
 	};
 
 	const onContinue = async (): Promise<void> => {
@@ -129,11 +123,7 @@ const ForceTransfer = (): ReactElement => {
 
 				removeTodo('transferClosingChannel');
 				addTodo('transferInProgress');
-
-				toggleView({
-					view: 'forceTransfer',
-					data: { isOpen: false },
-				});
+				closeBottomSheet('forceTransfer');
 			} else {
 				console.log('force close failed.');
 				showErrorNotification({

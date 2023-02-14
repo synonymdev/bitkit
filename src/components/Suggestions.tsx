@@ -15,7 +15,7 @@ import SuggestionCard from './SuggestionCard';
 import { allTodos } from '../store/shapes/todos';
 import { TTodoType } from '../store/types/todos';
 import { removeTodo } from '../store/actions/todos';
-import { toggleView } from '../store/actions/ui';
+import { showBottomSheet } from '../store/actions/ui';
 import { useAppSelector } from '../hooks/redux';
 import { useBalance } from '../hooks/wallet';
 import Dialog from './Dialog';
@@ -48,10 +48,7 @@ const Suggestions = (): ReactElement => {
 	const handleOnPress = useCallback(
 		(id: TTodoType): void => {
 			if (id === 'backupSeedPhrase') {
-				toggleView({
-					view: 'backupPrompt',
-					data: { isOpen: true },
-				});
+				showBottomSheet('backupPrompt');
 			}
 
 			if (id === 'lightning') {
@@ -72,10 +69,7 @@ const Suggestions = (): ReactElement => {
 
 			if (id === 'pin') {
 				if (!pinTodoDone) {
-					toggleView({
-						view: 'PINPrompt',
-						data: { isOpen: true, showLaterButton: true },
-					});
+					showBottomSheet('PINPrompt', { showLaterButton: true });
 				} else {
 					navigation.navigate('Settings', { screen: 'DisablePin' });
 				}

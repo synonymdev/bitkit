@@ -8,7 +8,7 @@ import BottomSheetNavigationHeader from '../../components/BottomSheetNavigationH
 import GlowImage from '../../components/GlowImage';
 import Button from '../../components/Button';
 import { ignoreHighBalance } from '../../store/actions/user';
-import { toggleView } from '../../store/actions/ui';
+import { closeBottomSheet, showBottomSheet } from '../../store/actions/ui';
 import { viewControllersSelector } from '../../store/reselect/ui';
 import { useBalance } from '../../hooks/wallet';
 import { useAppSelector } from '../../hooks/redux';
@@ -97,7 +97,7 @@ const HighBalanceWarning = ({
 	// and user has not seen this prompt for ASK_INTERVAL
 	// and no other bottom-sheets are shown
 	// and user on "Wallets" screen for CHECK_DELAY
-	const showBottomSheet = useMemo(() => {
+	const shouldShowBottomSheet = useMemo(() => {
 		const thresholdReached =
 			// fallback in case exchange rates are not available
 			fiatValue !== 0
@@ -122,21 +122,18 @@ const HighBalanceWarning = ({
 	]);
 
 	useEffect(() => {
-		if (!showBottomSheet) {
+		if (!shouldShowBottomSheet) {
 			return;
 		}
 
 		const timer = setTimeout(() => {
-			toggleView({
-				view: 'highBalance',
-				data: { isOpen: true },
-			});
+			showBottomSheet('highBalance');
 		}, CHECK_DELAY);
 
 		return (): void => {
 			clearInterval(timer);
 		};
-	}, [showBottomSheet]);
+	}, [shouldShowBottomSheet]);
 
 	const onMore = (): void => {
 		openURL('https://en.bitcoin.it/wiki/Storing_bitcoins');
@@ -144,10 +141,7 @@ const HighBalanceWarning = ({
 
 	const onDismiss = (): void => {
 		ignoreHighBalance(true);
-		toggleView({
-			view: 'highBalance',
-			data: { isOpen: false },
-		});
+		closeBottomSheet('highBalance');
 	};
 
 	return (

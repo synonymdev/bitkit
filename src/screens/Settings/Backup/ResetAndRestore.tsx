@@ -10,7 +10,7 @@ import Dialog from '../../../components/Dialog';
 import GlowImage from '../../../components/GlowImage';
 import Button from '../../../components/Button';
 import { wipeApp } from '../../../store/actions/settings';
-import { toggleView } from '../../../store/actions/ui';
+import { showBottomSheet } from '../../../store/actions/ui';
 import type { SettingsScreenProps } from '../../../navigation/types';
 
 const imageSrc = require('../../../assets/illustrations/restore.png');
@@ -43,10 +43,7 @@ const ResetAndRestore = ({
 						style={styles.button}
 						text="Back Up First"
 						onPress={(): void => {
-							toggleView({
-								view: 'backupNavigation',
-								data: { isOpen: true },
-							});
+							showBottomSheet('backupNavigation');
 						}}
 					/>
 					<View style={styles.divider} />

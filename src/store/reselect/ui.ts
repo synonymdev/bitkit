@@ -2,23 +2,25 @@ import { createSelector } from '@reduxjs/toolkit';
 import Store from '../types';
 import {
 	IUi,
-	IViewControllerData,
 	TAvailableUpdateType,
 	TProfileLink,
-	TUserViewController,
 	TViewController,
+	TUiViewController,
+	IViewControllerData,
 } from '../types/ui';
 
 const uiState = (state: Store): IUi => state.ui;
 
-const viewControllerState = (state: Store): TUserViewController =>
-	state.ui.viewControllers;
+const viewControllerState = (state: Store): TUiViewController => {
+	return state.ui.viewControllers;
+};
+
 /**
  * Returns all viewController data.
  */
 export const viewControllersSelector = createSelector(
 	[uiState],
-	(ui): TUserViewController => ui.viewControllers,
+	(ui): TUiViewController => ui.viewControllers,
 );
 
 /**
@@ -30,11 +32,13 @@ export const viewControllersSelector = createSelector(
 export const viewControllerSelector = createSelector(
 	[
 		viewControllerState,
-		(viewControllers, viewController: TViewController): TViewController =>
-			viewController,
+		(_viewControllers, viewController: TViewController): TViewController => {
+			return viewController;
+		},
 	],
-	(viewControllers, viewController): IViewControllerData =>
-		viewControllers[viewController],
+	(viewControllers, viewController): IViewControllerData => {
+		return viewControllers[viewController];
+	},
 );
 
 /**
@@ -46,11 +50,13 @@ export const viewControllerSelector = createSelector(
 export const viewControllerIsOpenSelector = createSelector(
 	[
 		viewControllerState,
-		(viewControllers, viewController: TViewController): TViewController =>
-			viewController,
+		(_viewControllers, viewController: TViewController): TViewController => {
+			return viewController;
+		},
 	],
-	(viewControllers, viewController): boolean =>
-		viewControllers[viewController].isOpen,
+	(viewControllers, viewController): boolean => {
+		return viewControllers[viewController].isOpen;
+	},
 );
 
 export const showLaterButtonSelector = createSelector(

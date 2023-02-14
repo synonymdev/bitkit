@@ -64,7 +64,7 @@ import {
 	updateBitcoinTransaction,
 	updateWallet,
 } from '../../../store/actions/wallet';
-import { toggleView } from '../../../store/actions/ui';
+import { showBottomSheet } from '../../../store/actions/ui';
 import Store from '../../../store/types';
 import SearchInput from '../../../components/SearchInput';
 import fuzzysort from 'fuzzysort';
@@ -696,11 +696,7 @@ const AddressViewer = ({
 				selectedNetwork,
 			});
 			await sendMax({ selectedWallet, selectedNetwork });
-
-			toggleView({
-				view: 'sendNavigation',
-				data: { isOpen: true },
-			});
+			showBottomSheet('sendNavigation');
 		},
 		[selectedNetwork, selectedUtxos, selectedWallet, utxos],
 	);

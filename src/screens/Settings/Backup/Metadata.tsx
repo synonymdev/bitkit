@@ -7,7 +7,7 @@ import GradientView from '../../../components/GradientView';
 import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
 import GlowImage from '../../../components/GlowImage';
 import Button from '../../../components/Button';
-import { toggleView } from '../../../store/actions/ui';
+import { closeBottomSheet } from '../../../store/actions/ui';
 
 const imageSrc = require('../../../assets/illustrations/tag.png');
 
@@ -22,10 +22,7 @@ const Metadata = (): ReactElement => {
 	);
 
 	const handleButtonPress = useCallback((): void => {
-		toggleView({
-			view: 'backupNavigation',
-			data: { isOpen: false },
-		});
+		closeBottomSheet('backupNavigation');
 	}, []);
 
 	return (

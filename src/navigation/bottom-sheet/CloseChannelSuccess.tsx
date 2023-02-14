@@ -6,7 +6,7 @@ import { Text01S } from '../../styles/text';
 import BottomSheetWrapper from '../../components/BottomSheetWrapper';
 import GlowImage from '../../components/GlowImage';
 import Button from '../../components/Button';
-import { toggleView } from '../../store/actions/ui';
+import { closeBottomSheet } from '../../store/actions/ui';
 import BottomSheetNavigationHeader from '../../components/BottomSheetNavigationHeader';
 import {
 	useBottomSheetBackPress,
@@ -30,10 +30,7 @@ const CloseChannelSuccess = (): ReactElement => {
 	);
 
 	const onContinue = (): void => {
-		toggleView({
-			view: 'closeChannelSuccess',
-			data: { isOpen: false },
-		});
+		closeBottomSheet('closeChannelSuccess');
 	};
 
 	return (

@@ -16,7 +16,7 @@ import useColors from '../hooks/colors';
 import { wipeApp } from '../store/actions/settings';
 import { setKeychainValue, getKeychainValue, vibrate } from '../utils/helpers';
 import BitkitLogo from '../assets/bitkit-logo.svg';
-import { toggleView } from '../store/actions/ui';
+import { showBottomSheet } from '../store/actions/ui';
 import { FadeIn, FadeOut } from 'react-native-reanimated';
 import NavigationHeader from './NavigationHeader';
 import { showErrorNotification } from '../utils/notifications';
@@ -180,12 +180,7 @@ const PinPad = ({
 										</Text02S>
 										<Pressable
 											onPress={(): void => {
-												toggleView({
-													view: 'forgotPIN',
-													data: {
-														isOpen: true,
-													},
-												});
+												showBottomSheet('forgotPIN');
 											}}>
 											<Text02S color="brand">Forgot your PIN?</Text02S>
 										</Pressable>

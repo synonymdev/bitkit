@@ -15,7 +15,7 @@ import { ClockIcon } from '../../styles/icons';
 import BottomSheetWrapper from '../../components/BottomSheetWrapper';
 import Glow from '../../components/Glow';
 import AmountToggle from '../../components/AmountToggle';
-import { toggleView } from '../../store/actions/ui';
+import { closeBottomSheet } from '../../store/actions/ui';
 import BottomSheetNavigationHeader from '../../components/BottomSheetNavigationHeader';
 import { rootNavigation } from '../../navigation/root/RootNavigator';
 import { useAppSelector } from '../../hooks/redux';
@@ -42,11 +42,11 @@ const NewTxPrompt = (): ReactElement => {
 		[insets.bottom],
 	);
 
-	const { txid } = useAppSelector((state) =>
-		viewControllerSelector(state, 'newTxPrompt'),
-	);
+	const { txId } = useAppSelector((state) => {
+		return viewControllerSelector(state, 'newTxPrompt');
+	});
 	const activityItem = useAppSelector((store) => {
-		return store.activity.items.find(({ id }) => id === txid);
+		return store.activity.items.find(({ id }) => id === txId);
 	});
 
 	useBottomSheetBackPress('newTxPrompt');
@@ -66,10 +66,7 @@ const NewTxPrompt = (): ReactElement => {
 
 	const handlePress = (): void => {
 		if (activityItem) {
-			toggleView({
-				view: 'newTxPrompt',
-				data: { isOpen: false },
-			});
+			closeBottomSheet('newTxPrompt');
 			rootNavigation.navigate('ActivityDetail', { id: activityItem.id });
 		}
 	};

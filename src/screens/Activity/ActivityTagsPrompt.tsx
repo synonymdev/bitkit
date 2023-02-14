@@ -6,18 +6,18 @@ import { BottomSheetTextInput } from '../../styles/components';
 import { Subtitle, Text13UP } from '../../styles/text';
 import BottomSheetWrapper from '../../components/BottomSheetWrapper';
 import SafeAreaInsets from '../../components/SafeAreaInsets';
-import { toggleView } from '../../store/actions/ui';
+import { closeBottomSheet } from '../../store/actions/ui';
 import Tag from '../../components/Tag';
 import { addMetaTxTag, addTag, deleteTag } from '../../store/actions/metadata';
 import { sleep } from '../../utils/helpers';
 import { showErrorNotification } from '../../utils/notifications';
 import { useAppSelector } from '../../hooks/redux';
 import { viewControllerSelector } from '../../store/reselect/ui';
+import { lastUsedTagsSelector } from '../../store/reselect/metadata';
 import {
 	useBottomSheetBackPress,
 	useSnapPoints,
 } from '../../hooks/bottomSheet';
-import { lastUsedTagsSelector } from '../../store/reselect/metadata';
 
 const Form = ({ id }: { id: string }): ReactElement => {
 	const [text, setText] = useState('');
@@ -35,10 +35,7 @@ const Form = ({ id }: { id: string }): ReactElement => {
 		addTag(tag);
 		Keyboard.dismiss();
 		await sleep(500); // await for keyboard to close
-		toggleView({
-			view: 'activityTagsPrompt',
-			data: { isOpen: false },
-		});
+		closeBottomSheet('activityTagsPrompt');
 	};
 
 	const handleInputBlur = async (): Promise<void> => {
@@ -55,10 +52,7 @@ const Form = ({ id }: { id: string }): ReactElement => {
 		}
 		addTag(text);
 		await sleep(500); // await for keyboard to close
-		toggleView({
-			view: 'activityTagsPrompt',
-			data: { isOpen: false },
-		});
+		closeBottomSheet('activityTagsPrompt');
 	};
 
 	return (
@@ -107,17 +101,14 @@ const Form = ({ id }: { id: string }): ReactElement => {
 
 const ActivityTagsPrompt = (): ReactElement => {
 	const snapPoints = useSnapPoints('small');
-	const { isOpen, id } = useAppSelector((state) =>
-		viewControllerSelector(state, 'activityTagsPrompt'),
-	);
+	const { isOpen, id } = useAppSelector((state) => {
+		return viewControllerSelector(state, 'activityTagsPrompt');
+	});
 
 	useBottomSheetBackPress('activityTagsPrompt');
 
 	const handleClose = (): void => {
-		toggleView({
-			view: 'activityTagsPrompt',
-			data: { isOpen: false },
-		});
+		closeBottomSheet('activityTagsPrompt');
 	};
 
 	return (

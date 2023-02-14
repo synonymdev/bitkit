@@ -4,7 +4,7 @@ import { SvgXml } from 'react-native-svg';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { receiveIcon, sendIcon } from '../assets/icons/tabs';
-import { toggleView } from '../store/actions/ui';
+import { showBottomSheet } from '../store/actions/ui';
 import useColors from '../hooks/colors';
 import { Text02M } from '../styles/text';
 import { ScanIcon } from '../styles/icons';
@@ -20,17 +20,11 @@ const TabBar = ({
 	const insets = useSafeAreaInsets();
 
 	const onReceivePress = useCallback((): void => {
-		toggleView({
-			view: 'receiveNavigation',
-			data: { isOpen: true },
-		});
+		showBottomSheet('receiveNavigation');
 	}, []);
 
 	const onSendPress = useCallback((): void => {
-		toggleView({
-			view: 'sendNavigation',
-			data: { isOpen: true },
-		});
+		showBottomSheet('sendNavigation');
 	}, []);
 
 	const openScanner = useCallback(

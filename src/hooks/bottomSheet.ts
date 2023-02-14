@@ -5,7 +5,7 @@ import {
 	useSafeAreaInsets,
 } from 'react-native-safe-area-context';
 
-import { toggleView } from '../store/actions/ui';
+import { closeBottomSheet } from '../store/actions/ui';
 import { viewControllerIsOpenSelector } from '../store/reselect/ui';
 import { TViewController } from '../store/types/ui';
 import { useAppSelector } from './redux';
@@ -54,7 +54,7 @@ export const useBottomSheetBackPress = (
 		backHandlerSubscriptionRef.current = BackHandler.addEventListener(
 			'hardwareBackPress',
 			() => {
-				toggleView({ view: viewController, data: { isOpen: false } });
+				closeBottomSheet(viewController);
 				return true;
 			},
 		);

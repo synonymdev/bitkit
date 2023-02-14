@@ -2,7 +2,7 @@ import Clipboard from '@react-native-clipboard/clipboard';
 import SDK from '@synonymdev/slashtags-sdk';
 
 import { rootNavigation } from '../../navigation/root/RootNavigator';
-import { toggleView } from '../../store/actions/ui';
+import { showBottomSheet } from '../../store/actions/ui';
 import { updateBitcoinTransaction } from '../../store/actions/wallet';
 import { showSuccessNotification } from '../notifications';
 import { decodeQRData } from '../scanner';
@@ -78,10 +78,7 @@ export const readClipboardInvoice = async ({
 		}
 
 		rootNavigation.navigate('Wallet');
-		toggleView({
-			view: 'sendNavigation',
-			data: { isOpen: true },
-		});
+		showBottomSheet('sendNavigation');
 		showSuccessNotification({
 			title: 'Clipboard Data Detected',
 			message: 'Bitkit redirected you to the payment screen.',

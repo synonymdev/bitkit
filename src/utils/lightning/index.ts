@@ -64,7 +64,7 @@ import {
 	IWalletItem,
 	TWalletName,
 } from '../../store/types/wallet';
-import { toggleView } from '../../store/actions/ui';
+import { closeBottomSheet, showBottomSheet } from '../../store/actions/ui';
 import { updateSlashPayConfig } from '../slashtags';
 import { sdk } from '../../components/SlashtagsProvider';
 import { showSuccessNotification } from '../notifications';
@@ -316,17 +316,10 @@ export const handleLightningPaymentSubscription = async ({
 			selectedWallet,
 			selectedNetwork,
 		});
-		toggleView({
-			view: 'newTxPrompt',
-			data: {
-				isOpen: true,
-				txid: invoice.value.payment_hash,
-			},
+		showBottomSheet('newTxPrompt', {
+			txId: invoice.value.payment_hash,
 		});
-		toggleView({
-			view: 'receiveNavigation',
-			data: { isOpen: false },
-		});
+		closeBottomSheet('receiveNavigation');
 		await refreshLdk({ selectedWallet, selectedNetwork });
 		updateSlashPayConfig({ sdk, selectedWallet, selectedNetwork });
 	}

@@ -15,7 +15,7 @@ import { useSelector } from 'react-redux';
 import BottomSheetWrapper from '../../components/BottomSheetWrapper';
 import Button from '../../components/Button';
 import BottomSheetNavigationHeader from '../../components/BottomSheetNavigationHeader';
-import { toggleView } from '../../store/actions/ui';
+import { closeBottomSheet } from '../../store/actions/ui';
 import { useBottomSheetBackPress } from '../../hooks/bottomSheet';
 import { useProfile, useSelectedSlashtag } from '../../hooks/slashtags';
 import { ContactItem } from '../../components/ContactsList';
@@ -128,10 +128,7 @@ const _SlashAuthModal = (): ReactElement => {
 	);
 
 	const onCancel = useCallback((): void => {
-		toggleView({
-			view: 'slashauthModal',
-			data: { isOpen: false },
-		});
+		closeBottomSheet('slashauthModal');
 	}, []);
 
 	const onContinue = useCallback(async (): Promise<void> => {
@@ -140,14 +137,10 @@ const _SlashAuthModal = (): ReactElement => {
 		const client = new Client(slashtag);
 		const response = await client.authz(_url).catch((e: Error) => {
 			if (e.message === 'channel closed') {
+				closeBottomSheet('slashauthModal');
 				showErrorNotification({
 					title: 'Error while signing in',
 					message: 'Could not connect to peer',
-				});
-
-				toggleView({
-					view: 'slashauthModal',
-					data: { isOpen: false },
 				});
 			}
 		});
@@ -170,11 +163,7 @@ const _SlashAuthModal = (): ReactElement => {
 		}
 
 		setIsLoading(false);
-
-		toggleView({
-			view: 'slashauthModal',
-			data: { isOpen: false },
-		});
+		closeBottomSheet('slashauthModal');
 	}, [_url, server.name, slashtag, url]);
 
 	return (

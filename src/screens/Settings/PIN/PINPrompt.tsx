@@ -7,7 +7,7 @@ import BottomSheetWrapper from '../../../components/BottomSheetWrapper';
 import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
 import GlowImage from '../../../components/GlowImage';
 import Button from '../../../components/Button';
-import { toggleView } from '../../../store/actions/ui';
+import { closeBottomSheet, showBottomSheet } from '../../../store/actions/ui';
 import { useAppSelector } from '../../../hooks/redux';
 import { showLaterButtonSelector } from '../../../store/reselect/ui';
 import {
@@ -33,21 +33,12 @@ const PINPrompt = (): ReactElement => {
 	useBottomSheetBackPress('PINPrompt');
 
 	const handlePIN = (): void => {
-		toggleView({
-			view: 'PINPrompt',
-			data: { isOpen: false },
-		});
-		toggleView({
-			view: 'PINNavigation',
-			data: { isOpen: true },
-		});
+		closeBottomSheet('PINPrompt');
+		showBottomSheet('PINNavigation');
 	};
 
 	const handleLater = (): void => {
-		toggleView({
-			view: 'PINPrompt',
-			data: { isOpen: false },
-		});
+		closeBottomSheet('PINPrompt');
 	};
 
 	return (
