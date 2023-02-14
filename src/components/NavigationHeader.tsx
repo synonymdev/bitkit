@@ -91,7 +91,7 @@ const NavigationHeader = ({
 	return (
 		<View style={[container, style]}>
 			<View style={[styles.leftColumn, buttonOffset]}>
-				{displayBackButton && (
+				{displayBackButton && navigation.canGoBack() && (
 					<ActionButton onPress={handleBackPress} testID="NavigationBack">
 						<BackIcon width={20} height={20} />
 					</ActionButton>

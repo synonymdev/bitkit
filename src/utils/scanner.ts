@@ -702,7 +702,11 @@ export const handleData = async ({
 			return ok({ type: EQRDataType.slashAuthURL });
 		}
 		case EQRDataType.bitcoinAddress: {
-			showBottomSheet('sendNavigation');
+			// If BottomSheet is not open yet (MainScanner)
+			showBottomSheet('sendNavigation', { screen: 'Amount' });
+
+			// If BottomSheet is already open (SendScanner)
+			sendNavigation.navigate('Amount');
 
 			// If no amount found in payment request, make sure that the user hasn't previously specified an amount from the send form.
 			if (!amount) {
@@ -727,8 +731,6 @@ export const handleData = async ({
 				},
 			});
 
-			sendNavigation.navigate('Amount');
-
 			return ok({ type: EQRDataType.bitcoinAddress, address, amount });
 		}
 
@@ -744,9 +746,16 @@ export const handleData = async ({
 				return err(decodedInvoice.error.message);
 			}
 
-			showBottomSheet('sendNavigation');
-
 			const invoiceAmount = decodedInvoice.value.amount_satoshis ?? 0;
+
+			if (invoiceAmount) {
+				showBottomSheet('sendNavigation', { screen: 'ReviewAndSend' });
+				sendNavigation.navigate('ReviewAndSend');
+			} else {
+				showBottomSheet('sendNavigation', { screen: 'Amount' });
+				sendNavigation.navigate('Amount');
+			}
+
 			await updateBitcoinTransaction({
 				selectedWallet,
 				selectedNetwork,
@@ -762,12 +771,6 @@ export const handleData = async ({
 					slashTagsUrl,
 				},
 			});
-
-			if (invoiceAmount) {
-				sendNavigation.navigate('ReviewAndSend');
-			} else {
-				sendNavigation.navigate('Amount');
-			}
 
 			return ok({
 				type: EQRDataType.lightningPaymentRequest,

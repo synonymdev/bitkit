@@ -1,5 +1,6 @@
 import React, { ReactElement, memo } from 'react';
 import { useSelector } from 'react-redux';
+import { createNavigationContainerRef } from '@react-navigation/native';
 import {
 	createNativeStackNavigator,
 	NativeStackNavigationOptions,
@@ -20,14 +21,13 @@ import Scanner from '../../screens/Wallets/Send/Scanner';
 import Contacts from '../../screens/Wallets/Send/Contacts';
 import CoinSelection from '../../screens/Wallets/Send/CoinSelection';
 import { NavigationContainer } from '../../styles/components';
+import { TProcessedData } from '../../utils/scanner';
+import { useSnapPoints } from '../../hooks/bottomSheet';
+import { viewControllerSelector } from '../../store/reselect/ui';
 import {
 	resetOnChainTransaction,
 	setupOnChainTransaction,
 } from '../../store/actions/wallet';
-import { useSnapPoints } from '../../hooks/bottomSheet';
-import { viewControllerIsOpenSelector } from '../../store/reselect/ui';
-import { TProcessedData } from '../../utils/scanner';
-import { createNavigationContainerRef } from '@react-navigation/native';
 
 export type SendNavigationProp = NativeStackNavigationProp<SendStackParamList>;
 
@@ -71,6 +71,14 @@ export const sendNavigation = {
 			: never
 	): void {
 		if (navigationRef.isReady()) {
+			const currentRoute = navigationRef.getCurrentRoute()?.name;
+			const nextRoute = args[0];
+
+			if (currentRoute === nextRoute) {
+				console.log(`Already on screen ${currentRoute}. Skipping...`);
+				return;
+			}
+
 			navigationRef.navigate(...args);
 		} else {
 			// sendNavigation not ready, try again after a short wait
@@ -81,9 +89,11 @@ export const sendNavigation = {
 
 const SendNavigation = (): ReactElement => {
 	const snapPoints = useSnapPoints('large');
-	const isOpen = useSelector((state) =>
-		viewControllerIsOpenSelector(state, 'sendNavigation'),
-	);
+	const { isOpen, screen } = useSelector((state) => {
+		return viewControllerSelector(state, 'sendNavigation');
+	});
+
+	const initialRouteName = screen ?? 'Recipient';
 
 	return (
 		<BottomSheetWrapper
@@ -92,7 +102,9 @@ const SendNavigation = (): ReactElement => {
 			onClose={resetOnChainTransaction}
 			onOpen={setupOnChainTransaction}>
 			<NavigationContainer key={isOpen.toString()} ref={navigationRef}>
-				<Stack.Navigator screenOptions={screenOptions}>
+				<Stack.Navigator
+					initialRouteName={initialRouteName}
+					screenOptions={screenOptions}>
 					<Stack.Screen name="Recipient" component={Recipient} />
 					<Stack.Screen name="Scanner" component={Scanner} />
 					<Stack.Screen name="Contacts" component={Contacts} />
