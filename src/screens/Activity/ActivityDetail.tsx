@@ -336,8 +336,8 @@ const OnchainActivityDetail = ({
 						<View style={styles.row}>
 							<TimerIcon style={styles.rowIcon} color="brand" />
 							<Text02M>
-								{feeDisplay.fiatSymbol}
-								{feeDisplay.fiatFormatted}
+								{feeDisplay.satoshis} ({feeDisplay.fiatSymbol}
+								{feeDisplay.fiatFormatted})
 							</Text02M>
 						</View>
 					}

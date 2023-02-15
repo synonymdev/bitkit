@@ -16,7 +16,11 @@ import { Caption13Up, Text02M } from '../../../styles/text';
 import {
 	Checkmark,
 	ClockIcon,
-	PenIcon,
+	PencileIcon,
+	SettingsIcon,
+	SpeedFastIcon,
+	SpeedNormalIcon,
+	SpeedSlowIcon,
 	TagIcon,
 	TimerIcon,
 } from '../../../styles/icons';
@@ -395,7 +399,7 @@ const ReviewAndSend = ({
 	const totalFeeDisplay = useDisplayValues(feeSats);
 	const feeAmount =
 		totalFeeDisplay.fiatFormatted !== '—'
-			? ` (${totalFeeDisplay.fiatSymbol} ${totalFeeDisplay.fiatFormatted})`
+			? ` (${totalFeeDisplay.fiatSymbol}${totalFeeDisplay.fiatFormatted})`
 			: '';
 
 	const runCreateTxMethods = useCallback((): void => {
@@ -521,6 +525,47 @@ const ReviewAndSend = ({
 		return desc;
 	}, [selectedFeeId, feeEstimates, satsPerByte]);
 
+	const feeIcon = useMemo(() => {
+		switch (selectedFeeId) {
+			case EFeeId.fast:
+				return (
+					<SpeedFastIcon
+						style={styles.icon}
+						color="brand"
+						width={16}
+						height={16}
+					/>
+				);
+			case EFeeId.normal:
+				return (
+					<SpeedNormalIcon
+						style={styles.icon}
+						color="brand"
+						width={16}
+						height={16}
+					/>
+				);
+			case EFeeId.slow:
+				return (
+					<SpeedSlowIcon
+						style={styles.icon}
+						color="brand"
+						width={16}
+						height={16}
+					/>
+				);
+			case EFeeId.custom:
+				return (
+					<SettingsIcon
+						style={styles.icon}
+						color="gray1"
+						width={16}
+						height={16}
+					/>
+				);
+		}
+	}, [selectedFeeId]);
+
 	const feeDescription = useMemo(() => {
 		return selectedFeeId === EFeeId.custom
 			? customDescription
@@ -562,12 +607,12 @@ const ReviewAndSend = ({
 								onPress={(): void => navigation.navigate('FeeRate')}
 								value={
 									<>
-										<TimerIcon style={styles.icon} color="brand" />
+										{feeIcon}
 										<Text02M>
 											{FeeText[selectedFeeId].title}
 											{feeAmount}
 										</Text02M>
-										<PenIcon height={16} width={20} />
+										<PencileIcon height={12} width={22} />
 									</>
 								}
 							/>
@@ -769,7 +814,7 @@ const styles = StyleSheet.create({
 		marginBottom: 16,
 	},
 	icon: {
-		marginRight: 4,
+		marginRight: 6,
 	},
 	tagsContainer: {
 		flexDirection: 'row',

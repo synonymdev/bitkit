@@ -37,7 +37,7 @@ const FeeItem = ({
 	const icon = useMemo(() => {
 		switch (id) {
 			case EFeeId.instant:
-				return <SpeedFastIcon color="brand" />;
+				return <SpeedFastIcon color="purple" />;
 			case EFeeId.fast:
 				return <SpeedFastIcon color="brand" />;
 			case EFeeId.normal:
@@ -51,6 +51,7 @@ const FeeItem = ({
 
 	return (
 		<>
+			<View style={styles.divider} />
 			<TouchableOpacity
 				onPress={onPress}
 				style={[
@@ -62,10 +63,10 @@ const FeeItem = ({
 				<View style={styles.row}>
 					<View style={styles.cell}>
 						<Text01M>{title}</Text01M>
-						<Text01M>
+						<View style={styles.sats}>
 							<LightningIcon height={17} color="gray1" />
-							{sats}
-						</Text01M>
+							<Text01M>{sats}</Text01M>
+						</View>
 					</View>
 					<View style={styles.cell}>
 						<Text02M color="gray1">{description}</Text02M>
@@ -75,7 +76,6 @@ const FeeItem = ({
 					</View>
 				</View>
 			</TouchableOpacity>
-			{id !== EFeeId.custom && <View style={styles.divider} />}
 		</>
 	);
 };
@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
 		paddingRight: 16,
 		alignContent: 'center',
 		justifyContent: 'center',
-		height: 80,
+		height: 90,
 	},
 	imageContainer: {
 		position: 'relative',
@@ -104,9 +104,12 @@ const styles = StyleSheet.create({
 		justifyContent: 'space-between',
 		alignContent: 'center',
 	},
+	sats: {
+		flexDirection: 'row',
+		alignItems: 'center',
+	},
 	divider: {
 		marginHorizontal: 16,
-		height: 1,
 		borderBottomWidth: 1,
 		borderColor: 'rgba(255, 255, 255, 0.1)',
 	},

@@ -407,8 +407,8 @@ export const UnitSatoshiIcon = styled(SvgXml).attrs((props) => ({
 
 export const LightningIcon = styled(SvgXml).attrs((props) => ({
 	xml: lightningIcon(props.color ? props.theme.colors[props.color] : '#B95CE8'),
-	height: props.height ?? '19.8px',
-	width: props.width ?? '21.6px',
+	height: props.height ?? '16px',
+	width: props.width ?? '16px',
 }))<IconProps>((props) => ({
 	color: props.color ? props.theme.colors[props.color] : 'white',
 }));

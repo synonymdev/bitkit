@@ -9,7 +9,7 @@ import GradientView from '../../../components/GradientView';
 import Button from '../../../components/Button';
 import Store from '../../../store/types';
 import { EFeeId } from '../../../store/types/fees';
-import { getBalance } from '../../../utils/wallet';
+import { useBalance } from '../../../hooks/wallet';
 import { showErrorNotification } from '../../../utils/notifications';
 import {
 	getTotalFee,
@@ -26,6 +26,12 @@ import {
 
 const FeeRate = ({ navigation }: SendScreenProps<'FeeRate'>): ReactElement => {
 	const insets = useSafeAreaInsets();
+	const selectedWallet = useSelector(selectedWalletSelector);
+	const selectedNetwork = useSelector(selectedNetworkSelector);
+	const transaction = useSelector(transactionSelector);
+	const feeEstimates = useSelector((store: Store) => store.fees.onchain);
+	const balance = useBalance({ onchain: true });
+
 	const nextButtonContainer = useMemo(
 		() => ({
 			...styles.nextButtonContainer,
@@ -33,18 +39,10 @@ const FeeRate = ({ navigation }: SendScreenProps<'FeeRate'>): ReactElement => {
 		}),
 		[insets.bottom],
 	);
-	const selectedWallet = useSelector(selectedWalletSelector);
-	const selectedNetwork = useSelector(selectedNetworkSelector);
-	const transaction = useSelector(transactionSelector);
-	const feeEstimates = useSelector((store: Store) => store.fees.onchain);
-	const balance = useMemo(
-		() => getBalance({ selectedWallet, selectedNetwork, onchain: true }),
-		[selectedNetwork, selectedWallet],
-	);
 
 	const selectedFeeId = useMemo(
-		() => transaction?.selectedFeeId,
-		[transaction?.selectedFeeId],
+		() => transaction.selectedFeeId,
+		[transaction.selectedFeeId],
 	);
 
 	const transactionTotal = useCallback(() => {
@@ -56,13 +54,13 @@ const FeeRate = ({ navigation }: SendScreenProps<'FeeRate'>): ReactElement => {
 	}, [selectedNetwork, selectedWallet, transaction.outputs]);
 
 	const satsPerByte = useMemo(
-		(): number => transaction?.satsPerByte ?? 1,
-		[transaction?.satsPerByte],
+		(): number => transaction.satsPerByte ?? 1,
+		[transaction.satsPerByte],
 	);
 
 	const getFee = useCallback(
-		(_satsPerByte = 1) => {
-			const message = transaction?.message;
+		(_satsPerByte: number) => {
+			const message = transaction.message;
 			return getTotalFee({
 				satsPerByte: _satsPerByte,
 				message,
@@ -70,7 +68,7 @@ const FeeRate = ({ navigation }: SendScreenProps<'FeeRate'>): ReactElement => {
 				selectedNetwork,
 			});
 		},
-		[selectedNetwork, selectedWallet, transaction?.message],
+		[selectedNetwork, selectedWallet, transaction.message],
 	);
 
 	const _updateFee = useCallback(
@@ -92,33 +90,16 @@ const FeeRate = ({ navigation }: SendScreenProps<'FeeRate'>): ReactElement => {
 		[selectedNetwork, selectedWallet, transaction],
 	);
 
-	const displayInstant = useMemo(() => false, []); //TODO: Determine if the user can pay via Lightning.
 	const displayFast = useMemo(() => {
 		return balance.satoshis >= transactionTotal() + getFee(feeEstimates.fast);
 	}, [balance.satoshis, feeEstimates.fast, getFee, transactionTotal]);
 	const displayNormal = useMemo(
-		() =>
-			balance.satoshis >= transactionTotal() + getFee(feeEstimates.normal) &&
-			feeEstimates.fast > feeEstimates.normal,
-		[
-			balance.satoshis,
-			feeEstimates.fast,
-			feeEstimates.normal,
-			getFee,
-			transactionTotal,
-		],
+		() => balance.satoshis >= transactionTotal() + getFee(feeEstimates.normal),
+		[balance.satoshis, feeEstimates.normal, getFee, transactionTotal],
 	);
 	const displaySlow = useMemo(
-		() =>
-			balance.satoshis >= transactionTotal() + getFee(feeEstimates.slow) &&
-			feeEstimates.normal > feeEstimates.slow,
-		[
-			balance.satoshis,
-			feeEstimates.normal,
-			feeEstimates.slow,
-			getFee,
-			transactionTotal,
-		],
+		() => balance.satoshis >= transactionTotal() + getFee(feeEstimates.slow),
+		[balance.satoshis, feeEstimates.slow, getFee, transactionTotal],
 	);
 	const displayCustom = useMemo(
 		() => balance.satoshis >= transactionTotal() + getFee(1),
@@ -131,15 +112,15 @@ const FeeRate = ({ navigation }: SendScreenProps<'FeeRate'>): ReactElement => {
 	);
 
 	const onCardPress = useCallback(
-		async (feeId: EFeeId, fee: number) => {
-			await _updateFee(feeId, fee);
+		(feeId: EFeeId, fee: number) => {
+			_updateFee(feeId, fee);
 			navigation.goBack();
 		},
 		[_updateFee, navigation],
 	);
 
-	const onCustomPress = useCallback(async () => {
-		await onCardPress(EFeeId.custom, satsPerByte);
+	const onCustomPress = useCallback(() => {
+		onCardPress(EFeeId.custom, satsPerByte);
 		navigation.navigate('FeeCustom');
 	}, [satsPerByte, navigation, onCardPress]);
 
@@ -148,62 +129,52 @@ const FeeRate = ({ navigation }: SendScreenProps<'FeeRate'>): ReactElement => {
 			<BottomSheetNavigationHeader title="Speed" />
 			<View style={styles.content}>
 				<Caption13Up color="gray1" style={styles.title}>
-					SPEED AND FEE
+					Speed and fee
 				</Caption13Up>
 
-				{displayInstant && (
-					<FeeItem
-						id={EFeeId.instant}
-						sats={0}
-						onPress={(): void => {}}
-						isSelected={false}
-					/>
-				)}
 				{displayFast && (
 					<FeeItem
 						id={EFeeId.fast}
 						sats={getFee(feeEstimates.fast)}
-						onPress={(): void => {
-							onCardPress(EFeeId.fast, feeEstimates.fast).then();
-						}}
 						isSelected={isSelected(EFeeId.fast)}
+						onPress={(): void => {
+							onCardPress(EFeeId.fast, feeEstimates.fast);
+						}}
 					/>
 				)}
 				{displayNormal && (
 					<FeeItem
 						id={EFeeId.normal}
 						sats={getFee(feeEstimates.normal)}
-						onPress={(): void => {
-							onCardPress(EFeeId.normal, feeEstimates.normal).then();
-						}}
 						isSelected={isSelected(EFeeId.normal)}
+						onPress={(): void => {
+							onCardPress(EFeeId.normal, feeEstimates.normal);
+						}}
 					/>
 				)}
 				{displaySlow && (
 					<FeeItem
 						id={EFeeId.slow}
 						sats={getFee(feeEstimates.slow)}
-						onPress={(): void => {
-							onCardPress(EFeeId.slow, feeEstimates.slow).then();
-						}}
 						isSelected={isSelected(EFeeId.slow)}
+						onPress={(): void => {
+							onCardPress(EFeeId.slow, feeEstimates.slow);
+						}}
 					/>
 				)}
 				{displayCustom && (
 					<FeeItem
 						id={EFeeId.custom}
 						sats={selectedFeeId === EFeeId.custom ? getFee(satsPerByte) : 0}
-						onPress={onCustomPress}
 						isSelected={isSelected(EFeeId.custom)}
+						onPress={onCustomPress}
 					/>
 				)}
 				<View style={nextButtonContainer}>
 					<Button
 						size="large"
 						text="Continue"
-						disabled={
-							selectedFeeId === EFeeId.none || selectedFeeId === EFeeId.custom
-						}
+						disabled={selectedFeeId === EFeeId.none}
 						onPress={(): void => navigation.navigate('ReviewAndSend')}
 					/>
 				</View>

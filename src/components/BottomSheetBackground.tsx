@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
 	background: {
 		resizeMode: 'stretch',
 		position: 'absolute',
-		top: 32,
+		top: 31,
 		left: '-2%',
 		bottom: '60%',
 		width: '105%',
