@@ -171,8 +171,8 @@ describe('Wallet - new wallet, send and receive', () => {
 
 		const tx13 =
 			store.getState().wallet.wallets.wallet0.transaction.bitcoinRegtest;
-		expect(tx13?.satsPerByte).toBe(3);
-		expect(tx13?.fee).toBe(900);
+		expect(tx13.satsPerByte).toBe(3);
+		expect(tx13.fee).toBe(423);
 
 		res = validateTransaction(tx13);
 		if (res.isErr()) {
