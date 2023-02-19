@@ -51,16 +51,16 @@ export type TBitcoinLabel =
 export type TTicker = 'BTC' | 'tBTC';
 
 export type TGetByteCountInput =
-	| 'MULTISIG-P2SH'
-	| 'MULTISIG-P2WSH'
-	| 'MULTISIG-P2SH-P2WSH'
-	| 'P2PKH'
-	| 'P2WPKH'
+	| `MULTISIG-P2SH:${number}-${number}`
+	| `MULTISIG-P2WSH:${number}-${number}`
+	| `MULTISIG-P2SH-P2WSH:${number}-${number}`
 	| 'P2SH-P2WPKH'
-	| 'p2wpkh'
-	| 'p2sh'
+	| 'P2PKH'
 	| 'p2pkh'
-	| string; //Unsure how to account for multisig variations (ex. 'MULTISIG-P2SH:2-4')
+	| 'P2WPKH'
+	| 'p2wpkh'
+	| 'P2SH'
+	| 'p2sh';
 
 export type TGetByteCountOutput =
 	| 'P2SH'

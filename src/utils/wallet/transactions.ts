@@ -28,6 +28,8 @@ import {
 	EAddressType,
 	TGetByteCountInputs,
 	TGetByteCountOutputs,
+	TGetByteCountInput,
+	TGetByteCountOutput,
 	TWalletName,
 } from '../../store/types/wallet';
 import {
@@ -194,17 +196,32 @@ export const getByteCount = (
 		let inputCount = 0;
 		let outputCount = 0;
 		// assumes compressed pubkeys in all cases.
-		let types = {
+		const types: {
 			inputs: {
+				[key in TGetByteCountInput]: number;
+			};
+			multiSigInputs: {
+				'MULTISIG-P2SH': number;
+				'MULTISIG-P2WSH': number;
+				'MULTISIG-P2SH-P2WSH': number;
+			};
+			outputs: {
+				[key in TGetByteCountOutput]: number;
+			};
+		} = {
+			inputs: {
+				P2WPKH: 108 + 41 * 4,
+				p2wpkh: 108 + 41 * 4 + 1,
+				P2PKH: 148 * 4,
+				p2pkh: 148 * 4 + 1,
+				P2SH: 108 + 64 * 4,
+				p2sh: 108 + 64 * 4 + 1,
+				'P2SH-P2WPKH': 108 + 64 * 4,
+			},
+			multiSigInputs: {
 				'MULTISIG-P2SH': 49 * 4,
 				'MULTISIG-P2WSH': 6 + 41 * 4,
 				'MULTISIG-P2SH-P2WSH': 6 + 76 * 4,
-				P2PKH: 148 * 4,
-				P2WPKH: 108 + 41 * 4,
-				'P2SH-P2WPKH': 108 + 64 * 4,
-				p2wpkh: 108 + 41 * 4 + 1,
-				p2sh: 108 + 64 * 4 + 1,
-				p2pkh: 148 * 4 + 1,
 			},
 			outputs: {
 				P2SH: 32 * 4,
@@ -252,7 +269,7 @@ export const getByteCount = (
 					return parseInt(item);
 				});
 
-				totalWeight += types.inputs[newKey] * addressTypeCount;
+				totalWeight += types.multiSigInputs[newKey] * addressTypeCount;
 				const multiplyer = newKey === 'MULTISIG-P2SH' ? 4 : 1;
 				totalWeight +=
 					(73 * mAndN[0] + 34 * mAndN[1]) * multiplyer * addressTypeCount;
@@ -281,16 +298,11 @@ export const getByteCount = (
 		totalWeight += varIntLength(inputCount) * 4;
 		totalWeight += varIntLength(outputCount) * 4;
 
-		let messageByteCount = 0;
-		try {
-			messageByteCount = message?.length ?? 0;
-			//Multiply by 2 to help ensure Electrum servers will broadcast the tx.
-			messageByteCount = messageByteCount * 2;
-		} catch {}
-		const res = Math.ceil(totalWeight / 4) + messageByteCount;
-		return res > ETransactionDefaults.recommendedBaseFee
-			? res
-			: ETransactionDefaults.recommendedBaseFee;
+		let messageByteCount = message?.length ?? 0;
+		//Multiply by 2 to help ensure Electrum servers will broadcast the tx.
+		messageByteCount = messageByteCount * 2;
+
+		return Math.ceil(totalWeight / 4) + messageByteCount;
 	} catch (e) {
 		return ETransactionDefaults.recommendedBaseFee;
 	}
@@ -304,7 +316,7 @@ export const constructByteCountParam = (
 	addresses: string[],
 ): TGetByteCountInputs | TGetByteCountOutputs => {
 	try {
-		if (!addresses || addresses.length <= 0) {
+		if (addresses.length <= 0) {
 			return { P2WPKH: 0 };
 		}
 		let param: TGetByteCountOutputs = {};
@@ -359,11 +371,11 @@ export const getTotalFee = ({
 		}
 
 		const inputs = transaction.inputs || [];
-		let outputs: IOutput[] = transaction.outputs || [];
+		const outputs = transaction.outputs || [];
 		const changeAddress = transaction.changeAddress;
 
 		//Group all input & output addresses into their respective array.
-		const inputAddresses = inputs.map((input) => input.address) || [];
+		const inputAddresses = inputs.map((input) => input.address);
 		const outputAddresses =
 			outputs.map((output) => {
 				if (output.address) {
