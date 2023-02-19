@@ -30,9 +30,10 @@ describe('Onchain', () => {
 
 		// repeat 60 times before fail
 		for (let i = 0; i < 60; i++) {
+			await sleep(1000);
 			try {
 				await element(by.id('ToGetStartedClose')).tap();
-				await sleep(1000);
+				await sleep(3000); // wait for redux-persist to save state
 				break;
 			} catch (e) {
 				continue;

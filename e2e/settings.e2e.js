@@ -15,20 +15,21 @@ describe('Settings', () => {
 		await element(by.id('SkipIntro')).tap();
 		await element(by.id('NewWallet')).tap();
 
-		// wat for wallet to be created
+		// wait for wallet to be created
 		await waitFor(element(by.id('ToGetStartedClose'))).toBeVisible();
 		await sleep(1000); // take app some time to load
 
 		// repeat 60 times before fail
 		for (let i = 0; i < 60; i++) {
+			await sleep(1000);
 			try {
 				await element(by.id('ToGetStartedClose')).tap();
-				await sleep(1000);
-				break;
-			} catch (e) {
-				continue;
-			}
+				await sleep(3000); // wait for redux-persist to save state
+				return;
+			} catch (e) {}
 		}
+
+		throw new Error('Tapping "ToGetStartedClose" timeout');
 	});
 
 	beforeEach(async () => {
