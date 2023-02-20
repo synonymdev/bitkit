@@ -15,6 +15,8 @@ export enum EBackupCategories {
 	jest = 'bitkit.jest',
 	transactions = 'bitkit.transactions',
 	ldkComplete = 'bitkit.ldk.complete',
+	settings = 'bitkit.settings',
+	widgets = 'bitkit.widgets',
 }
 
 //Keep a cached backup instance for each slashtag
@@ -40,10 +42,11 @@ const backupsFactory = async (slashtag: Slashtag): Promise<BackupProtocol> => {
 
 /**
  * Uploads a backup to the server
- * @param slashtag
- * @param content
- * @param category
- * @returns {Promise<Ok<*> | Err<unknown>>}
+ * @param {Slashtag} slashtag
+ * @param {Uint8Array} content
+ * @param {EBackupCategories} category
+ * @param {TAvailableNetworks} network
+ * @returns {Promise<Result<number>>}
  */
 export const uploadBackup = async (
 	slashtag: Slashtag,
@@ -91,10 +94,11 @@ type TFetchResult = {
 
 /**
  * Fetches a backup from the server
- * @param slashtag
- * @param timestamp
- * @param category
- * @returns {Promise<Ok<any> | Err<unknown>>}
+ * @param {Slashtag} slashtag
+ * @param {number} timestamp
+ * @param {EBackupCategories} category
+ * @param {TAvailableNetworks} network
+ * @returns {Promise<Result<TFetchResult>>}
  */
 export const fetchBackup = async (
 	slashtag: Slashtag,
@@ -126,9 +130,10 @@ export const fetchBackup = async (
 };
 
 /**
- * Returns list of backups in order of newest to olders
- * @param slashtag
- * @param category
+ * Returns list of backups in order of newest to oldest
+ * @param {Slashtag} slashtag
+ * @param {EBackupCategories} category
+ * @param {TAvailableNetworks} network
  * @returns {Promise<Result<{ timestamp: number }[]>>}
  */
 export const listBackups = async (

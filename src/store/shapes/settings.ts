@@ -16,6 +16,8 @@ import {
 	ISettings,
 } from '../types/settings';
 import { EBalanceUnit, EBitcoinUnit } from '../types/wallet';
+import { IWidgetsStore } from '../types/widgets';
+import cloneDeep from 'lodash.clonedeep';
 
 //TODO: Remove the public Electrum servers below once we spin up our own.
 export const origCustomElectrumPeers: Record<
@@ -81,7 +83,7 @@ const defaultReceivePreference = [
 	},
 ];
 
-export const defaultSettingsShape: ISettings = {
+export const defaultSettingsShape: Readonly<ISettings> = {
 	enableAutoReadClipboard: false,
 	enableSendAmountWarning: false,
 	pin: false,
@@ -106,4 +108,8 @@ export const defaultSettingsShape: ISettings = {
 	hideOnboardingMessage: false,
 	hideBeta: false,
 	enableDevOptions: __DEV__,
+};
+
+export const getDefaultSettingsShape = (): IWidgetsStore => {
+	return cloneDeep(defaultSettingsShape);
 };

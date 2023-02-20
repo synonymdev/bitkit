@@ -10,6 +10,18 @@ const backup = (state: IBackup = defaultBackupShape, action): IBackup => {
 				...action.payload,
 			};
 
+		case actions.UPDATE_SETTINGS:
+			return {
+				...state,
+				remoteSettingsBackupSynced: false,
+			};
+
+		case actions.SET_SLASHTAGS_FEED_WIDGET:
+			return {
+				...state,
+				remoteWidgetsBackupSynced: false,
+			};
+
 		case actions.RESET_BACKUP_STORE:
 			return defaultBackupShape;
 

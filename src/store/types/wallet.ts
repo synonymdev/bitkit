@@ -86,7 +86,7 @@ export enum EOutput {
 }
 
 export enum ETransactionDefaults {
-	recommendedBaseFee = 300, //Total recommended tx base fee in sats
+	recommendedBaseFee = 256, //Total recommended tx base fee in sats
 	baseTransactionSize = 250, //In bytes (250 is about normal)
 	dustLimit = 546, //Minimum value in sats for an output. Outputs below the dust limit may not be processed because the fees required to include them in a block would be greater than the value of the transaction itself.
 }

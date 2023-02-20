@@ -1,8 +1,19 @@
 import actions from './actions';
 import { getDispatch } from '../helpers';
-import { IWidget } from '../types/widgets';
+import { IWidget, IWidgetsStore } from '../types/widgets';
+import { ok, Result } from '@synonymdev/result';
 
 const dispatch = getDispatch();
+
+export const updateWidgets = (
+	payload: Partial<IWidgetsStore>,
+): Result<string> => {
+	dispatch({
+		type: actions.UPDATE_WIDGETS,
+		payload,
+	});
+	return ok('');
+};
 
 export const setAuthWidget = (
 	url: string,

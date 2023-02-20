@@ -30,14 +30,17 @@ export const RAWS = RAWSFactory({
 	},
 });
 
+export type TContacts = {
+	[url: string]: IContactRecord | undefined;
+};
 export interface ISlashtagsContext {
 	sdk: SDK;
-	contacts: { [url: string]: IContactRecord | undefined };
+	contacts: TContacts;
 }
 
 const SlashtagsContext = createContext<ISlashtagsContext>({
 	sdk: {} as SDK,
-	contacts: {},
+	contacts: {} as TContacts,
 });
 
 const RECONNECT_DHT_RELAY_INTERVAL = 1000 * 2;

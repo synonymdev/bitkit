@@ -12,42 +12,45 @@ import { IFees } from './types/fees';
 import { ISlashtags } from './types/slashtags';
 import { IUi } from './types/ui';
 import { IUser } from './types/user';
+import { IWidgetsStore } from './types/widgets';
+import cloneDeep from 'lodash.clonedeep';
 
 /*
 Used to retrieve the store outside of a component.
  */
-export const getStore = (): Store =>
-	JSON.parse(JSON.stringify(store.getState()));
+export const getStore = (): Store => cloneDeep(store.getState());
 
 export const getWalletStore = (): IWalletStore =>
-	JSON.parse(JSON.stringify(store.getState()[EStore.wallet]));
+	cloneDeep(store.getState()[EStore.wallet]);
 
 export const getSettingsStore = (): ISettings =>
-	JSON.parse(JSON.stringify(store.getState()[EStore.settings]));
+	cloneDeep(store.getState()[EStore.settings]);
 
 export const getMetaDataStore = (): IMetadata =>
-	JSON.parse(JSON.stringify(store.getState()[EStore.metadata]));
+	cloneDeep(store.getState()[EStore.metadata]);
 
 export const getActivityStore = (): IActivity =>
-	JSON.parse(JSON.stringify(store.getState()[EStore.activity]));
+	cloneDeep(store.getState()[EStore.activity]);
 
 export const getLightningStore = (): ILightning =>
-	JSON.parse(JSON.stringify(store.getState()[EStore.lightning]));
+	cloneDeep(store.getState()[EStore.lightning]);
 
 export const getBlocktankStore = (): IBlocktank =>
-	JSON.parse(JSON.stringify(store.getState()[EStore.blocktank]));
+	cloneDeep(store.getState()[EStore.blocktank]);
 
 export const getFeesStore = (): IFees =>
-	JSON.parse(JSON.stringify(store.getState()[EStore.fees]));
+	cloneDeep(store.getState()[EStore.fees]);
 
 export const getSlashtagsStore = (): ISlashtags =>
-	JSON.parse(JSON.stringify(store.getState()[EStore.slashtags]));
+	cloneDeep(store.getState()[EStore.slashtags]);
 
-export const getUiStore = (): IUi =>
-	JSON.parse(JSON.stringify(store.getState()[EStore.ui]));
+export const getUiStore = (): IUi => cloneDeep(store.getState()[EStore.ui]);
 
 export const getUserStore = (): IUser =>
-	JSON.parse(JSON.stringify(store.getState()[EStore.user]));
+	cloneDeep(store.getState()[EStore.user]);
+
+export const getWidgetsStore = (): IWidgetsStore =>
+	cloneDeep(store.getState()[EStore.widgets]);
 
 /*
 Used to get dispatch outside of a component.

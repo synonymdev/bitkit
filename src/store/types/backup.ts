@@ -1,8 +1,15 @@
+import {
+	ENetworks,
+	TAccount,
+} from '@synonymdev/react-native-ldk/dist/utils/types';
+
 export interface IBackup {
 	//Backpack
 	remoteBackupsEnabled: boolean;
 	remoteLdkBackupSynced: boolean;
 	remoteLdkBackupLastSync?: number;
+	remoteSettingsBackupSynced: boolean;
+	remoteWidgetsBackupSynced: boolean;
 	//TODO transactions, slashtags, metadata, etc.
 
 	//iCloud
@@ -17,3 +24,10 @@ export interface IBackup {
 	gDriveLdkBackupLastSync?: number;
 	//TODO transactions, slashtags, metadata, etc.
 }
+
+export declare type TAccountBackup<T> = {
+	account: TAccount;
+	package_version: string;
+	network: ENetworks;
+	data: T;
+};

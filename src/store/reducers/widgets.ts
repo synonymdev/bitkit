@@ -8,6 +8,12 @@ const widgetsReducer = (
 	action,
 ): IWidgetsStore => {
 	switch (action.type) {
+		case actions.UPDATE_WIDGETS:
+			return {
+				...state,
+				...action.payload,
+			};
+
 		case actions.SET_SLASHTAGS_AUTH_WIDGET: {
 			const existing = state.widgets[action.payload.url] || {};
 
