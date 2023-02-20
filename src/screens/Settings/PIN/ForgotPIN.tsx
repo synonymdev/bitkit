@@ -30,7 +30,7 @@ const ForgotPIN = (): ReactElement => {
 	useBottomSheetBackPress('forgotPIN');
 
 	const handlePress = (): void => {
-		wipeApp({});
+		wipeApp();
 		closeBottomSheet('forgotPIN');
 	};
 

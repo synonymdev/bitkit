@@ -392,7 +392,7 @@ export const refreshLdk = async ({
 }: {
 	selectedWallet?: TWalletName;
 	selectedNetwork?: TAvailableNetworks;
-}): Promise<Result<string>> => {
+} = {}): Promise<Result<string>> => {
 	try {
 		// wait for interactions/animations to be completed
 		await new Promise((resolve) =>
@@ -478,7 +478,7 @@ export const getAccount = async ({
 }: {
 	selectedWallet?: TWalletName;
 	selectedNetwork?: TAvailableNetworks;
-}): Promise<Result<TAccount>> => {
+} = {}): Promise<Result<TAccount>> => {
 	if (!selectedWallet) {
 		selectedWallet = getSelectedWallet();
 	}
@@ -529,7 +529,7 @@ export const exportBackup = async (
 	account?: TAccount,
 ): Promise<Result<TAccountBackup>> => {
 	if (!account) {
-		const res = await getAccount({});
+		const res = await getAccount();
 		if (res.isErr()) {
 			return err(res.error);
 		}
@@ -774,7 +774,7 @@ export const addPeers = async ({
 }: {
 	selectedWallet?: TWalletName;
 	selectedNetwork?: TAvailableNetworks;
-}): Promise<Result<string[]>> => {
+} = {}): Promise<Result<string[]>> => {
 	try {
 		const nodeUris = getBlocktankStore()?.info?.node_info?.uris;
 		if (!nodeUris) {
@@ -923,7 +923,7 @@ export const closeChannel = async ({
 }: TCloseChannelReq): Promise<Result<string>> => {
 	try {
 		// Ensure we're fully up-to-date.
-		await refreshLdk({});
+		await refreshLdk();
 		return await ldk.closeChannel({ channelId, counterPartyNodeId, force });
 	} catch (e) {
 		console.log(e);
@@ -1043,7 +1043,7 @@ export const payLightningInvoice = async (
 	sats?: number,
 ): Promise<Result<TChannelManagerPaymentSent>> => {
 	try {
-		const addPeersResponse = await addPeers({});
+		const addPeersResponse = await addPeers();
 		if (addPeersResponse.isErr()) {
 			return err(addPeersResponse.error.message);
 		}
@@ -1086,7 +1086,7 @@ export const payLightningInvoice = async (
 			timestamp: new Date().getTime(),
 		};
 		addActivityItem(activityItem);
-		refreshLdk({}).then();
+		refreshLdk().then();
 		return ok(payResponse.value);
 	} catch (e) {
 		console.log(e);

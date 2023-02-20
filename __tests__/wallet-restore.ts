@@ -75,12 +75,12 @@ describe('Wallet - wallet restore and receive', () => {
 			throw res.error;
 		}
 
-		res = await connectToElectrum({});
+		res = await connectToElectrum();
 		if (res.isErr()) {
 			throw res.error;
 		}
 
-		res = await updateAddressIndexes({});
+		res = await updateAddressIndexes();
 		if (res.isErr()) {
 			throw res.error;
 		}

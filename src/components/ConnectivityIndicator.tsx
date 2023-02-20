@@ -30,7 +30,7 @@ const ConnectivityIndicator = (): ReactElement => {
 
 	const onRetry = async (): Promise<void> => {
 		setIsLoading(true);
-		const connectionResponse = await connectToElectrum({});
+		const connectionResponse = await connectToElectrum();
 		if (connectionResponse.isOk()) {
 			updateUi({ isConnectedToElectrum: true });
 			showSuccessNotification({

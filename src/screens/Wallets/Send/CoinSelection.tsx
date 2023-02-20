@@ -106,21 +106,19 @@ const CoinSelection = ({
 		[coinSelectPreference],
 	);
 
-	const inputs = useMemo(() => transaction.inputs ?? [], [transaction.inputs]);
-
 	const [autoSelectionEnabled, setAutoSelectionEnabled] = useState(
-		inputs?.length === utxos?.length,
+		transaction.inputs.length === utxos.length,
 	);
 
 	const txInputValue = useMemo(
 		() => getTransactionInputValue({ selectedNetwork, selectedWallet }),
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-		[selectedWallet, selectedNetwork, inputs],
+		[selectedWallet, selectedNetwork, transaction.inputs],
 	);
 	const txInputDV = useDisplayValues(txInputValue);
 	const inputKeys = useMemo(
-		() => inputs.map((input) => getUtxoKey(input)),
-		[inputs],
+		() => transaction.inputs.map((input) => getUtxoKey(input)),
+		[transaction.inputs],
 	);
 
 	const txOutputValue = useMemo(() => {

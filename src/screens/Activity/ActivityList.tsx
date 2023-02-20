@@ -90,7 +90,7 @@ const ActivityList = ({
 
 	const onRefresh = async (): Promise<void> => {
 		setRefreshing(true);
-		await refreshWallet({});
+		await refreshWallet();
 		setRefreshing(false);
 	};
 

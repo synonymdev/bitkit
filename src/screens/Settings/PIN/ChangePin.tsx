@@ -52,14 +52,14 @@ const ChangePin = ({
 			// error getting pin
 			if (realPIN.error) {
 				console.log('Error getting PIN: ', realPIN.error);
-				vibrate({});
+				vibrate();
 				setPin('');
 				return;
 			}
 
 			// incorrect pin
 			if (pin !== realPIN?.data) {
-				vibrate({});
+				vibrate();
 				setWrongPin(true);
 				setPin('');
 				return;

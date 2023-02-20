@@ -24,7 +24,6 @@ export type TKeyDerivationAccount = '0'; //"On-Chain Wallet";
 export type TKeyDerivationChange = '0' | '1'; //"Receiving Address" | "Change Address";
 export type TKeyDerivationAddressIndex = string;
 export type TAssetType = 'bitcoin' | 'tether';
-export type TAssetNetwork = 'bitcoin' | 'lightning';
 
 export type NetworkTypePath = '0' | '1'; //"mainnet" | "testnet"
 
@@ -79,23 +78,11 @@ export type TGetByteCountOutputs = {
 	[key in TGetByteCountOutput]?: number;
 };
 
-export enum EOutput {
-	address = '',
-	value = 0,
-	index = 0,
-}
-
-export enum ETransactionDefaults {
-	recommendedBaseFee = 300, //Total recommended tx base fee in sats
-	baseTransactionSize = 250, //In bytes (250 is about normal)
-	dustLimit = 546, //Minimum value in sats for an output. Outputs below the dust limit may not be processed because the fees required to include them in a block would be greater than the value of the transaction itself.
-}
-
 export enum EKeyDerivationAccount {
 	onchain = 0,
 }
 
-export enum EBoost {
+export enum EBoostType {
 	rbf = 'rbf',
 	cpfp = 'cpfp',
 }
@@ -204,48 +191,28 @@ export interface IFormattedTransactions {
 }
 
 export interface IBitcoinTransactionData {
-	outputs?: IOutput[];
-	inputs?: IUtxo[];
-	changeAddress?: string;
-	fiatAmount?: number;
-	fee?: number; //Total fee in sats
-	satsPerByte?: number;
-	selectedFeeId?: EFeeId;
-	transactionSize?: number; //In bytes (250 is about normal)
-	message?: string; // OP_RETURN data for a given transaction.
-	label?: string; // User set label for a given transaction.
-	rbf?: boolean;
-	boostType?: EBoost;
-	minFee?: number; // (sats) Used for RBF/CPFP transactions where the fee needs to be greater than the original.
-	max?: boolean; // If the user intends to send the max amount.
-	tags?: string[];
+	outputs: IOutput[];
+	inputs: IUtxo[];
+	changeAddress: string;
+	fiatAmount: number;
+	fee: number; //Total fee in sats
+	satsPerByte: number;
+	selectedFeeId: EFeeId;
+	message: string; // OP_RETURN data for a given transaction.
+	label: string; // User set label for a given transaction.
+	rbf: boolean;
+	boostType: EBoostType;
+	minFee: number; // (sats) Used for RBF/CPFP transactions where the fee needs to be greater than the original.
+	max: boolean; // If the user intends to send the max amount.
+	tags: string[];
 	slashTagsUrl?: string;
 	lightningInvoice?: string;
 }
 
-export const defaultBitcoinTransactionData: IBitcoinTransactionData = {
-	outputs: [EOutput],
-	inputs: [],
-	changeAddress: '',
-	fiatAmount: 0,
-	fee: 512,
-	satsPerByte: 2,
-	selectedFeeId: EFeeId.none,
-	transactionSize: ETransactionDefaults.baseTransactionSize,
-	message: '',
-	label: '',
-	rbf: false,
-	boostType: EBoost.cpfp,
-	minFee: 1,
-	max: false,
-	tags: [],
-	lightningInvoice: '',
-};
-
 export interface IBoostedTransaction {
 	parentTransactions: string[]; // Array of parent txids to the currently boosted transaction.
 	childTransaction: string; // Child txid of the currently boosted transaction.
-	type: EBoost;
+	type: EBoostType;
 	fee: number;
 }
 

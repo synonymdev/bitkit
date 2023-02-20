@@ -47,12 +47,12 @@ const NumberPad = ({
 	children,
 }: NumberPad): ReactElement => {
 	const handleRemove = (): void => {
-		vibrate({});
+		vibrate();
 		onRemove();
 	};
 
 	const handlePress = (key: number | string): void => {
-		vibrate({});
+		vibrate();
 		onPress(key);
 	};
 

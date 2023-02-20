@@ -13,10 +13,7 @@ import Money from '../../../components/Money';
 import ProfileImage from '../../../components/ProfileImage';
 import Button from '../../../components/Button';
 import SendNumberPad from './SendNumberPad';
-import {
-	EBitcoinUnit,
-	ETransactionDefaults,
-} from '../../../store/types/wallet';
+import { EBitcoinUnit } from '../../../store/types/wallet';
 import {
 	getTransactionOutputValue,
 	sendMax,
@@ -37,6 +34,7 @@ import {
 import { useProfile } from '../../../hooks/slashtags';
 import useDisplayValues from '../../../hooks/displayValues';
 import { updateSettings } from '../../../store/actions/settings';
+import { TRANSACTION_DEFAULTS } from '../../../utils/wallet/constants';
 import type { SendScreenProps } from '../../../navigation/types';
 
 const ContactImage = ({ url }: { url: string }): JSX.Element => {
@@ -84,15 +82,11 @@ const Amount = ({ navigation }: SendScreenProps<'Amount'>): ReactElement => {
 		if (transaction.lightningInvoice) {
 			return lightningBalance.localBalance;
 		}
-		if (
-			transaction.outputs &&
-			transaction.outputs.length > 0 &&
-			transaction.outputs[0].address
-		) {
-			if (onChainBalance.satoshis <= ETransactionDefaults.recommendedBaseFee) {
+		if (transaction.outputs.length > 0 && transaction.outputs[0].address) {
+			if (onChainBalance.satoshis <= TRANSACTION_DEFAULTS.recommendedBaseFee) {
 				return 0;
 			}
-			return onChainBalance.satoshis - ETransactionDefaults.recommendedBaseFee;
+			return onChainBalance.satoshis - TRANSACTION_DEFAULTS.recommendedBaseFee;
 		}
 		return 0;
 	}, [
@@ -136,7 +130,7 @@ const Amount = ({ navigation }: SendScreenProps<'Amount'>): ReactElement => {
 		// onchain tx, but amount is below dust limit
 		if (
 			!transaction.lightningInvoice &&
-			amount <= ETransactionDefaults.recommendedBaseFee
+			amount <= TRANSACTION_DEFAULTS.recommendedBaseFee
 		) {
 			return true;
 		}

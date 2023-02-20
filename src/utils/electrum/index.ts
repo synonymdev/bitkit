@@ -151,7 +151,7 @@ export const electrumConnection = ((): ElectrumConnectionPubSub => {
 
 			if (error) {
 				console.log('Connection to Electrum Server lost, reconnecting...');
-				const response = await connectToElectrum({});
+				const response = await connectToElectrum();
 
 				if (response.isErr()) {
 					electrumConnection.publish(false);

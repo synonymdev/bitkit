@@ -201,7 +201,7 @@ export const vibrate = ({
 }: {
 	type?: TVibrate;
 	pattern?: number;
-}): void => {
+} = {}): void => {
 	try {
 		if (type === 'default') {
 			Vibration.vibrate(pattern);

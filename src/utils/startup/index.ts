@@ -36,7 +36,7 @@ export const createNewWallet = async ({
 	bip39Passphrase,
 }: {
 	bip39Passphrase?: string;
-}): Promise<Result<string>> => {
+} = {}): Promise<Result<string>> => {
 	const mnemonic = await generateMnemonic();
 	if (!mnemonic) {
 		return err('Unable to generate mnemonic.');

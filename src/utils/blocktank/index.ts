@@ -88,7 +88,7 @@ export const buyChannel = async (
 ): Promise<Result<IBuyChannelResponse>> => {
 	try {
 		// Ensure we're properly connected to the Blocktank node prior to buying a channel.
-		const addPeersRes = await addPeers({});
+		const addPeersRes = await addPeers();
 		if (addPeersRes.isErr()) {
 			return err('Unable to add Blocktank node as a peer at this time.');
 		}
@@ -148,7 +148,7 @@ export const finalizeChannel = async (
 			return err(nodeId.error.message);
 		}
 		//Attempt to sync and re-add peers prior to channel open.
-		await refreshLdk({});
+		await refreshLdk();
 
 		const params = {
 			order_id: orderId,
@@ -162,7 +162,7 @@ export const finalizeChannel = async (
 				message: 'Blocktank will open a channel shortly...',
 			});
 			// Once finalized, refresh on-chain & lightning.
-			await refreshWallet({});
+			await refreshWallet();
 			return ok(finalizeChannelResponse);
 		}
 		return err('Unable to finalize the Blocktank channel.');

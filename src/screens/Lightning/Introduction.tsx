@@ -9,8 +9,8 @@ import GlowingBackground from '../../components/GlowingBackground';
 import NavigationHeader from '../../components/NavigationHeader';
 import Button from '../../components/Button';
 import { useBalance } from '../../hooks/wallet';
-import { ETransactionDefaults } from '../../store/types/wallet';
 import { isGeoBlockedSelector } from '../../store/reselect/user';
+import { TRANSACTION_DEFAULTS } from '../../utils/wallet/constants';
 import type { LightningScreenProps } from '../../navigation/types';
 
 const imageSrc = require('../../assets/illustrations/lightning.png');
@@ -33,7 +33,7 @@ const Introduction = ({
 	}, [isGeoBlocked]);
 
 	const isDisabled = useMemo(() => {
-		return balance.satoshis <= ETransactionDefaults.recommendedBaseFee;
+		return balance.satoshis <= TRANSACTION_DEFAULTS.recommendedBaseFee;
 	}, [balance.satoshis]);
 
 	return (

@@ -195,7 +195,7 @@ const ReviewAndSend = ({
 	 * Returns the current output by index.
 	 */
 	const getOutput = useMemo((): IOutput => {
-		return transaction.outputs?.[index] ?? { address: '', value: 0, index: 0 };
+		return transaction.outputs[index] ?? { address: '', value: 0, index: 0 };
 	}, [index, transaction.outputs]);
 
 	/**
@@ -206,12 +206,12 @@ const ReviewAndSend = ({
 	}, [getOutput.address]);
 
 	const selectedFeeId = useMemo(
-		() => transaction.selectedFeeId ?? EFeeId.slow,
+		() => transaction.selectedFeeId,
 		[transaction.selectedFeeId],
 	);
 
 	const satsPerByte = useMemo((): number => {
-		return transaction.satsPerByte ?? 1;
+		return transaction.satsPerByte;
 	}, [transaction.satsPerByte]);
 
 	const getFee = useCallback(

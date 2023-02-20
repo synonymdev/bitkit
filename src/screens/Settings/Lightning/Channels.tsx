@@ -51,7 +51,6 @@ import {
 	createLightningInvoice,
 	savePeer,
 } from '../../../store/actions/lightning';
-import { ETransactionDefaults } from '../../../store/types/wallet';
 import { useBalance } from '../../../hooks/wallet';
 import {
 	selectedNetworkSelector,
@@ -63,6 +62,7 @@ import {
 	pendingChannelsSelector,
 } from '../../../store/reselect/lightning';
 import { enableDevOptionsSelector } from '../../../store/reselect/settings';
+import { TRANSACTION_DEFAULTS } from '../../../utils/wallet/constants';
 import { zipLogs } from '../../../utils/lightning/logs';
 import { SettingsScreenProps } from '../../../navigation/types';
 
@@ -292,7 +292,7 @@ const Channels = ({
 	}, [selectedNetwork, selectedWallet]);
 
 	const addConnectionIsDisabled = useMemo(() => {
-		return balance.satoshis <= ETransactionDefaults.recommendedBaseFee;
+		return balance.satoshis <= TRANSACTION_DEFAULTS.recommendedBaseFee;
 	}, [balance.satoshis]);
 
 	const onAddPeer = useCallback(async () => {

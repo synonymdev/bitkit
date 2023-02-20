@@ -63,7 +63,7 @@ const ResetAndRestore = ({
 				description="Are you sure you want to reset your Bitkit Wallet? Do you have a backup of your recovery phrase and wallet data?"
 				onCancel={(): void => setShowDialog(false)}
 				onConfirm={async (): Promise<void> => {
-					await wipeApp({});
+					await wipeApp();
 					setShowDialog(false);
 				}}
 			/>

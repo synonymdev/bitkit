@@ -10,7 +10,7 @@ import {
 	IUtxo,
 	EAddressType,
 	IBoostedTransactions,
-	EBoost,
+	EBoostType,
 	TWalletName,
 	IWalletStore,
 } from '../types/wallet';
@@ -91,7 +91,7 @@ export const createWallet = async ({
 	mnemonic = '',
 	bip39Passphrase = '',
 	addressTypes,
-}: ICreateWallet): Promise<Result<string>> => {
+}: ICreateWallet = {}): Promise<Result<string>> => {
 	if (!addressTypes) {
 		addressTypes = getAddressTypes();
 	}
@@ -148,7 +148,7 @@ export const updateAddressIndexes = async ({
 	selectedWallet?: TWalletName;
 	selectedNetwork?: TAvailableNetworks;
 	addressType?: EAddressType;
-}): Promise<Result<string>> => {
+} = {}): Promise<Result<string>> => {
 	if (!selectedNetwork) {
 		selectedNetwork = getSelectedNetwork();
 	}
@@ -781,7 +781,7 @@ export const deleteOnChainTransactionById = async ({
  * Adds a boosted transaction id to the boostedTransactions object.
  * @param {string} newTxId
  * @param {string} oldTxId
- * @param {EBoost} [type]
+ * @param {EBoostType} [type]
  * @param {number} fee
  * @param {TWalletName} [selectedWallet]
  * @param {TAvailableNetworks} [selectedNetwork]
@@ -789,14 +789,14 @@ export const deleteOnChainTransactionById = async ({
 export const addBoostedTransaction = async ({
 	newTxId,
 	oldTxId,
-	type = EBoost.cpfp,
+	type = EBoostType.cpfp,
 	fee,
 	selectedWallet,
 	selectedNetwork,
 }: {
 	newTxId: string;
 	oldTxId: string;
-	type?: EBoost;
+	type?: EBoostType;
 	fee: number;
 	selectedWallet?: TWalletName;
 	selectedNetwork?: TAvailableNetworks;
@@ -853,7 +853,7 @@ export const resetSelectedWallet = async ({
 		type: actions.RESET_SELECTED_WALLET,
 		payload: { selectedWallet },
 	});
-	await refreshWallet({});
+	await refreshWallet();
 };
 
 /**
@@ -864,7 +864,7 @@ export const resetWalletStore = async (): Promise<Result<string>> => {
 	dispatch({
 		type: actions.RESET_WALLET_STORE,
 	});
-	await createWallet({});
+	await createWallet();
 	await refreshWallet({
 		scanAllAddresses: true,
 		updateAllAddressTypes: true,
@@ -889,7 +889,7 @@ export const setupOnChainTransaction = async ({
 	utxos?: IUtxo[]; // Used to pre-specify utxos to use
 	rbf?: boolean; // Enable or disable rbf.
 	submitDispatch?: boolean; //Should we dispatch this and update the store.
-} = {}): Promise<Result<IBitcoinTransactionData>> => {
+} = {}): Promise<Result<Partial<IBitcoinTransactionData>>> => {
 	try {
 		if (!selectedNetwork) {
 			selectedNetwork = getSelectedNetwork();
@@ -1070,9 +1070,9 @@ export const getChangeAddress = async ({
 
 /**
  * This updates the specified on-chain transaction.
- * @param selectedWallet
- * @param selectedNetwork
- * @param transaction
+ * @param {Partial<IBitcoinTransactionData>} transaction
+ * @param {TWalletName} [selectedWallet]
+ * @param {TAvailableNetworks} [selectedNetwork]
  * @return {Promise<Result<string>>}
  */
 export const updateBitcoinTransaction = async ({
@@ -1080,7 +1080,7 @@ export const updateBitcoinTransaction = async ({
 	selectedWallet,
 	selectedNetwork,
 }: {
-	transaction: IBitcoinTransactionData;
+	transaction: Partial<IBitcoinTransactionData>;
 	selectedWallet?: TWalletName;
 	selectedNetwork?: TAvailableNetworks;
 }): Promise<Result<string>> => {
@@ -1093,29 +1093,25 @@ export const updateBitcoinTransaction = async ({
 		}
 
 		//Add output if specified
-		if (transaction?.outputs) {
-			let outputs =
-				getWalletStore().wallets[selectedWallet].transaction[selectedNetwork]
-					.outputs || [];
-			await Promise.all(
-				transaction?.outputs.map((output) => {
-					const outputIndex = output.index;
-					outputs[outputIndex] = output;
-				}),
-			);
+		if (transaction.outputs) {
+			const currentWallet = getWalletStore().wallets[selectedWallet];
+			const currentTransaction = currentWallet.transaction[selectedNetwork];
+			const outputs = currentTransaction.outputs.concat();
+			transaction.outputs.forEach((output) => {
+				outputs[output.index] = output;
+			});
 			transaction.outputs = outputs;
 		}
 
-		const payload = {
-			selectedNetwork,
-			selectedWallet,
-			transaction,
-		};
-
 		dispatch({
 			type: actions.UPDATE_ON_CHAIN_TRANSACTION,
-			payload,
+			payload: {
+				transaction,
+				selectedNetwork,
+				selectedWallet,
+			},
 		});
+
 		return ok('Transaction updated');
 	} catch (e) {
 		return err(e);

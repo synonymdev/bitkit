@@ -18,10 +18,8 @@ import {
 	shuffleArray,
 } from '../helpers';
 import {
-	defaultBitcoinTransactionData,
-	EBoost,
+	EBoostType,
 	EPaymentType,
-	ETransactionDefaults,
 	IBitcoinTransactionData,
 	IOutput,
 	IUtxo,
@@ -62,13 +60,15 @@ import { getTransactions, subscribeToAddresses } from './electrum';
 import { TOnchainActivityItem } from '../../store/types/activity';
 import { EFeeId, IOnchainFees } from '../../store/types/fees';
 import { defaultFeesShape } from '../../store/shapes/fees';
+import { defaultBitcoinTransactionData } from '../../store/shapes/wallet';
+import { TRANSACTION_DEFAULTS } from './constants';
 
 /*
  * Attempts to parse any given string as an on-chain payment request.
  * Returns an error if invalid.
  */
 export const parseOnChainPaymentRequest = (
-	data = '',
+	data: string,
 	selectedNetwork?: TAvailableNetworks,
 ): Result<{
 	address: string;
@@ -283,7 +283,7 @@ export const getByteCount = (
 		// Convert from Weight Units to virtual size
 		return Math.ceil(totalWeight / 4);
 	} catch (e) {
-		return ETransactionDefaults.recommendedBaseFee;
+		return TRANSACTION_DEFAULTS.recommendedBaseFee;
 	}
 };
 
@@ -327,9 +327,9 @@ export const getTotalFee = ({
 	selectedNetwork?: TAvailableNetworks;
 	message?: string;
 	fundingLightning?: boolean;
-	transaction?: IBitcoinTransactionData;
+	transaction?: Partial<IBitcoinTransactionData>;
 }): number => {
-	const fallBackFee = ETransactionDefaults.recommendedBaseFee;
+	const fallBackFee = TRANSACTION_DEFAULTS.recommendedBaseFee;
 	try {
 		if (!transaction) {
 			if (!selectedNetwork) {
@@ -452,7 +452,7 @@ const createPsbtFromTransactionData = async ({
 	const {
 		inputs = [],
 		outputs = [],
-		fee = ETransactionDefaults.recommendedBaseFee,
+		fee = TRANSACTION_DEFAULTS.recommendedBaseFee,
 		rbf,
 	} = transactionData;
 	let { changeAddress, message } = transactionData;
@@ -481,7 +481,7 @@ const createPsbtFromTransactionData = async ({
 		const changeAddressValue = balance - (outputValue + fee);
 		// Ensure we're not creating unspendable dust.
 		// If we have less than 2x the recommended base fee, just contribute it to the fee in this transaction.
-		if (changeAddressValue > ETransactionDefaults.dustLimit) {
+		if (changeAddressValue > TRANSACTION_DEFAULTS.dustLimit) {
 			targets.push({
 				address: changeAddress,
 				value: changeAddressValue,
@@ -493,7 +493,7 @@ const createPsbtFromTransactionData = async ({
 	} else if (outputValue + fee < balance) {
 		// If we have spare sats hanging around and the difference is greater than the dust limit, generate a changeAddress to send them to.
 		const diffValue = balance - (outputValue + fee);
-		if (diffValue > ETransactionDefaults.dustLimit) {
+		if (diffValue > TRANSACTION_DEFAULTS.dustLimit) {
 			const changeAddressRes = await getChangeAddress({
 				selectedWallet,
 				selectedNetwork,
@@ -677,103 +677,101 @@ export const signPsbt = ({
  * @param {IBitcoinTransactionData} [transactionData]
  * @returns {Promise<Result<{id: string, hex: string}>>}
  */
-export const createTransaction = ({
+export const createTransaction = async ({
 	selectedWallet,
 	selectedNetwork,
 	transactionData,
-}: ICreateTransaction): Promise<Result<{ id: string; hex: string }>> => {
-	return new Promise(async (resolve) => {
-		if (!selectedWallet) {
-			selectedWallet = getSelectedWallet();
-		}
-		if (!selectedNetwork) {
-			selectedNetwork = getSelectedNetwork();
-		}
-		// If no transaction data is provided, use the stored transaction object from storage.
-		if (!transactionData) {
-			const transactionDataRes = getOnchainTransactionData({
-				selectedWallet,
-				selectedNetwork,
-			});
-			if (transactionDataRes.isErr()) {
-				return err(transactionDataRes.error.message);
-			}
-			transactionData = transactionDataRes.value;
-		}
-
-		//Remove any outputs that are below the dust limit and apply them to the fee.
-		if (transactionData?.outputs) {
-			transactionData.outputs = removeDustOutputs(transactionData.outputs);
-		}
-
-		const inputValue = getTransactionInputValue({
-			selectedNetwork,
-			selectedWallet,
-			inputs: transactionData.inputs,
-		});
-		const outputValue = getTransactionOutputValue({
+}: ICreateTransaction = {}): Promise<Result<{ id: string; hex: string }>> => {
+	if (!selectedWallet) {
+		selectedWallet = getSelectedWallet();
+	}
+	if (!selectedNetwork) {
+		selectedNetwork = getSelectedNetwork();
+	}
+	// If no transaction data is provided, use the stored transaction object from storage.
+	if (!transactionData) {
+		const transactionDataRes = getOnchainTransactionData({
 			selectedWallet,
 			selectedNetwork,
-			outputs: transactionData.outputs,
 		});
-		if (inputValue === 0) {
-			const message = 'No inputs to spend.';
-			showErrorNotification({
-				title: 'Unable to create transaction.',
-				message,
-			});
-			return resolve(err(message));
+		if (transactionDataRes.isErr()) {
+			return err(transactionDataRes.error.message);
 		}
-		const fee = inputValue - outputValue;
+		transactionData = transactionDataRes.value;
+	}
 
-		//Refuse tx if the fee is greater than the amount we're attempting to send.
-		if (fee > inputValue) {
-			const message = 'Fee is larger than the intended payment.';
-			showErrorNotification({ title: 'Unable to create transaction', message });
-			return resolve(err(message));
-		}
-		try {
-			const bip32InterfaceRes = await getBip32Interface(
-				selectedWallet,
-				selectedNetwork,
-			);
-			if (bip32InterfaceRes.isErr()) {
-				return resolve(err(bip32InterfaceRes.error.message));
-			}
+	//Remove any outputs that are below the dust limit and apply them to the fee.
+	if (transactionData?.outputs) {
+		transactionData.outputs = removeDustOutputs(transactionData.outputs);
+	}
 
-			//Create PSBT before signing inputs
-			const psbtRes = await createPsbtFromTransactionData({
-				selectedWallet,
-				selectedNetwork,
-				transactionData,
-				bip32Interface: bip32InterfaceRes.value,
-			});
-
-			if (psbtRes.isErr()) {
-				return resolve(err(psbtRes.error));
-			}
-
-			const psbt = psbtRes.value;
-
-			const signedPsbtRes = await signPsbt({
-				selectedWallet,
-				selectedNetwork,
-				psbt,
-				bip32Interface: bip32InterfaceRes.value,
-			});
-
-			if (signedPsbtRes.isErr()) {
-				return resolve(err(signedPsbtRes.error));
-			}
-
-			const tx = signedPsbtRes.value.extractTransaction();
-			const id = tx.getId();
-			const hex = tx.toHex();
-			return resolve(ok({ id, hex }));
-		} catch (e) {
-			return resolve(err(e));
-		}
+	const inputValue = getTransactionInputValue({
+		selectedNetwork,
+		selectedWallet,
+		inputs: transactionData.inputs,
 	});
+	const outputValue = getTransactionOutputValue({
+		selectedWallet,
+		selectedNetwork,
+		outputs: transactionData.outputs,
+	});
+	if (inputValue === 0) {
+		const message = 'No inputs to spend.';
+		showErrorNotification({
+			title: 'Unable to create transaction.',
+			message,
+		});
+		return err(message);
+	}
+	const fee = inputValue - outputValue;
+
+	//Refuse tx if the fee is greater than the amount we're attempting to send.
+	if (fee > inputValue) {
+		const message = 'Fee is larger than the intended payment.';
+		showErrorNotification({ title: 'Unable to create transaction', message });
+		return err(message);
+	}
+	try {
+		const bip32InterfaceRes = await getBip32Interface(
+			selectedWallet,
+			selectedNetwork,
+		);
+		if (bip32InterfaceRes.isErr()) {
+			return err(bip32InterfaceRes.error.message);
+		}
+
+		//Create PSBT before signing inputs
+		const psbtRes = await createPsbtFromTransactionData({
+			selectedWallet,
+			selectedNetwork,
+			transactionData,
+			bip32Interface: bip32InterfaceRes.value,
+		});
+
+		if (psbtRes.isErr()) {
+			return err(psbtRes.error);
+		}
+
+		const psbt = psbtRes.value;
+
+		const signedPsbtRes = await signPsbt({
+			selectedWallet,
+			selectedNetwork,
+			psbt,
+			bip32Interface: bip32InterfaceRes.value,
+		});
+
+		if (signedPsbtRes.isErr()) {
+			return err(signedPsbtRes.error);
+		}
+
+		const tx = signedPsbtRes.value.extractTransaction();
+		const id = tx.getId();
+		const hex = tx.toHex();
+		return ok({ id, hex });
+	} catch (e) {
+		return err(e);
+	}
 };
 
 /**
@@ -783,7 +781,7 @@ export const createTransaction = ({
  */
 export const removeDustOutputs = (outputs: IOutput[]): IOutput[] => {
 	return outputs.filter((output) => {
-		return output?.value && output.value > ETransactionDefaults.dustLimit;
+		return output.value && output.value > TRANSACTION_DEFAULTS.dustLimit;
 	});
 };
 
@@ -1152,7 +1150,7 @@ export const updateFee = ({
 		selectedNetwork,
 	});
 	const newTotalAmount = Number(totalTransactionValue) + Number(newFee);
-	const _transaction: IBitcoinTransactionData = {
+	const _transaction: Partial<IBitcoinTransactionData> = {
 		satsPerByte,
 		fee: newFee,
 		selectedFeeId,
@@ -1366,24 +1364,22 @@ export const autoCoinSelect = async ({
 export const validateTransaction = (
 	transaction: IBitcoinTransactionData,
 ): Result<string> => {
+	const baseFee = TRANSACTION_DEFAULTS.recommendedBaseFee;
+
 	try {
-		if (!transaction) {
-			return err('Invalid transaction.');
-		}
-		const baseFee = 256;
-		if (!transaction?.fee) {
+		if (!transaction.fee) {
 			return err('No transaction fee provided.');
 		}
 		if (
-			!transaction?.outputs ||
+			!transaction.outputs ||
 			transaction.outputs?.length < 1 ||
 			!transaction.outputs[0].address
 		) {
 			return err('Please provide an address to send funds to.');
 		}
 		if (
-			!transaction?.inputs ||
-			(transaction.outputs?.length > 0 && !transaction?.outputs[0]?.value)
+			!transaction.inputs ||
+			(transaction.outputs?.length > 0 && !transaction.outputs[0]?.value)
 		) {
 			return err('Please provide an amount to send.');
 		}
@@ -1415,11 +1411,9 @@ export const validateTransaction = (
 		}
 		//Remove the change address from the outputs array, if any.
 		let filteredOutputs = outputs;
-		if (transaction?.changeAddress) {
+		if (transaction.changeAddress) {
 			filteredOutputs = outputs.filter((output) => {
-				if (output.address !== transaction.changeAddress) {
-					return output;
-				}
+				return output.address !== transaction.changeAddress;
 			});
 		}
 		const outputsReduce = reduceValue({
@@ -1463,9 +1457,9 @@ export const canBoost = (txid: string): ICanBoostResponse => {
 			return failure;
 		}
 		type = transactionResponse.value.type;
-		const balance = getOnChainBalance({});
 
-		const { currentWallet, selectedNetwork } = getCurrentWallet({});
+		const balance = getOnChainBalance();
+		const { currentWallet, selectedNetwork } = getCurrentWallet();
 
 		const hasUtxo = currentWallet.utxos[selectedNetwork].some(
 			(utxo) => txid === utxo.tx_hash,
@@ -1482,17 +1476,17 @@ export const canBoost = (txid: string): ICanBoostResponse => {
 			rbfEnabled &&
 			type === EPaymentType.sent &&
 			height <= 0 &&
-			balance >= ETransactionDefaults.recommendedBaseFee &&
+			balance >= TRANSACTION_DEFAULTS.recommendedBaseFee &&
 			matchedOutputValue !== totalOutputValue &&
 			matchedOutputValue > fee &&
-			btcToSats(matchedOutputValue) > ETransactionDefaults.recommendedBaseFee;
+			btcToSats(matchedOutputValue) > TRANSACTION_DEFAULTS.recommendedBaseFee;
 
 		// Performing a CPFP tx requires a new tx and higher fee.
 		const cpfp =
 			height <= 0 &&
 			hasUtxo &&
 			btcToSats(matchedOutputValue) >=
-				ETransactionDefaults.recommendedBaseFee * 3;
+				TRANSACTION_DEFAULTS.recommendedBaseFee * 3;
 		return { canBoost: rbf || cpfp, rbf, cpfp };
 	} catch (e) {
 		return failure;
@@ -1515,11 +1509,11 @@ export const sendMax = ({
 	index = 0,
 }: {
 	address?: string;
-	transaction?: IBitcoinTransactionData;
+	transaction?: Partial<IBitcoinTransactionData>;
 	selectedNetwork?: TAvailableNetworks;
 	selectedWallet?: TWalletName;
 	index?: number;
-}): Result<string> => {
+} = {}): Result<string> => {
 	try {
 		if (!selectedNetwork) {
 			selectedNetwork = getSelectedNetwork();
@@ -1556,7 +1550,7 @@ export const sendMax = ({
 			inputTotal = satoshis;
 
 			if (!max && inputTotal > 0) {
-				const _transaction: IBitcoinTransactionData = {
+				const _transaction: Partial<IBitcoinTransactionData> = {
 					outputs: [{ address, value: inputTotal, index }],
 					max: !max,
 				};
@@ -1591,7 +1585,7 @@ export const sendMax = ({
 					message: transaction.message,
 					transaction,
 				});
-				const _transaction: IBitcoinTransactionData = {
+				const _transaction: Partial<IBitcoinTransactionData> = {
 					fee: newFee,
 					outputs: [{ address, value: inputTotal - newFee, index }],
 					max: !max,
@@ -1851,7 +1845,7 @@ export const updateMessage = async ({
 	if (outputs?.length > index) {
 		address = outputs[index].address ?? '';
 	}
-	const _transaction: IBitcoinTransactionData = {
+	const _transaction: Partial<IBitcoinTransactionData> = {
 		message,
 		fee: newFee,
 	};
@@ -1965,7 +1959,7 @@ export const setupBoost = async ({
 	txid: string;
 	selectedWallet?: TWalletName;
 	selectedNetwork?: TAvailableNetworks;
-}): Promise<Result<IBitcoinTransactionData>> => {
+}): Promise<Result<Partial<IBitcoinTransactionData>>> => {
 	if (!selectedNetwork) {
 		selectedNetwork = getSelectedNetwork();
 	}
@@ -2000,7 +1994,7 @@ export const setupCpfp = async ({
 	selectedNetwork?: TAvailableNetworks;
 	txid?: string; // txid of utxo to include in the CPFP tx. Undefined will gather all utxo's.
 	satsPerByte?: number;
-}): Promise<Result<IBitcoinTransactionData>> => {
+}): Promise<Result<Partial<IBitcoinTransactionData>>> => {
 	if (!selectedNetwork) {
 		selectedNetwork = getSelectedNetwork();
 	}
@@ -2032,7 +2026,7 @@ export const setupCpfp = async ({
 		transaction: {
 			...response.value,
 			satsPerByte: satsPerByte ?? response.value.satsPerByte,
-			boostType: EBoost.cpfp,
+			boostType: EBoostType.cpfp,
 		},
 		address: receiveAddress.value,
 	});
@@ -2059,7 +2053,7 @@ export const setupRbf = async ({
 	txid: string;
 	selectedWallet?: TWalletName;
 	selectedNetwork?: TAvailableNetworks;
-}): Promise<Result<IBitcoinTransactionData>> => {
+}): Promise<Result<Partial<IBitcoinTransactionData>>> => {
 	try {
 		if (!selectedNetwork) {
 			selectedNetwork = getSelectedNetwork();
@@ -2093,7 +2087,7 @@ export const setupRbf = async ({
 		// Increment satsPerByte until the fee is greater than the previous + the default base fee.
 		while (
 			newFee <=
-			transaction.fee + ETransactionDefaults.recommendedBaseFee
+			transaction.fee + TRANSACTION_DEFAULTS.recommendedBaseFee
 		) {
 			newFee = getTotalFee({
 				transaction,
@@ -2133,7 +2127,7 @@ export const setupRbf = async ({
 			fee: newFee,
 			satsPerByte: _satsPerByte,
 			rbf: true,
-			boostType: EBoost.rbf,
+			boostType: EBoostType.rbf,
 		};
 
 		await updateBitcoinTransaction({
@@ -2210,7 +2204,7 @@ export const broadcastBoost = async ({
 		});
 
 		// Only delete the old transaction if it was an RBF, not a CPFP.
-		if (transaction.boostType === EBoost.rbf && oldTxId in transactions) {
+		if (transaction.boostType === EBoostType.rbf && oldTxId in transactions) {
 			await deleteOnChainTransactionById({
 				txid: oldTxId,
 				selectedNetwork,
@@ -2226,7 +2220,7 @@ export const broadcastBoost = async ({
 			timestamp: new Date().getTime(),
 		};
 
-		await refreshWallet({});
+		await refreshWallet();
 		return ok(updatedActivityItemData);
 	} catch (e) {
 		return err(e);

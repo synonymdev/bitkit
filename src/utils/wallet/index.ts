@@ -8,7 +8,6 @@ import { err, ok, Result } from '@synonymdev/result';
 
 import { networks, TAvailableNetworks } from '../networks';
 import {
-	assetNetworks,
 	defaultKeyDerivationPath,
 	getDefaultWalletShape,
 	defaultWalletStoreShape,
@@ -24,7 +23,6 @@ import {
 	IFormattedTransactions,
 	IFormattedTransaction,
 	IKeyDerivationPath,
-	IBitcoinTransactionData,
 	IOutput,
 	IUtxo,
 	EAddressType,
@@ -33,8 +31,6 @@ import {
 	TKeyDerivationPurpose,
 	IAddressTypes,
 	IKeyDerivationPathData,
-	ETransactionDefaults,
-	TAssetNetwork,
 	TWalletName,
 	TKeyDerivationCoinType,
 	TKeyDerivationChange,
@@ -74,11 +70,7 @@ import {
 	TCoinSelectPreference,
 } from '../../store/types/settings';
 import { updateActivityList } from '../../store/actions/activity';
-import {
-	getByteCount,
-	getTotalFee,
-	getTransactionOutputValue,
-} from './transactions';
+import { getByteCount } from './transactions';
 import {
 	getAddressHistory,
 	getTransactions,
@@ -90,7 +82,6 @@ import {
 import { getDisplayValues } from '../exchange-rate';
 import { IDisplayValues } from '../exchange-rate/types';
 import { IncludeBalances } from '../../hooks/wallet';
-import { EFeeId } from '../../store/types/fees';
 import { invokeNodeJsMethod } from '../nodejs-mobile';
 import { DefaultNodeJsMethodsShape } from '../nodejs-mobile/shapes';
 import { refreshLdk } from '../lightning';
@@ -120,7 +111,7 @@ export const refreshWallet = async ({
 	showNotification?: boolean;
 	selectedWallet?: TWalletName;
 	selectedNetwork?: TAvailableNetworks;
-}): Promise<Result<string>> => {
+} = {}): Promise<Result<string>> => {
 	try {
 		// wait for interactions/animations to be completed
 		await new Promise((resolve) =>
@@ -746,16 +737,14 @@ export const getOnChainBalance = ({
 }: {
 	selectedWallet?: TWalletName;
 	selectedNetwork?: TAvailableNetworks;
-}): number => {
+} = {}): number => {
 	if (!selectedWallet) {
 		selectedWallet = getSelectedWallet();
 	}
 	if (!selectedNetwork) {
 		selectedNetwork = getSelectedNetwork();
 	}
-	return (
-		getWalletStore().wallets[selectedWallet]?.balance[selectedNetwork] ?? 0
-	);
+	return getWalletStore().wallets[selectedWallet]?.balance[selectedNetwork];
 };
 
 /**
@@ -1309,7 +1298,7 @@ export const getSelectedAddressType = ({
 }: {
 	selectedWallet?: TWalletName;
 	selectedNetwork?: TAvailableNetworks;
-}): EAddressType => {
+} = {}): EAddressType => {
 	if (!selectedNetwork) {
 		selectedNetwork = getSelectedNetwork();
 	}
@@ -1345,7 +1334,7 @@ export const getCurrentWallet = ({
 }: {
 	selectedNetwork?: TAvailableNetworks;
 	selectedWallet?: TWalletName;
-}): {
+} = {}): {
 	currentWallet: IWallet;
 	currentLightningNode: IDefaultLightningShape;
 	selectedNetwork: TAvailableNetworks;
@@ -1942,66 +1931,64 @@ export const getRbfData = async ({
 /**
  * Converts IRbfData to IBitcoinTransactionData.
  * CURRENTLY NOT USED
- * @param data
+ * @param {IRbfData} data
  */
-export const formatRbfData = async (
-	data: IRbfData,
-): Promise<IBitcoinTransactionData> => {
-	const { selectedWallet, inputs, outputs, fee, selectedNetwork, message } =
-		data;
+// export const formatRbfData = async (
+// 	data: IRbfData,
+// ): Promise<Partial<IBitcoinTransactionData>> => {
+// 	const { selectedWallet, inputs, outputs, fee, selectedNetwork, message } =
+// 		data;
 
-	let changeAddress: undefined | string;
-	let satsPerByte = 1;
-	let selectedFeeId = EFeeId.none;
-	let transactionSize = ETransactionDefaults.baseTransactionSize; //In bytes (250 is about normal)
-	let label = ''; // User set label for a given transaction.
+// 	let changeAddress: undefined | string;
+// 	let satsPerByte = 1;
+// 	let selectedFeeId = EFeeId.none;
+// 	let transactionSize = TRANSACTION_DEFAULTS.baseTransactionSize; //In bytes (250 is about normal)
+// 	let label = ''; // User set label for a given transaction.
 
-	const { currentWallet } = getCurrentWallet({
-		selectedWallet,
-		selectedNetwork,
-	});
-	const changeAddressesObj = currentWallet.changeAddresses[selectedNetwork];
-	const changeAddresses = Object.values(changeAddressesObj).map(
-		({ address }) => address.address,
-	);
+// 	const { currentWallet } = getCurrentWallet({
+// 		selectedWallet,
+// 		selectedNetwork,
+// 	});
+// 	const changeAddressesObj = currentWallet.changeAddresses[selectedNetwork];
+// 	const changeAddresses = Object.values(changeAddressesObj).map(
+// 		({ address }) => address.address,
+// 	);
 
-	let newOutputs = outputs;
-	await Promise.all(
-		outputs.map(({ address }, index) => {
-			if (address && changeAddresses.includes(address)) {
-				changeAddress = address;
-				newOutputs.splice(index, 1);
-			}
-		}),
-	);
+// 	let newOutputs = outputs;
+// 	outputs.map(({ address }, index) => {
+// 		if (address && changeAddresses.includes(address)) {
+// 			changeAddress = address;
+// 			newOutputs.splice(index, 1);
+// 		}
+// 	});
 
-	let newFee = 0;
-	let newSatsPerByte = satsPerByte;
-	while (fee > newFee) {
-		newFee = getTotalFee({
-			selectedWallet,
-			satsPerByte: newSatsPerByte,
-			selectedNetwork,
-			message,
-		});
-		newSatsPerByte = newSatsPerByte + 1;
-	}
+// 	let newFee = 0;
+// 	let newSatsPerByte = satsPerByte;
+// 	while (fee > newFee) {
+// 		newFee = getTotalFee({
+// 			selectedWallet,
+// 			satsPerByte: newSatsPerByte,
+// 			selectedNetwork,
+// 			message,
+// 		});
+// 		newSatsPerByte = newSatsPerByte + 1;
+// 	}
 
-	const newFiatAmount = getTransactionOutputValue({ outputs });
+// 	const newFiatAmount = getTransactionOutputValue({ outputs });
 
-	return {
-		changeAddress: changeAddress || '',
-		message,
-		label,
-		outputs: newOutputs,
-		inputs,
-		fee: newFee,
-		satsPerByte: newSatsPerByte,
-		fiatAmount: newFiatAmount,
-		selectedFeeId,
-		transactionSize,
-	};
-};
+// 	return {
+// 		changeAddress: changeAddress || '',
+// 		message,
+// 		label,
+// 		outputs: newOutputs,
+// 		inputs,
+// 		fee: newFee,
+// 		satsPerByte: newSatsPerByte,
+// 		fiatAmount: newFiatAmount,
+// 		selectedFeeId,
+// 		transactionSize,
+// 	};
+// };
 
 /**
  * Generates a newly specified wallet.
@@ -2030,7 +2017,7 @@ export const createDefaultWallet = async ({
 			// if nothing else specified use only Native Segwit by default
 			addressTypes = { p2wpkh: getAddressTypes().p2wpkh };
 		}
-		const selectedAddressType = getSelectedAddressType({});
+		const selectedAddressType = getSelectedAddressType();
 
 		if (!bip39Passphrase) {
 			bip39Passphrase = await getBip39Passphrase(walletName);
@@ -2523,48 +2510,6 @@ export const getReceiveAddress = async ({
 	} catch (e) {
 		return err(e);
 	}
-};
-
-/**
- * Determines the asset network based on the provided asset name.
- * @param {string} asset
- * @return {TAssetNetwork}
- */
-export const getAssetNetwork = (asset: string): TAssetNetwork => {
-	switch (asset) {
-		case 'bitcoin':
-			return 'bitcoin';
-		case 'lightning':
-			return 'lightning';
-		default:
-			return 'bitcoin';
-	}
-};
-
-/**
- * This method returns all available asset names (bitcoin, lightning, tokens).
- * @param {TWalletName} [selectedWallet]
- * @param {TAvailableNetworks} [selectedNetwork]
- * @return {string[]>}
- */
-export const getAssetNames = ({
-	selectedWallet,
-	selectedNetwork,
-}: {
-	selectedWallet?: TWalletName;
-	selectedNetwork?: TAvailableNetworks;
-}): string[] => {
-	if (!selectedWallet) {
-		selectedWallet = getSelectedWallet();
-	}
-	if (!selectedNetwork) {
-		selectedNetwork = getSelectedNetwork();
-	}
-	const assetNames: string[] = [...assetNetworks];
-	try {
-		// TODO: Grab available tokens/assets.
-	} catch {}
-	return assetNames;
 };
 
 interface IGetBalanceProps extends IncludeBalances {

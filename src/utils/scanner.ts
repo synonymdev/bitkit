@@ -83,7 +83,7 @@ export interface QRData {
 }
 
 export const validateAddress = ({
-	address = '',
+	address,
 	selectedNetwork,
 }: {
 	address: string;

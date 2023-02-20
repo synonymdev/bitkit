@@ -58,24 +58,19 @@ const BoostForm = ({
 	const [showCustom, setShowCustom] = useState(false);
 	const boostData = useMemo(() => canBoost(activityItem.id), [activityItem.id]);
 
-	// Fallback values
-	const transactionFee = transaction.fee ?? 0;
-	const minFee = transaction.minFee ?? 0;
-	const satsPerByte = transaction.satsPerByte ?? 0;
 	const activityItemFee = btcToSats(activityItem.fee);
 	const recommendedFee = feeEstimates.fast;
-
-	const { description: duration } = useFeeText(satsPerByte);
+	const { description: duration } = useFeeText(transaction.satsPerByte);
 
 	const boostFee = useMemo(() => {
 		if (!boostData.canBoost) {
 			return 0;
 		}
 		if (!boostData.rbf) {
-			return transactionFee;
+			return transaction.fee;
 		}
-		return Math.abs(transactionFee - activityItemFee);
-	}, [boostData.canBoost, boostData.rbf, transactionFee, activityItemFee]);
+		return Math.abs(transaction.fee - activityItemFee);
+	}, [boostData.canBoost, boostData.rbf, transaction.fee, activityItemFee]);
 
 	useEffect(() => {
 		(async (): Promise<void> => {
@@ -200,7 +195,7 @@ const BoostForm = ({
 
 	const Title = (
 		<View style={styles.adjustValueRow}>
-			<Money sats={satsPerByte} size="text01m" symbol={true} />
+			<Money sats={transaction.satsPerByte} size="text01m" symbol={true} />
 			<Text01M> sat/byte</Text01M>
 		</View>
 	);
@@ -239,7 +234,7 @@ const BoostForm = ({
 						description={Description}
 						decreaseValue={onDecreaseValue}
 						increaseValue={onIncreaseValue}
-						decreaseDisabled={satsPerByte <= minFee}
+						decreaseDisabled={transaction.satsPerByte <= transaction.minFee}
 					/>
 				) : (
 					<ImageText

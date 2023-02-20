@@ -117,7 +117,7 @@ const Recipient = ({
 	 * Returns the current output by index.
 	 */
 	const getOutput = useMemo((): IOutput => {
-		return transaction.outputs?.[index] ?? { address: '', value: 0, index: 0 };
+		return transaction.outputs[index] ?? { address: '', value: 0, index: 0 };
 	}, [index, transaction.outputs]);
 
 	/**
@@ -253,7 +253,7 @@ const Recipient = ({
 		}
 
 		// Continue updating the on-chain information as we would previously.
-		const tx: IBitcoinTransactionData = {
+		const tx: Partial<IBitcoinTransactionData> = {
 			outputs: [{ address: tAddress, value, index }],
 			lightningInvoice: '',
 		};

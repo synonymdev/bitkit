@@ -39,14 +39,14 @@ const PinPad = ({
 
 	const handleOnPress = (number: number | string): void => {
 		if (pin.length !== 4) {
-			vibrate({});
+			vibrate();
 			setPin((p) => p + String(number));
 		}
 	};
 
 	const handleOnRemove = (): void => {
 		if (pin.length !== 0) {
-			vibrate({});
+			vibrate();
 			setPin((p) => p.slice(0, -1));
 		}
 	};
@@ -104,7 +104,7 @@ const PinPad = ({
 			// error getting pin
 			if (realPIN.error) {
 				await reducePinAttemptsRemaining();
-				vibrate({});
+				vibrate();
 				setPin('');
 				return;
 			}
@@ -113,7 +113,7 @@ const PinPad = ({
 			if (pin !== realPIN?.data) {
 				if (attemptsRemaining <= 1) {
 					vibrate({ type: 'default' });
-					await wipeApp({});
+					await wipeApp();
 					showErrorNotification({
 						title: 'Bitkit Wiped',
 						message: 'All wallet data has been wiped.',
@@ -122,7 +122,7 @@ const PinPad = ({
 					await reducePinAttemptsRemaining();
 				}
 
-				vibrate({});
+				vibrate();
 				setPin('');
 				return;
 			}

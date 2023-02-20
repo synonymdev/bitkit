@@ -1,7 +1,6 @@
 import Store from '../types';
 import { createSelector } from '@reduxjs/toolkit';
 import {
-	defaultBitcoinTransactionData,
 	IWalletStore,
 	IWallets,
 	IWallet,
@@ -14,6 +13,7 @@ import {
 	IAddressTypes,
 	EAddressType,
 } from '../types/wallet';
+import { defaultBitcoinTransactionData } from '../shapes/wallet';
 import { TAvailableNetworks } from '../../utils/networks';
 import { IExchangeRates } from '../../utils/exchange-rate/types';
 import { EFeeId } from '../types/fees';
@@ -126,7 +126,7 @@ export const transactionInputsSelector = createSelector(
 		const transaction =
 			wallet.wallets[selectedWallet]?.transaction[selectedNetwork] ||
 			defaultBitcoinTransactionData;
-		return transaction?.inputs ?? [];
+		return transaction.inputs;
 	},
 );
 

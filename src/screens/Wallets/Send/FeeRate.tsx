@@ -54,16 +54,15 @@ const FeeRate = ({ navigation }: SendScreenProps<'FeeRate'>): ReactElement => {
 	}, [selectedNetwork, selectedWallet, transaction.outputs]);
 
 	const satsPerByte = useMemo(
-		(): number => transaction.satsPerByte ?? 1,
+		(): number => transaction.satsPerByte,
 		[transaction.satsPerByte],
 	);
 
 	const getFee = useCallback(
 		(_satsPerByte: number) => {
-			const message = transaction.message;
 			return getTotalFee({
 				satsPerByte: _satsPerByte,
-				message,
+				message: transaction.message,
 				selectedWallet,
 				selectedNetwork,
 			});

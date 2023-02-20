@@ -30,13 +30,12 @@ const FeeCustom = ({
 
 	const getFee = useCallback(
 		(_satsPerByte = 1) => {
-			const message = transaction?.message;
 			return getTotalFee({
 				satsPerByte: _satsPerByte,
-				message,
+				message: transaction.message,
 			});
 		},
-		[transaction?.message],
+		[transaction.message],
 	);
 
 	const feeSats = useMemo(

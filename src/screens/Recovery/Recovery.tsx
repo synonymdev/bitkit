@@ -61,7 +61,7 @@ const Recovery = ({
 	};
 
 	const onWipeApp = async (): Promise<void> => {
-		await wipeApp({});
+		await wipeApp();
 		setShowDialog(false);
 	};
 

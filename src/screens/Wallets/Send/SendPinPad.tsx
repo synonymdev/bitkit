@@ -16,14 +16,14 @@ const SendPinPad = ({ onSuccess }: { onSuccess: () => void }): ReactElement => {
 
 	const handleOnPress = (number: number | string): void => {
 		if (pin.length !== 4) {
-			vibrate({});
+			vibrate();
 			setPin((p) => p + String(number));
 		}
 	};
 
 	const handleOnRemove = (): void => {
 		if (pin.length !== 0) {
-			vibrate({});
+			vibrate();
 			setPin((p) => p.slice(0, -1));
 		}
 	};
@@ -39,14 +39,14 @@ const SendPinPad = ({ onSuccess }: { onSuccess: () => void }): ReactElement => {
 
 			// error getting pin
 			if (realPIN.error) {
-				vibrate({});
+				vibrate();
 				setPin('');
 				return;
 			}
 
 			// incorrect pin
 			if (pin !== realPIN?.data) {
-				vibrate({});
+				vibrate();
 				setWrongPin(true);
 				setPin('');
 				return;

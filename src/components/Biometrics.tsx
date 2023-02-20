@@ -106,7 +106,7 @@ const Biometrics = ({
 							updateSettings({ biometrics: true });
 							onSuccess();
 						} else {
-							vibrate({});
+							vibrate();
 							onFailure?.();
 						}
 					})
