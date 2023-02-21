@@ -29,15 +29,14 @@ export default class ErrorBoundary extends Component<Props, State> {
 		}
 
 		return (
-			<SafeAreaView>
+			<SafeAreaView style={styles.root}>
 				<ScrollView style={styles.root}>
-					<Text style={styles.header}>Oops! There's an error</Text>
-					<Text>{error.message}</Text>
+					<Text style={styles.header}>Oops! There's an error:</Text>
+					<Text style={styles.text}>{error.message}</Text>
 					<Text style={styles.header}>Component stack:</Text>
-					<Text>{error.componentStack}</Text>
+					<Text style={styles.text}>{error.componentStack}</Text>
 					<Text style={styles.header}>Stack:</Text>
-					<Text>{error.stack}</Text>
-					<Text />
+					<Text style={styles.text}>{error.stack}</Text>
 				</ScrollView>
 			</SafeAreaView>
 		);
@@ -46,7 +45,9 @@ export default class ErrorBoundary extends Component<Props, State> {
 
 const styles = StyleSheet.create({
 	root: {
-		paddingHorizontal: 8,
+		backgroundColor: 'black',
+		paddingHorizontal: 16,
+		flex: 1,
 	},
 	header: {
 		fontSize: 16,
@@ -54,5 +55,8 @@ const styles = StyleSheet.create({
 		textAlign: 'center',
 		color: 'orange',
 		marginVertical: 8,
+	},
+	text: {
+		color: 'white',
 	},
 });
