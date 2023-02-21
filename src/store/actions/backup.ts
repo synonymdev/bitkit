@@ -327,7 +327,7 @@ export const performWidgetsRestore = async ({
 
 	const expectedBackupShape = getDefaultWidgetsShape();
 	//If the keys in the backup object are not found in the reference object assume the backup does not exist.
-	if (!isObjPartialMatch(backup, expectedBackupShape)) {
+	if (!isObjPartialMatch(backup, expectedBackupShape, ['widgets'])) {
 		return ok({ backupExists: false });
 	}
 

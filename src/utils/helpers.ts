@@ -327,7 +327,7 @@ export const isObjPartialMatch = (
 			return true;
 		}
 		if (key in referenceObj) {
-			if (typeof testObj[key] === 'object') {
+			if (!Array.isArray(testObj[key]) && typeof testObj[key] === 'object') {
 				return isObjPartialMatch(testObj[key], referenceObj[key]);
 			}
 			return true;
