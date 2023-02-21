@@ -314,7 +314,7 @@ export const objectsMatch = (obj1, obj2): boolean => {
  * @param {string[]} [keysToExclude] Returns true when excluded object keys are encountered.
  * @returns boolean
  */
-export const testObjIsPartialMatch = (
+export const isObjPartialMatch = (
 	testObj,
 	referenceObj,
 	keysToExclude: string[] = [],
@@ -328,7 +328,7 @@ export const testObjIsPartialMatch = (
 		}
 		if (key in referenceObj) {
 			if (typeof testObj[key] === 'object') {
-				return testObjIsPartialMatch(testObj[key], referenceObj[key]);
+				return isObjPartialMatch(testObj[key], referenceObj[key]);
 			}
 			return true;
 		}

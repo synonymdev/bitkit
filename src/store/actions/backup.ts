@@ -26,7 +26,7 @@ import { updateSettings } from './settings';
 import { IBackup, TAccountBackup } from '../types/backup';
 import { IWidgetsStore } from '../types/widgets';
 import { updateWidgets } from './widgets';
-import { testObjIsPartialMatch } from '../../utils/helpers';
+import { isObjPartialMatch } from '../../utils/helpers';
 import { getDefaultSettingsShape } from '../shapes/settings';
 import { getDefaultWidgetsShape } from '../shapes/widgets';
 
@@ -285,7 +285,7 @@ export const performSettingsRestore = async ({
 
 	const expectedBackupShape = getDefaultSettingsShape();
 	//If the keys in the backup object are not found in the reference object assume the backup does not exist.
-	if (!testObjIsPartialMatch(backup, expectedBackupShape)) {
+	if (!isObjPartialMatch(backup, expectedBackupShape)) {
 		return ok({ backupExists: false });
 	}
 
@@ -327,7 +327,7 @@ export const performWidgetsRestore = async ({
 
 	const expectedBackupShape = getDefaultWidgetsShape();
 	//If the keys in the backup object are not found in the reference object assume the backup does not exist.
-	if (!testObjIsPartialMatch(backup, expectedBackupShape)) {
+	if (!isObjPartialMatch(backup, expectedBackupShape)) {
 		return ok({ backupExists: false });
 	}
 
