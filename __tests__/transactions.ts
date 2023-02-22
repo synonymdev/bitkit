@@ -61,7 +61,7 @@ describe('On chain transactions', () => {
 		);
 
 		expect(res.value.id).toEqual(
-			'5354adb3f4549da123802f46817e0a3ce6fb5108b056636674721e4a693a59ff',
+			'4155049f78ff36c13dd9ca4c657799600115579a86bb465601ec8ca0af9f6982',
 		);
 	});
 });
