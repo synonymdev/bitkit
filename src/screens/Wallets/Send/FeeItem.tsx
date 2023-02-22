@@ -64,7 +64,7 @@ const FeeItem = ({
 					<View style={styles.cell}>
 						<Text01M>{title}</Text01M>
 						<View style={styles.sats}>
-							<LightningIcon height={17} color="gray1" />
+							<LightningIcon height={16} color="gray1" />
 							<Text01M>{sats}</Text01M>
 						</View>
 					</View>

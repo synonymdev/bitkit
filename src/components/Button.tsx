@@ -3,6 +3,7 @@ import {
 	StyleSheet,
 	ActivityIndicator,
 	TouchableOpacityProps,
+	Platform,
 } from 'react-native';
 import { View, TouchableOpacity } from '../styles/components';
 import { Caption13M, Text02M } from '../styles/text';
@@ -65,8 +66,13 @@ const Button = ({
 			...textStyle,
 			...(text && icon && { marginLeft: 8 }),
 			...(disabled && !icon && { color: white32 }),
+			...Platform.select({
+				android: {
+					lineHeight: size === 'small' ? 15 : 18,
+				},
+			}),
 		};
-	}, [textStyle, text, icon, disabled, white32]);
+	}, [textStyle, text, icon, disabled, white32, size]);
 
 	const Text = size === 'small' ? Caption13M : Text02M;
 
