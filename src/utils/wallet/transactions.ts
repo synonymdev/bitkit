@@ -179,8 +179,7 @@ const setReplaceByFee = ({
 };
 
 /*
-	Source:
-	https://gist.github.com/junderw/b43af3253ea5865ed52cb51c200ac19c
+	Adapted from: https://gist.github.com/junderw/b43af3253ea5865ed52cb51c200ac19c
 	Usage:
 	getByteCount({'MULTISIG-P2SH:2-4':45},{'P2PKH':1}) Means "45 inputs of P2SH Multisig and 1 output of P2PKH"
 	getByteCount({'P2PKH':1,'MULTISIG-P2SH:2-3':2},{'P2PKH':2}) means "1 P2PKH input and 2 Multisig P2SH (2 of 3) inputs along with 2 P2PKH outputs"
@@ -191,11 +190,10 @@ export const getByteCount = (
 	message?: string,
 ): number => {
 	try {
-		let totalWeight = 0;
+		// Base transaction weight
+		let totalWeight = 40;
 		let hasWitness = false;
-		let inputCount = 0;
-		let outputCount = 0;
-		// assumes compressed pubkeys in all cases.
+
 		const types: {
 			inputs: {
 				[key in TGetByteCountInput]: number;
@@ -240,18 +238,6 @@ export const getByteCount = (
 			}
 		};
 
-		const varIntLength = (number: number): number => {
-			checkUInt53(number);
-
-			return number < 0xfd
-				? 1
-				: number <= 0xffff
-				? 3
-				: number <= 0xffffffff
-				? 5
-				: 9;
-		};
-
 		const inputKeys = objectKeys(inputs);
 		inputKeys.forEach(function (key) {
 			const input = inputs[key]!;
@@ -264,10 +250,7 @@ export const getByteCount = (
 					throw new Error('invalid input: ' + key);
 				}
 				const newKey = keyParts[0];
-				const mAndN = keyParts[1].split('-').map(function (item) {
-					// eslint-disable-next-line radix
-					return parseInt(item);
-				});
+				const mAndN = keyParts[1].split('-').map((item) => parseInt(item, 10));
 
 				totalWeight += types.multiSigInputs[newKey] * addressTypeCount;
 				const multiplyer = newKey === 'MULTISIG-P2SH' ? 4 : 1;
@@ -276,8 +259,7 @@ export const getByteCount = (
 			} else {
 				totalWeight += types.inputs[key] * addressTypeCount;
 			}
-			inputCount += addressTypeCount;
-			if (key.indexOf('W') >= 0) {
+			if (['p2sh', 'P2SH', 'P2SH-P2WPKH', 'p2wpkh', 'P2WPKH'].includes(key)) {
 				hasWitness = true;
 			}
 		});
@@ -287,22 +269,19 @@ export const getByteCount = (
 			const output = outputs[key]!;
 			checkUInt53(output);
 			totalWeight += types.outputs[key] * output;
-			outputCount += output;
 		});
 
 		if (hasWitness) {
 			totalWeight += 2;
 		}
 
-		totalWeight += 8 * 4;
-		totalWeight += varIntLength(inputCount) * 4;
-		totalWeight += varIntLength(outputCount) * 4;
+		if (message?.length) {
+			// Multiply by 2 to help ensure Electrum servers will broadcast the tx.
+			totalWeight += message.length * 2;
+		}
 
-		let messageByteCount = message?.length ?? 0;
-		//Multiply by 2 to help ensure Electrum servers will broadcast the tx.
-		messageByteCount = messageByteCount * 2;
-
-		return Math.ceil(totalWeight / 4) + messageByteCount;
+		// Convert from Weight Units to virtual size
+		return Math.ceil(totalWeight / 4);
 	} catch (e) {
 		return ETransactionDefaults.recommendedBaseFee;
 	}
@@ -392,15 +371,11 @@ export const getTotalFee = ({
 		const outputParam = constructByteCountParam(outputAddresses);
 		//Increase P2WPKH output address by one for lightning funding calculation.
 		if (fundingLightning) {
-			outputParam.P2WPKH = (outputParam?.P2WPKH || 0) + 1;
+			outputParam.P2WPKH = (outputParam.P2WPKH || 0) + 1;
 		}
 
-		const transactionByteCount =
-			getByteCount(inputParam, outputParam, message) || fallBackFee;
-		const totalFee = transactionByteCount * Number(satsPerByte);
-		return totalFee > fallBackFee || Number.isNaN(totalFee)
-			? totalFee
-			: fallBackFee;
+		const transactionByteCount = getByteCount(inputParam, outputParam, message);
+		return transactionByteCount * Number(satsPerByte);
 	} catch {
 		return Number(satsPerByte) * fallBackFee || fallBackFee;
 	}
@@ -1399,9 +1374,6 @@ export const validateTransaction = (
 		if (!transaction?.fee) {
 			return err('No transaction fee provided.');
 		}
-		if (transaction.fee < baseFee) {
-			return err(`Transaction fee must be larger than ${baseFee}.`);
-		}
 		if (
 			!transaction?.outputs ||
 			transaction.outputs?.length < 1 ||
@@ -1458,10 +1430,6 @@ export const validateTransaction = (
 			return err(outputsReduce.error.message);
 		}
 
-		const fee = transaction.fee;
-		if (fee < baseFee) {
-			return err(`Fee must be larger than ${baseFee}`);
-		}
 		return ok('Transaction is valid.');
 	} catch (e) {
 		return err(e);
