@@ -31,7 +31,7 @@ describe('On chain transactions', () => {
 	it('Creates an on chain transaction from the transaction store', async () => {
 		const selectedWallet = getSelectedWallet();
 
-		await updateBitcoinTransaction({
+		updateBitcoinTransaction({
 			selectedNetwork,
 			selectedWallet,
 			transaction: {

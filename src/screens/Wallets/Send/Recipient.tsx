@@ -222,7 +222,7 @@ const Recipient = ({
 					transaction: {
 						outputs: [{ address: clipboardData, value, index }],
 					},
-				}).then();
+				});
 			}
 		},
 		[index, value, selectedNetwork, selectedWallet, sdk],
@@ -269,7 +269,7 @@ const Recipient = ({
 			selectedWallet,
 			selectedNetwork,
 			transaction: tx,
-		}).then();
+		});
 	}, [
 		handledOsPaste,
 		address,
@@ -303,7 +303,7 @@ const Recipient = ({
 					outputs: [{ address: txt, value, index }],
 					lightningInvoice: '',
 				},
-			}).then();
+			});
 		},
 		[
 			handlePaste,

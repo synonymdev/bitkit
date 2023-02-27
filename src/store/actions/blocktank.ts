@@ -1,6 +1,6 @@
 import actions from './actions';
 import { err, ok, Result } from '@synonymdev/result';
-import { getBlocktankStore, getDispatch } from '../helpers';
+import { getBlocktankStore, getDispatch, getFeesStore } from '../helpers';
 import {
 	IBuyChannelRequest,
 	IBuyChannelResponse,
@@ -268,7 +268,7 @@ export const autoBuyChannel = async ({
 		selectedNetwork,
 		selectedWallet,
 	});
-	await updateBitcoinTransaction({
+	updateBitcoinTransaction({
 		transaction: {
 			outputs: [
 				{
@@ -281,7 +281,7 @@ export const autoBuyChannel = async ({
 		selectedNetwork,
 		selectedWallet,
 	});
-	await updateFee({ satsPerByte: 4, selectedNetwork, selectedWallet });
+	updateFee({ satsPerByte: 4, selectedNetwork, selectedWallet });
 	console.log('Creating Transaction...');
 	const rawTx = await createTransaction({ selectedNetwork, selectedWallet });
 	console.log('rawTx:', rawTx);
@@ -382,9 +382,8 @@ export const startChannelPurchase = async ({
 		return err(orderData.error.message);
 	}
 
-	await updateBitcoinTransaction({
+	updateBitcoinTransaction({
 		transaction: {
-			rbf: false,
 			outputs: [
 				{
 					value: buyChannelResponse.value.total_amount,
@@ -395,10 +394,21 @@ export const startChannelPurchase = async ({
 		},
 	});
 
-	// Set fee appropriately to open an instant channel.
 	const zero_conf_satvbyte = orderData.value.zero_conf_satvbyte;
 	if (zero_conf_satvbyte) {
-		await updateFee({ satsPerByte: zero_conf_satvbyte, selectedNetwork });
+		// Set fee appropriately to open an instant channel.
+		updateFee({
+			satsPerByte: zero_conf_satvbyte,
+			selectedNetwork,
+			selectedWallet,
+		});
+	} else {
+		const feeEstimates = getFeesStore().onchain;
+		updateFee({
+			satsPerByte: feeEstimates.fast,
+			selectedNetwork,
+			selectedWallet,
+		});
 	}
 
 	const transactionDataRes = getOnchainTransactionData({
@@ -417,13 +427,13 @@ export const startChannelPurchase = async ({
 
 	// Ensure we have enough funds to pay for both the channel and the fee to broadcast the transaction.
 	if (
-		(transaction?.fee ?? 0) + (buyChannelResponse.value?.total_amount ?? 0) >
+		transaction.fee + buyChannelResponse.value.total_amount >
 		currentBalance.satoshis
 	) {
 		// TODO: Attempt to re-calculate a lower fee channel-open that's not instant if unable to pay.
 		const delta = Math.abs(
-			(transaction?.fee ?? 0) +
-				(buyChannelResponse.value?.price ?? 0) -
+			transaction.fee +
+				buyChannelResponse.value.price -
 				currentBalance.satoshis,
 		);
 		const cost = getDisplayValues({

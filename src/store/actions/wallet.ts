@@ -1075,7 +1075,7 @@ export const getChangeAddress = async ({
  * @param {TAvailableNetworks} [selectedNetwork]
  * @return {Promise<Result<string>>}
  */
-export const updateBitcoinTransaction = async ({
+export const updateBitcoinTransaction = ({
 	transaction,
 	selectedWallet,
 	selectedNetwork,
@@ -1083,7 +1083,7 @@ export const updateBitcoinTransaction = async ({
 	transaction: Partial<IBitcoinTransactionData>;
 	selectedWallet?: TWalletName;
 	selectedNetwork?: TAvailableNetworks;
-}): Promise<Result<string>> => {
+}): Result<string> => {
 	try {
 		if (!selectedNetwork) {
 			selectedNetwork = getSelectedNetwork();
@@ -1143,7 +1143,7 @@ export const updateSelectedFeeId = async ({
 		}
 		const transaction = transactionResponse.value;
 		transaction.selectedFeeId = feeId;
-		await updateBitcoinTransaction({ transaction });
+		updateBitcoinTransaction({ transaction });
 		return ok('Fee updated');
 	} catch (e) {
 		console.log(e);

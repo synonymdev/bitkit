@@ -701,9 +701,7 @@ export const createTransaction = async ({
 	}
 
 	//Remove any outputs that are below the dust limit and apply them to the fee.
-	if (transactionData?.outputs) {
-		transactionData.outputs = removeDustOutputs(transactionData.outputs);
-	}
+	removeDustOutputs(transactionData.outputs);
 
 	const inputValue = getTransactionInputValue({
 		selectedNetwork,
@@ -1125,10 +1123,10 @@ export const updateFee = ({
 	});
 
 	const max = transaction.max;
-	const message = transaction.message ?? '';
-	const outputs = transaction.outputs ?? [];
+	const message = transaction.message;
+	const outputs = transaction.outputs;
 	let address = '';
-	if (outputs?.length > index) {
+	if (outputs.length > index) {
 		address = outputs[index]?.address ?? '';
 	}
 
@@ -1166,7 +1164,7 @@ export const updateFee = ({
 			selectedNetwork,
 			selectedWallet,
 			transaction: _transaction,
-		}).then();
+		});
 		return ok('Successfully updated the transaction fee.');
 	}
 	return err(
@@ -1558,13 +1556,13 @@ export const sendMax = ({
 					selectedWallet,
 					selectedNetwork,
 					transaction: _transaction,
-				}).then();
+				});
 			} else {
 				updateBitcoinTransaction({
 					selectedWallet,
 					selectedNetwork,
 					transaction: { max: !max },
-				}).then();
+				});
 			}
 		} else {
 			// onchain transaction
@@ -1594,13 +1592,13 @@ export const sendMax = ({
 					selectedWallet,
 					selectedNetwork,
 					transaction: _transaction,
-				}).then();
+				});
 			} else {
 				updateBitcoinTransaction({
 					selectedWallet,
 					selectedNetwork,
 					transaction: { max: !max },
-				}).then();
+				});
 			}
 		}
 
@@ -1710,9 +1708,9 @@ export const updateAmount = async ({
 
 	let newAmount = Number(amount);
 	let inputTotal = 0;
-	const outputs = transaction?.outputs ?? [];
+	const outputs = transaction.outputs;
 
-	if (transaction?.lightningInvoice) {
+	if (transaction.lightningInvoice) {
 		// lightning transaction
 		const { satoshis } = getBalance({
 			lightning: true,
@@ -1726,8 +1724,8 @@ export const updateAmount = async ({
 		}
 	} else {
 		// onchain transaction
-		const satsPerByte = transaction?.satsPerByte ?? 1;
-		const message = transaction?.message;
+		const satsPerByte = transaction.satsPerByte;
+		const message = transaction.message;
 
 		let totalNewAmount = 0;
 		const totalFee = getTotalFee({
@@ -1761,7 +1759,7 @@ export const updateAmount = async ({
 
 	let address = '';
 	let value = 0;
-	if (outputs?.length > index) {
+	if (outputs.length > index) {
 		value = outputs[index].value ?? 0;
 		address = outputs[index].address ?? '';
 	}
@@ -1775,7 +1773,7 @@ export const updateAmount = async ({
 	}
 
 	const output = { address, value: newAmount, index };
-	await updateBitcoinTransaction({
+	updateBitcoinTransaction({
 		selectedWallet,
 		selectedNetwork,
 		transaction: {
@@ -1856,7 +1854,7 @@ export const updateMessage = async ({
 			selectedNetwork,
 			selectedWallet,
 			transaction: _transaction,
-		}).then();
+		});
 		return ok('Successfully updated the message.');
 	}
 	if (totalNewAmount <= inputTotal) {
@@ -1864,7 +1862,7 @@ export const updateMessage = async ({
 			selectedNetwork,
 			selectedWallet,
 			transaction: _transaction,
-		}).then();
+		});
 	}
 	return ok('Successfully updated the message.');
 };
@@ -2121,7 +2119,7 @@ export const setupRbf = async ({
 				txid,
 			});
 		}
-		const newTransaction = {
+		const newTransaction: Partial<IBitcoinTransactionData> = {
 			...transaction,
 			minFee: _satsPerByte,
 			fee: newFee,
@@ -2130,7 +2128,7 @@ export const setupRbf = async ({
 			boostType: EBoostType.rbf,
 		};
 
-		await updateBitcoinTransaction({
+		updateBitcoinTransaction({
 			selectedWallet,
 			selectedNetwork,
 			transaction: newTransaction,
@@ -2312,7 +2310,7 @@ export const getFeeEstimates = async (
 			selectedNetwork = getSelectedNetwork();
 		}
 
-		if (__DEV__ && selectedNetwork === 'bitcoinTestnet') {
+		if (__DEV__ && selectedNetwork === 'bitcoinRegtest') {
 			return defaultFeesShape.onchain;
 		}
 

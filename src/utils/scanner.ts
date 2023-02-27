@@ -721,7 +721,7 @@ export const handleData = async ({
 				amount = outputAmount.value;
 			}
 
-			await updateBitcoinTransaction({
+			updateBitcoinTransaction({
 				selectedWallet,
 				selectedNetwork,
 				transaction: {
@@ -756,7 +756,7 @@ export const handleData = async ({
 				sendNavigation.navigate('Amount');
 			}
 
-			await updateBitcoinTransaction({
+			updateBitcoinTransaction({
 				selectedWallet,
 				selectedNetwork,
 				transaction: {

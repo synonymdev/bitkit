@@ -141,7 +141,7 @@ describe('Wallet - new wallet, send and receive', () => {
 		expect(tx11?.satsPerByte).toBe(2);
 
 		// set address and amount
-		res = await updateBitcoinTransaction({
+		res = updateBitcoinTransaction({
 			transaction: {
 				outputs: [{ address: receivingAddress1, value: 50_000_000, index: 0 }],
 			},
@@ -237,7 +237,7 @@ describe('Wallet - new wallet, send and receive', () => {
 		}
 
 		// set address and amount
-		res = await updateBitcoinTransaction({
+		res = updateBitcoinTransaction({
 			transaction: {
 				outputs: [{ address: receivingAddress2, value: 50_000_000, index: 0 }],
 				rbf: true,

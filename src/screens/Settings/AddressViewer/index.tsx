@@ -687,7 +687,7 @@ const AddressViewer = ({
 			if (receiveAddress.isErr()) {
 				return;
 			}
-			await updateBitcoinTransaction({
+			updateBitcoinTransaction({
 				transaction: {
 					...transactionRes.value,
 					outputs: [{ address: receiveAddress.value, value: 0, index: 0 }],
