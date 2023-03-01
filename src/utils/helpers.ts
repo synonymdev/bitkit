@@ -13,6 +13,7 @@ import {
 	EBitcoinUnit,
 	TTicker,
 } from '../store/types/wallet';
+import i18n from '../utils/i18n';
 
 export const promiseTimeout = <T>(
 	ms: number,
@@ -393,90 +394,66 @@ export const abbreviateNumber = (
 	return { newValue: _newValue, abbreviation };
 };
 
-const getMonthName = (index: number): string => {
-	//TODO translate these
-	const months = [
-		'January',
-		'February',
-		'March',
-		'April',
-		'May',
-		'June',
-		'July',
-		'August',
-		'September',
-		'October',
-		'November',
-		'December',
-	];
-
-	if (index + 1 > months.length) {
-		return 'TODO';
-	}
-
-	return months[index];
-};
-
-export const getFormattedDate = (
-	date: Date,
-	preFormattedDate: string = '',
-	hideYear: boolean = false,
-): string => {
-	const day = date.getDate();
-	const month = getMonthName(date.getMonth());
-	const year = date.getFullYear();
-	const hours = date.getHours();
-	let minutes = date.getMinutes();
-	let minutesStr = `${minutes}`;
-	if (minutes < 10) {
-		// Adding leading zero to minutes
-		minutesStr = `0${minutes}`;
-	}
-
-	if (preFormattedDate) {
-		// Today at 10:20
-		// Yesterday at 10:20
-		return `${preFormattedDate} at ${hours}:${minutesStr}`;
-	}
-
-	if (hideYear) {
-		// 10. January at 10:20
-		return `${day} ${month} at ${hours}:${minutesStr}`;
-	}
-
-	// 10 January 2017 at 10:20
-	return `${day} ${month} ${year} at ${hours}:${minutesStr}`;
-};
-
 export const timeAgo = (timestamp: number): string => {
 	const date = new Date(timestamp);
 
-	const DAY_IN_MS = 24 * 60 * 60 * 1000;
 	const today = new Date();
-	const yesterday = new Date(today.getTime() - DAY_IN_MS);
 	const seconds = Math.round((today.getTime() - date.getTime()) / 1000);
 	const minutes = Math.round(seconds / 60);
-	const isToday = today.toDateString() === date.toDateString();
-	const isYesterday = yesterday.toDateString() === date.toDateString();
+	const hours = Math.round(minutes / 60);
+	const days = Math.round(hours / 24);
 	const isThisYear = today.getFullYear() === date.getFullYear();
 
 	if (seconds < 5) {
-		return 'now';
+		return i18n.t('intl:relativeTime', {
+			v: 0,
+			range: 'seconds',
+			numeric: 'auto',
+		});
 	} else if (seconds < 60) {
-		return `${seconds} seconds ago`;
-	} else if (seconds < 90) {
-		return 'about a minute ago';
+		return i18n.t('intl:relativeTime', {
+			v: -seconds,
+			range: 'seconds',
+			numeric: 'auto',
+		});
 	} else if (minutes < 60) {
-		return `${minutes} minutes ago`;
-	} else if (isToday) {
-		return getFormattedDate(date, 'Today'); // Today at 10:20
-	} else if (isYesterday) {
-		return getFormattedDate(date, 'Yesterday'); // Yesterday at 10:20
+		return i18n.t('intl:relativeTime', {
+			v: -minutes,
+			range: 'minute',
+			numeric: 'auto',
+		});
+	} else if (hours < 24) {
+		return i18n.t('intl:relativeTime', {
+			v: -hours,
+			range: 'hour',
+			numeric: 'auto',
+		});
+	} else if (days < 10) {
+		return i18n.t('intl:relativeTime', {
+			v: -days,
+			range: 'day',
+			numeric: 'auto',
+		});
 	} else if (isThisYear) {
-		return getFormattedDate(date, '', true); // 10 January at 10:20
+		// January 1 at 12:00 AM
+		return i18n.t('intl:dateTime', {
+			v: date,
+			formatParams: {
+				v: {
+					month: 'long',
+					day: 'numeric',
+					hour: 'numeric',
+					minute: 'numeric',
+				},
+			},
+		});
 	}
 
-	return getFormattedDate(date); // 10. January 2017. at 10:20
+	// January 1, 1970
+	return i18n.t('intl:dateTime', {
+		v: date,
+		formatParams: { v: { month: 'long', day: 'numeric', year: 'numeric' } },
+	});
 };
 
 export const openURL = async (url: string): Promise<void> => {

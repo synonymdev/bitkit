@@ -29,8 +29,6 @@ const getDeviceLanguage = (): string => {
 		language = language.split('_')[0];
 	}
 
-	console.info('language', language);
-
 	return language;
 };
 

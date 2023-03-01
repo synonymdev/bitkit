@@ -57,11 +57,11 @@ export const getExchangeRates = async (): Promise<Result<IExchangeRates>> => {
 		console.error(e);
 
 		if (lastUpdatedAt) {
-			const date = timeAgo(lastUpdatedAt);
-
 			showErrorNotification({
 				title: i18n.t('other:rate_error_title'),
-				message: i18n.t('other:rate_error_msg_date', { date }),
+				message: i18n.t('other:rate_error_msg_date', {
+					date: timeAgo(lastUpdatedAt),
+				}),
 			});
 		} else {
 			showErrorNotification({

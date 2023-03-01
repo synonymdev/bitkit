@@ -57,5 +57,6 @@
 	"lnurl_withdr_error_connect": "Unable to connect to LNURL withdraw server.",
 	"lnurl_withdr_success_title": "Withdraw Requested",
 	"lnurl_withdr_success_msg": "LNURL Withdraw was successfully requested.",
-	"bt_error_retrieve": "Unable To Retrieve Order Information"
+	"bt_error_retrieve": "Unable To Retrieve Order Information",
+	"earlier": "EARLIER"
 }

@@ -19,6 +19,9 @@ import slashtagsRU from './ru/slashtags.json';
 import walletEN from './en/wallet.json';
 import walletRU from './ru/wallet.json';
 
+// intl
+import intlEN from './en/intl.json';
+
 export default {
 	en: {
 		cards: cardsEN,
@@ -31,6 +34,7 @@ export default {
 		settings: settingsEN,
 		slashtags: slashtagsEN,
 		wallet: walletEN,
+		intl: intlEN,
 	},
 	ru: {
 		cards: cardsRU,

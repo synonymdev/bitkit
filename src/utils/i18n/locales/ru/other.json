@@ -56,5 +56,6 @@
 	"lnurl_withdr_error_create_invoice": "Не удалось успешно создать инвойс на вывод для LNURL.",
 	"lnurl_withdr_error_connect": "Не удалось подключиться к серверу вывода LNURL.",
 	"lnurl_withdr_success_title": "Запрос на вывод",
-	"lnurl_withdr_success_msg": "Вывод LNURL был успешно запрошен."
+	"lnurl_withdr_success_msg": "Вывод LNURL был успешно запрошен.",
+	"earlier": "РАНЕЕ"
 }

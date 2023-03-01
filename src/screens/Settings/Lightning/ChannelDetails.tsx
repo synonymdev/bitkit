@@ -219,21 +219,24 @@ const ChannelDetails = ({
 			if (!timestamp) {
 				return;
 			}
-			const formattedDate = new Date(timestamp * 1000).toLocaleString(
-				undefined,
-				{
-					year: 'numeric',
-					month: 'short',
-					day: 'numeric',
-					hour: 'numeric',
-					minute: 'numeric',
-					hour12: false,
+
+			const formattedDate = t('intl:dateTime', {
+				v: new Date(timestamp * 1000),
+				formatParams: {
+					v: {
+						year: 'numeric',
+						month: 'short',
+						day: 'numeric',
+						hour: 'numeric',
+						minute: 'numeric',
+						hour12: false,
+					},
 				},
-			);
+			});
 
 			setTxTime(formattedDate);
 		});
-	}, [selectedNetwork, channel.funding_txid]);
+	}, [selectedNetwork, channel.funding_txid, t]);
 
 	const openSupportLink = async (order: IGetOrderResponse): Promise<void> => {
 		await openURL(
@@ -301,17 +304,19 @@ const ChannelDetails = ({
 							name={t('created_on')}
 							value={
 								<Caption13M>
-									{new Date(blocktankOrder.created_at).toLocaleString(
-										undefined,
-										{
-											year: 'numeric',
-											month: 'short',
-											day: 'numeric',
-											hour: 'numeric',
-											minute: 'numeric',
-											hour12: false,
+									{t('intl:dateTime', {
+										v: new Date(blocktankOrder.created_at),
+										formatParams: {
+											v: {
+												year: 'numeric',
+												month: 'short',
+												day: 'numeric',
+												hour: 'numeric',
+												minute: 'numeric',
+												hour12: false,
+											},
 										},
-									)}
+									})}
 								</Caption13M>
 							}
 						/>

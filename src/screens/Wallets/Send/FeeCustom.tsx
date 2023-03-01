@@ -45,7 +45,6 @@ const FeeCustom = ({
 		[getFee, transaction.satsPerByte],
 	);
 	const totalFeeDisplay = useDisplayValues(feeSats);
-
 	const feeTotal = useMemo(() => {
 		if (totalFeeDisplay.fiatFormatted === '—') {
 			return t('send_fee_total', { feeSats });

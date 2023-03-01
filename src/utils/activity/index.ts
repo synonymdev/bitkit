@@ -7,6 +7,7 @@ import {
 	IActivityItemFormatted,
 	TOnchainActivityItem,
 } from '../../store/types/activity';
+import i18n from '../../utils/i18n';
 
 /**
  * Converts a formatted transaction to an activity item
@@ -174,56 +175,81 @@ export const groupActivityItems = (
 			// today format as 22:40
 			today.push({
 				...item,
-				formattedDate: new Date(item.timestamp).toLocaleString(undefined, {
-					hour: 'numeric',
-					minute: 'numeric',
-					hour12: false,
+				formattedDate: i18n.t('intl:dateTime', {
+					v: new Date(item.timestamp),
+					formatParams: {
+						v: {
+							hour: 'numeric',
+							minute: 'numeric',
+							hour12: false,
+						},
+					},
 				}),
 			});
 		} else if (item.timestamp >= beginningOfYesterday) {
 			// yesterday format as 22:40
 			yesterday.push({
 				...item,
-				formattedDate: new Date(item.timestamp).toLocaleString(undefined, {
-					hour: 'numeric',
-					minute: 'numeric',
-					hour12: false,
+				formattedDate: i18n.t('intl:dateTime', {
+					v: new Date(item.timestamp),
+					formatParams: {
+						v: {
+							hour: 'numeric',
+							minute: 'numeric',
+							hour12: false,
+						},
+					},
 				}),
 			});
 		} else if (item.timestamp >= beginningOfMonth) {
 			// month, format as April 4, 08:29
 			month.push({
 				...item,
-				formattedDate: new Date(item.timestamp).toLocaleString(undefined, {
-					month: 'long',
-					day: 'numeric',
-					hour: 'numeric',
-					minute: 'numeric',
-					hour12: false,
+				formattedDate: i18n.t('intl:dateTime', {
+					v: new Date(item.timestamp),
+					formatParams: {
+						v: {
+							month: 'long',
+							day: 'numeric',
+							hour: 'numeric',
+							minute: 'numeric',
+							hour12: false,
+						},
+					},
 				}),
 			});
 		} else if (item.timestamp >= beginningOfYear) {
 			// year, format as April 4, 08:29
 			year.push({
 				...item,
-				formattedDate: new Date(item.timestamp).toLocaleString(undefined, {
-					month: 'long',
-					day: 'numeric',
-					hour: 'numeric',
-					minute: 'numeric',
-					hour12: false,
+				formattedDate: i18n.t('intl:dateTime', {
+					v: new Date(item.timestamp),
+					formatParams: {
+						v: {
+							month: 'long',
+							day: 'numeric',
+							hour: 'numeric',
+							minute: 'numeric',
+							hour12: false,
+						},
+					},
 				}),
 			});
 		} else {
 			// earlier, format as February 2, 2021, 09:14
 			earlier.push({
 				...item,
-				formattedDate: new Date(item.timestamp).toLocaleString(undefined, {
-					month: 'long',
-					day: 'numeric',
-					hour: 'numeric',
-					minute: 'numeric',
-					hour12: false,
+				formattedDate: i18n.t('intl:dateTime', {
+					v: new Date(item.timestamp),
+					formatParams: {
+						v: {
+							month: 'long',
+							day: 'numeric',
+							hour: 'numeric',
+							minute: 'numeric',
+							hour12: false,
+						},
+					},
 				}),
 			});
 		}
@@ -231,19 +257,68 @@ export const groupActivityItems = (
 
 	let result: Array<string | IActivityItemFormatted> = [];
 	if (today.length > 0) {
-		result = [...result, 'TODAY', ...today];
+		result = [
+			...result,
+			// 'TODAY'
+			i18n
+				.t('intl:relativeTime', {
+					v: 0,
+					range: 'day',
+					numeric: 'auto',
+				})
+				.toUpperCase(),
+			...today,
+		];
 	}
 	if (yesterday.length > 0) {
-		result = [...result, 'YESTERDAY', ...yesterday];
+		result = [
+			...result,
+			// 'YESTERDAY'
+			i18n
+				.t('intl:relativeTime', {
+					v: -1,
+					range: 'day',
+					numeric: 'auto',
+				})
+				.toUpperCase(),
+			...yesterday,
+		];
 	}
 	if (month.length > 0) {
-		result = [...result, 'THIS MONTH', ...month];
+		result = [
+			...result,
+			// 'THIS MONTH'
+			i18n
+				.t('intl:relativeTime', {
+					v: 0,
+					range: 'month',
+					numeric: 'auto',
+				})
+				.toUpperCase(),
+			...month,
+		];
 	}
 	if (year.length > 0) {
-		result = [...result, 'THIS YEAR', ...year];
+		result = [
+			...result,
+			// 'THIS YEAR'
+			i18n
+				.t('intl:relativeTime', {
+					v: 0,
+					range: 'year',
+					numeric: 'auto',
+				})
+				.toUpperCase(),
+			...year,
+		];
 	}
 	if (earlier.length > 0) {
-		result = [...result, 'EARLIER', ...earlier];
+		result = [
+			...result,
+			// EARLIER
+			i18n.t('other:earlier').toUpperCase(),
+			...earlier,
+		];
 	}
 
 	return result;

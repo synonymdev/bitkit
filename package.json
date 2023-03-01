@@ -31,6 +31,12 @@
     "postinstall": "node postinstall.js"
   },
   "dependencies": {
+    "@formatjs/intl-datetimeformat": "6.5.1",
+    "@formatjs/intl-getcanonicallocales": "2.1.0",
+    "@formatjs/intl-locale": "3.1.1",
+    "@formatjs/intl-numberformat": "8.3.5",
+    "@formatjs/intl-pluralrules": "5.1.10",
+    "@formatjs/intl-relativetimeformat": "11.1.10",
     "@gorhom/bottom-sheet": "4.4.4",
     "@react-native-clipboard/clipboard": "^1.10.0",
     "@react-native-community/blur": "^4.2.0",
@@ -65,7 +71,6 @@
     "fuzzysort": "^1.9.0",
     "i18next": "22.4.10",
     "immer": "^9.0.16",
-    "intl": "^1.2.5",
     "jdenticon": "^3.1.1",
     "lodash.clonedeep": "^4.5.0",
     "lodash.debounce": "^4.0.8",

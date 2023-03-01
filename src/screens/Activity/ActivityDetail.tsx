@@ -354,9 +354,14 @@ const OnchainActivityDetail = ({
 						<View style={styles.row}>
 							<CalendarIcon style={styles.rowIcon} color="brand" />
 							<Text02M>
-								{new Date(timestamp).toLocaleString(undefined, {
-									month: 'long',
-									day: 'numeric',
+								{t('intl:dateTime', {
+									v: new Date(timestamp),
+									formatParams: {
+										v: {
+											month: 'long',
+											day: 'numeric',
+										},
+									},
 								})}
 							</Text02M>
 						</View>
@@ -368,10 +373,15 @@ const OnchainActivityDetail = ({
 						<View style={styles.row}>
 							<ClockIcon style={styles.rowIcon} color="brand" />
 							<Text02M>
-								{new Date(timestamp).toLocaleString(undefined, {
-									hour: 'numeric',
-									minute: 'numeric',
-									hour12: false,
+								{t('intl:dateTime', {
+									v: new Date(timestamp),
+									formatParams: {
+										v: {
+											hour: 'numeric',
+											minute: 'numeric',
+											hour12: false,
+										},
+									},
 								})}
 							</Text02M>
 						</View>
@@ -653,9 +663,14 @@ const LightningActivityDetail = ({
 						<View style={styles.row}>
 							<CalendarIcon style={styles.rowIcon} color="purple" />
 							<Text02M>
-								{new Date(timestamp).toLocaleString(undefined, {
-									month: 'long',
-									day: 'numeric',
+								{t('intl:dateTime', {
+									v: new Date(timestamp),
+									formatParams: {
+										v: {
+											month: 'long',
+											day: 'numeric',
+										},
+									},
 								})}
 							</Text02M>
 						</View>
@@ -667,10 +682,15 @@ const LightningActivityDetail = ({
 						<View style={styles.row}>
 							<ClockIcon style={styles.rowIcon} color="purple" />
 							<Text02M>
-								{new Date(timestamp).toLocaleString(undefined, {
-									hour: 'numeric',
-									minute: 'numeric',
-									hour12: false,
+								{t('intl:dateTime', {
+									v: new Date(timestamp),
+									formatParams: {
+										v: {
+											hour: 'numeric',
+											minute: 'numeric',
+											hour12: false,
+										},
+									},
 								})}
 							</Text02M>
 						</View>
