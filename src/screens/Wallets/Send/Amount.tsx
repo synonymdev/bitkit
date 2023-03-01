@@ -2,6 +2,7 @@ import React, { ReactElement, memo, useCallback, useMemo } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useSelector } from 'react-redux';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useTranslation } from 'react-i18next';
 
 import { TouchableOpacity } from '../../../styles/components';
 import { Caption13Up, Text02B } from '../../../styles/text';
@@ -43,6 +44,7 @@ const ContactImage = ({ url }: { url: string }): JSX.Element => {
 };
 
 const Amount = ({ navigation }: SendScreenProps<'Amount'>): ReactElement => {
+	const { t } = useTranslation('wallet');
 	const insets = useSafeAreaInsets();
 	const onChainBalance = useBalance({ onchain: true });
 	const lightningBalance = useLightningBalance(false);
@@ -144,7 +146,7 @@ const Amount = ({ navigation }: SendScreenProps<'Amount'>): ReactElement => {
 	return (
 		<GradientView style={styles.container}>
 			<BottomSheetNavigationHeader
-				title="Bitcoin Amount"
+				title={t('send_amount')}
 				actionIcon={
 					transaction.slashTagsUrl ? (
 						<ContactImage url={transaction.slashTagsUrl} />
@@ -158,8 +160,11 @@ const Amount = ({ navigation }: SendScreenProps<'Amount'>): ReactElement => {
 					<View style={styles.actions}>
 						<View>
 							<Caption13Up style={styles.availableAmountText} color="gray1">
-								Available (
-								{transaction.lightningInvoice ? 'spending' : 'savings'})
+								{t(
+									transaction.lightningInvoice
+										? 'send_availabe_spending'
+										: 'send_availabe_savings',
+								)}
 							</Caption13Up>
 							<Money
 								key="small"
@@ -180,7 +185,7 @@ const Amount = ({ navigation }: SendScreenProps<'Amount'>): ReactElement => {
 									<Text02B
 										size="12px"
 										color={isMaxSendAmount ? 'orange' : 'brand'}>
-										MAX
+										{t('send_max')}
 									</Text02B>
 								</TouchableOpacity>
 							</View>
@@ -211,7 +216,7 @@ const Amount = ({ navigation }: SendScreenProps<'Amount'>): ReactElement => {
 				<View style={buttonContainerStyles}>
 					<Button
 						size="large"
-						text="Continue"
+						text={t('continue')}
 						disabled={isInvalid()}
 						onPress={onContinue}
 						testID="ContinueAmount"

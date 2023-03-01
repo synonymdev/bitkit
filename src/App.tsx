@@ -20,7 +20,7 @@ import Toast from 'react-native-toast-message';
 import { ThemeProvider } from 'styled-components/native';
 
 import { SafeAreaProvider, StatusBar } from './styles/components';
-import themes from './styles/themes';
+import { getTheme } from './styles/themes';
 // import { checkForAppUpdate } from './store/actions/ui';
 import { useAppSelector } from './hooks/redux';
 import OnboardingNavigator from './navigation/onboarding/OnboardingNavigator';
@@ -31,7 +31,7 @@ import RestoringScreen from './screens/Onboarding/Restoring';
 import AppUpdate from './screens/AppUpdate';
 import AppOnboarded from './AppOnboarded';
 
-import './utils/translations';
+import i18n from './utils/i18n';
 import { RECOVERY_DELAY } from './utils/startup/constants';
 import { themeSelector } from './store/reselect/settings';
 import { walletExistsSelector } from './store/reselect/wallet';
@@ -93,7 +93,10 @@ const App = (): ReactElement => {
 		return <OnboardingNavigator />;
 	}, [tapCount, availableUpdateType, walletExists, requiresRemoteRestore]);
 
-	const currentTheme = useMemo(() => themes[theme], [theme]);
+	const currentTheme = useMemo(
+		() => getTheme(i18n.resolvedLanguage, theme),
+		[theme],
+	);
 
 	return (
 		<ThemeProvider theme={currentTheme}>

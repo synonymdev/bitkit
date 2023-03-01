@@ -1,0 +1,41 @@
+{
+	"backupSeedPhrase": {
+		"title": "Back up",
+		"description": "Store your money"
+	},
+	"lightning": {
+		"title": "Pay instantly",
+		"description": "Get on Lightning"
+	},
+	"lightningSettingUp": {
+		"title": "Setting Up",
+		"description": "Ready in ±20m"
+	},
+	"transfer": {
+		"title": "Transfer",
+		"description": "Spend or save"
+	},
+	"transferInProgress": {
+		"title": "Transferring",
+		"description": "Ready in ±20m"
+	},
+	"transferClosingChannel": {
+		"title": "Initiating...",
+		"description": "Keep app open"
+	},
+	"pin": {
+		"title": "Better security",
+		"description": "Set up a PIN code"
+	},
+	"slashtagsProfile": {
+		"title": "Public Profile",
+		"description": "Add your details"
+	},
+	"buyBitcoin": {
+		"title": "Get Bitcoin",
+		"description": "Stack some sats"
+	},
+	"lightning_no_funds_title": "No Funds Yet",
+	"lightning_no_funds_desc": "Before you can set up your instant spending balance, you need to send some on-chain Bitcoin to your wallet.",
+	"suggestions": "Suggestions"
+}

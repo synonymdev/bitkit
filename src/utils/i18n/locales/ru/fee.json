@@ -1,0 +1,44 @@
+{
+	"instant": {
+		"title": "Мгновенно",
+		"description": "±2-10 секунд",
+		"shortRange": "2-10s",
+		"shortDescription": "±2s"
+	},
+	"fast": {
+		"title": "Быстро",
+		"description": "±10-20 минут",
+		"shortRange": "10-20м",
+		"shortDescription": "±10м"
+	},
+	"normal": {
+		"title": "Нормально",
+		"description": "±20-60 минут",
+		"shortRange": "20-60м",
+		"shortDescription": "±20м"
+	},
+	"slow": {
+		"title": "Медленно",
+		"description": "±1-2 часов",
+		"shortRange": "1-2ч",
+		"shortDescription": "±1ч"
+	},
+	"minimum": {
+		"title": "Минимум",
+		"description": "+2 часов",
+		"shortRange": "+2ч",
+		"shortDescription": "+2ч"
+	},
+	"custom": {
+		"title": "Другое",
+		"description": "Зависит от комиссии",
+		"shortRange": "Зависит от комиссии",
+		"shortDescription": "Зависит от комиссии"
+	},
+	"none": {
+		"title": "",
+		"description": "",
+		"shortRange": "",
+		"shortDescription": ""
+	}
+}

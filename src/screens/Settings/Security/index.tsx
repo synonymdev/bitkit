@@ -2,6 +2,7 @@ import React, { memo, ReactElement, useMemo, useState, useEffect } from 'react';
 import { StyleSheet } from 'react-native';
 import { useSelector } from 'react-redux';
 import rnBiometrics from 'react-native-biometrics';
+import { useTranslation } from 'react-i18next';
 
 import { View as ThemedView } from '../../../styles/components';
 import Store from '../../../store/types';
@@ -15,6 +16,7 @@ import type { SettingsScreenProps } from '../../../navigation/types';
 const SecuritySettings = ({
 	navigation,
 }: SettingsScreenProps<'SecuritySettings'>): ReactElement => {
+	const { t } = useTranslation('settings');
 	const [biometryData, setBiometricData] = useState<IsSensorAvailableResult>();
 	const {
 		enableAutoReadClipboard,
@@ -40,11 +42,11 @@ const SecuritySettings = ({
 	const biometryTypeName = useMemo(
 		() =>
 			biometryData?.biometryType === 'TouchID'
-				? 'Touch ID'
+				? t('security:bio_touch_id')
 				: biometryData?.biometryType === 'FaceID'
-				? 'Face ID'
-				: biometryData?.biometryType ?? 'Biometrics',
-		[biometryData?.biometryType],
+				? t('security:bio_face_id')
+				: biometryData?.biometryType ?? t('security:bio'),
+		[biometryData?.biometryType, t],
 	);
 
 	const settingsListData: IListData[] = useMemo(
@@ -52,7 +54,7 @@ const SecuritySettings = ({
 			{
 				data: [
 					{
-						title: 'Read clipboard for ease of use',
+						title: t('security.clipboard'),
 						type: EItemType.switch,
 						enabled: enableAutoReadClipboard,
 						onPress: (): void => {
@@ -62,7 +64,7 @@ const SecuritySettings = ({
 						},
 					},
 					{
-						title: 'Warning for sending over $100',
+						title: t('security.warn_100'),
 						type: EItemType.switch,
 						enabled: enableSendAmountWarning,
 						onPress: (): void => {
@@ -72,8 +74,8 @@ const SecuritySettings = ({
 						},
 					},
 					{
-						title: 'PIN Code',
-						value: pin ? 'Enabled' : 'Disabled',
+						title: t('security.pin'),
+						value: t(pin ? 'security.pin_enabled' : 'security.pin_disabled'),
 						type: EItemType.button,
 						onPress: (): void => {
 							if (pin) {
@@ -85,7 +87,7 @@ const SecuritySettings = ({
 						testID: 'PINCode',
 					},
 					{
-						title: 'Change PIN Code',
+						title: t('security.pin_change'),
 						type: EItemType.button,
 						onPress: (): void => {
 							navigation.navigate('ChangePin');
@@ -93,7 +95,7 @@ const SecuritySettings = ({
 						hide: !pin,
 					},
 					{
-						title: 'Require PIN on launch',
+						title: t('security.pin_launch'),
 						type: EItemType.switch,
 						enabled: pinOnLaunch,
 						onPress: (): void => {
@@ -107,7 +109,7 @@ const SecuritySettings = ({
 						hide: !pin,
 					},
 					{
-						title: 'Require PIN for payments',
+						title: t('security.pin_payments'),
 						type: EItemType.switch,
 						enabled: pinForPayments,
 						onPress: (): void => {
@@ -121,7 +123,7 @@ const SecuritySettings = ({
 						hide: !pin,
 					},
 					{
-						title: `Use ${biometryTypeName} instead`,
+						title: t('security.use_bio', { biometryTypeName }),
 						type: EItemType.switch,
 						enabled: biometrics,
 						onPress: (): void => {
@@ -148,21 +150,22 @@ const SecuritySettings = ({
 			pinOnLaunch,
 			pinForPayments,
 			navigation,
+			t,
 		],
 	);
 
 	const footerText = useMemo(
 		() =>
 			pin && isBiometrySupported
-				? `When enabled, you can use ${biometryTypeName} instead of your PIN code to unlock your wallet or send payments.`
+				? t('security.footer', { biometryTypeName })
 				: undefined,
-		[isBiometrySupported, pin, biometryTypeName],
+		[isBiometrySupported, pin, biometryTypeName, t],
 	);
 
 	return (
 		<ThemedView style={styles.container}>
 			<SettingsView
-				title="Security And Privacy"
+				title={t('security_title')}
 				listData={settingsListData}
 				showBackNavigation={true}
 				fullHeight={false}

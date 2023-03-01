@@ -1,6 +1,7 @@
 import React, { ReactElement, useMemo } from 'react';
 import { Image, StyleSheet } from 'react-native';
 import { useSelector } from 'react-redux';
+import { Trans, useTranslation } from 'react-i18next';
 
 import { View } from '../../styles/components';
 import { Display, Text01S } from '../../styles/text';
@@ -18,19 +19,14 @@ const imageSrc = require('../../assets/illustrations/lightning.png');
 const Introduction = ({
 	navigation,
 }: LightningScreenProps<'Introduction'>): ReactElement => {
+	const { t } = useTranslation('lightning');
 	const balance = useBalance({ onchain: true });
 	const isGeoBlocked = useSelector(isGeoBlockedSelector);
 
-	const txt = useMemo(() => {
-		if (isGeoBlocked) {
-			return (
-				'Open a Lightning connection and \nsend or receive bitcoin instantly.\n\n' +
-				'Unfortunately, Bitkit cannot provide automatic Lightning connections to residents of the United States (yet).'
-			);
-		} else {
-			return 'Open a Lightning connection and \nsend or receive bitcoin instantly.';
-		}
-	}, [isGeoBlocked]);
+	const txt = useMemo(
+		() => t(isGeoBlocked ? 'int_blocked' : 'int_text'),
+		[isGeoBlocked, t],
+	);
 
 	const isDisabled = useMemo(() => {
 		return balance.satoshis <= TRANSACTION_DEFAULTS.recommendedBaseFee;
@@ -50,7 +46,13 @@ const Introduction = ({
 				</View>
 				<View color="transparent" style={styles.textContent}>
 					<Display>
-						Instant <Display color="purple">Payments.</Display>
+						<Trans
+							t={t}
+							i18nKey="int_header"
+							components={{
+								purple: <Display color="purple" />,
+							}}
+						/>
 					</Display>
 					<Text01S color="gray1" style={styles.text}>
 						{txt}
@@ -61,7 +63,7 @@ const Introduction = ({
 					{!isGeoBlocked && (
 						<>
 							<Button
-								text="Quick Setup"
+								text={t('int_quick')}
 								size="large"
 								style={[styles.button, styles.quickButton]}
 								disabled={isDisabled}
@@ -71,7 +73,7 @@ const Introduction = ({
 							/>
 
 							<Button
-								text="Custom Setup"
+								text={t('int_custom')}
 								size="large"
 								variant="secondary"
 								style={[styles.button, styles.customButton]}

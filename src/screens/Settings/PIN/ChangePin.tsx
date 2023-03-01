@@ -8,6 +8,7 @@ import React, {
 import { Pressable, StyleSheet, View } from 'react-native';
 import { FadeIn, FadeOut } from 'react-native-reanimated';
 import { useFocusEffect } from '@react-navigation/native';
+import { useTranslation } from 'react-i18next';
 
 import { View as ThemedView, AnimatedView } from '../../../styles/components';
 import { Text01S, Text02S } from '../../../styles/text';
@@ -22,6 +23,7 @@ import type { SettingsScreenProps } from '../../../navigation/types';
 const ChangePin = ({
 	navigation,
 }: SettingsScreenProps<'ChangePin'>): ReactElement => {
+	const { t } = useTranslation('security');
 	const [pin, setPin] = useState<string>('');
 	const [wrongPin, setWrongPin] = useState(false);
 	const { brand, brand08 } = useColors();
@@ -78,17 +80,14 @@ const ChangePin = ({
 		<ThemedView style={styles.container}>
 			<SafeAreaInsets type="top" />
 			<NavigationHeader
-				title="Change PIN"
+				title={t('cp_title')}
 				onClosePress={(): void => {
 					navigation.navigate('Wallet');
 				}}
 			/>
 
 			<View style={styles.text}>
-				<Text01S color="gray1">
-					You can change your PIN code to a new{'\n'}4-digit combination. Please
-					enter your current PIN code first.
-				</Text01S>
+				<Text01S color="gray1">{t('cp_text')}</Text01S>
 			</View>
 
 			<View style={styles.wrongPin}>
@@ -98,7 +97,7 @@ const ChangePin = ({
 							onPress={(): void => {
 								showBottomSheet('forgotPIN');
 							}}>
-							<Text02S color="brand">Forgot your PIN?</Text02S>
+							<Text02S color="brand">{t('cp_forgot')}</Text02S>
 						</Pressable>
 					</AnimatedView>
 				) : (

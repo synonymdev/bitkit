@@ -1,5 +1,6 @@
 import React, { memo, ReactElement, useMemo } from 'react';
 import { useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 
 import {
 	SpeedFastIcon,
@@ -14,46 +15,47 @@ import { transactionSpeedSelector } from '../../../store/reselect/settings';
 import { ETransactionSpeed } from '../../../store/types/settings';
 import type { SettingsScreenProps } from '../../../navigation/types';
 
-const transactionSpeeds = [
-	{
-		label: 'Fast (more expensive)',
-		value: ETransactionSpeed.fast,
-		description: '± 10-20 minutes',
-		Icon: SpeedFastIcon,
-		iconColor: 'brand',
-	},
-	{
-		label: 'Normal',
-		value: ETransactionSpeed.normal,
-		description: '± 20-60 minutes',
-		Icon: SpeedNormalIcon,
-		iconColor: 'brand',
-	},
-	{
-		label: 'Slow (cheaper)',
-		value: ETransactionSpeed.slow,
-		description: '± 1-2 hours',
-		Icon: SpeedSlowIcon,
-		iconColor: 'brand',
-	},
-	{
-		label: 'Custom',
-		value: ETransactionSpeed.custom,
-		description: 'Depends on fee',
-		Icon: SettingsIcon,
-		iconColor: 'gray1',
-	},
-];
-
 const TransactionSpeedSettings = ({
 	navigation,
 }: SettingsScreenProps<'TransactionSpeedSettings'>): ReactElement => {
+	const { t } = useTranslation('settings');
 	const selectedTransactionSpeed = useSelector(transactionSpeedSelector);
 
-	const currencyListData: IListData[] = useMemo(
-		() => [
+	const currencyListData: IListData[] = useMemo(() => {
+		const transactionSpeeds = [
 			{
-				title: 'Default Transaction Speed',
+				label: t('fee.fast.label'),
+				value: ETransactionSpeed.fast,
+				description: t('fee.fast.description'),
+				Icon: SpeedFastIcon,
+				iconColor: 'brand',
+			},
+			{
+				label: t('fee.normal.label'),
+				value: ETransactionSpeed.normal,
+				description: t('fee.normal.description'),
+				Icon: SpeedNormalIcon,
+				iconColor: 'brand',
+			},
+			{
+				label: t('fee.slow.label'),
+				value: ETransactionSpeed.slow,
+				description: t('fee.slow.description'),
+				Icon: SpeedSlowIcon,
+				iconColor: 'brand',
+			},
+			{
+				label: t('fee.custom.label'),
+				value: ETransactionSpeed.custom,
+				description: t('fee.custom.description'),
+				Icon: SettingsIcon,
+				iconColor: 'gray1',
+			},
+		];
+
+		return [
+			{
+				title: t('general.speed_default'),
 				data: transactionSpeeds.map((txSpeed) => ({
 					title: txSpeed.label,
 					value: txSpeed.value === selectedTransactionSpeed,
@@ -72,13 +74,12 @@ const TransactionSpeedSettings = ({
 					},
 				})),
 			},
-		],
-		[selectedTransactionSpeed, navigation],
-	);
+		];
+	}, [selectedTransactionSpeed, navigation, t]);
 
 	return (
 		<SettingsView
-			title="Transaction Speed"
+			title={t('general.speed_title')}
 			listData={currencyListData}
 			showBackNavigation={true}
 		/>

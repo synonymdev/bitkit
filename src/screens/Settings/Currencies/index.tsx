@@ -1,5 +1,6 @@
 import React, { memo, ReactElement, useMemo } from 'react';
 import { useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 
 import { EItemType, IListData } from '../../../components/List';
 import SettingsView from '../SettingsView';
@@ -12,6 +13,7 @@ import type { SettingsScreenProps } from '../../../navigation/types';
 const CurrenciesSettings = ({
 	navigation,
 }: SettingsScreenProps<'CurrenciesSettings'>): ReactElement => {
+	const { t } = useTranslation('settings');
 	const exchangeRates = useSelector(exchangeRatesSelector);
 	const selectedCurrency = useSelector(selectedCurrencySelector);
 
@@ -22,7 +24,7 @@ const CurrenciesSettings = ({
 	const currencyListData: IListData[] = useMemo(
 		() => [
 			{
-				title: 'Most Used',
+				title: t('general.currency_most_used'),
 				data: Object.values(mostUsedExchangeTickers).map((ticker) => {
 					return {
 						title: `${ticker.quote} (${ticker.currencySymbol})`,
@@ -36,7 +38,7 @@ const CurrenciesSettings = ({
 				}),
 			},
 			{
-				title: 'Other Currencies',
+				title: t('general.currency_other'),
 				data: Object.keys(exchangeRates)
 					.sort()
 					.map((ticker) => ({
@@ -50,16 +52,16 @@ const CurrenciesSettings = ({
 					})),
 			},
 		],
-		[selectedCurrency, exchangeRates, navigation],
+		[selectedCurrency, exchangeRates, navigation, t],
 	);
 
 	return (
 		<SettingsView
-			title="Local Currency"
+			title={t('general.currency_local_title')}
 			listData={currencyListData}
 			showBackNavigation={true}
 			showSearch={true}
-			footerText="Prices powered by Bitfinex & CoinGecko."
+			footerText={t('general.currency_footer')}
 		/>
 	);
 };

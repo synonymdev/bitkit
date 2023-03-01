@@ -1,6 +1,7 @@
 import React, { memo, ReactElement, useEffect, useMemo, useState } from 'react';
 import { KeyboardAvoidingView, Platform, StyleSheet } from 'react-native';
 import Share, { ShareOptions } from 'react-native-share';
+import { useTranslation } from 'react-i18next';
 
 import { TextInput, View } from '../../../styles/components';
 import { Text01S } from '../../../styles/text';
@@ -22,6 +23,7 @@ import type { SettingsScreenProps } from '../../../navigation/types';
 const ExportToPhone = ({
 	navigation,
 }: SettingsScreenProps<'ExportToPhone'>): ReactElement => {
+	const { t } = useTranslation('backup');
 	const { keyboardShown } = useKeyboard();
 	const [password, setPassword] = useState('');
 	const [isCreating, setIsCreating] = useState(false);
@@ -43,7 +45,7 @@ const ExportToPhone = ({
 
 	const shareToFiles = async (filePath: string): Promise<void> => {
 		const shareOptions: ShareOptions = {
-			title: 'Share backup file',
+			title: t('export_share'),
 			failOnCancel: false,
 			saveToFiles: true,
 			urls: [filePath],
@@ -54,16 +56,16 @@ const ExportToPhone = ({
 
 			if (res.success) {
 				showSuccessNotification({
-					title: 'Backup exported',
-					message: 'Successfully exported file to phone.',
+					title: t('export_success_title'),
+					message: t('export_success_msg'),
 				});
 				navigation.goBack();
 			}
 		} catch (error) {
 			if (JSON.stringify(error).indexOf('CANCELLED') < 0) {
 				showErrorNotification({
-					title: 'Backup failed',
-					message: 'Bitkit was not able to save the backup file.',
+					title: t('export_error_title'),
+					message: t('export_error_msg'),
 				});
 			}
 		}
@@ -77,7 +79,7 @@ const ExportToPhone = ({
 		if (fileRes.isErr()) {
 			setIsCreating(false);
 			return showErrorNotification({
-				title: 'Failed to create backup file',
+				title: t('export_error_file'),
 				message: fileRes.error.message,
 			});
 		}
@@ -90,19 +92,16 @@ const ExportToPhone = ({
 	return (
 		<SafeAreaView>
 			<NavigationHeader
-				title="Export To Phone"
+				title={t('export_title')}
 				onClosePress={(): void => {
 					navigation.navigate('Wallet');
 				}}
 			/>
 			<KeyboardAvoidingView style={styles.content} behavior="padding">
-				<Text01S color="gray1">
-					You can export a copy of your wallet data as a .ZIP file. This file is
-					encrypted with the password you set below.
-				</Text01S>
+				<Text01S color="gray1">{t('export_text')}</Text01S>
 				<TextInput
 					style={styles.textField}
-					placeholder="Password"
+					placeholder={t('export_password')}
 					value={password}
 					onChangeText={setPassword}
 					autoCapitalize="none"
@@ -117,7 +116,7 @@ const ExportToPhone = ({
 						style={styles.button}
 						size="large"
 						disabled={!password || isCreating}
-						text="Export"
+						text={t('export_button')}
 						onPress={onCreateBackup}
 					/>
 				</View>

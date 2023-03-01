@@ -8,6 +8,7 @@ import React, {
 import { StyleProp, StyleSheet, ViewStyle } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import rnBiometrics from 'react-native-biometrics';
+import { useTranslation } from 'react-i18next';
 
 import { View, TouchableOpacity } from '../styles/components';
 import { Subtitle } from '../styles/text';
@@ -54,6 +55,7 @@ const Biometrics = ({
 	style,
 	children,
 }: BiometricsComponent): ReactElement => {
+	const { t } = useTranslation('security');
 	const insets = useSafeAreaInsets();
 	const [biometryData, setBiometricData] = useState<IsSensorAvailableResult>();
 
@@ -61,10 +63,12 @@ const Biometrics = ({
 		(async (): Promise<void> => {
 			const data = await rnBiometrics.isSensorAvailable();
 			setBiometricData(data);
-			authenticate(`Confirm ${data.biometryType || 'Biometrics'}`);
+			authenticate(
+				t('bio_confirm', { biometricsName: data.biometryType || t('bio') }),
+			);
 		})();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
+	}, [t]);
 
 	const Icon = useCallback(
 		() => getIcon({ biometryData }),
@@ -81,25 +85,27 @@ const Biometrics = ({
 				return '';
 			}
 			if (biometryData?.available && biometryData?.biometryType) {
-				return `Authenticate with ${biometryData.biometryType}`;
+				return t('bio_auth_with', {
+					biometricsName: biometryData.biometryType,
+				});
 			}
-			return 'It appears that your device does not support Biometric security.';
+			return t('bio_no');
 		} catch {
-			return 'It appears that your device does not support Biometric security.';
+			return t('bio_no');
 		}
-	}, [biometryData?.available, biometryData?.biometryType]);
+	}, [biometryData?.available, biometryData?.biometryType, t]);
 
 	const authenticate = useCallback(
 		(promptMessage?: string): void => {
 			try {
 				if (!promptMessage) {
 					const biotmetryType = biometryData?.biometryType;
-					promptMessage = `Confirm ${biotmetryType}`;
+					promptMessage = t('bio_confirm', { biometricsName: biotmetryType });
 				}
 				rnBiometrics
 					.simplePrompt({
 						promptMessage: promptMessage || '',
-						cancelButtonText: 'Use PIN code',
+						cancelButtonText: t('use_pin'),
 					})
 					.then(({ success }) => {
 						if (success) {
@@ -117,7 +123,7 @@ const Biometrics = ({
 			} catch {}
 		},
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-		[biometryData?.biometryType],
+		[biometryData?.biometryType, t],
 	);
 
 	return (

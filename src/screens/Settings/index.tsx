@@ -7,6 +7,7 @@ import React, {
 } from 'react';
 import { StyleSheet, TouchableOpacity } from 'react-native';
 import { useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 
 import { View as ThemedView } from '../../styles/components';
 import { EItemType, IListData, ItemData } from '../../components/List';
@@ -22,6 +23,7 @@ const imageSrc = require('./../../assets/illustrations/cog.png');
 const MainSettings = ({
 	navigation,
 }: SettingsScreenProps<'MainSettings'>): ReactElement => {
+	const { t } = useTranslation('settings');
 	const enableDevOptions = useSelector(enableDevOptionsSelector);
 	const [enableDevOptionsCount, setEnableDevOptionsCount] = useState(0);
 
@@ -33,46 +35,42 @@ const MainSettings = ({
 			updateSettings({
 				enableDevOptions: enabled,
 			});
-			const title = enabled ? 'Dev Options Enabled' : 'Dev Options Disabled';
-			const message = enabled
-				? 'Dev options are now enabled throughout the app.'
-				: 'Dev options are now disabled throughout the app.';
 			showSuccessNotification({
-				title,
-				message,
+				title: t(enabled ? 'dev_enabled_title' : 'dev_disabled_title'),
+				message: t(enabled ? 'dev_enabled_message' : 'dev_disabled_message'),
 			});
 			setEnableDevOptionsCount(0);
 		}
-	}, [enableDevOptions, enableDevOptionsCount]);
+	}, [enableDevOptions, enableDevOptionsCount, t]);
 
 	const settingsListData: IListData[] = useMemo(() => {
 		const data: ItemData[] = [
 			{
-				title: 'General',
+				title: t('general_title'),
 				type: EItemType.button,
 				onPress: (): void => navigation.navigate('GeneralSettings'),
 				testID: 'GeneralSettings',
 			},
 			{
-				title: 'Security and Privacy',
+				title: t('security_title'),
 				type: EItemType.button,
 				onPress: (): void => navigation.navigate('SecuritySettings'),
 				testID: 'SecuritySettings',
 			},
 			{
-				title: 'Back up or Restore',
+				title: t('backup_title'),
 				type: EItemType.button,
 				onPress: (): void => navigation.navigate('BackupSettings'),
 				testID: 'BackupSettings',
 			},
 			{
-				title: 'Advanced',
+				title: t('advanced_title'),
 				type: EItemType.button,
 				onPress: (): void => navigation.navigate('AdvancedSettings'),
 				testID: 'AdvancedSettings',
 			},
 			{
-				title: 'About Bitkit',
+				title: t('about_title'),
 				type: EItemType.button,
 				onPress: (): void => navigation.navigate('AboutSettings'),
 			},
@@ -80,18 +78,18 @@ const MainSettings = ({
 
 		if (enableDevOptions) {
 			data.push({
-				title: 'Dev settings',
+				title: t('dev_title'),
 				type: EItemType.button,
 				onPress: (): void => navigation.navigate('DevSettings'),
 			});
 		}
 		return [{ data }];
-	}, [enableDevOptions, navigation]);
+	}, [enableDevOptions, navigation, t]);
 
 	return (
 		<ThemedView style={styles.container}>
 			<SettingsView
-				title="Settings"
+				title={t('settings')}
 				listData={settingsListData}
 				showBackNavigation={true}
 				fullHeight={false}

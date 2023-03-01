@@ -3,6 +3,7 @@ import { StyleSheet, Platform, View } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
 import { check, request, PERMISSIONS, RESULTS } from 'react-native-permissions';
 import { Camera as CameraKit, CameraType } from 'react-native-camera-kit';
+import { useTranslation } from 'react-i18next';
 
 import CameraNoAuth from './CameraNoAuth';
 import GradientView from './GradientView';
@@ -22,6 +23,7 @@ const Camera = ({
 	children?: ReactElement;
 	torchMode?: boolean;
 }): ReactElement => {
+	const { t } = useTranslation('other');
 	const isFocused = useIsFocused();
 	const [_data, setData] = useState('');
 	const [cameraStatus, setCameraStatus] = useState<Status>(Status.UNKNOWN);
@@ -40,10 +42,10 @@ const Camera = ({
 					break;
 				case RESULTS.DENIED:
 					const rationale = {
-						title: 'Permission to use camera',
-						message: 'Bitkit needs permission to use your camera',
-						buttonPositive: 'Okay',
-						buttonNegative: 'Cancel',
+						title: t('camera_ask_title'),
+						message: t('camera_ask_msg'),
+						buttonPositive: t('ok'),
+						buttonNegative: t('cancel'),
 					};
 					const requestResponse = await request(cameraPermission, rationale);
 					setCameraStatus(
@@ -58,7 +60,7 @@ const Camera = ({
 					break;
 			}
 		})();
-	}, []);
+	}, [t]);
 
 	const handleCodeRead = (event): void => {
 		const { codeStringValue } = event.nativeEvent;

@@ -16,6 +16,7 @@ import DraggableFlatList, {
 import { useIsFocused } from '@react-navigation/native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { FadeIn, FadeOut } from 'react-native-reanimated';
+import { useTranslation } from 'react-i18next';
 
 import { rootNavigation } from '../navigation/root/RootNavigator';
 import Store from '../store/types';
@@ -43,6 +44,7 @@ type WCM = {
 };
 
 export const Widgets = (): ReactElement => {
+	const { t } = useTranslation('slashtags');
 	const widgets = useSelector((state: Store) => state.widgets.widgets);
 	const sortOrder = useSelector((state: Store) => state.widgets.sortOrder);
 	const [editing, setEditing] = useState(false);
@@ -187,9 +189,9 @@ export const Widgets = (): ReactElement => {
 		return (
 			<>
 				<View style={styles.titleRow}>
-					<Subtitle style={styles.title}>Widgets</Subtitle>
+					<Subtitle style={styles.title}>{t('widgets')}</Subtitle>
 				</View>
-				<Text color="gray">SLASHTAGS DISABLED</Text>
+				<Text color="gray">{t('disabled')}</Text>
 			</>
 		);
 	}
@@ -197,7 +199,7 @@ export const Widgets = (): ReactElement => {
 	return (
 		<>
 			<View style={styles.titleRow}>
-				<Subtitle style={styles.title}>Widgets</Subtitle>
+				<Subtitle style={styles.title}>{t('widgets')}</Subtitle>
 				{widgetsArray.length > 0 && (
 					<TouchableOpacity
 						style={styles.edit}
@@ -215,7 +217,7 @@ export const Widgets = (): ReactElement => {
 				<View color="green16" style={styles.iconCircle}>
 					<PlusIcon height={16} color="green" />
 				</View>
-				<Text01M>Add Widget</Text01M>
+				<Text01M>{t('widget_add')}</Text01M>
 			</TouchableOpacity>
 			<Modal
 				transparent={true}

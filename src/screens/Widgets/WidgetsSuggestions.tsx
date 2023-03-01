@@ -1,5 +1,6 @@
 import React, { ReactElement } from 'react';
 import { TouchableOpacity, ScrollView, StyleSheet } from 'react-native';
+import { useTranslation } from 'react-i18next';
 
 import { View } from '../../styles/components';
 import { Title } from '../../styles/text';
@@ -29,6 +30,7 @@ const BitcoinFactsURL =
 const WidgetsSuggestions = ({
 	navigation,
 }: WidgetsScreenProps<'WidgetsSuggestions'>): ReactElement => {
+	const { t } = useTranslation('slashtags');
 	const onSwipeRight = (): void => {
 		navigation.navigate('Wallet');
 	};
@@ -37,7 +39,7 @@ const WidgetsSuggestions = ({
 		<View style={styles.container}>
 			<SafeAreaInsets type="top" />
 			<NavigationHeader
-				title="Add Widget"
+				title={t('widget_add')}
 				onClosePress={(): void => {
 					navigation.navigate('Wallet');
 				}}
@@ -47,22 +49,22 @@ const WidgetsSuggestions = ({
 					<ScrollView>
 						<Feed
 							icon={<ChartLineIcon />}
-							title="Bitcoin Price"
+							title={t('widget_price')}
 							url={PriceFeedURL}
 						/>
 						<Feed
 							icon={<NewspaperIcon />}
-							title="Bitcoin Headlines"
+							title={t('widget_headlines')}
 							url={NewsFeedURL}
 						/>
 						<Feed
 							icon={<CubeIcon />}
-							title="Bitcoin Blocks"
+							title={t('widget_blocks')}
 							url={BlocksFeedURL}
 						/>
 						<Feed
 							icon={<LightBulbIcon />}
-							title="Bitcoin Facts"
+							title={t('widget_facts')}
 							url={BitcoinFactsURL}
 						/>
 					</ScrollView>
@@ -70,7 +72,7 @@ const WidgetsSuggestions = ({
 					<View style={styles.buttonContainer}>
 						<Button
 							style={styles.button}
-							text="Or Scan QR"
+							text={t('widget_qr')}
 							size="large"
 							onPress={(): void => {
 								navigation.navigate('Scanner');

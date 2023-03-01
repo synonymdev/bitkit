@@ -2,6 +2,7 @@ import React, { useState, useMemo, useEffect, ReactElement } from 'react';
 import { View, StyleSheet, Pressable } from 'react-native';
 import { useSelector } from 'react-redux';
 import { SlashURL } from '@synonymdev/slashtags-sdk';
+import { useTranslation } from 'react-i18next';
 
 import { ScrollView, View as ThemedView } from '../../styles/components';
 import { Text01S, Text02M, Headline, Caption13Up } from '../../styles/text';
@@ -42,6 +43,7 @@ export const WidgetFeedEdit = ({
 	navigation,
 	route,
 }: RootStackScreenProps<'WidgetFeedEdit'>): ReactElement => {
+	const { t } = useTranslation('slashtags');
 	const { url } = route.params;
 	const sdk = useSlashtagsSDK();
 
@@ -75,7 +77,7 @@ export const WidgetFeedEdit = ({
 			.then(read)
 			.catch((e: Error) => {
 				showErrorNotification({
-					title: 'Failed to open feed drive',
+					title: t('widget_error_drive'),
 					message: e.message,
 				});
 			});
@@ -118,7 +120,7 @@ export const WidgetFeedEdit = ({
 				.catch((e: Error) => {
 					setIsLoading(false);
 					showErrorNotification({
-						title: 'Could not resolve feed configuration file slashfeed.json',
+						title: t('widget_error_slashfeed'),
 						message: e.message,
 					});
 				});
@@ -142,7 +144,7 @@ export const WidgetFeedEdit = ({
 			unmounted = true;
 			drive.close();
 		};
-	}, [sdk, url, savedWidget]);
+	}, [sdk, url, savedWidget, t]);
 
 	const onSave = (): void => {
 		if (config && selectedField !== savedSelectedField) {
@@ -163,8 +165,10 @@ export const WidgetFeedEdit = ({
 		navigation.navigate('Wallet');
 	};
 
-	const headerTitle = savedSelectedField ? 'Change Widget Feed' : 'Widget Feed';
-	const buttonText = savedSelectedField ? 'Save' : 'Save Widget';
+	const headerTitle = t(
+		savedSelectedField ? 'widget_feed_change' : 'widget_feed',
+	);
+	const buttonText = t(savedSelectedField ? 'save' : 'widget_save');
 	const previewWidget = config?.fields && {
 		feed: {
 			name: config.name ?? '',
@@ -224,7 +228,7 @@ export const WidgetFeedEdit = ({
 						<ScrollView>
 							{isLoading && (
 								<Text01S style={styles.loading} color="gray1">
-									Loading widget options...
+									{t('widget_loading_options')}
 								</Text01S>
 							)}
 
@@ -267,7 +271,7 @@ export const WidgetFeedEdit = ({
 						{!isLoading && previewWidget && (
 							<>
 								<Caption13Up color="gray1" style={styles.fieldLabel}>
-									Widget preview
+									{t('widget_preview')}
 								</Caption13Up>
 
 								{((): ReactElement => {
@@ -315,7 +319,7 @@ export const WidgetFeedEdit = ({
 							{savedSelectedField && (
 								<Button
 									style={styles.deleteButton}
-									text="Delete"
+									text={t('delete')}
 									size="large"
 									variant="secondary"
 									onPress={onDelete}

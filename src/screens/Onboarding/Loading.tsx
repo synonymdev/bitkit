@@ -1,6 +1,8 @@
 import React, { ReactElement, useState, useEffect } from 'react';
 import { View, StyleSheet, Image } from 'react-native';
 import { Keyframe, FadeOut } from 'react-native-reanimated';
+import { Trans, useTranslation } from 'react-i18next';
+
 import { AnimatedView } from '../../styles/components';
 import { Display } from '../../styles/text';
 import SafeAreaInsets from '../../components/SafeAreaInsets';
@@ -40,6 +42,7 @@ const enteringAnimation = new Keyframe({
 }).duration(DURATION);
 
 const LoadingWalletScreen = (): ReactElement => {
+	const { t } = useTranslation('onboarding');
 	const [key, setKey] = useState(false);
 
 	useEffect(() => {
@@ -52,8 +55,15 @@ const LoadingWalletScreen = (): ReactElement => {
 		<View style={styles.container}>
 			<SafeAreaInsets type="top" />
 			<View style={styles.loadingText}>
-				<Display>Setting up</Display>
-				<Display color="brand">your Wallet.</Display>
+				<Display>
+					<Trans
+						t={t}
+						i18nKey="loading_header"
+						components={{
+							brand: <Display color="brand" />,
+						}}
+					/>
+				</Display>
 			</View>
 			<View style={styles.animationContainer}>
 				<AnimatedView

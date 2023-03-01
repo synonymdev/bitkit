@@ -3,6 +3,7 @@ import { LayoutChangeEvent, StyleSheet, TouchableOpacity } from 'react-native';
 import { Canvas, LinearGradient, Rect, vec } from '@shopify/react-native-skia';
 import { FadeOut } from 'react-native-reanimated';
 import { useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 
 import { AnimatedView } from '../styles/components';
 import { Caption13M, Text01M } from '../styles/text';
@@ -15,6 +16,7 @@ import Flag from '../components/Flag';
 const BETA_HEIGHT = 100;
 
 const BetaSoftware = (): ReactElement => {
+	const { t } = useTranslation('other');
 	const colors = useColors();
 	const [layout, setLayout] = useState({ width: 1, height: 1 });
 	const hideBeta = useSelector((state: Store) => state.settings.hideBeta);
@@ -51,11 +53,9 @@ const BetaSoftware = (): ReactElement => {
 					/>
 				</Rect>
 			</Canvas>
-			<Flag text="BETA" style={styles.flag} />
-			<Text01M>Bitkit is beta software.</Text01M>
-			<Caption13M color="brand">
-				Don’t store all your money in Bitkit.
-			</Caption13M>
+			<Flag text={t('beta')} style={styles.flag} />
+			<Text01M>{t('beta_software')}</Text01M>
+			<Caption13M color="brand">{t('beta_warn')}</Caption13M>
 			{/* TODO: allow hide it later */}
 			{false && (
 				<TouchableOpacity onPress={handleHide} style={styles.button}>

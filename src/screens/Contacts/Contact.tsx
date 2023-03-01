@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 import { FadeIn, FadeOut } from 'react-native-reanimated';
 import Clipboard from '@react-native-clipboard/clipboard';
 import Share from 'react-native-share';
+import { useTranslation } from 'react-i18next';
 
 import { AnimatedView, View } from '../../styles/components';
 import {
@@ -40,6 +41,7 @@ export const Contact = ({
 	navigation,
 	route,
 }: RootStackScreenProps<'Contact'>): JSX.Element => {
+	const { t } = useTranslation('slashtags');
 	const { url } = route.params;
 	const [showDialog, setShowDialog] = useState(false);
 	const [showCopy, setShowCopy] = useState(false);
@@ -90,7 +92,7 @@ export const Contact = ({
 			return;
 		}
 		showErrorNotification({
-			title: 'Unable To Pay to this contact',
+			title: t('contact_pay_error'),
 			message: res.error.message,
 		});
 	};
@@ -99,7 +101,7 @@ export const Contact = ({
 		setIsSharing(true);
 		try {
 			await Share.open({
-				title: 'Share Profile Key',
+				title: t('contact_share'),
 				message: url,
 			});
 		} catch (e) {
@@ -107,7 +109,7 @@ export const Contact = ({
 		} finally {
 			setIsSharing(false);
 		}
-	}, [url]);
+	}, [url, t]);
 
 	const profileLinks = profile?.links ?? [];
 	const profileLinksWithIds = profileLinks.map((link) => ({
@@ -115,14 +117,14 @@ export const Contact = ({
 		id: `${link.title}:${link.url}`,
 	}));
 
-	const name = profile?.name ?? 'this contact';
+	const name = profile?.name ?? t('contact_this');
 	const firstName = name.split(/\s+/)[0];
 
 	return (
 		<View style={styles.container}>
 			<SafeAreaInsets type="top" />
 			<NavigationHeader
-				title="Contact"
+				title={t('contact')}
 				navigateBack={false}
 				onBackPress={(): void => {
 					navigation.navigate('Contacts');
@@ -190,7 +192,7 @@ export const Contact = ({
 							exiting={FadeOut.duration(500)}
 							color="transparent"
 							style={styles.tooltip}>
-							<Tooltip text="Profile Key Copied To Clipboard" />
+							<Tooltip text={t('contact_copied')} />
 						</AnimatedView>
 					)}
 				</View>
@@ -198,12 +200,11 @@ export const Contact = ({
 
 			<Dialog
 				visible={showDialog}
-				title={`Delete ${truncate(firstName, 30)}?`}
-				description={`Are you sure you want to delete ${truncate(
-					firstName,
-					30,
-				)} from your contacts?`}
-				confirmText="Yes, Delete"
+				title={t('contact_delete_title', { name: truncate(firstName, 30) })}
+				description={t('contact_delete_text', {
+					name: truncate(firstName, 30),
+				})}
+				confirmText={t('contact_delete_yes')}
 				onCancel={(): void => setShowDialog(false)}
 				onConfirm={(): void => {
 					onDelete();

@@ -1,0 +1,41 @@
+{
+	"backupSeedPhrase": {
+		"title": "Сохранить",
+		"description": "Обезопасьте деньги"
+	},
+	"lightning": {
+		"title": "Платить Моментально",
+		"description": "Настройте Лайтнинг"
+	},
+	"lightningSettingUp": {
+		"title": "Настройка",
+		"description": "Готово ±20м"
+	},
+	"transfer": {
+		"title": "Перенести",
+		"description": "Spend or save"
+	},
+	"transferInProgress": {
+		"title": "Перенос",
+		"description": "Готово ±20m"
+	},
+	"transferClosingChannel": {
+		"title": "Инициализация...",
+		"description": "Не закрывайте приложение"
+	},
+	"pin": {
+		"title": "Улучшить безопасность",
+		"description": "Установите PIN-код"
+	},
+	"slashtagsProfile": {
+		"title": "Публичный Профиль",
+		"description": "Добавьте свои данные"
+	},
+	"buyBitcoin": {
+		"title": "Получить Биткойн",
+		"description": "Получить Сатоши"
+	},
+	"lightning_no_funds_title": "Пока нет средств",
+	"lightning_no_funds_desc": "Прежде чем вы сможете настроить свой Мгновенный баланс расходов, вам нужно отправить немного биткойнов ончейн на свой кошелек.",
+	"suggestions": "Рекомендации"
+}

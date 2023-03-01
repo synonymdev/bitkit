@@ -1,6 +1,7 @@
 import React, { memo, ReactElement, useMemo } from 'react';
 import { StyleSheet } from 'react-native';
 import { useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 
 import { View as ThemedView } from '../../../styles/components';
 import { EItemType, IListData } from '../../../components/List';
@@ -18,6 +19,7 @@ import {
 } from '../../../store/reselect/wallet';
 
 const PaymentPreference = (): ReactElement => {
+	const { t } = useTranslation('settings');
 	const sdk = useSlashtagsSDK();
 	const receivePreference = useSelector(receivePreferenceSelector);
 	const enableOfflinePayments = useSelector(enableOfflinePaymentsSelector);
@@ -27,10 +29,10 @@ const PaymentPreference = (): ReactElement => {
 	const settingsListData: IListData[] = useMemo(
 		() => [
 			{
-				title: 'Payment preference (drag to reorder)',
+				title: t('adv.pp_drag'),
 				data: [
 					{
-						title: 'Payment preference (drag to reorder)',
+						title: t('adv.pp_drag'),
 						type: EItemType.draggable,
 						value: receivePreference,
 						onDragEnd: (data): void => {
@@ -40,10 +42,10 @@ const PaymentPreference = (): ReactElement => {
 				],
 			},
 			{
-				title: 'Pay to/from contacts',
+				title: t('adv.pp_contacts'),
 				data: [
 					{
-						title: 'Enable payments with contacts*',
+						title: t('adv.pp_contacts_switch'),
 						type: EItemType.switch,
 						enabled: enableOfflinePayments,
 						onPress: (): void => {
@@ -60,16 +62,17 @@ const PaymentPreference = (): ReactElement => {
 			sdk,
 			selectedWallet,
 			selectedNetwork,
+			t,
 		],
 	);
 
 	return (
 		<ThemedView style={styles.container}>
 			<SettingsView
-				title="Payment Preference"
+				title={t('adv.payment_preference')}
 				listData={settingsListData}
-				headerText="Choose how you prefer to receive money when users send funds to your profile key."
-				footerText="* This requires sharing payment data."
+				headerText={t('adv.pp_header')}
+				footerText={t('adv.pp_footer')}
 				showBackNavigation
 				fullHeight={false}
 			/>

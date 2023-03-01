@@ -9,6 +9,7 @@ import {
 import { useFocusEffect } from '@react-navigation/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Lottie from 'lottie-react-native';
+import { useTranslation } from 'react-i18next';
 
 import { Text02M } from '../../styles/text';
 import { ClockIcon } from '../../styles/icons';
@@ -30,6 +31,7 @@ const confettiSrc = require('../../assets/lottie/confetti-orange.json');
 const imageSrc = require('../../assets/illustrations/coin-stack-x.png');
 
 const NewTxPrompt = (): ReactElement => {
+	const { t } = useTranslation('wallet');
 	const snapPoints = useSnapPoints('large');
 	const insets = useSafeAreaInsets();
 	const animationRef = useRef<Lottie>(null);
@@ -84,7 +86,7 @@ const NewTxPrompt = (): ReactElement => {
 				</View>
 				<View>
 					<BottomSheetNavigationHeader
-						title="Payment Received!"
+						title={t('payment_received')}
 						displayBackButton={false}
 					/>
 					{activityItem && (
@@ -111,7 +113,7 @@ const NewTxPrompt = (): ReactElement => {
 							<>
 								<ClockIcon color="gray1" />
 								<Text02M color="gray1" style={styles.confirmingText}>
-									Confirming
+									{t('payment_confirming')}
 								</Text02M>
 							</>
 						)}

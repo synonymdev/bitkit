@@ -16,6 +16,7 @@ import {
 import { useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import { FlatList, GestureType } from 'react-native-gesture-handler';
+import { useTranslation } from 'react-i18next';
 
 import { RefreshControl } from '../../styles/components';
 import { Caption13Up, Subtitle, Text01S } from '../../styles/text';
@@ -29,7 +30,8 @@ import type { IActivityItemFormatted } from '../../store/types/activity';
 
 const ListHeaderComponent = memo(
 	(): ReactElement => {
-		return <Subtitle style={styles.title}>Activity</Subtitle>;
+		const { t } = useTranslation('wallet');
+		return <Subtitle style={styles.title}>{t('activity')}</Subtitle>;
 	},
 	() => true,
 );
@@ -51,6 +53,7 @@ const ActivityList = ({
 	filter?: {};
 	onScroll?: (event: NativeSyntheticEvent<NativeScrollEvent>) => void;
 }): ReactElement => {
+	const { t } = useTranslation('wallet');
 	const navigation = useNavigation<RootNavigationProp>();
 	const items = useSelector(activityItemsSelector);
 	const tags = useSelector(tagsSelector);
@@ -116,7 +119,7 @@ const ActivityList = ({
 				/>
 			}
 			ListHeaderComponent={showTitle ? ListHeaderComponent : undefined}
-			ListEmptyComponent={<Text01S color="gray1">No activity yet</Text01S>}
+			ListEmptyComponent={<Text01S color="gray1">{t('activity_no')}</Text01S>}
 		/>
 	);
 };

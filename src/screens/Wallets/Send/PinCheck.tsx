@@ -1,5 +1,6 @@
 import React, { ReactElement, memo } from 'react';
 import { StyleSheet, View } from 'react-native';
+import { useTranslation } from 'react-i18next';
 
 import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
 import GradientView from '../../../components/GradientView';
@@ -9,13 +10,14 @@ import type { SendScreenProps } from '../../../navigation/types';
 
 const PinCheck = ({ route }: SendScreenProps<'PinCheck'>): ReactElement => {
 	const { onSuccess } = route.params;
+	const { t } = useTranslation('security');
 
 	return (
 		<GradientView style={styles.container}>
 			<BottomSheetNavigationHeader title="Enter PIN Code" />
 			<View style={styles.content}>
 				<Text01S style={styles.text} color="white5">
-					Please enter your PIN code to confirm and send out this payment.
+					{t('pin_send')}
 				</Text01S>
 
 				<PinPad onSuccess={(): void => onSuccess()} />

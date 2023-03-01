@@ -1,6 +1,7 @@
 import React, { ReactElement, memo, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useSelector } from 'react-redux';
+import { Trans, useTranslation } from 'react-i18next';
 
 import { View as ThemedView } from '../../../styles/components';
 import { Text01B, Text01S } from '../../../styles/text';
@@ -28,6 +29,7 @@ const CloseConnection = ({
 	route,
 	navigation,
 }: SettingsScreenProps<'CloseConnection'>): ReactElement => {
+	const { t } = useTranslation('lightning');
 	const { channelId } = route.params;
 	const [loading, setLoading] = useState<boolean>(false);
 	const selectedWallet = useSelector(selectedWalletSelector);
@@ -51,7 +53,7 @@ const CloseConnection = ({
 		// If error, display error notification and return.
 		if (closeResponse.isErr()) {
 			showErrorNotification({
-				title: 'Channel Close Error',
+				title: t('close_error'),
 				message: closeResponse.error.message,
 			});
 			return;
@@ -59,8 +61,8 @@ const CloseConnection = ({
 
 		// TODO: remove and use CloseChannelSuccess bottom-sheet instead
 		showSuccessNotification({
-			title: 'Channel Close Success',
-			message: `Successfully closed ${name}`,
+			title: t('close_success_title'),
+			message: t('close_success_msg', { name }),
 		});
 
 		navigation.navigate('Channels');
@@ -70,19 +72,18 @@ const CloseConnection = ({
 		<ThemedView style={styles.root}>
 			<SafeAreaInsets type="top" />
 			<NavigationHeader
-				title="Close Connection"
+				title={t('close_conn')}
 				onClosePress={(): void => navigation.navigate('Wallet')}
 			/>
 			<View style={styles.content}>
 				<Text01S color="gray1">
-					There is a small cost to close this Lightning Connection and transfer
-					your full spending balance back to your savings. The exact fee depends
-					on network conditions.
-					{'\n'}
-					{'\n'}
-					Transferring funds to savings usually takes ±1 hour, but settlement
-					may take <Text01B color="white">14 days</Text01B> under certain
-					network conditions.
+					<Trans
+						t={t}
+						i18nKey="close_text"
+						components={{
+							white: <Text01B color="white" />,
+						}}
+					/>
 				</Text01S>
 
 				<GlowImage image={imageSrc} imageSize={200} glowColor="yellow" />
@@ -90,7 +91,7 @@ const CloseConnection = ({
 				<View style={styles.buttons}>
 					<Button
 						style={styles.button}
-						text="Cancel"
+						text={t('cancel')}
 						size="large"
 						variant="secondary"
 						onPress={navigation.goBack}
@@ -98,7 +99,7 @@ const CloseConnection = ({
 					<View style={styles.divider} />
 					<Button
 						style={styles.button}
-						text="Close"
+						text={t('close_button')}
 						size="large"
 						loading={loading}
 						onPress={onContinue}

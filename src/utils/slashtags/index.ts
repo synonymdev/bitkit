@@ -20,6 +20,7 @@ import { getSettingsStore } from '../../store/helpers';
 import { TAvailableNetworks } from '../networks';
 import { TWalletName } from '../../store/types/wallet';
 import { cacheProfile } from '../../store/actions/slashtags';
+import i18n from '../i18n';
 
 /**
  * Handles pasting or scanning a slash:// url
@@ -70,7 +71,7 @@ export const saveContact = async (
 	const id = SlashURL.parse(url).id;
 	await drive?.put('/' + id, encodeJSON(record)).catch((error: Error) =>
 		showErrorNotification({
-			title: 'Error while saving contact: ',
+			title: i18n.t('slashtags:error_saving_contact'),
 			message: error.message,
 		}),
 	);
@@ -88,7 +89,7 @@ export const saveProfile = async (
 	const drive = slashtag?.drivestore.get();
 	await drive.put('/profile.json', encodeJSON(profile)).catch((error: Error) =>
 		showErrorNotification({
-			title: 'Error while saving profile: ',
+			title: i18n.t('slashtags:error_saving_profile'),
 			message: error.message,
 		}),
 	);
@@ -114,7 +115,7 @@ export const deleteContact = async (
 	const id = SlashURL.parse(url).id;
 	await drive.del('/' + id).catch((error: Error) => {
 		showErrorNotification({
-			title: 'Error while deleting contact: ',
+			title: i18n.t('slashtags:error_delete_contact'),
 			message: error.message,
 		});
 	});
@@ -381,8 +382,8 @@ function noop(): void {}
 function checkClosed(slashtag: Slashtag): boolean {
 	if (slashtag.drivestore.closed) {
 		showErrorNotification({
-			title: 'SDK is closed',
-			message: 'please restart Bitkit!',
+			title: i18n.t('slashtags:error_sdk_title'),
+			message: i18n.t('slashtags:error_sdk_msg'),
 		});
 		return true;
 	} else {

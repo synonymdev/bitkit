@@ -9,6 +9,7 @@ import Clipboard from '@react-native-clipboard/clipboard';
 import { FadeIn, FadeOut } from 'react-native-reanimated';
 import { launchImageLibrary } from 'react-native-image-picker';
 import RNQRGenerator from 'rn-qr-generator';
+import { useTranslation } from 'react-i18next';
 
 import { AnimatedView } from '../../styles/components';
 import { Text02M } from '../../styles/text';
@@ -34,6 +35,7 @@ const ScannerComponent = ({
 	transparent = true,
 	onRead,
 }: ScannerComponentProps): ReactElement => {
+	const { t } = useTranslation('other');
 	const { white08, white5 } = useColors();
 	const dimensions = useWindowDimensions();
 	const [torchMode, setTorchMode] = useState(false);
@@ -144,7 +146,7 @@ const ScannerComponent = ({
 						<Button
 							style={styles.pasteButton}
 							icon={<ClipboardTextIcon width={16} height={16} />}
-							text="Paste QR Code"
+							text={t('qr_paste')}
 							size="large"
 							onPress={async (): Promise<void> => {
 								const url = await Clipboard.getString();

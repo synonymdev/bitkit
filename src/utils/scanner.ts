@@ -48,6 +48,7 @@ import {
 	handleLnurlPay,
 	handleLnurlWithdraw,
 } from './lnurl';
+import i18n from './i18n';
 
 const availableNetworksList = availableNetworks();
 
@@ -162,19 +163,18 @@ export const processInputData = async ({
 
 		const decodeRes = await decodeQRData(data, selectedNetwork);
 		if (decodeRes.isErr()) {
-			const title = 'Decoding Error';
 			showErrorNotification({
-				title,
+				title: i18n.t('other:scan_err_decoding'),
 				message: decodeRes.error.message,
 			});
-			return err(title);
+			return err('Decoding Error');
 		}
 
 		// Unable to interpret any of the provided data.
 		if (!decodeRes?.value.length) {
 			const message = 'Bitkit is unable to interpret the provided data.';
 			showErrorNotification({
-				title: 'Unable To Interpret Provided Data',
+				title: i18n.t('other:scan_err_interpret'),
 				message,
 			});
 			return err(message);
@@ -215,7 +215,7 @@ export const processInputData = async ({
 
 			if (response.isErr()) {
 				showErrorNotification({
-					title: 'Unable To Pay to this slashtag',
+					title: i18n.t('slashtags:error_pay_title'),
 					message: response.error.message,
 				});
 				return err(response.error.message);
@@ -223,8 +223,8 @@ export const processInputData = async ({
 
 			if (!Array.isArray(response.value) || response.value.length === 0) {
 				showErrorNotification({
-					title: 'Unable To Pay to this slashtag',
-					message: 'Remote slashpay profile is empty',
+					title: i18n.t('slashtags:error_pay_title'),
+					message: i18n.t('slashtags:error_pay_empty_title'),
 				});
 				return err('Remote slashpay profile is empty');
 			}
@@ -589,10 +589,10 @@ export const processBitcoinTransactionData = async ({
 					response = filteredBitcoinInvoice;
 				} else {
 					showInfoNotification({
-						title: 'Unable to fulfill the requested invoice amount',
-						message: `${
-							requestedAmount - onchainBalance.satoshis
-						} more sats needed.`,
+						title: i18n.t('lightning:error_fulfill_title'),
+						message: i18n.t('lightning:error_fulfill_msg', {
+							amount: requestedAmount - onchainBalance.satoshis,
+						}),
 					});
 					const transaction = getOnchainTransactionData({
 						selectedWallet,
@@ -656,12 +656,11 @@ export const handleData = async ({
 	selectedNetwork?: TAvailableNetworks;
 }): Promise<Result<TProcessedData>> => {
 	if (!data) {
-		const message = 'Unable to read or interpret the provided data.';
 		showErrorNotification({
-			title: 'No data provided',
-			message,
+			title: i18n.t('other:qr_error_no_data_header'),
+			message: i18n.t('other:qr_error_no_data_text'),
 		});
-		return err(message);
+		return err('Unable to read or interpret the provided data.');
 	}
 
 	if (!selectedNetwork) {
@@ -671,12 +670,16 @@ export const handleData = async ({
 		selectedWallet = getSelectedWallet();
 	}
 	if (data.network && data.network !== selectedNetwork) {
-		const message = `Bitkit is currently set to ${selectedNetwork} but data is for ${data.network}.`;
 		showErrorNotification({
-			title: 'Incorrect Network',
-			message,
+			title: i18n.t('other:qr_error_network_header'),
+			message: i18n.t('other:qr_error_network_text', {
+				selectedNetwork,
+				dataNetwork: data.network,
+			}),
 		});
-		return err(message);
+		return err(
+			`Bitkit is currently set to ${selectedNetwork} but data is for ${data.network}.`,
+		);
 	}
 
 	const qrDataType = data.qrDataType;
@@ -740,7 +743,7 @@ export const handleData = async ({
 			});
 			if (decodedInvoice.isErr()) {
 				showErrorNotification({
-					title: 'Unable To Decode Invoice',
+					title: i18n.t('lightning:error_decode'),
 					message: decodedInvoice.error.message,
 				});
 				return err(decodedInvoice.error.message);
@@ -809,12 +812,11 @@ export const handleData = async ({
 				return err('Unable to interpret peer information.');
 			}
 			if (peer.includes('onion')) {
-				const msg = 'Unable to add tor nodes at this time.';
 				showErrorNotification({
-					title: 'Error adding lightning peer',
-					message: msg,
+					title: i18n.t('lightning:error_add'),
+					message: i18n.t('lightning:error_add_tor'),
 				});
-				return err(msg);
+				return err('Unable to add tor nodes at this time.');
 			}
 			const addPeerRes = await addPeer({
 				peer,
@@ -822,7 +824,7 @@ export const handleData = async ({
 			});
 			if (addPeerRes.isErr()) {
 				showErrorNotification({
-					title: 'Unable to add lightning peer',
+					title: i18n.t('lightning:error_add'),
 					message: addPeerRes.error.message,
 				});
 				return err('Unable to add lightning peer.');
@@ -830,7 +832,7 @@ export const handleData = async ({
 			const savePeerRes = savePeer({ selectedWallet, selectedNetwork, peer });
 			if (savePeerRes.isErr()) {
 				showErrorNotification({
-					title: 'Unable to save lightning peer',
+					title: i18n.t('lightning:error_save'),
 					message: savePeerRes.error.message,
 				});
 				return err(savePeerRes.error.message);
@@ -838,7 +840,7 @@ export const handleData = async ({
 			closeBottomSheet('sendNavigation');
 			showSuccessNotification({
 				title: savePeerRes.value,
-				message: 'Lightning peer added & saved',
+				message: i18n.t('lightning:peer_saved'),
 			});
 			return ok({ type: EQRDataType.nodeId });
 		}

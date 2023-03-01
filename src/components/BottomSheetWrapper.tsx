@@ -36,12 +36,11 @@ import BottomSheet, {
 	BottomSheetBackgroundProps,
 	BottomSheetBackdropProps,
 } from '@gorhom/bottom-sheet';
+import { useTheme } from 'styled-components/native';
 
-import themes from '../styles/themes';
 import { IColors } from '../styles/colors';
 import { closeBottomSheet } from '../store/actions/ui';
 import { TViewController } from '../store/types/ui';
-import { themeSelector } from '../store/reselect/settings';
 import { viewControllerSelector } from '../store/reselect/ui';
 import { useAppSelector } from '../hooks/redux';
 import BottomSheetBackground from './BottomSheetBackground';
@@ -70,8 +69,7 @@ const BottomSheetWrapper = forwardRef(
 	): ReactElement => {
 		const bottomSheetRef = useRef<BottomSheet>(null);
 		const data = useAppSelector((state) => viewControllerSelector(state, view));
-		const settingsTheme = useAppSelector(themeSelector);
-		const theme = useMemo(() => themes[settingsTheme], [settingsTheme]);
+		const theme = useTheme();
 		const handleIndicatorStyle = useMemo(
 			() => ({ backgroundColor: theme.colors.gray2 }),
 			[theme.colors.gray2],

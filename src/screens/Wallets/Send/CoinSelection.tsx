@@ -3,6 +3,7 @@ import { StyleSheet, View, ScrollView } from 'react-native';
 import { useSelector } from 'react-redux';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { BottomSheetScrollView } from '@gorhom/bottom-sheet';
+import { useTranslation } from 'react-i18next';
 
 import GradientView from '../../../components/GradientView';
 import { Switch } from '../../../styles/components';
@@ -36,12 +37,6 @@ import { coinSelectPreferenceSelector } from '../../../store/reselect/settings';
  * @return string
  */
 const getUtxoKey = (utxo: IUtxo): string => `${utxo.tx_hash}${utxo.tx_pos}`;
-
-const preferences = {
-	small: "Small: Use smallest UTXO's first.",
-	large: "Large: Use largest UTXO's first.",
-	consolidate: "Consolidate: Combine all UTXO's.",
-};
 
 const UtxoRow = ({
 	item,
@@ -84,6 +79,7 @@ const UtxoRow = ({
 const CoinSelection = ({
 	navigation,
 }: SendScreenProps<'CoinSelection'>): ReactElement => {
+	const { t } = useTranslation('wallet');
 	const insets = useSafeAreaInsets();
 	const { gray4 } = useColors();
 
@@ -102,8 +98,8 @@ const CoinSelection = ({
 	);
 
 	const preference = useMemo(
-		() => preferences[coinSelectPreference],
-		[coinSelectPreference],
+		() => t(`preference_${coinSelectPreference}`),
+		[coinSelectPreference, t],
 	);
 
 	const [autoSelectionEnabled, setAutoSelectionEnabled] = useState(
@@ -154,12 +150,12 @@ const CoinSelection = ({
 
 	return (
 		<GradientView style={styles.container}>
-			<BottomSheetNavigationHeader title="Coin Selection" />
+			<BottomSheetNavigationHeader title={t('selection_title')} />
 			<View style={styles.content}>
 				<BottomSheetScrollView style={styles.scroll}>
 					<View style={[styles.coinRoot, { borderBottomColor: gray4 }]}>
 						<View style={styles.coinAmount}>
-							<Text01M>Auto</Text01M>
+							<Text01M>{t('selection_auto')}</Text01M>
 							<Text02M color="gray">{preference}</Text02M>
 						</View>
 						<Switch
@@ -200,11 +196,15 @@ const CoinSelection = ({
 							styles.totalBorder,
 							{ borderBottomColor: gray4 },
 						]}>
-						<Caption13Up color="gray1">TOTAL REQUIRED</Caption13Up>
+						<Caption13Up color="gray1">
+							{t('selection_total_required')}
+						</Caption13Up>
 						<Subtitle>{txOutputDV.bitcoinFormatted}</Subtitle>
 					</View>
 					<View style={styles.totalRow}>
-						<Caption13Up color="gray1">TOTAL SELECTED</Caption13Up>
+						<Caption13Up color="gray1">
+							{t('selection_total_selected')}
+						</Caption13Up>
 						<Subtitle color="green">{txInputDV.bitcoinFormatted}</Subtitle>
 					</View>
 				</View>
@@ -212,7 +212,7 @@ const CoinSelection = ({
 				<View style={buttonContainerStyles}>
 					<Button
 						size="large"
-						text="Continue"
+						text={t('continue')}
 						disabled={txInputValue < txOutputValue}
 						onPress={(): void => navigation.navigate('ReviewAndSend')}
 					/>
@@ -240,7 +240,9 @@ const styles = StyleSheet.create({
 		height: 72,
 		borderBottomWidth: 1,
 	},
-	coinAmount: {},
+	coinAmount: {
+		flexShrink: 1,
+	},
 	coinTagsScroll: {
 		marginHorizontal: 8,
 		flexDirection: 'row',

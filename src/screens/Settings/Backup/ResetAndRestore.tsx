@@ -1,5 +1,6 @@
 import React, { memo, ReactElement, useState } from 'react';
 import { StyleSheet } from 'react-native';
+import { useTranslation } from 'react-i18next';
 
 import { View } from '../../../styles/components';
 import { Text01S } from '../../../styles/text';
@@ -18,21 +19,19 @@ const imageSrc = require('../../../assets/illustrations/restore.png');
 const ResetAndRestore = ({
 	navigation,
 }: SettingsScreenProps<'ResetAndRestore'>): ReactElement => {
+	const { t } = useTranslation('security');
 	const [showDialog, setShowDialog] = useState(false);
 
 	return (
 		<SafeAreaView>
 			<NavigationHeader
-				title="Reset And Restore"
+				title={t('reset_title')}
 				onClosePress={(): void => {
 					navigation.navigate('Wallet');
 				}}
 			/>
 			<View style={styles.container}>
-				<Text01S color="gray1">
-					Back up your wallet first to avoid loss of your funds and wallet data.
-					Resetting will overwrite your current Bitkit setup.
-				</Text01S>
+				<Text01S color="gray1">{t('reset_text')}</Text01S>
 
 				<GlowImage image={imageSrc} imageSize={230} />
 
@@ -41,7 +40,7 @@ const ResetAndRestore = ({
 						size="large"
 						variant="secondary"
 						style={styles.button}
-						text="Back Up First"
+						text={t('reset_button_backup')}
 						onPress={(): void => {
 							showBottomSheet('backupNavigation');
 						}}
@@ -50,7 +49,7 @@ const ResetAndRestore = ({
 					<Button
 						size="large"
 						style={styles.button}
-						text="Reset Wallet"
+						text={t('reset_button_reset')}
 						onPress={(): void => setShowDialog(true)}
 					/>
 				</View>
@@ -59,8 +58,8 @@ const ResetAndRestore = ({
 
 			<Dialog
 				visible={showDialog}
-				title="Reset Bitkit?"
-				description="Are you sure you want to reset your Bitkit Wallet? Do you have a backup of your recovery phrase and wallet data?"
+				title={t('reset_dialog_title')}
+				description={t('reset_dialog_desc')}
 				onCancel={(): void => setShowDialog(false)}
 				onConfirm={async (): Promise<void> => {
 					await wipeApp();

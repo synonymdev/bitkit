@@ -20,6 +20,7 @@ import { FadeIn, useSharedValue } from 'react-native-reanimated';
 import Clipboard from '@react-native-clipboard/clipboard';
 import Share from 'react-native-share';
 import Carousel, { ICarouselInstance } from 'react-native-reanimated-carousel';
+import { useTranslation } from 'react-i18next';
 
 import {
 	View as ThemedView,
@@ -83,6 +84,7 @@ const QrIcon = memo(
 const Receive = ({
 	navigation,
 }: ReceiveScreenProps<'Receive'>): ReactElement => {
+	const { t } = useTranslation('wallet');
 	const dimensions = useWindowDimensions();
 	const insets = useSafeAreaInsets();
 	const progressValue = useSharedValue(0);
@@ -275,14 +277,14 @@ const Receive = ({
 				if (imageData) {
 					const image = `data:image/png;base64,${imageData}`;
 					await Share.open({
-						title: 'Share receiving address',
+						title: t('receive_share_address'),
 						message: text,
 						url: image,
 						type: 'image/png',
 					});
 				} else {
 					await Share.open({
-						title: 'Share receiving address',
+						title: t('receive_share_address'),
 						message: text,
 					});
 				}
@@ -292,7 +294,7 @@ const Receive = ({
 				setIsSharing(false);
 			}
 		},
-		[],
+		[t],
 	);
 
 	const qrMaxHeight = useMemo(
@@ -334,13 +336,13 @@ const Receive = ({
 					<Button
 						style={styles.actionButton}
 						icon={<CopyIcon width={18} color="brand" />}
-						text="Copy"
+						text={t('copy')}
 						onPress={(): void => handleCopy(uri, 'unified')}
 					/>
 					<View style={styles.buttonSpacer} />
 					<Button
 						style={styles.actionButton}
-						text="Share"
+						text={t('share')}
 						icon={<ShareIcon width={18} color="brand" />}
 						disabled={isSharing}
 						onPress={(): void => {
@@ -350,7 +352,7 @@ const Receive = ({
 				</View>
 			</View>
 		);
-	}, [uri, handleCopyQrCode, handleShare, isSharing, qrSize]);
+	}, [uri, handleCopyQrCode, handleShare, isSharing, qrSize, t]);
 
 	const Slide2 = useCallback((): ReactElement => {
 		return (
@@ -358,7 +360,9 @@ const Receive = ({
 				<ThemedView style={styles.invoices} color="white04">
 					<View style={styles.invoice}>
 						<View style={styles.invoiceLabel}>
-							<Caption13Up color="gray1">Bitcoin invoice</Caption13Up>
+							<Caption13Up color="gray1">
+								{t('receive_bitcoin_invoice')}
+							</Caption13Up>
 							<BitcoinSlantedIcon
 								style={styles.invoiceLabelIcon}
 								color="gray1"
@@ -373,7 +377,7 @@ const Receive = ({
 									style={styles.tooltip}
 									color="transparent"
 									entering={FadeIn}>
-									<Tooltip text="Invoice Copied To Clipboard" />
+									<Tooltip text={t('receive_copied')} />
 								</AnimatedView>
 							)}
 						</View>
@@ -381,7 +385,7 @@ const Receive = ({
 							<Button
 								style={styles.actionButton}
 								icon={<CopyIcon width={18} color="brand" />}
-								text="Copy"
+								text={t('copy')}
 								onPress={(): void => {
 									handleCopy(receiveAddress, 'onchain');
 								}}
@@ -389,7 +393,7 @@ const Receive = ({
 							<View style={styles.buttonSpacer} />
 							<Button
 								style={styles.actionButton}
-								text="Share"
+								text={t('share')}
 								icon={<ShareIcon width={18} color="brand" />}
 								disabled={isSharing}
 								onPress={(): void => {
@@ -404,7 +408,9 @@ const Receive = ({
 							<View style={styles.divider} />
 							<View style={styles.invoice}>
 								<View style={styles.invoiceLabel}>
-									<Caption13Up color="gray1">Lightning invoice</Caption13Up>
+									<Caption13Up color="gray1">
+										{t('receive_lightning_invoice')}
+									</Caption13Up>
 									<LightningIcon
 										style={styles.invoiceLabelIcon}
 										color="gray1"
@@ -419,7 +425,7 @@ const Receive = ({
 											style={styles.tooltip}
 											color="transparent"
 											entering={FadeIn}>
-											<Tooltip text="Invoice Copied To Clipboard" />
+											<Tooltip text={t('receive_copied')} />
 										</AnimatedView>
 									)}
 								</View>
@@ -427,7 +433,7 @@ const Receive = ({
 									<Button
 										style={styles.actionButton}
 										icon={<CopyIcon width={18} color="brand" />}
-										text="Copy"
+										text={t('copy')}
 										onPress={(): void => {
 											handleCopy(lightningInvoice, 'lightning');
 										}}
@@ -435,7 +441,7 @@ const Receive = ({
 									<View style={styles.buttonSpacer} />
 									<Button
 										style={styles.actionButton}
-										text="Share"
+										text={t('share')}
 										icon={<ShareIcon width={18} color="brand" />}
 										disabled={isSharing}
 										onPress={(): void => {
@@ -449,7 +455,14 @@ const Receive = ({
 				</ThemedView>
 			</View>
 		);
-	}, [lightningInvoice, receiveAddress, showTooltip, handleShare, isSharing]);
+	}, [
+		lightningInvoice,
+		receiveAddress,
+		showTooltip,
+		handleShare,
+		isSharing,
+		t,
+	]);
 
 	const slides = useMemo((): Slide[] => {
 		return [{ slide: Slide1 }, { slide: Slide2 }];
@@ -458,7 +471,7 @@ const Receive = ({
 	return (
 		<View style={styles.container} testID="ReceiveScreen">
 			<BottomSheetNavigationHeader
-				title="Receive Bitcoin"
+				title={t('receive_bitcoin')}
 				displayBackButton={false}
 			/>
 
@@ -502,7 +515,7 @@ const Receive = ({
 							style={styles.tooltipUnified}
 							color="transparent"
 							entering={FadeIn}>
-							<Tooltip text="Invoice Copied To Clipboard" />
+							<Tooltip text={t('receive_copied')} />
 						</AnimatedView>
 					)}
 				</View>
@@ -511,7 +524,7 @@ const Receive = ({
 			<View style={buttonContainerStyles}>
 				<Button
 					size="large"
-					text="Specify Invoice"
+					text={t('receive_specify')}
 					onPress={(): void => navigation.navigate('ReceiveDetails')}
 				/>
 			</View>

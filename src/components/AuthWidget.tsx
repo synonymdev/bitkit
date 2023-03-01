@@ -7,6 +7,7 @@ import React, {
 } from 'react';
 import { Linking, StyleSheet } from 'react-native';
 import { Client } from '@synonymdev/slashtags-auth';
+import { useTranslation } from 'react-i18next';
 
 import { useProfile, useSelectedSlashtag } from '../hooks/slashtags';
 import { TouchableOpacity, View } from '../styles/components';
@@ -32,6 +33,7 @@ const AuthWidget = ({
 	onLongPress?: () => void;
 	onPressIn?: () => void;
 }): ReactElement => {
+	const { t } = useTranslation('slashtags');
 	const [showButtons, setShowButtons] = useState(false);
 	const [showDialog, setShowDialog] = useState(false);
 
@@ -49,23 +51,21 @@ const AuthWidget = ({
 	const openMagicLink = useCallback(async () => {
 		const magiclink = await client.magiclink(url).catch((e: Error) => {
 			showErrorNotification({
-				title: 'Failed to get login link',
+				title: t('auth_error_link'),
 				message:
-					e.message === 'channel closed'
-						? 'Could not connect to peer'
-						: e.message,
+					e.message === 'channel closed' ? t('auth_error_peer') : e.message,
 			});
 		});
 
 		if (magiclink) {
 			Linking.openURL(magiclink.url).catch((e) => {
 				showErrorNotification({
-					title: 'Error opening login link',
+					title: t('auth_error_open'),
 					message: e.message,
 				});
 			});
 		}
-	}, [client, url]);
+	}, [client, url, t]);
 
 	const onDelete = (): void => {
 		setShowDialog(true);
@@ -91,7 +91,7 @@ const AuthWidget = ({
 				{showButtons && widget.magiclink && !isEditing && (
 					<View style={styles.buttonsContainer}>
 						<Button
-							text="Sign in"
+							text={t('auth_signin')}
 							onPress={openMagicLink}
 							icon={<KeyIcon color="brand" width={20} height={20} />}
 						/>
@@ -114,9 +114,9 @@ const AuthWidget = ({
 			</View>
 			<Dialog
 				visible={showDialog}
-				title={`Delete ${profile.name} auth widget?`}
-				description={`Are you sure you want to delete ${profile.name} from your widgets?`}
-				confirmText="Yes, Delete"
+				title={t('widget_delete_title', { name: profile.name })}
+				description={t('widget_delete_desc', { name: profile.name })}
+				confirmText={t('widget_delete_yes')}
 				onCancel={(): void => {
 					setShowDialog(false);
 				}}

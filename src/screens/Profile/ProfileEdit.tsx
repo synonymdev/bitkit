@@ -1,6 +1,7 @@
 import React, { useState, useMemo, useEffect, useCallback, memo } from 'react';
 import { View, StyleSheet, KeyboardAvoidingView, Platform } from 'react-native';
 import { useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 
 import { ScrollView, View as ThemedView } from '../../styles/components';
 import { Text02S } from '../../styles/text';
@@ -27,6 +28,7 @@ import useKeyboard from '../../hooks/keyboard';
 export const ProfileEdit = ({
 	navigation,
 }: RootStackScreenProps<'Profile' | 'ProfileEdit'>): JSX.Element => {
+	const { t } = useTranslation('slashtags');
 	const [fields, setFields] = useState<Omit<BasicProfile, 'links'>>({});
 	const links = useSelector((state: Store) => state.slashtags.links);
 	const [hasEdited, setHasEdited] = useState(false);
@@ -116,7 +118,7 @@ export const ProfileEdit = ({
 			<SafeAreaInsets type="top" />
 			<NavigationHeader
 				style={styles.header}
-				title={onboardedProfile ? 'Profile' : 'Create Profile'}
+				title={t(onboardedProfile ? 'profile' : 'profile_create')}
 				onClosePress={(): void => {
 					navigation.navigate(onboardedProfile ? 'Profile' : 'Wallet');
 				}}
@@ -133,7 +135,7 @@ export const ProfileEdit = ({
 					<Divider />
 					<ProfileLinks links={links} editable={true} />
 					<Button
-						text="Add Link"
+						text={t('profile_add_link')}
 						style={styles.addLinkButton}
 						onPress={(): void => {
 							navigation.navigate('ProfileAddLink');
@@ -143,16 +145,13 @@ export const ProfileEdit = ({
 						}
 					/>
 					<Divider />
-					<Text02S color="gray1">
-						Please note that all your profile information will be publicly
-						available and visible.
-					</Text02S>
+					<Text02S color="gray1">{t('profile_public_warn')}</Text02S>
 
 					{(!onboardedProfile || hasEdited) && (
 						<View style={buttonContainerStyles}>
 							<Button
 								style={styles.button}
-								text={onboardedProfile ? 'Save Profile' : 'Continue'}
+								text={t(onboardedProfile ? 'profile_save' : 'continue')}
 								size="large"
 								disabled={!isValid()}
 								onPress={save}

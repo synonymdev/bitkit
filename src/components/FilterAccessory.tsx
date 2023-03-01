@@ -2,6 +2,7 @@ import React, { ReactElement, memo } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useSelector } from 'react-redux';
 import { KeyboardAccessoryView } from 'react-native-keyboard-accessory';
+import { useTranslation } from 'react-i18next';
 
 import Tag from './Tag';
 import { View as ThemedView } from '../styles/components';
@@ -15,8 +16,9 @@ const FilterAccessory = ({
 	tags: string[];
 	addTag: (tag: string) => void;
 }): ReactElement => {
+	const { t } = useTranslation('wallet');
 	const suggestions = useSelector((store: Store) =>
-		store.metadata.lastUsedTags.filter((t) => !tags.includes(t)),
+		store.metadata.lastUsedTags.filter((tg) => !tags.includes(tg)),
 	);
 
 	if (suggestions.length === 0) {
@@ -25,7 +27,7 @@ const FilterAccessory = ({
 
 	const content = (
 		<ThemedView style={styles.suggestions} color="gray6">
-			<Text13UP color="gray1">FILTER ACTIVITY USING TAGS</Text13UP>
+			<Text13UP color="gray1">{t('tags_filter')}</Text13UP>
 			<View style={styles.suggestionsRow}>
 				{suggestions.map((s) => (
 					<Tag

@@ -7,6 +7,7 @@ import React, {
 } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
+import { useTranslation } from 'react-i18next';
 
 import { Text01S, Text02S } from '../../../styles/text';
 import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
@@ -22,6 +23,7 @@ const ChoosePIN = ({
 	navigation,
 	route,
 }: PinScreenProps<'ChoosePIN'>): ReactElement => {
+	const { t } = useTranslation('security');
 	const origPIN = route.params?.pin;
 	const [pin, setPin] = useState<string>('');
 	const [tryAgain, setTryAgain] = useState<boolean>(false);
@@ -69,25 +71,18 @@ const ChoosePIN = ({
 	return (
 		<GradientView style={styles.container}>
 			<BottomSheetNavigationHeader
-				title={origPIN ? 'Retype 4-Digit PIN' : 'Choose 4-Digit PIN'}
+				title={t(origPIN ? 'pin_retype_header' : 'pin_choose_header')}
 				displayBackButton={origPIN ? true : false}
 			/>
 
-			{origPIN ? (
-				<Text01S style={styles.text} color="gray1">
-					Please retype your 4-digit PIN to complete the setup process.
-				</Text01S>
-			) : (
-				<Text01S style={styles.text} color="gray1">
-					Please use a PIN you will remember. If you forget your PIN you can
-					reset it, but that will require restoring your wallet.
-				</Text01S>
-			)}
+			<Text01S style={styles.text} color="gray1">
+				{t(origPIN ? 'pin_retype_text' : 'pin_choose_text')}
+			</Text01S>
 
 			<View style={styles.tryAgain}>
 				{tryAgain ? (
 					<Text02S color="brand" testID="WrongPIN">
-						Try again, this is not the same PIN.
+						{t('pin_not_match')}
 					</Text02S>
 				) : (
 					<Text02S> </Text02S>

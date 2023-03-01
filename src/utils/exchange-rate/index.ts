@@ -14,6 +14,7 @@ import {
 	IFiatDisplayValues,
 	mostUsedExchangeTickers,
 } from './types';
+import i18n from '../i18n';
 
 type TTicker = {
 	symbol: string;
@@ -59,13 +60,13 @@ export const getExchangeRates = async (): Promise<Result<IExchangeRates>> => {
 			const date = timeAgo(lastUpdatedAt);
 
 			showErrorNotification({
-				title: 'Blocktank FX API Error',
-				message: `Could not get exchange rate. Using price from\n${date}`,
+				title: i18n.t('other:rate_error_title'),
+				message: i18n.t('other:rate_error_msg_date', { date }),
 			});
 		} else {
 			showErrorNotification({
-				title: 'Blocktank FX API Error',
-				message: 'Could not get exchange rate. Please try again later.',
+				title: i18n.t('other:rate_error_title'),
+				message: i18n.t('other:rate_error_msg_nodate'),
 			});
 		}
 

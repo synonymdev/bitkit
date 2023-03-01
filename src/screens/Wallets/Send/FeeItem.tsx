@@ -5,6 +5,7 @@ import {
 	TouchableOpacity,
 	GestureResponderEvent,
 } from 'react-native';
+import { useTranslation } from 'react-i18next';
 
 import { Text01M, Text02M } from '../../../styles/text';
 import {
@@ -17,7 +18,6 @@ import {
 import { EFeeId } from '../../../store/types/fees';
 import useColors from '../../../hooks/colors';
 import useDisplayValues from '../../../hooks/displayValues';
-import { FeeText } from '../../../store/shapes/fees';
 
 const FeeItem = ({
 	id,
@@ -31,7 +31,9 @@ const FeeItem = ({
 	onPress?: (event: GestureResponderEvent) => void;
 }): ReactElement => {
 	const colors = useColors();
-	const { title, description } = FeeText[id];
+	const { t } = useTranslation('fee');
+	const title = t(`${id}.title`);
+	const description = t(`${id}.description`);
 	const totalFeeDisplay = useDisplayValues(sats);
 
 	const icon = useMemo(() => {

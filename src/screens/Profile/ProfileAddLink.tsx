@@ -1,6 +1,7 @@
 import React, { useMemo, ReactElement, useCallback, memo } from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useTranslation } from 'react-i18next';
 
 import { View as ThemedView } from '../../styles/components';
 import { Text02S, Text02B } from '../../styles/text';
@@ -17,6 +18,7 @@ import { profileLinkSelector } from '../../store/reselect/ui';
 export const ProfileAddLinkForm = ({
 	navigation,
 }: RootStackScreenProps<'ProfileAddLink'>): ReactElement => {
+	const { t } = useTranslation('slashtags');
 	const insets = useSafeAreaInsets();
 	const form = useAppSelector(profileLinkSelector);
 
@@ -42,12 +44,12 @@ export const ProfileAddLinkForm = ({
 	return (
 		<ThemedView style={styles.container}>
 			<SafeAreaInsets type="top" />
-			<NavigationHeader title="Add Link" />
+			<NavigationHeader title={t('profile_add_link')} />
 			<View style={styles.content}>
 				<LabeledInput
 					style={styles.input}
-					label="Label"
-					placeholder="For example 'Website'"
+					label={t('profile_link_label')}
+					placeholder={t('profile_link_label_placeholder')}
 					value={form.title}
 					maxLength={25}
 					onChange={(value: string): void => {
@@ -57,12 +59,12 @@ export const ProfileAddLinkForm = ({
 						onPress={(): void => {
 							navigation.navigate('ProfileLinkSuggestions');
 						}}>
-						<Text02B color="brand">Suggestions</Text02B>
+						<Text02B color="brand">{t('profile_link_suggestions')}</Text02B>
 					</TouchableOpacity>
 				</LabeledInput>
 				<LabeledInput
 					style={styles.input}
-					label="Link or text"
+					label={t('profile_link_value')}
 					placeholder="https://"
 					value={form.url}
 					multiline={true}
@@ -73,13 +75,13 @@ export const ProfileAddLinkForm = ({
 					}}
 				/>
 				<Text02S style={styles.note} color="gray1">
-					Note: Any link you add will be publicly visible.
+					{t('profile_link_public')}
 				</Text02S>
 
 				<View style={buttonContainerStyles}>
 					<Button
 						style={styles.button}
-						text="Save"
+						text={t('save')}
 						size="large"
 						disabled={!isValid}
 						onPress={saveLink}

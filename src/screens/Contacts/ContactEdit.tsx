@@ -1,5 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { View, StyleSheet, KeyboardAvoidingView, Platform } from 'react-native';
+import { useTranslation } from 'react-i18next';
 
 import { View as ThemedView } from '../../styles/components';
 import NavigationHeader from '../../components/NavigationHeader';
@@ -19,6 +20,7 @@ export const ContactEdit = ({
 	navigation,
 	route,
 }: RootStackScreenProps<'ContactEdit'>): JSX.Element => {
+	const { t } = useTranslation('slashtags');
 	const url = route.params.url;
 	const saved = useSlashtags().contacts[url];
 	const { slashtag } = useSelectedSlashtag();
@@ -61,7 +63,7 @@ export const ContactEdit = ({
 		<ThemedView style={styles.container}>
 			<SafeAreaInsets type="top" />
 			<NavigationHeader
-				title={`${saved ? 'Edit' : 'Add'} Contact`}
+				title={t(saved ? 'contact_edit_capital' : 'contact_add_capital')}
 				displayBackButton={resolving}
 				onClosePress={(): void => {
 					if (saved) {
@@ -89,14 +91,14 @@ export const ContactEdit = ({
 				<View style={buttonContainerStyles}>
 					<Button
 						style={styles.button}
-						text="Discard"
+						text={t('discard')}
 						size="large"
 						variant="secondary"
 						onPress={onDiscard}
 					/>
 					<View style={styles.divider} />
 					<Button
-						text="Save"
+						text={t('save')}
 						size="large"
 						style={styles.button}
 						disabled={form.name?.length === 0}

@@ -8,6 +8,7 @@ import React, {
 import { StyleSheet, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 
 import { View } from '../../../styles/components';
 import { Caption13M, Text01M } from '../../../styles/text';
@@ -57,6 +58,7 @@ const NetworkRow = ({
 };
 
 const BitcoinBreakdown = (): ReactElement => {
+	const { t } = useTranslation('wallet');
 	const navigation = useNavigation<RootNavigationProp>();
 	const isGeoBlocked = useSelector(isGeoBlockedSelector);
 	const { satoshis: onchain } = useBalance({ onchain: true });
@@ -82,8 +84,8 @@ const BitcoinBreakdown = (): ReactElement => {
 	return (
 		<View color="transparent" style={styles.container}>
 			<NetworkRow
-				title="Savings Balance"
-				subtitle="On-chain BTC"
+				title={t('details_savings_title')}
+				subtitle={t('details_savings_subtitle')}
 				color="rgba(247, 147, 26, 0.16)"
 				icon={<SavingsIcon color="orange" width={17} height={17} />}
 				satoshis={onchain}
@@ -98,8 +100,8 @@ const BitcoinBreakdown = (): ReactElement => {
 				<View color="gray4" style={styles.line} />
 			</View>
 			<NetworkRow
-				title="Spending Balance"
-				subtitle="Instant BTC"
+				title={t('details_spending_title')}
+				subtitle={t('details_spending_subtitle')}
 				color="rgba(185, 92, 232, 0.16)"
 				icon={<CoinsIcon color="purple" width={13} height={13} />}
 				satoshis={lightning}

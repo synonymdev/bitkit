@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import Clipboard from '@react-native-clipboard/clipboard';
+import { useTranslation } from 'react-i18next';
 
 import { closeBottomSheet } from '../../store/actions/ui';
 import { handleSlashtagURL } from '../../utils/slashtags';
@@ -23,6 +24,7 @@ const AddContact = ({
 }: {
 	navigation: StackNavigationProp<RootStackParamList, 'Contacts'>;
 }): JSX.Element => {
+	const { t } = useTranslation('slashtags');
 	const snapPoints = useSnapPoints('small');
 	const [addContactURL, setAddContactURL] = useState('');
 	const [error, setError] = useState<boolean | string>(false);
@@ -37,7 +39,7 @@ const AddContact = ({
 		if (url === '') {
 			return;
 		} else if (url === myProfileURL) {
-			setError('You cannot add yourself as a contact.');
+			setError(t('contact_error_yourself'));
 			return;
 		} else if (!url.startsWith('slash:')) {
 			// Handle z32 key without slash: scheme prefix
@@ -52,7 +54,7 @@ const AddContact = ({
 		}
 
 		function onError(): void {
-			setError('This is not a valid key.');
+			setError(t('contact_error_key'));
 		}
 
 		function onContact(): void {
@@ -78,18 +80,18 @@ const AddContact = ({
 			backdrop={true}>
 			<View style={styles.container}>
 				<BottomSheetNavigationHeader
-					title="Add Contact"
+					title={t('contact_add_capital')}
 					displayBackButton={false}
 				/>
 				<Text01S color="gray1" style={styles.addContactNote}>
-					Add a new contact by scanning a QR or by pasting their key below.
+					{t('contact_add_explain')}
 				</Text01S>
 				<View style={styles.content}>
 					<LabeledInput
 						bottomSheet={true}
-						label="Add contact"
+						label={t('contact_add')}
 						value={addContactURL}
-						placeholder="Paste a key"
+						placeholder={t('contact_key_paste')}
 						multiline={true}
 						onChange={updateContactID}>
 						<TouchableOpacity onPress={navigateToScanner}>

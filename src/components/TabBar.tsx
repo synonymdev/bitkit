@@ -2,6 +2,7 @@ import React, { ReactElement, useCallback, useMemo } from 'react';
 import { View, TouchableOpacity, StyleSheet, Platform } from 'react-native';
 import { SvgXml } from 'react-native-svg';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useTranslation } from 'react-i18next';
 
 import { receiveIcon, sendIcon } from '../assets/icons/tabs';
 import { showBottomSheet } from '../store/actions/ui';
@@ -18,6 +19,7 @@ const TabBar = ({
 }): ReactElement => {
 	const { white08 } = useColors();
 	const insets = useSafeAreaInsets();
+	const { t } = useTranslation('wallet');
 
 	const onReceivePress = useCallback((): void => {
 		showBottomSheet('receiveNavigation');
@@ -59,7 +61,7 @@ const TabBar = ({
 				testID="Send">
 				<BlurView style={styles.send}>
 					<SvgXml xml={sendXml} width={13} height={13} />
-					<Text02M style={styles.tabText}>Send</Text02M>
+					<Text02M style={styles.tabText}>{t('send')}</Text02M>
 				</BlurView>
 			</TouchableOpacity>
 			<TouchableOpacity
@@ -75,7 +77,7 @@ const TabBar = ({
 				testID="Receive">
 				<BlurView style={styles.receive}>
 					<SvgXml xml={receiveXml} width={13} height={13} />
-					<Text02M style={styles.tabText}>Receive</Text02M>
+					<Text02M style={styles.tabText}>{t('receive')}</Text02M>
 				</BlurView>
 			</TouchableOpacity>
 		</View>

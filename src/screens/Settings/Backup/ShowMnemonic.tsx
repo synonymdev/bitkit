@@ -1,6 +1,7 @@
 import React, { memo, ReactElement, useMemo, useState, useEffect } from 'react';
 import { StyleSheet, View, Platform } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { Trans, useTranslation } from 'react-i18next';
 
 import { View as ThemedView } from '../../../styles/components';
 import { Text01S, Text01M, Text02S } from '../../../styles/text';
@@ -33,6 +34,7 @@ export const Word = ({
 const ShowMnemonic = ({
 	navigation,
 }: BackupScreenProps<'ShowMnemonic'>): ReactElement => {
+	const { t } = useTranslation('security');
 	const [show, setShow] = useState(false);
 	const [seed, setSeed] = useState<string[]>([]);
 	const [bip39Passphrase, setPassphrase] = useState<string>('');
@@ -51,7 +53,7 @@ const ShowMnemonic = ({
 		getMnemonicPhrase().then((res) => {
 			if (res.isErr()) {
 				showErrorNotification({
-					title: 'Error Getting Mnemonic',
+					title: t('mnemonic_error'),
 					message: res.error.message,
 				});
 				return;
@@ -59,7 +61,7 @@ const ShowMnemonic = ({
 			setSeed(res.value.split(' '));
 		});
 		getBip39Passphrase().then(setPassphrase);
-	}, []);
+	}, [t]);
 
 	const seedToShow = useMemo(
 		() => (Platform.OS === 'android' && !show ? dummySeed : seed),
@@ -69,20 +71,15 @@ const ShowMnemonic = ({
 	return (
 		<View style={styles.container}>
 			<BottomSheetNavigationHeader
-				title="Your Recovery Phrase"
+				title={t('mnemonic_your')}
 				displayBackButton={false}
 			/>
 
-			{show ? (
-				<Text01S color="gray1">
-					Write down these {seedToShow.length} words in the right order and
-					store them in a safe place.
-				</Text01S>
-			) : (
-				<Text01S color="gray1">
-					Use the 12 words below to recover your money at a later date.
-				</Text01S>
-			)}
+			<Text01S color="gray1">
+				{show
+					? t('mnemonic_write', { length: seedToShow.length })
+					: t('mnemonic_use')}
+			</Text01S>
 
 			<View
 				style={styles.seedContainer}
@@ -105,7 +102,7 @@ const ShowMnemonic = ({
 					<BlurView style={styles.blur}>
 						<Button
 							size="large"
-							text="Tap To Reveal"
+							text={t('mnemonic_reveal')}
 							color="black5"
 							onPress={(): void => setShow(true)}
 							testID="TapToReveal"
@@ -115,15 +112,20 @@ const ShowMnemonic = ({
 			</View>
 
 			<Text02S color="gray1">
-				<Text02S color="brand">Never share</Text02S> your recovery phrase with
-				anyone as this may result in the loss of funds.
+				<Trans
+					t={t}
+					i18nKey="mnemonic_never_share"
+					components={{
+						brand: <Text02S color="brand" />,
+					}}
+				/>
 			</Text02S>
 
 			<View style={nextButtonContainer}>
 				{show && (
 					<Button
 						size="large"
-						text="Continue"
+						text={t('continue')}
 						onPress={(): void => {
 							navigation.navigate(
 								bip39Passphrase ? 'ShowPassphrase' : 'ConfirmMnemonic',

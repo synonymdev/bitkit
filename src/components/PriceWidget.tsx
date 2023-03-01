@@ -8,6 +8,7 @@ import {
 	Path,
 } from '@shopify/react-native-skia';
 import b4a from 'b4a';
+import { useTranslation } from 'react-i18next';
 
 import { View } from '../styles/components';
 import { Text01M, Caption13M } from '../styles/text';
@@ -101,6 +102,7 @@ const PriceWidget = ({
 	onLongPress?: () => void;
 	onPressIn?: () => void;
 }): ReactElement => {
+	const { t } = useTranslation('slashtags');
 	const { value, drive } = useFeedWidget({ url, feed: widget.feed });
 	const [pastValues, setPastValues] = useState<number[]>([]);
 
@@ -147,7 +149,7 @@ const PriceWidget = ({
 	return (
 		<BaseFeedWidget
 			url={url}
-			name="Bitcoin Price"
+			name={t('widget_price')}
 			label={widget.feed.field.name}
 			icon={<ChartLineIcon width={32} height={32} />}
 			isEditing={isEditing}

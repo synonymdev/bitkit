@@ -47,7 +47,7 @@ export const setupBlocktank = (selectedNetwork: TAvailableNetworks): void => {
  * @returns {Promise<IGetInfoResponse>}
  */
 export const getBlocktankInfo = async (
-	fromStorage = false,
+	fromStorage: boolean = false,
 ): Promise<IGetInfoResponse> => {
 	let blocktankInfo: IGetInfoResponse | undefined;
 	if (fromStorage) {

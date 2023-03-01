@@ -1,5 +1,6 @@
 import React, { memo, ReactElement } from 'react';
 import { View, StyleSheet } from 'react-native';
+import { useTranslation } from 'react-i18next';
 
 import NavigationHeader from '../../components/NavigationHeader';
 import { View as ThemedView } from '../../styles/components';
@@ -30,6 +31,8 @@ const suggestions = [
 export const ProfileLinkSuggestions = ({
 	navigation,
 }: RootStackScreenProps<'ProfileLinkSuggestions'>): ReactElement => {
+	const { t } = useTranslation('slashtags');
+
 	const handleChoose = (suggestion: string): void => {
 		updateProfileLink({ title: suggestion });
 		navigation.goBack();
@@ -38,7 +41,8 @@ export const ProfileLinkSuggestions = ({
 	return (
 		<ThemedView style={styles.container}>
 			<SafeAreaInsets type="top" />
-			<NavigationHeader title="Suggestions To Add" />
+			<NavigationHeader title={t('profile_link_suggestions_to_add')} />
+			<NavigationHeader title="" />
 			<View style={styles.buttons}>
 				{suggestions.map((suggestion) => (
 					<Button

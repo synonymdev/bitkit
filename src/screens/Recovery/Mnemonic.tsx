@@ -1,6 +1,7 @@
 import React, { ReactElement, useEffect, useMemo, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { Trans, useTranslation } from 'react-i18next';
 
 import { View as ThemedView } from '../../styles/components';
 import { Text01M, Text01S } from '../../styles/text';
@@ -15,6 +16,7 @@ import { RecoveryStackScreenProps } from '../../navigation/types';
 const Mnemonic = ({
 	navigation,
 }: RecoveryStackScreenProps<'Mnemonic'>): ReactElement => {
+	const { t } = useTranslation('security');
 	const [seed, setSeed] = useState<string[]>([]);
 	const [passphrase, setPassphrase] = useState('');
 	const insets = useSafeAreaInsets();
@@ -26,7 +28,7 @@ const Mnemonic = ({
 
 			if (mnemoncicResult.isErr()) {
 				showErrorNotification({
-					title: 'Error Getting Mnemonic',
+					title: t('mnemonic_error'),
 					message: mnemoncicResult.error.message,
 				});
 				return;
@@ -37,7 +39,7 @@ const Mnemonic = ({
 		};
 
 		getSeed();
-	}, []);
+	}, [t]);
 
 	const buttonContainerStyles = useMemo(
 		() => ({
@@ -52,11 +54,10 @@ const Mnemonic = ({
 	return (
 		<ThemedView style={styles.root}>
 			<SafeAreaInsets type="top" />
-			<NavigationHeader title="Mnemonic Phrase" />
+			<NavigationHeader title={t('mnemonic_phrase')} />
 			<View style={styles.content}>
 				<Text01S style={styles.text} color="gray1">
-					Write down these {seed.length} words in the right order and store them
-					in a safe place.
+					{t('mnemonic_phrase', { length: seed.length })}
 				</Text01S>
 
 				<ThemedView color="gray324" style={styles.seed}>
@@ -75,11 +76,17 @@ const Mnemonic = ({
 				{passphrase !== '' && (
 					<View style={styles.passphrase}>
 						<Text01S style={styles.passphrase} color="gray1">
-							You added a passphrase to your recovery phrase during wallet
-							setup.
+							{t('pass_text')}
 						</Text01S>
 						<Text01M>
-							<Text01M color="gray1">Passphrase:</Text01M> {passphrase}
+							<Trans
+								t={t}
+								i18nKey="pass_recovery"
+								components={{
+									gray: <Text01M color="gray1" />,
+								}}
+								values={{ passphrase }}
+							/>
 						</Text01M>
 					</View>
 				)}
@@ -87,7 +94,7 @@ const Mnemonic = ({
 				<View style={buttonContainerStyles}>
 					<Button
 						style={styles.button}
-						text="Back"
+						text={t('back')}
 						size="large"
 						onPress={onBack}
 					/>

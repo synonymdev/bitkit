@@ -1,5 +1,6 @@
 import React, { memo, ReactElement, useMemo } from 'react';
 import { useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 
 import { EItemType, IListData } from '../../../components/List';
 import SettingsView from '../SettingsView';
@@ -10,16 +11,17 @@ import {
 } from '../../../store/reselect/settings';
 
 const CoinSelectSettings = (): ReactElement => {
+	const { t } = useTranslation('settings');
 	const selectedAutoPilot = useSelector(coinSelectAutoSelector);
 	const coinSelectPreference = useSelector(coinSelectPreferenceSelector);
 
 	const settingsListData: IListData[] = useMemo(
 		() => [
 			{
-				title: 'Coin Selection Method',
+				title: t('adv.cs_method'),
 				data: [
 					{
-						title: 'Manual',
+						title: t('adv.cs_manual'),
 						value: !selectedAutoPilot,
 						type: EItemType.button,
 						onPress: (): void => {
@@ -27,7 +29,7 @@ const CoinSelectSettings = (): ReactElement => {
 						},
 					},
 					{
-						title: 'Autopilot',
+						title: t('adv.cs_auto'),
 						value: selectedAutoPilot,
 						type: EItemType.button,
 						onPress: (): void => {
@@ -37,10 +39,10 @@ const CoinSelectSettings = (): ReactElement => {
 				],
 			},
 			{
-				title: selectedAutoPilot ? 'Autopilot Mode' : '',
+				title: selectedAutoPilot ? t('adv.cs_auto_mode') : '',
 				data: [
 					{
-						title: 'Consolidate',
+						title: t('adv.cs_consolidate'),
 						value: coinSelectPreference === 'consolidate',
 						type: EItemType.button,
 						hide: !selectedAutoPilot,
@@ -52,7 +54,7 @@ const CoinSelectSettings = (): ReactElement => {
 						},
 					},
 					{
-						title: 'Maximum Privacy',
+						title: t('adv.cs_max'),
 						value: coinSelectPreference === 'large',
 						type: EItemType.button,
 						hide: !selectedAutoPilot,
@@ -64,7 +66,7 @@ const CoinSelectSettings = (): ReactElement => {
 						},
 					},
 					{
-						title: 'Minimum UTXOs',
+						title: t('adv.cs_min'),
 						value: coinSelectPreference === 'small',
 						type: EItemType.button,
 						hide: !selectedAutoPilot,
@@ -78,12 +80,12 @@ const CoinSelectSettings = (): ReactElement => {
 				],
 			},
 		],
-		[selectedAutoPilot, coinSelectPreference],
+		[selectedAutoPilot, coinSelectPreference, t],
 	);
 
 	return (
 		<SettingsView
-			title="Coin Selection"
+			title={t('adv.coin_selection')}
 			listData={settingsListData}
 			showBackNavigation={true}
 		/>

@@ -2,6 +2,7 @@ import React, { memo, ReactElement, useMemo, useCallback } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useSelector } from 'react-redux';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useTranslation } from 'react-i18next';
 
 import { Caption13Up } from '../../../styles/text';
 import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
@@ -25,6 +26,7 @@ import {
 } from '../../../store/reselect/wallet';
 
 const FeeRate = ({ navigation }: SendScreenProps<'FeeRate'>): ReactElement => {
+	const { t } = useTranslation('wallet');
 	const insets = useSafeAreaInsets();
 	const selectedWallet = useSelector(selectedWalletSelector);
 	const selectedNetwork = useSelector(selectedNetworkSelector);
@@ -81,12 +83,12 @@ const FeeRate = ({ navigation }: SendScreenProps<'FeeRate'>): ReactElement => {
 			});
 			if (res.isErr()) {
 				showErrorNotification({
-					title: 'Error Updating Fee',
+					title: t('send_fee_error'),
 					message: res.error.message,
 				});
 			}
 		},
-		[selectedNetwork, selectedWallet, transaction],
+		[selectedNetwork, selectedWallet, transaction, t],
 	);
 
 	const displayFast = useMemo(() => {
@@ -125,10 +127,10 @@ const FeeRate = ({ navigation }: SendScreenProps<'FeeRate'>): ReactElement => {
 
 	return (
 		<GradientView style={styles.container}>
-			<BottomSheetNavigationHeader title="Speed" />
+			<BottomSheetNavigationHeader title={t('send_fee_speed')} />
 			<View style={styles.content}>
 				<Caption13Up color="gray1" style={styles.title}>
-					Speed and fee
+					{t('send_fee_and_speed')}
 				</Caption13Up>
 
 				{displayFast && (
@@ -172,7 +174,7 @@ const FeeRate = ({ navigation }: SendScreenProps<'FeeRate'>): ReactElement => {
 				<View style={nextButtonContainer}>
 					<Button
 						size="large"
-						text="Continue"
+						text={t('continue')}
 						disabled={selectedFeeId === EFeeId.none}
 						onPress={(): void => navigation.navigate('ReviewAndSend')}
 					/>

@@ -8,6 +8,7 @@ import React, {
 	useState,
 } from 'react';
 import { FlatList, LayoutAnimation, StyleSheet, View } from 'react-native';
+import { useTranslation } from 'react-i18next';
 
 import {
 	TouchableOpacity,
@@ -123,9 +124,7 @@ const defaultAllAddressesData: TAddressViewerData = {
 };
 
 const Separator = memo(
-	(): ReactElement => (
-		<ThemedView color={'darkGray'} style={styles.separator} />
-	),
+	(): ReactElement => <ThemedView color="darkGray" style={styles.separator} />,
 );
 
 const EmptyComponent = memo(
@@ -140,28 +139,29 @@ const EmptyComponent = memo(
 		searchTxt?: string;
 		loadingAddresses: boolean;
 	}): ReactElement => {
+		const { t } = useTranslation('settings');
 		const { addressType, addressIndex, viewReceivingAddresses } = config;
-		let txt = 'No Addresses To Display';
+		let txt = t('addr.no_addrs');
 		if (loadingAddresses) {
-			txt = 'Loading Addresses...';
+			txt = t('addr.loading');
 		}
 		if (hasUtxos) {
-			const receiveAddressText = viewReceivingAddresses
-				? 'receiving'
-				: 'change';
-			txt = `No funds found under the ${addressType} address type, ${receiveAddressText} addresses up to index ${
-				addressIndex - 1
-			}`;
+			txt = t(
+				viewReceivingAddresses
+					? 'addr.no_funds_receiving'
+					: 'addr.no_funds_change',
+				{ addressType, index: addressIndex - 1 },
+			);
 		}
 		if (hasUtxos && searchTxt) {
-			txt = `No addresses with funds found when searching for "${searchTxt}"`;
+			txt = t('addr.no_addrs_with_funds', { searchTxt });
 		}
 		if (!hasUtxos && searchTxt) {
-			txt = `No addresses found when searching for "${searchTxt}"`;
+			txt = t('addr.no_addrs_str', { searchTxt });
 		}
 		return (
 			<View style={styles.emptyComponent}>
-				<Subtitle style={styles.emptyText} color={'white8'}>
+				<Subtitle style={styles.emptyText} color="white8">
 					{txt}
 				</Subtitle>
 			</View>
@@ -231,6 +231,7 @@ const getAllAddresses = async ({
 const AddressViewer = ({
 	navigation,
 }: SettingsScreenProps<'AddressViewer'>): ReactElement => {
+	const { t } = useTranslation('settings');
 	const selectedWallet = useSelector(selectedWalletSelector);
 	const selectedNetwork = useSelector(selectedNetworkSelector);
 	const addressType = useSelector(addressTypeSelector);
@@ -708,17 +709,17 @@ const AddressViewer = ({
 		if (privateKey) {
 			Clipboard.setString(privateKey);
 			showSuccessNotification({
-				title: 'Copied to clipboard',
+				title: t('addr.copied'),
 				message: privateKey,
 			});
 		} else if (selectedAddress.address) {
 			Clipboard.setString(selectedAddress.address);
 			showSuccessNotification({
-				title: 'Copied to clipboard',
+				title: t('addr.copied'),
 				message: selectedAddress.address,
 			});
 		}
-	}, [privateKey, selectedAddress.address]);
+	}, [privateKey, selectedAddress.address, t]);
 
 	/**
 	 * Will retrieve and display the private key of the selected address.
@@ -828,7 +829,7 @@ const AddressViewer = ({
 					});
 					if (utxosRes.isErr()) {
 						showErrorNotification({
-							title: 'Rescan Error: Please Check Connection',
+							title: t('addr.rescan_error'),
 							message: utxosRes.error.message,
 						});
 						setIsCheckingBalances(false);
@@ -853,6 +854,7 @@ const AddressViewer = ({
 		config.selectedNetwork,
 		selectedNetwork,
 		selectedWallet,
+		t,
 	]);
 
 	const utxosLength = useMemo(() => utxos?.length ?? 0, [utxos?.length]);
@@ -874,11 +876,11 @@ const AddressViewer = ({
 				}
 			});
 		}
-		const addrTxt = uniqueAddresses.length === 1 ? 'Address' : 'Addresses';
+
 		return selectedUtxosLength > 0 && utxosLength !== selectedUtxosLength
-			? `Spend ${fundsToSpend} sats From ${uniqueAddresses.length} ${addrTxt}`
-			: `Spend All Funds From ${uniqueAddresses.length} ${addrTxt}`;
-	}, [selectedUtxos, selectedUtxosLength, utxos, utxosLength]);
+			? t('addr.spend_number', { fundsToSpend, count: uniqueAddresses.length })
+			: t('addr.spend_all', { count: uniqueAddresses.length });
+	}, [selectedUtxos, selectedUtxosLength, utxos, utxosLength, t]);
 
 	useEffect(() => {
 		const addressAmount =
@@ -904,7 +906,7 @@ const AddressViewer = ({
 		<ThemedView style={styles.content} color="black">
 			<SafeAreaInsets type="top" />
 			<NavigationHeader
-				title="Address Viewer"
+				title={t('adv.address_viewer')}
 				displayBackButton={true}
 				onClosePress={(): void => {
 					navigation.navigate('Wallet');
@@ -926,16 +928,16 @@ const AddressViewer = ({
 					</View>
 					<View>
 						<Text02S style={styles.headerText}>
-							Index: {selectedAddress?.index}
+							{t('addr.index', { index: selectedAddress?.index })}
 						</Text02S>
 						<Text02S style={styles.headerText} testID="Path">
-							Path: {selectedAddress?.path}
+							{t('addr.path', { path: selectedAddress?.path })}
 						</Text02S>
 						<TouchableOpacity
 							style={styles.headerText}
 							onPress={onPrivateKeyPress}>
 							<Text02S>
-								{privateKey ? 'Hide Private Key' : 'View Private Key'}
+								{t(privateKey ? 'addr.private_hide' : 'addr.private_view')}
 							</Text02S>
 						</TouchableOpacity>
 						{config.selectedNetwork !== 'bitcoinRegtest' && (
@@ -949,7 +951,9 @@ const AddressViewer = ({
 				</View>
 			)}
 			{privateKey && (
-				<Text02S style={styles.privKeyText}>Private Key: {privateKey}</Text02S>
+				<Text02S style={styles.privKeyText}>
+					{t('addr.private_key', { privateKey })}
+				</Text02S>
 			)}
 			<SearchInput
 				//style={styles.searchInput}
@@ -1014,14 +1018,14 @@ const AddressViewer = ({
 				<View style={styles.row}>
 					<Button
 						color={getAddressTypeButtonColor('change')}
-						text="Change Addresses"
+						text={t('addr.addr_change')}
 						onPress={(): void => {
 							toggleReceivingAddresses(false);
 						}}
 					/>
 					<Button
 						color={getAddressTypeButtonColor('receiving')}
-						text="Receiving Addresses"
+						text={t('addr.addr_receiving')}
 						onPress={(): void => {
 							toggleReceivingAddresses(true);
 						}}
@@ -1086,7 +1090,7 @@ const AddressViewer = ({
 							/>
 						)}
 						<Subtitle style={styles.spendFundsText}>
-							{totalBalance} sats found
+							{t('addr.sats_found', { totalBalance })}
 						</Subtitle>
 					</View>
 				)}
@@ -1098,13 +1102,13 @@ const AddressViewer = ({
 						}}
 					/>
 					<Button
-						text="Generate 20 More"
+						text={t('addr.gen_20')}
 						loading={isGeneratingMoreAddresses}
 						onPress={onGenerateMorePress}
 					/>
 					{!utxos && (
 						<Button
-							text="Check Balances"
+							text={t('addr.check_balances')}
 							loading={isCheckingBalances}
 							onPress={onCheckBalance}
 						/>

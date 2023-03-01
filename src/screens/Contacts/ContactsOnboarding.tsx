@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Image, StyleSheet } from 'react-native';
 import { StackScreenProps } from '@react-navigation/stack';
+import { Trans, useTranslation } from 'react-i18next';
 
 import NavigationHeader from '../../components/NavigationHeader';
 import Button from '../../components/Button';
@@ -17,11 +18,13 @@ type ContactsOnboardingProps = StackScreenProps<RootStackParamList, 'Contacts'>;
 export const ContactsOnboarding = ({
 	navigation,
 }: ContactsOnboardingProps): JSX.Element => {
+	const { t } = useTranslation('slashtags');
+
 	return (
 		<GlowingBackground topLeft="brand">
 			<SafeAreaInsets type="top" />
 			<NavigationHeader
-				title="Contacts"
+				title={t('contacts')}
 				displayBackButton={false}
 				onClosePress={(): void => {
 					navigation.navigate('Wallet');
@@ -32,18 +35,24 @@ export const ContactsOnboarding = ({
 					<Image style={styles.image} source={imageSrc} />
 				</View>
 				<View style={styles.text}>
-					<Display>Dynamic</Display>
-					<Display color="brand">Contacts.</Display>
+					<Display>
+						<Trans
+							t={t}
+							i18nKey="onboarding_header"
+							components={{
+								brand: <Display color="brand" />,
+							}}
+						/>
+					</Display>
 					<Text01S color="gray1" style={styles.introText}>
-						Use Bitkit to get automatic updates from your contacts, pay them,
-						and follow their public profiles.
+						{t('onboarding_text')}
 					</Text01S>
 				</View>
 
 				<View style={styles.buttonContainer}>
 					<Button
 						style={styles.button}
-						text="Add Your First Contact"
+						text={t('onboarding_button')}
 						size="large"
 						onPress={(): void => {
 							setOnboardedContacts();

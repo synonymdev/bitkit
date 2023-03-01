@@ -1,7 +1,8 @@
-import React, { memo, ReactElement, useCallback, useMemo } from 'react';
+import React, { memo, ReactNode, useCallback, useMemo } from 'react';
 import { View, StyleSheet, Image, ImageSourcePropType } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useSelector } from 'react-redux';
+import { Trans, useTranslation } from 'react-i18next';
 
 import { Display, Text01S, Text02S } from '../../styles/text';
 import NavigationHeader from '../../components/NavigationHeader';
@@ -31,16 +32,28 @@ const coinsImageSrc = require('../../assets/illustrations/coins.png');
 
 export const ProfileIntro = memo(
 	({ navigation }: RootStackScreenProps<'Profile'>): JSX.Element => {
+		const { t } = useTranslation('slashtags');
+
 		return (
 			<Layout
 				navigation={navigation}
-				backButton={true}
 				illustration={crownImageSrc}
-				title="Own your"
-				highlighted="Social Profile."
-				text="Use Bitkit to control your public profile and links, so your contacts can reach you or pay you anytime."
 				nextStep="InitialEdit"
-			/>
+				buttonText={t('continue')}
+				header={t('profile')}>
+				<Display>
+					<Trans
+						t={t}
+						i18nKey="onboarding_profile1_header"
+						components={{
+							brand: <Display color="brand" />,
+						}}
+					/>
+				</Display>
+				<Text01S color="gray1" style={styles.introText}>
+					{t('onboarding_profile1_text')}
+				</Text01S>
+			</Layout>
 		);
 	},
 );
@@ -48,6 +61,7 @@ export const ProfileIntro = memo(
 export const OfflinePayments = ({
 	navigation,
 }: RootStackScreenProps<'Profile'>): JSX.Element => {
+	const { t } = useTranslation('slashtags');
 	const enableOfflinePayments = useSelector(enableOfflinePaymentsSelector);
 	const selectedWallet = useSelector(selectedWalletSelector);
 	const selectedNetwork = useSelector(selectedNetworkSelector);
@@ -61,15 +75,24 @@ export const OfflinePayments = ({
 	return (
 		<Layout
 			navigation={navigation}
-			backButton={true}
 			illustration={coinsImageSrc}
-			title="Pay your"
-			header="Pay Your Contacts"
-			highlighted="Contacts."
-			text="You and your contacts can use Bitkit to send payments directly, without banks, anytime, anywhere."
 			nextStep="Done"
-			buttonText="Save Profile"
+			buttonText={t('profile_save')}
+			header={t('profile_pay_contacts')}
 			onNext={savePaymentConfig}>
+			<Display>
+				<Trans
+					t={t}
+					i18nKey="onboarding_profile2_header"
+					components={{
+						brand: <Display color="brand" />,
+					}}
+				/>
+			</Display>
+			<Text01S color="gray1" style={styles.introText}>
+				{t('onboarding_profile2_text')}
+			</Text01S>
+
 			<View style={styles.enableOfflineRow}>
 				<SwitchRow
 					isEnabled={enableOfflinePayments}
@@ -77,40 +100,30 @@ export const OfflinePayments = ({
 					onPress={(): void => {
 						updateSettings({ enableOfflinePayments: !enableOfflinePayments });
 					}}>
-					<Text01S>Enable payments with contacts*</Text01S>
+					<Text01S>{t('offline_enable')}</Text01S>
 				</SwitchRow>
-				<Text02S color="gray1">* This requires sharing payment data.</Text02S>
+				<Text02S color="gray1">{t('offline_enable_explain')}</Text02S>
 			</View>
 		</Layout>
 	);
 };
 
-export const Layout = memo(
+const Layout = memo(
 	({
 		navigation,
-		backButton = false,
 		illustration,
-		title,
-		subtitle,
-		text,
-		highlighted,
 		nextStep,
-		buttonText = 'Continue',
-		header = 'Profile',
+		buttonText,
+		header,
 		children,
 		onNext,
 	}: {
 		navigation: StackNavigationProp<RootStackParamList, 'Profile'>;
-		backButton: boolean;
 		illustration: ImageSourcePropType;
-		title: string;
-		subtitle?: string;
-		text: string;
-		highlighted: string;
-		nextStep?: ISlashtags['onboardingProfileStep'];
-		buttonText?: string;
-		header?: string;
-		children?: ReactElement;
+		nextStep: ISlashtags['onboardingProfileStep'];
+		buttonText: string;
+		header: string;
+		children: ReactNode;
 		onNext?: () => void;
 	}): JSX.Element => {
 		const { isSmallScreen } = useScreenSize();
@@ -131,7 +144,7 @@ export const Layout = memo(
 				<SafeAreaInsets type="top" />
 				<NavigationHeader
 					title={header}
-					displayBackButton={backButton}
+					displayBackButton={true}
 					onClosePress={(): void => {
 						navigation.navigate('Wallet');
 					}}
@@ -141,23 +154,13 @@ export const Layout = memo(
 						<View style={imageContainerStyles}>
 							<Image source={illustration} style={styles.image} />
 						</View>
-						<View style={styles.middleContainer}>
-							<Display>{title}</Display>
-							<Display>
-								{subtitle}
-								<Display color="brand">{highlighted}</Display>
-							</Display>
-							<Text01S color="gray1" style={styles.introText}>
-								{text}
-							</Text01S>
-							{children}
-						</View>
+						<View style={styles.middleContainer}>{children}</View>
 						<Button
 							text={buttonText}
 							size="large"
 							onPress={(): void => {
 								onNext?.();
-								nextStep && setOnboardingProfileStep(nextStep);
+								setOnboardingProfileStep(nextStep);
 							}}
 						/>
 					</View>

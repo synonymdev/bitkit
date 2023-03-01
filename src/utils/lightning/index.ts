@@ -70,6 +70,7 @@ import { sdk } from '../../components/SlashtagsProvider';
 import { showSuccessNotification } from '../notifications';
 import { TLightningNodeVersion } from '../../store/types/lightning';
 import { getBlocktankInfo, isGeoBlocked } from '../blocktank';
+import i18n from '../i18n';
 
 let LDKIsStayingSynced = false;
 
@@ -311,7 +312,7 @@ export const handleLightningPaymentSubscription = async ({
 			timestamp: new Date().getTime(),
 		};
 		addActivityItem(activityItem);
-		await addLightningPayment({
+		addLightningPayment({
 			invoice: invoice.value,
 			selectedWallet,
 			selectedNetwork,
@@ -358,8 +359,8 @@ export const subscribeToLightningPayments = ({
 	if (!onChannelSubscription) {
 		onChannelSubscription = ldk.onEvent(EEventTypes.new_channel, () => {
 			showSuccessNotification({
-				title: 'Lightning Channel Opened',
-				message: 'Congrats! A new lightning channel was successfully opened.',
+				title: i18n.t('lightning:channel_opened_title'),
+				message: i18n.t('lightning:channel_opened_msg'),
 			});
 			refreshLdk({ selectedWallet, selectedNetwork }).then();
 		});

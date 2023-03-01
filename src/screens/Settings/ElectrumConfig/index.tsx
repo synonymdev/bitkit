@@ -3,6 +3,7 @@ import { StyleSheet, KeyboardAvoidingView, Platform } from 'react-native';
 import { useSelector } from 'react-redux';
 import { err, ok, Result } from '@synonymdev/result';
 import Url from 'url-parse';
+import { useTranslation } from 'react-i18next';
 
 import { View, TextInput, ScrollView } from '../../../styles/components';
 import { Text, Text01S, Caption13Up } from '../../../styles/text';
@@ -56,28 +57,25 @@ const isValidURL = (data: string): boolean => {
 	return !!pattern.test(data);
 };
 
-const validateInput = ({
-	host,
-	port,
-}: {
-	host: string;
-	port: string;
-}): Result<string> => {
+const validateInput = (
+	{ host, port }: { host: string; port: string },
+	t: Function,
+): Result<string> => {
 	//Ensure the user passed in a host & port to test.
 	let error;
 	if (host === '' && port === '') {
-		error = 'Please specify a host and port to connect to.';
+		error = t('es.error_host_port');
 	} else if (host === '') {
-		error = 'Please specify a host to connect to.';
+		error = t('es.error_host');
 	} else if (port === '') {
-		error = 'Please specify a port to connect to.';
+		error = t('es.error_port');
 	} else if (isNaN(Number(port))) {
-		error = 'Invalid port.';
+		error = t('es.error_port_invalid');
 	}
 
 	const url = `${host}:${port}`;
 	if (!isValidURL(url)) {
-		error = 'Not a valid HTTP url.';
+		error = t('es.error_invalid_http');
 	}
 
 	if (error) {
@@ -89,6 +87,7 @@ const validateInput = ({
 const ElectrumConfig = ({
 	navigation,
 }: SettingsScreenProps<'ElectrumConfig'>): ReactElement => {
+	const { t } = useTranslation('settings');
 	const selectedNetwork = useSelector(selectedNetworkSelector);
 	const customElectrumPeers = useSelector((state: Store) =>
 		customElectrumPeersSelector(state, selectedNetwork),
@@ -124,10 +123,10 @@ const ElectrumConfig = ({
 		setLoading(true);
 
 		try {
-			const validityCheck = validateInput(peerData);
+			const validityCheck = validateInput(peerData, t);
 			if (validityCheck.isErr()) {
 				showErrorNotification({
-					title: 'Electrum Peer Error',
+					title: t('es.error_peer'),
 					message: validityCheck.error.message,
 				});
 				return;
@@ -150,13 +149,13 @@ const ElectrumConfig = ({
 				addElectrumPeer({ selectedNetwork, peer: connectData });
 				updateUi({ isConnectedToElectrum: true });
 				showSuccessNotification({
-					title: 'Electrum Server Updated',
-					message: `Successfully connected to ${host}:${port}`,
+					title: t('es.server_updated_title'),
+					message: t('es.server_updated_message', { host, port }),
 				});
 			} else {
 				updateUi({ isConnectedToElectrum: false });
 				showErrorNotification({
-					title: 'Unable to connect to Electrum Server',
+					title: t('es.server_error'),
 					message: connectResponse.error.message,
 				});
 			}
@@ -212,8 +211,8 @@ const ElectrumConfig = ({
 			connectAndAddPeer(connectData);
 		} catch {
 			showErrorNotification({
-				title: 'No Connection Data Detected',
-				message: 'Sorry, Bitkit is not able to read this QR code.',
+				title: t('es.qr_error_title'),
+				message: t('es.qr_error_message'),
 			});
 		}
 	};
@@ -225,7 +224,7 @@ const ElectrumConfig = ({
 		<View style={styles.container}>
 			<SafeAreaInsets type="top" />
 			<NavigationHeader
-				title="Electrum Server"
+				title={t('adv.electrum_server')}
 				actionIcon={<ScanIcon color="white" width={20} height={20} />}
 				onActionPress={navigateToScanner}
 			/>
@@ -233,7 +232,7 @@ const ElectrumConfig = ({
 				behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
 				style={styles.content}>
 				<ScrollView bounces={false}>
-					<Text01S color="gray1">Currently connected to</Text01S>
+					<Text01S color="gray1">{t('es.connected_to')}</Text01S>
 					<View style={styles.row}>
 						<View style={styles.connectedPeer} testID="Status">
 							{connectedPeer ? (
@@ -242,14 +241,14 @@ const ElectrumConfig = ({
 								</Text>
 							) : (
 								<Text color="red" testID="Disconnected">
-									disconnected
+									{t('es.disconnected')}
 								</Text>
 							)}
 						</View>
 					</View>
 
 					<Caption13Up color="gray1" style={styles.label}>
-						Host
+						{t('es.host')}
 					</Caption13Up>
 					<TextInput
 						style={styles.textInput}
@@ -267,11 +266,11 @@ const ElectrumConfig = ({
 					/>
 
 					<Caption13Up color="gray1" style={styles.label}>
-						Port
+						{t('es.port')}
 					</Caption13Up>
 					<TextInput
 						style={styles.textInput}
-						textAlignVertical={'center'}
+						textAlignVertical="center"
 						underlineColorAndroid="transparent"
 						autoCapitalize="none"
 						// @ts-ignore autoCompleteType -> autoComplete in newer version
@@ -284,7 +283,7 @@ const ElectrumConfig = ({
 					/>
 
 					<Caption13Up color="gray1" style={styles.label}>
-						Protocol
+						{t('es.protocol')}
 					</Caption13Up>
 					<RadioButtonGroup
 						data={radioButtons}
@@ -302,7 +301,7 @@ const ElectrumConfig = ({
 					<View style={styles.buttons}>
 						<Button
 							style={styles.button}
-							text="Reset To Default"
+							text={t('es.button_reset')}
 							variant="secondary"
 							size="large"
 							onPress={resetToDefault}
@@ -311,7 +310,7 @@ const ElectrumConfig = ({
 						<View style={styles.divider} />
 						<Button
 							style={styles.button}
-							text="Connect To Host"
+							text={t('es.button_connect')}
 							size="large"
 							loading={loading}
 							disabled={!hasEdited}

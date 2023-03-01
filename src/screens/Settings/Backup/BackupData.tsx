@@ -1,5 +1,6 @@
 import React, { memo, ReactElement } from 'react';
 import { StyleSheet } from 'react-native';
+import { useTranslation } from 'react-i18next';
 // import { useSelector } from 'react-redux';
 
 import { View } from '../../../styles/components';
@@ -18,6 +19,7 @@ const imageSrc = require('../../../assets/illustrations/folder.png');
 const BackupData = ({
 	navigation,
 }: SettingsScreenProps<'BackupData'>): ReactElement => {
+	const { t } = useTranslation('security');
 	// const { slashtag } = useSelectedSlashtag();
 	// const [showDialog, setShowDialog] = useState(false);
 	// const [isBackingUp, setIsBackingUp] = useState(false);
@@ -109,7 +111,7 @@ const BackupData = ({
 	return (
 		<SafeAreaView>
 			<NavigationHeader
-				title="Back Up Data"
+				title={t('backup_data_title')}
 				displayBackButton={true}
 				onClosePress={(): void => {
 					navigation.navigate('Wallet');
@@ -119,10 +121,7 @@ const BackupData = ({
 			{/* TODO: add scrolling on small screens */}
 
 			<View style={styles.container}>
-				<Text01S color="gray1">
-					Your profile, contacts, accounts, tags, and activity will be encrypted
-					and backed up automatically to our free cloud service.
-				</Text01S>
+				<Text01S color="gray1">{t('backup_data_text')}</Text01S>
 				<GlowImage image={imageSrc} glowColor="green" />
 				{/* <View>
 					<List data={settingsListData} bounces={false} />

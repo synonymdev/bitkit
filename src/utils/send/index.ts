@@ -9,6 +9,7 @@ import { decodeQRData } from '../scanner';
 import { getSelectedNetwork, getSelectedWallet } from '../wallet';
 import { TAvailableNetworks } from '../networks';
 import { TWalletName } from '../../store/types/wallet';
+import i18n from '../i18n';
 
 export const readClipboardInvoice = async ({
 	onChainBalance,
@@ -80,8 +81,8 @@ export const readClipboardInvoice = async ({
 		rootNavigation.navigate('Wallet');
 		showBottomSheet('sendNavigation');
 		showSuccessNotification({
-			title: 'Clipboard Data Detected',
-			message: 'Bitkit redirected you to the payment screen.',
+			title: i18n.t('other:scan_redirect_title'),
+			message: i18n.t('other:scan_redirect_msg'),
 		});
 	}
 };

@@ -1,6 +1,7 @@
 import React, { memo, ReactElement, useState } from 'react';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
 import { useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 
 import NavigationHeader from '../../../components/NavigationHeader';
 import GradientView from '../../../components/GradientView';
@@ -22,6 +23,7 @@ import {
 const Contacts = ({
 	navigation,
 }: SendScreenProps<'Contacts'>): ReactElement => {
+	const { t } = useTranslation('slashtags');
 	const [loading, setLoading] = useState(false);
 	const selectedWallet = useSelector(selectedWalletSelector);
 	const selectedNetwork = useSelector(selectedNetworkSelector);
@@ -51,14 +53,14 @@ const Contacts = ({
 			return;
 		}
 		showErrorNotification({
-			title: 'Unable To Pay to this contact',
+			title: t('contact_pay_error'),
 			message: res.error.message,
 		});
 	};
 
 	return (
 		<GradientView style={styles.container}>
-			<NavigationHeader title="Select Contact" size="sm" />
+			<NavigationHeader title={t('contact_select')} size="sm" />
 			<View style={styles.content}>
 				{loading ? (
 					<View style={styles.loading}>

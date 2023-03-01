@@ -1,6 +1,7 @@
 import React, { memo, ReactElement, useEffect, useMemo, useState } from 'react';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
 import { useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 
 import { Text01M, Text02M, Text02S } from '../../styles/text';
 import { TimerIconAlt } from '../../styles/icons';
@@ -48,6 +49,7 @@ const BoostForm = ({
 }: {
 	activityItem: TOnchainActivityItem;
 }): ReactElement => {
+	const { t } = useTranslation('wallet');
 	const feeEstimates = useSelector((store: Store) => store.fees.onchain);
 	const transaction = useSelector(transactionSelector);
 	const selectedNetwork = useSelector(selectedNetworkSelector);
@@ -103,7 +105,7 @@ const BoostForm = ({
 			});
 			if (res.isErr()) {
 				showErrorNotification({
-					title: 'Error Updating Fee',
+					title: t('send_fee_error'),
 					message: res.error.message,
 				});
 			}
@@ -124,7 +126,7 @@ const BoostForm = ({
 		});
 		if (res.isErr()) {
 			showErrorNotification({
-				title: 'Error Updating Fee',
+				title: t('send_fee_error'),
 				message: res.error.message,
 			});
 		}
@@ -139,7 +141,7 @@ const BoostForm = ({
 		});
 		if (res.isErr()) {
 			showErrorNotification({
-				title: 'Error Updating Fee',
+				title: t('send_fee_error'),
 				message: res.error.message,
 			});
 		}
@@ -151,7 +153,7 @@ const BoostForm = ({
 		if (transactionIsValid.isErr()) {
 			setLoading(false);
 			showErrorNotification({
-				title: 'Transaction Invalid',
+				title: t('tx_invalid'),
 				message: transactionIsValid.error.message,
 			});
 			return;
@@ -169,13 +171,13 @@ const BoostForm = ({
 				updateActivityItem(activityItem.id, response.value);
 				closeBottomSheet('boostPrompt');
 				showSuccessNotification({
-					title: 'Boost Success',
-					message: 'Successfully boosted this transaction.',
+					title: t('boost_success_title'),
+					message: t('boost_success_msg'),
 				});
 			} else {
 				showErrorNotification({
-					title: 'Boost Error',
-					message: 'Unable to boost this transaction.',
+					title: t('boost_error_title'),
+					message: t('boost_error_msg'),
 				});
 			}
 		} catch (e) {
@@ -196,7 +198,7 @@ const BoostForm = ({
 	const Title = (
 		<View style={styles.adjustValueRow}>
 			<Money sats={transaction.satsPerByte} size="text01m" symbol={true} />
-			<Text01M> sat/byte</Text01M>
+			<Text01M> {t('sat_vbyte_compact')}</Text01M>
 		</View>
 	);
 
@@ -215,17 +217,9 @@ const BoostForm = ({
 
 	return (
 		<>
-			{showCustom ? (
-				<Text02S color="gray1">
-					Your transaction may settle faster if you include an additional
-					network fee. Set your custom fee below.
-				</Text02S>
-			) : (
-				<Text02S color="gray1">
-					Your transaction may settle faster if you include an additional
-					network fee. Here is a recommendation:
-				</Text02S>
-			)}
+			<Text02S color="gray1">
+				{t(showCustom ? 'boost_fee_custom' : 'boost_fee_recomended')}
+			</Text02S>
 
 			<View style={styles.boostForm}>
 				{showCustom ? (
@@ -238,7 +232,7 @@ const BoostForm = ({
 					/>
 				) : (
 					<ImageText
-						title="Boost"
+						title={t('boost')}
 						description={duration}
 						value={Number(boostFee.toFixed(0))}
 						icon={<TimerIconAlt color="yellow" width={26} height={26} />}
@@ -250,14 +244,14 @@ const BoostForm = ({
 					{showCustom && (
 						<Button
 							style={styles.button}
-							text="Use Recommended Fee"
+							text={t('boost_recomended_button')}
 							textStyle={styles.buttonText}
 							onPress={onSwitchView}
 						/>
 					)}
 
 					<SwipeToConfirm
-						text="Swipe To Boost"
+						text={t('boost_swipe')}
 						color="yellow"
 						onConfirm={handleBoost}
 						icon={<TimerIconAlt width={30} height={30} color="black" />}

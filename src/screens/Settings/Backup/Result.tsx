@@ -1,6 +1,7 @@
 import React, { memo, ReactElement, useMemo } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useTranslation } from 'react-i18next';
 
 import { Text01S } from '../../../styles/text';
 import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
@@ -14,6 +15,7 @@ import { BackupScreenProps } from '../../../navigation/types';
 const imageSrc = require('../../../assets/illustrations/check.png');
 
 const Result = ({ navigation }: BackupScreenProps<'Result'>): ReactElement => {
+	const { t } = useTranslation('security');
 	const insets = useSafeAreaInsets();
 	const nextButtonContainer = useMemo(
 		() => ({
@@ -31,11 +33,10 @@ const Result = ({ navigation }: BackupScreenProps<'Result'>): ReactElement => {
 
 	return (
 		<GradientView style={styles.container}>
-			<BottomSheetNavigationHeader title="Successful" />
+			<BottomSheetNavigationHeader title={t('mnemonic_result_header')} />
 
 			<Text01S color="gray1" style={styles.text}>
-				Make sure you store your recovery phrase in a secure place, as this is
-				the only way to recover your money (!)
+				{t('mnemonic_result_text')}
 			</Text01S>
 
 			<GlowImage image={imageSrc} imageSize={200} glowColor="green" />
@@ -43,7 +44,7 @@ const Result = ({ navigation }: BackupScreenProps<'Result'>): ReactElement => {
 			<View style={nextButtonContainer}>
 				<Button
 					size="large"
-					text="OK"
+					text={t('ok')}
 					onPress={handleButtonPress}
 					testID="OK"
 				/>

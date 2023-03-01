@@ -8,6 +8,7 @@ import {
 	Platform,
 	TouchableOpacity,
 } from 'react-native';
+import { useTranslation } from 'react-i18next';
 
 import colors from '../styles/colors';
 
@@ -26,13 +27,22 @@ const Dialog = ({
 	visible,
 	title,
 	description,
-	cancelText = 'No, Cancel',
-	confirmText = 'Yes, Reset',
+	cancelText,
+	confirmText,
 	visibleTestID,
 	onCancel,
 	onConfirm,
 	onRequestClose,
 }: DialogProps): ReactElement => {
+	const { t } = useTranslation('common');
+
+	if (cancelText === undefined) {
+		cancelText = t('dialog_cancel');
+	}
+	if (confirmText === undefined) {
+		confirmText = t('dialog_confirm');
+	}
+
 	return (
 		<Modal
 			animationType="fade"

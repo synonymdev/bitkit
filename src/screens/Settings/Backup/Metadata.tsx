@@ -1,6 +1,7 @@
 import React, { memo, ReactElement, useCallback, useMemo } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useTranslation } from 'react-i18next';
 
 import { Text01S } from '../../../styles/text';
 import GradientView from '../../../components/GradientView';
@@ -12,6 +13,7 @@ import { closeBottomSheet } from '../../../store/actions/ui';
 const imageSrc = require('../../../assets/illustrations/tag.png');
 
 const Metadata = (): ReactElement => {
+	const { t } = useTranslation('security');
 	const insets = useSafeAreaInsets();
 	const buttonContainerStyles = useMemo(
 		() => ({
@@ -27,11 +29,10 @@ const Metadata = (): ReactElement => {
 
 	return (
 		<GradientView style={styles.container}>
-			<BottomSheetNavigationHeader title="Wallet Data" />
+			<BottomSheetNavigationHeader title={t('mnemonic_data_header')} />
 
 			<Text01S color="gray1" style={styles.text}>
-				Transactions, accounts, contacts and tags will be backed up
-				automagically. You can export data from the settings.
+				{t('mnemonic_data_text')}
 			</Text01S>
 
 			<GlowImage image={imageSrc} imageSize={200} />
@@ -39,7 +40,7 @@ const Metadata = (): ReactElement => {
 			<View style={buttonContainerStyles}>
 				<Button
 					size="large"
-					text="OK"
+					text={t('ok')}
 					onPress={handleButtonPress}
 					testID="OK"
 				/>

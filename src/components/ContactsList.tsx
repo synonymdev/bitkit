@@ -1,5 +1,6 @@
 import React, { ReactElement, useCallback, useMemo } from 'react';
 import { View, SectionList, StyleSheet, TouchableOpacity } from 'react-native';
+import { useTranslation } from 'react-i18next';
 
 import { View as ThemedView } from '../styles/components';
 import { Caption13Up, Text01M } from '../styles/text';
@@ -22,14 +23,15 @@ export const ContactItem = ({
 	size?: 'small' | 'normal';
 	onPress?: (contact: IContactRecord) => void;
 }): JSX.Element => {
+	const { t } = useTranslation('slashtags');
 	const { url: myProfileURL } = useSelectedSlashtag();
 	const { profile } = useProfile(contact.url);
 
 	const name = useMemo(() => {
 		const fallbackName =
-			contact.url === myProfileURL ? 'Your Name' : 'Contact Name';
+			contact.url === myProfileURL ? t('your_name_capital') : t('contact_name');
 		return truncate(profile?.name || contact?.name || fallbackName, 30);
-	}, [contact, profile?.name, myProfileURL]);
+	}, [contact, profile?.name, myProfileURL, t]);
 
 	return (
 		<TouchableOpacity
@@ -47,7 +49,7 @@ export const ContactItem = ({
 				<View style={cstyles.column} pointerEvents="none">
 					<Text01M
 						numberOfLines={1}
-						style={size !== 'small' ? cstyles.name : {}}>
+						style={size !== 'small' ? cstyles.name : undefined}>
 						{name}
 					</Text01M>
 					<SlashtagURL url={contact.url} color="gray1" bold={false} />
@@ -57,11 +59,15 @@ export const ContactItem = ({
 	);
 };
 
-const Empty = (): ReactElement => (
-	<View style={estyles.empty}>
-		<Text01M>No Contacts found</Text01M>
-	</View>
-);
+const Empty = (): ReactElement => {
+	const { t } = useTranslation('slashtags');
+
+	return (
+		<View style={estyles.empty}>
+			<Text01M>{t('contacts_no_found')}</Text01M>
+		</View>
+	);
+};
 
 const ContactsList = ({
 	onPress,
@@ -78,6 +84,7 @@ const ContactsList = ({
 	stickySectionHeadersEnabled?: boolean;
 	bottomSheet?: boolean;
 }): ReactElement => {
+	const { t } = useTranslation('slashtags');
 	const contacts = useSlashtags().contacts as { [url: string]: IContactRecord };
 	const { url: myProfileURL } = useSelectedSlashtag();
 
@@ -111,13 +118,13 @@ const ContactsList = ({
 
 		if (includeMyProfile && searchFilter.length === 0) {
 			result.unshift({
-				title: 'My profile',
+				title: t('my_profile'),
 				data: [{ url: myProfileURL as string } as IContactRecord],
 			});
 		}
 
 		return result;
-	}, [filteredContacts, myProfileURL, includeMyProfile, searchFilter]);
+	}, [filteredContacts, myProfileURL, includeMyProfile, searchFilter, t]);
 
 	const List = bottomSheet ? BottomSheetSectionList : SectionList;
 

@@ -2,6 +2,7 @@ import React, { ReactElement, useMemo, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useSelector } from 'react-redux';
 import { FadeIn, FadeOut } from 'react-native-reanimated';
+import { Trans, useTranslation } from 'react-i18next';
 
 import { AnimatedView } from '../../styles/components';
 import { Caption13Up, Display, Text01S, Text01M } from '../../styles/text';
@@ -36,6 +37,7 @@ const CustomConfirm = ({
 	navigation,
 	route,
 }: LightningScreenProps<'CustomConfirm'>): ReactElement => {
+	const { t } = useTranslation('lightning');
 	const { spendingAmount, receivingAmount } = route.params;
 	const selectedNetwork = useSelector(selectedNetworkSelector);
 	const selectedWallet = useSelector(selectedWalletSelector);
@@ -80,7 +82,7 @@ const CustomConfirm = ({
 		});
 		if (purchaseResponse.isErr()) {
 			showErrorNotification({
-				title: 'Channel Purchase Error',
+				title: t('error_channel_purchase'),
 				message: purchaseResponse.error.message,
 			});
 			return;
@@ -92,7 +94,7 @@ const CustomConfirm = ({
 		<GlowingBackground topLeft="purple">
 			<SafeAreaInsets type="top" />
 			<NavigationHeader
-				title="Add Instant Payments"
+				title={t('add_instant_payments')}
 				onClosePress={(): void => {
 					navigation.navigate('Wallet');
 				}}
@@ -101,30 +103,45 @@ const CustomConfirm = ({
 				{!keybrd && (
 					<AnimatedView color="transparent" entering={FadeIn} exiting={FadeOut}>
 						<Display>
-							3) <Display color="purple">Please{'\n'}Confirm.</Display>
+							<Trans
+								t={t}
+								i18nKey="custom_confirm_header"
+								components={{
+									purple: <Display color="purple" />,
+								}}
+							/>
 						</Display>
 						<Text01S color="gray1" style={styles.text}>
-							It costs
-							<Text01S>{` ${blocktankPurchaseFee.fiatSymbol}${channelOpenCost} `}</Text01S>
-							to connect you and set up your spending balance. Your Lightning
-							connection will stay open for at least
-							<Text01S onPress={(): void => setKeybrd(true)}>
-								{' '}
-								{weeks} weeks <PenIcon height={18} width={18} />
-							</Text01S>
-							.
+							<Trans
+								t={t}
+								i18nKey="custom_confirm_cost"
+								components={{
+									white: <Text01S color="white" />,
+									whiteWithKeyboard: (
+										<Text01S
+											color="white"
+											onPress={(): void => setKeybrd(true)}
+										/>
+									),
+									penIcon: <PenIcon height={18} width={18} />,
+								}}
+								values={{
+									amount: `${blocktankPurchaseFee.fiatSymbol}${channelOpenCost}`,
+									weeks,
+								}}
+							/>
 						</Text01S>
 
 						<View style={styles.block}>
 							<Caption13Up color="purple" style={styles.space}>
-								SPENDING BALANCE
+								{t('spending_label')}
 							</Caption13Up>
 							<AmountToggle sats={spendingAmount} />
 						</View>
 
 						<View style={styles.block}>
 							<Caption13Up color="purple" style={styles.space}>
-								Receiving capacity
+								{t('receiving_label')}
 							</Caption13Up>
 							<AmountToggle sats={receivingAmount} unit="fiat" />
 						</View>
@@ -134,7 +151,7 @@ const CustomConfirm = ({
 				{!keybrd && (
 					<AnimatedView color="transparent" entering={FadeIn} exiting={FadeOut}>
 						<SwipeToConfirm
-							text="Swipe To Pay & Connect"
+							text={t('connect_swipe_pay')}
 							color="purple"
 							onConfirm={handleConfirm}
 							icon={<LightningIcon width={30} height={30} color="black" />}
@@ -147,10 +164,9 @@ const CustomConfirm = ({
 
 				{keybrd && (
 					<AnimatedView color="transparent" entering={FadeIn} exiting={FadeOut}>
-						<Display color="purple">Connection Duration.</Display>
+						<Display color="purple">{t('duration_header')}</Display>
 						<Text01S color="gray1" style={styles.text}>
-							Choose the minimum number of weeks you want your connection to
-							remain open.
+							{t('duration_text')}
 						</Text01S>
 					</AnimatedView>
 				)}
@@ -163,7 +179,7 @@ const CustomConfirm = ({
 						style={styles.weeks}>
 						<Display>{weeks}</Display>
 						<Text01M color="gray1" style={styles.text}>
-							weeks
+							{t('duration_week', { count: weeks })}
 						</Text01M>
 					</AnimatedView>
 				)}

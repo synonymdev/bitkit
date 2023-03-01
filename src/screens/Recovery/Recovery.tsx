@@ -1,6 +1,7 @@
 import React, { ReactElement, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import Share from 'react-native-share';
+import { useTranslation } from 'react-i18next';
 
 import { useAppSelector } from '../../hooks/redux';
 import { wipeApp } from '../../store/actions/settings';
@@ -19,6 +20,7 @@ import { RecoveryStackScreenProps } from '../../navigation/types';
 const Recovery = ({
 	navigation,
 }: RecoveryStackScreenProps<'Recovery'>): ReactElement => {
+	const { t } = useTranslation('security');
 	const pin = useAppSelector((state) => state.settings.pin);
 	const [showDialog, setShowDialog] = useState(false);
 
@@ -26,7 +28,7 @@ const Recovery = ({
 		const result = await zipLogs();
 		if (result.isErr()) {
 			showErrorNotification({
-				title: 'Failed to share logs',
+				title: t('lightning:error_logs'),
 				message: result.error.message,
 			});
 			return;
@@ -36,7 +38,7 @@ const Recovery = ({
 		await Share.open({
 			type: 'application/zip',
 			url: `file://${result.value}`,
-			title: 'Export Lightning Logs',
+			title: t('lightning:export_logs'),
 		});
 	};
 
@@ -68,36 +70,34 @@ const Recovery = ({
 	return (
 		<ThemedView style={styles.root}>
 			<SafeAreaInsets type="top" />
-			<NavigationHeader title="Recovery" displayBackButton={false} />
+			<NavigationHeader title={t('recovery')} displayBackButton={false} />
 			<View style={styles.content}>
 				<Text01S style={styles.text} color="gray1">
-					You've entered Bitkit's recovery mode by tapping during startup. Here
-					are some actions to perform when running into issues that prevent the
-					app from fully functioning. Restart the app for a normal startup.
+					{t('recovery_text')}
 				</Text01S>
 
 				<View>
 					<Button
 						style={styles.button}
-						text="Export Lightning Logs"
+						text={t('lightning:export_logs')}
 						size="large"
 						onPress={onExportLogs}
 					/>
 					<Button
 						style={styles.button}
-						text="Display Seed"
+						text={t('display_seed')}
 						size="large"
 						onPress={onShowSeed}
 					/>
 					<Button
 						style={styles.button}
-						text="Contact Support"
+						text={t('contact_support')}
 						size="large"
 						onPress={onContactSupport}
 					/>
 					<Button
 						style={styles.button}
-						text="Wipe App"
+						text={t('wipe_app')}
 						size="large"
 						onPress={(): void => setShowDialog(true)}
 					/>
@@ -106,8 +106,8 @@ const Recovery = ({
 
 			<Dialog
 				visible={showDialog}
-				title="Reset Bitkit?"
-				description="Are you sure you want to reset your Bitkit Wallet? Do you have a backup of your recovery phrase and wallet data?"
+				title={t('reset_dialog_title')}
+				description={t('reset_dialog_desc')}
 				onCancel={(): void => setShowDialog(false)}
 				onConfirm={onWipeApp}
 			/>

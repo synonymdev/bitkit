@@ -24,6 +24,7 @@ import {
 } from '@shopify/react-native-skia';
 import { useSelector } from 'react-redux';
 import Clipboard from '@react-native-clipboard/clipboard';
+import { useTranslation } from 'react-i18next';
 
 import { View as ThemedView } from '../../styles/components';
 import { Caption13M, Caption13Up, Text02M, Title } from '../../styles/text';
@@ -64,7 +65,7 @@ import { useAppSelector } from '../../hooks/redux';
 import useDisplayValues from '../../hooks/displayValues';
 import Store from '../../store/types';
 import { showBottomSheet } from '../../store/actions/ui';
-import { EPaymentType } from '../../store/types/wallet';
+import { EPaymentType, EBoostType } from '../../store/types/wallet';
 import {
 	activityItemSelector,
 	activityItemsSelector,
@@ -160,6 +161,7 @@ const OnchainActivityDetail = ({
 		address,
 	} = item;
 
+	const { t } = useTranslation('wallet');
 	const tags = useAppSelector((state) => tagSelector(state, id));
 	const selectedNetwork = useSelector(selectedNetworkSelector);
 	const activityItems = useSelector(activityItemsSelector);
@@ -179,7 +181,7 @@ const OnchainActivityDetail = ({
 			(txResponse) => {
 				if (txResponse.isErr()) {
 					showErrorNotification({
-						title: 'Error Getting Transaction',
+						title: t('activity_error_get'),
 						message: txResponse.error.message,
 					});
 					return;
@@ -187,8 +189,8 @@ const OnchainActivityDetail = ({
 				const txData: ITransaction<ITxHash>[] = txResponse.value.data;
 				if (txData.length === 0) {
 					showErrorNotification({
-						title: 'Error Getting Transaction',
-						message: 'Transaction not found.',
+						title: t('activity_error_get'),
+						message: t('activity_error_tx_not_found'),
 					});
 					return;
 				}
@@ -196,7 +198,7 @@ const OnchainActivityDetail = ({
 				setTxDetails(data);
 			},
 		);
-	}, [id, activityType, extended, selectedNetwork, txDetails]);
+	}, [id, activityType, extended, selectedNetwork, txDetails, t]);
 
 	const showBoost = useMemo(() => {
 		if (confirmed || isBoosted) {
@@ -259,10 +261,10 @@ const OnchainActivityDetail = ({
 	const copyTransactionId = useCallback(() => {
 		Clipboard.setString(id);
 		showInfoNotification({
-			title: 'Copied Transaction ID',
-			message: 'Transaction ID copied to clipboard.',
+			title: t('activity_copied_tx'),
+			message: t('activity_copied_tx_text'),
 		});
-	}, [id]);
+	}, [id, t]);
 
 	const getOutputAddresses = useCallback(() => {
 		if (txDetails && txDetails.vout.length > 0) {
@@ -273,7 +275,7 @@ const OnchainActivityDetail = ({
 				const i = `${outputAddress}${n}`;
 				return (
 					<View key={i}>
-						<Text02M numberOfLines={1} ellipsizeMode={'middle'}>
+						<Text02M numberOfLines={1} ellipsizeMode="middle">
 							{outputAddress}
 						</Text02M>
 					</View>
@@ -288,7 +290,7 @@ const OnchainActivityDetail = ({
 	let status = (
 		<View style={styles.row}>
 			<HourglassIcon style={styles.rowIcon} color="brand" />
-			<Text02M color="brand">Confirming</Text02M>
+			<Text02M color="brand">{t('activity_confirming')}</Text02M>
 		</View>
 	);
 
@@ -296,7 +298,7 @@ const OnchainActivityDetail = ({
 		status = (
 			<View style={styles.row}>
 				<TimerIconAlt style={styles.rowIcon} color="yellow" height={14} />
-				<Text02M color="yellow">Boosting</Text02M>
+				<Text02M color="yellow">{t('activity_boosting')}</Text02M>
 			</View>
 		);
 	}
@@ -305,7 +307,7 @@ const OnchainActivityDetail = ({
 		status = (
 			<View style={styles.row}>
 				<CheckCircleIcon style={styles.rowIcon} color="green" />
-				<Text02M color="green">Confirmed</Text02M>
+				<Text02M color="green">{t('activity_confirmed')}</Text02M>
 			</View>
 		);
 	}
@@ -331,7 +333,7 @@ const OnchainActivityDetail = ({
 
 			<View style={styles.sectionContainer}>
 				<Section
-					title="Fee"
+					title={t('activity_fee')}
 					value={
 						<View style={styles.row}>
 							<TimerIcon style={styles.rowIcon} color="brand" />
@@ -342,12 +344,12 @@ const OnchainActivityDetail = ({
 						</View>
 					}
 				/>
-				<Section title="Status" value={status} />
+				<Section title={t('activity_status')} value={status} />
 			</View>
 
 			<View style={styles.sectionContainer}>
 				<Section
-					title="Date"
+					title={t('activity_date')}
 					value={
 						<View style={styles.row}>
 							<CalendarIcon style={styles.rowIcon} color="brand" />
@@ -361,7 +363,7 @@ const OnchainActivityDetail = ({
 					}
 				/>
 				<Section
-					title="Time"
+					title={t('activity_time')}
 					value={
 						<View style={styles.row}>
 							<ClockIcon style={styles.rowIcon} color="brand" />
@@ -383,7 +385,7 @@ const OnchainActivityDetail = ({
 						<View style={styles.sectionContainer}>
 							{slashTagsUrl && (
 								<Section
-									title="Contact"
+									title={t('activity_contact')}
 									value={
 										<ContactSmall
 											url={slashTagsUrl}
@@ -393,7 +395,7 @@ const OnchainActivityDetail = ({
 								/>
 							)}
 							<Section
-								title="Tags"
+								title={t('tags')}
 								value={
 									<View style={styles.tagsContainer}>
 										{tags.map((tag) => (
@@ -415,21 +417,21 @@ const OnchainActivityDetail = ({
 							{slashTagsUrl ? (
 								<Button
 									style={styles.button}
-									text="Detach"
+									text={t('activity_detach')}
 									icon={<UserMinusIcon height={16} width={16} color="brand" />}
 									onPress={handleDetach}
 								/>
 							) : (
 								<Button
 									style={styles.button}
-									text="Assign"
+									text={t('activity_assign')}
 									icon={<UserPlusIcon height={16} width={16} color="brand" />}
 									onPress={handleAssign}
 								/>
 							)}
 							<Button
 								style={styles.button}
-								text="Tag"
+								text={t('activity_tag')}
 								icon={<TagIcon height={16} width={16} color="brand" />}
 								onPress={handleAddTag}
 							/>
@@ -437,14 +439,14 @@ const OnchainActivityDetail = ({
 						<View style={styles.sectionContainer}>
 							<Button
 								style={styles.button}
-								text={isBoosted ? 'Already Boosted' : 'Boost'}
+								text={t(isBoosted ? 'activity_boosted' : 'activity_boost')}
 								icon={<TimerIconAlt color="brand" />}
 								disabled={!showBoost}
 								onPress={handleBoost}
 							/>
 							<Button
 								style={styles.button}
-								text="Explore"
+								text={t('activity_explore')}
 								icon={<GitBranchIcon />}
 								disabled={!blockExplorerUrl}
 								onPress={handleBlockExplorerOpen}
@@ -454,7 +456,7 @@ const OnchainActivityDetail = ({
 
 					<View style={styles.buttonDetailsContainer}>
 						<Button
-							text="Transaction Details"
+							text={t('activity_tx_details')}
 							size="large"
 							onPress={(): void =>
 								navigation.push('ActivityDetail', {
@@ -470,16 +472,24 @@ const OnchainActivityDetail = ({
 					<TouchableOpacity
 						onPress={copyTransactionId}
 						style={styles.sectionContainer}>
-						<Section title="Transaction ID" value={<Text02M>{id}</Text02M>} />
+						<Section
+							title={t('activity_tx_id')}
+							value={<Text02M>{id}</Text02M>}
+						/>
 					</TouchableOpacity>
 					<View style={styles.sectionContainer}>
-						<Section title="Address" value={<Text02M>{address}</Text02M>} />
+						<Section
+							title={t('activity_address')}
+							value={<Text02M>{address}</Text02M>}
+						/>
 					</View>
 					{txDetails ? (
 						<>
 							<View style={styles.sectionContainer}>
 								<Section
-									title={`INPUTS (${txDetails?.vin?.length ?? 0})`}
+									title={t('activity_input', {
+										count: txDetails?.vin?.length ?? 0,
+									})}
 									value={txDetails.vin.map((v) => {
 										const txid = v?.txid ?? '';
 										const vout = v?.vout ?? '';
@@ -490,7 +500,9 @@ const OnchainActivityDetail = ({
 							</View>
 							<View style={styles.sectionContainer}>
 								<Section
-									title={`OUTPUTS (${txDetails.vout.length})`}
+									title={t('activity_output', {
+										count: txDetails.vout.length,
+									})}
 									value={getOutputAddresses()}
 								/>
 							</View>
@@ -502,13 +514,15 @@ const OnchainActivityDetail = ({
 					{hasBoostedParents && (
 						<>
 							{boostedParents.map((parent, i) => {
-								const parentActivityType = boostedTransactions[parent].type;
+								const title =
+									boostedTransactions[parent].type === EBoostType.rbf
+										? t('activity_boosted_rbf', { num: i + 1 })
+										: t('activity_boosted_cpfp', { num: i + 1 });
+
 								return (
 									<View key={parent} style={styles.sectionContainer}>
 										<Section
-											title={`BOOSTED TRANSACTION ${
-												i + 1
-											} (${parentActivityType})`}
+											title={title}
 											value={
 												<TouchableOpacity
 													onPress={(): void => {
@@ -528,7 +542,7 @@ const OnchainActivityDetail = ({
 
 					<View style={styles.buttonDetailsContainer}>
 						<Button
-							text="Open Block Explorer"
+							text={t('activity_explorer')}
 							size="large"
 							disabled={!blockExplorerUrl}
 							onPress={handleBlockExplorerOpen}
@@ -549,6 +563,7 @@ const LightningActivityDetail = ({
 	navigation: RootNavigationProp;
 	extended?: boolean;
 }): ReactElement => {
+	const { t } = useTranslation('wallet');
 	const colors = useColors();
 	const { id, txType, value, message, timestamp, address } = item;
 	const tags = useSelector((state: Store) => tagSelector(state, id));
@@ -579,17 +594,17 @@ const LightningActivityDetail = ({
 	const copyTransactionId = useCallback(() => {
 		Clipboard.setString(id);
 		showInfoNotification({
-			title: 'Copied Transaction ID',
-			message: 'Transaction ID copied to clipboard.',
+			title: t('activity_copied_tx'),
+			message: t('activity_copied_tx_text'),
 		});
-	}, [id]);
+	}, [id, t]);
 
 	const isSend = txType === EPaymentType.sent;
 
 	const status = (
 		<View style={styles.row}>
 			<LightningIcon style={styles.rowIcon} color="purple" />
-			<Text02M color="purple">Successful</Text02M>
+			<Text02M color="purple">{t('activity_successful')}</Text02M>
 		</View>
 	);
 
@@ -614,7 +629,7 @@ const LightningActivityDetail = ({
 
 			<View style={styles.sectionContainer}>
 				<Section
-					title="Fee"
+					title={t('activity_fee')}
 					value={
 						<View style={styles.row}>
 							<SpeedFastIcon
@@ -628,12 +643,12 @@ const LightningActivityDetail = ({
 						</View>
 					}
 				/>
-				<Section title="Status" value={status} />
+				<Section title={t('activity_status')} value={status} />
 			</View>
 
 			<View style={styles.sectionContainer}>
 				<Section
-					title="Date"
+					title={t('activity_date')}
 					value={
 						<View style={styles.row}>
 							<CalendarIcon style={styles.rowIcon} color="purple" />
@@ -647,7 +662,7 @@ const LightningActivityDetail = ({
 					}
 				/>
 				<Section
-					title="Time"
+					title={t('activity_time')}
 					value={
 						<View style={styles.row}>
 							<ClockIcon style={styles.rowIcon} color="purple" />
@@ -669,7 +684,7 @@ const LightningActivityDetail = ({
 						<View style={styles.sectionContainer}>
 							{slashTagsUrl && (
 								<Section
-									title="Contact"
+									title={t('activity_contact')}
 									value={
 										<ContactSmall
 											url={slashTagsUrl}
@@ -679,7 +694,7 @@ const LightningActivityDetail = ({
 								/>
 							)}
 							<Section
-								title="Tags"
+								title={t('tags')}
 								value={
 									<View style={styles.tagsContainer}>
 										{tags.map((tag) => (
@@ -699,7 +714,7 @@ const LightningActivityDetail = ({
 					{message ? (
 						<View style={styles.invoiceNote}>
 							<Caption13M style={styles.sText} color="gray1">
-								INVOICE NOTE
+								{t('activity_invoice_note')}
 							</Caption13M>
 							<ThemedView color="gray5">
 								<Canvas style={styles.zRoot}>
@@ -717,21 +732,21 @@ const LightningActivityDetail = ({
 							{slashTagsUrl ? (
 								<Button
 									style={styles.button}
-									text="Detach"
+									text={t('activity_detach')}
 									icon={<UserMinusIcon height={16} width={16} color="brand" />}
 									onPress={handleDetach}
 								/>
 							) : (
 								<Button
 									style={styles.button}
-									text="Assign"
+									text={t('activity_assign')}
 									icon={<UserPlusIcon height={16} width={16} color="brand" />}
 									onPress={handleAssign}
 								/>
 							)}
 							<Button
 								style={styles.button}
-								text="Tag"
+								text={t('activity_tag')}
 								icon={<TagIcon height={16} width={16} color="brand" />}
 								onPress={handleAddTag}
 							/>
@@ -740,7 +755,7 @@ const LightningActivityDetail = ({
 
 					<View style={styles.buttonDetailsContainer}>
 						<Button
-							text="Transaction Details"
+							text={t('activity_tx_details')}
 							size="large"
 							onPress={(): void =>
 								navigation.push('ActivityDetail', {
@@ -756,10 +771,16 @@ const LightningActivityDetail = ({
 					<TouchableOpacity
 						onPress={copyTransactionId}
 						style={styles.sectionContainer}>
-						<Section title="Transaction ID" value={<Text02M>{id}</Text02M>} />
+						<Section
+							title={t('activity_tx_id')}
+							value={<Text02M>{id}</Text02M>}
+						/>
 					</TouchableOpacity>
 					<View style={styles.sectionContainer}>
-						<Section title="Invoice" value={<Text02M>{address}</Text02M>} />
+						<Section
+							title={t('activity_invoice')}
+							value={<Text02M>{address}</Text02M>}
+						/>
 					</View>
 				</>
 			)}
@@ -771,6 +792,7 @@ const ActivityDetail = ({
 	navigation,
 	route,
 }: RootStackScreenProps<'ActivityDetail'>): ReactElement => {
+	const { t } = useTranslation('wallet');
 	const extended = route.params.extended ?? false;
 	const colors = useColors();
 	const [size, setSize] = useState({ width: 0, height: 0 });
@@ -791,7 +813,9 @@ const ActivityDetail = ({
 		setSize((s) => (s.width === 0 ? { width, height } : s));
 	};
 
-	let title = isSend ? 'Sent Bitcoin' : 'Received Bitcoin';
+	let title = isSend
+		? t('activity_bitcoin_sent')
+		: t('activity_bitcoin_received');
 	let glowColor = colors.brand;
 
 	if (activityType === EActivityType.lightning) {
@@ -799,7 +823,7 @@ const ActivityDetail = ({
 	}
 
 	if (activityType === EActivityType.tether) {
-		title = isSend ? 'Sent Tether' : 'Received Teth‰er';
+		title = isSend ? t('activity_tether_sent') : t('activity_tether_received');
 		glowColor = colors.green;
 	}
 

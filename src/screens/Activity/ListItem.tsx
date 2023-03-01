@@ -1,5 +1,6 @@
 import React, { memo, ReactElement, ReactNode } from 'react';
 import { StyleSheet, View } from 'react-native';
+import { useTranslation } from 'react-i18next';
 
 import { TouchableOpacity, View as ThemedView } from '../../styles/components';
 import { Caption13M, Text01M } from '../../styles/text';
@@ -78,6 +79,7 @@ const OnchainListItem = ({
 	item: TOnchainActivityItemFormatted;
 	icon: JSX.Element;
 }): ReactElement => {
+	const { t } = useTranslation('wallet');
 	const {
 		txType,
 		value,
@@ -94,32 +96,42 @@ const OnchainListItem = ({
 
 	const isSend = txType === EPaymentType.sent;
 
-	let title = isSend ? 'Sent' : 'Received';
-	let description = confirmed
-		? formattedDate
-		: `Confirms in ${feeRateDescription}`;
+	let title = t(isSend ? 'activity_sent' : 'activity_received');
 
-	if (isBoosted && !confirmed) {
-		description = `Boosting. ${description}`;
+	let description;
+	if (confirmed) {
+		description = formattedDate;
+	} else if (isBoosted) {
+		description = t('activity_confirms_in_boosted', { feeRateDescription });
 		icon = (
 			<ThemedView style={styles.icon} color="yellow16">
 				<TimerIconAlt height={13} color="yellow" />
 			</ThemedView>
 		);
+	} else {
+		description = t('activity_confirms_in', { feeRateDescription });
 	}
 
 	if (isTransfer) {
-		title = 'Transfer';
+		title = t('activity_transfer');
 
 		if (isTransferringToSavings) {
-			description = 'Moving to Savings';
+			description = t(
+				confirmed
+					? 'activity_transfer_savings_done'
+					: 'activity_transfer_savings_inprogress',
+			);
 			icon = (
 				<ThemedView style={styles.icon} color="orange16">
 					<TransferIcon height={13} color="orange" />
 				</ThemedView>
 			);
 		} else {
-			description = 'Moved to Spending Balance';
+			description = t(
+				confirmed
+					? 'activity_transfer_spending_done'
+					: 'activity_transfer_spending_inprogres',
+			);
 			icon = (
 				<ThemedView style={styles.icon} color="purple16">
 					<TransferIcon height={13} color="purple" />
@@ -146,8 +158,11 @@ const LightningListItem = ({
 	item: TLightningActivityItemFormatted;
 	icon: JSX.Element;
 }): ReactElement => {
+	const { t } = useTranslation('wallet');
 	const { txType, value, message, formattedDate } = item;
-	const title = txType === EPaymentType.sent ? 'Sent' : 'Received';
+	const title = t(
+		txType === EPaymentType.sent ? 'activity_sent' : 'activity_received',
+	);
 	const description = message || formattedDate;
 	const isSend = txType === EPaymentType.sent;
 
@@ -167,8 +182,9 @@ export const EmptyItem = ({
 }: {
 	onPress: () => void;
 }): ReactElement => {
-	const title = 'No Activity Yet';
-	const description = 'Receive some funds to get started';
+	const { t } = useTranslation('wallet');
+	const title = t('activity_no');
+	const description = t('activity_no_explain');
 	const icon = (
 		<ThemedView color="yellow16" style={styles.icon}>
 			<HeartbeatIcon height={16} color="yellow" />

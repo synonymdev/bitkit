@@ -2,6 +2,7 @@ import React, { memo, ReactElement, useEffect, useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { useSelector } from 'react-redux';
 import Clipboard from '@react-native-clipboard/clipboard';
+import { useTranslation } from 'react-i18next';
 
 import {
 	View as ThemedView,
@@ -18,6 +19,7 @@ import { SettingsScreenProps } from '../../../navigation/types';
 const LightningNodeInfo = ({
 	navigation,
 }: SettingsScreenProps<'LightningNodeInfo'>): ReactElement => {
+	const { t } = useTranslation('lightning');
 	const [nodeId, setNodeId] = useState('');
 	const [error, setError] = useState('');
 	const selectedNetwork = useSelector(selectedNetworkSelector);
@@ -29,16 +31,16 @@ const LightningNodeInfo = ({
 				setNodeId(response.value);
 			} else {
 				console.log('Error getting NodeId', response.error.message);
-				setError('Bitkit failed to initialize the Lightning node.');
+				setError(t('node_failed'));
 			}
 		})();
-	}, [selectedNetwork]);
+	}, [selectedNetwork, t]);
 
 	return (
 		<ThemedView style={styles.container}>
 			<SafeAreaInsets type="top" />
 			<NavigationHeader
-				title="Lightning Node Info"
+				title={t('node_info')}
 				displayBackButton
 				onClosePress={(): void => {
 					navigation.navigate('Wallet');
@@ -51,13 +53,13 @@ const LightningNodeInfo = ({
 						onPress={(): void => {
 							Clipboard.setString(nodeId);
 							showSuccessNotification({
-								title: 'Copied to Clipboard',
-								message: 'Successfully copied LDK Node ID to clipboard.',
+								title: t('copied'),
+								message: t('node_id_copied'),
 							});
 						}}
 						testID="LDKNodeID">
 						<Caption13Up style={styles.label} color="gray1">
-							LDK Node ID
+							{t('node_id')}
 						</Caption13Up>
 						<Subtitle>{nodeId}</Subtitle>
 					</TouchableOpacity>
@@ -67,9 +69,9 @@ const LightningNodeInfo = ({
 					<>
 						<View>
 							<Caption13Up style={styles.label} color="gray1">
-								LDK Node ID
+								{t('node_id')}
 							</Caption13Up>
-							<Subtitle color="red">disconnected</Subtitle>
+							<Subtitle color="red">{t('node_disconnected')}</Subtitle>
 						</View>
 						<View style={styles.error}>
 							<Subtitle>{error}</Subtitle>

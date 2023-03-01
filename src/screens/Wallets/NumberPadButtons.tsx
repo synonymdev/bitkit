@@ -1,6 +1,7 @@
 import React, { memo, ReactElement, useMemo } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 
 import { TouchableOpacity } from '../../styles/components';
 import { Text02B } from '../../styles/text';
@@ -29,6 +30,7 @@ const NumberPadButtons = ({
 	onMaxPress,
 	onDone,
 }: NumberPadButtons): ReactElement => {
+	const { t } = useTranslation('wallet');
 	const { satoshis } = useBalance({ onchain: true, lightning: true });
 	const bitcoinUnit = useSelector(bitcoinUnitSelector);
 	const unitPreference = useSelector(unitPreferenceSelector);
@@ -61,7 +63,7 @@ const NumberPadButtons = ({
 						disabled={satoshis <= 0}
 						onPress={onMaxPress}>
 						<Text02B size="12px" color={isMaxSendAmount ? 'orange' : color}>
-							MAX
+							{t('send_max')}
 						</Text02B>
 					</TouchableOpacity>
 				)}
@@ -90,7 +92,7 @@ const NumberPadButtons = ({
 						color="white08"
 						onPress={onDone}>
 						<Text02B size="12px" color={color}>
-							DONE
+							{t('send_done')}
 						</Text02B>
 					</TouchableOpacity>
 				)}

@@ -11,6 +11,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Client } from '@synonymdev/slashtags-auth';
 import { SlashURL } from '@synonymdev/slashtags-sdk';
 import { useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 
 import BottomSheetWrapper from '../../components/BottomSheetWrapper';
 import Button from '../../components/Button';
@@ -73,6 +74,7 @@ const Key = ({
 };
 
 const _SlashAuthModal = (): ReactElement => {
+	const { t } = useTranslation('slashtags');
 	const [anonymous, setAnonymous] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
 
@@ -92,8 +94,8 @@ const _SlashAuthModal = (): ReactElement => {
 	}, [url, profile]);
 
 	const rootContact: IContactRecord = useMemo(() => {
-		return { url: slashtag.url, name: 'Your Name' };
-	}, [slashtag]);
+		return { url: slashtag.url, name: t('your_name_capital') };
+	}, [slashtag, t]);
 
 	// const sdk = useSlashtagsSDK();
 
@@ -111,12 +113,8 @@ const _SlashAuthModal = (): ReactElement => {
 	}, [server]);
 
 	const text = useMemo(() => {
-		if (isLoading) {
-			return `Signing in to ${serviceName}...`;
-		} else {
-			return `Sign in to ${serviceName} with your profile?`;
-		}
-	}, [serviceName, isLoading]);
+		return t(isLoading ? 'signin_to_loading' : 'signin_to', { serviceName });
+	}, [serviceName, isLoading, t]);
 
 	const insets = useSafeAreaInsets();
 	const buttonContainerStyles = useMemo(
@@ -139,37 +137,37 @@ const _SlashAuthModal = (): ReactElement => {
 			if (e.message === 'channel closed') {
 				closeBottomSheet('slashauthModal');
 				showErrorNotification({
-					title: 'Error while signing in',
-					message: 'Could not connect to peer',
+					title: t('signin_to_error_header'),
+					message: t('signin_to_error_text'),
 				});
 			}
 		});
 
 		if (response?.status === 'ok') {
 			showSuccessNotification({
-				title: 'You’re Signed In!',
-				message: `Successfully logged in${
-					server.name ? ` to ${server.name}.` : '.'
-				}`,
+				title: t('signin_to_success_header'),
+				message: server.name
+					? t('signin_to_success_text_name', { name: server.name })
+					: t('signin_to_success_text_noname'),
 			});
 
 			setAuthWidget(url, { magiclink: true });
 			rootNavigation.navigate('Wallet');
 		} else {
 			showErrorNotification({
-				title: 'Error while signing in',
+				title: t('signin_to_error_header'),
 				message: response?.message || '',
 			});
 		}
 
 		setIsLoading(false);
 		closeBottomSheet('slashauthModal');
-	}, [_url, server.name, slashtag, url]);
+	}, [_url, server.name, slashtag, url, t]);
 
 	return (
 		<View style={styles.container}>
 			<BottomSheetNavigationHeader
-				title={isLoading ? 'Signing in...' : 'Sign in'}
+				title={t(isLoading ? 'signin_title_loading' : 'signin_title')}
 				displayBackButton={false}
 			/>
 			<View style={styles.header}>
@@ -202,7 +200,7 @@ const _SlashAuthModal = (): ReactElement => {
 				<Button
 					style={styles.button}
 					size="large"
-					text="Cancel"
+					text={t('cancel')}
 					variant="secondary"
 					onPress={onCancel}
 				/>
@@ -212,7 +210,7 @@ const _SlashAuthModal = (): ReactElement => {
 						<Button
 							style={styles.button}
 							size="large"
-							text="Sign in"
+							text={t('signin_title')}
 							disabled={isLoading}
 							onPress={onContinue}
 						/>

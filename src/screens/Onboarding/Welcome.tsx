@@ -1,6 +1,7 @@
 import React, { ReactElement } from 'react';
 import { View, StyleSheet, Image } from 'react-native';
 import { FadeIn } from 'react-native-reanimated';
+import { Trans, useTranslation } from 'react-i18next';
 
 import { AnimatedView } from '../../styles/components';
 import { Display, Text01S } from '../../styles/text';
@@ -16,6 +17,8 @@ const imageSrc = require('../../assets/illustrations/figures.png');
 const OnboardingWelcomeScreen = ({
 	navigation,
 }: OnboardingStackScreenProps<'Welcome'>): ReactElement => {
+	const { t } = useTranslation('onboarding');
+
 	const onGetStarted = (): void => {
 		navigation.navigate('Slideshow');
 	};
@@ -41,27 +44,31 @@ const OnboardingWelcomeScreen = ({
 					</AnimatedView>
 
 					<View style={styles.textContent}>
-						<Display>
-							Your Bitcoin <Display color="brand">Toolkit.</Display>
-						</Display>
+						<Trans
+							t={t}
+							i18nKey="toolkit"
+							parent={Display}
+							components={{
+								brand: <Display color="brand" />,
+							}}
+						/>
 
 						<Text01S color="gray1" style={styles.text}>
-							Bitkit hands you the keys to your money, profile, contacts, and
-							web accounts.
+							{t('toolkit_text')}
 						</Text01S>
 
 						<View style={styles.buttonsContainer}>
 							<Button
 								size="large"
 								onPress={onGetStarted}
-								text="Get Started"
+								text={t('get_started')}
 								style={[styles.button, styles.restoreButton]}
 							/>
 							<Button
 								size="large"
 								variant="secondary"
 								onPress={onSkipIntro}
-								text="Skip Intro"
+								text={t('skip_intro')}
 								style={[styles.button, styles.skipButton]}
 								testID="SkipIntro"
 							/>

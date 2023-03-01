@@ -1,6 +1,7 @@
 import React, { memo, ReactElement, useMemo } from 'react';
 import { LayoutAnimation, StyleSheet, Image, View } from 'react-native';
 import { Canvas, RadialGradient, Rect, vec } from '@shopify/react-native-skia';
+import { useTranslation } from 'react-i18next';
 
 import { Pressable } from '../styles/components';
 import { Caption13M, Text01M } from '../styles/text';
@@ -32,14 +33,13 @@ type CardProps = ITodo & {
 
 const SuggestionCard = ({
 	id,
-	title,
-	description,
 	color,
 	image,
 	dismissable,
 	onPress,
 	onClose,
 }: CardProps): ReactElement => {
+	const { t } = useTranslation('cards');
 	LayoutAnimation.easeInEaseOut();
 
 	const colors = useColors();
@@ -72,8 +72,8 @@ const SuggestionCard = ({
 					<Image style={styles.image} resizeMode="contain" source={image} />
 				</View>
 				<View>
-					<Text01M>{title}</Text01M>
-					<Caption13M color="lightGray">{description}</Caption13M>
+					<Text01M>{t(`${id}.title`)}</Text01M>
+					<Caption13M color="lightGray">{t(`${id}.description`)}</Caption13M>
 				</View>
 			</Pressable>
 

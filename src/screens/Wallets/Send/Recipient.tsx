@@ -13,6 +13,7 @@ import { FadeIn, FadeOut } from 'react-native-reanimated';
 import Clipboard from '@react-native-clipboard/clipboard';
 import { validate } from 'bitcoin-address-validation';
 import { TInvoice } from '@synonymdev/react-native-ldk';
+import { useTranslation } from 'react-i18next';
 
 import { AnimatedView } from '../../../styles/components';
 import { Caption13Up } from '../../../styles/text';
@@ -47,6 +48,7 @@ const imageSrc = require('../../../assets/illustrations/coin-stack-logo.png');
 const Recipient = ({
 	navigation,
 }: SendScreenProps<'Recipient'>): ReactElement => {
+	const { t } = useTranslation('wallet');
 	const sdk = useSlashtagsSDK();
 	const insets = useSafeAreaInsets();
 	const { keyboardShown } = useKeyboard();
@@ -201,8 +203,8 @@ const Recipient = ({
 			}
 			if (!clipboardData) {
 				showErrorNotification({
-					title: 'Clipboard is empty',
-					message: 'No address data available.',
+					title: t('send_clipboard_empty_title'),
+					message: t('send_clipboard_empty_text'),
 				});
 				return;
 			}
@@ -225,7 +227,7 @@ const Recipient = ({
 				});
 			}
 		},
-		[index, value, selectedNetwork, selectedWallet, sdk],
+		[index, value, selectedNetwork, selectedWallet, sdk, t],
 	);
 
 	const onFocus = useCallback((): void => {
@@ -326,12 +328,12 @@ const Recipient = ({
 	return (
 		<View style={styles.container}>
 			<BottomSheetNavigationHeader
-				title="Send Bitcoin"
+				title={t('send_bitcoin')}
 				displayBackButton={false}
 			/>
 			<View style={styles.content}>
 				<Caption13Up color="gray1" style={styles.label} testID="Caption">
-					To
+					{t('send_to')}
 				</Caption13Up>
 
 				<AddressOrSlashpay
@@ -370,7 +372,7 @@ const Recipient = ({
 
 					<View style={buttonContainerStyles}>
 						<Button
-							text="Continue"
+							text={t('continue')}
 							size="large"
 							disabled={isInvalid()}
 							onPress={onContinue}

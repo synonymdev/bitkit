@@ -11,6 +11,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useFocusEffect } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
 import Lottie from 'lottie-react-native';
+import { useTranslation } from 'react-i18next';
 
 import { Subtitle, Text01S } from '../../../styles/text';
 import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
@@ -41,6 +42,7 @@ const Result = ({
 	navigation,
 	route,
 }: SendScreenProps<'Result'>): ReactElement => {
+	const { t } = useTranslation('wallet');
 	const { success, txId, errorTitle, errorMessage } = route.params;
 	const insets = useSafeAreaInsets();
 	const animationRef = useRef<Lottie>(null);
@@ -71,37 +73,34 @@ const Result = ({
 
 	if (success) {
 		imageSrc = require('../../../assets/illustrations/check.png');
-		title = 'Bitcoin Sent';
+		title = t('send_sent');
 		glowColor = 'green';
-		closeText = 'Close';
+		closeText = t('close');
 		error = <View style={styles.error} />;
 	} else if (transaction.lightningInvoice && transaction.slashTagsUrl) {
 		imageSrc = require('../../../assets/illustrations/exclamation-mark.png');
-		title = 'Instant Payment Failed';
+		title = t('send_instant_failed');
 		glowColor = 'yellow';
-		closeText = 'Cancel';
+		closeText = t('cancel');
 		retryText = loading ? (
 			<>
 				<ActivityIndicator />
-				Regular Payment
+				{t('send_regular')}
 			</>
 		) : (
-			'Regular Payment'
+			t('send_regular')
 		);
 		error = (
 			<View style={styles.error}>
-				<Text01S>
-					Unfortunately Anna Pleb could not be paid instantly. You can try a
-					regular payment (more expensive, slower).
-				</Text01S>
+				<Text01S>{t('send_error_slash_ln')}</Text01S>
 			</View>
 		);
 	} else {
 		imageSrc = require('../../../assets/illustrations/cross.png');
-		title = 'Transaction Failed';
+		title = t('send_error_tx_failed');
 		glowColor = 'red';
-		closeText = 'Cancel';
-		retryText = 'Try again';
+		closeText = t('cancel');
+		retryText = t('try_again');
 		error = (
 			<View style={styles.error}>
 				{errorTitle && (
@@ -166,7 +165,7 @@ const Result = ({
 				return;
 			}
 			showErrorNotification({
-				title: 'Unable To Pay to this contact',
+				title: t('send_error_contact'),
 				message: res.error.message,
 			});
 
@@ -215,7 +214,7 @@ const Result = ({
 							style={styles.button}
 							variant="primary"
 							size="large"
-							text="Details"
+							text={t('send_details')}
 							onPress={navigateToTxDetails}
 						/>
 						<View style={styles.divider} />

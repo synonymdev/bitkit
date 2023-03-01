@@ -1,6 +1,7 @@
 import React, { memo, ReactElement, useMemo } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useTranslation } from 'react-i18next';
 
 import { Text01S } from '../../../styles/text';
 import GradientView from '../../../components/GradientView';
@@ -14,6 +15,7 @@ const imageSrc = require('../../../assets/illustrations/exclamation-mark.png');
 const Warning = ({
 	navigation,
 }: BackupScreenProps<'Warning'>): ReactElement => {
+	const { t } = useTranslation('security');
 	const insets = useSafeAreaInsets();
 	const buttonContainerStyles = useMemo(
 		() => ({
@@ -29,12 +31,10 @@ const Warning = ({
 
 	return (
 		<GradientView style={styles.container}>
-			<BottomSheetNavigationHeader title="Keep It Secret" />
+			<BottomSheetNavigationHeader title={t('mnemonic_keep_header')} />
 
 			<Text01S color="gray1" style={styles.text}>
-				Remember, never share your recovery phrase with anyone! If someone has
-				access to your recovery phrase they can steal your money, profile and
-				other data.
+				{t('mnemonic_keep_text')}
 			</Text01S>
 
 			<GlowImage image={imageSrc} imageSize={200} glowColor="yellow" />
@@ -42,7 +42,7 @@ const Warning = ({
 			<View style={buttonContainerStyles}>
 				<Button
 					size="large"
-					text="OK"
+					text={t('ok')}
 					onPress={handleButtonPress}
 					testID="OK"
 				/>

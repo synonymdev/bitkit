@@ -1,5 +1,6 @@
 import React, { memo, ReactElement, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 
 import { EItemType, IListData, ItemData } from '../../../components/List';
 import SettingsView from '../SettingsView';
@@ -29,6 +30,7 @@ const networkLabels = {
 const AdvancedSettings = ({
 	navigation,
 }: SettingsScreenProps<'AdvancedSettings'>): ReactElement => {
+	const { t } = useTranslation('settings');
 	const selectedWallet = useSelector(selectedWalletSelector);
 	const selectedNetwork = useSelector(selectedNetworkSelector);
 	const selectedAddressType = useSelector(addressTypeSelector);
@@ -39,30 +41,30 @@ const AdvancedSettings = ({
 	const SettingsListData: IListData[] = useMemo(() => {
 		const payments: ItemData[] = [
 			{
-				title: 'Bitcoin Address Type',
+				title: t('adv.address_type'),
 				type: EItemType.button,
 				value: typesDescriptions[selectedAddressType],
 				onPress: (): void => navigation.navigate('AddressTypePreference'),
 				testID: 'AddressTypePreference',
 			},
 			{
-				title: 'Coin Selection',
+				title: t('adv.coin_selection'),
 				type: EItemType.button,
 				onPress: (): void => navigation.navigate('CoinSelectPreference'),
 			},
 			{
-				title: 'Payment Preference',
+				title: t('adv.payment_preference'),
 				type: EItemType.button,
 				onPress: (): void => navigation.navigate('PaymentPreference'),
 			},
 			{
-				title: 'Address Viewer',
+				title: t('adv.address_viewer'),
 				type: EItemType.button,
 				onPress: (): void => navigation.navigate('AddressViewer'),
 				testID: 'AddressViewer',
 			},
 			{
-				title: 'Rescan Addresses',
+				title: t('adv.rescan'),
 				value: rescanning ? 'Rescanning...' : '',
 				type: EItemType.textButton,
 				enabled: !rescanning,
@@ -83,19 +85,19 @@ const AdvancedSettings = ({
 
 		const networks: ItemData[] = [
 			{
-				title: 'Lightning Connections',
+				title: t('adv.lightning_connections'),
 				type: EItemType.button,
 				onPress: (): void => navigation.navigate('Channels'),
 				testID: 'Channels',
 			},
 			{
-				title: 'Lightning Node',
+				title: t('adv.lightning_node'),
 				type: EItemType.button,
 				onPress: (): void => navigation.navigate('LightningNodeInfo'),
 				testID: 'LightningNodeInfo',
 			},
 			{
-				title: 'Electrum Server',
+				title: t('adv.electrum_server'),
 				type: EItemType.button,
 				onPress: (): void => navigation.navigate('ElectrumConfig'),
 				testID: 'ElectrumConfig',
@@ -104,7 +106,7 @@ const AdvancedSettings = ({
 
 		if (enableDevOptions) {
 			networks.push({
-				title: 'Bitcoin Network',
+				title: t('adv.bitcoin_network'),
 				value: networkLabels[selectedNetwork],
 				type: EItemType.button,
 				onPress: (): void => navigation.navigate('BitcoinNetworkSelection'),
@@ -113,11 +115,11 @@ const AdvancedSettings = ({
 
 		return [
 			{
-				title: 'Payments',
+				title: t('adv.section_payments'),
 				data: payments,
 			},
 			{
-				title: 'Networks',
+				title: t('adv.section_networks'),
 				data: networks,
 			},
 		];
@@ -128,11 +130,12 @@ const AdvancedSettings = ({
 		navigation,
 		selectedWallet,
 		selectedNetwork,
+		t,
 	]);
 
 	return (
 		<SettingsView
-			title="Advanced"
+			title={t('advanced_title')}
 			listData={SettingsListData}
 			showBackNavigation={true}
 		/>

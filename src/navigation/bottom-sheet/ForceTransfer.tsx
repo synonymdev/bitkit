@@ -2,6 +2,7 @@ import React, { memo, ReactElement, useEffect, useMemo } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 
 import { Text01S } from '../../styles/text';
 import BottomSheetWrapper from '../../components/BottomSheetWrapper';
@@ -31,6 +32,7 @@ const RETRY_INTERVAL = 1000 * 60 * 5;
 const GIVE_UP = 1000 * 60 * 30;
 
 const ForceTransfer = (): ReactElement => {
+	const { t } = useTranslation('lightning');
 	const snapPoints = useSnapPoints('large');
 	const insets = useSafeAreaInsets();
 	const startTime = useSelector(startCoopCloseTimestampSelector);
@@ -108,7 +110,7 @@ const ForceTransfer = (): ReactElement => {
 		});
 		if (closeResponse.isErr()) {
 			showErrorNotification({
-				title: 'Channel Close Error',
+				title: t('close_error'),
 				message: closeResponse.error.message,
 			});
 			return;
@@ -117,8 +119,8 @@ const ForceTransfer = (): ReactElement => {
 			if (closeResponse.value.length === 0) {
 				console.log('force close success.');
 				showSuccessNotification({
-					title: 'Force Transfer Initiated',
-					message: 'Your funds will be accessible in ±14 days.',
+					title: t('force_init_title'),
+					message: t('force_init_msg'),
 				});
 
 				removeTodo('transferClosingChannel');
@@ -127,8 +129,8 @@ const ForceTransfer = (): ReactElement => {
 			} else {
 				console.log('force close failed.');
 				showErrorNotification({
-					title: 'Force Transfer Failed',
-					message: 'Something went wrong when trying to close the channel.',
+					title: t('force_failed_title'),
+					message: t('force_failed_msg'),
 				});
 				console.log({ closeResponse: closeResponse.value });
 			}
@@ -142,14 +144,11 @@ const ForceTransfer = (): ReactElement => {
 			backdrop={true}>
 			<View style={styles.root}>
 				<BottomSheetNavigationHeader
-					title="Force Transfer"
+					title={t('force_title')}
 					displayBackButton={false}
 				/>
 
-				<Text01S color="gray1">
-					Could not initiate transfer. Do you want to force this transfer? You
-					won’t be able to use these funds for ±14 days (!)
-				</Text01S>
+				<Text01S color="gray1">{t('force_text')}</Text01S>
 
 				<GlowImage image={imageSrc} imageSize={205} glowColor="yellow" />
 
@@ -158,14 +157,14 @@ const ForceTransfer = (): ReactElement => {
 						style={styles.button}
 						variant="secondary"
 						size="large"
-						text="Later"
+						text={t('later')}
 						onPress={onCancel}
 					/>
 					<View style={styles.divider} />
 					<Button
 						style={styles.button}
 						size="large"
-						text="Force Transfer"
+						text={t('force_button')}
 						onPress={onContinue}
 					/>
 				</View>

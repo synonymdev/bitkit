@@ -1,5 +1,6 @@
 import React, { ReactElement } from 'react';
 import { Image, StyleSheet, View } from 'react-native';
+import { Trans, useTranslation } from 'react-i18next';
 
 import { Display, Text01S } from '../styles/text';
 import SafeAreaInsets from '../components/SafeAreaInsets';
@@ -15,6 +16,8 @@ const imageSrc = require('../assets/illustrations/b-emboss.png');
 const BuyBitcoin = ({
 	navigation,
 }: RootStackScreenProps<'BuyBitcoin'>): ReactElement => {
+	const { t } = useTranslation('other');
+
 	return (
 		<GlowingBackground topLeft="orange">
 			<SafeAreaInsets type="top" />
@@ -29,19 +32,23 @@ const BuyBitcoin = ({
 				</View>
 				<View style={styles.textContent}>
 					<Display>
-						Bitcoin{'\n'}
-						<Display color="orange">for Bitkit.</Display>
+						<Trans
+							t={t}
+							i18nKey="buy_header"
+							components={{
+								orange: <Display color="orange" />,
+							}}
+						/>
 					</Display>
 					<Text01S color="gray1" style={styles.text}>
-						Don’t have Bitcoin yet to send to your Bitkit wallet? Stack some
-						sats.
+						{t('buy_text')}
 					</Text01S>
 				</View>
 
 				<View style={styles.buttonContainer}>
 					<Button
 						style={styles.button}
-						text="Buy Bitcoin"
+						text={t('buy_button')}
 						size="large"
 						onPress={(): void => {
 							removeTodo('buyBitcoin');

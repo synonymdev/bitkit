@@ -11,6 +11,7 @@ import { StyleSheet, View, TouchableOpacity, Keyboard } from 'react-native';
 import { useSelector } from 'react-redux';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { TInvoice } from '@synonymdev/react-native-ldk';
+import { useTranslation } from 'react-i18next';
 
 import { Caption13Up, Text02M } from '../../../styles/text';
 import {
@@ -106,6 +107,7 @@ const Section = memo(
 const ReviewAndSend = ({
 	navigation,
 }: SendScreenProps<'ReviewAndSend'>): ReactElement => {
+	const { t, i18n } = useTranslation('wallet');
 	const insets = useSafeAreaInsets();
 	const selectedWallet = useSelector(selectedWalletSelector);
 	const selectedNetwork = useSelector(selectedNetworkSelector);
@@ -242,7 +244,7 @@ const ReviewAndSend = ({
 
 	const createLightningTransaction = useCallback(async () => {
 		if (!transaction.lightningInvoice) {
-			_onError('Error creating transaction', 'No lightning invoice found.');
+			_onError(t('send_error_create_tx'), t('error_no_invoice'));
 			setIsLoading(false);
 			return;
 		}
@@ -261,7 +263,7 @@ const ReviewAndSend = ({
 			customSatAmount,
 		);
 		if (payInvoiceResponse.isErr()) {
-			_onError('Error creating transaction', payInvoiceResponse.error.message);
+			_onError(t('send_error_create_tx'), payInvoiceResponse.error.message);
 			setIsLoading(false);
 			return;
 		}
@@ -291,6 +293,7 @@ const ReviewAndSend = ({
 		transaction.lightningInvoice,
 		transaction.outputs,
 		transaction.tags,
+		t,
 	]);
 
 	const createOnChainTransaction = useCallback(async (): Promise<void> => {
@@ -299,10 +302,7 @@ const ReviewAndSend = ({
 			const transactionIsValid = validateTransaction(transaction);
 			if (transactionIsValid.isErr()) {
 				setIsLoading(false);
-				_onError(
-					'Error creating transaction',
-					transactionIsValid.error.message,
-				);
+				_onError(t('send_error_create_tx'), transactionIsValid.error.message);
 				return;
 			}
 			const response = await createTransaction({
@@ -311,7 +311,7 @@ const ReviewAndSend = ({
 			});
 			if (response.isErr()) {
 				setIsLoading(false);
-				_onError('Error creating transaction', response.error.message);
+				_onError(t('send_error_create_tx'), response.error.message);
 				return;
 			}
 			if (__DEV__) {
@@ -319,17 +319,14 @@ const ReviewAndSend = ({
 			}
 			setRawTx(response.value);
 		} catch (error) {
-			_onError('Error creating transaction', (error as Error).message);
+			_onError(t('send_error_create_tx'), (error as Error).message);
 			setIsLoading(false);
 		}
-	}, [selectedNetwork, selectedWallet, transaction, _onError]);
+	}, [selectedNetwork, selectedWallet, transaction, _onError, t]);
 
 	const _broadcast = useCallback(async () => {
 		if (!rawTx?.id || !rawTx?.hex) {
-			_onError(
-				'Error: No transaction is available to broadcast.',
-				'Please check your transaction info and try again.',
-			);
+			_onError(t('error_no_tx_title'), t('error_no_tx_msg'));
 			return;
 		}
 		const response = await broadcastTransaction({
@@ -339,16 +336,15 @@ const ReviewAndSend = ({
 		if (response.isErr()) {
 			// Check if it failed to broadcast due to low fee.
 			if (response.error.message.includes('min relay fee not met')) {
-				_onError(
-					'Error: Minimum relay fee not met',
-					'Please increase your fee and try again.',
-				);
+				_onError(t('error_min_fee_title'), t('error_min_fee_msg'));
 			} else {
 				// Most likely a connection error with the Electrum server.
 				// TODO: Add a backup method to broadcast via an api if unable to broadcast through Electrum.
 				_onError(
-					'Error: Unable to Broadcast Transaction',
-					`Please check your connection and try again. \n ${response.error.message}`,
+					t('error_broadcast_tx'),
+					t('error_broadcast_tx_connection', {
+						message: response.error.message,
+					}),
 				);
 			}
 			setIsLoading(false);
@@ -382,6 +378,7 @@ const ReviewAndSend = ({
 		_onError,
 		navigation,
 		transaction,
+		t,
 	]);
 
 	useEffect(() => {
@@ -551,18 +548,26 @@ const ReviewAndSend = ({
 		onChainBalance,
 	]);
 
-	const customDescription = useMemo(() => {
-		let desc = FeeText.custom.description;
-		if (selectedFeeId === EFeeId.custom) {
-			for (const key of Object.keys(feeEstimates)) {
-				if (satsPerByte >= feeEstimates[key] && key in FeeText) {
-					desc = FeeText[key]?.description ?? '';
-					break;
-				}
+	const feeDescription = useMemo(() => {
+		if (selectedFeeId !== EFeeId.custom) {
+			return t(`fee:${selectedFeeId}.description`);
+		}
+
+		let desc = t('fee:custom.description');
+
+		// try to get nice fee description if our cusom fee matches one of feeEstimates
+		for (const key of ['minimum', 'slow', 'normal', 'fast']) {
+			const newDescId = `fee:${key}.description`;
+			if (
+				key in feeEstimates &&
+				satsPerByte >= feeEstimates[key] &&
+				i18n.exists(newDescId)
+			) {
+				desc = t(newDescId);
 			}
 		}
 		return desc;
-	}, [selectedFeeId, feeEstimates, satsPerByte]);
+	}, [selectedFeeId, feeEstimates, t, i18n, satsPerByte]);
 
 	const feeIcon = useMemo(() => {
 		switch (selectedFeeId) {
@@ -605,16 +610,10 @@ const ReviewAndSend = ({
 		}
 	}, [selectedFeeId]);
 
-	const feeDescription = useMemo(() => {
-		return selectedFeeId === EFeeId.custom
-			? customDescription
-			: FeeText[selectedFeeId].description;
-	}, [customDescription, selectedFeeId]);
-
 	return (
 		<>
 			<GradientView style={styles.container}>
-				<BottomSheetNavigationHeader title="Review & Send" />
+				<BottomSheetNavigationHeader title={t('send_review')} />
 				<View style={styles.content}>
 					<AmountToggle
 						style={styles.amountToggle}
@@ -624,9 +623,11 @@ const ReviewAndSend = ({
 
 					<View style={styles.sectionContainer}>
 						<Section
-							title={
-								transaction.slashTagsUrl || !decodedInvoice ? 'To' : 'Invoice'
-							}
+							title={t(
+								transaction.slashTagsUrl || !decodedInvoice
+									? 'send_to'
+									: 'send_invoice',
+							)}
 							value={
 								transaction.slashTagsUrl ? (
 									<ContactSmall url={transaction.slashTagsUrl} size="large" />
@@ -642,13 +643,13 @@ const ReviewAndSend = ({
 					{!transaction.lightningInvoice ? (
 						<View style={styles.sectionContainer}>
 							<Section
-								title="Speed and fee"
+								title={t('send_fee_and_speed')}
 								onPress={(): void => navigation.navigate('FeeRate')}
 								value={
 									<>
 										{feeIcon}
 										<Text02M>
-											{FeeText[selectedFeeId].title}
+											{t(`fee:${selectedFeeId}.title`)}
 											{feeAmount}
 										</Text02M>
 										<PencileIcon height={12} width={22} />
@@ -656,7 +657,7 @@ const ReviewAndSend = ({
 								}
 							/>
 							<Section
-								title="Confirming in"
+								title={t('send_confirming_in')}
 								onPress={(): void => navigation.navigate('FeeRate')}
 								value={
 									<>
@@ -669,7 +670,7 @@ const ReviewAndSend = ({
 					) : (
 						<View style={styles.sectionContainer}>
 							<Section
-								title="Speed and fee"
+								title={t('send_fee_and_speed')}
 								value={
 									<>
 										<TimerIcon style={styles.icon} color="purple" />
@@ -679,7 +680,7 @@ const ReviewAndSend = ({
 							/>
 							{decodedInvoice?.expiry_time && (
 								<Section
-									title="Invoice expiration"
+									title={t('send_invoice_expiration')}
 									value={
 										<>
 											<ClockIcon style={styles.icon} color="purple" />
@@ -696,7 +697,7 @@ const ReviewAndSend = ({
 					{decodedInvoice?.description ? (
 						<View style={styles.sectionContainer}>
 							<Section
-								title="Note"
+								title={t('note')}
 								value={<Text02M>{decodedInvoice?.description}</Text02M>}
 							/>
 						</View>
@@ -704,7 +705,7 @@ const ReviewAndSend = ({
 
 					<View style={styles.sectionContainer}>
 						<Section
-							title="Tags"
+							title={t('tags')}
 							value={
 								<View>
 									<View style={styles.tagsContainer}>
@@ -720,7 +721,7 @@ const ReviewAndSend = ({
 									<View style={styles.tagsContainer}>
 										<Button
 											color="white04"
-											text="Add Tag"
+											text={t('tags_add')}
 											icon={<TagIcon color="brand" width={16} />}
 											onPress={(): void => {
 												Keyboard.dismiss();
@@ -735,7 +736,7 @@ const ReviewAndSend = ({
 
 					<View style={nextButtonContainer}>
 						<SwipeToConfirm
-							text="Swipe To Pay"
+							text={t('send_swipe')}
 							onConfirm={onSwipeToPay}
 							icon={<Checkmark width={30} height={30} color="black" />}
 							loading={isLoading}
@@ -746,9 +747,9 @@ const ReviewAndSend = ({
 
 				<Dialog
 					visible={showDialog1}
-					title="Are You Sure?"
-					description="It appears you are sending over $100. Do you want to continue?"
-					confirmText="Yes, Send"
+					title={t('are_you_sure')}
+					description={t('send_dialog1')}
+					confirmText={t('send_yes')}
 					onCancel={(): void => {
 						setShowDialog1(false);
 						setTimeout(() => navigation.goBack(), 100);
@@ -760,9 +761,9 @@ const ReviewAndSend = ({
 				/>
 				<Dialog
 					visible={showDialog2}
-					title="Are You Sure?"
-					description="It appears you are sending over 50% of your total balance. Do you want to continue?"
-					confirmText="Yes, Send"
+					title={t('are_you_sure')}
+					description={t('send_dialog2')}
+					confirmText={t('send_yes')}
 					onCancel={(): void => {
 						setShowDialog2(false);
 						setTimeout(() => navigation.goBack(), 100);
@@ -775,9 +776,9 @@ const ReviewAndSend = ({
 				/>
 				<Dialog
 					visible={showDialog3}
-					title="Are You Sure?"
-					description="The transaction fee appears to be over 50% of the amount you are sending. Do you want to continue?"
-					confirmText="Yes, Send"
+					title={t('are_you_sure')}
+					description={t('send_dialog3')}
+					confirmText={t('send_yes')}
 					onCancel={(): void => {
 						setShowDialog3(false);
 						setTimeout(() => navigation.goBack(), 100);
@@ -789,9 +790,9 @@ const ReviewAndSend = ({
 				/>
 				<Dialog
 					visible={showDialog4}
-					title="Are You Sure?"
-					description="The transaction fee appears to be over $10. Do you want to continue?"
-					confirmText="Yes, Send"
+					title={t('are_you_sure')}
+					description={t('send_dialog4')}
+					confirmText={t('send_yes')}
 					onCancel={(): void => {
 						setShowDialog4(false);
 						setTimeout(() => navigation.goBack(), 100);

@@ -10,6 +10,7 @@ import { StyleSheet, View } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import { FadeIn, FadeOut } from 'react-native-reanimated';
 import { useSelector } from 'react-redux';
+import { Trans, useTranslation } from 'react-i18next';
 
 import { AnimatedView } from '../../styles/components';
 import { Caption13Up, Display, Text01S } from '../../styles/text';
@@ -97,6 +98,7 @@ const CustomSetup = ({
 	navigation,
 	route,
 }: LightningScreenProps<'CustomSetup'>): ReactElement => {
+	const { t } = useTranslation('lightning');
 	const [loading, setLoading] = useState(false);
 	const currentBalance = useBalance({ onchain: true });
 	const bitcoinUnit = useSelector((state: Store) => state.settings.bitcoinUnit);
@@ -384,6 +386,60 @@ const CustomSetup = ({
 		spending,
 	]);
 
+	const onContinuePress = useCallback(async (): Promise<void> => {
+		if (spending) {
+			// go to second setup screen
+			navigation.push('CustomSetup', {
+				spending: false,
+				spendingAmount,
+			});
+			return;
+		}
+
+		// Create the channel order and navigate to the confirm screen.
+		setLoading(true);
+		const purchaseResponse = await startChannelPurchase({
+			productId,
+			remoteBalance: route.params.spendingAmount ?? 0,
+			localBalance: receivingAmount,
+			channelExpiry: 6,
+			selectedWallet,
+			selectedNetwork,
+		});
+		if (purchaseResponse.isErr()) {
+			let msg = purchaseResponse.error.message;
+			if (msg.includes('Local channel balance is too small')) {
+				t('error_channel_receiving', {
+					usdValue: blocktankService.max_chan_receiving_usd,
+				});
+			}
+			showErrorNotification({
+				title: t('error_channel_purchase'),
+				message: msg,
+			});
+			setLoading(false);
+			return;
+		}
+		setLoading(false);
+
+		navigation.navigate('CustomConfirm', {
+			spendingAmount: route.params.spendingAmount ?? 0,
+			receivingAmount,
+			orderId: purchaseResponse.value,
+		});
+	}, [
+		blocktankService,
+		navigation,
+		selectedNetwork,
+		selectedWallet,
+		spendingAmount,
+		productId,
+		receivingAmount,
+		route.params.spendingAmount,
+		spending,
+		t,
+	]);
+
 	return (
 		<GlowingBackground topLeft="purple">
 			<SafeAreaInsets type="top" />
@@ -399,31 +455,32 @@ const CustomSetup = ({
 			<View style={styles.root}>
 				<View>
 					<Display>
-						{spending ? '1) ' : '2) '}
-						<Display color="purple">
-							{spending ? 'Spending Money.' : 'Receiving Money.'}
-						</Display>
+						<Trans
+							t={t}
+							i18nKey={spending ? 'spending_header' : 'receiving_header'}
+							components={{
+								purple: <Display color="purple" />,
+							}}
+						/>
 					</Display>
 					{spending && !keybrd && (
 						<Text01S color="gray1" style={styles.text}>
-							Choose how much bitcoin you want to have available as your instant
-							spending balance.
+							{t('spending_amount_bitcoin')}
 						</Text01S>
 					)}
 					{spending && keybrd && (
 						<Text01S color="gray1" style={styles.text}>
-							Enter the amount of Bitcoin you want to be able to send instantly.
+							{t('enter_money')}
 						</Text01S>
 					)}
 					{!spending && !keybrd && (
 						<Text01S color="gray1" style={styles.text}>
-							Choose how much money you want to be able to receive instantly.
+							{t('receiving_amount_money')}
 						</Text01S>
 					)}
 					{!spending && keybrd && (
 						<Text01S color="gray1" style={styles.text}>
-							Enter the amount of Bitcoin you want to be able to receive
-							instantly.
+							{t('receiving_amount_bitcoin')}
 						</Text01S>
 					)}
 				</View>
@@ -432,7 +489,7 @@ const CustomSetup = ({
 					<AnimatedView color="transparent" entering={FadeIn} exiting={FadeOut}>
 						<View style={styles.barrels}>{getBarrels()}</View>
 						<Button
-							text="Enter Custom Amount"
+							text={t('enter_custom_amount')}
 							style={styles.buttonCustom}
 							onPress={(): void => setKeybrd((k) => !k)}
 						/>
@@ -443,7 +500,7 @@ const CustomSetup = ({
 					<View>
 						{!keybrd && (
 							<Caption13Up style={styles.amountTitle} color="purple">
-								{spending ? 'SPENDING BALANCE' : 'RECEIVING CAPACITY'}
+								{t(spending ? 'spending_label' : 'receiving_label')}
 							</Caption13Up>
 						)}
 						<AmountToggle
@@ -457,48 +514,10 @@ const CustomSetup = ({
 				{!keybrd && (
 					<AnimatedView color="transparent" entering={FadeIn} exiting={FadeOut}>
 						<Button
-							text="Continue"
+							text={t('continue')}
 							size="large"
 							loading={loading}
-							onPress={async (): Promise<void> => {
-								if (spending) {
-									// go to second setup screen
-									navigation.push('CustomSetup', {
-										spending: false,
-										spendingAmount,
-									});
-								} else {
-									// Create the channel order and navigate to the confirm screen.
-									setLoading(true);
-									const purchaseResponse = await startChannelPurchase({
-										productId,
-										remoteBalance: route.params.spendingAmount ?? 0,
-										localBalance: receivingAmount,
-										channelExpiry: 6,
-										selectedWallet,
-										selectedNetwork,
-									});
-									if (purchaseResponse.isErr()) {
-										let msg = purchaseResponse.error.message;
-										if (msg.includes('Local channel balance is too small')) {
-											msg = `Receiving amount needs to be greater than $${blocktankService.max_chan_receiving_usd}`;
-										}
-										showErrorNotification({
-											title: 'Channel Purchase Error',
-											message: msg,
-										});
-										setLoading(false);
-										return;
-									}
-									setLoading(false);
-
-									navigation.navigate('CustomConfirm', {
-										spendingAmount: route.params.spendingAmount ?? 0,
-										receivingAmount,
-										orderId: purchaseResponse.value,
-									});
-								}
-							}}
+							onPress={onContinuePress}
 						/>
 						<SafeAreaInsets type="bottom" />
 					</AnimatedView>

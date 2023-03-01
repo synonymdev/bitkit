@@ -7,6 +7,7 @@ import {
 	TextInputProps,
 	StyleProp,
 } from 'react-native';
+import { useTranslation } from 'react-i18next';
 
 import {
 	BottomSheetTextInput,
@@ -34,6 +35,7 @@ const AddressOrSlashpay = ({
 	slashTagsUrl,
 	...props
 }: Props): ReactElement => {
+	const { t } = useTranslation('wallet');
 	const colors = useColors();
 	const selectedWallet = useSelector(selectedWalletSelector);
 	const selectedNetwork = useSelector(selectedNetworkSelector);
@@ -69,7 +71,7 @@ const AddressOrSlashpay = ({
 					placeholderTextColor={colors.white5}
 					selectTextOnFocus={true}
 					multiline={true}
-					placeholder="Scan QR, paste invoice or select contact"
+					placeholder={t('send_address_placeholder')}
 					autoCapitalize="none"
 					autoCorrect={false}
 					blurOnSubmit={true}

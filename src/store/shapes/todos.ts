@@ -9,72 +9,72 @@ const imageBitcoin = require('../../assets/illustrations/b-emboss.png');
 
 const backupSeedPhraseTodo: ITodo = {
 	id: 'backupSeedPhrase',
-	title: 'Back up',
-	description: 'Store your money',
+	// title: 'Back up',
+	// description: 'Store your money',
 	color: 'blue',
 	image: imageSafe,
 	dismissable: true,
 };
 const lightningTodo: ITodo = {
 	id: 'lightning',
-	title: 'Pay instantly',
-	description: 'Get on Lightning',
+	// title: 'Pay instantly',
+	// description: 'Get on Lightning',
 	color: 'purple',
 	image: imageLightning,
 	dismissable: true,
 };
 const lightningSettingUpTodo: ITodo = {
 	id: 'lightningSettingUp',
-	title: 'Setting Up',
-	description: 'Ready in ±20m',
+	// title: 'Setting Up',
+	// description: 'Ready in ±20m',
 	color: 'purple',
 	image: imageLightning,
 	dismissable: false,
 };
 const transferTodo: ITodo = {
 	id: 'transfer',
-	title: 'Transfer',
-	description: 'Spend or save',
+	// title: 'Transfer',
+	// description: 'Spend or save',
 	color: 'purple',
 	image: imageTransfer,
 	dismissable: true,
 };
 const transferInProgressTodo: ITodo = {
 	id: 'transferInProgress',
-	title: 'Transferring',
-	description: 'Ready in ±20m',
+	// title: 'Transferring',
+	// description: 'Ready in ±20m',
 	color: 'purple',
 	image: imageTransfer,
 	dismissable: false,
 };
 const transferClosingChannel: ITodo = {
 	id: 'transferClosingChannel',
-	title: 'Initiating...',
-	description: 'Keep app open',
+	// title: 'Initiating...',
+	// description: 'Keep app open',
 	color: 'purple',
 	image: imageTransfer,
 	dismissable: false,
 };
 const pinTodo: ITodo = {
 	id: 'pin',
-	title: 'Better security',
-	description: 'Set up a PIN code',
+	// title: 'Better security',
+	// description: 'Set up a PIN code',
 	color: 'green',
 	image: imageShield,
 	dismissable: true,
 };
 const slashtagsProfileTodo: ITodo = {
 	id: 'slashtagsProfile',
-	title: 'Public Profile',
-	description: 'Add your details',
+	// title: 'Public Profile',
+	// description: 'Add your details',
 	color: 'brand',
 	image: imageCrown,
 	dismissable: true,
 };
 const buyBitcoinTodo: ITodo = {
 	id: 'buyBitcoin',
-	title: 'Get Bitcoin',
-	description: 'Stack some sats',
+	// title: 'Get Bitcoin',
+	// description: 'Stack some sats',
 	color: 'orange',
 	image: imageBitcoin,
 	dismissable: true,

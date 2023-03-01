@@ -95,6 +95,7 @@ const Money = (props: IMoney): ReactElement => {
 						lineHeight={lineHeight}
 						color={color ?? 'gray2'}
 						style={styles.symbol}
+						money={true}
 						testID="MoneyCurrencySymbol">
 						{dv.fiatSymbol}
 					</Text>
@@ -160,6 +161,7 @@ const Money = (props: IMoney): ReactElement => {
 					style={styles.sign}
 					lineHeight={lineHeight}
 					color={color ?? 'gray2'}
+					money={true}
 					testID="MoneySign">
 					{sign}
 				</Text>
@@ -169,6 +171,7 @@ const Money = (props: IMoney): ReactElement => {
 				style={styles.integer}
 				lineHeight={lineHeight}
 				color={color}
+				money={true}
 				testID="MoneyPrimary">
 				{prim}
 			</Text>
@@ -177,6 +180,7 @@ const Money = (props: IMoney): ReactElement => {
 					style={styles.decimal}
 					lineHeight={lineHeight}
 					color="gray2"
+					money={true}
 					testID="MoneySecondary">
 					{secd}
 				</Text>

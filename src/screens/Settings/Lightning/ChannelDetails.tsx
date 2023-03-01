@@ -4,6 +4,7 @@ import Clipboard from '@react-native-clipboard/clipboard';
 import { useSelector } from 'react-redux';
 import { SvgProps } from 'react-native-svg';
 import { IGetOrderResponse } from '@synonymdev/blocktank-client';
+import { useTranslation } from 'react-i18next';
 
 import { View as ThemedView } from '../../../styles/components';
 import { Caption13Up, Caption13M, Text01M } from '../../../styles/text';
@@ -167,6 +168,7 @@ const ChannelDetails = ({
 	navigation,
 	route,
 }: SettingsScreenProps<'ChannelDetails'>): ReactElement => {
+	const { t } = useTranslation('lightning');
 	const { channel } = route.params;
 
 	const name = useLightningChannelName(channel);
@@ -280,7 +282,7 @@ const ChannelDetails = ({
 				{blocktankOrder && (
 					<View style={styles.status}>
 						<View style={styles.sectionTitle}>
-							<Caption13Up color="gray1">Status</Caption13Up>
+							<Caption13Up color="gray1">{t('status')}</Caption13Up>
 						</View>
 						{Status && <Status />}
 					</View>
@@ -289,14 +291,14 @@ const ChannelDetails = ({
 				{blocktankOrder && (
 					<View style={styles.section}>
 						<View style={styles.sectionTitle}>
-							<Caption13Up color="gray1">Order Details</Caption13Up>
+							<Caption13Up color="gray1">{t('order_details')}</Caption13Up>
 						</View>
 						<Section
-							name="Order"
+							name={t('order')}
 							value={<Caption13M>{blocktankOrder._id}</Caption13M>}
 						/>
 						<Section
-							name="Created on"
+							name={t('created_on')}
 							value={
 								<Caption13M>
 									{new Date(blocktankOrder.created_at).toLocaleString(
@@ -315,7 +317,7 @@ const ChannelDetails = ({
 						/>
 						{channel.funding_txid && (
 							<Section
-								name="Transaction"
+								name={t('transaction')}
 								value={
 									<Caption13M ellipsizeMode="middle" numberOfLines={1}>
 										{channel.funding_txid}
@@ -333,7 +335,7 @@ const ChannelDetails = ({
 							/>
 						)}
 						<Section
-							name="Order fee"
+							name={t('order_fee')}
 							value={
 								<Money
 									sats={blocktankOrder.price}
@@ -349,10 +351,10 @@ const ChannelDetails = ({
 
 				<View style={styles.section}>
 					<View style={styles.sectionTitle}>
-						<Caption13Up color="gray1">Balance</Caption13Up>
+						<Caption13Up color="gray1">{t('balance')}</Caption13Up>
 					</View>
 					<Section
-						name="Receiving capacity"
+						name={t('receiving_label')}
 						value={
 							<Money
 								sats={receivingAvailable}
@@ -364,7 +366,7 @@ const ChannelDetails = ({
 						}
 					/>
 					<Section
-						name="Spending balance"
+						name={t('spending_label')}
 						value={
 							<Money
 								sats={spendingAvailable}
@@ -376,7 +378,7 @@ const ChannelDetails = ({
 						}
 					/>
 					<Section
-						name="Reserve balance"
+						name={t('reserve_balance')}
 						value={
 							<Money
 								sats={Number(channel.unspendable_punishment_reserve)}
@@ -388,7 +390,7 @@ const ChannelDetails = ({
 						}
 					/>
 					<Section
-						name="Total channel size"
+						name={t('total_size')}
 						value={
 							<Money
 								sats={capacity}
@@ -434,16 +436,16 @@ const ChannelDetails = ({
 
 				<View style={styles.section}>
 					<View style={styles.sectionTitle}>
-						<Caption13Up color="gray1">Other</Caption13Up>
+						<Caption13Up color="gray1">{t('other')}</Caption13Up>
 					</View>
 					{txTime && (
 						<Section
-							name="Opened on"
+							name={t('opened_on')}
 							value={<Caption13M>{txTime}</Caption13M>}
 						/>
 					)}
 					<Section
-						name="Node ID"
+						name={t('node_id')}
 						value={
 							<Caption13M ellipsizeMode="middle" numberOfLines={1}>
 								{channel.counterparty_node_id}
@@ -452,7 +454,7 @@ const ChannelDetails = ({
 						onPress={(): void => {
 							Clipboard.setString(channel.counterparty_node_id);
 							showSuccessNotification({
-								title: 'Copied Counterparty Node ID to Clipboard',
+								title: t('copied_couterparty'),
 								message: channel.counterparty_node_id,
 							});
 						}}
@@ -462,16 +464,20 @@ const ChannelDetails = ({
 				{enableDevOptions && (
 					<View style={styles.section}>
 						<View style={styles.sectionTitle}>
-							<Caption13Up color="gray1">Debug</Caption13Up>
+							<Caption13Up color="gray1">{t('debug')}</Caption13Up>
 						</View>
 						<Section
-							name="Is Usable?"
-							value={<Caption13M>{channel.is_usable.toString()}</Caption13M>}
+							name={t('is_usable')}
+							value={
+								<Caption13M>{t(channel.is_usable ? 'yes' : 'no')}</Caption13M>
+							}
 						/>
 						<Section
-							name="Is Ready?"
+							name={t('is_ready')}
 							value={
-								<Caption13M>{channel.is_channel_ready.toString()}</Caption13M>
+								<Caption13M>
+									{t(channel.is_channel_ready ? 'yes' : 'no')}
+								</Caption13M>
 							}
 						/>
 					</View>
@@ -482,7 +488,7 @@ const ChannelDetails = ({
 						<>
 							<Button
 								style={styles.button}
-								text="Support"
+								text={t('support')}
 								size="large"
 								variant="secondary"
 								onPress={(): void => {
@@ -494,7 +500,7 @@ const ChannelDetails = ({
 					)}
 					<Button
 						style={styles.button}
-						text="Close Connection"
+						text={t('close_conn')}
 						size="large"
 						onPress={(): void =>
 							navigation.navigate('CloseConnection', {

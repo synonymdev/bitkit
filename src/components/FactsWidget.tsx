@@ -2,6 +2,7 @@ import React, { memo, ReactElement, useEffect, useState } from 'react';
 import { TouchableOpacity, StyleSheet } from 'react-native';
 import { SlashURL } from '@synonymdev/slashtags-sdk';
 import b4a from 'b4a';
+import { useTranslation } from 'react-i18next';
 
 import { View } from '../styles/components';
 import { Caption13M, Text01M } from '../styles/text';
@@ -28,6 +29,7 @@ const FactsWidget = ({
 	onLongPress?: () => void;
 	onPressIn?: () => void;
 }): ReactElement => {
+	const { t } = useTranslation('slashtags');
 	const [showDialog, setShowDialog] = useState(false);
 	const [fact, setFact] = useState<string>();
 	const sdk = useSlashtagsSDK();
@@ -52,7 +54,7 @@ const FactsWidget = ({
 			})
 			.catch((e: Error) => {
 				showErrorNotification({
-					title: 'Failed to open news feed drive',
+					title: t('widget_error_drive'),
 					message: e.message,
 				});
 			});
@@ -81,7 +83,7 @@ const FactsWidget = ({
 		return function cleanup() {
 			unmounted = true;
 		};
-	}, [sdk, url]);
+	}, [sdk, url, t]);
 
 	const onEdit = (): void => {
 		rootNavigation.navigate('WidgetFeedEdit', { url });
@@ -103,7 +105,7 @@ const FactsWidget = ({
 				</View>
 				<View style={styles.infoContainer}>
 					<Text01M style={styles.name} numberOfLines={1}>
-						Bitcoin Facts
+						{t('widget_facts')}
 					</Text01M>
 					<View style={styles.row}>
 						<View style={styles.linkContainer}>
@@ -134,9 +136,9 @@ const FactsWidget = ({
 			)}
 			<Dialog
 				visible={showDialog}
-				title="Delete Bitcoin Facts widget?"
-				description="Are you sure you want to delete Bitcoin Facts from your widgets?"
-				confirmText="Yes, Delete"
+				title={t('widget_delete_title', { name: t('widget_facts') })}
+				description={t('widget_delete_desc', { name: t('widget_facts') })}
+				confirmText={t('widget_delete_yes')}
 				onCancel={(): void => {
 					setShowDialog(false);
 				}}

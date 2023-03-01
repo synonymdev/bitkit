@@ -62,6 +62,7 @@ import { EFeeId, IOnchainFees } from '../../store/types/fees';
 import { defaultFeesShape } from '../../store/shapes/fees';
 import { defaultBitcoinTransactionData } from '../../store/shapes/wallet';
 import { TRANSACTION_DEFAULTS } from './constants';
+import i18n from '../i18n';
 
 /*
  * Attempts to parse any given string as an on-chain payment request.
@@ -716,7 +717,7 @@ export const createTransaction = async ({
 	if (inputValue === 0) {
 		const message = 'No inputs to spend.';
 		showErrorNotification({
-			title: 'Unable to create transaction.',
+			title: i18n.t('wallet:error_create_tx'),
 			message,
 		});
 		return err(message);
@@ -726,9 +727,13 @@ export const createTransaction = async ({
 	//Refuse tx if the fee is greater than the amount we're attempting to send.
 	if (fee > inputValue) {
 		const message = 'Fee is larger than the intended payment.';
-		showErrorNotification({ title: 'Unable to create transaction', message });
+		showErrorNotification({
+			title: i18n.t('wallet:error_create_tx'),
+			message,
+		});
 		return err(message);
 	}
+
 	try {
 		const bip32InterfaceRes = await getBip32Interface(
 			selectedWallet,

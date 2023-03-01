@@ -7,6 +7,7 @@ import React, {
 } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
+import { useTranslation } from 'react-i18next';
 
 import { View as ThemedView, AnimatedView } from '../../../styles/components';
 import { Text01S, Text02S } from '../../../styles/text';
@@ -23,6 +24,7 @@ const ChangePin2 = ({
 	navigation,
 	route,
 }: SettingsScreenProps<'ChangePin2'>): ReactElement => {
+	const { t } = useTranslation('security');
 	const origPIN = route.params?.pin;
 	const [pin, setPin] = useState<string>('');
 	const [wrongPin, setWrongPin] = useState<boolean>(false);
@@ -70,29 +72,20 @@ const ChangePin2 = ({
 		<ThemedView style={styles.container}>
 			<SafeAreaInsets type="top" />
 			<NavigationHeader
-				title={origPIN ? 'Retype New PIN' : 'Set New PIN'}
+				title={t(origPIN ? 'cp_retype_title' : 'cp_setnew_title')}
 				onClosePress={(): void => {
 					navigation.navigate('Wallet');
 				}}
 			/>
 
-			{origPIN ? (
-				<Text01S style={styles.text} color="gray1">
-					Please retype your 4-digit PIN to complete the setup process.
-				</Text01S>
-			) : (
-				<Text01S style={styles.text} color="gray1">
-					Please use a PIN you will remember. If you forget your PIN you can
-					reset it, but that will require restoring your wallet.
-				</Text01S>
-			)}
+			<Text01S style={styles.text} color="gray1">
+				{t(origPIN ? 'cp_retype_text' : 'cp_setnew_text')}
+			</Text01S>
 
 			<View style={styles.wrongPin}>
 				{wrongPin ? (
 					<AnimatedView color="transparent" entering={FadeIn} exiting={FadeOut}>
-						<Text02S color="brand">
-							Try again, this is not the same PIN.
-						</Text02S>
+						<Text02S color="brand">{t('cp_try_again')}</Text02S>
 					</AnimatedView>
 				) : (
 					<Text02S> </Text02S>

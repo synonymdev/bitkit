@@ -1,5 +1,6 @@
 import React, { memo, ReactElement, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 
 import { EItemType, IListData } from '../../../components/List';
 import SettingsView from './../SettingsView';
@@ -9,6 +10,7 @@ import Dialog from '../../../components/Dialog';
 import { showSuggestionsSelector } from '../../../store/reselect/settings';
 
 const SuggestionsSettings = (): ReactElement => {
+	const { t } = useTranslation('settings');
 	const showSuggestions = useSelector(showSuggestionsSelector);
 	const [showDialog, setShowDialog] = useState(false);
 
@@ -17,7 +19,7 @@ const SuggestionsSettings = (): ReactElement => {
 			{
 				data: [
 					{
-						title: 'Display suggestions',
+						title: t('general.suggestions_display'),
 						enabled: showSuggestions,
 						type: EItemType.switch,
 						onPress: (): void => {
@@ -26,7 +28,7 @@ const SuggestionsSettings = (): ReactElement => {
 						testID: 'DisplaySuggestions',
 					},
 					{
-						title: 'Reset suggestions',
+						title: t('general.suggestions_reset'),
 						type: EItemType.button,
 						onPress: (): void => {
 							setShowDialog(true);
@@ -36,22 +38,20 @@ const SuggestionsSettings = (): ReactElement => {
 				],
 			},
 		],
-		[showSuggestions],
+		[showSuggestions, t],
 	);
 
 	return (
 		<>
 			<SettingsView
-				title="Suggestions"
+				title={t('general.suggestions')}
 				listData={settingsListData}
 				showBackNavigation={true}
 			/>
 			<Dialog
 				visible={showDialog}
-				title="Reset Suggestions?"
-				description="Are you sure you want to reset the suggestions? They will
-				reappear in case you have removed them from your Bitkit wallet
-				overview."
+				title={t('general.reset_title')}
+				description={t('general.reset_desc')}
 				onCancel={(): void => {
 					setShowDialog(false);
 				}}

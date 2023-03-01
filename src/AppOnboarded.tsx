@@ -2,6 +2,7 @@ import React, { memo, ReactElement, useEffect, useRef } from 'react';
 import { Platform, NativeModules, AppState } from 'react-native';
 import { useSelector } from 'react-redux';
 import NetInfo from '@react-native-community/netinfo';
+import { useTranslation } from 'react-i18next';
 
 import RootNavigator from './navigation/root/RootNavigator';
 import { useSlashtagsSDK } from './components/SlashtagsProvider';
@@ -23,6 +24,7 @@ import {
 	selectedNetworkSelector,
 	selectedWalletSelector,
 } from './store/reselect/wallet';
+import i18n from './utils/i18n';
 
 const onElectrumConnectionChange = (isConnected: boolean): void => {
 	// get state fresh from store everytime
@@ -31,21 +33,22 @@ const onElectrumConnectionChange = (isConnected: boolean): void => {
 	if (!isConnectedToElectrum && isConnected) {
 		updateUi({ isConnectedToElectrum: isConnected });
 		showSuccessNotification({
-			title: 'Bitkit Connection Restored',
-			message: 'Successfully reconnected to Electrum Server.',
+			title: i18n.t('other:connection_restored_title'),
+			message: i18n.t('other:connection_restored_message'),
 		});
 	}
 
 	if (isConnectedToElectrum && !isConnected) {
 		updateUi({ isConnectedToElectrum: isConnected });
 		showErrorNotification({
-			title: 'Bitkit Is Reconnecting',
-			message: 'Lost connection to server, trying to reconnect...',
+			title: i18n.t('other:connection_reconnect_title'),
+			message: i18n.t('other:connection_reconnect_msg'),
 		});
 	}
 };
 
 const AppOnboarded = (): ReactElement => {
+	const { t } = useTranslation('other');
 	const appState = useRef(AppState.currentState);
 	const sdk = useSlashtagsSDK();
 	const { satoshis: onChainBalance } = useBalance({ onchain: true });
@@ -156,15 +159,15 @@ const AppOnboarded = (): ReactElement => {
 				// prevent toast from showing on startup
 				if (isOnline !== isConnected) {
 					showSuccessNotification({
-						title: 'You’re Back Online!',
-						message: 'Successfully reconnected to the Internet.',
+						title: t('connection_back_title'),
+						message: t('connection_back_msg'),
 					});
 				}
 				updateUi({ isOnline: true });
 			} else {
 				showErrorNotification({
-					title: 'Internet Connectivity Issues',
-					message: 'Please check your network connection.',
+					title: t('connection_issue'),
+					message: t('connection_issue_explain'),
 				});
 				updateUi({ isOnline: false });
 			}
@@ -173,7 +176,7 @@ const AppOnboarded = (): ReactElement => {
 		return () => {
 			unsubscribeNetInfo();
 		};
-	}, [isOnline]);
+	}, [isOnline, t]);
 
 	return <RootNavigator />;
 };

@@ -6,6 +6,8 @@ import React, {
 	useCallback,
 } from 'react';
 import { StyleSheet, View, LayoutAnimation, Pressable } from 'react-native';
+import { FadeIn, FadeOut } from 'react-native-reanimated';
+import { useTranslation } from 'react-i18next';
 
 import { AnimatedView } from '../styles/components';
 import { Text02S, Subtitle } from '../styles/text';
@@ -17,7 +19,6 @@ import { wipeApp } from '../store/actions/settings';
 import { setKeychainValue, getKeychainValue, vibrate } from '../utils/helpers';
 import BitkitLogo from '../assets/bitkit-logo.svg';
 import { showBottomSheet } from '../store/actions/ui';
-import { FadeIn, FadeOut } from 'react-native-reanimated';
 import NavigationHeader from './NavigationHeader';
 import { showErrorNotification } from '../utils/notifications';
 
@@ -32,6 +33,7 @@ const PinPad = ({
 	showLogoOnPIN: boolean;
 	showBackNavigation?: boolean;
 }): ReactElement => {
+	const { t } = useTranslation('security');
 	const [pin, setPin] = useState('');
 	const [isLoading, setIsLoading] = useState(true);
 	const [attemptsRemaining, setAttemptsRemaining] = useState(0);
@@ -115,8 +117,8 @@ const PinPad = ({
 					vibrate({ type: 'default' });
 					await wipeApp();
 					showErrorNotification({
-						title: 'Bitkit Wiped',
-						message: 'All wallet data has been wiped.',
+						title: t('wiped_title'),
+						message: t('wiped_message'),
 					});
 				} else {
 					await reducePinAttemptsRemaining();
@@ -136,7 +138,7 @@ const PinPad = ({
 			onSuccess?.();
 		}, 500);
 		return (): void => clearInterval(timer);
-	}, [pin, attemptsRemaining, onSuccess, reducePinAttemptsRemaining]);
+	}, [pin, attemptsRemaining, onSuccess, reducePinAttemptsRemaining, t]);
 
 	const isLastAttempt = attemptsRemaining === 1;
 
@@ -157,7 +159,7 @@ const PinPad = ({
 						color="transparent"
 						entering={FadeIn}
 						exiting={FadeOut}>
-						<Subtitle style={styles.title}>Please enter your PIN code</Subtitle>
+						<Subtitle style={styles.title}>{t('pin_enter')}</Subtitle>
 
 						{attemptsRemaining !== Number(PIN_ATTEMPTS) && (
 							<AnimatedView
@@ -167,24 +169,17 @@ const PinPad = ({
 								exiting={FadeOut}>
 								{isLastAttempt ? (
 									<Text02S style={styles.attemptsRemaining} color="brand">
-										Last attempt. Entering the wrong PIN again will reset your
-										wallet.
+										{t('pin_last_attempt')}
 									</Text02S>
 								) : (
-									<>
-										<Text02S
-											style={styles.attemptsRemaining}
-											color="brand"
-											testID="AttemptsRemaining">
-											{attemptsRemaining} attempts remaining.{' '}
+									<Pressable
+										onPress={(): void => {
+											showBottomSheet('forgotPIN');
+										}}>
+										<Text02S testID="AttemptsRemaining" color="brand">
+											{t('pin_attempts', { attemptsRemaining })}
 										</Text02S>
-										<Pressable
-											onPress={(): void => {
-												showBottomSheet('forgotPIN');
-											}}>
-											<Text02S color="brand">Forgot your PIN?</Text02S>
-										</Pressable>
-									</>
+									</Pressable>
 								)}
 							</AnimatedView>
 						)}

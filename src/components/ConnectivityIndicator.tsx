@@ -2,6 +2,7 @@ import React, { memo, ReactElement, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import { useSelector } from 'react-redux';
 import { FadeIn, FadeOut } from 'react-native-reanimated';
+import { useTranslation } from 'react-i18next';
 
 import { updateUi } from '../store/actions/ui';
 import { View, AnimatedView } from '../styles/components';
@@ -19,6 +20,7 @@ import {
 } from '../store/reselect/ui';
 
 const ConnectivityIndicator = (): ReactElement => {
+	const { t } = useTranslation('other');
 	const [isLoading, setIsLoading] = useState(false);
 
 	const isConnectedToElectrum = useSelector(isConnectedToElectrumSelector);
@@ -34,13 +36,13 @@ const ConnectivityIndicator = (): ReactElement => {
 		if (connectionResponse.isOk()) {
 			updateUi({ isConnectedToElectrum: true });
 			showSuccessNotification({
-				title: 'Bitkit Connection Restored',
-				message: 'Successfully reconnected to Electrum Server.',
+				title: t('connection_restored_title'),
+				message: t('connection_restored_message'),
 			});
 		} else {
 			showErrorNotification({
-				title: 'Bitkit Connection Lost',
-				message: 'Please check your Electrum Server settings.',
+				title: t('connection_lost_title'),
+				message: t('connection_lost_message'),
 			});
 		}
 		setIsLoading(false);
@@ -54,14 +56,14 @@ const ConnectivityIndicator = (): ReactElement => {
 			exiting={FadeOut}>
 			<BrokenLinkIcon />
 			<View color="transparent" style={styles.textContainer}>
-				<Text01M>Connectivity Issues</Text01M>
-				<Caption13M color="gray1">It appears you’re disconnected</Caption13M>
+				<Text01M>{t('connection_issue')}</Text01M>
+				<Caption13M color="gray1">{t('connection_issue_explain')}</Caption13M>
 			</View>
 
 			{isOnline && !isConnectedToElectrum && (
 				<Button
 					style={styles.button}
-					text="Retry"
+					text={t('retry')}
 					loading={isLoading}
 					onPress={onRetry}
 				/>

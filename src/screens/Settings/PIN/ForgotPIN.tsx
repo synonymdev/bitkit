@@ -1,6 +1,7 @@
 import React, { memo, ReactElement, useMemo } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useTranslation } from 'react-i18next';
 
 import { Text01S } from '../../../styles/text';
 import BottomSheetWrapper from '../../../components/BottomSheetWrapper';
@@ -17,6 +18,7 @@ import {
 const imageSrc = require('../../../assets/illustrations/restore.png');
 
 const ForgotPIN = (): ReactElement => {
+	const { t } = useTranslation('security');
 	const snapPoints = useSnapPoints('large');
 	const insets = useSafeAreaInsets();
 	const buttonContainerStyles = useMemo(
@@ -41,13 +43,10 @@ const ForgotPIN = (): ReactElement => {
 			backdrop={true}>
 			<View style={styles.container}>
 				<BottomSheetNavigationHeader
-					title="Forgot PIN?"
+					title={t('pin_forgot_title')}
 					displayBackButton={false}
 				/>
-				<Text01S color="white5">
-					Forgot your PIN? Reset and recover your Bitkit wallet with your
-					recovery phrase. Set a new PIN after completing recovery.
-				</Text01S>
+				<Text01S color="white5">{t('pin_forgot_text')}</Text01S>
 
 				<GlowImage image={imageSrc} imageSize={192} />
 
@@ -55,7 +54,7 @@ const ForgotPIN = (): ReactElement => {
 					<Button
 						style={styles.button}
 						size="large"
-						text="Reset (Requires Recovery Phrase)"
+						text={t('pin_forgot_reset')}
 						onPress={handlePress}
 					/>
 				</View>

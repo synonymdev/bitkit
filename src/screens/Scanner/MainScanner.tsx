@@ -1,6 +1,7 @@
 import React, { memo, ReactElement } from 'react';
 import { StyleSheet } from 'react-native';
 import { useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 
 import { processInputData } from '../../utils/scanner';
 import SafeAreaInsets from '../../components/SafeAreaInsets';
@@ -19,6 +20,7 @@ const ScannerScreen = ({
 	navigation,
 	route,
 }: RootStackScreenProps<'Scanner'>): ReactElement => {
+	const { t } = useTranslation('other');
 	const onScan = route.params?.onScan;
 	const selectedNetwork = useSelector(selectedNetworkSelector);
 	const selectedWallet = useSelector(selectedWalletSelector);
@@ -31,8 +33,8 @@ const ScannerScreen = ({
 	const onRead = async (data: string): Promise<void> => {
 		if (!data) {
 			showErrorNotification({
-				title: 'No Data Detected',
-				message: 'Sorry. Bitkit is not able to read this QR code.',
+				title: t('qr_error_header'),
+				message: t('qr_error_text'),
 			});
 			return;
 		}
@@ -59,7 +61,7 @@ const ScannerScreen = ({
 				<SafeAreaInsets type="top" />
 				<NavigationHeader
 					style={styles.navigationHeader}
-					title="Scan Any QR Code"
+					title={t('qr_scan_any')}
 				/>
 			</ScannerComponent>
 		</DetectSwipe>

@@ -1,6 +1,7 @@
 import React, { memo, ReactElement, useState, useEffect } from 'react';
 import { StyleSheet, View, Pressable } from 'react-native';
 import { FadeIn, FadeOut } from 'react-native-reanimated';
+import { useTranslation } from 'react-i18next';
 
 import { AnimatedView } from '../../../styles/components';
 import { Text02S } from '../../../styles/text';
@@ -10,6 +11,7 @@ import { showBottomSheet } from '../../../store/actions/ui';
 import NumberPad from '../../../components/NumberPad';
 
 const SendPinPad = ({ onSuccess }: { onSuccess: () => void }): ReactElement => {
+	const { t } = useTranslation('security');
 	const [pin, setPin] = useState('');
 	const [wrongPin, setWrongPin] = useState(false);
 	const { brand, brand08 } = useColors();
@@ -74,7 +76,7 @@ const SendPinPad = ({ onSuccess }: { onSuccess: () => void }): ReactElement => {
 							onPress={(): void => {
 								showBottomSheet('forgotPIN');
 							}}>
-							<Text02S color="brand">Forgot your PIN?</Text02S>
+							<Text02S color="brand">{t('cp_forgot')}</Text02S>
 						</Pressable>
 					</AnimatedView>
 				)}

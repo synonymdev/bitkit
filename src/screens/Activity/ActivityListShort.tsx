@@ -8,6 +8,7 @@ import React, {
 import { View, StyleSheet } from 'react-native';
 import { useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
+import { useTranslation } from 'react-i18next';
 
 import { Subtitle, Text01M } from '../../styles/text';
 import { groupActivityItems } from '../../utils/activity';
@@ -21,6 +22,7 @@ import type { RootNavigationProp } from '../../navigation/types';
 const MAX_ACTIVITY_ITEMS = 3;
 
 const ActivityListShort = (): ReactElement => {
+	const { t } = useTranslation('wallet');
 	const navigation = useNavigation<RootNavigationProp>();
 	const items = useSelector(activityItemsSelector);
 
@@ -59,7 +61,7 @@ const ActivityListShort = (): ReactElement => {
 
 	return (
 		<View style={styles.content}>
-			<Subtitle style={styles.title}>Activity</Subtitle>
+			<Subtitle style={styles.title}>{t('activity')}</Subtitle>
 
 			{groupedItems.length === 0 ? (
 				<EmptyItem onPress={navigateToReceive} />
@@ -67,7 +69,7 @@ const ActivityListShort = (): ReactElement => {
 				<>
 					{groupedItems.map((item) => renderItem({ item }))}
 					<Button
-						text={<Text01M color="white8">Show All Activity</Text01M>}
+						text={<Text01M color="white8">{t('activity_show_all')}</Text01M>}
 						size="large"
 						variant="transparent"
 						onPress={navigateToActivityFiltered}

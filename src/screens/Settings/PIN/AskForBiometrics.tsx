@@ -9,6 +9,7 @@ import React, {
 import { Linking, Platform, Pressable, StyleSheet, View } from 'react-native';
 import rnBiometrics from 'react-native-biometrics';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useTranslation } from 'react-i18next';
 
 import { Switch } from '../../../styles/components';
 import { Text01M, Text01S } from '../../../styles/text';
@@ -33,6 +34,7 @@ const goToSettings = (): void => {
 const AskForBiometrics = ({
 	navigation,
 }: PinScreenProps<'AskForBiometrics'>): ReactElement => {
+	const { t } = useTranslation('security');
 	const insets = useSafeAreaInsets();
 	const [biometryData, setBiometricData] = useState<IsSensorAvailableResult>();
 	const [shouldEnableBiometrics, setShouldEnableBiometrics] = useState(false);
@@ -50,17 +52,17 @@ const AskForBiometrics = ({
 	);
 
 	const buttonText = useMemo(() => {
-		return !biometryData?.available ? 'Skip' : 'Continue';
-	}, [biometryData?.available]);
+		return t(!biometryData?.available ? 'skip' : 'continue');
+	}, [biometryData?.available, t]);
 
-	const typeName = useMemo(
+	const biometricsName = useMemo(
 		() =>
 			biometryData?.biometryType === 'TouchID'
-				? 'Touch ID'
+				? t('bio_touch_id')
 				: biometryData?.biometryType === 'FaceID'
-				? 'Face ID'
-				: biometryData?.biometryType ?? 'Biometrics',
-		[biometryData?.biometryType],
+				? t('bio_face_id')
+				: biometryData?.biometryType ?? t('bio'),
+		[biometryData?.biometryType, t],
 	);
 
 	const handleOnBack = (): void => {
@@ -80,7 +82,7 @@ const AskForBiometrics = ({
 		}
 
 		rnBiometrics
-			.simplePrompt({ promptMessage: `Confirm ${typeName}` })
+			.simplePrompt({ promptMessage: t('bio_confirm', { biometricsName }) })
 			.then(({ success }) => {
 				if (success) {
 					updateSettings({ biometrics: true });
@@ -89,45 +91,39 @@ const AskForBiometrics = ({
 			})
 			.catch(() => {
 				showErrorNotification({
-					title: 'Biometrics Setup Failed',
-					message: "Bitkit wasn't able to setup biometrics for your device.",
+					title: t('bio_error_title'),
+					message: t('bio_error_message'),
 				});
 			});
 	}, [
 		biometryData?.available,
 		biometryData?.biometryType,
 		shouldEnableBiometrics,
-		typeName,
+		biometricsName,
 		navigation,
+		t,
 	]);
 
 	return (
 		<GradientView style={styles.container}>
 			<BottomSheetNavigationHeader
-				title={typeName}
+				title={biometricsName}
 				onBackPress={handleOnBack}
 			/>
 
 			<View style={styles.content}>
-				{!biometryData && <Text01S color="gray1">Loading...</Text01S>}
+				{!biometryData && <Text01S color="gray1">{t('bio_loading')}</Text01S>}
 
 				{!biometryData?.available && (
 					<>
-						<Text01S color="gray1">
-							Looks like you haven’t set up biometric security for your device
-							yet (or it is not supported). You can try to enable biometric
-							security in the phone settings.
-						</Text01S>
+						<Text01S color="gray1">{t('bio_not_available')}</Text01S>
 						<GlowImage image={imageSrc} imageSize={200} glowColor="yellow" />
 					</>
 				)}
 
 				{biometryData?.biometryType && (
 					<>
-						<Text01S color="gray1">
-							PIN code set. Would you like to use {typeName} instead of your PIN
-							code whenever possible?
-						</Text01S>
+						<Text01S color="gray1">{t('bio_ask', { biometricsName })}</Text01S>
 						<View style={styles.imageContainer} pointerEvents="none">
 							<Glow style={styles.glow} size={600} color="brand" />
 							{biometryData?.biometryType === 'FaceID' ? (
@@ -141,7 +137,7 @@ const AskForBiometrics = ({
 							style={styles.toggle}
 							onPress={handleTogglePress}
 							testID="ToggleBiometrics">
-							<Text01M>Use {typeName}</Text01M>
+							<Text01M>{t('bio_use', { biometricsName })}</Text01M>
 							<Switch
 								onValueChange={handleTogglePress}
 								value={shouldEnableBiometrics}
@@ -157,7 +153,7 @@ const AskForBiometrics = ({
 								style={styles.button}
 								size="large"
 								variant="secondary"
-								text="Phone Settings"
+								text={t('bio_phone_settings')}
 								onPress={goToSettings}
 							/>
 							<View style={styles.divider} />
