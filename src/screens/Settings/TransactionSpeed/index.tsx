@@ -61,11 +61,15 @@ const TransactionSpeedSettings = ({
 					Icon: txSpeed.Icon,
 					iconColor: txSpeed.iconColor,
 					description: txSpeed.description,
-					onPress: (): void => {
-						navigation.goBack();
-						updateSettings({ transactionSpeed: txSpeed.value });
-					},
 					testID: txSpeed.value,
+					onPress: (): void => {
+						if (txSpeed.value === ETransactionSpeed.custom) {
+							navigation.navigate('CustomFee');
+						} else {
+							navigation.goBack();
+							updateSettings({ transactionSpeed: txSpeed.value });
+						}
+					},
 				})),
 			},
 		],

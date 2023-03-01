@@ -29,7 +29,7 @@ const FeeCustom = ({
 	);
 
 	const getFee = useCallback(
-		(_satsPerByte = 1) => {
+		(_satsPerByte: number) => {
 			return getTotalFee({
 				satsPerByte: _satsPerByte,
 				message: transaction.message,
@@ -46,7 +46,7 @@ const FeeCustom = ({
 	const feeAmount = useMemo(
 		() =>
 			totalFeeDisplay.fiatFormatted !== '—'
-				? ` (${totalFeeDisplay.fiatSymbol} ${totalFeeDisplay.fiatFormatted})`
+				? ` (${totalFeeDisplay.fiatSymbol}${totalFeeDisplay.fiatFormatted})`
 				: '',
 		[totalFeeDisplay.fiatFormatted, totalFeeDisplay.fiatSymbol],
 	);

@@ -30,7 +30,12 @@ import {
 	refreshWallet,
 	removeDuplicateAddresses,
 } from '../../utils/wallet';
-import { getDispatch, getFeesStore, getWalletStore } from '../helpers';
+import {
+	getDispatch,
+	getFeesStore,
+	getSettingsStore,
+	getWalletStore,
+} from '../helpers';
 import { TAvailableNetworks } from '../../utils/networks';
 import { objectKeys } from '../../utils/objectKeys';
 import { err, ok, Result } from '@synonymdev/result';
@@ -51,6 +56,7 @@ import {
 	getUtxos,
 } from '../../utils/wallet/electrum';
 import { EFeeId } from '../types/fees';
+import { ETransactionSpeed } from '../types/settings';
 import { IHeader } from '../../utils/types/electrum';
 import { showBottomSheet, closeBottomSheet } from './ui';
 import {
@@ -1341,7 +1347,7 @@ export const addTxTag = ({
 			return err(txData.error.message);
 		}
 
-		let tags = [...(txData.value?.tags ?? []), tag];
+		let tags = [...txData.value.tags, tag];
 		tags = [...new Set(tags)]; // remove duplicates
 
 		updateBitcoinTransaction({
@@ -1389,7 +1395,7 @@ export const removeTxTag = ({
 			return err(txData.error.message);
 		}
 
-		const tags = txData.value?.tags ?? [];
+		const tags = txData.value.tags;
 		const newTags = tags.filter((t) => t !== tag);
 
 		updateBitcoinTransaction({
@@ -1407,13 +1413,13 @@ export const removeTxTag = ({
 	}
 };
 
-export const setupFeeForOnChainTransaction = async ({
+export const setupFeeForOnChainTransaction = ({
 	selectedWallet,
 	selectedNetwork,
 }: {
 	selectedWallet?: TWalletName;
 	selectedNetwork?: TAvailableNetworks;
-} = {}): Promise<Result<string>> => {
+} = {}): Result<string> => {
 	try {
 		if (!selectedNetwork) {
 			selectedNetwork = getSelectedNetwork();
@@ -1422,13 +1428,35 @@ export const setupFeeForOnChainTransaction = async ({
 			selectedWallet = getSelectedWallet();
 		}
 
-		const fees = getFeesStore().onchain;
-
-		const res = updateFee({
+		const transactionRes = getOnchainTransactionData({
 			selectedNetwork,
 			selectedWallet,
-			satsPerByte: fees[EFeeId.normal],
-			selectedFeeId: EFeeId.normal,
+		});
+		if (transactionRes.isErr()) {
+			return err(transactionRes.error.message);
+		}
+
+		const fees = getFeesStore().onchain;
+		const { transactionSpeed, customFeeRate } = getSettingsStore();
+		const preferredFeeRate =
+			transactionSpeed === ETransactionSpeed.custom
+				? customFeeRate
+				: fees[transactionSpeed];
+
+		const satsPerByte =
+			transactionRes.value.selectedFeeId === 'none'
+				? preferredFeeRate
+				: transactionRes.value.satsPerByte;
+		const selectedFeeId =
+			transactionRes.value.selectedFeeId === 'none'
+				? EFeeId[transactionSpeed]
+				: transactionRes.value.selectedFeeId;
+
+		const res = updateFee({
+			satsPerByte,
+			selectedFeeId,
+			selectedNetwork,
+			selectedWallet,
 		});
 
 		if (res.isErr()) {

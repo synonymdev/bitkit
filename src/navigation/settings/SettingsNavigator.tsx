@@ -20,6 +20,7 @@ import BackupData from '../../screens/Settings/Backup/BackupData';
 import LightningNodeInfo from '../../screens/Settings/Lightning/LightningNodeInfo';
 import BitcoinUnitSettings from '../../screens/Settings/BitcoinUnit';
 import TransactionSpeedSettings from '../../screens/Settings/TransactionSpeed';
+import CustomFee from '../../screens/Settings/TransactionSpeed/CustomFee';
 import AuthCheck from '../../components/AuthCheck';
 import GeneralSettings from '../../screens/Settings/General';
 import SecuritySettings from '../../screens/Settings/Security';
@@ -68,6 +69,7 @@ export type SettingsStackParamList = {
 	CurrenciesSettings: undefined;
 	BitcoinUnitSettings: undefined;
 	TransactionSpeedSettings: undefined;
+	CustomFee: undefined;
 	ElectrumConfig: undefined;
 	CoinSelectPreference: undefined;
 	PaymentPreference: undefined;
@@ -124,6 +126,7 @@ const SettingsNavigator = (): ReactElement => {
 				name="TransactionSpeedSettings"
 				component={TransactionSpeedSettings}
 			/>
+			<Stack.Screen name="CustomFee" component={CustomFee} />
 			<Stack.Screen name="ElectrumConfig" component={ElectrumConfig} />
 			<Stack.Screen
 				name="CoinSelectPreference"

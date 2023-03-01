@@ -102,6 +102,7 @@ export const defaultSettingsShape: ISettings = {
 	unitPreference: 'asset',
 	showSuggestions: true,
 	transactionSpeed: ETransactionSpeed.normal,
+	customFeeRate: 0,
 	hideBalance: false,
 	hideOnboardingMessage: false,
 	hideBeta: false,

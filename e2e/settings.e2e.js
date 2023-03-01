@@ -109,7 +109,7 @@ describe('Settings', () => {
 			markComplete('s2');
 		});
 
-		it('Can switch choose transaction speed', async () => {
+		it('Can switch transaction speed', async () => {
 			if (checkComplete('s3')) {
 				return;
 			}
@@ -127,6 +127,9 @@ describe('Settings', () => {
 			// switch to Custom
 			await element(by.id('TransactionSpeedSettings')).tap();
 			await element(by.id('custom')).tap();
+			await element(by.id('N1').withAncestor(by.id('CustomFee'))).tap();
+			await element(by.id('Continue')).tap();
+			await element(by.id('NavigationBack')).tap();
 			await expect(
 				element(by.id('Value').withAncestor(by.id('TransactionSpeedSettings'))),
 			).toHaveText('Custom');

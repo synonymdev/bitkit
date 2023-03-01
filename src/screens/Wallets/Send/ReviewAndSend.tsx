@@ -181,11 +181,7 @@ const ReviewAndSend = ({
 	}, [transaction.outputs, selectedNetwork, selectedWallet]);
 
 	const transactionTotal = useMemo((): number => {
-		try {
-			return Number(amount) + Number(totalFee);
-		} catch {
-			return Number(totalFee);
-		}
+		return amount + totalFee;
 	}, [amount, totalFee]);
 
 	// TODO:
@@ -215,11 +211,10 @@ const ReviewAndSend = ({
 	}, [transaction.satsPerByte]);
 
 	const getFee = useCallback(
-		(_satsPerByte = 1) => {
-			const message = transaction.message;
+		(_satsPerByte: number) => {
 			return getTotalFee({
 				satsPerByte: _satsPerByte,
-				message,
+				message: transaction.message,
 				selectedWallet,
 				selectedNetwork,
 			});
@@ -228,12 +223,10 @@ const ReviewAndSend = ({
 	);
 
 	useEffect(() => {
-		(async (): Promise<void> => {
-			const res = await setupFeeForOnChainTransaction();
-			if (res.isErr()) {
-				console.log(res.error.message);
-			}
-		})();
+		const res = setupFeeForOnChainTransaction();
+		if (res.isErr()) {
+			console.log(res.error.message);
+		}
 	}, []);
 
 	const _onError = useCallback(
@@ -506,7 +499,7 @@ const ReviewAndSend = ({
 		});
 
 		// amount > 50% of total balance
-		if (transaction?.lightningInvoice) {
+		if (transaction.lightningInvoice) {
 			// If lightning tx use lightning balance.
 			if (amount > lightningBalance.localBalance / 2) {
 				warnings.push('dialog2');
@@ -530,7 +523,7 @@ const ReviewAndSend = ({
 
 		// Check if the user is setting the minimum relay fee given the current fee environment.
 		if (
-			transaction?.satsPerByte &&
+			transaction.satsPerByte &&
 			// This check is to prevent situations where all values are set to 1sat/vbyte. Where setting 1sat/vbyte is perfectly fine.
 			feeEstimates.minimum < feeEstimates.slow &&
 			transaction.satsPerByte <= feeEstimates.minimum
@@ -539,7 +532,7 @@ const ReviewAndSend = ({
 		}
 
 		// fee > 50% of send amount
-		if (!transaction?.lightningInvoice && feeSats > amount / 2) {
+		if (!transaction.lightningInvoice && feeSats > amount / 2) {
 			warnings.push('dialog3');
 		}
 		confirmPayment(warnings);
@@ -548,7 +541,7 @@ const ReviewAndSend = ({
 		exchangeRates,
 		bitcoinUnit,
 		feeSats,
-		transaction?.lightningInvoice,
+		transaction.lightningInvoice,
 		transaction.satsPerByte,
 		enableSendAmountWarning,
 		feeEstimates.minimum,

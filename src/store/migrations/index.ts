@@ -63,6 +63,15 @@ const migrations = {
 			activity: defaultActivityShape,
 		};
 	},
+	7: (state): PersistedState => {
+		return {
+			...state,
+			settings: {
+				...state.settings,
+				customFeeRate: 0,
+			},
+		};
+	},
 };
 
 export default migrations;

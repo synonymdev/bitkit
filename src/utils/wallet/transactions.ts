@@ -2310,7 +2310,7 @@ export const getFeeEstimates = async (
 			selectedNetwork = getSelectedNetwork();
 		}
 
-		if (__DEV__ && selectedNetwork === 'bitcoinRegtest') {
+		if (__DEV__ && selectedNetwork === EAvailableNetworks.bitcoinRegtest) {
 			return defaultFeesShape.onchain;
 		}
 
@@ -2355,7 +2355,7 @@ export const getSelectedFeeId = ({
 	if (transaction.isErr()) {
 		return EFeeId.none;
 	}
-	return transaction.value.selectedFeeId ?? EFeeId.none;
+	return transaction.value.selectedFeeId;
 };
 
 /**

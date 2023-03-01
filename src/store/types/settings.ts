@@ -57,6 +57,7 @@ export interface ISettings {
 	unitPreference: TUnitPreference;
 	showSuggestions: boolean;
 	transactionSpeed: ETransactionSpeed;
+	customFeeRate: number;
 	hideBalance: boolean;
 	hideOnboardingMessage: boolean;
 	hideBeta: boolean;
