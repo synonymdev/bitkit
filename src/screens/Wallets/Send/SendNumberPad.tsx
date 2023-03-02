@@ -3,7 +3,6 @@ import { StyleProp, ViewStyle } from 'react-native';
 import { useSelector } from 'react-redux';
 
 import NumberPad from '../../../components/NumberPad';
-import Store from '../../../store/types';
 import { btcToSats } from '../../../utils/helpers';
 import { useExchangeRate } from '../../../hooks/displayValues';
 import { EBitcoinUnit } from '../../../store/types/wallet';
@@ -21,6 +20,7 @@ import {
 	transactionSelector,
 } from '../../../store/reselect/wallet';
 import {
+	bitcoinUnitSelector,
 	selectedCurrencySelector,
 	unitPreferenceSelector,
 } from '../../../store/reselect/settings';
@@ -38,15 +38,11 @@ const SendNumberPad = ({
 
 	const selectedWallet = useSelector(selectedWalletSelector);
 	const selectedNetwork = useSelector(selectedNetworkSelector);
-
-	const bitcoinUnit = useSelector((store: Store) => store.settings.bitcoinUnit);
-
+	const bitcoinUnit = useSelector(bitcoinUnitSelector);
 	const unitPreference = useSelector(unitPreferenceSelector);
-
 	const currency = useSelector(selectedCurrencySelector);
-	const exchangeRate = useExchangeRate(currency);
-
 	const transaction = useSelector(transactionSelector);
+	const exchangeRate = useExchangeRate(currency);
 
 	/*
 	 * Retrieves total value of all outputs. Excludes change address.
@@ -159,7 +155,7 @@ const SendNumberPad = ({
 			selectedWallet,
 			selectedNetwork,
 			index: 0,
-		}).then();
+		});
 	};
 
 	// Shift, remove and update the current transaction amount based on the provided fiat value or bitcoin unit.
@@ -202,7 +198,7 @@ const SendNumberPad = ({
 			selectedNetwork,
 			index: 0,
 			max: false,
-		}).then();
+		});
 	};
 
 	const numberPadType =

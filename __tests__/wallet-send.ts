@@ -227,7 +227,7 @@ describe('Wallet - new wallet, send and receive', () => {
 		const receivingAddress2 = await rpc.getNewAddress();
 
 		// setup new transaction
-		res = await resetOnChainTransaction();
+		res = resetOnChainTransaction();
 		if (res.isErr()) {
 			throw res.error;
 		}
@@ -244,17 +244,17 @@ describe('Wallet - new wallet, send and receive', () => {
 			},
 		});
 
-		res = await sendMax();
+		res = sendMax();
 		if (res.isErr()) {
 			throw res.error;
 		}
 
 		const tx21 =
 			store.getState().wallet.wallets.wallet0.transaction.bitcoinRegtest;
-		expect(tx21?.rbf).toEqual(true);
+		expect(tx21.rbf).toEqual(true);
 
-		// sending amount + fee should be equeal to the balance
-		expect((tx21?.outputs?.[0].value ?? 0) + (tx21?.fee ?? 0)).toBe(
+		// sending amount + fee should be equal to the balance
+		expect((tx21.outputs[0]?.value ?? 0) + tx21.fee).toBe(
 			store.getState().wallet.wallets.wallet0.balance.bitcoinRegtest,
 		);
 

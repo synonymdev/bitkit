@@ -569,7 +569,7 @@ export const processBitcoinTransactionData = async ({
 				(d) => d.qrDataType === EQRDataType.bitcoinAddress,
 			);
 			if (filteredBitcoinInvoice) {
-				const requestedOnChainAmount = filteredBitcoinInvoice?.sats ?? 0;
+				const requestedOnChainAmount = filteredBitcoinInvoice.sats ?? 0;
 				// Only set a new requested amount if a value was specified in the invoice.
 				if (requestedOnChainAmount) {
 					requestedAmount = requestedOnChainAmount;
@@ -602,8 +602,8 @@ export const processBitcoinTransactionData = async ({
 					// If the user already specified an amount in the app, don't override it.
 					// Otherwise, set sats to 0.
 					let sats = 0;
-					if (transaction.isOk() && transaction.value?.outputs) {
-						sats = transaction.value?.outputs[0]?.value ?? 0;
+					if (transaction.isOk() && transaction.value.outputs) {
+						sats = transaction.value.outputs[0]?.value ?? 0;
 					}
 					response = {
 						...filteredBitcoinInvoice,

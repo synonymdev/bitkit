@@ -27,6 +27,7 @@ import { viewControllerSelector } from '../../store/reselect/ui';
 import {
 	resetOnChainTransaction,
 	setupOnChainTransaction,
+	setupFeeForOnChainTransaction,
 } from '../../store/actions/wallet';
 
 export type SendNavigationProp = NativeStackNavigationProp<SendStackParamList>;
@@ -95,12 +96,17 @@ const SendNavigation = (): ReactElement => {
 
 	const initialRouteName = screen ?? 'Recipient';
 
+	const onOpen = (): void => {
+		setupOnChainTransaction();
+		setupFeeForOnChainTransaction();
+	};
+
 	return (
 		<BottomSheetWrapper
 			view="sendNavigation"
 			snapPoints={snapPoints}
 			onClose={resetOnChainTransaction}
-			onOpen={setupOnChainTransaction}>
+			onOpen={onOpen}>
 			<NavigationContainer key={isOpen.toString()} ref={navigationRef}>
 				<Stack.Navigator
 					initialRouteName={initialRouteName}

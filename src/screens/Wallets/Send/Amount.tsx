@@ -17,10 +17,9 @@ import SendNumberPad from './SendNumberPad';
 import { EBitcoinUnit } from '../../../store/types/wallet';
 import {
 	getTransactionOutputValue,
+	getMaxSendAmount,
 	sendMax,
 } from '../../../utils/wallet/transactions';
-import { useBalance } from '../../../hooks/wallet';
-import { useLightningBalance } from '../../../hooks/lightning';
 import {
 	selectedNetworkSelector,
 	selectedWalletSelector,
@@ -46,8 +45,6 @@ const ContactImage = ({ url }: { url: string }): JSX.Element => {
 const Amount = ({ navigation }: SendScreenProps<'Amount'>): ReactElement => {
 	const { t } = useTranslation('wallet');
 	const insets = useSafeAreaInsets();
-	const onChainBalance = useBalance({ onchain: true });
-	const lightningBalance = useLightningBalance(false);
 	const selectedWallet = useSelector(selectedWalletSelector);
 	const selectedNetwork = useSelector(selectedNetworkSelector);
 	const coinSelectAuto = useSelector(coinSelectAutoSelector);
@@ -77,25 +74,21 @@ const Amount = ({ navigation }: SendScreenProps<'Amount'>): ReactElement => {
 
 	const displayValues = useDisplayValues(amount);
 
-	/**
-	 * Returns available amount to spend for either onchain or lightning.
-	 */
 	const availableAmount = useMemo(() => {
-		if (transaction.lightningInvoice) {
-			return lightningBalance.localBalance;
-		}
-		if (transaction.outputs.length > 0 && transaction.outputs[0].address) {
-			if (onChainBalance.satoshis <= TRANSACTION_DEFAULTS.recommendedBaseFee) {
-				return 0;
-			}
-			return onChainBalance.satoshis - TRANSACTION_DEFAULTS.recommendedBaseFee;
+		const maxAmountResponse = getMaxSendAmount({
+			selectedWallet,
+			selectedNetwork,
+		});
+		if (maxAmountResponse.isOk()) {
+			return maxAmountResponse.value.amount;
 		}
 		return 0;
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [
-		lightningBalance.localBalance,
-		onChainBalance.satoshis,
-		transaction.lightningInvoice,
 		transaction.outputs,
+		transaction.satsPerByte,
+		selectedWallet,
+		selectedNetwork,
 	]);
 
 	const availableAmountProps = useMemo(() => {
@@ -158,7 +151,7 @@ const Amount = ({ navigation }: SendScreenProps<'Amount'>): ReactElement => {
 
 				<View style={styles.numberPad}>
 					<View style={styles.actions}>
-						<View>
+						<View testID="AvailableAmount">
 							<Caption13Up style={styles.availableAmountText} color="gray1">
 								{t(
 									transaction.lightningInvoice
@@ -178,10 +171,10 @@ const Amount = ({ navigation }: SendScreenProps<'Amount'>): ReactElement => {
 								<TouchableOpacity
 									style={styles.actionButton}
 									color="white08"
+									testID="MAX"
 									onPress={(): void => {
 										sendMax({ selectedWallet, selectedNetwork });
-									}}
-									testID="MAX">
+									}}>
 									<Text02B
 										size="12px"
 										color={isMaxSendAmount ? 'orange' : 'brand'}>

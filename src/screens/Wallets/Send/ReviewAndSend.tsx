@@ -225,10 +225,7 @@ const ReviewAndSend = ({
 	);
 
 	useEffect(() => {
-		const res = setupFeeForOnChainTransaction();
-		if (res.isErr()) {
-			console.log(res.error.message);
-		}
+		setupFeeForOnChainTransaction();
 	}, []);
 
 	const _onError = useCallback(
@@ -804,8 +801,11 @@ const ReviewAndSend = ({
 				/>
 				<Dialog
 					visible={showDialog5}
-					title="Fee is potentially too low"
-					description={`The fee you are trying to set is below ${feeEstimates.minimum} sats and may be too low due to current network conditions. This transaction may fail, take a while to confirm, or get trimmed from the mempool. Do you wish to proceed?`}
+					title={t('send_dialog5_title')}
+					description={t('send_dialog5_description', {
+						minimumFee: feeEstimates.minimum,
+					})}
+					confirmText={t('continue')}
 					onCancel={(): void => {
 						setShowDialog5(false);
 						setTimeout(() => navigation.goBack(), 100);

@@ -92,20 +92,49 @@ const FeeRate = ({ navigation }: SendScreenProps<'FeeRate'>): ReactElement => {
 	);
 
 	const displayFast = useMemo(() => {
-		return balance.satoshis >= transactionTotal() + getFee(feeEstimates.fast);
-	}, [balance.satoshis, feeEstimates.fast, getFee, transactionTotal]);
-	const displayNormal = useMemo(
-		() => balance.satoshis >= transactionTotal() + getFee(feeEstimates.normal),
-		[balance.satoshis, feeEstimates.normal, getFee, transactionTotal],
-	);
-	const displaySlow = useMemo(
-		() => balance.satoshis >= transactionTotal() + getFee(feeEstimates.slow),
-		[balance.satoshis, feeEstimates.slow, getFee, transactionTotal],
-	);
-	const displayCustom = useMemo(
-		() => balance.satoshis >= transactionTotal() + getFee(1),
-		[balance.satoshis, getFee, transactionTotal],
-	);
+		return (
+			balance.satoshis >= transactionTotal() + getFee(feeEstimates.fast) ||
+			transaction.max
+		);
+	}, [
+		balance.satoshis,
+		feeEstimates.fast,
+		getFee,
+		transactionTotal,
+		transaction.max,
+	]);
+
+	const displayNormal = useMemo(() => {
+		return (
+			balance.satoshis >= transactionTotal() + getFee(feeEstimates.normal) ||
+			transaction.max
+		);
+	}, [
+		balance.satoshis,
+		feeEstimates.normal,
+		getFee,
+		transactionTotal,
+		transaction.max,
+	]);
+
+	const displaySlow = useMemo(() => {
+		return (
+			balance.satoshis >= transactionTotal() + getFee(feeEstimates.slow) ||
+			transaction.max
+		);
+	}, [
+		balance.satoshis,
+		feeEstimates.slow,
+		getFee,
+		transactionTotal,
+		transaction.max,
+	]);
+
+	const displayCustom = useMemo(() => {
+		return (
+			balance.satoshis >= transactionTotal() + getFee(1) || transaction.max
+		);
+	}, [balance.satoshis, getFee, transactionTotal, transaction.max]);
 
 	const isSelected = useCallback(
 		(id: EFeeId) => id === selectedFeeId,

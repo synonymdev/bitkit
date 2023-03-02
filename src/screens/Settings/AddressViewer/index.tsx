@@ -696,7 +696,7 @@ const AddressViewer = ({
 				selectedWallet,
 				selectedNetwork,
 			});
-			await sendMax({ selectedWallet, selectedNetwork });
+			sendMax({ selectedWallet, selectedNetwork });
 			showBottomSheet('sendNavigation');
 		},
 		[selectedNetwork, selectedUtxos, selectedWallet, utxos],

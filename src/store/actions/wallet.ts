@@ -886,7 +886,6 @@ export const setupOnChainTransaction = async ({
 	inputTxHashes,
 	utxos,
 	rbf = false,
-	submitDispatch = true,
 }: {
 	selectedWallet?: TWalletName;
 	selectedNetwork?: TAvailableNetworks;
@@ -894,7 +893,6 @@ export const setupOnChainTransaction = async ({
 	inputTxHashes?: string[]; // Used to pre-specify inputs to use by tx_hash
 	utxos?: IUtxo[]; // Used to pre-specify utxos to use
 	rbf?: boolean; // Enable or disable rbf.
-	submitDispatch?: boolean; //Should we dispatch this and update the store.
 } = {}): Promise<Result<Partial<IBitcoinTransactionData>>> => {
 	try {
 		if (!selectedNetwork) {
@@ -918,16 +916,16 @@ export const setupOnChainTransaction = async ({
 		let inputs: IUtxo[] = [];
 		if (inputTxHashes) {
 			// If specified, filter for the desired tx_hash and push the utxo as an input.
-			inputs = currentWallet.utxos[selectedNetwork].filter((utxo) =>
-				inputTxHashes.includes(utxo.tx_hash),
-			);
+			inputs = currentWallet.utxos[selectedNetwork].filter((utxo) => {
+				return inputTxHashes.includes(utxo.tx_hash);
+			});
 		} else if (utxos) {
 			inputs = utxos;
 		}
 
 		if (!inputs.length) {
 			// If inputs were previously selected, leave them.
-			if (transaction.inputs && transaction.inputs.length > 0) {
+			if (transaction.inputs.length > 0) {
 				inputs = transaction.inputs;
 			} else {
 				// Otherwise, lets use our available utxo's.
@@ -990,7 +988,7 @@ export const setupOnChainTransaction = async ({
 		if (!lightningInvoice) {
 			//Remove any potential change address that may have been included from a previous tx attempt.
 			outputs = outputs.filter((output) => {
-				if (output?.address && !changeAddressesArr.includes(output?.address)) {
+				if (output.address && !changeAddressesArr.includes(output.address)) {
 					return output;
 				}
 			});
@@ -1006,12 +1004,11 @@ export const setupOnChainTransaction = async ({
 			rbf,
 		};
 
-		if (submitDispatch) {
-			dispatch({
-				type: actions.SETUP_ON_CHAIN_TRANSACTION,
-				payload,
-			});
-		}
+		dispatch({
+			type: actions.SETUP_ON_CHAIN_TRANSACTION,
+			payload,
+		});
+
 		return ok(payload);
 	} catch (e) {
 		return err(e);
@@ -1413,6 +1410,11 @@ export const removeTxTag = ({
 	}
 };
 
+/**
+ * Updates the fee rate for the current transaction to the preferred value if none set.
+ * @param {TWalletName} [selectedWallet]
+ * @param {TAvailableNetworks} [selectedNetwork]
+ */
 export const setupFeeForOnChainTransaction = ({
 	selectedWallet,
 	selectedNetwork,
@@ -1428,13 +1430,14 @@ export const setupFeeForOnChainTransaction = ({
 			selectedWallet = getSelectedWallet();
 		}
 
-		const transactionRes = getOnchainTransactionData({
-			selectedNetwork,
+		const transactionDataResponse = getOnchainTransactionData({
 			selectedWallet,
+			selectedNetwork,
 		});
-		if (transactionRes.isErr()) {
-			return err(transactionRes.error.message);
+		if (transactionDataResponse.isErr()) {
+			return err(transactionDataResponse.error.message);
 		}
+		const transaction = transactionDataResponse.value;
 
 		const fees = getFeesStore().onchain;
 		const { transactionSpeed, customFeeRate } = getSettingsStore();
@@ -1444,13 +1447,13 @@ export const setupFeeForOnChainTransaction = ({
 				: fees[transactionSpeed];
 
 		const satsPerByte =
-			transactionRes.value.selectedFeeId === 'none'
+			transaction.selectedFeeId === 'none'
 				? preferredFeeRate
-				: transactionRes.value.satsPerByte;
+				: transaction.satsPerByte;
 		const selectedFeeId =
-			transactionRes.value.selectedFeeId === 'none'
+			transaction.selectedFeeId === 'none'
 				? EFeeId[transactionSpeed]
-				: transactionRes.value.selectedFeeId;
+				: transaction.selectedFeeId;
 
 		const res = updateFee({
 			satsPerByte,
@@ -1460,6 +1463,7 @@ export const setupFeeForOnChainTransaction = ({
 		});
 
 		if (res.isErr()) {
+			console.log(res.error.message);
 			return err(res.error.message);
 		}
 

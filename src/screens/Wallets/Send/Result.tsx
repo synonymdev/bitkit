@@ -178,7 +178,7 @@ const Result = ({
 			If unable to properly create a valid transaction for any reason, reset the tx state as done below.
 		*/
 		//If unable to broadcast for any reason, reset the transaction object and try again.
-		await resetOnChainTransaction({ selectedWallet, selectedNetwork });
+		resetOnChainTransaction({ selectedWallet, selectedNetwork });
 		await setupOnChainTransaction({
 			selectedWallet,
 			selectedNetwork,

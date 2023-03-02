@@ -88,6 +88,9 @@ const CoinSelection = ({
 	const transaction = useSelector(transactionSelector);
 	const utxos = useSelector(utxosSelector);
 	const coinSelectPreference = useSelector(coinSelectPreferenceSelector);
+	const [autoSelectionEnabled, setAutoSelectionEnabled] = useState(
+		transaction.inputs.length === utxos.length,
+	);
 
 	const buttonContainerStyles = useMemo(
 		() => ({
@@ -100,10 +103,6 @@ const CoinSelection = ({
 	const preference = useMemo(
 		() => t(`preference_${coinSelectPreference}`),
 		[coinSelectPreference, t],
-	);
-
-	const [autoSelectionEnabled, setAutoSelectionEnabled] = useState(
-		transaction.inputs.length === utxos.length,
 	);
 
 	const txInputValue = useMemo(
@@ -147,6 +146,8 @@ const CoinSelection = ({
 		});
 		setAutoSelectionEnabled(true);
 	};
+
+	const isValid = txInputValue >= txOutputValue;
 
 	return (
 		<GradientView style={styles.container}>
@@ -213,7 +214,7 @@ const CoinSelection = ({
 					<Button
 						size="large"
 						text={t('continue')}
-						disabled={txInputValue < txOutputValue}
+						disabled={!isValid}
 						onPress={(): void => navigation.navigate('ReviewAndSend')}
 					/>
 				</View>
