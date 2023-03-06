@@ -1,5 +1,6 @@
 import React, { memo, ReactElement, useMemo } from 'react';
 import { useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 
 import { EItemType, IListData } from '../../../components/List';
 import SettingsView from '../SettingsView';
@@ -9,30 +10,31 @@ import { bitcoinUnitSelector } from '../../../store/reselect/settings';
 import { EBitcoinUnit } from '../../../store/types/wallet';
 import type { SettingsScreenProps } from '../../../navigation/types';
 
-const bitcoinUnits = [
-	{
-		label: 'Bitcoin',
-		unit: EBitcoinUnit.BTC,
-		labelExample: '(0.0000100)',
-		Icon: UnitBitcoinIcon,
-	},
-	{
-		label: 'Satoshis',
-		unit: EBitcoinUnit.satoshi,
-		labelExample: '(1 000)',
-		Icon: UnitSatoshiIcon,
-	},
-];
-
 const BitcoinUnitSettings = ({
 	navigation,
 }: SettingsScreenProps<'BitcoinUnitSettings'>): ReactElement => {
+	const { t } = useTranslation('settings');
 	const selectedBitcoinUnit = useSelector(bitcoinUnitSelector);
 
-	const currencyListData: IListData[] = useMemo(
-		() => [
+	const currencyListData: IListData[] = useMemo(() => {
+		const bitcoinUnits = [
 			{
-				title: 'Display Bitcoin amounts as',
+				label: t('general.unit_bitcoin'),
+				unit: EBitcoinUnit.BTC,
+				labelExample: '(0.0000100)',
+				Icon: UnitBitcoinIcon,
+			},
+			{
+				label: t('general.unit_sathoshis'),
+				unit: EBitcoinUnit.satoshi,
+				labelExample: '(1 000)',
+				Icon: UnitSatoshiIcon,
+			},
+		];
+
+		return [
+			{
+				title: t('general.unit_display'),
 				data: bitcoinUnits.map((bitcoinUnit) => ({
 					title: `${bitcoinUnit.label} ${bitcoinUnit.labelExample}`,
 					value: bitcoinUnit.unit === selectedBitcoinUnit,
@@ -45,13 +47,12 @@ const BitcoinUnitSettings = ({
 					testID: bitcoinUnit.label,
 				})),
 			},
-		],
-		[selectedBitcoinUnit, navigation],
-	);
+		];
+	}, [selectedBitcoinUnit, navigation, t]);
 
 	return (
 		<SettingsView
-			title="Bitcoin Unit"
+			title={t('general.unit_title')}
 			listData={currencyListData}
 			showBackNavigation={true}
 		/>

@@ -1,6 +1,7 @@
 import React, { ReactElement } from 'react';
 import { Platform, StyleSheet, View } from 'react-native';
 import { getBundleId } from 'react-native-device-info';
+import { useTranslation } from 'react-i18next';
 
 import { View as ThemedView } from '../styles/components';
 import { Text01S, Title } from '../styles/text';
@@ -20,6 +21,7 @@ const appStoreUrl =
 		: `https://play.google.com/store/apps/details?id=${androidPackageName}`;
 
 const AppUpdate = (): ReactElement => {
+	const { t } = useTranslation('other');
 	const onUpdate = async (): Promise<void> => {
 		await openURL(appStoreUrl);
 	};
@@ -27,19 +29,16 @@ const AppUpdate = (): ReactElement => {
 	return (
 		<ThemedView style={styles.root}>
 			<SafeAreaInsets type="top" />
-			<Title style={styles.header}>Critical Update</Title>
+			<Title style={styles.header}>{t('up_title')}</Title>
 			<View style={styles.content}>
-				<Text01S color="gray1">
-					There is a critical update available for Bitkit. You must update to
-					continue using Bitkit.
-				</Text01S>
+				<Text01S color="gray1">{t('up_text')}</Text01S>
 
 				<GlowImage image={imageSrc} />
 
 				<View style={styles.buttonContainer}>
 					<Button
 						style={styles.button}
-						text="Update Bitkit"
+						text={t('up_button')}
 						size="large"
 						onPress={onUpdate}
 					/>

@@ -9,6 +9,7 @@ import { StyleSheet, View, Platform } from 'react-native';
 import { useSelector } from 'react-redux';
 import { FadeIn, FadeOut } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useTranslation } from 'react-i18next';
 
 import {
 	AnimatedView,
@@ -45,6 +46,7 @@ const imageSrc = require('../../../assets/illustrations/coin-stack-4.png');
 const ReceiveDetails = ({
 	navigation,
 }: ReceiveScreenProps<'ReceiveDetails'>): ReactElement => {
+	const { t } = useTranslation('wallet');
 	const insets = useSafeAreaInsets();
 	const { keyboardShown } = useKeyboard();
 	const { isSmallScreen } = useScreenSize();
@@ -91,7 +93,7 @@ const ReceiveDetails = ({
 	return (
 		<GradientView style={styles.container}>
 			<BottomSheetNavigationHeader
-				title="Specify Invoice"
+				title={t('receive_specify')}
 				displayBackButton={false}
 			/>
 			<View style={styles.content}>
@@ -106,13 +108,13 @@ const ReceiveDetails = ({
 					<>
 						<View style={styles.inputContainer}>
 							<Caption13Up style={styles.label} color="gray1">
-								Note
+								{t('note')}
 							</Caption13Up>
 							<View style={styles.inputWrapper}>
 								<BottomSheetTextInput
 									style={styles.input}
 									value={invoice.message}
-									placeholder="Optional note to payer"
+									placeholder={t('receive_note_placeholder')}
 									selectTextOnFocus={true}
 									multiline={true}
 									autoCapitalize="none"
@@ -135,7 +137,7 @@ const ReceiveDetails = ({
 								entering={FadeIn}
 								exiting={FadeOut}>
 								<Caption13Up style={styles.label} color="gray1">
-									Tags
+									{t('tags')}
 								</Caption13Up>
 								<View style={styles.tagsContainer}>
 									{invoice.tags.map((tag) => (
@@ -152,7 +154,7 @@ const ReceiveDetails = ({
 								<View style={styles.tagsContainer}>
 									<Button
 										color="white04"
-										text="Add Tag"
+										text={t('tags_add')}
 										icon={<TagIcon color="brand" width={16} />}
 										onPress={(): void => {
 											navigation.navigate('Tags');
@@ -173,7 +175,7 @@ const ReceiveDetails = ({
 						<View style={buttonContainerStyles}>
 							<Button
 								size="large"
-								text="Show QR Code"
+								text={t('receive_show_qr')}
 								onPress={onNavigateBack}
 							/>
 						</View>
@@ -208,7 +210,7 @@ const ReceiveDetails = ({
 						<View style={buttonContainerStyles}>
 							<Button
 								size="large"
-								text="Continue"
+								text={t('continue')}
 								onPress={(): void => setShowNumberPad(false)}
 							/>
 						</View>

@@ -1,5 +1,6 @@
 import React, { ReactElement, useCallback, useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
+import { useTranslation } from 'react-i18next';
 
 import { Display, Text01S } from '../../styles/text';
 import { IColors } from '../../styles/colors';
@@ -27,6 +28,7 @@ const RestoringScreen = (): ReactElement => {
 	const [tryAgainCount, setTryAgainCount] = useState(0);
 	const [showCautionDialog, setShowCautionDialog] = useState(false);
 	const slashtag = useSelectedSlashtag();
+	const { t } = useTranslation('onboarding');
 
 	const onRemoteRestore = useCallback(async (): Promise<void> => {
 		attemptedAutoRestore = true;
@@ -48,7 +50,7 @@ const RestoringScreen = (): ReactElement => {
 		const res = await startWalletServices({ restore: false });
 		if (res.isErr()) {
 			showErrorNotification({
-				title: 'Error: Unable to proceed without a backup',
+				title: t('restore_error_no_backup'),
 				message: res.error.message,
 			});
 			return;
@@ -56,7 +58,7 @@ const RestoringScreen = (): ReactElement => {
 		setProceedWBIsLoading(false);
 		// This will navigate the user to the main wallet view once startWalletServices has run successfully.
 		updateUser({ requiresRemoteRestore: false });
-	}, []);
+	}, [t]);
 
 	useEffect(() => {
 		if (attemptedAutoRestore) {
@@ -71,12 +73,14 @@ const RestoringScreen = (): ReactElement => {
 
 	if (showRestored || showFailed) {
 		color = showRestored ? 'green' : 'red';
-		const title = showRestored ? 'Wallet Restored.' : 'Failed to restore.';
-		const subtitle = showRestored
-			? 'You have successfully restored your wallet from backup. Enjoy Bitkit!'
-			: 'Failed to recover backed up data.';
+		const title = t(
+			showRestored ? 'restore_success_header' : 'restore_failed_header',
+		);
+		const subtitle = t(
+			showRestored ? 'restore_success_text' : 'restore_failed_text',
+		);
 		const imageSrc = showRestored ? checkImageSrc : crossImageSrc;
-		const buttonText = showRestored ? 'Get Started' : 'Try Again';
+		const buttonText = t(showRestored ? 'get_started' : 'try_again');
 
 		const onPress = (): void => {
 			if (showRestored) {
@@ -105,16 +109,16 @@ const RestoringScreen = (): ReactElement => {
 								setShowCautionDialog(true);
 							}}
 							size="large"
-							text="Proceed Without Backup"
+							text={t('restore_no_backup_button')}
 						/>
 					)}
 				</View>
 
 				<Dialog
 					visible={showCautionDialog}
-					title="Are You Sure?"
-					description="If you previously had a lightning backup it will be overwritten and lost. This could result in a loss of funds."
-					confirmText="Yes, Proceed"
+					title={t('are_you_sure')}
+					description={t('restore_no_backup_warn')}
+					confirmText={t('yes_proceed')}
 					onCancel={(): void => {
 						setShowCautionDialog(false);
 					}}

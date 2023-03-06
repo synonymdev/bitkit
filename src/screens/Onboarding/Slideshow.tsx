@@ -23,6 +23,7 @@ import {
 	useAnimatedStyle,
 	useSharedValue,
 } from 'react-native-reanimated';
+import { Trans, useTranslation } from 'react-i18next';
 
 import { AnimatedView, TouchableOpacity } from '../../styles/components';
 import { Caption13M, Display, Text01M, Text01S } from '../../styles/text';
@@ -60,6 +61,7 @@ const Slideshow = ({
 	const ref = useRef<ICarouselInstance | null>(null);
 	const [isCreatingWallet, setIsCreatingWallet] = useState(false);
 	const insets = useSafeAreaInsets();
+	const { t } = useTranslation('onboarding');
 
 	// because we can't properly scala image inside the <Swiper let's calculate with by hand
 	const dimensions = useWindowDimensions();
@@ -79,13 +81,13 @@ const Slideshow = ({
 		if (res.isErr()) {
 			setIsCreatingWallet(false);
 			showErrorNotification({
-				title: 'Wallet creation failed',
+				title: t('error_create'),
 				message: res.error.message,
 			});
 		}
 
 		updateUser({ requiresRemoteRestore: false });
-	}, [bip39Passphrase]);
+	}, [bip39Passphrase, t]);
 
 	const slides = useMemo(
 		(): Slide[] => [
@@ -97,11 +99,16 @@ const Slideshow = ({
 							<Image style={illustrationStyles} source={shieldImageSrc} />
 						</View>
 						<View style={styles.textContent}>
-							<Display>Bitcoin,</Display>
-							<Display color="brand">Everywhere.</Display>
+							<Trans
+								t={t}
+								i18nKey="slide1_header"
+								parent={Display}
+								components={{
+									brand: <Display color="brand" />,
+								}}
+							/>
 							<Text01S color="gray1" style={styles.text}>
-								Pay anyone, anywhere, any time, and spend your Bitcoin on the
-								things you value in life.
+								{t('slide1_text')}
 							</Text01S>
 						</View>
 						<SafeAreaInsets type="bottom" />
@@ -116,11 +123,16 @@ const Slideshow = ({
 							<Image style={illustrationStyles} source={lightningImageSrc} />
 						</View>
 						<View style={styles.textContent}>
-							<Display>Lightning</Display>
-							<Display color="purple">Fast.</Display>
+							<Trans
+								t={t}
+								i18nKey="slide2_header"
+								parent={Display}
+								components={{
+									purple: <Display color="purple" />,
+								}}
+							/>
 							<Text01S color="gray1" style={styles.text}>
-								Send Bitcoin faster than ever. Enjoy instant transactions with
-								friends, family, and merchants.
+								{t('slide2_text')}
 							</Text01S>
 						</View>
 						<SafeAreaInsets type="bottom" />
@@ -135,11 +147,16 @@ const Slideshow = ({
 							<Image style={illustrationStyles} source={sparkImageSrc} />
 						</View>
 						<View style={styles.textContent}>
-							<Display>Limitless</Display>
-							<Display color="blue">Web.</Display>
+							<Trans
+								t={t}
+								i18nKey="slide3_header"
+								parent={Display}
+								components={{
+									blue: <Display color="blue" />,
+								}}
+							/>
 							<Text01S color="gray1" style={styles.text}>
-								Hold the keys to portable profiles, dynamic contacts,
-								distributed feeds, and passwordless accounts.
+								{t('slide3_text')}
 							</Text01S>
 						</View>
 						<SafeAreaInsets type="bottom" />
@@ -154,13 +171,23 @@ const Slideshow = ({
 							<Image style={illustrationStyles} source={walletImageSrc} />
 						</View>
 						<View style={styles.textContent}>
-							<Display>
-								Let’s create
-								<Display color="brand"> your Wallet.</Display>
-							</Display>
+							<Trans
+								t={t}
+								i18nKey="slide4_header"
+								parent={Display}
+								components={{
+									brand: <Display color="brand" />,
+								}}
+							/>
+
 							<Text01S color="gray1" style={styles.text}>
-								Please note: Bitkit is <Text01S color="brand">beta </Text01S>
-								software.
+								<Trans
+									t={t}
+									i18nKey="slide4_text"
+									components={{
+										brand: <Text01S color="brand" />,
+									}}
+								/>
 							</Text01S>
 
 							<View style={styles.buttonsContainer}>
@@ -168,7 +195,7 @@ const Slideshow = ({
 									size="large"
 									style={[styles.button, styles.restoreButton]}
 									onPress={onNewWallet}
-									text="New Wallet"
+									text={t('new_wallet')}
 									testID="NewWallet"
 								/>
 
@@ -178,7 +205,7 @@ const Slideshow = ({
 									style={[styles.button, styles.newButton]}
 									// eslint-disable-next-line react/prop-types
 									onPress={(): void => navigation.navigate('RestoreFromSeed')}
-									text="Restore"
+									text={t('restore')}
 								/>
 							</View>
 						</View>
@@ -187,7 +214,7 @@ const Slideshow = ({
 				),
 			},
 		],
-		[illustrationStyles, navigation, onNewWallet],
+		[illustrationStyles, navigation, onNewWallet, t],
 	);
 
 	const [index, setIndex] = useState(skipIntro ? slides.length - 1 : 0);
@@ -279,7 +306,7 @@ const Slideshow = ({
 									}
 									navigation.navigate('Passphrase');
 								}}>
-								<Caption13M color="gray1">Advanced Setup</Caption13M>
+								<Caption13M color="gray1">{t('advanced_setup')}</Caption13M>
 							</TouchableOpacity>
 						</AnimatedView>
 						<AnimatedView
@@ -301,7 +328,7 @@ const Slideshow = ({
 						style={[styles.headerButtonContainer, skipOpacity]}>
 						<Pressable style={styles.skipButton} onPress={onSkip}>
 							<SafeAreaInsets type="top" />
-							<Text01M color="gray1">Skip</Text01M>
+							<Text01M color="gray1">{t('skip')}</Text01M>
 						</Pressable>
 					</AnimatedView>
 				</>

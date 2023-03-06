@@ -12,23 +12,37 @@ jobs:
   e2e:
     runs-on: macos-12
 
+    strategy:
+      fail-fast: false
+      matrix:
+        attempt: [1, 2]
+
     steps:
+      - name: Echo attempt
+        run: echo ${{ matrix.attempt }}
+
       - name: Checkout
         uses: actions/checkout@v3
         with:
           fetch-depth: 1
 
-      - name: Setup Docker on macOS
-        uses: docker-practice/actions-setup-docker@master
+      - name: Setup Docker on macOS attempt 1
+        id: docker1
+        continue-on-error: true
+        uses: docker-practice/actions-setup-docker@1.0.11
+        timeout-minutes: 30
+
+      - name: Setup Docker on macOS attempt 2
+        if: steps.docker1.outcome != 'success'
+        uses: docker-practice/actions-setup-docker@1.0.11
+        timeout-minutes: 30
 
       - name: Run regtest setup
-        run: |
-          cd __tests__ && docker-compose up -d
+        run: cd __tests__ && docker-compose up -d
 
       - name: Wait for bitcoind
         timeout-minutes: 2
-        run: |
-          while ! nc -z '127.0.0.1' 43782; do sleep 1; done
+        run: while ! nc -z '127.0.0.1' 43782; do sleep 1; done
 
       - name: Wait for electrum server
         timeout-minutes: 2

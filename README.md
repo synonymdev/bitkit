@@ -8,9 +8,14 @@
 
 ---
 
-**⚠️ Bitkit is still in beta. Please use at your own risk.**
+**⚠️ Beta software may put your money at risk.**
+
+**⚠️ We recommend using only small amounts.**
+
+**⚠️ Don’t use the same seed on multiple devices.**
 
 [⬇ Android - Download latest APK](https://github.com/synonymdev/bitkit/releases)
+
 [⬇ iPhone - Download latest TestFlight app](https://testflight.apple.com/join/lGXhnwcC)
 
 ---

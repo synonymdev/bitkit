@@ -1,5 +1,6 @@
 import React, { memo, ReactElement, useMemo } from 'react';
 import { useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 
 import { EItemType, IListData } from '../../../components/List';
 import SettingsView from '../SettingsView';
@@ -26,6 +27,7 @@ import { resetLdk } from '../../../utils/lightning';
 const BitcoinNetworkSelection = ({
 	navigation,
 }: SettingsScreenProps<'BitcoinNetworkSelection'>): ReactElement => {
+	const { t } = useTranslation('settings');
 	const selectedNetwork = useSelector(selectedNetworkSelector);
 	const settingsListData: IListData[] = useMemo(
 		() => [
@@ -75,7 +77,7 @@ const BitcoinNetworkSelection = ({
 
 	return (
 		<SettingsView
-			title="Bitcoin Network"
+			title={t('adv.bitcoin_network')}
 			listData={settingsListData}
 			showBackNavigation={true}
 		/>

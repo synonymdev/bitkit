@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, Keyboard } from 'react-native';
 import { useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 
 import {
 	View as ThemedView,
@@ -37,6 +38,7 @@ export const Contacts = (
 const ContactsScreen = ({
 	navigation,
 }: RootStackScreenProps<'Contacts'>): JSX.Element => {
+	const { t } = useTranslation('slashtags');
 	const [searchFilter, setSearchFilter] = useState('');
 	const { url: myProfileURL } = useSelectedSlashtag();
 
@@ -44,7 +46,7 @@ const ContactsScreen = ({
 		<ThemedView style={styles.container}>
 			<SafeAreaInsets type="top" />
 			<NavigationHeader
-				title="Contacts"
+				title={t('contacts')}
 				onClosePress={(): void => {
 					navigation.navigate('Wallet');
 				}}

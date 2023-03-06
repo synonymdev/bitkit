@@ -1,6 +1,7 @@
 import React, { ReactElement, useMemo, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useSelector } from 'react-redux';
+import { Trans, useTranslation } from 'react-i18next';
 
 import { Caption13Up, Display, Text01S } from '../../styles/text';
 import { LightningIcon } from '../../styles/icons';
@@ -29,6 +30,7 @@ const Confirm = ({
 	navigation,
 	route,
 }: TransferScreenProps<'Confirm'>): ReactElement => {
+	const { t } = useTranslation('lightning');
 	const { total, spendingAmount, orderId } = route.params;
 	const [loading, setLoading] = useState(false);
 	const lightningBalance = useLightningBalance();
@@ -79,35 +81,34 @@ const Confirm = ({
 		}
 	};
 
-	const text = isTransferringToSavings ? (
-		<Text01S color="gray1" style={styles.text}>
-			There is a small cost to transfer your full spending balance back to your
-			savings. The exact fee depends on network conditions.
-		</Text01S>
-	) : (
-		<Text01S color="gray1" style={styles.text}>
-			It costs{' '}
-			<Text01S>
-				{blocktankPurchaseFee.fiatSymbol}
-				{channelOpenCost}
-			</Text01S>{' '}
-			to transfer the additional funds to your spending balance.
-		</Text01S>
-	);
-
 	return (
 		<GlowingBackground topLeft="purple">
 			<SafeAreaInsets type="top" />
 			<NavigationHeader
-				title="Transfer Funds"
+				title={t('transfer_funds')}
 				onClosePress={(): void => {
 					navigation.navigate('Wallet');
 				}}
 			/>
 			<View style={styles.root}>
 				<View>
-					<Display color="purple">Please {'\n'}Confirm.</Display>
-					{text}
+					<Display color="purple">{t('transfer_header')}</Display>
+					<Text01S color="gray1" style={styles.text}>
+						{isTransferringToSavings ? (
+							t('transfer_close')
+						) : (
+							<Trans
+								t={t}
+								i18nKey="transfer_open"
+								components={{
+									white: <Text01S color="white" />,
+								}}
+								values={{
+									amount: `${blocktankPurchaseFee.fiatSymbol}${channelOpenCost}`,
+								}}
+							/>
+						)}
+					</Text01S>
 				</View>
 
 				<View style={styles.chartContainer}>
@@ -127,13 +128,13 @@ const Confirm = ({
 
 				<View>
 					<View style={styles.amountBig}>
-						<Caption13Up color="purple">Spending balance</Caption13Up>
+						<Caption13Up color="purple">{t('spending_label')}</Caption13Up>
 						<AmountToggle sats={spendingAmount} unit="fiat" />
 					</View>
 
 					<View style={styles.buttonContainer}>
 						<SwipeToConfirm
-							text="Swipe To Transfer"
+							text={t('transfer_swipe')}
 							color="purple"
 							icon={<LightningIcon width={30} height={30} color="black" />}
 							loading={loading}

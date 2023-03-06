@@ -6,6 +6,8 @@ import {
 	View,
 	ViewStyle,
 } from 'react-native';
+import { useTranslation } from 'react-i18next';
+
 import { TextInput } from '../styles/components';
 import { MagnifyingGlassIcon } from '../styles/icons';
 
@@ -18,11 +20,13 @@ const SearchInput = ({
 	children,
 	...props
 }: SearchInputProps): ReactElement => {
+	const { t } = useTranslation('search');
+
 	return (
 		<View style={[styles.root, style]}>
 			<MagnifyingGlassIcon style={styles.icon} />
 			{/* @ts-ignore react-native and styled-components types clashing */}
-			<TextInput style={styles.input} placeholder="Search" {...props} />
+			<TextInput style={styles.input} placeholder={t('search')} {...props} />
 			{children && <View style={styles.tags}>{children}</View>}
 		</View>
 	);

@@ -1,5 +1,6 @@
 import React, { ReactElement, memo } from 'react';
 import { StyleSheet, View } from 'react-native';
+import { useTranslation } from 'react-i18next';
 
 import { Display, Text01S } from '../../styles/text';
 import SafeAreaInsets from '../../components/SafeAreaInsets';
@@ -14,25 +15,26 @@ const imageSrc = require('../../assets/illustrations/switch.png');
 const Result = ({
 	navigation,
 }: LightningScreenProps<'Result'>): ReactElement => {
+	const { t } = useTranslation('lightning');
+
 	return (
 		<GlowingBackground topLeft="purple">
 			<SafeAreaInsets type="top" />
 			<NavigationHeader
-				title="Add Instant Payments"
+				title={t('add_instant_payments')}
 				displayBackButton={false}
 			/>
 			<View style={styles.root}>
-				<Display color="purple">You’re{'\n'}Connected!</Display>
+				<Display color="purple">{t('result_header')}</Display>
 				<Text01S color="gray1" style={styles.text}>
-					Connection initiated. You will be able to use instant payments in ±10
-					minutes.
+					{t('result_text')}
 				</Text01S>
 
 				<GlowImage image={imageSrc} glowColor="purple" />
 
 				<View>
 					<Button
-						text="Awesome!"
+						text={t('awesome')}
 						size="large"
 						onPress={(): void => {
 							navigation.popToTop();

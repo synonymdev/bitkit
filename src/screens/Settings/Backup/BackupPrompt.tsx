@@ -3,6 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import { useSelector } from 'react-redux';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { DISABLE_PERIODIC_REMINDERS } from '@env';
+import { useTranslation } from 'react-i18next';
 
 import { Text01S } from '../../../styles/text';
 import BottomSheetWrapper from '../../../components/BottomSheetWrapper';
@@ -41,6 +42,7 @@ const handleBackup = (): void => {
 };
 
 const BackupPrompt = ({ enabled }: { enabled: boolean }): ReactElement => {
+	const { t } = useTranslation('security');
 	const snapPoints = useSnapPoints('medium');
 	const insets = useSafeAreaInsets();
 	const { satoshis: balance } = useBalance({ onchain: true, lightning: true });
@@ -98,11 +100,8 @@ const BackupPrompt = ({ enabled }: { enabled: boolean }): ReactElement => {
 	}, [shouldShowBottomSheet]);
 
 	const text = useMemo(
-		() =>
-			balance > 0
-				? 'Now that you have some funds in your wallet, it is time to back up your money!'
-				: 'There are no funds in your wallet yet, but you can create a backup if you wish.',
-		[balance],
+		() => t(balance > 0 ? 'backup_funds' : 'backup_funds_no'),
+		[balance, t],
 	);
 
 	return (
@@ -113,7 +112,7 @@ const BackupPrompt = ({ enabled }: { enabled: boolean }): ReactElement => {
 			onClose={ignoreBackup}>
 			<View style={styles.container}>
 				<BottomSheetNavigationHeader
-					title="Wallet Backup"
+					title={t('backup_wallet')}
 					displayBackButton={false}
 				/>
 				<Text01S color="white5">{text}</Text01S>
@@ -123,14 +122,14 @@ const BackupPrompt = ({ enabled }: { enabled: boolean }): ReactElement => {
 						style={styles.button}
 						size="large"
 						variant="secondary"
-						text="Later"
+						text={t('later')}
 						onPress={handleLater}
 					/>
 					<View style={styles.divider} />
 					<Button
 						style={styles.button}
 						size="large"
-						text="Back Up"
+						text={t('backup_button')}
 						onPress={handleBackup}
 					/>
 				</View>

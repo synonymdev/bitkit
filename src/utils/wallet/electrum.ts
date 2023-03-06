@@ -282,7 +282,7 @@ export const subscribeToAddresses = async ({
 					scriptHash: addressScriptHash,
 					network: selectedNetwork,
 					onReceive: (): void => {
-						refreshWallet({});
+						refreshWallet();
 						onReceive?.();
 					},
 				});
@@ -703,7 +703,7 @@ export const connectToElectrum = async ({
 	retryAttempts?: number;
 	customPeers?: TCustomElectrumPeerOptionalProtocol[];
 	options?: { net?: any; tls?: any };
-}): Promise<Result<string>> => {
+} = {}): Promise<Result<string>> => {
 	if (!selectedNetwork) {
 		selectedNetwork = getSelectedNetwork();
 	}

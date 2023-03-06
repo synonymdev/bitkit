@@ -3,7 +3,7 @@ import { TAvailableNetworks } from './networks';
 import { getActivityStore, getWalletStore } from '../store/helpers';
 import { IActivityItem, TOnchainActivityItem } from '../store/types/activity';
 import {
-	EBoost,
+	EBoostType,
 	IBoostedTransactions,
 	TWalletName,
 } from '../store/types/wallet';
@@ -253,7 +253,7 @@ export const formatBoostedActivityItems = ({
 		const parentBoostType = boostedTransactions[rootParent.txId].type;
 
 		// if not a CPFP tx leave as is
-		if (parentBoostType === EBoost.rbf) {
+		if (parentBoostType === EBoostType.rbf) {
 			formattedItems.push(item);
 			return;
 		}

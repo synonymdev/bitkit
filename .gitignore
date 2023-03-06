@@ -82,3 +82,6 @@ android/app/pepk.jar
 # tests
 coverage/
 __tests__/bitcoin_datadir/
+
+#Build
+android/app/release/

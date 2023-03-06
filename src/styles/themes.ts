@@ -1,5 +1,6 @@
-import { ThemedStyledInterface } from 'styled-components';
 import baseStyled from 'styled-components/native';
+import { Platform } from 'react-native';
+import { sanFranciscoWeights } from 'react-native-typography';
 
 import colors, { IColors } from './colors';
 import { TTheme } from '../store/types/settings';
@@ -23,9 +24,24 @@ export interface IThemeColors extends IDefaultColors {
 	tabBackground: string;
 }
 
+interface IFont {
+	fontFamily?: string;
+	fontWeight?: string;
+}
+
+interface IFonts {
+	regular: IFont | undefined;
+	medium: IFont | undefined;
+	semibold: IFont | undefined;
+	bold: IFont | undefined;
+	header: IFont | undefined;
+	headerMoney: IFont | undefined;
+}
+
 export interface ITheme {
 	id: TTheme;
 	colors: IThemeColors;
+	fonts: IFonts;
 }
 
 interface IDefaultThemeValues {
@@ -40,6 +56,15 @@ const defaultThemeValues: IDefaultThemeValues = {
 		error: '#D87682',
 		transparent: 'transparent',
 	},
+};
+
+const defaultFontsValues: IFonts = {
+	regular: {},
+	medium: {},
+	semibold: {},
+	bold: {},
+	header: {},
+	headerMoney: {},
 };
 
 const light: ITheme = {
@@ -57,6 +82,7 @@ const light: ITheme = {
 		refreshControl: '#121212',
 		tabBackground: '#f2f2f2',
 	},
+	fonts: defaultFontsValues,
 };
 
 const dark: ITheme = {
@@ -74,7 +100,64 @@ const dark: ITheme = {
 		refreshControl: '#FFFFFF',
 		tabBackground: '#101010',
 	},
+	fonts: defaultFontsValues,
+};
+
+const USE_NHAAS_LANGUAGES = ['en'];
+
+export const getTheme = (lang, theme): ITheme => {
+	const headerFont = USE_NHAAS_LANGUAGES.includes(lang)
+		? 'NHaasGroteskDSW02-65Md'
+		: 'Roboto-Bold';
+
+	return {
+		...(theme === 'dark' ? dark : light),
+		fonts: {
+			regular: Platform.select({
+				ios: {
+					fontFamily: sanFranciscoWeights.regular.fontFamily,
+					fontWeight: sanFranciscoWeights.regular.fontWeight,
+				},
+				android: {
+					fontFamily: 'Roboto-Regular',
+				},
+			}),
+			medium: Platform.select({
+				ios: {
+					fontFamily: sanFranciscoWeights.medium.fontFamily,
+					fontWeight: sanFranciscoWeights.medium.fontWeight,
+				},
+				android: {
+					fontFamily: 'Roboto-Medium',
+				},
+			}),
+			semibold: Platform.select({
+				ios: {
+					fontFamily: sanFranciscoWeights.semibold.fontFamily,
+					fontWeight: sanFranciscoWeights.semibold.fontWeight,
+				},
+				android: {
+					fontFamily: 'Roboto-Medium',
+				},
+			}),
+			bold: Platform.select({
+				ios: {
+					fontFamily: sanFranciscoWeights.bold.fontFamily,
+					fontWeight: sanFranciscoWeights.bold.fontWeight,
+				},
+				android: {
+					fontFamily: 'Roboto-Bold',
+				},
+			}),
+			header: {
+				fontFamily: headerFont,
+			},
+			headerMoney: {
+				fontFamily: 'NHaasGroteskDSW02-65Md',
+			},
+		},
+	};
 };
 
 export default { light, dark };
-export const styled = baseStyled as unknown as ThemedStyledInterface<ITheme>;
+export const styled = baseStyled;

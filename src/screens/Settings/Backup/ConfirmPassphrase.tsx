@@ -1,6 +1,7 @@
 import React, { memo, ReactElement, useMemo, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useTranslation } from 'react-i18next';
 
 import { BottomSheetTextInput } from '../../../styles/components';
 import { Text01S } from '../../../styles/text';
@@ -14,6 +15,7 @@ const ConfirmPassphrase = ({
 	navigation,
 	route,
 }: BackupScreenProps<'ConfirmPassphrase'>): ReactElement => {
+	const { t } = useTranslation('security');
 	const { bip39Passphrase: origPass } = route.params;
 	const [bip39Passphrase, setPassphrase] = useState<string>('');
 
@@ -30,17 +32,14 @@ const ConfirmPassphrase = ({
 
 	return (
 		<GradientView style={styles.gradient}>
-			<BottomSheetNavigationHeader title="Confirm Passphrase" />
+			<BottomSheetNavigationHeader title={t('pass_confirm')} />
 			<View style={styles.container}>
-				<Text01S color="gray1">
-					Enter the passphrase you added while setting up and creating your
-					wallet.
-				</Text01S>
+				<Text01S color="gray1">{t('pass_confirm_text')}</Text01S>
 
 				<View style={styles.input}>
 					<BottomSheetTextInput
 						value={bip39Passphrase}
-						placeholder="Passphrase"
+						placeholder={t('pass')}
 						returnKeyType="done"
 						onChangeText={setPassphrase}
 						autoCapitalize="none"
@@ -54,7 +53,7 @@ const ConfirmPassphrase = ({
 					<Button
 						disabled={bip39Passphrase !== origPass}
 						size="large"
-						text="Continue"
+						text={t('continue')}
 						onPress={(): void => navigation.navigate('Result')}
 					/>
 				</View>

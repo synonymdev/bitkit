@@ -15,9 +15,11 @@ const Word = (props: IButton): ReactElement => {
  * Show keyboad accessory with seed suggestions
  */
 const SeedInputAccessory = ({
+	label,
 	word,
 	setWord,
 }: {
+	label: string;
 	word: string;
 	setWord: (word: string) => void;
 }): ReactElement => {
@@ -32,7 +34,7 @@ const SeedInputAccessory = ({
 
 	const content = (
 		<View style={styles.suggestions}>
-			<Text13UP color="gray1">SUGGESTIONS</Text13UP>
+			<Text13UP color="gray1">{label}</Text13UP>
 			<View style={styles.suggestionsRow}>
 				{suggestions.map((s) => (
 					<Word text={s} key={s} onPress={(): void => setWord(s)} />

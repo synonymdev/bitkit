@@ -1,6 +1,7 @@
 import React, { memo, ReactElement, useState } from 'react';
 import { StyleSheet, View, Keyboard } from 'react-native';
 import { useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 
 import { BottomSheetTextInput } from '../../styles/components';
 import { Subtitle, Text13UP } from '../../styles/text';
@@ -20,6 +21,7 @@ import {
 } from '../../hooks/bottomSheet';
 
 const Form = ({ id }: { id: string }): ReactElement => {
+	const { t } = useTranslation('wallet');
 	const [text, setText] = useState('');
 	const lastUsedTags = useSelector(lastUsedTagsSelector);
 
@@ -27,7 +29,7 @@ const Form = ({ id }: { id: string }): ReactElement => {
 		const res = addMetaTxTag(id, tag);
 		if (res.isErr()) {
 			showErrorNotification({
-				title: 'Error Adding Tag',
+				title: t('tags_add_error_header'),
 				message: res.error.message,
 			});
 			return;
@@ -45,7 +47,7 @@ const Form = ({ id }: { id: string }): ReactElement => {
 		const res = addMetaTxTag(id, text);
 		if (res.isErr()) {
 			showErrorNotification({
-				title: 'Error Adding Tag',
+				title: t('tags_add_error_header'),
 				message: res.error.message,
 			});
 			return;
@@ -60,7 +62,7 @@ const Form = ({ id }: { id: string }): ReactElement => {
 			{lastUsedTags.length !== 0 && (
 				<>
 					<Text13UP color="gray1" style={styles.label}>
-						PREVIOUSLY USED TAGS
+						{t('tags_previously')}
 					</Text13UP>
 					<View style={styles.tagsContainer}>
 						{lastUsedTags.map((tag) => (
@@ -81,10 +83,10 @@ const Form = ({ id }: { id: string }): ReactElement => {
 			)}
 
 			<Text13UP color="gray1" style={styles.label}>
-				NEW TAG
+				{t('tags_new')}
 			</Text13UP>
 			<BottomSheetTextInput
-				placeholder="Enter a new tag"
+				placeholder={t('tags_new_enter')}
 				backgroundColor="white08"
 				minHeight={52}
 				blurOnSubmit={true}
@@ -100,6 +102,7 @@ const Form = ({ id }: { id: string }): ReactElement => {
 };
 
 const ActivityTagsPrompt = (): ReactElement => {
+	const { t } = useTranslation('wallet');
 	const snapPoints = useSnapPoints('small');
 	const { isOpen, id } = useAppSelector((state) => {
 		return viewControllerSelector(state, 'activityTagsPrompt');
@@ -118,7 +121,7 @@ const ActivityTagsPrompt = (): ReactElement => {
 			backdrop={true}
 			onClose={handleClose}>
 			<View style={styles.root}>
-				<Subtitle style={styles.title}>Add Tag</Subtitle>
+				<Subtitle style={styles.title}>{t('tags_add')}</Subtitle>
 
 				{isOpen && id && <Form id={id} />}
 

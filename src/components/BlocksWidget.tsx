@@ -1,5 +1,6 @@
 import React, { memo, ReactElement } from 'react';
 import { View, StyleSheet } from 'react-native';
+import { useTranslation } from 'react-i18next';
 
 import { Text01M, Caption13M } from '../styles/text';
 import { CubeIcon } from '../styles/icons';
@@ -20,12 +21,13 @@ const BlocksWidget = ({
 	onLongPress?: () => void;
 	onPressIn?: () => void;
 }): ReactElement => {
+	const { t } = useTranslation('slashtags');
 	const { value } = useFeedWidget({ url, feed: widget.feed });
 
 	return (
 		<BaseFeedWidget
 			url={url}
-			name="Bitcoin Blocks"
+			name={t('widget_blocks')}
 			label={value?.height || ''}
 			icon={<CubeIcon width={32} height={32} />}
 			isEditing={isEditing}

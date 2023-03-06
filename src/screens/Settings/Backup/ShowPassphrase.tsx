@@ -2,6 +2,7 @@ import React, { memo, ReactElement, useMemo } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { BottomSheetScrollView } from '@gorhom/bottom-sheet';
+import { Trans, useTranslation } from 'react-i18next';
 
 import { View as ThemedView } from '../../../styles/components';
 import { Text01S, Text01M, Text02S } from '../../../styles/text';
@@ -15,6 +16,7 @@ const ShowPassphrase = ({
 	navigation,
 	route,
 }: BackupScreenProps<'ShowPassphrase'>): ReactElement => {
+	const { t } = useTranslation('security');
 	const { bip39Passphrase, seed } = route.params;
 	const insets = useSafeAreaInsets();
 	const nextButtonContainer = useMemo(
@@ -29,30 +31,33 @@ const ShowPassphrase = ({
 
 	return (
 		<GradientView style={styles.gradient}>
-			<BottomSheetNavigationHeader title="Your Passphrase" />
+			<BottomSheetNavigationHeader title={t('pass_your')} />
 			<View style={styles.container}>
-				<Text01S color="gray1">
-					You added a passphrase to your recovery phrase during wallet setup.
-				</Text01S>
+				<Text01S color="gray1">{t('pass_text')}</Text01S>
 
 				<ThemedView color="gray324" style={styles.passphrase}>
 					<BottomSheetScrollView>
 						<Text01M color="white5" style={styles.p}>
-							passphrase
+							{t('pass')}
 						</Text01M>
 						<Text01M>{bip39Passphrase}</Text01M>
 					</BottomSheetScrollView>
 				</ThemedView>
 
 				<Text02S color="gray1">
-					<Text02S color="brand">Never share</Text02S> your passphrase with
-					anyone as this may result in the loss of funds.
+					<Trans
+						t={t}
+						i18nKey="pass_never_share"
+						components={{
+							brand: <Text02S color="brand" />,
+						}}
+					/>
 				</Text02S>
 
 				<View style={nextButtonContainer}>
 					<Button
 						size="large"
-						text="Continue"
+						text={t('continue')}
 						onPress={(): void =>
 							navigation.navigate('ConfirmMnemonic', { seed, bip39Passphrase })
 						}

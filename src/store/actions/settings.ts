@@ -47,7 +47,7 @@ export const wipeApp = async ({
 	selectedWallet?: TWalletName;
 	showNotification?: boolean;
 	restartApp?: boolean;
-}): Promise<Result<string>> => {
+} = {}): Promise<Result<string>> => {
 	try {
 		if (!selectedWallet) {
 			selectedWallet = getSelectedWallet();

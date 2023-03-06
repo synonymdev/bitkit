@@ -9,6 +9,7 @@ import { StyleSheet, View } from 'react-native';
 import { useSelector } from 'react-redux';
 import { useFocusEffect } from '@react-navigation/native';
 import { FadeIn, FadeOut } from 'react-native-reanimated';
+import { useTranslation } from 'react-i18next';
 
 import { AnimatedView } from '../../styles/components';
 import { Caption13Up, Display, Text01S } from '../../styles/text';
@@ -42,6 +43,7 @@ import { EBitcoinUnit } from '../../store/types/wallet';
 const QuickSetup = ({
 	navigation,
 }: LightningScreenProps<'QuickSetup'>): ReactElement => {
+	const { t } = useTranslation('lightning');
 	const [keybrd, setKeybrd] = useState(false);
 	const [loading, setLoading] = useState(false);
 	const [totalBalance, setTotalBalance] = useState(0);
@@ -120,7 +122,7 @@ const QuickSetup = ({
 
 		if (purchaseResponse.isErr()) {
 			showErrorNotification({
-				title: 'Channel Purchase Error',
+				title: t('error_channel_purchase'),
 				message: purchaseResponse.error.message,
 			});
 			setLoading(false);
@@ -139,34 +141,26 @@ const QuickSetup = ({
 		selectedWallet,
 		spendingAmount,
 		totalBalance,
+		t,
 	]);
 
 	return (
 		<GlowingBackground topLeft="purple">
 			<SafeAreaInsets type="top" />
 			<NavigationHeader
-				title="Add Instant Payments"
+				title={t('add_instant_payments')}
 				onClosePress={(): void => {
 					navigation.navigate('Wallet');
 				}}
 			/>
 			<View style={styles.root}>
 				<View>
-					{keybrd ? (
-						<Display color="purple">Spending{'\n'}Money.</Display>
-					) : (
-						<Display color="purple">Spending{'\n'}Balance.</Display>
-					)}
-					{keybrd ? (
-						<Text01S color="gray1" style={styles.text}>
-							Enter the amount of money you want to be able to spend instantly.
-						</Text01S>
-					) : (
-						<Text01S color="gray1" style={styles.text}>
-							Choose how much bitcoin you want to be able to spend instantly and
-							how much you want to keep in savings.
-						</Text01S>
-					)}
+					<Display color="purple">
+						{t(keybrd ? 'spending_money' : 'spending_balance')}
+					</Display>
+					<Text01S color="gray1" style={styles.text}>
+						{t(keybrd ? 'enter_money' : 'enter_amount')}
+					</Text01S>
 				</View>
 
 				{!keybrd && (
@@ -177,8 +171,8 @@ const QuickSetup = ({
 							entering={FadeIn}
 							exiting={FadeOut}>
 							<View style={styles.row}>
-								<Caption13Up color="purple">SPENDING</Caption13Up>
-								<Caption13Up color="orange">SAVINGS</Caption13Up>
+								<Caption13Up color="purple">{t('spending')}</Caption13Up>
+								<Caption13Up color="orange">{t('savings')}</Caption13Up>
 							</View>
 							<View style={styles.sliderContainer}>
 								<FancySlider
@@ -202,7 +196,7 @@ const QuickSetup = ({
 						<View>
 							{!keybrd && (
 								<Caption13Up color="purple" style={styles.amountBigCaption}>
-									SPENDING BALANCE
+									{t('spending_label')}
 								</Caption13Up>
 							)}
 							<AmountToggle
@@ -220,7 +214,7 @@ const QuickSetup = ({
 							exiting={FadeOut}>
 							<Button
 								loading={loading}
-								text="Continue"
+								text={t('continue')}
 								size="large"
 								onPress={onContinuePress}
 							/>

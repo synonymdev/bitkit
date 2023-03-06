@@ -14,6 +14,7 @@ import {
 	View,
 	ViewStyle,
 } from 'react-native';
+import { useTranslation } from 'react-i18next';
 
 import { View as ThemedView } from '../styles/components';
 import { Text02M } from '../styles/text';
@@ -38,7 +39,7 @@ interface ISwipeToConfirm {
 }
 
 const SwipeToConfirm = ({
-	text = 'Swipe To Confirm',
+	text,
 	color,
 	onConfirm,
 	icon,
@@ -46,6 +47,8 @@ const SwipeToConfirm = ({
 	confirmed,
 	style,
 }: ISwipeToConfirm): ReactElement => {
+	const { t } = useTranslation('other');
+	text = text ?? t('swipe');
 	const pan = useRef<any>(new Animated.ValueXY()).current;
 	const loadingOpacity = useRef(new Animated.Value(0)).current;
 	const colors = useColors();

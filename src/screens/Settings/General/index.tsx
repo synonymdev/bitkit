@@ -1,10 +1,9 @@
-import React, { memo, ReactElement, useMemo, useState } from 'react';
+import React, { memo, ReactElement, useMemo } from 'react';
 import { useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 
 import { EItemType, IListData } from '../../../components/List';
 import SettingsView from './../SettingsView';
-import { resetTodos } from '../../../store/actions/todos';
-import Dialog from '../../../components/Dialog';
 import type { SettingsScreenProps } from '../../../navigation/types';
 import {
 	bitcoinUnitSelector,
@@ -13,48 +12,46 @@ import {
 	transactionSpeedSelector,
 } from '../../../store/reselect/settings';
 
-const unitsBitcoin = {
-	satoshi: 'Satoshis',
-	BTC: 'Bitcoin',
-};
-
-const transactionSpeeds = {
-	slow: 'Slow',
-	normal: 'Normal',
-	fast: 'Fast',
-	custom: 'Custom',
-};
-
 const GeneralSettings = ({
 	navigation,
 }: SettingsScreenProps<'GeneralSettings'>): ReactElement => {
-	const [showDialog, setShowDialog] = useState(false);
+	const { t } = useTranslation('settings');
 
 	const showSuggestions = useSelector(showSuggestionsSelector);
 	const selectedTransactionSpeed = useSelector(transactionSpeedSelector);
 	const selectedCurrency = useSelector(selectedCurrencySelector);
 	const selectedBitcoinUnit = useSelector(bitcoinUnitSelector);
 
-	const settingsListData: IListData[] = useMemo(
-		() => [
+	const settingsListData: IListData[] = useMemo(() => {
+		const transactionSpeeds = {
+			slow: t('fee.slow.value'),
+			normal: t('fee.normal.value'),
+			fast: t('fee.fast.value'),
+			custom: t('fee.custom.value'),
+		};
+
+		return [
 			{
 				data: [
 					{
-						title: 'Local currency',
+						title: t('general.currency_local'),
 						value: selectedCurrency,
 						type: EItemType.button,
 						onPress: (): void => navigation.navigate('CurrenciesSettings'),
 						testID: 'CurrenciesSettings',
 					},
 					{
-						title: 'Bitcoin unit',
-						value: unitsBitcoin[selectedBitcoinUnit],
+						title: t('general.unit'),
+						value:
+							selectedBitcoinUnit === 'BTC'
+								? t('general.unit_bitcoin')
+								: t('general.unit_sathoshis'),
 						type: EItemType.button,
 						onPress: (): void => navigation.navigate('BitcoinUnitSettings'),
 						testID: 'BitcoinUnitSettings',
 					},
 					{
-						title: 'Transaction speed',
+						title: t('general.speed'),
 						value: transactionSpeeds[selectedTransactionSpeed],
 						type: EItemType.button,
 						onPress: (): void =>
@@ -62,46 +59,34 @@ const GeneralSettings = ({
 						testID: 'TransactionSpeedSettings',
 					},
 					{
-						title: 'Suggestions',
-						value: showSuggestions ? 'Visible' : 'Hidden',
+						title: t('general.suggestions'),
+						value: t(
+							showSuggestions
+								? 'general.suggestions_visible'
+								: 'general.suggestions_hidden',
+						),
 						type: EItemType.button,
 						onPress: (): void => navigation.navigate('SuggestionsSettings'),
 						testID: 'SuggestionsSettings',
 					},
 				],
 			},
-		],
-		[
-			selectedCurrency,
-			selectedBitcoinUnit,
-			selectedTransactionSpeed,
-			showSuggestions,
-			navigation,
-		],
-	);
+		];
+	}, [
+		selectedCurrency,
+		selectedBitcoinUnit,
+		selectedTransactionSpeed,
+		showSuggestions,
+		navigation,
+		t,
+	]);
 
 	return (
-		<>
-			<SettingsView
-				title="General"
-				listData={settingsListData}
-				showBackNavigation={true}
-			/>
-			<Dialog
-				visible={showDialog}
-				title="Reset Suggestions?"
-				description="Are you sure you want to reset the suggestions? They will
-				reappear in case you have removed them from your Bitkit wallet
-				overview."
-				onCancel={(): void => {
-					setShowDialog(false);
-				}}
-				onConfirm={(): void => {
-					resetTodos();
-					setShowDialog(false);
-				}}
-			/>
-		</>
+		<SettingsView
+			title={t('general_title')}
+			listData={settingsListData}
+			showBackNavigation={true}
+		/>
 	);
 };
 

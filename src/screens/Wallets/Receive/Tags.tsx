@@ -8,6 +8,7 @@ import React, {
 import { Platform, StyleSheet, View } from 'react-native';
 import { useSelector } from 'react-redux';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useTranslation } from 'react-i18next';
 
 import { BottomSheetTextInput } from '../../../styles/components';
 import { Caption13Up } from '../../../styles/text';
@@ -22,6 +23,7 @@ import { addTag, deleteTag } from '../../../store/actions/metadata';
 import { ReceiveScreenProps } from '../../../navigation/types';
 
 const Tags = ({ navigation }: ReceiveScreenProps<'Tags'>): ReactElement => {
+	const { t } = useTranslation('wallet');
 	const { keyboardShown } = useKeyboard();
 	const insets = useSafeAreaInsets();
 	const [text, setText] = useState('');
@@ -62,12 +64,12 @@ const Tags = ({ navigation }: ReceiveScreenProps<'Tags'>): ReactElement => {
 
 	return (
 		<GradientView style={styles.container}>
-			<BottomSheetNavigationHeader title="Add Tag" />
+			<BottomSheetNavigationHeader title={t('tags_add')} />
 			<View style={styles.content}>
 				{lastUsedTags.length !== 0 && (
 					<>
 						<Caption13Up color="gray1" style={styles.section}>
-							Previously used tags
+							{t('tags_previously')}
 						</Caption13Up>
 						<View style={styles.tagsContainer}>
 							{lastUsedTags.map((tag) => (
@@ -87,10 +89,10 @@ const Tags = ({ navigation }: ReceiveScreenProps<'Tags'>): ReactElement => {
 					</>
 				)}
 				<Caption13Up color="gray1" style={styles.section}>
-					New tag
+					{t('tags_new')}
 				</Caption13Up>
 				<BottomSheetTextInput
-					placeholder="Enter a new tag"
+					placeholder={t('tags_new_enter')}
 					blurOnSubmit={false}
 					value={text}
 					onChangeText={setText}
@@ -101,7 +103,7 @@ const Tags = ({ navigation }: ReceiveScreenProps<'Tags'>): ReactElement => {
 
 				<View style={buttonContainerStyles}>
 					<Button
-						text="Add"
+						text={t('tags_add_button')}
 						size="large"
 						disabled={text.length === 0}
 						onPress={handleSubmit}

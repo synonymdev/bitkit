@@ -5,6 +5,7 @@ import {
 	TouchableOpacity,
 	GestureResponderEvent,
 } from 'react-native';
+import { useTranslation } from 'react-i18next';
 
 import { Text01M, Text02M } from '../../../styles/text';
 import {
@@ -17,7 +18,6 @@ import {
 import { EFeeId } from '../../../store/types/fees';
 import useColors from '../../../hooks/colors';
 import useDisplayValues from '../../../hooks/displayValues';
-import { FeeText } from '../../../store/shapes/fees';
 
 const FeeItem = ({
 	id,
@@ -31,7 +31,9 @@ const FeeItem = ({
 	onPress?: (event: GestureResponderEvent) => void;
 }): ReactElement => {
 	const colors = useColors();
-	const { title, description } = FeeText[id];
+	const { t } = useTranslation('fee');
+	const title = t(`${id}.title`);
+	const description = t(`${id}.description`);
 	const totalFeeDisplay = useDisplayValues(sats);
 
 	const icon = useMemo(() => {
@@ -63,16 +65,20 @@ const FeeItem = ({
 				<View style={styles.row}>
 					<View style={styles.cell}>
 						<Text01M>{title}</Text01M>
-						<View style={styles.sats}>
-							<LightningIcon height={17} color="gray1" />
-							<Text01M>{sats}</Text01M>
-						</View>
+						{sats !== 0 && (
+							<View style={styles.sats}>
+								<LightningIcon height={16} color="gray1" />
+								<Text01M>{sats}</Text01M>
+							</View>
+						)}
 					</View>
 					<View style={styles.cell}>
 						<Text02M color="gray1">{description}</Text02M>
-						<Text02M color="gray1">
-							{totalFeeDisplay.fiatSymbol} {totalFeeDisplay.fiatFormatted}
-						</Text02M>
+						{sats !== 0 && (
+							<Text02M color="gray1">
+								{totalFeeDisplay.fiatSymbol} {totalFeeDisplay.fiatFormatted}
+							</Text02M>
+						)}
 					</View>
 				</View>
 			</TouchableOpacity>

@@ -1,5 +1,6 @@
 import React, { memo, ReactElement, useMemo } from 'react';
 import { useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 
 import { EItemType, IListData } from '../../../components/List';
 import SettingsView from '../SettingsView';
@@ -33,12 +34,13 @@ const addressTypes = [
 const AddressTypeSettings = ({
 	navigation,
 }: SettingsScreenProps<'AddressTypePreference'>): ReactElement => {
+	const { t } = useTranslation('settings');
 	const selectedAddressType = useSelector(addressTypeSelector);
 
 	const listData: IListData[] = useMemo(
 		() => [
 			{
-				title: 'Bitcoin address type',
+				title: t('adv.address_type'),
 				data: addressTypes.map((addressType) => ({
 					type: EItemType.button,
 					title: `${addressType.name} ${addressType.example}`,
@@ -54,12 +56,12 @@ const AddressTypeSettings = ({
 				})),
 			},
 		],
-		[selectedAddressType, navigation],
+		[selectedAddressType, navigation, t],
 	);
 
 	return (
 		<SettingsView
-			title="Bitcoin Address Type"
+			title={t('adv.address_type')}
 			listData={listData}
 			showBackNavigation={true}
 		/>

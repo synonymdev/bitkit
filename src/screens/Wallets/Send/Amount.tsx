@@ -2,6 +2,7 @@ import React, { ReactElement, memo, useCallback, useMemo } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useSelector } from 'react-redux';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useTranslation } from 'react-i18next';
 
 import { TouchableOpacity } from '../../../styles/components';
 import { Caption13Up, Text02B } from '../../../styles/text';
@@ -13,16 +14,12 @@ import Money from '../../../components/Money';
 import ProfileImage from '../../../components/ProfileImage';
 import Button from '../../../components/Button';
 import SendNumberPad from './SendNumberPad';
-import {
-	EBitcoinUnit,
-	ETransactionDefaults,
-} from '../../../store/types/wallet';
+import { EBitcoinUnit } from '../../../store/types/wallet';
 import {
 	getTransactionOutputValue,
+	getMaxSendAmount,
 	sendMax,
 } from '../../../utils/wallet/transactions';
-import { useBalance } from '../../../hooks/wallet';
-import { useLightningBalance } from '../../../hooks/lightning';
 import {
 	selectedNetworkSelector,
 	selectedWalletSelector,
@@ -37,6 +34,7 @@ import {
 import { useProfile } from '../../../hooks/slashtags';
 import useDisplayValues from '../../../hooks/displayValues';
 import { updateSettings } from '../../../store/actions/settings';
+import { TRANSACTION_DEFAULTS } from '../../../utils/wallet/constants';
 import type { SendScreenProps } from '../../../navigation/types';
 
 const ContactImage = ({ url }: { url: string }): JSX.Element => {
@@ -45,9 +43,8 @@ const ContactImage = ({ url }: { url: string }): JSX.Element => {
 };
 
 const Amount = ({ navigation }: SendScreenProps<'Amount'>): ReactElement => {
+	const { t } = useTranslation('wallet');
 	const insets = useSafeAreaInsets();
-	const onChainBalance = useBalance({ onchain: true });
-	const lightningBalance = useLightningBalance(false);
 	const selectedWallet = useSelector(selectedWalletSelector);
 	const selectedNetwork = useSelector(selectedNetworkSelector);
 	const coinSelectAuto = useSelector(coinSelectAutoSelector);
@@ -77,29 +74,21 @@ const Amount = ({ navigation }: SendScreenProps<'Amount'>): ReactElement => {
 
 	const displayValues = useDisplayValues(amount);
 
-	/**
-	 * Returns available amount to spend for either onchain or lightning.
-	 */
 	const availableAmount = useMemo(() => {
-		if (transaction.lightningInvoice) {
-			return lightningBalance.localBalance;
-		}
-		if (
-			transaction.outputs &&
-			transaction.outputs.length > 0 &&
-			transaction.outputs[0].address
-		) {
-			if (onChainBalance.satoshis <= ETransactionDefaults.recommendedBaseFee) {
-				return 0;
-			}
-			return onChainBalance.satoshis - ETransactionDefaults.recommendedBaseFee;
+		const maxAmountResponse = getMaxSendAmount({
+			selectedWallet,
+			selectedNetwork,
+		});
+		if (maxAmountResponse.isOk()) {
+			return maxAmountResponse.value.amount;
 		}
 		return 0;
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [
-		lightningBalance.localBalance,
-		onChainBalance.satoshis,
-		transaction.lightningInvoice,
 		transaction.outputs,
+		transaction.satsPerByte,
+		selectedWallet,
+		selectedNetwork,
 	]);
 
 	const availableAmountProps = useMemo(() => {
@@ -136,7 +125,7 @@ const Amount = ({ navigation }: SendScreenProps<'Amount'>): ReactElement => {
 		// onchain tx, but amount is below dust limit
 		if (
 			!transaction.lightningInvoice &&
-			amount <= ETransactionDefaults.recommendedBaseFee
+			amount <= TRANSACTION_DEFAULTS.recommendedBaseFee
 		) {
 			return true;
 		}
@@ -150,7 +139,7 @@ const Amount = ({ navigation }: SendScreenProps<'Amount'>): ReactElement => {
 	return (
 		<GradientView style={styles.container}>
 			<BottomSheetNavigationHeader
-				title="Bitcoin Amount"
+				title={t('send_amount')}
 				actionIcon={
 					transaction.slashTagsUrl ? (
 						<ContactImage url={transaction.slashTagsUrl} />
@@ -162,10 +151,13 @@ const Amount = ({ navigation }: SendScreenProps<'Amount'>): ReactElement => {
 
 				<View style={styles.numberPad}>
 					<View style={styles.actions}>
-						<View>
+						<View testID="AvailableAmount">
 							<Caption13Up style={styles.availableAmountText} color="gray1">
-								Available (
-								{transaction.lightningInvoice ? 'spending' : 'savings'})
+								{t(
+									transaction.lightningInvoice
+										? 'send_availabe_spending'
+										: 'send_availabe_savings',
+								)}
 							</Caption13Up>
 							<Money
 								key="small"
@@ -179,14 +171,14 @@ const Amount = ({ navigation }: SendScreenProps<'Amount'>): ReactElement => {
 								<TouchableOpacity
 									style={styles.actionButton}
 									color="white08"
+									testID="MAX"
 									onPress={(): void => {
 										sendMax({ selectedWallet, selectedNetwork });
-									}}
-									testID="MAX">
+									}}>
 									<Text02B
 										size="12px"
 										color={isMaxSendAmount ? 'orange' : 'brand'}>
-										MAX
+										{t('send_max')}
 									</Text02B>
 								</TouchableOpacity>
 							</View>
@@ -217,7 +209,7 @@ const Amount = ({ navigation }: SendScreenProps<'Amount'>): ReactElement => {
 				<View style={buttonContainerStyles}>
 					<Button
 						size="large"
-						text="Continue"
+						text={t('continue')}
 						disabled={isInvalid()}
 						onPress={onContinue}
 						testID="ContinueAmount"

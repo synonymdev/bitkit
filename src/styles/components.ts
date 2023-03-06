@@ -124,6 +124,7 @@ export const TextInput = styled.TextInput.attrs<TextInputProps>((props) => ({
 	fontSize: '15px',
 	minHeight: props.minHeight ? props.minHeight : 52,
 	padding: 16,
+	textAlignVertical: props.multiline ? 'top' : 'center',
 }));
 
 export const TextInputNoOutline = styled.TextInput.attrs<TextInputProps>(
@@ -148,6 +149,7 @@ export const TextInputNoOutline = styled.TextInput.attrs<TextInputProps>(
 	color: props.color
 		? props.theme.colors[props.color]
 		: props.theme.colors.text,
+	textAlignVertical: props.multiline ? 'top' : 'center',
 }));
 
 export const BottomSheetTextInput = styled(
@@ -181,7 +183,7 @@ export const BottomSheetTextInput = styled(
 	fontSize: '15px',
 	minHeight: props.minHeight ? props.minHeight : 52,
 	padding: 16,
-	textAlignVertical: 'top',
+	textAlignVertical: props.multiline ? 'top' : 'center',
 }));
 
 export const RefreshControl = styled.RefreshControl.attrs((props) => ({
@@ -195,6 +197,7 @@ export const StatusBar = styled.StatusBar.attrs((props) => ({
 			barStyle: props.theme.id === 'light' ? 'dark-content' : 'light-content',
 		},
 		android: {
+			backgroundColor: 'black',
 			barStyle: 'light-content',
 		},
 	}),

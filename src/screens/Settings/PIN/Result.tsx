@@ -2,6 +2,7 @@ import React, { memo, ReactElement, useMemo } from 'react';
 import { StyleSheet, View, Pressable } from 'react-native';
 import { useSelector } from 'react-redux';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useTranslation } from 'react-i18next';
 
 import { Switch } from '../../../styles/components';
 import { Text01S, Text01M } from '../../../styles/text';
@@ -18,8 +19,19 @@ const imageSrc = require('../../../assets/illustrations/check.png');
 
 const Result = ({ route }: PinScreenProps<'Result'>): ReactElement => {
 	const { bio, type } = route.params;
+	const { t } = useTranslation('security');
 	const insets = useSafeAreaInsets();
 	const pinForPayments = useSelector(pinForPaymentsSelector);
+
+	const biometricsName = useMemo(
+		() =>
+			type === 'TouchID'
+				? t('bio_touch_id')
+				: type === 'FaceID'
+				? t('bio_face_id')
+				: type ?? t('bio'),
+		[type, t],
+	);
 
 	const nextButtonContainer = useMemo(
 		() => ({
@@ -40,21 +52,17 @@ const Result = ({ route }: PinScreenProps<'Result'>): ReactElement => {
 	return (
 		<GradientView style={styles.container}>
 			<BottomSheetNavigationHeader
-				title="Wallet Secured"
+				title={t('success_title')}
 				displayBackButton={false}
 			/>
 
 			<View style={styles.message}>
 				{bio ? (
 					<Text01S color="gray1">
-						You have successfully set up a PIN code and {type} to improve your
-						wallet security.
+						{t('success_bio', { biometricsName })}
 					</Text01S>
 				) : (
-					<Text01S color="gray1">
-						You have successfully set up a PIN code to improve your wallet
-						security.
-					</Text01S>
+					<Text01S color="gray1">{t('success_no_bio')}</Text01S>
 				)}
 			</View>
 
@@ -64,14 +72,14 @@ const Result = ({ route }: PinScreenProps<'Result'>): ReactElement => {
 				style={styles.toggle}
 				onPress={handleTogglePress}
 				testID="ToggleBioForPayments">
-				<Text01M>Also require for payments</Text01M>
+				<Text01M>{t('success_payments')}</Text01M>
 				<Switch onValueChange={handleTogglePress} value={pinForPayments} />
 			</Pressable>
 
 			<View style={nextButtonContainer}>
 				<Button
 					size="large"
-					text="OK"
+					text={t('ok')}
 					onPress={handleButtonPress}
 					testID="OK"
 				/>

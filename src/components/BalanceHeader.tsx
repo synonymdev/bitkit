@@ -1,6 +1,7 @@
 import React, { memo, ReactElement, useMemo } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useSelector } from 'react-redux';
+import { Trans, useTranslation } from 'react-i18next';
 
 import { Caption13Up } from '../styles/text';
 import { EyeIcon } from '../styles/icons';
@@ -23,6 +24,7 @@ import {
  * Displays the total available balance for the current wallet & network.
  */
 const BalanceHeader = (): ReactElement => {
+	const { t } = useTranslation('wallet');
 	const balanceUnit = useSelector(balanceUnitSelector);
 	const hideBalance = useSelector(hideBalanceSelector);
 	const selectedWallet = useSelector(selectedWalletSelector);
@@ -71,22 +73,29 @@ const BalanceHeader = (): ReactElement => {
 			onPress={handlePress}
 			testID="TotalBalance">
 			<View style={styles.totalBalanceRow}>
-				<Caption13Up color="gray1">Total balance</Caption13Up>
-				{showClaimableBalances && (
-					<>
-						<Caption13Up color="gray1"> (</Caption13Up>
-						<Money
-							color="gray1"
-							size="caption13M"
-							sats={claimableBalance}
-							unit={balanceUnit}
-							enableHide={true}
-							symbol={false}
-						/>
-						<Caption13Up color="gray1"> PENDING)</Caption13Up>
-					</>
+				{showClaimableBalances ? (
+					<Trans
+						t={t}
+						i18nKey="balance_total_pending"
+						components={{
+							text: <Caption13Up color="gray1" />,
+							pending: (
+								<Money
+									color="gray1"
+									size="caption13M"
+									sats={claimableBalance}
+									unit={balanceUnit}
+									enableHide={true}
+									symbol={false}
+								/>
+							),
+						}}
+					/>
+				) : (
+					<Caption13Up color="gray1">{t('balance_total')}</Caption13Up>
 				)}
 			</View>
+
 			<View style={styles.row}>
 				<View>
 					<Money

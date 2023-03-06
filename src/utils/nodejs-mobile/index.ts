@@ -73,7 +73,7 @@ export const invokeNodeJsMethod = <T = string>(
 }> => {
 	return new Promise(async (resolve) => {
 		if (data.method !== 'setup' && !isSetup) {
-			await setupNodejsMobile({});
+			await setupNodejsMobile();
 		}
 		const parseAndResolve = (res: string): void => {
 			const parsedData = JSON.parse(res);
@@ -106,7 +106,7 @@ export const setupNodejsMobile = async ({
 	selectedWallet?: TWalletName;
 	selectedNetwork?: TAvailableNetworks;
 	mnemonic?: string;
-}): Promise<Result<string>> => {
+} = {}): Promise<Result<string>> => {
 	if (!selectedWallet) {
 		selectedWallet = getSelectedWallet();
 	}

@@ -20,6 +20,7 @@ import {
 	// getBundleId,
 	getVersion,
 } from 'react-native-device-info';
+import { Trans, useTranslation } from 'react-i18next';
 
 import { Text01S } from '../../../styles/text';
 import {
@@ -51,6 +52,7 @@ const imageSrc = require('../../../assets/powered-by.png');
 const About = ({
 	navigation,
 }: SettingsScreenProps<'AboutSettings'>): ReactElement => {
+	const { t } = useTranslation('settings');
 	// TODO: uncomment links after full launch
 
 	// const [isReviewing, setIsReviewing] = useState(false);
@@ -101,14 +103,14 @@ const About = ({
 					// 	},
 					// },
 					{
-						title: 'Support',
+						title: t('about.support'),
 						type: EItemType.button,
 						onPress: async (): Promise<void> => {
 							await openURL(await createSupportLink());
 						},
 					},
 					{
-						title: 'Report a bug or contribute',
+						title: t('about.report_bug'),
 						type: EItemType.button,
 						onPress: (): void => {
 							openURL('https://www.github.com/synonymdev/bitkit').then();
@@ -120,7 +122,7 @@ const About = ({
 					// 	onPress: onShare,
 					// },
 					{
-						title: 'Legal',
+						title: t('about.legal'),
 						type: EItemType.button,
 						onPress: (): void => {
 							// TODO: update with correct url
@@ -128,7 +130,7 @@ const About = ({
 						},
 					},
 					{
-						title: 'Version',
+						title: t('about.version'),
 						value: `${getVersion()} (${getBuildNumber()})`,
 						type: EItemType.textButton,
 						onPress: (): void => {
@@ -141,14 +143,14 @@ const About = ({
 			},
 		],
 		// [isReviewing],
-		[],
+		[t],
 	);
 
 	return (
 		<GlowingBackground bottomRight="brand">
 			<SafeAreaInsets type="top" />
 			<NavigationHeader
-				title="About Bitkit"
+				title={t('about_title')}
 				onClosePress={(): void => {
 					navigation.navigate('Wallet');
 				}}
@@ -157,17 +159,20 @@ const About = ({
 				contentContainerStyle={styles.content}
 				showsVerticalScrollIndicator={false}>
 				<Text01S style={styles.text} color="gray1">
-					Bitkit hands you the keys to your money, profile, contacts, and web
-					accounts.{'\n'}
-					{'\n'}This{' '}
-					<Text01S
-						color="gray1"
-						onPress={(): void => {
-							navigation.navigate('EasterEgg');
-						}}>
-						Orange Pill
-					</Text01S>{' '}
-					was carefully crafted by Synonym Software Ltd.
+					<Trans
+						t={t}
+						i18nKey="about.text"
+						components={{
+							easterEgg: (
+								<Text01S
+									color="gray1"
+									onPress={(): void => {
+										navigation.navigate('EasterEgg');
+									}}
+								/>
+							),
+						}}
+					/>
 				</Text01S>
 
 				<List style={styles.list} data={settingsListData} bounces={false} />

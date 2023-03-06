@@ -11,12 +11,16 @@ const __enableDebugger__ = ENABLE_I18NEXT_DEBUGGER
 
 const getDeviceLanguage = (): string => {
 	let language = '';
-	if (Platform.OS === 'ios') {
-		language =
-			NativeModules.SettingsManager.settings.AppleLocale ||
-			NativeModules.SettingsManager.settings.AppleLanguages[0];
-	} else {
-		language = NativeModules.I18nManager.localeIdentifier;
+	try {
+		if (Platform.OS === 'ios') {
+			language =
+				NativeModules.SettingsManager.settings.AppleLocale ||
+				NativeModules.SettingsManager.settings.AppleLanguages[0];
+		} else {
+			language = NativeModules.I18nManager.localeIdentifier;
+		}
+	} catch (e) {
+		language = 'en';
 	}
 
 	// Android returns specific locales that iOS does not i.e. en_US, en_GB.
@@ -28,6 +32,8 @@ const getDeviceLanguage = (): string => {
 	return language;
 };
 
+export const defaultNS = 'common';
+
 i18n
 	.use(initReactI18next)
 	.init({
@@ -36,7 +42,8 @@ i18n
 		compatibilityJSON: 'v3',
 		resources,
 		ns: Object.keys(resources),
-		defaultNS: 'common',
+		defaultNS,
+		fallbackNS: defaultNS,
 		debug: __enableDebugger__,
 		cache: {
 			enabled: true,
@@ -44,6 +51,7 @@ i18n
 		interpolation: {
 			escapeValue: false,
 		},
+		returnNull: false,
 	})
 	.then();
 

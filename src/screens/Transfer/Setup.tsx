@@ -2,6 +2,7 @@ import React, { ReactElement, useState, useCallback, useMemo } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import { FadeIn, FadeOut } from 'react-native-reanimated';
+import { useTranslation } from 'react-i18next';
 
 import { AnimatedView } from '../../styles/components';
 import { Caption13Up, Display, Text01S } from '../../styles/text';
@@ -34,6 +35,7 @@ import { selectedCurrencySelector } from '../../store/reselect/settings';
 import { EBitcoinUnit } from '../../store/types/wallet';
 
 const Setup = ({ navigation }: TransferScreenProps<'Setup'>): ReactElement => {
+	const { t } = useTranslation('lightning');
 	const { satoshis: onChainBalance } = useBalance({ onchain: true });
 	const { satoshis: lightningBalance } = useBalance({ lightning: true });
 	const [keybrd, setKeybrd] = useState(false);
@@ -89,38 +91,39 @@ const Setup = ({ navigation }: TransferScreenProps<'Setup'>): ReactElement => {
 				spendingAmount,
 				total: spendingLimit,
 			});
-		} else {
-			// buy an additional channel from Blocktank with the difference
-			setLoading(true);
-			const remoteBalance = spendingAmount - lightningBalance;
-			const localBalance =
-				Math.round(remoteBalance * 1.1) > blocktankService.min_channel_size
-					? Math.round(remoteBalance * 1.1)
-					: blocktankService.min_channel_size;
-
-			const purchaseResponse = await startChannelPurchase({
-				selectedNetwork,
-				selectedWallet,
-				productId: blocktankService.product_id,
-				remoteBalance,
-				localBalance,
-				channelExpiry: 12,
-			});
-			if (purchaseResponse.isErr()) {
-				showErrorNotification({
-					title: 'Channel Purchase Error',
-					message: purchaseResponse.error.message,
-				});
-				setLoading(false);
-				return;
-			}
-			setLoading(false);
-			navigation.push('Confirm', {
-				spendingAmount,
-				total: spendingLimit,
-				orderId: purchaseResponse.value,
-			});
+			return;
 		}
+
+		// buy an additional channel from Blocktank with the difference
+		setLoading(true);
+		const remoteBalance = spendingAmount - lightningBalance;
+		const localBalance =
+			Math.round(remoteBalance * 1.1) > blocktankService.min_channel_size
+				? Math.round(remoteBalance * 1.1)
+				: blocktankService.min_channel_size;
+
+		const purchaseResponse = await startChannelPurchase({
+			selectedNetwork,
+			selectedWallet,
+			productId: blocktankService.product_id,
+			remoteBalance,
+			localBalance,
+			channelExpiry: 12,
+		});
+		if (purchaseResponse.isErr()) {
+			showErrorNotification({
+				title: t('error_channel_purchase'),
+				message: purchaseResponse.error.message,
+			});
+			setLoading(false);
+			return;
+		}
+		setLoading(false);
+		navigation.push('Confirm', {
+			spendingAmount,
+			total: spendingLimit,
+			orderId: purchaseResponse.value,
+		});
 	}, [
 		blocktankService,
 		isTransferringToSavings,
@@ -130,13 +133,14 @@ const Setup = ({ navigation }: TransferScreenProps<'Setup'>): ReactElement => {
 		selectedNetwork,
 		selectedWallet,
 		navigation,
+		t,
 	]);
 
 	return (
 		<GlowingBackground topLeft="purple">
 			<SafeAreaInsets type="top" />
 			<NavigationHeader
-				title="Transfer Funds"
+				title={t('transfer_funds')}
 				onClosePress={(): void => {
 					navigation.navigate('Wallet');
 				}}
@@ -145,18 +149,16 @@ const Setup = ({ navigation }: TransferScreenProps<'Setup'>): ReactElement => {
 				<View>
 					{keybrd ? (
 						<>
-							<Display color="purple">Spending Money.</Display>
+							<Display color="purple">{t('transfer_header_keybrd')}</Display>
 							<Text01S color="gray1" style={styles.text}>
-								Enter the amount of money you want to be able to spend
-								instantly.
+								{t('enter_money')}
 							</Text01S>
 						</>
 					) : (
 						<>
-							<Display color="purple">Spending{'\n'}& Saving.</Display>
+							<Display color="purple">{t('transfer_header_nokeybrd')}</Display>
 							<Text01S color="gray1" style={styles.text}>
-								Choose how much bitcoin you want to be able to spend instantly
-								and how much you want to keep in savings.
+								{t('enter_amount')}
 							</Text01S>
 							<AnimatedView
 								style={styles.sliderSection}
@@ -164,8 +166,8 @@ const Setup = ({ navigation }: TransferScreenProps<'Setup'>): ReactElement => {
 								entering={FadeIn}
 								exiting={FadeOut}>
 								<View style={styles.row}>
-									<Caption13Up color="purple">SPENDING</Caption13Up>
-									<Caption13Up color="orange">SAVINGS</Caption13Up>
+									<Caption13Up color="purple">{t('spending')}</Caption13Up>
+									<Caption13Up color="orange">{t('savings')}</Caption13Up>
 								</View>
 								<View style={styles.sliderContainer}>
 									<FancySlider
@@ -188,7 +190,7 @@ const Setup = ({ navigation }: TransferScreenProps<'Setup'>): ReactElement => {
 				<View>
 					<View style={styles.amountBig}>
 						{!keybrd && (
-							<Caption13Up color="purple">Spending balance</Caption13Up>
+							<Caption13Up color="purple">{t('spending_label')}</Caption13Up>
 						)}
 						<AmountToggle
 							sats={spendingAmount}
@@ -204,7 +206,7 @@ const Setup = ({ navigation }: TransferScreenProps<'Setup'>): ReactElement => {
 							entering={FadeIn}
 							exiting={FadeOut}>
 							<Button
-								text="Continue"
+								text={t('continue')}
 								size="large"
 								loading={loading}
 								disabled={isButtonDisabled}

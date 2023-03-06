@@ -1,5 +1,6 @@
 import React, { memo, ReactElement, useState } from 'react';
 import { StyleSheet } from 'react-native';
+import { useTranslation } from 'react-i18next';
 
 import { rootNavigation } from '../navigation/root/RootNavigator';
 import { TouchableOpacity, View } from '../styles/components';
@@ -75,6 +76,7 @@ export const BaseFeedWidget = ({
 	onLongPress?: () => void;
 	onPressIn?: () => void;
 }): ReactElement => {
+	const { t } = useTranslation('slashtags');
 	const [showDialog, setShowDialog] = useState(false);
 
 	const onEdit = (): void => {
@@ -126,9 +128,9 @@ export const BaseFeedWidget = ({
 
 			<Dialog
 				visible={showDialog}
-				title={`Delete ${name} widget?`}
-				description={`Are you sure you want to delete ${name} from your widgets?`}
-				confirmText="Yes, Delete"
+				title={t('widget_delete_title', { name })}
+				description={t('widget_delete_desc', { name })}
+				confirmText={t('widget_delete_yes')}
 				onCancel={(): void => {
 					setShowDialog(false);
 				}}

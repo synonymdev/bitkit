@@ -61,7 +61,7 @@ describe('Wallet - new wallet, send and receive', () => {
 		// 3 validate transactions and activity stores
 
 		// create wallet
-		let res = await createNewWallet({});
+		let res = await createNewWallet();
 		if (res.isErr()) {
 			throw res.error;
 		}
@@ -79,12 +79,12 @@ describe('Wallet - new wallet, send and receive', () => {
 			throw res.error;
 		}
 
-		res = await connectToElectrum({});
+		res = await connectToElectrum();
 		if (res.isErr()) {
 			throw res.error;
 		}
 
-		res = await updateAddressIndexes({});
+		res = await updateAddressIndexes();
 		if (res.isErr()) {
 			throw res.error;
 		}
@@ -128,7 +128,7 @@ describe('Wallet - new wallet, send and receive', () => {
 		const receivingAddress1 = await rpc.getNewAddress();
 
 		// setup transaction
-		const res2 = await setupOnChainTransaction({});
+		const res2 = await setupOnChainTransaction();
 		if (res2.isErr()) {
 			throw res2.error;
 		}
@@ -139,10 +139,9 @@ describe('Wallet - new wallet, send and receive', () => {
 		expect(tx11?.changeAddress).toBeDefined();
 		expect(tx11?.rbf).toBe(false);
 		expect(tx11?.satsPerByte).toBe(2);
-		expect(tx11?.transactionSize).toBe(250);
 
 		// set address and amount
-		res = await updateBitcoinTransaction({
+		res = updateBitcoinTransaction({
 			transaction: {
 				outputs: [{ address: receivingAddress1, value: 50_000_000, index: 0 }],
 			},
@@ -179,7 +178,7 @@ describe('Wallet - new wallet, send and receive', () => {
 			throw res.error;
 		}
 
-		const res3 = await createTransaction({});
+		const res3 = await createTransaction();
 		if (res3.isErr()) {
 			throw res3.error;
 		}
@@ -228,34 +227,34 @@ describe('Wallet - new wallet, send and receive', () => {
 		const receivingAddress2 = await rpc.getNewAddress();
 
 		// setup new transaction
-		res = await resetOnChainTransaction({});
+		res = resetOnChainTransaction();
 		if (res.isErr()) {
 			throw res.error;
 		}
-		const res4 = await setupOnChainTransaction({});
+		const res4 = await setupOnChainTransaction();
 		if (res4.isErr()) {
 			throw res4.error;
 		}
 
 		// set address and amount
-		res = await updateBitcoinTransaction({
+		res = updateBitcoinTransaction({
 			transaction: {
 				outputs: [{ address: receivingAddress2, value: 50_000_000, index: 0 }],
 				rbf: true,
 			},
 		});
 
-		res = await sendMax({});
+		res = sendMax();
 		if (res.isErr()) {
 			throw res.error;
 		}
 
 		const tx21 =
 			store.getState().wallet.wallets.wallet0.transaction.bitcoinRegtest;
-		expect(tx21?.rbf).toEqual(true);
+		expect(tx21.rbf).toEqual(true);
 
-		// sending amount + fee should be equeal to the balance
-		expect((tx21?.outputs?.[0].value ?? 0) + (tx21?.fee ?? 0)).toBe(
+		// sending amount + fee should be equal to the balance
+		expect((tx21.outputs[0]?.value ?? 0) + tx21.fee).toBe(
 			store.getState().wallet.wallets.wallet0.balance.bitcoinRegtest,
 		);
 
@@ -266,7 +265,7 @@ describe('Wallet - new wallet, send and receive', () => {
 			throw res.error;
 		}
 
-		const res5 = await createTransaction({});
+		const res5 = await createTransaction();
 		if (res5.isErr()) {
 			throw res5.error;
 		}

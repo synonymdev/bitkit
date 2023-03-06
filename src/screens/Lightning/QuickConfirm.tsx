@@ -1,6 +1,7 @@
 import React, { ReactElement, useMemo, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useSelector } from 'react-redux';
+import { Trans, useTranslation } from 'react-i18next';
 
 import { Caption13Up, Display, Text01S } from '../../styles/text';
 import { LightningIcon } from '../../styles/icons';
@@ -29,6 +30,7 @@ const QuickConfirm = ({
 	navigation,
 	route,
 }: LightningScreenProps<'QuickConfirm'>): ReactElement => {
+	const { t } = useTranslation('lightning');
 	const { spendingAmount, total, orderId } = route.params;
 	const selectedNetwork = useSelector(selectedNetworkSelector);
 
@@ -67,18 +69,25 @@ const QuickConfirm = ({
 		<GlowingBackground topLeft="purple">
 			<SafeAreaInsets type="top" />
 			<NavigationHeader
-				title="Add Instant Payments"
+				title={t('add_instant_payments')}
 				onClosePress={(): void => {
 					navigation.navigate('Wallet');
 				}}
 			/>
 			<View style={styles.root}>
 				<View>
-					<Display color="purple">Please {'\n'}Confirm.</Display>
+					<Display color="purple">{t('quick_confirm_header')}</Display>
 					<Text01S color="gray1" style={styles.text}>
-						It costs
-						<Text01S>{` ${blocktankPurchaseFee.fiatSymbol}${channelOpenCost} `}</Text01S>
-						to connect you to Lightning and set up your spending balance.
+						<Trans
+							t={t}
+							i18nKey="quick_confirm_cost"
+							components={{
+								white: <Text01S color="white" />,
+							}}
+							values={{
+								amount: `${blocktankPurchaseFee.fiatSymbol}${channelOpenCost}`,
+							}}
+						/>
 					</Text01S>
 				</View>
 
@@ -98,13 +107,13 @@ const QuickConfirm = ({
 
 				<View>
 					<View style={styles.amountBig}>
-						<Caption13Up color="purple">Spending balance</Caption13Up>
+						<Caption13Up color="purple">{t('spending_label')}</Caption13Up>
 						<AmountToggle sats={spendingAmount} unit="fiat" />
 					</View>
 
 					<View style={styles.buttonContainer}>
 						<SwipeToConfirm
-							text="Swipe To Connect"
+							text={t('connect_swipe')}
 							color="purple"
 							icon={<LightningIcon width={30} height={30} color="black" />}
 							loading={loading}

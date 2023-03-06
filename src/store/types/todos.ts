@@ -15,8 +15,6 @@ export type TTodoType =
 
 export interface ITodo {
 	id: TTodoType;
-	title: string;
-	description: string;
 	color: keyof IColors;
 	image: ImageSourcePropType;
 	dismissable: boolean;

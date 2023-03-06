@@ -1,5 +1,6 @@
 import React, { ReactElement, useState } from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
+import { Trans, useTranslation } from 'react-i18next';
 
 import { Display, Text01B, Text01S, Text02B } from '../../styles/text';
 import GlowingBackground from '../../components/GlowingBackground';
@@ -18,6 +19,7 @@ const TermsOfUse = ({
 	const [termsOfUse, setTermsOfUse] = useState(false);
 	const [privacyPolicy, setPrivacyPolicy] = useState(false);
 	const [loading, setLoading] = useState(false);
+	const { t } = useTranslation('onboarding');
 
 	const onPress = async (): Promise<void> => {
 		setLoading(true);
@@ -41,9 +43,14 @@ const TermsOfUse = ({
 			<SafeAreaInsets type="top" />
 			<View style={styles.content}>
 				<ScrollView style={styles.tos}>
-					<Display>Bitkit</Display>
-					<Display color="brand">Terms</Display>
-					<Display color="brand">of Use.</Display>
+					<Trans
+						t={t}
+						i18nKey="tos_header"
+						parent={Display}
+						components={{
+							brand: <Display color="brand" />,
+						}}
+					/>
 
 					<Text01S color="gray1" style={styles.text}>
 						{termsOfUseText}
@@ -52,36 +59,46 @@ const TermsOfUse = ({
 
 				<View style={styles.checkboxes}>
 					<CheckButton
-						label={<Text01B>Terms of use</Text01B>}
+						label={<Text01B>{t('tos_checkbox')}</Text01B>}
 						description={
-							<Text02B color="gray1">
-								I declare that I have read and accept the{' '}
-								<Text02B
-									color="brand"
-									onPress={(): void => {
-										openURL('https://bitkit.to/terms-of-use');
-									}}>
-									terms of use.
-								</Text02B>
-							</Text02B>
+							<Trans
+								t={t}
+								i18nKey="tos_checkbox_value"
+								components={{
+									grey: <Text02B color="gray1" />,
+									brand: (
+										<Text02B
+											color="brand"
+											onPress={(): void => {
+												openURL('https://bitkit.to/terms-of-use');
+											}}
+										/>
+									),
+								}}
+							/>
 						}
 						checked={termsOfUse}
 						onPress={(): void => setTermsOfUse((prevState) => !prevState)}
 						testID="Check1"
 					/>
 					<CheckButton
-						label={<Text01B>Privacy Policy</Text01B>}
+						label={<Text01B>{t('pp_checkbox')}</Text01B>}
 						description={
-							<Text02B color="gray1">
-								I declare that I have read and accept the{' '}
-								<Text02B
-									color="brand"
-									onPress={(): void => {
-										openURL('https://bitkit.to/privacy-policy');
-									}}>
-									privacy policy.
-								</Text02B>
-							</Text02B>
+							<Trans
+								t={t}
+								i18nKey="pp_checkbox_value"
+								components={{
+									grey: <Text02B color="gray1" />,
+									brand: (
+										<Text02B
+											color="brand"
+											onPress={(): void => {
+												openURL('https://bitkit.to/privacy-policy');
+											}}
+										/>
+									),
+								}}
+							/>
 						}
 						checked={privacyPolicy}
 						onPress={(): void => setPrivacyPolicy((prevState) => !prevState)}
@@ -91,7 +108,7 @@ const TermsOfUse = ({
 
 				<View style={styles.buttonContainer}>
 					<Button
-						text="Continue"
+						text={t('continue')}
 						size="large"
 						disabled={!isValid}
 						onPress={onPress}

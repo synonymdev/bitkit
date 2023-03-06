@@ -1,5 +1,6 @@
 import React, { ReactElement, memo } from 'react';
 import { StyleSheet, View } from 'react-native';
+import { Trans, useTranslation } from 'react-i18next';
 
 import { Display, Text01B, Text01S } from '../../styles/text';
 import SafeAreaInsets from '../../components/SafeAreaInsets';
@@ -15,25 +16,8 @@ const Success = ({
 	navigation,
 	route,
 }: TransferScreenProps<'Success'>): ReactElement => {
+	const { t } = useTranslation('lightning');
 	const { type } = route.params;
-	const title =
-		type === 'savings'
-			? 'Transferring to Savings.'
-			: 'Transferring to Spending.';
-
-	const text =
-		type === 'savings' ? (
-			<>
-				Transferring funds from your spending balance to your savings. You will
-				be able to use these funds in <Text01B color="purple">±1 hour</Text01B>.
-			</>
-		) : (
-			<>
-				Transferring funds from your savings to your spending balance. You will
-				be able to use these funds in{' '}
-				<Text01B color="purple">±10 minutes</Text01B>.
-			</>
-		);
 
 	const onContinue = (): void => {
 		navigation.popToTop();
@@ -43,17 +27,30 @@ const Success = ({
 	return (
 		<GlowingBackground topLeft="purple">
 			<SafeAreaInsets type="top" />
-			<NavigationHeader title="Transfer Successful" displayBackButton={false} />
+			<NavigationHeader
+				title={t('transfer_successful')}
+				displayBackButton={false}
+			/>
 			<View style={styles.root}>
-				<Display color="purple">{title}</Display>
+				<Display color="purple">
+					{t(type === 'savings' ? 'ts_savings_title' : 'ts_spendings_title')}
+				</Display>
 				<Text01S color="gray1" style={styles.text}>
-					{text}
+					<Trans
+						t={t}
+						i18nKey={
+							type === 'savings' ? 'ts_savings_text' : 'ts_spendings_text'
+						}
+						components={{
+							purple: <Text01B color="purple" />,
+						}}
+					/>
 				</Text01S>
 
 				<GlowImage image={imageSrc} glowColor="purple" />
 
 				<View style={styles.buttonContainer}>
-					<Button text="OK" size="large" onPress={onContinue} />
+					<Button text={t('ok')} size="large" onPress={onContinue} />
 				</View>
 			</View>
 			<SafeAreaInsets type="bottom" />

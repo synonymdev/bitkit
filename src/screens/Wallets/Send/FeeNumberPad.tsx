@@ -1,6 +1,7 @@
 import React, { memo, ReactElement } from 'react';
 import { StyleProp, ViewStyle } from 'react-native';
 import { useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 
 import NumberPad from '../../../components/NumberPad';
 import { updateFee } from '../../../utils/wallet/transactions';
@@ -19,6 +20,7 @@ const FeeNumberPad = ({
 }: {
 	style?: StyleProp<ViewStyle>;
 }): ReactElement => {
+	const { t } = useTranslation('wallet');
 	const selectedWallet = useSelector(selectedWalletSelector);
 	const selectedNetwork = useSelector(selectedNetworkSelector);
 	const transaction = useSelector(transactionSelector);
@@ -36,7 +38,7 @@ const FeeNumberPad = ({
 		});
 		if (res.isErr()) {
 			showErrorNotification({
-				title: 'Error Updating Fee',
+				title: t('send_fee_error'),
 				message: res.error.message,
 			});
 		}
@@ -58,7 +60,7 @@ const FeeNumberPad = ({
 		});
 		if (res.isErr()) {
 			showErrorNotification({
-				title: 'Error Updating Fee',
+				title: t('send_fee_error'),
 				message: res.error.message,
 			});
 		}

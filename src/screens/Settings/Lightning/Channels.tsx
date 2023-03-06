@@ -10,6 +10,7 @@ import Share from 'react-native-share';
 import { FadeIn, FadeOut } from 'react-native-reanimated';
 import { IGetOrderResponse } from '@synonymdev/blocktank-client';
 import { TChannel } from '@synonymdev/react-native-ldk';
+import { useTranslation } from 'react-i18next';
 
 import {
 	AnimatedView,
@@ -51,7 +52,6 @@ import {
 	createLightningInvoice,
 	savePeer,
 } from '../../../store/actions/lightning';
-import { ETransactionDefaults } from '../../../store/types/wallet';
 import { useBalance } from '../../../hooks/wallet';
 import {
 	selectedNetworkSelector,
@@ -63,13 +63,14 @@ import {
 	pendingChannelsSelector,
 } from '../../../store/reselect/lightning';
 import { enableDevOptionsSelector } from '../../../store/reselect/settings';
+import { TRANSACTION_DEFAULTS } from '../../../utils/wallet/constants';
 import { zipLogs } from '../../../utils/lightning/logs';
 import { SettingsScreenProps } from '../../../navigation/types';
 
 /**
  * Convert pending (non-channel) blocktank orders to (fake) channels.
  * @param {IGetOrderResponse[]} orders
- * @param {nodeKey} string
+ * @param {string} nodeKey
  */
 const getPendingBlocktankChannels = (
 	orders: IGetOrderResponse[],
@@ -82,7 +83,7 @@ const getPendingBlocktankChannels = (
 	const failedOrders: TChannel[] = [];
 
 	orders.forEach((order) => {
-		const fakeChannel = {
+		const fakeChannel: TChannel = {
 			channel_id: order._id,
 			is_public: false,
 			is_usable: false,
@@ -92,11 +93,14 @@ const getPendingBlocktankChannels = (
 			counterparty_node_id: nodeKey,
 			funding_txid: order.channel_open_tx?.transaction_id,
 			// channel_type: string,
-			user_channel_id: 0,
+			user_channel_id: '0',
 			// short_channel_id: number,
 			inbound_capacity_sat: order.local_balance,
 			outbound_capacity_sat: order.remote_balance,
 			channel_value_satoshis: order.local_balance + order.remote_balance,
+			short_channel_id: order._id,
+			config_forwarding_fee_base_msat: 0,
+			config_forwarding_fee_proportional_millionths: 0,
 		};
 
 		if ([0, 100, 150, 200].includes(order.state)) {
@@ -185,6 +189,7 @@ const ChannelList = memo(
 const Channels = ({
 	navigation,
 }: SettingsScreenProps<'Channels'>): ReactElement => {
+	const { t } = useTranslation('lightning');
 	const [showClosed, setShowClosed] = useState(false);
 	const [payingInvoice, setPayingInvoice] = useState(false);
 	const [refreshingLdk, setRefreshingLdk] = useState(false);
@@ -236,7 +241,7 @@ const Channels = ({
 		const result = await zipLogs();
 		if (result.isErr()) {
 			showErrorNotification({
-				title: 'Failed to share logs',
+				title: t('error_logs'),
 				message: result.error.message,
 			});
 			return;
@@ -246,9 +251,9 @@ const Channels = ({
 		await Share.open({
 			type: 'application/zip',
 			url: `file://${result.value}`,
-			title: 'Export Lightning Logs',
+			title: t('export_logs'),
 		});
-	}, []);
+	}, [t]);
 
 	const onChannelPress = useCallback(
 		(channel: TChannel) => {
@@ -267,7 +272,7 @@ const Channels = ({
 		});
 		if (createPaymentRequest.isErr()) {
 			showErrorNotification({
-				title: 'Failed to Create Invoice',
+				title: t('error_invoice'),
 				message: createPaymentRequest.error.message,
 			});
 			return;
@@ -276,7 +281,7 @@ const Channels = ({
 		console.log(to_str);
 		Clipboard.setString(to_str);
 		showSuccessNotification({
-			title: 'Copied Invoice to Clipboard',
+			title: t('invoice_copied'),
 			message: to_str,
 		});
 	};
@@ -289,7 +294,7 @@ const Channels = ({
 	}, [selectedNetwork, selectedWallet]);
 
 	const addConnectionIsDisabled = useMemo(() => {
-		return balance.satoshis <= ETransactionDefaults.recommendedBaseFee;
+		return balance.satoshis <= TRANSACTION_DEFAULTS.recommendedBaseFee;
 	}, [balance.satoshis]);
 
 	const onAddPeer = useCallback(async () => {
@@ -305,7 +310,7 @@ const Channels = ({
 		});
 		if (addPeerRes.isErr()) {
 			showErrorNotification({
-				title: 'Unable to add lightning peer',
+				title: t('error_add'),
 				message: addPeerRes.error.message,
 			});
 			return;
@@ -313,22 +318,22 @@ const Channels = ({
 		const savePeerRes = savePeer({ selectedWallet, selectedNetwork, peer });
 		if (savePeerRes.isErr()) {
 			showErrorNotification({
-				title: 'Unable to save lightning peer',
+				title: t('error_save'),
 				message: savePeerRes.error.message,
 			});
 			return;
 		}
 		showSuccessNotification({
 			title: savePeerRes.value,
-			message: 'Lightning peer added & saved',
+			message: t('peer_saved'),
 		});
-	}, [peer, selectedNetwork, selectedWallet]);
+	}, [peer, selectedNetwork, selectedWallet, t]);
 
 	return (
 		<ThemedView style={styles.root}>
 			<SafeAreaInsets type="top" />
 			<NavigationHeader
-				title="Lightning Connections"
+				title={t('connections')}
 				onAddPress={addConnectionIsDisabled ? undefined : handleAdd}
 			/>
 			<ScrollView
@@ -338,7 +343,7 @@ const Channels = ({
 				}>
 				<View style={styles.balances}>
 					<View style={styles.balance}>
-						<Caption13Up color="gray1">Spending balance</Caption13Up>
+						<Caption13Up color="gray1">{t('spending_label')}</Caption13Up>
 						<View style={styles.row}>
 							<UpArrow color="purple" width={22} height={22} />
 							<Money
@@ -350,7 +355,7 @@ const Channels = ({
 						</View>
 					</View>
 					<View style={styles.balance}>
-						<Caption13Up color="gray1">Receiving capacity</Caption13Up>
+						<Caption13Up color="gray1">{t('receiving_label')}</Caption13Up>
 						<View style={styles.row}>
 							<DownArrow color="white" width={22} height={22} />
 							<Money
@@ -366,7 +371,7 @@ const Channels = ({
 				{pendingConnections.length > 0 && (
 					<>
 						<Caption13Up color="gray1" style={styles.sectionTitle}>
-							Pending connections
+							{t('conn_pending')}
 						</Caption13Up>
 						<ChannelList
 							channels={pendingConnections}
@@ -377,7 +382,7 @@ const Channels = ({
 				)}
 
 				<Caption13Up color="gray1" style={styles.sectionTitle}>
-					Open connections
+					{t('conn_open')}
 				</Caption13Up>
 				<ChannelList channels={openChannels} onChannelPress={onChannelPress} />
 
@@ -386,7 +391,7 @@ const Channels = ({
 						{closedChannels.length > 0 && (
 							<>
 								<Caption13Up color="gray1" style={styles.sectionTitle}>
-									Closed connections
+									{t('conn_closed')}
 								</Caption13Up>
 								<ChannelList
 									channels={closedChannels}
@@ -398,7 +403,7 @@ const Channels = ({
 						{failedOrders.length > 0 && (
 							<>
 								<Caption13Up color="gray1" style={styles.sectionTitle}>
-									Failed connections
+									{t('conn_failed')}
 								</Caption13Up>
 								<ChannelList
 									channels={failedOrders}
@@ -412,7 +417,7 @@ const Channels = ({
 
 				{(closedChannels.length > 0 || failedOrders.length > 0) && (
 					<Button
-						text={`${showClosed ? 'Hide' : 'Show'} Closed & Failed`}
+						text={t(showClosed ? 'conn_closed_hide' : 'conn_closed_show')}
 						textStyle={{ color: colors.white8 }}
 						size="large"
 						variant="transparent"
@@ -564,7 +569,7 @@ const Channels = ({
 				<View style={styles.buttons}>
 					<Button
 						style={styles.button}
-						text="Export Logs"
+						text={t('conn_button_export_logs')}
 						size="large"
 						variant="secondary"
 						onPress={handleExportLogs}
@@ -572,7 +577,7 @@ const Channels = ({
 					<View style={styles.divider} />
 					<Button
 						style={styles.button}
-						text="Add Connection"
+						text={t('conn_button_add')}
 						size="large"
 						disabled={addConnectionIsDisabled}
 						onPress={handleAdd}

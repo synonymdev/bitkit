@@ -1,6 +1,7 @@
 import React, { memo, ReactElement, useMemo } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useTranslation } from 'react-i18next';
 
 import { Text01S } from '../../../styles/text';
 import BottomSheetWrapper from '../../../components/BottomSheetWrapper';
@@ -18,6 +19,7 @@ import {
 const imageSrc = require('../../../assets/illustrations/shield.png');
 
 const PINPrompt = (): ReactElement => {
+	const { t } = useTranslation('security');
 	const snapPoints = useSnapPoints('medium');
 	const insets = useSafeAreaInsets();
 	const showLaterButton = useAppSelector(showLaterButtonSelector);
@@ -49,13 +51,10 @@ const PINPrompt = (): ReactElement => {
 			view="PINPrompt">
 			<View style={styles.container}>
 				<BottomSheetNavigationHeader
-					title="Increase Security"
+					title={t('pin_security_header')}
 					displayBackButton={false}
 				/>
-				<Text01S color="white5">
-					To increase wallet security, you can set up a PIN code and Face ID to
-					unlock your wallet.
-				</Text01S>
+				<Text01S color="white5">{t('pin_security_text')}</Text01S>
 
 				<GlowImage image={imageSrc} imageSize={150} glowColor="green" />
 
@@ -66,7 +65,7 @@ const PINPrompt = (): ReactElement => {
 								style={styles.button}
 								size="large"
 								variant="secondary"
-								text="Later"
+								text={t('later')}
 								onPress={handleLater}
 							/>
 							<View style={styles.divider} />
@@ -75,7 +74,7 @@ const PINPrompt = (): ReactElement => {
 					<Button
 						style={styles.button}
 						size="large"
-						text="Secure Wallet"
+						text={t('pin_security_button')}
 						onPress={handlePIN}
 						testID="SecureWallet"
 					/>

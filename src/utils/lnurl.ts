@@ -8,11 +8,12 @@ import {
 	LNURLPayParams,
 	LNURLWithdrawParams,
 } from '@synonymdev/react-native-lnurl';
+import { err, ok, Result } from '@synonymdev/result';
+
 import {
 	showErrorNotification,
 	showSuccessNotification,
 } from './notifications';
-import { err, ok, Result } from '@synonymdev/result';
 import {
 	addPeer,
 	getLightningBalance,
@@ -28,6 +29,7 @@ import {
 	getSelectedNetwork,
 	getSelectedWallet,
 } from './wallet';
+import i18n from './i18n';
 
 /**
  * Handles LNURL Pay Requests.
@@ -54,25 +56,25 @@ export const handleLnurlPay = async ({
 
 	const nodeId = getNodeIdFromStorage({ selectedWallet, selectedNetwork });
 	if (!nodeId) {
-		const msg =
-			'Unable to startup local lightning node at this time. Please try again or restart the app.';
 		showErrorNotification({
-			title: 'LNURL-Pay Error',
-			message: msg,
+			title: i18n.t('other:lnurl_ln_error_title'),
+			message: i18n.t('other:lnurl_ln_error_msg'),
 		});
-		return err(msg);
+		return err(
+			'Unable to startup local lightning node at this time. Please try again or restart the app.',
+		);
 	}
 
 	const milliSats = params.minSendable;
 
-	const callbackRes = await createPayRequestUrl({
+	const callbackRes = createPayRequestUrl({
 		params,
 		milliSats,
 		comment: 'Bitkit LNURL-Pay',
 	});
 	if (callbackRes.isErr()) {
 		showErrorNotification({
-			title: 'LNURL-Pay failed',
+			title: i18n.t('other:lnurl_pay_error'),
 			message: callbackRes.error.message,
 		});
 		return err(callbackRes.error.message);
@@ -112,23 +114,22 @@ export const handleLnurlChannel = async ({
 
 	const peer = params.uri;
 	if (peer.includes('onion')) {
-		const msg = 'Unable to add tor nodes at this time.';
 		showErrorNotification({
-			title: 'LNURL-Channel Request Error',
-			message: `Error adding lightning peer: ${msg}`,
+			title: i18n.t('other:lnurl_channel_error'),
+			message: i18n.t('lightning:error_add_tor'),
 		});
-		return err(msg);
+		return err('Unable to add tor nodes at this time.');
 	}
 
 	const nodeId = getNodeIdFromStorage({ selectedWallet, selectedNetwork });
 	if (!nodeId) {
-		const msg =
-			'Unable to startup local lightning node at this time. Please try again or restart the app.';
 		showErrorNotification({
-			title: 'LNURL-Channel Request Error',
-			message: msg,
+			title: i18n.t('other:lnurl_channel_error'),
+			message: i18n.t('other:lnurl_ln_error_msg'),
 		});
-		return err(msg);
+		return err(
+			'Unable to startup local lightning node at this time. Please try again or restart the app.',
+		);
 	}
 	const peers = getPeersFromStorage({ selectedWallet, selectedNetwork });
 
@@ -140,22 +141,24 @@ export const handleLnurlChannel = async ({
 		});
 		if (addPeerRes.isErr()) {
 			showErrorNotification({
-				title: 'LNURL-Channel Request Error',
-				message: `Error adding lightning peer: ${addPeerRes.error.message}`,
+				title: i18n.t('other:lnurl_channel_error'),
+				message:
+					i18n.t('lightning:error_add') + '\n' + addPeerRes.error.message,
 			});
-			return err('Unable to add lightning peer.');
+			return err(addPeerRes.error.message);
 		}
 		const savePeerRes = savePeer({ selectedWallet, selectedNetwork, peer });
 		if (savePeerRes.isErr()) {
 			showErrorNotification({
-				title: 'LNURL-Channel Request Error',
-				message: `Unable to save lightning peer: ${savePeerRes.error.message}`,
+				title: i18n.t('other:lnurl_channel_error'),
+				message:
+					i18n.t('lightning:error_save') + '\n' + savePeerRes.error.message,
 			});
 			return err(savePeerRes.error.message);
 		}
 	}
 
-	const callbackRes = await createChannelRequestUrl({
+	const callbackRes = createChannelRequestUrl({
 		localNodeId: nodeId,
 		params,
 		isPrivate: true,
@@ -163,7 +166,7 @@ export const handleLnurlChannel = async ({
 	});
 	if (callbackRes.isErr()) {
 		showErrorNotification({
-			title: 'LNURL-Channel Request failed',
+			title: i18n.t('other:lnurl_channel_error'),
 			message: callbackRes.error.message,
 		});
 		return err(callbackRes.error.message);
@@ -172,8 +175,8 @@ export const handleLnurlChannel = async ({
 	const channelStatusRes = await fetch(callbackRes.value);
 	if (channelStatusRes.status !== 200) {
 		showErrorNotification({
-			title: 'LNURL-Channel failed',
-			message: 'Unable to connect to Blocktank server.',
+			title: i18n.t('other:lnurl_channel_error'),
+			message: i18n.t('other:lnurl_blocktank_error'),
 		});
 		return err('Unable to connect to Blocktank server.');
 	}
@@ -181,17 +184,17 @@ export const handleLnurlChannel = async ({
 
 	if (jsonRes.status === 'ERROR') {
 		showErrorNotification({
-			title: 'LNURL-Channel failed',
+			title: i18n.t('other:lnurl_channel_error'),
 			message: jsonRes.reason,
 		});
 		return err(jsonRes.reason);
 	}
 
 	showSuccessNotification({
-		title: 'Success!',
+		title: i18n.t('other:lnurl_channel_success_title'),
 		message: peer
-			? `Successfully requested channel from: ${peer}.`
-			: 'Successfully requested channel.',
+			? i18n.t('other:lnurl_channel_success_msg_peer', { peer })
+			: i18n.t('other:lnurl_channel_success_msg_no_peer'),
 	});
 	return ok({ type: EQRDataType.lnurlChannel });
 };
@@ -232,17 +235,17 @@ export const handleLnurlAuth = async ({
 	});
 	if (authRes.isErr()) {
 		showErrorNotification({
-			title: 'LNURL-Auth failed',
+			title: i18n.t('other:lnurl_auth_error'),
 			message: authRes.error.message,
 		});
 		return err(authRes.error.message);
 	}
 
 	showSuccessNotification({
-		title: 'Authenticated!',
+		title: i18n.t('other:lnurl_auth_success_title'),
 		message: params.domain
-			? `Successfully logged into: ${params.domain}.`
-			: 'Successfully logged in.',
+			? i18n.t('other:lnurl_auth_success_msg_domain', { domain: params.domain })
+			: i18n.t('other:lnurl_auth_success_msg_no_domain'),
 	});
 	return ok({ type: EQRDataType.lnurlAuth });
 };
@@ -281,13 +284,13 @@ export const handleLnurlWithdraw = async ({
 	});
 
 	if (lightningBalance.remoteBalance < amountSats) {
-		const msg =
-			'Not enough inbound/receiving capacity to complete lnurl-withdraw request.';
 		showErrorNotification({
-			title: 'LNURL-Withdraw Error',
-			message: msg,
+			title: i18n.t('other:lnurl_withdr_error'),
+			message: i18n.t('other:lnurl_withdr_error_no_capacity'),
 		});
-		return err(msg);
+		return err(
+			'Not enough inbound/receiving capacity to complete lnurl-withdraw request.',
+		);
 	}
 
 	const invoice = await createLightningInvoice({
@@ -298,20 +301,19 @@ export const handleLnurlWithdraw = async ({
 		selectedNetwork,
 	});
 	if (invoice.isErr()) {
-		const msg = 'Unable to successfully create invoice for lnurl-withdraw.';
 		showErrorNotification({
-			title: 'LNURL-Withdraw Error',
-			message: msg,
+			title: i18n.t('other:lnurl_withdr_error'),
+			message: i18n.t('other:lnurl_withdr_error_create_invoice'),
 		});
-		return err(msg);
+		return err('Unable to successfully create invoice for lnurl-withdraw.');
 	}
-	const callbackRes = await createWithdrawCallbackUrl({
+	const callbackRes = createWithdrawCallbackUrl({
 		params,
 		paymentRequest: invoice.value.to_str,
 	});
 	if (callbackRes.isErr()) {
 		showErrorNotification({
-			title: 'LNURL-Withdraw Request failed',
+			title: i18n.t('other:lnurl_withdr_error'),
 			message: callbackRes.error.message,
 		});
 		return err(callbackRes.error.message);
@@ -320,15 +322,15 @@ export const handleLnurlWithdraw = async ({
 	const channelStatusRes = await fetch(callbackRes.value);
 	if (channelStatusRes.status !== 200) {
 		showErrorNotification({
-			title: 'LNURL-Withdraw failed',
-			message: 'Unable to connect to LNURL withdraw server.',
+			title: i18n.t('other:lnurl_withdr_error'),
+			message: i18n.t('other:lnurl_withdr_error_connect'),
 		});
 		return err('Unable to connect to LNURL withdraw server.');
 	}
 
 	showSuccessNotification({
-		title: 'Withdraw Requested',
-		message: 'LNURL Withdraw was successfully requested.',
+		title: i18n.t('other:lnurl_withdr_success_title'),
+		message: i18n.t('other:lnurl_withdr_success_msg'),
 	});
 	return ok({ type: EQRDataType.lnurlWithdraw });
 };

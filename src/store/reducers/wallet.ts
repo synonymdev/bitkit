@@ -1,14 +1,11 @@
 import { produce } from 'immer';
 
 import actions from '../actions/actions';
-import {
-	defaultBitcoinTransactionData,
-	EOutput,
-	IWalletStore,
-} from '../types/wallet';
+import { IWalletStore } from '../types/wallet';
 import {
 	getDefaultWalletShape,
 	defaultWalletStoreShape,
+	defaultBitcoinTransactionData,
 } from '../shapes/wallet';
 
 const wallet = (
@@ -246,24 +243,6 @@ const wallet = (
 								fee: action.payload.fee,
 								rbf: action.payload.rbf,
 								max: defaultBitcoinTransactionData.max,
-							},
-						},
-					},
-				},
-			};
-
-		case actions.RESET_OUTPUTS:
-			return {
-				...state,
-				wallets: {
-					...state.wallets,
-					[selectedWallet]: {
-						...state.wallets[selectedWallet],
-						transaction: {
-							...state.wallets[selectedWallet].transaction,
-							[selectedNetwork]: {
-								...state.wallets[selectedWallet].transaction[selectedNetwork],
-								outputs: [EOutput],
 							},
 						},
 					},

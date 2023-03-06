@@ -8,6 +8,7 @@ import {
 	View,
 	useWindowDimensions,
 } from 'react-native';
+import { Trans, useTranslation } from 'react-i18next';
 
 import { TextInput } from '../../styles/components';
 import { Display, Text01S } from '../../styles/text';
@@ -26,6 +27,7 @@ const Passphrase = ({
 }: OnboardingStackScreenProps<'Passphrase'>): ReactElement => {
 	const [bip39Passphrase, setPassphrase] = useState<string>('');
 	const { isSmallScreen } = useScreenSize();
+	const { t } = useTranslation('onboarding');
 
 	const dimensions = useWindowDimensions();
 	const illustrationStyles = useMemo(
@@ -50,18 +52,23 @@ const Passphrase = ({
 					<SafeAreaInsets type="top" />
 					<View style={styles.navigationContainer}>
 						<NavigationHeader />
-						<Flag text="Advanced" style={styles.flag} />
+						<Flag text={t('advanced')} style={styles.flag} />
 					</View>
 					<View style={styles.imageContainer}>
 						<Image style={illustrationStyles} source={imageSrc} />
 					</View>
 					<View style={styles.textContent}>
-						<Display>
-							Secure with <Display color="brand">Passphrase</Display>
-						</Display>
+						<Trans
+							t={t}
+							i18nKey="passphrase_header"
+							parent={Display}
+							components={{
+								brand: <Display color="brand" />,
+							}}
+						/>
+
 						<Text01S color="gray1" style={styles.text}>
-							You can add a secret passphrase to the 12-word recovery phrase. If
-							you do, make sure you don’t forget.
+							{t('passphrase_text')}
 						</Text01S>
 
 						<TextInput
@@ -73,13 +80,13 @@ const Passphrase = ({
 							// @ts-ignore autoCompleteType -> autoComplete in newer version
 							autoCompleteType="off"
 							autoCorrect={false}
-							placeholder="Passphrase"
+							placeholder={t('passphrase')}
 						/>
 					</View>
 
 					<View style={styles.buttonContainer}>
 						<Button
-							text="Create New Wallet"
+							text={t('create_new_wallet')}
 							size="large"
 							style={[styles.button, styles.customButton]}
 							onPress={(): void => {

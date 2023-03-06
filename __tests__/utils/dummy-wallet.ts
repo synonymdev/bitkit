@@ -1,4 +1,5 @@
 import {
+	defaultBitcoinTransactionData,
 	getAddressIndexShape,
 	objectTypeItems,
 } from '../../src/store/shapes/wallet';
@@ -789,38 +790,8 @@ export const walletState: IWallet = {
 		timestamp: null,
 	},
 	transaction: {
-		bitcoin: {
-			outputs: [],
-			inputs: [],
-			changeAddress: '',
-			fiatAmount: 0,
-			fee: 256,
-			satsPerByte: 1,
-			transactionSize: 250,
-			message: '',
-			label: '',
-		},
-		bitcoinTestnet: {
-			outputs: [],
-			inputs: [],
-			changeAddress: '',
-			fiatAmount: 0,
-			fee: 256,
-			satsPerByte: 1,
-			transactionSize: 250,
-			message: '',
-			label: '',
-		},
-		bitcoinRegtest: {
-			outputs: [],
-			inputs: [],
-			changeAddress: '',
-			fiatAmount: 0,
-			fee: 256,
-			satsPerByte: 1,
-			transactionSize: 250,
-			message: '',
-			label: '',
-		},
+		bitcoin: defaultBitcoinTransactionData,
+		bitcoinTestnet: defaultBitcoinTransactionData,
+		bitcoinRegtest: defaultBitcoinTransactionData,
 	},
 };

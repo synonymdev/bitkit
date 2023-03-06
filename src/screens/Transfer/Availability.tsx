@@ -1,6 +1,7 @@
 import React, { ReactElement, memo } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useSelector } from 'react-redux';
+import { Trans, useTranslation } from 'react-i18next';
 
 import { Display, Text01B, Text01S } from '../../styles/text';
 import SafeAreaInsets from '../../components/SafeAreaInsets';
@@ -22,6 +23,7 @@ const imageSrc = require('../../assets/illustrations/exclamation-mark.png');
 const Availability = ({
 	navigation,
 }: TransferScreenProps<'Availability'>): ReactElement => {
+	const { t } = useTranslation('lightning');
 	const selectedWallet = useSelector(selectedWalletSelector);
 	const selectedNetwork = useSelector(selectedNetworkSelector);
 
@@ -55,14 +57,20 @@ const Availability = ({
 	return (
 		<GlowingBackground topLeft="purple">
 			<SafeAreaInsets type="top" />
-			<NavigationHeader title="Funds Availability" displayBackButton={false} />
+			<NavigationHeader
+				title={t('availability_title')}
+				displayBackButton={false}
+			/>
 			<View style={styles.root}>
-				<Display color="purple">Availability of your Funds.</Display>
+				<Display color="purple">{t('availability_header')}</Display>
 				<Text01S color="gray1" style={styles.text}>
-					Transferring funds to your savings usually takes about an hour, but
-					settlement may take an additional{' '}
-					<Text01B color="purple">14 days</Text01B> under certain network
-					conditions.
+					<Trans
+						t={t}
+						i18nKey="availability_text"
+						components={{
+							purple: <Text01B color="purple" />,
+						}}
+					/>
 				</Text01S>
 
 				<GlowImage image={imageSrc} glowColor="purple" />
@@ -70,7 +78,7 @@ const Availability = ({
 				<View style={styles.buttonContainer}>
 					<Button
 						style={styles.button}
-						text="Cancel"
+						text={t('cancel')}
 						size="large"
 						variant="secondary"
 						onPress={onCancel}
@@ -78,7 +86,7 @@ const Availability = ({
 					<View style={styles.divider} />
 					<Button
 						style={styles.button}
-						text="OK"
+						text={t('ok')}
 						size="large"
 						onPress={onContinue}
 					/>

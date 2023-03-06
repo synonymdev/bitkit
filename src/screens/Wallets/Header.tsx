@@ -1,6 +1,7 @@
 import React, { memo, ReactElement, useCallback } from 'react';
 import { StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { useTranslation } from 'react-i18next';
 
 import { View, TouchableOpacity } from '../../styles/components';
 import { Title } from '../../styles/text';
@@ -12,6 +13,7 @@ import { RootNavigationProp } from '../../navigation/types';
 import { isSlashtagsDisabled } from '../../utils/slashtags';
 
 const EnabledSlashtagsProfileButton = (): ReactElement => {
+	const { t } = useTranslation('slashtags');
 	const navigation = useNavigation<RootNavigationProp>();
 
 	const { url } = useSelectedSlashtag();
@@ -37,20 +39,21 @@ const EnabledSlashtagsProfileButton = (): ReactElement => {
 			{profile?.name ? (
 				<Title>{truncate(profile?.name, 20)}</Title>
 			) : (
-				<Title>Your name</Title>
+				<Title>{t('your_name')}</Title>
 			)}
 		</TouchableOpacity>
 	);
 };
 
 const ProfileButton = (): ReactElement => {
+	const { t } = useTranslation('slashtags');
 	return isSlashtagsDisabled ? (
 		<TouchableOpacity
 			style={styles.leftColumn}
 			activeOpacity={1}
 			onPress={(): void => {}}>
-			<ProfileImage size={32} url={''} image={''} style={styles.profileImage} />
-			<Title color="gray">Slashtags disabled</Title>
+			<ProfileImage size={32} url="" image="" style={styles.profileImage} />
+			<Title color="gray">{t('disabled')}</Title>
 		</TouchableOpacity>
 	) : (
 		<EnabledSlashtagsProfileButton />

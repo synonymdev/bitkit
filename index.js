@@ -31,7 +31,7 @@ if (__DEV__) {
 	// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 	global.console.error = (...arg) => {
 		for (const error of ignoreList) {
-			if (arg[0].startsWith(error)) {
+			if (arg[0]?.startsWith?.(error)) {
 				return;
 			}
 		}

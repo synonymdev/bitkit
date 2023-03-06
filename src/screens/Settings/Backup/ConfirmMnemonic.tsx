@@ -1,6 +1,7 @@
 import React, { memo, ReactElement, useMemo, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useTranslation } from 'react-i18next';
 
 import { Text01S, Text01M } from '../../../styles/text';
 import Button from '../../../components/Button';
@@ -30,6 +31,7 @@ const ConfirmMnemonic = ({
 	navigation,
 	route,
 }: BackupScreenProps<'ConfirmMnemonic'>): ReactElement => {
+	const { t } = useTranslation('security');
 	const { seed: origSeed, bip39Passphrase } = route.params;
 	const [seed, setSeed] = useState(Array(origSeed.length).fill(undefined));
 	const [pressed, setPressed] = useState(Array(origSeed.length).fill(false));
@@ -86,10 +88,10 @@ const ConfirmMnemonic = ({
 
 	return (
 		<GradientView style={styles.container}>
-			<BottomSheetNavigationHeader title="Confirm Recovery Phrase" />
+			<BottomSheetNavigationHeader title={t('mnemonic_confirm')} />
 
 			<Text01S color="gray1" style={styles.text}>
-				Tap the 12 words in the correct order.
+				{t('mnemonic_confirm_tap')}
 			</Text01S>
 
 			<View style={styles.buttons}>
@@ -129,7 +131,7 @@ const ConfirmMnemonic = ({
 				{!showButton && (
 					<Button
 						size="large"
-						text="Continue"
+						text={t('continue')}
 						onPress={(): void => {
 							if (bip39Passphrase) {
 								navigation.navigate('ConfirmPassphrase', { bip39Passphrase });

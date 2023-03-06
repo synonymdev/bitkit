@@ -1,5 +1,6 @@
 import React, { memo, ReactElement, useMemo } from 'react';
 import { useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 
 import { EItemType, IListData } from '../../../components/List';
 import SettingsView from '../SettingsView';
@@ -10,6 +11,7 @@ import Store from '../../../store/types';
 const BackupSettings = ({
 	navigation,
 }: SettingsScreenProps<'BackupSettings'>): ReactElement => {
+	const { t } = useTranslation('settings');
 	const pin = useSelector((state: Store) => state.settings.pin);
 
 	const settingsListData: IListData[] = useMemo(
@@ -17,7 +19,7 @@ const BackupSettings = ({
 			{
 				data: [
 					{
-						title: 'Back up your money',
+						title: t('backup.money'),
 						type: EItemType.button,
 						onPress: (): void => {
 							closeBottomSheet('backupPrompt');
@@ -26,7 +28,7 @@ const BackupSettings = ({
 						testID: 'BackupMoney',
 					},
 					{
-						title: 'Back up your data',
+						title: t('backup.data'),
 						type: EItemType.button,
 						enabled: true,
 						onPress: (): void => {
@@ -35,7 +37,7 @@ const BackupSettings = ({
 						testID: 'BackupData',
 					},
 					{
-						title: 'Reset and restore wallet',
+						title: t('backup.reset'),
 						type: EItemType.button,
 						enabled: true,
 						onPress: (): void => {
@@ -57,12 +59,12 @@ const BackupSettings = ({
 				],
 			},
 		],
-		[navigation, pin],
+		[navigation, pin, t],
 	);
 
 	return (
 		<SettingsView
-			title="Back Up Or Restore"
+			title={t('backup.title')}
 			listData={settingsListData}
 			showBackNavigation={true}
 		/>

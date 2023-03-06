@@ -2,10 +2,11 @@ import React, { memo, ReactElement, useMemo, useState, useEffect } from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import {
 	StyleSheet,
+	TouchableOpacity,
 	View,
 	useWindowDimensions,
-	TouchableOpacity,
 } from 'react-native';
+import { Trans, useTranslation } from 'react-i18next';
 
 import { Headline } from '../../styles/text';
 import { XIcon } from '../../styles/icons';
@@ -16,6 +17,7 @@ const EmptyWallet = (): ReactElement => {
 	const { height } = useWindowDimensions();
 	const insets = useSafeAreaInsets();
 	const [showClose, setShowClose] = useState(false);
+	const { t } = useTranslation('onboarding');
 
 	useEffect(() => {
 		// delay showning close button. this is handy for e2e testing
@@ -46,8 +48,11 @@ const EmptyWallet = (): ReactElement => {
 			)}
 
 			<Headline>
-				To get started send <Headline color="brand">Bitcoin</Headline> to your
-				wallet.
+				<Trans
+					t={t}
+					i18nKey="empty_wallet"
+					components={{ brand: <Headline color="brand" /> }}
+				/>
 			</Headline>
 
 			<View style={arrowContainer}>

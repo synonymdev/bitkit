@@ -10,7 +10,7 @@ import {
 	IUtxo,
 	EAddressType,
 	IBoostedTransactions,
-	EBoost,
+	EBoostType,
 	TWalletName,
 	IWalletStore,
 } from '../types/wallet';
@@ -30,7 +30,12 @@ import {
 	refreshWallet,
 	removeDuplicateAddresses,
 } from '../../utils/wallet';
-import { getDispatch, getFeesStore, getWalletStore } from '../helpers';
+import {
+	getDispatch,
+	getFeesStore,
+	getSettingsStore,
+	getWalletStore,
+} from '../helpers';
 import { TAvailableNetworks } from '../../utils/networks';
 import { objectKeys } from '../../utils/objectKeys';
 import { err, ok, Result } from '@synonymdev/result';
@@ -51,6 +56,7 @@ import {
 	getUtxos,
 } from '../../utils/wallet/electrum';
 import { EFeeId } from '../types/fees';
+import { ETransactionSpeed } from '../types/settings';
 import { IHeader } from '../../utils/types/electrum';
 import { showBottomSheet, closeBottomSheet } from './ui';
 import {
@@ -91,7 +97,7 @@ export const createWallet = async ({
 	mnemonic = '',
 	bip39Passphrase = '',
 	addressTypes,
-}: ICreateWallet): Promise<Result<string>> => {
+}: ICreateWallet = {}): Promise<Result<string>> => {
 	if (!addressTypes) {
 		addressTypes = getAddressTypes();
 	}
@@ -148,7 +154,7 @@ export const updateAddressIndexes = async ({
 	selectedWallet?: TWalletName;
 	selectedNetwork?: TAvailableNetworks;
 	addressType?: EAddressType;
-}): Promise<Result<string>> => {
+} = {}): Promise<Result<string>> => {
 	if (!selectedNetwork) {
 		selectedNetwork = getSelectedNetwork();
 	}
@@ -781,7 +787,7 @@ export const deleteOnChainTransactionById = async ({
  * Adds a boosted transaction id to the boostedTransactions object.
  * @param {string} newTxId
  * @param {string} oldTxId
- * @param {EBoost} [type]
+ * @param {EBoostType} [type]
  * @param {number} fee
  * @param {TWalletName} [selectedWallet]
  * @param {TAvailableNetworks} [selectedNetwork]
@@ -789,14 +795,14 @@ export const deleteOnChainTransactionById = async ({
 export const addBoostedTransaction = async ({
 	newTxId,
 	oldTxId,
-	type = EBoost.cpfp,
+	type = EBoostType.cpfp,
 	fee,
 	selectedWallet,
 	selectedNetwork,
 }: {
 	newTxId: string;
 	oldTxId: string;
-	type?: EBoost;
+	type?: EBoostType;
 	fee: number;
 	selectedWallet?: TWalletName;
 	selectedNetwork?: TAvailableNetworks;
@@ -853,7 +859,7 @@ export const resetSelectedWallet = async ({
 		type: actions.RESET_SELECTED_WALLET,
 		payload: { selectedWallet },
 	});
-	await refreshWallet({});
+	await refreshWallet();
 };
 
 /**
@@ -864,7 +870,7 @@ export const resetWalletStore = async (): Promise<Result<string>> => {
 	dispatch({
 		type: actions.RESET_WALLET_STORE,
 	});
-	await createWallet({});
+	await createWallet();
 	await refreshWallet({
 		scanAllAddresses: true,
 		updateAllAddressTypes: true,
@@ -880,7 +886,6 @@ export const setupOnChainTransaction = async ({
 	inputTxHashes,
 	utxos,
 	rbf = false,
-	submitDispatch = true,
 }: {
 	selectedWallet?: TWalletName;
 	selectedNetwork?: TAvailableNetworks;
@@ -888,8 +893,7 @@ export const setupOnChainTransaction = async ({
 	inputTxHashes?: string[]; // Used to pre-specify inputs to use by tx_hash
 	utxos?: IUtxo[]; // Used to pre-specify utxos to use
 	rbf?: boolean; // Enable or disable rbf.
-	submitDispatch?: boolean; //Should we dispatch this and update the store.
-} = {}): Promise<Result<IBitcoinTransactionData>> => {
+} = {}): Promise<Result<Partial<IBitcoinTransactionData>>> => {
 	try {
 		if (!selectedNetwork) {
 			selectedNetwork = getSelectedNetwork();
@@ -912,16 +916,16 @@ export const setupOnChainTransaction = async ({
 		let inputs: IUtxo[] = [];
 		if (inputTxHashes) {
 			// If specified, filter for the desired tx_hash and push the utxo as an input.
-			inputs = currentWallet.utxos[selectedNetwork].filter((utxo) =>
-				inputTxHashes.includes(utxo.tx_hash),
-			);
+			inputs = currentWallet.utxos[selectedNetwork].filter((utxo) => {
+				return inputTxHashes.includes(utxo.tx_hash);
+			});
 		} else if (utxos) {
 			inputs = utxos;
 		}
 
 		if (!inputs.length) {
 			// If inputs were previously selected, leave them.
-			if (transaction.inputs && transaction.inputs.length > 0) {
+			if (transaction.inputs.length > 0) {
 				inputs = transaction.inputs;
 			} else {
 				// Otherwise, lets use our available utxo's.
@@ -984,7 +988,7 @@ export const setupOnChainTransaction = async ({
 		if (!lightningInvoice) {
 			//Remove any potential change address that may have been included from a previous tx attempt.
 			outputs = outputs.filter((output) => {
-				if (output?.address && !changeAddressesArr.includes(output?.address)) {
+				if (output.address && !changeAddressesArr.includes(output.address)) {
 					return output;
 				}
 			});
@@ -1000,12 +1004,11 @@ export const setupOnChainTransaction = async ({
 			rbf,
 		};
 
-		if (submitDispatch) {
-			dispatch({
-				type: actions.SETUP_ON_CHAIN_TRANSACTION,
-				payload,
-			});
-		}
+		dispatch({
+			type: actions.SETUP_ON_CHAIN_TRANSACTION,
+			payload,
+		});
+
 		return ok(payload);
 	} catch (e) {
 		return err(e);
@@ -1070,20 +1073,20 @@ export const getChangeAddress = async ({
 
 /**
  * This updates the specified on-chain transaction.
- * @param selectedWallet
- * @param selectedNetwork
- * @param transaction
+ * @param {Partial<IBitcoinTransactionData>} transaction
+ * @param {TWalletName} [selectedWallet]
+ * @param {TAvailableNetworks} [selectedNetwork]
  * @return {Promise<Result<string>>}
  */
-export const updateBitcoinTransaction = async ({
+export const updateBitcoinTransaction = ({
 	transaction,
 	selectedWallet,
 	selectedNetwork,
 }: {
-	transaction: IBitcoinTransactionData;
+	transaction: Partial<IBitcoinTransactionData>;
 	selectedWallet?: TWalletName;
 	selectedNetwork?: TAvailableNetworks;
-}): Promise<Result<string>> => {
+}): Result<string> => {
 	try {
 		if (!selectedNetwork) {
 			selectedNetwork = getSelectedNetwork();
@@ -1093,29 +1096,25 @@ export const updateBitcoinTransaction = async ({
 		}
 
 		//Add output if specified
-		if (transaction?.outputs) {
-			let outputs =
-				getWalletStore().wallets[selectedWallet].transaction[selectedNetwork]
-					.outputs || [];
-			await Promise.all(
-				transaction?.outputs.map((output) => {
-					const outputIndex = output.index;
-					outputs[outputIndex] = output;
-				}),
-			);
+		if (transaction.outputs) {
+			const currentWallet = getWalletStore().wallets[selectedWallet];
+			const currentTransaction = currentWallet.transaction[selectedNetwork];
+			const outputs = currentTransaction.outputs.concat();
+			transaction.outputs.forEach((output) => {
+				outputs[output.index] = output;
+			});
 			transaction.outputs = outputs;
 		}
 
-		const payload = {
-			selectedNetwork,
-			selectedWallet,
-			transaction,
-		};
-
 		dispatch({
 			type: actions.UPDATE_ON_CHAIN_TRANSACTION,
-			payload,
+			payload: {
+				transaction,
+				selectedNetwork,
+				selectedWallet,
+			},
 		});
+
 		return ok('Transaction updated');
 	} catch (e) {
 		return err(e);
@@ -1147,7 +1146,7 @@ export const updateSelectedFeeId = async ({
 		}
 		const transaction = transactionResponse.value;
 		transaction.selectedFeeId = feeId;
-		await updateBitcoinTransaction({ transaction });
+		updateBitcoinTransaction({ transaction });
 		return ok('Fee updated');
 	} catch (e) {
 		console.log(e);
@@ -1345,7 +1344,7 @@ export const addTxTag = ({
 			return err(txData.error.message);
 		}
 
-		let tags = [...(txData.value?.tags ?? []), tag];
+		let tags = [...txData.value.tags, tag];
 		tags = [...new Set(tags)]; // remove duplicates
 
 		updateBitcoinTransaction({
@@ -1393,7 +1392,7 @@ export const removeTxTag = ({
 			return err(txData.error.message);
 		}
 
-		const tags = txData.value?.tags ?? [];
+		const tags = txData.value.tags;
 		const newTags = tags.filter((t) => t !== tag);
 
 		updateBitcoinTransaction({
@@ -1411,13 +1410,18 @@ export const removeTxTag = ({
 	}
 };
 
-export const setupFeeForOnChainTransaction = async ({
+/**
+ * Updates the fee rate for the current transaction to the preferred value if none set.
+ * @param {TWalletName} [selectedWallet]
+ * @param {TAvailableNetworks} [selectedNetwork]
+ */
+export const setupFeeForOnChainTransaction = ({
 	selectedWallet,
 	selectedNetwork,
 }: {
 	selectedWallet?: TWalletName;
 	selectedNetwork?: TAvailableNetworks;
-} = {}): Promise<Result<string>> => {
+} = {}): Result<string> => {
 	try {
 		if (!selectedNetwork) {
 			selectedNetwork = getSelectedNetwork();
@@ -1426,16 +1430,40 @@ export const setupFeeForOnChainTransaction = async ({
 			selectedWallet = getSelectedWallet();
 		}
 
+		const transactionDataResponse = getOnchainTransactionData({
+			selectedWallet,
+			selectedNetwork,
+		});
+		if (transactionDataResponse.isErr()) {
+			return err(transactionDataResponse.error.message);
+		}
+		const transaction = transactionDataResponse.value;
+
 		const fees = getFeesStore().onchain;
+		const { transactionSpeed, customFeeRate } = getSettingsStore();
+		const preferredFeeRate =
+			transactionSpeed === ETransactionSpeed.custom
+				? customFeeRate
+				: fees[transactionSpeed];
+
+		const satsPerByte =
+			transaction.selectedFeeId === 'none'
+				? preferredFeeRate
+				: transaction.satsPerByte;
+		const selectedFeeId =
+			transaction.selectedFeeId === 'none'
+				? EFeeId[transactionSpeed]
+				: transaction.selectedFeeId;
 
 		const res = updateFee({
+			satsPerByte,
+			selectedFeeId,
 			selectedNetwork,
 			selectedWallet,
-			satsPerByte: fees[EFeeId.normal],
-			selectedFeeId: EFeeId.normal,
 		});
 
 		if (res.isErr()) {
+			console.log(res.error.message);
 			return err(res.error.message);
 		}
 

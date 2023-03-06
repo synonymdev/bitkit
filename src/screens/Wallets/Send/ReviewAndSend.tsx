@@ -11,6 +11,7 @@ import { StyleSheet, View, TouchableOpacity, Keyboard } from 'react-native';
 import { useSelector } from 'react-redux';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { TInvoice } from '@synonymdev/react-native-ldk';
+import { useTranslation } from 'react-i18next';
 
 import { Caption13Up, Text02M } from '../../../styles/text';
 import {
@@ -106,6 +107,7 @@ const Section = memo(
 const ReviewAndSend = ({
 	navigation,
 }: SendScreenProps<'ReviewAndSend'>): ReactElement => {
+	const { t, i18n } = useTranslation('wallet');
 	const insets = useSafeAreaInsets();
 	const selectedWallet = useSelector(selectedWalletSelector);
 	const selectedNetwork = useSelector(selectedNetworkSelector);
@@ -129,6 +131,7 @@ const ReviewAndSend = ({
 	const [showDialog3, setShowDialog3] = useState(false);
 	const [showDialog4, setShowDialog4] = useState(false);
 	const [showDialog5, setShowDialog5] = useState(false);
+	const [dialogWarnings, setDialogWarnings] = useState<string[]>([]);
 	const [rawTx, setRawTx] = useState<{ hex: string; id: string }>();
 	const [decodedInvoice, setDecodedInvoice] = useState<TInvoice>();
 
@@ -180,11 +183,7 @@ const ReviewAndSend = ({
 	}, [transaction.outputs, selectedNetwork, selectedWallet]);
 
 	const transactionTotal = useMemo((): number => {
-		try {
-			return Number(amount) + Number(totalFee);
-		} catch {
-			return Number(totalFee);
-		}
+		return amount + totalFee;
 	}, [amount, totalFee]);
 
 	// TODO:
@@ -194,7 +193,7 @@ const ReviewAndSend = ({
 	 * Returns the current output by index.
 	 */
 	const getOutput = useMemo((): IOutput => {
-		return transaction.outputs?.[index] ?? { address: '', value: 0, index: 0 };
+		return transaction.outputs[index] ?? { address: '', value: 0, index: 0 };
 	}, [index, transaction.outputs]);
 
 	/**
@@ -205,20 +204,19 @@ const ReviewAndSend = ({
 	}, [getOutput.address]);
 
 	const selectedFeeId = useMemo(
-		() => transaction.selectedFeeId ?? EFeeId.slow,
+		() => transaction.selectedFeeId,
 		[transaction.selectedFeeId],
 	);
 
 	const satsPerByte = useMemo((): number => {
-		return transaction.satsPerByte ?? 1;
+		return transaction.satsPerByte;
 	}, [transaction.satsPerByte]);
 
 	const getFee = useCallback(
-		(_satsPerByte = 1) => {
-			const message = transaction.message;
+		(_satsPerByte: number) => {
 			return getTotalFee({
 				satsPerByte: _satsPerByte,
-				message,
+				message: transaction.message,
 				selectedWallet,
 				selectedNetwork,
 			});
@@ -227,12 +225,7 @@ const ReviewAndSend = ({
 	);
 
 	useEffect(() => {
-		(async (): Promise<void> => {
-			const res = await setupFeeForOnChainTransaction();
-			if (res.isErr()) {
-				console.log(res.error.message);
-			}
-		})();
+		setupFeeForOnChainTransaction();
 	}, []);
 
 	const _onError = useCallback(
@@ -248,7 +241,7 @@ const ReviewAndSend = ({
 
 	const createLightningTransaction = useCallback(async () => {
 		if (!transaction.lightningInvoice) {
-			_onError('Error creating transaction', 'No lightning invoice found.');
+			_onError(t('send_error_create_tx'), t('error_no_invoice'));
 			setIsLoading(false);
 			return;
 		}
@@ -267,7 +260,7 @@ const ReviewAndSend = ({
 			customSatAmount,
 		);
 		if (payInvoiceResponse.isErr()) {
-			_onError('Error creating transaction', payInvoiceResponse.error.message);
+			_onError(t('send_error_create_tx'), payInvoiceResponse.error.message);
 			setIsLoading(false);
 			return;
 		}
@@ -297,6 +290,7 @@ const ReviewAndSend = ({
 		transaction.lightningInvoice,
 		transaction.outputs,
 		transaction.tags,
+		t,
 	]);
 
 	const createOnChainTransaction = useCallback(async (): Promise<void> => {
@@ -305,10 +299,7 @@ const ReviewAndSend = ({
 			const transactionIsValid = validateTransaction(transaction);
 			if (transactionIsValid.isErr()) {
 				setIsLoading(false);
-				_onError(
-					'Error creating transaction',
-					transactionIsValid.error.message,
-				);
+				_onError(t('send_error_create_tx'), transactionIsValid.error.message);
 				return;
 			}
 			const response = await createTransaction({
@@ -317,7 +308,7 @@ const ReviewAndSend = ({
 			});
 			if (response.isErr()) {
 				setIsLoading(false);
-				_onError('Error creating transaction', response.error.message);
+				_onError(t('send_error_create_tx'), response.error.message);
 				return;
 			}
 			if (__DEV__) {
@@ -325,17 +316,14 @@ const ReviewAndSend = ({
 			}
 			setRawTx(response.value);
 		} catch (error) {
-			_onError('Error creating transaction', (error as Error).message);
+			_onError(t('send_error_create_tx'), (error as Error).message);
 			setIsLoading(false);
 		}
-	}, [selectedNetwork, selectedWallet, transaction, _onError]);
+	}, [selectedNetwork, selectedWallet, transaction, _onError, t]);
 
 	const _broadcast = useCallback(async () => {
 		if (!rawTx?.id || !rawTx?.hex) {
-			_onError(
-				'Error: No transaction is available to broadcast.',
-				'Please check your transaction info and try again.',
-			);
+			_onError(t('error_no_tx_title'), t('error_no_tx_msg'));
 			return;
 		}
 		const response = await broadcastTransaction({
@@ -345,16 +333,15 @@ const ReviewAndSend = ({
 		if (response.isErr()) {
 			// Check if it failed to broadcast due to low fee.
 			if (response.error.message.includes('min relay fee not met')) {
-				_onError(
-					'Error: Minimum relay fee not met',
-					'Please increase your fee and try again.',
-				);
+				_onError(t('error_min_fee_title'), t('error_min_fee_msg'));
 			} else {
 				// Most likely a connection error with the Electrum server.
 				// TODO: Add a backup method to broadcast via an api if unable to broadcast through Electrum.
 				_onError(
-					'Error: Unable to Broadcast Transaction',
-					`Please check your connection and try again. \n ${response.error.message}`,
+					t('error_broadcast_tx'),
+					t('error_broadcast_tx_connection', {
+						message: response.error.message,
+					}),
 				);
 			}
 			setIsLoading(false);
@@ -388,6 +375,7 @@ const ReviewAndSend = ({
 		_onError,
 		navigation,
 		transaction,
+		t,
 	]);
 
 	useEffect(() => {
@@ -424,18 +412,54 @@ const ReviewAndSend = ({
 		});
 	}, [navigation, runCreateTxMethods]);
 
-	const confirmPayment = useCallback(async () => {
-		if (pin && pinForPayments) {
-			if (biometrics) {
-				setShowBiometrics(true);
-			} else {
-				setIsLoading(false);
-				navigateToPin();
-			}
-		} else {
-			runCreateTxMethods();
+	const showDialogWarning = useCallback((dialogId) => {
+		switch (dialogId) {
+			case 'dialog1':
+				setShowDialog1(true);
+				break;
+			case 'dialog2':
+				setShowDialog2(true);
+				break;
+			case 'dialog3':
+				setShowDialog3(true);
+				break;
+			case 'dialog4':
+				setShowDialog4(true);
+				break;
+			case 'dialog5':
+				setShowDialog5(true);
+				break;
 		}
-	}, [pin, pinForPayments, biometrics, navigateToPin, runCreateTxMethods]);
+	}, []);
+
+	const confirmPayment = useCallback(
+		(warnings: string[] = []) => {
+			if (warnings.length > 0) {
+				showDialogWarning(warnings[0]);
+				setDialogWarnings(warnings.slice(1));
+				return;
+			}
+
+			if (pin && pinForPayments) {
+				if (biometrics) {
+					setShowBiometrics(true);
+				} else {
+					setIsLoading(false);
+					navigateToPin();
+				}
+			} else {
+				runCreateTxMethods();
+			}
+		},
+		[
+			biometrics,
+			navigateToPin,
+			pin,
+			pinForPayments,
+			runCreateTxMethods,
+			showDialogWarning,
+		],
+	);
 
 	const handleTagRemove = useCallback(
 		(tag: string) => {
@@ -451,6 +475,7 @@ const ReviewAndSend = ({
 	);
 
 	const onSwipeToPay = useCallback(async () => {
+		const warnings: string[] = [];
 		setIsLoading(true);
 
 		const { fiatValue: amountFiat } = getFiatDisplayValues({
@@ -468,55 +493,49 @@ const ReviewAndSend = ({
 		});
 
 		// amount > 50% of total balance
-		if (transaction?.lightningInvoice) {
+		if (transaction.lightningInvoice) {
 			// If lightning tx use lightning balance.
 			if (amount > lightningBalance.localBalance / 2) {
-				setShowDialog2(true);
-				return;
+				warnings.push('dialog2');
 			}
 		} else {
 			// If on-chain tx use on-chain balance.
 			if (amount > onChainBalance / 2) {
-				setShowDialog2(true);
-				return;
+				warnings.push('dialog2');
 			}
 		}
 
 		// amount > 100$ and enableSendAmountWarning
 		if (amountFiat > 100 && enableSendAmountWarning) {
-			setShowDialog1(true);
-			return;
+			warnings.push('dialog1');
 		}
 
 		// fee > 10$
 		if (feeFiat > 10) {
-			setShowDialog4(true);
-			return;
+			warnings.push('dialog4');
 		}
 
 		// Check if the user is setting the minimum relay fee given the current fee environment.
 		if (
-			transaction?.satsPerByte &&
+			transaction.satsPerByte &&
 			// This check is to prevent situations where all values are set to 1sat/vbyte. Where setting 1sat/vbyte is perfectly fine.
 			feeEstimates.minimum < feeEstimates.slow &&
 			transaction.satsPerByte <= feeEstimates.minimum
 		) {
-			setShowDialog5(true);
+			warnings.push('dialog5');
 		}
 
 		// fee > 50% of send amount
-		if (!transaction?.lightningInvoice && feeSats > amount / 2) {
-			setShowDialog3(true);
-			return;
+		if (!transaction.lightningInvoice && feeSats > amount / 2) {
+			warnings.push('dialog3');
 		}
-
-		confirmPayment();
+		confirmPayment(warnings);
 	}, [
 		amount,
 		exchangeRates,
 		bitcoinUnit,
 		feeSats,
-		transaction?.lightningInvoice,
+		transaction.lightningInvoice,
 		transaction.satsPerByte,
 		enableSendAmountWarning,
 		feeEstimates.minimum,
@@ -526,18 +545,26 @@ const ReviewAndSend = ({
 		onChainBalance,
 	]);
 
-	const customDescription = useMemo(() => {
-		let desc = FeeText.custom.description;
-		if (selectedFeeId === EFeeId.custom) {
-			for (const key of Object.keys(feeEstimates)) {
-				if (satsPerByte >= feeEstimates[key] && key in FeeText) {
-					desc = FeeText[key]?.description ?? '';
-					break;
-				}
+	const feeDescription = useMemo(() => {
+		if (selectedFeeId !== EFeeId.custom) {
+			return t(`fee:${selectedFeeId}.description`);
+		}
+
+		let desc = t('fee:custom.description');
+
+		// try to get nice fee description if our cusom fee matches one of feeEstimates
+		for (const key of ['minimum', 'slow', 'normal', 'fast']) {
+			const newDescId = `fee:${key}.description`;
+			if (
+				key in feeEstimates &&
+				satsPerByte >= feeEstimates[key] &&
+				i18n.exists(newDescId)
+			) {
+				desc = t(newDescId);
 			}
 		}
 		return desc;
-	}, [selectedFeeId, feeEstimates, satsPerByte]);
+	}, [selectedFeeId, feeEstimates, t, i18n, satsPerByte]);
 
 	const feeIcon = useMemo(() => {
 		switch (selectedFeeId) {
@@ -580,16 +607,10 @@ const ReviewAndSend = ({
 		}
 	}, [selectedFeeId]);
 
-	const feeDescription = useMemo(() => {
-		return selectedFeeId === EFeeId.custom
-			? customDescription
-			: FeeText[selectedFeeId].description;
-	}, [customDescription, selectedFeeId]);
-
 	return (
 		<>
 			<GradientView style={styles.container}>
-				<BottomSheetNavigationHeader title="Review & Send" />
+				<BottomSheetNavigationHeader title={t('send_review')} />
 				<View style={styles.content}>
 					<AmountToggle
 						style={styles.amountToggle}
@@ -599,9 +620,11 @@ const ReviewAndSend = ({
 
 					<View style={styles.sectionContainer}>
 						<Section
-							title={
-								transaction.slashTagsUrl || !decodedInvoice ? 'To' : 'Invoice'
-							}
+							title={t(
+								transaction.slashTagsUrl || !decodedInvoice
+									? 'send_to'
+									: 'send_invoice',
+							)}
 							value={
 								transaction.slashTagsUrl ? (
 									<ContactSmall url={transaction.slashTagsUrl} size="large" />
@@ -617,13 +640,13 @@ const ReviewAndSend = ({
 					{!transaction.lightningInvoice ? (
 						<View style={styles.sectionContainer}>
 							<Section
-								title="Speed and fee"
+								title={t('send_fee_and_speed')}
 								onPress={(): void => navigation.navigate('FeeRate')}
 								value={
 									<>
 										{feeIcon}
 										<Text02M>
-											{FeeText[selectedFeeId].title}
+											{t(`fee:${selectedFeeId}.title`)}
 											{feeAmount}
 										</Text02M>
 										<PencileIcon height={12} width={22} />
@@ -631,7 +654,7 @@ const ReviewAndSend = ({
 								}
 							/>
 							<Section
-								title="Confirming in"
+								title={t('send_confirming_in')}
 								onPress={(): void => navigation.navigate('FeeRate')}
 								value={
 									<>
@@ -644,7 +667,7 @@ const ReviewAndSend = ({
 					) : (
 						<View style={styles.sectionContainer}>
 							<Section
-								title="Speed and fee"
+								title={t('send_fee_and_speed')}
 								value={
 									<>
 										<TimerIcon style={styles.icon} color="purple" />
@@ -654,7 +677,7 @@ const ReviewAndSend = ({
 							/>
 							{decodedInvoice?.expiry_time && (
 								<Section
-									title="Invoice expiration"
+									title={t('send_invoice_expiration')}
 									value={
 										<>
 											<ClockIcon style={styles.icon} color="purple" />
@@ -671,7 +694,7 @@ const ReviewAndSend = ({
 					{decodedInvoice?.description ? (
 						<View style={styles.sectionContainer}>
 							<Section
-								title="Note"
+								title={t('note')}
 								value={<Text02M>{decodedInvoice?.description}</Text02M>}
 							/>
 						</View>
@@ -679,7 +702,7 @@ const ReviewAndSend = ({
 
 					<View style={styles.sectionContainer}>
 						<Section
-							title="Tags"
+							title={t('tags')}
 							value={
 								<View>
 									<View style={styles.tagsContainer}>
@@ -695,7 +718,7 @@ const ReviewAndSend = ({
 									<View style={styles.tagsContainer}>
 										<Button
 											color="white04"
-											text="Add Tag"
+											text={t('tags_add')}
 											icon={<TagIcon color="brand" width={16} />}
 											onPress={(): void => {
 												Keyboard.dismiss();
@@ -710,7 +733,7 @@ const ReviewAndSend = ({
 
 					<View style={nextButtonContainer}>
 						<SwipeToConfirm
-							text="Swipe To Pay"
+							text={t('send_swipe')}
 							onConfirm={onSwipeToPay}
 							icon={<Checkmark width={30} height={30} color="black" />}
 							loading={isLoading}
@@ -721,72 +744,75 @@ const ReviewAndSend = ({
 
 				<Dialog
 					visible={showDialog1}
-					title="Are You Sure?"
-					description="It appears you are sending over $100. Do you want to continue?"
-					confirmText="Yes, Send"
+					title={t('are_you_sure')}
+					description={t('send_dialog1')}
+					confirmText={t('send_yes')}
 					onCancel={(): void => {
 						setShowDialog1(false);
 						setTimeout(() => navigation.goBack(), 100);
 					}}
 					onConfirm={(): void => {
 						setShowDialog1(false);
-						confirmPayment();
+						confirmPayment(dialogWarnings);
 					}}
 				/>
 				<Dialog
 					visible={showDialog2}
-					title="Are You Sure?"
-					description="It appears you are sending over 50% of your total balance. Do you want to continue?"
-					confirmText="Yes, Send"
+					title={t('are_you_sure')}
+					description={t('send_dialog2')}
+					confirmText={t('send_yes')}
 					onCancel={(): void => {
 						setShowDialog2(false);
 						setTimeout(() => navigation.goBack(), 100);
 					}}
 					onConfirm={(): void => {
 						setShowDialog2(false);
-						confirmPayment();
+						confirmPayment(dialogWarnings);
 					}}
 					visibleTestID="DialogSend50"
 				/>
 				<Dialog
 					visible={showDialog3}
-					title="Are You Sure?"
-					description="The transaction fee appears to be over 50% of the amount you are sending. Do you want to continue?"
-					confirmText="Yes, Send"
+					title={t('are_you_sure')}
+					description={t('send_dialog3')}
+					confirmText={t('send_yes')}
 					onCancel={(): void => {
 						setShowDialog3(false);
 						setTimeout(() => navigation.goBack(), 100);
 					}}
 					onConfirm={(): void => {
 						setShowDialog3(false);
-						confirmPayment();
+						confirmPayment(dialogWarnings);
 					}}
 				/>
 				<Dialog
 					visible={showDialog4}
-					title="Are You Sure?"
-					description="The transaction fee appears to be over $10. Do you want to continue?"
-					confirmText="Yes, Send"
+					title={t('are_you_sure')}
+					description={t('send_dialog4')}
+					confirmText={t('send_yes')}
 					onCancel={(): void => {
 						setShowDialog4(false);
 						setTimeout(() => navigation.goBack(), 100);
 					}}
 					onConfirm={(): void => {
 						setShowDialog4(false);
-						confirmPayment();
+						confirmPayment(dialogWarnings);
 					}}
 				/>
 				<Dialog
 					visible={showDialog5}
-					title="Fee is potentially too low"
-					description={`The fee you are trying to set is below ${feeEstimates.minimum} sats and may be too low due to current network conditions. This transaction may fail, take a while to confirm, or get trimmed from the mempool. Do you wish to proceed?`}
+					title={t('send_dialog5_title')}
+					description={t('send_dialog5_description', {
+						minimumFee: feeEstimates.minimum,
+					})}
+					confirmText={t('continue')}
 					onCancel={(): void => {
 						setShowDialog5(false);
 						setTimeout(() => navigation.goBack(), 100);
 					}}
 					onConfirm={async (): Promise<void> => {
 						setShowDialog5(false);
-						confirmPayment();
+						confirmPayment(dialogWarnings);
 					}}
 				/>
 			</GradientView>

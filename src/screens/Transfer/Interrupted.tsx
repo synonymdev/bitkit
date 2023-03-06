@@ -1,5 +1,6 @@
 import React, { ReactElement, memo } from 'react';
 import { StyleSheet, View } from 'react-native';
+import { useTranslation } from 'react-i18next';
 
 import { Display, Text01S } from '../../styles/text';
 import SafeAreaInsets from '../../components/SafeAreaInsets';
@@ -14,25 +15,26 @@ const imageSrc = require('../../assets/illustrations/exclamation-mark.png');
 const Interrupted = ({
 	navigation,
 }: TransferScreenProps<'Interrupted'>): ReactElement => {
+	const { t } = useTranslation('lightning');
+
 	return (
 		<GlowingBackground topLeft="purple">
 			<SafeAreaInsets type="top" />
 			<NavigationHeader
-				title="Transfer Interrupted"
+				title={t('interrupted_title')}
 				displayBackButton={false}
 			/>
 			<View style={styles.root}>
-				<Display color="purple">Please keep Bitkit open.</Display>
+				<Display color="purple">{t('interrupted_header')}</Display>
 				<Text01S color="gray1" style={styles.text}>
-					Funds were not transferred yet. Bitkit will try to initiate the
-					transfer during the next 30 minutes. Please keep your app open.
+					{t('interrupted_text')}
 				</Text01S>
 
 				<GlowImage image={imageSrc} glowColor="purple" />
 
 				<View>
 					<Button
-						text="OK"
+						text={t('ok')}
 						size="large"
 						onPress={(): void => {
 							navigation.popToTop();

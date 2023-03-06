@@ -15,7 +15,12 @@ const FeeCustomToggle = ({
 
 	return (
 		<View style={[styles.row, style]}>
-			<LightningIcon height={38} style={styles.symbol} color="gray2" />
+			<LightningIcon
+				style={styles.symbol}
+				width={24}
+				height={38}
+				color="gray2"
+			/>
 			<Display lineHeight="57px">{transaction.satsPerByte}</Display>
 		</View>
 	);

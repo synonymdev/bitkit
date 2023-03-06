@@ -1,6 +1,7 @@
 import React, { memo, ReactElement } from 'react';
 import { StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { useTranslation } from 'react-i18next';
 
 import { Subtitle } from '../styles/text';
 import { BitcoinCircleIcon } from '../styles/icons';
@@ -11,11 +12,12 @@ import type { WalletNavigationProp } from '../navigation/wallet/WalletNavigator'
 const Assets = (): ReactElement => {
 	const navigation = useNavigation<WalletNavigationProp>();
 	const { satoshis } = useBalance({ onchain: true, lightning: true });
+	const { t } = useTranslation('wallet');
 
 	return (
 		<>
 			<Subtitle style={styles.title} testID="AssetsTitle">
-				Assets
+				{t('assets')}
 			</Subtitle>
 			<AssetCard
 				name="Bitcoin"

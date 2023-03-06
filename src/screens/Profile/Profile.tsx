@@ -18,6 +18,7 @@ import {
 import { useSelector } from 'react-redux';
 import QRCode from 'react-native-qrcode-svg';
 import Share from 'react-native-share';
+import { useTranslation } from 'react-i18next';
 
 import {
 	AnimatedView,
@@ -75,6 +76,7 @@ const Profile = memo((props: RootStackScreenProps<'Profile'>): ReactElement => {
 const ProfileScreen = ({
 	navigation,
 }: RootStackScreenProps<'Profile'>): ReactElement => {
+	const { t } = useTranslation('slashtags');
 	const [showCopy, setShowCopy] = useState(false);
 	const { url } = useSelectedSlashtag();
 	const { profile } = useProfile(url);
@@ -102,7 +104,7 @@ const ProfileScreen = ({
 		const image = `data:image/png;base64,${qrRef.current}`;
 		try {
 			await Share.open({
-				title: 'Share Profile Key',
+				title: t('contact_share'),
 				message: url,
 				url: image,
 				type: 'image/png',
@@ -112,7 +114,7 @@ const ProfileScreen = ({
 		} finally {
 			setIsSharing(false);
 		}
-	}, [url]);
+	}, [url, t]);
 
 	const profileLinks = useMemo(() => profile?.links ?? [], [profile?.links]);
 	const profileLinksWithIds = useMemo(() => {
@@ -127,7 +129,7 @@ const ProfileScreen = ({
 			<SafeAreaInsets type="top" />
 			<NavigationHeader
 				style={styles.header}
-				title="Profile"
+				title={t('profile')}
 				onClosePress={(): void => {
 					navigation.navigate('Wallet');
 				}}
@@ -185,7 +187,7 @@ const ProfileScreen = ({
 								exiting={FadeOut.duration(500)}
 								color="transparent"
 								style={styles.tooltip}>
-								<Tooltip text="Profile Key Copied To Clipboard" />
+								<Tooltip text={t('contact_copied')} />
 							</AnimatedView>
 						)}
 					</View>
@@ -206,6 +208,7 @@ const QRView = ({
 	profile?: BasicProfile;
 	qrRef: MutableRefObject<string | undefined>;
 }): ReactElement => {
+	const { t } = useTranslation('slashtags');
 	const dimensions = useWindowDimensions();
 	const [showCopy, setShowCopy] = useState(false);
 
@@ -238,7 +241,7 @@ const QRView = ({
 		// });
 	}, []);
 
-	const name = useMemo(() => profile?.name ?? 'Profile', [profile?.name]);
+	const name = useMemo(() => profile?.name ?? t('profile'), [profile?.name, t]);
 	const firstName = useMemo(() => name.split(/\s+/)[0], [name]);
 
 	return (
@@ -272,12 +275,12 @@ const QRView = ({
 						exiting={FadeOut.duration(500)}
 						color="transparent"
 						style={styles.tooltip}>
-						<Tooltip text="Profile Key Copied To Clipboard" />
+						<Tooltip text={t('contact_copied')} />
 					</AnimatedView>
 				)}
 			</View>
 			<Text02S style={styles.qrViewNote}>
-				Scan to add {truncate(firstName, 30)}
+				{t('profile_scan_to_add', { name: truncate(firstName, 30) })}
 			</Text02S>
 		</View>
 	);

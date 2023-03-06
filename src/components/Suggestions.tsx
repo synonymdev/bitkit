@@ -8,6 +8,7 @@ import React, {
 import { StyleSheet, useWindowDimensions } from 'react-native';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import Carousel from 'react-native-reanimated-carousel';
+import { useTranslation } from 'react-i18next';
 
 import { View } from '../styles/components';
 import { Subtitle } from '../styles/text';
@@ -27,6 +28,7 @@ import {
 } from '../store/reselect/settings';
 
 const Suggestions = (): ReactElement => {
+	const { t } = useTranslation('cards');
 	const navigation = useNavigation<RootNavigationProp>();
 	const { width } = useWindowDimensions();
 	const [index, setIndex] = useState(0);
@@ -96,7 +98,7 @@ const Suggestions = (): ReactElement => {
 
 	return (
 		<>
-			<Subtitle style={styles.title}>Suggestions</Subtitle>
+			<Subtitle style={styles.title}>{t('suggestions')}</Subtitle>
 			<View style={styles.container} testID="Suggestions">
 				<Carousel
 					style={carouselStyle}
@@ -111,8 +113,6 @@ const Suggestions = (): ReactElement => {
 						<SuggestionCard
 							id={item.id}
 							key={item.id}
-							title={item.title}
-							description={item.description}
 							color={item.color}
 							image={item.image}
 							dismissable={item.dismissable}
@@ -124,9 +124,9 @@ const Suggestions = (): ReactElement => {
 			</View>
 			<Dialog
 				visible={showDialog}
-				title="No Funds Yet"
-				description="Before you can set up your instant spending balance, you need to send some on-chain Bitcoin to your wallet."
-				confirmText="Ok"
+				title={t('lightning_no_funds_title')}
+				description={t('lightning_no_funds_desc')}
+				confirmText={t('ok')}
 				onConfirm={(): void => {
 					setShowDialog(false);
 				}}

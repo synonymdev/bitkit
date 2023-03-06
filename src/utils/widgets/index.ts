@@ -1,5 +1,6 @@
 import b4a from 'b4a';
 import { SlashFeedJSON } from '../../store/types/widgets';
+import i18n from '../../utils/i18n';
 
 export enum SUPPORTED_FEED_TYPES {
 	PRICE_FEED = 'exchange.price_history',
@@ -47,8 +48,6 @@ export const decodeWidgetFieldValue = (
 
 			if (field.name === 'Last Block') {
 				const format = new Intl.NumberFormat('en-US').format;
-				// TODO: use a better formatter
-				const formatDate = (date: Date): string => date.toLocaleString();
 
 				return {
 					height: json.height ? format(json.height) : '',
@@ -56,7 +55,21 @@ export const decodeWidgetFieldValue = (
 						? format(json.transactionCount) + ' txs'
 						: '',
 					size: json.size ? format(json.size) + 'Kb' : '',
-					time: json.timestamp && formatDate(new Date(json.timestamp * 1000)),
+					// time: json.timestamp && formatDate(new Date(json.timestamp * 1000)),
+					time:
+						json.timestamp &&
+						i18n.t('intl:dateTime', {
+							v: new Date(json.timestamp * 1000),
+							formatParams: {
+								v: {
+									year: 'numeric',
+									month: 'short',
+									day: 'numeric',
+									hour: 'numeric',
+									minute: 'numeric',
+								},
+							},
+						}),
 				};
 			}
 

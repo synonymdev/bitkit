@@ -11,7 +11,7 @@ import lm, {
 	TAccount,
 	TAccountBackup,
 	TChannel,
-	TChannelManagerPayment,
+	TChannelManagerClaim,
 	TChannelManagerPaymentSent,
 	TCloseChannelReq,
 	TCreatePaymentReq,
@@ -70,6 +70,7 @@ import { sdk } from '../../components/SlashtagsProvider';
 import { showSuccessNotification } from '../notifications';
 import { TLightningNodeVersion } from '../../store/types/lightning';
 import { getBlocktankInfo, isGeoBlocked } from '../blocktank';
+import i18n from '../i18n';
 
 let LDKIsStayingSynced = false;
 
@@ -279,7 +280,7 @@ export const handleLightningPaymentSubscription = async ({
 	selectedWallet,
 	selectedNetwork,
 }: {
-	payment: TChannelManagerPayment;
+	payment: TChannelManagerClaim;
 	selectedWallet?: TWalletName;
 	selectedNetwork?: TAvailableNetworks;
 }): Promise<void> => {
@@ -311,7 +312,7 @@ export const handleLightningPaymentSubscription = async ({
 			timestamp: new Date().getTime(),
 		};
 		addActivityItem(activityItem);
-		await addLightningPayment({
+		addLightningPayment({
 			invoice: invoice.value,
 			selectedWallet,
 			selectedNetwork,
@@ -346,7 +347,7 @@ export const subscribeToLightningPayments = ({
 	if (!paymentSubscription) {
 		paymentSubscription = ldk.onEvent(
 			EEventTypes.channel_manager_payment_claimed,
-			(res: TChannelManagerPayment) => {
+			(res: TChannelManagerClaim) => {
 				handleLightningPaymentSubscription({
 					payment: res,
 					selectedNetwork,
@@ -358,8 +359,8 @@ export const subscribeToLightningPayments = ({
 	if (!onChannelSubscription) {
 		onChannelSubscription = ldk.onEvent(EEventTypes.new_channel, () => {
 			showSuccessNotification({
-				title: 'Lightning Channel Opened',
-				message: 'Congrats! A new lightning channel was successfully opened.',
+				title: i18n.t('lightning:channel_opened_title'),
+				message: i18n.t('lightning:channel_opened_msg'),
 			});
 			refreshLdk({ selectedWallet, selectedNetwork }).then();
 		});
@@ -392,7 +393,7 @@ export const refreshLdk = async ({
 }: {
 	selectedWallet?: TWalletName;
 	selectedNetwork?: TAvailableNetworks;
-}): Promise<Result<string>> => {
+} = {}): Promise<Result<string>> => {
 	try {
 		// wait for interactions/animations to be completed
 		await new Promise((resolve) =>
@@ -478,7 +479,7 @@ export const getAccount = async ({
 }: {
 	selectedWallet?: TWalletName;
 	selectedNetwork?: TAvailableNetworks;
-}): Promise<Result<TAccount>> => {
+} = {}): Promise<Result<TAccount>> => {
 	if (!selectedWallet) {
 		selectedWallet = getSelectedWallet();
 	}
@@ -529,7 +530,7 @@ export const exportBackup = async (
 	account?: TAccount,
 ): Promise<Result<TAccountBackup>> => {
 	if (!account) {
-		const res = await getAccount({});
+		const res = await getAccount();
 		if (res.isErr()) {
 			return err(res.error);
 		}
@@ -774,7 +775,7 @@ export const addPeers = async ({
 }: {
 	selectedWallet?: TWalletName;
 	selectedNetwork?: TAvailableNetworks;
-}): Promise<Result<string[]>> => {
+} = {}): Promise<Result<string[]>> => {
 	try {
 		const nodeUris = getBlocktankStore()?.info?.node_info?.uris;
 		if (!nodeUris) {
@@ -923,7 +924,7 @@ export const closeChannel = async ({
 }: TCloseChannelReq): Promise<Result<string>> => {
 	try {
 		// Ensure we're fully up-to-date.
-		await refreshLdk({});
+		await refreshLdk();
 		return await ldk.closeChannel({ channelId, counterPartyNodeId, force });
 	} catch (e) {
 		console.log(e);
@@ -1043,7 +1044,7 @@ export const payLightningInvoice = async (
 	sats?: number,
 ): Promise<Result<TChannelManagerPaymentSent>> => {
 	try {
-		const addPeersResponse = await addPeers({});
+		const addPeersResponse = await addPeers();
 		if (addPeersResponse.isErr()) {
 			return err(addPeersResponse.error.message);
 		}
@@ -1086,7 +1087,7 @@ export const payLightningInvoice = async (
 			timestamp: new Date().getTime(),
 		};
 		addActivityItem(activityItem);
-		refreshLdk({}).then();
+		refreshLdk().then();
 		return ok(payResponse.value);
 	} catch (e) {
 		console.log(e);

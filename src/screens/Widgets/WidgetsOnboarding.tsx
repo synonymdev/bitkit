@@ -1,5 +1,6 @@
-import React, { ReactElement } from 'react';
+import React, { ReactElement, ReactNode } from 'react';
 import { Image, ImageSourcePropType, StyleSheet, View } from 'react-native';
+import { Trans, useTranslation } from 'react-i18next';
 
 import Button from '../../components/Button';
 import DetectSwipe from '../../components/DetectSwipe';
@@ -16,69 +17,75 @@ const puzzleImageSrc = require('../../assets/illustrations/puzzle.png');
 export const GoodbyePasswords = ({
 	navigation,
 }: WidgetsScreenProps<'GoodbyePasswords'>): ReactElement => {
+	const { t } = useTranslation('slashtags');
+
 	return (
 		<Layout
-			header=""
 			navigation={navigation}
-			backButton={true}
 			illustration={padlockImageSrc}
-			title="Goodbye,"
-			highlighted="Passwords."
-			text="Experience the web without passwords. Use Bitkit to log in to your favorite web services."
 			onNext={(): void => {
 				navigation.navigate('HelloWidgets');
-			}}
-		/>
+			}}>
+			<Display>
+				<Trans
+					t={t}
+					i18nKey="onboarding_widgets1_header"
+					components={{
+						brand: <Display color="brand" />,
+					}}
+				/>
+			</Display>
+			<Text01S color="gray1" style={styles.introText}>
+				{t('onboarding_widgets1_text')}
+			</Text01S>
+		</Layout>
 	);
 };
 
 export const HelloWidgets = ({
 	navigation,
 }: WidgetsScreenProps<'HelloWidgets'>): ReactElement => {
+	const { t } = useTranslation('slashtags');
+
 	return (
 		<Layout
-			header=""
 			navigation={navigation}
-			backButton={true}
 			illustration={puzzleImageSrc}
-			title="Hello,"
-			highlighted="Widgets."
-			text="Enjoy decentralized feeds from your favorite web services, by adding fun and useful widgets to your wallet."
 			onNext={(): void => {
 				setWidgetsOnboarding(true);
 				navigation.navigate('WidgetsSuggestions');
-			}}
-		/>
+			}}>
+			<Display>
+				<Trans
+					t={t}
+					i18nKey="onboarding_widgets2_header"
+					components={{
+						brand: <Display color="brand" />,
+					}}
+				/>
+			</Display>
+			<Text01S color="gray1" style={styles.introText}>
+				{t('onboarding_widgets2_text')}
+			</Text01S>
+		</Layout>
 	);
 };
 
-export const Layout = ({
+const Layout = ({
 	navigation,
-	backButton = false,
 	illustration,
-	title,
-	subtitle,
-	text,
-	highlighted,
-	buttonText = 'Continue',
-	header = 'Profile',
 	children,
 	onNext,
 }: {
 	navigation:
 		| WidgetsScreenProps<'GoodbyePasswords'>['navigation']
 		| WidgetsScreenProps<'HelloWidgets'>['navigation'];
-	backButton: boolean;
 	illustration: ImageSourcePropType;
-	title: string;
-	subtitle?: string;
-	text: string;
-	highlighted: string;
-	buttonText?: string;
-	header?: string;
-	children?: ReactElement;
-	onNext?: () => void;
+	children: ReactNode;
+	onNext: () => void;
 }): JSX.Element => {
+	const { t } = useTranslation('slashtags');
+
 	const onSwipeRight = (): void => {
 		navigation.getParent()?.navigate('Wallet');
 	};
@@ -87,8 +94,7 @@ export const Layout = ({
 		<GlowingBackground topLeft="brand">
 			<SafeAreaInsets type="top" />
 			<NavigationHeader
-				title={header}
-				displayBackButton={backButton}
+				displayBackButton={true}
 				onClosePress={(): void => {
 					navigation.navigate('Wallet');
 				}}
@@ -98,19 +104,9 @@ export const Layout = ({
 					<View style={styles.imageContainer}>
 						<Image source={illustration} style={styles.illustration} />
 					</View>
-					<View style={styles.middleContainer}>
-						<Display>{title}</Display>
-						<Display>
-							{subtitle}
-							<Display color="brand">{highlighted}</Display>
-						</Display>
-						<Text01S color="gray1" style={styles.introText}>
-							{text}
-						</Text01S>
-						{children}
-					</View>
+					<View style={styles.middleContainer}>{children}</View>
 					<Button
-						text={buttonText}
+						text={t('continue')}
 						size="large"
 						onPress={(): void => {
 							onNext?.();

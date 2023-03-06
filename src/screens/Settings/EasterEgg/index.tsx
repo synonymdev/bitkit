@@ -1,6 +1,7 @@
 import React, { memo, ReactElement } from 'react';
 import { View, Image, StyleSheet, Share, Platform } from 'react-native';
 import { getBundleId } from 'react-native-device-info';
+import { Trans, useTranslation } from 'react-i18next';
 
 import Button from '../../../components/Button';
 import GlowingBackground from '../../../components/GlowingBackground';
@@ -18,32 +19,38 @@ const appStoreUrl =
 		? 'https://testflight.apple.com/join/lGXhnwcC'
 		: `https://play.google.com/store/apps/details?id=${androidPackageName}`;
 
-const onShare = async (): Promise<void> => {
-	await Share.share({
-		title: 'Bitkit',
-		message: `Download Bitkit, Your Ultimate Bitcoin Toolkit. Handing you the keys to reshape your digital life. ${appStoreUrl}`,
-	});
-};
-
 const EasterEgg = (): ReactElement => {
+	const { t } = useTranslation('settings');
+
+	const onShare = async (): Promise<void> => {
+		await Share.share({
+			title: 'Bitkit',
+			message: t('about.op_message', { appStoreUrl }),
+		});
+	};
+
 	return (
 		<GlowingBackground bottomRight="brand">
-			<SettingsView title="Orange Pilled" showBackNavigation={true} />
+			<SettingsView title={t('about.op_title')} showBackNavigation={true} />
 			<View style={styles.alignCenter}>
 				<Image source={imageSrc} />
 			</View>
 			<View style={styles.intro}>
 				<Display color="white" style={styles.text}>
-					Who will you
-				</Display>
-				<Display color="brand" style={styles.text}>
-					Orange-Pill?
+					<Trans
+						t={t}
+						i18nKey="about.op_text"
+						parent={Display}
+						components={{
+							brand: <Display color="brand" style={styles.text} />,
+						}}
+					/>
 				</Display>
 			</View>
 			<View style={styles.alignCenter}>
 				<Button
 					style={styles.button}
-					text="Share Bitkit With A Friend"
+					text={t('about.op_share')}
 					onPress={onShare}
 				/>
 			</View>

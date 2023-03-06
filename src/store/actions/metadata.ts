@@ -64,7 +64,7 @@ export const updateMetaIncTxTags = (
  * @returns {Result<string>}
  */
 export const moveMetaIncTxTags = (): Result<string> => {
-	const { selectedNetwork, currentWallet } = getCurrentWallet({});
+	const { selectedNetwork, currentWallet } = getCurrentWallet();
 	if (!currentWallet) {
 		console.warn('No wallet found. Cannot update metadata with transactions.');
 		return ok('');

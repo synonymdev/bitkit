@@ -7,6 +7,7 @@ import {
 	View,
 	GestureResponderEvent,
 } from 'react-native';
+import { useTranslation } from 'react-i18next';
 
 import { View as ThemedView } from '../../styles/components';
 import { Caption13M } from '../../styles/text';
@@ -23,10 +24,10 @@ import DetectSwipe from '../../components/DetectSwipe';
 import type { WalletScreenProps } from '../../navigation/types';
 
 const tabs = [
-	{ name: 'All', filter: {} },
-	{ name: 'Sent', filter: { txType: EPaymentType.sent } },
-	{ name: 'Received', filter: { txType: EPaymentType.received } },
-	{ name: 'Instant', filter: { types: ['lightning'] } },
+	{ id: 'all', filter: {} },
+	{ id: 'sent', filter: { txType: EPaymentType.sent } },
+	{ id: 'received', filter: { txType: EPaymentType.received } },
+	{ id: 'instant', filter: { types: ['lightning'] } },
 ];
 
 const Tab = ({
@@ -56,6 +57,7 @@ const Tab = ({
 const ActivityFiltered = ({
 	navigation,
 }: WalletScreenProps<'ActivityFiltered'>): ReactElement => {
+	const { t } = useTranslation('wallet');
 	const insets = useSafeAreaInsets();
 	const panGestureRef = useRef<GestureType>(Gesture.Pan());
 	const [radiusContainerHeight, setRadiusContainerHeight] = useState(0);
@@ -75,8 +77,8 @@ const ActivityFiltered = ({
 		};
 	}, [radiusContainerHeight, insets.bottom]);
 
-	const addTag = (tag): void => setTags((t) => [...t, tag]);
-	const removeTag = (tag): void => setTags((t) => t.filter((x) => x !== tag));
+	const addTag = (tag): void => setTags((tg) => [...tg, tag]);
+	const removeTag = (tag): void => setTags((tg) => tg.filter((x) => x !== tag));
 
 	const onSwipeLeft = (): void => {
 		if (currentTab < tabs.length - 1) {
@@ -102,7 +104,7 @@ const ActivityFiltered = ({
 					<BlurView>
 						<SafeAreaInsets type="top" />
 						<NavigationHeader
-							title="All Activity"
+							title={t('activity_all')}
 							onClosePress={navigation.popToTop}
 						/>
 						<View style={styles.formContainer}>
@@ -112,11 +114,11 @@ const ActivityFiltered = ({
 								onChangeText={setSearch}>
 								{tags.length > 0 && (
 									<View style={styles.tags}>
-										{tags.map((t) => (
+										{tags.map((tg) => (
 											<Tag
 												style={styles.tag}
-												key={t}
-												value={t}
+												key={tg}
+												value={tg}
 												onClose={(): void => removeTag(t)}
 											/>
 										))}
@@ -126,8 +128,8 @@ const ActivityFiltered = ({
 							<View style={styles.tabContainer}>
 								{tabs.map((tab, index) => (
 									<Tab
-										key={tab.name}
-										text={tab.name}
+										key={tab.id}
+										text={t('activity_tabs.' + tab.id)}
 										active={currentTab === index}
 										onPress={(): void => setCurrentTab(index)}
 									/>

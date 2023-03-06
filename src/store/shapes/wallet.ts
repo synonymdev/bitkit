@@ -1,3 +1,4 @@
+import cloneDeep from 'lodash.clonedeep';
 import { WALLET_DEFAULT_SELECTED_NETWORK } from '@env';
 
 import {
@@ -5,23 +6,17 @@ import {
 	IWallet,
 	IWalletStore,
 	IBitcoinTransactionData,
-	defaultBitcoinTransactionData,
 	IKeyDerivationPath,
 	IAddressTypes,
-	TAssetNetwork,
 	IAddresses,
 	IAddress,
 	EAddressType,
+	EBoostType,
 } from '../types/wallet';
 import { IHeader } from '../../utils/types/electrum';
 import { EAvailableNetworks } from '../../utils/networks';
 import { objectKeys } from '../../utils/objectKeys';
-import cloneDeep from 'lodash.clonedeep';
-
-export const assetNetworks: Readonly<TAssetNetwork[]> = [
-	'bitcoin',
-	'lightning',
-];
+import { EFeeId } from '../types/fees';
 
 export const addressTypes: Readonly<IAddressTypes> = {
 	[EAddressType.p2pkh]: {
@@ -39,6 +34,24 @@ export const addressTypes: Readonly<IAddressTypes> = {
 		type: EAddressType.p2wpkh,
 		label: 'bech32',
 	},
+};
+
+export const defaultBitcoinTransactionData: IBitcoinTransactionData = {
+	outputs: [],
+	inputs: [],
+	changeAddress: '',
+	fiatAmount: 0,
+	fee: 512,
+	satsPerByte: 2,
+	selectedFeeId: EFeeId.none,
+	message: '',
+	label: '',
+	rbf: false,
+	boostType: EBoostType.cpfp,
+	minFee: 1,
+	max: false,
+	tags: [],
+	lightningInvoice: '',
 };
 
 export const bitcoinTransaction: Readonly<

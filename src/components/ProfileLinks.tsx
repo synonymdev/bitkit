@@ -6,6 +6,7 @@ import {
 	StyleSheet,
 	ViewStyle,
 } from 'react-native';
+import { useTranslation } from 'react-i18next';
 
 import { Caption13Up, Text02M, Text02S } from '../styles/text';
 import { TrashIcon } from '../styles/icons';
@@ -24,10 +25,12 @@ const ProfileLinks = ({
 	editable?: boolean;
 	style?: StyleProp<ViewStyle>;
 }): JSX.Element => {
+	const { t } = useTranslation('slashtags');
+
 	return (
 		<View style={style}>
 			{!editable && links?.length === 0 ? (
-				<Text02S color="gray1">No links added yet...</Text02S>
+				<Text02S color="gray1">{t('contact_no_links')}</Text02S>
 			) : (
 				links.map((link): JSX.Element => {
 					const trimmedUrl = link.url

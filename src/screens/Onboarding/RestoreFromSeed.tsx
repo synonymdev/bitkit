@@ -17,6 +17,7 @@ import {
 import * as bip39 from 'bip39';
 import rnAndroidKeyboardAdjust from 'rn-android-keyboard-adjust';
 import { KeyboardAccessoryView } from 'react-native-keyboard-accessory';
+import { Trans, useTranslation } from 'react-i18next';
 
 import { Display, Text01S, Text02S } from '../../styles/text';
 import GlowingBackground from '../../components/GlowingBackground';
@@ -42,6 +43,7 @@ const RestoreFromSeed = (): ReactElement => {
 	const [bip39Passphrase, setPassphrase] = useState<string>('');
 	const inputRefs = useRef<Array<TextInput>>([]);
 	const passRef = useRef<TextInput>(null);
+	const { t } = useTranslation('onboarding');
 	const enableButtons = useMemo(
 		() =>
 			!seed.includes(undefined) &&
@@ -107,7 +109,7 @@ const RestoreFromSeed = (): ReactElement => {
 		});
 		if (res.isErr()) {
 			showErrorNotification({
-				title: 'Error Restoring Wallet',
+				title: t('restore_error_title'),
 				message: res.error.message,
 			});
 			return;
@@ -187,12 +189,9 @@ const RestoreFromSeed = (): ReactElement => {
 				</View>
 				<View>
 					<View style={styles.title}>
-						<Display>Restore</Display>
-						<Display>your Wallet</Display>
+						<Display>{t('restore_header')}</Display>
 					</View>
-					<Text01S color="white8">
-						Please type in your recovery phrase from any (paper) backup.
-					</Text01S>
+					<Text01S color="white8">{t('restore_phrase')}</Text01S>
 				</View>
 				<View style={styles.inputsContainer}>
 					<View style={styles.inputsColumn}>
@@ -208,16 +207,19 @@ const RestoreFromSeed = (): ReactElement => {
 
 				{showRedExplanation && (
 					<Text02S color="gray1" style={styles.explanation}>
-						If a word is shown in <Text02S color="red">red</Text02S>, it means
-						that it was not found in the recovery phrase dictionary. Check for
-						spelling errors.
+						<Trans
+							t={t}
+							i18nKey="restore_red_explain"
+							components={{
+								red: <Text02S color="red" />,
+							}}
+						/>
 					</Text02S>
 				)}
 
 				{showInvalidChecksum && (
 					<Text02S color="red" style={styles.explanation}>
-						The checksum for the recovery phrase appears to be incorrect. Please
-						double check your recovery phrase.
+						{t('restore_inv_checksum')}
 					</Text02S>
 				)}
 
@@ -228,11 +230,11 @@ const RestoreFromSeed = (): ReactElement => {
 							value={bip39Passphrase}
 							onChangeText={setPassphrase}
 							onSubmitEditing={handleSubmitEditing}
-							placeholder="Passphrase*"
+							placeholder={t('restore_passphrase_placeholder')}
 							valid={true}
 						/>
 						<Text02S color="gray1" style={styles.explanation}>
-							*Optional, enter only if you’ve set up one.
+							{t('restore_passphrase_meaning')}
 						</Text02S>
 					</>
 				)}
@@ -241,7 +243,7 @@ const RestoreFromSeed = (): ReactElement => {
 					{!showPassphrase && (
 						<Button
 							style={styles.button}
-							text="Advanced"
+							text={t('advanced')}
 							size="large"
 							variant="secondary"
 							disabled={!enableButtons}
@@ -251,7 +253,7 @@ const RestoreFromSeed = (): ReactElement => {
 
 					<Button
 						style={styles.button}
-						text={showPassphrase ? 'Restore Wallet' : 'Restore'}
+						text={t(showPassphrase ? 'restore_wallet' : 'restore')}
 						size="large"
 						disabled={!enableButtons}
 						onPress={handleRestore}
@@ -266,6 +268,7 @@ const RestoreFromSeed = (): ReactElement => {
 				</KeyboardAccessoryView>
 			) : (
 				<SeedInputAccessory
+					label={t('restore_suggestions')}
 					word={focused !== null ? seed[focused] : null}
 					setWord={(text): void => {
 						if (focused === null) {

@@ -1,6 +1,7 @@
 import React, { memo, ReactElement, useMemo } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useTranslation } from 'react-i18next';
 
 import { View as ThemedView } from '../../../styles/components';
 import { Text01S } from '../../../styles/text';
@@ -17,6 +18,7 @@ const DisablePin = ({
 	navigation,
 }: SettingsScreenProps<'DisablePin'>): ReactElement => {
 	const insets = useSafeAreaInsets();
+	const { t } = useTranslation('security');
 
 	const buttonContainerStyles = useMemo(
 		() => ({
@@ -43,17 +45,14 @@ const DisablePin = ({
 		<ThemedView style={styles.container}>
 			<SafeAreaInsets type="top" />
 			<NavigationHeader
-				title="Disable PIN"
+				title={t('')}
 				onClosePress={(): void => {
 					navigation.navigate('Wallet');
 				}}
 			/>
 
 			<View style={styles.message}>
-				<Text01S color="gray1">
-					PIN code is currently enabled. If you want to disable your PIN, you
-					need to enter your current PIN code first.
-				</Text01S>
+				<Text01S color="gray1">{t('pin_disable_text')}</Text01S>
 			</View>
 
 			<GlowImage image={imageSrc} imageSize={200} />
@@ -61,7 +60,7 @@ const DisablePin = ({
 			<View style={buttonContainerStyles}>
 				<Button
 					size="large"
-					text="Disable PIN"
+					text={t('pin_disable_button')}
 					onPress={handleButtonPress}
 					testID="DisablePin"
 				/>

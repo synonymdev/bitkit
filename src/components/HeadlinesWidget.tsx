@@ -1,6 +1,7 @@
 import React, { memo, ReactElement, useEffect, useState } from 'react';
 import { TouchableOpacity, Linking, StyleSheet } from 'react-native';
 import { SlashURL } from '@synonymdev/slashtags-sdk';
+import { useTranslation } from 'react-i18next';
 
 import { View } from '../styles/components';
 import { Caption13M, Text01M } from '../styles/text';
@@ -31,6 +32,7 @@ const HeadlinesWidget = ({
 	onLongPress?: () => void;
 	onPressIn?: () => void;
 }): ReactElement => {
+	const { t } = useTranslation('slashtags');
 	const [showDialog, setShowDialog] = useState(false);
 	const [article, setArticle] = useState<{
 		title: string;
@@ -60,7 +62,7 @@ const HeadlinesWidget = ({
 			})
 			.catch((e: Error) => {
 				showErrorNotification({
-					title: 'Failed to open news feed drive',
+					title: t('widget_error_drive'),
 					message: e.message,
 				});
 			});
@@ -84,7 +86,7 @@ const HeadlinesWidget = ({
 		return function cleanup() {
 			unmounted = true;
 		};
-	}, [sdk, url]);
+	}, [sdk, url, t]);
 
 	const onEdit = (): void => {
 		rootNavigation.navigate('WidgetFeedEdit', { url });
@@ -145,9 +147,9 @@ const HeadlinesWidget = ({
 			)}
 			<Dialog
 				visible={showDialog}
-				title="Delete Bitcoin Headlines widget?"
-				description="Are you sure you want to delete Bitcoin Headlines from your widgets?"
-				confirmText="Yes, Delete"
+				title={t('widget_delete_title', { name: t('widget_headlines') })}
+				description={t('widget_delete_desc', { name: t('widget_headlines') })}
+				confirmText={t('widget_delete_yes')}
 				onCancel={(): void => {
 					setShowDialog(false);
 				}}

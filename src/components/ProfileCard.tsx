@@ -7,6 +7,7 @@ import {
 	Platform,
 } from 'react-native';
 import { launchImageLibrary } from 'react-native-image-picker';
+import { useTranslation } from 'react-i18next';
 
 import { TextInputNoOutline } from '../styles/components';
 import { Text, Title } from '../styles/text';
@@ -34,6 +35,7 @@ export const ProfileCard = ({
 	resolving: boolean;
 	onChange?: (name: string, value: string) => void;
 }): JSX.Element => {
+	const { t } = useTranslation('slashtags');
 	const bioRef = useRef<TextInput>(null);
 
 	const name = profile?.name ?? '';
@@ -52,9 +54,7 @@ export const ProfileCard = ({
 							// placeholder doesn't like the lineHeight
 							style={[styles.nameInput, name ? styles.nameInputFilled : {}]}
 							value={name?.slice(0, MAX_NAME_LENGTH)}
-							placeholder={
-								contact ? "Contact's name" : 'Your public\nprofile name'
-							}
+							placeholder={t(contact ? 'contacts_name' : 'contact_your_name')}
 							multiline={true}
 							onChangeText={(value: string): void => {
 								if (value.slice(-1) === '\t') {
@@ -70,9 +70,7 @@ export const ProfileCard = ({
 					) : (
 						<View>
 							{resolving ? (
-								<Title style={styles.name}>
-									Retrieving{'\n'}contact info...
-								</Title>
+								<Title style={styles.name}>{t('contact_retrieving')}</Title>
 							) : (
 								nameParts.map((part, index) => (
 									<Title key={index} numberOfLines={1} style={styles.name}>
@@ -118,7 +116,7 @@ export const ProfileCard = ({
 					style={styles.bioInput}
 					color="gray1"
 					value={bio}
-					placeholder="Short bio. Tell a bit about yourself."
+					placeholder={t('profile_bio')}
 					multiline={true}
 					onChangeText={(value): void => onChange?.('bio', value)}
 					blurOnSubmit
