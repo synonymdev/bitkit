@@ -246,17 +246,32 @@ export const truncate = (text: string, length: number): string => {
 
 /**
  * Truncates strings with an ellipses in the middle
- * @param text
- * @param length
+ * @param {string} text
+ * @param {number} [maxLength]
  * @returns {string}
  */
-export const ellipse = (text: string, length: number = 15): string => {
-	const leftLength = (length - 3) / 2;
-	const rightLength = (length - 3) / 2;
+export const ellipsis = (text: string, maxLength: number = 15): string => {
+	if (!text) {
+		return text;
+	}
+	if (maxLength < 1) {
+		return text;
+	}
+	if (text.length <= maxLength) {
+		return text;
+	}
+	if (maxLength === 1) {
+		return text.substring(0, 1) + '...';
+	}
 
-	return `${text.slice(0, leftLength)}...${text.slice(
-		text.length - rightLength,
-	)}`;
+	const midpoint = Math.ceil(text.length / 2);
+	const toRemove = text.length - maxLength;
+	const leftStrip = Math.ceil(toRemove / 2);
+	const rightStrip = toRemove - leftStrip;
+	const leftText = text.substring(0, midpoint - leftStrip);
+	const rightText = text.substring(midpoint + rightStrip);
+
+	return `${leftText}...${rightText}`;
 };
 
 /**

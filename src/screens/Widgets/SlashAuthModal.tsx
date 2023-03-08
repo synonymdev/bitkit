@@ -28,7 +28,7 @@ import {
 	showErrorNotification,
 	showSuccessNotification,
 } from '../../utils/notifications';
-import { ellipse } from '../../utils/helpers';
+import { ellipsis } from '../../utils/helpers';
 import { setAuthWidget } from '../../store/actions/widgets';
 import Divider from '../../components/Divider';
 import { useSnapPoints } from '../../hooks/bottomSheet';
@@ -109,7 +109,7 @@ const _SlashAuthModal = (): ReactElement => {
 	// }, [anonymousSlashtag]);
 
 	const serviceName = useMemo(() => {
-		return server.name || ellipse(server.url, 25);
+		return server.name || ellipsis(server.url, 25);
 	}, [server]);
 
 	const text = useMemo(() => {

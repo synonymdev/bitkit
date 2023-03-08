@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { TChannel } from '@synonymdev/react-native-ldk';
 
-import { ellipse } from '../utils/helpers';
+import { ellipsis } from '../utils/helpers';
 import Store from '../store/types';
 import { TUseChannelBalance } from '../store/types/lightning';
 import { blocktankNodeInfoSelector } from '../store/reselect/blocktank';
@@ -117,7 +117,7 @@ export const useLightningChannelName = (channel: TChannel): string => {
 	const blocktankNodeInfo = useSelector(blocktankNodeInfoSelector);
 	const isBlocktankChannel =
 		channel.counterparty_node_id === blocktankNodeInfo.public_key;
-	const shortChannelId = ellipse(channel.channel_id, 13);
+	const shortChannelId = ellipsis(channel.channel_id, 13);
 
 	if (isBlocktankChannel) {
 		return `Blocktank ${

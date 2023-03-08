@@ -43,7 +43,7 @@ import { useLightningBalance } from '../../../hooks/lightning';
 import { useBottomSheetBackPress } from '../../../hooks/bottomSheet';
 import { refreshLdk } from '../../../utils/lightning';
 import { getUnifiedUri } from '../../../utils/receive';
-import { ellipse, sleep } from '../../../utils/helpers';
+import { ellipsis, sleep } from '../../../utils/helpers';
 import { getReceiveAddress } from '../../../utils/wallet';
 import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
 import Button from '../../../components/Button';
@@ -372,7 +372,7 @@ const Receive = ({
 							/>
 						</View>
 						<View style={styles.invoiceText}>
-							<Text02S>{ellipse(receiveAddress, 35)}</Text02S>
+							<Text02S>{ellipsis(receiveAddress, 35)}</Text02S>
 							{showTooltip.onchain && (
 								<AnimatedView
 									style={styles.tooltip}
@@ -420,7 +420,7 @@ const Receive = ({
 									/>
 								</View>
 								<View style={styles.invoiceText}>
-									<Text02S>{ellipse(lightningInvoice, 35)}</Text02S>
+									<Text02S>{ellipsis(lightningInvoice, 35)}</Text02S>
 									{showTooltip.lightning && (
 										<AnimatedView
 											style={styles.tooltip}
