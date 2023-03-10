@@ -1,5 +1,11 @@
-import actions from './actions';
+import lm from '@synonymdev/react-native-ldk';
 import { err, ok, Result } from '@synonymdev/result';
+import {
+	ENetworks,
+	TLdkData,
+} from '@synonymdev/react-native-ldk/dist/utils/types';
+
+import actions from './actions';
 import { getDispatch } from '../helpers';
 import {
 	EBackupCategories,
@@ -14,21 +20,19 @@ import {
 	setAccount,
 	setLdkStoragePath,
 } from '../../utils/lightning';
-import lm from '@synonymdev/react-native-ldk';
 import { TAvailableNetworks } from '../../utils/networks';
-import {
-	ENetworks,
-	TLdkData,
-} from '@synonymdev/react-native-ldk/dist/utils/types';
 import { getSelectedNetwork } from '../../utils/wallet';
 import { ISettings } from '../types/settings';
 import { updateSettings } from './settings';
 import { IBackup, TAccountBackup } from '../types/backup';
+import { isObjPartialMatch } from '../../utils/helpers';
 import { IWidgetsStore } from '../types/widgets';
 import { updateWidgets } from './widgets';
-import { isObjPartialMatch } from '../../utils/helpers';
 import { getDefaultSettingsShape } from '../shapes/settings';
 import { getDefaultWidgetsShape } from '../shapes/widgets';
+import { IMetadata } from '../types/metadata';
+import { getDefaultMetadataShape } from '../shapes/metadata';
+import { updateMetadata } from './metadata';
 
 const dispatch = getDispatch();
 
@@ -289,14 +293,15 @@ export const performSettingsRestore = async ({
 		return ok({ backupExists: false });
 	}
 
-	await updateSettings({
+	updateSettings({
 		...expectedBackupShape,
 		...backup,
 		biometrics: false,
 		pin: false,
 		pinForPayments: false,
-		pinOnLaunch: false,
+		pinOnLaunch: true,
 	});
+	updateBackup({ remoteSettingsBackupSynced: true });
 
 	// Restore success
 	return ok({ backupExists: true });
@@ -320,6 +325,7 @@ export const performWidgetsRestore = async ({
 	if (backupRes.isErr()) {
 		return err(backupRes.error.message);
 	}
+
 	const backup = backupRes.value;
 	if (!backup) {
 		return ok({ backupExists: false });
@@ -331,11 +337,61 @@ export const performWidgetsRestore = async ({
 		return ok({ backupExists: false });
 	}
 
-	await updateWidgets({
+	updateWidgets({
 		...expectedBackupShape,
 		...backup,
 		onboardedWidgets: true,
 	});
+	updateBackup({ remoteWidgetsBackupSynced: true });
+
+	// Restore success
+	return ok({ backupExists: true });
+};
+
+export const performMetadataRestore = async ({
+	slashtag,
+	selectedNetwork,
+}: {
+	slashtag: Slashtag;
+	selectedNetwork?: TAvailableNetworks;
+}): Promise<Result<{ backupExists: boolean }>> => {
+	if (!selectedNetwork) {
+		selectedNetwork = getSelectedNetwork();
+	}
+
+	const backupRes = await getBackup<IMetadata>({
+		slashtag,
+		backupCategory: EBackupCategories.metadata,
+		selectedNetwork,
+	});
+	if (backupRes.isErr()) {
+		return err(backupRes.error.message);
+	}
+
+	const backup = backupRes.value;
+
+	if (!backup) {
+		return ok({ backupExists: false });
+	}
+
+	const expectedBackupShape = getDefaultMetadataShape();
+	//If the keys in the backup object are not found in the reference object assume the backup does not exist.
+	if (
+		!isObjPartialMatch(backup, expectedBackupShape, [
+			'tags',
+			'pendingTags',
+			'slashTagsUrls',
+		])
+	) {
+		return ok({ backupExists: false });
+	}
+
+	updateMetadata({
+		...expectedBackupShape,
+		...backup,
+	});
+	updateBackup({ remoteMetadataBackupSynced: true });
+
 	// Restore success
 	return ok({ backupExists: true });
 };
@@ -368,6 +424,15 @@ export const performFullRestoreFromLatestBackup = async (
 			console.log('Error backing up widgets', widgetsBackupRes.error.message);
 		}
 
+		const metadataBackupRes = await performMetadataRestore({
+			slashtag,
+			selectedNetwork,
+		});
+		if (metadataBackupRes.isErr()) {
+			//Since this backup feature is not critical and mostly for user convenience there's no reason to throw an error here.
+			console.log('Error backing up widgets', metadataBackupRes.error.message);
+		}
+
 		// Restore success
 		return ok({ backupExists: true });
 	} catch (e) {
@@ -396,5 +461,13 @@ export const resetBackupStore = (): Result<string> => {
 		type: actions.RESET_BACKUP_STORE,
 	});
 
+	return ok('');
+};
+
+export const updateBackup = (payload: Partial<IBackup>): Result<string> => {
+	dispatch({
+		type: actions.BACKUP_UPDATE,
+		payload,
+	});
 	return ok('');
 };

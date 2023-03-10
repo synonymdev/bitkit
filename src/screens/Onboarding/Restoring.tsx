@@ -100,7 +100,12 @@ const RestoringScreen = (): ReactElement => {
 				<GlowImage image={imageSrc} imageSize={200} glowColor={color} />
 
 				<View style={styles.buttonContainer}>
-					<Button onPress={onPress} size="large" text={buttonText} />
+					<Button
+						onPress={onPress}
+						size="large"
+						text={buttonText}
+						testID={showRestored ? 'GetStartedButton' : 'TryAgainButton'}
+					/>
 					{tryAgainCount > 1 && showFailed && (
 						<Button
 							loading={proceedWBIsLoading}

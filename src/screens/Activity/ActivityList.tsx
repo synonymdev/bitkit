@@ -68,8 +68,15 @@ const ActivityList = ({
 	}, [filter, items, tags]);
 
 	const renderItem = useCallback(
-		// eslint-disable-next-line react/no-unused-prop-types
-		({ item }: { item: string | IActivityItemFormatted }): ReactElement => {
+		({
+			item,
+			index,
+		}: {
+			// eslint-disable-next-line react/no-unused-prop-types
+			item: string | IActivityItemFormatted;
+			// eslint-disable-next-line react/no-unused-prop-types
+			index: number;
+		}): ReactElement => {
 			if (typeof item === 'string') {
 				return (
 					<Caption13Up color="gray1" style={styles.category} key={item}>
@@ -80,6 +87,7 @@ const ActivityList = ({
 
 			return (
 				<ListItem
+					testID={`Activity-${index}`}
 					key={item.id}
 					item={item}
 					onPress={(): void => {

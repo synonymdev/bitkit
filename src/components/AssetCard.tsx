@@ -10,15 +10,17 @@ const AssetCard = ({
 	icon,
 	satoshis,
 	onPress,
+	testID,
 }: {
 	name: string;
 	ticker: string;
 	icon: ReactElement;
 	satoshis: number;
 	onPress: (event: GestureResponderEvent) => void;
+	testID?: string;
 }): ReactElement => {
 	return (
-		<Pressable style={styles.container} onPress={onPress}>
+		<Pressable style={styles.container} onPress={onPress} testID={testID}>
 			<View color="transparent" style={styles.col1}>
 				{icon}
 				<View color="transparent" style={styles.titleContainer}>

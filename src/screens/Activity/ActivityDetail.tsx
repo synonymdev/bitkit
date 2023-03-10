@@ -408,12 +408,13 @@ const OnchainActivityDetail = ({
 								title={t('tags')}
 								value={
 									<View style={styles.tagsContainer}>
-										{tags.map((tag) => (
+										{tags.map((tag, index) => (
 											<Tag
 												key={tag}
 												value={tag}
 												style={styles.tag}
 												onClose={(): void => handleRemoveTag(tag)}
+												testID={`ActivityTag-${index}`}
 											/>
 										))}
 									</View>
@@ -444,6 +445,7 @@ const OnchainActivityDetail = ({
 								text={t('activity_tag')}
 								icon={<TagIcon height={16} width={16} color="brand" />}
 								onPress={handleAddTag}
+								testID="ActivityTag"
 							/>
 						</View>
 						<View style={styles.sectionContainer}>
@@ -852,7 +854,13 @@ const ActivityDetail = ({
 			<Canvas style={[styles.canvas, size]}>
 				<Glow color={glowColor} size={size} />
 			</Canvas>
-			<NavigationHeader title={title} onClosePress={navigation.popToTop} />
+			<NavigationHeader
+				title={title}
+				onClosePress={(): void => {
+					navigation.goBack();
+					navigation.goBack();
+				}}
+			/>
 			<ScrollView
 				contentContainerStyle={styles.scrollContent}
 				showsVerticalScrollIndicator={false}>

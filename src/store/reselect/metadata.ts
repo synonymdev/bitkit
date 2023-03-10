@@ -7,7 +7,7 @@ import {
 	TTags,
 } from '../types/metadata';
 
-const metadataState = (state: Store): IMetadata => state.metadata;
+export const metadataState = (state: Store): IMetadata => state.metadata;
 
 export const tagsSelector = createSelector(
 	[metadataState],

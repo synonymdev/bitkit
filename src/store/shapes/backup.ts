@@ -5,6 +5,7 @@ export const defaultBackupShape: IBackup = {
 	remoteLdkBackupSynced: false,
 	remoteSettingsBackupSynced: false,
 	remoteWidgetsBackupSynced: false,
+	remoteMetadataBackupSynced: false,
 
 	iCloudBackupsEnabled: false,
 	iCloudLdkBackupsSynced: false,

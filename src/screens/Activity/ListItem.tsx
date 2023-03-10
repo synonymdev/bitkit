@@ -214,9 +214,11 @@ const Avatar = ({ url }: { url: string }): ReactElement => {
 const ActivityListItem = ({
 	item,
 	onPress,
+	testID,
 }: {
 	item: IActivityItemFormatted;
 	onPress: () => void;
+	testID?: string;
 }): ReactElement => {
 	const { id, activityType, txType } = item;
 	const profileUrl = useAppSelector((state) => slashTagsUrlSelector(state, id));
@@ -235,7 +237,7 @@ const ActivityListItem = ({
 	);
 
 	return (
-		<TouchableOpacity style={styles.root} onPress={onPress}>
+		<TouchableOpacity style={styles.root} onPress={onPress} testID={testID}>
 			{activityType === EActivityType.onchain && (
 				<OnchainListItem item={item} icon={icon} />
 			)}

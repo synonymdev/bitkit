@@ -125,6 +125,12 @@ const metadata = (
 		case actions.RESET_META_STORE:
 			return defaultMetadataShape;
 
+		case actions.UPDATE_META:
+			return {
+				...state,
+				...action.payload,
+			};
+
 		default:
 			return state;
 	}

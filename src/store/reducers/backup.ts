@@ -22,6 +22,20 @@ const backup = (state: IBackup = defaultBackupShape, action): IBackup => {
 				remoteWidgetsBackupSynced: false,
 			};
 
+		case actions.UPDATE_META_TX_TAGS:
+		case actions.ADD_META_TX_TAG:
+		case actions.DELETE_META_TX_TAG:
+		case actions.UPDATE_META_INC_TX_TAGS:
+		case actions.MOVE_META_INC_TX_TAG:
+		case actions.ADD_META_TX_SLASH_TAGS_URL:
+		case actions.DELETE_META_TX_SLASH_TAGS_URL:
+		case actions.ADD_TAG:
+		case actions.DELETE_TAG:
+			return {
+				...state,
+				remoteMetadataBackupSynced: false,
+			};
+
 		case actions.RESET_BACKUP_STORE:
 			return defaultBackupShape;
 

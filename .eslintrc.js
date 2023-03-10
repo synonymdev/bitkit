@@ -83,5 +83,11 @@ module.exports = {
 		// Jest Plugin
 		// The following rules are made available via `eslint-plugin-jest`.
 		'jest/no-disabled-tests': 0,
+		'react-hooks/exhaustive-deps': [
+			'error',
+			{
+				additionalHooks: 'useDebouncedEffect',
+			},
+		],
 	},
 };

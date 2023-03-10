@@ -23,11 +23,13 @@ const FactsWidget = ({
 	isEditing = false,
 	onLongPress,
 	onPressIn,
+	testID,
 }: {
 	url: string;
 	isEditing?: boolean;
 	onLongPress?: () => void;
 	onPressIn?: () => void;
+	testID?: string;
 }): ReactElement => {
 	const { t } = useTranslation('slashtags');
 	const [showDialog, setShowDialog] = useState(false);
@@ -99,7 +101,8 @@ const FactsWidget = ({
 				style={styles.root}
 				activeOpacity={0.9}
 				onLongPress={onLongPress}
-				onPressIn={onPressIn}>
+				onPressIn={onPressIn}
+				testID={testID}>
 				<View style={styles.icon}>
 					{<LightBulbIcon width={32} height={32} />}
 				</View>

@@ -257,6 +257,7 @@ const RestoreFromSeed = (): ReactElement => {
 						size="large"
 						disabled={!enableButtons}
 						onPress={handleRestore}
+						testID="RestoreButton"
 					/>
 				</View>
 				<SafeAreaInsets type="bottom" />

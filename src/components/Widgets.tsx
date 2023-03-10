@@ -137,6 +137,7 @@ export const Widgets = (): ReactElement => {
 	const renderFlat = useCallback(
 		(item): ReactElement => {
 			const [url, widget] = item;
+			let testID;
 
 			if (!widget.feed) {
 				return (
@@ -146,6 +147,7 @@ export const Widgets = (): ReactElement => {
 						widget={widget}
 						isEditing={false}
 						onLongPress={handleEditStart}
+						testID="AuthWidget"
 					/>
 				);
 			}
@@ -154,18 +156,23 @@ export const Widgets = (): ReactElement => {
 			switch (widget.feed.type) {
 				case SUPPORTED_FEED_TYPES.PRICE_FEED:
 					Component = PriceWidget;
+					testID = 'PriceWidget';
 					break;
 				case SUPPORTED_FEED_TYPES.HEADLINES_FEED:
 					Component = HeadlinesWidget;
+					testID = 'HeadlinesWidget';
 					break;
 				case SUPPORTED_FEED_TYPES.BLOCKS_FEED:
 					Component = BlocksWidget;
+					testID = 'BlocksWidget';
 					break;
 				case SUPPORTED_FEED_TYPES.FACTS_FEED:
 					Component = FactsWidget;
+					testID = 'FactsWidget';
 					break;
 				default:
 					Component = FeedWidget;
+					testID = 'FeedWidget';
 			}
 
 			return (
@@ -175,6 +182,7 @@ export const Widgets = (): ReactElement => {
 					widget={widget}
 					isEditing={false}
 					onLongPress={handleEditStart}
+					testID={testID}
 				/>
 			);
 		},
@@ -198,7 +206,7 @@ export const Widgets = (): ReactElement => {
 
 	return (
 		<>
-			<View style={styles.titleRow}>
+			<View style={styles.titleRow} testID="WidgetsTitle">
 				<Subtitle style={styles.title}>{t('widgets')}</Subtitle>
 				{widgetsArray.length > 0 && (
 					<TouchableOpacity
@@ -213,7 +221,7 @@ export const Widgets = (): ReactElement => {
 				)}
 			</View>
 			<View ref={widgetsContainer}>{widgetsArray.map(renderFlat)}</View>
-			<TouchableOpacity style={styles.add} onPress={onAdd}>
+			<TouchableOpacity style={styles.add} onPress={onAdd} testID="WidgetsAdd">
 				<View color="green16" style={styles.iconCircle}>
 					<PlusIcon height={16} color="green" />
 				</View>

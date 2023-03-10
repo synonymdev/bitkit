@@ -9,8 +9,15 @@ interface ITag {
 	style?: {};
 	onPress?: () => void;
 	onClose?: () => void;
+	testID?: string;
 }
-const Tag = ({ value, style, onPress, onClose }: ITag): ReactElement => {
+const Tag = ({
+	value,
+	style,
+	onPress,
+	onClose,
+	testID,
+}: ITag): ReactElement => {
 	const tagStyle = useMemo(
 		() => StyleSheet.compose(styles.root, style),
 		[style],
@@ -18,7 +25,9 @@ const Tag = ({ value, style, onPress, onClose }: ITag): ReactElement => {
 
 	return (
 		<TouchableOpacity color="transparent" style={tagStyle} onPress={onPress}>
-			<Text02M style={styles.text}>{value}</Text02M>
+			<Text02M style={styles.text} testID={testID}>
+				{value}
+			</Text02M>
 			{onClose && (
 				<TouchableOpacity
 					color="transparent"

@@ -4,7 +4,7 @@ import { getDispatch, getMetaDataStore } from '../helpers';
 import { getCurrentWallet } from '../../utils/wallet';
 import { EPaymentType } from '../types/wallet';
 import { removeKeysFromObject } from '../../utils/helpers';
-import { TTags } from '../types/metadata';
+import { TTags, IMetadata } from '../types/metadata';
 
 const dispatch = getDispatch();
 
@@ -150,5 +150,13 @@ export const deleteTag = (tag: string): Result<string> => {
  */
 export const resetMetaStore = (): Result<string> => {
 	dispatch({ type: actions.RESET_META_STORE });
+	return ok('');
+};
+
+export const updateMetadata = (payload: Partial<IMetadata>): Result<string> => {
+	dispatch({
+		type: actions.UPDATE_META,
+		payload,
+	});
 	return ok('');
 };

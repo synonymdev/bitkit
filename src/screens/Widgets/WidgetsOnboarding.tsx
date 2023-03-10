@@ -106,6 +106,7 @@ const Layout = ({
 					</View>
 					<View style={styles.middleContainer}>{children}</View>
 					<Button
+						testID="ContinueWidgets"
 						text={t('continue')}
 						size="large"
 						onPress={(): void => {

@@ -206,6 +206,7 @@ const Slideshow = ({
 									// eslint-disable-next-line react/prop-types
 									onPress={(): void => navigation.navigate('RestoreFromSeed')}
 									text={t('restore')}
+									testID="RestoreWallet"
 								/>
 							</View>
 						</View>

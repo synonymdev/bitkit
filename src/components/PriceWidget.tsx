@@ -95,12 +95,14 @@ const PriceWidget = ({
 	isEditing = false,
 	onLongPress,
 	onPressIn,
+	testID,
 }: {
 	url: string;
 	widget: IWidget;
 	isEditing?: boolean;
 	onLongPress?: () => void;
 	onPressIn?: () => void;
+	testID?: string;
 }): ReactElement => {
 	const { t } = useTranslation('slashtags');
 	const { value, drive } = useFeedWidget({ url, feed: widget.feed });
@@ -166,6 +168,7 @@ const PriceWidget = ({
 			}
 			onLongPress={onLongPress}
 			onPressIn={onPressIn}
+			testID={testID}
 		/>
 	);
 };

@@ -1,4 +1,9 @@
-import { removeKeysFromObject, timeAgo, ellipsis } from '../src/utils/helpers';
+import {
+	removeKeysFromObject,
+	timeAgo,
+	isObjPartialMatch,
+	ellipsis,
+} from '../src/utils/helpers';
 
 describe('removeKeysFromObject', () => {
 	it('takes a string, removes a single key from the object and returns the result', () => {
@@ -34,7 +39,7 @@ describe('removeKeysFromObject', () => {
 });
 
 describe('timeAgo', () => {
-	it('cat format time', () => {
+	it('can format time', () => {
 		expect(timeAgo(+new Date())).toEqual('now');
 		expect(timeAgo(+new Date() - 1000 * 10)).toEqual('10 seconds ago');
 		expect(timeAgo(+new Date() - 1000 * 60 * 10)).toEqual('10 minutes ago');
@@ -66,5 +71,21 @@ describe('ellipsis', () => {
 		expect(ellipsis(s, 9)).toEqual('1234...67890');
 		expect(ellipsis(s, 10)).toEqual('1234567890');
 		expect(ellipsis(s, 11)).toEqual('1234567890');
+	});
+});
+
+describe('isObjPartialMatch', () => {
+	it('can perform match', () => {
+		const f = isObjPartialMatch;
+		expect(f({}, {})).toEqual(true);
+		expect(f({}, { a: 1 })).toEqual(true);
+		expect(f({ a: 1 }, {})).toEqual(false);
+		expect(f({ a: 1 }, {}, ['a'])).toEqual(false);
+		expect(f({ a: { b: 2 } }, { a: { c: 3 } }, ['a'])).toEqual(true);
+
+		expect(f({ a: { b: 2 } }, { a: { b: 1 } })).toEqual(true);
+		expect(f({ a: { c: 1 } }, { a: { b: 1 } })).toEqual(false);
+
+		expect(f({ a: 1 }, { a: [] })).toEqual(true);
 	});
 });

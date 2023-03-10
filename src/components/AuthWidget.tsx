@@ -26,12 +26,14 @@ const AuthWidget = ({
 	isEditing = false,
 	onLongPress,
 	onPressIn,
+	testID,
 }: {
 	url: string;
 	widget: IWidget;
 	isEditing?: boolean;
 	onLongPress?: () => void;
 	onPressIn?: () => void;
+	testID?: string;
 }): ReactElement => {
 	const { t } = useTranslation('slashtags');
 	const [showButtons, setShowButtons] = useState(false);
@@ -77,7 +79,8 @@ const AuthWidget = ({
 			onPress={switchShowButtons}
 			onLongPress={onLongPress}
 			onPressIn={onPressIn}
-			activeOpacity={0.9}>
+			activeOpacity={0.9}
+			testID={testID}>
 			<View style={styles.left}>
 				<ProfileImage
 					style={styles.icon}

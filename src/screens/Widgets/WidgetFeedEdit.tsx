@@ -330,6 +330,7 @@ export const WidgetFeedEdit = ({
 								text={buttonText}
 								size="large"
 								onPress={onSave}
+								testID="SaveWidget"
 							/>
 						</View>
 					</View>

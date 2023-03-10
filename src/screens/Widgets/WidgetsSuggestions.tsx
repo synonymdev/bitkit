@@ -51,11 +51,13 @@ const WidgetsSuggestions = ({
 							icon={<ChartLineIcon />}
 							title={t('widget_price')}
 							url={PriceFeedURL}
+							testID="PriceWidget"
 						/>
 						<Feed
 							icon={<NewspaperIcon />}
 							title={t('widget_headlines')}
 							url={NewsFeedURL}
+							testID="HeadlinesWidget"
 						/>
 						<Feed
 							icon={<CubeIcon />}
@@ -90,17 +92,20 @@ const Feed = ({
 	icon,
 	title,
 	url,
+	testID,
 }: {
 	icon: JSX.Element;
 	title: string;
 	url: string;
+	testID?: string;
 }): JSX.Element => {
 	return (
 		<TouchableOpacity
 			activeOpacity={0.9}
 			onPress={(): void => {
 				handleSlashtagURL(url);
-			}}>
+			}}
+			testID={testID}>
 			<View style={styles.feed}>
 				<View style={styles.icon}>{icon}</View>
 				<Title>{title}</Title>

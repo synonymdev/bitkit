@@ -22,11 +22,15 @@ const SeedInput = forwardRef<any, SeedInputProps>(
 					autoCapitalize="none"
 					autoCorrect={false}
 					returnKeyType="done"
+					testID={`Word-${index}`}
 					{...props}
 				/>
 				{index !== undefined && (
 					<View style={styles.index}>
-						<Text01S color={valid ? 'white5' : 'red'} style={styles.indexText}>
+						<Text01S
+							color={valid ? 'white5' : 'red'}
+							style={styles.indexText}
+							testID={`WordIndex-${index}`}>
 							{index + 1}.
 						</Text01S>
 					</View>

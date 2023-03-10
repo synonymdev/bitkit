@@ -35,7 +35,8 @@ export const HourglassSpinner = ({
 		<AnimatedView
 			style={[styles.container, style]}
 			entering={entering}
-			color="transparent">
+			color="transparent"
+			testID="HourglassSpinner">
 			<GlowImage image={imageSrc} imageSize={230} />
 		</AnimatedView>
 	);

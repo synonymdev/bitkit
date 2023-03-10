@@ -1,3 +1,4 @@
+import cloneDeep from 'lodash.clonedeep';
 import { TAvailableNetworks } from '@synonymdev/react-native-ldk';
 import {
 	ELECTRUM_BITCOIN_HOST,
@@ -17,7 +18,6 @@ import {
 } from '../types/settings';
 import { EBalanceUnit, EBitcoinUnit } from '../types/wallet';
 import { IWidgetsStore } from '../types/widgets';
-import cloneDeep from 'lodash.clonedeep';
 
 //TODO: Remove the public Electrum servers below once we spin up our own.
 export const origCustomElectrumPeers: Record<

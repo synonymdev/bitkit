@@ -327,7 +327,7 @@ export const objectsMatch = (obj1, obj2): boolean => {
  * Determines if all keys in the test object are found in the reference object.
  * @param testObj
  * @param referenceObj
- * @param {string[]} [keysToExclude] Returns true when excluded object keys are encountered.
+ * @param {string[]} [keysToExclude] Skip recursive check for these keys.
  * @returns boolean
  */
 export const isObjPartialMatch = (
@@ -339,11 +339,11 @@ export const isObjPartialMatch = (
 		return false;
 	}
 	return Object.keys(testObj).every((key) => {
-		if (keysToExclude.includes(key)) {
-			return true;
-		}
 		if (key in referenceObj) {
 			if (!Array.isArray(testObj[key]) && typeof testObj[key] === 'object') {
+				if (keysToExclude.includes(key)) {
+					return true;
+				}
 				return isObjPartialMatch(testObj[key], referenceObj[key]);
 			}
 			return true;

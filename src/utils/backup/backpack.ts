@@ -17,6 +17,7 @@ export enum EBackupCategories {
 	ldkComplete = 'bitkit.ldk.complete',
 	settings = 'bitkit.settings',
 	widgets = 'bitkit.widgets',
+	metadata = 'bitkit.metadata',
 }
 
 //Keep a cached backup instance for each slashtag

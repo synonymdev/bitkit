@@ -96,6 +96,7 @@ const Form = ({ id }: { id: string }): ReactElement => {
 				autoFocus={true}
 				maxLength={15}
 				returnKeyType="done"
+				testID="TagInput"
 			/>
 		</>
 	);

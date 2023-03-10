@@ -14,12 +14,14 @@ const BlocksWidget = ({
 	isEditing = false,
 	onLongPress,
 	onPressIn,
+	testID,
 }: {
 	url: string;
 	widget: IWidget;
 	isEditing?: boolean;
 	onLongPress?: () => void;
 	onPressIn?: () => void;
+	testID?: string;
 }): ReactElement => {
 	const { t } = useTranslation('slashtags');
 	const { value } = useFeedWidget({ url, feed: widget.feed });
@@ -47,6 +49,7 @@ const BlocksWidget = ({
 					)}
 				</View>
 			}
+			testID={testID}
 		/>
 	);
 };

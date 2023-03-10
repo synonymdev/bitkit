@@ -1,23 +1,30 @@
 import React, { ReactElement, useEffect } from 'react';
 import lm from '@synonymdev/react-native-ldk';
+import { useSelector } from 'react-redux';
+
 import {
 	performRemoteBackup,
 	performRemoteLdkBackup,
 } from '../../store/actions/backup';
 import { useSelectedSlashtag } from '../../hooks/slashtags';
 import { isSlashtagsDisabled } from '../slashtags';
-import { useSelector } from 'react-redux';
 import { backupSelector } from '../../store/reselect/backup';
 import { selectedNetworkSelector } from '../../store/reselect/wallet';
-import { getSettingsStore, getWidgetsStore } from '../../store/helpers';
 import { EBackupCategories } from './backpack';
+import { useDebouncedEffect } from '../../hooks/helpers';
+import { settingsSelector } from '../../store/reselect/settings';
+import { metadataState } from '../../store/reselect/metadata';
+import { widgetsState } from '../../store/reselect/widgets';
+
+const BACKUP_DEBOUNCE = 5000;
 
 const EnabledSlashtag = (): ReactElement => {
 	const selectedNetwork = useSelector(selectedNetworkSelector);
 	const { slashtag } = useSelectedSlashtag();
 	const backup = useSelector(backupSelector);
-
-	//TODO perform other backup types (tags/metadata)
+	const settings = useSelector(settingsSelector);
+	const metadata = useSelector(metadataState);
+	const widgets = useSelector(widgetsState);
 
 	useEffect(() => {
 		const sub = lm.subscribeToBackups((res) => {
@@ -31,9 +38,11 @@ const EnabledSlashtag = (): ReactElement => {
 	}, [slashtag]);
 
 	// Attempts to backup settings anytime remoteSettingsBackupSynced is set to false.
-	useEffect(() => {
-		if (!backup?.remoteSettingsBackupSynced) {
-			const settings = getSettingsStore();
+	useDebouncedEffect(
+		() => {
+			if (backup.remoteSettingsBackupSynced) {
+				return;
+			}
 			performRemoteBackup({
 				slashtag,
 				isSyncedKey: 'remoteSettingsBackupSynced',
@@ -41,14 +50,17 @@ const EnabledSlashtag = (): ReactElement => {
 				selectedNetwork,
 				backup: settings,
 			}).then();
-		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [backup?.remoteSettingsBackupSynced, slashtag]);
+		},
+		[backup.remoteSettingsBackupSynced, slashtag, settings, selectedNetwork],
+		BACKUP_DEBOUNCE,
+	);
 
 	// Attempts to backup widgets anytime remoteWidgetsBackupSynced is set to false.
-	useEffect(() => {
-		if (!backup?.remoteWidgetsBackupSynced) {
-			const widgets = getWidgetsStore();
+	useDebouncedEffect(
+		() => {
+			if (backup.remoteWidgetsBackupSynced) {
+				return;
+			}
 			performRemoteBackup({
 				slashtag,
 				isSyncedKey: 'remoteWidgetsBackupSynced',
@@ -56,9 +68,28 @@ const EnabledSlashtag = (): ReactElement => {
 				selectedNetwork,
 				backup: widgets,
 			}).then();
-		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [backup?.remoteWidgetsBackupSynced, slashtag]);
+		},
+		[backup.remoteWidgetsBackupSynced, slashtag, widgets, selectedNetwork],
+		BACKUP_DEBOUNCE,
+	);
+
+	// Attempts to backup metadata anytime remoteMetadataBackupSynced is set to false.
+	useDebouncedEffect(
+		() => {
+			if (backup.remoteMetadataBackupSynced) {
+				return;
+			}
+			performRemoteBackup({
+				slashtag,
+				isSyncedKey: 'remoteMetadataBackupSynced',
+				backupCategory: EBackupCategories.metadata,
+				selectedNetwork,
+				backup: metadata,
+			}).then();
+		},
+		[backup.remoteMetadataBackupSynced, slashtag, metadata, selectedNetwork],
+		BACKUP_DEBOUNCE,
+	);
 
 	return <></>;
 };

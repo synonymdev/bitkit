@@ -21,6 +21,7 @@ const Assets = (): ReactElement => {
 			</Subtitle>
 			<AssetCard
 				name="Bitcoin"
+				testID="BitcoinAsset"
 				ticker="BTC"
 				satoshis={satoshis}
 				icon={<BitcoinCircleIcon />}
