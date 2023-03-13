@@ -1,51 +1,42 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="com.bitkit">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools" package="com.bitkit">
 
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.USE_FINGERPRINT" />
-    <uses-permission android:name="android.permiandroid:themession.VIBRATE"/>
+  <uses-permission android:name="android.permission.INTERNET"/>
+  <uses-permission android:name="android.permission.CAMERA"/>
+  <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+  <uses-permission android:name="android.permission.USE_FINGERPRINT"/>
+  <uses-permission android:name="android.permiandroid:themession.VIBRATE"/>
 
-    <uses-permission tools:node="remove" android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission tools:node="remove" android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission tools:node="remove" android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission tools:node="remove" android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+  <uses-permission tools:node="remove" android:name="android.permission.READ_PHONE_STATE"/>
+  <uses-permission tools:node="remove" android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+  <uses-permission tools:node="remove" android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+  <uses-permission tools:node="remove" android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
 
-    <!-- TODO: Remove this line before launch -->
-    <!-- android:usesCleartextTraffic="true" -->
+  <!-- TODO: Remove this line before launch -->
+  <!-- android:usesCleartextTraffic="true" -->
 
-    <application
-      android:name=".MainApplication"
-      android:label="@string/app_name"
-      android:icon="@mipmap/ic_launcher"
-      android:roundIcon="@mipmap/ic_launcher_round"
-      android:allowBackup="false"
-      android:usesCleartextTraffic="true">
-      <activity
-        android:name=".MainActivity"
-        android:label="@string/app_name"
-        android:configChanges="keyboard|keyboardHidden|orientation|screenSize|uiMode"
-        android:launchMode="singleTask"
-        android:screenOrientation="portrait"
-        android:windowSoftInputMode="adjustPan"
-        android:theme="@style/AppTheme.Launcher"
-        android:exported="true">
-        <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
-            <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter>
-      </activity>
-      <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" />
-    </application>
+  <application android:name=".MainApplication" android:label="@string/app_name" android:icon="@mipmap/ic_launcher" android:roundIcon="@mipmap/ic_launcher_round" android:allowBackup="false" android:usesCleartextTraffic="true">
+    <activity android:name=".MainActivity" android:label="@string/app_name" android:configChanges="keyboard|keyboardHidden|orientation|screenSize|uiMode" android:launchMode="singleTask" android:screenOrientation="portrait" android:windowSoftInputMode="adjustPan" android:theme="@style/AppTheme.Launcher" android:exported="true">
+      <intent-filter>
+        <action android:name="android.intent.action.MAIN"/>
+        <category android:name="android.intent.category.LAUNCHER"/>
+      </intent-filter>
+      <intent-filter>
+        <action android:name="android.intent.action.VIEW"/>
+        <category android:name="android.intent.category.DEFAULT"/>
+        <category android:name="android.intent.category.BROWSABLE"/>
+        <data android:scheme="slash"/>
+        <data android:scheme="slashauth"/>
+      </intent-filter>
+    </activity>
+    <activity android:name="com.facebook.react.devsupport.DevSettingsActivity"/>
+  </application>
 
-    <queries>
-        <intent>
-            <data android:scheme="https"/>
-        </intent>
-        <intent>
-            <data android:scheme="mailto"/>
-        </intent>
-    </queries>
+  <queries>
+    <intent>
+      <data android:scheme="https"/>
+    </intent>
+    <intent>
+      <data android:scheme="mailto"/>
+    </intent>
+  </queries>
 </manifest>

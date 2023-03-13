@@ -9,9 +9,9 @@ import {
 } from '@react-navigation/stack';
 
 import { NavigationContainer } from '../../styles/components';
+import { processInputData } from '../../utils/scanner';
 import Store from '../../store/types';
 import AuthCheck from '../../components/AuthCheck';
-import Biometrics from '../../components/Biometrics';
 import WalletNavigator from '../wallet/WalletNavigator';
 import ActivityDetail from '../../screens/Activity/ActivityDetail';
 import ActivityAssignContact from '../../screens/Activity/ActivityAssignContact';
@@ -83,28 +83,47 @@ const RootNavigator = (): ReactElement => {
 		[pin, pinOnLaunch],
 	);
 
+	const linking = {
+		prefixes: ['slash'],
+		getStateFromPath(path, _config): any {
+			if (!pin) {
+				processInputData({ data: `slash${path}` });
+			} else {
+				return {
+					routes: [
+						{
+							name: 'RootAuthCheck',
+							params: {
+								onSuccess: (): void => {
+									rootNavigation.navigate('Wallet');
+									processInputData({ data: `slash${path}` });
+								},
+							},
+						},
+					],
+				};
+			}
+		},
+	};
+
 	const AuthCheckComponent = useCallback(
-		({ navigation }: RootStackScreenProps<'RootAuthCheck'>): ReactElement => {
+		({
+			navigation,
+			route,
+		}: RootStackScreenProps<'RootAuthCheck'>): ReactElement => {
+			const onSuccess = (): void => {
+				if (route.params?.onSuccess) {
+					route.params.onSuccess();
+				} else {
+					navigation.replace('Wallet');
+				}
+			};
+
 			return (
 				<AuthCheck
 					showLogoOnPIN={true}
 					showBackNavigation={false}
-					onSuccess={(): void => {
-						navigation.replace('Wallet');
-					}}
-				/>
-			);
-		},
-		[],
-	);
-
-	const BiometricsComponent = useCallback(
-		({ navigation }: RootStackScreenProps<'Biometrics'>): ReactElement => {
-			return (
-				<Biometrics
-					onSuccess={(): void => {
-						navigation.replace('Wallet');
-					}}
+					onSuccess={onSuccess}
 				/>
 			);
 		},
@@ -112,7 +131,7 @@ const RootNavigator = (): ReactElement => {
 	);
 
 	return (
-		<NavigationContainer ref={navigationRef}>
+		<NavigationContainer ref={navigationRef} linking={linking}>
 			<Stack.Navigator
 				screenOptions={navOptions}
 				// adding this because we are using @react-navigation/stack instead of
@@ -123,7 +142,6 @@ const RootNavigator = (): ReactElement => {
 				<Stack.Group screenOptions={navOptions}>
 					<Stack.Screen name="RootAuthCheck" component={AuthCheckComponent} />
 					<Stack.Screen name="Wallet" component={WalletNavigator} />
-					<Stack.Screen name="Biometrics" component={BiometricsComponent} />
 					<Stack.Screen name="ActivityDetail" component={ActivityDetail} />
 					<Stack.Screen
 						name="ActivityAssignContact"

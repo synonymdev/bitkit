@@ -52,8 +52,6 @@ const AuthCheck = ({
 			<GlowingBackground topLeft="brand">
 				<Biometrics
 					onSuccess={(): void => {
-						setDisplayBiometrics(false);
-						setDisplayPin(false);
 						authCheckParams.onSuccess?.();
 					}}
 					onFailure={(): void => {
