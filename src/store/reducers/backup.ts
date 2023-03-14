@@ -43,6 +43,19 @@ const backup = (state: IBackup = defaultBackupShape, action): IBackup => {
 				? { ...state, remoteLdkActivityBackupSynced: false }
 				: state;
 
+		case actions.ADD_ACTIVITY_ITEM:
+			// we only listen for LN activity here
+			return action.payload.activityType === EActivityType.lightning
+				? { ...state, remoteLdkActivityBackupSynced: false }
+				: state;
+
+		case actions.ADD_PAID_BLOCKTANK_ORDER:
+		case actions.UPDATE_BLOCKTANK_ORDER:
+			return {
+				...state,
+				remoteBlocktankBackupSynced: false,
+			};
+
 		case actions.RESET_BACKUP_STORE:
 			return defaultBackupShape;
 

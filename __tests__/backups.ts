@@ -17,6 +17,7 @@ import {
 	addMetaSlashTagsUrlTag,
 } from '../src/store/actions/metadata';
 import {
+	performBlocktankRestore,
 	performLdkActivityRestore,
 	performMetadataRestore,
 	performRemoteBackup,
@@ -25,6 +26,8 @@ import {
 } from '../src/store/actions/backup';
 import {
 	getActivityStore,
+	getBlocktankStore,
+	getDispatch,
 	getMetaDataStore,
 	getSettingsStore,
 	getWidgetsStore,
@@ -44,6 +47,12 @@ import {
 } from '../src/store/actions/activity';
 import { EActivityType } from '../src/store/types/activity';
 import { EPaymentType } from '../src/store/types/wallet';
+import {
+	addPaidBlocktankOrder,
+	resetBlocktankStore,
+} from '../src/store/actions/blocktank';
+import actions from '../src/store/actions/actions';
+import { defaultOrderResponse } from '../src/store/shapes/blocktank';
 
 jest.setTimeout(30000);
 
@@ -247,5 +256,45 @@ describe('Remote backups', () => {
 		expect(restoreRes.value.backupExists).toEqual(true);
 		expect(store.getState().activity.items).toEqual(backup);
 		expect(store.getState().backup.remoteLdkActivityBackupSynced).toEqual(true);
+	});
+
+	it('Backups and restores Blocktank orders', async () => {
+		const dispatch = getDispatch();
+		addPaidBlocktankOrder({ orderId: 'id', txid: 'txid' });
+		dispatch({
+			type: actions.UPDATE_BLOCKTANK_ORDER,
+			payload: defaultOrderResponse,
+		});
+
+		const { orders, paidOrders } = getBlocktankStore();
+		const backup = { orders, paidOrders };
+
+		const uploadRes = await performRemoteBackup({
+			slashtag,
+			isSyncedKey: 'remoteBlocktankBackupSynced',
+			backupCategory: EBackupCategories.blocktank,
+			backup,
+		});
+
+		if (uploadRes.isErr()) {
+			throw uploadRes.error;
+		}
+
+		resetBlocktankStore();
+		expect(store.getState().blocktank.orders.length).toEqual(0);
+		expect(store.getState().blocktank.paidOrders).toMatchObject({});
+
+		const restoreRes = await performBlocktankRestore({
+			slashtag,
+		});
+
+		if (restoreRes.isErr()) {
+			throw restoreRes.error;
+		}
+
+		expect(restoreRes.value.backupExists).toEqual(true);
+		expect(store.getState().blocktank.orders).toEqual(backup.orders);
+		expect(store.getState().blocktank.paidOrders).toEqual(backup.paidOrders);
+		expect(store.getState().backup.remoteBlocktankBackupSynced).toEqual(true);
 	});
 });

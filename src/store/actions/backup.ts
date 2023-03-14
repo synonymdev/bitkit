@@ -35,6 +35,7 @@ import { getDefaultMetadataShape } from '../shapes/metadata';
 import { updateMetadata } from './metadata';
 import { EActivityType } from '../types/activity';
 import { addActivityItems } from './activity';
+import { updateBlocktank } from './blocktank';
 
 const dispatch = getDispatch();
 
@@ -440,6 +441,43 @@ export const performLdkActivityRestore = async ({
 	return ok({ backupExists: true });
 };
 
+export const performBlocktankRestore = async ({
+	slashtag,
+	selectedNetwork,
+}: {
+	slashtag: Slashtag;
+	selectedNetwork?: TAvailableNetworks;
+}): Promise<Result<{ backupExists: boolean }>> => {
+	if (!selectedNetwork) {
+		selectedNetwork = getSelectedNetwork();
+	}
+
+	const backupRes = await getBackup<IMetadata>({
+		slashtag,
+		backupCategory: EBackupCategories.blocktank,
+		selectedNetwork,
+	});
+	if (backupRes.isErr()) {
+		return err(backupRes.error.message);
+	}
+
+	const backup = backupRes.value;
+
+	if (!backup) {
+		return ok({ backupExists: false });
+	}
+
+	if (!('orders' in backup && 'paidOrders' in backup)) {
+		return ok({ backupExists: false });
+	}
+
+	updateBlocktank(backup);
+	updateBackup({ remoteLdkActivityBackupSynced: true });
+
+	// Restore success
+	return ok({ backupExists: true });
+};
+
 export const performFullRestoreFromLatestBackup = async (
 	slashtag: Slashtag,
 ): Promise<Result<{ backupExists: boolean }>> => {
@@ -484,6 +522,15 @@ export const performFullRestoreFromLatestBackup = async (
 		if (ldkActivityRes.isErr()) {
 			//Since this backup feature is not critical and mostly for user convenience there's no reason to throw an error here.
 			console.log('Error backing up ldkActivity', ldkActivityRes.error.message);
+		}
+
+		const btBackupRes = await performBlocktankRestore({
+			slashtag,
+			selectedNetwork,
+		});
+		if (btBackupRes.isErr()) {
+			//Since this backup feature is not critical and mostly for user convenience there's no reason to throw an error here.
+			console.log('Error backing up blocktank', btBackupRes.error.message);
 		}
 
 		// Restore success

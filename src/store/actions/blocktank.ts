@@ -40,6 +40,7 @@ import { showErrorNotification } from '../../utils/notifications';
 import { getDisplayValues } from '../../utils/exchange-rate';
 import { TWalletName } from '../types/wallet';
 import i18n from '../../utils/i18n';
+import { IBlocktank } from '../types/blocktank';
 
 const dispatch = getDispatch();
 
@@ -531,4 +532,14 @@ export const confirmChannelPurchase = async ({
 		selectedNetwork,
 	}).then();
 	return ok(broadcastResponse.value);
+};
+
+export const updateBlocktank = (
+	payload: Partial<IBlocktank>,
+): Result<string> => {
+	dispatch({
+		type: actions.UPDATE_BLOCKTANK,
+		payload,
+	});
+	return ok('');
 };

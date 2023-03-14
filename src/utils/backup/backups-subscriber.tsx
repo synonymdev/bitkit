@@ -17,6 +17,7 @@ import { metadataState } from '../../store/reselect/metadata';
 import { widgetsState } from '../../store/reselect/widgets';
 import { activityItemsState } from '../../store/reselect/activity';
 import { EActivityType } from '../../store/types/activity';
+import { blocktankSelector } from '../../store/reselect/blocktank';
 
 const BACKUP_DEBOUNCE = 5000;
 
@@ -28,6 +29,7 @@ const EnabledSlashtag = (): ReactElement => {
 	const metadata = useSelector(metadataState);
 	const widgets = useSelector(widgetsState);
 	const activity = useSelector(activityItemsState);
+	const blocktank = useSelector(blocktankSelector);
 
 	useEffect(() => {
 		const sub = lm.subscribeToBackups((res) => {
@@ -114,6 +116,36 @@ const EnabledSlashtag = (): ReactElement => {
 			}).then();
 		},
 		[backup.remoteLdkActivityBackupSynced, slashtag, activity, selectedNetwork],
+		BACKUP_DEBOUNCE,
+	);
+
+	// Attempts to backup blocktank anytime remoteBlocktankBackupSynced is set to false.
+	useDebouncedEffect(
+		() => {
+			if (backup.remoteBlocktankBackupSynced) {
+				return;
+			}
+
+			const back = {
+				orders: blocktank.orders,
+				paidOrders: blocktank.paidOrders,
+			};
+
+			performRemoteBackup({
+				slashtag,
+				isSyncedKey: 'remoteBlocktankBackupSynced',
+				backupCategory: EBackupCategories.ldkActivity,
+				selectedNetwork,
+				backup: back,
+			}).then();
+		},
+		[
+			backup.remoteBlocktankBackupSynced,
+			slashtag,
+			blocktank.orders,
+			blocktank.paidOrders,
+			selectedNetwork,
+		],
 		BACKUP_DEBOUNCE,
 	);
 
