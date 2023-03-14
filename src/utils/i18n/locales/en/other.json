@@ -33,7 +33,7 @@
 	"camera_no_text": "<bold>It appears Bitkit does not have permission to access your camera.</bold>\n\nTo utilize this feature in the future you will need to enable camera permissions for this app from your phones settings.",
 	"swipe": "Swipe To Confirm",
 	"scan_redirect_title": "Clipboard Data Detected",
-	"scan_redirect_msg": "Bitkit redirected you to the payment screen.",
+	"scan_redirect_msg": "Bitkit redirected you to the relevant screen.",
 	"scan_err_decoding": "Decoding Error",
 	"scan_err_interpret": "Unable To Interpret Provided Data",
 	"rate_error_title": "Blocktank FX API Error",

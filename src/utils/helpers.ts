@@ -563,9 +563,7 @@ export async function tryNTimes<T>({
 	while (true) {
 		try {
 			const result = await toTry();
-			console.log({ result });
 			if (result.isErr()) {
-				console.log('failed.');
 				if (++attemptCount >= times) {
 					throw result.error;
 				}
@@ -573,7 +571,6 @@ export async function tryNTimes<T>({
 				return result.value;
 			}
 		} catch (error) {
-			console.log('failed.');
 			if (++attemptCount >= times) {
 				throw error;
 			}

@@ -5,16 +5,13 @@ import NetInfo from '@react-native-community/netinfo';
 import { useTranslation } from 'react-i18next';
 
 import RootNavigator from './navigation/root/RootNavigator';
-import { useSlashtagsSDK } from './components/SlashtagsProvider';
-import { updateUi } from './store/actions/ui';
-import { useBalance } from './hooks/wallet';
 import { startWalletServices } from './utils/startup';
 import { RECOVERY_DELAY } from './utils/startup/constants';
 import { electrumConnection } from './utils/electrum';
-import { readClipboardInvoice } from './utils/send';
 import { unsubscribeFromLightningSubscriptions } from './utils/lightning';
-import { enableAutoReadClipboardSelector } from './store/reselect/settings';
+import i18n from './utils/i18n';
 import { getStore } from './store/helpers';
+import { updateUi } from './store/actions/ui';
 import { isOnlineSelector } from './store/reselect/ui';
 import {
 	showErrorNotification,
@@ -24,7 +21,6 @@ import {
 	selectedNetworkSelector,
 	selectedWalletSelector,
 } from './store/reselect/wallet';
-import i18n from './utils/i18n';
 
 const onElectrumConnectionChange = (isConnected: boolean): void => {
 	// get state fresh from store everytime
@@ -50,10 +46,6 @@ const onElectrumConnectionChange = (isConnected: boolean): void => {
 const AppOnboarded = (): ReactElement => {
 	const { t } = useTranslation('other');
 	const appState = useRef(AppState.currentState);
-	const sdk = useSlashtagsSDK();
-	const { satoshis: onChainBalance } = useBalance({ onchain: true });
-	const { satoshis: lightningBalance } = useBalance({ lightning: true });
-	const enableAutoReadClipboard = useSelector(enableAutoReadClipboardSelector);
 	const selectedWallet = useSelector(selectedWalletSelector);
 	const selectedNetwork = useSelector(selectedNetworkSelector);
 	const isOnline = useSelector(isOnlineSelector);
@@ -65,29 +57,10 @@ const AppOnboarded = (): ReactElement => {
 			setTimeout(NativeModules.SplashScreenModule.hide, 100);
 		}
 
-		let timerId: NodeJS.Timeout;
-
-		// launch wallet services
-		((): void => {
-			// Delay service startup to make time for entering recovery
-			timerId = setTimeout(() => {
-				startWalletServices({ selectedNetwork, selectedWallet });
-			}, RECOVERY_DELAY);
-
-			// check clipboard for payment data
-			if (enableAutoReadClipboard) {
-				// hack to wait for BottomSheet to be ready(?)
-				setTimeout(() => {
-					readClipboardInvoice({
-						onChainBalance,
-						lightningBalance,
-						sdk,
-						selectedWallet,
-						selectedNetwork,
-					});
-				}, 100);
-			}
-		})();
+		// Delay service startup to make time for entering recovery
+		const timerId = setTimeout(() => {
+			startWalletServices({ selectedNetwork, selectedWallet });
+		}, RECOVERY_DELAY);
 
 		return () => {
 			clearTimeout(timerId);
@@ -115,20 +88,6 @@ const AppOnboarded = (): ReactElement => {
 					electrumSubscription = electrumConnection.subscribe(
 						onElectrumConnectionChange,
 					);
-
-					// check clipboard for payment data
-					if (enableAutoReadClipboard) {
-						// timeout needed otherwise clipboard is empty
-						setTimeout(() => {
-							readClipboardInvoice({
-								onChainBalance,
-								lightningBalance,
-								sdk,
-								selectedNetwork,
-								selectedWallet,
-							}).then();
-						}, 1000);
-					}
 				}
 
 				// on App to background
@@ -149,7 +108,6 @@ const AppOnboarded = (): ReactElement => {
 			electrumSubscription.remove();
 		};
 		// onMount
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	useEffect(() => {

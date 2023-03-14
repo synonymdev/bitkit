@@ -1,5 +1,11 @@
-import React, { ReactElement, useCallback, useMemo, memo } from 'react';
-import { Platform } from 'react-native';
+import React, {
+	ReactElement,
+	useCallback,
+	memo,
+	useEffect,
+	useRef,
+} from 'react';
+import { AppState, Platform } from 'react-native';
 import { useSelector } from 'react-redux';
 import { createNavigationContainerRef } from '@react-navigation/native';
 import {
@@ -10,7 +16,9 @@ import {
 
 import { NavigationContainer } from '../../styles/components';
 import { processInputData } from '../../utils/scanner';
+import { readClipboardData } from '../../utils/send';
 import Store from '../../store/types';
+import { enableAutoReadClipboardSelector } from '../../store/reselect/settings';
 import AuthCheck from '../../components/AuthCheck';
 import WalletNavigator from '../wallet/WalletNavigator';
 import ActivityDetail from '../../screens/Activity/ActivityDetail';
@@ -76,12 +84,15 @@ export const rootNavigation = {
 export type TInitialRoutes = 'Wallet' | 'RootAuthCheck';
 
 const RootNavigator = (): ReactElement => {
+	const appState = useRef(AppState.currentState);
 	const pin = useSelector((state: Store) => state.settings.pin);
 	const pinOnLaunch = useSelector((state: Store) => state.settings.pinOnLaunch);
-	const initialRouteName: TInitialRoutes = useMemo(
-		() => (pin && pinOnLaunch ? 'RootAuthCheck' : 'Wallet'),
-		[pin, pinOnLaunch],
-	);
+	const enableAutoReadClipboard = useSelector(enableAutoReadClipboardSelector);
+
+	const showAuth = pin && pinOnLaunch;
+	const initialRouteName: TInitialRoutes = showAuth
+		? 'RootAuthCheck'
+		: 'Wallet';
 
 	const linking = {
 		prefixes: ['slash'],
@@ -106,6 +117,32 @@ const RootNavigator = (): ReactElement => {
 		},
 	};
 
+	useEffect(() => {
+		if (enableAutoReadClipboard && !showAuth) {
+			readClipboardData().then();
+		}
+
+		// on App to foreground
+		const appStateSubscription = AppState.addEventListener(
+			'change',
+			(nextAppState) => {
+				if (appState.current.match(/background/) && nextAppState === 'active') {
+					const currentRoute = navigationRef.getCurrentRoute()?.name;
+					// prevent redirecting while on AuthCheck
+					if (enableAutoReadClipboard && currentRoute !== 'RootAuthCheck') {
+						readClipboardData().then();
+					}
+				}
+
+				appState.current = nextAppState;
+			},
+		);
+
+		return () => {
+			appStateSubscription.remove();
+		};
+	}, [enableAutoReadClipboard, showAuth]);
+
 	const AuthCheckComponent = useCallback(
 		({
 			navigation,
@@ -116,6 +153,11 @@ const RootNavigator = (): ReactElement => {
 					route.params.onSuccess();
 				} else {
 					navigation.replace('Wallet');
+
+					// check clipboard for payment data
+					if (enableAutoReadClipboard) {
+						readClipboardData().then();
+					}
 				}
 			};
 
@@ -127,7 +169,7 @@ const RootNavigator = (): ReactElement => {
 				/>
 			);
 		},
-		[],
+		[enableAutoReadClipboard],
 	);
 
 	return (

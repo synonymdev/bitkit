@@ -144,6 +144,7 @@ export const processInputData = async ({
 	selectedNetwork,
 	selectedWallet,
 	skip = [],
+	showErrors = true,
 }: {
 	data: string;
 	source?: 'mainScanner' | 'sendScanner';
@@ -151,6 +152,7 @@ export const processInputData = async ({
 	selectedWallet?: TWalletName;
 	sdk?: SDK;
 	skip?: Array<string>;
+	showErrors?: boolean;
 }): Promise<Result<TProcessedData>> => {
 	data = data.trim();
 	try {
@@ -163,20 +165,24 @@ export const processInputData = async ({
 
 		const decodeRes = await decodeQRData(data, selectedNetwork);
 		if (decodeRes.isErr()) {
-			showErrorNotification({
-				title: i18n.t('other:scan_err_decoding'),
-				message: decodeRes.error.message,
-			});
+			if (showErrors) {
+				showErrorNotification({
+					title: i18n.t('other:scan_err_decoding'),
+					message: decodeRes.error.message,
+				});
+			}
 			return err('Decoding Error');
 		}
 
 		// Unable to interpret any of the provided data.
-		if (!decodeRes?.value.length) {
+		if (!decodeRes.value.length) {
 			const message = 'Bitkit is unable to interpret the provided data.';
-			showErrorNotification({
-				title: i18n.t('other:scan_err_interpret'),
-				message,
-			});
+			if (showErrors) {
+				showErrorNotification({
+					title: i18n.t('other:scan_err_interpret'),
+					message,
+				});
+			}
 			return err(message);
 		}
 
@@ -214,18 +220,22 @@ export const processInputData = async ({
 			const response = await processSlashPayURL({ url, sdk });
 
 			if (response.isErr()) {
-				showErrorNotification({
-					title: i18n.t('slashtags:error_pay_title'),
-					message: response.error.message,
-				});
+				if (showErrors) {
+					showErrorNotification({
+						title: i18n.t('slashtags:error_pay_title'),
+						message: response.error.message,
+					});
+				}
 				return err(response.error.message);
 			}
 
-			if (!Array.isArray(response.value) || response.value.length === 0) {
-				showErrorNotification({
-					title: i18n.t('slashtags:error_pay_title'),
-					message: i18n.t('slashtags:error_pay_empty_title'),
-				});
+			if (response.value.length === 0) {
+				if (showErrors) {
+					showErrorNotification({
+						title: i18n.t('slashtags:error_pay_title'),
+						message: i18n.t('slashtags:error_pay_empty_title'),
+					});
+				}
 				return err('Remote slashpay profile is empty');
 			}
 
@@ -445,32 +455,32 @@ export const processSlashPayURL = async ({
 }): Promise<Result<QRData[]>> => {
 	try {
 		const payConfig = await getSlashPayConfig(sdk, url);
-		const res = payConfig
-			.map(({ type, value }) => {
-				switch (type) {
-					case 'p2wpkh':
-					case 'p2sh':
-					case 'p2pkh':
-						if (!validateAddress({ address: value }).isValid) {
-							return;
-						}
-						return {
-							qrDataType: 'bitcoinAddress',
+		const qrData: QRData[] = [];
+
+		payConfig.forEach(({ type, value }) => {
+			switch (type) {
+				case 'p2wpkh':
+				case 'p2sh':
+				case 'p2pkh':
+					if (validateAddress({ address: value }).isValid) {
+						qrData.push({
+							qrDataType: EQRDataType.bitcoinAddress,
 							address: value,
 							sats: 0,
 							slashTagsUrl: url,
-						};
-					case 'lightningInvoice':
-						return {
-							qrDataType: 'lightningPaymentRequest',
-							lightningPaymentRequest: value,
-							slashTagsUrl: url,
-						};
-				}
-			})
-			.filter((item) => !!item);
+						});
+					}
+					break;
+				case 'lightningInvoice':
+					qrData.push({
+						qrDataType: EQRDataType.lightningPaymentRequest,
+						lightningPaymentRequest: value,
+						slashTagsUrl: url,
+					});
+			}
+		});
 
-		return ok(res as QRData[]);
+		return ok(qrData);
 	} catch (e) {
 		console.log('processSlashPayURL error', e);
 		return err(e);
