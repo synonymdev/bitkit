@@ -1,5 +1,13 @@
-import React, { memo, ReactElement, useCallback, useMemo, useRef } from 'react';
+import React, {
+	memo,
+	ReactElement,
+	useCallback,
+	useEffect,
+	useMemo,
+	useRef,
+} from 'react';
 import {
+	AppState,
 	Image,
 	Platform,
 	StyleSheet,
@@ -35,6 +43,7 @@ const NewTxPrompt = (): ReactElement => {
 	const snapPoints = useSnapPoints('large');
 	const insets = useSafeAreaInsets();
 	const animationRef = useRef<Lottie>(null);
+	const appState = useRef(AppState.currentState);
 
 	const buttonContainerStyles = useMemo(
 		() => ({
@@ -65,6 +74,27 @@ const NewTxPrompt = (): ReactElement => {
 			}
 		}, []),
 	);
+
+	// TEMP: fix iOS animation on app to foreground
+	useEffect(() => {
+		const appStateSubscription = AppState.addEventListener(
+			'change',
+			(nextAppState) => {
+				if (
+					appState.current.match(/inactive|background/) &&
+					nextAppState === 'active'
+				) {
+					animationRef.current?.play();
+				}
+
+				appState.current = nextAppState;
+			},
+		);
+
+		return () => {
+			appStateSubscription.remove();
+		};
+	}, []);
 
 	const handlePress = (): void => {
 		if (activityItem) {
