@@ -11,6 +11,7 @@ export interface IBackup {
 	remoteSettingsBackupSynced: boolean;
 	remoteWidgetsBackupSynced: boolean;
 	remoteMetadataBackupSynced: boolean;
+	remoteLdkActivityBackupSynced: boolean;
 	//TODO transactions, slashtags, metadata, etc.
 
 	//iCloud

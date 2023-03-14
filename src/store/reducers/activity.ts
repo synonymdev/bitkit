@@ -24,6 +24,13 @@ const activity = (
 			};
 		}
 
+		case actions.ADD_ACTIVITY_ITEMS: {
+			return {
+				...state,
+				items: [...action.payload, ...state.items],
+			};
+		}
+
 		case actions.UPDATE_ACTIVITY_ITEM: {
 			const newItems = state.items.map((activityItem) => {
 				if (activityItem.id === action.payload.id) {

@@ -15,6 +15,8 @@ import { useDebouncedEffect } from '../../hooks/helpers';
 import { settingsSelector } from '../../store/reselect/settings';
 import { metadataState } from '../../store/reselect/metadata';
 import { widgetsState } from '../../store/reselect/widgets';
+import { activityItemsState } from '../../store/reselect/activity';
+import { EActivityType } from '../../store/types/activity';
 
 const BACKUP_DEBOUNCE = 5000;
 
@@ -25,6 +27,7 @@ const EnabledSlashtag = (): ReactElement => {
 	const settings = useSelector(settingsSelector);
 	const metadata = useSelector(metadataState);
 	const widgets = useSelector(widgetsState);
+	const activity = useSelector(activityItemsState);
 
 	useEffect(() => {
 		const sub = lm.subscribeToBackups((res) => {
@@ -88,6 +91,29 @@ const EnabledSlashtag = (): ReactElement => {
 			}).then();
 		},
 		[backup.remoteMetadataBackupSynced, slashtag, metadata, selectedNetwork],
+		BACKUP_DEBOUNCE,
+	);
+
+	// Attempts to backup ldkActivity anytime remoteMetadataBackupSynced is set to false.
+	useDebouncedEffect(
+		() => {
+			if (backup.remoteLdkActivityBackupSynced) {
+				return;
+			}
+
+			const ldkActivity = activity.filter(
+				(a) => a.activityType === EActivityType.lightning,
+			);
+
+			performRemoteBackup({
+				slashtag,
+				isSyncedKey: 'remoteLdkActivityBackupSynced',
+				backupCategory: EBackupCategories.ldkActivity,
+				selectedNetwork,
+				backup: ldkActivity,
+			}).then();
+		},
+		[backup.remoteLdkActivityBackupSynced, slashtag, activity, selectedNetwork],
 		BACKUP_DEBOUNCE,
 	);
 

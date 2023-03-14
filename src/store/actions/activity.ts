@@ -24,6 +24,16 @@ export const addActivityItem = (
 	return ok('Activity Item Added.');
 };
 
+export const addActivityItems = (
+	activityItems: Array<IActivityItem>,
+): Result<string> => {
+	dispatch({
+		type: actions.ADD_ACTIVITY_ITEMS,
+		payload: activityItems,
+	});
+	return ok('Activity Item Added.');
+};
+
 /**
  * @param {string} id
  * @param {IActivityItem} newActivityItem

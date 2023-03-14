@@ -15,6 +15,7 @@ export enum EBackupCategories {
 	jest = 'bitkit.jest',
 	transactions = 'bitkit.transactions',
 	ldkComplete = 'bitkit.ldk.complete',
+	ldkActivity = 'bitkit.ldk.activity',
 	settings = 'bitkit.settings',
 	widgets = 'bitkit.widgets',
 	metadata = 'bitkit.metadata',

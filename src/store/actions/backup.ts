@@ -33,6 +33,8 @@ import { getDefaultWidgetsShape } from '../shapes/widgets';
 import { IMetadata } from '../types/metadata';
 import { getDefaultMetadataShape } from '../shapes/metadata';
 import { updateMetadata } from './metadata';
+import { EActivityType } from '../types/activity';
+import { addActivityItems } from './activity';
 
 const dispatch = getDispatch();
 
@@ -396,6 +398,48 @@ export const performMetadataRestore = async ({
 	return ok({ backupExists: true });
 };
 
+export const performLdkActivityRestore = async ({
+	slashtag,
+	selectedNetwork,
+}: {
+	slashtag: Slashtag;
+	selectedNetwork?: TAvailableNetworks;
+}): Promise<Result<{ backupExists: boolean }>> => {
+	if (!selectedNetwork) {
+		selectedNetwork = getSelectedNetwork();
+	}
+
+	const backupRes = await getBackup<IMetadata>({
+		slashtag,
+		backupCategory: EBackupCategories.ldkActivity,
+		selectedNetwork,
+	});
+	if (backupRes.isErr()) {
+		return err(backupRes.error.message);
+	}
+
+	const backup = backupRes.value;
+
+	if (!backup) {
+		return ok({ backupExists: false });
+	}
+
+	if (
+		!(
+			Array.isArray(backup) &&
+			backup.every((i) => i.activityType === EActivityType.lightning)
+		)
+	) {
+		return ok({ backupExists: false });
+	}
+
+	addActivityItems(backup);
+	updateBackup({ remoteLdkActivityBackupSynced: true });
+
+	// Restore success
+	return ok({ backupExists: true });
+};
+
 export const performFullRestoreFromLatestBackup = async (
 	slashtag: Slashtag,
 ): Promise<Result<{ backupExists: boolean }>> => {
@@ -430,7 +474,16 @@ export const performFullRestoreFromLatestBackup = async (
 		});
 		if (metadataBackupRes.isErr()) {
 			//Since this backup feature is not critical and mostly for user convenience there's no reason to throw an error here.
-			console.log('Error backing up widgets', metadataBackupRes.error.message);
+			console.log('Error backing up metadata', metadataBackupRes.error.message);
+		}
+
+		const ldkActivityRes = await performLdkActivityRestore({
+			slashtag,
+			selectedNetwork,
+		});
+		if (ldkActivityRes.isErr()) {
+			//Since this backup feature is not critical and mostly for user convenience there's no reason to throw an error here.
+			console.log('Error backing up ldkActivity', ldkActivityRes.error.message);
 		}
 
 		// Restore success
