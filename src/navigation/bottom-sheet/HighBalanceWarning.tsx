@@ -2,6 +2,7 @@ import React, { memo, ReactElement, useEffect, useMemo } from 'react';
 import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { DISABLE_PERIODIC_REMINDERS } from '@env';
+import { useTranslation } from 'react-i18next';
 
 import { Caption13Up, Display, Text02S } from '../../styles/text';
 import BottomSheetWrapper from '../../components/BottomSheetWrapper';
@@ -60,6 +61,7 @@ const HighBalanceWarning = ({
 }: {
 	enabled: boolean;
 }): ReactElement => {
+	const { t } = useTranslation('other');
 	const snapPoints = useSnapPoints('medium');
 	const insets = useSafeAreaInsets();
 	const balance = useBalance({ onchain: true, lightning: true });
@@ -154,18 +156,17 @@ const HighBalanceWarning = ({
 			onClose={ignoreHighBalance}>
 			<View style={styles.root}>
 				<BottomSheetNavigationHeader
-					title="High Wallet Balance (!)"
+					title={t('high_title')}
 					displayBackButton={false}
 				/>
 
 				<View style={styles.amountContainer}>
-					<Caption13Up color="gray1">Wallet balance exceeds</Caption13Up>
+					<Caption13Up color="gray1">{t('high_text1')}</Caption13Up>
 					<Amount style={styles.amount} />
 				</View>
 
 				<Text02S style={styles.text} color="gray1">
-					For safety reasons, we recommend moving some of your savings to an
-					offline cold wallet or multisig solution.
+					{t('high_text2')}
 				</Text02S>
 
 				<GlowImage image={imageSrc} imageSize={180} glowColor="yellow" />
@@ -182,7 +183,7 @@ const HighBalanceWarning = ({
 					<Button
 						style={styles.button}
 						size="large"
-						text="Understood"
+						text={t('high_button_understood')}
 						onPress={onDismiss}
 					/>
 				</View>

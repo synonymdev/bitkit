@@ -3,6 +3,7 @@ import { Platform, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { getBundleId } from 'react-native-device-info';
 import { DISABLE_PERIODIC_REMINDERS } from '@env';
+import { useTranslation } from 'react-i18next';
 
 import { Text01S } from '../../styles/text';
 import BottomSheetWrapper from '../../components/BottomSheetWrapper';
@@ -38,6 +39,7 @@ const ASK_INTERVAL = 1000 * 60 * 60 * 12; // 12h - how long this prompt will be 
 const CHECK_DELAY = 2500; // how long user needs to stay on Wallets screen before he will see this prompt
 
 const AppUpdatePrompt = ({ enabled }: { enabled: boolean }): ReactElement => {
+	const { t } = useTranslation('other');
 	const snapPoints = useSnapPoints('large');
 	const insets = useSafeAreaInsets();
 	const viewControllers = useAppSelector(viewControllersSelector);
@@ -109,13 +111,10 @@ const AppUpdatePrompt = ({ enabled }: { enabled: boolean }): ReactElement => {
 			onClose={ignoreAppUpdate}>
 			<View style={styles.root}>
 				<BottomSheetNavigationHeader
-					title="Update Available"
+					title={t('update_title')}
 					displayBackButton={false}
 				/>
-				<Text01S color="gray1">
-					Please update Bitkit to the latest version for new features and bug
-					fixes!
-				</Text01S>
+				<Text01S color="gray1">{t('update_text')}</Text01S>
 
 				<GlowImage image={imageSrc} />
 
@@ -124,14 +123,14 @@ const AppUpdatePrompt = ({ enabled }: { enabled: boolean }): ReactElement => {
 						style={styles.button}
 						variant="secondary"
 						size="large"
-						text="Cancel"
+						text={t('cancel')}
 						onPress={onCancel}
 					/>
 					<View style={styles.divider} />
 					<Button
 						style={styles.button}
 						size="large"
-						text="Update"
+						text={t('update_button')}
 						onPress={onUpdate}
 					/>
 				</View>

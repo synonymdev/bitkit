@@ -58,5 +58,13 @@
 	"lnurl_withdr_success_title": "Withdraw Requested",
 	"lnurl_withdr_success_msg": "LNURL Withdraw was successfully requested.",
 	"bt_error_retrieve": "Unable To Retrieve Order Information",
-	"earlier": "EARLIER"
+	"earlier": "EARLIER",
+	"update_title": "Update Available",
+	"update_text": "Please update Bitkit to the latest version for new features and bug fixes!",
+	"update_button": "Update",
+	"high_title": "High Wallet Balance (!)",
+	"high_text1": "Wallet balance exceeds",
+	"high_text2": "For safety reasons, we recommend moving some of your savings to an offline cold wallet or multisig solution.",
+	"high_button_more": "Learn More",
+	"high_button_understood": "Understood"
 }
