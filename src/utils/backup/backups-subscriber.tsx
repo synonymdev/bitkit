@@ -134,7 +134,7 @@ const EnabledSlashtag = (): ReactElement => {
 			performRemoteBackup({
 				slashtag,
 				isSyncedKey: 'remoteBlocktankBackupSynced',
-				backupCategory: EBackupCategories.ldkActivity,
+				backupCategory: EBackupCategories.blocktank,
 				selectedNetwork,
 				backup: back,
 			}).then();
