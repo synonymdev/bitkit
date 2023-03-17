@@ -96,7 +96,7 @@ const EnabledSlashtag = (): ReactElement => {
 		BACKUP_DEBOUNCE,
 	);
 
-	// Attempts to backup ldkActivity anytime remoteMetadataBackupSynced is set to false.
+	// Attempts to backup ldkActivity anytime remoteLdkActivityBackupSynced is set to false.
 	useDebouncedEffect(
 		() => {
 			if (backup.remoteLdkActivityBackupSynced) {

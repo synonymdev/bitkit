@@ -36,6 +36,8 @@ import { updateMetadata } from './metadata';
 import { EActivityType } from '../types/activity';
 import { addActivityItems } from './activity';
 import { updateBlocktank } from './blocktank';
+import { IBlocktank } from '../types/blocktank';
+import { IActivity } from '../types/activity';
 
 const dispatch = getDispatch();
 
@@ -410,7 +412,7 @@ export const performLdkActivityRestore = async ({
 		selectedNetwork = getSelectedNetwork();
 	}
 
-	const backupRes = await getBackup<IMetadata>({
+	const backupRes = await getBackup<IActivity['items']>({
 		slashtag,
 		backupCategory: EBackupCategories.ldkActivity,
 		selectedNetwork,
@@ -452,7 +454,7 @@ export const performBlocktankRestore = async ({
 		selectedNetwork = getSelectedNetwork();
 	}
 
-	const backupRes = await getBackup<IMetadata>({
+	const backupRes = await getBackup<Partial<IBlocktank>>({
 		slashtag,
 		backupCategory: EBackupCategories.blocktank,
 		selectedNetwork,
