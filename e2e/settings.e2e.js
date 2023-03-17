@@ -406,7 +406,7 @@ describe('Settings', () => {
 			// get address from qrcode
 			const { label: addr } = await element(by.id('QRCode')).getAttributes();
 			// because we can't use Jest expect in Detox tests, let's just throw an error if there is one
-			if (!addr.startsWith('bitcoin:m')) {
+			if (!addr.startsWith('bitcoin:m') && !addr.startsWith('bitcoin:n')) {
 				throw new Error(`Wrong receiving address: ${addr}`);
 			}
 			await element(by.id('ReceiveScreen')).swipe('down'); // close Receive screen
