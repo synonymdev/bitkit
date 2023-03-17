@@ -31,9 +31,7 @@ export type TReceiveOption = {
 
 export type TUnitPreference = 'asset' | 'fiat';
 
-export type TCustomElectrumPeers =
-	| IWalletItem<ICustomElectrumPeer[]>
-	| IWalletItem<[]>;
+export type TCustomElectrumPeers = IWalletItem<ICustomElectrumPeer[]>;
 
 export interface ISettings {
 	enableAutoReadClipboard: boolean;

@@ -44,6 +44,20 @@ export type TUnspentAddressScriptHashData = {
 };
 
 /**
+ * Check if app is connected to Electrum Server.
+ * @returns {Promise<boolean>}
+ */
+export const isConnectedElectrum = async (): Promise<boolean> => {
+	const { error } = await electrum.pingServer();
+
+	if (error) {
+		return false;
+	} else {
+		return true;
+	}
+};
+
+/**
  * Returns UTXO's for a given wallet and network along with the available balance.
  * @param {TWalletName} [selectedWallet]
  * @param {TAvailableNetworks} [selectedNetwork]
@@ -610,10 +624,10 @@ export const getAddressHistory = async ({
 		}
 
 		const history: IGetAddressHistoryResponse[] = [];
-		combinedResponse.map(
+		combinedResponse.forEach(
 			({ data, result }: { data: IAddress; result: TTxResult[] }): void => {
 				if (result && result?.length > 0) {
-					result.map((item) => {
+					result.forEach((item) => {
 						history.push({ ...data, ...item });
 					});
 				}

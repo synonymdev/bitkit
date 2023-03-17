@@ -166,14 +166,10 @@ export const updateAddressIndexes = async ({
 		selectedWallet,
 		selectedNetwork,
 	});
-	const addressTypes = getAddressTypes();
-	let addressTypesToCheck = Object.keys(addressTypes) as EAddressType[];
+
+	let addressTypesToCheck = Object.keys(getAddressTypes()) as EAddressType[];
 	if (addressType) {
-		addressTypesToCheck = await Promise.all(
-			addressTypesToCheck.filter(
-				(_addressType) => _addressType === addressType,
-			),
-		);
+		addressTypesToCheck = [addressType];
 	}
 
 	let updated = false;
@@ -193,42 +189,40 @@ export const updateAddressIndexes = async ({
 		if (response.isErr()) {
 			throw response.error;
 		}
+		const result = response.value;
 
-		const { type } = addressTypes[addressTypeKey];
-		let addressIndex = currentWallet.addressIndex[selectedNetwork][type];
+		let addressIndex =
+			currentWallet.addressIndex[selectedNetwork][addressTypeKey];
 		let changeAddressIndex =
-			currentWallet.changeAddressIndex[selectedNetwork][type];
+			currentWallet.changeAddressIndex[selectedNetwork][addressTypeKey];
 		let lastUsedAddressIndex =
-			currentWallet.lastUsedAddressIndex[selectedNetwork][type];
+			currentWallet.lastUsedAddressIndex[selectedNetwork][addressTypeKey];
 		let lastUsedChangeAddressIndex =
-			currentWallet.lastUsedChangeAddressIndex[selectedNetwork][type];
+			currentWallet.lastUsedChangeAddressIndex[selectedNetwork][addressTypeKey];
 
 		if (
-			currentWallet.addressIndex[selectedNetwork][type]?.index < 0 ||
-			currentWallet.changeAddressIndex[selectedNetwork][type]?.index < 0 ||
-			response.value?.addressIndex?.index >
-				currentWallet.addressIndex[selectedNetwork][type]?.index ||
-			response.value?.changeAddressIndex?.index >
-				currentWallet.changeAddressIndex[selectedNetwork][type]?.index ||
-			response.value?.lastUsedAddressIndex?.index >
-				currentWallet.lastUsedAddressIndex[selectedNetwork][type]?.index ||
-			response.value?.lastUsedChangeAddressIndex?.index >
-				currentWallet.lastUsedChangeAddressIndex[selectedNetwork][type]?.index
+			addressIndex.index < 0 ||
+			changeAddressIndex.index < 0 ||
+			result.addressIndex.index > addressIndex.index ||
+			result.changeAddressIndex.index > changeAddressIndex.index ||
+			result.lastUsedAddressIndex.index > lastUsedAddressIndex.index ||
+			result.lastUsedChangeAddressIndex.index >
+				lastUsedChangeAddressIndex?.index
 		) {
-			if (response.value?.addressIndex) {
-				addressIndex = response.value.addressIndex;
+			if (result.addressIndex) {
+				addressIndex = result.addressIndex;
 			}
 
-			if (response.value?.changeAddressIndex) {
-				changeAddressIndex = response.value?.changeAddressIndex;
+			if (result.changeAddressIndex) {
+				changeAddressIndex = result.changeAddressIndex;
 			}
 
-			if (response.value?.lastUsedAddressIndex) {
-				lastUsedAddressIndex = response.value.lastUsedAddressIndex;
+			if (result.lastUsedAddressIndex) {
+				lastUsedAddressIndex = result.lastUsedAddressIndex;
 			}
 
-			if (response.value?.lastUsedChangeAddressIndex) {
-				lastUsedChangeAddressIndex = response.value?.lastUsedChangeAddressIndex;
+			if (result.lastUsedChangeAddressIndex) {
+				lastUsedChangeAddressIndex = result.lastUsedChangeAddressIndex;
 			}
 
 			dispatch({
@@ -275,9 +269,10 @@ export const resetAddressIndexes = ({
 	}
 
 	const addressTypes = getAddressTypes();
-	const addressTypeKeys = Object.keys(addressTypes) as EAddressType[];
+	const addressTypeKeys = objectKeys(addressTypes);
 	const defaultWalletShape = getDefaultWalletShape();
-	addressTypeKeys.map((addressType) => {
+
+	addressTypeKeys.forEach((addressType) => {
 		dispatch({
 			type: actions.UPDATE_ADDRESS_INDEX,
 			payload: {
@@ -472,13 +467,12 @@ export const addAddresses = async ({
 		selectedWallet,
 		selectedNetwork,
 	});
-
 	if (removeDuplicateResponse.isErr()) {
 		return err(removeDuplicateResponse.error.message);
 	}
 
-	const addresses = removeDuplicateResponse.value?.addresses ?? {};
-	const changeAddresses = removeDuplicateResponse.value?.changeAddresses ?? {};
+	const addresses = removeDuplicateResponse.value.addresses;
+	const changeAddresses = removeDuplicateResponse.value.changeAddresses;
 	if (!Object.keys(addresses).length && !Object.keys(changeAddresses).length) {
 		return err('No addresses to add.');
 	}
@@ -1551,39 +1545,32 @@ export const setZeroIndexAddresses = async ({
 		});
 	}
 
-	if (
-		addressIndexInfo.addressIndex.index >= 0 &&
-		addressIndexInfo.changeAddressIndex.index >= 0
-	) {
+	const addressIndex = addressIndexInfo.addressIndex;
+	const changeAddressIndex = addressIndexInfo.changeAddressIndex;
+
+	if (addressIndex.index >= 0 && changeAddressIndex.index >= 0) {
 		return ok('No need to set indexes.');
 	}
 
-	let addressIndex = addressIndexInfo.addressIndex;
-	let changeAddressIndex = addressIndexInfo.changeAddressIndex;
-
-	let payload: {
+	const currentWallet = getWalletStore().wallets[selectedWallet];
+	const payload: {
 		addressIndex?: IAddress;
 		changeAddressIndex?: IAddress;
 	} = {};
 
 	if (addressIndex.index < 0) {
-		const addresses =
-			getWalletStore().wallets[selectedWallet]?.addresses[selectedNetwork][
-				addressType
-			];
-		const filterRes = Object.values(addresses).find((a) => a.index === 0);
-		if (filterRes) {
-			payload.addressIndex = filterRes;
+		const addresses = currentWallet?.addresses[selectedNetwork][addressType];
+		const address = Object.values(addresses).find((a) => a.index === 0);
+		if (address) {
+			payload.addressIndex = address;
 		}
 	}
 	if (changeAddressIndex.index < 0) {
 		const changeAddresses =
-			getWalletStore().wallets[selectedWallet]?.changeAddresses[
-				selectedNetwork
-			][addressType];
-		const filterRes = Object.values(changeAddresses).find((a) => a.index === 0);
-		if (filterRes) {
-			payload.changeAddressIndex = filterRes;
+			currentWallet?.changeAddresses[selectedNetwork][addressType];
+		const address = Object.values(changeAddresses).find((a) => a.index === 0);
+		if (address) {
+			payload.changeAddressIndex = address;
 		}
 	}
 
@@ -1594,5 +1581,6 @@ export const setZeroIndexAddresses = async ({
 			addressType,
 		},
 	});
+
 	return ok('Set Zero Index Addresses.');
 };

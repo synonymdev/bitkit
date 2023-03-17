@@ -514,7 +514,7 @@ const createPsbtFromTransactionData = async ({
 	}
 
 	//Embed any OP_RETURN messages.
-	if (message && message.trim() !== '') {
+	if (message.trim() !== '') {
 		const messageLength = message.length;
 		const lengthMin = 5;
 		//This is a patch for the following: https://github.com/coreyphillips/moonshine/issues/52
@@ -545,7 +545,7 @@ const createPsbtFromTransactionData = async ({
 
 	//Add Inputs from inputs array
 	try {
-		for await (const input of inputs) {
+		for (const input of inputs) {
 			const path = input.path;
 			const keyPair: BIP32Interface = root.derivePath(path);
 			await addInput({
@@ -841,7 +841,7 @@ export const addInput = async ({
 		const network = networks[selectedNetwork];
 		const { type } = getAddressInfo(input.address);
 
-		if (!input?.value) {
+		if (!input.value) {
 			return err('No input provided.');
 		}
 
@@ -909,7 +909,7 @@ export const addInput = async ({
 };
 
 export const broadcastTransaction = async ({
-	rawTx = '',
+	rawTx,
 	selectedNetwork,
 	selectedWallet,
 	subscribeToOutputAddress = true,
@@ -931,14 +931,14 @@ export const broadcastTransaction = async ({
 		if (!selectedWallet) {
 			selectedWallet = getSelectedWallet();
 		}
-		const transaction = await getOnchainTransactionData({
+		const transaction = getOnchainTransactionData({
 			selectedNetwork,
 			selectedWallet,
 		});
 		if (transaction.isErr()) {
 			return err(transaction.error.message);
 		}
-		const address = transaction.value.outputs?.[0]?.address;
+		const address = transaction.value.outputs[0]?.address;
 		if (address) {
 			const scriptHash = await getScriptHash(address, selectedNetwork);
 			if (scriptHash) {

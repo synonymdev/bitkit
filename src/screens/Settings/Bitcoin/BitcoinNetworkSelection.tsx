@@ -4,7 +4,6 @@ import { useTranslation } from 'react-i18next';
 
 import { EItemType, IListData } from '../../../components/List';
 import SettingsView from '../SettingsView';
-import { EAvailableNetworks } from '../../../utils/networks';
 import {
 	updateAddressIndexes,
 	updateWallet,
@@ -14,15 +13,17 @@ import {
 	updateActivityList,
 } from '../../../store/actions/activity';
 import { updateOnchainFeeEstimates } from '../../../store/actions/fees';
-import { getNetworkData } from '../../../utils/helpers';
+import { selectedNetworkSelector } from '../../../store/reselect/wallet';
+import { connectToElectrum } from '../../../utils/wallet/electrum';
 import { startWalletServices } from '../../../utils/startup';
+import { EAvailableNetworks } from '../../../utils/networks';
+import { getNetworkData } from '../../../utils/helpers';
+import { resetLdk } from '../../../utils/lightning';
 import {
 	getCurrentWallet,
 	getSelectedAddressType,
 } from '../../../utils/wallet';
 import { SettingsScreenProps } from '../../../navigation/types';
-import { selectedNetworkSelector } from '../../../store/reselect/wallet';
-import { resetLdk } from '../../../utils/lightning';
 
 const BitcoinNetworkSelection = ({
 	navigation,
@@ -52,6 +53,8 @@ const BitcoinNetworkSelection = ({
 								selectedNetwork: network,
 								selectedWallet,
 							});
+							// Connect to a Electrum Server on the network
+							await connectToElectrum({ selectedNetwork: network });
 							// Generate addresses if none exist for the newly selected wallet and network.
 							await updateAddressIndexes({
 								selectedWallet,
