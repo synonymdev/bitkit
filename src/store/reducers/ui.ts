@@ -11,10 +11,10 @@ const ui = (state: IUi = defaultUiShape, action): IUi => {
 			};
 		}
 
-		case actions.SET_APP_UPDATE_TYPE:
+		case actions.SET_APP_UPDATE_INFO:
 			return {
 				...state,
-				availableUpdateType: action.payload,
+				availableUpdate: action.payload,
 			};
 
 		case actions.SHOW_SHEET:

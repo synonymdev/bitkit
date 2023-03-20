@@ -45,10 +45,17 @@ export type TProfileLink = {
 	url: string;
 };
 
-export type TAvailableUpdateType = 'critical' | 'optional' | null;
+export type TAvailableUpdate = {
+	version: string;
+	buildNumber: number;
+	notes: string;
+	pub_date: string;
+	url: string;
+	critical: boolean;
+};
 
 export interface IUi {
-	availableUpdateType: TAvailableUpdateType;
+	availableUpdate: TAvailableUpdate | null;
 	isConnectedToElectrum: boolean;
 	isOnline: boolean;
 	profileLink: TProfileLink;

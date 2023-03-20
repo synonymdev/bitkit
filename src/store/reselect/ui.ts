@@ -2,7 +2,6 @@ import { createSelector } from '@reduxjs/toolkit';
 import Store from '../types';
 import {
 	IUi,
-	TAvailableUpdateType,
 	TProfileLink,
 	TViewController,
 	TUiViewController,
@@ -79,7 +78,7 @@ export const isConnectedToElectrumSelector = createSelector(
 	(ui): boolean => ui.isConnectedToElectrum,
 );
 
-export const availableUpdateTypeSelector = createSelector(
+export const availableUpdateSelector = createSelector(
 	[uiState],
-	(ui): TAvailableUpdateType => ui.availableUpdateType,
+	(ui) => ui.availableUpdate,
 );

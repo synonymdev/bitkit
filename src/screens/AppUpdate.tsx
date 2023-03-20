@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react';
-import { Platform, StyleSheet, View } from 'react-native';
-import { getBundleId } from 'react-native-device-info';
+import { StyleSheet, View } from 'react-native';
+import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 
 import { View as ThemedView } from '../styles/components';
@@ -9,21 +9,16 @@ import SafeAreaInsets from '../components/SafeAreaInsets';
 import GlowImage from '../components/GlowImage';
 import Button from '../components/Button';
 import { openURL } from '../utils/helpers';
+import { availableUpdateSelector } from '../store/reselect/ui';
 
 const imageSrc = require('../assets/illustrations/bitkit-logo.png');
 
-// TODO: add correct store IDs and test
-// const appleAppID = '1634634088';
-const androidPackageName = getBundleId();
-const appStoreUrl =
-	Platform.OS === 'ios'
-		? 'https://testflight.apple.com/join/lGXhnwcC'
-		: `https://play.google.com/store/apps/details?id=${androidPackageName}`;
-
 const AppUpdate = (): ReactElement => {
 	const { t } = useTranslation('other');
+	const updateInfo = useSelector(availableUpdateSelector);
+
 	const onUpdate = async (): Promise<void> => {
-		await openURL(appStoreUrl);
+		await openURL(updateInfo?.url!);
 	};
 
 	return (

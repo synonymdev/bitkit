@@ -20,7 +20,7 @@ import { ThemeProvider } from 'styled-components/native';
 
 import { SafeAreaProvider, StatusBar } from './styles/components';
 import { getTheme } from './styles/themes';
-// import { checkForAppUpdate } from './store/actions/ui';
+import { checkForAppUpdate } from './store/actions/ui';
 import { useAppSelector } from './hooks/redux';
 import OnboardingNavigator from './navigation/onboarding/OnboardingNavigator';
 import { SlashtagsProvider } from './components/SlashtagsProvider';
@@ -35,7 +35,7 @@ import { RECOVERY_DELAY } from './utils/startup/constants';
 import { themeSelector } from './store/reselect/settings';
 import { walletExistsSelector } from './store/reselect/wallet';
 import { requiresRemoteRestoreSelector } from './store/reselect/user';
-import { availableUpdateTypeSelector } from './store/reselect/ui';
+import { availableUpdateSelector } from './store/reselect/ui';
 
 if (Platform.OS === 'android') {
 	if (UIManager.setLayoutAnimationEnabledExperimental) {
@@ -49,7 +49,7 @@ const App = (): ReactElement => {
 	const theme = useAppSelector(themeSelector);
 	const walletExists = useAppSelector(walletExistsSelector);
 	const requiresRemoteRestore = useAppSelector(requiresRemoteRestoreSelector);
-	const availableUpdateType = useAppSelector(availableUpdateTypeSelector);
+	const updateInfo = useAppSelector(availableUpdateSelector);
 
 	// on App start
 	useEffect(() => {
@@ -59,8 +59,7 @@ const App = (): ReactElement => {
 		}
 
 		// check for Bitkit update
-		// TEMP: disabled for now
-		// checkForAppUpdate();
+		checkForAppUpdate();
 
 		// Tap twice anywhere in the first 500ms of startup to enter recovery
 		setTimeout((): void => setIsListening(false), RECOVERY_DELAY);
@@ -77,7 +76,7 @@ const App = (): ReactElement => {
 			return <RecoveryNavigator />;
 		}
 
-		if (availableUpdateType === 'critical') {
+		if (updateInfo?.critical) {
 			return <AppUpdate />;
 		}
 
@@ -90,7 +89,7 @@ const App = (): ReactElement => {
 		}
 
 		return <OnboardingNavigator />;
-	}, [tapCount, availableUpdateType, walletExists, requiresRemoteRestore]);
+	}, [tapCount, updateInfo?.critical, walletExists, requiresRemoteRestore]);
 
 	const currentTheme = useMemo(
 		() => getTheme(i18n.resolvedLanguage, theme),

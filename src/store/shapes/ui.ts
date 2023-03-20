@@ -25,7 +25,7 @@ export const defaultViewControllers: IUi['viewControllers'] = {
 };
 
 export const defaultUiShape: IUi = {
-	availableUpdateType: null,
+	availableUpdate: null,
 	isConnectedToElectrum: true,
 	isOnline: true,
 	profileLink: { title: '', url: '' },

@@ -1,12 +1,13 @@
-import { getReadableVersion } from 'react-native-device-info';
+import { Platform } from 'react-native';
+import { getBuildNumber } from 'react-native-device-info';
 import { ok, Result } from '@synonymdev/result';
-import semverDiff from 'semver/functions/diff';
 
-import { IUi, ViewControllerParamList } from '../types/ui';
+import { IUi, TAvailableUpdate, ViewControllerParamList } from '../types/ui';
 import { getDispatch } from '../helpers';
 import actions from './actions';
 
-const releaseUrl = 'https://api.github.com/repos/synonymdev/bitkit/releases';
+const releaseUrl =
+	'https://github.com/synonymdev/bitkit/releases/download/updater/release.json';
 
 const dispatch = getDispatch();
 
@@ -52,21 +53,17 @@ export const updateProfileLink = (payload: {
 };
 
 export const checkForAppUpdate = async (): Promise<void> => {
-	const currentVersion = getReadableVersion();
+	const currentBuild = Number(getBuildNumber());
 	const response = await fetch(releaseUrl);
 	const releases = await response.json();
-	const latestVersion = releases[0].tag_name;
-	const diff = semverDiff(currentVersion, latestVersion);
+	const release: TAvailableUpdate = releases.platforms[Platform.OS];
+	const latestBuild = release.buildNumber;
+	const updateAvailable = latestBuild > currentBuild;
 
-	if (diff) {
-		const criticalReleaseTypes = ['major', 'premajor', 'minor', 'preminor'];
-		const updateType = criticalReleaseTypes.includes(diff)
-			? 'critical'
-			: 'optional';
-
+	if (updateAvailable) {
 		dispatch({
-			type: actions.SET_APP_UPDATE_TYPE,
-			payload: updateType,
+			type: actions.SET_APP_UPDATE_INFO,
+			payload: release,
 		});
 	}
 };

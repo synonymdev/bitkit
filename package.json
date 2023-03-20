@@ -129,7 +129,6 @@
     "rn-electrum-client": "github:synonymdev/react-native-electrum-client#a32a292d4e4918a04d280137e24e5961c74c543f",
     "rn-qr-generator": "^1.2.0",
     "secp256k1": "^4.0.3",
-    "semver": "^7.3.8",
     "stream-browserify": "^3.0.0",
     "styled-components": "^5.3.5",
     "url-parse": "^1.5.10",
@@ -195,6 +194,7 @@
     "redux-flipper": "^2.0.2",
     "rimraf": "^3.0.2",
     "rn-nodeify": "^10.3.0",
+    "semver": "^7.3.8",
     "typescript": "^4.7.4"
   },
   "react-native": {
