@@ -26,7 +26,7 @@
 	"mnemonic_keep_header": "Keep It Secret",
 	"mnemonic_keep_text": "Remember, never share your recovery phrase with anyone! If someone has access to your recovery phrase they can steal your money, profile and other data.",
 	"mnemonic_data_header": "Wallet Data",
-	"mnemonic_data_text": "Transactions, accounts, contacts and tags will be backed up automagically. You can export data from the settings.",
+	"mnemonic_data_text": "Your profile, contacts, accounts, tags, and activity will be backed up automatically to our free cloud service.",
 	"mnemonic_multiple_header": "Multiple Devices",
 	"mnemonic_multiple_text": "Don't use your Bitkit recovery phrase on multiple phones simultaneously, as this can corrupt your data.",
 	"pin_security_header": "Increase Security",

@@ -10,7 +10,7 @@ import GlowImage from '../../../components/GlowImage';
 import Button from '../../../components/Button';
 import type { BackupScreenProps } from '../../../navigation/types';
 
-const imageSrc = require('../../../assets/illustrations/exclamation-mark.png');
+const imageSrc = require('../../../assets/illustrations/phone.png');
 
 const MultipleDevices = ({
 	navigation,
