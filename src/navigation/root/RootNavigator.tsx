@@ -24,6 +24,7 @@ import WalletNavigator from '../wallet/WalletNavigator';
 import ActivityDetail from '../../screens/Activity/ActivityDetail';
 import ActivityAssignContact from '../../screens/Activity/ActivityAssignContact';
 import BuyBitcoin from '../../screens/BuyBitcoin';
+import BetaRisk from '../../screens/BetaRisk';
 import ScannerScreen from '../../screens/Scanner/MainScanner';
 import SettingsNavigator from '../settings/SettingsNavigator';
 import LightningNavigator from '../lightning/LightningNavigator';
@@ -36,6 +37,7 @@ import Profile from '../../screens/Profile/Profile';
 import ProfileEdit from '../../screens/Profile/ProfileEdit';
 import ProfileAddLink from '../../screens/Profile/ProfileAddLink';
 import ProfileLinkSuggestions from '../../screens/Profile/ProfileLinkSuggestions';
+import ProfileDetails from '../../screens/Profile/ProfileDetails';
 import Contacts from '../../screens/Contacts/Contacts';
 import Contact from '../../screens/Contacts/Contact';
 import ContactEdit from '../../screens/Contacts/ContactEdit';
@@ -204,10 +206,12 @@ const RootNavigator = (): ReactElement => {
 						name="ProfileLinkSuggestions"
 						component={ProfileLinkSuggestions}
 					/>
+					<Stack.Screen name="ProfileDetails" component={ProfileDetails} />
 					<Stack.Screen name="Contacts" component={Contacts} />
 					<Stack.Screen name="ContactEdit" component={ContactEdit} />
 					<Stack.Screen name="Contact" component={Contact} />
 					<Stack.Screen name="BuyBitcoin" component={BuyBitcoin} />
+					<Stack.Screen name="BetaRisk" component={BetaRisk} />
 					<Stack.Screen name="WidgetFeedEdit" component={WidgetFeedEdit} />
 					<Stack.Screen name="WidgetsRoot" component={WidgetsNavigator} />
 				</Stack.Group>

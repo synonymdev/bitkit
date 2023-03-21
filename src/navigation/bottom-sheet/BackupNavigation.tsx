@@ -13,6 +13,7 @@ import ConfirmMnemonic from '../../screens/Settings/Backup/ConfirmMnemonic';
 import ConfirmPassphrase from '../../screens/Settings/Backup/ConfirmPassphrase';
 import Result from '../../screens/Settings/Backup/Result';
 import Warning from '../../screens/Settings/Backup/Warning';
+import MultipleDevices from '../../screens/Settings/Backup/MultipleDevices';
 import Metadata from '../../screens/Settings/Backup/Metadata';
 import { NavigationContainer } from '../../styles/components';
 import { useSnapPoints } from '../../hooks/bottomSheet';
@@ -28,6 +29,7 @@ export type BackupStackParamList = {
 	ConfirmPassphrase: { bip39Passphrase: string };
 	Result: undefined;
 	Warning: undefined;
+	MultipleDevices: undefined;
 	Metadata: undefined;
 };
 
@@ -57,6 +59,7 @@ const BackupNavigation = (): ReactElement => {
 						/>
 						<Stack.Screen name="Result" component={Result} />
 						<Stack.Screen name="Warning" component={Warning} />
+						<Stack.Screen name="MultipleDevices" component={MultipleDevices} />
 						<Stack.Screen name="Metadata" component={Metadata} />
 					</Stack.Group>
 				</Stack.Navigator>

@@ -102,7 +102,7 @@
 	"activity_boost": "Буст",
 	"activity_boosted": "Уже ускорили",
 	"activity_explore": "Эксплорер",
-	"activity_tx_details": "Детали Транзакции",
+	"activity_tx_details": "Технические Детали",
 	"activity_tx_id": "ID Транзакции",
 	"activity_address": "Адрес",
 	"activity_input": "{{count}} ВХОД",

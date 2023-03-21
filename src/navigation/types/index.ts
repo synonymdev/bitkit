@@ -40,10 +40,12 @@ export type RootStackParamList = {
 	ProfileEdit: undefined;
 	ProfileAddLink: undefined;
 	ProfileLinkSuggestions: undefined;
+	ProfileDetails: undefined;
 	Contacts: undefined;
 	ContactEdit: { url: string };
 	Contact: { url: string };
 	BuyBitcoin: undefined;
+	BetaRisk: undefined;
 	WidgetFeedEdit: { url: string };
 	WidgetsRoot: NavigatorScreenParams<WidgetsStackParamList> | undefined;
 };

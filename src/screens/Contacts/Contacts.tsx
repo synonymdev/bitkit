@@ -14,12 +14,13 @@ import SafeAreaInsets from '../../components/SafeAreaInsets';
 import SearchInput from '../../components/SearchInput';
 import ContactsList from '../../components/ContactsList';
 import { showBottomSheet } from '../../store/actions/ui';
-import { useSelectedSlashtag } from '../../hooks/slashtags';
+import { useProfile, useSelectedSlashtag } from '../../hooks/slashtags';
 import { RootStackScreenProps } from '../../navigation/types';
 import AddContact from './AddContact';
 import { onboardedContactsSelector } from '../../store/reselect/slashtags';
 import { useSlashtags } from '../../components/SlashtagsProvider';
 import { IContactRecord } from '../../store/types/slashtags';
+import ProfileImage from '../../components/ProfileImage';
 
 export const Contacts = (
 	props: RootStackScreenProps<'Contacts'>,
@@ -41,6 +42,7 @@ const ContactsScreen = ({
 	const { t } = useTranslation('slashtags');
 	const [searchFilter, setSearchFilter] = useState('');
 	const { url: myProfileURL } = useSelectedSlashtag();
+	const { profile } = useProfile(myProfileURL);
 
 	return (
 		<ThemedView style={styles.container}>
@@ -50,6 +52,10 @@ const ContactsScreen = ({
 				onClosePress={(): void => {
 					navigation.navigate('Wallet');
 				}}
+				actionIcon={
+					<ProfileImage size={28} url={myProfileURL} image={profile?.image} />
+				}
+				onActionPress={(): void => navigation.navigate('Profile')}
 			/>
 			<View style={styles.content}>
 				<View style={styles.searchRow}>

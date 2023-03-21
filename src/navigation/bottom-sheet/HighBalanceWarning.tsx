@@ -30,8 +30,14 @@ import {
 
 const imageSrc = require('../../assets/illustrations/exclamation-mark.png');
 
-const BALANCE_THRESHOLD_USD = 1000; // how high the balance must be to show this warning to the user (in USD)
-const BALANCE_THRESHOLD_SATS = 5000000; // how high the balance must be to show this warning to the user (in Sats)
+// TODO: change back after beta
+// BALANCE_THRESHOLD_USD = 1000
+// BALANCE_THRESHOLD_SATS = 5000000
+// high_text2_beta -> high_text2
+// and remove BETA variable
+const BETA = true;
+const BALANCE_THRESHOLD_USD = 100; // how high the balance must be to show this warning to the user (in USD)
+const BALANCE_THRESHOLD_SATS = 500000; // how high the balance must be to show this warning to the user (in Sats)
 const MAX_WARNINGS = 3; // how many times to show this warning to the user
 const ASK_INTERVAL = 1000 * 60 * 60 * 24; // 1 day - how long this prompt will be hidden if user taps Later
 const CHECK_DELAY = 3000; // how long user needs to stay on Wallets screen before he will see this prompt
@@ -42,7 +48,7 @@ const Amount = ({ style }: { style?: StyleProp<ViewStyle> }): ReactElement => {
 			<Display style={aStyles.symbol} color="gray2">
 				$
 			</Display>
-			<Display>1,000</Display>
+			<Display>{BALANCE_THRESHOLD_USD}</Display>
 		</View>
 	);
 };
@@ -166,24 +172,28 @@ const HighBalanceWarning = ({
 				</View>
 
 				<Text02S style={styles.text} color="gray1">
-					{t('high_text2')}
+					{t('high_text2_beta')}
 				</Text02S>
 
 				<GlowImage image={imageSrc} imageSize={180} glowColor="yellow" />
 
 				<View style={buttonContainerStyles}>
+					{!BETA && (
+						<>
+							<Button
+								style={styles.button}
+								variant="secondary"
+								size="large"
+								text={t('high_button_more')}
+								onPress={onMore}
+							/>
+							<View style={styles.divider} />
+						</>
+					)}
 					<Button
 						style={styles.button}
-						variant="secondary"
 						size="large"
-						text="Learn More"
-						onPress={onMore}
-					/>
-					<View style={styles.divider} />
-					<Button
-						style={styles.button}
-						size="large"
-						text={t('high_button_understood')}
+						text={t('understood')}
 						onPress={onDismiss}
 					/>
 				</View>

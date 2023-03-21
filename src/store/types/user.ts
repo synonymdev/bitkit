@@ -7,4 +7,5 @@ export interface IUser {
 	isGeoBlocked: boolean;
 	requiresRemoteRestore: boolean;
 	startCoopCloseTimestamp: number;
+	betaRiskAccepted: boolean;
 }

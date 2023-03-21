@@ -333,6 +333,7 @@ describe('Settings', () => {
 			await element(by.id('OK')).tap();
 			await element(by.id('OK')).tap();
 			await element(by.id('OK')).tap();
+			await element(by.id('OK')).tap();
 			await sleep(1000);
 			markComplete('s6');
 		});
@@ -346,6 +347,7 @@ describe('Settings', () => {
 			// wallet be in regtest mode by default
 			// at first check if it is Native segwit by default
 			await element(by.id('Receive')).tap();
+			await element(by.id('UnderstoodButton')).tap();
 			await sleep(1000); // animation
 			// get address from qrcode
 			const { label: address } = await element(by.id('QRCode')).getAttributes();

@@ -8,6 +8,7 @@ import TermsOfUse from '../../screens/Onboarding/TermsOfUse';
 import WelcomeScreen from '../../screens/Onboarding/Welcome';
 import SlideshowScreen from '../../screens/Onboarding/Slideshow';
 import RestoreFromSeed from '../../screens/Onboarding/RestoreFromSeed';
+import MultipleDevices from '../../screens/Onboarding/MultipleDevices';
 import Passphrase from '../../screens/Onboarding/Passphrase';
 import { NavigationContainer } from '../../styles/components';
 
@@ -19,6 +20,7 @@ export type OnboardingStackParamList = {
 	Welcome: undefined;
 	Slideshow: { skipIntro?: boolean; bip39Passphrase?: string } | undefined;
 	RestoreFromSeed: undefined;
+	MultipleDevices: undefined;
 	Passphrase: undefined;
 };
 
@@ -46,6 +48,11 @@ const OnboardingNavigator = (): ReactElement => {
 				<Stack.Screen
 					name="Slideshow"
 					component={SlideshowScreen}
+					options={navOptionHandler}
+				/>
+				<Stack.Screen
+					name="MultipleDevices"
+					component={MultipleDevices}
 					options={navOptionHandler}
 				/>
 				<Stack.Screen

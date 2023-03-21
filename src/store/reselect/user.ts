@@ -43,3 +43,8 @@ export const ignoreAppUpdateTimestampSelector = createSelector(
 	[userState],
 	(user): number => user.ignoreAppUpdateTimestamp,
 );
+
+export const betaRiskAcceptedSelector = createSelector(
+	[userState],
+	(user): boolean => user.betaRiskAccepted,
+);

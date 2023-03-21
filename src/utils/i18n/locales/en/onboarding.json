@@ -43,5 +43,7 @@
 	"restore_no_backup_button": "Proceed Without Backup",
 	"restore_no_backup_warn": "If you previously had a lightning backup it will be overwritten and lost. This could result in a loss of funds.",
 	"empty_wallet": "To get started send\n<brand>Bitcoin</brand> to your wallet.",
-	"error_create": "Wallet creation failed"
+	"error_create": "Wallet creation failed",
+	"multiple_header": "Caution:\n<yellow>Multiple devices</yellow>",
+	"multiple_text": "Don't install your Bitkit recovery phrase into multiple phones simultaneously, as this can corrupt your data."
 }

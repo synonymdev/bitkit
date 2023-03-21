@@ -85,6 +85,9 @@ describe('Onchain', () => {
 
 			for (let i = 0; i < 3; i++) {
 				await element(by.id('Receive')).tap();
+				if (i === 0) {
+					await element(by.id('UnderstoodButton')).tap();
+				}
 				await sleep(1000); // animation
 				// get address from qrcode
 				let { label: wAddress } = await element(

@@ -49,6 +49,12 @@ const user = (state: IUser = defaultUserShape, action): IUser => {
 				backupVerified: true,
 			};
 
+		case actions.ACCEPT_BETA_RISK:
+			return {
+				...state,
+				betaRiskAccepted: true,
+			};
+
 		case actions.RESET_USER_STORE:
 			return defaultUserShape;
 

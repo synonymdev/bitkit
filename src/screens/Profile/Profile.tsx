@@ -30,7 +30,6 @@ import {
 	CopyIcon,
 	InfoIcon,
 	PencileIcon,
-	QrPage,
 	ShareIcon,
 	UsersIcon,
 } from '../../styles/icons';
@@ -41,7 +40,6 @@ import { truncate } from '../../utils/helpers';
 import NavigationHeader from '../../components/NavigationHeader';
 import SafeAreaInsets from '../../components/SafeAreaInsets';
 import ProfileCard from '../../components/ProfileCard';
-import ProfileLinks from '../../components/ProfileLinks';
 import Tooltip from '../../components/Tooltip';
 import Divider from '../../components/Divider';
 import IconButton from '../../components/IconButton';
@@ -77,21 +75,12 @@ const ProfileScreen = ({
 	navigation,
 }: RootStackScreenProps<'Profile'>): ReactElement => {
 	const { t } = useTranslation('slashtags');
-	const [showCopy, setShowCopy] = useState(false);
 	const { url } = useSelectedSlashtag();
 	const { profile } = useProfile(url);
 	const qrRef = useRef<string>();
 
-	const [view, setView] = useState('qr');
+	const [showCopy, setShowCopy] = useState(false);
 	const [isSharing, setIsSharing] = useState(false);
-
-	const switchView = useCallback((): void => {
-		view === 'details' ? setView('qr') : setView('details');
-	}, [view]);
-
-	// const onSwipeLeft = (): void => {
-	// 	navigation.navigate('Wallet');
-	// };
 
 	const handleCopy = useCallback((): void => {
 		setShowCopy(() => true);
@@ -116,14 +105,6 @@ const ProfileScreen = ({
 		}
 	}, [url, t]);
 
-	const profileLinks = useMemo(() => profile?.links ?? [], [profile?.links]);
-	const profileLinksWithIds = useMemo(() => {
-		return profileLinks.map((link) => ({
-			...link,
-			id: `${link.title}:${link.url}`,
-		}));
-	}, [profileLinks]);
-
 	return (
 		<ThemedView style={styles.container}>
 			<SafeAreaInsets type="top" />
@@ -133,21 +114,24 @@ const ProfileScreen = ({
 				onClosePress={(): void => {
 					navigation.navigate('Wallet');
 				}}
+				onActionPress={(): void => {
+					navigation.navigate('Contacts');
+				}}
+				actionIcon={<UsersIcon height={24} width={24} />}
 			/>
-			{/* Disable swipe detection because it causes ScrollView to be buggy */}
-			{/* <DetectSwipe onSwipeLeft={onSwipeLeft}> */}
+
 			<ScrollView>
 				<View style={styles.content}>
 					<ProfileCard url={url} profile={profile} resolving={false} />
 					<Divider />
 					<View style={styles.bottom}>
 						<View style={styles.bottomHeader}>
-							<IconButton style={styles.iconButton} onPress={switchView}>
-								{view === 'qr' ? (
-									<InfoIcon height={20} width={20} color="brand" />
-								) : (
-									<QrPage height={20} width={20} color="brand" />
-								)}
+							<IconButton
+								style={styles.iconButton}
+								onPress={(): void => {
+									navigation.navigate('ProfileDetails');
+								}}>
+								<InfoIcon height={20} width={20} color="brand" />
 							</IconButton>
 							<IconButton style={styles.iconButton} onPress={handleCopy}>
 								<CopyIcon height={24} width={24} color="brand" />
@@ -165,22 +149,8 @@ const ProfileScreen = ({
 								}}>
 								<PencileIcon height={20} width={20} color="brand" />
 							</IconButton>
-							<IconButton
-								style={styles.iconButton}
-								onPress={(): void => {
-									navigation.navigate('Contacts');
-								}}>
-								<UsersIcon height={24} width={24} color="brand" />
-							</IconButton>
 						</View>
-						{view === 'details' ? (
-							<ProfileLinks
-								links={profileLinksWithIds}
-								style={styles.profileDetails}
-							/>
-						) : (
-							<QRView url={url} profile={profile} qrRef={qrRef} />
-						)}
+						<QRView url={url} profile={profile} qrRef={qrRef} />
 						{showCopy && (
 							<AnimatedView
 								entering={FadeIn.duration(500)}
@@ -194,7 +164,6 @@ const ProfileScreen = ({
 				</View>
 				<SafeAreaInsets type="bottom" />
 			</ScrollView>
-			{/* </DetectSwipe> */}
 		</ThemedView>
 	);
 };
@@ -321,9 +290,6 @@ const styles = StyleSheet.create({
 	},
 	qrViewNote: {
 		marginTop: 16,
-	},
-	profileDetails: {
-		marginTop: 40,
 	},
 	tooltip: {
 		position: 'absolute',

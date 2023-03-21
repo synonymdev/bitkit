@@ -12,9 +12,9 @@ import type { BackupScreenProps } from '../../../navigation/types';
 
 const imageSrc = require('../../../assets/illustrations/exclamation-mark.png');
 
-const Warning = ({
+const MultipleDevices = ({
 	navigation,
-}: BackupScreenProps<'Warning'>): ReactElement => {
+}: BackupScreenProps<'MultipleDevices'>): ReactElement => {
 	const { t } = useTranslation('security');
 	const insets = useSafeAreaInsets();
 	const buttonContainerStyles = useMemo(
@@ -26,15 +26,15 @@ const Warning = ({
 	);
 
 	const handleButtonPress = (): void => {
-		navigation.navigate('MultipleDevices');
+		navigation.navigate('Metadata');
 	};
 
 	return (
 		<GradientView style={styles.container}>
-			<BottomSheetNavigationHeader title={t('mnemonic_keep_header')} />
+			<BottomSheetNavigationHeader title={t('mnemonic_multiple_header')} />
 
 			<Text01S color="gray1" style={styles.text}>
-				{t('mnemonic_keep_text')}
+				{t('mnemonic_multiple_text')}
 			</Text01S>
 
 			<GlowImage image={imageSrc} imageSize={200} glowColor="yellow" />
@@ -65,4 +65,4 @@ const styles = StyleSheet.create({
 	},
 });
 
-export default memo(Warning);
+export default memo(MultipleDevices);

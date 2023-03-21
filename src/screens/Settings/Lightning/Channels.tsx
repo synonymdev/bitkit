@@ -19,7 +19,12 @@ import {
 	TextInput,
 } from '../../../styles/components';
 import { Caption13Up, Text01M } from '../../../styles/text';
-import { ChevronRight, DownArrow, UpArrow } from '../../../styles/icons';
+import {
+	ChevronRight,
+	DownArrow,
+	UpArrow,
+	PlusIcon,
+} from '../../../styles/icons';
 import SafeAreaInsets from '../../../components/SafeAreaInsets';
 import Button from '../../../components/Button';
 import NavigationHeader from '../../../components/NavigationHeader';
@@ -341,7 +346,8 @@ const Channels = ({
 			<SafeAreaInsets type="top" />
 			<NavigationHeader
 				title={t('connections')}
-				onAddPress={addConnectionIsDisabled ? undefined : handleAdd}
+				onActionPress={addConnectionIsDisabled ? undefined : handleAdd}
+				actionIcon={<PlusIcon width={24} height={24} />}
 			/>
 			<ScrollView
 				contentContainerStyle={styles.content}

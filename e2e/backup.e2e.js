@@ -89,6 +89,7 @@ describe('Backup', () => {
 		}
 		// recieve bitcoin
 		await element(by.id('Receive')).tap();
+		await element(by.id('UnderstoodButton')).tap();
 		await sleep(1000); // animation
 		// get address from qrcode
 		let { label: wAddress } = await element(by.id('QRCode')).getAttributes();
@@ -187,6 +188,7 @@ describe('Backup', () => {
 		await waitFor(element(by.id('SkipIntro'))).toBeVisible();
 		await element(by.id('SkipIntro')).tap();
 		await element(by.id('RestoreWallet')).tap();
+		await element(by.id('MultipleButton')).tap();
 		await element(by.id('Word-0')).replaceText(seed);
 		await element(by.id('WordIndex-4')).swipe('up');
 		await element(by.id('RestoreButton')).tap();

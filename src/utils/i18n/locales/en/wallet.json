@@ -104,7 +104,7 @@
 	"activity_boost": "Boost",
 	"activity_boosted": "Already Boosted",
 	"activity_explore": "Explore",
-	"activity_tx_details": "Transaction Details",
+	"activity_tx_details": "Technical Details",
 	"activity_tx_id": "Transaction ID",
 	"activity_address": "Address",
 	"activity_input": "{{count}} INPUT",

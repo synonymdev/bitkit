@@ -9,4 +9,5 @@ export const defaultUserShape: IUser = {
 	isGeoBlocked: false,
 	requiresRemoteRestore: false,
 	startCoopCloseTimestamp: 0,
+	betaRiskAccepted: false,
 };

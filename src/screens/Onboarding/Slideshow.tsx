@@ -204,7 +204,7 @@ const Slideshow = ({
 									variant="secondary"
 									style={[styles.button, styles.newButton]}
 									// eslint-disable-next-line react/prop-types
-									onPress={(): void => navigation.navigate('RestoreFromSeed')}
+									onPress={(): void => navigation.navigate('MultipleDevices')}
 									text={t('restore')}
 									testID="RestoreWallet"
 								/>

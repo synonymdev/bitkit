@@ -7,10 +7,12 @@ import { useTranslation } from 'react-i18next';
 import { receiveIcon, sendIcon } from '../assets/icons/tabs';
 import { showBottomSheet } from '../store/actions/ui';
 import useColors from '../hooks/colors';
+import { useAppSelector } from '../hooks/redux';
 import { Text02M } from '../styles/text';
 import { ScanIcon } from '../styles/icons';
 import BlurView from '../components/BlurView';
 import type { RootNavigationProp } from '../navigation/types';
+import { betaRiskAcceptedSelector } from '../store/reselect/user';
 
 const TabBar = ({
 	navigation,
@@ -20,10 +22,15 @@ const TabBar = ({
 	const { white08 } = useColors();
 	const insets = useSafeAreaInsets();
 	const { t } = useTranslation('wallet');
+	const betaRiskAccepted = useAppSelector(betaRiskAcceptedSelector);
 
 	const onReceivePress = useCallback((): void => {
-		showBottomSheet('receiveNavigation');
-	}, []);
+		if (betaRiskAccepted) {
+			showBottomSheet('receiveNavigation');
+		} else {
+			navigation.navigate('BetaRisk');
+		}
+	}, [betaRiskAccepted, navigation]);
 
 	const onSendPress = useCallback((): void => {
 		showBottomSheet('sendNavigation');

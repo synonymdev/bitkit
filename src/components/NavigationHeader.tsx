@@ -10,7 +10,7 @@ import {
 import { useNavigation } from '@react-navigation/native';
 
 import { Subtitle, Title } from '../styles/text';
-import { BackIcon, PlusIcon, XIcon } from '../styles/icons';
+import { BackIcon, XIcon } from '../styles/icons';
 import { Keyboard } from '../hooks/keyboard';
 
 const ActionButton = memo(
@@ -19,7 +19,7 @@ const ActionButton = memo(
 		onPress,
 		testID,
 	}: {
-		children: JSX.Element;
+		children?: JSX.Element;
 		onPress?: (event: GestureResponderEvent) => void;
 		testID?: string;
 	}): ReactElement => {
@@ -35,6 +35,8 @@ const ActionButton = memo(
 	},
 );
 
+const ACTION_WIDTH = 45;
+
 export type NavigationHeaderProps = {
 	title?: string;
 	displayBackButton?: boolean;
@@ -44,7 +46,6 @@ export type NavigationHeaderProps = {
 	style?: StyleProp<ViewStyle>;
 	onBackPress?: () => void;
 	onClosePress?: () => void;
-	onAddPress?: () => void;
 	onActionPress?: () => void;
 };
 
@@ -57,7 +58,6 @@ const NavigationHeader = ({
 	style,
 	onBackPress,
 	onClosePress,
-	onAddPress,
 	onActionPress,
 }: NavigationHeaderProps): ReactElement => {
 	const navigation = useNavigation<any>();
@@ -75,23 +75,37 @@ const NavigationHeader = ({
 	const container = useMemo(
 		() => [
 			styles.container,
-			size === 'lg'
-				? { marginTop: 17, paddingBottom: 35 }
-				: { marginTop: 2, paddingBottom: 10 },
+			size === 'lg' ? styles.containerLg : styles.containerSm,
+			style,
 		],
-		[size],
+		[size, style],
 	);
 
-	// provide a bigger hitbox for action buttons
-	const buttonOffset = useMemo(
-		() => [size === 'lg' ? { top: -8 } : { top: -10 }],
-		[size],
+	const showBack = Boolean(displayBackButton && navigation.canGoBack());
+
+	const numberOfActions = useMemo(() => {
+		if (onActionPress && onClosePress) {
+			return 2;
+		} else if (showBack || onActionPress || onClosePress) {
+			return 1;
+		} else {
+			return 0;
+		}
+	}, [onActionPress, onClosePress, showBack]);
+
+	const actionColumn = useMemo(
+		() => [
+			styles.actionColumn,
+			{ marginVertical: size === 'lg' ? -8 : -10 }, // provide a bigger hitbox for action buttons
+			{ width: numberOfActions * ACTION_WIDTH },
+		],
+		[size, numberOfActions],
 	);
 
 	return (
-		<View style={[container, style]}>
-			<View style={[styles.leftColumn, buttonOffset]}>
-				{displayBackButton && navigation.canGoBack() && (
+		<View style={container}>
+			<View style={actionColumn}>
+				{showBack && (
 					<ActionButton onPress={handleBackPress} testID="NavigationBack">
 						<BackIcon width={20} height={20} />
 					</ActionButton>
@@ -102,18 +116,13 @@ const NavigationHeader = ({
 					{title}
 				</Text>
 			</View>
-			<View style={[styles.rightColumn, buttonOffset]}>
-				{actionIcon && (
+			<View style={actionColumn}>
+				{onActionPress && (
 					<ActionButton onPress={onActionPress}>{actionIcon}</ActionButton>
 				)}
 				{onClosePress && (
 					<ActionButton onPress={onClosePress} testID="NavigationClose">
 						<XIcon width={24} height={24} />
-					</ActionButton>
-				)}
-				{onAddPress && (
-					<ActionButton onPress={onAddPress}>
-						<PlusIcon width={24} height={24} />
 					</ActionButton>
 				)}
 			</View>
@@ -125,37 +134,32 @@ const styles = StyleSheet.create({
 	container: {
 		flexDirection: 'row',
 	},
-	leftColumn: {
-		position: 'absolute',
-		left: 0,
-		height: 42,
-		width: 50,
-		justifyContent: 'center',
-		zIndex: 1,
+	containerLg: {
+		marginTop: 17,
+		paddingBottom: 35,
+	},
+	containerSm: {
+		marginTop: 2,
+		paddingBottom: 10,
+	},
+	actionColumn: {
+		flexDirection: 'row',
 	},
 	middleColumn: {
-		flex: 1,
+		flexGrow: 1,
+		flexShrink: 1,
 		justifyContent: 'center',
 		alignItems: 'center',
 	},
-	rightColumn: {
-		position: 'absolute',
-		right: 0,
-		height: 42,
-		width: 50,
-		justifyContent: 'center',
-		alignItems: 'flex-end',
-		zIndex: 1,
-	},
 	title: {
 		textAlign: 'center',
-		marginHorizontal: 42,
 	},
 	action: {
 		flex: 1,
 		flexDirection: 'row',
 		alignItems: 'center',
-		paddingHorizontal: 16,
+		justifyContent: 'center',
+		maxWidth: ACTION_WIDTH,
 	},
 });
 
