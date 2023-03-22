@@ -40,7 +40,7 @@ We automatically on-board users to Lightning through the integration of our ligh
 
 Users can back up all their on-chain Bitcoin data with a standard BIP-39 seed. Lightning channel data should automatically be stored on a backup server. The data needs to be encrypted on the client-side before it is sent to a server to ensure privacy. You can view our code [here](https://github.com/synonymdev/bitkit-backup-client).
 
-The other main features Bitkit supports are the creation of social profiles; the importing and managing of contacts; dynamic payment profiles; key-based account logins; and the display of public data feeds and private account data through in-application widgets. You can experiment with these features in our [playground](https://synonym.to/products/slashtags#playground). We currently support three public data widgets: a bitcoin [price feed](https://github.com/synonymdev/slashtags-widget-price-feed), a bitcoin [news feed](https://github.com/synonymdev/slashtags-widget-news-feed), a bitcoin [block data feed](https://github.com/synonymdev/slashtags-widget-bitcoin-feed).
+The other main features Bitkit supports are the creation of social profiles; the importing and managing of contacts; dynamic payment profiles; key-based account logins; and the display of public data feeds and private account data through in-application widgets. You can experiment with these features in our [playground](https://slashtags.to/#playground). We currently support three public data widgets: a bitcoin [price feed](https://github.com/synonymdev/slashtags-widget-price-feed), a bitcoin [news feed](https://github.com/synonymdev/slashtags-widget-news-feed), a bitcoin [block data feed](https://github.com/synonymdev/slashtags-widget-bitcoin-feed).
 
 All these additional features are powered by Slashtags: an open-source protocol for creating secure and scalable peer-to-peer applications. You can view our JavaScript-based software development kit which has been used for the Bitkit wallet [here](https://github.com/synonymdev/slashtags).
 
@@ -50,7 +50,7 @@ While much of the power of Slashtags comes via these hyperdrives, the keypairs t
 
 All Slashtags data is exchanged within a Kademlia-based distributed hash table system.
 
-You can read more about Slashtags on our [website](https://synonym.to/products/slashtags) and on our SDK's [Github page](https://github.com/synonymdev/slashtags). Slashtags predominantly builds on the lower-level functionality of the Hypercore stack. You can learn more about the Hypercore stack [here](https://hypercore-protocol.org/) as well as from the two main Github projects [here](https://github.com/hypercore-protocol) and [here](https://github.com/hyperswarm).
+You can read more about Slashtags on our [website](https://slashtags.to/) and on our SDK's [Github page](https://github.com/synonymdev/slashtags). Slashtags predominantly builds on the lower-level functionality of the Hypercore stack. You can learn more about the Hypercore stack [here](https://docs.holepunch.to/) as well as from the two main Github projects [here](https://github.com/holepunchto/hypercore) and [here](https://github.com/holepunchto/hyperdht).
 
 Slashtags user data should be automatically replicated via a [seeding server](https://github.com/synonymdev/slashtag-seeding-server). In this way, user data is always available. In addition, it allows the user to restore all their Slashtags data from just their BIP-39 seed.
 
