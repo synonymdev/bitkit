@@ -86,7 +86,7 @@ export const saveProfile = async (
 		return;
 	}
 
-	const drive = slashtag?.drivestore.get();
+	const drive = await slashtag?.drivestore.get();
 	await drive.put('/profile.json', encodeJSON(profile)).catch((error: Error) =>
 		showErrorNotification({
 			title: i18n.t('slashtags:error_saving_profile'),
