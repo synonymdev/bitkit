@@ -223,7 +223,7 @@ const _Item = memo((item: ItemData): ReactElement => {
 
 		return (
 			<TouchableOpacity
-				style={styles.item}
+				style={[styles.item, { opacity: enabled ? 1 : 0.5 }]}
 				activeOpacity={0.6}
 				disabled={disabled}
 				onPress={enabled ? _onPress : undefined}
@@ -323,6 +323,7 @@ const List = ({
 			stickySectionHeadersEnabled={false}
 			contentContainerStyle={style}
 			bounces={bounces}
+			testID="List"
 		/>
 	);
 };

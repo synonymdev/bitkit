@@ -72,6 +72,7 @@ const MainSettings = ({
 			{
 				title: t('about_title'),
 				type: EItemType.button,
+				testID: 'About',
 				onPress: (): void => navigation.navigate('AboutSettings'),
 			},
 		];
@@ -80,6 +81,7 @@ const MainSettings = ({
 			data.push({
 				title: t('dev_title'),
 				type: EItemType.button,
+				testID: 'DevSettings',
 				onPress: (): void => navigation.navigate('DevSettings'),
 			});
 		}

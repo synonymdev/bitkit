@@ -37,11 +37,12 @@ const DevSettings = ({
 				title: 'Slashtags',
 				data: [
 					{
-						title:
-							'Slashtags Settings' + (isSlashtagsDisabled ? ' disabled' : ''),
+						title: 'Slashtags Settings',
 						type: EItemType.button,
+						enabled: !isSlashtagsDisabled,
+						testID: 'SlashtagsSettings',
 						onPress: (): void => {
-							!isSlashtagsDisabled && navigation.navigate('SlashtagsSettings');
+							navigation.navigate('SlashtagsSettings');
 						},
 					},
 				],
@@ -141,6 +142,7 @@ const DevSettings = ({
 					{
 						title: 'Trigger exception in React render',
 						type: EItemType.button,
+						testID: 'TriggerRenderError',
 						onPress: (): void => {
 							setThrowError(true);
 						},
@@ -148,6 +150,7 @@ const DevSettings = ({
 					{
 						title: 'Trigger exception in action handler',
 						type: EItemType.button,
+						testID: 'TriggerActionError',
 						onPress: (): void => {
 							throw new Error('test action error');
 						},
@@ -155,6 +158,7 @@ const DevSettings = ({
 					{
 						title: 'Trigger unhandled async exception',
 						type: EItemType.button,
+						testID: 'TriggerAsyncError',
 						onPress: async (): Promise<void> => {
 							throw new Error('test async error');
 						},
