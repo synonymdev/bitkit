@@ -484,7 +484,7 @@ describe('Settings', () => {
 	});
 
 	describe('Dev Settings', () => {
-		it('Can access Dev Settings by tapping cog icon 5 times', async () => {
+		it('Shows the crash error screen when triggering render error', async () => {
 			if (checkComplete('s10')) {
 				return;
 			}
@@ -496,24 +496,18 @@ describe('Settings', () => {
 			await element(by.id('DevSettings')).tap();
 			await expect(element(by.id('SlashtagsSettings'))).toBeVisible();
 
-			markComplete('s10');
-		});
-
-		it('Shows the crash error screen when triggering render error', async () => {
 			// Error screen will not be rendered in development mode
-			if (checkComplete('s11') || __DEV__) {
+			if (__DEV__) {
+				markComplete('s10');
 				return;
 			}
 
-			await element(by.id('Settings')).tap();
-			await element(by.id('DevOptions')).multiTap(5); // enable dev mode
-			await element(by.id('DevSettings')).tap();
 			await element(by.id('List')).scrollTo('bottom');
 			await element(by.id('TriggerRenderError')).tap();
 			await expect(element(by.id('ErrorClose'))).toBeVisible();
 			await expect(element(by.id('ErrorReport'))).toBeVisible();
 
-			markComplete('s11');
+			markComplete('s10');
 		});
 	});
 });
