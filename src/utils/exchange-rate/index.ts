@@ -1,5 +1,6 @@
 import { default as bitcoinUnits } from 'bitcoin-units';
 import { ok, err, Result } from '@synonymdev/result';
+import { BLOCKTANK_HOST } from '@env';
 
 import { getSettingsStore, getWalletStore } from '../../store/helpers';
 import { EBitcoinUnit } from '../../store/types/wallet';
@@ -32,8 +33,7 @@ export const getExchangeRates = async (): Promise<Result<IExchangeRates>> => {
 	const lastUpdatedAt = getWalletStore().exchangeRates.USD?.lastUpdatedAt;
 
 	try {
-		// TODO: pull this out into .env
-		const response = await fetch('https://blocktank.synonym.to/fx/rates/btc/');
+		const response = await fetch(`${BLOCKTANK_HOST}/fx/rates/btc`);
 		const { tickers } = await response.json();
 
 		const rates: IExchangeRates = tickers.reduce(

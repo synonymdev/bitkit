@@ -2102,10 +2102,10 @@
     deepmerge "^4.2.2"
     svgo "^2.8.0"
 
-"@synonymdev/blocktank-client@0.0.49":
-  version "0.0.49"
-  resolved "https://registry.yarnpkg.com/@synonymdev/blocktank-client/-/blocktank-client-0.0.49.tgz#e66955ea922a6bffa74c5765f8682afe71c3ce5a"
-  integrity sha512-TQw36XV7pEjBlwQXZkoLZazy7KQOzXIqn8cHgtvJxCjtnYHr1DPr+zphhotCFjtI4rKMjBZpm5dHw3HHmNOMEQ==
+"@synonymdev/blocktank-client@0.0.50":
+  version "0.0.50"
+  resolved "https://registry.yarnpkg.com/@synonymdev/blocktank-client/-/blocktank-client-0.0.50.tgz#bca14d66dc80108d3764981fe54a3dea3d2ef433"
+  integrity sha512-A3mAenFAYA39P9hul1LMw4cfti9eRJ7E3AzUJAVrTCOaU2JlwK/+2vPfamcuUmhrY/7UvbNzC3pGFG6WRp3o/A==
   dependencies:
     cross-fetch "^3.1.4"
     node-fetch "3.1.1"

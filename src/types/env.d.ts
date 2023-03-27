@@ -13,9 +13,7 @@ declare module '@env' {
 	export const SLASHTAGS_SEEDER_BASE_URL: string;
 	export const SLASHTAGS_SEEDER_TOPIC: string;
 
-	export const DISABLE_SLASHTAGS: string;
-	export const SLASHTAGS_SEEDER_BASE_URL: string;
-	export const SLASHTAGS_SEEDER_TOPIC: string;
+	export const BLOCKTANK_HOST: string;
 
 	export const ELECTRUM_BITCOIN_HOST: string;
 	export const ELECTRUM_BITCOIN_SSL_PORT: number;
