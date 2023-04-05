@@ -1,4 +1,4 @@
-name: elint-check
+name: lint-check
 
 on: pull_request
 
