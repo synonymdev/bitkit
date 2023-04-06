@@ -55,6 +55,7 @@
 	"tags_previously": "Previously used tags",
 	"tags_filter": "Filter activity using tags",
 	"tags_filter_title": "Select Tag",
+	"tags_no": "No tags available yet",
 	"selection_title": "Coin Selection",
 	"selection_auto": "Auto",
 	"selection_total_required": "Total required",

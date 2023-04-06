@@ -2,7 +2,7 @@ import React, { memo, ReactElement } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
-import { Subtitle, Text13UP } from '../../styles/text';
+import { Subtitle, Text02S, Text13UP } from '../../styles/text';
 import BottomSheetWrapper from '../../components/BottomSheetWrapper';
 import SafeAreaInsets from '../../components/SafeAreaInsets';
 import { closeBottomSheet } from '../../store/actions/ui';
@@ -55,6 +55,9 @@ const TagsPrompt = ({
 							testID={s}
 						/>
 					))}
+					{suggestions.length === 0 && (
+						<Text02S style={styles.noTags}>{t('tags_no')}</Text02S>
+					)}
 				</View>
 
 				<SafeAreaInsets type="bottom" />
@@ -81,6 +84,9 @@ const styles = StyleSheet.create({
 	tag: {
 		marginRight: 8,
 		marginBottom: 8,
+	},
+	noTags: {
+		marginTop: 16,
 	},
 });
 
