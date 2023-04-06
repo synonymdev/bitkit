@@ -1,7 +1,7 @@
 import { default as bitcoinUnits } from 'bitcoin-units';
 import { ok, err, Result } from '@synonymdev/result';
-import { BLOCKTANK_HOST } from '@env';
 
+import { __BLOCKTANK_HOST__ } from '../../constants/env';
 import { getSettingsStore, getWalletStore } from '../../store/helpers';
 import { EBitcoinUnit } from '../../store/types/wallet';
 import { showErrorNotification } from '../notifications';
@@ -33,7 +33,7 @@ export const getExchangeRates = async (): Promise<Result<IExchangeRates>> => {
 	const lastUpdatedAt = getWalletStore().exchangeRates.USD?.lastUpdatedAt;
 
 	try {
-		const response = await fetch(`${BLOCKTANK_HOST}/fx/rates/btc`);
+		const response = await fetch(`${__BLOCKTANK_HOST__}/fx/rates/btc`);
 		const { tickers } = await response.json();
 
 		const rates: IExchangeRates = tickers.reduce(

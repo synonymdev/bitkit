@@ -1,14 +1,10 @@
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import * as RNLocalize from 'react-native-localize';
-import { ENABLE_I18NEXT_DEBUGGER } from '@env';
 
+import { __ENABLE_I18NEXT_DEBUGGER__ } from '../../constants/env';
 import resources from './locales';
 import { updateUi } from '../../store/actions/ui';
-
-const __enableDebugger__ = ENABLE_I18NEXT_DEBUGGER
-	? ENABLE_I18NEXT_DEBUGGER === 'true'
-	: __DEV__;
 
 const getDeviceLanguage = (): string => {
 	return RNLocalize.getLocales()[0].languageTag;
@@ -26,7 +22,7 @@ i18n
 		ns: Object.keys(resources),
 		defaultNS,
 		fallbackNS: defaultNS,
-		debug: __enableDebugger__,
+		debug: __ENABLE_I18NEXT_DEBUGGER__,
 		cache: {
 			enabled: true,
 		},

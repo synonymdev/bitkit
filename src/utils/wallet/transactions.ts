@@ -8,6 +8,7 @@ import { err, ok, Result } from '@synonymdev/result';
 import * as electrum from 'rn-electrum-client/helpers';
 import validate, { getAddressInfo } from 'bitcoin-address-validation';
 
+import { __JEST__ } from '../../constants/env';
 import { validateAddress } from '../scanner';
 import { EAvailableNetworks, networks, TAvailableNetworks } from '../networks';
 import {
@@ -563,7 +564,7 @@ const createPsbtFromTransactionData = async ({
 	setReplaceByFee({ psbt, setRbf: !!rbf });
 
 	// Shuffle targets if not run from unit test and add outputs.
-	if (process.env.JEST_WORKER_ID === undefined) {
+	if (!__JEST__) {
 		targets = shuffleArray(targets);
 	}
 

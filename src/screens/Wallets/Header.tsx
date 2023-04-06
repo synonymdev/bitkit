@@ -3,6 +3,7 @@ import { StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 
+import { __DISABLE_SLASHTAGS__ } from '../../constants/env';
 import { View, TouchableOpacity } from '../../styles/components';
 import { Title } from '../../styles/text';
 import { ProfileIcon, SettingsIcon } from '../../styles/icons';
@@ -10,7 +11,6 @@ import ProfileImage from '../../components/ProfileImage';
 import { truncate } from '../../utils/helpers';
 import { useProfile, useSelectedSlashtag } from '../../hooks/slashtags';
 import { RootNavigationProp } from '../../navigation/types';
-import { isSlashtagsDisabled } from '../../utils/slashtags';
 
 const EnabledSlashtagsProfileButton = (): ReactElement => {
 	const { t } = useTranslation('slashtags');
@@ -47,7 +47,7 @@ const EnabledSlashtagsProfileButton = (): ReactElement => {
 
 const ProfileButton = (): ReactElement => {
 	const { t } = useTranslation('slashtags');
-	return isSlashtagsDisabled ? (
+	return __DISABLE_SLASHTAGS__ ? (
 		<TouchableOpacity
 			style={styles.leftColumn}
 			activeOpacity={1}
@@ -64,7 +64,7 @@ const Header = (): ReactElement => {
 	const navigation = useNavigation<RootNavigationProp>();
 
 	const openContacts = useCallback(() => {
-		!isSlashtagsDisabled && navigation.navigate('Contacts');
+		!__DISABLE_SLASHTAGS__ && navigation.navigate('Contacts');
 	}, [navigation]);
 	const openSettings = useCallback(
 		() => navigation.navigate('Settings', { screen: 'MainSettings' }),

@@ -1,6 +1,10 @@
 import cloneDeep from 'lodash.clonedeep';
-import { WALLET_DEFAULT_SELECTED_NETWORK } from '@env';
 
+import { __WALLET_DEFAULT_SELECTED_NETWORK__ } from '../../constants/env';
+import { IHeader } from '../../utils/types/electrum';
+import { EAvailableNetworks } from '../../utils/networks';
+import { objectKeys } from '../../utils/objectKeys';
+import { EFeeId } from '../types/fees';
 import {
 	IWalletItem,
 	IWallet,
@@ -13,10 +17,6 @@ import {
 	EAddressType,
 	EBoostType,
 } from '../types/wallet';
-import { IHeader } from '../../utils/types/electrum';
-import { EAvailableNetworks } from '../../utils/networks';
-import { objectKeys } from '../../utils/objectKeys';
-import { EFeeId } from '../types/fees';
 
 export const addressTypes: Readonly<IAddressTypes> = {
 	[EAddressType.p2pkh]: {
@@ -201,7 +201,7 @@ export const defaultWalletShape: Readonly<IWallet> = {
 
 export const defaultWalletStoreShape: Readonly<IWalletStore> = {
 	walletExists: false,
-	selectedNetwork: WALLET_DEFAULT_SELECTED_NETWORK,
+	selectedNetwork: __WALLET_DEFAULT_SELECTED_NETWORK__,
 	selectedWallet: 'wallet0',
 	addressTypes: addressTypes,
 	exchangeRates: {},

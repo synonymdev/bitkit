@@ -38,7 +38,6 @@ import BottomSheet, {
 	useBottomSheetTimingConfigs,
 } from '@gorhom/bottom-sheet';
 import { useTheme } from 'styled-components/native';
-import { DISABLE_LOOP_ANIMATION } from '@env';
 
 import { IColors } from '../styles/colors';
 import { closeBottomSheet } from '../store/actions/ui';
@@ -46,6 +45,7 @@ import { TViewController } from '../store/types/ui';
 import { viewControllerSelector } from '../store/reselect/ui';
 import { useAppSelector } from '../hooks/redux';
 import BottomSheetBackground from './BottomSheetBackground';
+import { __DISABLE_LOOP_ANIMATION__ } from '../constants/env';
 
 export interface BottomSheetWrapperProps {
 	children: ReactElement;
@@ -172,7 +172,7 @@ const BottomSheetWrapper = forwardRef(
 				activeOffsetX={activeOffsetX}
 				activeOffsetY={activeOffsetY}
 				animationConfigs={
-					DISABLE_LOOP_ANIMATION ? testAnimationConfigs : undefined
+					__DISABLE_LOOP_ANIMATION__ ? testAnimationConfigs : undefined
 				}>
 				<BottomSheetView
 					style={styles.container}

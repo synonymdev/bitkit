@@ -5,6 +5,10 @@ import { useSelector } from 'react-redux';
 import RAWSFactory from 'random-access-web-storage';
 import b4a from 'b4a';
 
+import {
+	__DISABLE_SLASHTAGS__,
+	__SLASHTAGS_SEEDER_TOPIC__,
+} from '../constants/env';
 import { storage as mmkv } from '../store/mmkv-storage';
 import { IContactRecord } from '../store/types/slashtags';
 import { getSlashtagsPrimaryKey } from '../utils/wallet';
@@ -12,10 +16,8 @@ import {
 	decodeJSON,
 	getSelectedSlashtag,
 	onSDKError,
-	isSlashtagsDisabled,
 } from '../utils/slashtags';
 import { updateSeederMaybe } from '../store/actions/slashtags';
-import { SLASHTAGS_SEEDER_TOPIC } from '@env';
 import { seedHashSelector } from '../store/reselect/wallet';
 
 export const RAWS = RAWSFactory({
@@ -95,7 +97,7 @@ export const SlashtagsProvider = ({
 			relaySocket.onclose = reconnect;
 		};
 
-		!isSlashtagsDisabled && createSDK(relaySocket);
+		!__DISABLE_SLASHTAGS__ && createSDK(relaySocket);
 
 		function createSDK(relay: WebSocket): void {
 			const _sdk = new SDK({
@@ -168,7 +170,7 @@ export const SlashtagsProvider = ({
 
 			// Hardcode a single topic to connect to the seeder
 			// seeder this way won't need to announce O(n) topics.
-			const topic = b4a.from(SLASHTAGS_SEEDER_TOPIC, 'hex');
+			const topic = b4a.from(__SLASHTAGS_SEEDER_TOPIC__, 'hex');
 			sdk.swarm.join(topic, { server: false, client: true });
 
 			// Increase swarm sockets max event listeners
@@ -226,7 +228,7 @@ export const SlashtagsProvider = ({
 	return (
 		// Do not render children (depending on the sdk) until the primary key is loaded and the sdk opened
 		<SlashtagsContext.Provider value={{ sdk: sdk as SDK, contacts }}>
-			{(opened || isSlashtagsDisabled) && children}
+			{(opened || __DISABLE_SLASHTAGS__) && children}
 		</SlashtagsContext.Provider>
 	);
 };

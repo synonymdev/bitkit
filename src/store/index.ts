@@ -13,36 +13,22 @@ import {
 	PURGE,
 	REGISTER,
 } from 'redux-persist';
-import {
-	ENABLE_REDUX_FLIPPER,
-	ENABLE_REDUX_LOGGER,
-	ENABLE_REDUX_IMMUTABLE_CHECK,
-	ENABLE_MIGRATION_DEBUG,
-} from '@env';
 
+import {
+	__ENABLE_MIGRATION_DEBUG__,
+	__ENABLE_REDUX_FLIPPER__,
+	__ENABLE_REDUX_IMMUTABLE_CHECK__,
+	__ENABLE_REDUX_LOGGER__,
+	__JEST__,
+} from '../constants/env';
 import mmkvStorage from './mmkv-storage';
 import reducers, { RootReducer } from './reducers';
 import migrations from './migrations';
 
-const __JEST__ = process.env.JEST_WORKER_ID !== undefined;
-const __enableDebugger__ = ENABLE_REDUX_FLIPPER
-	? ENABLE_REDUX_FLIPPER === 'true'
-	: false;
-const __enableLogger__ = ENABLE_REDUX_LOGGER
-	? ENABLE_REDUX_LOGGER === 'true'
-	: true;
-const __enableImmutableCheck__ =
-	__DEV__ && ENABLE_REDUX_IMMUTABLE_CHECK
-		? ENABLE_REDUX_IMMUTABLE_CHECK === 'true'
-		: false;
-const __enableMigrationDebug__ = ENABLE_MIGRATION_DEBUG
-	? ENABLE_MIGRATION_DEBUG === 'true'
-	: false;
-
 const middleware: ConfigureStoreOptions['middleware'] = [];
 const devMiddleware = [
-	...(__enableDebugger__ ? [createDebugger()] : []),
-	...(__enableLogger__ ? [logger] : []),
+	...(__ENABLE_REDUX_FLIPPER__ ? [createDebugger()] : []),
+	...(__ENABLE_REDUX_LOGGER__ ? [logger] : []),
 ];
 
 const enhancers: ConfigureStoreOptions['enhancers'] = [];
@@ -54,7 +40,7 @@ const persistConfig = {
 	version: 9,
 	stateReconciler: autoMergeLevel2,
 	blacklist: ['ui'],
-	migrate: createMigrate(migrations, { debug: __enableMigrationDebug__ }),
+	migrate: createMigrate(migrations, { debug: __ENABLE_MIGRATION_DEBUG__ }),
 };
 const persistedReducer = persistReducer<RootReducer>(persistConfig, reducers);
 
@@ -70,7 +56,7 @@ const store = configureStore({
 			},
 			// if things are slow in development disable this
 			// https://github.com/reduxjs/redux-toolkit/issues/415
-			immutableCheck: __enableImmutableCheck__,
+			immutableCheck: __ENABLE_REDUX_IMMUTABLE_CHECK__,
 		});
 
 		if (__DEV__ && !__JEST__) {

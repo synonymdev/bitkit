@@ -2,8 +2,8 @@ import { SDK, SlashURL, Slashtag, Hyperdrive } from '@synonymdev/slashtags-sdk';
 import b4a from 'b4a';
 import mime from 'mime/lite';
 import debounce from 'lodash.debounce';
-import { DISABLE_SLASHTAGS, SLASHTAGS_SEEDER_BASE_URL } from '@env';
 
+import { __SLASHTAGS_SEEDER_BASE_URL__ } from '../../constants/env';
 import { rootNavigation } from '../../navigation/root/RootNavigator';
 import { BasicProfile, SlashPayConfig } from '../../store/types/slashtags';
 import { showErrorNotification } from '../notifications';
@@ -326,7 +326,7 @@ export const seedDrives = async (slashtag: Slashtag): Promise<boolean> => {
 			];
 
 			const firstResponse = await fetch(
-				SLASHTAGS_SEEDER_BASE_URL + '/seeding/hypercore',
+				__SLASHTAGS_SEEDER_BASE_URL__ + '/seeding/hypercore',
 				{
 					method: 'POST',
 					body: JSON.stringify({ publicKey: keys[0] }),
@@ -335,7 +335,7 @@ export const seedDrives = async (slashtag: Slashtag): Promise<boolean> => {
 			);
 
 			const secondResponse = await fetch(
-				SLASHTAGS_SEEDER_BASE_URL + '/seeding/hypercore',
+				__SLASHTAGS_SEEDER_BASE_URL__ + '/seeding/hypercore',
 				{
 					method: 'POST',
 					body: JSON.stringify({ publicKey: keys[1] }),
@@ -437,5 +437,3 @@ export const readAsDataURL = async (
 
 	return base64 && `data:${mimeType};base64,${base64}`;
 };
-
-export const isSlashtagsDisabled = DISABLE_SLASHTAGS === 'true';

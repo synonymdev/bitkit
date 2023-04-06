@@ -1,7 +1,12 @@
 import { IWalletItem, EBitcoinUnit, EBalanceUnit } from './wallet';
 
 export type TTheme = 'dark' | 'light';
+
 export type TProtocol = 'ssl' | 'tcp';
+
+export const isProtocol = (protocol: string): protocol is TProtocol => {
+	return ['tcp', 'ssl'].includes(protocol);
+};
 
 export enum ETransactionSpeed {
 	fast = 'fast',

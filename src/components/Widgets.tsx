@@ -18,6 +18,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { FadeIn, FadeOut } from 'react-native-reanimated';
 import { useTranslation } from 'react-i18next';
 
+import { __DISABLE_SLASHTAGS__ } from '../constants/env';
 import { rootNavigation } from '../navigation/root/RootNavigator';
 import Store from '../store/types';
 import { AnimatedView, TouchableOpacity, View } from '../styles/components';
@@ -25,14 +26,12 @@ import { Subtitle, Text, Text01M } from '../styles/text';
 import { PlusIcon, SortAscendingIcon, Checkmark } from '../styles/icons';
 import { SUPPORTED_FEED_TYPES } from '../utils/widgets';
 import { setWidgetsSortOrder } from '../store/actions/widgets';
-
 import PriceWidget from './PriceWidget';
 import AuthWidget from './AuthWidget';
 import FeedWidget from './FeedWidget';
 import HeadlinesWidget from './HeadlinesWidget';
 import BlocksWidget from './BlocksWidget';
 import FactsWidget from './FactsWidget';
-import { isSlashtagsDisabled } from '../utils/slashtags';
 
 type WCM = {
 	x: number;
@@ -193,7 +192,7 @@ export const Widgets = (): ReactElement => {
 		rootNavigation.navigate('WidgetsRoot');
 	}, []);
 
-	if (isSlashtagsDisabled) {
+	if (__DISABLE_SLASHTAGS__) {
 		return (
 			<>
 				<View style={styles.titleRow}>

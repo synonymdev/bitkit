@@ -1,6 +1,7 @@
 import React, { memo, ReactElement, useMemo, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
+import { __DISABLE_SLASHTAGS__ } from '../../../constants/env';
 import actions from '../../../store/actions/actions';
 import {
 	clearUtxos,
@@ -18,7 +19,6 @@ import { resetTodos } from '../../../store/actions/todos';
 import { resetUiStore } from '../../../store/actions/ui';
 import { resetSettingsStore, wipeApp } from '../../../store/actions/settings';
 import { selectedWalletSelector } from '../../../store/reselect/wallet';
-import { isSlashtagsDisabled } from '../../../utils/slashtags';
 import { resetMetaStore } from '../../../store/actions/metadata';
 import { EItemType, IListData } from '../../../components/List';
 import SettingsView from './../SettingsView';
@@ -39,7 +39,7 @@ const DevSettings = ({
 					{
 						title: 'Slashtags Settings',
 						type: EItemType.button,
-						enabled: !isSlashtagsDisabled,
+						enabled: !__DISABLE_SLASHTAGS__,
 						testID: 'SlashtagsSettings',
 						onPress: (): void => {
 							navigation.navigate('SlashtagsSettings');

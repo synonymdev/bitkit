@@ -2,11 +2,11 @@ import React, { memo, ReactElement, useState, useEffect, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import b4a from 'b4a';
 
+import { __SLASHTAGS_SEEDER_BASE_URL__ } from '../../../constants/env';
 import { EItemType, IListData } from '../../../components/List';
 import SettingsView from '../SettingsView';
 import { useSelectedSlashtag } from '../../../hooks/slashtags';
 import { useSlashtagsSDK } from '../../../components/SlashtagsProvider';
-import { SLASHTAGS_SEEDER_BASE_URL } from '@env';
 import { lastSentSelector } from '../../../store/reselect/slashtags';
 
 const SlashtagsSettings = (): ReactElement => {
@@ -42,7 +42,7 @@ const SlashtagsSettings = (): ReactElement => {
 				try {
 					const key = b4a.toString(drive.key, 'hex');
 					const firstResponse = await fetch(
-						SLASHTAGS_SEEDER_BASE_URL + '/seeding/hypercore/' + key,
+						__SLASHTAGS_SEEDER_BASE_URL__ + '/seeding/hypercore/' + key,
 						{ method: 'GET' },
 					);
 					const status = await firstResponse.json();

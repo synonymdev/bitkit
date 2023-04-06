@@ -1,9 +1,9 @@
 import React, { memo, ReactElement, useEffect, useMemo } from 'react';
 import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { DISABLE_PERIODIC_REMINDERS } from '@env';
 import { useTranslation } from 'react-i18next';
 
+import { __DISABLE_PERIODIC_REMINDERS__ } from '../../constants/env';
 import { Caption13Up, Display, Text02S } from '../../styles/text';
 import BottomSheetWrapper from '../../components/BottomSheetWrapper';
 import BottomSheetNavigationHeader from '../../components/BottomSheetNavigationHeader';
@@ -116,7 +116,7 @@ const HighBalanceWarning = ({
 		const isTimeoutOver = Number(new Date()) - ignoreTimestamp > ASK_INTERVAL;
 		return (
 			enabled &&
-			DISABLE_PERIODIC_REMINDERS !== 'true' &&
+			!__DISABLE_PERIODIC_REMINDERS__ &&
 			thresholdReached &&
 			belowMaxWarnings &&
 			isTimeoutOver &&

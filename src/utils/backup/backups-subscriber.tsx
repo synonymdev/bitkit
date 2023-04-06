@@ -6,8 +6,8 @@ import {
 	performRemoteBackup,
 	performRemoteLdkBackup,
 } from '../../store/actions/backup';
+import { __DISABLE_SLASHTAGS__ } from '../../constants/env';
 import { useSelectedSlashtag } from '../../hooks/slashtags';
-import { isSlashtagsDisabled } from '../slashtags';
 import { backupSelector } from '../../store/reselect/backup';
 import { selectedNetworkSelector } from '../../store/reselect/wallet';
 import { EBackupCategories } from './backpack';
@@ -153,7 +153,7 @@ const EnabledSlashtag = (): ReactElement => {
 };
 
 const BackupSubscriber = (): ReactElement => {
-	return !isSlashtagsDisabled ? <EnabledSlashtag /> : <></>;
+	return !__DISABLE_SLASHTAGS__ ? <EnabledSlashtag /> : <></>;
 };
 
 export default BackupSubscriber;

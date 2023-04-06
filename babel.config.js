@@ -3,7 +3,13 @@ module.exports = {
 	plugins: [
 		// needed to make `for await (` work in js
 		'@babel/plugin-proposal-async-generator-functions',
-		'module:react-native-dotenv',
+		[
+			'module:react-native-dotenv',
+			{
+				safe: true,
+				allowUndefined: false,
+			},
+		],
 		'react-native-reanimated/plugin',
 	],
 	env: {

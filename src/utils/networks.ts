@@ -3,6 +3,12 @@ export type TAvailableNetworks =
 	| 'bitcoinTestnet'
 	| 'bitcoinRegtest';
 
+export const isBitcoinNetwork = (
+	network: string,
+): network is TAvailableNetworks => {
+	return ['bitcoin', 'bitcoinTestnet', 'bitcoinRegtest'].includes(network);
+};
+
 export enum EAvailableNetworks {
 	bitcoin = 'bitcoin',
 	bitcoinTestnet = 'bitcoinTestnet',

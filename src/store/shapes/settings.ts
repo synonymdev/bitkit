@@ -1,16 +1,16 @@
 import cloneDeep from 'lodash.clonedeep';
 import { TAvailableNetworks } from '@synonymdev/react-native-ldk';
-import {
-	ELECTRUM_BITCOIN_HOST,
-	ELECTRUM_BITCOIN_SSL_PORT,
-	ELECTRUM_BITCOIN_TCP_PORT,
-	ELECTRUM_BITCOIN_PROTO,
-	ELECTRUM_REGTEST_HOST,
-	ELECTRUM_REGTEST_SSL_PORT,
-	ELECTRUM_REGTEST_TCP_PORT,
-	ELECTRUM_REGTEST_PROTO,
-} from '@env';
 
+import {
+	__ELECTRUM_BITCOIN_HOST__,
+	__ELECTRUM_BITCOIN_PROTO__,
+	__ELECTRUM_BITCOIN_SSL_PORT__,
+	__ELECTRUM_BITCOIN_TCP_PORT__,
+	__ELECTRUM_REGTEST_HOST__,
+	__ELECTRUM_REGTEST_PROTO__,
+	__ELECTRUM_REGTEST_SSL_PORT__,
+	__ELECTRUM_REGTEST_TCP_PORT__,
+} from '../../constants/env';
 import {
 	ETransactionSpeed,
 	ICustomElectrumPeer,
@@ -26,10 +26,10 @@ export const origCustomElectrumPeers: Record<
 > = {
 	bitcoin: [
 		{
-			host: ELECTRUM_BITCOIN_HOST,
-			ssl: ELECTRUM_BITCOIN_SSL_PORT,
-			tcp: ELECTRUM_BITCOIN_TCP_PORT,
-			protocol: ELECTRUM_BITCOIN_PROTO,
+			host: __ELECTRUM_BITCOIN_HOST__,
+			ssl: __ELECTRUM_BITCOIN_SSL_PORT__,
+			tcp: __ELECTRUM_BITCOIN_TCP_PORT__,
+			protocol: __ELECTRUM_BITCOIN_PROTO__,
 		},
 	],
 	bitcoinTestnet: [
@@ -60,10 +60,10 @@ export const origCustomElectrumPeers: Record<
 	],
 	bitcoinRegtest: [
 		{
-			host: ELECTRUM_REGTEST_HOST,
-			ssl: ELECTRUM_REGTEST_SSL_PORT,
-			tcp: ELECTRUM_REGTEST_TCP_PORT,
-			protocol: ELECTRUM_REGTEST_PROTO,
+			host: __ELECTRUM_REGTEST_HOST__,
+			ssl: __ELECTRUM_REGTEST_SSL_PORT__,
+			tcp: __ELECTRUM_REGTEST_TCP_PORT__,
+			protocol: __ELECTRUM_REGTEST_PROTO__,
 		},
 	],
 };

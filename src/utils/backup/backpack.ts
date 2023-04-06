@@ -1,10 +1,13 @@
 import BackupProtocol from 'backpack-client/src/backup-protocol.js';
 import { ok, err, Result } from '@synonymdev/result';
 import { Slashtag } from '@synonymdev/slashtags-sdk';
-import { BACKUPS_SHARED_SECRET, BACKUPS_SERVER_SLASHTAG } from '@env';
 
 import { name as appName, version as appVersion } from '../../../package.json';
 import { TAvailableNetworks } from '../networks';
+import {
+	__BACKUPS_SERVER_SLASHTAG__,
+	__BACKUPS_SHARED_SECRET__,
+} from '../../constants/env';
 
 const categoryWithNetwork = (
 	category: EBackupCategories,
@@ -25,7 +28,7 @@ export enum EBackupCategories {
 //Keep a cached backup instance for each slashtag
 const backupsInstances: { [key: string]: BackupProtocol } = {};
 const backupsFactory = async (slashtag: Slashtag): Promise<BackupProtocol> => {
-	if (!BACKUPS_SHARED_SECRET || !BACKUPS_SERVER_SLASHTAG) {
+	if (!__BACKUPS_SHARED_SECRET__ || !__BACKUPS_SERVER_SLASHTAG__) {
 		const error =
 			'Missing env fields BACKUPS_SHARED_SECRET and BACKUPS_SERVER_SLASHTAG';
 		console.error(error);
@@ -37,7 +40,7 @@ const backupsFactory = async (slashtag: Slashtag): Promise<BackupProtocol> => {
 		backupsInstances[key] = new BackupProtocol(slashtag);
 
 		// Give the protocol the shared secret
-		backupsInstances[key].setSecret(BACKUPS_SHARED_SECRET);
+		backupsInstances[key].setSecret(__BACKUPS_SHARED_SECRET__);
 	}
 
 	return backupsInstances[key];
@@ -71,7 +74,7 @@ export const uploadBackup = async (
 		};
 
 		const { error, results, success } = await backups.backupData(
-			BACKUPS_SERVER_SLASHTAG,
+			__BACKUPS_SERVER_SLASHTAG__,
 			data,
 		);
 
@@ -113,7 +116,7 @@ export const fetchBackup = async (
 		const backups = await backupsFactory(slashtag);
 
 		const { error, results, success } = await backups.restoreData(
-			BACKUPS_SERVER_SLASHTAG,
+			__BACKUPS_SERVER_SLASHTAG__,
 			{
 				category: categoryWithNetwork(category, network),
 				timestamp,
@@ -148,7 +151,7 @@ export const listBackups = async (
 		const backups = await backupsFactory(slashtag);
 
 		const { error, results, success } = await backups.getRecentBackups(
-			BACKUPS_SERVER_SLASHTAG,
+			__BACKUPS_SERVER_SLASHTAG__,
 			{
 				category: categoryWithNetwork(category, network),
 			},

@@ -1,8 +1,8 @@
 import { Slashtag } from '@synonymdev/slashtags-sdk';
 import { ok, Result } from '@synonymdev/result';
 import b4a from 'b4a';
-import { SLASHTAGS_SEEDER_BASE_URL } from '@env';
 
+import { __SLASHTAGS_SEEDER_BASE_URL__ } from '../../constants/env';
 import actions from './actions';
 import { getDispatch, getSlashtagsStore } from '../helpers';
 import { BasicProfile, ISlashtags, Link, LocalLink } from '../types/slashtags';
@@ -89,7 +89,7 @@ export const resetSlashtagsStore = (): Result<string> => {
 export const updateSeederMaybe = async (slashtag: Slashtag): Promise<void> => {
 	const key = b4a.toString(slashtag.key, 'hex');
 	const response = await fetch(
-		SLASHTAGS_SEEDER_BASE_URL + '/seeding/hypercore/' + key,
+		__SLASHTAGS_SEEDER_BASE_URL__ + '/seeding/hypercore/' + key,
 		{ method: 'GET' },
 	);
 	const status = await response.json();

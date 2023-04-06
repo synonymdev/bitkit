@@ -2,9 +2,9 @@ import React, { memo, ReactElement, useMemo, useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useSelector } from 'react-redux';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { DISABLE_PERIODIC_REMINDERS } from '@env';
 import { useTranslation } from 'react-i18next';
 
+import { __DISABLE_PERIODIC_REMINDERS__ } from '../../../constants/env';
 import { Text01S } from '../../../styles/text';
 import BottomSheetWrapper from '../../../components/BottomSheetWrapper';
 import GlowImage from '../../../components/GlowImage';
@@ -77,7 +77,7 @@ const BackupPrompt = ({ enabled }: { enabled: boolean }): ReactElement => {
 		const isTimeoutOver = Number(new Date()) - ignoreTimestamp > ASK_INTERVAL;
 		return (
 			enabled &&
-			DISABLE_PERIODIC_REMINDERS !== 'true' &&
+			!__DISABLE_PERIODIC_REMINDERS__ &&
 			!backupVerified &&
 			!empty &&
 			isTimeoutOver &&
