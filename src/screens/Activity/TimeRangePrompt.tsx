@@ -382,7 +382,6 @@ const styles = StyleSheet.create({
 		width: DAY_HEIGHT,
 	},
 	buttonContainer: {
-		marginTop: 'auto',
 		flexDirection: 'row',
 		justifyContent: 'center',
 		marginHorizontal: 16,
@@ -394,8 +393,8 @@ const styles = StyleSheet.create({
 		width: 16,
 	},
 	range: {
-		flex: 1,
-		justifyContent: 'center',
+		marginTop: 'auto',
+		marginBottom: 36,
 		alignItems: 'center',
 	},
 });
