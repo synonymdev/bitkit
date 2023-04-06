@@ -30,9 +30,7 @@ const TabBar = ({
 	const viewControllers = useAppSelector(viewControllersSelector);
 	const anyBottomSheetIsOpen = useMemo(() => {
 		const viewControllerKeys = objectKeys(viewControllers);
-		return viewControllerKeys
-			.filter((view) => view !== 'backupPrompt')
-			.some((view) => viewControllers[view].isOpen);
+		return viewControllerKeys.some((view) => viewControllers[view].isOpen);
 	}, [viewControllers]);
 
 	const onReceivePress = useCallback((): void => {

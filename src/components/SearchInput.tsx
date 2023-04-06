@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		borderRadius: 32,
 		backgroundColor: 'rgba(255, 255, 255, 0.08)',
-		minHeight: 48,
+		height: 48,
 		overflow: 'hidden',
 	},
 	input: {

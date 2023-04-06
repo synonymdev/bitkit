@@ -87,11 +87,13 @@ const ActivityFiltered = ({
 		};
 	}, [radiusContainerHeight, insets.bottom]);
 
-	const addTag = (tag): void => {
+	const addTag = (tag: string): void => {
 		setTags((tg) => [...tg, tag]);
 		closeBottomSheet('tagsPrompt');
 	};
-	const removeTag = (tag): void => setTags((tg) => tg.filter((x) => x !== tag));
+	const removeTag = (tag: string): void => {
+		setTags((tg) => tg.filter((x) => x !== tag));
+	};
 
 	const onSwipeLeft = (): void => {
 		if (currentTab < tabs.length - 1) {

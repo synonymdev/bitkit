@@ -18,7 +18,7 @@ const TagsPrompt = ({
 	onAddTag,
 	tags,
 }: {
-	onAddTag: Function;
+	onAddTag: (tag: string) => void;
 	tags: Array<string>;
 }): ReactElement => {
 	const { t } = useTranslation('wallet');
