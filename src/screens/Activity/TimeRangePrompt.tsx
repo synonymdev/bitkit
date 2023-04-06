@@ -283,7 +283,7 @@ const TimeRangePrompt = ({
 	onChange: Function;
 }): ReactElement => {
 	const { t } = useTranslation('wallet');
-	const snapPoints = useSnapPoints('medium');
+	const snapPoints = useSnapPoints('calendar');
 
 	useBottomSheetBackPress('timeRangePrompt');
 

@@ -10,7 +10,9 @@ import { viewControllerIsOpenSelector } from '../store/reselect/ui';
 import { TViewController } from '../store/types/ui';
 import { useAppSelector } from './redux';
 
-export const useSnapPoints = (size: 'small' | 'medium' | 'large'): number[] => {
+export const useSnapPoints = (
+	size: 'small' | 'medium' | 'large' | 'calendar',
+): number[] => {
 	const { height } = useSafeAreaFrame();
 	const insets = useSafeAreaInsets();
 
@@ -23,6 +25,13 @@ export const useSnapPoints = (size: 'small' | 'medium' | 'large'): number[] => {
 		if (size === 'medium') {
 			// only Header + Balance should be visible
 			const preferredHeight = height - (180 + insets.top);
+			const maxHeight = height - (60 + insets.top);
+			const minHeight = Math.min(600, maxHeight);
+			return [Math.max(preferredHeight, minHeight)];
+		}
+		if (size === 'calendar') {
+			// same as medium + 40px, to be just under search input
+			const preferredHeight = height - (140 + insets.top);
 			const maxHeight = height - (60 + insets.top);
 			const minHeight = Math.min(600, maxHeight);
 			return [Math.max(preferredHeight, minHeight)];
