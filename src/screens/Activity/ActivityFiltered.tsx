@@ -7,6 +7,7 @@ import {
 	View,
 	GestureResponderEvent,
 	Keyboard,
+	ScrollView,
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
@@ -129,7 +130,10 @@ const ActivityFiltered = ({
 								onChangeText={setSearch}>
 								<View style={styles.searchButtons}>
 									{tags.length > 0 && (
-										<View style={styles.tags}>
+										<ScrollView
+											horizontal={true}
+											showsHorizontalScrollIndicator={false}
+											style={styles.tags}>
 											{tags.map((tg) => (
 												<Tag
 													style={styles.tag}
@@ -139,7 +143,7 @@ const ActivityFiltered = ({
 													testID={tg}
 												/>
 											))}
-										</View>
+										</ScrollView>
 									)}
 									<TouchableOpacity
 										style={styles.filterButton}
