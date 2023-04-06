@@ -120,7 +120,8 @@ const NumberPad = ({
 						onPress={(): void => handlePress('000')}
 						activeOpacity={ACTIVE_OPACITY}
 						style={styles.buttonContainer}
-						color="transparent">
+						color="transparent"
+						testID="N000">
 						<Text style={styles.button}>000</Text>
 					</TouchableOpacity>
 				)}
@@ -129,7 +130,8 @@ const NumberPad = ({
 						onPress={(): void => handlePress('.')}
 						activeOpacity={ACTIVE_OPACITY}
 						style={styles.buttonContainer}
-						color="transparent">
+						color="transparent"
+						testID="NDecimal">
 						<Text style={styles.button}>.</Text>
 					</TouchableOpacity>
 				)}
@@ -142,7 +144,8 @@ const NumberPad = ({
 					onPress={handleRemove}
 					activeOpacity={ACTIVE_OPACITY}
 					style={styles.buttonContainer}
-					color="transparent">
+					color="transparent"
+					testID="NRemove">
 					<Ionicons name={'ios-backspace-outline'} size={31} />
 				</TouchableOpacity>
 			</View>

@@ -1,6 +1,12 @@
 import BitcoinJsonRpc from 'bitcoin-json-rpc';
 
-import { sleep, checkComplete, markComplete } from './helpers';
+import {
+	sleep,
+	checkComplete,
+	markComplete,
+	launchAndWait,
+	completeOnboarding,
+} from './helpers';
 import initWaitForElectrumToSync from '../__tests__/utils/wait-for-electrum';
 
 const bitcoinURL =
@@ -11,34 +17,7 @@ describe('Onchain', () => {
 	const rpc = new BitcoinJsonRpc(bitcoinURL);
 
 	beforeAll(async () => {
-		await device.launchApp();
-
-		// TOS and PP
-		await waitFor(element(by.id('Check1'))).toBeVisible();
-
-		await element(by.id('Check1')).tap();
-		await element(by.id('Check2')).tap();
-		await element(by.id('Continue')).tap();
-
-		await waitFor(element(by.id('SkipIntro'))).toBeVisible();
-		await element(by.id('SkipIntro')).tap();
-		await element(by.id('NewWallet')).tap();
-
-		// wat for wallet to be created
-		await waitFor(element(by.id('ToGetStartedClose'))).toBeVisible();
-		await sleep(1000); // take app some time to load
-
-		// repeat 60 times before fail
-		for (let i = 0; i < 60; i++) {
-			await sleep(1000);
-			try {
-				await element(by.id('ToGetStartedClose')).tap();
-				await sleep(3000); // wait for redux-persist to save state
-				break;
-			} catch (e) {
-				continue;
-			}
-		}
+		await completeOnboarding();
 
 		let balance = await rpc.getBalance();
 		const address = await rpc.getNewAddress();
@@ -55,21 +34,7 @@ describe('Onchain', () => {
 	});
 
 	beforeEach(async () => {
-		await sleep(1000);
-		await device.launchApp({
-			newInstance: true,
-			permissions: { faceid: 'YES' },
-		});
-		// wait for AssetsTitle to appear and be accessible
-		for (let i = 0; i < 60; i++) {
-			try {
-				await element(by.id('AssetsTitle')).tap();
-				await sleep(1000);
-				break;
-			} catch (e) {
-				continue;
-			}
-		}
+		await launchAndWait();
 		await waitForElectrum();
 	});
 

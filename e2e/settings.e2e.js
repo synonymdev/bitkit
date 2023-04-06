@@ -1,55 +1,20 @@
-import { sleep, checkComplete, markComplete } from './helpers';
+import {
+	sleep,
+	checkComplete,
+	markComplete,
+	launchAndWait,
+	completeOnboarding,
+} from './helpers';
 
 const __DEV__ = process.env.DEBUG === 'true';
 
 describe('Settings', () => {
 	beforeAll(async () => {
-		await device.launchApp();
-
-		// TOS and PP
-		await waitFor(element(by.id('Check1'))).toBeVisible();
-
-		await element(by.id('Check1')).tap();
-		await element(by.id('Check2')).tap();
-		await element(by.id('Continue')).tap();
-
-		await waitFor(element(by.id('SkipIntro'))).toBeVisible();
-		await element(by.id('SkipIntro')).tap();
-		await element(by.id('NewWallet')).tap();
-
-		// wait for wallet to be created
-		await waitFor(element(by.id('ToGetStartedClose'))).toBeVisible();
-		await sleep(1000); // take app some time to load
-
-		// repeat 60 times before fail
-		for (let i = 0; i < 60; i++) {
-			await sleep(1000);
-			try {
-				await element(by.id('ToGetStartedClose')).tap();
-				await sleep(3000); // wait for redux-persist to save state
-				return;
-			} catch (e) {}
-		}
-
-		throw new Error('Tapping "ToGetStartedClose" timeout');
+		await completeOnboarding();
 	});
 
 	beforeEach(async () => {
-		await sleep(1000);
-		await device.launchApp({
-			newInstance: true,
-			permissions: { faceid: 'YES' },
-		});
-		// wait for AssetsTitle to appear and be accessible
-		for (let i = 0; i < 60; i++) {
-			try {
-				await element(by.id('AssetsTitle')).tap();
-				await sleep(1000);
-				break;
-			} catch (e) {
-				continue;
-			}
-		}
+		await launchAndWait();
 	});
 
 	describe('General', () => {

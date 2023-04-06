@@ -101,6 +101,7 @@ const ReceiveDetails = ({
 					sats={invoice.amount}
 					reverse={true}
 					space={16}
+					testID="ReceiveAmountToggle"
 					onPress={(): void => setShowNumberPad(true)}
 				/>
 
@@ -185,13 +186,14 @@ const ReceiveDetails = ({
 				)}
 
 				{showNumberPad && (
-					<View style={styles.numberPad}>
+					<View style={styles.numberPad} testID="ReceiveNumberPad">
 						<View style={styles.actions}>
 							<View style={styles.actionButtons}>
 								<View style={styles.actionButtonContainer}>
 									<TouchableOpacity
 										style={styles.actionButton}
 										color="white08"
+										testID="ReceiveNumberPadSwitch"
 										onPress={onChangeUnit}>
 										<SwitchIcon color="brand" width={16.44} height={13.22} />
 										<Text02B

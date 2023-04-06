@@ -27,8 +27,8 @@ const AmountToggle = ({
 	disable?: boolean;
 	children?: ReactElement;
 	style?: StyleProp<ViewStyle>;
-	onPress?: () => void;
 	testID?: string;
+	onPress?: () => void;
 }): ReactElement => {
 	const unitPreference = useSelector(unitPreferenceSelector);
 
