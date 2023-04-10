@@ -69,7 +69,7 @@ const ChangePin2 = ({
 	}, [pin, origPIN, navigation]);
 
 	return (
-		<ThemedView style={styles.container}>
+		<ThemedView style={styles.container} testID="ChangePIN2">
 			<SafeAreaInsets type="top" />
 			<NavigationHeader
 				title={t(origPIN ? 'cp_retype_title' : 'cp_setnew_title')}
@@ -84,7 +84,11 @@ const ChangePin2 = ({
 
 			<View style={styles.wrongPin}>
 				{wrongPin ? (
-					<AnimatedView color="transparent" entering={FadeIn} exiting={FadeOut}>
+					<AnimatedView
+						color="transparent"
+						entering={FadeIn}
+						exiting={FadeOut}
+						testID="WrongPIN">
 						<Text02S color="brand">{t('cp_try_again')}</Text02S>
 					</AnimatedView>
 				) : (

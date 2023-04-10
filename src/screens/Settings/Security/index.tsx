@@ -77,6 +77,7 @@ const SecuritySettings = ({
 						title: t('security.pin'),
 						value: t(pin ? 'security.pin_enabled' : 'security.pin_disabled'),
 						type: EItemType.button,
+						testID: 'PINCode',
 						onPress: (): void => {
 							if (pin) {
 								navigation.navigate('DisablePin');
@@ -84,20 +85,21 @@ const SecuritySettings = ({
 								showBottomSheet('PINPrompt', { showLaterButton: false });
 							}
 						},
-						testID: 'PINCode',
 					},
 					{
 						title: t('security.pin_change'),
 						type: EItemType.button,
+						hide: !pin,
+						testID: 'ChangePIN',
 						onPress: (): void => {
 							navigation.navigate('ChangePin');
 						},
-						hide: !pin,
 					},
 					{
 						title: t('security.pin_launch'),
 						type: EItemType.switch,
 						enabled: pinOnLaunch,
+						hide: !pin,
 						onPress: (): void => {
 							navigation.navigate('AuthCheck', {
 								onSuccess: () => {
@@ -106,12 +108,12 @@ const SecuritySettings = ({
 								},
 							});
 						},
-						hide: !pin,
 					},
 					{
 						title: t('security.pin_payments'),
 						type: EItemType.switch,
 						enabled: pinForPayments,
+						hide: !pin,
 						onPress: (): void => {
 							navigation.navigate('AuthCheck', {
 								onSuccess: () => {
@@ -120,12 +122,13 @@ const SecuritySettings = ({
 								},
 							});
 						},
-						hide: !pin,
 					},
 					{
 						title: t('security.use_bio', { biometryTypeName }),
 						type: EItemType.switch,
 						enabled: biometrics,
+						hide: !pin || !isBiometrySupported,
+						testID: 'UseBiometryInstead',
 						onPress: (): void => {
 							navigation.navigate('AuthCheck', {
 								onSuccess: () => {
@@ -134,8 +137,6 @@ const SecuritySettings = ({
 								},
 							});
 						},
-						hide: !pin || !isBiometrySupported,
-						testID: 'UseBiometryInstead',
 					},
 				],
 			},

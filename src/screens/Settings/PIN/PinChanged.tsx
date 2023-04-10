@@ -43,7 +43,12 @@ const PinChanged = ({
 			<GlowImage image={imageSrc} imageSize={200} glowColor="green" />
 
 			<View style={buttonContainerStyles}>
-				<Button size="large" text={t('ok')} onPress={handleButtonPress} />
+				<Button
+					size="large"
+					text={t('ok')}
+					testID="OK"
+					onPress={handleButtonPress}
+				/>
 			</View>
 		</ThemedView>
 	);

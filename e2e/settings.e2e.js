@@ -156,9 +156,10 @@ describe('Settings', () => {
 			// test plan:
 			// - set up PIN with Biometrics
 			// - try login with Biometrics and with PIN
-			// - disable PIN
 			// - enable PIN without Biometrics
+			// - change PIN
 			// - login with PIN
+			// - disable PIN
 			// - enter wrong PIN 10 times and reset the app
 			if (checkComplete('s5')) {
 				return;
@@ -220,17 +221,26 @@ describe('Settings', () => {
 			// await sleep(1000);
 			// await element(by.label('Cancel')).atIndex(0).tap();
 
-			// disable faceid, but leave PIN, restart the app and try it
+			// disable FaceID, change PIN, restart the app and try it
 			await element(by.id('Settings')).tap();
 			await element(by.id('SecuritySettings')).tap();
 			await element(by.id('UseBiometryInstead')).tap();
 			await device.matchFace();
 			await sleep(1000);
 
+			await element(by.id('ChangePIN')).tap();
+			await element(by.id('N1').withAncestor(by.id('ChangePIN'))).multiTap(4);
+			await sleep(1000);
+			await element(by.id('N2').withAncestor(by.id('ChangePIN2'))).multiTap(4);
+			await element(by.id('N9').withAncestor(by.id('ChangePIN2'))).multiTap(4);
+			await expect(element(by.id('WrongPIN'))).toBeVisible();
+			await element(by.id('N2').withAncestor(by.id('ChangePIN2'))).multiTap(4);
+			await element(by.id('OK')).tap();
+
 			await device.launchApp({ newInstance: true });
 			await waitFor(element(by.id('PinPad'))).toBeVisible();
 			await sleep(1000);
-			await element(by.id('N1').withAncestor(by.id('PinPad'))).multiTap(4);
+			await element(by.id('N2').withAncestor(by.id('PinPad'))).multiTap(4);
 			await waitFor(element(by.id('TotalBalance')))
 				.toBeVisible()
 				.withTimeout(10000);
@@ -240,7 +250,7 @@ describe('Settings', () => {
 			await element(by.id('SecuritySettings')).tap();
 			await element(by.id('PINCode')).tap();
 			await element(by.id('DisablePin')).tap();
-			await element(by.id('N1').withAncestor(by.id('PinPad'))).multiTap(4);
+			await element(by.id('N2').withAncestor(by.id('PinPad'))).multiTap(4);
 			await sleep(1000);
 			await device.launchApp({ newInstance: true });
 			await waitFor(element(by.id('TotalBalance')))
@@ -264,6 +274,7 @@ describe('Settings', () => {
 			// // app should show Licence agreement
 			// await device.launchApp({ newInstance: true });
 			// await waitFor(element(by.id('Check1'))).toBeVisible();
+
 			markComplete('s5');
 		});
 	});
