@@ -77,7 +77,7 @@ const ChangePin = ({
 	}, [pin, navigation]);
 
 	return (
-		<ThemedView style={styles.container}>
+		<ThemedView style={styles.container} testID="ChangePIN">
 			<SafeAreaInsets type="top" />
 			<NavigationHeader
 				title={t('cp_title')}
