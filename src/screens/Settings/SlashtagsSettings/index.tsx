@@ -58,8 +58,6 @@ const SlashtagsSettings = (): ReactElement => {
 				if (!unmounted) {
 					setProfileError(error.message);
 				}
-			} finally {
-				drive.close();
 			}
 		})();
 

@@ -142,7 +142,6 @@ export const WidgetFeedEdit = ({
 
 		return function cleanup() {
 			unmounted = true;
-			drive.close();
 		};
 	}, [sdk, url, savedWidget, t]);
 

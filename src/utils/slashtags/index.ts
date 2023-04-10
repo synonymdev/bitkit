@@ -75,7 +75,6 @@ export const saveContact = async (
 			message: error.message,
 		}),
 	);
-	drive.close();
 };
 
 export const saveProfile = async (
@@ -95,8 +94,6 @@ export const saveProfile = async (
 	);
 
 	cacheProfile(slashtag.url, drive.files.feed.fork, drive.version, profile);
-
-	drive.close();
 };
 
 /**
@@ -119,8 +116,6 @@ export const deleteContact = async (
 			message: error.message,
 		});
 	});
-
-	drive.close();
 };
 
 /**
@@ -148,7 +143,6 @@ export const saveBulkContacts = async (slashtag: Slashtag): Promise<void> => {
 	);
 	await batch.flush();
 	console.debug('Done saving bulk contacts');
-	drive.close();
 };
 
 export const onSDKError = (error: Error): void => {
@@ -290,7 +284,6 @@ export const updateSlashPayConfig = debounce(
 		}
 
 		if (!needToUpdate) {
-			drive.close();
 			return;
 		}
 
@@ -302,8 +295,6 @@ export const updateSlashPayConfig = debounce(
 				console.debug('Updated slashpay.json:', newPayConfig);
 			})
 			.catch(noop);
-
-		drive.close();
 	},
 	5000,
 );
@@ -343,7 +334,6 @@ export const seedDrives = async (slashtag: Slashtag): Promise<boolean> => {
 				},
 			);
 
-			drive.close();
 			return [firstResponse.status, secondResponse.status].every(
 				(s) => s === 200,
 			);
@@ -373,7 +363,6 @@ export const getSlashPayConfig = async (
 	const payConfig =
 		(await drive.get('/slashpay.json').then(decodeJSON).catch(noop)) || [];
 
-	drive.close();
 	return payConfig;
 };
 
