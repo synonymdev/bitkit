@@ -1,11 +1,10 @@
 import React, { ReactElement } from 'react';
 import { StyleSheet } from 'react-native';
-import { systemWeights } from 'react-native-typography';
 import { Trans, useTranslation } from 'react-i18next';
 
 import { View } from '../styles/components';
-import { Text } from '../styles/text';
-import { EvilIcon } from '../styles/icons';
+import { Text01S, Text01B } from '../styles/text';
+import { ExclamationIcon } from '../styles/icons';
 import NavigationHeader from './NavigationHeader';
 import SafeAreaView from './SafeAreaView';
 
@@ -16,16 +15,16 @@ const CameraNoAuth = (): ReactElement => {
 		<SafeAreaView style={styles.root}>
 			<NavigationHeader title="Permission" />
 			<View style={styles.container} color="transparent">
-				<EvilIcon name="exclamation" size={60} />
-				<Text style={styles.text}>
+				<ExclamationIcon />
+				<Text01S style={styles.text}>
 					<Trans
 						t={t}
 						i18nKey="camera_no_text"
 						components={{
-							bold: <Text style={styles.boldText} />,
+							bold: <Text01B />,
 						}}
 					/>
-				</Text>
+				</Text01S>
 			</View>
 		</SafeAreaView>
 	);
@@ -43,13 +42,6 @@ const styles = StyleSheet.create({
 	},
 	text: {
 		marginTop: 18,
-		...systemWeights.regular,
-		fontSize: 18,
-		textAlign: 'center',
-	},
-	boldText: {
-		...systemWeights.bold,
-		fontSize: 18,
 		textAlign: 'center',
 	},
 });

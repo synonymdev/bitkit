@@ -1,6 +1,5 @@
 import { ColorValue, Platform, Switch as RNSwitch } from 'react-native';
 import Animated from 'react-native-reanimated';
-import { sanFranciscoWeights } from 'react-native-typography';
 import { SafeAreaProvider as _SafeAreaProvider } from 'react-native-safe-area-context';
 import { BottomSheetTextInput as _BottomSheetTextInput } from '@gorhom/bottom-sheet';
 import {
@@ -102,15 +101,7 @@ export const TextInput = styled.TextInput.attrs<TextInputProps>((props) => ({
 		? props.placeholderTextColor
 		: props.theme.colors.gray1,
 }))<TextInputProps>((props) => ({
-	...Platform.select({
-		ios: {
-			fontFamily: sanFranciscoWeights.semibold.fontFamily,
-			fontWeight: sanFranciscoWeights.semibold.fontWeight,
-		},
-		android: {
-			fontFamily: 'Roboto-Medium',
-		},
-	}),
+	...props.theme.fonts.medium,
 	backgroundColor: props.backgroundColor
 		? props.theme.colors[props.backgroundColor]
 		: props.theme.colors.white08,
@@ -136,15 +127,7 @@ export const TextInputNoOutline = styled.TextInput.attrs<TextInputProps>(
 			: props.theme.colors.gray1,
 	}),
 )<TextInputProps>((props) => ({
-	...Platform.select({
-		ios: {
-			fontFamily: sanFranciscoWeights.semibold.fontFamily,
-			fontWeight: sanFranciscoWeights.semibold.fontWeight,
-		},
-		android: {
-			fontFamily: 'Roboto-Medium',
-		},
-	}),
+	...props.theme.fonts.medium,
 	fontSize: '15px',
 	color: props.color
 		? props.theme.colors[props.color]
@@ -161,15 +144,7 @@ export const BottomSheetTextInput = styled(
 		? props.placeholderTextColor
 		: props.theme.colors.white5,
 }))<TextInputProps>((props) => ({
-	...Platform.select({
-		ios: {
-			fontFamily: sanFranciscoWeights.semibold.fontFamily,
-			fontWeight: sanFranciscoWeights.semibold.fontWeight,
-		},
-		android: {
-			fontFamily: 'Roboto-Medium',
-		},
-	}),
+	...props.theme.fonts.medium,
 	backgroundColor: props.backgroundColor
 		? props.theme.colors[props.backgroundColor]
 		: props.theme.colors.white04,

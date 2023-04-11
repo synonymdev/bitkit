@@ -8,9 +8,10 @@ import {
 } from 'react-native';
 import { launchImageLibrary } from 'react-native-image-picker';
 import { useTranslation } from 'react-i18next';
+import { useTheme } from 'styled-components/native';
 
 import { TextInputNoOutline } from '../styles/components';
-import { Text, Title } from '../styles/text';
+import { Text, Headline } from '../styles/text';
 import { CameraIcon } from '../styles/icons';
 import ProfileImage from './ProfileImage';
 import { SlashtagURL } from './SlashtagURL';
@@ -35,6 +36,7 @@ export const ProfileCard = ({
 	resolving: boolean;
 	onChange?: (name: string, value: string) => void;
 }): JSX.Element => {
+	const theme = useTheme();
 	const { t } = useTranslation('slashtags');
 	const bioRef = useRef<TextInput>(null);
 
@@ -52,7 +54,11 @@ export const ProfileCard = ({
 						<TextInputNoOutline
 							autoFocus={!name}
 							// placeholder doesn't like the lineHeight
-							style={[styles.nameInput, name ? styles.nameInputFilled : {}]}
+							style={[
+								theme.fonts.bold,
+								styles.nameInput,
+								name ? styles.nameInputFilled : {},
+							]}
 							value={name?.slice(0, MAX_NAME_LENGTH)}
 							placeholder={t(contact ? 'contacts_name' : 'contact_your_name')}
 							multiline={true}
@@ -70,12 +76,14 @@ export const ProfileCard = ({
 					) : (
 						<View>
 							{resolving ? (
-								<Title style={styles.name}>{t('contact_retrieving')}</Title>
+								<Headline style={styles.name}>
+									{t('contact_retrieving')}
+								</Headline>
 							) : (
 								nameParts.map((part, index) => (
-									<Title key={index} numberOfLines={1} style={styles.name}>
+									<Headline key={index} numberOfLines={1} style={styles.name}>
 										{truncate(part, 30)}
-									</Title>
+									</Headline>
 								))
 							)}
 						</View>
@@ -113,7 +121,7 @@ export const ProfileCard = ({
 				<TextInputNoOutline
 					// @ts-ignore react-native and styled-components types clashing
 					ref={bioRef}
-					style={styles.bioInput}
+					style={[theme.fonts.regular, styles.bioInput]}
 					color="gray1"
 					value={bio}
 					placeholder={t('profile_bio')}
@@ -124,7 +132,7 @@ export const ProfileCard = ({
 					maxLength={MAX_BIO_LENGTH}
 				/>
 			) : (
-				<Text color="gray1" style={styles.bio}>
+				<Text color="gray1" style={[theme.fonts.regular, styles.bio]}>
 					{bio?.slice(0, MAX_BIO_LENGTH)}
 				</Text>
 			)}
@@ -145,33 +153,27 @@ const styles = StyleSheet.create({
 	},
 	name: {
 		flexWrap: 'wrap',
-		fontSize: 34,
-		lineHeight: 34,
-		fontFamily: 'NHaasGroteskDSW02-65Md',
 	},
 	nameInput: {
 		flexWrap: 'wrap',
 		fontSize: 34,
-		fontFamily: 'NHaasGroteskDSW02-65Md',
+		lineHeight: 34,
+		// needed because of issues with this font on Android
+		marginTop: Platform.OS === 'android' ? 10 : 0,
 	},
 	nameInputFilled: {
 		fontSize: 34,
 		lineHeight: 34,
-		// needed because of issues with this font on Android
-		marginTop: Platform.OS === 'android' ? -12 : -5,
-		marginBottom: Platform.OS === 'android' ? -24 : 0,
 	},
 	url: {
 		marginTop: 8,
 	},
 	bio: {
-		fontFamily: 'NHaasGroteskDSW02-55Rg',
 		fontSize: 22,
 		letterSpacing: 0.4,
 		lineHeight: 26,
 	},
 	bioInput: {
-		fontFamily: 'NHaasGroteskDSW02-55Rg',
 		fontSize: 22,
 		letterSpacing: 0.4,
 		lineHeight: 26,

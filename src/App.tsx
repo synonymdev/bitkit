@@ -30,7 +30,7 @@ import RestoringScreen from './screens/Onboarding/Restoring';
 import AppUpdate from './screens/AppUpdate';
 import AppOnboarded from './AppOnboarded';
 
-import i18n from './utils/i18n';
+import './utils/i18n';
 import { RECOVERY_DELAY } from './utils/startup/constants';
 import { themeSelector } from './store/reselect/settings';
 import { walletExistsSelector } from './store/reselect/wallet';
@@ -91,10 +91,7 @@ const App = (): ReactElement => {
 		return <OnboardingNavigator />;
 	}, [tapCount, updateInfo?.critical, walletExists, requiresRemoteRestore]);
 
-	const currentTheme = useMemo(
-		() => getTheme(i18n.resolvedLanguage, theme),
-		[theme],
-	);
+	const currentTheme = useMemo(() => getTheme(theme), [theme]);
 
 	return (
 		<ThemeProvider theme={currentTheme}>

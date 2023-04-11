@@ -5,7 +5,13 @@ import { SlashURL } from '@synonymdev/slashtags-sdk';
 import { useTranslation } from 'react-i18next';
 
 import { ScrollView, View as ThemedView } from '../../styles/components';
-import { Text01S, Text02M, Headline, Caption13Up } from '../../styles/text';
+import {
+	Caption13Up,
+	Headline,
+	Text01S,
+	Text02M,
+	Title,
+} from '../../styles/text';
 import {
 	CubeIcon,
 	NewspaperIcon,
@@ -194,7 +200,7 @@ export const WidgetFeedEdit = ({
 			) : (
 				<View style={styles.content}>
 					<View style={styles.header}>
-						<View style={styles.headerText}>
+						<View>
 							<Headline>{config.name}</Headline>
 							<SlashtagURL style={styles.url} url={url} />
 						</View>
@@ -219,9 +225,7 @@ export const WidgetFeedEdit = ({
 					</View>
 
 					{config.description && (
-						<Text01S style={styles.description} color="gray1">
-							{config.description}
-						</Text01S>
+						<Title color="gray1">{config.description}</Title>
 					)}
 
 					{Object.entries(fields).length > 1 && (
@@ -355,19 +359,12 @@ const styles = StyleSheet.create({
 		justifyContent: 'space-between',
 		marginBottom: 16,
 	},
-	headerText: {},
 	headerImage: {
 		borderRadius: 8,
 		overflow: 'hidden',
 	},
 	url: {
 		marginTop: 8,
-	},
-	description: {
-		fontFamily: 'NHaasGroteskDSW02-55Rg',
-		fontSize: 22,
-		letterSpacing: 0.4,
-		lineHeight: 26,
 	},
 	loading: {
 		marginTop: 16,

@@ -1,6 +1,4 @@
 import baseStyled from 'styled-components/native';
-import { Platform } from 'react-native';
-import { sanFranciscoWeights } from 'react-native-typography';
 
 import colors, { IColors } from './colors';
 import { TTheme } from '../store/types/settings';
@@ -34,8 +32,6 @@ interface IFonts {
 	medium: IFont | undefined;
 	semibold: IFont | undefined;
 	bold: IFont | undefined;
-	header: IFont | undefined;
-	headerMoney: IFont | undefined;
 }
 
 export interface ITheme {
@@ -63,8 +59,6 @@ const defaultFontsValues: IFonts = {
 	medium: {},
 	semibold: {},
 	bold: {},
-	header: {},
-	headerMoney: {},
 };
 
 const light: ITheme = {
@@ -103,57 +97,21 @@ const dark: ITheme = {
 	fonts: defaultFontsValues,
 };
 
-const USE_NHAAS_LANGUAGES = ['en'];
-
-export const getTheme = (lang, theme): ITheme => {
-	const headerFont = USE_NHAAS_LANGUAGES.includes(lang)
-		? 'NHaasGroteskDSW02-65Md'
-		: 'Roboto-Bold';
-
+export const getTheme = (theme: string): ITheme => {
 	return {
 		...(theme === 'dark' ? dark : light),
 		fonts: {
-			regular: Platform.select({
-				ios: {
-					fontFamily: sanFranciscoWeights.regular.fontFamily,
-					fontWeight: sanFranciscoWeights.regular.fontWeight,
-				},
-				android: {
-					fontFamily: 'Roboto-Regular',
-				},
-			}),
-			medium: Platform.select({
-				ios: {
-					fontFamily: sanFranciscoWeights.medium.fontFamily,
-					fontWeight: sanFranciscoWeights.medium.fontWeight,
-				},
-				android: {
-					fontFamily: 'Roboto-Medium',
-				},
-			}),
-			semibold: Platform.select({
-				ios: {
-					fontFamily: sanFranciscoWeights.semibold.fontFamily,
-					fontWeight: sanFranciscoWeights.semibold.fontWeight,
-				},
-				android: {
-					fontFamily: 'Roboto-Medium',
-				},
-			}),
-			bold: Platform.select({
-				ios: {
-					fontFamily: sanFranciscoWeights.bold.fontFamily,
-					fontWeight: sanFranciscoWeights.bold.fontWeight,
-				},
-				android: {
-					fontFamily: 'Roboto-Bold',
-				},
-			}),
-			header: {
-				fontFamily: headerFont,
+			regular: {
+				fontFamily: 'InterTight-Regular',
 			},
-			headerMoney: {
-				fontFamily: 'NHaasGroteskDSW02-65Md',
+			medium: {
+				fontFamily: 'InterTight-Medium',
+			},
+			semibold: {
+				fontFamily: 'InterTight-SemiBold',
+			},
+			bold: {
+				fontFamily: 'InterTight-Bold',
 			},
 		},
 	};

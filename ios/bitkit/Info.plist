@@ -50,33 +50,10 @@
 	<string>The photo library is used to scan qrcodes in order to import or send Bitcoin and assets.</string>
 	<key>UIAppFonts</key>
 	<array>
-		<string>AntDesign.ttf</string>
-		<string>Entypo.ttf</string>
-		<string>EvilIcons.ttf</string>
-		<string>Feather.ttf</string>
-		<string>FontAwesome.ttf</string>
-		<string>FontAwesome5_Brands.ttf</string>
-		<string>FontAwesome5_Regular.ttf</string>
-		<string>FontAwesome5_Solid.ttf</string>
-		<string>Foundation.ttf</string>
-		<string>Ionicons.ttf</string>
-		<string>MaterialCommunityIcons.ttf</string>
-		<string>MaterialIcons.ttf</string>
-		<string>Octicons.ttf</string>
-		<string>SimpleLineIcons.ttf</string>
-		<string>Zocial.ttf</string>
-		<string>Fontisto.ttf</string>
-		<string>NHaasGroteskDSW02-15UltTh.ttf</string>
-		<string>NHaasGroteskDSW02-45Lt.ttf</string>
-		<string>NHaasGroteskDSW02-55Rg.ttf</string>
-		<string>NHaasGroteskDSW02-65Md.ttf</string>
-		<string>NHaasGroteskDSW02-75Bd.ttf</string>
-		<string>NHaasGroteskDSW02-95Blk.ttf</string>
-		<string>Roboto-Black.ttf</string>
-		<string>Roboto-Bold.ttf</string>
-		<string>Roboto-Light.ttf</string>
-		<string>Roboto-Medium.ttf</string>
-		<string>Roboto-Regular.ttf</string>
+		<string>InterTight-Bold.ttf</string>
+		<string>InterTight-Medium.ttf</string>
+		<string>InterTight-Regular.ttf</string>
+		<string>InterTight-SemiBold.ttf</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>

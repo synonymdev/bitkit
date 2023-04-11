@@ -1,8 +1,3 @@
-import _Feather from 'react-native-vector-icons/Feather';
-import _EvilIcon from 'react-native-vector-icons/EvilIcons';
-import _Ionicons from 'react-native-vector-icons/Ionicons';
-import _MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import _AntDesign from 'react-native-vector-icons/AntDesign';
 import { SvgXml } from 'react-native-svg';
 
 import styled from './styled-components';
@@ -69,6 +64,9 @@ import {
 	keyIcon,
 	hourglassIcon,
 	bitcoinSlantedIcon,
+	backspaceIcon,
+	exclamationIcon,
+	fingerPrintIcon,
 } from '../assets/icons/wallet';
 import {
 	chevronRightIcon,
@@ -367,6 +365,30 @@ export const BitcoinSlantedIcon = styled(SvgXml).attrs((props) => ({
 	color: props.color ? props.theme.colors[props.color] : 'white',
 }));
 
+export const BackspaceIcon = styled(SvgXml).attrs((props) => ({
+	xml: backspaceIcon(props.color ? props.theme.colors[props.color] : 'white'),
+	height: props.height ?? '31px',
+	width: props.width ?? '31px',
+}))<IconProps>((props) => ({
+	color: props.color ? props.theme.colors[props.color] : 'white',
+}));
+
+export const ExclamationIcon = styled(SvgXml).attrs((props) => ({
+	xml: exclamationIcon(props.color ? props.theme.colors[props.color] : 'white'),
+	height: props.height ?? '60px',
+	width: props.width ?? '60px',
+}))<IconProps>((props) => ({
+	color: props.color ? props.theme.colors[props.color] : 'white',
+}));
+
+export const FingerPrintIcon = styled(SvgXml).attrs((props) => ({
+	xml: fingerPrintIcon(props.color ? props.theme.colors[props.color] : 'white'),
+	height: props.height ?? '65px',
+	width: props.width ?? '65px',
+}))<IconProps>((props) => ({
+	color: props.color ? props.theme.colors[props.color] : 'white',
+}));
+
 export const BitcoinCircleIcon = styled(SvgXml).attrs((props) => ({
 	xml: bitcoinCircleIcon(
 		props.color ? props.theme.colors[props.color] : '#F7931A',
@@ -573,46 +595,6 @@ export const SortAscendingIcon = styled(SvgXml).attrs((props) => ({
 	),
 	height: props.height ?? '24px',
 	width: props.width ?? '24px',
-}))<IconProps>((props) => ({
-	color: props.color ? props.theme.colors[props.color] : 'white',
-}));
-
-export const Feather = styled(_Feather).attrs((props) => ({
-	color: props.color
-		? props.theme.colors[props.color]
-		: props.theme.colors.text,
-}))<IconProps>((props) => ({
-	color: props.color ? props.theme.colors[props.color] : 'white',
-}));
-
-export const MaterialIcons = styled(_MaterialIcons).attrs((props) => ({
-	color: props.color
-		? props.theme.colors[props.color]
-		: props.theme.colors.text,
-}))((props) => ({
-	color: props.color ? props.theme.colors[props.color] : 'white',
-}));
-
-export const AntDesign = styled(_AntDesign).attrs((props) => ({
-	color: props.color
-		? props.theme.colors[props.color]
-		: props.theme.colors.text,
-}))<IconProps>((props) => ({
-	color: props.color ? props.theme.colors[props.color] : 'white',
-}));
-
-export const EvilIcon = styled(_EvilIcon).attrs((props) => ({
-	color: props.color
-		? props.theme.colors[props.color]
-		: props.theme.colors.text,
-}))<IconProps>((props) => ({
-	color: props.color ? props.theme.colors[props.color] : 'white',
-}));
-
-export const Ionicons = styled(_Ionicons).attrs((props) => ({
-	color: props.color
-		? props.theme.colors[props.color]
-		: props.theme.colors.text,
 }))<IconProps>((props) => ({
 	color: props.color ? props.theme.colors[props.color] : 'white',
 }));

@@ -93,9 +93,8 @@ const Money = (props: IMoney): ReactElement => {
 				return (
 					<Text
 						lineHeight={lineHeight}
-						color={color ?? 'gray2'}
+						color={color ?? 'white5'}
 						style={styles.symbol}
-						money={true}
 						testID="MoneyCurrencySymbol">
 						{dv.fiatSymbol}
 					</Text>
@@ -103,7 +102,7 @@ const Money = (props: IMoney): ReactElement => {
 			case 'satoshi':
 				return (
 					<LightningIcon
-						color={color ?? 'gray2'}
+						color={color ?? 'white5'}
 						height={iconHeight}
 						width={iconWidth}
 						style={styles.symbol}
@@ -113,7 +112,7 @@ const Money = (props: IMoney): ReactElement => {
 			default:
 				return (
 					<BIcon
-						color={color ?? 'gray2'}
+						color={color ?? 'white5'}
 						height={iconHeight}
 						width={iconWidth}
 						style={styles.symbol}
@@ -165,8 +164,7 @@ const Money = (props: IMoney): ReactElement => {
 				<Text
 					style={styles.sign}
 					lineHeight={lineHeight}
-					color={color ?? 'gray2'}
-					money={true}
+					color={color ?? 'white5'}
 					testID="MoneySign">
 					{sign}
 				</Text>
@@ -176,7 +174,6 @@ const Money = (props: IMoney): ReactElement => {
 				style={styles.integer}
 				lineHeight={lineHeight}
 				color={color}
-				money={true}
 				testID="MoneyPrimary">
 				{prim}
 			</Text>
@@ -184,8 +181,7 @@ const Money = (props: IMoney): ReactElement => {
 				<Text
 					style={styles.decimal}
 					lineHeight={lineHeight}
-					color="gray2"
-					money={true}
+					color="white5"
 					testID="MoneySecondary">
 					{secd}
 				</Text>

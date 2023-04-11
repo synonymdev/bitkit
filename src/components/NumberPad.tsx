@@ -2,7 +2,7 @@ import React, { memo, ReactElement } from 'react';
 import { View, StyleSheet, ViewStyle, StyleProp } from 'react-native';
 import { TouchableOpacity } from '../styles/components';
 import { Text } from '../styles/text';
-import { Ionicons } from '../styles/icons';
+import { BackspaceIcon } from '../styles/icons';
 import { vibrate } from '../utils/helpers';
 
 const ACTIVE_OPACITY = 0.2;
@@ -146,7 +146,7 @@ const NumberPad = ({
 					style={styles.buttonContainer}
 					color="transparent"
 					testID="NRemove">
-					<Ionicons name={'ios-backspace-outline'} size={31} />
+					<BackspaceIcon />
 				</TouchableOpacity>
 			</View>
 		</View>

@@ -12,7 +12,7 @@ import { useTranslation } from 'react-i18next';
 
 import { View, TouchableOpacity } from '../styles/components';
 import { Subtitle } from '../styles/text';
-import { Ionicons } from '../styles/icons';
+import { FingerPrintIcon } from '../styles/icons';
 import { updateSettings } from '../store/actions/settings';
 import { vibrate } from '../utils/helpers';
 
@@ -27,7 +27,7 @@ const getIcon = ({
 		}
 		const biometryType = biometryData?.biometryType;
 		if (biometryType === 'TouchID' || biometryType === 'Biometrics') {
-			return <Ionicons name="ios-finger-print" size={65} />;
+			return <FingerPrintIcon />;
 		}
 
 		return <></>;
