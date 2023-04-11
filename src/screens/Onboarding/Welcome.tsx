@@ -88,7 +88,7 @@ const OnboardingWelcomeScreen = ({
 const styles = StyleSheet.create({
 	content: {
 		flex: 1,
-		paddingHorizontal: 48,
+		paddingHorizontal: 32,
 	},
 	imageContainer: {
 		flex: 4,

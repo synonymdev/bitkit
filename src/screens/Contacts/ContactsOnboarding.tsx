@@ -68,7 +68,7 @@ export const ContactsOnboarding = ({
 const styles = StyleSheet.create({
 	content: {
 		flex: 1,
-		marginHorizontal: 16,
+		marginHorizontal: 32,
 		paddingBottom: 16,
 	},
 	imageContainer: {

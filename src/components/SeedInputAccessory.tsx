@@ -53,7 +53,7 @@ const SeedInputAccessory = ({
 const styles = StyleSheet.create({
 	suggestions: {
 		backgroundColor: 'black',
-		paddingHorizontal: 48,
+		paddingHorizontal: 32,
 		paddingTop: 16,
 		paddingBottom: 10,
 	},

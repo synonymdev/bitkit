@@ -300,7 +300,7 @@ const styles = StyleSheet.create({
 		marginHorizontal: -50,
 	},
 	content: {
-		paddingHorizontal: 48,
+		paddingHorizontal: 32,
 		paddingBottom: 16,
 		flexGrow: 1,
 		justifyContent: 'space-between',

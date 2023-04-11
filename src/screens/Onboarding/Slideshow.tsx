@@ -352,7 +352,7 @@ const styles = StyleSheet.create({
 	},
 	slide: {
 		flex: 1,
-		paddingHorizontal: 48,
+		paddingHorizontal: 32,
 	},
 	imageContainer: {
 		flex: 4,

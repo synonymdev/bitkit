@@ -81,7 +81,7 @@ const LoadingWalletScreen = (): ReactElement => {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		padding: 48,
+		padding: 32,
 	},
 	loadingText: {
 		flex: 1,

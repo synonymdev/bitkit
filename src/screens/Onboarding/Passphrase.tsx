@@ -131,7 +131,7 @@ const styles = StyleSheet.create({
 	textContent: {
 		// line up Welcome screen content with Slideshow
 		flex: Platform.OS === 'ios' ? 3.2 : 3.5,
-		paddingHorizontal: 48,
+		paddingHorizontal: 32,
 	},
 	text: {
 		marginTop: 8,
@@ -144,7 +144,7 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		justifyContent: 'center',
 		marginTop: 'auto',
-		paddingHorizontal: 48,
+		paddingHorizontal: 32,
 	},
 	button: {
 		flex: 1,

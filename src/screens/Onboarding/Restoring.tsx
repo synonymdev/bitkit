@@ -141,7 +141,7 @@ const RestoringScreen = (): ReactElement => {
 const styles = StyleSheet.create({
 	content: {
 		flex: 1,
-		paddingHorizontal: 48,
+		paddingHorizontal: 32,
 		paddingTop: 120,
 		paddingBottom: 16,
 	},

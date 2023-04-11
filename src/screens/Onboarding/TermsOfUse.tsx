@@ -124,12 +124,12 @@ const TermsOfUse = ({
 const styles = StyleSheet.create({
 	content: {
 		flex: 1,
-		paddingTop: 48,
 		paddingBottom: 16,
-		paddingHorizontal: 48,
+		paddingHorizontal: 32,
 	},
 	tos: {
 		flex: 1,
+		paddingTop: 48,
 	},
 	text: {
 		marginTop: 8,

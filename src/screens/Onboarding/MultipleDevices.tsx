@@ -76,8 +76,8 @@ const styles = StyleSheet.create({
 		resizeMode: 'contain',
 	},
 	textContent: {
-		flex: 3,
-		paddingHorizontal: 16,
+		flex: 4,
+		paddingHorizontal: 32,
 	},
 	text: {
 		marginTop: 8,
@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		justifyContent: 'center',
 		marginTop: 'auto',
-		marginHorizontal: 16,
+		marginHorizontal: 32,
 	},
 	button: {
 		flex: 1,

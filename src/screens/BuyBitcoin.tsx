@@ -65,7 +65,7 @@ const BuyBitcoin = ({
 const styles = StyleSheet.create({
 	content: {
 		flex: 1,
-		marginHorizontal: 16,
+		marginHorizontal: 32,
 	},
 	imageContainer: {
 		flex: 3.2,
