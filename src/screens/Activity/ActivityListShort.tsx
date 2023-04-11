@@ -10,7 +10,7 @@ import { useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 
-import { Subtitle, Text02M } from '../../styles/text';
+import { Caption13Up, Text02M } from '../../styles/text';
 import { groupActivityItems } from '../../utils/activity';
 import { showBottomSheet } from '../../store/actions/ui';
 import { IActivityItemFormatted } from '../../store/types/activity';
@@ -69,7 +69,9 @@ const ActivityListShort = (): ReactElement => {
 
 	return (
 		<View style={styles.content}>
-			<Subtitle style={styles.title}>{t('activity')}</Subtitle>
+			<Caption13Up color="gray1" style={styles.title}>
+				{t('activity')}
+			</Caption13Up>
 
 			{groupedItems.length === 0 ? (
 				<EmptyItem onPress={navigateToReceive} />

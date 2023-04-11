@@ -11,7 +11,7 @@ import Carousel from 'react-native-reanimated-carousel';
 import { useTranslation } from 'react-i18next';
 
 import { View } from '../styles/components';
-import { Subtitle } from '../styles/text';
+import { Caption13Up } from '../styles/text';
 import SuggestionCard from './SuggestionCard';
 import { allTodos } from '../store/shapes/todos';
 import { TTodoType } from '../store/types/todos';
@@ -98,7 +98,9 @@ const Suggestions = (): ReactElement => {
 
 	return (
 		<>
-			<Subtitle style={styles.title}>{t('suggestions')}</Subtitle>
+			<Caption13Up style={styles.title} color="gray1">
+				{t('suggestions')}
+			</Caption13Up>
 			<View style={styles.container} testID="Suggestions">
 				<Carousel
 					style={carouselStyle}
@@ -138,7 +140,7 @@ const Suggestions = (): ReactElement => {
 const styles = StyleSheet.create({
 	title: {
 		marginTop: 32,
-		marginBottom: 1,
+		marginBottom: 5,
 		marginLeft: 16,
 	},
 	container: {

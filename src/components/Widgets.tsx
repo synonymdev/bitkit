@@ -22,7 +22,7 @@ import { __DISABLE_SLASHTAGS__ } from '../constants/env';
 import { rootNavigation } from '../navigation/root/RootNavigator';
 import Store from '../store/types';
 import { AnimatedView, TouchableOpacity, View } from '../styles/components';
-import { Subtitle, Text, Text01M } from '../styles/text';
+import { Caption13Up, Text, Text01M } from '../styles/text';
 import { PlusIcon, SortAscendingIcon, Checkmark } from '../styles/icons';
 import { SUPPORTED_FEED_TYPES } from '../utils/widgets';
 import { setWidgetsSortOrder } from '../store/actions/widgets';
@@ -196,7 +196,9 @@ export const Widgets = (): ReactElement => {
 		return (
 			<>
 				<View style={styles.titleRow}>
-					<Subtitle style={styles.title}>{t('widgets')}</Subtitle>
+					<Caption13Up style={styles.title} color="gray1">
+						{t('widgets')}
+					</Caption13Up>
 				</View>
 				<Text color="gray">{t('disabled')}</Text>
 			</>
@@ -206,7 +208,9 @@ export const Widgets = (): ReactElement => {
 	return (
 		<>
 			<View style={styles.titleRow} testID="WidgetsTitle">
-				<Subtitle style={styles.title}>{t('widgets')}</Subtitle>
+				<Caption13Up style={styles.title} color="gray1">
+					{t('widgets')}
+				</Caption13Up>
 				{widgetsArray.length > 0 && (
 					<TouchableOpacity
 						style={styles.edit}

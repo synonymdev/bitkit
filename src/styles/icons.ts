@@ -369,7 +369,7 @@ export const BitcoinSlantedIcon = styled(SvgXml).attrs((props) => ({
 
 export const BitcoinCircleIcon = styled(SvgXml).attrs((props) => ({
 	xml: bitcoinCircleIcon(
-		props.color ? props.theme.colors[props.color] : '#F7931A',
+		props.color ? props.theme.colors[props.color] : 'white',
 	),
 	height: props.height ?? '32px',
 	width: props.width ?? '32px',

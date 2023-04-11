@@ -125,6 +125,7 @@ const styles = StyleSheet.create({
 		paddingLeft: 16,
 	},
 	row: {
+		marginTop: 16,
 		flexDirection: 'row',
 		alignItems: 'center',
 		justifyContent: 'space-between',

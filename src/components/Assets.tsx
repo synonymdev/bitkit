@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 
-import { Subtitle } from '../styles/text';
+import { Caption13Up } from '../styles/text';
 import { BitcoinCircleIcon } from '../styles/icons';
 import { useBalance } from '../hooks/wallet';
 import AssetCard from './AssetCard';
@@ -16,15 +16,15 @@ const Assets = (): ReactElement => {
 
 	return (
 		<>
-			<Subtitle style={styles.title} testID="AssetsTitle">
+			<Caption13Up color="gray1" style={styles.title} testID="AssetsTitle">
 				{t('assets')}
-			</Subtitle>
+			</Caption13Up>
 			<AssetCard
 				name="Bitcoin"
 				testID="BitcoinAsset"
 				ticker="BTC"
 				satoshis={satoshis}
-				icon={<BitcoinCircleIcon />}
+				icon={<BitcoinCircleIcon color="orange" />}
 				onPress={(): void => {
 					navigation.navigate('WalletsDetail', {
 						assetType: 'bitcoin',
