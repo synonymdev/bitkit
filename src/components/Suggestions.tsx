@@ -139,7 +139,7 @@ const Suggestions = (): ReactElement => {
 
 const styles = StyleSheet.create({
 	title: {
-		marginTop: 32,
+		marginTop: 28,
 		marginBottom: 5,
 		marginLeft: 16,
 	},
