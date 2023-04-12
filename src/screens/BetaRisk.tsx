@@ -26,7 +26,7 @@ const BetaRisk = ({
 	};
 
 	return (
-		<GlowingBackground topLeft="orange">
+		<GlowingBackground topLeft="yellow">
 			<SafeAreaInsets type="top" />
 			<View style={styles.content}>
 				<View style={styles.imageContainer}>
