@@ -92,8 +92,8 @@ const SuggestionCard = ({
 
 const styles = StyleSheet.create({
 	container: {
-		width: 160,
-		height: 160,
+		width: 152,
+		height: 152,
 		borderRadius: 16,
 		paddingHorizontal: 16,
 		paddingBottom: 14,

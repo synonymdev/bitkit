@@ -225,7 +225,9 @@ export const WidgetFeedEdit = ({
 					</View>
 
 					{config.description && (
-						<Title color="gray1">{config.description}</Title>
+						<Title style={styles.description} color="gray1">
+							{config.description}
+						</Title>
 					)}
 
 					{Object.entries(fields).length > 1 && (
@@ -403,6 +405,9 @@ const styles = StyleSheet.create({
 	},
 	saveButton: {
 		flex: 1,
+	},
+	description: {
+		fontWeight: 'normal',
 	},
 });
 
