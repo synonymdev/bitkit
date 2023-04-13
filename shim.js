@@ -62,3 +62,23 @@ if (!Symbol.asyncIterator) {
 if (!Symbol.iterator) {
 	Symbol.iterator = '@@iterator';
 }
+
+if (!Promise.allSettled) {
+	// RN only supports Promise.allSettled after v0.70.6
+	// https://stackoverflow.com/a/70114114/1231070
+	// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+	Promise.allSettled = (promises) =>
+		Promise.all(
+			promises.map((pr) =>
+				pr
+					.then((value) => ({
+						status: 'fulfilled',
+						value,
+					}))
+					.catch((reason) => ({
+						status: 'rejected',
+						reason,
+					})),
+			),
+		);
+}
