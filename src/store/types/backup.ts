@@ -8,12 +8,22 @@ export interface IBackup {
 	remoteBackupsEnabled: boolean;
 	remoteLdkBackupSynced: boolean;
 	remoteLdkBackupLastSync?: number;
+	remoteLdkBackupLastSyncRequired?: number;
 	remoteSettingsBackupSynced: boolean;
+	remoteSettingsBackupLastSync?: number;
+	remoteSettingsBackupSyncRequired?: number;
 	remoteWidgetsBackupSynced: boolean;
+	remoteWidgetsBackupLastSync?: number;
+	remoteWidgetsBackupSyncRequired?: number;
 	remoteMetadataBackupSynced: boolean;
+	remoteMetadataBackupLastSync?: number;
+	remoteMetadataBackupSyncRequired?: number;
 	remoteLdkActivityBackupSynced: boolean;
+	remoteLdkActivityBackupLastSync?: number;
+	remoteLdkActivityBackupSyncRequired?: number;
 	remoteBlocktankBackupSynced: boolean;
-	//TODO transactions, slashtags, metadata, etc.
+	remoteBlocktankBackupLastSync?: number;
+	remoteBlocktankBackupSyncRequired?: number;
 
 	//iCloud
 	iCloudBackupsEnabled: boolean;

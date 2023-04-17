@@ -59,7 +59,12 @@
 		"title": "Back Up Or Restore",
 		"money": "Back up your money",
 		"data": "Back up your data",
-		"reset": "Reset and restore wallet"
+		"reset": "Reset and restore wallet",
+		"failed_title": "Data Backup Failure",
+		"failed_message": "Bitkit failed to back up it's data. Please check your connection.",
+		"latest": "latest data backup",
+		"full": "Bitkit successfully completed a full data backup on {{time}}.",
+		"not_yet": "Not done yet."
 	},
 	"adv": {
 		"section_payments": "Payments",

@@ -115,6 +115,8 @@ describe('Remote backups', () => {
 		const uploadRes = await performRemoteBackup({
 			slashtag,
 			isSyncedKey: 'remoteMetadataBackupSynced',
+			syncRequiredKey: 'remoteMetadataBackupSyncRequired',
+			syncCompletedKey: 'remoteMetadataBackupLastSync',
 			backupCategory: EBackupCategories.metadata,
 			backup,
 		});
@@ -150,6 +152,8 @@ describe('Remote backups', () => {
 		const uploadRes = await performRemoteBackup({
 			slashtag,
 			isSyncedKey: 'remoteSettingsBackupSynced',
+			syncRequiredKey: 'remoteSettingsBackupSyncRequired',
+			syncCompletedKey: 'remoteSettingsBackupLastSync',
 			backupCategory: EBackupCategories.settings,
 			backup,
 		});
@@ -192,6 +196,8 @@ describe('Remote backups', () => {
 		const uploadRes = await performRemoteBackup({
 			slashtag,
 			isSyncedKey: 'remoteWidgetsBackupSynced',
+			syncRequiredKey: 'remoteWidgetsBackupSyncRequired',
+			syncCompletedKey: 'remoteWidgetsBackupLastSync',
 			backupCategory: EBackupCategories.widgets,
 			backup,
 		});
@@ -235,6 +241,8 @@ describe('Remote backups', () => {
 		const uploadRes = await performRemoteBackup({
 			slashtag,
 			isSyncedKey: 'remoteLdkActivityBackupSynced',
+			syncRequiredKey: 'remoteLdkActivityBackupSyncRequired',
+			syncCompletedKey: 'remoteLdkActivityBackupLastSync',
 			backupCategory: EBackupCategories.ldkActivity,
 			backup,
 		});
@@ -273,6 +281,8 @@ describe('Remote backups', () => {
 		const uploadRes = await performRemoteBackup({
 			slashtag,
 			isSyncedKey: 'remoteBlocktankBackupSynced',
+			syncRequiredKey: 'remoteBlocktankBackupSyncRequired',
+			syncCompletedKey: 'remoteBlocktankBackupLastSync',
 			backupCategory: EBackupCategories.blocktank,
 			backup,
 		});

@@ -20,6 +20,7 @@ const BackupData = ({
 	navigation,
 }: SettingsScreenProps<'BackupData'>): ReactElement => {
 	const { t } = useTranslation('security');
+
 	// const { slashtag } = useSelectedSlashtag();
 	// const [showDialog, setShowDialog] = useState(false);
 	// const [isBackingUp, setIsBackingUp] = useState(false);

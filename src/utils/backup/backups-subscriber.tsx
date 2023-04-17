@@ -1,6 +1,7 @@
-import React, { ReactElement, useEffect } from 'react';
+import React, { ReactElement, useEffect, useMemo, useState } from 'react';
 import lm from '@synonymdev/react-native-ldk';
 import { useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 
 import {
 	performRemoteBackup,
@@ -18,10 +19,16 @@ import { widgetsState } from '../../store/reselect/widgets';
 import { activityItemsState } from '../../store/reselect/activity';
 import { EActivityType } from '../../store/types/activity';
 import { blocktankSelector } from '../../store/reselect/blocktank';
+import { showErrorNotification } from '../notifications';
+import { __DISABLE_PERIODIC_REMINDERS__ } from '../../constants/env';
 
-const BACKUP_DEBOUNCE = 5000;
+const BACKUP_DEBOUNCE = 5000; // 5 seconds
+const BACKUP_CHECK_INTERVAL = 60 * 1000; // 1 minute
+const FAILED_BACKUP_CHECK_TIME = 30 * 60 * 1000; // 30 minutes
+const FAILED_BACKUP_NOTIFICATION_INTERVAL = 10 * 60 * 1000; // 10 minutes
 
 const EnabledSlashtag = (): ReactElement => {
+	const { t } = useTranslation('settings');
 	const selectedNetwork = useSelector(selectedNetworkSelector);
 	const { slashtag } = useSelectedSlashtag();
 	const backup = useSelector(backupSelector);
@@ -30,13 +37,16 @@ const EnabledSlashtag = (): ReactElement => {
 	const widgets = useSelector(widgetsState);
 	const activity = useSelector(activityItemsState);
 	const blocktank = useSelector(blocktankSelector);
+	const [now, setNow] = useState<number>(new Date().getTime());
 
 	useEffect(() => {
 		const sub = lm.subscribeToBackups((res) => {
 			performRemoteLdkBackup(
 				slashtag,
 				res.isOk() ? res.value : undefined,
-			).catch(console.error);
+			).catch((e) => {
+				console.error('LDK backup error', e);
+			});
 		});
 
 		return () => lm.unsubscribeFromBackups(sub);
@@ -48,9 +58,12 @@ const EnabledSlashtag = (): ReactElement => {
 			if (backup.remoteSettingsBackupSynced) {
 				return;
 			}
+			console.info('perform settings backup');
 			performRemoteBackup({
 				slashtag,
 				isSyncedKey: 'remoteSettingsBackupSynced',
+				syncRequiredKey: 'remoteSettingsBackupSyncRequired',
+				syncCompletedKey: 'remoteSettingsBackupLastSync',
 				backupCategory: EBackupCategories.settings,
 				selectedNetwork,
 				backup: settings,
@@ -69,6 +82,8 @@ const EnabledSlashtag = (): ReactElement => {
 			performRemoteBackup({
 				slashtag,
 				isSyncedKey: 'remoteWidgetsBackupSynced',
+				syncRequiredKey: 'remoteWidgetsBackupSyncRequired',
+				syncCompletedKey: 'remoteWidgetsBackupLastSync',
 				backupCategory: EBackupCategories.widgets,
 				selectedNetwork,
 				backup: widgets,
@@ -87,6 +102,8 @@ const EnabledSlashtag = (): ReactElement => {
 			performRemoteBackup({
 				slashtag,
 				isSyncedKey: 'remoteMetadataBackupSynced',
+				syncRequiredKey: 'remoteMetadataBackupSyncRequired',
+				syncCompletedKey: 'remoteMetadataBackupLastSync',
 				backupCategory: EBackupCategories.metadata,
 				selectedNetwork,
 				backup: metadata,
@@ -110,6 +127,8 @@ const EnabledSlashtag = (): ReactElement => {
 			performRemoteBackup({
 				slashtag,
 				isSyncedKey: 'remoteLdkActivityBackupSynced',
+				syncRequiredKey: 'remoteLdkActivityBackupSyncRequired',
+				syncCompletedKey: 'remoteLdkActivityBackupLastSync',
 				backupCategory: EBackupCategories.ldkActivity,
 				selectedNetwork,
 				backup: ldkActivity,
@@ -134,6 +153,8 @@ const EnabledSlashtag = (): ReactElement => {
 			performRemoteBackup({
 				slashtag,
 				isSyncedKey: 'remoteBlocktankBackupSynced',
+				syncRequiredKey: 'remoteBlocktankBackupSyncRequired',
+				syncCompletedKey: 'remoteBlocktankBackupLastSync',
 				backupCategory: EBackupCategories.blocktank,
 				selectedNetwork,
 				backup: back,
@@ -148,6 +169,60 @@ const EnabledSlashtag = (): ReactElement => {
 		],
 		BACKUP_DEBOUNCE,
 	);
+
+	const shouldShowBackupWarning = useMemo(() => {
+		if (__DISABLE_PERIODIC_REMINDERS__) {
+			return false;
+		}
+
+		if (
+			(backup.remoteSettingsBackupSyncRequired &&
+				now - backup.remoteSettingsBackupSyncRequired >
+					FAILED_BACKUP_CHECK_TIME) ||
+			(backup.remoteWidgetsBackupSyncRequired &&
+				now - backup.remoteWidgetsBackupSyncRequired >
+					FAILED_BACKUP_CHECK_TIME) ||
+			(backup.remoteMetadataBackupSyncRequired &&
+				now - backup.remoteMetadataBackupSyncRequired >
+					FAILED_BACKUP_CHECK_TIME) ||
+			(backup.remoteLdkActivityBackupSyncRequired &&
+				now - backup.remoteLdkActivityBackupSyncRequired >
+					FAILED_BACKUP_CHECK_TIME) ||
+			(backup.remoteBlocktankBackupSyncRequired &&
+				now - backup.remoteBlocktankBackupSyncRequired >
+					FAILED_BACKUP_CHECK_TIME)
+		) {
+			return true;
+		}
+		return false;
+	}, [backup, now]);
+
+	useEffect(() => {
+		const timer = setInterval(() => {
+			setNow(new Date().getTime());
+		}, BACKUP_CHECK_INTERVAL);
+
+		return (): void => {
+			clearInterval(timer);
+		};
+	}, []);
+
+	useEffect(() => {
+		if (!shouldShowBackupWarning) {
+			return;
+		}
+
+		const timer = setInterval(() => {
+			showErrorNotification({
+				title: t('backup.failed_title'),
+				message: t('backup.failed_message'),
+			});
+		}, FAILED_BACKUP_NOTIFICATION_INTERVAL);
+
+		return (): void => {
+			clearInterval(timer);
+		};
+	}, [t, shouldShowBackupWarning]);
 
 	return <></>;
 };

@@ -1,4 +1,5 @@
 import React, { memo, ReactElement, useMemo } from 'react';
+import { StyleSheet } from 'react-native';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 
@@ -7,12 +8,27 @@ import SettingsView from '../SettingsView';
 import { closeBottomSheet, showBottomSheet } from '../../../store/actions/ui';
 import { SettingsScreenProps } from '../../../navigation/types';
 import Store from '../../../store/types';
+import { Caption13Up, Text02S } from '../../../styles/text';
+import { View as ThemedView } from '../../../styles/components';
+import { backupSelector } from '../../../store/reselect/backup';
 
 const BackupSettings = ({
 	navigation,
 }: SettingsScreenProps<'BackupSettings'>): ReactElement => {
 	const { t } = useTranslation('settings');
 	const pin = useSelector((state: Store) => state.settings.pin);
+	const backup = useSelector(backupSelector);
+
+	const arr = [
+		backup.remoteLdkBackupLastSync,
+		backup.remoteSettingsBackupLastSync,
+		backup.remoteWidgetsBackupLastSync,
+		backup.remoteMetadataBackupLastSync,
+		backup.remoteLdkActivityBackupLastSync,
+		backup.remoteBlocktankBackupLastSync,
+	].filter((i) => i !== undefined) as Array<number>;
+
+	const min = Math.min(...arr);
 
 	const settingsListData: IListData[] = useMemo(
 		() => [
@@ -63,12 +79,55 @@ const BackupSettings = ({
 	);
 
 	return (
-		<SettingsView
-			title={t('backup.title')}
-			listData={settingsListData}
-			showBackNavigation={true}
-		/>
+		<ThemedView style={styles.container}>
+			<SettingsView
+				title={t('backup.title')}
+				listData={settingsListData}
+				fullHeight={false}
+				showBackNavigation={true}
+			/>
+			<ThemedView style={styles.status}>
+				<Caption13Up style={styles.caption} color="gray1">
+					{t('backup.latest')}
+				</Caption13Up>
+				<Text02S style={styles.text}>
+					{min &&
+						t('backup.full', {
+							time: t('intl:dateTime', {
+								v: new Date(min),
+								formatParams: {
+									v: {
+										year: 'numeric',
+										month: 'long',
+										day: 'numeric',
+										hour: 'numeric',
+										minute: 'numeric',
+										hour12: false,
+									},
+								},
+							}),
+						})}
+					{!min && t('backup.not_yet')}
+				</Text02S>
+			</ThemedView>
+		</ThemedView>
 	);
 };
+
+const styles = StyleSheet.create({
+	container: {
+		flex: 1,
+	},
+	caption: {
+		marginBottom: 12,
+	},
+	status: {
+		flex: 1,
+		paddingHorizontal: 16,
+	},
+	text: {
+		fontSize: 15,
+	},
+});
 
 export default memo(BackupSettings);

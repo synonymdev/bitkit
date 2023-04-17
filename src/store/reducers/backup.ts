@@ -11,17 +11,25 @@ const backup = (state: IBackup = defaultBackupShape, action): IBackup => {
 				...action.payload,
 			};
 
-		case actions.UPDATE_SETTINGS:
+		case actions.UPDATE_SETTINGS: {
+			const remoteSettingsBackupSyncRequired =
+				state.remoteSettingsBackupSyncRequired ?? new Date().getTime();
 			return {
 				...state,
+				remoteSettingsBackupSyncRequired,
 				remoteSettingsBackupSynced: false,
 			};
+		}
 
-		case actions.SET_SLASHTAGS_FEED_WIDGET:
+		case actions.SET_SLASHTAGS_FEED_WIDGET: {
+			const remoteWidgetsBackupSyncRequired =
+				state.remoteWidgetsBackupSyncRequired ?? new Date().getTime();
 			return {
 				...state,
+				remoteWidgetsBackupSyncRequired,
 				remoteWidgetsBackupSynced: false,
 			};
+		}
 
 		case actions.UPDATE_META_TX_TAGS:
 		case actions.ADD_META_TX_TAG:
@@ -31,24 +39,40 @@ const backup = (state: IBackup = defaultBackupShape, action): IBackup => {
 		case actions.ADD_META_TX_SLASH_TAGS_URL:
 		case actions.DELETE_META_TX_SLASH_TAGS_URL:
 		case actions.ADD_TAG:
-		case actions.DELETE_TAG:
+		case actions.DELETE_TAG: {
+			const remoteMetadataBackupSyncRequired =
+				state.remoteMetadataBackupSyncRequired ?? new Date().getTime();
 			return {
 				...state,
+				remoteMetadataBackupSyncRequired,
 				remoteMetadataBackupSynced: false,
 			};
+		}
 
-		case actions.ADD_ACTIVITY_ITEM:
+		case actions.ADD_ACTIVITY_ITEM: {
 			// we only listen for LN activity here
-			return action.payload.activityType === EActivityType.lightning
-				? { ...state, remoteLdkActivityBackupSynced: false }
-				: state;
-
-		case actions.ADD_PAID_BLOCKTANK_ORDER:
-		case actions.UPDATE_BLOCKTANK_ORDER:
+			if (action.payload.activityType !== EActivityType.lightning) {
+				return state;
+			}
+			const remoteLdkActivityBackupSyncRequired =
+				state.remoteLdkActivityBackupSyncRequired ?? new Date().getTime();
 			return {
 				...state,
+				remoteLdkActivityBackupSyncRequired,
+				remoteLdkActivityBackupSynced: false,
+			};
+		}
+
+		case actions.ADD_PAID_BLOCKTANK_ORDER:
+		case actions.UPDATE_BLOCKTANK_ORDER: {
+			const remoteBlocktankBackupSyncRequired =
+				state.remoteBlocktankBackupSyncRequired ?? new Date().getTime();
+			return {
+				...state,
+				remoteBlocktankBackupSyncRequired,
 				remoteBlocktankBackupSynced: false,
 			};
+		}
 
 		case actions.RESET_BACKUP_STORE:
 			return defaultBackupShape;

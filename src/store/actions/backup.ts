@@ -117,6 +117,7 @@ export const performRemoteLdkBackup = async (
 		payload: {
 			remoteLdkBackupSynced: true,
 			remoteLdkBackupLastSync: new Date().getTime(),
+			remoteLdkBackupLastSyncRequired: undefined,
 		},
 	});
 
@@ -126,12 +127,16 @@ export const performRemoteLdkBackup = async (
 export const performRemoteBackup = async <T>({
 	slashtag,
 	isSyncedKey,
+	syncRequiredKey,
+	syncCompletedKey,
 	backupCategory,
 	backup,
 	selectedNetwork,
 }: {
 	slashtag: Slashtag;
 	isSyncedKey: keyof IBackup;
+	syncRequiredKey: keyof IBackup;
+	syncCompletedKey: keyof IBackup;
 	backupCategory: EBackupCategories;
 	backup?: T;
 	selectedNetwork?: TAvailableNetworks;
@@ -160,6 +165,8 @@ export const performRemoteBackup = async <T>({
 		type: actions.BACKUP_UPDATE,
 		payload: {
 			[isSyncedKey]: true,
+			[syncRequiredKey]: undefined,
+			[syncCompletedKey]: new Date().getTime(),
 		},
 	});
 
