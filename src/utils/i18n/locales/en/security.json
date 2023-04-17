@@ -29,6 +29,7 @@
 	"mnemonic_data_text": "Your profile, contacts, accounts, tags, and activity will be backed up automatically to our free cloud service.",
 	"mnemonic_multiple_header": "Multiple Devices",
 	"mnemonic_multiple_text": "Don't use your Bitkit recovery phrase on multiple phones simultaneously, as this can corrupt your data.",
+	"mnemonic_latest_backup": "<bold>Latest data backup:</bold> {{time}}",
 	"pin_security_header": "Increase Security",
 	"pin_security_text": "To increase wallet security, you can set up a PIN code and Face ID to unlock your wallet.",
 	"pin_security_button": "Secure Wallet",

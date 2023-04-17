@@ -28,7 +28,7 @@ const BackupSettings = ({
 		backup.remoteBlocktankBackupLastSync,
 	].filter((i) => i !== undefined) as Array<number>;
 
-	const min = Math.min(...arr);
+	const max = Math.max(...arr);
 
 	const settingsListData: IListData[] = useMemo(
 		() => [
@@ -91,10 +91,10 @@ const BackupSettings = ({
 					{t('backup.latest')}
 				</Caption13Up>
 				<Text02S style={styles.text}>
-					{min &&
+					{max &&
 						t('backup.full', {
 							time: t('intl:dateTime', {
-								v: new Date(min),
+								v: new Date(max),
 								formatParams: {
 									v: {
 										year: 'numeric',
@@ -102,12 +102,11 @@ const BackupSettings = ({
 										day: 'numeric',
 										hour: 'numeric',
 										minute: 'numeric',
-										hour12: false,
 									},
 								},
 							}),
 						})}
-					{!min && t('backup.not_yet')}
+					{!max && t('backup.not_yet')}
 				</Text02S>
 			</ThemedView>
 		</ThemedView>
