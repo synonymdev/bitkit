@@ -15,11 +15,6 @@ import {
 	StyleSheet,
 	Pressable,
 } from 'react-native';
-import {
-	getBuildNumber,
-	// getBundleId,
-	getVersion,
-} from 'react-native-device-info';
 import { Trans, useTranslation } from 'react-i18next';
 
 import { Text01S } from '../../../styles/text';
@@ -131,7 +126,7 @@ const About = ({
 					},
 					{
 						title: t('about.version'),
-						value: `${getVersion()} (${getBuildNumber()})`,
+						value: 'Testing123',
 						type: EItemType.textButton,
 						onPress: (): void => {
 							openURL(
