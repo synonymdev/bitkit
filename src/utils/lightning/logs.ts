@@ -12,25 +12,29 @@ export const zipLogs = async (limit: number = 10): Promise<Result<string>> => {
 	const time = new Date().getTime();
 	const fileName = `${logFilePrefix}_${time}`;
 
+	const jsonFilesPath = `${RNFS.DocumentDirectoryPath}/ldk/${lm.account.name}`;
 	const logsPath = `${RNFS.DocumentDirectoryPath}/ldk/${lm.account.name}/logs`;
 	const tempPath = `${logsPath}/share`;
 	const zipPath = `${tempPath}/${fileName}.zip`;
 
 	try {
 		const logs = await listLogs(logsPath, limit);
+		const jsonFiles = await listJsonFiles(jsonFilesPath);
+		const files = [...logs, ...jsonFiles];
 
 		//Copy to dir to be zipped
 		await rm(tempPath);
 		await mkdir(tempPath);
-		for (let index = 0; index < logs.length; index++) {
-			const logPath = logs[index];
+
+		for (let index = 0; index < files.length; index++) {
+			const logPath = files[index];
 			let filename = logPath.substring(logPath.lastIndexOf('/') + 1);
 			await copyFile(logPath, `${tempPath}/${filename}`);
 		}
 
-		await zip(logs, zipPath);
+		await zip(files, zipPath);
 
-		//Cleanup duplicate logs after zips
+		//Cleanup duplicate files after zips
 		listLogs(tempPath, limit).then((newFiles) => {
 			newFiles.forEach((f) => rm(f));
 		});
@@ -76,4 +80,20 @@ const listLogs = async (path: string, limit: number): Promise<string[]> => {
 	});
 
 	return list.slice(0, limit).map((f) => f.path);
+};
+
+/**
+ * Lists .json files in a given directory
+ * @param path
+ * @returns {Promise<string[]>}
+ */
+const listJsonFiles = async (path: string): Promise<string[]> => {
+	let list = await RNFS.readDir(path);
+
+	// Filter for .json files only
+	list = list.filter((f) => {
+		return f.isFile() && f.name.endsWith('json') && f.size > 0;
+	});
+
+	return list.map((f) => f.path);
 };
