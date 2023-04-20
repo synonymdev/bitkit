@@ -187,7 +187,7 @@
     "metro-config": "^0.76.0",
     "metro-react-native-babel-preset": "0.73.9",
     "nano-staged": "^0.8.0",
-    "node-fetch": "^3.3.0",
+    "node-fetch": "^2.6.7",
     "prettier": "^2.4.1",
     "punycode": "^2.3.0",
     "react-native-flipper": "^0.183.0",
@@ -210,9 +210,6 @@
     "Notifications",
     "PhotoLibrary"
   ],
-  "jest": {
-    "preset": "react-native"
-  },
   "react-native": {
     "crypto": "react-native-crypto",
     "_stream_transform": "readable-stream/transform",
