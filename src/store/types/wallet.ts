@@ -175,9 +175,9 @@ export interface IUtxo {
 }
 
 export interface IOutput {
-	address?: string; //Address to send to.
-	value?: number; //Amount denominated in sats.
-	index: number; //Used to specify which output to update or edit when using updateBitcoinTransaction.
+	address: string; // Address to send to.
+	value: number; // Amount denominated in sats.
+	index: number; // Used to specify which output to update or edit when using updateBitcoinTransaction.
 }
 
 export interface IFormattedTransaction {

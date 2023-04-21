@@ -30,6 +30,11 @@ describe('Receive', () => {
 	// - correct placeholders
 	// - no exceeding maxAmount
 
+	// Tags
+	// - can add new tag
+	// - can add prev saved tag
+	// - can delete prev saved tag
+
 	it('Basic functionality', async () => {
 		if (checkComplete('receive-1-1')) {
 			return;
@@ -104,6 +109,14 @@ describe('Receive', () => {
 		await element(by.id('SpecifyInvoiceButton')).tap();
 		await expect(element(by.text('123'))).not.toBeVisible();
 		await expect(element(by.id('ReceiveNote'))).not.toHaveText(note);
+		await expect(element(by.text(tag))).not.toBeVisible();
+
+		// previous tags
+		await element(by.id('TagsAdd')).tap();
+		await element(by.id(`Tag-${tag}`)).tap();
+		await expect(element(by.text(tag))).toBeVisible();
+		await element(by.id('TagsAdd')).tap();
+		await element(by.id(`Tag-${tag}-close`)).tap();
 		await expect(element(by.text(tag))).not.toBeVisible();
 
 		markComplete('receive-1-1');

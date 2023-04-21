@@ -96,8 +96,9 @@ const SendNavigation = (): ReactElement => {
 
 	const initialRouteName = screen ?? 'Recipient';
 
-	const onOpen = (): void => {
-		setupOnChainTransaction();
+	const onOpen = async (): Promise<void> => {
+		resetOnChainTransaction();
+		await setupOnChainTransaction();
 		setupFeeForOnChainTransaction();
 	};
 
@@ -105,8 +106,8 @@ const SendNavigation = (): ReactElement => {
 		<BottomSheetWrapper
 			view="sendNavigation"
 			snapPoints={snapPoints}
-			onClose={resetOnChainTransaction}
-			onOpen={onOpen}>
+			onOpen={onOpen}
+			onClose={resetOnChainTransaction}>
 			<NavigationContainer key={isOpen.toString()} ref={navigationRef}>
 				<Stack.Navigator
 					initialRouteName={initialRouteName}

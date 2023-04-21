@@ -33,6 +33,7 @@ interface IMoney {
 	enableHide?: boolean; // if true and settings.hideBalance === true it will replace number with dots
 	sign?: string;
 	style?: StyleProp<ViewStyle>;
+	testID?: string;
 	size?:
 		| 'display'
 		| 'text01s'
@@ -58,6 +59,7 @@ const Money = (props: IMoney): ReactElement => {
 	const color = props.color;
 	const hide = (props.enableHide ?? false) && hideBalance;
 	const sign = props.sign;
+	const testID = props.testID;
 
 	const dv = useDisplayValues(
 		sats,
@@ -158,7 +160,7 @@ const Money = (props: IMoney): ReactElement => {
 	}
 
 	return (
-		<View style={[styles.root, props.style]}>
+		<View style={[styles.root, props.style]} testID={testID}>
 			{sign && (
 				<Text
 					style={styles.sign}
@@ -169,27 +171,17 @@ const Money = (props: IMoney): ReactElement => {
 				</Text>
 			)}
 			{showSymbol && symbol}
-			<Text
-				style={styles.integer}
-				lineHeight={lineHeight}
-				color={color}
-				testID="MoneyPrimary">
+			<Text lineHeight={lineHeight} color={color} testID="MoneyPrimary">
 				{prim}
 			</Text>
 			{secd !== '' && (
-				<Text
-					style={styles.decimal}
-					lineHeight={lineHeight}
-					color="white5"
-					testID="MoneySecondary">
+				<Text lineHeight={lineHeight} color="white5" testID="MoneySecondary">
 					{secd}
 				</Text>
 			)}
 		</View>
 	);
 };
-
-export default memo(Money);
 
 const styles = StyleSheet.create({
 	root: {
@@ -202,6 +194,6 @@ const styles = StyleSheet.create({
 	symbol: {
 		marginRight: 4,
 	},
-	integer: {},
-	decimal: {},
 });
+
+export default memo(Money);

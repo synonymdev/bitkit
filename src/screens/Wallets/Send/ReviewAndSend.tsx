@@ -31,7 +31,6 @@ import SwipeToConfirm from '../../../components/SwipeToConfirm';
 import AmountToggle from '../../../components/AmountToggle';
 import Tag from '../../../components/Tag';
 import ContactSmall from '../../../components/ContactSmall';
-import { IOutput } from '../../../store/types/wallet';
 import {
 	broadcastTransaction,
 	createTransaction,
@@ -75,6 +74,8 @@ import {
 import {
 	bitcoinUnitSelector,
 	enableSendAmountWarningSelector,
+	pinForPaymentsSelector,
+	pinSelector,
 } from '../../../store/reselect/settings';
 import { onChainFeesSelector } from '../../../store/reselect/fees';
 import { updateOnChainActivityList } from '../../../store/actions/activity';
@@ -118,11 +119,9 @@ const ReviewAndSend = ({
 	const exchangeRates = useSelector(exchangeRatesSelector);
 	const feeEstimates = useSelector(onChainFeesSelector);
 	const enableSendAmountWarning = useSelector(enableSendAmountWarningSelector);
-	const pin = useSelector((state: Store) => state.settings.pin);
+	const pin = useSelector(pinSelector);
+	const pinForPayments = useSelector(pinForPaymentsSelector);
 	const biometrics = useSelector((state: Store) => state.settings.biometrics);
-	const pinForPayments = useSelector(
-		(state: Store) => state.settings.pinForPayments,
-	);
 
 	const [isLoading, setIsLoading] = useState(false);
 	const [showBiotmetrics, setShowBiometrics] = useState(false);
@@ -165,64 +164,23 @@ const ReviewAndSend = ({
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [transaction.lightningInvoice]);
 
-	const totalFee = transaction.fee;
-
 	/*
 	 * Total value of all outputs. Excludes change address.
 	 */
 	const amount = useMemo((): number => {
-		try {
-			return getTransactionOutputValue({
-				selectedWallet,
-				selectedNetwork,
-			});
-		} catch {
-			return 0;
-		}
+		return getTransactionOutputValue({
+			selectedWallet,
+			selectedNetwork,
+		});
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [transaction.outputs, selectedNetwork, selectedWallet]);
 
-	const transactionTotal = useMemo((): number => {
-		return amount + totalFee;
-	}, [amount, totalFee]);
-
-	// TODO:
-	const index = 0;
-
-	/**
-	 * Returns the current output by index.
-	 */
-	const getOutput = useMemo((): IOutput => {
-		return transaction.outputs[index] ?? { address: '', value: 0, index: 0 };
-	}, [index, transaction.outputs]);
-
-	/**
-	 * Returns the current address to send funds to.
-	 */
-	const address = useMemo((): string => {
-		return getOutput.address ?? '';
-	}, [getOutput.address]);
-
-	const selectedFeeId = useMemo(
-		() => transaction.selectedFeeId,
-		[transaction.selectedFeeId],
-	);
-
-	const satsPerByte = useMemo((): number => {
-		return transaction.satsPerByte;
-	}, [transaction.satsPerByte]);
-
-	const getFee = useCallback(
-		(_satsPerByte: number) => {
-			return getTotalFee({
-				satsPerByte: _satsPerByte,
-				message: transaction.message,
-				selectedWallet,
-				selectedNetwork,
-			});
-		},
-		[selectedNetwork, selectedWallet, transaction.message],
-	);
+	// TODO: add support for multiple outputs
+	const outputIndex = 0;
+	const transactionTotal = amount + transaction.fee;
+	const selectedFeeId = transaction.selectedFeeId;
+	const satsPerByte = transaction.satsPerByte;
+	const address = transaction.outputs[outputIndex].address ?? '';
 
 	useEffect(() => {
 		setupFeeForOnChainTransaction();
@@ -250,10 +208,9 @@ const ReviewAndSend = ({
 		let customSatAmount = 0;
 		if (
 			amountRequestedFromInvoice <= 0 &&
-			transaction.outputs &&
 			(transaction.outputs[0].value ?? 0) > 0
 		) {
-			customSatAmount = transaction.outputs[0].value ?? 0;
+			customSatAmount = transaction.outputs[0].value;
 		}
 		const payInvoiceResponse = await payLightningInvoice(
 			transaction.lightningInvoice,
@@ -384,7 +341,20 @@ const ReviewAndSend = ({
 		}
 	}, [rawTx, _broadcast]);
 
-	const feeSats = getFee(satsPerByte);
+	const feeSats = useMemo(() => {
+		return getTotalFee({
+			satsPerByte: transaction.satsPerByte,
+			message: transaction.message,
+			selectedWallet,
+			selectedNetwork,
+		});
+	}, [
+		transaction.satsPerByte,
+		transaction.message,
+		selectedWallet,
+		selectedNetwork,
+	]);
+
 	const totalFeeDisplay = useDisplayValues(feeSats);
 	const feeAmount =
 		totalFeeDisplay.fiatFormatted !== '—'

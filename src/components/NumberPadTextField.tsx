@@ -14,11 +14,10 @@ import MoneySymbol from './MoneySymbol';
 import { EBalanceUnit, EBitcoinUnit } from '../store/types/wallet';
 import { balanceUnitSelector } from '../store/reselect/settings';
 import {
-	fiatToBitcoinUnit,
+	convertToSats,
 	getDisplayValues,
 	getFiatDisplayValuesForFiat,
 } from '../utils/exchange-rate';
-import { btcToSats } from '../utils/helpers';
 
 const NumberPadTextField = ({
 	value,
@@ -47,17 +46,7 @@ const NumberPadTextField = ({
 		placeholder = `0.${placeholderFractional}`;
 	}
 
-	// convert to sats for secondary
-	let satoshis = Number(value);
-	if (unit === EBalanceUnit.BTC) {
-		satoshis = btcToSats(satoshis);
-	}
-	if (unit === EBalanceUnit.fiat) {
-		satoshis = fiatToBitcoinUnit({
-			fiatValue: satoshis,
-			bitcoinUnit: EBitcoinUnit.satoshi,
-		});
-	}
+	const satoshis = convertToSats(value, unit);
 
 	if (value) {
 		const [integer, fractional] = value.split('.');
@@ -108,8 +97,14 @@ const NumberPadTextField = ({
 			/>
 			<View style={styles.main}>
 				<MoneySymbol style={styles.symbol} unit={unit} />
-				{value !== placeholder && <Display color="white">{value}</Display>}
-				<Display color="gray1">{placeholder}</Display>
+				{value !== placeholder && (
+					<Display color="white" lineHeight="57px">
+						{value}
+					</Display>
+				)}
+				<Display color="gray1" lineHeight="57px">
+					{placeholder}
+				</Display>
 			</View>
 		</Pressable>
 	);
@@ -118,7 +113,8 @@ const NumberPadTextField = ({
 const styles = StyleSheet.create({
 	main: {
 		flexDirection: 'row',
-		marginTop: 18,
+		alignItems: 'center',
+		marginTop: 9,
 	},
 	symbol: {
 		marginRight: 4,

@@ -4,6 +4,7 @@ import { gestureHandlerRootHOC } from 'react-native-gesture-handler';
 
 import Root from './Root';
 import { name as appName } from './app.json';
+import { __DISABLE_LOOP_ANIMATION__ } from './src/constants/env';
 
 // TEMP: disable font scaling for globally
 Text.defaultProps = Text.defaultProps || {};
@@ -26,6 +27,11 @@ if (__DEV__) {
 
 	// ignore warnings
 	LogBox.ignoreLogs(ignoreList);
+
+	// disable all logs for E2E tests running in debug mode
+	if (__DISABLE_LOOP_ANIMATION__) {
+		LogBox.ignoreAllLogs();
+	}
 
 	// ignore errors
 	const errorWarn = global.console.error;
