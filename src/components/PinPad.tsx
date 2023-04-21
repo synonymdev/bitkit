@@ -39,17 +39,17 @@ const PinPad = ({
 	const [attemptsRemaining, setAttemptsRemaining] = useState(0);
 	const { brand, brand08 } = useColors();
 
-	const handleOnPress = (number: number | string): void => {
-		if (pin.length !== 4) {
-			vibrate();
-			setPin((p) => p + String(number));
-		}
-	};
-
-	const handleOnRemove = (): void => {
-		if (pin.length !== 0) {
-			vibrate();
-			setPin((p) => p.slice(0, -1));
+	const handleOnPress = (key: string): void => {
+		if (key === 'delete') {
+			if (pin.length !== 0) {
+				vibrate();
+				setPin((p) => p.slice(0, -1));
+			}
+		} else {
+			if (pin.length !== 4) {
+				vibrate();
+				setPin((p) => p + key);
+			}
 		}
 	};
 
@@ -205,7 +205,6 @@ const PinPad = ({
 							style={styles.numberpad}
 							type="simple"
 							onPress={handleOnPress}
-							onRemove={handleOnRemove}
 						/>
 					</AnimatedView>
 				)}

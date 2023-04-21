@@ -7,7 +7,7 @@ import {
 } from '@react-navigation/native-stack';
 
 import BottomSheetWrapper from '../../components/BottomSheetWrapper';
-import Receive from '../../screens/Wallets/Receive';
+import ReceiveQR from '../../screens/Wallets/Receive/ReceiveQR';
 import ReceiveDetails from '../../screens/Wallets/Receive/ReceiveDetails';
 import Tags from '../../screens/Wallets/Receive/Tags';
 import { useSnapPoints } from '../../hooks/bottomSheet';
@@ -18,7 +18,7 @@ export type ReceiveNavigationProp =
 	NativeStackNavigationProp<ReceiveStackParamList>;
 
 export type ReceiveStackParamList = {
-	Receive: undefined;
+	ReceiveQR: undefined;
 	ReceiveDetails: undefined;
 	Tags: undefined;
 };
@@ -36,14 +36,15 @@ const ReceiveNavigation = (): ReactElement => {
 	);
 
 	return (
-		<BottomSheetWrapper view="receiveNavigation" snapPoints={snapPoints}>
+		<BottomSheetWrapper
+			view="receiveNavigation"
+			snapPoints={snapPoints}
+			testID="ReceiveScreen">
 			<NavigationContainer key={isOpen.toString()}>
 				<Stack.Navigator screenOptions={navOptions}>
-					<Stack.Group screenOptions={navOptions}>
-						<Stack.Screen name="Receive" component={Receive} />
-						<Stack.Screen name="ReceiveDetails" component={ReceiveDetails} />
-						<Stack.Screen name="Tags" component={Tags} />
-					</Stack.Group>
+					<Stack.Screen name="ReceiveQR" component={ReceiveQR} />
+					<Stack.Screen name="ReceiveDetails" component={ReceiveDetails} />
+					<Stack.Screen name="Tags" component={Tags} />
 				</Stack.Navigator>
 			</NavigationContainer>
 		</BottomSheetWrapper>

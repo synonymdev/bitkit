@@ -1,6 +1,5 @@
 import Store from '../types';
 import { createSelector } from '@reduxjs/toolkit';
-import { EBalanceUnit, EBitcoinUnit } from '../types/wallet';
 import {
 	ICustomElectrumPeer,
 	ISettings,
@@ -9,7 +8,6 @@ import {
 	TReceiveOption,
 	TTheme,
 	ETransactionSpeed,
-	TUnitPreference,
 } from '../types/settings';
 import { TAvailableNetworks } from '../../utils/networks';
 import themes, { IThemeColors } from '../../styles/themes';
@@ -23,13 +21,13 @@ export const selectedCurrencySelector = createSelector(
 	[settingsState],
 	(settings): string => settings.selectedCurrency,
 );
+export const balanceUnitSelector = createSelector(
+	[settingsState],
+	(settings) => settings.balanceUnit,
+);
 export const bitcoinUnitSelector = createSelector(
 	[settingsState],
-	(settings): EBitcoinUnit => settings.bitcoinUnit,
-);
-export const unitPreferenceSelector = createSelector(
-	[settingsState],
-	(settings): TUnitPreference => settings.unitPreference,
+	(settings) => settings.bitcoinUnit,
 );
 export const coinSelectAutoSelector = createSelector(
 	[settingsState],
@@ -38,10 +36,6 @@ export const coinSelectAutoSelector = createSelector(
 export const hideOnboardingMessageSelector = createSelector(
 	[settingsState],
 	(settings): boolean => settings.hideOnboardingMessage,
-);
-export const balanceUnitSelector = createSelector(
-	[settingsState],
-	(settings): EBalanceUnit => settings.balanceUnit,
 );
 export const hideBalanceSelector = createSelector(
 	[settingsState],

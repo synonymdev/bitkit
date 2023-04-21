@@ -45,7 +45,7 @@ const GeneralSettings = ({
 						value:
 							selectedBitcoinUnit === 'BTC'
 								? t('general.unit_bitcoin')
-								: t('general.unit_sathoshis'),
+								: t('general.unit_satoshis'),
 						type: EItemType.button,
 						onPress: (): void => navigation.navigate('BitcoinUnitSettings'),
 						testID: 'BitcoinUnitSettings',

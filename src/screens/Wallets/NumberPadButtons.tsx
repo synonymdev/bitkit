@@ -10,11 +10,8 @@ import { updateSettings } from '../../store/actions/settings';
 import useDisplayValues from '../../hooks/displayValues';
 import { IColors } from '../../styles/colors';
 import { transactionMaxSelector } from '../../store/reselect/wallet';
-import {
-	bitcoinUnitSelector,
-	unitPreferenceSelector,
-} from '../../store/reselect/settings';
-import { EBitcoinUnit } from '../../store/types/wallet';
+import { balanceUnitSelector } from '../../store/reselect/settings';
+import { EBalanceUnit, EBitcoinUnit } from '../../store/types/wallet';
 import { useBalance } from '../../hooks/wallet';
 
 type NumberPadButtons = {
@@ -32,24 +29,27 @@ const NumberPadButtons = ({
 }: NumberPadButtons): ReactElement => {
 	const { t } = useTranslation('wallet');
 	const { satoshis } = useBalance({ onchain: true, lightning: true });
-	const bitcoinUnit = useSelector(bitcoinUnitSelector);
-	const unitPreference = useSelector(unitPreferenceSelector);
+	const unit = useSelector(balanceUnitSelector);
 	const isMaxSendAmount = useSelector(transactionMaxSelector);
-
 	const displayValues = useDisplayValues(satoshis);
 
 	// BTC -> satoshi -> fiat
 	const nextUnit = useMemo(() => {
-		if (unitPreference === 'asset') {
-			return bitcoinUnit === EBitcoinUnit.BTC ? EBitcoinUnit.satoshi : 'fiat';
+		if (unit === EBalanceUnit.BTC) {
+			return EBalanceUnit.satoshi;
 		}
-		return EBitcoinUnit.BTC;
-	}, [bitcoinUnit, unitPreference]);
+		if (unit === EBalanceUnit.satoshi) {
+			return EBalanceUnit.fiat;
+		}
+		return EBalanceUnit.BTC;
+	}, [unit]);
 
 	const onChangeUnit = (): void => {
 		updateSettings({
-			unitPreference: nextUnit === 'fiat' ? 'fiat' : 'asset',
-			...(nextUnit !== 'fiat' && { bitcoinUnit: nextUnit }),
+			balanceUnit: nextUnit,
+			...(nextUnit !== EBalanceUnit.fiat && {
+				bitcoinUnit: nextUnit as unknown as EBitcoinUnit,
+			}),
 		});
 	};
 

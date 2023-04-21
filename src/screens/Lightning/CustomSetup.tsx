@@ -23,7 +23,6 @@ import { useExchangeRate } from '../../hooks/displayValues';
 import AmountToggle from '../../components/AmountToggle';
 import NumberPadLightning from './NumberPadLightning';
 import type { LightningScreenProps } from '../../navigation/types';
-import Store from '../../store/types';
 import { useBalance } from '../../hooks/wallet';
 import {
 	resetOnChainTransaction,
@@ -38,10 +37,10 @@ import { objectKeys } from '../../utils/objectKeys';
 import { showErrorNotification } from '../../utils/notifications';
 import { startChannelPurchase } from '../../store/actions/blocktank';
 import { convertCurrency } from '../../utils/blocktank';
-import { EBitcoinUnit } from '../../store/types/wallet';
+import { EBalanceUnit, EBitcoinUnit } from '../../store/types/wallet';
 import {
+	balanceUnitSelector,
 	selectedCurrencySelector,
-	unitPreferenceSelector,
 } from '../../store/reselect/settings';
 import {
 	blocktankProductIdSelector,
@@ -101,7 +100,6 @@ const CustomSetup = ({
 	const { t } = useTranslation('lightning');
 	const [loading, setLoading] = useState(false);
 	const currentBalance = useBalance({ onchain: true });
-	const bitcoinUnit = useSelector((state: Store) => state.settings.bitcoinUnit);
 	const selectedCurrency = useSelector(selectedCurrencySelector);
 
 	const spending = route.params?.spending;
@@ -128,20 +126,10 @@ const CustomSetup = ({
 		TPackages[]
 	>([]);
 	const productId = useSelector(blocktankProductIdSelector);
-	const unitPreference = useSelector(unitPreferenceSelector);
+	const unit = useSelector(balanceUnitSelector);
 	const selectedNetwork = useSelector(selectedNetworkSelector);
 	const selectedWallet = useSelector(selectedWalletSelector);
 	const blocktankService = useSelector(blocktankServiceSelector);
-
-	const unit = useMemo(() => {
-		if (unitPreference === 'fiat') {
-			return 'fiat';
-		}
-		if (bitcoinUnit === 'BTC') {
-			return 'BTC';
-		}
-		return 'satoshi';
-	}, [bitcoinUnit, unitPreference]);
 
 	const fiatToSats = useCallback(
 		(fiatValue = 0): number => {
@@ -505,7 +493,7 @@ const CustomSetup = ({
 						)}
 						<AmountToggle
 							sats={amount}
-							unit="fiat"
+							unit={EBalanceUnit.fiat}
 							onPress={(): void => setKeybrd((k) => !k)}
 						/>
 					</View>

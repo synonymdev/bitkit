@@ -11,13 +11,14 @@ const ui = (state: IUi = defaultUiShape, action): IUi => {
 			};
 		}
 
-		case actions.SET_APP_UPDATE_INFO:
+		case actions.SET_APP_UPDATE_INFO: {
 			return {
 				...state,
 				availableUpdate: action.payload,
 			};
+		}
 
-		case actions.SHOW_SHEET:
+		case actions.SHOW_SHEET: {
 			return {
 				...state,
 				viewControllers: {
@@ -28,8 +29,9 @@ const ui = (state: IUi = defaultUiShape, action): IUi => {
 					},
 				},
 			};
+		}
 
-		case actions.CLOSE_SHEET:
+		case actions.CLOSE_SHEET: {
 			return {
 				...state,
 				viewControllers: {
@@ -37,8 +39,9 @@ const ui = (state: IUi = defaultUiShape, action): IUi => {
 					[action.payload]: defaultViewControllers[action.payload],
 				},
 			};
+		}
 
-		case actions.UPDATE_PROFILE_LINK:
+		case actions.UPDATE_PROFILE_LINK: {
 			return {
 				...state,
 				profileLink: {
@@ -46,12 +49,15 @@ const ui = (state: IUi = defaultUiShape, action): IUi => {
 					url: action.payload.url ?? state.profileLink.url,
 				},
 			};
+		}
 
-		case actions.RESET_UI_STORE:
+		case actions.RESET_UI_STORE: {
 			return defaultUiShape;
+		}
 
-		default:
+		default: {
 			return state;
+		}
 	}
 };
 

@@ -42,7 +42,6 @@ export const ProfileLinkSuggestions = ({
 		<ThemedView style={styles.container}>
 			<SafeAreaInsets type="top" />
 			<NavigationHeader title={t('profile_link_suggestions_to_add')} />
-			<NavigationHeader title="" />
 			<View style={styles.buttons}>
 				{suggestions.map((suggestion) => (
 					<Button

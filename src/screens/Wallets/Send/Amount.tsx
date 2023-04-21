@@ -14,7 +14,7 @@ import Money from '../../../components/Money';
 import ProfileImage from '../../../components/ProfileImage';
 import Button from '../../../components/Button';
 import SendNumberPad from './SendNumberPad';
-import { EBitcoinUnit } from '../../../store/types/wallet';
+import { EBalanceUnit, EBitcoinUnit } from '../../../store/types/wallet';
 import {
 	getTransactionOutputValue,
 	getMaxSendAmount,
@@ -27,9 +27,8 @@ import {
 	transactionSelector,
 } from '../../../store/reselect/wallet';
 import {
-	bitcoinUnitSelector,
+	balanceUnitSelector,
 	coinSelectAutoSelector,
-	unitPreferenceSelector,
 } from '../../../store/reselect/settings';
 import { useProfile } from '../../../hooks/slashtags';
 import useDisplayValues from '../../../hooks/displayValues';
@@ -49,8 +48,7 @@ const Amount = ({ navigation }: SendScreenProps<'Amount'>): ReactElement => {
 	const selectedNetwork = useSelector(selectedNetworkSelector);
 	const coinSelectAuto = useSelector(coinSelectAutoSelector);
 	const transaction = useSelector(transactionSelector);
-	const bitcoinUnit = useSelector(bitcoinUnitSelector);
-	const unitPreference = useSelector(unitPreferenceSelector);
+	const unit = useSelector(balanceUnitSelector);
 	const isMaxSendAmount = useSelector(transactionMaxSelector);
 
 	const buttonContainerStyles = useMemo(
@@ -93,22 +91,27 @@ const Amount = ({ navigation }: SendScreenProps<'Amount'>): ReactElement => {
 
 	const availableAmountProps = useMemo(() => {
 		return {
-			...(unitPreference !== 'fiat' ? { symbol: true } : { showFiat: true }),
+			...(unit !== EBalanceUnit.fiat ? { symbol: true } : { showFiat: true }),
 		};
-	}, [unitPreference]);
+	}, [unit]);
 
 	// BTC -> satoshi -> fiat
 	const nextUnit = useMemo(() => {
-		if (unitPreference === 'asset') {
-			return bitcoinUnit === EBitcoinUnit.BTC ? EBitcoinUnit.satoshi : 'fiat';
+		if (unit === EBalanceUnit.BTC) {
+			return EBalanceUnit.satoshi;
 		}
-		return EBitcoinUnit.BTC;
-	}, [bitcoinUnit, unitPreference]);
+		if (unit === EBalanceUnit.satoshi) {
+			return EBalanceUnit.fiat;
+		}
+		return EBalanceUnit.BTC;
+	}, [unit]);
 
 	const onChangeUnit = (): void => {
 		updateSettings({
-			unitPreference: nextUnit === 'fiat' ? 'fiat' : 'asset',
-			...(nextUnit !== 'fiat' && { bitcoinUnit: nextUnit }),
+			balanceUnit: nextUnit,
+			...(nextUnit !== EBalanceUnit.fiat && {
+				bitcoinUnit: nextUnit as unknown as EBitcoinUnit,
+			}),
 		});
 	};
 
@@ -147,7 +150,12 @@ const Amount = ({ navigation }: SendScreenProps<'Amount'>): ReactElement => {
 				}
 			/>
 			<View style={styles.content}>
-				<AmountToggle sats={amount} reverse={true} space={16} />
+				<AmountToggle
+					sats={amount}
+					reverse={true}
+					decimalLength="long"
+					space={16}
+				/>
 
 				<View style={styles.numberPad}>
 					<View style={styles.actions}>
@@ -163,6 +171,7 @@ const Amount = ({ navigation }: SendScreenProps<'Amount'>): ReactElement => {
 								key="small"
 								sats={availableAmount}
 								size="caption13M"
+								decimalLength="long"
 								{...availableAmountProps}
 							/>
 						</View>

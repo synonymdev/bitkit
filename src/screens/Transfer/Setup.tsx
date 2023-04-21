@@ -197,7 +197,6 @@ const Setup = ({ navigation }: TransferScreenProps<'Setup'>): ReactElement => {
 						)}
 						<AmountToggle
 							sats={spendingAmount}
-							unit="fiat"
 							onPress={(): void => setKeybrd(true)}
 						/>
 					</View>

@@ -19,7 +19,7 @@ import {
 import { Caption13Up, Text02B } from '../../../styles/text';
 import { SwitchIcon, TagIcon } from '../../../styles/icons';
 import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
-import AmountToggle from '../../../components/AmountToggle';
+import NumberPadTextField from '../../../components/NumberPadTextField';
 import Button from '../../../components/Button';
 import Tag from '../../../components/Tag';
 import {
@@ -29,17 +29,15 @@ import {
 import useKeyboard, { Keyboard } from '../../../hooks/keyboard';
 import GradientView from '../../../components/GradientView';
 import ReceiveNumberPad from './ReceiveNumberPad';
-import useDisplayValues from '../../../hooks/displayValues';
+import { useCurrency } from '../../../hooks/displayValues';
 import { ReceiveScreenProps } from '../../../navigation/types';
-import { EBitcoinUnit } from '../../../store/types/wallet';
+import { EBalanceUnit, EBitcoinUnit } from '../../../store/types/wallet';
 import { updateSettings } from '../../../store/actions/settings';
 import { receiveSelector } from '../../../store/reselect/receive';
-import {
-	bitcoinUnitSelector,
-	unitPreferenceSelector,
-} from '../../../store/reselect/settings';
+import { balanceUnitSelector } from '../../../store/reselect/settings';
 import GlowImage from '../../../components/GlowImage';
 import { useScreenSize } from '../../../hooks/screen';
+import { getNumberPadText } from '../../../utils/numberpad';
 
 const imageSrc = require('../../../assets/illustrations/coin-stack-4.png');
 
@@ -53,9 +51,8 @@ const ReceiveDetails = ({
 	const [isInputFocused, setIsInputFocused] = useState(false);
 	const [showNumberPad, setShowNumberPad] = useState(false);
 	const invoice = useSelector(receiveSelector);
-	const bitcoinUnit = useSelector(bitcoinUnitSelector);
-	const unitPreference = useSelector(unitPreferenceSelector);
-	const displayValues = useDisplayValues(invoice.amount);
+	const unit = useSelector(balanceUnitSelector);
+	const { fiatTicker } = useCurrency();
 
 	const buttonContainerStyles = useMemo(
 		() => ({
@@ -72,23 +69,35 @@ const ReceiveDetails = ({
 
 	// BTC -> satoshi -> fiat
 	const nextUnit = useMemo(() => {
-		if (unitPreference === 'asset') {
-			return bitcoinUnit === EBitcoinUnit.BTC ? EBitcoinUnit.satoshi : 'fiat';
+		if (unit === EBalanceUnit.BTC) {
+			return EBalanceUnit.satoshi;
 		}
-		return EBitcoinUnit.BTC;
-	}, [bitcoinUnit, unitPreference]);
+		if (unit === EBalanceUnit.satoshi) {
+			return EBalanceUnit.fiat;
+		}
+		return EBalanceUnit.BTC;
+	}, [unit]);
 
 	const onChangeUnit = (): void => {
+		const result = getNumberPadText(invoice.amount, nextUnit);
+		updateInvoice({ numberPadText: result });
+
 		updateSettings({
-			unitPreference: nextUnit === 'fiat' ? 'fiat' : 'asset',
-			...(nextUnit !== 'fiat' && { bitcoinUnit: nextUnit }),
+			balanceUnit: nextUnit,
+			...(nextUnit !== EBalanceUnit.fiat && {
+				bitcoinUnit: nextUnit as unknown as EBitcoinUnit,
+			}),
 		});
 	};
 
 	const onNavigateBack = useCallback(async () => {
 		await Keyboard.dismiss();
-		navigation.navigate('Receive');
+		navigation.navigate('ReceiveQR');
 	}, [navigation]);
+
+	const onContinue = useCallback(() => {
+		setShowNumberPad(false);
+	}, []);
 
 	return (
 		<GradientView style={styles.container}>
@@ -97,11 +106,9 @@ const ReceiveDetails = ({
 				displayBackButton={false}
 			/>
 			<View style={styles.content}>
-				<AmountToggle
-					sats={invoice.amount}
-					reverse={true}
-					space={16}
-					testID="ReceiveAmountToggle"
+				<NumberPadTextField
+					value={invoice.numberPadText}
+					testID="ReceiveNumberPadTextField"
 					onPress={(): void => setShowNumberPad(true)}
 				/>
 
@@ -122,6 +129,7 @@ const ReceiveDetails = ({
 									autoCorrect={false}
 									blurOnSubmit={true}
 									returnKeyType="done"
+									testID="ReceiveNote"
 									onFocus={(): void => setIsInputFocused(true)}
 									onBlur={(): void => setIsInputFocused(false)}
 									onChangeText={(txt): void => {
@@ -157,10 +165,8 @@ const ReceiveDetails = ({
 										color="white04"
 										text={t('tags_add')}
 										icon={<TagIcon color="brand" width={16} />}
-										onPress={(): void => {
-											navigation.navigate('Tags');
-										}}
 										testID="TagsAdd"
+										onPress={(): void => navigation.navigate('Tags')}
 									/>
 								</View>
 
@@ -178,8 +184,8 @@ const ReceiveDetails = ({
 							<Button
 								size="large"
 								text={t('receive_show_qr')}
-								onPress={onNavigateBack}
 								testID="ShowQrReceive"
+								onPress={onNavigateBack}
 							/>
 						</View>
 					</>
@@ -202,7 +208,7 @@ const ReceiveDetails = ({
 											color="brand">
 											{nextUnit === 'BTC' && 'BTC'}
 											{nextUnit === 'satoshi' && 'sats'}
-											{nextUnit === 'fiat' && displayValues.fiatTicker}
+											{nextUnit === 'fiat' && fiatTicker}
 										</Text02B>
 									</TouchableOpacity>
 								</View>
@@ -215,7 +221,8 @@ const ReceiveDetails = ({
 							<Button
 								size="large"
 								text={t('continue')}
-								onPress={(): void => setShowNumberPad(false)}
+								testID="ReceiveNumberPadSubmit"
+								onPress={onContinue}
 							/>
 						</View>
 					</View>

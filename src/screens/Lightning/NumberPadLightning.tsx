@@ -3,15 +3,15 @@ import { StyleSheet } from 'react-native';
 import { useSelector } from 'react-redux';
 
 import NumberPad from '../../components/NumberPad';
-import useDisplayValues, { useExchangeRate } from '../../hooks/displayValues';
+import { useExchangeRate } from '../../hooks/displayValues';
+import useDisplayValues from '../../hooks/displayValues__deprecated';
 import { fiatToBitcoinUnit } from '../../utils/exchange-rate';
 import { btcToSats } from '../../utils/helpers';
 import NumberPadButtons from '../Wallets/NumberPadButtons';
-import { EBitcoinUnit } from '../../store/types/wallet';
+import { EBalanceUnit, EBitcoinUnit } from '../../store/types/wallet';
 import {
-	bitcoinUnitSelector,
+	balanceUnitSelector,
 	selectedCurrencySelector,
-	unitPreferenceSelector,
 } from '../../store/reselect/settings';
 
 const NumberPadLightning = ({
@@ -30,15 +30,19 @@ const NumberPadLightning = ({
 	const [decimalMode, setDecimalMode] = useState(false);
 	const [prefixZeros, setPrefixZeros] = useState(0);
 
-	const bitcoinUnit = useSelector(bitcoinUnitSelector);
-	const unitPreference = useSelector(unitPreferenceSelector);
+	const unit = useSelector(balanceUnitSelector);
 	const currency = useSelector(selectedCurrencySelector);
 	const exchangeRate = useExchangeRate(currency);
 	const displayValue = useDisplayValues(sats);
 
-	const onPress = (key: number | string): void => {
+	const onPress = (key: string): void => {
 		let amount = '0';
 		let newAmount = 0;
+
+		if (key === 'delete') {
+			onRemove();
+			return;
+		}
 
 		if (key === '.') {
 			setDecimalMode(true);
@@ -47,48 +51,50 @@ const NumberPadLightning = ({
 			setDecimalMode(false);
 		}
 
-		if ((decimalMode || prefixZeros !== 0) && key === 0) {
+		if ((decimalMode || prefixZeros !== 0) && key === '0') {
 			setPrefixZeros((prevValue) => prevValue + 1);
 			return;
 		} else {
 			setPrefixZeros(0);
 		}
 
-		if (unitPreference === 'asset') {
-			if (bitcoinUnit === 'BTC') {
-				amount = displayValue.bitcoinFormatted;
-				amount = String(parseFloat(amount));
+		if (unit === EBalanceUnit.BTC) {
+			amount = displayValue.bitcoinFormatted;
+			amount = String(parseFloat(amount));
 
-				const [, decimals] = amount.split('.');
-				if (decimals?.length > 7) {
-					return;
-				}
-
-				if (decimals?.length > 0 && key === 0) {
-					setPrefixZeros((prevValue) => prevValue + 1);
-					return;
-				}
-
-				if (prefixZeros !== 0) {
-					if (decimals?.length > 0) {
-						amount = `${amount}${'0'.repeat(prefixZeros)}${key}`;
-					} else {
-						amount = `${amount}.${'0'.repeat(prefixZeros)}${key}`;
-					}
-				} else {
-					if (decimalMode) {
-						amount = `${amount}.${key}`;
-					} else {
-						amount = `${amount}${key}`;
-					}
-				}
-
-				newAmount = btcToSats(Number(amount));
-			} else {
-				amount = String(sats);
-				newAmount = Number(`${amount}${key}`);
+			const [, decimals] = amount.split('.');
+			if (decimals?.length > 7) {
+				return;
 			}
-		} else {
+
+			if (decimals?.length > 0 && key === '0') {
+				setPrefixZeros((prevValue) => prevValue + 1);
+				return;
+			}
+
+			if (prefixZeros !== 0) {
+				if (decimals?.length > 0) {
+					amount = `${amount}${'0'.repeat(prefixZeros)}${key}`;
+				} else {
+					amount = `${amount}.${'0'.repeat(prefixZeros)}${key}`;
+				}
+			} else {
+				if (decimalMode) {
+					amount = `${amount}.${key}`;
+				} else {
+					amount = `${amount}${key}`;
+				}
+			}
+
+			newAmount = btcToSats(Number(amount));
+		}
+
+		if (unit === EBalanceUnit.satoshi) {
+			amount = String(sats);
+			newAmount = Number(`${amount}${key}`);
+		}
+
+		if (unit === EBalanceUnit.fiat) {
 			amount = displayValue.fiatValue.toString();
 
 			const [, decimals] = amount.split('.');
@@ -96,7 +102,7 @@ const NumberPadLightning = ({
 				return;
 			}
 
-			if (decimals?.length > 0 && key === 0) {
+			if (decimals?.length > 0 && key === '0') {
 				setPrefixZeros((prevValue) => prevValue + 1);
 				return;
 			}
@@ -135,20 +141,21 @@ const NumberPadLightning = ({
 		let amount = '0';
 		let newAmount = '0';
 
-		if (unitPreference === 'asset') {
-			if (bitcoinUnit === 'BTC') {
-				amount = displayValue.bitcoinFormatted;
-				amount = String(parseFloat(amount));
+		if (unit === EBalanceUnit.BTC) {
+			amount = displayValue.bitcoinFormatted;
+			amount = String(parseFloat(amount));
 
-				// remove last character
-				newAmount = amount.replace(/.$/, '');
+			// remove last character
+			newAmount = amount.replace(/.$/, '');
 
-				newAmount = String(btcToSats(Number(newAmount)));
-			} else {
-				amount = String(sats);
-				newAmount = amount.substring(0, amount.length - 1);
-			}
-		} else {
+			newAmount = String(btcToSats(Number(newAmount)));
+		}
+
+		if (unit === EBalanceUnit.satoshi) {
+			amount = String(sats);
+			newAmount = amount.substring(0, amount.length - 1);
+		}
+		if (unit === EBalanceUnit.fiat) {
 			amount = displayValue.fiatValue.toString();
 
 			// remove last character
@@ -167,17 +174,13 @@ const NumberPadLightning = ({
 		onChange(Number(newAmount));
 	};
 
-	const numberPadType =
-		unitPreference === 'asset' && bitcoinUnit === EBitcoinUnit.satoshi
-			? 'integer'
-			: 'decimal';
+	const numberPadType = unit === EBalanceUnit.satoshi ? 'integer' : 'decimal';
 
 	return (
 		<NumberPad
 			style={[styles.numberpad, style]}
 			type={numberPadType}
-			onPress={onPress}
-			onRemove={onRemove}>
+			onPress={onPress}>
 			<NumberPadButtons
 				color="purple"
 				onMaxPress={onMaxPress}

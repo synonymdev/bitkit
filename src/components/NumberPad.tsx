@@ -6,52 +6,53 @@ import { BackspaceIcon } from '../styles/icons';
 import { vibrate } from '../utils/helpers';
 
 const ACTIVE_OPACITY = 0.2;
-const digits = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0];
+const matrix = [
+	['1', '2', '3'],
+	['4', '5', '6'],
+	['7', '8', '9'],
+];
 
 const Button = memo(
 	({
-		num,
+		text,
+		hasError,
 		onPress,
 		testID,
 	}: {
-		num: number;
+		text: string;
 		onPress: () => void;
+		hasError?: boolean;
 		testID?: string;
-	}): ReactElement => {
-		return (
-			<TouchableOpacity
-				onPress={onPress}
-				activeOpacity={ACTIVE_OPACITY}
-				style={styles.buttonContainer}
-				color="transparent"
-				testID={testID}>
-				<Text style={styles.button}>{num}</Text>
-			</TouchableOpacity>
-		);
-	},
+	}): ReactElement => (
+		<TouchableOpacity
+			style={styles.buttonContainer}
+			color="transparent"
+			activeOpacity={ACTIVE_OPACITY}
+			testID={testID}
+			onPress={onPress}>
+			<Text style={[styles.button, hasError && styles.buttonError]}>
+				{text}
+			</Text>
+		</TouchableOpacity>
+	),
 );
 
 type NumberPad = {
 	type: 'simple' | 'integer' | 'decimal';
+	onPress: (key: string) => void;
+	errorKey?: string;
 	style?: StyleProp<ViewStyle>;
 	children?: ReactElement;
-	onPress: (key: number | string) => void;
-	onRemove: () => void;
 };
 
 const NumberPad = ({
-	onPress,
-	onRemove,
 	type,
+	errorKey,
 	style,
 	children,
+	onPress,
 }: NumberPad): ReactElement => {
-	const handleRemove = (): void => {
-		vibrate();
-		onRemove();
-	};
-
-	const handlePress = (key: number | string): void => {
+	const handlePress = (key: string): void => {
 		vibrate();
 		onPress(key);
 	};
@@ -59,93 +60,51 @@ const NumberPad = ({
 	return (
 		<View style={[styles.container, style]}>
 			{children}
-			<View style={styles.row}>
-				<Button
-					onPress={(): void => handlePress(digits[0])}
-					num={digits[0]}
-					testID="N1"
-				/>
-				<Button
-					onPress={(): void => handlePress(digits[1])}
-					num={digits[1]}
-					testID="N2"
-				/>
-				<Button
-					onPress={(): void => handlePress(digits[2])}
-					num={digits[2]}
-					testID="N3"
-				/>
-			</View>
 
-			<View style={styles.row}>
-				<Button
-					onPress={(): void => handlePress(digits[3])}
-					num={digits[3]}
-					testID="N4"
-				/>
-				<Button
-					onPress={(): void => handlePress(digits[4])}
-					num={digits[4]}
-					testID="N5"
-				/>
-				<Button
-					onPress={(): void => handlePress(digits[5])}
-					num={digits[5]}
-					testID="N6"
-				/>
-			</View>
-
-			<View style={styles.row}>
-				<Button
-					onPress={(): void => handlePress(digits[6])}
-					num={digits[6]}
-					testID="N7"
-				/>
-				<Button
-					onPress={(): void => handlePress(digits[7])}
-					num={digits[7]}
-					testID="N8"
-				/>
-				<Button
-					onPress={(): void => handlePress(digits[8])}
-					num={digits[8]}
-					testID="N9"
-				/>
-			</View>
+			{matrix.map((row, rowIndex) => (
+				<View style={styles.row} key={`row-${rowIndex}`}>
+					{row.map((number, columnIndex) => (
+						<Button
+							key={`button-${rowIndex}-${columnIndex}`}
+							text={number}
+							hasError={errorKey === number}
+							testID={`N${number}`}
+							onPress={(): void => handlePress(number)}
+						/>
+					))}
+				</View>
+			))}
 
 			<View style={styles.row}>
 				{type === 'simple' && <View style={styles.buttonContainer} />}
 				{type === 'integer' && (
-					<TouchableOpacity
+					<Button
+						text="000"
+						hasError={errorKey === '000'}
+						testID="N000"
 						onPress={(): void => handlePress('000')}
-						activeOpacity={ACTIVE_OPACITY}
-						style={styles.buttonContainer}
-						color="transparent"
-						testID="N000">
-						<Text style={styles.button}>000</Text>
-					</TouchableOpacity>
+					/>
 				)}
 				{type === 'decimal' && (
-					<TouchableOpacity
+					<Button
+						text="."
+						hasError={errorKey === '.'}
+						testID="NDecimal"
 						onPress={(): void => handlePress('.')}
-						activeOpacity={ACTIVE_OPACITY}
-						style={styles.buttonContainer}
-						color="transparent"
-						testID="NDecimal">
-						<Text style={styles.button}>.</Text>
-					</TouchableOpacity>
+					/>
 				)}
 				<Button
-					onPress={(): void => handlePress(digits[9])}
-					num={digits[9]}
+					text="0"
+					hasError={errorKey === '0'}
 					testID="N0"
+					onPress={(): void => handlePress('0')}
 				/>
 				<TouchableOpacity
-					onPress={handleRemove}
-					activeOpacity={ACTIVE_OPACITY}
 					style={styles.buttonContainer}
 					color="transparent"
-					testID="NRemove">
+					activeOpacity={ACTIVE_OPACITY}
+					testID="NRemove"
+					onPress={(): void => handlePress('delete')}>
 					<BackspaceIcon />
 				</TouchableOpacity>
 			</View>
@@ -158,6 +117,11 @@ const styles = StyleSheet.create({
 		flex: 1,
 		paddingBottom: 16,
 	},
+	row: {
+		flex: 1,
+		flexDirection: 'row',
+		justifyContent: 'space-evenly',
+	},
 	buttonContainer: {
 		flex: 1,
 		alignItems: 'center',
@@ -169,10 +133,8 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		textAlign: 'center',
 	},
-	row: {
-		flex: 1,
-		flexDirection: 'row',
-		justifyContent: 'space-evenly',
+	buttonError: {
+		color: '#ff6600',
 	},
 });
 

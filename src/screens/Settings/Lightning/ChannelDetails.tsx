@@ -25,6 +25,7 @@ import { getBlockExplorerLink } from '../../../utils/wallet/transactions';
 import { openURL } from '../../../utils/helpers';
 import { createOrderSupportLink } from '../../../utils/support';
 import Store from '../../../store/types';
+import { EBalanceUnit } from '../../../store/types/wallet';
 import {
 	selectedNetworkSelector,
 	selectedWalletSelector,
@@ -375,7 +376,7 @@ const ChannelDetails = ({
 									size="caption13M"
 									symbol={true}
 									color="white"
-									unit="satoshi"
+									unit={EBalanceUnit.satoshi}
 								/>
 							}
 						/>
@@ -394,7 +395,7 @@ const ChannelDetails = ({
 								size="caption13M"
 								symbol={true}
 								color="white"
-								unit="satoshi"
+								unit={EBalanceUnit.satoshi}
 							/>
 						}
 					/>
@@ -406,7 +407,7 @@ const ChannelDetails = ({
 								size="caption13M"
 								symbol={true}
 								color="white"
-								unit="satoshi"
+								unit={EBalanceUnit.satoshi}
 							/>
 						}
 					/>
@@ -418,7 +419,7 @@ const ChannelDetails = ({
 								size="caption13M"
 								symbol={true}
 								color="white"
-								unit="satoshi"
+								unit={EBalanceUnit.satoshi}
 							/>
 						}
 					/>
@@ -430,7 +431,7 @@ const ChannelDetails = ({
 								size="caption13M"
 								symbol={true}
 								color="white"
-								unit="satoshi"
+								unit={EBalanceUnit.satoshi}
 							/>
 						}
 					/>
@@ -449,7 +450,7 @@ const ChannelDetails = ({
 								size="caption13M"
 								symbol={true}
 								color="white"
-								unit="satoshi"
+								unit={EBalanceUnit.satoshi}
 							/>
 						}
 					/>
@@ -461,7 +462,7 @@ const ChannelDetails = ({
 								size="caption13M"
 								symbol={true}
 								color="white"
-								unit="satoshi"
+								unit={EBalanceUnit.satoshi}
 							/>
 						}
 					/>

@@ -1,5 +1,5 @@
 import React, { memo, ReactElement, useMemo } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import { useSelector } from 'react-redux';
 
 import {
@@ -14,15 +14,25 @@ import {
 } from '../styles/text';
 import { BIcon, LightningIcon } from '../styles/icons';
 import useDisplayValues from '../hooks/displayValues';
-import Store from '../store/types';
 import { abbreviateNumber } from '../utils/helpers';
-import { EBitcoinUnit } from '../store/types/wallet';
+import { EBalanceUnit, EBitcoinUnit } from '../store/types/wallet';
 import { IColors } from '../styles/colors';
+import {
+	bitcoinUnitSelector,
+	hideBalanceSelector,
+} from '../store/reselect/settings';
 
 interface IMoney {
 	sats: number;
 	showFiat?: boolean; // if true shows value in fiat, if false shows value in settings.bitcoinUnit. Can be overwritten by unit prop
-	unit?: 'fiat' | 'BTC' | 'satoshi'; // force value formatting
+	unit?: EBalanceUnit | EBitcoinUnit; // force value formatting
+	highlight?: boolean; // grey out decimals in fiat
+	decimalLength?: 'long' | 'short'; // whether to show 5 or 8 decimals for BTC
+	symbol?: boolean; // show symbol icon
+	color?: keyof IColors;
+	enableHide?: boolean; // if true and settings.hideBalance === true it will replace number with dots
+	sign?: string;
+	style?: StyleProp<ViewStyle>;
 	size?:
 		| 'display'
 		| 'text01s'
@@ -32,23 +42,18 @@ interface IMoney {
 		| 'caption13M'
 		| 'title'
 		| 'headline';
-	highlight?: boolean; // grey last 3 chars in sats/bitcoin or decimal in fiat
-	symbol?: boolean; // show symbol icon
-	color?: keyof IColors;
-	enableHide?: boolean; // if true and settings.hideBalance === true it will replace number with dots
-	style?: object;
-	sign?: string;
 }
 
 const Money = (props: IMoney): ReactElement => {
-	const bitcoinUnit = useSelector((state: Store) => state.settings.bitcoinUnit);
-	const hideBalance = useSelector((state: Store) => state.settings.hideBalance);
+	const bitcoinUnit = useSelector(bitcoinUnitSelector);
+	const hideBalance = useSelector(hideBalanceSelector);
 
 	const sats = Math.abs(props.sats);
 	const highlight = props.highlight ?? false;
+	const decimalLength = props.decimalLength ?? 'short';
 	const size = props.size ?? 'display';
 	const showFiat = props.showFiat ?? false;
-	const unit = props.unit ?? (showFiat ? 'fiat' : bitcoinUnit);
+	const unit = props.unit ?? (showFiat ? EBalanceUnit.fiat : bitcoinUnit);
 	const showSymbol = props.symbol ?? (unit === 'fiat' ? true : false);
 	const color = props.color;
 	const hide = (props.enableHide ?? false) && hideBalance;
@@ -56,12 +61,7 @@ const Money = (props: IMoney): ReactElement => {
 
 	const dv = useDisplayValues(
 		sats,
-		unit === 'fiat' ? EBitcoinUnit.BTC : (unit as EBitcoinUnit),
-	);
-
-	const style = useMemo(
-		() => StyleSheet.compose(styles.root, props.style),
-		[props.style],
+		unit === EBalanceUnit.fiat ? EBitcoinUnit.BTC : (unit as EBitcoinUnit),
 	);
 
 	const [Text, lineHeight, iconHeight, iconWidth] = useMemo(() => {
@@ -92,30 +92,30 @@ const Money = (props: IMoney): ReactElement => {
 			case 'fiat':
 				return (
 					<Text
+						style={styles.symbol}
 						lineHeight={lineHeight}
 						color={color ?? 'white5'}
-						style={styles.symbol}
-						testID="MoneyCurrencySymbol">
+						testID="MoneyFiatSymbol">
 						{dv.fiatSymbol}
 					</Text>
 				);
 			case 'satoshi':
 				return (
 					<LightningIcon
+						style={styles.symbol}
 						color={color ?? 'white5'}
 						height={iconHeight}
 						width={iconWidth}
-						style={styles.symbol}
 						testID="MoneyLightningSymbol"
 					/>
 				);
 			default:
 				return (
 					<BIcon
+						style={styles.symbol}
 						color={color ?? 'white5'}
 						height={iconHeight}
 						width={iconWidth}
-						style={styles.symbol}
 						testID="MoneyBitcoinSymbol"
 					/>
 				);
@@ -124,7 +124,7 @@ const Money = (props: IMoney): ReactElement => {
 
 	let [prim = '', secd = ''] = useMemo(() => {
 		switch (unit) {
-			case 'fiat':
+			case EBalanceUnit.fiat:
 				if (dv.fiatWhole.length > 12) {
 					const { newValue, abbreviation } = abbreviateNumber(dv.fiatWhole);
 					return highlight
@@ -132,21 +132,20 @@ const Money = (props: IMoney): ReactElement => {
 						: [newValue + abbreviation];
 				}
 				return highlight
-					? [dv.fiatWhole, dv.fiatDecimal + dv.fiatDecimalValue]
+					? [dv.fiatWhole, dv.fiatDecimalSymbol + dv.fiatDecimal]
 					: [dv.fiatFormatted];
-			case 'satoshi': {
-				// No highlight effect for denomination in sats
-				return [dv.bitcoinFormatted];
+			case EBalanceUnit.BTC: {
+				if (decimalLength === 'long') {
+					return [Number(dv.bitcoinFormatted).toFixed(8)];
+				}
+
+				return [Number(dv.bitcoinFormatted).toFixed(5)];
 			}
 			default: {
-				const value = dv.bitcoinFormatted;
-				if (!highlight || !value.includes(dv.fiatDecimal) || sats < 999999) {
-					return [value];
-				}
-				return [value.slice(0, -3), value.slice(-3)];
+				return [dv.bitcoinFormatted];
 			}
 		}
-	}, [highlight, dv, unit, sats]);
+	}, [highlight, dv, unit, decimalLength]);
 
 	if (hide) {
 		if (size === 'display') {
@@ -159,7 +158,7 @@ const Money = (props: IMoney): ReactElement => {
 	}
 
 	return (
-		<View style={style}>
+		<View style={[styles.root, props.style]}>
 			{sign && (
 				<Text
 					style={styles.sign}

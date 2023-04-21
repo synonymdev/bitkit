@@ -4,7 +4,7 @@
 	"int_header": "Instant\n<purple>Payments.</purple>",
 	"int_quick": "Quick Setup",
 	"int_custom": "Custom Setup",
-	"add_instant_payments": "Add Instant Payments",
+	"add_instant_payments": "Instant Payments",
 	"error_channel_purchase": "Channel Purchase Error",
 	"error_channel_receiving": "Receiving amount needs to be greater than ${{usdValue}}",
 	"spending_money": "Spending\nMoney.",

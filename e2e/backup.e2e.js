@@ -175,7 +175,7 @@ describe('Backup', () => {
 
 		// check settings
 		await expect(
-			element(by.id('MoneyCurrencySymbol').withAncestor(by.id('TotalBalance'))),
+			element(by.id('MoneyFiatSymbol').withAncestor(by.id('TotalBalance'))),
 		).toHaveText('£');
 
 		// check metadata

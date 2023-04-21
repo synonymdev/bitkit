@@ -101,7 +101,7 @@ export const TextInput = styled.TextInput.attrs<TextInputProps>((props) => ({
 		? props.placeholderTextColor
 		: props.theme.colors.gray1,
 }))<TextInputProps>((props) => ({
-	...props.theme.fonts.medium,
+	...props.theme.fonts.semibold,
 	backgroundColor: props.backgroundColor
 		? props.theme.colors[props.backgroundColor]
 		: props.theme.colors.white08,
@@ -127,7 +127,7 @@ export const TextInputNoOutline = styled.TextInput.attrs<TextInputProps>(
 			: props.theme.colors.gray1,
 	}),
 )<TextInputProps>((props) => ({
-	...props.theme.fonts.medium,
+	...props.theme.fonts.semibold,
 	fontSize: '15px',
 	color: props.color
 		? props.theme.colors[props.color]
@@ -144,7 +144,7 @@ export const BottomSheetTextInput = styled(
 		? props.placeholderTextColor
 		: props.theme.colors.white5,
 }))<TextInputProps>((props) => ({
-	...props.theme.fonts.medium,
+	...props.theme.fonts.semibold,
 	backgroundColor: props.backgroundColor
 		? props.theme.colors[props.backgroundColor]
 		: props.theme.colors.white04,

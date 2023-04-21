@@ -38,7 +38,7 @@ import {
 } from '../../store/reselect/wallet';
 import { blocktankServiceSelector } from '../../store/reselect/blocktank';
 import { selectedCurrencySelector } from '../../store/reselect/settings';
-import { EBitcoinUnit } from '../../store/types/wallet';
+import { EBalanceUnit, EBitcoinUnit } from '../../store/types/wallet';
 
 const QuickSetup = ({
 	navigation,
@@ -201,7 +201,7 @@ const QuickSetup = ({
 							)}
 							<AmountToggle
 								sats={spendingAmount}
-								unit="fiat"
+								unit={EBalanceUnit.fiat}
 								onPress={(): void => setKeybrd(true)}
 							/>
 						</View>

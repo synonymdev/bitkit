@@ -58,9 +58,7 @@ import { receiveSelector } from '../../../store/reselect/receive';
 import { ReceiveScreenProps } from '../../../navigation/types';
 import BitcoinLogo from '../../../assets/bitcoin-logo-small.svg';
 
-type Slide = {
-	slide: () => ReactElement;
-};
+type Slide = () => ReactElement;
 
 const defaultTooltips = {
 	unified: false,
@@ -81,9 +79,9 @@ const QrIcon = memo(
 	() => true,
 );
 
-const Receive = ({
+const ReceiveQR = ({
 	navigation,
-}: ReceiveScreenProps<'Receive'>): ReactElement => {
+}: ReceiveScreenProps<'ReceiveQR'>): ReactElement => {
 	const { t } = useTranslation('wallet');
 	const dimensions = useWindowDimensions();
 	const insets = useSafeAreaInsets();
@@ -186,8 +184,8 @@ const Receive = ({
 			setLoading(true);
 		}
 		// Gives the modal animation time to start.
-		await sleep(50);
 		await Promise.all([getLightningInvoice(), getAddress()]);
+		await sleep(200);
 		setLoading(false);
 	}, [getAddress, getLightningInvoice, loading, receiveNavigationIsOpen]);
 
@@ -299,18 +297,9 @@ const Receive = ({
 		[t],
 	);
 
-	const qrMaxHeight = useMemo(
-		() => dimensions.height / 2.5,
-		[dimensions?.height],
-	);
-	const qrMaxWidth = useMemo(
-		() => dimensions.width - 16 * 4,
-		[dimensions?.width],
-	);
-	const qrSize = useMemo(
-		() => Math.min(qrMaxWidth, qrMaxHeight),
-		[qrMaxHeight, qrMaxWidth],
-	);
+	const qrMaxHeight = dimensions.height / 2.5;
+	const qrMaxWidth = dimensions.width - 16 * 4;
+	const qrSize = Math.min(qrMaxWidth, qrMaxHeight);
 
 	const Slide1 = useCallback((): ReactElement => {
 		return (
@@ -340,6 +329,7 @@ const Receive = ({
 						style={styles.actionButton}
 						icon={<CopyIcon width={18} color="brand" />}
 						text={t('copy')}
+						testID="ReceiveCopyQR"
 						onPress={(): void => handleCopy(uri, 'unified')}
 					/>
 					<View style={styles.buttonSpacer} />
@@ -361,7 +351,7 @@ const Receive = ({
 		return (
 			<View style={styles.slide}>
 				<ThemedView style={styles.invoices} color="white04">
-					<View style={styles.invoice}>
+					<View style={styles.invoice} testID="ReceiveOnchainInvoice">
 						<View style={styles.invoiceLabel}>
 							<Caption13Up color="gray1">
 								{t('receive_bitcoin_invoice')}
@@ -374,7 +364,7 @@ const Receive = ({
 							/>
 						</View>
 						<View style={styles.invoiceText}>
-							<Text02S>{ellipsis(receiveAddress, 35)}</Text02S>
+							<Text02S>{ellipsis(receiveAddress, 25)}</Text02S>
 							{showTooltip.onchain && (
 								<AnimatedView
 									style={styles.tooltip}
@@ -467,12 +457,10 @@ const Receive = ({
 		t,
 	]);
 
-	const slides = useMemo((): Slide[] => {
-		return [{ slide: Slide1 }, { slide: Slide2 }];
-	}, [Slide1, Slide2]);
+	const slides = useMemo((): Slide[] => [Slide1, Slide2], [Slide1, Slide2]);
 
 	return (
-		<View style={styles.container} testID="ReceiveScreen">
+		<View style={styles.container}>
 			<BottomSheetNavigationHeader
 				title={t('receive_bitcoin')}
 				displayBackButton={false}
@@ -494,9 +482,10 @@ const Receive = ({
 						height={qrMaxHeight + 110}
 						loop={false}
 						panGestureHandlerProps={{ activeOffsetX: [-10, 10] }}
-						renderItem={({ index: i }): ReactElement => {
-							const Slide = slides[i].slide;
-							return <Slide key={i} />;
+						testID="ReceiveSlider"
+						renderItem={({ index }): ReactElement => {
+							const Slide = slides[index];
+							return <Slide key={index} />;
 						}}
 						onProgressChange={(_, absoluteProgress): void => {
 							progressValue.value = absoluteProgress;
@@ -628,4 +617,4 @@ const styles = StyleSheet.create({
 	},
 });
 
-export default memo(Receive);
+export default memo(ReceiveQR);

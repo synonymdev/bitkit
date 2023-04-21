@@ -1,3 +1,5 @@
+import { EBitcoinUnit } from '../../store/types/wallet';
+
 export const mostUsedExchangeTickers = {
 	USD: {
 		currencySymbol: '$',
@@ -34,18 +36,20 @@ export interface IExchangeRates {
 
 export interface IBitcoinDisplayValues {
 	bitcoinFormatted: string;
-	bitcoinSymbol: string; //₿, m₿, μ₿, ⚡,
-	bitcoinTicker: string; //BTC, mBTC, μBTC, Sats
+	bitcoinWhole: string; // Value before decimal point
+	bitcoinDecimal: string; // Value after decimal point
+	bitcoinSymbol: string; // ₿, ⚡,
+	bitcoinTicker: EBitcoinUnit;
 	satoshis: number;
 }
 
 export interface IFiatDisplayValues {
 	fiatFormatted: string;
-	fiatWhole: string; //Value before decimal point
-	fiatDecimal: string; //Decimal point "." or ","
-	fiatDecimalValue: string; // Value after decimal point
-	fiatSymbol: string; //$,€,£
-	fiatTicker: string; //USD, EUR
+	fiatWhole: string; // Value before decimal point
+	fiatDecimal: string; // Value after decimal point
+	fiatSymbol: string; // $,€,£
+	fiatDecimalSymbol: string; // Decimal point "." or ","
+	fiatTicker: string; // USD, EUR etc.
 	fiatValue: number;
 }
 
@@ -53,16 +57,18 @@ export type IDisplayValues = IBitcoinDisplayValues & IFiatDisplayValues;
 
 export const defaultBitcoinDisplayValues: IBitcoinDisplayValues = {
 	bitcoinFormatted: '—',
+	bitcoinWhole: '',
+	bitcoinDecimal: '',
 	bitcoinSymbol: '',
-	bitcoinTicker: '',
+	bitcoinTicker: EBitcoinUnit.satoshi,
 	satoshis: 0,
 };
 
 export const defaultFiatDisplayValues: IFiatDisplayValues = {
 	fiatFormatted: '—',
 	fiatWhole: '',
-	fiatDecimal: '',
-	fiatDecimalValue: '',
+	fiatDecimalSymbol: '.',
+	fiatDecimal: '00',
 	fiatSymbol: '',
 	fiatTicker: '',
 	fiatValue: 0,

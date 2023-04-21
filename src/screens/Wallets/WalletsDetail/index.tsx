@@ -223,6 +223,7 @@ const WalletsDetail = ({
 													sats={satoshis}
 													enableHide={true}
 													highlight={true}
+													decimalLength="long"
 												/>
 											</TouchableOpacity>
 										</DetectSwipe>
