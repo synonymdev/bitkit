@@ -1,4 +1,11 @@
-import React, { ReactElement, memo, useCallback, useMemo } from 'react';
+import React, {
+	ReactElement,
+	memo,
+	useCallback,
+	useMemo,
+	useState,
+	useEffect,
+} from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useSelector } from 'react-redux';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -7,18 +14,20 @@ import { useTranslation } from 'react-i18next';
 import { TouchableOpacity } from '../../../styles/components';
 import { Caption13Up, Text02B } from '../../../styles/text';
 import { SwitchIcon } from '../../../styles/icons';
+import { IColors } from '../../../styles/colors';
 import GradientView from '../../../components/GradientView';
 import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
-import AmountToggle from '../../../components/AmountToggle';
 import Money from '../../../components/Money';
 import ProfileImage from '../../../components/ProfileImage';
-import Button from '../../../components/Button';
+import NumberPadTextField from '../../../components/NumberPadTextField';
 import SendNumberPad from './SendNumberPad';
+import Button from '../../../components/Button';
 import { EBalanceUnit, EBitcoinUnit } from '../../../store/types/wallet';
 import {
 	getTransactionOutputValue,
 	getMaxSendAmount,
 	sendMax,
+	updateSendAmount,
 } from '../../../utils/wallet/transactions';
 import {
 	selectedNetworkSelector,
@@ -31,8 +40,11 @@ import {
 	coinSelectAutoSelector,
 } from '../../../store/reselect/settings';
 import { useProfile } from '../../../hooks/slashtags';
-import useDisplayValues from '../../../hooks/displayValues';
+import { useCurrency } from '../../../hooks/displayValues';
 import { updateSettings } from '../../../store/actions/settings';
+import { updateBitcoinTransaction } from '../../../store/actions/wallet';
+import { getNumberPadText } from '../../../utils/numberpad';
+import { convertToSats } from '../../../utils/exchange-rate';
 import { TRANSACTION_DEFAULTS } from '../../../utils/wallet/constants';
 import type { SendScreenProps } from '../../../navigation/types';
 
@@ -44,12 +56,15 @@ const ContactImage = ({ url }: { url: string }): JSX.Element => {
 const Amount = ({ navigation }: SendScreenProps<'Amount'>): ReactElement => {
 	const { t } = useTranslation('wallet');
 	const insets = useSafeAreaInsets();
+	const { fiatTicker } = useCurrency();
 	const selectedWallet = useSelector(selectedWalletSelector);
 	const selectedNetwork = useSelector(selectedNetworkSelector);
 	const coinSelectAuto = useSelector(coinSelectAutoSelector);
 	const transaction = useSelector(transactionSelector);
 	const unit = useSelector(balanceUnitSelector);
 	const isMaxSendAmount = useSelector(transactionMaxSelector);
+	const [text, setText] = useState('');
+	const [error, setError] = useState(false);
 
 	const buttonContainerStyles = useMemo(
 		() => ({
@@ -59,18 +74,21 @@ const Amount = ({ navigation }: SendScreenProps<'Amount'>): ReactElement => {
 		[insets.bottom],
 	);
 
-	/*
-	 * Total value of all outputs. Excludes change address.
-	 */
-	const amount = useMemo((): number => {
-		return getTransactionOutputValue({
+	// Set initial text for NumberPadTextField
+	useEffect(() => {
+		const transactionOutputValue = getTransactionOutputValue({
 			selectedWallet,
 			selectedNetwork,
 		});
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [transaction.outputs, selectedNetwork, selectedWallet]);
 
-	const displayValues = useDisplayValues(amount);
+		const result = getNumberPadText(transactionOutputValue, unit);
+		setText(result);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [transaction.outputs, selectedWallet, selectedNetwork]);
+
+	const amount = useMemo((): number => {
+		return convertToSats(text, unit);
+	}, [text, unit]);
 
 	const availableAmount = useMemo(() => {
 		const maxAmountResponse = getMaxSendAmount({
@@ -89,11 +107,21 @@ const Amount = ({ navigation }: SendScreenProps<'Amount'>): ReactElement => {
 		selectedNetwork,
 	]);
 
-	const availableAmountProps = useMemo(() => {
-		return {
-			...(unit !== EBalanceUnit.fiat ? { symbol: true } : { showFiat: true }),
-		};
-	}, [unit]);
+	const availableAmountProps = {
+		...(unit !== EBalanceUnit.fiat ? { symbol: true } : { showFiat: true }),
+		...(error && { color: 'brand' as keyof IColors }),
+	};
+
+	// Unset isMaxSendAmount after edit
+	useEffect(() => {
+		if (isMaxSendAmount && amount !== availableAmount) {
+			updateBitcoinTransaction({ transaction: { max: false } });
+		}
+
+		if (!isMaxSendAmount && amount === availableAmount) {
+			updateBitcoinTransaction({ transaction: { max: true } });
+		}
+	}, [isMaxSendAmount, amount, availableAmount]);
 
 	// BTC -> satoshi -> fiat
 	const nextUnit = useMemo(() => {
@@ -107,6 +135,9 @@ const Amount = ({ navigation }: SendScreenProps<'Amount'>): ReactElement => {
 	}, [unit]);
 
 	const onChangeUnit = (): void => {
+		const result = getNumberPadText(amount, nextUnit);
+		setText(result);
+
 		updateSettings({
 			balanceUnit: nextUnit,
 			...(nextUnit !== EBalanceUnit.fiat && {
@@ -115,29 +146,62 @@ const Amount = ({ navigation }: SendScreenProps<'Amount'>): ReactElement => {
 		});
 	};
 
+	const onMaxAmount = useCallback((): void => {
+		const result = getNumberPadText(availableAmount, unit);
+		setText(result);
+		sendMax({ selectedWallet, selectedNetwork });
+	}, [availableAmount, unit, selectedWallet, selectedNetwork]);
+
+	const onError = (): void => {
+		setError(true);
+		setTimeout(() => setError(false), 500);
+	};
+
 	const onContinue = useCallback((): void => {
+		const result = updateSendAmount({
+			amount,
+			selectedWallet,
+			selectedNetwork,
+		});
+		if (result.isErr()) {
+			return;
+		}
+
 		// If auto coin-select is disabled and there is no lightning invoice.
 		if (!coinSelectAuto && !transaction.lightningInvoice) {
 			navigation.navigate('CoinSelection');
 		} else {
 			navigation.navigate('ReviewAndSend');
 		}
-	}, [coinSelectAuto, transaction.lightningInvoice, navigation]);
+	}, [
+		amount,
+		selectedWallet,
+		selectedNetwork,
+		coinSelectAuto,
+		transaction.lightningInvoice,
+		navigation,
+	]);
 
-	const isInvalid = useCallback(() => {
-		// onchain tx, but amount is below dust limit
-		if (
-			!transaction.lightningInvoice &&
-			amount <= TRANSACTION_DEFAULTS.recommendedBaseFee
-		) {
-			return true;
+	const isValid = useMemo(() => {
+		if (amount === 0) {
+			return false;
 		}
-		// lightning tx, but amount is 0
-		if (transaction.lightningInvoice && amount === 0) {
-			return true;
+
+		// onchain tx
+		if (!transaction.lightningInvoice) {
+			// amount is below dust limit
+			if (amount <= TRANSACTION_DEFAULTS.recommendedBaseFee) {
+				return false;
+			}
+
+			// amount is above availableAmount
+			if (amount > availableAmount) {
+				return false;
+			}
 		}
-		return false;
-	}, [amount, transaction.lightningInvoice]);
+
+		return true;
+	}, [amount, transaction.lightningInvoice, availableAmount]);
 
 	return (
 		<GradientView style={styles.container}>
@@ -150,16 +214,11 @@ const Amount = ({ navigation }: SendScreenProps<'Amount'>): ReactElement => {
 				}
 			/>
 			<View style={styles.content}>
-				<AmountToggle
-					sats={amount}
-					reverse={true}
-					decimalLength="long"
-					space={16}
-				/>
+				<NumberPadTextField value={text} testID="SendNumberField" />
 
-				<View style={styles.numberPad}>
+				<View style={styles.numberPad} testID="SendAmountNumberPad">
 					<View style={styles.actions}>
-						<View testID="AvailableAmount">
+						<View>
 							<Caption13Up style={styles.availableAmountText} color="gray1">
 								{t(
 									transaction.lightningInvoice
@@ -172,6 +231,7 @@ const Amount = ({ navigation }: SendScreenProps<'Amount'>): ReactElement => {
 								sats={availableAmount}
 								size="caption13M"
 								decimalLength="long"
+								testID="AvailableAmount"
 								{...availableAmountProps}
 							/>
 						</View>
@@ -180,10 +240,8 @@ const Amount = ({ navigation }: SendScreenProps<'Amount'>): ReactElement => {
 								<TouchableOpacity
 									style={styles.actionButton}
 									color="white08"
-									testID="MAX"
-									onPress={(): void => {
-										sendMax({ selectedWallet, selectedNetwork });
-									}}>
+									testID="SendNumberPadMax"
+									onPress={onMaxAmount}>
 									<Text02B
 										size="12px"
 										color={isMaxSendAmount ? 'orange' : 'brand'}>
@@ -197,7 +255,7 @@ const Amount = ({ navigation }: SendScreenProps<'Amount'>): ReactElement => {
 									style={styles.actionButton}
 									color="white08"
 									onPress={onChangeUnit}
-									testID="ChangeUnit">
+									testID="SendNumberPadUnit">
 									<SwitchIcon color="brand" width={16.44} height={13.22} />
 									<Text02B
 										style={styles.actionButtonText}
@@ -205,23 +263,28 @@ const Amount = ({ navigation }: SendScreenProps<'Amount'>): ReactElement => {
 										color="brand">
 										{nextUnit === 'BTC' && 'BTC'}
 										{nextUnit === 'satoshi' && 'sats'}
-										{nextUnit === 'fiat' && displayValues.fiatTicker}
+										{nextUnit === 'fiat' && fiatTicker}
 									</Text02B>
 								</TouchableOpacity>
 							</View>
 						</View>
 					</View>
 
-					<SendNumberPad />
+					<SendNumberPad
+						value={text}
+						maxAmount={availableAmount}
+						onChange={setText}
+						onError={onError}
+					/>
 				</View>
 
 				<View style={buttonContainerStyles}>
 					<Button
 						size="large"
 						text={t('continue')}
-						disabled={isInvalid()}
-						onPress={onContinue}
+						disabled={!isValid}
 						testID="ContinueAmount"
+						onPress={onContinue}
 					/>
 				</View>
 			</View>

@@ -199,7 +199,7 @@ const ReceiveDetails = ({
 									<TouchableOpacity
 										style={styles.actionButton}
 										color="white08"
-										testID="ReceiveNumberPadSwitch"
+										testID="ReceiveNumberPadUnit"
 										onPress={onChangeUnit}>
 										<SwitchIcon color="brand" width={16.44} height={13.22} />
 										<Text02B

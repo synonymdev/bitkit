@@ -323,14 +323,14 @@ export const constructByteCountParam = (
  * Attempt to estimate the current fee for a given wallet and its UTXO's
  */
 export const getTotalFee = ({
-	satsPerByte = 2,
+	satsPerByte,
 	message = '',
 	transaction, // If left undefined, the method will retrieve the tx data from state.
 	fundingLightning = false,
 	selectedWallet,
 	selectedNetwork,
 }: {
-	satsPerByte?: number;
+	satsPerByte: number;
 	message?: string;
 	transaction?: Partial<IBitcoinTransactionData>;
 	fundingLightning?: boolean;
@@ -363,12 +363,7 @@ export const getTotalFee = ({
 
 		//Group all input & output addresses into their respective array.
 		const inputAddresses = inputs.map((input) => input.address);
-		const outputAddresses: string[] = [];
-		outputs.forEach((output) => {
-			if (output.address) {
-				outputAddresses.push(output.address);
-			}
-		});
+		const outputAddresses = outputs.map((output) => output.address);
 
 		//No need for a change address when draining the wallet
 		if (changeAddress && !transaction.max) {
@@ -394,10 +389,6 @@ interface ICreateTransaction {
 	selectedWallet?: TWalletName;
 	selectedNetwork?: TAvailableNetworks;
 	transactionData?: IBitcoinTransactionData;
-}
-
-interface ITargets extends IOutput {
-	script?: Buffer;
 }
 
 /**
@@ -434,6 +425,13 @@ const getBip32Interface = async (
 	return ok(root);
 };
 
+interface ITargets {
+	value: number; // Amount denominated in sats.
+	index: number; // Used to specify which output to update or edit when using updateBitcoinTransaction.
+	address?: string; // Amount denominated in sats.
+	script?: Buffer;
+}
+
 /**
  * Returns a PSBT that includes unsigned funding inputs.
  * @param {TWalletName} selectedWallet
@@ -453,12 +451,7 @@ const createPsbtFromTransactionData = async ({
 	transactionData: IBitcoinTransactionData;
 	bip32Interface?: BIP32Interface;
 }): Promise<Result<Psbt>> => {
-	const {
-		inputs = [],
-		outputs = [],
-		fee = TRANSACTION_DEFAULTS.recommendedBaseFee,
-		rbf,
-	} = transactionData;
+	const { inputs, outputs, fee, rbf } = transactionData;
 	let { changeAddress, message } = transactionData;
 
 	//Get balance of current inputs.
@@ -481,7 +474,7 @@ const createPsbtFromTransactionData = async ({
 	let targets: ITargets[] = outputs.concat();
 
 	//Change address and amount to send back to wallet.
-	if (changeAddress !== '') {
+	if (changeAddress) {
 		const changeAddressValue = balance - (outputValue + fee);
 		// Ensure we're not creating unspendable dust.
 		// If we have less than 2x the recommended base fee, just contribute it to the fee in this transaction.
@@ -568,36 +561,35 @@ const createPsbtFromTransactionData = async ({
 		targets = shuffleArray(targets);
 	}
 
-	await Promise.all(
-		targets.map((target) => {
-			//Check if OP_RETURN
-			let isOpReturn = false;
-			try {
-				isOpReturn = !!target.script;
-			} catch (e) {}
-			if (isOpReturn) {
-				if (target?.script) {
-					psbt.addOutput({
-						script: target.script,
-						value: target.value ?? 0,
-					});
-				}
-			} else {
-				if (target?.address && target?.value) {
-					psbt.addOutput({
-						address: target.address,
-						value: target.value,
-					});
-				}
+	targets.forEach((target) => {
+		//Check if OP_RETURN
+		let isOpReturn = false;
+		try {
+			isOpReturn = !!target.script;
+		} catch (e) {}
+		if (isOpReturn) {
+			if (target.script) {
+				psbt.addOutput({
+					script: target.script,
+					value: target.value ?? 0,
+				});
 			}
-		}),
-	);
+		} else {
+			if (target.address && target.value) {
+				psbt.addOutput({
+					address: target.address,
+					value: target.value,
+				});
+			}
+		}
+	});
 
 	return ok(psbt);
 };
 
 /**
  * Uses the transaction data store to create an unsigned PSBT with funded inputs
+ * CURRENTLY UNUSED
  * @param {TWalletName} selectedWallet
  * @param {TAvailableNetworks} selectedNetwork
  */
@@ -790,7 +782,7 @@ export const createTransaction = async ({
  */
 export const removeDustOutputs = (outputs: IOutput[]): IOutput[] => {
 	return outputs.filter((output) => {
-		return output.value && output.value > TRANSACTION_DEFAULTS.dustLimit;
+		return output.value > TRANSACTION_DEFAULTS.dustLimit;
 	});
 };
 
@@ -977,7 +969,7 @@ export const getTransactionOutputValue = ({
 	selectedWallet?: TWalletName;
 	selectedNetwork?: TAvailableNetworks;
 	outputs?: IOutput[];
-}): number => {
+} = {}): number => {
 	try {
 		if (!outputs) {
 			if (!selectedWallet) {
@@ -1719,27 +1711,21 @@ export const adjustFee = ({
 
 /**
  * Updates the amount to send for the currently selected output.
- * @param {string} amount
- * @param {number} [index]
+ * @param {number} amount
  * @param {IBitcoinTransactionData} [transaction]
  * @param {TAvailableNetworks} [selectedNetwork]
  * @param {TWalletName} [selectedWallet]
- * @param {boolean} [max]
  */
-export const updateAmount = ({
+export const updateSendAmount = ({
 	amount,
-	index = 0,
 	transaction,
 	selectedNetwork,
 	selectedWallet,
-	max = false,
 }: {
-	amount: string;
-	index?: number;
+	amount: number;
 	transaction?: IBitcoinTransactionData;
 	selectedNetwork?: TAvailableNetworks;
 	selectedWallet?: TWalletName;
-	max?: boolean;
 }): Result<string> => {
 	if (!selectedNetwork) {
 		selectedNetwork = getSelectedNetwork();
@@ -1758,81 +1744,73 @@ export const updateAmount = ({
 		transaction = transactionDataResponse.value;
 	}
 
-	let newAmount = Number(amount);
-	let inputTotal = 0;
-	const outputs = transaction.outputs;
+	// TODO: add support for multiple outputs
+	const currentOutput = transaction.outputs[0];
+	let max = false;
 
 	if (transaction.lightningInvoice) {
 		// lightning transaction
-		const { satoshis } = getBalance({
+		const balance = getBalance({
 			lightning: true,
 			selectedWallet,
 			selectedNetwork,
 		});
-		inputTotal = satoshis;
 
-		if (newAmount === inputTotal) {
+		if (amount > balance.satoshis) {
+			return err('New amount exceeds the current balance.');
+		}
+
+		if (amount === balance.satoshis) {
 			max = true;
 		}
 	} else {
 		// onchain transaction
-		const satsPerByte = transaction.satsPerByte;
-		const message = transaction.message;
-
-		let totalNewAmount = 0;
 		const totalFee = getTotalFee({
-			satsPerByte,
-			message,
+			satsPerByte: transaction.satsPerByte,
+			message: transaction.message,
 			selectedWallet,
 			selectedNetwork,
 		});
 
-		inputTotal = getTransactionInputValue({
+		const inputTotal = getTransactionInputValue({
 			selectedNetwork,
 			selectedWallet,
 			inputs: transaction.inputs,
 		});
 
-		if (newAmount !== 0) {
-			totalNewAmount = newAmount + totalFee;
-			if (totalNewAmount > inputTotal && inputTotal - totalFee < 0) {
-				newAmount = 0;
+		if (amount !== 0) {
+			const totalAmount = amount + totalFee;
+			const dustLimit = TRANSACTION_DEFAULTS.dustLimit;
+
+			if (totalAmount > inputTotal && inputTotal - totalFee < 0) {
+				amount = 0;
 			}
-		}
 
-		if (totalNewAmount > inputTotal) {
-			return err('New amount exceeds the current balance.');
-		}
+			if (totalAmount - dustLimit > inputTotal) {
+				return err('New amount exceeds the current balance.');
+			}
 
-		if (totalNewAmount === inputTotal) {
-			max = true;
+			if (totalAmount === inputTotal) {
+				max = true;
+			}
+
+			// TODO: Handle dust
 		}
 	}
 
-	let address = '';
-	let value = 0;
-	if (outputs.length > index) {
-		value = outputs[index].value ?? 0;
-		address = outputs[index].address ?? '';
-	}
-
-	//Return if the new amount exceeds the current balance or there is no change detected.
-	if (newAmount === value) {
+	if (currentOutput && amount === currentOutput.value) {
 		return ok('No change detected. No need to update.');
 	}
-	if (newAmount > inputTotal) {
-		return err('New amount exceeds the current balance.');
-	}
 
-	const output = { address, value: newAmount, index };
 	updateBitcoinTransaction({
 		selectedWallet,
 		selectedNetwork,
 		transaction: {
-			outputs: [output],
+			outputs: [{ ...currentOutput, value: amount }],
 			max,
 		},
 	});
+
 	return ok('');
 };
 
@@ -2243,7 +2221,7 @@ export const broadcastBoost = async ({
 		const newTxId = broadcastResult.value;
 		let transactions =
 			getWalletStore().wallets[selectedWallet].transactions[selectedNetwork];
-		const boostedFee = transaction.fee ?? 0;
+		const boostedFee = transaction.fee;
 		await addBoostedTransaction({
 			newTxId,
 			oldTxId,
@@ -2264,8 +2242,8 @@ export const broadcastBoost = async ({
 
 		const updatedActivityItemData: Partial<TOnchainActivityItem> = {
 			txId: newTxId,
-			address: transaction.changeAddress ?? '',
-			fee: oldFee + satsToBtc(Number(transaction.fee)),
+			address: transaction.changeAddress,
+			fee: oldFee + satsToBtc(transaction.fee),
 			isBoosted: true,
 			timestamp: new Date().getTime(),
 		};

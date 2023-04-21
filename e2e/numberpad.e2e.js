@@ -61,7 +61,7 @@ describe('NumberPad', () => {
 		await expect(element(by.text('12 300'))).toBeVisible();
 
 		// Switch to BTC
-		await element(by.id('ReceiveNumberPadSwitch')).multiTap(2);
+		await element(by.id('ReceiveNumberPadUnit')).multiTap(2);
 		await expect(element(by.text('0.000123'))).toBeVisible();
 		await element(
 			by.id('NRemove').withAncestor(by.id('ReceiveNumberPad')),

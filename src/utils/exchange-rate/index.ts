@@ -101,7 +101,7 @@ export const fiatToBitcoinUnit = ({
 		const value = bitcoinUnits(Number(fiatValue), currency)
 			.to(bitcoinUnit)
 			.value()
-			.toFixed(bitcoinUnit === 'satoshi' ? 0 : 8); // satoshi cannot be a fractional number
+			.toFixed(bitcoinUnit === EBitcoinUnit.satoshi ? 0 : 8); // satoshi cannot be a fractional number
 
 		return Number(value);
 	} catch (e) {
@@ -112,8 +112,11 @@ export const fiatToBitcoinUnit = ({
 /**
  * Converts a NumberPadTextField value to an amount in satoshis
  */
-export const convertToSats = (text: string, unit?: EBalanceUnit): number => {
-	let amount = Number(text);
+export const convertToSats = (
+	value: number | string,
+	unit: EBalanceUnit,
+): number => {
+	let amount = Number(value);
 
 	if (unit === EBalanceUnit.BTC) {
 		return btcToSats(amount);

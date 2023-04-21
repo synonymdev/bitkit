@@ -42,23 +42,16 @@ const FeeRate = ({ navigation }: SendScreenProps<'FeeRate'>): ReactElement => {
 		[insets.bottom],
 	);
 
-	const selectedFeeId = useMemo(
-		() => transaction.selectedFeeId,
-		[transaction.selectedFeeId],
-	);
+	const selectedFeeId = transaction.selectedFeeId;
+	const satsPerByte = transaction.satsPerByte;
 
 	const transactionTotal = useCallback(() => {
 		return getTransactionOutputValue({
 			selectedWallet,
 			selectedNetwork,
-			outputs: transaction.outputs,
 		});
-	}, [selectedNetwork, selectedWallet, transaction.outputs]);
-
-	const satsPerByte = useMemo(
-		(): number => transaction.satsPerByte,
-		[transaction.satsPerByte],
-	);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [transaction.outputs, selectedNetwork, selectedWallet]);
 
 	const getFee = useCallback(
 		(_satsPerByte: number) => {
@@ -69,7 +62,7 @@ const FeeRate = ({ navigation }: SendScreenProps<'FeeRate'>): ReactElement => {
 				selectedNetwork,
 			});
 		},
-		[selectedNetwork, selectedWallet, transaction.message],
+		[transaction.message, selectedNetwork, selectedWallet],
 	);
 
 	const _updateFee = useCallback(
