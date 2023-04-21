@@ -107,6 +107,7 @@ const Tags = ({ navigation }: ReceiveScreenProps<'Tags'>): ReactElement => {
 						text={t('tags_add_button')}
 						size="large"
 						disabled={text.length === 0}
+						testID="ReceiveTagsSubmit"
 						onPress={handleSubmit}
 					/>
 				</View>

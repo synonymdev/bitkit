@@ -65,7 +65,11 @@ import { useAppSelector } from '../../hooks/redux';
 import useDisplayValues from '../../hooks/displayValues';
 import Store from '../../store/types';
 import { showBottomSheet } from '../../store/actions/ui';
-import { EPaymentType, EBoostType } from '../../store/types/wallet';
+import {
+	EPaymentType,
+	EBoostType,
+	EBalanceUnit,
+} from '../../store/types/wallet';
 import {
 	activityItemSelector,
 	activityItemsSelector,
@@ -314,7 +318,12 @@ const OnchainActivityDetail = ({
 
 	return (
 		<>
-			<Money sats={value} unit="fiat" size="caption13M" color="gray1" />
+			<Money
+				sats={value}
+				unit={EBalanceUnit.fiat}
+				size="caption13M"
+				color="gray1"
+			/>
 			<View style={styles.title}>
 				<View style={styles.titleBlock}>
 					<Money sats={value} sign={isSend ? '- ' : '+ '} />
@@ -620,7 +629,12 @@ const LightningActivityDetail = ({
 
 	return (
 		<>
-			<Money sats={value} unit="fiat" size="caption13M" color="gray1" />
+			<Money
+				sats={value}
+				unit={EBalanceUnit.fiat}
+				size="caption13M"
+				color="gray1"
+			/>
 			<View style={styles.title}>
 				<View style={styles.titleBlock}>
 					<Money sats={value} sign={isSend ? '- ' : '+ '} />

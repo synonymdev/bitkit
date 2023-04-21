@@ -6,6 +6,7 @@ const dispatch = getDispatch();
 
 export const updateInvoice = (payload: {
 	amount?: number;
+	numberPadText?: string;
 	message?: string;
 	tags?: string[];
 }): Result<string> => {

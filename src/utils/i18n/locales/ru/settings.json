@@ -31,7 +31,7 @@
 		"unit_title": "Bitcoin Unit",
 		"unit_display": "Отображать кол-во Биткоин в",
 		"unit_bitcoin": "Биткоин",
-		"unit_sathoshis": "Сатоши",
+		"unit_satoshis": "Сатоши",
 		"speed": "Скорость транзакций",
 		"speed_title": "Скорость Транзакций",
 		"speed_default": "Значение По Умолчанию",

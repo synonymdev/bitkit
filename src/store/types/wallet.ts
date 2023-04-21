@@ -31,8 +31,6 @@ export type NetworkTypePath = '0' | '1'; //"mainnet" | "testnet"
 export enum EBitcoinUnit {
 	satoshi = 'satoshi',
 	BTC = 'BTC',
-	// mBTC = 'mBTC',
-	// μBTC = 'μBTC',
 }
 
 export enum EBalanceUnit {

@@ -34,8 +34,6 @@ export type TReceiveOption = {
 	title: string;
 };
 
-export type TUnitPreference = 'asset' | 'fiat';
-
 export type TCustomElectrumPeers = IWalletItem<ICustomElectrumPeer[]>;
 
 export interface ISettings {
@@ -57,7 +55,6 @@ export interface ISettings {
 	coinSelectPreference: TCoinSelectPreference;
 	receivePreference: TReceiveOption[];
 	enableOfflinePayments: boolean;
-	unitPreference: TUnitPreference;
 	showSuggestions: boolean;
 	transactionSpeed: ETransactionSpeed;
 	customFeeRate: number;

@@ -29,9 +29,7 @@ describe('Settings', () => {
 			await sleep(1000);
 
 			await expect(
-				element(
-					by.id('MoneyCurrencySymbol').withAncestor(by.id('TotalBalance')),
-				),
+				element(by.id('MoneyFiatSymbol').withAncestor(by.id('TotalBalance'))),
 			).toHaveText('$');
 
 			// switch to GBP
@@ -42,9 +40,7 @@ describe('Settings', () => {
 			await element(by.id('NavigationClose')).tap();
 
 			await expect(
-				element(
-					by.id('MoneyCurrencySymbol').withAncestor(by.id('TotalBalance')),
-				),
+				element(by.id('MoneyFiatSymbol').withAncestor(by.id('TotalBalance'))),
 			).toHaveText('£');
 
 			// switch back to sats

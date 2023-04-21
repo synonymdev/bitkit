@@ -6,6 +6,7 @@ import { useLightningChannelBalance } from '../hooks/lightning';
 import { View as ThemedView } from '../styles/components';
 import { DownArrow, UpArrow } from '../styles/icons';
 import { IThemeColors } from '../styles/themes';
+import { EBalanceUnit } from '../store/types/wallet';
 import Money from './Money';
 
 export type TStatus = 'pending' | 'open' | 'closed';
@@ -49,7 +50,7 @@ const LightningChannel = ({
 						sats={spendingAvailable}
 						color={spendingAvailableColor}
 						size="caption13M"
-						unit="satoshi"
+						unit={EBalanceUnit.satoshi}
 					/>
 				</View>
 				<View style={styles.balance}>
@@ -58,7 +59,7 @@ const LightningChannel = ({
 						sats={receivingAvailable}
 						color={receivingAvailableColor}
 						size="caption13M"
-						unit="satoshi"
+						unit={EBalanceUnit.satoshi}
 					/>
 				</View>
 			</View>

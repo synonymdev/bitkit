@@ -22,7 +22,7 @@ describe('Pulls latest fiat exchange rates and checks the wallet store for valid
 		expect(dv.fiatFormatted).toBe('—');
 		expect(dv.fiatWhole).toBe('—');
 		expect(dv.fiatDecimal).toBe('');
-		expect(dv.fiatDecimalValue).toBe('');
+		expect(dv.fiatDecimalSymbol).toBe('');
 		expect(dv.fiatSymbol).toBe('$');
 		expect(dv.fiatTicker).toBe('USD');
 		expect(dv.fiatValue).toBe(0);
@@ -71,11 +71,11 @@ describe('Pulls latest fiat exchange rates and checks the wallet store for valid
 
 		expect(dv.fiatFormatted).toBe('1,010.10');
 		expect(dv.fiatWhole).toBe('1,010');
-		expect(dv.fiatDecimal).toBe('.');
-		expect(dv.fiatDecimalValue).toBe('10');
+		expect(dv.fiatDecimal).toBe('10');
+		expect(dv.fiatDecimalSymbol).toBe('.');
 		expect(dv.fiatSymbol).toBe('$');
 		expect(dv.fiatTicker).toBe('USD');
-		expect(dv.fiatValue).toBe(1010.1);
+		expect(dv.fiatValue).toBe(1010.101);
 		expect(dv.bitcoinFormatted).toBe('0.01010101');
 		expect(dv.bitcoinSymbol).toBe('₿');
 		expect(dv.bitcoinTicker).toBe('BTC');
@@ -95,14 +95,14 @@ describe('Pulls latest fiat exchange rates and checks the wallet store for valid
 
 		expect(dv.fiatFormatted).toBe('1,010.10');
 		expect(dv.fiatWhole).toBe('1,010');
-		expect(dv.fiatDecimal).toBe('.');
-		expect(dv.fiatDecimalValue).toBe('10');
+		expect(dv.fiatDecimal).toBe('10');
+		expect(dv.fiatDecimalSymbol).toBe('.');
 		expect(dv.fiatSymbol).toBe('₽');
 		expect(dv.fiatTicker).toBe('RUB');
-		expect(dv.fiatValue).toBe(1010.1);
+		expect(dv.fiatValue).toBe(1010.101);
 		expect(dv.bitcoinFormatted).toBe('1 010 101');
 		expect(dv.bitcoinSymbol).toBe('⚡');
-		expect(dv.bitcoinTicker).toBe('sats');
+		expect(dv.bitcoinTicker).toBe('satoshi');
 		expect(dv.satoshis).toBe(1010101);
 	});
 });

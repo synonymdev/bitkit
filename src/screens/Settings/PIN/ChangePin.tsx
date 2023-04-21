@@ -28,16 +28,19 @@ const ChangePin = ({
 	const [wrongPin, setWrongPin] = useState(false);
 	const { brand, brand08 } = useColors();
 
-	const handleOnPress = (n: string | number): void => {
-		setPin((p) => {
-			if (p.length === 4) {
-				return p;
+	const handleOnPress = (key: string): void => {
+		if (key === 'delete') {
+			if (pin.length !== 0) {
+				vibrate();
+				setPin((p) => p.slice(0, -1));
 			}
-			return p + String(n);
-		});
+		} else {
+			if (pin.length !== 4) {
+				vibrate();
+				setPin((p) => p + key);
+			}
+		}
 	};
-
-	const handleOnRemove = (): void => setPin((p) => p.slice(0, -1));
 
 	// reset pin on back
 	useFocusEffect(useCallback(() => setPin(''), []));
@@ -126,7 +129,6 @@ const ChangePin = ({
 				style={styles.numberpad}
 				type="simple"
 				onPress={handleOnPress}
-				onRemove={handleOnRemove}
 			/>
 		</ThemedView>
 	);

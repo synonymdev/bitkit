@@ -25,7 +25,7 @@ const BitcoinUnitSettings = ({
 				Icon: UnitBitcoinIcon,
 			},
 			{
-				label: t('general.unit_sathoshis'),
+				label: t('general.unit_satoshis'),
 				unit: EBitcoinUnit.satoshi,
 				labelExample: '(1 000)',
 				Icon: UnitSatoshiIcon,

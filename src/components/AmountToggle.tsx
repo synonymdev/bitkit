@@ -4,7 +4,8 @@ import { LayoutAnimation, StyleProp, View, ViewStyle } from 'react-native';
 
 import { Pressable } from '../styles/components';
 import Money from '../components/Money';
-import { unitPreferenceSelector } from '../store/reselect/settings';
+import { balanceUnitSelector } from '../store/reselect/settings';
+import { EBalanceUnit } from '../store/types/wallet';
 
 /**
  * Displays the total amount of sats specified and it's corresponding fiat value.
@@ -15,24 +16,25 @@ const AmountToggle = ({
 	space = 0, // space between the rows
 	reverse = false,
 	disable = false,
+	decimalLength = 'short',
 	children,
 	style,
 	onPress,
 	testID,
 }: {
 	sats: number;
-	unit?: 'asset' | 'fiat';
+	unit?: EBalanceUnit;
 	reverse?: boolean;
 	space?: number;
 	disable?: boolean;
+	decimalLength?: 'long' | 'short'; // whether to show 5 or 8 decimals for BTC
 	children?: ReactElement;
 	style?: StyleProp<ViewStyle>;
 	testID?: string;
 	onPress?: () => void;
 }): ReactElement => {
-	const unitPreference = useSelector(unitPreferenceSelector);
-
-	const primary = unit ?? unitPreference;
+	const balanceUnit = useSelector(balanceUnitSelector);
+	const primaryUnit = unit ?? balanceUnit;
 
 	const components = useMemo(() => {
 		const btcProps = { symbol: true };
@@ -40,22 +42,24 @@ const AmountToggle = ({
 
 		const arr = [
 			<Money
-				key="big"
+				key="primary"
 				sats={sats}
-				{...{ ...(primary === 'fiat' ? fiatProps : btcProps) }}
+				decimalLength={decimalLength}
+				{...{ ...(primaryUnit === EBalanceUnit.fiat ? fiatProps : btcProps) }}
 			/>,
 			<View key="space" style={{ height: space }} />,
 			<Money
-				key="small"
+				key="secondary"
 				sats={sats}
 				size="text01m"
 				color="gray1"
-				{...{ ...(primary === 'fiat' ? btcProps : fiatProps) }}
+				decimalLength={decimalLength}
+				{...{ ...(primaryUnit === EBalanceUnit.fiat ? btcProps : fiatProps) }}
 			/>,
 		];
 
 		return reverse ? arr.reverse() : arr;
-	}, [primary, sats, reverse, space]);
+	}, [primaryUnit, sats, reverse, space, decimalLength]);
 
 	LayoutAnimation.easeInEaseOut();
 
@@ -67,10 +71,10 @@ const AmountToggle = ({
 
 	return (
 		<Pressable
-			onPress={_onPress}
-			color="transparent"
 			style={style}
-			testID={testID}>
+			color="transparent"
+			testID={testID}
+			onPress={_onPress}>
 			{components}
 			{children}
 		</Pressable>

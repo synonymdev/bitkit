@@ -76,6 +76,7 @@ import {
 	blocktankPaidOrdersSelector,
 } from '../../../store/reselect/blocktank';
 import { TPaidBlocktankOrders } from '../../../store/types/blocktank';
+import { EBalanceUnit } from '../../../store/types/wallet';
 
 /**
  * Convert pending (non-channel) blocktank orders to (fake) channels.
@@ -363,7 +364,7 @@ const Channels = ({
 								sats={localBalance}
 								color="purple"
 								size="title"
-								unit="satoshi"
+								unit={EBalanceUnit.satoshi}
 							/>
 						</View>
 					</View>
@@ -375,7 +376,7 @@ const Channels = ({
 								sats={remoteBalance}
 								color="white"
 								size="title"
-								unit="satoshi"
+								unit={EBalanceUnit.satoshi}
 							/>
 						</View>
 					</View>

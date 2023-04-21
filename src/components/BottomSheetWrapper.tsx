@@ -39,7 +39,6 @@ import BottomSheet, {
 } from '@gorhom/bottom-sheet';
 import { useTheme } from 'styled-components/native';
 
-import { IColors } from '../styles/colors';
 import { closeBottomSheet } from '../store/actions/ui';
 import { TViewController } from '../store/types/ui';
 import { viewControllerSelector } from '../store/reselect/ui';
@@ -52,7 +51,7 @@ export interface BottomSheetWrapperProps {
 	view: TViewController;
 	snapPoints: (string | number)[];
 	backdrop?: boolean;
-	backgroundStartColor?: keyof IColors;
+	testID?: string;
 	onOpen?: () => void;
 	onClose?: () => void;
 }
@@ -64,6 +63,7 @@ const BottomSheetWrapper = forwardRef(
 			view,
 			snapPoints,
 			backdrop = true,
+			testID,
 			onOpen,
 			onClose,
 		}: BottomSheetWrapperProps,
@@ -176,6 +176,7 @@ const BottomSheetWrapper = forwardRef(
 				}>
 				<BottomSheetView
 					style={styles.container}
+					testID={testID}
 					onLayout={handleContentLayout}>
 					{children}
 				</BottomSheetView>

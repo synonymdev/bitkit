@@ -108,7 +108,7 @@ const QuickConfirm = ({
 				<View>
 					<View style={styles.amountBig}>
 						<Caption13Up color="purple">{t('spending_label')}</Caption13Up>
-						<AmountToggle sats={spendingAmount} unit="fiat" />
+						<AmountToggle sats={spendingAmount} />
 					</View>
 
 					<View style={styles.buttonContainer}>

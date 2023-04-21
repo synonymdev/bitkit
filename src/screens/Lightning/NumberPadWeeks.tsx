@@ -1,8 +1,12 @@
-import React, { ReactElement } from 'react';
-import { StyleSheet } from 'react-native';
+import React, { ReactElement, useState } from 'react';
+import { StyleSheet, StyleProp, ViewStyle } from 'react-native';
 
 import NumberPad from '../../components/NumberPad';
+import { vibrate } from '../../utils/helpers';
+import { handleNumberPadPress } from '../../utils/numberpad';
 import NumberPadButtons from '../Wallets/NumberPadButtons';
+
+const MAX_WEEKS = 12;
 
 const NumberPadWeeks = ({
 	weeks,
@@ -13,22 +17,22 @@ const NumberPadWeeks = ({
 	weeks: number;
 	onChange: (weeks: number) => void;
 	onDone: () => void;
-	style?: object | Array<object>;
+	style?: StyleProp<ViewStyle>;
 }): ReactElement => {
-	const onPress = (key: string | number): void => {
-		let amount = Number(`${weeks}${key}`);
-		// limit amount 12 weeks
-		if (amount > 12) {
-			amount = 12;
-		}
-		onChange(amount);
-	};
+	const [errorKey, setErrorKey] = useState<string>();
 
-	const onRemove = (): void => {
-		let str = String(weeks);
-		str = str.substr(0, str.length - 1);
-		const amount = Number(str);
-		onChange(amount);
+	const onPress = (key: string): void => {
+		const current = weeks.toString();
+		const newAmount = handleNumberPadPress(key, current, { maxLength: 2 });
+
+		if (Number(newAmount) > MAX_WEEKS) {
+			vibrate({ type: 'notificationWarning' });
+			setErrorKey(key);
+			setTimeout(() => setErrorKey(undefined), 500);
+			return;
+		}
+
+		onChange(Number(newAmount));
 	};
 
 	const handleDone = (): void => {
@@ -40,14 +44,12 @@ const NumberPadWeeks = ({
 		<NumberPad
 			style={[styles.numberpad, style]}
 			type="simple"
-			onPress={onPress}
-			onRemove={onRemove}>
+			errorKey={errorKey}
+			onPress={onPress}>
 			<NumberPadButtons
 				color="purple"
 				showUnitButton={false}
-				onMaxPress={(): void => {
-					onChange(12);
-				}}
+				onMaxPress={(): void => onChange(MAX_WEEKS)}
 				onDone={handleDone}
 			/>
 		</NumberPad>

@@ -1,4 +1,4 @@
-import React, { ReactElement, memo, useCallback, useMemo } from 'react';
+import React, { ReactElement, memo, useMemo, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useSelector } from 'react-redux';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -8,11 +8,17 @@ import { Caption13Up, Text01S } from '../../../styles/text';
 import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
 import GradientView from '../../../components/GradientView';
 import Button from '../../../components/Button';
-import FeeCustomToggle from './FeeCustomToggle';
-import FeeNumberPad from './FeeNumberPad';
-import { getTotalFee } from '../../../utils/wallet/transactions';
+import Amount from '../../../components/Amount';
+import NumberPad from '../../../components/NumberPad';
+import { getTotalFee, updateFee } from '../../../utils/wallet/transactions';
+import { handleNumberPadPress } from '../../../utils/numberpad';
+import { showErrorNotification } from '../../../utils/notifications';
 import useDisplayValues from '../../../hooks/displayValues';
-import { transactionSelector } from '../../../store/reselect/wallet';
+import {
+	selectedNetworkSelector,
+	selectedWalletSelector,
+	transactionSelector,
+} from '../../../store/reselect/wallet';
 import type { SendScreenProps } from '../../../navigation/types';
 
 const FeeCustom = ({
@@ -20,7 +26,10 @@ const FeeCustom = ({
 }: SendScreenProps<'FeeCustom'>): ReactElement => {
 	const { t } = useTranslation('wallet');
 	const insets = useSafeAreaInsets();
+	const selectedWallet = useSelector(selectedWalletSelector);
+	const selectedNetwork = useSelector(selectedNetworkSelector);
 	const transaction = useSelector(transactionSelector);
+	const [feeRate, setFeeRate] = useState(transaction.satsPerByte);
 
 	const buttonContainerStyles = useMemo(
 		() => ({
@@ -30,57 +39,72 @@ const FeeCustom = ({
 		[insets.bottom],
 	);
 
-	const getFee = useCallback(
-		(_satsPerByte: number) => {
-			return getTotalFee({
-				satsPerByte: _satsPerByte,
-				message: transaction.message,
-			});
-		},
-		[transaction.message],
-	);
+	const totalFee = getTotalFee({
+		satsPerByte: feeRate,
+		message: transaction.message,
+	});
 
-	const feeSats = useMemo(
-		() => getFee(transaction.satsPerByte),
-		[getFee, transaction.satsPerByte],
-	);
-	const totalFeeDisplay = useDisplayValues(feeSats);
-	const feeTotal = useMemo(() => {
+	const totalFeeDisplay = useDisplayValues(totalFee);
+	const totalFeeText = useMemo(() => {
 		if (totalFeeDisplay.fiatFormatted === '—') {
-			return t('send_fee_total', { feeSats });
+			return t('send_fee_total', { totalFee });
 		}
 		return t('send_fee_total_fiat', {
-			feeSats,
+			feeSats: totalFee,
 			fiatSymbol: totalFeeDisplay.fiatSymbol,
 			fiatFormatted: totalFeeDisplay.fiatFormatted,
 		});
-	}, [feeSats, totalFeeDisplay.fiatFormatted, totalFeeDisplay.fiatSymbol, t]);
+	}, [totalFee, totalFeeDisplay.fiatFormatted, totalFeeDisplay.fiatSymbol, t]);
 
-	const isValid = transaction.satsPerByte !== 0;
+	const onPress = (key: string): void => {
+		const current = feeRate.toString();
+		const newAmount = handleNumberPadPress(key, current, { maxLength: 3 });
+		setFeeRate(Number(newAmount));
+	};
+
+	const onContinue = (): void => {
+		const res = updateFee({
+			satsPerByte: Number(feeRate),
+			selectedWallet,
+			selectedNetwork,
+			transaction,
+		});
+		if (res.isErr()) {
+			showErrorNotification({
+				title: t('send_fee_error'),
+				message: res.error.message,
+			});
+		}
+		if (res.isOk()) {
+			navigation.goBack();
+		}
+	};
+
+	const isValid = feeRate !== 0;
 
 	return (
 		<GradientView style={styles.container}>
-			<BottomSheetNavigationHeader
-				title={t('send_fee_custom')}
-				displayBackButton={isValid}
-			/>
+			<BottomSheetNavigationHeader title={t('send_fee_custom')} />
 			<View style={styles.content}>
 				<Caption13Up color="gray1" style={styles.title}>
 					{t('sat_vbyte')}
 				</Caption13Up>
-				<FeeCustomToggle />
-				<Text01S style={styles.text} color="white5">
-					{feeTotal}
-				</Text01S>
+				<Amount value={feeRate} />
 
-				<FeeNumberPad style={styles.numberPad} />
+				{isValid && (
+					<Text01S style={styles.text} color="white5">
+						{totalFeeText}
+					</Text01S>
+				)}
+
+				<NumberPad style={styles.numberPad} type="simple" onPress={onPress} />
 
 				<View style={buttonContainerStyles}>
 					<Button
 						size="large"
 						text={t('continue')}
 						disabled={!isValid}
-						onPress={(): void => navigation.goBack()}
+						onPress={onContinue}
 					/>
 				</View>
 			</View>

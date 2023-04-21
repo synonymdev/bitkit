@@ -29,43 +29,37 @@ const BalanceHeader = (): ReactElement => {
 	const hideBalance = useSelector(hideBalanceSelector);
 	const selectedWallet = useSelector(selectedWalletSelector);
 	const selectedNetwork = useSelector(selectedNetworkSelector);
-	const claimableBalance = useSelector((state: Store) =>
-		claimableBalanceSelector(state, selectedWallet, selectedNetwork),
-	);
-	const { satoshis } = useBalance({
-		onchain: true,
-		lightning: true,
+	const { satoshis } = useBalance({ onchain: true, lightning: true });
+	const claimableBalance = useSelector((state: Store) => {
+		return claimableBalanceSelector(state, selectedWallet, selectedNetwork);
 	});
 
-	const handlePress = (): void => {
-		// BTC -> satoshi -> fiat
-		const nextUnit =
-			balanceUnit === EBalanceUnit.BTC
-				? EBalanceUnit.satoshi
-				: balanceUnit === EBalanceUnit.satoshi
-				? EBalanceUnit.fiat
-				: EBalanceUnit.BTC;
+	// BTC -> satoshi -> fiat
+	const nextUnit = useMemo(() => {
+		if (balanceUnit === EBalanceUnit.BTC) {
+			return EBalanceUnit.satoshi;
+		}
+		if (balanceUnit === EBalanceUnit.satoshi) {
+			return EBalanceUnit.fiat;
+		}
+		return EBalanceUnit.BTC;
+	}, [balanceUnit]);
 
-		const payload = {
+	const handlePress = (): void => {
+		updateSettings({
 			balanceUnit: nextUnit,
 			...(nextUnit !== EBalanceUnit.fiat && {
 				bitcoinUnit: nextUnit as unknown as EBitcoinUnit,
 			}),
-		};
-		updateSettings(payload);
+		});
 	};
 
 	const toggleHideBalance = (): void => {
 		updateSettings({ hideBalance: !hideBalance });
 	};
 
-	const totalBalance = useMemo(() => {
-		return satoshis + claimableBalance;
-	}, [claimableBalance, satoshis]);
-
-	const showClaimableBalances = useMemo(() => {
-		return claimableBalance > 0;
-	}, [claimableBalance]);
+	const totalBalance = satoshis + claimableBalance;
+	const showClaimableBalances = claimableBalance > 0;
 
 	return (
 		<TouchableOpacity
@@ -104,6 +98,7 @@ const BalanceHeader = (): ReactElement => {
 						enableHide={true}
 						highlight={true}
 						symbol={true}
+						decimalLength="long"
 					/>
 				</View>
 				{hideBalance && (
@@ -115,8 +110,6 @@ const BalanceHeader = (): ReactElement => {
 		</TouchableOpacity>
 	);
 };
-
-export default memo(BalanceHeader);
 
 const styles = StyleSheet.create({
 	container: {
@@ -138,3 +131,5 @@ const styles = StyleSheet.create({
 		paddingRight: 16,
 	},
 });
+
+export default memo(BalanceHeader);

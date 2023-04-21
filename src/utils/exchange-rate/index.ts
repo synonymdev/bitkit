@@ -3,9 +3,9 @@ import { ok, err, Result } from '@synonymdev/result';
 
 import { __BLOCKTANK_HOST__ } from '../../constants/env';
 import { getSettingsStore, getWalletStore } from '../../store/helpers';
-import { EBitcoinUnit } from '../../store/types/wallet';
+import { EBalanceUnit, EBitcoinUnit } from '../../store/types/wallet';
 import { showErrorNotification } from '../notifications';
-import { timeAgo } from '../helpers';
+import { btcToSats, timeAgo } from '../helpers';
 import {
 	defaultFiatDisplayValues,
 	defaultBitcoinDisplayValues,
@@ -109,6 +109,26 @@ export const fiatToBitcoinUnit = ({
 	}
 };
 
+/**
+ * Converts a NumberPadTextField value to an amount in satoshis
+ */
+export const convertToSats = (text: string, unit?: EBalanceUnit): number => {
+	let amount = Number(text);
+
+	if (unit === EBalanceUnit.BTC) {
+		return btcToSats(amount);
+	}
+
+	if (unit === EBalanceUnit.fiat) {
+		return fiatToBitcoinUnit({
+			fiatValue: amount,
+			bitcoinUnit: EBitcoinUnit.satoshi,
+		});
+	}
+
+	return amount;
+};
+
 export const getBitcoinDisplayValues = ({
 	satoshis,
 	bitcoinUnit,
@@ -121,15 +141,22 @@ export const getBitcoinDisplayValues = ({
 			bitcoinUnit = getSettingsStore().bitcoinUnit;
 		}
 
+		let bitcoinSymbol = '₿';
+		let bitcoinTicker = bitcoinUnit;
+
 		let bitcoinFormatted: string = bitcoinUnits(satoshis, 'satoshi')
 			.to(bitcoinUnit)
 			.value()
-			.toFixed(bitcoinUnit === 'satoshi' ? 0 : 8)
 			.toString();
 
-		// format sats to group thousands
-		// 4000000 -> 4 000 000
-		if (bitcoinUnit === 'satoshi') {
+		const [bitcoinWhole, bitcoinDecimal] = bitcoinFormatted.split('.');
+
+		if (bitcoinUnit === EBitcoinUnit.satoshi) {
+			bitcoinSymbol = '⚡';
+			bitcoinTicker = EBitcoinUnit.satoshi;
+
+			// format sats to group thousands
+			// 4000000 -> 4 000 000
 			let res = '';
 			bitcoinFormatted
 				.split('')
@@ -143,20 +170,10 @@ export const getBitcoinDisplayValues = ({
 			bitcoinFormatted = res;
 		}
 
-		let bitcoinSymbol = '';
-		let bitcoinTicker = bitcoinUnit.toString();
-		switch (bitcoinUnit) {
-			case 'BTC':
-				bitcoinSymbol = '₿';
-				break;
-			case 'satoshi':
-				bitcoinSymbol = '⚡';
-				bitcoinTicker = 'sats';
-				break;
-		}
-
 		return {
 			bitcoinFormatted,
+			bitcoinWhole,
+			bitcoinDecimal,
 			bitcoinSymbol,
 			bitcoinTicker,
 			satoshis,
@@ -171,17 +188,17 @@ export const getFiatDisplayValues = ({
 	satoshis,
 	exchangeRate,
 	exchangeRates,
+	bitcoinUnit,
 	currency,
 	currencySymbol,
-	bitcoinUnit,
 	locale = 'en-US',
 }: {
 	satoshis: number;
 	exchangeRate?: number;
 	exchangeRates?: IExchangeRates;
+	bitcoinUnit?: EBitcoinUnit;
 	currency?: string;
 	currencySymbol?: string;
-	bitcoinUnit?: EBitcoinUnit;
 	locale?: string;
 }): IFiatDisplayValues => {
 	if (!exchangeRates) {
@@ -210,8 +227,8 @@ export const getFiatDisplayValues = ({
 				...bitcoinDisplayValues,
 				fiatFormatted: '—',
 				fiatWhole: satoshis === 0 ? '0' : '—',
-				fiatDecimal: satoshis === 0 ? '.' : '',
-				fiatDecimalValue: satoshis === 0 ? '00' : '',
+				fiatDecimal: satoshis === 0 ? '00' : '',
+				fiatDecimalSymbol: satoshis === 0 ? '.' : '',
 				fiatSymbol: fallbackTicker.currencySymbol,
 				fiatTicker: fallbackTicker.quote,
 				fiatValue: 0,
@@ -226,59 +243,14 @@ export const getFiatDisplayValues = ({
 		bitcoinUnits.setFiat(currency, exchangeRate);
 		let fiatValue: number = bitcoinUnits(satoshis, 'satoshi')
 			.to(currency)
-			.value()
-			.toFixed(2);
+			.value();
 
-		let {
-			fiatFormatted,
-			fiatWhole,
-			fiatDecimal,
-			fiatDecimalValue,
-			fiatSymbol,
-		} = defaultFiatDisplayValues;
-
-		let currencyFormat = currency;
-		if (currency === 'EUT') {
-			currencyFormat = 'EUR';
-		}
-		if (currency === 'USDT') {
-			currencyFormat = 'USD';
-		}
-
-		fiatFormatted = '';
-
-		const fiatFormattedIntl = new Intl.NumberFormat(locale, {
-			style: 'currency',
-			currency: currencyFormat,
+		return getFiatDisplayValuesForFiat({
+			value: fiatValue,
+			currency,
+			currencySymbol,
+			locale,
 		});
-
-		fiatFormattedIntl.formatToParts(fiatValue).forEach((part) => {
-			if (part.type === 'currency') {
-				fiatSymbol = currencySymbol ?? part.value;
-			} else if (part.type === 'integer' || part.type === 'group') {
-				fiatWhole = `${fiatWhole}${part.value}`;
-			} else if (part.type === 'fraction') {
-				fiatDecimalValue = part.value;
-			} else if (part.type === 'decimal') {
-				fiatDecimal = part.value;
-			}
-
-			if (part.type !== 'currency') {
-				fiatFormatted = `${fiatFormatted}${part.value}`;
-			}
-		});
-
-		fiatFormatted = fiatFormatted.trim();
-
-		return {
-			fiatFormatted,
-			fiatWhole,
-			fiatDecimal,
-			fiatDecimalValue,
-			fiatSymbol,
-			fiatTicker: currency,
-			fiatValue: Number(fiatValue),
-		};
 	} catch (e) {
 		console.error(e);
 
@@ -288,13 +260,78 @@ export const getFiatDisplayValues = ({
 		return {
 			fiatFormatted: '—',
 			fiatWhole: satoshis === 0 ? '0' : '—',
-			fiatDecimal: satoshis === 0 ? '.' : '',
-			fiatDecimalValue: satoshis === 0 ? '00' : '',
+			fiatDecimal: satoshis === 0 ? '00' : '',
+			fiatDecimalSymbol: satoshis === 0 ? '.' : '',
 			fiatSymbol: fallbackTicker.currencySymbol,
 			fiatTicker: fallbackTicker.quote,
 			fiatValue: 0,
 		};
 	}
+};
+
+/**
+ * Formats a fiat amount into a displayValue format without conversion
+ */
+export const getFiatDisplayValuesForFiat = ({
+	value,
+	currency,
+	currencySymbol,
+	locale = 'en-US',
+}: {
+	value: number;
+	currency?: string;
+	currencySymbol?: string;
+	locale?: string;
+}): IFiatDisplayValues => {
+	if (!currency) {
+		currency = getSettingsStore().selectedCurrency;
+	}
+
+	let { fiatFormatted, fiatWhole, fiatDecimal, fiatDecimalSymbol, fiatSymbol } =
+		defaultFiatDisplayValues;
+
+	let currencyFormat = currency;
+	if (currency === 'EUT') {
+		currencyFormat = 'EUR';
+	}
+	if (currency === 'USDT') {
+		currencyFormat = 'USD';
+	}
+
+	fiatFormatted = '';
+
+	const fiatFormattedIntl = new Intl.NumberFormat(locale, {
+		style: 'currency',
+		currency: currencyFormat,
+	});
+
+	fiatFormattedIntl.formatToParts(value).forEach((part) => {
+		if (part.type === 'currency') {
+			fiatSymbol = currencySymbol ?? part.value;
+		} else if (part.type === 'integer' || part.type === 'group') {
+			fiatWhole = `${fiatWhole}${part.value}`;
+		} else if (part.type === 'fraction') {
+			fiatDecimal = part.value;
+		} else if (part.type === 'decimal') {
+			fiatDecimal = part.value;
+		}
+
+		if (part.type !== 'currency') {
+			fiatFormatted = `${fiatFormatted}${part.value}`;
+		}
+	});
+
+	fiatFormatted = fiatFormatted.trim();
+
+	return {
+		fiatFormatted,
+		fiatWhole,
+		fiatDecimal,
+		fiatDecimalSymbol,
+		fiatSymbol,
+		fiatTicker: currency,
+		fiatValue: value,
+	};
 };
 
 export const getDisplayValues = ({

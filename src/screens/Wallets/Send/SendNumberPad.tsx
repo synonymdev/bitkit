@@ -5,24 +5,21 @@ import { useSelector } from 'react-redux';
 import NumberPad from '../../../components/NumberPad';
 import { btcToSats } from '../../../utils/helpers';
 import { useExchangeRate } from '../../../hooks/displayValues';
-import { EBitcoinUnit } from '../../../store/types/wallet';
+import { EBalanceUnit, EBitcoinUnit } from '../../../store/types/wallet';
 import {
 	getTransactionOutputValue,
 	updateAmount,
 } from '../../../utils/wallet/transactions';
-import {
-	fiatToBitcoinUnit,
-	getDisplayValues,
-} from '../../../utils/exchange-rate';
+import { fiatToBitcoinUnit } from '../../../utils/exchange-rate';
+import { getDisplayValues } from '../../../utils/exchange-rate/index__deprecated';
 import {
 	selectedNetworkSelector,
 	selectedWalletSelector,
 	transactionSelector,
 } from '../../../store/reselect/wallet';
 import {
-	bitcoinUnitSelector,
+	balanceUnitSelector,
 	selectedCurrencySelector,
-	unitPreferenceSelector,
 } from '../../../store/reselect/settings';
 
 /**
@@ -38,8 +35,7 @@ const SendNumberPad = ({
 
 	const selectedWallet = useSelector(selectedWalletSelector);
 	const selectedNetwork = useSelector(selectedNetworkSelector);
-	const bitcoinUnit = useSelector(bitcoinUnitSelector);
-	const unitPreference = useSelector(unitPreferenceSelector);
+	const unit = useSelector(balanceUnitSelector);
 	const currency = useSelector(selectedCurrencySelector);
 	const transaction = useSelector(transactionSelector);
 	const exchangeRate = useExchangeRate(currency);
@@ -60,8 +56,13 @@ const SendNumberPad = ({
 	}, [transaction.outputs, selectedNetwork, selectedWallet]);
 
 	// Add, shift and update the current transaction amount based on the provided fiat value or bitcoin unit.
-	const onPress = (key: number | string): void => {
+	const onPress = (key: string): void => {
 		let amount = '0';
+
+		if (key === 'delete') {
+			onRemove();
+			return;
+		}
 
 		if (key === '.') {
 			setDecimalMode(true);
@@ -70,49 +71,51 @@ const SendNumberPad = ({
 			setDecimalMode(false);
 		}
 
-		if ((decimalMode || prefixZeros !== 0) && key === 0) {
+		if ((decimalMode || prefixZeros !== 0) && key === '0') {
 			setPrefixZeros((prevValue) => prevValue + 1);
 			return;
 		} else {
 			setPrefixZeros(0);
 		}
 
-		if (unitPreference === 'asset') {
-			if (bitcoinUnit === 'BTC') {
-				const displayValue = getDisplayValues({ satoshis: getAmountToSend() });
-				amount = displayValue.bitcoinFormatted;
-				amount = String(parseFloat(amount));
+		if (unit === EBalanceUnit.BTC) {
+			const displayValue = getDisplayValues({ satoshis: getAmountToSend() });
+			amount = displayValue.bitcoinFormatted;
+			amount = String(parseFloat(amount));
 
-				const [, decimals] = amount.split('.');
-				if (decimals?.length > 7) {
-					return;
-				}
-
-				if (decimals?.length > 0 && key === 0) {
-					setPrefixZeros((prevValue) => prevValue + 1);
-					return;
-				}
-
-				if (prefixZeros !== 0) {
-					if (decimals?.length > 0) {
-						amount = `${amount}${'0'.repeat(prefixZeros)}${key}`;
-					} else {
-						amount = `${amount}.${'0'.repeat(prefixZeros)}${key}`;
-					}
-				} else {
-					if (decimalMode) {
-						amount = `${amount}.${key}`;
-					} else {
-						amount = `${amount}${key}`;
-					}
-				}
-
-				amount = String(btcToSats(Number(amount)));
-			} else {
-				amount = String(getAmountToSend());
-				amount = `${amount}${key}`;
+			const [, decimals] = amount.split('.');
+			if (decimals?.length > 7) {
+				return;
 			}
-		} else {
+
+			if (decimals?.length > 0 && key === '0') {
+				setPrefixZeros((prevValue) => prevValue + 1);
+				return;
+			}
+
+			if (prefixZeros !== 0) {
+				if (decimals?.length > 0) {
+					amount = `${amount}${'0'.repeat(prefixZeros)}${key}`;
+				} else {
+					amount = `${amount}.${'0'.repeat(prefixZeros)}${key}`;
+				}
+			} else {
+				if (decimalMode) {
+					amount = `${amount}.${key}`;
+				} else {
+					amount = `${amount}${key}`;
+				}
+			}
+
+			amount = String(btcToSats(Number(amount)));
+		}
+
+		if (unit === EBalanceUnit.satoshi) {
+			amount = String(getAmountToSend());
+			amount = `${amount}${key}`;
+		}
+
+		if (unit === EBalanceUnit.fiat) {
 			const displayValue = getDisplayValues({ satoshis: getAmountToSend() });
 			amount = displayValue.fiatValue.toString();
 
@@ -121,7 +124,7 @@ const SendNumberPad = ({
 				return;
 			}
 
-			if (decimals?.length > 0 && key === 0) {
+			if (decimals?.length > 0 && key === '0') {
 				setPrefixZeros((prevValue) => prevValue + 1);
 				return;
 			}
@@ -150,6 +153,7 @@ const SendNumberPad = ({
 				}),
 			);
 		}
+
 		updateAmount({
 			amount,
 			selectedWallet,
@@ -158,25 +162,29 @@ const SendNumberPad = ({
 		});
 	};
 
-	// Shift, remove and update the current transaction amount based on the provided fiat value or bitcoin unit.
 	const onRemove = (): void => {
 		let amount = '0';
 		let newAmount = '0';
-		if (unitPreference === 'asset') {
-			if (bitcoinUnit === 'BTC') {
-				const displayValue = getDisplayValues({ satoshis: getAmountToSend() });
-				amount = displayValue.bitcoinFormatted;
-				amount = String(parseFloat(amount));
 
-				// remove last character
-				newAmount = amount.replace(/.$/, '');
+		if (unit === EBalanceUnit.BTC) {
+			const displayValue = getDisplayValues({
+				satoshis: getAmountToSend(),
+			});
+			amount = displayValue.bitcoinFormatted;
+			amount = String(parseFloat(amount));
 
-				newAmount = String(btcToSats(Number(newAmount)));
-			} else {
-				amount = String(getAmountToSend());
-				newAmount = amount.substring(0, amount.length - 1);
-			}
-		} else {
+			// remove last character
+			newAmount = amount.replace(/.$/, '');
+
+			newAmount = String(btcToSats(Number(newAmount)));
+		}
+
+		if (unit === EBalanceUnit.satoshi) {
+			amount = String(getAmountToSend());
+			newAmount = amount.substring(0, amount.length - 1);
+		}
+
+		if (unit === EBalanceUnit.fiat) {
 			const displayValue = getDisplayValues({ satoshis: getAmountToSend() });
 			amount = displayValue.fiatValue.toString();
 
@@ -192,6 +200,7 @@ const SendNumberPad = ({
 
 			newAmount = String(fiatAmount);
 		}
+
 		updateAmount({
 			amount: newAmount,
 			selectedWallet,
@@ -201,19 +210,9 @@ const SendNumberPad = ({
 		});
 	};
 
-	const numberPadType =
-		unitPreference === 'asset' && bitcoinUnit === EBitcoinUnit.satoshi
-			? 'integer'
-			: 'decimal';
+	const numberPadType = unit === EBalanceUnit.satoshi ? 'integer' : 'decimal';
 
-	return (
-		<NumberPad
-			style={style}
-			type={numberPadType}
-			onPress={onPress}
-			onRemove={onRemove}
-		/>
-	);
+	return <NumberPad style={style} type={numberPadType} onPress={onPress} />;
 };
 
 export default memo(SendNumberPad);

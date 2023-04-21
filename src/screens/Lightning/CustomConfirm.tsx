@@ -143,7 +143,7 @@ const CustomConfirm = ({
 							<Caption13Up color="purple" style={styles.space}>
 								{t('receiving_label')}
 							</Caption13Up>
-							<AmountToggle sats={receivingAmount} unit="fiat" />
+							<AmountToggle sats={receivingAmount} />
 						</View>
 					</AnimatedView>
 				)}
@@ -186,6 +186,7 @@ const CustomConfirm = ({
 
 				{keybrd && (
 					<NumberPadWeeks
+						style={styles.numberpad}
 						weeks={weeks}
 						onChange={setWeeks}
 						onDone={(): void => {
@@ -194,7 +195,6 @@ const CustomConfirm = ({
 							}
 							setKeybrd(false);
 						}}
-						style={styles.numberpad}
 					/>
 				)}
 			</View>
