@@ -52,7 +52,7 @@ describe('timeAgo', () => {
 		expect(timeAgo(+new Date(new Date().getFullYear(), 0, 1))).toEqual(
 			'January 1 at 12:00 AM',
 		);
-		expect(timeAgo(1)).toEqual('December 31, 1969');
+		expect(timeAgo(1)).toEqual('January 1, 1970');
 	});
 });
 
