@@ -13,3 +13,4 @@ jest.mock('react-native-localize', () => mockRNLocalize);
 global.net = require('net'); // needed by Electrum client. For RN it is proviced in shim.js
 global.tls = require('tls'); // needed by Electrum client. For RN it is proviced in shim.js
 global.fetch = require('node-fetch'); // TODO: replace with native api, when will be available
+global.crypto = require('node:crypto');

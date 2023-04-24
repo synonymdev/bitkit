@@ -7,7 +7,9 @@ const eventName = 'message';
 
 const channel = {
 	addListener: (_, cb) => {
-		clientEmitter.addListener(eventName, cb);
+		const listener = clientEmitter.addListener(eventName, cb);
+		listener.remove = listener.removeListener;
+		return listener;
 	},
 	send: (message) => {
 		// if (serverEmitter.lis)
