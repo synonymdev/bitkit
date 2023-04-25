@@ -26,6 +26,15 @@ export const markComplete = (name) => {
 
 export const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
+export const isButtonEnabled = async (element) => {
+	try {
+		await expect(element).tap();
+		return true;
+	} catch (e) {
+		return false;
+	}
+};
+
 export const completeOnboarding = async () => {
 	await device.launchApp();
 

@@ -36,6 +36,7 @@ const Result = ({
 					<Button
 						text={t('awesome')}
 						size="large"
+						testID="LightningResultConfirm"
 						onPress={(): void => {
 							navigation.popToTop();
 							navigation.goBack();

@@ -118,7 +118,9 @@ const NavigationHeader = ({
 			</View>
 			<View style={actionColumn}>
 				{onActionPress && (
-					<ActionButton onPress={onActionPress}>{actionIcon}</ActionButton>
+					<ActionButton onPress={onActionPress} testID="NavigationAction">
+						{actionIcon}
+					</ActionButton>
 				)}
 				{onClosePress && (
 					<ActionButton onPress={onClosePress} testID="NavigationClose">

@@ -30,24 +30,22 @@ const QuickConfirm = ({
 	navigation,
 	route,
 }: LightningScreenProps<'QuickConfirm'>): ReactElement => {
-	const { t } = useTranslation('lightning');
 	const { spendingAmount, total, orderId } = route.params;
+	const { t } = useTranslation('lightning');
+	const [loading, setLoading] = useState(false);
 	const selectedNetwork = useSelector(selectedNetworkSelector);
-
 	const orders = useSelector(blocktankOrdersSelector);
 	const order = useMemo(() => {
 		return orders.find((o) => o._id === orderId);
 	}, [orderId, orders]);
 	const blocktankPurchaseFee = useDisplayValues(order?.price ?? 0);
 	const transactionFee = useSelector(transactionFeeSelector);
-	const fiatTransactionFee = useDisplayValues(transactionFee ?? 0);
+	const fiatTransactionFee = useDisplayValues(transactionFee);
 	const channelOpenCost = useMemo(() => {
 		return (
 			blocktankPurchaseFee.fiatValue + fiatTransactionFee.fiatValue
 		).toFixed(2);
 	}, [fiatTransactionFee.fiatValue, blocktankPurchaseFee.fiatValue]);
-
-	const [loading, setLoading] = useState(false);
 
 	const savingsAmount = total - spendingAmount;
 	const spendingPercentage = Math.round((spendingAmount / total) * 100);
@@ -106,8 +104,10 @@ const QuickConfirm = ({
 				</View>
 
 				<View>
-					<View style={styles.amountBig}>
-						<Caption13Up color="purple">{t('spending_label')}</Caption13Up>
+					<View style={styles.amount}>
+						<Caption13Up style={styles.amountCaption} color="purple">
+							{t('spending_label')}
+						</Caption13Up>
 						<AmountToggle sats={spendingAmount} />
 					</View>
 
@@ -138,8 +138,11 @@ const styles = StyleSheet.create({
 	text: {
 		marginTop: 8,
 	},
-	amountBig: {
+	amount: {
 		marginBottom: 32,
+	},
+	amountCaption: {
+		marginBottom: 4,
 	},
 	chartContainer: {
 		flexDirection: 'row',

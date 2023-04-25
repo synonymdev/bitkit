@@ -52,7 +52,7 @@ const SwipeToConfirm = ({
 	const pan = useRef<any>(new Animated.ValueXY()).current;
 	const loadingOpacity = useRef(new Animated.Value(0)).current;
 	const colors = useColors();
-	const kolor = color ? colors[color] : colors.green ?? colors.green;
+	const circleColor = color ? colors[color] : colors.green ?? colors.green;
 	const confirmedInternal = useRef(false);
 	const [containerWidth, setContainerWidth] = useState(0);
 	const endPosition = containerWidth === 0 ? 1 : containerWidth - CIRCLE_SIZE;
@@ -154,7 +154,7 @@ const SwipeToConfirm = ({
 					style={[
 						styles.shadow,
 						{
-							backgroundColor: kolor,
+							backgroundColor: circleColor,
 							width: shadowWidth,
 							opacity: shadowOpacity,
 						},
@@ -178,7 +178,8 @@ const SwipeToConfirm = ({
 					]}
 					testID="GRAB"
 					{...panResponder.panHandlers}>
-					<Animated.View style={[styles.circle, { backgroundColor: kolor }]}>
+					<Animated.View
+						style={[styles.circle, { backgroundColor: circleColor }]}>
 						<Animated.View style={[styles.icon, { opacity: startIconOpacity }]}>
 							<RightArrow color="black" />
 						</Animated.View>

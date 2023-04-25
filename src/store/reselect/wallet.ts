@@ -137,7 +137,7 @@ export const transactionInputsSelector = createSelector(
  */
 export const transactionFeeSelector = createSelector(
 	[walletState],
-	(wallet): number | undefined => {
+	(wallet) => {
 		const selectedWallet = wallet.selectedWallet;
 		const selectedNetwork = wallet.selectedNetwork;
 		return (

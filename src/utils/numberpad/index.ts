@@ -64,6 +64,7 @@ export const handleNumberPadPress = (
 export const getNumberPadText = (
 	amount: number,
 	unit?: EBalanceUnit,
+	shouldRound?: boolean,
 ): string => {
 	if (amount === 0) {
 		return '';
@@ -87,7 +88,11 @@ export const getNumberPadText = (
 			bitcoinUnit: EBitcoinUnit.satoshi,
 		});
 
-		return displayValue.fiatValue.toString();
+		if (shouldRound) {
+			return displayValue.fiatValue.toFixed(0);
+		} else {
+			return displayValue.fiatValue.toString();
+		}
 	}
 
 	const displayValue = getDisplayValues({

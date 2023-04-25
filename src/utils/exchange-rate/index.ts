@@ -110,7 +110,31 @@ export const fiatToBitcoinUnit = ({
 };
 
 /**
- * Converts a NumberPadTextField value to an amount in satoshis
+ * Converts from one fiat to another
+ */
+export const convertCurrency = ({
+	amount,
+	from,
+	to,
+}: {
+	amount: number;
+	from: string;
+	to: string;
+}): IFiatDisplayValues => {
+	const sats = fiatToBitcoinUnit({
+		fiatValue: amount,
+		bitcoinUnit: EBitcoinUnit.satoshi,
+		currency: from,
+	});
+	return getFiatDisplayValues({
+		satoshis: sats,
+		bitcoinUnit: EBitcoinUnit.satoshi,
+		currency: to,
+	});
+};
+
+/**
+ * Converts an amount of currency in a specific unit to satoshis
  */
 export const convertToSats = (
 	value: number | string,

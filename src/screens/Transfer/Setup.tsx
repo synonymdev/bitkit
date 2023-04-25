@@ -1,4 +1,10 @@
-import React, { ReactElement, useState, useCallback, useMemo } from 'react';
+import React, {
+	ReactElement,
+	useState,
+	useCallback,
+	useMemo,
+	useEffect,
+} from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import { FadeIn, FadeOut } from 'react-native-reanimated';
@@ -9,8 +15,8 @@ import { Caption13Up, Display, Text01S } from '../../styles/text';
 import SafeAreaInsets from '../../components/SafeAreaInsets';
 import GlowingBackground from '../../components/GlowingBackground';
 import NavigationHeader from '../../components/NavigationHeader';
+import NumberPadTextField from '../../components/NumberPadTextField';
 import Button from '../../components/Button';
-import AmountToggle from '../../components/AmountToggle';
 import Percentage from '../../components/Percentage';
 import FancySlider from '../../components/FancySlider';
 import NumberPadLightning from '../Lightning/NumberPadLightning';
@@ -19,8 +25,11 @@ import { showErrorNotification } from '../../utils/notifications';
 import { startChannelPurchase } from '../../store/actions/blocktank';
 import { useSelector } from 'react-redux';
 import { SPENDING_LIMIT_RATIO } from '../../utils/wallet/constants';
-import { convertCurrency } from '../../utils/blocktank';
-import { fiatToBitcoinUnit } from '../../utils/exchange-rate';
+import {
+	convertCurrency,
+	convertToSats,
+	fiatToBitcoinUnit,
+} from '../../utils/exchange-rate';
 import {
 	resetOnChainTransaction,
 	setupOnChainTransaction,
@@ -31,8 +40,13 @@ import {
 	selectedWalletSelector,
 } from '../../store/reselect/wallet';
 import { blocktankServiceSelector } from '../../store/reselect/blocktank';
-import { selectedCurrencySelector } from '../../store/reselect/settings';
-import { EBitcoinUnit } from '../../store/types/wallet';
+import {
+	balanceUnitSelector,
+	selectedCurrencySelector,
+} from '../../store/reselect/settings';
+import { EBalanceUnit, EBitcoinUnit } from '../../store/types/wallet';
+import { getNumberPadText } from '../../utils/numberpad';
+import { updateSettings } from '../../store/actions/settings';
 
 const Setup = ({ navigation }: TransferScreenProps<'Setup'>): ReactElement => {
 	const { t } = useTranslation('lightning');
@@ -41,10 +55,11 @@ const Setup = ({ navigation }: TransferScreenProps<'Setup'>): ReactElement => {
 		lightning: true,
 		subtractReserveBalance: false,
 	});
-	const [keybrd, setKeybrd] = useState(false);
-	const [loading, setLoading] = useState(false);
-	const [spendingAmount, setSpendingAmount] = useState(lightningBalance);
 
+	const [textFieldValue, setTextFieldValue] = useState('');
+	const [showNumberPad, setShowNumberPad] = useState(false);
+	const [loading, setLoading] = useState(false);
+	const unit = useSelector(balanceUnitSelector);
 	const selectedNetwork = useSelector(selectedNetworkSelector);
 	const selectedWallet = useSelector(selectedWalletSelector);
 	const blocktankService = useSelector(blocktankServiceSelector);
@@ -78,17 +93,64 @@ const Setup = ({ navigation }: TransferScreenProps<'Setup'>): ReactElement => {
 		return min < lightningBalance ? lightningBalance : min;
 	}, [selectedCurrency, lightningBalance, onChainBalance]);
 
+	const spendingAmount = useMemo((): number => {
+		return convertToSats(textFieldValue, unit);
+	}, [textFieldValue, unit]);
+
 	const savingsAmount = spendingLimit - spendingAmount;
 	const spendingPercentage = Math.round((spendingAmount / spendingLimit) * 100);
 	const savingsPercentage = Math.round((savingsAmount / spendingLimit) * 100);
 	const isTransferringToSavings = spendingAmount < lightningBalance;
 	const isButtonDisabled = spendingAmount === lightningBalance;
 
-	const handleChange = useCallback((value: number) => {
-		setSpendingAmount(Math.round(value));
+	// set initial value
+	useEffect(() => {
+		const result = getNumberPadText(lightningBalance, unit);
+		setTextFieldValue(result);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [lightningBalance]);
+
+	const onSliderChange = useCallback(
+		(value: number) => {
+			const result = getNumberPadText(Math.round(value), unit);
+			setTextFieldValue(result);
+		},
+		[unit],
+	);
+
+	// BTC -> satoshi -> fiat
+	const nextUnit = useMemo(() => {
+		if (unit === EBalanceUnit.BTC) {
+			return EBalanceUnit.satoshi;
+		}
+		if (unit === EBalanceUnit.satoshi) {
+			return EBalanceUnit.fiat;
+		}
+		return EBalanceUnit.BTC;
+	}, [unit]);
+
+	const onChangeUnit = (): void => {
+		const result = getNumberPadText(spendingAmount, nextUnit);
+		setTextFieldValue(result);
+
+		updateSettings({
+			balanceUnit: nextUnit,
+			...(nextUnit !== EBalanceUnit.fiat && {
+				bitcoinUnit: nextUnit as unknown as EBitcoinUnit,
+			}),
+		});
+	};
+
+	const onMax = useCallback(() => {
+		const result = getNumberPadText(spendingLimit, unit);
+		setTextFieldValue(result);
+	}, [spendingLimit, unit]);
+
+	const onDone = useCallback(() => {
+		setShowNumberPad(false);
 	}, []);
 
-	const onContinuePress = useCallback(async (): Promise<void> => {
+	const onContinue = useCallback(async (): Promise<void> => {
 		if (isTransferringToSavings) {
 			navigation.push('Confirm', {
 				spendingAmount,
@@ -150,7 +212,7 @@ const Setup = ({ navigation }: TransferScreenProps<'Setup'>): ReactElement => {
 			/>
 			<View style={styles.root}>
 				<View>
-					{keybrd ? (
+					{showNumberPad ? (
 						<>
 							<Display color="purple">{t('transfer_header_keybrd')}</Display>
 							<Text01S color="gray1" style={styles.text}>
@@ -174,11 +236,11 @@ const Setup = ({ navigation }: TransferScreenProps<'Setup'>): ReactElement => {
 								</View>
 								<View style={styles.sliderContainer}>
 									<FancySlider
+										value={spendingAmount}
 										minimumValue={0}
 										maximumValue={spendingLimit}
-										value={spendingAmount}
 										snapPoint={lightningBalance}
-										onValueChange={handleChange}
+										onValueChange={onSliderChange}
 									/>
 								</View>
 								<View style={styles.row}>
@@ -191,17 +253,22 @@ const Setup = ({ navigation }: TransferScreenProps<'Setup'>): ReactElement => {
 				</View>
 
 				<View>
-					<View style={styles.amountBig}>
-						{!keybrd && (
-							<Caption13Up color="purple">{t('spending_label')}</Caption13Up>
+					<View style={styles.amount}>
+						{!showNumberPad && (
+							<Caption13Up style={styles.amountCaption} color="purple">
+								{t('spending_label')}
+							</Caption13Up>
 						)}
-						<AmountToggle
-							sats={spendingAmount}
-							onPress={(): void => setKeybrd(true)}
+						<NumberPadTextField
+							value={textFieldValue}
+							showPlaceholder={showNumberPad}
+							reverse={true}
+							testID="TransferSetupNumberField"
+							onPress={(): void => setShowNumberPad(true)}
 						/>
 					</View>
 
-					{!keybrd && (
+					{!showNumberPad && (
 						<AnimatedView
 							style={styles.buttonContainer}
 							color="transparent"
@@ -212,27 +279,22 @@ const Setup = ({ navigation }: TransferScreenProps<'Setup'>): ReactElement => {
 								size="large"
 								loading={loading}
 								disabled={isButtonDisabled}
-								onPress={onContinuePress}
+								onPress={onContinue}
 							/>
 							<SafeAreaInsets type="bottom" />
 						</AnimatedView>
 					)}
 				</View>
 
-				{keybrd && (
+				{showNumberPad && (
 					<NumberPadLightning
 						style={styles.numberpad}
-						sats={spendingAmount}
-						onChange={setSpendingAmount}
-						onMaxPress={(): void => {
-							setSpendingAmount(spendingLimit);
-						}}
-						onDone={(): void => {
-							if (spendingAmount > spendingLimit) {
-								setSpendingAmount(spendingLimit);
-							}
-							setKeybrd(false);
-						}}
+						value={textFieldValue}
+						maxAmount={spendingLimit}
+						onChange={setTextFieldValue}
+						onChangeUnit={onChangeUnit}
+						onMax={onMax}
+						onDone={onDone}
 					/>
 				)}
 			</View>
@@ -262,8 +324,11 @@ const styles = StyleSheet.create({
 		marginTop: 24,
 		marginBottom: 16,
 	},
-	amountBig: {
+	amount: {
 		marginBottom: 32,
+	},
+	amountCaption: {
+		marginBottom: 4,
 	},
 	buttonContainer: {
 		marginBottom: 16,

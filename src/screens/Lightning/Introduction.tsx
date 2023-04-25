@@ -63,21 +63,23 @@ const Introduction = ({
 					{!isGeoBlocked && (
 						<>
 							<Button
+								style={[styles.button, styles.quickButton]}
 								text={t('int_quick')}
 								size="large"
-								style={[styles.button, styles.quickButton]}
 								disabled={isDisabled}
+								testID="QuickSetup"
 								onPress={(): void => {
 									navigation.navigate('QuickSetup');
 								}}
 							/>
 
 							<Button
+								style={[styles.button, styles.customButton]}
 								text={t('int_custom')}
 								size="large"
 								variant="secondary"
-								style={[styles.button, styles.customButton]}
 								disabled={isDisabled}
+								testID="CustomSetup"
 								onPress={(): void => {
 									navigation.navigate('CustomSetup', { spending: true });
 								}}

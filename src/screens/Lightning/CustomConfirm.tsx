@@ -39,20 +39,20 @@ const CustomConfirm = ({
 }: LightningScreenProps<'CustomConfirm'>): ReactElement => {
 	const { t } = useTranslation('lightning');
 	const { spendingAmount, receivingAmount } = route.params;
-	const selectedNetwork = useSelector(selectedNetworkSelector);
-	const selectedWallet = useSelector(selectedWalletSelector);
-	const [keybrd, setKeybrd] = useState(false);
-	const [loading, setLoading] = useState(false);
 	const [weeks, setWeeks] = useState(6);
+	const [loading, setLoading] = useState(false);
 	const [orderId, setOrderId] = useState(route.params.orderId);
+	const [showNumberPad, setShowNumberPad] = useState(false);
+	const selectedWallet = useSelector(selectedWalletSelector);
+	const selectedNetwork = useSelector(selectedNetworkSelector);
 	const blocktankService = useSelector(blocktankServiceSelector);
-	const order = useSelector((state: Store) =>
-		blocktankOrderSelector(state, orderId),
-	);
+	const order = useSelector((state: Store) => {
+		return blocktankOrderSelector(state, orderId);
+	});
 
 	const blocktankPurchaseFee = useDisplayValues(order?.price ?? 0);
 	const transactionFee = useSelector(transactionFeeSelector);
-	const fiatTransactionFee = useDisplayValues(transactionFee ?? 0);
+	const fiatTransactionFee = useDisplayValues(transactionFee);
 	const channelOpenCost = useMemo(() => {
 		return (
 			blocktankPurchaseFee.fiatValue + fiatTransactionFee.fiatValue
@@ -99,8 +99,8 @@ const CustomConfirm = ({
 					navigation.navigate('Wallet');
 				}}
 			/>
-			<View style={styles.root}>
-				{!keybrd && (
+			<View style={styles.root} testID="CustomConfirm">
+				{!showNumberPad && (
 					<AnimatedView color="transparent" entering={FadeIn} exiting={FadeOut}>
 						<Display>
 							<Trans
@@ -120,7 +120,8 @@ const CustomConfirm = ({
 									whiteWithKeyboard: (
 										<Text01S
 											color="white"
-											onPress={(): void => setKeybrd(true)}
+											testID="CustomConfirmWeeks"
+											onPress={(): void => setShowNumberPad(true)}
 										/>
 									),
 									penIcon: <PenIcon height={18} width={18} />,
@@ -148,7 +149,7 @@ const CustomConfirm = ({
 					</AnimatedView>
 				)}
 
-				{!keybrd && (
+				{!showNumberPad && (
 					<AnimatedView color="transparent" entering={FadeIn} exiting={FadeOut}>
 						<SwipeToConfirm
 							text={t('connect_swipe_pay')}
@@ -162,29 +163,29 @@ const CustomConfirm = ({
 					</AnimatedView>
 				)}
 
-				{keybrd && (
+				{showNumberPad && (
 					<AnimatedView color="transparent" entering={FadeIn} exiting={FadeOut}>
 						<Display color="purple">{t('duration_header')}</Display>
-						<Text01S color="gray1" style={styles.text}>
+						<Text01S style={styles.text} color="gray1">
 							{t('duration_text')}
 						</Text01S>
 					</AnimatedView>
 				)}
 
-				{keybrd && (
+				{showNumberPad && (
 					<AnimatedView
+						style={styles.weeks}
 						color="transparent"
 						entering={FadeIn}
-						exiting={FadeOut}
-						style={styles.weeks}>
+						exiting={FadeOut}>
 						<Display>{weeks}</Display>
-						<Text01M color="gray1" style={styles.text}>
+						<Text01M style={styles.text} color="gray1">
 							{t('duration_week', { count: weeks })}
 						</Text01M>
 					</AnimatedView>
 				)}
 
-				{keybrd && (
+				{showNumberPad && (
 					<NumberPadWeeks
 						style={styles.numberpad}
 						weeks={weeks}
@@ -193,7 +194,7 @@ const CustomConfirm = ({
 							if (order.channel_expiry !== weeks) {
 								updateOrderExpiration().then();
 							}
-							setKeybrd(false);
+							setShowNumberPad(false);
 						}}
 					/>
 				)}

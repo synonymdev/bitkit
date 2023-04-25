@@ -21,17 +21,22 @@ import {
 
 const NumberPadTextField = ({
 	value,
+	showPlaceholder = true,
+	reverse = false,
 	style,
 	testID,
 	onPress,
 }: {
 	value: string;
 	space?: number;
+	showPlaceholder?: boolean;
+	reverse?: boolean;
 	style?: StyleProp<ViewStyle>;
 	testID?: string;
 	onPress?: () => void;
 }): ReactElement => {
 	const unit = useSelector(balanceUnitSelector);
+	const satoshis = convertToSats(value, unit);
 
 	let placeholder = '0';
 	let placeholderFractional = '';
@@ -45,8 +50,9 @@ const NumberPadTextField = ({
 	if (placeholderFractional !== '') {
 		placeholder = `0.${placeholderFractional}`;
 	}
-
-	const satoshis = convertToSats(value, unit);
+	if (!showPlaceholder) {
+		value = value === '' ? placeholder : value;
+	}
 
 	if (value) {
 		const [integer, fractional] = value.split('.');
@@ -89,12 +95,16 @@ const NumberPadTextField = ({
 
 	return (
 		<Pressable style={style} testID={testID} onPress={onPress}>
-			<Money
-				sats={satoshis}
-				size="text01m"
-				color="gray1"
-				{...{ ...(unit === EBalanceUnit.fiat ? btcProps : fiatProps) }}
-			/>
+			{!reverse && (
+				<Money
+					style={styles.secondary}
+					sats={satoshis}
+					size="text01m"
+					color="gray1"
+					{...{ ...(unit === EBalanceUnit.fiat ? btcProps : fiatProps) }}
+				/>
+			)}
+
 			<View style={styles.main}>
 				<MoneySymbol style={styles.symbol} unit={unit} />
 				{value !== placeholder && (
@@ -106,6 +116,15 @@ const NumberPadTextField = ({
 					{placeholder}
 				</Display>
 			</View>
+
+			{reverse && (
+				<Money
+					sats={satoshis}
+					size="text01m"
+					color="gray1"
+					{...{ ...(unit === EBalanceUnit.fiat ? btcProps : fiatProps) }}
+				/>
+			)}
 		</Pressable>
 	);
 };
@@ -114,7 +133,9 @@ const styles = StyleSheet.create({
 	main: {
 		flexDirection: 'row',
 		alignItems: 'center',
-		marginTop: 9,
+	},
+	secondary: {
+		marginBottom: 9,
 	},
 	symbol: {
 		marginRight: 4,

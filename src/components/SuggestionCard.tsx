@@ -56,7 +56,7 @@ const SuggestionCard = ({
 	);
 
 	return (
-		<Card style={containerStyle} testID={`Suggestion${id}`}>
+		<Card style={containerStyle} testID={`Suggestion-${id}`}>
 			<Canvas style={styles.canvas}>
 				{dismissable ? (
 					<Glow color={colors[color]} />
@@ -65,9 +65,9 @@ const SuggestionCard = ({
 				)}
 			</Canvas>
 			<Pressable
-				onPress={(): void => onPress(id)}
+				style={styles.pressable}
 				color="transparent"
-				style={styles.pressable}>
+				onPress={(): void => onPress(id)}>
 				<View style={styles.iconContainer}>
 					<Image style={styles.image} resizeMode="contain" source={image} />
 				</View>

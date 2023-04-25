@@ -1,4 +1,4 @@
-import React, { memo, ReactElement, useMemo } from 'react';
+import React, { memo, ReactElement } from 'react';
 import { Image, ImageSourcePropType, StyleSheet } from 'react-native';
 
 import useColors from '../../hooks/colors';
@@ -12,29 +12,27 @@ const Barrel = ({
 	id,
 	amount,
 	img,
+	testID,
 	onPress,
 }: {
 	active: boolean;
 	id: TPackages['id'];
 	amount: number;
 	img: ImageSourcePropType;
+	testID?: string;
 	onPress: (id: TPackages['id']) => void;
 }): ReactElement => {
 	const colors = useColors();
-	const style = useMemo(
-		() =>
-			active ? [styles.bRoot, { borderColor: colors.purple }] : styles.bRoot,
-		[active, colors.purple],
-	);
-	const dp = useDisplayValues(Number(amount));
+	const dp = useDisplayValues(amount);
 
 	return (
 		<TouchableOpacity
+			style={[styles.root, active && { borderColor: colors.purple }]}
 			color="purple16"
-			style={style}
+			testID={testID}
 			onPress={(): void => onPress(id)}>
-			<Image style={styles.bImage} source={img} />
-			<Subtitle style={styles.bAmount}>
+			<Image style={styles.image} source={img} />
+			<Subtitle style={styles.amount}>
 				{dp.fiatSymbol} {dp.fiatWhole}
 			</Subtitle>
 		</TouchableOpacity>
@@ -42,7 +40,7 @@ const Barrel = ({
 };
 
 const styles = StyleSheet.create({
-	bRoot: {
+	root: {
 		flex: 1,
 		justifyContent: 'space-between',
 		alignItems: 'center',
@@ -50,13 +48,13 @@ const styles = StyleSheet.create({
 		borderRadius: 8,
 		borderWidth: 1,
 	},
-	bImage: {
+	image: {
 		margin: 8,
 		height: 100,
 		width: 100,
 		resizeMode: 'contain',
 	},
-	bAmount: {
+	amount: {
 		marginTop: 8,
 		marginBottom: 16,
 		textAlign: 'center',

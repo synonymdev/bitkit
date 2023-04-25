@@ -53,7 +53,7 @@ const Confirm = ({
 
 	const blocktankPurchaseFee = useDisplayValues(order?.price ?? 0);
 	const transactionFee = useSelector(transactionFeeSelector);
-	const fiatTransactionFee = useDisplayValues(transactionFee ?? 0);
+	const fiatTransactionFee = useDisplayValues(transactionFee);
 	const channelOpenCost = useMemo(() => {
 		return (
 			blocktankPurchaseFee.fiatValue + fiatTransactionFee.fiatValue

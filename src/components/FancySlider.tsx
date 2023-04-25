@@ -281,7 +281,7 @@ const FancySlider = ({
 				) : null}
 				<Animated.View
 					style={[
-						styles.grap,
+						styles.grab,
 						{
 							height: GRAB_SIZE,
 							width: GRAB_SIZE,
@@ -292,6 +292,7 @@ const FancySlider = ({
 							],
 						},
 					]}
+					testID="SliderHandle"
 					{...panResponder.panHandlers}>
 					<ThemedView color="purple" style={styles.circle1}>
 						<ThemedView color="white" style={styles.circle2} />
@@ -334,7 +335,7 @@ const styles = StyleSheet.create({
 		top: 12,
 		bottom: 0,
 	},
-	grap: {
+	grab: {
 		position: 'absolute',
 		left: (CIRCLE_SIZE - GRAB_SIZE) / 2,
 		top: (CIRCLE_SIZE - GRAB_SIZE) / 2,

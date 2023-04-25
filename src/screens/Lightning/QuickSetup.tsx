@@ -18,7 +18,6 @@ import GlowingBackground from '../../components/GlowingBackground';
 import NavigationHeader from '../../components/NavigationHeader';
 import Percentage from '../../components/Percentage';
 import Button from '../../components/Button';
-import AmountToggle from '../../components/AmountToggle';
 import FancySlider from '../../components/FancySlider';
 import NumberPadLightning from './NumberPadLightning';
 import { useBalance } from '../../hooks/wallet';
@@ -28,8 +27,11 @@ import {
 } from '../../store/actions/wallet';
 import { startChannelPurchase } from '../../store/actions/blocktank';
 import { showErrorNotification } from '../../utils/notifications';
-import { fiatToBitcoinUnit } from '../../utils/exchange-rate';
-import { convertCurrency } from '../../utils/blocktank';
+import {
+	convertCurrency,
+	convertToSats,
+	fiatToBitcoinUnit,
+} from '../../utils/exchange-rate';
 import { SPENDING_LIMIT_RATIO } from '../../utils/wallet/constants';
 import type { LightningScreenProps } from '../../navigation/types';
 import {
@@ -37,30 +39,29 @@ import {
 	selectedWalletSelector,
 } from '../../store/reselect/wallet';
 import { blocktankServiceSelector } from '../../store/reselect/blocktank';
-import { selectedCurrencySelector } from '../../store/reselect/settings';
+import {
+	balanceUnitSelector,
+	selectedCurrencySelector,
+} from '../../store/reselect/settings';
 import { EBalanceUnit, EBitcoinUnit } from '../../store/types/wallet';
+import NumberPadTextField from '../../components/NumberPadTextField';
+import { getNumberPadText } from '../../utils/numberpad';
+import { updateSettings } from '../../store/actions/settings';
 
 const QuickSetup = ({
 	navigation,
 }: LightningScreenProps<'QuickSetup'>): ReactElement => {
 	const { t } = useTranslation('lightning');
-	const [keybrd, setKeybrd] = useState(false);
+	const [showNumberPad, setShowNumberPad] = useState(false);
 	const [loading, setLoading] = useState(false);
 	const [totalBalance, setTotalBalance] = useState(0);
-	const [spendingAmount, setSpendingAmount] = useState(0);
+	const [textFieldValue, setTextFieldValue] = useState('');
 	const currentBalance = useBalance({ onchain: true });
+	const unit = useSelector(balanceUnitSelector);
 	const selectedNetwork = useSelector(selectedNetworkSelector);
 	const selectedWallet = useSelector(selectedWalletSelector);
 	const blocktankService = useSelector(blocktankServiceSelector);
 	const selectedCurrency = useSelector(selectedCurrencySelector);
-
-	const savingsAmount = totalBalance - spendingAmount;
-	const spendingPercentage = Math.round((spendingAmount / totalBalance) * 100);
-	const savingsPercentage = Math.round((savingsAmount / totalBalance) * 100);
-
-	const handleChange = useCallback((v: number) => {
-		setSpendingAmount(Math.round(v));
-	}, []);
 
 	const spendingLimit = useMemo(() => {
 		const spendableBalance = Math.round(
@@ -71,16 +72,23 @@ const QuickSetup = ({
 			from: 'USD',
 			to: selectedCurrency,
 		});
-		const maxSpendingLimit =
-			fiatToBitcoinUnit({
-				fiatValue: convertedUnit.fiatValue,
-				bitcoinUnit: EBitcoinUnit.satoshi,
-			}) ?? 0;
+		const maxSpendingLimit = fiatToBitcoinUnit({
+			fiatValue: convertedUnit.fiatValue,
+			bitcoinUnit: EBitcoinUnit.satoshi,
+		});
 		if (!maxSpendingLimit) {
 			return spendableBalance;
 		}
 		return Math.min(spendableBalance, maxSpendingLimit);
 	}, [currentBalance.satoshis, selectedCurrency]);
+
+	const spendingAmount = useMemo((): number => {
+		return convertToSats(textFieldValue, unit);
+	}, [textFieldValue, unit]);
+
+	const savingsAmount = totalBalance - spendingAmount;
+	const spendingPercentage = Math.round((spendingAmount / totalBalance) * 100);
+	const savingsPercentage = Math.round((savingsAmount / totalBalance) * 100);
 
 	useEffect(() => {
 		setTotalBalance(spendingLimit);
@@ -92,7 +100,10 @@ const QuickSetup = ({
 
 	// default spendingPercentage to 20%
 	useEffect(() => {
-		return setSpendingAmount(Math.round(totalBalance * 0.2));
+		const defaultSpendingAmount = Math.round(totalBalance * 0.2);
+		const result = getNumberPadText(defaultSpendingAmount, unit);
+		setTextFieldValue(result);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [totalBalance]);
 
 	useFocusEffect(
@@ -105,7 +116,47 @@ const QuickSetup = ({
 		}, [selectedNetwork, selectedWallet]),
 	);
 
-	const onContinuePress = useCallback(async (): Promise<void> => {
+	// BTC -> satoshi -> fiat
+	const nextUnit = useMemo(() => {
+		if (unit === EBalanceUnit.BTC) {
+			return EBalanceUnit.satoshi;
+		}
+		if (unit === EBalanceUnit.satoshi) {
+			return EBalanceUnit.fiat;
+		}
+		return EBalanceUnit.BTC;
+	}, [unit]);
+
+	const onChangeUnit = (): void => {
+		const result = getNumberPadText(spendingAmount, nextUnit);
+		setTextFieldValue(result);
+
+		updateSettings({
+			balanceUnit: nextUnit,
+			...(nextUnit !== EBalanceUnit.fiat && {
+				bitcoinUnit: nextUnit as unknown as EBitcoinUnit,
+			}),
+		});
+	};
+
+	const onSliderChange = useCallback(
+		(value: number) => {
+			const result = getNumberPadText(Math.round(value), unit);
+			setTextFieldValue(result);
+		},
+		[unit],
+	);
+
+	const onMax = useCallback(() => {
+		const result = getNumberPadText(totalBalance, unit);
+		setTextFieldValue(result);
+	}, [totalBalance, unit]);
+
+	const onDone = useCallback(() => {
+		setShowNumberPad(false);
+	}, []);
+
+	const onContinue = useCallback(async (): Promise<void> => {
 		setLoading(true);
 		const localBalance =
 			Math.round(spendingAmount * 1.1) > blocktankService.min_channel_size
@@ -130,17 +181,17 @@ const QuickSetup = ({
 		}
 		setLoading(false);
 		navigation.push('QuickConfirm', {
-			spendingAmount,
+			spendingAmount: spendingAmount,
 			total: totalBalance,
 			orderId: purchaseResponse.value,
 		});
 	}, [
+		spendingAmount,
 		blocktankService,
-		navigation,
 		selectedNetwork,
 		selectedWallet,
-		spendingAmount,
 		totalBalance,
+		navigation,
 		t,
 	]);
 
@@ -156,14 +207,14 @@ const QuickSetup = ({
 			<View style={styles.root}>
 				<View>
 					<Display color="purple">
-						{t(keybrd ? 'spending_money' : 'spending_balance')}
+						{t(showNumberPad ? 'spending_money' : 'spending_balance')}
 					</Display>
 					<Text01S color="gray1" style={styles.text}>
-						{t(keybrd ? 'enter_money' : 'enter_amount')}
+						{t(showNumberPad ? 'enter_money' : 'enter_amount')}
 					</Text01S>
 				</View>
 
-				{!keybrd && (
+				{!showNumberPad && (
 					<>
 						<View style={styles.grow1} />
 						<AnimatedView
@@ -176,10 +227,10 @@ const QuickSetup = ({
 							</View>
 							<View style={styles.sliderContainer}>
 								<FancySlider
+									value={spendingAmount}
 									minimumValue={0}
 									maximumValue={totalBalance}
-									value={spendingAmount}
-									onValueChange={handleChange}
+									onValueChange={onSliderChange}
 								/>
 							</View>
 							<View style={styles.row}>
@@ -192,23 +243,24 @@ const QuickSetup = ({
 				)}
 
 				<View>
-					<View style={styles.amountBig}>
-						<View>
-							{!keybrd && (
-								<Caption13Up color="purple" style={styles.amountBigCaption}>
-									{t('spending_label')}
-								</Caption13Up>
-							)}
-							<AmountToggle
-								sats={spendingAmount}
-								unit={EBalanceUnit.fiat}
-								onPress={(): void => setKeybrd(true)}
-							/>
-						</View>
+					<View style={styles.amount}>
+						{!showNumberPad && (
+							<Caption13Up style={styles.amountCaption} color="purple">
+								{t('spending_label')}
+							</Caption13Up>
+						)}
+						<NumberPadTextField
+							value={textFieldValue}
+							showPlaceholder={showNumberPad}
+							reverse={true}
+							testID="QuickSetupNumberField"
+							onPress={(): void => setShowNumberPad(true)}
+						/>
 					</View>
 
-					{!keybrd && (
+					{!showNumberPad && (
 						<AnimatedView
+							style={styles.button}
 							color="transparent"
 							entering={FadeIn}
 							exiting={FadeOut}>
@@ -216,27 +268,24 @@ const QuickSetup = ({
 								loading={loading}
 								text={t('continue')}
 								size="large"
-								onPress={onContinuePress}
+								disabled={spendingAmount === 0}
+								testID="QuickSetupContinue"
+								onPress={onContinue}
 							/>
 							<SafeAreaInsets type="bottom" />
 						</AnimatedView>
 					)}
 				</View>
 
-				{keybrd && (
+				{showNumberPad && (
 					<NumberPadLightning
-						sats={spendingAmount}
-						onChange={setSpendingAmount}
-						onMaxPress={(): void => {
-							setSpendingAmount(totalBalance);
-						}}
-						onDone={(): void => {
-							if (spendingAmount > totalBalance) {
-								setSpendingAmount(totalBalance);
-							}
-							setKeybrd(false);
-						}}
 						style={styles.numberpad}
+						value={textFieldValue}
+						maxAmount={totalBalance}
+						onChange={setTextFieldValue}
+						onChangeUnit={onChangeUnit}
+						onMax={onMax}
+						onDone={onDone}
 					/>
 				)}
 			</View>
@@ -266,13 +315,10 @@ const styles = StyleSheet.create({
 		marginTop: 24,
 		marginBottom: 16,
 	},
-	amountBig: {
-		flexDirection: 'row',
-		justifyContent: 'space-between',
-		alignItems: 'center',
-		marginBottom: 32,
+	amount: {
+		marginBottom: 27,
 	},
-	amountBigCaption: {
+	amountCaption: {
 		marginBottom: 4,
 	},
 	numberpad: {
@@ -283,6 +329,9 @@ const styles = StyleSheet.create({
 	},
 	grow2: {
 		flexGrow: 2,
+	},
+	button: {
+		marginTop: 11,
 	},
 });
 

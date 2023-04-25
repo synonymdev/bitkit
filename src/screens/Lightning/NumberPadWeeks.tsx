@@ -49,7 +49,7 @@ const NumberPadWeeks = ({
 			<NumberPadButtons
 				color="purple"
 				showUnitButton={false}
-				onMaxPress={(): void => onChange(MAX_WEEKS)}
+				onMax={(): void => onChange(MAX_WEEKS)}
 				onDone={handleDone}
 			/>
 		</NumberPad>

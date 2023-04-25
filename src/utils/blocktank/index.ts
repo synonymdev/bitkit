@@ -22,7 +22,7 @@ import { TGeoBlockResponse } from '../../store/types/blocktank';
 import { setGeoBlock, updateUser } from '../../store/actions/user';
 import { fiatToBitcoinUnit, getFiatDisplayValues } from '../exchange-rate';
 import { getBalance, refreshWallet } from '../wallet';
-import { IDisplayValues, IFiatDisplayValues } from '../exchange-rate/types';
+import { IDisplayValues } from '../exchange-rate/types';
 import { EBitcoinUnit } from '../../store/types/wallet';
 
 // https://github.com/synonymdev/blocktank-server/blob/master/src/Orders/Order.js#L27
@@ -333,25 +333,4 @@ export const getSpendingLimits = ({
 		selectedCurrencySpendingLimitFiat:
 			selectedCurrencySpendingLimitFiat.fiatValue,
 	};
-};
-
-export const convertCurrency = ({
-	amount,
-	from,
-	to,
-}: {
-	amount: number;
-	from: string;
-	to: string;
-}): IFiatDisplayValues => {
-	const sats = fiatToBitcoinUnit({
-		fiatValue: amount,
-		bitcoinUnit: EBitcoinUnit.satoshi,
-		currency: from,
-	});
-	return getFiatDisplayValues({
-		satoshis: sats,
-		bitcoinUnit: EBitcoinUnit.satoshi,
-		currency: to,
-	});
 };

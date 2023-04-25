@@ -117,10 +117,10 @@ describe('Settings', () => {
 			await element(
 				by
 					.id('SuggestionDismiss')
-					.withAncestor(by.id('SuggestionbackupSeedPhrase')),
+					.withAncestor(by.id('Suggestion-backupSeedPhrase')),
 			).tap();
 			await expect(
-				element(by.id('SuggestionbackupSeedPhrase')),
+				element(by.id('Suggestion-backupSeedPhrase')),
 			).not.toBeVisible();
 
 			// hide Suggestions
@@ -141,8 +141,7 @@ describe('Settings', () => {
 			await element(by.id('NavigationClose')).tap();
 
 			// backupSeedPhrase should be visible again
-			await expect(element(by.id('SuggestionbackupSeedPhrase'))).toBeVisible();
-
+			await expect(element(by.id('Suggestion-backupSeedPhrase'))).toBeVisible();
 			markComplete('s4');
 		});
 	});

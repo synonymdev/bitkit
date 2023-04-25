@@ -26,7 +26,7 @@
 	"receiving_amount_bitcoin": "Enter the amount of Bitcoin you want to be able to receive instantly.",
 	"enter_custom_amount": "Enter Custom Amount",
 	"custom_confirm_header": "3) <purple>Please\nConfirm.</purple>",
-	"custom_confirm_cost": "It costs <white>{{amount}}</white> to connect you and set up your spending balance. Your Lightning connection will stay open for at least <whiteWithKeyboard>{{weeks}} week <penIcon/></whiteWithKeyboard>.",
+	"custom_confirm_cost": "It costs <white>{{amount}}</white> to connect you and set up your spending balance. Your Lightning connection will stay open for at least <whiteWithKeyboard>{{weeks}} week(s) <penIcon/></whiteWithKeyboard>.",
 	"duration_header": "Connection Duration.",
 	"duration_text": "Choose the minimum number of weeks you want your connection to remain open.",
 	"duration_week": "weeks",

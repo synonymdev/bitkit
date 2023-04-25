@@ -19,8 +19,6 @@ import Barrel from './Barrel';
 import GlowingBackground from '../../components/GlowingBackground';
 import NavigationHeader from '../../components/NavigationHeader';
 import Button from '../../components/Button';
-import { useExchangeRate } from '../../hooks/displayValues';
-import AmountToggle from '../../components/AmountToggle';
 import NumberPadLightning from './NumberPadLightning';
 import type { LightningScreenProps } from '../../navigation/types';
 import { useBalance } from '../../hooks/wallet';
@@ -29,14 +27,14 @@ import {
 	setupOnChainTransaction,
 } from '../../store/actions/wallet';
 import {
+	convertCurrency,
+	convertToSats,
 	fiatToBitcoinUnit,
 	getFiatDisplayValues,
 } from '../../utils/exchange-rate';
-import { btcToSats } from '../../utils/helpers';
 import { objectKeys } from '../../utils/objectKeys';
 import { showErrorNotification } from '../../utils/notifications';
 import { startChannelPurchase } from '../../store/actions/blocktank';
-import { convertCurrency } from '../../utils/blocktank';
 import { EBalanceUnit, EBitcoinUnit } from '../../store/types/wallet';
 import {
 	balanceUnitSelector,
@@ -50,6 +48,9 @@ import {
 	selectedNetworkSelector,
 	selectedWalletSelector,
 } from '../../store/reselect/wallet';
+import NumberPadTextField from '../../components/NumberPadTextField';
+import { getNumberPadText } from '../../utils/numberpad';
+import { updateSettings } from '../../store/actions/settings';
 
 export type TPackages = {
 	id: 'small' | 'medium' | 'big';
@@ -97,16 +98,19 @@ const CustomSetup = ({
 	navigation,
 	route,
 }: LightningScreenProps<'CustomSetup'>): ReactElement => {
+	const spending = route.params.spending;
 	const { t } = useTranslation('lightning');
-	const [loading, setLoading] = useState(false);
 	const currentBalance = useBalance({ onchain: true });
 	const selectedCurrency = useSelector(selectedCurrencySelector);
+	const productId = useSelector(blocktankProductIdSelector);
+	const selectedNetwork = useSelector(selectedNetworkSelector);
+	const selectedWallet = useSelector(selectedWalletSelector);
+	const blocktankService = useSelector(blocktankServiceSelector);
+	const unit = useSelector(balanceUnitSelector);
 
-	const spending = route.params?.spending;
-	const [keybrd, setKeybrd] = useState(false);
-	const [keybrdWasEverOpened, setKeybrdWasEverOpened] = useState(false);
-	const [spendingAmount, setSpendingAmount] = useState(0);
-	const [receivingAmount, setReceivingAmount] = useState(0);
+	const [textFieldValue, setTextFieldValue] = useState('');
+	const [showNumberPad, setShowNumberPad] = useState(false);
+	const [loading, setLoading] = useState(false);
 	const [spendPkgRates, setSpendPkgRates] = useState({
 		big: 0,
 		medium: 0,
@@ -117,31 +121,12 @@ const CustomSetup = ({
 		medium: 0,
 		small: 0,
 	});
-	const fiatCurrencyRate = useExchangeRate(selectedCurrency);
-
 	const [availableSpendingPackages, setAvailableSpendingPackages] = useState<
 		TPackages[]
 	>([]); //Packages the user can afford.
 	const [availableReceivingPackages, setAvailableReceivingPackages] = useState<
 		TPackages[]
 	>([]);
-	const productId = useSelector(blocktankProductIdSelector);
-	const unit = useSelector(balanceUnitSelector);
-	const selectedNetwork = useSelector(selectedNetworkSelector);
-	const selectedWallet = useSelector(selectedWalletSelector);
-	const blocktankService = useSelector(blocktankServiceSelector);
-
-	const fiatToSats = useCallback(
-		(fiatValue = 0): number => {
-			return fiatToBitcoinUnit({
-				fiatValue,
-				exchangeRate: fiatCurrencyRate,
-				currency: selectedCurrency,
-				bitcoinUnit: EBitcoinUnit.satoshi,
-			});
-		},
-		[fiatCurrencyRate, selectedCurrency],
-	);
 
 	const spendableFiatBalance = useMemo(() => {
 		const spendableBalance = Math.round(currentBalance.fiatValue / 1.2);
@@ -150,11 +135,10 @@ const CustomSetup = ({
 			from: 'USD',
 			to: selectedCurrency,
 		});
-		const maxSpendingLimitSats =
-			fiatToBitcoinUnit({
-				fiatValue: convertedUnit.fiatValue,
-				bitcoinUnit: EBitcoinUnit.satoshi,
-			}) ?? 0;
+		const maxSpendingLimitSats = fiatToBitcoinUnit({
+			fiatValue: convertedUnit.fiatValue,
+			bitcoinUnit: EBitcoinUnit.satoshi,
+		});
 		const maxSpendingLimit = getFiatDisplayValues({
 			satoshis: maxSpendingLimitSats,
 			bitcoinUnit: EBitcoinUnit.satoshi,
@@ -193,11 +177,11 @@ const CustomSetup = ({
 					from: 'USD',
 					to: selectedCurrency,
 				});
-				rates[id] = fiatToSats(convertedAmount.fiatValue);
+				rates[id] = convertToSats(convertedAmount.fiatValue, EBalanceUnit.fiat);
 				availPackages.push({ ...p, fiatAmount: convertedAmount.fiatValue });
 			} else {
 				const key = objectKeys(rates)[i];
-				rates[key] = fiatToSats(spendableFiatBalance);
+				rates[key] = convertToSats(spendableFiatBalance, EBalanceUnit.fiat);
 				const convertedAmount = convertCurrency({
 					amount: PACKAGES_SPENDING[i].fiatAmount,
 					from: 'USD',
@@ -211,7 +195,9 @@ const CustomSetup = ({
 			}
 			return !reachedSpendingCap;
 		});
-		setSpendingAmount(rates.small);
+		// set initial spending amount
+		const result = getNumberPadText(rates.small, unit, true);
+		setTextFieldValue(result);
 		setAvailableSpendingPackages(availPackages);
 		setSpendPkgRates(rates);
 
@@ -224,7 +210,10 @@ const CustomSetup = ({
 					from: 'USD',
 					to: selectedCurrency,
 				});
-				const sats = fiatToSats(convertedAmount.fiatValue);
+				const sats = convertToSats(
+					convertedAmount.fiatValue,
+					EBalanceUnit.fiat,
+				);
 				// Ensure the conversion still puts us below the max_chan_receiving
 				receiveRates[id] =
 					sats > blocktankService.max_chan_receiving
@@ -240,7 +229,10 @@ const CustomSetup = ({
 					from: 'USD',
 					to: selectedCurrency,
 				});
-				const sats = fiatToSats(convertedAmount.fiatValue);
+				const sats = convertToSats(
+					convertedAmount.fiatValue,
+					EBalanceUnit.fiat,
+				);
 				// Ensure the conversion still puts us below the max_chan_receiving
 				receiveRates[id] =
 					sats > blocktankService.max_chan_receiving
@@ -254,19 +246,19 @@ const CustomSetup = ({
 		});
 		setAvailableReceivingPackages(availReceivingPackages);
 		setReceivePkgRates(receiveRates);
+
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [
 		blocktankService.max_chan_receiving,
 		blocktankService.max_chan_receiving_usd,
-		fiatToSats,
 		selectedCurrency,
 		spendableFiatBalance,
 	]);
 
+	// set initial receiving amount
 	useEffect(() => {
-		if (spending) {
-			setSpendingAmount(0);
-		} else {
-			const { big = 0, medium = 0, small = 0 } = receivePkgRates;
+		if (!spending) {
+			const { big, medium, small } = receivePkgRates;
 			// Attempt to suggest a receiving balance 10x greater than current on-chain balance.
 			// May not be able to afford anything much larger.
 			const balanceMultiplied = currentBalance.satoshis * 10;
@@ -280,8 +272,11 @@ const CustomSetup = ({
 					: balanceMultiplied > blocktankService.min_channel_size
 					? blocktankService.min_channel_size
 					: 0;
-			setReceivingAmount(amount);
+
+			const result = getNumberPadText(amount, unit, true);
+			setTextFieldValue(result);
 		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [
 		blocktankService.max_chan_receiving,
 		blocktankService.min_channel_size,
@@ -290,30 +285,24 @@ const CustomSetup = ({
 		spending,
 	]);
 
-	// set amount to 0 when user tries to enter custom amount at the first time
-	useEffect(() => {
-		if (keybrdWasEverOpened || !keybrd) {
-			return;
-		}
-		setKeybrdWasEverOpened(true);
-		if (spending) {
-			setSpendingAmount(0);
-		} else {
-			setReceivingAmount(0);
-		}
-	}, [keybrd, keybrdWasEverOpened, spending]);
+	const amount = useMemo((): number => {
+		return convertToSats(textFieldValue, unit);
+	}, [textFieldValue, unit]);
 
-	const handleBarrelPress = (id: TPackages['id']): void => {
-		if (spending) {
-			setSpendingAmount(spendPkgRates[id]);
-		} else {
-			setReceivingAmount(receivePkgRates[id]);
-		}
-	};
+	const maxAmount = useMemo((): number => {
+		return spending
+			? currentBalance.satoshis
+			: blocktankService.max_chan_receiving;
+	}, [spending, currentBalance.satoshis, blocktankService.max_chan_receiving]);
 
-	const amount = useMemo(() => {
-		return spending ? spendingAmount : receivingAmount;
-	}, [receivingAmount, spending, spendingAmount]);
+	const onBarrelPress = useCallback(
+		(id: TPackages['id']): void => {
+			const rate = spending ? spendPkgRates[id] : receivePkgRates[id];
+			const result = getNumberPadText(rate, unit, true);
+			setTextFieldValue(result);
+		},
+		[spending, spendPkgRates, receivePkgRates, unit],
+	);
 
 	const getBarrels = useCallback((): ReactElement[] => {
 		if (spending) {
@@ -321,10 +310,11 @@ const CustomSetup = ({
 				<Barrel
 					key={p.id}
 					id={p.id}
-					active={spendPkgRates[p.id] === spendingAmount}
+					active={spendPkgRates[p.id] === amount}
 					amount={spendPkgRates[p.id]}
 					img={p.img}
-					onPress={handleBarrelPress}
+					testID={`Barrel-${p.id}`}
+					onPress={onBarrelPress}
 				/>
 			));
 		} else {
@@ -332,63 +322,97 @@ const CustomSetup = ({
 				<Barrel
 					key={p.id}
 					id={p.id}
-					active={receivePkgRates[p.id] === receivingAmount}
+					active={receivePkgRates[p.id] === amount}
 					amount={receivePkgRates[p.id]}
 					img={p.img}
-					onPress={handleBarrelPress}
+					testID={`Barrel-${p.id}`}
+					onPress={onBarrelPress}
 				/>
 			));
 		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [
-		availableReceivingPackages,
 		availableSpendingPackages,
+		availableReceivingPackages,
 		receivePkgRates,
-		receivingAmount,
 		spendPkgRates,
+		onBarrelPress,
 		spending,
-		spendingAmount,
+		amount,
 	]);
 
-	const onMaxPress = useCallback(() => {
+	// BTC -> satoshi -> fiat
+	const nextUnit = useMemo(() => {
+		if (unit === EBalanceUnit.BTC) {
+			return EBalanceUnit.satoshi;
+		}
+		if (unit === EBalanceUnit.satoshi) {
+			return EBalanceUnit.fiat;
+		}
+		return EBalanceUnit.BTC;
+	}, [unit]);
+
+	const onChangeUnit = (): void => {
+		const result = getNumberPadText(amount, nextUnit);
+		setTextFieldValue(result);
+
+		updateSettings({
+			balanceUnit: nextUnit,
+			...(nextUnit !== EBalanceUnit.fiat && {
+				bitcoinUnit: nextUnit as unknown as EBitcoinUnit,
+			}),
+		});
+	};
+
+	const onMax = useCallback(() => {
 		if (spending) {
 			// Select highest available spend package.
-			const maxSpendPackage = availableSpendingPackages.reduce((a, b) =>
-				a.fiatAmount > b.fiatAmount ? a : b,
-			);
+			const maxSpendPackage = availableSpendingPackages.reduce((a, b) => {
+				return a.fiatAmount > b.fiatAmount ? a : b;
+			});
 			const spendRate = spendPkgRates[maxSpendPackage.id];
-			setSpendingAmount(spendRate);
+			const result = getNumberPadText(spendRate, unit);
+			setTextFieldValue(result);
 		} else {
 			// Select highest available receive package.
-			const maxReceivePackage = availableReceivingPackages.reduce((a, b) =>
-				a.fiatAmount > b.fiatAmount ? a : b,
-			);
+			const maxReceivePackage = availableReceivingPackages.reduce((a, b) => {
+				return a.fiatAmount > b.fiatAmount ? a : b;
+			});
 			const receiveRate = receivePkgRates[maxReceivePackage.id];
-			setReceivingAmount(receiveRate);
+			const result = getNumberPadText(receiveRate, unit);
+			setTextFieldValue(result);
 		}
 	}, [
-		availableReceivingPackages,
-		availableSpendingPackages,
-		receivePkgRates,
-		spendPkgRates,
 		spending,
+		availableSpendingPackages,
+		availableReceivingPackages,
+		spendPkgRates,
+		receivePkgRates,
+		unit,
 	]);
 
-	const onContinuePress = useCallback(async (): Promise<void> => {
+	const onDone = useCallback(() => {
+		setShowNumberPad(false);
+	}, []);
+
+	const onContinue = useCallback(async (): Promise<void> => {
 		if (spending) {
 			// go to second setup screen
 			navigation.push('CustomSetup', {
 				spending: false,
-				spendingAmount,
+				spendingAmount: amount,
 			});
 			return;
 		}
 
 		// Create the channel order and navigate to the confirm screen.
 		setLoading(true);
+
+		const spendingAmount = route.params.spendingAmount ?? 0;
+		const receivingAmount = amount;
+
 		const purchaseResponse = await startChannelPurchase({
 			productId,
-			remoteBalance: route.params.spendingAmount ?? 0,
+			remoteBalance: spendingAmount,
 			localBalance: receivingAmount,
 			channelExpiry: 6,
 			selectedWallet,
@@ -411,7 +435,7 @@ const CustomSetup = ({
 		setLoading(false);
 
 		navigation.navigate('CustomConfirm', {
-			spendingAmount: route.params.spendingAmount ?? 0,
+			spendingAmount,
 			receivingAmount,
 			orderId: purchaseResponse.value,
 		});
@@ -420,10 +444,9 @@ const CustomSetup = ({
 		navigation,
 		selectedNetwork,
 		selectedWallet,
-		spendingAmount,
 		productId,
-		receivingAmount,
 		route.params.spendingAmount,
+		amount,
 		spending,
 		t,
 	]);
@@ -432,7 +455,7 @@ const CustomSetup = ({
 		<GlowingBackground topLeft="purple">
 			<SafeAreaInsets type="top" />
 			<NavigationHeader
-				title="Add Instant Payments"
+				title={t('add_instant_payments')}
 				onClosePress={(): void => {
 					navigation.navigate('Wallet');
 				}}
@@ -451,94 +474,77 @@ const CustomSetup = ({
 							}}
 						/>
 					</Display>
-					{spending && !keybrd && (
+					{spending && !showNumberPad && (
 						<Text01S color="gray1" style={styles.text}>
 							{t('spending_amount_bitcoin')}
 						</Text01S>
 					)}
-					{spending && keybrd && (
+					{spending && showNumberPad && (
 						<Text01S color="gray1" style={styles.text}>
 							{t('enter_money')}
 						</Text01S>
 					)}
-					{!spending && !keybrd && (
+					{!spending && !showNumberPad && (
 						<Text01S color="gray1" style={styles.text}>
 							{t('receiving_amount_money')}
 						</Text01S>
 					)}
-					{!spending && keybrd && (
+					{!spending && showNumberPad && (
 						<Text01S color="gray1" style={styles.text}>
 							{t('receiving_amount_bitcoin')}
 						</Text01S>
 					)}
 				</View>
 
-				{!keybrd && (
+				{!showNumberPad && (
 					<AnimatedView color="transparent" entering={FadeIn} exiting={FadeOut}>
 						<View style={styles.barrels}>{getBarrels()}</View>
 						<Button
-							text={t('enter_custom_amount')}
 							style={styles.buttonCustom}
-							onPress={(): void => setKeybrd((k) => !k)}
+							text={t('enter_custom_amount')}
+							testID="CustomSetupCustomAmount"
+							onPress={(): void => setShowNumberPad((k) => !k)}
 						/>
 					</AnimatedView>
 				)}
 
-				<View style={styles.amountBig}>
-					<View>
-						{!keybrd && (
-							<Caption13Up style={styles.amountTitle} color="purple">
-								{t(spending ? 'spending_label' : 'receiving_label')}
-							</Caption13Up>
-						)}
-						<AmountToggle
-							sats={amount}
-							unit={EBalanceUnit.fiat}
-							onPress={(): void => setKeybrd((k) => !k)}
-						/>
-					</View>
+				<View style={styles.amount}>
+					{!showNumberPad && (
+						<Caption13Up style={styles.amountCaption} color="purple">
+							{t(spending ? 'spending_label' : 'receiving_label')}
+						</Caption13Up>
+					)}
+					<NumberPadTextField
+						value={textFieldValue}
+						showPlaceholder={showNumberPad}
+						reverse={true}
+						testID="CustomSetupNumberField"
+						onPress={(): void => setShowNumberPad(true)}
+					/>
 				</View>
 
-				{!keybrd && (
+				{!showNumberPad && (
 					<AnimatedView color="transparent" entering={FadeIn} exiting={FadeOut}>
 						<Button
 							text={t('continue')}
 							size="large"
 							loading={loading}
-							onPress={onContinuePress}
+							testID="CustomSetupContinue"
+							onPress={onContinue}
 						/>
 						<SafeAreaInsets type="bottom" />
 					</AnimatedView>
 				)}
 
-				{keybrd && (
+				{showNumberPad && (
 					<NumberPadLightning
-						sats={amount}
-						onChange={(txt): void => {
-							if (spending) {
-								setSpendingAmount(txt);
-							} else {
-								setReceivingAmount(txt);
-							}
-						}}
-						onMaxPress={onMaxPress}
-						onDone={(): void => {
-							let typedAmountInSats = amount;
-							if (unit === 'BTC') {
-								typedAmountInSats = btcToSats(typedAmountInSats);
-							}
-							if (spending && typedAmountInSats > currentBalance.satoshis) {
-								onMaxPress();
-							}
-							if (
-								!spending &&
-								typedAmountInSats > blocktankService.max_chan_receiving
-							) {
-								onMaxPress();
-							}
-							setKeybrd(false);
-						}}
 						style={styles.numberpad}
+						value={textFieldValue}
+						maxAmount={maxAmount}
+						onChange={setTextFieldValue}
+						onChangeUnit={onChangeUnit}
+						onMax={onMax}
+						onDone={onDone}
 					/>
 				)}
 			</View>
@@ -566,15 +572,12 @@ const styles = StyleSheet.create({
 	buttonCustom: {
 		alignSelf: 'flex-start',
 	},
-	amountBig: {
-		flexDirection: 'row',
-		justifyContent: 'space-between',
-		alignItems: 'center',
+	amount: {
 		marginTop: 'auto',
 		marginBottom: 32,
 	},
-	amountTitle: {
-		marginBottom: 8,
+	amountCaption: {
+		marginBottom: 4,
 	},
 	numberpad: {
 		marginHorizontal: -16,

@@ -30,7 +30,7 @@ const SendNumberPad = ({
 	const numberPadType = unit === EBalanceUnit.satoshi ? 'integer' : 'decimal';
 
 	const onPress = (key: string): void => {
-		let newValue = handleNumberPadPress(key, value, {
+		const newValue = handleNumberPadPress(key, value, {
 			maxLength,
 			maxDecimals,
 		});

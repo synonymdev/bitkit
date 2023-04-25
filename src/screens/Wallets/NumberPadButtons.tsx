@@ -6,32 +6,31 @@ import { useTranslation } from 'react-i18next';
 import { TouchableOpacity } from '../../styles/components';
 import { Text02B } from '../../styles/text';
 import { SwitchIcon } from '../../styles/icons';
-import { updateSettings } from '../../store/actions/settings';
-import useDisplayValues from '../../hooks/displayValues';
+import { useCurrency } from '../../hooks/displayValues';
 import { IColors } from '../../styles/colors';
-import { transactionMaxSelector } from '../../store/reselect/wallet';
 import { balanceUnitSelector } from '../../store/reselect/settings';
-import { EBalanceUnit, EBitcoinUnit } from '../../store/types/wallet';
-import { useBalance } from '../../hooks/wallet';
+import { EBalanceUnit } from '../../store/types/wallet';
 
 type NumberPadButtons = {
 	color?: keyof IColors;
 	showUnitButton?: boolean;
-	onMaxPress?: () => void;
+	isMaxAmount?: boolean;
+	onMax?: () => void;
+	onChangeUnit?: () => void;
 	onDone?: () => void;
 };
 
 const NumberPadButtons = ({
 	color = 'brand',
 	showUnitButton = true,
-	onMaxPress,
+	isMaxAmount = false,
+	onMax,
+	onChangeUnit,
 	onDone,
 }: NumberPadButtons): ReactElement => {
 	const { t } = useTranslation('wallet');
-	const { satoshis } = useBalance({ onchain: true, lightning: true });
+	const { fiatTicker } = useCurrency();
 	const unit = useSelector(balanceUnitSelector);
-	const isMaxSendAmount = useSelector(transactionMaxSelector);
-	const displayValues = useDisplayValues(satoshis);
 
 	// BTC -> satoshi -> fiat
 	const nextUnit = useMemo(() => {
@@ -44,25 +43,16 @@ const NumberPadButtons = ({
 		return EBalanceUnit.BTC;
 	}, [unit]);
 
-	const onChangeUnit = (): void => {
-		updateSettings({
-			balanceUnit: nextUnit,
-			...(nextUnit !== EBalanceUnit.fiat && {
-				bitcoinUnit: nextUnit as unknown as EBitcoinUnit,
-			}),
-		});
-	};
-
 	return (
 		<View style={styles.container}>
 			<View style={styles.buttonContainer}>
-				{onMaxPress && (
+				{onMax && (
 					<TouchableOpacity
 						style={styles.button}
 						color="white08"
-						disabled={satoshis <= 0}
-						onPress={onMaxPress}>
-						<Text02B size="12px" color={isMaxSendAmount ? 'orange' : color}>
+						testID="NumberPadButtonsMax"
+						onPress={onMax}>
+						<Text02B size="12px" color={isMaxAmount ? 'orange' : color}>
 							{t('send_max')}
 						</Text02B>
 					</TouchableOpacity>
@@ -74,12 +64,13 @@ const NumberPadButtons = ({
 					<TouchableOpacity
 						style={styles.button}
 						color="white08"
+						testID="NumberPadButtonsUnit"
 						onPress={onChangeUnit}>
 						<SwitchIcon color={color} width={16.44} height={13.22} />
 						<Text02B size="12px" color={color} style={styles.middleButtonText}>
 							{nextUnit === 'BTC' && 'BTC'}
 							{nextUnit === 'satoshi' && 'sats'}
-							{nextUnit === 'fiat' && displayValues.fiatTicker}
+							{nextUnit === 'fiat' && fiatTicker}
 						</Text02B>
 					</TouchableOpacity>
 				)}
@@ -90,6 +81,7 @@ const NumberPadButtons = ({
 					<TouchableOpacity
 						style={styles.button}
 						color="white08"
+						testID="NumberPadButtonsDone"
 						onPress={onDone}>
 						<Text02B size="12px" color={color}>
 							{t('send_done')}

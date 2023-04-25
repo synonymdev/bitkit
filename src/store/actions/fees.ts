@@ -1,9 +1,7 @@
 import { ok, Result } from '@synonymdev/result';
-// import ldk from '@synonymdev/react-native-ldk/dist/ldk';
 
 import actions from './actions';
 import { getDispatch, getFeesStore } from '../helpers';
-// import { getSelectedNetwork } from '../../utils/wallet';
 import { getFeeEstimates } from '../../utils/wallet/transactions';
 import { TAvailableNetworks } from '../../utils/networks';
 
