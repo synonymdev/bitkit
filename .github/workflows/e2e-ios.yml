@@ -1,12 +1,9 @@
 name: e2e-ios
 
-on:
-  pull_request:
-    branches:
-      - 'master'
-  push:
-    branches:
-      - 'master'
+on: pull_request
+
+env:
+  NO_FLIPPER: 1
 
 jobs:
   e2e:
@@ -62,31 +59,14 @@ jobs:
       - name: Node
         uses: actions/setup-node@v3
         with:
-          node-version: 16
+          node-version: 18
           cache: 'yarn' # cache packages, but not node_modules
-
-      - name: Cache node modules
-        uses: actions/cache@v3
-        id: cache-nm
-        with:
-          path: node_modules
-          key: node-modules-${{ hashFiles('**/yarn.lock') }}
-
-      - name: Rebuild detox
-        if: steps.cache-nm.outputs.cache-hit == 'true'
-        run: yarn detox clean-framework-cache && yarn detox build-framework-cache
-
-      - name: Install Dependencies
-        if: steps.cache-nm.outputs.cache-hit != 'true'
-        run: yarn install
 
       - name: Activate enviroment variables
         run: cp .env.test.template .env
 
-      - name: Activate react-native-skia-stup
-        run: |
-          yarn add @shopify/react-native-skia@0.1.156 github:limpbrains/react-native-skia-stub
-          patch -p1 < .github/workflows/react-native-skia-stub.patch
+      - name: Activate react-native-skia-stub
+        run: patch -p1 < .github/workflows/react-native-skia-stub.patch
 
       - name: Cache Pods
         uses: actions/cache@v3
@@ -95,15 +75,11 @@ jobs:
           path: ios/Pods
           key: pods-${{ hashFiles('**/Podfile.lock') }}
 
-      - name: Update Pods
-        run: |
-          gem update cocoapods xcodeproj
-          cd ios && pod install && cd ..
+      - name: Yarn Install
+        run: yarn --no-audit --prefer-offline
 
       - name: Install applesimutils
-        run: |
-          brew tap wix/brew
-          brew install applesimutils
+        run: HOMEBREW_NO_AUTO_UPDATE=1 brew tap wix/brew && brew install applesimutils
 
       - name: Build
         run: yarn e2e:build:ios-release

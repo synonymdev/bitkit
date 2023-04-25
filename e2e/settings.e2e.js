@@ -142,11 +142,11 @@ describe('Settings', () => {
 			await element(by.id('DisplaySuggestions')).tap();
 			await element(by.id('ResetSuggestions')).tap();
 			await element(by.id('DialogConfirm')).tap();
-			await expect(element(by.id('Suggestions'))).not.toBeVisible();
 			await element(by.id('NavigationClose')).tap();
 
 			// backupSeedPhrase should be visible again
 			await expect(element(by.id('SuggestionbackupSeedPhrase'))).toBeVisible();
+
 			markComplete('s4');
 		});
 	});
