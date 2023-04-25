@@ -104,11 +104,11 @@ jobs:
           ccache -s
         shell: bash
 
-      - name: Create Simulator Log
-        # With a little delay so the detox test below has time to spawn it, missing the first part of boot is fine
-        # If you boot the simulator separately from detox, some other race fails and detox testee never sends ready to proxy
-        continue-on-error: true
-        run: nohup sh -c "sleep 30 && xcrun simctl spawn booted log stream --level debug --style compact > simulator.log 2>&1 &"
+      # - name: Create Simulator Log
+      #   # With a little delay so the detox test below has time to spawn it, missing the first part of boot is fine
+      #   # If you boot the simulator separately from detox, some other race fails and detox testee never sends ready to proxy
+      #   continue-on-error: true
+      #   run: nohup sh -c "sleep 30 && xcrun simctl spawn booted log stream --level debug --style compact > simulator.log 2>&1 &"
 
       - name: Test attempt 1
         continue-on-error: true
@@ -126,16 +126,16 @@ jobs:
         if: steps.test2.outcome != 'success'
         run: yarn e2e:test:ios-release --record-videos all --take-screenshots all --record-logs all
 
-      - name: Compress Simulator Log
-        if: always()
-        run: gzip -9 simulator.log
+      # - name: Compress Simulator Log
+      #   if: always()
+      #   run: gzip -9 simulator.log
 
-      - name: Upload Simulator Log
-        uses: actions/upload-artifact@v3
-        if: always()
-        with:
-          name: simulator_log
-          path: simulator.log.gz
+      # - name: Upload Simulator Log
+      #   uses: actions/upload-artifact@v3
+      #   if: always()
+      #   with:
+      #     name: simulator_log
+      #     path: simulator.log.gz
 
       - uses: actions/upload-artifact@v3
         if: failure()
