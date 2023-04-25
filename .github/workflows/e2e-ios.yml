@@ -75,14 +75,40 @@ jobs:
           path: ios/Pods
           key: pods-${{ hashFiles('**/Podfile.lock') }}
 
+      # Detox is compiled during yarn install, using Xcode, set up cache first
+      - uses: hendrikmuhs/ccache-action@v1.2
+        name: Xcode Compile Cache
+        with:
+          key: ccache-${{ runner.os }}
+          max-size: 1500M
+
       - name: Yarn Install
         run: yarn --no-audit --prefer-offline
 
       - name: Install applesimutils
         run: HOMEBREW_NO_AUTO_UPDATE=1 brew tap wix/brew && brew install applesimutils
 
-      - name: Build
-        run: yarn e2e:build:ios-release
+      - name: Build iOS App
+        run: |
+          export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
+          export CCACHE_SLOPPINESS=clang_index_store,file_stat_matches,include_file_ctime,include_file_mtime,ivfsoverlay,pch_defines,modules,system_headers,time_macros
+          export CCACHE_FILECLONE=true
+          export CCACHE_DEPEND=true
+          export CCACHE_INODECACHE=true
+          export CCACHE_LIMIT_MULTIPLE=0.95
+          ccache -s
+          export SKIP_BUNDLING=1
+          export RCT_NO_LAUNCH_PACKAGER=1
+          set -o pipefail
+          yarn e2e:build:ios-release
+          ccache -s
+        shell: bash
+
+      - name: Create Simulator Log
+        # With a little delay so the detox test below has time to spawn it, missing the first part of boot is fine
+        # If you boot the simulator separately from detox, some other race fails and detox testee never sends ready to proxy
+        continue-on-error: true
+        run: nohup sh -c "sleep 30 && xcrun simctl spawn booted log stream --level debug --style compact > simulator.log 2>&1 &"
 
       - name: Test attempt 1
         continue-on-error: true
@@ -99,6 +125,17 @@ jobs:
         id: test3
         if: steps.test2.outcome != 'success'
         run: yarn e2e:test:ios-release --record-videos all --take-screenshots all --record-logs all
+
+      - name: Compress Simulator Log
+        if: always()
+        run: gzip -9 simulator.log
+
+      - name: Upload Simulator Log
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: simulator_log
+          path: simulator.log.gz
 
       - uses: actions/upload-artifact@v3
         if: failure()
