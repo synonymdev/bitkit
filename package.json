@@ -4,7 +4,7 @@
   "version": "1.0.0-beta.24",
   "private": false,
   "scripts": {
-    "setup-android": "yarn add -D https://github.com/sodium-friends/react-native-libsodium#6fbfee572fdfde7e7eec7a1956951d106b342145",
+    "setup-android": "yarn add -D github:sodium-friends/react-native-libsodium#6fbfee572fdfde7e7eec7a1956951d106b342145",
     "android": "react-native run-android",
     "setup-ios": "yarn add -D react-native-libsodium@0.7.0",
     "ios": "react-native run-ios --simulator='iPhone 14'",
@@ -79,7 +79,7 @@
     "lodash.isequal": "^4.5.0",
     "lodash.throttle": "^4.1.1",
     "lottie-react-native": "^5.1.5",
-    "nodejs-mobile-react-native": "https://github.com/Shopify/nodejs-mobile-react-native",
+    "nodejs-mobile-react-native": "github:Shopify/nodejs-mobile-react-native#a74b13a8f92b39805611c3458e453e57e5abe98f",
     "process": "^0.11.10",
     "protobufjs": "^6.11.2",
     "random-access-web-storage": "^2.0.0",
@@ -203,10 +203,7 @@
   },
   "reactNativePermissionsIOS": [
     "Camera",
-    "Contacts",
     "FaceID",
-    "LocationWhenInUse",
-    "MediaLibrary",
     "Notifications",
     "PhotoLibrary"
   ],

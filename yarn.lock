@@ -9028,9 +9028,9 @@ nodejs-mobile-gyp@^0.3.1:
     tar "^4.4.8"
     which "1"
 
-"nodejs-mobile-react-native@https://github.com/Shopify/nodejs-mobile-react-native":
+"nodejs-mobile-react-native@github:Shopify/nodejs-mobile-react-native#a74b13a8f92b39805611c3458e453e57e5abe98f":
   version "0.8.1"
-  resolved "https://github.com/Shopify/nodejs-mobile-react-native#a74b13a8f92b39805611c3458e453e57e5abe98f"
+  resolved "https://codeload.github.com/Shopify/nodejs-mobile-react-native/tar.gz/a74b13a8f92b39805611c3458e453e57e5abe98f"
   dependencies:
     mkdirp "^0.5.1"
     ncp "^2.0.0"
