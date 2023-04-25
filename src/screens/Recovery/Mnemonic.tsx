@@ -57,7 +57,7 @@ const Mnemonic = ({
 			<NavigationHeader title={t('mnemonic_phrase')} />
 			<View style={styles.content}>
 				<Text01S style={styles.text} color="gray1">
-					{t('mnemonic_phrase', { length: seed.length })}
+					{t('mnemonic_write', { length: seed.length })}
 				</Text01S>
 
 				<ThemedView color="gray324" style={styles.seed}>
