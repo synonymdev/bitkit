@@ -14,6 +14,7 @@ export interface IColors {
 	yellow: string;
 	indigo: string;
 	purple: string;
+	bitcoin: string;
 	destructive: string;
 	gray6: string;
 	gray5: string;
@@ -65,10 +66,11 @@ const colors: IColors = {
 	green: '#75BF72',
 	green2: '#22C846',
 	yellow: '#FFD200',
-	orange: '#F7931A',
+	orange: '#FF6600',
 	red: '#E95164',
 	indigo: '#2D5BFF',
 	purple: '#B95CE8',
+	bitcoin: '#F7931A',
 
 	// Base
 	black: '#000000',

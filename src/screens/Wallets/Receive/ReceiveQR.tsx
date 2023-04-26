@@ -28,6 +28,7 @@ import {
 	AnimatedView,
 } from '../../../styles/components';
 import {
+	BitcoinCircleIcon,
 	BitcoinSlantedIcon,
 	CopyIcon,
 	LightningIcon,
@@ -56,7 +57,6 @@ import {
 } from '../../../store/reselect/wallet';
 import { receiveSelector } from '../../../store/reselect/receive';
 import { ReceiveScreenProps } from '../../../navigation/types';
-import BitcoinLogo from '../../../assets/bitcoin-logo-small.svg';
 
 type Slide = () => ReactElement;
 
@@ -71,7 +71,7 @@ const QrIcon = memo(
 		return (
 			<View style={styles.qrIconContainer}>
 				<View style={styles.qrIcon}>
-					<BitcoinLogo />
+					<BitcoinCircleIcon color="bitcoin" width={50} height={50} />
 				</View>
 			</View>
 		);
