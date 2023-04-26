@@ -92,7 +92,7 @@ const TabBar = ({
 				onPress={openScanner}
 				activeOpacity={0.8}
 				style={[styles.tabScan, borderStyles]}>
-				<ScanIcon width={32} height={32} />
+				<ScanIcon width={32} height={32} color="gray2" />
 			</TouchableOpacity>
 			<TouchableOpacity
 				activeOpacity={0.8}

@@ -468,7 +468,7 @@ const OnchainActivityDetail = ({
 							<Button
 								style={styles.button}
 								text={t('activity_explore')}
-								icon={<GitBranchIcon />}
+								icon={<GitBranchIcon color="brand" />}
 								disabled={!blockExplorerUrl}
 								onPress={handleBlockExplorerOpen}
 							/>

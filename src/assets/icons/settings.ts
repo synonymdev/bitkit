@@ -1,14 +1,7 @@
 export const chevronRightIcon = (
-	color = '#FFFFFF',
+	color = 'white',
 ): string => `<svg width="7" height="12" viewBox="0 0 7 12" xmlns="http://www.w3.org/2000/svg">
 <path fill-rule="evenodd" clip-rule="evenodd" d="M0.822528 0C0.357621 0 0 0.347721 0 0.81135C0 1.04316 0.0983458 1.23932 0.241394 1.39089L5.00626 6L0.241394 10.6091C0.0983458 10.7607 0 10.9658 0 11.1886C0 11.6523 0.357621 12 0.822528 12C1.05498 12 1.25167 11.9198 1.40366 11.7682L6.74967 6.58845C6.91954 6.42797 7 6.2229 7 6C7 5.7771 6.91954 5.58095 6.74967 5.41155L1.40366 0.24073C1.25167 0.0802431 1.05498 0 0.822528 0Z" fill="${color}"/>
-</svg>
-`;
-
-export const leftArrowIcon = (
-	color = '#636366',
-): string => `<svg width="20" height="18" viewBox="0 0 20 18" xmlns="http://www.w3.org/2000/svg">
-<path d="M3.4938 8.00012L9.34743 2.42896L7.96861 0.980225L0.310587 8.2687C-0.103212 8.66253 -0.103578 9.32238 0.309783 9.71667L7.96781 17.0214L9.34824 15.5742L3.50459 10.0001L19.9999 10.0012L20.0001 8.00118L11.7469 8.00065L3.4938 8.00012Z" fill=${color}/>
 </svg>
 `;
 
@@ -28,7 +21,7 @@ export const arrowCounterClock = (color = 'white'): string =>
 	</svg>
 	`;
 
-export const checkmarkIcon = (color = '#33CE59'): string =>
+export const checkmarkIcon = (color = 'white'): string =>
 	`<svg fill="none" height="32" viewBox="0 0 32 32" width="32" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="m27.7071 8.29352c.3905.39053.3905 1.0237 0 1.41421l-14 13.99937c-.3905.3905-1.0237.3905-1.4142 0l-6.99998-6.9993c-.39054-.3906-.39057-1.0237-.00006-1.4143.39051-.3905 1.02367-.3905 1.41422 0l6.29292 6.2923 13.2929-13.29231c.3905-.39052 1.0237-.3905 1.4142.00003z" fill="${color}" fill-rule="evenodd"/></svg>`;
 
 export const copyIcon = (color = 'white'): string =>

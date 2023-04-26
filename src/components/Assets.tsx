@@ -24,7 +24,7 @@ const Assets = (): ReactElement => {
 				testID="BitcoinAsset"
 				ticker="BTC"
 				satoshis={satoshis}
-				icon={<BitcoinCircleIcon color="orange" />}
+				icon={<BitcoinCircleIcon color="bitcoin" />}
 				onPress={(): void => {
 					navigation.navigate('WalletsDetail', {
 						assetType: 'bitcoin',

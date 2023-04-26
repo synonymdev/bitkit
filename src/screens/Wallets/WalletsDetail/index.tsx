@@ -27,6 +27,7 @@ import {
 import { useSelector } from 'react-redux';
 
 import { AnimatedView, View } from '../../../styles/components';
+import { BitcoinCircleIcon } from '../../../styles/icons';
 import { Title } from '../../../styles/text';
 import NavigationHeader from '../../../components/NavigationHeader';
 import { useBalance } from '../../../hooks/wallet';
@@ -39,7 +40,6 @@ import BlurView from '../../../components/BlurView';
 import { EActivityType } from '../../../store/types/activity';
 import Store from '../../../store/types';
 import { updateSettings } from '../../../store/actions/settings';
-import BitcoinLogo from '../../../assets/bitcoin-logo.svg';
 import { capitalize } from '../../../utils/helpers';
 import DetectSwipe from '../../../components/DetectSwipe';
 import { EBitcoinUnit } from '../../../store/types/wallet';
@@ -185,7 +185,7 @@ const WalletsDetail = ({
 							}}>
 							<View color="transparent" style={styles.row}>
 								<View color="transparent" style={styles.cell}>
-									<BitcoinLogo viewBox="0 0 70 70" height={32} width={32} />
+									<BitcoinCircleIcon color="bitcoin" />
 									<Title style={styles.title}>{title}</Title>
 								</View>
 
