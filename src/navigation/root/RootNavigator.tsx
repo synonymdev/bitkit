@@ -29,7 +29,6 @@ import ScannerScreen from '../../screens/Scanner/MainScanner';
 import SettingsNavigator from '../settings/SettingsNavigator';
 import LightningNavigator from '../lightning/LightningNavigator';
 import TransferNavigator from '../transfer/TransferNavigator';
-import PINPrompt from '../../screens/Settings/PIN/PINPrompt';
 import ForgotPIN from '../../screens/Settings/PIN/ForgotPIN';
 import BoostPrompt from '../../screens/Wallets/BoostPrompt';
 import NewTxPrompt from '../../screens/Wallets/NewTxPrompt';
@@ -221,7 +220,6 @@ const RootNavigator = (): ReactElement => {
 			<ReceiveNavigation />
 			<BackupNavigation />
 			<PINNavigation />
-			<PINPrompt />
 			<ForgotPIN />
 			<BoostPrompt />
 			<NewTxPrompt />

@@ -71,7 +71,7 @@ const Suggestions = (): ReactElement => {
 
 			if (id === 'pin') {
 				if (!pinTodoDone) {
-					showBottomSheet('PINPrompt', { showLaterButton: true });
+					showBottomSheet('PINNavigation', { showLaterButton: true });
 				} else {
 					navigation.navigate('Settings', { screen: 'DisablePin' });
 				}

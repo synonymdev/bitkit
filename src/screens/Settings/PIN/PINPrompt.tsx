@@ -4,23 +4,21 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
 
 import { Text01S } from '../../../styles/text';
-import BottomSheetWrapper from '../../../components/BottomSheetWrapper';
 import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
 import GlowImage from '../../../components/GlowImage';
 import Button from '../../../components/Button';
-import { closeBottomSheet, showBottomSheet } from '../../../store/actions/ui';
-import { useAppSelector } from '../../../hooks/redux';
+import { closeBottomSheet } from '../../../store/actions/ui';
 import { showLaterButtonSelector } from '../../../store/reselect/ui';
-import {
-	useBottomSheetBackPress,
-	useSnapPoints,
-} from '../../../hooks/bottomSheet';
+import { useAppSelector } from '../../../hooks/redux';
+import { useBottomSheetBackPress } from '../../../hooks/bottomSheet';
+import { PinScreenProps } from '../../../navigation/types';
 
 const imageSrc = require('../../../assets/illustrations/shield.png');
 
-const PINPrompt = (): ReactElement => {
+const PINPrompt = ({
+	navigation,
+}: PinScreenProps<'PINPrompt'>): ReactElement => {
 	const { t } = useTranslation('security');
-	const snapPoints = useSnapPoints('medium');
 	const insets = useSafeAreaInsets();
 	const showLaterButton = useAppSelector(showLaterButtonSelector);
 
@@ -32,55 +30,48 @@ const PINPrompt = (): ReactElement => {
 		[insets.bottom],
 	);
 
-	useBottomSheetBackPress('PINPrompt');
+	useBottomSheetBackPress('PINNavigation');
 
-	const handlePIN = (): void => {
-		closeBottomSheet('PINPrompt');
-		showBottomSheet('PINNavigation');
+	const onContinue = (): void => {
+		navigation.navigate('ChoosePIN');
 	};
 
-	const handleLater = (): void => {
-		closeBottomSheet('PINPrompt');
+	const onDismiss = (): void => {
+		closeBottomSheet('PINNavigation');
 	};
 
 	return (
-		<BottomSheetWrapper
-			snapPoints={snapPoints}
-			backdrop={true}
-			onClose={handleLater}
-			view="PINPrompt">
-			<View style={styles.container}>
-				<BottomSheetNavigationHeader
-					title={t('pin_security_header')}
-					displayBackButton={false}
+		<View style={styles.container}>
+			<BottomSheetNavigationHeader
+				title={t('pin_security_header')}
+				displayBackButton={false}
+			/>
+			<Text01S color="white5">{t('pin_security_text')}</Text01S>
+
+			<GlowImage image={imageSrc} imageSize={150} glowColor="green" />
+
+			<View style={buttonContainerStyles}>
+				{showLaterButton && (
+					<>
+						<Button
+							style={styles.button}
+							size="large"
+							variant="secondary"
+							text={t('later')}
+							onPress={onDismiss}
+						/>
+						<View style={styles.divider} />
+					</>
+				)}
+				<Button
+					style={styles.button}
+					size="large"
+					text={t('pin_security_button')}
+					onPress={onContinue}
+					testID="SecureWallet"
 				/>
-				<Text01S color="white5">{t('pin_security_text')}</Text01S>
-
-				<GlowImage image={imageSrc} imageSize={150} glowColor="green" />
-
-				<View style={buttonContainerStyles}>
-					{showLaterButton && (
-						<>
-							<Button
-								style={styles.button}
-								size="large"
-								variant="secondary"
-								text={t('later')}
-								onPress={handleLater}
-							/>
-							<View style={styles.divider} />
-						</>
-					)}
-					<Button
-						style={styles.button}
-						size="large"
-						text={t('pin_security_button')}
-						onPress={handlePIN}
-						testID="SecureWallet"
-					/>
-				</View>
 			</View>
-		</BottomSheetWrapper>
+		</View>
 	);
 };
 

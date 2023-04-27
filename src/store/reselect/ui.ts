@@ -60,7 +60,7 @@ export const viewControllerIsOpenSelector = createSelector(
 
 export const showLaterButtonSelector = createSelector(
 	[uiState],
-	(ui): boolean | undefined => ui.viewControllers.PINPrompt.showLaterButton,
+	(ui) => ui.viewControllers.PINNavigation.showLaterButton,
 );
 
 export const profileLinkSelector = createSelector(

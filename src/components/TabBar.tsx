@@ -3,7 +3,7 @@ import { TouchableOpacity, StyleSheet, Platform } from 'react-native';
 import { SvgXml } from 'react-native-svg';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
-import { FadeIn, FadeOut } from 'react-native-reanimated';
+import { FadeIn } from 'react-native-reanimated';
 
 import { receiveIcon, sendIcon } from '../assets/icons/tabs';
 import { showBottomSheet } from '../store/actions/ui';
@@ -74,31 +74,31 @@ const TabBar = ({
 
 	return (
 		<AnimatedView
-			color="transparent"
 			style={[styles.tabRoot, { bottom }]}
-			entering={FadeIn}
-			exiting={FadeOut}>
+			color="transparent"
+			entering={FadeIn}>
 			<TouchableOpacity
-				activeOpacity={0.8}
-				onPress={onSendPress}
 				style={styles.blurContainer}
-				testID="Send">
+				activeOpacity={0.8}
+				testID="Send"
+				onPress={onSendPress}>
 				<BlurView style={styles.send}>
 					<SvgXml xml={sendXml} width={13} height={13} />
 					<Text02M style={styles.tabText}>{t('send')}</Text02M>
 				</BlurView>
 			</TouchableOpacity>
 			<TouchableOpacity
-				onPress={openScanner}
+				style={[styles.tabScan, borderStyles]}
 				activeOpacity={0.8}
-				style={[styles.tabScan, borderStyles]}>
+				testID="Scan"
+				onPress={openScanner}>
 				<ScanIcon width={32} height={32} color="gray2" />
 			</TouchableOpacity>
 			<TouchableOpacity
-				activeOpacity={0.8}
-				onPress={onReceivePress}
 				style={styles.blurContainer}
-				testID="Receive">
+				activeOpacity={0.8}
+				testID="Receive"
+				onPress={onReceivePress}>
 				<BlurView style={styles.receive}>
 					<SvgXml xml={receiveXml} width={13} height={13} />
 					<Text02M style={styles.tabText}>{t('receive')}</Text02M>

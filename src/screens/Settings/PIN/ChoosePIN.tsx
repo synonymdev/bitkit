@@ -75,7 +75,6 @@ const ChoosePIN = ({
 		<GradientView style={styles.container}>
 			<BottomSheetNavigationHeader
 				title={t(origPIN ? 'pin_retype_header' : 'pin_choose_header')}
-				displayBackButton={origPIN ? true : false}
 			/>
 
 			<Text01S style={styles.text} color="gray1">
