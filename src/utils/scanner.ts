@@ -577,28 +577,20 @@ export const processBitcoinTransactionData = async ({
 		// If no lightning invoice response, attempt to grab an on-chain invoice.
 		if (!response) {
 			// Filter for the bitcoin address or on-chain invoice
-			const filteredBitcoinInvoice = data.find(
+			const bitcoinInvoice = data.find(
 				(d) => d.qrDataType === EQRDataType.bitcoinAddress,
 			);
-			if (filteredBitcoinInvoice) {
-				const requestedOnChainAmount = filteredBitcoinInvoice.sats ?? 0;
-				// Only set a new requested amount if a value was specified in the invoice.
-				if (requestedOnChainAmount) {
-					requestedAmount = requestedOnChainAmount;
-				}
+			if (bitcoinInvoice?.sats) {
+				requestedAmount = bitcoinInvoice.sats;
 			}
 
 			// Attempt to pay the on-chain invoice if unable to pay with lightning.
 			// Check that we have a bitcoin invoice and can afford to pay it.
-			if (
-				onchainBalance.satoshis &&
-				filteredBitcoinInvoice &&
-				filteredBitcoinInvoice?.sats !== undefined
-			) {
+			if (onchainBalance.satoshis && bitcoinInvoice?.sats !== undefined) {
 				// If we can afford to pay it, pass it through.
 				// Otherwise, set the provided address and set sats to 0.
 				if (onchainBalance.satoshis > requestedAmount) {
-					response = filteredBitcoinInvoice;
+					response = bitcoinInvoice;
 				} else {
 					showInfoNotification({
 						title: i18n.t('lightning:error_fulfill_title'),
@@ -618,7 +610,7 @@ export const processBitcoinTransactionData = async ({
 						sats = transaction.value.outputs[0]?.value ?? 0;
 					}
 					response = {
-						...filteredBitcoinInvoice,
+						...bitcoinInvoice,
 						sats,
 					};
 				}

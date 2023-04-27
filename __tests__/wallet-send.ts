@@ -271,6 +271,7 @@ describe('Wallet - new wallet, send and receive', () => {
 		);
 
 		// TODO check change fee logic while sending MAX amount
+		// TODO check logic for dustLimit (dust added to fee)
 
 		res = validateTransaction(tx21);
 		if (res.isErr()) {

@@ -89,8 +89,9 @@ const Tags = ({ navigation }: SendScreenProps<'Tags'>): ReactElement => {
 							{lastUsedTags.map((tag) => (
 								<Tag
 									key={tag}
-									value={tag}
 									style={styles.tag}
+									value={tag}
+									testID={`Tag-${tag}`}
 									onPress={(): void => {
 										handleTagChoose(tag);
 									}}

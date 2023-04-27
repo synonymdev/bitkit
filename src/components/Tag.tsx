@@ -30,9 +30,9 @@ const Tag = ({
 			</Text02M>
 			{onClose && (
 				<TouchableOpacity
+					style={styles.close}
 					color="transparent"
 					onPress={onClose}
-					style={styles.close}
 					testID={testID ? `${testID}-close` : undefined}>
 					<XIcon color="gray1" width={16} />
 				</TouchableOpacity>

@@ -479,6 +479,7 @@ const OnchainActivityDetail = ({
 						<Button
 							text={t('activity_tx_details')}
 							size="large"
+							testID="ActivityTxDetails"
 							onPress={(): void =>
 								navigation.push('ActivityDetail', {
 									id: item.id,
