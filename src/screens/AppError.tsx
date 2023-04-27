@@ -20,7 +20,7 @@ const imageSrc = require('../assets/illustrations/cross.png');
 type ReactError = Error & ErrorInfo;
 
 const AppError = ({ error }: { error: ReactError }): JSX.Element => {
-	const onClose = async (): Promise<void> => {
+	const onClose = (): void => {
 		RNExitApp.exitApp();
 	};
 

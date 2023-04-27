@@ -1,5 +1,5 @@
 import React, { memo, ReactElement, useEffect, useRef } from 'react';
-import { Platform, NativeModules, AppState } from 'react-native';
+import { AppState } from 'react-native';
 import { useSelector } from 'react-redux';
 import NetInfo from '@react-native-community/netinfo';
 import { useTranslation } from 'react-i18next';
@@ -52,11 +52,6 @@ const AppOnboarded = (): ReactElement => {
 
 	// on App start
 	useEffect(() => {
-		// hide splash screen on android
-		if (Platform.OS === 'android') {
-			setTimeout(NativeModules.SplashScreenModule.hide, 100);
-		}
-
 		// Delay service startup to make time for entering recovery
 		const timerId = setTimeout(() => {
 			startWalletServices({ selectedNetwork, selectedWallet });
