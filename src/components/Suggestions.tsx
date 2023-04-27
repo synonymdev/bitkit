@@ -19,7 +19,7 @@ import { removeTodo } from '../store/actions/todos';
 import { showBottomSheet } from '../store/actions/ui';
 import { useAppSelector } from '../hooks/redux';
 import { useBalance } from '../hooks/wallet';
-import Dialog from './Dialog';
+import { showAlert } from '../utils/alert';
 import type { RootNavigationProp } from '../navigation/types';
 import { todosSelector } from '../store/reselect/todos';
 import {
@@ -32,7 +32,6 @@ const Suggestions = (): ReactElement => {
 	const navigation = useNavigation<RootNavigationProp>();
 	const { width } = useWindowDimensions();
 	const [index, setIndex] = useState(0);
-	const [showDialog, setShowDialog] = useState(false);
 	const { satoshis: balance } = useBalance({ onchain: true, lightning: true });
 	const todos = useAppSelector(todosSelector);
 	const pinTodoDone = useAppSelector(pinSelector);
@@ -57,7 +56,11 @@ const Suggestions = (): ReactElement => {
 				if (balance > 0) {
 					navigation.navigate('LightningRoot', { screen: 'Introduction' });
 				} else {
-					setShowDialog(true);
+					showAlert(
+						t('lightning_no_funds_title'),
+						t('lightning_no_funds_desc'),
+						[{ text: t('ok') }],
+					);
 				}
 			}
 
@@ -124,15 +127,6 @@ const Suggestions = (): ReactElement => {
 					)}
 				/>
 			</View>
-			<Dialog
-				visible={showDialog}
-				title={t('lightning_no_funds_title')}
-				description={t('lightning_no_funds_desc')}
-				confirmText={t('ok')}
-				onConfirm={(): void => {
-					setShowDialog(false);
-				}}
-			/>
 		</>
 	);
 };
