@@ -17,7 +17,6 @@ export const defaultViewControllers: IUi['viewControllers'] = {
 	highBalance: defaultViewController,
 	newTxPrompt: defaultViewController,
 	PINNavigation: defaultViewController,
-	PINPrompt: defaultViewController,
 	profileAddDataForm: defaultViewController,
 	receiveNavigation: defaultViewController,
 	sendNavigation: defaultViewController,

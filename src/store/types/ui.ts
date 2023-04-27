@@ -13,8 +13,7 @@ export type ViewControllerParamList = {
 	forgotPIN: undefined;
 	highBalance: undefined;
 	newTxPrompt: { txId: string };
-	PINNavigation: undefined;
-	PINPrompt: { showLaterButton: boolean };
+	PINNavigation: { showLaterButton: boolean };
 	profileAddDataForm: undefined;
 	receiveNavigation: undefined;
 	sendNavigation: { screen: keyof SendStackParamList } | undefined;

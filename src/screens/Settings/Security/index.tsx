@@ -82,7 +82,7 @@ const SecuritySettings = ({
 							if (pin) {
 								navigation.navigate('DisablePin');
 							} else {
-								showBottomSheet('PINPrompt', { showLaterButton: false });
+								showBottomSheet('PINNavigation', { showLaterButton: false });
 							}
 						},
 					},
