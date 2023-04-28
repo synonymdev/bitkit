@@ -77,10 +77,6 @@ const defaultReceivePreference = [
 		key: 'onchain',
 		title: 'On-chain (Bitkit)',
 	},
-	{
-		key: 'lnurlpay',
-		title: 'LNURL-pay',
-	},
 ];
 
 export const defaultSettingsShape: Readonly<ISettings> = {

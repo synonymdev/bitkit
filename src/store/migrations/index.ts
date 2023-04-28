@@ -85,6 +85,20 @@ const migrations = {
 			checks: defaultChecksShape,
 		};
 	},
+	10: (state): PersistedState => {
+		// remove lnurlpay from receivePreference
+		const receivePreference = state.settings.receivePreference.filter(
+			(i) => i.key !== 'lnurlpay',
+		);
+
+		return {
+			...state,
+			settings: {
+				...state.settings,
+				receivePreference,
+			},
+		};
+	},
 };
 
 export default migrations;
