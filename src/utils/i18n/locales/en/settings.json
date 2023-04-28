@@ -68,7 +68,7 @@
 		"latest": "latest data backup",
 		"status_failed": "Failed Backup: {{time}}",
 		"status_success": "Latest Backup: {{time}}",
-		"status_empty": "Not needed "
+		"status_empty": "Backup not needed"
 	},
 	"adv": {
 		"section_payments": "Payments",
