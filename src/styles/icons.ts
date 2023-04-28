@@ -15,6 +15,7 @@ import {
 	userPlusIcon,
 	userMinusIcon,
 	gitBranchIcon,
+	noteIcon,
 	calendarIcon,
 	checkCircleIcon,
 	clockIcon,
@@ -82,6 +83,9 @@ import {
 	arrowCounterClock,
 	leftSign,
 	rightSign,
+	arrowClockwise,
+	rectanglesTwo,
+	lightningHollow,
 } from '../assets/icons/settings';
 
 type IconProps = {
@@ -138,6 +142,14 @@ export const UserMinusIcon = styled(SvgXml).attrs((props) => ({
 
 export const GitBranchIcon = styled(SvgXml).attrs((props) => ({
 	xml: gitBranchIcon(props.color ? props.theme.colors[props.color] : 'white'),
+	height: props.height ?? '16px',
+	width: props.width ?? '16px',
+}))<IconProps>((props) => ({
+	color: props.color ? props.theme.colors[props.color] : 'white',
+}));
+
+export const NoteIcon = styled(SvgXml).attrs((props) => ({
+	xml: noteIcon(props.color ? props.theme.colors[props.color] : 'white'),
 	height: props.height ?? '16px',
 	width: props.width ?? '16px',
 }))<IconProps>((props) => ({
@@ -769,6 +781,36 @@ export const RightSign = styled(SvgXml).attrs((props) => ({
 	),
 	height: props.height ?? '18px',
 	width: props.width ?? '11px',
+}))<IconProps>((props) => ({
+	color: props.color ? props.theme.colors[props.color] : 'white',
+}));
+
+export const ArrowClockwise = styled(SvgXml).attrs((props) => ({
+	xml: arrowClockwise(
+		props.color ? props.theme.colors[props.color] : props.theme.colors.white,
+	),
+	height: props.height ?? '24px',
+	width: props.width ?? '24px',
+}))<IconProps>((props) => ({
+	color: props.color ? props.theme.colors[props.color] : 'white',
+}));
+
+export const RectanglesTwo = styled(SvgXml).attrs((props) => ({
+	xml: rectanglesTwo(
+		props.color ? props.theme.colors[props.color] : props.theme.colors.white,
+	),
+	height: props.height ?? '24px',
+	width: props.width ?? '24px',
+}))<IconProps>((props) => ({
+	color: props.color ? props.theme.colors[props.color] : 'white',
+}));
+
+export const LightningHollow = styled(SvgXml).attrs((props) => ({
+	xml: lightningHollow(
+		props.color ? props.theme.colors[props.color] : props.theme.colors.white,
+	),
+	height: props.height ?? '24px',
+	width: props.width ?? '24px',
 }))<IconProps>((props) => ({
 	color: props.color ? props.theme.colors[props.color] : 'white',
 }));

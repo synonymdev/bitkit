@@ -1,5 +1,5 @@
-import React, { memo, ReactElement, useMemo } from 'react';
-import { StyleSheet } from 'react-native';
+import React, { memo, ReactElement, ReactNode, useMemo, useState } from 'react';
+import { StyleSheet, View } from 'react-native';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 
@@ -8,9 +8,103 @@ import SettingsView from '../SettingsView';
 import { closeBottomSheet, showBottomSheet } from '../../../store/actions/ui';
 import { SettingsScreenProps } from '../../../navigation/types';
 import Store from '../../../store/types';
-import { Caption13Up, Text02S } from '../../../styles/text';
-import { View as ThemedView } from '../../../styles/components';
+import { Caption13M, Caption13Up, Text01M } from '../../../styles/text';
+import {
+	ScrollView,
+	TouchableOpacity,
+	View as ThemedView,
+} from '../../../styles/components';
 import { backupSelector } from '../../../store/reselect/backup';
+import {
+	ArrowClockwise,
+	LightningHollow,
+	NoteIcon,
+	RectanglesTwo,
+	SettingsIcon,
+	TagIcon,
+	TransferIcon,
+	// UsersIcon,
+} from '../../../styles/icons';
+import { FAILED_BACKUP_CHECK_TIME } from '../../../utils/backup/backups-subscriber';
+import { updateBackup } from '../../../store/actions/backup';
+
+const Status = ({
+	icon,
+	title,
+	isSyncedKey,
+	lastSync,
+	syncRequired,
+}: {
+	icon: ReactElement;
+	title: ReactNode;
+	isSyncedKey: string;
+	lastSync?: number;
+	syncRequired?: number;
+}): ReactElement => {
+	const { t } = useTranslation('settings');
+	const [hideRetry, setHideRetry] = useState<boolean>(false);
+
+	const failed =
+		syncRequired &&
+		new Date().getTime() - syncRequired > FAILED_BACKUP_CHECK_TIME;
+
+	let subtitle;
+	if (failed) {
+		subtitle = t('backup.status_failed', {
+			time: t('intl:dateTime', {
+				v: new Date(syncRequired),
+				formatParams: {
+					v: {
+						year: 'numeric',
+						month: 'long',
+						day: 'numeric',
+						hour: 'numeric',
+						minute: 'numeric',
+					},
+				},
+			}),
+		});
+	} else if (lastSync) {
+		subtitle = t('backup.status_success', {
+			time: t('intl:dateTime', {
+				v: new Date(lastSync),
+				formatParams: {
+					v: {
+						year: 'numeric',
+						month: 'long',
+						day: 'numeric',
+						hour: 'numeric',
+						minute: 'numeric',
+					},
+				},
+			}),
+		});
+	} else {
+		subtitle = t('backup.status_empty');
+	}
+
+	const retry = (): void => {
+		setHideRetry(true);
+		updateBackup({ [isSyncedKey]: false });
+	};
+
+	return (
+		<View style={styles.status}>
+			<View style={styles.icon}>
+				{React.cloneElement(icon, { color: failed ? 'red' : 'green' })}
+			</View>
+			<View style={styles.desc}>
+				<Text01M>{title}</Text01M>
+				<Caption13M color="gray1">{subtitle}</Caption13M>
+			</View>
+			{failed && !hideRetry && (
+				<TouchableOpacity onPress={retry} color="white08" style={styles.button}>
+					<ArrowClockwise color="brand" width={16} height={16} />
+				</TouchableOpacity>
+			)}
+		</View>
+	);
+};
 
 const BackupSettings = ({
 	navigation,
@@ -19,16 +113,50 @@ const BackupSettings = ({
 	const pin = useSelector((state: Store) => state.settings.pin);
 	const backup = useSelector(backupSelector);
 
-	const arr = [
-		backup.remoteLdkBackupLastSync,
-		backup.remoteSettingsBackupLastSync,
-		backup.remoteWidgetsBackupLastSync,
-		backup.remoteMetadataBackupLastSync,
-		backup.remoteLdkActivityBackupLastSync,
-		backup.remoteBlocktankBackupLastSync,
-	].filter((i) => i !== undefined) as Array<number>;
-
-	const max = Math.max(...arr);
+	const categories = [
+		{
+			icon: <LightningHollow width={24} height={24} />,
+			title: 'Connections',
+			isSyncedKey: 'remoteLdkBackupSynced',
+			lastSync: backup.remoteLdkBackupLastSync,
+			syncRequired: backup.remoteLdkBackupLastSyncRequired,
+		},
+		{
+			icon: <NoteIcon width={24} height={24} />,
+			title: 'Connection Receipts',
+			isSyncedKey: 'remoteBlocktankBackupSynced',
+			lastSync: backup.remoteBlocktankBackupLastSync,
+			syncRequired: backup.remoteBlocktankBackupSyncRequired,
+		},
+		{
+			icon: <TransferIcon width={24} height={24} />,
+			title: 'Transaction Log',
+			isSyncedKey: 'remoteLdkActivityBackupSynced',
+			lastSync: backup.remoteLdkActivityBackupLastSync,
+			syncRequired: backup.remoteLdkActivityBackupSyncRequired,
+		},
+		{
+			icon: <SettingsIcon width={24} height={24} />,
+			title: 'Settings',
+			isSyncedKey: 'remoteSettingsBackupSynced',
+			lastSync: backup.remoteSettingsBackupLastSync,
+			syncRequired: backup.remoteSettingsBackupSyncRequired,
+		},
+		{
+			icon: <RectanglesTwo width={24} height={24} />,
+			title: 'Widgets',
+			isSyncedKey: 'remoteWidgetsBackupSynced',
+			lastSync: backup.remoteWidgetsBackupLastSync,
+			syncRequired: backup.remoteWidgetsBackupSyncRequired,
+		},
+		{
+			icon: <TagIcon width={24} height={24} />,
+			title: 'Tags',
+			isSyncedKey: 'remoteMetadataBackupSynced',
+			lastSync: backup.remoteMetadataBackupLastSync,
+			syncRequired: backup.remoteMetadataBackupSyncRequired,
+		},
+	];
 
 	const settingsListData: IListData[] = useMemo(
 		() => [
@@ -86,29 +214,14 @@ const BackupSettings = ({
 				fullHeight={false}
 				showBackNavigation={true}
 			/>
-			<ThemedView style={styles.status}>
+			<ScrollView style={styles.statusRoot}>
 				<Caption13Up style={styles.caption} color="gray1">
 					{t('backup.latest')}
 				</Caption13Up>
-				<Text02S style={styles.text}>
-					{max &&
-						t('backup.full', {
-							time: t('intl:dateTime', {
-								v: new Date(max),
-								formatParams: {
-									v: {
-										year: 'numeric',
-										month: 'long',
-										day: 'numeric',
-										hour: 'numeric',
-										minute: 'numeric',
-									},
-								},
-							}),
-						})}
-					{!max && t('backup.not_yet')}
-				</Text02S>
-			</ThemedView>
+				{categories.map((c) => (
+					<Status key={c.title} {...c} />
+				))}
+			</ScrollView>
 		</ThemedView>
 	);
 };
@@ -118,14 +231,35 @@ const styles = StyleSheet.create({
 		flex: 1,
 	},
 	caption: {
+		marginLeft: 16,
 		marginBottom: 12,
 	},
-	status: {
+	statusRoot: {
 		flex: 1,
-		paddingHorizontal: 16,
 	},
-	text: {
-		fontSize: 15,
+	status: {
+		marginHorizontal: 16,
+		borderBottomWidth: 1,
+		borderBottomColor: 'rgba(255, 255, 255, 0.1)',
+		height: 56,
+		flexDirection: 'row',
+		alignItems: 'center',
+	},
+	icon: {
+		width: 56,
+		marginLeft: -16,
+		alignItems: 'center',
+	},
+	desc: {
+		flex: 1,
+	},
+	button: {
+		alignItems: 'center',
+		justifyContent: 'center',
+		width: 40,
+		height: 40,
+		borderRadius: 20,
+		marginLeft: 12,
 	},
 });
 

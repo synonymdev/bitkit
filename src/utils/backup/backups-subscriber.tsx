@@ -24,7 +24,7 @@ import { __DISABLE_PERIODIC_REMINDERS__ } from '../../constants/env';
 
 const BACKUP_DEBOUNCE = 5000; // 5 seconds
 const BACKUP_CHECK_INTERVAL = 60 * 1000; // 1 minute
-const FAILED_BACKUP_CHECK_TIME = 30 * 60 * 1000; // 30 minutes
+export const FAILED_BACKUP_CHECK_TIME = 30 * 60 * 1000; // 30 minutes
 const FAILED_BACKUP_NOTIFICATION_INTERVAL = 10 * 60 * 1000; // 10 minutes
 
 const EnabledSlashtag = (): ReactElement => {
@@ -190,6 +190,9 @@ const EnabledSlashtag = (): ReactElement => {
 					FAILED_BACKUP_CHECK_TIME) ||
 			(backup.remoteBlocktankBackupSyncRequired &&
 				now - backup.remoteBlocktankBackupSyncRequired >
+					FAILED_BACKUP_CHECK_TIME) ||
+			(backup.remoteLdkActivityBackupSyncRequired &&
+				now - backup.remoteLdkActivityBackupSyncRequired >
 					FAILED_BACKUP_CHECK_TIME)
 		) {
 			return true;

@@ -66,8 +66,9 @@
 		"failed_title": "Data Backup Failure",
 		"failed_message": "Bitkit failed to back up it's data. Please check your connection.",
 		"latest": "latest data backup",
-		"full": "Bitkit successfully completed a full data backup on {{time}}.",
-		"not_yet": "Not done yet."
+		"status_failed": "Failed Backup: {{time}}",
+		"status_success": "Latest Backup: {{time}}",
+		"status_empty": "Not needed "
 	},
 	"adv": {
 		"section_payments": "Payments",
