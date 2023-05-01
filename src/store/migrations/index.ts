@@ -3,6 +3,7 @@ import { defaultActivityShape } from '../shapes/activity';
 import { defaultTodosShape } from '../shapes/todos';
 import { defaultViewControllers } from '../shapes/ui';
 import { defaultChecksShape } from '../shapes/checks';
+import { defaultBackupShape } from '../shapes/backup';
 
 // add migrations for every persisted store version change
 // NOTE: state reconciliation works only 2 levels deep
@@ -96,6 +97,15 @@ const migrations = {
 			settings: {
 				...state.settings,
 				receivePreference,
+			},
+		};
+	},
+	11: (state): PersistedState => {
+		return {
+			...state,
+			backup: {
+				...defaultBackupShape,
+				...state.backup,
 			},
 		};
 	},
