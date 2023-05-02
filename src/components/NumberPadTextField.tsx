@@ -50,9 +50,6 @@ const NumberPadTextField = ({
 	if (placeholderFractional !== '') {
 		placeholder = `0.${placeholderFractional}`;
 	}
-	if (!showPlaceholder) {
-		value = value === '' ? placeholder : value;
-	}
 
 	if (value) {
 		const [integer, fractional] = value.split('.');
@@ -105,15 +102,15 @@ const NumberPadTextField = ({
 				/>
 			)}
 
-			<View style={styles.main}>
+			<View style={styles.primary}>
 				<MoneySymbol style={styles.symbol} unit={unit} />
-				{value !== placeholder && (
-					<Display color="white" lineHeight="57px">
-						{value}
+				<Display color="white" lineHeight="57px">
+					{value !== placeholder && value}
+					<Display
+						color={showPlaceholder ? 'white5' : 'white'}
+						lineHeight="57px">
+						{placeholder}
 					</Display>
-				)}
-				<Display color="gray1" lineHeight="57px">
-					{placeholder}
 				</Display>
 			</View>
 
@@ -130,7 +127,7 @@ const NumberPadTextField = ({
 };
 
 const styles = StyleSheet.create({
-	main: {
+	primary: {
 		flexDirection: 'row',
 		alignItems: 'center',
 	},

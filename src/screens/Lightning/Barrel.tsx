@@ -5,35 +5,47 @@ import useColors from '../../hooks/colors';
 import useDisplayValues from '../../hooks/displayValues';
 import { TouchableOpacity } from '../../styles/components';
 import { Subtitle } from '../../styles/text';
-import { TPackages } from './CustomSetup';
+import { TPackage } from './CustomSetup';
 
 const Barrel = ({
-	active,
 	id,
 	amount,
 	img,
+	active,
+	disabled = false,
 	testID,
 	onPress,
 }: {
-	active: boolean;
-	id: TPackages['id'];
+	id: TPackage['id'];
 	amount: number;
 	img: ImageSourcePropType;
+	active: boolean;
+	disabled?: boolean;
 	testID?: string;
-	onPress: (id: TPackages['id']) => void;
+	onPress: (id: TPackage['id']) => void;
 }): ReactElement => {
 	const colors = useColors();
-	const dp = useDisplayValues(amount);
+	const { fiatSymbol, fiatWhole } = useDisplayValues(amount);
 
 	return (
 		<TouchableOpacity
-			style={[styles.root, active && { borderColor: colors.purple }]}
-			color="purple16"
+			style={[
+				styles.root,
+				active && { borderColor: colors.purple },
+				disabled && styles.disabled,
+			]}
+			color={active ? 'purple32' : 'purple16'}
+			activeOpacity={0.7}
+			disabled={disabled}
 			testID={testID}
-			onPress={(): void => onPress(id)}>
+			onPress={(): void => {
+				if (!disabled) {
+					onPress(id);
+				}
+			}}>
 			<Image style={styles.image} source={img} />
 			<Subtitle style={styles.amount}>
-				{dp.fiatSymbol} {dp.fiatWhole}
+				{fiatSymbol} {fiatWhole}
 			</Subtitle>
 		</TouchableOpacity>
 	);
@@ -47,6 +59,9 @@ const styles = StyleSheet.create({
 		marginHorizontal: 8,
 		borderRadius: 8,
 		borderWidth: 1,
+	},
+	disabled: {
+		opacity: 0.5,
 	},
 	image: {
 		margin: 8,

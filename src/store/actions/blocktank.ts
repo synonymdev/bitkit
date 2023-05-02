@@ -384,7 +384,7 @@ export const startChannelPurchase = async ({
 	channelExpiry?: number;
 	selectedWallet?: TWalletName;
 	selectedNetwork?: TAvailableNetworks;
-}): Promise<Result<string>> => {
+}): Promise<Result<{ orderId: string; channelOpenCost: number }>> => {
 	if (!selectedNetwork) {
 		selectedNetwork = getSelectedNetwork();
 	}
@@ -459,6 +459,9 @@ export const startChannelPurchase = async ({
 		selectedWallet,
 	});
 
+	const channelPrice = buyChannelResponse.value.price;
+	const channelOpenCost = channelPrice + transaction.fee;
+
 	// Ensure we have enough funds to pay for both the channel and the fee to broadcast the transaction.
 	if (
 		transaction.fee + buyChannelResponse.value.total_amount >
@@ -480,7 +483,7 @@ export const startChannelPurchase = async ({
 		);
 	}
 
-	return ok(buyChannelResponse.value.order_id);
+	return ok({ orderId: buyChannelResponse.value.order_id, channelOpenCost });
 };
 
 /**

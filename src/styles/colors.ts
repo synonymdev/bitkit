@@ -39,6 +39,7 @@ export interface IColors {
 	white84: string;
 	red16: string;
 	orange16: string;
+	orange50: string;
 	green16: string;
 	blue03: string;
 	black5: string;
@@ -46,8 +47,9 @@ export interface IColors {
 	brand08: string;
 	yellow08: string;
 	yellow16: string;
-	purple16: string;
 	purple5: string;
+	purple16: string;
+	purple32: string;
 	brand16: string;
 }
 
@@ -106,6 +108,7 @@ const colors: IColors = {
 	white84: 'rgba(255, 255, 255, 0.84)',
 	red16: 'rgba(233, 81, 100, 0.16)',
 	orange16: 'rgba(247, 147, 26, 0.16)',
+	orange50: 'rgba(247, 147, 26, 0.50)',
 	green16: 'rgba(117, 191, 114, 0.16)',
 	blue03: 'rgba(0, 133, 255, 0.3)',
 	black5: 'rgba(0, 0, 0, 0.5)',
@@ -113,8 +116,9 @@ const colors: IColors = {
 	brand08: 'rgba(255, 102, 0, 0.08)',
 	yellow08: 'rgba(255, 174, 0, 0.08)',
 	yellow16: 'rgba(255, 174, 0, 0.16)',
-	purple16: 'rgba(185, 92, 232, 0.16)',
 	purple5: 'rgba(185, 92, 232, 0.5)',
+	purple16: 'rgba(185, 92, 232, 0.16)',
+	purple32: 'rgba(185, 92, 232, 0.32)',
 	brand16: 'rgba(255, 102, 0, 0.16)',
 };
 

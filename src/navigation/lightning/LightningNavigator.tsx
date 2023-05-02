@@ -20,7 +20,6 @@ export type LightningStackParamList = {
 	QuickSetup: undefined;
 	QuickConfirm: {
 		spendingAmount: number;
-		total: number;
 		orderId: string;
 	};
 	CustomSetup: {

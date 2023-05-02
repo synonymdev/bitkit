@@ -50,11 +50,14 @@ describe('LN Channel Onboarding', () => {
 		// - can change amount via the slider
 		// - can change amount via the NumberPad
 		// - cannot continue with zero spending balance
+		// - shows the blocktank limit (9999$ on staging) and note
+		// - shows the reserve limit (80%) and note
 
 		// CustomSetup
 		// - can change amount via the cards
 		// - can change amount via the NumberPad
 		// - can change channel duration
+		// - shows disabled receiving cards when spending amount is higher
 
 		it('Can buy a channel via the QuickSetup', async () => {
 			if (checkComplete('channels-1')) {
@@ -69,7 +72,7 @@ describe('LN Channel Onboarding', () => {
 			let { label: wAddress } = await element(by.id('QRCode')).getAttributes();
 			wAddress = wAddress.replace('bitcoin:', '');
 
-			await rpc.sendToAddress(wAddress, '1');
+			await rpc.sendToAddress(wAddress, '0.1');
 			await rpc.generateToAddress(1, await rpc.getNewAddress());
 			await waitForElectrum();
 
@@ -79,13 +82,8 @@ describe('LN Channel Onboarding', () => {
 			await element(by.id('NewTxPrompt')).swipe('down'); // close Receive screen
 			await sleep(1000); // animation
 
-			// balance should be 1 BTC
-			await expect(
-				element(by.id('MoneyPrimary').withAncestor(by.id('TotalBalance'))),
-			).toHaveText('100 000 000');
-
 			await element(by.id('Suggestion-lightning')).tap();
-			await element(by.id('QuickSetup')).tap();
+			await element(by.id('QuickSetupButton')).tap();
 			// set spending balance to zero
 			await element(by.id('SliderHandle')).swipe('left');
 			await sleep(2000); // wait for weird slider behavior
@@ -93,15 +91,45 @@ describe('LN Channel Onboarding', () => {
 			const buttonEnabled = await isButtonEnabled(button);
 			jestExpect(buttonEnabled).toBe(false);
 
-			// NumberPad
+			// should show 80% limit note
+			// set x offset to avoid navigating back
+			await element(by.id('SliderHandle')).swipe('right', 'slow', NaN, 0.8);
+			await expect(element(by.id('QuickSetupReserveNote'))).toBeVisible();
 			await element(by.id('QuickSetupNumberField')).tap();
 			await element(by.id('NumberPadButtonsMax')).tap();
-			await element(by.id('NumberPadButtonsUnit')).tap();
+			await element(by.id('NumberPadButtonsDone')).tap();
+			await expect(element(by.id('QuickSetupReserveNote'))).toBeVisible();
+			// await expect(element(by.text('80%'))).toBeVisible();
+
+			await rpc.sendToAddress(wAddress, '0.5');
+			await rpc.generateToAddress(1, await rpc.getNewAddress());
+			await waitForElectrum();
+
+			await waitFor(element(by.id('NewTxPrompt')))
+				.toBeVisible()
+				.withTimeout(10000);
+			await element(by.id('NewTxPrompt')).swipe('down'); // close Receive screen
+			await sleep(1000); // animation
+
+			// should show Blocktank limit note
+			await element(by.id('Suggestion-lightning')).tap();
+			await element(by.id('QuickSetupButton')).tap();
+			await element(by.id('SliderHandle')).swipe('right');
+			await expect(element(by.id('QuickSetupBlocktankNote'))).toBeVisible();
+			await element(by.id('QuickSetupNumberField')).tap();
+			await element(by.id('NumberPadButtonsMax')).tap();
+			await element(by.id('NumberPadButtonsDone')).tap();
+			await expect(element(by.id('QuickSetupBlocktankNote'))).toBeVisible();
+
+			// NumberPad
+			await element(by.id('SliderHandle')).swipe('left');
+			await element(by.id('QuickSetupNumberField')).tap();
+			await element(by.id('N2').withAncestor(by.id('QuickSetup'))).tap();
+			await element(by.id('N0').withAncestor(by.id('QuickSetup'))).multiTap(5);
 			await element(by.id('NumberPadButtonsDone')).tap();
 			await element(by.id('QuickSetupContinue')).tap();
 
-			// check that the max amount is correct
-			await expect(element(by.text('999.00'))).toBeVisible();
+			await expect(element(by.text('200 000'))).toBeVisible();
 
 			// Swipe to confirm (set x offset to avoid navigating back)
 			await element(by.id('GRAB')).swipe('right', 'slow', NaN, 0.8);
@@ -128,12 +156,17 @@ describe('LN Channel Onboarding', () => {
 			await element(by.id('NumberPadButtonsUnit')).tap();
 			await element(by.id('NumberPadButtonsDone')).tap();
 
-			// tap the 2nd card
-			await element(by.id('Barrel-medium')).tap();
+			// tap the 3rd card
+			await element(by.id('Barrel-big')).tap();
 
-			// go to confirmation screen
+			// Receive Amount
 			await element(by.id('CustomSetupContinue')).tap();
 			await sleep(1000); // animation
+			const button = element(by.id('Barrel-medium'));
+			const buttonEnabled = await isButtonEnabled(button);
+			jestExpect(buttonEnabled).toBe(false);
+
+			// go to confirmation screen
 			await element(by.id('CustomSetupContinue')).tap();
 			await sleep(1000); // animation
 

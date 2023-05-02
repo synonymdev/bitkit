@@ -1,15 +1,16 @@
 import React, { ReactElement } from 'react';
-import { Platform, StyleSheet, View } from 'react-native';
+import { Platform, StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import { Headline, Text01S } from '../styles/text';
 import { CoinsIcon, SavingsIcon } from '../styles/icons';
 
 type PercentageProps = {
 	value: number;
 	type: 'spending' | 'savings';
+	style?: StyleProp<ViewStyle>;
 };
 
-const Percentage = ({ value, type }: PercentageProps): ReactElement => (
-	<View style={styles.root}>
+const Percentage = ({ value, type, style }: PercentageProps): ReactElement => (
+	<View style={[styles.root, style]}>
 		{type === 'spending' ? (
 			<CoinsIcon color="purple" height={26} width={26} />
 		) : (

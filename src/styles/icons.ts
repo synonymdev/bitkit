@@ -292,6 +292,14 @@ export const PenIcon = styled(SvgXml).attrs((props) => ({
 	color: props.color ? props.theme.colors[props.color] : 'white',
 }));
 
+export const PencileIcon = styled(SvgXml).attrs((props) => ({
+	xml: pencileIcon(props.color ? props.theme.colors[props.color] : 'white'),
+	height: props.height ?? '32px',
+	width: props.width ?? '32px',
+}))<IconProps>((props) => ({
+	color: props.color ? props.theme.colors[props.color] : 'white',
+}));
+
 export const SavingsIcon = styled(SvgXml).attrs((props) => ({
 	xml: savingsIcon(props.color ? props.theme.colors[props.color] : 'white'),
 	height: props.height ?? '32px',
@@ -516,14 +524,6 @@ export const SortAscendingIcon = styled(SvgXml).attrs((props) => ({
 	),
 	height: props.height ?? '24px',
 	width: props.width ?? '24px',
-}))<IconProps>((props) => ({
-	color: props.color ? props.theme.colors[props.color] : 'white',
-}));
-
-export const PencileIcon = styled(SvgXml).attrs((props) => ({
-	xml: pencileIcon(props.color ? props.theme.colors[props.color] : 'white'),
-	height: props.height ?? '32px',
-	width: props.width ?? '32px',
 }))<IconProps>((props) => ({
 	color: props.color ? props.theme.colors[props.color] : 'white',
 }));

@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 
 import { TouchableOpacity } from '../../styles/components';
-import { Text02B } from '../../styles/text';
+import { Caption13Up } from '../../styles/text';
 import { SwitchIcon } from '../../styles/icons';
 import { useCurrency } from '../../hooks/displayValues';
 import { IColors } from '../../styles/colors';
@@ -52,9 +52,9 @@ const NumberPadButtons = ({
 						color="white08"
 						testID="NumberPadButtonsMax"
 						onPress={onMax}>
-						<Text02B size="12px" color={isMaxAmount ? 'orange' : color}>
+						<Caption13Up size="12px" color={isMaxAmount ? 'orange' : color}>
 							{t('send_max')}
-						</Text02B>
+						</Caption13Up>
 					</TouchableOpacity>
 				)}
 			</View>
@@ -67,11 +67,14 @@ const NumberPadButtons = ({
 						testID="NumberPadButtonsUnit"
 						onPress={onChangeUnit}>
 						<SwitchIcon color={color} width={16.44} height={13.22} />
-						<Text02B size="12px" color={color} style={styles.middleButtonText}>
+						<Caption13Up
+							size="12px"
+							color={color}
+							style={styles.middleButtonText}>
 							{nextUnit === 'BTC' && 'BTC'}
 							{nextUnit === 'satoshi' && 'sats'}
 							{nextUnit === 'fiat' && fiatTicker}
-						</Text02B>
+						</Caption13Up>
 					</TouchableOpacity>
 				)}
 			</View>
@@ -83,9 +86,9 @@ const NumberPadButtons = ({
 						color="white08"
 						testID="NumberPadButtonsDone"
 						onPress={onDone}>
-						<Text02B size="12px" color={color}>
+						<Caption13Up size="12px" color={color}>
 							{t('send_done')}
-						</Text02B>
+						</Caption13Up>
 					</TouchableOpacity>
 				)}
 			</View>

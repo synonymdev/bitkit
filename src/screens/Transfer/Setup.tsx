@@ -11,7 +11,7 @@ import { FadeIn, FadeOut } from 'react-native-reanimated';
 import { useTranslation } from 'react-i18next';
 
 import { AnimatedView } from '../../styles/components';
-import { Caption13Up, Display, Text01S } from '../../styles/text';
+import { Caption13Up, Display, Text01S, Text02S } from '../../styles/text';
 import SafeAreaInset from '../../components/SafeAreaInset';
 import GlowingBackground from '../../components/GlowingBackground';
 import NavigationHeader from '../../components/NavigationHeader';
@@ -22,14 +22,13 @@ import FancySlider from '../../components/FancySlider';
 import NumberPadLightning from '../Lightning/NumberPadLightning';
 import { useBalance } from '../../hooks/wallet';
 import { showErrorNotification } from '../../utils/notifications';
-import { startChannelPurchase } from '../../store/actions/blocktank';
+import {
+	refreshBlocktankInfo,
+	startChannelPurchase,
+} from '../../store/actions/blocktank';
 import { useSelector } from 'react-redux';
 import { SPENDING_LIMIT_RATIO } from '../../utils/wallet/constants';
-import {
-	convertCurrency,
-	convertToSats,
-	fiatToBitcoinUnit,
-} from '../../utils/exchange-rate';
+import { convertToSats } from '../../utils/exchange-rate';
 import {
 	resetOnChainTransaction,
 	setupOnChainTransaction,
@@ -40,17 +39,14 @@ import {
 	selectedWalletSelector,
 } from '../../store/reselect/wallet';
 import { blocktankServiceSelector } from '../../store/reselect/blocktank';
-import {
-	balanceUnitSelector,
-	selectedCurrencySelector,
-} from '../../store/reselect/settings';
+import { balanceUnitSelector } from '../../store/reselect/settings';
 import { EBalanceUnit, EBitcoinUnit } from '../../store/types/wallet';
 import { getNumberPadText } from '../../utils/numberpad';
 import { updateSettings } from '../../store/actions/settings';
 
 const Setup = ({ navigation }: TransferScreenProps<'Setup'>): ReactElement => {
 	const { t } = useTranslation('lightning');
-	const { satoshis: onChainBalance } = useBalance({ onchain: true });
+	const { satoshis: onchainBalance } = useBalance({ onchain: true });
 	const { satoshis: lightningBalance } = useBalance({
 		lightning: true,
 		subtractReserveBalance: false,
@@ -60,48 +56,40 @@ const Setup = ({ navigation }: TransferScreenProps<'Setup'>): ReactElement => {
 	const [showNumberPad, setShowNumberPad] = useState(false);
 	const [loading, setLoading] = useState(false);
 	const unit = useSelector(balanceUnitSelector);
-	const selectedNetwork = useSelector(selectedNetworkSelector);
 	const selectedWallet = useSelector(selectedWalletSelector);
+	const selectedNetwork = useSelector(selectedNetworkSelector);
 	const blocktankService = useSelector(blocktankServiceSelector);
-	const selectedCurrency = useSelector(selectedCurrencySelector);
 
 	useFocusEffect(
 		useCallback(() => {
 			resetOnChainTransaction({ selectedNetwork, selectedWallet });
-			setupOnChainTransaction({
-				selectedNetwork,
-				selectedWallet,
-			}).then();
+			setupOnChainTransaction({ selectedNetwork, selectedWallet }).then();
+			refreshBlocktankInfo().then();
 		}, [selectedNetwork, selectedWallet]),
 	);
-
-	const spendingLimit = useMemo(() => {
-		const spendableBalance =
-			Math.round(onChainBalance / SPENDING_LIMIT_RATIO) + lightningBalance;
-
-		const convertedUnit = convertCurrency({
-			amount: 999,
-			from: 'USD',
-			to: selectedCurrency,
-		});
-		const maxSpendingLimit = fiatToBitcoinUnit({
-			fiatValue: convertedUnit.fiatValue,
-			bitcoinUnit: EBitcoinUnit.satoshi,
-		});
-
-		const min = Math.min(spendableBalance, maxSpendingLimit);
-		return min < lightningBalance ? lightningBalance : min;
-	}, [selectedCurrency, lightningBalance, onChainBalance]);
 
 	const spendingAmount = useMemo((): number => {
 		return convertToSats(textFieldValue, unit);
 	}, [textFieldValue, unit]);
 
-	const savingsAmount = spendingLimit - spendingAmount;
-	const spendingPercentage = Math.round((spendingAmount / spendingLimit) * 100);
-	const savingsPercentage = Math.round((savingsAmount / spendingLimit) * 100);
+	const blocktankSpendingLimit = blocktankService.max_chan_spending;
+	const spendableBalance = Math.round(
+		(onchainBalance + lightningBalance) * SPENDING_LIMIT_RATIO,
+	);
+	const savingsAmount = onchainBalance - spendingAmount;
+	const spendingPercentage = Math.round(
+		(spendingAmount / (onchainBalance + lightningBalance)) * 100,
+	);
+	const savingsPercentage = Math.round(
+		(savingsAmount / (onchainBalance + lightningBalance)) * 100,
+	);
 	const isTransferringToSavings = spendingAmount < lightningBalance;
 	const isButtonDisabled = spendingAmount === lightningBalance;
+
+	const spendingLimit = useMemo(() => {
+		const min = Math.min(spendableBalance, blocktankSpendingLimit);
+		return min < lightningBalance ? lightningBalance : min;
+	}, [spendableBalance, blocktankSpendingLimit, lightningBalance]);
 
 	// set initial value
 	useEffect(() => {
@@ -154,7 +142,6 @@ const Setup = ({ navigation }: TransferScreenProps<'Setup'>): ReactElement => {
 		if (isTransferringToSavings) {
 			navigation.push('Confirm', {
 				spendingAmount,
-				total: spendingLimit,
 			});
 			return;
 		}
@@ -175,26 +162,25 @@ const Setup = ({ navigation }: TransferScreenProps<'Setup'>): ReactElement => {
 			localBalance,
 			channelExpiry: 12,
 		});
+
+		setLoading(false);
 		if (purchaseResponse.isErr()) {
 			showErrorNotification({
 				title: t('error_channel_purchase'),
 				message: purchaseResponse.error.message,
 			});
-			setLoading(false);
-			return;
 		}
-		setLoading(false);
-		navigation.push('Confirm', {
-			spendingAmount,
-			total: spendingLimit,
-			orderId: purchaseResponse.value,
-		});
+		if (purchaseResponse.isOk()) {
+			navigation.push('Confirm', {
+				spendingAmount,
+				orderId: purchaseResponse.value.orderId,
+			});
+		}
 	}, [
 		blocktankService,
 		isTransferringToSavings,
 		lightningBalance,
 		spendingAmount,
-		spendingLimit,
 		selectedNetwork,
 		selectedWallet,
 		navigation,
@@ -210,7 +196,7 @@ const Setup = ({ navigation }: TransferScreenProps<'Setup'>): ReactElement => {
 					navigation.navigate('Wallet');
 				}}
 			/>
-			<View style={styles.root}>
+			<View style={styles.root} testID="TransferSetup">
 				<View>
 					{showNumberPad ? (
 						<>
@@ -237,53 +223,66 @@ const Setup = ({ navigation }: TransferScreenProps<'Setup'>): ReactElement => {
 								<View style={styles.sliderContainer}>
 									<FancySlider
 										value={spendingAmount}
-										minimumValue={0}
-										maximumValue={spendingLimit}
+										startValue={0}
+										endValue={onchainBalance}
+										maxValue={spendingLimit}
 										snapPoint={lightningBalance}
 										onValueChange={onSliderChange}
 									/>
 								</View>
-								<View style={styles.row}>
+								<View style={styles.percentages}>
 									<Percentage value={spendingPercentage} type="spending" />
 									<Percentage value={savingsPercentage} type="savings" />
 								</View>
 							</AnimatedView>
+
+							{spendingAmount === Math.round(blocktankSpendingLimit) && (
+								<AnimatedView
+									style={styles.note}
+									entering={FadeIn}
+									exiting={FadeOut}>
+									<Text02S color="gray1">{t('note_blocktank_limit')}</Text02S>
+								</AnimatedView>
+							)}
+
+							{spendingAmount === spendableBalance && (
+								<AnimatedView
+									style={styles.note}
+									entering={FadeIn}
+									exiting={FadeOut}>
+									<Text02S color="gray1">{t('note_reserve_limit')}</Text02S>
+								</AnimatedView>
+							)}
 						</>
 					)}
 				</View>
 
-				<View>
-					<View style={styles.amount}>
-						{!showNumberPad && (
-							<Caption13Up style={styles.amountCaption} color="purple">
-								{t('spending_label')}
-							</Caption13Up>
-						)}
-						<NumberPadTextField
-							value={textFieldValue}
-							showPlaceholder={showNumberPad}
-							reverse={true}
-							testID="TransferSetupNumberField"
-							onPress={(): void => setShowNumberPad(true)}
-						/>
-					</View>
-
+				<View style={styles.amount}>
 					{!showNumberPad && (
-						<AnimatedView
-							style={styles.buttonContainer}
-							color="transparent"
-							entering={FadeIn}
-							exiting={FadeOut}>
-							<Button
-								text={t('continue')}
-								size="large"
-								loading={loading}
-								disabled={isButtonDisabled}
-								onPress={onContinue}
-							/>
-						</AnimatedView>
+						<Caption13Up style={styles.amountCaption} color="purple">
+							{t('spending_label')}
+						</Caption13Up>
 					)}
+					<NumberPadTextField
+						value={textFieldValue}
+						showPlaceholder={showNumberPad}
+						reverse={true}
+						testID="TransferSetupNumberField"
+						onPress={(): void => setShowNumberPad(true)}
+					/>
 				</View>
+
+				{!showNumberPad && (
+					<AnimatedView color="transparent" entering={FadeIn} exiting={FadeOut}>
+						<Button
+							text={t('continue')}
+							size="large"
+							loading={loading}
+							disabled={isButtonDisabled}
+							onPress={onContinue}
+						/>
+					</AnimatedView>
+				)}
 
 				{showNumberPad && (
 					<NumberPadLightning
@@ -305,17 +304,17 @@ const Setup = ({ navigation }: TransferScreenProps<'Setup'>): ReactElement => {
 const styles = StyleSheet.create({
 	root: {
 		flex: 1,
-		justifyContent: 'space-between',
 		marginTop: 8,
 		paddingHorizontal: 16,
 	},
 	text: {
-		marginTop: 8,
+		marginTop: 4,
 	},
 	row: {
 		flexDirection: 'row',
 		justifyContent: 'space-between',
 		alignItems: 'center',
+		marginVertical: 4,
 	},
 	sliderSection: {
 		marginTop: 42,
@@ -324,14 +323,20 @@ const styles = StyleSheet.create({
 		marginTop: 24,
 		marginBottom: 16,
 	},
+	percentages: {
+		flexDirection: 'row',
+		justifyContent: 'space-between',
+		alignItems: 'center',
+	},
+	note: {
+		marginTop: 16,
+	},
 	amount: {
+		marginTop: 'auto',
 		marginBottom: 32,
 	},
 	amountCaption: {
 		marginBottom: 4,
-	},
-	buttonContainer: {
-		marginTop: 'auto',
 	},
 	numberpad: {
 		marginHorizontal: -16,

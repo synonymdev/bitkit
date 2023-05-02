@@ -15,6 +15,7 @@ import PieChart from '../Lightning/PieChart';
 import { addTodo, removeTodo } from '../../store/actions/todos';
 import { confirmChannelPurchase } from '../../store/actions/blocktank';
 import { useLightningBalance } from '../../hooks/lightning';
+import { useBalance } from '../../hooks/wallet';
 import useDisplayValues from '../../hooks/displayValues';
 import type { TransferScreenProps } from '../../navigation/types';
 import { blocktankOrdersSelector } from '../../store/reselect/blocktank';
@@ -30,17 +31,20 @@ const Confirm = ({
 	navigation,
 	route,
 }: TransferScreenProps<'Confirm'>): ReactElement => {
+	const { spendingAmount, orderId } = route.params;
 	const { t } = useTranslation('lightning');
-	const { total, spendingAmount, orderId } = route.params;
+	const { satoshis: onchainBalance } = useBalance({ onchain: true });
 	const [loading, setLoading] = useState(false);
 	const lightningBalance = useLightningBalance();
 
-	const savingsAmount = total - spendingAmount;
-	const savingsPercentage = Math.round((savingsAmount / total) * 100);
+	const savingsAmount = onchainBalance - spendingAmount;
+	const savingsPercentage = Math.round((savingsAmount / onchainBalance) * 100);
+	const spendingPercentage = Math.round(
+		(spendingAmount / onchainBalance) * 100,
+	);
 	const currentSpendingAmount = lightningBalance.localBalance;
-	const spendingPercentage = Math.round((spendingAmount / total) * 100);
 	const spendingCurrentPercentage = Math.round(
-		(currentSpendingAmount / total) * 100,
+		(currentSpendingAmount / onchainBalance) * 100,
 	);
 
 	const isTransferringToSavings = spendingAmount < currentSpendingAmount;
@@ -91,26 +95,24 @@ const Confirm = ({
 					navigation.navigate('Wallet');
 				}}
 			/>
-			<View style={styles.root}>
-				<View>
-					<Display color="purple">{t('transfer_header')}</Display>
-					<Text01S color="gray1" style={styles.text}>
-						{isTransferringToSavings ? (
-							t('transfer_close')
-						) : (
-							<Trans
-								t={t}
-								i18nKey="transfer_open"
-								components={{
-									white: <Text01S color="white" />,
-								}}
-								values={{
-									amount: `${blocktankPurchaseFee.fiatSymbol}${channelOpenCost}`,
-								}}
-							/>
-						)}
-					</Text01S>
-				</View>
+			<View style={styles.root} testID="TransferConfirm">
+				<Display color="purple">{t('transfer_header')}</Display>
+				<Text01S color="gray1" style={styles.text}>
+					{isTransferringToSavings ? (
+						t('transfer_close')
+					) : (
+						<Trans
+							t={t}
+							i18nKey="transfer_open"
+							components={{
+								white: <Text01S color="white" />,
+							}}
+							values={{
+								amount: `${blocktankPurchaseFee.fiatSymbol}${channelOpenCost}`,
+							}}
+						/>
+					)}
+				</Text01S>
 
 				<View style={styles.chartContainer}>
 					<View style={styles.chart}>
@@ -121,29 +123,35 @@ const Confirm = ({
 							dashed={spendingCurrentPercentage}
 						/>
 					</View>
-					<View style={styles.percContainer}>
-						<Percentage value={spendingPercentage} type="spending" />
-						<Percentage value={savingsPercentage} type="savings" />
-					</View>
-				</View>
-
-				<View>
-					<View style={styles.amountBig}>
-						<Caption13Up color="purple">{t('spending_label')}</Caption13Up>
-						<AmountToggle sats={spendingAmount} />
-					</View>
-
-					<View style={styles.buttonContainer}>
-						<SwipeToConfirm
-							text={t('transfer_swipe')}
-							color="purple"
-							icon={<LightningIcon width={30} height={30} color="black" />}
-							loading={loading}
-							confirmed={loading}
-							onConfirm={handleConfirm}
+					<View>
+						<Percentage
+							style={styles.percentage}
+							value={spendingPercentage}
+							type="spending"
+						/>
+						<Percentage
+							style={styles.percentage}
+							value={savingsPercentage}
+							type="savings"
 						/>
 					</View>
 				</View>
+
+				<View style={styles.amount}>
+					<Caption13Up style={styles.amountCaption} color="purple">
+						{t('spending_label')}
+					</Caption13Up>
+					<AmountToggle sats={spendingAmount} />
+				</View>
+
+				<SwipeToConfirm
+					text={t('transfer_swipe')}
+					color="purple"
+					icon={<LightningIcon width={30} height={30} color="black" />}
+					loading={loading}
+					confirmed={loading}
+					onConfirm={handleConfirm}
+				/>
 			</View>
 			<SafeAreaInset type="bottom" minPadding={16} />
 		</GlowingBackground>
@@ -153,17 +161,15 @@ const Confirm = ({
 const styles = StyleSheet.create({
 	root: {
 		flex: 1,
-		justifyContent: 'space-between',
 		marginTop: 8,
 		paddingHorizontal: 16,
 	},
 	text: {
-		marginTop: 8,
-	},
-	amountBig: {
-		marginBottom: 32,
+		marginTop: 4,
+		marginBottom: 62,
 	},
 	chartContainer: {
+		// flex: 1,
 		flexDirection: 'row',
 		alignItems: 'center',
 	},
@@ -174,12 +180,15 @@ const styles = StyleSheet.create({
 		height: PIE_SIZE + PIE_SHIFT,
 		marginRight: 32,
 	},
-	percContainer: {
-		alignSelf: 'stretch',
-		justifyContent: 'space-around',
+	percentage: {
+		marginVertical: 8,
 	},
-	buttonContainer: {
+	amount: {
 		marginTop: 'auto',
+		marginBottom: 16,
+	},
+	amountCaption: {
+		marginBottom: 4,
 	},
 });
 

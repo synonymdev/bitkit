@@ -18,7 +18,6 @@ export type TransferStackParamList = {
 	Setup: undefined;
 	Confirm: {
 		spendingAmount: number;
-		total: number;
 		orderId?: string;
 	};
 	Availability: undefined;

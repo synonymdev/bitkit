@@ -6,7 +6,7 @@ import { Trans, useTranslation } from 'react-i18next';
 
 import { AnimatedView } from '../../styles/components';
 import { Caption13Up, Display, Text01S, Text01M } from '../../styles/text';
-import { LightningIcon, PenIcon } from '../../styles/icons';
+import { LightningIcon, PencileIcon } from '../../styles/icons';
 import SafeAreaInset from '../../components/SafeAreaInset';
 import GlowingBackground from '../../components/GlowingBackground';
 import NavigationHeader from '../../components/NavigationHeader';
@@ -33,13 +33,15 @@ import {
 	blocktankServiceSelector,
 } from '../../store/reselect/blocktank';
 
+export const DEFAULT_CHANNEL_DURATION = 6;
+
 const CustomConfirm = ({
 	navigation,
 	route,
 }: LightningScreenProps<'CustomConfirm'>): ReactElement => {
 	const { t } = useTranslation('lightning');
 	const { spendingAmount, receivingAmount } = route.params;
-	const [weeks, setWeeks] = useState(6);
+	const [weeks, setWeeks] = useState(DEFAULT_CHANNEL_DURATION);
 	const [loading, setLoading] = useState(false);
 	const [orderId, setOrderId] = useState(route.params.orderId);
 	const [showNumberPad, setShowNumberPad] = useState(false);
@@ -87,7 +89,7 @@ const CustomConfirm = ({
 			});
 			return;
 		}
-		setOrderId(purchaseResponse.value);
+		setOrderId(purchaseResponse.value.orderId);
 	};
 
 	return (
@@ -124,7 +126,7 @@ const CustomConfirm = ({
 											onPress={(): void => setShowNumberPad(true)}
 										/>
 									),
-									penIcon: <PenIcon height={18} width={18} />,
+									penIcon: <PencileIcon height={16} width={13} />,
 								}}
 								values={{
 									amount: `${blocktankPurchaseFee.fiatSymbol}${channelOpenCost}`,
@@ -150,9 +152,13 @@ const CustomConfirm = ({
 				)}
 
 				{!showNumberPad && (
-					<AnimatedView color="transparent" entering={FadeIn} exiting={FadeOut}>
+					<AnimatedView
+						style={styles.buttonContainer}
+						color="transparent"
+						entering={FadeIn}
+						exiting={FadeOut}>
 						<SwipeToConfirm
-							text={t('connect_swipe_pay')}
+							text={t('connect_swipe')}
 							color="purple"
 							onConfirm={handleConfirm}
 							icon={<LightningIcon width={30} height={30} color="black" />}
@@ -206,12 +212,11 @@ const CustomConfirm = ({
 const styles = StyleSheet.create({
 	root: {
 		flex: 1,
-		justifyContent: 'space-between',
 		marginTop: 8,
 		paddingHorizontal: 16,
 	},
 	text: {
-		marginTop: 8,
+		marginTop: 4,
 		marginBottom: 40,
 	},
 	space: {
@@ -219,12 +224,14 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 	},
 	block: {
-		borderBottomWidth: 1,
 		marginBottom: 32,
 	},
 	weeks: {
 		alignSelf: 'flex-start',
 		alignItems: 'center',
+	},
+	buttonContainer: {
+		marginTop: 'auto',
 	},
 	numberpad: {
 		marginHorizontal: -16,

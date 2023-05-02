@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
 		paddingHorizontal: 16,
 	},
 	text: {
-		marginTop: 8,
+		marginTop: 4,
 		marginBottom: 16,
 	},
 	buttonContainer: {

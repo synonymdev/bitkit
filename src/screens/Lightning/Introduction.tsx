@@ -1,9 +1,8 @@
 import React, { ReactElement, useMemo } from 'react';
-import { Image, StyleSheet } from 'react-native';
+import { View, Image, StyleSheet } from 'react-native';
 import { useSelector } from 'react-redux';
 import { Trans, useTranslation } from 'react-i18next';
 
-import { View } from '../../styles/components';
 import { Display, Text01S } from '../../styles/text';
 import SafeAreaInset from '../../components/SafeAreaInset';
 import GlowingBackground from '../../components/GlowingBackground';
@@ -34,17 +33,17 @@ const Introduction = ({
 
 	return (
 		<GlowingBackground topLeft="purple">
-			<View color="transparent" style={styles.slide}>
+			<View style={styles.slide}>
 				<SafeAreaInset type="top" />
 				<NavigationHeader
 					onClosePress={(): void => {
 						navigation.navigate('Wallet');
 					}}
 				/>
-				<View color="transparent" style={styles.imageContainer}>
+				<View style={styles.imageContainer}>
 					<Image style={styles.image} source={imageSrc} />
 				</View>
-				<View color="transparent" style={styles.textContent}>
+				<View style={styles.textContent}>
 					<Display>
 						<Trans
 							t={t}
@@ -59,7 +58,7 @@ const Introduction = ({
 					</Text01S>
 				</View>
 
-				<View color="transparent" style={styles.buttonContainer}>
+				<View style={styles.buttonContainer}>
 					{!isGeoBlocked && (
 						<>
 							<Button
@@ -67,7 +66,7 @@ const Introduction = ({
 								text={t('int_quick')}
 								size="large"
 								disabled={isDisabled}
-								testID="QuickSetup"
+								testID="QuickSetupButton"
 								onPress={(): void => {
 									navigation.navigate('QuickSetup');
 								}}
@@ -79,13 +78,24 @@ const Introduction = ({
 								size="large"
 								variant="secondary"
 								disabled={isDisabled}
-								testID="CustomSetup"
+								testID="CustomSetupButton"
 								onPress={(): void => {
 									navigation.navigate('CustomSetup', { spending: true });
 								}}
 							/>
 						</>
 					)}
+
+					{/* TODO: build third party channel flow */}
+					{/* {isGeoBlocked && (
+						<Button
+							style={styles.button}
+							text={t('int_third_party')}
+							size="large"
+							testID="ThirdPartySetup"
+							// onPress={(): void => {}}
+						/>
+					)} */}
 				</View>
 				<SafeAreaInset type="bottom" minPadding={16} />
 			</View>
@@ -100,11 +110,9 @@ const styles = StyleSheet.create({
 		alignItems: 'stretch',
 	},
 	imageContainer: {
-		flex: 4,
+		flex: 3.2,
 		alignItems: 'center',
 		paddingVertical: 50,
-		justifyContent: 'flex-end',
-		width: '100%',
 	},
 	image: {
 		flex: 1,
@@ -115,7 +123,7 @@ const styles = StyleSheet.create({
 		paddingHorizontal: 32,
 	},
 	text: {
-		marginTop: 8,
+		marginTop: 4,
 	},
 	buttonContainer: {
 		flexDirection: 'row',

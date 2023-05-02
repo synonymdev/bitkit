@@ -13,15 +13,16 @@ import Percentage from '../../components/Percentage';
 import SwipeToConfirm from '../../components/SwipeToConfirm';
 import PieChart from './PieChart';
 import { sleep } from '../../utils/helpers';
-import { confirmChannelPurchase } from '../../store/actions/blocktank';
-import { addTodo } from '../../store/actions/todos';
+import { useBalance } from '../../hooks/wallet';
 import useDisplayValues from '../../hooks/displayValues';
 import type { LightningScreenProps } from '../../navigation/types';
+import { addTodo } from '../../store/actions/todos';
+import { confirmChannelPurchase } from '../../store/actions/blocktank';
+import { blocktankOrdersSelector } from '../../store/reselect/blocktank';
 import {
 	selectedNetworkSelector,
 	transactionFeeSelector,
 } from '../../store/reselect/wallet';
-import { blocktankOrdersSelector } from '../../store/reselect/blocktank';
 
 const PIE_SIZE = 140;
 const PIE_SHIFT = 70;
@@ -30,10 +31,11 @@ const QuickConfirm = ({
 	navigation,
 	route,
 }: LightningScreenProps<'QuickConfirm'>): ReactElement => {
-	const { spendingAmount, total, orderId } = route.params;
+	const { spendingAmount, orderId } = route.params;
 	const { t } = useTranslation('lightning');
 	const [loading, setLoading] = useState(false);
 	const selectedNetwork = useSelector(selectedNetworkSelector);
+	const { satoshis: onchainBalance } = useBalance({ onchain: true });
 	const orders = useSelector(blocktankOrdersSelector);
 	const order = useMemo(() => {
 		return orders.find((o) => o._id === orderId);
@@ -47,9 +49,11 @@ const QuickConfirm = ({
 		).toFixed(2);
 	}, [fiatTransactionFee.fiatValue, blocktankPurchaseFee.fiatValue]);
 
-	const savingsAmount = total - spendingAmount;
-	const spendingPercentage = Math.round((spendingAmount / total) * 100);
-	const savingsPercentage = Math.round((savingsAmount / total) * 100);
+	const savingsAmount = onchainBalance - spendingAmount;
+	const spendingPercentage = Math.round(
+		(spendingAmount / onchainBalance) * 100,
+	);
+	const savingsPercentage = Math.round((savingsAmount / onchainBalance) * 100);
 
 	const handleConfirm = async (): Promise<void> => {
 		setLoading(true);
@@ -72,22 +76,20 @@ const QuickConfirm = ({
 					navigation.navigate('Wallet');
 				}}
 			/>
-			<View style={styles.root}>
-				<View>
-					<Display color="purple">{t('quick_confirm_header')}</Display>
-					<Text01S color="gray1" style={styles.text}>
-						<Trans
-							t={t}
-							i18nKey="quick_confirm_cost"
-							components={{
-								white: <Text01S color="white" />,
-							}}
-							values={{
-								amount: `${blocktankPurchaseFee.fiatSymbol}${channelOpenCost}`,
-							}}
-						/>
-					</Text01S>
-				</View>
+			<View style={styles.root} testID="QuickConfirm">
+				<Display color="purple">{t('quick_confirm_header')}</Display>
+				<Text01S style={styles.text} color="gray1">
+					<Trans
+						t={t}
+						i18nKey="quick_confirm_cost"
+						components={{
+							white: <Text01S color="white" />,
+						}}
+						values={{
+							amount: `${blocktankPurchaseFee.fiatSymbol}${channelOpenCost}`,
+						}}
+					/>
+				</Text01S>
 
 				<View style={styles.chartContainer}>
 					<View style={styles.chart}>
@@ -97,31 +99,35 @@ const QuickConfirm = ({
 							primary={spendingPercentage}
 						/>
 					</View>
-					<View style={styles.percContainer}>
-						<Percentage value={spendingPercentage} type="spending" />
-						<Percentage value={savingsPercentage} type="savings" />
-					</View>
-				</View>
-
-				<View>
-					<View style={styles.amount}>
-						<Caption13Up style={styles.amountCaption} color="purple">
-							{t('spending_label')}
-						</Caption13Up>
-						<AmountToggle sats={spendingAmount} />
-					</View>
-
-					<View style={styles.buttonContainer}>
-						<SwipeToConfirm
-							text={t('connect_swipe')}
-							color="purple"
-							icon={<LightningIcon width={30} height={30} color="black" />}
-							loading={loading}
-							confirmed={loading}
-							onConfirm={handleConfirm}
+					<View>
+						<Percentage
+							style={styles.percentage}
+							value={spendingPercentage}
+							type="spending"
+						/>
+						<Percentage
+							style={styles.percentage}
+							value={savingsPercentage}
+							type="savings"
 						/>
 					</View>
 				</View>
+
+				<View style={styles.amount}>
+					<Caption13Up style={styles.amountCaption} color="purple">
+						{t('spending_label')}
+					</Caption13Up>
+					<AmountToggle sats={spendingAmount} />
+				</View>
+
+				<SwipeToConfirm
+					text={t('connect_swipe')}
+					color="purple"
+					icon={<LightningIcon width={30} height={30} color="black" />}
+					loading={loading}
+					confirmed={loading}
+					onConfirm={handleConfirm}
+				/>
 			</View>
 			<SafeAreaInset type="bottom" minPadding={16} />
 		</GlowingBackground>
@@ -131,20 +137,15 @@ const QuickConfirm = ({
 const styles = StyleSheet.create({
 	root: {
 		flex: 1,
-		justifyContent: 'space-between',
 		marginTop: 8,
 		paddingHorizontal: 16,
 	},
 	text: {
-		marginTop: 8,
-	},
-	amount: {
-		marginBottom: 32,
-	},
-	amountCaption: {
-		marginBottom: 4,
+		marginTop: 4,
+		marginBottom: 62,
 	},
 	chartContainer: {
+		// flex: 1,
 		flexDirection: 'row',
 		alignItems: 'center',
 	},
@@ -155,12 +156,15 @@ const styles = StyleSheet.create({
 		height: PIE_SIZE + PIE_SHIFT,
 		marginRight: 32,
 	},
-	percContainer: {
-		alignSelf: 'stretch',
-		justifyContent: 'space-around',
+	percentage: {
+		marginVertical: 8,
 	},
-	buttonContainer: {
+	amount: {
 		marginTop: 'auto',
+		marginBottom: 16,
+	},
+	amountCaption: {
+		marginBottom: 4,
 	},
 });
 

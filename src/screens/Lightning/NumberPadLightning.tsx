@@ -3,10 +3,11 @@ import { StyleProp, StyleSheet, ViewStyle } from 'react-native';
 import { useSelector } from 'react-redux';
 
 import NumberPad from '../../components/NumberPad';
-import { handleNumberPadPress } from '../../utils/numberpad';
+import GradientView from '../../components/GradientView';
 import NumberPadButtons from '../Wallets/NumberPadButtons';
 import { EBalanceUnit } from '../../store/types/wallet';
 import { balanceUnitSelector } from '../../store/reselect/settings';
+import { handleNumberPadPress } from '../../utils/numberpad';
 import { convertToSats } from '../../utils/exchange-rate';
 import { vibrate } from '../../utils/helpers';
 
@@ -57,19 +58,22 @@ const NumberPadLightning = ({
 			type={numberPadType}
 			errorKey={errorKey}
 			onPress={onPress}>
-			<NumberPadButtons
-				color="purple"
-				onMax={onMax}
-				onChangeUnit={onChangeUnit}
-				onDone={onDone}
-			/>
+			<GradientView>
+				<NumberPadButtons
+					color="white"
+					onMax={onMax}
+					onChangeUnit={onChangeUnit}
+					onDone={onDone}
+				/>
+			</GradientView>
 		</NumberPad>
 	);
 };
 
 const styles = StyleSheet.create({
 	numberpad: {
-		maxHeight: 425,
+		maxHeight: 380,
+		position: 'relative',
 	},
 });
 

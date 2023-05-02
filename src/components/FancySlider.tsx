@@ -7,15 +7,7 @@ import React, {
 	useRef,
 	useState,
 } from 'react';
-import { BlurMask, Canvas, Rect } from '@shopify/react-native-skia';
-import {
-	Animated,
-	PanResponder,
-	StyleProp,
-	StyleSheet,
-	View,
-	ViewStyle,
-} from 'react-native';
+import { Animated, PanResponder, StyleSheet, View } from 'react-native';
 import throttle from 'lodash.throttle';
 
 import { View as ThemedView } from '../styles/components';
@@ -27,18 +19,18 @@ const SNAP_POINT_SIZE = 5;
 
 const valueToX = (
 	value: number,
-	minimumValue: number,
-	maximumValue: number,
+	startValue: number,
+	endValue: number,
 	width: number,
 ): number => {
 	let newValue = value;
-	if (value < minimumValue) {
-		newValue = minimumValue;
+	if (value < startValue) {
+		newValue = startValue;
 	}
-	if (value > maximumValue) {
-		newValue = maximumValue;
+	if (value > endValue) {
+		newValue = endValue;
 	}
-	const delta = maximumValue - minimumValue;
+	const delta = endValue - startValue;
 	// Make sure we're not dividing by zero.
 	if (delta === 0) {
 		return 0;
@@ -48,8 +40,8 @@ const valueToX = (
 
 const xToValue = (
 	x: number,
-	minimumValue: number,
-	maximumValue: number,
+	startValue: number,
+	endValue: number,
 	width: number,
 ): number => {
 	let newX = x;
@@ -59,7 +51,7 @@ const xToValue = (
 	if (x > width) {
 		newX = width;
 	}
-	const delta = maximumValue - minimumValue;
+	const delta = endValue - startValue;
 	// Make sure we're not dividing by zero.
 	if (width === 0) {
 		return 0;
@@ -67,45 +59,19 @@ const xToValue = (
 	return (delta / width) * newX;
 };
 
-const Glow = ({
-	style,
-	width,
-}: {
-	style: StyleProp<ViewStyle>;
-	width: number;
-}): ReactElement => {
-	const colors = useColors();
-	const cStyle = useMemo(
-		() => [style, { width: width + CIRCLE_SIZE * 2, height: CIRCLE_SIZE * 3 }],
-		[width, style],
-	);
-
-	return (
-		<Canvas style={cStyle}>
-			<Rect
-				x={CIRCLE_SIZE}
-				y={CIRCLE_SIZE}
-				width={width}
-				height={CIRCLE_SIZE}
-				opacity={0.4}
-				color={colors.purple}>
-				<BlurMask blur={20} style="normal" />
-			</Rect>
-		</Canvas>
-	);
-};
-
 interface IFancySlider {
-	minimumValue: number;
-	maximumValue: number;
+	startValue: number;
+	endValue: number;
+	maxValue: number;
 	value: number;
 	snapPoint?: number;
 	onValueChange: (value: number) => void;
 }
 
 const FancySlider = ({
-	minimumValue,
-	maximumValue,
+	startValue,
+	endValue,
+	maxValue,
 	value,
 	snapPoint,
 	onValueChange,
@@ -113,10 +79,12 @@ const FancySlider = ({
 	const pan = useRef<any>(new Animated.ValueXY()).current;
 	const active = useRef(false);
 	const colors = useColors();
-	const minTrackKolor = colors.purple;
-	const maxTrackKolor = colors.orange;
+	const minTrackColor = colors.purple;
+	const maxTrackColor = colors.orange;
+	const disabledTrackColor = colors.orange50;
 	const [containerWidth, setContainerWidth] = useState(0);
 	const endPosition = containerWidth === 0 ? 1 : containerWidth - CIRCLE_SIZE;
+	const maxEndPosition = valueToX(maxValue, startValue, endValue, endPosition);
 
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	const throttledOnValueChange = useCallback(throttle(onValueChange, 100), [
@@ -128,10 +96,10 @@ const FancySlider = ({
 			if (!active.current) {
 				return;
 			}
-			const v = xToValue(x, minimumValue, maximumValue, endPosition);
+			const v = xToValue(x, startValue, endValue, endPosition);
 			throttledOnValueChange(v);
 		},
-		[throttledOnValueChange, minimumValue, maximumValue, endPosition],
+		[throttledOnValueChange, startValue, endValue, endPosition],
 	);
 
 	const panResponder = useMemo(() => {
@@ -161,16 +129,18 @@ const FancySlider = ({
 					Animated.spring(pan, {
 						toValue: { x: 0, y: 0 },
 						useNativeDriver: false,
+						speed: 1000,
 					}).start(() => {
 						active.current = false;
 					});
 				}
 
-				// snap to end
-				if (pan.x._value > endPosition) {
+				// snap to max
+				if (pan.x._value > maxEndPosition) {
 					Animated.spring(pan, {
-						toValue: { x: endPosition, y: 0 },
+						toValue: { x: maxEndPosition, y: 0 },
 						useNativeDriver: false,
+						speed: 1000,
 					}).start(() => {
 						active.current = false;
 					});
@@ -178,7 +148,7 @@ const FancySlider = ({
 
 				// handle snapPoint
 				if (snapPoint !== undefined) {
-					const delta = maximumValue - minimumValue;
+					const delta = endValue - startValue;
 					const snapPointX = (endPosition / delta) * snapPoint;
 
 					if (pan.x._value < snapPointX * 0.65) {
@@ -205,18 +175,18 @@ const FancySlider = ({
 				}
 			},
 		});
-	}, [endPosition, pan, snapPoint, minimumValue, maximumValue]);
+	}, [endPosition, maxEndPosition, pan, snapPoint, startValue, endValue]);
 
 	const circleTranslateX = pan.x.interpolate({
 		inputRange: [0, endPosition],
 		outputRange: [0, endPosition],
 	});
 
-	let snapPointTranslateX;
+	let snapPointTranslateX: number | undefined;
 	if (containerWidth > 0 && snapPoint !== undefined) {
 		snapPointTranslateX =
 			SNAP_POINT_SIZE / 2 +
-			((containerWidth - SNAP_POINT_SIZE * 2) / maximumValue - minimumValue) *
+			((containerWidth - SNAP_POINT_SIZE * 2) / endValue - startValue) *
 				snapPoint;
 	}
 
@@ -226,6 +196,11 @@ const FancySlider = ({
 	});
 
 	const maxTrackWidth = pan.x.interpolate({
+		inputRange: [0, maxEndPosition],
+		outputRange: [maxEndPosition + CIRCLE_SIZE / 2, CIRCLE_SIZE / 2],
+	});
+
+	const disabledTrackWidth = pan.x.interpolate({
 		inputRange: [0, endPosition],
 		outputRange: [endPosition + CIRCLE_SIZE / 2, CIRCLE_SIZE / 2],
 	});
@@ -239,13 +214,12 @@ const FancySlider = ({
 		if (active.current) {
 			return;
 		}
-		const x = valueToX(value, minimumValue, maximumValue, endPosition);
+		const x = valueToX(value, startValue, endValue, endPosition);
 		pan.setValue({ x, y: pan.y._value });
-	}, [pan, value, minimumValue, maximumValue, endPosition]);
+	}, [pan, value, startValue, endValue, endPosition]);
 
 	return (
 		<View style={styles.root}>
-			<Glow width={containerWidth} style={styles.glow} />
 			<View
 				style={styles.container}
 				onLayout={(e): void => {
@@ -254,19 +228,31 @@ const FancySlider = ({
 				}}>
 				<Animated.View
 					style={[
+						styles.track,
 						styles.minTrack,
 						{
-							backgroundColor: minTrackKolor,
+							backgroundColor: minTrackColor,
 							width: minTrackWidth,
 						},
 					]}
 				/>
 				<Animated.View
 					style={[
-						styles.maxTrack,
+						styles.track,
+						styles.disabledTrack,
 						{
-							backgroundColor: maxTrackKolor,
+							backgroundColor: disabledTrackColor,
+							width: disabledTrackWidth,
+						},
+					]}
+				/>
+				<Animated.View
+					style={[
+						styles.track,
+						{
+							backgroundColor: maxTrackColor,
 							width: maxTrackWidth,
+							left: minTrackWidth,
 						},
 					]}
 				/>
@@ -315,25 +301,20 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		justifyContent: 'center',
 	},
-	minTrack: {
+	track: {
 		borderRadius: 8,
 		flexDirection: 'row',
 		height: 8,
 		flex: 1,
 		position: 'absolute',
-		left: 2,
-		top: 12,
 		bottom: 0,
+		top: 12,
 	},
-	maxTrack: {
-		borderRadius: 8,
-		flexDirection: 'row',
-		height: 8,
-		flex: 1,
-		position: 'absolute',
+	minTrack: {
+		left: 0,
+	},
+	disabledTrack: {
 		right: 0,
-		top: 12,
-		bottom: 0,
 	},
 	grab: {
 		position: 'absolute',
@@ -360,12 +341,6 @@ const styles = StyleSheet.create({
 		left: 0,
 		height: 16,
 		width: SNAP_POINT_SIZE,
-	},
-	glow: {
-		position: 'absolute',
-		top: -CIRCLE_SIZE,
-		left: -CIRCLE_SIZE,
-		right: -CIRCLE_SIZE,
 	},
 });
 
