@@ -92,7 +92,6 @@ describe('LN Channel Onboarding', () => {
 			jestExpect(buttonEnabled).toBe(false);
 
 			// should show 80% limit note
-			// set x offset to avoid navigating back
 			await element(by.id('SliderHandle')).swipe('right', 'slow', NaN, 0.8);
 			await expect(element(by.id('QuickSetupReserveNote'))).toBeVisible();
 			await element(by.id('QuickSetupNumberField')).tap();
@@ -101,10 +100,10 @@ describe('LN Channel Onboarding', () => {
 			await expect(element(by.id('QuickSetupReserveNote'))).toBeVisible();
 			// await expect(element(by.text('80%'))).toBeVisible();
 
+			// get more BTC
 			await rpc.sendToAddress(wAddress, '0.5');
 			await rpc.generateToAddress(1, await rpc.getNewAddress());
 			await waitForElectrum();
-
 			await waitFor(element(by.id('NewTxPrompt')))
 				.toBeVisible()
 				.withTimeout(10000);
@@ -112,9 +111,7 @@ describe('LN Channel Onboarding', () => {
 			await sleep(1000); // animation
 
 			// should show Blocktank limit note
-			await element(by.id('Suggestion-lightning')).tap();
-			await element(by.id('QuickSetupButton')).tap();
-			await element(by.id('SliderHandle')).swipe('right');
+			await element(by.id('SliderHandle')).swipe('right', 'slow', NaN, 0.8);
 			await expect(element(by.id('QuickSetupBlocktankNote'))).toBeVisible();
 			await element(by.id('QuickSetupNumberField')).tap();
 			await element(by.id('NumberPadButtonsMax')).tap();
