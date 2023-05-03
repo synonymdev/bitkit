@@ -72,17 +72,12 @@ const Setup = ({ navigation }: TransferScreenProps<'Setup'>): ReactElement => {
 		return convertToSats(textFieldValue, unit);
 	}, [textFieldValue, unit]);
 
+	const totalBalance = onchainBalance + lightningBalance;
 	const blocktankSpendingLimit = blocktankService.max_chan_spending;
-	const spendableBalance = Math.round(
-		(onchainBalance + lightningBalance) * SPENDING_LIMIT_RATIO,
-	);
-	const savingsAmount = onchainBalance - spendingAmount;
-	const spendingPercentage = Math.round(
-		(spendingAmount / (onchainBalance + lightningBalance)) * 100,
-	);
-	const savingsPercentage = Math.round(
-		(savingsAmount / (onchainBalance + lightningBalance)) * 100,
-	);
+	const spendableBalance = Math.round(totalBalance * SPENDING_LIMIT_RATIO);
+	const savingsAmount = totalBalance - spendingAmount;
+	const spendingPercentage = Math.round((spendingAmount / totalBalance) * 100);
+	const savingsPercentage = Math.round((savingsAmount / totalBalance) * 100);
 	const isTransferringToSavings = spendingAmount < lightningBalance;
 	const isButtonDisabled = spendingAmount === lightningBalance;
 
@@ -224,7 +219,7 @@ const Setup = ({ navigation }: TransferScreenProps<'Setup'>): ReactElement => {
 									<FancySlider
 										value={spendingAmount}
 										startValue={0}
-										endValue={onchainBalance}
+										endValue={totalBalance}
 										maxValue={spendingLimit}
 										snapPoint={lightningBalance}
 										onValueChange={onSliderChange}
