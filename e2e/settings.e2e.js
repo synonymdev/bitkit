@@ -282,11 +282,9 @@ describe('Settings', () => {
 
 			await element(by.id('Settings')).tap();
 			await element(by.id('BackupSettings')).tap();
-			await element(by.id('BackupData')).tap(); // just check if this screen can be opened
-			await element(by.id('NavigationBack')).tap();
 			await element(by.id('ResetAndRestore')).tap(); // just check if this screen can be opened
 			await element(by.id('NavigationBack')).tap();
-			await element(by.id('BackupMoney')).tap();
+			await element(by.id('BackupWallet')).tap();
 			await sleep(1000); // animation
 			await element(by.id('TapToReveal')).tap();
 

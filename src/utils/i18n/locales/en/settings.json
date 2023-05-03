@@ -60,8 +60,8 @@
 	},
 	"backup": {
 		"title": "Back Up Or Restore",
-		"money": "Back up your money",
-		"data": "Back up your data",
+		"wallet": "Back up your wallet",
+		"export": "Export wallet data to phone",
 		"reset": "Reset and restore wallet",
 		"failed_title": "Data Backup Failure",
 		"failed_message": "Bitkit failed to back up it's data. Please check your connection.",

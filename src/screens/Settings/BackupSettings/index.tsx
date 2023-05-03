@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 
 import { EItemType, IListData } from '../../../components/List';
 import SettingsView from '../SettingsView';
-import { closeBottomSheet, showBottomSheet } from '../../../store/actions/ui';
+import { showBottomSheet } from '../../../store/actions/ui';
 import { SettingsScreenProps } from '../../../navigation/types';
 import Store from '../../../store/types';
 import { Caption13M, Caption13Up, Text01M } from '../../../styles/text';
@@ -181,27 +181,18 @@ const BackupSettings = ({
 			{
 				data: [
 					{
-						title: t('backup.money'),
+						title: t('backup.wallet'),
 						type: EItemType.button,
+						testID: 'BackupWallet',
 						onPress: (): void => {
-							closeBottomSheet('backupPrompt');
 							showBottomSheet('backupNavigation');
 						},
-						testID: 'BackupMoney',
-					},
-					{
-						title: t('backup.data'),
-						type: EItemType.button,
-						enabled: true,
-						onPress: (): void => {
-							navigation.navigate('BackupData');
-						},
-						testID: 'BackupData',
 					},
 					{
 						title: t('backup.reset'),
 						type: EItemType.button,
 						enabled: true,
+						testID: 'ResetAndRestore',
 						onPress: (): void => {
 							if (pin) {
 								navigation.navigate('AuthCheck', {
@@ -216,8 +207,16 @@ const BackupSettings = ({
 								navigation.navigate('ResetAndRestore');
 							}
 						},
-						testID: 'ResetAndRestore',
 					},
+					// {
+					// 	title: t('backup.export'),
+					// 	type: EItemType.button,
+					// 	enabled: true,
+					// 	testID: 'ExportToPhone',
+					// 	onPress: (): void => {
+					// 		navigation.navigate('ExportToPhone');
+					// 	},
+					// },
 				],
 			},
 		],

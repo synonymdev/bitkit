@@ -127,7 +127,7 @@ describe('Backup', () => {
 		// get seed
 		await element(by.id('Settings')).tap();
 		await element(by.id('BackupSettings')).tap();
-		await element(by.id('BackupMoney')).tap();
+		await element(by.id('BackupWallet')).tap();
 		await sleep(1000); // animation
 		await element(by.id('TapToReveal')).tap();
 

@@ -16,7 +16,6 @@ import PaymentPreference from '../../screens/Settings/PaymentPreference';
 import AddressTypePreference from '../../screens/Settings/AddressTypePreference';
 import DevSettings from '../../screens/Settings/DevSettings';
 import AddressViewer from '../../screens/Settings/AddressViewer';
-import BackupData from '../../screens/Settings/Backup/BackupData';
 import LightningNodeInfo from '../../screens/Settings/Lightning/LightningNodeInfo';
 import BitcoinUnitSettings from '../../screens/Settings/BitcoinUnit';
 import TransactionSpeedSettings from '../../screens/Settings/TransactionSpeed';
@@ -75,7 +74,6 @@ export type SettingsStackParamList = {
 	PaymentPreference: undefined;
 	AddressTypePreference: undefined;
 	DevSettings: undefined;
-	BackupData: undefined;
 	ExportToPhone: undefined;
 	ResetAndRestore: undefined;
 	BitcoinNetworkSelection: undefined;
@@ -139,7 +137,6 @@ const SettingsNavigator = (): ReactElement => {
 			/>
 			<Stack.Screen name="DevSettings" component={DevSettings} />
 			<Stack.Screen name="AddressViewer" component={AddressViewer} />
-			<Stack.Screen name="BackupData" component={BackupData} />
 			<Stack.Screen name="ExportToPhone" component={ExportToPhone} />
 			<Stack.Screen name="ResetAndRestore" component={ResetAndRestore} />
 			<Stack.Screen
