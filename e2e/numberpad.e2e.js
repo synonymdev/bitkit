@@ -62,7 +62,7 @@ describe('NumberPad', () => {
 
 		// Switch to BTC
 		await element(by.id('ReceiveNumberPadUnit')).multiTap(2);
-		await expect(element(by.text('0.000123'))).toBeVisible();
+		await expect(element(by.text('0.00012300'))).toBeVisible();
 		await element(
 			by.id('NRemove').withAncestor(by.id('ReceiveNumberPad')),
 		).multiTap(7);
@@ -74,7 +74,7 @@ describe('NumberPad', () => {
 		await element(by.id('N0').withAncestor(by.id('ReceiveNumberPad'))).tap();
 		await element(by.id('N6').withAncestor(by.id('ReceiveNumberPad'))).tap();
 		await element(by.id('N9').withAncestor(by.id('ReceiveNumberPad'))).tap();
-		await expect(element(by.text('4.2069'))).toBeVisible();
+		await expect(element(by.text('4.20690000'))).toBeVisible();
 
 		markComplete('numberpad-1');
 	});
@@ -99,7 +99,7 @@ describe('NumberPad', () => {
 		await element(
 			by.id('NDecimal').withAncestor(by.id('ReceiveNumberPad')),
 		).tap();
-		await expect(element(by.text('1.01'))).toBeVisible();
+		await expect(element(by.text('1.01000000'))).toBeVisible();
 
 		markComplete('numberpad-2');
 	});
