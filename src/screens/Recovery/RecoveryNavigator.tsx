@@ -8,6 +8,7 @@ import { NavigationContainer } from '../../styles/components';
 import AuthCheck from '../../components/AuthCheck';
 import Recovery from '../../screens/Recovery/Recovery';
 import Mnemonic from '../../screens/Recovery/Mnemonic';
+import { __DISABLE_ANIMATION__ } from '../../constants/env';
 
 export type RecoveryStackParamList = {
 	AuthCheck: { onSuccess: () => void };
@@ -19,6 +20,7 @@ const Stack = createStackNavigator<RecoveryStackParamList>();
 
 const screenOptions: StackNavigationOptions = {
 	headerShown: false,
+	animationEnabled: !__DISABLE_ANIMATION__,
 };
 
 const RecoveryNavigator = (): ReactElement => {

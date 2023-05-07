@@ -44,7 +44,7 @@ import { TViewController } from '../store/types/ui';
 import { viewControllerSelector } from '../store/reselect/ui';
 import { useAppSelector } from '../hooks/redux';
 import BottomSheetBackground from './BottomSheetBackground';
-import { __DISABLE_LOOP_ANIMATION__ } from '../constants/env';
+import { __DISABLE_ANIMATION__ } from '../constants/env';
 
 export interface BottomSheetWrapperProps {
 	children: ReactElement;
@@ -172,7 +172,7 @@ const BottomSheetWrapper = forwardRef(
 				activeOffsetX={activeOffsetX}
 				activeOffsetY={activeOffsetY}
 				animationConfigs={
-					__DISABLE_LOOP_ANIMATION__ ? testAnimationConfigs : undefined
+					__DISABLE_ANIMATION__ ? testAnimationConfigs : undefined
 				}>
 				<BottomSheetView
 					style={styles.container}

@@ -48,8 +48,10 @@ const ProfileAddLinkForm = ({
 					maxLength={25}
 					onChange={(value: string): void => {
 						updateProfileLink({ ...form, title: value });
-					}}>
+					}}
+					testID="LinkLabelInput">
 					<TouchableOpacity
+						testID="ProfileLinkSuggestions"
 						onPress={(): void => {
 							navigation.navigate('ProfileLinkSuggestions');
 						}}>
@@ -67,6 +69,7 @@ const ProfileAddLinkForm = ({
 					onChange={(value: string): void => {
 						updateProfileLink({ ...form, url: value });
 					}}
+					testID="LinkValueInput"
 				/>
 				<Text02S style={styles.note} color="gray1">
 					{t('profile_link_public')}
@@ -79,6 +82,7 @@ const ProfileAddLinkForm = ({
 						size="large"
 						disabled={!isValid}
 						onPress={onSave}
+						testID="SaveLink"
 					/>
 				</View>
 				<SafeAreaInset type="bottom" minPadding={16} />

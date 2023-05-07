@@ -16,6 +16,7 @@ type LabeledInputProps = {
 	style?: StyleProp<ViewStyle>;
 	onChange?: (value: string) => void;
 	maxLength?: number;
+	testID?: string;
 };
 
 const LabeledInput = ({
@@ -31,6 +32,7 @@ const LabeledInput = ({
 	placeholder,
 	style,
 	maxLength,
+	testID,
 }: LabeledInputProps): ReactElement => {
 	const numberOfChildren = React.Children.toArray(children).length;
 
@@ -57,6 +59,7 @@ const LabeledInput = ({
 						multiline={multiline || false}
 						editable={!!onChange}
 						returnKeyType={returnKeyType}
+						testID={testID}
 					/>
 				) : (
 					<TextInput
@@ -73,6 +76,7 @@ const LabeledInput = ({
 						editable={!!onChange}
 						returnKeyType={returnKeyType}
 						maxLength={maxLength}
+						testID={testID}
 					/>
 				)}
 				{children && (

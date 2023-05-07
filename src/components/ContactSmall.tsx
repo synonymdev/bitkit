@@ -13,12 +13,14 @@ const ContactSmall = ({
 	style,
 	onPress,
 	onDelete,
+	testID,
 }: {
 	url: string;
 	size?: 'small' | 'large';
 	style?: StyleProp<ViewStyle>;
 	onPress?: () => void;
 	onDelete?: () => void;
+	testID?: string;
 }): ReactElement => {
 	const { profile } = useProfile(url);
 
@@ -31,7 +33,8 @@ const ContactSmall = ({
 			]}
 			color="white05"
 			activeOpacity={onPress ? 0.6 : 1}
-			onPress={onPress}>
+			onPress={onPress}
+			testID={testID}>
 			<ProfileImage
 				url={url}
 				image={profile.image}

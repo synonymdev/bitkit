@@ -27,5 +27,5 @@ declare module '@env' {
 	export const WALLET_DEFAULT_SELECTED_NETWORK: string;
 
 	export const DISABLE_PERIODIC_REMINDERS: string;
-	export const DISABLE_LOOP_ANIMATION: string;
+	export const DISABLE_ANIMATION: string;
 }

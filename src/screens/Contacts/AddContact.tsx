@@ -93,7 +93,8 @@ const AddContact = ({
 						value={addContactURL}
 						placeholder={t('contact_key_paste')}
 						multiline={true}
-						onChange={updateContactID}>
+						onChange={updateContactID}
+						testID="ContactURLInput">
 						<TouchableOpacity onPress={navigateToScanner}>
 							<CornersOutIcon width={24} height={24} color="brand" />
 						</TouchableOpacity>

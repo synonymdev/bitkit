@@ -10,7 +10,7 @@ describe('New Wallet', () => {
 	// });
 
 	it('should create new wallet', async () => {
-		if (checkComplete('n1')) {
+		if (checkComplete('newwallet-1')) {
 			return;
 		}
 
@@ -26,6 +26,6 @@ describe('New Wallet', () => {
 
 		// wat for wallet to be created
 		await waitFor(element(by.id('ToGetStartedClose'))).toBeVisible();
-		markComplete('n1');
+		markComplete('newwallet-1');
 	});
 });

@@ -18,6 +18,7 @@ import Metadata from '../../screens/Settings/Backup/Metadata';
 import { NavigationContainer } from '../../styles/components';
 import { useSnapPoints } from '../../hooks/bottomSheet';
 import { viewControllerIsOpenSelector } from '../../store/reselect/ui';
+import { __DISABLE_ANIMATION__ } from '../../constants/env';
 
 export type BackupNavigationProp =
 	NativeStackNavigationProp<BackupStackParamList>;
@@ -37,6 +38,7 @@ const Stack = createNativeStackNavigator<BackupStackParamList>();
 
 const navOptions: NativeStackNavigationOptions = {
 	headerShown: false,
+	...(__DISABLE_ANIMATION__ ? { animationDuration: 0 } : {}),
 };
 
 const BackupNavigation = (): ReactElement => {

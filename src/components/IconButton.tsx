@@ -7,11 +7,13 @@ const IconButton = ({
 	disabled = false,
 	style,
 	onPress,
+	testID,
 }: {
 	children: ReactNode;
 	disabled?: boolean;
 	style?: StyleProp<ViewStyle>;
 	onPress?: () => void;
+	testID?: string;
 }): ReactElement => {
 	const buttonStyles = useMemo(
 		() => ({
@@ -27,7 +29,8 @@ const IconButton = ({
 			color="white08"
 			activeOpacity={0.7}
 			disabled={disabled}
-			onPress={onPress}>
+			onPress={onPress}
+			testID={testID}>
 			{children}
 		</TouchableOpacity>
 	);

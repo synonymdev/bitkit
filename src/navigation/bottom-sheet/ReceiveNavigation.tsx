@@ -13,6 +13,7 @@ import Tags from '../../screens/Wallets/Receive/Tags';
 import { useSnapPoints } from '../../hooks/bottomSheet';
 import { NavigationContainer } from '../../styles/components';
 import { viewControllerIsOpenSelector } from '../../store/reselect/ui';
+import { __DISABLE_ANIMATION__ } from '../../constants/env';
 
 export type ReceiveNavigationProp =
 	NativeStackNavigationProp<ReceiveStackParamList>;
@@ -27,6 +28,7 @@ const Stack = createNativeStackNavigator<ReceiveStackParamList>();
 
 const navOptions: NativeStackNavigationOptions = {
 	headerShown: false,
+	...(__DISABLE_ANIMATION__ ? { animationDuration: 0 } : {}),
 };
 
 const ReceiveNavigation = (): ReactElement => {

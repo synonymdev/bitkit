@@ -55,6 +55,7 @@ const ProfileLinks = ({
 								});
 							}}>
 							<TouchableOpacity
+								testID="RemoveLinkButton"
 								onPress={(): void => {
 									removeLink(link.id);
 								}}>

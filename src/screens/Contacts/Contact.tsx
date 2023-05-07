@@ -129,9 +129,7 @@ const Contact = ({
 				onBackPress={(): void => {
 					navigation.navigate('Contacts');
 				}}
-				onClosePress={(): void => {
-					navigation.navigate('Wallet');
-				}}
+				onClosePress={navigation.popToTop}
 			/>
 			<View style={styles.content}>
 				<ProfileCard
@@ -177,7 +175,8 @@ const Contact = ({
 							style={styles.iconButton}
 							onPress={(): void => {
 								setShowDialog(true);
-							}}>
+							}}
+							testID="DeleteContactButton">
 							<TrashIcon height={24} width={24} color="brand" />
 						</IconButton>
 					</View>

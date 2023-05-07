@@ -45,6 +45,7 @@ import SlashtagsSettings from '../../screens/Settings/SlashtagsSettings';
 import LightningNavigator, {
 	LightningStackParamList,
 } from '../lightning/LightningNavigator';
+import { __DISABLE_ANIMATION__ } from '../../constants/env';
 
 export type SettingsNavigationProp =
 	StackNavigationProp<SettingsStackParamList>;
@@ -96,6 +97,7 @@ const screenOptions: StackNavigationOptions = {
 	// prevent flickering issue on Android
 	presentation: Platform.OS === 'ios' ? 'card' : 'transparentModal',
 	headerShown: false,
+	animationEnabled: !__DISABLE_ANIMATION__,
 };
 
 const SettingsNavigator = (): ReactElement => {

@@ -51,12 +51,14 @@ import PINNavigation from '../bottom-sheet/PINNavigation';
 import ForceTransfer from '../bottom-sheet/ForceTransfer';
 import CloseChannelSuccess from '../bottom-sheet/CloseChannelSuccess';
 import type { RootStackParamList, RootStackScreenProps } from '../types';
+import { __DISABLE_ANIMATION__ } from '../../constants/env';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
 const navOptions: StackNavigationOptions = {
 	headerShown: false,
 	...TransitionPresets.SlideFromRightIOS,
+	animationEnabled: !__DISABLE_ANIMATION__,
 };
 
 /**

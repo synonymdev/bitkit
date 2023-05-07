@@ -92,6 +92,7 @@ const ContactEdit = ({
 						size="large"
 						disabled={form.name?.length === 0}
 						onPress={onSave}
+						testID="SaveContactButton"
 					/>
 				</View>
 				<SafeAreaInset type="bottom" minPadding={16} />

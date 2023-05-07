@@ -12,6 +12,7 @@ import {
 } from '../../screens/Widgets/WidgetsOnboarding';
 import WidgetsSuggestions from '../../screens/Widgets/WidgetsSuggestions';
 import { onboardedWidgetsSelector } from '../../store/reselect/widgets';
+import { __DISABLE_ANIMATION__ } from '../../constants/env';
 
 export type WidgetsNavigationProp =
 	NativeStackNavigationProp<WidgetsStackParamList>;
@@ -24,8 +25,9 @@ export type WidgetsStackParamList = {
 
 const Stack = createNativeStackNavigator<WidgetsStackParamList>();
 
-const navOptions: NativeStackNavigationOptions = {
+const screenOptions: NativeStackNavigationOptions = {
 	headerShown: false,
+	...(__DISABLE_ANIMATION__ ? { animationDuration: 0 } : {}),
 };
 
 const WidgetsNavigator = (): ReactElement => {
@@ -36,7 +38,7 @@ const WidgetsNavigator = (): ReactElement => {
 			initialRouteName={
 				onboardedWidgets ? 'WidgetsSuggestions' : 'GoodbyePasswords'
 			}>
-			<Stack.Group screenOptions={navOptions}>
+			<Stack.Group screenOptions={screenOptions}>
 				<Stack.Screen name="GoodbyePasswords" component={GoodbyePasswords} />
 				<Stack.Screen name="HelloWidgets" component={HelloWidgets} />
 				<Stack.Screen

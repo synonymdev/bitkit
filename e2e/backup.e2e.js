@@ -50,7 +50,7 @@ describe('Backup', () => {
 		// - backup seed
 		// - restore wallet
 		// - check if everything was restored
-		if (checkComplete('b1')) {
+		if (checkComplete('backup-1')) {
 			return;
 		}
 		// recieve bitcoin
@@ -189,6 +189,6 @@ describe('Backup', () => {
 		await expect(element(by.id('PriceWidget'))).toBeVisible();
 		await expect(element(by.id('HeadlinesWidget'))).toBeVisible();
 
-		markComplete('b1');
+		markComplete('backup-1');
 	});
 });

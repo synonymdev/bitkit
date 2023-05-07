@@ -408,6 +408,7 @@ const OnchainActivityDetail = ({
 										<ContactSmall
 											url={slashTagsUrl}
 											onPress={(): void => navigateToContact(slashTagsUrl)}
+											testID="ContactSmall"
 										/>
 									}
 								/>
@@ -439,6 +440,7 @@ const OnchainActivityDetail = ({
 									text={t('activity_detach')}
 									icon={<UserMinusIcon height={16} width={16} color="brand" />}
 									onPress={handleDetach}
+									testID="ActivityDetach"
 								/>
 							) : (
 								<Button
@@ -446,6 +448,7 @@ const OnchainActivityDetail = ({
 									text={t('activity_assign')}
 									icon={<UserPlusIcon height={16} width={16} color="brand" />}
 									onPress={handleAssign}
+									testID="ActivityAssign"
 								/>
 							)}
 							<Button

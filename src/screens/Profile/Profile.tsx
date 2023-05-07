@@ -118,13 +118,17 @@ const ProfileScreen = ({
 				<Divider />
 				<View style={styles.actions}>
 					<IconButton
+						testID="DetailsButton"
 						style={styles.iconButton}
 						onPress={(): void => {
 							navigation.navigate('ProfileDetails');
 						}}>
 						<InfoIcon height={20} width={20} color="brand" />
 					</IconButton>
-					<IconButton style={styles.iconButton} onPress={handleCopy}>
+					<IconButton
+						testID="CopyButton"
+						style={styles.iconButton}
+						onPress={handleCopy}>
 						<CopyIcon height={24} width={24} color="brand" />
 					</IconButton>
 					<IconButton
@@ -134,6 +138,7 @@ const ProfileScreen = ({
 						<ShareIcon height={24} width={24} color="brand" />
 					</IconButton>
 					<IconButton
+						testID="EditButton"
 						style={styles.iconButton}
 						onPress={(): void => {
 							navigation.navigate('ProfileEdit');
@@ -232,7 +237,7 @@ const QRView = ({
 						color="transparent"
 						entering={FadeIn.duration(500)}
 						exiting={FadeOut.duration(500)}>
-						<Tooltip text={t('contact_copied')} />
+						<Tooltip testID="ContactCopiedTooltip" text={t('contact_copied')} />
 					</AnimatedView>
 				)}
 			</TouchableOpacity>

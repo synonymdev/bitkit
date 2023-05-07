@@ -61,6 +61,7 @@ const ContactsScreen = ({
 						style={styles.searchInput}
 						value={searchFilter}
 						onChangeText={setSearchFilter}
+						testID="ContactsSearchInput"
 					/>
 					<ThemedTouchableOpacity
 						style={styles.addButton}
@@ -69,7 +70,8 @@ const ContactsScreen = ({
 						onPress={(): void => {
 							Keyboard.dismiss();
 							showBottomSheet('addContactModal');
-						}}>
+						}}
+						testID="AddContact">
 						<PlusIcon width={24} height={24} color="brand" />
 					</ThemedTouchableOpacity>
 				</View>

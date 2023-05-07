@@ -8,12 +8,14 @@ const BOX_SIZE = 32;
 const Tooltip = ({
 	style,
 	text,
+	testID,
 }: {
 	text: string | ReactElement;
 	style?: StyleProp<ViewStyle>;
+	testID?: string;
 }): ReactElement => {
 	return (
-		<View style={[styles.root, style]}>
+		<View style={[styles.root, style]} testID={testID}>
 			<View style={styles.boxContainer}>
 				<ThemedView color="black92" style={styles.box} />
 			</View>

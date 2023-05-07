@@ -15,6 +15,7 @@ import AskForBiometrics from '../../screens/Settings/PIN/AskForBiometrics';
 import { NavigationContainer } from '../../styles/components';
 import { useSnapPoints } from '../../hooks/bottomSheet';
 import { viewControllerIsOpenSelector } from '../../store/reselect/ui';
+import { __DISABLE_ANIMATION__ } from '../../constants/env';
 
 export type PinNavigationProp = NativeStackNavigationProp<PinStackParamList>;
 
@@ -29,6 +30,7 @@ const Stack = createNativeStackNavigator<PinStackParamList>();
 
 const screenOptions: NativeStackNavigationOptions = {
 	headerShown: false,
+	...(__DISABLE_ANIMATION__ ? { animationDuration: 0 } : {}),
 };
 
 const PINNavigation = (): ReactElement => {

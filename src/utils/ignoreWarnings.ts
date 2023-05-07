@@ -1,5 +1,5 @@
 import { LogBox } from 'react-native';
-import { __DISABLE_LOOP_ANIMATION__ } from '../constants/env';
+import { __DISABLE_ANIMATION__ } from '../constants/env';
 
 if (__DEV__) {
 	const ignoredLogs = [];
@@ -18,7 +18,7 @@ if (__DEV__) {
 	const ignoredErrors = [];
 
 	// disable all logs for E2E tests running in debug mode
-	if (__DISABLE_LOOP_ANIMATION__) {
+	if (__DISABLE_ANIMATION__) {
 		LogBox.ignoreAllLogs();
 	}
 

@@ -11,6 +11,7 @@ import CustomConfirm from '../../screens/Lightning/CustomConfirm';
 import Result from '../../screens/Lightning/Result';
 import QuickSetup from '../../screens/Lightning/QuickSetup';
 import QuickConfirm from '../../screens/Lightning/QuickConfirm';
+import { __DISABLE_ANIMATION__ } from '../../constants/env';
 
 export type LightningNavigationProp =
 	NativeStackNavigationProp<LightningStackParamList>;
@@ -37,6 +38,7 @@ export type LightningStackParamList = {
 const Stack = createNativeStackNavigator<LightningStackParamList>();
 const screenOptions: NativeStackNavigationOptions = {
 	headerShown: false,
+	...(__DISABLE_ANIMATION__ ? { animationDuration: 0 } : {}),
 };
 
 const LightningStack = (): ReactElement => {

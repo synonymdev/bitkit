@@ -57,6 +57,7 @@ const ContactsOnboarding = ({
 						onPress={(): void => {
 							setOnboardedContacts();
 						}}
+						testID="ContactsOnboardingButton"
 					/>
 				</View>
 			</View>

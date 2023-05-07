@@ -29,7 +29,8 @@ const EnabledSlashtagsProfileButton = (): ReactElement => {
 		<TouchableOpacity
 			style={styles.leftColumn}
 			activeOpacity={1}
-			onPress={openProfile}>
+			onPress={openProfile}
+			testID="Header">
 			<ProfileImage
 				size={32}
 				url={url}
@@ -79,7 +80,8 @@ const Header = (): ReactElement => {
 				<TouchableOpacity
 					style={styles.profileIcon}
 					activeOpacity={1}
-					onPress={openContacts}>
+					onPress={openContacts}
+					testID="HeaderContactsButton">
 					<ProfileIcon width={24} height={24} />
 				</TouchableOpacity>
 				<TouchableOpacity

@@ -53,7 +53,7 @@ describe('Onchain', () => {
 		// - TODO: coin selectiom
 
 		it('Can receive 2 transactions and send them all at once', async () => {
-			if (checkComplete('o1')) {
+			if (checkComplete('onchain-1')) {
 				return;
 			}
 
@@ -222,11 +222,11 @@ describe('Onchain', () => {
 			await element(by.id('CalendarApplyButton')).tap();
 			await expect(element(by.id('Activity-3'))).toExist();
 
-			markComplete('o1');
+			markComplete('onchain-1');
 		});
 
 		it('Avoids creating a dust output and instead adds it to the fee', async () => {
-			if (checkComplete('o2')) {
+			if (checkComplete('onchain-2')) {
 				return;
 			}
 
@@ -300,7 +300,7 @@ describe('Onchain', () => {
 			// only 1 output -> no dust
 			await expect(element(by.text('1 OUTPUT'))).toBeVisible();
 
-			markComplete('o2');
+			markComplete('onchain-2');
 		});
 	});
 });

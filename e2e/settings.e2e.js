@@ -19,7 +19,7 @@ describe('Settings', () => {
 
 	describe('General', () => {
 		it('Can switch local currency', async () => {
-			if (checkComplete('s1')) {
+			if (checkComplete('settings-1')) {
 				return;
 			}
 
@@ -46,11 +46,11 @@ describe('Settings', () => {
 			// switch back to sats
 			await element(by.id('TotalBalance')).tap();
 			await element(by.id('TotalBalance')).tap();
-			markComplete('s1');
+			markComplete('settings-1');
 		});
 
 		it('Can switch Bitcoin Unit', async () => {
-			if (checkComplete('s2')) {
+			if (checkComplete('settings-2')) {
 				return;
 			}
 
@@ -69,11 +69,11 @@ describe('Settings', () => {
 			await expect(
 				element(by.id('Value').withAncestor(by.id('BitcoinUnitSettings'))),
 			).toHaveText('Satoshis');
-			markComplete('s2');
+			markComplete('settings-2');
 		});
 
 		it('Can switch transaction speed', async () => {
-			if (checkComplete('s3')) {
+			if (checkComplete('settings-3')) {
 				return;
 			}
 
@@ -103,11 +103,11 @@ describe('Settings', () => {
 			await expect(
 				element(by.id('Value').withAncestor(by.id('TransactionSpeedSettings'))),
 			).toHaveText('Normal');
-			markComplete('s3');
+			markComplete('settings-3');
 		});
 
 		it('Can change hide and reset Suggestions', async () => {
-			if (checkComplete('s4')) {
+			if (checkComplete('settings-4')) {
 				return;
 			}
 
@@ -142,7 +142,7 @@ describe('Settings', () => {
 
 			// backupSeedPhrase should be visible again
 			await expect(element(by.id('Suggestion-backupSeedPhrase'))).toBeVisible();
-			markComplete('s4');
+			markComplete('settings-4');
 		});
 	});
 
@@ -156,7 +156,7 @@ describe('Settings', () => {
 			// - login with PIN
 			// - disable PIN
 			// - enter wrong PIN 10 times and reset the app
-			if (checkComplete('s5')) {
+			if (checkComplete('settings-5')) {
 				return;
 			}
 
@@ -270,13 +270,13 @@ describe('Settings', () => {
 			// await device.launchApp({ newInstance: true });
 			// await waitFor(element(by.id('Check1'))).toBeVisible();
 
-			markComplete('s5');
+			markComplete('settings-5');
 		});
 	});
 
 	describe('Backup or restore', () => {
 		it('Can show backup and validate it', async () => {
-			if (checkComplete('s6')) {
+			if (checkComplete('settings-6')) {
 				return;
 			}
 
@@ -306,13 +306,13 @@ describe('Settings', () => {
 			await element(by.id('OK')).tap();
 			await element(by.id('OK')).tap();
 			await sleep(1000);
-			markComplete('s6');
+			markComplete('settings-6');
 		});
 	});
 
 	describe('Advanced', () => {
 		it('Can switch address types', async () => {
-			if (checkComplete('s7')) {
+			if (checkComplete('settings-7')) {
 				return;
 			}
 			// wallet be in regtest mode by default
@@ -333,6 +333,7 @@ describe('Settings', () => {
 			await element(by.id('Settings')).tap();
 			await element(by.id('AdvancedSettings')).tap();
 			await element(by.id('AddressViewer')).tap();
+			await sleep(1000);
 			await waitFor(element(by.id('Address-0')))
 				.toBeVisible()
 				.withTimeout(30000);
@@ -357,6 +358,7 @@ describe('Settings', () => {
 
 			// check address in Address Viewer
 			await element(by.id('AddressViewer')).tap();
+			await sleep(1000);
 			await waitFor(element(by.id('Address-0')))
 				.toBeVisible()
 				.withTimeout(30000);
@@ -392,11 +394,11 @@ describe('Settings', () => {
 			await element(by.id('p2wpkh')).tap();
 			await element(by.id('NavigationClose')).tap();
 			await sleep(1000);
-			markComplete('s7');
+			markComplete('settings-7');
 		});
 
 		it('Can open LN settings screens', async () => {
-			if (checkComplete('s8')) {
+			if (checkComplete('settings-8')) {
 				return;
 			}
 
@@ -414,18 +416,20 @@ describe('Settings', () => {
 			await element(by.id('NavigationBack')).tap();
 
 			await element(by.id('LightningNodeInfo')).tap();
-			await expect(element(by.id('LDKNodeID'))).toBeVisible();
+			await waitFor(element(by.id('LDKNodeID')))
+				.toBeVisible()
+				.withTimeout(30000);
 			await element(by.id('NavigationBack')).tap();
 			await element(by.id('NavigationBack')).tap();
 			if (!__DEV__) {
 				await element(by.id('DevOptions')).multiTap(5); // disable dev mode
 			}
 			await sleep(1000);
-			markComplete('s8');
+			markComplete('settings-8');
 		});
 
 		it('Can enter wrong Electrum server and get an error message', async () => {
-			if (checkComplete('s9')) {
+			if (checkComplete('settings-9')) {
 				return;
 			}
 
@@ -448,13 +452,13 @@ describe('Settings', () => {
 			await element(by.id('ConnectToHost')).tap();
 			await waitFor(element(by.id('Connected'))).toBeVisible();
 			await sleep(1000);
-			markComplete('s9');
+			markComplete('settings-9');
 		});
 	});
 
 	describe('Dev Settings', () => {
 		it('Shows the crash error screen when triggering render error', async () => {
-			if (checkComplete('s10')) {
+			if (checkComplete('settings-10')) {
 				return;
 			}
 
@@ -467,7 +471,7 @@ describe('Settings', () => {
 
 			// Error screen will not be rendered in development mode
 			if (__DEV__) {
-				markComplete('s10');
+				markComplete('settings-10');
 				return;
 			}
 
@@ -476,7 +480,7 @@ describe('Settings', () => {
 			await expect(element(by.id('ErrorClose'))).toBeVisible();
 			await expect(element(by.id('ErrorReport'))).toBeVisible();
 
-			markComplete('s10');
+			markComplete('settings-10');
 		});
 	});
 });

@@ -50,7 +50,7 @@ const ProfileCard = ({
 
 	return (
 		<>
-			<View style={styles.row}>
+			<View style={styles.row} testID="ProfileCardName">
 				<View style={styles.text}>
 					{editable && !resolving ? (
 						<TextInputNoOutline
@@ -74,6 +74,7 @@ const ProfileCard = ({
 							blurOnSubmit
 							returnKeyType="done"
 							maxLength={MAX_NAME_LENGTH}
+							testID="NameInput"
 						/>
 					) : (
 						<View>
@@ -132,6 +133,7 @@ const ProfileCard = ({
 					blurOnSubmit
 					returnKeyType="done"
 					maxLength={MAX_BIO_LENGTH}
+					testID="BioInput"
 				/>
 			) : (
 				<Text color="gray1" style={[theme.fonts.regular, styles.bio]}>

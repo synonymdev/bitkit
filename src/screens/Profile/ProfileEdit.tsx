@@ -140,6 +140,7 @@ const ProfileEdit = ({
 						icon={
 							<PlusIcon color="brand" width={16} style={styles.addLinkButton} />
 						}
+						testID="ProfileAddLink"
 					/>
 					<Divider />
 					<Text02S color="gray1">{t('profile_public_warn')}</Text02S>
@@ -152,6 +153,7 @@ const ProfileEdit = ({
 							size="large"
 							disabled={!hasEdited || !isValid()}
 							onPress={save}
+							testID="ProfileSaveButton"
 						/>
 					</View>
 				</ScrollView>

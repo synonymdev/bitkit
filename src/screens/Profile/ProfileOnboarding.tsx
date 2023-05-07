@@ -168,6 +168,7 @@ const Layout = memo(
 								onNext?.();
 								setOnboardingProfileStep(nextStep);
 							}}
+							testID="OnboardingContinue"
 						/>
 					</View>
 				</DetectSwipe>
