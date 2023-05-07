@@ -59,7 +59,7 @@ describe('LN Channel Onboarding', () => {
 		// - can change channel duration
 		// - shows disabled receiving cards when spending amount is higher
 
-		it('Can buy a channel via the QuickSetup', async () => {
+		it('Can buy a channel via the QuickSetup and CustomSetup', async () => {
 			if (checkComplete('channels-1')) {
 				return;
 			}
@@ -136,14 +136,8 @@ describe('LN Channel Onboarding', () => {
 				element(by.id('Suggestion-lightningSettingUp')),
 			).toBeVisible();
 
-			markComplete('channels-1');
-		});
-
-		it('Can buy a channel via the CustomSetup', async () => {
-			if (checkComplete('channels-2')) {
-				return;
-			}
-
+			// CustomSetup
+			await launchAndWait();
 			await element(by.id('Suggestion-lightningSettingUp')).tap();
 			await element(by.id('NavigationAction')).tap();
 
@@ -159,9 +153,9 @@ describe('LN Channel Onboarding', () => {
 			// Receive Amount
 			await element(by.id('CustomSetupContinue')).tap();
 			await sleep(1000); // animation
-			const button = element(by.id('Barrel-medium'));
-			const buttonEnabled = await isButtonEnabled(button);
-			jestExpect(buttonEnabled).toBe(false);
+			const button2 = element(by.id('Barrel-medium'));
+			const buttonEnabled2 = await isButtonEnabled(button2);
+			jestExpect(buttonEnabled2).toBe(false);
 
 			// go to confirmation screen
 			await element(by.id('CustomSetupContinue')).tap();
@@ -189,7 +183,7 @@ describe('LN Channel Onboarding', () => {
 				element(by.id('Suggestion-lightningSettingUp')),
 			).toBeVisible();
 
-			markComplete('channels-2');
+			markComplete('channels-1');
 		});
 	});
 });
