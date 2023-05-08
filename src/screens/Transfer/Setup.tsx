@@ -74,7 +74,9 @@ const Setup = ({ navigation }: TransferScreenProps<'Setup'>): ReactElement => {
 
 	const diff = 0.01;
 	const btSpendingLimit = blocktankService.max_chan_spending;
-	const blocktankChannelLimit = btSpendingLimit / 2 - btSpendingLimit * diff;
+	const btSpendingLimitBalanced = Math.round(
+		btSpendingLimit / 2 - btSpendingLimit * diff,
+	);
 	const totalBalance = onchainBalance + lightningBalance;
 	const spendableBalance = Math.round(totalBalance * SPENDING_LIMIT_RATIO);
 	const savingsAmount = totalBalance - spendingAmount;
@@ -84,18 +86,18 @@ const Setup = ({ navigation }: TransferScreenProps<'Setup'>): ReactElement => {
 	const isButtonDisabled = spendingAmount === lightningBalance;
 
 	const spendingLimit = useMemo(() => {
-		const min = Math.min(spendableBalance, blocktankChannelLimit);
+		const min = Math.min(spendableBalance, btSpendingLimitBalanced);
 		return min < lightningBalance ? lightningBalance : min;
-	}, [spendableBalance, blocktankChannelLimit, lightningBalance]);
+	}, [spendableBalance, btSpendingLimitBalanced, lightningBalance]);
 
-	const blocktankChannelLimitUsd = useMemo((): string => {
+	const btSpendingLimitBalancedUsd = useMemo((): string => {
 		const { fiatWhole } = getFiatDisplayValues({
-			satoshis: blocktankChannelLimit,
+			satoshis: btSpendingLimitBalanced,
 			currency: 'USD',
 		});
 
 		return fiatWhole;
-	}, [blocktankChannelLimit]);
+	}, [btSpendingLimitBalanced]);
 
 	// set initial value
 	useEffect(() => {
@@ -243,14 +245,14 @@ const Setup = ({ navigation }: TransferScreenProps<'Setup'>): ReactElement => {
 								</View>
 							</AnimatedView>
 
-							{spendingAmount === Math.round(blocktankChannelLimit) && (
+							{spendingAmount === Math.round(btSpendingLimitBalanced) && (
 								<AnimatedView
 									style={styles.note}
 									entering={FadeIn}
 									exiting={FadeOut}>
 									<Text02S color="gray1">
 										{t('note_blocktank_limit', {
-											usdValue: blocktankChannelLimitUsd,
+											usdValue: btSpendingLimitBalancedUsd,
 										})}
 									</Text02S>
 								</AnimatedView>

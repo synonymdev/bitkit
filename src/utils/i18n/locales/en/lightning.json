@@ -16,7 +16,7 @@
 	"savings": "Savings",
 	"spending_label": "Spending balance",
 	"receiving_label": "Receiving capacity",
-	"note_blocktank_limit": "The amount you can transfer to your spending balance is currently limited to $999.",
+	"note_blocktank_limit": "The amount you can transfer to your spending balance is currently limited to ${{usdValue}}.",
 	"note_reserve_limit": "The amount you can transfer to your spending balance is limited to 80%. You need to keep funds in reserve to move this bitcoin back to savings.",
 	"quick_confirm_header": "Please\nConfirm.",
 	"quick_confirm_cost": "It costs <white>{{amount}}</white> to connect you to Lightning and set up your spending balance.",

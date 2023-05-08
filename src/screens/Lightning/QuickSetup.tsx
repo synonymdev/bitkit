@@ -80,7 +80,9 @@ const QuickSetup = ({
 
 	const diff = 0.01;
 	const btSpendingLimit = blocktankService.max_chan_spending;
-	const blocktankChannelLimit = btSpendingLimit / 2 - btSpendingLimit * diff;
+	const btSpendingLimitBalanced = Math.round(
+		btSpendingLimit / 2 - btSpendingLimit * diff,
+	);
 	const spendableBalance = Math.round(onchainBalance * SPENDING_LIMIT_RATIO);
 	const savingsAmount = onchainBalance - spendingAmount;
 	const savingsPercentage = Math.round((savingsAmount / onchainBalance) * 100);
@@ -89,17 +91,17 @@ const QuickSetup = ({
 	);
 
 	const spendingLimit = useMemo(() => {
-		return Math.min(spendableBalance, blocktankChannelLimit);
-	}, [spendableBalance, blocktankChannelLimit]);
+		return Math.min(spendableBalance, btSpendingLimitBalanced);
+	}, [spendableBalance, btSpendingLimitBalanced]);
 
-	const blocktankChannelLimitUsd = useMemo((): string => {
+	const btSpendingLimitBalancedUsd = useMemo((): string => {
 		const { fiatWhole } = getFiatDisplayValues({
-			satoshis: blocktankChannelLimit,
+			satoshis: btSpendingLimitBalanced,
 			currency: 'USD',
 		});
 
 		return fiatWhole;
-	}, [blocktankChannelLimit]);
+	}, [btSpendingLimitBalanced]);
 
 	// BTC -> satoshi -> fiat
 	const nextUnit = useMemo(() => {
@@ -222,7 +224,7 @@ const QuickSetup = ({
 							</View>
 						</AnimatedView>
 
-						{spendingAmount === Math.round(blocktankChannelLimit) && (
+						{spendingAmount === Math.round(btSpendingLimitBalanced) && (
 							<AnimatedView
 								style={styles.note}
 								entering={FadeIn}
@@ -230,7 +232,7 @@ const QuickSetup = ({
 								testID="QuickSetupBlocktankNote">
 								<Text02S color="gray1">
 									{t('note_blocktank_limit', {
-										usdValue: blocktankChannelLimitUsd,
+										usdValue: btSpendingLimitBalancedUsd,
 									})}
 								</Text02S>
 							</AnimatedView>
