@@ -28,7 +28,7 @@ import {
 } from '../../store/actions/blocktank';
 import { useSelector } from 'react-redux';
 import { SPENDING_LIMIT_RATIO } from '../../utils/wallet/constants';
-import { convertToSats } from '../../utils/exchange-rate';
+import { convertToSats, getFiatDisplayValues } from '../../utils/exchange-rate';
 import {
 	resetOnChainTransaction,
 	setupOnChainTransaction,
@@ -72,8 +72,10 @@ const Setup = ({ navigation }: TransferScreenProps<'Setup'>): ReactElement => {
 		return convertToSats(textFieldValue, unit);
 	}, [textFieldValue, unit]);
 
+	const diff = 0.01;
+	const btSpendingLimit = blocktankService.max_chan_spending;
+	const blocktankChannelLimit = btSpendingLimit / 2 - btSpendingLimit * diff;
 	const totalBalance = onchainBalance + lightningBalance;
-	const blocktankSpendingLimit = blocktankService.max_chan_spending;
 	const spendableBalance = Math.round(totalBalance * SPENDING_LIMIT_RATIO);
 	const savingsAmount = totalBalance - spendingAmount;
 	const spendingPercentage = Math.round((spendingAmount / totalBalance) * 100);
@@ -82,9 +84,18 @@ const Setup = ({ navigation }: TransferScreenProps<'Setup'>): ReactElement => {
 	const isButtonDisabled = spendingAmount === lightningBalance;
 
 	const spendingLimit = useMemo(() => {
-		const min = Math.min(spendableBalance, blocktankSpendingLimit);
+		const min = Math.min(spendableBalance, blocktankChannelLimit);
 		return min < lightningBalance ? lightningBalance : min;
-	}, [spendableBalance, blocktankSpendingLimit, lightningBalance]);
+	}, [spendableBalance, blocktankChannelLimit, lightningBalance]);
+
+	const blocktankChannelLimitUsd = useMemo((): string => {
+		const { fiatWhole } = getFiatDisplayValues({
+			satoshis: blocktankChannelLimit,
+			currency: 'USD',
+		});
+
+		return fiatWhole;
+	}, [blocktankChannelLimit]);
 
 	// set initial value
 	useEffect(() => {
@@ -144,10 +155,11 @@ const Setup = ({ navigation }: TransferScreenProps<'Setup'>): ReactElement => {
 		// buy an additional channel from Blocktank with the difference
 		setLoading(true);
 		const remoteBalance = spendingAmount - lightningBalance;
-		const localBalance =
-			Math.round(remoteBalance * 1.1) > blocktankService.min_channel_size
-				? Math.round(remoteBalance * 1.1)
-				: blocktankService.min_channel_size;
+		// Ensure local balance is bigger than remote balance
+		const localBalance = Math.max(
+			Math.round(remoteBalance + remoteBalance * diff),
+			blocktankService.min_channel_size,
+		);
 
 		const purchaseResponse = await startChannelPurchase({
 			selectedNetwork,
@@ -231,12 +243,16 @@ const Setup = ({ navigation }: TransferScreenProps<'Setup'>): ReactElement => {
 								</View>
 							</AnimatedView>
 
-							{spendingAmount === Math.round(blocktankSpendingLimit) && (
+							{spendingAmount === Math.round(blocktankChannelLimit) && (
 								<AnimatedView
 									style={styles.note}
 									entering={FadeIn}
 									exiting={FadeOut}>
-									<Text02S color="gray1">{t('note_blocktank_limit')}</Text02S>
+									<Text02S color="gray1">
+										{t('note_blocktank_limit', {
+											usdValue: blocktankChannelLimitUsd,
+										})}
+									</Text02S>
 								</AnimatedView>
 							)}
 

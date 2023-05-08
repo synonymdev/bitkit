@@ -190,24 +190,40 @@ const CustomSetup = ({
 					satoshis: satoshisCapped,
 				};
 			} else {
-				const convertedAmount = convertCurrency({
+				const amount = convertCurrency({
 					amount: blocktankService.max_chan_receiving_usd,
 					from: 'USD',
 					to: selectedCurrency,
 				});
-				const satoshis = convertToSats(
-					convertedAmount.fiatValue,
+				const amountSatoshis = convertToSats(
+					amount.fiatValue,
 					EBalanceUnit.fiat,
 				);
-				// Ensure the conversion still puts us below the max_chan_receiving
-				const satoshisCapped = Math.min(
-					satoshis,
+				// subtract a buffer to ensure we don't land right on the max channel size
+				// also avoids exchange rate deltas with Blocktank
+				const buffer = convertCurrency({
+					amount: 10,
+					from: 'USD',
+					to: selectedCurrency,
+				});
+				const bufferSatoshis = convertToSats(
+					buffer.fiatValue,
+					EBalanceUnit.fiat,
+				);
+
+				// Ensure the amount is below the max channel size
+				const receiveLimit = amountSatoshis - spendingAmount! - bufferSatoshis;
+				let satoshisCapped = Math.min(amountSatoshis, receiveLimit);
+
+				// Ensure the amount is below max_chan_receiving
+				satoshisCapped = Math.min(
+					satoshisCapped,
 					blocktankService.max_chan_receiving,
 				);
 
 				return {
 					...p,
-					fiatAmount: convertedAmount.fiatValue,
+					fiatAmount: amount.fiatValue,
 					satoshis: satoshisCapped,
 				};
 			}
@@ -218,6 +234,7 @@ const CustomSetup = ({
 		blocktankService.max_chan_receiving,
 		blocktankService.max_chan_receiving_usd,
 		selectedCurrency,
+		spendingAmount,
 	]);
 
 	// set initial spending/receiving amount
@@ -247,7 +264,7 @@ const CustomSetup = ({
 					? blocktankService.min_channel_size
 					: 0;
 
-			const result = getNumberPadText(amount, unit, true);
+			const result = getNumberPadText(amount, unit);
 			setTextFieldValue(result);
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -272,7 +289,7 @@ const CustomSetup = ({
 	// fetch approximate channel open cost on ReceiveAmount screen
 	useEffect(() => {
 		if (!spending && receivingPackages.length) {
-			const defaultPackage = receivingPackages.find((p) => p.id === 'medium')!;
+			const defaultPackage = receivingPackages.find((p) => p.id === 'big')!;
 			const getChannelOpenCost = async (): Promise<void> => {
 				const response = await startChannelPurchase({
 					productId,
