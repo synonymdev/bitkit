@@ -19,6 +19,11 @@ export const ignoreBackupTimestampSelector = createSelector(
 	(user): number => user.ignoreBackupTimestamp,
 );
 
+export const lightningSettingUpStepSelector = createSelector(
+	[userState],
+	(user): number => user.lightningSettingUpStep,
+);
+
 export const requiresRemoteRestoreSelector = createSelector(
 	[userState],
 	(user): boolean => user.requiresRemoteRestore,

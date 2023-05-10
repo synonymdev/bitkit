@@ -38,9 +38,8 @@ const Availability = ({
 			selectedWallet,
 		});
 
-		removeTodo('transfer');
-
 		if (closeResponse.isOk() && closeResponse.value.length === 0) {
+			removeTodo('transferClosingChannel');
 			addTodo('transferToSavings');
 			await refreshWallet();
 			navigation.navigate('Success', { type: 'savings' });

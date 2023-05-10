@@ -68,11 +68,10 @@ import {
 import { closeBottomSheet, showBottomSheet } from '../../store/actions/ui';
 import { updateSlashPayConfig } from '../slashtags';
 import { sdk } from '../../components/SlashtagsProvider';
-import { showSuccessNotification } from '../notifications';
 import { TLightningNodeVersion } from '../../store/types/lightning';
 import { getBlocktankInfo, isGeoBlocked } from '../blocktank';
-import i18n from '../i18n';
 import { updateOnchainFeeEstimates } from '../../store/actions/fees';
+import { addTodo, removeTodo } from '../../store/actions/todos';
 
 let LDKIsStayingSynced = false;
 
@@ -84,6 +83,8 @@ export const DEFAULT_LIGHTNING_PEERS: IWalletItem<string[]> = {
 
 let paymentSubscription: EmitterSubscription | undefined;
 let onChannelSubscription: EmitterSubscription | undefined;
+let onSpendableOutputsSubscription: EmitterSubscription | undefined;
+
 /**
  * Wipes LDK data from storage
  * @returns {Promise<Result<string>>}
@@ -135,7 +136,7 @@ export const setupLdk = async ({
 	selectedWallet?: TWalletName;
 	selectedNetwork?: TAvailableNetworks;
 	shouldRefreshLdk?: boolean;
-}): Promise<Result<string>> => {
+} = {}): Promise<Result<string>> => {
 	try {
 		if (!selectedWallet) {
 			selectedWallet = getSelectedWallet();
@@ -219,7 +220,7 @@ export const setupLdk = async ({
 		}
 
 		await Promise.all([
-			await updateLightningNodeId({
+			updateLightningNodeId({
 				nodeId: nodeIdRes.value,
 				selectedNetwork,
 				selectedWallet,
@@ -339,16 +340,17 @@ export const subscribeToLightningPayments = ({
 	selectedWallet?: TWalletName;
 	selectedNetwork?: TAvailableNetworks;
 }): void => {
-	if (!selectedWallet) {
-		selectedWallet = getSelectedWallet();
-	}
-	if (!selectedNetwork) {
-		selectedNetwork = getSelectedNetwork();
-	}
 	if (!paymentSubscription) {
 		paymentSubscription = ldk.onEvent(
 			EEventTypes.channel_manager_payment_claimed,
 			(res: TChannelManagerClaim) => {
+				if (!selectedWallet) {
+					selectedWallet = getSelectedWallet();
+				}
+				if (!selectedNetwork) {
+					selectedNetwork = getSelectedNetwork();
+				}
+
 				handleLightningPaymentSubscription({
 					payment: res,
 					selectedNetwork,
@@ -361,12 +363,35 @@ export const subscribeToLightningPayments = ({
 		onChannelSubscription = ldk.onEvent(
 			EEventTypes.new_channel,
 			(_res: TChannelUpdate) => {
-				// TODO: channel not open yet, change toast text or remove
-				showSuccessNotification({
-					title: i18n.t('lightning:channel_opened_title'),
-					message: i18n.t('lightning:channel_opened_msg'),
-				});
+				// New Channel will open in 1 block confirmation
+
+				if (!selectedWallet) {
+					selectedWallet = getSelectedWallet();
+				}
+				if (!selectedNetwork) {
+					selectedNetwork = getSelectedNetwork();
+				}
+
+				const currentNode = getLightningStore().nodes[selectedWallet];
+				const openChannels = currentNode.openChannelIds[selectedNetwork];
+
+				// only add this todo for the first channel
+				if (!openChannels.length) {
+					addTodo('lightningConnecting');
+				}
+
+				removeTodo('lightningSettingUp');
 				refreshLdk({ selectedWallet, selectedNetwork }).then();
+			},
+		);
+	}
+	if (!onSpendableOutputsSubscription) {
+		onSpendableOutputsSubscription = ldk.onEvent(
+			EEventTypes.channel_manager_spendable_outputs,
+			() => {
+				// Channel closed & all funds are spendable
+				removeTodo('transferToSavings');
+				addTodo('lightning');
 			},
 		);
 	}
@@ -375,6 +400,7 @@ export const subscribeToLightningPayments = ({
 export const unsubscribeFromLightningSubscriptions = (): void => {
 	paymentSubscription?.remove();
 	onChannelSubscription?.remove();
+	onSpendableOutputsSubscription?.remove();
 };
 
 export const resetLdk = async (): Promise<Result<string>> => {

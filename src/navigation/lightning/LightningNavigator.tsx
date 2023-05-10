@@ -8,9 +8,11 @@ import {
 import Introduction from '../../screens/Lightning/Introduction';
 import CustomSetup from '../../screens/Lightning/CustomSetup';
 import CustomConfirm from '../../screens/Lightning/CustomConfirm';
-import Result from '../../screens/Lightning/Result';
 import QuickSetup from '../../screens/Lightning/QuickSetup';
 import QuickConfirm from '../../screens/Lightning/QuickConfirm';
+import SettingUp from '../../screens/Lightning/SettingUp';
+import Success from '../../screens/Lightning/Success';
+import Timeout from '../../screens/Lightning/Timeout';
 import { __DISABLE_ANIMATION__ } from '../../constants/env';
 
 export type LightningNavigationProp =
@@ -32,7 +34,9 @@ export type LightningStackParamList = {
 		receivingAmount: number;
 		orderId: string;
 	};
-	Result: undefined;
+	SettingUp: undefined;
+	Success: undefined;
+	Timeout: undefined;
 };
 
 const Stack = createNativeStackNavigator<LightningStackParamList>();
@@ -51,7 +55,9 @@ const LightningStack = (): ReactElement => {
 			<Stack.Screen name="QuickConfirm" component={QuickConfirm} />
 			<Stack.Screen name="CustomSetup" component={CustomSetup} />
 			<Stack.Screen name="CustomConfirm" component={CustomConfirm} />
-			<Stack.Screen name="Result" component={Result} />
+			<Stack.Screen name="SettingUp" component={SettingUp} />
+			<Stack.Screen name="Success" component={Success} />
+			<Stack.Screen name="Timeout" component={Timeout} />
 		</Stack.Navigator>
 	);
 };

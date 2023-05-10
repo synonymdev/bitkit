@@ -17,7 +17,7 @@ const AmountToggle = ({
 	space = 0, // space between the rows
 	reverse = false,
 	disable = false,
-	decimalLength = 'short',
+	decimalLength = 'long',
 	children,
 	style,
 	onPress,

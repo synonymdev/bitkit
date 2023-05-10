@@ -2341,7 +2341,14 @@ export const getFeeEstimates = async (
 		}
 
 		if (__DEV__ && selectedNetwork === EAvailableNetworks.bitcoinRegtest) {
-			return defaultFeesShape.onchain;
+			// use the same fee rates on regtest as Blocktank LND
+			return {
+				fast: 60,
+				normal: 50,
+				slow: 40,
+				minimum: 30,
+				timestamp: Date.now(),
+			};
 		}
 
 		const urlModifier = selectedNetwork === 'bitcoin' ? '' : 'testnet/';

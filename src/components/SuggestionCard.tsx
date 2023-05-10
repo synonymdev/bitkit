@@ -1,7 +1,6 @@
 import React, { memo, ReactElement, useMemo } from 'react';
 import { LayoutAnimation, StyleSheet, Image, View } from 'react-native';
 import { Canvas, RadialGradient, Rect, vec } from '@shopify/react-native-skia';
-import { useTranslation } from 'react-i18next';
 
 import { Pressable } from '../styles/components';
 import { Caption13M, Text01M } from '../styles/text';
@@ -27,6 +26,8 @@ const InnerShadow = memo(({ color }: { color: string }): ReactElement => {
 });
 
 type CardProps = ITodo & {
+	title: string;
+	description: string;
 	onPress: (id: TTodoType) => void;
 	onClose: (id: TTodoType) => void;
 };
@@ -35,11 +36,12 @@ const SuggestionCard = ({
 	id,
 	color,
 	image,
+	title,
+	description,
 	dismissable,
 	onPress,
 	onClose,
 }: CardProps): ReactElement => {
-	const { t } = useTranslation('cards');
 	LayoutAnimation.easeInEaseOut();
 
 	const colors = useColors();
@@ -72,8 +74,10 @@ const SuggestionCard = ({
 					<Image style={styles.image} resizeMode="contain" source={image} />
 				</View>
 				<View>
-					<Text01M>{t(`${id}.title`)}</Text01M>
-					<Caption13M color="lightGray">{t(`${id}.description`)}</Caption13M>
+					<Text01M>{title}</Text01M>
+					<Caption13M color={dismissable ? 'lightGray' : 'purple'}>
+						{description}
+					</Caption13M>
 				</View>
 			</Pressable>
 

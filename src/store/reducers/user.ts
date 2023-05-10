@@ -31,6 +31,13 @@ const user = (state: IUser = defaultUserShape, action): IUser => {
 			};
 		}
 
+		case actions.SET_LIGHTNING_SETTING_UP_STEP: {
+			return {
+				...state,
+				lightningSettingUpStep: action.payload,
+			};
+		}
+
 		case actions.START_COOP_CLOSE_TIMER:
 			return {
 				...state,

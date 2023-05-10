@@ -113,7 +113,6 @@ const NewTxPrompt = (): ReactElement => {
 						sats={activityItem.value}
 						reverse={true}
 						space={12}
-						decimalLength="long"
 						testID="NewTxPrompt"
 						onPress={handlePress}
 					/>

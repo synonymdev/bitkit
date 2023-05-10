@@ -6,7 +6,7 @@ import { err, ok, Result } from '@synonymdev/result';
 /**
  * Zips up the newest LDK logs and returns base64 of zip file
  * @param {number} limit
- * @param {allAccounts} boolean
+ * @param {boolean} allAccounts
  */
 export const zipLogs = async ({
 	limit = 10,

@@ -33,6 +33,14 @@ export const ignoreHighBalance = (final = false): Result<string> => {
 	return ok('');
 };
 
+export const setLightningSettingUpStep = (step: number): Result<string> => {
+	dispatch({
+		type: actions.SET_LIGHTNING_SETTING_UP_STEP,
+		payload: step,
+	});
+	return ok('');
+};
+
 export const acceptBetaRisk = (): Result<string> => {
 	dispatch({ type: actions.ACCEPT_BETA_RISK });
 	return ok('');

@@ -9,11 +9,18 @@
 	},
 	"lightningSettingUp": {
 		"title": "Setting Up",
-		"description": "Ready in ±20m"
+		"description0": "Awaiting Payment",
+		"description1": "Paid",
+		"description2": "Queued",
+		"description3": "Opening"
 	},
-	"transfer": {
-		"title": "Transfer",
-		"description": "Spend or save"
+	"lightningConnecting": {
+		"title": "Connecting",
+		"description": "Ready in ±10m"
+	},
+	"lightningReady": {
+		"title": "Ready",
+		"description": "Connected!"
 	},
 	"transferToSpending": {
 		"title": "Transferring",

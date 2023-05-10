@@ -88,7 +88,7 @@ const BitcoinBreakdown = (): ReactElement => {
 			/>
 			<View color="transparent" style={styles.transferRow}>
 				<View color="gray4" style={styles.line} />
-				<TouchableOpacity onPress={onRebalancePress}>
+				<TouchableOpacity testID="TransferButton" onPress={onRebalancePress}>
 					<View style={styles.transferButton} color="white08">
 						<TransferIcon height={13} color="white" />
 					</View>

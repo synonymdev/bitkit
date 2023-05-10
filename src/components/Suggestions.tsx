@@ -6,6 +6,7 @@ import React, {
 	useCallback,
 } from 'react';
 import { StyleSheet, useWindowDimensions } from 'react-native';
+import { useSelector } from 'react-redux';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import Carousel from 'react-native-reanimated-carousel';
 import { useTranslation } from 'react-i18next';
@@ -17,11 +18,11 @@ import { allTodos } from '../store/shapes/todos';
 import { TTodoType } from '../store/types/todos';
 import { removeTodo } from '../store/actions/todos';
 import { showBottomSheet } from '../store/actions/ui';
-import { useAppSelector } from '../hooks/redux';
 import { useBalance } from '../hooks/wallet';
 import Dialog from './Dialog';
 import type { RootNavigationProp } from '../navigation/types';
 import { todosSelector } from '../store/reselect/todos';
+import { lightningSettingUpStepSelector } from '../store/reselect/user';
 import {
 	pinSelector,
 	showSuggestionsSelector,
@@ -34,9 +35,10 @@ const Suggestions = (): ReactElement => {
 	const [index, setIndex] = useState(0);
 	const [showDialog, setShowDialog] = useState(false);
 	const { satoshis: balance } = useBalance({ onchain: true, lightning: true });
-	const todos = useAppSelector(todosSelector);
-	const pinTodoDone = useAppSelector(pinSelector);
-	const showSuggestions = useAppSelector(showSuggestionsSelector);
+	const todos = useSelector(todosSelector);
+	const pinTodoDone = useSelector(pinSelector);
+	const showSuggestions = useSelector(showSuggestionsSelector);
+	const lightningSettingUpStep = useSelector(lightningSettingUpStepSelector);
 
 	const carouselStyle = useMemo(() => ({ width }), [width]);
 	const panGestureHandlerProps = useMemo(
@@ -62,11 +64,7 @@ const Suggestions = (): ReactElement => {
 			}
 
 			if (id === 'lightningSettingUp') {
-				navigation.navigate('Settings', { screen: 'Channels' });
-			}
-
-			if (id === 'transfer') {
-				navigation.navigate('Transfer', { screen: 'Setup' });
+				navigation.navigate('LightningRoot', { screen: 'SettingUp' });
 			}
 
 			if (id === 'pin') {
@@ -111,17 +109,30 @@ const Suggestions = (): ReactElement => {
 					width={170}
 					panGestureHandlerProps={panGestureHandlerProps}
 					onSnapToItem={setIndex}
-					renderItem={({ item }): ReactElement => (
-						<SuggestionCard
-							id={item.id}
-							key={item.id}
-							color={item.color}
-							image={item.image}
-							dismissable={item.dismissable}
-							onPress={handleOnPress}
-							onClose={removeTodo}
-						/>
-					)}
+					renderItem={({ item }): ReactElement => {
+						const title = t(`${item.id}.title`);
+						let description = t(`${item.id}.description`);
+
+						if (item.id === 'lightningSettingUp') {
+							description = t(
+								`${item.id}.description${lightningSettingUpStep}`,
+							);
+						}
+
+						return (
+							<SuggestionCard
+								id={item.id}
+								key={item.id}
+								color={item.color}
+								image={item.image}
+								title={title}
+								description={description}
+								dismissable={item.dismissable}
+								onPress={handleOnPress}
+								onClose={removeTodo}
+							/>
+						);
+					}}
 				/>
 			</View>
 			<Dialog

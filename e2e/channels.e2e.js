@@ -131,15 +131,16 @@ describe('LN Channel Onboarding', () => {
 			// Swipe to confirm (set x offset to avoid navigating back)
 			await element(by.id('GRAB')).swipe('right', 'slow', NaN, 0.8);
 			await sleep(1000); // animation
-			await element(by.id('LightningResultConfirm')).tap();
-			await expect(
-				element(by.id('Suggestion-lightningSettingUp')),
-			).toBeVisible();
+			await expect(element(by.id('LightningSettingUp'))).toBeVisible();
 
 			// CustomSetup
 			await launchAndWait();
-			await element(by.id('Suggestion-lightningSettingUp')).tap();
-			await element(by.id('NavigationAction')).tap();
+			await expect(
+				element(by.id('Suggestion-lightningSettingUp')),
+			).toBeVisible();
+			await element(by.id('BitcoinAsset')).tap();
+			await element(by.id('TransferButton')).tap();
+			await element(by.id('CustomSetupButton')).tap();
 
 			// NumberPad
 			await element(by.id('CustomSetupCustomAmount')).tap();
@@ -177,11 +178,7 @@ describe('LN Channel Onboarding', () => {
 			// Swipe to confirm (set x offset to avoid navigating back)
 			await element(by.id('GRAB')).swipe('right', 'slow', NaN, 0.8);
 			await sleep(1000); // animation
-			await element(by.id('LightningResultConfirm')).tap();
-			await element(by.id('NavigationBack')).tap();
-			await expect(
-				element(by.id('Suggestion-lightningSettingUp')),
-			).toBeVisible();
+			await expect(element(by.id('LightningSettingUp'))).toBeVisible();
 
 			markComplete('channels-1');
 		});

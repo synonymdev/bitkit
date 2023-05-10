@@ -11,10 +11,6 @@
 		"title": "Настройка",
 		"description": "Готово ±20м"
 	},
-	"transfer": {
-		"title": "Перенести",
-		"description": "Spend or save"
-	},
 	"transferToSpending": {
 		"title": "Перенос",
 		"description": "Готово ±20m"

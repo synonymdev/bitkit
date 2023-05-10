@@ -2,23 +2,14 @@ import { err, ok, Result } from '@synonymdev/result';
 import {
 	IBuyChannelRequest,
 	IBuyChannelResponse,
-	IFinalizeChannelResponse,
 	IGetOrderResponse,
 } from '@synonymdev/blocktank-client';
 
 import actions from './actions';
-import {
-	resetOnChainTransaction,
-	setupOnChainTransaction,
-	updateBitcoinTransaction,
-} from './wallet';
+import { resetOnChainTransaction, updateBitcoinTransaction } from './wallet';
+import { setLightningSettingUpStep } from './user';
 import { addTodo, removeTodo } from './todos';
-import {
-	getBlocktankStore,
-	getDispatch,
-	getFeesStore,
-	getTodosStore,
-} from '../helpers';
+import { getBlocktankStore, getDispatch, getFeesStore } from '../helpers';
 import * as blocktank from '../../utils/blocktank';
 import {
 	getBalance,
@@ -26,25 +17,27 @@ import {
 	getSelectedWallet,
 	refreshWallet,
 } from '../../utils/wallet';
-import { EAvailableNetworks, TAvailableNetworks } from '../../utils/networks';
-import { sleep } from '../../utils/helpers';
+import { TAvailableNetworks } from '../../utils/networks';
 import {
 	broadcastTransaction,
 	createTransaction,
 	getOnchainTransactionData,
 	updateFee,
 } from '../../utils/wallet/transactions';
-import { getNodeId } from '../../utils/lightning';
 import {
 	finalizeChannel,
 	getBlocktankInfo,
 	getOrder,
 	watchOrder,
 } from '../../utils/blocktank';
-import { showErrorNotification } from '../../utils/notifications';
+import {
+	showErrorNotification,
+	showSuccessNotification,
+} from '../../utils/notifications';
 import { getDisplayValues } from '../../utils/exchange-rate';
-import { TWalletName } from '../types/wallet';
 import i18n from '../../utils/i18n';
+import { setupLdk } from '../../utils/lightning';
+import { TWalletName } from '../types/wallet';
 import { IBlocktank } from '../types/blocktank';
 
 const dispatch = getDispatch();
@@ -90,92 +83,54 @@ export const refreshOrdersList = async (): Promise<Result<string>> => {
 /**
  * Retrieves, updates and attempts to finalize any pending channel open for a given orderId.
  * @param {string} orderId
- * @param {IGetOrderResponse} [orderResponse]
  * @returns {Promise<Result<IGetOrderResponse>>}
  */
 export const refreshOrder = async (
 	orderId: string,
-	orderResponse?: IGetOrderResponse,
 ): Promise<Result<IGetOrderResponse>> => {
 	try {
 		const currentOrders = getBlocktankStore().orders;
-		const filteredOrders = currentOrders.filter((o) => o._id !== orderId);
+		const currentOrder = currentOrders.find((o) => o._id === orderId);
+		const paidOrders = getBlocktankStore().paidOrders;
+		const isPaidOrder = Object.keys(paidOrders).includes(orderId);
 
-		if (!orderResponse) {
-			const getOrderRes = await blocktank.getOrder(orderId);
-			if (getOrderRes.isErr()) {
-				return err(getOrderRes.error.message);
-			}
-			orderResponse = getOrderRes.value;
+		const getOrderResult = await blocktank.getOrder(orderId);
+		if (getOrderResult.isErr()) {
+			return err(getOrderResult.error.message);
+		}
+		let order = getOrderResult.value;
 
-			// Attempt to finalize the channel open.
-			if (orderResponse.state === 100) {
-				const finalizeRes = await finalizeChannel(orderId);
-				if (finalizeRes.isOk()) {
-					removeTodo('lightning');
-					const getUpdatedOrderRes = await blocktank.getOrder(orderId);
-					if (getUpdatedOrderRes.isErr()) {
-						return err(getUpdatedOrderRes.error.message);
-					}
-					orderResponse = getUpdatedOrderRes.value;
+		// Attempt to finalize the channel open.
+		if (order.state === 100) {
+			setLightningSettingUpStep(1);
+			const finalizeRes = await finalizeChannel(orderId);
+			if (finalizeRes.isOk()) {
+				removeTodo('lightning');
+				const getUpdatedOrderResult = await blocktank.getOrder(orderId);
+				if (getUpdatedOrderResult.isErr()) {
+					return err(getUpdatedOrderResult.error.message);
 				}
-			}
-
-			const allOrders = [...filteredOrders, orderResponse];
-			const orderStates = allOrders.map((o) => o.state);
-			const todos = getTodosStore();
-			const isCloseInProgress = todos.some((todo) => {
-				return ['transferToSavings', 'transferClosingChannel'].includes(todo);
-			});
-
-			// check if all orders have any of the states
-			const allOrdersHaveState = (states: number[]): boolean => {
-				return orderStates.every((orderState) => states.includes(orderState));
-			};
-
-			// check if one of the orders has any of the states
-			const oneOrderHasState = (states: number[]): boolean => {
-				return orderStates.some((orderState) => states.includes(orderState));
-			};
-
-			// update suggestions cards
-			// blocktank-client code reference: https://github.com/synonymdev/blocktank-client/blob/f8a20c35a4953435cecf8f718ee555e311e1db9b/src/services/client.ts#L15
-			// all orders finalized/failed
-			if (allOrdersHaveState([150, 350, 400, 410, 450, 500])) {
-				removeTodo('lightningSettingUp');
-				removeTodo('transferToSpending');
-
-				// at least one channel open while others are finalized
-				// addtionally check for ongoing closes (1 block lag for BT to change state)
-				if (oneOrderHasState([500]) && !isCloseInProgress) {
-					addTodo('transfer');
-				}
-			}
-
-			// all orders closed/failed
-			if (allOrdersHaveState([150, 400, 410, 450])) {
-				removeTodo('transferToSpending');
-				removeTodo('transferToSavings');
-				removeTodo('transferClosingChannel');
-				removeTodo('transfer');
-				addTodo('lightning');
+				order = getUpdatedOrderResult.value;
 			}
 		}
 
-		const storedOrder = currentOrders.find(
-			(o) =>
-				o._id === orderId || (orderResponse && orderResponse._id === o._id),
-		);
-		if (storedOrder?.state === orderResponse.state) {
-			return ok(orderResponse);
+		// Order state has not changed
+		if (currentOrder?.state === order.state) {
+			return ok(order);
 		}
 
+		// Update stored order
 		dispatch({
 			type: actions.UPDATE_BLOCKTANK_ORDER,
-			payload: orderResponse,
+			payload: order,
 		});
 
-		return ok(orderResponse);
+		// Handle order state changes for paid orders
+		if (currentOrder && currentOrder.state !== order.state && isPaidOrder) {
+			handleOrderStateChange(order);
+		}
+
+		return ok(order);
 	} catch (error) {
 		return err(error);
 	}
@@ -187,7 +142,7 @@ export const refreshOrder = async (
  */
 export const refreshBlocktankInfo = async (): Promise<Result<string>> => {
 	const infoResponse = await getBlocktankInfo();
-	if (infoResponse?.node_info) {
+	if (infoResponse.node_info) {
 		dispatch({
 			type: actions.UPDATE_BLOCKTANK_INFO,
 			payload: infoResponse,
@@ -222,142 +177,6 @@ export const buyChannel = async (
 	} catch (error) {
 		return err(error);
 	}
-};
-
-/*
- * This resets the activity store to defaultActivityShape
- * @returns {Result<string>}
- */
-export const resetBlocktankStore = (): Result<string> => {
-	dispatch({
-		type: actions.RESET_BLOCKTANK_STORE,
-	});
-	return ok('');
-};
-
-// TODO: This is for DEV testing purposes on regtest only. Remove upon release.
-/**
- * Attempts to auto-buy a channel from Blocktank while on regtest.
- * @param {TAvailableNetworks} [selectedNetwork]
- * @param {TWalletName} [selectedWallet]
- * @param {number} [inboundLiquidity]
- * @param {number} [outboundLiquidity]
- * @param {number} [channelExpiry]
- * @returns {Promise<Result<IFinalizeChannelResponse>>}
- */
-export const autoBuyChannel = async ({
-	selectedNetwork,
-	selectedWallet,
-	inboundLiquidity = 100000, //Inbound liquidity. How much will be on Blocktank.
-	outboundLiquidity = 0, //Outbound liquidity. How much will get pushed to the app
-	channelExpiry = 12,
-}: {
-	selectedNetwork?: TAvailableNetworks;
-	selectedWallet?: TWalletName;
-	inboundLiquidity?: number;
-	outboundLiquidity?: number;
-	channelExpiry?: number;
-}): Promise<Result<IFinalizeChannelResponse>> => {
-	if (!selectedNetwork) {
-		selectedNetwork = getSelectedNetwork();
-	}
-	if (!selectedWallet) {
-		selectedWallet = getSelectedWallet();
-	}
-	if (selectedNetwork !== EAvailableNetworks.bitcoinRegtest) {
-		return err('This method is only allowed on regtest.');
-	}
-	const nodeId = await getNodeId();
-	console.log('Nodeid', nodeId);
-	if (nodeId.isErr()) {
-		return err(nodeId.error.message);
-	}
-
-	const { satoshis } = getBalance({
-		onchain: true,
-		selectedNetwork,
-		selectedWallet,
-	});
-	if (!satoshis || satoshis < 2000) {
-		return err('Please send at least 2000 satoshis to your wallet.');
-	}
-	const product_id = getBlocktankStore().serviceList[0].product_id;
-	console.log('Product ID:', product_id);
-	/*const remote_balance =
-		getStore().blocktank.serviceList[0].min_channel_size * 4;
-	const local_balance =
-		getStore().blocktank.serviceList[0].min_channel_size * 4;*/
-	const buyChannelData = {
-		product_id,
-		remote_balance: outboundLiquidity,
-		local_balance: inboundLiquidity,
-		channel_expiry: channelExpiry,
-	};
-	const buyChannelResponse = await buyChannel(buyChannelData);
-	console.log('buyChannelResponse:', buyChannelResponse);
-	if (buyChannelResponse.isErr()) {
-		return err(buyChannelResponse.error.message);
-	}
-	await setupOnChainTransaction({
-		selectedNetwork,
-		selectedWallet,
-	});
-	updateBitcoinTransaction({
-		transaction: {
-			outputs: [
-				{
-					value: buyChannelResponse.value.price,
-					index: 0,
-					address: buyChannelResponse.value.btc_address,
-				},
-			],
-		},
-		selectedNetwork,
-		selectedWallet,
-	});
-	updateFee({ satsPerByte: 4, selectedNetwork, selectedWallet });
-	console.log('Creating Transaction...');
-	const rawTx = await createTransaction({ selectedNetwork, selectedWallet });
-	console.log('rawTx:', rawTx);
-	if (rawTx.isErr()) {
-		return err(rawTx.error.message);
-	}
-	console.log('Broadcastion Transaction...');
-	const broadcastResponse = await broadcastTransaction({
-		rawTx: rawTx.value.hex,
-		selectedNetwork,
-		selectedWallet,
-	});
-	console.log('broadcastResponse: ', broadcastResponse);
-	if (broadcastResponse.isErr()) {
-		return err(broadcastResponse.error.message);
-	}
-	let paymentReceived = false;
-	let i = 1;
-	while (!paymentReceived && i <= 60) {
-		const orderStatus = await blocktank.getOrder(
-			buyChannelResponse.value.order_id,
-		);
-		console.log(`orderStatus check (${i}/60): `, orderStatus);
-		if (orderStatus.isErr()) {
-			return err(orderStatus.error.message);
-		}
-		if (orderStatus.value.state === 100) {
-			paymentReceived = true;
-		}
-		await sleep(5000);
-		i++;
-	}
-	if (!paymentReceived) {
-		console.log('Payment not received.');
-		return err('Payment not received.');
-	}
-
-	const finalizeResponse = await blocktank.finalizeChannel(
-		buyChannelResponse.value.order_id,
-	);
-	console.log('finalizeResponse', finalizeResponse);
-	return finalizeResponse;
 };
 
 /**
@@ -428,11 +247,14 @@ export const startChannelPurchase = async ({
 		},
 	});
 
-	const zero_conf_satvbyte = orderData.value.zero_conf_satvbyte;
+	const { zero_conf_satvbyte } = orderData.value;
+
+	// TODO: do something if the user can't afford the fee
 	if (zero_conf_satvbyte) {
 		// Set fee appropriately to open an instant channel.
 		updateFee({
-			satsPerByte: zero_conf_satvbyte,
+			// satsPerByte: zero_conf_satvbyte,
+			satsPerByte: zero_conf_satvbyte + 100,
 			selectedNetwork,
 			selectedWallet,
 		});
@@ -484,28 +306,6 @@ export const startChannelPurchase = async ({
 	}
 
 	return ok({ orderId: buyChannelResponse.value.order_id, channelOpenCost });
-};
-
-/**
- * Stores all paid order id's and pairs them with their corresponding txid.
- * @param {string} orderId
- * @param {string} txid
- */
-export const addPaidBlocktankOrder = ({
-	orderId,
-	txid,
-}: {
-	orderId: string;
-	txid: string;
-}): void => {
-	const payload = {
-		orderId,
-		txid,
-	};
-	dispatch({
-		type: actions.ADD_PAID_BLOCKTANK_ORDER,
-		payload,
-	});
 };
 
 /**
@@ -565,7 +365,102 @@ export const confirmChannelPurchase = async ({
 		selectedWallet,
 		selectedNetwork,
 	}).then();
+
 	return ok(broadcastResponse.value);
+};
+
+/**
+ * Stores all paid order id's and pairs them with their corresponding txid.
+ * @param {string} orderId
+ * @param {string} txid
+ */
+export const addPaidBlocktankOrder = ({
+	orderId,
+	txid,
+}: {
+	orderId: string;
+	txid: string;
+}): void => {
+	const payload = {
+		orderId,
+		txid,
+	};
+	dispatch({
+		type: actions.ADD_PAID_BLOCKTANK_ORDER,
+		payload,
+	});
+};
+
+/**
+ * Dispatches various UI actions based on the state change of a given order.
+ * @param {IGetOrderResponse} order
+ */
+const handleOrderStateChange = (order: IGetOrderResponse): void => {
+	// Order states: https://github.com/synonymdev/blocktank-client/blob/f8a20c35a4953435cecf8f718ee555e311e1db9b/src/services/client.ts#L15
+	const currentOrders = getBlocktankStore().orders;
+	const otherOrders = currentOrders.filter((o) => o._id !== order._id);
+	const otherOrderStates = otherOrders.map((o) => o.state);
+
+	const oneOtherOrderHasState = (states: number[]): boolean => {
+		return otherOrderStates.some((state) => states.includes(state));
+	};
+
+	// queued for opening
+	if (order.state === 200) {
+		setLightningSettingUpStep(2);
+	}
+
+	// opening connection
+	if (order.state === 300) {
+		setLightningSettingUpStep(3);
+	}
+
+	// given up
+	if (order.state === 400) {
+		removeTodo('lightningSettingUp');
+		showErrorNotification({
+			title: i18n.t('lightning:order_given_up_title'),
+			message: i18n.t('lightning:order_given_up_msg'),
+		});
+	}
+
+	// order expired
+	if (order.state === 410) {
+		removeTodo('lightningSettingUp');
+		showErrorNotification({
+			title: i18n.t('lightning:order_expired_title'),
+			message: i18n.t('lightning:order_expired_msg'),
+		});
+	}
+
+	// channel closed
+	if (order.state === 450) {
+		if (!oneOtherOrderHasState([500])) {
+			removeTodo('transferToSpending');
+			removeTodo('transferClosingChannel');
+		}
+	}
+
+	// new channel open
+	if (order.state === 500) {
+		removeTodo('lightningConnecting');
+
+		if (!oneOtherOrderHasState([500])) {
+			// first channel
+			addTodo('lightningReady');
+			setTimeout(() => removeTodo('lightningReady'), 4000);
+			showSuccessNotification({
+				title: i18n.t('lightning:channel_opened_title'),
+				message: i18n.t('lightning:channel_opened_msg'),
+			});
+		} else {
+			// subsequent channels
+			removeTodo('transferToSpending');
+		}
+
+		// restart LDK after channel open
+		setupLdk();
+	}
 };
 
 export const updateBlocktank = (
@@ -575,5 +470,14 @@ export const updateBlocktank = (
 		type: actions.UPDATE_BLOCKTANK,
 		payload,
 	});
+	return ok('');
+};
+
+/*
+ * This resets the activity store to defaultActivityShape
+ * @returns {Result<string>}
+ */
+export const resetBlocktankStore = (): Result<string> => {
+	dispatch({ type: actions.RESET_BLOCKTANK_STORE });
 	return ok('');
 };

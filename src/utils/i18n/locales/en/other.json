@@ -62,7 +62,7 @@
 	"update_title": "Update Available",
 	"update_text": "Please update Bitkit to the latest version for new features and bug fixes!",
 	"update_button": "Update",
-	"high_title": "High Wallet Balance (!)",
+	"high_title": "High Balance",
 	"high_text1": "Wallet balance exceeds",
 	"high_text2": "For safety reasons, we recommend moving some of your savings to an offline cold wallet or multisig solution.",
 	"high_text2_beta": "Please consider moving some of your funds. We recommend using only small amounts while Bitkit is in beta.",

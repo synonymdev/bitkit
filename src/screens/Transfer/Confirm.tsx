@@ -12,7 +12,7 @@ import AmountToggle from '../../components/AmountToggle';
 import Percentage from '../../components/Percentage';
 import SwipeToConfirm from '../../components/SwipeToConfirm';
 import PieChart from '../Lightning/PieChart';
-import { addTodo, removeTodo } from '../../store/actions/todos';
+import { addTodo } from '../../store/actions/todos';
 import { confirmChannelPurchase } from '../../store/actions/blocktank';
 import { useLightningBalance } from '../../hooks/lightning';
 import { useBalance } from '../../hooks/wallet';
@@ -76,7 +76,6 @@ const Confirm = ({
 				return;
 			}
 			setLoading(false);
-			removeTodo('transfer');
 			addTodo('transferToSpending');
 			navigation.navigate('Success', { type: 'spending' });
 		} else {

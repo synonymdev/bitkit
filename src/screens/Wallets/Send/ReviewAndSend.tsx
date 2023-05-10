@@ -577,7 +577,6 @@ const ReviewAndSend = ({
 					<AmountToggle
 						style={styles.amountToggle}
 						sats={amount}
-						decimalLength="long"
 						reverse={true}
 						space={12}
 					/>

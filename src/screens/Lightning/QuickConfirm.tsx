@@ -19,6 +19,7 @@ import type { LightningScreenProps } from '../../navigation/types';
 import { addTodo } from '../../store/actions/todos';
 import { confirmChannelPurchase } from '../../store/actions/blocktank';
 import { blocktankOrdersSelector } from '../../store/reselect/blocktank';
+import { setLightningSettingUpStep } from '../../store/actions/user';
 import {
 	selectedNetworkSelector,
 	transactionFeeSelector,
@@ -63,8 +64,9 @@ const QuickConfirm = ({
 			setLoading(false);
 			return;
 		}
+		setLightningSettingUpStep(0);
 		addTodo('lightningSettingUp');
-		navigation.navigate('Result');
+		navigation.navigate('SettingUp');
 	};
 
 	return (

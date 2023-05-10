@@ -1,6 +1,6 @@
 import actions from '../actions/actions';
 import { ITodos } from '../types/todos';
-import { allTodos, defaultTodosShape, todoSortinOrder } from '../shapes/todos';
+import { allTodos, defaultTodosShape, todoSortingOrder } from '../shapes/todos';
 
 const todos = (state: ITodos = defaultTodosShape, action): ITodos => {
 	switch (action.type) {
@@ -8,7 +8,7 @@ const todos = (state: ITodos = defaultTodosShape, action): ITodos => {
 			const newTodo = allTodos.find((todo) => todo.id === action.payload)!.id;
 			const uniqueTodos = [...new Set([...state, newTodo])];
 			const newTodos = uniqueTodos.sort(
-				(a, b) => todoSortinOrder.indexOf(a) - todoSortinOrder.indexOf(b),
+				(a, b) => todoSortingOrder.indexOf(a) - todoSortingOrder.indexOf(b),
 			);
 
 			return newTodos;

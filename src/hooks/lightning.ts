@@ -117,7 +117,7 @@ export const useLightningChannelName = (channel: TChannel): string => {
 	const blocktankNodeInfo = useSelector(blocktankNodeInfoSelector);
 	const isBlocktankChannel =
 		channel.counterparty_node_id === blocktankNodeInfo.public_key;
-	const shortChannelId = ellipsis(channel.channel_id, 13);
+	const shortChannelId = ellipsis(channel.channel_id, 10);
 
 	if (isBlocktankChannel) {
 		return `Blocktank ${

@@ -109,6 +109,15 @@ const migrations = {
 			},
 		};
 	},
+	12: (state): PersistedState => {
+		return {
+			...state,
+			user: {
+				...state.user,
+				lightningSettingUpStep: 0,
+			},
+		};
+	},
 };
 
 export default migrations;

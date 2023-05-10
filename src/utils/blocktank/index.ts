@@ -17,7 +17,6 @@ import {
 	getSettingsStore,
 	getUserStore,
 } from '../../store/helpers';
-import { showSuccessNotification } from '../notifications';
 import { TGeoBlockResponse } from '../../store/types/blocktank';
 import { setGeoBlock, updateUser } from '../../store/actions/user';
 import { fiatToBitcoinUnit, getFiatDisplayValues } from '../exchange-rate';
@@ -158,10 +157,6 @@ export const finalizeChannel = async (
 		};
 		const finalizeChannelResponse = await bt.finalizeChannel(params);
 		if (finalizeChannelResponse) {
-			showSuccessNotification({
-				title: 'Lightning Channel Finalized',
-				message: 'Blocktank will open a channel shortly...',
-			});
 			// Once finalized, refresh on-chain & lightning.
 			await refreshWallet();
 			return ok(finalizeChannelResponse);

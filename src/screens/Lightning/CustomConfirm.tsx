@@ -23,6 +23,7 @@ import {
 } from '../../store/actions/blocktank';
 import { showErrorNotification } from '../../utils/notifications';
 import { addTodo } from '../../store/actions/todos';
+import { setLightningSettingUpStep } from '../../store/actions/user';
 import {
 	selectedNetworkSelector,
 	selectedWalletSelector,
@@ -69,8 +70,9 @@ const CustomConfirm = ({
 			setLoading(false);
 			return;
 		}
+		setLightningSettingUpStep(0);
 		addTodo('lightningSettingUp');
-		navigation.navigate('Result');
+		navigation.navigate('SettingUp');
 	};
 
 	const updateOrderExpiration = async (): Promise<void> => {

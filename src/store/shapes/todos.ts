@@ -25,11 +25,17 @@ const lightningSettingUpTodo: ITodo = {
 	image: imageLightning,
 	dismissable: false,
 };
-const transferTodo: ITodo = {
-	id: 'transfer',
+const lightningConnectingTodo: ITodo = {
+	id: 'lightningConnecting',
 	color: 'purple',
-	image: imageTransfer,
-	dismissable: true,
+	image: imageLightning,
+	dismissable: false,
+};
+const lightningReadyTodo: ITodo = {
+	id: 'lightningReady',
+	color: 'purple',
+	image: imageLightning,
+	dismissable: false,
 };
 const transferToSpendingTodo: ITodo = {
 	id: 'transferToSpending',
@@ -72,7 +78,8 @@ export const allTodos = [
 	backupSeedPhraseTodo,
 	lightningTodo,
 	lightningSettingUpTodo,
-	transferTodo,
+	lightningConnectingTodo,
+	lightningReadyTodo,
 	transferToSpendingTodo,
 	transferToSavingsTodo,
 	transferClosingChannel,
@@ -89,11 +96,12 @@ const defaultTodos = [
 	buyBitcoinTodo.id,
 ];
 
-export const todoSortinOrder: TTodoType[] = [
+export const todoSortingOrder: TTodoType[] = [
 	'backupSeedPhrase',
 	'lightning',
 	'lightningSettingUp',
-	'transfer',
+	'lightningConnecting',
+	'lightningReady',
 	'transferToSpending',
 	'transferToSavings',
 	'transferClosingChannel',

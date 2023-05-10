@@ -31,7 +31,7 @@ const dispatch = getDispatch();
  * @param {TWalletName} [selectedWallet]
  * @param {TAvailableNetworks} [selectedNetwork]
  */
-export const updateLightningNodeId = async ({
+export const updateLightningNodeId = ({
 	nodeId,
 	selectedWallet,
 	selectedNetwork,
@@ -39,7 +39,7 @@ export const updateLightningNodeId = async ({
 	nodeId: string;
 	selectedWallet?: TWalletName;
 	selectedNetwork?: TAvailableNetworks;
-}): Promise<Result<string>> => {
+}): Result<string> => {
 	if (!selectedNetwork) {
 		selectedNetwork = getSelectedNetwork();
 	}
@@ -62,6 +62,32 @@ export const updateLightningNodeId = async ({
 		});
 	}
 	return ok('No need to update nodeId.');
+};
+
+/**
+ * Attempts to grab, update and save the lightning node version to storage.
+ * @returns {Promise<Result<TLightningNodeVersion>>}
+ */
+export const updateLightningNodeVersion = async (): Promise<
+	Result<TLightningNodeVersion>
+> => {
+	try {
+		const version = await getNodeVersion();
+		if (version.isErr()) {
+			return err(version.error.message);
+		}
+		const currentVersion = getLightningStore()?.version;
+		if (version.value.ldk !== currentVersion.ldk) {
+			dispatch({
+				type: actions.UPDATE_LIGHTNING_NODE_VERSION,
+				payload: { version: version.value },
+			});
+		}
+		return ok(version.value);
+	} catch (e) {
+		console.log(e);
+		return err(e);
+	}
 };
 
 /**
@@ -109,32 +135,6 @@ export const updateLightningChannels = async ({
 		payload,
 	});
 	return ok(lightningChannels.value);
-};
-
-/**
- * Attempts to grab, update and save the lightning node version to storage.
- * @returns {Promise<Result<TLightningNodeVersion>>}
- */
-export const updateLightningNodeVersion = async (): Promise<
-	Result<TLightningNodeVersion>
-> => {
-	try {
-		const version = await getNodeVersion();
-		if (version.isErr()) {
-			return err(version.error.message);
-		}
-		const currentVersion = getLightningStore()?.version;
-		if (version.value.ldk !== currentVersion.ldk) {
-			dispatch({
-				type: actions.UPDATE_LIGHTNING_NODE_VERSION,
-				payload: { version: version.value },
-			});
-		}
-		return ok(version.value);
-	} catch (e) {
-		console.log(e);
-		return err(e);
-	}
 };
 
 /**

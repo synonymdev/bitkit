@@ -506,6 +506,16 @@ const ChannelDetails = ({
 						<View style={styles.sectionTitle}>
 							<Caption13Up color="gray1">{t('debug')}</Caption13Up>
 						</View>
+						{blocktankOrder?.order_expiry && (
+							<Section
+								name="Order Expiry"
+								value={
+									<Caption13M>
+										{new Date(blocktankOrder.order_expiry).toLocaleString()}
+									</Caption13M>
+								}
+							/>
+						)}
 						<Section
 							name={t('is_usable')}
 							value={
