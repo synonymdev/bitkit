@@ -14,7 +14,6 @@ import SwipeToConfirm from '../../components/SwipeToConfirm';
 import PieChart from '../Lightning/PieChart';
 import { addTodo, removeTodo } from '../../store/actions/todos';
 import { confirmChannelPurchase } from '../../store/actions/blocktank';
-import { useLightningBalance } from '../../hooks/lightning';
 import { useBalance } from '../../hooks/wallet';
 import useDisplayValues from '../../hooks/displayValues';
 import type { TransferScreenProps } from '../../navigation/types';
@@ -34,20 +33,21 @@ const Confirm = ({
 	const { spendingAmount, orderId } = route.params;
 	const { t } = useTranslation('lightning');
 	const { satoshis: onchainBalance } = useBalance({ onchain: true });
+	const { satoshis: lightningBalance } = useBalance({
+		lightning: true,
+		subtractReserveBalance: false,
+	});
 	const [loading, setLoading] = useState(false);
-	const lightningBalance = useLightningBalance();
 
-	const savingsAmount = onchainBalance - spendingAmount;
-	const savingsPercentage = Math.round((savingsAmount / onchainBalance) * 100);
-	const spendingPercentage = Math.round(
-		(spendingAmount / onchainBalance) * 100,
-	);
-	const currentSpendingAmount = lightningBalance.localBalance;
+	const totalBalance = onchainBalance + lightningBalance;
+	const savingsAmount = totalBalance - spendingAmount;
+	const savingsPercentage = Math.round((savingsAmount / totalBalance) * 100);
+	const spendingPercentage = Math.round((spendingAmount / totalBalance) * 100);
 	const spendingCurrentPercentage = Math.round(
-		(currentSpendingAmount / onchainBalance) * 100,
+		(lightningBalance / totalBalance) * 100,
 	);
 
-	const isTransferringToSavings = spendingAmount < currentSpendingAmount;
+	const isTransferringToSavings = spendingAmount < lightningBalance;
 
 	const selectedNetwork = useSelector(selectedNetworkSelector);
 	const orders = useSelector(blocktankOrdersSelector);
