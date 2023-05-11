@@ -72,10 +72,11 @@ describe('Backup', () => {
 		await sleep(1000); // animation
 
 		// set tag to new tx
+		const tag = 'testtag';
 		await element(by.id('BitcoinAsset')).tap();
 		await element(by.id('Activity-1')).tap();
 		await element(by.id('ActivityTag')).tap();
-		await element(by.id('TagInput')).replaceText('testtag');
+		await element(by.id('TagInput')).replaceText(tag);
 		await element(by.id('TagInput')).tapReturnKey();
 		await sleep(1000); // animation
 		await element(by.id('NavigationClose')).tap();
@@ -181,7 +182,9 @@ describe('Backup', () => {
 		// check metadata
 		await element(by.id('BitcoinAsset')).tap();
 		await element(by.id('Activity-1')).tap();
-		await expect(element(by.id('ActivityTag-0'))).toHaveText('testtag');
+		await expect(
+			element(by.id(`Tag-${tag}`).withAncestor(by.id('ActivityTags'))),
+		).toBeVisible();
 		await element(by.id('NavigationClose')).tap();
 
 		// check widgets

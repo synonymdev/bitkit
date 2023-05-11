@@ -188,21 +188,21 @@ describe('Onchain', () => {
 
 			// filter by receive tag
 			await element(by.id('TagsPrompt')).tap();
-			await element(by.id('rtag0')).tap();
+			await element(by.id('Tag-rtag0')).tap();
 			await expect(
 				element(by.id('MoneySign').withAncestor(by.id('Activity-1'))),
 			).toHaveText('+');
 			await expect(element(by.id('Activity-2'))).not.toExist();
-			await element(by.id('rtag0-close')).tap();
+			await element(by.id('Tag-rtag0-delete')).tap();
 
 			// filter by send tag
 			await element(by.id('TagsPrompt')).tap();
-			await element(by.id('stag')).tap();
+			await element(by.id('Tag-stag')).tap();
 			await expect(
 				element(by.id('MoneySign').withAncestor(by.id('Activity-1'))),
 			).toHaveText('-');
 			await expect(element(by.id('Activity-2'))).not.toExist();
-			await element(by.id('stag-close')).tap();
+			await element(by.id('Tag-stag-delete')).tap();
 
 			// calendar, previous month, 0 transactions
 			await element(by.id('TimeRangePrompt')).tap();

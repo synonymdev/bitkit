@@ -23,10 +23,9 @@ const TagsPrompt = ({
 }): ReactElement => {
 	const { t } = useTranslation('wallet');
 	const snapPoints = useSnapPoints('medium');
-
-	const suggestions = useSelector((store: Store) =>
-		store.metadata.lastUsedTags.filter((tg) => !tags.includes(tg)),
-	);
+	const suggestions = useSelector((store: Store) => {
+		return store.metadata.lastUsedTags.filter((tg) => !tags.includes(tg));
+	});
 
 	useBottomSheetBackPress('tagsPrompt');
 
@@ -46,13 +45,12 @@ const TagsPrompt = ({
 				<Text13UP color="gray1">{t('tags_filter')}</Text13UP>
 
 				<View style={styles.suggestionsRow}>
-					{suggestions.map((s) => (
+					{suggestions.map((tag) => (
 						<Tag
-							key={s}
-							value={s}
+							key={tag}
 							style={styles.tag}
-							onPress={(): void => onAddTag(s)}
-							testID={s}
+							value={tag}
+							onPress={(): void => onAddTag(tag)}
 						/>
 					))}
 					{suggestions.length === 0 && (

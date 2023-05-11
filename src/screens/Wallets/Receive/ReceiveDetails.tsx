@@ -138,7 +138,7 @@ const ReceiveDetails = ({
 											key={tag}
 											style={styles.tag}
 											value={tag}
-											onClose={(): void => {
+											onDelete={(): void => {
 												removeInvoiceTag({ tag });
 											}}
 										/>

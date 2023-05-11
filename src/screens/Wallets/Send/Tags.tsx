@@ -6,20 +6,20 @@ import { useTranslation } from 'react-i18next';
 import { BottomSheetTextInput } from '../../../styles/components';
 import { Caption13Up } from '../../../styles/text';
 import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
+import SafeAreaInset from '../../../components/SafeAreaInset';
 import GradientView from '../../../components/GradientView';
 import Tag from '../../../components/Tag';
 import Button from '../../../components/Button';
 import { showErrorNotification } from '../../../utils/notifications';
 import { Keyboard } from '../../../hooks/keyboard';
 import { addTxTag } from '../../../store/actions/wallet';
-import { addTag, deleteTag } from '../../../store/actions/metadata';
+import { addTag } from '../../../store/actions/metadata';
 import { lastUsedTagsSelector } from '../../../store/reselect/metadata';
 import {
 	selectedNetworkSelector,
 	selectedWalletSelector,
 } from '../../../store/reselect/wallet';
 import type { SendScreenProps } from '../../../navigation/types';
-import SafeAreaInset from '../../../components/SafeAreaInset';
 
 const Tags = ({ navigation }: SendScreenProps<'Tags'>): ReactElement => {
 	const { t } = useTranslation('wallet');
@@ -76,12 +76,8 @@ const Tags = ({ navigation }: SendScreenProps<'Tags'>): ReactElement => {
 									key={tag}
 									style={styles.tag}
 									value={tag}
-									testID={`Tag-${tag}`}
 									onPress={(): void => {
 										handleTagChoose(tag);
-									}}
-									onClose={(): void => {
-										deleteTag(tag);
 									}}
 								/>
 							))}

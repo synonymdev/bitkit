@@ -43,6 +43,8 @@
 		"suggestions_hidden": "Hidden",
 		"suggestions_display": "Display suggestions",
 		"suggestions_reset": "Reset suggestions",
+		"tags": "Tags",
+		"tags_previously": "Previously used tags",
 		"reset_title": "Reset Suggestions?",
 		"reset_desc": "Are you sure you want to reset the suggestions? They will reappear in case you have removed them from your Bitkit wallet overview."
 	},

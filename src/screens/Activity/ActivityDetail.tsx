@@ -416,14 +416,13 @@ const OnchainActivityDetail = ({
 							<Section
 								title={t('tags')}
 								value={
-									<View style={styles.tagsContainer}>
-										{tags.map((tag, index) => (
+									<View style={styles.tagsContainer} testID="ActivityTags">
+										{tags.map((tag) => (
 											<Tag
 												key={tag}
-												value={tag}
 												style={styles.tag}
-												onClose={(): void => handleRemoveTag(tag)}
-												testID={`ActivityTag-${index}`}
+												value={tag}
+												onDelete={(): void => handleRemoveTag(tag)}
 											/>
 										))}
 									</View>
@@ -737,9 +736,9 @@ const LightningActivityDetail = ({
 										{tags.map((tag) => (
 											<Tag
 												key={tag}
-												value={tag}
 												style={styles.tag}
-												onClose={(): void => handleRemoveTag(tag)}
+												value={tag}
+												onDelete={(): void => handleRemoveTag(tag)}
 											/>
 										))}
 									</View>

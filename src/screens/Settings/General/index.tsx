@@ -2,9 +2,10 @@ import React, { memo, ReactElement, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 
-import { EItemType, IListData } from '../../../components/List';
+import { EItemType, IListData, ItemData } from '../../../components/List';
 import SettingsView from './../SettingsView';
 import type { SettingsScreenProps } from '../../../navigation/types';
+import { lastUsedTagsSelector } from '../../../store/reselect/metadata';
 import {
 	bitcoinUnitSelector,
 	selectedCurrencySelector,
@@ -17,6 +18,7 @@ const GeneralSettings = ({
 }: SettingsScreenProps<'GeneralSettings'>): ReactElement => {
 	const { t } = useTranslation('settings');
 
+	const lastUsedTags = useSelector(lastUsedTagsSelector);
 	const showSuggestions = useSelector(showSuggestionsSelector);
 	const selectedTransactionSpeed = useSelector(transactionSpeedSelector);
 	const selectedCurrency = useSelector(selectedCurrencySelector);
@@ -30,53 +32,59 @@ const GeneralSettings = ({
 			custom: t('fee.custom.value'),
 		};
 
-		return [
+		const data: ItemData[] = [
 			{
-				data: [
-					{
-						title: t('general.currency_local'),
-						value: selectedCurrency,
-						type: EItemType.button,
-						onPress: (): void => navigation.navigate('CurrenciesSettings'),
-						testID: 'CurrenciesSettings',
-					},
-					{
-						title: t('general.unit'),
-						value:
-							selectedBitcoinUnit === 'BTC'
-								? t('general.unit_bitcoin')
-								: t('general.unit_satoshis'),
-						type: EItemType.button,
-						onPress: (): void => navigation.navigate('BitcoinUnitSettings'),
-						testID: 'BitcoinUnitSettings',
-					},
-					{
-						title: t('general.speed'),
-						value: transactionSpeeds[selectedTransactionSpeed],
-						type: EItemType.button,
-						onPress: (): void =>
-							navigation.navigate('TransactionSpeedSettings'),
-						testID: 'TransactionSpeedSettings',
-					},
-					{
-						title: t('general.suggestions'),
-						value: t(
-							showSuggestions
-								? 'general.suggestions_visible'
-								: 'general.suggestions_hidden',
-						),
-						type: EItemType.button,
-						onPress: (): void => navigation.navigate('SuggestionsSettings'),
-						testID: 'SuggestionsSettings',
-					},
-				],
+				title: t('general.currency_local'),
+				value: selectedCurrency,
+				type: EItemType.button,
+				testID: 'CurrenciesSettings',
+				onPress: (): void => navigation.navigate('CurrenciesSettings'),
+			},
+			{
+				title: t('general.unit'),
+				value:
+					selectedBitcoinUnit === 'BTC'
+						? t('general.unit_bitcoin')
+						: t('general.unit_satoshis'),
+				type: EItemType.button,
+				testID: 'BitcoinUnitSettings',
+				onPress: (): void => navigation.navigate('BitcoinUnitSettings'),
+			},
+			{
+				title: t('general.speed'),
+				value: transactionSpeeds[selectedTransactionSpeed],
+				type: EItemType.button,
+				testID: 'TransactionSpeedSettings',
+				onPress: (): void => navigation.navigate('TransactionSpeedSettings'),
+			},
+			{
+				title: t('general.suggestions'),
+				value: t(
+					showSuggestions
+						? 'general.suggestions_visible'
+						: 'general.suggestions_hidden',
+				),
+				type: EItemType.button,
+				testID: 'SuggestionsSettings',
+				onPress: (): void => navigation.navigate('SuggestionsSettings'),
 			},
 		];
+
+		if (lastUsedTags.length) {
+			data.push({
+				title: t('general.tags'),
+				type: EItemType.button,
+				testID: 'TagsSettings',
+				onPress: (): void => navigation.navigate('TagsSettings'),
+			});
+		}
+		return [{ data }];
 	}, [
+		lastUsedTags,
+		showSuggestions,
 		selectedCurrency,
 		selectedBitcoinUnit,
 		selectedTransactionSpeed,
-		showSuggestions,
 		navigation,
 		t,
 	]);

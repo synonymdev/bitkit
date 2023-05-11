@@ -144,6 +144,48 @@ describe('Settings', () => {
 			await expect(element(by.id('Suggestion-backupSeedPhrase'))).toBeVisible();
 			markComplete('settings-4');
 		});
+
+		it('Can remove last used tags', async () => {
+			if (checkComplete('s-1-5')) {
+				return;
+			}
+
+			// no tags, menu entry should be hidden
+			await element(by.id('Settings')).tap();
+			await element(by.id('GeneralSettings')).tap();
+			await expect(element(by.id('TagsSettings'))).not.toBeVisible();
+			await element(by.id('NavigationClose')).tap();
+
+			// open receive tags, add a tag
+			const tag = 'test123';
+			await element(by.id('Receive')).tap();
+			await element(by.id('UnderstoodButton')).tap();
+			await element(by.id('SpecifyInvoiceButton')).tap();
+			await expect(element(by.text(tag))).not.toBeVisible();
+			await element(by.id('TagsAdd')).tap();
+			await expect(element(by.text(tag))).not.toBeVisible();
+			await element(by.id('TagInputReceive')).typeText(tag);
+			await element(by.id('ReceiveTagsSubmit')).tap();
+			await expect(element(by.text(tag))).toBeVisible();
+			await element(by.id('ReceiveScreen')).swipe('down');
+
+			// open tag manager, delete tag
+			await element(by.id('Settings')).tap();
+			await element(by.id('GeneralSettings')).tap();
+			await element(by.id('TagsSettings')).tap();
+			await expect(element(by.text(tag))).toBeVisible();
+			await element(by.id(`Tag-${tag}-delete`)).tap();
+			await element(by.id('NavigationClose')).tap();
+
+			// open receive tags, check tags are gone
+			await element(by.id('Receive')).tap();
+			await element(by.id('SpecifyInvoiceButton')).tap();
+			await expect(element(by.text(tag))).not.toBeVisible();
+			await element(by.id('TagsAdd')).tap();
+			await expect(element(by.text(tag))).not.toBeVisible();
+
+			markComplete('s-1-5');
+		});
 	});
 
 	describe('Security and Privacy', () => {
@@ -318,7 +360,6 @@ describe('Settings', () => {
 			// wallet be in regtest mode by default
 			// at first check if it is Native segwit by default
 			await element(by.id('Receive')).tap();
-			await element(by.id('UnderstoodButton')).tap();
 			await sleep(1000); // animation
 			// get address from qrcode
 			const { label: address } = await element(by.id('QRCode')).getAttributes();

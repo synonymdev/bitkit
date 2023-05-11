@@ -21,7 +21,7 @@ const BitcoinUnitSettings = ({
 			{
 				label: t('general.unit_bitcoin'),
 				unit: EBitcoinUnit.BTC,
-				labelExample: '(0.0000100)',
+				labelExample: '(0.00001000)',
 				Icon: UnitBitcoinIcon,
 			},
 			{

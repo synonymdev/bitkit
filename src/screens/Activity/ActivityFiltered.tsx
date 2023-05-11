@@ -134,13 +134,12 @@ const ActivityFiltered = ({
 											horizontal={true}
 											showsHorizontalScrollIndicator={false}
 											style={styles.tags}>
-											{tags.map((tg) => (
+											{tags.map((tag) => (
 												<Tag
+													key={tag}
 													style={styles.tag}
-													key={tg}
-													value={tg}
-													onClose={(): void => removeTag(tg)}
-													testID={tg}
+													value={tag}
+													onDelete={(): void => removeTag(tag)}
 												/>
 											))}
 										</ScrollView>

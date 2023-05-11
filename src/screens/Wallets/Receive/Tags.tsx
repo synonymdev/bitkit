@@ -13,7 +13,7 @@ import Tag from '../../../components/Tag';
 import { Keyboard } from '../../../hooks/keyboard';
 import { lastUsedTagsSelector } from '../../../store/reselect/metadata';
 import { updateInvoice } from '../../../store/actions/receive';
-import { addTag, deleteTag } from '../../../store/actions/metadata';
+import { addTag } from '../../../store/actions/metadata';
 import { ReceiveScreenProps } from '../../../navigation/types';
 
 const Tags = ({ navigation }: ReceiveScreenProps<'Tags'>): ReactElement => {
@@ -56,12 +56,8 @@ const Tags = ({ navigation }: ReceiveScreenProps<'Tags'>): ReactElement => {
 									key={tag}
 									style={styles.tag}
 									value={tag}
-									testID={`Tag-${tag}`}
 									onPress={(): void => {
 										handleTagChoose(tag);
-									}}
-									onClose={(): void => {
-										deleteTag(tag);
 									}}
 								/>
 							))}

@@ -675,7 +675,7 @@ const ReviewAndSend = ({
 												key={tag}
 												style={styles.tag}
 												value={tag}
-												onClose={(): void => handleTagRemove(tag)}
+												onDelete={(): void => handleTagRemove(tag)}
 											/>
 										))}
 									</View>

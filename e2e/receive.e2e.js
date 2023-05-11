@@ -3,6 +3,7 @@ import {
 	markComplete,
 	completeOnboarding,
 	launchAndWait,
+	sleep,
 } from './helpers';
 
 describe('Receive', () => {
@@ -42,7 +43,7 @@ describe('Receive', () => {
 
 		await element(by.id('Receive')).tap();
 		await element(by.id('UnderstoodButton')).tap();
-
+		await sleep(1000); // animation
 		// await element(by.id('ReceiveCopyQR')).tap();
 		// await waitFor(element(by.id('ReceiveTooltip1')))
 		// 	.toExist()
@@ -111,12 +112,11 @@ describe('Receive', () => {
 		await expect(element(by.id('ReceiveNote'))).not.toHaveText(note);
 		await expect(element(by.text(tag))).not.toBeVisible();
 
-		// previous tags
+		// check previous tags & delete
 		await element(by.id('TagsAdd')).tap();
 		await element(by.id(`Tag-${tag}`)).tap();
 		await expect(element(by.text(tag))).toBeVisible();
-		await element(by.id('TagsAdd')).tap();
-		await element(by.id(`Tag-${tag}-close`)).tap();
+		await element(by.id(`Tag-${tag}-delete`)).tap();
 		await expect(element(by.text(tag))).not.toBeVisible();
 
 		markComplete('receive-1-1');

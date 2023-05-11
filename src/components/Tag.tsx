@@ -1,40 +1,42 @@
-import React, { ReactElement, memo, useMemo } from 'react';
-import { StyleSheet } from 'react-native';
+import React, { ReactElement, memo } from 'react';
+import { StyleProp, StyleSheet, ViewStyle } from 'react-native';
 import { TouchableOpacity } from '../styles/components';
 import { Text02M } from '../styles/text';
-import { XIcon } from '../styles/icons';
+import { TrashIcon, XIcon } from '../styles/icons';
 
 interface ITag {
 	value: string;
-	style?: {};
+	icon?: 'close' | 'trash';
+	style?: StyleProp<ViewStyle>;
 	onPress?: () => void;
-	onClose?: () => void;
-	testID?: string;
+	onDelete?: () => void;
 }
+
 const Tag = ({
 	value,
+	icon = 'close',
 	style,
 	onPress,
-	onClose,
-	testID,
+	onDelete,
 }: ITag): ReactElement => {
-	const tagStyle = useMemo(
-		() => StyleSheet.compose(styles.root, style),
-		[style],
-	);
-
 	return (
-		<TouchableOpacity color="transparent" style={tagStyle} onPress={onPress}>
-			<Text02M style={styles.text} testID={testID}>
-				{value}
-			</Text02M>
-			{onClose && (
+		<TouchableOpacity
+			style={[styles.root, style]}
+			activeOpacity={onPress ? 0.2 : 1}
+			color="transparent"
+			onPress={onPress}>
+			<Text02M testID={`Tag-${value}`}>{value}</Text02M>
+			{onDelete && (
 				<TouchableOpacity
-					style={styles.close}
+					style={styles.icon}
 					color="transparent"
-					onPress={onClose}
-					testID={testID ? `${testID}-close` : undefined}>
-					<XIcon color="gray1" width={16} />
+					onPress={onDelete}
+					testID={`Tag-${value}-delete`}>
+					{icon === 'close' ? (
+						<XIcon color="gray1" width={16} />
+					) : (
+						<TrashIcon color="gray1" width={16} />
+					)}
 				</TouchableOpacity>
 			)}
 		</TouchableOpacity>
@@ -49,16 +51,12 @@ const styles = StyleSheet.create({
 		borderColor: 'rgba(255, 255, 255, 0.16)',
 		flexDirection: 'row',
 		alignItems: 'center',
+		paddingHorizontal: 10,
 	},
-	close: {
-		marginLeft: -12,
-		paddingLeft: 12,
-		paddingRight: 15,
-		alignSelf: 'stretch',
-		justifyContent: 'center',
-	},
-	text: {
-		marginHorizontal: 12,
+	icon: {
+		paddingLeft: 8,
+		marginRight: -10,
+		paddingRight: 10,
 	},
 });
 
