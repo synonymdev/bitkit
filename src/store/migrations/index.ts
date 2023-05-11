@@ -112,6 +112,7 @@ const migrations = {
 	12: (state): PersistedState => {
 		return {
 			...state,
+			todos: defaultTodosShape,
 			user: {
 				...state.user,
 				lightningSettingUpStep: 0,
