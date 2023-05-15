@@ -214,12 +214,12 @@ const ReviewAndSend = ({
 		}
 
 		// save tags to metadata
-		updateMetaTxTags(transaction.lightningInvoice, transaction.tags);
+		updateMetaTxTags(payInvoiceResponse.value.payment_hash, transaction.tags);
 
 		// save Slashtags contact to metadata
 		if (transaction.slashTagsUrl) {
 			addMetaSlashTagsUrlTag(
-				transaction.lightningInvoice,
+				payInvoiceResponse.value.payment_hash,
 				transaction.slashTagsUrl,
 			);
 		}
