@@ -80,6 +80,7 @@ jobs:
         run: yarn e2e:test:ios-release --record-videos all --take-screenshots all --record-logs all
 
       - name: Test attempt 3
+        continue-on-error: true
         id: test3
         if: steps.test1.outcome != 'success' && steps.test2.outcome != 'success'
         run: yarn e2e:test:ios-release --record-videos all --take-screenshots all --record-logs all

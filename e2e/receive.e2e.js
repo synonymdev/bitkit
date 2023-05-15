@@ -50,6 +50,9 @@ describe('Receive', () => {
 		// 	.withTimeout(2000);
 		// await expect(element(by.id('ReceiveTooltip1'))).toExist();
 
+		await waitFor(element(by.id('QRCode')))
+			.toBeVisible()
+			.withTimeout(30000);
 		// check that we have a valid BIP21 URI
 		const { label: address } = await element(by.id('QRCode')).getAttributes();
 		if (!address.startsWith('bitcoin:') || address.length < 20) {

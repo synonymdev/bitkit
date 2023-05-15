@@ -361,6 +361,9 @@ describe('Settings', () => {
 			// at first check if it is Native segwit by default
 			await element(by.id('Receive')).tap();
 			await sleep(1000); // animation
+			await waitFor(element(by.id('QRCode')))
+				.toBeVisible()
+				.withTimeout(30000);
 			// get address from qrcode
 			const { label: address } = await element(by.id('QRCode')).getAttributes();
 			// because we can't use Jest expect in Detox tests, let's just throw an error if there is one
