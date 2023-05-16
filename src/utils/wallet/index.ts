@@ -11,6 +11,7 @@ import {
 	getDefaultWalletShape,
 	defaultWalletStoreShape,
 	TAddressIndexInfo,
+	addressTypes,
 } from '../../store/shapes/wallet';
 import {
 	EPaymentType,
@@ -28,7 +29,6 @@ import {
 	TKeyDerivationAccount,
 	TKeyDerivationAccountType,
 	TKeyDerivationPurpose,
-	IAddressTypes,
 	IKeyDerivationPathData,
 	TWalletName,
 	TKeyDerivationCoinType,
@@ -483,7 +483,6 @@ export const getKeyDerivationPath = ({
 		if (!selectedNetwork) {
 			selectedNetwork = getSelectedNetwork();
 		}
-		const addressTypes = getAddressTypes();
 		const keyDerivationPathResponse = getKeyDerivationPathObject({
 			selectedNetwork,
 			path: addressTypes[addressType].path,
@@ -875,7 +874,6 @@ export const getNextAvailableAddress = async ({
 				selectedWallet,
 			});
 		}
-		const addressTypes = getAddressTypes();
 		const { path } = addressTypes[addressType];
 
 		const result = formatKeyDerivationPath({ path, selectedNetwork });
@@ -1508,7 +1506,7 @@ export const formatTransactions = async ({
 	if (inputDataResponse.isErr()) {
 		return err(inputDataResponse.error.message);
 	}
-	const addressTypes = objectKeys(getAddressTypes());
+	const addressTypeKeys = objectKeys(EAddressType);
 	const inputData = inputDataResponse.value;
 	const currentAddresses = currentWallet.addresses[selectedNetwork];
 	const currentChangeAddresses = currentWallet.changeAddresses[selectedNetwork];
@@ -1516,7 +1514,7 @@ export const formatTransactions = async ({
 	let addresses = {} as IAddresses;
 	let changeAddresses = {} as IAddresses;
 
-	addressTypes.map((addressType) => {
+	addressTypeKeys.map((addressType) => {
 		// Check if addresses of this type have been generated. If not, skip.
 		if (Object.keys(currentAddresses[addressType])?.length > 0) {
 			addresses = {
@@ -1737,7 +1735,7 @@ export const getRbfData = async ({
 	const txData = txResponse.value.data;
 
 	const wallet = getWalletStore();
-	const addressTypes = objectKeys(getAddressTypes());
+	const addressTypeKeys = objectKeys(EAddressType);
 	const addresses = wallet.wallets[selectedWallet].addresses[selectedNetwork];
 	const changeAddresses =
 		wallet.wallets[selectedWallet].changeAddresses[selectedNetwork];
@@ -1746,7 +1744,7 @@ export const getRbfData = async ({
 	let allChangeAddresses = {} as IAddresses;
 
 	await Promise.all(
-		addressTypes.map((addressType) => {
+		addressTypeKeys.map((addressType) => {
 			allAddresses = {
 				...allAddresses,
 				...addresses[addressType],
@@ -1976,7 +1974,7 @@ export const getRbfData = async ({
  * @param {number} [changeAddressAmount]
  * @param {string} [mnemonic]
  * @param {string} [bip39Passphrase]
- * @param {EAddressType} [addressTypes]
+ * @param {EAddressType} [addressTypesToCreate]
  * @return {Promise<Result<IWallets>>}
  */
 export const createDefaultWallet = async ({
@@ -1985,16 +1983,16 @@ export const createDefaultWallet = async ({
 	changeAddressAmount = GENERATE_ADDRESS_AMOUNT,
 	mnemonic = '',
 	bip39Passphrase = '',
-	addressTypes,
+	addressTypesToCreate,
 	selectedNetwork,
 }: ICreateWallet): Promise<Result<IWallets>> => {
 	try {
 		if (!selectedNetwork) {
 			selectedNetwork = getSelectedNetwork();
 		}
-		if (!addressTypes) {
+		if (!addressTypesToCreate) {
 			// if nothing else specified use only Native Segwit by default
-			addressTypes = { p2wpkh: getAddressTypes().p2wpkh };
+			addressTypesToCreate = { p2wpkh: addressTypes.p2wpkh };
 		}
 		const selectedAddressType = getSelectedAddressType();
 
@@ -2029,7 +2027,7 @@ export const createDefaultWallet = async ({
 
 		await setKeychainSlashtagsPrimaryKey(seed);
 
-		for (const { type, path } of Object.values(addressTypes)) {
+		for (const { type, path } of Object.values(addressTypesToCreate)) {
 			const pathObject = getKeyDerivationPathObject({
 				path,
 				selectedNetwork,
@@ -2192,7 +2190,7 @@ export const autoCoinSelect = async ({
 		}
 
 		// Get all input and output address types for fee calculation.
-		const addressTypes = {
+		const addressIOTypes = {
 			inputs: {},
 			outputs: {},
 		} as IAddressIOTypes;
@@ -2204,10 +2202,10 @@ export const autoCoinSelect = async ({
 					return;
 				}
 				const type = validateResponse.type.toUpperCase();
-				if (type in addressTypes.inputs) {
-					addressTypes.inputs[type] = addressTypes.inputs[type] + 1;
+				if (type in addressIOTypes.inputs) {
+					addressIOTypes.inputs[type] = addressIOTypes.inputs[type] + 1;
 				} else {
-					addressTypes.inputs[type] = 1;
+					addressIOTypes.inputs[type] = 1;
 				}
 			}),
 			outputs.map(({ address }) => {
@@ -2219,15 +2217,15 @@ export const autoCoinSelect = async ({
 					return;
 				}
 				const type = validateResponse.type.toUpperCase();
-				if (type in addressTypes.outputs) {
-					addressTypes.outputs[type] = addressTypes.outputs[type] + 1;
+				if (type in addressIOTypes.outputs) {
+					addressIOTypes.outputs[type] = addressIOTypes.outputs[type] + 1;
 				} else {
-					addressTypes.outputs[type] = 1;
+					addressIOTypes.outputs[type] = 1;
 				}
 			}),
 		]);
 
-		const baseFee = getByteCount(addressTypes.inputs, addressTypes.outputs);
+		const baseFee = getByteCount(addressIOTypes.inputs, addressIOTypes.outputs);
 		const fee = baseFee * satsPerByte;
 
 		//Ensure we can still cover the transaction with the previously selected UTXO's. Add more UTXO's if not.
@@ -2372,14 +2370,6 @@ export const getKeyDerivationPathObject = ({
 };
 
 /**
- * Returns available address types for the given network and wallet
- * @return IAddressTypes
- */
-export const getAddressTypes = (): IAddressTypes => {
-	return getWalletStore().addressTypes;
-};
-
-/**
  * The method returns the base key derivation path for a given address type.
  * @param {EAddressType} [addressType]
  * @param {TAvailableNetworks} [selectedNetwork]
@@ -2408,7 +2398,6 @@ export const getAddressTypePath = ({
 		if (!addressType) {
 			addressType = getSelectedAddressType({ selectedNetwork, selectedWallet });
 		}
-		const addressTypes = getAddressTypes();
 
 		const path = addressTypes[addressType].path;
 		const pathData = formatKeyDerivationPath({
@@ -2723,7 +2712,6 @@ export const createZeroIndexAddresses = async ({
 	if (!selectedWallet) {
 		selectedWallet = getSelectedWallet();
 	}
-	const addressTypes = getAddressTypes();
 	await Promise.all(
 		Object.values(addressTypes).map(async ({ type }) => {
 			await addAddresses({

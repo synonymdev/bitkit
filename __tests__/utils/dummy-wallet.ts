@@ -17,7 +17,6 @@ export const mnemonic =
 export const walletState: IWallet = {
 	id: 'wallet0',
 	name: '',
-	type: 'default',
 	lastUsedAddressIndex: getAddressIndexShape(),
 	lastUsedChangeAddressIndex: getAddressIndexShape(),
 	addresses: {
@@ -748,52 +747,10 @@ export const walletState: IWallet = {
 		bitcoinRegtest: 0,
 		timestamp: null,
 	},
-	lastUpdated: {
-		bitcoin: 0,
-		bitcoinTestnet: 0,
-		bitcoinRegtest: 0,
-		timestamp: null,
-	},
-	hasBackedUpWallet: false,
-	walletBackupTimestamp: '',
-	keyDerivationPath: {
-		bitcoin: {
-			purpose: '84',
-			coinType: '0',
-			account: '0',
-			change: '0',
-			addressIndex: '0',
-		},
-		bitcoinTestnet: {
-			purpose: '84',
-			coinType: '0',
-			account: '0',
-			change: '0',
-			addressIndex: '0',
-		},
-		bitcoinRegtest: {
-			purpose: '84',
-			coinType: '0',
-			account: '0',
-			change: '0',
-			addressIndex: '0',
-		},
-	},
-	networkTypePath: {
-		bitcoin: '0',
-		bitcoinTestnet: '1',
-		bitcoinRegtest: '0',
-	},
 	addressType: {
 		bitcoin: EAddressType.p2wpkh,
 		bitcoinTestnet: EAddressType.p2wpkh,
 		bitcoinRegtest: EAddressType.p2wpkh,
-	},
-	rbfData: {
-		bitcoin: {},
-		bitcoinTestnet: {},
-		bitcoinRegtest: {},
-		timestamp: null,
 	},
 	transaction: {
 		bitcoin: defaultBitcoinTransactionData,

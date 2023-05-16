@@ -10,7 +10,6 @@ import {
 	IFormattedTransaction,
 	IBitcoinTransactionData,
 	IUtxo,
-	IAddressTypes,
 	EAddressType,
 } from '../types/wallet';
 import { defaultBitcoinTransactionData } from '../shapes/wallet';
@@ -26,8 +25,6 @@ export const selectedWalletState = (state: Store): TWalletName =>
 	state.wallet.selectedWallet;
 export const selectedNetworkState = (state: Store): TAvailableNetworks =>
 	state.wallet.selectedNetwork;
-export const addressTypesState = (state: Store): IAddressTypes =>
-	state.wallet.addressTypes;
 
 /**
  * Returns the selected wallet id.
@@ -217,11 +214,6 @@ export const utxosSelector = createSelector(walletState, (wallet): IUtxo[] => {
 	const selectedNetwork = wallet.selectedNetwork;
 	return wallet.wallets[selectedWallet]?.utxos[selectedNetwork] || [];
 });
-
-export const addressTypesSelector = createSelector(
-	[walletState],
-	(wallet): IAddressTypes => wallet.addressTypes,
-);
 
 export const walletExistsSelector = createSelector(
 	[walletState],

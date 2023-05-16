@@ -10,10 +10,10 @@ import {
 	IUtxo,
 	IWalletItem,
 	TWalletName,
+	EAddressType,
 } from '../../store/types/wallet';
 import {
 	getAddressFromScriptPubKey,
-	getAddressTypes,
 	getCurrentWallet,
 	getCustomElectrumPeers,
 	getScriptHash,
@@ -24,6 +24,7 @@ import {
 	refreshWallet,
 } from './index';
 import { ICustomElectrumPeer } from '../../store/types/settings';
+import { addressTypes } from '../../store/shapes/wallet';
 import { updateHeader } from '../../store/actions/wallet';
 import { getWalletStore } from '../../store/helpers';
 import {
@@ -85,24 +86,19 @@ export const getUtxos = async ({
 			selectedWallet,
 		});
 
-		const addressTypes = objectKeys(getAddressTypes());
+		const addressTypeKeys = objectKeys(EAddressType);
 		let addresses = {} as IAddresses;
 		let changeAddresses = {} as IAddresses;
 		let existingUtxos: { [key: string]: IUtxo } = {};
 
-		addressTypes.map((addressType) => {
-			if (!selectedNetwork) {
-				selectedNetwork = getSelectedNetwork();
-			}
-			if (!selectedWallet) {
-				selectedWallet = getSelectedWallet();
-			}
+		for (const addressType of addressTypeKeys) {
 			const addressCount = Object.keys(
 				currentWallet.addresses[selectedNetwork][addressType],
 			)?.length;
+
 			// Check if addresses of this type have been generated. If not, skip.
 			if (addressCount <= 0) {
-				return;
+				break;
 			}
 
 			// Grab the current index for both addresses and change addresses.
@@ -133,7 +129,7 @@ export const getUtxos = async ({
 				addresses = { ...addresses, ...allAddresses };
 				changeAddresses = { ...changeAddresses, ...allChangeAddresses };
 			}
-		});
+		}
 
 		// Make sure we're re-check existing utxos that may exist outside the gap limit and putting them in the necessary format.
 		currentWallet.utxos[selectedNetwork].map((utxo) => {
@@ -256,11 +252,11 @@ export const subscribeToAddresses = async ({
 		selectedNetwork,
 		selectedWallet,
 	});
-	const addressTypes = objectKeys(getAddressTypes());
+	const addressTypeKeys = objectKeys(addressTypes);
 
 	// Gather the receiving address scripthash for each address type if no scripthashes were provided.
 	if (!scriptHashes.length) {
-		for (const addressType of addressTypes) {
+		for (const addressType of addressTypeKeys) {
 			// Check if addresses of this type have been generated. If not, skip.
 			const addressCount = Object.keys(
 				currentWallet.addresses[selectedNetwork][addressType],
@@ -560,8 +556,8 @@ export const getAddressHistory = async ({
 			currentWallet.changeAddressIndex[selectedNetwork];
 
 		if (scriptHashes.length < 1) {
-			const addressTypes = objectKeys(getAddressTypes());
-			addressTypes.forEach((addressType) => {
+			const addressTypeKeys = objectKeys(addressTypes);
+			addressTypeKeys.forEach((addressType) => {
 				const addresses = currentAddresses[addressType];
 				const changeAddresses = currentChangeAddresses[addressType];
 				let addressValues = Object.values(addresses);

@@ -26,8 +26,6 @@ export type TKeyDerivationChange = '0' | '1'; //"Receiving Address" | "Change Ad
 export type TKeyDerivationAddressIndex = string;
 export type TAssetType = 'bitcoin' | 'tether';
 
-export type NetworkTypePath = '0' | '1'; //"mainnet" | "testnet"
-
 export enum EBitcoinUnit {
 	satoshi = 'satoshi',
 	BTC = 'BTC',
@@ -77,22 +75,6 @@ export type TGetByteCountOutputs = {
 	[key in TGetByteCountOutput]?: number;
 };
 
-export enum EOutput {
-	address = '',
-	value = 0,
-	index = 0,
-}
-
-export enum ETransactionDefaults {
-	recommendedBaseFee = 256, //Total recommended tx base fee in sats
-	baseTransactionSize = 250, //In bytes (250 is about normal)
-	dustLimit = 546, //Minimum value in sats for an output. Outputs below the dust limit may not be processed because the fees required to include them in a block would be greater than the value of the transaction itself.
-}
-
-export enum EKeyDerivationAccount {
-	onchain = 0,
-}
-
 export enum EBoostType {
 	rbf = 'rbf',
 	cpfp = 'cpfp',
@@ -101,11 +83,13 @@ export enum EBoostType {
 export interface IAddressTypeData {
 	type: EAddressType;
 	path: string;
-	label: string;
+	name: string;
+	description: string;
+	example: string;
 }
 
 export type IAddressTypes = {
-	[key in EAddressType]: IAddressTypeData;
+	[key in EAddressType]: Readonly<IAddressTypeData>;
 };
 
 // m / purpose' / coin_type' / account' / change / address_index
@@ -128,7 +112,6 @@ export interface IWalletStore {
 	walletExists: boolean;
 	selectedNetwork: TAvailableNetworks;
 	selectedWallet: TWalletName;
-	addressTypes: IAddressTypes;
 	exchangeRates: IExchangeRates;
 	header: IWalletItem<IHeader>;
 	wallets: { [key: TWalletName]: IWallet };
@@ -159,7 +142,7 @@ export interface ICreateWallet {
 	bip39Passphrase?: string;
 	addressAmount?: number;
 	changeAddressAmount?: number;
-	addressTypes?: Partial<IAddressTypes>;
+	addressTypesToCreate?: Partial<IAddressTypes>;
 	selectedNetwork?: TAvailableNetworks;
 }
 
@@ -235,7 +218,6 @@ export interface IBoostedTransactions {
 export interface IWallet {
 	id: TWalletName;
 	name: string;
-	type: string;
 	seedHash?: string; // Help components/hooks recognize when a seed is set/updated for the same wallet id/name.
 	addresses: IWalletItem<IAddressTypeContent<IAddresses>>;
 	addressIndex: IWalletItem<IAddressTypeContent<IAddress>>;
@@ -244,22 +226,16 @@ export interface IWallet {
 	changeAddressIndex: IWalletItem<IAddressTypeContent<IAddress>>;
 	lastUsedChangeAddressIndex: IWalletItem<IAddressTypeContent<IAddress>>;
 	utxos: IWalletItem<IUtxo[]>;
+	blacklistedUtxos: IWalletItem<[]>;
 	boostedTransactions: IWalletItem<IBoostedTransactions>;
 	transactions: IWalletItem<IFormattedTransactions>;
-	blacklistedUtxos: IWalletItem<[]>;
+	transaction: IWalletItem<IBitcoinTransactionData>;
 	balance: IWalletItem<number>;
-	lastUpdated: IWalletItem<number>;
-	hasBackedUpWallet: boolean;
-	walletBackupTimestamp: string;
-	keyDerivationPath: IWalletItem<IKeyDerivationPath>;
-	networkTypePath: IWalletItem<string>;
 	addressType: {
 		bitcoin: EAddressType;
 		bitcoinTestnet: EAddressType;
 		bitcoinRegtest: EAddressType;
 	};
-	rbfData: IWalletItem<object>;
-	transaction: IWalletItem<IBitcoinTransactionData>;
 }
 
 export interface IWallets {

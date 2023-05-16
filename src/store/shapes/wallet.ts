@@ -19,20 +19,26 @@ import {
 } from '../types/wallet';
 
 export const addressTypes: Readonly<IAddressTypes> = {
-	[EAddressType.p2pkh]: {
-		path: "m/44'/0'/0'/0/0",
-		type: EAddressType.p2pkh,
-		label: 'legacy',
+	[EAddressType.p2wpkh]: {
+		name: 'Native Segwit Bech32',
+		type: EAddressType.p2wpkh,
+		path: "m/84'/0'/0'/0/0",
+		description: 'Pay-to-witness-public-key-hash',
+		example: '(bc1x...)',
 	},
 	[EAddressType.p2sh]: {
-		path: "m/49'/0'/0'/0/0",
+		name: 'Nested Segwit',
 		type: EAddressType.p2sh,
-		label: 'segwit',
+		path: "m/49'/0'/0'/0/0",
+		description: 'Pay-to-Script-Hash',
+		example: '(3x...)',
 	},
-	[EAddressType.p2wpkh]: {
-		path: "m/84'/0'/0'/0/0",
-		type: EAddressType.p2wpkh,
-		label: 'bech32',
+	[EAddressType.p2pkh]: {
+		name: 'Legacy',
+		type: EAddressType.p2pkh,
+		path: "m/44'/0'/0'/0/0",
+		description: 'Pay-to-public-key-hash',
+		example: '(1x...)',
 	},
 };
 
@@ -153,7 +159,7 @@ export const defaultKeyDerivationPath: Readonly<IKeyDerivationPath> = {
 	addressIndex: '0',
 };
 
-export const header: Readonly<IHeader> = {
+export const defaultHeader: Readonly<IHeader> = {
 	height: 0,
 	hash: '',
 	hex: '',
@@ -162,7 +168,6 @@ export const header: Readonly<IHeader> = {
 export const defaultWalletShape: Readonly<IWallet> = {
 	id: 'wallet0',
 	name: '',
-	type: 'default',
 	addresses: getAddressesShape(),
 	addressIndex: getAddressIndexShape(),
 	lastUsedAddressIndex: getAddressIndexShape(),
@@ -170,45 +175,27 @@ export const defaultWalletShape: Readonly<IWallet> = {
 	changeAddressIndex: getAddressIndexShape(),
 	lastUsedChangeAddressIndex: getAddressIndexShape(),
 	utxos: arrayTypeItems,
+	blacklistedUtxos: arrayTypeItems,
 	boostedTransactions: objectTypeItems,
 	transactions: objectTypeItems,
-	blacklistedUtxos: arrayTypeItems,
+	transaction: bitcoinTransaction,
 	balance: numberTypeItems,
-	lastUpdated: numberTypeItems,
-	hasBackedUpWallet: false,
-	walletBackupTimestamp: '',
-	keyDerivationPath: {
-		bitcoin: defaultKeyDerivationPath,
-		bitcoinTestnet: {
-			...defaultKeyDerivationPath,
-			coinType: '0',
-		},
-		bitcoinRegtest: defaultKeyDerivationPath,
-	},
-	networkTypePath: {
-		bitcoin: '0',
-		bitcoinTestnet: '1',
-		bitcoinRegtest: '0',
-	},
 	addressType: {
 		bitcoin: EAddressType.p2wpkh,
 		bitcoinTestnet: EAddressType.p2wpkh,
 		bitcoinRegtest: EAddressType.p2wpkh,
 	},
-	rbfData: objectTypeItems,
-	transaction: bitcoinTransaction,
 };
 
 export const defaultWalletStoreShape: Readonly<IWalletStore> = {
 	walletExists: false,
 	selectedNetwork: __WALLET_DEFAULT_SELECTED_NETWORK__,
 	selectedWallet: 'wallet0',
-	addressTypes: addressTypes,
 	exchangeRates: {},
 	header: {
-		bitcoin: header,
-		bitcoinTestnet: header,
-		bitcoinRegtest: header,
+		bitcoin: defaultHeader,
+		bitcoinTestnet: defaultHeader,
+		bitcoinRegtest: defaultHeader,
 	},
 	wallets: {},
 };

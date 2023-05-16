@@ -7,29 +7,8 @@ import SettingsView from '../SettingsView';
 import { refreshWallet } from '../../../utils/wallet';
 import { updateSelectedAddressType } from '../../../store/actions/wallet';
 import { addressTypeSelector } from '../../../store/reselect/wallet';
-import { EAddressType } from '../../../store/types/wallet';
+import { addressTypes } from '../../../store/shapes/wallet';
 import type { SettingsScreenProps } from '../../../navigation/types';
-
-const addressTypes = [
-	{
-		type: EAddressType.p2wpkh,
-		name: 'Native Segwit Bech32',
-		description: 'Pay-to-witness-public-key-hash',
-		example: '(bc1x...)',
-	},
-	{
-		type: EAddressType.p2sh,
-		name: 'Nested Segwit',
-		description: 'Pay-to-Script-Hash',
-		example: '(3x...)',
-	},
-	{
-		type: EAddressType.p2pkh,
-		name: 'Legacy',
-		description: 'Pay-to-public-key-hash',
-		example: '(1x...)',
-	},
-];
 
 const AddressTypeSettings = ({
 	navigation,
@@ -41,7 +20,7 @@ const AddressTypeSettings = ({
 		() => [
 			{
 				title: t('adv.address_type'),
-				data: addressTypes.map((addressType) => ({
+				data: Object.values(addressTypes).map((addressType) => ({
 					type: EItemType.button,
 					title: `${addressType.name} ${addressType.example}`,
 					description: addressType.description,

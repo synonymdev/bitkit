@@ -44,7 +44,7 @@ import {
 	getLightningStore,
 	getWalletStore,
 } from '../../store/helpers';
-import { header as defaultHeader } from '../../store/shapes/wallet';
+import { defaultHeader } from '../../store/shapes/wallet';
 import {
 	addLightningPayment,
 	removePeer,

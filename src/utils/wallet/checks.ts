@@ -13,7 +13,6 @@ import { v4 as uuidv4 } from 'uuid';
 
 import {
 	generateAddresses,
-	getAddressTypes,
 	getCurrentWallet,
 	getKeyDerivationPathObject,
 	getSelectedAddressType,
@@ -39,6 +38,7 @@ import {
 	reportImpactedAddressBalance,
 	reportUnreportedWarnings,
 } from '../checks';
+import { addressTypes } from '../../store/shapes/wallet';
 
 export const runChecks = async ({
 	selectedWallet,
@@ -95,7 +95,6 @@ export const runStorageCheck = async ({
 		selectedWallet,
 		selectedNetwork,
 	});
-	const addressTypes = getAddressTypes();
 	let addressTypesToCheck = [addressTypes[selectedAddressType]];
 	if (allAddressTypes) {
 		addressTypesToCheck = Object.values(addressTypes);
@@ -173,7 +172,7 @@ export const runStorageCheck = async ({
  * See https://github.com/synonymdev/bitkit/issues/826 for more info.
  * @param {TWalletName} [selectedWallet]
  * @param {TAvailableNetworks} [selectedNetwork]
- * @param {IAddressTypeData} [addressTypesToCheck]
+ * @param {IAddressTypeData[]} [addressTypesToCheck]
  * @returns {Promise<Result<TAddressStorageCheckRes>>}
  */
 export const addressStorageCheck = async ({
@@ -196,7 +195,7 @@ export const addressStorageCheck = async ({
 		selectedNetwork,
 	});
 	if (!addressTypesToCheck) {
-		addressTypesToCheck = Object.values(getAddressTypes());
+		addressTypesToCheck = Object.values(addressTypes);
 	}
 
 	const minMaxData: TMinMaxData[] = [];
@@ -395,7 +394,6 @@ export const getImpactedAddresses = async ({
 		selectedWallet,
 		selectedNetwork,
 	});
-	const addressTypes = getAddressTypes();
 
 	let impactedAddresses: TImpactedAddresses[] = [];
 	let impactedChangeAddresses: TImpactedAddresses[] = [];

@@ -19,7 +19,6 @@ import {
 	formatTransactions,
 	generateAddresses,
 	getAddressIndexInfo,
-	getAddressTypes,
 	getCurrentWallet,
 	getGapLimit,
 	getKeyDerivationPathObject,
@@ -67,7 +66,11 @@ import {
 import { getBoostedTransactionParents } from '../../utils/boost';
 import { updateSlashPayConfig } from '../../utils/slashtags';
 import { sdk } from '../../components/SlashtagsProvider';
-import { getDefaultWalletShape, TAddressIndexInfo } from '../shapes/wallet';
+import {
+	addressTypes,
+	getDefaultWalletShape,
+	TAddressIndexInfo,
+} from '../shapes/wallet';
 import { TGetImpactedAddressesRes } from '../types/checks';
 
 const dispatch = getDispatch();
@@ -89,7 +92,7 @@ export const updateWallet = (
  * @param {number} [changeAddressAmount]
  * @param {string} [mnemonic]
  * @param {string} [bip39Passphrase]
- * @param {Partial<IAddressTypes>} [addressTypes]
+ * @param {Partial<IAddressTypes>} [addressTypesToCreate]
  * @return {Promise<Result<string>>}
  */
 export const createWallet = async ({
@@ -98,10 +101,10 @@ export const createWallet = async ({
 	changeAddressAmount = GENERATE_ADDRESS_AMOUNT,
 	mnemonic = '',
 	bip39Passphrase = '',
-	addressTypes,
+	addressTypesToCreate,
 }: ICreateWallet = {}): Promise<Result<string>> => {
-	if (!addressTypes) {
-		addressTypes = getAddressTypes();
+	if (!addressTypesToCreate) {
+		addressTypesToCreate = addressTypes;
 	}
 	try {
 		const response = await createDefaultWallet({
@@ -110,7 +113,7 @@ export const createWallet = async ({
 			changeAddressAmount,
 			mnemonic,
 			bip39Passphrase,
-			addressTypes,
+			addressTypesToCreate,
 		});
 		if (response.isErr()) {
 			return err(response.error.message);
@@ -168,14 +171,14 @@ export const updateAddressIndexes = async ({
 		selectedNetwork,
 	});
 
-	let addressTypesToCheck = Object.keys(getAddressTypes()) as EAddressType[];
+	let addressTypeKeys = Object.keys(EAddressType) as EAddressType[];
 	if (addressType) {
-		addressTypesToCheck = [addressType];
+		addressTypeKeys = [addressType];
 	}
 
 	let updated = false;
 
-	const promises = addressTypesToCheck.map(async (addressTypeKey) => {
+	const promises = addressTypeKeys.map(async (addressTypeKey) => {
 		if (!selectedNetwork) {
 			selectedNetwork = getSelectedNetwork();
 		}
@@ -269,8 +272,7 @@ export const resetAddressIndexes = ({
 		selectedNetwork = getSelectedNetwork();
 	}
 
-	const addressTypes = getAddressTypes();
-	const addressTypeKeys = objectKeys(addressTypes);
+	const addressTypeKeys = objectKeys(EAddressType);
 	const defaultWalletShape = getDefaultWalletShape();
 
 	addressTypeKeys.forEach((addressType) => {
@@ -316,7 +318,6 @@ export const generateNewReceiveAddress = async ({
 		if (!addressType) {
 			addressType = getSelectedAddressType({ selectedNetwork, selectedWallet });
 		}
-		const addressTypes = getAddressTypes();
 		const { currentWallet } = getCurrentWallet({
 			selectedWallet,
 			selectedNetwork,
@@ -436,7 +437,6 @@ export const addAddresses = async ({
 	if (!addressType) {
 		addressType = getSelectedAddressType({ selectedWallet, selectedNetwork });
 	}
-	const addressTypes = getAddressTypes();
 	const { path, type } = addressTypes[addressType];
 	if (!keyDerivationPath) {
 		const keyDerivationPathResponse = getKeyDerivationPathObject({
@@ -952,9 +952,9 @@ export const setupOnChainTransaction = async ({
 		const currentChangeAddresses =
 			currentWallet.changeAddresses[selectedNetwork];
 
-		const addressTypes = objectKeys(getAddressTypes());
+		const addressTypeKeys = objectKeys(EAddressType);
 		let changeAddresses: IAddresses = {};
-		addressTypes.forEach((key) => {
+		addressTypeKeys.forEach((key) => {
 			changeAddresses = {
 				...changeAddresses,
 				...currentChangeAddresses[key],

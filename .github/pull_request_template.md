@@ -11,6 +11,7 @@ Add any links to GitHub issues or Asana tasks that are relevant to this pull req
 - [ ] Bug fix (non-breaking change which fixes an issue)
 - [ ] New feature (non-breaking change which adds functionality)
 - [ ] Breaking change (fix or feature that would cause existing functionality to not work as expected)
+- [ ] Refactoring (improving code without creating new functionality)
 
 ### Tests
 
