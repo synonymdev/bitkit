@@ -7,7 +7,7 @@ const createDevEnvFile = 'cp .env.development.template .env.development';
 
 //Create development environment file if it doesn't exist
 fs.access(devEnvFile, fs.constants.F_OK, (err) => {
-	if (err || !process.env.CI) {
+	if (err && !process.env.CI) {
 		console.log(`File '${devEnvFile}' not found, running createDevEnv...`);
 		exec(createDevEnvFile);
 	}
