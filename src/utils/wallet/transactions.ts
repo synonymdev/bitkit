@@ -1,6 +1,6 @@
 import * as bip21 from 'bip21';
-import * as bip32 from 'bip32';
-import { BIP32Interface } from 'bip32';
+import ecc from '@bitcoinerlab/secp256k1';
+import { BIP32Factory, BIP32Interface } from 'bip32';
 import * as bip39 from 'bip39';
 import * as bitcoin from 'bitcoinjs-lib';
 import { Psbt } from 'bitcoinjs-lib';
@@ -66,6 +66,8 @@ import { EFeeId, IOnchainFees } from '../../store/types/fees';
 import { defaultFeesShape } from '../../store/shapes/fees';
 import { TRANSACTION_DEFAULTS } from './constants';
 import i18n from '../i18n';
+
+const BIP32 = BIP32Factory(ecc);
 
 /*
  * Attempts to parse any given string as an on-chain payment request.
@@ -416,7 +418,7 @@ const getBip32Interface = async (
 
 	const mnemonic = getMnemonicPhraseResult.value;
 	const seed = await bip39.mnemonicToSeed(mnemonic, bip39Passphrase);
-	const root = bip32.fromSeed(seed, network);
+	const root = BIP32.fromSeed(seed, network);
 
 	return ok(root);
 };

@@ -54,8 +54,7 @@ describe('On chain transactions', () => {
 		});
 
 		if (res.isErr()) {
-			expect(res.error.message).toEqual('');
-			return;
+			throw res.error;
 		}
 
 		expect(res.value.hex).toEqual(

@@ -55,6 +55,15 @@ jobs:
       - name: Activate react-native-skia-stub
         run: patch -p1 < .github/workflows/react-native-skia-stub.patch
 
+      - name: Detox Framework Cache
+        uses: actions/cache@v3
+        with:
+          path: ~/Library/Detox/ios
+          key: detox-framework-cache-${{ hashFiles('**/detox/package.json') }}
+
+      - name: Yarn Install
+        run: yarn --no-audit --prefer-offline || yarn --no-audit --prefer-offline
+
       - name: Cache Pods
         uses: actions/cache@v3
         id: podcache
@@ -62,8 +71,8 @@ jobs:
           path: ios/Pods
           key: pods-${{ hashFiles('**/Podfile.lock') }}
 
-      - name: Yarn Install
-        run: yarn --no-audit --prefer-offline
+      - name: Pod Install
+        run: pod install --project-directory=ios || pod install --project-directory=ios
 
       - name: Build
         run: yarn e2e:build:ios-release

@@ -33,6 +33,7 @@
     "postinstall": "node postinstall.js"
   },
   "dependencies": {
+    "@bitcoinerlab/secp256k1": "^1.0.2",
     "@formatjs/intl-datetimeformat": "6.5.1",
     "@formatjs/intl-getcanonicallocales": "2.1.0",
     "@formatjs/intl-locale": "^3.1.1",
@@ -58,7 +59,7 @@
     "assert": "^2.0.0",
     "backpack-client": "github:synonymdev/bitkit-backup-client#f08fdb28529d8a3f8bfecc789443c43b966a7581",
     "bip21": "^2.0.3",
-    "bip32": "^2.0.6",
+    "bip32": "^3.1.0",
     "bip39": "^3.0.4",
     "bitcoin-address-validation": "^2.2.1",
     "bitcoin-units": "^0.3.0",
