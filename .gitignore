@@ -70,9 +70,8 @@ buck-out/
 stpg/cache.json
 
 # Environment
-.env
-.env.production
-.env.development
+.env*
+!.env*.template
 
 # NodeJS-Mobile
 /nodejs-assets/build-native-modules-MacOS-helper-script-node.sh

@@ -1,20 +1,15 @@
-import React, {
-	ReactElement,
-	memo,
-	useCallback,
-	useEffect,
-	useMemo,
-	useState,
-} from 'react';
+import React, { ReactElement, memo, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useSelector } from 'react-redux';
 import { FadeIn, FadeOut } from 'react-native-reanimated';
 import Clipboard from '@react-native-clipboard/clipboard';
-import { validate } from 'bitcoin-address-validation';
-import { TInvoice } from '@synonymdev/react-native-ldk';
 import { useTranslation } from 'react-i18next';
 
-import { AnimatedView } from '../../../styles/components';
+import {
+	View as ThemedView,
+	AnimatedView,
+	BottomSheetTextInput,
+} from '../../../styles/components';
 import { Caption13Up } from '../../../styles/text';
 import { ClipboardTextIcon, ScanIcon, UserIcon } from '../../../styles/icons';
 import { useSlashtagsSDK } from '../../../components/SlashtagsProvider';
@@ -23,281 +18,122 @@ import SafeAreaInset from '../../../components/SafeAreaInset';
 import IconButton from '../../../components/IconButton';
 import GlowImage from '../../../components/GlowImage';
 import Button from '../../../components/Button';
-import { decodeLightningInvoice, refreshLdk } from '../../../utils/lightning';
-import { validateSlashtagURL } from '../../../utils/slashtags';
 import { processInputData } from '../../../utils/scanner';
-import { sleep } from '../../../utils/helpers';
-import { IBitcoinTransactionData, IOutput } from '../../../store/types/wallet';
-import { updateBitcoinTransaction } from '../../../store/actions/wallet';
 import { showErrorNotification } from '../../../utils/notifications';
-import { updateOnchainFeeEstimates } from '../../../store/actions/fees';
-import { viewControllerIsOpenSelector } from '../../../store/reselect/ui';
 import useKeyboard, { Keyboard } from '../../../hooks/keyboard';
 import { useBottomSheetBackPress } from '../../../hooks/bottomSheet';
-import { useLightningBalance } from '../../../hooks/lightning';
-import AddressOrSlashpay from './AddressOrSlashpay';
 import {
 	selectedNetworkSelector,
 	selectedWalletSelector,
 	transactionSelector,
 } from '../../../store/reselect/wallet';
 import type { SendScreenProps } from '../../../navigation/types';
+import ContactSmall from '../../../components/ContactSmall';
+import useColors from '../../../hooks/colors';
+import {
+	resetOnChainTransaction,
+	setupOnChainTransaction,
+} from '../../../store/actions/wallet';
 
 const imageSrc = require('../../../assets/illustrations/coin-stack-logo.png');
 
 const Recipient = ({
 	navigation,
 }: SendScreenProps<'Recipient'>): ReactElement => {
-	const { t } = useTranslation('wallet');
+	const colors = useColors();
 	const sdk = useSlashtagsSDK();
+	const { t } = useTranslation('wallet');
 	const { keyboardShown } = useKeyboard();
-	const lightningBalance = useLightningBalance(false);
-	const [decodedInvoice, setDecodedInvoice] = useState<TInvoice>();
-	const [handledOsPaste, setHandledOsPaste] = useState(false);
+	const [textFieldValue, setTextFieldValue] = useState('');
+	const [isValid, setIsValid] = useState(false);
+	const transaction = useSelector(transactionSelector);
 	const selectedWallet = useSelector(selectedWalletSelector);
 	const selectedNetwork = useSelector(selectedNetworkSelector);
-	const transaction = useSelector(transactionSelector);
-	const sendNavigationIsOpen = useSelector((state) =>
-		viewControllerIsOpenSelector(state, 'sendNavigation'),
-	);
 
 	useBottomSheetBackPress('sendNavigation');
 
-	const getDecodeAndSetLightningInvoice =
-		useCallback(async (): Promise<void> => {
-			try {
-				if (!transaction.lightningInvoice) {
-					setDecodedInvoice(undefined);
-					return;
-				}
-				const decodeInvoiceResponse = await decodeLightningInvoice({
-					paymentRequest: transaction.lightningInvoice,
-				});
-				if (decodeInvoiceResponse.isErr()) {
-					setDecodedInvoice(undefined);
-					return;
-				}
-				setDecodedInvoice(decodeInvoiceResponse.value);
-			} catch (e) {
-				setDecodedInvoice(undefined);
-				console.log(e);
-			}
-		}, [transaction.lightningInvoice]);
+	const onChangeText = async (text?: string): Promise<void> => {
+		let hasPasted = false;
 
-	useEffect(() => {
-		if (!sendNavigationIsOpen) {
-			return;
-		}
-		// Gives the modal animation time to start.
-		sleep(50).then(() => {
-			getDecodeAndSetLightningInvoice().then();
-		});
-	}, [
-		getDecodeAndSetLightningInvoice,
-		sendNavigationIsOpen,
-		transaction.lightningInvoice,
-	]);
+		// user pressed clipboard button
+		if (text === undefined) {
+			hasPasted = true;
+			text = await Clipboard.getString();
 
-	// TODO:
-	const index = 0;
-
-	/**
-	 * Returns the current output by index.
-	 */
-	const getOutput = useMemo((): IOutput => {
-		return transaction.outputs[index] ?? { address: '', value: 0, index: 0 };
-	}, [index, transaction.outputs]);
-
-	/**
-	 * Returns the current address to send funds to.
-	 */
-	const address = useMemo((): string => {
-		return getOutput.address ?? '';
-	}, [getOutput.address]);
-
-	// Holds decoded lightning invoice amount in satoshis
-	const decodedInvoiceAmount = useMemo(() => {
-		if (
-			transaction.lightningInvoice &&
-			decodedInvoice?.amount_satoshis &&
-			decodedInvoice.amount_satoshis > 0
-		) {
-			return decodedInvoice.amount_satoshis;
-		}
-		return 0;
-	}, [decodedInvoice?.amount_satoshis, transaction.lightningInvoice]);
-
-	/**
-	 * Returns the value of the current output.
-	 */
-	const value = useMemo((): number => {
-		return transaction.lightningInvoice
-			? decodedInvoiceAmount
-			: getOutput.value ?? 0;
-	}, [decodedInvoiceAmount, getOutput.value, transaction.lightningInvoice]);
-
-	useEffect(() => {
-		if (!sendNavigationIsOpen) {
-			return;
-		}
-		// Gives the modal animation time to start.
-		sleep(50).then(() => {
-			// try to update fees on this screen, because they will be used on next one
-			updateOnchainFeeEstimates({ selectedNetwork, forceUpdate: true }).then();
-
-			if (lightningBalance.localBalance > 0) {
-				refreshLdk({ selectedWallet, selectedNetwork }).then();
-			}
-		});
-	}, [
-		sendNavigationIsOpen,
-		lightningBalance.localBalance,
-		selectedNetwork,
-		selectedWallet,
-	]);
-
-	const handleScan = (): void => {
-		navigation.navigate('Scanner');
-	};
-
-	const handleSendToContact = (): void => {
-		navigation.navigate('Contacts');
-	};
-
-	const onContinue = async (): Promise<void> => {
-		await Keyboard.dismiss();
-		if (transaction.lightningInvoice && decodedInvoiceAmount > 0) {
-			navigation.navigate('ReviewAndSend');
-		} else {
-			navigation.navigate('Amount');
-		}
-	};
-
-	const handlePaste = useCallback(
-		async (txt: string) => {
-			let clipboardData = txt;
-			if (!clipboardData) {
-				clipboardData = await Clipboard.getString();
-			}
-			if (!clipboardData) {
+			if (!text) {
 				showErrorNotification({
 					title: t('send_clipboard_empty_title'),
 					message: t('send_clipboard_empty_text'),
 				});
 				return;
 			}
-			await Keyboard.dismiss();
-			const result = await processInputData({
-				data: clipboardData,
-				source: 'sendScanner',
-				sdk,
-				selectedNetwork,
-				selectedWallet,
-			});
-			if (result.isErr()) {
-				// Even though we're not able to interpret the data, pass it to the text input for editing.
-				updateBitcoinTransaction({
-					selectedWallet,
-					selectedNetwork,
-					transaction: {
-						outputs: [{ address: clipboardData, value, index }],
-					},
-				});
-			}
-		},
-		[index, value, selectedNetwork, selectedWallet, sdk, t],
-	);
-
-	const onBlur = useCallback(async (): Promise<void> => {
-		//An OS Paste was triggered. No need to process onBlur data.
-		if (handledOsPaste) {
-			return;
 		}
-		const tAddress = address.trim();
-		// check if it is a slashtag url and try to get address from it
-		if (validateSlashtagURL(tAddress)) {
-			await processInputData({
-				data: tAddress,
-				source: 'sendScanner',
-				sdk,
-				selectedNetwork,
-				selectedWallet,
-			});
+
+		// user probably pasted via OS paste
+		if (text.length > textFieldValue.length + 1) {
+			hasPasted = true;
+		}
+
+		setTextFieldValue(text);
+
+		if (!text) {
 			return;
 		}
 
-		// Continue updating the on-chain information as we would previously.
-		const tx: Partial<IBitcoinTransactionData> = {
-			outputs: [{ address: tAddress, value, index }],
-			lightningInvoice: '',
-		};
-		// Attempt to decode what may be a lightning invoice.
-		const decodeInvoiceResponse = await decodeLightningInvoice({
-			paymentRequest: tAddress,
-		});
-		// Set lightning invoice if successfully decoded.
-		if (decodeInvoiceResponse.isOk()) {
-			tx.lightningInvoice = tAddress;
-		}
-		updateBitcoinTransaction({
-			selectedWallet,
-			selectedNetwork,
-			transaction: tx,
-		});
-	}, [
-		handledOsPaste,
-		address,
-		value,
-		index,
-		selectedWallet,
-		selectedNetwork,
-		sdk,
-	]);
-
-	const onChangeText = useCallback(
-		(txt: string) => {
-			const includesKeyword =
-				txt.includes(':') ||
-				txt.includes('?') ||
-				txt.includes('bitcoin') ||
-				txt.includes('lightning') ||
-				txt.startsWith('ln');
-
-			// Workaround for capturing an invoice from a potential OS paste.
-			if (!handledOsPaste && includesKeyword) {
-				handlePaste(txt).then();
-				setHandledOsPaste(true);
-				return;
-			} else if (handledOsPaste && includesKeyword) {
-				setHandledOsPaste(false);
-			}
-
-			updateBitcoinTransaction({
-				selectedWallet,
-				selectedNetwork,
-				transaction: {
-					outputs: [{ address: txt, value, index }],
-					lightningInvoice: '',
-				},
-			});
-		},
-		[
-			handlePaste,
-			handledOsPaste,
-			index,
+		const result = await processInputData({
+			data: text,
+			source: 'sendScanner',
+			showErrors: hasPasted,
+			sdk,
 			selectedNetwork,
 			selectedWallet,
-			value,
-		],
-	);
+		});
 
-	const isInvalid = useCallback(() => {
-		// no valid address or lightning invoice
-		if (!validate(address) && !transaction.lightningInvoice) {
-			return true;
+		if (result.isOk()) {
+			setIsValid(true);
+		} else {
+			setIsValid(false);
 		}
-		return false;
-	}, [address, transaction.lightningInvoice]);
+	};
+
+	const onOpenScanner = (): void => {
+		navigation.navigate('Scanner');
+	};
+
+	const onSendToContact = (): void => {
+		navigation.navigate('Contacts');
+	};
+
+	const onRemoveContact = async (): Promise<void> => {
+		setTextFieldValue('');
+		resetOnChainTransaction({
+			selectedWallet,
+			selectedNetwork,
+		});
+		await setupOnChainTransaction({
+			selectedNetwork,
+			selectedWallet,
+		});
+	};
+
+	const onContinue = async (): Promise<void> => {
+		await Keyboard.dismiss();
+
+		// make sure transaction is up-to-date when navigating back and forth
+		await processInputData({
+			data: textFieldValue,
+			source: 'sendScanner',
+			sdk,
+			selectedNetwork,
+			selectedWallet,
+		});
+
+		if (transaction.lightningInvoice && transaction.outputs[0].value > 0) {
+			navigation.navigate('ReviewAndSend');
+		} else {
+			navigation.navigate('Amount');
+		}
+	};
 
 	return (
 		<View style={styles.container}>
@@ -310,27 +146,49 @@ const Recipient = ({
 					{t('send_to')}
 				</Caption13Up>
 
-				<AddressOrSlashpay
-					style={[styles.input, keyboardShown && styles.inputKeyboard]}
-					value={transaction.lightningInvoice || address}
-					slashTagsUrl={transaction.slashTagsUrl}
-					onChangeText={onChangeText}
-					onBlur={onBlur}
-					testID="AddressOrSlashpay">
-					<IconButton style={styles.inputAction} onPress={handleScan}>
-						<ScanIcon color="brand" width={24} />
-					</IconButton>
-					<IconButton
-						style={styles.inputAction}
-						onPress={(): void => {
-							handlePaste('').then();
-						}}>
-						<ClipboardTextIcon color="brand" width={24} />
-					</IconButton>
-					<IconButton style={styles.inputAction} onPress={handleSendToContact}>
-						<UserIcon color="brand" width={24} />
-					</IconButton>
-				</AddressOrSlashpay>
+				<ThemedView
+					style={[styles.inputWrapper, keyboardShown && styles.inputKeyboard]}
+					color="white04">
+					{transaction.slashTagsUrl ? (
+						<ContactSmall
+							style={styles.contact}
+							url={transaction.slashTagsUrl}
+							onDelete={onRemoveContact}
+						/>
+					) : (
+						<BottomSheetTextInput
+							style={styles.input}
+							value={textFieldValue}
+							selectionColor={colors.brand}
+							placeholderTextColor={colors.white5}
+							selectTextOnFocus={true}
+							multiline={true}
+							placeholder={t('send_address_placeholder')}
+							autoCapitalize="none"
+							autoCorrect={false}
+							blurOnSubmit={true}
+							returnKeyType="done"
+							onChangeText={onChangeText}
+							testID="RecipientInput"
+						/>
+					)}
+
+					<View style={styles.inputActions}>
+						<IconButton style={styles.inputAction} onPress={onOpenScanner}>
+							<ScanIcon color="brand" width={24} />
+						</IconButton>
+						<IconButton
+							style={styles.inputAction}
+							onPress={(): void => {
+								onChangeText().then();
+							}}>
+							<ClipboardTextIcon color="brand" width={24} />
+						</IconButton>
+						<IconButton style={styles.inputAction} onPress={onSendToContact}>
+							<UserIcon color="brand" width={24} />
+						</IconButton>
+					</View>
+				</ThemedView>
 
 				<View style={[styles.bottom, keyboardShown && styles.bottomKeyboard]}>
 					{!keyboardShown && (
@@ -346,9 +204,9 @@ const Recipient = ({
 					<Button
 						text={t('continue')}
 						size="large"
-						disabled={isInvalid()}
-						onPress={onContinue}
+						disabled={!isValid && !transaction.slashTagsUrl}
 						testID="ContinueRecipient"
+						onPress={onContinue}
 					/>
 				</View>
 			</View>
@@ -368,15 +226,31 @@ const styles = StyleSheet.create({
 	label: {
 		marginBottom: 8,
 	},
-	input: {
+	inputWrapper: {
+		flex: 1,
+		justifyContent: 'space-between',
+		position: 'relative',
+		borderRadius: 8,
 		marginBottom: 16,
 	},
 	inputKeyboard: {
 		flex: 1,
 		marginBottom: 16,
 	},
+	input: {
+		backgroundColor: 'transparent',
+		flex: 1,
+	},
+	inputActions: {
+		flexDirection: 'row',
+		justifyContent: 'flex-end',
+		padding: 16,
+	},
 	inputAction: {
 		marginLeft: 16,
+	},
+	contact: {
+		margin: 16,
 	},
 	bottom: {
 		position: 'relative',

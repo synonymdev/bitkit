@@ -25,11 +25,17 @@ import { TProcessedData } from '../../utils/scanner';
 import { useSnapPoints } from '../../hooks/bottomSheet';
 import { viewControllerSelector } from '../../store/reselect/ui';
 import {
-	resetOnChainTransaction,
 	setupOnChainTransaction,
 	setupFeeForOnChainTransaction,
 } from '../../store/actions/wallet';
 import { __E2E__ } from '../../constants/env';
+import { updateOnchainFeeEstimates } from '../../store/actions/fees';
+import { useLightningBalance } from '../../hooks/lightning';
+import {
+	selectedNetworkSelector,
+	selectedWalletSelector,
+} from '../../store/reselect/wallet';
+import { refreshLdk } from '../../utils/lightning';
 
 export type SendNavigationProp = NativeStackNavigationProp<SendStackParamList>;
 
@@ -92,6 +98,9 @@ export const sendNavigation = {
 
 const SendNavigation = (): ReactElement => {
 	const snapPoints = useSnapPoints('large');
+	const lightningBalance = useLightningBalance(false);
+	const selectedWallet = useSelector(selectedWalletSelector);
+	const selectedNetwork = useSelector(selectedNetworkSelector);
 	const { isOpen, screen } = useSelector((state) => {
 		return viewControllerSelector(state, 'sendNavigation');
 	});
@@ -99,16 +108,20 @@ const SendNavigation = (): ReactElement => {
 	const initialRouteName = screen ?? 'Recipient';
 
 	const onOpen = async (): Promise<void> => {
+		await updateOnchainFeeEstimates({ selectedNetwork, forceUpdate: true });
 		await setupOnChainTransaction();
 		setupFeeForOnChainTransaction();
+
+		if (lightningBalance.localBalance > 0) {
+			refreshLdk({ selectedWallet, selectedNetwork }).then();
+		}
 	};
 
 	return (
 		<BottomSheetWrapper
 			view="sendNavigation"
 			snapPoints={snapPoints}
-			onOpen={onOpen}
-			onClose={resetOnChainTransaction}>
+			onOpen={onOpen}>
 			<NavigationContainer key={isOpen.toString()} ref={navigationRef}>
 				<Stack.Navigator
 					initialRouteName={initialRouteName}

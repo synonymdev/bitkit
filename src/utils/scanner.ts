@@ -18,7 +18,6 @@ import {
 
 import {
 	getOnchainTransactionData,
-	getTransactionOutputAmount,
 	parseOnChainPaymentRequest,
 } from './wallet/transactions';
 import { getLightningStore } from '../store/helpers';
@@ -412,13 +411,14 @@ export const decodeQRData = async (
 		const decodedInvoice = await decodeLightningInvoice({
 			paymentRequest: lightningInvoice,
 		});
+		// TODO: show something when LN invoice is expired?
 		if (decodedInvoice.isOk()) {
 			foundNetworksInQR.push({
 				qrDataType: EQRDataType.lightningPaymentRequest,
 				lightningPaymentRequest: data,
 				network: selectedNetwork,
-				sats: decodedInvoice.value?.amount_satoshis ?? 0,
-				message: decodedInvoice.value?.description ?? '',
+				sats: decodedInvoice.value.amount_satoshis ?? 0,
+				message: decodedInvoice.value.description ?? '',
 			});
 		} else {
 			error += `${decodedInvoice.error.message} `;
@@ -714,19 +714,6 @@ export const handleData = async ({
 
 			// If BottomSheet is already open (SendScanner)
 			sendNavigation.navigate('Amount');
-
-			// If no amount found in payment request, make sure that the user hasn't previously specified an amount from the send form.
-			if (!amount) {
-				const outputAmount = getTransactionOutputAmount({
-					selectedNetwork,
-					selectedWallet,
-					outputIndex: 0,
-				});
-				if (outputAmount.isErr()) {
-					return err(outputAmount.error.message);
-				}
-				amount = outputAmount.value;
-			}
 
 			updateBitcoinTransaction({
 				selectedWallet,

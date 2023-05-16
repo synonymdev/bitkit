@@ -83,6 +83,7 @@ const NavigationHeader = ({
 		[size, style],
 	);
 
+	// TODO: this doesn't have the right navigator
 	const showBack = Boolean(displayBackButton && navigation.canGoBack());
 
 	const numberOfActions = useMemo(() => {

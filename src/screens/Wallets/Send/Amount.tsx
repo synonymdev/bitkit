@@ -9,6 +9,7 @@ import React, {
 import { StyleSheet, View } from 'react-native';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
+import { useRoute } from '@react-navigation/native';
 
 import { TouchableOpacity } from '../../../styles/components';
 import { Caption13Up, Text02B } from '../../../styles/text';
@@ -54,6 +55,7 @@ const ContactImage = ({ url }: { url: string }): ReactElement => {
 };
 
 const Amount = ({ navigation }: SendScreenProps<'Amount'>): ReactElement => {
+	const route = useRoute();
 	const { t } = useTranslation('wallet');
 	const { fiatTicker } = useCurrency();
 	const selectedWallet = useSelector(selectedWalletSelector);
@@ -194,10 +196,13 @@ const Amount = ({ navigation }: SendScreenProps<'Amount'>): ReactElement => {
 		return true;
 	}, [amount, transaction.lightningInvoice, availableAmount]);
 
+	const canGoBack = navigation.getState().routes[0]?.key !== route.key;
+
 	return (
 		<GradientView style={styles.container}>
 			<BottomSheetNavigationHeader
 				title={t('send_amount')}
+				displayBackButton={canGoBack}
 				actionIcon={
 					transaction.slashTagsUrl ? (
 						<ContactImage url={transaction.slashTagsUrl} />

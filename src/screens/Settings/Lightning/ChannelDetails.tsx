@@ -328,6 +328,7 @@ const ChannelDetails = ({
 						<Section
 							name={t('order')}
 							value={<Caption13M>{blocktankOrder._id}</Caption13M>}
+							onPress={(): void => Clipboard.setString(blocktankOrder._id)}
 						/>
 						<Section
 							name={t('created_on')}

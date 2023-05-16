@@ -17,6 +17,7 @@ import type { RootNavigationProp } from '../navigation/types';
 import { betaRiskAcceptedSelector } from '../store/reselect/user';
 import { objectKeys } from '../utils/objectKeys';
 import { viewControllersSelector } from '../store/reselect/ui';
+import { resetOnChainTransaction } from '../store/actions/wallet';
 
 const TabBar = ({
 	navigation,
@@ -42,6 +43,8 @@ const TabBar = ({
 	}, [betaRiskAccepted, navigation]);
 
 	const onSendPress = useCallback((): void => {
+		// make sure we start with a clean transaction state
+		resetOnChainTransaction();
 		showBottomSheet('sendNavigation');
 	}, []);
 

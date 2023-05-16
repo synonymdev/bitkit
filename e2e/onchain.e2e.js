@@ -92,10 +92,8 @@ describe('Onchain', () => {
 			const coreAddress = await rpc.getNewAddress();
 			await element(by.id('Send')).tap();
 			await sleep(1000); // animation
-			await element(by.id('AddressOrSlashpay')).replaceText(coreAddress);
-			await element(by.id('AddressOrSlashpay')).tapReturnKey();
-			await sleep(2000); // validation
-			await element(by.id('ContinueRecipient')).tap();
+			await element(by.id('RecipientInput')).replaceText(coreAddress);
+			await sleep(1000); // animation
 
 			// Amount / NumberPad
 			await element(by.id('SendNumberPadMax')).tap();
@@ -247,10 +245,8 @@ describe('Onchain', () => {
 			const coreAddress = await rpc.getNewAddress();
 			await element(by.id('Send')).tap();
 			await sleep(1000); // animation
-			await element(by.id('AddressOrSlashpay')).replaceText(coreAddress);
-			await element(by.id('AddressOrSlashpay')).tapReturnKey();
-			await sleep(2000); // validation
-			await element(by.id('ContinueRecipient')).tap();
+			await element(by.id('RecipientInput')).replaceText(coreAddress);
+			await sleep(1000); // animation
 
 			// enter amount that would leave dust
 			let { label: amount } = await element(

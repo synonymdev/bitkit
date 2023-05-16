@@ -314,6 +314,15 @@ const ReceiveQR = ({
 						}}
 					/>
 					<QrIcon />
+
+					{showTooltip.unified && (
+						<AnimatedView
+							style={styles.tooltipUnified}
+							color="transparent"
+							entering={FadeIn}>
+							<Tooltip text={t('receive_copied')} />
+						</AnimatedView>
+					)}
 				</TouchableOpacity>
 				<View style={styles.actions}>
 					<Button
@@ -336,7 +345,15 @@ const ReceiveQR = ({
 				</View>
 			</View>
 		);
-	}, [uri, handleCopyQrCode, handleShare, isSharing, qrSize, t]);
+	}, [
+		uri,
+		handleCopyQrCode,
+		handleShare,
+		isSharing,
+		qrSize,
+		showTooltip.unified,
+		t,
+	]);
 
 	const Slide2 = useCallback((): ReactElement => {
 		return (
@@ -492,15 +509,6 @@ const ReceiveQR = ({
 							/>
 						))}
 					</View>
-
-					{showTooltip.unified && (
-						<AnimatedView
-							style={styles.tooltipUnified}
-							color="transparent"
-							entering={FadeIn}>
-							<Tooltip text={t('receive_copied')} />
-						</AnimatedView>
-					)}
 				</View>
 			)}
 
@@ -601,7 +609,7 @@ const styles = StyleSheet.create({
 	},
 	tooltipUnified: {
 		position: 'absolute',
-		top: '45%',
+		bottom: 20,
 	},
 	buttonContainer: {
 		paddingHorizontal: 16,

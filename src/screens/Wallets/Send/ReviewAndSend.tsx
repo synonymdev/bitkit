@@ -79,6 +79,7 @@ import {
 } from '../../../store/reselect/settings';
 import { onChainFeesSelector } from '../../../store/reselect/fees';
 import { updateOnChainActivityList } from '../../../store/actions/activity';
+import { truncate } from '../../../utils/helpers';
 
 const Section = memo(
 	({
@@ -174,8 +175,10 @@ const ReviewAndSend = ({
 	const address = transaction?.outputs[outputIndex]?.address ?? '';
 
 	useEffect(() => {
-		setupFeeForOnChainTransaction();
-	}, []);
+		if (!transaction.lightningInvoice) {
+			setupFeeForOnChainTransaction();
+		}
+	}, [transaction.lightningInvoice]);
 
 	const _onError = useCallback(
 		(errorTitle: string, errorMessage: string) => {
@@ -592,9 +595,15 @@ const ReviewAndSend = ({
 								transaction.slashTagsUrl ? (
 									<ContactSmall url={transaction.slashTagsUrl} size="large" />
 								) : (
-									<Text02M numberOfLines={1} ellipsizeMode="middle">
-										{decodedInvoice ? decodedInvoice.to_str : address}
-									</Text02M>
+									<>
+										{decodedInvoice ? (
+											<Text02M>{truncate(decodedInvoice.to_str, 100)}</Text02M>
+										) : (
+											<Text02M numberOfLines={1} ellipsizeMode="middle">
+												{address}
+											</Text02M>
+										)}
+									</>
 								)
 							}
 						/>

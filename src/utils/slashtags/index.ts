@@ -393,6 +393,10 @@ function checkClosed(slashtag: Slashtag): boolean {
 	}
 }
 
+/**
+ * CURRENTLY UNUSED
+ * Check if a given string is a valid slashtag URL
+ */
 export const validateSlashtagURL = (url: string): boolean => {
 	try {
 		const parsed = SlashURL.parse(url);
