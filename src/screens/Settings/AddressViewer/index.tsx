@@ -42,7 +42,10 @@ import {
 	TWalletName,
 } from '../../../store/types/wallet';
 import Button from '../../../components/Button';
-import { addressContent, addressTypes } from '../../../store/shapes/wallet';
+import {
+	defaultAddressContent,
+	addressTypes,
+} from '../../../store/shapes/wallet';
 import {
 	EAvailableNetworks,
 	TAvailableNetworks,
@@ -60,10 +63,10 @@ import { setupNodejsMobile } from '../../../utils/nodejs-mobile';
 import { getAddressUtxos } from '../../../utils/wallet/electrum';
 import { enableDevOptionsSelector } from '../../../store/reselect/settings';
 import {
-	resetOnChainTransaction,
+	resetSendTransaction,
 	setupOnChainTransaction,
 	updateAddressIndexes,
-	updateBitcoinTransaction,
+	updateSendTransaction,
 	updateWallet,
 } from '../../../store/actions/wallet';
 import { showBottomSheet } from '../../../store/actions/ui';
@@ -261,8 +264,9 @@ const AddressViewer = ({
 		[],
 	);
 	// The currently selected address to display qrcode data for.
-	const [selectedAddress, setSelectedAddress] =
-		useState<IAddress>(addressContent);
+	const [selectedAddress, setSelectedAddress] = useState<IAddress>(
+		defaultAddressContent,
+	);
 	// The private key of the currently selected address to display qrcode data for.
 	const [privateKey, setPrivateKey] = useState<string | undefined>(undefined);
 	// Available array of UTXO's after checking for a balance.
@@ -684,7 +688,7 @@ const AddressViewer = ({
 			if (utxosLength <= 0) {
 				return;
 			}
-			resetOnChainTransaction({
+			resetSendTransaction({
 				selectedWallet,
 				selectedNetwork,
 			});
@@ -704,7 +708,7 @@ const AddressViewer = ({
 			if (receiveAddress.isErr()) {
 				return;
 			}
-			updateBitcoinTransaction({
+			updateSendTransaction({
 				transaction: {
 					...transactionRes.value,
 					outputs: [{ address: receiveAddress.value, value: 0, index: 0 }],

@@ -1906,13 +1906,13 @@ export const getRbfData = async ({
 };
 
 /**
- * Converts IRbfData to IBitcoinTransactionData.
+ * Converts IRbfData to ISendTransaction.
  * CURRENTLY NOT USED
  * @param {IRbfData} data
  */
 // export const formatRbfData = async (
 // 	data: IRbfData,
-// ): Promise<Partial<IBitcoinTransactionData>> => {
+// ): Promise<Partial<ISendTransaction>> => {
 // 	const { selectedWallet, inputs, outputs, fee, selectedNetwork, message } =
 // 		data;
 

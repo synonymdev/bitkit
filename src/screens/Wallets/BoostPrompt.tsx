@@ -11,7 +11,7 @@ import SafeAreaInset from '../../components/SafeAreaInset';
 import AdjustValue from '../../components/AdjustValue';
 import Store from '../../store/types';
 import { closeBottomSheet } from '../../store/actions/ui';
-import { resetOnChainTransaction } from '../../store/actions/wallet';
+import { resetSendTransaction } from '../../store/actions/wallet';
 import {
 	adjustFee,
 	broadcastBoost,
@@ -90,7 +90,7 @@ const BoostForm = ({
 		})();
 
 		return (): void => {
-			resetOnChainTransaction({ selectedNetwork, selectedWallet });
+			resetSendTransaction({ selectedNetwork, selectedWallet });
 		};
 	}, [activityItem.id, selectedNetwork, selectedWallet]);
 

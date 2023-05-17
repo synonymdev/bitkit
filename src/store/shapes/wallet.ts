@@ -9,7 +9,7 @@ import {
 	IWalletItem,
 	IWallet,
 	IWalletStore,
-	IBitcoinTransactionData,
+	ISendTransaction,
 	IKeyDerivationPath,
 	IAddressTypes,
 	IAddresses,
@@ -42,70 +42,21 @@ export const addressTypes: Readonly<IAddressTypes> = {
 	},
 };
 
-export const defaultBitcoinTransactionData: IBitcoinTransactionData = {
-	outputs: [],
-	inputs: [],
-	changeAddress: '',
-	fiatAmount: 0,
-	fee: 512,
-	satsPerByte: 2,
-	selectedFeeId: EFeeId.none,
-	message: '',
-	label: '',
-	rbf: false,
-	boostType: EBoostType.cpfp,
-	minFee: 1,
-	max: false,
-	tags: [],
-	lightningInvoice: '',
+export const getNetworkContent = <T>(data: T): Readonly<IWalletItem<T>> => {
+	const networks = objectKeys(EAvailableNetworks);
+	const content = {} as IWalletItem<T>;
+
+	networks.forEach((network) => {
+		content[network] = data;
+	});
+
+	return content;
 };
 
-export const bitcoinTransaction: Readonly<
-	IWalletItem<IBitcoinTransactionData>
-> = {
-	bitcoin: defaultBitcoinTransactionData,
-	bitcoinTestnet: defaultBitcoinTransactionData,
-	bitcoinRegtest: defaultBitcoinTransactionData,
-};
-
-export const numberTypeItems: Readonly<IWalletItem<number>> = {
-	bitcoin: 0,
-	bitcoinTestnet: 0,
-	bitcoinRegtest: 0,
-	timestamp: null,
-};
-
-export const arrayTypeItems: Readonly<IWalletItem<[]>> = {
-	bitcoin: [],
-	bitcoinTestnet: [],
-	bitcoinRegtest: [],
-	timestamp: null,
-};
-
-export const objectTypeItems: Readonly<IWalletItem<{}>> = {
-	bitcoin: {},
-	bitcoinTestnet: {},
-	bitcoinRegtest: {},
-	timestamp: null,
-};
-
-export const stringTypeItems: Readonly<IWalletItem<string>> = {
-	bitcoin: '',
-	bitcoinTestnet: '',
-	bitcoinRegtest: '',
-	timestamp: null,
-};
-
-export const addressContent: Readonly<IAddress> = {
-	index: -1,
-	path: '',
-	address: '',
-	scriptHash: '',
-	publicKey: '',
-};
-
-export const getAddressTypeContent = <T>(data: T): IAddressTypeContent<T> => {
-	const addressTypeKeys = objectKeys(addressTypes);
+export const getAddressTypeContent = <T>(
+	data: T,
+): Readonly<IAddressTypeContent<T>> => {
+	const addressTypeKeys = objectKeys(EAddressType);
 	const content = {} as IAddressTypeContent<T>;
 
 	addressTypeKeys.forEach((addressType) => {
@@ -130,12 +81,15 @@ export const getAddressIndexShape = (): IWalletItem<
 	IAddressTypeContent<IAddress>
 > => {
 	return cloneDeep({
-		[EAvailableNetworks.bitcoin]:
-			getAddressTypeContent<IAddress>(addressContent),
-		[EAvailableNetworks.bitcoinTestnet]:
-			getAddressTypeContent<IAddress>(addressContent),
-		[EAvailableNetworks.bitcoinRegtest]:
-			getAddressTypeContent<IAddress>(addressContent),
+		[EAvailableNetworks.bitcoin]: getAddressTypeContent<IAddress>(
+			defaultAddressContent,
+		),
+		[EAvailableNetworks.bitcoinTestnet]: getAddressTypeContent<IAddress>(
+			defaultAddressContent,
+		),
+		[EAvailableNetworks.bitcoinRegtest]: getAddressTypeContent<IAddress>(
+			defaultAddressContent,
+		),
 		timestamp: null,
 	});
 };
@@ -149,6 +103,32 @@ export const getAddressesShape = (): IWalletItem<
 		[EAvailableNetworks.bitcoinRegtest]: getAddressTypeContent<IAddresses>({}),
 		timestamp: null,
 	});
+};
+
+export const defaultSendTransaction: ISendTransaction = {
+	outputs: [],
+	inputs: [],
+	changeAddress: '',
+	fiatAmount: 0,
+	fee: 512,
+	satsPerByte: 2,
+	selectedFeeId: EFeeId.none,
+	message: '',
+	label: '',
+	rbf: false,
+	boostType: EBoostType.cpfp,
+	minFee: 1,
+	max: false,
+	tags: [],
+	lightningInvoice: '',
+};
+
+export const defaultAddressContent: Readonly<IAddress> = {
+	index: -1,
+	path: '',
+	address: '',
+	scriptHash: '',
+	publicKey: '',
 };
 
 export const defaultKeyDerivationPath: Readonly<IKeyDerivationPath> = {
@@ -174,12 +154,12 @@ export const defaultWalletShape: Readonly<IWallet> = {
 	changeAddresses: getAddressesShape(),
 	changeAddressIndex: getAddressIndexShape(),
 	lastUsedChangeAddressIndex: getAddressIndexShape(),
-	utxos: arrayTypeItems,
-	blacklistedUtxos: arrayTypeItems,
-	boostedTransactions: objectTypeItems,
-	transactions: objectTypeItems,
-	transaction: bitcoinTransaction,
-	balance: numberTypeItems,
+	utxos: getNetworkContent([]),
+	blacklistedUtxos: getNetworkContent([]),
+	boostedTransactions: getNetworkContent({}),
+	transactions: getNetworkContent({}),
+	transaction: getNetworkContent(defaultSendTransaction),
+	balance: getNetworkContent(0),
 	addressType: {
 		bitcoin: EAddressType.p2wpkh,
 		bitcoinTestnet: EAddressType.p2wpkh,

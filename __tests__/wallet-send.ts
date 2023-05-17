@@ -7,9 +7,9 @@ import { createNewWallet, startWalletServices } from '../src/utils/startup';
 import {
 	updateAddressIndexes,
 	updateWallet,
-	updateBitcoinTransaction,
+	updateSendTransaction,
 	setupOnChainTransaction,
-	resetOnChainTransaction,
+	resetSendTransaction,
 } from '../src/store/actions/wallet';
 import { connectToElectrum } from '../src/utils/wallet/electrum';
 import {
@@ -153,7 +153,7 @@ describe('Wallet - new wallet, send and receive', () => {
 		expect(tx11?.satsPerByte).toBe(2);
 
 		// set address and amount
-		res = updateBitcoinTransaction({
+		res = updateSendTransaction({
 			transaction: {
 				outputs: [{ address: receivingAddress1, value: 50_000_000, index: 0 }],
 			},
@@ -239,7 +239,7 @@ describe('Wallet - new wallet, send and receive', () => {
 		const receivingAddress2 = await rpc.getNewAddress();
 
 		// setup new transaction
-		res = resetOnChainTransaction();
+		res = resetSendTransaction();
 		if (res.isErr()) {
 			throw res.error;
 		}
@@ -249,7 +249,7 @@ describe('Wallet - new wallet, send and receive', () => {
 		}
 
 		// set address and amount
-		res = updateBitcoinTransaction({
+		res = updateSendTransaction({
 			transaction: {
 				outputs: [{ address: receivingAddress2, value: 50_000_000, index: 0 }],
 				rbf: true,

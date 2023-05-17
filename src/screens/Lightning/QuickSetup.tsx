@@ -22,7 +22,7 @@ import FancySlider from '../../components/FancySlider';
 import NumberPadLightning from './NumberPadLightning';
 import { useBalance } from '../../hooks/wallet';
 import {
-	resetOnChainTransaction,
+	resetSendTransaction,
 	setupOnChainTransaction,
 } from '../../store/actions/wallet';
 import {
@@ -61,7 +61,7 @@ const QuickSetup = ({
 
 	useFocusEffect(
 		useCallback(() => {
-			resetOnChainTransaction({ selectedNetwork, selectedWallet });
+			resetSendTransaction({ selectedNetwork, selectedWallet });
 			setupOnChainTransaction({ selectedNetwork, selectedWallet }).then();
 			refreshBlocktankInfo().then();
 		}, [selectedNetwork, selectedWallet]),

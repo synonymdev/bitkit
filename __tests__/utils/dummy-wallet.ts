@@ -1,7 +1,8 @@
 import {
-	defaultBitcoinTransactionData,
+	defaultSendTransaction,
 	getAddressIndexShape,
-	objectTypeItems,
+	getAddressTypeContent,
+	getNetworkContent,
 } from '../../src/store/shapes/wallet';
 import {
 	EAddressType,
@@ -495,11 +496,7 @@ export const walletState: IWallet = {
 				},
 			},
 		},
-		bitcoinRegtest: {
-			p2pkh: {},
-			p2sh: {},
-			p2wpkh: {},
-		},
+		bitcoinRegtest: getAddressTypeContent({}),
 		timestamp: null,
 	},
 	changeAddressIndex: {
@@ -734,13 +731,8 @@ export const walletState: IWallet = {
 		bitcoinRegtest: {},
 		timestamp: null,
 	},
-	boostedTransactions: objectTypeItems,
-	blacklistedUtxos: {
-		bitcoin: [],
-		bitcoinTestnet: [],
-		bitcoinRegtest: [],
-		timestamp: null,
-	},
+	boostedTransactions: getNetworkContent({}),
+	blacklistedUtxos: getNetworkContent([]),
 	balance: {
 		bitcoin: 0,
 		bitcoinTestnet: 128206,
@@ -753,8 +745,8 @@ export const walletState: IWallet = {
 		bitcoinRegtest: EAddressType.p2wpkh,
 	},
 	transaction: {
-		bitcoin: defaultBitcoinTransactionData,
-		bitcoinTestnet: defaultBitcoinTransactionData,
-		bitcoinRegtest: defaultBitcoinTransactionData,
+		bitcoin: defaultSendTransaction,
+		bitcoinTestnet: defaultSendTransaction,
+		bitcoinRegtest: defaultSendTransaction,
 	},
 };

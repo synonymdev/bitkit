@@ -6,7 +6,7 @@ import {
 } from '@synonymdev/blocktank-client';
 
 import actions from './actions';
-import { resetOnChainTransaction, updateBitcoinTransaction } from './wallet';
+import { resetSendTransaction, updateSendTransaction } from './wallet';
 import { setLightningSettingUpStep } from './user';
 import { addTodo, removeTodo } from './todos';
 import { getBlocktankStore, getDispatch, getFeesStore } from '../helpers';
@@ -235,7 +235,7 @@ export const startChannelPurchase = async ({
 		return err(orderData.error.message);
 	}
 
-	updateBitcoinTransaction({
+	updateSendTransaction({
 		transaction: {
 			outputs: [
 				{
@@ -355,7 +355,7 @@ export const confirmChannelPurchase = async ({
 	addPaidBlocktankOrder({ orderId, txid: broadcastResponse.value });
 
 	// Reset tx data.
-	resetOnChainTransaction({ selectedWallet, selectedNetwork });
+	resetSendTransaction({ selectedWallet, selectedNetwork });
 
 	watchOrder(orderId).then();
 	removeTodo('lightning');

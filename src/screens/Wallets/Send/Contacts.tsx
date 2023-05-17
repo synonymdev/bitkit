@@ -16,7 +16,7 @@ import {
 	selectedWalletSelector,
 } from '../../../store/reselect/wallet';
 import {
-	resetOnChainTransaction,
+	resetSendTransaction,
 	setupOnChainTransaction,
 } from '../../../store/actions/wallet';
 
@@ -31,7 +31,7 @@ const Contacts = ({
 
 	const handlePress = async (contact: IContactRecord): Promise<void> => {
 		// make sure we start with a clean transaction state
-		resetOnChainTransaction({
+		resetSendTransaction({
 			selectedWallet,
 			selectedNetwork,
 		});

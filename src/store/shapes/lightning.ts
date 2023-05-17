@@ -1,21 +1,15 @@
 import { IDefaultLightningShape, ILightning } from '../types/lightning';
-import {
-	arrayTypeItems,
-	defaultWalletShape,
-	numberTypeItems,
-	objectTypeItems,
-	stringTypeItems,
-} from './wallet';
+import { defaultWalletShape, getNetworkContent } from './wallet';
 
 export const defaultLightningShape: IDefaultLightningShape = {
-	nodeId: stringTypeItems,
-	info: objectTypeItems,
-	channels: objectTypeItems,
-	openChannelIds: arrayTypeItems,
-	invoices: arrayTypeItems,
-	payments: objectTypeItems,
-	peers: arrayTypeItems,
-	claimableBalance: numberTypeItems,
+	nodeId: getNetworkContent(''),
+	info: getNetworkContent({}),
+	channels: getNetworkContent({}),
+	openChannelIds: getNetworkContent([]),
+	invoices: getNetworkContent([]),
+	payments: getNetworkContent({}),
+	peers: getNetworkContent([]),
+	claimableBalance: getNetworkContent(0),
 };
 
 export const defaultLightningStoreShape: ILightning = {

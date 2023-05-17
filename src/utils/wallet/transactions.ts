@@ -17,7 +17,7 @@ import { getKeychainValue } from '../keychain';
 import {
 	EBoostType,
 	EPaymentType,
-	IBitcoinTransactionData,
+	ISendTransaction,
 	IOutput,
 	IUtxo,
 	EAddressType,
@@ -53,7 +53,7 @@ import {
 	deleteOnChainTransactionById,
 	getChangeAddress,
 	setupOnChainTransaction,
-	updateBitcoinTransaction,
+	updateSendTransaction,
 } from '../../store/actions/wallet';
 import {
 	ETransactionSpeed,
@@ -328,7 +328,7 @@ export const getTotalFee = ({
 }: {
 	satsPerByte: number;
 	message?: string;
-	transaction?: Partial<IBitcoinTransactionData>;
+	transaction?: Partial<ISendTransaction>;
 	fundingLightning?: boolean;
 	selectedWallet?: TWalletName;
 	selectedNetwork?: TAvailableNetworks;
@@ -384,7 +384,7 @@ export const getTotalFee = ({
 interface ICreateTransaction {
 	selectedWallet?: TWalletName;
 	selectedNetwork?: TAvailableNetworks;
-	transactionData?: IBitcoinTransactionData;
+	transactionData?: ISendTransaction;
 }
 
 /**
@@ -423,7 +423,7 @@ const getBip32Interface = async (
 
 interface ITargets {
 	value: number; // Amount denominated in sats.
-	index: number; // Used to specify which output to update or edit when using updateBitcoinTransaction.
+	index: number; // Used to specify which output to update or edit when using updateSendTransaction.
 	address?: string; // Amount denominated in sats.
 	script?: Buffer;
 }
@@ -432,7 +432,7 @@ interface ITargets {
  * Returns a PSBT that includes unsigned funding inputs.
  * @param {TWalletName} selectedWallet
  * @param {TAvailableNetworks} selectedNetwork
- * @param {IBitcoinTransactionData} transactionData
+ * @param {ISendTransaction} transactionData
  * @param {BIP32Interface} bip32Interface
  * @return {Promise<Result<Psbt>>}
  */
@@ -444,7 +444,7 @@ const createPsbtFromTransactionData = async ({
 }: {
 	selectedWallet: TWalletName;
 	selectedNetwork: TAvailableNetworks;
-	transactionData: IBitcoinTransactionData;
+	transactionData: ISendTransaction;
 	bip32Interface?: BIP32Interface;
 }): Promise<Result<Psbt>> => {
 	const { inputs, outputs, fee, rbf } = transactionData;
@@ -659,7 +659,7 @@ export const signPsbt = async ({
  * Creates complete signed transaction using the transaction data store
  * @param selectedWallet
  * @param selectedNetwork
- * @param {IBitcoinTransactionData} [transactionData]
+ * @param {ISendTransaction} [transactionData]
  * @returns {Promise<Result<{id: string, hex: string}>>}
  */
 export const createTransaction = async ({
@@ -783,7 +783,7 @@ export const getOnchainTransactionData = ({
 }: {
 	selectedWallet?: TWalletName;
 	selectedNetwork?: TAvailableNetworks;
-}): Result<IBitcoinTransactionData> => {
+}): Result<ISendTransaction> => {
 	try {
 		if (!selectedWallet) {
 			selectedWallet = getSelectedWallet();
@@ -1068,7 +1068,7 @@ export const getTransactionInputs = ({
  * @param {TWalletName} [selectedWallet]
  * @param {TAvailableNetworks} [selectedNetwork]
  * @param {number} [index]
- * @param {IBitcoinTransactionData} [transaction]
+ * @param {ISendTransaction} [transaction]
  */
 export const updateFee = ({
 	satsPerByte,
@@ -1083,7 +1083,7 @@ export const updateFee = ({
 	selectedWallet?: TWalletName;
 	selectedNetwork?: TAvailableNetworks;
 	index?: number;
-	transaction?: IBitcoinTransactionData;
+	transaction?: ISendTransaction;
 }): Result<string> => {
 	if (!selectedWallet) {
 		selectedWallet = getSelectedWallet();
@@ -1133,7 +1133,7 @@ export const updateFee = ({
 		selectedNetwork,
 	});
 	const newTotalAmount = totalTransactionValue + newFee;
-	const _transaction: Partial<IBitcoinTransactionData> = {
+	const _transaction: Partial<ISendTransaction> = {
 		satsPerByte,
 		fee: newFee,
 		selectedFeeId,
@@ -1145,7 +1145,7 @@ export const updateFee = ({
 	}
 
 	if (max || newTotalAmount <= inputTotal) {
-		updateBitcoinTransaction({
+		updateSendTransaction({
 			selectedNetwork,
 			selectedWallet,
 			transaction: _transaction,
@@ -1341,11 +1341,11 @@ export const autoCoinSelect = async ({
 
 /**
  * Used to validate transaction form data.
- * @param {IBitcoinTransactionData} transaction
+ * @param {ISendTransaction} transaction
  * @return {Result<string>}
  */
 export const validateTransaction = (
-	transaction: IBitcoinTransactionData,
+	transaction: ISendTransaction,
 ): Result<string> => {
 	const baseFee = TRANSACTION_DEFAULTS.recommendedBaseFee;
 
@@ -1467,7 +1467,7 @@ export const canBoost = (txid: string): ICanBoostResponse => {
 
 /**
  * Calculates the max amount able to send for onchain/lightning
- * @param {IBitcoinTransactionData} [transaction]
+ * @param {ISendTransaction} [transaction]
  * @param {TAvailableNetworks} [selectedNetwork]
  * @param {TWalletName} [selectedWallet]
  * @param {number} [index]
@@ -1477,7 +1477,7 @@ export const getMaxSendAmount = ({
 	selectedNetwork,
 	selectedWallet,
 }: {
-	transaction?: IBitcoinTransactionData;
+	transaction?: ISendTransaction;
 	selectedNetwork: TAvailableNetworks;
 	selectedWallet: TWalletName;
 }): Result<{ amount: number; fee?: number }> => {
@@ -1562,7 +1562,7 @@ export const getMaxSendAmount = ({
 /**
  * Sends the max amount to the provided output index.
  * @param {string} [address] If left undefined, the current receiving address will be provided.
- * @param {IBitcoinTransactionData} [transaction]
+ * @param {ISendTransaction} [transaction]
  * @param {number} [index]
  * @param {TAvailableNetworks} [selectedNetwork]
  * @param {TWalletName} [selectedWallet]
@@ -1575,7 +1575,7 @@ export const sendMax = ({
 	selectedWallet,
 }: {
 	address?: string;
-	transaction?: Partial<IBitcoinTransactionData>;
+	transaction?: Partial<ISendTransaction>;
 	index?: number;
 	selectedNetwork?: TAvailableNetworks;
 	selectedWallet?: TWalletName;
@@ -1613,7 +1613,7 @@ export const sendMax = ({
 		const { amount, fee } = maxAmountResponse.value;
 
 		if (!transaction.max) {
-			updateBitcoinTransaction({
+			updateSendTransaction({
 				selectedWallet,
 				selectedNetwork,
 				transaction: {
@@ -1623,7 +1623,7 @@ export const sendMax = ({
 				},
 			});
 		} else {
-			updateBitcoinTransaction({
+			updateSendTransaction({
 				selectedWallet,
 				selectedNetwork,
 				transaction: {
@@ -1641,7 +1641,7 @@ export const sendMax = ({
 /**
  * Adjusts the fee by a given sat per byte.
  * @param {number} [adjustBy]
- * @param {IBitcoinTransactionData} [transaction]
+ * @param {ISendTransaction} [transaction]
  * @param {TAvailableNetworks} [selectedNetwork]
  * @param {TWalletName} [selectedWallet]
  */
@@ -1652,7 +1652,7 @@ export const adjustFee = ({
 	selectedWallet,
 }: {
 	adjustBy: number;
-	transaction?: IBitcoinTransactionData;
+	transaction?: ISendTransaction;
 	selectedNetwork?: TAvailableNetworks;
 	selectedWallet?: TWalletName;
 }): Result<string> => {
@@ -1698,7 +1698,7 @@ export const adjustFee = ({
 /**
  * Updates the amount to send for the currently selected output.
  * @param {number} amount
- * @param {IBitcoinTransactionData} [transaction]
+ * @param {ISendTransaction} [transaction]
  * @param {TAvailableNetworks} [selectedNetwork]
  * @param {TWalletName} [selectedWallet]
  */
@@ -1709,7 +1709,7 @@ export const updateSendAmount = ({
 	selectedWallet,
 }: {
 	amount: number;
-	transaction?: IBitcoinTransactionData;
+	transaction?: ISendTransaction;
 	selectedNetwork?: TAvailableNetworks;
 	selectedWallet?: TWalletName;
 }): Result<string> => {
@@ -1788,7 +1788,7 @@ export const updateSendAmount = ({
 		return ok('No change detected. No need to update.');
 	}
 
-	updateBitcoinTransaction({
+	updateSendTransaction({
 		selectedWallet,
 		selectedNetwork,
 		transaction: {
@@ -1804,7 +1804,7 @@ export const updateSendAmount = ({
  * Updates the OP_RETURN message.
  * CURRENTLY UNUSED
  * @param {string} message
- * @param {IBitcoinTransactionData} [transaction]
+ * @param {ISendTransaction} [transaction]
  * @param {number} [index]
  * @param {TWalletName} [selectedWallet]
  * @param {TAvailableNetworks} [selectedNetwork]
@@ -1817,7 +1817,7 @@ export const updateMessage = async ({
 	selectedNetwork,
 }: {
 	message: string;
-	transaction?: IBitcoinTransactionData;
+	transaction?: ISendTransaction;
 	index?: number;
 	selectedWallet?: TWalletName;
 	selectedNetwork?: TAvailableNetworks;
@@ -1859,14 +1859,14 @@ export const updateMessage = async ({
 	if (outputs?.length > index) {
 		address = outputs[index].address ?? '';
 	}
-	const _transaction: Partial<IBitcoinTransactionData> = {
+	const _transaction: Partial<ISendTransaction> = {
 		message,
 		fee: newFee,
 	};
 	if (max) {
 		_transaction.outputs = [{ address, value: inputTotal - newFee, index }];
 		//Update the tx value with the new fee to continue sending the max amount.
-		updateBitcoinTransaction({
+		updateSendTransaction({
 			selectedNetwork,
 			selectedWallet,
 			transaction: _transaction,
@@ -1874,7 +1874,7 @@ export const updateMessage = async ({
 		return ok('Successfully updated the message.');
 	}
 	if (totalNewAmount <= inputTotal) {
-		updateBitcoinTransaction({
+		updateSendTransaction({
 			selectedNetwork,
 			selectedWallet,
 			transaction: _transaction,
@@ -1885,7 +1885,7 @@ export const updateMessage = async ({
 
 /**
  * Runs & Applies the autoCoinSelect method to the current transaction.
- * @param {IBitcoinTransactionData} [transaction]
+ * @param {ISendTransaction} [transaction]
  * @param {TWalletName} [selectedWallet]
  * @param {TAvailableNetworks} [selectedNetwork]
  */
@@ -1896,7 +1896,7 @@ const runCoinSelect = async ({
 	selectedWallet,
 	selectedNetwork,
 }: {
-	transaction?: IBitcoinTransactionData;
+	transaction?: ISendTransaction;
 	selectedNetwork?: TAvailableNetworks;
 	selectedWallet?: TWalletName;
 }): Promise<Result<string>> => {
@@ -1941,11 +1941,11 @@ const runCoinSelect = async ({
 		if (
 			transaction?.inputs?.length !== autoCoinSelectResponse.value.inputs.length
 		) {
-			const updatedTx: IBitcoinTransactionData = {
+			const updatedTx: ISendTransaction = {
 				fee: autoCoinSelectResponse.value.fee,
 				inputs: autoCoinSelectResponse.value.inputs,
 			};
-			updateBitcoinTransaction({
+			updateSendTransaction({
 				selectedWallet,
 				selectedNetwork,
 				transaction: updatedTx,
@@ -1973,7 +1973,7 @@ export const setupBoost = async ({
 	txid: string;
 	selectedWallet?: TWalletName;
 	selectedNetwork?: TAvailableNetworks;
-}): Promise<Result<Partial<IBitcoinTransactionData>>> => {
+}): Promise<Result<Partial<ISendTransaction>>> => {
 	if (!selectedNetwork) {
 		selectedNetwork = getSelectedNetwork();
 	}
@@ -2008,7 +2008,7 @@ export const setupCpfp = async ({
 	selectedNetwork?: TAvailableNetworks;
 	txid?: string; // txid of utxo to include in the CPFP tx. Undefined will gather all utxo's.
 	satsPerByte?: number;
-}): Promise<Result<Partial<IBitcoinTransactionData>>> => {
+}): Promise<Result<Partial<ISendTransaction>>> => {
 	if (!selectedNetwork) {
 		selectedNetwork = getSelectedNetwork();
 	}
@@ -2067,7 +2067,7 @@ export const setupRbf = async ({
 	txid: string;
 	selectedWallet?: TWalletName;
 	selectedNetwork?: TAvailableNetworks;
-}): Promise<Result<Partial<IBitcoinTransactionData>>> => {
+}): Promise<Result<Partial<ISendTransaction>>> => {
 	try {
 		if (!selectedNetwork) {
 			selectedNetwork = getSelectedNetwork();
@@ -2135,7 +2135,7 @@ export const setupRbf = async ({
 				txid,
 			});
 		}
-		const newTransaction: Partial<IBitcoinTransactionData> = {
+		const newTransaction: Partial<ISendTransaction> = {
 			...transaction,
 			minFee: _satsPerByte,
 			fee: newFee,
@@ -2144,7 +2144,7 @@ export const setupRbf = async ({
 			boostType: EBoostType.rbf,
 		};
 
-		updateBitcoinTransaction({
+		updateSendTransaction({
 			selectedWallet,
 			selectedNetwork,
 			transaction: newTransaction,

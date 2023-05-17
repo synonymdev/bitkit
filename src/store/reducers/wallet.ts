@@ -5,7 +5,7 @@ import { IWalletStore } from '../types/wallet';
 import {
 	getDefaultWalletShape,
 	defaultWalletStoreShape,
-	defaultBitcoinTransactionData,
+	defaultSendTransaction,
 } from '../shapes/wallet';
 
 const wallet = (
@@ -207,7 +207,7 @@ const wallet = (
 				exchangeRates: defaultWalletStoreShape.exchangeRates,
 			};
 
-		case actions.UPDATE_ON_CHAIN_TRANSACTION:
+		case actions.UPDATE_SEND_TRANSACTION:
 			const transaction = action.payload.transaction;
 			return {
 				...state,
@@ -242,14 +242,14 @@ const wallet = (
 								outputs: action.payload.outputs,
 								fee: action.payload.fee,
 								rbf: action.payload.rbf,
-								max: defaultBitcoinTransactionData.max,
+								max: defaultSendTransaction.max,
 							},
 						},
 					},
 				},
 			};
 
-		case actions.RESET_ON_CHAIN_TRANSACTION:
+		case actions.RESET_SEND_TRANSACTION:
 			return {
 				...state,
 				wallets: {
@@ -258,7 +258,7 @@ const wallet = (
 						...state.wallets[selectedWallet],
 						transaction: {
 							...state.wallets[selectedWallet].transaction,
-							[selectedNetwork]: defaultBitcoinTransactionData,
+							[selectedNetwork]: defaultSendTransaction,
 						},
 					},
 				},

@@ -3,7 +3,7 @@ import '../src/store/actions/ui';
 import {
 	createWallet,
 	setupOnChainTransaction,
-	updateBitcoinTransaction,
+	updateSendTransaction,
 	updateWallet,
 } from '../src/store/actions/wallet';
 import { getSelectedWallet } from '../src/utils/wallet';
@@ -33,7 +33,7 @@ describe('On chain transactions', () => {
 	it('Creates an on chain transaction from the transaction store', async () => {
 		const selectedWallet = getSelectedWallet();
 
-		updateBitcoinTransaction({
+		updateSendTransaction({
 			selectedNetwork,
 			selectedWallet,
 			transaction: {

@@ -1,9 +1,9 @@
 import cloneDeep from 'lodash.clonedeep';
 import { IChecksContent, IChecksShape } from '../types/checks';
-import { arrayTypeItems } from './wallet';
+import { getNetworkContent } from './wallet';
 
 export const defaultChecksContent: IChecksContent = {
-	warnings: arrayTypeItems,
+	warnings: getNetworkContent([]),
 };
 
 export const getDefaultChecksContent = (): IChecksContent => {

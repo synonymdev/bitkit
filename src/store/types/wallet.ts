@@ -160,7 +160,7 @@ export interface IUtxo {
 export interface IOutput {
 	address: string; // Address to send to.
 	value: number; // Amount denominated in sats.
-	index: number; // Used to specify which output to update or edit when using updateBitcoinTransaction.
+	index: number; // Used to specify which output to update or edit when using updateSendTransaction.
 }
 
 export interface IFormattedTransaction {
@@ -185,7 +185,7 @@ export interface IFormattedTransactions {
 	[key: string]: IFormattedTransaction;
 }
 
-export interface IBitcoinTransactionData {
+export interface ISendTransaction {
 	outputs: IOutput[];
 	inputs: IUtxo[];
 	changeAddress: string;
@@ -229,7 +229,7 @@ export interface IWallet {
 	blacklistedUtxos: IWalletItem<[]>;
 	boostedTransactions: IWalletItem<IBoostedTransactions>;
 	transactions: IWalletItem<IFormattedTransactions>;
-	transaction: IWalletItem<IBitcoinTransactionData>;
+	transaction: IWalletItem<ISendTransaction>;
 	balance: IWalletItem<number>;
 	addressType: {
 		bitcoin: EAddressType;

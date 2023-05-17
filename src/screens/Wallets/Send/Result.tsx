@@ -22,7 +22,7 @@ import { rootNavigation } from '../../../navigation/root/RootNavigator';
 import Store from '../../../store/types';
 import type { SendScreenProps } from '../../../navigation/types';
 import {
-	resetOnChainTransaction,
+	resetSendTransaction,
 	setupOnChainTransaction,
 } from '../../../store/actions/wallet';
 import { activityItemSelector } from '../../../store/reselect/activity';
@@ -133,7 +133,7 @@ const Result = ({
 	const handleRetry = async (): Promise<void> => {
 		if (transaction.lightningInvoice && transaction.slashTagsUrl) {
 			setLoading(true);
-			resetOnChainTransaction({
+			resetSendTransaction({
 				selectedWallet,
 				selectedNetwork,
 			});
@@ -168,7 +168,7 @@ const Result = ({
 			If unable to properly create a valid transaction for any reason, reset the tx state as done below.
 		*/
 		//If unable to broadcast for any reason, reset the transaction object and try again.
-		resetOnChainTransaction({ selectedWallet, selectedNetwork });
+		resetSendTransaction({ selectedWallet, selectedNetwork });
 		await setupOnChainTransaction({
 			selectedWallet,
 			selectedNetwork,

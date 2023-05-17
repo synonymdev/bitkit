@@ -26,7 +26,7 @@ import {
 	showInfoNotification,
 	showSuccessNotification,
 } from './notifications';
-import { updateBitcoinTransaction } from '../store/actions/wallet';
+import { updateSendTransaction } from '../store/actions/wallet';
 import { getBalance, getSelectedNetwork, getSelectedWallet } from './wallet';
 import { showBottomSheet, closeBottomSheet } from '../store/actions/ui';
 import { handleSlashtagURL } from './slashtags';
@@ -715,7 +715,7 @@ export const handleData = async ({
 			// If BottomSheet is already open (SendScanner)
 			sendNavigation.navigate('Amount');
 
-			updateBitcoinTransaction({
+			updateSendTransaction({
 				selectedWallet,
 				selectedNetwork,
 				transaction: {
@@ -750,7 +750,7 @@ export const handleData = async ({
 				sendNavigation.navigate('Amount');
 			}
 
-			updateBitcoinTransaction({
+			updateSendTransaction({
 				selectedWallet,
 				selectedNetwork,
 				transaction: {

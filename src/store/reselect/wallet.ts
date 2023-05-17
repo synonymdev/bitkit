@@ -8,11 +8,11 @@ import {
 	IBoostedTransactions,
 	IFormattedTransactions,
 	IFormattedTransaction,
-	IBitcoinTransactionData,
+	ISendTransaction,
 	IUtxo,
 	EAddressType,
 } from '../types/wallet';
-import { defaultBitcoinTransactionData } from '../shapes/wallet';
+import { defaultSendTransaction } from '../shapes/wallet';
 import { TAvailableNetworks } from '../../utils/networks';
 import { IExchangeRates } from '../../utils/exchange-rate';
 import { EFeeId } from '../types/fees';
@@ -96,16 +96,16 @@ export const transactionsSelector = createSelector(
 /**
  * Returns transaction data for the currently selected wallet & network.
  * @param {Store} state
- * @returns {IBitcoinTransactionData}
+ * @returns {ISendTransaction}
  */
 export const transactionSelector = createSelector(
 	[walletState],
-	(wallet): IBitcoinTransactionData => {
+	(wallet): ISendTransaction => {
 		const selectedWallet = wallet.selectedWallet;
 		const selectedNetwork = wallet.selectedNetwork;
 		return (
 			wallet.wallets[selectedWallet]?.transaction[selectedNetwork] ||
-			defaultBitcoinTransactionData
+			defaultSendTransaction
 		);
 	},
 );
@@ -122,7 +122,7 @@ export const transactionInputsSelector = createSelector(
 		const selectedNetwork = wallet.selectedNetwork;
 		const transaction =
 			wallet.wallets[selectedWallet]?.transaction[selectedNetwork] ||
-			defaultBitcoinTransactionData;
+			defaultSendTransaction;
 		return transaction.inputs;
 	},
 );
@@ -130,7 +130,7 @@ export const transactionInputsSelector = createSelector(
 /**
  * Returns transaction fee for the currently selected wallet & network.
  * @param {Store} state
- * @returns {IBitcoinTransactionData}
+ * @returns {ISendTransaction}
  */
 export const transactionFeeSelector = createSelector(
 	[walletState],
@@ -139,7 +139,7 @@ export const transactionFeeSelector = createSelector(
 		const selectedNetwork = wallet.selectedNetwork;
 		return (
 			wallet.wallets[selectedWallet]?.transaction[selectedNetwork].fee ||
-			defaultBitcoinTransactionData.fee
+			defaultSendTransaction.fee
 		);
 	},
 );
@@ -147,7 +147,7 @@ export const transactionFeeSelector = createSelector(
 /**
  * Returns whether transaction is set to max for the currently selected wallet & network.
  * @param {Store} state
- * @returns {IBitcoinTransactionData}
+ * @returns {ISendTransaction}
  */
 export const transactionMaxSelector = createSelector(
 	[walletState],

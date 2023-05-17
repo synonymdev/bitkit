@@ -31,7 +31,7 @@ import type { SendScreenProps } from '../../../navigation/types';
 import ContactSmall from '../../../components/ContactSmall';
 import useColors from '../../../hooks/colors';
 import {
-	resetOnChainTransaction,
+	resetSendTransaction,
 	setupOnChainTransaction,
 } from '../../../store/actions/wallet';
 
@@ -106,7 +106,7 @@ const Recipient = ({
 
 	const onRemoveContact = async (): Promise<void> => {
 		setTextFieldValue('');
-		resetOnChainTransaction({
+		resetSendTransaction({
 			selectedWallet,
 			selectedNetwork,
 		});

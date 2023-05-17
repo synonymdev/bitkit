@@ -23,7 +23,7 @@ import NumberPadLightning from './NumberPadLightning';
 import type { LightningScreenProps } from '../../navigation/types';
 import { useBalance } from '../../hooks/wallet';
 import {
-	resetOnChainTransaction,
+	resetSendTransaction,
 	setupOnChainTransaction,
 } from '../../store/actions/wallet';
 import { convertCurrency, convertToSats } from '../../utils/conversion';
@@ -116,7 +116,7 @@ const CustomSetup = ({
 
 	useFocusEffect(
 		useCallback(() => {
-			resetOnChainTransaction({ selectedNetwork, selectedWallet });
+			resetSendTransaction({ selectedNetwork, selectedWallet });
 			setupOnChainTransaction({ selectedNetwork, selectedWallet }).then();
 			refreshBlocktankInfo().then();
 		}, [selectedNetwork, selectedWallet]),

@@ -6,7 +6,7 @@ import {
 	ICreateWallet,
 	IFormattedTransactions,
 	IKeyDerivationPath,
-	IBitcoinTransactionData,
+	ISendTransaction,
 	IUtxo,
 	EAddressType,
 	IBoostedTransactions,
@@ -765,23 +765,21 @@ export const deleteOnChainTransactionById = async ({
 	selectedWallet?: TWalletName;
 	selectedNetwork?: TAvailableNetworks;
 }): Promise<void> => {
-	try {
-		if (!selectedNetwork) {
-			selectedNetwork = getSelectedNetwork();
-		}
-		if (!selectedWallet) {
-			selectedWallet = getSelectedWallet();
-		}
-		const payload = {
-			txid,
-			selectedNetwork,
-			selectedWallet,
-		};
-		dispatch({
-			type: actions.DELETE_ON_CHAIN_TRANSACTION,
-			payload,
-		});
-	} catch (e) {}
+	if (!selectedNetwork) {
+		selectedNetwork = getSelectedNetwork();
+	}
+	if (!selectedWallet) {
+		selectedWallet = getSelectedWallet();
+	}
+	const payload = {
+		txid,
+		selectedNetwork,
+		selectedWallet,
+	};
+	dispatch({
+		type: actions.DELETE_ON_CHAIN_TRANSACTION,
+		payload,
+	});
 };
 
 /**
@@ -882,14 +880,14 @@ export const resetWalletStore = async (): Promise<Result<string>> => {
 
 /**
  * Sets up a transaction for a given wallet by gathering inputs, setting the next available change address as an output and sets up the baseline fee structure.
- * This function will not override previously set transaction data. To do that you'll need to call resetOnChainTransaction.
+ * This function will not override previously set transaction data. To do that you'll need to call resetSendTransaction.
  * @param {TWalletName} [selectedWallet]
  * @param {TAvailableNetworks} [selectedNetwork]
  * @param {EAddressType} [addressType]
  * @param {string[]} [inputTxHashes]
  * @param {IUtxo[]} [utxos]
  * @param {boolean} [rbf]
- * @returns {Promise<Result<Partial<IBitcoinTransactionData>>>}
+ * @returns {Promise<Result<Partial<ISendTransaction>>>}
  */
 export const setupOnChainTransaction = async ({
 	selectedWallet,
@@ -905,7 +903,7 @@ export const setupOnChainTransaction = async ({
 	inputTxHashes?: string[]; // Used to pre-specify inputs to use by tx_hash
 	utxos?: IUtxo[]; // Used to pre-specify utxos to use
 	rbf?: boolean; // Enable or disable rbf.
-} = {}): Promise<Result<Partial<IBitcoinTransactionData>>> => {
+} = {}): Promise<Result<Partial<ISendTransaction>>> => {
 	try {
 		if (!selectedNetwork) {
 			selectedNetwork = getSelectedNetwork();
@@ -1084,18 +1082,18 @@ export const getChangeAddress = async ({
 };
 
 /**
- * This updates the specified on-chain transaction.
- * @param {Partial<IBitcoinTransactionData>} transaction
+ * This updates the transaction state used for sending.
+ * @param {Partial<ISendTransaction>} transaction
  * @param {TWalletName} [selectedWallet]
  * @param {TAvailableNetworks} [selectedNetwork]
  * @return {Promise<Result<string>>}
  */
-export const updateBitcoinTransaction = ({
+export const updateSendTransaction = ({
 	transaction,
 	selectedWallet,
 	selectedNetwork,
 }: {
-	transaction: Partial<IBitcoinTransactionData>;
+	transaction: Partial<ISendTransaction>;
 	selectedWallet?: TWalletName;
 	selectedNetwork?: TAvailableNetworks;
 }): Result<string> => {
@@ -1119,7 +1117,7 @@ export const updateBitcoinTransaction = ({
 		}
 
 		dispatch({
-			type: actions.UPDATE_ON_CHAIN_TRANSACTION,
+			type: actions.UPDATE_SEND_TRANSACTION,
 			payload: {
 				transaction,
 				selectedNetwork,
@@ -1158,7 +1156,7 @@ export const updateSelectedFeeId = async ({
 		}
 		const transaction = transactionResponse.value;
 		transaction.selectedFeeId = feeId;
-		updateBitcoinTransaction({ transaction });
+		updateSendTransaction({ transaction });
 		return ok('Fee updated');
 	} catch (e) {
 		console.log(e);
@@ -1167,12 +1165,12 @@ export const updateSelectedFeeId = async ({
 };
 
 /**
- * This completely resets the on-chain transaction data for the specified wallet and network.
+ * This completely resets the send transaction state for the specified wallet and network.
  * @param {TWalletName} [selectedWallet]
  * @param {TAvailableNetworks} [selectedNetwork]
  * @returns {Result<string>}
  */
-export const resetOnChainTransaction = ({
+export const resetSendTransaction = ({
 	selectedWallet,
 	selectedNetwork,
 }: {
@@ -1192,7 +1190,7 @@ export const resetOnChainTransaction = ({
 			selectedWallet,
 		};
 		dispatch({
-			type: actions.RESET_ON_CHAIN_TRANSACTION,
+			type: actions.RESET_SEND_TRANSACTION,
 			payload,
 		});
 		return ok('Transaction reseted');
@@ -1273,7 +1271,7 @@ export const removeTxInput = ({
 				return txInput;
 			}
 		});
-		updateBitcoinTransaction({
+		updateSendTransaction({
 			selectedNetwork,
 			selectedWallet,
 			transaction: {
@@ -1318,7 +1316,7 @@ export const addTxInput = ({
 		}
 		const inputs = txData.value?.inputs ?? [];
 		const newInputs = [...inputs, input];
-		updateBitcoinTransaction({
+		updateSendTransaction({
 			selectedNetwork,
 			selectedWallet,
 			transaction: {
@@ -1365,7 +1363,7 @@ export const addTxTag = ({
 		let tags = [...txData.value.tags, tag];
 		tags = [...new Set(tags)]; // remove duplicates
 
-		updateBitcoinTransaction({
+		updateSendTransaction({
 			selectedNetwork,
 			selectedWallet,
 			transaction: {
@@ -1413,7 +1411,7 @@ export const removeTxTag = ({
 		const tags = txData.value.tags;
 		const newTags = tags.filter((t) => t !== tag);
 
-		updateBitcoinTransaction({
+		updateSendTransaction({
 			selectedNetwork,
 			selectedWallet,
 			transaction: {

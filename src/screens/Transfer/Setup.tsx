@@ -31,7 +31,7 @@ import { SPENDING_LIMIT_RATIO } from '../../utils/wallet/constants';
 import { convertToSats } from '../../utils/conversion';
 import { getFiatDisplayValues } from '../../utils/displayValues';
 import {
-	resetOnChainTransaction,
+	resetSendTransaction,
 	setupOnChainTransaction,
 } from '../../store/actions/wallet';
 import type { TransferScreenProps } from '../../navigation/types';
@@ -63,7 +63,7 @@ const Setup = ({ navigation }: TransferScreenProps<'Setup'>): ReactElement => {
 
 	useFocusEffect(
 		useCallback(() => {
-			resetOnChainTransaction({ selectedNetwork, selectedWallet });
+			resetSendTransaction({ selectedNetwork, selectedWallet });
 			setupOnChainTransaction({ selectedNetwork, selectedWallet }).then();
 			refreshBlocktankInfo().then();
 		}, [selectedNetwork, selectedWallet]),

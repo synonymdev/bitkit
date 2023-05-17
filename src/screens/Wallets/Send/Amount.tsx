@@ -43,7 +43,7 @@ import {
 import { useProfile } from '../../../hooks/slashtags';
 import { useCurrency } from '../../../hooks/displayValues';
 import { updateSettings } from '../../../store/actions/settings';
-import { updateBitcoinTransaction } from '../../../store/actions/wallet';
+import { updateSendTransaction } from '../../../store/actions/wallet';
 import { getNumberPadText } from '../../../utils/numberpad';
 import { convertToSats } from '../../../utils/conversion';
 import { TRANSACTION_DEFAULTS } from '../../../utils/wallet/constants';
@@ -108,11 +108,11 @@ const Amount = ({ navigation }: SendScreenProps<'Amount'>): ReactElement => {
 	// Unset isMaxSendAmount after edit
 	useEffect(() => {
 		if (isMaxSendAmount && amount !== availableAmount) {
-			updateBitcoinTransaction({ transaction: { max: false } });
+			updateSendTransaction({ transaction: { max: false } });
 		}
 
 		if (!isMaxSendAmount && amount === availableAmount) {
-			updateBitcoinTransaction({ transaction: { max: true } });
+			updateSendTransaction({ transaction: { max: true } });
 		}
 	}, [isMaxSendAmount, amount, availableAmount]);
 
