@@ -106,8 +106,21 @@ export const wipeLdkStorage = async ({
 	await ldk.reset();
 	const path = `${RNFS.DocumentDirectoryPath}/ldk/${lm.account.name}`;
 
+	const deleteAllFiles = async (dirpath: string): Promise<void> => {
+		const items = await RNFS.readDir(dirpath);
+		for (const item of items) {
+			if (item.isFile()) {
+				await RNFS.unlink(item.path);
+			} else {
+				deleteAllFiles(item.path);
+			}
+		}
+	};
+
 	try {
-		await RNFS.unlink(path);
+		// delete all files in the directory
+		// NOTE: this is a workaround for RNFS.unlink(folder) freezing the app
+		await deleteAllFiles(path);
 	} catch (e) {
 		return err(e);
 	}

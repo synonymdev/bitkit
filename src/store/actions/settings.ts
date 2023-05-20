@@ -1,16 +1,16 @@
-import RNRestart from 'react-native-restart';
 import { err, ok, Result } from '@synonymdev/result';
-import { Platform, BackHandler } from 'react-native';
+import RNRestart from 'react-native-restart';
 
 import actions from './actions';
 import { getDispatch } from '../helpers';
+import { sleep } from '../../utils/helpers';
+import { removePin } from '../../utils/settings';
+import { wipeLdkStorage } from '../../utils/lightning';
+import { TAvailableNetworks } from '../../utils/networks';
+import { showSuccessNotification } from '../../utils/notifications';
 import { getSelectedNetwork, getSelectedWallet } from '../../utils/wallet';
 import { getAllKeychainKeys, resetKeychainValue } from '../../utils/keychain';
-import { wipeLdkStorage } from '../../utils/lightning';
-import { removePin } from '../../utils/settings';
-import { TAvailableNetworks } from '../../utils/networks';
 import { ICustomElectrumPeer, ISettings } from '../types/settings';
-import { showSuccessNotification } from '../../utils/notifications';
 import { TWalletName } from '../types/wallet';
 
 const dispatch = getDispatch();
@@ -70,15 +70,12 @@ export const wipeApp = async ({
 			});
 		}
 
-		// BackHandler.exitApp() works fine on Android and closes the app
-		// for iOS we are using react-native-restart to restart the app
 		if (restartApp) {
-			if (Platform.OS === 'android') {
-				BackHandler.exitApp();
-			} else {
-				RNRestart.Restart();
-			}
+			// avoid freeze on iOS
+			await sleep(1000);
+			RNRestart.Restart();
 		}
+
 		return ok('');
 	} catch (e) {
 		console.log(e);
