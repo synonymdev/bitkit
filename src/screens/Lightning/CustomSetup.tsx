@@ -21,7 +21,7 @@ import NavigationHeader from '../../components/NavigationHeader';
 import Button from '../../components/Button';
 import NumberPadLightning from './NumberPadLightning';
 import type { LightningScreenProps } from '../../navigation/types';
-import { useBalance } from '../../hooks/wallet';
+import { useBalance, useSwitchUnit } from '../../hooks/wallet';
 import {
 	resetSendTransaction,
 	setupOnChainTransaction,
@@ -30,7 +30,7 @@ import { convertCurrency, convertToSats } from '../../utils/conversion';
 import { getFiatDisplayValues } from '../../utils/displayValues';
 import { showErrorNotification } from '../../utils/notifications';
 import { startChannelPurchase } from '../../store/actions/blocktank';
-import { EBalanceUnit, EBitcoinUnit } from '../../store/types/wallet';
+import { EBalanceUnit } from '../../store/types/wallet';
 import {
 	balanceUnitSelector,
 	selectedCurrencySelector,
@@ -45,10 +45,10 @@ import {
 } from '../../store/reselect/wallet';
 import NumberPadTextField from '../../components/NumberPadTextField';
 import { getNumberPadText } from '../../utils/numberpad';
-import { updateSettings } from '../../store/actions/settings';
 import { DEFAULT_CHANNEL_DURATION } from './CustomConfirm';
 import { SPENDING_LIMIT_RATIO } from '../../utils/wallet/constants';
 import { refreshBlocktankInfo } from '../../store/actions/blocktank';
+import useDisplayValues from '../../hooks/displayValues';
 
 export type TPackage = {
 	id: 'small' | 'medium' | 'big';
@@ -99,8 +99,10 @@ const CustomSetup = ({
 }: LightningScreenProps<'CustomSetup'>): ReactElement => {
 	const { spending, spendingAmount } = route.params;
 	const { t } = useTranslation('lightning');
+	const [nextUnit, onSwitchUnit] = useSwitchUnit();
+	const { onchainBalance } = useBalance();
+	const { fiatValue: onchainFiatBalance } = useDisplayValues(onchainBalance);
 	const unit = useSelector(balanceUnitSelector);
-	const currentBalance = useBalance({ onchain: true });
 	const productId = useSelector(blocktankProductIdSelector);
 	const selectedWallet = useSelector(selectedWalletSelector);
 	const selectedNetwork = useSelector(selectedNetworkSelector);
@@ -124,7 +126,7 @@ const CustomSetup = ({
 
 	useEffect(() => {
 		const spendableBalance = Math.round(
-			currentBalance.fiatValue * SPENDING_LIMIT_RATIO,
+			onchainFiatBalance * SPENDING_LIMIT_RATIO,
 		);
 
 		let reachedSpendingCap = false;
@@ -227,7 +229,7 @@ const CustomSetup = ({
 		});
 		setReceivingPackages(availReceivingPackages);
 	}, [
-		currentBalance.fiatValue,
+		onchainFiatBalance,
 		blocktankService.max_chan_receiving,
 		blocktankService.max_chan_receiving_usd,
 		selectedCurrency,
@@ -249,7 +251,7 @@ const CustomSetup = ({
 
 			// Attempt to suggest a receiving balance 10x greater than current on-chain balance.
 			// May not be able to afford anything much larger.
-			const balanceMultiplied = currentBalance.satoshis * 10;
+			const balanceMultiplied = onchainBalance * 10;
 			const amount =
 				balanceMultiplied > big.satoshis
 					? big.satoshis
@@ -268,7 +270,7 @@ const CustomSetup = ({
 	}, [
 		blocktankService.max_chan_receiving,
 		blocktankService.min_channel_size,
-		currentBalance.satoshis,
+		onchainBalance,
 		receivingPackages,
 		spending,
 	]);
@@ -278,10 +280,8 @@ const CustomSetup = ({
 	}, [textFieldValue, unit]);
 
 	const maxAmount = useMemo((): number => {
-		return spending
-			? currentBalance.satoshis
-			: blocktankService.max_chan_receiving;
-	}, [spending, currentBalance.satoshis, blocktankService.max_chan_receiving]);
+		return spending ? onchainBalance : blocktankService.max_chan_receiving;
+	}, [spending, onchainBalance, blocktankService.max_chan_receiving]);
 
 	// fetch approximate channel open cost on ReceiveAmount screen
 	useEffect(() => {
@@ -360,27 +360,10 @@ const CustomSetup = ({
 		unit,
 	]);
 
-	// BTC -> satoshi -> fiat
-	const nextUnit = useMemo(() => {
-		if (unit === EBalanceUnit.BTC) {
-			return EBalanceUnit.satoshi;
-		}
-		if (unit === EBalanceUnit.satoshi) {
-			return EBalanceUnit.fiat;
-		}
-		return EBalanceUnit.BTC;
-	}, [unit]);
-
 	const onChangeUnit = (): void => {
 		const result = getNumberPadText(amount, nextUnit);
 		setTextFieldValue(result);
-
-		updateSettings({
-			balanceUnit: nextUnit,
-			...(nextUnit !== EBalanceUnit.fiat && {
-				bitcoinUnit: nextUnit as unknown as EBitcoinUnit,
-			}),
-		});
+		onSwitchUnit();
 	};
 
 	const onMax = useCallback(() => {

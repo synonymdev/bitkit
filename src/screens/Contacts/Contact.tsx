@@ -55,11 +55,11 @@ const Contact = ({
 	const { slashtag } = useSelectedSlashtag();
 	const sdk = useSlashtagsSDK();
 	const contactRecord = useSlashtags().contacts[url];
-	const balance = useBalance({ onchain: true, lightning: true });
+	const { spendableBalance } = useBalance();
 
 	const canSend = useMemo(() => {
-		return balance.satoshis > 0;
-	}, [balance.satoshis]);
+		return spendableBalance > 0;
+	}, [spendableBalance]);
 
 	const profileCard = useMemo(
 		() => ({ ...profile, ...contactRecord }),

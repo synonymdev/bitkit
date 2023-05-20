@@ -1,6 +1,7 @@
 import React, { memo, ReactElement, useEffect, useMemo } from 'react';
 import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import { useSelector } from 'react-redux';
 
 import { __E2E__ } from '../../constants/env';
 import { Caption13Up, Display, Text02S } from '../../styles/text';
@@ -13,7 +14,6 @@ import { ignoreHighBalance } from '../../store/actions/user';
 import { closeBottomSheet, showBottomSheet } from '../../store/actions/ui';
 import { viewControllersSelector } from '../../store/reselect/ui';
 import { useBalance } from '../../hooks/wallet';
-import { useAppSelector } from '../../hooks/redux';
 import { getFiatDisplayValues } from '../../utils/displayValues';
 import { openURL } from '../../utils/helpers';
 import { objectKeys } from '../../utils/objectKeys';
@@ -68,13 +68,13 @@ const HighBalanceWarning = ({
 	enabled: boolean;
 }): ReactElement => {
 	const { t } = useTranslation('other');
+	const { totalBalance } = useBalance();
 	const snapPoints = useSnapPoints('medium');
-	const balance = useBalance({ onchain: true, lightning: true });
-	const count = useAppSelector(ignoreHighBalanceCountSelector);
-	const bitcoinUnit = useAppSelector(bitcoinUnitSelector);
-	const exchangeRates = useAppSelector(exchangeRatesSelector);
-	const viewControllers = useAppSelector(viewControllersSelector);
-	const ignoreTimestamp = useAppSelector(ignoreHighBalanceTimestampSelector);
+	const count = useSelector(ignoreHighBalanceCountSelector);
+	const bitcoinUnit = useSelector(bitcoinUnitSelector);
+	const exchangeRates = useSelector(exchangeRatesSelector);
+	const viewControllers = useSelector(viewControllersSelector);
+	const ignoreTimestamp = useSelector(ignoreHighBalanceTimestampSelector);
 
 	useBottomSheetBackPress('highBalance');
 
@@ -86,7 +86,7 @@ const HighBalanceWarning = ({
 	}, [viewControllers]);
 
 	const { fiatValue } = getFiatDisplayValues({
-		satoshis: balance.satoshis,
+		satoshis: totalBalance,
 		currency: 'USD',
 		bitcoinUnit,
 		exchangeRates,
@@ -102,7 +102,7 @@ const HighBalanceWarning = ({
 			// fallback in case exchange rates are not available
 			fiatValue !== 0
 				? fiatValue > BALANCE_THRESHOLD_USD
-				: balance.satoshis > BALANCE_THRESHOLD_SATS;
+				: totalBalance > BALANCE_THRESHOLD_SATS;
 		const belowMaxWarnings = count < MAX_WARNINGS;
 		const isTimeoutOver = Number(new Date()) - ignoreTimestamp > ASK_INTERVAL;
 		return (
@@ -116,7 +116,7 @@ const HighBalanceWarning = ({
 	}, [
 		enabled,
 		fiatValue,
-		balance.satoshis,
+		totalBalance,
 		count,
 		ignoreTimestamp,
 		anyBottomSheetIsOpen,

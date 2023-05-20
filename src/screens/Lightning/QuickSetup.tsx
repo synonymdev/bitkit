@@ -20,7 +20,7 @@ import Percentage from '../../components/Percentage';
 import Button from '../../components/Button';
 import FancySlider from '../../components/FancySlider';
 import NumberPadLightning from './NumberPadLightning';
-import { useBalance } from '../../hooks/wallet';
+import { useBalance, useSwitchUnit } from '../../hooks/wallet';
 import {
 	resetSendTransaction,
 	setupOnChainTransaction,
@@ -40,20 +40,19 @@ import {
 } from '../../store/reselect/wallet';
 import { blocktankServiceSelector } from '../../store/reselect/blocktank';
 import { balanceUnitSelector } from '../../store/reselect/settings';
-import { EBalanceUnit, EBitcoinUnit } from '../../store/types/wallet';
 import NumberPadTextField from '../../components/NumberPadTextField';
 import { getNumberPadText } from '../../utils/numberpad';
-import { updateSettings } from '../../store/actions/settings';
 
 const QuickSetup = ({
 	navigation,
 }: LightningScreenProps<'QuickSetup'>): ReactElement => {
 	const { t } = useTranslation('lightning');
+	const { onchainBalance } = useBalance();
+	const [nextUnit, onSwitchUnit] = useSwitchUnit();
 	const unit = useSelector(balanceUnitSelector);
 	const selectedWallet = useSelector(selectedWalletSelector);
 	const selectedNetwork = useSelector(selectedNetworkSelector);
 	const blocktankService = useSelector(blocktankServiceSelector);
-	const { satoshis: onchainBalance } = useBalance({ onchain: true });
 
 	const [loading, setLoading] = useState(false);
 	const [showNumberPad, setShowNumberPad] = useState(false);
@@ -104,27 +103,10 @@ const QuickSetup = ({
 		return fiatWhole;
 	}, [btSpendingLimitBalanced]);
 
-	// BTC -> satoshi -> fiat
-	const nextUnit = useMemo(() => {
-		if (unit === EBalanceUnit.BTC) {
-			return EBalanceUnit.satoshi;
-		}
-		if (unit === EBalanceUnit.satoshi) {
-			return EBalanceUnit.fiat;
-		}
-		return EBalanceUnit.BTC;
-	}, [unit]);
-
 	const onChangeUnit = (): void => {
 		const result = getNumberPadText(spendingAmount, nextUnit);
 		setTextFieldValue(result);
-
-		updateSettings({
-			balanceUnit: nextUnit,
-			...(nextUnit !== EBalanceUnit.fiat && {
-				bitcoinUnit: nextUnit as unknown as EBitcoinUnit,
-			}),
-		});
+		onSwitchUnit();
 	};
 
 	const onSliderChange = useCallback(

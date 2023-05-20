@@ -32,14 +32,9 @@ const Confirm = ({
 }: TransferScreenProps<'Confirm'>): ReactElement => {
 	const { spendingAmount, orderId } = route.params;
 	const { t } = useTranslation('lightning');
-	const { satoshis: onchainBalance } = useBalance({ onchain: true });
-	const { satoshis: lightningBalance } = useBalance({
-		lightning: true,
-		subtractReserveBalance: false,
-	});
 	const [loading, setLoading] = useState(false);
+	const { totalBalance, lightningBalance } = useBalance();
 
-	const totalBalance = onchainBalance + lightningBalance;
 	const savingsAmount = totalBalance - spendingAmount;
 	const savingsPercentage = Math.round((savingsAmount / totalBalance) * 100);
 	const spendingPercentage = Math.round((spendingAmount / totalBalance) * 100);

@@ -12,18 +12,10 @@ import { EAvailableNetworks, TAvailableNetworks } from '../networks';
 import { addPeers, getNodeId, refreshLdk } from '../lightning';
 import { refreshOrder } from '../../store/actions/blocktank';
 import { sleep } from '../helpers';
-import {
-	getBlocktankStore,
-	getSettingsStore,
-	getUserStore,
-} from '../../store/helpers';
+import { getBlocktankStore, getUserStore } from '../../store/helpers';
 import { TGeoBlockResponse } from '../../store/types/blocktank';
 import { setGeoBlock, updateUser } from '../../store/actions/user';
-import { getBalance, refreshWallet } from '../wallet';
-import { fiatToBitcoinUnit } from '../conversion';
-import { getFiatDisplayValues } from '../displayValues';
-import { IDisplayValues } from '../displayValues/types';
-import { EBitcoinUnit } from '../../store/types/wallet';
+import { refreshWallet } from '../wallet';
 
 // https://github.com/synonymdev/blocktank-server/blob/master/src/Orders/Order.js#L27
 export const unsettledStatuses = [0, 100, 200, 300, 350, 500];
@@ -277,57 +269,57 @@ export const isGeoBlocked = async (fromStorage = false): Promise<boolean> => {
 };
 
 /**
- * TODO: For Future Use
  * Returns Blocktank spending limits in sats, USD & the user's selectedCurrency.
+ * CURRENTLY UNUSED
  * @param selectedCurrency
  */
-export const getSpendingLimits = ({
-	selectedCurrency,
-}: {
-	selectedCurrency?: string;
-}): {
-	currentBalance: IDisplayValues;
-	spendableBalanceSats: number;
-	spendableBalanceFiat: number;
-	usdSpendingLimitFiat: number;
-	spendingLimitSats: number;
-	selectedCurrencySpendingLimitFiat: number;
-} => {
-	if (!selectedCurrency) {
-		selectedCurrency = getSettingsStore().selectedCurrency;
-	}
-	const usdMax = 1000;
-	const denominator = 1.2;
+// export const getSpendingLimits = ({
+// 	selectedCurrency,
+// }: {
+// 	selectedCurrency?: string;
+// }): {
+// 	currentBalance: IDisplayValues;
+// 	spendableBalanceSats: number;
+// 	spendableBalanceFiat: number;
+// 	usdSpendingLimitFiat: number;
+// 	spendingLimitSats: number;
+// 	selectedCurrencySpendingLimitFiat: number;
+// } => {
+// 	if (!selectedCurrency) {
+// 		selectedCurrency = getSettingsStore().selectedCurrency;
+// 	}
+// 	const usdMax = 1000;
+// 	const denominator = 1.2;
 
-	const currentBalance = getBalance({ onchain: true });
-	const spendableBalanceSats = Math.round(
-		currentBalance.satoshis / denominator,
-	);
-	const spendableBalanceFiat = Math.round(
-		currentBalance.fiatValue / denominator,
-	);
-	const usdSpendingLimitFiat =
-		spendableBalanceFiat < usdMax ? spendableBalanceFiat : usdMax;
-	const spendingLimitSats = fiatToBitcoinUnit({
-		fiatValue: usdSpendingLimitFiat,
-		bitcoinUnit: EBitcoinUnit.satoshi,
-		currency: 'USD',
-	});
-	const selectedCurrencySpendingLimitFiat = getFiatDisplayValues({
-		satoshis:
-			spendableBalanceSats < spendingLimitSats
-				? spendableBalanceSats
-				: spendingLimitSats,
-		bitcoinUnit: EBitcoinUnit.satoshi,
-		currency: selectedCurrency,
-	});
-	return {
-		currentBalance,
-		spendableBalanceSats,
-		spendableBalanceFiat,
-		usdSpendingLimitFiat,
-		spendingLimitSats,
-		selectedCurrencySpendingLimitFiat:
-			selectedCurrencySpendingLimitFiat.fiatValue,
-	};
-};
+// 	const currentBalance = getBalance({ onchain: true });
+// 	const spendableBalanceSats = Math.round(
+// 		currentBalance.satoshis / denominator,
+// 	);
+// 	const spendableBalanceFiat = Math.round(
+// 		currentBalance.fiatValue / denominator,
+// 	);
+// 	const usdSpendingLimitFiat =
+// 		spendableBalanceFiat < usdMax ? spendableBalanceFiat : usdMax;
+// 	const spendingLimitSats = fiatToBitcoinUnit({
+// 		fiatValue: usdSpendingLimitFiat,
+// 		bitcoinUnit: EBitcoinUnit.satoshi,
+// 		currency: 'USD',
+// 	});
+// 	const selectedCurrencySpendingLimitFiat = getFiatDisplayValues({
+// 		satoshis:
+// 			spendableBalanceSats < spendingLimitSats
+// 				? spendableBalanceSats
+// 				: spendingLimitSats,
+// 		bitcoinUnit: EBitcoinUnit.satoshi,
+// 		currency: selectedCurrency,
+// 	});
+// 	return {
+// 		currentBalance,
+// 		spendableBalanceSats,
+// 		spendableBalanceFiat,
+// 		usdSpendingLimitFiat,
+// 		spendingLimitSats,
+// 		selectedCurrencySpendingLimitFiat:
+// 			selectedCurrencySpendingLimitFiat.fiatValue,
+// 	};
+// };

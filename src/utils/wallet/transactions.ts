@@ -1495,19 +1495,19 @@ export const getMaxSendAmount = ({
 
 		if (transaction.lightningInvoice) {
 			// lightning transaction
-			const balance = getBalance({
-				lightning: true,
+			const { spendingBalance } = getBalance({
 				selectedWallet,
 				selectedNetwork,
 			});
+			// TODO: get routing fee
+			const fee = 1;
 			const maxAmount = {
-				amount: balance.satoshis,
+				amount: spendingBalance - fee,
 			};
 			return ok(maxAmount);
 		} else {
 			// onchain transaction
-			const balance = getBalance({
-				onchain: true,
+			const { onchainBalance } = getBalance({
 				selectedWallet,
 				selectedNetwork,
 			});
@@ -1544,11 +1544,11 @@ export const getMaxSendAmount = ({
 			});
 
 			const maxAmount = {
-				amount: balance.satoshis - fee,
+				amount: onchainBalance - fee,
 				fee,
 			};
 
-			if (balance.satoshis <= fee) {
+			if (onchainBalance <= fee) {
 				return err('Balance is too low to spend.');
 			}
 
@@ -1736,17 +1736,16 @@ export const updateSendAmount = ({
 
 	if (transaction.lightningInvoice) {
 		// lightning transaction
-		const balance = getBalance({
-			lightning: true,
+		const { spendingBalance } = getBalance({
 			selectedWallet,
 			selectedNetwork,
 		});
 
-		if (amount > balance.satoshis) {
+		if (amount > spendingBalance) {
 			return err('New amount exceeds the current balance.');
 		}
 
-		if (amount === balance.satoshis) {
+		if (amount === spendingBalance) {
 			max = true;
 		}
 	} else {

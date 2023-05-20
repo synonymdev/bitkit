@@ -32,9 +32,9 @@ const Suggestions = (): ReactElement => {
 	const { t } = useTranslation('cards');
 	const navigation = useNavigation<RootNavigationProp>();
 	const { width } = useWindowDimensions();
+	const { onchainBalance } = useBalance();
 	const [index, setIndex] = useState(0);
 	const [showDialog, setShowDialog] = useState(false);
-	const { satoshis: balance } = useBalance({ onchain: true, lightning: true });
 	const todos = useSelector(todosSelector);
 	const pinTodoDone = useSelector(pinSelector);
 	const showSuggestions = useSelector(showSuggestionsSelector);
@@ -56,7 +56,7 @@ const Suggestions = (): ReactElement => {
 			}
 
 			if (id === 'lightning') {
-				if (balance > 0) {
+				if (onchainBalance > 0) {
 					navigation.navigate('LightningRoot', { screen: 'Introduction' });
 				} else {
 					setShowDialog(true);
@@ -83,7 +83,7 @@ const Suggestions = (): ReactElement => {
 				navigation.navigate('BuyBitcoin');
 			}
 		},
-		[balance, navigation, pinTodoDone],
+		[onchainBalance, navigation, pinTodoDone],
 	);
 
 	if (!todos.length || !showSuggestions) {

@@ -44,11 +44,11 @@ const handleBackup = (): void => {
 const BackupPrompt = ({ enabled }: { enabled: boolean }): ReactElement => {
 	const { t } = useTranslation('security');
 	const snapPoints = useSnapPoints('medium');
-	const { satoshis: balance } = useBalance({ onchain: true, lightning: true });
 	const empty = useNoTransactions();
 	const viewControllers = useAppSelector(viewControllersSelector);
 	const ignoreTimestamp = useSelector(ignoreBackupTimestampSelector);
 	const backupVerified = useSelector(backupVerifiedSelector);
+	const { totalBalance } = useBalance();
 
 	useBottomSheetBackPress('backupPrompt');
 
@@ -91,8 +91,8 @@ const BackupPrompt = ({ enabled }: { enabled: boolean }): ReactElement => {
 	}, [shouldShowBottomSheet]);
 
 	const text = useMemo(
-		() => t(balance > 0 ? 'backup_funds' : 'backup_funds_no'),
-		[balance, t],
+		() => t(totalBalance > 0 ? 'backup_funds' : 'backup_funds_no'),
+		[totalBalance, t],
 	);
 
 	return (

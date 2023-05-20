@@ -216,7 +216,7 @@ const Channels = ({
 	const [peer, setPeer] = useState('');
 
 	const colors = useColors();
-	const balance = useBalance({ onchain: true });
+	const { onchainBalance } = useBalance();
 	const { localBalance, remoteBalance } = useLightningBalance(false);
 	const selectedWallet = useSelector(selectedWalletSelector);
 	const selectedNetwork = useSelector(selectedNetworkSelector);
@@ -311,8 +311,8 @@ const Channels = ({
 	}, [selectedNetwork, selectedWallet]);
 
 	const addConnectionIsDisabled = useMemo(() => {
-		return balance.satoshis <= TRANSACTION_DEFAULTS.recommendedBaseFee;
-	}, [balance.satoshis]);
+		return onchainBalance <= TRANSACTION_DEFAULTS.recommendedBaseFee;
+	}, [onchainBalance]);
 
 	const onAddPeer = useCallback(async () => {
 		if (!peer) {

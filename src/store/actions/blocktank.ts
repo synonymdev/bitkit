@@ -275,8 +275,7 @@ export const startChannelPurchase = async ({
 		return err(transactionDataRes.error.message);
 	}
 	const transaction = transactionDataRes.value;
-	const currentBalance = getBalance({
-		onchain: true,
+	const { onchainBalance } = getBalance({
 		selectedNetwork,
 		selectedWallet,
 	});
@@ -287,17 +286,13 @@ export const startChannelPurchase = async ({
 	// Ensure we have enough funds to pay for both the channel and the fee to broadcast the transaction.
 	if (
 		transaction.fee + buyChannelResponse.value.total_amount >
-		currentBalance.satoshis
+		onchainBalance
 	) {
 		// TODO: Attempt to re-calculate a lower fee channel-open that's not instant if unable to pay.
 		const delta = Math.abs(
-			transaction.fee +
-				buyChannelResponse.value.price -
-				currentBalance.satoshis,
+			transaction.fee + buyChannelResponse.value.price - onchainBalance,
 		);
-		const cost = getDisplayValues({
-			satoshis: delta,
-		});
+		const cost = getDisplayValues({ satoshis: delta });
 		return err(
 			`You need ${
 				cost.fiatSymbol + cost.fiatFormatted

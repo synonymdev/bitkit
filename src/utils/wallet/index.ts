@@ -74,8 +74,6 @@ import {
 	subscribeToAddresses,
 	TTxResult,
 } from './electrum';
-import { getDisplayValues } from '../displayValues';
-import { IncludeBalances } from '../../hooks/wallet';
 import { invokeNodeJsMethod } from '../nodejs-mobile';
 import { DefaultNodeJsMethodsShape } from '../nodejs-mobile/shapes';
 import { refreshLdk } from '../lightning';
@@ -88,7 +86,6 @@ import { moveMetaIncTxTags } from '../../store/actions/metadata';
 import { refreshOrdersList } from '../../store/actions/blocktank';
 import { IDefaultLightningShape } from '../../store/types/lightning';
 import { objectKeys } from '../objectKeys';
-import { IDisplayValues } from '../displayValues/types';
 
 export const refreshWallet = async ({
 	onchain = true,
@@ -2480,66 +2477,70 @@ export const getReceiveAddress = async ({
 	}
 };
 
-interface IGetBalanceProps extends IncludeBalances {
-	selectedWallet?: TWalletName;
-	selectedNetwork?: TAvailableNetworks;
-}
 /**
- * Retrieves the total wallet display values for the currently selected wallet and network.
- * @param {boolean} [onchain]
- * @param {boolean} [lightning]
- * @param {boolean} [subtractReserveBalance]
+ * Retrieves wallet balances for the currently selected wallet and network.
  * @param {TWalletName} [selectedWallet]
  * @param {TAvailableNetworks} [selectedNetwork]
  */
 export const getBalance = ({
-	onchain = false,
-	lightning = false,
-	subtractReserveBalance = true,
 	selectedWallet,
 	selectedNetwork,
-}: IGetBalanceProps): IDisplayValues => {
+}: {
+	selectedWallet?: TWalletName;
+	selectedNetwork?: TAvailableNetworks;
+}): {
+	onchainBalance: number; // Total onchain funds
+	lightningBalance: number; // Total lightning funds (spendable + reserved + claimable)
+	spendingBalance: number; // Share of lightning funds that are spendable
+	reserveBalance: number; // Share of lightning funds that are locked up in channels
+	claimableBalance: number; // Funds that will be available after a channel opens/closes
+	spendableBalance: number; // Total spendable funds (onchain + spendable lightning)
+	totalBalance: number; // Total funds (all of the above)
+} => {
 	if (!selectedWallet) {
 		selectedWallet = getSelectedWallet();
 	}
 	if (!selectedNetwork) {
 		selectedNetwork = getSelectedNetwork();
 	}
-	let balance = 0;
-
-	const { currentWallet, currentLightningNode } = getCurrentWallet({
+	const { currentWallet, currentLightningNode: node } = getCurrentWallet({
 		selectedWallet,
 		selectedNetwork,
 	});
+	const channels = node?.channels[selectedNetwork];
+	const openChannelIds = node?.openChannelIds[selectedNetwork];
+	const claimableBalance = node?.claimableBalance[selectedNetwork];
+	const openChannels = Object.values(channels).filter((channel) => {
+		return openChannelIds.includes(channel.channel_id);
+	});
 
-	if (onchain) {
-		balance += currentWallet?.balance[selectedNetwork] ?? 0;
-	}
+	// Get the total spending & reserved balance of all open channels
+	let spendingBalance = 0;
+	let reserveBalance = 0;
+	openChannels.forEach((channel) => {
+		if (channel.is_channel_ready) {
+			const spendable = channel.outbound_capacity_sat;
+			const unspendable = channel.balance_sat - spendable;
+			reserveBalance += unspendable;
+			spendingBalance += spendable;
+		}
+	});
 
-	if (lightning) {
-		const openChannelIds =
-			currentLightningNode?.openChannelIds[selectedNetwork];
-		const channels = currentLightningNode?.channels[selectedNetwork];
-		const openChannels = Object.values(channels).filter((channel) => {
-			return openChannelIds.includes(channel.channel_id);
-		});
+	const onchainBalance = currentWallet.balance[selectedNetwork];
+	const lightningBalance = spendingBalance + reserveBalance + claimableBalance;
+	const spendableBalance = onchainBalance + spendingBalance;
+	const totalBalance =
+		onchainBalance + spendingBalance + reserveBalance + claimableBalance;
 
-		balance = Object.values(openChannels).reduce(
-			(previousValue, currentChannel) => {
-				if (currentChannel.is_channel_ready) {
-					let reserveBalance = 0;
-					if (subtractReserveBalance) {
-						reserveBalance = currentChannel.unspendable_punishment_reserve ?? 0;
-					}
-					return previousValue + currentChannel.balance_sat - reserveBalance;
-				}
-				return previousValue;
-			},
-			balance,
-		);
-	}
-
-	return getDisplayValues({ satoshis: balance });
+	return {
+		onchainBalance,
+		lightningBalance,
+		spendingBalance,
+		reserveBalance,
+		claimableBalance,
+		spendableBalance,
+		totalBalance,
+	};
 };
 
 /**

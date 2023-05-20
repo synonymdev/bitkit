@@ -516,19 +516,12 @@ export const processBitcoinTransactionData = async ({
 		let error: { title: string; message: string } | undefined; //Information that will be passed as a notification.
 		let requestedAmount = 0; //Amount requested in sats by the provided invoice.
 
-		const lightningBalance = getBalance({
-			lightning: true,
+		const { onchainBalance, spendingBalance } = getBalance({
 			selectedWallet,
 			selectedNetwork,
 		});
 		const openLightningChannels =
 			getLightningStore().nodes[selectedWallet].openChannelIds[selectedNetwork];
-
-		const onchainBalance = getBalance({
-			onchain: true,
-			selectedWallet,
-			selectedNetwork,
-		});
 
 		// Filter for the lightning invoice.
 		const filteredLightningInvoice = data.find(
@@ -560,13 +553,13 @@ export const processBitcoinTransactionData = async ({
 			decodedLightningInvoice &&
 			!decodedLightningInvoice.is_expired &&
 			openLightningChannels.length &&
-			lightningBalance.satoshis
+			spendingBalance
 		) {
 			// Ensure we can afford to pay the lightning invoice. If so, pass it through.
-			if (lightningBalance.satoshis >= requestedAmount) {
+			if (spendingBalance >= requestedAmount) {
 				response = filteredLightningInvoice;
 			} else {
-				const diff = requestedAmount - lightningBalance.satoshis;
+				const diff = requestedAmount - spendingBalance;
 				error = {
 					title: 'Unable to afford the lightning invoice',
 					message: `(${diff} more sats needed.)`,
@@ -586,16 +579,16 @@ export const processBitcoinTransactionData = async ({
 
 			// Attempt to pay the on-chain invoice if unable to pay with lightning.
 			// Check that we have a bitcoin invoice and can afford to pay it.
-			if (onchainBalance.satoshis && bitcoinInvoice?.sats !== undefined) {
+			if (onchainBalance && bitcoinInvoice?.sats !== undefined) {
 				// If we can afford to pay it, pass it through.
 				// Otherwise, set the provided address and set sats to 0.
-				if (onchainBalance.satoshis > requestedAmount) {
+				if (onchainBalance > requestedAmount) {
 					response = bitcoinInvoice;
 				} else {
 					showInfoNotification({
 						title: i18n.t('lightning:error_fulfill_title'),
 						message: i18n.t('lightning:error_fulfill_msg', {
-							amount: requestedAmount - onchainBalance.satoshis,
+							amount: requestedAmount - onchainBalance,
 						}),
 					});
 					const transaction = getOnchainTransactionData({

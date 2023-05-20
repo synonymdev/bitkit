@@ -27,11 +27,11 @@ import SafeAreaInset from '../../../components/SafeAreaInset';
 
 const FeeRate = ({ navigation }: SendScreenProps<'FeeRate'>): ReactElement => {
 	const { t } = useTranslation('wallet');
+	const { onchainBalance } = useBalance();
 	const selectedWallet = useSelector(selectedWalletSelector);
 	const selectedNetwork = useSelector(selectedNetworkSelector);
 	const transaction = useSelector(transactionSelector);
 	const feeEstimates = useSelector((store: Store) => store.fees.onchain);
-	const balance = useBalance({ onchain: true });
 
 	const selectedFeeId = transaction.selectedFeeId;
 	const satsPerByte = transaction.satsPerByte;
@@ -77,11 +77,11 @@ const FeeRate = ({ navigation }: SendScreenProps<'FeeRate'>): ReactElement => {
 
 	const displayFast = useMemo(() => {
 		return (
-			balance.satoshis >= transactionTotal() + getFee(feeEstimates.fast) ||
+			onchainBalance >= transactionTotal() + getFee(feeEstimates.fast) ||
 			transaction.max
 		);
 	}, [
-		balance.satoshis,
+		onchainBalance,
 		feeEstimates.fast,
 		getFee,
 		transactionTotal,
@@ -90,11 +90,11 @@ const FeeRate = ({ navigation }: SendScreenProps<'FeeRate'>): ReactElement => {
 
 	const displayNormal = useMemo(() => {
 		return (
-			balance.satoshis >= transactionTotal() + getFee(feeEstimates.normal) ||
+			onchainBalance >= transactionTotal() + getFee(feeEstimates.normal) ||
 			transaction.max
 		);
 	}, [
-		balance.satoshis,
+		onchainBalance,
 		feeEstimates.normal,
 		getFee,
 		transactionTotal,
@@ -103,11 +103,11 @@ const FeeRate = ({ navigation }: SendScreenProps<'FeeRate'>): ReactElement => {
 
 	const displaySlow = useMemo(() => {
 		return (
-			balance.satoshis >= transactionTotal() + getFee(feeEstimates.slow) ||
+			onchainBalance >= transactionTotal() + getFee(feeEstimates.slow) ||
 			transaction.max
 		);
 	}, [
-		balance.satoshis,
+		onchainBalance,
 		feeEstimates.slow,
 		getFee,
 		transactionTotal,
@@ -115,10 +115,8 @@ const FeeRate = ({ navigation }: SendScreenProps<'FeeRate'>): ReactElement => {
 	]);
 
 	const displayCustom = useMemo(() => {
-		return (
-			balance.satoshis >= transactionTotal() + getFee(1) || transaction.max
-		);
-	}, [balance.satoshis, getFee, transactionTotal, transaction.max]);
+		return onchainBalance >= transactionTotal() + getFee(1) || transaction.max;
+	}, [onchainBalance, getFee, transactionTotal, transaction.max]);
 
 	const isSelected = useCallback(
 		(id: EFeeId) => id === selectedFeeId,

@@ -20,58 +20,54 @@ export const lightningSelector = createSelector(
 
 /**
  * Returns the current lightning balance for a given wallet.
+ * CURRENTLY UNUSED
  * @param {Store} state
  * @param {TWalletName} selectedWallet
  * @param {TAvailableNetworks} selectedNetwork
  * @param {boolean} subtractReserveBalance
  * @returns {number}
  */
-export const lightningBalanceSelector = createSelector(
-	[
-		lightningState,
-		(_lightning, selectedWallet: TWalletName): TWalletName => selectedWallet,
-		(
-			_lightning,
-			_selectedWallet,
-			selectedNetwork: TAvailableNetworks,
-		): TAvailableNetworks => selectedNetwork,
-		(
-			_lightning,
-			_selectedWallet,
-			_selectedNetwork,
-			subtractReserveBalance: boolean,
-		): boolean => subtractReserveBalance,
-	],
-	(
-		lightning,
-		selectedWallet,
-		selectedNetwork,
-		subtractReserveBalance,
-	): number => {
-		let balance = 0;
-		const openChannelIds =
-			lightning.nodes[selectedWallet]?.openChannelIds[selectedNetwork];
-		const channels = lightning.nodes[selectedWallet]?.channels[selectedNetwork];
-		balance = Object.values(channels).reduce(
-			(previousValue, currentChannel) => {
-				if (
-					currentChannel?.is_channel_ready &&
-					openChannelIds.includes(currentChannel?.channel_id)
-				) {
-					let reserveBalance = 0;
-					if (subtractReserveBalance) {
-						reserveBalance =
-							currentChannel?.unspendable_punishment_reserve ?? 0;
-					}
-					return previousValue + currentChannel.balance_sat - reserveBalance;
-				}
-				return previousValue;
-			},
-			balance,
-		);
-		return balance;
-	},
-);
+// export const lightningBalanceSelector = createSelector(
+// 	[
+// 		lightningState,
+// 		(_lightning, selectedWallet: TWalletName): TWalletName => selectedWallet,
+// 		(
+// 			_lightning,
+// 			_selectedWallet,
+// 			selectedNetwork: TAvailableNetworks,
+// 		): TAvailableNetworks => selectedNetwork,
+// 		(
+// 			_lightning,
+// 			_selectedWallet,
+// 			_selectedNetwork,
+// 			subtractReserveBalance: boolean,
+// 		): boolean => subtractReserveBalance,
+// 	],
+// 	(
+// 		lightning,
+// 		selectedWallet,
+// 		selectedNetwork,
+// 		subtractReserveBalance,
+// 	): number => {
+// 		let balance = 0;
+// 		const openChannelIds =
+// 			lightning.nodes[selectedWallet]?.openChannelIds[selectedNetwork];
+// 		const channels = lightning.nodes[selectedWallet]?.channels[selectedNetwork];
+// 		balance = Object.values(channels).reduce((previousValue, channel) => {
+// 			if (
+// 				channel.is_channel_ready &&
+// 				openChannelIds.includes(channel.channel_id)
+// 			) {
+// 				const channelBalance = subtractReserveBalance
+// 					? channel.outbound_capacity_sat
+// 					: channel.balance_sat;
+// 				return previousValue + channelBalance;
+// 			}
+// 			return previousValue;
+// 		}, balance);
+// 		return balance;
+// 	},
+// );
 
 export const nodeSelector = createSelector(
 	[

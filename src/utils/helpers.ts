@@ -87,12 +87,12 @@ export const getLastWordInString = (phrase = ''): string => {
  * @param arr
  * @param value
  */
-export const reduceValue = ({
-	arr = [],
-	value = '',
+export const reduceValue = <T>({
+	arr,
+	value,
 }: {
-	arr: any[];
-	value: string;
+	arr: T[];
+	value: keyof T;
 }): Result<number> => {
 	try {
 		if (!value) {

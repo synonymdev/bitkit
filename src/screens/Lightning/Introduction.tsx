@@ -19,7 +19,7 @@ const Introduction = ({
 	navigation,
 }: LightningScreenProps<'Introduction'>): ReactElement => {
 	const { t } = useTranslation('lightning');
-	const balance = useBalance({ onchain: true });
+	const { onchainBalance } = useBalance();
 	const isGeoBlocked = useSelector(isGeoBlockedSelector);
 
 	const txt = useMemo(
@@ -28,8 +28,8 @@ const Introduction = ({
 	);
 
 	const isDisabled = useMemo(() => {
-		return balance.satoshis <= TRANSACTION_DEFAULTS.recommendedBaseFee;
-	}, [balance.satoshis]);
+		return onchainBalance <= TRANSACTION_DEFAULTS.recommendedBaseFee;
+	}, [onchainBalance]);
 
 	return (
 		<GlowingBackground topLeft="purple">

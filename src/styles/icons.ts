@@ -63,6 +63,7 @@ import {
 	backspaceIcon,
 	exclamationIcon,
 	fingerPrintIcon,
+	lockIcon,
 } from '../assets/icons/wallet';
 import {
 	chevronRightIcon,
@@ -405,6 +406,14 @@ export const UnitSatoshiIcon = styled(SvgXml).attrs((props) => ({
 
 export const LightningIcon = styled(SvgXml).attrs((props) => ({
 	xml: lightningIcon(props.color ? props.theme.colors[props.color] : 'white'),
+	height: props.height ?? '16px',
+	width: props.width ?? '16px',
+}))<IconProps>((props) => ({
+	color: props.color ? props.theme.colors[props.color] : 'white',
+}));
+
+export const LockIcon = styled(SvgXml).attrs((props) => ({
+	xml: lockIcon(props.color ? props.theme.colors[props.color] : 'white'),
 	height: props.height ?? '16px',
 	width: props.width ?? '16px',
 }))<IconProps>((props) => ({

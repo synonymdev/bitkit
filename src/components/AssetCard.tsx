@@ -7,21 +7,24 @@ import {
 } from 'react-native';
 import { Text01M, Caption13M } from '../styles/text';
 import Money from '../components/Money';
+import { ClockIcon } from '../styles/icons';
 
 const AssetCard = ({
 	name,
 	ticker,
 	icon,
 	satoshis,
-	onPress,
+	pending,
 	testID,
+	onPress,
 }: {
 	name: string;
 	ticker: string;
 	icon: ReactElement;
 	satoshis: number;
-	onPress: (event: GestureResponderEvent) => void;
+	pending?: boolean;
 	testID?: string;
+	onPress: (event: GestureResponderEvent) => void;
 }): ReactElement => {
 	return (
 		<Pressable style={styles.container} onPress={onPress} testID={testID}>
@@ -32,7 +35,16 @@ const AssetCard = ({
 			</View>
 
 			<View style={styles.amount}>
-				<Money sats={satoshis} enableHide={true} size="text01m" />
+				<View style={styles.primary}>
+					{/* TODO: change color depending on pending savings/spending */}
+					{pending && <ClockIcon color="purple" />}
+					<Money
+						style={styles.primaryAmount}
+						sats={satoshis}
+						enableHide={true}
+						size="text01m"
+					/>
+				</View>
 				<Money
 					sats={satoshis}
 					enableHide={true}
@@ -67,6 +79,13 @@ const styles = StyleSheet.create({
 		justifyContent: 'space-between',
 		alignItems: 'flex-end',
 		marginLeft: 'auto',
+	},
+	primary: {
+		flexDirection: 'row',
+		alignItems: 'center',
+	},
+	primaryAmount: {
+		marginLeft: 8,
 	},
 });
 

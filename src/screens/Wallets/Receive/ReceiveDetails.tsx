@@ -1,10 +1,4 @@
-import React, {
-	ReactElement,
-	memo,
-	useCallback,
-	useMemo,
-	useState,
-} from 'react';
+import React, { ReactElement, memo, useCallback, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useSelector } from 'react-redux';
 import { FadeIn, FadeOut } from 'react-native-reanimated';
@@ -31,13 +25,11 @@ import GradientView from '../../../components/GradientView';
 import ReceiveNumberPad from './ReceiveNumberPad';
 import { useCurrency } from '../../../hooks/displayValues';
 import { ReceiveScreenProps } from '../../../navigation/types';
-import { EBalanceUnit, EBitcoinUnit } from '../../../store/types/wallet';
-import { updateSettings } from '../../../store/actions/settings';
 import { receiveSelector } from '../../../store/reselect/receive';
-import { balanceUnitSelector } from '../../../store/reselect/settings';
 import GlowImage from '../../../components/GlowImage';
 import { useScreenSize } from '../../../hooks/screen';
 import { getNumberPadText } from '../../../utils/numberpad';
+import { useSwitchUnit } from '../../../hooks/wallet';
 
 const imageSrc = require('../../../assets/illustrations/coin-stack-4.png');
 
@@ -47,32 +39,15 @@ const ReceiveDetails = ({
 	const { t } = useTranslation('wallet');
 	const { keyboardShown } = useKeyboard();
 	const { isSmallScreen } = useScreenSize();
+	const [nextUnit, switchUnit] = useSwitchUnit();
 	const [showNumberPad, setShowNumberPad] = useState(false);
 	const invoice = useSelector(receiveSelector);
-	const unit = useSelector(balanceUnitSelector);
 	const { fiatTicker } = useCurrency();
-
-	// BTC -> satoshi -> fiat
-	const nextUnit = useMemo(() => {
-		if (unit === EBalanceUnit.BTC) {
-			return EBalanceUnit.satoshi;
-		}
-		if (unit === EBalanceUnit.satoshi) {
-			return EBalanceUnit.fiat;
-		}
-		return EBalanceUnit.BTC;
-	}, [unit]);
 
 	const onChangeUnit = (): void => {
 		const result = getNumberPadText(invoice.amount, nextUnit);
 		updateInvoice({ numberPadText: result });
-
-		updateSettings({
-			balanceUnit: nextUnit,
-			...(nextUnit !== EBalanceUnit.fiat && {
-				bitcoinUnit: nextUnit as unknown as EBitcoinUnit,
-			}),
-		});
+		switchUnit();
 	};
 
 	const onNavigateBack = useCallback(async () => {

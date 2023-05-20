@@ -274,10 +274,10 @@ export const handleLnurlWithdraw = async ({
 	}
 
 	const amountSats = params.maxWithdrawable / 1000; //Convert msats to sats.
-	const description = params?.defaultDescription ?? '';
+	const description = params.defaultDescription;
 
 	// Determine if we have enough receiving capacity before proceeding.
-	const lightningBalance = await getLightningBalance({
+	const lightningBalance = getLightningBalance({
 		selectedWallet,
 		selectedNetwork,
 		includeReserveBalance: false,

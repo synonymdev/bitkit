@@ -1,20 +1,13 @@
-import React, { memo, ReactElement, useMemo } from 'react';
+import React, { memo, ReactElement } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useSelector } from 'react-redux';
 import { Trans, useTranslation } from 'react-i18next';
 
 import { Caption13Up } from '../styles/text';
 import { EyeIcon } from '../styles/icons';
-import Store from '../store/types';
-import { useBalance } from '../hooks/wallet';
-import { updateSettings } from '../store/actions/settings';
 import Money from './Money';
-import { claimableBalanceSelector } from '../store/reselect/lightning';
-import { EBalanceUnit, EBitcoinUnit } from '../store/types/wallet';
-import {
-	selectedNetworkSelector,
-	selectedWalletSelector,
-} from '../store/reselect/wallet';
+import { useBalance, useSwitchUnit } from '../hooks/wallet';
+import { updateSettings } from '../store/actions/settings';
 import {
 	balanceUnitSelector,
 	hideBalanceSelector,
@@ -25,49 +18,22 @@ import {
  */
 const BalanceHeader = (): ReactElement => {
 	const { t } = useTranslation('wallet');
-	const balanceUnit = useSelector(balanceUnitSelector);
+	const [_, switchUnit] = useSwitchUnit();
+	const { totalBalance, claimableBalance } = useBalance();
+	const unit = useSelector(balanceUnitSelector);
 	const hideBalance = useSelector(hideBalanceSelector);
-	const selectedWallet = useSelector(selectedWalletSelector);
-	const selectedNetwork = useSelector(selectedNetworkSelector);
-	const { satoshis } = useBalance({ onchain: true, lightning: true });
-	const claimableBalance = useSelector((state: Store) => {
-		return claimableBalanceSelector(state, selectedWallet, selectedNetwork);
-	});
-
-	// BTC -> satoshi -> fiat
-	const nextUnit = useMemo(() => {
-		if (balanceUnit === EBalanceUnit.BTC) {
-			return EBalanceUnit.satoshi;
-		}
-		if (balanceUnit === EBalanceUnit.satoshi) {
-			return EBalanceUnit.fiat;
-		}
-		return EBalanceUnit.BTC;
-	}, [balanceUnit]);
-
-	const handlePress = (): void => {
-		updateSettings({
-			balanceUnit: nextUnit,
-			...(nextUnit !== EBalanceUnit.fiat && {
-				bitcoinUnit: nextUnit as unknown as EBitcoinUnit,
-			}),
-		});
-	};
 
 	const toggleHideBalance = (): void => {
 		updateSettings({ hideBalance: !hideBalance });
 	};
 
-	const totalBalance = satoshis + claimableBalance;
-	const showClaimableBalances = claimableBalance > 0;
-
 	return (
 		<TouchableOpacity
 			style={styles.container}
-			onPress={handlePress}
-			testID="TotalBalance">
+			testID="TotalBalance"
+			onPress={switchUnit}>
 			<View style={styles.totalBalanceRow}>
-				{showClaimableBalances ? (
+				{claimableBalance ? (
 					<Trans
 						t={t}
 						i18nKey="balance_total_pending"
@@ -78,7 +44,7 @@ const BalanceHeader = (): ReactElement => {
 									color="gray1"
 									size="caption13Up"
 									sats={claimableBalance}
-									unit={balanceUnit}
+									unit={unit}
 									enableHide={true}
 									symbol={false}
 									decimalLength="long"
@@ -95,7 +61,7 @@ const BalanceHeader = (): ReactElement => {
 				<View>
 					<Money
 						sats={totalBalance}
-						unit={balanceUnit}
+						unit={unit}
 						enableHide={true}
 						highlight={true}
 						symbol={true}

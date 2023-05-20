@@ -6,6 +6,7 @@ import React, {
 	useEffect,
 } from 'react';
 import { StyleSheet, View } from 'react-native';
+import { useSelector } from 'react-redux';
 import { useFocusEffect } from '@react-navigation/native';
 import { FadeIn, FadeOut } from 'react-native-reanimated';
 import { useTranslation } from 'react-i18next';
@@ -20,15 +21,15 @@ import Button from '../../components/Button';
 import Percentage from '../../components/Percentage';
 import FancySlider from '../../components/FancySlider';
 import NumberPadLightning from '../Lightning/NumberPadLightning';
-import { useBalance } from '../../hooks/wallet';
-import { showErrorNotification } from '../../utils/notifications';
+import { useBalance, useSwitchUnit } from '../../hooks/wallet';
 import {
 	refreshBlocktankInfo,
 	startChannelPurchase,
 } from '../../store/actions/blocktank';
-import { useSelector } from 'react-redux';
-import { SPENDING_LIMIT_RATIO } from '../../utils/wallet/constants';
 import { convertToSats } from '../../utils/conversion';
+import { getNumberPadText } from '../../utils/numberpad';
+import { SPENDING_LIMIT_RATIO } from '../../utils/wallet/constants';
+import { showErrorNotification } from '../../utils/notifications';
 import { getFiatDisplayValues } from '../../utils/displayValues';
 import {
 	resetSendTransaction,
@@ -39,19 +40,13 @@ import {
 	selectedNetworkSelector,
 	selectedWalletSelector,
 } from '../../store/reselect/wallet';
-import { blocktankServiceSelector } from '../../store/reselect/blocktank';
 import { balanceUnitSelector } from '../../store/reselect/settings';
-import { EBalanceUnit, EBitcoinUnit } from '../../store/types/wallet';
-import { getNumberPadText } from '../../utils/numberpad';
-import { updateSettings } from '../../store/actions/settings';
+import { blocktankServiceSelector } from '../../store/reselect/blocktank';
 
 const Setup = ({ navigation }: TransferScreenProps<'Setup'>): ReactElement => {
 	const { t } = useTranslation('lightning');
-	const { satoshis: onchainBalance } = useBalance({ onchain: true });
-	const { satoshis: lightningBalance } = useBalance({
-		lightning: true,
-		subtractReserveBalance: false,
-	});
+	const [nextUnit, switchUnit] = useSwitchUnit();
+	const { totalBalance, lightningBalance } = useBalance();
 
 	const [textFieldValue, setTextFieldValue] = useState('');
 	const [showNumberPad, setShowNumberPad] = useState(false);
@@ -78,7 +73,6 @@ const Setup = ({ navigation }: TransferScreenProps<'Setup'>): ReactElement => {
 	const btSpendingLimitBalanced = Math.round(
 		btSpendingLimit / 2 - btSpendingLimit * diff,
 	);
-	const totalBalance = onchainBalance + lightningBalance;
 	const spendableBalance = Math.round(totalBalance * SPENDING_LIMIT_RATIO);
 	const savingsAmount = totalBalance - spendingAmount;
 	const spendingPercentage = Math.round((spendingAmount / totalBalance) * 100);
@@ -115,27 +109,10 @@ const Setup = ({ navigation }: TransferScreenProps<'Setup'>): ReactElement => {
 		[unit],
 	);
 
-	// BTC -> satoshi -> fiat
-	const nextUnit = useMemo(() => {
-		if (unit === EBalanceUnit.BTC) {
-			return EBalanceUnit.satoshi;
-		}
-		if (unit === EBalanceUnit.satoshi) {
-			return EBalanceUnit.fiat;
-		}
-		return EBalanceUnit.BTC;
-	}, [unit]);
-
 	const onChangeUnit = (): void => {
 		const result = getNumberPadText(spendingAmount, nextUnit);
 		setTextFieldValue(result);
-
-		updateSettings({
-			balanceUnit: nextUnit,
-			...(nextUnit !== EBalanceUnit.fiat && {
-				bitcoinUnit: nextUnit as unknown as EBitcoinUnit,
-			}),
-		});
+		switchUnit();
 	};
 
 	const onMax = useCallback(() => {

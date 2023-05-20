@@ -36,7 +36,7 @@ const QuickConfirm = ({
 	const { t } = useTranslation('lightning');
 	const [loading, setLoading] = useState(false);
 	const selectedNetwork = useSelector(selectedNetworkSelector);
-	const { satoshis: onchainBalance } = useBalance({ onchain: true });
+	const { onchainBalance } = useBalance();
 	const orders = useSelector(blocktankOrdersSelector);
 	const order = useMemo(() => {
 		return orders.find((o) => o._id === orderId);

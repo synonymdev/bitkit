@@ -23,7 +23,7 @@ import ProfileImage from '../../../components/ProfileImage';
 import NumberPadTextField from '../../../components/NumberPadTextField';
 import SendNumberPad from './SendNumberPad';
 import Button from '../../../components/Button';
-import { EBalanceUnit, EBitcoinUnit } from '../../../store/types/wallet';
+import { EBalanceUnit } from '../../../store/types/wallet';
 import {
 	getTransactionOutputValue,
 	getMaxSendAmount,
@@ -41,8 +41,8 @@ import {
 	coinSelectAutoSelector,
 } from '../../../store/reselect/settings';
 import { useProfile } from '../../../hooks/slashtags';
+import { useSwitchUnit } from '../../../hooks/wallet';
 import { useCurrency } from '../../../hooks/displayValues';
-import { updateSettings } from '../../../store/actions/settings';
 import { updateSendTransaction } from '../../../store/actions/wallet';
 import { getNumberPadText } from '../../../utils/numberpad';
 import { convertToSats } from '../../../utils/conversion';
@@ -58,6 +58,7 @@ const Amount = ({ navigation }: SendScreenProps<'Amount'>): ReactElement => {
 	const route = useRoute();
 	const { t } = useTranslation('wallet');
 	const { fiatTicker } = useCurrency();
+	const [nextUnit, switchUnit] = useSwitchUnit();
 	const selectedWallet = useSelector(selectedWalletSelector);
 	const selectedNetwork = useSelector(selectedNetworkSelector);
 	const coinSelectAuto = useSelector(coinSelectAutoSelector);
@@ -116,27 +117,10 @@ const Amount = ({ navigation }: SendScreenProps<'Amount'>): ReactElement => {
 		}
 	}, [isMaxSendAmount, amount, availableAmount]);
 
-	// BTC -> satoshi -> fiat
-	const nextUnit = useMemo(() => {
-		if (unit === EBalanceUnit.BTC) {
-			return EBalanceUnit.satoshi;
-		}
-		if (unit === EBalanceUnit.satoshi) {
-			return EBalanceUnit.fiat;
-		}
-		return EBalanceUnit.BTC;
-	}, [unit]);
-
 	const onChangeUnit = (): void => {
 		const result = getNumberPadText(amount, nextUnit);
 		setText(result);
-
-		updateSettings({
-			balanceUnit: nextUnit,
-			...(nextUnit !== EBalanceUnit.fiat && {
-				bitcoinUnit: nextUnit as unknown as EBitcoinUnit,
-			}),
-		});
+		switchUnit();
 	};
 
 	const onMaxAmount = useCallback((): void => {
@@ -183,7 +167,7 @@ const Amount = ({ navigation }: SendScreenProps<'Amount'>): ReactElement => {
 		// onchain tx
 		if (!transaction.lightningInvoice) {
 			// amount is below dust limit
-			if (amount <= TRANSACTION_DEFAULTS.recommendedBaseFee) {
+			if (amount <= TRANSACTION_DEFAULTS.dustLimit) {
 				return false;
 			}
 

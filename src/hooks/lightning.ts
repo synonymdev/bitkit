@@ -13,7 +13,6 @@ import {
 import {
 	channelsSelector,
 	openChannelsSelector,
-	nodeSelector,
 	openChannelIdsSelector,
 } from '../store/reselect/lightning';
 
@@ -126,17 +125,4 @@ export const useLightningChannelName = (channel: TChannel): string => {
 	} else {
 		return channel.inbound_scid_alias?.toString() ?? shortChannelId;
 	}
-};
-
-export const useClaimableBalance = (): number => {
-	const selectedWallet = useSelector(selectedWalletSelector);
-	const selectedNetwork = useSelector(selectedNetworkSelector);
-	const node = useSelector((state: Store) => {
-		return nodeSelector(state, selectedWallet);
-	});
-
-	if ('claimableBalance' in node) {
-		return node?.claimableBalance[selectedNetwork] ?? 0;
-	}
-	return 0;
 };

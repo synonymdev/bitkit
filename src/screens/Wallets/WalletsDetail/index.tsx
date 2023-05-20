@@ -44,13 +44,16 @@ import SafeAreaInset from '../../../components/SafeAreaInset';
 import Money from '../../../components/Money';
 import BlurView from '../../../components/BlurView';
 import { EActivityType } from '../../../store/types/activity';
-import Store from '../../../store/types';
 import { updateSettings } from '../../../store/actions/settings';
 import { capitalize } from '../../../utils/helpers';
 import DetectSwipe from '../../../components/DetectSwipe';
 import { EBitcoinUnit } from '../../../store/types/wallet';
 import type { WalletScreenProps } from '../../../navigation/types';
 import { SkiaMutableValue } from '@shopify/react-native-skia/src/values/types';
+import {
+	bitcoinUnitSelector,
+	hideBalanceSelector,
+} from '../../../store/reselect/settings';
 
 const updateHeight = ({ height, toValue = 0, duration = 250 }): void => {
 	try {
@@ -88,9 +91,9 @@ const WalletsDetail = ({
 	route,
 }: WalletScreenProps<'WalletsDetail'>): ReactElement => {
 	const { assetType } = route.params;
-	const { satoshis } = useBalance({ onchain: true, lightning: true });
-	const bitcoinUnit = useSelector((store: Store) => store.settings.bitcoinUnit);
-	const hideBalance = useSelector((state: Store) => state.settings.hideBalance);
+	const { totalBalance } = useBalance();
+	const bitcoinUnit = useSelector(bitcoinUnitSelector);
+	const hideBalance = useSelector(hideBalanceSelector);
 	const colors = useColors();
 	const size = useValue({ width: 0, height: 0 });
 	const title = capitalize(assetType);
@@ -196,7 +199,7 @@ const WalletsDetail = ({
 										exiting={FadeOut}>
 										<TouchableOpacity onPress={handleSwitchUnit}>
 											<Money
-												sats={satoshis}
+												sats={totalBalance}
 												enableHide={true}
 												highlight={true}
 												size="title"
@@ -219,7 +222,7 @@ const WalletsDetail = ({
 												onPress={handleSwitchUnit}
 												style={styles.largeValueContainer}>
 												<Money
-													sats={satoshis}
+													sats={totalBalance}
 													enableHide={true}
 													highlight={true}
 													decimalLength="long"
