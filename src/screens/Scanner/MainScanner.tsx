@@ -11,6 +11,7 @@ import ScannerComponent from './ScannerComponent';
 import type { RootStackScreenProps } from '../../navigation/types';
 import DetectSwipe from '../../components/DetectSwipe';
 import { useSlashtagsSDK } from '../../components/SlashtagsProvider';
+import { resetSendTransaction } from '../../store/actions/wallet';
 import {
 	selectedNetworkSelector,
 	selectedWalletSelector,
@@ -45,6 +46,8 @@ const ScannerScreen = ({
 			onScan(data);
 			return;
 		}
+
+		resetSendTransaction({ selectedNetwork, selectedWallet });
 
 		processInputData({
 			data,

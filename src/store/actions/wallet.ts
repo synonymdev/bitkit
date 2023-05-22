@@ -1177,27 +1177,21 @@ export const resetSendTransaction = ({
 	selectedWallet?: TWalletName;
 	selectedNetwork?: TAvailableNetworks;
 } = {}): Result<string> => {
-	try {
-		if (!selectedNetwork) {
-			selectedNetwork = getSelectedNetwork();
-		}
-		if (!selectedWallet) {
-			selectedWallet = getSelectedWallet();
-		}
+	if (!selectedNetwork) {
+		selectedNetwork = getSelectedNetwork();
+	}
+	if (!selectedWallet) {
+		selectedWallet = getSelectedWallet();
+	}
 
-		const payload = {
+	dispatch({
+		type: actions.RESET_SEND_TRANSACTION,
+		payload: {
 			selectedNetwork,
 			selectedWallet,
-		};
-		dispatch({
-			type: actions.RESET_SEND_TRANSACTION,
-			payload,
-		});
-		return ok('Transaction reseted');
-	} catch (e) {
-		console.log(e);
-		return err(e);
-	}
+		},
+	});
+	return ok('Transaction reseted');
 };
 
 export const updateSelectedAddressType = async ({

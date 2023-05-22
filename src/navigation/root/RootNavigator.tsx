@@ -21,6 +21,7 @@ import { NavigationContainer } from '../../styles/components';
 import { processInputData } from '../../utils/scanner';
 import { checkClipboardData } from '../../utils/clipboard';
 import Store from '../../store/types';
+import { resetSendTransaction } from '../../store/actions/wallet';
 import { enableAutoReadClipboardSelector } from '../../store/reselect/settings';
 import AuthCheck from '../../components/AuthCheck';
 import Dialog from '../../components/Dialog';
@@ -131,6 +132,13 @@ const RootNavigator = (): ReactElement => {
 		if (result.isOk()) {
 			setShowDialog(true);
 		}
+	};
+
+	const onConfirmClipboardRedirect = async (): Promise<void> => {
+		setShowDialog(false);
+		const clipboardData = await Clipboard.getString();
+		resetSendTransaction();
+		await processInputData({ data: clipboardData, showErrors: false });
 	};
 
 	useEffect(() => {
@@ -248,11 +256,7 @@ const RootNavigator = (): ReactElement => {
 				title={t('clipboard_redirect_title')}
 				description={t('clipboard_redirect_msg')}
 				onCancel={(): void => setShowDialog(false)}
-				onConfirm={async (): Promise<void> => {
-					setShowDialog(false);
-					const clipboardData = await Clipboard.getString();
-					await processInputData({ data: clipboardData, showErrors: false });
-				}}
+				onConfirm={onConfirmClipboardRedirect}
 			/>
 		</NavigationContainer>
 	);

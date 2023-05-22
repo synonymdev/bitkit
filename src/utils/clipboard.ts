@@ -1,10 +1,10 @@
 import { Platform } from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
+import { Result, ok, err } from '@synonymdev/result';
 
 import { decodeQRData } from './scanner';
 import { sleep } from './helpers';
 import { getSettingsStore } from '../store/helpers';
-import { Result, ok, err } from '@synonymdev/result';
 
 export const checkClipboardData = async (): Promise<Result<string>> => {
 	const { enableAutoReadClipboard } = getSettingsStore();
