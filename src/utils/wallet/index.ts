@@ -229,82 +229,78 @@ export const generateAddresses = async ({
 
 		await Promise.all(
 			addressArray.map(async (_item, i) => {
-				try {
-					const index = i + addressIndex;
-					const path = { ...keyDerivationPath! };
-					path.addressIndex = `${index}`;
-					const addressPath = formatKeyDerivationPath({
-						path,
-						selectedNetwork,
-						accountType,
-						changeAddress: false,
-						addressIndex: `${index}`,
-					});
-					if (addressPath.isErr()) {
-						return err(addressPath.error.message);
-					}
-					const address = await getAddress({
-						path: addressPath.value.pathString,
-						selectedNetwork,
-						type,
-					});
-					if (address.isErr()) {
-						return err(address.error.message);
-					}
-					const scriptHash = await getScriptHash(
-						address.value.address,
-						selectedNetwork,
-					);
-					if (!scriptHash) {
-						return err('Unable to get script hash.');
-					}
-					addresses[scriptHash] = {
-						...address.value,
-						index,
-						scriptHash,
-					};
-				} catch {}
+				const index = i + addressIndex;
+				const path = { ...keyDerivationPath! };
+				path.addressIndex = `${index}`;
+				const addressPath = formatKeyDerivationPath({
+					path,
+					selectedNetwork,
+					accountType,
+					changeAddress: false,
+					addressIndex: `${index}`,
+				});
+				if (addressPath.isErr()) {
+					throw addressPath.error;
+				}
+				const address = await getAddress({
+					path: addressPath.value.pathString,
+					selectedNetwork,
+					type,
+				});
+				if (address.isErr()) {
+					throw address.error;
+				}
+				const scriptHash = await getScriptHash(
+					address.value.address,
+					selectedNetwork,
+				);
+				if (!scriptHash) {
+					throw new Error('Unable to get script hash.');
+				}
+				addresses[scriptHash] = {
+					...address.value,
+					index,
+					scriptHash,
+				};
 			}),
 		);
 
 		await Promise.all(
 			changeAddressArray.map(async (_item, i) => {
-				try {
-					const index = i + changeAddressIndex;
-					const path = { ...keyDerivationPath! };
-					path.addressIndex = `${index}`;
-					const changeAddressPath = formatKeyDerivationPath({
-						path,
-						selectedNetwork,
-						accountType,
-						changeAddress: true,
-						addressIndex: `${index}`,
-					});
-					if (changeAddressPath.isErr()) {
-						return err(changeAddressPath.error.message);
-					}
+				const index = i + changeAddressIndex;
+				const path = { ...keyDerivationPath! };
+				path.addressIndex = `${index}`;
+				const changeAddressPath = formatKeyDerivationPath({
+					path,
+					selectedNetwork,
+					accountType,
+					changeAddress: true,
+					addressIndex: `${index}`,
+				});
+				if (changeAddressPath.isErr()) {
+					throw changeAddressPath.error;
+				}
 
-					const address = await getAddress({
-						path: changeAddressPath.value.pathString,
-						selectedNetwork,
-						type,
-					});
-					if (address.isErr()) {
-						return err(address.error.message);
-					}
-					const scriptHash = await getScriptHash(
-						address.value.address,
-						selectedNetwork,
-					);
-					if (!scriptHash) {
-						return err('Unable to get script hash.');
-					}
-					changeAddresses[scriptHash] = {
-						...address.value,
-						index,
-						scriptHash,
-					};
-				} catch {}
+				const address = await getAddress({
+					path: changeAddressPath.value.pathString,
+					selectedNetwork,
+					type,
+				});
+				if (address.isErr()) {
+					throw address.error;
+				}
+				const scriptHash = await getScriptHash(
+					address.value.address,
+					selectedNetwork,
+				);
+				if (!scriptHash) {
+					throw new Error('Unable to get script hash.');
+				}
+				changeAddresses[scriptHash] = {
+					...address.value,
+					index,
+					scriptHash,
+				};
 			}),
 		);
 
