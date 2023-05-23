@@ -1084,7 +1084,7 @@ export const updateFee = ({
 	selectedNetwork?: TAvailableNetworks;
 	index?: number;
 	transaction?: ISendTransaction;
-}): Result<string> => {
+}): Result<{ fee: number }> => {
 	if (!selectedWallet) {
 		selectedWallet = getSelectedWallet();
 	}
@@ -1107,19 +1107,13 @@ export const updateFee = ({
 		inputs: transaction.inputs,
 	});
 
-	const max = transaction.max;
-	const message = transaction.message;
-	const outputs = transaction.outputs;
+	const { max, message, outputs } = transaction;
 	let address = '';
 	if (outputs.length > index) {
 		address = outputs[index]?.address ?? '';
 	}
 
-	//Check that the user has enough funds
-	const newFee = getTotalFee({
-		satsPerByte,
-		message,
-	});
+	const newFee = getTotalFee({ satsPerByte, message });
 
 	//Return if the new fee exceeds half of the user's balance
 	if (newFee >= inputTotal / 2) {
@@ -1140,18 +1134,20 @@ export const updateFee = ({
 	};
 
 	if (max) {
-		//Update the tx value with the new fee to continue sending the max amount.
+		// Update the tx value with the new fee to continue sending the max amount.
 		_transaction.outputs = [{ address, value: inputTotal - newFee, index }];
 	}
 
+	// Check that the user has enough funds
 	if (max || newTotalAmount <= inputTotal) {
 		updateSendTransaction({
 			selectedNetwork,
 			selectedWallet,
 			transaction: _transaction,
 		});
-		return ok('Successfully updated the transaction fee.');
+		return ok({ fee: newFee });
 	}
+
 	return err(
 		'New total amount exceeds the available balance. Unable to update the transaction fee.',
 	);
@@ -1655,7 +1651,7 @@ export const adjustFee = ({
 	transaction?: ISendTransaction;
 	selectedNetwork?: TAvailableNetworks;
 	selectedWallet?: TWalletName;
-}): Result<string> => {
+}): Result<{ fee: number }> => {
 	try {
 		if (!selectedNetwork) {
 			selectedNetwork = getSelectedNetwork();
@@ -1674,10 +1670,9 @@ export const adjustFee = ({
 			transaction = transactionDataResponse.value;
 		}
 		// const coinSelectPreference = getStore().settings.coinSelectPreference;
-		const satsPerByte = transaction.satsPerByte ?? 1;
-		const newSatsPerByte = satsPerByte + adjustBy;
+		const newSatsPerByte = transaction.satsPerByte + adjustBy;
 		if (newSatsPerByte < 1) {
-			return ok('This is the lowest we can go. Returning...');
+			return err('This is the lowest we can go. Returning...');
 		}
 		const response = updateFee({
 			transaction,

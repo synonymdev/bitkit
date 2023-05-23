@@ -58,6 +58,8 @@
 	"lnurl_withdr_success_title": "Withdraw Requested",
 	"lnurl_withdr_success_msg": "LNURL Withdraw was successfully requested.",
 	"bt_error_retrieve": "Unable To Retrieve Order Information",
+	"bt_channel_purchase_fee_error": "Not enough funds to cover the transaction fee.",
+	"bt_channel_purchase_cost_error": "You need {{delta}} more to complete this transaction.",
 	"earlier": "EARLIER",
 	"update_title": "Update Available",
 	"update_text": "Please update Bitkit to the latest version for new features and bug fixes!",

@@ -21,7 +21,6 @@ import { TAvailableNetworks } from '../../utils/networks';
 import {
 	broadcastTransaction,
 	createTransaction,
-	getOnchainTransactionData,
 	updateFee,
 } from '../../utils/wallet/transactions';
 import {
@@ -197,13 +196,16 @@ export const startChannelPurchase = async ({
 	selectedWallet,
 	selectedNetwork,
 }: {
-	productId?: string;
+	productId: string;
 	remoteBalance: number;
 	localBalance: number;
 	channelExpiry?: number;
 	selectedWallet?: TWalletName;
 	selectedNetwork?: TAvailableNetworks;
 }): Promise<Result<{ orderId: string; channelOpenCost: number }>> => {
+	if (!productId) {
+		return err('Unable to retrieve Blocktank product id.');
+	}
 	if (!selectedNetwork) {
 		selectedNetwork = getSelectedNetwork();
 	}
@@ -211,22 +213,18 @@ export const startChannelPurchase = async ({
 		selectedWallet = getSelectedWallet();
 	}
 
-	if (!productId) {
-		return err('Unable to retrieve Blocktank product id.');
-	}
-
-	const buyChannelData = {
+	const buyChannelResponse = await buyChannel({
 		product_id: productId,
 		remote_balance: remoteBalance,
 		local_balance: localBalance,
 		channel_expiry: channelExpiry,
-	};
-	const buyChannelResponse = await buyChannel(buyChannelData);
+	});
 	if (buyChannelResponse.isErr()) {
 		return err(buyChannelResponse.error.message);
 	}
+	const buyChannelData = buyChannelResponse.value;
 
-	const orderData = await getOrder(buyChannelResponse.value.order_id);
+	const orderData = await getOrder(buyChannelData.order_id);
 	if (orderData.isErr()) {
 		showErrorNotification({
 			title: i18n.t('other:bt_error_retrieve'),
@@ -235,72 +233,46 @@ export const startChannelPurchase = async ({
 		return err(orderData.error.message);
 	}
 
+	const feeEstimates = getFeesStore().onchain;
+	const satsPerByte = orderData.value.zero_conf_satvbyte ?? feeEstimates.fast;
+	const updateFeeRes = updateFee({
+		satsPerByte: satsPerByte,
+		selectedNetwork,
+		selectedWallet,
+	});
+	if (updateFeeRes.isErr()) {
+		return err(i18n.t('other:bt_channel_purchase_fee_error'));
+	}
+
+	const transactionFee = updateFeeRes.value.fee;
+	const { onchainBalance } = getBalance({ selectedNetwork, selectedWallet });
+	const channelOpenCost = buyChannelData.price + transactionFee;
+
+	// Ensure we have enough funds to pay for both the channel and the fee to broadcast the transaction.
+	if (buyChannelData.total_amount + transactionFee > onchainBalance) {
+		// TODO: Attempt to re-calculate a lower fee channel-open that's not instant if unable to pay.
+		const delta = Math.abs(channelOpenCost - onchainBalance);
+		const cost = getDisplayValues({ satoshis: delta });
+		return err(
+			i18n.t('other:bt_channel_purchase_cost_error', {
+				delta: `${cost.fiatSymbol}${cost.fiatFormatted}`,
+			}),
+		);
+	}
+
 	updateSendTransaction({
 		transaction: {
 			outputs: [
 				{
-					value: buyChannelResponse.value.total_amount,
+					address: buyChannelData.btc_address,
+					value: buyChannelData.total_amount,
 					index: 0,
-					address: buyChannelResponse.value.btc_address,
 				},
 			],
 		},
 	});
 
-	const { zero_conf_satvbyte } = orderData.value;
-
-	// TODO: do something if the user can't afford the fee
-	if (zero_conf_satvbyte) {
-		// Set fee appropriately to open an instant channel.
-		updateFee({
-			// satsPerByte: zero_conf_satvbyte,
-			satsPerByte: zero_conf_satvbyte + 100,
-			selectedNetwork,
-			selectedWallet,
-		});
-	} else {
-		const feeEstimates = getFeesStore().onchain;
-		updateFee({
-			satsPerByte: feeEstimates.fast,
-			selectedNetwork,
-			selectedWallet,
-		});
-	}
-
-	const transactionDataRes = getOnchainTransactionData({
-		selectedWallet,
-		selectedNetwork,
-	});
-	if (transactionDataRes.isErr()) {
-		return err(transactionDataRes.error.message);
-	}
-	const transaction = transactionDataRes.value;
-	const { onchainBalance } = getBalance({
-		selectedNetwork,
-		selectedWallet,
-	});
-
-	const channelPrice = buyChannelResponse.value.price;
-	const channelOpenCost = channelPrice + transaction.fee;
-
-	// Ensure we have enough funds to pay for both the channel and the fee to broadcast the transaction.
-	if (
-		transaction.fee + buyChannelResponse.value.total_amount >
-		onchainBalance
-	) {
-		// TODO: Attempt to re-calculate a lower fee channel-open that's not instant if unable to pay.
-		const delta = Math.abs(
-			transaction.fee + buyChannelResponse.value.price - onchainBalance,
-		);
-		const cost = getDisplayValues({ satoshis: delta });
-		return err(
-			`You need ${
-				cost.fiatSymbol + cost.fiatFormatted
-			} more to complete this transaction.`,
-		);
-	}
-
-	return ok({ orderId: buyChannelResponse.value.order_id, channelOpenCost });
+	return ok({ orderId: buyChannelData.order_id, channelOpenCost });
 };
 
 /**

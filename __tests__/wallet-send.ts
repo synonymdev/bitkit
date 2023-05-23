@@ -7,9 +7,9 @@ import { createNewWallet, startWalletServices } from '../src/utils/startup';
 import {
 	updateAddressIndexes,
 	updateWallet,
+	resetSendTransaction,
 	updateSendTransaction,
 	setupOnChainTransaction,
-	resetSendTransaction,
 } from '../src/store/actions/wallet';
 import { connectToElectrum } from '../src/utils/wallet/electrum';
 import {
@@ -168,16 +168,19 @@ describe('Wallet - new wallet, send and receive', () => {
 		expect(tx12?.satsPerByte).toBe(2);
 
 		// setting fee too high should return an error
-		res = updateFee({ satsPerByte: 100_000_000, transaction: tx12 });
+		let updateFeeRes = updateFee({
+			satsPerByte: 100_000_000,
+			transaction: tx12,
+		});
 		// @ts-ignore
-		expect(res.error.message).toBe(
+		expect(updateFeeRes.error.message).toBe(
 			'Unable to increase the fee any further. Otherwise, it will exceed half the current balance.',
 		);
 
 		// set fee to 3 vsat/byte
-		res = updateFee({ satsPerByte: 3, transaction: tx12 });
-		if (res.isErr()) {
-			throw res.error;
+		updateFeeRes = updateFee({ satsPerByte: 3, transaction: tx12 });
+		if (updateFeeRes.isErr()) {
+			throw updateFeeRes.error;
 		}
 
 		const tx13 =
