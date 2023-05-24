@@ -1,4 +1,10 @@
-import React, { ReactElement, memo, useCallback, useState } from 'react';
+import React, {
+	ReactElement,
+	memo,
+	useCallback,
+	useState,
+	useEffect,
+} from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useSelector } from 'react-redux';
 import { FadeIn, FadeOut } from 'react-native-reanimated';
@@ -30,11 +36,13 @@ import GlowImage from '../../../components/GlowImage';
 import { useScreenSize } from '../../../hooks/screen';
 import { getNumberPadText } from '../../../utils/numberpad';
 import { useSwitchUnit } from '../../../hooks/wallet';
+import { updateMetaIncTxTags } from '../../../store/actions/metadata';
 
 const imageSrc = require('../../../assets/illustrations/coin-stack-4.png');
 
 const ReceiveDetails = ({
 	navigation,
+	route,
 }: ReceiveScreenProps<'ReceiveDetails'>): ReactElement => {
 	const { t } = useTranslation('wallet');
 	const { keyboardShown } = useKeyboard();
@@ -43,6 +51,7 @@ const ReceiveDetails = ({
 	const [showNumberPad, setShowNumberPad] = useState(false);
 	const invoice = useSelector(receiveSelector);
 	const { fiatTicker } = useCurrency();
+	const { receiveAddress, lightningInvoice } = route.params;
 
 	const onChangeUnit = (): void => {
 		const result = getNumberPadText(invoice.amount, nextUnit);
@@ -58,6 +67,12 @@ const ReceiveDetails = ({
 	const onContinue = useCallback(() => {
 		setShowNumberPad(false);
 	}, []);
+
+	useEffect(() => {
+		if (invoice.tags.length > 0 && receiveAddress) {
+			updateMetaIncTxTags(receiveAddress, lightningInvoice, invoice.tags);
+		}
+	}, [receiveAddress, lightningInvoice, invoice.tags]);
 
 	return (
 		<GradientView style={styles.container}>

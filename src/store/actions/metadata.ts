@@ -49,7 +49,7 @@ export const deleteMetaTxTag = (txid: string, tag: string): Result<string> => {
  */
 export const updateMetaIncTxTags = (
 	address: string,
-	payReq: string,
+	payReq?: string,
 	tags: Array<string> = [],
 ): Result<string> => {
 	dispatch({

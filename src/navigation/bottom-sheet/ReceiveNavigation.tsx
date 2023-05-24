@@ -20,7 +20,7 @@ export type ReceiveNavigationProp =
 
 export type ReceiveStackParamList = {
 	ReceiveQR: undefined;
-	ReceiveDetails: undefined;
+	ReceiveDetails: { receiveAddress: string; lightningInvoice?: string };
 	Tags: undefined;
 };
 

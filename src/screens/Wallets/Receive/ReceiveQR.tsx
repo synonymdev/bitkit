@@ -516,7 +516,12 @@ const ReceiveQR = ({
 				<Button
 					size="large"
 					text={t('receive_specify')}
-					onPress={(): void => navigation.navigate('ReceiveDetails')}
+					onPress={(): void =>
+						navigation.navigate('ReceiveDetails', {
+							receiveAddress,
+							lightningInvoice,
+						})
+					}
 					testID="SpecifyInvoiceButton"
 				/>
 			</View>
