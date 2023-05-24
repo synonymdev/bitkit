@@ -1,4 +1,5 @@
 import Toast, { ToastPosition } from 'react-native-toast-message';
+import { __E2E__ } from '../constants/env';
 
 type AppNotification = {
 	title?: string;
@@ -16,6 +17,10 @@ export const showErrorNotification = (
 	{ title = 'Something went wrong', message }: AppNotification,
 	position: ToastPosition = 'top',
 ): void => {
+	if (__E2E__) {
+		return;
+	}
+
 	Toast.show({
 		type: 'error',
 		text1: title,
@@ -29,6 +34,10 @@ export const showSuccessNotification = (
 	{ title = 'Success!', message }: AppNotification,
 	position: ToastPosition = 'top',
 ): void => {
+	if (__E2E__) {
+		return;
+	}
+
 	Toast.show({
 		type: 'success',
 		text1: title,
@@ -42,6 +51,10 @@ export const showInfoNotification = (
 	{ title = '', message }: AppNotification,
 	position: ToastPosition = 'top',
 ): void => {
+	if (__E2E__) {
+		return;
+	}
+
 	Toast.show({
 		type: 'info',
 		text1: title,
