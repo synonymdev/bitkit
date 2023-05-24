@@ -130,7 +130,7 @@ export type TProcessedData = {
 /**
  * This method processes, decodes and handles all scanned/pasted information provided by the user.
  * @param {string} data
- * @param {'mainScanner' | 'sendScanner'} [source]
+ * @param {'mainScanner' | 'send'} [source]
  * @param {SDK} sdk
  * @param {TAvailableNetworks} [selectedNetwork]
  * @param {TWalletName} [selectedWallet]
@@ -146,7 +146,7 @@ export const processInputData = async ({
 	showErrors = true,
 }: {
 	data: string;
-	source?: 'mainScanner' | 'sendScanner';
+	source?: 'mainScanner' | 'send';
 	selectedNetwork?: TAvailableNetworks;
 	selectedWallet?: TWalletName;
 	sdk?: SDK;
@@ -164,25 +164,26 @@ export const processInputData = async ({
 
 		const decodeRes = await decodeQRData(data, selectedNetwork);
 		if (decodeRes.isErr()) {
+			const errorMessage = i18n.t('other:scan_err_interpret_msg');
 			if (showErrors) {
 				showErrorNotification({
 					title: i18n.t('other:scan_err_decoding'),
-					message: decodeRes.error.message,
+					message: errorMessage,
 				});
 			}
-			return err('Decoding Error');
+			return err(errorMessage);
 		}
 
 		// Unable to interpret any of the provided data.
 		if (!decodeRes.value.length) {
-			const message = 'Bitkit is unable to interpret the provided data.';
+			const errorMessage = i18n.t('other:scan_err_interpret_msg');
 			if (showErrors) {
 				showErrorNotification({
-					title: i18n.t('other:scan_err_interpret'),
-					message,
+					title: i18n.t('other:scan_err_interpret_title'),
+					message: errorMessage,
 				});
 			}
-			return err(message);
+			return err(errorMessage);
 		}
 
 		let dataToHandle;
@@ -204,7 +205,7 @@ export const processInputData = async ({
 			}
 			dataToHandle = processBitcoinTxResponse.value;
 		} else if (
-			source === 'sendScanner' &&
+			source === 'send' &&
 			decodeRes.value[0].qrDataType === 'slashURL'
 		) {
 			if (!sdk) {
@@ -229,13 +230,14 @@ export const processInputData = async ({
 			}
 
 			if (response.value.length === 0) {
+				const errorMessage = i18n.t('slashtags:error_pay_empty_msg');
 				if (showErrors) {
 					showErrorNotification({
 						title: i18n.t('slashtags:error_pay_title'),
-						message: i18n.t('slashtags:error_pay_empty_title'),
+						message: errorMessage,
 					});
 				}
-				return err('Remote slashpay profile is empty');
+				return err(errorMessage);
 			}
 
 			const filteredData = response.value.filter(
@@ -281,6 +283,10 @@ export const decodeQRData = async (
 	data: string,
 	selectedNetwork?: TAvailableNetworks,
 ): Promise<Result<QRData[]>> => {
+	if (!data) {
+		return err('No data provided.');
+	}
+
 	if (data.startsWith('slashauth:')) {
 		return ok([{ qrDataType: EQRDataType.slashAuthURL, url: data }]);
 	} else if (data.startsWith('slash:')) {
@@ -832,5 +838,150 @@ export const handleData = async ({
 
 		default:
 			return err('Unable to read or interpret the provided data.');
+	}
+};
+
+/**
+ * This method decodes and validates a URI and returns the data in a QRData object.
+ * @param {string} data
+ * @param {'mainScanner' | 'send'} [source]
+ * @param {SDK} [sdk]
+ * @param {boolean} [showErrors]
+ * @param {TAvailableNetworks} [selectedNetwork]
+ * @param {TWalletName} [selectedWallet]
+ */
+export const validateInputData = async ({
+	data,
+	source = 'mainScanner',
+	sdk,
+	showErrors,
+	selectedNetwork,
+	selectedWallet,
+}: {
+	data: string;
+	source?: 'mainScanner' | 'send';
+	sdk?: SDK;
+	showErrors?: boolean;
+	selectedNetwork?: TAvailableNetworks;
+	selectedWallet?: TWalletName;
+}): Promise<Result<QRData>> => {
+	if (!data) {
+		return err('No data provided.');
+	}
+
+	if (!selectedNetwork) {
+		selectedNetwork = getSelectedNetwork();
+	}
+	if (!selectedWallet) {
+		selectedWallet = getSelectedWallet();
+	}
+
+	try {
+		const decodeRes = await decodeQRData(data, selectedNetwork);
+		if (decodeRes.isErr() || !decodeRes.value.length) {
+			const errorMessage = i18n.t('other:scan_err_interpret_msg');
+			if (showErrors) {
+				showErrorNotification({
+					title: i18n.t('other:scan_err_interpret_title'),
+					message: errorMessage,
+				});
+			}
+			return err(errorMessage);
+		}
+
+		const decodedData = decodeRes.value[0];
+
+		// Check if we're dealing with a Bitcoin payment request.
+		if (
+			decodeRes.value.length > 1 ||
+			decodedData.qrDataType === 'bitcoinAddress' ||
+			decodedData.qrDataType === 'lightningPaymentRequest'
+		) {
+			// Attempt to handle a unified Bitcoin transaction.
+			const processBitcoinTxResponse = await processBitcoinTransactionData({
+				data: decodeRes.value,
+				selectedWallet,
+				selectedNetwork,
+			});
+			if (processBitcoinTxResponse.isErr()) {
+				return err(processBitcoinTxResponse.error.message);
+			}
+			return ok(processBitcoinTxResponse.value);
+		}
+
+		if (decodedData.qrDataType === 'slashURL') {
+			if (!sdk) {
+				const msg =
+					'Slashtags SDK was not provided to processInputData method.';
+				console.error(msg);
+				return err(msg);
+			}
+
+			// If we're on the send screen, we need to additionally check for payment data.
+			if (source === 'send') {
+				const response = await processSlashPayURL({
+					url: decodedData.url!,
+					sdk,
+				});
+				if (response.isErr()) {
+					const errorMessage = response.error.message;
+					if (showErrors) {
+						showErrorNotification({
+							title: i18n.t('slashtags:error_pay_title'),
+							message: errorMessage,
+						});
+					}
+					return err(errorMessage);
+				}
+				if (response.value.length === 0) {
+					const errorMessage = i18n.t('slashtags:error_pay_empty_msg');
+					if (showErrors) {
+						showErrorNotification({
+							title: i18n.t('slashtags:error_pay_title'),
+							message: errorMessage,
+						});
+					}
+					return err(errorMessage);
+				}
+				return ok(response.value[0]);
+			} else {
+				return ok(decodedData);
+			}
+		}
+
+		if (decodedData.qrDataType === 'slashAuthURL') {
+			if (source === 'send') {
+				const errorMessage = i18n.t('other:scan_err_not_payable_msg');
+				if (showErrors) {
+					showErrorNotification({
+						title: i18n.t('slashtags:error_pay_title'),
+						message: errorMessage,
+					});
+				}
+				return err(errorMessage);
+			} else {
+				return ok(decodedData);
+			}
+		}
+
+		if (decodedData.qrDataType === 'slashFeedURL') {
+			if (source === 'send') {
+				const errorMessage = i18n.t('other:scan_err_not_payable_msg');
+				if (showErrors) {
+					showErrorNotification({
+						title: i18n.t('slashtags:error_pay_title'),
+						message: errorMessage,
+					});
+				}
+				return err(errorMessage);
+			} else {
+				return ok(decodedData);
+			}
+		}
+
+		return ok(decodedData);
+	} catch (e) {
+		console.error(e);
+		return err(e);
 	}
 };

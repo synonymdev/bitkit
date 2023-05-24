@@ -143,7 +143,7 @@ const Result = ({
 			});
 			const res = await processInputData({
 				data: transaction.slashTagsUrl,
-				source: 'sendScanner',
+				source: 'send',
 				sdk,
 				selectedNetwork,
 				selectedWallet,

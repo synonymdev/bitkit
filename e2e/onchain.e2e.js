@@ -93,7 +93,8 @@ describe('Onchain', () => {
 			await element(by.id('Send')).tap();
 			await sleep(1000); // animation
 			await element(by.id('RecipientInput')).replaceText(coreAddress);
-			await sleep(1000); // animation
+			await element(by.id('RecipientInput')).tapReturnKey();
+			await element(by.id('ContinueRecipient')).tap();
 
 			// Amount / NumberPad
 			await element(by.id('SendNumberPadMax')).tap();
@@ -246,7 +247,8 @@ describe('Onchain', () => {
 			await element(by.id('Send')).tap();
 			await sleep(1000); // animation
 			await element(by.id('RecipientInput')).replaceText(coreAddress);
-			await sleep(1000); // animation
+			await element(by.id('RecipientInput')).tapReturnKey();
+			await element(by.id('ContinueRecipient')).tap();
 
 			// enter amount that would leave dust
 			let { label: amount } = await element(

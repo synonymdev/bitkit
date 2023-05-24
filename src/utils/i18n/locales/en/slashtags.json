@@ -90,6 +90,6 @@
 	"error_delete_contact": "Error while deleting contact:",
 	"error_sdk_title": "SDK is closed",
 	"error_sdk_msg": "please restart Bitkit!",
-	"error_pay_title": "Unable To Pay to this slashtag",
-	"error_pay_empty_title": "Remote slashpay profile is empty"
+	"error_pay_title": "Unable To Pay To This Slashtag",
+	"error_pay_empty_msg": "Remote slashpay profile is empty"
 }

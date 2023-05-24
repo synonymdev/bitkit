@@ -15,21 +15,21 @@ import { ClipboardTextIcon, ScanIcon, UserIcon } from '../../../styles/icons';
 import { useSlashtagsSDK } from '../../../components/SlashtagsProvider';
 import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
 import SafeAreaInset from '../../../components/SafeAreaInset';
+import ContactSmall from '../../../components/ContactSmall';
 import IconButton from '../../../components/IconButton';
 import GlowImage from '../../../components/GlowImage';
 import Button from '../../../components/Button';
-import { processInputData } from '../../../utils/scanner';
+import { processInputData, validateInputData } from '../../../utils/scanner';
 import { showErrorNotification } from '../../../utils/notifications';
+import useColors from '../../../hooks/colors';
 import useKeyboard, { Keyboard } from '../../../hooks/keyboard';
 import { useBottomSheetBackPress } from '../../../hooks/bottomSheet';
+import type { SendScreenProps } from '../../../navigation/types';
 import {
 	selectedNetworkSelector,
 	selectedWalletSelector,
 	transactionSelector,
 } from '../../../store/reselect/wallet';
-import type { SendScreenProps } from '../../../navigation/types';
-import ContactSmall from '../../../components/ContactSmall';
-import useColors from '../../../hooks/colors';
 import {
 	resetSendTransaction,
 	setupOnChainTransaction,
@@ -53,12 +53,14 @@ const Recipient = ({
 	useBottomSheetBackPress('sendNavigation');
 
 	const onChangeText = async (text?: string): Promise<void> => {
-		let hasPasted = false;
+		let _isValid = false;
+		let usedPasteButton = false;
 
 		// user pressed clipboard button
 		if (text === undefined) {
-			hasPasted = true;
+			usedPasteButton = true;
 			text = await Clipboard.getString();
+			text = text.trim();
 
 			if (!text) {
 				showErrorNotification({
@@ -69,31 +71,31 @@ const Recipient = ({
 			}
 		}
 
-		// user probably pasted via OS paste
-		if (text.length > textFieldValue.length + 1) {
-			hasPasted = true;
-		}
-
 		setTextFieldValue(text);
 
-		if (!text) {
-			return;
-		}
-
-		const result = await processInputData({
+		const decodeRes = await validateInputData({
 			data: text,
-			source: 'sendScanner',
-			showErrors: hasPasted,
+			source: 'send',
 			sdk,
-			selectedNetwork,
-			selectedWallet,
+			showErrors: usedPasteButton,
 		});
-
-		if (result.isOk()) {
-			setIsValid(true);
+		if (decodeRes.isErr()) {
+			_isValid = false;
 		} else {
-			setIsValid(false);
+			_isValid = true;
+			if (usedPasteButton) {
+				// parse data, update transaction and navigate to next screen
+				await processInputData({
+					data: text,
+					source: 'send',
+					sdk,
+					selectedNetwork,
+					selectedWallet,
+				});
+			}
 		}
+
+		setIsValid(_isValid);
 	};
 
 	const onOpenScanner = (): void => {
@@ -106,14 +108,9 @@ const Recipient = ({
 
 	const onRemoveContact = async (): Promise<void> => {
 		setTextFieldValue('');
-		resetSendTransaction({
-			selectedWallet,
-			selectedNetwork,
-		});
-		await setupOnChainTransaction({
-			selectedNetwork,
-			selectedWallet,
-		});
+		setIsValid(false);
+		resetSendTransaction({ selectedWallet, selectedNetwork });
+		await setupOnChainTransaction({ selectedNetwork, selectedWallet });
 	};
 
 	const onContinue = async (): Promise<void> => {
@@ -122,7 +119,7 @@ const Recipient = ({
 		// make sure transaction is up-to-date when navigating back and forth
 		await processInputData({
 			data: textFieldValue,
-			source: 'sendScanner',
+			source: 'send',
 			showErrors: false,
 			sdk,
 			selectedNetwork,

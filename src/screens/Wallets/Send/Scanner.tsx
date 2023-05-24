@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 
-import { processInputData } from '../../../utils/scanner';
+import { processInputData, validateInputData } from '../../../utils/scanner';
 import { showErrorNotification } from '../../../utils/notifications';
 import { useSlashtagsSDK } from '../../../components/SlashtagsProvider';
 import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
@@ -28,13 +28,21 @@ const ScannerScreen = (): ReactElement => {
 			return;
 		}
 
-		await processInputData({
+		const decodeRes = await validateInputData({
 			data,
-			source: 'sendScanner',
+			source: 'send',
 			sdk,
-			selectedNetwork,
-			selectedWallet,
-		}).then();
+			showErrors: true,
+		});
+		if (decodeRes.isOk()) {
+			await processInputData({
+				data,
+				source: 'send',
+				sdk,
+				selectedNetwork,
+				selectedWallet,
+			});
+		}
 	};
 
 	return (

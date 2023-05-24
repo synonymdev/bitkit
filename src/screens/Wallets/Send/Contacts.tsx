@@ -42,7 +42,7 @@ const Contacts = ({
 		setLoading(true);
 		const res = await processInputData({
 			data: contact.url,
-			source: 'sendScanner',
+			source: 'send',
 			sdk,
 			selectedNetwork,
 			selectedWallet,
