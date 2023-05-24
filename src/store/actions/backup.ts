@@ -1,9 +1,5 @@
-import lm from '@synonymdev/react-native-ldk';
 import { err, ok, Result } from '@synonymdev/result';
-import {
-	ENetworks,
-	TLdkData,
-} from '@synonymdev/react-native-ldk/dist/utils/types';
+import lm, { ENetworks, TLdkData } from '@synonymdev/react-native-ldk';
 
 import actions from './actions';
 import { getBackupStore, getDispatch } from '../helpers';

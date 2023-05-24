@@ -1,7 +1,4 @@
-import {
-	ENetworks,
-	TAccount,
-} from '@synonymdev/react-native-ldk/dist/utils/types';
+import { ENetworks, TAccount } from '@synonymdev/react-native-ldk';
 
 export interface IBackup {
 	//Backpack

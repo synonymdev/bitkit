@@ -3,8 +3,8 @@ import Keychain from 'react-native-keychain';
 import * as bitcoin from 'bitcoinjs-lib';
 import RNFS from 'react-native-fs';
 import { err, ok, Result } from '@synonymdev/result';
-import ldk from '@synonymdev/react-native-ldk/dist/ldk';
 import lm, {
+	ldk,
 	DefaultTransactionDataShape,
 	EEventTypes,
 	ENetworks,
