@@ -312,15 +312,13 @@ export const handleLightningPaymentSubscription = async ({
 		selectedWallet,
 	});
 	if (invoice.isOk()) {
-		const value = payment.amount_sat;
-		let activityItem: TLightningActivityItem = {
+		const activityItem: TLightningActivityItem = {
 			id: invoice.value.payment_hash,
 			activityType: EActivityType.lightning,
 			txType: EPaymentType.received,
-			txId: invoice.value.payment_hash,
 			message: invoice.value.description ?? '',
 			address: invoice.value.to_str,
-			value,
+			value: payment.amount_sat,
 			// TODO: show fee?
 			// fee: 0,
 			// feeRate: 0,
@@ -1152,11 +1150,10 @@ export const payLightningInvoice = async (
 		if (sats) {
 			value = sats;
 		}
-		let activityItem: TLightningActivityItem = {
+		const activityItem: TLightningActivityItem = {
 			id: decodedInvoice.value.payment_hash,
 			activityType: EActivityType.lightning,
 			txType: EPaymentType.sent,
-			txId: decodedInvoice.value.payment_hash,
 			message: decodedInvoice.value.description ?? '',
 			address: invoice,
 			value: -value,

@@ -267,6 +267,13 @@ const OnchainActivityDetail = ({
 
 	const blockExplorerUrl = getBlockExplorerLink(id);
 
+	const handleExplore = (): void => {
+		navigation.push('ActivityDetail', {
+			id: item.id,
+			extended: true,
+		});
+	};
+
 	const handleBlockExplorerOpen = useCallback(async () => {
 		await openURL(blockExplorerUrl);
 	}, [blockExplorerUrl]);
@@ -338,77 +345,81 @@ const OnchainActivityDetail = ({
 					<Money sats={value} sign={isSend ? '- ' : '+ '} />
 				</View>
 
-				<ThemedView
-					color={isSend ? 'red16' : 'green16'}
-					style={styles.iconContainer}>
+				<ThemedView style={styles.iconContainer} color="brand16">
 					{isSend ? (
-						<SendIcon height={19} color="red" />
+						<SendIcon height={19} color="brand" />
 					) : (
-						<ReceiveIcon height={19} color="green" />
+						<ReceiveIcon height={19} color="brand" />
 					)}
 				</ThemedView>
 			</View>
 
-			<View style={styles.sectionContainer}>
-				<Section
-					title={t('activity_fee')}
-					value={
-						<View style={styles.row}>
-							<TimerIcon style={styles.rowIcon} color="brand" />
-							<Text02M>
-								{feeDisplay.satoshis} ({feeDisplay.fiatSymbol}
-								{feeDisplay.fiatFormatted})
-							</Text02M>
-						</View>
-					}
-				/>
-				<Section title={t('activity_status')} value={status} />
-			</View>
-
-			<View style={styles.sectionContainer}>
-				<Section
-					title={t('activity_date')}
-					value={
-						<View style={styles.row}>
-							<CalendarIcon style={styles.rowIcon} color="brand" width={16} />
-							<Text02M>
-								{t('intl:dateTime', {
-									v: new Date(timestamp),
-									formatParams: {
-										v: {
-											month: 'long',
-											day: 'numeric',
-										},
-									},
-								})}
-							</Text02M>
-						</View>
-					}
-				/>
-				<Section
-					title={t('activity_time')}
-					value={
-						<View style={styles.row}>
-							<ClockIcon style={styles.rowIcon} color="brand" />
-							<Text02M>
-								{t('intl:dateTime', {
-									v: new Date(confirmed ? confirmTimestamp! : timestamp),
-									formatParams: {
-										v: {
-											hour: 'numeric',
-											minute: 'numeric',
-											hour12: false,
-										},
-									},
-								})}
-							</Text02M>
-						</View>
-					}
-				/>
-			</View>
-
 			{!extended ? (
 				<>
+					<View style={styles.sectionContainer}>
+						{isSend && (
+							<Section
+								title={t('activity_fee')}
+								value={
+									<View style={styles.row}>
+										<TimerIcon style={styles.rowIcon} color="brand" />
+										<Text02M>
+											{feeDisplay.satoshis} ({feeDisplay.fiatSymbol}
+											{feeDisplay.fiatFormatted})
+										</Text02M>
+									</View>
+								}
+							/>
+						)}
+						<Section title={t('activity_status')} value={status} />
+					</View>
+
+					<View style={styles.sectionContainer}>
+						<Section
+							title={t('activity_date')}
+							value={
+								<View style={styles.row}>
+									<CalendarIcon
+										style={styles.rowIcon}
+										color="brand"
+										width={16}
+									/>
+									<Text02M>
+										{t('intl:dateTime', {
+											v: new Date(timestamp),
+											formatParams: {
+												v: {
+													month: 'long',
+													day: 'numeric',
+												},
+											},
+										})}
+									</Text02M>
+								</View>
+							}
+						/>
+						<Section
+							title={t('activity_time')}
+							value={
+								<View style={styles.row}>
+									<ClockIcon style={styles.rowIcon} color="brand" />
+									<Text02M>
+										{t('intl:dateTime', {
+											v: new Date(confirmed ? confirmTimestamp! : timestamp),
+											formatParams: {
+												v: {
+													hour: 'numeric',
+													minute: 'numeric',
+													hour12: false,
+												},
+											},
+										})}
+									</Text02M>
+								</View>
+							}
+						/>
+					</View>
+
 					{(tags.length !== 0 || slashTagsUrl) && (
 						<View style={styles.sectionContainer}>
 							{slashTagsUrl && (
@@ -481,23 +492,10 @@ const OnchainActivityDetail = ({
 								text={t('activity_explore')}
 								icon={<GitBranchIcon color="brand" />}
 								disabled={!blockExplorerUrl}
-								onPress={handleBlockExplorerOpen}
+								testID="ActivityTxDetails"
+								onPress={handleExplore}
 							/>
 						</View>
-					</View>
-
-					<View style={styles.buttonDetailsContainer}>
-						<Button
-							text={t('activity_tx_details')}
-							size="large"
-							testID="ActivityTxDetails"
-							onPress={(): void =>
-								navigation.push('ActivityDetail', {
-									id: item.id,
-									extended: true,
-								})
-							}
-						/>
 					</View>
 				</>
 			) : (
@@ -622,6 +620,13 @@ const LightningActivityDetail = ({
 		navigation.navigate('Contact', { url });
 	};
 
+	const handleExplore = (): void => {
+		navigation.push('ActivityDetail', {
+			id: item.id,
+			extended: true,
+		});
+	};
+
 	const copyTransactionId = useCallback(() => {
 		Clipboard.setString(id);
 		showInfoNotification({
@@ -652,80 +657,80 @@ const LightningActivityDetail = ({
 					<Money sats={value} sign={isSend ? '- ' : '+ '} />
 				</View>
 
-				<ThemedView
-					color={isSend ? 'red16' : 'green16'}
-					style={styles.iconContainer}>
+				<ThemedView style={styles.iconContainer} color="purple16">
 					{isSend ? (
-						<SendIcon height={19} color="red" />
+						<SendIcon height={19} color="purple" />
 					) : (
-						<ReceiveIcon height={19} color="green" />
+						<ReceiveIcon height={19} color="purple" />
 					)}
 				</ThemedView>
 			</View>
 
-			<View style={styles.sectionContainer}>
-				<Section
-					title={t('activity_fee')}
-					value={
-						<View style={styles.row}>
-							<SpeedFastIcon
-								style={styles.rowIcon}
-								color="purple"
-								width={16}
-								height={16}
-							/>
-							{/* TODO: get actual fee */}
-							<Text02M>$0.01</Text02M>
-						</View>
-					}
-				/>
-				<Section title={t('activity_status')} value={status} />
-			</View>
-
-			<View style={styles.sectionContainer}>
-				<Section
-					title={t('activity_date')}
-					value={
-						<View style={styles.row}>
-							<CalendarIcon style={styles.rowIcon} color="purple" />
-							<Text02M>
-								{t('intl:dateTime', {
-									v: new Date(timestamp),
-									formatParams: {
-										v: {
-											month: 'long',
-											day: 'numeric',
-										},
-									},
-								})}
-							</Text02M>
-						</View>
-					}
-				/>
-				<Section
-					title={t('activity_time')}
-					value={
-						<View style={styles.row}>
-							<ClockIcon style={styles.rowIcon} color="purple" />
-							<Text02M>
-								{t('intl:dateTime', {
-									v: new Date(timestamp),
-									formatParams: {
-										v: {
-											hour: 'numeric',
-											minute: 'numeric',
-											hour12: false,
-										},
-									},
-								})}
-							</Text02M>
-						</View>
-					}
-				/>
-			</View>
-
 			{!extended ? (
 				<>
+					<View style={styles.sectionContainer}>
+						{isSend && (
+							<Section
+								title={t('activity_fee')}
+								value={
+									<View style={styles.row}>
+										<SpeedFastIcon
+											style={styles.rowIcon}
+											color="purple"
+											width={16}
+											height={16}
+										/>
+										{/* TODO: get actual fee */}
+										<Text02M>$0.01</Text02M>
+									</View>
+								}
+							/>
+						)}
+						<Section title={t('activity_status')} value={status} />
+					</View>
+
+					<View style={styles.sectionContainer}>
+						<Section
+							title={t('activity_date')}
+							value={
+								<View style={styles.row}>
+									<CalendarIcon style={styles.rowIcon} color="purple" />
+									<Text02M>
+										{t('intl:dateTime', {
+											v: new Date(timestamp),
+											formatParams: {
+												v: {
+													month: 'long',
+													day: 'numeric',
+												},
+											},
+										})}
+									</Text02M>
+								</View>
+							}
+						/>
+						<Section
+							title={t('activity_time')}
+							value={
+								<View style={styles.row}>
+									<ClockIcon style={styles.rowIcon} color="purple" />
+									<Text02M>
+										{t('intl:dateTime', {
+											v: new Date(timestamp),
+											formatParams: {
+												v: {
+													hour: 'numeric',
+													minute: 'numeric',
+													hour12: false,
+												},
+											},
+										})}
+									</Text02M>
+								</View>
+							}
+						/>
+					</View>
+
 					{(tags.length !== 0 || slashTagsUrl) && (
 						<View style={styles.sectionContainer}>
 							{slashTagsUrl && (
@@ -779,37 +784,39 @@ const LightningActivityDetail = ({
 								<Button
 									style={styles.button}
 									text={t('activity_detach')}
-									icon={<UserMinusIcon height={16} width={16} color="brand" />}
+									icon={<UserMinusIcon height={16} width={16} color="purple" />}
 									onPress={handleDetach}
 								/>
 							) : (
 								<Button
 									style={styles.button}
 									text={t('activity_assign')}
-									icon={<UserPlusIcon height={16} width={16} color="brand" />}
+									icon={<UserPlusIcon height={16} width={16} color="purple" />}
 									onPress={handleAssign}
 								/>
 							)}
 							<Button
 								style={styles.button}
 								text={t('activity_tag')}
-								icon={<TagIcon height={16} width={16} color="brand" />}
+								icon={<TagIcon height={16} width={16} color="purple" />}
 								onPress={handleAddTag}
 							/>
 						</View>
-					</View>
-
-					<View style={styles.buttonDetailsContainer}>
-						<Button
-							text={t('activity_tx_details')}
-							size="large"
-							onPress={(): void =>
-								navigation.push('ActivityDetail', {
-									id: item.id,
-									extended: true,
-								})
-							}
-						/>
+						<View style={styles.sectionContainer}>
+							<Button
+								style={styles.button}
+								text={t('activity_boost')}
+								icon={<TimerIconAlt color="purple" />}
+								disabled={true}
+							/>
+							<Button
+								style={styles.button}
+								text={t('activity_explore')}
+								icon={<GitBranchIcon color="purple" />}
+								testID="ActivityTxDetails"
+								onPress={handleExplore}
+							/>
+						</View>
 					</View>
 				</>
 			) : (
@@ -818,7 +825,7 @@ const LightningActivityDetail = ({
 						onPress={copyTransactionId}
 						style={styles.sectionContainer}>
 						<Section
-							title={t('activity_tx_id')}
+							title={t('activity_payment_hash')}
 							value={<Text02M>{id}</Text02M>}
 						/>
 					</TouchableOpacity>
@@ -929,7 +936,7 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		alignItems: 'center',
 		justifyContent: 'space-between',
-		marginBottom: 32,
+		marginBottom: 24,
 	},
 	titleBlock: {
 		flexDirection: 'row',

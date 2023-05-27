@@ -294,7 +294,8 @@ describe('Onchain', () => {
 			await element(by.id('Activity-1')).tap();
 			await element(by.id('ActivityTxDetails')).tap();
 			// only 1 output -> no dust
-			await expect(element(by.text('1 OUTPUT'))).toBeVisible();
+			await expect(element(by.text('OUTPUT'))).toBeVisible();
+			await expect(element(by.text('OUTPUTS (2)'))).not.toBeVisible();
 
 			markComplete('onchain-2');
 		});

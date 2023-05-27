@@ -202,6 +202,15 @@ const ElectrumConfig = ({
 				connectData.port = connectData.protocol === 'ssl' ? '443' : '80';
 			}
 
+			const validityCheck = validateInput(connectData, t);
+			if (validityCheck.isErr()) {
+				showErrorNotification({
+					title: t('es.error_peer'),
+					message: validityCheck.error.message,
+				});
+				return;
+			}
+
 			// Update form
 			setHost(connectData.host);
 			setPort(connectData.port);

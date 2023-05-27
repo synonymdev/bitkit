@@ -227,7 +227,6 @@ describe('Remote backups', () => {
 			id: 'id',
 			activityType: EActivityType.lightning,
 			txType: EPaymentType.received,
-			txId: 'txId',
 			message: '',
 			address: 'invoice',
 			value: 1,

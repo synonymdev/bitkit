@@ -32,7 +32,6 @@ export type TLightningActivityItem = {
 	id: string;
 	activityType: EActivityType.lightning;
 	txType: EPaymentType;
-	txId: string;
 	value: number;
 	address: string;
 	message: string;

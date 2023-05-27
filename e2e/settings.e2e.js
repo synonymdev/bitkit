@@ -343,6 +343,7 @@ describe('Settings', () => {
 					.atIndex(0) // in case there are a few same words in the seed phrase
 					.tap();
 			}
+			await sleep(1000);
 			await element(by.id('ContinueConfirmMnemonic')).tap();
 			await element(by.id('OK')).tap();
 			await element(by.id('OK')).tap();
