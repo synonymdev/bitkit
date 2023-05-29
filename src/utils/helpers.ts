@@ -568,7 +568,10 @@ export const generateCalendar = (
 	return { weeks, weekDays };
 };
 
-export type TGetMinMaxObject<T> = { min: T | undefined; max: T | undefined };
+export type TGetMinMaxObject<T extends object> = {
+	min: T | undefined;
+	max: T | undefined;
+};
 
 /**
  * Accepts an array of objects and returns the minimum and maximum object based off of the provided key.
@@ -577,7 +580,7 @@ export type TGetMinMaxObject<T> = { min: T | undefined; max: T | undefined };
  * @param {string} key
  * @returns { min: T | undefined; max: T | undefined }
  */
-export const getMinMaxObjects = <T>({
+export const getMinMaxObjects = <T extends object>({
 	arr = [],
 	key = '',
 }: {
