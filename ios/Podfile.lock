@@ -78,7 +78,7 @@ PODS:
   - hermes-engine/Pre-built (0.71.7)
   - libevent (2.1.12)
   - lottie-ios (3.4.4)
-  - lottie-react-native (5.1.5):
+  - lottie-react-native (5.1.6):
     - lottie-ios (~> 3.4.0)
     - React-Core
   - MMKV (1.2.15):
@@ -340,13 +340,13 @@ PODS:
     - glog
   - react-native-biometrics (2.2.2):
     - React
-  - react-native-blur (4.3.0):
+  - react-native-blur (4.3.2):
     - React-Core
-  - react-native-document-picker (8.2.0):
+  - react-native-document-picker (8.2.1):
     - React-Core
-  - react-native-flipper (0.183.0):
+  - react-native-flipper (0.191.0):
     - React-Core
-  - react-native-image-picker (5.3.1):
+  - react-native-image-picker (5.4.0):
     - React-Core
   - react-native-ldk (0.0.95):
     - React
@@ -355,13 +355,13 @@ PODS:
   - react-native-mmkv (2.8.0):
     - MMKV (>= 1.2.13)
     - React-Core
-  - react-native-netinfo (9.3.9):
+  - react-native-netinfo (9.3.10):
     - React-Core
   - react-native-randombytes (3.6.1):
     - React-Core
   - react-native-restart (0.0.27):
     - React-Core
-  - react-native-safe-area-context (4.5.1):
+  - react-native-safe-area-context (4.5.3):
     - RCT-Folly
     - RCTRequired
     - RCTTypeSafety
@@ -811,7 +811,7 @@ SPEC CHECKSUMS:
   hermes-engine: 4438d2b8bf8bebaba1b1ac0451160bab59e491f8
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
   lottie-ios: 8f97d3271e155c2d688875c29cd3c74908aef5f8
-  lottie-react-native: 3e722c63015fdb9c27638b0a77969fc412067c18
+  lottie-react-native: 8f9d4be452e23f6e5ca0fdc11669dc99ab52be81
   MMKV: 7f34558bbb5a33b0eaefae2de4b6a20a2ffdad6f
   MMKVCore: ddf41b9d9262f058419f9ba7598719af56c02cd3
   nodejs-mobile-react-native: e35e7ed7ecfca168f168983e9557f1c5278d864b
@@ -831,17 +831,17 @@ SPEC CHECKSUMS:
   React-jsinspector: 9885f6f94d231b95a739ef7bb50536fb87ce7539
   React-logger: 3f8ebad1be1bf3299d1ab6d7f971802d7395c7ef
   react-native-biometrics: 4aec6978534944b5f830b9c3489b721c906ea70b
-  react-native-blur: 50c9feabacbc5f49b61337ebc32192c6be7ec3c3
-  react-native-document-picker: 495c444c0c773c6e83a5d91165890ecb1c0a399a
-  react-native-flipper: fe6db6651d338f516899ebe8dad573d0f2d7aa76
-  react-native-image-picker: ec9b713e248760bfa0f879f0715391de4651a7cb
+  react-native-blur: cfdad7b3c01d725ab62a8a729f42ea463998afa2
+  react-native-document-picker: 69ca2094d8780cfc1e7e613894d15290fdc54bba
+  react-native-flipper: 5d8dcbcb905a7e8076c9a61a3709944c23cf48ee
+  react-native-image-picker: 709d04e7df67bd3a90f376c3eedb2e8b8334dd04
   react-native-ldk: 3608ec98dc228dc8ea4ca15e68a8b4562be7cfb5
   react-native-libsodium: 2834a805c906aef4b7609019bcc87e7d9eb86b23
   react-native-mmkv: 7da5e18e55c04a9af9a7e0ab9792a1e8d33765a1
-  react-native-netinfo: 22c082970cbd99071a4e5aa7a612ac20d66b08f0
+  react-native-netinfo: ccbe1085dffd16592791d550189772e13bf479e2
   react-native-randombytes: 421f1c7d48c0af8dbcd471b0324393ebf8fe7846
   react-native-restart: 7595693413fe3ca15893702f2c8306c62a708162
-  react-native-safe-area-context: f5549f36508b1b7497434baa0cd97d7e470920d4
+  react-native-safe-area-context: b8979f5eda6ed5903d4dbc885be3846ea3daa753
   react-native-skia: 588e058a8fe35b8da0b3c7996aa7fe0ee088035b
   react-native-tcp-socket: c1b7297619616b4c9caae6889bcb0aba78086989
   React-perflogger: 2d505bbe298e3b7bacdd9e542b15535be07220f6

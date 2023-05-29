@@ -17,10 +17,10 @@ describe('Wallet Methods', () => {
 		}
 		expect(res.value.onchain).toEqual(mnemonic);
 		expect(res.value.lightning).toEqual(
-			'old found shock tenant merit tower foster chase sauce stool book enhance public key whip group retreat member cabin blanket sorry pole gym wink',
+			'lawn host tribe green enrich crime anxiety volume item pill soon steak hip mother orbit balcony avocado half scrap topic race near cool change',
 		);
 		expect(res.value.tokens).toEqual(
-			'inspire sick rule wild near rebuild pride tomato shell come drip reduce street steel warrior project radar sister day title spice execute evolve outside',
+			'receive original tilt luxury autumn burden weapon mix bonus joke glow mobile west detect orient midnight slice control bargain height light clock argue oval',
 		);
 	});
 
