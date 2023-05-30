@@ -221,7 +221,9 @@ const QRView = ({
 					quietZone={20}
 					getRef={(c): void => {
 						if (c) {
-							c.toDataURL((data: string) => (qrRef.current = data));
+							c.toDataURL((data: string) => {
+								qrRef.current = data.replace(/(\r\n|\n|\r)/gm, '');
+							});
 						}
 					}}
 				/>

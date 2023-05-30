@@ -254,10 +254,7 @@ const ReceiveQR = ({
 		console.log('TODO: copy QR code as image');
 		// not implemented in upstream yet
 		// https://github.com/react-native-clipboard/clipboard/issues/6
-		// qrRef.current.toDataURL((base64) => {
-		// 	const image = `data:image/png;base64,${base64}`;
-		// 	// Clipboard.setString(image);
-		// });
+		// Clipboard.setString(qrRef.current);
 	}, []);
 
 	const handleShare = useCallback(
@@ -309,7 +306,9 @@ const ReceiveQR = ({
 						quietZone={16}
 						getRef={(c): void => {
 							if (c) {
-								c.toDataURL((data: string) => (qrRef.current = data));
+								c.toDataURL((data: string) => {
+									qrRef.current = data.replace(/(\r\n|\n|\r)/gm, '');
+								});
 							}
 						}}
 					/>
