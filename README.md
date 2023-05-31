@@ -49,18 +49,23 @@ The other main features Bitkit supports are as follows:
 
 All these additional features are powered by Slashtags: a collection of software modules and specifications that complements the Bitcoin and Lightning stacks in the building of peer-to-peer applications, specifically to enable decentralized identities and web-of-trust reputation systems. You can view our JavaScript-based software development kit which has been used for the Bitkit wallet [here](https://github.com/synonymdev/slashtags).
 
-You can experiment with Bitkit's Slashtags features in our [playground](https://slashtags.to/#playground). We currently support four public data widgets: a bitcoin [price feed](https://github.com/synonymdev/slashtags-widget-price-feed), a bitcoin [news feed](https://github.com/synonymdev/slashtags-widget-news-feed), a bitcoin [block data feed](https://github.com/synonymdev/slashtags-widget-bitcoin-feed), and bitcoin [facts feed](https://github.com/synonymdev/slashtags-widget-facts-feed). 
+You can experiment with Bitkit's Slashtags features in our [playground](https://slashtags.to/#playground). We currently support four public data widgets: 
+
+* 📈 [Bitcoin Price Feed](https://github.com/synonymdev/slashtags-widget-price-feed) - [📲 Add to your phone](https://slashtags.to/playground/price)
+* 📰 [Bitcoin News Feed](https://github.com/synonymdev/slashtags-widget-news-feed) - [📲 Add to your phone](https://slashtags.to/playground/headlines)
+* 📊 [Bitcoin Block Feed](https://github.com/synonymdev/slashtags-widget-bitcoin-feed) - [📲 Add to your phone](https://slashtags.to/playground/blocks)
+* 📚 [Bitcoin Facts Feed](https://github.com/synonymdev/slashtags-widget-facts-feed) - [📲 Add to your phone](https://slashtags.to/playground/facts)
 
 Slashtags user data is automatically replicated via our [seeding server](https://github.com/synonymdev/slashtag-seeding-server). In this way, user data is always available. In addition, it allows the user to restore all their Slashtags data from just their BIP-39 seed and optional password.
 
 ## Support
 
-If you are experiencing any problems with Bitkit, please open an issue and use the template provided, or reach out to us on [telegram](https://t.me/bitkitchat).
+If you are experiencing any problems with Bitkit, please open an issue and use the template provided, or reach out to us on [Telegram](https://t.me/bitkitchat).
 
 ## Installation
 
-[Download](https://github.com/synonymdev/bitkit/releases) or [Build it from source](./BUILD.md).
+[Download](https://github.com/synonymdev/bitkit/releases) or [build it from source](./BUILD.md).
 
 ## Development
 
-See [Development documentation](./DEVELOPMENT.md).
+See [development documentation](./DEVELOPMENT.md).
