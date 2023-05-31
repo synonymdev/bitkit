@@ -42,10 +42,10 @@ Users can back up their Bitcoin and Lightning keys with a standard BIP-39 seed a
 
 The other main features Bitkit supports are as follows: 
 
-* Social profiles and contacts
-* Easy payments to profiles
-* Key-based account logins
-* Streaming of private and public data feeds into widgets
+* 📱 Social profiles and contacts
+* 💸 Easy payments to profiles
+* 🔑 Key-based account logins
+* 📊 Streaming of private and public data feeds into widgets
 
 All these additional features are powered by Slashtags: a collection of software modules and specifications that complements the Bitcoin and Lightning stacks in the building of peer-to-peer applications, specifically to enable decentralized identities and web-of-trust reputation systems. You can view our JavaScript-based software development kit which has been used for the Bitkit wallet [here](https://github.com/synonymdev/slashtags).
 
