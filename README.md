@@ -1,12 +1,6 @@
-<p align="center">
-  <a href="https://github.com/synonymdev/bitkit" title="Bitkit">
-    <img alt="bitkit" src="./src/assets/bitkit_logo_readme.png" width="150"></img>
-  </a>
-</p>
+# Bitkit
 
-<h3 align="center">Bitkit</h3>
-
----
+https://github.com/synonymdev/bitkit/assets/5798170/99807c8a-2cb8-41f5-810f-6146e633e95b
 
 **⚠️ Beta software that may put your money at risk.**
 
@@ -18,7 +12,6 @@
 
 [⬇ iPhone - Download latest TestFlight app](https://testflight.apple.com/join/lGXhnwcC)
 
----
 
 ## Overview
 
