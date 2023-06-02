@@ -7,7 +7,7 @@ import React, {
 	useState,
 	useEffect,
 } from 'react';
-import { StyleSheet, Modal } from 'react-native';
+import { StyleSheet, Modal, Platform } from 'react-native';
 import { useSelector } from 'react-redux';
 import DraggableFlatList, {
 	RenderItemParams,
@@ -42,14 +42,39 @@ type WCM = {
 	pageY: number;
 };
 
+const ListWrapper = ({
+	wcm,
+	children,
+}: {
+	wcm: WCM;
+	children: ReactElement;
+}): ReactElement => {
+	const style = [
+		styles.absolute,
+		{
+			left: wcm.pageX,
+			top: wcm.pageY,
+			width: wcm.width,
+		},
+	];
+
+	return Platform.OS === 'ios' ? (
+		<AnimatedView entering={FadeIn} exiting={FadeOut} style={style}>
+			{children}
+		</AnimatedView>
+	) : (
+		<View style={style}>{children}</View>
+	);
+};
+
 const Widgets = (): ReactElement => {
 	const { t } = useTranslation('slashtags');
+	const isFocused = useIsFocused();
 	const widgets = useSelector((state: Store) => state.widgets.widgets);
 	const sortOrder = useSelector((state: Store) => state.widgets.sortOrder);
+	const widgetsContainer = useRef<any>();
+	const [wcm, setWcm] = useState<WCM>();
 	const [editing, setEditing] = useState(false);
-	const widgetsContainer = useRef<any>(null);
-	const [wcm, setwcm] = useState<undefined | WCM>();
-	const isFocused = useIsFocused();
 
 	const widgetsArray = useMemo(() => {
 		return Object.entries(widgets).sort(
@@ -63,9 +88,11 @@ const Widgets = (): ReactElement => {
 				resolve({ x, y, width, height, pageX, pageY });
 			});
 		});
-		setwcm(res);
+
+		setWcm(res);
 		setEditing(true);
 	}, []);
+
 	const handleEditEnd = useCallback((): void => {
 		setEditing(false);
 	}, []);
@@ -133,60 +160,55 @@ const Widgets = (): ReactElement => {
 		[],
 	);
 
-	const renderFlat = useCallback(
-		(item): ReactElement => {
-			const [url, widget] = item;
-			let testID;
+	const renderFlat = useCallback((item): ReactElement => {
+		const [url, widget] = item;
+		let testID;
 
-			if (!widget.feed) {
-				return (
-					<AuthWidget
-						key={url}
-						url={url}
-						widget={widget}
-						isEditing={false}
-						onLongPress={handleEditStart}
-						testID="AuthWidget"
-					/>
-				);
-			}
-
-			let Component;
-			switch (widget.feed.type) {
-				case SUPPORTED_FEED_TYPES.PRICE_FEED:
-					Component = PriceWidget;
-					testID = 'PriceWidget';
-					break;
-				case SUPPORTED_FEED_TYPES.HEADLINES_FEED:
-					Component = HeadlinesWidget;
-					testID = 'HeadlinesWidget';
-					break;
-				case SUPPORTED_FEED_TYPES.BLOCKS_FEED:
-					Component = BlocksWidget;
-					testID = 'BlocksWidget';
-					break;
-				case SUPPORTED_FEED_TYPES.FACTS_FEED:
-					Component = FactsWidget;
-					testID = 'FactsWidget';
-					break;
-				default:
-					Component = FeedWidget;
-					testID = 'FeedWidget';
-			}
-
+		if (!widget.feed) {
 			return (
-				<Component
+				<AuthWidget
 					key={url}
 					url={url}
 					widget={widget}
 					isEditing={false}
-					onLongPress={handleEditStart}
-					testID={testID}
+					testID="AuthWidget"
 				/>
 			);
-		},
-		[handleEditStart],
-	);
+		}
+
+		let Component;
+		switch (widget.feed.type) {
+			case SUPPORTED_FEED_TYPES.PRICE_FEED:
+				Component = PriceWidget;
+				testID = 'PriceWidget';
+				break;
+			case SUPPORTED_FEED_TYPES.HEADLINES_FEED:
+				Component = HeadlinesWidget;
+				testID = 'HeadlinesWidget';
+				break;
+			case SUPPORTED_FEED_TYPES.BLOCKS_FEED:
+				Component = BlocksWidget;
+				testID = 'BlocksWidget';
+				break;
+			case SUPPORTED_FEED_TYPES.FACTS_FEED:
+				Component = FactsWidget;
+				testID = 'FactsWidget';
+				break;
+			default:
+				Component = FeedWidget;
+				testID = 'FeedWidget';
+		}
+
+		return (
+			<Component
+				key={url}
+				url={url}
+				widget={widget}
+				isEditing={false}
+				testID={testID}
+			/>
+		);
+	}, []);
 
 	const onAdd = useCallback((): void => {
 		rootNavigation.navigate('WidgetsRoot');
@@ -237,17 +259,7 @@ const Widgets = (): ReactElement => {
 					activeOpacity={0}
 				/>
 				{editing && wcm && (
-					<AnimatedView
-						entering={FadeIn}
-						exiting={FadeOut}
-						style={[
-							styles.absolute,
-							{
-								left: wcm.pageX,
-								top: wcm.pageY,
-								width: wcm.width,
-							},
-						]}>
+					<ListWrapper wcm={wcm}>
 						{/* we need to wrap DraggableFlatList with GestureHandlerRootView, otherwise Gestures are not working in <Modal for Android */}
 						<GestureHandlerRootView>
 							<DraggableFlatList
@@ -258,7 +270,7 @@ const Widgets = (): ReactElement => {
 								activationDistance={1}
 							/>
 						</GestureHandlerRootView>
-					</AnimatedView>
+					</ListWrapper>
 				)}
 			</Modal>
 		</>
