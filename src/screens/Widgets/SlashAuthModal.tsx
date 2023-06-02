@@ -124,15 +124,22 @@ const _SlashAuthModal = (): ReactElement => {
 		setIsLoading(true);
 
 		const client = new Client(slashtag);
-		const response = await client.authz(_url).catch((e: Error) => {
-			if (e.message === 'channel closed') {
-				closeBottomSheet('slashauthModal');
-				showErrorNotification({
-					title: t('signin_to_error_header'),
-					message: t('signin_to_error_text'),
-				});
-			}
-		});
+		let response;
+
+		try {
+			response = await client.authz(_url);
+		} catch (e) {
+			showErrorNotification({
+				title: t('signin_to_error_header'),
+				message:
+					e.message === 'channel closed'
+						? t('signin_to_error_text')
+						: e.message,
+			});
+			setIsLoading(false);
+			closeBottomSheet('slashauthModal');
+			return;
+		}
 
 		if (response?.status === 'ok') {
 			showSuccessNotification({
