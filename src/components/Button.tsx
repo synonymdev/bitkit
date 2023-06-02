@@ -5,10 +5,10 @@ import {
 	TouchableOpacityProps,
 	Platform,
 } from 'react-native';
-import { View, TouchableOpacity } from '../styles/components';
-import { Caption13M, Text02M } from '../styles/text';
-import useColors from '../hooks/colors';
 import { IThemeColors } from '../styles/themes';
+import { Caption13M, Text02M } from '../styles/text';
+import { View, TouchableOpacity } from '../styles/components';
+import useColors from '../hooks/colors';
 
 export interface IButton extends TouchableOpacityProps {
 	text?: string | ReactElement;
@@ -78,9 +78,9 @@ const Button = ({
 
 	return (
 		<TouchableOpacity
+			style={buttonStyle}
 			activeOpacity={0.6}
 			color={buttonColor}
-			style={buttonStyle}
 			disabled={loading || disabled}
 			{...props}>
 			{icon && (

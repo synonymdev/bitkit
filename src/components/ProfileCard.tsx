@@ -122,7 +122,6 @@ const ProfileCard = ({
 
 			{editable && !contact ? (
 				<TextInputNoOutline
-					// @ts-ignore react-native and styled-components types clashing
 					ref={bioRef}
 					style={[theme.fonts.regular, styles.bioInput]}
 					color="gray1"

@@ -261,8 +261,7 @@ const ElectrumConfig = ({
 					textAlignVertical="center"
 					underlineColorAndroid="transparent"
 					autoCapitalize="none"
-					// @ts-ignore autoCompleteType -> autoComplete in newer version
-					autoCompleteType="off"
+					autoComplete="off"
 					keyboardType="default"
 					autoCorrect={false}
 					onChangeText={setHost}
@@ -279,8 +278,7 @@ const ElectrumConfig = ({
 					textAlignVertical="center"
 					underlineColorAndroid="transparent"
 					autoCapitalize="none"
-					// @ts-ignore autoCompleteType -> autoComplete in newer version
-					autoCompleteType="off"
+					autoComplete="off"
 					keyboardType="number-pad"
 					autoCorrect={false}
 					onChangeText={setPort}

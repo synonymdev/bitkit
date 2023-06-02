@@ -1,10 +1,17 @@
 import {
 	ColorValue,
 	Platform,
+	PressableProps,
 	Switch as RNSwitch,
 	ScrollViewProps,
+	TouchableOpacity as RNTouchableOpacity,
+	TouchableOpacityProps,
+	Pressable as RNPressable,
+	ViewProps,
+	TextInput as RNTextInput,
+	TextInputProps as RNTextInputProps,
 } from 'react-native';
-import Animated from 'react-native-reanimated';
+import Animated, { AnimateProps } from 'react-native-reanimated';
 import { SafeAreaProvider as _SafeAreaProvider } from 'react-native-safe-area-context';
 import { BottomSheetTextInput as _BottomSheetTextInput } from '@gorhom/bottom-sheet';
 import {
@@ -17,12 +24,13 @@ import styled from './styled-components';
 import colors from './colors';
 import { IThemeColors } from './themes';
 
-type ComponentProps = {
+type ColorProps = {
 	color?: keyof IThemeColors;
 };
 
-type TextInputProps = ComponentProps & {
+type TextInputProps = RNTextInputProps & {
 	backgroundColor?: keyof IThemeColors;
+	color?: keyof IThemeColors;
 	minHeight?: number;
 	placeholderTextColor?: ColorValue;
 };
@@ -59,40 +67,46 @@ export const NavigationContainer = styled(_NavigationContainer).attrs(
 	}),
 )({});
 
-export const View = styled.View<ComponentProps>((props) => ({
+export const View = styled.View<ViewProps & ColorProps>((props) => ({
 	backgroundColor: props.color
 		? props.theme.colors[props.color]
 		: props.theme.colors.background,
 }));
 
-export const AnimatedView = styled(Animated.View)<ComponentProps>((props) => ({
+export const AnimatedView = styled(Animated.View)<
+	AnimateProps<ViewProps> & ColorProps
+>((props) => ({
 	backgroundColor: props.color
 		? props.theme.colors[props.color]
 		: props.theme.colors.background,
 }));
 
-export const ScrollView = styled.ScrollView.attrs<ScrollViewProps>((props) => ({
-	backgroundColor: props.color
-		? props.theme.colors[props.color]
-		: props.theme.colors.background,
-	keyboardShouldPersistTaps: 'handled',
-	...props,
-}))({});
-
-export const TouchableOpacity = styled.TouchableOpacity<ComponentProps>(
+export const ScrollView = styled.ScrollView.attrs<ScrollViewProps & ColorProps>(
 	(props) => ({
 		backgroundColor: props.color
 			? props.theme.colors[props.color]
 			: props.theme.colors.background,
+		keyboardShouldPersistTaps: 'handled',
+		...props,
 	}),
-);
+)({});
 
-export const Pressable = styled.Pressable<ComponentProps>((props) => ({
+export const TouchableOpacity = styled(RNTouchableOpacity)<
+	TouchableOpacityProps & ColorProps
+>((props) => ({
 	backgroundColor: props.color
 		? props.theme.colors[props.color]
 		: props.theme.colors.background,
-	opacity: props.disabled ? 0.4 : 1,
 }));
+
+export const Pressable = styled(RNPressable)<PressableProps & ColorProps>(
+	(props) => ({
+		backgroundColor: props.color
+			? props.theme.colors[props.color]
+			: props.theme.colors.background,
+		opacity: props.disabled ? 0.4 : 1,
+	}),
+);
 
 export const Switch = styled(RNSwitch).attrs((props) => ({
 	trackColor: { false: '#767577', true: props.theme.colors.brand },
@@ -101,7 +115,7 @@ export const Switch = styled(RNSwitch).attrs((props) => ({
 	...props,
 }))({});
 
-export const TextInput = styled.TextInput.attrs<TextInputProps>((props) => ({
+export const TextInput = styled(RNTextInput).attrs<TextInputProps>((props) => ({
 	keyboardAppearance: props.theme.id,
 	selectionColor: colors.brand,
 	placeholderTextColor: props.placeholderTextColor
@@ -125,7 +139,7 @@ export const TextInput = styled.TextInput.attrs<TextInputProps>((props) => ({
 	textAlignVertical: props.multiline ? 'top' : 'center',
 }));
 
-export const TextInputNoOutline = styled.TextInput.attrs<TextInputProps>(
+export const TextInputNoOutline = styled(RNTextInput).attrs<TextInputProps>(
 	(props) => ({
 		keyboardAppearance: props.theme.id,
 		selectionColor: colors.brand,

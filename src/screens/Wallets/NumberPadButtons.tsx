@@ -52,7 +52,7 @@ const NumberPadButtons = ({
 						color="white08"
 						testID="NumberPadButtonsMax"
 						onPress={onMax}>
-						<Caption13Up size="12px" color={isMaxAmount ? 'orange' : color}>
+						<Caption13Up color={isMaxAmount ? 'orange' : color}>
 							{t('send_max')}
 						</Caption13Up>
 					</TouchableOpacity>
@@ -67,10 +67,7 @@ const NumberPadButtons = ({
 						testID="NumberPadButtonsUnit"
 						onPress={onChangeUnit}>
 						<SwitchIcon color={color} width={16.44} height={13.22} />
-						<Caption13Up
-							size="12px"
-							color={color}
-							style={styles.middleButtonText}>
+						<Caption13Up color={color} style={styles.middleButtonText}>
 							{nextUnit === 'BTC' && 'BTC'}
 							{nextUnit === 'satoshi' && 'sats'}
 							{nextUnit === 'fiat' && fiatTicker}
@@ -86,9 +83,7 @@ const NumberPadButtons = ({
 						color="white08"
 						testID="NumberPadButtonsDone"
 						onPress={onDone}>
-						<Caption13Up size="12px" color={color}>
-							{t('send_done')}
-						</Caption13Up>
+						<Caption13Up color={color}>{t('send_done')}</Caption13Up>
 					</TouchableOpacity>
 				)}
 			</View>

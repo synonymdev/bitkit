@@ -28,7 +28,6 @@ const SearchInput = ({
 				style={styles.icon}
 				color={props.value ? 'brand' : 'gray1'}
 			/>
-			{/* @ts-ignore react-native and styled-components types clashing */}
 			<TextInput style={styles.input} placeholder={t('search')} {...props} />
 			{children && <View style={styles.tags}>{children}</View>}
 		</View>

@@ -24,7 +24,6 @@ export interface IThemeColors extends IDefaultColors {
 
 interface IFont {
 	fontFamily?: string;
-	fontWeight?: string;
 }
 
 interface IFonts {

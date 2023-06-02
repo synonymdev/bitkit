@@ -94,8 +94,7 @@ const ExportToPhone = ({
 					value={password}
 					onChangeText={setPassword}
 					autoCapitalize="none"
-					// @ts-ignore autoCompleteType -> autoComplete in newer version
-					autoCompleteType="off"
+					autoComplete="off"
 					autoCorrect={false}
 					returnKeyType="done"
 				/>

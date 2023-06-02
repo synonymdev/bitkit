@@ -14,7 +14,6 @@ const SeedInput = forwardRef<any, SeedInputProps>(
 
 		return (
 			<View style={styles.inputWrapper}>
-				{/* @ts-ignore @types/styled-components-react-native onBlur types clashing */}
 				<TextInput
 					ref={ref}
 					style={inputStyle}

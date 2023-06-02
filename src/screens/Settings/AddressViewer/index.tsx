@@ -247,7 +247,7 @@ const AddressViewer = ({
 		viewControllerIsOpenSelector(state, 'sendNavigation'),
 	);
 
-	const flatListRef = useRef<FlatList<any>>();
+	const flatListRef = useRef<FlatList>(null);
 
 	const [config, setConfig] = useState({
 		...defaultConfig,
@@ -1057,7 +1057,6 @@ const AddressViewer = ({
 					</View>
 				)}
 				<FlatList
-					// @ts-ignore
 					ref={flatListRef}
 					ListEmptyComponent={
 						<EmptyComponent
