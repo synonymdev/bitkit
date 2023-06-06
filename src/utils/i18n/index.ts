@@ -17,7 +17,6 @@ i18n
 	.init({
 		lng: getDeviceLanguage(),
 		fallbackLng: 'en',
-		compatibilityJSON: 'v3',
 		resources,
 		ns: Object.keys(resources),
 		defaultNS,

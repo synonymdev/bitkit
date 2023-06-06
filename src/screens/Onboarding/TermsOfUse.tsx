@@ -65,7 +65,7 @@ const TermsOfUse = ({
 								t={t}
 								i18nKey="tos_checkbox_value"
 								components={{
-									grey: <Text02B color="gray1" />,
+									gray: <Text02B color="gray1" />,
 									brand: (
 										<Text02B
 											color="brand"
@@ -88,7 +88,7 @@ const TermsOfUse = ({
 								t={t}
 								i18nKey="pp_checkbox_value"
 								components={{
-									grey: <Text02B color="gray1" />,
+									gray: <Text02B color="gray1" />,
 									brand: (
 										<Text02B
 											color="brand"
