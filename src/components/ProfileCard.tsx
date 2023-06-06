@@ -45,9 +45,6 @@ const ProfileCard = ({
 	const name = profile?.name ?? '';
 	const bio = profile?.bio;
 
-	// two lines max.
-	const nameParts = name.split(/\s+/).slice(0, 2);
-
 	return (
 		<>
 			<View style={styles.row} testID="ProfileCardName">
@@ -83,11 +80,9 @@ const ProfileCard = ({
 									{t('contact_retrieving')}
 								</Headline>
 							) : (
-								nameParts.map((part, index) => (
-									<Headline key={index} numberOfLines={1} style={styles.name}>
-										{truncate(part, 30)}
-									</Headline>
-								))
+								<Headline numberOfLines={2} style={styles.name}>
+									{truncate(name, 30)}
+								</Headline>
 							)}
 						</View>
 					)}
