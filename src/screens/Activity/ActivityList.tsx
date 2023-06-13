@@ -15,10 +15,13 @@ import {
 } from 'react-native';
 import { useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
-import { FlatList, GestureType } from 'react-native-gesture-handler';
+import {
+	FlatList,
+	RefreshControl,
+	GestureType,
+} from 'react-native-gesture-handler';
 import { useTranslation } from 'react-i18next';
 
-import { RefreshControl } from '../../styles/components';
 import { Caption13Up, Subtitle, Text01S } from '../../styles/text';
 import { refreshWallet } from '../../utils/wallet';
 import { groupActivityItems, filterActivityItems } from '../../utils/activity';

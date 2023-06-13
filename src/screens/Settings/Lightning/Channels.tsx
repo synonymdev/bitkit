@@ -7,7 +7,7 @@ import React, {
 } from 'react';
 import { StyleSheet, View, ScrollView, TouchableOpacity } from 'react-native';
 import Share from 'react-native-share';
-import { FadeIn, FadeOut } from 'react-native-reanimated';
+import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
 import { IGetOrderResponse } from '@synonymdev/blocktank-client';
 import { TChannel } from '@synonymdev/react-native-ldk';
 import { useTranslation } from 'react-i18next';
@@ -79,6 +79,10 @@ import {
 } from '../../../store/reselect/blocktank';
 import { TPaidBlocktankOrders } from '../../../store/types/blocktank';
 import { EBalanceUnit } from '../../../store/types/wallet';
+
+// Workaround for crash on Android
+// https://github.com/software-mansion/react-native-reanimated/issues/4306#issuecomment-1538184321
+const AnimatedRefreshControl = Animated.createAnimatedComponent(RefreshControl);
 
 /**
  * Convert pending (non-channel) blocktank orders to (fake) channels.
@@ -357,7 +361,11 @@ const Channels = ({
 			<ScrollView
 				contentContainerStyle={styles.content}
 				refreshControl={
-					<RefreshControl refreshing={refreshingLdk} onRefresh={onRefreshLdk} />
+					<AnimatedRefreshControl
+						refreshing={refreshingLdk}
+						exiting={FadeOut}
+						onRefresh={onRefreshLdk}
+					/>
 				}>
 				<View style={styles.balances}>
 					<View style={styles.balance}>

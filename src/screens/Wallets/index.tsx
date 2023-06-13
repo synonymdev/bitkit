@@ -9,6 +9,7 @@ import { useSelector } from 'react-redux';
 import { StyleSheet, View } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import { RefreshControl, ScrollView } from 'react-native-gesture-handler';
+import Animated, { FadeOut } from 'react-native-reanimated';
 
 import { useNoTransactions } from '../../hooks/wallet';
 import useColors from '../../hooks/colors';
@@ -31,6 +32,10 @@ import {
 	hideOnboardingMessageSelector,
 } from '../../store/reselect/settings';
 import { widgetsSelector } from '../../store/reselect/widgets';
+
+// Workaround for crash on Android
+// https://github.com/software-mansion/react-native-reanimated/issues/4306#issuecomment-1538184321
+const AnimatedRefreshControl = Animated.createAnimatedComponent(RefreshControl);
 
 const Wallets = ({
 	navigation,
@@ -89,10 +94,11 @@ const Wallets = ({
 					disableScrollViewPanResponder={true}
 					showsVerticalScrollIndicator={false}
 					refreshControl={
-						<RefreshControl
+						<AnimatedRefreshControl
 							refreshing={refreshing}
-							onRefresh={onRefresh}
 							tintColor={colors.refreshControl}
+							exiting={FadeOut}
+							onRefresh={onRefresh}
 						/>
 					}>
 					<DetectSwipe
