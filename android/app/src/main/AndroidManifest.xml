@@ -41,6 +41,14 @@
             <category android:name="android.intent.category.BROWSABLE"/>
             <data android:scheme="slash"/>
             <data android:scheme="slashauth"/>
+            <data android:scheme="bitcoin" />
+            <data android:scheme="BITCOIN" />
+            <data android:scheme="lightning" />
+            <data android:scheme="LIGHTNING" />
+            <data android:scheme="lnurl" />
+            <data android:scheme="lnurlw" />
+            <data android:scheme="lnurlc" />
+            <data android:scheme="lnurlp" />
           </intent-filter>
       </activity>
       <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" />

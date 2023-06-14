@@ -6,9 +6,12 @@ import React, {
 	useRef,
 	useState,
 } from 'react';
-import { AppState, Platform } from 'react-native';
+import { AppState, Linking, Platform } from 'react-native';
 import { useSelector } from 'react-redux';
-import { createNavigationContainerRef } from '@react-navigation/native';
+import {
+	LinkingOptions,
+	createNavigationContainerRef,
+} from '@react-navigation/native';
 import Clipboard from '@react-native-clipboard/clipboard';
 import { useTranslation } from 'react-i18next';
 import {
@@ -22,7 +25,6 @@ import { processInputData } from '../../utils/scanner';
 import { checkClipboardData } from '../../utils/clipboard';
 import Store from '../../store/types';
 import { resetSendTransaction } from '../../store/actions/wallet';
-import { enableAutoReadClipboardSelector } from '../../store/reselect/settings';
 import AuthCheck from '../../components/AuthCheck';
 import Dialog from '../../components/Dialog';
 import WalletNavigator from '../wallet/WalletNavigator';
@@ -95,33 +97,30 @@ const RootNavigator = (): ReactElement => {
 	const [showDialog, setShowDialog] = useState(false);
 	const pin = useSelector((state: Store) => state.settings.pin);
 	const pinOnLaunch = useSelector((state: Store) => state.settings.pinOnLaunch);
-	const enableAutoReadClipboard = useSelector(enableAutoReadClipboardSelector);
 
 	const showAuth = pin && pinOnLaunch;
 	const initialRouteName: TInitialRoutes = showAuth
 		? 'RootAuthCheck'
 		: 'Wallet';
 
-	const linking = {
-		prefixes: ['slash'],
-		getStateFromPath(path, _config): any {
-			if (!pin) {
-				processInputData({ data: `slash${path}` });
-			} else {
-				return {
-					routes: [
-						{
-							name: 'RootAuthCheck',
-							params: {
-								onSuccess: (): void => {
-									rootNavigation.navigate('Wallet');
-									processInputData({ data: `slash${path}` });
-								},
-							},
-						},
-					],
-				};
-			}
+	const linking: LinkingOptions<{}> = {
+		prefixes: ['slash', 'bitcoin', 'lightning'],
+		// This is just here to prevent a warning
+		config: { screens: { Wallet: '' } },
+		subscribe(listener): () => void {
+			// Deep linking if the app is already open
+			const onReceiveURL = ({ url }: { url: string }): void => {
+				rootNavigation.navigate('Wallet');
+				processInputData({ data: url });
+				return listener(url);
+			};
+
+			// Listen to incoming links from deep linking
+			const subscription = Linking.addEventListener('url', onReceiveURL);
+
+			return () => {
+				subscription.remove();
+			};
 		},
 	};
 
@@ -132,16 +131,28 @@ const RootNavigator = (): ReactElement => {
 		}
 	};
 
+	const checkClipboardAndDeeplink = async (): Promise<void> => {
+		// Deep linking if the app wasn't previously open
+		const initialUrl = await Linking.getInitialURL();
+		if (initialUrl) {
+			processInputData({ data: initialUrl });
+			return;
+		}
+
+		checkClipboard().then();
+	};
+
 	const onConfirmClipboardRedirect = async (): Promise<void> => {
 		setShowDialog(false);
 		const clipboardData = await Clipboard.getString();
 		resetSendTransaction();
+		rootNavigation.navigate('Wallet');
 		await processInputData({ data: clipboardData, showErrors: false });
 	};
 
 	useEffect(() => {
 		if (!showAuth) {
-			checkClipboard().then();
+			checkClipboardAndDeeplink().then();
 		}
 
 		// on App to foreground
@@ -163,24 +174,16 @@ const RootNavigator = (): ReactElement => {
 		return () => {
 			appStateSubscription.remove();
 		};
-	}, [showAuth]);
+
+		// onMount
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
 
 	const AuthCheckComponent = useCallback(
-		({
-			navigation,
-			route,
-		}: RootStackScreenProps<'RootAuthCheck'>): ReactElement => {
+		({ navigation }: RootStackScreenProps<'RootAuthCheck'>): ReactElement => {
 			const onSuccess = (): void => {
-				if (route.params?.onSuccess) {
-					route.params.onSuccess();
-				} else {
-					navigation.replace('Wallet');
-
-					// check clipboard for payment data
-					if (enableAutoReadClipboard) {
-						checkClipboard().then();
-					}
-				}
+				navigation.replace('Wallet');
+				checkClipboardAndDeeplink().then();
 			};
 
 			return (
@@ -191,7 +194,8 @@ const RootNavigator = (): ReactElement => {
 				/>
 			);
 		},
-		[enableAutoReadClipboard],
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+		[],
 	);
 
 	return (
