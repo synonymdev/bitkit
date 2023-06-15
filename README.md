@@ -55,6 +55,10 @@ Slashtags user data is automatically replicated via our [seeding server](https:/
 
 If you are experiencing any problems with Bitkit, please open an issue and use the template provided, or reach out to us on [Telegram](https://t.me/bitkitchat).
 
+## Translations
+
+[Join our Transifex project](https://explore.transifex.com/synonym/bitkit/) to help translate Bitkit into your local language and boost Bitcoin adoption worldwide. Questions? Connect with our team on [Discord](https://discord.gg/uRMHufhuTA).
+
 ## Installation
 
 [Download](https://github.com/synonymdev/bitkit/releases) or [build it from source](./BUILD.md).
