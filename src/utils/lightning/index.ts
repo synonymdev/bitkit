@@ -473,6 +473,7 @@ export const refreshLdk = async ({
 		}
 
 		const syncRes = await lm.syncLdk();
+		await lm.setFees();
 		if (syncRes.isErr()) {
 			return err(syncRes.error.message);
 		}
