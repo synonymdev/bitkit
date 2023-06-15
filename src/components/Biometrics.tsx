@@ -7,7 +7,7 @@ import React, {
 } from 'react';
 import { StyleProp, StyleSheet, ViewStyle } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import rnBiometrics from 'react-native-biometrics';
+import { BiometryType } from 'react-native-biometrics';
 import { useTranslation } from 'react-i18next';
 
 import { View, TouchableOpacity } from '../styles/components';
@@ -15,46 +15,36 @@ import { Subtitle } from '../styles/text';
 import { FingerPrintIcon } from '../styles/icons';
 import { updateSettings } from '../store/actions/settings';
 import { vibrate } from '../utils/helpers';
+import rnBiometrics from '../utils/biometrics';
 
-const getIcon = ({
-	biometryData,
-}: {
-	biometryData?: IsSensorAvailableResult;
-}): ReactElement => {
-	try {
-		if (!biometryData?.available) {
-			return <View />;
-		}
-		const biometryType = biometryData?.biometryType;
-		if (biometryType === 'TouchID' || biometryType === 'Biometrics') {
-			return <FingerPrintIcon />;
-		}
-
-		return <></>;
-	} catch {
-		return <></>;
-	}
-};
-
-export type BiometryType = 'TouchID' | 'FaceID' | 'Biometrics';
 export interface IsSensorAvailableResult {
 	available: boolean;
 	biometryType?: BiometryType;
 	error?: string;
 }
 
-interface BiometricsComponent {
-	onSuccess: () => void;
-	onFailure?: () => void;
-	style?: StyleProp<ViewStyle>;
-	children?: ReactElement;
-}
+const getIcon = (biometryData?: IsSensorAvailableResult): ReactElement => {
+	if (!biometryData?.available) {
+		return <View />;
+	}
+	const biometryType = biometryData.biometryType;
+	if (biometryType === 'TouchID' || biometryType === 'Biometrics') {
+		return <FingerPrintIcon />;
+	}
+	return <></>;
+};
+
 const Biometrics = ({
 	onSuccess,
 	onFailure,
 	style,
 	children,
-}: BiometricsComponent): ReactElement => {
+}: {
+	onSuccess: () => void;
+	onFailure?: () => void;
+	style?: StyleProp<ViewStyle>;
+	children?: ReactElement;
+}): ReactElement => {
 	const { t } = useTranslation('security');
 	const insets = useSafeAreaInsets();
 	const [biometryData, setBiometricData] = useState<IsSensorAvailableResult>();
@@ -71,7 +61,7 @@ const Biometrics = ({
 	}, [t]);
 
 	const Icon = useCallback(
-		() => getIcon({ biometryData }),
+		() => getIcon(biometryData),
 		//eslint-disable-next-line react-hooks/exhaustive-deps
 		[biometryData?.biometryType],
 	);
@@ -97,30 +87,28 @@ const Biometrics = ({
 
 	const authenticate = useCallback(
 		(promptMessage?: string): void => {
-			try {
-				if (!promptMessage) {
-					const biotmetryType = biometryData?.biometryType;
-					promptMessage = t('bio_confirm', { biometricsName: biotmetryType });
-				}
-				rnBiometrics
-					.simplePrompt({
-						promptMessage: promptMessage || '',
-						cancelButtonText: t('use_pin'),
-					})
-					.then(({ success }) => {
-						if (success) {
-							updateSettings({ biometrics: true });
-							onSuccess();
-						} else {
-							vibrate();
-							onFailure?.();
-						}
-					})
-					.catch(() => {
-						console.log('biometrics failed');
+			if (!promptMessage) {
+				const biotmetryType = biometryData?.biometryType;
+				promptMessage = t('bio_confirm', { biometricsName: biotmetryType });
+			}
+			rnBiometrics
+				.simplePrompt({
+					promptMessage,
+					cancelButtonText: t('use_pin'),
+				})
+				.then(({ success }) => {
+					if (success) {
+						updateSettings({ biometrics: true });
+						onSuccess();
+					} else {
+						vibrate();
 						onFailure?.();
-					});
-			} catch {}
+					}
+				})
+				.catch(() => {
+					console.log('biometrics failed');
+					onFailure?.();
+				});
 		},
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 		[biometryData?.biometryType, t],

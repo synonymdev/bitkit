@@ -1,7 +1,6 @@
 import React, { memo, ReactElement, useMemo, useState, useEffect } from 'react';
 import { StyleSheet } from 'react-native';
 import { useSelector } from 'react-redux';
-import rnBiometrics from 'react-native-biometrics';
 import { useTranslation } from 'react-i18next';
 
 import { View as ThemedView } from '../../../styles/components';
@@ -11,6 +10,7 @@ import { IsSensorAvailableResult } from '../../../components/Biometrics';
 import { showBottomSheet } from '../../../store/actions/ui';
 import { updateSettings } from '../../../store/actions/settings';
 import SettingsView from '../SettingsView';
+import rnBiometrics from '../../../utils/biometrics';
 import type { SettingsScreenProps } from '../../../navigation/types';
 
 const SecuritySettings = ({
@@ -29,25 +29,25 @@ const SecuritySettings = ({
 
 	useEffect(() => {
 		(async (): Promise<void> => {
-			const data: IsSensorAvailableResult =
-				await rnBiometrics.isSensorAvailable();
+			const data = await rnBiometrics.isSensorAvailable();
 			setBiometricData(data);
 		})();
 	}, []);
 
-	const isBiometrySupported = useMemo(
-		() => biometryData?.available && biometryData?.biometryType,
-		[biometryData?.available, biometryData?.biometryType],
-	);
-	const biometryTypeName = useMemo(
-		() =>
-			biometryData?.biometryType === 'TouchID'
-				? t('security:bio_touch_id')
-				: biometryData?.biometryType === 'FaceID'
-				? t('security:bio_face_id')
-				: biometryData?.biometryType ?? t('security:bio'),
-		[biometryData?.biometryType, t],
-	);
+	const isBiometrySupported =
+		biometryData?.available && biometryData.biometryType;
+
+	const biometryTypeName =
+		biometryData?.biometryType === 'TouchID'
+			? t('security:bio_touch_id')
+			: biometryData?.biometryType === 'FaceID'
+			? t('security:bio_face_id')
+			: biometryData?.biometryType ?? t('security:bio');
+
+	const footerText =
+		pin && isBiometrySupported
+			? t('security.footer', { biometryTypeName })
+			: undefined;
 
 	const settingsListData: IListData[] = useMemo(
 		() => [
@@ -153,14 +153,6 @@ const SecuritySettings = ({
 			navigation,
 			t,
 		],
-	);
-
-	const footerText = useMemo(
-		() =>
-			pin && isBiometrySupported
-				? t('security.footer', { biometryTypeName })
-				: undefined,
-		[isBiometrySupported, pin, biometryTypeName, t],
 	);
 
 	return (

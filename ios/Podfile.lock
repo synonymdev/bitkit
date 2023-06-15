@@ -338,8 +338,8 @@ PODS:
   - React-jsinspector (0.71.7)
   - React-logger (0.71.7):
     - glog
-  - react-native-biometrics (2.2.2):
-    - React
+  - react-native-biometrics (3.0.1):
+    - React-Core
   - react-native-blur (4.3.0):
     - React-Core
   - react-native-document-picker (8.2.0):
@@ -830,7 +830,7 @@ SPEC CHECKSUMS:
   React-jsiexecutor: eaa5f71eb8f6861cf0e57f1a0f52aeb020d9e18e
   React-jsinspector: 9885f6f94d231b95a739ef7bb50536fb87ce7539
   React-logger: 3f8ebad1be1bf3299d1ab6d7f971802d7395c7ef
-  react-native-biometrics: 4aec6978534944b5f830b9c3489b721c906ea70b
+  react-native-biometrics: 352e5a794bfffc46a0c86725ea7dc62deb085bdc
   react-native-blur: 50c9feabacbc5f49b61337ebc32192c6be7ec3c3
   react-native-document-picker: 495c444c0c773c6e83a5d91165890ecb1c0a399a
   react-native-flipper: 5d8dcbcb905a7e8076c9a61a3709944c23cf48ee

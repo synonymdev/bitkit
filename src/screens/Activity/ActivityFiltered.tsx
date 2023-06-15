@@ -131,9 +131,10 @@ const ActivityFiltered = ({
 								<View style={styles.searchButtons}>
 									{tags.length > 0 && (
 										<ScrollView
+											style={styles.tags}
+											color="transparent"
 											horizontal={true}
-											showsHorizontalScrollIndicator={false}
-											style={styles.tags}>
+											showsHorizontalScrollIndicator={false}>
 											{tags.map((tag) => (
 												<Tag
 													key={tag}

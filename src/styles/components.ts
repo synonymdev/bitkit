@@ -89,7 +89,7 @@ export const ScrollView = styled.ScrollView.attrs<ScrollViewProps & ColorProps>(
 		keyboardShouldPersistTaps: 'handled',
 		...props,
 	}),
-)({});
+)<ScrollViewProps & ColorProps>(() => ({}));
 
 export const TouchableOpacity = styled(RNTouchableOpacity)<
 	TouchableOpacityProps & ColorProps

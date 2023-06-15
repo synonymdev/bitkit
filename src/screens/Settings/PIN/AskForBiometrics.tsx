@@ -3,11 +3,9 @@ import React, {
 	ReactElement,
 	useState,
 	useEffect,
-	useMemo,
 	useCallback,
 } from 'react';
 import { Linking, Platform, Pressable, StyleSheet, View } from 'react-native';
-import rnBiometrics from 'react-native-biometrics';
 import { useTranslation } from 'react-i18next';
 
 import { Switch } from '../../../styles/components';
@@ -20,16 +18,12 @@ import GlowImage from '../../../components/GlowImage';
 import Button from '../../../components/Button';
 import Glow from '../../../components/Glow';
 import { IsSensorAvailableResult } from '../../../components/Biometrics';
+import rnBiometrics from '../../../utils/biometrics';
 import { showErrorNotification } from '../../../utils/notifications';
 import { updateSettings } from '../../../store/actions/settings';
 import type { PinScreenProps } from '../../../navigation/types';
 
 const imageSrc = require('../../../assets/illustrations/cog.png');
-const goToSettings = (): void => {
-	Platform.OS === 'ios'
-		? Linking.openURL('App-Prefs:Settings')
-		: Linking.sendIntent('android.settings.SETTINGS');
-};
 
 const AskForBiometrics = ({
 	navigation,
@@ -39,29 +33,28 @@ const AskForBiometrics = ({
 	const [shouldEnableBiometrics, setShouldEnableBiometrics] = useState(false);
 
 	useEffect(() => {
-		rnBiometrics.isSensorAvailable().then((data) => setBiometricData(data));
+		(async (): Promise<void> => {
+			const data = await rnBiometrics.isSensorAvailable();
+			setBiometricData(data);
+		})();
 	}, []);
 
-	const buttonText = useMemo(() => {
-		return t(!biometryData?.available ? 'skip' : 'continue');
-	}, [biometryData?.available, t]);
-
-	const biometricsName = useMemo(
-		() =>
-			biometryData?.biometryType === 'TouchID'
-				? t('bio_touch_id')
-				: biometryData?.biometryType === 'FaceID'
-				? t('bio_face_id')
-				: biometryData?.biometryType ?? t('bio'),
-		[biometryData?.biometryType, t],
-	);
-
-	const handleOnBack = (): void => {
-		navigation.goBack();
-	};
+	const buttonText = t(!biometryData?.available ? 'skip' : 'continue');
+	const biometricsName =
+		biometryData?.biometryType === 'TouchID'
+			? t('bio_touch_id')
+			: biometryData?.biometryType === 'FaceID'
+			? t('bio_face_id')
+			: biometryData?.biometryType ?? t('bio');
 
 	const handleTogglePress = (): void => {
 		setShouldEnableBiometrics((prevState) => !prevState);
+	};
+
+	const goToSettings = (): void => {
+		Platform.OS === 'ios'
+			? Linking.openURL('App-Prefs:Settings')
+			: Linking.sendIntent('android.settings.SETTINGS');
 	};
 
 	const handleButtonPress = useCallback((): void => {
@@ -97,10 +90,7 @@ const AskForBiometrics = ({
 
 	return (
 		<GradientView style={styles.container}>
-			<BottomSheetNavigationHeader
-				title={biometricsName}
-				onBackPress={handleOnBack}
-			/>
+			<BottomSheetNavigationHeader title={biometricsName} />
 
 			<View style={styles.content}>
 				{!biometryData && <Text01S color="gray1">{t('bio_loading')}</Text01S>}
