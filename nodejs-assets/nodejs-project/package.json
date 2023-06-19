@@ -10,7 +10,7 @@
   "license": "MIT",
   "dependencies": {
     "@noble/secp256k1": "^1.7.0",
-    "bip32": "git+ssh://git@github.com/synonymdev/bip32",
+    "bip32": "github:synonymdev/bip32#58f0dd7d253d70fa5ff442997464892c46874348",
     "bip39": "^3.0.4",
     "bitcoinjs-lib": "^6.0.1",
     "create-hmac": "^1.1.7"

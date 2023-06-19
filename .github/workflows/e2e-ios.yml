@@ -35,17 +35,6 @@ jobs:
         timeout-minutes: 2
         run: while ! nc -z '127.0.0.1' 60001; do sleep 1; done
 
-      - name: Install SSH key
-        uses: shimataro/ssh-key-action@v2
-        with:
-          key: ${{ secrets.TEST_USER_SSH_KEY }}
-          known_hosts: ${{ secrets.TEST_USER_KNOWN_HOSTS }}
-
-      - name: Use NPM Token with organization read access
-        uses: dkershner6/use-npm-token-action@v1
-        with:
-          token: '${{ secrets.NPMJS_READ }}'
-
       - name: Setup Node
         uses: actions/setup-node@v3
         with:
