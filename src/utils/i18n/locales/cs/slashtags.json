@@ -1,0 +1,10 @@
+{
+  "contact": "Kontakt",
+  "contacts": "Kontakty",
+  "contact_pay_error": "Tomuto kontaktu nelze zaplatit",
+  "profile": "Profil",
+  "profile_link_suggestions": "Návrhy",
+  "offline_enable": "Povolit platby s kontakty*",
+  "offline_enable_explain": "* Toto vyžaduje sdílení dat o platbě",
+  "widgets": "Widgety"
+}

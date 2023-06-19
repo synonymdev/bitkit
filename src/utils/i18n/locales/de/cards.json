@@ -1,0 +1,52 @@
+{
+  "backupSeedPhrase": {
+    "title": "Back up",
+    "description": "Verwahre dein Geld"
+  },
+  "lightning": {
+    "title": "Zahle sofort",
+    "description": "Benutze Lightning"
+  },
+  "lightningSettingUp": {
+    "title": "Einrichtung",
+    "description0": "Zahlung wird erwartet",
+    "description1": "Gezahlt",
+    "description2": "in Warteschlange",
+    "description3": "Öffnen"
+  },
+  "lightningConnecting": {
+    "title": "Verbinden",
+    "description": "bereit in ca. 10 Minuten"
+  },
+  "lightningReady": {
+    "title": "Bereit",
+    "description": "Verbunden!"
+  },
+  "transferToSpending": {
+    "title": "Übertragung",
+    "description": "bereit in ca. 20 Minuten"
+  },
+  "transferToSavings": {
+    "title": "Übertragung",
+    "description": "bereit in ca. 60 Minuten"
+  },
+  "transferClosingChannel": {
+    "title": "Initialisiere…",
+    "description": "Halte App offen"
+  },
+  "pin": {
+    "title": "Bessere Sicherheit",
+    "description": "Lege einen PIN fest"
+  },
+  "slashtagsProfile": {
+    "title": "Öffentliches Profil",
+    "description": "Füge deine Angaben hinzu"
+  },
+  "buyBitcoin": {
+    "title": "Erhalte Bitcoin",
+    "description": "Stacke ein paar Sats"
+  },
+  "lightning_no_funds_title": "Kein Guthaben verfügbar",
+  "lightning_no_funds_desc": "Bevor Du ein instantzahlungs-fähiges Konto einrichtest, musst Du ein wenig on-chain Bitcoin an dein Wallet senden.",
+  "suggestions": "Verbesserungsvorschläge"
+}

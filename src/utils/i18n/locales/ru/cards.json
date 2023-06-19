@@ -1,41 +1,43 @@
 {
-	"backupSeedPhrase": {
-		"title": "Сохранить",
-		"description": "Обезопасьте деньги"
-	},
-	"lightning": {
-		"title": "Платить Моментально",
-		"description": "Настройте Лайтнинг"
-	},
-	"lightningSettingUp": {
-		"title": "Настройка",
-		"description": "Готово ±20м"
-	},
-	"transferToSpending": {
-		"title": "Перенос",
-		"description": "Готово ±20m"
-	},
-	"transferToSavings": {
-		"title": "Перенос",
-		"description": "Готово ±60m"
-	},
-	"transferClosingChannel": {
-		"title": "Инициализация...",
-		"description": "Не закрывайте приложение"
-	},
-	"pin": {
-		"title": "Улучшить безопасность",
-		"description": "Установите PIN-код"
-	},
-	"slashtagsProfile": {
-		"title": "Публичный Профиль",
-		"description": "Добавьте свои данные"
-	},
-	"buyBitcoin": {
-		"title": "Получить Биткойн",
-		"description": "Получить Сатоши"
-	},
-	"lightning_no_funds_title": "Пока нет средств",
-	"lightning_no_funds_desc": "Прежде чем вы сможете настроить свой Мгновенный баланс расходов, вам нужно отправить немного биткойнов ончейн на свой кошелек.",
-	"suggestions": "Рекомендации"
+  "backupSeedPhrase": {
+    "title": "Бекап",
+    "description": "Сохранить"
+  },
+  "lightning": {
+    "title": "Лайтнинг",
+    "description": "Настроить"
+  },
+  "lightningSettingUp": {
+    "title": "Настройка"
+  },
+  "lightningConnecting": {
+    "title": "Вы\nподключены!"
+  },
+  "transferToSpending": {
+    "title": "Перенос",
+    "description": "Готово ±20м"
+  },
+  "transferToSavings": {
+    "title": "Перенос",
+    "description": "Готово ±60м"
+  },
+  "transferClosingChannel": {
+    "title": "Инициализация...",
+    "description": "Не закрывайте приложение"
+  },
+  "pin": {
+    "title": "PIN-код",
+    "description": "Установить"
+  },
+  "slashtagsProfile": {
+    "title": "Профиль",
+    "description": "Редактировать"
+  },
+  "buyBitcoin": {
+    "title": "Биткоин",
+    "description": "Купить"
+  },
+  "lightning_no_funds_title": "Пока нет средств",
+  "lightning_no_funds_desc": "Прежде чем вы сможете настроить свой Мгновенный баланс расходов, вам нужно отправить немного биткоинов ончейн на свой кошелек.",
+  "suggestions": "Рекомендации"
 }

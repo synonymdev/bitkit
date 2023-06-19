@@ -1,0 +1,22 @@
+{
+  "backupSeedPhrase": {
+    "description": "Stockez votre argent"
+  },
+  "lightning": {
+    "title": "Payez instantanément",
+    "description": "Montez sur la Lightning"
+  },
+  "lightningSettingUp": {
+    "description0": "En attente de paiement",
+    "description1": "Payé",
+    "description2": "En attente",
+    "description3": "Ouverture"
+  },
+  "lightningConnecting": {
+    "title": "Connexion",
+    "description": "Prêt dans ±10m"
+  },
+  "lightningReady": {
+    "title": "Prêt"
+  }
+}

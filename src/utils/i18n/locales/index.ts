@@ -1,51 +1,38 @@
-import cardsEN from './en/cards.json';
-import cardsRU from './ru/cards.json';
-import commonEN from './en/common.json';
-import commonRU from './ru/common.json';
-import feeEN from './en/fee.json';
-import feeRU from './ru/fee.json';
-import lightningEN from './en/lightning.json';
-import lightningRU from './ru/lightning.json';
-import onboardingEN from './en/onboarding.json';
-import onboardingRU from './ru/onboarding.json';
-import otherEN from './en/other.json';
-import otherRU from './ru/other.json';
-import securityEN from './en/security.json';
-import securityRU from './ru/security.json';
-import settingsEN from './en/settings.json';
-import settingsRU from './ru/settings.json';
-import slashtagsEN from './en/slashtags.json';
-import slashtagsRU from './ru/slashtags.json';
-import walletEN from './en/wallet.json';
-import walletRU from './ru/wallet.json';
+import en from './en';
 
-// intl
-import intlEN from './en/intl.json';
+import arb from './arb';
+import cs from './cs';
+import de from './de';
+import el from './el';
+import es from './es';
+import fa from './fa';
+import fr from './fr';
+import it from './it';
+import ja from './ja';
+import ko from './ko';
+import nl from './nl';
+import no from './no';
+import pl from './pl';
+import pt_BR from './pt_BR';
+import pt_PT from './pt_PT';
+import ru from './ru';
 
 export default {
-	en: {
-		cards: cardsEN,
-		common: commonEN,
-		fee: feeEN,
-		lightning: lightningEN,
-		onboarding: onboardingEN,
-		other: otherEN,
-		security: securityEN,
-		settings: settingsEN,
-		slashtags: slashtagsEN,
-		wallet: walletEN,
-		intl: intlEN,
-	},
-	ru: {
-		cards: cardsRU,
-		common: commonRU,
-		fee: feeRU,
-		lightning: lightningRU,
-		onboarding: onboardingRU,
-		other: otherRU,
-		security: securityRU,
-		settings: settingsRU,
-		slashtags: slashtagsRU,
-		wallet: walletRU,
-	},
+	en,
+	arb,
+	cs,
+	de,
+	el,
+	es,
+	fa,
+	fr,
+	it,
+	ja,
+	ko,
+	nl,
+	no,
+	pl,
+	pt_BR,
+	pt_PT,
+	ru,
 } as const;

@@ -1,0 +1,52 @@
+{
+  "backupSeedPhrase": {
+    "title": "Back up",
+    "description": "Conserva i tuoi soldi"
+  },
+  "lightning": {
+    "title": "Paga istantaneamente",
+    "description": "Passa su Lightning"
+  },
+  "lightningSettingUp": {
+    "title": "In preparazione",
+    "description0": "In Attesa del Pagamento",
+    "description1": "Pagato",
+    "description2": "In coda",
+    "description3": "Apertura"
+  },
+  "lightningConnecting": {
+    "title": "Collegamento",
+    "description": "Pronto in ±10m"
+  },
+  "lightningReady": {
+    "title": "Pronto",
+    "description": "Connesso!"
+  },
+  "transferToSpending": {
+    "title": "Trasferimento",
+    "description": "Pronto in ±20m"
+  },
+  "transferToSavings": {
+    "title": "Trasferimento",
+    "description": "Pronto in ±60m"
+  },
+  "transferClosingChannel": {
+    "title": "Inizializzazione...",
+    "description": "Tieni l'app aperta"
+  },
+  "pin": {
+    "title": "Maggior sicurezza",
+    "description": "Imposta un codice PIN"
+  },
+  "slashtagsProfile": {
+    "title": "Profilo Pubblico",
+    "description": "Aggiungi i tuoi dettagli"
+  },
+  "buyBitcoin": {
+    "title": "Ottieni Bitcoin",
+    "description": "Stack sats"
+  },
+  "lightning_no_funds_title": "Non ci sono ancora fondi",
+  "lightning_no_funds_desc": "Prima di poter impostare il saldo di spesa istantaneo, è necessario inviare alcuni Bitcoin sul proprio wallet on-chain.",
+  "suggestions": "Consigli"
+}

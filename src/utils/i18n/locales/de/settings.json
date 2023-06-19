@@ -1,0 +1,27 @@
+{
+  "about": {
+    "support": "Support"
+  },
+  "general": {
+    "suggestions": "Verbesserungsvorschläge"
+  },
+  "adv": {
+    "lightning_connections": "Lightning Verbindungen"
+  },
+  "fee": {
+    "fast": {
+      "value": "Schnell"
+    },
+    "normal": {
+      "label": "Normal",
+      "value": "Normal"
+    },
+    "custom": {
+      "label": "Benutzerdefiniert",
+      "value": "Benutzerdefiniert"
+    }
+  },
+  "es": {
+    "disconnected": "getrennt"
+  }
+}

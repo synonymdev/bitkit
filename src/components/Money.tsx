@@ -24,7 +24,7 @@ interface IMoney {
 	sats: number;
 	showFiat?: boolean; // if true shows value in fiat, if false shows value in settings.bitcoinUnit. Can be overwritten by unit prop
 	unit?: EBalanceUnit | EBitcoinUnit; // force value formatting
-	highlight?: boolean; // grey out decimals in fiat
+	highlight?: boolean; // gray out decimals in fiat
 	decimalLength?: 'long' | 'short'; // whether to show 5 or 8 decimals for BTC
 	symbol?: boolean; // show symbol icon
 	color?: keyof IColors;

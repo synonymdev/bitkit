@@ -1,0 +1,17 @@
+{
+  "tos_header": "Bitkit\n<brand>Nutzungs-</brand>\n<brand>bedingungen.</brand>",
+  "tos_checkbox": "Nutzungsbedingungen",
+  "tos_checkbox_value": "<gray>Ich erkläre hiermit, dass ich die <brand>Nutzungsbedingungen</brand> gelesen und akzeptiert habe.</gray>",
+  "pp_checkbox": "Datenschutz-Bestimmungen",
+  "pp_checkbox_value": "<gray>Ich erkläre hiermit, dass ich die <brand>Datenschutz-Bestimmungen</brand> gelesen und akzeptiert habe. </gray>",
+  "toolkit": "Dein Bitcoin\n<brand>Toolkit.</brand>",
+  "toolkit_text": "Bitkit händigt dir die Keys zu deinem Geld, Profil, deinen Kontakten und Web-Accounts aus.",
+  "get_started": "Lege los",
+  "skip_intro": "Intro überspringen",
+  "skip": "Überspringe",
+  "slide1_header": "Bitcoin,\n<brand>Überall.</brand>",
+  "slide1_text": "Bezahle jedermann, überall, jederzeit und gebe deine bitcoin für Dinge im Leben aus die du wertschätzt.",
+  "slide2_header": "Lightning,\n<purple>Schnell.</purple>",
+  "slide2_text": "Verschicke Bitcoin schneller als jemals zuvor. Erfreue dich an instant Transaktionen mit Freunden, Familie und Händlern.",
+  "slide3_header": "Grenzenloses\n<blue>Web.</blue>"
+}

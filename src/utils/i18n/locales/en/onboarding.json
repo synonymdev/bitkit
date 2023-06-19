@@ -1,9 +1,9 @@
 {
 	"tos_header": "Bitkit\n<brand>Terms</brand>\n<brand>of Use.</brand>",
 	"tos_checkbox": "Terms of use",
-	"tos_checkbox_value": "<grey>I declare that I have read and accept the <brand>terms of use.</brand></gray>",
+	"tos_checkbox_value": "<gray>I declare that I have read and accept the <brand>terms of use.</brand></gray>",
 	"pp_checkbox": "Privacy Policy",
-	"pp_checkbox_value": "<grey>I declare that I have read and accept the <brand>privacy policy.</brand></gray>",
+	"pp_checkbox_value": "<gray>I declare that I have read and accept the <brand>privacy policy.</brand></gray>",
 	"toolkit": "Your Bitcoin\n<brand>Toolkit.</brand>",
 	"toolkit_text": "Bitkit hands you the keys to your money, profile, contacts, and web accounts.",
 	"get_started": "Get Started",

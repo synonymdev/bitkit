@@ -1,0 +1,28 @@
+{
+  "advanced_title": "Avanzate",
+  "about": {
+    "support": "Supporto"
+  },
+  "general": {
+    "suggestions": "Consigli"
+  },
+  "adv": {
+    "lightning_connections": "Connessioni Lightning"
+  },
+  "fee": {
+    "fast": {
+      "value": "Veloce"
+    },
+    "normal": {
+      "label": "Normale",
+      "value": "Normale"
+    },
+    "custom": {
+      "label": "Personalizzate",
+      "value": "Personalizzate"
+    }
+  },
+  "es": {
+    "disconnected": "disconnesso"
+  }
+}

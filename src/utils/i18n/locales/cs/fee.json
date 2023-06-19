@@ -1,0 +1,38 @@
+{
+  "instant": {
+    "title": "Okamžitě",
+    "description": "+/- 2-10 sekund",
+    "shortRange": "2-10s",
+    "shortDescription": "+/- 2s"
+  },
+  "fast": {
+    "title": "Rychle",
+    "description": "+/- 10-20 minut",
+    "shortRange": "10-20m",
+    "shortDescription": "+/- 10m"
+  },
+  "normal": {
+    "title": "Standardní",
+    "description": "+/- 20-60 minut",
+    "shortRange": "20-60m",
+    "shortDescription": "+/- 20m"
+  },
+  "slow": {
+    "title": "Pomalu",
+    "description": "+/- 1-2 hodiny",
+    "shortRange": "1-2h",
+    "shortDescription": "+/- 1h"
+  },
+  "minimum": {
+    "title": "Minimum",
+    "description": "+2 hodiny",
+    "shortRange": "+2h",
+    "shortDescription": "+ 2h"
+  },
+  "custom": {
+    "title": "Vlastní",
+    "description": "Odvíjí se od poplatku",
+    "shortRange": "Odvíjí se od poplatku",
+    "shortDescription": "Odvíjí se od poplatku"
+  }
+}

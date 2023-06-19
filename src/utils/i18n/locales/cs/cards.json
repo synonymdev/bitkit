@@ -1,0 +1,52 @@
+{
+  "backupSeedPhrase": {
+    "title": "Záloha",
+    "description": "Uložit peníze"
+  },
+  "lightning": {
+    "title": "Okamžitá úhrada",
+    "description": "Převést na Lightning"
+  },
+  "lightningSettingUp": {
+    "title": "Nastavování",
+    "description0": "Očekávaná platba",
+    "description1": "Uhrazeno",
+    "description2": "Ve frontě",
+    "description3": "Otevírání"
+  },
+  "lightningConnecting": {
+    "title": "Spojování",
+    "description": "Hotovo za +/- 10m"
+  },
+  "lightningReady": {
+    "title": "Hotovo",
+    "description": "Propojeno!"
+  },
+  "transferToSpending": {
+    "title": "Probíhající přenos",
+    "description": "Hotovo za +/- 20m"
+  },
+  "transferToSavings": {
+    "title": "Probíhající přenos",
+    "description": "Hotovo za +/- 60m"
+  },
+  "transferClosingChannel": {
+    "title": "Inicializace...",
+    "description": "Nechte aplikaci otevřenou"
+  },
+  "pin": {
+    "title": "Lepší ochrana",
+    "description": "Nastavení PIN kódu"
+  },
+  "slashtagsProfile": {
+    "title": "Veřejný profil",
+    "description": "Doplňte své údaje"
+  },
+  "buyBitcoin": {
+    "title": "Získat Bitcoin",
+    "description": "Stackuj Saty"
+  },
+  "lightning_no_funds_title": "Zatím žádné prostředky",
+  "lightning_no_funds_desc": "Abyste si mohli nastavit zůstatek pro okamžité platby, musíte nejdříve uskutečnit Bitcoinovou on-chain transakci do své peněženky.",
+  "suggestions": "Návrhy"
+}
