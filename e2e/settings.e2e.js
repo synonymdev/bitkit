@@ -362,7 +362,9 @@ describe('Settings', () => {
 			// wallet be in regtest mode by default
 			// at first check if it is Native segwit by default
 			await element(by.id('Receive')).tap();
-			await sleep(1000); // animation
+			try {
+				await element(by.id('UnderstoodButton')).tap();
+			} catch (e) {}
 			await waitFor(element(by.id('QRCode')))
 				.toBeVisible()
 				.withTimeout(30000);
