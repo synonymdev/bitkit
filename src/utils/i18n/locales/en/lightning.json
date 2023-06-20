@@ -1,5 +1,5 @@
 {
-	"int_blocked": "Open a Lightning connection and send or receive bitcoin instantly.\n\nUnfortunately, Bitkit cannot provide automatic Lightning connections to residents of the United States (yet).",
+	"int_blocked": "Open a Lightning connection and send or receive bitcoin instantly.\n\nUnfortunately, Bitkit cannot provide automatic Lightning connections to residents of the United States & Canada (yet).",
 	"int_text": "Open a Lightning connection and send or receive bitcoin instantly.",
 	"int_header": "Instant\n<purple>Payments.</purple>",
 	"int_quick": "Quick Setup",

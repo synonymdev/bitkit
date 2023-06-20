@@ -123,13 +123,11 @@ const Glow = ({
 }: {
 	color: string;
 	size: { width: number; height: number };
-}): ReactElement => {
-	return (
-		<Rect x={0} y={0} width={size.width} height={size.height} opacity={0.3}>
-			<RadialGradient c={vec(0, 100)} r={600} colors={[color, 'transparent']} />
-		</Rect>
-	);
-};
+}): ReactElement => (
+	<Rect x={0} y={0} width={size.width} height={size.height} opacity={0.3}>
+		<RadialGradient c={vec(0, 100)} r={600} colors={[color, 'transparent']} />
+	</Rect>
+);
 
 const ZigZag = ({ color }: { color: string }): ReactElement => {
 	const step = 12;
@@ -893,7 +891,7 @@ const ActivityDetail = ({
 	return (
 		<ThemedView style={styles.root} onLayout={handleLayout}>
 			<SafeAreaInset type="top" />
-			<Canvas style={[styles.canvas, size]}>
+			<Canvas style={styles.canvas}>
 				<Glow color={glowColor} size={size} />
 			</Canvas>
 			<NavigationHeader
@@ -940,7 +938,7 @@ const styles = StyleSheet.create({
 		position: 'relative',
 	},
 	canvas: {
-		position: 'absolute',
+		...StyleSheet.absoluteFillObject,
 	},
 	title: {
 		flexDirection: 'row',

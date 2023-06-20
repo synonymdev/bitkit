@@ -188,12 +188,13 @@ export const RefreshControl = styled.RefreshControl.attrs((props) => ({
 
 export const StatusBar = styled.StatusBar.attrs((props) => ({
 	animated: true,
+	translucent: true,
 	...Platform.select({
 		ios: {
 			barStyle: props.theme.id === 'light' ? 'dark-content' : 'light-content',
 		},
 		android: {
-			backgroundColor: 'black',
+			backgroundColor: 'transparent',
 			barStyle: 'light-content',
 		},
 	}),
