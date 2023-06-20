@@ -55,6 +55,7 @@
 		"pin": "PIN Code",
 		"pin_change": "Change PIN Code",
 		"pin_launch": "Require PIN on launch",
+		"pin_idle": "Require PIN on idle",
 		"pin_payments": "Require PIN for payments",
 		"pin_enabled": "Enabled",
 		"pin_disabled": "Disabled",

@@ -57,6 +57,7 @@ export type TAvailableUpdate = {
 
 export interface IUi {
 	availableUpdate: TAvailableUpdate | null;
+	isAuthenticated: boolean;
 	isConnectedToElectrum: boolean;
 	isOnline: boolean;
 	profileLink: TProfileLink;

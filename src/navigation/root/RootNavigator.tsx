@@ -1,11 +1,4 @@
-import React, {
-	ReactElement,
-	useCallback,
-	memo,
-	useEffect,
-	useRef,
-	useState,
-} from 'react';
+import React, { ReactElement, memo, useEffect, useRef, useState } from 'react';
 import { AppState, Linking, Platform } from 'react-native';
 import { useSelector } from 'react-redux';
 import {
@@ -23,7 +16,8 @@ import {
 import { NavigationContainer } from '../../styles/components';
 import { processInputData } from '../../utils/scanner';
 import { checkClipboardData } from '../../utils/clipboard';
-import Store from '../../store/types';
+import { updateUi } from '../../store/actions/ui';
+import { isAuthenticatedSelector } from '../../store/reselect/ui';
 import { resetSendTransaction } from '../../store/actions/wallet';
 import AuthCheck from '../../components/AuthCheck';
 import Dialog from '../../components/Dialog';
@@ -56,13 +50,13 @@ import PINNavigation from '../bottom-sheet/PINNavigation';
 import ForceTransfer from '../bottom-sheet/ForceTransfer';
 import CloseChannelSuccess from '../bottom-sheet/CloseChannelSuccess';
 import { __E2E__ } from '../../constants/env';
-import type { RootStackParamList, RootStackScreenProps } from '../types';
+import type { RootStackParamList } from '../types';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
-const navOptions: StackNavigationOptions = {
-	headerShown: false,
+const screenOptions: StackNavigationOptions = {
 	...TransitionPresets.SlideFromRightIOS,
+	headerShown: false,
 	animationEnabled: !__E2E__,
 };
 
@@ -94,14 +88,9 @@ export type TInitialRoutes = 'Wallet' | 'RootAuthCheck';
 const RootNavigator = (): ReactElement => {
 	const { t } = useTranslation('other');
 	const appState = useRef(AppState.currentState);
-	const [showDialog, setShowDialog] = useState(false);
-	const pin = useSelector((state: Store) => state.settings.pin);
-	const pinOnLaunch = useSelector((state: Store) => state.settings.pinOnLaunch);
+	const isAuthenticated = useSelector(isAuthenticatedSelector);
 
-	const showAuth = pin && pinOnLaunch;
-	const initialRouteName: TInitialRoutes = showAuth
-		? 'RootAuthCheck'
-		: 'Wallet';
+	const [showDialog, setShowDialog] = useState(false);
 
 	const linking: LinkingOptions<{}> = {
 		prefixes: ['slash', 'bitcoin', 'lightning'],
@@ -151,7 +140,7 @@ const RootNavigator = (): ReactElement => {
 	};
 
 	useEffect(() => {
-		if (!showAuth) {
+		if (isAuthenticated) {
 			checkClipboardAndDeeplink().then();
 		}
 
@@ -179,68 +168,44 @@ const RootNavigator = (): ReactElement => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
-	const AuthCheckComponent = useCallback(
-		({ navigation }: RootStackScreenProps<'RootAuthCheck'>): ReactElement => {
-			const onSuccess = (): void => {
-				navigation.replace('Wallet');
-				checkClipboardAndDeeplink().then();
-			};
-
-			return (
-				<AuthCheck
-					showLogoOnPIN={true}
-					showBackNavigation={false}
-					onSuccess={onSuccess}
-				/>
-			);
-		},
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-		[],
-	);
-
 	return (
 		<NavigationContainer ref={navigationRef} linking={linking}>
 			<Stack.Navigator
-				screenOptions={navOptions}
+				screenOptions={screenOptions}
 				// adding this because we are using @react-navigation/stack instead of
 				// @react-navigation/native-stack header
 				// https://github.com/react-navigation/react-navigation/issues/9015#issuecomment-828700138
-				detachInactiveScreens={Platform.OS !== 'ios'}
-				initialRouteName={initialRouteName}>
-				<Stack.Group screenOptions={navOptions}>
-					<Stack.Screen name="RootAuthCheck" component={AuthCheckComponent} />
-					<Stack.Screen name="Wallet" component={WalletNavigator} />
-					<Stack.Screen name="ActivityDetail" component={ActivityDetail} />
-					<Stack.Screen
-						name="ActivityAssignContact"
-						component={ActivityAssignContact}
-					/>
-					<Stack.Screen name="Scanner" component={ScannerScreen} />
-					<Stack.Screen name="LightningRoot" component={LightningNavigator} />
-					<Stack.Screen name="Transfer" component={TransferNavigator} />
-					<Stack.Screen name="Settings" component={SettingsNavigator} />
-					<Stack.Screen
-						name="Profile"
-						component={Profile}
-						options={{ gestureDirection: 'horizontal-inverted' }}
-					/>
-					<Stack.Screen name="ProfileEdit" component={ProfileEdit} />
-					<Stack.Screen name="ProfileDetails" component={ProfileDetails} />
-					<Stack.Screen name="Contacts" component={Contacts} />
-					<Stack.Screen name="ContactEdit" component={ContactEdit} />
-					<Stack.Screen name="Contact" component={Contact} />
-					<Stack.Screen name="BuyBitcoin" component={BuyBitcoin} />
-					<Stack.Screen name="BetaRisk" component={BetaRisk} />
-					<Stack.Screen name="WidgetFeedEdit" component={WidgetFeedEdit} />
-					<Stack.Screen name="WidgetsRoot" component={WidgetsNavigator} />
-				</Stack.Group>
+				detachInactiveScreens={Platform.OS !== 'ios'}>
+				<Stack.Screen name="Wallet" component={WalletNavigator} />
+				<Stack.Screen name="ActivityDetail" component={ActivityDetail} />
+				<Stack.Screen
+					name="ActivityAssignContact"
+					component={ActivityAssignContact}
+				/>
+				<Stack.Screen name="Scanner" component={ScannerScreen} />
+				<Stack.Screen name="LightningRoot" component={LightningNavigator} />
+				<Stack.Screen name="Transfer" component={TransferNavigator} />
+				<Stack.Screen name="Settings" component={SettingsNavigator} />
+				<Stack.Screen
+					name="Profile"
+					component={Profile}
+					options={{ gestureDirection: 'horizontal-inverted' }}
+				/>
+				<Stack.Screen name="ProfileEdit" component={ProfileEdit} />
+				<Stack.Screen name="ProfileDetails" component={ProfileDetails} />
+				<Stack.Screen name="Contacts" component={Contacts} />
+				<Stack.Screen name="ContactEdit" component={ContactEdit} />
+				<Stack.Screen name="Contact" component={Contact} />
+				<Stack.Screen name="BuyBitcoin" component={BuyBitcoin} />
+				<Stack.Screen name="BetaRisk" component={BetaRisk} />
+				<Stack.Screen name="WidgetFeedEdit" component={WidgetFeedEdit} />
+				<Stack.Screen name="WidgetsRoot" component={WidgetsNavigator} />
 			</Stack.Navigator>
 
 			<SendNavigation />
 			<ReceiveNavigation />
 			<BackupNavigation />
 			<PINNavigation />
-			<ForgotPIN />
 			<BoostPrompt />
 			<NewTxPrompt />
 			<SlashAuthModal />
@@ -255,6 +220,19 @@ const RootNavigator = (): ReactElement => {
 				onCancel={(): void => setShowDialog(false)}
 				onConfirm={onConfirmClipboardRedirect}
 			/>
+
+			{!isAuthenticated && (
+				<AuthCheck
+					showBackNavigation={false}
+					showLogoOnPIN={true}
+					onSuccess={(): void => {
+						updateUi({ isAuthenticated: true });
+						checkClipboardAndDeeplink().then();
+					}}
+				/>
+			)}
+
+			<ForgotPIN />
 		</NavigationContainer>
 	);
 };

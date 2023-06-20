@@ -41,6 +41,7 @@ export interface ISettings {
 	enableSendAmountWarning: boolean;
 	pin: boolean;
 	pinOnLaunch: boolean;
+	pinOnIdle: boolean;
 	pinForPayments: boolean;
 	biometrics: boolean;
 	rbf: boolean;

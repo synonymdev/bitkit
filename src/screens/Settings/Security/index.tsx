@@ -24,6 +24,7 @@ const SecuritySettings = ({
 		pin,
 		biometrics,
 		pinOnLaunch,
+		pinOnIdle,
 		pinForPayments,
 	} = useSelector((state: Store) => state.settings);
 
@@ -100,6 +101,7 @@ const SecuritySettings = ({
 						type: EItemType.switch,
 						enabled: pinOnLaunch,
 						hide: !pin,
+						testID: 'EnablePinOnLaunch',
 						onPress: (): void => {
 							navigation.navigate('AuthCheck', {
 								onSuccess: () => {
@@ -110,10 +112,26 @@ const SecuritySettings = ({
 						},
 					},
 					{
+						title: t('security.pin_idle'),
+						type: EItemType.switch,
+						enabled: pinOnIdle,
+						hide: !pin,
+						testID: 'EnablePinOnIdle',
+						onPress: (): void => {
+							navigation.navigate('AuthCheck', {
+								onSuccess: () => {
+									navigation.pop();
+									updateSettings({ pinOnIdle: !pinOnIdle });
+								},
+							});
+						},
+					},
+					{
 						title: t('security.pin_payments'),
 						type: EItemType.switch,
 						enabled: pinForPayments,
 						hide: !pin,
+						testID: 'EnablePinForPayments',
 						onPress: (): void => {
 							navigation.navigate('AuthCheck', {
 								onSuccess: () => {
@@ -149,6 +167,7 @@ const SecuritySettings = ({
 			biometrics,
 			pin,
 			pinOnLaunch,
+			pinOnIdle,
 			pinForPayments,
 			navigation,
 			t,

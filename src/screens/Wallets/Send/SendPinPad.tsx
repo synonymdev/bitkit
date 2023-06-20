@@ -60,7 +60,7 @@ const SendPinPad = ({ onSuccess }: { onSuccess: () => void }): ReactElement => {
 		}, 500);
 
 		return (): void => {
-			clearInterval(timer);
+			clearTimeout(timer);
 		};
 	}, [pin, onSuccess]);
 

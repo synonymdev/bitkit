@@ -86,7 +86,7 @@ const BackupPrompt = ({ enabled }: { enabled: boolean }): ReactElement => {
 		}, CHECK_DELAY);
 
 		return (): void => {
-			clearInterval(timer);
+			clearTimeout(timer);
 		};
 	}, [shouldShowBottomSheet]);
 

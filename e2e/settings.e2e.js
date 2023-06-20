@@ -259,9 +259,18 @@ describe('Settings', () => {
 			// await sleep(1000);
 			// await element(by.label('Cancel')).atIndex(0).tap();
 
-			// disable FaceID, change PIN, restart the app and try it
+			// test PIN on idle
 			await element(by.id('Settings')).tap();
 			await element(by.id('SecuritySettings')).tap();
+			await element(by.id('EnablePinOnIdle')).tap();
+			await device.matchFace();
+			await sleep(1000);
+			await waitFor(element(by.id('Biometrics')))
+				.toBeVisible()
+				.withTimeout(100000);
+			await device.matchFace();
+
+			// disable FaceID, change PIN, restart the app and try it
 			await element(by.id('UseBiometryInstead')).tap();
 			await device.matchFace();
 			await sleep(1000);

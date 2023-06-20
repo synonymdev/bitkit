@@ -84,6 +84,7 @@ export const defaultSettingsShape: Readonly<ISettings> = {
 	enableSendAmountWarning: false,
 	pin: false,
 	pinOnLaunch: true,
+	pinOnIdle: false,
 	pinForPayments: false,
 	biometrics: false,
 	rbf: false,

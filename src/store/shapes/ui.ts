@@ -27,11 +27,12 @@ export const defaultViewControllers: IUi['viewControllers'] = {
 
 export const defaultUiShape: IUi = {
 	availableUpdate: null,
+	isAuthenticated: true,
 	isConnectedToElectrum: true,
 	isOnline: true,
+	language: 'en',
 	profileLink: { title: '', url: '' },
+	timeZone: 'UTC',
 	// Used to control bottom-sheets throughout the app
 	viewControllers: defaultViewControllers,
-	timeZone: 'UTC',
-	language: 'en',
 };

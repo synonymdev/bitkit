@@ -131,6 +131,15 @@ const migrations = {
 		}
 		return newState;
 	},
+	14: (state): PersistedState => {
+		return {
+			...state,
+			settings: {
+				...state.settings,
+				pinOnIdle: false,
+			},
+		};
+	},
 };
 
 export default migrations;

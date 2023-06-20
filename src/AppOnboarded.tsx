@@ -5,6 +5,7 @@ import NetInfo from '@react-native-community/netinfo';
 import { useTranslation } from 'react-i18next';
 
 import RootNavigator from './navigation/root/RootNavigator';
+import InactivityTracker from './components/InactivityTracker';
 import { startWalletServices } from './utils/startup';
 import { RECOVERY_DELAY } from './utils/startup/constants';
 import { electrumConnection } from './utils/electrum';
@@ -13,6 +14,7 @@ import i18n from './utils/i18n';
 import { getStore } from './store/helpers';
 import { updateUi } from './store/actions/ui';
 import { isOnlineSelector } from './store/reselect/ui';
+import { pinOnLaunchSelector, pinSelector } from './store/reselect/settings';
 import {
 	showErrorNotification,
 	showSuccessNotification,
@@ -48,6 +50,8 @@ const AppOnboarded = (): ReactElement => {
 	const appState = useRef(AppState.currentState);
 	const selectedWallet = useSelector(selectedWalletSelector);
 	const selectedNetwork = useSelector(selectedNetworkSelector);
+	const pin = useSelector(pinSelector);
+	const pinOnLaunch = useSelector(pinOnLaunchSelector);
 	const isOnline = useSelector(isOnlineSelector);
 
 	// on App start
@@ -56,6 +60,10 @@ const AppOnboarded = (): ReactElement => {
 		const timerId = setTimeout(() => {
 			startWalletServices({ selectedNetwork, selectedWallet });
 		}, RECOVERY_DELAY);
+
+		if (pin && pinOnLaunch) {
+			updateUi({ isAuthenticated: false });
+		}
 
 		return () => {
 			clearTimeout(timerId);
@@ -131,7 +139,11 @@ const AppOnboarded = (): ReactElement => {
 		};
 	}, [isOnline, t]);
 
-	return <RootNavigator />;
+	return (
+		<InactivityTracker>
+			<RootNavigator />
+		</InactivityTracker>
+	);
 };
 
 export default memo(AppOnboarded);

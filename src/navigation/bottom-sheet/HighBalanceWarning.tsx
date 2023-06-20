@@ -132,7 +132,7 @@ const HighBalanceWarning = ({
 		}, CHECK_DELAY);
 
 		return (): void => {
-			clearInterval(timer);
+			clearTimeout(timer);
 		};
 	}, [shouldShowBottomSheet]);
 

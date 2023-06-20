@@ -67,6 +67,11 @@ export const profileLinkSelector = createSelector(
 	(ui) => ui.profileLink,
 );
 
+export const isAuthenticatedSelector = createSelector(
+	[uiState],
+	(ui) => ui.isAuthenticated,
+);
+
 export const isOnlineSelector = createSelector(
 	[uiState],
 	(ui): boolean => ui.isOnline,

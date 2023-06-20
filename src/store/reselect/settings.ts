@@ -51,7 +51,15 @@ export const enableDevOptionsSelector = createSelector(
 );
 export const pinSelector = createSelector(
 	[settingsState],
-	(settings): boolean => settings.pin,
+	(settings) => settings.pin,
+);
+export const pinOnLaunchSelector = createSelector(
+	[settingsState],
+	(settings) => settings.pinOnLaunch,
+);
+export const pinOnIdleSelector = createSelector(
+	[settingsState],
+	(settings) => settings.pinOnIdle,
 );
 
 export const coinSelectPreferenceSelector = createSelector(

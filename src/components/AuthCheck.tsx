@@ -1,81 +1,54 @@
 import React, { memo, ReactElement, useState } from 'react';
-import { RouteProp } from '@react-navigation/native';
+import { StyleSheet } from 'react-native';
 import { useSelector } from 'react-redux';
+import { RouteProp } from '@react-navigation/native';
+import Animated, { FadeOut } from 'react-native-reanimated';
 
 import GlowingBackground from './GlowingBackground';
 import Biometrics from './Biometrics';
 import PinPad from './PinPad';
 import Store from '../store/types';
 
-export interface IAuthCheck {
-	children?: ReactElement;
-	requirePin?: boolean;
-	onSuccess?: () => void;
-	onFailure?: () => void;
-	showLogoOnPIN?: boolean;
+type AuthCheckProps = {
 	showBackNavigation?: boolean;
-}
-export interface IAuthCheckParams extends IAuthCheck {
-	route?: RouteProp<{ params: IAuthCheck }, 'params'>;
-}
+	showLogoOnPIN?: boolean;
+	route?: RouteProp<{ params: { requirePin: boolean; onSuccess: () => void } }>;
+	onSuccess?: () => void;
+};
 
 /**
  * This component checks if the user has enabled pin or biometrics and runs through each check as needed before proceeding.
- * @param {ReactElement} children
- * @param {Function} onSuccess
- * @param {Function} onFailure
- * @param {RouteProp<{ params: IAuthCheck }, 'params'>} route
  */
 const AuthCheck = ({
-	children = <></>,
-	requirePin,
-	onSuccess,
-	onFailure,
-	showLogoOnPIN = false,
 	showBackNavigation = true,
+	showLogoOnPIN = false,
 	route,
-}: IAuthCheckParams): ReactElement => {
-	const pin = useSelector((state: Store) => state.settings.pin);
+	onSuccess,
+}: AuthCheckProps): ReactElement => {
 	const biometrics = useSelector((state: Store) => state.settings.biometrics);
+	const [requireBiometrics, setRequireBiometrics] = useState(biometrics);
 
-	const [displayPin, setDisplayPin] = useState(pin);
-	const [displayBiometrics, setDisplayBiometrics] = useState(biometrics);
-	const [authCheckParams] = useState<IAuthCheck>({
-		requirePin: route?.params?.requirePin ?? requirePin,
-		onSuccess: route?.params?.onSuccess ?? onSuccess,
-		onFailure: route?.params?.onFailure ?? onFailure,
-		showLogoOnPIN: route?.params?.showLogoOnPIN ?? showLogoOnPIN,
-	});
+	const requirePin = route?.params?.requirePin ?? false;
+	onSuccess = route?.params?.onSuccess ?? onSuccess;
 
-	if (displayPin && displayBiometrics && !authCheckParams.requirePin) {
-		return (
-			<GlowingBackground topLeft="brand">
-				<Biometrics
-					onSuccess={(): void => {
-						authCheckParams.onSuccess?.();
-					}}
-					onFailure={(): void => {
-						setDisplayBiometrics(false);
-					}}
+	return (
+		<Animated.View style={StyleSheet.absoluteFillObject} exiting={FadeOut}>
+			{requireBiometrics && !requirePin ? (
+				<GlowingBackground topLeft="brand">
+					<Biometrics
+						onSuccess={(): void => onSuccess?.()}
+						onFailure={(): void => setRequireBiometrics(false)}
+					/>
+				</GlowingBackground>
+			) : (
+				<PinPad
+					showBackNavigation={showBackNavigation}
+					showLogoOnPIN={showLogoOnPIN}
+					onSuccess={(): void => onSuccess?.()}
 				/>
-			</GlowingBackground>
-		);
-	}
-
-	if (displayPin) {
-		return (
-			<PinPad
-				showBackNavigation={showBackNavigation}
-				showLogoOnPIN={showLogoOnPIN}
-				onSuccess={(): void => {
-					setDisplayPin(false);
-					authCheckParams.onSuccess?.();
-				}}
-			/>
-		);
-	}
-
-	return children;
+			)}
+		</Animated.View>
+	);
 };
 
 export default memo(AuthCheck);

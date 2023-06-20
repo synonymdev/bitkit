@@ -13,13 +13,11 @@ import ActivityFiltered from '../../screens/Activity/ActivityFiltered';
 import BackupPrompt from '../../screens/Settings/Backup/BackupPrompt';
 import AppUpdatePrompt from '../bottom-sheet/AppUpdatePrompt';
 import HighBalanceWarning from '../bottom-sheet/HighBalanceWarning';
-import AuthCheck from '../../components/AuthCheck';
 import TabBar from '../../components/TabBar';
 import type { RootStackScreenProps } from '../types';
 import { __E2E__ } from '../../constants/env';
 
 export type WalletStackParamList = {
-	AuthCheck: { onSuccess: () => void };
 	Wallets: { onFocus: (focused: boolean) => void };
 	WalletsDetail: { assetType: TAssetType };
 	ActivityFiltered: undefined;
@@ -28,11 +26,9 @@ export type WalletStackParamList = {
 export type WalletNavigationProp = StackNavigationProp<WalletStackParamList>;
 
 const Stack = createStackNavigator<WalletStackParamList>();
-const navOptions: StackNavigationOptions = { headerShown: false };
-const modalOptions = navOptions;
 const screenOptions: StackNavigationOptions = {
-	...navOptions,
 	...TransitionPresets.SlideFromRightIOS,
+	headerShown: false,
 	animationEnabled: !__E2E__,
 };
 
@@ -43,19 +39,14 @@ const WalletsStack = ({
 
 	return (
 		<>
-			<Stack.Navigator initialRouteName="Wallets" screenOptions={navOptions}>
-				<Stack.Group screenOptions={modalOptions}>
-					<Stack.Screen name="AuthCheck" component={AuthCheck} />
-				</Stack.Group>
-				<Stack.Group screenOptions={screenOptions}>
-					<Stack.Screen
-						name="Wallets"
-						component={WalletsScreen}
-						initialParams={{ onFocus: setIsFocused }}
-					/>
-					<Stack.Screen name="WalletsDetail" component={WalletsDetail} />
-					<Stack.Screen name="ActivityFiltered" component={ActivityFiltered} />
-				</Stack.Group>
+			<Stack.Navigator screenOptions={screenOptions}>
+				<Stack.Screen
+					name="Wallets"
+					component={WalletsScreen}
+					initialParams={{ onFocus: setIsFocused }}
+				/>
+				<Stack.Screen name="WalletsDetail" component={WalletsDetail} />
+				<Stack.Screen name="ActivityFiltered" component={ActivityFiltered} />
 			</Stack.Navigator>
 
 			<TabBar navigation={navigation} />

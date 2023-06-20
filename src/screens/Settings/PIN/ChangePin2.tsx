@@ -68,7 +68,7 @@ const ChangePin2 = ({
 			}
 		}, 500);
 
-		return (): void => clearInterval(timer);
+		return (): void => clearTimeout(timer);
 	}, [pin, origPIN, navigation]);
 
 	return (

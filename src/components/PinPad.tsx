@@ -136,7 +136,8 @@ const PinPad = ({
 			setPin('');
 			onSuccess?.();
 		}, 500);
-		return (): void => clearInterval(timer);
+
+		return (): void => clearTimeout(timer);
 	}, [pin, attemptsRemaining, onSuccess, reducePinAttemptsRemaining, t]);
 
 	const isLastAttempt = attemptsRemaining === 1;
@@ -152,61 +153,64 @@ const PinPad = ({
 					{showLogoOnPIN && <BitkitLogo height={64} width={184} />}
 				</View>
 
-				{!isLoading && (
-					<AnimatedView
-						style={styles.content}
-						color="transparent"
-						entering={FadeIn}
-						exiting={FadeOut}>
-						<Subtitle style={styles.title}>{t('pin_enter')}</Subtitle>
+				<View style={styles.content}>
+					{!isLoading && (
+						<AnimatedView
+							style={styles.contentInner}
+							color="transparent"
+							entering={FadeIn}
+							exiting={FadeOut}>
+							<Subtitle style={styles.title}>{t('pin_enter')}</Subtitle>
 
-						{attemptsRemaining !== Number(PIN_ATTEMPTS) && (
-							<AnimatedView
-								style={styles.attempts}
-								color="transparent"
-								entering={FadeIn}
-								exiting={FadeOut}>
-								{isLastAttempt ? (
-									<Text02S style={styles.attemptsRemaining} color="brand">
-										{t('pin_last_attempt')}
-									</Text02S>
-								) : (
-									<Pressable
-										onPress={(): void => {
-											showBottomSheet('forgotPIN');
-										}}>
-										<Text02S testID="AttemptsRemaining" color="brand">
-											{t('pin_attempts', { attemptsRemaining })}
+							{attemptsRemaining !== Number(PIN_ATTEMPTS) && (
+								<AnimatedView
+									style={styles.attempts}
+									color="transparent"
+									entering={FadeIn}
+									exiting={FadeOut}>
+									{isLastAttempt ? (
+										<Text02S style={styles.attemptsRemaining} color="brand">
+											{t('pin_last_attempt')}
 										</Text02S>
-									</Pressable>
-								)}
-							</AnimatedView>
-						)}
+									) : (
+										<Pressable
+											onPress={(): void => {
+												showBottomSheet('forgotPIN');
+											}}>
+											<Text02S testID="AttemptsRemaining" color="brand">
+												{t('pin_attempts', { attemptsRemaining })}
+											</Text02S>
+										</Pressable>
+									)}
+								</AnimatedView>
+							)}
 
-						<View style={styles.dots}>
-							{Array(4)
-								.fill(null)
-								.map((_, i) => (
-									<View
-										key={i}
-										style={[
-											styles.dot,
-											{
-												borderColor: brand,
-												backgroundColor: pin[i] === undefined ? brand08 : brand,
-											},
-										]}
-									/>
-								))}
-						</View>
+							<View style={styles.dots}>
+								{Array(4)
+									.fill(null)
+									.map((_, i) => (
+										<View
+											key={i}
+											style={[
+												styles.dot,
+												{
+													borderColor: brand,
+													backgroundColor:
+														pin[i] === undefined ? brand08 : brand,
+												},
+											]}
+										/>
+									))}
+							</View>
 
-						<NumberPad
-							style={styles.numberpad}
-							type="simple"
-							onPress={handleOnPress}
-						/>
-					</AnimatedView>
-				)}
+							<NumberPad
+								style={styles.numberpad}
+								type="simple"
+								onPress={handleOnPress}
+							/>
+						</AnimatedView>
+					)}
+				</View>
 			</View>
 		</GlowingBackground>
 	);
@@ -230,6 +234,9 @@ const styles = StyleSheet.create({
 	content: {
 		flex: 2,
 		marginTop: 'auto',
+	},
+	contentInner: {
+		flex: 1,
 	},
 	title: {
 		textAlign: 'center',
