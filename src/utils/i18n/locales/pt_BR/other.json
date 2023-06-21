@@ -51,7 +51,7 @@
   "lnurl_channel_success_msg_no_peer": "Canal solicitado com sucesso.",
   "lnurl_auth_error": "Falha na LNURL-Auth",
   "lnurl_auth_success_title": "Autenticado!",
-  "lnurl_auth_success_msg_domain": "Conectado com sucesso: {domínio}",
+  "lnurl_auth_success_msg_domain": "Conectado com sucesso: {domain}",
   "lnurl_auth_success_msg_no_domain": "O login foi efetuado com sucesso.",
   "lnurl_withdr_error_no_capacity": "Não há capacidade de entrada/recebimento suficiente para concluir a solicitação de retirada via LNURL.",
   "lnurl_withdr_error_create_invoice": "Não foi possível gerar a fatura para lnurl-withdraw.",

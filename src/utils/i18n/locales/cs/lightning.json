@@ -90,6 +90,7 @@
   "order_details": "Podrobnosti o objednávce",
   "order": "Objednávka",
   "created_on": "Vytvořeno",
+  "transaction": "Transakce",
   "order_fee": "Poplatek za objednávku",
   "balance": "Zůstatek",
   "reserve_balance": "Rezervní zůstatek",

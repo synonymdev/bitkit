@@ -79,6 +79,7 @@
   "order_details": "Детали Ордера",
   "order": "Ордер",
   "created_on": "Создан",
+  "transaction": "Транзакция",
   "order_fee": "Комиссия ордера",
   "balance": "Баланс",
   "reserve_balance": "Зарезервировано",

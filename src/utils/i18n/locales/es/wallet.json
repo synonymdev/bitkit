@@ -138,7 +138,7 @@
   "payment_confirming": "Confirmando",
   "error_create_tx": "No se puede crear la transacción",
   "error_broadcast_tx": "Transacción imposible de emitir",
-  "error_broadcast_tx_connection": "Por favor, verifique su conexión e inténtelo de nuevo.\n{mensaje}",
+  "error_broadcast_tx_connection": "Por favor, verifique su conexión e inténtelo de nuevo.\n{message}",
   "filter_title": "Seleccionar gama",
   "filter_clear": "Limpiar",
   "filter_apply": "Aplicarse",

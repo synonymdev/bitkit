@@ -73,6 +73,7 @@
   "order_details": "Detalhes do Pedido",
   "order": "Pedido",
   "created_on": "Criado em",
+  "transaction": "Transação",
   "balance": "Balanço",
   "reserve_balance": "Saldo reserva",
   "total_size": "Tamanho do canal",

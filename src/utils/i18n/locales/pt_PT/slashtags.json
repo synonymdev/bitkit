@@ -30,7 +30,7 @@
   "signin_to_error_header": "Erro ao fazer login",
   "signin_to_error_text": "Não foi possível conectar-se ao par",
   "signin_to_success_header": "Você está conectado!",
-  "signin_to_success_text_name": "Login realizado com sucesso em {nome}",
+  "signin_to_success_text_name": "Login realizado com sucesso em {name}",
   "signin_to_success_text_noname": "O login foi efetuado com sucesso.",
   "signin_title": "Entrar",
   "signin_title_loading": "Fazendo login...",

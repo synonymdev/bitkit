@@ -89,6 +89,7 @@
   "order_details": "Auftragsdetails",
   "order": "Auftrag",
   "created_on": "Erstellt am",
+  "transaction": "Transaktion",
   "order_fee": "Auftragsgebühr",
   "balance": "Kontostand",
   "reserve_balance": "Reservekontostand",
