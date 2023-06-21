@@ -1,5 +1,6 @@
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
+import ICU from 'i18next-icu';
 import * as RNLocalize from 'react-native-localize';
 
 import { __ENABLE_I18NEXT_DEBUGGER__ } from '../../constants/env';
@@ -14,10 +15,10 @@ export const defaultNS = 'common';
 
 i18n
 	.use(initReactI18next)
+	.use(ICU)
 	.init({
 		lng: getDeviceLanguage(),
 		fallbackLng: 'en',
-		compatibilityJSON: 'v3',
 		resources,
 		ns: Object.keys(resources),
 		defaultNS,

@@ -863,13 +863,11 @@ export const checkUnconfirmedTransactions = async ({
 		const { unconfirmedTxs, outdatedTxs, ghostTxs } = processRes.value;
 		if (outdatedTxs.length) {
 			// Notify user that a reorg has occurred and that the transaction has been pushed back into the mempool.
-			const singular = i18n.t('wallet:reorg_msg_begin_singular');
-			const plural = i18n.t('wallet:reorg_msg_begin_plural');
 			showInfoNotification({
 				title: i18n.t('wallet:reorg_detected'),
-				message: `${outdatedTxs.length} ${
-					outdatedTxs.length === 1 ? singular : plural
-				}`,
+				message: i18n.t('wallet:reorg_msg_begin', {
+					count: outdatedTxs.length,
+				}),
 				autoHide: false,
 			});
 			//We need to update the height of the transactions that were reorg'd out.
@@ -877,14 +875,10 @@ export const checkUnconfirmedTransactions = async ({
 		}
 		if (ghostTxs.length) {
 			// Notify user that a transaction has been removed from the mempool.
-			const titleIntro =
-				ghostTxs.length === 1
-					? i18n.t('wallet:transaction')
-					: i18n.t('wallet:transactions');
-			await showErrorNotification({
-				title: `${ghostTxs.length} ${titleIntro} ${i18n.t(
-					'wallet:activity_removed',
-				)}`,
+			showErrorNotification({
+				title: i18n.t('wallet:activity_removed_title_one', {
+					count: ghostTxs.length,
+				}),
 				message: i18n.t('wallet:activity_removed_msg'),
 				autoHide: false,
 			});

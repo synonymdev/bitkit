@@ -32,7 +32,7 @@
 	"custom_confirm_cost": "It costs <white>{{amount}}</white> to connect you and set up your spending balance. Your Lightning connection will stay open for at least <whiteWithKeyboard>{{weeks}} week(s)</whiteWithKeyboard>.<whiteWithKeyboard><penIcon/></whiteWithKeyboard>",
 	"duration_header": "Connection Duration.",
 	"duration_text": "Choose the minimum number of weeks you want your connection to remain open.",
-	"duration_week": "weeks",
+  	"duration_week": "{count, plural, one {week} other {weeks}}",
 	"setting_up_header": "Setting Up",
 	"setting_up_text": "Please wait and keep Bitkit open while your Lightning connection is being set up. This process takes about a minute.",
 	"setting_up_step1": "Awaiting Payment",
