@@ -876,7 +876,7 @@ export const checkUnconfirmedTransactions = async ({
 		if (ghostTxs.length) {
 			// Notify user that a transaction has been removed from the mempool.
 			showErrorNotification({
-				title: i18n.t('wallet:activity_removed_title_one', {
+				title: i18n.t('wallet:activity_removed_title', {
 					count: ghostTxs.length,
 				}),
 				message: i18n.t('wallet:activity_removed_msg'),
