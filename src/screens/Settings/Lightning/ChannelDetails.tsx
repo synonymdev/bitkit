@@ -47,6 +47,7 @@ import {
 } from '../../../styles/icons';
 import type { SettingsScreenProps } from '../../../navigation/types';
 import { useAppSelector } from '../../../hooks/redux';
+import { i18nTime } from '../../../utils/i18n';
 
 export const getOrderStatus = (state: number): React.FC<SvgProps> => {
 	// possible order states
@@ -175,6 +176,7 @@ const ChannelDetails = ({
 	route,
 }: SettingsScreenProps<'ChannelDetails'>): ReactElement => {
 	const { t } = useTranslation('lightning');
+	const { t: tTime } = useTranslation('intl', { i18n: i18nTime });
 	const { channel } = route.params;
 
 	const [txTime, setTxTime] = useState<string>();
@@ -237,7 +239,7 @@ const ChannelDetails = ({
 				return;
 			}
 
-			const formattedDate = t('intl:dateTime', {
+			const formattedDate = tTime('dateTime', {
 				v: new Date(timestamp * 1000),
 				formatParams: {
 					v: {
@@ -253,7 +255,7 @@ const ChannelDetails = ({
 
 			setTxTime(formattedDate);
 		});
-	}, [selectedNetwork, channel.funding_txid, t]);
+	}, [selectedNetwork, channel.funding_txid, tTime]);
 
 	const openSupportLink = async (order: IGetOrderResponse): Promise<void> => {
 		const link = await createOrderSupportLink(
@@ -282,7 +284,7 @@ const ChannelDetails = ({
 
 	let channelCloseTime: string | undefined;
 	if (blocktankOrder?.channel_close_tx) {
-		channelCloseTime = t('intl:dateTime', {
+		channelCloseTime = tTime('dateTime', {
 			v: new Date(blocktankOrder.channel_close_tx.ts),
 			formatParams: {
 				v: {
@@ -334,7 +336,7 @@ const ChannelDetails = ({
 							name={t('created_on')}
 							value={
 								<Caption13M>
-									{t('intl:dateTime', {
+									{tTime('dateTime', {
 										v: new Date(blocktankOrder.created_at),
 										formatParams: {
 											v: {

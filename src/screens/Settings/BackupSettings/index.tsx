@@ -28,6 +28,7 @@ import {
 } from '../../../styles/icons';
 import { FAILED_BACKUP_CHECK_TIME } from '../../../utils/backup/backups-subscriber';
 import { updateBackup } from '../../../store/actions/backup';
+import { i18nTime } from '../../../utils/i18n';
 
 const Status = ({
 	Icon,
@@ -43,6 +44,7 @@ const Status = ({
 	syncRequired?: number;
 }): ReactElement => {
 	const { t } = useTranslation('settings');
+	const { t: tTime } = useTranslation('intl', { i18n: i18nTime });
 	const [hideRetry, setHideRetry] = useState<boolean>(false);
 
 	const failed =
@@ -52,7 +54,7 @@ const Status = ({
 	let subtitle;
 	if (failed) {
 		subtitle = t('backup.status_failed', {
-			time: t('intl:dateTime', {
+			time: tTime('dateTime', {
 				v: new Date(syncRequired),
 				formatParams: {
 					v: {
@@ -67,7 +69,7 @@ const Status = ({
 		});
 	} else if (lastSync) {
 		subtitle = t('backup.status_success', {
-			time: t('intl:dateTime', {
+			time: tTime('dateTime', {
 				v: new Date(lastSync),
 				formatParams: {
 					v: {

@@ -13,7 +13,10 @@ const getDeviceLanguage = (): string => {
 
 export const defaultNS = 'common';
 
-i18n
+// this is a main instance of i18next that is used accross that app
+// ICU is enabled to support plurals
+const i18nICU = i18n.createInstance();
+i18nICU
 	.use(initReactI18next)
 	.use(ICU)
 	.init({
@@ -24,12 +27,8 @@ i18n
 		defaultNS,
 		fallbackNS: defaultNS,
 		debug: __ENABLE_I18NEXT_DEBUGGER__,
-		cache: {
-			enabled: true,
-		},
-		interpolation: {
-			escapeValue: false,
-		},
+		cache: { enabled: true },
+		interpolation: { escapeValue: false },
 		returnNull: false,
 	})
 	.then(() => {
@@ -57,4 +56,25 @@ i18n
 		updateUi({ timeZone, language: i18n.language });
 	});
 
-export default i18n;
+export default i18nICU;
+
+// this istance of i18next is used to format dates and relative time
+export const i18nTime = i18n.createInstance();
+i18nTime.init({
+	lng: getDeviceLanguage(),
+	fallbackLng: 'en',
+	resources: {
+		en: {
+			intl: {
+				dateTime: '{{v, datetime}}',
+				relativeTime: '{{v, relativeTime}}',
+			},
+		},
+	},
+	defaultNS: 'intl',
+	fallbackNS: 'intl',
+	debug: __ENABLE_I18NEXT_DEBUGGER__,
+	cache: { enabled: true },
+	interpolation: { escapeValue: false },
+	returnNull: false,
+});

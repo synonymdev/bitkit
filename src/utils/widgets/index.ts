@@ -1,6 +1,6 @@
 import b4a from 'b4a';
 import { SlashFeedJSON } from '../../store/types/widgets';
-import i18n from '../../utils/i18n';
+import { i18nTime } from '../../utils/i18n';
 
 export enum SUPPORTED_FEED_TYPES {
 	PRICE_FEED = 'exchange.price_history',
@@ -58,7 +58,7 @@ export const decodeWidgetFieldValue = (
 					// time: json.timestamp && formatDate(new Date(json.timestamp * 1000)),
 					time:
 						json.timestamp &&
-						i18n.t('intl:dateTime', {
+						i18nTime.t('dateTime', {
 							v: new Date(json.timestamp * 1000),
 							formatParams: {
 								v: {

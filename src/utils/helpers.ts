@@ -10,7 +10,7 @@ import {
 	EBitcoinUnit,
 	TTicker,
 } from '../store/types/wallet';
-import i18n from '../utils/i18n';
+import { i18nTime } from '../utils/i18n';
 
 export const promiseTimeout = <T>(
 	ms: number,
@@ -374,38 +374,38 @@ export const timeAgo = (timestamp: number): string => {
 	const isThisYear = today.getFullYear() === date.getFullYear();
 
 	if (seconds < 5) {
-		return i18n.t('intl:relativeTime', {
+		return i18nTime.t('relativeTime', {
 			v: 0,
 			range: 'seconds',
 			numeric: 'auto',
 		});
 	} else if (seconds < 60) {
-		return i18n.t('intl:relativeTime', {
+		return i18nTime.t('relativeTime', {
 			v: -seconds,
 			range: 'seconds',
 			numeric: 'auto',
 		});
 	} else if (minutes < 60) {
-		return i18n.t('intl:relativeTime', {
+		return i18nTime.t('relativeTime', {
 			v: -minutes,
 			range: 'minute',
 			numeric: 'auto',
 		});
 	} else if (hours < 24) {
-		return i18n.t('intl:relativeTime', {
+		return i18nTime.t('relativeTime', {
 			v: -hours,
 			range: 'hour',
 			numeric: 'auto',
 		});
 	} else if (days < 10) {
-		return i18n.t('intl:relativeTime', {
+		return i18nTime.t('relativeTime', {
 			v: -days,
 			range: 'day',
 			numeric: 'auto',
 		});
 	} else if (isThisYear) {
 		// January 1 at 12:00 AM
-		return i18n.t('intl:dateTime', {
+		return i18nTime.t('dateTime', {
 			v: date,
 			formatParams: {
 				v: {
@@ -419,7 +419,7 @@ export const timeAgo = (timestamp: number): string => {
 	}
 
 	// January 1, 1970
-	return i18n.t('intl:dateTime', {
+	return i18nTime.t('dateTime', {
 		v: date,
 		formatParams: { v: { month: 'long', day: 'numeric', year: 'numeric' } },
 	});

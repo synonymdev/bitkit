@@ -1,6 +1,6 @@
 import { IGetOrderResponse } from '@synonymdev/blocktank-client';
 
-import i18n from '../../utils/i18n';
+import i18n, { i18nTime } from '../../utils/i18n';
 import { btcToSats } from '../conversion';
 import { TPaidBlocktankOrders } from '../../store/types/blocktank';
 import { EPaymentType, IFormattedTransaction } from '../../store/types/wallet';
@@ -251,8 +251,8 @@ export const groupActivityItems = (
 	let result: Array<string | IActivityItem> = [];
 	if (today.length > 0) {
 		// 'TODAY'
-		const grpupName = i18n
-			.t('intl:relativeTime', {
+		const grpupName = i18nTime
+			.t('relativeTime', {
 				v: 0,
 				range: 'day',
 				numeric: 'auto',
@@ -263,8 +263,8 @@ export const groupActivityItems = (
 	}
 	if (yesterday.length > 0) {
 		// 'YESTERDAY'
-		const groupName = i18n
-			.t('intl:relativeTime', {
+		const groupName = i18nTime
+			.t('relativeTime', {
 				v: -1,
 				range: 'day',
 				numeric: 'auto',
@@ -275,8 +275,8 @@ export const groupActivityItems = (
 	}
 	if (month.length > 0) {
 		// 'THIS MONTH'
-		const groupName = i18n
-			.t('intl:relativeTime', {
+		const groupName = i18nTime
+			.t('relativeTime', {
 				v: 0,
 				range: 'month',
 				numeric: 'auto',
@@ -287,8 +287,8 @@ export const groupActivityItems = (
 	}
 	if (year.length > 0) {
 		// 'THIS YEAR'
-		const groupName = i18n
-			.t('intl:relativeTime', {
+		const groupName = i18nTime
+			.t('relativeTime', {
 				v: 0,
 				range: 'year',
 				numeric: 'auto',
@@ -317,7 +317,7 @@ export const getActivityItemDate = (timestamp: number): string => {
 
 	if (timestamp >= beginningOfYesterday) {
 		// today & yesterday, format as 22:40
-		return i18n.t('intl:dateTime', {
+		return i18nTime.t('dateTime', {
 			v: new Date(timestamp),
 			formatParams: {
 				v: {
@@ -331,7 +331,7 @@ export const getActivityItemDate = (timestamp: number): string => {
 
 	if (timestamp >= beginningOfYear) {
 		// current year, format as April 4, 08:29
-		return i18n.t('intl:dateTime', {
+		return i18nTime.t('dateTime', {
 			v: new Date(timestamp),
 			formatParams: {
 				v: {
@@ -346,7 +346,7 @@ export const getActivityItemDate = (timestamp: number): string => {
 	}
 
 	// before current year, format as February 2, 2021, 09:14
-	return i18n.t('intl:dateTime', {
+	return i18nTime.t('dateTime', {
 		v: new Date(timestamp),
 		formatParams: {
 			v: {

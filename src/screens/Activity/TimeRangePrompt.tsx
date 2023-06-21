@@ -16,6 +16,7 @@ import { generateCalendar } from '../../utils/helpers';
 import Button from '../../components/Button';
 import { languageSelector, timeZoneSelector } from '../../store/reselect/ui';
 import { useAppSelector } from '../../hooks/redux';
+import { i18nTime } from '../../utils/i18n';
 
 const DAY_HEIGHT = 44;
 
@@ -94,6 +95,7 @@ const Calendar = ({
 	onChange: (timeRange: number[]) => void;
 }): ReactElement => {
 	const { t } = useTranslation('wallet');
+	const { t: tTime } = useTranslation('intl', { i18n: i18nTime });
 	const timeZone = useAppSelector(timeZoneSelector);
 	const language = useAppSelector(languageSelector);
 	const [monthDate, setMonthDate] = useState(() => {
@@ -105,13 +107,13 @@ const Calendar = ({
 	const { calendar, weekDays } = useMemo(() => {
 		const c = generateCalendar(monthDate, language, timeZone);
 		const wkDays = c.weekDays.map((day) => {
-			return t('intl:dateTime', {
+			return tTime('dateTime', {
 				v: new Date(Date.UTC(1970, 0, day + 4)),
 				formatParams: { v: { weekday: 'short' } },
 			});
 		});
 		return { calendar: c, weekDays: wkDays };
-	}, [t, monthDate, timeZone, language]);
+	}, [tTime, monthDate, timeZone, language]);
 	const today = useMemo(() => {
 		const now = new Date();
 		return new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
@@ -158,7 +160,7 @@ const Calendar = ({
 			<View style={styles.selector}>
 				<View style={styles.current}>
 					<Text01M>
-						{t('intl:dateTime', {
+						{tTime('dateTime', {
 							v: monthDate,
 							formatParams: { v: { month: 'long', year: 'numeric', timeZone } },
 						})}
@@ -230,7 +232,7 @@ const Calendar = ({
 			<View style={styles.range}>
 				{range.length === 1 && (
 					<Text01M>
-						{t('intl:dateTime', {
+						{tTime('dateTime', {
 							v: range[0],
 							formatParams: {
 								v: { day: 'numeric', month: 'long', year: 'numeric', timeZone },
@@ -240,14 +242,14 @@ const Calendar = ({
 				)}
 				{range.length === 2 && (
 					<Text01M>
-						{t('intl:dateTime', {
+						{tTime('dateTime', {
 							v: range[0],
 							formatParams: {
 								v: { day: 'numeric', month: 'long', year: 'numeric', timeZone },
 							},
 						})}
 						{' – '}
-						{t('intl:dateTime', {
+						{tTime('dateTime', {
 							v: range[1],
 							formatParams: {
 								v: { day: 'numeric', month: 'long', year: 'numeric', timeZone },

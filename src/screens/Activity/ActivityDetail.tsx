@@ -101,6 +101,7 @@ import type {
 	RootNavigationProp,
 	RootStackScreenProps,
 } from '../../navigation/types';
+import { i18nTime } from '../../utils/i18n';
 
 const Section = memo(
 	({ title, value }: { title: string; value: ReactNode }) => {
@@ -168,6 +169,7 @@ const OnchainActivityDetail = ({
 	} = item;
 
 	const { t } = useTranslation('wallet');
+	const { t: tTime } = useTranslation('intl', { i18n: i18nTime });
 	const contacts = useSlashtags().contacts as { [url: string]: IContactRecord };
 	const tags = useAppSelector((state) => tagSelector(state, id));
 	const selectedNetwork = useSelector(selectedNetworkSelector);
@@ -393,7 +395,7 @@ const OnchainActivityDetail = ({
 										width={16}
 									/>
 									<Text02M>
-										{t('intl:dateTime', {
+										{tTime('dateTime', {
 											v: new Date(timestamp),
 											formatParams: {
 												v: {
@@ -412,7 +414,7 @@ const OnchainActivityDetail = ({
 								<View style={styles.row}>
 									<ClockIcon style={styles.rowIcon} color="brand" />
 									<Text02M>
-										{t('intl:dateTime', {
+										{tTime('dateTime', {
 											v: new Date(confirmed ? confirmTimestamp! : timestamp),
 											formatParams: {
 												v: {
@@ -601,6 +603,7 @@ const LightningActivityDetail = ({
 	extended?: boolean;
 }): ReactElement => {
 	const { t } = useTranslation('wallet');
+	const { t: tTime } = useTranslation('intl', { i18n: i18nTime });
 	const colors = useColors();
 	const { id, txType, value, message, timestamp, address } = item;
 	const tags = useSelector((state: Store) => tagSelector(state, id));
@@ -704,7 +707,7 @@ const LightningActivityDetail = ({
 								<View style={styles.row}>
 									<CalendarIcon style={styles.rowIcon} color="purple" />
 									<Text02M>
-										{t('intl:dateTime', {
+										{tTime('dateTime', {
 											v: new Date(timestamp),
 											formatParams: {
 												v: {
@@ -723,7 +726,7 @@ const LightningActivityDetail = ({
 								<View style={styles.row}>
 									<ClockIcon style={styles.rowIcon} color="purple" />
 									<Text02M>
-										{t('intl:dateTime', {
+										{tTime('dateTime', {
 											v: new Date(timestamp),
 											formatParams: {
 												v: {

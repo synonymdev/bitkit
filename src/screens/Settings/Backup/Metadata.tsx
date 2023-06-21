@@ -11,11 +11,13 @@ import Button from '../../../components/Button';
 import { closeBottomSheet } from '../../../store/actions/ui';
 import { useSelector } from 'react-redux';
 import { backupSelector } from '../../../store/reselect/backup';
+import { i18nTime } from '../../../utils/i18n';
 
 const imageSrc = require('../../../assets/illustrations/tag.png');
 
 const Metadata = (): ReactElement => {
 	const { t } = useTranslation('security');
+	const { t: tTime } = useTranslation('intl', { i18n: i18nTime });
 	const backup = useSelector(backupSelector);
 
 	const arr = [
@@ -53,7 +55,7 @@ const Metadata = (): ReactElement => {
 								bold: <Text02B />,
 							}}
 							values={{
-								time: t('intl:dateTime', {
+								time: tTime('dateTime', {
 									v: new Date(max),
 									formatParams: {
 										v: {
