@@ -1,9 +1,7 @@
 {
   "tos_header": "Bitkit\n<brand>Условия</brand>",
   "tos_checkbox": "Условия использования",
-  "tos_checkbox_value": "<gray>Я заявляю, что прочитал и принимаю <brand>условия использования.</brand></gray>",
   "pp_checkbox": "Политика Конфиденциальности",
-  "pp_checkbox_value": "<gray>Я заявляю, что прочитал и принимаю <brand>политику конфиденциальности.</brand></gray>",
   "toolkit": "Биткоин\n<brand>Инструменты</brand>",
   "toolkit_text": "Используя Bitkit, Вы управляете ключами к вашим деньгам, профилю, контактам и веб-аккаунтам.",
   "get_started": "Начать",

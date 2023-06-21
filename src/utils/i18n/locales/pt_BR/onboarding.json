@@ -1,9 +1,7 @@
 {
   "tos_header": "Bitkit\n<brand>Termos</brand>\n<brand>de Uso.</brand>",
   "tos_checkbox": "Termos de uso",
-  "tos_checkbox_value": "<gray>Declaro que li e aceito os <brand>termos de uso.</brand></gray>",
   "pp_checkbox": "Política de Privacidade",
-  "pp_checkbox_value": "<gray>Declaro que li e aceito a <brand>política de privacidade.</brand></gray>",
   "toolkit": "Seu Bitcoin\n<brand>Toolkit.</brand>",
   "get_started": "Começar",
   "skip_intro": "Pular Introdução",

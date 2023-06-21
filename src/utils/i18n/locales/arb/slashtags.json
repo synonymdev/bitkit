@@ -19,8 +19,8 @@
   "contact_share": "مشاركة مفتاح الملف الشخصي",
   "contact_this": "جهة الاتصال هذه",
   "contact_copied": "نُسخ مفتاح الملف الشخصي إلى الحافظة",
-  "contact_delete_title": "حذف {{name}}؟",
-  "contact_delete_text": "هل أنت متأكد من إرادتك حذف {{name}} من جهات اتصالك؟",
+  "contact_delete_title": "حذف {name}؟",
+  "contact_delete_text": "هل أنت متأكد من إرادتك حذف {name} من جهات اتصالك؟",
   "contact_delete_yes": "نعم، احذف",
   "contact_select": "اختر جهة اتصال",
   "widget_delete_yes": "نعم، احذف"
