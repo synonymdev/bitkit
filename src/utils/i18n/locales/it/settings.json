@@ -1,28 +1,91 @@
 {
+  "settings": "Impostazioni",
+  "dev_enabled_title": "Opzioni Sviluppatore Attivate",
+  "dev_disabled_title": "Opzioni Sviluppatore Disattivate",
+  "general_title": "Generale",
+  "security_title": "Sicurezza e Privacy",
   "advanced_title": "Avanzate",
   "about": {
-    "support": "Supporto"
+    "support": "Supporto",
+    "report_bug": "Segnala un bug o contribuisci",
+    "version": "Versione",
+    "op_share": "Condividi BitKit Con Un Amico"
   },
+  "dev_title": "Impostazioni Sviluppatore",
   "general": {
-    "suggestions": "Consigli"
+    "currency_local": "Valuta locale",
+    "currency_local_title": "Valuta Locale",
+    "currency_other": "Altre Valute",
+    "unit_bitcoin": "Bitcoin",
+    "speed": "Velocità transazione",
+    "speed_title": "Velocità Transazione",
+    "suggestions": "Consigli",
+    "suggestions_visible": "Visibile",
+    "suggestions_hidden": "Nascosto",
+    "suggestions_display": "Mostra suggerimenti",
+    "tags": "Tag",
+    "tags_previously": "Tag usati in precedenza"
+  },
+  "security": {
+    "pin": "Codice PIN",
+    "pin_change": "Cambia codice PIN",
+    "pin_launch": "Richiedi PIN all'avvio",
+    "pin_payments": "Richiedi PIN per i pagamenti",
+    "pin_enabled": "Attivato",
+    "pin_disabled": "Disattivato",
+    "use_bio": "Usa {biometryTypeName} invece",
+    "footer": "Quanto attivato, puoi usare {biometryTypeName} invece del tuo codice PIN per sbloccare il tuo wallet o inviare pagamenti."
+  },
+  "backup": {
+    "category_settings": "Impostazioni",
+    "category_widgets": "Widget",
+    "category_tags": "Tag",
+    "category_profile": "Profilo",
+    "category_contacts": "Contatti"
   },
   "adv": {
-    "lightning_connections": "Connessioni Lightning"
+    "section_payments": "Pagamenti",
+    "section_networks": "Reti",
+    "address_type": "Tipologia Indirizzo Bitcoin",
+    "payment_preference": "Preferenze Pagamento",
+    "pp_contacts_switch": "Abilita i pagamenti con i contatti*",
+    "lightning_connections": "Connessioni Lightning",
+    "lightning_node": "Nodo Lightning",
+    "electrum_server": "Server Electrum",
+    "bitcoin_network": "Rete Bitcoin"
   },
   "fee": {
     "fast": {
-      "value": "Veloce"
+      "label": "Veloce (più costoso)",
+      "value": "Veloce",
+      "description": "± 10-20 minuti"
     },
     "normal": {
       "label": "Normale",
-      "value": "Normale"
+      "value": "Normale",
+      "description": "± 20-60 minuti"
+    },
+    "slow": {
+      "label": "Lento (più economico)",
+      "value": "Lento",
+      "description": "± 1-2 ore"
     },
     "custom": {
       "label": "Personalizzate",
       "value": "Personalizzate"
     }
   },
+  "addr": {
+    "no_addrs": "Nessun indirizzo da mostrare",
+    "loading": "Caricamento Indirizzi...",
+    "private_hide": "Nascondi Chiave Privata",
+    "private_view": "Mostra Chiave Privata",
+    "private_key": "Chiave Privata: {privateKey}",
+    "addr_change": "Cambia Indirizzi"
+  },
   "es": {
-    "disconnected": "disconnesso"
+    "disconnected": "disconnesso",
+    "host": "Host",
+    "protocol": "Protocollo"
   }
 }
