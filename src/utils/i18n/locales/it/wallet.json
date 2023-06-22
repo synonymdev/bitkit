@@ -21,6 +21,7 @@
   "tags_filter_title": "Seleziona Tag",
   "selection_total_required": "Totale richiesto",
   "selection_total_selected": "Totale selezionato",
+  "receive_bitcoin": "Ricevi Bitcoin",
   "receive_show_qr": "Visualizza QR Code",
   "activity": "Attività",
   "activity_show_all": "Visualizza tutte le attività",
@@ -33,9 +34,13 @@
   "activity_tether_received": "Tether ricevuti",
   "activity_confirmed": "Confermato",
   "activity_removed": "Rimossa dalla Mempool",
+  "activity_removed_title": "{count, plural, one {# Transazione Rimossa dalla Mempool} many {# Transazioni Rimosse dalla Mempool} other {# Transazioni Rimosse dalla Mempool}}",
   "activity_status": "Stato",
   "activity_date": "Data",
+  "activity_time": "Orario",
   "activity_contact": "Contatto",
+  "activity_assign": "Assegna",
+  "activity_detach": "Scollega",
   "activity_tag": "Tag",
   "activity_explore": "Esplora",
   "activity_tx_id": "ID Transazione",
@@ -48,5 +53,7 @@
     "received": "Ricevuto",
     "other": "Altro"
   },
-  "payment_received": "Pagamento Ricevuto!"
+  "payment_received": "Pagamento Ricevuto!",
+  "filter_apply": "Applica",
+  "reorg_msg_begin": "{count, plural, one {# delle tue transazioni non è più confermata.} many {# delle tue transazioni non sono più confermate.} other {# delle tue transazioni non sono più confermate.}}"
 }

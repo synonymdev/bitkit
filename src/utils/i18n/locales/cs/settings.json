@@ -10,13 +10,13 @@
   "advanced_title": "Pokročilý",
   "about_title": "O Bitkit",
   "about": {
-    "text": "Bitkit vám předává klíče k vašim penězům, profilu, kontaktům a webovým účtům.\n\nTato oranžová pilulka byla pečlivě vytvořena společností Synonym Software Ltd.",
+    "text": "Bitkit vám předává klíče k vašim penězům, profilu, kontaktům a webovým účtům.\n\nTato <easterEgg>Oranžová Pilulka</easterEgg> byla pečlivě vytvořena společností Synonym Software Ltd.",
     "support": "Podpora",
     "report_bug": "Nahlásit chybu nebo přispět",
     "legal": "Právní",
     "version": "Verze",
     "op_title": "\"Orange Pilled\"",
-    "op_text": "Koho budete \"Orange-Pill\"?",
+    "op_text": "Koho budete <brand>\"Orange-Pill\"?</brand>",
     "op_share": "Sdílet Bitkit s přítelem",
     "op_message": "Stáhněte si Bitkit, váš ultimátní bitcoinový nástroj. Předáváme vám klíče k přetvoření vašeho digitálního života. {appStoreUrl}"
   },

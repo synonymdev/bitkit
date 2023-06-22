@@ -2,7 +2,7 @@
   "send": "Posláno",
   "receive": "Přijmuto",
   "balance_total": "Celkový zůstatek",
-  "balance_total_pending": "Celkový zůstatek (nedokončený)",
+  "balance_total_pending": "<text>Celkový zůstatek (</text><pending/><text>nedokončený)</text>",
   "assets": "Aktiva",
   "send_bitcoin": "Poslat Bitcoin",
   "send_to": "Komu",

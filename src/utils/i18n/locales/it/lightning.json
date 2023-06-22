@@ -31,6 +31,7 @@
   "custom_confirm_cost": "Il costo della connessione e della configurazione del saldo di spesa è di <white>{amount}</white>. La tua connessione Lightning rimarrà aperta per almeno <whiteWithKeyboard>{settimane} settimana/e</whiteWithKeyboard>.<whiteWithKeyboard><penIcon/></whiteWithKeyboard>",
   "duration_header": "Durata della Connessione.",
   "duration_text": "Scegli il numero minimo di settimane per cui vuoi che la connessione rimanga aperta.",
+  "duration_week": "{count, plural, one {settimane} many {Tuo nome} other {settimane}}",
   "setting_up_header": "In preparazione",
   "setting_up_text": "Attendi e tieni Bitkit aperto mentre la tua connessione Lightning viene configurata. Questo processo richiede circa un minuto.",
   "setting_up_step1": "In Attesa del Pagamento",

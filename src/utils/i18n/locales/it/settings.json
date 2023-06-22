@@ -1,7 +1,9 @@
 {
   "settings": "Impostazioni",
   "dev_enabled_title": "Opzioni Sviluppatore Attivate",
+  "dev_enabled_message": "Opzioni sviluppatore sono ora abilitate ovunque nell'app.",
   "dev_disabled_title": "Opzioni Sviluppatore Disattivate",
+  "dev_disabled_message": "Opzioni sviluppatore sono ora disabilitate ovunque nell'app.",
   "general_title": "Generale",
   "security_title": "Sicurezza e Privacy",
   "advanced_title": "Avanzate",
@@ -9,6 +11,8 @@
     "support": "Supporto",
     "report_bug": "Segnala un bug o contribuisci",
     "version": "Versione",
+    "op_title": "Orange Pillato",
+    "op_text": "Chi <brand>Orange-Pillerai?</brand>",
     "op_share": "Condividi BitKit Con Un Amico"
   },
   "dev_title": "Impostazioni Sviluppatore",
@@ -17,6 +21,7 @@
     "currency_local_title": "Valuta Locale",
     "currency_other": "Altre Valute",
     "unit_bitcoin": "Bitcoin",
+    "unit_satoshis": "Satoshis",
     "speed": "Velocità transazione",
     "speed_title": "Velocità Transazione",
     "suggestions": "Consigli",
@@ -81,7 +86,9 @@
     "private_hide": "Nascondi Chiave Privata",
     "private_view": "Mostra Chiave Privata",
     "private_key": "Chiave Privata: {privateKey}",
-    "addr_change": "Cambia Indirizzi"
+    "addr_change": "Cambia Indirizzi",
+    "sats_found": "{totalBalance} sats trovati",
+    "gen_20": "Genera altri 20"
   },
   "es": {
     "disconnected": "disconnesso",
