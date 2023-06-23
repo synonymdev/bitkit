@@ -36,7 +36,7 @@ import {
 } from '../../utils/notifications';
 import { getDisplayValues } from '../../utils/displayValues';
 import i18n from '../../utils/i18n';
-import { refreshLdk } from '../../utils/lightning';
+import { restartLdk } from '../../utils/lightning';
 import { TWalletName } from '../types/wallet';
 import { IBlocktank } from '../types/blocktank';
 
@@ -429,8 +429,8 @@ const handleOrderStateChange = (order: IGetOrderResponse): void => {
 			removeTodo('transferToSpending');
 		}
 
-		// refresh LDK after channel open
-		refreshLdk();
+		// restart LDK after channel open
+		restartLdk();
 	}
 };
 

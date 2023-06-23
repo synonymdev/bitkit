@@ -267,6 +267,15 @@ export const setupLdk = async ({
 	}
 };
 
+export const restartLdk = async (): Promise<Result<string>> => {
+	// wait for interactions/animations to be completed
+	await new Promise((resolve) => {
+		InteractionManager.runAfterInteractions(() => resolve(null));
+	});
+
+	return ldk.restart();
+};
+
 /**
  * Retrieves any pending/unpaid invoices from the invoices array via payment hash.
  * @param {string} paymentHash
