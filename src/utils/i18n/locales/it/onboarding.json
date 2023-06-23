@@ -1,7 +1,9 @@
 {
   "tos_header": "Bitkit\n<brand>Termini</brand>\n<brand>di Utilizzo.</brand>",
   "tos_checkbox": "Termini di Utilizzo",
+  "tos_checkbox_value": "<gray>Dichiaro di aver letto e accettato le <brand>condizioni di utilizzo</brand>.</gray>",
   "pp_checkbox": "Informativa Privacy",
+  "pp_checkbox_value": "<gray>Dichiaro di aver letto e accettato l'<brand>informativa sulla privacy.</brand></gray>",
   "toolkit": "Il tuo Bitcoin\n<brand>Toolkit.</brand>",
   "toolkit_text": "Bitkit ti consegna le chiavi per i tuoi soldi, il tuo profilo, i tuoi contatti e i tuoi account web.",
   "get_started": "Inizia",

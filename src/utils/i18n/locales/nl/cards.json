@@ -1,1 +1,52 @@
-{}
+{
+  "backupSeedPhrase": {
+    "title": "Backup",
+    "description": "Bescherm uw geld"
+  },
+  "lightning": {
+    "title": "Directe betalingen",
+    "description": "Gebruik Lightning"
+  },
+  "lightningSettingUp": {
+    "title": "Wordt aangemaakt",
+    "description0": "In afwachting van betaling",
+    "description1": "Betaald",
+    "description2": "In de wacht",
+    "description3": "Wordt geopened"
+  },
+  "lightningConnecting": {
+    "title": "Verbinding aan het maken",
+    "description": "Klaar in ±10m"
+  },
+  "lightningReady": {
+    "title": "Gereed",
+    "description": "Verbonden!"
+  },
+  "transferToSpending": {
+    "title": "Aan het overmaken",
+    "description": "Klaar in ±20m"
+  },
+  "transferToSavings": {
+    "title": "Aan het overmaken",
+    "description": "Gereed in ±60m"
+  },
+  "transferClosingChannel": {
+    "title": "Aan het opstarten...",
+    "description": "Houdt de app open"
+  },
+  "pin": {
+    "title": "Beveiliging verbeteren",
+    "description": "Pincode instellen"
+  },
+  "slashtagsProfile": {
+    "title": "Openbaar profiel",
+    "description": "Vul uw gegevens in"
+  },
+  "buyBitcoin": {
+    "title": "Bitcoin ontvangen",
+    "description": "Verzamel wat sats"
+  },
+  "lightning_no_funds_title": "Uw wallet is leeg",
+  "lightning_no_funds_desc": "Het instellen van instant payments vereist dat u eerst on-chain Bitcoin overmaakt naar uw wallet. ",
+  "suggestions": "Suggesties"
+}

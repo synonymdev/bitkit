@@ -1,4 +1,5 @@
 {
+  "int_blocked": "Apri una connessione Lightning e invia o ricevi bitcoin all'istante.\n\nPurtroppo, Bitkit non può fornire connessioni Lightning automatiche ai residenti degli Stati Uniti e del Canada (attualmente).",
   "int_text": "Apri una connessione Lightning e invia o ricevi bitcoin all'istante.",
   "int_header": "<purple>Pagamenti</purple>\nIstantanei.",
   "int_quick": "Configurazione Rapida",
