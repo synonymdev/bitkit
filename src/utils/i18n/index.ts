@@ -8,7 +8,10 @@ import resources from './locales';
 import { updateUi } from '../../store/actions/ui';
 
 const getDeviceLanguage = (): string => {
-	return RNLocalize.getLocales()[0].languageTag;
+	const lang =
+		RNLocalize.findBestAvailableLanguage(Object.keys(resources))?.languageTag ??
+		'en';
+	return lang;
 };
 
 export const defaultNS = 'common';
@@ -23,7 +26,6 @@ i18nICU
 		lng: getDeviceLanguage(),
 		fallbackLng: 'en',
 		resources,
-		ns: Object.keys(resources),
 		defaultNS,
 		fallbackNS: defaultNS,
 		debug: __ENABLE_I18NEXT_DEBUGGER__,

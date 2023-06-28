@@ -32,7 +32,7 @@ export default {
 	nl,
 	no,
 	pl,
-	pt_BR,
-	pt_PT,
+	'pt-BR': pt_BR,
+	'pt-PT': pt_PT,
 	ru,
 } as const;
