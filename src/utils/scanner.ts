@@ -28,7 +28,11 @@ import { updateSendTransaction } from '../store/actions/wallet';
 import { getBalance, getSelectedNetwork, getSelectedWallet } from './wallet';
 import { showBottomSheet, closeBottomSheet } from '../store/actions/ui';
 import { handleSlashtagURL } from './slashtags';
-import { addPeer, decodeLightningInvoice } from './lightning';
+import {
+	addPeer,
+	decodeLightningInvoice,
+	getLightningBalance,
+} from './lightning';
 import {
 	availableNetworks,
 	EAvailableNetworks,
@@ -39,12 +43,7 @@ import { getSlashPayConfig } from './slashtags';
 import { savePeer } from '../store/actions/lightning';
 import { TWalletName } from '../store/types/wallet';
 import { sendNavigation } from '../navigation/bottom-sheet/SendNavigation';
-import {
-	handleLnurlAuth,
-	handleLnurlChannel,
-	handleLnurlPay,
-	handleLnurlWithdraw,
-} from './lnurl';
+import { handleLnurlAuth, handleLnurlChannel, handleLnurlPay } from './lnurl';
 import i18n from './i18n';
 
 const availableNetworksList = availableNetworks();
@@ -812,11 +811,31 @@ export const handleData = async ({
 		}
 		case EQRDataType.lnurlWithdraw: {
 			let params = data.lnUrlParams as LNURLWithdrawParams;
-			return await handleLnurlWithdraw({
-				params,
+
+			//Convert msats to sats.
+			params.minWithdrawable = Math.floor(params.minWithdrawable / 1000);
+			params.maxWithdrawable = Math.floor(params.maxWithdrawable / 1000);
+
+			// Determine if we have enough receiving capacity before proceeding.
+			const lightningBalance = getLightningBalance({
 				selectedWallet,
 				selectedNetwork,
+				includeReserveBalance: false,
 			});
+
+			if (lightningBalance.remoteBalance < params.minWithdrawable) {
+				showToast({
+					type: 'error',
+					title: i18n.t('other:lnurl_withdr_error'),
+					description: i18n.t('other:lnurl_withdr_error_no_capacity'),
+				});
+				return err(
+					'Not enough inbound/receiving capacity to complete lnurl-withdraw request.',
+				);
+			}
+
+			showBottomSheet('lnurlWithdraw', { wParams: params });
+			return ok({ type: EQRDataType.lnurlWithdraw });
 		}
 
 		case EQRDataType.nodeId: {

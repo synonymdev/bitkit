@@ -23,6 +23,7 @@ export const defaultViewControllers: IUi['viewControllers'] = {
 	slashauthModal: defaultViewController,
 	timeRangePrompt: defaultViewController,
 	tagsPrompt: defaultViewController,
+	lnurlWithdraw: defaultViewController,
 };
 
 export const defaultUiShape: IUi = {

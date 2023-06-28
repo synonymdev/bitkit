@@ -15,7 +15,6 @@ import { err, ok, Result } from '@synonymdev/result';
 import { showToast } from './notifications';
 import {
 	addPeer,
-	getLightningBalance,
 	getNodeIdFromStorage,
 	getPeersFromStorage,
 } from './lightning';
@@ -263,16 +262,19 @@ export const handleLnurlAuth = async ({
 
 /**
  * Handles LNURL Withdraw Requests.
+ * @param {number} amount
  * @param {LNURLWithdrawParams} params
  * @param {TWalletName} [selectedWallet]
  * @param {TAvailableNetworks} [selectedNetwork]
  * @returns {Promise<Result<TProcessedData>>}
  */
 export const handleLnurlWithdraw = async ({
+	amount,
 	params,
 	selectedWallet,
 	selectedNetwork,
 }: {
+	amount: number;
 	params: LNURLWithdrawParams;
 	selectedWallet?: TWalletName;
 	selectedNetwork?: TAvailableNetworks;
@@ -284,30 +286,10 @@ export const handleLnurlWithdraw = async ({
 		selectedNetwork = getSelectedNetwork();
 	}
 
-	const amountSats = Math.floor(params.maxWithdrawable / 1000); //Convert msats to sats.
-	const description = params.defaultDescription;
-
-	// Determine if we have enough receiving capacity before proceeding.
-	const lightningBalance = getLightningBalance({
-		selectedWallet,
-		selectedNetwork,
-		includeReserveBalance: false,
-	});
-
-	if (lightningBalance.remoteBalance < amountSats) {
-		const message = i18n.t('other:lnurl_withdr_error_no_capacity');
-		showToast({
-			type: 'error',
-			title: i18n.t('other:lnurl_withdr_error'),
-			description: message,
-		});
-		return err(message);
-	}
-
 	const invoice = await createLightningInvoice({
 		expiryDeltaSeconds: 3600,
-		amountSats,
-		description,
+		amountSats: amount,
+		description: params.defaultDescription ?? '',
 		selectedWallet,
 		selectedNetwork,
 	});

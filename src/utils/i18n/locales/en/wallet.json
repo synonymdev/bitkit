@@ -153,5 +153,11 @@
 	"filter_apply": "Apply",
 	"reorg_detected": "Reorg Detected",
 	"reorg_msg_begin": "{count, plural, one {# of your transactions is no longer confirmed.} other {# of your transactions are no longer confirmed.}}",
-	"reorg_msg_end": "Please check your activity list for affected transactions."
+	"reorg_msg_end": "Please check your activity list for affected transactions.",
+	"lnurl_w_title": "Withdraw Bitcoin",
+	"lnurl_w_max": "AvailablE TO WITHDRAW",
+	"lnurl_w_text": "The funds you withdraw will be deposited into your Bitkit spending balance.",
+	"lnurl_w_button": "Withdraw",
+	"lnurl_w_success_title": "Success",
+	"lnurl_w_success_description": "Withdraw Requested Successful"
 }

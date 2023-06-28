@@ -1,3 +1,4 @@
+import { LNURLWithdrawParams } from 'js-lnurl';
 import { IActivityItem, TOnchainActivityItem } from './activity';
 import { SendStackParamList } from '../../navigation/bottom-sheet/SendNavigation';
 
@@ -20,6 +21,7 @@ export type ViewControllerParamList = {
 	slashauthModal: { url: string };
 	timeRangePrompt: undefined;
 	tagsPrompt: undefined;
+	lnurlWithdraw: { wParams: LNURLWithdrawParams };
 };
 
 export type TViewController = keyof ViewControllerParamList;
@@ -40,6 +42,7 @@ export type IViewControllerData = {
 	showLaterButton?: boolean;
 	txId?: string;
 	url?: string;
+	wParams?: LNURLWithdrawParams;
 };
 
 export type TProfileLink = {

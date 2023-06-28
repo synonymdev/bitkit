@@ -21,6 +21,7 @@ import type { PinStackParamList } from '../bottom-sheet/PINNavigation';
 import type { ProfileLinkStackParamList } from '../bottom-sheet/ProfileLinkNavigation';
 import type { ReceiveStackParamList } from '../bottom-sheet/ReceiveNavigation';
 import type { SendStackParamList } from '../bottom-sheet/SendNavigation';
+import type { LNURLWithdrawStackParamList } from '../bottom-sheet/LNURLWithdrawNavigation';
 
 // TODO: move all navigation related types here
 // https://reactnavigation.org/docs/typescript#organizing-types
@@ -105,3 +106,6 @@ export type ReceiveScreenProps<T extends keyof ReceiveStackParamList> =
 
 export type SendScreenProps<T extends keyof SendStackParamList> =
 	NativeStackScreenProps<SendStackParamList, T>;
+
+export type LNURLWithdrawProps<T extends keyof LNURLWithdrawStackParamList> =
+	NativeStackScreenProps<LNURLWithdrawStackParamList, T>;

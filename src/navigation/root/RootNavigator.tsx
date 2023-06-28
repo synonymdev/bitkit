@@ -58,6 +58,7 @@ import BackupNavigation from '../bottom-sheet/BackupNavigation';
 import PINNavigation from '../bottom-sheet/PINNavigation';
 import ForceTransfer from '../bottom-sheet/ForceTransfer';
 import CloseChannelSuccess from '../bottom-sheet/CloseChannelSuccess';
+import LNURLWithdrawNavigation from '../bottom-sheet/LNURLWithdrawNavigation';
 import { __E2E__ } from '../../constants/env';
 import type { RootStackParamList } from '../types';
 
@@ -244,6 +245,7 @@ const RootNavigator = (): ReactElement => {
 			<ForceTransfer />
 			<CloseChannelSuccess />
 			<BackupSubscriber />
+			<LNURLWithdrawNavigation />
 
 			<Dialog
 				visible={showDialog && isAuthenticated}
