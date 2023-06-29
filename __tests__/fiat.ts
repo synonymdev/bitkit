@@ -105,4 +105,14 @@ describe('Pulls latest fiat exchange rates and checks the wallet store for valid
 		expect(dv.bitcoinTicker).toBe('satoshi');
 		expect(dv.satoshis).toBe(1010101);
 	});
+
+	it('Can convert small amount of sats without scientific notation', () => {
+		const dv = getDisplayValues({
+			satoshis: 10,
+			bitcoinUnit: EBitcoinUnit.BTC,
+		});
+
+		expect(dv.bitcoinFormatted).toBe('0.0000001');
+		expect(dv.bitcoinWhole).toBe('0');
+	});
 });

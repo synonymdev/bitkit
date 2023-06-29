@@ -29,7 +29,9 @@ export const getBitcoinDisplayValues = ({
 		let bitcoinFormatted: string = bitcoinUnits(satoshis, 'satoshi')
 			.to(bitcoinUnit)
 			.value()
-			.toString();
+			// convert to string without scientific notation and trailing zeros
+			.toFixed(10)
+			.replace(/\.?0+$/, '');
 
 		const [bitcoinWhole, bitcoinDecimal] = bitcoinFormatted.split('.');
 
