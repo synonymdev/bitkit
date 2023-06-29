@@ -18,13 +18,19 @@ jobs:
       - name: Setup Buildcache
         uses: mikehardy/buildcache-action@v2
 
-      - name: Setup Docker Colima
+      - name: Setup Docker Colima 1
         uses: douglascamata/setup-docker-macos-action@v1-alpha
         id: docker1
         continue-on-error: true
 
-      - name: Setup Docker Default
+      - name: Setup Docker Colima 2
         if: steps.docker1.outcome != 'success'
+        uses: douglascamata/setup-docker-macos-action@v1-alpha
+        id: docker2
+        continue-on-error: true
+
+      - name: Setup Docker Default
+        if: steps.docker2.outcome != 'success'
         uses: docker-practice/actions-setup-docker@1.0.12
         timeout-minutes: 30
 
