@@ -18,8 +18,15 @@ jobs:
       - name: Setup Buildcache
         uses: mikehardy/buildcache-action@v2
 
-      - name: Setup Docker
+      - name: Setup Docker Colima
         uses: douglascamata/setup-docker-macos-action@v1-alpha
+        id: docker1
+        continue-on-error: true
+
+      - name: Setup Docker Default
+        if: steps.docker1.outcome != 'success'
+        uses: docker-practice/actions-setup-docker@1.0.12
+        timeout-minutes: 30
 
       - name: Install AppleSimulatorUtils
         run: HOMEBREW_NO_AUTO_UPDATE=1 brew tap wix/brew && brew install applesimutils
