@@ -1,1 +1,38 @@
-{}
+{
+  "instant": {
+    "title": "Direct",
+    "description": "±2-10 seconden",
+    "shortRange": "2-10s",
+    "shortDescription": "±2s"
+  },
+  "fast": {
+    "title": "Snel",
+    "description": "±10-20 minuten",
+    "shortRange": "10-20m",
+    "shortDescription": "±10m"
+  },
+  "normal": {
+    "title": "Normaal",
+    "description": "±20-60 minuten",
+    "shortRange": "20-60m",
+    "shortDescription": "±20m"
+  },
+  "slow": {
+    "title": "Langzaam",
+    "description": "±1-2 uur",
+    "shortRange": "1-2h",
+    "shortDescription": "±1h"
+  },
+  "minimum": {
+    "title": "Minimum",
+    "description": "+2 uur",
+    "shortRange": "+2h",
+    "shortDescription": "+2h"
+  },
+  "custom": {
+    "title": "Op maat",
+    "description": "Afhankelijk van het tarief",
+    "shortRange": "Afhankelijk van het tarief",
+    "shortDescription": "Afhankelijk van het tarief"
+  }
+}

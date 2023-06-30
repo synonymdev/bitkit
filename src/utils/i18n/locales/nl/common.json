@@ -1,1 +1,27 @@
-{}
+{
+  "continue": "Ga verder",
+  "cancel": "Annuleren",
+  "close": "Sluiten",
+  "are_you_sure": "Weet u het zeker?",
+  "yes_proceed": "Ja, ga verder",
+  "try_again": "Opnieuw proberen",
+  "dialog_cancel": "Nee, annuleren",
+  "sat_vbyte": "sat / vbyte",
+  "sat_vbyte_compact": "sat / vbyte",
+  "copy": "kopiëren",
+  "share": "Delen",
+  "search": "Zoeken",
+  "discard": "Weggooien",
+  "save": "Opslaan",
+  "done": "Gereed",
+  "delete": "Verwijderen",
+  "ok": "OK",
+  "retry": "Opnieuw proberen",
+  "later": "Later",
+  "skip": "Overslaan",
+  "copied": "Gekopieerd naar het klembord",
+  "yes": "Ja",
+  "no": "Nee",
+  "back": "Teruggaan",
+  "understood": "Begrepen"
+}

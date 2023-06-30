@@ -1,4 +1,6 @@
 {
+  "setting_up_header": "Configuration",
   "setting_up_step1": "En attente de paiement",
-  "result_header": "Connexion"
+  "result_header": "Connexion",
+  "close_button": "Fermer"
 }

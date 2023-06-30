@@ -4,10 +4,11 @@
   },
   "lightning": {
     "title": "Payez instantanément",
-    "description": "Montez sur la Lightning"
+    "description": "Utilise Lightning"
   },
   "lightningSettingUp": {
-    "description0": "En attente de paiement",
+    "title": "Mise en place",
+    "description0": "En attente du paiement",
     "description1": "Payé",
     "description2": "En attente",
     "description3": "Ouverture"
@@ -17,6 +18,34 @@
     "description": "Prêt dans ±10m"
   },
   "lightningReady": {
-    "title": "Prêt"
-  }
+    "title": "Prêt",
+    "description": "Connecté !"
+  },
+  "transferToSpending": {
+    "title": "Transfert",
+    "description": "Prêt dans ±20min"
+  },
+  "transferToSavings": {
+    "title": "Transfert",
+    "description": "Prêt dans ±60m"
+  },
+  "transferClosingChannel": {
+    "title": "Démarrage...",
+    "description": "Maintenir l'application ouverte"
+  },
+  "pin": {
+    "title": "Une sécurité renforcée",
+    "description": "Définir un code PIN"
+  },
+  "slashtagsProfile": {
+    "title": "Profil public",
+    "description": "Ajouter vos informations"
+  },
+  "buyBitcoin": {
+    "title": "Obtenir du Bitcoin",
+    "description": "Stack des sats"
+  },
+  "lightning_no_funds_title": "No Funds Yet",
+  "lightning_no_funds_desc": "Avant de pouvoir établir votre solde de dépenses instantanées, vous devez envoyer des bitcoins à votre porte-monnaie.",
+  "suggestions": "Suggestions"
 }

@@ -1,1 +1,27 @@
-{}
+{
+  "continue": "Continue",
+  "cancel": "Annuler",
+  "close": "Fermer",
+  "are_you_sure": "Êtes-vous sûr ?",
+  "yes_proceed": "Oui, poursuivre",
+  "try_again": "Réessayer",
+  "dialog_cancel": "Non, annuler",
+  "sat_vbyte": "sat / vbyte",
+  "sat_vbyte_compact": "sat / vbyte",
+  "copy": "Copier",
+  "share": "Partager",
+  "search": "Recherche",
+  "discard": "Abandon",
+  "save": "Enregistrer",
+  "done": "Terminé",
+  "delete": "Supprimer",
+  "ok": "OK",
+  "retry": "Réessayer",
+  "later": "Plus tard",
+  "skip": "Ignorer",
+  "copied": "Copié dans le presse-papier",
+  "yes": "Oui",
+  "no": "Non",
+  "back": "Retour",
+  "understood": "Compris"
+}

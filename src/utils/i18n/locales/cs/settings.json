@@ -51,7 +51,6 @@
   },
   "security": {
     "clipboard": "Pro snadné použití si přečtěte schránku",
-    "warn_100": "Upozornění při odeslání více než $100",
     "pin": "PIN kód",
     "pin_change": "Změna PIN kódu",
     "pin_launch": "Při spuštění vyžadovat PIN",

@@ -48,7 +48,6 @@
     "reset_confirm": "Sí, Restaurar"
   },
   "security": {
-    "warn_100": "Advertencia para envio de más de 100 dólares",
     "pin": "Código PIN",
     "pin_change": "Cambiar código PIN",
     "pin_launch": "Exigir PIN en arranque",

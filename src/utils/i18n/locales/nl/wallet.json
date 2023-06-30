@@ -1,1 +1,4 @@
-{}
+{
+  "send_error_contact": "Contactpersoon kan niet betaald worden",
+  "activity_contact": "Contactpersoon"
+}

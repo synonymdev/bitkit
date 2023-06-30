@@ -9,6 +9,7 @@
   "savings": "Poupança",
   "receiving_label": "Capacidade de recebimento",
   "quick_confirm_header": "Por favor\nConfirme.",
+  "quick_confirm_cost": "Custa <white>{amount}</white> para conectar à Lightning e configurar seu saldo de gastos.",
   "connect_swipe": "Deslize Para Conectar",
   "connect_swipe_pay": "Deslize Para Pagar e Conectar",
   "receiving_amount_money": "Escolha quanto dinheiro você deseja receber instantaneamente.",

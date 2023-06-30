@@ -21,6 +21,7 @@
   "mnemonic_data_text": "O backup de seu perfil, contatos, contas, tags e atividades será feito automaticamente em nosso serviço de nuvem gratuito.",
   "mnemonic_multiple_header": "Vários Dispositivos",
   "mnemonic_multiple_text": "Não use a frase de recuperação do Bitkit em vários telefones simultaneamente, pois isso pode corromper seus dados.",
+  "mnemonic_latest_backup": "<bold>Backup mais recente:</bold> {time}",
   "pin_security_header": "Aumentar Segurança",
   "pin_security_text": "Para aumentar a segurança da carteira, você pode configurar um código PIN e o Face ID para desbloquear a carteira.",
   "pin_choose_header": "Escolha o PIN de 4 dígitos",

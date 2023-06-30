@@ -1,1 +1,18 @@
-{}
+{
+  "general": {
+    "suggestions": "Suggestions"
+  },
+  "fee": {
+    "fast": {
+      "value": "Rapide"
+    },
+    "normal": {
+      "label": "Normal",
+      "value": "Normal"
+    },
+    "custom": {
+      "label": "Personnalisé",
+      "value": "Personnalisé"
+    }
+  }
+}

@@ -1,1 +1,35 @@
-{}
+{
+  "instant": {
+    "title": "Instantané",
+    "description": "±2-10 secondes",
+    "shortRange": "2-10s",
+    "shortDescription": "±2s"
+  },
+  "fast": {
+    "title": "Rapide",
+    "description": "±10-20 minutes",
+    "shortRange": "10-20min",
+    "shortDescription": "±10min"
+  },
+  "normal": {
+    "title": "Normal",
+    "description": "±20-60 minutes",
+    "shortRange": "20-60min",
+    "shortDescription": "±20min"
+  },
+  "slow": {
+    "title": "Lent",
+    "description": "±1-2 heures",
+    "shortRange": "1-2h",
+    "shortDescription": "±1h"
+  },
+  "minimum": {
+    "title": "Minimum",
+    "description": "+2 heures",
+    "shortRange": "+2h",
+    "shortDescription": "+2h"
+  },
+  "custom": {
+    "title": "Personnalisé"
+  }
+}

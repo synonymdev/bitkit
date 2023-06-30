@@ -1,1 +1,22 @@
-{}
+{
+  "advanced_title": "Geavanceerd",
+  "general": {
+    "suggestions": "Suggesties"
+  },
+  "backup": {
+    "category_contacts": "Contactpersonen"
+  },
+  "fee": {
+    "fast": {
+      "value": "Snel"
+    },
+    "normal": {
+      "label": "Normaal",
+      "value": "Normaal"
+    },
+    "custom": {
+      "label": "Op maat",
+      "value": "Op maat"
+    }
+  }
+}

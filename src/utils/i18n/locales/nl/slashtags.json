@@ -1,1 +1,22 @@
-{}
+{
+  "your_name": "Uw naam",
+  "your_name_capital": "Uw Naam",
+  "contact_name": "Naam Contactpersoon",
+  "contact": "Contact",
+  "contacts": "Contacten",
+  "contact_add": "Contact toevoegen",
+  "contact_add_capital": "Contact toevoegen",
+  "contact_add_explain": "Voeg een nieuw contact toe door hun QR code te scannen of hun sleutel hieronder te plakken.",
+  "contact_key_paste": "Plak een sleutel",
+  "contact_error_yourself": "U kunt uzelf niet als contact toevoegen.",
+  "contact_error_key": "Dit is geen valide sleutel. ",
+  "contact_edit_capital": "Contact Bewerken",
+  "contacts_name": "Naam van contact",
+  "contact_your_name": "Naam van uw\npublieke profiel",
+  "contact_retrieving": "Gegevens van contact\naan het ophalen...",
+  "contact_no_links": "Er zijn nog geen links toegevoegd...",
+  "contact_pay_error": "Contact kan niet betaald worden",
+  "contact_share": "Profielsleutel delen",
+  "contact_this": "deze contact",
+  "profile_link_suggestions": "Suggesties"
+}

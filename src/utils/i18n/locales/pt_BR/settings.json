@@ -51,7 +51,6 @@
   },
   "security": {
     "clipboard": "Ler área de transferência",
-    "warn_100": "Confirmar pagamentos maiores que $100",
     "pin": "Código PIN",
     "pin_change": "Alterar o código PIN",
     "pin_launch": "Solicitar PIN para desbloquear",
