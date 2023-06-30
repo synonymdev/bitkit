@@ -30,7 +30,7 @@ jobs:
         continue-on-error: true
 
       - name: Setup Docker Default
-        if: steps.docker2.outcome != 'success'
+        if: steps.docker1.outcome != 'success' && steps.docker2.outcome != 'success'
         uses: docker-practice/actions-setup-docker@1.0.12
         timeout-minutes: 30
 
