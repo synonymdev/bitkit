@@ -21,7 +21,7 @@ import {
 	confirmChannelPurchase,
 	startChannelPurchase,
 } from '../../store/actions/blocktank';
-import { showErrorNotification } from '../../utils/notifications';
+import { showToast } from '../../utils/notifications';
 import { addTodo } from '../../store/actions/todos';
 import { setLightningSettingUpStep } from '../../store/actions/user';
 import {
@@ -85,9 +85,10 @@ const CustomConfirm = ({
 			selectedNetwork,
 		});
 		if (purchaseResponse.isErr()) {
-			showErrorNotification({
+			showToast({
+				type: 'error',
 				title: t('error_channel_purchase'),
-				message: purchaseResponse.error.message,
+				description: purchaseResponse.error.message,
 			});
 			return;
 		}

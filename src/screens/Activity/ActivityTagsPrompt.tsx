@@ -13,7 +13,6 @@ import { closeBottomSheet } from '../../store/actions/ui';
 import { viewControllerSelector } from '../../store/reselect/ui';
 import { addMetaTxTag, addTag } from '../../store/actions/metadata';
 import { lastUsedTagsSelector } from '../../store/reselect/metadata';
-import { showErrorNotification } from '../../utils/notifications';
 import { useAppSelector } from '../../hooks/redux';
 import { Keyboard } from '../../hooks/keyboard';
 import {
@@ -39,14 +38,7 @@ const ActivityTagsPrompt = (): ReactElement => {
 	};
 
 	const handleTagChoose = async (tag: string): Promise<void> => {
-		const res = addMetaTxTag(id!, tag);
-		if (res.isErr()) {
-			showErrorNotification({
-				title: t('tags_add_error_header'),
-				message: res.error.message,
-			});
-			return;
-		}
+		addMetaTxTag(id!, tag);
 		addTag(tag);
 		setText('');
 		await Keyboard.dismiss();
@@ -57,14 +49,7 @@ const ActivityTagsPrompt = (): ReactElement => {
 		if (text.length === 0) {
 			return;
 		}
-		const res = addMetaTxTag(id!, text);
-		if (res.isErr()) {
-			showErrorNotification({
-				title: t('tags_add_error_header'),
-				message: res.error.message,
-			});
-			return;
-		}
+		addMetaTxTag(id!, text);
 		addTag(text);
 		setText('');
 		await Keyboard.dismiss();

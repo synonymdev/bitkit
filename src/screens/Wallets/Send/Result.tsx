@@ -33,7 +33,7 @@ import {
 } from '../../../store/reselect/wallet';
 import { useSlashtags } from '../../../components/SlashtagsProvider';
 import { processInputData } from '../../../utils/scanner';
-import { showErrorNotification } from '../../../utils/notifications';
+import { showToast } from '../../../utils/notifications';
 
 const confettiSrc = require('../../../assets/lottie/confetti-green.json');
 
@@ -154,9 +154,10 @@ const Result = ({
 				navigation.navigate('Amount');
 				return;
 			}
-			showErrorNotification({
+			showToast({
+				type: 'error',
 				title: t('send_error_contact'),
-				message: res.error.message,
+				description: res.error.message,
 			});
 
 			return;

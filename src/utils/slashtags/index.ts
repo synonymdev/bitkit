@@ -6,7 +6,7 @@ import debounce from 'lodash.debounce';
 import { __SLASHTAGS_SEEDER_BASE_URL__ } from '../../constants/env';
 import { rootNavigation } from '../../navigation/root/RootNavigator';
 import { BasicProfile, SlashPayConfig } from '../../store/types/slashtags';
-import { showErrorNotification } from '../notifications';
+import { showToast } from '../notifications';
 import {
 	getCurrentWallet,
 	getReceiveAddress,
@@ -70,9 +70,10 @@ export const saveContact = async (
 	const drive = await slashtag.drivestore.get('contacts');
 	const id = SlashURL.parse(url).id;
 	await drive?.put('/' + id, encodeJSON(record)).catch((error: Error) =>
-		showErrorNotification({
+		showToast({
+			type: 'error',
 			title: i18n.t('slashtags:error_saving_contact'),
-			message: error.message,
+			description: error.message,
 		}),
 	);
 	drive.close();
@@ -88,9 +89,10 @@ export const saveProfile = async (
 
 	const drive = await slashtag?.drivestore.get();
 	await drive.put('/profile.json', encodeJSON(profile)).catch((error: Error) =>
-		showErrorNotification({
+		showToast({
+			type: 'error',
 			title: i18n.t('slashtags:error_saving_profile'),
-			message: error.message,
+			description: error.message,
 		}),
 	);
 
@@ -114,9 +116,10 @@ export const deleteContact = async (
 	const drive = await slashtag.drivestore.get('contacts');
 	const id = SlashURL.parse(url).id;
 	await drive.del('/' + id).catch((error: Error) => {
-		showErrorNotification({
+		showToast({
+			type: 'error',
 			title: i18n.t('slashtags:error_delete_contact'),
-			message: error.message,
+			description: error.message,
 		});
 	});
 
@@ -157,9 +160,10 @@ export const onSDKError = (error: Error): void => {
 		error = new Error("Couldn't connect to the provided DHT relay");
 	}
 
-	showErrorNotification({
+	showToast({
+		type: 'error',
 		title: 'SlashtagsProvider Error',
-		message: error.message,
+		description: error.message,
 	});
 };
 
@@ -383,9 +387,10 @@ function noop(): void {}
 
 function checkClosed(slashtag: Slashtag): boolean {
 	if (slashtag.drivestore.closed) {
-		showErrorNotification({
+		showToast({
+			type: 'error',
 			title: i18n.t('slashtags:error_sdk_title'),
-			message: i18n.t('slashtags:error_sdk_msg'),
+			description: i18n.t('slashtags:error_sdk_msg'),
 		});
 		return true;
 	} else {

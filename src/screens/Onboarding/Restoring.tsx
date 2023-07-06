@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { Display, Text01S } from '../../styles/text';
 import { IColors } from '../../styles/colors';
 import { restoreRemoteBackups, startWalletServices } from '../../utils/startup';
+import { showToast } from '../../utils/notifications';
 import { sleep } from '../../utils/helpers';
 import { useSelectedSlashtag } from '../../hooks/slashtags';
 import { updateUser } from '../../store/actions/user';
@@ -13,7 +14,6 @@ import SafeAreaInset from '../../components/SafeAreaInset';
 import GlowImage from '../../components/GlowImage';
 import Button from '../../components/Button';
 import LoadingWalletScreen from './Loading';
-import { showErrorNotification } from '../../utils/notifications';
 import Dialog from '../../components/Dialog';
 
 const checkImageSrc = require('../../assets/illustrations/check.png');
@@ -49,9 +49,10 @@ const RestoringScreen = (): ReactElement => {
 		setProceedWBIsLoading(true);
 		const res = await startWalletServices({ restore: false });
 		if (res.isErr()) {
-			showErrorNotification({
+			showToast({
+				type: 'error',
 				title: t('restore_error_no_backup'),
-				message: res.error.message,
+				description: res.error.message,
 			});
 			return;
 		}

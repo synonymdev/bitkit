@@ -11,7 +11,7 @@ import Button from '../../../components/Button';
 import BlurView from '../../../components/BlurView';
 import { getMnemonicPhrase, getBip39Passphrase } from '../../../utils/wallet';
 import { useBottomSheetBackPress } from '../../../hooks/bottomSheet';
-import { showErrorNotification } from '../../../utils/notifications';
+import { showToast } from '../../../utils/notifications';
 import { vibrate } from '../../../utils/helpers';
 import type { BackupScreenProps } from '../../../navigation/types';
 
@@ -46,9 +46,10 @@ const ShowMnemonic = ({
 	useEffect(() => {
 		getMnemonicPhrase().then((res) => {
 			if (res.isErr()) {
-				showErrorNotification({
+				showToast({
+					type: 'error',
 					title: t('mnemonic_error'),
-					message: res.error.message,
+					description: res.error.message,
 				});
 				return;
 			}

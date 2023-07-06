@@ -32,7 +32,7 @@ import GlowingBackground from '../../components/GlowingBackground';
 import Dot from '../../components/SliderDots';
 import Button from '../../components/Button';
 import { createNewWallet } from '../../utils/startup';
-import { showErrorNotification } from '../../utils/notifications';
+import { showToast } from '../../utils/notifications';
 import { sleep } from '../../utils/helpers';
 import LoadingWalletScreen from './Loading';
 import { updateUser } from '../../store/actions/user';
@@ -76,13 +76,14 @@ const Slideshow = ({
 
 	const onNewWallet = useCallback(async (): Promise<void> => {
 		setIsCreatingWallet(true);
-		await sleep(500); // wait fot animation to be started
+		await sleep(500); // wait for animation to be started
 		const res = await createNewWallet({ bip39Passphrase });
 		if (res.isErr()) {
 			setIsCreatingWallet(false);
-			showErrorNotification({
+			showToast({
+				type: 'error',
 				title: t('error_create'),
-				message: res.error.message,
+				description: res.error.message,
 			});
 		}
 

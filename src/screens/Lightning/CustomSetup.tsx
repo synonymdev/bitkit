@@ -28,7 +28,7 @@ import {
 } from '../../store/actions/wallet';
 import { convertCurrency, convertToSats } from '../../utils/conversion';
 import { getFiatDisplayValues } from '../../utils/displayValues';
-import { showErrorNotification } from '../../utils/notifications';
+import { showToast } from '../../utils/notifications';
 import { startChannelPurchase } from '../../store/actions/blocktank';
 import { EBalanceUnit } from '../../store/types/wallet';
 import {
@@ -418,9 +418,10 @@ const CustomSetup = ({
 					usdValue: blocktankService.max_chan_receiving_usd,
 				});
 			}
-			showErrorNotification({
+			showToast({
+				type: 'error',
 				title: t('error_channel_purchase'),
-				message: msg,
+				description: msg,
 			});
 		}
 		if (purchaseResponse.isOk()) {

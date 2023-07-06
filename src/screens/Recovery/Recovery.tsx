@@ -4,12 +4,13 @@ import { useSelector } from 'react-redux';
 import Share from 'react-native-share';
 import { useTranslation } from 'react-i18next';
 import RNExitApp from 'react-native-exit-app';
+import { ldk } from '@synonymdev/react-native-ldk';
 
 import { wipeApp } from '../../store/actions/settings';
 import { openURL } from '../../utils/helpers';
 import { zipLogs } from '../../utils/lightning/logs';
 import { createSupportLink } from '../../utils/support';
-import { showErrorNotification } from '../../utils/notifications';
+import { showToast } from '../../utils/notifications';
 import { View as ThemedView } from '../../styles/components';
 import { Text01S } from '../../styles/text';
 import NavigationHeader from '../../components/NavigationHeader';
@@ -19,7 +20,6 @@ import Dialog from '../../components/Dialog';
 import { RecoveryStackScreenProps } from '../../navigation/types';
 import { walletExistsSelector } from '../../store/reselect/wallet';
 import { pinSelector } from '../../store/reselect/settings';
-import { ldk } from '@synonymdev/react-native-ldk';
 import { startWalletServices } from '../../utils/startup';
 
 const Recovery = ({
@@ -44,9 +44,10 @@ const Recovery = ({
 	const onExportLogs = async (): Promise<void> => {
 		const result = await zipLogs({ limit: 20, allAccounts: true });
 		if (result.isErr()) {
-			showErrorNotification({
+			showToast({
+				type: 'error',
 				title: t('lightning:error_logs'),
-				message: result.error.message,
+				description: result.error.message,
 			});
 			return;
 		}
@@ -124,9 +125,10 @@ const Recovery = ({
 			staleBackupRecoveryMode: true,
 		});
 		if (setupRes.isErr()) {
-			showErrorNotification({
+			showToast({
+				type: 'error',
 				title: t('lightning_recovery_error'),
-				message: setupRes.error.message,
+				description: setupRes.error.message,
 			});
 			setIsRecoveringChannels(false);
 			return;
@@ -134,9 +136,10 @@ const Recovery = ({
 
 		const balances = await ldk.claimableBalances(false);
 		if (balances.isErr()) {
-			showErrorNotification({
+			showToast({
+				type: 'error',
 				title: t('lightning_recovery_error'),
-				message: balances.error.message,
+				description: balances.error.message,
 			});
 			setIsRecoveringChannels(false);
 			return;

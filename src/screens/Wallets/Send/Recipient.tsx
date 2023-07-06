@@ -20,7 +20,7 @@ import IconButton from '../../../components/IconButton';
 import GlowImage from '../../../components/GlowImage';
 import Button from '../../../components/Button';
 import { processInputData, validateInputData } from '../../../utils/scanner';
-import { showErrorNotification } from '../../../utils/notifications';
+import { showToast } from '../../../utils/notifications';
 import useColors from '../../../hooks/colors';
 import useKeyboard, { Keyboard } from '../../../hooks/keyboard';
 import { useBottomSheetBackPress } from '../../../hooks/bottomSheet';
@@ -64,9 +64,10 @@ const Recipient = ({
 			text = text.trim();
 
 			if (!text) {
-				showErrorNotification({
+				showToast({
+					type: 'error',
 					title: t('send_clipboard_empty_title'),
-					message: t('send_clipboard_empty_text'),
+					description: t('send_clipboard_empty_text'),
 				});
 				return;
 			}

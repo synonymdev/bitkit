@@ -59,7 +59,7 @@ import {
 	ETransactionSpeed,
 	TCoinSelectPreference,
 } from '../../store/types/settings';
-import { showErrorNotification } from '../notifications';
+import { showToast } from '../notifications';
 import { getTransactions, subscribeToAddresses } from './electrum';
 import { TOnchainActivityItem } from '../../store/types/activity';
 import { EFeeId, IOnchainFees } from '../../store/types/fees';
@@ -700,9 +700,10 @@ export const createTransaction = async ({
 	});
 	if (inputValue === 0) {
 		const message = 'No inputs to spend.';
-		showErrorNotification({
+		showToast({
+			type: 'error',
 			title: i18n.t('wallet:error_create_tx'),
-			message,
+			description: message,
 		});
 		return err(message);
 	}
@@ -711,9 +712,10 @@ export const createTransaction = async ({
 	//Refuse tx if the fee is greater than the amount we're attempting to send.
 	if (fee > inputValue) {
 		const message = 'Fee is larger than the intended payment.';
-		showErrorNotification({
+		showToast({
+			type: 'error',
 			title: i18n.t('wallet:error_create_tx'),
-			message,
+			description: message,
 		});
 		return err(message);
 	}

@@ -86,10 +86,7 @@ import { ITransaction, ITxHash } from '../../utils/wallet';
 import { openURL } from '../../utils/helpers';
 import { btcToSats } from '../../utils/conversion';
 import { getBoostedTransactionParents } from '../../utils/boost';
-import {
-	showErrorNotification,
-	showInfoNotification,
-} from '../../utils/notifications';
+import { showToast } from '../../utils/notifications';
 import {
 	boostedTransactionsSelector,
 	selectedNetworkSelector,
@@ -190,17 +187,19 @@ const OnchainActivityDetail = ({
 		getTransactions({ txHashes: [{ tx_hash: id }], selectedNetwork }).then(
 			(txResponse) => {
 				if (txResponse.isErr()) {
-					showErrorNotification({
+					showToast({
+						type: 'error',
 						title: t('activity_error_get'),
-						message: txResponse.error.message,
+						description: txResponse.error.message,
 					});
 					return;
 				}
 				const txData = txResponse.value.data;
 				if (txData.length === 0) {
-					showErrorNotification({
+					showToast({
+						type: 'error',
 						title: t('activity_error_get'),
-						message: t('activity_error_tx_not_found'),
+						description: t('activity_error_tx_not_found'),
 					});
 					return;
 				}
@@ -282,9 +281,10 @@ const OnchainActivityDetail = ({
 
 	const copyTransactionId = useCallback(() => {
 		Clipboard.setString(id);
-		showInfoNotification({
+		showToast({
+			type: 'info',
 			title: t('activity_copied_tx'),
-			message: t('activity_copied_tx_text'),
+			description: t('activity_copied_tx_text'),
 		});
 	}, [id, t]);
 
@@ -641,9 +641,10 @@ const LightningActivityDetail = ({
 
 	const copyTransactionId = useCallback(() => {
 		Clipboard.setString(id);
-		showInfoNotification({
+		showToast({
+			type: 'info',
 			title: t('activity_copied_tx'),
-			message: t('activity_copied_tx_text'),
+			description: t('activity_copied_tx_text'),
 		});
 	}, [id, t]);
 

@@ -12,10 +12,7 @@ import {
 } from 'js-lnurl';
 import { err, ok, Result } from '@synonymdev/result';
 
-import {
-	showErrorNotification,
-	showSuccessNotification,
-} from './notifications';
+import { showToast } from './notifications';
 import {
 	addPeer,
 	getLightningBalance,
@@ -58,13 +55,13 @@ export const handleLnurlPay = async ({
 
 	const nodeId = getNodeIdFromStorage({ selectedWallet, selectedNetwork });
 	if (!nodeId) {
-		showErrorNotification({
+		const message = i18n.t('other:lnurl_ln_error_msg');
+		showToast({
+			type: 'error',
 			title: i18n.t('other:lnurl_ln_error_title'),
-			message: i18n.t('other:lnurl_ln_error_msg'),
+			description: message,
 		});
-		return err(
-			'Unable to startup local lightning node at this time. Please try again or restart the app.',
-		);
+		return err(message);
 	}
 
 	const milliSats = params.minSendable;
@@ -75,9 +72,10 @@ export const handleLnurlPay = async ({
 		comment: 'Bitkit LNURL-Pay',
 	});
 	if (callbackRes.isErr()) {
-		showErrorNotification({
+		showToast({
+			type: 'error',
 			title: i18n.t('other:lnurl_pay_error'),
-			message: callbackRes.error.message,
+			description: callbackRes.error.message,
 		});
 		return err(callbackRes.error.message);
 	}
@@ -116,22 +114,24 @@ export const handleLnurlChannel = async ({
 
 	const peer = params.uri;
 	if (peer.includes('onion')) {
-		showErrorNotification({
+		const message = i18n.t('lightning:error_add_tor');
+		showToast({
+			type: 'error',
 			title: i18n.t('other:lnurl_channel_error'),
-			message: i18n.t('lightning:error_add_tor'),
+			description: message,
 		});
-		return err('Unable to add tor nodes at this time.');
+		return err(message);
 	}
 
 	const nodeId = getNodeIdFromStorage({ selectedWallet, selectedNetwork });
 	if (!nodeId) {
-		showErrorNotification({
+		const message = i18n.t('other:lnurl_ln_error_msg');
+		showToast({
+			type: 'error',
 			title: i18n.t('other:lnurl_channel_error'),
-			message: i18n.t('other:lnurl_ln_error_msg'),
+			description: message,
 		});
-		return err(
-			'Unable to startup local lightning node at this time. Please try again or restart the app.',
-		);
+		return err(message);
 	}
 	const peers = getPeersFromStorage({ selectedWallet, selectedNetwork });
 
@@ -142,18 +142,20 @@ export const handleLnurlChannel = async ({
 			timeout: 5000,
 		});
 		if (addPeerRes.isErr()) {
-			showErrorNotification({
+			showToast({
+				type: 'error',
 				title: i18n.t('other:lnurl_channel_error'),
-				message:
+				description:
 					i18n.t('lightning:error_add') + '\n' + addPeerRes.error.message,
 			});
 			return err(addPeerRes.error.message);
 		}
 		const savePeerRes = savePeer({ selectedWallet, selectedNetwork, peer });
 		if (savePeerRes.isErr()) {
-			showErrorNotification({
+			showToast({
+				type: 'error',
 				title: i18n.t('other:lnurl_channel_error'),
-				message:
+				description:
 					i18n.t('lightning:error_save') + '\n' + savePeerRes.error.message,
 			});
 			return err(savePeerRes.error.message);
@@ -167,34 +169,39 @@ export const handleLnurlChannel = async ({
 		cancel: false,
 	});
 	if (callbackRes.isErr()) {
-		showErrorNotification({
+		showToast({
+			type: 'error',
 			title: i18n.t('other:lnurl_channel_error'),
-			message: callbackRes.error.message,
+			description: callbackRes.error.message,
 		});
 		return err(callbackRes.error.message);
 	}
 
 	const channelStatusRes = await fetch(callbackRes.value);
 	if (channelStatusRes.status !== 200) {
-		showErrorNotification({
+		const message = i18n.t('other:lnurl_blocktank_error');
+		showToast({
+			type: 'error',
 			title: i18n.t('other:lnurl_channel_error'),
-			message: i18n.t('other:lnurl_blocktank_error'),
+			description: message,
 		});
-		return err('Unable to connect to Blocktank server.');
+		return err(message);
 	}
 	const jsonRes = await channelStatusRes.json();
 
 	if (jsonRes.status === 'ERROR') {
-		showErrorNotification({
+		showToast({
+			type: 'error',
 			title: i18n.t('other:lnurl_channel_error'),
-			message: jsonRes.reason,
+			description: jsonRes.reason,
 		});
 		return err(jsonRes.reason);
 	}
 
-	showSuccessNotification({
+	showToast({
+		type: 'success',
 		title: i18n.t('other:lnurl_channel_success_title'),
-		message: peer
+		description: peer
 			? i18n.t('other:lnurl_channel_success_msg_peer', { peer })
 			: i18n.t('other:lnurl_channel_success_msg_no_peer'),
 	});
@@ -236,16 +243,18 @@ export const handleLnurlAuth = async ({
 		bip32Mnemonic: getMnemonicPhraseResponse.value,
 	});
 	if (authRes.isErr()) {
-		showErrorNotification({
+		showToast({
+			type: 'error',
 			title: i18n.t('other:lnurl_auth_error'),
-			message: authRes.error.message,
+			description: authRes.error.message,
 		});
 		return err(authRes.error.message);
 	}
 
-	showSuccessNotification({
+	showToast({
+		type: 'success',
 		title: i18n.t('other:lnurl_auth_success_title'),
-		message: params.domain
+		description: params.domain
 			? i18n.t('other:lnurl_auth_success_msg_domain', { domain: params.domain })
 			: i18n.t('other:lnurl_auth_success_msg_no_domain'),
 	});
@@ -286,13 +295,13 @@ export const handleLnurlWithdraw = async ({
 	});
 
 	if (lightningBalance.remoteBalance < amountSats) {
-		showErrorNotification({
+		const message = i18n.t('other:lnurl_withdr_error_no_capacity');
+		showToast({
+			type: 'error',
 			title: i18n.t('other:lnurl_withdr_error'),
-			message: i18n.t('other:lnurl_withdr_error_no_capacity'),
+			description: message,
 		});
-		return err(
-			'Not enough inbound/receiving capacity to complete lnurl-withdraw request.',
-		);
+		return err(message);
 	}
 
 	const invoice = await createLightningInvoice({
@@ -303,45 +312,51 @@ export const handleLnurlWithdraw = async ({
 		selectedNetwork,
 	});
 	if (invoice.isErr()) {
-		showErrorNotification({
+		const message = i18n.t('other:lnurl_withdr_error_create_invoice');
+		showToast({
+			type: 'error',
 			title: i18n.t('other:lnurl_withdr_error'),
-			message: i18n.t('other:lnurl_withdr_error_create_invoice'),
+			description: message,
 		});
-		return err('Unable to successfully create invoice for lnurl-withdraw.');
+		return err(message);
 	}
 	const callbackRes = createWithdrawCallbackUrl({
 		params,
 		paymentRequest: invoice.value.to_str,
 	});
 	if (callbackRes.isErr()) {
-		showErrorNotification({
+		showToast({
+			type: 'error',
 			title: i18n.t('other:lnurl_withdr_error'),
-			message: callbackRes.error.message,
+			description: callbackRes.error.message,
 		});
 		return err(callbackRes.error.message);
 	}
 
 	const channelStatusRes = await fetch(callbackRes.value);
 	if (channelStatusRes.status !== 200) {
-		showErrorNotification({
+		showToast({
+			type: 'error',
 			title: i18n.t('other:lnurl_withdr_error'),
-			message: i18n.t('other:lnurl_withdr_error_connect'),
+			description: i18n.t('other:lnurl_withdr_error_connect'),
 		});
 		return err('Unable to connect to LNURL withdraw server.');
 	}
 
 	const jsonRes = await channelStatusRes.json();
 	if (jsonRes.status === 'ERROR') {
-		showErrorNotification({
+		showToast({
+			type: 'error',
 			title: i18n.t('other:lnurl_withdr_error'),
-			message: jsonRes.reason,
+			description: jsonRes.reason,
 		});
 		return err(jsonRes.reason);
 	}
 
-	showSuccessNotification({
+	showToast({
+		type: 'success',
 		title: i18n.t('other:lnurl_withdr_success_title'),
-		message: i18n.t('other:lnurl_withdr_success_msg'),
+		description: i18n.t('other:lnurl_withdr_success_msg'),
 	});
 	return ok({ type: EQRDataType.lnurlWithdraw });
 };

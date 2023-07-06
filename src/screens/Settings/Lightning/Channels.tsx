@@ -39,17 +39,13 @@ import {
 	refreshLdk,
 	setupLdk,
 } from '../../../utils/lightning';
+import { showToast } from '../../../utils/notifications';
 import Store from '../../../store/types';
 import { usePaidBlocktankOrders } from '../../../hooks/blocktank';
 import {
 	useLightningChannelName,
 	useLightningBalance,
 } from '../../../hooks/lightning';
-import {
-	showErrorNotification,
-	showInfoNotification,
-	showSuccessNotification,
-} from '../../../utils/notifications';
 import {
 	createLightningInvoice,
 	savePeer,
@@ -266,9 +262,10 @@ const Channels = ({
 	const handleExportLogs = useCallback(async (): Promise<void> => {
 		const result = await zipLogs({ includeJson: enableDevOptions });
 		if (result.isErr()) {
-			showErrorNotification({
+			showToast({
+				type: 'error',
 				title: t('error_logs'),
-				message: result.error.message,
+				description: result.error.message,
 			});
 			return;
 		}
@@ -297,18 +294,20 @@ const Channels = ({
 			selectedWallet,
 		});
 		if (createPaymentRequest.isErr()) {
-			showErrorNotification({
+			showToast({
+				type: 'error',
 				title: t('error_invoice'),
-				message: createPaymentRequest.error.message,
+				description: createPaymentRequest.error.message,
 			});
 			return;
 		}
 		const { to_str } = createPaymentRequest.value;
 		console.log(to_str);
 		Clipboard.setString(to_str);
-		showSuccessNotification({
+		showToast({
+			type: 'success',
 			title: t('invoice_copied'),
-			message: to_str,
+			description: to_str,
 		});
 	};
 
@@ -331,23 +330,26 @@ const Channels = ({
 			timeout: 5000,
 		});
 		if (addPeerRes.isErr()) {
-			showErrorNotification({
+			showToast({
+				type: 'error',
 				title: t('error_add'),
-				message: addPeerRes.error.message,
+				description: addPeerRes.error.message,
 			});
 			return;
 		}
 		const savePeerRes = savePeer({ selectedWallet, selectedNetwork, peer });
 		if (savePeerRes.isErr()) {
-			showErrorNotification({
+			showToast({
+				type: 'error',
 				title: t('error_save'),
-				message: savePeerRes.error.message,
+				description: savePeerRes.error.message,
 			});
 			return;
 		}
-		showSuccessNotification({
+		showToast({
+			type: 'success',
 			title: savePeerRes.value,
-			message: t('peer_saved'),
+			description: t('peer_saved'),
 		});
 	}, [peer, selectedNetwork, selectedWallet, t]);
 
@@ -529,13 +531,16 @@ const Channels = ({
 								setSpendingStuckOutputs(true);
 								const res = await recoverOutputs();
 								if (res.isOk()) {
-									showInfoNotification({
-										message: res.value,
+									showToast({
+										type: 'info',
+										title: 'Stuck outputs recovered',
+										description: res.value,
 									});
 								} else {
-									showErrorNotification({
+									showToast({
+										type: 'error',
 										title: 'No stuck outputs recovered',
-										message: res.error.message,
+										description: res.error.message,
 									});
 								}
 								setSpendingStuckOutputs(false);
@@ -552,9 +557,10 @@ const Channels = ({
 								}
 								console.log(nodeId.value);
 								Clipboard.setString(nodeId.value);
-								showSuccessNotification({
+								showToast({
+									type: 'success',
 									title: 'Copied Node ID to Clipboard',
-									message: nodeId.value,
+									description: nodeId.value,
 								});
 							}}
 							testID="CopyNodeId"
@@ -590,17 +596,19 @@ const Channels = ({
 												setPayingInvoice(true);
 												const invoice = await Clipboard.getString();
 												if (!invoice) {
-													showErrorNotification({
+													showToast({
+														type: 'error',
 														title: 'No Invoice Detected',
-														message:
+														description:
 															'Unable to retrieve anything from the clipboard.',
 													});
 												}
 												const response = await payLightningInvoice(invoice);
 												if (response.isErr()) {
-													showErrorNotification({
+													showToast({
+														type: 'error',
 														title: 'Invoice Payment Failed',
-														message: response.error.message,
+														description: response.error.message,
 													});
 													setPayingInvoice(false);
 													return;
@@ -609,9 +617,10 @@ const Channels = ({
 													refreshLdk({ selectedWallet, selectedNetwork }),
 												]);
 												setPayingInvoice(false);
-												showSuccessNotification({
+												showToast({
+													type: 'success',
 													title: 'Invoice Payment Success',
-													message: `Fee: ${response.value.fee_paid_sat} sats`,
+													description: `Fee: ${response.value.fee_paid_sat} sats`,
 												});
 											}}
 										/>

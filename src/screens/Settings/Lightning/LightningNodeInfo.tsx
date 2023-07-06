@@ -12,7 +12,7 @@ import { Subtitle, Caption13Up } from '../../../styles/text';
 import NavigationHeader from '../../../components/NavigationHeader';
 import SafeAreaInset from '../../../components/SafeAreaInset';
 import { getNodeId } from '../../../utils/lightning';
-import { showSuccessNotification } from '../../../utils/notifications';
+import { showToast } from '../../../utils/notifications';
 import { selectedNetworkSelector } from '../../../store/reselect/wallet';
 import { SettingsScreenProps } from '../../../navigation/types';
 
@@ -52,9 +52,10 @@ const LightningNodeInfo = ({
 					<TouchableOpacity
 						onPress={(): void => {
 							Clipboard.setString(nodeId);
-							showSuccessNotification({
+							showToast({
+								type: 'success',
 								title: t('copied'),
-								message: t('node_id_copied'),
+								description: t('node_id_copied'),
 							});
 						}}
 						testID="LDKNodeID">

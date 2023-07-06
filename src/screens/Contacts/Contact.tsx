@@ -26,6 +26,7 @@ import {
 } from '../../components/SlashtagsProvider';
 import { useBalance } from '../../hooks/wallet';
 import { truncate } from '../../utils/helpers';
+import { showToast } from '../../utils/notifications';
 import { RootStackScreenProps } from '../../navigation/types';
 import Dialog from '../../components/Dialog';
 import Tooltip from '../../components/Tooltip';
@@ -34,7 +35,6 @@ import {
 	selectedNetworkSelector,
 	selectedWalletSelector,
 } from '../../store/reselect/wallet';
-import { showErrorNotification } from '../../utils/notifications';
 
 const Contact = ({
 	navigation,
@@ -90,9 +90,10 @@ const Contact = ({
 			navigation.popToTop();
 			return;
 		}
-		showErrorNotification({
+		showToast({
+			type: 'error',
 			title: t('contact_pay_error'),
-			message: res.error.message,
+			description: res.error.message,
 		});
 	};
 

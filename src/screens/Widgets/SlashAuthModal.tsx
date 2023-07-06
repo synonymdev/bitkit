@@ -24,10 +24,7 @@ import { IContactRecord } from '../../store/types/slashtags';
 import ProfileImage from '../../components/ProfileImage';
 import { Title, Text01S } from '../../styles/text';
 import { Checkmark } from '../../styles/icons';
-import {
-	showErrorNotification,
-	showSuccessNotification,
-} from '../../utils/notifications';
+import { showToast } from '../../utils/notifications';
 import { ellipsis } from '../../utils/helpers';
 import { setAuthWidget } from '../../store/actions/widgets';
 import Divider from '../../components/Divider';
@@ -129,9 +126,10 @@ const _SlashAuthModal = (): ReactElement => {
 		try {
 			response = await client.authz(_url);
 		} catch (e) {
-			showErrorNotification({
+			showToast({
+				type: 'error',
 				title: t('signin_to_error_header'),
-				message:
+				description:
 					e.message === 'channel closed'
 						? t('signin_to_error_text')
 						: e.message,
@@ -142,9 +140,10 @@ const _SlashAuthModal = (): ReactElement => {
 		}
 
 		if (response?.status === 'ok') {
-			showSuccessNotification({
+			showToast({
+				type: 'success',
 				title: t('signin_to_success_header'),
-				message: server.name
+				description: server.name
 					? t('signin_to_success_text_name', { name: server.name })
 					: t('signin_to_success_text_noname'),
 			});
@@ -152,9 +151,10 @@ const _SlashAuthModal = (): ReactElement => {
 			setAuthWidget(url, { magiclink: true });
 			rootNavigation.navigate('Wallet');
 		} else {
-			showErrorNotification({
+			showToast({
+				type: 'error',
 				title: t('signin_to_error_header'),
-				message: response?.message || '',
+				description: response?.message || '',
 			});
 		}
 

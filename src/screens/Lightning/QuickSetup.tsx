@@ -29,7 +29,7 @@ import {
 	refreshBlocktankInfo,
 	startChannelPurchase,
 } from '../../store/actions/blocktank';
-import { showErrorNotification } from '../../utils/notifications';
+import { showToast } from '../../utils/notifications';
 import { convertToSats } from '../../utils/conversion';
 import { getFiatDisplayValues } from '../../utils/displayValues';
 import { SPENDING_LIMIT_RATIO } from '../../utils/wallet/constants';
@@ -145,9 +145,10 @@ const QuickSetup = ({
 
 		setLoading(false);
 		if (purchaseResponse.isErr()) {
-			showErrorNotification({
+			showToast({
+				type: 'error',
 				title: t('error_channel_purchase'),
-				message: purchaseResponse.error.message,
+				description: purchaseResponse.error.message,
 			});
 		}
 		if (purchaseResponse.isOk()) {

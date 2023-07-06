@@ -9,14 +9,11 @@ import SafeAreaInset from '../../../components/SafeAreaInset';
 import NavigationHeader from '../../../components/NavigationHeader';
 import GlowImage from '../../../components/GlowImage';
 import Button from '../../../components/Button';
+import { showToast } from '../../../utils/notifications';
 import { closeChannel, refreshLdk } from '../../../utils/lightning';
 import { useLightningChannelName } from '../../../hooks/lightning';
 import { channelSelector } from '../../../store/reselect/lightning';
 import Store from '../../../store/types';
-import {
-	showErrorNotification,
-	showSuccessNotification,
-} from '../../../utils/notifications';
 import type { SettingsScreenProps } from '../../../navigation/types';
 import {
 	selectedNetworkSelector,
@@ -52,17 +49,19 @@ const CloseConnection = ({
 		setLoading(false);
 		// If error, display error notification and return.
 		if (closeResponse.isErr()) {
-			showErrorNotification({
+			showToast({
+				type: 'error',
 				title: t('close_error'),
-				message: closeResponse.error.message,
+				description: closeResponse.error.message,
 			});
 			return;
 		}
 
 		// TODO: remove and use CloseChannelSuccess bottom-sheet instead
-		showSuccessNotification({
+		showToast({
+			type: 'success',
 			title: t('close_success_title'),
-			message: t('close_success_msg', { name }),
+			description: t('close_success_msg', { name }),
 		});
 
 		navigation.navigate('Channels');

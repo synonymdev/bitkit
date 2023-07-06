@@ -28,10 +28,10 @@ import VerticalShadow from '../../components/VerticalShadow';
 import Button from '../../components/Button';
 import { validateMnemonic } from '../../utils/wallet';
 import { restoreSeed } from '../../utils/startup';
+import { showToast } from '../../utils/notifications';
 import LoadingWalletScreen from './Loading';
 import NavigationHeader from '../../components/NavigationHeader';
 import { updateUser, verifyBackup } from '../../store/actions/user';
-import { showErrorNotification } from '../../utils/notifications';
 
 const RestoreFromSeed = (): ReactElement => {
 	const numberOfWords = 12;
@@ -108,9 +108,10 @@ const RestoreFromSeed = (): ReactElement => {
 			bip39Passphrase,
 		});
 		if (res.isErr()) {
-			showErrorNotification({
+			showToast({
+				type: 'error',
 				title: t('restore_error_title'),
-				message: res.error.message,
+				description: res.error.message,
 			});
 			return;
 		}

@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { processInputData } from '../../utils/scanner';
 import SafeAreaInset from '../../components/SafeAreaInset';
 import NavigationHeader from '../../components/NavigationHeader';
-import { showErrorNotification } from '../../utils/notifications';
+import { showToast } from '../../utils/notifications';
 import ScannerComponent from './ScannerComponent';
 import type { RootStackScreenProps } from '../../navigation/types';
 import DetectSwipe from '../../components/DetectSwipe';
@@ -31,11 +31,12 @@ const ScannerScreen = ({
 		navigation.navigate('Wallet');
 	};
 
-	const onRead = async (data: string): Promise<void> => {
+	const onRead = (data: string): void => {
 		if (!data) {
-			showErrorNotification({
+			showToast({
+				type: 'error',
 				title: t('qr_error_header'),
-				message: t('qr_error_text'),
+				description: t('qr_error_text'),
 			});
 			return;
 		}

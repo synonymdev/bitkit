@@ -55,7 +55,7 @@ import {
 	payLightningInvoice,
 } from '../../../utils/lightning';
 import { getFiatDisplayValues } from '../../../utils/displayValues';
-import { showErrorNotification } from '../../../utils/notifications';
+import { showToast } from '../../../utils/notifications';
 import { refreshWallet } from '../../../utils/wallet';
 import type { SendScreenProps } from '../../../navigation/types';
 import SafeAreaInset from '../../../components/SafeAreaInset';
@@ -430,9 +430,10 @@ const ReviewAndSend = ({
 		(tag: string) => {
 			const res = removeTxTag({ tag, selectedNetwork, selectedWallet });
 			if (res.isErr()) {
-				showErrorNotification({
+				showToast({
+					type: 'error',
 					title: 'Error Removing Tag',
-					message: res.error.message,
+					description: res.error.message,
 				});
 			}
 		},

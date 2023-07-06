@@ -7,7 +7,7 @@ import { sleep } from '../../utils/helpers';
 import { removePin } from '../../utils/settings';
 import { wipeLdkStorage } from '../../utils/lightning';
 import { TAvailableNetworks } from '../../utils/networks';
-import { showSuccessNotification } from '../../utils/notifications';
+import { showToast } from '../../utils/notifications';
 import { getSelectedNetwork, getSelectedWallet } from '../../utils/wallet';
 import { getAllKeychainKeys, resetKeychainValue } from '../../utils/keychain';
 import { ICustomElectrumPeer, ISettings } from '../types/settings';
@@ -64,9 +64,10 @@ export const wipeApp = async ({
 		dispatch({ type: actions.WIPE_APP });
 
 		if (showNotification) {
-			showSuccessNotification({
+			showToast({
+				type: 'success',
 				title: 'Bitkit Wiped Successfully',
-				message: 'All app data has been reset.',
+				description: 'All app data has been reset.',
 			});
 		}
 

@@ -9,10 +9,7 @@ import NavigationHeader from '../../../components/NavigationHeader';
 import KeyboardAvoidingView from '../../../components/KeyboardAvoidingView';
 import SafeAreaInset from '../../../components/SafeAreaInset';
 import Button from '../../../components/Button';
-import {
-	showErrorNotification,
-	showSuccessNotification,
-} from '../../../utils/notifications';
+import { showToast } from '../../../utils/notifications';
 import {
 	cleanupBackupFiles,
 	createBackupFile,
@@ -44,17 +41,19 @@ const ExportToPhone = ({
 			const res = await Share.open(shareOptions);
 
 			if (res.success) {
-				showSuccessNotification({
+				showToast({
+					type: 'success',
 					title: t('export_success_title'),
-					message: t('export_success_msg'),
+					description: t('export_success_msg'),
 				});
 				navigation.goBack();
 			}
 		} catch (error) {
 			if (JSON.stringify(error).indexOf('CANCELLED') < 0) {
-				showErrorNotification({
+				showToast({
+					type: 'error',
 					title: t('export_error_title'),
-					message: t('export_error_msg'),
+					description: t('export_error_msg'),
 				});
 			}
 		}
@@ -67,10 +66,12 @@ const ExportToPhone = ({
 
 		if (fileRes.isErr()) {
 			setIsCreating(false);
-			return showErrorNotification({
+			showToast({
+				type: 'error',
 				title: t('export_error_file'),
-				message: fileRes.error.message,
+				description: fileRes.error.message,
 			});
+			return;
 		}
 
 		await shareToFiles(fileRes.value);

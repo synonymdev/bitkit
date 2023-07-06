@@ -51,10 +51,7 @@ import {
 	EAvailableNetworks,
 	TAvailableNetworks,
 } from '../../../utils/networks';
-import {
-	showErrorNotification,
-	showSuccessNotification,
-} from '../../../utils/notifications';
+import { showToast } from '../../../utils/notifications';
 import {
 	getBlockExplorerLink,
 	sendMax,
@@ -730,15 +727,17 @@ const AddressViewer = ({
 	const onQrCodePress = useCallback(() => {
 		if (privateKey) {
 			Clipboard.setString(privateKey);
-			showSuccessNotification({
+			showToast({
+				type: 'success',
 				title: t('addr.copied'),
-				message: privateKey,
+				description: privateKey,
 			});
 		} else if (selectedAddress.address) {
 			Clipboard.setString(selectedAddress.address);
-			showSuccessNotification({
+			showToast({
+				type: 'success',
 				title: t('addr.copied'),
-				message: selectedAddress.address,
+				description: selectedAddress.address,
 			});
 		}
 	}, [privateKey, selectedAddress.address, t]);
@@ -852,9 +851,10 @@ const AddressViewer = ({
 						allAddresses: _allAddresses,
 					});
 					if (utxosRes.isErr()) {
-						showErrorNotification({
+						showToast({
+							type: 'error',
 							title: t('addr.rescan_error'),
-							message: utxosRes.error.message,
+							description: utxosRes.error.message,
 						});
 						setIsCheckingBalances(false);
 						return;

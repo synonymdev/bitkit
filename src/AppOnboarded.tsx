@@ -15,10 +15,7 @@ import { getStore } from './store/helpers';
 import { updateUi } from './store/actions/ui';
 import { isOnlineSelector } from './store/reselect/ui';
 import { pinOnLaunchSelector, pinSelector } from './store/reselect/settings';
-import {
-	showErrorNotification,
-	showSuccessNotification,
-} from './utils/notifications';
+import { showToast } from './utils/notifications';
 import {
 	selectedNetworkSelector,
 	selectedWalletSelector,
@@ -30,17 +27,19 @@ const onElectrumConnectionChange = (isConnected: boolean): void => {
 
 	if (!isConnectedToElectrum && isConnected) {
 		updateUi({ isConnectedToElectrum: isConnected });
-		showSuccessNotification({
+		showToast({
+			type: 'success',
 			title: i18n.t('other:connection_restored_title'),
-			message: i18n.t('other:connection_restored_message'),
+			description: i18n.t('other:connection_restored_message'),
 		});
 	}
 
 	if (isConnectedToElectrum && !isConnected) {
 		updateUi({ isConnectedToElectrum: isConnected });
-		showErrorNotification({
+		showToast({
+			type: 'error',
 			title: i18n.t('other:connection_reconnect_title'),
-			message: i18n.t('other:connection_reconnect_msg'),
+			description: i18n.t('other:connection_reconnect_msg'),
 		});
 	}
 };
@@ -118,16 +117,18 @@ const AppOnboarded = (): ReactElement => {
 			if (isConnected) {
 				// prevent toast from showing on startup
 				if (isOnline !== isConnected) {
-					showSuccessNotification({
+					showToast({
+						type: 'success',
 						title: t('connection_back_title'),
-						message: t('connection_back_msg'),
+						description: t('connection_back_msg'),
 					});
 				}
 				updateUi({ isOnline: true });
 			} else {
-				showErrorNotification({
+				showToast({
+					type: 'error',
 					title: t('connection_issue'),
-					message: t('connection_issue_explain'),
+					description: t('connection_issue_explain'),
 				});
 				updateUi({ isOnline: false });
 			}

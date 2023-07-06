@@ -10,7 +10,7 @@ import SafeAreaInset from '../../../components/SafeAreaInset';
 import GradientView from '../../../components/GradientView';
 import Tag from '../../../components/Tag';
 import Button from '../../../components/Button';
-import { showErrorNotification } from '../../../utils/notifications';
+import { showToast } from '../../../utils/notifications';
 import { Keyboard } from '../../../hooks/keyboard';
 import { addTxTag } from '../../../store/actions/wallet';
 import { addTag } from '../../../store/actions/metadata';
@@ -34,9 +34,10 @@ const Tags = ({ navigation }: SendScreenProps<'Tags'>): ReactElement => {
 		}
 		const res = addTxTag({ tag: text, selectedNetwork, selectedWallet });
 		if (res.isErr()) {
-			showErrorNotification({
+			showToast({
+				type: 'error',
 				title: t('tags_add_error_header'),
-				message: res.error.message,
+				description: res.error.message,
 			});
 			return;
 		}
@@ -49,9 +50,10 @@ const Tags = ({ navigation }: SendScreenProps<'Tags'>): ReactElement => {
 	const handleTagChoose = async (tag: string): Promise<void> => {
 		const res = addTxTag({ tag, selectedNetwork, selectedWallet });
 		if (res.isErr()) {
-			showErrorNotification({
+			showToast({
+				type: 'error',
 				title: t('tags_add_error_header'),
-				message: res.error.message,
+				description: res.error.message,
 			});
 			return;
 		}

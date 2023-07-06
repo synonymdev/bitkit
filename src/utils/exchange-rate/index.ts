@@ -4,7 +4,7 @@ import i18n from '../i18n';
 import { timeAgo } from '../helpers';
 import { getWalletStore } from '../../store/helpers';
 import { __BLOCKTANK_HOST__ } from '../../constants/env';
-import { showErrorNotification } from '../notifications';
+import { showToast } from '../notifications';
 
 export const mostUsedExchangeTickers = {
 	USD: {
@@ -80,16 +80,18 @@ export const getExchangeRates = async (): Promise<Result<IExchangeRates>> => {
 		console.error(e);
 
 		if (lastUpdatedAt) {
-			showErrorNotification({
+			showToast({
+				type: 'error',
 				title: i18n.t('other:rate_error_title'),
-				message: i18n.t('other:rate_error_msg_date', {
+				description: i18n.t('other:rate_error_msg_date', {
 					date: timeAgo(lastUpdatedAt),
 				}),
 			});
 		} else {
-			showErrorNotification({
+			showToast({
+				type: 'error',
 				title: i18n.t('other:rate_error_title'),
-				message: i18n.t('other:rate_error_msg_nodate'),
+				description: i18n.t('other:rate_error_msg_nodate'),
 			});
 		}
 

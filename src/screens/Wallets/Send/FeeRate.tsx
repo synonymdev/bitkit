@@ -10,7 +10,7 @@ import Button from '../../../components/Button';
 import Store from '../../../store/types';
 import { EFeeId } from '../../../store/types/fees';
 import { useBalance } from '../../../hooks/wallet';
-import { showErrorNotification } from '../../../utils/notifications';
+import { showToast } from '../../../utils/notifications';
 import {
 	getTotalFee,
 	getTransactionOutputValue,
@@ -66,9 +66,10 @@ const FeeRate = ({ navigation }: SendScreenProps<'FeeRate'>): ReactElement => {
 				selectedFeeId: feeId,
 			});
 			if (res.isErr()) {
-				showErrorNotification({
+				showToast({
+					type: 'error',
 					title: t('send_fee_error'),
-					message: res.error.message,
+					description: res.error.message,
 				});
 			}
 		},

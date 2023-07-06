@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 
 import { processInputData, validateInputData } from '../../../utils/scanner';
-import { showErrorNotification } from '../../../utils/notifications';
+import { showToast } from '../../../utils/notifications';
 import { useSlashtagsSDK } from '../../../components/SlashtagsProvider';
 import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
 import ScannerComponent from '../../Scanner/ScannerComponent';
@@ -21,9 +21,10 @@ const ScannerScreen = (): ReactElement => {
 
 	const onRead = async (data: string): Promise<void> => {
 		if (!data) {
-			showErrorNotification({
+			showToast({
+				type: 'error',
 				title: t('qr_error_header'),
-				message: t('qr_error_text'),
+				description: t('qr_error_text'),
 			});
 			return;
 		}

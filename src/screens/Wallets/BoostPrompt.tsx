@@ -20,10 +20,7 @@ import {
 	updateFee,
 	validateTransaction,
 } from '../../utils/wallet/transactions';
-import {
-	showErrorNotification,
-	showSuccessNotification,
-} from '../../utils/notifications';
+import { showToast } from '../../utils/notifications';
 import { btcToSats } from '../../utils/conversion';
 import { TOnchainActivityItem } from '../../store/types/activity';
 import {
@@ -104,9 +101,10 @@ const BoostForm = ({
 				selectedWallet,
 			});
 			if (res.isErr()) {
-				showErrorNotification({
+				showToast({
+					type: 'error',
 					title: t('send_fee_error'),
-					message: res.error.message,
+					description: res.error.message,
 				});
 			}
 		}
@@ -125,9 +123,10 @@ const BoostForm = ({
 			transaction,
 		});
 		if (res.isErr()) {
-			showErrorNotification({
+			showToast({
+				type: 'error',
 				title: t('send_fee_error'),
-				message: res.error.message,
+				description: res.error.message,
 			});
 		}
 	};
@@ -140,9 +139,10 @@ const BoostForm = ({
 			transaction,
 		});
 		if (res.isErr()) {
-			showErrorNotification({
+			showToast({
+				type: 'error',
 				title: t('send_fee_error'),
-				message: res.error.message,
+				description: res.error.message,
 			});
 		}
 	};
@@ -152,9 +152,10 @@ const BoostForm = ({
 		const transactionIsValid = validateTransaction(transaction);
 		if (transactionIsValid.isErr()) {
 			setLoading(false);
-			showErrorNotification({
+			showToast({
+				type: 'error',
 				title: t('tx_invalid'),
-				message: transactionIsValid.error.message,
+				description: transactionIsValid.error.message,
 			});
 			return;
 		}
@@ -170,14 +171,16 @@ const BoostForm = ({
 				// Optimistically/immediately update activity item
 				updateActivityItem(activityItem.id, response.value);
 				closeBottomSheet('boostPrompt');
-				showSuccessNotification({
+				showToast({
+					type: 'success',
 					title: t('boost_success_title'),
-					message: t('boost_success_msg'),
+					description: t('boost_success_msg'),
 				});
 			} else {
-				showErrorNotification({
+				showToast({
+					type: 'error',
 					title: t('boost_error_title'),
-					message: t('boost_error_msg'),
+					description: t('boost_error_msg'),
 				});
 			}
 		} catch (e) {

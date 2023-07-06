@@ -24,10 +24,7 @@ import {
 	getDefaultPort,
 	getProtocolForPort,
 } from '../../../utils/electrum';
-import {
-	showErrorNotification,
-	showSuccessNotification,
-} from '../../../utils/notifications';
+import { showToast } from '../../../utils/notifications';
 import { getConnectedPeer, IPeerData } from '../../../utils/wallet/electrum';
 import SafeAreaInset from '../../../components/SafeAreaInset';
 import { RadioButtonGroup } from '../../../components/RadioButton';
@@ -125,9 +122,10 @@ const ElectrumConfig = ({
 		try {
 			const validityCheck = validateInput(peerData, t);
 			if (validityCheck.isErr()) {
-				showErrorNotification({
+				showToast({
+					type: 'error',
 					title: t('es.error_peer'),
-					message: validityCheck.error.message,
+					description: validityCheck.error.message,
 				});
 				return;
 			}
@@ -148,15 +146,17 @@ const ElectrumConfig = ({
 			if (connectResponse.isOk()) {
 				addElectrumPeer({ selectedNetwork, peer: connectData });
 				updateUi({ isConnectedToElectrum: true });
-				showSuccessNotification({
+				showToast({
+					type: 'success',
 					title: t('es.server_updated_title'),
-					message: t('es.server_updated_message', { host, port }),
+					description: t('es.server_updated_message', { host, port }),
 				});
 			} else {
 				updateUi({ isConnectedToElectrum: false });
-				showErrorNotification({
+				showToast({
+					type: 'error',
 					title: t('es.server_error'),
-					message: connectResponse.error.message,
+					description: connectResponse.error.message,
 				});
 			}
 			await getAndUpdateConnectedPeer();
@@ -204,9 +204,10 @@ const ElectrumConfig = ({
 
 			const validityCheck = validateInput(connectData, t);
 			if (validityCheck.isErr()) {
-				showErrorNotification({
+				showToast({
+					type: 'error',
 					title: t('es.error_peer'),
-					message: validityCheck.error.message,
+					description: validityCheck.error.message,
 				});
 				return;
 			}
@@ -219,9 +220,10 @@ const ElectrumConfig = ({
 			// Try to connect
 			connectAndAddPeer(connectData);
 		} catch {
-			showErrorNotification({
+			showToast({
+				type: 'error',
 				title: t('es.qr_error_title'),
-				message: t('es.qr_error_message'),
+				description: t('es.qr_error_message'),
 			});
 		}
 	};

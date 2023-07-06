@@ -19,7 +19,7 @@ import Button from '../../../components/Button';
 import Glow from '../../../components/Glow';
 import { IsSensorAvailableResult } from '../../../components/Biometrics';
 import rnBiometrics from '../../../utils/biometrics';
-import { showErrorNotification } from '../../../utils/notifications';
+import { showToast } from '../../../utils/notifications';
 import { updateSettings } from '../../../store/actions/settings';
 import type { PinScreenProps } from '../../../navigation/types';
 
@@ -74,9 +74,10 @@ const AskForBiometrics = ({
 				}
 			})
 			.catch(() => {
-				showErrorNotification({
+				showToast({
+					type: 'error',
 					title: t('bio_error_title'),
-					message: t('bio_error_message'),
+					description: t('bio_error_message'),
 				});
 			});
 	}, [

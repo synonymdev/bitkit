@@ -8,10 +8,7 @@ import { updateUi } from '../store/actions/ui';
 import { View, AnimatedView } from '../styles/components';
 import { Text01M, Caption13M } from '../styles/text';
 import { BrokenLinkIcon } from '../styles/icons';
-import {
-	showErrorNotification,
-	showSuccessNotification,
-} from '../utils/notifications';
+import { showToast } from '../utils/notifications';
 import { connectToElectrum } from '../utils/wallet/electrum';
 import Button from './Button';
 import {
@@ -35,14 +32,16 @@ const ConnectivityIndicator = (): ReactElement => {
 		const connectionResponse = await connectToElectrum();
 		if (connectionResponse.isOk()) {
 			updateUi({ isConnectedToElectrum: true });
-			showSuccessNotification({
+			showToast({
+				type: 'success',
 				title: t('connection_restored_title'),
-				message: t('connection_restored_message'),
+				description: t('connection_restored_message'),
 			});
 		} else {
-			showErrorNotification({
+			showToast({
+				type: 'error',
 				title: t('connection_lost_title'),
-				message: t('connection_lost_message'),
+				description: t('connection_lost_message'),
 			});
 		}
 		setIsLoading(false);

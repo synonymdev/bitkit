@@ -13,7 +13,7 @@ import {
 } from '../styles/icons';
 import { IWidget } from '../store/types/widgets';
 import { useSlashtagsSDK } from './SlashtagsProvider';
-import { showErrorNotification } from '../utils/notifications';
+import { showToast } from '../utils/notifications';
 import { decodeJSON } from '../utils/slashtags';
 import { rootNavigation } from '../navigation/root/RootNavigator';
 import Dialog from './Dialog';
@@ -63,9 +63,10 @@ const HeadlinesWidget = ({
 				drive.core.on('append', read);
 			})
 			.catch((e: Error) => {
-				showErrorNotification({
+				showToast({
+					type: 'error',
 					title: t('widget_error_drive'),
-					message: e.message,
+					description: e.message,
 				});
 			});
 

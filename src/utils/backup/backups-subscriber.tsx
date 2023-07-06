@@ -20,7 +20,7 @@ import { widgetsState } from '../../store/reselect/widgets';
 import { activityItemsState } from '../../store/reselect/activity';
 import { EActivityType } from '../../store/types/activity';
 import { blocktankSelector } from '../../store/reselect/blocktank';
-import { showErrorNotification } from '../notifications';
+import { showToast } from '../notifications';
 import { __E2E__ } from '../../constants/env';
 
 const BACKUP_DEBOUNCE = 5000; // 5 seconds
@@ -218,9 +218,10 @@ const EnabledSlashtag = (): ReactElement => {
 		}
 
 		const timer = setInterval(() => {
-			showErrorNotification({
+			showToast({
+				type: 'error',
 				title: t('backup.failed_title'),
-				message: t('backup.failed_message'),
+				description: t('backup.failed_message'),
 			});
 		}, FAILED_BACKUP_NOTIFICATION_INTERVAL);
 

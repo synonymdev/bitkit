@@ -4,7 +4,7 @@ import { Trans, useTranslation } from 'react-i18next';
 
 import { View as ThemedView } from '../../styles/components';
 import { Text01M, Text01S } from '../../styles/text';
-import { showErrorNotification } from '../../utils/notifications';
+import { showToast } from '../../utils/notifications';
 import { getBip39Passphrase, getMnemonicPhrase } from '../../utils/wallet';
 import NavigationHeader from '../../components/NavigationHeader';
 import SafeAreaInset from '../../components/SafeAreaInset';
@@ -25,9 +25,10 @@ const Mnemonic = ({
 			const bip39Passphrase = await getBip39Passphrase();
 
 			if (mnemoncicResult.isErr()) {
-				showErrorNotification({
+				showToast({
+					type: 'error',
 					title: t('mnemonic_error'),
-					message: mnemoncicResult.error.message,
+					description: mnemoncicResult.error.message,
 				});
 				return;
 			}

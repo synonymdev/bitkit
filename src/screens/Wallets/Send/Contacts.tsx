@@ -7,7 +7,7 @@ import NavigationHeader from '../../../components/NavigationHeader';
 import GradientView from '../../../components/GradientView';
 import ContactsList from '../../../components/ContactsList';
 import { processInputData } from '../../../utils/scanner';
-import { showErrorNotification } from '../../../utils/notifications';
+import { showToast } from '../../../utils/notifications';
 import { useSlashtags } from '../../../components/SlashtagsProvider';
 import type { SendScreenProps } from '../../../navigation/types';
 import type { IContactRecord } from '../../../store/types/slashtags';
@@ -52,9 +52,10 @@ const Contacts = ({
 			navigation.navigate('Amount');
 			return;
 		}
-		showErrorNotification({
+		showToast({
+			type: 'error',
 			title: t('contact_pay_error'),
-			message: res.error.message,
+			description: res.error.message,
 		});
 	};
 

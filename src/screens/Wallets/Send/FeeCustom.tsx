@@ -12,7 +12,7 @@ import Amount from '../../../components/Amount';
 import NumberPad from '../../../components/NumberPad';
 import { getTotalFee, updateFee } from '../../../utils/wallet/transactions';
 import { handleNumberPadPress } from '../../../utils/numberpad';
-import { showErrorNotification } from '../../../utils/notifications';
+import { showToast } from '../../../utils/notifications';
 import useDisplayValues from '../../../hooks/displayValues';
 import {
 	selectedNetworkSelector,
@@ -61,9 +61,10 @@ const FeeCustom = ({
 			transaction,
 		});
 		if (res.isErr()) {
-			showErrorNotification({
+			showToast({
+				type: 'error',
 				title: t('send_fee_error'),
-				message: res.error.message,
+				description: res.error.message,
 			});
 		}
 		if (res.isOk()) {

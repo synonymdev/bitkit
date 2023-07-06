@@ -21,7 +21,7 @@ import {
 	useLightningChannelBalance,
 	useLightningChannelName,
 } from '../../../hooks/lightning';
-import { showSuccessNotification } from '../../../utils/notifications';
+import { showToast } from '../../../utils/notifications';
 import { getTransactions } from '../../../utils/wallet/electrum';
 import { getBlockExplorerLink } from '../../../utils/wallet/transactions';
 import { openURL } from '../../../utils/helpers';
@@ -495,9 +495,10 @@ const ChannelDetails = ({
 						}
 						onPress={(): void => {
 							Clipboard.setString(channel.counterparty_node_id);
-							showSuccessNotification({
+							showToast({
+								type: 'success',
 								title: t('copied_couterparty'),
-								message: channel.counterparty_node_id,
+								description: channel.counterparty_node_id,
 							});
 						}}
 					/>

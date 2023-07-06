@@ -26,7 +26,7 @@ import Store from '../../store/types';
 import { IWidget, SlashFeedJSON } from '../../store/types/widgets';
 import { useSlashtagsSDK } from '../../components/SlashtagsProvider';
 import { decodeJSON, readAsDataURL } from '../../utils/slashtags';
-import { showErrorNotification } from '../../utils/notifications';
+import { showToast } from '../../utils/notifications';
 import ProfileImage from '../../components/ProfileImage';
 import { deleteWidget, setFeedWidget } from '../../store/actions/widgets';
 import {
@@ -82,9 +82,10 @@ const WidgetFeedEdit = ({
 			.ready()
 			.then(read)
 			.catch((e: Error) => {
-				showErrorNotification({
+				showToast({
+					type: 'error',
 					title: t('widget_error_drive'),
-					message: e.message,
+					description: e.message,
 				});
 			});
 
@@ -125,9 +126,10 @@ const WidgetFeedEdit = ({
 				})
 				.catch((e: Error) => {
 					setIsLoading(false);
-					showErrorNotification({
+					showToast({
+						type: 'error',
 						title: t('widget_error_slashfeed'),
-						message: e.message,
+						description: e.message,
 					});
 				});
 		}

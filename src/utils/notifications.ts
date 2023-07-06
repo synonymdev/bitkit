@@ -1,13 +1,11 @@
-import Toast, { ToastPosition } from 'react-native-toast-message';
+import Toast from 'react-native-toast-message';
 import { __E2E__ } from '../constants/env';
 
-type AppNotification = {
-	title?: string;
-	message: string;
+export type ToastOptions = {
+	type: 'success' | 'error' | 'info';
+	title: string;
+	description: string;
 	autoHide?: boolean;
-	visibilityTime?: number;
-	topOffset?: number;
-	bottomOffset?: number;
 };
 
 const defaultOptions = {
@@ -17,60 +15,22 @@ const defaultOptions = {
 	bottomOffset: 120,
 };
 
-export const showErrorNotification = (
-	{
-		title = 'Something went wrong',
-		message = ' ', // Toast.show fails if we accidentally provide an empty string
-		...options
-	}: AppNotification,
-	position: ToastPosition = 'top',
-): void => {
+export const showToast = ({
+	type,
+	title,
+	description,
+	autoHide,
+}: ToastOptions): void => {
 	if (__E2E__) {
 		return;
 	}
 
 	Toast.show({
-		type: 'error',
-		text1: title,
-		text2: message,
 		...defaultOptions,
-		...options,
-		position,
-	});
-};
-
-export const showSuccessNotification = (
-	{ title = 'Success!', message, ...options }: AppNotification,
-	position: ToastPosition = 'top',
-): void => {
-	if (__E2E__) {
-		return;
-	}
-
-	Toast.show({
-		type: 'success',
+		type,
 		text1: title,
-		text2: message,
-		...defaultOptions,
-		...options,
-		position,
-	});
-};
-
-export const showInfoNotification = (
-	{ title = '', message, ...options }: AppNotification,
-	position: ToastPosition = 'top',
-): void => {
-	if (__E2E__) {
-		return;
-	}
-
-	Toast.show({
-		type: 'info',
-		text1: title,
-		text2: message,
-		...defaultOptions,
-		...options,
-		position,
+		text2: description,
+		position: 'top',
+		autoHide,
 	});
 };

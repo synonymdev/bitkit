@@ -13,7 +13,7 @@ import {
 	TrashIcon,
 } from '../styles/icons';
 import { useSlashtagsSDK } from './SlashtagsProvider';
-import { showErrorNotification } from '../utils/notifications';
+import { showToast } from '../utils/notifications';
 import { rootNavigation } from '../navigation/root/RootNavigator';
 import Dialog from './Dialog';
 import { deleteWidget } from '../store/actions/widgets';
@@ -55,9 +55,10 @@ const FactsWidget = ({
 				drive.core.on('append', read);
 			})
 			.catch((e: Error) => {
-				showErrorNotification({
+				showToast({
+					type: 'error',
 					title: t('widget_error_drive'),
-					message: e.message,
+					description: e.message,
 				});
 			});
 

@@ -23,11 +23,7 @@ import {
 	parseOnChainPaymentRequest,
 } from './wallet/transactions';
 import { getLightningStore } from '../store/helpers';
-import {
-	showErrorNotification,
-	showInfoNotification,
-	showSuccessNotification,
-} from './notifications';
+import { showToast, ToastOptions } from './notifications';
 import { updateSendTransaction } from '../store/actions/wallet';
 import { getBalance, getSelectedNetwork, getSelectedWallet } from './wallet';
 import { showBottomSheet, closeBottomSheet } from '../store/actions/ui';
@@ -168,9 +164,10 @@ export const processInputData = async ({
 		if (decodeRes.isErr()) {
 			const errorMessage = i18n.t('other:scan_err_interpret_msg');
 			if (showErrors) {
-				showErrorNotification({
+				showToast({
+					type: 'error',
 					title: i18n.t('other:scan_err_decoding'),
-					message: errorMessage,
+					description: errorMessage,
 				});
 			}
 			return err(errorMessage);
@@ -180,9 +177,10 @@ export const processInputData = async ({
 		if (!decodeRes.value.length) {
 			const errorMessage = i18n.t('other:scan_err_interpret_msg');
 			if (showErrors) {
-				showErrorNotification({
+				showToast({
+					type: 'error',
 					title: i18n.t('other:scan_err_interpret_title'),
-					message: errorMessage,
+					description: errorMessage,
 				});
 			}
 			return err(errorMessage);
@@ -223,9 +221,10 @@ export const processInputData = async ({
 
 			if (response.isErr()) {
 				if (showErrors) {
-					showErrorNotification({
+					showToast({
+						type: 'error',
 						title: i18n.t('slashtags:error_pay_title'),
-						message: response.error.message,
+						description: response.error.message,
 					});
 				}
 				return err(response.error.message);
@@ -234,9 +233,10 @@ export const processInputData = async ({
 			if (response.value.length === 0) {
 				const errorMessage = i18n.t('slashtags:error_pay_empty_msg');
 				if (showErrors) {
-					showErrorNotification({
+					showToast({
+						type: 'error',
 						title: i18n.t('slashtags:error_pay_title'),
-						message: errorMessage,
+						description: errorMessage,
 					});
 				}
 				return err(errorMessage);
@@ -521,7 +521,7 @@ export const processBitcoinTransactionData = async ({
 		}
 
 		let response;
-		let error: { title: string; message: string } | undefined; //Information that will be passed as a notification.
+		let error: ToastOptions | undefined; //Information that will be passed as a notification.
 		let requestedAmount = 0; //Amount requested in sats by the provided invoice.
 
 		let { onchainBalance, spendingBalance } = getBalance({
@@ -561,8 +561,9 @@ export const processBitcoinTransactionData = async ({
 				requestedAmount = decodedLightningInvoice.amount_satoshis ?? 0;
 				if (decodedLightningInvoice.is_expired) {
 					error = {
+						type: 'error',
 						title: 'Lightning Invoice Expired',
-						message: 'Unfortunately, this lightning invoice has expired.',
+						description: 'Unfortunately, this lightning invoice has expired.',
 					};
 				}
 			}
@@ -585,8 +586,9 @@ export const processBitcoinTransactionData = async ({
 			} else {
 				const diff = requestedAmount - spendingBalance;
 				error = {
+					type: 'error',
 					title: 'Unable to afford the lightning invoice',
-					message: `(${diff} more sats needed.)`,
+					description: `(${diff} more sats needed.)`,
 				};
 			}
 		}
@@ -609,9 +611,10 @@ export const processBitcoinTransactionData = async ({
 				if (onchainBalance > requestedAmount) {
 					response = bitcoinInvoice;
 				} else {
-					showInfoNotification({
+					showToast({
+						type: 'info',
 						title: i18n.t('lightning:error_fulfill_title'),
-						message: i18n.t('lightning:error_fulfill_msg', {
+						description: i18n.t('lightning:error_fulfill_msg', {
 							amount: requestedAmount - onchainBalance,
 						}),
 					});
@@ -635,20 +638,22 @@ export const processBitcoinTransactionData = async ({
 		}
 
 		if (error) {
-			showErrorNotification(error);
+			showToast(error);
 		} else {
 			if (requestedAmount) {
 				error = {
+					type: 'error',
 					title: `${requestedAmount} more sats needed`,
-					message: 'Unable to pay the provided invoice',
+					description: 'Unable to pay the provided invoice',
 				};
 			} else {
 				error = {
+					type: 'error',
 					title: 'Unable to pay the provided invoice',
-					message: 'Please send more sats to Bitkit to process payments.',
+					description: 'Please send more sats to Bitkit to process payments.',
 				};
 			}
-			showErrorNotification(error);
+			showToast(error);
 		}
 		return err(error.title);
 	} catch (e) {
@@ -673,9 +678,10 @@ export const handleData = async ({
 	selectedNetwork?: TAvailableNetworks;
 }): Promise<Result<TProcessedData>> => {
 	if (!data) {
-		showErrorNotification({
+		showToast({
+			type: 'error',
 			title: i18n.t('other:qr_error_no_data_header'),
-			message: i18n.t('other:qr_error_no_data_text'),
+			description: i18n.t('other:qr_error_no_data_text'),
 		});
 		return err('Unable to read or interpret the provided data.');
 	}
@@ -687,9 +693,10 @@ export const handleData = async ({
 		selectedWallet = getSelectedWallet();
 	}
 	if (data.network && data.network !== selectedNetwork) {
-		showErrorNotification({
+		showToast({
+			type: 'error',
 			title: i18n.t('other:qr_error_network_header'),
-			message: i18n.t('other:qr_error_network_text', {
+			description: i18n.t('other:qr_error_network_text', {
 				selectedNetwork,
 				dataNetwork: data.network,
 			}),
@@ -747,9 +754,10 @@ export const handleData = async ({
 				paymentRequest: lightningPaymentRequest,
 			});
 			if (decodedInvoice.isErr()) {
-				showErrorNotification({
+				showToast({
+					type: 'error',
 					title: i18n.t('lightning:error_decode'),
-					message: decodedInvoice.error.message,
+					description: decodedInvoice.error.message,
 				});
 				return err(decodedInvoice.error.message);
 			}
@@ -817,9 +825,10 @@ export const handleData = async ({
 				return err('Unable to interpret peer information.');
 			}
 			if (peer.includes('onion')) {
-				showErrorNotification({
+				showToast({
+					type: 'error',
 					title: i18n.t('lightning:error_add'),
-					message: i18n.t('lightning:error_add_tor'),
+					description: i18n.t('lightning:error_add_tor'),
 				});
 				return err('Unable to add tor nodes at this time.');
 			}
@@ -828,24 +837,27 @@ export const handleData = async ({
 				timeout: 5000,
 			});
 			if (addPeerRes.isErr()) {
-				showErrorNotification({
+				showToast({
+					type: 'error',
 					title: i18n.t('lightning:error_add'),
-					message: addPeerRes.error.message,
+					description: addPeerRes.error.message,
 				});
 				return err('Unable to add lightning peer.');
 			}
 			const savePeerRes = savePeer({ selectedWallet, selectedNetwork, peer });
 			if (savePeerRes.isErr()) {
-				showErrorNotification({
+				showToast({
+					type: 'error',
 					title: i18n.t('lightning:error_save'),
-					message: savePeerRes.error.message,
+					description: savePeerRes.error.message,
 				});
 				return err(savePeerRes.error.message);
 			}
 			closeBottomSheet('sendNavigation');
-			showSuccessNotification({
+			showToast({
+				type: 'success',
 				title: savePeerRes.value,
-				message: i18n.t('lightning:peer_saved'),
+				description: i18n.t('lightning:peer_saved'),
 			});
 			return ok({ type: EQRDataType.nodeId });
 		}
@@ -895,9 +907,10 @@ export const validateInputData = async ({
 		if (decodeRes.isErr() || !decodeRes.value.length) {
 			const errorMessage = i18n.t('other:scan_err_interpret_msg');
 			if (showErrors) {
-				showErrorNotification({
+				showToast({
+					type: 'error',
 					title: i18n.t('other:scan_err_interpret_title'),
-					message: errorMessage,
+					description: errorMessage,
 				});
 			}
 			return err(errorMessage);
@@ -940,9 +953,10 @@ export const validateInputData = async ({
 				if (response.isErr()) {
 					const errorMessage = response.error.message;
 					if (showErrors) {
-						showErrorNotification({
+						showToast({
+							type: 'error',
 							title: i18n.t('slashtags:error_pay_title'),
-							message: errorMessage,
+							description: errorMessage,
 						});
 					}
 					return err(errorMessage);
@@ -950,9 +964,10 @@ export const validateInputData = async ({
 				if (response.value.length === 0) {
 					const errorMessage = i18n.t('slashtags:error_pay_empty_msg');
 					if (showErrors) {
-						showErrorNotification({
+						showToast({
+							type: 'error',
 							title: i18n.t('slashtags:error_pay_title'),
-							message: errorMessage,
+							description: errorMessage,
 						});
 					}
 					return err(errorMessage);
@@ -967,9 +982,10 @@ export const validateInputData = async ({
 			if (source === 'send') {
 				const errorMessage = i18n.t('other:scan_err_not_payable_msg');
 				if (showErrors) {
-					showErrorNotification({
+					showToast({
+						type: 'error',
 						title: i18n.t('slashtags:error_pay_title'),
-						message: errorMessage,
+						description: errorMessage,
 					});
 				}
 				return err(errorMessage);
@@ -982,9 +998,10 @@ export const validateInputData = async ({
 			if (source === 'send') {
 				const errorMessage = i18n.t('other:scan_err_not_payable_msg');
 				if (showErrors) {
-					showErrorNotification({
+					showToast({
+						type: 'error',
 						title: i18n.t('slashtags:error_pay_title'),
-						message: errorMessage,
+						description: errorMessage,
 					});
 				}
 				return err(errorMessage);

@@ -30,10 +30,7 @@ import {
 	isGeoBlocked,
 	watchOrder,
 } from '../../utils/blocktank';
-import {
-	showErrorNotification,
-	showSuccessNotification,
-} from '../../utils/notifications';
+import { showToast } from '../../utils/notifications';
 import { getDisplayValues } from '../../utils/displayValues';
 import i18n from '../../utils/i18n';
 import { restartLdk } from '../../utils/lightning';
@@ -231,9 +228,10 @@ export const startChannelPurchase = async ({
 
 	const orderData = await getOrder(buyChannelData.order_id);
 	if (orderData.isErr()) {
-		showErrorNotification({
+		showToast({
+			type: 'error',
 			title: i18n.t('other:bt_error_retrieve'),
-			message: orderData.error.message,
+			description: orderData.error.message,
 		});
 		return err(orderData.error.message);
 	}
@@ -305,9 +303,10 @@ export const confirmChannelPurchase = async ({
 
 	const rawTx = await createTransaction({ selectedWallet, selectedNetwork });
 	if (rawTx.isErr()) {
-		showErrorNotification({
+		showToast({
+			type: 'error',
 			title: i18n.t('wallet:error_create_tx'),
-			message: rawTx.error.message,
+			description: rawTx.error.message,
 		});
 		return err(rawTx.error.message);
 	}
@@ -318,9 +317,10 @@ export const confirmChannelPurchase = async ({
 		selectedNetwork,
 	});
 	if (broadcastResponse.isErr()) {
-		showErrorNotification({
+		showToast({
+			type: 'error',
 			title: i18n.t('wallet:error_broadcast_tx'),
-			message: broadcastResponse.error.message,
+			description: broadcastResponse.error.message,
 		});
 		return err(broadcastResponse.error.message);
 	}
@@ -390,18 +390,20 @@ const handleOrderStateChange = (order: IGetOrderResponse): void => {
 	// given up
 	if (order.state === 400) {
 		removeTodo('lightningSettingUp');
-		showErrorNotification({
+		showToast({
+			type: 'error',
 			title: i18n.t('lightning:order_given_up_title'),
-			message: i18n.t('lightning:order_given_up_msg'),
+			description: i18n.t('lightning:order_given_up_msg'),
 		});
 	}
 
 	// order expired
 	if (order.state === 410) {
 		removeTodo('lightningSettingUp');
-		showErrorNotification({
+		showToast({
+			type: 'error',
 			title: i18n.t('lightning:order_expired_title'),
-			message: i18n.t('lightning:order_expired_msg'),
+			description: i18n.t('lightning:order_expired_msg'),
 		});
 	}
 
@@ -420,9 +422,10 @@ const handleOrderStateChange = (order: IGetOrderResponse): void => {
 		if (!oneOtherOrderHasState([500])) {
 			// first channel
 			addTodo('lightningReady');
-			showSuccessNotification({
+			showToast({
+				type: 'success',
 				title: i18n.t('lightning:channel_opened_title'),
-				message: i18n.t('lightning:channel_opened_msg'),
+				description: i18n.t('lightning:channel_opened_msg'),
 			});
 		} else {
 			// subsequent channels

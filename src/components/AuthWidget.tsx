@@ -13,7 +13,7 @@ import { useProfile, useSelectedSlashtag } from '../hooks/slashtags';
 import { TouchableOpacity, View } from '../styles/components';
 import { Text01M } from '../styles/text';
 import { KeyIcon, ListIcon, TrashIcon } from '../styles/icons';
-import { showErrorNotification } from '../utils/notifications';
+import { showToast } from '../utils/notifications';
 import Button from './Button';
 import ProfileImage from './ProfileImage';
 import { IWidget } from '../store/types/widgets';
@@ -52,18 +52,20 @@ const AuthWidget = ({
 
 	const openMagicLink = useCallback(async () => {
 		const magiclink = await client.magiclink(url).catch((e: Error) => {
-			showErrorNotification({
+			showToast({
+				type: 'error',
 				title: t('auth_error_link'),
-				message:
+				description:
 					e.message === 'channel closed' ? t('auth_error_peer') : e.message,
 			});
 		});
 
 		if (magiclink) {
 			Linking.openURL(magiclink.url).catch((e) => {
-				showErrorNotification({
+				showToast({
+					type: 'error',
 					title: t('auth_error_open'),
-					message: e.message,
+					description: e.message,
 				});
 			});
 		}

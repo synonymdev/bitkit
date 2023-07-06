@@ -35,7 +35,7 @@ import { updateBlocktank } from './blocktank';
 import { IBlocktank } from '../types/blocktank';
 import { IActivity } from '../types/activity';
 import { checkBackup } from '../../utils/slashtags';
-import { showErrorNotification } from '../../utils/notifications';
+import { showToast } from '../../utils/notifications';
 import { FAILED_BACKUP_CHECK_TIME } from '../../utils/backup/backups-subscriber';
 import i18n from '../../utils/i18n';
 
@@ -591,9 +591,10 @@ export const checkProfileAndContanctsBackup = async (
 		(backup.hyperContactsCheckRequested &&
 			now - backup.hyperContactsCheckRequested > FAILED_BACKUP_CHECK_TIME)
 	) {
-		showErrorNotification({
+		showToast({
+			type: 'error',
 			title: i18n.t('settings:backup.failed_title'),
-			message: i18n.t('settings:backup.failed_message'),
+			description: i18n.t('settings:backup.failed_message'),
 		});
 	}
 };

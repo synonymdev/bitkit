@@ -81,13 +81,10 @@ import {
 } from '../shapes/wallet';
 import { TGetImpactedAddressesRes } from '../types/checks';
 import { updateActivityItem, updateActivityList } from './activity';
+import { showToast } from '../../utils/notifications';
 import { getActivityItemById } from '../../utils/activity';
-import { EActivityType, TOnchainActivityItem } from '../types/activity';
-import {
-	showErrorNotification,
-	showInfoNotification,
-} from '../../utils/notifications';
 import { getFakeTransaction } from '../../utils/wallet/testing';
+import { EActivityType, TOnchainActivityItem } from '../types/activity';
 import i18n from '../../utils/i18n';
 
 const dispatch = getDispatch();
@@ -862,9 +859,10 @@ export const checkUnconfirmedTransactions = async ({
 		const { unconfirmedTxs, outdatedTxs, ghostTxs } = processRes.value;
 		if (outdatedTxs.length) {
 			// Notify user that a reorg has occurred and that the transaction has been pushed back into the mempool.
-			showInfoNotification({
+			showToast({
+				type: 'info',
 				title: i18n.t('wallet:reorg_detected'),
-				message: i18n.t('wallet:reorg_msg_begin', {
+				description: i18n.t('wallet:reorg_msg_begin', {
 					count: outdatedTxs.length,
 				}),
 				autoHide: false,
@@ -874,11 +872,12 @@ export const checkUnconfirmedTransactions = async ({
 		}
 		if (ghostTxs.length) {
 			// Notify user that a transaction has been removed from the mempool.
-			showErrorNotification({
+			showToast({
+				type: 'error',
 				title: i18n.t('wallet:activity_removed_title', {
 					count: ghostTxs.length,
 				}),
-				message: i18n.t('wallet:activity_removed_msg'),
+				description: i18n.t('wallet:activity_removed_msg'),
 				autoHide: false,
 			});
 			//We need to update the ghost transactions in the store & activity-list and rescan the addresses to get the correct balance.

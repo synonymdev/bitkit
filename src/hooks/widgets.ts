@@ -2,7 +2,7 @@ import { SlashURL, Hyperdrive } from '@synonymdev/slashtags-sdk';
 import { useEffect, useState } from 'react';
 
 import { useSlashtagsSDK } from '../components/SlashtagsProvider';
-import { showErrorNotification } from '../utils/notifications';
+import { showToast } from '../utils/notifications';
 import { decodeWidgetFieldValue } from '../utils/widgets';
 import { IWidget } from '../store/types/widgets';
 
@@ -41,9 +41,10 @@ export const useFeedWidget = ({
 				drive.core.on('append', read);
 			})
 			.catch((e: Error) => {
-				showErrorNotification({
+				showToast({
+					type: 'error',
 					title: 'Failed to open feed drive',
-					message: e.message,
+					description: e.message,
 				});
 			});
 

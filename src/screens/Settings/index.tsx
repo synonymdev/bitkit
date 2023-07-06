@@ -14,7 +14,7 @@ import { EItemType, IListData, ItemData } from '../../components/List';
 import SettingsView from './SettingsView';
 import GlowImage from '../../components/GlowImage';
 import { updateSettings } from '../../store/actions/settings';
-import { showSuccessNotification } from '../../utils/notifications';
+import { showToast } from '../../utils/notifications';
 import { SettingsScreenProps } from '../../navigation/types';
 import { enableDevOptionsSelector } from '../../store/reselect/settings';
 
@@ -35,9 +35,12 @@ const MainSettings = ({
 			updateSettings({
 				enableDevOptions: enabled,
 			});
-			showSuccessNotification({
+			showToast({
+				type: 'success',
 				title: t(enabled ? 'dev_enabled_title' : 'dev_disabled_title'),
-				message: t(enabled ? 'dev_enabled_message' : 'dev_disabled_message'),
+				description: t(
+					enabled ? 'dev_enabled_message' : 'dev_disabled_message',
+				),
 			});
 			setEnableDevOptionsCount(0);
 		}

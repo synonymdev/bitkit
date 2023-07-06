@@ -29,7 +29,7 @@ import {
 import { convertToSats } from '../../utils/conversion';
 import { getNumberPadText } from '../../utils/numberpad';
 import { SPENDING_LIMIT_RATIO } from '../../utils/wallet/constants';
-import { showErrorNotification } from '../../utils/notifications';
+import { showToast } from '../../utils/notifications';
 import { getFiatDisplayValues } from '../../utils/displayValues';
 import {
 	resetSendTransaction,
@@ -152,9 +152,10 @@ const Setup = ({ navigation }: TransferScreenProps<'Setup'>): ReactElement => {
 
 		setLoading(false);
 		if (purchaseResponse.isErr()) {
-			showErrorNotification({
+			showToast({
+				type: 'error',
 				title: t('error_channel_purchase'),
-				message: purchaseResponse.error.message,
+				description: purchaseResponse.error.message,
 			});
 		}
 		if (purchaseResponse.isOk()) {

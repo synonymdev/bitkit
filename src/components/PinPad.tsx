@@ -21,7 +21,7 @@ import { setKeychainValue, getKeychainValue } from '../utils/keychain';
 import BitkitLogo from '../assets/bitkit-logo.svg';
 import { showBottomSheet } from '../store/actions/ui';
 import NavigationHeader from './NavigationHeader';
-import { showErrorNotification } from '../utils/notifications';
+import { showToast } from '../utils/notifications';
 
 export const PIN_ATTEMPTS = '8';
 
@@ -115,9 +115,10 @@ const PinPad = ({
 				if (attemptsRemaining <= 1) {
 					vibrate({ type: 'default' });
 					await wipeApp();
-					showErrorNotification({
+					showToast({
+						type: 'error',
 						title: t('wiped_title'),
-						message: t('wiped_message'),
+						description: t('wiped_message'),
 					});
 				} else {
 					await reducePinAttemptsRemaining();

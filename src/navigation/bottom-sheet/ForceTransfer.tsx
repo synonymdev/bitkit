@@ -12,14 +12,11 @@ import { closeBottomSheet, showBottomSheet } from '../../store/actions/ui';
 import GlowImage from '../../components/GlowImage';
 import { addTodo, removeTodo } from '../../store/actions/todos';
 import { closeAllChannels } from '../../utils/lightning';
+import { showToast } from '../../utils/notifications';
 import {
 	useBottomSheetBackPress,
 	useSnapPoints,
 } from '../../hooks/bottomSheet';
-import {
-	showErrorNotification,
-	showSuccessNotification,
-} from '../../utils/notifications';
 import {
 	selectedNetworkSelector,
 	selectedWalletSelector,
@@ -103,18 +100,20 @@ const ForceTransfer = (): ReactElement => {
 			selectedWallet,
 		});
 		if (closeResponse.isErr()) {
-			showErrorNotification({
+			showToast({
+				type: 'error',
 				title: t('close_error'),
-				message: closeResponse.error.message,
+				description: closeResponse.error.message,
 			});
 			return;
 		}
 		if (closeResponse.isOk()) {
 			if (closeResponse.value.length === 0) {
 				console.log('force close success.');
-				showSuccessNotification({
+				showToast({
+					type: 'success',
 					title: t('force_init_title'),
-					message: t('force_init_msg'),
+					description: t('force_init_msg'),
 				});
 
 				removeTodo('transferClosingChannel');
@@ -122,9 +121,10 @@ const ForceTransfer = (): ReactElement => {
 				closeBottomSheet('forceTransfer');
 			} else {
 				console.log('force close failed.');
-				showErrorNotification({
+				showToast({
+					type: 'error',
 					title: t('force_failed_title'),
-					message: t('force_failed_msg'),
+					description: t('force_failed_msg'),
 				});
 				console.log({ closeResponse: closeResponse.value });
 			}
