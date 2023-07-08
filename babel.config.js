@@ -1,4 +1,5 @@
 const { types } = require('@babel/core');
+const { E2E_TESTS } = process.env;
 
 module.exports = {
 	presets: ['module:metro-react-native-babel-preset'],
@@ -18,7 +19,9 @@ module.exports = {
 	],
 	env: {
 		production: {
-			plugins: ['transform-remove-console'],
+			// do not use `transform-remove-console` in e2e tests
+			// so we can see all the logs
+			plugins: E2E_TESTS ? [] : ['transform-remove-console'],
 		},
 	},
 };

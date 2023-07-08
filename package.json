@@ -148,6 +148,7 @@
     "@commitlint/cli": "^17.6.3",
     "@commitlint/config-conventional": "^17.6.3",
     "@ptsecurity/commitlint-config": "^2.0.0",
+    "@radar/lnrpc": "^0.11.1-beta.1",
     "@react-native-community/eslint-config": "^3.2.0",
     "@tradle/react-native-http": "^2.0.1",
     "@tsconfig/react-native": "^3.0.2",

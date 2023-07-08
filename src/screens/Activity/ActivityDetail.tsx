@@ -785,7 +785,7 @@ const LightningActivityDetail = ({
 									<ZigZag color={colors.background} />
 								</Canvas>
 								<View style={styles.note}>
-									<Title>{message}</Title>
+									<Title testID="InvoiceNote">{message}</Title>
 								</View>
 							</ThemedView>
 						</View>

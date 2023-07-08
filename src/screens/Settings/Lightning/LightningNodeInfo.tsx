@@ -57,12 +57,13 @@ const LightningNodeInfo = ({
 								title: t('copied'),
 								description: t('node_id_copied'),
 							});
-						}}
-						testID="LDKNodeID">
+						}}>
 						<Caption13Up style={styles.label} color="gray1">
 							{t('node_id')}
 						</Caption13Up>
-						<Subtitle>{nodeId}</Subtitle>
+						<Subtitle testID="LDKNodeID" accessibilityLabel={nodeId}>
+							{nodeId}
+						</Subtitle>
 					</TouchableOpacity>
 				)}
 

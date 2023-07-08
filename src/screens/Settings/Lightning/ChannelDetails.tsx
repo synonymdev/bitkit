@@ -151,10 +151,12 @@ const Section = memo(
 	({
 		name,
 		value,
+		testID,
 		onPress,
 	}: {
 		name: string;
 		value: ReactElement;
+		testID?: string;
 		onPress?: () => void;
 	}): ReactElement => {
 		return (
@@ -165,7 +167,9 @@ const Section = memo(
 				<View style={styles.sectionName}>
 					<Caption13M>{name}</Caption13M>
 				</View>
-				<View style={styles.sectionValue}>{value}</View>
+				<View style={styles.sectionValue} testID={testID}>
+					{value}
+				</View>
 			</TouchableOpacity>
 		);
 	},
@@ -307,7 +311,9 @@ const ChannelDetails = ({
 				title={channelName}
 				onClosePress={(): void => navigation.navigate('Wallet')}
 			/>
-			<ScrollView contentContainerStyle={styles.content}>
+			<ScrollView
+				contentContainerStyle={styles.content}
+				testID="ChannelScrollView">
 				<View style={styles.channel}>
 					<LightningChannel channel={channel} status={getChannelStatus()} />
 				</View>
@@ -427,6 +433,7 @@ const ChannelDetails = ({
 					/>
 					<Section
 						name={t('total_size')}
+						testID="TotalSize"
 						value={
 							<Money
 								sats={capacity}
@@ -527,6 +534,7 @@ const ChannelDetails = ({
 						/>
 						<Section
 							name={t('is_ready')}
+							testID={channel.is_channel_ready ? 'IsReadyYes' : 'IsReadyNo'}
 							value={
 								<Caption13M>
 									{t(channel.is_channel_ready ? 'yes' : 'no')}
@@ -556,6 +564,7 @@ const ChannelDetails = ({
 							style={styles.button}
 							text={t('close_conn')}
 							size="large"
+							testID="CloseConnection"
 							onPress={(): void =>
 								navigation.navigate('CloseConnection', {
 									channelId: channel.channel_id,

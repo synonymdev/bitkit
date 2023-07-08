@@ -4,6 +4,7 @@ on: pull_request
 
 env:
   NO_FLIPPER: 1
+  E2E_TESTS: 1 # build without transform-remove-console babel plugin
 
 jobs:
   e2e:
@@ -38,7 +39,7 @@ jobs:
         run: HOMEBREW_NO_AUTO_UPDATE=1 brew tap wix/brew && brew install applesimutils
 
       - name: Run regtest setup
-        run: cd __tests__ && docker-compose up -d
+        run: cd __tests__ && mkdir lnd && chmod 777 lnd && docker-compose up -d
 
       - name: Wait for bitcoind
         timeout-minutes: 2

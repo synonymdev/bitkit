@@ -163,7 +163,8 @@ const Channel = memo(
 		return (
 			<TouchableOpacity
 				style={styles.nRoot}
-				onPress={(): void => onPress(channel)}>
+				onPress={(): void => onPress(channel)}
+				testID="Channel">
 				<View style={styles.nTitle}>
 					<Text01M
 						style={styles.nName}
@@ -484,6 +485,7 @@ const Channels = ({
 							}}
 							blurOnSubmit
 							returnKeyType="done"
+							testID="AddPeerInput"
 						/>
 						<Button
 							style={styles.devButton}
@@ -493,6 +495,7 @@ const Channels = ({
 									: 'Paste Lightning Peer From Clipboard'
 							}
 							onPress={onAddPeer}
+							testID="AddPeerButton"
 						/>
 						<Button
 							style={styles.devButton}

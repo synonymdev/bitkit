@@ -14,8 +14,7 @@ import initWaitForElectrumToSync from './utils/wait-for-electrum';
 
 jest.setTimeout(60_000);
 
-const bitcoinURL =
-	'http://electrumx:1VmSUVGBuLNWvZl0LExRDW0tvl6196-47RfXIzS384g=@localhost:43782';
+const bitcoinURL = 'http://polaruser:polarpass@127.0.0.1:43782';
 
 describe('Wallet - wallet restore and receive', () => {
 	let waitForElectrum;

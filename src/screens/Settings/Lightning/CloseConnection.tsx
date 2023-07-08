@@ -99,6 +99,7 @@ const CloseConnection = ({
 					<Button
 						style={styles.button}
 						text={t('close_button')}
+						testID="CloseConnectionButton"
 						size="large"
 						loading={loading}
 						onPress={onContinue}
