@@ -12,7 +12,9 @@ import initWaitForElectrumToSync from '../__tests__/utils/wait-for-electrum';
 
 const __DEV__ = process.env.DEBUG === 'true';
 
-describe('Profile and Contacts', () => {
+d = checkComplete('slash-1') ? describe.skip : describe;
+
+d('Profile and Contacts', () => {
 	let waitForElectrum;
 	const rpc = new BitcoinJsonRpc(bitcoinURL);
 
@@ -42,7 +44,7 @@ describe('Profile and Contacts', () => {
 		waitForElectrum?.close();
 	});
 
-	describe('Slashtags', () => {
+	d('Slashtags', () => {
 		// Test plan
 		// - create new profile
 		// - edit profile

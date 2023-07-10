@@ -7,15 +7,21 @@ export const bitcoinURL = 'http://polaruser:polarpass@127.0.0.1:43782';
 
 export const checkComplete = (name) => {
 	if (!process.env.CI) {
-		return;
+		return false;
 	}
 
-	if (fs.existsSync(path.join(LOCK_PATH, 'lock-' + name))) {
-		console.warn('skipping', name, 'as it previously passed on CI');
-		return true;
+	if (typeof name === 'string') {
+		name = [name];
 	}
 
-	return false;
+	for (const n of name) {
+		if (!fs.existsSync(path.join(LOCK_PATH, 'lock-' + n))) {
+			return false;
+		}
+	}
+
+	console.warn('skipping', name, 'as it previously passed on CI');
+	return true;
 };
 
 export const markComplete = (name) => {

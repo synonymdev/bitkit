@@ -12,7 +12,9 @@ import {
 	bitcoinURL,
 } from './helpers';
 
-describe('LN Channel Onboarding', () => {
+d = checkComplete('channels-1') ? describe.skip : describe;
+
+d('LN Channel Onboarding', () => {
 	let waitForElectrum;
 	const rpc = new BitcoinJsonRpc(bitcoinURL);
 
@@ -42,7 +44,7 @@ describe('LN Channel Onboarding', () => {
 		waitForElectrum?.close();
 	});
 
-	describe('Lightning onboarding / Channel purchase', () => {
+	d('Lightning onboarding / Channel purchase', () => {
 		// Test plan
 		// QuickSetup
 		// - can change amount via the slider

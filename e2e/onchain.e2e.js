@@ -10,7 +10,9 @@ import {
 } from './helpers';
 import initWaitForElectrumToSync from '../__tests__/utils/wait-for-electrum';
 
-describe('Onchain', () => {
+d = checkComplete(['onchain-1', 'onchain-2']) ? describe.skip : describe;
+
+d('Onchain', () => {
 	let waitForElectrum;
 	const rpc = new BitcoinJsonRpc(bitcoinURL);
 
@@ -40,7 +42,7 @@ describe('Onchain', () => {
 		waitForElectrum?.close();
 	});
 
-	describe('Receive and Send', () => {
+	d('Receive and Send', () => {
 		// Test plan
 		// - can receive to 2 addresses and tag them
 		// - shows correct total balance

@@ -6,7 +6,9 @@ import {
 	sleep,
 } from './helpers';
 
-describe('Receive', () => {
+d = checkComplete('receive-1') ? describe.skip : describe;
+
+d('Receive', () => {
 	beforeAll(async () => {
 		await completeOnboarding();
 	});
@@ -37,7 +39,7 @@ describe('Receive', () => {
 	// - can delete prev saved tag
 
 	it('Basic functionality', async () => {
-		if (checkComplete('receive-1-1')) {
+		if (checkComplete('receive-1')) {
 			return;
 		}
 
@@ -122,6 +124,6 @@ describe('Receive', () => {
 		await element(by.id(`Tag-${tag}-delete`)).tap();
 		await expect(element(by.text(tag))).not.toBeVisible();
 
-		markComplete('receive-1-1');
+		markComplete('receive-1');
 	});
 });

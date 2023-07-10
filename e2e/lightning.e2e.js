@@ -13,7 +13,9 @@ import initWaitForElectrumToSync from '../__tests__/utils/wait-for-electrum';
 
 const __DEV__ = process.env.DEBUG === 'true';
 
-describe('Lightning', () => {
+d = checkComplete('lighting-1') ? describe.skip : describe;
+
+d('Lightning', () => {
 	let waitForElectrum;
 	const rpc = new BitcoinJsonRpc(bitcoinURL);
 
@@ -43,7 +45,7 @@ describe('Lightning', () => {
 		waitForElectrum?.close();
 	});
 
-	describe('Receive and Send', () => {
+	d('Receive and Send', () => {
 		// Test plan:
 		// - connect to LND node
 		// - receive funds

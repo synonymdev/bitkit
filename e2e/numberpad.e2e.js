@@ -5,7 +5,9 @@ import {
 	launchAndWait,
 } from './helpers';
 
-describe('NumberPad', () => {
+d = checkComplete(['numberpad-1', 'numberpad-2']) ? describe.skip : describe;
+
+d('NumberPad', () => {
 	beforeAll(async () => {
 		await completeOnboarding();
 	});

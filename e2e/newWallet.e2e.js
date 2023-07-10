@@ -1,13 +1,11 @@
 import { checkComplete, markComplete } from './helpers';
 
-describe('New Wallet', () => {
+d = checkComplete('newwallet-1') ? describe.skip : describe;
+
+d('New Wallet', () => {
 	beforeAll(async () => {
 		await device.launchApp();
 	});
-
-	// beforeEach(async () => {
-	// 	await device.reloadReactNative();
-	// });
 
 	it('should create new wallet', async () => {
 		if (checkComplete('newwallet-1')) {

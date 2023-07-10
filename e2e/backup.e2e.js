@@ -10,7 +10,9 @@ import {
 } from './helpers';
 import initWaitForElectrumToSync from '../__tests__/utils/wait-for-electrum';
 
-describe('Backup', () => {
+d = checkComplete('backup-1') ? describe.skip : describe;
+
+d('Backup', () => {
 	let waitForElectrum;
 	const rpc = new BitcoinJsonRpc(bitcoinURL);
 

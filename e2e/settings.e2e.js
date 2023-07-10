@@ -8,7 +8,22 @@ import {
 
 const __DEV__ = process.env.DEBUG === 'true';
 
-describe('Settings', () => {
+d = checkComplete([
+	'settings-1',
+	'settings-2',
+	'settings-3',
+	'settings-4',
+	'settings-5',
+	'settings-6',
+	'settings-7',
+	'settings-8',
+	'settings-9',
+	'settings-10',
+])
+	? describe.skip
+	: describe;
+
+d('Settings', () => {
 	beforeAll(async () => {
 		await completeOnboarding();
 	});
@@ -17,7 +32,7 @@ describe('Settings', () => {
 		await launchAndWait();
 	});
 
-	describe('General', () => {
+	d('General', () => {
 		it('Can switch local currency', async () => {
 			if (checkComplete('settings-1')) {
 				return;
@@ -146,7 +161,7 @@ describe('Settings', () => {
 		});
 
 		it('Can remove last used tags', async () => {
-			if (checkComplete('s-1-5')) {
+			if (checkComplete('settings-5')) {
 				return;
 			}
 
@@ -185,11 +200,11 @@ describe('Settings', () => {
 			await element(by.id('TagsAdd')).tap();
 			await expect(element(by.text(tag))).not.toBeVisible();
 
-			markComplete('s-1-5');
+			markComplete('settings-5');
 		});
 	});
 
-	describe('Backup or restore', () => {
+	d('Backup or restore', () => {
 		it('Can show backup and validate it', async () => {
 			if (checkComplete('settings-6')) {
 				return;
@@ -226,7 +241,7 @@ describe('Settings', () => {
 		});
 	});
 
-	describe('Advanced', () => {
+	d('Advanced', () => {
 		it('Can switch address types', async () => {
 			if (checkComplete('settings-7')) {
 				return;
@@ -379,7 +394,7 @@ describe('Settings', () => {
 		});
 	});
 
-	describe('Dev Settings', () => {
+	d('Dev Settings', () => {
 		it('Shows the crash error screen when triggering render error', async () => {
 			if (checkComplete('settings-10')) {
 				return;
@@ -406,7 +421,7 @@ describe('Settings', () => {
 		});
 	});
 
-	describe('Security and Privacy', () => {
+	d('Security and Privacy', () => {
 		it('Can setup PIN and Biometrics', async () => {
 			// test plan:
 			// - set up PIN with Biometrics
@@ -416,7 +431,7 @@ describe('Settings', () => {
 			// - login with PIN
 			// - disable PIN
 			// - enter wrong PIN 10 times and reset the app
-			if (checkComplete('settings-5')) {
+			if (checkComplete('settings-11')) {
 				return;
 			}
 
@@ -540,7 +555,7 @@ describe('Settings', () => {
 			// await device.launchApp({ newInstance: true });
 			// await waitFor(element(by.id('Check1'))).toBeVisible();
 
-			markComplete('settings-5');
+			markComplete('settings-11');
 		});
 	});
 });
