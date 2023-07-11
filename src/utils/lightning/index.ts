@@ -482,6 +482,7 @@ export const refreshLdk = async ({
 		if (syncRes.isErr()) {
 			return err(syncRes.error.message);
 		}
+		await addPeers({ selectedNetwork, selectedWallet });
 		await updateLightningChannels({ selectedWallet, selectedNetwork });
 		await updateClaimableBalance({ selectedNetwork, selectedWallet });
 		return ok('');
