@@ -1755,7 +1755,7 @@ export const updateSendAmount = ({
 		});
 
 		if (amount > spendingBalance) {
-			return err('New amount exceeds the current balance.');
+			return err(i18n.t('wallet:send_amount_error_balance'));
 		}
 
 		if (amount === spendingBalance) {
@@ -1763,36 +1763,36 @@ export const updateSendAmount = ({
 		}
 	} else {
 		// onchain transaction
-		const totalFee = getTotalFee({
-			satsPerByte: transaction.satsPerByte,
-			message: transaction.message,
-			selectedWallet,
-			selectedNetwork,
-		});
-
 		const inputTotal = getTransactionInputValue({
 			selectedNetwork,
 			selectedWallet,
 			inputs: transaction.inputs,
 		});
 
-		if (amount !== 0) {
-			const totalAmount = amount + totalFee;
-			const dustLimit = TRANSACTION_DEFAULTS.dustLimit;
+		const fee = getTotalFee({
+			satsPerByte: transaction.satsPerByte,
+			message: transaction.message,
+			selectedWallet,
+			selectedNetwork,
+		});
 
-			if (totalAmount > inputTotal && inputTotal - totalFee < 0) {
-				amount = 0;
+		const totalAmount = amount + fee;
+
+		if (totalAmount === inputTotal) {
+			max = true;
+		} else {
+			if (amount > inputTotal) {
+				return err(i18n.t('wallet:send_amount_error_balance'));
 			}
 
-			if (totalAmount - dustLimit > inputTotal) {
-				return err('New amount exceeds the current balance.');
+			if (totalAmount > inputTotal) {
+				return err(i18n.t('wallet:send_amount_error_fee'));
 			}
 
-			if (totalAmount === inputTotal) {
-				max = true;
+			if (totalAmount > inputTotal - TRANSACTION_DEFAULTS.dustLimit) {
+				// TODO: add dust to fee
+				console.log('Transaction will create dust. Adding dust to fee.');
 			}
-
-			// TODO: Handle dust
 		}
 	}
 

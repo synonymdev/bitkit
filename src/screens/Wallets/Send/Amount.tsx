@@ -45,6 +45,7 @@ import { useSwitchUnit } from '../../../hooks/wallet';
 import { useCurrency } from '../../../hooks/displayValues';
 import { updateSendTransaction } from '../../../store/actions/wallet';
 import { getNumberPadText } from '../../../utils/numberpad';
+import { showToast } from '../../../utils/notifications';
 import { convertToSats } from '../../../utils/conversion';
 import { TRANSACTION_DEFAULTS } from '../../../utils/wallet/constants';
 import type { SendScreenProps } from '../../../navigation/types';
@@ -142,6 +143,11 @@ const Amount = ({ navigation }: SendScreenProps<'Amount'>): ReactElement => {
 			transaction,
 		});
 		if (result.isErr()) {
+			showToast({
+				type: 'error',
+				title: t('send_amount_error_title'),
+				description: result.error.message,
+			});
 			return;
 		}
 
@@ -158,6 +164,7 @@ const Amount = ({ navigation }: SendScreenProps<'Amount'>): ReactElement => {
 		coinSelectAuto,
 		transaction,
 		navigation,
+		t,
 	]);
 
 	const isValid = useMemo(() => {
