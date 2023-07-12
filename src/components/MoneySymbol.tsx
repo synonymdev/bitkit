@@ -17,32 +17,30 @@ const MoneySymbol = ({
 
 	return (
 		<View style={[styles.root, style]}>
-			<View style={styles.inner}>
-				{unit === EBalanceUnit.fiat && (
-					<Display
-						style={styles.fiatSymbol}
-						color="white5"
-						testID="MoneyFiatSymbol">
-						{fiatSymbol}
-					</Display>
-				)}
-				{unit === EBalanceUnit.satoshi && (
-					<LightningIcon
-						color="white5"
-						height={40}
-						width={28}
-						testID="MoneyLightningSymbol"
-					/>
-				)}
-				{unit === EBalanceUnit.BTC && (
-					<BIcon
-						color="white5"
-						height={40}
-						width={28}
-						testID="MoneyBitcoinSymbol"
-					/>
-				)}
-			</View>
+			{unit === EBalanceUnit.fiat && (
+				<Display
+					style={styles.fiatSymbol}
+					color="white5"
+					testID="MoneyFiatSymbol">
+					{fiatSymbol}
+				</Display>
+			)}
+			{unit === EBalanceUnit.satoshi && (
+				<LightningIcon
+					color="white5"
+					height={40}
+					width={28}
+					testID="MoneyLightningSymbol"
+				/>
+			)}
+			{unit === EBalanceUnit.BTC && (
+				<BIcon
+					color="white5"
+					height={40}
+					width={28}
+					testID="MoneyBitcoinSymbol"
+				/>
+			)}
 		</View>
 	);
 };
@@ -52,10 +50,6 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		alignItems: 'center',
 		position: 'relative',
-		width: 28,
-	},
-	inner: {
-		position: 'absolute',
 	},
 	fiatSymbol: {
 		fontSize: 46,
