@@ -162,5 +162,7 @@
 	"lnurl_w_text": "The funds you withdraw will be deposited into your Bitkit spending balance.",
 	"lnurl_w_button": "Withdraw",
 	"lnurl_w_success_title": "Success",
-	"lnurl_w_success_description": "Withdraw Requested Successful"
+	"lnurl_w_success_description": "Withdraw Requested Successful",
+	"lnurl_p_title": "Send Bitcoin",
+	"lnurl_p_max": "Maximum amount"
 }

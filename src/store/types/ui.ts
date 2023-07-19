@@ -1,4 +1,4 @@
-import { LNURLWithdrawParams } from 'js-lnurl';
+import { LNURLWithdrawParams, LNURLPayParams } from 'js-lnurl';
 import { IActivityItem, TOnchainActivityItem } from './activity';
 import { SendStackParamList } from '../../navigation/bottom-sheet/SendNavigation';
 
@@ -22,6 +22,7 @@ export type ViewControllerParamList = {
 	timeRangePrompt: undefined;
 	tagsPrompt: undefined;
 	lnurlWithdraw: { wParams: LNURLWithdrawParams };
+	lnurlPay: { pParams: LNURLPayParams };
 };
 
 export type TViewController = keyof ViewControllerParamList;
@@ -43,6 +44,7 @@ export type IViewControllerData = {
 	txId?: string;
 	url?: string;
 	wParams?: LNURLWithdrawParams;
+	pParams?: LNURLPayParams;
 };
 
 export type TProfileLink = {

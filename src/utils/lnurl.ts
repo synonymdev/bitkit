@@ -1,8 +1,8 @@
 import {
 	createChannelRequestUrl,
-	createPayRequestUrl,
 	createWithdrawCallbackUrl,
 	lnurlAuth as lnAuth,
+	lnurlPay,
 } from '@synonymdev/react-native-lnurl';
 import {
 	LNURLAuthParams,
@@ -19,7 +19,7 @@ import {
 	getPeersFromStorage,
 } from './lightning';
 import { createLightningInvoice, savePeer } from '../store/actions/lightning';
-import { EQRDataType, processInputData, TProcessedData } from './scanner';
+import { EQRDataType, TProcessedData } from './scanner';
 import { TWalletName } from '../store/types/wallet';
 import { TAvailableNetworks } from './networks';
 import {
@@ -34,17 +34,19 @@ import i18n from './i18n';
  * @param {LNURLPayParams} params
  * @param {TWalletName} [selectedWallet]
  * @param {TAvailableNetworks} [selectedNetwork]
- * @returns {Promise<Result<TProcessedData>>}
+ * @returns {Promise<Result<string>>}
  */
 export const handleLnurlPay = async ({
 	params,
+	amountSats,
 	selectedWallet,
 	selectedNetwork,
 }: {
 	params: LNURLPayParams;
+	amountSats: number;
 	selectedWallet?: TWalletName;
 	selectedNetwork?: TAvailableNetworks;
-}): Promise<Result<TProcessedData>> => {
+}): Promise<Result<string>> => {
 	if (!selectedWallet) {
 		selectedWallet = getSelectedWallet();
 	}
@@ -53,6 +55,7 @@ export const handleLnurlPay = async ({
 	}
 
 	const nodeId = getNodeIdFromStorage({ selectedWallet, selectedNetwork });
+
 	if (!nodeId) {
 		const message = i18n.t('other:lnurl_ln_error_msg');
 		showToast({
@@ -63,13 +66,14 @@ export const handleLnurlPay = async ({
 		return err(message);
 	}
 
-	const milliSats = params.minSendable;
+	const milliSats = Math.floor(amountSats * 1000);
 
-	const callbackRes = createPayRequestUrl({
+	const callbackRes = await lnurlPay({
 		params,
 		milliSats,
 		comment: 'Bitkit LNURL-Pay',
 	});
+
 	if (callbackRes.isErr()) {
 		showToast({
 			type: 'error',
@@ -79,14 +83,7 @@ export const handleLnurlPay = async ({
 		return err(callbackRes.error.message);
 	}
 
-	const invoice = callbackRes.value;
-
-	//Now that we have the invoice, process it.
-	return await processInputData({
-		data: invoice,
-		selectedWallet,
-		selectedNetwork,
-	});
+	return ok(callbackRes.value.pr);
 };
 
 /**

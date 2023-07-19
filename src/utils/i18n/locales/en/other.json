@@ -44,6 +44,7 @@
 	"lnurl_ln_error_title": "LNURL-Pay Error",
 	"lnurl_ln_error_msg": "Unable to startup local lightning node at this time. Please try again or restart the app.",
 	"lnurl_pay_error": "LNURL-Pay failed",
+	"lnurl_pay_error_no_capacity": "Not enough outbound/sending capacity to complete lnurl-pay request.",
 	"lnurl_channel_error": "LNURL-Channel Request Error",
 	"lnurl_blocktank_error": "Unable to connect to Blocktank server.",
 	"lnurl_channel_success_title": "Success!",

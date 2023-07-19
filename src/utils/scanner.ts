@@ -43,7 +43,7 @@ import { getSlashPayConfig } from './slashtags';
 import { savePeer } from '../store/actions/lightning';
 import { TWalletName } from '../store/types/wallet';
 import { sendNavigation } from '../navigation/bottom-sheet/SendNavigation';
-import { handleLnurlAuth, handleLnurlChannel, handleLnurlPay } from './lnurl';
+import { handleLnurlAuth, handleLnurlChannel } from './lnurl';
 import i18n from './i18n';
 
 const availableNetworksList = availableNetworks();
@@ -795,7 +795,31 @@ export const handleData = async ({
 
 		case EQRDataType.lnurlPay: {
 			const params = data.lnUrlParams! as LNURLPayParams;
-			return await handleLnurlPay({ params, selectedWallet, selectedNetwork });
+
+			//Convert msats to sats.
+			params.minSendable = Math.floor(params.minSendable / 1000);
+			params.maxSendable = Math.floor(params.maxSendable / 1000);
+
+			// Determine if we have enough sending capacity before proceeding.
+			const lightningBalance = getLightningBalance({
+				selectedWallet,
+				selectedNetwork,
+				includeReserveBalance: false,
+			});
+
+			if (lightningBalance.localBalance < params.minSendable) {
+				showToast({
+					type: 'error',
+					title: i18n.t('other:lnurl_pay_error'),
+					description: i18n.t('other:lnurl_pay_error_no_capacity'),
+				});
+				return err(
+					'Not enough outbound/sending capacity to complete lnurl-pay request.',
+				);
+			}
+
+			showBottomSheet('lnurlPay', { pParams: params });
+			return ok({ type: EQRDataType.lnurlPay });
 		}
 		case EQRDataType.lnurlChannel: {
 			const params = data.lnUrlParams! as LNURLChannelParams;

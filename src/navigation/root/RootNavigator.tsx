@@ -59,6 +59,7 @@ import PINNavigation from '../bottom-sheet/PINNavigation';
 import ForceTransfer from '../bottom-sheet/ForceTransfer';
 import CloseChannelSuccess from '../bottom-sheet/CloseChannelSuccess';
 import LNURLWithdrawNavigation from '../bottom-sheet/LNURLWithdrawNavigation';
+import LNURLPayNavigation from '../bottom-sheet/LNURLPayNavigation';
 import { __E2E__ } from '../../constants/env';
 import type { RootStackParamList } from '../types';
 
@@ -246,6 +247,7 @@ const RootNavigator = (): ReactElement => {
 			<CloseChannelSuccess />
 			<BackupSubscriber />
 			<LNURLWithdrawNavigation />
+			<LNURLPayNavigation />
 
 			<Dialog
 				visible={showDialog && isAuthenticated}

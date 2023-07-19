@@ -24,6 +24,7 @@ export const defaultViewControllers: IUi['viewControllers'] = {
 	timeRangePrompt: defaultViewController,
 	tagsPrompt: defaultViewController,
 	lnurlWithdraw: defaultViewController,
+	lnurlPay: defaultViewController,
 };
 
 export const defaultUiShape: IUi = {
