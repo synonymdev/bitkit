@@ -1,12 +1,49 @@
 {
+  "settings": "Einstellungen",
+  "dev_enabled_title": "Entwickler-Einstellungen an",
+  "dev_enabled_message": "Entwickler-Einstellungen sind jetzt innerhalb der App eingeschaltet.",
+  "dev_disabled_title": "Entwickler-Einstellungen aus",
+  "dev_disabled_message": "Entwickler-Einstellungen sind jetzt innerhalb der App ausgeschaltet.",
+  "general_title": "Allgemein",
+  "security_title": "Sicherheit und Privatsphäre",
+  "backup_title": "Back up oder Wiederherstellung",
+  "advanced_title": "Fortgeschritten",
+  "about_title": "Über Bitkit",
   "about": {
-    "support": "Support"
+    "text": "Bitkit übergibt dir die Keys zu deinem Geld, Profil, deinen Kontakten und deinen Web Accounts.",
+    "support": "Support",
+    "report_bug": "Repote einen Bug oder wirke mit",
+    "legal": "Rechtliches",
+    "op_title": "Orange-Pilled",
+    "op_text": "Wen wirst du <brand>orangepillen?</brand>",
+    "op_share": "Teile Bitkit mit einem Freund",
+    "op_message": "Downloade Bitkit, dein ultimatives Bitcoin Toolkit. Nimm die Keys in deine Hand und reformiere dein digitales Leben. {appStoreUrl}"
   },
+  "dev_title": "Entwickler-Einstellungen",
   "general": {
-    "suggestions": "Verbesserungsvorschläge"
+    "currency_local": "Lokale Währung",
+    "currency_local_title": "Lokale Währung",
+    "currency_footer": "Preise bereitgestellt von Bitfinex & CoinGecko.",
+    "currency_most_used": "Meist genutzt",
+    "currency_other": "Andere Währungen",
+    "unit": "Bitcoin Einheit",
+    "unit_title": "Bitcoin Einheit",
+    "unit_display": "Zeige Bitcoin-Menge an als",
+    "unit_bitcoin": "Bitcoin",
+    "suggestions": "Verbesserungsvorschläge",
+    "reset_desc": "Bist du dir sicher, dass du die Vorschläge löschen willst? Diese werden erneut auftauchen, wenn du diese von deiner Bitkit Wallet Übersicht entfernt hast. "
+  },
+  "security": {
+    "use_bio": "Nutze {biometryTypeName} stattdessen",
+    "footer": "Wenn eingeschaltet, kannst du {biometryTypeName} an Stelle von deinem PIN code verwenden, um dein Wallet zu entsperren oder Zahlungen zu senden."
+  },
+  "backup": {
+    "category_settings": "Einstellungen"
   },
   "adv": {
-    "lightning_connections": "Lightning Verbindungen"
+    "address_type": "Bitcoin Adressen-Typ",
+    "lightning_connections": "Lightning Verbindungen",
+    "bitcoin_network": "Bitcoin Netzwerk"
   },
   "fee": {
     "fast": {
@@ -22,6 +59,7 @@
     }
   },
   "es": {
+    "qr_error_message": "Entschuldige, Bitkit ist nicht in der Lage diesen QR code zu lesen.",
     "disconnected": "getrennt"
   }
 }

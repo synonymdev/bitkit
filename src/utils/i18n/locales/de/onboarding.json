@@ -11,5 +11,17 @@
   "slide1_text": "Bezahle jedermann, überall, jederzeit und gebe deine bitcoin für Dinge im Leben aus die du wertschätzt.",
   "slide2_header": "Lightning,\n<purple>Schnell.</purple>",
   "slide2_text": "Verschicke Bitcoin schneller als jemals zuvor. Erfreue dich an instant Transaktionen mit Freunden, Familie und Händlern.",
-  "slide3_header": "Grenzenloses\n<blue>Web.</blue>"
+  "slide3_header": "Grenzenloses\n<blue>Web.</blue>",
+  "slide3_text": "Hält die Schlüssel zu tragbaren Profilen, dynamischen Kontakten, verteilten Feeds und kennwortlosen Konten.",
+  "slide4_header": "Erstelle <brand>dein Wallet.</brand>",
+  "slide4_text": "Bitte beachte: Bitkit ist <brand>beta</brand> software.",
+  "new_wallet": "Neues Wallet",
+  "restore": "Wiederherstellen",
+  "restore_wallet": "Wallet wiederherstellen",
+  "advanced_setup": "Benutzerdefiniertes Setup",
+  "advanced": "Benutzerdefiniert",
+  "passphrase_header": "Absichern mit <brand>Passwort</brand>",
+  "passphrase_text": "Du kannst deiner 12-Wörter-langen Wiederherstellungsphrase ein geheimes Passwort hinzufügen. Wenn du das tust, stelle sicher, dass du es nicht vergisst.",
+  "passphrase": "Passwort",
+  "create_new_wallet": "Erstelle neues Wallet"
 }

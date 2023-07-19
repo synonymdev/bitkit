@@ -1,1 +1,26 @@
-{}
+{
+  "send": "Wyślij",
+  "receive": "Otrzymaj",
+  "balance_total": "Saldo",
+  "balance_total_pending": "<text>Saldo (</text><pending/><text> w toku)</text>",
+  "assets": "Aktywa",
+  "send_bitcoin": "Wyślij Bitcoin",
+  "send_to": "Do",
+  "send_invoice": "Faktura",
+  "send_address_placeholder": "Skanuj kod QR, wklej fakturę lub wybierz kontakt",
+  "send_clipboard_empty_title": "Schowek jest pusty",
+  "send_clipboard_empty_text": "Nie ma danych adresowych",
+  "send_amount": "Kwota bitcoinów",
+  "send_max": "MAX",
+  "send_done": "GOTOWE",
+  "send_availabe_spending": "Dostępne (na wydawanie)",
+  "send_availabe_savings": "Dostępne (oszczędności)",
+  "send_review": "Przejrzyj i wyślij",
+  "send_confirming_in": "Potwierdzone w ciągu",
+  "send_invoice_expiration": "Termin faktury",
+  "send_swipe": "Przesuń palcem by zapłacić",
+  "send_yes": "Tak, wyślij",
+  "send_dialog1": "Wygląda na to, że wysyłasz ponad $100. Czy kontynuować?",
+  "send_dialog2": "Wygląda na to, że wysyłasz ponad 50% swojego salda. Czy kontynuować?",
+  "activity_invoice": "Faktura"
+}
