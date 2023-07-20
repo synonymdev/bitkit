@@ -3,25 +3,20 @@ import React, {
 	memo,
 	useCallback,
 	useMemo,
-	useRef,
 	useState,
-	useEffect,
 } from 'react';
-import { StyleSheet, Modal, Platform } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { useSelector } from 'react-redux';
+import { useFocusEffect } from '@react-navigation/native';
+import { useTranslation } from 'react-i18next';
 import DraggableFlatList, {
 	RenderItemParams,
 	ScaleDecorator,
 } from 'react-native-draggable-flatlist';
-import { useIsFocused } from '@react-navigation/native';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { FadeIn, FadeOut } from 'react-native-reanimated';
-import { useTranslation } from 'react-i18next';
 
 import { __DISABLE_SLASHTAGS__ } from '../constants/env';
 import { rootNavigation } from '../navigation/root/RootNavigator';
-import Store from '../store/types';
-import { AnimatedView, TouchableOpacity, View } from '../styles/components';
+import { TouchableOpacity, View } from '../styles/components';
 import { Caption13Up, Text, Text01M } from '../styles/text';
 import { PlusIcon, SortAscendingIcon, Checkmark } from '../styles/icons';
 import { SUPPORTED_FEED_TYPES } from '../utils/widgets';
@@ -32,192 +27,116 @@ import FeedWidget from './FeedWidget';
 import HeadlinesWidget from './HeadlinesWidget';
 import BlocksWidget from './BlocksWidget';
 import FactsWidget from './FactsWidget';
-
-type WCM = {
-	x: number;
-	y: number;
-	width: number;
-	height: number;
-	pageX: number;
-	pageY: number;
-};
-
-const ListWrapper = ({
-	wcm,
-	children,
-}: {
-	wcm: WCM;
-	children: ReactElement;
-}): ReactElement => {
-	const style = [
-		styles.absolute,
-		{
-			left: wcm.pageX,
-			top: wcm.pageY,
-			width: wcm.width,
-		},
-	];
-
-	return Platform.OS === 'ios' ? (
-		<AnimatedView entering={FadeIn} exiting={FadeOut} style={style}>
-			{children}
-		</AnimatedView>
-	) : (
-		<View style={style}>{children}</View>
-	);
-};
+import { IWidget } from '../store/types/widgets';
+import {
+	onboardedWidgetsSelector,
+	widgetsOrderSelector,
+	widgetsSelector,
+} from '../store/reselect/widgets';
 
 const Widgets = (): ReactElement => {
 	const { t } = useTranslation('slashtags');
-	const isFocused = useIsFocused();
-	const widgets = useSelector((state: Store) => state.widgets.widgets);
-	const sortOrder = useSelector((state: Store) => state.widgets.sortOrder);
-	const widgetsContainer = useRef<any>();
-	const [wcm, setWcm] = useState<WCM>();
+	const widgets = useSelector(widgetsSelector);
+	const sortOrder = useSelector(widgetsOrderSelector);
+	const onboardedWidgets = useSelector(onboardedWidgetsSelector);
 	const [editing, setEditing] = useState(false);
 
-	const widgetsArray = useMemo(() => {
-		return Object.entries(widgets).sort(
+	useFocusEffect(useCallback(() => setEditing(false), []));
+
+	const sortedWidgets = useMemo(() => {
+		const savedWidgets = Object.entries(widgets) as [string, IWidget][];
+		return savedWidgets.sort(
 			([a], [b]) => sortOrder.indexOf(a) - sortOrder.indexOf(b),
 		);
 	}, [widgets, sortOrder]);
 
-	const handleEditStart = useCallback(async (): Promise<void> => {
-		const res: WCM = await new Promise((resolve) => {
-			widgetsContainer.current?.measure((x, y, width, height, pageX, pageY) => {
-				resolve({ x, y, width, height, pageX, pageY });
-			});
-		});
-
-		setWcm(res);
-		setEditing(true);
-	}, []);
-
-	const handleEditEnd = useCallback((): void => {
-		setEditing(false);
-	}, []);
-
-	useEffect(() => {
-		if (isFocused) {
-			return;
-		}
-		handleEditEnd();
-	}, [isFocused, handleEditEnd]);
-
-	const handleDragEnd = useCallback(({ data }) => {
+	const onDragEnd = useCallback(({ data }) => {
 		const order = data.map((i): string => i[0]);
 		setWidgetsSortOrder(order);
 	}, []);
 
-	const renderEditing = useCallback(
-		({ item, drag }: RenderItemParams<Array<any>>): ReactElement => {
+	const onAdd = (): void => {
+		const screen = onboardedWidgets ? 'WidgetsSuggestions' : 'GoodbyePasswords';
+		rootNavigation.navigate(screen);
+	};
+
+	const renderItem = useCallback(
+		({ item, drag }: RenderItemParams<[string, IWidget]>): ReactElement => {
 			const [url, widget] = item;
 
-			if (!widget.feed) {
+			const _drag = (): void => {
+				// only allow dragging if there are more than 1 widget
+				if (sortedWidgets.length > 1) {
+					drag();
+				}
+			};
+
+			if (!widget.fields) {
 				return (
 					<ScaleDecorator>
 						<AuthWidget
+							style={styles.widget}
 							url={url}
 							widget={widget}
-							isEditing={true}
-							onLongPress={drag}
-							onPressIn={drag}
+							isEditing={editing}
+							onLongPress={_drag}
+							onPressIn={_drag}
 						/>
 					</ScaleDecorator>
 				);
 			}
 
-			let Component;
-			switch (widget.feed.type) {
+			let testID;
+			let Component:
+				| typeof PriceWidget
+				| typeof HeadlinesWidget
+				| typeof BlocksWidget
+				| typeof FactsWidget
+				| typeof FeedWidget;
+
+			switch (widget.type) {
 				case SUPPORTED_FEED_TYPES.PRICE_FEED:
 					Component = PriceWidget;
+					testID = 'PriceWidget';
 					break;
 				case SUPPORTED_FEED_TYPES.HEADLINES_FEED:
 					Component = HeadlinesWidget;
+					testID = 'HeadlinesWidget';
 					break;
 				case SUPPORTED_FEED_TYPES.BLOCKS_FEED:
 					Component = BlocksWidget;
+					testID = 'BlocksWidget';
 					break;
 				case SUPPORTED_FEED_TYPES.FACTS_FEED:
 					Component = FactsWidget;
+					testID = 'FactsWidget';
 					break;
 				default:
 					Component = FeedWidget;
+					testID = 'FeedWidget';
 			}
 
 			return (
 				<ScaleDecorator>
 					<Component
+						style={styles.widget}
 						url={url}
 						widget={widget}
-						isEditing={true}
-						onLongPress={drag}
-						onPressIn={drag}
+						isEditing={editing}
+						onLongPress={_drag}
+						onPressIn={_drag}
+						testID={testID}
 					/>
 				</ScaleDecorator>
 			);
 		},
-		[],
+		[editing, sortedWidgets.length],
 	);
-
-	const renderFlat = useCallback((item): ReactElement => {
-		const [url, widget] = item;
-		let testID;
-
-		if (!widget.feed) {
-			return (
-				<AuthWidget
-					key={url}
-					url={url}
-					widget={widget}
-					isEditing={false}
-					testID="AuthWidget"
-				/>
-			);
-		}
-
-		let Component;
-		switch (widget.feed.type) {
-			case SUPPORTED_FEED_TYPES.PRICE_FEED:
-				Component = PriceWidget;
-				testID = 'PriceWidget';
-				break;
-			case SUPPORTED_FEED_TYPES.HEADLINES_FEED:
-				Component = HeadlinesWidget;
-				testID = 'HeadlinesWidget';
-				break;
-			case SUPPORTED_FEED_TYPES.BLOCKS_FEED:
-				Component = BlocksWidget;
-				testID = 'BlocksWidget';
-				break;
-			case SUPPORTED_FEED_TYPES.FACTS_FEED:
-				Component = FactsWidget;
-				testID = 'FactsWidget';
-				break;
-			default:
-				Component = FeedWidget;
-				testID = 'FeedWidget';
-		}
-
-		return (
-			<Component
-				key={url}
-				url={url}
-				widget={widget}
-				isEditing={false}
-				testID={testID}
-			/>
-		);
-	}, []);
-
-	const onAdd = useCallback((): void => {
-		rootNavigation.navigate('WidgetsRoot');
-	}, []);
 
 	if (__DISABLE_SLASHTAGS__) {
 		return (
 			<>
-				<View style={styles.titleRow}>
+				<View style={styles.title}>
 					<Caption13Up color="gray1">{t('widgets')}</Caption13Up>
 				</View>
 				<Text color="gray">{t('disabled')}</Text>
@@ -227,12 +146,13 @@ const Widgets = (): ReactElement => {
 
 	return (
 		<>
-			<View style={styles.titleRow} testID="WidgetsTitle">
+			<View style={styles.title} testID="WidgetsTitle">
 				<Caption13Up color="gray1">{t('widgets')}</Caption13Up>
-				{widgetsArray.length > 0 && (
+				{sortedWidgets.length > 0 && (
 					<TouchableOpacity
 						style={styles.edit}
-						onPress={editing ? handleEditEnd : handleEditStart}>
+						testID="WidgetsEdit"
+						onPress={(): void => setEditing(!editing)}>
 						{editing ? (
 							<Checkmark width={24} height={24} color="gray1" />
 						) : (
@@ -241,44 +161,32 @@ const Widgets = (): ReactElement => {
 					</TouchableOpacity>
 				)}
 			</View>
-			<View ref={widgetsContainer}>{widgetsArray.map(renderFlat)}</View>
-			<TouchableOpacity style={styles.add} onPress={onAdd} testID="WidgetsAdd">
+
+			<DraggableFlatList
+				data={sortedWidgets}
+				keyExtractor={(item): string => item[0]}
+				renderItem={renderItem}
+				scrollEnabled={false}
+				dragHitSlop={{ top: editing ? 0 : -1000 }}
+				onDragEnd={onDragEnd}
+			/>
+
+			<TouchableOpacity
+				style={styles.add}
+				color="white08"
+				onPress={onAdd}
+				testID="WidgetsAdd">
 				<View color="green16" style={styles.iconCircle}>
 					<PlusIcon height={16} color="green" />
 				</View>
 				<Text01M>{t('widget_add')}</Text01M>
 			</TouchableOpacity>
-			<View style={styles.divider} />
-			<Modal
-				transparent={true}
-				visible={editing}
-				onRequestClose={handleEditEnd}>
-				<TouchableOpacity
-					style={styles.backdrop}
-					onPress={handleEditEnd}
-					activeOpacity={0}
-				/>
-				{editing && wcm && (
-					<ListWrapper wcm={wcm}>
-						{/* we need to wrap DraggableFlatList with GestureHandlerRootView, otherwise Gestures are not working in <Modal for Android */}
-						<GestureHandlerRootView>
-							<DraggableFlatList
-								data={widgetsArray}
-								keyExtractor={(item): string => item[0]}
-								renderItem={renderEditing}
-								onDragEnd={handleDragEnd}
-								activationDistance={1}
-							/>
-						</GestureHandlerRootView>
-					</ListWrapper>
-				)}
-			</Modal>
 		</>
 	);
 };
 
 const styles = StyleSheet.create({
-	titleRow: {
+	title: {
 		flexDirection: 'row',
 		alignItems: 'center',
 		justifyContent: 'space-between',
@@ -295,15 +203,15 @@ const styles = StyleSheet.create({
 		paddingLeft: 16,
 		marginLeft: -16,
 	},
+	widget: {
+		marginTop: 16,
+	},
 	add: {
-		marginTop: 27,
+		marginTop: 16,
+		borderRadius: 16,
+		padding: 16,
 		flexDirection: 'row',
 		alignItems: 'center',
-	},
-	divider: {
-		paddingBottom: 27,
-		borderBottomColor: 'rgba(255, 255, 255, 0.1)',
-		borderBottomWidth: 1,
 	},
 	iconCircle: {
 		borderRadius: 20,
@@ -312,14 +220,6 @@ const styles = StyleSheet.create({
 		justifyContent: 'center',
 		alignItems: 'center',
 		marginRight: 16,
-	},
-	backdrop: {
-		width: '100%',
-		height: '100%',
-		opacity: 0,
-	},
-	absolute: {
-		position: 'absolute',
 	},
 });
 

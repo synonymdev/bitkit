@@ -1,98 +1,19 @@
-import React, { memo, ReactElement, useEffect, useMemo, useState } from 'react';
-import { StyleSheet } from 'react-native';
-import {
-	Skia,
-	Canvas,
-	LinearGradient,
-	vec,
-	Path,
-} from '@shopify/react-native-skia';
-import b4a from 'b4a';
+import React, { memo, ReactElement, useEffect, useState } from 'react';
+import { View, StyleProp, StyleSheet, ViewStyle } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import b4a from 'b4a';
 
-import { View } from '../styles/components';
-import { Text01M, Caption13M } from '../styles/text';
-import { ChartLineIcon } from '../styles/icons';
-import useColors from '../hooks/colors';
-import { BaseFeedWidget } from './FeedWidget';
+import { Caption13M, Text02M } from '../styles/text';
+import { useSlashfeed } from '../hooks/widgets';
 import { IWidget } from '../store/types/widgets';
-import { useFeedWidget } from '../hooks/widgets';
-import { IThemeColors } from '../styles/themes';
-
-const Chart = ({
-	color,
-	values,
-}: {
-	color: string;
-	values: number[];
-}): ReactElement => {
-	const { green, red } = useColors();
-	const [layout, setLayout] = useState({ width: 1, height: 1 });
-
-	const handleLayout = (event: any): void => {
-		setLayout({
-			width: event.nativeEvent.layout.width,
-			height: event.nativeEvent.layout.height,
-		});
-	};
-
-	let { height, width } = layout;
-
-	const backgroud = Skia.Path.Make();
-	const line = Skia.Path.Make();
-	const steps = values.length;
-	const step = width / steps;
-
-	const normalized = useMemo(() => {
-		const min = values.reduce((prev, curr) => Math.min(prev, curr), Infinity);
-		const max = values.reduce((prev, curr) => Math.max(prev, curr), 0);
-
-		return values.map((value: number) => {
-			return (value - min) / (max - min);
-		});
-	}, [values]);
-
-	backgroud.moveTo(0, 0);
-	for (let i = 0; i < steps; i++) {
-		const value = height - normalized[i] * height;
-		backgroud.lineTo(i * step, value);
-		if (i === 0) {
-			line.moveTo(0, value);
-		} else {
-			line.lineTo(i * step, value);
-		}
-	}
-	backgroud.lineTo(width, height);
-	backgroud.lineTo(0, height);
-	backgroud.close();
-
-	return (
-		<View style={styles.chart} onLayout={handleLayout}>
-			<Canvas style={styles.canvas}>
-				<Path path={backgroud} color={color === 'red' ? red : green}>
-					<LinearGradient
-						start={vec(0, 0)}
-						end={vec(0, height * 1.3)}
-						positions={[0, 1]}
-						colors={[color, 'transparent']}
-					/>
-				</Path>
-				<Path
-					path={line}
-					color={color === 'red' ? red : green}
-					style="stroke"
-					strokeJoin="round"
-					strokeWidth={2}
-				/>
-			</Canvas>
-		</View>
-	);
-};
+import BaseFeedWidget from './BaseFeedWidget';
+import { Chart, getChange, THistory } from './PriceChart';
 
 const PriceWidget = ({
 	url,
 	widget,
 	isEditing = false,
+	style,
 	onLongPress,
 	onPressIn,
 	testID,
@@ -100,98 +21,146 @@ const PriceWidget = ({
 	url: string;
 	widget: IWidget;
 	isEditing?: boolean;
+	style?: StyleProp<ViewStyle>;
 	onLongPress?: () => void;
 	onPressIn?: () => void;
 	testID?: string;
 }): ReactElement => {
 	const { t } = useTranslation('slashtags');
-	const { value, drive } = useFeedWidget({ url, feed: widget.feed });
-	const [pastValues, setPastValues] = useState<number[]>([]);
+	const [history, setHistory] = useState<THistory[]>([]);
+	const { drive, fields, config, loading } = useSlashfeed({
+		url,
+		fields: widget.fields,
+	});
 
-	const period: '24h' | '7d' | '30d' = '24h';
+	const period = widget.extras?.period!;
 
 	useEffect(() => {
 		let unmounted = false;
 
-		if (!drive || !widget.feed.field?.files[period]) {
+		if (!drive) {
 			return;
 		}
-		drive
-			.get(widget.feed.field.files[period])
-			.then((buf: Uint8Array) => {
-				const string = buf && b4a.toString(buf);
-				const values = JSON.parse(string).map(Number);
-				!unmounted && values && setPastValues(values);
-			})
-			.catch(noop);
 
-		return function cleanup() {
+		const getPastValues = async (): Promise<void> => {
+			const promises = widget.fields.map(async (field) => {
+				const pair = field.name;
+				const buffer: Uint8Array = await drive.get(field.files[period]);
+				const pastValues: number[] = JSON.parse(b4a.toString(buffer));
+				const change = getChange(pastValues);
+
+				return { pair, change, pastValues };
+			});
+
+			const rowData = await Promise.all(promises);
+
+			if (!unmounted) {
+				setHistory(rowData);
+			}
+		};
+
+		getPastValues();
+
+		return () => {
 			unmounted = true;
 		};
-	}, [drive, widget.feed.field?.files, period]);
-
-	const change = useMemo((): {
-		color: keyof IThemeColors;
-		formatted: string;
-	} => {
-		if (!pastValues || pastValues.length < 2) {
-			return { color: 'green', formatted: '+0%' };
-		}
-		const _change = pastValues[pastValues.length - 1] / pastValues[0] - 1;
-
-		const sign = _change >= 0 ? '+' : '';
-		const color = _change >= 0 ? 'green' : 'red';
-
-		return {
-			color,
-			formatted: sign + (_change * 100).toFixed(2) + '%',
-		};
-	}, [pastValues]);
+	}, [drive, widget.fields, period]);
 
 	return (
 		<BaseFeedWidget
+			style={style}
 			url={url}
 			name={t('widget_price')}
-			label={widget.feed.field?.name}
-			icon={<ChartLineIcon width={32} height={32} />}
+			isLoading={loading}
 			isEditing={isEditing}
-			middle={<Chart color={change.color} values={pastValues} />}
-			right={
-				<View style={styles.numbers}>
-					<Text01M style={styles.price} numberOfLines={1}>
-						{value}
-					</Text01M>
-					<Caption13M style={styles.change} color={change.color}>
-						{change.formatted}
-					</Caption13M>
-				</View>
-			}
-			onLongPress={onLongPress}
-			onPressIn={onPressIn}
 			testID={testID}
-		/>
+			onLongPress={onLongPress}
+			onPressIn={onPressIn}>
+			<>
+				{fields.map((field) => {
+					const historical = history.find((d) => d.pair === field.name);
+
+					return (
+						<View
+							key={field.name}
+							style={styles.row}
+							testID={`PriceWidgetRow-${field.name}`}>
+							<View style={styles.columnLeft}>
+								<Text02M color="gray1" numberOfLines={1}>
+									{field.name}
+								</Text02M>
+							</View>
+							<View style={styles.columnRight}>
+								{historical && (
+									<Text02M
+										style={styles.change}
+										color={historical.change.color}>
+										{historical.change.formatted}
+									</Text02M>
+								)}
+								<Text02M numberOfLines={1}>{field.value}</Text02M>
+							</View>
+						</View>
+					);
+				})}
+
+				{history[0] && (
+					<Chart
+						style={styles.chart}
+						values={history[0].pastValues}
+						positive={history[0].change.color === 'green'}
+						period={period}
+					/>
+				)}
+
+				{widget.extras?.showSource && config?.source && (
+					<View style={styles.source} testID="PriceWidgetSource">
+						<View style={styles.columnLeft}>
+							<Caption13M color="gray1" numberOfLines={1}>
+								{t('widget_source')}
+							</Caption13M>
+						</View>
+						<View style={styles.columnRight}>
+							<Caption13M color="gray1" numberOfLines={1}>
+								{config.source.name}
+							</Caption13M>
+						</View>
+					</View>
+				)}
+			</>
+		</BaseFeedWidget>
 	);
 };
 
 const styles = StyleSheet.create({
-	chart: {
+	row: {
+		flexDirection: 'row',
+		alignItems: 'center',
+		justifyContent: 'space-between',
+		minHeight: 28,
+	},
+	columnLeft: {
 		flex: 1,
-		minHeight: 40, // static width + height is really important to avoid rerenders of chart
+		flexDirection: 'row',
+		alignItems: 'center',
 	},
-	numbers: {
-		alignItems: 'flex-end',
-	},
-	price: {
-		lineHeight: 22,
+	columnRight: {
+		flex: 1,
+		flexDirection: 'row',
+		alignItems: 'center',
+		justifyContent: 'flex-end',
 	},
 	change: {
-		lineHeight: 18,
+		marginRight: 8,
 	},
-	canvas: {
-		flex: 1,
+	chart: {
+		marginTop: 8,
+	},
+	source: {
+		marginTop: 16,
+		flexDirection: 'row',
+		alignItems: 'center',
 	},
 });
 
 export default memo(PriceWidget);
-
-function noop(): void {}

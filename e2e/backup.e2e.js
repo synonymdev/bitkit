@@ -91,16 +91,16 @@ d('Backup', () => {
 
 		// add price widget
 		await element(by.id('WidgetsAdd')).tap();
-		await element(by.id('ContinueWidgets')).tap();
-		await element(by.id('ContinueWidgets')).tap();
+		await element(by.id('ContinueWidgets-0')).tap();
+		await element(by.id('ContinueWidgets-1')).tap();
 		await element(by.id('PriceWidget')).tap();
 		// for unknown reason await waitFor(element(by.id('HourglassSpinner'))).not.toBeVisible();
-		// doesn't work here, so instead we just wait until we can tap SaveWidget
+		// doesn't work here, so instead we just wait until we can tap WidgetSave
 		// 5 min timeout
 		for (let i = 0; i < 300; i++) {
 			await sleep(1000);
 			try {
-				await element(by.id('SaveWidget')).tap();
+				await element(by.id('WidgetSave')).tap();
 				break;
 			} catch (e) {}
 		}
@@ -112,18 +112,17 @@ d('Backup', () => {
 		await element(by.id('WidgetsAdd')).tap();
 		await element(by.id('HeadlinesWidget')).tap();
 		// for unknown reason await waitFor(element(by.id('HourglassSpinner'))).not.toBeVisible();
-		// doesn't work here, so instead we just wait until we can tap SaveWidget
+		// doesn't work here, so instead we just wait until we can tap WidgetSave
 		// 5 min timeout
 		for (let i = 0; i < 300; i++) {
 			await sleep(1000);
 			try {
-				await element(by.id('SaveWidget')).tap();
+				await element(by.id('WidgetSave')).tap();
 				break;
 			} catch (e) {}
 		}
 
 		await sleep(1000); // animation
-		await element(by.id('WidgetsTitle')).swipe('down');
 
 		// get seed
 		await element(by.id('Settings')).tap();
@@ -188,7 +187,7 @@ d('Backup', () => {
 		await element(by.id('NavigationClose')).tap();
 
 		// check widgets
-		await element(by.id('WidgetsTitle')).swipe('up');
+		await element(by.id('WalletsScrollView')).scroll(300, 'down', NaN, 0.85);
 		await expect(element(by.id('PriceWidget'))).toBeVisible();
 		await expect(element(by.id('HeadlinesWidget'))).toBeVisible();
 

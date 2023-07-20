@@ -1,70 +1,50 @@
-import React, {
-	memo,
-	ReactElement,
-	useCallback,
-	useMemo,
-	useState,
-} from 'react';
-import { View, Linking, StyleSheet, StyleProp, ViewStyle } from 'react-native';
-import { Client } from '@synonymdev/slashtags-auth';
+import React, { memo, ReactElement, useState } from 'react';
+import { View, StyleSheet, StyleProp, ViewStyle } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
-import { Text01M } from '../styles/text';
-import { TouchableOpacity } from '../styles/components';
-import { KeyIcon, ListIcon, SettingsIcon, TrashIcon } from '../styles/icons';
-import { useProfile, useSelectedSlashtag } from '../hooks/slashtags';
-import { showToast } from '../utils/notifications';
-import { IWidget } from '../store/types/widgets';
-import { deleteWidget } from '../store/actions/widgets';
-import Button from './Button';
-import Dialog from './Dialog';
-import ProfileImage from './ProfileImage';
 import { rootNavigation } from '../navigation/root/RootNavigator';
+import { TouchableOpacity } from '../styles/components';
+import { Text01M } from '../styles/text';
+import {
+	SettingsIcon,
+	ListIcon,
+	TrashIcon,
+	QuestionMarkIcon,
+} from '../styles/icons';
+import { useSlashfeed } from '../hooks/widgets';
+import { deleteWidget } from '../store/actions/widgets';
+import Dialog from './Dialog';
+import SvgImage from './SvgImage';
+import LoadingView from './LoadingView';
 
-const AuthWidget = ({
+const BaseFeedWidget = ({
 	url,
-	widget,
-	isEditing = false,
+	name,
+	children,
+	isLoading,
+	isEditing,
 	style,
-	testID,
-	onLongPress,
+	onPress,
 	onPressIn,
+	onLongPress,
+	testID,
 }: {
 	url: string;
-	widget: IWidget;
+	name?: string;
+	children: ReactElement;
+	isLoading?: boolean;
 	isEditing?: boolean;
 	style?: StyleProp<ViewStyle>;
-	testID?: string;
-	onLongPress?: () => void;
+	onPress?: () => void;
 	onPressIn?: () => void;
+	onLongPress?: () => void;
+	testID?: string;
 }): ReactElement => {
 	const { t } = useTranslation('slashtags');
-	const { slashtag } = useSelectedSlashtag();
-	const { profile } = useProfile(url, { resolve: true });
+	const { config, icon } = useSlashfeed({ url });
 	const [showDialog, setShowDialog] = useState(false);
 
-	const client = useMemo(() => new Client(slashtag), [slashtag]);
-
-	const onSignIn = useCallback(async () => {
-		const magiclink = await client.magiclink(url).catch((e: Error) => {
-			showToast({
-				type: 'error',
-				title: t('auth_error_link'),
-				description:
-					e.message === 'channel closed' ? t('auth_error_peer') : e.message,
-			});
-		});
-
-		if (magiclink) {
-			Linking.openURL(magiclink.url).catch((e) => {
-				showToast({
-					type: 'error',
-					title: t('auth_error_open'),
-					description: e.message,
-				});
-			});
-		}
-	}, [client, url, t]);
+	const widgetName = name ?? config?.name ?? url;
 
 	const onEdit = (): void => {
 		rootNavigation.navigate('Widget', { url });
@@ -81,53 +61,45 @@ const AuthWidget = ({
 				color="white08"
 				activeOpacity={0.9}
 				testID={testID}
+				onPress={onPress}
 				onPressIn={onPressIn}
 				onLongPress={onLongPress}>
 				<View style={styles.header}>
 					<View style={styles.title}>
-						<ProfileImage
-							style={styles.icon}
-							url={url}
-							image={profile?.image}
-							size={32}
-						/>
+						<View style={styles.icon}>
+							{icon ? (
+								<SvgImage image={icon} size={32} />
+							) : (
+								<QuestionMarkIcon width={32} height={32} />
+							)}
+						</View>
 
 						<Text01M style={styles.name} numberOfLines={1}>
-							{profile?.name || ' '}
+							{widgetName}
 						</Text01M>
 					</View>
-
-					{!isEditing && widget.magiclink && (
-						<View style={styles.actions}>
-							<Button
-								style={styles.signInButton}
-								text={t('auth_signin')}
-								icon={<KeyIcon color="white" width={16} height={16} />}
-								onPress={onSignIn}
-							/>
-						</View>
-					)}
 
 					{isEditing && (
 						<View style={styles.actions}>
 							<TouchableOpacity
 								style={styles.actionButton}
 								color="transparent"
+								testID="WidgetActionDelete"
 								onPress={onDelete}>
 								<TrashIcon width={22} />
 							</TouchableOpacity>
-							{widget.fields && (
-								<TouchableOpacity
-									style={styles.actionButton}
-									color="transparent"
-									onPress={onEdit}>
-									<SettingsIcon width={22} />
-								</TouchableOpacity>
-							)}
+							<TouchableOpacity
+								style={styles.actionButton}
+								color="transparent"
+								testID="WidgetActionEdit"
+								onPress={onEdit}>
+								<SettingsIcon width={22} />
+							</TouchableOpacity>
 							<TouchableOpacity
 								style={styles.actionButton}
 								color="transparent"
 								activeOpacity={0.9}
+								testID="WidgetActionDrag"
 								onLongPress={onLongPress}
 								onPressIn={onPressIn}>
 								<ListIcon color="white" width={24} />
@@ -135,12 +107,16 @@ const AuthWidget = ({
 						</View>
 					)}
 				</View>
+
+				<LoadingView style={styles.content} loading={!!isLoading} delay={1000}>
+					{children}
+				</LoadingView>
 			</TouchableOpacity>
 
 			<Dialog
 				visible={showDialog}
 				title={t('widget_delete_title')}
-				description={t('widget_delete_desc', { name: profile.name })}
+				description={t('widget_delete_desc', { name })}
 				confirmText={t('widget_delete_yes')}
 				onCancel={(): void => {
 					setShowDialog(false);
@@ -196,11 +172,10 @@ const styles = StyleSheet.create({
 		paddingBottom: 30,
 		marginBottom: -30,
 	},
-	signInButton: {
-		height: 32,
-		paddingHorizontal: 16,
-		minWidth: 0,
+	content: {
+		justifyContent: 'center',
+		marginTop: 16,
 	},
 });
 
-export default memo(AuthWidget);
+export default memo(BaseFeedWidget);

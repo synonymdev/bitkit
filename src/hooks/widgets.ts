@@ -1,30 +1,45 @@
-import { SlashURL, Hyperdrive } from '@synonymdev/slashtags-sdk';
 import { useEffect, useState } from 'react';
+import { SlashURL, Hyperdrive } from '@synonymdev/slashtags-sdk';
 
 import { useSlashtagsSDK } from '../components/SlashtagsProvider';
+import i18n from '../utils/i18n';
 import { showToast } from '../utils/notifications';
 import { decodeWidgetFieldValue } from '../utils/widgets';
-import { IWidget } from '../store/types/widgets';
+import { decodeJSON, readAsDataURL } from '../utils/slashtags';
+import { SlashFeedJSON } from '../store/types/widgets';
 
-export const useFeedWidget = ({
-	url,
-	feed,
-}: {
+type Field = {
+	name: string;
+	value: string;
+	unit?: string;
+};
+
+export const useSlashfeed = (options: {
 	url: string;
-	feed: IWidget['feed'];
+	fields?: SlashFeedJSON['fields'];
 }): {
-	value?: any;
+	config?: SlashFeedJSON;
+	icon?: string;
+	fields: Field[];
 	drive?: Hyperdrive;
+	loading: boolean;
+	failed: boolean;
 } => {
-	const [value, setValue] = useState<string>();
+	const [config, setConfig] = useState<SlashFeedJSON>();
+	const [icon, setIcon] = useState<string>();
+	const [fields, setFields] = useState<Field[]>([]);
 	const [_drive, setDrive] = useState<Hyperdrive>();
+	const [loading, setLoading] = useState(false);
+	const [failed, setFailed] = useState(false);
 
 	const sdk = useSlashtagsSDK();
 
 	useEffect(() => {
 		let unmounted = false;
 
-		const parsed = SlashURL.parse(url);
+		setLoading(true);
+
+		const parsed = SlashURL.parse(options.url);
 		const key = parsed.key;
 		const encryptionKey =
 			typeof parsed.privateQuery.encryptionKey === 'string'
@@ -33,41 +48,84 @@ export const useFeedWidget = ({
 
 		const drive = sdk.drive(key, { encryptionKey });
 
-		drive
-			.ready()
-			.then(() => {
-				setDrive(drive);
-				read();
-				drive.core.on('append', read);
-			})
-			.catch((e: Error) => {
-				showToast({
-					type: 'error',
-					title: 'Failed to open feed drive',
-					description: e.message,
-				});
-			});
+		const getData = async (): Promise<void> => {
+			try {
+				const slashfeed = await drive.get('/slashfeed.json');
+				const _config = decodeJSON(slashfeed) as SlashFeedJSON;
 
-		function read(): void {
-			if (!feed?.field) {
-				return;
+				if (!_config) {
+					setFailed(true);
+					setLoading(false);
+					return;
+				}
+
+				let feedIcon = _config.icons['48'] || Object.values(_config.icons)[0];
+				if (feedIcon.startsWith('/')) {
+					feedIcon = await readAsDataURL(drive, feedIcon);
+				}
+
+				setConfig(_config);
+				setIcon(feedIcon);
+
+				const read = async (): Promise<void> => {
+					const _fields = options.fields ?? _config.fields;
+
+					// Don't continue for news & facts feeds
+					if (!_fields.length || _fields[0].main === '/feed/') {
+						setLoading(false);
+						return;
+					}
+
+					const promises = _fields.map(async (field) => {
+						const buffer: Uint8Array = await drive.get(field.main);
+						const value = decodeWidgetFieldValue(_config.type, field, buffer);
+						return { name: field.name, value };
+					});
+
+					const values = await Promise.all(promises);
+
+					if (!unmounted) {
+						setFields(values);
+						setLoading(false);
+					}
+				};
+
+				try {
+					await drive.ready();
+					setDrive(drive);
+					read();
+					drive.core.on('append', read);
+				} catch (error) {
+					console.error(error);
+					setLoading(false);
+					setFailed(true);
+					showToast({
+						type: 'error',
+						title: i18n.t('widget_error_drive'),
+						description: error.message,
+					});
+				}
+			} catch (error) {
+				console.error(error);
+				setLoading(false);
+				setFailed(true);
 			}
-			drive
-				.get(feed.field.main)
-				.then((buf: Uint8Array) =>
-					decodeWidgetFieldValue(feed.type, feed.field, buf),
-				)
-				.then((_value: any) => !unmounted && _value && setValue(_value));
-		}
+		};
 
-		return function cleanup() {
+		getData();
+
+		return () => {
 			unmounted = true;
 			drive.core.removeAllListeners();
 		};
-	}, [url, sdk, feed]);
+	}, [sdk, options.url, options.fields]);
 
 	return {
-		value,
+		config,
+		icon,
+		fields,
 		drive: _drive,
+		loading,
+		failed,
 	};
 };

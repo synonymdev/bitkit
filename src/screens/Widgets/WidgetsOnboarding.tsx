@@ -9,20 +9,21 @@ import NavigationHeader from '../../components/NavigationHeader';
 import SafeAreaInset from '../../components/SafeAreaInset';
 import { setWidgetsOnboarding } from '../../store/actions/widgets';
 import { Display, Text01S } from '../../styles/text';
-import type { WidgetsScreenProps } from '../../navigation/types';
+import type { RootStackScreenProps } from '../../navigation/types';
 
 const padlockImageSrc = require('../../assets/illustrations/padlock.png');
 const puzzleImageSrc = require('../../assets/illustrations/puzzle.png');
 
 export const GoodbyePasswords = ({
 	navigation,
-}: WidgetsScreenProps<'GoodbyePasswords'>): ReactElement => {
+}: RootStackScreenProps<'GoodbyePasswords'>): ReactElement => {
 	const { t } = useTranslation('slashtags');
 
 	return (
 		<Layout
 			navigation={navigation}
 			illustration={padlockImageSrc}
+			screenIndex={0}
 			onNext={(): void => {
 				navigation.navigate('HelloWidgets');
 			}}>
@@ -44,13 +45,14 @@ export const GoodbyePasswords = ({
 
 export const HelloWidgets = ({
 	navigation,
-}: WidgetsScreenProps<'HelloWidgets'>): ReactElement => {
+}: RootStackScreenProps<'HelloWidgets'>): ReactElement => {
 	const { t } = useTranslation('slashtags');
 
 	return (
 		<Layout
 			navigation={navigation}
 			illustration={puzzleImageSrc}
+			screenIndex={1}
 			onNext={(): void => {
 				setWidgetsOnboarding(true);
 				navigation.navigate('WidgetsSuggestions');
@@ -73,13 +75,15 @@ export const HelloWidgets = ({
 
 const Layout = ({
 	navigation,
+	screenIndex,
 	illustration,
 	children,
 	onNext,
 }: {
 	navigation:
-		| WidgetsScreenProps<'GoodbyePasswords'>['navigation']
-		| WidgetsScreenProps<'HelloWidgets'>['navigation'];
+		| RootStackScreenProps<'GoodbyePasswords'>['navigation']
+		| RootStackScreenProps<'HelloWidgets'>['navigation'];
+	screenIndex: number;
 	illustration: ImageSourcePropType;
 	children: ReactNode;
 	onNext: () => void;
@@ -110,10 +114,8 @@ const Layout = ({
 							style={styles.button}
 							text={t('continue')}
 							size="large"
-							testID="ContinueWidgets"
-							onPress={(): void => {
-								onNext?.();
-							}}
+							testID={`ContinueWidgets-${screenIndex}`}
+							onPress={onNext}
 						/>
 					</View>
 				</View>

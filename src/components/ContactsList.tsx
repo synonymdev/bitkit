@@ -52,7 +52,7 @@ export const ContactItem = ({
 						style={size !== 'small' ? cstyles.name : undefined}>
 						{name}
 					</Text01M>
-					<SlashtagURL url={contact.url} color="gray1" bold={false} />
+					<SlashtagURL url={contact.url} color="gray1" size="small" />
 				</View>
 			</View>
 		</TouchableOpacity>

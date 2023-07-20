@@ -106,7 +106,7 @@ const _SlashAuthModal = (): ReactElement => {
 	// }, [anonymousSlashtag]);
 
 	const serviceName = useMemo(() => {
-		return server.name || ellipsis(server.url, 25);
+		return server.name || ellipsis(server.url, 22);
 	}, [server]);
 
 	const text = useMemo(() => {
@@ -175,9 +175,9 @@ const _SlashAuthModal = (): ReactElement => {
 					image={server?.image}
 					size={32}
 				/>
-				<Title>{serviceName}</Title>
+				<Title numberOfLines={1}>{serviceName}</Title>
 			</View>
-			<Text01S color="gray1" style={styles.text}>
+			<Text01S style={styles.text} color="gray1">
 				{text}
 			</Text01S>
 			<Key

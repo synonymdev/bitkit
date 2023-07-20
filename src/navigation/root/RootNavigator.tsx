@@ -49,9 +49,9 @@ import Contacts from '../../screens/Contacts/Contacts';
 import Contact from '../../screens/Contacts/Contact';
 import ContactEdit from '../../screens/Contacts/ContactEdit';
 import SlashAuthModal from '../../screens/Widgets/SlashAuthModal';
-import WidgetFeedEdit from '../../screens/Widgets/WidgetFeedEdit';
+import Widget from '../../screens/Widgets/Widget';
+import WidgetEdit from '../../screens/Widgets/WidgetEdit';
 import BackupSubscriber from '../../utils/backup/backups-subscriber';
-import WidgetsNavigator from '../widgets/WidgetsNavigator';
 import SendNavigation from '../bottom-sheet/SendNavigation';
 import ReceiveNavigation from '../bottom-sheet/ReceiveNavigation';
 import BackupNavigation from '../bottom-sheet/BackupNavigation';
@@ -59,6 +59,11 @@ import PINNavigation from '../bottom-sheet/PINNavigation';
 import ForceTransfer from '../bottom-sheet/ForceTransfer';
 import CloseChannelSuccess from '../bottom-sheet/CloseChannelSuccess';
 import LNURLWithdrawNavigation from '../bottom-sheet/LNURLWithdrawNavigation';
+import {
+	GoodbyePasswords,
+	HelloWidgets,
+} from '../../screens/Widgets/WidgetsOnboarding';
+import WidgetsSuggestions from '../../screens/Widgets/WidgetsSuggestions';
 import { __E2E__ } from '../../constants/env';
 import type { RootStackParamList } from '../types';
 
@@ -231,8 +236,14 @@ const RootNavigator = (): ReactElement => {
 				<Stack.Screen name="Contact" component={Contact} />
 				<Stack.Screen name="BuyBitcoin" component={BuyBitcoin} />
 				<Stack.Screen name="BetaRisk" component={BetaRisk} />
-				<Stack.Screen name="WidgetFeedEdit" component={WidgetFeedEdit} />
-				<Stack.Screen name="WidgetsRoot" component={WidgetsNavigator} />
+				<Stack.Screen name="GoodbyePasswords" component={GoodbyePasswords} />
+				<Stack.Screen name="HelloWidgets" component={HelloWidgets} />
+				<Stack.Screen
+					name="WidgetsSuggestions"
+					component={WidgetsSuggestions}
+				/>
+				<Stack.Screen name="Widget" component={Widget} />
+				<Stack.Screen name="WidgetEdit" component={WidgetEdit} />
 			</Stack.Navigator>
 
 			<SendNavigation />

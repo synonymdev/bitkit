@@ -97,6 +97,7 @@ const Wallets = ({
 					]}
 					disableScrollViewPanResponder={true}
 					showsVerticalScrollIndicator={false}
+					testID="WalletsScrollView"
 					refreshControl={
 						<AnimatedRefreshControl
 							refreshing={refreshing}

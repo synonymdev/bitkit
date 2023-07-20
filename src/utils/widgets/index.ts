@@ -3,7 +3,7 @@ import { SlashFeedJSON } from '../../store/types/widgets';
 import { i18nTime } from '../../utils/i18n';
 
 export enum SUPPORTED_FEED_TYPES {
-	PRICE_FEED = 'exchange.price_history',
+	PRICE_FEED = 'exchange.price_history_timestamped',
 	HEADLINES_FEED = 'news.headlines',
 	BLOCKS_FEED = 'bitcoin.stats',
 	FACTS_FEED = 'quotes',
@@ -20,15 +20,12 @@ export const decodeWidgetFieldValue = (
 	buf: Uint8Array,
 ): any => {
 	switch (type) {
-		case SUPPORTED_FEED_TYPES.PRICE_FEED:
-			let value: number;
-
+		case SUPPORTED_FEED_TYPES.PRICE_FEED: {
 			try {
-				value = buf && JSON.parse(b4a.toString(buf));
-
 				const currency = field.quote;
+				const value: number = JSON.parse(b4a.toString(buf));
 
-				return new Intl.NumberFormat('en-US', {
+				const price = new Intl.NumberFormat('en-US', {
 					style: 'currency',
 					currency:
 						currency === 'EUT' ? 'EUR' : currency === 'UST' ? 'USD' : currency,
@@ -39,16 +36,18 @@ export const decodeWidgetFieldValue = (
 							? prev + part.value
 							: prev;
 					}, '');
+
+				return price;
 			} catch (error) {
 				return error.message;
 			}
+		}
 
-		case SUPPORTED_FEED_TYPES.BLOCKS_FEED:
-			const json = buf && JSON.parse(b4a.toString(buf));
+		case SUPPORTED_FEED_TYPES.BLOCKS_FEED: {
+			const json = JSON.parse(b4a.toString(buf));
+			const { format } = new Intl.NumberFormat('en-US');
 
 			if (field.name === 'Last Block') {
-				const format = new Intl.NumberFormat('en-US').format;
-
 				return {
 					height: json.height ? format(json.height) : '',
 					transacionCount: json.transactionCount
@@ -73,10 +72,50 @@ export const decodeWidgetFieldValue = (
 				};
 			}
 
+			if (field.name === 'Block') {
+				return format(json);
+			}
+			if (field.name === 'Time') {
+				const formatted = i18nTime.t('dateTime', {
+					v: new Date(json * 1000),
+					formatParams: {
+						v: {
+							hour: 'numeric',
+							minute: 'numeric',
+							second: 'numeric',
+						},
+					},
+				});
+				return formatted;
+			}
+			if (field.name === 'Date') {
+				const formatted = i18nTime.t('dateTime', {
+					v: new Date(json * 1000),
+					formatParams: {
+						v: {
+							year: 'numeric',
+							month: 'short',
+							day: 'numeric',
+						},
+					},
+				});
+				return formatted;
+			}
+			if (field.name === 'Transactions') {
+				return format(json);
+			}
+			if (field.name === 'Size') {
+				return `${format(Math.trunc(json))} Kb`;
+			}
+			if (field.name === 'Weight') {
+				return `${format(json)} MWU`;
+			}
+
 			return json;
+		}
 
 		default: {
-			let val: any = buf && b4a.toString(buf).slice(0, 35);
+			let val: any = b4a.toString(buf).slice(0, 35);
 			// Remove extra JSON stringification
 			if (typeof val === 'string') {
 				try {
