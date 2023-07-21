@@ -10,7 +10,6 @@ import { StyleSheet, View } from 'react-native';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 
-import LNURLWNumberpad from './LNURLWNumberpad';
 import { TouchableOpacity } from '../../../styles/components';
 import { Caption13Up, Text02B } from '../../../styles/text';
 import { SwitchIcon } from '../../../styles/icons';
@@ -33,6 +32,7 @@ import { useCurrency } from '../../../hooks/displayValues';
 import { getNumberPadText } from '../../../utils/numberpad';
 import { convertToSats } from '../../../utils/conversion';
 import type { LNURLWithdrawProps } from '../../../navigation/types';
+import SendNumberPad from '../Send/SendNumberPad';
 
 const Amount = ({
 	navigation,
@@ -141,7 +141,7 @@ const Amount = ({
 						</View>
 					</View>
 
-					<LNURLWNumberpad
+					<SendNumberPad
 						value={text}
 						maxAmount={maxWithdrawable}
 						onChange={setText}
