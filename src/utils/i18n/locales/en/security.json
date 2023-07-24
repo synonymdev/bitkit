@@ -72,7 +72,7 @@
 	"reset_dialog_title": "Reset Bitkit?",
 	"reset_dialog_desc": "Are you sure you want to reset your Bitkit Wallet? Do you have a backup of your recovery phrase and wallet data?",
 	"recovery": "Recovery",
-	"recovery_text": "You've entered Bitkit's recovery mode by tapping during startup. Here are some actions to perform when running into issues that prevent the app from fully functioning. Restart the app for a normal startup.",
+	"recovery_text": "You've entered Bitkit's recovery mode. Here are some actions to perform when running into issues that prevent the app from fully functioning. Restart the app for a normal startup.",
 	"lightning_recovery_title": "Lightning Recovery",
 	"lightning_recovery_desc": "Warning: This will force close all your channels and recover any funds to your on-chain wallet. Only use this option if you are unable to access your lightning wallet due to a restore error.",
 	"lightning_recovery_success": "Lightning Recovery Success",

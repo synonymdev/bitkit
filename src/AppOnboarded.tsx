@@ -7,7 +7,6 @@ import { useTranslation } from 'react-i18next';
 import RootNavigator from './navigation/root/RootNavigator';
 import InactivityTracker from './components/InactivityTracker';
 import { startWalletServices } from './utils/startup';
-import { RECOVERY_DELAY } from './utils/startup/constants';
 import { electrumConnection } from './utils/electrum';
 import { unsubscribeFromLightningSubscriptions } from './utils/lightning';
 import i18n from './utils/i18n';
@@ -55,16 +54,12 @@ const AppOnboarded = (): ReactElement => {
 
 	// on App start
 	useEffect(() => {
-		// Delay service startup to make time for entering recovery
-		const timerId = setTimeout(() => {
-			startWalletServices({ selectedNetwork, selectedWallet });
-		}, RECOVERY_DELAY);
+		startWalletServices({ selectedNetwork, selectedWallet });
 
 		const needsAuth = pin && pinOnLaunch;
 		updateUi({ isAuthenticated: !needsAuth });
 
 		return () => {
-			clearTimeout(timerId);
 			unsubscribeFromLightningSubscriptions();
 		};
 		// onMount

@@ -111,6 +111,7 @@
     "react-native-modal": "^13.0.1",
     "react-native-permissions": "^3.7.3",
     "react-native-qrcode-svg": "^6.2.0",
+    "react-native-quick-actions": "^0.3.13",
     "react-native-randombytes": "^3.6.1",
     "react-native-rate": "^1.2.12",
     "react-native-reanimated": "^3.1.0",

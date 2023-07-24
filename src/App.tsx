@@ -6,16 +6,16 @@ import React, {
 	useCallback,
 	useState,
 } from 'react';
-import { Platform, NativeModules, StyleSheet } from 'react-native';
+import { Platform, NativeModules } from 'react-native';
 import { useSelector } from 'react-redux';
 import Toast from 'react-native-toast-message';
+import QuickActions from 'react-native-quick-actions';
 import { ThemeProvider } from 'styled-components/native';
 
-import { SafeAreaProvider, StatusBar, View } from './styles/components';
+import { SafeAreaProvider, StatusBar } from './styles/components';
 import { getTheme } from './styles/themes';
 import OnboardingNavigator from './navigation/onboarding/OnboardingNavigator';
 import { SlashtagsProvider } from './components/SlashtagsProvider';
-import TwoFingerPressable from './components/TwoFingerPressable';
 import { toastConfig } from './components/Toast';
 import RecoveryNavigator from './screens/Recovery/RecoveryNavigator';
 import RestoringScreen from './screens/Onboarding/Restoring';
@@ -23,15 +23,15 @@ import AppUpdate from './screens/AppUpdate';
 import AppOnboarded from './AppOnboarded';
 
 import './utils/i18n';
+import './utils/quick-actions';
 import { checkForAppUpdate } from './store/actions/ui';
-import { RECOVERY_DELAY } from './utils/startup/constants';
 import { themeSelector } from './store/reselect/settings';
 import { walletExistsSelector } from './store/reselect/wallet';
 import { requiresRemoteRestoreSelector } from './store/reselect/user';
 import { criticalUpdateSelector } from './store/reselect/ui';
 
 const App = (): ReactElement => {
-	const [isListening, setIsListening] = useState(true);
+	const [isReady, setIsReady] = useState(false);
 	const [showRecovery, setShowRecovery] = useState(false);
 	const theme = useSelector(themeSelector);
 	const walletExists = useSelector(walletExistsSelector);
@@ -45,21 +45,24 @@ const App = (): ReactElement => {
 			setTimeout(NativeModules.SplashScreenModule.hide, 100);
 		}
 
-		// check for Bitkit update
-		checkForAppUpdate();
+		const checkForRecovery = async (): Promise<void> => {
+			const action = await QuickActions.popInitialAction();
+			if (action?.title === 'Recovery') {
+				setShowRecovery(true);
+			}
 
-		// Tap twice anywhere in the first 500ms of startup to enter recovery
-		setTimeout((): void => setIsListening(false), RECOVERY_DELAY);
+			setIsReady(true);
+		};
+
+		checkForRecovery();
+		checkForAppUpdate();
 	}, []);
 
-	const onTwoFingerPress = useCallback(() => {
-		if (isListening) {
-			setShowRecovery(true);
-			setIsListening(false);
-		}
-	}, [isListening]);
-
 	const RootComponent = useCallback((): ReactElement => {
+		if (!isReady) {
+			return <></>;
+		}
+
 		if (showRecovery) {
 			return <RecoveryNavigator />;
 		}
@@ -77,7 +80,13 @@ const App = (): ReactElement => {
 		}
 
 		return <OnboardingNavigator />;
-	}, [showRecovery, hasCriticalUpdate, walletExists, requiresRemoteRestore]);
+	}, [
+		isReady,
+		showRecovery,
+		hasCriticalUpdate,
+		walletExists,
+		requiresRemoteRestore,
+	]);
 
 	const currentTheme = useMemo(() => getTheme(theme), [theme]);
 
@@ -85,26 +94,11 @@ const App = (): ReactElement => {
 		<ThemeProvider theme={currentTheme}>
 			<SafeAreaProvider>
 				<StatusBar />
-				<TwoFingerPressable onGesture={onTwoFingerPress}>
-					<View style={[styles.tapListener, !isListening && styles.hide]} />
-				</TwoFingerPressable>
 				<RootComponent />
 				<Toast config={toastConfig} />
 			</SafeAreaProvider>
 		</ThemeProvider>
 	);
 };
-
-const styles = StyleSheet.create({
-	tapListener: {
-		...StyleSheet.absoluteFillObject,
-		backgroundColor: 'transparent',
-		flex: 1,
-		zIndex: 1,
-	},
-	hide: {
-		zIndex: -1,
-	},
-});
 
 export default memo(App);
