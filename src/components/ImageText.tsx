@@ -49,7 +49,7 @@ const ImageText = ({
 					size="text02m"
 					color="gray1"
 					symbol={true}
-					showFiat={true}
+					unitType="secondary"
 					enableHide={true}
 				/>
 			</View>

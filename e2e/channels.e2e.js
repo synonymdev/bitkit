@@ -94,7 +94,7 @@ d('LN Channel Onboarding', () => {
 			// should show 80% limit note
 			await element(by.id('SliderHandle')).swipe('right', 'slow', NaN, 0.8);
 			await expect(element(by.id('QuickSetupReserveNote'))).toBeVisible();
-			await element(by.id('QuickSetupNumberField')).tap();
+			await element(by.id('QuickSetupCustomAmount')).tap();
 			await element(by.id('NumberPadButtonsMax')).tap();
 			await element(by.id('NumberPadButtonsDone')).tap();
 			await expect(element(by.id('QuickSetupReserveNote'))).toBeVisible();
@@ -113,14 +113,14 @@ d('LN Channel Onboarding', () => {
 			// should show Blocktank limit note
 			await element(by.id('SliderHandle')).swipe('right', 'slow', NaN, 0.8);
 			await expect(element(by.id('QuickSetupBlocktankNote'))).toBeVisible();
-			await element(by.id('QuickSetupNumberField')).tap();
+			await element(by.id('QuickSetupCustomAmount')).tap();
 			await element(by.id('NumberPadButtonsMax')).tap();
 			await element(by.id('NumberPadButtonsDone')).tap();
 			await expect(element(by.id('QuickSetupBlocktankNote'))).toBeVisible();
 
 			// NumberPad
 			await element(by.id('SliderHandle')).swipe('left');
-			await element(by.id('QuickSetupNumberField')).tap();
+			await element(by.id('QuickSetupCustomAmount')).tap();
 			await element(by.id('N2').withAncestor(by.id('QuickSetup'))).tap();
 			await element(by.id('N0').withAncestor(by.id('QuickSetup'))).multiTap(5);
 			await element(by.id('NumberPadButtonsDone')).tap();

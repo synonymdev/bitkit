@@ -40,7 +40,7 @@ import {
 	selectedNetworkSelector,
 	selectedWalletSelector,
 } from '../../store/reselect/wallet';
-import { balanceUnitSelector } from '../../store/reselect/settings';
+import { primaryUnitSelector } from '../../store/reselect/settings';
 import { blocktankServiceSelector } from '../../store/reselect/blocktank';
 
 const Setup = ({ navigation }: TransferScreenProps<'Setup'>): ReactElement => {
@@ -51,7 +51,7 @@ const Setup = ({ navigation }: TransferScreenProps<'Setup'>): ReactElement => {
 	const [textFieldValue, setTextFieldValue] = useState('');
 	const [showNumberPad, setShowNumberPad] = useState(false);
 	const [loading, setLoading] = useState(false);
-	const unit = useSelector(balanceUnitSelector);
+	const unit = useSelector(primaryUnitSelector);
 	const selectedWallet = useSelector(selectedWalletSelector);
 	const selectedNetwork = useSelector(selectedNetworkSelector);
 	const blocktankService = useSelector(blocktankServiceSelector);
@@ -245,6 +245,17 @@ const Setup = ({ navigation }: TransferScreenProps<'Setup'>): ReactElement => {
 									<Text02S color="gray1">{t('note_reserve_limit')}</Text02S>
 								</AnimatedView>
 							)}
+
+							<AnimatedView
+								color="transparent"
+								entering={FadeIn}
+								exiting={FadeOut}>
+								<Button
+									style={styles.buttonCustom}
+									text={t('enter_custom_amount')}
+									onPress={(): void => setShowNumberPad(true)}
+								/>
+							</AnimatedView>
 						</>
 					)}
 				</View>
@@ -259,8 +270,7 @@ const Setup = ({ navigation }: TransferScreenProps<'Setup'>): ReactElement => {
 						value={textFieldValue}
 						showPlaceholder={showNumberPad}
 						reverse={true}
-						testID="TransferSetupNumberField"
-						onPress={(): void => setShowNumberPad(true)}
+						onPress={onChangeUnit}
 					/>
 				</View>
 
@@ -332,6 +342,10 @@ const styles = StyleSheet.create({
 	},
 	numberpad: {
 		marginHorizontal: -16,
+	},
+	buttonCustom: {
+		marginTop: 16,
+		alignSelf: 'flex-start',
 	},
 });
 

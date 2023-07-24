@@ -140,6 +140,18 @@ const migrations = {
 			},
 		};
 	},
+	15: (state): PersistedState => {
+		delete state.settings.bitcoinUnit;
+		delete state.settings.balanceUnit;
+
+		return {
+			...state,
+			settings: {
+				...state.settings,
+				unit: 'satoshi',
+			},
+		};
+	},
 };
 
 export default migrations;

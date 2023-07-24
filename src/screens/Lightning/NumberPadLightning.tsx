@@ -5,8 +5,8 @@ import { useSelector } from 'react-redux';
 import NumberPad from '../../components/NumberPad';
 import GradientView from '../../components/GradientView';
 import NumberPadButtons from '../Wallets/NumberPadButtons';
-import { EBalanceUnit } from '../../store/types/wallet';
-import { balanceUnitSelector } from '../../store/reselect/settings';
+import { EUnit } from '../../store/types/wallet';
+import { primaryUnitSelector } from '../../store/reselect/settings';
 import { handleNumberPadPress } from '../../utils/numberpad';
 import { convertToSats } from '../../utils/conversion';
 import { vibrate } from '../../utils/helpers';
@@ -29,11 +29,11 @@ const NumberPadLightning = ({
 	style?: StyleProp<ViewStyle>;
 }): ReactElement => {
 	const [errorKey, setErrorKey] = useState<string>();
-	const unit = useSelector(balanceUnitSelector);
+	const unit = useSelector(primaryUnitSelector);
 
-	const maxDecimals = unit === EBalanceUnit.BTC ? 8 : 2;
-	const maxLength = unit === EBalanceUnit.satoshi ? 10 : 20;
-	const numberPadType = unit === EBalanceUnit.satoshi ? 'integer' : 'decimal';
+	const maxDecimals = unit === EUnit.BTC ? 8 : 2;
+	const maxLength = unit === EUnit.satoshi ? 10 : 20;
+	const numberPadType = unit === EUnit.satoshi ? 'integer' : 'decimal';
 
 	const onPress = (key: string): void => {
 		const newValue = handleNumberPadPress(key, value, {

@@ -39,7 +39,7 @@ import {
 	selectedWalletSelector,
 } from '../../store/reselect/wallet';
 import { blocktankServiceSelector } from '../../store/reselect/blocktank';
-import { balanceUnitSelector } from '../../store/reselect/settings';
+import { primaryUnitSelector } from '../../store/reselect/settings';
 import NumberPadTextField from '../../components/NumberPadTextField';
 import { getNumberPadText } from '../../utils/numberpad';
 
@@ -49,7 +49,7 @@ const QuickSetup = ({
 	const { t } = useTranslation('lightning');
 	const { onchainBalance } = useBalance();
 	const [nextUnit, onSwitchUnit] = useSwitchUnit();
-	const unit = useSelector(balanceUnitSelector);
+	const unit = useSelector(primaryUnitSelector);
 	const selectedWallet = useSelector(selectedWalletSelector);
 	const selectedNetwork = useSelector(selectedNetworkSelector);
 	const blocktankService = useSelector(blocktankServiceSelector);
@@ -231,6 +231,18 @@ const QuickSetup = ({
 								<Text02S color="gray1">{t('note_reserve_limit')}</Text02S>
 							</AnimatedView>
 						)}
+
+						<AnimatedView
+							color="transparent"
+							entering={FadeIn}
+							exiting={FadeOut}>
+							<Button
+								style={styles.buttonCustom}
+								text={t('enter_custom_amount')}
+								testID="QuickSetupCustomAmount"
+								onPress={(): void => setShowNumberPad(true)}
+							/>
+						</AnimatedView>
 					</>
 				)}
 
@@ -244,8 +256,7 @@ const QuickSetup = ({
 						value={textFieldValue}
 						showPlaceholder={showNumberPad}
 						reverse={true}
-						testID="QuickSetupNumberField"
-						onPress={(): void => setShowNumberPad(true)}
+						onPress={onChangeUnit}
 					/>
 				</View>
 
@@ -316,6 +327,10 @@ const styles = StyleSheet.create({
 	},
 	numberpad: {
 		marginHorizontal: -16,
+	},
+	buttonCustom: {
+		marginTop: 16,
+		alignSelf: 'flex-start',
 	},
 });
 

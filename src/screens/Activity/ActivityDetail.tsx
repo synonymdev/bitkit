@@ -68,11 +68,7 @@ import useDisplayValues from '../../hooks/displayValues';
 import Store from '../../store/types';
 import { showBottomSheet } from '../../store/actions/ui';
 import { IContactRecord } from '../../store/types/slashtags';
-import {
-	EPaymentType,
-	EBoostType,
-	EBalanceUnit,
-} from '../../store/types/wallet';
+import { EPaymentType, EBoostType } from '../../store/types/wallet';
 import {
 	activityItemSelector,
 	activityItemsSelector,
@@ -100,6 +96,7 @@ import type {
 	RootStackScreenProps,
 } from '../../navigation/types';
 import { i18nTime } from '../../utils/i18n';
+import { useSwitchUnit } from '../../hooks/wallet';
 
 const Section = memo(
 	({ title, value }: { title: string; value: ReactNode }) => {
@@ -168,6 +165,7 @@ const OnchainActivityDetail = ({
 
 	const { t } = useTranslation('wallet');
 	const { t: tTime } = useTranslation('intl', { i18n: i18nTime });
+	const [_, switchUnit] = useSwitchUnit();
 	const contacts = useSlashtags().contacts as { [url: string]: IContactRecord };
 	const tags = useAppSelector((state) => tagSelector(state, id));
 	const selectedNetwork = useSelector(selectedNetworkSelector);
@@ -347,11 +345,11 @@ const OnchainActivityDetail = ({
 		<>
 			<Money
 				sats={value}
-				unit={EBalanceUnit.fiat}
 				size="caption13Up"
 				color="gray1"
+				unitType="secondary"
 			/>
-			<View style={styles.title}>
+			<TouchableOpacity style={styles.title} onPress={switchUnit}>
 				<View style={styles.titleBlock}>
 					<Money sats={value} sign={isSend ? '- ' : '+ '} />
 				</View>
@@ -363,7 +361,7 @@ const OnchainActivityDetail = ({
 						<ReceiveIcon height={19} color="brand" />
 					)}
 				</ThemedView>
-			</View>
+			</TouchableOpacity>
 
 			{!extended ? (
 				<>
@@ -605,6 +603,7 @@ const LightningActivityDetail = ({
 }): ReactElement => {
 	const { t } = useTranslation('wallet');
 	const { t: tTime } = useTranslation('intl', { i18n: i18nTime });
+	const [_, switchUnit] = useSwitchUnit();
 	const colors = useColors();
 	const { id, txType, value, message, timestamp, address } = item;
 	const tags = useSelector((state: Store) => tagSelector(state, id));
@@ -661,11 +660,11 @@ const LightningActivityDetail = ({
 		<>
 			<Money
 				sats={value}
-				unit={EBalanceUnit.fiat}
+				unitType="secondary"
 				size="caption13Up"
 				color="gray1"
 			/>
-			<View style={styles.title}>
+			<TouchableOpacity style={styles.title} onPress={switchUnit}>
 				<View style={styles.titleBlock}>
 					<Money sats={value} sign={isSend ? '- ' : '+ '} />
 				</View>
@@ -677,7 +676,7 @@ const LightningActivityDetail = ({
 						<ReceiveIcon height={19} color="purple" />
 					)}
 				</ThemedView>
-			</View>
+			</TouchableOpacity>
 
 			{!extended ? (
 				<>

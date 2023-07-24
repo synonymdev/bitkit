@@ -43,13 +43,14 @@ const AssetCard = ({
 							sats={satoshis}
 							enableHide={true}
 							size="text01m"
+							unitType="primary"
 						/>
 					</View>
 					<Money
 						sats={satoshis}
 						enableHide={true}
 						size="caption13M"
-						showFiat={true}
+						unitType="secondary"
 						color="gray1"
 					/>
 				</View>

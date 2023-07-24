@@ -5,46 +5,56 @@ import { useTranslation } from 'react-i18next';
 import { EItemType, IListData } from '../../../components/List';
 import SettingsView from '../SettingsView';
 import { updateSettings } from '../../../store/actions/settings';
-import { UnitBitcoinIcon, UnitSatoshiIcon } from '../../../styles/icons';
-import { bitcoinUnitSelector } from '../../../store/reselect/settings';
-import { EBitcoinUnit } from '../../../store/types/wallet';
+import {
+	UnitBitcoinIcon,
+	UnitSatoshiIcon,
+	UnitFiatIcon,
+} from '../../../styles/icons';
+import { primaryUnitSelector } from '../../../store/reselect/settings';
+import { EUnit } from '../../../store/types/wallet';
 import type { SettingsScreenProps } from '../../../navigation/types';
 
 const BitcoinUnitSettings = ({
 	navigation,
 }: SettingsScreenProps<'BitcoinUnitSettings'>): ReactElement => {
 	const { t } = useTranslation('settings');
-	const selectedBitcoinUnit = useSelector(bitcoinUnitSelector);
+	const selectedBitcoinUnit = useSelector(primaryUnitSelector);
 
 	const currencyListData: IListData[] = useMemo(() => {
-		const bitcoinUnits = [
+		const units = [
 			{
 				label: t('general.unit_bitcoin'),
-				unit: EBitcoinUnit.BTC,
+				unit: EUnit.BTC,
 				labelExample: '(0.00001000)',
 				Icon: UnitBitcoinIcon,
 			},
 			{
 				label: t('general.unit_satoshis'),
-				unit: EBitcoinUnit.satoshi,
+				unit: EUnit.satoshi,
 				labelExample: '(1 000)',
 				Icon: UnitSatoshiIcon,
+			},
+			{
+				label: t('general.unit_fiat'),
+				unit: EUnit.fiat,
+				labelExample: '($1,000)',
+				Icon: UnitFiatIcon,
 			},
 		];
 
 		return [
 			{
 				title: t('general.unit_display'),
-				data: bitcoinUnits.map((bitcoinUnit) => ({
-					title: `${bitcoinUnit.label} ${bitcoinUnit.labelExample}`,
-					value: bitcoinUnit.unit === selectedBitcoinUnit,
+				data: units.map((unit) => ({
+					title: `${unit.label} ${unit.labelExample}`,
+					value: unit.unit === selectedBitcoinUnit,
 					type: EItemType.button,
-					Icon: bitcoinUnit.Icon,
+					Icon: unit.Icon,
 					onPress: (): void => {
 						navigation.goBack();
-						updateSettings({ bitcoinUnit: bitcoinUnit.unit });
+						updateSettings({ unit: unit.unit });
 					},
-					testID: bitcoinUnit.label,
+					testID: unit.label,
 				})),
 			},
 		];

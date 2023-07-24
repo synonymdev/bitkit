@@ -9,7 +9,7 @@ import Money from './Money';
 import { useBalance, useSwitchUnit } from '../hooks/wallet';
 import { updateSettings } from '../store/actions/settings';
 import {
-	balanceUnitSelector,
+	primaryUnitSelector,
 	hideBalanceSelector,
 } from '../store/reselect/settings';
 
@@ -20,7 +20,7 @@ const BalanceHeader = (): ReactElement => {
 	const { t } = useTranslation('wallet');
 	const [_, switchUnit] = useSwitchUnit();
 	const { totalBalance, claimableBalance } = useBalance();
-	const unit = useSelector(balanceUnitSelector);
+	const unit = useSelector(primaryUnitSelector);
 	const hideBalance = useSelector(hideBalanceSelector);
 
 	const toggleHideBalance = (): void => {

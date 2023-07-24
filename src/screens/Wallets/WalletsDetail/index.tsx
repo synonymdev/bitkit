@@ -13,6 +13,7 @@ import {
 	StyleSheet,
 	TouchableOpacity,
 } from 'react-native';
+import { SkiaMutableValue } from '@shopify/react-native-skia/src/values/types';
 
 import {
 	Easing,
@@ -36,7 +37,7 @@ import { AnimatedView, View } from '../../../styles/components';
 import { BitcoinCircleIcon } from '../../../styles/icons';
 import { Title } from '../../../styles/text';
 import NavigationHeader from '../../../components/NavigationHeader';
-import { useBalance } from '../../../hooks/wallet';
+import { useBalance, useSwitchUnit } from '../../../hooks/wallet';
 import useColors from '../../../hooks/colors';
 import ActivityList from '../../Activity/ActivityList';
 import BitcoinBreakdown from './BitcoinBreakdown';
@@ -47,13 +48,8 @@ import { EActivityType } from '../../../store/types/activity';
 import { updateSettings } from '../../../store/actions/settings';
 import { capitalize } from '../../../utils/helpers';
 import DetectSwipe from '../../../components/DetectSwipe';
-import { EBitcoinUnit } from '../../../store/types/wallet';
 import type { WalletScreenProps } from '../../../navigation/types';
-import { SkiaMutableValue } from '@shopify/react-native-skia/src/values/types';
-import {
-	bitcoinUnitSelector,
-	hideBalanceSelector,
-} from '../../../store/reselect/settings';
+import { hideBalanceSelector } from '../../../store/reselect/settings';
 
 const updateHeight = ({ height, toValue = 0, duration = 250 }): void => {
 	try {
@@ -92,8 +88,8 @@ const WalletsDetail = ({
 }: WalletScreenProps<'WalletsDetail'>): ReactElement => {
 	const { assetType } = route.params;
 	const { totalBalance } = useBalance();
-	const bitcoinUnit = useSelector(bitcoinUnitSelector);
 	const hideBalance = useSelector(hideBalanceSelector);
+	const [_, switchUnit] = useSwitchUnit();
 	const colors = useColors();
 	const size = useValue({ width: 0, height: 0 });
 	const title = capitalize(assetType);
@@ -144,14 +140,6 @@ const WalletsDetail = ({
 		updateSettings({ hideBalance: !hideBalance });
 	};
 
-	const handleSwitchUnit = useCallback(() => {
-		const nextUnit =
-			bitcoinUnit === EBitcoinUnit.satoshi
-				? EBitcoinUnit.BTC
-				: EBitcoinUnit.satoshi;
-		updateSettings({ bitcoinUnit: nextUnit });
-	}, [bitcoinUnit]);
-
 	return (
 		<AnimatedView style={styles.container}>
 			<View color="transparent" style={styles.txListContainer}>
@@ -191,13 +179,30 @@ const WalletsDetail = ({
 									<Title style={styles.title}>{title}</Title>
 								</View>
 
+								{showDetails && (
+									<AnimatedView
+										color="transparent"
+										style={styles.cell}
+										entering={FadeIn}
+										exiting={FadeOut}>
+										<Money
+											sats={totalBalance}
+											enableHide={true}
+											highlight={true}
+											size="caption13M"
+											unitType="secondary"
+											color="gray1"
+										/>
+									</AnimatedView>
+								)}
+
 								{!showDetails && (
 									<AnimatedView
 										color="transparent"
 										style={styles.cell}
 										entering={FadeIn}
 										exiting={FadeOut}>
-										<TouchableOpacity onPress={handleSwitchUnit}>
+										<TouchableOpacity onPress={switchUnit}>
 											<Money
 												sats={totalBalance}
 												enableHide={true}
@@ -219,7 +224,7 @@ const WalletsDetail = ({
 											onSwipeLeft={toggleHideBalance}
 											onSwipeRight={toggleHideBalance}>
 											<TouchableOpacity
-												onPress={handleSwitchUnit}
+												onPress={switchUnit}
 												style={styles.largeValueContainer}>
 												<Money
 													sats={totalBalance}

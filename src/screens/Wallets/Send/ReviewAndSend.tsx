@@ -27,7 +27,6 @@ import {
 import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
 import GradientView from '../../../components/GradientView';
 import SwipeToConfirm from '../../../components/SwipeToConfirm';
-import AmountToggle from '../../../components/AmountToggle';
 import Tag from '../../../components/Tag';
 import ContactSmall from '../../../components/ContactSmall';
 import {
@@ -47,7 +46,6 @@ import {
 	addMetaSlashTagsUrlTag,
 } from '../../../store/actions/metadata';
 import useColors from '../../../hooks/colors';
-import useDisplayValues from '../../../hooks/displayValues';
 import { FeeText } from '../../../store/shapes/fees';
 import { EFeeId } from '../../../store/types/fees';
 import {
@@ -72,7 +70,6 @@ import {
 	transactionSelector,
 } from '../../../store/reselect/wallet';
 import {
-	bitcoinUnitSelector,
 	enableSendAmountWarningSelector,
 	pinForPaymentsSelector,
 	pinSelector,
@@ -80,6 +77,9 @@ import {
 import { onChainFeesSelector } from '../../../store/reselect/fees';
 import { updateOnChainActivityList } from '../../../store/actions/activity';
 import { truncate } from '../../../utils/helpers';
+import Money from '../../../components/Money';
+import { EUnit } from '../../../store/types/wallet';
+import AmountToggle from '../../../components/AmountToggle';
 
 const Section = memo(
 	({
@@ -115,7 +115,6 @@ const ReviewAndSend = ({
 	const onChainBalance = useSelector(onChainBalanceSelector);
 	const transaction = useSelector(transactionSelector);
 	const lightningBalance = useLightningBalance(false);
-	const bitcoinUnit = useSelector(bitcoinUnitSelector);
 	const exchangeRates = useSelector(exchangeRatesSelector);
 	const feeEstimates = useSelector(onChainFeesSelector);
 	const enableSendAmountWarning = useSelector(enableSendAmountWarningSelector);
@@ -349,12 +348,6 @@ const ReviewAndSend = ({
 		selectedNetwork,
 	]);
 
-	const totalFeeDisplay = useDisplayValues(feeSats);
-	const feeAmount =
-		totalFeeDisplay.fiatFormatted !== '—'
-			? ` (${totalFeeDisplay.fiatSymbol}${totalFeeDisplay.fiatFormatted})`
-			: '';
-
 	const runCreateTxMethods = useCallback((): void => {
 		if (transaction.lightningInvoice) {
 			createLightningTransaction().then();
@@ -448,14 +441,14 @@ const ReviewAndSend = ({
 			satoshis: amount,
 			currency: 'USD',
 			exchangeRates,
-			bitcoinUnit,
+			unit: EUnit.BTC,
 		});
 
 		const { fiatValue: feeFiat } = getFiatDisplayValues({
 			satoshis: feeSats,
 			currency: 'USD',
 			exchangeRates,
-			bitcoinUnit,
+			unit: EUnit.BTC,
 		});
 
 		// amount > 50% of total balance
@@ -500,7 +493,6 @@ const ReviewAndSend = ({
 	}, [
 		amount,
 		exchangeRates,
-		bitcoinUnit,
 		feeSats,
 		transaction.lightningInvoice,
 		transaction.satsPerByte,
@@ -511,6 +503,20 @@ const ReviewAndSend = ({
 		lightningBalance.localBalance,
 		onChainBalance,
 	]);
+
+	const goBackToAmount = useCallback(() => {
+		const { routes } = navigation.getState();
+		const amountIndex = routes.findLastIndex(
+			(route) => route.name === 'Amount',
+		);
+
+		if (amountIndex === -1) {
+			console.error('Amount screen not found');
+			return;
+		}
+
+		navigation.pop(routes.length - amountIndex - 1);
+	}, [navigation]);
 
 	const feeDescription = useMemo(() => {
 		if (selectedFeeId !== EFeeId.custom) {
@@ -584,6 +590,7 @@ const ReviewAndSend = ({
 						sats={amount}
 						reverse={true}
 						space={12}
+						onPress={goBackToAmount}
 					/>
 
 					<View style={styles.sectionContainer}>
@@ -617,14 +624,12 @@ const ReviewAndSend = ({
 								title={t('send_fee_and_speed')}
 								onPress={(): void => navigation.navigate('FeeRate')}
 								value={
-									<>
+									<View style={styles.fee}>
 										{feeIcon}
-										<Text02M>
-											{t(`fee:${selectedFeeId}.title`)}
-											{feeAmount}
-										</Text02M>
+										<Text02M>{t(`fee:${selectedFeeId}.title`)} </Text02M>
+										<Money sats={feeSats} size="text02m" />
 										<PencileIcon height={12} width={22} />
-									</>
+									</View>
 								}
 							/>
 							<Section
@@ -861,6 +866,10 @@ const styles = StyleSheet.create({
 	},
 	buttonContainer: {
 		marginTop: 'auto',
+	},
+	fee: {
+		flexDirection: 'row',
+		alignItems: 'center',
 	},
 });
 

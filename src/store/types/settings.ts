@@ -1,4 +1,4 @@
-import { IWalletItem, EBitcoinUnit, EBalanceUnit } from './wallet';
+import { IWalletItem, EUnit } from './wallet';
 
 export type TTheme = 'dark' | 'light';
 
@@ -46,8 +46,7 @@ export interface ISettings {
 	biometrics: boolean;
 	rbf: boolean;
 	theme: TTheme;
-	bitcoinUnit: EBitcoinUnit;
-	balanceUnit: EBalanceUnit;
+	unit: EUnit;
 	customElectrumPeers: TCustomElectrumPeers;
 	// TODO: type available currencies
 	selectedCurrency: string;

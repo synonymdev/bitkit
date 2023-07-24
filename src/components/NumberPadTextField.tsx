@@ -11,8 +11,8 @@ import {
 import { Display } from '../styles/text';
 import Money from './Money';
 import MoneySymbol from './MoneySymbol';
-import { EBalanceUnit, EBitcoinUnit } from '../store/types/wallet';
-import { balanceUnitSelector } from '../store/reselect/settings';
+import { EUnit } from '../store/types/wallet';
+import { primaryUnitSelector } from '../store/reselect/settings';
 import { convertToSats } from '../utils/conversion';
 import {
 	getDisplayValues,
@@ -28,23 +28,22 @@ const NumberPadTextField = ({
 	onPress,
 }: {
 	value: string;
-	space?: number;
 	showPlaceholder?: boolean;
 	reverse?: boolean;
 	style?: StyleProp<ViewStyle>;
 	testID?: string;
 	onPress?: () => void;
 }): ReactElement => {
-	const unit = useSelector(balanceUnitSelector);
+	const unit = useSelector(primaryUnitSelector);
 	const satoshis = convertToSats(value, unit);
 
 	let placeholder = '0';
 	let placeholderFractional = '';
 
-	if (unit === EBalanceUnit.BTC) {
+	if (unit === EUnit.BTC) {
 		placeholderFractional = '00000000';
 	}
-	if (unit === EBalanceUnit.fiat) {
+	if (unit === EUnit.fiat) {
 		placeholderFractional = '00';
 	}
 	if (placeholderFractional !== '') {
@@ -54,7 +53,7 @@ const NumberPadTextField = ({
 	if (value) {
 		const [integer, fractional] = value.split('.');
 
-		if (unit === EBalanceUnit.fiat) {
+		if (unit === EUnit.fiat) {
 			const { fiatWhole } = getFiatDisplayValuesForFiat({
 				value: Number(integer),
 			});
@@ -65,7 +64,7 @@ const NumberPadTextField = ({
 			placeholder = placeholder.substring(2 + fractional?.length);
 
 			// truncate to 2 decimals for fiat
-			if (unit === EBalanceUnit.fiat) {
+			if (unit === EUnit.fiat) {
 				const { fiatWhole } = getFiatDisplayValuesForFiat({
 					value: Number(integer),
 				});
@@ -73,10 +72,10 @@ const NumberPadTextField = ({
 				value = `${fiatWhole}.${fractional.substring(0, 2)}`;
 			}
 		} else {
-			if (unit === EBalanceUnit.satoshi) {
+			if (unit === EUnit.satoshi) {
 				const displayValue = getDisplayValues({
 					satoshis: Number(value),
-					bitcoinUnit: EBitcoinUnit.satoshi,
+					unit: EUnit.satoshi,
 				});
 				value = displayValue.bitcoinFormatted;
 
@@ -87,9 +86,6 @@ const NumberPadTextField = ({
 		}
 	}
 
-	const btcProps = { symbol: true };
-	const fiatProps = { showFiat: true };
-
 	return (
 		<Pressable style={style} testID={testID} onPress={onPress}>
 			{!reverse && (
@@ -98,7 +94,8 @@ const NumberPadTextField = ({
 					sats={satoshis}
 					size="caption13Up"
 					color="gray1"
-					{...{ ...(unit === EBalanceUnit.fiat ? btcProps : fiatProps) }}
+					symbol={true}
+					unitType="secondary"
 				/>
 			)}
 
@@ -119,7 +116,8 @@ const NumberPadTextField = ({
 					sats={satoshis}
 					size="text01m"
 					color="gray1"
-					{...{ ...(unit === EBalanceUnit.fiat ? btcProps : fiatProps) }}
+					symbol={true}
+					unitType="secondary"
 				/>
 			)}
 		</Pressable>

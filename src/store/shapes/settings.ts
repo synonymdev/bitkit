@@ -20,7 +20,7 @@ import {
 	ICustomElectrumPeer,
 	ISettings,
 } from '../types/settings';
-import { EBalanceUnit, EBitcoinUnit } from '../types/wallet';
+import { EUnit } from '../types/wallet';
 import { IWidgetsStore } from '../types/widgets';
 
 //TODO: Remove the public Electrum servers below once we spin up our own.
@@ -101,8 +101,7 @@ export const defaultSettingsShape: Readonly<ISettings> = {
 	biometrics: false,
 	rbf: false,
 	theme: 'dark',
-	bitcoinUnit: EBitcoinUnit.satoshi,
-	balanceUnit: EBalanceUnit.satoshi,
+	unit: EUnit.satoshi,
 	selectedCurrency: 'USD',
 	selectedLanguage: 'english',
 	customElectrumPeers: origCustomElectrumPeers,

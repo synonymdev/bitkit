@@ -1,4 +1,4 @@
-import { EBalanceUnit, EBitcoinUnit } from '../../store/types/wallet';
+import { EUnit } from '../../store/types/wallet';
 import { getDisplayValues } from '../displayValues';
 
 /**
@@ -63,17 +63,17 @@ export const handleNumberPadPress = (
  */
 export const getNumberPadText = (
 	amount: number,
-	unit?: EBalanceUnit,
+	unit?: EUnit,
 	shouldRound?: boolean,
 ): string => {
 	if (amount === 0) {
 		return '';
 	}
 
-	if (unit === EBalanceUnit.BTC) {
+	if (unit === EUnit.BTC) {
 		const displayValue = getDisplayValues({
 			satoshis: amount,
-			bitcoinUnit: EBitcoinUnit.BTC,
+			unit: EUnit.BTC,
 		});
 
 		const { bitcoinWhole, bitcoinDecimal } = displayValue;
@@ -82,10 +82,10 @@ export const getNumberPadText = (
 		return `${bitcoinWhole}${decimalPart}`;
 	}
 
-	if (unit === EBalanceUnit.fiat) {
+	if (unit === EUnit.fiat) {
 		const displayValue = getDisplayValues({
 			satoshis: amount,
-			bitcoinUnit: EBitcoinUnit.satoshi,
+			unit: EUnit.satoshi,
 		});
 
 		if (shouldRound) {
@@ -97,7 +97,7 @@ export const getNumberPadText = (
 
 	const displayValue = getDisplayValues({
 		satoshis: amount,
-		bitcoinUnit: EBitcoinUnit.satoshi,
+		unit: EUnit.satoshi,
 	});
 
 	return displayValue.satoshis.toString();

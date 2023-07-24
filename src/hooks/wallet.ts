@@ -7,8 +7,8 @@ import {
 	openChannelsSelector,
 } from '../store/reselect/lightning';
 import { updateSettings } from '../store/actions/settings';
-import { EBalanceUnit, EBitcoinUnit } from '../store/types/wallet';
-import { balanceUnitSelector } from '../store/reselect/settings';
+import { EUnit } from '../store/types/wallet';
+import { primaryUnitSelector } from '../store/reselect/settings';
 import {
 	currentWalletSelector,
 	selectedNetworkSelector,
@@ -86,27 +86,22 @@ export function useNoTransactions(): boolean {
 	return empty;
 }
 
-export const useSwitchUnit = (): [EBalanceUnit, () => void] => {
-	const balanceUnit = useSelector(balanceUnitSelector);
+export const useSwitchUnit = (): [EUnit, () => void] => {
+	const unit = useSelector(primaryUnitSelector);
 
 	// BTC -> satoshi -> fiat
 	const nextUnit = useMemo(() => {
-		if (balanceUnit === EBalanceUnit.BTC) {
-			return EBalanceUnit.satoshi;
+		if (unit === EUnit.BTC) {
+			return EUnit.satoshi;
 		}
-		if (balanceUnit === EBalanceUnit.satoshi) {
-			return EBalanceUnit.fiat;
+		if (unit === EUnit.satoshi) {
+			return EUnit.fiat;
 		}
-		return EBalanceUnit.BTC;
-	}, [balanceUnit]);
+		return EUnit.BTC;
+	}, [unit]);
 
 	const switchUnit = (): void => {
-		updateSettings({
-			balanceUnit: nextUnit,
-			...(nextUnit !== EBalanceUnit.fiat && {
-				bitcoinUnit: nextUnit as unknown as EBitcoinUnit,
-			}),
-		});
+		updateSettings({ unit: nextUnit });
 	};
 
 	return [nextUnit, switchUnit];

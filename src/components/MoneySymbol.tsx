@@ -3,21 +3,21 @@ import { View, StyleProp, ViewStyle, StyleSheet } from 'react-native';
 
 import { Display } from '../styles/text';
 import { BIcon, LightningIcon } from '../styles/icons';
-import { EBalanceUnit } from '../store/types/wallet';
+import { EUnit } from '../store/types/wallet';
 import { useCurrency } from '../hooks/displayValues';
 
 const MoneySymbol = ({
 	unit,
 	style,
 }: {
-	unit: EBalanceUnit;
+	unit: EUnit;
 	style?: StyleProp<ViewStyle>;
 }): ReactElement => {
 	const { fiatSymbol } = useCurrency();
 
 	return (
 		<View style={[styles.root, style]}>
-			{unit === EBalanceUnit.fiat && (
+			{unit === EUnit.fiat && (
 				<Display
 					style={styles.fiatSymbol}
 					color="white5"
@@ -25,7 +25,7 @@ const MoneySymbol = ({
 					{fiatSymbol}
 				</Display>
 			)}
-			{unit === EBalanceUnit.satoshi && (
+			{unit === EUnit.satoshi && (
 				<LightningIcon
 					color="white5"
 					height={40}
@@ -33,7 +33,7 @@ const MoneySymbol = ({
 					testID="MoneyLightningSymbol"
 				/>
 			)}
-			{unit === EBalanceUnit.BTC && (
+			{unit === EUnit.BTC && (
 				<BIcon
 					color="white5"
 					height={40}

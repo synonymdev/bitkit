@@ -42,6 +42,7 @@ import {
 	bIcon,
 	unitBitcoinIcon,
 	unitSatoshiIcon,
+	unitFiatIcon,
 	trashIcon,
 	plusIcon,
 	backIcon,
@@ -430,6 +431,16 @@ export const UnitSatoshiIcon = styled(SvgXml).attrs((props) => ({
 	color: props.color ? props.theme.colors[props.color] : 'white',
 }));
 
+export const UnitFiatIcon = styled(SvgXml).attrs((props) => ({
+	xml: unitFiatIcon(
+		props.color ? props.theme.colors[props.color] : props.theme.colors.brand,
+	),
+	height: props.height ?? '32px',
+	width: props.width ?? '32px',
+}))<IconProps>((props) => ({
+	color: props.color ? props.theme.colors[props.color] : 'white',
+}));
+
 export const LightningIcon = styled(SvgXml).attrs((props) => ({
 	xml: lightningIcon(props.color ? props.theme.colors[props.color] : 'white'),
 	height: props.height ?? '16px',
@@ -668,8 +679,8 @@ export const GlobeIcon = styled(SvgXml).attrs((props) => ({
 	xml: globeIcon(
 		props.color ? props.theme.colors[props.color] : props.theme.colors.brand,
 	),
-	height: props.height ?? '24px',
-	width: props.width ?? '24px',
+	height: props.height ?? '16px',
+	width: props.width ?? '16px',
 }))<IconProps>((props) => ({
 	color: props.color ? props.theme.colors[props.color] : 'white',
 }));

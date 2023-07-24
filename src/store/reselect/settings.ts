@@ -1,5 +1,6 @@
-import Store from '../types';
 import { createSelector } from '@reduxjs/toolkit';
+
+import Store from '../types';
 import {
 	ICustomElectrumPeer,
 	ISettings,
@@ -11,6 +12,7 @@ import {
 } from '../types/settings';
 import { TAvailableNetworks } from '../../utils/networks';
 import themes, { IThemeColors } from '../../styles/themes';
+import { EUnit } from '../types/wallet';
 
 export const settingsState = (state: Store): ISettings => state.settings;
 const customElectrumPeersState = (state: Store): TCustomElectrumPeers =>
@@ -21,17 +23,9 @@ export const selectedCurrencySelector = createSelector(
 	[settingsState],
 	(settings): string => settings.selectedCurrency,
 );
-export const balanceUnitSelector = createSelector(
-	[settingsState],
-	(settings) => settings.balanceUnit,
-);
 export const biometricsSelector = createSelector(
 	[settingsState],
 	(settings) => settings.biometrics,
-);
-export const bitcoinUnitSelector = createSelector(
-	[settingsState],
-	(settings) => settings.bitcoinUnit,
 );
 export const coinSelectAutoSelector = createSelector(
 	[settingsState],
@@ -120,13 +114,31 @@ export const selectedLanguageSelector = createSelector(
 	[settingsState],
 	(settings): string => settings.selectedLanguage,
 );
-
 export const enableAutoReadClipboardSelector = createSelector(
 	[settingsState],
 	(settings): boolean => settings.enableAutoReadClipboard,
 );
-
 export const enableSendAmountWarningSelector = createSelector(
 	[settingsState],
 	(settings): boolean => settings.enableSendAmountWarning,
+);
+
+export const primaryUnitSelector = createSelector(
+	[settingsState],
+	(settings) => settings.unit,
+);
+export const secondaryUnitSelector = createSelector(
+	[settingsState],
+	(settings) => {
+		if (settings.unit === EUnit.fiat) {
+			return EUnit.satoshi;
+		}
+		return EUnit.fiat;
+	},
+);
+export const nonFiatUnitSelector = createSelector(
+	[settingsState],
+	(settings) => {
+		return settings.unit === EUnit.fiat ? EUnit.satoshi : EUnit.fiat;
+	},
 );

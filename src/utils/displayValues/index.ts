@@ -1,7 +1,7 @@
 import { default as bitcoinUnits } from 'bitcoin-units';
 
 import { getSettingsStore, getWalletStore } from '../../store/helpers';
-import { EBitcoinUnit } from '../../store/types/wallet';
+import { EUnit } from '../../store/types/wallet';
 import { IExchangeRates, mostUsedExchangeTickers } from '../exchange-rate';
 import {
 	defaultFiatDisplayValues,
@@ -13,21 +13,21 @@ import {
 
 export const getBitcoinDisplayValues = ({
 	satoshis,
-	bitcoinUnit,
+	unit,
 }: {
 	satoshis: number;
-	bitcoinUnit?: EBitcoinUnit;
+	unit: EUnit;
 }): IBitcoinDisplayValues => {
 	try {
-		if (!bitcoinUnit) {
-			bitcoinUnit = getSettingsStore().bitcoinUnit;
+		if (unit === EUnit.fiat) {
+			unit = EUnit.BTC;
 		}
 
 		let bitcoinSymbol = '₿';
-		let bitcoinTicker = bitcoinUnit;
+		let bitcoinTicker = unit;
 
 		let bitcoinFormatted: string = bitcoinUnits(satoshis, 'satoshi')
-			.to(bitcoinUnit)
+			.to(unit)
 			.value()
 			// convert to string without scientific notation and trailing zeros
 			.toFixed(10)
@@ -35,9 +35,9 @@ export const getBitcoinDisplayValues = ({
 
 		const [bitcoinWhole, bitcoinDecimal] = bitcoinFormatted.split('.');
 
-		if (bitcoinUnit === EBitcoinUnit.satoshi) {
+		if (unit === EUnit.satoshi) {
 			bitcoinSymbol = '⚡';
-			bitcoinTicker = EBitcoinUnit.satoshi;
+			bitcoinTicker = EUnit.satoshi;
 
 			// format sats to group thousands
 			// 4000000 -> 4 000 000
@@ -72,7 +72,7 @@ export const getFiatDisplayValues = ({
 	satoshis,
 	exchangeRate,
 	exchangeRates,
-	bitcoinUnit,
+	unit,
 	currency,
 	currencySymbol,
 	locale = 'en-US',
@@ -80,7 +80,7 @@ export const getFiatDisplayValues = ({
 	satoshis: number;
 	exchangeRate?: number;
 	exchangeRates?: IExchangeRates;
-	bitcoinUnit?: EBitcoinUnit;
+	unit?: EUnit;
 	currency?: string;
 	currencySymbol?: string;
 	locale?: string;
@@ -91,8 +91,8 @@ export const getFiatDisplayValues = ({
 	if (!currency) {
 		currency = getSettingsStore().selectedCurrency;
 	}
-	if (!bitcoinUnit) {
-		bitcoinUnit = getSettingsStore().bitcoinUnit;
+	if (!unit) {
+		unit = getSettingsStore().unit;
 	}
 
 	try {
@@ -104,7 +104,7 @@ export const getFiatDisplayValues = ({
 
 			const bitcoinDisplayValues = getBitcoinDisplayValues({
 				satoshis: satoshis,
-				bitcoinUnit: bitcoinUnit,
+				unit: unit,
 			});
 
 			return {
@@ -223,24 +223,24 @@ export const getDisplayValues = ({
 	exchangeRate,
 	currency,
 	currencySymbol,
-	bitcoinUnit,
+	unit,
 	locale = 'en-US',
 }: {
 	satoshis: number;
 	exchangeRate?: number;
 	currency?: string;
 	currencySymbol?: string;
-	bitcoinUnit?: EBitcoinUnit;
+	unit?: EUnit;
 	locale?: string;
 }): IDisplayValues => {
 	const bitcoinDisplayValues = getBitcoinDisplayValues({
 		satoshis: satoshis,
-		bitcoinUnit: bitcoinUnit,
+		unit: unit ?? EUnit.satoshi,
 	});
 
 	const fiatDisplayValues = getFiatDisplayValues({
 		satoshis,
-		bitcoinUnit,
+		unit: unit,
 		exchangeRate,
 		currency,
 		currencySymbol,

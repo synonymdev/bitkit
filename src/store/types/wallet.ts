@@ -26,12 +26,7 @@ export type TKeyDerivationChange = '0' | '1'; //"Receiving Address" | "Change Ad
 export type TKeyDerivationAddressIndex = string;
 export type TAssetType = 'bitcoin' | 'tether';
 
-export enum EBitcoinUnit {
-	satoshi = 'satoshi',
-	BTC = 'BTC',
-}
-
-export enum EBalanceUnit {
+export enum EUnit {
 	satoshi = 'satoshi',
 	BTC = 'BTC',
 	fiat = 'fiat',

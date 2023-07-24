@@ -23,7 +23,6 @@ import ProfileImage from '../../../components/ProfileImage';
 import NumberPadTextField from '../../../components/NumberPadTextField';
 import SendNumberPad from './SendNumberPad';
 import Button from '../../../components/Button';
-import { EBalanceUnit } from '../../../store/types/wallet';
 import {
 	getTransactionOutputValue,
 	getMaxSendAmount,
@@ -37,7 +36,7 @@ import {
 	transactionSelector,
 } from '../../../store/reselect/wallet';
 import {
-	balanceUnitSelector,
+	primaryUnitSelector,
 	coinSelectAutoSelector,
 } from '../../../store/reselect/settings';
 import { useProfile } from '../../../hooks/slashtags';
@@ -49,6 +48,7 @@ import { showToast } from '../../../utils/notifications';
 import { convertToSats } from '../../../utils/conversion';
 import { TRANSACTION_DEFAULTS } from '../../../utils/wallet/constants';
 import type { SendScreenProps } from '../../../navigation/types';
+import { EUnit } from '../../../store/types/wallet';
 
 const ContactImage = ({ url }: { url: string }): ReactElement => {
 	const { profile } = useProfile(url);
@@ -64,7 +64,7 @@ const Amount = ({ navigation }: SendScreenProps<'Amount'>): ReactElement => {
 	const selectedNetwork = useSelector(selectedNetworkSelector);
 	const coinSelectAuto = useSelector(coinSelectAutoSelector);
 	const transaction = useSelector(transactionSelector);
-	const unit = useSelector(balanceUnitSelector);
+	const unit = useSelector(primaryUnitSelector);
 	const isMaxSendAmount = useSelector(transactionMaxSelector);
 	const [text, setText] = useState('');
 	const [error, setError] = useState(false);
@@ -103,7 +103,6 @@ const Amount = ({ navigation }: SendScreenProps<'Amount'>): ReactElement => {
 	]);
 
 	const availableAmountProps = {
-		...(unit !== EBalanceUnit.fiat ? { symbol: true } : { showFiat: true }),
 		...(error && { color: 'brand' as keyof IColors }),
 	};
 
@@ -202,7 +201,11 @@ const Amount = ({ navigation }: SendScreenProps<'Amount'>): ReactElement => {
 				}
 			/>
 			<View style={styles.content}>
-				<NumberPadTextField value={text} testID="SendNumberField" />
+				<NumberPadTextField
+					onPress={onChangeUnit}
+					value={text}
+					testID="SendNumberField"
+				/>
 
 				<View style={styles.numberPad} testID="SendAmountNumberPad">
 					<View style={styles.actions}>
@@ -215,11 +218,11 @@ const Amount = ({ navigation }: SendScreenProps<'Amount'>): ReactElement => {
 								)}
 							</Caption13Up>
 							<Money
-								key="small"
 								sats={availableAmount}
 								size="text02m"
 								decimalLength="long"
 								testID="AvailableAmount"
+								symbol={true}
 								{...availableAmountProps}
 							/>
 						</View>
@@ -249,9 +252,9 @@ const Amount = ({ navigation }: SendScreenProps<'Amount'>): ReactElement => {
 										style={styles.actionButtonText}
 										size="12px"
 										color="brand">
-										{nextUnit === 'BTC' && 'BTC'}
-										{nextUnit === 'satoshi' && 'sats'}
-										{nextUnit === 'fiat' && fiatTicker}
+										{nextUnit === EUnit.BTC && 'BTC'}
+										{nextUnit === EUnit.satoshi && 'sats'}
+										{nextUnit === EUnit.fiat && fiatTicker}
 									</Text02B>
 								</TouchableOpacity>
 							</View>

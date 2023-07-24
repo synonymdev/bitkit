@@ -33,6 +33,7 @@
 		"unit_display": "Display amounts in",
 		"unit_bitcoin": "Bitcoin",
 		"unit_satoshis": "Satoshis",
+		"unit_fiat": "Local Currency",
 		"speed": "Transaction speed",
 		"speed_title": "Transaction Speed",
 		"speed_default": "Default Transaction Speed",

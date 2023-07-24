@@ -17,7 +17,6 @@ import { useBalance } from '../../hooks/wallet';
 import { getFiatDisplayValues } from '../../utils/displayValues';
 import { openURL } from '../../utils/helpers';
 import { objectKeys } from '../../utils/objectKeys';
-import { bitcoinUnitSelector } from '../../store/reselect/settings';
 import { exchangeRatesSelector } from '../../store/reselect/wallet';
 import {
 	useBottomSheetBackPress,
@@ -27,6 +26,7 @@ import {
 	ignoreHighBalanceCountSelector,
 	ignoreHighBalanceTimestampSelector,
 } from '../../store/reselect/user';
+import { EUnit } from '../../store/types/wallet';
 
 const imageSrc = require('../../assets/illustrations/exclamation-mark.png');
 
@@ -71,7 +71,6 @@ const HighBalanceWarning = ({
 	const { totalBalance } = useBalance();
 	const snapPoints = useSnapPoints('medium');
 	const count = useSelector(ignoreHighBalanceCountSelector);
-	const bitcoinUnit = useSelector(bitcoinUnitSelector);
 	const exchangeRates = useSelector(exchangeRatesSelector);
 	const viewControllers = useSelector(viewControllersSelector);
 	const ignoreTimestamp = useSelector(ignoreHighBalanceTimestampSelector);
@@ -88,7 +87,7 @@ const HighBalanceWarning = ({
 	const { fiatValue } = getFiatDisplayValues({
 		satoshis: totalBalance,
 		currency: 'USD',
-		bitcoinUnit,
+		unit: EUnit.BTC,
 		exchangeRates,
 	});
 

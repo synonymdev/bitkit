@@ -4,28 +4,33 @@ import { useSelector } from 'react-redux';
 import { getExchangeRate } from '../utils/exchange-rate';
 import { getDisplayValues } from '../utils/displayValues';
 import { IDisplayValues } from '../utils/displayValues/types';
-import { EBitcoinUnit } from '../store/types/wallet';
+import { EUnit } from '../store/types/wallet';
 import { exchangeRatesSelector } from '../store/reselect/wallet';
 import {
-	bitcoinUnitSelector,
+	primaryUnitSelector,
 	selectedCurrencySelector,
 } from '../store/reselect/settings';
 
 export default function useDisplayValues(
 	satoshis: number,
-	bitcoinUnit?: EBitcoinUnit,
+	unit?: EUnit,
 ): IDisplayValues {
-	const stateUnit = useSelector(bitcoinUnitSelector);
+	const primaryUnit = useSelector(primaryUnitSelector);
 	const selectedCurrency = useSelector(selectedCurrencySelector);
 	const exchangeRates = useSelector(exchangeRatesSelector);
 	const exchangeRate = useMemo(
 		() => getExchangeRate(selectedCurrency),
 		[selectedCurrency],
 	);
-	bitcoinUnit = useMemo(
-		() => bitcoinUnit ?? stateUnit,
-		[bitcoinUnit, stateUnit],
-	);
+	const unit2 = useMemo(() => {
+		if (unit) {
+			return unit;
+		}
+		if (primaryUnit !== EUnit.fiat) {
+			return primaryUnit;
+		}
+		return EUnit.satoshi;
+	}, [unit, primaryUnit]);
 	const currencySymbol = useMemo(
 		() => exchangeRates[selectedCurrency]?.currencySymbol,
 		[exchangeRates, selectedCurrency],
@@ -36,10 +41,10 @@ export default function useDisplayValues(
 			exchangeRate,
 			currency: selectedCurrency,
 			currencySymbol,
-			bitcoinUnit,
+			unit: unit2,
 			locale: 'en-US', //TODO get from native module
 		});
-	}, [satoshis, exchangeRate, selectedCurrency, currencySymbol, bitcoinUnit]);
+	}, [satoshis, exchangeRate, selectedCurrency, currencySymbol, unit2]);
 }
 
 /**

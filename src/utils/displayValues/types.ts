@@ -1,11 +1,11 @@
-import { EBitcoinUnit } from '../../store/types/wallet';
+import { EUnit } from '../../store/types/wallet';
 
 export interface IBitcoinDisplayValues {
 	bitcoinFormatted: string;
 	bitcoinWhole: string; // Value before decimal point
 	bitcoinDecimal: string; // Value after decimal point
 	bitcoinSymbol: string; // ₿, ⚡,
-	bitcoinTicker: EBitcoinUnit;
+	bitcoinTicker: EUnit;
 	satoshis: number;
 }
 
@@ -26,7 +26,7 @@ export const defaultBitcoinDisplayValues: IBitcoinDisplayValues = {
 	bitcoinWhole: '',
 	bitcoinDecimal: '',
 	bitcoinSymbol: '',
-	bitcoinTicker: EBitcoinUnit.satoshi,
+	bitcoinTicker: EUnit.satoshi,
 	satoshis: 0,
 };
 

@@ -1,18 +1,14 @@
 import React, { memo, ReactElement, useCallback, useMemo } from 'react';
-import { useSelector } from 'react-redux';
 import { StyleProp, View, ViewStyle } from 'react-native';
 
 import { Pressable } from '../styles/components';
 import Money from '../components/Money';
-import { balanceUnitSelector } from '../store/reselect/settings';
-import { EBalanceUnit } from '../store/types/wallet';
 
 /**
  * Displays the total amount of sats specified and it's corresponding fiat value.
  */
 const AmountToggle = ({
 	sats,
-	unit,
 	secondaryFont = 'caption13Up',
 	space = 0, // space between the rows
 	reverse = false,
@@ -25,7 +21,6 @@ const AmountToggle = ({
 }: {
 	sats: number;
 	secondaryFont?: 'text01m' | 'caption13Up';
-	unit?: EBalanceUnit;
 	reverse?: boolean;
 	space?: number;
 	disable?: boolean;
@@ -35,19 +30,14 @@ const AmountToggle = ({
 	testID?: string;
 	onPress?: () => void;
 }): ReactElement => {
-	const balanceUnit = useSelector(balanceUnitSelector);
-	const primaryUnit = unit ?? balanceUnit;
-
 	const components = useMemo(() => {
-		const btcProps = { symbol: true };
-		const fiatProps = { showFiat: true };
-
 		const arr = [
 			<Money
 				key="primary"
 				sats={sats}
 				decimalLength={decimalLength}
-				{...{ ...(primaryUnit === EBalanceUnit.fiat ? fiatProps : btcProps) }}
+				unitType="primary"
+				symbol={true}
 			/>,
 			<View key="space" style={{ height: space }} />,
 			<Money
@@ -56,12 +46,13 @@ const AmountToggle = ({
 				size={secondaryFont}
 				color="gray1"
 				decimalLength={decimalLength}
-				{...{ ...(primaryUnit === EBalanceUnit.fiat ? btcProps : fiatProps) }}
+				unitType="secondary"
+				symbol={true}
 			/>,
 		];
 
 		return reverse ? arr.reverse() : arr;
-	}, [primaryUnit, sats, reverse, space, decimalLength, secondaryFont]);
+	}, [sats, reverse, space, decimalLength, secondaryFont]);
 
 	const _onPress = useCallback((): void => {
 		if (!disable && onPress) {

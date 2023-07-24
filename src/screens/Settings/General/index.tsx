@@ -7,11 +7,12 @@ import SettingsView from './../SettingsView';
 import type { SettingsScreenProps } from '../../../navigation/types';
 import { lastUsedTagsSelector } from '../../../store/reselect/metadata';
 import {
-	bitcoinUnitSelector,
+	primaryUnitSelector,
 	selectedCurrencySelector,
 	showSuggestionsSelector,
 	transactionSpeedSelector,
 } from '../../../store/reselect/settings';
+import { EUnit } from '../../../store/types/wallet';
 
 const GeneralSettings = ({
 	navigation,
@@ -22,7 +23,7 @@ const GeneralSettings = ({
 	const showSuggestions = useSelector(showSuggestionsSelector);
 	const selectedTransactionSpeed = useSelector(transactionSpeedSelector);
 	const selectedCurrency = useSelector(selectedCurrencySelector);
-	const selectedBitcoinUnit = useSelector(bitcoinUnitSelector);
+	const selectedUnit = useSelector(primaryUnitSelector);
 
 	const settingsListData: IListData[] = useMemo(() => {
 		const transactionSpeeds = {
@@ -43,9 +44,11 @@ const GeneralSettings = ({
 			{
 				title: t('general.unit'),
 				value:
-					selectedBitcoinUnit === 'BTC'
+					selectedUnit === EUnit.BTC
 						? t('general.unit_bitcoin')
-						: t('general.unit_satoshis'),
+						: selectedUnit === EUnit.satoshi
+						? t('general.unit_satoshis')
+						: t('general.unit_fiat'),
 				type: EItemType.button,
 				testID: 'BitcoinUnitSettings',
 				onPress: (): void => navigation.navigate('BitcoinUnitSettings'),
@@ -83,7 +86,7 @@ const GeneralSettings = ({
 		lastUsedTags,
 		showSuggestions,
 		selectedCurrency,
-		selectedBitcoinUnit,
+		selectedUnit,
 		selectedTransactionSpeed,
 		navigation,
 		t,

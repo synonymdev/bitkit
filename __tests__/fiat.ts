@@ -3,7 +3,7 @@ import { getWalletStore } from '../src/store/helpers';
 import { updateExchangeRates } from '../src/store/actions/wallet';
 import { getDisplayValues } from '../src/utils/displayValues';
 import { resetExchangeRates } from '../src/store/actions/wallet';
-import { EBitcoinUnit } from '../src/store/types/wallet';
+import { EUnit } from '../src/store/types/wallet';
 
 global.fetch = require('node-fetch');
 
@@ -15,7 +15,7 @@ describe('Pulls latest fiat exchange rates and checks the wallet store for valid
 	it('handles missing exchange rate by returning the correct fiat fallback', () => {
 		const dv = getDisplayValues({
 			satoshis: 1010101,
-			bitcoinUnit: EBitcoinUnit.BTC,
+			unit: EUnit.BTC,
 		});
 
 		// expected fiat fallback
@@ -65,7 +65,7 @@ describe('Pulls latest fiat exchange rates and checks the wallet store for valid
 			satoshis: 1010101,
 			exchangeRate: 100000,
 			currency: 'USD',
-			bitcoinUnit: EBitcoinUnit.BTC,
+			unit: EUnit.BTC,
 			locale: 'en-US',
 		});
 
@@ -89,7 +89,7 @@ describe('Pulls latest fiat exchange rates and checks the wallet store for valid
 			exchangeRate: 100000,
 			currency: 'RUB',
 			currencySymbol: '₽',
-			bitcoinUnit: EBitcoinUnit.satoshi,
+			unit: EUnit.satoshi,
 			locale: 'en-US',
 		});
 
@@ -109,7 +109,7 @@ describe('Pulls latest fiat exchange rates and checks the wallet store for valid
 	it('Can convert small amount of sats without scientific notation', () => {
 		const dv = getDisplayValues({
 			satoshis: 10,
-			bitcoinUnit: EBitcoinUnit.BTC,
+			unit: EUnit.BTC,
 		});
 
 		expect(dv.bitcoinFormatted).toBe('0.0000001');

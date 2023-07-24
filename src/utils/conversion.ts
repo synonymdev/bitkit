@@ -1,5 +1,5 @@
 import { default as bitcoinUnits } from 'bitcoin-units';
-import { EBalanceUnit, EBitcoinUnit } from '../store/types/wallet';
+import { EUnit } from '../store/types/wallet';
 import { getSettingsStore } from '../store/helpers';
 import { getExchangeRate } from './exchange-rate';
 import { IFiatDisplayValues } from './displayValues/types';
@@ -22,20 +22,17 @@ export const satsToBtc = (balance: number): number => {
 /**
  * Converts an amount of currency in a specific unit to satoshis
  */
-export const convertToSats = (
-	value: number | string,
-	unit: EBalanceUnit,
-): number => {
+export const convertToSats = (value: number | string, unit: EUnit): number => {
 	let amount = Number(value);
 
-	if (unit === EBalanceUnit.BTC) {
+	if (unit === EUnit.BTC) {
 		return btcToSats(amount);
 	}
 
-	if (unit === EBalanceUnit.fiat) {
+	if (unit === EUnit.fiat) {
 		return fiatToBitcoinUnit({
 			fiatValue: amount,
-			bitcoinUnit: EBitcoinUnit.satoshi,
+			unit: EUnit.satoshi,
 		});
 	}
 
@@ -46,12 +43,12 @@ export const fiatToBitcoinUnit = ({
 	fiatValue,
 	exchangeRate,
 	currency,
-	bitcoinUnit,
+	unit,
 }: {
 	fiatValue: string | number;
 	exchangeRate?: number;
 	currency?: string;
-	bitcoinUnit?: EBitcoinUnit;
+	unit?: EUnit;
 }): number => {
 	if (!currency) {
 		currency = getSettingsStore().selectedCurrency;
@@ -59,17 +56,17 @@ export const fiatToBitcoinUnit = ({
 	if (!exchangeRate) {
 		exchangeRate = getExchangeRate(currency);
 	}
-	if (!bitcoinUnit) {
-		bitcoinUnit = getSettingsStore().bitcoinUnit;
+	if (!unit) {
+		unit = getSettingsStore().unit;
 	}
 
 	try {
 		// this throws if exchangeRate is 0
 		bitcoinUnits.setFiat(currency, exchangeRate);
 		const value = bitcoinUnits(Number(fiatValue), currency)
-			.to(bitcoinUnit)
+			.to(unit)
 			.value()
-			.toFixed(bitcoinUnit === EBitcoinUnit.satoshi ? 0 : 8); // satoshi cannot be a fractional number
+			.toFixed(unit === EUnit.satoshi ? 0 : 8); // satoshi cannot be a fractional number
 
 		return Number(value);
 	} catch (e) {
@@ -91,12 +88,12 @@ export const convertCurrency = ({
 }): IFiatDisplayValues => {
 	const sats = fiatToBitcoinUnit({
 		fiatValue: amount,
-		bitcoinUnit: EBitcoinUnit.satoshi,
+		unit: EUnit.satoshi,
 		currency: from,
 	});
 	return getFiatDisplayValues({
 		satoshis: sats,
-		bitcoinUnit: EBitcoinUnit.satoshi,
+		unit: EUnit.satoshi,
 		currency: to,
 	});
 };

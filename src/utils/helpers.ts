@@ -584,7 +584,7 @@ export const removeKeyFromObject = (
  */
 export const chunkUint8Array = (
 	buffer: Uint8Array,
-	chunkSize = 50000,
+	chunkSize: number = 50000,
 ): Result<Uint8Array[]> => {
 	if (!Number.isInteger(chunkSize) || chunkSize <= 0) {
 		return err('chunkSize must be a positive integer.');

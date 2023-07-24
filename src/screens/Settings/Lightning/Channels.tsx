@@ -69,7 +69,7 @@ import {
 	blocktankPaidOrdersSelector,
 } from '../../../store/reselect/blocktank';
 import { TPaidBlocktankOrders } from '../../../store/types/blocktank';
-import { EBalanceUnit } from '../../../store/types/wallet';
+import { EUnit } from '../../../store/types/wallet';
 
 // Workaround for crash on Android
 // https://github.com/software-mansion/react-native-reanimated/issues/4306#issuecomment-1538184321
@@ -383,7 +383,7 @@ const Channels = ({
 								sats={localBalance}
 								color="purple"
 								size="title"
-								unit={EBalanceUnit.satoshi}
+								unit={EUnit.satoshi}
 							/>
 						</View>
 					</View>
@@ -395,7 +395,7 @@ const Channels = ({
 								sats={remoteBalance}
 								color="white"
 								size="title"
-								unit={EBalanceUnit.satoshi}
+								unit={EUnit.satoshi}
 							/>
 						</View>
 					</View>

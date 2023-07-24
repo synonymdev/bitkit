@@ -9,7 +9,7 @@ import NavigationHeader from '../../../components/NavigationHeader';
 // import LightningChannel from '../../../components/LightningChannel';
 import Money from '../../../components/Money';
 import { SettingsScreenProps } from '../../../navigation/types';
-import { EBalanceUnit } from '../../../store/types/wallet';
+import { EUnit } from '../../../store/types/wallet';
 
 const Section = ({
 	name,
@@ -59,7 +59,7 @@ const AddConnection = ({
 							size="caption13M"
 							symbol={true}
 							color="white"
-							unit={EBalanceUnit.satoshi}
+							unit={EUnit.satoshi}
 						/>
 					}
 				/>
@@ -71,7 +71,7 @@ const AddConnection = ({
 							size="caption13M"
 							symbol={true}
 							color="white"
-							unit={EBalanceUnit.satoshi}
+							unit={EUnit.satoshi}
 						/>
 					}
 				/>
@@ -83,7 +83,7 @@ const AddConnection = ({
 							size="caption13M"
 							symbol={true}
 							color="white"
-							unit={EBalanceUnit.satoshi}
+							unit={EUnit.satoshi}
 						/>
 					}
 				/>
@@ -95,7 +95,7 @@ const AddConnection = ({
 							size="caption13M"
 							symbol={true}
 							color="white"
-							unit={EBalanceUnit.satoshi}
+							unit={EUnit.satoshi}
 						/>
 					}
 				/>

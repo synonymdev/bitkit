@@ -212,7 +212,7 @@ const BoostForm = ({
 				size="text02m"
 				color="gray1"
 				symbol={true}
-				showFiat={true}
+				unitType="secondary"
 			/>
 			<Text02M color="gray1"> {duration}</Text02M>
 		</View>

@@ -41,7 +41,6 @@ const NetworkRow = ({
 							size="caption13M"
 							color={color}
 							enableHide={true}
-							symbol={false}
 						/>
 					</View>
 				) : null}
@@ -55,7 +54,6 @@ const NetworkRow = ({
 							size="caption13M"
 							color={color}
 							enableHide={true}
-							symbol={false}
 						/>
 					</View>
 				) : null}

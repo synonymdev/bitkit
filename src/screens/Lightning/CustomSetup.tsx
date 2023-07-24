@@ -30,9 +30,9 @@ import { convertCurrency, convertToSats } from '../../utils/conversion';
 import { getFiatDisplayValues } from '../../utils/displayValues';
 import { showToast } from '../../utils/notifications';
 import { startChannelPurchase } from '../../store/actions/blocktank';
-import { EBalanceUnit } from '../../store/types/wallet';
+import { EUnit } from '../../store/types/wallet';
 import {
-	balanceUnitSelector,
+	primaryUnitSelector,
 	selectedCurrencySelector,
 } from '../../store/reselect/settings';
 import {
@@ -99,10 +99,10 @@ const CustomSetup = ({
 }: LightningScreenProps<'CustomSetup'>): ReactElement => {
 	const { spending, spendingAmount } = route.params;
 	const { t } = useTranslation('lightning');
-	const [nextUnit, onSwitchUnit] = useSwitchUnit();
+	const [nextUnit, switchUnit] = useSwitchUnit();
 	const { onchainBalance } = useBalance();
 	const { fiatValue: onchainFiatBalance } = useDisplayValues(onchainBalance);
-	const unit = useSelector(balanceUnitSelector);
+	const unit = useSelector(primaryUnitSelector);
 	const productId = useSelector(blocktankProductIdSelector);
 	const selectedWallet = useSelector(selectedWalletSelector);
 	const selectedNetwork = useSelector(selectedNetworkSelector);
@@ -139,17 +139,14 @@ const CustomSetup = ({
 					from: 'USD',
 					to: selectedCurrency,
 				});
-				const satoshis = convertToSats(
-					convertedAmount.fiatValue,
-					EBalanceUnit.fiat,
-				);
+				const satoshis = convertToSats(convertedAmount.fiatValue, EUnit.fiat);
 				availSpendingPackages.push({
 					...p,
 					fiatAmount: convertedAmount.fiatValue,
 					satoshis,
 				});
 			} else {
-				const satoshis = convertToSats(spendableBalance, EBalanceUnit.fiat);
+				const satoshis = convertToSats(spendableBalance, EUnit.fiat);
 				const convertedAmount = convertCurrency({
 					amount: PACKAGES_SPENDING[i].fiatAmount,
 					from: 'USD',
@@ -173,10 +170,7 @@ const CustomSetup = ({
 					from: 'USD',
 					to: selectedCurrency,
 				});
-				const satoshis = convertToSats(
-					convertedAmount.fiatValue,
-					EBalanceUnit.fiat,
-				);
+				const satoshis = convertToSats(convertedAmount.fiatValue, EUnit.fiat);
 				// Ensure the conversion still puts us below the max_chan_receiving
 				const satoshisCapped = Math.min(
 					satoshis,
@@ -194,10 +188,7 @@ const CustomSetup = ({
 					from: 'USD',
 					to: selectedCurrency,
 				});
-				const amountSatoshis = convertToSats(
-					amount.fiatValue,
-					EBalanceUnit.fiat,
-				);
+				const amountSatoshis = convertToSats(amount.fiatValue, EUnit.fiat);
 				// subtract a buffer to ensure we don't land right on the max channel size
 				// also avoids exchange rate deltas with Blocktank
 				const buffer = convertCurrency({
@@ -205,10 +196,7 @@ const CustomSetup = ({
 					from: 'USD',
 					to: selectedCurrency,
 				});
-				const bufferSatoshis = convertToSats(
-					buffer.fiatValue,
-					EBalanceUnit.fiat,
-				);
+				const bufferSatoshis = convertToSats(buffer.fiatValue, EUnit.fiat);
 
 				// Ensure the amount is below the max channel size
 				const receiveLimit = amountSatoshis - spendingAmount! - bufferSatoshis;
@@ -363,7 +351,7 @@ const CustomSetup = ({
 	const onChangeUnit = (): void => {
 		const result = getNumberPadText(amount, nextUnit);
 		setTextFieldValue(result);
-		onSwitchUnit();
+		switchUnit();
 	};
 
 	const onMax = useCallback(() => {
@@ -514,9 +502,8 @@ const CustomSetup = ({
 					<NumberPadTextField
 						value={textFieldValue}
 						showPlaceholder={showNumberPad}
-						reverse={true}
 						testID="CustomSetupNumberField"
-						onPress={(): void => setShowNumberPad(true)}
+						onPress={onChangeUnit}
 					/>
 				</View>
 

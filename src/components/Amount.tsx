@@ -2,16 +2,16 @@ import React, { ReactElement } from 'react';
 import { View, StyleSheet, StyleProp, ViewStyle } from 'react-native';
 
 import { Display } from '../styles/text';
-import { EBalanceUnit } from '../store/types/wallet';
+import { EUnit } from '../store/types/wallet';
 import MoneySymbol from './MoneySymbol';
 
 const Amount = ({
 	value,
-	unit = EBalanceUnit.satoshi,
+	unit = EUnit.satoshi,
 	style,
 }: {
 	value: number;
-	unit?: EBalanceUnit;
+	unit?: EUnit;
 	style?: StyleProp<ViewStyle>;
 }): ReactElement => (
 	<View style={[styles.row, style]}>

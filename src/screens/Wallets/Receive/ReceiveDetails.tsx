@@ -68,6 +68,14 @@ const ReceiveDetails = ({
 		setShowNumberPad(false);
 	}, []);
 
+	const onNumberPadPress = (): void => {
+		if (showNumberPad) {
+			onChangeUnit();
+		} else {
+			setShowNumberPad(true);
+		}
+	};
+
 	useEffect(() => {
 		if (invoice.tags.length > 0 && receiveAddress) {
 			updateMetaIncTxTags(receiveAddress, lightningInvoice, invoice.tags);
@@ -85,7 +93,7 @@ const ReceiveDetails = ({
 					value={invoice.numberPadText}
 					showPlaceholder={showNumberPad}
 					testID="ReceiveNumberPadTextField"
-					onPress={(): void => setShowNumberPad(true)}
+					onPress={onNumberPadPress}
 				/>
 
 				{!showNumberPad && (

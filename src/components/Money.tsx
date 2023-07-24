@@ -13,17 +13,18 @@ import {
 import { BIcon, LightningIcon } from '../styles/icons';
 import useDisplayValues from '../hooks/displayValues';
 import { abbreviateNumber } from '../utils/helpers';
-import { EBalanceUnit, EBitcoinUnit } from '../store/types/wallet';
+import { EUnit } from '../store/types/wallet';
 import { IColors } from '../styles/colors';
 import {
-	bitcoinUnitSelector,
+	primaryUnitSelector,
+	secondaryUnitSelector,
 	hideBalanceSelector,
 } from '../store/reselect/settings';
 
 interface IMoney {
 	sats: number;
-	showFiat?: boolean; // if true shows value in fiat, if false shows value in settings.bitcoinUnit. Can be overwritten by unit prop
-	unit?: EBalanceUnit | EBitcoinUnit; // force value formatting
+	unitType?: 'primary' | 'secondary'; // force primary or secondary unit. Can be overwritten by unit prop
+	unit?: EUnit; // force value formatting
 	highlight?: boolean; // gray out decimals in fiat
 	decimalLength?: 'long' | 'short'; // whether to show 5 or 8 decimals for BTC
 	symbol?: boolean; // show symbol icon
@@ -42,25 +43,24 @@ interface IMoney {
 }
 
 const Money = (props: IMoney): ReactElement => {
-	const bitcoinUnit = useSelector(bitcoinUnitSelector);
+	const primaryUnit = useSelector(primaryUnitSelector);
+	const secondaryUnit = useSelector(secondaryUnitSelector);
 	const hideBalance = useSelector(hideBalanceSelector);
 
 	const sats = Math.abs(props.sats);
 	const highlight = props.highlight ?? false;
 	const decimalLength = props.decimalLength ?? 'short';
 	const size = props.size ?? 'display';
-	const showFiat = props.showFiat ?? false;
-	const unit = props.unit ?? (showFiat ? EBalanceUnit.fiat : bitcoinUnit);
+	const unit =
+		props.unit ??
+		(props.unitType === 'secondary' ? secondaryUnit : primaryUnit);
 	const showSymbol = props.symbol ?? (unit === 'fiat' ? true : false);
 	const color = props.color;
 	const hide = (props.enableHide ?? false) && hideBalance;
 	const sign = props.sign;
 	const testID = props.testID;
 
-	const dv = useDisplayValues(
-		sats,
-		unit === EBalanceUnit.fiat ? EBitcoinUnit.BTC : (unit as EBitcoinUnit),
-	);
+	const dv = useDisplayValues(sats, unit === EUnit.fiat ? EUnit.BTC : unit);
 
 	const [Text, lineHeight, iconHeight, iconWidth] = useMemo(() => {
 		switch (size) {
@@ -117,7 +117,7 @@ const Money = (props: IMoney): ReactElement => {
 
 	let [prim = '', secd = ''] = useMemo(() => {
 		switch (unit) {
-			case EBalanceUnit.fiat:
+			case EUnit.fiat:
 				if (dv.fiatWhole.length > 12) {
 					const { newValue, abbreviation } = abbreviateNumber(dv.fiatWhole);
 					return highlight
@@ -127,7 +127,7 @@ const Money = (props: IMoney): ReactElement => {
 				return highlight
 					? [dv.fiatWhole, dv.fiatDecimalSymbol + dv.fiatDecimal]
 					: [dv.fiatFormatted];
-			case EBalanceUnit.BTC: {
+			case EUnit.BTC: {
 				if (decimalLength === 'long') {
 					return [Number(dv.bitcoinFormatted).toFixed(8)];
 				}

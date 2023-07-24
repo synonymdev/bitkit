@@ -8,8 +8,8 @@ import { Caption13Up } from '../../styles/text';
 import { SwitchIcon } from '../../styles/icons';
 import { useCurrency } from '../../hooks/displayValues';
 import { IColors } from '../../styles/colors';
-import { balanceUnitSelector } from '../../store/reselect/settings';
-import { EBalanceUnit } from '../../store/types/wallet';
+import { primaryUnitSelector } from '../../store/reselect/settings';
+import { EUnit } from '../../store/types/wallet';
 
 type NumberPadButtons = {
 	color?: keyof IColors;
@@ -30,17 +30,17 @@ const NumberPadButtons = ({
 }: NumberPadButtons): ReactElement => {
 	const { t } = useTranslation('wallet');
 	const { fiatTicker } = useCurrency();
-	const unit = useSelector(balanceUnitSelector);
+	const unit = useSelector(primaryUnitSelector);
 
 	// BTC -> satoshi -> fiat
 	const nextUnit = useMemo(() => {
-		if (unit === EBalanceUnit.BTC) {
-			return EBalanceUnit.satoshi;
+		if (unit === EUnit.BTC) {
+			return EUnit.satoshi;
 		}
-		if (unit === EBalanceUnit.satoshi) {
-			return EBalanceUnit.fiat;
+		if (unit === EUnit.satoshi) {
+			return EUnit.fiat;
 		}
-		return EBalanceUnit.BTC;
+		return EUnit.BTC;
 	}, [unit]);
 
 	return (

@@ -60,13 +60,14 @@ export const ListItem = ({
 					size="text01m"
 					sign={isSend ? '-' : '+'}
 					highlight={true}
+					unitType="primary"
 				/>
 				<Money
 					sats={amount}
 					enableHide={true}
 					size="caption13M"
-					showFiat={true}
 					color={exists ? 'gray1' : 'red'}
+					unitType="secondary"
 				/>
 			</View>
 		) : null}

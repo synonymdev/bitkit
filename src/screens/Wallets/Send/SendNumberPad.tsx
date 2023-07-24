@@ -4,10 +4,10 @@ import { useSelector } from 'react-redux';
 
 import NumberPad from '../../../components/NumberPad';
 import { vibrate } from '../../../utils/helpers';
-import { EBalanceUnit } from '../../../store/types/wallet';
+import { EUnit } from '../../../store/types/wallet';
 import { handleNumberPadPress } from '../../../utils/numberpad';
 import { convertToSats } from '../../../utils/conversion';
-import { balanceUnitSelector } from '../../../store/reselect/settings';
+import { primaryUnitSelector } from '../../../store/reselect/settings';
 
 const SendNumberPad = ({
 	value,
@@ -23,11 +23,11 @@ const SendNumberPad = ({
 	style?: StyleProp<ViewStyle>;
 }): ReactElement => {
 	const [errorKey, setErrorKey] = useState<string>();
-	const unit = useSelector(balanceUnitSelector);
+	const unit = useSelector(primaryUnitSelector);
 
-	const maxDecimals = unit === EBalanceUnit.BTC ? 8 : 2;
-	const maxLength = unit === EBalanceUnit.satoshi ? 10 : 20;
-	const numberPadType = unit === EBalanceUnit.satoshi ? 'integer' : 'decimal';
+	const maxDecimals = unit === EUnit.BTC ? 8 : 2;
+	const maxLength = unit === EUnit.satoshi ? 10 : 20;
+	const numberPadType = unit === EUnit.satoshi ? 'integer' : 'decimal';
 
 	const onPress = (key: string): void => {
 		const newValue = handleNumberPadPress(key, value, {
