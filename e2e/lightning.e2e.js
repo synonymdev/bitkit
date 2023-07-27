@@ -63,8 +63,8 @@ d('Lightning', () => {
 			// send funds to LND node and open a channel
 			const lnd = await createLndRpc({
 				server: 'localhost:10009',
-				tls: `${__dirname}/../__tests__/lnd/tls.cert`,
-				macaroonPath: `${__dirname}/../__tests__/lnd/data/chain/bitcoin/regtest/admin.macaroon`,
+				tls: `${__dirname}/../docker/lnd/tls.cert`,
+				macaroonPath: `${__dirname}/../docker/lnd/data/chain/bitcoin/regtest/admin.macaroon`,
 			});
 			const { address: lndAddress } = await lnd.newAddress();
 			await rpc.sendToAddress(lndAddress, '1');

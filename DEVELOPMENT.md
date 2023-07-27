@@ -10,17 +10,13 @@ Make sure you have [setup your environment for React Native](https://reactnative
 git clone git@github.com:synonymdev/bitkit.git && cd bitkit
 ```
 
-2. Switch Node version
-
-Switch to the Node.js version defined in `.nvmrc`. If `nvm` (or similiar) is installed on your system you can run `nvm use`.
-
-3. Install dependencies
+2. Install dependencies
 
 ```shell
 yarn install
 ```
 
-4. Setup iOS or Android dependencies
+3. Setup iOS or Android dependencies
 
 ```shell
 yarn setup-ios
@@ -32,7 +28,7 @@ or
 yarn setup-android
 ```
 
-5. Start the project
+4. Start the project
 
 On iOS Simulator:
 
@@ -50,18 +46,18 @@ yarn android
 
 Bitkit uses two types of testing: unit and end-to-end (E2E) tests.
 
-### 1. Unit tests
+Before running tests, you need to install [Docker](https://docs.docker.com/get-docker/) and run bitcoind and the electrum server in regtest mode. You can do this by using the `docker-compose.yml` file from the **docker** directory:
 
-Before running unit tests, you need to install Docker and run bitcoind and the electrum server in regtest mode. You can do this by using the docker-compose.yml file from the **tests** directory:
-
-```sh
-cd __tests__
+```shell
+cd docker
 docker compose up
 ```
 
 After that, you are ready to run the tests:
 
-```sh
+### 1. Unit tests
+
+```shell
 yarn test
 ```
 

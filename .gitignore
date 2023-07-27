@@ -90,9 +90,10 @@ android/app/pepk.jar
 
 # tests
 coverage/
-__tests__/bitcoin_datadir/
-__tests__/lnd/
 artifacts/
+
+# docker
+docker/lnd/
 
 #Build
 android/app/release/

@@ -1,6 +1,7 @@
 version: '3'
 services:
   bitcoind:
+    container_name: bitcoin
     image: btcpayserver/bitcoin:25.0
     restart: unless-stopped
     expose:
@@ -46,6 +47,7 @@ services:
       ]
 
   electrs:
+    container_name: electrum
     image: getumbrel/electrs:v0.9.10
     restart: unless-stopped
     depends_on:
@@ -84,6 +86,7 @@ services:
       - '/www'
 
   lnd:
+    container_name: lnd
     image: polarlightning/lnd:0.16.2-beta
     restart: unless-stopped
     depends_on:
