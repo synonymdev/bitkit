@@ -123,7 +123,7 @@ export const wipeLdkStorage = async ({
 			if (item.isFile()) {
 				await RNFS.unlink(item.path);
 			} else {
-				deleteAllFiles(item.path);
+				await deleteAllFiles(item.path);
 			}
 		}
 	};
