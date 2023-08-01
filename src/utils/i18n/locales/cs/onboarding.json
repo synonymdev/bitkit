@@ -1,5 +1,5 @@
 {
-  "tos_header": "Bitkit\n<brand>Podmínky</brand>\n<brand>použití.</brand>",
+  "tos_header": "Bitkit\n<brand>Podmínky</brand><brand>\npoužití.</brand>",
   "tos_checkbox": "Podmínky použití",
   "tos_checkbox_value": "<gray>Prohlašuji, že jsem si přečetl a souhlasím s <brand>podmínkami použití.</brand></gray>",
   "pp_checkbox": "Zásady ochrany osobních údajů",
@@ -31,5 +31,19 @@
   "restore_red_explain": "Pokud je slovo zobrazeno <red>červeně</red>, znamená to, že nebylo nalezeno ve slovníku frází pro obnovení. Zkontrolujte pravopisné chyby.",
   "restore_inv_checksum": "Kontrolní součet pro frázi pro obnovení se zdá být nesprávný. Zkontrolujte prosím svou frázi pro obnovení.",
   "restore_suggestions": "NÁVRHY",
-  "restore_passphrase_placeholder": "Passphrase* - přístupová fráze"
+  "restore_passphrase_placeholder": "Passphrase* - přístupová fráze",
+  "restore_passphrase_meaning": "*Volitelné, zadejte pouze v případě, že jste jej nastavili.",
+  "restore_error_title": "Při obnovování peněženky došlo k chybě",
+  "loading_header": "Nastavování\n<brand>vaší peněženky.</brand>",
+  "restore_error_no_backup": "Chyba: Bez zálohy nelze pokračovat",
+  "restore_success_header": "Peněženka obnovena.",
+  "restore_success_text": "Úspěšně jste obnovili svou peněženku ze zálohy. Užijte si Bitkit!",
+  "restore_failed_header": "Obnovení se nezdařilo.",
+  "restore_failed_text": "Obnovení zálohovaných dat se nezdařilo.",
+  "restore_no_backup_button": "Pokračovat bez zálohy",
+  "restore_no_backup_warn": "Pokud jste dříve měli lightning zálohu, bude přepsána a ztracena. To by mohlo vést ke ztrátě finančních prostředků.",
+  "empty_wallet": "Chcete-li začít, pošlete\n<brand>Bitcoin</brand> do vaší peněženky.",
+  "error_create": "Vytvoření peněženky se nezdařilo",
+  "multiple_header": "Pozor:\n<yellow>Více zařízení</yellow>",
+  "multiple_text": "Neinstalujte frázi pro obnovení Bitkit do více telefonů současně, protože by to mohlo poškodit vaše data."
 }

@@ -1,1 +1,35 @@
-{}
+{
+  "instant": {
+    "title": "Αμεσα",
+    "description": "±2-10 δευτερόλεπτα",
+    "shortRange": "2-10 δευτ.",
+    "shortDescription": "±2 δευτ."
+  },
+  "fast": {
+    "title": "Γρήγορα",
+    "description": "±10-20 λεπτά",
+    "shortRange": "10-20 λεπτά",
+    "shortDescription": "±10 λεπτά"
+  },
+  "normal": {
+    "title": "Κανονικά",
+    "description": "±20-60 λεπτά",
+    "shortRange": "20-60 λεπτά",
+    "shortDescription": "±20 λεπτά"
+  },
+  "slow": {
+    "title": "Αργά",
+    "description": "±1-2 ώρες",
+    "shortRange": "1-2 ώρες",
+    "shortDescription": "±1 ώρα"
+  },
+  "minimum": {
+    "title": "Ελάχιστο",
+    "description": "+2 ώρες",
+    "shortRange": "+2 ώρες",
+    "shortDescription": "+2 ώρες"
+  },
+  "custom": {
+    "title": "Προσαρμοσμένο"
+  }
+}

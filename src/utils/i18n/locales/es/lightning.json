@@ -45,7 +45,7 @@
   "availability_title": "Disponibilidad de fondos",
   "availability_header": "Disponibilidad de sus fondos.",
   "availability_text": "La transferencia de fondos al ahorro suele tardar\n±1 hora, pero la confirmación puede tardar <purple>14 días</purple> en determinadas condiciones de la red.",
-  "node_info": "Información sobre el nodo Lightning",
+  "node_info": "Nodo Lightning",
   "node_id": "ID del nodo LDK",
   "node_disconnected": "desconectado",
   "node_failed": "Bitkit ha fallado al inicializar el nodo Lightning.",

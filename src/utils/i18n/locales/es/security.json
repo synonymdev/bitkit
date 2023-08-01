@@ -69,7 +69,6 @@
   "reset_dialog_title": "¿Restablecer Bitkit a los padrones iniciales?",
   "reset_dialog_desc": "¿Está seguro de que desea restablecer su monedero Bitkit? ¿Tiene una copia de seguridad de su frase de recuperación y de los datos de su monedero?",
   "recovery": "Recuperación",
-  "recovery_text": "Ha entrado en el modo de recuperación de Bitkit pulsando durante el inicio. Estas son algunas acciones a realizar cuando se encuentras con problemas que impidan que la aplicación funcione correctamente. Reinicie la aplicación para un arranque normal.",
   "contact_support": "Contactar servicio de asistencia",
   "wipe_app": "Borrar App",
   "close_app": "Cerrar Bitkit",

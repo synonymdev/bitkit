@@ -142,5 +142,6 @@
   "filter_title": "Выберите диапазон",
   "filter_clear": "Очистить",
   "filter_apply": "Применить",
-  "reorg_detected": "Обнаружен реорг"
+  "reorg_detected": "Обнаружен реорг",
+  "lnurl_p_title": "Отправить Биткоин"
 }

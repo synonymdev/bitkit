@@ -22,5 +22,6 @@
   "send_yes": "Tak, wyślij",
   "send_dialog1": "Wygląda na to, że wysyłasz ponad $100. Czy kontynuować?",
   "send_dialog2": "Wygląda na to, że wysyłasz ponad 50% swojego salda. Czy kontynuować?",
-  "activity_invoice": "Faktura"
+  "activity_invoice": "Faktura",
+  "lnurl_p_title": "Wyślij Bitcoin"
 }

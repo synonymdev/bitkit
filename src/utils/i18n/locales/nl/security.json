@@ -72,7 +72,6 @@
   "reset_dialog_title": "Bitkit Resetten?",
   "reset_dialog_desc": "Weet u zeker u uw Bitkit wallet wilt resetten? Heeft u een backup van uw herstelwoorden en wallet data?",
   "recovery": "Herstel",
-  "recovery_text": "U zit in de Bitkit herstelmodus omdat u getikt heeft tijdens het opstarten. Hier zijn enkele handelingen die u kunt verrichten wanneer er problemen zijn die de app belemmeren om volledig te functioneren. Herstart de app om normaal op te starten. ",
   "display_seed": "Toon Herstelwoorden",
   "contact_support": "Contact Opnemen",
   "wipe_app": "Wis de App",

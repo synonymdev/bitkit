@@ -153,5 +153,6 @@
   "filter_apply": "Applica",
   "reorg_detected": "Riorganizzazione Rilevata",
   "reorg_msg_begin": "{count, plural, one {# delle tue transazioni non è più confermata.} many {# delle tue transazioni non sono più confermate.} other {# delle tue transazioni non sono più confermate.}}",
-  "reorg_msg_end": "Controlla l'elenco delle attività per verificare le transazioni interessate."
+  "reorg_msg_end": "Controlla l'elenco delle attività per verificare le transazioni interessate.",
+  "lnurl_p_title": "Invia Bitcoin"
 }

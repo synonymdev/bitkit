@@ -62,7 +62,7 @@
   "availability_title": "Beschikbare Balans",
   "availability_header": "Beschikbaarheid van uw Balans.",
   "availability_text": "Het overmaken naar uw spaargeld duurt meestal\n±1 uur, maar het kan tot <purple>14 dagen</purple>duren afhankelijk van netwerk omstandigheden.  ",
-  "node_info": "Lightning Node Info",
+  "node_info": "Lightning Node",
   "node_id_copied": "LDK Node ID gekopieerd naar het klembord.",
   "node_id": "LDK Node ID",
   "node_disconnected": "verbinding verbroken",

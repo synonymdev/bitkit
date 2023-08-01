@@ -45,7 +45,7 @@
   "availability_title": "Disponibilidade de Fundos",
   "availability_header": "Disponibilidade dos seus Fundos.",
   "availability_text": "A transferência de fundos para a poupança geralmente leva\n±1 hora, mas a liquidação pode levar <purple>14 dias</purple> em determinadas condições da rede.",
-  "node_info": "Informações sobre o Lightning Node",
+  "node_info": "Nó Lightning",
   "node_id_copied": "ID LDK do Node copiado para a área de transferência.",
   "node_id": "ID LDK do Node",
   "node_disconnected": "desconectado",

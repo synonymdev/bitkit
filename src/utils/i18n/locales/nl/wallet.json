@@ -153,5 +153,6 @@
   "filter_apply": "Toepassen",
   "reorg_detected": "Blockchain Herindeling Gedetecteerd",
   "reorg_msg_begin": "{count, plural, one {# van uw transacties zijn niet langer bevestigd.} other {# van uw transacties zijn niet langer bevestigd.}}",
-  "reorg_msg_end": "Controleer uw activiteitenleest voor de beïnvloedde transacties."
+  "reorg_msg_end": "Controleer uw activiteitenleest voor de beïnvloedde transacties.",
+  "lnurl_p_title": "Bitcoin Versturen"
 }

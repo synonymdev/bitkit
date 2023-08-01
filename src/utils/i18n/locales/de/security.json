@@ -13,7 +13,6 @@
   "reset_text": "Back up dein Wallet zuerst, um den Verlust deines Geldes und deiner Wallet-Daten vorzubeugen. Ein Reset wird dein aktuelles Bitkit-Setup überschreiben.",
   "reset_dialog_title": "Bitkit Reset?",
   "reset_dialog_desc": "Bist du dir sicher, dass du dein Bitkit-Wallet resetten willst? Hast du einen Back-Up deiner Wiederherstellungsphrase und deiner Wallet-Daten?",
-  "recovery_text": "Du hast den Bitkit-Wiederherstellungsmodus aufgerufen, als du beim Starten drauf getippt hast. Hier findest du einige Maßnahmen, die du ergreifen solltest, wenn Probleme auftreten, die die Funktionsfähigkeit der App beeinträchtigen können. Starte die App für einen normalen Start neu.",
   "export_error_msg": "Bitkit war nicht in der Lage, die Back-Up-Datei zu speichern.",
   "cp_text": "Du kannst deinen PIN code zu einer neuen\n4-Ziffern-Kombination ändern. Bitte gebe deinen aktuellen PIN Code zuerst ein.",
   "cp_changed_text": "Du hast erfolgreich deinen PIN zu einer 4-Ziffer-Kombination geändert.",

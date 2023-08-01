@@ -30,7 +30,7 @@
   "enter_custom_amount": "Zadejte vlastní částku",
   "custom_confirm_header": "<purple>Prosím\npotvrďte.</purple>",
   "custom_confirm_cost": "Spojení s vámi a nastavení zůstatku útrat stojí <white>{amount}</white>. Vaše připojení Lightning zůstane otevřené po dobu alespoň <whiteWithKeyboard>{weeks} týdnů (týdne)</whiteWithKeyboard>.<whiteWithKeyboard><penIcon/></whiteWithKeyboard>",
-  "duration_header": "Trvání připojení.",
+  "duration_header": "Délka připojení.",
   "duration_text": "Vyberte minimální počet týdnů, po které má vaše připojení zůstat otevřené.",
   "setting_up_header": "Nastavování",
   "setting_up_text": "Počkejte prosím a ponechte Bitkit otevřený, dokud se vaše Lightning připojení nastavuje. Tento proces trvá asi minutu.",
@@ -61,7 +61,7 @@
   "availability_title": "Dostupnost prostředků",
   "availability_header": "Dostupnost vašich prostředků.",
   "availability_text": "Převod prostředků do úspor obvykle trvá\n±1 hodinu, ale vyřízení může za určitých podmínek sítě trvat až <purple>14 dní</purple>.",
-  "node_info": "Informace o Lightning uzlu",
+  "node_info": "Lightning uzel",
   "node_id_copied": "ID uzlu LDK bylo úspěšně zkopírováno do schránky.",
   "node_id": "ID uzlu LDK",
   "node_disconnected": "Odpojeno",
@@ -98,6 +98,7 @@
   "other": "Další",
   "opened_on": "Otevřeno",
   "closed_on": "Uzavřeno",
+  "channel_node_id": "ID uzlu",
   "copied_couterparty": "ID uzlu protistrany bylo zkopírováno do schránky",
   "debug": "Debug",
   "is_usable": "Je použitelný?",
@@ -107,7 +108,7 @@
   "close_error": "Chyba zavření kanálu",
   "close_success_title": "Úspěšné uzavření kanálu",
   "close_success_msg": "Úspěšně uzavřeno {name}",
-  "close_text": "Uzavření tohoto Lightning spojení a převedení celého disponibilního zůstatku zpět do úspor stojí malé náklady. Přesný poplatek závisí na podmínkách sítě.\n\nPřevod prostředků na spoření obvykle trvá ±1 hodinu, ale vypořádání může za určitých podmínek sítě trvat až <white>14 dní</white>.",
+  "close_text": "Uzavření tohoto Lightning spojení a převedení celého disponibilního zůstatku zpět do úspor stojí určitou menší částku. Přesný poplatek závisí na podmínkách sítě.\n\nPřevod prostředků na spoření obvykle trvá ±1 hodinu, ale vypořádání může za určitých podmínek sítě trvat až <white>14 dní</white>.",
   "close_button": "Zavřít",
   "force_title": "Vynutit převod",
   "force_text": "Nelze zahájit přenos. Chcete tento převod vynutit? Tyto prostředky nebudete moci použít po dobu ±14 dní (!)",
@@ -121,5 +122,17 @@
   "order_given_up_title": "Nastavení okamžitých plateb se nezdařilo",
   "order_given_up_msg": "Platnost objednávky vypršela. Prosím zkuste to znovu.",
   "order_expired_title": "Nastavení okamžitých plateb se nezdařilo",
-  "order_expired_msg": "Platnost objednávky vypršela. Prosím zkuste to znovu."
+  "order_expired_msg": "Platnost objednávky vypršela. Prosím zkuste to znovu.",
+  "order_state": {
+    "awaiting_payment": "Čekání na platbu",
+    "paid": "Platba proběhla úspěšně",
+    "refunded": "Platba vrácena",
+    "queued": "Ve frontě na otevření",
+    "opening": "Zahajování spojení",
+    "closing": "Uzavírání spojení",
+    "given_up": "Ukončeno",
+    "expired": "Platnost objednávky vypršela",
+    "closed": "Spojení uzavřeno",
+    "open": "Spojení otevřeno"
+  }
 }

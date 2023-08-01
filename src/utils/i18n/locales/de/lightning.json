@@ -1,4 +1,5 @@
 {
+  "int_blocked": "Öffne eine Lightning-Verbindung und sende oder erhalte bitcoin sofort.\n\nLeider kann Bitkit aktuell (noch) keine automatische Lightning-Verbindung zu Personen wohnhaft in den USA zur Verfügung stellen.",
   "int_text": "Öffne eine Lightning-Verbindung und sende oder erhalte bitcoin sofort.",
   "int_header": "Sofortige\n<purple>Zahlungen.</purple>",
   "int_quick": "Schnelles Einrichten",
@@ -60,7 +61,6 @@
   "availability_title": "Guthaben Verfügbarkeit",
   "availability_header": "Verfügbarkeit deines Guthabens",
   "availability_text": "Übertragung des Guthabens zum Sparkonto dauert in der Regel \n±1 Stunde, aber das Settlement kann <purple>14 Tage</purple> unter gewissen Netzwerkbedingungen dauern.",
-  "node_info": "Lightning-Node Info",
   "node_id_copied": "LDK Node ID erfolgreich in die Zwischenablage kopiert.",
   "node_id": "LDK Node ID",
   "node_disconnected": "getrennt",

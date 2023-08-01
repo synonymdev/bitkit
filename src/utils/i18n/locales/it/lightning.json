@@ -62,7 +62,7 @@
   "availability_title": "Disponibilità Fondi",
   "availability_header": "Disponibilità dei tuoi Fondi.",
   "availability_text": "Il trasferimento dei fondi ai risparmi richiede solitamente\n±1 ora, ma il settlement può richiedere <purple>14 giorni</purple> in determinate condizioni di rete.",
-  "node_info": "Info del Nodo Lightning",
+  "node_info": "Nodo Lightning",
   "node_id_copied": "ID del nodo LDK copiato con successo negli appunti.",
   "node_id": "ID Nodo LDK",
   "node_disconnected": "disconnesso",

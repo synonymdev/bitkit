@@ -72,7 +72,6 @@
   "reset_dialog_title": "Resettare Bitkit?",
   "reset_dialog_desc": "Sei sicuro di voler resettare il tuo Wallet Bitkit ? Hai un backup della recovery phrase e dei dati del wallet?",
   "recovery": "Recovery",
-  "recovery_text": "Sei entrato nella modalità di recovery di Bitkit durante l'avvio. Ecco alcune azioni da eseguire quando si verifica un problema che impedisce all'applicazione di funzionare completamente. Riavvia l'app per un avvio normale.",
   "display_seed": "Mostra la Seed Phrase",
   "contact_support": "Contatta l'Assistenza",
   "wipe_app": "Wipe App",

@@ -5,10 +5,8 @@
   "dev_disabled_title": "Entwickler-Einstellungen aus",
   "dev_disabled_message": "Entwickler-Einstellungen sind jetzt innerhalb der App ausgeschaltet.",
   "general_title": "Allgemein",
-  "security_title": "Sicherheit und Privatsphäre",
   "backup_title": "Back up oder Wiederherstellung",
   "advanced_title": "Fortgeschritten",
-  "about_title": "Über Bitkit",
   "about": {
     "text": "Bitkit übergibt dir die Keys zu deinem Geld, Profil, deinen Kontakten und deinen Web Accounts.",
     "support": "Support",
@@ -26,10 +24,8 @@
     "currency_footer": "Preise bereitgestellt von Bitfinex & CoinGecko.",
     "currency_most_used": "Meist genutzt",
     "currency_other": "Andere Währungen",
-    "unit": "Bitcoin Einheit",
-    "unit_title": "Bitcoin Einheit",
-    "unit_display": "Zeige Bitcoin-Menge an als",
     "unit_bitcoin": "Bitcoin",
+    "unit_fiat": "Lokale Währung",
     "suggestions": "Verbesserungsvorschläge",
     "reset_desc": "Bist du dir sicher, dass du die Vorschläge löschen willst? Diese werden erneut auftauchen, wenn du diese von deiner Bitkit Wallet Übersicht entfernt hast. "
   },
@@ -41,6 +37,7 @@
     "category_settings": "Einstellungen"
   },
   "adv": {
+    "section_other": "Andere",
     "address_type": "Bitcoin Adressen-Typ",
     "lightning_connections": "Lightning Verbindungen",
     "bitcoin_network": "Bitcoin Netzwerk"

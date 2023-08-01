@@ -1,5 +1,4 @@
 {
-  "tos_header": "Bitkit\n<brand>Nutzungs-</brand>\n<brand>bedingungen.</brand>",
   "tos_checkbox": "Nutzungsbedingungen",
   "pp_checkbox": "Datenschutz-Bestimmungen",
   "toolkit": "Dein Bitcoin\n<brand>Toolkit.</brand>",
@@ -23,5 +22,23 @@
   "passphrase_header": "Absichern mit <brand>Passwort</brand>",
   "passphrase_text": "Du kannst deiner 12-Wörter-langen Wiederherstellungsphrase ein geheimes Passwort hinzufügen. Wenn du das tust, stelle sicher, dass du es nicht vergisst.",
   "passphrase": "Passwort",
-  "create_new_wallet": "Erstelle neues Wallet"
+  "create_new_wallet": "Erstelle neues Wallet",
+  "restore_header": "Stelle\ndein Waller wieder her",
+  "restore_phrase": "Bitte gebe deine Wiederherstellungsphrase von jeglichem (Papier) Back-Up ein.",
+  "restore_red_explain": "Wenn eines der Wörter in <red>rot</red>, angezeigt wird, bedeutet das, dass es nicht im Wiederherstellungsphrasen-Wörterbuch zu finden ist. Überprüfe es auf Rechtschreibfehler.",
+  "restore_inv_checksum": "Die Checksumme der Wiederherstellungsphrase erscheint inkorrekt. Bitte überprüfe deine Wiederherstellungsphrase erneut.",
+  "restore_suggestions": "VORSCHLÄGE",
+  "restore_passphrase_placeholder": "Passphrase*",
+  "restore_passphrase_meaning": "*Optional, nur eingeben, falls wenn du eine eingerichtet hast.",
+  "restore_error_title": "Fehler bei der Wallet-Wiederherstellung",
+  "loading_header": "Einrichten\n<brand>deines Wallets.</brand>",
+  "restore_error_no_backup": "Fehler: Weiterer Schritt ohne Back Up nicht erlaubt.",
+  "restore_success_header": "Wallet wiederhergestellt.",
+  "restore_success_text": "Du hast erfolgreich dein Wallet mittels deines Back Ups wiederhergestellt. Viel Spaß mit Bitkit!",
+  "restore_failed_header": "Wiederherstellung fehlgeschlagen.",
+  "restore_failed_text": "Wiederherstellung der Back-Up-Daten fehlgeschlagen.",
+  "restore_no_backup_button": "Weiter ohne Back Up",
+  "restore_no_backup_warn": "Falls du vorher ein Lightning Back Up eingerichtet hast, wird es überschrieben und verloren gehen. Dies könnte zu einem Verlust deines Geldes führen.",
+  "empty_wallet": "Um zu starten sende\n<brand>Bitcoin</brand>an dein Wallet.",
+  "error_create": "Wallet-Erstellung fehlgeschlagen"
 }

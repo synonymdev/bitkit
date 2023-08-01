@@ -143,5 +143,6 @@
   "filter_clear": "Limpiar",
   "filter_apply": "Aplicarse",
   "reorg_detected": "Reorganización Detectada",
-  "reorg_msg_end": "Por favor, compruebe su lista de actividades para ver las transacciones afectadas."
+  "reorg_msg_end": "Por favor, compruebe su lista de actividades para ver las transacciones afectadas.",
+  "lnurl_p_title": "Enviar Bitcoin"
 }

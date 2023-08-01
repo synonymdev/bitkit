@@ -2,8 +2,14 @@
   "send_bitcoin": "Sende Bitcoin",
   "send_amount": "Bitcoin Menge",
   "send_sent": "Bitcoin versendet",
+  "send_amount_error_title": "Ungültige Menge",
+  "send_amount_error_balance": "Neue Menge übersteigt den aktuellen Kontostand.",
+  "send_amount_error_fee": "Zahlen der Gebühr fehlgeschlagen.",
   "activity_status": "Status",
   "activity_tabs": {
     "other": "Andere"
-  }
+  },
+  "lnurl_w_success_description": "Abhebe-Request erfolgreich",
+  "lnurl_p_title": "Sende Bitcoin",
+  "lnurl_p_max": "Maximale Menge"
 }
