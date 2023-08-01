@@ -47,7 +47,6 @@ const BalanceHeader = (): ReactElement => {
 									unit={unit}
 									enableHide={true}
 									symbol={false}
-									decimalLength="long"
 								/>
 							),
 						}}
@@ -65,7 +64,6 @@ const BalanceHeader = (): ReactElement => {
 						enableHide={true}
 						highlight={true}
 						symbol={true}
-						decimalLength="long"
 					/>
 				</View>
 				{hideBalance && (

@@ -230,7 +230,6 @@ const WalletsDetail = ({
 													sats={totalBalance}
 													enableHide={true}
 													highlight={true}
-													decimalLength="long"
 												/>
 											</TouchableOpacity>
 										</DetectSwipe>

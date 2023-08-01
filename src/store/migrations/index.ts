@@ -141,14 +141,25 @@ const migrations = {
 		};
 	},
 	15: (state): PersistedState => {
+		// remove old unit settings
 		delete state.settings.bitcoinUnit;
 		delete state.settings.balanceUnit;
+
+		// LN activity value should be positive
+		const items = state.activity.items.map((item: { value: number }) => ({
+			...item,
+			value: Math.abs(item.value),
+		}));
 
 		return {
 			...state,
 			settings: {
 				...state.settings,
 				unit: 'satoshi',
+			},
+			activity: {
+				...state.activity,
+				items,
 			},
 		};
 	},

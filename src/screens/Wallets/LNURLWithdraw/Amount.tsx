@@ -99,7 +99,6 @@ const Amount = ({
 								key="small"
 								sats={maxWithdrawable}
 								size="text02m"
-								decimalLength="long"
 								testID="maxWithdrawable"
 								symbol={true}
 								{...maxWithdrawableProps}

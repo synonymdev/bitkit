@@ -37,10 +37,10 @@ import {
 	LightningIcon,
 	ReceiveIcon,
 	SendIcon,
-	SpeedFastIcon,
 	TagIcon,
 	TimerIcon,
 	TimerIconAlt,
+	UserIcon,
 	UserMinusIcon,
 	UserPlusIcon,
 	XIcon,
@@ -64,7 +64,6 @@ import {
 } from '../../utils/wallet/transactions';
 import useColors from '../../hooks/colors';
 import { useAppSelector } from '../../hooks/redux';
-import useDisplayValues from '../../hooks/displayValues';
 import Store from '../../store/types';
 import { showBottomSheet } from '../../store/actions/ui';
 import { IContactRecord } from '../../store/types/slashtags';
@@ -80,7 +79,6 @@ import {
 import { getTransactions } from '../../utils/wallet/electrum';
 import { ITransaction, ITxHash } from '../../utils/wallet';
 import { openURL } from '../../utils/helpers';
-import { btcToSats } from '../../utils/conversion';
 import { getBoostedTransactionParents } from '../../utils/boost';
 import { showToast } from '../../utils/notifications';
 import {
@@ -163,6 +161,9 @@ const OnchainActivityDetail = ({
 		exists,
 	} = item;
 
+	const isSend = txType === EPaymentType.sent;
+	const total = isSend ? fee + value : value;
+
 	const { t } = useTranslation('wallet');
 	const { t: tTime } = useTranslation('intl', { i18n: i18nTime });
 	const [_, switchUnit] = useSwitchUnit();
@@ -171,7 +172,6 @@ const OnchainActivityDetail = ({
 	const selectedNetwork = useSelector(selectedNetworkSelector);
 	const activityItems = useSelector(activityItemsSelector);
 	const boostedTransactions = useSelector(boostedTransactionsSelector);
-	const feeDisplay = useDisplayValues(btcToSats(fee));
 	const [txDetails, setTxDetails] = useState<ITransaction<ITxHash>['result']>();
 	const slashTagsUrl = useAppSelector((state) => {
 		return slashTagsUrlSelector(state, id);
@@ -305,8 +305,6 @@ const OnchainActivityDetail = ({
 		return <View />;
 	}, [txDetails]);
 
-	const isSend = txType === EPaymentType.sent;
-
 	let status = (
 		<View style={styles.row}>
 			<HourglassIcon style={styles.rowIcon} color="brand" width={16} />
@@ -344,14 +342,14 @@ const OnchainActivityDetail = ({
 	return (
 		<>
 			<Money
-				sats={value}
+				sats={total}
 				size="caption13Up"
 				color="gray1"
 				unitType="secondary"
 			/>
 			<TouchableOpacity style={styles.title} onPress={switchUnit}>
 				<View style={styles.titleBlock}>
-					<Money sats={value} sign={isSend ? '- ' : '+ '} />
+					<Money sats={total} sign={isSend ? '- ' : '+ '} />
 				</View>
 
 				<ThemedView style={styles.iconContainer} color="brand16">
@@ -366,20 +364,6 @@ const OnchainActivityDetail = ({
 			{!extended ? (
 				<>
 					<View style={styles.sectionContainer}>
-						{isSend && (
-							<Section
-								title={t('activity_fee')}
-								value={
-									<View style={styles.row}>
-										<TimerIcon style={styles.rowIcon} color="brand" />
-										<Text02M>
-											{feeDisplay.satoshis} ({feeDisplay.fiatSymbol}
-											{feeDisplay.fiatFormatted})
-										</Text02M>
-									</View>
-								}
-							/>
-						)}
 						<Section title={t('activity_status')} value={status} />
 					</View>
 
@@ -428,6 +412,55 @@ const OnchainActivityDetail = ({
 							}
 						/>
 					</View>
+
+					{isSend && (
+						<View style={styles.sectionContainer}>
+							<Section
+								title={t('activity_payment')}
+								value={
+									<View style={styles.row}>
+										<UserIcon
+											style={styles.rowIcon}
+											width={16}
+											height={16}
+											color="brand"
+										/>
+										<Money
+											sats={value}
+											size="text02m"
+											style={styles.moneyMargin}
+										/>
+										<Money
+											sats={value}
+											size="caption13Up"
+											color="gray1"
+											unitType="secondary"
+										/>
+									</View>
+								}
+							/>
+
+							<Section
+								title={t('activity_fee')}
+								value={
+									<View style={styles.row}>
+										<TimerIcon style={styles.rowIcon} color="brand" />
+										<Money
+											sats={fee}
+											size="text02m"
+											style={styles.moneyMargin}
+										/>
+										<Money
+											sats={fee}
+											size="caption13Up"
+											color="gray1"
+											unitType="secondary"
+										/>
+									</View>
+								}
+							/>
+						</View>
+					)}
 
 					{(tags.length !== 0 || slashTagsUrl) && (
 						<View style={styles.sectionContainer}>
@@ -605,7 +638,8 @@ const LightningActivityDetail = ({
 	const { t: tTime } = useTranslation('intl', { i18n: i18nTime });
 	const [_, switchUnit] = useSwitchUnit();
 	const colors = useColors();
-	const { id, txType, value, message, timestamp, address } = item;
+	const { id, txType, value, fee, message, timestamp, address } = item;
+	const total = value + (fee ?? 0);
 	const tags = useSelector((state: Store) => tagSelector(state, id));
 	const slashTagsUrl = useSelector((state: Store) => {
 		return slashTagsUrlSelector(state, id);
@@ -659,14 +693,14 @@ const LightningActivityDetail = ({
 	return (
 		<>
 			<Money
-				sats={value}
+				sats={total}
 				unitType="secondary"
 				size="caption13Up"
 				color="gray1"
 			/>
 			<TouchableOpacity style={styles.title} onPress={switchUnit}>
 				<View style={styles.titleBlock}>
-					<Money sats={value} sign={isSend ? '- ' : '+ '} />
+					<Money sats={total} sign={isSend ? '- ' : '+ '} />
 				</View>
 
 				<ThemedView style={styles.iconContainer} color="purple16">
@@ -681,23 +715,6 @@ const LightningActivityDetail = ({
 			{!extended ? (
 				<>
 					<View style={styles.sectionContainer}>
-						{isSend && (
-							<Section
-								title={t('activity_fee')}
-								value={
-									<View style={styles.row}>
-										<SpeedFastIcon
-											style={styles.rowIcon}
-											color="purple"
-											width={16}
-											height={16}
-										/>
-										{/* TODO: get actual fee */}
-										<Text02M>$0.01</Text02M>
-									</View>
-								}
-							/>
-						)}
 						<Section title={t('activity_status')} value={status} />
 					</View>
 
@@ -742,6 +759,57 @@ const LightningActivityDetail = ({
 							}
 						/>
 					</View>
+
+					{isSend && (
+						<View style={styles.sectionContainer}>
+							<Section
+								title={t('activity_payment')}
+								value={
+									<View style={styles.row}>
+										<UserIcon
+											style={styles.rowIcon}
+											width={16}
+											height={16}
+											color="purple"
+										/>
+										<Money
+											sats={value}
+											size="text02m"
+											style={styles.moneyMargin}
+										/>
+										<Money
+											sats={value}
+											size="caption13Up"
+											color="gray1"
+											unitType="secondary"
+										/>
+									</View>
+								}
+							/>
+
+							{fee !== undefined && (
+								<Section
+									title={t('activity_fee')}
+									value={
+										<View style={styles.row}>
+											<TimerIcon style={styles.rowIcon} color="purple" />
+											<Money
+												sats={fee}
+												size="text02m"
+												style={styles.moneyMargin}
+											/>
+											<Money
+												sats={fee}
+												size="caption13Up"
+												color="gray1"
+												unitType="secondary"
+											/>
+										</View>
+									}
+								/>
+							)}
+						</View>
+					)}
 
 					{(tags.length !== 0 || slashTagsUrl) && (
 						<View style={styles.sectionContainer}>
@@ -823,8 +891,8 @@ const LightningActivityDetail = ({
 							/>
 							<Button
 								style={styles.button}
-								text={t('activity_explore')}
-								icon={<GitBranchIcon color="purple" />}
+								text={t('activity_connection')}
+								icon={<LightningIcon color="purple" />}
 								testID="ActivityTxDetails"
 								onPress={handleExplore}
 							/>
@@ -1011,6 +1079,9 @@ const styles = StyleSheet.create({
 	tag: {
 		marginRight: 8,
 		marginBottom: 8,
+	},
+	moneyMargin: {
+		marginRight: 8,
 	},
 });
 

@@ -53,7 +53,7 @@ export const onChainTransactionToActivityItem = ({
 		txType: transaction.type,
 		txId: transaction.txid,
 		value: btcToSats(Math.abs(amount)),
-		fee: transaction.fee,
+		fee: btcToSats(Math.abs(transaction.fee)),
 		feeRate: transaction.satsPerByte,
 		address: transaction.address,
 		confirmed: transaction.height > 0,

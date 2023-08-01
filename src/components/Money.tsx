@@ -49,7 +49,7 @@ const Money = (props: IMoney): ReactElement => {
 
 	const sats = Math.abs(props.sats);
 	const highlight = props.highlight ?? false;
-	const decimalLength = props.decimalLength ?? 'short';
+	const decimalLength = props.decimalLength ?? 'long';
 	const size = props.size ?? 'display';
 	const unit =
 		props.unit ??

@@ -334,9 +334,6 @@ export const handleLightningPaymentSubscription = async ({
 		address,
 		value: payment.amount_sat,
 		confirmed: true,
-		// TODO: show fee?
-		// fee: 0,
-		// feeRate: 0,
 		timestamp: new Date().getTime(),
 	};
 	addActivityItem(activityItem);
@@ -1172,11 +1169,9 @@ export const payLightningInvoice = async (
 			txType: EPaymentType.sent,
 			message: decodedInvoice.value.description ?? '',
 			address: invoice,
-			value: -value,
+			value,
 			confirmed: true,
-			// TODO: show fee?
-			// fee: payResponse.value.fee_paid_sat,
-			// feeRate: 0,
+			fee: payResponse.value.fee_paid_sat ?? 0,
 			timestamp: new Date().getTime(),
 		};
 		//TODO rather sync with ldk for txs

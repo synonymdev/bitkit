@@ -85,6 +85,7 @@ const OnchainListItem = ({
 	const {
 		txType,
 		value,
+		fee,
 		feeRate,
 		confirmed,
 		confirmTimestamp,
@@ -99,6 +100,7 @@ const OnchainListItem = ({
 	const isTransferringToSpending = isTransfer && isSend;
 
 	let title = t(isSend ? 'activity_sent' : 'activity_received');
+	const amount = isSend ? value + fee : value;
 
 	let description;
 	if (confirmed) {
@@ -149,7 +151,7 @@ const OnchainListItem = ({
 		<ListItem
 			title={title}
 			description={description}
-			amount={value}
+			amount={amount}
 			icon={icon}
 			exists={exists}
 			isSend={isSend}
@@ -165,19 +167,20 @@ const LightningListItem = ({
 	icon: JSX.Element;
 }): ReactElement => {
 	const { t } = useTranslation('wallet');
-	const { txType, value, message, timestamp } = item;
+	const { txType, value, fee, message, timestamp } = item;
 	const title = t(
 		txType === EPaymentType.sent ? 'activity_sent' : 'activity_received',
 	);
 	const description = message || getActivityItemDate(timestamp);
 	const isSend = txType === EPaymentType.sent;
+	const amount = isSend ? value + (fee ?? 0) : value;
 
 	return (
 		<ListItem
 			title={title}
 			description={description}
 			icon={icon}
-			amount={value}
+			amount={amount}
 			isSend={isSend}
 		/>
 	);
