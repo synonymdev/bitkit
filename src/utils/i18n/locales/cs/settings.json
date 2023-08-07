@@ -5,11 +5,12 @@
   "dev_disabled_title": "Dev nastavení zakázáno",
   "dev_disabled_message": "Dev nastavení zakázáno prostřednictvím aplikace",
   "general_title": "Obecné",
-  "security_title": "Zabezpečení a soukromí",
+  "security_title": "Bezpečnost a soukromí",
   "backup_title": "Zálohovat nebo obnovit",
   "advanced_title": "Pokročilý",
   "about_title": "O nás",
   "about": {
+    "title": "O Bitkit",
     "text": "Bitkit vám předává klíče k vašim penězům, profilu, kontaktům a webovým účtům.\n\nTato <easterEgg>Oranžová Pilulka</easterEgg> byla pečlivě vytvořena společností Synonym Software Ltd.",
     "support": "Podpora",
     "report_bug": "Nahlásit chybu nebo přispět",
@@ -33,7 +34,6 @@
     "unit_display": "Zobrazit částky v",
     "unit_bitcoin": "Bitcoin",
     "unit_satoshis": "Satoshi",
-    "unit_fiat": "Lokální měna",
     "speed": "Rychlost transakce",
     "speed_title": "Rychlost transakce",
     "speed_default": "Výchozí rychlost transakce",
@@ -52,6 +52,7 @@
     "reset_confirm": "Ano, resetovat"
   },
   "security": {
+    "title": "Zabezpečení a soukromí",
     "clipboard": "Číst schránku pro snadné použití",
     "warn_100": "Upozornit při odesílání více než $100",
     "pin": "PIN kód",
@@ -140,6 +141,8 @@
     "no_addrs_with_funds": "Při hledání „{searchTxt}“ nebyly nalezeny žádné adresy s finančními prostředky",
     "no_addrs_str": "Při hledání „{searchTxt}“ nebyly nalezeny žádné adresy",
     "rescan_error": "Chyba opětovného skenování: Zkontrolujte prosím připojení",
+    "spend_number": "{count, plural, one {Strávit {fundsToSpend} sats Od # adresa} few {Strávit {fundsToSpend} sats Od # adresy} many {Strávit {fundsToSpend} sats Od # adresy} other {Utratit {fundsToSpend} satů z # adresy}}",
+    "spend_all": "{count, plural, one {Utratit všechny prostředky z # adresa} few {Utratit všechny prostředky z # adres} many {Utratit všechny prostředky z # adres} other {Utratit všechny prostředky z # adres}}",
     "index": "Index: {index}",
     "path": "Path: {path}",
     "private_hide": "Skrýt privátní klíč",

@@ -32,6 +32,7 @@
   "custom_confirm_cost": "Spojení s vámi a nastavení zůstatku útrat stojí <white>{amount}</white>. Vaše připojení Lightning zůstane otevřené po dobu alespoň <whiteWithKeyboard>{weeks} týdnů (týdne)</whiteWithKeyboard>.<whiteWithKeyboard><penIcon/></whiteWithKeyboard>",
   "duration_header": "Délka připojení.",
   "duration_text": "Vyberte minimální počet týdnů, po které má vaše připojení zůstat otevřené.",
+  "duration_week": "{count, plural, one {týden} few {týdny} many {týdny} other {týdnů}}",
   "setting_up_header": "Nastavování",
   "setting_up_text": "Počkejte prosím a ponechte Bitkit otevřený, dokud se vaše Lightning připojení nastavuje. Tento proces trvá asi minutu.",
   "setting_up_step1": "Očekávaná platba",
