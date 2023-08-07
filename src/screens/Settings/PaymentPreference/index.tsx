@@ -5,10 +5,11 @@ import { useTranslation } from 'react-i18next';
 
 import { View as ThemedView } from '../../../styles/components';
 import { EItemType, IListData } from '../../../components/List';
-import SettingsView from '../SettingsView';
-import { updateSettings } from '../../../store/actions/settings';
 import { useSlashtagsSDK } from '../../../components/SlashtagsProvider';
+import SettingsView from '../SettingsView';
+import { arraysMatch } from '../../../utils/helpers';
 import { updateSlashPayConfig } from '../../../utils/slashtags';
+import { updateSettings } from '../../../store/actions/settings';
 import {
 	enableOfflinePaymentsSelector,
 	receivePreferenceSelector,
@@ -37,6 +38,15 @@ const PaymentPreference = (): ReactElement => {
 						value: receivePreference,
 						onDragEnd: (data): void => {
 							updateSettings({ receivePreference: data });
+
+							if (!arraysMatch(receivePreference, data)) {
+								updateSlashPayConfig({
+									forceUpdate: true,
+									sdk,
+									selectedWallet,
+									selectedNetwork,
+								});
+							}
 						},
 					},
 				],

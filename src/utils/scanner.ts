@@ -277,8 +277,12 @@ export const processInputData = async ({
 				({ qrDataType }) => !skip.includes(qrDataType),
 			);
 
+			// The first item in the array is the preferred payment method.
+			const receivePreference = filteredData[0].qrDataType;
+
 			const processBitcoinTxResponse = await processBitcoinTransactionData({
 				data: filteredData,
+				preferredPaymentMethod: receivePreference,
 				selectedWallet,
 				selectedNetwork,
 			});
@@ -536,10 +540,12 @@ export const processSlashPayURL = async ({
  */
 export const processBitcoinTransactionData = async ({
 	data = [],
+	preferredPaymentMethod,
 	selectedNetwork,
 	selectedWallet,
 }: {
 	data: QRData[];
+	preferredPaymentMethod?: EQRDataType;
 	selectedNetwork?: TAvailableNetworks;
 	selectedWallet?: TWalletName;
 }): Promise<Result<QRData>> => {
@@ -624,8 +630,8 @@ export const processBitcoinTransactionData = async ({
 			}
 		}
 
-		// If no lightning invoice response, attempt to grab an on-chain invoice.
-		if (!response) {
+		// If no lightning invoice response or the contact prefers on-chain payments, grab an on-chain invoice..
+		if (!response || preferredPaymentMethod === EQRDataType.bitcoinAddress) {
 			// Filter for the bitcoin address or on-chain invoice
 			const bitcoinInvoice = data.find(
 				(d) => d.qrDataType === EQRDataType.bitcoinAddress,

@@ -171,12 +171,16 @@ export const onSDKError = (error: Error): void => {
 	});
 };
 
+const INVOICE_EXPIRY_DELTA = 60 * 60 * 24 * 7; // one week
+
 export const updateSlashPayConfig = debounce(
 	async ({
+		forceUpdate = false,
 		sdk,
 		selectedWallet,
 		selectedNetwork,
 	}: {
+		forceUpdate?: boolean;
 		sdk?: SDK;
 		selectedWallet?: TWalletName;
 		selectedNetwork?: TAvailableNetworks;
@@ -193,31 +197,24 @@ export const updateSlashPayConfig = debounce(
 		}
 		const slashtag = getSelectedSlashtag(sdk);
 		const drive = slashtag.drivestore.get();
-		const payConfig: SlashPayConfig =
-			(await drive.get('/slashpay.json').then(decodeJSON).catch(noop)) || [];
 
-		await waitForLdk();
-
-		const { currentLightningNode } = getCurrentWallet({
-			selectedWallet,
-			selectedNetwork,
-		});
-		const settings = getSettingsStore();
-		const enableOfflinePayments = settings.enableOfflinePayments;
-		const addressType = getSelectedAddressType({
-			selectedWallet,
-			selectedNetwork,
-		});
-		const claimedPayments = await getClaimedLightningPayments();
-		const openChannelIds = currentLightningNode.openChannelIds[selectedNetwork];
-
-		// if offline payments are disabled and payment config is empy then do nothing
-		if (!enableOfflinePayments && payConfig.length === 0) {
-			return;
+		let payConfig: SlashPayConfig = [];
+		try {
+			const buffer = await drive.get('/slashpay.json');
+			payConfig = decodeJSON(buffer) as SlashPayConfig;
+		} catch (err) {
+			console.log(err);
 		}
 
-		// if offline payments are disabled and payment config is not empy then delete it
-		if (!enableOfflinePayments && payConfig.length > 0) {
+		const { enableOfflinePayments, receivePreference } = getSettingsStore();
+
+		if (!enableOfflinePayments) {
+			// if offline payments are disabled and payment config is empty then do nothing
+			if (payConfig.length === 0) {
+				return;
+			}
+
+			// if offline payments are disabled and payment config is not empty then delete it
 			const newPayConfig: SlashPayConfig = [];
 			console.debug('Pushing new slashpay.json:', newPayConfig);
 			await drive
@@ -233,6 +230,11 @@ export const updateSlashPayConfig = debounce(
 		const newPayConfig: SlashPayConfig = [];
 
 		// check if we need to update onchain address
+		const addressType = getSelectedAddressType({
+			selectedWallet,
+			selectedNetwork,
+		});
+
 		const currentAddress = payConfig.find(
 			({ type }) => type === addressType,
 		)?.value;
@@ -250,6 +252,13 @@ export const updateSlashPayConfig = debounce(
 		}
 
 		// check if we need to update LN invoice
+		await waitForLdk();
+		const { currentLightningNode } = getCurrentWallet({
+			selectedWallet,
+			selectedNetwork,
+		});
+		const openChannelIds = currentLightningNode.openChannelIds[selectedNetwork];
+
 		if (openChannelIds.length) {
 			const currentInvoice =
 				payConfig.find(({ type }) => type === 'lightningInvoice')?.value ?? '';
@@ -257,6 +266,8 @@ export const updateSlashPayConfig = debounce(
 			const decodedInvoice = await decodeLightningInvoice({
 				paymentRequest: currentInvoice,
 			});
+
+			const claimedPayments = await getClaimedLightningPayments();
 
 			// if currentInvoice still not in react-native-ldk's claimed payments list, then we don't need to update it.
 			const currentInvoiceStillUnpaid =
@@ -276,7 +287,7 @@ export const updateSlashPayConfig = debounce(
 				const response = await createLightningInvoice({
 					amountSats: 0,
 					description: '',
-					expiryDeltaSeconds: 60 * 60 * 24 * 7, // one week
+					expiryDeltaSeconds: INVOICE_EXPIRY_DELTA,
 					selectedNetwork,
 					selectedWallet,
 				});
@@ -303,19 +314,26 @@ export const updateSlashPayConfig = debounce(
 			}
 		}
 
-		if (!needToUpdate) {
-			drive.close();
-			return;
+		if (needToUpdate || forceUpdate) {
+			// Put preferred payment method first in the array
+			const sortedPayConfig = newPayConfig.sort((a) => {
+				if (
+					a.type === 'lightningInvoice' &&
+					receivePreference[0].key === 'lightning'
+				) {
+					return -1;
+				} else {
+					return 1;
+				}
+			});
+
+			try {
+				await drive.put('/slashpay.json', encodeJSON(sortedPayConfig));
+				console.debug('Updated slashpay.json:', sortedPayConfig);
+			} catch (err) {
+				console.log(err);
+			}
 		}
-
-		console.debug('Pushing new slashpay.json:', newPayConfig);
-
-		await drive
-			.put('/slashpay.json', encodeJSON(newPayConfig))
-			.then(() => {
-				console.debug('Updated slashpay.json:', newPayConfig);
-			})
-			.catch(noop);
 
 		drive.close();
 	},
