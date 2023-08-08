@@ -48,7 +48,7 @@ d('Onchain', () => {
 		// - shows correct total balance
 		// - can send total balance and tag the tx
 		// - no exceeding availableAmount
-		// - shows a warning for sending over 50% of total
+		// - shows warnings for sending over 100$ or 50% of total
 		// - avoid creating dust output
 		// - TODO: coin selectiom
 
@@ -125,7 +125,7 @@ d('Onchain', () => {
 			await element(by.id('GRAB')).swipe('right'); // Swipe to confirm
 
 			await sleep(1000); // animation
-			await waitFor(element(by.id('DialogSend50'))) // sending over 50% of balance warning
+			await waitFor(element(by.id('SendDialog2'))) // sending over 50% of balance warning
 				.toBeVisible()
 				.withTimeout(10000);
 			await sleep(1000); // animation
@@ -251,6 +251,13 @@ d('Onchain', () => {
 			await sleep(1000); // animation
 
 			const coreAddress = await rpc.getNewAddress();
+
+			// enable warning for sending over 100$ to test multiple warning dialogs
+			await element(by.id('Settings')).tap();
+			await element(by.id('SecuritySettings')).tap();
+			await element(by.id('SendAmountWarning')).tap();
+			await element(by.id('NavigationClose')).tap();
+
 			await element(by.id('Send')).tap();
 			await sleep(1000); // animation
 			await element(by.id('RecipientInput')).replaceText(coreAddress);
@@ -275,12 +282,22 @@ d('Onchain', () => {
 
 			// TODO: check correct fee
 
+			// sending over 50% of balance warning
 			await sleep(1000); // animation
-			await waitFor(element(by.id('DialogSend50'))) // sending over 50% of balance warning
+			await waitFor(element(by.id('SendDialog2')))
 				.toBeVisible()
 				.withTimeout(10000);
 			await sleep(1000); // animation
 			await element(by.id('DialogConfirm')).tap();
+
+			// sending over 100$ warning
+			await sleep(1000); // animation
+			await waitFor(element(by.id('SendDialog1')))
+				.toBeVisible()
+				.withTimeout(10000);
+			await sleep(1000); // animation
+			await element(by.id('DialogConfirm')).tap();
+
 			await waitFor(element(by.id('SendSuccess')))
 				.toBeVisible()
 				.withTimeout(10000);

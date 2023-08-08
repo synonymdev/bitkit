@@ -727,6 +727,7 @@ const ReviewAndSend = ({
 					title={t('are_you_sure')}
 					description={t('send_dialog1')}
 					confirmText={t('send_yes')}
+					visibleTestID="SendDialog1"
 					onHide={(): void => confirmPayment(dialogWarnings)}
 					onConfirm={(): void => setShowDialog1(false)}
 					onCancel={(): void => {
@@ -740,7 +741,7 @@ const ReviewAndSend = ({
 					title={t('are_you_sure')}
 					description={t('send_dialog2')}
 					confirmText={t('send_yes')}
-					visibleTestID="DialogSend50"
+					visibleTestID="SendDialog2"
 					onHide={(): void => confirmPayment(dialogWarnings)}
 					onConfirm={(): void => setShowDialog2(false)}
 					onCancel={(): void => {
@@ -754,6 +755,7 @@ const ReviewAndSend = ({
 					title={t('are_you_sure')}
 					description={t('send_dialog3')}
 					confirmText={t('send_yes')}
+					visibleTestID="SendDialog3"
 					onHide={(): void => confirmPayment(dialogWarnings)}
 					onConfirm={(): void => setShowDialog3(false)}
 					onCancel={(): void => {
@@ -767,6 +769,7 @@ const ReviewAndSend = ({
 					title={t('are_you_sure')}
 					description={t('send_dialog4')}
 					confirmText={t('send_yes')}
+					visibleTestID="SendDialog4"
 					onHide={(): void => confirmPayment(dialogWarnings)}
 					onConfirm={(): void => setShowDialog4(false)}
 					onCancel={(): void => {
@@ -782,8 +785,9 @@ const ReviewAndSend = ({
 						minimumFee: feeEstimates.minimum,
 					})}
 					confirmText={t('continue')}
+					visibleTestID="SendDialog5"
 					onHide={(): void => confirmPayment(dialogWarnings)}
-					onConfirm={async (): Promise<void> => setShowDialog5(false)}
+					onConfirm={(): void => setShowDialog5(false)}
 					onCancel={(): void => {
 						setShowDialog5(false);
 						setIsLoading(false);

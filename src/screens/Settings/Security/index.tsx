@@ -58,6 +58,7 @@ const SecuritySettings = ({
 						title: t('security.clipboard'),
 						type: EItemType.switch,
 						enabled: enableAutoReadClipboard,
+						testID: 'AutoReadClipboard',
 						onPress: (): void => {
 							updateSettings({
 								enableAutoReadClipboard: !enableAutoReadClipboard,
@@ -68,6 +69,7 @@ const SecuritySettings = ({
 						title: t('security.warn_100'),
 						type: EItemType.switch,
 						enabled: enableSendAmountWarning,
+						testID: 'SendAmountWarning',
 						onPress: (): void => {
 							updateSettings({
 								enableSendAmountWarning: !enableSendAmountWarning,
