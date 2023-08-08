@@ -1,18 +1,17 @@
 import React, { memo, ReactElement } from 'react';
 import {
-	Modal,
-	ModalProps,
 	StyleSheet,
 	Text,
 	View,
 	Platform,
 	TouchableOpacity,
 } from 'react-native';
+import Modal from 'react-native-modal';
 import { useTranslation } from 'react-i18next';
 
 import colors from '../styles/colors';
 
-type DialogProps = ModalProps & {
+type DialogProps = {
 	visible: boolean;
 	title: string;
 	description: string;
@@ -21,6 +20,7 @@ type DialogProps = ModalProps & {
 	visibleTestID?: string;
 	onCancel?: () => void;
 	onConfirm?: () => void;
+	onHide?: () => void;
 };
 
 const Dialog = ({
@@ -32,7 +32,7 @@ const Dialog = ({
 	visibleTestID,
 	onCancel,
 	onConfirm,
-	onRequestClose,
+	onHide,
 }: DialogProps): ReactElement => {
 	const { t } = useTranslation('common');
 
@@ -44,58 +44,46 @@ const Dialog = ({
 	}
 
 	return (
-		<>
-			{visible && (
-				<View>
-					<Modal
-						animationType="fade"
-						transparent={true}
-						visible={visible}
-						onRequestClose={onRequestClose}>
-						<View style={styles.centeredView}>
-							<View style={styles.view}>
-								<View style={styles.text}>
-									<Text style={styles.title}>{title}</Text>
-									<Text style={styles.description}>{description}</Text>
-								</View>
-								<View
-									style={styles.buttons}
-									testID={visible ? visibleTestID : undefined}>
-									{onCancel && (
-										<TouchableOpacity
-											style={[styles.button, styles.buttonLeft]}
-											onPress={onCancel}
-											testID="DialogCancel">
-											<Text style={styles.buttonText}>{cancelText}</Text>
-										</TouchableOpacity>
-									)}
-									{onConfirm && (
-										<TouchableOpacity
-											style={styles.button}
-											onPress={onConfirm}
-											testID="DialogConfirm">
-											<Text style={styles.buttonText}>{confirmText}</Text>
-										</TouchableOpacity>
-									)}
-								</View>
-							</View>
-						</View>
-					</Modal>
+		<Modal
+			isVisible={visible}
+			animationIn="fadeIn"
+			animationOut="fadeOut"
+			useNativeDriverForBackdrop={true}
+			onModalHide={onHide}>
+			<View style={styles.content}>
+				<View style={styles.text}>
+					<Text style={styles.title}>{title}</Text>
+					<Text style={styles.description}>{description}</Text>
 				</View>
-			)}
-		</>
+				<View
+					style={styles.buttons}
+					testID={visible ? visibleTestID : undefined}>
+					{onCancel && (
+						<TouchableOpacity
+							style={[styles.button, styles.buttonLeft]}
+							onPress={onCancel}
+							testID="DialogCancel">
+							<Text style={styles.buttonText}>{cancelText}</Text>
+						</TouchableOpacity>
+					)}
+					{onConfirm && (
+						<TouchableOpacity
+							style={styles.button}
+							onPress={onConfirm}
+							testID="DialogConfirm">
+							<Text style={styles.buttonText}>{confirmText}</Text>
+						</TouchableOpacity>
+					)}
+				</View>
+			</View>
+		</Modal>
 	);
 };
 
 const styles = StyleSheet.create({
-	centeredView: {
-		backgroundColor: 'rgba(0, 0, 0, 0.6)',
-		flex: 1,
-		justifyContent: 'center',
-		alignItems: 'center',
-	},
-	view: {
+	content: {
 		backgroundColor: 'rgba(49, 49, 49, 1)',
+		alignSelf: 'center',
 		alignItems: 'center',
 		color: colors.white,
 		shadowColor: colors.black,
