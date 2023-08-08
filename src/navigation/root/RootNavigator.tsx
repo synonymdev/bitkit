@@ -24,10 +24,10 @@ import { NavigationContainer } from '../../styles/components';
 import { processInputData } from '../../utils/scanner';
 import { checkClipboardData } from '../../utils/clipboard';
 import { useRenderCount } from '../../hooks/helpers';
+import { getStore } from '../../store/helpers';
 import { updateUi } from '../../store/actions/ui';
 import { resetSendTransaction } from '../../store/actions/wallet';
 import { isAuthenticatedSelector } from '../../store/reselect/ui';
-import { pinOnIdleSelector, pinSelector } from '../../store/reselect/settings';
 import AuthCheck from '../../components/AuthCheck';
 import Dialog from '../../components/Dialog';
 import WalletNavigator from '../wallet/WalletNavigator';
@@ -99,8 +99,6 @@ const RootNavigator = (): ReactElement => {
 	const appState = useRef(AppState.currentState);
 	const [showDialog, setShowDialog] = useState(false);
 	const [shouldCheckClipboard, setShouldCheckClipboard] = useState(false);
-	const pin = useSelector(pinSelector);
-	const pinOnIdle = useSelector(pinOnIdleSelector);
 	const isAuthenticated = useSelector(isAuthenticatedSelector);
 	const renderCount = useRenderCount();
 
@@ -169,24 +167,15 @@ const RootNavigator = (): ReactElement => {
 		const appStateSubscription = AppState.addEventListener(
 			'change',
 			(nextAppState): void => {
+				// get state fresh from store everytime
+				const uiStore = getStore().ui;
+
 				// on App to foreground
 				if (appState.current.match(/background/) && nextAppState === 'active') {
 					// prevent redirecting while on AuthCheck
-					if (isAuthenticated) {
+					if (uiStore.isAuthenticated) {
 						checkClipboard().then();
 					} else {
-						setShouldCheckClipboard(true);
-					}
-				}
-
-				// on App to background
-				if (
-					appState.current.match(/active|inactive/) &&
-					nextAppState === 'background'
-				) {
-					// lock the app on background if pinOnIdle is enabled
-					if (pin && pinOnIdle) {
-						updateUi({ isAuthenticated: false });
 						setShouldCheckClipboard(true);
 					}
 				}
