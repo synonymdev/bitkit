@@ -58,6 +58,7 @@
 	"lnurl_withdr_error_no_capacity": "Not enough inbound/receiving capacity to complete lnurl-withdraw request.",
 	"lnurl_withdr_error_create_invoice": "Unable to successfully create invoice for lnurl-withdraw.",
 	"lnurl_withdr_error_connect": "Unable to connect to LNURL withdraw server.",
+	"lnurl_withdr_error_minmax": "Wrong LNURL withdraw params, min/max not set correctly.",
 	"lnurl_withdr_success_title": "Withdraw Requested",
 	"lnurl_withdr_success_msg": "LNURL Withdraw was successfully requested.",
 	"bt_error_retrieve": "Unable To Retrieve Order Information",

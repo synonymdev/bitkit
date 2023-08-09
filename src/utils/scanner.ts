@@ -872,6 +872,17 @@ export const handleData = async ({
 			params.minWithdrawable = Math.floor(params.minWithdrawable / 1000);
 			params.maxWithdrawable = Math.floor(params.maxWithdrawable / 1000);
 
+			if (params.minWithdrawable > params.maxWithdrawable) {
+				showToast({
+					type: 'error',
+					title: i18n.t('other:lnurl_withdr_error'),
+					description: i18n.t('other:lnurl_withdr_error_minmax'),
+				});
+				return err(
+					'Wrong lnurl-withdraw params: minWithdrawable > maxWithdrawable.',
+				);
+			}
+
 			// Determine if we have enough receiving capacity before proceeding.
 			const lightningBalance = getLightningBalance({
 				selectedWallet,
