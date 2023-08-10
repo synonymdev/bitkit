@@ -56,11 +56,14 @@ const CustomConfirm = ({
 	const blocktankPurchaseFee = useDisplayValues(order?.price ?? 0);
 	const transactionFee = useSelector(transactionFeeSelector);
 	const fiatTransactionFee = useDisplayValues(transactionFee);
+
 	const channelOpenCost = useMemo(() => {
-		return (
-			blocktankPurchaseFee.fiatValue + fiatTransactionFee.fiatValue
-		).toFixed(2);
-	}, [fiatTransactionFee.fiatValue, blocktankPurchaseFee.fiatValue]);
+		const fee = blocktankPurchaseFee.fiatValue + fiatTransactionFee.fiatValue;
+		return fee.toFixed(2);
+
+		// avoid flashing different price after confirmation
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [orderId]);
 
 	const handleConfirm = async (): Promise<void> => {
 		setLoading(true);
