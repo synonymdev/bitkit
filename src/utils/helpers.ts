@@ -160,7 +160,7 @@ export const trimExtraSpaces = (text: string): string => {
  * Capitalizes the first letter of every word.
  * @param {string} text
  */
-export const capitalize = (text = ''): string => {
+export const capitalize = (text: string): string => {
 	return text.charAt(0).toUpperCase() + text.slice(1);
 };
 

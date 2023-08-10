@@ -8,6 +8,7 @@ import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigati
 import SafeAreaInset from '../../../components/SafeAreaInset';
 import GradientView from '../../../components/GradientView';
 import Button from '../../../components/Button';
+import { capitalize } from '../../../utils/helpers';
 import { useBottomSheetBackPress } from '../../../hooks/bottomSheet';
 import type { BackupScreenProps } from '../../../navigation/types';
 
@@ -30,7 +31,7 @@ const ConfirmPassphrase = ({
 				<View style={styles.input}>
 					<BottomSheetTextInput
 						value={bip39Passphrase}
-						placeholder={t('pass')}
+						placeholder={capitalize(t('pass'))}
 						returnKeyType="done"
 						onChangeText={setPassphrase}
 						autoCapitalize="none"
