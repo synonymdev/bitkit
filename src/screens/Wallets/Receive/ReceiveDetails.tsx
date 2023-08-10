@@ -248,7 +248,7 @@ const styles = StyleSheet.create({
 	numberPad: {
 		flex: 1,
 		marginTop: 'auto',
-		maxHeight: 500,
+		maxHeight: 450,
 	},
 	actionButtons: {
 		flexDirection: 'row',
