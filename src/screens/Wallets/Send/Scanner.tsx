@@ -47,7 +47,7 @@ const ScannerScreen = (): ReactElement => {
 	};
 
 	return (
-		<ScannerComponent transparent={false} onRead={onRead}>
+		<ScannerComponent bottomSheet={true} onRead={onRead}>
 			<BottomSheetNavigationHeader
 				style={styles.navigationHeader}
 				title={t('qr_scan')}

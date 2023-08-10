@@ -15,13 +15,15 @@ enum Status {
 }
 
 const Camera = ({
-	onBarCodeRead,
 	children,
 	torchMode = false,
+	bottomSheet = false,
+	onBarCodeRead,
 }: {
-	onBarCodeRead: (data: string) => void;
 	children?: ReactElement;
 	torchMode?: boolean;
+	bottomSheet?: boolean;
+	onBarCodeRead: (data: string) => void;
 }): ReactElement => {
 	const { t } = useTranslation('other');
 	const isFocused = useIsFocused();
@@ -88,7 +90,9 @@ const Camera = ({
 					{children}
 				</>
 			)}
-			{cameraStatus === Status.NOT_AUTHORIZED && <CameraNoAuth />}
+			{cameraStatus === Status.NOT_AUTHORIZED && (
+				<CameraNoAuth bottomSheet={bottomSheet} />
+			)}
 		</GradientView>
 	);
 };

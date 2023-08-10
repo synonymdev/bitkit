@@ -26,13 +26,13 @@ import Button from '../../components/Button';
 
 type ScannerComponentProps = {
 	children: ReactNode;
-	transparent?: boolean;
+	bottomSheet?: boolean;
 	onRead: (data: string) => void;
 };
 
 const ScannerComponent = ({
 	children,
-	transparent = true,
+	bottomSheet = false,
 	onRead,
 }: ScannerComponentProps): ReactElement => {
 	const { t } = useTranslation('other');
@@ -43,7 +43,7 @@ const ScannerComponent = ({
 	const [error, setError] = useState('');
 
 	const backgroundStyles = useMemo(() => {
-		if (transparent) {
+		if (bottomSheet) {
 			return {
 				...styles.background,
 				backgroundColor: 'rgba(0, 0, 0, 0.64)',
@@ -54,7 +54,7 @@ const ScannerComponent = ({
 			...styles.background,
 			backgroundColor: 'black',
 		};
-	}, [transparent]);
+	}, [bottomSheet]);
 
 	const showError = (text: string): void => {
 		setError(text);
@@ -104,11 +104,14 @@ const ScannerComponent = ({
 		}
 	};
 
-	const TopBackground = transparent ? BlurView : GradientView;
-	const Background = transparent ? BlurView : View;
+	const TopBackground = bottomSheet ? BlurView : GradientView;
+	const Background = bottomSheet ? BlurView : View;
 
 	return (
-		<Camera onBarCodeRead={onBarCodeRead} torchMode={torchMode}>
+		<Camera
+			bottomSheet={bottomSheet}
+			torchMode={torchMode}
+			onBarCodeRead={onBarCodeRead}>
 			<>
 				{children}
 
