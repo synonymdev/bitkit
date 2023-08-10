@@ -125,7 +125,8 @@ export type TActivityFilter = {
 	types?: EActivityType[];
 	tags?: string[];
 	txType?: EPaymentType;
-	transfer?: boolean;
+	includeTransfers?: boolean;
+	onlyTransfers?: boolean;
 	timerange?: number[];
 };
 
@@ -141,7 +142,8 @@ export const filterActivityItems = (
 	{
 		search = '',
 		types = [],
-		transfer,
+		includeTransfers = false,
+		onlyTransfers = false,
 		tags = [],
 		txType,
 		timerange = [],
@@ -173,11 +175,20 @@ export const filterActivityItems = (
 			return false;
 		}
 
-		// isTransfer doesn't match
+		// If we're not including transfers and it's a transfer, skip it
 		if (
-			transfer &&
+			!includeTransfers &&
 			item.activityType === EActivityType.onchain &&
-			transfer !== item.isTransfer
+			item.isTransfer
+		) {
+			return false;
+		}
+
+		// If we're only including transfers and it's not a transfer, skip it
+		if (
+			onlyTransfers &&
+			item.activityType === EActivityType.onchain &&
+			!item.isTransfer
 		) {
 			return false;
 		}
