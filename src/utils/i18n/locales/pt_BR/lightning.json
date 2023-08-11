@@ -27,7 +27,7 @@
   "setting_up_step4": "Abrindo Conexão",
   "result_header": "Conectando",
   "result_text": "Conexão Lightning iniciada. Você poderá realizar pagamentos instantâneos em ±10 minutos.",
-  "timeout_header": "Tempo Esgotado",
+  "timeout_header": "Por favor, mantenha o Bitkit aberto.",
   "timeout_text": "O Bitkit continuará tentando abrir sua conexão Lightning em segundo plano. Mantenha o aplicativo aberto.",
   "awesome": "Fantástico!",
   "transfer_header": "Por favor\nConfirme.",

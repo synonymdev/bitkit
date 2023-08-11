@@ -41,7 +41,7 @@
   "setting_up_step4": "Apertura della Connessione",
   "result_header": "In Connessione",
   "result_text": "Connessione Lightning avviata. Sarai in grado di utilizzare i pagamenti istantanei in ±10 minuti.",
-  "timeout_header": "Tempo Scaduto",
+  "timeout_header": "Tieni Bitkit aperto.",
   "timeout_text": "Bitkit continuerà a cercare di aprire la connessione Lightning in background. Tieni aperta l'applicazione.",
   "awesome": "Fantastico!",
   "transfer_funds": "Trasferimento Fondi",

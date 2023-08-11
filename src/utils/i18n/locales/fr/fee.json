@@ -30,6 +30,9 @@
     "shortDescription": "+2h"
   },
   "custom": {
-    "title": "Personnalisé"
+    "title": "Personnalisé",
+    "description": "Dépend des frais",
+    "shortRange": "Dépend des frais",
+    "shortDescription": "Dépend des frais"
   }
 }

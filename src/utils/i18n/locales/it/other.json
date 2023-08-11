@@ -71,6 +71,5 @@
   "high_text2": "Per motivi di sicurezza, ti consigliamo di spostare una parte dei tuoi risparmi in un cold wallet offline o in una soluzione multisig.",
   "high_text2_beta": "Considera la possibilità di spostare alcuni dei tuoi fondi. Raccomandiamo di utilizzare solo piccole somme mentre Bitkit è in fase beta.",
   "high_button_more": "Scopri di Più",
-  "caution_header": "Attenzione:\n<yellow>Rischio Beta.</yellow>",
-  "caution_text": "Il software in beta può mettere a rischio i tuo soldi. Raccomandiamo di utilizzare solo piccole somme (come €10) mentre Bitkit è in versione beta."
+  "caution_header": "Attenzione:\n<yellow>Rischio Beta.</yellow>"
 }

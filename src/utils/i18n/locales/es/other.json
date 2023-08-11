@@ -68,6 +68,5 @@
   "high_title": "Saldo Elevado",
   "high_text2_beta": "Por favor, considere mover algunos de sus fondos. Le recomendamos utilizar sólo pequeñas cantidades mientras Bitkit esté en fase beta.",
   "high_button_more": "Más informaciónes",
-  "caution_header": "Precaución:\n<yellow>Riesgo Beta.</yellow>",
-  "caution_text": "El software beta puede poner en riesgo su dinero. Le recomendamos que utilice sólo pequeñas cantidades (como 10 dólares) mientras Bitkit esté en fase beta."
+  "caution_header": "Precaución:\n<yellow>Riesgo Beta.</yellow>"
 }

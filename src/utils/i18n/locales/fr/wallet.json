@@ -1,1 +1,6 @@
-{}
+{
+  "activity_status": "Statut",
+  "activity_tabs": {
+    "other": "Autre"
+  }
+}

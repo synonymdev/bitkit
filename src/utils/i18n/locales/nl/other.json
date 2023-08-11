@@ -71,6 +71,5 @@
   "high_text2": "Voor veiligheidsredenen raden wij aan om wat van uw spaargeld naar een offline cold wallet of multisig oplossing te verhuizen.",
   "high_text2_beta": "Overweeg om wat van uw geld te verplaatsen. Wij raden aan om alleen Bitkit te gebruiken met kleine hoeveelheden geld. ",
   "high_button_more": "Meer Weten",
-  "caution_header": "Pas op: <yellow>Beta Risico.</yellow>",
-  "caution_text": "Beta software kan riskant zijn voor uw geld. Wij raden aan om enkel kleine bedragen te gebruiken (zoals $10) terwijl Bitkit in beta is. "
+  "caution_header": "Pas op: <yellow>Beta Risico.</yellow>"
 }

@@ -41,7 +41,7 @@
   "setting_up_step4": "Otevírání spojení",
   "result_header": "Spojování",
   "result_text": "Bylo zahájeno Lightning spojení. Okamžité platby budete moci využívat do ±10 minut.",
-  "timeout_header": "Čas vypršel",
+  "timeout_header": "Nechte Bitkit otevřený.",
   "timeout_text": "Bitkit se bude nadále pokoušet otevřít vaše připojení Lightning na pozadí. Nechte aplikaci otevřenou.",
   "awesome": "Skvělé!",
   "transfer_funds": "Převést prostředky",

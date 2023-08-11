@@ -41,7 +41,7 @@
   "setting_up_step4": "Verbinding Wordt Gereed Gemaakt",
   "result_header": "Verbinding aan het maken",
   "result_text": "Verbinding met Lightning wordt gereed gemaakt. U kunt gebruik maken van directe betalingen in ±10 minuten.  ",
-  "timeout_header": "Verlopen",
+  "timeout_header": "Bitkit open houden. ",
   "timeout_text": "Bitkit probeert verbinding te maken met Lightning. Houd de app open.  ",
   "awesome": "Fantastisch!",
   "transfer_funds": "Geld Overmaken",

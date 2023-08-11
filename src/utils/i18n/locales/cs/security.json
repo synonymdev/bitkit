@@ -74,7 +74,6 @@
   "recovery": "Obnova",
   "recovery_text": "Vstoupili jste do režimu obnovy Bitkitu. Zde je několik akcí, které je třeba provést když narazíte na problémy, které brání plnému fungování aplikace. Restartujte aplikaci pro normální spuštění.",
   "lightning_recovery_title": "Lightning obnova",
-  "lightning_recovery_desc": "Varování: Toto vynutí uzavření všech vašich kanálů a obnovení veškerých prostředků do vaší on-chain peněženky. Tuto možnost použijte pouze v případě, že nemáte přístup ke své lightning peněžence kvůli chybě obnovení.",
   "lightning_recovery_success": "Lightning obnova úspěšná",
   "lightning_recovery_success_message": "Čekající zůstatek {sats} satů byl obnoven. Znovu otevřete aplikaci, abyste viděli svůj obnovený zůstatek.",
   "lightning_recovery_error": "Chyba obnovy Lightning",

@@ -72,6 +72,5 @@
   "high_text2": "Z bezpečnostních důvodů doporučujeme přesunout část svých úspor do offline cold wallet nebo multisig řešení.",
   "high_text2_beta": "Zvažte přesunutí části svých prostředků. Doporučujeme používat pouze malá množství, dokud je Bitkit v beta verzi.",
   "high_button_more": "Další informace",
-  "caution_header": "Pozor:\n<yellow>Beta riziko.</yellow>",
-  "caution_text": "Beta software může ohrozit vaše peníze. Doporučujeme používat pouze malé částky (například 10 $), zatímco je Bitkit stále ve verzi beta."
+  "caution_header": "Pozor:\n<yellow>Beta riziko.</yellow>"
 }

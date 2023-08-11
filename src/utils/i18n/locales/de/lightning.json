@@ -40,7 +40,7 @@
   "setting_up_step4": "Öffne Verbindung",
   "result_header": "verbinden",
   "result_text": "Lightning-Verbindung initiiert. Du kannst in ±10 Minuten instant zahlen.",
-  "timeout_header": "Zeitüberschreitung",
+  "timeout_header": "Bitte lasse Bitkit offen.",
   "timeout_text": "Bitkit wird im Hintergrund versuchen deine Lightning-Verbindung zu öffnen. Bitte lasse die App dabei geöffnet.",
   "awesome": "Wunderbar!",
   "transfer_funds": "Übertrage Guthaben",

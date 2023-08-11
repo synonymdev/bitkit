@@ -1,6 +1,22 @@
 {
+  "settings": "Paramètres",
+  "dev_enabled_title": "Options de développement activées",
+  "dev_enabled_message": "Les options de développement sont désormais activées dans l'ensemble de l'application.",
+  "dev_disabled_title": "Options de développement désactivées",
+  "advanced_title": "Avancé",
+  "about": {
+    "support": "Support"
+  },
   "general": {
     "suggestions": "Suggestions"
+  },
+  "backup": {
+    "category_settings": "Paramètres"
+  },
+  "adv": {
+    "section_other": "Autre",
+    "lightning_connections": "Connexions Lightning",
+    "lightning_node": "Nœud Lightning"
   },
   "fee": {
     "fast": {
@@ -14,5 +30,8 @@
       "label": "Personnalisé",
       "value": "Personnalisé"
     }
+  },
+  "es": {
+    "disconnected": "déconnecté"
   }
 }

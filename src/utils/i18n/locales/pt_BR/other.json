@@ -69,6 +69,5 @@
   "high_text2": "Por motivos de segurança, recomendamos que você transfira parte de suas economias para uma carteira fria off-line ou para uma solução multisig.",
   "high_text2_beta": "Considere a possibilidade de transferir parte de seus fundos. Recomendamos que use apenas pequenas quantias enquanto o Bitkit estiver na versão beta.",
   "high_button_more": "Saiba Mais",
-  "caution_header": "Cuidado:\n<yellow>Risco Beta.</yellow>",
-  "caution_text": "Software beta pode colocar seu dinheiro em risco. Recomendamos que use apenas pequenas quantias (tipo US$ 10) enquanto o Bitkit estiver na versão beta."
+  "caution_header": "Cuidado:\n<yellow>Risco Beta.</yellow>"
 }
