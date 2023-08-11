@@ -39,7 +39,7 @@ const persistConfig = {
 	// increase version after store shape changes
 	version: 15,
 	stateReconciler: autoMergeLevel2,
-	blacklist: ['ui'],
+	blacklist: ['receive', 'ui'],
 	migrate: createMigrate(migrations, { debug: __ENABLE_MIGRATION_DEBUG__ }),
 };
 const persistedReducer = persistReducer<RootReducer>(persistConfig, reducers);

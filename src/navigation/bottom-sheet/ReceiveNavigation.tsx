@@ -13,6 +13,7 @@ import Tags from '../../screens/Wallets/Receive/Tags';
 import { useSnapPoints } from '../../hooks/bottomSheet';
 import { NavigationContainer } from '../../styles/components';
 import { viewControllerIsOpenSelector } from '../../store/reselect/ui';
+import { resetInvoice } from '../../store/actions/receive';
 import { __E2E__ } from '../../constants/env';
 
 export type ReceiveNavigationProp =
@@ -37,11 +38,16 @@ const ReceiveNavigation = (): ReactElement => {
 		viewControllerIsOpenSelector(state, 'receiveNavigation'),
 	);
 
+	const onOpen = (): void => {
+		resetInvoice();
+	};
+
 	return (
 		<BottomSheetWrapper
 			view="receiveNavigation"
 			snapPoints={snapPoints}
-			testID="ReceiveScreen">
+			testID="ReceiveScreen"
+			onOpen={onOpen}>
 			<NavigationContainer key={isOpen.toString()}>
 				<Stack.Navigator screenOptions={navOptions}>
 					<Stack.Screen name="ReceiveQR" component={ReceiveQR} />

@@ -34,7 +34,6 @@ import {
 	ShareIcon,
 } from '../../../styles/icons';
 import { Caption13Up, Text02S } from '../../../styles/text';
-import { resetInvoice } from '../../../store/actions/receive';
 import { updateMetaIncTxTags } from '../../../store/actions/metadata';
 import { createLightningInvoice } from '../../../store/actions/lightning';
 import { generateNewReceiveAddress } from '../../../store/actions/wallet';
@@ -186,7 +185,6 @@ const ReceiveQR = ({
 		}
 		// Gives the modal animation time to start.
 		sleep(50).then(() => {
-			resetInvoice();
 			// Only refresh LDK if we have a remote balance.
 			if (lightningBalance.remoteBalance > 0) {
 				refreshLdk({ selectedWallet, selectedNetwork }).then();
