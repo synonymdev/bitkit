@@ -254,7 +254,9 @@ export const startChannelPurchase = async ({
 	// Ensure we have enough funds to pay for both the channel and the fee to broadcast the transaction.
 	if (buyChannelData.total_amount + transactionFee > onchainBalance) {
 		// TODO: Attempt to re-calculate a lower fee channel-open that's not instant if unable to pay.
-		const delta = Math.abs(channelOpenCost - onchainBalance);
+		const delta = Math.abs(
+			buyChannelData.total_amount + transactionFee - onchainBalance,
+		);
 		const cost = getDisplayValues({ satoshis: delta });
 		return err(
 			i18n.t('other:bt_channel_purchase_cost_error', {
