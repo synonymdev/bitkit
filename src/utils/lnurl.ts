@@ -71,7 +71,10 @@ export const handleLnurlPay = async ({
 	const callbackRes = await lnurlPay({
 		params,
 		milliSats,
-		comment: 'Bitkit LNURL-Pay',
+		// comment should only be included if server asks for it with "commentAllowed"
+		// https://github.com/lnurl/luds/blob/luds/12.md
+		// comment: 'Bitkit LNURL-Pay',
+		comment: '',
 	});
 
 	if (callbackRes.isErr()) {
