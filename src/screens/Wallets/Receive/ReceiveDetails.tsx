@@ -36,7 +36,10 @@ import GlowImage from '../../../components/GlowImage';
 import { useScreenSize } from '../../../hooks/screen';
 import { getNumberPadText } from '../../../utils/numberpad';
 import { useSwitchUnit } from '../../../hooks/wallet';
-import { updateMetaIncTxTags } from '../../../store/actions/metadata';
+import {
+	removePendingInvoice,
+	updatePendingInvoice,
+} from '../../../store/actions/metadata';
 
 const imageSrc = require('../../../assets/illustrations/coin-stack-4.png');
 
@@ -77,10 +80,17 @@ const ReceiveDetails = ({
 	};
 
 	useEffect(() => {
-		if (invoice.tags.length > 0 && receiveAddress) {
-			updateMetaIncTxTags(receiveAddress, lightningInvoice, invoice.tags);
+		if (invoice.tags.length > 0) {
+			updatePendingInvoice({
+				id: invoice.id,
+				tags: invoice.tags,
+				address: receiveAddress,
+				payReq: lightningInvoice,
+			});
+		} else {
+			removePendingInvoice(invoice.id);
 		}
-	}, [receiveAddress, lightningInvoice, invoice.tags]);
+	}, [invoice.id, invoice.tags, receiveAddress, lightningInvoice]);
 
 	return (
 		<GradientView style={styles.container}>

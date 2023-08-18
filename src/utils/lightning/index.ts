@@ -47,6 +47,7 @@ import {
 } from '../../store/helpers';
 import { defaultHeader } from '../../store/shapes/wallet';
 import {
+	moveMetaIncPaymentTags,
 	removePeer,
 	syncLightningTxsWithActivityList,
 	updateClaimableBalance,
@@ -318,6 +319,8 @@ export const handleLightningPaymentSubscription = async ({
 	if (invoice) {
 		message = invoice.description ?? '';
 		address = invoice.to_str;
+
+		moveMetaIncPaymentTags(invoice);
 	} else {
 		//Unlikely to happen and not really a problem if it does
 		console.error(

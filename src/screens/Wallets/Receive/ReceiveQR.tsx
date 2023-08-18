@@ -34,7 +34,7 @@ import {
 	ShareIcon,
 } from '../../../styles/icons';
 import { Caption13Up, Text02S } from '../../../styles/text';
-import { updateMetaIncTxTags } from '../../../store/actions/metadata';
+import { updatePendingInvoice } from '../../../store/actions/metadata';
 import { createLightningInvoice } from '../../../store/actions/lightning';
 import { generateNewReceiveAddress } from '../../../store/actions/wallet';
 import { viewControllerIsOpenSelector } from '../../../store/reselect/ui';
@@ -96,7 +96,7 @@ const ReceiveQR = ({
 	const selectedWallet = useSelector(selectedWalletSelector);
 	const selectedNetwork = useSelector(selectedNetworkSelector);
 	const addressType = useSelector(addressTypeSelector);
-	const { amount, message, tags } = useSelector(receiveSelector);
+	const { id, amount, message, tags } = useSelector(receiveSelector);
 	const lightningBalance = useLightningBalance(false);
 	const receiveNavigationIsOpen = useSelector((state) =>
 		viewControllerIsOpenSelector(state, 'receiveNavigation'),
@@ -215,13 +215,15 @@ const ReceiveQR = ({
 	]);
 
 	useEffect(() => {
-		// Gives the modal animation time to start.
-		sleep(50).then(() => {
-			if (tags.length !== 0 && receiveAddress && receiveNavigationIsOpen) {
-				updateMetaIncTxTags(receiveAddress, lightningInvoice, tags);
-			}
-		});
-	}, [receiveAddress, lightningInvoice, tags, receiveNavigationIsOpen]);
+		if (id && tags.length !== 0 && receiveAddress && receiveNavigationIsOpen) {
+			updatePendingInvoice({
+				id,
+				tags,
+				address: receiveAddress,
+				payReq: lightningInvoice,
+			});
+		}
+	}, [id, receiveAddress, lightningInvoice, tags, receiveNavigationIsOpen]);
 
 	const uri = useMemo((): string => {
 		if (!receiveNavigationIsOpen) {
@@ -242,9 +244,9 @@ const ReceiveQR = ({
 		receiveNavigationIsOpen,
 	]);
 
-	const handleCopy = (text: string, id: string): void => {
+	const handleCopy = (text: string, tooltipId: string): void => {
 		Clipboard.setString(text);
-		setShowTooltip((prevState) => ({ ...prevState, [id]: true }));
+		setShowTooltip((prevState) => ({ ...prevState, [tooltipId]: true }));
 		setTimeout(() => setShowTooltip(defaultTooltips), 1500);
 	};
 
@@ -517,13 +519,13 @@ const ReceiveQR = ({
 				<Button
 					size="large"
 					text={t('receive_specify')}
-					onPress={(): void =>
+					testID="SpecifyInvoiceButton"
+					onPress={(): void => {
 						navigation.navigate('ReceiveDetails', {
 							receiveAddress,
 							lightningInvoice,
-						})
-					}
-					testID="SpecifyInvoiceButton"
+						});
+					}}
 				/>
 			</View>
 			<SafeAreaInset type="bottom" minPadding={16} />

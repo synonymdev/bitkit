@@ -61,22 +61,35 @@ const metadata = (
 			};
 		}
 
-		case actions.UPDATE_META_INC_TX_TAGS: {
+		case actions.UPDATE_PENDING_INVOICE: {
+			const newInvoice = { ...action.payload, timestamp: Date.now() };
+
+			// remove duplicates
+			const filtered = state.pendingInvoices.filter((invoice) => {
+				return invoice.id !== action.payload.id;
+			});
+
 			return {
 				...state,
-				pendingTags: {
-					...state.pendingTags,
-					[action.payload.address]: action.payload.tags,
-					// TODO: handle Lightning
-					// [action.payload.payReq]: action.payload.tags,
-				},
+				pendingInvoices: [...filtered, newInvoice],
+			};
+		}
+
+		case actions.DELETE_PENDING_INVOICE: {
+			const filtered = state.pendingInvoices.filter((invoice) => {
+				return invoice.id !== action.payload;
+			});
+
+			return {
+				...state,
+				pendingInvoices: filtered,
 			};
 		}
 
 		case actions.MOVE_META_INC_TX_TAG: {
 			return {
 				...state,
-				pendingTags: action.payload.pendingTags,
+				pendingInvoices: action.payload.pendingInvoices,
 				tags: { ...state.tags, ...action.payload.tags },
 			};
 		}

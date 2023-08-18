@@ -14,7 +14,7 @@ import {
 	addTag,
 	addMetaTxTag,
 	resetMetaStore,
-	updateMetaIncTxTags,
+	updatePendingInvoice,
 	addMetaSlashTagsUrlTag,
 } from '../src/store/actions/metadata';
 import {
@@ -107,7 +107,12 @@ describe('Remote backups', () => {
 	it('Backups and restores metadata', async () => {
 		addMetaTxTag('txid1', 'tag');
 		addTag('tag');
-		updateMetaIncTxTags('address', 'invoice', ['futuretag']);
+		updatePendingInvoice({
+			id: 'id123',
+			tags: ['futuretag'],
+			address: 'address',
+			payReq: 'lightningInvoice',
+		});
 		addMetaSlashTagsUrlTag('txid2', 'slashtag');
 
 		const backup = getMetaDataStore();

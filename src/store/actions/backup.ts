@@ -277,6 +277,7 @@ export const getBackup = async <T>({
 		backupCategory === EBackupCategories.metadata
 	) {
 		// Remove previously incorrectly encoded emojis from the backup
+		// eslint-disable-next-line no-control-regex
 		jsonString = jsonString.replace(/([\u0000-\u001F])/g, '');
 	}
 
@@ -401,11 +402,7 @@ export const performMetadataRestore = async ({
 	const expectedBackupShape = getDefaultMetadataShape();
 	//If the keys in the backup object are not found in the reference object assume the backup does not exist.
 	if (
-		!isObjPartialMatch(backup, expectedBackupShape, [
-			'tags',
-			'pendingTags',
-			'slashTagsUrls',
-		])
+		!isObjPartialMatch(backup, expectedBackupShape, ['tags', 'slashTagsUrls'])
 	) {
 		return ok({ backupExists: false });
 	}

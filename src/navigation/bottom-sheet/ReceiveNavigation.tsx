@@ -38,16 +38,13 @@ const ReceiveNavigation = (): ReactElement => {
 		viewControllerIsOpenSelector(state, 'receiveNavigation'),
 	);
 
-	const onOpen = (): void => {
-		resetInvoice();
-	};
-
 	return (
 		<BottomSheetWrapper
 			view="receiveNavigation"
 			snapPoints={snapPoints}
 			testID="ReceiveScreen"
-			onOpen={onOpen}>
+			onOpen={resetInvoice}
+			onClose={resetInvoice}>
 			<NavigationContainer key={isOpen.toString()}>
 				<Stack.Navigator screenOptions={navOptions}>
 					<Stack.Screen name="ReceiveQR" component={ReceiveQR} />

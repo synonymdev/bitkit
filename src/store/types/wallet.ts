@@ -180,7 +180,7 @@ export interface IFormattedTransaction {
 }
 
 export interface IFormattedTransactions {
-	[key: string]: IFormattedTransaction;
+	[txId: string]: IFormattedTransaction;
 }
 
 export interface ISendTransaction {

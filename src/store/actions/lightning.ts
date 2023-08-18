@@ -1,10 +1,13 @@
-import actions from './actions';
-import { getDispatch, getLightningStore } from '../helpers';
-import { err, ok, Result } from '@synonymdev/result';
 import { LNURLChannelParams } from 'js-lnurl';
+import { err, ok, Result } from '@synonymdev/result';
+import { TChannel, TInvoice } from '@synonymdev/react-native-ldk';
 import { getLNURLParams, lnurlChannel } from '@synonymdev/react-native-lnurl';
-import { getSelectedNetwork, getSelectedWallet } from '../../utils/wallet';
+
+import actions from './actions';
+import { getDispatch, getLightningStore, getMetaDataStore } from '../helpers';
 import { TAvailableNetworks } from '../../utils/networks';
+import { getActivityItemById } from '../../utils/activity';
+import { getSelectedNetwork, getSelectedWallet } from '../../utils/wallet';
 import {
 	addPeers,
 	createPaymentRequest,
@@ -19,14 +22,12 @@ import {
 	hasOpenLightningChannels,
 	parseUri,
 } from '../../utils/lightning';
-import { TChannel, TInvoice } from '@synonymdev/react-native-ldk';
 import {
 	TCreateLightningInvoice,
 	TLightningNodeVersion,
 } from '../types/lightning';
 import { EPaymentType, TWalletName } from '../types/wallet';
 import { EActivityType, TLightningActivityItem } from '../types/activity';
-import { getActivityItemById } from '../../utils/activity';
 
 const dispatch = getDispatch();
 
@@ -413,4 +414,30 @@ export const syncLightningTxsWithActivityList = async (): Promise<
 	});
 
 	return ok('Stored lightning transactions synced with activity list.');
+};
+
+/**
+ * Moves pending tags to metadata store linked to received payment
+ * @param {TInvoice} invoice
+ * @returns {Result<string>}
+ */
+export const moveMetaIncPaymentTags = (invoice: TInvoice): Result<string> => {
+	const { pendingInvoices } = getMetaDataStore();
+	const matched = pendingInvoices.find((item) => {
+		return item.payReq === invoice.to_str;
+	});
+
+	if (matched) {
+		const newPending = pendingInvoices.filter((item) => item !== matched);
+
+		dispatch({
+			type: actions.MOVE_META_INC_TX_TAG,
+			payload: {
+				pendingInvoices: newPending,
+				tags: { [invoice.payment_hash]: matched.tags },
+			},
+		});
+	}
+
+	return ok('Metadata tags resynced with transactions.');
 };

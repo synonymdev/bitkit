@@ -176,6 +176,9 @@ d('Lightning', () => {
 			const note1 = 'note 111';
 			await element(by.id('ReceiveNote')).typeText(note1);
 			await element(by.id('ReceiveNote')).tapReturnKey();
+			await element(by.id('TagsAdd')).tap();
+			await element(by.id('TagInputReceive')).typeText('rtag');
+			await element(by.id('TagInputReceive')).tapReturnKey();
 			await element(by.id('ShowQrReceive')).tap();
 			await element(by.id('QRCode')).swipe('left');
 			const { label: invoice2 } = await element(
@@ -222,6 +225,12 @@ d('Lightning', () => {
 			await element(by.id('RecipientInput')).tapReturnKey();
 			await element(by.id('ContinueRecipient')).tap();
 			await element(by.id('ContinueAmount')).tap(); // FIXME: this should not be needed
+
+			// Review & Send
+			await expect(element(by.id('TagsAddSend'))).toBeVisible();
+			await element(by.id('TagsAddSend')).tap(); // add tag
+			await element(by.id('TagInputSend')).typeText('stag');
+			await element(by.id('TagInputSend')).tapReturnKey();
 			await element(by.id('GRAB')).swipe('right'); // Swipe to confirm
 			await waitFor(element(by.id('SendSuccess')))
 				.toBeVisible()
@@ -249,6 +258,69 @@ d('Lightning', () => {
 			await element(by.id('NavigationClose')).tap();
 			await element(by.id('ActivityShort-3')).tap();
 			await expect(element(by.id('InvoiceNote'))).toHaveText(note1);
+			await element(by.id('NavigationClose')).tap();
+
+			// check activity filters & tags
+			await element(by.id('ActivityShowAll')).tap();
+
+			// All, 4 transactions
+			await expect(
+				element(by.id('MoneySign').withAncestor(by.id('Activity-1'))),
+			).toHaveText('-');
+			await expect(
+				element(by.id('MoneySign').withAncestor(by.id('Activity-2'))),
+			).toHaveText('-');
+			await expect(
+				element(by.id('MoneySign').withAncestor(by.id('Activity-3'))),
+			).toHaveText('+');
+			await expect(
+				element(by.id('MoneySign').withAncestor(by.id('Activity-4'))),
+			).toHaveText('+');
+			await expect(element(by.id('Activity-5'))).not.toExist();
+
+			// Sent, 2 transactions
+			await element(by.id('Tab-sent')).tap();
+			await expect(
+				element(by.id('MoneySign').withAncestor(by.id('Activity-1'))),
+			).toHaveText('-');
+			await expect(
+				element(by.id('MoneySign').withAncestor(by.id('Activity-2'))),
+			).toHaveText('-');
+			await expect(element(by.id('Activity-3'))).not.toExist();
+
+			// Received, 2 transactions
+			await element(by.id('Tab-received')).tap();
+			await expect(
+				element(by.id('MoneySign').withAncestor(by.id('Activity-1'))),
+			).toHaveText('+');
+			await expect(
+				element(by.id('MoneySign').withAncestor(by.id('Activity-2'))),
+			).toHaveText('+');
+			await expect(element(by.id('Activity-3'))).not.toExist();
+
+			// Other, 0 transactions
+			// TODO: fixed in another PR
+			// await element(by.id('Tab-other')).tap();
+			// await expect(element(by.id('Activity-1'))).not.toExist();
+
+			// filter by receive tag
+			await element(by.id('Tab-all')).tap();
+			await element(by.id('TagsPrompt')).tap();
+			await element(by.id('Tag-rtag')).tap();
+			await expect(
+				element(by.id('MoneySign').withAncestor(by.id('Activity-1'))),
+			).toHaveText('+');
+			await expect(element(by.id('Activity-2'))).not.toExist();
+			await element(by.id('Tag-rtag-delete')).tap();
+
+			// filter by send tag
+			await element(by.id('TagsPrompt')).tap();
+			await element(by.id('Tag-stag')).tap();
+			await expect(
+				element(by.id('MoneySign').withAncestor(by.id('Activity-1'))),
+			).toHaveText('-');
+			await expect(element(by.id('Activity-2'))).not.toExist();
+			await element(by.id('Tag-stag-delete')).tap();
 			await element(by.id('NavigationClose')).tap();
 
 			// get seed

@@ -163,6 +163,15 @@ const migrations = {
 			},
 		};
 	},
+	16: (state): PersistedState => {
+		return {
+			...state,
+			metadata: {
+				...state.metadata,
+				pendingInvoices: [],
+			},
+		};
+	},
 };
 
 export default migrations;

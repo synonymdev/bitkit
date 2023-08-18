@@ -3,8 +3,7 @@ import actions from './actions';
 import { getDispatch, getMetaDataStore } from '../helpers';
 import { getCurrentWallet } from '../../utils/wallet';
 import { EPaymentType } from '../types/wallet';
-import { removeKeysFromObject } from '../../utils/helpers';
-import { TTags, IMetadata } from '../types/metadata';
+import { IMetadata } from '../types/metadata';
 
 const dispatch = getDispatch();
 
@@ -45,16 +44,28 @@ export const deleteMetaTxTag = (txid: string, tag: string): Result<string> => {
 };
 
 /*
- * This action updates transactions tags
+ * This action updates a pending invoice
  */
-export const updateMetaIncTxTags = (
-	address: string,
-	payReq?: string,
-	tags: Array<string> = [],
-): Result<string> => {
+export const updatePendingInvoice = (payload: {
+	id: string;
+	tags: string[];
+	address: string;
+	payReq?: string;
+}): Result<string> => {
 	dispatch({
-		type: actions.UPDATE_META_INC_TX_TAGS,
-		payload: { address, payReq, tags },
+		type: actions.UPDATE_PENDING_INVOICE,
+		payload,
+	});
+	return ok('');
+};
+
+/*
+ * This action deletes a pending invoice
+ */
+export const removePendingInvoice = (id: string): Result<string> => {
+	dispatch({
+		type: actions.DELETE_PENDING_INVOICE,
+		payload: id,
 	});
 	return ok('');
 };
@@ -71,29 +82,34 @@ export const moveMetaIncTxTags = (): Result<string> => {
 	}
 
 	const transactions = currentWallet.transactions[selectedNetwork];
-	const { tags, pendingTags } = getMetaDataStore();
+	const { pendingInvoices } = getMetaDataStore();
 
-	// Find all incoming transactions that we have pending tags for
-	const matchedTxs = Object.values(transactions).filter(
-		(tx) => tx.type === EPaymentType.received && !!pendingTags[tx.address],
-	);
-	const matchedAddresses = matchedTxs.map((tx) => tx.address);
-
-	// move matched from pendingTags to tags
-	const newPendingTags = removeKeysFromObject(pendingTags, matchedAddresses);
-	const newTags = matchedTxs
-		.filter((tx) => !Object.keys(tags).includes(tx.txid))
-		.map((tx) => ({ [tx.txid]: pendingTags[tx.address] }));
-
-	const newTagsObj: TTags = Object.assign({}, ...newTags);
-
-	dispatch({
-		type: actions.MOVE_META_INC_TX_TAG,
-		payload: {
-			tags: newTagsObj,
-			pendingTags: newPendingTags,
-		},
+	// Find received transaction that matches a pending invoice
+	const matched = Object.values(transactions).find((tx) => {
+		return pendingInvoices.find((invoice) => {
+			const isReceived = tx.type === EPaymentType.received;
+			return isReceived && tx.address === invoice.address;
+		});
 	});
+
+	// Find pending invoice that matches the transaction
+	const matchedInvoice = pendingInvoices.find((item) => {
+		return matched?.address === item.address;
+	});
+
+	if (matched && matchedInvoice) {
+		const newPending = pendingInvoices.filter((item) => {
+			return item !== matchedInvoice;
+		});
+
+		dispatch({
+			type: actions.MOVE_META_INC_TX_TAG,
+			payload: {
+				pendingInvoices: newPending,
+				tags: { [matched.txid]: matchedInvoice.tags },
+			},
+		});
+	}
 
 	return ok('Metadata tags resynced with transactions.');
 };
