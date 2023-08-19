@@ -24,7 +24,11 @@ import { useTranslation } from 'react-i18next';
 
 import { Caption13Up, Subtitle, Text01S } from '../../styles/text';
 import { refreshWallet } from '../../utils/wallet';
-import { groupActivityItems, filterActivityItems } from '../../utils/activity';
+import {
+	groupActivityItems,
+	filterActivityItems,
+	TActivityFilter,
+} from '../../utils/activity';
 import ListItem from './ListItem';
 import { RootNavigationProp } from '../../navigation/types';
 import { activityItemsSelector } from '../../store/reselect/activity';
@@ -53,7 +57,7 @@ const ActivityList = ({
 	contentContainerStyle?: StyleProp<ViewStyle>;
 	progressViewOffset?: number;
 	showTitle?: boolean;
-	filter?: {};
+	filter?: TActivityFilter;
 	onScroll?: (event: NativeSyntheticEvent<NativeScrollEvent>) => void;
 }): ReactElement => {
 	const { t } = useTranslation('wallet');

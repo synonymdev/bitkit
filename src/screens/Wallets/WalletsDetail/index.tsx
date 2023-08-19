@@ -44,12 +44,11 @@ import BitcoinBreakdown from './BitcoinBreakdown';
 import SafeAreaInset from '../../../components/SafeAreaInset';
 import Money from '../../../components/Money';
 import BlurView from '../../../components/BlurView';
-import { EActivityType } from '../../../store/types/activity';
 import { updateSettings } from '../../../store/actions/settings';
+import { hideBalanceSelector } from '../../../store/reselect/settings';
 import { capitalize } from '../../../utils/helpers';
 import DetectSwipe from '../../../components/DetectSwipe';
 import type { WalletScreenProps } from '../../../navigation/types';
-import { hideBalanceSelector } from '../../../store/reselect/settings';
 
 const updateHeight = ({ height, toValue = 0, duration = 250 }): void => {
 	try {
@@ -98,14 +97,6 @@ const WalletsDetail = ({
 	const [headerHeight, setHeaderHeight] = useState(0);
 	const height = useSharedValue(0);
 
-	const filter = useMemo(() => {
-		const types =
-			assetType === 'bitcoin'
-				? [EActivityType.onchain, EActivityType.lightning]
-				: [EActivityType.tether];
-		return { types };
-	}, [assetType]);
-
 	const activityPadding = useMemo(
 		() => ({ paddingTop: radiusContainerHeight, paddingBottom: 230 }),
 		[radiusContainerHeight],
@@ -114,6 +105,10 @@ const WalletsDetail = ({
 	useEffect(() => {
 		updateHeight({ height, toValue: headerHeight });
 	}, [height, headerHeight]);
+
+	const toggleHideBalance = (): void => {
+		updateSettings({ hideBalance: !hideBalance });
+	};
 
 	const onScroll = useCallback(
 		(e: NativeSyntheticEvent<NativeScrollEvent>) => {
@@ -136,10 +131,6 @@ const WalletsDetail = ({
 		[showDetails, height, headerHeight],
 	);
 
-	const toggleHideBalance = (): void => {
-		updateSettings({ hideBalance: !hideBalance });
-	};
-
 	return (
 		<AnimatedView style={styles.container}>
 			<View color="transparent" style={styles.txListContainer}>
@@ -148,7 +139,7 @@ const WalletsDetail = ({
 					style={styles.txList}
 					contentContainerStyle={activityPadding}
 					progressViewOffset={radiusContainerHeight + 10}
-					filter={filter}
+					filter={{ includeTransfers: true }}
 				/>
 			</View>
 			<View color="transparent" style={styles.radiusContainer}>

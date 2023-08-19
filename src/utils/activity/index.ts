@@ -176,20 +176,14 @@ export const filterActivityItems = (
 		}
 
 		// If we're not including transfers and it's a transfer, skip it
-		if (
-			!includeTransfers &&
-			item.activityType === EActivityType.onchain &&
-			item.isTransfer
-		) {
+		// @ts-ignore
+		if (!includeTransfers && item.isTransfer) {
 			return false;
 		}
 
 		// If we're only including transfers and it's not a transfer, skip it
-		if (
-			onlyTransfers &&
-			item.activityType === EActivityType.onchain &&
-			!item.isTransfer
-		) {
+		// @ts-ignore
+		if (onlyTransfers && !item.isTransfer) {
 			return false;
 		}
 

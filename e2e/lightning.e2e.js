@@ -299,9 +299,8 @@ d('Lightning', () => {
 			await expect(element(by.id('Activity-3'))).not.toExist();
 
 			// Other, 0 transactions
-			// TODO: fixed in another PR
-			// await element(by.id('Tab-other')).tap();
-			// await expect(element(by.id('Activity-1'))).not.toExist();
+			await element(by.id('Tab-other')).tap();
+			await expect(element(by.id('Activity-1'))).not.toExist();
 
 			// filter by receive tag
 			await element(by.id('Tab-all')).tap();
