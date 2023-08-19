@@ -4,6 +4,7 @@ import {
 	NativeStackNavigationOptions,
 	NativeStackNavigationProp,
 } from '@react-navigation/native-stack';
+import { LNURLChannelParams } from 'js-lnurl';
 
 import Introduction from '../../screens/Lightning/Introduction';
 import CustomSetup from '../../screens/Lightning/CustomSetup';
@@ -13,6 +14,8 @@ import QuickConfirm from '../../screens/Lightning/QuickConfirm';
 import SettingUp from '../../screens/Lightning/SettingUp';
 import Success from '../../screens/Lightning/Success';
 import Timeout from '../../screens/Lightning/Timeout';
+import LNURLChannel from '../../screens/Lightning/LNURLChannel';
+import LNURLChannelSuccess from '../../screens/Lightning/LNURLChannelSuccess';
 import { __E2E__ } from '../../constants/env';
 
 export type LightningNavigationProp =
@@ -37,6 +40,8 @@ export type LightningStackParamList = {
 	SettingUp: undefined;
 	Success: undefined;
 	Timeout: undefined;
+	LNURLChannel: { cParams: LNURLChannelParams };
+	LNURLChannelSuccess: undefined;
 };
 
 const Stack = createNativeStackNavigator<LightningStackParamList>();
@@ -58,6 +63,11 @@ const LightningStack = (): ReactElement => {
 			<Stack.Screen name="SettingUp" component={SettingUp} />
 			<Stack.Screen name="Success" component={Success} />
 			<Stack.Screen name="Timeout" component={Timeout} />
+			<Stack.Screen name="LNURLChannel" component={LNURLChannel} />
+			<Stack.Screen
+				name="LNURLChannelSuccess"
+				component={LNURLChannelSuccess}
+			/>
 		</Stack.Navigator>
 	);
 };

@@ -82,7 +82,7 @@ export const launchAndWait = async () => {
 	await sleep(1000);
 	await device.launchApp({
 		newInstance: true,
-		permissions: { faceid: 'YES' },
+		permissions: { faceid: 'YES', camera: 'YES' },
 	});
 
 	// wait for AssetsTitle to appear and be accessible

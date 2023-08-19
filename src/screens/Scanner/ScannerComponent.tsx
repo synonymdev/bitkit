@@ -1,5 +1,6 @@
 import React, { ReactElement, ReactNode, useMemo, useState } from 'react';
 import {
+	Alert,
 	View,
 	TouchableOpacity,
 	StyleSheet,
@@ -23,6 +24,7 @@ import Camera from '../../components/Camera';
 import GradientView from '../../components/GradientView';
 import BlurView from '../../components/BlurView';
 import Button from '../../components/Button';
+import { __E2E__ } from '../../constants/env';
 
 type ScannerComponentProps = {
 	children: ReactNode;
@@ -104,6 +106,12 @@ const ScannerComponent = ({
 		}
 	};
 
+	const onReadDebug = (): void => {
+		Alert.prompt('Enter QRCode string', undefined, (text) => {
+			onRead(text);
+		});
+	};
+
 	const TopBackground = bottomSheet ? GradientView : BlurView;
 	const Background = bottomSheet ? View : BlurView;
 
@@ -156,6 +164,16 @@ const ScannerComponent = ({
 								onRead(url);
 							}}
 						/>
+
+						{(__DEV__ || __E2E__) && (
+							<Button
+								style={styles.pasteButton}
+								text="Enter QRCode string"
+								size="large"
+								onPress={onReadDebug}
+								testID="ScanPrompt"
+							/>
+						)}
 
 						{!!error && (
 							<AnimatedView

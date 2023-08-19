@@ -11,7 +11,7 @@ import {
 } from './helpers';
 import initWaitForElectrumToSync from '../__tests__/utils/wait-for-electrum';
 
-const __DEV__ = process.env.DEBUG === 'true';
+const __DEV__ = process.env.DEV === 'true';
 
 d = checkComplete('lighting-1') ? describe.skip : describe;
 

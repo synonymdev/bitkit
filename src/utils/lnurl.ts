@@ -68,25 +68,34 @@ export const handleLnurlPay = async ({
 
 	const milliSats = Math.floor(amountSats * 1000);
 
-	const callbackRes = await lnurlPay({
-		params,
-		milliSats,
-		// comment should only be included if server asks for it with "commentAllowed"
-		// https://github.com/lnurl/luds/blob/luds/12.md
-		// comment: 'Bitkit LNURL-Pay',
-		comment: '',
-	});
+	try {
+		const callbackRes = await lnurlPay({
+			params,
+			milliSats,
+			// comment should only be included if server asks for it with "commentAllowed"
+			// https://github.com/lnurl/luds/blob/luds/12.md
+			// comment: 'Bitkit LNURL-Pay',
+			comment: '',
+		});
 
-	if (callbackRes.isErr()) {
+		if (callbackRes.isErr()) {
+			showToast({
+				type: 'error',
+				title: i18n.t('other:lnurl_pay_error'),
+				description: callbackRes.error.message,
+			});
+			return err(callbackRes.error.message);
+		}
+
+		return ok(callbackRes.value.pr);
+	} catch (e) {
 		showToast({
 			type: 'error',
 			title: i18n.t('other:lnurl_pay_error'),
-			description: callbackRes.error.message,
+			description: e.message,
 		});
-		return err(callbackRes.error.message);
+		return err(e.message);
 	}
-
-	return ok(callbackRes.value.pr);
 };
 
 /**
@@ -315,30 +324,32 @@ export const handleLnurlWithdraw = async ({
 		return err(callbackRes.error.message);
 	}
 
-	const channelStatusRes = await fetch(callbackRes.value);
-	if (channelStatusRes.status !== 200) {
+	try {
+		const channelStatusRes = await fetch(callbackRes.value);
+		const jsonRes = await channelStatusRes.json();
+
+		if (jsonRes.status === 'ERROR') {
+			showToast({
+				type: 'error',
+				title: i18n.t('other:lnurl_withdr_error'),
+				description: jsonRes.reason,
+			});
+			return err(jsonRes.reason);
+		}
+
+		showToast({
+			type: 'success',
+			title: i18n.t('other:lnurl_withdr_success_title'),
+			description: i18n.t('other:lnurl_withdr_success_msg'),
+		});
+
+		return ok({ type: EQRDataType.lnurlWithdraw });
+	} catch (e) {
 		showToast({
 			type: 'error',
 			title: i18n.t('other:lnurl_withdr_error'),
-			description: i18n.t('other:lnurl_withdr_error_connect'),
+			description: e.message,
 		});
-		return err('Unable to connect to LNURL withdraw server.');
+		return err(e.message);
 	}
-
-	const jsonRes = await channelStatusRes.json();
-	if (jsonRes.status === 'ERROR') {
-		showToast({
-			type: 'error',
-			title: i18n.t('other:lnurl_withdr_error'),
-			description: jsonRes.reason,
-		});
-		return err(jsonRes.reason);
-	}
-
-	showToast({
-		type: 'success',
-		title: i18n.t('other:lnurl_withdr_success_title'),
-		description: i18n.t('other:lnurl_withdr_success_msg'),
-	});
-	return ok({ type: EQRDataType.lnurlWithdraw });
 };

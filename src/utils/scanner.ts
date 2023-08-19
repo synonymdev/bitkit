@@ -43,7 +43,8 @@ import { getSlashPayConfig } from './slashtags';
 import { savePeer } from '../store/actions/lightning';
 import { TWalletName } from '../store/types/wallet';
 import { sendNavigation } from '../navigation/bottom-sheet/SendNavigation';
-import { handleLnurlAuth, handleLnurlChannel } from './lnurl';
+import { rootNavigation } from '../navigation/root/RootNavigator';
+import { handleLnurlAuth } from './lnurl';
 import i18n from './i18n';
 import { bech32m } from 'bech32';
 
@@ -861,11 +862,11 @@ export const handleData = async ({
 		}
 		case EQRDataType.lnurlChannel: {
 			const params = data.lnUrlParams! as LNURLChannelParams;
-			return await handleLnurlChannel({
-				params,
-				selectedWallet,
-				selectedNetwork,
+			rootNavigation.navigate('LightningRoot', {
+				screen: 'LNURLChannel',
+				params: { cParams: params },
 			});
+			return ok({ type: EQRDataType.lnurlChannel });
 		}
 		case EQRDataType.lnurlAuth: {
 			const params = data.lnUrlParams as LNURLAuthParams;

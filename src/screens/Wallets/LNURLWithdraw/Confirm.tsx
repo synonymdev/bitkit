@@ -73,6 +73,7 @@ const Confirm = ({ route }: LNURLWithdrawProps<'Confirm'>): ReactElement => {
 							text={t('lnurl_w_button')}
 							disabled={isLoading}
 							onPress={handlePress}
+							testID="WithdrawConfirmButton"
 						/>
 					</View>
 				</View>

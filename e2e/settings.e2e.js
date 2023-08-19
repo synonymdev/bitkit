@@ -6,7 +6,7 @@ import {
 	completeOnboarding,
 } from './helpers';
 
-const __DEV__ = process.env.DEBUG === 'true';
+const __DEV__ = process.env.DEV === 'true';
 
 d = checkComplete([
 	'settings-1',

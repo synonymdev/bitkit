@@ -104,7 +104,7 @@ services:
     command:
       - '--noseedbackup'
       - '--alias=lnd'
-      - '--externalip=lnd'
+      - '--externalip=127.0.0.1'
       - '--bitcoin.active'
       - '--bitcoin.regtest'
       - '--bitcoin.node=bitcoind'
