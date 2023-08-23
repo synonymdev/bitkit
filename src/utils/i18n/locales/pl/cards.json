@@ -1,5 +1,52 @@
 {
   "backupSeedPhrase": {
-    "title": "Kopia bezpieczeństwa"
-  }
+    "title": "Kopia bezpieczeństwa",
+    "description": "Przechowuj swoje pieniądze"
+  },
+  "lightning": {
+    "title": "Zapłać natychmiast",
+    "description": "Przejdź do sieci Lightning"
+  },
+  "lightningSettingUp": {
+    "title": "Ustawienia",
+    "description0": "Oczekująca płatność",
+    "description1": "Zapłacono",
+    "description2": "W kolejce",
+    "description3": "Otwieranie"
+  },
+  "lightningConnecting": {
+    "title": "Łączenie",
+    "description": "Gotowe w ±10 minut"
+  },
+  "lightningReady": {
+    "title": "Gotowe",
+    "description": "Połączone!"
+  },
+  "transferToSpending": {
+    "title": "Transferuję",
+    "description": "Gotowe w ±20 minut"
+  },
+  "transferToSavings": {
+    "title": "Transferuję",
+    "description": "Gotowe w ±60 minut"
+  },
+  "transferClosingChannel": {
+    "title": "Instaluję",
+    "description": "Pozostaw aplikację włączoną"
+  },
+  "pin": {
+    "title": "Lepsze bezpieczeństwo",
+    "description": "Ustaw kod PIN"
+  },
+  "slashtagsProfile": {
+    "title": "Profil publiczny",
+    "description": "Dodaj swoje detale"
+  },
+  "buyBitcoin": {
+    "title": "Kup Bitcoina",
+    "description": "Stackuj trochę satów"
+  },
+  "lightning_no_funds_title": "Brak funduszy",
+  "lightning_no_funds_desc": "Zanim będziesz móc ustawić natychmiastowe wypłaty, potrzebujesz dokonać wpłaty on-chain na swój portfel",
+  "suggestions": "Sugestie"
 }

@@ -1,0 +1,42 @@
+{
+  "general": {
+    "speed_fee_custom": "Fijar tarifa personalizada",
+    "tags": "Etiquetas",
+    "tags_previously": "Etiquetas utilizadas anteriormente"
+  },
+  "backup": {
+    "category_tags": "Etiquetas",
+    "category_profile": "Perfil",
+    "category_contacts": "Contactos"
+  },
+  "adv": {
+    "section_other": "Otros"
+  },
+  "addr": {
+    "private_hide": "Ocultar clave privada",
+    "private_view": "Ver clave privada",
+    "addr_change": "Cambiar direcciones",
+    "addr_receiving": "Direcciones de recibimiento",
+    "gen_20": "Generar 20 más",
+    "check_balances": "Consultar Saldos"
+  },
+  "es": {
+    "error_host_port": "Especifique un host y una puerta al que conectarse.",
+    "error_host": "Por favor, especifique un host para conectarse.",
+    "error_port": "Especifique una puerta para conectarse.",
+    "error_port_invalid": "Puerta inválida.",
+    "error_invalid_http": "No es una url HTTP válida.",
+    "error_peer": "par Electrum con Error",
+    "server_updated_title": "Servidor Electrum actualizado",
+    "server_error": "No se fue possible conectar al servidor Electrum",
+    "qr_error_title": "No se detectan datos para la conexión",
+    "qr_error_message": "Lo sentimos, Bitkit no puede leer este código QR.",
+    "connected_to": "Actualmente conectado a",
+    "disconnected": "desconectado",
+    "host": "Anfitrión",
+    "port": "Puerta",
+    "protocol": "Protocolo",
+    "button_reset": "Restablecer configuraciones iniciales",
+    "button_connect": "Conectar con el anfitrión"
+  }
+}

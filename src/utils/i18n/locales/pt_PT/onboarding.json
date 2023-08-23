@@ -1,1 +1,9 @@
-{}
+{
+  "toolkit": "Seu Bitcoin\n<brand>Toolkit.</brand>",
+  "slide1_header": "Bitcoin,\n<brand>Em qualquer lugar.</brand>",
+  "slide2_header": "Lightning,\n<purple>Rápido.</purple>",
+  "slide3_header": "Sem limites\n<blue>Web.</blue>",
+  "loading_header": "Configurando\n<brand>sua Carteira.</brand>",
+  "empty_wallet": "Para começar, envie\n<brand>Bitcoin</brand> para sua carteira.",
+  "multiple_header": "Cuidado:\n<yellow>Vários dispositivos</yellow>"
+}

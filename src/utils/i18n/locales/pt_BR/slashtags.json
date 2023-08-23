@@ -16,6 +16,7 @@
   "contact_retrieving": "Recebimento\ninformações do contato...",
   "contact_no_links": "Nenhum link adicionado ainda...",
   "contact_pay_error": "Não foi Possível Pagar este Contato",
+  "contact_share": "Compartilhar Chave do Perfil",
   "contact_this": "este contato",
   "contact_copied": "Chave do Perfil Copiada para a Área de Transferência",
   "contact_delete_title": "Excluir {name}?",

@@ -1,0 +1,37 @@
+{
+  "backupSeedPhrase": {
+    "title": "Còpia de seguretat",
+    "description": "Guarda els teus diners"
+  },
+  "lightning": {
+    "title": "Paga instantàniament",
+    "description": "Anar a Lightning"
+  },
+  "lightningSettingUp": {
+    "title": "Preparant",
+    "description0": "Esperant el pagament",
+    "description1": "Pagat",
+    "description2": "A la cua",
+    "description3": "Obrint"
+  },
+  "lightningConnecting": {
+    "title": "Conectant",
+    "description": "Llest en ±10m"
+  },
+  "lightningReady": {
+    "title": "Llest",
+    "description": "Conectat!"
+  },
+  "transferToSpending": {
+    "title": "Transferint",
+    "description": "Llest en ±20m"
+  },
+  "transferToSavings": {
+    "title": "Transferint",
+    "description": "Llest en ±60m"
+  },
+  "transferClosingChannel": {
+    "title": "Iniciant..."
+  },
+  "suggestions": "Sugeriments"
+}

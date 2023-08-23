@@ -1,0 +1,10 @@
+{
+  "close_app": "Tanca Bitkit",
+  "export_password": "Contrasenya",
+  "export_button": "Exportar",
+  "cp_title": "Canvia el PIN",
+  "cp_forgot": "Has oblidat el teu codi PIN?",
+  "cp_retype_title": "Torna a escriure el nou PIN",
+  "cp_changed_title": "El PIN ha canviat",
+  "use_pin": "Utilitzar el codi PIN"
+}

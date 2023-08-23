@@ -1,0 +1,50 @@
+{
+  "settings": "Configuracions",
+  "general_title": "General",
+  "security_title": "Seguretat i privacitat",
+  "advanced_title": "Avançat",
+  "about_title": "Sobre",
+  "about": {
+    "title": "Sobre Bitkit",
+    "legal": "Legal",
+    "version": "Versió"
+  },
+  "general": {
+    "section_title": "Categories",
+    "currency_local": "Moneda local",
+    "currency_local_title": "Moneda local",
+    "unit": "Unitat per defecte",
+    "unit_title": "Unitat per defecte",
+    "unit_bitcoin": "Bitcoin",
+    "unit_satoshis": "Satoshis",
+    "suggestions": "Sugeriments",
+    "suggestions_visible": "Visible",
+    "suggestions_hidden": "Amagat",
+    "tags": "Etiquetes"
+  },
+  "security": {
+    "pin": "Codi Pin",
+    "pin_change": "Canviar el codi PIN",
+    "pin_launch": "Requereix un PIN per activar-se",
+    "pin_idle": "Requereix un PIN quan està inactiu",
+    "pin_payments": "Requereix un PIN per als pagaments",
+    "pin_enabled": "Activat",
+    "pin_disabled": "Desactivat",
+    "use_bio": "Utilitza {biometryTypeName} enlloc"
+  },
+  "backup": {
+    "status_failed": "Error de còpia de seguretat: {time}",
+    "status_success": "Última còpia de seguretat: {time}",
+    "category_connections": "Connexions",
+    "category_settings": "Configuracions",
+    "category_widgets": "Ginys",
+    "category_tags": "Etiquetes",
+    "category_profile": "Perfil",
+    "category_contacts": "Contactes"
+  },
+  "adv": {
+    "section_payments": "Pagaments",
+    "section_networks": "Xarxes",
+    "section_other": "Altres"
+  }
+}

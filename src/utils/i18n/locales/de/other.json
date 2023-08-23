@@ -1,3 +1,4 @@
 {
-  "lnurl_pay_error_no_capacity": "Nicht genug ausgehende/sendefähige Kapazität um lnurl-pay request zu vervollständigen."
+  "lnurl_pay_error_no_capacity": "Nicht genug ausgehende/sendefähige Kapazität um lnurl-pay request zu vervollständigen.",
+  "lnurl_channel_header": "Sofortige Zahlungen"
 }

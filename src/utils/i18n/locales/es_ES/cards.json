@@ -1,0 +1,13 @@
+{
+  "backupSeedPhrase": {
+    "title": "Copia de seguridad"
+  },
+  "lightning": {
+    "description": "Ir a Lightning"
+  },
+  "lightningSettingUp": {
+    "description0": "Esperando pago"
+  },
+  "lightning_no_funds_title": "Sin fondos, todavia",
+  "lightning_no_funds_desc": "Antes de que pueda configurar su saldo de gasto instantáneo, necesita enviar un poco de Bitcoin on-chain a su monedero."
+}
