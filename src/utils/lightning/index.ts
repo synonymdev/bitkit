@@ -67,7 +67,11 @@ import {
 	IWalletItem,
 	TWalletName,
 } from '../../store/types/wallet';
-import { closeBottomSheet, showBottomSheet } from '../../store/actions/ui';
+import {
+	closeBottomSheet,
+	showBottomSheet,
+	updateUi,
+} from '../../store/actions/ui';
 import { updateSlashPayConfig } from '../slashtags';
 import { sdk } from '../../components/SlashtagsProvider';
 import { TLightningNodeVersion } from '../../store/types/lightning';
@@ -473,7 +477,7 @@ export const refreshLdk = async ({
 		]);
 		await updateClaimableBalance({ selectedNetwork, selectedWallet });
 		await syncLightningTxsWithActivityList();
-
+		updateUi({ isLDKReady: true });
 		return ok('');
 	} catch (e) {
 		console.log(e);

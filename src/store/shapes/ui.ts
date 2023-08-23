@@ -32,6 +32,7 @@ export const defaultUiShape: IUi = {
 	isAuthenticated: false,
 	isConnectedToElectrum: true,
 	isOnline: true,
+	isLDKReady: false, // LDK node running and connected
 	language: 'en',
 	profileLink: { title: '', url: '' },
 	timeZone: 'UTC',

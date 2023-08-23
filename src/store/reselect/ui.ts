@@ -77,6 +77,11 @@ export const isOnlineSelector = createSelector(
 	(ui): boolean => ui.isOnline,
 );
 
+export const isLDKReadySelector = createSelector(
+	[uiState],
+	(ui): boolean => ui.isLDKReady,
+);
+
 export const isConnectedToElectrumSelector = createSelector(
 	[uiState],
 	(ui): boolean => ui.isConnectedToElectrum,

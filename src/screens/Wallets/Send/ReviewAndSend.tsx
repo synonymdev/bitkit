@@ -80,6 +80,7 @@ import { truncate } from '../../../utils/helpers';
 import Money from '../../../components/Money';
 import { EUnit } from '../../../store/types/wallet';
 import AmountToggle from '../../../components/AmountToggle';
+import LightningSyncing from '../../../components/LightningSyncing';
 
 const Section = memo(
 	({
@@ -811,6 +812,10 @@ const ReviewAndSend = ({
 					}}
 				/>
 			)}
+
+			{transaction.lightningInvoice && (
+				<LightningSyncing style={styles.syncing} title={t('send_review')} />
+			)}
 		</>
 	);
 };
@@ -864,6 +869,9 @@ const styles = StyleSheet.create({
 	fee: {
 		flexDirection: 'row',
 		alignItems: 'center',
+	},
+	syncing: {
+		...StyleSheet.absoluteFillObject,
 	},
 });
 

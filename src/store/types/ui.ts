@@ -66,6 +66,7 @@ export interface IUi {
 	isAuthenticated: boolean;
 	isConnectedToElectrum: boolean;
 	isOnline: boolean;
+	isLDKReady: boolean;
 	profileLink: TProfileLink;
 	viewControllers: TUiViewController;
 	timeZone: string;
