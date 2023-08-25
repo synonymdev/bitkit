@@ -60,7 +60,7 @@ d('LNURL', () => {
 			port: 30001,
 			lightning: {
 				backend: 'lnd',
-				config: { hostname: 'localhost:8080', macaroon, cert: tls },
+				config: { hostname: '127.0.0.1:8080', macaroon, cert: tls },
 			},
 			store: { config: { noWarning: true } },
 		});
@@ -132,6 +132,9 @@ d('LNURL', () => {
 			by.label('OK').and(by.type('_UIAlertControllerActionView')),
 		).tap();
 		const channelRequestPromise = waitForEvent(lnurl, 'channelRequest:action'); // init event listener
+		await waitFor(element(by.id('ConnectButton')))
+			.toBeVisible()
+			.withTimeout(10000);
 		await element(by.id('ConnectButton')).tap();
 		await channelRequestPromise; // resove init listener
 

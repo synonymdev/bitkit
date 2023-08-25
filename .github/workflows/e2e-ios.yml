@@ -5,6 +5,7 @@ on: pull_request
 env:
   NO_FLIPPER: 1
   E2E_TESTS: 1 # build without transform-remove-console babel plugin
+  DEBUG: 'lnurl* lnurl server'
 
 jobs:
   e2e:
@@ -20,13 +21,13 @@ jobs:
         uses: mikehardy/buildcache-action@v2
 
       - name: Setup Docker Colima 1
-        uses: douglascamata/setup-docker-macos-action@v1-alpha.6
+        uses: douglascamata/setup-docker-macos-action@v1-alpha
         id: docker1
         continue-on-error: true
 
       - name: Setup Docker Colima 2
         if: steps.docker1.outcome != 'success'
-        uses: douglascamata/setup-docker-macos-action@v1-alpha.6
+        uses: douglascamata/setup-docker-macos-action@v1-alpha
         id: docker2
         continue-on-error: true
 
