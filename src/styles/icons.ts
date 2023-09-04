@@ -68,6 +68,7 @@ import {
 	shareIosIcon,
 	shareAndroidIcon,
 	hourglassSimpleIcon,
+	questionMarkIcon,
 } from '../assets/icons/wallet';
 import {
 	chevronRightIcon,
@@ -100,8 +101,8 @@ type IconProps = {
 
 export const ScanIcon = styled(SvgXml).attrs((props) => ({
 	xml: scanIcon(props.color ? props.theme.colors[props.color] : 'white'),
-	height: props.height ?? '20.53px',
-	width: props.width ?? '20.54px',
+	height: props.height ?? '32px',
+	width: props.width ?? '32px',
 }))<IconProps>((props) => ({
 	color: props.color ? props.theme.colors[props.color] : 'white',
 }));
@@ -801,6 +802,12 @@ export const NewspaperIcon = styled(SvgXml).attrs((props) => ({
 }))<IconProps>((props) => ({
 	color: props.color ? props.theme.colors[props.color] : 'white',
 }));
+
+export const QuestionMarkIcon = styled(SvgXml).attrs((props) => ({
+	xml: questionMarkIcon(),
+	height: props.height ?? '30px',
+	width: props.width ?? '30px',
+}))<IconProps>(() => ({}));
 
 export const CubeIcon = styled(SvgXml).attrs((props) => ({
 	xml: cubeIcon(

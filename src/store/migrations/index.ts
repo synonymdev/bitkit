@@ -4,6 +4,7 @@ import { defaultTodosShape } from '../shapes/todos';
 import { defaultViewControllers } from '../shapes/ui';
 import { defaultChecksShape } from '../shapes/checks';
 import { defaultBackupShape } from '../shapes/backup';
+import { defaultWidgetsShape } from '../shapes/widgets';
 import { getNetworkContent } from '../shapes/wallet';
 // add migrations for every persisted store version change
 // NOTE: state reconciliation works only 2 levels deep
@@ -170,6 +171,12 @@ const migrations = {
 				...state.metadata,
 				pendingInvoices: [],
 			},
+		};
+	},
+	17: (state): PersistedState => {
+		return {
+			...state,
+			widgets: defaultWidgetsShape,
 		};
 	},
 };

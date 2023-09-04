@@ -21,7 +21,7 @@ const backup = (state: IBackup = defaultBackupShape, action): IBackup => {
 			};
 		}
 
-		case actions.SET_SLASHTAGS_FEED_WIDGET: {
+		case actions.SET_FEED_WIDGET: {
 			const remoteWidgetsBackupSyncRequired =
 				state.remoteWidgetsBackupSyncRequired ?? new Date().getTime();
 			return {

@@ -184,15 +184,16 @@ describe('Remote backups', () => {
 	});
 
 	it('Backups and restores widgets', async () => {
-		setFeedWidget('url', {
-			name: 'name',
+		setFeedWidget({
+			url: 'url',
 			type: 'type',
-			icon: 'icon',
-			field: {
-				name: 'name',
-				main: 'main',
-				files: {},
-			},
+			fields: [
+				{
+					name: 'name',
+					main: 'main',
+					files: {},
+				},
+			],
 		});
 		updateWidgets({ onboardedWidgets: true });
 

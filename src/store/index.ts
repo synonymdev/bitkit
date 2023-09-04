@@ -37,7 +37,7 @@ const persistConfig = {
 	key: 'root',
 	storage: mmkvStorage,
 	// increase version after store shape changes
-	version: 16,
+	version: 17,
 	stateReconciler: autoMergeLevel2,
 	blacklist: ['receive', 'ui'],
 	migrate: createMigrate(migrations, { debug: __ENABLE_MIGRATION_DEBUG__ }),

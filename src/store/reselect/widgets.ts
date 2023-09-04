@@ -20,6 +20,11 @@ export const widgetSelector = createSelector(
 	(widgets, url): IWidget | undefined => widgets.widgets[url],
 );
 
+export const widgetsOrderSelector = createSelector(
+	[widgetsState],
+	(widgets) => widgets.sortOrder,
+);
+
 export const onboardedWidgetsSelector = createSelector(
 	[widgetsState],
 	(widgets): boolean => widgets.onboardedWidgets,

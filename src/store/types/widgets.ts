@@ -17,11 +17,20 @@ export interface SlashFeedJSON {
 	[key: string]: any;
 }
 
-export interface IWidget {
-	feed: Pick<SlashFeedJSON, 'name' | 'type'> & {
-		icon: string;
-		field?: SlashFeedJSON['fields'][0];
+export type TGraphPeriod = '1D' | '1W' | '1M';
+
+export type TWidgetSettings = {
+	fields: string[];
+	extras?: {
+		period?: TGraphPeriod;
+		showSource?: boolean;
 	};
+};
+
+export interface IWidget {
+	type: string;
+	fields: SlashFeedJSON['fields'];
+	extras?: TWidgetSettings['extras'];
 	magiclink?: boolean;
 }
 

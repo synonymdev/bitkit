@@ -1,224 +1,160 @@
 import React, { memo, ReactElement, useEffect, useState } from 'react';
-import { TouchableOpacity, Linking, StyleSheet } from 'react-native';
-import { SlashURL } from '@synonymdev/slashtags-sdk';
-import { useTranslation } from 'react-i18next';
-
-import { View } from '../styles/components';
-import { Caption13M, Text01M } from '../styles/text';
 import {
-	SettingsIcon,
-	ListIcon,
-	NewspaperIcon,
-	TrashIcon,
-} from '../styles/icons';
-import { IWidget } from '../store/types/widgets';
-import { useSlashtagsSDK } from './SlashtagsProvider';
+	View,
+	TouchableOpacity,
+	StyleSheet,
+	StyleProp,
+	ViewStyle,
+} from 'react-native';
+import { useTranslation } from 'react-i18next';
+import Reader from '@synonymdev/news-feed/lib/reader';
+
+import { Caption13M, Title } from '../styles/text';
+import { openURL } from '../utils/helpers';
 import { showToast } from '../utils/notifications';
-import { decodeJSON } from '../utils/slashtags';
-import { rootNavigation } from '../navigation/root/RootNavigator';
-import Dialog from './Dialog';
-import { deleteWidget } from '../store/actions/widgets';
+import BaseFeedWidget from './BaseFeedWidget';
+import { webRelayClient, webRelayUrl } from './SlashtagsProvider';
+
+type Article = {
+	title: string;
+	published: string;
+	publishedDate: string;
+	link: string;
+	comments?: string;
+	author?: string;
+	categories?: string[];
+	thumbnail?: string;
+	publisher: {
+		title: string;
+		link: string;
+		image?: string;
+	};
+};
 
 const HeadlinesWidget = ({
 	url,
-	widget,
 	isEditing = false,
+	style,
+	testID,
 	onLongPress,
 	onPressIn,
-	testID,
 }: {
 	url: string;
-	widget: IWidget;
 	isEditing?: boolean;
+	style?: StyleProp<ViewStyle>;
+	testID?: string;
 	onLongPress?: () => void;
 	onPressIn?: () => void;
-	testID?: string;
 }): ReactElement => {
 	const { t } = useTranslation('slashtags');
-	const [showDialog, setShowDialog] = useState(false);
-	const [article, setArticle] = useState<{
-		title: string;
-		link: string;
-		publisher: { title: string };
-	}>();
-
-	const sdk = useSlashtagsSDK();
+	const [article, setArticle] = useState<Article>();
+	const [isLoading, setIsLoading] = useState(false);
 
 	useEffect(() => {
 		let unmounted = false;
 
-		const parsed = SlashURL.parse(url);
-		const key = parsed.key;
-		const encryptionKey =
-			typeof parsed.privateQuery.encryptionKey === 'string'
-				? SlashURL.decode(parsed.privateQuery.encryptionKey)
-				: undefined;
+		setIsLoading(true);
 
-		const drive = sdk.drive(key, { encryptionKey });
+		const getData = async (): Promise<void> => {
+			try {
+				const reader = new Reader(
+					webRelayClient,
+					`${url}?relay=${webRelayUrl}`,
+				);
 
-		drive
-			.ready()
-			.then(() => {
-				read();
-				drive.core.on('append', read);
-			})
-			.catch((e: Error) => {
+				const _article = await reader.getLatestArtible();
+
+				if (!unmounted && _article) {
+					setArticle(_article);
+					setIsLoading(false);
+				}
+			} catch (error) {
+				console.error(error);
+				setIsLoading(false);
 				showToast({
 					type: 'error',
 					title: t('widget_error_drive'),
-					description: e.message,
+					description: error.message,
 				});
-			});
+			}
+		};
 
-		function read(): void {
-			// Manually find latest file as efficently as possible
-			const stream = drive.entries({
-				gt: '/feed/',
-				lte: '/feed0',
-				reverse: true,
-				limit: 1,
-			});
+		getData();
 
-			stream.on('data', async (data: any) => {
-				const _article = await drive.get(data.key).then(decodeJSON).catch(noop);
-
-				!unmounted && _article && setArticle(_article);
-			});
-		}
-
-		return function cleanup() {
+		return () => {
 			unmounted = true;
 		};
-	}, [sdk, url, t]);
-
-	const onEdit = (): void => {
-		rootNavigation.navigate('WidgetFeedEdit', { url });
-	};
-
-	const onDelete = (): void => {
-		setShowDialog(true);
-	};
+	}, [url, t]);
 
 	return (
-		<View>
-			<TouchableOpacity
-				style={styles.root}
-				activeOpacity={0.9}
-				onPress={(): void => {
-					!isEditing && article?.link && Linking.openURL(article.link);
-				}}
-				onLongPress={onLongPress}
-				onPressIn={onPressIn}
-				testID={testID}>
-				<View style={styles.icon}>
-					{<NewspaperIcon width={32} height={32} />}
-				</View>
-				<View style={styles.infoContainer}>
-					<Text01M style={styles.name} numberOfLines={1}>
-						{article?.title || widget.feed.name}
-					</Text01M>
-					<View style={styles.row}>
-						<View style={styles.linkContainer}>
-							<Caption13M color="gray1" numberOfLines={1}>
-								{article?.link}
-							</Caption13M>
-						</View>
-						<View style={styles.authorContainer}>
-							<Caption13M style={styles.author} color="gray1" numberOfLines={1}>
-								{article?.publisher.title}
-							</Caption13M>
-						</View>
-					</View>
-				</View>
-			</TouchableOpacity>
+		<BaseFeedWidget
+			style={style}
+			url={url}
+			name={t('widget_headlines')}
+			isLoading={isLoading}
+			isEditing={isEditing}
+			testID={testID}
+			onPressIn={onPressIn}
+			onLongPress={onLongPress}
+			onPress={(): void => {
+				if (!isEditing && article?.link) {
+					openURL(article.link);
+				}
+			}}>
+			<>
+				<Title numberOfLines={2}>{article?.title}</Title>
 
-			{isEditing && (
-				<View style={styles.buttonsContainer}>
-					<TouchableOpacity style={styles.actionButton} onPress={onDelete}>
-						<TrashIcon width={22} />
-					</TouchableOpacity>
-					<TouchableOpacity style={styles.actionButton} onPress={onEdit}>
-						<SettingsIcon width={22} />
-					</TouchableOpacity>
-					<TouchableOpacity
-						style={styles.actionButton}
-						onLongPress={onLongPress}
-						onPressIn={onPressIn}
-						activeOpacity={0.9}>
-						<ListIcon color="white" width={24} />
-					</TouchableOpacity>
-				</View>
-			)}
-			<Dialog
-				visible={showDialog}
-				title={t('widget_delete_title')}
-				description={t('widget_delete_desc', { name: t('widget_headlines') })}
-				confirmText={t('widget_delete_yes')}
-				onCancel={(): void => {
-					setShowDialog(false);
-				}}
-				onConfirm={(): void => {
-					deleteWidget(url);
-					setShowDialog(false);
-				}}
-			/>
-		</View>
+				<TouchableOpacity
+					style={styles.source}
+					activeOpacity={0.9}
+					onPress={(): void => {
+						if (article?.comments) {
+							openURL(article.comments);
+						} else {
+							openURL(article!.link);
+						}
+					}}>
+					<View style={styles.columnLeft}>
+						<Caption13M color="gray1" numberOfLines={1}>
+							{t('widget_source')}
+						</Caption13M>
+					</View>
+					<View style={styles.columnRight}>
+						<Caption13M color="gray1" numberOfLines={1}>
+							{article?.publisher.title}
+						</Caption13M>
+					</View>
+				</TouchableOpacity>
+			</>
+		</BaseFeedWidget>
 	);
 };
 
 const styles = StyleSheet.create({
-	root: {
-		height: 88,
+	columnLeft: {
+		flex: 1,
 		flexDirection: 'row',
 		alignItems: 'center',
-		borderBottomColor: 'rgba(255, 255, 255, 0.1)',
-		borderBottomWidth: 1,
 	},
-	icon: {
-		marginRight: 16,
-		borderRadius: 6.4,
-		overflow: 'hidden',
-		height: 32,
-		width: 32,
-	},
-	infoContainer: {
-		flex: 1.2,
-		flexDirection: 'column',
-		justifyContent: 'flex-start',
-	},
-	row: {
-		alignItems: 'center',
+	columnRight: {
+		flex: 1,
 		flexDirection: 'row',
+		alignItems: 'center',
+		justifyContent: 'flex-end',
 	},
-	name: {
-		lineHeight: 22,
-	},
-	linkContainer: {
-		flex: 3,
-	},
-	authorContainer: {
-		flex: 2,
-	},
-	author: {
-		textAlign: 'right',
-	},
-	buttonsContainer: {
-		position: 'absolute',
-		right: 0,
-		top: 0,
-		bottom: 1,
+	source: {
+		marginTop: 16,
 		flexDirection: 'row',
-		justifyContent: 'center',
 		alignItems: 'center',
-	},
-	actionButton: {
-		paddingHorizontal: 10,
-		height: '100%',
-		alignItems: 'center',
-		justifyContent: 'center',
+		justifyContent: 'space-between',
+		// increase hitbox
+		paddingBottom: 10,
+		marginBottom: -10,
+		paddingLeft: 10,
+		marginLeft: -10,
+		paddingRight: 10,
+		marginRight: -10,
 	},
 });
 
 export default memo(HeadlinesWidget);
-
-function noop(): void {}

@@ -1,27 +1,38 @@
-import React, { ReactElement } from 'react';
+import React, { ReactElement, useMemo } from 'react';
 import { StyleProp, ViewStyle } from 'react-native';
-import { SlashURL } from '@synonymdev/slashtags-sdk';
+import { parse } from '@synonymdev/slashtags-url';
 import { TouchableOpacity } from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
 
-import { Caption13S, Text02M } from '../styles/text';
+import { Caption13S, Text01M, Text02M } from '../styles/text';
 import { IThemeColors } from '../styles/themes';
+import { ellipsis } from '../utils/helpers';
 
 const SlashtagURL = ({
 	url,
 	style,
 	color = 'brand',
-	bold = true,
+	size = 'medium',
 	onPress,
 }: {
 	url: string;
 	style?: StyleProp<ViewStyle>;
 	color?: keyof IThemeColors;
-	bold?: boolean;
+	size?: 'small' | 'medium' | 'large';
 	onPress?: () => void;
 }): ReactElement => {
-	const id = SlashURL.parse(url).id;
-	const Text = bold ? Text02M : Caption13S;
+	const { id, path } = parse(url);
+
+	const Text = useMemo(() => {
+		switch (size) {
+			case 'large':
+				return Text01M;
+			case 'medium':
+				return Text02M;
+			case 'small':
+				return Caption13S;
+		}
+	}, [size]);
 
 	return (
 		<TouchableOpacity
@@ -36,7 +47,8 @@ const SlashtagURL = ({
 				}
 			}}>
 			<Text color={color}>
-				@{id?.slice(0, 5)}...{url?.slice(url.length - 6)}
+				@{ellipsis(id, 10)}
+				{path}
 			</Text>
 		</TouchableOpacity>
 	);

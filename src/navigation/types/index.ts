@@ -9,12 +9,12 @@ import type {
 } from '@react-navigation/stack';
 
 import type { IActivityItem } from '../../store/types/activity';
+import type { TWidgetSettings } from '../../store/types/widgets';
 import type { OnboardingStackParamList } from '../onboarding/OnboardingNavigator';
 import type { RecoveryStackParamList } from '../../screens/Recovery/RecoveryNavigator';
 import type { WalletStackParamList } from '../wallet/WalletNavigator';
 import type { LightningStackParamList } from '../lightning/LightningNavigator';
 import type { TransferStackParamList } from '../transfer/TransferNavigator';
-import type { WidgetsStackParamList } from '../widgets/WidgetsNavigator';
 import type { SettingsStackParamList } from '../settings/SettingsNavigator';
 import type { BackupStackParamList } from '../bottom-sheet/BackupNavigation';
 import type { PinStackParamList } from '../bottom-sheet/PINNavigation';
@@ -34,6 +34,7 @@ export type RootStackParamList = {
 	Biometrics: undefined;
 	ActivityDetail: { id: IActivityItem['id']; extended?: boolean };
 	ActivityAssignContact: { txid: string };
+	AppUpdate: undefined;
 	Scanner: { onScan: (data: string) => void } | undefined;
 	LightningRoot: NavigatorScreenParams<LightningStackParamList>;
 	Transfer: NavigatorScreenParams<TransferStackParamList>;
@@ -46,8 +47,17 @@ export type RootStackParamList = {
 	Contact: { url: string };
 	BuyBitcoin: undefined;
 	BetaRisk: undefined;
-	WidgetFeedEdit: { url: string };
-	WidgetsRoot: NavigatorScreenParams<WidgetsStackParamList> | undefined;
+	GoodbyePasswords: undefined;
+	HelloWidgets: undefined;
+	WidgetsSuggestions: undefined;
+	Widget: {
+		url: string;
+		preview?: TWidgetSettings;
+	};
+	WidgetEdit: {
+		url: string;
+		initialFields: TWidgetSettings;
+	};
 };
 
 // Root Stack Navigator
@@ -77,12 +87,6 @@ export type LightningScreenProps<T extends keyof LightningStackParamList> =
 export type TransferScreenProps<T extends keyof TransferStackParamList> =
 	CompositeScreenProps<
 		NativeStackScreenProps<TransferStackParamList, T>,
-		RootStackScreenProps<keyof RootStackParamList>
-	>;
-
-export type WidgetsScreenProps<T extends keyof WidgetsStackParamList> =
-	CompositeScreenProps<
-		NativeStackScreenProps<WidgetsStackParamList, T>,
 		RootStackScreenProps<keyof RootStackParamList>
 	>;
 

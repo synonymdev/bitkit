@@ -1,4 +1,5 @@
-import SDK, { SlashURL, Slashtag, Hyperdrive } from '@synonymdev/slashtags-sdk';
+import SDK, { Slashtag, Hyperdrive } from '@synonymdev/slashtags-sdk';
+import { parse } from '@synonymdev/slashtags-url';
 import b4a from 'b4a';
 import mime from 'mime/lite';
 import debounce from 'lodash.debounce';
@@ -35,13 +36,12 @@ export const handleSlashtagURL = (
 	onSuccess?: (url: string) => void,
 ): void => {
 	try {
-		// Validate URL
-		const parsed = SlashURL.parse(url);
+		const parsed = parse(url);
 
 		if (parsed.protocol === 'slash:') {
 			rootNavigation.navigate('ContactEdit', { url });
 		} else if (parsed.protocol === 'slashfeed:') {
-			rootNavigation.navigate('WidgetFeedEdit', { url });
+			rootNavigation.navigate('Widget', { url });
 		}
 
 		onSuccess?.(url);
@@ -72,7 +72,7 @@ export const saveContact = async (
 	}
 
 	const drive = await slashtag.drivestore.get('contacts');
-	const id = SlashURL.parse(url).id;
+	const { id } = parse(url);
 	await drive?.put('/' + id, encodeJSON(record)).catch((error: Error) =>
 		showToast({
 			type: 'error',
@@ -118,7 +118,7 @@ export const deleteContact = async (
 	}
 
 	const drive = await slashtag.drivestore.get('contacts');
-	const id = SlashURL.parse(url).id;
+	const { id } = parse(url);
 	await drive.del('/' + id).catch((error: Error) => {
 		showToast({
 			type: 'error',
@@ -149,7 +149,7 @@ export const saveBulkContacts = async (slashtag: Slashtag): Promise<void> => {
 	await Promise.all(
 		urls.map(async (url) => {
 			const name = Math.random().toString(16).slice(2, 8);
-			const id = SlashURL.parse(url).id;
+			const { id } = parse(url);
 			return batch?.put('/' + id, encodeJSON({ name }));
 		}),
 	);
@@ -395,7 +395,7 @@ export const getSlashPayConfig = async (
 		return [];
 	}
 
-	const drive = sdk.drive(SlashURL.parse(url).key);
+	const drive = sdk.drive(parse(url).key);
 	await drive.ready().catch(noop);
 	const payConfig =
 		(await drive.get('/slashpay.json').then(decodeJSON).catch(noop)) || [];
@@ -425,7 +425,7 @@ function checkClosed(slashtag: Slashtag): boolean {
  */
 export const validateSlashtagURL = (url: string): boolean => {
 	try {
-		const parsed = SlashURL.parse(url);
+		const parsed = parse(url);
 		if (parsed.protocol === 'slash:') {
 			return true;
 		}

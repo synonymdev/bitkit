@@ -1,73 +1,110 @@
-import { SlashURL, Hyperdrive } from '@synonymdev/slashtags-sdk';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import { Reader } from '@synonymdev/slashtags-feeds';
+import b4a from 'b4a';
 
-import { useSlashtagsSDK } from '../components/SlashtagsProvider';
-import { showToast } from '../utils/notifications';
-import { decodeWidgetFieldValue } from '../utils/widgets';
-import { IWidget } from '../store/types/widgets';
+import { webRelayClient, webRelayUrl } from '../components/SlashtagsProvider';
+import { SlashFeedJSON } from '../store/types/widgets';
+import { SUPPORTED_FEED_TYPES, decodeWidgetFieldValue } from '../utils/widgets';
 
-export const useFeedWidget = ({
-	url,
-	feed,
-}: {
+type Field = {
+	name: string;
+	value: string;
+	unit?: string;
+};
+
+export const useSlashfeed = (options: {
 	url: string;
-	feed: IWidget['feed'];
+	fields?: SlashFeedJSON['fields'];
 }): {
-	value?: any;
-	drive?: Hyperdrive;
+	reader: Reader;
+	fields: Field[];
+	config?: SlashFeedJSON;
+	icon?: string;
+	loading: boolean;
+	failed: boolean;
 } => {
-	const [value, setValue] = useState<string>();
-	const [_drive, setDrive] = useState<Hyperdrive>();
+	const [config, setConfig] = useState<any>();
+	const [icon, setIcon] = useState<string>();
+	const [fields, setFields] = useState<Field[]>([]);
+	const [loading, setLoading] = useState(false);
+	const [failed, setFailed] = useState(false);
 
-	const sdk = useSlashtagsSDK();
+	const reader = useMemo(() => {
+		return new Reader(webRelayClient, `${options.url}?relay=${webRelayUrl}`);
+	}, [options.url]);
 
 	useEffect(() => {
 		let unmounted = false;
 
-		const parsed = SlashURL.parse(url);
-		const key = parsed.key;
-		const encryptionKey =
-			typeof parsed.privateQuery.encryptionKey === 'string'
-				? SlashURL.decode(parsed.privateQuery.encryptionKey)
-				: undefined;
+		setLoading(true);
 
-		const drive = sdk.drive(key, { encryptionKey });
+		const getData = async (): Promise<void> => {
+			try {
+				const _config = await reader.getConfig();
 
-		drive
-			.ready()
-			.then(() => {
-				setDrive(drive);
-				read();
-				drive.core.on('append', read);
-			})
-			.catch((e: Error) => {
-				showToast({
-					type: 'error',
-					title: 'Failed to open feed drive',
-					description: e.message,
+				if (!_config) {
+					setFailed(true);
+					setLoading(false);
+					return;
+				}
+
+				setConfig(_config);
+
+				const buffer = await reader.getIcon();
+				const _icon = b4a.toString(buffer);
+				setIcon(_icon);
+
+				const _fields = options.fields ?? _config.fields ?? [];
+
+				// Don't continue for news & facts feeds
+				if (
+					_config.type === SUPPORTED_FEED_TYPES.FACTS_FEED ||
+					_config.type === SUPPORTED_FEED_TYPES.HEADLINES_FEED
+				) {
+					setLoading(false);
+					return;
+				}
+
+				const promises = _fields.map(async (field) => {
+					const fieldName = field.main.replace('/feed/', '');
+					const value = await reader.getField(fieldName);
+					const formattedValue = decodeWidgetFieldValue(
+						_config.type ?? '',
+						field,
+						value,
+					);
+					return {
+						name: field.name as string,
+						value: formattedValue as string,
+					};
 				});
-			});
 
-		function read(): void {
-			if (!feed?.field) {
-				return;
+				const values = await Promise.all(promises);
+
+				if (!unmounted) {
+					setFields(values);
+					setLoading(false);
+				}
+			} catch (error) {
+				console.error(error);
+				setLoading(false);
+				setFailed(true);
 			}
-			drive
-				.get(feed.field.main)
-				.then((buf: Uint8Array) =>
-					decodeWidgetFieldValue(feed.type, feed.field, buf),
-				)
-				.then((_value: any) => !unmounted && _value && setValue(_value));
-		}
-
-		return function cleanup() {
-			unmounted = true;
-			drive.core.removeAllListeners();
 		};
-	}, [url, sdk, feed]);
+
+		getData();
+
+		return () => {
+			unmounted = true;
+		};
+	}, [reader, options.url, options.fields]);
 
 	return {
-		value,
-		drive: _drive,
+		reader,
+		config,
+		icon,
+		fields,
+		loading,
+		failed,
 	};
 };
