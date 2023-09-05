@@ -13,7 +13,7 @@ import { Caption13M, Title } from '../styles/text';
 import { openURL } from '../utils/helpers';
 import { showToast } from '../utils/notifications';
 import BaseFeedWidget from './BaseFeedWidget';
-import { webRelayClient, webRelayUrl } from './SlashtagsProvider';
+import { webRelayClient, webRelayUrl } from './SlashtagsProvider2';
 
 type Article = {
 	title: string;

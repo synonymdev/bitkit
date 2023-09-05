@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { Reader } from '@synonymdev/slashtags-feeds';
 import b4a from 'b4a';
 
-import { webRelayClient, webRelayUrl } from '../components/SlashtagsProvider';
+import { webRelayClient, webRelayUrl } from '../components/SlashtagsProvider2';
 import { SlashFeedJSON } from '../store/types/widgets';
 import { SUPPORTED_FEED_TYPES, decodeWidgetFieldValue } from '../utils/widgets';
 

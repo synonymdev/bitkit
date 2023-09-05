@@ -16,6 +16,7 @@ import { SafeAreaProvider, StatusBar } from './styles/components';
 import { getTheme } from './styles/themes';
 import OnboardingNavigator from './navigation/onboarding/OnboardingNavigator';
 import { SlashtagsProvider } from './components/SlashtagsProvider';
+import { SlashtagsProvider2 } from './components/SlashtagsProvider2';
 import { toastConfig } from './components/Toast';
 import RecoveryNavigator from './screens/Recovery/RecoveryNavigator';
 import RestoringScreen from './screens/Onboarding/Restoring';
@@ -74,7 +75,9 @@ const App = (): ReactElement => {
 		if (walletExists) {
 			return (
 				<SlashtagsProvider>
-					{requiresRemoteRestore ? <RestoringScreen /> : <AppOnboarded />}
+					<SlashtagsProvider2>
+						{requiresRemoteRestore ? <RestoringScreen /> : <AppOnboarded />}
+					</SlashtagsProvider2>
 				</SlashtagsProvider>
 			);
 		}

@@ -20,6 +20,7 @@ import { widgetsState } from '../../store/reselect/widgets';
 import { activityItemsState } from '../../store/reselect/activity';
 import { EActivityType } from '../../store/types/activity';
 import { blocktankSelector } from '../../store/reselect/blocktank';
+import { slashtagsSelector } from '../../store/reselect/slashtags';
 import { showToast } from '../notifications';
 import { __E2E__ } from '../../constants/env';
 
@@ -38,6 +39,7 @@ const EnabledSlashtag = (): ReactElement => {
 	const widgets = useSelector(widgetsState);
 	const activity = useSelector(activityItemsState);
 	const blocktank = useSelector(blocktankSelector);
+	const slashtags = useSelector(slashtagsSelector);
 	const [now, setNow] = useState<number>(new Date().getTime());
 
 	useEffect(() => {
@@ -59,7 +61,6 @@ const EnabledSlashtag = (): ReactElement => {
 			if (backup.remoteSettingsBackupSynced) {
 				return;
 			}
-			console.info('perform settings backup');
 			performRemoteBackup({
 				slashtag,
 				isSyncedKey: 'remoteSettingsBackupSynced',
@@ -100,7 +101,6 @@ const EnabledSlashtag = (): ReactElement => {
 			if (backup.remoteMetadataBackupSynced) {
 				return;
 			}
-			console.info('perform metadata backup');
 			performRemoteBackup({
 				slashtag,
 				isSyncedKey: 'remoteMetadataBackupSynced',
@@ -172,6 +172,36 @@ const EnabledSlashtag = (): ReactElement => {
 		BACKUP_DEBOUNCE,
 	);
 
+	// Attempts to backup contacts anytime remoteSlashtagsBackupSynced is set to false.
+	useDebouncedEffect(
+		() => {
+			if (backup.remoteSlashtagsBackupSynced) {
+				return;
+			}
+
+			const back = {
+				contacts: slashtags.contacts,
+			};
+
+			performRemoteBackup({
+				slashtag,
+				isSyncedKey: 'remoteSlashtagsBackupSynced',
+				syncRequiredKey: 'remoteSlashtagsBackupSyncRequired',
+				syncCompletedKey: 'remoteSlashtagsBackupLastSync',
+				backupCategory: EBackupCategories.slashtags,
+				selectedNetwork,
+				backup: back,
+			}).then();
+		},
+		[
+			backup.remoteSlashtagsBackupSynced,
+			slashtag,
+			slashtags.contacts,
+			selectedNetwork,
+		],
+		BACKUP_DEBOUNCE,
+	);
+
 	const shouldShowBackupWarning = useMemo(() => {
 		if (__E2E__) {
 			return false;
@@ -192,6 +222,9 @@ const EnabledSlashtag = (): ReactElement => {
 					FAILED_BACKUP_CHECK_TIME) ||
 			(backup.remoteBlocktankBackupSyncRequired &&
 				now - backup.remoteBlocktankBackupSyncRequired >
+					FAILED_BACKUP_CHECK_TIME) ||
+			(backup.remoteSlashtagsBackupSyncRequired &&
+				now - backup.remoteSlashtagsBackupSyncRequired >
 					FAILED_BACKUP_CHECK_TIME) ||
 			(backup.remoteLdkActivityBackupSyncRequired &&
 				now - backup.remoteLdkActivityBackupSyncRequired >

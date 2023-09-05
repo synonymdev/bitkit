@@ -39,7 +39,7 @@ import {
 	primaryUnitSelector,
 	coinSelectAutoSelector,
 } from '../../../store/reselect/settings';
-import { useProfile } from '../../../hooks/slashtags';
+import { useProfile2 } from '../../../hooks/slashtags2';
 import { useSwitchUnit } from '../../../hooks/wallet';
 import { useCurrency } from '../../../hooks/displayValues';
 import { updateSendTransaction } from '../../../store/actions/wallet';
@@ -51,7 +51,7 @@ import type { SendScreenProps } from '../../../navigation/types';
 import { EUnit } from '../../../store/types/wallet';
 
 const ContactImage = ({ url }: { url: string }): ReactElement => {
-	const { profile } = useProfile(url);
+	const { profile } = useProfile2(url);
 	return <ProfileImage url={url} image={profile.image} size={24} />;
 };
 

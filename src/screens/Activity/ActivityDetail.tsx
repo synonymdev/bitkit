@@ -25,6 +25,7 @@ import {
 import { useSelector } from 'react-redux';
 import Clipboard from '@react-native-clipboard/clipboard';
 import { useTranslation } from 'react-i18next';
+import { parse } from '@synonymdev/slashtags-url';
 
 import { View as ThemedView } from '../../styles/components';
 import { Caption13Up, Text02M, Title } from '../../styles/text';
@@ -51,7 +52,6 @@ import ContactSmall from '../../components/ContactSmall';
 import NavigationHeader from '../../components/NavigationHeader';
 import SafeAreaInset from '../../components/SafeAreaInset';
 import Tag from '../../components/Tag';
-import { useSlashtags } from '../../components/SlashtagsProvider';
 import ActivityTagsPrompt from './ActivityTagsPrompt';
 import {
 	EActivityType,
@@ -66,7 +66,6 @@ import useColors from '../../hooks/colors';
 import { useAppSelector } from '../../hooks/redux';
 import Store from '../../store/types';
 import { showBottomSheet } from '../../store/actions/ui';
-import { IContactRecord } from '../../store/types/slashtags';
 import { EPaymentType, EBoostType } from '../../store/types/wallet';
 import {
 	activityItemSelector,
@@ -95,6 +94,7 @@ import type {
 } from '../../navigation/types';
 import { i18nTime } from '../../utils/i18n';
 import { useSwitchUnit } from '../../hooks/wallet';
+import { contactsSelector } from '../../store/reselect/slashtags';
 
 const Section = memo(
 	({ title, value }: { title: string; value: ReactNode }) => {
@@ -167,7 +167,7 @@ const OnchainActivityDetail = ({
 	const { t } = useTranslation('wallet');
 	const { t: tTime } = useTranslation('intl', { i18n: i18nTime });
 	const [_, switchUnit] = useSwitchUnit();
-	const contacts = useSlashtags().contacts as { [url: string]: IContactRecord };
+	const contacts = useSelector(contactsSelector);
 	const tags = useAppSelector((state) => tagSelector(state, id));
 	const selectedNetwork = useSelector(selectedNetworkSelector);
 	const activityItems = useSelector(activityItemsSelector);
@@ -256,7 +256,7 @@ const OnchainActivityDetail = ({
 	};
 
 	const navigateToContact = (url: string): void => {
-		const hasContact = Object.keys(contacts).includes(url);
+		const hasContact = Object.keys(contacts).includes(parse(url).id);
 		if (hasContact) {
 			navigation.navigate('Contact', { url });
 		} else {

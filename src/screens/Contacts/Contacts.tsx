@@ -14,17 +14,18 @@ import SafeAreaInset from '../../components/SafeAreaInset';
 import SearchInput from '../../components/SearchInput';
 import ContactsList from '../../components/ContactsList';
 import { showBottomSheet } from '../../store/actions/ui';
-import { useProfile, useSelectedSlashtag } from '../../hooks/slashtags';
+import { useProfile2, useSelectedSlashtag2 } from '../../hooks/slashtags2';
 import { RootStackScreenProps } from '../../navigation/types';
 import AddContact from './AddContact';
-import { onboardedContactsSelector } from '../../store/reselect/slashtags';
-import { useSlashtags } from '../../components/SlashtagsProvider';
-import { IContactRecord } from '../../store/types/slashtags';
+import {
+	contactsSelector,
+	onboardedContactsSelector,
+} from '../../store/reselect/slashtags';
 import ProfileImage from '../../components/ProfileImage';
 
 const Contacts = (props: RootStackScreenProps<'Contacts'>): ReactElement => {
 	const onboarded = useSelector(onboardedContactsSelector);
-	const contacts = useSlashtags().contacts as { [url: string]: IContactRecord };
+	const contacts = useSelector(contactsSelector);
 	const showOnboarding = !onboarded && Object.keys(contacts).length === 0;
 
 	return showOnboarding ? (
@@ -39,8 +40,13 @@ const ContactsScreen = ({
 }: RootStackScreenProps<'Contacts'>): ReactElement => {
 	const { t } = useTranslation('slashtags');
 	const [searchFilter, setSearchFilter] = useState('');
-	const { url: myProfileURL } = useSelectedSlashtag();
-	const { profile } = useProfile(myProfileURL);
+	const { url: myProfileURL } = useSelectedSlashtag2();
+	const { profile } = useProfile2(myProfileURL);
+
+	const handleChangeText = (text: string): void => {
+		const txt = text.trim();
+		setSearchFilter(txt);
+	};
 
 	return (
 		<ThemedView style={styles.container}>
@@ -60,7 +66,7 @@ const ContactsScreen = ({
 					<SearchInput
 						style={styles.searchInput}
 						value={searchFilter}
-						onChangeText={setSearchFilter}
+						onChangeText={handleChangeText}
 						testID="ContactsSearchInput"
 					/>
 					<ThemedTouchableOpacity

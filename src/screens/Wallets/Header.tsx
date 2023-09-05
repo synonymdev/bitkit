@@ -8,18 +8,15 @@ import { Title } from '../../styles/text';
 import { ProfileIcon, SettingsIcon } from '../../styles/icons';
 import ProfileImage from '../../components/ProfileImage';
 import { truncate } from '../../utils/helpers';
-import { useProfile, useSelectedSlashtag } from '../../hooks/slashtags';
+import { useProfile2, useSelectedSlashtag2 } from '../../hooks/slashtags2';
 import { RootNavigationProp } from '../../navigation/types';
 import VerticalShadow from '../../components/VerticalShadow';
 
 const EnabledSlashtagsProfileButton = (): ReactElement => {
 	const { t } = useTranslation('slashtags');
 	const navigation = useNavigation<RootNavigationProp>();
-
-	const { url } = useSelectedSlashtag();
-	// Could be faster if we use the cache from useSlashtags driectly,
-	// but if useProfile is blocked, then everything is too, better solve that.
-	const { profile } = useProfile(url);
+	const { url } = useSelectedSlashtag2();
+	const { profile } = useProfile2(url);
 
 	const openProfile = useCallback(() => {
 		navigation.navigate('Profile');
@@ -34,10 +31,10 @@ const EnabledSlashtagsProfileButton = (): ReactElement => {
 			<ProfileImage
 				size={32}
 				url={url}
-				image={profile?.image}
+				image={profile.image}
 				style={styles.profileImage}
 			/>
-			{profile?.name ? (
+			{profile.name ? (
 				<Title>{truncate(profile?.name, 20)}</Title>
 			) : (
 				<Title>{t('your_name_capital')}</Title>

@@ -13,6 +13,7 @@ import Button from '../../components/Button';
 import { RecoveryStackScreenProps } from '../../navigation/types';
 import { useSelectedSlashtag } from '../../hooks/slashtags';
 import { SlashtagsProvider } from '../../components/SlashtagsProvider';
+import { SlashtagsProvider2 } from '../../components/SlashtagsProvider2';
 import {
 	EBackupCategories,
 	fetchBackup,
@@ -28,12 +29,15 @@ import { useSelector } from 'react-redux';
 import { bytesToString } from '../../utils/converters';
 import { setLdkStoragePath } from '../../utils/lightning';
 import { TAccountBackup } from '../../store/types/backup';
+
 const Lightning = (
 	props: RecoveryStackScreenProps<'Lightning'>,
 ): ReactElement => {
 	return (
 		<SlashtagsProvider>
-			<LightningWithSlashtags {...props} />
+			<SlashtagsProvider2>
+				<LightningWithSlashtags {...props} />
+			</SlashtagsProvider2>
 		</SlashtagsProvider>
 	);
 };

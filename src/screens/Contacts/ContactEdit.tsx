@@ -8,13 +8,13 @@ import SafeAreaInset from '../../components/SafeAreaInset';
 import KeyboardAvoidingView from '../../components/KeyboardAvoidingView';
 import ProfileCard, { MAX_NAME_LENGTH } from '../../components/ProfileCard';
 import Button from '../../components/Button';
-import { saveContact } from '../../utils/slashtags';
-import { useProfile, useSelectedSlashtag } from '../../hooks/slashtags';
-import { BasicProfile } from '../../store/types/slashtags';
-import { useSlashtags } from '../../components/SlashtagsProvider';
+import { useProfile2 } from '../../hooks/slashtags2';
 import { RootStackScreenProps } from '../../navigation/types';
 import Divider from '../../components/Divider';
 import HourglassSpinner from '../../components/HourglassSpinner';
+import { contactSelector } from '../../store/reselect/slashtags';
+import { addContact } from '../../store/actions/slashtags';
+import { useAppSelector } from '../../hooks/redux';
 
 const ContactEdit = ({
 	navigation,
@@ -22,19 +22,19 @@ const ContactEdit = ({
 }: RootStackScreenProps<'ContactEdit'>): ReactElement => {
 	const { t } = useTranslation('slashtags');
 	const url = route.params.url;
-	const savedContact = useSlashtags().contacts[url];
-	const { slashtag } = useSelectedSlashtag();
-	const contact = useProfile(url, { resolve: !savedContact });
-	const [form, setForm] = useState<BasicProfile>(savedContact || {});
+	const savedContact = useAppSelector((state) => {
+		return contactSelector(state, url);
+	});
+	const contact = useProfile2(url, { resolve: true });
+	const [name, setName] = useState<string>(savedContact?.name || '');
 
 	const profile = useMemo(
 		() => ({
 			...contact.profile,
 			// Keep name length in contact record managable in case user doesn't override the remote name
-			name: contact.profile.name?.slice(0, MAX_NAME_LENGTH),
-			...form,
+			name: name ? name : contact.profile.name?.slice(0, MAX_NAME_LENGTH),
 		}),
-		[contact.profile, form],
+		[contact.profile, name],
 	);
 
 	const resolving = !savedContact && contact.resolving;
@@ -45,7 +45,7 @@ const ContactEdit = ({
 
 	const onSave = (): void => {
 		// To avoid phishing attacks, a name should always be saved in contact record
-		slashtag && saveContact(slashtag, url, { name: profile.name });
+		addContact(url, name);
 		navigation.navigate('Contact', { url });
 	};
 
@@ -71,7 +71,8 @@ const ContactEdit = ({
 					contact={true}
 					autoFocus={!!savedContact}
 					onChange={(_, value): void =>
-						setForm((prev) => ({ ...prev, name: value }))
+						// setForm((prev) => ({ ...prev, name: value }))
+						setName(value)
 					}
 				/>
 
@@ -90,7 +91,7 @@ const ContactEdit = ({
 						style={styles.button}
 						text={t('save')}
 						size="large"
-						disabled={form.name?.length === 0}
+						disabled={!name}
 						onPress={onSave}
 						testID="SaveContactButton"
 					/>

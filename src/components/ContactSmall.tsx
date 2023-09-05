@@ -3,7 +3,7 @@ import { StyleProp, StyleSheet, ViewStyle } from 'react-native';
 
 import { TouchableOpacity } from '../styles/components';
 import { Text02M } from '../styles/text';
-import { useProfile } from '../hooks/slashtags';
+import { useProfile2 } from '../hooks/slashtags2';
 import ProfileImage from './ProfileImage';
 import { XIcon } from '../styles/icons';
 
@@ -22,7 +22,7 @@ const ContactSmall = ({
 	onDelete?: () => void;
 	testID?: string;
 }): ReactElement => {
-	const { profile } = useProfile(url);
+	const { profile } = useProfile2(url);
 
 	return (
 		<TouchableOpacity

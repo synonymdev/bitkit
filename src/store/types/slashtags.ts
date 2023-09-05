@@ -11,6 +11,10 @@ export type BasicProfile = Partial<{
 /** Contact Record saved in the "contacts" SlashDrive */
 export type IContactRecord = { url: string; name: string } & BasicProfile;
 
+export type TContacts = {
+	[id: string]: IContactRecord;
+};
+
 export type SlashPayConfig = {
 	type: EAddressType | 'lightningInvoice';
 	value: string;
@@ -55,4 +59,8 @@ export interface ISlashtags {
 			profile: BasicProfile;
 		};
 	};
+	profilesCache: {
+		[id: string]: BasicProfile;
+	};
+	contacts: TContacts;
 }

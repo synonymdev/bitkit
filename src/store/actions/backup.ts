@@ -32,12 +32,14 @@ import { updateMetadata } from './metadata';
 import { EActivityType } from '../types/activity';
 import { addActivityItems } from './activity';
 import { updateBlocktank } from './blocktank';
+import { addContacts } from './slashtags';
 import { IBlocktank } from '../types/blocktank';
 import { IActivity } from '../types/activity';
 import { checkBackup } from '../../utils/slashtags';
 import { showToast } from '../../utils/notifications';
 import { FAILED_BACKUP_CHECK_TIME } from '../../utils/backup/backups-subscriber';
 import i18n from '../../utils/i18n';
+import { ISlashtags, TContacts } from '../types/slashtags';
 
 const dispatch = getDispatch();
 
@@ -496,6 +498,43 @@ export const performBlocktankRestore = async ({
 	return ok({ backupExists: true });
 };
 
+export const performSlashtagsRestore = async ({
+	slashtag,
+	selectedNetwork,
+}: {
+	slashtag: Slashtag;
+	selectedNetwork?: TAvailableNetworks;
+}): Promise<Result<{ backupExists: boolean }>> => {
+	if (!selectedNetwork) {
+		selectedNetwork = getSelectedNetwork();
+	}
+
+	const backupRes = await getBackup<Partial<ISlashtags>>({
+		slashtag,
+		backupCategory: EBackupCategories.slashtags,
+		selectedNetwork,
+	});
+	if (backupRes.isErr()) {
+		return err(backupRes.error.message);
+	}
+
+	const backup = backupRes.value;
+
+	if (!backup) {
+		return ok({ backupExists: false });
+	}
+
+	if (!('contacts' in backup)) {
+		return ok({ backupExists: false });
+	}
+
+	addContacts(backup.contacts as TContacts);
+	updateBackup({ remoteSlashtagsBackupSynced: true });
+
+	// Restore success
+	return ok({ backupExists: true });
+};
+
 export const performFullRestoreFromLatestBackup = async (
 	slashtag: Slashtag,
 ): Promise<Result<{ backupExists: boolean }>> => {
@@ -556,6 +595,15 @@ export const performFullRestoreFromLatestBackup = async (
 		if (btBackupRes.isErr()) {
 			//Since this backup feature is not critical and mostly for user convenience there's no reason to throw an error here.
 			console.log('Error backing up blocktank', btBackupRes.error.message);
+		}
+
+		const slashBackupRes = await performSlashtagsRestore({
+			slashtag,
+			selectedNetwork,
+		});
+		if (slashBackupRes.isErr()) {
+			//Since this backup feature is not critical and mostly for user convenience there's no reason to throw an error here.
+			console.log('Error backing up contacts', slashBackupRes.error.message);
 		}
 
 		// Restore success

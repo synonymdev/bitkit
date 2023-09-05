@@ -7,7 +7,7 @@ import { Caption13M, Text01M, Text02M } from '../styles/text';
 import BaseFeedWidget from './BaseFeedWidget';
 import { IWidget } from '../store/types/widgets';
 import { useSlashfeed } from '../hooks/widgets';
-import { webRelayClient, webRelayUrl } from './SlashtagsProvider';
+import { webRelayClient, webRelayUrl } from './SlashtagsProvider2';
 import { decodeWidgetFieldValue, SUPPORTED_FEED_TYPES } from '../utils/widgets';
 
 const INTERVAL = 1000 * 60;

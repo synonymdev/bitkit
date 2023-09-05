@@ -5,4 +5,6 @@ export const defaultSlashtagsShape: ISlashtags = {
 	onboardingProfileStep: 'Intro',
 	links: [],
 	profiles: {},
+	contacts: {},
+	profilesCache: {},
 };

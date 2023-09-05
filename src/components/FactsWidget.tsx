@@ -5,7 +5,7 @@ import { Reader } from '@synonymdev/facts-feed';
 
 import { Title } from '../styles/text';
 import { showToast } from '../utils/notifications';
-import { webRelayClient, webRelayUrl } from './SlashtagsProvider';
+import { webRelayClient, webRelayUrl } from './SlashtagsProvider2';
 import BaseFeedWidget from './BaseFeedWidget';
 
 const FactsWidget = ({

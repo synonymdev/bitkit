@@ -14,6 +14,22 @@ const __DEV__ = process.env.DEV === 'true';
 
 d = checkComplete('slash-1') ? describe.skip : describe;
 
+// private key: rhuoi5upr3he3d5p9ef685bnxq8adbariwphg7i8gxdnnazok87xtc3e15pkouxizbzm6m4kjaoi9bndwp88iefycf6i6qhqu1ifzfa
+const satoshi = {
+	name: 'Satoshi Nakamoto',
+	url: 'slash:9n31tfs4ibg9mqdqzhzwwutbm6nr8e4qxkokyam7mh7a78fkmqmo/profile.json?relay=https://dht-relay.synonym.to/staging/web-relay',
+	bio: "Satoshi Nakamoto: Enigmatic genius behind Bitcoin's creation and originator's identity unknown.",
+	website: 'bitcoin.org',
+	email: 'satoshin@gmx.com',
+};
+
+// private key: nsttdkefgy5ta1wkcbn757eaxgcchxzxp9y7yrgd88ynkm733mscy7761757t95ejzptcgfq468mhe5f4uqff1xw3utgm7g9gekhj7y
+const hal = {
+	name1: 'Hal',
+	name2: 'Finney',
+	url: 'slash:ab557f5z5d9souq5nack7ihqzatsmighkmr9ju8ncz4p6coiau4y/profile.json?relay=https://dht-relay.synonym.to/staging/web-relay',
+};
+
 d('Profile and Contacts', () => {
 	let waitForElectrum;
 	const rpc = new BitcoinJsonRpc(bitcoinURL);
@@ -109,60 +125,50 @@ d('Profile and Contacts', () => {
 			await element(by.id('ContactsOnboardingButton')).tap();
 			await element(by.id('AddContact')).tap();
 
-			// John
-			await element(by.id('ContactURLInput')).replaceText(
-				'slash:9uate7b6srfaur8stm5br7kencdz6km9xde46iph165d6isidssy',
-			);
-			// await waitFor(element(by.id('HourglassSpinner')))
-			// 	.not.toBeVisible()
-			// 	.withTimeout(30000);
+			// Satoshi
+			await element(by.id('ContactURLInput')).replaceText(satoshi.url);
 			await waitFor(element(by.id('NameInput')))
 				.toBeVisible()
 				.withTimeout(30000);
-			await expect(element(by.text('John Carvalho'))).toExist();
-			await expect(element(by.text('Slashtags fixes this.'))).toExist();
+			await expect(element(by.text(satoshi.name))).toExist();
+			await expect(element(by.text(satoshi.bio))).toExist();
 			await element(by.id('SaveContactButton')).tap();
 			await expect(element(by.text('WEBSITE'))).toExist();
-			await expect(element(by.text('synonym.to'))).toExist();
+			await expect(element(by.text(satoshi.website))).toExist();
 			await element(by.id('NavigationBack')).atIndex(2).tap();
 
-			// Corey
+			// Hal
 			// TODO: fix bottom sheet not closing
-			if (__DEV__) {
-				await element(by.id('AddContact')).tap();
-			}
-			await element(by.id('ContactURLInput')).replaceText(
-				'slash:rhbmdu3wn7916nok3n8ui4d3wiua3rtisihqpzpeakuci55fa8yy',
-			);
-			// await waitFor(element(by.id('HourglassSpinner')))
-			// 	.not.toBeVisible()
-			// 	.withTimeout(30000);
+			// if (__DEV__) {
+			await element(by.id('AddContact')).tap();
+			// }
+			await element(by.id('ContactURLInput')).replaceText(hal.url);
 			await waitFor(element(by.id('NameInput')))
 				.toBeVisible()
 				.withTimeout(30000);
-			await expect(element(by.text('Corey'))).toExist();
-			await element(by.id('NameInput')).replaceText('CoreyNewName');
+			await expect(element(by.text(hal.name1))).toExist();
+			await element(by.id('NameInput')).replaceText(hal.name2);
 			await element(by.id('SaveContactButton')).tap();
-			await expect(element(by.text('CoreyNewName'))).toExist();
+			await expect(element(by.text(hal.name2))).toExist();
 			await element(by.id('NavigationClose')).atIndex(2).tap();
 
 			// FILTER CONTACTS
 			await element(by.id('HeaderContactsButton')).tap();
-			await expect(element(by.text('John Carvalho'))).toBeVisible();
-			await expect(element(by.text('CoreyNewName'))).toBeVisible();
-			await element(by.id('ContactsSearchInput')).typeText('John\n');
-			await expect(element(by.text('John Carvalho'))).toBeVisible();
-			await expect(element(by.text('CoreyNewName'))).not.toBeVisible();
-			await element(by.id('ContactsSearchInput')).replaceText('Corey');
+			await expect(element(by.text(satoshi.name))).toBeVisible();
+			await expect(element(by.text(hal.name2))).toBeVisible();
+			await element(by.id('ContactsSearchInput')).typeText('Satoshi\n');
+			await expect(element(by.text(satoshi.name))).toBeVisible();
+			await expect(element(by.text(hal.name2))).not.toBeVisible();
+			await element(by.id('ContactsSearchInput')).replaceText('Finn\n');
 			await element(by.id('ContactsSearchInput')).tapReturnKey();
-			await expect(element(by.text('John Carvalho'))).not.toBeVisible();
-			await expect(element(by.text('CoreyNewName'))).toBeVisible();
+			await expect(element(by.text(satoshi.name))).not.toBeVisible();
+			await expect(element(by.text(hal.name2))).toBeVisible();
 
 			// REMOVE CONTACT
-			// await element(by.text('CoreyNewName')).tap();
+			// await element(by.text(hal.name2)).tap();
 			// await element(by.id('DeleteContactButton')).tap();
 			// await element(by.id('DialogConfirm')).tap();
-			// await expect(element(by.text('CoreyNewName'))).not.toBeVisible();
+			// await expect(element(by.text(hal.name2))).not.toBeVisible();
 			await element(by.id('NavigationClose')).tap();
 
 			// RECEIVE MONEY AND ATTACH CONTACT TO THE TRANSACTION
@@ -181,12 +187,12 @@ d('Profile and Contacts', () => {
 			await element(by.id('BitcoinAsset')).tap();
 			await element(by.id('Activity-1')).tap();
 			await element(by.id('ActivityAssign')).tap();
-			await element(by.text('John Carvalho')).tap();
+			await element(by.text(satoshi.name)).tap();
 			await element(by.id('ActivityDetach')).tap();
 			await element(by.id('ActivityAssign')).tap();
-			await element(by.text('John Carvalho')).tap();
+			await element(by.text(satoshi.name)).tap();
 			await expect(
-				element(by.text('John Carvalho').withAncestor(by.id('ContactSmall'))),
+				element(by.text(satoshi.name).withAncestor(by.id('ContactSmall'))),
 			).toBeVisible();
 			await element(by.id('NavigationClose')).tap();
 			// give it time to perform the metadata backup
@@ -238,13 +244,13 @@ d('Profile and Contacts', () => {
 				.withTimeout(60000);
 
 			await element(by.id('HeaderContactsButton')).tap();
-			await expect(element(by.text('John Carvalho'))).toBeVisible();
+			await expect(element(by.text(satoshi.name))).toBeVisible();
 			await element(by.id('NavigationClose')).tap();
 
 			await element(by.id('BitcoinAsset')).tap();
 			await element(by.id('Activity-1')).tap();
 			await expect(
-				element(by.text('John Carvalho').withAncestor(by.id('ContactSmall'))),
+				element(by.text(satoshi.name).withAncestor(by.id('ContactSmall'))),
 			).toBeVisible();
 
 			markComplete('slash-1');

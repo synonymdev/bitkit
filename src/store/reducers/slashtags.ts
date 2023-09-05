@@ -66,6 +66,43 @@ const slashtags = (
 				},
 			};
 		}
+		case actions.CONTACT_ADD: {
+			return {
+				...state,
+				contacts: {
+					...state.contacts,
+					[action.payload.id]: {
+						name: action.payload.name,
+						url: action.payload.url,
+					},
+				},
+			};
+		}
+		case actions.CONTACT_DELETE: {
+			const contacts = state.contacts;
+			delete contacts[action.payload.id];
+			return {
+				...state,
+				contacts: {
+					...contacts,
+				},
+			};
+		}
+		case actions.CONTACTS_ADD: {
+			return {
+				...state,
+				contacts: action.payload.contacts,
+			};
+		}
+		case actions.CACHE_PROFILE2: {
+			return {
+				...state,
+				profilesCache: {
+					...state.profilesCache,
+					[action.payload.id]: action.payload.profile,
+				},
+			};
+		}
 		default:
 			return state;
 	}

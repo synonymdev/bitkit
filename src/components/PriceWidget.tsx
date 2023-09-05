@@ -8,7 +8,7 @@ import { Caption13M, Text02M } from '../styles/text';
 import { useSlashfeed } from '../hooks/widgets';
 import { IWidget } from '../store/types/widgets';
 import BaseFeedWidget from './BaseFeedWidget';
-import { webRelayClient, webRelayUrl } from './SlashtagsProvider';
+import { webRelayClient, webRelayUrl } from './SlashtagsProvider2';
 import { Change, Chart, getChange } from './PriceChart';
 import { decodeWidgetFieldValue, SUPPORTED_FEED_TYPES } from '../utils/widgets';
 import { __E2E__ } from '../constants/env';

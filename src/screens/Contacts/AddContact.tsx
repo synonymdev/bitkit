@@ -3,6 +3,7 @@ import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import Clipboard from '@react-native-clipboard/clipboard';
 import { useTranslation } from 'react-i18next';
+import { SlashURL } from '@synonymdev/slashtags-sdk';
 
 import { closeBottomSheet } from '../../store/actions/ui';
 import { handleSlashtagURL } from '../../utils/slashtags';
@@ -16,8 +17,7 @@ import {
 import { Text01S, Text02S } from '../../styles/text';
 import { ClipboardTextIcon, CornersOutIcon } from '../../styles/icons';
 import type { RootStackParamList } from '../../navigation/types';
-import { useSelectedSlashtag } from '../../hooks/slashtags';
-import { SlashURL } from '@synonymdev/slashtags-sdk';
+import { useSelectedSlashtag2 } from '../../hooks/slashtags2';
 
 const AddContact = ({
 	navigation,
@@ -28,7 +28,7 @@ const AddContact = ({
 	const snapPoints = useSnapPoints('small');
 	const [addContactURL, setAddContactURL] = useState('');
 	const [error, setError] = useState<boolean | string>(false);
-	const { url: myProfileURL } = useSelectedSlashtag();
+	const { url: myProfileURL } = useSelectedSlashtag2();
 
 	useBottomSheetBackPress('addContactModal');
 

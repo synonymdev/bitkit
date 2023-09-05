@@ -75,6 +75,18 @@ const backup = (state: IBackup = defaultBackupShape, action): IBackup => {
 			};
 		}
 
+		case actions.CONTACT_ADD:
+		case actions.CONTACT_DELETE:
+		case actions.CONTACTS_ADD: {
+			const remoteSlashtagsBackupSyncRequired =
+				state.remoteSlashtagsBackupSyncRequired ?? new Date().getTime();
+			return {
+				...state,
+				remoteSlashtagsBackupSyncRequired,
+				remoteSlashtagsBackupSynced: false,
+			};
+		}
+
 		case actions.BACKUP_SEEDER_CHECK_START: {
 			const hyperProfileCheckRequested =
 				state.hyperProfileCheckRequested ?? new Date().getTime();

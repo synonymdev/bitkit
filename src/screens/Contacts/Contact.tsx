@@ -5,6 +5,7 @@ import { FadeIn, FadeOut } from 'react-native-reanimated';
 import Clipboard from '@react-native-clipboard/clipboard';
 import Share from 'react-native-share';
 import { useTranslation } from 'react-i18next';
+import { SlashURL } from '@synonymdev/slashtags-sdk';
 
 import { AnimatedView, View } from '../../styles/components';
 import {
@@ -17,13 +18,10 @@ import NavigationHeader from '../../components/NavigationHeader';
 import SafeAreaInset from '../../components/SafeAreaInset';
 import ProfileCard from '../../components/ProfileCard';
 import ProfileLinks from '../../components/ProfileLinks';
-import { deleteContact } from '../../utils/slashtags';
+import { deleteContact } from '../../store/actions/slashtags';
 import { processInputData } from '../../utils/scanner';
-import { useProfile, useSelectedSlashtag } from '../../hooks/slashtags';
-import {
-	useSlashtags,
-	useSlashtagsSDK,
-} from '../../components/SlashtagsProvider';
+import { useSlashtagsSDK } from '../../components/SlashtagsProvider';
+import { useProfile2 } from '../../hooks/slashtags2';
 import { useBalance } from '../../hooks/wallet';
 import { truncate } from '../../utils/helpers';
 import { showToast } from '../../utils/notifications';
@@ -35,6 +33,7 @@ import {
 	selectedNetworkSelector,
 	selectedWalletSelector,
 } from '../../store/reselect/wallet';
+import { contactsSelector } from '../../store/reselect/slashtags';
 
 const Contact = ({
 	navigation,
@@ -49,11 +48,14 @@ const Contact = ({
 
 	const selectedWallet = useSelector(selectedWalletSelector);
 	const selectedNetwork = useSelector(selectedNetworkSelector);
-
-	const { profile } = useProfile(url, { resolve: true });
-	const { slashtag } = useSelectedSlashtag();
+	const contacts = useSelector(contactsSelector);
 	const sdk = useSlashtagsSDK();
-	const contactRecord = useSlashtags().contacts[url];
+
+	const { profile } = useProfile2(url, { resolve: true });
+	const savedContact = useMemo(() => {
+		const id = SlashURL.parse(url).id;
+		return contacts[id];
+	}, [contacts, url]);
 	const { spendableBalance } = useBalance();
 
 	const canSend = useMemo(() => {
@@ -61,8 +63,8 @@ const Contact = ({
 	}, [spendableBalance]);
 
 	const profileCard = useMemo(
-		() => ({ ...profile, ...contactRecord }),
-		[profile, contactRecord],
+		() => ({ ...profile, name: savedContact?.name ?? profile?.name }),
+		[profile, savedContact],
 	);
 
 	const onCopy = (): void => {
@@ -72,9 +74,9 @@ const Contact = ({
 	};
 
 	const onDelete = useCallback(() => {
-		deleteContact(slashtag, url);
+		deleteContact(url);
 		navigation.navigate('Contacts');
-	}, [navigation, slashtag, url]);
+	}, [navigation, url]);
 
 	const handleSend = async (): Promise<void> => {
 		setLoading(true);

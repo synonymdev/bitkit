@@ -313,7 +313,11 @@ export const SlashtagsProvider = ({
 
 	return (
 		// Do not render children (depending on the sdk) until the primary key is loaded and the sdk opened
-		<SlashtagsContext.Provider value={{ sdk: sdk as SDK, contacts }}>
+		<SlashtagsContext.Provider
+			value={{
+				sdk: sdk as SDK,
+				contacts,
+			}}>
 			{(opened || __DISABLE_SLASHTAGS__) && children}
 		</SlashtagsContext.Provider>
 	);

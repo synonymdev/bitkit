@@ -24,7 +24,7 @@ import { Pair } from '@synonymdev/price-feed/types/lib/reader';
 import { IThemeColors } from '../styles/themes';
 import { SlashFeedJSON, TGraphPeriod } from '../store/types/widgets';
 import useColors from '../hooks/colors';
-import { webRelayClient, webRelayUrl } from './SlashtagsProvider';
+import { webRelayClient, webRelayUrl } from './SlashtagsProvider2';
 
 export type Change = {
 	color: keyof IThemeColors;

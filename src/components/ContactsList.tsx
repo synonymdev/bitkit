@@ -1,18 +1,19 @@
 import React, { ReactElement, useCallback, useMemo } from 'react';
 import { View, SectionList, StyleSheet, TouchableOpacity } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import { useSelector } from 'react-redux';
+import { BottomSheetSectionList } from '@gorhom/bottom-sheet';
 
-import { View as ThemedView } from '../styles/components';
-import { Caption13Up, Text01M } from '../styles/text';
 import ProfileImage from './ProfileImage';
 import SlashtagURL from './SlashtagURL';
-import { useProfile, useSelectedSlashtag } from '../hooks/slashtags';
-import { IContactRecord } from '../store/types/slashtags';
-import { useSlashtags } from './SlashtagsProvider';
 import Divider from './Divider';
-import { BottomSheetSectionList } from '@gorhom/bottom-sheet';
+import { View as ThemedView } from '../styles/components';
+import { Caption13Up, Text01M } from '../styles/text';
+import { useProfile2, useSelectedSlashtag2 } from '../hooks/slashtags2';
+import { IContactRecord } from '../store/types/slashtags';
 import { truncate } from '../utils/helpers';
 import { IThemeColors } from '../styles/themes';
+import { contactsSelector } from '../store/reselect/slashtags';
 
 export const ContactItem = ({
 	contact,
@@ -24,8 +25,8 @@ export const ContactItem = ({
 	onPress?: (contact: IContactRecord) => void;
 }): ReactElement => {
 	const { t } = useTranslation('slashtags');
-	const { url: myProfileURL } = useSelectedSlashtag();
-	const { profile } = useProfile(contact.url);
+	const { url: myProfileURL } = useSelectedSlashtag2();
+	const { profile } = useProfile2(contact.url);
 
 	const name = useMemo(() => {
 		const fallbackName =
@@ -85,8 +86,8 @@ const ContactsList = ({
 	bottomSheet?: boolean;
 }): ReactElement => {
 	const { t } = useTranslation('slashtags');
-	const contacts = useSlashtags().contacts as { [url: string]: IContactRecord };
-	const { url: myProfileURL } = useSelectedSlashtag();
+	const contacts = useSelector(contactsSelector);
+	const { url: myProfileURL } = useSelectedSlashtag2();
 
 	const filteredContacts = useMemo(() => {
 		return Object.values(contacts)
