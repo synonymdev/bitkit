@@ -3,6 +3,9 @@
   "int_header": "Błyskawiczne\n<purple>Płatności.</purple>",
   "int_quick": "Szybka konfiguracja",
   "int_custom": "Własna konfiguracja",
+  "add_instant_payments": "Płatności natychmiastowe",
   "setting_up_step1": "Oczekująca płatność",
+  "result_header": "Łączenie.",
+  "channel_node_id": "ID węzła",
   "close_button": "Zamknij"
 }

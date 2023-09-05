@@ -31,7 +31,22 @@
     "description": "Llest en ±60m"
   },
   "transferClosingChannel": {
-    "title": "Iniciant..."
+    "title": "Iniciant...",
+    "description": "Mantenir l'aplicació oberta"
   },
+  "pin": {
+    "title": "Milor seguretat",
+    "description": "Configurar un codi PIN"
+  },
+  "slashtagsProfile": {
+    "title": "Perfil públic",
+    "description": "Afegeix els teus detalls"
+  },
+  "buyBitcoin": {
+    "title": "Obtenir bitcoin",
+    "description": "Apilar alguns sats"
+  },
+  "lightning_no_funds_title": "Encara sense fons",
+  "lightning_no_funds_desc": "Abans de poder configurar el vostre saldo de despesa instantània, heu d'enviar una mica de Bitcoin onchain al vostre moneder",
   "suggestions": "Sugeriments"
 }

@@ -33,11 +33,13 @@
   "duration_header": "Durée de la connexion.",
   "duration_text": "Choisissez le nombre minimum de semaines pendant lesquelles votre connexion doit rester ouverte.",
   "duration_week": "{count, plural, one {semaine} many {semaines} other {semaines}}",
+  "setting_up_header": "Mise en place.",
   "setting_up_text": "Veuillez patienter et laisser Bitkit ouvert pendant l'établissement de votre connexion Lightning. Ce processus prend environ une minute.",
   "setting_up_step1": "En attente de paiement",
   "setting_up_step2": "Paiement réussi",
   "setting_up_step3": "En attente d'ouverture",
   "setting_up_step4": "Ouverture de la connexion",
+  "result_header": "Connexion.",
   "result_text": "La connexion Lightning est initiée. Vous pourrez utiliser les paiements instantanés dans ±10 minutes.",
   "timeout_header": "S'il vous plaît, laissez Bitkit ouvert.",
   "timeout_text": "Bitkit continuera à essayer d'ouvrir votre connexion Lightning en arrière-plan. Veuillez laisser l'application ouverte.",
@@ -133,5 +135,7 @@
     "expired": "Commande expirée",
     "closed": "Connexion fermée",
     "open": "Connexion ouverte"
-  }
+  },
+  "wait_text_top": "Veuillez attendre que Bitkit se connecte au réseau de paiement (±10 secondes).",
+  "wait_text_bottom": "Connexion et synchronisation..."
 }
