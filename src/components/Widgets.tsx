@@ -66,7 +66,7 @@ const Widgets = (): ReactElement => {
 
 			const _drag = (): void => {
 				// only allow dragging if there are more than 1 widget
-				if (sortedWidgets.length > 1) {
+				if (sortedWidgets.length > 1 && editing) {
 					drag();
 				}
 			};
@@ -167,7 +167,7 @@ const Widgets = (): ReactElement => {
 				keyExtractor={(item): string => item[0]}
 				renderItem={renderItem}
 				scrollEnabled={false}
-				dragHitSlop={{ top: editing ? 0 : -1000 }}
+				activationDistance={editing ? 0 : 100}
 				onDragEnd={onDragEnd}
 			/>
 

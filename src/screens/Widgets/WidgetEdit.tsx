@@ -53,10 +53,6 @@ const WidgetEdit = ({
 	const defaultSettings = getDefaultSettings(config);
 	const hasEdited = !isEqual(settings, defaultSettings);
 
-	console.log({ settings });
-	console.log({ defaultSettings });
-	console.log({ hasEdited });
-
 	const onSave = (): void => {
 		navigation.navigate('Widget', { url, preview: settings });
 	};
