@@ -1,3 +1,4 @@
+import { removeKeysFromObject } from '../../utils/helpers';
 import actions from '../actions/actions';
 import { defaultSlashtagsShape } from '../shapes/slashtags';
 import { ISlashtags } from '../types/slashtags';
@@ -79,13 +80,10 @@ const slashtags = (
 			};
 		}
 		case actions.CONTACT_DELETE: {
-			const contacts = state.contacts;
-			delete contacts[action.payload.id];
+			const contacts = removeKeysFromObject(state.contacts, action.payload.id);
 			return {
 				...state,
-				contacts: {
-					...contacts,
-				},
+				contacts,
 			};
 		}
 		case actions.CONTACTS_ADD: {
