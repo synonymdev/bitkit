@@ -1,5 +1,5 @@
 import { createSelector } from '@reduxjs/toolkit';
-import { SlashURL } from '@synonymdev/slashtags-sdk';
+import { parse } from '@synonymdev/slashtags-url';
 
 import Store from '../types';
 import {
@@ -42,7 +42,7 @@ export const contactsSelector = createSelector(
 export const contactSelector = createSelector(
 	[slashtagsState, (_slashtagsItems, url: string): string => url],
 	(slashtags, url): IContactRecord | undefined => {
-		const { id } = SlashURL.parse(url);
+		const { id } = parse(url);
 		return slashtags.contacts?.[id];
 	},
 );
@@ -59,7 +59,7 @@ export const profilesCacheSelector = createSelector(
 export const profileCacheSelector = createSelector(
 	[slashtagsState, (_slashtagsItems, url: string): string => url],
 	(slashtags, url): BasicProfile | {} => {
-		const { id } = SlashURL.parse(url);
+		const { id } = parse(url);
 		return slashtags.profilesCache?.[id] ?? {};
 	},
 );

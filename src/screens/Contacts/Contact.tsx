@@ -5,7 +5,7 @@ import { FadeIn, FadeOut } from 'react-native-reanimated';
 import Clipboard from '@react-native-clipboard/clipboard';
 import Share from 'react-native-share';
 import { useTranslation } from 'react-i18next';
-import { SlashURL } from '@synonymdev/slashtags-sdk';
+import { parse } from '@synonymdev/slashtags-url';
 
 import { AnimatedView, View } from '../../styles/components';
 import {
@@ -53,7 +53,7 @@ const Contact = ({
 
 	const { profile } = useProfile2(url, { resolve: true });
 	const savedContact = useMemo(() => {
-		const id = SlashURL.parse(url).id;
+		const { id } = parse(url);
 		return contacts[id];
 	}, [contacts, url]);
 	const { spendableBalance } = useBalance();
