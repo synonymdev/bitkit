@@ -10,7 +10,7 @@ import {
 } from './helpers';
 import initWaitForElectrumToSync from '../__tests__/utils/wait-for-electrum';
 
-const __DEV__ = process.env.DEV === 'true';
+// const __DEV__ = process.env.DEV === 'true';
 
 d = checkComplete('slash-1') ? describe.skip : describe;
 
