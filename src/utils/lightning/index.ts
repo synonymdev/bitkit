@@ -73,8 +73,7 @@ import {
 	showBottomSheet,
 	updateUi,
 } from '../../store/actions/ui';
-import { updateSlashPayConfig } from '../slashtags';
-import { sdk } from '../../components/SlashtagsProvider';
+import { updateSlashPayConfig2 } from '../slashtags2';
 import { TLightningNodeVersion } from '../../store/types/lightning';
 import { getBlocktankInfo, isGeoBlocked } from '../blocktank';
 import { updateOnchainFeeEstimates } from '../../store/actions/fees';
@@ -360,7 +359,7 @@ export const handleLightningPaymentSubscription = async ({
 	closeBottomSheet('receiveNavigation');
 
 	await refreshLdk({ selectedWallet, selectedNetwork });
-	updateSlashPayConfig({ sdk, selectedWallet, selectedNetwork });
+	updateSlashPayConfig2({ selectedWallet, selectedNetwork });
 };
 
 /**

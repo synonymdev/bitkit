@@ -7,7 +7,7 @@ import {
 	ViewStyle,
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import Reader from '@synonymdev/news-feed/lib/reader';
+import Reader from '@synonymdev/slashtags-widget-news-feed/lib/reader';
 
 import { Caption13M, Title } from '../styles/text';
 import { openURL } from '../utils/helpers';

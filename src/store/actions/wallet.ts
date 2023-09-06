@@ -1,3 +1,5 @@
+import { err, ok, Result } from '@synonymdev/result';
+
 import actions from './actions';
 import {
 	EPaymentType,
@@ -46,7 +48,6 @@ import {
 } from '../helpers';
 import { TAvailableNetworks } from '../../utils/networks';
 import { objectKeys } from '../../utils/objectKeys';
-import { err, ok, Result } from '@synonymdev/result';
 import {
 	getOnchainTransactionData,
 	getTotalFee,
@@ -72,8 +73,7 @@ import {
 	GENERATE_ADDRESS_AMOUNT,
 } from '../../utils/wallet/constants';
 import { getBoostedTransactionParents } from '../../utils/boost';
-import { updateSlashPayConfig } from '../../utils/slashtags';
-import { sdk } from '../../components/SlashtagsProvider';
+import { updateSlashPayConfig2 } from '../../utils/slashtags2';
 import {
 	addressTypes,
 	getDefaultWalletShape,
@@ -1165,7 +1165,7 @@ export const updateTransactions = async ({
 				selectedWallet,
 			},
 		});
-		updateSlashPayConfig({ sdk, selectedWallet, selectedNetwork });
+		updateSlashPayConfig2({ selectedWallet, selectedNetwork });
 		return ok(undefined);
 	}
 
@@ -1223,7 +1223,7 @@ export const updateTransactions = async ({
 		},
 	});
 
-	updateSlashPayConfig({ sdk, selectedWallet, selectedNetwork });
+	updateSlashPayConfig2({ selectedWallet, selectedNetwork });
 
 	return ok(notificationTxid);
 };

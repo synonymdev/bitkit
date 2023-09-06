@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { Reader } from '@synonymdev/slashtags-feeds';
+import { Reader } from '@synonymdev/feeds';
 import b4a from 'b4a';
 
 import { webRelayClient, webRelayUrl } from '../components/SlashtagsProvider2';

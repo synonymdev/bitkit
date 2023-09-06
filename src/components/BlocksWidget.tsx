@@ -1,7 +1,7 @@
 import React, { memo, ReactElement, useEffect, useState } from 'react';
 import { View, StyleSheet, StyleProp, ViewStyle } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { Reader } from '@synonymdev/slashtags-feeds';
+import { Reader } from '@synonymdev/feeds';
 
 import { Caption13M, Text01M, Text02M } from '../styles/text';
 import BaseFeedWidget from './BaseFeedWidget';

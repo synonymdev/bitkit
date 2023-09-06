@@ -18,8 +18,8 @@ import {
 	Mask,
 	Rect,
 } from '@shopify/react-native-skia';
-import { Reader } from '@synonymdev/price-feed';
-import { Pair } from '@synonymdev/price-feed/types/lib/reader';
+import { Reader } from '@synonymdev/slashtags-widget-price-feed';
+import { Pair } from '@synonymdev/slashtags-widget-price-feed/types/lib/reader';
 
 import { IThemeColors } from '../styles/themes';
 import { SlashFeedJSON, TGraphPeriod } from '../store/types/widgets';

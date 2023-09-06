@@ -1,8 +1,8 @@
 import React, { memo, ReactElement, useEffect, useState } from 'react';
 import { View, StyleProp, StyleSheet, ViewStyle } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { Reader } from '@synonymdev/price-feed';
-import { Pair } from '@synonymdev/price-feed/types/lib/reader';
+import { Reader } from '@synonymdev/slashtags-widget-price-feed';
+import { Pair } from '@synonymdev/slashtags-widget-price-feed/types/lib/reader';
 
 import { Caption13M, Text02M } from '../styles/text';
 import { useSlashfeed } from '../hooks/widgets';

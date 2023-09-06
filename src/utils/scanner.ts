@@ -39,7 +39,6 @@ import {
 	networks,
 	TAvailableNetworks,
 } from './networks';
-import { getSlashPayConfig } from './slashtags';
 import { savePeer } from '../store/actions/lightning';
 import { TWalletName } from '../store/types/wallet';
 import { sendNavigation } from '../navigation/bottom-sheet/SendNavigation';
@@ -47,6 +46,7 @@ import { rootNavigation } from '../navigation/root/RootNavigator';
 import { handleLnurlAuth } from './lnurl';
 import i18n from './i18n';
 import { bech32m } from 'bech32';
+import { getSlashPayConfig2 } from './slashtags2';
 
 const availableNetworksList = availableNetworks();
 
@@ -249,7 +249,7 @@ export const processInputData = async ({
 
 			// Check if this is a slashtag url, and we want to send funds to it.
 			const url = decodeRes.value[0].url ?? '';
-			const response = await processSlashPayURL({ url, sdk });
+			const response = await processSlashPayURL({ url });
 
 			if (response.isErr()) {
 				if (showErrors) {
@@ -492,13 +492,11 @@ export const decodeQRData = async (
 
 export const processSlashPayURL = async ({
 	url,
-	sdk,
 }: {
 	url: string;
-	sdk: SDK;
 }): Promise<Result<QRData[]>> => {
 	try {
-		const payConfig = await getSlashPayConfig(sdk, url);
+		const payConfig = await getSlashPayConfig2(url);
 		const qrData: QRData[] = [];
 
 		payConfig.forEach(({ type, value }) => {
@@ -1041,7 +1039,6 @@ export const validateInputData = async ({
 			if (source === 'send') {
 				const response = await processSlashPayURL({
 					url: decodedData.url!,
-					sdk,
 				});
 				if (response.isErr()) {
 					const errorMessage = response.error.message;

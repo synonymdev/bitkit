@@ -52,14 +52,17 @@ export const useProfile2 = (
 		const reader = new SlashtagsProfile(webRelayClient);
 		reader
 			.get(url)
-			.then((pr: BasicProfile) => {
+			.then((pr) => {
 				// console.info('Profile resolved', url, pr);
 				if (unmounted) {
 					return;
 				}
 
 				setResolving(false);
-				cacheProfile2(url, pr);
+
+				if (pr) {
+					cacheProfile2(url, pr);
+				}
 
 				if (!unmounted) {
 					setResolving(false);

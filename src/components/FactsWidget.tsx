@@ -1,7 +1,7 @@
 import React, { memo, ReactElement, useEffect, useState } from 'react';
 import { StyleProp, ViewStyle } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { Reader } from '@synonymdev/facts-feed';
+import { Reader } from '@synonymdev/slashtags-widget-facts-feed';
 
 import { Title } from '../styles/text';
 import { showToast } from '../utils/notifications';

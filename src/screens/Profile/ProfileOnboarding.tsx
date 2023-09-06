@@ -19,8 +19,6 @@ import SafeAreaInset from '../../components/SafeAreaInset';
 import { setOnboardingProfileStep } from '../../store/actions/slashtags';
 import { ISlashtags } from '../../store/types/slashtags';
 import SwitchRow from '../../components/SwitchRow';
-import { updateSlashPayConfig } from '../../utils/slashtags';
-import { useSlashtagsSDK } from '../../components/SlashtagsProvider';
 import { updateSettings } from '../../store/actions/settings';
 import DetectSwipe from '../../components/DetectSwipe';
 import type {
@@ -32,6 +30,7 @@ import {
 	selectedNetworkSelector,
 	selectedWalletSelector,
 } from '../../store/reselect/wallet';
+import { updateSlashPayConfig2 } from '../../utils/slashtags2';
 
 const crownImageSrc = require('../../assets/illustrations/crown.png');
 const coinsImageSrc = require('../../assets/illustrations/coins.png');
@@ -72,12 +71,10 @@ export const OfflinePayments = ({
 	const selectedNetwork = useSelector(selectedNetworkSelector);
 	const [enableOfflinePayments, setOfflinePayments] = useState(true);
 
-	const sdk = useSlashtagsSDK();
-
 	const savePaymentConfig = useCallback((): void => {
 		updateSettings({ enableOfflinePayments });
-		updateSlashPayConfig({ sdk, selectedWallet, selectedNetwork });
-	}, [enableOfflinePayments, sdk, selectedNetwork, selectedWallet]);
+		updateSlashPayConfig2({ selectedWallet, selectedNetwork });
+	}, [enableOfflinePayments, selectedNetwork, selectedWallet]);
 
 	return (
 		<Layout
