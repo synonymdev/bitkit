@@ -26,13 +26,14 @@ const ContactEdit = ({
 		return contactSelector(state, url);
 	});
 	const contact = useProfile2(url, { resolve: true });
-	const [name, setName] = useState<string>(savedContact?.name || '');
+	const [name, setName] = useState<string | null>(savedContact?.name || null);
 
 	const profile = useMemo(
 		() => ({
 			...contact.profile,
 			// Keep name length in contact record managable in case user doesn't override the remote name
-			name: name ? name : contact.profile.name?.slice(0, MAX_NAME_LENGTH),
+			name:
+				name !== null ? name : contact.profile.name?.slice(0, MAX_NAME_LENGTH),
 		}),
 		[contact.profile, name],
 	);
@@ -44,6 +45,9 @@ const ContactEdit = ({
 	};
 
 	const onSave = (): void => {
+		if (name === null) {
+			return;
+		}
 		// To avoid phishing attacks, a name should always be saved in contact record
 		addContact(url, name);
 		navigation.navigate('Contact', { url });
@@ -70,10 +74,7 @@ const ContactEdit = ({
 					editable={true}
 					contact={true}
 					autoFocus={!!savedContact}
-					onChange={(_, value): void =>
-						// setForm((prev) => ({ ...prev, name: value }))
-						setName(value)
-					}
+					onChange={(_, value): void => setName(value)}
 				/>
 
 				{resolving ? <HourglassSpinner /> : <Divider />}
