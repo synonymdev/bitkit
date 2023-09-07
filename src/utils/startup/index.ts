@@ -180,7 +180,7 @@ export const startWalletServices = async ({
 		}
 
 		// Refresh slashpay config
-		updateSlashPayConfig2({ selectedNetwork });
+		updateSlashPayConfig2({ selectedNetwork, forceUpdate: true });
 
 		return ok('Wallet started');
 	} catch (e) {

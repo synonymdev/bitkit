@@ -85,8 +85,8 @@ export default class SlashpayConfig {
 	 */
 	async get(url: string): Promise<SlashPayConfig | null> {
 		const buf = url
-			? await this._client.get(url)
-			: await this._client.get(SLASHPAY_PATH);
+			? await this._client.get(url, { skipCache: true })
+			: await this._client.get(SLASHPAY_PATH, { skipCache: true });
 
 		return buf && decode(buf);
 	}

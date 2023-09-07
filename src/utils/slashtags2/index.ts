@@ -145,6 +145,7 @@ export const updateSlashPayConfig2 = debounce(
 				);
 
 			const invoiceNeedsToBeUpdated =
+				forceUpdate ||
 				!currentInvoice ||
 				!currentInvoiceStillUnpaid ||
 				decodedInvoice.isErr() ||
