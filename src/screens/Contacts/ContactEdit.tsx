@@ -1,4 +1,4 @@
-import React, { useState, useMemo, ReactElement } from 'react';
+import React, { useState, useMemo, useEffect, ReactElement } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
@@ -52,6 +52,12 @@ const ContactEdit = ({
 		addContact(url, name);
 		navigation.navigate('Contact', { url });
 	};
+
+	useEffect(() => {
+		if (contact.profile.name && name === null) {
+			setName(contact.profile.name);
+		}
+	}, [contact, name]);
 
 	return (
 		<ThemedView style={styles.container}>
