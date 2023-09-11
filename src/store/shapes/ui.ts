@@ -22,6 +22,7 @@ export const defaultViewControllers: IUi['viewControllers'] = {
 	sendNavigation: defaultViewController,
 	slashauthModal: defaultViewController,
 	timeRangePrompt: defaultViewController,
+	treasureHunt: defaultViewController,
 	tagsPrompt: defaultViewController,
 	lnurlWithdraw: defaultViewController,
 	lnurlPay: defaultViewController,

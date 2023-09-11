@@ -23,6 +23,7 @@ import type { ReceiveStackParamList } from '../bottom-sheet/ReceiveNavigation';
 import type { SendStackParamList } from '../bottom-sheet/SendNavigation';
 import type { LNURLWithdrawStackParamList } from '../bottom-sheet/LNURLWithdrawNavigation';
 import type { LNURLPayStackParamList } from '../bottom-sheet/LNURLPayNavigation';
+import type { TreasureHuntStackParamList } from '../bottom-sheet/TreasureHuntNavigation';
 
 // TODO: move all navigation related types here
 // https://reactnavigation.org/docs/typescript#organizing-types
@@ -117,3 +118,7 @@ export type LNURLWithdrawProps<T extends keyof LNURLWithdrawStackParamList> =
 
 export type LNURLPayProps<T extends keyof LNURLPayStackParamList> =
 	NativeStackScreenProps<LNURLPayStackParamList, T>;
+
+export type TreasureHuntScreenProps<
+	T extends keyof TreasureHuntStackParamList,
+> = NativeStackScreenProps<TreasureHuntStackParamList, T>;

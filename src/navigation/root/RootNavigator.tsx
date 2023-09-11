@@ -60,6 +60,7 @@ import ForceTransfer from '../bottom-sheet/ForceTransfer';
 import CloseChannelSuccess from '../bottom-sheet/CloseChannelSuccess';
 import LNURLWithdrawNavigation from '../bottom-sheet/LNURLWithdrawNavigation';
 import LNURLPayNavigation from '../bottom-sheet/LNURLPayNavigation';
+import TreasureHuntNavigation from '../bottom-sheet/TreasureHuntNavigation';
 import WidgetsSuggestions from '../../screens/Widgets/WidgetsSuggestions';
 import {
 	GoodbyePasswords,
@@ -108,7 +109,7 @@ const RootNavigator = (): ReactElement => {
 	const renderCount = useRenderCount();
 
 	const linking: LinkingOptions<{}> = {
-		prefixes: ['slash', 'bitcoin', 'lightning'],
+		prefixes: ['bitkit', 'slash', 'bitcoin', 'lightning'],
 		// This is just here to prevent a warning
 		config: { screens: { Wallet: '' } },
 		subscribe(listener): () => void {
@@ -248,6 +249,7 @@ const RootNavigator = (): ReactElement => {
 			<BackupSubscriber />
 			<LNURLWithdrawNavigation />
 			<LNURLPayNavigation />
+			<TreasureHuntNavigation />
 
 			<Dialog
 				visible={showDialog && isAuthenticated}

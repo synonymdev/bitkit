@@ -21,7 +21,7 @@ import {
 } from '../../styles/icons';
 import useColors from '../../hooks/colors';
 import Camera from '../../components/Camera';
-import GradientView from '../../components/GradientView';
+import GradientView from '../../components/CameraGradientView';
 import BlurView from '../../components/BlurView';
 import Button from '../../components/Button';
 import { __E2E__ } from '../../constants/env';

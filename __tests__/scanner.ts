@@ -1,4 +1,4 @@
-import { decodeQRData } from '../src/utils/scanner';
+import { TBitcoinUrl, decodeQRData } from '../src/utils/scanner';
 
 describe('QR codes', () => {
 	it('decodes a bitcoin URI with params', async () => {
@@ -8,7 +8,7 @@ describe('QR codes', () => {
 		if (res.isErr()) {
 			throw res.error;
 		}
-		const qrData = res.value[0];
+		const qrData = res.value[0] as TBitcoinUrl;
 		expect(qrData.network).toEqual('bitcoin');
 		expect(qrData.qrDataType).toEqual('bitcoinAddress');
 		expect(qrData.sats).toEqual(50000);
@@ -22,7 +22,7 @@ describe('QR codes', () => {
 		if (res.isErr()) {
 			throw res.error;
 		}
-		const qrData = res.value[0];
+		const qrData = res.value[0] as TBitcoinUrl;
 		expect(qrData.network).toEqual('bitcoin');
 		expect(qrData.qrDataType).toEqual('bitcoinAddress');
 	});
@@ -34,7 +34,7 @@ describe('QR codes', () => {
 		if (res.isErr()) {
 			throw res.error;
 		}
-		const qrData = res.value[0];
+		const qrData = res.value[0] as TBitcoinUrl;
 		expect(qrData.network).toEqual('bitcoin');
 		expect(qrData.qrDataType).toEqual('bitcoinAddress');
 	});
@@ -46,7 +46,7 @@ describe('QR codes', () => {
 		if (res.isErr()) {
 			throw res.error;
 		}
-		const qrData = res.value[0];
+		const qrData = res.value[0] as TBitcoinUrl;
 		expect(qrData.network).toEqual('bitcoin');
 		expect(qrData.qrDataType).toEqual('bitcoinAddress');
 	});
@@ -58,7 +58,7 @@ describe('QR codes', () => {
 		if (res.isErr()) {
 			throw res.error;
 		}
-		const qrData = res.value[0];
+		const qrData = res.value[0] as TBitcoinUrl;
 		expect(qrData.network).toEqual('bitcoin');
 		expect(qrData.qrDataType).toEqual('bitcoinAddress');
 	});

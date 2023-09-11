@@ -73,6 +73,7 @@
 		<dict>
 			<key>CFBundleURLSchemes</key>
 			<array>
+				<string>bitkit</string>
 				<string>slash</string>
 				<string>slashauth</string>
 				<string>bitcoin</string>

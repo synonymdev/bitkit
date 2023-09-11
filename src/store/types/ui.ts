@@ -20,6 +20,7 @@ export type ViewControllerParamList = {
 	sendNavigation: { screen: keyof SendStackParamList } | undefined;
 	slashauthModal: { url: string };
 	timeRangePrompt: undefined;
+	treasureHunt: { id: string };
 	tagsPrompt: undefined;
 	lnurlWithdraw: { wParams: LNURLWithdrawParams };
 	lnurlPay: { pParams: LNURLPayParams };
