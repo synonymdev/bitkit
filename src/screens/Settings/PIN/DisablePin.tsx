@@ -25,7 +25,7 @@ const DisablePin = ({
 				// hack needed for Android
 				setTimeout(() => {
 					removePin();
-					navigation.replace('SecuritySettings');
+					navigation.pop(2);
 				}, 100);
 			},
 		});
