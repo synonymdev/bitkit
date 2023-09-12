@@ -4,12 +4,10 @@
   "version": "1.0.0-beta.60",
   "private": false,
   "scripts": {
-    "setup-android": "yarn add -D github:sodium-friends/react-native-libsodium#6fbfee572fdfde7e7eec7a1956951d106b342145",
+    "start": "react-native start",
     "android": "react-native run-android",
-    "setup-ios": "yarn add -D react-native-libsodium@0.7.0",
     "ios": "react-native run-ios --simulator='iPhone 14'",
     "ios:se": "react-native run-ios --simulator='iPhone SE (3rd generation)'",
-    "start": "react-native start",
     "test": "jest --forceExit",
     "test:coverage": "jest --forceExit --coverage=true",
     "e2e:build:ios-debug": "detox build --configuration ios.debug",
@@ -209,7 +207,6 @@
     "prettier": "^2.8.8",
     "punycode": "^2.3.0",
     "react-native-flipper": "^0.191.0",
-    "react-native-libsodium": "0.7.0",
     "react-native-mmkv-flipper-plugin": "^1.0.0",
     "react-native-svg-transformer": "^1.0.0",
     "react-test-renderer": "18.2.0",
@@ -233,7 +230,6 @@
     "_stream_passthrough": "readable-stream/passthrough",
     "stream": "stream-browserify",
     "vm": "vm-browserify",
-    "sodium-native": "react-native-libsodium",
     "net": "react-native-tcp-socket"
   },
   "browser": {

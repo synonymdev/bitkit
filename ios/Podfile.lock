@@ -352,8 +352,6 @@ PODS:
     - React-Core
   - react-native-ldk (0.0.105):
     - React
-  - react-native-libsodium (0.7.0):
-    - React-Core
   - react-native-mmkv (2.8.0):
     - MMKV (>= 1.2.13)
     - React-Core
@@ -596,7 +594,6 @@ DEPENDENCIES:
   - react-native-image-picker (from `../node_modules/react-native-image-picker`)
   - "react-native-keep-awake (from `../node_modules/@sayem314/react-native-keep-awake`)"
   - "react-native-ldk (from `../node_modules/@synonymdev/react-native-ldk`)"
-  - react-native-libsodium (from `../node_modules/react-native-libsodium`)
   - react-native-mmkv (from `../node_modules/react-native-mmkv`)
   - "react-native-netinfo (from `../node_modules/@react-native-community/netinfo`)"
   - react-native-randombytes (from `../node_modules/react-native-randombytes`)
@@ -721,8 +718,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@sayem314/react-native-keep-awake"
   react-native-ldk:
     :path: "../node_modules/@synonymdev/react-native-ldk"
-  react-native-libsodium:
-    :path: "../node_modules/react-native-libsodium"
   react-native-mmkv:
     :path: "../node_modules/react-native-mmkv"
   react-native-netinfo:
@@ -852,7 +847,6 @@ SPEC CHECKSUMS:
   react-native-image-picker: ec9b713e248760bfa0f879f0715391de4651a7cb
   react-native-keep-awake: caee3ff89eaa21dfe29010f0d143566874a04441
   react-native-ldk: a52fd92b755b8f9f1da6b4e59102e20076392c20
-  react-native-libsodium: 2834a805c906aef4b7609019bcc87e7d9eb86b23
   react-native-mmkv: 7da5e18e55c04a9af9a7e0ab9792a1e8d33765a1
   react-native-netinfo: 22c082970cbd99071a4e5aa7a612ac20d66b08f0
   react-native-randombytes: 421f1c7d48c0af8dbcd471b0324393ebf8fe7846
