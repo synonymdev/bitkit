@@ -85,7 +85,7 @@ const ReceiveQR = ({
 	const dimensions = useWindowDimensions();
 	const progressValue = useSharedValue(0);
 	const carouselRef = useRef<ICarouselInstance>(null);
-	const qrRef = useRef<string>();
+	const qrRef = useRef<any>('');
 
 	const [loading, setLoading] = useState(true);
 	const [receiveAddress, setReceiveAddress] = useState('');
@@ -304,13 +304,7 @@ const ReceiveQR = ({
 						value={uri}
 						size={qrSize}
 						quietZone={16}
-						getRef={(c): void => {
-							if (c) {
-								c.toDataURL((data: string) => {
-									qrRef.current = data.replace(/(\r\n|\n|\r)/gm, '');
-								});
-							}
-						}}
+						getRef={(c): void => (qrRef.current = c)}
 					/>
 					<QrIcon />
 
@@ -338,7 +332,10 @@ const ReceiveQR = ({
 						icon={<ShareIcon width={18} color="brand" />}
 						disabled={isSharing}
 						onPress={(): void => {
-							handleShare(uri, qrRef.current);
+							qrRef.current?.toDataURL((data: string) => {
+								const imageData = data.replace(/(\r\n|\n|\r)/gm, '');
+								handleShare(uri, imageData);
+							});
 						}}
 					/>
 				</View>
