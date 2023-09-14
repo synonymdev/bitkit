@@ -1,20 +1,22 @@
 import React, { useState, useMemo, useEffect, ReactElement } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import { parse } from '@synonymdev/slashtags-url';
 
 import { View as ThemedView } from '../../styles/components';
-import NavigationHeader from '../../components/NavigationHeader';
+import Button from '../../components/Button';
+import Divider from '../../components/Divider';
 import SafeAreaInset from '../../components/SafeAreaInset';
+import HourglassSpinner from '../../components/HourglassSpinner';
+import NavigationHeader from '../../components/NavigationHeader';
 import KeyboardAvoidingView from '../../components/KeyboardAvoidingView';
 import ProfileCard, { MAX_NAME_LENGTH } from '../../components/ProfileCard';
-import Button from '../../components/Button';
-import { useProfile2 } from '../../hooks/slashtags2';
 import { RootStackScreenProps } from '../../navigation/types';
-import Divider from '../../components/Divider';
-import HourglassSpinner from '../../components/HourglassSpinner';
-import { contactSelector } from '../../store/reselect/slashtags';
 import { addContact } from '../../store/actions/slashtags';
+import { contactSelector } from '../../store/reselect/slashtags';
 import { useAppSelector } from '../../hooks/redux';
+import { useProfile2, useSelectedSlashtag2 } from '../../hooks/slashtags2';
+import { Text02S } from '../../styles/text';
 
 const ContactEdit = ({
 	navigation,
@@ -25,7 +27,8 @@ const ContactEdit = ({
 	const savedContact = useAppSelector((state) => {
 		return contactSelector(state, url);
 	});
-	const contact = useProfile2(url, { resolve: true });
+	const contact = useProfile2(url);
+	const { url: myProfileUrl } = useSelectedSlashtag2();
 	const [name, setName] = useState<string | null>(savedContact?.name || null);
 
 	const profile = useMemo(
@@ -38,6 +41,14 @@ const ContactEdit = ({
 		[contact.profile, name],
 	);
 
+	const myProfile = useMemo(() => {
+		try {
+			return parse(myProfileUrl).id === parse(url).id;
+		} catch (e) {
+			return false;
+		}
+	}, [myProfileUrl, url]);
+
 	const resolving = !savedContact && contact.resolving;
 
 	const onDiscard = (): void => {
@@ -49,8 +60,8 @@ const ContactEdit = ({
 			return;
 		}
 		// To avoid phishing attacks, a name should always be saved in contact record
-		addContact(url, name);
-		navigation.navigate('Contact', { url });
+		addContact(contact.url, name);
+		navigation.navigate('Contact', { url: contact.url });
 	};
 
 	useEffect(() => {
@@ -74,7 +85,7 @@ const ContactEdit = ({
 			/>
 			<KeyboardAvoidingView style={styles.content}>
 				<ProfileCard
-					url={url}
+					url={contact.url}
 					resolving={resolving}
 					profile={profile}
 					editable={true}
@@ -84,6 +95,12 @@ const ContactEdit = ({
 				/>
 
 				{resolving ? <HourglassSpinner /> : <Divider />}
+
+				{myProfile && (
+					<View style={styles.error} testID="ContactError">
+						<Text02S color="brand">{t('contact_error_yourself')}</Text02S>
+					</View>
+				)}
 
 				<View style={styles.buttonContainer}>
 					<Button
@@ -98,7 +115,7 @@ const ContactEdit = ({
 						style={styles.button}
 						text={t('save')}
 						size="large"
-						disabled={!name}
+						disabled={myProfile || !name}
 						onPress={onSave}
 						testID="SaveContactButton"
 					/>
@@ -127,6 +144,11 @@ const styles = StyleSheet.create({
 	},
 	divider: {
 		width: 16,
+	},
+	error: {
+		justifyContent: 'center',
+		alignItems: 'center',
+		flex: 1,
 	},
 });
 

@@ -4,6 +4,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import Clipboard from '@react-native-clipboard/clipboard';
 import { useTranslation } from 'react-i18next';
 import { SlashURL } from '@synonymdev/slashtags-sdk';
+import { parse } from '@synonymdev/slashtags-url';
 
 import { closeBottomSheet } from '../../store/actions/ui';
 import { handleSlashtagURL } from '../../utils/slashtags';
@@ -38,10 +39,16 @@ const AddContact = ({
 
 		if (url === '') {
 			return;
-		} else if (url === myProfileURL) {
-			setError(t('contact_error_yourself'));
-			return;
-		} else if (!url.startsWith('slash:')) {
+		}
+
+		try {
+			if (parse(url).id === parse(myProfileURL).id) {
+				setError(t('contact_error_yourself'));
+				return;
+			}
+		} catch (e) {}
+
+		if (!url.startsWith('slash:')) {
 			// Handle z32 key without slash: scheme prefix
 			try {
 				SlashURL.decode(url);
@@ -104,7 +111,7 @@ const AddContact = ({
 					</LabeledInput>
 
 					{error && (
-						<View style={styles.error}>
+						<View style={styles.error} testID="ContactError">
 							<Text02S color="brand">{error}</Text02S>
 						</View>
 					)}

@@ -84,7 +84,7 @@ const _SlashAuthModal = (): ReactElement => {
 	const url = useMemo(() => SlashURL.format(parsed.key), [parsed.key]);
 
 	const { slashtag } = useSelectedSlashtag();
-	const { profile } = useProfile(url, { resolve: true });
+	const { profile } = useProfile(url);
 
 	const server: IContactRecord = useMemo(() => {
 		return { url, ...profile, name: profile.name || '' };

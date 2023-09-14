@@ -1,16 +1,14 @@
 import BitcoinJsonRpc from 'bitcoin-json-rpc';
 
 import {
-	sleep,
-	checkComplete,
-	markComplete,
-	launchAndWait,
-	completeOnboarding,
 	bitcoinURL,
+	checkComplete,
+	completeOnboarding,
+	launchAndWait,
+	markComplete,
+	sleep,
 } from './helpers';
 import initWaitForElectrumToSync from '../__tests__/utils/wait-for-electrum';
-
-// const __DEV__ = process.env.DEV === 'true';
 
 d = checkComplete('slash-1') ? describe.skip : describe;
 
@@ -104,6 +102,9 @@ d('Profile and Contacts', () => {
 			await expect(element(by.text('TestName'))).toExist();
 			await expect(element(by.text('Testing Bitkit for sats'))).toExist();
 			await element(by.id('CopyButton')).tap();
+			const { label: slashtagsUrl } = await element(
+				by.id('ProfileSlashtag'),
+			).getAttributes();
 
 			// EDIT PROFILE
 			await element(by.id('EditButton')).tap();
@@ -123,7 +124,12 @@ d('Profile and Contacts', () => {
 			// ADD CONTACTS
 			await element(by.id('HeaderContactsButton')).tap();
 			await element(by.id('ContactsOnboardingButton')).tap();
+
+			// self
 			await element(by.id('AddContact')).tap();
+			await element(by.id('ContactURLInput')).typeText(slashtagsUrl + '\n');
+			// await element(by.id('ContactURLInput')).tapReturnKey();
+			await expect(element(by.id('ContactError'))).toBeVisible();
 
 			// Satoshi
 			await element(by.id('ContactURLInput')).replaceText(satoshi.url);
@@ -138,10 +144,7 @@ d('Profile and Contacts', () => {
 			await element(by.id('NavigationBack')).atIndex(2).tap();
 
 			// Hal
-			// TODO: fix bottom sheet not closing
-			// if (__DEV__) {
 			await element(by.id('AddContact')).tap();
-			// }
 			await element(by.id('ContactURLInput')).replaceText(hal.url);
 			await waitFor(element(by.id('NameInput')))
 				.toBeVisible()
@@ -165,10 +168,10 @@ d('Profile and Contacts', () => {
 			await expect(element(by.text(hal.name2))).toBeVisible();
 
 			// REMOVE CONTACT
-			// await element(by.text(hal.name2)).tap();
-			// await element(by.id('DeleteContactButton')).tap();
-			// await element(by.id('DialogConfirm')).tap();
-			// await expect(element(by.text(hal.name2))).not.toBeVisible();
+			await element(by.text(hal.name2)).tap();
+			await element(by.id('DeleteContactButton')).tap();
+			await element(by.id('DialogConfirm')).tap();
+			await expect(element(by.text(hal.name2))).not.toBeVisible();
 			await element(by.id('NavigationClose')).tap();
 
 			// RECEIVE MONEY AND ATTACH CONTACT TO THE TRANSACTION

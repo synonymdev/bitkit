@@ -22,6 +22,7 @@ import {
 	onboardedContactsSelector,
 } from '../../store/reselect/slashtags';
 import ProfileImage from '../../components/ProfileImage';
+import { parse } from '@synonymdev/slashtags-url';
 
 const Contacts = (props: RootStackScreenProps<'Contacts'>): ReactElement => {
 	const onboarded = useSelector(onboardedContactsSelector);
@@ -86,7 +87,7 @@ const ContactsScreen = ({
 						searchFilter={searchFilter}
 						includeMyProfile={true}
 						onPress={({ url }): void => {
-							const isContact = url !== myProfileURL;
+							const isContact = parse(url).id !== parse(myProfileURL).id;
 							if (isContact) {
 								navigation.navigate('Contact', { url });
 							} else {

@@ -31,7 +31,7 @@ import {
 } from '../../styles/icons';
 import { BasicProfile } from '../../store/types/slashtags';
 import { onboardingProfileStepSelector } from '../../store/reselect/slashtags';
-import { useProfile2, useSlashtags2 } from '../../hooks/slashtags2';
+import { useProfile2, useSelectedSlashtag2 } from '../../hooks/slashtags2';
 import { truncate } from '../../utils/helpers';
 import NavigationHeader from '../../components/NavigationHeader';
 import SafeAreaInset from '../../components/SafeAreaInset';
@@ -64,8 +64,8 @@ const ProfileScreen = ({
 	navigation,
 }: RootStackScreenProps<'Profile'>): ReactElement => {
 	const { t } = useTranslation('slashtags');
-	const { url } = useSlashtags2();
-	const { profile } = useProfile2(url, { resolve: true });
+	const { url } = useSelectedSlashtag2();
+	const { profile } = useProfile2(url);
 	const qrRef = useRef<string>();
 
 	const [showCopy, setShowCopy] = useState(false);

@@ -40,7 +40,7 @@ const AuthWidget = ({
 }): ReactElement => {
 	const { t } = useTranslation('slashtags');
 	const { slashtag } = useSelectedSlashtag();
-	const { profile } = useProfile(url, { resolve: true });
+	const { profile } = useProfile(url);
 	const [showDialog, setShowDialog] = useState(false);
 
 	const client = useMemo(() => new Client(slashtag), [slashtag]);

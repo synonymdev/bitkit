@@ -32,4 +32,5 @@ declare module '@env' {
 	export const WALLET_DEFAULT_SELECTED_NETWORK: string;
 
 	export const E2E: string;
+	export const WEB_RELAY: string;
 }

@@ -86,7 +86,7 @@ const ProfileCard = ({
 							)}
 						</View>
 					)}
-					<SlashtagURL style={styles.url} url={url} />
+					<SlashtagURL style={styles.url} url={url} testID="ProfileSlashtag" />
 				</View>
 
 				{editable && !contact ? (

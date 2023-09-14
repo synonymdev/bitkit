@@ -13,6 +13,7 @@ import {
 	CopyIcon,
 	PencileIcon,
 	ShareIcon,
+	TrashIcon,
 } from '../../styles/icons';
 import NavigationHeader from '../../components/NavigationHeader';
 import SafeAreaInset from '../../components/SafeAreaInset';
@@ -51,7 +52,7 @@ const Contact = ({
 	const contacts = useSelector(contactsSelector);
 	const sdk = useSlashtagsSDK();
 
-	const { profile } = useProfile2(url, { resolve: true });
+	const { profile } = useProfile2(url);
 	const savedContact = useMemo(() => {
 		const { id } = parse(url);
 		return contacts[id];
@@ -173,14 +174,14 @@ const Contact = ({
 							}}>
 							<PencileIcon height={20} width={20} color="brand" />
 						</IconButton>
-						{/*<IconButton*/}
-						{/*	style={styles.iconButton}*/}
-						{/*	onPress={(): void => {*/}
-						{/*		setShowDialog(true);*/}
-						{/*	}}*/}
-						{/*	testID="DeleteContactButton">*/}
-						{/*	<TrashIcon height={24} width={24} color="brand" />*/}
-						{/*</IconButton>*/}
+						<IconButton
+							style={styles.iconButton}
+							onPress={(): void => {
+								setShowDialog(true);
+							}}
+							testID="DeleteContactButton">
+							<TrashIcon height={24} width={24} color="brand" />
+						</IconButton>
 					</View>
 					<ProfileLinks style={styles.links} links={profileLinksWithIds} />
 

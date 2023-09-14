@@ -14,14 +14,16 @@ const SlashtagURL = ({
 	color = 'brand',
 	size = 'medium',
 	onPress,
+	testID,
 }: {
 	url: string;
 	style?: StyleProp<ViewStyle>;
 	color?: keyof IThemeColors;
 	size?: 'small' | 'medium' | 'large';
 	onPress?: () => void;
+	testID?: string;
 }): ReactElement => {
-	const { id, path } = parse(url);
+	const { id } = parse(url);
 
 	const Text = useMemo(() => {
 		switch (size) {
@@ -39,6 +41,8 @@ const SlashtagURL = ({
 			style={style}
 			activeOpacity={0.8}
 			delayLongPress={500}
+			testID={testID}
+			accessibilityLabel={url}
 			onPress={onPress}
 			onLongPress={(): void => {
 				if (url) {
@@ -46,10 +50,7 @@ const SlashtagURL = ({
 					console.debug('Copied slashtag url:', url);
 				}
 			}}>
-			<Text color={color}>
-				@{ellipsis(id, 10)}
-				{path}
-			</Text>
+			<Text color={color}>@{ellipsis(id, 10)}</Text>
 		</TouchableOpacity>
 	);
 };

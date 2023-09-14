@@ -25,6 +25,7 @@ import {
 	getSelectedWallet,
 } from '../wallet';
 import SlashpayConfig from './slashpay';
+import { __WEB_RELAY__ } from '../../constants/env';
 
 export const saveProfile2 = async (
 	url: string,
@@ -48,6 +49,14 @@ export const saveProfile2 = async (
 };
 
 const INVOICE_EXPIRY_DELTA = 60 * 60 * 24 * 7; // one week
+
+export const getNewProfileUrl = (url: string): string => {
+	const parsed = parse(url);
+	const res = format(parsed.key, {
+		query: { relay: __WEB_RELAY__ },
+	});
+	return res;
+};
 
 export const updateSlashPayConfig2 = debounce(
 	async ({
