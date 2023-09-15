@@ -49,7 +49,6 @@ const DevSettings = ({
 
 	const settingsListData: IListData[] = [
 		{
-			title: 'Slashtags',
 			data: [
 				{
 					title: 'Slashtags Settings',
@@ -58,6 +57,14 @@ const DevSettings = ({
 					testID: 'SlashtagsSettings',
 					onPress: (): void => {
 						navigation.navigate('SlashtagsSettings');
+					},
+				},
+				{
+					title: 'Fee Settings',
+					type: EItemType.button,
+					testID: 'FeeSettings',
+					onPress: (): void => {
+						navigation.navigate('FeeSettings');
 					},
 				},
 			],

@@ -2339,25 +2339,24 @@ export interface IGetFeeEstimatesResponse {
  */
 export const getFeeEstimates = async (
 	selectedNetwork?: TAvailableNetworks,
-): Promise<IOnchainFees> => {
+): Promise<Result<IOnchainFees>> => {
 	try {
 		if (!selectedNetwork) {
 			selectedNetwork = getSelectedNetwork();
 		}
 
 		if (__E2E__) {
-			return defaultFeesShape.onchain;
+			return ok({
+				...defaultFeesShape.onchain,
+				timestamp: Date.now(),
+			});
 		}
 
-		if (__DEV__ && selectedNetwork === EAvailableNetworks.bitcoinRegtest) {
-			// use the same fee rates on regtest as Blocktank LND
-			return {
-				fast: 60,
-				normal: 50,
-				slow: 40,
-				minimum: 30,
+		if (selectedNetwork === EAvailableNetworks.bitcoinRegtest) {
+			return ok({
+				...defaultFeesShape.onchain,
 				timestamp: Date.now(),
-			};
+			});
 		}
 
 		const urlModifier = selectedNetwork === 'bitcoin' ? '' : 'testnet/';
@@ -2365,15 +2364,15 @@ export const getFeeEstimates = async (
 			`https://mempool.space/${urlModifier}api/v1/fees/recommended`,
 		);
 		const res: IGetFeeEstimatesResponse = await response.json();
-		return {
+		return ok({
 			fast: res.fastestFee,
 			normal: res.halfHourFee,
 			slow: res.hourFee,
 			minimum: res.minimumFee,
 			timestamp: Date.now(),
-		};
-	} catch {
-		return defaultFeesShape.onchain;
+		});
+	} catch (e) {
+		return err(e);
 	}
 };
 

@@ -8,3 +8,8 @@ export const onChainFeesSelector = createSelector(
 	[feesState],
 	(fees): IOnchainFees => fees.onchain,
 );
+
+export const overrideFeeSelector = createSelector(
+	[feesState],
+	(fees): boolean => fees.override,
+);

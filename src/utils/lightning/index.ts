@@ -219,19 +219,20 @@ export const setupLdk = async ({
 		if (storageRes.isErr()) {
 			return err(storageRes.error);
 		}
-		const fees = getFeesStore().onchain;
 		const peers = await getLightningNodePeers({
 			selectedWallet,
 			selectedNetwork,
 		});
 		const lmStart = await lm.start({
 			account: account.value,
-			getFees: () =>
-				Promise.resolve({
-					highPriority: selectedNetwork === 'bitcoinRegtest' ? 4 : fees.fast,
-					normal: selectedNetwork === 'bitcoinRegtest' ? 2 : fees.normal,
-					background: selectedNetwork === 'bitcoinRegtest' ? 1 : fees.slow,
-				}),
+			getFees: async () => {
+				const fees = getFeesStore().onchain;
+				return {
+					highPriority: fees.fast,
+					normal: fees.normal,
+					background: fees.slow,
+				};
+			},
 			network,
 			getBestBlock,
 			getAddress,

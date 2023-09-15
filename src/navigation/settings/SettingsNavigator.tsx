@@ -42,6 +42,7 @@ import ExportToPhone from '../../screens/Settings/Backup/ExportToPhone';
 import ResetAndRestore from '../../screens/Settings/Backup/ResetAndRestore';
 import SuggestionsSettings from '../../screens/Settings/Suggestions';
 import TagsSettings from '../../screens/Settings/Tags';
+import FeeSettings from '../../screens/Settings/Fee';
 import SlashtagsSettings from '../../screens/Settings/SlashtagsSettings';
 import LightningNavigator, {
 	LightningStackParamList,
@@ -91,6 +92,7 @@ export type SettingsStackParamList = {
 	SuggestionsSettings: undefined;
 	TagsSettings: undefined;
 	AddressViewer: undefined;
+	FeeSettings: undefined;
 };
 
 const Stack = createStackNavigator<SettingsStackParamList>();
@@ -164,6 +166,7 @@ const SettingsNavigator = (): ReactElement => {
 				component={SuggestionsSettings}
 			/>
 			<Stack.Screen name="TagsSettings" component={TagsSettings} />
+			<Stack.Screen name="FeeSettings" component={FeeSettings} />
 		</Stack.Navigator>
 	);
 };
