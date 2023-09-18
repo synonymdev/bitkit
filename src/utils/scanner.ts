@@ -813,6 +813,7 @@ export const handleData = async ({
 
 	if (
 		qrDataType === EQRDataType.bitcoinAddress &&
+		data.network &&
 		data.network !== selectedNetwork
 	) {
 		showToast({
