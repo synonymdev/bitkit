@@ -78,6 +78,7 @@ import { TLightningNodeVersion } from '../../store/types/lightning';
 import { getBlocktankInfo, isGeoBlocked } from '../blocktank';
 import { updateOnchainFeeEstimates } from '../../store/actions/fees';
 import { addTodo, removeTodo } from '../../store/actions/todos';
+import { __TRUSTED_ZERO_CONF_PEERS__ } from '../../constants/env';
 
 let LDKIsStayingSynced = false;
 
@@ -219,10 +220,6 @@ export const setupLdk = async ({
 		if (storageRes.isErr()) {
 			return err(storageRes.error);
 		}
-		const peers = await getLightningNodePeers({
-			selectedWallet,
-			selectedNetwork,
-		});
 		const lmStart = await lm.start({
 			account: account.value,
 			getFees: async () => {
@@ -257,7 +254,7 @@ export const setupLdk = async ({
 				},
 				manually_accept_inbound_channels: true,
 			},
-			trustedZeroConfPeers: peers,
+			trustedZeroConfPeers: __TRUSTED_ZERO_CONF_PEERS__,
 		});
 
 		if (lmStart.isErr()) {
