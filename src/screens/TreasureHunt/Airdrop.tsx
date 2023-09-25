@@ -5,12 +5,12 @@ import React, {
 	useEffect,
 	useRef,
 } from 'react';
-import { AppState, Platform, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { useSelector } from 'react-redux';
-import { useFocusEffect } from '@react-navigation/native';
 import { SvgXml } from 'react-native-svg';
-import Lottie from 'lottie-react-native';
 import { ldk } from '@synonymdev/react-native-ldk';
+import { getUniqueId, isEmulator } from 'react-native-device-info';
+import { sha256 } from 'bitcoinjs-lib/src/crypto';
 
 import { Caption13M, Text01M } from '../../styles/text';
 import GradientView from '../../components/GradientView';
@@ -19,19 +19,16 @@ import Title from './Title';
 import GradientText from './GradientText';
 import useDisplayValues from '../../hooks/displayValues';
 import { EUnit } from '../../store/types/wallet';
-import { emptyPrize, prizes } from './prizes';
-import BitkitLogo from '../../assets/bitkit-logo.svg';
+import { airdrop } from './prizes';
 import { useLightningMaxInboundCapacity } from '../../hooks/lightning';
 import { getNodeIdFromStorage, waitForLdk } from '../../utils/lightning';
 import { createLightningInvoice } from '../../store/actions/lightning';
 import { useAppSelector } from '../../hooks/redux';
 import { updateSettings } from '../../store/actions/settings';
 import { viewControllerSelector } from '../../store/reselect/ui';
-import { useScreenSize } from '../../hooks/screen';
 import { __TREASURE_HUNT_HOST__ } from '../../constants/env';
+import BitkitLogo from '../../assets/bitkit-logo.svg';
 import type { TreasureHuntScreenProps } from '../../navigation/types';
-
-const confettiSrc = require('../../assets/lottie/confetti-yellow.json');
 
 const lightningIcon = `
   <svg width="14" height="16" viewBox="0 0 14 16">
@@ -51,67 +48,23 @@ const lightningIcon = `
   </svg>
 `;
 
-const Prize = ({
+const Airdrop = ({
 	navigation,
-}: TreasureHuntScreenProps<'Prize'>): ReactElement => {
+}: TreasureHuntScreenProps<'Airdrop'>): ReactElement => {
 	const interval = useRef<NodeJS.Timer>();
-	const animationRef = useRef<Lottie>(null);
-	const appState = useRef(AppState.currentState);
-	const { isSmallScreen } = useScreenSize();
-	const { treasureChests } = useAppSelector((state) => state.settings);
 	const maxInboundCapacitySat = useLightningMaxInboundCapacity();
 	const { chestId } = useSelector((state) => {
 		return viewControllerSelector(state, 'treasureHunt');
 	});
 
+	const { treasureChests } = useAppSelector((state) => state.settings);
 	const chest = treasureChests.find((c) => c.chestId === chestId)!;
-	const chests = treasureChests.filter((c) => !c.isAirdrop);
-	const chestIndex = chests.indexOf(chest);
-
 	const { attemptId, state, winType } = chest;
 	const isPaid = state === 'success';
 
-	let prize = emptyPrize;
-	if (winType && winType !== 'empty') {
-		prize = prizes[chestIndex].find((p) => p.winType === winType)!;
-	}
+	const prize = winType !== 'empty' ? airdrop[1] : airdrop[0];
 
 	const dv = useDisplayValues(prize.amount, EUnit.satoshi);
-	const isWinner = prize.winType === 'winning';
-
-	// TEMP: fix iOS animation autoPlay
-	// @see https://github.com/lottie-react-native/lottie-react-native/issues/832
-	useFocusEffect(
-		useCallback(() => {
-			if (Platform.OS === 'ios') {
-				animationRef.current?.reset();
-				setTimeout(() => {
-					animationRef.current?.play();
-				}, 0);
-			}
-		}, []),
-	);
-
-	// TEMP: fix iOS animation on app to foreground
-	useEffect(() => {
-		const appStateSubscription = AppState.addEventListener(
-			'change',
-			(nextAppState) => {
-				if (
-					appState.current.match(/inactive|background/) &&
-					nextAppState === 'active'
-				) {
-					animationRef.current?.play();
-				}
-
-				appState.current = nextAppState;
-			},
-		);
-
-		return () => {
-			appStateSubscription.remove();
-		};
-	}, []);
 
 	const getLightningInvoice = useCallback(async (): Promise<string> => {
 		await waitForLdk();
@@ -132,9 +85,61 @@ const Prize = ({
 	}, []);
 
 	useEffect(() => {
-		if (winType === 'empty') {
-			return;
-		}
+		const openChest = async (): Promise<void> => {
+			const nodePublicKey = getNodeIdFromStorage();
+			const isSimulator = await isEmulator();
+			let deviceId = nodePublicKey;
+
+			if (!isSimulator) {
+				// Device check is only available for physical devices
+				const uniqueId = await getUniqueId();
+				const buffer = Buffer.from(uniqueId, 'utf8');
+				deviceId = sha256(buffer).toString('hex');
+			}
+
+			const input = {
+				chestId,
+				deviceId,
+				nodePublicKey,
+			};
+			const signResult = await ldk.nodeSign({
+				message: JSON.stringify(input),
+				messagePrefix: '',
+			});
+			if (signResult.isErr()) {
+				navigation.replace('Error');
+				return;
+			}
+			const signature = signResult.value;
+
+			const response = await fetch(__TREASURE_HUNT_HOST__, {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({
+					method: 'openChest',
+					params: { input, signature },
+				}),
+			});
+
+			const { result } = await response.json();
+
+			if (!result.error) {
+				const updated = {
+					...chest,
+					chestId: chestId!,
+					state: 'opened' as const,
+					attemptId: result.attemptId,
+					winType: result.winType,
+				};
+				const newChests = treasureChests.map((c) => {
+					return c !== chest ? c : updated;
+				});
+
+				updateSettings({ treasureChests: newChests });
+			} else {
+				navigation.replace('Error');
+			}
+		};
 
 		const claimPrize = async (): Promise<void> => {
 			const invoice = await getLightningInvoice();
@@ -162,15 +167,7 @@ const Prize = ({
 					headers: { 'Content-Type': 'application/json' },
 					body: JSON.stringify({
 						method: 'grabTreasure',
-						params: {
-							input: {
-								attemptId,
-								invoice,
-								maxInboundCapacitySat,
-								nodePublicKey,
-							},
-							signature,
-						},
+						params: { input, signature },
 					}),
 				});
 
@@ -180,18 +177,20 @@ const Prize = ({
 					console.log(result.error);
 					return;
 				} else {
-					const updated = {
+					const newChest = {
 						...chest,
 						chestId: chestId!,
 						attemptId,
 						state: 'claimed' as const,
 						winType,
 					};
-					const newChests = treasureChests.map((c) => {
-						return c !== chest ? c : updated;
-					});
 
-					updateSettings({ treasureChests: newChests });
+					updateSettings({
+						treasureChests: [
+							...treasureChests.filter((c) => c.chestId !== chestId!),
+							newChest,
+						],
+					});
 				}
 			}
 		};
@@ -240,31 +239,23 @@ const Prize = ({
 			}
 		};
 
+		if (state === 'found') {
+			openChest();
+		}
+
 		if (state === 'opened') {
 			setTimeout(claimPrize, 10000);
 		}
 
-		if (state !== 'success' && state !== 'failed') {
+		if (state === 'claimed') {
 			interval.current = setInterval(checkPayment, 20000);
 		}
 
-		// onMount
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
+	}, [state]);
 
 	return (
 		<GradientView style={styles.container} image={prize.image}>
-			{isWinner && (
-				<View style={styles.confetti} pointerEvents="none">
-					<Lottie
-						ref={animationRef}
-						onLayout={(_): void => animationRef.current?.play()}
-						source={confettiSrc}
-						autoPlay
-						loop
-					/>
-				</View>
-			)}
 			<View style={styles.logo} pointerEvents="none">
 				<BitkitLogo height={32} width={90} />
 			</View>
@@ -282,13 +273,13 @@ const Prize = ({
 				<Text01M style={styles.description} color="yellow">
 					{prize.description}
 				</Text01M>
-				{/* eslint-disable-next-line react-native/no-inline-styles */}
-				<View style={[styles.note, { marginTop: isSmallScreen ? 40 : 80 }]}>
-					{prize.note ? (
+				<View style={styles.note}>
+					{prize.winType === 'empty' && (
 						<Caption13M style={styles.noteText} color="yellow">
 							{prize.note}
 						</Caption13M>
-					) : (
+					)}
+					{prize.winType === 'winning' && (
 						<Caption13M style={styles.noteText} color="yellow">
 							{isPaid ? (
 								<Caption13M color="brand">
@@ -299,8 +290,7 @@ const Prize = ({
 									The payout may take about a minute.{' '}
 								</Caption13M>
 							)}
-							Each treasure chest you discover boosts the prize and odds of
-							winning!
+							{prize.note}
 						</Caption13M>
 					)}
 				</View>
@@ -313,16 +303,6 @@ const Prize = ({
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-	},
-	confetti: {
-		...StyleSheet.absoluteFillObject,
-		// fix Android confetti height
-		...Platform.select({
-			android: {
-				width: '180%',
-			},
-		}),
-		// zIndex: 1,
 	},
 	logo: {
 		flexDirection: 'row',
@@ -350,11 +330,13 @@ const styles = StyleSheet.create({
 		marginTop: 'auto',
 		textAlign: 'center',
 	},
-	note: {},
+	note: {
+		marginTop: 80,
+	},
 	noteText: {
 		opacity: 0.6,
 		textAlign: 'center',
 	},
 });
 
-export default memo(Prize);
+export default memo(Airdrop);

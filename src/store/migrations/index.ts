@@ -197,6 +197,15 @@ const migrations = {
 			},
 		};
 	},
+	20: (state): PersistedState => {
+		return {
+			...state,
+			settings: {
+				...state.settings,
+				treasureChests: [],
+			},
+		};
+	},
 };
 
 export default migrations;

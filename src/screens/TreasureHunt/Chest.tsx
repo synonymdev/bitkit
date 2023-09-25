@@ -1,17 +1,17 @@
-import React, { ReactElement, memo } from 'react';
+import React, { ReactElement, memo, useCallback } from 'react';
 import { StyleSheet, Platform, View, TouchableOpacity } from 'react-native';
 import { useSelector } from 'react-redux';
 
-import { Text02M } from '../../styles/text';
+import { Subtitle, Text02M } from '../../styles/text';
 import GradientView from '../../components/GradientView';
 import SafeAreaInset from '../../components/SafeAreaInset';
 import BlurView from '../../components/BlurView';
-import { useLightningBalance } from '../../hooks/lightning';
 import { useBottomSheetBackPress } from '../../hooks/bottomSheet';
 import { viewControllerSelector } from '../../store/reselect/ui';
 import GradientText from './GradientText';
 import Title from './Title';
 import BitkitLogo from '../../assets/bitkit-logo.svg';
+import Store from '../../store/types';
 import type { TreasureHuntScreenProps } from '../../navigation/types';
 
 const imageSrc = require('../../assets/treasure-hunt/treasure.jpg');
@@ -19,35 +19,62 @@ const imageSrc = require('../../assets/treasure-hunt/treasure.jpg');
 const Chest = ({
 	navigation,
 }: TreasureHuntScreenProps<'Chest'>): ReactElement => {
-	const { remoteBalance } = useLightningBalance(false);
-	const { id } = useSelector((state) => {
+	const { treasureChests } = useSelector((state: Store) => state.settings);
+	const { chestId } = useSelector((state) => {
 		return viewControllerSelector(state, 'treasureHunt');
 	});
 
+	const chest = treasureChests.find((c) => c.chestId === chestId!);
+	const chests = treasureChests.filter((c) => !c.isAirdrop);
+	const chestIndex = chest ? chests.indexOf(chest) : treasureChests.length;
+
 	useBottomSheetBackPress('treasureHunt');
 
-	console.log({ id });
-	console.log({ remoteBalance });
+	const onOpen = useCallback(async () => {
+		if (chestId) {
+			const hasFailed = chest?.state === 'failed';
+			const hasOpened = ['opened', 'claimed', 'success'].includes(
+				chest?.state!,
+			);
+
+			if (hasFailed) {
+				navigation.replace('Error');
+			} else if (hasOpened) {
+				navigation.replace('Prize');
+			} else {
+				navigation.replace('Loading');
+			}
+		}
+
+		// onMount
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [chestId]);
 
 	return (
 		<GradientView style={styles.container} image={imageSrc}>
 			<View style={styles.logo} pointerEvents="none">
 				<BitkitLogo height={32} width={90} />
 			</View>
-			<Title text="Treasure Chest" />
+			<View style={styles.title}>
+				<Title text="Treasure Chest" />
+				{chest?.shortId && (
+					<View style={styles.chestName}>
+						<Subtitle>{chest.shortId}</Subtitle>
+					</View>
+				)}
+			</View>
 			<View style={styles.content}>
 				<View style={styles.chestNumber}>
-					<GradientText style={styles.chestNumberText} text="1/6" />
+					<GradientText
+						style={styles.chestNumberText}
+						text={`${chestIndex + 1}/6`}
+					/>
 				</View>
 				<View style={styles.buttonContainer}>
 					<TouchableOpacity
 						style={styles.button}
 						activeOpacity={0.8}
-						onPress={(): void =>
-							navigation.navigate('Prize', {
-								id: Math.floor(Math.random() * 14) + 1,
-							})
-						}>
+						onPress={onOpen}>
 						<BlurView style={styles.buttonBlur}>
 							<Text02M style={styles.buttonText}>Try To Open</Text02M>
 						</BlurView>
@@ -62,10 +89,27 @@ const Chest = ({
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
+		position: 'relative',
 	},
 	logo: {
 		flexDirection: 'row',
 		justifyContent: 'center',
+	},
+	title: {
+		flex: 1,
+	},
+	chestName: {
+		backgroundColor: 'black',
+		borderWidth: 4,
+		borderColor: '#FF6600',
+		borderRadius: 48,
+		height: 48,
+		width: 48,
+		justifyContent: 'center',
+		alignItems: 'center',
+		position: 'absolute',
+		top: 130,
+		right: 80,
 	},
 	content: {
 		flex: 1,
@@ -75,7 +119,7 @@ const styles = StyleSheet.create({
 	chestNumber: {
 		flex: 1,
 		alignItems: 'center',
-		marginTop: 30,
+		marginTop: 20,
 	},
 	chestNumberText: {
 		flex: 1,

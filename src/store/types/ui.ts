@@ -20,7 +20,7 @@ export type ViewControllerParamList = {
 	sendNavigation: { screen: keyof SendStackParamList } | undefined;
 	slashauthModal: { url: string };
 	timeRangePrompt: undefined;
-	treasureHunt: { id: string };
+	treasureHunt: { chestId: string };
 	tagsPrompt: undefined;
 	lnurlWithdraw: { wParams: LNURLWithdrawParams };
 	lnurlPay: { pParams: LNURLPayParams };
@@ -38,6 +38,7 @@ export type TUiViewController = {
 export type IViewControllerData = {
 	isOpen: boolean;
 	activityItem?: IActivityItem;
+	chestId?: string;
 	onchainActivityItem?: TOnchainActivityItem;
 	id?: string;
 	screen?: keyof SendStackParamList;

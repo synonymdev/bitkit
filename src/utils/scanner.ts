@@ -40,10 +40,13 @@ import {
 	networks,
 	TAvailableNetworks,
 } from './networks';
+import { setFeedWidget } from '../store/actions/widgets';
 import { savePeer } from '../store/actions/lightning';
 import { TWalletName } from '../store/types/wallet';
 import { sendNavigation } from '../navigation/bottom-sheet/SendNavigation';
 import { rootNavigation } from '../navigation/root/RootNavigator';
+import { LuganoFeedURL } from '../screens/Widgets/WidgetsSuggestions';
+import { SUPPORTED_FEED_TYPES } from './widgets';
 import { handleLnurlAuth } from './lnurl';
 import i18n from './i18n';
 
@@ -382,12 +385,23 @@ export const decodeQRData = async (
 	}
 
 	// Treasure hunt
+	// Airdrop
+	if (data.includes('bitkit.to/drone')) {
+		const chestId = '2gZxrqhc';
+		return ok([{ qrDataType: EQRDataType.treasureHunt, chestId }]);
+	}
 	// Universal links
 	if (data.includes('bitkit.to/treasure-hunt')) {
 		const url = new URLParse(data, true);
-		const chestId = url.query.chest;
+		const chestId = url.query.chest!;
 
 		if (chestId) {
+			setFeedWidget({
+				url: LuganoFeedURL,
+				type: SUPPORTED_FEED_TYPES.LUGANO_FEED,
+				fields: [],
+			});
+
 			return ok([{ qrDataType: EQRDataType.treasureHunt, chestId }]);
 		}
 	}
@@ -396,6 +410,12 @@ export const decodeQRData = async (
 		const chestId = data.split('-')[1];
 
 		if (chestId) {
+			setFeedWidget({
+				url: LuganoFeedURL,
+				type: SUPPORTED_FEED_TYPES.LUGANO_FEED,
+				fields: [],
+			});
+
 			return ok([{ qrDataType: EQRDataType.treasureHunt, chestId }]);
 		}
 	}
@@ -1042,7 +1062,7 @@ export const handleData = async ({
 		}
 
 		case EQRDataType.treasureHunt: {
-			showBottomSheet('treasureHunt', { id: data.chestId });
+			showBottomSheet('treasureHunt', { chestId: data.chestId });
 			return ok({ type: EQRDataType.lnurlWithdraw });
 		}
 

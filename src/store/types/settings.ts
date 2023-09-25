@@ -1,3 +1,4 @@
+import { TPrize } from '../../screens/TreasureHunt/prizes';
 import { IWalletItem, EUnit } from './wallet';
 
 export type TTheme = 'dark' | 'light';
@@ -62,4 +63,12 @@ export interface ISettings {
 	hideOnboardingMessage: boolean;
 	hideBeta: boolean;
 	enableDevOptions: boolean;
+	treasureChests: {
+		chestId: string;
+		state: 'found' | 'opened' | 'claimed' | 'success' | 'failed';
+		isAirdrop?: boolean;
+		shortId?: string;
+		attemptId?: string;
+		winType?: TPrize['winType'];
+	}[];
 }

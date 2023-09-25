@@ -109,6 +109,27 @@ export const useLightningChannelBalance = (
 };
 
 /**
+ * Returns the maximum inbound capacity of all known open channels.
+ * @returns {number}
+ */
+export const useLightningMaxInboundCapacity = (): number => {
+	const selectedWallet = useSelector(selectedWalletSelector);
+	const selectedNetwork = useSelector(selectedNetworkSelector);
+	const openChannels = useSelector((state: Store) => {
+		return openChannelsSelector(state, selectedWallet, selectedNetwork);
+	});
+
+	const maxInboundCapacity = useMemo(() => {
+		return openChannels.reduce((max, channel) => {
+			const outbound = channel.inbound_capacity_sat;
+			return outbound > max ? outbound : max;
+		}, 0);
+	}, [openChannels]);
+
+	return maxInboundCapacity;
+};
+
+/**
  * Returns the name of a channel.
  * @param {TChannel} channel
  * @param {IBtOrder} blocktankOrder

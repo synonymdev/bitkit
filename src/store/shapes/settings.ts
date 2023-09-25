@@ -116,6 +116,7 @@ export const defaultSettingsShape: Readonly<ISettings> = {
 	hideOnboardingMessage: false,
 	hideBeta: false,
 	enableDevOptions: __DEV__,
+	treasureChests: [],
 };
 
 export const getDefaultSettingsShape = (): IWidgetsStore => {

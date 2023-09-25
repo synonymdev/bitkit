@@ -2804,10 +2804,10 @@
   dependencies:
     b4a "^1.5.3"
 
-"@synonymdev/react-native-ldk@^0.0.109":
-  version "0.0.109"
-  resolved "https://registry.yarnpkg.com/@synonymdev/react-native-ldk/-/react-native-ldk-0.0.109.tgz#be78dc1720014bc257d0ae9f4d893802ef773aa5"
-  integrity sha512-8W4yUkqWTTjCIJln8HG1HbGu7aTS1BtcVBEVmio5FLG3ZkKZD3kM5wsZgf6yQxbaznubF9P0wl82dvMXgcoh4Q==
+"@synonymdev/react-native-ldk@^0.0.110":
+  version "0.0.110"
+  resolved "https://registry.yarnpkg.com/@synonymdev/react-native-ldk/-/react-native-ldk-0.0.110.tgz#83d636327721e97624ecf339928b520cf6c9cf48"
+  integrity sha512-+2GFXyBVO6ifvhQX85gAmaKdYmxwWKtLE+aqgHQIw2baMFp/8LxdOzIfVGGmJjLRBoZzkdfUeGyNZ7W9sVFC4Q==
   dependencies:
     bitcoinjs-lib "^6.0.2"
 

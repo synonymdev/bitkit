@@ -15,6 +15,7 @@ import { openURL } from '../utils/helpers';
 import { useSlashfeed } from '../hooks/widgets';
 import Button from './Button';
 import { CalendarIcon, MapPinLineIcon, MapTrifoldIcon } from '../styles/icons';
+import { useAppSelector } from '../hooks/redux';
 
 const cache = {
 	banner: '',
@@ -38,18 +39,16 @@ const LuganoWidget = ({
 	onPressIn?: () => void;
 }): ReactElement => {
 	const { config, reader } = useSlashfeed({ url });
-
-	// TODO: update this with data from Bitkit.
-	const [treasureChestsFound] = useState(0);
-
-	const [banner, setBanner] = useState<string>(cache.banner);
-
+	const { treasureChests } = useAppSelector((state) => state.settings);
+	const [banner, setBanner] = useState(cache.banner);
 	const [links, setLinks] = useState<{ name: string; url: string }[]>(
 		cache.links,
 	);
 	const [schedule, setSchedule] = useState<
 		{ timeLocation: string; name: string }[]
 	>([]);
+
+	const numberOfChests = treasureChests.filter((c) => !c.isAirdrop).length;
 
 	useEffect(() => {
 		const bannerBase64Path = config?.fields?.find((f) => f.name === 'banner')
@@ -174,13 +173,15 @@ const LuganoWidget = ({
 				<View style={styles.source}>
 					<View style={styles.sourceColumnLeft}>
 						<Caption13M color="gray1" numberOfLines={1}>
-							{`Treasure Chests Found: ${treasureChestsFound} of 7`}
+							Treasure Chests Found: {numberOfChests} of 7
 						</Caption13M>
 					</View>
 					<View style={styles.columnRight}>
 						<TouchableOpacity
 							activeOpacity={0.9}
-							onPress={(): Promise<boolean> => openURL('https://bitkit.to')}>
+							onPress={(): void => {
+								openURL('https://www.bitkit.to/treasure-hunt');
+							}}>
 							<Caption13M color="gray1" numberOfLines={1}>
 								bitkit.to
 							</Caption13M>

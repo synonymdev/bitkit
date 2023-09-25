@@ -24,7 +24,6 @@ import {
 	getNodeVersion,
 	getPendingInvoice,
 	getSentLightningPayments,
-	hasOpenLightningChannels,
 	parseUri,
 } from '../../utils/lightning';
 import {
@@ -247,9 +246,6 @@ export const createLightningInvoice = async ({
 	}
 	if (!selectedWallet) {
 		selectedWallet = getSelectedWallet();
-	}
-	if (!hasOpenLightningChannels({ selectedWallet, selectedNetwork })) {
-		return err('No lightning channels available to receive an invoice.');
 	}
 	const invoice = await createPaymentRequest({
 		amountSats,

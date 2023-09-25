@@ -237,6 +237,7 @@ const RootNavigator = (): ReactElement => {
 				<Stack.Screen name="WidgetEdit" component={WidgetEdit} />
 			</Stack.Navigator>
 
+			<TreasureHuntNavigation />
 			<SendNavigation />
 			<ReceiveNavigation />
 			<BackupNavigation />
@@ -249,7 +250,6 @@ const RootNavigator = (): ReactElement => {
 			<BackupSubscriber />
 			<LNURLWithdrawNavigation />
 			<LNURLPayNavigation />
-			<TreasureHuntNavigation />
 
 			<Dialog
 				visible={showDialog && isAuthenticated}

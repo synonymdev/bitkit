@@ -775,7 +775,7 @@ export const getNodeIdFromStorage = ({
 }: {
 	selectedWallet?: TWalletName;
 	selectedNetwork?: TAvailableNetworks;
-}): string => {
+} = {}): string => {
 	try {
 		if (!selectedWallet) {
 			selectedWallet = getSelectedWallet();
