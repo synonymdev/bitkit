@@ -9,9 +9,11 @@ const activity = (
 ): IActivity => {
 	switch (action.type) {
 		case actions.ADD_ACTIVITY_ITEM: {
+			const items = state.items.filter((item) => item.id !== action.payload.id);
+
 			return {
 				...state,
-				items: [action.payload, ...state.items],
+				items: [action.payload, ...items],
 			};
 		}
 
