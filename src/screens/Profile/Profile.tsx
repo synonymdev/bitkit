@@ -66,7 +66,7 @@ const ProfileScreen = ({
 	const { t } = useTranslation('slashtags');
 	const { url } = useSelectedSlashtag2();
 	const { profile } = useProfile2(url);
-	const qrRef = useRef<string>();
+	const qrRef = useRef<any>();
 
 	const [showCopy, setShowCopy] = useState(false);
 	const [isSharing, setIsSharing] = useState(false);
@@ -79,8 +79,18 @@ const ProfileScreen = ({
 
 	const handleShare = useCallback(async (): Promise<void> => {
 		setIsSharing(true);
-		const image = `data:image/png;base64,${qrRef.current}`;
 		try {
+			const imageBase64 = await new Promise<string>((resolve, reject) => {
+				if (!qrRef.current) {
+					reject(new Error('QR code ref not set'));
+					return;
+				}
+				qrRef.current.toDataURL((data: string) => {
+					const imageData = data.replace(/(\r\n|\n|\r)/gm, '');
+					resolve(imageData);
+				});
+			});
+			const image = `data:image/png;base64,${imageBase64}`;
 			await Share.open({
 				title: t('contact_share'),
 				message: url,
@@ -215,13 +225,7 @@ const QRView = ({
 					value={url}
 					size={qrSize}
 					quietZone={20}
-					getRef={(c): void => {
-						if (c) {
-							c.toDataURL((data: string) => {
-								qrRef.current = data.replace(/(\r\n|\n|\r)/gm, '');
-							});
-						}
-					}}
+					getRef={(c): void => (qrRef.current = c)}
 				/>
 				<View style={styles.qrImageContainer}>
 					<ThemedView style={styles.qrImageOuter} color="white">
