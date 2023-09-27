@@ -71,29 +71,33 @@ const SlashtagsSettings = (): ReactElement => {
 	const settingsListData: IListData[] = useMemo(
 		() => [
 			{
-				title: 'PublicDrive',
+				title: 'Public Drive',
 				data: [
 					{
 						title: 'version',
 						value: driveVersion,
-						type: EItemType.button,
+						type: EItemType.textButton,
+						enabled: false,
 					},
 					{
 						title: 'last seeded',
 						value: lastSeed && new Date(lastSeed).toLocaleString(),
-						type: EItemType.button,
+						type: EItemType.textButton,
+						enabled: false,
 					},
 					{
 						title: 'seeder status',
 						value: seederStatus.seeded
 							? 'behind by ' + seederStatus.diff + ' blocks'
 							: 'Not Found',
-						type: EItemType.button,
+						type: EItemType.textButton,
+						enabled: false,
 					},
 					{
 						title: 'corrupt',
 						value: profileError || 'false',
-						type: EItemType.button,
+						type: EItemType.textButton,
+						enabled: false,
 					},
 				],
 			},
@@ -104,6 +108,7 @@ const SlashtagsSettings = (): ReactElement => {
 						title: 'open',
 						value: !sdk.closed || 'false',
 						type: EItemType.button,
+						disabled: true,
 					},
 				],
 			},
@@ -114,17 +119,18 @@ const SlashtagsSettings = (): ReactElement => {
 						title: 'open',
 						value: sdk.swarm.dht._protocol._stream._socket.readyState === 1,
 						type: EItemType.button,
+						disabled: true,
 					},
 					{
 						title: 'url',
 						value: sdk.swarm.dht._protocol._stream._socket.url,
-						type: EItemType.button,
+						type: EItemType.textButton,
+						enabled: false,
 					},
 					{
 						title: 'close relay socket',
 						type: EItemType.button,
-						onPress: () =>
-							sdk?._relaySocket ? sdk._relaySocket.close() : null,
+						onPress: () => sdk._relaySocket?.close(),
 					},
 				],
 			},
@@ -135,11 +141,13 @@ const SlashtagsSettings = (): ReactElement => {
 						title: 'swarm NOT destroyed',
 						value: !sdk.swarm.destroyed || 'false',
 						type: EItemType.button,
+						disabled: true,
 					},
 					{
 						title: 'announced on publicDrive',
 						value: discoveryKey ? sdk.swarm.status(discoveryKey)?.isServer : '',
 						type: EItemType.button,
+						disabled: true,
 					},
 				],
 			},
