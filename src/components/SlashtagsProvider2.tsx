@@ -140,6 +140,7 @@ export const SlashtagsProvider2 = ({
 				relay: webRelayUrl,
 				keyPair,
 				store,
+				_skipCache: true,
 			});
 
 			profile = new SlashtagsProfile(webRelayClient);

@@ -65,7 +65,7 @@
     "@synonymdev/slashtags-widget-facts-feed": "1.1.0",
     "@synonymdev/slashtags-widget-news-feed": "1.1.0",
     "@synonymdev/slashtags-widget-price-feed": "1.1.0",
-    "@synonymdev/web-relay": "1.0.2",
+    "@synonymdev/web-relay": "1.0.3",
     "assert": "^2.0.0",
     "backpack-client": "github:synonymdev/bitkit-backup-client#f08fdb28529d8a3f8bfecc789443c43b966a7581",
     "bech32": "^2.0.0",
