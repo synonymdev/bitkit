@@ -157,8 +157,6 @@
     "server_updated_title": "Electrum Server Aangepast",
     "server_updated_message": "Succesvolle verbinding met {host}:{port}",
     "server_error": "Niet in staat om verbinding te maken met de Electrum Server",
-    "qr_error_title": "Geen Verbindingsdata Gevonden",
-    "qr_error_message": "Sorry, maar Bitkit kan deze QR code niet lezen.",
     "connected_to": "Momenteel verbonden met",
     "disconnected": "verbinding verbroken",
     "host": "Hostcomputer",

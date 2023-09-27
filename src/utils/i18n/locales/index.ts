@@ -1,6 +1,7 @@
 import en from './en';
 
 import arb from './arb';
+import ca from './ca';
 import cs from './cs';
 import de from './de';
 import el from './el';
@@ -21,6 +22,7 @@ import ru from './ru';
 export default {
 	en,
 	arb,
+	ca,
 	cs,
 	de,
 	el,

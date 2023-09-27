@@ -67,8 +67,6 @@
   "preference_large": "Grande: Usar as maiores UTXOs primeiro.",
   "preference_consolidate": "Consolidar: Combinar todas as UTXOs.",
   "receive_bitcoin": "Receber Bitcoin",
-  "receive_specify": "Especificar Fatura",
-  "receive_copied": "Fatura Copiada para a Área de Transferência",
   "receive_share_address": "Compartilhar endereço de recebimento",
   "receive_bitcoin_invoice": "Fatura de Bitcoin",
   "receive_lightning_invoice": "Fatura Lightning",

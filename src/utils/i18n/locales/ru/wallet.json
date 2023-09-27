@@ -60,8 +60,6 @@
   "preference_large": "Большой: сначала использовать наибольший UTXO.",
   "preference_consolidate": "Консолидация: использовать все UTXO.",
   "receive_bitcoin": "Получить Биткоин",
-  "receive_specify": "Уточнить Инвойс",
-  "receive_copied": "Инвойс Cкопирован в Буфер Обмена",
   "receive_share_address": "Поделитесь адресом",
   "receive_bitcoin_invoice": "Биткоин инвойс",
   "receive_lightning_invoice": "Лайтнинг инвойс",

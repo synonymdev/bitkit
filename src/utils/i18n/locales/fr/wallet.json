@@ -67,8 +67,6 @@
   "preference_large": "Grand : Utilisez d'abord les UTXOs les plus importants.",
   "preference_consolidate": "Consolider : regrouper tous les UTXOs.",
   "receive_bitcoin": "Recevoir des bitcoins",
-  "receive_specify": "Précisez la facture",
-  "receive_copied": "Facture copiée dans le presse-papiers",
   "receive_share_address": "Partager l'adresse de réception",
   "receive_bitcoin_invoice": "Facture bitcoin",
   "receive_lightning_invoice": "Facture Lightning",

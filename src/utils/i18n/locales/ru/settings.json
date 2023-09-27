@@ -140,8 +140,6 @@
     "server_updated_title": "Сервер Электрум обновлен",
     "server_updated_message": "Успешное подключение к {host}:{port}",
     "server_error": "Невозможно подключиться к серверу Электрум",
-    "qr_error_title": "Данные для соединения не обнаружены",
-    "qr_error_message": "К сожалению, Bitkit не может прочитать этот QR-код.",
     "connected_to": "Подключен к",
     "disconnected": "отключен",
     "host": "Хост",

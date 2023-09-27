@@ -21,7 +21,7 @@
   "contact_copied": "Ключ профиля скопирован в буфер обмена",
   "contact_delete_title": "Удалить {name}?",
   "contact_delete_text": "Вы уверены, что хотите удалить {name} из списка контактов?",
-  "contact_delete_yes": "Да, Удалить",
+  "contact_delete_yes": "Да,\nУдалить",
   "contact_select": "Выбрать Контакт",
   "contact_assign": "Привязать Контакт",
   "contacts_no_found": "Контакты не найдены",

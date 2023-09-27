@@ -165,8 +165,6 @@
     "server_updated_title": "Electrum Server aktualizován",
     "server_updated_message": "Úspěšně připojeno k {host}:{port}",
     "server_error": "Nelze se připojit k serveru Electrum",
-    "qr_error_title": "Nebyla zjištěna žádná data připojení",
-    "qr_error_message": "Je nám líto, Bitkit není schopen přečíst tento QR kód.",
     "connected_to": "Aktuálně připojeno k",
     "disconnected": "odpojeno",
     "host": "Host",

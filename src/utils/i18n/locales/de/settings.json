@@ -41,6 +41,7 @@
     "section_other": "Andere",
     "address_type": "Bitcoin Adressen-Typ",
     "lightning_connections": "Lightning Verbindungen",
+    "lightning_node": "Lightning Node",
     "bitcoin_network": "Bitcoin Netzwerk"
   },
   "fee": {
@@ -57,7 +58,6 @@
     }
   },
   "es": {
-    "qr_error_message": "Entschuldige, Bitkit ist nicht in der Lage diesen QR code zu lesen.",
     "disconnected": "getrennt"
   }
 }

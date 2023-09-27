@@ -145,8 +145,6 @@
     "server_updated_title": "Servidor Electrum actualizado",
     "server_updated_message": "Conectado con éxito a {host}:{port}",
     "server_error": "No se fue possible conectar al servidor Electrum",
-    "qr_error_title": "No se detectan datos para la conexión",
-    "qr_error_message": "Lo sentimos, Bitkit no puede leer este código QR.",
     "connected_to": "Actualmente conectado a",
     "disconnected": "desconectado",
     "host": "Anfitrión",

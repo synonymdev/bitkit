@@ -4,7 +4,7 @@
   "pin_disable_title": "Desactiva el PIN",
   "pin_disable_button": "Desactiva el PIN",
   "pin_forgot_title": "Has oblidat el PIN?",
-  "bio_confirm": "Confirma{biometricsName}",
+  "bio_confirm": "Confirma {biometricsName}",
   "close_app": "Tanca Bitkit",
   "export_password": "Contrasenya",
   "export_button": "Exportar",

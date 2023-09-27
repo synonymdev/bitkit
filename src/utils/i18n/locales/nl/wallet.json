@@ -64,8 +64,6 @@
   "preference_large": "Groot: Gebruik de grootste UTXOs eerst.",
   "preference_consolidate": "Consolideren: Gebruik alle UTXOs.",
   "receive_bitcoin": "Bitcoin Ontvangen",
-  "receive_specify": "Factuur Vermelden",
-  "receive_copied": "Factuur Gekopieerd Naar Klembord",
   "receive_share_address": "Deel ontvangstadres",
   "receive_bitcoin_invoice": "Bitcoin factuur",
   "receive_lightning_invoice": "Lightning factuur",
