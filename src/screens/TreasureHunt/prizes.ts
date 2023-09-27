@@ -1,7 +1,8 @@
 import { ImageSourcePropType } from 'react-native';
+import { TChest } from '../../store/types/settings';
 
 export type TPrize = {
-	winType: 'winning' | 'consolation' | 'empty';
+	winType: TChest['winType'];
 	amount: number;
 	image: ImageSourcePropType;
 	title: string;
@@ -27,7 +28,7 @@ export const prizes: TPrize[][] = [
 			image: require('../../assets/treasure-hunt/consolation-1.jpg'),
 			title: 'Lightning Strikes',
 			description:
-				'Clouds gather, and a huge thunder bolt hits the treasure chest, liquifying most of the coins. Only 100 sats are left intact.',
+				'Clouds gather, and a huge thunderbolt hits the treasure chest, liquifying most of the coins. Only 100 sats are left intact.',
 		},
 		{
 			winType: 'winning',

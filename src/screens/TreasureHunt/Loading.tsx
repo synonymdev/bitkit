@@ -1,18 +1,14 @@
 import React, { ReactElement, memo, useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { useSelector } from 'react-redux';
-import { getUniqueId, isEmulator } from 'react-native-device-info';
 import { ldk } from '@synonymdev/react-native-ldk';
-import { sha256 } from 'bitcoinjs-lib/src/crypto';
 
 import { Subtitle, Text02M } from '../../styles/text';
 import GradientView from '../../components/GradientView';
 import SafeAreaInset from '../../components/SafeAreaInset';
 import Title from './Title';
 import { getNodeIdFromStorage } from '../../utils/lightning';
-import { updateSettings } from '../../store/actions/settings';
+import { updateTreasureChest } from '../../store/actions/settings';
 import { useAppSelector } from '../../hooks/redux';
-import { viewControllerSelector } from '../../store/reselect/ui';
 import { __TREASURE_HUNT_HOST__ } from '../../constants/env';
 import BitkitLogo from '../../assets/bitkit-logo.svg';
 import type { TreasureHuntScreenProps } from '../../navigation/types';
@@ -21,31 +17,16 @@ const imageSrc = require('../../assets/treasure-hunt/loading.jpg');
 
 const Loading = ({
 	navigation,
+	route,
 }: TreasureHuntScreenProps<'Loading'>): ReactElement => {
-	const { chestId } = useSelector((state) => {
-		return viewControllerSelector(state, 'treasureHunt');
-	});
+	const { chestId } = route.params;
 	const { treasureChests } = useAppSelector((state) => state.settings);
 	const chest = treasureChests.find((c) => c.chestId === chestId);
 
 	useEffect(() => {
 		const openChest = async (): Promise<void> => {
 			const nodePublicKey = getNodeIdFromStorage();
-			const isSimulator = await isEmulator();
-			let deviceId = nodePublicKey;
-
-			if (!isSimulator) {
-				// Device check is only available for physical devices
-				const uniqueId = await getUniqueId();
-				const buffer = Buffer.from(uniqueId, 'utf8');
-				deviceId = sha256(buffer).toString('hex');
-			}
-
-			const input = {
-				chestId,
-				deviceId,
-				nodePublicKey,
-			};
+			const input = { chestId, nodePublicKey };
 			const signResult = await ldk.nodeSign({
 				message: JSON.stringify(input),
 				messagePrefix: '',
@@ -74,21 +55,15 @@ const Loading = ({
 
 			if (!result.error || hasOpened) {
 				if (!result.error) {
-					const updated = {
-						...chest,
-						chestId: chestId!,
-						state: 'opened' as const,
+					updateTreasureChest({
+						chestId,
+						state: 'opened',
 						attemptId: result.attemptId,
 						winType: result.winType,
-					};
-					const newChests = treasureChests.map((c) => {
-						return c !== chest ? c : updated;
 					});
-
-					updateSettings({ treasureChests: newChests });
 				}
 
-				navigation.replace('Prize');
+				navigation.replace('Prize', { chestId });
 			} else {
 				navigation.replace('Error');
 			}

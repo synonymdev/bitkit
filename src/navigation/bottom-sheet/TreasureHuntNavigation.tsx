@@ -1,4 +1,10 @@
-import React, { ReactElement, memo, useEffect, useState } from 'react';
+import React, {
+	ReactElement,
+	memo,
+	useCallback,
+	useEffect,
+	useState,
+} from 'react';
 import { useSelector } from 'react-redux';
 import {
 	createStackNavigator,
@@ -17,7 +23,7 @@ import Error from '../../screens/TreasureHunt/Error';
 import { viewControllerSelector } from '../../store/reselect/ui';
 import { NavigationContainer } from '../../styles/components';
 import { useAppSelector } from '../../hooks/redux';
-import { updateSettings } from '../../store/actions/settings';
+import { addTreasureChest } from '../../store/actions/settings';
 import { __TREASURE_HUNT_HOST__ } from '../../constants/env';
 
 export type TreasureHuntNavigationProp =
@@ -25,9 +31,9 @@ export type TreasureHuntNavigationProp =
 
 export type TreasureHuntStackParamList = {
 	Chest: undefined;
-	Loading: undefined;
-	Prize: undefined;
-	Airdrop: undefined;
+	Loading: { chestId: string };
+	Prize: { chestId: string };
+	Airdrop: { chestId: string };
 	Error: undefined;
 };
 
@@ -51,52 +57,51 @@ const TreasureHuntNavigation = (): ReactElement => {
 
 	const found = treasureChests.find((chest) => chest.chestId === chestId!);
 
+	const getChest = useCallback(async (): Promise<void> => {
+		if (!chestId) {
+			return;
+		}
+
+		const response = await fetch(__TREASURE_HUNT_HOST__, {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify({
+				method: 'getChest',
+				params: {
+					input: { chestId },
+				},
+			}),
+		});
+
+		const { result } = await response.json();
+
+		const isAirdrop = result?.sky === 1;
+
+		if (!result.error) {
+			addTreasureChest({
+				chestId,
+				shortId: result.shortId,
+				state: 'found',
+				isAirdrop,
+			});
+
+			if (isAirdrop) {
+				setInitialScreen('Airdrop');
+			} else {
+				setInitialScreen('Chest');
+			}
+		} else {
+			setInitialScreen('Error');
+		}
+
+		setIsLoading(false);
+	}, [chestId]);
+
 	useEffect(() => {
 		if (!isOpen) {
 			setIsLoading(true);
 			return;
 		}
-
-		const getChest = async (): Promise<void> => {
-			const response = await fetch(__TREASURE_HUNT_HOST__, {
-				method: 'POST',
-				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify({
-					method: 'getChest',
-					params: {
-						input: { chestId },
-					},
-				}),
-			});
-
-			const { result } = await response.json();
-
-			const isAirdrop = result?.sky === 1;
-
-			if (!result.error) {
-				updateSettings({
-					treasureChests: [
-						...treasureChests,
-						{
-							chestId: chestId!,
-							shortId: result.shortId,
-							state: 'found',
-							isAirdrop,
-						},
-					],
-				});
-
-				if (isAirdrop) {
-					setInitialScreen('Airdrop');
-				} else {
-					setInitialScreen('Chest');
-				}
-			} else {
-				setInitialScreen('Error');
-			}
-
-			setIsLoading(false);
-		};
 
 		if (found) {
 			if (found.isAirdrop) {
@@ -115,7 +120,7 @@ const TreasureHuntNavigation = (): ReactElement => {
 
 		// onOpen
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [isOpen]);
+	}, [isOpen, getChest]);
 
 	if (!isOpen || isLoading) {
 		return <></>;
@@ -128,9 +133,21 @@ const TreasureHuntNavigation = (): ReactElement => {
 					initialRouteName={initialScreen}
 					screenOptions={screenOptions}>
 					<Stack.Screen name="Chest" component={Chest} />
-					<Stack.Screen name="Loading" component={Loading} />
-					<Stack.Screen name="Prize" component={Prize} />
-					<Stack.Screen name="Airdrop" component={Airdrop} />
+					<Stack.Screen
+						name="Loading"
+						component={Loading}
+						initialParams={{ chestId }}
+					/>
+					<Stack.Screen
+						name="Prize"
+						component={Prize}
+						initialParams={{ chestId }}
+					/>
+					<Stack.Screen
+						name="Airdrop"
+						component={Airdrop}
+						initialParams={{ chestId }}
+					/>
 					<Stack.Screen name="Error" component={Error} />
 				</Stack.Navigator>
 			</NavigationContainer>

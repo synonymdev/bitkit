@@ -6,11 +6,8 @@ import React, {
 	useRef,
 } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { useSelector } from 'react-redux';
 import { SvgXml } from 'react-native-svg';
 import { ldk } from '@synonymdev/react-native-ldk';
-import { getUniqueId, isEmulator } from 'react-native-device-info';
-import { sha256 } from 'bitcoinjs-lib/src/crypto';
 
 import { Caption13M, Text01M } from '../../styles/text';
 import GradientView from '../../components/GradientView';
@@ -24,8 +21,7 @@ import { useLightningMaxInboundCapacity } from '../../hooks/lightning';
 import { getNodeIdFromStorage, waitForLdk } from '../../utils/lightning';
 import { createLightningInvoice } from '../../store/actions/lightning';
 import { useAppSelector } from '../../hooks/redux';
-import { updateSettings } from '../../store/actions/settings';
-import { viewControllerSelector } from '../../store/reselect/ui';
+import { updateTreasureChest } from '../../store/actions/settings';
 import { __TREASURE_HUNT_HOST__ } from '../../constants/env';
 import BitkitLogo from '../../assets/bitkit-logo.svg';
 import type { TreasureHuntScreenProps } from '../../navigation/types';
@@ -50,12 +46,11 @@ const lightningIcon = `
 
 const Airdrop = ({
 	navigation,
+	route,
 }: TreasureHuntScreenProps<'Airdrop'>): ReactElement => {
+	const { chestId } = route.params;
 	const interval = useRef<NodeJS.Timer>();
 	const maxInboundCapacitySat = useLightningMaxInboundCapacity();
-	const { chestId } = useSelector((state) => {
-		return viewControllerSelector(state, 'treasureHunt');
-	});
 
 	const { treasureChests } = useAppSelector((state) => state.settings);
 	const chest = treasureChests.find((c) => c.chestId === chestId)!;
@@ -87,21 +82,7 @@ const Airdrop = ({
 	useEffect(() => {
 		const openChest = async (): Promise<void> => {
 			const nodePublicKey = getNodeIdFromStorage();
-			const isSimulator = await isEmulator();
-			let deviceId = nodePublicKey;
-
-			if (!isSimulator) {
-				// Device check is only available for physical devices
-				const uniqueId = await getUniqueId();
-				const buffer = Buffer.from(uniqueId, 'utf8');
-				deviceId = sha256(buffer).toString('hex');
-			}
-
-			const input = {
-				chestId,
-				deviceId,
-				nodePublicKey,
-			};
+			const input = { chestId, nodePublicKey };
 			const signResult = await ldk.nodeSign({
 				message: JSON.stringify(input),
 				messagePrefix: '',
@@ -124,18 +105,12 @@ const Airdrop = ({
 			const { result } = await response.json();
 
 			if (!result.error) {
-				const updated = {
-					...chest,
-					chestId: chestId!,
-					state: 'opened' as const,
+				updateTreasureChest({
+					chestId,
+					state: 'opened',
 					attemptId: result.attemptId,
 					winType: result.winType,
-				};
-				const newChests = treasureChests.map((c) => {
-					return c !== chest ? c : updated;
 				});
-
-				updateSettings({ treasureChests: newChests });
 			} else {
 				navigation.replace('Error');
 			}
@@ -177,19 +152,10 @@ const Airdrop = ({
 					console.log(result.error);
 					return;
 				} else {
-					const newChest = {
-						...chest,
-						chestId: chestId!,
-						attemptId,
-						state: 'claimed' as const,
-						winType,
-					};
-
-					updateSettings({
-						treasureChests: [
-							...treasureChests.filter((c) => c.chestId !== chestId!),
-							newChest,
-						],
+					updateTreasureChest({
+						chestId,
+						state: 'claimed',
+						attemptId: result.attemptId,
 					});
 				}
 			}
@@ -219,19 +185,10 @@ const Airdrop = ({
 
 				clearTimeout(interval.current);
 
-				const updatedState = result.state === 'SUCCESS' ? 'success' : 'failed';
-				const updated = {
-					...chest,
-					chestId: chestId!,
-					attemptId,
-					state: updatedState as 'success' | 'failed',
-					winType,
-				};
-				const newChests = treasureChests.map((c) => {
-					return c !== chest ? c : updated;
+				updateTreasureChest({
+					chestId,
+					state: result.state === 'SUCCESS' ? 'success' : 'failed',
 				});
-
-				updateSettings({ treasureChests: newChests });
 
 				if (result.state === 'FAILED') {
 					navigation.replace('Error');

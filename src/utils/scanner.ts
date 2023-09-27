@@ -385,38 +385,44 @@ export const decodeQRData = async (
 	}
 
 	// Treasure hunt
-	// Airdrop
-	if (data.includes('bitkit.to/drone')) {
-		const chestId = '2gZxrqhc';
-		return ok([{ qrDataType: EQRDataType.treasureHunt, chestId }]);
-	}
-	// Universal links
-	if (data.includes('bitkit.to/treasure-hunt')) {
-		const url = new URLParse(data, true);
-		const chestId = url.query.chest!;
-
-		if (chestId) {
-			setFeedWidget({
-				url: LuganoFeedURL,
-				type: SUPPORTED_FEED_TYPES.LUGANO_FEED,
-				fields: [],
-			});
-
+	if (__DEV__ || selectedNetwork === EAvailableNetworks.bitcoin) {
+		// Airdrop
+		if (data.includes('bitkit.to/drone')) {
+			const chestId = '2gZxrqhc';
 			return ok([{ qrDataType: EQRDataType.treasureHunt, chestId }]);
 		}
-	}
-	// Deeplinks (fallback)
-	if (data.includes('bitkit:chest')) {
-		const chestId = data.split('-')[1];
+		// Universal links
+		if (data.includes('bitkit.to/treasure-hunt')) {
+			const url = new URLParse(data, true);
+			const chestId = url.query.chest!;
 
-		if (chestId) {
-			setFeedWidget({
-				url: LuganoFeedURL,
-				type: SUPPORTED_FEED_TYPES.LUGANO_FEED,
-				fields: [],
-			});
+			if (chestId) {
+				setTimeout(() => {
+					setFeedWidget({
+						url: LuganoFeedURL,
+						type: SUPPORTED_FEED_TYPES.LUGANO_FEED,
+						fields: [],
+					});
+				}, 1000);
 
-			return ok([{ qrDataType: EQRDataType.treasureHunt, chestId }]);
+				return ok([{ qrDataType: EQRDataType.treasureHunt, chestId }]);
+			}
+		}
+		// Deeplinks (fallback)
+		if (data.includes('bitkit:chest')) {
+			const chestId = data.split('-')[1];
+
+			if (chestId) {
+				setTimeout(() => {
+					setFeedWidget({
+						url: LuganoFeedURL,
+						type: SUPPORTED_FEED_TYPES.LUGANO_FEED,
+						fields: [],
+					});
+				}, 1000);
+
+				return ok([{ qrDataType: EQRDataType.treasureHunt, chestId }]);
+			}
 		}
 	}
 

@@ -10,7 +10,7 @@ import { TAvailableNetworks } from '../../utils/networks';
 import { showToast } from '../../utils/notifications';
 import { getSelectedNetwork, getSelectedWallet } from '../../utils/wallet';
 import { getAllKeychainKeys, resetKeychainValue } from '../../utils/keychain';
-import { ICustomElectrumPeer, ISettings } from '../types/settings';
+import { ICustomElectrumPeer, ISettings, TChest } from '../types/settings';
 import { TWalletName } from '../types/wallet';
 
 const dispatch = getDispatch();
@@ -18,6 +18,22 @@ const dispatch = getDispatch();
 export const updateSettings = (payload: Partial<ISettings>): Result<string> => {
 	dispatch({
 		type: actions.UPDATE_SETTINGS,
+		payload,
+	});
+	return ok('');
+};
+
+export const addTreasureChest = (payload: TChest): Result<string> => {
+	dispatch({
+		type: actions.ADD_TREASURE_CHEST,
+		payload,
+	});
+	return ok('');
+};
+
+export const updateTreasureChest = (payload: TChest): Result<string> => {
+	dispatch({
+		type: actions.UPDATE_TREASURE_CHEST,
 		payload,
 	});
 	return ok('');

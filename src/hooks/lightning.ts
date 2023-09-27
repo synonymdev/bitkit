@@ -121,8 +121,8 @@ export const useLightningMaxInboundCapacity = (): number => {
 
 	const maxInboundCapacity = useMemo(() => {
 		return openChannels.reduce((max, channel) => {
-			const outbound = channel.inbound_capacity_sat;
-			return outbound > max ? outbound : max;
+			const inbound = channel.inbound_capacity_sat;
+			return inbound > max ? inbound : max;
 		}, 0);
 	}, [openChannels]);
 

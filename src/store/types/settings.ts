@@ -1,4 +1,3 @@
-import { TPrize } from '../../screens/TreasureHunt/prizes';
 import { IWalletItem, EUnit } from './wallet';
 
 export type TTheme = 'dark' | 'light';
@@ -37,6 +36,15 @@ export type TReceiveOption = {
 
 export type TCustomElectrumPeers = IWalletItem<ICustomElectrumPeer[]>;
 
+export type TChest = {
+	chestId: string;
+	state: 'found' | 'opened' | 'claimed' | 'success' | 'failed';
+	isAirdrop?: boolean;
+	shortId?: string;
+	attemptId?: string;
+	winType?: 'winning' | 'consolation' | 'empty';
+};
+
 export interface ISettings {
 	enableAutoReadClipboard: boolean;
 	enableSendAmountWarning: boolean;
@@ -63,12 +71,5 @@ export interface ISettings {
 	hideOnboardingMessage: boolean;
 	hideBeta: boolean;
 	enableDevOptions: boolean;
-	treasureChests: {
-		chestId: string;
-		state: 'found' | 'opened' | 'claimed' | 'success' | 'failed';
-		isAirdrop?: boolean;
-		shortId?: string;
-		attemptId?: string;
-		winType?: TPrize['winType'];
-	}[];
+	treasureChests: TChest[];
 }

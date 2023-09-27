@@ -24,8 +24,8 @@ const Chest = ({
 		return viewControllerSelector(state, 'treasureHunt');
 	});
 
-	const chest = treasureChests.find((c) => c.chestId === chestId!);
 	const chests = treasureChests.filter((c) => !c.isAirdrop);
+	const chest = chests.find((c) => c.chestId === chestId)!;
 	const chestIndex = chest ? chests.indexOf(chest) : treasureChests.length;
 
 	useBottomSheetBackPress('treasureHunt');
@@ -40,9 +40,9 @@ const Chest = ({
 			if (hasFailed) {
 				navigation.replace('Error');
 			} else if (hasOpened) {
-				navigation.replace('Prize');
+				navigation.replace('Prize', { chestId });
 			} else {
-				navigation.replace('Loading');
+				navigation.replace('Loading', { chestId });
 			}
 		}
 

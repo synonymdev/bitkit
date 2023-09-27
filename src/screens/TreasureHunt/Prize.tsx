@@ -6,7 +6,6 @@ import React, {
 	useRef,
 } from 'react';
 import { AppState, Platform, StyleSheet, View } from 'react-native';
-import { useSelector } from 'react-redux';
 import { useFocusEffect } from '@react-navigation/native';
 import { SvgXml } from 'react-native-svg';
 import Lottie from 'lottie-react-native';
@@ -25,8 +24,7 @@ import { useLightningMaxInboundCapacity } from '../../hooks/lightning';
 import { getNodeIdFromStorage, waitForLdk } from '../../utils/lightning';
 import { createLightningInvoice } from '../../store/actions/lightning';
 import { useAppSelector } from '../../hooks/redux';
-import { updateSettings } from '../../store/actions/settings';
-import { viewControllerSelector } from '../../store/reselect/ui';
+import { updateTreasureChest } from '../../store/actions/settings';
 import { useScreenSize } from '../../hooks/screen';
 import { __TREASURE_HUNT_HOST__ } from '../../constants/env';
 import type { TreasureHuntScreenProps } from '../../navigation/types';
@@ -53,19 +51,18 @@ const lightningIcon = `
 
 const Prize = ({
 	navigation,
+	route,
 }: TreasureHuntScreenProps<'Prize'>): ReactElement => {
+	const { chestId } = route.params;
 	const interval = useRef<NodeJS.Timer>();
 	const animationRef = useRef<Lottie>(null);
 	const appState = useRef(AppState.currentState);
 	const { isSmallScreen } = useScreenSize();
 	const { treasureChests } = useAppSelector((state) => state.settings);
 	const maxInboundCapacitySat = useLightningMaxInboundCapacity();
-	const { chestId } = useSelector((state) => {
-		return viewControllerSelector(state, 'treasureHunt');
-	});
 
-	const chest = treasureChests.find((c) => c.chestId === chestId)!;
 	const chests = treasureChests.filter((c) => !c.isAirdrop);
+	const chest = chests.find((c) => c.chestId === chestId)!;
 	const chestIndex = chests.indexOf(chest);
 
 	const { attemptId, state, winType } = chest;
@@ -180,23 +177,20 @@ const Prize = ({
 					console.log(result.error);
 					return;
 				} else {
-					const updated = {
-						...chest,
-						chestId: chestId!,
+					updateTreasureChest({
+						chestId,
 						attemptId,
-						state: 'claimed' as const,
-						winType,
-					};
-					const newChests = treasureChests.map((c) => {
-						return c !== chest ? c : updated;
+						state: 'claimed',
 					});
-
-					updateSettings({ treasureChests: newChests });
 				}
 			}
 		};
 
 		const checkPayment = async (): Promise<void> => {
+			if (!attemptId) {
+				return;
+			}
+
 			const response = await fetch(__TREASURE_HUNT_HOST__, {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
@@ -212,6 +206,7 @@ const Prize = ({
 
 			if (result.error) {
 				console.log(result.error);
+				clearTimeout(interval.current);
 				return;
 			} else {
 				if (result.state === 'INFLIGHT') {
@@ -220,19 +215,10 @@ const Prize = ({
 
 				clearTimeout(interval.current);
 
-				const updatedState = result.state === 'SUCCESS' ? 'success' : 'failed';
-				const updated = {
-					...chest,
-					chestId: chestId!,
-					attemptId,
-					state: updatedState as 'success' | 'failed',
-					winType,
-				};
-				const newChests = treasureChests.map((c) => {
-					return c !== chest ? c : updated;
+				updateTreasureChest({
+					chestId,
+					state: result.state === 'SUCCESS' ? 'success' : 'failed',
 				});
-
-				updateSettings({ treasureChests: newChests });
 
 				if (result.state === 'FAILED') {
 					navigation.replace('Error');

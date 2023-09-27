@@ -13,13 +13,14 @@ const settings = (
 	}
 
 	switch (action.type) {
-		case actions.UPDATE_SETTINGS:
+		case actions.UPDATE_SETTINGS: {
 			return {
 				...state,
 				...action.payload,
 			};
+		}
 
-		case actions.UPDATE_ELECTRUM_PEERS:
+		case actions.UPDATE_ELECTRUM_PEERS: {
 			return {
 				...state,
 				customElectrumPeers: {
@@ -27,12 +28,38 @@ const settings = (
 					[selectedNetwork]: action.payload.customElectrumPeers,
 				},
 			};
+		}
 
-		case actions.RESET_SETTINGS_STORE:
+		case actions.ADD_TREASURE_CHEST: {
+			return {
+				...state,
+				treasureChests: [...state.treasureChests, action.payload],
+			};
+		}
+
+		case actions.UPDATE_TREASURE_CHEST: {
+			const { chestId } = action.payload;
+			const current = state.treasureChests.find((c) => c.chestId === chestId);
+			const updatedChest = { ...current, ...action.payload };
+
+			// replace old data while keeping the order
+			const updatedChests = state.treasureChests.map((chest) => {
+				return chest === current ? updatedChest : chest;
+			});
+
+			return {
+				...state,
+				treasureChests: updatedChests,
+			};
+		}
+
+		case actions.RESET_SETTINGS_STORE: {
 			return defaultSettingsShape;
+		}
 
-		default:
+		default: {
 			return state;
+		}
 	}
 };
 
