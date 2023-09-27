@@ -377,7 +377,6 @@ export const subscribeToLightningPayments = ({
 	selectedNetwork?: TAvailableNetworks;
 }): void => {
 	if (!paymentSubscription) {
-		// @ts-ignore
 		paymentSubscription = ldk.onEvent(
 			EEventTypes.channel_manager_payment_claimed,
 			(res: TChannelManagerClaim) => {
@@ -397,7 +396,6 @@ export const subscribeToLightningPayments = ({
 		);
 	}
 	if (!onChannelSubscription) {
-		// @ts-ignore
 		onChannelSubscription = ldk.onEvent(
 			EEventTypes.new_channel,
 			async (_res: TChannelUpdate) => {
@@ -427,7 +425,6 @@ export const subscribeToLightningPayments = ({
 		);
 	}
 	if (!onSpendableOutputsSubscription) {
-		// @ts-ignore
 		onSpendableOutputsSubscription = ldk.onEvent(
 			EEventTypes.channel_manager_spendable_outputs,
 			() => {
@@ -583,12 +580,9 @@ export const getAccount = async ({
 	}
 };
 const _getDefaultAccount = (name: string, mnemonic: string): TAccount => {
-	// @ts-ignore
-	const ldkSeed = bitcoin.crypto.sha256(mnemonic).toString('hex');
-	return {
-		name,
-		seed: ldkSeed,
-	};
+	const buffer = Buffer.from(mnemonic, 'utf8');
+	const seed = bitcoin.crypto.sha256(buffer).toString('hex');
+	return { name, seed };
 };
 
 /**
@@ -775,7 +769,7 @@ export const getNodeIdFromStorage = ({
 }: {
 	selectedWallet?: TWalletName;
 	selectedNetwork?: TAvailableNetworks;
-}): string => {
+} = {}): string => {
 	try {
 		if (!selectedWallet) {
 			selectedWallet = getSelectedWallet();
