@@ -1,5 +1,6 @@
 import React, { memo, ReactElement, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { __DISABLE_SLASHTAGS__ } from '../../../constants/env';
 import actions from '../../../store/actions/actions';
@@ -18,7 +19,6 @@ import { resetSlashtagsStore } from '../../../store/actions/slashtags';
 import { resetWidgetsStore } from '../../../store/actions/widgets';
 import { resetFeesStore } from '../../../store/actions/fees';
 import { resetTodos } from '../../../store/actions/todos';
-import { resetUiStore } from '../../../store/actions/ui';
 import { resetSettingsStore, wipeApp } from '../../../store/actions/settings';
 import { getWalletStore } from '../../../store/helpers';
 import { warningsSelector } from '../../../store/reselect/checks';
@@ -161,6 +161,33 @@ const DevSettings = ({
 			title: 'App Cache',
 			data: [
 				{
+					title: 'Clear AsyncStorage',
+					type: EItemType.button,
+					onPress: AsyncStorage.clear,
+				},
+				{
+					title: "Clear UTXO's",
+					type: EItemType.button,
+					onPress: clearUtxos,
+				},
+				{
+					title: 'Reset All Stores',
+					type: EItemType.button,
+					onPress: (): void => {
+						dispatch({ type: actions.WIPE_APP });
+					},
+				},
+				{
+					title: 'Reset Activity Store',
+					type: EItemType.button,
+					onPress: resetActivityStore,
+				},
+				{
+					title: 'Reset Blocktank Store',
+					type: EItemType.button,
+					onPress: resetBlocktankStore,
+				},
+				{
 					title: 'Reset Current Wallet Store',
 					type: EItemType.button,
 					onPress: async (): Promise<void> => {
@@ -173,9 +200,9 @@ const DevSettings = ({
 					onPress: resetWalletStore,
 				},
 				{
-					title: "Clear UTXO's",
+					title: 'Reset Fees Store',
 					type: EItemType.button,
-					onPress: clearUtxos,
+					onPress: resetFeesStore,
 				},
 				{
 					title: 'Reset Lightning Store',
@@ -188,29 +215,9 @@ const DevSettings = ({
 					onPress: resetMetaStore,
 				},
 				{
-					title: 'Reset Fees Store',
-					type: EItemType.button,
-					onPress: resetFeesStore,
-				},
-				{
 					title: 'Reset Settings Store',
 					type: EItemType.button,
 					onPress: resetSettingsStore,
-				},
-				{
-					title: 'Reset Activity Store',
-					type: EItemType.button,
-					onPress: resetActivityStore,
-				},
-				{
-					title: 'Reset User Store',
-					type: EItemType.button,
-					onPress: resetUserStore,
-				},
-				{
-					title: 'Reset Blocktank Store',
-					type: EItemType.button,
-					onPress: resetBlocktankStore,
 				},
 				{
 					title: 'Reset Slashtags Store',
@@ -223,21 +230,14 @@ const DevSettings = ({
 					onPress: resetTodos,
 				},
 				{
-					title: 'Reset UI Store',
+					title: 'Reset User Store',
 					type: EItemType.button,
-					onPress: resetUiStore,
+					onPress: resetUserStore,
 				},
 				{
 					title: 'Reset Widgets Store',
 					type: EItemType.button,
 					onPress: resetWidgetsStore,
-				},
-				{
-					title: 'Reset All Stores',
-					type: EItemType.button,
-					onPress: (): void => {
-						dispatch({ type: actions.WIPE_APP });
-					},
 				},
 				{
 					title: 'Wipe App',
