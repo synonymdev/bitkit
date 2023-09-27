@@ -47,6 +47,7 @@ import SlashtagsSettings from '../../screens/Settings/SlashtagsSettings';
 import LightningNavigator, {
 	LightningStackParamList,
 } from '../lightning/LightningNavigator';
+import WebRelay from '../../screens/Settings/WebRelay';
 import { __E2E__ } from '../../constants/env';
 
 export type SettingsNavigationProp =
@@ -93,6 +94,7 @@ export type SettingsStackParamList = {
 	TagsSettings: undefined;
 	AddressViewer: undefined;
 	FeeSettings: undefined;
+	WebRelay: undefined;
 };
 
 const Stack = createStackNavigator<SettingsStackParamList>();
@@ -167,6 +169,7 @@ const SettingsNavigator = (): ReactElement => {
 			/>
 			<Stack.Screen name="TagsSettings" component={TagsSettings} />
 			<Stack.Screen name="FeeSettings" component={FeeSettings} />
+			<Stack.Screen name="WebRelay" component={WebRelay} />
 		</Stack.Navigator>
 	);
 };

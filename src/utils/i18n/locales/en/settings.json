@@ -109,6 +109,7 @@
 		"lightning_connections": "Lightning Connections",
 		"lightning_node": "Lightning Node",
 		"electrum_server": "Electrum Server",
+		"web_relay": "Slashtags Web Relay",
 		"bitcoin_network": "Bitcoin Network"
 	},
 	"fee": {
@@ -172,5 +173,13 @@
 		"protocol": "Protocol",
 		"button_reset": "Reset To Default",
 		"button_connect": "Connect To Host"
+	},
+	"wr": {
+		"error_wr": "Web Relay Error",
+		"error_url": "Please specify a URL to connect to.",
+		"error_https": "Not a valid HTTPS url.",
+		"error_healthcheck": "Healthcheck Failed",
+		"url_updated_title": "Web Relay Updated",
+		"url_updated_message": "Successfully connected to {url}"
 	}
 }

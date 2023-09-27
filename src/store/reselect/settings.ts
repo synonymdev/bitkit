@@ -142,3 +142,7 @@ export const nonFiatUnitSelector = createSelector(
 		return settings.unit === EUnit.fiat ? EUnit.satoshi : EUnit.fiat;
 	},
 );
+export const webRelaySelector = createSelector(
+	[settingsState],
+	(settings): string => settings.webRelay,
+);

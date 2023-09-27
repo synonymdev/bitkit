@@ -14,6 +14,7 @@ import {
 	__ELECTRUM_SIGNET_PROTO__,
 	__ELECTRUM_SIGNET_SSL_PORT__,
 	__ELECTRUM_SIGNET_TCP_PORT__,
+	__WEB_RELAY__,
 } from '../../constants/env';
 import {
 	ETransactionSpeed,
@@ -117,6 +118,7 @@ export const defaultSettingsShape: Readonly<ISettings> = {
 	hideBeta: false,
 	enableDevOptions: __DEV__,
 	treasureChests: [],
+	webRelay: __WEB_RELAY__,
 };
 
 export const getDefaultSettingsShape = (): IWidgetsStore => {

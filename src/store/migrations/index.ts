@@ -6,6 +6,7 @@ import { defaultChecksShape } from '../shapes/checks';
 import { defaultBackupShape } from '../shapes/backup';
 import { defaultWidgetsShape } from '../shapes/widgets';
 import { getNetworkContent } from '../shapes/wallet';
+import { __WEB_RELAY__ } from '../../constants/env';
 // add migrations for every persisted store version change
 // NOTE: state reconciliation works only 2 levels deep
 // see https://github.com/rt2zz/redux-persist#state-reconciler
@@ -203,6 +204,15 @@ const migrations = {
 			settings: {
 				...state.settings,
 				treasureChests: [],
+			},
+		};
+	},
+	21: (state): PersistedState => {
+		return {
+			...state,
+			settings: {
+				...state.settings,
+				webRelay: __WEB_RELAY__,
 			},
 		};
 	},

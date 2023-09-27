@@ -8,9 +8,9 @@ import { Caption13M, Text02M } from '../styles/text';
 import { useSlashfeed } from '../hooks/widgets';
 import { IWidget } from '../store/types/widgets';
 import BaseFeedWidget from './BaseFeedWidget';
-import { webRelayClient, webRelayUrl } from './SlashtagsProvider2';
 import { Change, Chart, getChange } from './PriceChart';
 import { decodeWidgetFieldValue, SUPPORTED_FEED_TYPES } from '../utils/widgets';
+import { useSlashtags2 } from '../hooks/slashtags2';
 
 const INTERVAL = 1000 * 60;
 
@@ -40,6 +40,7 @@ const PriceWidget = ({
 	onPressIn?: () => void;
 }): ReactElement => {
 	const { t } = useTranslation('slashtags');
+	const { webRelayClient, webRelayUrl } = useSlashtags2();
 	const [data, setData] = useState<TField[]>([]);
 	const [error, setError] = useState(false);
 	const { config, loading } = useSlashfeed({
@@ -120,7 +121,7 @@ const PriceWidget = ({
 		return () => {
 			clearInterval(interval);
 		};
-	}, [url, widget.fields, period]);
+	}, [url, widget.fields, period, webRelayClient, webRelayUrl]);
 
 	return (
 		<BaseFeedWidget

@@ -1,4 +1,6 @@
 import jestExpect from 'expect';
+import parse from 'url-parse';
+
 import {
 	sleep,
 	checkComplete,
@@ -11,7 +13,7 @@ import {
 
 const __DEV__ = process.env.DEV === 'true';
 
-d = checkComplete([
+const d = checkComplete([
 	'settings-1',
 	'settings-2',
 	'settings-3',
@@ -22,6 +24,8 @@ d = checkComplete([
 	'settings-8',
 	'settings-9',
 	'settings-10',
+	'settings-11',
+	'settings-12',
 ])
 	? describe.skip
 	: describe;
@@ -455,11 +459,49 @@ d('Settings', () => {
 
 			markComplete('settings-9');
 		});
+
+		it('Can connect to different Slashtags Web Relay', async () => {
+			if (checkComplete('settings-10')) {
+				return;
+			}
+
+			await element(by.id('Settings')).tap();
+			await element(by.id('AdvancedSettings')).tap();
+			await element(by.id('WebRelay')).tap();
+
+			const { label: origRelay } = await element(
+				by.id('ConnectedUrl'),
+			).getAttributes();
+
+			// add port to url
+			const url = parse(origRelay, true);
+			url.set('hostname', url.hostname + ':443');
+			const relayUrl = url.toString();
+
+			await element(by.id('UrlInput')).replaceText(relayUrl);
+			await element(by.id('Status')).tap(); // close keyboard
+			await element(by.id('ConnectToUrl')).tap();
+			await sleep(1000);
+
+			// url should be updated
+			let { label: newRelay } = await element(
+				by.id('ConnectedUrl'),
+			).getAttributes();
+
+			jestExpect(newRelay).toBe(relayUrl);
+
+			// now change it back
+			await element(by.id('UrlInput')).replaceText(origRelay);
+			await element(by.id('Status')).tap(); // close keyboard
+			await element(by.id('ConnectToUrl')).tap();
+
+			markComplete('settings-10');
+		});
 	});
 
 	d('Dev Settings', () => {
 		it('Shows the crash error screen when triggering render error', async () => {
-			if (checkComplete('settings-10')) {
+			if (checkComplete('settings-11')) {
 				return;
 			}
 
@@ -480,7 +522,7 @@ d('Settings', () => {
 			await expect(element(by.id('ErrorClose'))).toBeVisible();
 			await expect(element(by.id('ErrorReport'))).toBeVisible();
 
-			markComplete('settings-10');
+			markComplete('settings-11');
 		});
 	});
 
@@ -494,7 +536,7 @@ d('Settings', () => {
 			// - login with PIN
 			// - disable PIN
 			// - enter wrong PIN 10 times and reset the app
-			if (checkComplete('settings-11')) {
+			if (checkComplete('settings-12')) {
 				return;
 			}
 
@@ -618,7 +660,7 @@ d('Settings', () => {
 			// await device.launchApp({ newInstance: true });
 			// await waitFor(element(by.id('Check1'))).toBeVisible();
 
-			markComplete('settings-11');
+			markComplete('settings-12');
 		});
 	});
 });

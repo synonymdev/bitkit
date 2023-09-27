@@ -2,9 +2,9 @@ import { useEffect, useMemo, useState } from 'react';
 import { Reader } from '@synonymdev/feeds';
 import b4a from 'b4a';
 
-import { webRelayClient, webRelayUrl } from '../components/SlashtagsProvider2';
 import { SlashFeedJSON } from '../store/types/widgets';
 import { SUPPORTED_FEED_TYPES, decodeWidgetFieldValue } from '../utils/widgets';
+import { useSlashtags2 } from './slashtags2';
 
 type Field = {
 	name: string;
@@ -33,6 +33,7 @@ export const useSlashfeed = (options: {
 	loading: boolean;
 	failed: boolean;
 } => {
+	const { webRelayClient, webRelayUrl } = useSlashtags2();
 	const [config, setConfig] = useState<SlashFeedJSON>(
 		cache[options.url]?.config,
 	);
@@ -43,7 +44,7 @@ export const useSlashfeed = (options: {
 
 	const reader = useMemo(() => {
 		return new Reader(webRelayClient, `${options.url}?relay=${webRelayUrl}`);
-	}, [options.url]);
+	}, [options.url, webRelayUrl, webRelayClient]);
 
 	useEffect(() => {
 		let unmounted = false;

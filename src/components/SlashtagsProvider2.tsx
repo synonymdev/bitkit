@@ -1,6 +1,5 @@
 import React, { ReactElement, useEffect, useState } from 'react';
 import { createContext } from 'react';
-import { useSelector } from 'react-redux';
 import b4a from 'b4a';
 import KeyChain from '@synonymdev/slashtags-keychain';
 import type { Client as IWebRelayClient } from '@synonymdev/web-relay';
@@ -12,7 +11,8 @@ import { format, parse } from '@synonymdev/slashtags-url';
 import { getSlashtagsPrimaryKey } from '../utils/wallet';
 import { seedHashSelector } from '../store/reselect/wallet';
 import { showToast } from '../utils/notifications';
-import { __WEB_RELAY__ } from '../constants/env';
+import { useAppSelector } from '../hooks/redux';
+import { webRelaySelector } from '../store/reselect/settings';
 
 class Store {
 	location: string;
@@ -86,7 +86,6 @@ class Store {
 	async close(): Promise<void> {}
 }
 
-export const webRelayUrl = __WEB_RELAY__;
 const store = new Store('example1.db') as unknown as Client.Store;
 
 export let webRelayClient: IWebRelayClient;
@@ -94,12 +93,14 @@ export let profile: SlashtagsProfile;
 
 export interface ISlashtagsContext2 {
 	webRelayClient: Client;
+	webRelayUrl: string;
 	url: string;
 	profile: SlashtagsProfile;
 }
 
 export const SlashtagsContext2 = createContext<ISlashtagsContext2>({
 	webRelayClient: {} as Client,
+	webRelayUrl: '',
 	url: '',
 	profile: {} as SlashtagsProfile,
 });
@@ -110,7 +111,8 @@ export const SlashtagsProvider2 = ({
 	children: ReactElement;
 }): ReactElement => {
 	const [url, setUrl] = useState<string>('');
-	const seedHash = useSelector(seedHashSelector);
+	const seedHash = useAppSelector(seedHashSelector);
+	const webRelayUrl = useAppSelector(webRelaySelector);
 
 	useEffect(() => {
 		if (!seedHash) {
@@ -147,17 +149,18 @@ export const SlashtagsProvider2 = ({
 			const profileUrl = await profile.createURL();
 			const parsed = parse(profileUrl);
 			const long = format(parsed.key, {
-				query: { relay: __WEB_RELAY__ },
+				query: { relay: webRelayUrl },
 			});
 			setUrl(long);
 		})();
-	}, [seedHash]);
+	}, [seedHash, webRelayUrl]);
 
 	return (
 		// Do not render children until we have a url
 		<SlashtagsContext2.Provider
 			value={{
 				webRelayClient,
+				webRelayUrl,
 				url,
 				profile,
 			}}>

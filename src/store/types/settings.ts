@@ -72,4 +72,5 @@ export interface ISettings {
 	hideBeta: boolean;
 	enableDevOptions: boolean;
 	treasureChests: TChest[];
+	webRelay: string;
 }

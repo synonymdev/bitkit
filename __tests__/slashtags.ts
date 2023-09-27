@@ -5,10 +5,11 @@ describe('Slashtags', () => {
 		expect(
 			getNewProfileUrl(
 				'slash:c7xk1b11o8k8jw6cn9a8asjcau77aenf7iq79tbc9u933wyoyjxy',
+				'https://dht-relay.synonym.to/staging/web-relay',
 			),
 		).toEqual(
 			'slash:c7xk1b11o8k8jw6cn9a8asjcau77aenf7iq79tbc9u933wyoyjxy?relay=https://dht-relay.synonym.to/staging/web-relay',
 		);
-		expect(() => getNewProfileUrl('xxx')).toThrow(Error);
+		expect(() => getNewProfileUrl('xxx', 'yyy')).toThrow(Error);
 	});
 });

@@ -12,8 +12,8 @@ import Reader from '@synonymdev/slashtags-widget-news-feed/lib/reader';
 import { Caption13M, Title } from '../styles/text';
 import { openURL } from '../utils/helpers';
 import { showToast } from '../utils/notifications';
+import { useSlashtags2 } from '../hooks/slashtags2';
 import BaseFeedWidget from './BaseFeedWidget';
-import { webRelayClient, webRelayUrl } from './SlashtagsProvider2';
 
 type Article = {
 	title: string;
@@ -49,6 +49,7 @@ const HeadlinesWidget = ({
 	const { t } = useTranslation('slashtags');
 	const [article, setArticle] = useState<Article>();
 	const [isLoading, setIsLoading] = useState(false);
+	const { webRelayClient, webRelayUrl } = useSlashtags2();
 
 	useEffect(() => {
 		let unmounted = false;
@@ -84,7 +85,7 @@ const HeadlinesWidget = ({
 		return () => {
 			unmounted = true;
 		};
-	}, [url, t]);
+	}, [url, t, webRelayClient, webRelayUrl]);
 
 	return (
 		<BaseFeedWidget

@@ -24,7 +24,7 @@ import { Pair } from '@synonymdev/slashtags-widget-price-feed/types/lib/reader';
 import { IThemeColors } from '../styles/themes';
 import { SlashFeedJSON, TGraphPeriod } from '../store/types/widgets';
 import useColors from '../hooks/colors';
-import { webRelayClient, webRelayUrl } from './SlashtagsProvider2';
+import { useSlashtags2 } from '../hooks/slashtags2';
 
 export type Change = {
 	color: keyof IThemeColors;
@@ -159,6 +159,7 @@ const PriceChart = ({
 	period: TGraphPeriod;
 	style?: StyleProp<ViewStyle>;
 }): ReactElement => {
+	const { webRelayClient, webRelayUrl } = useSlashtags2();
 	const [history, setHistory] = useState<THistory>();
 
 	useEffect(() => {
@@ -183,7 +184,7 @@ const PriceChart = ({
 		return () => {
 			unmounted = true;
 		};
-	}, [url, field, period]);
+	}, [url, field, period, webRelayClient, webRelayUrl]);
 
 	if (!history) {
 		return <></>;

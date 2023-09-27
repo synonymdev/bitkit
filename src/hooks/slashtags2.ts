@@ -15,7 +15,7 @@ import {
 	webRelayClient,
 } from '../components/SlashtagsProvider2';
 import { useSlashtags } from '../components/SlashtagsProvider';
-import { __E2E__, __WEB_RELAY__ } from '../constants/env';
+import { __E2E__ } from '../constants/env';
 import { getNewProfileUrl, saveProfile2 } from '../utils/slashtags2';
 import { useAppSelector } from './redux';
 import { useProfile, useSelectedSlashtag } from './slashtags';
@@ -39,18 +39,19 @@ export const useProfile2 = (
 	profile: BasicProfile;
 	url: string;
 } => {
+	const { webRelayUrl } = useSlashtags2();
 	const [resolving, setResolving] = useState(true);
 	const [url, profileUrl] = useMemo(() => {
 		const parsed = parse(origUrl);
 		const url1 = format(parsed.key, {
-			query: { relay: parsed.query?.relay ?? __WEB_RELAY__ },
+			query: { relay: parsed.query?.relay ?? webRelayUrl },
 		});
 		const url2 = format(parsed.key, {
 			path: '/profile.json',
-			query: { relay: parsed.query?.relay ?? __WEB_RELAY__ },
+			query: { relay: parsed.query?.relay ?? webRelayUrl },
 		});
 		return [url1, url2];
-	}, [origUrl]);
+	}, [origUrl, webRelayUrl]);
 	const contact = useAppSelector((state) => {
 		return contactSelector(state, url);
 	});
@@ -126,7 +127,7 @@ export const useMigrateSlashtags2 = (): void => {
 	const newContacts = useAppSelector(contactsSelector);
 
 	const { url: oldUrl } = useSelectedSlashtag();
-	const { url, profile: slashtagsProfile } = useSlashtags2();
+	const { url, profile: slashtagsProfile, webRelayUrl } = useSlashtags2();
 	const { profile: oldProfile } = useProfile(oldUrl, { resolve: true });
 	const { profile: newProfile } = useProfile2(oldUrl);
 
@@ -150,7 +151,7 @@ export const useMigrateSlashtags2 = (): void => {
 			let newUrl = '';
 			let id = '';
 			try {
-				newUrl = getNewProfileUrl(old.url);
+				newUrl = getNewProfileUrl(old.url, webRelayUrl);
 				id = parse(newUrl).id;
 			} catch (e) {
 				continue;

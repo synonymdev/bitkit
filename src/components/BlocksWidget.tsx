@@ -7,8 +7,8 @@ import { Caption13M, Text01M, Text02M } from '../styles/text';
 import BaseFeedWidget from './BaseFeedWidget';
 import { IWidget } from '../store/types/widgets';
 import { useSlashfeed } from '../hooks/widgets';
-import { webRelayClient, webRelayUrl } from './SlashtagsProvider2';
 import { decodeWidgetFieldValue, SUPPORTED_FEED_TYPES } from '../utils/widgets';
+import { useSlashtags2 } from '../hooks/slashtags2';
 
 const INTERVAL = 1000 * 60;
 
@@ -32,6 +32,7 @@ const BlocksWidget = ({
 	const { t } = useTranslation('slashtags');
 	const { config, fields, loading } = useSlashfeed({ url });
 	const [data, setData] = useState(fields);
+	const { webRelayClient, webRelayUrl } = useSlashtags2();
 
 	// manually refresh feed for now
 	useEffect(() => {
@@ -70,7 +71,7 @@ const BlocksWidget = ({
 		return () => {
 			clearInterval(interval);
 		};
-	}, [url, widget.fields]);
+	}, [url, widget.fields, webRelayUrl, webRelayClient]);
 
 	return (
 		<BaseFeedWidget
