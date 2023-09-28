@@ -58,8 +58,8 @@ const ReceiveAmount = ({
 			setIsLoading(false);
 			showToast({
 				type: 'error',
-				title: `Below Minimum Amount of ${txt}`,
-				description: `Invoice must be at least ${txt}`,
+				title: t('receive_error_min_title'),
+				description: t('receive_error_min_description', { txt }),
 				autoHide: true,
 			});
 			return;
@@ -70,8 +70,8 @@ const ReceiveAmount = ({
 			setIsLoading(false);
 			showToast({
 				type: 'error',
-				title: `Above Maximum Amount of ${txt}`,
-				description: `Invoice must be less than ${txt}`,
+				title: t('receive_error_max_title'),
+				description: t('receive_error_max_description', { txt }),
 				autoHide: true,
 			});
 			return;
@@ -88,7 +88,7 @@ const ReceiveAmount = ({
 			console.log({ error: cJitEntryResponse.error.message });
 			showToast({
 				type: 'error',
-				title: 'CJIT Error',
+				title: t('receive_cjit_error'),
 				description: cJitEntryResponse.error.message,
 			});
 			return;
@@ -121,7 +121,11 @@ const ReceiveAmount = ({
 							<Caption13Up style={styles.minimumText} color="gray1">
 								{t('minimum')}
 							</Caption13Up>
-							<Money sats={25000} size="text02m" symbol={true} />
+							<Money
+								sats={blocktank.options.minChannelSizeSat}
+								size="text02m"
+								symbol={true}
+							/>
 						</View>
 						<View style={styles.actionButtons}>
 							<View style={styles.actionButtonContainer}>

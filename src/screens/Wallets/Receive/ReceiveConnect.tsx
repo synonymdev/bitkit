@@ -65,7 +65,7 @@ const ReceiveConnect = ({
 
 				<View style={styles.payAmount}>
 					<Caption13Up style={styles.payAmountText} color="gray1">
-						You will receive
+						{t('receive_will')}
 					</Caption13Up>
 					<Money
 						sats={payAmount}
