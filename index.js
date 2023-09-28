@@ -8,15 +8,6 @@ import { gestureHandlerRootHOC } from 'react-native-gesture-handler';
 
 import Root from './src/Root';
 import { name as appName } from './app.json';
-import { __E2E__ } from './src/constants/env';
-
-if (!__E2E__) {
-	// Polyfill fetch streaming on iOS (Android is not supported yet)
-	// https://github.com/react-native-community/fetch/issues/13
-	polyfillEncoding();
-	polyfillReadableStream();
-	polyfillFetch();
-}
 
 // Polyfill fetch streaming on iOS (Android is not supported yet)
 // https://github.com/react-native-community/fetch/issues/13
