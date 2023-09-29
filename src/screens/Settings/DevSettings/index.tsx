@@ -1,6 +1,8 @@
 import React, { memo, ReactElement, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import RNFS, { unlink, writeFile } from 'react-native-fs';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Share from 'react-native-share';
 
 import { __DISABLE_SLASHTAGS__ } from '../../../constants/env';
 import actions from '../../../store/actions/actions';
@@ -20,7 +22,7 @@ import { resetWidgetsStore } from '../../../store/actions/widgets';
 import { resetFeesStore } from '../../../store/actions/fees';
 import { resetTodos } from '../../../store/actions/todos';
 import { resetSettingsStore, wipeApp } from '../../../store/actions/settings';
-import { getWalletStore } from '../../../store/helpers';
+import { getStore, getWalletStore } from '../../../store/helpers';
 import { warningsSelector } from '../../../store/reselect/checks';
 import {
 	addressTypeSelector,
@@ -46,6 +48,29 @@ const DevSettings = ({
 	const warnings = useSelector((state) => {
 		return warningsSelector(state, selectedWallet, selectedNetwork);
 	});
+
+	const exportStore = async (): Promise<void> => {
+		const time = new Date().getTime();
+		const store = JSON.stringify(getStore());
+		const filePath = `${RNFS.DocumentDirectoryPath}/bitkit_store_${time}.json`;
+
+		try {
+			// Create temp file in app storage
+			await writeFile(filePath, store, 'utf8');
+
+			// Export file
+			await Share.open({
+				title: 'Export Bitkit Store',
+				type: 'application/json',
+				url: `file://${filePath}`,
+			});
+
+			// Delete file from app storage
+			await unlink(filePath);
+		} catch (error) {
+			console.log(error);
+		}
+	};
 
 	const settingsListData: IListData[] = [
 		{
@@ -169,6 +194,11 @@ const DevSettings = ({
 					title: "Clear UTXO's",
 					type: EItemType.button,
 					onPress: clearUtxos,
+				},
+				{
+					title: 'Export Store',
+					type: EItemType.button,
+					onPress: exportStore,
 				},
 				{
 					title: 'Reset All Stores',
