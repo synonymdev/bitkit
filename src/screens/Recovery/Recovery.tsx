@@ -84,7 +84,10 @@ const Recovery = ({
 
 	const onContactSupport = async (): Promise<void> => {
 		const link = await createSupportLink();
-		await openURL(link);
+		const res = await openURL(link);
+		if (!res) {
+			await openURL('https://synonym.to/contact');
+		}
 	};
 
 	const onWipeApp = (): void => {
@@ -94,6 +97,7 @@ const Recovery = ({
 					// hack needed for Android
 					setTimeout(() => {
 						setShowWipeDialog(true);
+						navigation.pop();
 					}, 100);
 				},
 			});

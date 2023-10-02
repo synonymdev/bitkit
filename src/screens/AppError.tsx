@@ -31,7 +31,10 @@ const AppError = ({ error }: { error: ReactError }): ReactElement => {
 \nStack: ${error.stack}`;
 
 		const link = await createSupportLink('Bitkit Support [Error]', message);
-		await openURL(link);
+		const res = await openURL(link);
+		if (!res) {
+			await openURL('https://synonym.to/contact');
+		}
 	};
 
 	return (

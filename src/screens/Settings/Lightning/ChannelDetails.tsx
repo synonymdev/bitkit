@@ -303,7 +303,10 @@ const ChannelDetails = ({
 			order.id,
 			`Transaction ID: ${order?.channel?.fundingTx.id}`,
 		);
-		await openURL(link);
+		const res = await openURL(link);
+		if (!res) {
+			await openURL('https://synonym.to/contact');
+		}
 	};
 
 	const getChannelStatus = (): TStatus => {
