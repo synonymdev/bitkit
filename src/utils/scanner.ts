@@ -315,7 +315,7 @@ export const processInputData = async ({
 					showToast({
 						type: 'error',
 						title: i18n.t('slashtags:error_pay_title'),
-						description: response.error.message,
+						description: `An error occurred: ${response.error.message}`,
 					});
 				}
 				return err(response.error.message);
@@ -705,7 +705,7 @@ export const processBitcoinTransactionData = async ({
 					error = {
 						type: 'error',
 						title: 'Lightning Invoice Expired',
-						description: 'Unfortunately, this lightning invoice has expired.',
+						description: 'This Lightning invoice has expired.',
 					};
 				}
 			}
@@ -729,8 +729,8 @@ export const processBitcoinTransactionData = async ({
 				const diff = requestedAmount - spendingBalance;
 				error = {
 					type: 'error',
-					title: 'Unable to afford the lightning invoice',
-					description: `(${diff} more sats needed.)`,
+					title: i18n.t('other:scan_pay_error_title'),
+					description: `${diff} more sats needed to pay this invoice.`,
 				};
 			}
 		}
@@ -754,8 +754,8 @@ export const processBitcoinTransactionData = async ({
 					response = bitcoinInvoice;
 				} else {
 					showToast({
-						type: 'info',
-						title: i18n.t('lightning:error_fulfill_title'),
+						type: 'error',
+						title: i18n.t('other:scan_pay_error_title'),
 						description: i18n.t('lightning:error_fulfill_msg', {
 							amount: requestedAmount - onchainBalance,
 						}),
@@ -785,14 +785,16 @@ export const processBitcoinTransactionData = async ({
 			if (requestedAmount) {
 				error = {
 					type: 'error',
-					title: `${requestedAmount} more sats needed`,
-					description: 'Unable to pay the provided invoice',
+					title: i18n.t('other:scan_pay_error_title'),
+					description: i18n.t('other:scan_pay_error_amount_description', {
+						amount: requestedAmount,
+					}),
 				};
 			} else {
 				error = {
 					type: 'error',
-					title: 'Unable to pay the provided invoice',
-					description: 'Please send more sats to Bitkit to process payments.',
+					title: i18n.t('other:scan_pay_error_title'),
+					description: i18n.t('other:scan_pay_error_description'),
 				};
 			}
 			showToast(error);
@@ -904,10 +906,11 @@ export const handleData = async ({
 				paymentRequest: lightningPaymentRequest,
 			});
 			if (decodedInvoice.isErr()) {
+				console.log(decodedInvoice.error.message);
 				showToast({
 					type: 'error',
 					title: i18n.t('lightning:error_decode'),
-					description: decodedInvoice.error.message,
+					description: i18n.t('other:qr_error_no_data_text'),
 				});
 				return err(decodedInvoice.error.message);
 			}
@@ -1032,7 +1035,7 @@ export const handleData = async ({
 			if (peer.includes('onion')) {
 				showToast({
 					type: 'error',
-					title: i18n.t('lightning:error_add'),
+					title: i18n.t('lightning:error_add_title'),
 					description: i18n.t('lightning:error_add_tor'),
 				});
 				return err('Unable to add tor nodes at this time.');
@@ -1053,7 +1056,7 @@ export const handleData = async ({
 			if (savePeerRes.isErr()) {
 				showToast({
 					type: 'error',
-					title: i18n.t('lightning:error_save'),
+					title: i18n.t('lightning:error_save_title'),
 					description: savePeerRes.error.message,
 				});
 				return err(savePeerRes.error.message);
@@ -1165,7 +1168,7 @@ export const validateInputData = async ({
 						showToast({
 							type: 'error',
 							title: i18n.t('slashtags:error_pay_title'),
-							description: errorMessage,
+							description: `An error occurred: ${errorMessage}`,
 						});
 					}
 					return err(errorMessage);

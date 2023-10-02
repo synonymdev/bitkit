@@ -293,7 +293,7 @@ export const startChannelPurchase = async ({
 		showToast({
 			type: 'error',
 			title: i18n.t('other:bt_error_retrieve'),
-			description: orderData.error.message,
+			description: `An error occurred: ${orderData.error.message}`,
 		});
 		return err(orderData.error.message);
 	}

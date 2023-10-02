@@ -158,11 +158,12 @@ const ElectrumConfig = ({
 					description: t('es.server_updated_message', { host, port }),
 				});
 			} else {
+				console.log(connectResponse.error.message);
 				updateUi({ isConnectedToElectrum: false });
 				showToast({
 					type: 'error',
 					title: t('es.server_error'),
-					description: connectResponse.error.message,
+					description: t('es.server_error_description'),
 				});
 			}
 			await getAndUpdateConnectedPeer();

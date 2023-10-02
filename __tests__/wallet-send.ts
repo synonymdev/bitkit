@@ -175,7 +175,7 @@ describe('Wallet - new wallet, send and receive', () => {
 		});
 		// @ts-ignore
 		expect(updateFeeRes.error.message).toBe(
-			'Unable to increase the fee any further. Otherwise, it will exceed half the current balance.',
+			'Unable to increase the fee. It would exceed half of your current balance.',
 		);
 
 		// set fee to 3 vsat/byte

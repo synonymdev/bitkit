@@ -3,6 +3,7 @@ import RNRestart from 'react-native-restart';
 
 import actions from './actions';
 import { getDispatch } from '../helpers';
+import i18n from '../../utils/i18n';
 import { sleep } from '../../utils/helpers';
 import { removePin } from '../../utils/settings';
 import { wipeLdkStorage } from '../../utils/lightning';
@@ -82,8 +83,8 @@ export const wipeApp = async ({
 		if (showNotification) {
 			showToast({
 				type: 'success',
-				title: 'Bitkit Wiped Successfully',
-				description: 'All app data has been reset.',
+				title: i18n.t('security:wiped_title'),
+				description: i18n.t('security:wiped_description'),
 			});
 		}
 

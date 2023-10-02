@@ -135,8 +135,9 @@ export interface IAddresses {
 
 export interface ICreateWallet {
 	walletName?: TWalletName;
-	mnemonic?: string;
+	mnemonic: string;
 	bip39Passphrase?: string;
+	restore?: boolean;
 	addressAmount?: number;
 	changeAddressAmount?: number;
 	addressTypesToCreate?: Partial<IAddressTypes>;

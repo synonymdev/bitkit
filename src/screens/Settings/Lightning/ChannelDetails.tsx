@@ -547,7 +547,7 @@ const ChannelDetails = ({
 							Clipboard.setString(channel.counterparty_node_id);
 							showToast({
 								type: 'success',
-								title: t('copied_couterparty'),
+								title: t('copied'),
 								description: channel.counterparty_node_id,
 							});
 						}}

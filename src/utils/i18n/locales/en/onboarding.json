@@ -33,9 +33,9 @@
 	"restore_suggestions": "SUGGESTIONS",
 	"restore_passphrase_placeholder": "Passphrase*",
 	"restore_passphrase_meaning": "*Optional, enter only if you’ve set up one.",
-	"restore_error_title": "Error Restoring Wallet",
+	"restore_error_title": "Wallet Restore Failed",
+	"restore_error_description": "Bitkit could not restore your wallet from backup or recovery phrase.",
 	"loading_header": "Setting up\n<brand>your Wallet.</brand>",
-	"restore_error_no_backup": "Error: Unable to proceed without a backup",
 	"restore_success_header": "Wallet Restored.",
 	"restore_success_text": "You have successfully restored your wallet from backup. Enjoy Bitkit!",
 	"restore_failed_header": "Spending Balance Issue",
@@ -43,7 +43,7 @@
 	"restore_no_backup_button": "Proceed Without Backup",
 	"restore_no_backup_warn": "If you previously had a lightning backup it will be overwritten and lost. This could result in a loss of funds.",
 	"empty_wallet": "To get started send\n<brand>Bitcoin</brand> to your wallet.",
-	"error_create": "Wallet creation failed",
+	"error_create": "Wallet Creation Failed",
 	"multiple_header": "Caution:\n<yellow>Multiple devices</yellow>",
 	"multiple_text": "Don't install your Bitkit recovery phrase into multiple phones simultaneously, as this can corrupt your data."
 }

@@ -46,10 +46,11 @@ const ShowMnemonic = ({
 	useEffect(() => {
 		getMnemonicPhrase().then((res) => {
 			if (res.isErr()) {
+				console.log(res.error.message);
 				showToast({
 					type: 'error',
 					title: t('mnemonic_error'),
-					description: res.error.message,
+					description: t('mnemonic_error_description'),
 				});
 				return;
 			}

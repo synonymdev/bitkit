@@ -47,11 +47,16 @@ const AuthWidget = ({
 
 	const onSignIn = useCallback(async () => {
 		const magiclink = await client.magiclink(url).catch((e: Error) => {
+			console.log(e.message);
+			const message =
+				e.message === 'channel closed'
+					? t('auth_error_peer')
+					: `An error occured: ${e.message}`;
+
 			showToast({
 				type: 'error',
 				title: t('auth_error_link'),
-				description:
-					e.message === 'channel closed' ? t('auth_error_peer') : e.message,
+				description: message,
 			});
 		});
 
@@ -59,7 +64,7 @@ const AuthWidget = ({
 			Linking.openURL(magiclink.url).catch((e) => {
 				showToast({
 					type: 'error',
-					title: t('auth_error_open'),
+					title: t('auth_error_link'),
 					description: e.message,
 				});
 			});

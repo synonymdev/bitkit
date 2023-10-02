@@ -8,7 +8,6 @@ import {
 	clearUtxos,
 	injectFakeTransaction,
 	resetSelectedWallet,
-	resetWalletStore,
 	updateWallet,
 } from '../../../store/actions/wallet';
 import { resetUserStore } from '../../../store/actions/user';
@@ -193,11 +192,6 @@ const DevSettings = ({
 					onPress: async (): Promise<void> => {
 						await resetSelectedWallet({ selectedWallet });
 					},
-				},
-				{
-					title: 'Reset Entire Wallet Store',
-					type: EItemType.button,
-					onPress: resetWalletStore,
 				},
 				{
 					title: 'Reset Fees Store',

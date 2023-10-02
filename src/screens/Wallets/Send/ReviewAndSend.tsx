@@ -426,14 +426,15 @@ const ReviewAndSend = ({
 		(tag: string) => {
 			const res = removeTxTag({ tag, selectedNetwork, selectedWallet });
 			if (res.isErr()) {
+				console.log(res.error.message);
 				showToast({
 					type: 'error',
-					title: 'Error Removing Tag',
-					description: res.error.message,
+					title: t('tag_remove_error_title'),
+					description: t('tag_remove_error_description'),
 				});
 			}
 		},
-		[selectedWallet, selectedNetwork],
+		[selectedWallet, selectedNetwork, t],
 	);
 
 	const onSwipeToPay = useCallback(async () => {

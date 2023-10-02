@@ -2,6 +2,7 @@ import React, { ReactElement, memo } from 'react';
 import {
 	StyleProp,
 	StyleSheet,
+	Platform,
 	TextInputProps,
 	View,
 	ViewStyle,
@@ -51,6 +52,11 @@ const styles = StyleSheet.create({
 		flex: 1,
 		backgroundColor: 'transparent',
 		paddingLeft: 0,
+		...Platform.select({
+			android: {
+				fontFamily: 'Inter-Regular',
+			},
+		}),
 	},
 	icon: {
 		marginHorizontal: 16,

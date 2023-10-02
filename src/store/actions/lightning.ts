@@ -294,7 +294,7 @@ export const savePeer = ({
 	}
 
 	if (!peer) {
-		return err('Invalid Peer Data');
+		return err('The peer data appears to be invalid.');
 	}
 	// Check that the URI is valid.
 	const parsedPeerData = parseUri(peer);
@@ -318,7 +318,7 @@ export const savePeer = ({
 		type: actions.SAVE_LIGHTNING_PEER,
 		payload,
 	});
-	return ok('Successfully Saved Lightning Peer.');
+	return ok('Lightning Peer Saved');
 };
 
 /**
@@ -344,7 +344,7 @@ export const removePeer = ({
 		selectedNetwork = getSelectedNetwork();
 	}
 	if (!peer) {
-		return err('Invalid Peer Data');
+		return err('The peer data appears to be invalid.');
 	}
 	const payload = {
 		peer,

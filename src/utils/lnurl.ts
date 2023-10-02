@@ -60,7 +60,7 @@ export const handleLnurlPay = async ({
 		const message = i18n.t('other:lnurl_ln_error_msg');
 		showToast({
 			type: 'error',
-			title: i18n.t('other:lnurl_ln_error_title'),
+			title: i18n.t('other:lnurl_pay_error'),
 			description: message,
 		});
 		return err(message);
@@ -82,7 +82,7 @@ export const handleLnurlPay = async ({
 			showToast({
 				type: 'error',
 				title: i18n.t('other:lnurl_pay_error'),
-				description: callbackRes.error.message,
+				description: `An error occured: ${callbackRes.error.message}`,
 			});
 			return err(callbackRes.error.message);
 		}
@@ -92,7 +92,7 @@ export const handleLnurlPay = async ({
 		showToast({
 			type: 'error',
 			title: i18n.t('other:lnurl_pay_error'),
-			description: e.message,
+			description: `An error occured: ${e.message}`,
 		});
 		return err(e.message);
 	}
@@ -150,21 +150,21 @@ export const handleLnurlChannel = async ({
 			timeout: 5000,
 		});
 		if (addPeerRes.isErr()) {
+			console.log(addPeerRes.error.message);
 			showToast({
 				type: 'error',
 				title: i18n.t('other:lnurl_channel_error'),
-				description:
-					i18n.t('lightning:error_add') + '\n' + addPeerRes.error.message,
+				description: i18n.t('lightning:error_add'),
 			});
 			return err(addPeerRes.error.message);
 		}
 		const savePeerRes = savePeer({ selectedWallet, selectedNetwork, peer });
 		if (savePeerRes.isErr()) {
+			console.log(savePeerRes.error.message);
 			showToast({
 				type: 'error',
 				title: i18n.t('other:lnurl_channel_error'),
-				description:
-					i18n.t('lightning:error_save') + '\n' + savePeerRes.error.message,
+				description: i18n.t('lightning:error_save'),
 			});
 			return err(savePeerRes.error.message);
 		}
@@ -180,7 +180,7 @@ export const handleLnurlChannel = async ({
 		showToast({
 			type: 'error',
 			title: i18n.t('other:lnurl_channel_error'),
-			description: callbackRes.error.message,
+			description: `An error occured: ${callbackRes.error.message}`,
 		});
 		return err(callbackRes.error.message);
 	}
@@ -201,7 +201,7 @@ export const handleLnurlChannel = async ({
 		showToast({
 			type: 'error',
 			title: i18n.t('other:lnurl_channel_error'),
-			description: jsonRes.reason,
+			description: `An error occured: ${jsonRes.reason}`,
 		});
 		return err(jsonRes.reason);
 	}
@@ -251,10 +251,11 @@ export const handleLnurlAuth = async ({
 		bip32Mnemonic: getMnemonicPhraseResponse.value,
 	});
 	if (authRes.isErr()) {
+		console.log(authRes.error.message);
 		showToast({
 			type: 'error',
 			title: i18n.t('other:lnurl_auth_error'),
-			description: authRes.error.message,
+			description: `An error occured: ${authRes.error.message}`,
 		});
 		return err(authRes.error.message);
 	}
@@ -316,10 +317,11 @@ export const handleLnurlWithdraw = async ({
 		paymentRequest: invoice.value.to_str,
 	});
 	if (callbackRes.isErr()) {
+		console.log(callbackRes.error.message);
 		showToast({
 			type: 'error',
 			title: i18n.t('other:lnurl_withdr_error'),
-			description: callbackRes.error.message,
+			description: i18n.t('other:lnurl_withdr_error_generic'),
 		});
 		return err(callbackRes.error.message);
 	}
@@ -329,10 +331,11 @@ export const handleLnurlWithdraw = async ({
 		const jsonRes = await channelStatusRes.json();
 
 		if (jsonRes.status === 'ERROR') {
+			console.log(jsonRes.reason);
 			showToast({
 				type: 'error',
 				title: i18n.t('other:lnurl_withdr_error'),
-				description: jsonRes.reason,
+				description: i18n.t('other:lnurl_withdr_error_generic'),
 			});
 			return err(jsonRes.reason);
 		}
@@ -345,10 +348,11 @@ export const handleLnurlWithdraw = async ({
 
 		return ok({ type: EQRDataType.lnurlWithdraw });
 	} catch (e) {
+		console.log(e.message);
 		showToast({
 			type: 'error',
 			title: i18n.t('other:lnurl_withdr_error'),
-			description: e.message,
+			description: i18n.t('other:lnurl_withdr_error_generic'),
 		});
 		return err(e.message);
 	}

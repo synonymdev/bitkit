@@ -126,13 +126,14 @@ const _SlashAuthModal = (): ReactElement => {
 		try {
 			response = await client.authz(_url);
 		} catch (e) {
+			console.log(e.message);
 			showToast({
 				type: 'error',
 				title: t('signin_to_error_header'),
 				description:
 					e.message === 'channel closed'
 						? t('signin_to_error_text')
-						: e.message,
+						: 'An error occurred. Please try again.',
 			});
 			setIsLoading(false);
 			closeBottomSheet('slashauthModal');
@@ -151,10 +152,13 @@ const _SlashAuthModal = (): ReactElement => {
 			setAuthWidget(url, { magiclink: true });
 			rootNavigation.navigate('Wallet');
 		} else {
+			console.log(response.message);
 			showToast({
 				type: 'error',
 				title: t('signin_to_error_header'),
-				description: response?.message || '',
+				description: response?.message
+					? `An error occurred: ${response.message}`
+					: 'An error occurred. Please try again.',
 			});
 		}
 

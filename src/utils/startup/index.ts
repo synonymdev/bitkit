@@ -54,6 +54,7 @@ export const restoreSeed = async ({
 	const res = await createWallet({
 		mnemonic,
 		bip39Passphrase,
+		restore: true,
 		addressAmount: 25,
 		changeAddressAmount: 25,
 	});

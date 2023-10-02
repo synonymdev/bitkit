@@ -44,7 +44,7 @@ export const reduceValue = <T>({
 }): Result<number> => {
 	try {
 		if (!value) {
-			return err('No value specified.');
+			return err('Please specify a value.');
 		}
 		return ok(
 			arr.reduce((acc, cur) => {

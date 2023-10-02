@@ -851,10 +851,11 @@ const AddressViewer = ({
 						allAddresses: _allAddresses,
 					});
 					if (utxosRes.isErr()) {
+						console.log(utxosRes.error.message);
 						showToast({
 							type: 'error',
 							title: t('addr.rescan_error'),
-							description: utxosRes.error.message,
+							description: t('addr.rescan_error_description'),
 						});
 						setIsCheckingBalances(false);
 						return;

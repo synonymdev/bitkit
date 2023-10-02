@@ -127,11 +127,9 @@ export const SlashtagsProvider2 = ({
 			) {
 				showToast({
 					type: 'error',
-					title: 'SlashtagsProvider Error',
+					title: 'Data Connection Issue',
 					description:
-						'Could not load primaryKey from keyChain, data:"' +
-						primaryKeyRes.data +
-						'"',
+						'An error occured: Could not load primary key from keychain.',
 				});
 				return;
 			}

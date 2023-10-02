@@ -46,7 +46,7 @@ const FactsWidget = ({
 				showToast({
 					type: 'error',
 					title: t('widget_error_drive'),
-					description: error.message,
+					description: `An error occurred: ${error.message}`,
 				});
 			}
 		};

@@ -40,7 +40,7 @@ const Recovery = ({
 			showToast({
 				type: 'error',
 				title: t('lightning:error_logs'),
-				description: result.error.message,
+				description: t('lightning:error_logs_description'),
 			});
 			return;
 		}

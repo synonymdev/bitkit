@@ -101,32 +101,34 @@ export const updateWallet = (
 
 /**
  * Creates and stores a newly specified wallet.
+ * @param {string} mnemonic
  * @param {string} [wallet]
  * @param {number} [addressAmount]
  * @param {number} [changeAddressAmount]
- * @param {string} [mnemonic]
  * @param {string} [bip39Passphrase]
  * @param {Partial<IAddressTypes>} [addressTypesToCreate]
  * @return {Promise<Result<string>>}
  */
 export const createWallet = async ({
 	walletName = getDefaultWalletShape().id,
+	mnemonic,
+	bip39Passphrase = '',
+	restore = false,
 	addressAmount = GENERATE_ADDRESS_AMOUNT,
 	changeAddressAmount = GENERATE_ADDRESS_AMOUNT,
-	mnemonic = '',
-	bip39Passphrase = '',
 	addressTypesToCreate,
-}: ICreateWallet = {}): Promise<Result<string>> => {
+}: ICreateWallet): Promise<Result<string>> => {
 	if (!addressTypesToCreate) {
 		addressTypesToCreate = addressTypes;
 	}
 	try {
 		const response = await createDefaultWallet({
 			walletName,
-			addressAmount,
-			changeAddressAmount,
 			mnemonic,
 			bip39Passphrase,
+			restore,
+			addressAmount,
+			changeAddressAmount,
 			addressTypesToCreate,
 		});
 		if (response.isErr()) {
@@ -888,10 +890,10 @@ export const checkUnconfirmedTransactions = async ({
 			// Notify user that a transaction has been removed from the mempool.
 			showToast({
 				type: 'error',
-				title: i18n.t('wallet:activity_removed_title', {
+				title: i18n.t('wallet:activity_removed_title'),
+				description: i18n.t('wallet:activity_removed_msg', {
 					count: ghostTxs.length,
 				}),
-				description: i18n.t('wallet:activity_removed_msg'),
 				autoHide: false,
 			});
 			//We need to update the ghost transactions in the store & activity-list and rescan the addresses to get the correct balance.
@@ -1351,23 +1353,6 @@ export const resetSelectedWallet = async ({
 		payload: { selectedWallet },
 	});
 	await refreshWallet();
-};
-
-/**
- * This does not delete the stored mnemonic phrases on the device.
- * This resets the wallet store to defaultWalletStoreShape
- */
-export const resetWalletStore = async (): Promise<Result<string>> => {
-	dispatch({
-		type: actions.RESET_WALLET_STORE,
-	});
-	await createWallet();
-	await refreshWallet({
-		scanAllAddresses: true,
-		updateAllAddressTypes: true,
-		showNotification: false,
-	});
-	return ok('');
 };
 
 /**

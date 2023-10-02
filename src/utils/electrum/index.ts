@@ -68,10 +68,10 @@ export const formatPeerData = (
 			return err('No data provided.');
 		}
 		if (data?.length !== 3) {
-			return err('Invalid peer data');
+			return err('The peer data appears to be invalid.');
 		}
 		if (data[2]?.length < 2) {
-			return err('Invalid peer data');
+			return err('The peer data appears to be invalid.');
 		}
 		const [ip, host, ports] = data;
 		const [version, ssl, tcp] = ports;

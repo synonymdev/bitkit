@@ -55,7 +55,7 @@ const LightningNodeInfo = ({
 							showToast({
 								type: 'success',
 								title: t('copied'),
-								description: t('node_id_copied'),
+								description: nodeId,
 							});
 						}}>
 						<Caption13Up style={styles.label} color="gray1">

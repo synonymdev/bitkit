@@ -188,7 +188,7 @@ const OnchainActivityDetail = ({
 					showToast({
 						type: 'error',
 						title: t('activity_error_get'),
-						description: txResponse.error.message,
+						description: t('activity_error_get_description'),
 					});
 					return;
 				}
@@ -280,9 +280,9 @@ const OnchainActivityDetail = ({
 	const copyTransactionId = useCallback(() => {
 		Clipboard.setString(id);
 		showToast({
-			type: 'info',
+			type: 'success',
 			title: t('activity_copied_tx'),
-			description: t('activity_copied_tx_text'),
+			description: id,
 		});
 	}, [id, t]);
 
@@ -675,9 +675,9 @@ const LightningActivityDetail = ({
 	const copyTransactionId = useCallback(() => {
 		Clipboard.setString(id);
 		showToast({
-			type: 'info',
+			type: 'success',
 			title: t('activity_copied_tx'),
-			description: t('activity_copied_tx_text'),
+			description: id,
 		});
 	}, [id, t]);
 

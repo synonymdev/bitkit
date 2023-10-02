@@ -91,13 +91,14 @@ const Contact = ({
 		setLoading(false);
 		if (res.isOk()) {
 			navigation.popToTop();
-			return;
+		} else {
+			console.log(res.error.message);
+			showToast({
+				type: 'error',
+				title: t('contact_pay_error'),
+				description: `An error occurred: ${res.error.message}`,
+			});
 		}
-		showToast({
-			type: 'error',
-			title: t('contact_pay_error'),
-			description: res.error.message,
-		});
 	};
 
 	const handleShare = useCallback(async (): Promise<void> => {

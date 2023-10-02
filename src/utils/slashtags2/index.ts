@@ -34,10 +34,11 @@ export const saveProfile2 = async (
 	try {
 		await slashtagsProfile.put(profile);
 	} catch (e) {
+		console.log(e.message);
 		showToast({
 			type: 'error',
 			title: i18n.t('slashtags:error_saving_contact'),
-			description: e.message,
+			description: `An error occurred: ${e.message}`,
 		});
 		return err(e);
 	}

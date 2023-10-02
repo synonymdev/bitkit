@@ -806,11 +806,11 @@ export const parseUri = (
 	const uri = str.split('@');
 	const publicKey = uri[0];
 	if (uri.length !== 2) {
-		return err('Invalid URI.');
+		return err('The URI appears to be invalid.');
 	}
 	const parsed = uri[1].split(':');
 	if (parsed.length < 2) {
-		return err('Invalid URI.');
+		return err('The URI appears to be invalid.');
 	}
 	const ip = parsed[0];
 	const port = Number(parsed[1]);

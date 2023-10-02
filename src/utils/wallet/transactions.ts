@@ -706,7 +706,7 @@ export const createTransaction = async ({
 		outputs: transactionData.outputs,
 	});
 	if (inputValue === 0) {
-		const message = 'No inputs to spend.';
+		const message = i18n.t('wallet:send_error_no_inputs');
 		showToast({
 			type: 'error',
 			title: i18n.t('wallet:error_create_tx'),
@@ -718,7 +718,7 @@ export const createTransaction = async ({
 
 	//Refuse tx if the fee is greater than the amount we're attempting to send.
 	if (fee > inputValue) {
-		const message = 'Fee is larger than the intended payment.';
+		const message = i18n.t('wallet:send_error_fee_exceeds');
 		showToast({
 			type: 'error',
 			title: i18n.t('wallet:error_create_tx'),
@@ -1126,9 +1126,7 @@ export const updateFee = ({
 
 	//Return if the new fee exceeds half of the user's balance
 	if (newFee >= inputTotal / 2) {
-		return err(
-			'Unable to increase the fee any further. Otherwise, it will exceed half the current balance.',
-		);
+		return err(i18n.t('wallet:send_fee_error_half'));
 	}
 
 	const totalTransactionValue = getTransactionOutputValue({
@@ -1158,9 +1156,7 @@ export const updateFee = ({
 		return ok({ fee: newFee });
 	}
 
-	return err(
-		'New total amount exceeds the available balance. Unable to update the transaction fee.',
-	);
+	return err(i18n.t('wallet:send_fee_error_max'));
 };
 
 /**
@@ -1357,7 +1353,7 @@ export const validateTransaction = (
 
 	try {
 		if (!transaction.fee) {
-			return err('No transaction fee provided.');
+			return err('Please provide a transaction fee.');
 		}
 		if (transaction.outputs.length < 1 || !transaction.outputs[0].address) {
 			return err('Please provide an address to send funds to.');
@@ -1372,15 +1368,15 @@ export const validateTransaction = (
 			const value = outputs[i]?.value ?? 0;
 			const { isValid } = validateAddress({ address });
 			if (!isValid) {
-				return err(`Invalid Address: ${address}`);
+				return err('The provided adress is invalid.');
 			}
 			if (value < baseFee) {
 				return err(
-					`Output value for ${address} must be greater than or equal to ${baseFee} sats`,
+					`The output value must be greater than or equal to ${baseFee} sats.`,
 				);
 			}
 			if (!Number.isInteger(value)) {
-				return err(`Output value for ${address} should be an integer`);
+				return err('Please specify an integer value.');
 			}
 		}
 
@@ -1697,7 +1693,7 @@ export const adjustFee = ({
 		// const coinSelectPreference = getStore().settings.coinSelectPreference;
 		const newSatsPerByte = transaction.satsPerByte + adjustBy;
 		if (newSatsPerByte < 1) {
-			return err('This is the lowest we can go. Returning...');
+			return err(i18n.t('wallet:send_fee_error_min'));
 		}
 		const response = updateFee({
 			transaction,

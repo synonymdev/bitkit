@@ -49,10 +49,11 @@ const RestoringScreen = (): ReactElement => {
 		setProceedWBIsLoading(true);
 		const res = await startWalletServices({ restore: false });
 		if (res.isErr()) {
+			console.log(res.error.message);
 			showToast({
 				type: 'error',
-				title: t('restore_error_no_backup'),
-				description: res.error.message,
+				title: t('restore_error_title'),
+				description: t('restore_error_description'),
 			});
 			return;
 		}

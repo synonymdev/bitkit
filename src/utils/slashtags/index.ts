@@ -73,13 +73,14 @@ export const saveContact = async (
 
 	const drive = await slashtag.drivestore.get('contacts');
 	const { id } = parse(url);
-	await drive?.put('/' + id, encodeJSON(record)).catch((error: Error) =>
+	await drive?.put('/' + id, encodeJSON(record)).catch((error: Error) => {
+		console.log(error.message);
 		showToast({
 			type: 'error',
 			title: i18n.t('slashtags:error_saving_contact'),
-			description: error.message,
-		}),
-	);
+			description: `An error occurred: ${error.message}`,
+		});
+	});
 	drive.close();
 };
 
@@ -161,12 +162,14 @@ export const saveBulkContacts = async (slashtag: Slashtag): Promise<void> => {
 export const onSDKError = (error: Error): void => {
 	// TODO (slashtags) move this error management to the SDK
 	if (error.message.endsWith('Connection refused')) {
-		error = new Error("Couldn't connect to the provided DHT relay");
+		error = new Error("Bitkit couldn't connect to the relay.");
+	} else {
+		error = new Error(`An error occurred: ${error.message}`);
 	}
 
 	showToast({
 		type: 'error',
-		title: 'SlashtagsProvider Error',
+		title: 'Data Connection Issue',
 		description: error.message,
 	});
 };

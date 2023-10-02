@@ -278,7 +278,7 @@ const Channels = ({
 			showToast({
 				type: 'error',
 				title: t('error_logs'),
-				description: result.error.message,
+				description: t('error_logs_description'),
 			});
 			return;
 		}
@@ -345,7 +345,7 @@ const Channels = ({
 		if (addPeerRes.isErr()) {
 			showToast({
 				type: 'error',
-				title: t('error_add'),
+				title: t('error_add_title'),
 				description: addPeerRes.error.message,
 			});
 			return;
@@ -354,7 +354,7 @@ const Channels = ({
 		if (savePeerRes.isErr()) {
 			showToast({
 				type: 'error',
-				title: t('error_save'),
+				title: t('error_save_title'),
 				description: savePeerRes.error.message,
 			});
 			return;
