@@ -51,7 +51,7 @@ const DevSettings = ({
 
 	const exportStore = async (): Promise<void> => {
 		const time = new Date().getTime();
-		const store = JSON.stringify(getStore());
+		const store = JSON.stringify(getStore(), null, 2);
 		const filePath = `${RNFS.DocumentDirectoryPath}/bitkit_store_${time}.json`;
 
 		try {
