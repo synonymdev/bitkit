@@ -173,7 +173,7 @@ const LuganoWidget = ({
 				<View style={styles.source}>
 					<View style={styles.sourceColumnLeft}>
 						<Caption13M color="gray1" numberOfLines={1}>
-							Treasure Chests Found: {numberOfChests} of 7
+							Treasure Chests Found: {numberOfChests} of 6
 						</Caption13M>
 					</View>
 					<View style={styles.columnRight}>
