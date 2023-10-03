@@ -1368,7 +1368,7 @@ export const validateTransaction = (
 			const value = outputs[i]?.value ?? 0;
 			const { isValid } = validateAddress({ address });
 			if (!isValid) {
-				return err('The provided adress is invalid.');
+				return err('The provided address is invalid.');
 			}
 			if (value < baseFee) {
 				return err(

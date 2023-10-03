@@ -38,7 +38,7 @@ const Tags = ({ navigation }: SendScreenProps<'Tags'>): ReactElement => {
 			showToast({
 				type: 'error',
 				title: t('tags_add_error_header'),
-				description: t('ttags_add_error_description'),
+				description: t('tags_add_error_description'),
 			});
 			return;
 		}
@@ -55,7 +55,7 @@ const Tags = ({ navigation }: SendScreenProps<'Tags'>): ReactElement => {
 			showToast({
 				type: 'error',
 				title: t('tags_add_error_header'),
-				description: t('ttags_add_error_description'),
+				description: t('tags_add_error_description'),
 			});
 			return;
 		}
