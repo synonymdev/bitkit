@@ -62,8 +62,6 @@ const Airdrop = ({
 	const dv = useDisplayValues(prize.amount, EUnit.satoshi);
 
 	const getLightningInvoice = useCallback(async (): Promise<string> => {
-		await waitForLdk();
-
 		const response = await createLightningInvoice({
 			amountSats: 0,
 			description: `Treasure Payout: ${prize.title}`,
@@ -81,6 +79,8 @@ const Airdrop = ({
 
 	useEffect(() => {
 		const openChest = async (): Promise<void> => {
+			await waitForLdk();
+
 			const nodePublicKey = getNodeIdFromStorage();
 			const input = { chestId, nodePublicKey };
 			const signResult = await ldk.nodeSign({

@@ -1,14 +1,15 @@
 import React, { ReactElement, memo, useEffect } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { ActivityIndicator, StyleSheet, View } from 'react-native';
 import { ldk } from '@synonymdev/react-native-ldk';
 
 import { Subtitle, Text02M } from '../../styles/text';
 import GradientView from '../../components/GradientView';
 import SafeAreaInset from '../../components/SafeAreaInset';
 import Title from './Title';
-import { getNodeIdFromStorage } from '../../utils/lightning';
+import { getNodeIdFromStorage, waitForLdk } from '../../utils/lightning';
 import { updateTreasureChest } from '../../store/actions/settings';
 import { useAppSelector } from '../../hooks/redux';
+import { useScreenSize } from '../../hooks/screen';
 import { __TREASURE_HUNT_HOST__ } from '../../constants/env';
 import BitkitLogo from '../../assets/bitkit-logo.svg';
 import type { TreasureHuntScreenProps } from '../../navigation/types';
@@ -20,11 +21,19 @@ const Loading = ({
 	route,
 }: TreasureHuntScreenProps<'Loading'>): ReactElement => {
 	const { chestId } = route.params;
+	const { isSmallScreen } = useScreenSize();
 	const { treasureChests } = useAppSelector((state) => state.settings);
 	const chest = treasureChests.find((c) => c.chestId === chestId);
 
+	const chestNameStyle = {
+		top: isSmallScreen ? 100 : 126,
+		right: isSmallScreen ? 90 : 80,
+	};
+
 	useEffect(() => {
 		const openChest = async (): Promise<void> => {
+			await waitForLdk();
+
 			const nodePublicKey = getNodeIdFromStorage();
 			const input = { chestId, nodePublicKey };
 			const signResult = await ldk.nodeSign({
@@ -81,16 +90,19 @@ const Loading = ({
 				<BitkitLogo height={32} width={90} />
 			</View>
 			<View style={styles.title}>
-				<Title text="Treasure Chest" />
+				<Title text="Treasure Chest" indent={15} />
 				{chest?.shortId && (
-					<View style={styles.chestName}>
+					<View style={[styles.chestName, chestNameStyle]}>
 						<Subtitle>{chest.shortId}</Subtitle>
 					</View>
 				)}
 			</View>
 			<View style={styles.content}>
-				<View style={styles.buttonContainer}>
-					<Text02M color="yellow">Trying to Open...</Text02M>
+				<View style={styles.footer}>
+					<ActivityIndicator color="white" />
+					<View style={styles.loadingText}>
+						<Text02M color="yellow">Trying To Open...</Text02M>
+					</View>
 				</View>
 			</View>
 			<SafeAreaInset type="bottom" minPadding={16} />
@@ -120,7 +132,7 @@ const styles = StyleSheet.create({
 		justifyContent: 'center',
 		alignItems: 'center',
 		position: 'absolute',
-		top: 130,
+		top: 127,
 		right: 80,
 	},
 	content: {
@@ -128,10 +140,15 @@ const styles = StyleSheet.create({
 		paddingHorizontal: 16,
 		justifyContent: 'center',
 	},
-	buttonContainer: {
+	footer: {
 		marginTop: 'auto',
 		justifyContent: 'flex-end',
 		alignItems: 'center',
+	},
+	loadingText: {
+		height: 56,
+		justifyContent: 'center',
+		marginTop: 8,
 	},
 });
 

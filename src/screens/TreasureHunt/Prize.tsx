@@ -111,8 +111,6 @@ const Prize = ({
 	}, []);
 
 	const getLightningInvoice = useCallback(async (): Promise<string> => {
-		await waitForLdk();
-
 		const response = await createLightningInvoice({
 			amountSats: 0,
 			description: `Treasure Payout: ${prize.title}`,
@@ -134,6 +132,8 @@ const Prize = ({
 		}
 
 		const claimPrize = async (): Promise<void> => {
+			await waitForLdk();
+
 			const invoice = await getLightningInvoice();
 			const nodePublicKey = getNodeIdFromStorage();
 

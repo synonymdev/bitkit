@@ -180,7 +180,7 @@ const LuganoWidget = ({
 						<TouchableOpacity
 							activeOpacity={0.9}
 							onPress={(): void => {
-								openURL('https://www.bitkit.to/treasure-hunt');
+								openURL('https://bitkit.to/treasure-hunt');
 							}}>
 							<Caption13M color="gray1" numberOfLines={1}>
 								bitkit.to

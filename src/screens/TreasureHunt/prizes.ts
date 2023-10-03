@@ -34,7 +34,7 @@ export const prizes: TPrize[][] = [
 			winType: 'winning',
 			amount: 10000,
 			image: require('../../assets/treasure-hunt/prize.jpg'),
-			title: 'Gavin’s Treasure',
+			title: "Gavin's Treasure",
 			description:
 				'You use commit access and manage to open the treasure chest! You find 10 000 sats and early Bitcoin source code.',
 		},
@@ -52,7 +52,7 @@ export const prizes: TPrize[][] = [
 			winType: 'winning',
 			amount: 20000,
 			image: require('../../assets/treasure-hunt/prize.jpg'),
-			title: 'Luke’s Treasure',
+			title: "Luke's Treasure",
 			description:
 				'You use small blocks to break the lock and manage to open the treasure chest! Inside you find 20 000 sats and a few exotic BIPs.',
 		},
@@ -70,7 +70,7 @@ export const prizes: TPrize[][] = [
 			winType: 'winning',
 			amount: 30000,
 			image: require('../../assets/treasure-hunt/prize.jpg'),
-			title: 'Nick’s Treasure',
+			title: "Nick's Treasure",
 			description:
 				'You crack the programmable lock and manage to open the treasure chest! Inside\n you find 30 000 sats and some bit gold.',
 		},
@@ -88,7 +88,7 @@ export const prizes: TPrize[][] = [
 			winType: 'winning',
 			amount: 40000,
 			image: require('../../assets/treasure-hunt/prize.jpg'),
-			title: 'Adam’s Treasure',
+			title: "Adam's Treasure",
 			description:
 				'You use proof-of-work and manage to open the treasure chest! Inside you find 40 000 sats and some Hashcash.',
 		},
@@ -106,7 +106,7 @@ export const prizes: TPrize[][] = [
 			winType: 'winning',
 			amount: 50000,
 			image: require('../../assets/treasure-hunt/prize.jpg'),
-			title: 'Hal’s Treasure',
+			title: "Hal's Treasure",
 			description:
 				'You break the encryption and manage to open the treasure chest! Inside you find 50 000 sats and the first-ever Bitcoin tx.',
 		},
@@ -125,7 +125,7 @@ export const prizes: TPrize[][] = [
 			winType: 'winning',
 			amount: 100000,
 			image: require('../../assets/treasure-hunt/prize.jpg'),
-			title: 'Satoshi’s Treasure',
+			title: "Satoshi's Treasure",
 			description:
 				'You use your conviction and manage to open the treasure chest! Inside you find 100 000 sats and a note from Satoshi.',
 			note: '“Congrats on completing the Treasure Hunt. May the sats be with you.”',
@@ -138,7 +138,7 @@ export const airdrop: TPrize[] = [
 		winType: 'empty',
 		amount: 0,
 		image: require('../../assets/treasure-hunt/airdrop.jpg'),
-		title: 'Satoshi’s Airdrop',
+		title: "Satoshi's Airdrop",
 		description:
 			'Magical lights flicker in the night sky. You gaze in amazement, but forget to quickly grab your phone and scan the QR.',
 		note: 'Sorry, Satoshi has run out of coins to hand out. Thank you for testing Bitkit. The Synonym Team.',
@@ -147,7 +147,7 @@ export const airdrop: TPrize[] = [
 		winType: 'winning',
 		amount: 10000,
 		image: require('../../assets/treasure-hunt/airdrop.jpg'),
-		title: 'Satoshi’s Airdrop',
+		title: "Satoshi's Airdrop",
 		description:
 			'Magical lights flicker in the night sky. Hundreds of Bitcoiners gaze in amazement. A small gift from Satoshi.',
 		note: 'Thank you for testing Bitkit. The Synonym Team.',

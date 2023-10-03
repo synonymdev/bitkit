@@ -9,7 +9,13 @@ import {
 } from '@shopify/react-native-skia';
 import { useScreenSize } from '../../hooks/screen';
 
-export const Title = ({ text }: { text: string }): ReactElement => {
+export const Title = ({
+	text,
+	indent = 0,
+}: {
+	text: string;
+	indent?: number;
+}): ReactElement => {
 	const { isSmallScreen } = useScreenSize();
 	const fontSize = isSmallScreen ? 80 : 96;
 
@@ -34,7 +40,7 @@ export const Title = ({ text }: { text: string }): ReactElement => {
 							colors={gradient}
 						/>
 					</Text>
-					<Text x={35} y={fontSize * 1.8} text={lastWord} font={font}>
+					<Text x={35 + indent} y={fontSize * 1.8} text={lastWord} font={font}>
 						<LinearGradient
 							start={vec(0, fontSize * 0.5)}
 							end={vec(0, fontSize * 1.8)}

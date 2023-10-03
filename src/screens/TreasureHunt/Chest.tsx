@@ -6,6 +6,7 @@ import { Subtitle, Text02M } from '../../styles/text';
 import GradientView from '../../components/GradientView';
 import SafeAreaInset from '../../components/SafeAreaInset';
 import BlurView from '../../components/BlurView';
+import { useScreenSize } from '../../hooks/screen';
 import { useBottomSheetBackPress } from '../../hooks/bottomSheet';
 import { viewControllerSelector } from '../../store/reselect/ui';
 import GradientText from './GradientText';
@@ -19,6 +20,7 @@ const imageSrc = require('../../assets/treasure-hunt/treasure.jpg');
 const Chest = ({
 	navigation,
 }: TreasureHuntScreenProps<'Chest'>): ReactElement => {
+	const { isSmallScreen } = useScreenSize();
 	const { treasureChests } = useSelector((state: Store) => state.settings);
 	const { chestId } = useSelector((state) => {
 		return viewControllerSelector(state, 'treasureHunt');
@@ -29,6 +31,11 @@ const Chest = ({
 	const chestIndex = chest ? chests.indexOf(chest) : treasureChests.length;
 
 	useBottomSheetBackPress('treasureHunt');
+
+	const chestNameStyle = {
+		top: isSmallScreen ? 100 : 126,
+		right: isSmallScreen ? 90 : 80,
+	};
 
 	const onOpen = useCallback(async () => {
 		if (chestId) {
@@ -56,9 +63,9 @@ const Chest = ({
 				<BitkitLogo height={32} width={90} />
 			</View>
 			<View style={styles.title}>
-				<Title text="Treasure Chest" />
+				<Title text="Treasure Chest" indent={15} />
 				{chest?.shortId && (
-					<View style={styles.chestName}>
+					<View style={[styles.chestName, chestNameStyle]}>
 						<Subtitle>{chest.shortId}</Subtitle>
 					</View>
 				)}
@@ -108,8 +115,6 @@ const styles = StyleSheet.create({
 		justifyContent: 'center',
 		alignItems: 'center',
 		position: 'absolute',
-		top: 130,
-		right: 80,
 	},
 	content: {
 		flex: 1,
