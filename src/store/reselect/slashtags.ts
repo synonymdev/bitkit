@@ -47,6 +47,11 @@ export const contactSelector = createSelector(
 	},
 );
 
+export const lastPaidSelector = createSelector(
+	[slashtagsState],
+	(slashtags) => slashtags.lastPaidContacts,
+);
+
 export const profilesCacheSelector = createSelector(
 	[slashtagsState],
 	(

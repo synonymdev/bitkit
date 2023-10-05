@@ -19,7 +19,7 @@ import GradientView from '../../../components/GradientView';
 import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
 import SafeAreaInset from '../../../components/SafeAreaInset';
 import Money from '../../../components/Money';
-import ProfileImage from '../../../components/ProfileImage';
+import ContactImage from '../../../components/ContactImage';
 import NumberPadTextField from '../../../components/NumberPadTextField';
 import SendNumberPad from './SendNumberPad';
 import Button from '../../../components/Button';
@@ -39,21 +39,15 @@ import {
 	primaryUnitSelector,
 	coinSelectAutoSelector,
 } from '../../../store/reselect/settings';
-import { useProfile2 } from '../../../hooks/slashtags2';
 import { useSwitchUnit } from '../../../hooks/wallet';
 import { useCurrency } from '../../../hooks/displayValues';
+import { EUnit } from '../../../store/types/wallet';
 import { updateSendTransaction } from '../../../store/actions/wallet';
 import { getNumberPadText } from '../../../utils/numberpad';
 import { showToast } from '../../../utils/notifications';
 import { convertToSats } from '../../../utils/conversion';
 import { TRANSACTION_DEFAULTS } from '../../../utils/wallet/constants';
 import type { SendScreenProps } from '../../../navigation/types';
-import { EUnit } from '../../../store/types/wallet';
-
-const ContactImage = ({ url }: { url: string }): ReactElement => {
-	const { profile } = useProfile2(url);
-	return <ProfileImage url={url} image={profile.image} size={24} />;
-};
 
 const Amount = ({ navigation }: SendScreenProps<'Amount'>): ReactElement => {
 	const route = useRoute();

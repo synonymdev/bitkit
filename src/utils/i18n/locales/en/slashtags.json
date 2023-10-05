@@ -97,5 +97,5 @@
 	"error_sdk_title": "Please Restart Bitkit",
 	"error_sdk_msg": "An essential component is not working properly. Please restart Bitkit.",
 	"error_pay_title": "Unable To Pay Contact",
-	"error_pay_empty_msg": "There is no payment data available for this profile."
+	"error_pay_empty_msg": "There is no payment data available for this contact."
 }

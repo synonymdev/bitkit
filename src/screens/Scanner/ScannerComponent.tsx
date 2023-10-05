@@ -100,7 +100,9 @@ const ScannerComponent = ({
 			}
 		} catch (err) {
 			console.error('Failed to open image file: ', err);
-			showError('Sorry. An error occured when trying to open this image file.');
+			showError(
+				'Sorry. An error occurred when trying to open this image file.',
+			);
 		} finally {
 			setIsChoosingFile(false);
 		}
@@ -114,6 +116,7 @@ const ScannerComponent = ({
 
 	const TopBackground = bottomSheet ? GradientView : BlurView;
 	const Background = bottomSheet ? View : BlurView;
+	const size = dimensions.width - 16 * 2;
 
 	return (
 		<Camera
@@ -127,11 +130,8 @@ const ScannerComponent = ({
 					<TopBackground style={backgroundStyles} />
 					<View style={styles.maskCenter}>
 						<Background style={backgroundStyles} />
-						<View
-							style={{
-								height: dimensions.height / 2.4,
-								width: dimensions.width - 16 * 2,
-							}}>
+						<View style={{ height: size, width: size }}>
+							{bottomSheet && <View style={styles.maskRing} />}
 							<View style={styles.actionsRow}>
 								<TouchableOpacity
 									style={[styles.actionButton, { backgroundColor: white08 }]}
@@ -196,9 +196,19 @@ const styles = StyleSheet.create({
 	background: {
 		flex: 1,
 		alignItems: 'center',
+		zIndex: -1,
 	},
 	maskCenter: {
 		flexDirection: 'row',
+	},
+	maskRing: {
+		position: 'absolute',
+		top: -16,
+		bottom: -16,
+		left: -16,
+		right: -16,
+		borderRadius: 30,
+		borderWidth: 16,
 	},
 	actionsRow: {
 		flexDirection: 'row',

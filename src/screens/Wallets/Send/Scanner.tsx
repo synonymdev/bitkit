@@ -7,6 +7,7 @@ import { processInputData, validateInputData } from '../../../utils/scanner';
 import { showToast } from '../../../utils/notifications';
 import { useSlashtagsSDK } from '../../../components/SlashtagsProvider';
 import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
+import SafeAreaInset from '../../../components/SafeAreaInset';
 import ScannerComponent from '../../Scanner/ScannerComponent';
 import {
 	selectedNetworkSelector,
@@ -47,12 +48,15 @@ const ScannerScreen = (): ReactElement => {
 	};
 
 	return (
-		<ScannerComponent bottomSheet={true} onRead={onRead}>
-			<BottomSheetNavigationHeader
-				style={styles.navigationHeader}
-				title={t('qr_scan')}
-			/>
-		</ScannerComponent>
+		<>
+			<ScannerComponent bottomSheet={true} onRead={onRead}>
+				<BottomSheetNavigationHeader
+					style={styles.navigationHeader}
+					title={t('qr_scan')}
+				/>
+			</ScannerComponent>
+			<SafeAreaInset type="bottom" minPadding={16} />
+		</>
 	);
 };
 

@@ -716,7 +716,7 @@ const AddressViewer = ({
 			});
 			updateUi({ fromAddressViewer: true });
 			sendMax({ selectedWallet, selectedNetwork });
-			showBottomSheet('sendNavigation');
+			showBottomSheet('sendNavigation', { screen: 'ReviewAndSend' });
 		},
 		[selectedNetwork, selectedUtxos, selectedWallet, utxos],
 	);

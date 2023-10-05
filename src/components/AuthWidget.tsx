@@ -51,7 +51,7 @@ const AuthWidget = ({
 			const message =
 				e.message === 'channel closed'
 					? t('auth_error_peer')
-					: `An error occured: ${e.message}`;
+					: `An error occurred: ${e.message}`;
 
 			showToast({
 				type: 'error',

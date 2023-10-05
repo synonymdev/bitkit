@@ -87,14 +87,14 @@ const NavigationHeader = ({
 	const showBack = Boolean(displayBackButton && navigation.canGoBack());
 
 	const numberOfActions = useMemo(() => {
-		if (onActionPress && onClosePress) {
+		if (actionIcon && onClosePress) {
 			return 2;
-		} else if (showBack || onActionPress || onClosePress) {
+		} else if (showBack || actionIcon || onClosePress) {
 			return 1;
 		} else {
 			return 0;
 		}
-	}, [onActionPress, onClosePress, showBack]);
+	}, [actionIcon, onClosePress, showBack]);
 
 	const actionColumn = useMemo(
 		() => [
@@ -123,7 +123,7 @@ const NavigationHeader = ({
 				</Text>
 			</View>
 			<View style={actionColumn}>
-				{onActionPress && (
+				{actionIcon && (
 					<ActionButton
 						style={styles.actionRight}
 						testID="NavigationAction"

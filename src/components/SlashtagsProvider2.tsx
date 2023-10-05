@@ -129,7 +129,7 @@ export const SlashtagsProvider2 = ({
 					type: 'error',
 					title: 'Data Connection Issue',
 					description:
-						'An error occured: Could not load primary key from keychain.',
+						'An error occurred: Could not load primary key from keychain.',
 				});
 				return;
 			}

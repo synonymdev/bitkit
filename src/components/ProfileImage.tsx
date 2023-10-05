@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { Image, View, ViewStyle } from 'react-native';
+import { Image, StyleProp, View, ViewStyle } from 'react-native';
 import { SvgXml } from 'react-native-svg';
 
 import { BasicProfile } from '../store/types/slashtags';
@@ -14,7 +14,7 @@ const ProfileImage = ({
 }: {
 	url?: string;
 	image?: BasicProfile['image'];
-	style?: ViewStyle;
+	style?: StyleProp<ViewStyle>;
 	size: number;
 }): JSX.Element => {
 	const { gray5 } = useColors();
@@ -38,13 +38,12 @@ const ProfileImage = ({
 			overflow: 'hidden',
 			height: size,
 			width: size,
-			...style,
 		}),
-		[xml, size, style, gray5],
+		[xml, gray5, size],
 	);
 
 	return (
-		<View style={_style}>
+		<View style={[_style, style]}>
 			{xml ? (
 				<SvgXml width={size} height={size} xml={xml} />
 			) : image ? (

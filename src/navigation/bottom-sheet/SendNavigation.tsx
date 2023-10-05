@@ -17,8 +17,9 @@ import Tags from '../../screens/Wallets/Send/Tags';
 import AutoRebalance from '../../screens/Wallets/Send/AutoRebalance';
 import PinCheck from '../../screens/Wallets/Send/PinCheck';
 import Result from '../../screens/Wallets/Send/Result';
-import Scanner from '../../screens/Wallets/Send/Scanner';
 import Contacts from '../../screens/Wallets/Send/Contacts';
+import Address from '../../screens/Wallets/Send/Address';
+import Scanner from '../../screens/Wallets/Send/Scanner';
 import CoinSelection from '../../screens/Wallets/Send/CoinSelection';
 import { NavigationContainer } from '../../styles/components';
 import { TProcessedData } from '../../utils/scanner';
@@ -42,9 +43,10 @@ export type SendNavigationProp = NativeStackNavigationProp<SendStackParamList>;
 export type SendStackParamList = {
 	PinCheck: { onSuccess: () => void };
 	Recipient: undefined;
-	Amount: undefined;
-	Scanner: { onScan: (data: TProcessedData) => void } | undefined;
 	Contacts: undefined;
+	Address: undefined;
+	Scanner: { onScan: (data: TProcessedData) => void } | undefined;
+	Amount: undefined;
 	CoinSelection: undefined;
 	FeeRate: undefined;
 	FeeCustom: undefined;
@@ -127,8 +129,9 @@ const SendNavigation = (): ReactElement => {
 					initialRouteName={initialRouteName}
 					screenOptions={screenOptions}>
 					<Stack.Screen name="Recipient" component={Recipient} />
-					<Stack.Screen name="Scanner" component={Scanner} />
 					<Stack.Screen name="Contacts" component={Contacts} />
+					<Stack.Screen name="Address" component={Address} />
+					<Stack.Screen name="Scanner" component={Scanner} />
 					<Stack.Screen name="Amount" component={Amount} />
 					<Stack.Screen name="CoinSelection" component={CoinSelection} />
 					<Stack.Screen name="FeeRate" component={FeeRate} />

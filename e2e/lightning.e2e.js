@@ -200,9 +200,10 @@ d('Lightning', () => {
 				memo: note2,
 			});
 			await element(by.id('Send')).tap();
+			await element(by.id('RecipientManual')).tap();
 			await element(by.id('RecipientInput')).replaceText(invoice3);
 			await element(by.id('RecipientInput')).tapReturnKey();
-			await element(by.id('ContinueRecipient')).tap();
+			await element(by.id('AddressContinue')).tap();
 			await element(
 				by.id('N1').withAncestor(by.id('SendAmountNumberPad')),
 			).multiTap(3);
@@ -223,10 +224,10 @@ d('Lightning', () => {
 				value: '1000',
 			});
 			await element(by.id('Send')).tap();
+			await element(by.id('RecipientManual')).tap();
 			await element(by.id('RecipientInput')).replaceText(invoice4);
 			await element(by.id('RecipientInput')).tapReturnKey();
-			await element(by.id('ContinueRecipient')).tap();
-			await element(by.id('ContinueAmount')).tap(); // FIXME: this should not be needed
+			await element(by.id('AddressContinue')).tap();
 
 			// Review & Send
 			await expect(element(by.id('TagsAddSend'))).toBeVisible();

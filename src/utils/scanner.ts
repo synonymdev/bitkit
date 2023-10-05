@@ -640,17 +640,21 @@ export const processSlashPayURL = async ({
  * If unable to pay the provided lightning invoice it will defer to on-chain.
  * If unable to pay the requested on-chain amount it will return only the on-chain address and set sats to zero.
  * @param {QRData[]} data
+ * @param {EQRDataType} [preferredPaymentMethod]
+ * @param {boolean} [showErrors]
  * @param {TAvailableNetworks} [selectedNetwork]
  * @param {TWalletName} [selectedWallet]
  */
 export const processBitcoinTransactionData = async ({
 	data = [],
 	preferredPaymentMethod,
+	showErrors = true,
 	selectedNetwork,
 	selectedWallet,
 }: {
 	data: QRData[];
 	preferredPaymentMethod?: EQRDataType;
+	showErrors?: boolean;
 	selectedNetwork?: TAvailableNetworks;
 	selectedWallet?: TWalletName;
 }): Promise<Result<QRData>> => {
@@ -748,29 +752,22 @@ export const processBitcoinTransactionData = async ({
 			// Attempt to pay the on-chain invoice if unable to pay with lightning.
 			// Check that we have a bitcoin invoice and can afford to pay it.
 			if (onchainBalance && bitcoinInvoice?.sats !== undefined) {
-				// If we can afford to pay it, pass it through.
-				// Otherwise, set the provided address and set sats to 0.
 				if (onchainBalance > requestedAmount) {
+					// If we can afford to pay it, pass it through.
 					response = bitcoinInvoice;
 				} else {
-					showToast({
-						type: 'error',
-						title: i18n.t('other:scan_pay_error_title'),
-						description: i18n.t('lightning:error_fulfill_msg', {
-							amount: requestedAmount - onchainBalance,
-						}),
-					});
+					// Otherwise, set the provided address and set sats to 0.
+					response = { ...bitcoinInvoice, sats: 0 };
 
-					// If the user already specified an amount in the app, don't override it.
-					// Otherwise, set sats to 0.
-					let sats = 0;
-					if (transaction.value.outputs) {
-						sats = transaction.value.outputs[0]?.value ?? 0;
+					if (showErrors) {
+						showToast({
+							type: 'error',
+							title: i18n.t('other:scan_pay_error_title'),
+							description: i18n.t('lightning:error_fulfill_msg', {
+								amount: requestedAmount - onchainBalance,
+							}),
+						});
 					}
-					response = {
-						...bitcoinInvoice,
-						sats,
-					};
 				}
 			}
 		}
@@ -799,7 +796,7 @@ export const processBitcoinTransactionData = async ({
 			}
 			showToast(error);
 		}
-		return err(error.title);
+		return err(error.description);
 	} catch (e) {
 		console.log(e);
 		return err(e);
@@ -1140,6 +1137,7 @@ export const validateInputData = async ({
 			// Attempt to handle a unified Bitcoin transaction.
 			const processBitcoinTxResponse = await processBitcoinTransactionData({
 				data: decodeRes.value,
+				showErrors,
 				selectedWallet,
 				selectedNetwork,
 			});

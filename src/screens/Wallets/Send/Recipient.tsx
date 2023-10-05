@@ -1,145 +1,113 @@
-import React, { ReactElement, memo, useState } from 'react';
+import React, { ReactElement, memo } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useSelector } from 'react-redux';
-import { FadeIn, FadeOut } from 'react-native-reanimated';
 import Clipboard from '@react-native-clipboard/clipboard';
 import { useTranslation } from 'react-i18next';
 
+import { Pressable } from '../../../styles/components';
+import { Caption13Up, Text01M } from '../../../styles/text';
 import {
-	View as ThemedView,
-	AnimatedView,
-	BottomSheetTextInput,
-} from '../../../styles/components';
-import { Caption13Up } from '../../../styles/text';
-import { ClipboardTextIcon, ScanIcon, UserIcon } from '../../../styles/icons';
+	UsersIcon,
+	PencileIcon,
+	ClipboardTextIcon,
+	ScanIcon,
+} from '../../../styles/icons';
 import { useSlashtagsSDK } from '../../../components/SlashtagsProvider';
 import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
 import SafeAreaInset from '../../../components/SafeAreaInset';
-import ContactSmall from '../../../components/ContactSmall';
-import IconButton from '../../../components/IconButton';
+import ContactImage from '../../../components/ContactImage';
 import GlowImage from '../../../components/GlowImage';
-import Button from '../../../components/Button';
-import { processInputData, validateInputData } from '../../../utils/scanner';
+import { processInputData } from '../../../utils/scanner';
 import { showToast } from '../../../utils/notifications';
-import useColors from '../../../hooks/colors';
-import useKeyboard, { Keyboard } from '../../../hooks/keyboard';
+import { useScreenSize } from '../../../hooks/screen';
 import { useBottomSheetBackPress } from '../../../hooks/bottomSheet';
 import type { SendScreenProps } from '../../../navigation/types';
+import { lastPaidSelector } from '../../../store/reselect/slashtags';
 import {
 	selectedNetworkSelector,
 	selectedWalletSelector,
-	transactionSelector,
 } from '../../../store/reselect/wallet';
-import {
-	resetSendTransaction,
-	setupOnChainTransaction,
-} from '../../../store/actions/wallet';
-import { fromAddressViewerSelector } from '../../../store/reselect/ui';
-import { updateUi } from '../../../store/actions/ui';
 
 const imageSrc = require('../../../assets/illustrations/coin-stack-logo.png');
+
+const Button = ({
+	icon,
+	text,
+	actions,
+	testID,
+	onPress,
+}: {
+	icon: ReactElement;
+	text: string;
+	actions?: ReactElement;
+	testID?: string;
+	onPress: () => void;
+}): ReactElement => (
+	<Pressable
+		style={styles.button}
+		color="white04"
+		testID={testID}
+		onPress={onPress}>
+		<View style={styles.buttonIcon}>{icon}</View>
+		<Text01M color="white">{text}</Text01M>
+		<View style={styles.buttonActions}>{actions}</View>
+	</Pressable>
+);
 
 const Recipient = ({
 	navigation,
 }: SendScreenProps<'Recipient'>): ReactElement => {
-	const colors = useColors();
 	const sdk = useSlashtagsSDK();
 	const { t } = useTranslation('wallet');
-	const { keyboardShown } = useKeyboard();
-	const [textFieldValue, setTextFieldValue] = useState('');
-	const [isValid, setIsValid] = useState(false);
-	const fromAddressViewer = useSelector(fromAddressViewerSelector);
-	const transaction = useSelector(transactionSelector);
+	const { isSmallScreen } = useScreenSize();
 	const selectedWallet = useSelector(selectedWalletSelector);
 	const selectedNetwork = useSelector(selectedNetworkSelector);
+	const lastPaidContacts = useSelector(lastPaidSelector);
 
 	useBottomSheetBackPress('sendNavigation');
 
-	const onChangeText = async (text?: string): Promise<void> => {
-		let _isValid = false;
-		let usedPasteButton = false;
+	const onOpenContacts = (): void => {
+		navigation.navigate('Contacts');
+	};
 
-		// user pressed clipboard button
-		if (text === undefined) {
-			usedPasteButton = true;
-			text = await Clipboard.getString();
-			text = text.trim();
-
-			if (!text) {
-				showToast({
-					type: 'error',
-					title: t('send_clipboard_empty_title'),
-					description: t('send_clipboard_empty_text'),
-				});
-				return;
-			}
-		}
-
-		setTextFieldValue(text);
-
-		const decodeRes = await validateInputData({
-			data: text,
+	const onSendToContact = async (url: string): Promise<void> => {
+		await processInputData({
+			data: url,
 			source: 'send',
 			sdk,
-			showErrors: usedPasteButton,
+			selectedNetwork,
+			selectedWallet,
 		});
-		if (decodeRes.isErr()) {
-			_isValid = false;
-		} else {
-			_isValid = true;
-			if (usedPasteButton) {
-				// parse data, update transaction and navigate to next screen
-				await processInputData({
-					data: text,
-					source: 'send',
-					sdk,
-					selectedNetwork,
-					selectedWallet,
-				});
-			}
+	};
+
+	const onPasteInvoice = async (): Promise<void> => {
+		const data = await Clipboard.getString();
+		const text = data.trim();
+
+		if (!text) {
+			showToast({
+				type: 'error',
+				title: t('send_clipboard_empty_title'),
+				description: t('send_clipboard_empty_text'),
+			});
+			return;
 		}
 
-		setIsValid(_isValid);
+		// parse data, update transaction and navigate to next screen
+		await processInputData({
+			data: text,
+			source: 'send',
+			selectedNetwork,
+			selectedWallet,
+		});
+	};
+
+	const onManual = (): void => {
+		navigation.navigate('Address');
 	};
 
 	const onOpenScanner = (): void => {
 		navigation.navigate('Scanner');
-	};
-
-	const onSendToContact = (): void => {
-		navigation.navigate('Contacts');
-	};
-
-	const onRemoveContact = async (): Promise<void> => {
-		setTextFieldValue('');
-		setIsValid(false);
-		resetSendTransaction({ selectedWallet, selectedNetwork });
-		await setupOnChainTransaction({ selectedNetwork, selectedWallet });
-	};
-
-	const onContinue = async (): Promise<void> => {
-		await Keyboard.dismiss();
-
-		if (fromAddressViewer) {
-			//Skip processInputData if from address viewer so-as to not lose inputs.
-			updateUi({ fromAddressViewer: false });
-		} else {
-			// make sure transaction is up-to-date when navigating back and forth
-			await processInputData({
-				data: textFieldValue,
-				source: 'send',
-				showErrors: false,
-				sdk,
-				selectedNetwork,
-				selectedWallet,
-			});
-		}
-
-		if (transaction.lightningInvoice && transaction.outputs[0].value > 0) {
-			navigation.navigate('ReviewAndSend');
-		} else {
-			navigation.navigate('Amount');
-		}
 	};
 
 	return (
@@ -153,69 +121,52 @@ const Recipient = ({
 					{t('send_to')}
 				</Caption13Up>
 
-				<ThemedView
-					style={[styles.inputWrapper, keyboardShown && styles.inputKeyboard]}
-					color="white04">
-					{transaction.slashTagsUrl ? (
-						<ContactSmall
-							style={styles.contact}
-							url={transaction.slashTagsUrl}
-							onDelete={onRemoveContact}
-						/>
-					) : (
-						<BottomSheetTextInput
-							style={styles.input}
-							value={textFieldValue}
-							selectionColor={colors.brand}
-							placeholderTextColor={colors.white5}
-							selectTextOnFocus={true}
-							multiline={true}
-							placeholder={t('send_address_placeholder')}
-							autoCapitalize="none"
-							autoCorrect={false}
-							blurOnSubmit={true}
-							returnKeyType="done"
-							onChangeText={onChangeText}
-							testID="RecipientInput"
-						/>
-					)}
-
-					<View style={styles.inputActions}>
-						<IconButton style={styles.inputAction} onPress={onOpenScanner}>
-							<ScanIcon color="brand" width={24} />
-						</IconButton>
-						<IconButton
-							style={styles.inputAction}
-							onPress={(): void => {
-								onChangeText().then();
-							}}>
-							<ClipboardTextIcon color="brand" width={24} />
-						</IconButton>
-						<IconButton style={styles.inputAction} onPress={onSendToContact}>
-							<UserIcon color="brand" width={24} />
-						</IconButton>
-					</View>
-				</ThemedView>
-
-				<View style={[styles.bottom, keyboardShown && styles.bottomKeyboard]}>
-					{!keyboardShown && (
-						<AnimatedView
-							style={styles.image}
-							color="transparent"
-							entering={FadeIn}
-							exiting={FadeOut}>
-							<GlowImage image={imageSrc} glowColor="white3" />
-						</AnimatedView>
-					)}
-
+				<View>
 					<Button
-						text={t('continue')}
-						size="large"
-						disabled={!isValid && !transaction.slashTagsUrl}
-						testID="ContinueRecipient"
-						onPress={onContinue}
+						icon={<UsersIcon color="brand" width={32} height={30} />}
+						text={t('recipient_contact')}
+						actions={
+							<View style={styles.contacts}>
+								{lastPaidContacts.map((url) => (
+									<Pressable
+										key={url}
+										color="transparent"
+										onPress={(): Promise<void> => onSendToContact(url)}>
+										<ContactImage style={styles.contact} url={url} size={32} />
+									</Pressable>
+								))}
+							</View>
+						}
+						testID="RecipientContact"
+						onPress={onOpenContacts}
+					/>
+					<Button
+						icon={<ClipboardTextIcon color="brand" width={32} height={30} />}
+						text={t('recipient_invoice')}
+						testID="RecipientInvoice"
+						onPress={onPasteInvoice}
+					/>
+					<Button
+						icon={<PencileIcon color="brand" width={32} height={22} />}
+						text={t('recipient_manual')}
+						testID="RecipientManual"
+						onPress={onManual}
+					/>
+					<Button
+						icon={<ScanIcon color="brand" width={32} height={22} />}
+						text={t('recipient_scan')}
+						testID="RecipientScan"
+						onPress={onOpenScanner}
 					/>
 				</View>
+
+				{!isSmallScreen && (
+					<View style={styles.bottom}>
+						<View style={styles.image}>
+							<GlowImage image={imageSrc} glowColor="white3" />
+						</View>
+					</View>
+				)}
 			</View>
 			<SafeAreaInset type="bottom" minPadding={16} />
 		</View>
@@ -233,31 +184,13 @@ const styles = StyleSheet.create({
 	label: {
 		marginBottom: 8,
 	},
-	inputWrapper: {
-		flex: 1,
-		justifyContent: 'space-between',
-		position: 'relative',
-		borderRadius: 8,
-		marginBottom: 16,
-	},
-	inputKeyboard: {
-		flex: 1,
-		marginBottom: 16,
-	},
-	input: {
-		backgroundColor: 'transparent',
-		flex: 1,
-	},
-	inputActions: {
+	contacts: {
 		flexDirection: 'row',
-		justifyContent: 'flex-end',
-		padding: 16,
-	},
-	inputAction: {
-		marginLeft: 16,
+		alignItems: 'center',
+		justifyContent: 'space-between',
 	},
 	contact: {
-		margin: 16,
+		marginLeft: 16,
 	},
 	bottom: {
 		position: 'relative',
@@ -265,12 +198,23 @@ const styles = StyleSheet.create({
 		flex: 1,
 		justifyContent: 'flex-end',
 	},
-	bottomKeyboard: {
-		flex: 0,
-	},
 	image: {
 		flex: 1,
 		zIndex: -1,
+	},
+	button: {
+		flexDirection: 'row',
+		alignItems: 'center',
+		borderRadius: 8,
+		padding: 24,
+		marginBottom: 8,
+		height: 80,
+	},
+	buttonIcon: {
+		marginRight: 16,
+	},
+	buttonActions: {
+		marginLeft: 'auto',
 	},
 });
 

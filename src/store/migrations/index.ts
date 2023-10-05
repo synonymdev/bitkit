@@ -1,3 +1,5 @@
+// Add migrations for every persisted store version change
+
 import { PersistedState } from 'redux-persist';
 import { defaultActivityShape } from '../shapes/activity';
 import { defaultTodosShape } from '../shapes/todos';
@@ -7,9 +9,6 @@ import { defaultBackupShape } from '../shapes/backup';
 import { defaultWidgetsShape } from '../shapes/widgets';
 import { getNetworkContent } from '../shapes/wallet';
 import { __WEB_RELAY__ } from '../../constants/env';
-// add migrations for every persisted store version change
-// NOTE: state reconciliation works only 2 levels deep
-// see https://github.com/rt2zz/redux-persist#state-reconciler
 
 const migrations = {
 	0: (state): PersistedState => {
@@ -213,6 +212,15 @@ const migrations = {
 			settings: {
 				...state.settings,
 				webRelay: __WEB_RELAY__,
+			},
+		};
+	},
+	22: (state): PersistedState => {
+		return {
+			...state,
+			slashtags: {
+				...state.slashtags,
+				lastPaidContacts: [],
 			},
 		};
 	},

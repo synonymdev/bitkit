@@ -161,6 +161,10 @@ export const addContacts = (
 	return ok('Contacts added');
 };
 
+export const updateLastPaidContacts = (url: string): void => {
+	dispatch({ type: actions.UPDATE_LAST_PAID_CONTACTS, payload: url });
+};
+
 export const deleteContact = (url: string): Result<string> => {
 	const { id } = parse(url);
 	dispatch({ type: actions.CONTACT_DELETE, payload: { id } });

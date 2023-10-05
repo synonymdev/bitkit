@@ -63,4 +63,5 @@ export interface ISlashtags {
 		[id: string]: BasicProfile;
 	};
 	contacts: TContacts;
+	lastPaidContacts: string[];
 }

@@ -79,6 +79,7 @@ import { onChainFeesSelector } from '../../../store/reselect/fees';
 import { updateOnChainActivityList } from '../../../store/actions/activity';
 import { truncate } from '../../../utils/helpers';
 import { EUnit } from '../../../store/types/wallet';
+import { updateLastPaidContacts } from '../../../store/actions/slashtags';
 import AmountToggle from '../../../components/AmountToggle';
 import LightningSyncing from '../../../components/LightningSyncing';
 
@@ -219,8 +220,9 @@ const ReviewAndSend = ({
 		// save tags to metadata
 		updateMetaTxTags(payInvoiceResponse.value.payment_hash, transaction.tags);
 
-		// save Slashtags contact to metadata
 		if (transaction.slashTagsUrl) {
+			updateLastPaidContacts(transaction.slashTagsUrl);
+			// save Slashtags contact to metadata
 			addMetaSlashTagsUrlTag(
 				payInvoiceResponse.value.payment_hash,
 				transaction.slashTagsUrl,
@@ -315,6 +317,10 @@ const ReviewAndSend = ({
 
 		updateOnChainActivityList();
 		setIsLoading(false);
+
+		if (transaction.slashTagsUrl) {
+			updateLastPaidContacts(transaction.slashTagsUrl);
+		}
 
 		navigation.navigate('Result', { success: true, txId: rawTx.id });
 	}, [

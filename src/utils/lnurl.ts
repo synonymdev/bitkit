@@ -82,7 +82,7 @@ export const handleLnurlPay = async ({
 			showToast({
 				type: 'error',
 				title: i18n.t('other:lnurl_pay_error'),
-				description: `An error occured: ${callbackRes.error.message}`,
+				description: `An error occurred: ${callbackRes.error.message}`,
 			});
 			return err(callbackRes.error.message);
 		}
@@ -92,7 +92,7 @@ export const handleLnurlPay = async ({
 		showToast({
 			type: 'error',
 			title: i18n.t('other:lnurl_pay_error'),
-			description: `An error occured: ${e.message}`,
+			description: `An error occurred: ${e.message}`,
 		});
 		return err(e.message);
 	}
@@ -180,7 +180,7 @@ export const handleLnurlChannel = async ({
 		showToast({
 			type: 'error',
 			title: i18n.t('other:lnurl_channel_error'),
-			description: `An error occured: ${callbackRes.error.message}`,
+			description: `An error occurred: ${callbackRes.error.message}`,
 		});
 		return err(callbackRes.error.message);
 	}
@@ -201,7 +201,7 @@ export const handleLnurlChannel = async ({
 		showToast({
 			type: 'error',
 			title: i18n.t('other:lnurl_channel_error'),
-			description: `An error occured: ${jsonRes.reason}`,
+			description: `An error occurred: ${jsonRes.reason}`,
 		});
 		return err(jsonRes.reason);
 	}
@@ -255,7 +255,7 @@ export const handleLnurlAuth = async ({
 		showToast({
 			type: 'error',
 			title: i18n.t('other:lnurl_auth_error'),
-			description: `An error occured: ${authRes.error.message}`,
+			description: `An error occurred: ${authRes.error.message}`,
 		});
 		return err(authRes.error.message);
 	}
