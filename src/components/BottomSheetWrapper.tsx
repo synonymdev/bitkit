@@ -30,7 +30,6 @@ import React, {
 } from 'react';
 import { StyleSheet } from 'react-native';
 import BottomSheet, {
-	useBottomSheetDynamicSnapPoints,
 	BottomSheetView,
 	BottomSheetBackdrop,
 	BottomSheetBackgroundProps,
@@ -104,10 +103,6 @@ const BottomSheetWrapper = forwardRef(
 			},
 		}));
 
-		const initialSnapPoints = useMemo(() => ['60%', '95%'], []);
-		const { animatedHandleHeight, handleContentLayout } =
-			useBottomSheetDynamicSnapPoints(initialSnapPoints);
-
 		const _onOpen = useCallback(() => onOpen?.(), [onOpen]);
 
 		const _onClose = useCallback(() => {
@@ -167,15 +162,11 @@ const BottomSheetWrapper = forwardRef(
 				index={index}
 				onChange={handleSheetChanges}
 				backdropComponent={renderBackdrop}
-				handleHeight={animatedHandleHeight}
 				snapPoints={snapPoints}
 				activeOffsetX={activeOffsetX}
 				activeOffsetY={activeOffsetY}
 				animationConfigs={__E2E__ ? testAnimationConfigs : undefined}>
-				<BottomSheetView
-					style={styles.container}
-					testID={testID}
-					onLayout={handleContentLayout}>
+				<BottomSheetView style={styles.container} testID={testID}>
 					{children}
 				</BottomSheetView>
 			</BottomSheet>
