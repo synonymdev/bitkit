@@ -2,7 +2,7 @@ import SDK, { Slashtag, Hyperdrive } from '@synonymdev/slashtags-sdk';
 import { parse } from '@synonymdev/slashtags-url';
 import b4a from 'b4a';
 import mime from 'mime/lite';
-import debounce from 'lodash.debounce';
+import debounce from 'lodash/debounce';
 
 import { __SLASHTAGS_SEEDER_BASE_URL__ } from '../../constants/env';
 import { rootNavigation } from '../../navigation/root/RootNavigator';

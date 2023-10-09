@@ -16,7 +16,6 @@ import { sleep } from '../../utils/helpers';
 import { useBalance } from '../../hooks/wallet';
 import useDisplayValues from '../../hooks/displayValues';
 import type { LightningScreenProps } from '../../navigation/types';
-import { addTodo } from '../../store/actions/todos';
 import { confirmChannelPurchase } from '../../store/actions/blocktank';
 import { blocktankOrdersSelector } from '../../store/reselect/blocktank';
 import {
@@ -74,7 +73,6 @@ const QuickConfirm = ({
 			setLoading(false);
 			return;
 		}
-		addTodo('lightningSettingUp');
 		navigation.navigate('SettingUp');
 	};
 

@@ -18,6 +18,8 @@ import { vibrate } from '../../../utils/helpers';
 import { useBottomSheetBackPress } from '../../../hooks/bottomSheet';
 import { addPin } from '../../../utils/settings';
 import type { PinScreenProps } from '../../../navigation/types';
+import { hideTodo } from '../../../store/actions/todos';
+import { pinTodo } from '../../../store/shapes/todos';
 
 const ChoosePIN = ({
 	navigation,
@@ -60,6 +62,7 @@ const ChoosePIN = ({
 			const pinsAreEqual = pin === origPIN;
 			if (pinsAreEqual) {
 				addPin(pin);
+				hideTodo(pinTodo.id);
 				navigation.navigate('AskForBiometrics');
 			} else {
 				vibrate({ type: 'notificationWarning' });

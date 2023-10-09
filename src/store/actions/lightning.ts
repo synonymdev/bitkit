@@ -4,12 +4,7 @@ import { TChannel, TInvoice } from '@synonymdev/react-native-ldk';
 import { getLNURLParams, lnurlChannel } from '@synonymdev/react-native-lnurl';
 
 import actions from './actions';
-import {
-	getDispatch,
-	getLightningStore,
-	getMetaDataStore,
-	getStore,
-} from '../helpers';
+import { getDispatch, getLightningStore, getMetaDataStore } from '../helpers';
 import { TAvailableNetworks } from '../../utils/networks';
 import { getActivityItemById } from '../../utils/activity';
 import { getSelectedNetwork, getSelectedWallet } from '../../utils/wallet';
@@ -32,10 +27,6 @@ import {
 } from '../types/lightning';
 import { EPaymentType, TWalletName } from '../types/wallet';
 import { EActivityType, TLightningActivityItem } from '../types/activity';
-import { addTodo, removeTodo } from './todos';
-import i18n from '../../utils/i18n';
-
-import { showToast } from '../../utils/notifications';
 
 const dispatch = getDispatch();
 
@@ -130,44 +121,13 @@ export const updateLightningChannels = async ({
 
 	const channels: { [channelId: string]: TChannel } = {};
 	const openChannelIds: string[] = [];
-	const pendingChannels: string[] = [];
 
-	let shouldRemoveTodo = true;
 	lightningChannels.value.forEach((channel) => {
 		channels[channel.channel_id] = channel;
-		if (!channel.is_channel_ready) {
-			pendingChannels.push(channel.channel_id);
-			const confirmations_required = channel?.confirmations_required ?? 1;
-			if (channel.confirmations < confirmations_required) {
-				shouldRemoveTodo = false;
-			}
-		}
 		if (!openChannelIds.includes(channel.channel_id)) {
 			openChannelIds.push(channel.channel_id);
 		}
 	});
-	if (!pendingChannels.length && shouldRemoveTodo) {
-		const lightningConnectingTodoExists = getStore().todos.find(
-			(t) => t === 'lightningConnecting',
-		);
-		if (lightningConnectingTodoExists) {
-			showToast({
-				type: 'success',
-				title: i18n.t('lightning:channel_opened_title'),
-				description: i18n.t('lightning:channel_opened_msg'),
-			});
-			removeTodo('lightningConnecting');
-			addTodo('lightningReady');
-		}
-	}
-
-	if (
-		!shouldRemoveTodo &&
-		openChannelIds.length === 1 &&
-		pendingChannels.length === 1
-	) {
-		addTodo('lightningConnecting');
-	}
 
 	const payload = {
 		channels,

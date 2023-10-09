@@ -30,15 +30,11 @@ export const useLightningBalance = (
 } => {
 	const selectedWallet = useSelector(selectedWalletSelector);
 	const selectedNetwork = useSelector(selectedNetworkSelector);
-	const openChannelIds = useSelector((state: Store) => {
-		return openChannelIdsSelector(state, selectedWallet, selectedNetwork);
-	});
+	const openChannelIds = useSelector(openChannelIdsSelector);
 	const channels = useSelector((state: Store) => {
 		return channelsSelector(state, selectedWallet, selectedNetwork);
 	});
-	const openChannels = useSelector((state: Store) => {
-		return openChannelsSelector(state, selectedWallet, selectedNetwork);
-	});
+	const openChannels = useSelector(openChannelsSelector);
 
 	const localBalance = useMemo(() => {
 		return openChannels.reduce((acc, channel) => {
@@ -113,11 +109,7 @@ export const useLightningChannelBalance = (
  * @returns {number}
  */
 export const useLightningMaxInboundCapacity = (): number => {
-	const selectedWallet = useSelector(selectedWalletSelector);
-	const selectedNetwork = useSelector(selectedNetworkSelector);
-	const openChannels = useSelector((state: Store) => {
-		return openChannelsSelector(state, selectedWallet, selectedNetwork);
-	});
+	const openChannels = useSelector(openChannelsSelector);
 
 	const maxInboundCapacity = useMemo(() => {
 		return openChannels.reduce((max, channel) => {

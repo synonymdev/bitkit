@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import isEqual from 'lodash.isequal';
+import isEqual from 'lodash/isEqual';
 
 import {
 	ScrollView,

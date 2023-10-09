@@ -1,4 +1,4 @@
-import debounce from 'lodash.debounce';
+import debounce from 'lodash/debounce';
 import { ok, err, Result } from '@synonymdev/result';
 import SlashtagsProfile from '@synonymdev/slashtags-profile';
 import { format, parse } from '@synonymdev/slashtags-url';

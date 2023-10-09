@@ -22,7 +22,6 @@ import {
 	startChannelPurchase,
 } from '../../store/actions/blocktank';
 import { showToast } from '../../utils/notifications';
-import { addTodo } from '../../store/actions/todos';
 import {
 	selectedNetworkSelector,
 	selectedWalletSelector,
@@ -73,7 +72,6 @@ const CustomConfirm = ({
 			setLoading(false);
 			return;
 		}
-		addTodo('lightningSettingUp');
 		navigation.navigate('SettingUp');
 	};
 

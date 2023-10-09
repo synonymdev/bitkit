@@ -26,7 +26,6 @@ import {
 	setLinks,
 	setOnboardingProfileStep,
 } from '../../store/actions/slashtags';
-import { removeTodo } from '../../store/actions/todos';
 import { showBottomSheet } from '../../store/actions/ui';
 import { BasicProfile } from '../../store/types/slashtags';
 import { slashtagsLinksSelector } from '../../store/reselect/slashtags';
@@ -103,7 +102,6 @@ const ProfileEdit = ({
 
 		if (!onboardedProfile) {
 			setOnboardingProfileStep('OfflinePayments');
-			removeTodo('slashtagsProfile');
 		} else {
 			navigation.navigate('Profile');
 		}

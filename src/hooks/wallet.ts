@@ -32,12 +32,8 @@ export const useBalance = (): {
 	const currentWallet = useSelector((state: Store) => {
 		return currentWalletSelector(state, selectedWallet);
 	});
-	const openChannels = useSelector((state: Store) => {
-		return openChannelsSelector(state, selectedWallet, selectedNetwork);
-	});
-	const claimableBalance = useSelector((state: Store) => {
-		return claimableBalanceSelector(state, selectedWallet, selectedNetwork);
-	});
+	const openChannels = useSelector(openChannelsSelector);
+	const claimableBalance = useSelector(claimableBalanceSelector);
 
 	// Get the total spending & reserved balance of all open channels
 	let spendingBalance = 0;

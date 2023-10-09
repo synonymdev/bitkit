@@ -9,7 +9,6 @@ import GradientView from '../../../components/GradientView';
 import GlowImage from '../../../components/GlowImage';
 import Button from '../../../components/Button';
 import { verifyBackup } from '../../../store/actions/user';
-import { removeTodo } from '../../../store/actions/todos';
 import { BackupScreenProps } from '../../../navigation/types';
 
 const imageSrc = require('../../../assets/illustrations/check.png');
@@ -19,7 +18,6 @@ const Result = ({ navigation }: BackupScreenProps<'Result'>): ReactElement => {
 
 	const handleButtonPress = (): void => {
 		verifyBackup();
-		removeTodo('backupSeedPhrase');
 		navigation.navigate('Warning');
 	};
 

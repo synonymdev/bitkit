@@ -8,7 +8,7 @@ import GlowingBackground from '../components/GlowingBackground';
 import NavigationHeader from '../components/NavigationHeader';
 import Button from '../components/Button';
 import { openURL } from '../utils/helpers';
-import { removeTodo } from '../store/actions/todos';
+import { hideTodo } from '../store/actions/todos';
 import type { RootStackScreenProps } from '../navigation/types';
 
 const imageSrc = require('../assets/illustrations/b-emboss.png');
@@ -51,7 +51,7 @@ const BuyBitcoin = ({
 						text={t('buy_button')}
 						size="large"
 						onPress={(): void => {
-							removeTodo('buyBitcoin');
+							hideTodo('buyBitcoin');
 							openURL('https://bitcoin.org/en/exchanges');
 						}}
 					/>

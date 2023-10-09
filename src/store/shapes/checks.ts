@@ -1,4 +1,4 @@
-import cloneDeep from 'lodash.clonedeep';
+import cloneDeep from 'lodash/cloneDeep';
 import { IChecksContent, IChecksShape } from '../types/checks';
 import { getNetworkContent } from './wallet';
 

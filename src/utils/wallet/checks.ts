@@ -8,7 +8,7 @@ import {
 import { TAvailableNetworks } from '../networks';
 import { err, ok, Result } from '@synonymdev/result';
 import { getMinMaxObjects, TGetMinMaxObject } from '../helpers';
-import isEqual from 'lodash.isequal';
+import isEqual from 'lodash/isEqual';
 import { v4 as uuidv4 } from 'uuid';
 
 import {

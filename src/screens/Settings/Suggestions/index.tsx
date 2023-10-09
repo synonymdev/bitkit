@@ -7,7 +7,7 @@ import SettingsView from './../SettingsView';
 import Dialog from '../../../components/Dialog';
 import Button from '../../../components/Button';
 import { EItemType, IListData } from '../../../components/List';
-import { resetTodos } from '../../../store/actions/todos';
+import { resetHiddenTodos } from '../../../store/actions/todos';
 import { updateSettings } from '../../../store/actions/settings';
 import { showSuggestionsSelector } from '../../../store/reselect/settings';
 import { SettingsScreenProps } from '../../../navigation/types';
@@ -66,7 +66,7 @@ const SuggestionsSettings = ({
 					setShowDialog(false);
 				}}
 				onConfirm={(): void => {
-					resetTodos();
+					resetHiddenTodos();
 					setShowDialog(false);
 					navigation.navigate('Wallet');
 				}}

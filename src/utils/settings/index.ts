@@ -1,5 +1,4 @@
 import { resetKeychainValue, setKeychainValue } from '../keychain';
-import { removeTodo } from '../../store/actions/todos';
 import { updateSettings } from '../../store/actions/settings';
 import { PIN_ATTEMPTS } from '../../components/PinPad';
 
@@ -8,7 +7,7 @@ import { PIN_ATTEMPTS } from '../../components/PinPad';
  * Set PIN keychain data, update settings state and remove todo item
  */
 export const addPin = async (newPin: string): Promise<void> => {
-	await Promise.all([editPin(newPin), removeTodo('pin')]);
+	await editPin(newPin);
 };
 
 /**
@@ -29,7 +28,6 @@ export const editPin = async (newPin: string): Promise<void> => {
  * Wipes PIN data from device memory.
  */
 export const removePin = async (): Promise<void> => {
-	removeTodo('pin');
 	// reset to defaults
 	updateSettings({
 		pin: false,

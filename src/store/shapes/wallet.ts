@@ -1,4 +1,4 @@
-import cloneDeep from 'lodash.clonedeep';
+import cloneDeep from 'lodash/cloneDeep';
 
 import { __WALLET_DEFAULT_SELECTED_NETWORK__ } from '../../constants/env';
 import { IHeader } from '../../utils/types/electrum';

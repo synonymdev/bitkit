@@ -242,15 +242,9 @@ const Channels = ({
 
 	const blocktankOrders = useSelector(blocktankOrdersSelector);
 	const paidOrders = useSelector(blocktankPaidOrdersSelector);
-	const openChannels = useSelector((state: Store) => {
-		return openChannelsSelector(state, selectedWallet, selectedNetwork);
-	});
-	const pendingChannels = useSelector((state: Store) => {
-		return pendingChannelsSelector(state, selectedWallet, selectedNetwork);
-	});
-	const closedChannels = useSelector((state: Store) => {
-		return closedChannelsSelector(state, selectedWallet, selectedNetwork);
-	});
+	const openChannels = useSelector(openChannelsSelector);
+	const pendingChannels = useSelector(pendingChannelsSelector);
+	const closedChannels = useSelector(closedChannelsSelector);
 	const blocktankNodeKey = useSelector((state: Store) => {
 		return state.blocktank.info.nodes[0].pubkey;
 	});

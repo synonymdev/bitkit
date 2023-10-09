@@ -9,6 +9,7 @@ import {
 import { createSelector } from '@reduxjs/toolkit';
 import { TAvailableNetworks } from '../../utils/networks';
 import { TWalletName } from '../types/wallet';
+import { selectedNetworkSelector, selectedWalletSelector } from './wallet';
 
 export const lightningState = (state: Store): ILightning => state.lightning;
 export const nodesState = (state: Store): TNodes => state.lightning.nodes;
@@ -82,20 +83,10 @@ export const nodeSelector = createSelector(
 /**
  * Returns open lightning channel ids for a given wallet and network.
  * @param {Store} state
- * @param {TWalletName} selectedWallet
- * @param {TAvailableNetworks} selectedNetwork
  * @returns {TOpenChannelIds}
  */
 export const openChannelIdsSelector = createSelector(
-	[
-		lightningState,
-		(_nodes, selectedWallet: TWalletName): TWalletName => selectedWallet,
-		(
-			_lightning,
-			_selectedWallet,
-			selectedNetwork: TAvailableNetworks,
-		): TAvailableNetworks => selectedNetwork,
-	],
+	[lightningState, selectedWalletSelector, selectedNetworkSelector],
 	(lightning, selectedWallet, selectedNetwork): TOpenChannelIds =>
 		lightning.nodes[selectedWallet]?.openChannelIds[selectedNetwork] ?? [],
 );
@@ -163,20 +154,10 @@ export const channelSelector = createSelector(
 /**
  * Returns all open lightning channels.
  * @param {Store} state
- * @param {TWalletName} selectedWallet
- * @param {TAvailableNetworks} selectedNetwork
  * @returns {TChannel[]}
  */
 export const openChannelsSelector = createSelector(
-	[
-		lightningState,
-		(_lightning, selectedWallet: TWalletName): TWalletName => selectedWallet,
-		(
-			_lightning,
-			_selectedWallet,
-			selectedNetwork: TAvailableNetworks,
-		): TAvailableNetworks => selectedNetwork,
-	],
+	[lightningState, selectedWalletSelector, selectedNetworkSelector],
 	(lightning, selectedWallet, selectedNetwork): TChannel[] => {
 		const node = lightning.nodes[selectedWallet];
 		const channels = node.channels[selectedNetwork];
@@ -193,20 +174,10 @@ export const openChannelsSelector = createSelector(
 /**
  * Returns all pending lightning channels.
  * @param {Store} state
- * @param {TWalletName} selectedWallet
- * @param {TAvailableNetworks} selectedNetwork
  * @returns {TChannel[]}
  */
 export const pendingChannelsSelector = createSelector(
-	[
-		lightningState,
-		(_lightning, selectedWallet: TWalletName): TWalletName => selectedWallet,
-		(
-			_lightning,
-			_selectedWallet,
-			selectedNetwork: TAvailableNetworks,
-		): TAvailableNetworks => selectedNetwork,
-	],
+	[lightningState, selectedWalletSelector, selectedNetworkSelector],
 	(lightning, selectedWallet, selectedNetwork): TChannel[] => {
 		const node = lightning.nodes[selectedWallet];
 		const channels = node.channels[selectedNetwork];
@@ -224,20 +195,10 @@ export const pendingChannelsSelector = createSelector(
 /**
  * Returns all closed lightning channels.
  * @param {Store} state
- * @param {TWalletName} selectedWallet
- * @param {TAvailableNetworks} selectedNetwork
  * @returns {TChannel[]}
  */
 export const closedChannelsSelector = createSelector(
-	[
-		lightningState,
-		(_lightning, selectedWallet: TWalletName): TWalletName => selectedWallet,
-		(
-			_lightning,
-			_selectedWallet,
-			selectedNetwork: TAvailableNetworks,
-		): TAvailableNetworks => selectedNetwork,
-	],
+	[lightningState, selectedWalletSelector, selectedNetworkSelector],
 	(lightning, selectedWallet, selectedNetwork): TChannel[] => {
 		const node = lightning.nodes[selectedWallet];
 		const channels = node.channels[selectedNetwork];
@@ -252,20 +213,10 @@ export const closedChannelsSelector = createSelector(
 /**
  * Returns claimable balance.
  * @param {Store} state
- * @param {TWalletName} selectedWallet
- * @param {TAvailableNetworks} selectedNetwork
  * @returns {number}
  */
 export const claimableBalanceSelector = createSelector(
-	[
-		lightningState,
-		(_lightning, selectedWallet: TWalletName): TWalletName => selectedWallet,
-		(
-			_lightning,
-			_selectedWallet,
-			selectedNetwork: TAvailableNetworks,
-		): TAvailableNetworks => selectedNetwork,
-	],
+	[lightningState, selectedWalletSelector, selectedNetworkSelector],
 	(lightning, selectedWallet, selectedNetwork): number => {
 		const node = lightning.nodes[selectedWallet];
 		return node?.claimableBalance[selectedNetwork] ?? 0;

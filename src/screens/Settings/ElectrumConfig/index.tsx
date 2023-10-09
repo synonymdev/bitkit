@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import { err, ok, Result } from '@synonymdev/result';
 import Url from 'url-parse';
 import { useTranslation } from 'react-i18next';
-import isEqual from 'lodash.isequal';
+import isEqual from 'lodash/isEqual';
 
 import { View, TextInput, ScrollView } from '../../../styles/components';
 import { Text01S, Caption13Up } from '../../../styles/text';

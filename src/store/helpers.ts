@@ -1,5 +1,5 @@
 import { Dispatch } from 'redux';
-import cloneDeep from 'lodash.clonedeep';
+import cloneDeep from 'lodash/cloneDeep';
 
 import store from '../store';
 import Store, { EStore } from './types';

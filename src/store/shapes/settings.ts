@@ -1,4 +1,4 @@
-import cloneDeep from 'lodash.clonedeep';
+import cloneDeep from 'lodash/cloneDeep';
 import { TAvailableNetworks } from '@synonymdev/react-native-ldk';
 
 import {
@@ -22,7 +22,6 @@ import {
 	ISettings,
 } from '../types/settings';
 import { EUnit } from '../types/wallet';
-import { IWidgetsStore } from '../types/widgets';
 
 //TODO: Remove the public Electrum servers below once we spin up our own.
 export const origCustomElectrumPeers: Record<
@@ -121,6 +120,6 @@ export const defaultSettingsShape: Readonly<ISettings> = {
 	webRelay: __WEB_RELAY__,
 };
 
-export const getDefaultSettingsShape = (): IWidgetsStore => {
+export const getDefaultSettingsShape = (): ISettings => {
 	return cloneDeep(defaultSettingsShape);
 };

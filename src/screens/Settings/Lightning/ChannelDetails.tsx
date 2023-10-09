@@ -25,7 +25,6 @@ import { getTransactions } from '../../../utils/wallet/electrum';
 import { getBlockExplorerLink } from '../../../utils/wallet/transactions';
 import { openURL } from '../../../utils/helpers';
 import { createOrderSupportLink } from '../../../utils/support';
-import Store from '../../../store/types';
 import { EUnit } from '../../../store/types/wallet';
 import {
 	selectedNetworkSelector,
@@ -230,10 +229,7 @@ const ChannelDetails = ({
 	});
 
 	const channelName = useLightningChannelName(channel, blocktankOrder);
-
-	const openChannelIds = useSelector((state: Store) => {
-		return openChannelIdsSelector(state, selectedWallet, selectedNetwork);
-	});
+	const openChannelIds = useSelector(openChannelIdsSelector);
 
 	useEffect(() => {
 		if (blocktankOrder) {

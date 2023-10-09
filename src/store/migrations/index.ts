@@ -224,6 +224,12 @@ const migrations = {
 			},
 		};
 	},
+	23: (state): PersistedState => {
+		return {
+			...state,
+			todos: defaultTodosShape,
+		};
+	},
 };
 
 export default migrations;

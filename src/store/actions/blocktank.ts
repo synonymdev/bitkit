@@ -3,7 +3,6 @@ import { err, ok, Result } from '@synonymdev/result';
 import actions from './actions';
 import { resetSendTransaction, updateSendTransaction } from './wallet';
 import { setLightningSettingUpStep } from './user';
-import { removeTodo } from './todos';
 import { getBlocktankStore, getDispatch } from '../helpers';
 import * as blocktank from '../../utils/blocktank';
 import {
@@ -131,7 +130,6 @@ export const refreshOrder = async (
 			setLightningSettingUpStep(1);
 			const finalizeRes = await openChannel(orderId);
 			if (finalizeRes.isOk()) {
-				removeTodo('lightning');
 				setLightningSettingUpStep(3);
 				const getUpdatedOrderResult = await blocktank.getOrder(orderId);
 				if (getUpdatedOrderResult.isErr()) {
@@ -406,7 +404,6 @@ export const confirmChannelPurchase = async ({
 
 	watchOrder(orderId).then();
 	setLightningSettingUpStep(0);
-	removeTodo('lightning');
 	refreshWallet({
 		onchain: true,
 		lightning: false, // No need to refresh lightning wallet at this time.
@@ -456,7 +453,6 @@ const handleOrderStateChange = (order: IBtOrder): void => {
 
 	// given up
 	if (order.payment.bolt11Invoice.state === 'failed') {
-		removeTodo('lightningSettingUp');
 		showToast({
 			type: 'error',
 			title: i18n.t('lightning:order_given_up_title'),
@@ -466,7 +462,6 @@ const handleOrderStateChange = (order: IBtOrder): void => {
 
 	// order expired
 	if (order.state === BtOrderState.EXPIRED) {
-		removeTodo('lightningSettingUp');
 		showToast({
 			type: 'error',
 			title: i18n.t('lightning:order_expired_title'),
@@ -474,15 +469,8 @@ const handleOrderStateChange = (order: IBtOrder): void => {
 		});
 	}
 
-	// channel closed
-	if (order.channel?.state === 'closed') {
-		removeTodo('transferToSpending');
-		removeTodo('transferClosingChannel');
-	}
-
 	// new channel open
 	if (order.state === BtOrderState.OPEN) {
-		removeTodo('transferToSpending');
 		// refresh LDK after channel open
 		refreshLdk({});
 	}

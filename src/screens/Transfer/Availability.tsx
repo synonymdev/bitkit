@@ -12,7 +12,6 @@ import Button from '../../components/Button';
 import { refreshWallet } from '../../utils/wallet';
 import { closeAllChannels } from '../../utils/lightning';
 import { startCoopCloseTimer } from '../../store/actions/user';
-import { addTodo, removeTodo } from '../../store/actions/todos';
 import type { TransferScreenProps } from '../../navigation/types';
 import {
 	selectedNetworkSelector,
@@ -39,14 +38,11 @@ const Availability = ({
 		});
 
 		if (closeResponse.isOk() && closeResponse.value.length === 0) {
-			removeTodo('transferClosingChannel');
-			addTodo('transferToSavings');
 			await refreshWallet();
 			navigation.navigate('Success', { type: 'savings' });
 			return;
 		} else {
 			startCoopCloseTimer();
-			addTodo('transferClosingChannel');
 			navigation.navigate('Interrupted');
 		}
 	};

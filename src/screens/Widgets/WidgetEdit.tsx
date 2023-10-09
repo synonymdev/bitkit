@@ -1,7 +1,7 @@
 import React, { useState, ReactElement } from 'react';
 import { View, StyleSheet, Pressable } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import isEqual from 'lodash.isequal';
+import isEqual from 'lodash/isEqual';
 
 import { ScrollView, View as ThemedView } from '../../styles/components';
 import { Caption13M, Text01S, Text02M } from '../../styles/text';

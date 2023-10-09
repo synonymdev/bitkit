@@ -1,51 +1,74 @@
 import React, {
-	memo,
 	ReactElement,
 	useMemo,
 	useState,
 	useCallback,
+	useEffect,
 } from 'react';
-import { StyleSheet, useWindowDimensions } from 'react-native';
-import { useSelector } from 'react-redux';
-import { useFocusEffect, useNavigation } from '@react-navigation/native';
-import Carousel from 'react-native-reanimated-carousel';
 import { useTranslation } from 'react-i18next';
+import Carousel from 'react-native-reanimated-carousel';
+import { StyleSheet, useWindowDimensions } from 'react-native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 
-import { View } from '../styles/components';
 import { Caption13Up } from '../styles/text';
-import SuggestionCard from './SuggestionCard';
-import { allTodos } from '../store/shapes/todos';
+import { View as ThemedView } from '../styles/components';
+import { showToast } from '../utils/notifications';
 import { TTodoType } from '../store/types/todos';
-import { removeTodo } from '../store/actions/todos';
+import { channelsNotificationsShown, hideTodo } from '../store/actions/todos';
 import { showBottomSheet } from '../store/actions/ui';
-import { useBalance } from '../hooks/wallet';
-import Dialog from './Dialog';
-import type { RootNavigationProp } from '../navigation/types';
-import { todosSelector } from '../store/reselect/todos';
+import {
+	newChannelsNotificationsSelector,
+	todosFullSelector,
+} from '../store/reselect/todos';
 import { lightningSettingUpStepSelector } from '../store/reselect/user';
 import {
 	pinSelector,
 	showSuggestionsSelector,
 } from '../store/reselect/settings';
+import type { RootNavigationProp } from '../navigation/types';
+import { useBalance } from '../hooks/wallet';
+import { useAppSelector } from '../hooks/redux';
+import Dialog from './Dialog';
+import SuggestionCard from './SuggestionCard';
 
 const Suggestions = (): ReactElement => {
 	const { t } = useTranslation('cards');
 	const navigation = useNavigation<RootNavigationProp>();
 	const { width } = useWindowDimensions();
 	const { onchainBalance } = useBalance();
+	const pinTodoDone = useAppSelector(pinSelector);
+	const suggestions = useAppSelector(todosFullSelector);
+	const showSuggestions = useAppSelector(showSuggestionsSelector);
+	const lightningSettingUpStep = useAppSelector(lightningSettingUpStepSelector);
+	const newChannels = useAppSelector(newChannelsNotificationsSelector);
 	const [index, setIndex] = useState(0);
 	const [showDialog, setShowDialog] = useState(false);
-	const todos = useSelector(todosSelector);
-	const pinTodoDone = useSelector(pinSelector);
-	const showSuggestions = useSelector(showSuggestionsSelector);
-	const lightningSettingUpStep = useSelector(lightningSettingUpStepSelector);
+
+	// show toast when new channels are opened and hide the notification
+	useEffect(() => {
+		if (newChannels.length === 0) {
+			return;
+		}
+
+		showToast({
+			type: 'success',
+			title: t('lightning:channel_opened_title'),
+			description: t('lightning:channel_opened_msg'),
+		});
+
+		const timer = setTimeout(() => {
+			channelsNotificationsShown(newChannels);
+		}, 4000);
+
+		return () => clearTimeout(timer);
+	}, [t, newChannels]);
 
 	const panGestureHandlerProps = useMemo(
 		() => ({ activeOffsetX: [-10, 10] }),
 		[],
 	);
 
-	// reset index on mount
+	// reset index on focus
 	useFocusEffect(useCallback(() => setIndex(0), []));
 
 	const handleOnPress = useCallback(
@@ -85,56 +108,57 @@ const Suggestions = (): ReactElement => {
 		[onchainBalance, navigation, pinTodoDone],
 	);
 
-	if (!todos.length || !showSuggestions) {
+	const handleRenderItem = useCallback(
+		({ item }): ReactElement => {
+			const title = t(`${item.id}.title`);
+			let description = t(`${item.id}.description`);
+
+			if (item.id === 'lightningSettingUp') {
+				description = t(`${item.id}.description${lightningSettingUpStep}`);
+			}
+
+			return (
+				<SuggestionCard
+					id={item.id}
+					key={item.id}
+					color={item.color}
+					image={item.image}
+					title={title}
+					description={description}
+					dismissable={item.dismissable}
+					onPress={handleOnPress}
+					onClose={hideTodo}
+				/>
+			);
+		},
+		[t, handleOnPress, lightningSettingUpStep],
+	);
+
+	if (!suggestions.length || !showSuggestions) {
 		return <></>;
 	}
 
-	const todoItems = todos.map((id) => allTodos.find((todo) => todo.id === id)!);
 	// avoid crash when deleting last item
-	const defaultIndex = Math.min(index, todos.length - 1);
+	const defaultIndex = Math.min(index, suggestions.length - 1);
 
 	return (
 		<>
 			<Caption13Up style={styles.title} color="gray1">
 				{t('suggestions')}
 			</Caption13Up>
-			<View style={styles.container} testID="Suggestions">
+			<ThemedView style={styles.container} testID="Suggestions">
 				<Carousel
 					style={[styles.carousel, { width }]}
-					data={todoItems}
+					data={suggestions}
 					defaultIndex={defaultIndex}
 					loop={false}
 					height={170}
 					width={167}
 					panGestureHandlerProps={panGestureHandlerProps}
 					onSnapToItem={setIndex}
-					renderItem={({ item }): ReactElement => {
-						const title = t(`${item.id}.title`);
-						let description = t(`${item.id}.description`);
-
-						if (item.id === 'lightningSettingUp') {
-							description = t(
-								`${item.id}.description${lightningSettingUpStep}`,
-							);
-						}
-
-						return (
-							<SuggestionCard
-								id={item.id}
-								key={item.id}
-								color={item.color}
-								image={item.image}
-								title={title}
-								description={description}
-								dismissable={item.dismissable}
-								temporary={item.temporary}
-								onPress={handleOnPress}
-								onClose={removeTodo}
-							/>
-						);
-					}}
+					renderItem={handleRenderItem}
 				/>
-			</View>
+			</ThemedView>
 			<Dialog
 				visible={showDialog}
 				title={t('lightning_no_funds_title')}
@@ -164,4 +188,4 @@ const styles = StyleSheet.create({
 	},
 });
 
-export default memo(Suggestions);
+export default Suggestions;
