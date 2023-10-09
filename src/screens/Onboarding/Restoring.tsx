@@ -13,8 +13,12 @@ import GlowingBackground from '../../components/GlowingBackground';
 import SafeAreaInset from '../../components/SafeAreaInset';
 import GlowImage from '../../components/GlowImage';
 import Button from '../../components/Button';
-import LoadingWalletScreen from './Loading';
 import Dialog from '../../components/Dialog';
+import LoadingWalletScreen from './Loading';
+import { useAppSelector } from '../../hooks/redux';
+import { useProfile2, useSelectedSlashtag2 } from '../../hooks/slashtags2';
+import { setOnboardingProfileStep } from '../../store/actions/slashtags';
+import { onboardingProfileStepSelector } from '../../store/reselect/slashtags';
 
 const checkImageSrc = require('../../assets/illustrations/check.png');
 const crossImageSrc = require('../../assets/illustrations/cross.png');
@@ -22,13 +26,16 @@ const crossImageSrc = require('../../assets/illustrations/cross.png');
 let attemptedAutoRestore = false;
 
 const RestoringScreen = (): ReactElement => {
+	const { t } = useTranslation('onboarding');
+	const slashtag = useSelectedSlashtag();
+	const { url } = useSelectedSlashtag2();
+	const { profile } = useProfile2(url);
+	const onboardingStep = useAppSelector(onboardingProfileStepSelector);
 	const [showRestored, setShowRestored] = useState(false);
 	const [showFailed, setShowFailed] = useState(false);
 	const [proceedWBIsLoading, setProceedWBIsLoading] = useState(false);
 	const [tryAgainCount, setTryAgainCount] = useState(0);
 	const [showCautionDialog, setShowCautionDialog] = useState(false);
-	const slashtag = useSelectedSlashtag();
-	const { t } = useTranslation('onboarding');
 
 	const onRemoteRestore = useCallback(async (): Promise<void> => {
 		attemptedAutoRestore = true;
@@ -69,6 +76,13 @@ const RestoringScreen = (): ReactElement => {
 
 		onRemoteRestore().then();
 	}, [onRemoteRestore]);
+
+	useEffect(() => {
+		// If the user has a name, we can assume they have completed the profile onboarding
+		if (onboardingStep !== 'Done' && profile.name) {
+			setOnboardingProfileStep('Done');
+		}
+	}, [profile.name, onboardingStep]);
 
 	let color: keyof IColors = 'brand';
 	let content = <LoadingWalletScreen />;
