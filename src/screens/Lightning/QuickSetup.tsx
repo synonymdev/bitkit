@@ -71,12 +71,17 @@ const QuickSetup = ({
 		return convertToSats(textFieldValue, unit);
 	}, [textFieldValue, unit]);
 
-	const btSpendingLimit = useMemo(() => {
+	const btMaxChannelSizeSat = useMemo(() => {
 		return blocktankInfo.options.maxChannelSizeSat;
 	}, [blocktankInfo.options.maxChannelSizeSat]);
+	const btMaxClientBalanceSat = useMemo(() => {
+		return blocktankInfo.options.maxClientBalanceSat;
+	}, [blocktankInfo.options.maxClientBalanceSat]);
+
 	const diff = 0.01;
-	const btSpendingLimitBalanced = Math.round(
-		btSpendingLimit / 2 - btSpendingLimit * diff,
+	const btSpendingLimitBalanced = Math.min(
+		Math.round(btMaxChannelSizeSat / 2 - btMaxChannelSizeSat * diff),
+		btMaxClientBalanceSat,
 	);
 	const spendableBalance = Math.round(onchainBalance * SPENDING_LIMIT_RATIO);
 	const savingsAmount = onchainBalance - spendingAmount;
@@ -219,7 +224,7 @@ const QuickSetup = ({
 							</View>
 						</AnimatedView>
 
-						{spendingAmount >= Math.round(btSpendingLimitBalanced) && (
+						{spendingAmount > Math.round(btSpendingLimitBalanced) && (
 							<AnimatedView
 								style={styles.note}
 								entering={FadeIn}
