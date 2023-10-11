@@ -1,13 +1,52 @@
 {
   "backupSeedPhrase": {
-    "title": "Copia de seguridad"
+    "title": "Copia de seguridad",
+    "description": "Guarde su dinero"
   },
   "lightning": {
+    "title": "Pague instantáneamente",
     "description": "Ir a Lightning"
   },
   "lightningSettingUp": {
-    "description0": "Esperando pago"
+    "title": "Configuración",
+    "description0": "Esperando pago",
+    "description1": "Pagado",
+    "description2": "En cola",
+    "description3": "Abriendo"
+  },
+  "lightningConnecting": {
+    "title": "Conectando",
+    "description": "Listo en unos 10 minutos"
+  },
+  "lightningReady": {
+    "title": "Preparado",
+    "description": "¡Conectado!"
+  },
+  "transferToSpending": {
+    "title": "Transfiriendo",
+    "description": "Listo en unos 20 minutos"
+  },
+  "transferToSavings": {
+    "title": "Transfiriendo",
+    "description": "Listo en unos 60 minutos"
+  },
+  "transferClosingChannel": {
+    "title": "Iniciando...",
+    "description": "Mantenga abierta la app"
+  },
+  "pin": {
+    "title": "Mejorar la seguridad",
+    "description": "Establezca un código PIN"
+  },
+  "slashtagsProfile": {
+    "title": "Perfil Público",
+    "description": "Introduzca sus datos"
+  },
+  "buyBitcoin": {
+    "title": "Obtener Bitcoin",
+    "description": "Apile algunos satoshis"
   },
   "lightning_no_funds_title": "Sin fondos, todavia",
-  "lightning_no_funds_desc": "Antes de que pueda configurar su saldo de gasto instantáneo, necesita enviar un poco de Bitcoin on-chain a su monedero."
+  "lightning_no_funds_desc": "Antes de que pueda configurar su saldo de gasto instantáneo, necesita enviar un poco de Bitcoin on-chain a su monedero.",
+  "suggestions": "Sugerencias"
 }

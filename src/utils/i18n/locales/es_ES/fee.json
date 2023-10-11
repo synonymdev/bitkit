@@ -1,15 +1,18 @@
 {
   "instant": {
+    "title": "Instantáneo",
     "description": "±2-10 segundos",
     "shortRange": "2-10s",
     "shortDescription": "±2s"
   },
   "fast": {
+    "title": "Rápido",
     "description": "±10-20 minutos",
     "shortRange": "10-20m",
     "shortDescription": "±10m"
   },
   "normal": {
+    "title": "Normal",
     "description": "±20-60 minutos",
     "shortRange": "20-60m",
     "shortDescription": "±20m"
@@ -27,6 +30,7 @@
     "shortDescription": "+2h"
   },
   "custom": {
+    "title": "Personalizar",
     "description": "Depende de la tarifa",
     "shortRange": "Depende de la tarifa",
     "shortDescription": "Depende de la tarifa"

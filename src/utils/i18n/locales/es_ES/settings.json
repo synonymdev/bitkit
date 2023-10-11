@@ -1,6 +1,7 @@
 {
   "general": {
     "speed_fee_custom": "Fijar tarifa personalizada",
+    "suggestions": "Sugerencias",
     "tags": "Etiquetas",
     "tags_previously": "Etiquetas utilizadas anteriormente"
   },
@@ -11,6 +12,19 @@
   },
   "adv": {
     "section_other": "Otros"
+  },
+  "fee": {
+    "fast": {
+      "value": "Rápido"
+    },
+    "normal": {
+      "label": "Normal",
+      "value": "Normal"
+    },
+    "custom": {
+      "label": "Personalizar",
+      "value": "Personalizar"
+    }
   },
   "addr": {
     "private_hide": "Ocultar clave privada",
@@ -24,11 +38,7 @@
     "error_host_port": "Especifique un host y una puerta al que conectarse.",
     "error_host": "Por favor, especifique un host para conectarse.",
     "error_port": "Especifique una puerta para conectarse.",
-    "error_port_invalid": "Puerta inválida.",
-    "error_invalid_http": "No es una url HTTP válida.",
-    "error_peer": "par Electrum con Error",
     "server_updated_title": "Servidor Electrum actualizado",
-    "server_error": "No se fue possible conectar al servidor Electrum",
     "connected_to": "Actualmente conectado a",
     "disconnected": "desconectado",
     "host": "Anfitrión",

@@ -14,7 +14,6 @@
   "contacts_name": "Apellido del contacto",
   "contact_retrieving": "Confirmando\ninformación de contacto...",
   "contact_no_links": "Aún no se han añadido enlaces...",
-  "contact_pay_error": "No se puede pagar a este contacto",
   "contact_share": "Compartir clave de perfil",
   "contact_this": "este contacto",
   "contact_delete_yes": "Sí, Borrar",
@@ -22,10 +21,6 @@
   "contact_assign": "Asignar contacto",
   "contacts_no_found": "No se han encontrado contactos",
   "disabled": "Slashtags desactivadas",
-  "signin_to_error_header": "Error al iniciar sesión",
-  "signin_to_error_text": "No se ha podido conectar con par",
-  "signin_to_success_header": "¡Sesión iniciada!",
-  "signin_to_success_text_noname": "Se ha conectado con éxito.",
   "signin_title_loading": "accediendo",
   "onboarding_text": "Utilice Bitkit para recibir actualizaciones automáticas de sus contactos, pagarles y seguir sus perfiles públicos.",
   "onboarding_button": "Añada su primer contacto",
@@ -46,10 +41,11 @@
   "profile_link_label_placeholder": "Por ejemplo \"Sitio web\"",
   "profile_link_value": "Enlace o texto",
   "profile_link_public": "Nota: Cualquier enlace que añada será públicamente visible.",
+  "profile_link_suggestions": "Sugerencias",
   "profile_link_suggestions_to_add": "Sugerencias para añadir",
   "widget_add": "Añadir Widget",
   "widget_price": "Precio del Bitcoin",
   "widget_qr": "O escanear QR",
-  "widget_delete_yes": "Sí, Borrar",
-  "auth_error_peer": "No se ha podido conectar con par"
+  "widget_edit_custom": "Personalizar",
+  "widget_delete_yes": "Sí, Borrar"
 }

@@ -8,6 +8,7 @@
   "dialog_cancel": "No, Cancelar",
   "sat_vbyte": "sat / vbyte",
   "sat_vbyte_compact": "sat / vbyte",
+  "edit": "Editar",
   "copy": "Copiar",
   "share": "Compartir",
   "search": "Busqueda",
@@ -19,8 +20,10 @@
   "retry": "Vuelva a intentarlo",
   "later": "Más tarde",
   "skip": "Saltar",
-  "copied": "Copiado al portapapeles",
+  "copied": "Copiado Al Portapapeles",
   "yes": "Sí",
   "no": "No",
-  "back": "Volver"
+  "back": "Volver",
+  "understood": "Entendido",
+  "connect": "Conectar"
 }

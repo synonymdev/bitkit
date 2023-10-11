@@ -1,9 +1,7 @@
 {
   "settings": "Einstellungen",
   "dev_enabled_title": "Entwickler-Einstellungen an",
-  "dev_enabled_message": "Entwickler-Einstellungen sind jetzt innerhalb der App eingeschaltet.",
   "dev_disabled_title": "Entwickler-Einstellungen aus",
-  "dev_disabled_message": "Entwickler-Einstellungen sind jetzt innerhalb der App ausgeschaltet.",
   "general_title": "Allgemein",
   "security_title": "Sicherheit und Privatsphäre",
   "backup_title": "Back up oder Wiederherstellung",

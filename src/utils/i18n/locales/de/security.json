@@ -5,7 +5,6 @@
   "bio_no": "Anscheinend unterstützt dein Gerät die biometrische Sicherheitsfunktion nicht.",
   "bio_confirm": "Bestätige {biometricsName}",
   "bio_error_title": "Biometrie Setup fehlgeschlagen",
-  "bio_error_message": "Bitkit war nicht in der Lage das Biometrie Setup deinem Gerät zur Verfügung zu stellen.",
   "bio_not_available": "Anscheinend hast du die Biometrie-Sicherheitsfunktion noch nicht für dein Gerät eingerichtet (oder sie wird nicht unterstützt). Du kannst versuchen, die Biometrie-Sicherheitsfunktion in den Einstellungen deines Geräts zu aktivieren.",
   "bio_ask": "PIN code eingerichtet. Würdest du gerne {biometricsName} anstelle des PIN Codes verwenden, wann auch immer möglich?",
   "bio_use": "Nutze {biometricsName}",
@@ -13,8 +12,6 @@
   "reset_text": "Back up dein Wallet zuerst, um den Verlust deines Geldes und deiner Wallet-Daten vorzubeugen. Ein Reset wird dein aktuelles Bitkit-Setup überschreiben.",
   "reset_dialog_title": "Bitkit Reset?",
   "reset_dialog_desc": "Bist du dir sicher, dass du dein Bitkit-Wallet resetten willst? Hast du einen Back-Up deiner Wiederherstellungsphrase und deiner Wallet-Daten?",
-  "export_error_msg": "Bitkit war nicht in der Lage, die Back-Up-Datei zu speichern.",
   "cp_text": "Du kannst deinen PIN code zu einer neuen\n4-Ziffern-Kombination ändern. Bitte gebe deinen aktuellen PIN Code zuerst ein.",
-  "cp_changed_text": "Du hast erfolgreich deinen PIN zu einer 4-Ziffer-Kombination geändert.",
-  "wiped_title": "Bitkit gelöscht"
+  "cp_changed_text": "Du hast erfolgreich deinen PIN zu einer 4-Ziffer-Kombination geändert."
 }

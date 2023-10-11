@@ -12,7 +12,6 @@
   "pass_confirm_text": "Introduzca la frase de acesso que añadió al configurar y crear su monedero.",
   "mnemonic_phrase": "Frase mnemotécnica",
   "mnemonic_your": "Su frase de recuperación",
-  "mnemonic_error": "Error Obteniendo Mnemónico",
   "mnemonic_use": "Utilice las 12 palabras siguientes para recuperar su dinero más adelante.",
   "mnemonic_reveal": "Toque para revelar",
   "mnemonic_never_share": "<brand>No comparta</brand> nunca su frase de recuperación con nadie, ya que podría perder los fondos.",
@@ -45,7 +44,6 @@
   "bio_face_id": "Face ID",
   "bio_touch_id": "Touch ID",
   "bio_error_title": "la configuración de los datos biométricos he fallado",
-  "bio_error_message": "Bitkit no ha podido configurar los datos biométricos de su dispositivo.",
   "bio_loading": "Cargando...",
   "bio_not_available": "Parece que aún no ha configurado la seguridad biométrica para su dispositivo (o no es compatible). Puede intentar activar la seguridad biométrica en los ajustes del teléfono.",
   "bio_phone_settings": "Ajustes del teléfono",
@@ -65,11 +63,6 @@
   "export_password": "Contraseña",
   "export_button": "Exportar",
   "export_share": "Compartir el archivo de copia de seguridad",
-  "export_success_title": "Copia de seguridad exportada",
-  "export_success_msg": "Archivo exportado con éxito al teléfono.",
-  "export_error_title": "Falló la copia de seguridad",
-  "export_error_msg": "Bitkit no ha podido guardar el archivo de copia de seguridad.",
-  "export_error_file": "Falla en la creacion de la copia de seguridad",
   "cp_title": "Cambiar PIN",
   "cp_text": "Puede cambiar su código PIN por una nueva\ncombinación de 4 dígitos. Por favor, introduzca primero su código PIN actual.",
   "cp_forgot": "¿Ha olvidado su PIN?",
@@ -80,7 +73,5 @@
   "cp_try_again": "Inténtelo de nuevo, no es el mismo PIN.",
   "cp_changed_title": "PIN cambiado",
   "cp_changed_text": "Ha cambiado correctamente su PIN por una nueva combinación de 4 dígitos.",
-  "use_pin": "Utilizar código PIN",
-  "wiped_title": "Bitkit Borrado",
-  "wiped_message": "Todos los datos de la cartera han sido borrados."
+  "use_pin": "Utilizar código PIN"
 }

@@ -14,7 +14,6 @@
   "pass_recovery": "<gray>Frase Secreta:</gray> {passphrase}",
   "mnemonic_phrase": "Frase mnemônica",
   "mnemonic_your": "Sua frase de recuperação",
-  "mnemonic_error": "Erro ao obter o mnemônico",
   "mnemonic_write": "Anote essas palavras {comprimento} na ordem correta e guarde-as em um local seguro.",
   "mnemonic_use": "Use as 12 palavras abaixo para recuperar seu dinheiro em uma data posterior.",
   "mnemonic_reveal": "Toque para revelar",
@@ -55,7 +54,6 @@
   "bio_touch_id": "Touch ID",
   "bio_confirm": "Confirme {biometricsName}",
   "bio_error_title": "Falha na configuração da biometria",
-  "bio_error_message": "O Bitkit não conseguiu configurar a biometria para o seu dispositivo.",
   "bio_loading": "Carregando...",
   "bio_not_available": "Parece que você ainda não configurou a segurança biométrica para o seu dispositivo (ou não é compatível). Você pode tentar ativar a segurança biométrica nas configurações do telefone.",
   "bio_ask": "PIN configurado. Você gostaria de usar {biometricsName} em vez de seu código PIN sempre que possível?",
@@ -84,11 +82,6 @@
   "export_password": "Senha",
   "export_button": "Exportar",
   "export_share": "Compartilhar arquivo de backup",
-  "export_success_title": "Backup exportado",
-  "export_success_msg": "Exportação bem-sucedida do arquivo para a memória do celular.",
-  "export_error_title": "Falha na realização do backup",
-  "export_error_msg": "O Bitkit não conseguiu salvar o arquivo de backup.",
-  "export_error_file": "Falha ao criar o arquivo de backup",
   "cp_title": "Alterar PIN",
   "cp_text": "Você pode alterar seu código PIN para uma nova\ncombinação de 4 dígitos. Primeiro, digite seu código PIN atual.",
   "cp_forgot": "Esqueceu seu PIN?",
@@ -99,7 +92,5 @@
   "cp_try_again": "Tente novamente, este não é o mesmo PIN.",
   "cp_changed_title": "PIN alterado",
   "cp_changed_text": "Você alterou com sucesso seu PIN para uma nova combinação de 4 dígitos.",
-  "use_pin": "Usar o código PIN",
-  "wiped_title": "Bitkit apagado",
-  "wiped_message": "Todos os dados da carteira foram apagados."
+  "use_pin": "Usar o código PIN"
 }
