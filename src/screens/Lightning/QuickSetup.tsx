@@ -224,7 +224,7 @@ const QuickSetup = ({
 							</View>
 						</AnimatedView>
 
-						{spendingAmount > Math.round(btSpendingLimitBalanced) && (
+						{spendingAmount >= Math.round(btSpendingLimitBalanced) && (
 							<AnimatedView
 								style={styles.note}
 								entering={FadeIn}

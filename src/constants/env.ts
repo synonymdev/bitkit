@@ -54,7 +54,7 @@ if (!isProtocol(ELECTRUM_SIGNET_PROTO)) {
 }
 
 if (!BACKUPS_SERVER_HOST || !BACKUPS_SERVER_PUBKEY) {
-	throw new Error(`BACKUPS_SERVER_HOST or BACKUPS_SERVER_PUBKEY is missing.`);
+	throw new Error('BACKUPS_SERVER_HOST or BACKUPS_SERVER_PUBKEY is missing.');
 }
 
 export const __JEST__ = process.env.JEST_WORKER_ID !== undefined;

@@ -17,11 +17,16 @@ export const getUnifiedUri = ({
 	message: string;
 	lightning?: string;
 }): string => {
-	const amountBTC = bitcoinUnits(amount, 'satoshi').to('btc').value();
+	const amountBTC = bitcoinUnits(amount, 'satoshi')
+		.to('btc')
+		.value()
+		// convert to string without scientific notation and trailing zeros
+		.toFixed(10)
+		.replace(/\.?0+$/, '');
 
 	return encode(address, {
 		// only attach non-empty params
-		...(amountBTC ? { amount: amountBTC } : {}),
+		...(amount ? { amount: amountBTC } : {}),
 		...(label !== '' ? { label } : {}),
 		// do wallet apps still use "message"?
 		...(message !== '' ? { message } : {}),
