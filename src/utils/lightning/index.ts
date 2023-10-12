@@ -417,7 +417,7 @@ export const subscribeToLightningPayments = ({
 					selectedNetwork = getSelectedNetwork();
 				}
 
-				refreshLdk({ selectedWallet, selectedNetwork }).then();
+				await refreshLdk({ selectedWallet, selectedNetwork });
 
 				// Check if this is a CJIT Entry that needs to be added to the activity list.
 				addCJitActivityItem(_res.channel_id).then();
