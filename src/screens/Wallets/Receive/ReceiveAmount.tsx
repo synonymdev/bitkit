@@ -1,7 +1,8 @@
-import React, { ReactElement, memo, useState, useMemo } from 'react';
+import React, { ReactElement, memo, useState, useCallback } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
+import { useFocusEffect } from '@react-navigation/native';
 
 import { TouchableOpacity } from '../../../styles/components';
 import { Caption13Up, Text02B } from '../../../styles/text';
@@ -9,6 +10,7 @@ import { SwitchIcon } from '../../../styles/icons';
 import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
 import NumberPadTextField from '../../../components/NumberPadTextField';
 import SafeAreaInset from '../../../components/SafeAreaInset';
+import Money from '../../../components/Money';
 import Button from '../../../components/Button';
 import GradientView from '../../../components/GradientView';
 import ReceiveNumberPad from './ReceiveNumberPad';
@@ -19,11 +21,11 @@ import { receiveSelector } from '../../../store/reselect/receive';
 import { getNumberPadText } from '../../../utils/numberpad';
 import { createCJitEntry } from '../../../utils/blocktank';
 import { showToast } from '../../../utils/notifications';
-import type { ReceiveScreenProps } from '../../../navigation/types';
 import { DEFAULT_CHANNEL_DURATION } from '../../Lightning/CustomConfirm';
 import { primaryUnitSelector } from '../../../store/reselect/settings';
 import { blocktankInfoSelector } from '../../../store/reselect/blocktank';
-import Money from '../../../components/Money';
+import { refreshBlocktankInfo } from '../../../store/actions/blocktank';
+import type { ReceiveScreenProps } from '../../../navigation/types';
 
 const ReceiveAmount = ({
 	navigation,
@@ -36,19 +38,21 @@ const ReceiveAmount = ({
 	const unit = useSelector(primaryUnitSelector);
 	const blocktank = useSelector(blocktankInfoSelector);
 
+	const { minChannelSizeSat, maxChannelSizeSat } = blocktank.options;
+	// Subtract from max to keep a buffer for dust
+	const maxInvoiceSats = maxChannelSizeSat - minChannelSizeSat;
+
+	useFocusEffect(
+		useCallback(() => {
+			refreshBlocktankInfo().then();
+		}, []),
+	);
+
 	const onChangeUnit = (): void => {
 		const result = getNumberPadText(invoice.amount, nextUnit);
 		updateInvoice({ numberPadText: result });
 		switchUnit();
 	};
-
-	const maxChannelSats = useMemo(() => {
-		return blocktank.options.maxChannelSizeSat;
-	}, [blocktank.options.maxChannelSizeSat]);
-	const maxInvoiceSats = useMemo(() => {
-		// Subtract from max to keep a buffer for dust
-		return maxChannelSats - blocktank.options.minChannelSizeSat;
-	}, [blocktank.options.minChannelSizeSat, maxChannelSats]);
 
 	const onContinue = async (): Promise<void> => {
 		setIsLoading(true);
@@ -77,7 +81,7 @@ const ReceiveAmount = ({
 			return;
 		}
 		const cJitEntryResponse = await createCJitEntry({
-			channelSizeSat: maxChannelSats,
+			channelSizeSat: maxChannelSizeSat,
 			invoiceSat: invoice.amount,
 			invoiceDescription: invoice.message,
 			channelExpiryWeeks: DEFAULT_CHANNEL_DURATION,
