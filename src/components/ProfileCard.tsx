@@ -97,8 +97,8 @@ const ProfileCard = ({
 							const result = await launchImageLibrary({
 								mediaType: 'photo',
 								includeBase64: true,
-								maxWidth: 1024,
-								maxHeight: 1024,
+								maxWidth: 256,
+								maxHeight: 256,
 							});
 
 							const base64 = result.assets?.[0].base64;

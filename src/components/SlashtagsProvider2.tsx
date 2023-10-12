@@ -86,10 +86,10 @@ class Store {
 	async close(): Promise<void> {}
 }
 
-const store = new Store('example1.db') as unknown as Client.Store;
+const store = new Store('slashtags.db') as unknown as Client.Store;
 
 export let webRelayClient: IWebRelayClient;
-export let profile: SlashtagsProfile;
+let profile: SlashtagsProfile;
 
 export interface ISlashtagsContext2 {
 	webRelayClient: Client;

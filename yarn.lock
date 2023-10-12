@@ -2872,10 +2872,10 @@
     b4a "^1.6.4"
     sodium-universal "^4.0.0"
 
-"@synonymdev/slashtags-profile@1.0.1":
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/@synonymdev/slashtags-profile/-/slashtags-profile-1.0.1.tgz#cf5646554faf5e31ff6d6fa2f46caaca332680bd"
-  integrity sha512-BgTeKDpuGOoSAmqydkz0dZ6jqdkuU16g4cAsg9gbV56nGWVYdhUVk5K3oaWXlIeLOs78Uu0HUkqvwFHtXQfcdA==
+"@synonymdev/slashtags-profile@1.0.2":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@synonymdev/slashtags-profile/-/slashtags-profile-1.0.2.tgz#0e73bd0d165f1f0f8600a9b337191931d67f5e21"
+  integrity sha512-vFkYcozOaBjJljBr6D63iTCdJvj9/S2pfcBQN8weLTlW8WEGuiHbxN5aZw50kTeo/NJ1k7AUhEY/ccJTOHE/QQ==
   dependencies:
     "@synonymdev/slashtags-url" "^1.0.0-alpha.3"
     ajv "^8.12.0"
@@ -2984,10 +2984,10 @@
     "@synonymdev/feeds" "^2.0.0"
     node-fetch "^2.6.12"
 
-"@synonymdev/web-relay@1.0.3":
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/@synonymdev/web-relay/-/web-relay-1.0.3.tgz#e163358092115ff51cd0c33a74830994ee965f4e"
-  integrity sha512-Gk0CbBOQHcSGYCNvEA4sdqfFgy4LTMAERMVTIoNuxyexcgfmcjwzYvMnOA8e704Bf2FUAylRmcbewmveSAclDg==
+"@synonymdev/web-relay@1.0.5":
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/@synonymdev/web-relay/-/web-relay-1.0.5.tgz#b6ab3ad7765bec006bc103f30bcd5867e9376113"
+  integrity sha512-f8OS0QGl8eiyr6gQV5U7XMC3DR9QRfQft8G9MNly1yNFqs6LMyKPsVqgOweiGYCS6/hwZttc56Z8La4/zJmkAQ==
   dependencies:
     "@synonymdev/slashtags-url" "^1.0.0"
     b4a "1.6.4"
@@ -2995,6 +2995,7 @@
     level "8.0.0"
     lmdb "2.8.4"
     node-fetch "2.6.12"
+    prom-client "14.2.0"
     sodium-universal "4.0.0"
     xmlhttprequest "1.8.0"
 
@@ -4124,6 +4125,11 @@ bindings@^1.3.0, bindings@^1.5.0:
   integrity sha512-p2q/t/mhvuOj/UeLlV6566GD/guowlr0hHxClI0W9m7MWYkL1F0hLo+0Aexs9HSPCtR1SXQ0TD3MMKrXZajbiQ==
   dependencies:
     file-uri-to-path "1.0.0"
+
+bintrees@1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/bintrees/-/bintrees-1.0.2.tgz#49f896d6e858a4a499df85c38fb399b9aff840f8"
+  integrity sha512-VOMgTMwjAaUG580SXn3LacVgjurrbMme7ZZNYGSSV7mmtY6QQRh0Eg3pwIcntQ77DErK1L0NxkbetjcoXzVwKw==
 
 bip174@^2.1.0:
   version "2.1.0"
@@ -10454,6 +10460,13 @@ process@^0.11.10:
   resolved "https://registry.yarnpkg.com/process/-/process-0.11.10.tgz#7332300e840161bda3e69a1d1d91a7d4bc16f182"
   integrity sha512-cdGef/drWFoydD1JsMzuFf8100nZl+GT+yacc2bEced5f9Rjk4z+WtFUTBu9PhOi9j/jfmBPu0mMEY4wIdAF8A==
 
+prom-client@14.2.0:
+  version "14.2.0"
+  resolved "https://registry.yarnpkg.com/prom-client/-/prom-client-14.2.0.tgz#ca94504e64156f6506574c25fb1c34df7812cf11"
+  integrity sha512-sF308EhTenb/pDRPakm+WgiN+VdM/T1RaHj1x+MvAuT8UiQP8JmOEbxVqtkbfR4LrvOg5n7ic01kRBDGXjYikA==
+  dependencies:
+    tdigest "^0.1.1"
+
 promise-polyfill@^6.0.1:
   version "6.1.0"
   resolved "https://registry.yarnpkg.com/promise-polyfill/-/promise-polyfill-6.1.0.tgz#dfa96943ea9c121fca4de9b5868cb39d3472e057"
@@ -12544,6 +12557,13 @@ tar@^4.4.8:
     mkdirp "^0.5.5"
     safe-buffer "^5.2.1"
     yallist "^3.1.1"
+
+tdigest@^0.1.1:
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/tdigest/-/tdigest-0.1.2.tgz#96c64bac4ff10746b910b0e23b515794e12faced"
+  integrity sha512-+G0LLgjjo9BZX2MfdvPfH+MKLCrxlXSYec5DaPYP1fe6Iyhf0/fSmJ0bFiZ1F8BT6cGXl2LpltQptzjXKWEkKA==
+  dependencies:
+    bintrees "1.0.2"
 
 telnet-client@1.2.8:
   version "1.2.8"

@@ -32,9 +32,9 @@ export const saveProfile2 = async (
 	slashtagsProfile: SlashtagsProfile,
 ): Promise<Result<string>> => {
 	try {
-		await slashtagsProfile.put(profile);
+		await slashtagsProfile.put(profile, { awaitRelaySync: true });
 	} catch (e) {
-		console.log(e.message);
+		console.log('profile saving error', e);
 		showToast({
 			type: 'error',
 			title: i18n.t('slashtags:error_saving_contact'),
