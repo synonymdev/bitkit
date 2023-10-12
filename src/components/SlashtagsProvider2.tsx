@@ -141,6 +141,7 @@ export const SlashtagsProvider2 = ({
 				keyPair,
 				store,
 				_skipCache: true,
+				_skipRecordVerification: true,
 			});
 
 			profile = new SlashtagsProfile(webRelayClient);
