@@ -210,7 +210,7 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 	},
 	time: {
-		width: 42,
+		width: 45,
 		marginRight: 8,
 	},
 	columnRight: {
