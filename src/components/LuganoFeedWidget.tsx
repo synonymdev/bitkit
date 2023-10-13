@@ -45,7 +45,7 @@ const LuganoWidget = ({
 		cache.links,
 	);
 	const [schedule, setSchedule] = useState<
-		{ timeLocation: string; name: string }[]
+		{ time: string; location: string; name: string }[]
 	>([]);
 
 	const numberOfChests = treasureChests.filter((c) => !c.isAirdrop).length;
@@ -98,7 +98,8 @@ const LuganoWidget = ({
 						const minutes = time.getMinutes().toString().padStart(2, '0');
 
 						return {
-							timeLocation: hours + ':' + minutes + ' @ ' + event.location,
+							time: hours + ':' + minutes,
+							location: event.location,
 							name: event.name,
 						};
 					});
@@ -126,8 +127,11 @@ const LuganoWidget = ({
 				{schedule.map((event) => (
 					<View key={event.name} style={styles.row}>
 						<View style={styles.columnLeft}>
+							<Text02M color="gray1" style={styles.time}>
+								{event.time}
+							</Text02M>
 							<Text02M color="gray1" numberOfLines={1}>
-								{event.timeLocation}
+								{event.location}
 							</Text02M>
 						</View>
 						<View style={styles.columnRight}>
@@ -201,12 +205,16 @@ const styles = StyleSheet.create({
 		minHeight: 28,
 	},
 	columnLeft: {
-		flex: 1,
+		width: 100,
 		flexDirection: 'row',
 		alignItems: 'center',
 	},
+	time: {
+		width: 42,
+		marginRight: 8,
+	},
 	columnRight: {
-		flex: 1,
+		flex: 2,
 		flexDirection: 'row',
 		alignItems: 'center',
 		justifyContent: 'flex-end',
