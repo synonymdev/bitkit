@@ -12,7 +12,6 @@ import { addContacts, cacheProfile2 } from '../store/actions/slashtags';
 import {
 	ISlashtagsContext2,
 	SlashtagsContext2,
-	webRelayClient,
 } from '../components/SlashtagsProvider2';
 import { useSlashtags } from '../components/SlashtagsProvider';
 import { __E2E__ } from '../constants/env';
@@ -39,7 +38,7 @@ export const useProfile2 = (
 	profile: BasicProfile;
 	url: string;
 } => {
-	const { webRelayUrl } = useSlashtags2();
+	const { webRelayClient, webRelayUrl } = useSlashtags2();
 	const [resolving, setResolving] = useState(true);
 	const [url, profileUrl] = useMemo(() => {
 		const parsed = parse(origUrl);
@@ -112,7 +111,7 @@ export const useProfile2 = (
 			unsubscribe();
 			unmounted = true;
 		};
-	}, [profileUrl, shouldResolve]);
+	}, [webRelayClient, profileUrl, shouldResolve]);
 
 	return {
 		resolving,

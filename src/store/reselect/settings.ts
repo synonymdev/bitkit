@@ -146,3 +146,8 @@ export const webRelaySelector = createSelector(
 	[settingsState],
 	(settings): string => settings.webRelay,
 );
+
+export const webRelayTrustedSelector = createSelector(
+	[settingsState],
+	(settings) => settings.isWebRelayTrusted,
+);

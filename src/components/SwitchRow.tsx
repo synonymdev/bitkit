@@ -1,4 +1,4 @@
-import React, { memo, ReactElement } from 'react';
+import React, { memo, ReactElement, ReactNode } from 'react';
 import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import { Switch } from '../styles/components';
 import { IThemeColors } from '../styles/themes';
@@ -11,7 +11,7 @@ const SwitchRow = ({
 	showDivider = true,
 	onPress,
 }: {
-	children: ReactElement;
+	children: ReactNode;
 	color?: keyof IThemeColors;
 	isEnabled: boolean;
 	showDivider?: boolean;

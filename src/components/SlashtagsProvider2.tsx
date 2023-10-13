@@ -12,7 +12,10 @@ import { getSlashtagsPrimaryKey } from '../utils/wallet';
 import { seedHashSelector } from '../store/reselect/wallet';
 import { showToast } from '../utils/notifications';
 import { useAppSelector } from '../hooks/redux';
-import { webRelaySelector } from '../store/reselect/settings';
+import {
+	webRelaySelector,
+	webRelayTrustedSelector,
+} from '../store/reselect/settings';
 
 class Store {
 	location: string;
@@ -94,6 +97,7 @@ let profile: SlashtagsProfile;
 export interface ISlashtagsContext2 {
 	webRelayClient: Client;
 	webRelayUrl: string;
+	isWebRelayTrusted: boolean;
 	url: string;
 	profile: SlashtagsProfile;
 }
@@ -101,6 +105,7 @@ export interface ISlashtagsContext2 {
 export const SlashtagsContext2 = createContext<ISlashtagsContext2>({
 	webRelayClient: {} as Client,
 	webRelayUrl: '',
+	isWebRelayTrusted: false,
 	url: '',
 	profile: {} as SlashtagsProfile,
 });
@@ -110,9 +115,11 @@ export const SlashtagsProvider2 = ({
 }: {
 	children: ReactElement;
 }): ReactElement => {
+	const [client, setClient] = useState<IWebRelayClient>();
 	const [url, setUrl] = useState<string>('');
 	const seedHash = useAppSelector(seedHashSelector);
 	const webRelayUrl = useAppSelector(webRelaySelector);
+	const isWebRelayTrusted = useAppSelector(webRelayTrustedSelector);
 
 	useEffect(() => {
 		if (!seedHash) {
@@ -141,8 +148,9 @@ export const SlashtagsProvider2 = ({
 				keyPair,
 				store,
 				_skipCache: true,
-				_skipRecordVerification: true,
+				_skipRecordVerification: isWebRelayTrusted,
 			});
+			setClient(webRelayClient);
 
 			profile = new SlashtagsProfile(webRelayClient);
 			const profileUrl = await profile.createURL();
@@ -152,14 +160,15 @@ export const SlashtagsProvider2 = ({
 			});
 			setUrl(long);
 		})();
-	}, [seedHash, webRelayUrl]);
+	}, [seedHash, webRelayUrl, isWebRelayTrusted]);
 
 	return (
 		// Do not render children until we have a url
 		<SlashtagsContext2.Provider
 			value={{
-				webRelayClient,
+				webRelayClient: client,
 				webRelayUrl,
+				isWebRelayTrusted,
 				url,
 				profile,
 			}}>

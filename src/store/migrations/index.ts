@@ -230,6 +230,15 @@ const migrations = {
 			todos: defaultTodosShape,
 		};
 	},
+	24: (state): PersistedState => {
+		return {
+			...state,
+			settings: {
+				...state.settings,
+				isWebRelayTrusted: false,
+			},
+		};
+	},
 };
 
 export default migrations;

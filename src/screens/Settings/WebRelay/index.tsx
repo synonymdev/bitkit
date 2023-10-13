@@ -5,13 +5,15 @@ import Url from 'url-parse';
 import { useTranslation } from 'react-i18next';
 
 import { View, TextInput, ScrollView } from '../../../styles/components';
-import { Caption13Up, Text01S } from '../../../styles/text';
+import { Caption13Up, Text01S, Text02S } from '../../../styles/text';
 import { ScanIcon } from '../../../styles/icons';
 import { updateSettings } from '../../../store/actions/settings';
 import NavigationHeader from '../../../components/NavigationHeader';
 import SafeAreaInset from '../../../components/SafeAreaInset';
+import SwitchRow from '../../../components/SwitchRow';
 import Button from '../../../components/Button';
 import { showToast } from '../../../utils/notifications';
+import { saveProfile2, updateSlashPayConfig2 } from '../../../utils/slashtags2';
 import type { SettingsScreenProps } from '../../../navigation/types';
 import { __WEB_RELAY__ } from '../../../constants/env';
 import {
@@ -19,7 +21,6 @@ import {
 	useSelectedSlashtag2,
 	useSlashtags2,
 } from '../../../hooks/slashtags2';
-import { saveProfile2, updateSlashPayConfig2 } from '../../../utils/slashtags2';
 
 const validateInput = (
 	url: string,
@@ -46,6 +47,7 @@ const WebRelay = ({
 	const {
 		webRelayClient,
 		webRelayUrl,
+		isWebRelayTrusted,
 		profile: slashtagsProfile,
 	} = useSlashtags2();
 	const { url: myProfileUrl } = useSelectedSlashtag2();
@@ -129,6 +131,10 @@ const WebRelay = ({
 		navigation.navigate('Scanner', { onScan: connectAndSave });
 	};
 
+	const onToggle = (): void => {
+		updateSettings({ isWebRelayTrusted: !isWebRelayTrusted });
+	};
+
 	const hasEdited = webRelayUrl !== url;
 
 	return (
@@ -168,6 +174,16 @@ const WebRelay = ({
 					returnKeyType="done"
 					testID="UrlInput"
 				/>
+
+				<View style={styles.switch}>
+					<SwitchRow
+						isEnabled={isWebRelayTrusted}
+						showDivider={false}
+						onPress={onToggle}>
+						<Text01S>{t('wr.trust')}</Text01S>
+						<Text02S color="gray1">{t('wr.trust_description')}</Text02S>
+					</SwitchRow>
+				</View>
 
 				<View style={styles.buttons}>
 					<Button
@@ -212,7 +228,7 @@ const styles = StyleSheet.create({
 		justifyContent: 'center',
 	},
 	label: {
-		marginTop: 32,
+		marginTop: 16,
 		marginBottom: 4,
 	},
 	connectedPeer: {
@@ -221,7 +237,10 @@ const styles = StyleSheet.create({
 	textInput: {
 		minHeight: 52,
 		marginTop: 12,
-		marginBottom: 32,
+		marginBottom: 16,
+	},
+	switch: {
+		marginBottom: 16,
 	},
 	buttons: {
 		marginTop: 16,
