@@ -864,7 +864,7 @@ export const handleData = async ({
 			return ok({ type: EQRDataType.slashtagURL });
 		}
 		case EQRDataType.slashFeedURL: {
-			handleSlashtagURL(data.url);
+			handleSlashtagURL(decodeURIComponent(data.url));
 			return ok({ type: EQRDataType.slashFeedURL });
 		}
 		case EQRDataType.slashAuthURL: {
