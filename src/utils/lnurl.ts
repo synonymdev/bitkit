@@ -30,6 +30,21 @@ import {
 import i18n from './i18n';
 
 /**
+ * Finds an LNURL in a string.
+ * @see https://github.com/lnurl/luds/blob/luds/01.md#fallback-scheme
+ * @param {string} text
+ * @returns {string | null}
+ */
+export const findlnurl = (text: string): string | null => {
+	const text2 = text.toLowerCase().trim();
+	const res =
+		/^(?:(http.*|bitcoin:.*)[&?]lightning=|lightning:)?(lnurl1[02-9ac-hj-np-z]+)/.exec(
+			text2,
+		);
+	return res ? res[2] : null;
+};
+
+/**
  * Handles LNURL Pay Requests.
  * @param {LNURLPayParams} params
  * @param {TWalletName} [selectedWallet]

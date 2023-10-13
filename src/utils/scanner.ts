@@ -47,7 +47,7 @@ import { sendNavigation } from '../navigation/bottom-sheet/SendNavigation';
 import { rootNavigation } from '../navigation/root/RootNavigator';
 import { LuganoFeedURL } from '../screens/Widgets/WidgetsSuggestions';
 import { SUPPORTED_FEED_TYPES } from './widgets';
-import { handleLnurlAuth } from './lnurl';
+import { findlnurl, handleLnurlAuth } from './lnurl';
 import i18n from './i18n';
 
 const availableNetworksList = availableNetworks();
@@ -448,67 +448,69 @@ export const decodeQRData = async (
 	let lightningInvoice = '';
 	let error = '';
 
-	//Lightning URI or plain lightning payment request
+	//Lightning URI
+	if (findlnurl(data)) {
+		const invoice = findlnurl(data)!;
+		//Attempt to handle any lnurl request.
+		const res = await getLNURLParams(invoice);
+		if (res.isOk()) {
+			const params = res.value;
+
+			if ('tag' in params) {
+				if (params.tag === 'login') {
+					foundNetworksInQR.push({
+						qrDataType: EQRDataType.lnurlAuth,
+						lnUrlParams: params as LNURLAuthParams,
+					});
+				}
+				if (params.tag === 'withdrawRequest') {
+					foundNetworksInQR.push({
+						qrDataType: EQRDataType.lnurlWithdraw,
+						//No real difference between networks for lnurl, all keys are derived the same way so assuming current network
+						network: selectedNetwork,
+						lnUrlParams: params as LNURLWithdrawParams,
+					});
+				}
+				if (params.tag === 'channelRequest') {
+					foundNetworksInQR.push({
+						qrDataType: EQRDataType.lnurlChannel,
+						//No real difference between networks for lnurl, all keys are derived the same way so assuming current network
+						network: selectedNetwork,
+						lnUrlParams: params as LNURLChannelParams,
+					});
+				}
+				if (params.tag === 'payRequest') {
+					foundNetworksInQR.push({
+						qrDataType: EQRDataType.lnurlPay,
+						//No real difference between networks for lnurl, all keys are derived the same way so assuming current network
+						network: selectedNetwork,
+						lnUrlParams: params as LNURLPayParams,
+					});
+				}
+			}
+		} else {
+			error += `${res.error.message} `;
+		}
+	}
+
+	//Plain lightning payment request
 	if (
 		data.toLowerCase().indexOf('lightning:') > -1 ||
 		data.toLowerCase().startsWith('lntb') ||
-		data.toLowerCase().startsWith('lnbc') ||
-		data.toLowerCase().startsWith('lnurl')
+		data.toLowerCase().startsWith('lnbc')
 	) {
 		//If it's a lightning URI, remove "lightning:", everything to the left of it.
 		let invoice = data
 			.replace(/^.*?(lightning:)/i, '')
 			.trim()
 			.toLowerCase();
-		//Attempt to handle any lnurl request.
-		if (invoice.startsWith('lnurl')) {
-			const res = await getLNURLParams(invoice);
-			if (res.isOk()) {
-				const params = res.value;
 
-				if ('tag' in params) {
-					if (params.tag === 'login') {
-						foundNetworksInQR.push({
-							qrDataType: EQRDataType.lnurlAuth,
-							lnUrlParams: params as LNURLAuthParams,
-						});
-					}
-					if (params.tag === 'withdrawRequest') {
-						foundNetworksInQR.push({
-							qrDataType: EQRDataType.lnurlWithdraw,
-							//No real difference between networks for lnurl, all keys are derived the same way so assuming current network
-							network: selectedNetwork,
-							lnUrlParams: params as LNURLWithdrawParams,
-						});
-					}
-					if (params.tag === 'channelRequest') {
-						foundNetworksInQR.push({
-							qrDataType: EQRDataType.lnurlChannel,
-							//No real difference between networks for lnurl, all keys are derived the same way so assuming current network
-							network: selectedNetwork,
-							lnUrlParams: params as LNURLChannelParams,
-						});
-					}
-					if (params.tag === 'payRequest') {
-						foundNetworksInQR.push({
-							qrDataType: EQRDataType.lnurlPay,
-							//No real difference between networks for lnurl, all keys are derived the same way so assuming current network
-							network: selectedNetwork,
-							lnUrlParams: params as LNURLPayParams,
-						});
-					}
-				}
-			} else {
-				error += `${res.error.message} `;
-			}
-		} else {
-			//Assume invoice
-			//Ignore params if there are any, all details can be derived from invoice
-			if (invoice.indexOf('?') > -1) {
-				invoice = invoice.split('?')[0];
-			}
-			lightningInvoice = invoice;
+		//Assume invoice
+		//Ignore params if there are any, all details can be derived from invoice
+		if (invoice.indexOf('?') > -1) {
+			invoice = invoice.split('?')[0];
 		}
+		lightningInvoice = invoice;
 	}
 
 	//Plain bitcoin address or Bitcoin address URI
