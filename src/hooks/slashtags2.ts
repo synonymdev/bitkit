@@ -176,6 +176,13 @@ export const useMigrateSlashtags2 = (): void => {
 		}
 		status.current.profile = true;
 
-		saveProfile2(url, oldProfile, slashtagsProfile);
+		// save everything, except image becase it can be too big
+		const p = {
+			bio: oldProfile.bio,
+			name: oldProfile.name,
+			links: oldProfile.links,
+		};
+
+		saveProfile2(url, p, slashtagsProfile);
 	}, [oldProfile, newProfile, slashtagsProfile, url]);
 };
