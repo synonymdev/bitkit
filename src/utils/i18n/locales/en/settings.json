@@ -182,6 +182,8 @@
 		"error_https": "Not a valid HTTPS url.",
 		"error_healthcheck": "Healthcheck Failed",
 		"url_updated_title": "Web Relay Updated",
-		"url_updated_message": "Successfully connected to {url}"
+		"url_updated_message": "Successfully connected to {url}",
+		"trust": "Trust this relay",
+		"trust_description": "Skip record verification for this web relay"
 	}
 }
