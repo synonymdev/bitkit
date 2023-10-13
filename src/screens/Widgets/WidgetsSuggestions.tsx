@@ -15,15 +15,15 @@ import { useSlashfeed } from '../../hooks/widgets';
 import type { RootStackScreenProps } from '../../navigation/types';
 
 const PriceFeedURL =
-	'slashfeed:azswe48ifp8gmk3p44e7futnxp6dxjm6izbgdyy96nqk8876xtty/Bitcoin Price';
+	'slashfeed:9ckhj7ea31ugskdewy9eiod5trhtbgcu9juza8aypjyugsp5f4oo/Bitcoin Price';
 const NewsFeedURL =
-	'slashfeed:dwqu3z7jrt58h63y5k91nzdawwoe8jz33yypkdhm4gdf6egn39qo/Bitcoin Headlines';
+	'slashfeed:tdm8gwcuh6nfw4w8remadpzid9cff4tpoyazeokzbrfnjrxyf9ho/Bitcoin Headlines';
 const BlocksFeedURL =
-	'slashfeed:ourqbz3s3e1yqs5wqkzqo74zoydqqssgskueo6gsgp46e5i5ecdo/Bitcoin Blocks';
+	'slashfeed:xzdjbqu5ym3hk4xp993hg4ahzs1g4o85dhw9nnp4qcbd57pxndoo/Bitcoin Blocks';
 const BitcoinFactsURL =
-	'slashfeed:6zwka9fw7orrfb7kbeojhre1yyrgd9foss8a3z9x5rtss1k9ujao/Bitcoin Facts';
+	'slashfeed:jm1n46tbdbnz4soq8hqppbpwt3pqp3cp9qobdjgyk8mjmnmdj14o/Bitcoin Facts';
 export const LuganoFeedURL =
-	'slashfeed:qa336xyxfqaia8hi89zdbszzbegbyheu4udr87k44hiw8746m1bo/Plan ₿ Forum';
+	'slashfeed:aa6poszco9snsh5fu9nj16aecpabhi798m5hazgttykqkxn4ocny/Plan ₿ Forum';
 
 const WidgetsSuggestions = ({
 	navigation,
