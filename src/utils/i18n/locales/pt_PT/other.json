@@ -1,5 +1,4 @@
 {
   "buy_header": "Bitcoin\n<orange>para o Bitkit.</orange>",
-  "rate_error_msg_date": "Não foi possível obter a taxa de câmbio. Usando o preço de\n{date}",
   "caution_header": "Cuidado:\n<yellow>Risco Beta.</yellow>"
 }

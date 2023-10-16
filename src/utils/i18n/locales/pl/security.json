@@ -14,7 +14,6 @@
   "pass_recovery": "Hasło{passphrase}",
   "mnemonic_phrase": "Mnemonik",
   "mnemonic_your": "Twoje hasło",
-  "mnemonic_error": "Błędny mnemonik",
   "mnemonic_write": "Zapisz poniższe słowa{length} według kolejności i przechowuj je w bezpiecznym miejscu.",
   "mnemonic_use": "Użyj 12 poniższych słów aby odzyskać swoje środki w przyszłości.",
   "mnemonic_reveal": "Stuknij aby pokazać",
@@ -55,7 +54,6 @@
   "bio_touch_id": "Czytnik linii papilarnych",
   "bio_confirm": "Potwierdź {biometricsName}",
   "bio_error_title": "Konfiguracja biometrii nie powiodła się. ",
-  "bio_error_message": "Bitkit nie był w stanie skonfigurować biometrii na tym urządzeniu.",
   "bio_loading": "Ładuję...",
   "bio_use": "Użyj {biometricsName}",
   "bio_phone_settings": "Ustawienia telefonu",
@@ -77,11 +75,6 @@
   "export_password": "Hasło",
   "export_button": "Eksport",
   "export_share": "Udostępnij kopię zapasową",
-  "export_success_title": "Kopia zapasowa wyeksportowana",
-  "export_success_msg": "Pomyślnie wyeksportowano plik do telefonu.",
-  "export_error_title": "Tworzenie kopii zapasowej nie powiodło się",
-  "export_error_msg": "Bitkit nie mógł zapisać kopii zapasowej.",
-  "export_error_file": "Tworzenie kopii zapasowej nie powiodło się",
   "cp_title": "Zmień kod PIN",
   "cp_forgot": "Zapomniałeś kod PIN?",
   "cp_retype_title": "Wpisz ponownie kod PIN",
@@ -91,7 +84,5 @@
   "cp_try_again": "Spróbuj ponownie, kody PIN się różnią.",
   "cp_changed_title": "Kod PIN zmieniony",
   "cp_changed_text": "Pomyślnie zmieniono kod PIN na nową 4 cyfrową kombinację.",
-  "use_pin": "Użyj kodu PIN",
-  "wiped_title": "Bitkit wyczyszczony",
-  "wiped_message": "Wszystkie dane portfela zostały wyczyszczone."
+  "use_pin": "Użyj kodu PIN"
 }

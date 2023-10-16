@@ -33,12 +33,17 @@
   "restore_suggestions": "SUGGESTIONS",
   "restore_passphrase_placeholder": "Phrase secrète*",
   "restore_passphrase_meaning": "*Facultatif, n'entrez que si vous en avez créé une.",
+  "restore_error_title": "Échec de la restauration du portefeuille",
+  "restore_error_description": "Bitkit n'a pas pu restaurer votre portefeuille à partir d'une phrase de sauvegarde ou de récupération.",
   "loading_header": "Configurer\n<brand>votre portefeuille.</brand>",
   "restore_success_header": "Portefeuille restauré.",
   "restore_success_text": "Vous avez restauré avec succès votre portefeuille à partir d'une sauvegarde. Profitez de Bitkit !",
+  "restore_failed_header": "Problème",
+  "restore_failed_text": "Bitkit a restauré votre compte d'épargne, mais n'a pas restauré votre le compte courant et vos données.",
   "restore_no_backup_button": "Procéder sans sauvegarde",
   "restore_no_backup_warn": "Si vous disposiez auparavant d'une sauvegarde Lightning, celle-ci sera écrasée et perdue. Cela pourrait entraîner une perte de fonds.",
   "empty_wallet": "Pour commencer, envoyez du\n<brand>Bitcoin</brand> sur votre portefeuille.",
+  "error_create": "Échec de la création d'un portefeuille",
   "multiple_header": "Attention :\n<yellow>Plusieurs appareils</yellow>",
   "multiple_text": "N'installez pas votre phrase de récupération Bitkit sur plusieurs téléphones simultanément, car cela pourrait corrompre vos données."
 }

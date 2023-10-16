@@ -182,6 +182,8 @@
     "error_https": "Není platná url HTTPS adresa.",
     "error_healthcheck": "Kontrola stavu se nezdařila",
     "url_updated_title": "Webový přenos aktualizován",
-    "url_updated_message": "Úspěšně připojeno k {url}"
+    "url_updated_message": "Úspěšně připojeno k {url}",
+    "trust": "Důvěřovat tomuto přenosu",
+    "trust_description": "Přeskočení ověření záznamu pro tento webový přenos"
   }
 }

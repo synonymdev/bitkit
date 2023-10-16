@@ -27,6 +27,8 @@
   "disabled": "Slashtags désactivés",
   "signin_to": "Connectez-vous à {serviceName} avec votre profil ?",
   "signin_to_loading": "Connectez-vous à {serviceName}...",
+  "signin_to_success_header": "Signé en",
+  "signin_to_success_text_noname": "Vous vous êtes connecté avec succès.",
   "signin_title": "S'inscrire",
   "signin_title_loading": "S'inscrire...",
   "onboarding_header": "Dynamique\n<brand>Contacts.</brand>",

@@ -14,6 +14,8 @@
   "pass_recovery": "<gray>Phrase secrète:</gray> {passphrase}",
   "mnemonic_phrase": "Phrase mnémotechnique",
   "mnemonic_your": "Votre phrase de récupération",
+  "mnemonic_error": "Défaillance du portefeuille",
+  "mnemonic_error_description": "Bitkit n'a pas pu lire votre phrase de récupération.",
   "mnemonic_write": "Notez ces mots {length} dans le bon ordre et conservez-les dans un endroit sûr.",
   "mnemonic_use": "Utilisez les 12 mots ci-dessous pour récupérer votre argent ultérieurement.",
   "mnemonic_reveal": "Tapez pour révéler",
@@ -54,6 +56,7 @@
   "bio_touch_id": "Touch ID",
   "bio_confirm": "Confirmer {biometricsName}",
   "bio_error_title": "Échec de la configuration des données biométriques",
+  "bio_error_message": "Bitkit n'a pas pu configurer {type} pour votre appareil.",
   "bio_loading": "Chargement...",
   "bio_not_available": "Il semble que vous n'ayez pas encore configuré la sécurité biométrique pour votre appareil (ou qu'elle ne soit pas prise en charge). Vous pouvez essayer d'activer la sécurité biométrique dans les paramètres du téléphone.",
   "bio_ask": "Code PIN. Souhaitez-vous utiliser {biometricsName} au lieu de votre code PIN dans la mesure du possible ?",
@@ -86,6 +89,11 @@
   "export_password": "Mot de passe",
   "export_button": "Exportation",
   "export_share": "Partager le fichier de sauvegarde",
+  "export_success_title": "Sauvegarde exportée",
+  "export_success_msg": "Bitkit a réussi à exporter le fichier de sauvegarde vers votre téléphone.",
+  "export_error_title": "Échec de la sauvegarde",
+  "export_error_msg": "Bitkit n'a pas pu exporter le fichier de sauvegarde vers votre téléphone.",
+  "export_error_file": "Bitkit n'a pas pu créer le fichier de sauvegarde.",
   "cp_title": "Modifier le code PIN",
   "cp_text": "Vous pouvez remplacer votre code PIN par une nouvelle\ncombinaison de 4 chiffres. Veuillez d'abord introduire votre code PIN actuel.",
   "cp_forgot": "Vous avez oublié votre code PIN ?",
@@ -96,5 +104,7 @@
   "cp_try_again": "Réessayez, il ne s'agit pas du même code PIN.",
   "cp_changed_title": "Le code PIN a été modifié",
   "cp_changed_text": "Vous avez modifié avec succès votre code PIN en le remplaçant par une nouvelle combinaison de 4 chiffres.",
-  "use_pin": "Utiliser le code PIN"
+  "use_pin": "Utiliser le code PIN",
+  "wiped_title": "Données du portefeuille supprimées",
+  "wiped_message": "Bitkit a été réinitialisé et toutes les données du portefeuille ont été supprimées."
 }

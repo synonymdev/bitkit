@@ -1,6 +1,7 @@
 {
   "settings": "Paramètres",
   "dev_enabled_title": "Options de développement activées",
+  "dev_enabled_message": "Les options pour les développeurs sont désormais activées dans l'ensemble de l'application.",
   "dev_disabled_title": "Options de développement désactivées",
   "general_title": "Général",
   "security_title": "Sécurité et vie privée",

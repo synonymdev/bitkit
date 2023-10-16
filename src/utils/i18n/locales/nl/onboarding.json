@@ -32,17 +32,12 @@
   "restore_suggestions": "SUGGESTIES",
   "restore_passphrase_placeholder": "Paswoord*",
   "restore_passphrase_meaning": "Optioneel, alleen invullen als u er één heeft gebruikt. ",
-  "restore_error_title": "Fout Opgetreden met Wallet Herstellen",
   "loading_header": "Configureer\n<brand>uw Wallet.</brand>",
-  "restore_error_no_backup": "Foutmelding: Er kan geen backup gemaakt worden",
   "restore_success_header": "Wallet Herstelt",
   "restore_success_text": "Uw wallet is succesvol hersteld vanuit de backup. Veel plezier met Bitkit!",
-  "restore_failed_header": "Herstellen niet gelukt.",
-  "restore_failed_text": "Het is niet gelukt de gegevens te herstellen.",
   "restore_no_backup_button": "Doorgaan Zonder Backup",
   "restore_no_backup_warn": "Als u eerder een lightning backup heeft gemaakt zal deze overschreven worden en niet meer toegangkelijk zijn. Hierdoor kunt u geld verliezen. ",
   "empty_wallet": "Om te beginnen, stuur\n<brand>Bitcoin</brand>naar uw wallet.",
-  "error_create": "Fout opgetreden met het aanmaken van de wallet",
   "multiple_header": "Waarschuwing:\n<yellow>Meerdere apparaten</yellow>",
   "multiple_text": "Installeer Bitkit niet op meerdere telefoons tegelijk met dezelfde herstelwoorden, dit kan data corruptie veroorzaken. "
 }

@@ -46,7 +46,7 @@
     "title": "Obtenir du Bitcoin",
     "description": "Stack des sats"
   },
-  "lightning_no_funds_title": "No Funds Yet",
+  "lightning_no_funds_title": "Pas encore de fonds",
   "lightning_no_funds_desc": "Avant de pouvoir établir votre solde de dépenses instantanées, vous devez envoyer des bitcoins à votre porte-monnaie.",
   "suggestions": "Suggestions"
 }
