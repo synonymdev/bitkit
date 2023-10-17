@@ -24,7 +24,7 @@ export const prizes: TPrize[][] = [
 	[
 		{
 			winType: 'consolation',
-			amount: 100,
+			amount: 500,
 			image: require('../../assets/treasure-hunt/consolation-1.jpg'),
 			title: 'Lightning Strikes',
 			description:
@@ -42,7 +42,7 @@ export const prizes: TPrize[][] = [
 	[
 		{
 			winType: 'consolation',
-			amount: 500,
+			amount: 1000,
 			image: require('../../assets/treasure-hunt/consolation-2.jpg'),
 			title: 'Boating Accident',
 			description:
@@ -60,7 +60,7 @@ export const prizes: TPrize[][] = [
 	[
 		{
 			winType: 'consolation',
-			amount: 1000,
+			amount: 1500,
 			image: require('../../assets/treasure-hunt/consolation-3.jpg'),
 			title: 'To Da Moon!',
 			description:
