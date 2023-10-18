@@ -28,7 +28,7 @@ export const prizes: TPrize[][] = [
 			image: require('../../assets/treasure-hunt/consolation-1.jpg'),
 			title: 'Lightning Strikes',
 			description:
-				'Clouds gather, and a huge thunderbolt hits the treasure chest, liquifying most of the coins. Only 100 sats are left intact.',
+				'Clouds gather, and a huge thunderbolt hits the treasure chest, liquifying most of the coins. Only 500 sats are left intact.',
 		},
 		{
 			winType: 'winning',
@@ -46,7 +46,7 @@ export const prizes: TPrize[][] = [
 			image: require('../../assets/treasure-hunt/consolation-2.jpg'),
 			title: 'Boating Accident',
 			description:
-				'Your ship capsizes during a storm and you lose the private keys to the treasure chest. A pirate gives you 500 sats out of pity.',
+				'Your ship capsizes during a storm and you lose the private keys to the treasure chest. A pirate gives you 1 000 sats out of pity.',
 		},
 		{
 			winType: 'winning',
@@ -64,7 +64,7 @@ export const prizes: TPrize[][] = [
 			image: require('../../assets/treasure-hunt/consolation-3.jpg'),
 			title: 'To Da Moon!',
 			description:
-				'A rocket with shitcoiners entices you and takes you to da moon. No treasure for you! Under a moon rock, you find 1 000 sats.',
+				'A rocket with shitcoiners entices you and takes you to da moon. No treasure for you! Under a moon rock, you find 1 500 sats.',
 		},
 		{
 			winType: 'winning',
