@@ -83,6 +83,7 @@
   "activity_bitcoin_received": "Bitcoin Recebido",
   "activity_tether_sent": "Tether Enviado",
   "activity_tether_received": "Tether Recebido",
+  "activity_copied_tx": "Copiado para Área de Transferência ",
   "activity_confirming": "Confirmando",
   "activity_confirmed": "Confirmado",
   "activity_removed": "Removido da Mempool",

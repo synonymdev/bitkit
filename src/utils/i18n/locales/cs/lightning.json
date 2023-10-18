@@ -137,5 +137,7 @@
     "open": "Spojení otevřeno"
   },
   "wait_text_top": "Prosím vyčkejte, až se Bitkit připojí k platební síti (±10 sekund).",
-  "wait_text_bottom": "Připojování & synchronizace..."
+  "wait_text_bottom": "Připojování & synchronizace...",
+  "migrating_ldk_title": "Probíhající migrace",
+  "migrating_ldk_description": "LDK je v současné době v procesu migrace. Restartujte prosím aplikaci, počkejte několik bloků a zkuste to znovu."
 }

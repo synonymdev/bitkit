@@ -21,7 +21,7 @@
   "restore": "Obnovit",
   "restore_wallet": "Obnovit peněženku",
   "advanced_setup": "Pokročilé nastavení",
-  "advanced": "Pokročilý",
+  "advanced": "Pokročilé",
   "passphrase_header": "Zabezpečení pomocí <brand>přístupové fráze</brand>",
   "passphrase_text": "K 12slovné frázi pro obnovení můžete přidat tajnou přístupovou frázi. Pokud ji přidáte, nezapomeňte ji.",
   "passphrase": "Passphrase - přístupová fráze",

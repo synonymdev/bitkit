@@ -6,8 +6,8 @@
   "dev_disabled_message": "Možnosti pro vývojáře jsou nyní v celé aplikaci vypnuté.",
   "general_title": "Obecné",
   "security_title": "Bezpečnost a soukromí",
-  "backup_title": "Zálohovat nebo obnovit",
-  "advanced_title": "Pokročilý",
+  "backup_title": "Záloha nebo obnovení",
+  "advanced_title": "Pokročilé",
   "about_title": "O nás",
   "about": {
     "title": "O Bitkit",
@@ -41,7 +41,7 @@
     "speed_fee_total": "{feeSats} satů za průměrnou transakci",
     "speed_fee_total_fiat": "{feeSats} satů za průměrnou transakci ({fiatSymbol}{fiatFormatted})",
     "suggestions": "Návrhy",
-    "suggestions_visible": "Viditelný",
+    "suggestions_visible": "Viditelné",
     "suggestions_hidden": "Skrytý",
     "suggestions_display": "Zobrazit návrhy",
     "suggestions_reset": "Resetovat návrhy",
@@ -66,7 +66,7 @@
     "footer": "Pokud povoleno, můžete pro odemčení peněženky nebo zaslání platby použít {biometryTypeName} namísto PIN kódu."
   },
   "backup": {
-    "title": "Zálohovat nebo obnovit",
+    "title": "Záloha nebo obnovení",
     "wallet": "Zálohujte svou peněženku",
     "export": "Exportovat data peněženky do telefonu",
     "reset": "Resetovat a obnovit peněženku",
@@ -109,12 +109,12 @@
     "lightning_connections": "Lightning propojení",
     "lightning_node": "Lightning uzel",
     "electrum_server": "Electrum server",
-    "web_relay": "Slashtags Web Přenos",
+    "web_relay": "Slashtags web přenos",
     "bitcoin_network": "Bitcoinová síť"
   },
   "fee": {
     "fast": {
-      "label": "Rychlý (dražší)",
+      "label": "Rychlá (dražší)",
       "value": "Rychle",
       "description": "+/- 10-20 minut"
     },
@@ -124,7 +124,7 @@
       "description": "+/- 20-60 minut"
     },
     "slow": {
-      "label": "Pomalý (levnější)",
+      "label": "Pomalá (levnější)",
       "value": "Pomalu",
       "description": "+/- 1-2 hodiny"
     },
