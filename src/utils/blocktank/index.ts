@@ -171,8 +171,8 @@ export const getCJitEntry = async (entryId: string): Promise<ICJitEntry> => {
  */
 export const getOrder = async (orderId: string): Promise<Result<IBtOrder>> => {
 	try {
-		const orderState = await bt.getOrder(orderId);
-		return ok(orderState);
+		const order = await bt.getOrder(orderId);
+		return ok(order);
 	} catch (e) {
 		return err(e);
 	}
@@ -317,52 +317,44 @@ export const getStateMessage = (order: IBtOrder): string => {
 	const channelState: BtOpenChannelState | undefined = order.channel?.state;
 
 	switch (orderState) {
-		case 'expired':
+		case BtOrderState.EXPIRED:
 			return i18n.t('lightning:order_state.expired');
 	}
 
 	switch (paymentState) {
-		case 'refunded':
+		case BtPaymentState.REFUNDED:
 			return i18n.t('lightning:order_state.refunded');
 	}
 
 	if (channelState) {
 		switch (channelState) {
-			case 'opening':
+			case BtOpenChannelState.OPENING:
 				return i18n.t('lightning:order_state.opening');
-			case 'open':
+			case BtOpenChannelState.OPEN:
 				return i18n.t('lightning:order_state.open');
-			case 'closed':
+			case BtOpenChannelState.CLOSED:
 				return i18n.t('lightning:order_state.closed');
 		}
 	}
 
 	switch (orderState) {
-		case 'closed':
+		case BtOrderState.CLOSED:
 			return i18n.t('lightning:order_state.closed');
-		case 'open':
+		case BtOrderState.OPEN:
 			return i18n.t('lightning:order_state.open');
-		case 'created':
-			return i18n.t('lightning:order_state.awaiting_payment');
 	}
 
 	switch (paymentState) {
-		case 'created':
+		case BtPaymentState.CREATED:
 			return i18n.t('lightning:order_state.awaiting_payment');
-		case 'paid':
+		case BtPaymentState.PAID:
 			return i18n.t('lightning:order_state.paid');
 	}
 
 	switch (orderState) {
-		case 'closed':
-			return i18n.t('lightning:order_state.closed');
-		case 'open':
-			return i18n.t('lightning:order_state.open');
-		case 'created':
+		case BtOrderState.CREATED:
 			return i18n.t('lightning:order_state.awaiting_payment');
 	}
-
-	return 'Unknown state';
 };
 
 /**

@@ -109,7 +109,7 @@
     "other": "Другие"
   },
   "details_savings_title": "Баланс Сбережений",
-  "details_savings_subtitle": "On-chain BTC",
+  "details_savings_subtitle": "BTC",
   "details_spending_title": "Баланс Расходов",
   "details_spending_subtitle": "Мгновенные BTC",
   "tx_invalid": "Неверная Транзакция",
