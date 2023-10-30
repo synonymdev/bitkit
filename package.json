@@ -201,7 +201,7 @@
     "node-fetch": "^2.6.7",
     "prettier": "^2.8.8",
     "punycode": "^2.3.0",
-    "react-native-flipper": "^0.191.0",
+    "react-native-flipper": "0.212.0",
     "react-native-mmkv-flipper-plugin": "^1.0.0",
     "react-native-svg-transformer": "^1.0.0",
     "react-test-renderer": "18.2.0",
