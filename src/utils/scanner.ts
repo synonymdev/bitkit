@@ -732,11 +732,15 @@ export const processBitcoinTransactionData = async ({
 			if (spendingBalance >= requestedAmount) {
 				response = filteredLightningInvoice;
 			} else {
-				const diff = requestedAmount - spendingBalance;
 				error = {
 					type: 'error',
-					title: i18n.t('other:scan_pay_error_title'),
-					description: `${diff} more sats needed to pay this invoice.`,
+					title: i18n.t('other:pay_insufficient_spending'),
+					description: i18n.t(
+						'other:pay_insufficient_spending_amount_description',
+						{
+							amount: requestedAmount - spendingBalance,
+						},
+					),
 				};
 			}
 		}
@@ -764,10 +768,13 @@ export const processBitcoinTransactionData = async ({
 					if (showErrors) {
 						showToast({
 							type: 'error',
-							title: i18n.t('other:scan_pay_error_title'),
-							description: i18n.t('lightning:error_fulfill_msg', {
-								amount: requestedAmount - onchainBalance,
-							}),
+							title: i18n.t('other:pay_insufficient_savings'),
+							description: i18n.t(
+								'other:pay_insufficient_savings_amount_description',
+								{
+									amount: requestedAmount - onchainBalance,
+								},
+							),
 						});
 					}
 				}
@@ -784,16 +791,19 @@ export const processBitcoinTransactionData = async ({
 			if (requestedAmount) {
 				error = {
 					type: 'error',
-					title: i18n.t('other:scan_pay_error_title'),
-					description: i18n.t('other:scan_pay_error_amount_description', {
-						amount: requestedAmount,
-					}),
+					title: i18n.t('other:pay_insufficient_savings'),
+					description: i18n.t(
+						'other:pay_insufficient_savings_amount_description',
+						{
+							amount: requestedAmount,
+						},
+					),
 				};
 			} else {
 				error = {
 					type: 'error',
-					title: i18n.t('other:scan_pay_error_title'),
-					description: i18n.t('other:scan_pay_error_description'),
+					title: i18n.t('other:pay_insufficient_savings'),
+					description: i18n.t('other:pay_insufficient_savings_description'),
 				};
 			}
 			showToast(error);

@@ -85,7 +85,6 @@
 	"error_save_title": "Unable To Save Lightning Peer",
 	"error_save": "Unable to save lightning peer",
 	"error_decode": "Unable To Decode Invoice",
-	"error_fulfill_msg": "{amount} more sats needed to fulfill the requested invoice amount.",
 	"peer_saved": "The Lightning peer was successfully added and saved.",
 	"invoice_copied": "Copied Invoice to Clipboard",
 	"status": "Status",
