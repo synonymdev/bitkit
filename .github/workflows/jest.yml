@@ -31,7 +31,7 @@ jobs:
           cache: 'yarn'
 
       - name: Install Node.js dependencies
-        run: yarn install
+        run: yarn install || yarn install
 
       - name: Activate enviroment variables
         run: cp .env.development.template .env
