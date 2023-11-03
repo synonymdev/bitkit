@@ -471,7 +471,7 @@ PODS:
     - React-Core
   - RNKeychain (8.1.1):
     - React-Core
-  - RNLocalize (2.2.6):
+  - RNLocalize (3.0.2):
     - React-Core
   - RNPermissions (3.9.3):
     - React-Core
@@ -871,7 +871,7 @@ SPEC CHECKSUMS:
   RNFS: 4ac0f0ea233904cb798630b3c077808c06931688
   RNGestureHandler: 071d7a9ad81e8b83fe7663b303d132406a7d8f39
   RNKeychain: ff836453cba46938e0e9e4c22e43d43fa2c90333
-  RNLocalize: d4b8af4e442d4bcca54e68fc687a2129b4d71a81
+  RNLocalize: dbea38dcb344bf80ff18a1757b1becf11f70cae4
   RNPermissions: a94622f6ea140de2e635832c8c15330a9c07b8a7
   RNQrGenerator: 90461ba3ca88c1d38ef73da50fade35d9648215d
   RNQuickAction: 6d404a869dc872cde841ad3147416a670d13fa93

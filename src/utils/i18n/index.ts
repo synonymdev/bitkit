@@ -9,8 +9,7 @@ import { updateUi } from '../../store/actions/ui';
 
 const getDeviceLanguage = (): string => {
 	const lang =
-		RNLocalize.findBestAvailableLanguage(Object.keys(resources))?.languageTag ??
-		'en';
+		RNLocalize.findBestLanguageTag(Object.keys(resources))?.languageTag ?? 'en';
 	return lang;
 };
 
