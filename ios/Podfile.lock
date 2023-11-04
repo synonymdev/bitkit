@@ -339,17 +339,15 @@ PODS:
     - React-Core
   - react-native-blur (4.3.2):
     - React-Core
-  - react-native-document-picker (8.2.0):
-    - React-Core
   - react-native-flipper (0.212.0):
     - React-Core
-  - react-native-image-picker (5.3.1):
+  - react-native-image-picker (7.0.2):
     - React-Core
-  - react-native-keep-awake (1.2.0):
+  - react-native-keep-awake (1.2.2):
     - React-Core
   - react-native-ldk (0.0.120):
     - React
-  - react-native-mmkv (2.8.0):
+  - react-native-mmkv (2.10.2):
     - MMKV (>= 1.2.13)
     - React-Core
   - react-native-netinfo (10.0.0):
@@ -358,12 +356,8 @@ PODS:
     - React-Core
   - react-native-restart (0.0.27):
     - React-Core
-  - react-native-safe-area-context (4.5.1):
-    - RCT-Folly
-    - RCTRequired
-    - RCTTypeSafety
+  - react-native-safe-area-context (4.7.4):
     - React-Core
-    - ReactCommon/turbomodule/core
   - react-native-skia (0.1.182):
     - React
     - React-callinvoker
@@ -461,19 +455,20 @@ PODS:
     - React-Core
   - RNCClipboard (1.12.1):
     - React-Core
-  - RNDeviceInfo (10.6.0):
+  - RNDeviceInfo (10.11.0):
     - React-Core
-  - RNExitApp (1.1.0):
-    - React
+  - RNExitApp (2.0.0):
+    - React-Core
   - RNFS (2.20.0):
     - React-Core
-  - RNGestureHandler (2.9.0):
+  - RNGestureHandler (2.13.4):
+    - RCT-Folly (= 2021.07.22.00)
     - React-Core
-  - RNKeychain (8.1.1):
+  - RNKeychain (8.1.2):
     - React-Core
   - RNLocalize (3.0.2):
     - React-Core
-  - RNPermissions (3.9.3):
+  - RNPermissions (3.10.1):
     - React-Core
   - RNQrGenerator (1.3.1):
     - React
@@ -482,7 +477,7 @@ PODS:
     - React
   - RNRate (1.2.12):
     - React-Core
-  - RNReactNativeHapticFeedback (1.14.0):
+  - RNReactNativeHapticFeedback (2.2.0):
     - React-Core
   - RNReanimated (3.5.4):
     - DoubleConversion
@@ -516,15 +511,15 @@ PODS:
   - RNScreens (3.27.0):
     - RCT-Folly (= 2021.07.22.00)
     - React-Core
-  - RNShare (8.2.2):
+  - RNShare (9.4.1):
     - React-Core
-  - RNSVG (12.5.1):
+  - RNSVG (13.14.0):
     - React-Core
-  - RNZipArchive (6.0.9):
+  - RNZipArchive (6.1.0):
     - React-Core
-    - RNZipArchive/Core (= 6.0.9)
+    - RNZipArchive/Core (= 6.1.0)
     - SSZipArchive (~> 2.2)
-  - RNZipArchive/Core (6.0.9):
+  - RNZipArchive/Core (6.1.0):
     - React-Core
     - SSZipArchive (~> 2.2)
   - SocketRocket (0.7.0)
@@ -586,7 +581,6 @@ DEPENDENCIES:
   - React-logger (from `../node_modules/react-native/ReactCommon/logger`)
   - react-native-biometrics (from `../node_modules/react-native-biometrics`)
   - "react-native-blur (from `../node_modules/@react-native-community/blur`)"
-  - react-native-document-picker (from `../node_modules/react-native-document-picker`)
   - react-native-flipper (from `../node_modules/react-native-flipper`)
   - react-native-image-picker (from `../node_modules/react-native-image-picker`)
   - "react-native-keep-awake (from `../node_modules/@sayem314/react-native-keep-awake`)"
@@ -704,8 +698,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-biometrics"
   react-native-blur:
     :path: "../node_modules/@react-native-community/blur"
-  react-native-document-picker:
-    :path: "../node_modules/react-native-document-picker"
   react-native-flipper:
     :path: "../node_modules/react-native-flipper"
   react-native-image-picker:
@@ -838,16 +830,15 @@ SPEC CHECKSUMS:
   React-logger: 3f8ebad1be1bf3299d1ab6d7f971802d7395c7ef
   react-native-biometrics: 352e5a794bfffc46a0c86725ea7dc62deb085bdc
   react-native-blur: cfdad7b3c01d725ab62a8a729f42ea463998afa2
-  react-native-document-picker: 495c444c0c773c6e83a5d91165890ecb1c0a399a
   react-native-flipper: 9c1957af24b76493ba74f46d000a5c1d485e7731
-  react-native-image-picker: ec9b713e248760bfa0f879f0715391de4651a7cb
-  react-native-keep-awake: caee3ff89eaa21dfe29010f0d143566874a04441
+  react-native-image-picker: 2e2e82aba9b6a91a7c78f7d9afde341a2659c7b8
+  react-native-keep-awake: ad1d67f617756b139536977a0bf06b27cec0714a
   react-native-ldk: fc83520c891e58888c8f975a02ed394a4c4e1c36
-  react-native-mmkv: 7da5e18e55c04a9af9a7e0ab9792a1e8d33765a1
+  react-native-mmkv: 9ae7ca3977e8ef48dbf7f066974eb844c20b5fd7
   react-native-netinfo: b16b9df4de3ae252984ca7a18097a3d30d27ba21
   react-native-randombytes: 421f1c7d48c0af8dbcd471b0324393ebf8fe7846
   react-native-restart: 7595693413fe3ca15893702f2c8306c62a708162
-  react-native-safe-area-context: f5549f36508b1b7497434baa0cd97d7e470920d4
+  react-native-safe-area-context: 2cd91d532de12acdb0a9cbc8d43ac72a8e4c897c
   react-native-skia: 588e058a8fe35b8da0b3c7996aa7fe0ee088035b
   react-native-tcp-socket: c1b7297619616b4c9caae6889bcb0aba78086989
   React-perflogger: 2d505bbe298e3b7bacdd9e542b15535be07220f6
@@ -866,22 +857,22 @@ SPEC CHECKSUMS:
   ReactNativeCameraKit: 32e04877e57e0eeab26e45817e3fd532e7d302fb
   RNCAsyncStorage: 3a8f7145d17cdd9f88e7b77666c94a09e4f759c8
   RNCClipboard: d77213bfa269013bf4b857b7a9ca37ee062d8ef1
-  RNDeviceInfo: 475a4c447168d0ad4c807e48ef5e0963a0f4eb1b
-  RNExitApp: c4e052df2568b43bec8a37c7cd61194d4cfee2c3
+  RNDeviceInfo: bf8a32acbcb875f568217285d1793b0e8588c974
+  RNExitApp: 00036cabe7bacbb413d276d5520bf74ba39afa6a
   RNFS: 4ac0f0ea233904cb798630b3c077808c06931688
-  RNGestureHandler: 071d7a9ad81e8b83fe7663b303d132406a7d8f39
-  RNKeychain: ff836453cba46938e0e9e4c22e43d43fa2c90333
+  RNGestureHandler: 6e46dde1f87e5f018a54fe5d40cd0e0b942b49ee
+  RNKeychain: a65256b6ca6ba6976132cc4124b238a5b13b3d9c
   RNLocalize: dbea38dcb344bf80ff18a1757b1becf11f70cae4
-  RNPermissions: a94622f6ea140de2e635832c8c15330a9c07b8a7
+  RNPermissions: 2c0eec471f4de66d04d226c339898d10a6e123c4
   RNQrGenerator: 90461ba3ca88c1d38ef73da50fade35d9648215d
   RNQuickAction: 6d404a869dc872cde841ad3147416a670d13fa93
   RNRate: ef3bcff84f39bb1d1e41c5593d3eea4aab2bd73a
-  RNReactNativeHapticFeedback: 1e3efeca9628ff9876ee7cdd9edec1b336913f8c
+  RNReactNativeHapticFeedback: ec56a5f81c3941206fd85625fa669ffc7b4545f9
   RNReanimated: be07c7ae209074d0e8a84cf38b7909457ac59a32
   RNScreens: 3c2d122f5e08c192e254c510b212306da97d2581
-  RNShare: d82e10f6b7677f4b0048c23709bd04098d5aee6c
-  RNSVG: d7d7bc8229af3842c9cfc3a723c815a52cdd1105
-  RNZipArchive: 68a0c6db4b1c103f846f1559622050df254a3ade
+  RNShare: 32e97adc8d8c97d4a26bcdd3c45516882184f8b6
+  RNSVG: d00c8f91c3cbf6d476451313a18f04d220d4f396
+  RNZipArchive: ef9451b849c45a29509bf44e65b788829ab07801
   SocketRocket: abac6f5de4d4d62d24e11868d7a2f427e0ef940d
   SSZipArchive: fe6a26b2a54d5a0890f2567b5cc6de5caa600aef
   TouchID: ba4c656d849cceabc2e4eef722dea5e55959ecf4

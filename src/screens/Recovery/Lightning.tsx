@@ -1,6 +1,8 @@
 import React, { ReactElement, useEffect, useState } from 'react';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import RNExitApp from 'react-native-exit-app';
+import { useSelector } from 'react-redux';
 
 import lm, { ldk, TLdkData } from '@synonymdev/react-native-ldk';
 import { View as ThemedView } from '../../styles/components';
@@ -23,9 +25,7 @@ import { EAvailableNetworks } from '../../utils/networks';
 import Dialog from '../../components/Dialog';
 import { startWalletServices } from '../../utils/startup';
 import { showToast } from '../../utils/notifications';
-import RNExitApp from 'react-native-exit-app';
 import { selectedNetworkSelector } from '../../store/reselect/wallet';
-import { useSelector } from 'react-redux';
 import { bytesToString } from '../../utils/converters';
 import { setLdkStoragePath } from '../../utils/lightning';
 import { TAccountBackup } from '../../store/types/backup';
