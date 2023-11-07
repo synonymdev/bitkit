@@ -38,10 +38,11 @@ import {
 	selectedNetworkSelector,
 	selectedWalletSelector,
 } from '../../store/reselect/wallet';
-import { blocktankServiceSelector } from '../../store/reselect/blocktank';
+import { blocktankInfoSelector } from '../../store/reselect/blocktank';
 import { primaryUnitSelector } from '../../store/reselect/settings';
 import NumberPadTextField from '../../components/NumberPadTextField';
 import { getNumberPadText } from '../../utils/numberpad';
+import { DEFAULT_CHANNEL_DURATION } from './CustomConfirm';
 
 const QuickSetup = ({
 	navigation,
@@ -52,7 +53,7 @@ const QuickSetup = ({
 	const unit = useSelector(primaryUnitSelector);
 	const selectedWallet = useSelector(selectedWalletSelector);
 	const selectedNetwork = useSelector(selectedNetworkSelector);
-	const blocktankService = useSelector(blocktankServiceSelector);
+	const blocktankInfo = useSelector(blocktankInfoSelector);
 
 	const [loading, setLoading] = useState(false);
 	const [showNumberPad, setShowNumberPad] = useState(false);
@@ -66,22 +67,21 @@ const QuickSetup = ({
 		}, [selectedNetwork, selectedWallet]),
 	);
 
-	// default spendingPercentage to 20%
-	useEffect(() => {
-		const defaultSpendingAmount = Math.round(onchainBalance * 0.2);
-		const result = getNumberPadText(defaultSpendingAmount, unit);
-		setTextFieldValue(result);
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [onchainBalance]);
-
 	const spendingAmount = useMemo((): number => {
 		return convertToSats(textFieldValue, unit);
 	}, [textFieldValue, unit]);
 
+	const btMaxChannelSizeSat = useMemo(() => {
+		return blocktankInfo.options.maxChannelSizeSat;
+	}, [blocktankInfo.options.maxChannelSizeSat]);
+	const btMaxClientBalanceSat = useMemo(() => {
+		return blocktankInfo.options.maxClientBalanceSat;
+	}, [blocktankInfo.options.maxClientBalanceSat]);
+
 	const diff = 0.01;
-	const btSpendingLimit = blocktankService.max_chan_spending;
-	const btSpendingLimitBalanced = Math.round(
-		btSpendingLimit / 2 - btSpendingLimit * diff,
+	const btSpendingLimitBalanced = Math.min(
+		Math.round(btMaxChannelSizeSat / 2 - btMaxChannelSizeSat * diff),
+		btMaxClientBalanceSat,
 	);
 	const spendableBalance = Math.round(onchainBalance * SPENDING_LIMIT_RATIO);
 	const savingsAmount = onchainBalance - spendingAmount;
@@ -103,6 +103,24 @@ const QuickSetup = ({
 		return fiatWhole;
 	}, [btSpendingLimitBalanced]);
 
+	const setDefaultClientBalance = useCallback(() => {
+		const value = Math.min(
+			Math.round(onchainBalance * 0.2),
+			btSpendingLimitBalanced,
+		);
+		const result = getNumberPadText(value, unit);
+		setTextFieldValue(result);
+	}, [btSpendingLimitBalanced, onchainBalance, unit]);
+
+	const onMax = useCallback(() => {
+		const result = getNumberPadText(spendingLimit, unit);
+		setTextFieldValue(result);
+	}, [spendingLimit, unit]);
+
+	useEffect(() => {
+		setDefaultClientBalance();
+	}, [setDefaultClientBalance, onchainBalance, unit]);
+
 	const onChangeUnit = (): void => {
 		const result = getNumberPadText(spendingAmount, nextUnit);
 		setTextFieldValue(result);
@@ -117,11 +135,6 @@ const QuickSetup = ({
 		[unit],
 	);
 
-	const onMax = useCallback(() => {
-		const result = getNumberPadText(spendingLimit, unit);
-		setTextFieldValue(result);
-	}, [spendingLimit, unit]);
-
 	const onDone = useCallback(() => {
 		setShowNumberPad(false);
 	}, []);
@@ -129,18 +142,21 @@ const QuickSetup = ({
 	const onContinue = useCallback(async (): Promise<void> => {
 		setLoading(true);
 
-		// Ensure local balance is bigger than remote balance
-		const localBalance = Math.max(
+		const maxUsableLspBalance = Math.round(
+			blocktankInfo.options.maxChannelSizeSat - spendingAmount!,
+		);
+		const minUsableLspBalance = Math.round(maxUsableLspBalance / 3);
+		let lspBalance = Math.max(
 			Math.round(spendingAmount + spendingAmount * diff),
-			blocktankService.min_channel_size,
+			minUsableLspBalance,
 		);
 		const purchaseResponse = await startChannelPurchase({
 			selectedNetwork,
 			selectedWallet,
-			productId: blocktankService.product_id,
-			remoteBalance: spendingAmount,
-			localBalance,
-			channelExpiry: 12,
+			remoteBalance: spendingAmount!,
+			localBalance: lspBalance,
+			channelExpiry: DEFAULT_CHANNEL_DURATION,
+			lspNodeId: blocktankInfo.nodes[0].pubkey,
 		});
 
 		setLoading(false);
@@ -154,12 +170,12 @@ const QuickSetup = ({
 		if (purchaseResponse.isOk()) {
 			navigation.push('QuickConfirm', {
 				spendingAmount: spendingAmount,
-				orderId: purchaseResponse.value.orderId,
+				orderId: purchaseResponse.value.order.id,
 			});
 		}
 	}, [
+		blocktankInfo,
 		spendingAmount,
-		blocktankService,
 		selectedNetwork,
 		selectedWallet,
 		navigation,
@@ -208,7 +224,7 @@ const QuickSetup = ({
 							</View>
 						</AnimatedView>
 
-						{spendingAmount === Math.round(btSpendingLimitBalanced) && (
+						{spendingAmount >= Math.round(btSpendingLimitBalanced) && (
 							<AnimatedView
 								style={styles.note}
 								entering={FadeIn}
@@ -222,7 +238,7 @@ const QuickSetup = ({
 							</AnimatedView>
 						)}
 
-						{spendingAmount === spendableBalance && (
+						{spendingAmount >= spendableBalance && (
 							<AnimatedView
 								style={styles.note}
 								entering={FadeIn}
@@ -266,7 +282,7 @@ const QuickSetup = ({
 							loading={loading}
 							text={t('continue')}
 							size="large"
-							disabled={spendingAmount === 0}
+							disabled={spendingAmount > spendingLimit}
 							testID="QuickSetupContinue"
 							onPress={onContinue}
 						/>

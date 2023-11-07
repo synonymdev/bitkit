@@ -30,6 +30,21 @@ import {
 import i18n from './i18n';
 
 /**
+ * Finds an LNURL in a string.
+ * @see https://github.com/lnurl/luds/blob/luds/01.md#fallback-scheme
+ * @param {string} text
+ * @returns {string | null}
+ */
+export const findlnurl = (text: string): string | null => {
+	const text2 = text.toLowerCase().trim();
+	const res =
+		/^(?:(http.*|bitcoin:.*)[&?]lightning=|lightning:)?(lnurl1[02-9ac-hj-np-z]+)/.exec(
+			text2,
+		);
+	return res ? res[2] : null;
+};
+
+/**
  * Handles LNURL Pay Requests.
  * @param {LNURLPayParams} params
  * @param {TWalletName} [selectedWallet]
@@ -60,7 +75,7 @@ export const handleLnurlPay = async ({
 		const message = i18n.t('other:lnurl_ln_error_msg');
 		showToast({
 			type: 'error',
-			title: i18n.t('other:lnurl_ln_error_title'),
+			title: i18n.t('other:lnurl_pay_error'),
 			description: message,
 		});
 		return err(message);
@@ -68,22 +83,34 @@ export const handleLnurlPay = async ({
 
 	const milliSats = Math.floor(amountSats * 1000);
 
-	const callbackRes = await lnurlPay({
-		params,
-		milliSats,
-		comment: 'Bitkit LNURL-Pay',
-	});
+	try {
+		const callbackRes = await lnurlPay({
+			params,
+			milliSats,
+			// comment should only be included if server asks for it with "commentAllowed"
+			// https://github.com/lnurl/luds/blob/luds/12.md
+			// comment: 'Bitkit LNURL-Pay',
+			comment: '',
+		});
 
-	if (callbackRes.isErr()) {
+		if (callbackRes.isErr()) {
+			showToast({
+				type: 'error',
+				title: i18n.t('other:lnurl_pay_error'),
+				description: `An error occurred: ${callbackRes.error.message}`,
+			});
+			return err(callbackRes.error.message);
+		}
+
+		return ok(callbackRes.value.pr);
+	} catch (e) {
 		showToast({
 			type: 'error',
 			title: i18n.t('other:lnurl_pay_error'),
-			description: callbackRes.error.message,
+			description: `An error occurred: ${e.message}`,
 		});
-		return err(callbackRes.error.message);
+		return err(e.message);
 	}
-
-	return ok(callbackRes.value.pr);
 };
 
 /**
@@ -138,21 +165,21 @@ export const handleLnurlChannel = async ({
 			timeout: 5000,
 		});
 		if (addPeerRes.isErr()) {
+			console.log(addPeerRes.error.message);
 			showToast({
 				type: 'error',
 				title: i18n.t('other:lnurl_channel_error'),
-				description:
-					i18n.t('lightning:error_add') + '\n' + addPeerRes.error.message,
+				description: i18n.t('lightning:error_add'),
 			});
 			return err(addPeerRes.error.message);
 		}
 		const savePeerRes = savePeer({ selectedWallet, selectedNetwork, peer });
 		if (savePeerRes.isErr()) {
+			console.log(savePeerRes.error.message);
 			showToast({
 				type: 'error',
 				title: i18n.t('other:lnurl_channel_error'),
-				description:
-					i18n.t('lightning:error_save') + '\n' + savePeerRes.error.message,
+				description: i18n.t('lightning:error_save'),
 			});
 			return err(savePeerRes.error.message);
 		}
@@ -168,7 +195,7 @@ export const handleLnurlChannel = async ({
 		showToast({
 			type: 'error',
 			title: i18n.t('other:lnurl_channel_error'),
-			description: callbackRes.error.message,
+			description: `An error occurred: ${callbackRes.error.message}`,
 		});
 		return err(callbackRes.error.message);
 	}
@@ -189,7 +216,7 @@ export const handleLnurlChannel = async ({
 		showToast({
 			type: 'error',
 			title: i18n.t('other:lnurl_channel_error'),
-			description: jsonRes.reason,
+			description: `An error occurred: ${jsonRes.reason}`,
 		});
 		return err(jsonRes.reason);
 	}
@@ -239,10 +266,11 @@ export const handleLnurlAuth = async ({
 		bip32Mnemonic: getMnemonicPhraseResponse.value,
 	});
 	if (authRes.isErr()) {
+		console.log(authRes.error.message);
 		showToast({
 			type: 'error',
 			title: i18n.t('other:lnurl_auth_error'),
-			description: authRes.error.message,
+			description: `An error occurred: ${authRes.error.message}`,
 		});
 		return err(authRes.error.message);
 	}
@@ -304,38 +332,43 @@ export const handleLnurlWithdraw = async ({
 		paymentRequest: invoice.value.to_str,
 	});
 	if (callbackRes.isErr()) {
+		console.log(callbackRes.error.message);
 		showToast({
 			type: 'error',
 			title: i18n.t('other:lnurl_withdr_error'),
-			description: callbackRes.error.message,
+			description: i18n.t('other:lnurl_withdr_error_generic'),
 		});
 		return err(callbackRes.error.message);
 	}
 
-	const channelStatusRes = await fetch(callbackRes.value);
-	if (channelStatusRes.status !== 200) {
+	try {
+		const channelStatusRes = await fetch(callbackRes.value);
+		const jsonRes = await channelStatusRes.json();
+
+		if (jsonRes.status === 'ERROR') {
+			console.log(jsonRes.reason);
+			showToast({
+				type: 'error',
+				title: i18n.t('other:lnurl_withdr_error'),
+				description: i18n.t('other:lnurl_withdr_error_generic'),
+			});
+			return err(jsonRes.reason);
+		}
+
+		showToast({
+			type: 'success',
+			title: i18n.t('other:lnurl_withdr_success_title'),
+			description: i18n.t('other:lnurl_withdr_success_msg'),
+		});
+
+		return ok({ type: EQRDataType.lnurlWithdraw });
+	} catch (e) {
+		console.log(e.message);
 		showToast({
 			type: 'error',
 			title: i18n.t('other:lnurl_withdr_error'),
-			description: i18n.t('other:lnurl_withdr_error_connect'),
+			description: i18n.t('other:lnurl_withdr_error_generic'),
 		});
-		return err('Unable to connect to LNURL withdraw server.');
+		return err(e.message);
 	}
-
-	const jsonRes = await channelStatusRes.json();
-	if (jsonRes.status === 'ERROR') {
-		showToast({
-			type: 'error',
-			title: i18n.t('other:lnurl_withdr_error'),
-			description: jsonRes.reason,
-		});
-		return err(jsonRes.reason);
-	}
-
-	showToast({
-		type: 'success',
-		title: i18n.t('other:lnurl_withdr_success_title'),
-		description: i18n.t('other:lnurl_withdr_success_msg'),
-	});
-	return ok({ type: EQRDataType.lnurlWithdraw });
 };

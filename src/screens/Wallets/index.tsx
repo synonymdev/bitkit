@@ -97,6 +97,7 @@ const Wallets = ({ navigation, onFocus }: Props): ReactElement => {
 					]}
 					disableScrollViewPanResponder={true}
 					showsVerticalScrollIndicator={false}
+					testID="WalletsScrollView"
 					refreshControl={
 						<AnimatedRefreshControl
 							refreshing={refreshing}

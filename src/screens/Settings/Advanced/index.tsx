@@ -68,6 +68,18 @@ const AdvancedSettings = ({
 				testID: 'ElectrumConfig',
 			},
 			{
+				title: t('adv.rgs_server'),
+				type: EItemType.button,
+				onPress: (): void => navigation.navigate('RGSServer'),
+				testID: 'RGSServer',
+			},
+			{
+				title: t('adv.web_relay'),
+				type: EItemType.button,
+				onPress: (): void => navigation.navigate('WebRelay'),
+				testID: 'WebRelay',
+			},
+			{
 				title: t('adv.bitcoin_network'),
 				value: networkLabels[selectedNetwork].shortLabel,
 				type: EItemType.button,

@@ -3,6 +3,7 @@ import RNRestart from 'react-native-restart';
 
 import actions from './actions';
 import { getDispatch } from '../helpers';
+import i18n from '../../utils/i18n';
 import { sleep } from '../../utils/helpers';
 import { removePin } from '../../utils/settings';
 import { wipeLdkStorage } from '../../utils/lightning';
@@ -10,7 +11,7 @@ import { TAvailableNetworks } from '../../utils/networks';
 import { showToast } from '../../utils/notifications';
 import { getSelectedNetwork, getSelectedWallet } from '../../utils/wallet';
 import { getAllKeychainKeys, resetKeychainValue } from '../../utils/keychain';
-import { ICustomElectrumPeer, ISettings } from '../types/settings';
+import { ICustomElectrumPeer, ISettings, TChest } from '../types/settings';
 import { TWalletName } from '../types/wallet';
 
 const dispatch = getDispatch();
@@ -18,6 +19,22 @@ const dispatch = getDispatch();
 export const updateSettings = (payload: Partial<ISettings>): Result<string> => {
 	dispatch({
 		type: actions.UPDATE_SETTINGS,
+		payload,
+	});
+	return ok('');
+};
+
+export const addTreasureChest = (payload: TChest): Result<string> => {
+	dispatch({
+		type: actions.ADD_TREASURE_CHEST,
+		payload,
+	});
+	return ok('');
+};
+
+export const updateTreasureChest = (payload: TChest): Result<string> => {
+	dispatch({
+		type: actions.UPDATE_TREASURE_CHEST,
 		payload,
 	});
 	return ok('');
@@ -66,8 +83,8 @@ export const wipeApp = async ({
 		if (showNotification) {
 			showToast({
 				type: 'success',
-				title: 'Bitkit Wiped Successfully',
-				description: 'All app data has been reset.',
+				title: i18n.t('security:wiped_title'),
+				description: i18n.t('security:wiped_description'),
 			});
 		}
 

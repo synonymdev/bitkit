@@ -84,7 +84,7 @@ const _SlashAuthModal = (): ReactElement => {
 	const url = useMemo(() => SlashURL.format(parsed.key), [parsed.key]);
 
 	const { slashtag } = useSelectedSlashtag();
-	const { profile } = useProfile(url, { resolve: true });
+	const { profile } = useProfile(url);
 
 	const server: IContactRecord = useMemo(() => {
 		return { url, ...profile, name: profile.name || '' };
@@ -106,7 +106,7 @@ const _SlashAuthModal = (): ReactElement => {
 	// }, [anonymousSlashtag]);
 
 	const serviceName = useMemo(() => {
-		return server.name || ellipsis(server.url, 25);
+		return server.name || ellipsis(server.url, 22);
 	}, [server]);
 
 	const text = useMemo(() => {
@@ -126,13 +126,14 @@ const _SlashAuthModal = (): ReactElement => {
 		try {
 			response = await client.authz(_url);
 		} catch (e) {
+			console.log(e.message);
 			showToast({
 				type: 'error',
 				title: t('signin_to_error_header'),
 				description:
 					e.message === 'channel closed'
 						? t('signin_to_error_text')
-						: e.message,
+						: 'An error occurred. Please try again.',
 			});
 			setIsLoading(false);
 			closeBottomSheet('slashauthModal');
@@ -151,10 +152,13 @@ const _SlashAuthModal = (): ReactElement => {
 			setAuthWidget(url, { magiclink: true });
 			rootNavigation.navigate('Wallet');
 		} else {
+			console.log(response.message);
 			showToast({
 				type: 'error',
 				title: t('signin_to_error_header'),
-				description: response?.message || '',
+				description: response?.message
+					? `An error occurred: ${response.message}`
+					: 'An error occurred. Please try again.',
 			});
 		}
 
@@ -175,9 +179,9 @@ const _SlashAuthModal = (): ReactElement => {
 					image={server?.image}
 					size={32}
 				/>
-				<Title>{serviceName}</Title>
+				<Title numberOfLines={1}>{serviceName}</Title>
 			</View>
-			<Text01S color="gray1" style={styles.text}>
+			<Text01S style={styles.text} color="gray1">
 				{text}
 			</Text01S>
 			<Key

@@ -78,7 +78,7 @@ android {
         applicationId "to.synonym.bitkit.wallet"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 60
+        versionCode 85
         versionName "1.0"
         multiDexEnabled true
         missingDimensionStrategy 'react-native-camera', 'general'
@@ -124,7 +124,9 @@ dependencies {
         exclude group:'com.squareup.okhttp3', module:'okhttp'
     }
 
-    debugImplementation("com.facebook.flipper:flipper-fresco-plugin:${FLIPPER_VERSION}")
+    // 0.182.0 is the latest one on https://mvnrepository.com/artifact/com.facebook.flipper/flipper-fresco-plugin
+    // debugImplementation("com.facebook.flipper:flipper-fresco-plugin:${FLIPPER_VERSION}")
+    debugImplementation("com.facebook.flipper:flipper-fresco-plugin:0.182.0")
     if (hermesEnabled.toBoolean()) {
         implementation("com.facebook.react:hermes-android")
     } else {

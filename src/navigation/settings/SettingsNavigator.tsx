@@ -11,6 +11,7 @@ import { TChannel } from '@synonymdev/react-native-ldk';
 import MainSettings from '../../screens/Settings';
 import CurrenciesSettings from '../../screens/Settings/Currencies';
 import ElectrumConfig from '../../screens/Settings/ElectrumConfig';
+import RGSServer from '../../screens/Settings/RGSServer';
 import CoinSelectPreference from '../../screens/Settings/CoinSelectPreference';
 import PaymentPreference from '../../screens/Settings/PaymentPreference';
 import AddressTypePreference from '../../screens/Settings/AddressTypePreference';
@@ -42,10 +43,12 @@ import ExportToPhone from '../../screens/Settings/Backup/ExportToPhone';
 import ResetAndRestore from '../../screens/Settings/Backup/ResetAndRestore';
 import SuggestionsSettings from '../../screens/Settings/Suggestions';
 import TagsSettings from '../../screens/Settings/Tags';
+import FeeSettings from '../../screens/Settings/Fee';
 import SlashtagsSettings from '../../screens/Settings/SlashtagsSettings';
 import LightningNavigator, {
 	LightningStackParamList,
 } from '../lightning/LightningNavigator';
+import WebRelay from '../../screens/Settings/WebRelay';
 import { __E2E__ } from '../../constants/env';
 
 export type SettingsNavigationProp =
@@ -72,6 +75,7 @@ export type SettingsStackParamList = {
 	TransactionSpeedSettings: undefined;
 	CustomFee: undefined;
 	ElectrumConfig: undefined;
+	RGSServer: undefined;
 	CoinSelectPreference: undefined;
 	PaymentPreference: undefined;
 	AddressTypePreference: undefined;
@@ -91,6 +95,8 @@ export type SettingsStackParamList = {
 	SuggestionsSettings: undefined;
 	TagsSettings: undefined;
 	AddressViewer: undefined;
+	FeeSettings: undefined;
+	WebRelay: undefined;
 };
 
 const Stack = createStackNavigator<SettingsStackParamList>();
@@ -127,6 +133,7 @@ const SettingsNavigator = (): ReactElement => {
 			/>
 			<Stack.Screen name="CustomFee" component={CustomFee} />
 			<Stack.Screen name="ElectrumConfig" component={ElectrumConfig} />
+			<Stack.Screen name="RGSServer" component={RGSServer} />
 			<Stack.Screen
 				name="CoinSelectPreference"
 				component={CoinSelectPreference}
@@ -164,6 +171,8 @@ const SettingsNavigator = (): ReactElement => {
 				component={SuggestionsSettings}
 			/>
 			<Stack.Screen name="TagsSettings" component={TagsSettings} />
+			<Stack.Screen name="FeeSettings" component={FeeSettings} />
+			<Stack.Screen name="WebRelay" component={WebRelay} />
 		</Stack.Navigator>
 	);
 };

@@ -31,7 +31,7 @@ import {
 } from '../../styles/icons';
 import { BasicProfile } from '../../store/types/slashtags';
 import { onboardingProfileStepSelector } from '../../store/reselect/slashtags';
-import { useProfile, useSelectedSlashtag } from '../../hooks/slashtags';
+import { useProfile2, useSelectedSlashtag2 } from '../../hooks/slashtags2';
 import { truncate } from '../../utils/helpers';
 import NavigationHeader from '../../components/NavigationHeader';
 import SafeAreaInset from '../../components/SafeAreaInset';
@@ -64,9 +64,9 @@ const ProfileScreen = ({
 	navigation,
 }: RootStackScreenProps<'Profile'>): ReactElement => {
 	const { t } = useTranslation('slashtags');
-	const { url } = useSelectedSlashtag();
-	const { profile } = useProfile(url);
-	const qrRef = useRef<string>();
+	const { url } = useSelectedSlashtag2();
+	const { profile } = useProfile2(url);
+	const qrRef = useRef<any>();
 
 	const [showCopy, setShowCopy] = useState(false);
 	const [isSharing, setIsSharing] = useState(false);
@@ -79,8 +79,18 @@ const ProfileScreen = ({
 
 	const handleShare = useCallback(async (): Promise<void> => {
 		setIsSharing(true);
-		const image = `data:image/png;base64,${qrRef.current}`;
 		try {
+			const imageBase64 = await new Promise<string>((resolve, reject) => {
+				if (!qrRef.current) {
+					reject(new Error('QR code ref not set'));
+					return;
+				}
+				qrRef.current.toDataURL((data: string) => {
+					const imageData = data.replace(/(\r\n|\n|\r)/gm, '');
+					resolve(imageData);
+				});
+			});
+			const image = `data:image/png;base64,${imageBase64}`;
 			await Share.open({
 				title: t('contact_share'),
 				message: url,
@@ -100,13 +110,13 @@ const ProfileScreen = ({
 			<NavigationHeader
 				style={styles.header}
 				title={t('profile')}
+				actionIcon={<UsersIcon height={24} width={24} />}
 				onClosePress={(): void => {
 					navigation.navigate('Wallet');
 				}}
 				onActionPress={(): void => {
 					navigation.navigate('Contacts');
 				}}
-				actionIcon={<UsersIcon height={24} width={24} />}
 			/>
 
 			<ScrollView contentContainerStyle={styles.content}>
@@ -142,14 +152,19 @@ const ProfileScreen = ({
 						<PencileIcon height={20} width={20} color="brand" />
 					</IconButton>
 				</View>
-				<QRView url={url} profile={profile} qrRef={qrRef} />
+				<QRView
+					url={url}
+					profile={profile}
+					qrRef={qrRef}
+					onPress={handleCopy}
+				/>
 				{showCopy && (
 					<AnimatedView
-						entering={FadeIn.duration(500)}
-						exiting={FadeOut.duration(500)}
+						style={styles.tooltip}
 						color="transparent"
-						style={styles.tooltip}>
-						<Tooltip text={t('contact_copied')} />
+						entering={FadeIn.duration(500)}
+						exiting={FadeOut.duration(500)}>
+						<Tooltip testID="ContactCopiedTooltip" text={t('contact_copied')} />
 					</AnimatedView>
 				)}
 				<SafeAreaInset type="bottom" minPadding={16} />
@@ -162,14 +177,15 @@ const QRView = ({
 	url,
 	profile,
 	qrRef,
+	onPress,
 }: {
 	url: string;
 	profile?: BasicProfile;
 	qrRef: MutableRefObject<string | undefined>;
+	onPress?: () => void;
 }): ReactElement => {
 	const { t } = useTranslation('slashtags');
 	const dimensions = useWindowDimensions();
-	const [showCopy, setShowCopy] = useState(false);
 
 	const qrMaxHeight = useMemo(
 		() => dimensions.height / 2.3,
@@ -183,12 +199,6 @@ const QRView = ({
 		() => Math.min(qrMaxWidth, qrMaxHeight),
 		[qrMaxHeight, qrMaxWidth],
 	);
-
-	const handleCopy = useCallback((): void => {
-		setShowCopy(() => true);
-		setTimeout(() => setShowCopy(() => false), 1200);
-		Clipboard.setString(url);
-	}, [url]);
 
 	const handleCopyQrCode = useCallback((): void => {
 		console.log('TODO: copy QR code as image');
@@ -209,35 +219,19 @@ const QRView = ({
 				style={styles.qrCode}
 				color="white"
 				activeOpacity={1}
-				onPress={handleCopy}
+				onPress={onPress}
 				onLongPress={handleCopyQrCode}>
 				<QRCode
 					value={url}
 					size={qrSize}
 					quietZone={20}
-					getRef={(c): void => {
-						if (c) {
-							c.toDataURL((data: string) => {
-								qrRef.current = data.replace(/(\r\n|\n|\r)/gm, '');
-							});
-						}
-					}}
+					getRef={(c): void => (qrRef.current = c)}
 				/>
 				<View style={styles.qrImageContainer}>
 					<ThemedView style={styles.qrImageOuter} color="white">
 						<ProfileImage url={url} image={profile?.image} size={68} />
 					</ThemedView>
 				</View>
-
-				{showCopy && (
-					<AnimatedView
-						style={styles.tooltip}
-						color="transparent"
-						entering={FadeIn.duration(500)}
-						exiting={FadeOut.duration(500)}>
-						<Tooltip testID="ContactCopiedTooltip" text={t('contact_copied')} />
-					</AnimatedView>
-				)}
 			</TouchableOpacity>
 
 			<Text02S style={styles.qrViewNote}>
@@ -293,7 +287,7 @@ const styles = StyleSheet.create({
 	tooltip: {
 		position: 'absolute',
 		alignSelf: 'center',
-		top: '66%',
+		top: '70%',
 	},
 });
 

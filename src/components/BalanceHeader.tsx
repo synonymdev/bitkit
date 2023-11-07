@@ -28,10 +28,7 @@ const BalanceHeader = (): ReactElement => {
 	};
 
 	return (
-		<TouchableOpacity
-			style={styles.container}
-			testID="TotalBalance"
-			onPress={switchUnit}>
+		<View style={styles.container}>
 			<View style={styles.totalBalanceRow}>
 				{claimableBalance ? (
 					<Trans
@@ -56,23 +53,24 @@ const BalanceHeader = (): ReactElement => {
 				)}
 			</View>
 
-			<View style={styles.row}>
-				<View>
-					<Money
-						sats={totalBalance}
-						unit={unit}
-						enableHide={true}
-						highlight={true}
-						symbol={true}
-					/>
-				</View>
+			<TouchableOpacity
+				style={styles.row}
+				testID="TotalBalance"
+				onPress={switchUnit}>
+				<Money
+					sats={totalBalance}
+					unit={unit}
+					enableHide={true}
+					highlight={true}
+					symbol={true}
+				/>
 				{hideBalance && (
 					<TouchableOpacity style={styles.toggle} onPress={toggleHideBalance}>
 						<EyeIcon />
 					</TouchableOpacity>
 				)}
-			</View>
-		</TouchableOpacity>
+			</TouchableOpacity>
+		</View>
 	);
 };
 
@@ -93,6 +91,7 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 	},
 	toggle: {
+		paddingTop: 7,
 		paddingRight: 16,
 	},
 });

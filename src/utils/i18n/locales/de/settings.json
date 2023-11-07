@@ -1,9 +1,7 @@
 {
   "settings": "Einstellungen",
   "dev_enabled_title": "Entwickler-Einstellungen an",
-  "dev_enabled_message": "Entwickler-Einstellungen sind jetzt innerhalb der App eingeschaltet.",
   "dev_disabled_title": "Entwickler-Einstellungen aus",
-  "dev_disabled_message": "Entwickler-Einstellungen sind jetzt innerhalb der App ausgeschaltet.",
   "general_title": "Allgemein",
   "security_title": "Sicherheit und Privatsphäre",
   "backup_title": "Back up oder Wiederherstellung",
@@ -41,6 +39,7 @@
     "section_other": "Andere",
     "address_type": "Bitcoin Adressen-Typ",
     "lightning_connections": "Lightning Verbindungen",
+    "lightning_node": "Lightning Node",
     "bitcoin_network": "Bitcoin Netzwerk"
   },
   "fee": {
@@ -57,7 +56,6 @@
     }
   },
   "es": {
-    "qr_error_message": "Entschuldige, Bitkit ist nicht in der Lage diesen QR code zu lesen.",
     "disconnected": "getrennt"
   }
 }

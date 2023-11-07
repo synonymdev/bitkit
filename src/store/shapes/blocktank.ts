@@ -1,58 +1,80 @@
 import { IBlocktank } from '../types/blocktank';
-import { IGetOrderResponse } from '@synonymdev/blocktank-client';
+import {
+	BtOrderState,
+	BtPaymentState,
+	IBtOrder,
+	IBtInfo,
+} from '@synonymdev/blocktank-lsp-http-client';
 
-export const defaultBlocktankInfoShape = {
-	capacity: {
-		local_balance: 0,
-		remote_balance: 0,
-	},
-	services: [],
-	node_info: {
-		alias: '',
-		active_channels_count: 0,
-		uris: [],
-		public_key: '',
+export const defaultBlocktankInfoShape: IBtInfo = {
+	version: 2,
+	nodes: [
+		{
+			alias: '',
+			pubkey: '',
+			connectionStrings: [],
+		},
+	],
+	options: {
+		minChannelSizeSat: 0,
+		maxChannelSizeSat: 50000000,
+		minExpiryWeeks: 1,
+		maxExpiryWeeks: 12,
+		minPaymentConfirmations: 0,
+		minHighRiskPaymentConfirmations: 1,
+		max0ConfClientBalanceSat: 856487,
+		maxClientBalanceSat: 856487,
 	},
 };
 
 export const defaultBlocktankShape: IBlocktank = {
-	serviceList: [],
-	serviceListLastUpdated: undefined,
 	orders: [],
 	paidOrders: {},
 	info: defaultBlocktankInfoShape,
+	cJitEntries: [],
 };
 
-export const defaultOrderResponse: IGetOrderResponse = {
-	_id: '',
-	local_balance: 0,
-	remote_balance: 0,
-	channel_expiry: 0,
-	channel_open_tx: {
-		transaction_id: '',
-		transaction_vout: 0,
+export const defaultOrderResponse: IBtOrder = {
+	id: '',
+	state: BtOrderState.CREATED,
+	feeSat: 0,
+	lspBalanceSat: 0,
+	clientBalanceSat: 0,
+	zeroConf: false,
+	channelExpiryWeeks: 0,
+	// @ts-ignore
+	channelExpiresAt: new Date().getTime(),
+	// @ts-ignore
+	orderExpiresAt: new Date().getTime(),
+	channel: undefined,
+	lspNode: {
+		alias: '',
+		pubkey: '',
+		connectionStrings: [],
 	},
-	channel_expiry_ts: 0,
-	order_expiry: 0,
-	price: 0,
-	total_amount: 0,
-	btc_address: '',
-	created_at: 0,
-	state: 0,
-	stateMessage: '',
-	purchase_invoice: '',
-	amount_received: 0,
-	onchain_payments: [],
-	lnurl_decoded: {
-		uri: '',
-		callback: '',
-		k1: '',
-		tag: '',
+	payment: {
+		state: BtPaymentState.CREATED,
+		paidSat: 0,
+		bolt11Invoice: {
+			request: '',
+			// @ts-ignore
+			state: null,
+			// @ts-ignore
+			expiresAt: new Date().getTime(),
+			// @ts-ignore
+			updatedAt: new Date().getTime(),
+		},
+		onchain: {
+			address: '',
+			confirmedSat: 0,
+			transactions: [],
+			requiredConfirmations: 0,
+		},
 	},
-	lnurl_string: '',
-	remote_node: undefined,
-	zero_conf: false,
-	zero_conf_satvbyte: 0,
-	zero_conf_satvbyte_expiry: 0,
-	renewals: [],
+	couponCode: '',
+	discountPercent: 0,
+	// @ts-ignore
+	updatedAt: new Date().getTime(),
+	// @ts-ignore
+	createdAt: new Date().getTime(),
 };

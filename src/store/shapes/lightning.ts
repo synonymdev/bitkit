@@ -11,6 +11,7 @@ export const defaultLightningShape: IDefaultLightningShape = {
 };
 
 export const defaultLightningStoreShape: ILightning = {
+	accountVersion: 1,
 	version: {
 		ldk: '',
 		c_bindings: '',

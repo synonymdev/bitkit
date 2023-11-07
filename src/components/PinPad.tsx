@@ -267,7 +267,7 @@ const styles = StyleSheet.create({
 	},
 	numberpad: {
 		marginTop: 'auto',
-		maxHeight: 350,
+		maxHeight: 410,
 	},
 });
 

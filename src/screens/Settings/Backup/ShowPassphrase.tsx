@@ -70,10 +70,10 @@ const styles = StyleSheet.create({
 		paddingHorizontal: 32,
 	},
 	passphrase: {
+		borderRadius: 16,
 		marginVertical: 32,
 		padding: 32,
-		borderRadius: 16,
-		flex: 1,
+		minHeight: 235,
 	},
 	p: {
 		marginBottom: 8,

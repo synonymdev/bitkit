@@ -50,8 +50,10 @@ const InactivityTracker = ({
 		});
 	}, [resetInactivityTimeout]);
 
+	const panProps = pinOnIdle ? panResponder.panHandlers : {};
+
 	return (
-		<View style={styles.root} {...panResponder.panHandlers}>
+		<View style={styles.root} {...panProps}>
 			{children}
 		</View>
 	);

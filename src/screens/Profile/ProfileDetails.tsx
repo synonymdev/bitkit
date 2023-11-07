@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 
 import { View as ThemedView, ScrollView } from '../../styles/components';
 import { UsersIcon } from '../../styles/icons';
-import { useProfile, useSelectedSlashtag } from '../../hooks/slashtags';
+import { useProfile2, useSelectedSlashtag2 } from '../../hooks/slashtags2';
 import NavigationHeader from '../../components/NavigationHeader';
 import SafeAreaInset from '../../components/SafeAreaInset';
 import ProfileCard from '../../components/ProfileCard';
@@ -17,8 +17,8 @@ const ProfileDetails = ({
 	navigation,
 }: RootStackScreenProps<'ProfileDetails'>): ReactElement => {
 	const { t } = useTranslation('slashtags');
-	const { url } = useSelectedSlashtag();
-	const { profile } = useProfile(url);
+	const { url } = useSelectedSlashtag2();
+	const { profile } = useProfile2(url);
 
 	const profileLinks = useMemo(() => profile?.links ?? [], [profile?.links]);
 	const profileLinksWithIds = useMemo(() => {

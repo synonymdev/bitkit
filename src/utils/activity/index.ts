@@ -1,5 +1,3 @@
-import { IGetOrderResponse } from '@synonymdev/blocktank-client';
-
 import i18n, { i18nTime } from '../../utils/i18n';
 import { btcToSats } from '../conversion';
 import { TPaidBlocktankOrders } from '../../store/types/blocktank';
@@ -11,12 +9,13 @@ import {
 } from '../../store/types/activity';
 import { err, ok, Result } from '@synonymdev/result';
 import { getActivityStore } from '../../store/helpers';
+import { IBtOrder } from '@synonymdev/blocktank-lsp-http-client';
 
 /**
  * Converts a formatted transaction to an activity item
  * @param {IFormattedTransaction} transaction
  * @param {TPaidBlocktankOrders} blocktankTransactions
- * @param {IGetOrderResponse[]} blocktankOrders
+ * @param {IBtOrder[]} blocktankOrders
  * @returns {TOnchainActivityItem} activityItem
  */
 export const onChainTransactionToActivityItem = ({
@@ -26,7 +25,7 @@ export const onChainTransactionToActivityItem = ({
 }: {
 	transaction: IFormattedTransaction;
 	blocktankTransactions: TPaidBlocktankOrders;
-	blocktankOrders: IGetOrderResponse[];
+	blocktankOrders: IBtOrder[];
 }): TOnchainActivityItem => {
 	// subtract fee from amount if applicable
 	const amount =
@@ -42,7 +41,7 @@ export const onChainTransactionToActivityItem = ({
 	// check if tx is a payment from Blocktank (i.e. transfer to savings)
 	const isTransferToSavings = !!blocktankOrders.find((order) => {
 		return !!transaction.vin.find(
-			(input) => input.txid === order.channel_close_tx?.transaction_id,
+			(input) => input.txid === order.channel?.close?.txId,
 		);
 	});
 
@@ -125,7 +124,8 @@ export type TActivityFilter = {
 	types?: EActivityType[];
 	tags?: string[];
 	txType?: EPaymentType;
-	transfer?: boolean;
+	includeTransfers?: boolean;
+	onlyTransfers?: boolean;
 	timerange?: number[];
 };
 
@@ -141,7 +141,8 @@ export const filterActivityItems = (
 	{
 		search = '',
 		types = [],
-		transfer,
+		includeTransfers = false,
+		onlyTransfers = false,
 		tags = [],
 		txType,
 		timerange = [],
@@ -173,12 +174,15 @@ export const filterActivityItems = (
 			return false;
 		}
 
-		// isTransfer doesn't match
-		if (
-			transfer &&
-			item.activityType === EActivityType.onchain &&
-			transfer !== item.isTransfer
-		) {
+		// If we're not including transfers and it's a transfer, skip it
+		// @ts-ignore
+		if (!includeTransfers && item.isTransfer) {
+			return false;
+		}
+
+		// If we're only including transfers and it's not a transfer, skip it
+		// @ts-ignore
+		if (onlyTransfers && !item.isTransfer) {
 			return false;
 		}
 

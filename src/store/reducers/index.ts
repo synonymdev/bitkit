@@ -1,4 +1,6 @@
 import { AnyAction, CombinedState, combineReducers } from 'redux';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 import { storage } from '../mmkv-storage';
 import actions from '../actions/actions';
 import ui from './ui';
@@ -43,6 +45,9 @@ const rootReducer = (
 		console.log('Wiping app data...');
 		// Clear mmkv persisted storage
 		storage.clearAll();
+		// Clear web relay client storage
+		AsyncStorage.clear().catch(() => {});
+
 		// Reset all stores
 		return appReducer(undefined, action);
 	}

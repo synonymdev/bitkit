@@ -8,7 +8,7 @@ import React, {
 	useState,
 } from 'react';
 import { Animated, PanResponder, StyleSheet, View } from 'react-native';
-import throttle from 'lodash.throttle';
+import throttle from 'lodash/throttle';
 
 import { View as ThemedView } from '../styles/components';
 import useColors from '../hooks/colors';

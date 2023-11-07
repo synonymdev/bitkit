@@ -1,4 +1,4 @@
-import React, { ReactElement, memo } from 'react';
+import React, { ReactElement, memo, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useSelector } from 'react-redux';
 import { Trans, useTranslation } from 'react-i18next';
@@ -12,7 +12,6 @@ import Button from '../../components/Button';
 import { refreshWallet } from '../../utils/wallet';
 import { closeAllChannels } from '../../utils/lightning';
 import { startCoopCloseTimer } from '../../store/actions/user';
-import { addTodo, removeTodo } from '../../store/actions/todos';
 import type { TransferScreenProps } from '../../navigation/types';
 import {
 	selectedNetworkSelector,
@@ -25,6 +24,7 @@ const Availability = ({
 	navigation,
 }: TransferScreenProps<'Availability'>): ReactElement => {
 	const { t } = useTranslation('lightning');
+	const [isLoading, setIsLoading] = useState(false);
 	const selectedWallet = useSelector(selectedWalletSelector);
 	const selectedNetwork = useSelector(selectedNetworkSelector);
 
@@ -33,20 +33,18 @@ const Availability = ({
 	};
 
 	const onContinue = async (): Promise<void> => {
+		setIsLoading(true);
 		const closeResponse = await closeAllChannels({
 			selectedNetwork,
 			selectedWallet,
 		});
 
 		if (closeResponse.isOk() && closeResponse.value.length === 0) {
-			removeTodo('transferClosingChannel');
-			addTodo('transferToSavings');
 			await refreshWallet();
 			navigation.navigate('Success', { type: 'savings' });
 			return;
 		} else {
 			startCoopCloseTimer();
-			addTodo('transferClosingChannel');
 			navigation.navigate('Interrupted');
 		}
 	};
@@ -85,6 +83,7 @@ const Availability = ({
 						style={styles.button}
 						text={t('ok')}
 						size="large"
+						loading={isLoading}
 						onPress={onContinue}
 					/>
 				</View>

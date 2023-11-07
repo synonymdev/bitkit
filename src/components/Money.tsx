@@ -142,7 +142,7 @@ const Money = (props: IMoney): ReactElement => {
 
 	if (hide) {
 		if (size === 'display') {
-			prim = ' • • • • • • • • • •';
+			prim = ' • • • • • • • • •';
 		} else {
 			prim = ' • • • • •';
 		}

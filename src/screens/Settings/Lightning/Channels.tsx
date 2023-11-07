@@ -3,10 +3,10 @@ import { StyleSheet, View, ScrollView, TouchableOpacity } from 'react-native';
 import { useSelector } from 'react-redux';
 import Share from 'react-native-share';
 import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
-import { IGetOrderResponse } from '@synonymdev/blocktank-client';
 import { TChannel } from '@synonymdev/react-native-ldk';
 import { useTranslation } from 'react-i18next';
 import Clipboard from '@react-native-clipboard/clipboard';
+import { IBtOrder, BtOrderState } from '@synonymdev/blocktank-lsp-http-client';
 
 import {
 	AnimatedView,
@@ -57,6 +57,7 @@ import {
 } from '../../../store/reselect/wallet';
 import {
 	closedChannelsSelector,
+	lightningSelector,
 	openChannelsSelector,
 	pendingChannelsSelector,
 } from '../../../store/reselect/lightning';
@@ -77,11 +78,12 @@ const AnimatedRefreshControl = Animated.createAnimatedComponent(RefreshControl);
 
 /**
  * Convert pending (non-channel) blocktank orders to (fake) channels.
- * @param {IGetOrderResponse[]} orders
+ * @param {IBtOrder[]} orders
+ * @param {TPaidBlocktankOrders} paidOrders
  * @param {string} nodeKey
  */
 const getPendingBlocktankChannels = (
-	orders: IGetOrderResponse[],
+	orders: IBtOrder[],
 	paidOrders: TPaidBlocktankOrders,
 	nodeKey: string,
 ): {
@@ -92,32 +94,40 @@ const getPendingBlocktankChannels = (
 	const failedOrders: TChannel[] = [];
 
 	Object.keys(paidOrders).forEach((orderId) => {
-		const order = orders.find((o) => o._id === orderId)!;
-
+		let order = orders.find((o) => o.id === orderId)!;
+		if (!order) {
+			// In the event it was paid for using the old api.
+			// @ts-ignore
+			order = orders.find((o) => o?._id === orderId)!;
+			if (!order) {
+				return;
+			}
+		}
 		const fakeChannel: TChannel = {
-			channel_id: order._id,
+			channel_id: order.id,
+			confirmations: 0,
 			is_public: false,
 			is_usable: false,
 			is_channel_ready: false,
 			is_outbound: false,
-			balance_sat: order.local_balance,
+			balance_sat: order.lspBalanceSat,
 			counterparty_node_id: nodeKey,
-			funding_txid: order.channel_open_tx?.transaction_id,
-			// channel_type: string,
+			funding_txid: order.channel?.fundingTx.id,
 			user_channel_id: '0',
-			// short_channel_id: number,
-			inbound_capacity_sat: order.local_balance,
-			outbound_capacity_sat: order.remote_balance,
-			channel_value_satoshis: order.local_balance + order.remote_balance,
-			short_channel_id: order._id,
+			inbound_scid_alias: '',
+			inbound_payment_scid: '',
+			inbound_capacity_sat: order.lspBalanceSat,
+			outbound_capacity_sat: order.clientBalanceSat,
+			channel_value_satoshis: order.lspBalanceSat + order.clientBalanceSat,
+			short_channel_id: order.id,
 			config_forwarding_fee_base_msat: 0,
 			config_forwarding_fee_proportional_millionths: 0,
 		};
 
-		if ([0, 100, 150, 200].includes(order.state)) {
+		if (order.state === BtOrderState.CREATED) {
 			pendingOrders.push(fakeChannel);
 		}
-		if ([400, 410].includes(order.state)) {
+		if (order.state === BtOrderState.EXPIRED) {
 			failedOrders.push(fakeChannel);
 		}
 	});
@@ -141,11 +151,11 @@ const Channel = memo(
 		const blocktankOrder = Object.values(paidBlocktankOrders).find((order) => {
 			// real channel
 			if (channel.funding_txid) {
-				return order.channel_open_tx?.transaction_id === channel.funding_txid;
+				return order.channel?.fundingTx.id === channel.funding_txid;
 			}
 
 			// fake channel
-			return order._id === channel.channel_id;
+			return order.id === channel.channel_id;
 		});
 
 		const channelName = useLightningChannelName(channel, blocktankOrder);
@@ -227,20 +237,15 @@ const Channels = ({
 	const selectedWallet = useSelector(selectedWalletSelector);
 	const selectedNetwork = useSelector(selectedNetworkSelector);
 	const enableDevOptions = useSelector(enableDevOptionsSelector);
+	const lightning = useSelector(lightningSelector);
 
 	const blocktankOrders = useSelector(blocktankOrdersSelector);
 	const paidOrders = useSelector(blocktankPaidOrdersSelector);
-	const openChannels = useSelector((state: Store) => {
-		return openChannelsSelector(state, selectedWallet, selectedNetwork);
-	});
-	const pendingChannels = useSelector((state: Store) => {
-		return pendingChannelsSelector(state, selectedWallet, selectedNetwork);
-	});
-	const closedChannels = useSelector((state: Store) => {
-		return closedChannelsSelector(state, selectedWallet, selectedNetwork);
-	});
+	const openChannels = useSelector(openChannelsSelector);
+	const pendingChannels = useSelector(pendingChannelsSelector);
+	const closedChannels = useSelector(closedChannelsSelector);
 	const blocktankNodeKey = useSelector((state: Store) => {
-		return state.blocktank.info.node_info.public_key;
+		return state.blocktank.info.nodes[0].pubkey;
 	});
 
 	const { pendingOrders, failedOrders } = getPendingBlocktankChannels(
@@ -251,6 +256,14 @@ const Channels = ({
 	const pendingConnections = [...pendingOrders, ...pendingChannels];
 
 	const handleAdd = useCallback((): void => {
+		if (lightning.accountVersion < 2) {
+			showToast({
+				type: 'error',
+				title: t('migrating_ldk_title'),
+				description: t('migrating_ldk_description'),
+			});
+			return;
+		}
 		navigation.navigate('LightningRoot', {
 			screen: 'CustomSetup',
 			params: { spending: true },
@@ -258,7 +271,7 @@ const Channels = ({
 
 		// TODO: Update this view once we enable creating channels with nodes other than Blocktank.
 		// navigation.navigate('LightningAddConnection');
-	}, [navigation]);
+	}, [lightning.accountVersion, navigation, t]);
 
 	const handleExportLogs = useCallback(async (): Promise<void> => {
 		const result = await zipLogs({ includeJson: enableDevOptions });
@@ -266,7 +279,7 @@ const Channels = ({
 			showToast({
 				type: 'error',
 				title: t('error_logs'),
-				description: result.error.message,
+				description: t('error_logs_description'),
 			});
 			return;
 		}
@@ -333,7 +346,7 @@ const Channels = ({
 		if (addPeerRes.isErr()) {
 			showToast({
 				type: 'error',
-				title: t('error_add'),
+				title: t('error_add_title'),
 				description: addPeerRes.error.message,
 			});
 			return;
@@ -342,7 +355,7 @@ const Channels = ({
 		if (savePeerRes.isErr()) {
 			showToast({
 				type: 'error',
-				title: t('error_save'),
+				title: t('error_save_title'),
 				description: savePeerRes.error.message,
 			});
 			return;

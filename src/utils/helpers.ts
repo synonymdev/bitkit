@@ -44,7 +44,7 @@ export const reduceValue = <T>({
 }): Result<number> => {
 	try {
 		if (!value) {
-			return err('No value specified.');
+			return err('Please specify a value.');
 		}
 		return ok(
 			arr.reduce((acc, cur) => {
@@ -160,7 +160,7 @@ export const trimExtraSpaces = (text: string): string => {
  * Capitalizes the first letter of every word.
  * @param {string} text
  */
-export const capitalize = (text = ''): string => {
+export const capitalize = (text: string): string => {
 	return text.charAt(0).toUpperCase() + text.slice(1);
 };
 
@@ -575,28 +575,3 @@ export const removeKeyFromObject = (
 	key: string,
 	{ [key]: _, ...rest }: Record<string, any>,
 ): Record<string, any> => rest;
-
-/**
- * Breaks a Uint8Array into smaller chunks of a given size
- * @param {Uint8Array} buffer
- * @param {number} chunkSize
- * @returns {Uint8Array[]}
- */
-export const chunkUint8Array = (
-	buffer: Uint8Array,
-	chunkSize: number = 50000,
-): Result<Uint8Array[]> => {
-	if (!Number.isInteger(chunkSize) || chunkSize <= 0) {
-		return err('chunkSize must be a positive integer.');
-	}
-	let result: Uint8Array[] = [];
-	try {
-		for (let i = 0; i < buffer.length; i += chunkSize) {
-			let chunk = new Uint8Array(buffer.buffer.slice(i, i + chunkSize));
-			result.push(chunk);
-		}
-	} catch (e) {
-		return err(e);
-	}
-	return ok(result);
-};

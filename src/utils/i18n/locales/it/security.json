@@ -14,7 +14,6 @@
   "pass_recovery": "<gray>Passphrase:</gray> {passphrase}",
   "mnemonic_phrase": "Frase Mnemonica",
   "mnemonic_your": "La Tua Recovery Phrase",
-  "mnemonic_error": "Errore nell'Ottenimento della Mnemonica",
   "mnemonic_write": "Scrivi queste {length} parole nell'ordine giusto e conservale in un luogo sicuro.",
   "mnemonic_use": "Utilizza le 12 parole che seguono per recuperare i tuoi soldi in un secondo momento.",
   "mnemonic_reveal": "Tocca Per Rivelare",
@@ -55,7 +54,6 @@
   "bio_touch_id": "Touch ID",
   "bio_confirm": "Conferma {biometricsName}",
   "bio_error_title": "Configurazione Biometrica Fallita",
-  "bio_error_message": "Bitkit non è stato in grado di configurare la biometria per il tuo dispositivo.",
   "bio_loading": "Caricamento...",
   "bio_not_available": "Sembra che tu non abbia ancora impostato la sicurezza biometrica per il tuo dispositivo (o che non sia supportata). Puoi provare ad abilitare la sicurezza biometrica nelle impostazioni del telefono.",
   "bio_ask": "Codice PIN impostato. Desideri utilizzare {biometricsName} al posto del codice PIN quando possibile?",
@@ -81,11 +79,6 @@
   "export_password": "Password",
   "export_button": "Esporta",
   "export_share": "Condividi il file di backup",
-  "export_success_title": "Backup esportato",
-  "export_success_msg": "File esportato sul telefono con successo.",
-  "export_error_title": "Backup fallito",
-  "export_error_msg": "Bitkit non è stato in grado di salvare il file di backup.",
-  "export_error_file": "Creazione del file di backup fallita",
   "cp_title": "Cambia PIN",
   "cp_text": "Puoi cambiare il codice PIN con una nuova\ncombinazione di 4 cifre. Inserisci prima il codice PIN corrente.",
   "cp_forgot": "Hai dimenticato il PIN?",
@@ -96,7 +89,5 @@
   "cp_try_again": "Provi di nuovo, il PIN non coincide.",
   "cp_changed_title": "Il PIN è stato modificato",
   "cp_changed_text": "Hai cambiato con successo il PIN con una nuova combinazione a 4 cifre.",
-  "use_pin": "Usa il codice PIN",
-  "wiped_title": "Bitkit Pulita",
-  "wiped_message": "Tutti i dati del portafoglio sono stati cancellati."
+  "use_pin": "Usa il codice PIN"
 }

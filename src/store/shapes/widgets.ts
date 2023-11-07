@@ -1,5 +1,5 @@
 import { IWidgetsStore } from '../types/widgets';
-import cloneDeep from 'lodash.clonedeep';
+import cloneDeep from 'lodash/cloneDeep';
 
 export const defaultWidgetsShape: Readonly<IWidgetsStore> = {
 	widgets: {},

@@ -18,6 +18,7 @@ import { handleLnurlWithdraw } from '../../../utils/lnurl';
 import { closeBottomSheet } from '../../../store/actions/ui';
 import { Text01S } from '../../../styles/text';
 import { showToast } from '../../../utils/notifications';
+import LightningSyncing from '../../../components/LightningSyncing';
 
 const imageSrc = require('../../../assets/illustrations/transfer.png');
 
@@ -73,11 +74,13 @@ const Confirm = ({ route }: LNURLWithdrawProps<'Confirm'>): ReactElement => {
 							text={t('lnurl_w_button')}
 							disabled={isLoading}
 							onPress={handlePress}
+							testID="WithdrawConfirmButton"
 						/>
 					</View>
 				</View>
 				<SafeAreaInset type="bottom" minPadding={16} />
 			</GradientView>
+			<LightningSyncing style={styles.syncing} title={t('lnurl_w_title')} />
 		</>
 	);
 };
@@ -95,6 +98,9 @@ const styles = StyleSheet.create({
 	},
 	buttonContainer: {
 		marginTop: 'auto',
+	},
+	syncing: {
+		...StyleSheet.absoluteFillObject,
 	},
 });
 

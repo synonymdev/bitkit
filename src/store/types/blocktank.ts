@@ -1,15 +1,15 @@
 import {
-	IGetInfoResponse,
-	IGetOrderResponse,
-	IService,
-} from '@synonymdev/blocktank-client';
+	IBtInfo,
+	IBtOrder,
+	ICJitEntry,
+	ICreateOrderOptions,
+} from '@synonymdev/blocktank-lsp-http-client';
 
 export interface IBlocktank {
-	serviceList: IService[];
-	serviceListLastUpdated?: number;
-	orders: IGetOrderResponse[];
+	orders: IBtOrder[];
 	paidOrders: TPaidBlocktankOrders;
-	info: IGetInfoResponse;
+	info: IBtInfo;
+	cJitEntries: ICJitEntry[];
 }
 
 export type TPaidBlocktankOrders = {
@@ -17,3 +17,9 @@ export type TPaidBlocktankOrders = {
 };
 
 export type TGeoBlockResponse = { error?: 'GEO_BLOCKED'; accept?: boolean };
+
+export interface ICreateOrderRequest {
+	lspBalanceSat: number;
+	channelExpiryWeeks: number;
+	options: Partial<ICreateOrderOptions>;
+}

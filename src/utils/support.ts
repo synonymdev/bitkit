@@ -65,7 +65,7 @@ export const createOrderSupportLink = async (
 		//No specific order ID so add all of them
 		const orders = getStore().blocktank.orders;
 		if (orders.length > 0) {
-			body += `\nBlocktank order IDs: ${orders.map((o) => o._id).join(', ')}`;
+			body += `\nBlocktank order IDs: ${orders.map((o) => o.id).join(', ')}`;
 		}
 	}
 

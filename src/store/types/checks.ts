@@ -1,8 +1,10 @@
 import { EAddressType, IAddress, IWalletItem, TWalletName } from './wallet';
 import { TAvailableNetworks } from '../../utils/networks';
+import { TChannel } from '@synonymdev/react-native-ldk';
 
 export enum EWarningIds {
 	'storageCheck' = 888,
+	'ldkMigration' = 999,
 }
 
 export type TMinMaxAddressData = {
@@ -44,7 +46,7 @@ export type TImpactedAddresses = {
 export type TStorageWarning = {
 	id: string;
 	warningId: EWarningIds;
-	data: TGetImpactedAddressesRes;
+	data: TGetImpactedAddressesRes | TChannel;
 	warningReported: boolean;
 	timestamp: number;
 };

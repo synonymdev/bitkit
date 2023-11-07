@@ -31,22 +31,26 @@ const AuthCheck = ({
 	const requirePin = route?.params?.requirePin ?? false;
 	onSuccess = route?.params?.onSuccess ?? onSuccess;
 
-	return (
-		<Animated.View style={StyleSheet.absoluteFillObject} exiting={FadeOut}>
-			{requireBiometrics && !requirePin ? (
+	if (requireBiometrics && !requirePin) {
+		return (
+			<Animated.View style={StyleSheet.absoluteFillObject} exiting={FadeOut}>
 				<GlowingBackground topLeft="brand">
 					<Biometrics
 						onSuccess={(): void => onSuccess?.()}
 						onFailure={(): void => setRequireBiometrics(false)}
 					/>
 				</GlowingBackground>
-			) : (
-				<PinPad
-					showBackNavigation={showBackNavigation}
-					showLogoOnPIN={showLogoOnPIN}
-					onSuccess={(): void => onSuccess?.()}
-				/>
-			)}
+			</Animated.View>
+		);
+	}
+
+	return (
+		<Animated.View style={StyleSheet.absoluteFillObject} exiting={FadeOut}>
+			<PinPad
+				showBackNavigation={showBackNavigation}
+				showLogoOnPIN={showLogoOnPIN}
+				onSuccess={(): void => onSuccess?.()}
+			/>
 		</Animated.View>
 	);
 };

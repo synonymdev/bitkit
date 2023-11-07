@@ -1,6 +1,10 @@
 import actions from './actions';
 import { getDispatch } from '../helpers';
-import { IWidget, IWidgetsStore } from '../types/widgets';
+import {
+	IWidgetsStore,
+	SlashFeedJSON,
+	TWidgetSettings,
+} from '../types/widgets';
 import { ok, Result } from '@synonymdev/result';
 
 const dispatch = getDispatch();
@@ -22,7 +26,7 @@ export const setAuthWidget = (
 	},
 ): void => {
 	dispatch({
-		type: actions.SET_SLASHTAGS_AUTH_WIDGET,
+		type: actions.SET_AUTH_WIDGET,
 		payload: {
 			url,
 			magiclink: data.magiclink,
@@ -30,19 +34,31 @@ export const setAuthWidget = (
 	});
 };
 
-export const setFeedWidget = (url: string, feed: IWidget['feed']): void => {
+export const setFeedWidget = ({
+	url,
+	type,
+	fields,
+	extras,
+}: {
+	url: string;
+	type: string;
+	fields: SlashFeedJSON['fields'];
+	extras?: TWidgetSettings['extras'];
+}): void => {
 	dispatch({
-		type: actions.SET_SLASHTAGS_FEED_WIDGET,
+		type: actions.SET_FEED_WIDGET,
 		payload: {
 			url,
-			feed,
+			type,
+			fields,
+			extras,
 		},
 	});
 };
 
 export const deleteWidget = (url: string): void => {
 	dispatch({
-		type: actions.DELETE_SLASHTAGS_WIDGET,
+		type: actions.DELETE_WIDGET,
 		payload: { url },
 	});
 };
@@ -53,7 +69,7 @@ export const resetWidgetsStore = (): void => {
 
 export const setWidgetsOnboarding = (onboardedWidgets: boolean): void => {
 	dispatch({
-		type: actions.SET_WIDGETS_ONBAORDING,
+		type: actions.SET_WIDGETS_ONBOARDING,
 		payload: { onboardedWidgets },
 	});
 };

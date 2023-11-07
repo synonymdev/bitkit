@@ -11,7 +11,6 @@ import GlowImage from '../../../components/GlowImage';
 import Button from '../../../components/Button';
 import { showToast } from '../../../utils/notifications';
 import { closeChannel, refreshLdk } from '../../../utils/lightning';
-import { useLightningChannelName } from '../../../hooks/lightning';
 import { channelSelector } from '../../../store/reselect/lightning';
 import Store from '../../../store/types';
 import type { SettingsScreenProps } from '../../../navigation/types';
@@ -34,7 +33,6 @@ const CloseConnection = ({
 	const channel = useSelector((state: Store) => {
 		return channelSelector(state, selectedWallet, selectedNetwork, channelId);
 	});
-	const name = useLightningChannelName(channel);
 
 	const onContinue = async (): Promise<void> => {
 		setLoading(true);
@@ -61,7 +59,7 @@ const CloseConnection = ({
 		showToast({
 			type: 'success',
 			title: t('close_success_title'),
-			description: t('close_success_msg', { name }),
+			description: t('close_success_msg'),
 		});
 
 		navigation.navigate('Channels');

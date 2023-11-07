@@ -1,4 +1,5 @@
-import { decodeQRData } from '../src/utils/scanner';
+import { findlnurl } from '../src/utils/lnurl';
+import { TBitcoinUrl, decodeQRData } from '../src/utils/scanner';
 
 describe('QR codes', () => {
 	it('decodes a bitcoin URI with params', async () => {
@@ -8,7 +9,7 @@ describe('QR codes', () => {
 		if (res.isErr()) {
 			throw res.error;
 		}
-		const qrData = res.value[0];
+		const qrData = res.value[0] as TBitcoinUrl;
 		expect(qrData.network).toEqual('bitcoin');
 		expect(qrData.qrDataType).toEqual('bitcoinAddress');
 		expect(qrData.sats).toEqual(50000);
@@ -22,7 +23,7 @@ describe('QR codes', () => {
 		if (res.isErr()) {
 			throw res.error;
 		}
-		const qrData = res.value[0];
+		const qrData = res.value[0] as TBitcoinUrl;
 		expect(qrData.network).toEqual('bitcoin');
 		expect(qrData.qrDataType).toEqual('bitcoinAddress');
 	});
@@ -34,7 +35,7 @@ describe('QR codes', () => {
 		if (res.isErr()) {
 			throw res.error;
 		}
-		const qrData = res.value[0];
+		const qrData = res.value[0] as TBitcoinUrl;
 		expect(qrData.network).toEqual('bitcoin');
 		expect(qrData.qrDataType).toEqual('bitcoinAddress');
 	});
@@ -46,7 +47,7 @@ describe('QR codes', () => {
 		if (res.isErr()) {
 			throw res.error;
 		}
-		const qrData = res.value[0];
+		const qrData = res.value[0] as TBitcoinUrl;
 		expect(qrData.network).toEqual('bitcoin');
 		expect(qrData.qrDataType).toEqual('bitcoinAddress');
 	});
@@ -58,8 +59,29 @@ describe('QR codes', () => {
 		if (res.isErr()) {
 			throw res.error;
 		}
-		const qrData = res.value[0];
+		const qrData = res.value[0] as TBitcoinUrl;
 		expect(qrData.network).toEqual('bitcoin');
 		expect(qrData.qrDataType).toEqual('bitcoinAddress');
+	});
+
+	it('finds lnurl', async () => {
+		const base =
+			'lnurl1dp68gurn8ghj7mrww3uxymm59e3xjemnw4hzu7re0ghkcmn4wfkz7urp0ylh2um9wf5kg0fhxycnv9g9w58';
+		expect(findlnurl(base)).toEqual(base);
+		expect(findlnurl(base.toUpperCase())).toEqual(base);
+		expect(findlnurl('https://site.com/?lightning=' + base)).toEqual(base);
+		expect(
+			findlnurl('https://site.com/?lightning=' + base.toUpperCase()),
+		).toEqual(base);
+		expect(findlnurl('https://site.com/?nada=nada&lightning=' + base)).toEqual(
+			base,
+		);
+		expect(
+			findlnurl('https://site.com/?nada=nada&lightning=' + base.toUpperCase()),
+		).toEqual(base);
+		expect(findlnurl('bs')).toEqual(null);
+		expect(findlnurl('https://site.com')).toEqual(null);
+		expect(findlnurl('https://site.com/?bs=' + base)).toEqual(null);
+		expect(findlnurl('bitcoin:site.com/?lightning=' + base)).toEqual(base);
 	});
 });

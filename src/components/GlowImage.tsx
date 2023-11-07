@@ -24,7 +24,7 @@ const GlowImage = ({
 }): ReactElement => {
 	return (
 		<View style={[styles.container, style]} pointerEvents="none">
-			<Glow color={glowColor} size={600} style={styles.glow} />
+			<Glow color={glowColor} size={imageSize * 2.7} style={styles.glow} />
 			<Image source={image} style={[styles.image, { height: imageSize }]} />
 		</View>
 	);

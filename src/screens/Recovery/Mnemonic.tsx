@@ -25,10 +25,11 @@ const Mnemonic = ({
 			const bip39Passphrase = await getBip39Passphrase();
 
 			if (mnemoncicResult.isErr()) {
+				console.log(mnemoncicResult.error.message);
 				showToast({
 					type: 'error',
 					title: t('mnemonic_error'),
-					description: mnemoncicResult.error.message,
+					description: t('mnemonic_error_description'),
 				});
 				return;
 			}

@@ -22,6 +22,7 @@ export const showToast = ({
 	autoHide,
 }: ToastOptions): void => {
 	if (__E2E__) {
+		console.log('showToast', { type, title, description });
 		return;
 	}
 

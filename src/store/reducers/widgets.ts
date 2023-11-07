@@ -14,7 +14,7 @@ const widgetsReducer = (
 				...action.payload,
 			};
 
-		case actions.SET_SLASHTAGS_AUTH_WIDGET: {
+		case actions.SET_AUTH_WIDGET: {
 			const existing = state.widgets[action.payload.url] || {};
 
 			return {
@@ -30,26 +30,22 @@ const widgetsReducer = (
 			};
 		}
 
-		case actions.SET_SLASHTAGS_FEED_WIDGET: {
-			const existing = state.widgets[action.payload.url] || { feed: {} };
-
+		case actions.SET_FEED_WIDGET: {
 			return {
 				...state,
+				sortOrder: [...state.sortOrder, action.payload.url],
 				widgets: {
 					...state.widgets,
 					[action.payload.url]: {
-						...existing,
-						feed: {
-							...existing.feed,
-							...action.payload.feed,
-						},
+						type: action.payload.type,
+						fields: action.payload.fields,
+						extras: action.payload.extras,
 					},
 				},
-				sortOrder: [...state.sortOrder, action.payload.url],
 			};
 		}
 
-		case actions.DELETE_SLASHTAGS_WIDGET: {
+		case actions.DELETE_WIDGET: {
 			const widgets = removeKeysFromObject(state.widgets, action.payload.url);
 			const sortOrder = state.sortOrder.filter((i) => i !== action.payload.url);
 
@@ -60,7 +56,7 @@ const widgetsReducer = (
 			};
 		}
 
-		case actions.SET_WIDGETS_ONBAORDING: {
+		case actions.SET_WIDGETS_ONBOARDING: {
 			return {
 				...state,
 				onboardedWidgets: action.payload.onboardedWidgets,

@@ -8,7 +8,7 @@ import {
 	TouchableOpacity,
 } from 'react-native';
 import { SvgProps } from 'react-native-svg';
-import isEqual from 'lodash.isequal';
+import isEqual from 'lodash/isEqual';
 
 import { Switch } from '../styles/components';
 import {

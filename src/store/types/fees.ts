@@ -19,4 +19,5 @@ export interface IOnchainFees {
 
 export interface IFees {
 	onchain: IOnchainFees;
+	override: boolean;
 }

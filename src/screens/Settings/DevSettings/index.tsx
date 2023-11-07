@@ -1,5 +1,8 @@
 import React, { memo, ReactElement, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import RNFS, { unlink, writeFile } from 'react-native-fs';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import Share from 'react-native-share';
 
 import { __DISABLE_SLASHTAGS__ } from '../../../constants/env';
 import actions from '../../../store/actions/actions';
@@ -7,20 +10,22 @@ import {
 	clearUtxos,
 	injectFakeTransaction,
 	resetSelectedWallet,
-	resetWalletStore,
 	updateWallet,
 } from '../../../store/actions/wallet';
 import { resetUserStore } from '../../../store/actions/user';
 import { resetActivityStore } from '../../../store/actions/activity';
-import { resetLightningStore } from '../../../store/actions/lightning';
+import {
+	resetLightningStore,
+	updateLdkAccountVersion,
+	updateLightningNodeId,
+} from '../../../store/actions/lightning';
 import { resetBlocktankStore } from '../../../store/actions/blocktank';
 import { resetSlashtagsStore } from '../../../store/actions/slashtags';
 import { resetWidgetsStore } from '../../../store/actions/widgets';
 import { resetFeesStore } from '../../../store/actions/fees';
 import { resetTodos } from '../../../store/actions/todos';
-import { resetUiStore } from '../../../store/actions/ui';
 import { resetSettingsStore, wipeApp } from '../../../store/actions/settings';
-import { getWalletStore } from '../../../store/helpers';
+import { getStore, getWalletStore } from '../../../store/helpers';
 import { warningsSelector } from '../../../store/reselect/checks';
 import {
 	addressTypeSelector,
@@ -34,6 +39,12 @@ import { refreshWallet } from '../../../utils/wallet';
 import { runChecks } from '../../../utils/wallet/checks';
 import { getFakeTransaction } from '../../../utils/wallet/testing';
 import type { SettingsScreenProps } from '../../../navigation/types';
+import { lightningSelector } from '../../../store/reselect/lightning';
+import {
+	createDefaultLdkAccount,
+	getNodeId,
+	setupLdk,
+} from '../../../utils/lightning';
 
 const DevSettings = ({
 	navigation,
@@ -43,13 +54,36 @@ const DevSettings = ({
 	const selectedWallet = useSelector(selectedWalletSelector);
 	const selectedNetwork = useSelector(selectedNetworkSelector);
 	const addressType = useSelector(addressTypeSelector);
+	const lightning = useSelector(lightningSelector);
 	const warnings = useSelector((state) => {
 		return warningsSelector(state, selectedWallet, selectedNetwork);
 	});
 
+	const exportStore = async (): Promise<void> => {
+		const time = new Date().getTime();
+		const store = JSON.stringify(getStore(), null, 2);
+		const filePath = `${RNFS.DocumentDirectoryPath}/bitkit_store_${time}.json`;
+
+		try {
+			// Create temp file in app storage
+			await writeFile(filePath, store, 'utf8');
+
+			// Export file
+			await Share.open({
+				title: 'Export Bitkit Store',
+				type: 'application/json',
+				url: `file://${filePath}`,
+			});
+
+			// Delete file from app storage
+			await unlink(filePath);
+		} catch (error) {
+			console.log(error);
+		}
+	};
+
 	const settingsListData: IListData[] = [
 		{
-			title: 'Slashtags',
 			data: [
 				{
 					title: 'Slashtags Settings',
@@ -58,6 +92,14 @@ const DevSettings = ({
 					testID: 'SlashtagsSettings',
 					onPress: (): void => {
 						navigation.navigate('SlashtagsSettings');
+					},
+				},
+				{
+					title: 'Fee Settings',
+					type: EItemType.button,
+					testID: 'FeeSettings',
+					onPress: (): void => {
+						navigation.navigate('FeeSettings');
 					},
 				},
 			],
@@ -151,8 +193,103 @@ const DevSettings = ({
 			],
 		},
 		{
+			title: 'LDK Account Migration',
+			data: [
+				{
+					title: `LDK Account Version: ${lightning.accountVersion}`,
+					type: EItemType.textButton,
+					value: '',
+					testID: 'LDKAccountVersion',
+				},
+				{
+					title: 'Force LDK V2 Account Migration',
+					type: EItemType.button,
+					onPress: async (): Promise<void> => {
+						updateLdkAccountVersion(2);
+						await createDefaultLdkAccount({
+							version: 2,
+							selectedWallet,
+							selectedNetwork,
+						});
+						await setupLdk({
+							selectedWallet,
+							selectedNetwork,
+							shouldRefreshLdk: true,
+						});
+						const newNodeId = await getNodeId();
+						if (newNodeId.isOk()) {
+							updateLightningNodeId({
+								nodeId: newNodeId.value,
+								selectedWallet,
+								selectedNetwork,
+							});
+						}
+					},
+					testID: 'ForceV2Migration',
+				},
+				{
+					title: 'Revert to LDK V1 Account',
+					type: EItemType.button,
+					onPress: async (): Promise<void> => {
+						updateLdkAccountVersion(1);
+						await createDefaultLdkAccount({
+							version: 1,
+							selectedWallet,
+							selectedNetwork,
+						});
+						await setupLdk({
+							selectedWallet,
+							selectedNetwork,
+							shouldRefreshLdk: true,
+						});
+						const newNodeId = await getNodeId();
+						if (newNodeId.isOk()) {
+							updateLightningNodeId({
+								nodeId: newNodeId.value,
+								selectedWallet,
+								selectedNetwork,
+							});
+						}
+					},
+					testID: 'RevertToLDKV1',
+				},
+			],
+		},
+		{
 			title: 'App Cache',
 			data: [
+				{
+					title: 'Clear AsyncStorage',
+					type: EItemType.button,
+					onPress: AsyncStorage.clear,
+				},
+				{
+					title: "Clear UTXO's",
+					type: EItemType.button,
+					onPress: clearUtxos,
+				},
+				{
+					title: 'Export Store',
+					type: EItemType.button,
+					onPress: exportStore,
+				},
+				{
+					title: 'Reset All Stores',
+					type: EItemType.button,
+					onPress: (): void => {
+						dispatch({ type: actions.WIPE_APP });
+					},
+				},
+				{
+					title: 'Reset Activity Store',
+					type: EItemType.button,
+					onPress: resetActivityStore,
+				},
+				{
+					title: 'Reset Blocktank Store',
+					type: EItemType.button,
+					onPress: resetBlocktankStore,
+				},
 				{
 					title: 'Reset Current Wallet Store',
 					type: EItemType.button,
@@ -161,14 +298,9 @@ const DevSettings = ({
 					},
 				},
 				{
-					title: 'Reset Entire Wallet Store',
+					title: 'Reset Fees Store',
 					type: EItemType.button,
-					onPress: resetWalletStore,
-				},
-				{
-					title: "Clear UTXO's",
-					type: EItemType.button,
-					onPress: clearUtxos,
+					onPress: resetFeesStore,
 				},
 				{
 					title: 'Reset Lightning Store',
@@ -181,29 +313,9 @@ const DevSettings = ({
 					onPress: resetMetaStore,
 				},
 				{
-					title: 'Reset Fees Store',
-					type: EItemType.button,
-					onPress: resetFeesStore,
-				},
-				{
 					title: 'Reset Settings Store',
 					type: EItemType.button,
 					onPress: resetSettingsStore,
-				},
-				{
-					title: 'Reset Activity Store',
-					type: EItemType.button,
-					onPress: resetActivityStore,
-				},
-				{
-					title: 'Reset User Store',
-					type: EItemType.button,
-					onPress: resetUserStore,
-				},
-				{
-					title: 'Reset Blocktank Store',
-					type: EItemType.button,
-					onPress: resetBlocktankStore,
 				},
 				{
 					title: 'Reset Slashtags Store',
@@ -216,21 +328,14 @@ const DevSettings = ({
 					onPress: resetTodos,
 				},
 				{
-					title: 'Reset UI Store',
+					title: 'Reset User Store',
 					type: EItemType.button,
-					onPress: resetUiStore,
+					onPress: resetUserStore,
 				},
 				{
 					title: 'Reset Widgets Store',
 					type: EItemType.button,
 					onPress: resetWidgetsStore,
-				},
-				{
-					title: 'Reset All Stores',
-					type: EItemType.button,
-					onPress: (): void => {
-						dispatch({ type: actions.WIPE_APP });
-					},
 				},
 				{
 					title: 'Wipe App',

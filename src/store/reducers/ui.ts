@@ -22,7 +22,7 @@ const ui = (state: IUi = defaultUiShape, action): IUi => {
 			return {
 				...state,
 				viewControllers: {
-					...state.viewControllers,
+					...defaultViewControllers,
 					[action.payload.view]: {
 						...action.payload.params,
 						isOpen: true,

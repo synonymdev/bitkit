@@ -8,12 +8,12 @@ import { err, ok, Result } from '@synonymdev/result';
 import SDK from '@synonymdev/slashtags-sdk';
 import { TInvoice } from '@synonymdev/react-native-ldk';
 import { getLNURLParams } from '@synonymdev/react-native-lnurl';
-
+import { bech32m } from 'bech32';
+import URLParse from 'url-parse';
 import {
 	LNURLAuthParams,
 	LNURLChannelParams,
 	LNURLPayParams,
-	LNURLResponse,
 	LNURLWithdrawParams,
 } from 'js-lnurl';
 
@@ -28,6 +28,7 @@ import { updateSendTransaction } from '../store/actions/wallet';
 import { getBalance, getSelectedNetwork, getSelectedWallet } from './wallet';
 import { showBottomSheet, closeBottomSheet } from '../store/actions/ui';
 import { handleSlashtagURL } from './slashtags';
+import { getSlashPayConfig2 } from './slashtags2';
 import {
 	addPeer,
 	decodeLightningInvoice,
@@ -39,13 +40,12 @@ import {
 	networks,
 	TAvailableNetworks,
 } from './networks';
-import { getSlashPayConfig } from './slashtags';
 import { savePeer } from '../store/actions/lightning';
 import { TWalletName } from '../store/types/wallet';
 import { sendNavigation } from '../navigation/bottom-sheet/SendNavigation';
-import { handleLnurlAuth, handleLnurlChannel } from './lnurl';
+import { rootNavigation } from '../navigation/root/RootNavigator';
+import { findlnurl, handleLnurlAuth } from './lnurl';
 import i18n from './i18n';
-import { bech32m } from 'bech32';
 
 const availableNetworksList = availableNetworks();
 
@@ -60,25 +60,82 @@ export enum EQRDataType {
 	slashtagURL = 'slashURL',
 	slashFeedURL = 'slashFeedURL',
 	nodeId = 'nodeId',
+	treasureHunt = 'treasureHunt',
 	//TODO add xpub, lightning node peer etc
 }
 
-export interface QRData {
+export type TLnUrlData =
+	| TLnUrlAuth
+	| TLnUrlChannel
+	| TLnUrlPay
+	| TLnUrlWithdraw;
+
+export type QRData =
+	| TBitcoinUrl
+	| TLightningUrl
+	| TLnUrlData
+	| TNodeId
+	| TSlashTagUrl
+	| TSlashAuthUrl
+	| TSlashFeedUrl
+	| TTreasureChestUrl;
+
+export type TBitcoinUrl = {
+	qrDataType: EQRDataType.bitcoinAddress;
+	address: string;
+	sats: number;
 	network?: TAvailableNetworks | EAvailableNetworks;
-	qrDataType: EQRDataType;
-	sats?: number;
-	address?: string;
-	lightningPaymentRequest?: string;
 	message?: string;
-	lnUrlParams?:
-		| LNURLAuthParams
-		| LNURLWithdrawParams
-		| LNURLChannelParams
-		| LNURLPayParams
-		| LNURLResponse;
-	url?: string;
 	slashTagsUrl?: string;
-}
+};
+export type TLightningUrl = {
+	qrDataType: EQRDataType.lightningPaymentRequest;
+	lightningPaymentRequest: string;
+	sats?: number;
+	network?: TAvailableNetworks;
+	message?: string;
+	slashTagsUrl?: string;
+};
+export type TLnUrlAuth = {
+	qrDataType: EQRDataType.lnurlAuth;
+	lnUrlParams: LNURLAuthParams;
+};
+export type TLnUrlChannel = {
+	qrDataType: EQRDataType.lnurlChannel;
+	lnUrlParams: LNURLChannelParams;
+	network?: TAvailableNetworks;
+};
+export type TLnUrlPay = {
+	qrDataType: EQRDataType.lnurlPay;
+	lnUrlParams: LNURLPayParams;
+	network?: TAvailableNetworks;
+};
+export type TLnUrlWithdraw = {
+	qrDataType: EQRDataType.lnurlWithdraw;
+	lnUrlParams: LNURLWithdrawParams;
+	network?: TAvailableNetworks;
+};
+export type TNodeId = {
+	qrDataType: EQRDataType.nodeId;
+	network: TAvailableNetworks;
+	url: string;
+};
+export type TSlashTagUrl = {
+	qrDataType: EQRDataType.slashtagURL;
+	url: string;
+};
+export type TSlashAuthUrl = {
+	qrDataType: EQRDataType.slashAuthURL;
+	url: string;
+};
+export type TSlashFeedUrl = {
+	qrDataType: EQRDataType.slashFeedURL;
+	url: string;
+};
+export type TTreasureChestUrl = {
+	qrDataType: EQRDataType.treasureHunt;
+	chestId: string;
+};
 
 export const validateAddress = ({
 	address,
@@ -248,14 +305,14 @@ export const processInputData = async ({
 
 			// Check if this is a slashtag url, and we want to send funds to it.
 			const url = decodeRes.value[0].url ?? '';
-			const response = await processSlashPayURL({ url, sdk });
+			const response = await processSlashPayURL({ url });
 
 			if (response.isErr()) {
 				if (showErrors) {
 					showToast({
 						type: 'error',
 						title: i18n.t('slashtags:error_pay_title'),
-						description: response.error.message,
+						description: `An error occurred: ${response.error.message}`,
 					});
 				}
 				return err(response.error.message);
@@ -277,8 +334,12 @@ export const processInputData = async ({
 				({ qrDataType }) => !skip.includes(qrDataType),
 			);
 
+			// The first item in the array is the preferred payment method.
+			const receivePreference = filteredData[0].qrDataType;
+
 			const processBitcoinTxResponse = await processBitcoinTransactionData({
 				data: filteredData,
+				preferredPaymentMethod: receivePreference,
 				selectedWallet,
 				selectedNetwork,
 			});
@@ -320,6 +381,33 @@ export const decodeQRData = async (
 		return err('No data provided.');
 	}
 
+	// Treasure hunt
+	if (__DEV__ || selectedNetwork === EAvailableNetworks.bitcoin) {
+		// Airdrop
+		if (data.includes('cutt.ly/VwQFzhJJ') || data.includes('bitkit.to/drone')) {
+			const chestId = '2gZxrqhc';
+			return ok([{ qrDataType: EQRDataType.treasureHunt, chestId }]);
+		}
+		// Universal links
+		if (data.includes('bitkit.to/treasure-hunt')) {
+			const url = new URLParse(data, true);
+			const chestId = url.query.chest!;
+
+			if (chestId) {
+				return ok([{ qrDataType: EQRDataType.treasureHunt, chestId }]);
+			}
+		}
+		// Deeplinks (fallback)
+		if (data.includes('bitkit:chest')) {
+			const chestId = data.split('-')[1];
+
+			if (chestId) {
+				return ok([{ qrDataType: EQRDataType.treasureHunt, chestId }]);
+			}
+		}
+	}
+
+	// Slashtags
 	if (data.startsWith('slashauth:')) {
 		return ok([{ qrDataType: EQRDataType.slashAuthURL, url: data }]);
 	} else if (data.startsWith('slash:')) {
@@ -332,72 +420,78 @@ export const decodeQRData = async (
 		selectedNetwork = getSelectedNetwork();
 	}
 
-	let foundNetworksInQR: QRData[] = [];
+	let foundNetworksInQR: (
+		| TBitcoinUrl
+		| TLightningUrl
+		| TLnUrlData
+		| TNodeId
+	)[] = [];
 	let lightningInvoice = '';
 	let error = '';
 
-	//Lightning URI or plain lightning payment request
+	//Lightning URI
+	if (findlnurl(data)) {
+		const invoice = findlnurl(data)!;
+		//Attempt to handle any lnurl request.
+		const res = await getLNURLParams(invoice);
+		if (res.isOk()) {
+			const params = res.value;
+
+			if ('tag' in params) {
+				if (params.tag === 'login') {
+					foundNetworksInQR.push({
+						qrDataType: EQRDataType.lnurlAuth,
+						lnUrlParams: params as LNURLAuthParams,
+					});
+				}
+				if (params.tag === 'withdrawRequest') {
+					foundNetworksInQR.push({
+						qrDataType: EQRDataType.lnurlWithdraw,
+						//No real difference between networks for lnurl, all keys are derived the same way so assuming current network
+						network: selectedNetwork,
+						lnUrlParams: params as LNURLWithdrawParams,
+					});
+				}
+				if (params.tag === 'channelRequest') {
+					foundNetworksInQR.push({
+						qrDataType: EQRDataType.lnurlChannel,
+						//No real difference between networks for lnurl, all keys are derived the same way so assuming current network
+						network: selectedNetwork,
+						lnUrlParams: params as LNURLChannelParams,
+					});
+				}
+				if (params.tag === 'payRequest') {
+					foundNetworksInQR.push({
+						qrDataType: EQRDataType.lnurlPay,
+						//No real difference between networks for lnurl, all keys are derived the same way so assuming current network
+						network: selectedNetwork,
+						lnUrlParams: params as LNURLPayParams,
+					});
+				}
+			}
+		} else {
+			error += `${res.error.message} `;
+		}
+	}
+
+	//Plain lightning payment request
 	if (
 		data.toLowerCase().indexOf('lightning:') > -1 ||
 		data.toLowerCase().startsWith('lntb') ||
-		data.toLowerCase().startsWith('lnbc') ||
-		data.toLowerCase().startsWith('lnurl')
+		data.toLowerCase().startsWith('lnbc')
 	) {
 		//If it's a lightning URI, remove "lightning:", everything to the left of it.
 		let invoice = data
 			.replace(/^.*?(lightning:)/i, '')
 			.trim()
 			.toLowerCase();
-		//Attempt to handle any lnurl request.
-		if (invoice.startsWith('lnurl')) {
-			const res = await getLNURLParams(invoice);
-			if (res.isOk()) {
-				const params = res.value;
-				let tag = '';
-				if ('tag' in params) {
-					tag = params.tag;
-				}
 
-				let qrDataType: EQRDataType | undefined;
-
-				switch (tag) {
-					case 'login': {
-						qrDataType = EQRDataType.lnurlAuth;
-						break;
-					}
-					case 'withdrawRequest': {
-						qrDataType = EQRDataType.lnurlWithdraw;
-						break;
-					}
-					case 'channelRequest': {
-						qrDataType = EQRDataType.lnurlChannel;
-						break;
-					}
-					case 'payRequest': {
-						qrDataType = EQRDataType.lnurlPay;
-						break;
-					}
-				}
-
-				if (qrDataType) {
-					foundNetworksInQR.push({
-						qrDataType,
-						//No real difference between networks for lnurl, all keys are derived the same way so assuming current network
-						network: selectedNetwork,
-						lnUrlParams: params,
-					});
-				}
-			} else {
-				error += `${res.error.message} `;
-			}
-		} else {
-			//Assume invoice
-			//Ignore params if there are any, all details can be derived from invoice
-			if (invoice.indexOf('?') > -1) {
-				invoice = invoice.split('?')[0];
-			}
-			lightningInvoice = invoice;
+		//Assume invoice
+		//Ignore params if there are any, all details can be derived from invoice
+		if (invoice.indexOf('?') > -1) {
+			invoice = invoice.split('?')[0];
 		}
+		lightningInvoice = invoice;
 	}
 
 	//Plain bitcoin address or Bitcoin address URI
@@ -487,13 +581,11 @@ export const decodeQRData = async (
 
 export const processSlashPayURL = async ({
 	url,
-	sdk,
 }: {
 	url: string;
-	sdk: SDK;
 }): Promise<Result<QRData[]>> => {
 	try {
-		const payConfig = await getSlashPayConfig(sdk, url);
+		const payConfig = await getSlashPayConfig2(url);
 		const qrData: QRData[] = [];
 
 		payConfig.forEach(({ type, value }) => {
@@ -531,15 +623,21 @@ export const processSlashPayURL = async ({
  * If unable to pay the provided lightning invoice it will defer to on-chain.
  * If unable to pay the requested on-chain amount it will return only the on-chain address and set sats to zero.
  * @param {QRData[]} data
+ * @param {EQRDataType} [preferredPaymentMethod]
+ * @param {boolean} [showErrors]
  * @param {TAvailableNetworks} [selectedNetwork]
  * @param {TWalletName} [selectedWallet]
  */
 export const processBitcoinTransactionData = async ({
 	data = [],
+	preferredPaymentMethod,
+	showErrors = true,
 	selectedNetwork,
 	selectedWallet,
 }: {
 	data: QRData[];
+	preferredPaymentMethod?: EQRDataType;
+	showErrors?: boolean;
 	selectedNetwork?: TAvailableNetworks;
 	selectedWallet?: TWalletName;
 }): Promise<Result<QRData>> => {
@@ -581,7 +679,7 @@ export const processBitcoinTransactionData = async ({
 		// Filter for the lightning invoice.
 		const filteredLightningInvoice = data.find(
 			(d) => d.qrDataType === EQRDataType.lightningPaymentRequest,
-		);
+		) as TLightningUrl;
 		let decodedLightningInvoice: TInvoice | undefined;
 		if (filteredLightningInvoice) {
 			const decodeInvoiceRes = await decodeLightningInvoice({
@@ -594,7 +692,7 @@ export const processBitcoinTransactionData = async ({
 					error = {
 						type: 'error',
 						title: 'Lightning Invoice Expired',
-						description: 'Unfortunately, this lightning invoice has expired.',
+						description: 'This Lightning invoice has expired.',
 					};
 				}
 			}
@@ -615,21 +713,25 @@ export const processBitcoinTransactionData = async ({
 			if (spendingBalance >= requestedAmount) {
 				response = filteredLightningInvoice;
 			} else {
-				const diff = requestedAmount - spendingBalance;
 				error = {
 					type: 'error',
-					title: 'Unable to afford the lightning invoice',
-					description: `(${diff} more sats needed.)`,
+					title: i18n.t('other:pay_insufficient_spending'),
+					description: i18n.t(
+						'other:pay_insufficient_spending_amount_description',
+						{
+							amount: requestedAmount - spendingBalance,
+						},
+					),
 				};
 			}
 		}
 
-		// If no lightning invoice response, attempt to grab an on-chain invoice.
-		if (!response) {
+		// If no lightning invoice response or the contact prefers on-chain payments, grab an on-chain invoice..
+		if (!response || preferredPaymentMethod === EQRDataType.bitcoinAddress) {
 			// Filter for the bitcoin address or on-chain invoice
 			const bitcoinInvoice = data.find(
 				(d) => d.qrDataType === EQRDataType.bitcoinAddress,
-			);
+			) as TBitcoinUrl;
 			if (bitcoinInvoice?.sats) {
 				requestedAmount = bitcoinInvoice.sats;
 			}
@@ -637,29 +739,25 @@ export const processBitcoinTransactionData = async ({
 			// Attempt to pay the on-chain invoice if unable to pay with lightning.
 			// Check that we have a bitcoin invoice and can afford to pay it.
 			if (onchainBalance && bitcoinInvoice?.sats !== undefined) {
-				// If we can afford to pay it, pass it through.
-				// Otherwise, set the provided address and set sats to 0.
 				if (onchainBalance > requestedAmount) {
+					// If we can afford to pay it, pass it through.
 					response = bitcoinInvoice;
 				} else {
-					showToast({
-						type: 'info',
-						title: i18n.t('lightning:error_fulfill_title'),
-						description: i18n.t('lightning:error_fulfill_msg', {
-							amount: requestedAmount - onchainBalance,
-						}),
-					});
+					// Otherwise, set the provided address and set sats to 0.
+					response = { ...bitcoinInvoice, sats: 0 };
 
-					// If the user already specified an amount in the app, don't override it.
-					// Otherwise, set sats to 0.
-					let sats = 0;
-					if (transaction.value.outputs) {
-						sats = transaction.value.outputs[0]?.value ?? 0;
+					if (showErrors) {
+						showToast({
+							type: 'error',
+							title: i18n.t('other:pay_insufficient_savings'),
+							description: i18n.t(
+								'other:pay_insufficient_savings_amount_description',
+								{
+									amount: requestedAmount - onchainBalance,
+								},
+							),
+						});
 					}
-					response = {
-						...bitcoinInvoice,
-						sats,
-					};
 				}
 			}
 		}
@@ -674,19 +772,24 @@ export const processBitcoinTransactionData = async ({
 			if (requestedAmount) {
 				error = {
 					type: 'error',
-					title: `${requestedAmount} more sats needed`,
-					description: 'Unable to pay the provided invoice',
+					title: i18n.t('other:pay_insufficient_savings'),
+					description: i18n.t(
+						'other:pay_insufficient_savings_amount_description',
+						{
+							amount: requestedAmount,
+						},
+					),
 				};
 			} else {
 				error = {
 					type: 'error',
-					title: 'Unable to pay the provided invoice',
-					description: 'Please send more sats to Bitkit to process payments.',
+					title: i18n.t('other:pay_insufficient_savings'),
+					description: i18n.t('other:pay_insufficient_savings_description'),
 				};
 			}
 			showToast(error);
 		}
-		return err(error.title);
+		return err(error.description);
 	} catch (e) {
 		console.log(e);
 		return err(e);
@@ -723,7 +826,14 @@ export const handleData = async ({
 	if (!selectedWallet) {
 		selectedWallet = getSelectedWallet();
 	}
-	if (data.network && data.network !== selectedNetwork) {
+
+	const qrDataType = data.qrDataType;
+
+	if (
+		qrDataType === EQRDataType.bitcoinAddress &&
+		data.network &&
+		data.network !== selectedNetwork
+	) {
 		showToast({
 			type: 'error',
 			title: i18n.t('other:qr_error_network_header'),
@@ -737,29 +847,24 @@ export const handleData = async ({
 		);
 	}
 
-	const qrDataType = data.qrDataType;
-	const address = data.address ?? '';
-	const lightningPaymentRequest = data.lightningPaymentRequest ?? '';
-	let amount = data.sats ?? 0;
-	const message = data.message ?? '';
-	const slashTagsUrl = data.slashTagsUrl;
-
 	//TODO(slashtags): Register Bitkit to handle all slash?x:// protocols
 	switch (qrDataType) {
 		case EQRDataType.slashtagURL: {
-			handleSlashtagURL(data.url!);
+			handleSlashtagURL(data.url);
 			closeBottomSheet('addContactModal');
 			return ok({ type: EQRDataType.slashtagURL });
 		}
 		case EQRDataType.slashFeedURL: {
-			handleSlashtagURL(data.url!);
+			handleSlashtagURL(decodeURIComponent(data.url));
 			return ok({ type: EQRDataType.slashFeedURL });
 		}
 		case EQRDataType.slashAuthURL: {
-			showBottomSheet('slashauthModal', { url: data.url! });
+			showBottomSheet('slashauthModal', { url: data.url });
 			return ok({ type: EQRDataType.slashAuthURL });
 		}
 		case EQRDataType.bitcoinAddress: {
+			const { address, sats, message, slashTagsUrl } = data;
+
 			// If BottomSheet is not open yet (MainScanner)
 			showBottomSheet('sendNavigation', { screen: 'Amount' });
 
@@ -771,24 +876,31 @@ export const handleData = async ({
 				selectedNetwork,
 				transaction: {
 					label: message,
-					outputs: [{ address, value: amount, index: 0 }],
+					outputs: [{ address: address, value: sats, index: 0 }],
 					lightningInvoice: undefined,
-					slashTagsUrl,
+					slashTagsUrl: slashTagsUrl,
 				},
 			});
 
-			return ok({ type: EQRDataType.bitcoinAddress, address, amount });
+			return ok({
+				type: EQRDataType.bitcoinAddress,
+				address: address,
+				amount: sats,
+			});
 		}
 
 		case EQRDataType.lightningPaymentRequest: {
+			const { lightningPaymentRequest, slashTagsUrl } = data;
+
 			const decodedInvoice = await decodeLightningInvoice({
 				paymentRequest: lightningPaymentRequest,
 			});
 			if (decodedInvoice.isErr()) {
+				console.log(decodedInvoice.error.message);
 				showToast({
 					type: 'error',
 					title: i18n.t('lightning:error_decode'),
-					description: decodedInvoice.error.message,
+					description: i18n.t('other:qr_error_no_data_text'),
 				});
 				return err(decodedInvoice.error.message);
 			}
@@ -854,23 +966,46 @@ export const handleData = async ({
 			return ok({ type: EQRDataType.lnurlPay });
 		}
 		case EQRDataType.lnurlChannel: {
+			const accountVersion = getLightningStore().accountVersion;
+			if (accountVersion < 2) {
+				return err(
+					'LDK is currently in the process of migrating. Please restart your app, wait a few blocks and try again.',
+				);
+			}
 			const params = data.lnUrlParams! as LNURLChannelParams;
-			return await handleLnurlChannel({
-				params,
-				selectedWallet,
-				selectedNetwork,
+			rootNavigation.navigate('LightningRoot', {
+				screen: 'LNURLChannel',
+				params: { cParams: params },
 			});
+			return ok({ type: EQRDataType.lnurlChannel });
 		}
 		case EQRDataType.lnurlAuth: {
 			const params = data.lnUrlParams as LNURLAuthParams;
 			return await handleLnurlAuth({ params, selectedWallet, selectedNetwork });
 		}
 		case EQRDataType.lnurlWithdraw: {
+			const accountVersion = getLightningStore().accountVersion;
+			if (accountVersion < 2) {
+				return err(
+					'LDK is currently in the process of migrating. Please restart your app, wait a few blocks and try again.',
+				);
+			}
 			let params = data.lnUrlParams as LNURLWithdrawParams;
 
 			//Convert msats to sats.
 			params.minWithdrawable = Math.floor(params.minWithdrawable / 1000);
 			params.maxWithdrawable = Math.floor(params.maxWithdrawable / 1000);
+
+			if (params.minWithdrawable > params.maxWithdrawable) {
+				showToast({
+					type: 'error',
+					title: i18n.t('other:lnurl_withdr_error'),
+					description: i18n.t('other:lnurl_withdr_error_minmax'),
+				});
+				return err(
+					'Wrong lnurl-withdraw params: minWithdrawable > maxWithdrawable.',
+				);
+			}
 
 			// Determine if we have enough receiving capacity before proceeding.
 			const lightningBalance = getLightningBalance({
@@ -902,7 +1037,7 @@ export const handleData = async ({
 			if (peer.includes('onion')) {
 				showToast({
 					type: 'error',
-					title: i18n.t('lightning:error_add'),
+					title: i18n.t('lightning:error_add_title'),
 					description: i18n.t('lightning:error_add_tor'),
 				});
 				return err('Unable to add tor nodes at this time.');
@@ -923,7 +1058,7 @@ export const handleData = async ({
 			if (savePeerRes.isErr()) {
 				showToast({
 					type: 'error',
-					title: i18n.t('lightning:error_save'),
+					title: i18n.t('lightning:error_save_title'),
 					description: savePeerRes.error.message,
 				});
 				return err(savePeerRes.error.message);
@@ -935,6 +1070,11 @@ export const handleData = async ({
 				description: i18n.t('lightning:peer_saved'),
 			});
 			return ok({ type: EQRDataType.nodeId });
+		}
+
+		case EQRDataType.treasureHunt: {
+			showBottomSheet('treasureHunt', { chestId: data.chestId });
+			return ok({ type: EQRDataType.lnurlWithdraw });
 		}
 
 		default:
@@ -1002,6 +1142,7 @@ export const validateInputData = async ({
 			// Attempt to handle a unified Bitcoin transaction.
 			const processBitcoinTxResponse = await processBitcoinTransactionData({
 				data: decodeRes.value,
+				showErrors,
 				selectedWallet,
 				selectedNetwork,
 			});
@@ -1023,7 +1164,6 @@ export const validateInputData = async ({
 			if (source === 'send') {
 				const response = await processSlashPayURL({
 					url: decodedData.url!,
-					sdk,
 				});
 				if (response.isErr()) {
 					const errorMessage = response.error.message;
@@ -1031,7 +1171,7 @@ export const validateInputData = async ({
 						showToast({
 							type: 'error',
 							title: i18n.t('slashtags:error_pay_title'),
-							description: errorMessage,
+							description: `An error occurred: ${errorMessage}`,
 						});
 					}
 					return err(errorMessage);

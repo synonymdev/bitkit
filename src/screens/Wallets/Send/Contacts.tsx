@@ -50,13 +50,13 @@ const Contacts = ({
 		setLoading(false);
 		if (res.isOk()) {
 			navigation.navigate('Amount');
-			return;
+		} else {
+			showToast({
+				type: 'error',
+				title: t('contact_pay_error'),
+				description: res.error.message,
+			});
 		}
-		showToast({
-			type: 'error',
-			title: t('contact_pay_error'),
-			description: res.error.message,
-		});
 	};
 
 	return (

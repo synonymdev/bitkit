@@ -1,5 +1,6 @@
 import React, { ReactElement, ReactNode, useMemo, useState } from 'react';
 import {
+	Alert,
 	View,
 	TouchableOpacity,
 	StyleSheet,
@@ -20,19 +21,20 @@ import {
 } from '../../styles/icons';
 import useColors from '../../hooks/colors';
 import Camera from '../../components/Camera';
-import GradientView from '../../components/GradientView';
+import GradientView from '../../components/CameraGradientView';
 import BlurView from '../../components/BlurView';
 import Button from '../../components/Button';
+import { __E2E__ } from '../../constants/env';
 
 type ScannerComponentProps = {
 	children: ReactNode;
-	transparent?: boolean;
+	bottomSheet?: boolean;
 	onRead: (data: string) => void;
 };
 
 const ScannerComponent = ({
 	children,
-	transparent = true,
+	bottomSheet = false,
 	onRead,
 }: ScannerComponentProps): ReactElement => {
 	const { t } = useTranslation('other');
@@ -43,7 +45,7 @@ const ScannerComponent = ({
 	const [error, setError] = useState('');
 
 	const backgroundStyles = useMemo(() => {
-		if (transparent) {
+		if (!bottomSheet) {
 			return {
 				...styles.background,
 				backgroundColor: 'rgba(0, 0, 0, 0.64)',
@@ -54,7 +56,7 @@ const ScannerComponent = ({
 			...styles.background,
 			backgroundColor: 'black',
 		};
-	}, [transparent]);
+	}, [bottomSheet]);
 
 	const showError = (text: string): void => {
 		setError(text);
@@ -98,17 +100,29 @@ const ScannerComponent = ({
 			}
 		} catch (err) {
 			console.error('Failed to open image file: ', err);
-			showError('Sorry. An error occured when trying to open this image file.');
+			showError(
+				'Sorry. An error occurred when trying to open this image file.',
+			);
 		} finally {
 			setIsChoosingFile(false);
 		}
 	};
 
-	const TopBackground = transparent ? BlurView : GradientView;
-	const Background = transparent ? BlurView : View;
+	const onReadDebug = (): void => {
+		Alert.prompt('Enter QRCode string', undefined, (text) => {
+			onRead(text);
+		});
+	};
+
+	const TopBackground = bottomSheet ? GradientView : BlurView;
+	const Background = bottomSheet ? View : BlurView;
+	const size = dimensions.width - 16 * 2;
 
 	return (
-		<Camera onBarCodeRead={onBarCodeRead} torchMode={torchMode}>
+		<Camera
+			bottomSheet={bottomSheet}
+			torchMode={torchMode}
+			onBarCodeRead={onBarCodeRead}>
 			<>
 				{children}
 
@@ -116,11 +130,8 @@ const ScannerComponent = ({
 					<TopBackground style={backgroundStyles} />
 					<View style={styles.maskCenter}>
 						<Background style={backgroundStyles} />
-						<View
-							style={{
-								height: dimensions.height / 2.4,
-								width: dimensions.width - 16 * 2,
-							}}>
+						<View style={{ height: size, width: size }}>
+							{bottomSheet && <View style={styles.maskRing} />}
 							<View style={styles.actionsRow}>
 								<TouchableOpacity
 									style={[styles.actionButton, { backgroundColor: white08 }]}
@@ -154,6 +165,16 @@ const ScannerComponent = ({
 							}}
 						/>
 
+						{__E2E__ && (
+							<Button
+								style={styles.pasteButton}
+								text="Enter QRCode string"
+								size="large"
+								onPress={onReadDebug}
+								testID="ScanPrompt"
+							/>
+						)}
+
 						{!!error && (
 							<AnimatedView
 								color="transparent"
@@ -175,9 +196,19 @@ const styles = StyleSheet.create({
 	background: {
 		flex: 1,
 		alignItems: 'center',
+		zIndex: -1,
 	},
 	maskCenter: {
 		flexDirection: 'row',
+	},
+	maskRing: {
+		position: 'absolute',
+		top: -16,
+		bottom: -16,
+		left: -16,
+		right: -16,
+		borderRadius: 30,
+		borderWidth: 16,
 	},
 	actionsRow: {
 		flexDirection: 'row',

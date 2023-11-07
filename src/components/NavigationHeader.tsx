@@ -87,14 +87,14 @@ const NavigationHeader = ({
 	const showBack = Boolean(displayBackButton && navigation.canGoBack());
 
 	const numberOfActions = useMemo(() => {
-		if (onActionPress && onClosePress) {
+		if (actionIcon && onClosePress) {
 			return 2;
-		} else if (showBack || onActionPress || onClosePress) {
+		} else if (showBack || actionIcon || onClosePress) {
 			return 1;
 		} else {
 			return 0;
 		}
-	}, [onActionPress, onClosePress, showBack]);
+	}, [actionIcon, onClosePress, showBack]);
 
 	const actionColumn = useMemo(
 		() => [
@@ -123,16 +123,19 @@ const NavigationHeader = ({
 				</Text>
 			</View>
 			<View style={actionColumn}>
-				{onActionPress && (
-					<ActionButton onPress={onActionPress} testID="NavigationAction">
+				{actionIcon && (
+					<ActionButton
+						style={styles.actionRight}
+						testID="NavigationAction"
+						onPress={onActionPress}>
 						{actionIcon}
 					</ActionButton>
 				)}
 				{onClosePress && (
 					<ActionButton
-						style={styles.closeButton}
-						onPress={onClosePress}
-						testID="NavigationClose">
+						style={styles.actionRight}
+						testID="NavigationClose"
+						onPress={onClosePress}>
 						<XIcon width={24} height={24} />
 					</ActionButton>
 				)}
@@ -175,7 +178,7 @@ const styles = StyleSheet.create({
 	backButton: {
 		paddingLeft: 11,
 	},
-	closeButton: {
+	actionRight: {
 		paddingRight: 11,
 	},
 });

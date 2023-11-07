@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 import { err, ok, Result } from '@synonymdev/result';
 import Url from 'url-parse';
 import { useTranslation } from 'react-i18next';
+import isEqual from 'lodash/isEqual';
 
 import { View, TextInput, ScrollView } from '../../../styles/components';
 import { Text01S, Caption13Up } from '../../../styles/text';
@@ -17,8 +18,9 @@ import Store from '../../../store/types';
 import { origCustomElectrumPeers } from '../../../store/shapes/settings';
 import { connectToElectrum } from '../../../utils/wallet/electrum';
 import NavigationHeader from '../../../components/NavigationHeader';
+import SafeAreaInset from '../../../components/SafeAreaInset';
+import { RadioButtonGroup } from '../../../components/RadioButton';
 import Button from '../../../components/Button';
-import { objectsMatch } from '../../../utils/helpers';
 import {
 	defaultElectrumPorts,
 	getDefaultPort,
@@ -26,8 +28,6 @@ import {
 } from '../../../utils/electrum';
 import { showToast } from '../../../utils/notifications';
 import { getConnectedPeer, IPeerData } from '../../../utils/wallet/electrum';
-import SafeAreaInset from '../../../components/SafeAreaInset';
-import { RadioButtonGroup } from '../../../components/RadioButton';
 import type { SettingsScreenProps } from '../../../navigation/types';
 
 type RadioButtonItem = { label: string; value: TProtocol };
@@ -106,7 +106,11 @@ const ElectrumConfig = ({
 	const getAndUpdateConnectedPeer = async (): Promise<void> => {
 		const peerInfo = await getConnectedPeer(selectedNetwork);
 		if (peerInfo.isOk()) {
-			setConnectedPeer(peerInfo.value);
+			setConnectedPeer({
+				host: peerInfo.value.host,
+				port: peerInfo.value.port.toString(),
+				protocol: peerInfo.value.protocol,
+			});
 		} else {
 			setConnectedPeer(undefined);
 		}
@@ -154,11 +158,12 @@ const ElectrumConfig = ({
 					description: t('es.server_updated_message', { host, port }),
 				});
 			} else {
+				console.log(connectResponse.error.message);
 				updateUi({ isConnectedToElectrum: false });
 				showToast({
 					type: 'error',
 					title: t('es.server_error'),
-					description: connectResponse.error.message,
+					description: t('es.server_error_description'),
 				});
 			}
 			await getAndUpdateConnectedPeer();
@@ -181,18 +186,29 @@ const ElectrumConfig = ({
 	};
 
 	const onScan = (data: string): void => {
-		try {
-			// manually prefix protocol if missing
-			if (!data.startsWith('http') && !data.startsWith('https')) {
-				const url = new Url(data);
-				const _protocol = getProtocolForPort(url.pathname, selectedNetwork);
-				const prefix = `${_protocol === 'ssl' ? 'https://' : 'http://'}`;
-				data = `${prefix}${data}`;
+		let connectData: IPeerData;
+
+		if (!data.startsWith('http://') && !data.startsWith('https://')) {
+			let [_host, _port, shortProtocol] = data.split(':');
+			let _protocol: TProtocol = 'tcp';
+
+			if (shortProtocol) {
+				// Support Umbrel connection URL format
+				_protocol = shortProtocol === 's' ? 'ssl' : 'tcp';
+			} else {
+				// Prefix protocol for common ports if missing
+				_protocol = getProtocolForPort(_port, selectedNetwork);
 			}
 
-			// parse
+			connectData = {
+				host: _host,
+				port: _port,
+				protocol: _protocol,
+			};
+		} else {
 			const url = new Url(data);
-			const connectData: IPeerData = {
+
+			connectData = {
 				host: url.hostname,
 				port: url.port,
 				protocol: url.protocol === 'https:' ? 'ssl' : 'tcp',
@@ -200,38 +216,33 @@ const ElectrumConfig = ({
 
 			// Add default port back in
 			// https://github.com/unshiftio/url-parse/issues/132
-			if (!connectData.port) {
-				connectData.port = connectData.protocol === 'ssl' ? '443' : '80';
+			if (!url.port) {
+				const defaultPort = url.protocol === 'https:' ? '443' : '80';
+				connectData.port = defaultPort;
 			}
+		}
 
-			const validityCheck = validateInput(connectData, t);
-			if (validityCheck.isErr()) {
-				showToast({
-					type: 'error',
-					title: t('es.error_peer'),
-					description: validityCheck.error.message,
-				});
-				return;
-			}
-
-			// Update form
-			setHost(connectData.host);
-			setPort(connectData.port);
-			setProtocol(connectData.protocol);
-
-			// Try to connect
-			connectAndAddPeer(connectData);
-		} catch {
+		const validityCheck = validateInput(connectData, t);
+		if (validityCheck.isErr()) {
 			showToast({
 				type: 'error',
-				title: t('es.qr_error_title'),
-				description: t('es.qr_error_message'),
+				title: t('es.error_peer'),
+				description: validityCheck.error.message,
 			});
+			return;
 		}
+
+		// Update form
+		setHost(connectData.host);
+		setPort(connectData.port);
+		setProtocol(connectData.protocol);
+
+		// Try to connect
+		connectAndAddPeer(connectData);
 	};
 
 	// Compare against the currently connected peer
-	const hasEdited = !objectsMatch({ host, port, protocol }, connectedPeer);
+	const hasEdited = !isEqual({ host, port, protocol }, connectedPeer);
 
 	return (
 		<View style={styles.container}>
@@ -292,7 +303,10 @@ const ElectrumConfig = ({
 					testID="PortInput"
 				/>
 
-				<View style={styles.protocol}>
+				<View
+					style={styles.protocol}
+					accessibilityLabel={protocol}
+					testID="ElectrumProtocol">
 					<Caption13Up color="gray1" style={styles.label}>
 						{t('es.protocol')}
 					</Caption13Up>
@@ -318,8 +332,8 @@ const ElectrumConfig = ({
 						text={t('es.button_reset')}
 						variant="secondary"
 						size="large"
-						onPress={resetToDefault}
 						testID="ResetToDefault"
+						onPress={resetToDefault}
 					/>
 					<View style={styles.divider} />
 					<Button
@@ -328,10 +342,10 @@ const ElectrumConfig = ({
 						size="large"
 						loading={loading}
 						disabled={!hasEdited}
+						testID="ConnectToHost"
 						onPress={(): void => {
 							connectAndAddPeer({ host, port, protocol });
 						}}
-						testID="ConnectToHost"
 					/>
 				</View>
 				<SafeAreaInset type="bottom" minPadding={16} />

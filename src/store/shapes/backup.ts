@@ -19,6 +19,9 @@ export const defaultBackupShape: IBackup = {
 	remoteBlocktankBackupSynced: false,
 	remoteBlocktankBackupLastSync: undefined,
 	remoteBlocktankBackupSyncRequired: undefined,
+	remoteSlashtagsBackupSynced: false,
+	remoteSlashtagsBackupLastSync: undefined,
+	remoteSlashtagsBackupSyncRequired: undefined,
 
 	hyperProfileSeedCheckSuccess: undefined,
 	hyperProfileCheckRequested: undefined,

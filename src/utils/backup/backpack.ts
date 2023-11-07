@@ -23,6 +23,7 @@ export enum EBackupCategories {
 	widgets = 'bitkit.widgets',
 	metadata = 'bitkit.metadata',
 	blocktank = 'bitkit.blocktank',
+	slashtags = 'bitkit.slashtags',
 }
 
 //Keep a cached backup instance for each slashtag

@@ -10,6 +10,7 @@ import {
 	ViewProps,
 	TextInput as RNTextInput,
 	TextInputProps as RNTextInputProps,
+	SwitchProps,
 } from 'react-native';
 import Animated, { AnimateProps } from 'react-native-reanimated';
 import { SafeAreaProvider as _SafeAreaProvider } from 'react-native-safe-area-context';
@@ -108,12 +109,19 @@ export const Pressable = styled(RNPressable)<PressableProps & ColorProps>(
 	}),
 );
 
-export const Switch = styled(RNSwitch).attrs((props) => ({
-	trackColor: { false: '#767577', true: props.theme.colors.brand },
-	thumbColor: 'white',
-	ios_backgroundColor: '#3e3e3e',
-	...props,
-}))({});
+export const Switch = styled(RNSwitch).attrs<SwitchProps & ColorProps>(
+	(props) => ({
+		trackColor: {
+			false: '#767577',
+			true: props.color
+				? props.theme.colors[props.color]
+				: props.theme.colors.brand,
+		},
+		thumbColor: 'white',
+		ios_backgroundColor: '#3e3e3e',
+		...props,
+	}),
+)<SwitchProps & ColorProps>(() => ({}));
 
 export const TextInput = styled(RNTextInput).attrs<TextInputProps>((props) => ({
 	keyboardAppearance: props.theme.id,

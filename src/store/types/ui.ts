@@ -20,6 +20,7 @@ export type ViewControllerParamList = {
 	sendNavigation: { screen: keyof SendStackParamList } | undefined;
 	slashauthModal: { url: string };
 	timeRangePrompt: undefined;
+	treasureHunt: { chestId: string };
 	tagsPrompt: undefined;
 	lnurlWithdraw: { wParams: LNURLWithdrawParams };
 	lnurlPay: { pParams: LNURLPayParams };
@@ -37,6 +38,7 @@ export type TUiViewController = {
 export type IViewControllerData = {
 	isOpen: boolean;
 	activityItem?: IActivityItem;
+	chestId?: string;
 	onchainActivityItem?: TOnchainActivityItem;
 	id?: string;
 	screen?: keyof SendStackParamList;
@@ -66,8 +68,10 @@ export interface IUi {
 	isAuthenticated: boolean;
 	isConnectedToElectrum: boolean;
 	isOnline: boolean;
+	isLDKReady: boolean;
 	profileLink: TProfileLink;
 	viewControllers: TUiViewController;
 	timeZone: string;
 	language: string;
+	fromAddressViewer: boolean;
 }

@@ -1,15 +1,18 @@
-import React, { memo, ReactElement } from 'react';
+import React, { memo, ReactElement, ReactNode } from 'react';
 import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import { Switch } from '../styles/components';
+import { IThemeColors } from '../styles/themes';
 import Divider from './Divider';
 
 const SwitchRow = ({
 	children,
+	color,
 	isEnabled,
 	showDivider = true,
 	onPress,
 }: {
-	children: ReactElement;
+	children: ReactNode;
+	color?: keyof IThemeColors;
 	isEnabled: boolean;
 	showDivider?: boolean;
 	onPress: () => void;
@@ -22,7 +25,7 @@ const SwitchRow = ({
 				style={styles.container}>
 				<View style={styles.leftColumn}>{children}</View>
 				<View style={styles.rightColumn}>
-					<Switch onValueChange={onPress} value={isEnabled} />
+					<Switch value={isEnabled} color={color} onValueChange={onPress} />
 				</View>
 			</TouchableOpacity>
 			{showDivider && <Divider style={styles.divider} />}
@@ -34,7 +37,7 @@ const styles = StyleSheet.create({
 	container: {
 		flexDirection: 'row',
 		justifyContent: 'flex-start',
-		alignItems: 'flex-start',
+		alignItems: 'center',
 		paddingVertical: 8,
 	},
 	divider: {

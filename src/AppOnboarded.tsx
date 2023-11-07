@@ -19,6 +19,7 @@ import {
 	selectedNetworkSelector,
 	selectedWalletSelector,
 } from './store/reselect/wallet';
+import { useMigrateSlashtags2 } from './hooks/slashtags2';
 
 const onElectrumConnectionChange = (isConnected: boolean): void => {
 	// get state fresh from store everytime
@@ -51,6 +52,9 @@ const AppOnboarded = (): ReactElement => {
 	const pin = useSelector(pinSelector);
 	const pinOnLaunch = useSelector(pinOnLaunchSelector);
 	const isOnline = useSelector(isOnlineSelector);
+
+	// migrate slashtags from v1 to v2
+	useMigrateSlashtags2();
 
 	// on App start
 	useEffect(() => {

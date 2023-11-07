@@ -26,13 +26,18 @@ import type { WalletScreenProps } from '../../navigation/types';
 import TimeRangePrompt from './TimeRangePrompt';
 import { showBottomSheet, closeBottomSheet } from '../../store/actions/ui';
 import TagsPrompt from './TagsPrompt';
-import { EActivityType } from '../../store/types/activity';
+import { TActivityFilter } from '../../utils/activity';
 
-const tabs = [
-	{ id: 'all', filter: {} },
+type TTab = {
+	id: string;
+	filter: TActivityFilter;
+};
+
+const tabs: TTab[] = [
+	{ id: 'all', filter: { includeTransfers: true } },
 	{ id: 'sent', filter: { txType: EPaymentType.sent } },
 	{ id: 'received', filter: { txType: EPaymentType.received } },
-	{ id: 'other', filter: { types: [EActivityType.onchain], transfer: true } },
+	{ id: 'other', filter: { includeTransfers: true, onlyTransfers: true } },
 ];
 
 const Tab = ({

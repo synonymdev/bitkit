@@ -1,1 +1,13 @@
-{}
+{
+  "settings": "Ustawienia",
+  "general": {
+    "suggestions": "Sugestie"
+  },
+  "backup": {
+    "category_settings": "Ustawienia"
+  },
+  "es": {
+    "host": "Host",
+    "port": "Port"
+  }
+}

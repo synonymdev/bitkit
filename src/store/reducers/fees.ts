@@ -9,9 +9,14 @@ const fees = (state: IFees = defaultFeesShape, action): IFees => {
 				...state,
 				onchain: {
 					...state.onchain,
-					timestamp: Date.now(),
 					...action.payload,
 				},
+			};
+
+		case actions.UPDATE_OVERRIDE_FEES:
+			return {
+				...state,
+				override: action.payload,
 			};
 
 		case actions.RESET_FEES_STORE:

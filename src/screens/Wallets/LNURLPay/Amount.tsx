@@ -176,7 +176,7 @@ const styles = StyleSheet.create({
 	numberPad: {
 		flex: 1,
 		marginTop: 'auto',
-		maxHeight: 450,
+		maxHeight: 435,
 	},
 	actions: {
 		borderBottomColor: 'rgba(255, 255, 255, 0.1)',

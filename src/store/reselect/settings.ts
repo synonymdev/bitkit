@@ -82,6 +82,10 @@ export const customElectrumPeersSelector = createSelector(
 	(customElectrumPeers, selectedNetwork): ICustomElectrumPeer[] =>
 		customElectrumPeers[selectedNetwork],
 );
+export const rapidGossipSyncUrlSelector = createSelector(
+	[settingsState],
+	(settings): string => settings.rapidGossipSyncUrl,
+);
 export const transactionSpeedSelector = createSelector(
 	[settingsState],
 	(settings): ETransactionSpeed => settings.transactionSpeed,
@@ -141,4 +145,13 @@ export const nonFiatUnitSelector = createSelector(
 	(settings) => {
 		return settings.unit === EUnit.fiat ? EUnit.satoshi : EUnit.fiat;
 	},
+);
+export const webRelaySelector = createSelector(
+	[settingsState],
+	(settings): string => settings.webRelay,
+);
+
+export const webRelayTrustedSelector = createSelector(
+	[settingsState],
+	(settings) => settings.isWebRelayTrusted,
 );

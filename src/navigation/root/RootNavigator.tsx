@@ -24,10 +24,10 @@ import { NavigationContainer } from '../../styles/components';
 import { processInputData } from '../../utils/scanner';
 import { checkClipboardData } from '../../utils/clipboard';
 import { useRenderCount } from '../../hooks/helpers';
+import { getStore } from '../../store/helpers';
 import { updateUi } from '../../store/actions/ui';
 import { resetSendTransaction } from '../../store/actions/wallet';
 import { isAuthenticatedSelector } from '../../store/reselect/ui';
-import { pinOnIdleSelector, pinSelector } from '../../store/reselect/settings';
 import AuthCheck from '../../components/AuthCheck';
 import Dialog from '../../components/Dialog';
 import WalletNavigator from '../wallet/WalletNavigator';
@@ -49,9 +49,9 @@ import Contacts from '../../screens/Contacts/Contacts';
 import Contact from '../../screens/Contacts/Contact';
 import ContactEdit from '../../screens/Contacts/ContactEdit';
 import SlashAuthModal from '../../screens/Widgets/SlashAuthModal';
-import WidgetFeedEdit from '../../screens/Widgets/WidgetFeedEdit';
+import Widget from '../../screens/Widgets/Widget';
+import WidgetEdit from '../../screens/Widgets/WidgetEdit';
 import BackupSubscriber from '../../utils/backup/backups-subscriber';
-import WidgetsNavigator from '../widgets/WidgetsNavigator';
 import SendNavigation from '../bottom-sheet/SendNavigation';
 import ReceiveNavigation from '../bottom-sheet/ReceiveNavigation';
 import BackupNavigation from '../bottom-sheet/BackupNavigation';
@@ -60,6 +60,12 @@ import ForceTransfer from '../bottom-sheet/ForceTransfer';
 import CloseChannelSuccess from '../bottom-sheet/CloseChannelSuccess';
 import LNURLWithdrawNavigation from '../bottom-sheet/LNURLWithdrawNavigation';
 import LNURLPayNavigation from '../bottom-sheet/LNURLPayNavigation';
+import TreasureHuntNavigation from '../bottom-sheet/TreasureHuntNavigation';
+import WidgetsSuggestions from '../../screens/Widgets/WidgetsSuggestions';
+import {
+	GoodbyePasswords,
+	HelloWidgets,
+} from '../../screens/Widgets/WidgetsOnboarding';
 import { __E2E__ } from '../../constants/env';
 import type { RootStackParamList } from '../types';
 
@@ -99,13 +105,11 @@ const RootNavigator = (): ReactElement => {
 	const appState = useRef(AppState.currentState);
 	const [showDialog, setShowDialog] = useState(false);
 	const [shouldCheckClipboard, setShouldCheckClipboard] = useState(false);
-	const pin = useSelector(pinSelector);
-	const pinOnIdle = useSelector(pinOnIdleSelector);
 	const isAuthenticated = useSelector(isAuthenticatedSelector);
 	const renderCount = useRenderCount();
 
 	const linking: LinkingOptions<{}> = {
-		prefixes: ['slash', 'bitcoin', 'lightning'],
+		prefixes: ['bitkit', 'slash', 'bitcoin', 'lightning'],
 		// This is just here to prevent a warning
 		config: { screens: { Wallet: '' } },
 		subscribe(listener): () => void {
@@ -169,24 +173,15 @@ const RootNavigator = (): ReactElement => {
 		const appStateSubscription = AppState.addEventListener(
 			'change',
 			(nextAppState): void => {
+				// get state fresh from store everytime
+				const uiStore = getStore().ui;
+
 				// on App to foreground
 				if (appState.current.match(/background/) && nextAppState === 'active') {
 					// prevent redirecting while on AuthCheck
-					if (isAuthenticated) {
+					if (uiStore.isAuthenticated) {
 						checkClipboard().then();
 					} else {
-						setShouldCheckClipboard(true);
-					}
-				}
-
-				// on App to background
-				if (
-					appState.current.match(/active|inactive/) &&
-					nextAppState === 'background'
-				) {
-					// lock the app on background if pinOnIdle is enabled
-					if (pin && pinOnIdle) {
-						updateUi({ isAuthenticated: false });
 						setShouldCheckClipboard(true);
 					}
 				}
@@ -232,10 +227,17 @@ const RootNavigator = (): ReactElement => {
 				<Stack.Screen name="Contact" component={Contact} />
 				<Stack.Screen name="BuyBitcoin" component={BuyBitcoin} />
 				<Stack.Screen name="BetaRisk" component={BetaRisk} />
-				<Stack.Screen name="WidgetFeedEdit" component={WidgetFeedEdit} />
-				<Stack.Screen name="WidgetsRoot" component={WidgetsNavigator} />
+				<Stack.Screen name="GoodbyePasswords" component={GoodbyePasswords} />
+				<Stack.Screen name="HelloWidgets" component={HelloWidgets} />
+				<Stack.Screen
+					name="WidgetsSuggestions"
+					component={WidgetsSuggestions}
+				/>
+				<Stack.Screen name="Widget" component={Widget} />
+				<Stack.Screen name="WidgetEdit" component={WidgetEdit} />
 			</Stack.Navigator>
 
+			<TreasureHuntNavigation />
 			<SendNavigation />
 			<ReceiveNavigation />
 			<BackupNavigation />

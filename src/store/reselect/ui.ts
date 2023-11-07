@@ -77,6 +77,11 @@ export const isOnlineSelector = createSelector(
 	(ui): boolean => ui.isOnline,
 );
 
+export const isLDKReadySelector = createSelector(
+	[uiState],
+	(ui): boolean => ui.isLDKReady,
+);
+
 export const isConnectedToElectrumSelector = createSelector(
 	[uiState],
 	(ui): boolean => ui.isConnectedToElectrum,
@@ -95,3 +100,8 @@ export const criticalUpdateSelector = createSelector(
 export const timeZoneSelector = createSelector([uiState], (ui) => ui.timeZone);
 
 export const languageSelector = createSelector([uiState], (ui) => ui.language);
+
+export const fromAddressViewerSelector = createSelector(
+	[uiState],
+	(ui) => ui.fromAddressViewer,
+);

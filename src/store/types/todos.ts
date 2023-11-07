@@ -3,7 +3,6 @@ import { IColors } from '../../styles/colors';
 
 export type TTodoType =
 	| 'backupSeedPhrase'
-	| 'boost'
 	| 'pin'
 	| 'lightning'
 	| 'lightningSettingUp'
@@ -20,7 +19,15 @@ export interface ITodo {
 	color: keyof IColors;
 	image: ImageSourcePropType;
 	dismissable: boolean;
-	temporary?: boolean;
 }
 
-export type ITodos = TTodoType[];
+export interface IOpenChannelNotification {
+	[key: string]: number;
+}
+
+export type ITodos = {
+	hide: Partial<{
+		[K in TTodoType]: number;
+	}>;
+	newChannelsNotifications: IOpenChannelNotification;
+};

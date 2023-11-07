@@ -27,6 +27,8 @@ import { runStorageCheck } from '../src/utils/wallet/checks';
 jest.setTimeout(60_000);
 
 const bitcoinURL = 'http://polaruser:polarpass@127.0.0.1:43782';
+const electrumHost = '127.0.0.1';
+const electrumPort = 60001;
 
 describe('Wallet - new wallet, send and receive', () => {
 	let waitForElectrum;
@@ -45,7 +47,7 @@ describe('Wallet - new wallet, send and receive', () => {
 		}
 
 		waitForElectrum = await initWaitForElectrumToSync(
-			{ port: 60001, host: '127.0.0.1' },
+			{ host: electrumHost, port: electrumPort },
 			bitcoinURL,
 		);
 	});
@@ -70,7 +72,7 @@ describe('Wallet - new wallet, send and receive', () => {
 		expect(res.value).toEqual('Wallet created');
 
 		// switch to regtest
-		await updateWallet({ selectedNetwork: 'bitcoinRegtest' });
+		updateWallet({ selectedNetwork: 'bitcoinRegtest' });
 		expect(store.getState().wallet.selectedNetwork).toEqual('bitcoinRegtest');
 
 		res = await addElectrumPeer({
@@ -173,7 +175,7 @@ describe('Wallet - new wallet, send and receive', () => {
 		});
 		// @ts-ignore
 		expect(updateFeeRes.error.message).toBe(
-			'Unable to increase the fee any further. Otherwise, it will exceed half the current balance.',
+			'Unable to increase the fee. It would exceed half of your current balance.',
 		);
 
 		// set fee to 3 vsat/byte

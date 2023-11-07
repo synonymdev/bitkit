@@ -26,7 +26,11 @@ import {
 	resetSendTransaction,
 	setupOnChainTransaction,
 } from '../../store/actions/wallet';
-import { convertCurrency, convertToSats } from '../../utils/conversion';
+import {
+	convertCurrency,
+	convertToSats,
+	fiatToBitcoinUnit,
+} from '../../utils/conversion';
 import { getFiatDisplayValues } from '../../utils/displayValues';
 import { showToast } from '../../utils/notifications';
 import { startChannelPurchase } from '../../store/actions/blocktank';
@@ -35,10 +39,7 @@ import {
 	primaryUnitSelector,
 	selectedCurrencySelector,
 } from '../../store/reselect/settings';
-import {
-	blocktankProductIdSelector,
-	blocktankServiceSelector,
-} from '../../store/reselect/blocktank';
+import { blocktankInfoSelector } from '../../store/reselect/blocktank';
 import {
 	selectedNetworkSelector,
 	selectedWalletSelector,
@@ -71,15 +72,15 @@ const PACKAGES_SPENDING: Omit<TPackage, 'satoshis'>[] = [
 	{
 		id: 'big',
 		img: require('../../assets/illustrations/coin-stack-3.png'),
-		fiatAmount: 500,
+		fiatAmount: 450,
 	},
 ];
 
 const PACKAGES_RECEIVING: Omit<TPackage, 'satoshis'>[] = [
 	{
-		id: 'small',
-		img: require('../../assets/illustrations/coin-stack-1.png'),
-		fiatAmount: 250,
+		id: 'big',
+		img: require('../../assets/illustrations/coin-stack-3.png'),
+		fiatAmount: 999,
 	},
 	{
 		id: 'medium',
@@ -87,9 +88,9 @@ const PACKAGES_RECEIVING: Omit<TPackage, 'satoshis'>[] = [
 		fiatAmount: 500,
 	},
 	{
-		id: 'big',
-		img: require('../../assets/illustrations/coin-stack-3.png'),
-		fiatAmount: 999,
+		id: 'small',
+		img: require('../../assets/illustrations/coin-stack-1.png'),
+		fiatAmount: 250,
 	},
 ];
 
@@ -103,18 +104,30 @@ const CustomSetup = ({
 	const { onchainBalance } = useBalance();
 	const { fiatValue: onchainFiatBalance } = useDisplayValues(onchainBalance);
 	const unit = useSelector(primaryUnitSelector);
-	const productId = useSelector(blocktankProductIdSelector);
 	const selectedWallet = useSelector(selectedWalletSelector);
 	const selectedNetwork = useSelector(selectedNetworkSelector);
 	const selectedCurrency = useSelector(selectedCurrencySelector);
-	const blocktankService = useSelector(blocktankServiceSelector);
+	const blocktankInfo = useSelector(blocktankInfoSelector);
 
 	const [textFieldValue, setTextFieldValue] = useState('');
-	const [channelOpenCost, setChannelOpenCost] = useState('');
+	const [channelOpenFee, setChannelOpenFee] = useState('');
 	const [showNumberPad, setShowNumberPad] = useState(false);
 	const [loading, setLoading] = useState(false);
 	const [spendingPackages, setSpendingPackages] = useState<TPackage[]>([]); // Packages the user can afford.
 	const [receivingPackages, setReceivingPackages] = useState<TPackage[]>([]);
+
+	const maxChannelSizeSat = useMemo(() => {
+		if (blocktankInfo.options.maxChannelSizeSat > 0) {
+			return blocktankInfo.options.maxChannelSizeSat - (spendingAmount ?? 0);
+		}
+		return (
+			fiatToBitcoinUnit({
+				fiatValue: 989, // 989 instead of 999 to allow for exchange rate variances.
+				currency: 'USD',
+				unit: EUnit.satoshi,
+			}) - (spendingAmount ?? 0)
+		);
+	}, [blocktankInfo.options.maxChannelSizeSat, spendingAmount]);
 
 	useFocusEffect(
 		useCallback(() => {
@@ -163,66 +176,40 @@ const CustomSetup = ({
 		});
 		setSpendingPackages(availSpendingPackages);
 
-		const availReceivingPackages: TPackage[] = PACKAGES_RECEIVING.map((p) => {
-			if (p.fiatAmount < blocktankService.max_chan_receiving_usd) {
-				const convertedAmount = convertCurrency({
-					amount: p.fiatAmount,
-					from: 'USD',
-					to: selectedCurrency,
-				});
-				const satoshis = convertToSats(convertedAmount.fiatValue, EUnit.fiat);
-				// Ensure the conversion still puts us below the max_chan_receiving
-				const satoshisCapped = Math.min(
-					satoshis,
-					blocktankService.max_chan_receiving,
-				);
-
-				return {
-					...p,
-					fiatAmount: convertedAmount.fiatValue,
-					satoshis: satoshisCapped,
-				};
-			} else {
-				const amount = convertCurrency({
-					amount: blocktankService.max_chan_receiving_usd,
-					from: 'USD',
-					to: selectedCurrency,
-				});
-				const amountSatoshis = convertToSats(amount.fiatValue, EUnit.fiat);
-				// subtract a buffer to ensure we don't land right on the max channel size
-				// also avoids exchange rate deltas with Blocktank
-				const buffer = convertCurrency({
-					amount: 10,
-					from: 'USD',
-					to: selectedCurrency,
-				});
-				const bufferSatoshis = convertToSats(buffer.fiatValue, EUnit.fiat);
-
-				// Ensure the amount is below the max channel size
-				const receiveLimit = amountSatoshis - spendingAmount! - bufferSatoshis;
-				let satoshisCapped = Math.min(amountSatoshis, receiveLimit);
-
-				// Ensure the amount is below max_chan_receiving
-				satoshisCapped = Math.min(
-					satoshisCapped,
-					blocktankService.max_chan_receiving,
-				);
-
-				return {
-					...p,
-					fiatAmount: amount.fiatValue,
-					satoshis: satoshisCapped,
-				};
-			}
+		let maxReceiving = maxChannelSizeSat;
+		let minReceiving = spendingAmount! ?? 0;
+		const minChannelSizeFiat = getFiatDisplayValues({
+			satoshis: minReceiving,
 		});
+		let availReceivingPackages: TPackage[] = [];
+		PACKAGES_RECEIVING.forEach((p) => {
+			const maxChannelSizeFiat = getFiatDisplayValues({
+				satoshis: maxReceiving,
+			});
+
+			const delta = Math.abs(maxReceiving - minReceiving);
+			let packageFiatAmount = p.fiatAmount;
+
+			// Ensure the fiatAmount is within the range of minReceiving and maxChannelSizeFiat.fiatValue
+			if (packageFiatAmount > maxChannelSizeFiat.fiatValue) {
+				packageFiatAmount = maxChannelSizeFiat.fiatValue;
+			} else if (packageFiatAmount < minChannelSizeFiat.fiatValue) {
+				packageFiatAmount = minChannelSizeFiat.fiatValue;
+			}
+
+			const satoshis = convertToSats(packageFiatAmount, EUnit.fiat);
+			const satoshisCapped = Math.min(satoshis, maxReceiving);
+
+			maxReceiving = Number((maxReceiving - delta / 3).toFixed(0));
+			availReceivingPackages.push({
+				...p,
+				fiatAmount: packageFiatAmount,
+				satoshis: satoshisCapped,
+			});
+		});
+		availReceivingPackages.sort((a, b) => a.satoshis - b.satoshis);
 		setReceivingPackages(availReceivingPackages);
-	}, [
-		onchainFiatBalance,
-		blocktankService.max_chan_receiving,
-		blocktankService.max_chan_receiving_usd,
-		selectedCurrency,
-		spendingAmount,
-	]);
+	}, [maxChannelSizeSat, onchainFiatBalance, selectedCurrency, spendingAmount]);
 
 	// set initial spending/receiving amount
 	useEffect(() => {
@@ -247,8 +234,8 @@ const CustomSetup = ({
 					? medium.satoshis
 					: balanceMultiplied > small.satoshis
 					? small.satoshis
-					: balanceMultiplied > blocktankService.min_channel_size
-					? blocktankService.min_channel_size
+					: balanceMultiplied > blocktankInfo.options.minChannelSizeSat
+					? blocktankInfo.options.minChannelSizeSat
 					: 0;
 
 			const result = getNumberPadText(amount, unit);
@@ -256,8 +243,8 @@ const CustomSetup = ({
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [
-		blocktankService.max_chan_receiving,
-		blocktankService.min_channel_size,
+		maxChannelSizeSat,
+		blocktankInfo.options.minChannelSizeSat,
 		onchainBalance,
 		receivingPackages,
 		spending,
@@ -268,8 +255,8 @@ const CustomSetup = ({
 	}, [textFieldValue, unit]);
 
 	const maxAmount = useMemo((): number => {
-		return spending ? onchainBalance : blocktankService.max_chan_receiving;
-	}, [spending, onchainBalance, blocktankService.max_chan_receiving]);
+		return spending ? onchainBalance : maxChannelSizeSat;
+	}, [spending, onchainBalance, maxChannelSizeSat]);
 
 	// fetch approximate channel open cost on ReceiveAmount screen
 	useEffect(() => {
@@ -277,18 +264,20 @@ const CustomSetup = ({
 			const defaultPackage = receivingPackages.find((p) => p.id === 'big')!;
 			const getChannelOpenCost = async (): Promise<void> => {
 				const response = await startChannelPurchase({
-					productId,
 					remoteBalance: spendingAmount!,
 					localBalance: defaultPackage.satoshis,
 					channelExpiry: DEFAULT_CHANNEL_DURATION,
 					selectedWallet,
 					selectedNetwork,
+					lspNodeId: blocktankInfo.nodes[0].pubkey,
 				});
 				if (response.isOk()) {
 					const { fiatSymbol, fiatValue } = getFiatDisplayValues({
-						satoshis: response.value.channelOpenCost,
+						satoshis:
+							response.value.channelOpenFee +
+							response.value.transactionFeeEstimate,
 					});
-					setChannelOpenCost(`${fiatSymbol} ${fiatValue.toFixed(2)}`);
+					setChannelOpenFee(`${fiatSymbol} ${fiatValue.toFixed(2)}`);
 				}
 			};
 
@@ -298,9 +287,9 @@ const CustomSetup = ({
 		spending,
 		receivingPackages,
 		spendingAmount,
-		productId,
 		selectedWallet,
 		selectedNetwork,
+		blocktankInfo.nodes,
 	]);
 
 	const getBarrels = useCallback((): ReactElement[] => {
@@ -390,7 +379,6 @@ const CustomSetup = ({
 		setLoading(true);
 
 		const purchaseResponse = await startChannelPurchase({
-			productId,
 			remoteBalance: spendingAmount!,
 			localBalance: amount,
 			channelExpiry: DEFAULT_CHANNEL_DURATION,
@@ -403,7 +391,7 @@ const CustomSetup = ({
 			let msg = purchaseResponse.error.message;
 			if (msg.includes('Local channel balance is too small')) {
 				t('error_channel_receiving', {
-					usdValue: blocktankService.max_chan_receiving_usd,
+					usdValue: maxChannelSizeSat,
 				});
 			}
 			showToast({
@@ -416,19 +404,18 @@ const CustomSetup = ({
 			navigation.navigate('CustomConfirm', {
 				spendingAmount: spendingAmount!,
 				receivingAmount: amount,
-				orderId: purchaseResponse.value.orderId,
+				orderId: purchaseResponse.value.order.id,
 			});
 		}
 	}, [
-		blocktankService,
-		navigation,
-		selectedNetwork,
-		selectedWallet,
-		productId,
+		spending,
 		spendingAmount,
 		amount,
-		spending,
+		selectedWallet,
+		selectedNetwork,
+		navigation,
 		t,
+		maxChannelSizeSat,
 	]);
 
 	return (
@@ -492,9 +479,9 @@ const CustomSetup = ({
 							<Caption13Up style={styles.amountCaption} color="purple">
 								{t(spending ? 'spending_label' : 'receiving_label')}
 							</Caption13Up>
-							{channelOpenCost && (
+							{channelOpenFee && (
 								<Caption13Up style={styles.amountCaptionCost} color="gray1">
-									(Cost: {channelOpenCost})
+									(Cost: {channelOpenFee})
 								</Caption13Up>
 							)}
 						</View>

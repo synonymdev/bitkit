@@ -21,6 +21,9 @@ export interface IBackup {
 	remoteBlocktankBackupSynced: boolean;
 	remoteBlocktankBackupLastSync?: number;
 	remoteBlocktankBackupSyncRequired?: number;
+	remoteSlashtagsBackupSynced: boolean;
+	remoteSlashtagsBackupLastSync?: number;
+	remoteSlashtagsBackupSyncRequired?: number;
 
 	//Hyperdrives
 	hyperProfileSeedCheckSuccess?: number;

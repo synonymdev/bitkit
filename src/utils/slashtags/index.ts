@@ -1,7 +1,8 @@
-import SDK, { SlashURL, Slashtag, Hyperdrive } from '@synonymdev/slashtags-sdk';
+import SDK, { Slashtag, Hyperdrive } from '@synonymdev/slashtags-sdk';
+import { parse } from '@synonymdev/slashtags-url';
 import b4a from 'b4a';
 import mime from 'mime/lite';
-import debounce from 'lodash.debounce';
+import debounce from 'lodash/debounce';
 
 import { __SLASHTAGS_SEEDER_BASE_URL__ } from '../../constants/env';
 import { rootNavigation } from '../../navigation/root/RootNavigator';
@@ -35,13 +36,12 @@ export const handleSlashtagURL = (
 	onSuccess?: (url: string) => void,
 ): void => {
 	try {
-		// Validate URL
-		const parsed = SlashURL.parse(url);
+		const parsed = parse(url);
 
 		if (parsed.protocol === 'slash:') {
 			rootNavigation.navigate('ContactEdit', { url });
 		} else if (parsed.protocol === 'slashfeed:') {
-			rootNavigation.navigate('WidgetFeedEdit', { url });
+			rootNavigation.navigate('Widget', { url });
 		}
 
 		onSuccess?.(url);
@@ -72,14 +72,15 @@ export const saveContact = async (
 	}
 
 	const drive = await slashtag.drivestore.get('contacts');
-	const id = SlashURL.parse(url).id;
-	await drive?.put('/' + id, encodeJSON(record)).catch((error: Error) =>
+	const { id } = parse(url);
+	await drive?.put('/' + id, encodeJSON(record)).catch((error: Error) => {
+		console.log(error.message);
 		showToast({
 			type: 'error',
 			title: i18n.t('slashtags:error_saving_contact'),
-			description: error.message,
-		}),
-	);
+			description: `An error occurred: ${error.message}`,
+		});
+	});
 	drive.close();
 };
 
@@ -118,7 +119,7 @@ export const deleteContact = async (
 	}
 
 	const drive = await slashtag.drivestore.get('contacts');
-	const id = SlashURL.parse(url).id;
+	const { id } = parse(url);
 	await drive.del('/' + id).catch((error: Error) => {
 		showToast({
 			type: 'error',
@@ -149,7 +150,7 @@ export const saveBulkContacts = async (slashtag: Slashtag): Promise<void> => {
 	await Promise.all(
 		urls.map(async (url) => {
 			const name = Math.random().toString(16).slice(2, 8);
-			const id = SlashURL.parse(url).id;
+			const { id } = parse(url);
 			return batch?.put('/' + id, encodeJSON({ name }));
 		}),
 	);
@@ -161,22 +162,28 @@ export const saveBulkContacts = async (slashtag: Slashtag): Promise<void> => {
 export const onSDKError = (error: Error): void => {
 	// TODO (slashtags) move this error management to the SDK
 	if (error.message.endsWith('Connection refused')) {
-		error = new Error("Couldn't connect to the provided DHT relay");
+		error = new Error("Bitkit couldn't connect to the relay.");
+	} else {
+		error = new Error(`An error occurred: ${error.message}`);
 	}
 
 	showToast({
 		type: 'error',
-		title: 'SlashtagsProvider Error',
+		title: 'Data Connection Issue',
 		description: error.message,
 	});
 };
 
+const INVOICE_EXPIRY_DELTA = 60 * 60 * 24 * 7; // one week
+
 export const updateSlashPayConfig = debounce(
 	async ({
+		forceUpdate = false,
 		sdk,
 		selectedWallet,
 		selectedNetwork,
 	}: {
+		forceUpdate?: boolean;
 		sdk?: SDK;
 		selectedWallet?: TWalletName;
 		selectedNetwork?: TAvailableNetworks;
@@ -193,39 +200,27 @@ export const updateSlashPayConfig = debounce(
 		}
 		const slashtag = getSelectedSlashtag(sdk);
 		const drive = slashtag.drivestore.get();
-		const payConfig: SlashPayConfig =
-			(await drive.get('/slashpay.json').then(decodeJSON).catch(noop)) || [];
 
-		await waitForLdk();
-
-		const { currentLightningNode } = getCurrentWallet({
-			selectedWallet,
-			selectedNetwork,
-		});
-		const settings = getSettingsStore();
-		const enableOfflinePayments = settings.enableOfflinePayments;
-		const addressType = getSelectedAddressType({
-			selectedWallet,
-			selectedNetwork,
-		});
-		const claimedPayments = await getClaimedLightningPayments();
-		const openChannelIds = currentLightningNode.openChannelIds[selectedNetwork];
-
-		// if offline payments are disabled and payment config is empy then do nothing
-		if (!enableOfflinePayments && payConfig.length === 0) {
-			return;
+		let payConfig: SlashPayConfig = [];
+		try {
+			const buffer = await drive.get('/slashpay.json');
+			const json = decodeJSON(buffer) as SlashPayConfig | undefined;
+			payConfig = json ?? [];
+		} catch (err) {
+			console.log(err);
 		}
 
-		// if offline payments are disabled and payment config is not empy then delete it
-		if (!enableOfflinePayments && payConfig.length > 0) {
-			const newPayConfig: SlashPayConfig = [];
-			console.debug('Pushing new slashpay.json:', newPayConfig);
-			await drive
-				.put('/slashpay.json', encodeJSON(newPayConfig))
-				.then(() => {
-					console.debug('Updated slashpay.json:', newPayConfig);
-				})
-				.catch(noop);
+		const { enableOfflinePayments, receivePreference } = getSettingsStore();
+
+		if (!enableOfflinePayments) {
+			// if offline payments are disabled and payment config is empty then do nothing
+			if (payConfig.length === 0) {
+				return;
+			}
+
+			// if offline payments are disabled and payment config is not empty then delete it
+			await drive.put('/slashpay.json', encodeJSON([]));
+			console.debug('Deleted slashpay.json');
 			return;
 		}
 
@@ -233,6 +228,11 @@ export const updateSlashPayConfig = debounce(
 		const newPayConfig: SlashPayConfig = [];
 
 		// check if we need to update onchain address
+		const addressType = getSelectedAddressType({
+			selectedWallet,
+			selectedNetwork,
+		});
+
 		const currentAddress = payConfig.find(
 			({ type }) => type === addressType,
 		)?.value;
@@ -250,6 +250,13 @@ export const updateSlashPayConfig = debounce(
 		}
 
 		// check if we need to update LN invoice
+		await waitForLdk();
+		const { currentLightningNode } = getCurrentWallet({
+			selectedWallet,
+			selectedNetwork,
+		});
+		const openChannelIds = currentLightningNode.openChannelIds[selectedNetwork];
+
 		if (openChannelIds.length) {
 			const currentInvoice =
 				payConfig.find(({ type }) => type === 'lightningInvoice')?.value ?? '';
@@ -257,6 +264,8 @@ export const updateSlashPayConfig = debounce(
 			const decodedInvoice = await decodeLightningInvoice({
 				paymentRequest: currentInvoice,
 			});
+
+			const claimedPayments = await getClaimedLightningPayments();
 
 			// if currentInvoice still not in react-native-ldk's claimed payments list, then we don't need to update it.
 			const currentInvoiceStillUnpaid =
@@ -276,7 +285,7 @@ export const updateSlashPayConfig = debounce(
 				const response = await createLightningInvoice({
 					amountSats: 0,
 					description: '',
-					expiryDeltaSeconds: 60 * 60 * 24 * 7, // one week
+					expiryDeltaSeconds: INVOICE_EXPIRY_DELTA,
 					selectedNetwork,
 					selectedWallet,
 				});
@@ -303,19 +312,26 @@ export const updateSlashPayConfig = debounce(
 			}
 		}
 
-		if (!needToUpdate) {
-			drive.close();
-			return;
+		if (needToUpdate || forceUpdate) {
+			// Put preferred payment method first in the array
+			const sortedPayConfig = newPayConfig.sort((a) => {
+				if (
+					a.type === 'lightningInvoice' &&
+					receivePreference[0].key === 'lightning'
+				) {
+					return -1;
+				} else {
+					return 1;
+				}
+			});
+
+			try {
+				await drive.put('/slashpay.json', encodeJSON(sortedPayConfig));
+				console.debug('Updated slashpay.json:', sortedPayConfig);
+			} catch (err) {
+				console.log(err);
+			}
 		}
-
-		console.debug('Pushing new slashpay.json:', newPayConfig);
-
-		await drive
-			.put('/slashpay.json', encodeJSON(newPayConfig))
-			.then(() => {
-				console.debug('Updated slashpay.json:', newPayConfig);
-			})
-			.catch(noop);
 
 		drive.close();
 	},
@@ -382,7 +398,7 @@ export const getSlashPayConfig = async (
 		return [];
 	}
 
-	const drive = sdk.drive(SlashURL.parse(url).key);
+	const drive = sdk.drive(parse(url).key);
 	await drive.ready().catch(noop);
 	const payConfig =
 		(await drive.get('/slashpay.json').then(decodeJSON).catch(noop)) || [];
@@ -412,7 +428,7 @@ function checkClosed(slashtag: Slashtag): boolean {
  */
 export const validateSlashtagURL = (url: string): boolean => {
 	try {
-		const parsed = SlashURL.parse(url);
+		const parsed = parse(url);
 		if (parsed.protocol === 'slash:') {
 			return true;
 		}

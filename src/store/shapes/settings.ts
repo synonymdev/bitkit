@@ -1,4 +1,4 @@
-import cloneDeep from 'lodash.clonedeep';
+import cloneDeep from 'lodash/cloneDeep';
 import { TAvailableNetworks } from '@synonymdev/react-native-ldk';
 
 import {
@@ -14,6 +14,7 @@ import {
 	__ELECTRUM_SIGNET_PROTO__,
 	__ELECTRUM_SIGNET_SSL_PORT__,
 	__ELECTRUM_SIGNET_TCP_PORT__,
+	__WEB_RELAY__,
 } from '../../constants/env';
 import {
 	ETransactionSpeed,
@@ -21,7 +22,6 @@ import {
 	ISettings,
 } from '../types/settings';
 import { EUnit } from '../types/wallet';
-import { IWidgetsStore } from '../types/widgets';
 
 //TODO: Remove the public Electrum servers below once we spin up our own.
 export const origCustomElectrumPeers: Record<
@@ -105,10 +105,11 @@ export const defaultSettingsShape: Readonly<ISettings> = {
 	selectedCurrency: 'USD',
 	selectedLanguage: 'english',
 	customElectrumPeers: origCustomElectrumPeers,
+	rapidGossipSyncUrl: 'https://rapidsync.lightningdevkit.org/snapshot/',
 	coinSelectAuto: true,
 	coinSelectPreference: 'small',
 	receivePreference: defaultReceivePreference,
-	enableOfflinePayments: true,
+	enableOfflinePayments: false,
 	showSuggestions: true,
 	transactionSpeed: ETransactionSpeed.normal,
 	customFeeRate: 0,
@@ -116,8 +117,11 @@ export const defaultSettingsShape: Readonly<ISettings> = {
 	hideOnboardingMessage: false,
 	hideBeta: false,
 	enableDevOptions: __DEV__,
+	treasureChests: [],
+	webRelay: __WEB_RELAY__,
+	isWebRelayTrusted: false,
 };
 
-export const getDefaultSettingsShape = (): IWidgetsStore => {
+export const getDefaultSettingsShape = (): ISettings => {
 	return cloneDeep(defaultSettingsShape);
 };

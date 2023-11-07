@@ -1,5 +1,6 @@
 import { Slashtag } from '@synonymdev/slashtags-sdk';
 import { ok, Result } from '@synonymdev/result';
+import { parse } from '@synonymdev/slashtags-url';
 import b4a from 'b4a';
 
 import { __SLASHTAGS_SEEDER_BASE_URL__ } from '../../constants/env';
@@ -136,4 +137,36 @@ export const cacheProfile = (
 	}
 };
 
+export const cacheProfile2 = (url: string, profile: BasicProfile): void => {
+	const { id } = parse(url);
+
+	dispatch({
+		type: actions.CACHE_PROFILE2,
+		payload: { id, profile },
+	});
+};
+
 function noop(): void {}
+
+export const addContact = (url: string, name: string): Result<string> => {
+	const { id } = parse(url);
+	dispatch({ type: actions.CONTACT_ADD, payload: { id, url, name } });
+	return ok('Contact added');
+};
+
+export const addContacts = (
+	contacts: ISlashtags['contacts'],
+): Result<string> => {
+	dispatch({ type: actions.CONTACTS_ADD, payload: { contacts } });
+	return ok('Contacts added');
+};
+
+export const updateLastPaidContacts = (url: string): void => {
+	dispatch({ type: actions.UPDATE_LAST_PAID_CONTACTS, payload: url });
+};
+
+export const deleteContact = (url: string): Result<string> => {
+	const { id } = parse(url);
+	dispatch({ type: actions.CONTACT_DELETE, payload: { id } });
+	return ok('Contact deleted');
+};

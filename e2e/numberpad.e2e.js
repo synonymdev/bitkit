@@ -3,9 +3,12 @@ import {
 	markComplete,
 	completeOnboarding,
 	launchAndWait,
+	isVisible,
 } from './helpers';
 
-d = checkComplete(['numberpad-1', 'numberpad-2']) ? describe.skip : describe;
+const d = checkComplete(['numberpad-1', 'numberpad-2'])
+	? describe.skip
+	: describe;
 
 d('NumberPad', () => {
 	beforeAll(async () => {
@@ -78,6 +81,9 @@ d('NumberPad', () => {
 		await element(by.id('N9').withAncestor(by.id('ReceiveNumberPad'))).tap();
 		await expect(element(by.text('4.20690000'))).toBeVisible();
 
+		// Switch back to sats
+		await element(by.id('ReceiveNumberPadUnit')).tap();
+
 		markComplete('numberpad-1');
 	});
 
@@ -87,8 +93,14 @@ d('NumberPad', () => {
 		}
 
 		await element(by.id('Receive')).tap();
+		if (await isVisible('UnderstoodButton')) {
+			await element(by.id('UnderstoodButton')).tap();
+		}
 		await element(by.id('SpecifyInvoiceButton')).tap();
 		await element(by.id('ReceiveNumberPadTextField')).tap();
+
+		// Switch to BTC
+		await element(by.id('ReceiveNumberPadUnit')).multiTap(2);
 		await element(by.id('N0').withAncestor(by.id('ReceiveNumberPad'))).multiTap(
 			2,
 		);

@@ -7,6 +7,8 @@ import {
 	launchAndWait,
 	completeOnboarding,
 	bitcoinURL,
+	electrumHost,
+	electrumPort,
 } from './helpers';
 import initWaitForElectrumToSync from '../__tests__/utils/wait-for-electrum';
 
@@ -26,7 +28,7 @@ d('Onchain', () => {
 		}
 
 		waitForElectrum = await initWaitForElectrumToSync(
-			{ port: 60001, host: '127.0.0.1' },
+			{ host: electrumHost, port: electrumPort },
 			bitcoinURL,
 		);
 
@@ -48,7 +50,7 @@ d('Onchain', () => {
 		// - shows correct total balance
 		// - can send total balance and tag the tx
 		// - no exceeding availableAmount
-		// - shows a warning for sending over 50% of total
+		// - shows warnings for sending over 100$ or 50% of total
 		// - avoid creating dust output
 		// - TODO: coin selectiom
 
@@ -95,10 +97,10 @@ d('Onchain', () => {
 
 			const coreAddress = await rpc.getNewAddress();
 			await element(by.id('Send')).tap();
-			await sleep(1000); // animation
+			await element(by.id('RecipientManual')).tap();
 			await element(by.id('RecipientInput')).replaceText(coreAddress);
 			await element(by.id('RecipientInput')).tapReturnKey();
-			await element(by.id('ContinueRecipient')).tap();
+			await element(by.id('AddressContinue')).tap();
 
 			// Amount / NumberPad
 			await element(by.id('SendNumberPadMax')).tap();
@@ -125,7 +127,7 @@ d('Onchain', () => {
 			await element(by.id('GRAB')).swipe('right'); // Swipe to confirm
 
 			await sleep(1000); // animation
-			await waitFor(element(by.id('DialogSend50'))) // sending over 50% of balance warning
+			await waitFor(element(by.id('SendDialog2'))) // sending over 50% of balance warning
 				.toBeVisible()
 				.withTimeout(10000);
 			await sleep(1000); // animation
@@ -251,11 +253,18 @@ d('Onchain', () => {
 			await sleep(1000); // animation
 
 			const coreAddress = await rpc.getNewAddress();
+
+			// enable warning for sending over 100$ to test multiple warning dialogs
+			await element(by.id('Settings')).tap();
+			await element(by.id('SecuritySettings')).tap();
+			await element(by.id('SendAmountWarning')).tap();
+			await element(by.id('NavigationClose')).tap();
+
 			await element(by.id('Send')).tap();
-			await sleep(1000); // animation
+			await element(by.id('RecipientManual')).tap();
 			await element(by.id('RecipientInput')).replaceText(coreAddress);
 			await element(by.id('RecipientInput')).tapReturnKey();
-			await element(by.id('ContinueRecipient')).tap();
+			await element(by.id('AddressContinue')).tap();
 
 			// enter amount that would leave dust
 			let { label: amount } = await element(
@@ -275,12 +284,22 @@ d('Onchain', () => {
 
 			// TODO: check correct fee
 
+			// sending over 50% of balance warning
 			await sleep(1000); // animation
-			await waitFor(element(by.id('DialogSend50'))) // sending over 50% of balance warning
+			await waitFor(element(by.id('SendDialog2')))
 				.toBeVisible()
 				.withTimeout(10000);
 			await sleep(1000); // animation
 			await element(by.id('DialogConfirm')).tap();
+
+			// sending over 100$ warning
+			await sleep(1000); // animation
+			await waitFor(element(by.id('SendDialog1')))
+				.toBeVisible()
+				.withTimeout(10000);
+			await sleep(1000); // animation
+			await element(by.id('DialogConfirm')).tap();
+
 			await waitFor(element(by.id('SendSuccess')))
 				.toBeVisible()
 				.withTimeout(10000);

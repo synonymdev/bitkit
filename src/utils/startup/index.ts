@@ -11,16 +11,12 @@ import {
 } from '../wallet';
 import { createWallet, updateExchangeRates } from '../../store/actions/wallet';
 import { getWalletStore } from '../../store/helpers';
-import {
-	refreshBlocktankInfo,
-	refreshServiceList,
-} from '../../store/actions/blocktank';
+import { refreshBlocktankInfo } from '../../store/actions/blocktank';
 import { connectToElectrum, subscribeToHeader } from '../wallet/electrum';
 import { updateOnchainFeeEstimates } from '../../store/actions/fees';
 import { keepLdkSynced, setupLdk } from '../lightning';
 import { setupBlocktank, watchPendingOrders } from '../blocktank';
-import { updateSlashPayConfig } from '../slashtags';
-import { sdk } from '../../components/SlashtagsProvider';
+import { updateSlashPayConfig2 } from '../slashtags2';
 import { Slashtag } from '../../hooks/slashtags';
 import { performFullRestoreFromLatestBackup } from '../../store/actions/backup';
 import { promiseTimeout } from '../helpers';
@@ -58,6 +54,7 @@ export const restoreSeed = async ({
 	const res = await createWallet({
 		mnemonic,
 		bip39Passphrase,
+		restore: true,
 		addressAmount: 25,
 		changeAddressAmount: 25,
 	});
@@ -158,6 +155,7 @@ export const startWalletServices = async ({
 				selectedNetwork,
 				shouldRefreshLdk: false,
 				staleBackupRecoveryMode,
+				shouldPreemptivelyStopLdk: false,
 			});
 			if (setupResponse.isOk()) {
 				keepLdkSynced({ selectedNetwork }).then();
@@ -180,12 +178,11 @@ export const startWalletServices = async ({
 		}
 
 		if (lightning) {
-			await refreshServiceList();
 			watchPendingOrders();
 		}
 
 		// Refresh slashpay config
-		updateSlashPayConfig({ sdk, selectedNetwork });
+		updateSlashPayConfig2({ selectedNetwork, forceUpdate: true });
 
 		return ok('Wallet started');
 	} catch (e) {

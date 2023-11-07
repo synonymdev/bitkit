@@ -1,98 +1,108 @@
-import bt, {
-	IBuyChannelRequest,
-	IBuyChannelResponse,
-	IFinalizeChannelResponse,
-	IGetInfoResponse,
-	IGetOrderResponse,
-	IService,
-} from '@synonymdev/blocktank-client';
+import {
+	BlocktankClient,
+	BtOrderState,
+	BtPaymentState,
+	IBtInfo,
+	IBtOrder,
+	ICJitEntry,
+} from '@synonymdev/blocktank-lsp-http-client';
+
 import { err, ok, Result } from '@synonymdev/result';
 
 import { EAvailableNetworks, TAvailableNetworks } from '../networks';
 import { addPeers, getNodeId, refreshLdk } from '../lightning';
-import { refreshOrder } from '../../store/actions/blocktank';
+import {
+	refreshAllBlocktankOrders,
+	refreshOrder,
+	refreshOrdersList,
+} from '../../store/actions/blocktank';
 import i18n from '../../utils/i18n';
 import { sleep } from '../helpers';
 import { getBlocktankStore, getUserStore } from '../../store/helpers';
-import { TGeoBlockResponse } from '../../store/types/blocktank';
+import {
+	ICreateOrderRequest,
+	TGeoBlockResponse,
+} from '../../store/types/blocktank';
 import { setGeoBlock, updateUser } from '../../store/actions/user';
 import { refreshWallet } from '../wallet';
+import { BtOpenChannelState } from '@synonymdev/blocktank-lsp-http-client/dist/shared/BtOpenChannelState';
+import { DEFAULT_CHANNEL_DURATION } from '../../screens/Lightning/CustomConfirm';
+import { CJitStateEnum } from '@synonymdev/blocktank-lsp-http-client/dist/shared/CJitStateEnum';
 
-// https://github.com/synonymdev/blocktank-server/blob/master/src/Orders/Order.js#L27
-export const unsettledStatuses = [0, 100, 200, 300, 350, 500];
+const bt = new BlocktankClient();
 
 /**
  * Sets the selectedNetwork for Blocktank.
- * @param {TAvailableNetworks} selectedNetwork
  * @returns {void}
  */
 export const setupBlocktank = async (
 	selectedNetwork: TAvailableNetworks,
 ): Promise<void> => {
-	bt.setHeaders({ 'User-Agent': 'Bitkit' });
-	if (selectedNetwork === EAvailableNetworks.bitcoinTestnet) {
+	let isGeoBlocked = false;
+	switch (selectedNetwork) {
+		case EAvailableNetworks.bitcoin:
+			isGeoBlocked = await setGeoBlock();
+			bt.baseUrl = 'https://blocktank.synonym.to/api/v2';
+			break;
+		case EAvailableNetworks.bitcoinRegtest:
+			updateUser({ isGeoBlocked: false });
+			bt.baseUrl = 'https://api.stag.blocktank.to/blocktank/api/v2';
+			break;
+	}
+	if (isGeoBlocked) {
 		return;
-	} else if (selectedNetwork === EAvailableNetworks.bitcoinRegtest) {
-		updateUser({ isGeoBlocked: false });
-		bt.setNetwork('regtest');
-	} else {
-		await setGeoBlock();
-		bt.setNetwork('mainnet');
+	}
+	const blocktankOrders = getBlocktankStore().orders;
+	// @ts-ignore
+	if (blocktankOrders.length && blocktankOrders[0]?._id) {
+		await refreshAllBlocktankOrders();
 	}
 };
 
 /**
  * Retrieve Blocktank info from either storage or via the api.
  * @param {boolean} [fromStorage] If true, will attempt to retrieve from storage first and only fallback to the api if needed.
- * @returns {Promise<IGetInfoResponse>}
+ * @returns {Promise<IBtInfo>}
  */
 export const getBlocktankInfo = async (
 	fromStorage: boolean = false,
-): Promise<IGetInfoResponse> => {
-	let blocktankInfo: IGetInfoResponse | undefined;
+): Promise<IBtInfo> => {
+	let blocktankInfo: IBtInfo | undefined;
 	if (fromStorage) {
 		blocktankInfo = getBlocktankStore().info;
 	}
-	if (!blocktankInfo?.node_info?.public_key) {
+	if (blocktankInfo?.version !== 2 || !blocktankInfo?.nodes[0]?.pubkey) {
 		blocktankInfo = await bt.getInfo();
 	}
 	return blocktankInfo;
 };
 
 /**
- * @returns {Promise<Result<IService[]>>}
+ * @param {ICreateOrderRequest} data
+ * @returns {Promise<Result<IBtOrder>>}
  */
-export const getAvailableServices = async (): Promise<Result<IService[]>> => {
-	try {
-		// Get all node info and available services
-		const info = await bt.getInfo();
-		if (
-			info?.services &&
-			Array.isArray(info.services) &&
-			info.services.length > 0
-		) {
-			return ok(info.services);
-		}
-		return err('Unable to provide services from Blocktank at this time.');
-	} catch (e) {
-		return err(e);
-	}
-};
-
-/**
- * @param {IBuyChannelRequest} data
- * @returns {Promise<Result<IBuyChannelResponse>>}
- */
-export const buyChannel = async (
-	data: IBuyChannelRequest,
-): Promise<Result<IBuyChannelResponse>> => {
+export const createOrder = async (
+	data: ICreateOrderRequest,
+): Promise<Result<IBtOrder>> => {
 	try {
 		// Ensure we're properly connected to the Blocktank node prior to buying a channel.
 		const addPeersRes = await addPeers();
 		if (addPeersRes.isErr()) {
 			return err('Unable to add Blocktank node as a peer at this time.');
 		}
-		const buyRes = await bt.buyChannel(data);
+		const buyRes = await bt.createOrder(
+			data.lspBalanceSat,
+			data.channelExpiryWeeks,
+			{
+				...data.options,
+				couponCode: data.options?.couponCode ?? 'bitkit',
+				turboChannel: true,
+				zeroReserve: true,
+			},
+		);
+		if (buyRes?.id) {
+			await refreshOrder(buyRes.id);
+		}
 		return ok(buyRes);
 	} catch (e) {
 		console.log(e);
@@ -101,15 +111,81 @@ export const buyChannel = async (
 };
 
 /**
- * @param {string} orderId
- * @returns {Promise<Result<IGetOrderResponse>>}
+ * @param {ICreateOrderRequest} data
+ * @returns {Promise<Result<ICJitEntry>>}
  */
-export const getOrder = async (
-	orderId: string,
-): Promise<Result<IGetOrderResponse>> => {
+export const createCJitEntry = async ({
+	channelSizeSat,
+	invoiceSat,
+	invoiceDescription,
+	channelExpiryWeeks = DEFAULT_CHANNEL_DURATION,
+	couponCode = 'bitkit',
+}: {
+	channelSizeSat: number;
+	invoiceSat: number;
+	invoiceDescription: string;
+	channelExpiryWeeks: number;
+	couponCode?: string;
+}): Promise<Result<ICJitEntry>> => {
 	try {
-		const orderState = await bt.getOrder(orderId);
-		return ok(orderState);
+		const nodeIdResult = await getNodeId();
+		if (nodeIdResult.isErr()) {
+			return err(nodeIdResult.error.message);
+		}
+		const nodeId = nodeIdResult.value;
+
+		// Ensure we're properly connected to the Blocktank node prior to buying a channel.
+		const addPeersRes = await addPeers();
+		if (addPeersRes.isErr()) {
+			return err('Unable to add Blocktank node as a peer at this time.');
+		}
+
+		const createRes = await bt.createCJitEntry(
+			channelSizeSat,
+			invoiceSat,
+			invoiceDescription,
+			nodeId,
+			channelExpiryWeeks,
+			couponCode,
+		);
+
+		return ok(createRes);
+	} catch (e) {
+		console.log(e);
+		return err(e);
+	}
+};
+
+/**
+ * Retrieves a CJIT Entry using the provided entryId.
+ * @param {string} entryId
+ * @returns {Promise<ICJitEntry>}
+ */
+export const getCJitEntry = async (entryId: string): Promise<ICJitEntry> => {
+	return await bt.getCJitEntry(entryId);
+};
+
+/**
+ * @param {string} orderId
+ * @returns {Promise<Result<IBtOrder>>}
+ */
+export const getOrder = async (orderId: string): Promise<Result<IBtOrder>> => {
+	try {
+		const order = await bt.getOrder(orderId);
+		return ok(order);
+	} catch (e) {
+		return err(e);
+	}
+};
+
+export const getMin0ConfTxFee = async (
+	orderId: string,
+): Promise<
+	Result<{ id: string; validityEndsAt: string; satPerVByte: number }>
+> => {
+	try {
+		const res = await bt.getMin0ConfTxFee(orderId);
+		return ok(res);
 	} catch (e) {
 		return err(e);
 	}
@@ -118,12 +194,10 @@ export const getOrder = async (
 /**
  * Returns the data of a provided orderId from storage.
  * @param {string} orderId
- * @returns {Result<IGetOrderResponse>}
+ * @returns {Result<IBtOrder>}
  */
-export const getOrderFromStorage = (
-	orderId: string,
-): Result<IGetOrderResponse> => {
-	const order = getBlocktankStore().orders.find((o) => o._id === orderId);
+export const getOrderFromStorage = (orderId: string): Result<IBtOrder> => {
+	const order = getBlocktankStore().orders.find((o) => o.id === orderId);
 	if (order) {
 		return ok(order);
 	}
@@ -133,11 +207,11 @@ export const getOrderFromStorage = (
 /**
  * Attempts to finalize a pending channel open with Blocktank for the provided orderId.
  * @param {string} orderId
- * @returns {Promise<Result<IFinalizeChannelResponse>>}
+ * @returns {Promise<Result<IBtOrder>>}
  */
-export const finalizeChannel = async (
+export const openChannel = async (
 	orderId: string,
-): Promise<Result<IFinalizeChannelResponse>> => {
+): Promise<Result<IBtOrder>> => {
 	try {
 		const nodeId = await getNodeId();
 		if (nodeId.isErr()) {
@@ -145,13 +219,11 @@ export const finalizeChannel = async (
 		}
 		//Attempt to sync and re-add peers prior to channel open.
 		await refreshLdk();
-
-		const params = {
-			order_id: orderId,
-			node_uri: nodeId.value,
-			private: true,
-		};
-		const finalizeChannelResponse = await bt.finalizeChannel(params);
+		const finalizeChannelResponse = await bt.openChannel(
+			orderId,
+			nodeId.value,
+			false,
+		);
 		if (finalizeChannelResponse) {
 			// Once finalized, refresh on-chain & lightning.
 			await refreshWallet();
@@ -170,19 +242,33 @@ export const finalizeChannel = async (
  */
 export const watchPendingOrders = (): void => {
 	const pendingOrders = getPendingOrders();
-	pendingOrders.forEach((order) => watchOrder(order._id));
+	pendingOrders.forEach((order) => watchOrder(order.id));
 };
 
 /**
- * Return orders that are less than or equal to the specified order state.
- * @returns {IGetOrderResponse[]} pending Blocktank orders
+ * Return orders that have a status that may change.
+ * @returns {IBtOrder[]} pending Blocktank orders
  */
-export const getPendingOrders = (): IGetOrderResponse[] => {
+export const getPendingOrders = (): IBtOrder[] => {
 	const orders = getBlocktankStore().orders;
-	const unsettledOrders = orders.filter((order) => {
-		return unsettledStatuses.includes(order.state);
+	return orders.filter((order) => {
+		return [
+			BtOrderState.CREATED,
+			BtOrderState.OPEN,
+			BtOrderState.EXPIRED,
+		].includes(order.state);
 	});
-	return unsettledOrders;
+};
+
+/**
+ * Returns CJIT orders that have been created and are currently pending.
+ * @returns {ICJitEntry[]}
+ */
+export const getPendingCJitEntries = (): ICJitEntry[] => {
+	const entries = getBlocktankStore().cJitEntries;
+	return entries.filter((entry) => {
+		return entry.state === CJitStateEnum.CREATED;
+	});
 };
 
 /**
@@ -200,15 +286,20 @@ export const watchOrder = async (
 	if (orderData.isErr()) {
 		return err(orderData.error.message);
 	}
-	const expiry = orderData.value.order_expiry;
+	const expiry = orderData.value.orderExpiresAt;
 	while (!settled && !error) {
 		const res = await refreshOrder(orderId);
 		if (res.isErr()) {
 			error = res.error.message;
 			break;
 		}
-		if (!unsettledStatuses.includes(res.value.state)) {
+		if (res.value.state === BtOrderState.EXPIRED) {
+			error = 'Order expired.';
+			break;
+		}
+		if (res.value.state === BtOrderState.OPEN) {
 			settled = true;
+			await refreshOrdersList();
 			break;
 		}
 		await sleep(frequency);
@@ -217,34 +308,53 @@ export const watchOrder = async (
 };
 
 /**
- * @param {number} code
+ * @param {IBtOrder} order
  * @returns {string}
  */
-export const getStateMessage = (code: number): string => {
-	switch (code) {
-		case 0:
-			return i18n.t('lightning:order_state.awaiting_payment');
-		case 100:
-			return i18n.t('lightning:order_state.paid');
-		case 150:
-			return i18n.t('lightning:order_state.refunded');
-		case 200:
-			return i18n.t('lightning:order_state.queued');
-		case 300:
-			return i18n.t('lightning:order_state.opening');
-		case 350:
-			return i18n.t('lightning:order_state.closing');
-		case 400:
-			return i18n.t('lightning:order_state.given_up');
-		case 410:
+export const getStateMessage = (order: IBtOrder): string => {
+	const orderState: BtOrderState = order.state;
+	const paymentState: BtPaymentState = order.payment.state;
+	const channelState: BtOpenChannelState | undefined = order.channel?.state;
+
+	switch (orderState) {
+		case BtOrderState.EXPIRED:
 			return i18n.t('lightning:order_state.expired');
-		case 450:
+	}
+
+	switch (paymentState) {
+		case BtPaymentState.REFUNDED:
+			return i18n.t('lightning:order_state.refunded');
+	}
+
+	if (channelState) {
+		switch (channelState) {
+			case BtOpenChannelState.OPENING:
+				return i18n.t('lightning:order_state.opening');
+			case BtOpenChannelState.OPEN:
+				return i18n.t('lightning:order_state.open');
+			case BtOpenChannelState.CLOSED:
+				return i18n.t('lightning:order_state.closed');
+		}
+	}
+
+	switch (orderState) {
+		case BtOrderState.CLOSED:
 			return i18n.t('lightning:order_state.closed');
-		case 500:
+		case BtOrderState.OPEN:
 			return i18n.t('lightning:order_state.open');
 	}
 
-	return `Unknown code: ${code}`;
+	switch (paymentState) {
+		case BtPaymentState.CREATED:
+			return i18n.t('lightning:order_state.awaiting_payment');
+		case BtPaymentState.PAID:
+			return i18n.t('lightning:order_state.paid');
+	}
+
+	switch (orderState) {
+		case BtOrderState.CREATED:
+			return i18n.t('lightning:order_state.awaiting_payment');
+	}
 };
 
 /**

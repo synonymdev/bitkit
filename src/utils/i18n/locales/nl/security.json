@@ -14,7 +14,6 @@
   "pass_recovery": "<gray>Wachtwoordzin:</gray>{passphrase}",
   "mnemonic_phrase": "Herstelwoorden",
   "mnemonic_your": "Herstelwoorden",
-  "mnemonic_error": "Fout Opgetreden Ophalen Herstelwoord",
   "mnemonic_write": "Schrijf deze {length}woorden op in de juiste volgorde en bewaar ze op een veilige plek. ",
   "mnemonic_use": "De 12 woorden hieronder kunnen gebruikt worden om uw geld later weer te herstellen.",
   "mnemonic_reveal": "Tik Aan Om Weer Te Geven",
@@ -55,7 +54,6 @@
   "bio_touch_id": "Touch ID",
   "bio_confirm": "Bevestig {biometricsName}",
   "bio_error_title": "Instellen Biometrie Mislukt",
-  "bio_error_message": "Bitkit kon geen biometrische beveiliging instellen voor uw apparaat.",
   "bio_loading": "Aan het laden...",
   "bio_not_available": "Het lijkt er op dat u nog geen biometrische beveiliging heeft geconfigureerd voor uw apparaat (of dit wordt niet ondersteund). U kunt proberen om biometrische beveiliging in te schakelen met de telefooninstellingen. ",
   "bio_ask": "Pincode gereed. Wilt u {biometricsName}gebruiken in plaats van uw pincode waar mogelijk? ",
@@ -81,11 +79,6 @@
   "export_password": "Wachtwoord",
   "export_button": "Exporteren",
   "export_share": "Backup bestand delen",
-  "export_success_title": "Backup geëxporteerd",
-  "export_success_msg": "Het bestand is succesvol geëxporteerd naar uw telefoon.",
-  "export_error_title": "Backup mislukt",
-  "export_error_msg": "Bitkit was niet in staat om het backup bestand op te slaan.",
-  "export_error_file": "Backup bestand aanmaken mislukt",
   "cp_title": "Pincode Veranderen",
   "cp_text": "U kunt de 4 cijfers van uw pincode veranderen. Voer dan eerst uw huidige pincode in. ",
   "cp_forgot": "Pincode vergeten?",
@@ -96,7 +89,5 @@
   "cp_try_again": "Probeer het nogmaals, dit is niet dezelfde pincode.",
   "cp_changed_title": "De pincode is veranderd",
   "cp_changed_text": "U heeft de 4-cijferige pincode succesvol aangepast. ",
-  "use_pin": "Pincode Gebruiken",
-  "wiped_title": "Bitkit Gewist",
-  "wiped_message": "Alle wallet data is gewist"
+  "use_pin": "Pincode Gebruiken"
 }

@@ -46,6 +46,8 @@ import {
 	addMetaSlashTagsUrlTag,
 } from '../../../store/actions/metadata';
 import useColors from '../../../hooks/colors';
+import useDisplayValues from '../../../hooks/displayValues';
+import { useLightningBalance } from '../../../hooks/lightning';
 import { FeeText } from '../../../store/shapes/fees';
 import { EFeeId } from '../../../store/types/fees';
 import {
@@ -58,7 +60,6 @@ import { refreshWallet } from '../../../utils/wallet';
 import type { SendScreenProps } from '../../../navigation/types';
 import SafeAreaInset from '../../../components/SafeAreaInset';
 import Dialog from '../../../components/Dialog';
-import { useLightningBalance } from '../../../hooks/lightning';
 import Biometrics from '../../../components/Biometrics';
 import Button from '../../../components/Button';
 import Store from '../../../store/types';
@@ -77,9 +78,10 @@ import {
 import { onChainFeesSelector } from '../../../store/reselect/fees';
 import { updateOnChainActivityList } from '../../../store/actions/activity';
 import { truncate } from '../../../utils/helpers';
-import Money from '../../../components/Money';
 import { EUnit } from '../../../store/types/wallet';
+import { updateLastPaidContacts } from '../../../store/actions/slashtags';
 import AmountToggle from '../../../components/AmountToggle';
+import LightningSyncing from '../../../components/LightningSyncing';
 
 const Section = memo(
 	({
@@ -218,8 +220,9 @@ const ReviewAndSend = ({
 		// save tags to metadata
 		updateMetaTxTags(payInvoiceResponse.value.payment_hash, transaction.tags);
 
-		// save Slashtags contact to metadata
 		if (transaction.slashTagsUrl) {
+			updateLastPaidContacts(transaction.slashTagsUrl);
+			// save Slashtags contact to metadata
 			addMetaSlashTagsUrlTag(
 				payInvoiceResponse.value.payment_hash,
 				transaction.slashTagsUrl,
@@ -315,6 +318,10 @@ const ReviewAndSend = ({
 		updateOnChainActivityList();
 		setIsLoading(false);
 
+		if (transaction.slashTagsUrl) {
+			updateLastPaidContacts(transaction.slashTagsUrl);
+		}
+
 		navigation.navigate('Result', { success: true, txId: rawTx.id });
 	}, [
 		onChainBalance,
@@ -347,6 +354,8 @@ const ReviewAndSend = ({
 		selectedWallet,
 		selectedNetwork,
 	]);
+
+	const fiatTransactionFee = useDisplayValues(feeSats);
 
 	const runCreateTxMethods = useCallback((): void => {
 		if (transaction.lightningInvoice) {
@@ -423,14 +432,15 @@ const ReviewAndSend = ({
 		(tag: string) => {
 			const res = removeTxTag({ tag, selectedNetwork, selectedWallet });
 			if (res.isErr()) {
+				console.log(res.error.message);
 				showToast({
 					type: 'error',
-					title: 'Error Removing Tag',
-					description: res.error.message,
+					title: t('tag_remove_error_title'),
+					description: t('tag_remove_error_description'),
 				});
 			}
 		},
-		[selectedWallet, selectedNetwork],
+		[selectedWallet, selectedNetwork, t],
 	);
 
 	const onSwipeToPay = useCallback(async () => {
@@ -626,8 +636,11 @@ const ReviewAndSend = ({
 								value={
 									<View style={styles.fee}>
 										{feeIcon}
-										<Text02M>{t(`fee:${selectedFeeId}.title`)} </Text02M>
-										<Money sats={feeSats} size="text02m" />
+										<Text02M>
+											{t(`fee:${selectedFeeId}.title`)} (
+											{fiatTransactionFee.fiatSymbol}
+											{fiatTransactionFee.fiatFormatted})
+										</Text02M>
 										<PencileIcon height={12} width={22} />
 									</View>
 								}
@@ -727,14 +740,13 @@ const ReviewAndSend = ({
 					title={t('are_you_sure')}
 					description={t('send_dialog1')}
 					confirmText={t('send_yes')}
-					onCancel={async (): Promise<void> => {
+					visibleTestID="SendDialog1"
+					onHide={(): void => confirmPayment(dialogWarnings)}
+					onConfirm={(): void => setShowDialog1(false)}
+					onCancel={(): void => {
 						setShowDialog1(false);
 						setIsLoading(false);
 						setTimeout(() => navigation.goBack(), 300);
-					}}
-					onConfirm={(): void => {
-						setShowDialog1(false);
-						confirmPayment(dialogWarnings);
 					}}
 				/>
 				<Dialog
@@ -742,30 +754,27 @@ const ReviewAndSend = ({
 					title={t('are_you_sure')}
 					description={t('send_dialog2')}
 					confirmText={t('send_yes')}
-					onCancel={async (): Promise<void> => {
+					visibleTestID="SendDialog2"
+					onHide={(): void => confirmPayment(dialogWarnings)}
+					onConfirm={(): void => setShowDialog2(false)}
+					onCancel={(): void => {
 						setShowDialog2(false);
 						setIsLoading(false);
 						setTimeout(() => navigation.goBack(), 300);
 					}}
-					onConfirm={(): void => {
-						setShowDialog2(false);
-						confirmPayment(dialogWarnings);
-					}}
-					visibleTestID="DialogSend50"
 				/>
 				<Dialog
 					visible={showDialog3}
 					title={t('are_you_sure')}
 					description={t('send_dialog3')}
 					confirmText={t('send_yes')}
-					onCancel={async (): Promise<void> => {
+					visibleTestID="SendDialog3"
+					onHide={(): void => confirmPayment(dialogWarnings)}
+					onConfirm={(): void => setShowDialog3(false)}
+					onCancel={(): void => {
 						setShowDialog3(false);
 						setIsLoading(false);
 						setTimeout(() => navigation.goBack(), 300);
-					}}
-					onConfirm={(): void => {
-						setShowDialog3(false);
-						confirmPayment(dialogWarnings);
 					}}
 				/>
 				<Dialog
@@ -773,14 +782,13 @@ const ReviewAndSend = ({
 					title={t('are_you_sure')}
 					description={t('send_dialog4')}
 					confirmText={t('send_yes')}
-					onCancel={async (): Promise<void> => {
+					visibleTestID="SendDialog4"
+					onHide={(): void => confirmPayment(dialogWarnings)}
+					onConfirm={(): void => setShowDialog4(false)}
+					onCancel={(): void => {
 						setShowDialog4(false);
 						setIsLoading(false);
 						setTimeout(() => navigation.goBack(), 300);
-					}}
-					onConfirm={(): void => {
-						setShowDialog4(false);
-						confirmPayment(dialogWarnings);
 					}}
 				/>
 				<Dialog
@@ -790,14 +798,13 @@ const ReviewAndSend = ({
 						minimumFee: feeEstimates.minimum,
 					})}
 					confirmText={t('continue')}
+					visibleTestID="SendDialog5"
+					onHide={(): void => confirmPayment(dialogWarnings)}
+					onConfirm={(): void => setShowDialog5(false)}
 					onCancel={(): void => {
 						setShowDialog5(false);
 						setIsLoading(false);
 						setTimeout(() => navigation.goBack(), 300);
-					}}
-					onConfirm={async (): Promise<void> => {
-						setShowDialog5(false);
-						confirmPayment(dialogWarnings);
 					}}
 				/>
 				<SafeAreaInset type="bottom" minPadding={16} />
@@ -816,6 +823,10 @@ const ReviewAndSend = ({
 						navigateToPin();
 					}}
 				/>
+			)}
+
+			{transaction.lightningInvoice && (
+				<LightningSyncing style={styles.syncing} title={t('send_review')} />
 			)}
 		</>
 	);
@@ -870,6 +881,9 @@ const styles = StyleSheet.create({
 	fee: {
 		flexDirection: 'row',
 		alignItems: 'center',
+	},
+	syncing: {
+		...StyleSheet.absoluteFillObject,
 	},
 });
 

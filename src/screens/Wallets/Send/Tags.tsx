@@ -34,10 +34,11 @@ const Tags = ({ navigation }: SendScreenProps<'Tags'>): ReactElement => {
 		}
 		const res = addTxTag({ tag: text, selectedNetwork, selectedWallet });
 		if (res.isErr()) {
+			console.log(res.error.message);
 			showToast({
 				type: 'error',
 				title: t('tags_add_error_header'),
-				description: res.error.message,
+				description: t('tags_add_error_description'),
 			});
 			return;
 		}
@@ -50,10 +51,11 @@ const Tags = ({ navigation }: SendScreenProps<'Tags'>): ReactElement => {
 	const handleTagChoose = async (tag: string): Promise<void> => {
 		const res = addTxTag({ tag, selectedNetwork, selectedWallet });
 		if (res.isErr()) {
+			console.log(res.error.message);
 			showToast({
 				type: 'error',
 				title: t('tags_add_error_header'),
-				description: res.error.message,
+				description: t('tags_add_error_description'),
 			});
 			return;
 		}

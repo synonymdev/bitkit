@@ -1,11 +1,21 @@
 import { ok, Result } from '@synonymdev/result';
 
 import actions from './actions';
-import { IActivityItem } from '../types/activity';
+import {
+	EActivityType,
+	IActivityItem,
+	TLightningActivityItem,
+} from '../types/activity';
 import { getBlocktankStore, getDispatch } from '../helpers';
 import { onChainTransactionToActivityItem } from '../../utils/activity';
 import { getCurrentWallet } from '../../utils/wallet';
 import { formatBoostedActivityItems } from '../../utils/boost';
+import { TChannel } from '@synonymdev/react-native-ldk';
+import { EPaymentType } from '../types/wallet';
+import { closeBottomSheet, showBottomSheet } from './ui';
+import { checkPendingCJitEntries } from './blocktank';
+import { getLightningChannels } from '../../utils/lightning';
+import { updateSettings } from './settings';
 
 const dispatch = getDispatch();
 
@@ -22,6 +32,60 @@ export const addActivityItem = (
 		payload: activityItem,
 	});
 	return ok('Activity Item Added.');
+};
+
+/**
+ * Attempts to determine if a given channel open was in response to
+ * a CJIT entry and adds it to the activity list accordingly.
+ * @param {string} channelId
+ */
+export const addCJitActivityItem = async (channelId: string): Promise<void> => {
+	const lightningChannels = await getLightningChannels();
+	if (lightningChannels.isErr()) {
+		return;
+	}
+	const lightningChannel = lightningChannels.value.find(
+		(channel: TChannel) => channel.channel_id === channelId,
+	);
+	if (!lightningChannel) {
+		return; // Channel not found.
+	}
+	if (
+		lightningChannel.confirmations_required !== 0 ||
+		lightningChannel.balance_sat === 0
+	) {
+		return; // No need to take action.
+	}
+
+	// Update any pending CJIT entries.
+	await checkPendingCJitEntries();
+
+	// Check if we have a CJIT entry for this channel.
+	const cJitEntry = getBlocktankStore().cJitEntries.find((entry) => {
+		return entry?.channel?.fundingTx.id === lightningChannel.funding_txid;
+	});
+	if (!cJitEntry) {
+		// No CJIT entry found for this channel.
+		// Most likely a normal channel open.
+		return;
+	}
+
+	const activityItem: TLightningActivityItem = {
+		id: lightningChannel?.funding_txid ?? '',
+		activityType: EActivityType.lightning,
+		txType: EPaymentType.received,
+		message: '',
+		address: cJitEntry.invoice.request,
+		value: lightningChannel.balance_sat,
+		confirmed: true,
+		timestamp: new Date().getTime(),
+	};
+	addActivityItem(activityItem);
+	updateSettings({
+		hideOnboardingMessage: true,
+	});
+	closeBottomSheet('receiveNavigation');
+	showBottomSheet('newTxPrompt', { activityItem });
 };
 
 export const addActivityItems = (

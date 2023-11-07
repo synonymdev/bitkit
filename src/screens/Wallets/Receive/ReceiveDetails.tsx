@@ -36,9 +36,22 @@ import GlowImage from '../../../components/GlowImage';
 import { useScreenSize } from '../../../hooks/screen';
 import { getNumberPadText } from '../../../utils/numberpad';
 import { useSwitchUnit } from '../../../hooks/wallet';
-import { updateMetaIncTxTags } from '../../../store/actions/metadata';
+import {
+	removePendingInvoice,
+	updatePendingInvoice,
+} from '../../../store/actions/metadata';
+import { createCJitEntry } from '../../../utils/blocktank';
+import { DEFAULT_CHANNEL_DURATION } from '../../Lightning/CustomConfirm';
+import { blocktankInfoSelector } from '../../../store/reselect/blocktank';
+import { isGeoBlockedSelector } from '../../../store/reselect/user';
+import { useLightningBalance } from '../../../hooks/lightning';
+import { lightningSelector } from '../../../store/reselect/lightning';
 
 const imageSrc = require('../../../assets/illustrations/coin-stack-4.png');
+
+// hardcoded to be above fee (1092)
+// TODO: fee is dynamic so this should be fetched from the API
+const MINIMUM_AMOUNT = 5000;
 
 const ReceiveDetails = ({
 	navigation,
@@ -51,7 +64,13 @@ const ReceiveDetails = ({
 	const [showNumberPad, setShowNumberPad] = useState(false);
 	const invoice = useSelector(receiveSelector);
 	const { fiatTicker } = useCurrency();
-	const { receiveAddress, lightningInvoice } = route.params;
+	const { receiveAddress, lightningInvoice, enableInstant } = route.params;
+	const blocktank = useSelector(blocktankInfoSelector);
+	const lightningBalance = useLightningBalance(false);
+	const isGeoBlocked = useSelector(isGeoBlockedSelector);
+	const lightning = useSelector(lightningSelector);
+
+	const { maxChannelSizeSat } = blocktank.options;
 
 	const onChangeUnit = (): void => {
 		const result = getNumberPadText(invoice.amount, nextUnit);
@@ -59,14 +78,58 @@ const ReceiveDetails = ({
 		switchUnit();
 	};
 
+	// Determines if a CJIT entry can and should be created for the given invoice.
+	const createCJitIfNeeded = useCallback(async () => {
+		// Return if geo-blocked or if we have a large enough remote balance to satisfy the invoice.
+		if (
+			!enableInstant ||
+			isGeoBlocked ||
+			lightningBalance.remoteBalance >= invoice.amount ||
+			lightning.accountVersion < 2
+		) {
+			return;
+		}
+
+		// channel size must be at least 2x the invoice amount
+		const maxAmount = maxChannelSizeSat / 2;
+
+		// Ensure the CJIT entry is within an acceptable range.
+		if (invoice.amount >= MINIMUM_AMOUNT && invoice.amount <= maxAmount) {
+			const cJitEntryResponse = await createCJitEntry({
+				channelSizeSat: maxChannelSizeSat,
+				invoiceSat: invoice.amount,
+				invoiceDescription: invoice.message,
+				channelExpiryWeeks: DEFAULT_CHANNEL_DURATION,
+				couponCode: 'bitkit',
+			});
+			if (cJitEntryResponse.isErr()) {
+				console.log({ error: cJitEntryResponse.error.message });
+				return;
+			}
+			const order = cJitEntryResponse.value;
+			updateInvoice({ jitOrder: order });
+			navigation.navigate('ReceiveConnect');
+		}
+	}, [
+		maxChannelSizeSat,
+		enableInstant,
+		invoice.amount,
+		invoice.message,
+		isGeoBlocked,
+		lightning.accountVersion,
+		lightningBalance.remoteBalance,
+		navigation,
+	]);
+
 	const onNavigateBack = useCallback(async () => {
 		await Keyboard.dismiss();
 		navigation.navigate('ReceiveQR');
 	}, [navigation]);
 
-	const onContinue = useCallback(() => {
+	const onContinue = useCallback(async () => {
+		await createCJitIfNeeded();
 		setShowNumberPad(false);
-	}, []);
+	}, [createCJitIfNeeded]);
 
 	const onNumberPadPress = (): void => {
 		if (showNumberPad) {
@@ -77,10 +140,17 @@ const ReceiveDetails = ({
 	};
 
 	useEffect(() => {
-		if (invoice.tags.length > 0 && receiveAddress) {
-			updateMetaIncTxTags(receiveAddress, lightningInvoice, invoice.tags);
+		if (invoice.tags.length > 0) {
+			updatePendingInvoice({
+				id: invoice.id,
+				tags: invoice.tags,
+				address: receiveAddress,
+				payReq: lightningInvoice,
+			});
+		} else {
+			removePendingInvoice(invoice.id);
 		}
-	}, [receiveAddress, lightningInvoice, invoice.tags]);
+	}, [invoice.id, invoice.tags, receiveAddress, lightningInvoice]);
 
 	return (
 		<GradientView style={styles.container}>
@@ -248,7 +318,7 @@ const styles = StyleSheet.create({
 	numberPad: {
 		flex: 1,
 		marginTop: 'auto',
-		maxHeight: 500,
+		maxHeight: 450,
 	},
 	actionButtons: {
 		flexDirection: 'row',

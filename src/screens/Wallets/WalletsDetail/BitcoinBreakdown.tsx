@@ -6,15 +6,20 @@ import { useTranslation } from 'react-i18next';
 
 import { View as ThemedView } from '../../../styles/components';
 import { TransferIcon, SavingsIcon, CoinsIcon } from '../../../styles/icons';
-import NetworkRow from './NetworkRow';
 import { useBalance } from '../../../hooks/wallet';
 import { RootNavigationProp } from '../../../navigation/types';
 import { isGeoBlockedSelector } from '../../../store/reselect/user';
+import { lightningSelector } from '../../../store/reselect/lightning';
+import { showToast } from '../../../utils/notifications';
+import { openChannelIdsSelector } from '../../../store/reselect/lightning';
+import NetworkRow from './NetworkRow';
 
 const BitcoinBreakdown = (): ReactElement => {
 	const { t } = useTranslation('wallet');
 	const navigation = useNavigation<RootNavigationProp>();
 	const isGeoBlocked = useSelector(isGeoBlockedSelector);
+	const lightning = useSelector(lightningSelector);
+	const openChannelIds = useSelector(openChannelIdsSelector);
 	const {
 		onchainBalance,
 		lightningBalance,
@@ -23,7 +28,17 @@ const BitcoinBreakdown = (): ReactElement => {
 		claimableBalance,
 	} = useBalance();
 
+	const isTransferToSavings = openChannelIds.length === 0;
+
 	const onRebalancePress = (): void => {
+		if (lightning.accountVersion < 2) {
+			showToast({
+				type: 'error',
+				title: t('migrating_ldk_title'),
+				description: t('migrating_ldk_description'),
+			});
+			return;
+		}
 		if (lightningBalance && !isGeoBlocked) {
 			navigation.navigate('Transfer', { screen: 'Setup' });
 		} else {
@@ -37,6 +52,7 @@ const BitcoinBreakdown = (): ReactElement => {
 				title={t('details_savings_title')}
 				subtitle={t('details_savings_subtitle')}
 				balance={onchainBalance}
+				pendingBalance={isTransferToSavings ? claimableBalance : 0}
 				color="brand"
 				icon={
 					<ThemedView style={styles.icon} color="brand16">
@@ -57,7 +73,7 @@ const BitcoinBreakdown = (): ReactElement => {
 				title={t('details_spending_title')}
 				subtitle={t('details_spending_subtitle')}
 				balance={spendingBalance}
-				pendingBalance={claimableBalance}
+				pendingBalance={isTransferToSavings ? 0 : claimableBalance}
 				reserveBalance={reserveBalance}
 				color="purple"
 				icon={

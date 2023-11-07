@@ -21,7 +21,7 @@ const backup = (state: IBackup = defaultBackupShape, action): IBackup => {
 			};
 		}
 
-		case actions.SET_SLASHTAGS_FEED_WIDGET: {
+		case actions.SET_FEED_WIDGET: {
 			const remoteWidgetsBackupSyncRequired =
 				state.remoteWidgetsBackupSyncRequired ?? new Date().getTime();
 			return {
@@ -34,7 +34,8 @@ const backup = (state: IBackup = defaultBackupShape, action): IBackup => {
 		case actions.UPDATE_META_TX_TAGS:
 		case actions.ADD_META_TX_TAG:
 		case actions.DELETE_META_TX_TAG:
-		case actions.UPDATE_META_INC_TX_TAGS:
+		case actions.UPDATE_PENDING_INVOICE:
+		case actions.DELETE_PENDING_INVOICE:
 		case actions.MOVE_META_INC_TX_TAG:
 		case actions.ADD_META_TX_SLASH_TAGS_URL:
 		case actions.DELETE_META_TX_SLASH_TAGS_URL:
@@ -71,6 +72,18 @@ const backup = (state: IBackup = defaultBackupShape, action): IBackup => {
 				...state,
 				remoteBlocktankBackupSyncRequired,
 				remoteBlocktankBackupSynced: false,
+			};
+		}
+
+		case actions.CONTACT_ADD:
+		case actions.CONTACT_DELETE:
+		case actions.CONTACTS_ADD: {
+			const remoteSlashtagsBackupSyncRequired =
+				state.remoteSlashtagsBackupSyncRequired ?? new Date().getTime();
+			return {
+				...state,
+				remoteSlashtagsBackupSyncRequired,
+				remoteSlashtagsBackupSynced: false,
 			};
 		}
 

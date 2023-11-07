@@ -1,13 +1,13 @@
 {
   "settings": "Nastavení",
   "dev_enabled_title": "Dev nastavení povoleno",
-  "dev_enabled_message": "Dev nastavení povoleno prostřednictvím aplikace",
+  "dev_enabled_message": "V celé aplikaci jsou nyní povoleny možnosti pro vývojáře.",
   "dev_disabled_title": "Dev nastavení zakázáno",
-  "dev_disabled_message": "Dev nastavení zakázáno prostřednictvím aplikace",
+  "dev_disabled_message": "Možnosti pro vývojáře jsou nyní v celé aplikaci vypnuté.",
   "general_title": "Obecné",
   "security_title": "Bezpečnost a soukromí",
-  "backup_title": "Zálohovat nebo obnovit",
-  "advanced_title": "Pokročilý",
+  "backup_title": "Záloha nebo obnovení",
+  "advanced_title": "Pokročilé",
   "about_title": "O nás",
   "about": {
     "title": "O Bitkit",
@@ -41,7 +41,7 @@
     "speed_fee_total": "{feeSats} satů za průměrnou transakci",
     "speed_fee_total_fiat": "{feeSats} satů za průměrnou transakci ({fiatSymbol}{fiatFormatted})",
     "suggestions": "Návrhy",
-    "suggestions_visible": "Viditelný",
+    "suggestions_visible": "Viditelné",
     "suggestions_hidden": "Skrytý",
     "suggestions_display": "Zobrazit návrhy",
     "suggestions_reset": "Resetovat návrhy",
@@ -66,12 +66,12 @@
     "footer": "Pokud povoleno, můžete pro odemčení peněženky nebo zaslání platby použít {biometryTypeName} namísto PIN kódu."
   },
   "backup": {
-    "title": "Zálohovat nebo obnovit",
+    "title": "Záloha nebo obnovení",
     "wallet": "Zálohujte svou peněženku",
     "export": "Exportovat data peněženky do telefonu",
     "reset": "Resetovat a obnovit peněženku",
-    "failed_title": "Zálohování dat selhalo",
-    "failed_message": "Bitkitu se nepodařilo zálohovat svá data. Zkontrolujte připojení.",
+    "failed_title": "Zálohování dat se nezdařilo",
+    "failed_message": "Bitkit se nepodařilo zálohovat data peněženky. Zkontrolujte prosím vaše připojení.",
     "latest": "nejnovější zálohy dat",
     "status_failed": "Zálohování se nezdařilo: {time}",
     "status_success": "Poslední záloha: {time}",
@@ -109,11 +109,12 @@
     "lightning_connections": "Lightning propojení",
     "lightning_node": "Lightning uzel",
     "electrum_server": "Electrum server",
+    "web_relay": "Slashtags web přenos",
     "bitcoin_network": "Bitcoinová síť"
   },
   "fee": {
     "fast": {
-      "label": "Rychlý (dražší)",
+      "label": "Rychlá (dražší)",
       "value": "Rychle",
       "description": "+/- 10-20 minut"
     },
@@ -123,7 +124,7 @@
       "description": "+/- 20-60 minut"
     },
     "slow": {
-      "label": "Pomalý (levnější)",
+      "label": "Pomalá (levnější)",
       "value": "Pomalu",
       "description": "+/- 1-2 hodiny"
     },
@@ -140,7 +141,8 @@
     "no_funds_change": "Pod typem adresy {addressType} nebyly nalezeny žádné prostředky, změňte adresy až do indexu {index}.",
     "no_addrs_with_funds": "Při hledání „{searchTxt}“ nebyly nalezeny žádné adresy s finančními prostředky",
     "no_addrs_str": "Při hledání „{searchTxt}“ nebyly nalezeny žádné adresy",
-    "rescan_error": "Chyba opětovného skenování: Zkontrolujte prosím připojení",
+    "rescan_error": "Obnovení skenování se nezdařilo",
+    "rescan_error_description": "Bitkit nebyl schopen zkontrolovat zůstatky adres.",
     "spend_number": "{count, plural, one {Strávit {fundsToSpend} sats Od # adresa} few {Strávit {fundsToSpend} sats Od # adresy} many {Strávit {fundsToSpend} sats Od # adresy} other {Utratit {fundsToSpend} satů z # adresy}}",
     "spend_all": "{count, plural, one {Utratit všechny prostředky z # adresa} few {Utratit všechny prostředky z # adres} many {Utratit všechny prostředky z # adres} other {Utratit všechny prostředky z # adres}}",
     "index": "Index: {index}",
@@ -159,14 +161,13 @@
     "error_host_port": "Zadejte host a port, ke kterému se chcete připojit.",
     "error_host": "Zadejte host, ke kterému se chcete připojit.",
     "error_port": "Zadejte port, ke kterému se chcete připojit.",
-    "error_port_invalid": "Chybný port.",
-    "error_invalid_http": "Neplatná adresa URL HTTP.",
-    "error_peer": "Electrum Peer Error",
+    "error_port_invalid": "Zadejte platný port.",
+    "error_invalid_http": "Zadejte prosím platnou adresu url.",
+    "error_peer": "Chyba Electrum",
     "server_updated_title": "Electrum Server aktualizován",
     "server_updated_message": "Úspěšně připojeno k {host}:{port}",
-    "server_error": "Nelze se připojit k serveru Electrum",
-    "qr_error_title": "Nebyla zjištěna žádná data připojení",
-    "qr_error_message": "Je nám líto, Bitkit není schopen přečíst tento QR kód.",
+    "server_error": "Electrum připojení selhalo",
+    "server_error_description": "Bitkit se nepodařilo vytvořit spojení na Electrum.",
     "connected_to": "Aktuálně připojeno k",
     "disconnected": "odpojeno",
     "host": "Host",
@@ -174,5 +175,15 @@
     "protocol": "Protokol",
     "button_reset": "Obnovit do základního nastavení",
     "button_connect": "Připojit se k Host"
+  },
+  "wr": {
+    "error_wr": "Chyba webového přenosu",
+    "error_url": "Zadejte prosím adresu URL, ke které se chcete připojit.",
+    "error_https": "Není platná url HTTPS adresa.",
+    "error_healthcheck": "Kontrola stavu se nezdařila",
+    "url_updated_title": "Webový přenos aktualizován",
+    "url_updated_message": "Úspěšně připojeno k {url}",
+    "trust": "Důvěřovat tomuto přenosu",
+    "trust_description": "Přeskočení ověření záznamu pro tento webový přenos"
   }
 }

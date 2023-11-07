@@ -1,9 +1,12 @@
 import React, { memo, ReactElement } from 'react';
+import { useSelector } from 'react-redux';
 import { View, GestureResponderEvent, StyleSheet } from 'react-native';
+
 import { ClockIcon } from '../styles/icons';
 import { Text01M, Caption13M } from '../styles/text';
 import { TouchableOpacity } from '../styles/components';
 import Money from '../components/Money';
+import { openChannelIdsSelector } from '../store/reselect/lightning';
 
 const AssetCard = ({
 	name,
@@ -22,6 +25,10 @@ const AssetCard = ({
 	testID?: string;
 	onPress: (event: GestureResponderEvent) => void;
 }): ReactElement => {
+	const openChannelIds = useSelector(openChannelIdsSelector);
+
+	const isTransferToSavings = openChannelIds.length === 0;
+
 	return (
 		<View style={styles.container}>
 			<TouchableOpacity
@@ -36,8 +43,9 @@ const AssetCard = ({
 
 				<View style={styles.amount}>
 					<View style={styles.primary}>
-						{/* TODO: change color depending on pending savings/spending */}
-						{pending && <ClockIcon color="purple" />}
+						{pending && (
+							<ClockIcon color={isTransferToSavings ? 'orange' : 'purple'} />
+						)}
 						<Money
 							style={styles.primaryAmount}
 							sats={satoshis}

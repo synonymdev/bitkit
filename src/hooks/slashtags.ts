@@ -20,7 +20,7 @@ export const useSelectedSlashtag = (): {
 	const sdk = useSlashtagsSDK();
 	const slashtag = getSelectedSlashtag(sdk);
 
-	return { url: slashtag?.url, slashtag };
+	return { url: slashtag.url, slashtag };
 };
 
 /**
@@ -34,9 +34,7 @@ export const useSelectedSlashtag = (): {
  */
 export const useProfile = (
 	url: string,
-	opts?: {
-		resolve?: boolean;
-	},
+	opts?: { resolve?: boolean },
 ): { resolving: boolean; profile: BasicProfile } => {
 	const sdk = useSlashtagsSDK();
 	const contactRecord = useSlashtags().contacts[url];
@@ -51,11 +49,8 @@ export const useProfile = (
 			: profile;
 	}, [profile, contactRecord]);
 
-	const shouldResolve = Boolean(
-		opts?.resolve ||
-			// If We are restoring wallet, try to resolve anyways
-			!profile,
-	);
+	// If We are restoring wallet, try to resolve anyways
+	const shouldResolve = opts?.resolve || !profile;
 
 	useEffect(() => {
 		// Skip resolving profile from peers to avoid blocking UI
@@ -71,32 +66,35 @@ export const useProfile = (
 
 		const drive = sdk.drive(SlashURL.parse(url).key);
 
-		drive
-			.ready()
-			.then(() => {
-				// Resolve immediatly
-				resolve().finally(() => {
-					!unmounted && setResolving(false);
-				});
+		const getData = async (): Promise<void> => {
+			const read = async (): Promise<void> => {
+				const node = await drive.files.get('/profile.json');
+				const version = node?.seq;
+
+				const buffer = await drive.get('/profile.json');
+				const _profile = decodeJSON(buffer) as BasicProfile;
+
+				cacheProfile(url, drive.files.feed.fork, version, _profile);
+
+				if (!unmounted) {
+					setResolving(false);
+				}
+			};
+
+			try {
+				await drive.ready();
+				// Resolve immediately
+				read();
 				// Watch update
-				drive.core.on('append', resolve);
-			})
-			.catch(onError);
+				drive.core.on('append', read);
+			} catch (error) {
+				console.debug('Error opening drive in useProfile', error.message);
+			}
+		};
 
-		async function resolve(): Promise<void> {
-			const version = await drive.files
-				.get('/profile.json')
-				.then((node: any) => node?.seq);
+		getData();
 
-			const _profile = await drive
-				.get('/profile.json')
-				.then(decodeJSON)
-				.catch(noop);
-
-			cacheProfile(url, drive.files.feed.fork, version, _profile);
-		}
-
-		return function cleanup(): void {
+		return (): void => {
 			unmounted = true;
 			drive.core.removeAllListeners();
 			drive.close();
@@ -108,9 +106,3 @@ export const useProfile = (
 		profile: withContactRecord || {},
 	};
 };
-
-function onError(error: Error): void {
-	console.debug('Error opening drive in useProfile', error.message);
-}
-
-function noop(): void {}

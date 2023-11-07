@@ -1,7 +1,6 @@
 import { useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { TChannel } from '@synonymdev/react-native-ldk';
-import { IGetOrderResponse } from '@synonymdev/blocktank-client';
 
 import { ellipsis } from '../utils/helpers';
 import Store from '../store/types';
@@ -16,6 +15,7 @@ import {
 	openChannelIdsSelector,
 } from '../store/reselect/lightning';
 import { usePaidBlocktankOrders } from './blocktank';
+import { IBtOrder } from '@synonymdev/blocktank-lsp-http-client';
 
 /**
  * Returns the lightning balance of all known open channels.
@@ -30,15 +30,11 @@ export const useLightningBalance = (
 } => {
 	const selectedWallet = useSelector(selectedWalletSelector);
 	const selectedNetwork = useSelector(selectedNetworkSelector);
-	const openChannelIds = useSelector((state: Store) => {
-		return openChannelIdsSelector(state, selectedWallet, selectedNetwork);
-	});
+	const openChannelIds = useSelector(openChannelIdsSelector);
 	const channels = useSelector((state: Store) => {
 		return channelsSelector(state, selectedWallet, selectedNetwork);
 	});
-	const openChannels = useSelector((state: Store) => {
-		return openChannelsSelector(state, selectedWallet, selectedNetwork);
-	});
+	const openChannels = useSelector(openChannelsSelector);
 
 	const localBalance = useMemo(() => {
 		return openChannels.reduce((acc, channel) => {
@@ -109,24 +105,41 @@ export const useLightningChannelBalance = (
 };
 
 /**
+ * Returns the maximum inbound capacity of all known open channels.
+ * @returns {number}
+ */
+export const useLightningMaxInboundCapacity = (): number => {
+	const openChannels = useSelector(openChannelsSelector);
+
+	const maxInboundCapacity = useMemo(() => {
+		return openChannels.reduce((max, channel) => {
+			const inbound = channel.inbound_capacity_sat;
+			return inbound > max ? inbound : max;
+		}, 0);
+	}, [openChannels]);
+
+	return maxInboundCapacity;
+};
+
+/**
  * Returns the name of a channel.
  * @param {TChannel} channel
- * @param {IGetOrderResponse} blocktankOrder
+ * @param {IBtOrder} blocktankOrder
  * @returns {string}
  */
 export const useLightningChannelName = (
 	channel: TChannel,
-	blocktankOrder?: IGetOrderResponse,
+	blocktankOrder?: IBtOrder,
 ): string => {
 	const paidBlocktankOrders = usePaidBlocktankOrders();
 
 	if (blocktankOrder) {
 		const index = paidBlocktankOrders.findIndex(
-			(order) => order._id === blocktankOrder._id,
+			(order) => order.id === blocktankOrder.id,
 		);
 		return `Connection ${index + 1}`;
 	} else {
 		const shortChannelId = ellipsis(channel.channel_id, 10);
-		return channel.inbound_scid_alias?.toString() ?? shortChannelId;
+		return channel.inbound_scid_alias ?? shortChannelId;
 	}
 };

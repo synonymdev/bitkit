@@ -21,7 +21,14 @@ if (__DEV__) {
 		ignoreList: string[],
 	): any => {
 		return (...args): void => {
-			const output = args.join(' ');
+			let output: string;
+			try {
+				output = args.join(' ');
+			} catch (err) {
+				// if we can't check if the log should be ignored, just log it
+				logger(...args);
+				return;
+			}
 
 			if (!ignoreList.some((log) => output.includes(log))) {
 				logger(...args);

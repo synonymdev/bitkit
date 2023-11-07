@@ -67,7 +67,7 @@ import {
 	updateSendTransaction,
 	updateWallet,
 } from '../../../store/actions/wallet';
-import { showBottomSheet } from '../../../store/actions/ui';
+import { showBottomSheet, updateUi } from '../../../store/actions/ui';
 import Store from '../../../store/types';
 import SearchInput from '../../../components/SearchInput';
 import AddressViewerListItem from './AddressViewerListItem';
@@ -710,13 +710,13 @@ const AddressViewer = ({
 				transaction: {
 					...transactionRes.value,
 					outputs: [{ address: receiveAddress.value, value: 0, index: 0 }],
-					fromAddressViewer: true,
 				},
 				selectedWallet,
 				selectedNetwork,
 			});
+			updateUi({ fromAddressViewer: true });
 			sendMax({ selectedWallet, selectedNetwork });
-			showBottomSheet('sendNavigation');
+			showBottomSheet('sendNavigation', { screen: 'ReviewAndSend' });
 		},
 		[selectedNetwork, selectedUtxos, selectedWallet, utxos],
 	);
@@ -851,10 +851,11 @@ const AddressViewer = ({
 						allAddresses: _allAddresses,
 					});
 					if (utxosRes.isErr()) {
+						console.log(utxosRes.error.message);
 						showToast({
 							type: 'error',
 							title: t('addr.rescan_error'),
-							description: utxosRes.error.message,
+							description: t('addr.rescan_error_description'),
 						});
 						setIsCheckingBalances(false);
 						return;

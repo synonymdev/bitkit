@@ -10,7 +10,6 @@ import SafeAreaInset from '../../components/SafeAreaInset';
 import Button from '../../components/Button';
 import { closeBottomSheet, showBottomSheet } from '../../store/actions/ui';
 import GlowImage from '../../components/GlowImage';
-import { addTodo, removeTodo } from '../../store/actions/todos';
 import { closeAllChannels } from '../../utils/lightning';
 import { showToast } from '../../utils/notifications';
 import {
@@ -60,8 +59,6 @@ const ForceTransfer = (): ReactElement => {
 					console.log('coop close success.');
 					clearCoopCloseTimer();
 					clearInterval(interval);
-					removeTodo('transferClosingChannel');
-					addTodo('transferToSavings');
 				} else {
 					console.log('coop close failed.');
 					console.log({ closeResponse: closeResponse.value });
@@ -115,9 +112,6 @@ const ForceTransfer = (): ReactElement => {
 					title: t('force_init_title'),
 					description: t('force_init_msg'),
 				});
-
-				removeTodo('transferClosingChannel');
-				addTodo('transferToSavings');
 				closeBottomSheet('forceTransfer');
 			} else {
 				console.log('force close failed.');

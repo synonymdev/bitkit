@@ -16,10 +16,8 @@ import { sleep } from '../../utils/helpers';
 import { useBalance } from '../../hooks/wallet';
 import useDisplayValues from '../../hooks/displayValues';
 import type { LightningScreenProps } from '../../navigation/types';
-import { addTodo } from '../../store/actions/todos';
 import { confirmChannelPurchase } from '../../store/actions/blocktank';
 import { blocktankOrdersSelector } from '../../store/reselect/blocktank';
-import { setLightningSettingUpStep } from '../../store/actions/user';
 import {
 	selectedNetworkSelector,
 	transactionFeeSelector,
@@ -33,22 +31,33 @@ const QuickConfirm = ({
 	route,
 }: LightningScreenProps<'QuickConfirm'>): ReactElement => {
 	const { spendingAmount, orderId } = route.params;
-	const { t } = useTranslation('lightning');
-	const [loading, setLoading] = useState(false);
-	const selectedNetwork = useSelector(selectedNetworkSelector);
 	const { onchainBalance } = useBalance();
+	const { t } = useTranslation('lightning');
 	const orders = useSelector(blocktankOrdersSelector);
-	const order = useMemo(() => {
-		return orders.find((o) => o._id === orderId);
-	}, [orderId, orders]);
-	const blocktankPurchaseFee = useDisplayValues(order?.price ?? 0);
 	const transactionFee = useSelector(transactionFeeSelector);
+	const selectedNetwork = useSelector(selectedNetworkSelector);
+	const [loading, setLoading] = useState(false);
+
+	const order = useMemo(() => {
+		return orders.find((o) => o.id === orderId);
+	}, [orderId, orders]);
+	const purchaseFee = useMemo(() => {
+		return !order ? 0 : order?.feeSat ?? 0;
+	}, [order]);
+	const blocktankPurchaseFee = useDisplayValues(purchaseFee);
 	const fiatTransactionFee = useDisplayValues(transactionFee);
+	const clientBalance = useDisplayValues(order?.clientBalanceSat ?? 0);
+
 	const channelOpenCost = useMemo(() => {
 		return (
-			blocktankPurchaseFee.fiatValue + fiatTransactionFee.fiatValue
+			blocktankPurchaseFee.fiatValue -
+			clientBalance.fiatValue +
+			fiatTransactionFee.fiatValue
 		).toFixed(2);
-	}, [fiatTransactionFee.fiatValue, blocktankPurchaseFee.fiatValue]);
+
+		// avoid flashing different price after confirmation
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [orderId]);
 
 	const savingsAmount = onchainBalance - spendingAmount;
 	const spendingPercentage = Math.round(
@@ -64,8 +73,6 @@ const QuickConfirm = ({
 			setLoading(false);
 			return;
 		}
-		setLightningSettingUpStep(0);
-		addTodo('lightningSettingUp');
 		navigation.navigate('SettingUp');
 	};
 

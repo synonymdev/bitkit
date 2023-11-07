@@ -17,6 +17,8 @@ export type TCreateLightningInvoice = TCreatePaymentReq & {
 
 export type TOpenChannelIds = string[];
 
+export type TLdkAccountVersions = 1 | 2;
+
 export interface IDefaultLightningShape {
 	nodeId: IWalletItem<string>;
 	channels: IWalletItem<{ [key: string]: TChannel }>;
@@ -31,6 +33,7 @@ export type TNodes = {
 };
 
 export interface ILightning {
+	accountVersion: TLdkAccountVersions;
 	version: TLightningNodeVersion;
 	nodes: TNodes;
 }

@@ -1,4 +1,5 @@
 import { ok, Result } from '@synonymdev/result';
+import { ICJitEntry } from '@synonymdev/blocktank-lsp-http-client';
 import actions from './actions';
 import { getDispatch } from '../helpers';
 
@@ -9,6 +10,7 @@ export const updateInvoice = (payload: {
 	numberPadText?: string;
 	message?: string;
 	tags?: string[];
+	jitOrder?: ICJitEntry;
 }): Result<string> => {
 	dispatch({ type: actions.UPDATE_INVOICE, payload });
 	return ok('');

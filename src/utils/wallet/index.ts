@@ -18,7 +18,6 @@ import {
 	EPaymentType,
 	IAddresses,
 	IAddress,
-	ICreateWallet,
 	IWallets,
 	IWallet,
 	IFormattedTransactions,
@@ -34,6 +33,7 @@ import {
 	TWalletName,
 	TKeyDerivationCoinType,
 	TKeyDerivationChange,
+	IAddressTypes,
 } from '../../store/types/wallet';
 import {
 	IGetAddress,
@@ -42,6 +42,7 @@ import {
 	IGenerateAddressesResponse,
 	IGetAddressResponse,
 } from '../types';
+import i18n from '../i18n';
 import { btcToSats } from '../conversion';
 import { getKeychainValue, setKeychainValue } from '../keychain';
 import {
@@ -1949,18 +1950,24 @@ export const getRbfData = async ({
  * @return {Promise<Result<IWallets>>}
  */
 export const createDefaultWallet = async ({
-	walletName = getDefaultWalletShape().id,
-	addressAmount = GENERATE_ADDRESS_AMOUNT,
-	changeAddressAmount = GENERATE_ADDRESS_AMOUNT,
-	mnemonic = '',
-	bip39Passphrase = '',
+	walletName,
+	mnemonic,
+	bip39Passphrase,
+	restore,
+	addressAmount,
+	changeAddressAmount,
 	addressTypesToCreate,
-	selectedNetwork,
-}: ICreateWallet): Promise<Result<IWallets>> => {
+}: {
+	walletName: TWalletName;
+	mnemonic: string;
+	bip39Passphrase: string;
+	restore: boolean;
+	addressAmount: number;
+	changeAddressAmount: number;
+	addressTypesToCreate: Partial<IAddressTypes>;
+}): Promise<Result<IWallets>> => {
 	try {
-		if (!selectedNetwork) {
-			selectedNetwork = getSelectedNetwork();
-		}
+		const selectedNetwork = getSelectedNetwork();
 		if (!addressTypesToCreate) {
 			// if nothing else specified use only Native Segwit by default
 			addressTypesToCreate = { p2wpkh: addressTypes.p2wpkh };
@@ -1973,10 +1980,14 @@ export const createDefaultWallet = async ({
 
 		const wallets = getWalletStore().wallets;
 		if (walletName in wallets && wallets[walletName]?.id) {
-			return err(`Wallet ID, "${walletName}" already exists.`);
+			return err(`Wallet "${walletName}" already exists.`);
 		}
 		if (!validateMnemonic(mnemonic)) {
-			return err('Invalid Mnemonic');
+			if (restore) {
+				return err(i18n.t('wallet:create_wallet_mnemonic_restore_error'));
+			} else {
+				return err(i18n.t('wallet:create_wallet_mnemonic_error'));
+			}
 		}
 		await setKeychainValue({ key: walletName, value: mnemonic });
 		await setKeychainValue({

@@ -77,7 +77,7 @@ const AskForBiometrics = ({
 				showToast({
 					type: 'error',
 					title: t('bio_error_title'),
-					description: t('bio_error_message'),
+					description: t('bio_error_message', { type: biometricsName }),
 				});
 			});
 	}, [

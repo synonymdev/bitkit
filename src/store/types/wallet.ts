@@ -135,8 +135,9 @@ export interface IAddresses {
 
 export interface ICreateWallet {
 	walletName?: TWalletName;
-	mnemonic?: string;
+	mnemonic: string;
 	bip39Passphrase?: string;
+	restore?: boolean;
 	addressAmount?: number;
 	changeAddressAmount?: number;
 	addressTypesToCreate?: Partial<IAddressTypes>;
@@ -180,7 +181,7 @@ export interface IFormattedTransaction {
 }
 
 export interface IFormattedTransactions {
-	[key: string]: IFormattedTransaction;
+	[txId: string]: IFormattedTransaction;
 }
 
 export interface ISendTransaction {
@@ -200,7 +201,6 @@ export interface ISendTransaction {
 	tags: string[];
 	slashTagsUrl?: string;
 	lightningInvoice?: string;
-	fromAddressViewer?: boolean;
 }
 
 export interface IBoostedTransaction {

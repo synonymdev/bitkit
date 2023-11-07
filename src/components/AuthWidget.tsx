@@ -5,58 +5,61 @@ import React, {
 	useMemo,
 	useState,
 } from 'react';
-import { Linking, StyleSheet } from 'react-native';
+import { View, Linking, StyleSheet, StyleProp, ViewStyle } from 'react-native';
 import { Client } from '@synonymdev/slashtags-auth';
 import { useTranslation } from 'react-i18next';
 
-import { useProfile, useSelectedSlashtag } from '../hooks/slashtags';
-import { TouchableOpacity, View } from '../styles/components';
 import { Text01M } from '../styles/text';
-import { KeyIcon, ListIcon, TrashIcon } from '../styles/icons';
+import { TouchableOpacity } from '../styles/components';
+import { KeyIcon, ListIcon, SettingsIcon, TrashIcon } from '../styles/icons';
+import { useProfile, useSelectedSlashtag } from '../hooks/slashtags';
 import { showToast } from '../utils/notifications';
-import Button from './Button';
-import ProfileImage from './ProfileImage';
 import { IWidget } from '../store/types/widgets';
 import { deleteWidget } from '../store/actions/widgets';
+import Button from './Button';
 import Dialog from './Dialog';
+import ProfileImage from './ProfileImage';
+import { rootNavigation } from '../navigation/root/RootNavigator';
 
 const AuthWidget = ({
 	url,
 	widget,
 	isEditing = false,
+	style,
+	testID,
 	onLongPress,
 	onPressIn,
-	testID,
 }: {
 	url: string;
 	widget: IWidget;
 	isEditing?: boolean;
+	style?: StyleProp<ViewStyle>;
+	testID?: string;
 	onLongPress?: () => void;
 	onPressIn?: () => void;
-	testID?: string;
 }): ReactElement => {
 	const { t } = useTranslation('slashtags');
-	const [showButtons, setShowButtons] = useState(false);
-	const [showDialog, setShowDialog] = useState(false);
-
-	const { profile } = useProfile(url, { resolve: true });
 	const { slashtag } = useSelectedSlashtag();
+	const { profile } = useProfile(url);
+	const [showDialog, setShowDialog] = useState(false);
+	const [isSigningIn, setIsSigningIn] = useState(false);
 
-	const switchShowButtons = (): void => {
-		setShowButtons((b) => !b);
-	};
+	const client = useMemo(() => new Client(slashtag), [slashtag]);
 
-	const client = useMemo(() => {
-		return new Client(slashtag);
-	}, [slashtag]);
+	const onSignIn = useCallback(async () => {
+		setIsSigningIn(true);
 
-	const openMagicLink = useCallback(async () => {
 		const magiclink = await client.magiclink(url).catch((e: Error) => {
+			console.log(e.message);
+			const message =
+				e.message === 'channel closed'
+					? t('auth_error_peer')
+					: `An error occurred: ${e.message}`;
+
 			showToast({
 				type: 'error',
 				title: t('auth_error_link'),
-				description:
-					e.message === 'channel closed' ? t('auth_error_peer') : e.message,
+				description: message,
 			});
 		});
 
@@ -64,59 +67,87 @@ const AuthWidget = ({
 			Linking.openURL(magiclink.url).catch((e) => {
 				showToast({
 					type: 'error',
-					title: t('auth_error_open'),
+					title: t('auth_error_link'),
 					description: e.message,
 				});
 			});
 		}
+
+		setIsSigningIn(false);
 	}, [client, url, t]);
+
+	const onEdit = (): void => {
+		rootNavigation.navigate('Widget', { url });
+	};
 
 	const onDelete = (): void => {
 		setShowDialog(true);
 	};
 
 	return (
-		<TouchableOpacity
-			style={styles.container}
-			onPress={switchShowButtons}
-			onLongPress={onLongPress}
-			onPressIn={onPressIn}
-			activeOpacity={0.9}
-			testID={testID}>
-			<View style={styles.left}>
-				<ProfileImage
-					style={styles.icon}
-					url={url}
-					image={profile?.image}
-					size={32}
-				/>
-				<Text01M>{profile?.name || ' '}</Text01M>
-			</View>
-			<View style={styles.right}>
-				{showButtons && widget.magiclink && !isEditing && (
-					<View style={styles.buttonsContainer}>
-						<Button
-							text={t('auth_signin')}
-							onPress={openMagicLink}
-							icon={<KeyIcon color="brand" width={20} height={20} />}
+		<>
+			<TouchableOpacity
+				style={[styles.root, style]}
+				color="white08"
+				activeOpacity={0.9}
+				testID={testID}
+				onPressIn={onPressIn}
+				onLongPress={onLongPress}>
+				<View style={styles.header}>
+					<View style={styles.title}>
+						<ProfileImage
+							style={styles.icon}
+							url={url}
+							image={profile?.image}
+							size={32}
 						/>
+
+						<Text01M style={styles.name} numberOfLines={1}>
+							{profile?.name || ' '}
+						</Text01M>
 					</View>
-				)}
-				{isEditing && (
-					<View style={styles.buttonsContainer}>
-						<TouchableOpacity style={styles.actionButton} onPress={onDelete}>
-							<TrashIcon width={22} />
-						</TouchableOpacity>
-						<TouchableOpacity
-							style={styles.actionButton}
-							onLongPress={onLongPress}
-							onPressIn={onPressIn}
-							activeOpacity={0.9}>
-							<ListIcon color="white" width={24} />
-						</TouchableOpacity>
-					</View>
-				)}
-			</View>
+
+					{!isEditing && widget.magiclink && (
+						<View style={styles.actions}>
+							<Button
+								style={styles.signInButton}
+								text={t('auth_signin')}
+								icon={<KeyIcon color="white" width={16} height={16} />}
+								loading={isSigningIn}
+								onPress={onSignIn}
+							/>
+						</View>
+					)}
+
+					{isEditing && (
+						<View style={styles.actions}>
+							<TouchableOpacity
+								style={styles.actionButton}
+								color="transparent"
+								onPress={onDelete}>
+								<TrashIcon width={22} />
+							</TouchableOpacity>
+							{widget.fields && (
+								<TouchableOpacity
+									style={styles.actionButton}
+									color="transparent"
+									onPress={onEdit}>
+									<SettingsIcon width={22} />
+								</TouchableOpacity>
+							)}
+							<TouchableOpacity
+								style={styles.actionButton}
+								color="transparent"
+								activeOpacity={0.9}
+								onLongPress={onLongPress}
+								onPressIn={onPressIn}>
+								<ListIcon color="white" width={24} />
+							</TouchableOpacity>
+						</View>
+					)}
+				</View>
+			</TouchableOpacity>
+
 			<Dialog
 				visible={showDialog}
 				title={t('widget_delete_title')}
@@ -130,24 +161,21 @@ const AuthWidget = ({
 					setShowDialog(false);
 				}}
 			/>
-		</TouchableOpacity>
+		</>
 	);
 };
 
 const styles = StyleSheet.create({
-	container: {
-		height: 88,
+	root: {
+		borderRadius: 16,
+		padding: 16,
+	},
+	header: {
 		flexDirection: 'row',
 		alignItems: 'center',
 		justifyContent: 'space-between',
-		borderBottomColor: 'rgba(255, 255, 255, 0.1)',
-		borderBottomWidth: 1,
 	},
-	left: {
-		flexDirection: 'row',
-		alignItems: 'center',
-	},
-	right: {
+	title: {
 		flexDirection: 'row',
 		alignItems: 'center',
 	},
@@ -155,18 +183,34 @@ const styles = StyleSheet.create({
 		marginRight: 16,
 		borderRadius: 6.4,
 		overflow: 'hidden',
+		height: 32,
+		width: 32,
 	},
-	buttonsContainer: {
-		position: 'absolute',
-		right: 0,
+	name: {
+		lineHeight: 22,
+	},
+	actions: {
 		flexDirection: 'row',
+		justifyContent: 'center',
 		alignItems: 'center',
 	},
 	actionButton: {
-		paddingHorizontal: 10,
-		height: '100%',
 		alignItems: 'center',
 		justifyContent: 'center',
+		width: 32,
+		height: 32,
+		marginLeft: 8,
+
+		// increase hitbox
+		paddingTop: 30,
+		marginTop: -30,
+		paddingBottom: 30,
+		marginBottom: -30,
+	},
+	signInButton: {
+		height: 32,
+		paddingHorizontal: 16,
+		minWidth: 0,
 	},
 });
 

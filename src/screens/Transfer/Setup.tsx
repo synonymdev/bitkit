@@ -41,7 +41,7 @@ import {
 	selectedWalletSelector,
 } from '../../store/reselect/wallet';
 import { primaryUnitSelector } from '../../store/reselect/settings';
-import { blocktankServiceSelector } from '../../store/reselect/blocktank';
+import { blocktankInfoSelector } from '../../store/reselect/blocktank';
 
 const Setup = ({ navigation }: TransferScreenProps<'Setup'>): ReactElement => {
 	const { t } = useTranslation('lightning');
@@ -54,7 +54,7 @@ const Setup = ({ navigation }: TransferScreenProps<'Setup'>): ReactElement => {
 	const unit = useSelector(primaryUnitSelector);
 	const selectedWallet = useSelector(selectedWalletSelector);
 	const selectedNetwork = useSelector(selectedNetworkSelector);
-	const blocktankService = useSelector(blocktankServiceSelector);
+	const blocktankInfo = useSelector(blocktankInfoSelector);
 
 	useFocusEffect(
 		useCallback(() => {
@@ -69,7 +69,7 @@ const Setup = ({ navigation }: TransferScreenProps<'Setup'>): ReactElement => {
 	}, [textFieldValue, unit]);
 
 	const diff = 0.01;
-	const btSpendingLimit = blocktankService.max_chan_spending;
+	const btSpendingLimit = blocktankInfo.options.maxChannelSizeSat;
 	const btSpendingLimitBalanced = Math.round(
 		btSpendingLimit / 2 - btSpendingLimit * diff,
 	);
@@ -138,13 +138,12 @@ const Setup = ({ navigation }: TransferScreenProps<'Setup'>): ReactElement => {
 		// Ensure local balance is bigger than remote balance
 		const localBalance = Math.max(
 			Math.round(remoteBalance + remoteBalance * diff),
-			blocktankService.min_channel_size,
+			blocktankInfo.options.minChannelSizeSat,
 		);
 
 		const purchaseResponse = await startChannelPurchase({
 			selectedNetwork,
 			selectedWallet,
-			productId: blocktankService.product_id,
 			remoteBalance,
 			localBalance,
 			channelExpiry: 12,
@@ -161,11 +160,11 @@ const Setup = ({ navigation }: TransferScreenProps<'Setup'>): ReactElement => {
 		if (purchaseResponse.isOk()) {
 			navigation.push('Confirm', {
 				spendingAmount,
-				orderId: purchaseResponse.value.orderId,
+				orderId: purchaseResponse.value.order.id,
 			});
 		}
 	}, [
-		blocktankService,
+		blocktankInfo,
 		isTransferringToSavings,
 		lightningBalance,
 		spendingAmount,

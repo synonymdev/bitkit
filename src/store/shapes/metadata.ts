@@ -1,11 +1,11 @@
-import cloneDeep from 'lodash.clonedeep';
+import cloneDeep from 'lodash/cloneDeep';
 
 import { IMetadata } from '../types/metadata';
 
 export const defaultMetadataShape: IMetadata = {
 	tags: {},
-	pendingTags: {},
 	lastUsedTags: [],
+	pendingInvoices: [],
 	slashTagsUrls: {},
 };
 

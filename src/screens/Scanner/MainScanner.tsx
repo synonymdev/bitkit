@@ -65,7 +65,7 @@ const ScannerScreen = ({
 				<SafeAreaInset type="top" />
 				<NavigationHeader
 					style={styles.navigationHeader}
-					title={t('qr_scan_any')}
+					title={t('qr_scan')}
 				/>
 			</ScannerComponent>
 		</DetectSwipe>

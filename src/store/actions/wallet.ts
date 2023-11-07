@@ -1,3 +1,5 @@
+import { err, ok, Result } from '@synonymdev/result';
+
 import actions from './actions';
 import {
 	EPaymentType,
@@ -46,7 +48,6 @@ import {
 } from '../helpers';
 import { TAvailableNetworks } from '../../utils/networks';
 import { objectKeys } from '../../utils/objectKeys';
-import { err, ok, Result } from '@synonymdev/result';
 import {
 	getOnchainTransactionData,
 	getTotalFee,
@@ -72,8 +73,7 @@ import {
 	GENERATE_ADDRESS_AMOUNT,
 } from '../../utils/wallet/constants';
 import { getBoostedTransactionParents } from '../../utils/boost';
-import { updateSlashPayConfig } from '../../utils/slashtags';
-import { sdk } from '../../components/SlashtagsProvider';
+import { updateSlashPayConfig2 } from '../../utils/slashtags2';
 import {
 	addressTypes,
 	getDefaultWalletShape,
@@ -101,32 +101,34 @@ export const updateWallet = (
 
 /**
  * Creates and stores a newly specified wallet.
+ * @param {string} mnemonic
  * @param {string} [wallet]
  * @param {number} [addressAmount]
  * @param {number} [changeAddressAmount]
- * @param {string} [mnemonic]
  * @param {string} [bip39Passphrase]
  * @param {Partial<IAddressTypes>} [addressTypesToCreate]
  * @return {Promise<Result<string>>}
  */
 export const createWallet = async ({
 	walletName = getDefaultWalletShape().id,
+	mnemonic,
+	bip39Passphrase = '',
+	restore = false,
 	addressAmount = GENERATE_ADDRESS_AMOUNT,
 	changeAddressAmount = GENERATE_ADDRESS_AMOUNT,
-	mnemonic = '',
-	bip39Passphrase = '',
 	addressTypesToCreate,
-}: ICreateWallet = {}): Promise<Result<string>> => {
+}: ICreateWallet): Promise<Result<string>> => {
 	if (!addressTypesToCreate) {
 		addressTypesToCreate = addressTypes;
 	}
 	try {
 		const response = await createDefaultWallet({
 			walletName,
-			addressAmount,
-			changeAddressAmount,
 			mnemonic,
 			bip39Passphrase,
+			restore,
+			addressAmount,
+			changeAddressAmount,
 			addressTypesToCreate,
 		});
 		if (response.isErr()) {
@@ -278,6 +280,20 @@ export const updateAddressIndexes = async ({
 					return err(_changeAddressIndex.error.message);
 				}
 				changeAddressIndex = _changeAddressIndex.value.changeAddresses[0];
+			}
+
+			//Ensure that the address indexes are integers.
+			if (!Number.isInteger(addressIndex.index)) {
+				return err('Invalid address index.');
+			}
+			if (!Number.isInteger(changeAddressIndex.index)) {
+				return err('Invalid change address index.');
+			}
+			if (!Number.isInteger(lastUsedAddressIndex.index)) {
+				return err('Invalid last used address index.');
+			}
+			if (!Number.isInteger(lastUsedChangeAddressIndex.index)) {
+				return err('Invalid last used change address index.');
 			}
 
 			dispatch({
@@ -874,10 +890,10 @@ export const checkUnconfirmedTransactions = async ({
 			// Notify user that a transaction has been removed from the mempool.
 			showToast({
 				type: 'error',
-				title: i18n.t('wallet:activity_removed_title', {
+				title: i18n.t('wallet:activity_removed_title'),
+				description: i18n.t('wallet:activity_removed_msg', {
 					count: ghostTxs.length,
 				}),
-				description: i18n.t('wallet:activity_removed_msg'),
 				autoHide: false,
 			});
 			//We need to update the ghost transactions in the store & activity-list and rescan the addresses to get the correct balance.
@@ -1165,7 +1181,7 @@ export const updateTransactions = async ({
 				selectedWallet,
 			},
 		});
-		updateSlashPayConfig({ sdk, selectedWallet, selectedNetwork });
+		updateSlashPayConfig2({ selectedWallet, selectedNetwork });
 		return ok(undefined);
 	}
 
@@ -1180,7 +1196,7 @@ export const updateTransactions = async ({
 		// check if tx is a payment from Blocktank (i.e. transfer to savings)
 		const isTransferToSavings = !!blocktankOrders.find((order) => {
 			return !!transactions[txid].vin.find(
-				(input) => input.txid === order.channel_close_tx?.transaction_id,
+				(input) => input.txid === order.channel?.close?.txId,
 			);
 		});
 
@@ -1223,7 +1239,7 @@ export const updateTransactions = async ({
 		},
 	});
 
-	updateSlashPayConfig({ sdk, selectedWallet, selectedNetwork });
+	updateSlashPayConfig2({ selectedWallet, selectedNetwork });
 
 	return ok(notificationTxid);
 };
@@ -1340,23 +1356,6 @@ export const resetSelectedWallet = async ({
 };
 
 /**
- * This does not delete the stored mnemonic phrases on the device.
- * This resets the wallet store to defaultWalletStoreShape
- */
-export const resetWalletStore = async (): Promise<Result<string>> => {
-	dispatch({
-		type: actions.RESET_WALLET_STORE,
-	});
-	await createWallet();
-	await refreshWallet({
-		scanAllAddresses: true,
-		updateAllAddressTypes: true,
-		showNotification: false,
-	});
-	return ok('');
-};
-
-/**
  * Sets up a transaction for a given wallet by gathering inputs, setting the next available change address as an output and sets up the baseline fee structure.
  * This function will not override previously set transaction data. To do that you'll need to call resetSendTransaction.
  * @param {TWalletName} [selectedWallet]
@@ -1365,6 +1364,7 @@ export const resetWalletStore = async (): Promise<Result<string>> => {
  * @param {string[]} [inputTxHashes]
  * @param {IUtxo[]} [utxos]
  * @param {boolean} [rbf]
+ * @param satsPerByte
  * @returns {Promise<Result<Partial<ISendTransaction>>>}
  */
 export const setupOnChainTransaction = async ({
@@ -1374,6 +1374,7 @@ export const setupOnChainTransaction = async ({
 	inputTxHashes,
 	utxos,
 	rbf = false,
+	satsPerByte = 1,
 }: {
 	selectedWallet?: TWalletName;
 	selectedNetwork?: TAvailableNetworks;
@@ -1381,6 +1382,7 @@ export const setupOnChainTransaction = async ({
 	inputTxHashes?: string[]; // Used to pre-specify inputs to use by tx_hash
 	utxos?: IUtxo[]; // Used to pre-specify utxos to use
 	rbf?: boolean; // Enable or disable rbf.
+	satsPerByte?: number; // Set the sats per byte for the transaction.
 } = {}): Promise<Result<Partial<ISendTransaction>>> => {
 	try {
 		if (!selectedNetwork) {
@@ -1465,7 +1467,7 @@ export const setupOnChainTransaction = async ({
 
 		// Set the minimum fee.
 		const fee = getTotalFee({
-			satsPerByte: 1,
+			satsPerByte,
 			message: '',
 		});
 
@@ -1490,6 +1492,7 @@ export const setupOnChainTransaction = async ({
 			fee,
 			outputs,
 			rbf,
+			satsPerByte,
 		};
 
 		dispatch({

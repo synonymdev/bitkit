@@ -1,10 +1,12 @@
 import en from './en';
 
 import arb from './arb';
+import ca from './ca';
 import cs from './cs';
 import de from './de';
 import el from './el';
-import es from './es';
+import es_ES from './es_ES';
+import es_419 from './es_419';
 import fa from './fa';
 import fr from './fr';
 import it from './it';
@@ -20,10 +22,12 @@ import ru from './ru';
 export default {
 	en,
 	arb,
+	ca,
 	cs,
 	de,
 	el,
-	es,
+	'es-ES': es_ES,
+	'es-419': es_419,
 	fa,
 	fr,
 	it,

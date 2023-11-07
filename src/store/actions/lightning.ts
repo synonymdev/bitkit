@@ -1,10 +1,13 @@
-import actions from './actions';
-import { getDispatch, getLightningStore } from '../helpers';
-import { err, ok, Result } from '@synonymdev/result';
 import { LNURLChannelParams } from 'js-lnurl';
+import { err, ok, Result } from '@synonymdev/result';
+import { TChannel, TInvoice } from '@synonymdev/react-native-ldk';
 import { getLNURLParams, lnurlChannel } from '@synonymdev/react-native-lnurl';
-import { getSelectedNetwork, getSelectedWallet } from '../../utils/wallet';
+
+import actions from './actions';
+import { getDispatch, getLightningStore, getMetaDataStore } from '../helpers';
 import { TAvailableNetworks } from '../../utils/networks';
+import { getActivityItemById } from '../../utils/activity';
+import { getSelectedNetwork, getSelectedWallet } from '../../utils/wallet';
 import {
 	addPeers,
 	createPaymentRequest,
@@ -16,17 +19,15 @@ import {
 	getNodeVersion,
 	getPendingInvoice,
 	getSentLightningPayments,
-	hasOpenLightningChannels,
 	parseUri,
 } from '../../utils/lightning';
-import { TChannel, TInvoice } from '@synonymdev/react-native-ldk';
 import {
 	TCreateLightningInvoice,
+	TLdkAccountVersions,
 	TLightningNodeVersion,
 } from '../types/lightning';
 import { EPaymentType, TWalletName } from '../types/wallet';
 import { EActivityType, TLightningActivityItem } from '../types/activity';
-import { getActivityItemById } from '../../utils/activity';
 
 const dispatch = getDispatch();
 
@@ -207,9 +208,6 @@ export const createLightningInvoice = async ({
 	if (!selectedWallet) {
 		selectedWallet = getSelectedWallet();
 	}
-	if (!hasOpenLightningChannels({ selectedWallet, selectedNetwork })) {
-		return err('No lightning channels available to receive an invoice.');
-	}
 	const invoice = await createPaymentRequest({
 		amountSats,
 		description,
@@ -257,7 +255,7 @@ export const savePeer = ({
 	}
 
 	if (!peer) {
-		return err('Invalid Peer Data');
+		return err('The peer data appears to be invalid.');
 	}
 	// Check that the URI is valid.
 	const parsedPeerData = parseUri(peer);
@@ -281,7 +279,7 @@ export const savePeer = ({
 		type: actions.SAVE_LIGHTNING_PEER,
 		payload,
 	});
-	return ok('Successfully Saved Lightning Peer.');
+	return ok('Lightning Peer Saved');
 };
 
 /**
@@ -307,7 +305,7 @@ export const removePeer = ({
 		selectedNetwork = getSelectedNetwork();
 	}
 	if (!peer) {
-		return err('Invalid Peer Data');
+		return err('The peer data appears to be invalid.');
 	}
 	const payload = {
 		peer,
@@ -378,7 +376,7 @@ export const syncLightningTxsWithActivityList = async (): Promise<
 	const sentTxs = await getSentLightningPayments();
 	for (const tx of sentTxs) {
 		const sats = tx.amount_sat;
-		if (!sats) {
+		if (!sats || tx.state !== 'successful') {
 			continue;
 		}
 
@@ -389,7 +387,8 @@ export const syncLightningTxsWithActivityList = async (): Promise<
 			message: '',
 			address: '',
 			confirmed: tx.state === 'successful',
-			value: -sats,
+			value: sats,
+			fee: tx.fee_paid_sat ?? 0,
 			timestamp: tx.unix_timestamp * 1000,
 		});
 	}
@@ -412,4 +411,42 @@ export const syncLightningTxsWithActivityList = async (): Promise<
 	});
 
 	return ok('Stored lightning transactions synced with activity list.');
+};
+
+/**
+ * Moves pending tags to metadata store linked to received payment
+ * @param {TInvoice} invoice
+ * @returns {Result<string>}
+ */
+export const moveMetaIncPaymentTags = (invoice: TInvoice): Result<string> => {
+	const { pendingInvoices } = getMetaDataStore();
+	const matched = pendingInvoices.find((item) => {
+		return item.payReq === invoice.to_str;
+	});
+
+	if (matched) {
+		const newPending = pendingInvoices.filter((item) => item !== matched);
+
+		dispatch({
+			type: actions.MOVE_META_INC_TX_TAG,
+			payload: {
+				pendingInvoices: newPending,
+				tags: { [invoice.payment_hash]: matched.tags },
+			},
+		});
+	}
+
+	return ok('Metadata tags resynced with transactions.');
+};
+
+export const updateLdkAccountVersion = (
+	accountVersion: TLdkAccountVersions,
+): TLdkAccountVersions => {
+	dispatch({
+		type: actions.UPDATE_LDK_ACCOUNT_VERSION,
+		payload: {
+			accountVersion,
+		},
+	});
+	return accountVersion;
 };

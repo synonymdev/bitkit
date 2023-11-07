@@ -65,11 +65,12 @@ const ExportToPhone = ({
 		const fileRes = await createBackupFile(password);
 
 		if (fileRes.isErr()) {
+			console.log(fileRes.error.message);
 			setIsCreating(false);
 			showToast({
 				type: 'error',
-				title: t('export_error_file'),
-				description: fileRes.error.message,
+				title: t('export_error_title'),
+				description: t('export_error_file'),
 			});
 			return;
 		}

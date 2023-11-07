@@ -32,17 +32,12 @@
   "restore_suggestions": "CONSIGLI",
   "restore_passphrase_placeholder": "Passphrase*",
   "restore_passphrase_meaning": "*Opzionale, da inserire solo se ne hai impostata una.",
-  "restore_error_title": "Errore nel Ripristino del Wallet",
   "loading_header": "Configurando\n<brand>il tuo Wallet.</brand>",
-  "restore_error_no_backup": "Errore: Impossibile procedere senza un backup",
   "restore_success_header": "Wallet ripristinato.",
   "restore_success_text": "Hai ripristinato con successo il tuo wallet dal backup. Goditi Bitkit!",
-  "restore_failed_header": "Ripristino fallito.",
-  "restore_failed_text": "Impossibile ripristinare i dati di backup.",
   "restore_no_backup_button": "Procedi Senza Backup",
   "restore_no_backup_warn": "Se in precedenza possedevi un backup lightning, questo verrà sovrascritto e perso. Ciò potrebbe causare una perdita di fondi.",
   "empty_wallet": "Per iniziare invia\n<brand>Bitcoin</brand> sul tuo wallet.",
-  "error_create": "Creazione Wallet fallita",
   "multiple_header": "Attenzione:\n<yellow>Dispositivi multipli</yellow>",
   "multiple_text": "Non installare la frase di recupero Bitkit su più telefoni contemporaneamente, per non danneggiare i dati."
 }

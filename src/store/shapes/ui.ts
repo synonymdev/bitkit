@@ -22,6 +22,7 @@ export const defaultViewControllers: IUi['viewControllers'] = {
 	sendNavigation: defaultViewController,
 	slashauthModal: defaultViewController,
 	timeRangePrompt: defaultViewController,
+	treasureHunt: defaultViewController,
 	tagsPrompt: defaultViewController,
 	lnurlWithdraw: defaultViewController,
 	lnurlPay: defaultViewController,
@@ -32,9 +33,11 @@ export const defaultUiShape: IUi = {
 	isAuthenticated: false,
 	isConnectedToElectrum: true,
 	isOnline: true,
+	isLDKReady: false, // LDK node running and connected
 	language: 'en',
 	profileLink: { title: '', url: '' },
 	timeZone: 'UTC',
 	// Used to control bottom-sheets throughout the app
 	viewControllers: defaultViewControllers,
+	fromAddressViewer: false, // When true, ensures tx inputs are not cleared when sweeping from address viewer.
 };

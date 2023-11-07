@@ -60,9 +60,10 @@ export const defaultFeesShape: IFees = {
 	//On-chain fees in sats/vbyte
 	onchain: {
 		fast: 4, // 10-20 mins
-		normal: 3, // 20-60 mins
-		slow: 2, // 1-2 hrs
+		normal: 2, // 20-60 mins
+		slow: 1, // 1-2 hrs
 		minimum: 1,
 		timestamp: Date.now() - 60 * 30 * 1000 - 1,
 	},
+	override: false,
 };

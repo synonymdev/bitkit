@@ -68,6 +68,11 @@ import {
 	shareIosIcon,
 	shareAndroidIcon,
 	hourglassSimpleIcon,
+	questionMarkIcon,
+	unifiedCircleIcon,
+	lightningCircleIcon,
+	mapTrifoldIcon,
+	mapPinLineIcon,
 } from '../assets/icons/wallet';
 import {
 	chevronRightIcon,
@@ -100,8 +105,8 @@ type IconProps = {
 
 export const ScanIcon = styled(SvgXml).attrs((props) => ({
 	xml: scanIcon(props.color ? props.theme.colors[props.color] : 'white'),
-	height: props.height ?? '20.53px',
-	width: props.width ?? '20.54px',
+	height: props.height ?? '32px',
+	width: props.width ?? '32px',
 }))<IconProps>((props) => ({
 	color: props.color ? props.theme.colors[props.color] : 'white',
 }));
@@ -410,6 +415,20 @@ export const BitcoinCircleIcon = styled(SvgXml).attrs((props) => ({
 }))<IconProps>((props) => ({
 	color: props.color ? props.theme.colors[props.color] : 'white',
 }));
+
+export const LightningCircleIcon = styled(SvgXml).attrs((props) => ({
+	xml: lightningCircleIcon(),
+	height: props.height ?? '32px',
+	width: props.width ?? '32px',
+}))<IconProps>((props) => ({
+	color: props.color ? props.theme.colors[props.color] : 'white',
+}));
+
+export const UnifiedIcon = styled(SvgXml).attrs((props) => ({
+	xml: unifiedCircleIcon(),
+	height: props.height ?? '32px',
+	width: props.width ?? '32px',
+}))<IconProps>(() => ({}));
 
 export const UnitBitcoinIcon = styled(SvgXml).attrs((props) => ({
 	xml: unitBitcoinIcon(
@@ -802,6 +821,12 @@ export const NewspaperIcon = styled(SvgXml).attrs((props) => ({
 	color: props.color ? props.theme.colors[props.color] : 'white',
 }));
 
+export const QuestionMarkIcon = styled(SvgXml).attrs((props) => ({
+	xml: questionMarkIcon(),
+	height: props.height ?? '30px',
+	width: props.width ?? '30px',
+}))<IconProps>(() => ({}));
+
 export const CubeIcon = styled(SvgXml).attrs((props) => ({
 	xml: cubeIcon(
 		props.color ? props.theme.colors[props.color] : props.theme.colors.brand,
@@ -868,6 +893,26 @@ export const LightningHollow = styled(SvgXml).attrs((props) => ({
 	),
 	height: props.height ?? '24px',
 	width: props.width ?? '24px',
+}))<IconProps>((props) => ({
+	color: props.color ? props.theme.colors[props.color] : 'white',
+}));
+
+export const MapTrifoldIcon = styled(SvgXml).attrs((props) => ({
+	xml: mapTrifoldIcon(
+		props.color ? props.theme.colors[props.color] : props.theme.colors.white,
+	),
+	height: props.height ?? '16px',
+	width: props.width ?? '16px',
+}))<IconProps>((props) => ({
+	color: props.color ? props.theme.colors[props.color] : 'white',
+}));
+
+export const MapPinLineIcon = styled(SvgXml).attrs((props) => ({
+	xml: mapPinLineIcon(
+		props.color ? props.theme.colors[props.color] : props.theme.colors.white,
+	),
+	height: props.height ?? '16px',
+	width: props.width ?? '16px',
 }))<IconProps>((props) => ({
 	color: props.color ? props.theme.colors[props.color] : 'white',
 }));

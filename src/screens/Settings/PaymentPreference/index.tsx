@@ -6,9 +6,9 @@ import { useTranslation } from 'react-i18next';
 import { View as ThemedView } from '../../../styles/components';
 import { EItemType, IListData } from '../../../components/List';
 import SettingsView from '../SettingsView';
+import { arraysMatch } from '../../../utils/helpers';
+import { updateSlashPayConfig2 } from '../../../utils/slashtags2';
 import { updateSettings } from '../../../store/actions/settings';
-import { useSlashtagsSDK } from '../../../components/SlashtagsProvider';
-import { updateSlashPayConfig } from '../../../utils/slashtags';
 import {
 	enableOfflinePaymentsSelector,
 	receivePreferenceSelector,
@@ -20,7 +20,6 @@ import {
 
 const PaymentPreference = (): ReactElement => {
 	const { t } = useTranslation('settings');
-	const sdk = useSlashtagsSDK();
 	const receivePreference = useSelector(receivePreferenceSelector);
 	const enableOfflinePayments = useSelector(enableOfflinePaymentsSelector);
 	const selectedWallet = useSelector(selectedWalletSelector);
@@ -37,6 +36,14 @@ const PaymentPreference = (): ReactElement => {
 						value: receivePreference,
 						onDragEnd: (data): void => {
 							updateSettings({ receivePreference: data });
+
+							if (!arraysMatch(receivePreference, data)) {
+								updateSlashPayConfig2({
+									forceUpdate: true,
+									selectedWallet,
+									selectedNetwork,
+								});
+							}
 						},
 					},
 				],
@@ -50,7 +57,7 @@ const PaymentPreference = (): ReactElement => {
 						enabled: enableOfflinePayments,
 						onPress: (): void => {
 							updateSettings({ enableOfflinePayments: !enableOfflinePayments });
-							updateSlashPayConfig({ sdk, selectedWallet, selectedNetwork });
+							updateSlashPayConfig2({ selectedWallet, selectedNetwork });
 						},
 					},
 				],
@@ -59,7 +66,6 @@ const PaymentPreference = (): ReactElement => {
 		[
 			receivePreference,
 			enableOfflinePayments,
-			sdk,
 			selectedWallet,
 			selectedNetwork,
 			t,

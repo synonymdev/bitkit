@@ -3,7 +3,6 @@ import { StyleSheet, View, ScrollView, TouchableOpacity } from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
 import { useSelector } from 'react-redux';
 import { SvgProps } from 'react-native-svg';
-import { IGetOrderResponse } from '@synonymdev/blocktank-client';
 import { useTranslation } from 'react-i18next';
 
 import { View as ThemedView } from '../../../styles/components';
@@ -26,7 +25,6 @@ import { getTransactions } from '../../../utils/wallet/electrum';
 import { getBlockExplorerLink } from '../../../utils/wallet/transactions';
 import { openURL } from '../../../utils/helpers';
 import { createOrderSupportLink } from '../../../utils/support';
-import Store from '../../../store/types';
 import { EUnit } from '../../../store/types/wallet';
 import {
 	selectedNetworkSelector,
@@ -45,107 +43,136 @@ import {
 	HourglassSimpleIcon,
 	LightningIcon,
 	TimerSpeedIcon,
-	XIcon,
 } from '../../../styles/icons';
 import type { SettingsScreenProps } from '../../../navigation/types';
-import { i18nTime } from '../../../utils/i18n';
+import i18n, { i18nTime } from '../../../utils/i18n';
+import {
+	BtOrderState,
+	BtPaymentState,
+	IBtOrder,
+} from '@synonymdev/blocktank-lsp-http-client';
+import { BtOpenChannelState } from '@synonymdev/blocktank-lsp-http-client/dist/shared/BtOpenChannelState';
+import { updateOrder } from '../../../store/actions/blocktank';
 
-export const getOrderStatus = (state: number): React.FC<SvgProps> => {
-	// possible order states
-	// https://github.com/synonymdev/blocktank-server/blob/master/src/Orders/Order.js
-	switch (state) {
-		case 0:
-			return (): ReactElement => (
-				<View style={styles.statusRow}>
-					<ThemedView color="purple16" style={styles.statusIcon}>
-						<ClockIcon color="purple" width={16} height={16} />
-					</ThemedView>
-					<Text01M color="purple">{getStateMessage(state)}</Text01M>
-				</View>
-			);
-		case 100:
-			return (): ReactElement => (
-				<View style={styles.statusRow}>
-					<ThemedView color="purple16" style={styles.statusIcon}>
-						<Checkmark color="purple" width={16} height={16} />
-					</ThemedView>
-					<Text01M color="purple">{getStateMessage(state)}</Text01M>
-				</View>
-			);
-		case 150:
-			return (): ReactElement => (
-				<View style={styles.statusRow}>
-					<ThemedView color="white1" style={styles.statusIcon}>
-						<ArrowCounterClock color="gray1" width={16} height={16} />
-					</ThemedView>
-					<Text01M color="gray1">{getStateMessage(state)}</Text01M>
-				</View>
-			);
-		case 200:
-		case 300:
-			return (): ReactElement => (
-				<View style={styles.statusRow}>
-					<ThemedView color="purple16" style={styles.statusIcon}>
-						<HourglassSimpleIcon color="purple" width={16} height={16} />
-					</ThemedView>
-					<Text01M color="purple">{getStateMessage(state)}</Text01M>
-				</View>
-			);
-		case 350:
-			return (): ReactElement => (
-				<View style={styles.statusRow}>
-					<ThemedView color="white1" style={styles.statusIcon}>
-						<HourglassSimpleIcon color="gray1" width={16} height={16} />
-					</ThemedView>
-					<Text01M color="gray1">{getStateMessage(state)}</Text01M>
-				</View>
-			);
-		case 400:
-			return (): ReactElement => (
-				<View style={styles.statusRow}>
-					<ThemedView color="red16" style={styles.statusIcon}>
-						<XIcon color="red" width={16} height={16} />
-					</ThemedView>
-					<Text01M color="red">{getStateMessage(state)}</Text01M>
-				</View>
-			);
-		case 410:
+export const getOrderStatus = (
+	order: IBtOrder,
+	channelIsOpen: boolean = true,
+): React.FC<SvgProps> => {
+	const orderState: BtOrderState = order.state;
+	const paymentState: BtPaymentState = order.payment.state;
+	const channelState: BtOpenChannelState | undefined = order.channel?.state;
+
+	switch (orderState) {
+		case 'expired':
 			return (): ReactElement => (
 				<View style={styles.statusRow}>
 					<ThemedView color="red16" style={styles.statusIcon}>
 						<TimerSpeedIcon color="red" width={16} height={16} />
 					</ThemedView>
-					<Text01M color="red">{getStateMessage(state)}</Text01M>
+					<Text01M color="red">{getStateMessage(order)}</Text01M>
 				</View>
 			);
-		case 450:
+	}
+
+	switch (paymentState) {
+		case 'refunded':
 			return (): ReactElement => (
 				<View style={styles.statusRow}>
 					<ThemedView color="white1" style={styles.statusIcon}>
-						<LightningIcon color="gray1" width={16} height={16} />
+						<ArrowCounterClock color="gray1" width={16} height={16} />
 					</ThemedView>
-					<Text01M color="gray1">{getStateMessage(state)}</Text01M>
+					<Text01M color="gray1">{getStateMessage(order)}</Text01M>
 				</View>
 			);
-		case 500:
+	}
+
+	if (channelState) {
+		switch (channelState) {
+			case 'opening':
+				return (): ReactElement => (
+					<View style={styles.statusRow}>
+						<ThemedView color="purple16" style={styles.statusIcon}>
+							<HourglassSimpleIcon color="purple" width={16} height={16} />
+						</ThemedView>
+						<Text01M color="purple">{getStateMessage(order)}</Text01M>
+					</View>
+				);
+			case 'open':
+				// Seems Blocktank will not register the channel as closed until the closing transaction is confirmed.
+				// This condition is here to show the channel as closed due to this.
+				if (!channelIsOpen) {
+					return (): ReactElement => (
+						<View style={styles.statusRow}>
+							<ThemedView color="white1" style={styles.statusIcon}>
+								<LightningIcon color="gray1" width={16} height={16} />
+							</ThemedView>
+							<Text01M color="gray1">
+								{i18n.t('lightning:order_state.closed')}
+							</Text01M>
+						</View>
+					);
+				}
+				return (): ReactElement => (
+					<View style={styles.statusRow}>
+						<ThemedView color="green16" style={styles.statusIcon}>
+							<LightningIcon color="green" width={16} height={16} />
+						</ThemedView>
+						<Text01M color="green">{getStateMessage(order)}</Text01M>
+					</View>
+				);
+			case 'closed':
+				return (): ReactElement => (
+					<View style={styles.statusRow}>
+						<ThemedView color="white1" style={styles.statusIcon}>
+							<LightningIcon color="gray1" width={16} height={16} />
+						</ThemedView>
+						<Text01M color="gray1">{getStateMessage(order)}</Text01M>
+					</View>
+				);
+		}
+	}
+
+	switch (orderState) {
+		case 'created':
+			return (): ReactElement => (
+				<View style={styles.statusRow}>
+					<ThemedView color="purple16" style={styles.statusIcon}>
+						<ClockIcon color="purple" width={16} height={16} />
+					</ThemedView>
+					<Text01M color="purple">{getStateMessage(order)}</Text01M>
+				</View>
+			);
+		case 'open':
 			return (): ReactElement => (
 				<View style={styles.statusRow}>
 					<ThemedView color="green16" style={styles.statusIcon}>
 						<LightningIcon color="green" width={16} height={16} />
 					</ThemedView>
-					<Text01M color="green">{getStateMessage(state)}</Text01M>
-				</View>
-			);
-		default:
-			return (): ReactElement => (
-				<View style={styles.statusRow}>
-					<ThemedView color="white1" style={styles.statusIcon}>
-						<LightningIcon color="gray1" width={16} height={16} />
-					</ThemedView>
-					<Text01M>{getStateMessage(state)}</Text01M>
+					<Text01M color="green">{getStateMessage(order)}</Text01M>
 				</View>
 			);
 	}
+
+	switch (paymentState) {
+		case 'paid':
+			return (): ReactElement => (
+				<View style={styles.statusRow}>
+					<ThemedView color="purple16" style={styles.statusIcon}>
+						<Checkmark color="purple" width={16} height={16} />
+					</ThemedView>
+					<Text01M color="purple">{getStateMessage(order)}</Text01M>
+				</View>
+			);
+	}
+
+	return (): ReactElement => (
+		<View style={styles.statusRow}>
+			<ThemedView color="white1" style={styles.statusIcon}>
+				<LightningIcon color="gray1" width={16} height={16} />
+			</ThemedView>
+			<Text01M>{getStateMessage(order)}</Text01M>
+		</View>
+	);
 };
 
 const Section = memo(
@@ -194,18 +221,22 @@ const ChannelDetails = ({
 	const blocktankOrder = Object.values(paidBlocktankOrders).find((order) => {
 		// real channel
 		if (channel.funding_txid) {
-			return order.channel_open_tx?.transaction_id === channel.funding_txid;
+			return order?.channel?.fundingTx.id === channel.funding_txid;
 		}
 
 		// fake channel
-		return order._id === channel.channel_id;
+		return order.id === channel.channel_id;
 	});
 
 	const channelName = useLightningChannelName(channel, blocktankOrder);
+	const openChannelIds = useSelector(openChannelIdsSelector);
 
-	const openChannelIds = useSelector((state: Store) => {
-		return openChannelIdsSelector(state, selectedWallet, selectedNetwork);
-	});
+	useEffect(() => {
+		if (blocktankOrder) {
+			updateOrder(blocktankOrder.id).then();
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
 
 	const channelIsOpen = useAppSelector((state) => {
 		return channelIsOpenSelector(
@@ -219,11 +250,11 @@ const ChannelDetails = ({
 	// TODO: show status for non-blocktank channels
 	const Status = useMemo(() => {
 		if (blocktankOrder) {
-			return getOrderStatus(blocktankOrder.state);
+			return getOrderStatus(blocktankOrder, channelIsOpen);
 		}
 
 		return null;
-	}, [blocktankOrder]);
+	}, [blocktankOrder, channelIsOpen]);
 
 	useEffect(() => {
 		if (!channel.funding_txid) {
@@ -263,20 +294,23 @@ const ChannelDetails = ({
 		});
 	}, [selectedNetwork, channel.funding_txid, tTime]);
 
-	const openSupportLink = async (order: IGetOrderResponse): Promise<void> => {
+	const openSupportLink = async (order: IBtOrder): Promise<void> => {
 		const link = await createOrderSupportLink(
-			order._id,
-			`Transaction ID: ${order.channel_open_tx?.transaction_id}`,
+			order.id,
+			`Transaction ID: ${order?.channel?.fundingTx.id}`,
 		);
-		await openURL(link);
+		const res = await openURL(link);
+		if (!res) {
+			await openURL('https://synonym.to/contact');
+		}
 	};
 
 	const getChannelStatus = (): TStatus => {
 		if (blocktankOrder) {
-			if ([0, 100, 150, 200].includes(blocktankOrder.state)) {
+			if (blocktankOrder.state === BtOrderState.CREATED) {
 				return 'pending';
 			}
-			if ([400, 410].includes(blocktankOrder.state)) {
+			if (blocktankOrder.state === BtOrderState.CLOSED) {
 				return 'closed';
 			}
 		}
@@ -289,9 +323,9 @@ const ChannelDetails = ({
 	};
 
 	let channelCloseTime: string | undefined;
-	if (blocktankOrder?.channel_close_tx) {
+	if (blocktankOrder?.channel?.close) {
 		channelCloseTime = tTime('dateTime', {
-			v: new Date(blocktankOrder.channel_close_tx.ts),
+			v: new Date(blocktankOrder.channel.close.registeredAt),
 			formatParams: {
 				v: {
 					year: 'numeric',
@@ -335,15 +369,19 @@ const ChannelDetails = ({
 						</View>
 						<Section
 							name={t('order')}
-							value={<Caption13M>{blocktankOrder._id}</Caption13M>}
-							onPress={(): void => Clipboard.setString(blocktankOrder._id)}
+							value={
+								<Caption13M ellipsizeMode="middle" numberOfLines={1}>
+									{blocktankOrder.id}
+								</Caption13M>
+							}
+							onPress={(): void => Clipboard.setString(blocktankOrder.id)}
 						/>
 						<Section
 							name={t('created_on')}
 							value={
 								<Caption13M>
 									{tTime('dateTime', {
-										v: new Date(blocktankOrder.created_at),
+										v: new Date(blocktankOrder.createdAt),
 										formatParams: {
 											v: {
 												year: 'numeric',
@@ -381,7 +419,7 @@ const ChannelDetails = ({
 							name={t('order_fee')}
 							value={
 								<Money
-									sats={blocktankOrder.price}
+									sats={blocktankOrder.feeSat - blocktankOrder.clientBalanceSat}
 									size="caption13M"
 									symbol={true}
 									color="white"
@@ -505,7 +543,7 @@ const ChannelDetails = ({
 							Clipboard.setString(channel.counterparty_node_id);
 							showToast({
 								type: 'success',
-								title: t('copied_couterparty'),
+								title: t('copied'),
 								description: channel.counterparty_node_id,
 							});
 						}}
@@ -517,12 +555,12 @@ const ChannelDetails = ({
 						<View style={styles.sectionTitle}>
 							<Caption13Up color="gray1">{t('debug')}</Caption13Up>
 						</View>
-						{blocktankOrder?.order_expiry && (
+						{blocktankOrder?.orderExpiresAt && (
 							<Section
 								name="Order Expiry"
 								value={
 									<Caption13M>
-										{new Date(blocktankOrder.order_expiry).toLocaleString()}
+										{new Date(blocktankOrder.orderExpiresAt).toLocaleString()}
 									</Caption13M>
 								}
 							/>

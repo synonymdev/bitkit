@@ -114,6 +114,12 @@ const lightning = (
 				},
 			};
 
+		case actions.UPDATE_LDK_ACCOUNT_VERSION:
+			return {
+				...state,
+				accountVersion: action.payload.accountVersion,
+			};
+
 		case actions.RESET_LIGHTNING_STORE:
 			return defaultLightningStoreShape;
 

@@ -10,7 +10,7 @@ PODS:
     - React-Core (= 0.72.4)
     - React-jsi (= 0.72.4)
     - ReactCommon/turbomodule/core (= 0.72.4)
-  - Flipper (0.182.0):
+  - Flipper (0.203.0):
     - Flipper-Folly (~> 2.6)
   - Flipper-Boost-iOSX (1.76.0.1.11)
   - Flipper-DoubleConversion (3.2.0.1)
@@ -24,48 +24,46 @@ PODS:
     - OpenSSL-Universal (= 1.1.1100)
   - Flipper-Glog (0.5.0.5)
   - Flipper-PeerTalk (0.0.4)
-  - FlipperKit (0.182.0):
-    - FlipperKit/Core (= 0.182.0)
-  - FlipperKit/Core (0.182.0):
-    - Flipper (~> 0.182.0)
+  - FlipperKit (0.203.0):
+    - FlipperKit/Core (= 0.203.0)
+  - FlipperKit/Core (0.203.0):
+    - Flipper (~> 0.203.0)
     - FlipperKit/CppBridge
     - FlipperKit/FBCxxFollyDynamicConvert
     - FlipperKit/FBDefines
     - FlipperKit/FKPortForwarding
     - SocketRocket (~> 0.6.0)
-  - FlipperKit/CppBridge (0.182.0):
-    - Flipper (~> 0.182.0)
-  - FlipperKit/FBCxxFollyDynamicConvert (0.182.0):
+  - FlipperKit/CppBridge (0.203.0):
+    - Flipper (~> 0.203.0)
+  - FlipperKit/FBCxxFollyDynamicConvert (0.203.0):
     - Flipper-Folly (~> 2.6)
-  - FlipperKit/FBDefines (0.182.0)
-  - FlipperKit/FKPortForwarding (0.182.0):
+  - FlipperKit/FBDefines (0.203.0)
+  - FlipperKit/FKPortForwarding (0.203.0):
     - CocoaAsyncSocket (~> 7.6)
     - Flipper-PeerTalk (~> 0.0.4)
-  - FlipperKit/FlipperKitHighlightOverlay (0.182.0)
-  - FlipperKit/FlipperKitLayoutHelpers (0.182.0):
+  - FlipperKit/FlipperKitHighlightOverlay (0.203.0)
+  - FlipperKit/FlipperKitLayoutHelpers (0.203.0):
     - FlipperKit/Core
     - FlipperKit/FlipperKitHighlightOverlay
     - FlipperKit/FlipperKitLayoutTextSearchable
-  - FlipperKit/FlipperKitLayoutIOSDescriptors (0.182.0):
+  - FlipperKit/FlipperKitLayoutIOSDescriptors (0.203.0):
     - FlipperKit/Core
     - FlipperKit/FlipperKitHighlightOverlay
     - FlipperKit/FlipperKitLayoutHelpers
-    - YogaKit (~> 1.18)
-  - FlipperKit/FlipperKitLayoutPlugin (0.182.0):
+  - FlipperKit/FlipperKitLayoutPlugin (0.203.0):
     - FlipperKit/Core
     - FlipperKit/FlipperKitHighlightOverlay
     - FlipperKit/FlipperKitLayoutHelpers
     - FlipperKit/FlipperKitLayoutIOSDescriptors
     - FlipperKit/FlipperKitLayoutTextSearchable
-    - YogaKit (~> 1.18)
-  - FlipperKit/FlipperKitLayoutTextSearchable (0.182.0)
-  - FlipperKit/FlipperKitNetworkPlugin (0.182.0):
+  - FlipperKit/FlipperKitLayoutTextSearchable (0.203.0)
+  - FlipperKit/FlipperKitNetworkPlugin (0.203.0):
     - FlipperKit/Core
-  - FlipperKit/FlipperKitReactPlugin (0.182.0):
+  - FlipperKit/FlipperKitReactPlugin (0.203.0):
     - FlipperKit/Core
-  - FlipperKit/FlipperKitUserDefaultsPlugin (0.182.0):
+  - FlipperKit/FlipperKitUserDefaultsPlugin (0.203.0):
     - FlipperKit/Core
-  - FlipperKit/SKIOSNetworkPlugin (0.182.0):
+  - FlipperKit/SKIOSNetworkPlugin (0.203.0):
     - FlipperKit/Core
     - FlipperKit/FlipperKitNetworkPlugin
   - fmt (6.2.1)
@@ -74,9 +72,9 @@ PODS:
     - hermes-engine/Pre-built (= 0.72.4)
   - hermes-engine/Pre-built (0.72.4)
   - libevent (2.1.12)
-  - lottie-ios (4.2.0)
-  - lottie-react-native (6.1.2):
-    - lottie-ios (~> 4.2.0)
+  - lottie-ios (3.4.4)
+  - lottie-react-native (5.1.6):
+    - lottie-ios (~> 3.4.0)
     - React-Core
   - MMKV (1.3.1):
     - MMKVCore (~> 1.3.1)
@@ -386,36 +384,28 @@ PODS:
     - glog
   - react-native-biometrics (3.0.1):
     - React-Core
-  - react-native-blur (4.3.0):
+  - react-native-blur (4.3.2):
     - React-Core
-  - react-native-document-picker (8.2.0):
+  - react-native-flipper (0.212.0):
     - React-Core
-  - react-native-flipper (0.191.0):
+  - react-native-image-picker (7.0.2):
     - React-Core
-  - react-native-image-picker (5.6.0):
+  - react-native-keep-awake (1.2.2):
     - React-Core
-  - react-native-keep-awake (1.2.0):
-    - React-Core
-  - react-native-ldk (0.0.103):
+  - react-native-ldk (0.0.120):
     - React
-  - react-native-libsodium (0.7.0):
-    - React-Core
-  - react-native-mmkv (2.10.1):
+  - react-native-mmkv (2.10.2):
     - MMKV (>= 1.2.13)
     - React-Core
-  - react-native-netinfo (9.3.9):
+  - react-native-netinfo (10.0.0):
     - React-Core
   - react-native-randombytes (3.6.1):
     - React-Core
   - react-native-restart (0.0.27):
     - React-Core
-  - react-native-safe-area-context (4.5.1):
-    - RCT-Folly
-    - RCTRequired
-    - RCTTypeSafety
+  - react-native-safe-area-context (4.7.4):
     - React-Core
-    - ReactCommon/turbomodule/core
-  - react-native-skia (0.1.200):
+  - react-native-skia (0.1.216):
     - React
     - React-callinvoker
     - React-Core
@@ -532,23 +522,26 @@ PODS:
     - React-jsi (= 0.72.4)
     - React-logger (= 0.72.4)
     - React-perflogger (= 0.72.4)
-  - ReactNativeCameraKit (14.0.0-beta11):
+  - ReactNativeCameraKit (14.0.0-beta13):
     - React-Core
-  - RNCClipboard (1.11.2):
+  - RNCAsyncStorage (1.19.4):
     - React-Core
-  - RNDeviceInfo (10.6.0):
+  - RNCClipboard (1.12.1):
     - React-Core
-  - RNExitApp (1.1.0):
-    - React
+  - RNDeviceInfo (10.11.0):
+    - React-Core
+  - RNExitApp (2.0.0):
+    - React-Core
   - RNFS (2.20.0):
     - React-Core
-  - RNGestureHandler (2.9.0):
+  - RNGestureHandler (2.13.4):
+    - RCT-Folly (= 2021.07.22.00)
     - React-Core
-  - RNKeychain (8.1.1):
+  - RNKeychain (8.1.2):
     - React-Core
-  - RNLocalize (2.2.6):
+  - RNLocalize (3.0.2):
     - React-Core
-  - RNPermissions (3.8.0):
+  - RNPermissions (3.10.1):
     - React-Core
   - RNQrGenerator (1.3.1):
     - React
@@ -557,9 +550,9 @@ PODS:
     - React
   - RNRate (1.2.12):
     - React-Core
-  - RNReactNativeHapticFeedback (1.14.0):
+  - RNReactNativeHapticFeedback (2.2.0):
     - React-Core
-  - RNReanimated (3.4.2):
+  - RNReanimated (3.5.4):
     - DoubleConversion
     - FBLazyVector
     - glog
@@ -588,18 +581,18 @@ PODS:
     - React-RCTText
     - ReactCommon/turbomodule/core
     - Yoga
-  - RNScreens (3.24.0):
+  - RNScreens (3.27.0):
+    - RCT-Folly (= 2021.07.22.00)
     - React-Core
-    - React-RCTImage
-  - RNShare (8.2.2):
+  - RNShare (9.4.1):
     - React-Core
-  - RNSVG (12.5.1):
+  - RNSVG (13.14.0):
     - React-Core
-  - RNZipArchive (6.0.9):
+  - RNZipArchive (6.1.0):
     - React-Core
-    - RNZipArchive/Core (= 6.0.9)
+    - RNZipArchive/Core (= 6.1.0)
     - SSZipArchive (~> 2.2)
-  - RNZipArchive/Core (6.0.9):
+  - RNZipArchive/Core (6.1.0):
     - React-Core
     - SSZipArchive (~> 2.2)
   - SocketRocket (0.6.1)
@@ -607,8 +600,6 @@ PODS:
   - TouchID (4.4.1):
     - React
   - Yoga (1.14.0)
-  - YogaKit (1.18.1):
-    - Yoga (~> 1.14)
   - ZXingObjC (3.6.9):
     - ZXingObjC/All (= 3.6.9)
   - ZXingObjC/All (3.6.9)
@@ -618,26 +609,26 @@ DEPENDENCIES:
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
   - FBLazyVector (from `../node_modules/react-native/Libraries/FBLazyVector`)
   - FBReactNativeSpec (from `../node_modules/react-native/React/FBReactNativeSpec`)
-  - Flipper (= 0.182.0)
+  - Flipper (= 0.203.0)
   - Flipper-Boost-iOSX (= 1.76.0.1.11)
   - Flipper-DoubleConversion (= 3.2.0.1)
   - Flipper-Fmt (= 7.1.7)
   - Flipper-Folly (= 2.6.10)
   - Flipper-Glog (= 0.5.0.5)
   - Flipper-PeerTalk (= 0.0.4)
-  - FlipperKit (= 0.182.0)
-  - FlipperKit/Core (= 0.182.0)
-  - FlipperKit/CppBridge (= 0.182.0)
-  - FlipperKit/FBCxxFollyDynamicConvert (= 0.182.0)
-  - FlipperKit/FBDefines (= 0.182.0)
-  - FlipperKit/FKPortForwarding (= 0.182.0)
-  - FlipperKit/FlipperKitHighlightOverlay (= 0.182.0)
-  - FlipperKit/FlipperKitLayoutPlugin (= 0.182.0)
-  - FlipperKit/FlipperKitLayoutTextSearchable (= 0.182.0)
-  - FlipperKit/FlipperKitNetworkPlugin (= 0.182.0)
-  - FlipperKit/FlipperKitReactPlugin (= 0.182.0)
-  - FlipperKit/FlipperKitUserDefaultsPlugin (= 0.182.0)
-  - FlipperKit/SKIOSNetworkPlugin (= 0.182.0)
+  - FlipperKit (= 0.203.0)
+  - FlipperKit/Core (= 0.203.0)
+  - FlipperKit/CppBridge (= 0.203.0)
+  - FlipperKit/FBCxxFollyDynamicConvert (= 0.203.0)
+  - FlipperKit/FBDefines (= 0.203.0)
+  - FlipperKit/FKPortForwarding (= 0.203.0)
+  - FlipperKit/FlipperKitHighlightOverlay (= 0.203.0)
+  - FlipperKit/FlipperKitLayoutPlugin (= 0.203.0)
+  - FlipperKit/FlipperKitLayoutTextSearchable (= 0.203.0)
+  - FlipperKit/FlipperKitNetworkPlugin (= 0.203.0)
+  - FlipperKit/FlipperKitReactPlugin (= 0.203.0)
+  - FlipperKit/FlipperKitUserDefaultsPlugin (= 0.203.0)
+  - FlipperKit/SKIOSNetworkPlugin (= 0.203.0)
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
   - hermes-engine (from `../node_modules/react-native/sdks/hermes-engine/hermes-engine.podspec`)
   - libevent (~> 2.1.12)
@@ -663,12 +654,10 @@ DEPENDENCIES:
   - React-logger (from `../node_modules/react-native/ReactCommon/logger`)
   - react-native-biometrics (from `../node_modules/react-native-biometrics`)
   - "react-native-blur (from `../node_modules/@react-native-community/blur`)"
-  - react-native-document-picker (from `../node_modules/react-native-document-picker`)
   - react-native-flipper (from `../node_modules/react-native-flipper`)
   - react-native-image-picker (from `../node_modules/react-native-image-picker`)
   - "react-native-keep-awake (from `../node_modules/@sayem314/react-native-keep-awake`)"
   - "react-native-ldk (from `../node_modules/@synonymdev/react-native-ldk`)"
-  - react-native-libsodium (from `../node_modules/react-native-libsodium`)
   - react-native-mmkv (from `../node_modules/react-native-mmkv`)
   - "react-native-netinfo (from `../node_modules/@react-native-community/netinfo`)"
   - react-native-randombytes (from `../node_modules/react-native-randombytes`)
@@ -694,6 +683,7 @@ DEPENDENCIES:
   - React-utils (from `../node_modules/react-native/ReactCommon/react/utils`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
   - ReactNativeCameraKit (from `../node_modules/react-native-camera-kit`)
+  - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
   - "RNCClipboard (from `../node_modules/@react-native-clipboard/clipboard`)"
   - RNDeviceInfo (from `../node_modules/react-native-device-info`)
   - RNExitApp (from `../node_modules/react-native-exit-app`)
@@ -733,7 +723,6 @@ SPEC REPOS:
     - OpenSSL-Universal
     - SocketRocket
     - SSZipArchive
-    - YogaKit
     - ZXingObjC
 
 EXTERNAL SOURCES:
@@ -788,8 +777,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-biometrics"
   react-native-blur:
     :path: "../node_modules/@react-native-community/blur"
-  react-native-document-picker:
-    :path: "../node_modules/react-native-document-picker"
   react-native-flipper:
     :path: "../node_modules/react-native-flipper"
   react-native-image-picker:
@@ -798,8 +785,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@sayem314/react-native-keep-awake"
   react-native-ldk:
     :path: "../node_modules/@synonymdev/react-native-ldk"
-  react-native-libsodium:
-    :path: "../node_modules/react-native-libsodium"
   react-native-mmkv:
     :path: "../node_modules/react-native-mmkv"
   react-native-netinfo:
@@ -850,6 +835,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon"
   ReactNativeCameraKit:
     :path: "../node_modules/react-native-camera-kit"
+  RNCAsyncStorage:
+    :path: "../node_modules/@react-native-async-storage/async-storage"
   RNCClipboard:
     :path: "../node_modules/@react-native-clipboard/clipboard"
   RNDeviceInfo:
@@ -895,20 +882,20 @@ SPEC CHECKSUMS:
   DoubleConversion: 5189b271737e1565bdce30deb4a08d647e3f5f54
   FBLazyVector: 5d4a3b7f411219a45a6d952f77d2c0a6c9989da5
   FBReactNativeSpec: 3fc2d478e1c4b08276f9dd9128f80ec6d5d85c1f
-  Flipper: 6edb735e6c3e332975d1b17956bcc584eccf5818
+  Flipper: c70899db07015da7ec9025f29463a997a0184d01
   Flipper-Boost-iOSX: fd1e2b8cbef7e662a122412d7ac5f5bea715403c
   Flipper-DoubleConversion: 2dc99b02f658daf147069aad9dbd29d8feb06d30
   Flipper-Fmt: 60cbdd92fc254826e61d669a5d87ef7015396a9b
   Flipper-Folly: 584845625005ff068a6ebf41f857f468decd26b3
   Flipper-Glog: 70c50ce58ddaf67dc35180db05f191692570f446
   Flipper-PeerTalk: 116d8f857dc6ef55c7a5a75ea3ceaafe878aadc9
-  FlipperKit: 2efad7007d6745a3f95e4034d547be637f89d3f6
+  FlipperKit: 2bd3b69628fedcbdc66766d0dac0a8abd2de5f8f
   fmt: ff9d55029c625d3757ed641535fd4a75fedc7ce9
   glog: 04b94705f318337d7ead9e6d17c019bd9b1f6b1b
   hermes-engine: 81191603c4eaa01f5e4ae5737a9efcf64756c7b2
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
-  lottie-ios: 809ecf2d460ed650a6aed7aa88b2ec45fab4779c
-  lottie-react-native: 3d6f1b0db1fd9e18b92af1fbfbf67037611bae67
+  lottie-ios: 8f97d3271e155c2d688875c29cd3c74908aef5f8
+  lottie-react-native: 8f9d4be452e23f6e5ca0fdc11669dc99ab52be81
   MMKV: 5a07930c70c70b86cd87761a42c8f3836fb681d7
   MMKVCore: e50135dbd33235b6ab390635991bab437ab873c0
   nodejs-mobile-react-native: e35e7ed7ecfca168f168983e9557f1c5278d864b
@@ -929,19 +916,17 @@ SPEC CHECKSUMS:
   React-jsinspector: aaed4cf551c4a1c98092436518c2d267b13a673f
   React-logger: da1ebe05ae06eb6db4b162202faeafac4b435e77
   react-native-biometrics: 352e5a794bfffc46a0c86725ea7dc62deb085bdc
-  react-native-blur: 50c9feabacbc5f49b61337ebc32192c6be7ec3c3
-  react-native-document-picker: 495c444c0c773c6e83a5d91165890ecb1c0a399a
-  react-native-flipper: 5d8dcbcb905a7e8076c9a61a3709944c23cf48ee
-  react-native-image-picker: db60857e03d63721f19b6f4027de20429ddd9cba
-  react-native-keep-awake: caee3ff89eaa21dfe29010f0d143566874a04441
-  react-native-ldk: e31bd28e7e29fb4dd99b86bceed14025f8bf53eb
-  react-native-libsodium: 2834a805c906aef4b7609019bcc87e7d9eb86b23
-  react-native-mmkv: dea675cf9697ad35940f1687e98e133e1358ef9f
-  react-native-netinfo: 22c082970cbd99071a4e5aa7a612ac20d66b08f0
+  react-native-blur: cfdad7b3c01d725ab62a8a729f42ea463998afa2
+  react-native-flipper: 9c1957af24b76493ba74f46d000a5c1d485e7731
+  react-native-image-picker: 2e2e82aba9b6a91a7c78f7d9afde341a2659c7b8
+  react-native-keep-awake: ad1d67f617756b139536977a0bf06b27cec0714a
+  react-native-ldk: fc83520c891e58888c8f975a02ed394a4c4e1c36
+  react-native-mmkv: 9ae7ca3977e8ef48dbf7f066974eb844c20b5fd7
+  react-native-netinfo: b16b9df4de3ae252984ca7a18097a3d30d27ba21
   react-native-randombytes: 421f1c7d48c0af8dbcd471b0324393ebf8fe7846
   react-native-restart: 7595693413fe3ca15893702f2c8306c62a708162
-  react-native-safe-area-context: f5549f36508b1b7497434baa0cd97d7e470920d4
-  react-native-skia: d0b0aab6bb1f146eb6f379fb671b719deabd20fb
+  react-native-safe-area-context: 2cd91d532de12acdb0a9cbc8d43ac72a8e4c897c
+  react-native-skia: f4d52c69fd3534143365287d03db35270d7b09b7
   react-native-tcp-socket: c1b7297619616b4c9caae6889bcb0aba78086989
   React-NativeModulesApple: edb5ace14f73f4969df6e7b1f3e41bef0012740f
   React-perflogger: 496a1a3dc6737f964107cb3ddae7f9e265ddda58
@@ -960,31 +945,31 @@ SPEC CHECKSUMS:
   React-runtimescheduler: 4941cc1b3cf08b792fbf666342c9fc95f1969035
   React-utils: b79f2411931f9d3ea5781404dcbb2fa8a837e13a
   ReactCommon: 4b2bdcb50a3543e1c2b2849ad44533686610826d
-  ReactNativeCameraKit: 5c9b3d2366199b6d6d4a1a72c13d78fff7296332
-  RNCClipboard: 3f0451a8100393908bea5c5c5b16f96d45f30bfc
-  RNDeviceInfo: 475a4c447168d0ad4c807e48ef5e0963a0f4eb1b
-  RNExitApp: c4e052df2568b43bec8a37c7cd61194d4cfee2c3
+  ReactNativeCameraKit: d95d3e19c514526a234d9f93c6db7e7f10eef9ea
+  RNCAsyncStorage: 3a8f7145d17cdd9f88e7b77666c94a09e4f759c8
+  RNCClipboard: d77213bfa269013bf4b857b7a9ca37ee062d8ef1
+  RNDeviceInfo: bf8a32acbcb875f568217285d1793b0e8588c974
+  RNExitApp: 00036cabe7bacbb413d276d5520bf74ba39afa6a
   RNFS: 4ac0f0ea233904cb798630b3c077808c06931688
-  RNGestureHandler: 071d7a9ad81e8b83fe7663b303d132406a7d8f39
-  RNKeychain: ff836453cba46938e0e9e4c22e43d43fa2c90333
-  RNLocalize: d4b8af4e442d4bcca54e68fc687a2129b4d71a81
-  RNPermissions: c5eafcb7dc107815baf0f4c795410c653eb9635a
+  RNGestureHandler: 6e46dde1f87e5f018a54fe5d40cd0e0b942b49ee
+  RNKeychain: a65256b6ca6ba6976132cc4124b238a5b13b3d9c
+  RNLocalize: dbea38dcb344bf80ff18a1757b1becf11f70cae4
+  RNPermissions: 2c0eec471f4de66d04d226c339898d10a6e123c4
   RNQrGenerator: 90461ba3ca88c1d38ef73da50fade35d9648215d
   RNQuickAction: 6d404a869dc872cde841ad3147416a670d13fa93
   RNRate: ef3bcff84f39bb1d1e41c5593d3eea4aab2bd73a
-  RNReactNativeHapticFeedback: 1e3efeca9628ff9876ee7cdd9edec1b336913f8c
-  RNReanimated: 726395a2fa2f04cea340274ba57a4e659bc0d9c1
-  RNScreens: b21dc57dfa2b710c30ec600786a3fc223b1b92e7
-  RNShare: d82e10f6b7677f4b0048c23709bd04098d5aee6c
-  RNSVG: d7d7bc8229af3842c9cfc3a723c815a52cdd1105
-  RNZipArchive: 68a0c6db4b1c103f846f1559622050df254a3ade
+  RNReactNativeHapticFeedback: ec56a5f81c3941206fd85625fa669ffc7b4545f9
+  RNReanimated: ab2e96c6d5591c3dfbb38a464f54c8d17fb34a87
+  RNScreens: 3c2d122f5e08c192e254c510b212306da97d2581
+  RNShare: 32e97adc8d8c97d4a26bcdd3c45516882184f8b6
+  RNSVG: d00c8f91c3cbf6d476451313a18f04d220d4f396
+  RNZipArchive: ef9451b849c45a29509bf44e65b788829ab07801
   SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17
   SSZipArchive: fe6a26b2a54d5a0890f2567b5cc6de5caa600aef
   TouchID: ba4c656d849cceabc2e4eef722dea5e55959ecf4
   Yoga: 3efc43e0d48686ce2e8c60f99d4e6bd349aff981
-  YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
   ZXingObjC: 8898711ab495761b2dbbdec76d90164a6d7e14c5
 
-PODFILE CHECKSUM: cf6332fd1adc6afe5176032f8ddfb72684376530
+PODFILE CHECKSUM: b01d3271ab99feb247ef10569ea8ace3cf7254ec
 
 COCOAPODS: 1.12.1

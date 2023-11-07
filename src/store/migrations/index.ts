@@ -1,13 +1,15 @@
+// Add migrations for every persisted store version change
+
 import { PersistedState } from 'redux-persist';
 import { defaultActivityShape } from '../shapes/activity';
+import { defaultBlocktankInfoShape } from '../shapes/blocktank';
 import { defaultTodosShape } from '../shapes/todos';
 import { defaultViewControllers } from '../shapes/ui';
 import { defaultChecksShape } from '../shapes/checks';
 import { defaultBackupShape } from '../shapes/backup';
+import { defaultWidgetsShape } from '../shapes/widgets';
 import { getNetworkContent } from '../shapes/wallet';
-// add migrations for every persisted store version change
-// NOTE: state reconciliation works only 2 levels deep
-// see https://github.com/rt2zz/redux-persist#state-reconciler
+import { __WEB_RELAY__ } from '../../constants/env';
 
 const migrations = {
 	0: (state): PersistedState => {
@@ -160,6 +162,117 @@ const migrations = {
 			activity: {
 				...state.activity,
 				items,
+			},
+		};
+	},
+	16: (state): PersistedState => {
+		return {
+			...state,
+			metadata: {
+				...state.metadata,
+				pendingInvoices: [],
+			},
+		};
+	},
+	17: (state): PersistedState => {
+		return {
+			...state,
+			widgets: defaultWidgetsShape,
+		};
+	},
+	18: (state): PersistedState => {
+		return {
+			...state,
+			ui: {
+				...state.ui,
+				fromAddressViewer: false,
+			},
+		};
+	},
+	19: (state): PersistedState => {
+		return {
+			...state,
+			blocktank: {
+				...state.blocktank,
+				cJitEntries: [],
+			},
+		};
+	},
+	20: (state): PersistedState => {
+		return {
+			...state,
+			settings: {
+				...state.settings,
+				treasureChests: [],
+			},
+		};
+	},
+	21: (state): PersistedState => {
+		return {
+			...state,
+			settings: {
+				...state.settings,
+				webRelay: __WEB_RELAY__,
+			},
+		};
+	},
+	22: (state): PersistedState => {
+		return {
+			...state,
+			slashtags: {
+				...state.slashtags,
+				lastPaidContacts: [],
+			},
+		};
+	},
+	23: (state): PersistedState => {
+		return {
+			...state,
+			todos: defaultTodosShape,
+		};
+	},
+	24: (state): PersistedState => {
+		return {
+			...state,
+			lightning: {
+				...state.lightning,
+				accountVersion: 1,
+			},
+		};
+	},
+	25: (state): PersistedState => {
+		return {
+			...state,
+			settings: {
+				...state.settings,
+				isWebRelayTrusted: false,
+			},
+		};
+	},
+	26: (state): PersistedState => {
+		return {
+			...state,
+			blocktank: {
+				...state.blocktank,
+				info: defaultBlocktankInfoShape,
+			},
+		};
+	},
+	27: (state): PersistedState => {
+		return {
+			...state,
+			settings: {
+				...state.settings,
+				isWebRelayTrusted: true,
+			},
+		};
+	},
+	28: (state): PersistedState => {
+		return {
+			...state,
+			settings: {
+				...state.settings,
+				rapidGossipSyncUrl: 'https://rapidsync.lightningdevkit.org/snapshot/',
 			},
 		};
 	},

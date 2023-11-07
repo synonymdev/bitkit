@@ -14,7 +14,7 @@ import {
 	addTag,
 	addMetaTxTag,
 	resetMetaStore,
-	updateMetaIncTxTags,
+	updatePendingInvoice,
 	addMetaSlashTagsUrlTag,
 } from '../src/store/actions/metadata';
 import {
@@ -100,17 +100,19 @@ describe('Remote backups', () => {
 		if (fetchRes.isErr()) {
 			throw fetchRes.error;
 		}
-		const bytesToStringRes = bytesToString(fetchRes.value.content);
-		if (bytesToStringRes.isErr()) {
-			throw bytesToStringRes.error;
-		}
-		expect(bytesToStringRes.value).toEqual(message);
+		const jsonString = bytesToString(fetchRes.value.content);
+		expect(jsonString).toEqual(message);
 	});
 
 	it('Backups and restores metadata', async () => {
 		addMetaTxTag('txid1', 'tag');
 		addTag('tag');
-		updateMetaIncTxTags('address', 'invoice', ['futuretag']);
+		updatePendingInvoice({
+			id: 'id123',
+			tags: ['futuretag'],
+			address: 'address',
+			payReq: 'lightningInvoice',
+		});
 		addMetaSlashTagsUrlTag('txid2', 'slashtag');
 
 		const backup = getMetaDataStore();
@@ -182,15 +184,16 @@ describe('Remote backups', () => {
 	});
 
 	it('Backups and restores widgets', async () => {
-		setFeedWidget('url', {
-			name: 'name',
+		setFeedWidget({
+			url: 'url',
 			type: 'type',
-			icon: 'icon',
-			field: {
-				name: 'name',
-				main: 'main',
-				files: {},
-			},
+			fields: [
+				{
+					name: 'name',
+					main: 'main',
+					files: {},
+				},
+			],
 		});
 		updateWidgets({ onboardedWidgets: true });
 

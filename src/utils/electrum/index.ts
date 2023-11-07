@@ -35,7 +35,7 @@ export const getDefaultPort = (
 export const getProtocolForPort = (
 	port: string,
 	selectedNetwork?: TAvailableNetworks,
-): TProtocol | undefined => {
+): TProtocol => {
 	if (port === '443') {
 		return 'ssl';
 	}
@@ -68,10 +68,10 @@ export const formatPeerData = (
 			return err('No data provided.');
 		}
 		if (data?.length !== 3) {
-			return err('Invalid peer data');
+			return err('The peer data appears to be invalid.');
 		}
 		if (data[2]?.length < 2) {
-			return err('Invalid peer data');
+			return err('The peer data appears to be invalid.');
 		}
 		const [ip, host, ports] = data;
 		const [version, ssl, tcp] = ports;
@@ -146,6 +146,10 @@ export const electrumConnection = ((): ElectrumConnectionPubSub => {
 	let latestState: boolean | null = null;
 
 	setInterval(async () => {
+		if (subscribers.size === 0) {
+			return;
+		}
+
 		try {
 			const { error } = await electrum.pingServer();
 

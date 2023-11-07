@@ -1,0 +1,16 @@
+{
+  "mnemonic_multiple_header": "Múltiples dispositius",
+  "pin_security_header": "Incrementa la seguretat",
+  "pin_disable_title": "Desactiva el PIN",
+  "pin_disable_button": "Desactiva el PIN",
+  "pin_forgot_title": "Has oblidat el PIN?",
+  "bio_confirm": "Confirma {biometricsName}",
+  "close_app": "Tanca Bitkit",
+  "export_password": "Contrasenya",
+  "export_button": "Exportar",
+  "cp_title": "Canvia el PIN",
+  "cp_forgot": "Has oblidat el teu codi PIN?",
+  "cp_retype_title": "Torna a escriure el nou PIN",
+  "cp_changed_title": "El PIN ha canviat",
+  "use_pin": "Utilitzar el codi PIN"
+}
