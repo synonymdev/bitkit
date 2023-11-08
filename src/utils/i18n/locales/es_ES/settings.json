@@ -46,5 +46,8 @@
     "protocol": "Protocolo",
     "button_reset": "Restablecer configuraciones iniciales",
     "button_connect": "Conectar con el anfitrión"
+  },
+  "rgs": {
+    "button_connect": "Conectar"
   }
 }

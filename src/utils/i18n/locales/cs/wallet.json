@@ -157,7 +157,7 @@
     "other": "Další"
   },
   "details_savings_title": "Zůstatek úspor",
-  "details_savings_subtitle": "On-chain BTC",
+  "details_savings_subtitle": "BTC",
   "details_spending_title": "Dostupný zůstatek",
   "details_spending_subtitle": "Okamžité BTC",
   "tx_invalid": "Neplatná transakce",

@@ -57,5 +57,8 @@
   },
   "es": {
     "disconnected": "getrennt"
+  },
+  "rgs": {
+    "button_connect": "Verbinden"
   }
 }

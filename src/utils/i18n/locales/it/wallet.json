@@ -117,7 +117,6 @@
     "other": "Altro"
   },
   "details_savings_title": "Conto di Risparmio",
-  "details_savings_subtitle": "BTC on-chain",
   "details_spending_title": "Conto Spendibile",
   "details_spending_subtitle": "BTC istantanei",
   "tx_invalid": "Transazione non valida",

@@ -85,7 +85,6 @@
   "error_save_title": "Nelze uložit Lightning Peer",
   "error_save": "Nelze uložit lightning peer",
   "error_decode": "Nelze dekódovat fakturu",
-  "error_fulfill_msg": "{amount} více satů je potřeba ke splnění požadované částky na faktuře.",
   "peer_saved": "Lightning peer byl úspěšně přidán a uložen.",
   "invoice_copied": "Faktura byla zkopírována do schránky",
   "status": "Status",

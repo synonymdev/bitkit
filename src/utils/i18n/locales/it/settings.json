@@ -155,5 +155,8 @@
     "protocol": "Protocollo",
     "button_reset": "Ripristina Impostazioni di Default",
     "button_connect": "Connetti all'Host"
+  },
+  "rgs": {
+    "button_connect": "Connetti"
   }
 }

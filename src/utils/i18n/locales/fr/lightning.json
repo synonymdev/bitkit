@@ -85,7 +85,6 @@
   "error_save_title": "Impossible de sauvegarder le Pair Lightning",
   "error_save": "Impossible de sauvegarder le pair Lightning",
   "error_decode": "Impossible de décoder la facture",
-  "error_fulfill_msg": "{amount} plus de sats nécessaires pour atteindre le montant de la facture demandée.",
   "peer_saved": "Le pair Lightning a été ajouté et sauvegardé avec succès.",
   "invoice_copied": "Facture copiée dans le presse-papiers",
   "status": "Statut",

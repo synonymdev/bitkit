@@ -119,7 +119,6 @@
     "other": "Autre"
   },
   "details_savings_title": "Solde de l'épargne",
-  "details_savings_subtitle": "BTC On-chain",
   "details_spending_title": "Solde des dépenses",
   "details_spending_subtitle": "BTC instantané",
   "tx_invalid": "Transaction invalide",

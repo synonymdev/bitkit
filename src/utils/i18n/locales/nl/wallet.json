@@ -117,7 +117,6 @@
     "other": "Overige"
   },
   "details_savings_title": "Spaarsaldo",
-  "details_savings_subtitle": "On-chain BTC",
   "details_spending_title": "Bestedingssaldo",
   "details_spending_subtitle": "Direct Beschikbare BTC",
   "tx_invalid": "Transactie Ongeldig",

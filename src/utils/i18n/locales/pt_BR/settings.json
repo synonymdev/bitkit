@@ -1,7 +1,9 @@
 {
   "settings": "Configurações",
   "dev_enabled_title": "Modo Desenvolvedor Ativado",
+  "dev_enabled_message": "As opções de desenvolvedor estão agora habilitadas em todo o aplicativo.",
   "dev_disabled_title": "Modo Desenvolvedor Desativado",
+  "dev_disabled_message": "As opções de desenvolvedor estão agora desabilitadas em todo o aplicativo.",
   "general_title": "Geral",
   "security_title": "Segurança e Privacidade",
   "backup_title": "Fazer backup ou Restaurar",
@@ -68,6 +70,8 @@
     "wallet": "Faça backup da sua carteira",
     "export": "Exportar dados da carteira para seu celular",
     "reset": "Reiniciar e restaurar carteira",
+    "failed_title": "Falha no Backup de Dados",
+    "failed_message": "O Bitkit falhou ao fazer o backup dos dados da carteira. Por favor, verifique sua conexão.",
     "latest": "backups de dados mais recentes",
     "status_failed": "Falha no backup: {time}",
     "status_success": "Último backup: {time}",
@@ -105,6 +109,8 @@
     "lightning_connections": "Conexões Lightning",
     "lightning_node": "Nó Lightning",
     "electrum_server": "Servidor Electrum",
+    "rgs_server": "Servidor Rapid-Gossip-Sync",
+    "web_relay": "Web Relay de Slashtags",
     "bitcoin_network": "Rede Bitcoin"
   },
   "fee": {
@@ -136,6 +142,8 @@
     "no_funds_change": "Não foram encontrados fundos nos primeiros {index} endereços {addressType} de troco.",
     "no_addrs_with_funds": "Não foi encontrado nenhum endereço contendo \"{searchTxt}\" com fundos ",
     "no_addrs_str": "Nenhum endereço foi encontrado ao pesquisar por \"{searchTxt}\"",
+    "rescan_error": "O Re-escaneamento Falhou.",
+    "rescan_error_description": "O Bitkit não conseguiu verificar os saldos do endereço.",
     "index": "Índice: {index}",
     "path": "Caminho: {caminho}",
     "private_hide": "Ocultar Chave Privada",
@@ -152,8 +160,13 @@
     "error_host_port": "Especifique um host e uma porta para se conectar.",
     "error_host": "Especifique um host para se conectar.",
     "error_port": "Especifique uma porta para se conectar.",
+    "error_port_invalid": "Por favor, especifique uma porta válida.",
+    "error_invalid_http": "Por favor, especifique uma URL válida.",
+    "error_peer": "Erro do Electrum",
     "server_updated_title": "Servidor Electrum Atualizado",
     "server_updated_message": "Conectado com sucesso a {host}:{port}",
+    "server_error": "Falha na Conexão do Electrum",
+    "server_error_description": "O Bitkit não conseguiu estabelecer uma conexão com o Electrum.",
     "connected_to": "Atualmente conectado a",
     "disconnected": "desconectado",
     "host": "Host",
@@ -161,5 +174,22 @@
     "protocol": "Protocolo",
     "button_reset": "Redefinir para o Padrão",
     "button_connect": "Conectar ao Host"
+  },
+  "rgs": {
+    "server_url": "URL do Servidor de Rapid-Gossip-Sync",
+    "button_connect": "Conectar",
+    "button_reconnect": "Reconectar",
+    "update_success_title": "Servidor de Rapid-Gossip-Sync Atualizado",
+    "update_success_description": "Pode ser necessário reiniciar o aplicativo uma ou duas vezes para que essa alteração seja aplicada."
+  },
+  "wr": {
+    "error_wr": "Erro do Web Relay",
+    "error_url": "Por favor, especifique uma URL para se conectar.",
+    "error_https": "URL HTTPS inválida.",
+    "error_healthcheck": "Falha no Healthcheck.",
+    "url_updated_title": "Web Relay Atualizado",
+    "url_updated_message": "Conectado com sucesso a {url}",
+    "trust": "Confiar neste relay.",
+    "trust_description": "Pular verificação de registro para este web relay"
   }
 }

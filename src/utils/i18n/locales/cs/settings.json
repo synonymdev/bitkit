@@ -1,8 +1,8 @@
 {
   "settings": "Nastavení",
-  "dev_enabled_title": "Dev nastavení povoleno",
+  "dev_enabled_title": "Nastavení pro vývojáře povoleno",
   "dev_enabled_message": "V celé aplikaci jsou nyní povoleny možnosti pro vývojáře.",
-  "dev_disabled_title": "Dev nastavení zakázáno",
+  "dev_disabled_title": "Nastavení pro vývojáře zakázáno",
   "dev_disabled_message": "Možnosti pro vývojáře jsou nyní v celé aplikaci vypnuté.",
   "general_title": "Obecné",
   "security_title": "Bezpečnost a soukromí",
@@ -21,7 +21,7 @@
     "op_share": "Sdílet Bitkit s přítelem",
     "op_message": "Stáhněte si Bitkit, váš ultimátní bitcoinový nástroj. Předáváme vám klíče k přetvoření vašeho digitálního života. {appStoreUrl}"
   },
-  "dev_title": "Dev nastavení",
+  "dev_title": "Vývojářské nastavení",
   "general": {
     "section_title": "Kategorie",
     "currency_local": "Lokální měna",
@@ -97,18 +97,19 @@
     "cs_auto_mode": "Autopilot mód",
     "cs_consolidate": "Konsolidovat",
     "cs_max": "Maximální soukromí",
-    "cs_min": "Minimální UTXO",
-    "payment_preference": "Preferovaná platba",
+    "cs_min": "Minimálně UTXO",
+    "payment_preference": "Platební preference",
     "pp_header": "Vyberte, jak chcete přijímat peníze, když uživatelé pošlou prostředky na váš profilový klíč.",
     "pp_footer": "* Toto vyžaduje sdílení dat o platbě",
-    "pp_drag": "Preferovaná platba (přetáhněte pro změnu pořadí)",
+    "pp_drag": "Preference platby (přetáhněte pro změnu pořadí)",
     "pp_contacts": "Zaplatit od/komu kontakty",
     "pp_contacts_switch": "Povolit platby s kontakty*",
     "address_viewer": "Prohlížeč adres",
     "rescan": "Znovu naskenovat adresy",
-    "lightning_connections": "Lightning propojení",
+    "lightning_connections": "Lightning spojení",
     "lightning_node": "Lightning uzel",
     "electrum_server": "Electrum server",
+    "rgs_server": "Server Rapid-Gossip-Sync",
     "web_relay": "Slashtags web přenos",
     "bitcoin_network": "Bitcoinová síť"
   },
@@ -116,17 +117,17 @@
     "fast": {
       "label": "Rychlá (dražší)",
       "value": "Rychle",
-      "description": "+/- 10-20 minut"
+      "description": "± 10-20 minut"
     },
     "normal": {
       "label": "Standardní",
       "value": "Standardní",
-      "description": "+/- 20-60 minut"
+      "description": "± 20-60 minut"
     },
     "slow": {
       "label": "Pomalá (levnější)",
       "value": "Pomalu",
-      "description": "+/- 1-2 hodiny"
+      "description": "± 1-2 hodiny"
     },
     "custom": {
       "label": "Vlastní",
@@ -148,7 +149,7 @@
     "index": "Index: {index}",
     "path": "Path: {path}",
     "private_hide": "Skrýt privátní klíč",
-    "private_view": "Viditelný privátní klíč",
+    "private_view": "Zobrazit privátní klíč",
     "private_key": "Privátní klíč: {privateKey}",
     "addr_change": "Změnit adresu",
     "addr_receiving": "Adresy pro příjem",
@@ -175,6 +176,13 @@
     "protocol": "Protokol",
     "button_reset": "Obnovit do základního nastavení",
     "button_connect": "Připojit se k Host"
+  },
+  "rgs": {
+    "server_url": "URL dresa serveru Rapid-Gossip-Sync",
+    "button_connect": "Připojit",
+    "button_reconnect": "Opětovné připojení",
+    "update_success_title": "Server Rapid-Gossip-Sync aktualizován",
+    "update_success_description": "Aby se tato změna projevila, může být nutné aplikaci jednou nebo dvakrát restartovat."
   },
   "wr": {
     "error_wr": "Chyba webového přenosu",

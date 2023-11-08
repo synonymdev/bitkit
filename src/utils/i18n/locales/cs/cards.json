@@ -15,20 +15,20 @@
     "description3": "Otevírání"
   },
   "lightningConnecting": {
-    "title": "Spojování",
-    "description": "Hotovo za +/- 10m"
+    "title": "Připojování",
+    "description": "Připraveno za ±10 m"
   },
   "lightningReady": {
-    "title": "Hotovo",
-    "description": "Propojeno!"
+    "title": "Připraveno",
+    "description": "Připojeno!"
   },
   "transferToSpending": {
     "title": "Probíhající přenos",
-    "description": "Hotovo za +/- 20m"
+    "description": "Připraveno za ±20 m"
   },
   "transferToSavings": {
     "title": "Probíhající přenos",
-    "description": "Hotovo za +/- 60m"
+    "description": "Připraveno za ±60 m"
   },
   "transferClosingChannel": {
     "title": "Inicializace...",
@@ -36,7 +36,7 @@
   },
   "pin": {
     "title": "Lepší ochrana",
-    "description": "Nastavení PIN kódu"
+    "description": "Nastavte PIN kód"
   },
   "slashtagsProfile": {
     "title": "Veřejný profil",

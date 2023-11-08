@@ -164,5 +164,8 @@
     "protocol": "Protocole",
     "button_reset": "Réinitialisation des valeurs par défaut",
     "button_connect": "Connexion à un hôte"
+  },
+  "rgs": {
+    "button_connect": "Connecter"
   }
 }
