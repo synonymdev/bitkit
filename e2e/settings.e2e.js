@@ -597,22 +597,22 @@ d('Settings', () => {
 			// await sleep(1000);
 			// await element(by.label('Cancel')).atIndex(0).tap();
 
-			// test PIN on idle
+			// test PIN on idle and disable it after
 			await element(by.id('Settings')).tap();
 			await element(by.id('SecuritySettings')).tap();
 			await element(by.id('EnablePinOnIdle')).tap();
 			await device.matchFace();
-			await sleep(1000);
 			await waitFor(element(by.id('Biometrics')))
 				.toBeVisible()
 				.withTimeout(100000);
 			await device.matchFace();
+			await element(by.id('EnablePinOnIdle')).tap();
+			await device.matchFace();
+			await sleep(3000);
 
 			// disable FaceID, change PIN, restart the app and try it
 			await element(by.id('UseBiometryInstead')).tap();
 			await device.matchFace();
-			await sleep(1000);
-
 			await element(by.id('ChangePIN')).tap();
 			await element(by.id('N1').withAncestor(by.id('ChangePIN'))).multiTap(4);
 			await sleep(1000);
