@@ -274,7 +274,10 @@ const Channels = ({
 	}, [lightning.accountVersion, navigation, t]);
 
 	const handleExportLogs = useCallback(async (): Promise<void> => {
-		const result = await zipLogs({ includeJson: enableDevOptions });
+		const result = await zipLogs({
+			includeJson: enableDevOptions,
+			includeBinaries: enableDevOptions,
+		});
 		if (result.isErr()) {
 			showToast({
 				type: 'error',

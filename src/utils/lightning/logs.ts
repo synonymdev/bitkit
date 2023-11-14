@@ -11,10 +11,12 @@ import { err, ok, Result } from '@synonymdev/result';
 export const zipLogs = async ({
 	limit = 10,
 	includeJson = false,
+	includeBinaries = false,
 	allAccounts = false,
 }: {
 	limit?: number;
 	includeJson?: boolean;
+	includeBinaries?: boolean;
 	allAccounts?: boolean;
 } = {}): Promise<Result<string>> => {
 	const time = new Date().getTime();
@@ -26,13 +28,14 @@ export const zipLogs = async ({
 
 	try {
 		// Create temporary folder
-		await rm(tempPath);
+		await unlinkIfExists(tempPath);
 		await mkdir(`${tempPath}/${zipFileName}`);
 
 		const accounts = await listLogs({
 			path: ldkPath,
 			limit,
 			includeJson,
+			includeBinaries,
 			accountName: allAccounts ? undefined : lm.account.name,
 		});
 
@@ -68,25 +71,42 @@ export const zipLogs = async ({
 const listLogs = async ({
 	path,
 	limit,
-	includeJson = false,
 	accountName,
+	includeJson = false,
+	includeBinaries = false,
 }: {
 	path: string;
 	limit: number;
-	includeJson?: boolean;
 	accountName?: string;
+	includeJson?: boolean;
+	includeBinaries?: boolean;
 }): Promise<{ id: string; files: string[] }[]> => {
 	const ldkPathItems = await RNFS.readDir(path);
-	const filter = accountName ?? 'account';
-	const accounts = ldkPathItems.filter((item) => item.path.endsWith(filter));
+	const filter = accountName ?? 'ldkaccount';
+	const accounts = ldkPathItems.filter((item) => item.path.includes(filter));
 
 	const promises = accounts.map(async (account) => {
-		const logFiles = await listLogsForAccount(`${account.path}/logs`, limit);
-		const jsonFiles = includeJson
-			? await listJsonFilesForAccount(account.path)
-			: [];
-		const files = [...logFiles, ...jsonFiles];
-		return { id: account.name, files };
+		const files = await listLogsForAccount(`${account.path}/logs`, limit);
+
+		if (includeJson) {
+			const jsonFiles = await listFilesForAccount({
+				path: account.path,
+				filter: ['.json'],
+			});
+			files.push(...jsonFiles);
+		}
+
+		if (includeBinaries) {
+			const binFiles = await listFilesForAccount({
+				path: account.path,
+				filter: ['.bin'],
+			});
+			files.push(...binFiles);
+		}
+
+		const filePaths = files.map((f) => f.path);
+
+		return { id: account.name, files: filePaths };
 	});
 
 	return Promise.all(promises);
@@ -94,50 +114,53 @@ const listLogs = async ({
 
 /**
  * Lists .log files for an LDK account sorted by newest first
- * @param path
- * @param limit
- * @returns {Promise<string[]>}
+ * @param {string} path
+ * @param {number} limit
+ * @returns {Promise<RNFS.ReadDirItem[]>}
  */
 const listLogsForAccount = async (
 	path: string,
 	limit: number,
-): Promise<string[]> => {
+): Promise<RNFS.ReadDirItem[]> => {
+	const files = await listFilesForAccount({ path, filter: ['.log'] });
+
+	// Sort by newest
+	files.sort((a, b) => {
+		const aTime = (a.mtime ?? new Date()).getTime();
+		const bTime = (b.mtime ?? new Date()).getTime();
+		return bTime - aTime;
+	});
+
+	// Limit number of log files
+	return files.slice(0, limit);
+};
+
+/**
+ * Lists files in a given directory
+ * @param {string} path
+ * @param {string[]} [filter]
+ * @returns {Promise<RNFS.ReadDirItem[]>}
+ */
+const listFilesForAccount = async ({
+	path,
+	filter,
+}: {
+	path: string;
+	filter?: string[];
+}): Promise<RNFS.ReadDirItem[]> => {
 	if (!(await exists(path))) {
 		return [];
 	}
 
-	let list = await RNFS.readDir(path);
+	let files = await RNFS.readDir(path);
 
-	// Filter for log files only
-	list = list.filter((f) => {
-		return f.isFile() && f.name.indexOf('.log') > -1 && f.size > 0;
-	});
+	// Filter files
+	if (filter) {
+		const regex = new RegExp(filter.join('|'));
+		files = files.filter((f) => f.isFile() && f.size > 0 && regex.test(f.name));
+	}
 
-	// Newest first
-	list.sort((a, b) => {
-		return (
-			(b.mtime ?? new Date()).getTime() - (a.mtime ?? new Date()).getTime()
-		);
-	});
-
-	// Limit number of files
-	return list.slice(0, limit).map((f) => f.path);
-};
-
-/**
- * Lists .json files in a given directory
- * @param path
- * @returns {Promise<string[]>}
- */
-const listJsonFilesForAccount = async (path: string): Promise<string[]> => {
-	let list = await RNFS.readDir(path);
-
-	// Filter for .json files only
-	list = list.filter((f) => {
-		return f.isFile() && f.name.endsWith('json') && f.size > 0;
-	});
-
-	return list.map((f) => f.path);
+	return files;
 };
 
 /**
@@ -145,7 +168,7 @@ const listJsonFilesForAccount = async (path: string): Promise<string[]> => {
  * @param path
  * @returns {Promise<void>}
  */
-const rm = async (path: string): Promise<void> => {
+const unlinkIfExists = async (path: string): Promise<void> => {
 	try {
 		if (await exists(path)) {
 			await unlink(path);
