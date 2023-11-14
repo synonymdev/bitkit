@@ -54,7 +54,7 @@ const Prize = ({
 	route,
 }: TreasureHuntScreenProps<'Prize'>): ReactElement => {
 	const { chestId } = route.params;
-	const interval = useRef<NodeJS.Timer>();
+	const interval = useRef<NodeJS.Timeout>();
 	const animationRef = useRef<Lottie>(null);
 	const appState = useRef(AppState.currentState);
 	const { isSmallScreen } = useScreenSize();

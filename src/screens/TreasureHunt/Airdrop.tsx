@@ -49,7 +49,7 @@ const Airdrop = ({
 	route,
 }: TreasureHuntScreenProps<'Airdrop'>): ReactElement => {
 	const { chestId } = route.params;
-	const interval = useRef<NodeJS.Timer>();
+	const interval = useRef<NodeJS.Timeout>();
 	const maxInboundCapacitySat = useLightningMaxInboundCapacity();
 
 	const { treasureChests } = useAppSelector((state) => state.settings);
