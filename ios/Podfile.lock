@@ -76,9 +76,9 @@ PODS:
   - lottie-react-native (5.1.6):
     - lottie-ios (~> 3.4.0)
     - React-Core
-  - MMKV (1.3.1):
-    - MMKVCore (~> 1.3.1)
-  - MMKVCore (1.3.1)
+  - MMKV (1.3.0):
+    - MMKVCore (~> 1.3.0)
+  - MMKVCore (1.3.0)
   - nodejs-mobile-react-native (0.8.1):
     - React-Core
   - OpenSSL-Universal (1.1.1100)
@@ -392,7 +392,7 @@ PODS:
     - React-Core
   - react-native-keep-awake (1.2.2):
     - React-Core
-  - react-native-ldk (0.0.120):
+  - react-native-ldk (0.0.121):
     - React
   - react-native-mmkv (2.10.2):
     - MMKV (>= 1.2.13)
@@ -598,9 +598,9 @@ PODS:
   - SocketRocket (0.6.1)
   - SSZipArchive (2.4.3)
   - Yoga (1.14.0)
-  - ZXingObjC (3.6.9):
-    - ZXingObjC/All (= 3.6.9)
-  - ZXingObjC/All (3.6.9)
+  - ZXingObjC (3.6.5):
+    - ZXingObjC/All (= 3.6.5)
+  - ZXingObjC/All (3.6.5)
 
 DEPENDENCIES:
   - boost (from `../node_modules/react-native/third-party-podspecs/boost.podspec`)
@@ -891,8 +891,8 @@ SPEC CHECKSUMS:
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
   lottie-ios: 8f97d3271e155c2d688875c29cd3c74908aef5f8
   lottie-react-native: 8f9d4be452e23f6e5ca0fdc11669dc99ab52be81
-  MMKV: 5a07930c70c70b86cd87761a42c8f3836fb681d7
-  MMKVCore: e50135dbd33235b6ab390635991bab437ab873c0
+  MMKV: 9c6c3fa4ddd849f28c7b9a5c9d23aab84f14ee35
+  MMKVCore: 9bb7440b170181ac5b81f542ac258103542e693d
   nodejs-mobile-react-native: e35e7ed7ecfca168f168983e9557f1c5278d864b
   OpenSSL-Universal: ebc357f1e6bc71fa463ccb2fe676756aff50e88c
   RCT-Folly: 424b8c9a7a0b9ab2886ffe9c3b041ef628fd4fb1
@@ -915,7 +915,7 @@ SPEC CHECKSUMS:
   react-native-flipper: 9c1957af24b76493ba74f46d000a5c1d485e7731
   react-native-image-picker: 2e2e82aba9b6a91a7c78f7d9afde341a2659c7b8
   react-native-keep-awake: ad1d67f617756b139536977a0bf06b27cec0714a
-  react-native-ldk: fc83520c891e58888c8f975a02ed394a4c4e1c36
+  react-native-ldk: b94705aa18ce353138044e7602c51e866584ad67
   react-native-mmkv: 9ae7ca3977e8ef48dbf7f066974eb844c20b5fd7
   react-native-netinfo: 5ddbf20865bcffab6b43d0e4e1fd8b3896beb898
   react-native-randombytes: 421f1c7d48c0af8dbcd471b0324393ebf8fe7846
@@ -962,8 +962,8 @@ SPEC CHECKSUMS:
   SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17
   SSZipArchive: fe6a26b2a54d5a0890f2567b5cc6de5caa600aef
   Yoga: 3efc43e0d48686ce2e8c60f99d4e6bd349aff981
-  ZXingObjC: 8898711ab495761b2dbbdec76d90164a6d7e14c5
+  ZXingObjC: fdbb269f25dd2032da343e06f10224d62f537bdb
 
 PODFILE CHECKSUM: b01d3271ab99feb247ef10569ea8ace3cf7254ec
 
-COCOAPODS: 1.12.1
+COCOAPODS: 1.14.2
