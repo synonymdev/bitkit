@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import RNFS, { unlink, writeFile } from 'react-native-fs';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Share from 'react-native-share';
+import { useTranslation } from 'react-i18next';
 
 import { __DISABLE_SLASHTAGS__ } from '../../../constants/env';
 import actions from '../../../store/actions/actions';
@@ -26,30 +27,35 @@ import { resetFeesStore } from '../../../store/actions/fees';
 import { resetTodos } from '../../../store/actions/todos';
 import { resetSettingsStore, wipeApp } from '../../../store/actions/settings';
 import { getStore, getWalletStore } from '../../../store/helpers';
+import { resetMetaStore } from '../../../store/actions/metadata';
 import { warningsSelector } from '../../../store/reselect/checks';
+import { lightningSelector } from '../../../store/reselect/lightning';
 import {
 	addressTypeSelector,
 	selectedNetworkSelector,
 	selectedWalletSelector,
 } from '../../../store/reselect/wallet';
-import { resetMetaStore } from '../../../store/actions/metadata';
 import SettingsView from './../SettingsView';
 import { EItemType, IListData } from '../../../components/List';
-import { refreshWallet } from '../../../utils/wallet';
-import { runChecks } from '../../../utils/wallet/checks';
-import { getFakeTransaction } from '../../../utils/wallet/testing';
 import type { SettingsScreenProps } from '../../../navigation/types';
-import { lightningSelector } from '../../../store/reselect/lightning';
+import { refreshWallet } from '../../../utils/wallet';
+import { zipLogs } from '../../../utils/lightning/logs';
+import { runChecks } from '../../../utils/wallet/checks';
+import { showToast } from '../../../utils/notifications';
+import { getFakeTransaction } from '../../../utils/wallet/testing';
 import {
 	createDefaultLdkAccount,
 	getNodeId,
 	setupLdk,
 } from '../../../utils/lightning';
+import Dialog from '../../../components/Dialog';
 
 const DevSettings = ({
 	navigation,
 }: SettingsScreenProps<'DevSettings'>): ReactElement => {
 	const dispatch = useDispatch();
+	const { t } = useTranslation('lightning');
+	const [showDialog, setShowDialog] = useState(false);
 	const [throwError, setThrowError] = useState(false);
 	const selectedWallet = useSelector(selectedWalletSelector);
 	const selectedNetwork = useSelector(selectedNetworkSelector);
@@ -58,6 +64,30 @@ const DevSettings = ({
 	const warnings = useSelector((state) => {
 		return warningsSelector(state, selectedWallet, selectedNetwork);
 	});
+
+	const exportLdkLogs = async (): Promise<void> => {
+		const result = await zipLogs({
+			includeJson: true,
+			includeBinaries: true,
+		});
+		if (result.isErr()) {
+			showToast({
+				type: 'error',
+				title: t('error_logs'),
+				description: t('error_logs_description'),
+			});
+			return;
+		}
+
+		// Share the zip file
+		await Share.open({
+			type: 'application/zip',
+			url: `file://${result.value}`,
+			title: t('export_logs'),
+		});
+
+		setShowDialog(false);
+	};
 
 	const exportStore = async (): Promise<void> => {
 		const time = new Date().getTime();
@@ -269,6 +299,11 @@ const DevSettings = ({
 					onPress: clearUtxos,
 				},
 				{
+					title: 'Export LDK Logs',
+					type: EItemType.button,
+					onPress: () => setShowDialog(true),
+				},
+				{
 					title: 'Export Store',
 					type: EItemType.button,
 					onPress: exportStore,
@@ -351,11 +386,22 @@ const DevSettings = ({
 	}
 
 	return (
-		<SettingsView
-			title="Dev Settings"
-			listData={settingsListData}
-			showBackNavigation={true}
-		/>
+		<>
+			<SettingsView
+				title="Dev Settings"
+				listData={settingsListData}
+				showBackNavigation={true}
+			/>
+
+			<Dialog
+				visible={showDialog}
+				title="Export sensitive logs?"
+				description="This export contains sensitive data and gives control over your Lightning funds. Do you want to continue?"
+				cancelText="Cancel"
+				onCancel={(): void => setShowDialog(false)}
+				onConfirm={exportLdkLogs}
+			/>
+		</>
 	);
 };
 

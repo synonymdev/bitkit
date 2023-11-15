@@ -274,10 +274,7 @@ const Channels = ({
 	}, [lightning.accountVersion, navigation, t]);
 
 	const handleExportLogs = useCallback(async (): Promise<void> => {
-		const result = await zipLogs({
-			includeJson: enableDevOptions,
-			includeBinaries: enableDevOptions,
-		});
+		const result = await zipLogs();
 		if (result.isErr()) {
 			showToast({
 				type: 'error',
@@ -293,7 +290,7 @@ const Channels = ({
 			url: `file://${result.value}`,
 			title: t('export_logs'),
 		});
-	}, [t, enableDevOptions]);
+	}, [t]);
 
 	const onChannelPress = useCallback(
 		(channel: TChannel) => {
