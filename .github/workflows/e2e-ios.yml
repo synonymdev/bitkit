@@ -9,7 +9,7 @@ env:
 
 jobs:
   e2e:
-    runs-on: macos-12
+    runs-on: macos-13
 
     steps:
       - name: Checkout
