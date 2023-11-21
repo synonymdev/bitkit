@@ -49,10 +49,6 @@ import { lightningSelector } from '../../../store/reselect/lightning';
 
 const imageSrc = require('../../../assets/illustrations/coin-stack-4.png');
 
-// hardcoded to be above fee (1092)
-// TODO: fee is dynamic so this should be fetched from the API
-const MINIMUM_AMOUNT = 5000;
-
 const ReceiveDetails = ({
 	navigation,
 	route,
@@ -94,7 +90,10 @@ const ReceiveDetails = ({
 		const maxAmount = maxChannelSizeSat / 2;
 
 		// Ensure the CJIT entry is within an acceptable range.
-		if (invoice.amount >= MINIMUM_AMOUNT && invoice.amount <= maxAmount) {
+		if (
+			invoice.amount >= blocktank.options.minChannelSizeSat &&
+			invoice.amount <= maxAmount
+		) {
 			const cJitEntryResponse = await createCJitEntry({
 				channelSizeSat: maxChannelSizeSat,
 				invoiceSat: invoice.amount,
@@ -119,6 +118,7 @@ const ReceiveDetails = ({
 		lightning.accountVersion,
 		lightningBalance.remoteBalance,
 		navigation,
+		blocktank.options.minChannelSizeSat,
 	]);
 
 	const onNavigateBack = useCallback(async () => {

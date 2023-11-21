@@ -26,10 +26,6 @@ import { blocktankInfoSelector } from '../../../store/reselect/blocktank';
 import { refreshBlocktankInfo } from '../../../store/actions/blocktank';
 import type { ReceiveScreenProps } from '../../../navigation/types';
 
-// hardcoded to be above fee (1092)
-// TODO: fee is dynamic so this should be fetched from the API
-const MINIMUM_AMOUNT = 5000;
-
 const ReceiveAmount = ({
 	navigation,
 }: ReceiveScreenProps<'ReceiveAmount'>): ReactElement => {
@@ -83,7 +79,8 @@ const ReceiveAmount = ({
 	};
 
 	const continueDisabled =
-		invoice.amount < MINIMUM_AMOUNT || invoice.amount > maxAmount;
+		invoice.amount < blocktank.options.minChannelSizeSat ||
+		invoice.amount > maxAmount;
 
 	return (
 		<GradientView style={styles.container}>
@@ -103,7 +100,11 @@ const ReceiveAmount = ({
 							<Caption13Up style={styles.minimumText} color="gray1">
 								{t('minimum')}
 							</Caption13Up>
-							<Money sats={MINIMUM_AMOUNT} size="text02m" symbol={true} />
+							<Money
+								sats={blocktank.options.minChannelSizeSat}
+								size="text02m"
+								symbol={true}
+							/>
 						</View>
 						<View style={styles.actionButtons}>
 							<View style={styles.actionButtonContainer}>
