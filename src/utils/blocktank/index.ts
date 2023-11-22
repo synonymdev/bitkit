@@ -6,8 +6,9 @@ import {
 	IBtOrder,
 	ICJitEntry,
 } from '@synonymdev/blocktank-lsp-http-client';
-
 import { err, ok, Result } from '@synonymdev/result';
+import { CJitStateEnum } from '@synonymdev/blocktank-lsp-http-client/dist/shared/CJitStateEnum';
+import { BtOpenChannelState } from '@synonymdev/blocktank-lsp-http-client/dist/shared/BtOpenChannelState';
 
 import { EAvailableNetworks, TAvailableNetworks } from '../networks';
 import { addPeers, getNodeId, refreshLdk } from '../lightning';
@@ -25,9 +26,8 @@ import {
 } from '../../store/types/blocktank';
 import { setGeoBlock, updateUser } from '../../store/actions/user';
 import { refreshWallet } from '../wallet';
-import { BtOpenChannelState } from '@synonymdev/blocktank-lsp-http-client/dist/shared/BtOpenChannelState';
 import { DEFAULT_CHANNEL_DURATION } from '../../screens/Lightning/CustomConfirm';
-import { CJitStateEnum } from '@synonymdev/blocktank-lsp-http-client/dist/shared/CJitStateEnum';
+import { __BLOCKTANK_HOST__ } from '../../constants/env';
 
 const bt = new BlocktankClient();
 
@@ -372,12 +372,12 @@ export const isGeoBlocked = async (fromStorage = false): Promise<boolean> => {
 			}
 		}
 		const response = await fetch(
-			'https://blocktank.synonym.to/api/v1/channel/geocheck',
+			`${__BLOCKTANK_HOST__}/api/v2/channel/geocheck`,
 		);
 		const data: TGeoBlockResponse = await response.json();
 		return !!data?.error;
 	} catch {
-		return true;
+		return false;
 	}
 };
 
