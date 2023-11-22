@@ -8,6 +8,7 @@
 	"add_instant_payments": "Instant Payments",
 	"error_channel_purchase": "Instant Payments Setup Failed",
 	"error_channel_receiving": "Receiving amount needs to be greater than ${usdValue}",
+	"error_channel_fee": "Fee estimation error",
 	"spending_money": "Spending\nMoney.",
 	"spending_balance": "Spending\nBalance.",
 	"enter_money": "Enter the amount of money you want to be able to spend instantly.",
