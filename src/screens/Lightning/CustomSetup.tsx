@@ -110,9 +110,7 @@ const CustomSetup = ({
 	const blocktankInfo = useSelector(blocktankInfoSelector);
 
 	const [textFieldValue, setTextFieldValue] = useState('');
-	const [channelOpenFee, setChannelOpenFee] = useState<{ [string]: string }>(
-		{},
-	);
+	const [channelOpenFee, setChannelOpenFee] = useState<{}>({});
 	const [showNumberPad, setShowNumberPad] = useState(false);
 	const [loading, setLoading] = useState(false);
 	const [spendingPackages, setSpendingPackages] = useState<TPackage[]>([]); // Packages the user can afford.

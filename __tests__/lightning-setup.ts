@@ -24,6 +24,11 @@ export const defaultBlocktankInfoShape: IBtInfo = {
 		max0ConfClientBalanceSat: 0,
 		maxClientBalanceSat: 990000, // 495 USD
 	},
+	versions: {
+		http: "0.0.0",
+		btc: "0.0.0",
+		ln2: "0.0.0",
+	}
 };
 
 describe('lightning setup selector', () => {
