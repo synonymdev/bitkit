@@ -26,57 +26,6 @@ export const lightningSelector = createSelector(
 	(lightning): ILightning => lightning,
 );
 
-/**
- * Returns the current lightning balance for a given wallet.
- * CURRENTLY UNUSED
- * @param {Store} state
- * @param {TWalletName} selectedWallet
- * @param {TAvailableNetworks} selectedNetwork
- * @param {boolean} subtractReserveBalance
- * @returns {number}
- */
-// export const lightningBalanceSelector = createSelector(
-// 	[
-// 		lightningState,
-// 		(_lightning, selectedWallet: TWalletName): TWalletName => selectedWallet,
-// 		(
-// 			_lightning,
-// 			_selectedWallet,
-// 			selectedNetwork: TAvailableNetworks,
-// 		): TAvailableNetworks => selectedNetwork,
-// 		(
-// 			_lightning,
-// 			_selectedWallet,
-// 			_selectedNetwork,
-// 			subtractReserveBalance: boolean,
-// 		): boolean => subtractReserveBalance,
-// 	],
-// 	(
-// 		lightning,
-// 		selectedWallet,
-// 		selectedNetwork,
-// 		subtractReserveBalance,
-// 	): number => {
-// 		let balance = 0;
-// 		const openChannelIds =
-// 			lightning.nodes[selectedWallet]?.openChannelIds[selectedNetwork];
-// 		const channels = lightning.nodes[selectedWallet]?.channels[selectedNetwork];
-// 		balance = Object.values(channels).reduce((previousValue, channel) => {
-// 			if (
-// 				channel.is_channel_ready &&
-// 				openChannelIds.includes(channel.channel_id)
-// 			) {
-// 				const channelBalance = subtractReserveBalance
-// 					? channel.outbound_capacity_sat
-// 					: channel.balance_sat;
-// 				return previousValue + channelBalance;
-// 			}
-// 			return previousValue;
-// 		}, balance);
-// 		return balance;
-// 	},
-// );
-
 export const nodeSelector = createSelector(
 	[
 		lightningState,
@@ -292,6 +241,86 @@ export const lnSetupSelector = createSelector(
 			spendableBalance,
 			btSpendingLimitBalanced,
 			defaultClientBalance,
+		};
+	},
+);
+
+export const lnTransferSelector = createSelector(
+	[
+		blocktankInfoSelector,
+		onChainBalanceSelector,
+		(_, spendingAmount): number => spendingAmount,
+	],
+	(blocktankInfo, onchainBalance, spendingAmount: number): TLnSetup => {
+		if (onchainBalance === 0) {
+			throw new TypeError('Cannot setup LN with 0 onchain balance');
+		}
+
+		const btMaxClientBalanceSat = blocktankInfo.options.maxClientBalanceSat;
+		const btMaxChannelSizeSat = blocktankInfo.options.maxChannelSizeSat;
+
+		const btSpendingLimitBalanced = Math.min(
+			Math.round(btMaxChannelSizeSat / 2 - btMaxChannelSizeSat * DIFF),
+			btMaxClientBalanceSat,
+		);
+		const spendableBalance = Math.round(onchainBalance * SPENDING_LIMIT_RATIO);
+		const spendingLimit = Math.min(spendableBalance, btSpendingLimitBalanced);
+
+		const savingsAmount = onchainBalance - spendingAmount;
+		const savingsPercentage = Math.round(
+			(savingsAmount / onchainBalance) * 100,
+		);
+		const spendingsPercentage = Math.round(
+			(spendingAmount / onchainBalance) * 100,
+		);
+
+		const defaultClientBalance = Math.min(
+			Math.round(onchainBalance * 0.2),
+			btSpendingLimitBalanced,
+		);
+
+		return {
+			slider: {
+				startValue: 0,
+				endValue: onchainBalance,
+				maxValue: spendingLimit,
+			},
+			percentage: {
+				spendings: spendingsPercentage,
+				savings: savingsPercentage,
+			},
+			spendableBalance,
+			btSpendingLimitBalanced,
+			defaultClientBalance,
+		};
+	},
+);
+
+/**
+ * Returns the current lightning balance.
+ */
+export const lightningBalanceSelector = createSelector(
+	[openChannelsSelector, claimableBalanceSelector],
+	(openChannels, claimableBalance) => {
+		let spendingBalance = 0;
+		let reserveBalance = 0;
+		openChannels.forEach((channel) => {
+			if (channel.is_channel_ready) {
+				const spendable = channel.outbound_capacity_sat;
+				const unspendable = channel.balance_sat - spendable;
+				reserveBalance += unspendable;
+				spendingBalance += spendable;
+			}
+		});
+
+		const lightningBalance =
+			spendingBalance + reserveBalance + claimableBalance;
+
+		return {
+			lightningBalance,
+			reserveBalance,
+			claimableBalance,
+			spendingBalance,
 		};
 	},
 );
