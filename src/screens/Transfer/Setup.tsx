@@ -28,7 +28,7 @@ import {
 } from '../../store/actions/blocktank';
 import { convertToSats } from '../../utils/conversion';
 import { getNumberPadText } from '../../utils/numberpad';
-import { SPENDING_LIMIT_RATIO } from '../../utils/wallet/constants';
+import { DIFF, SPENDING_LIMIT_RATIO } from '../../utils/wallet/constants';
 import { showToast } from '../../utils/notifications';
 import { getFiatDisplayValues } from '../../utils/displayValues';
 import {
@@ -42,6 +42,7 @@ import {
 } from '../../store/reselect/wallet';
 import { primaryUnitSelector } from '../../store/reselect/settings';
 import { blocktankInfoSelector } from '../../store/reselect/blocktank';
+import { lnTransferSelector } from '../../store/reselect/aggregations';
 
 const Setup = ({ navigation }: TransferScreenProps<'Setup'>): ReactElement => {
 	const { t } = useTranslation('lightning');
@@ -68,38 +69,26 @@ const Setup = ({ navigation }: TransferScreenProps<'Setup'>): ReactElement => {
 		return convertToSats(textFieldValue, unit);
 	}, [textFieldValue, unit]);
 
-	const diff = 0.01;
-	const btSpendingLimit = blocktankInfo.options.maxChannelSizeSat;
-	const btSpendingLimitBalanced = Math.round(
-		btSpendingLimit / 2 - btSpendingLimit * diff,
+	const lnSetup = useSelector((state) =>
+		lnTransferSelector(state, spendingAmount),
 	);
-	const spendableBalance = Math.round(totalBalance * SPENDING_LIMIT_RATIO);
-	const savingsAmount = totalBalance - spendingAmount;
-	const spendingPercentage = Math.round((spendingAmount / totalBalance) * 100);
-	const savingsPercentage = Math.round((savingsAmount / totalBalance) * 100);
-	const isTransferringToSavings = spendingAmount < lightningBalance;
-	const isButtonDisabled = spendingAmount === lightningBalance;
-
-	const spendingLimit = useMemo(() => {
-		const min = Math.min(spendableBalance, btSpendingLimitBalanced);
-		return min < lightningBalance ? lightningBalance : min;
-	}, [spendableBalance, btSpendingLimitBalanced, lightningBalance]);
 
 	const btSpendingLimitBalancedUsd = useMemo((): string => {
 		const { fiatWhole } = getFiatDisplayValues({
-			satoshis: btSpendingLimitBalanced,
+			satoshis: lnSetup.btSpendingLimitBalanced,
 			currency: 'USD',
 		});
 
 		return fiatWhole;
-	}, [btSpendingLimitBalanced]);
+	}, [lnSetup.btSpendingLimitBalanced]);
 
 	// set initial value
 	useEffect(() => {
-		const result = getNumberPadText(lightningBalance, unit);
+		const result = getNumberPadText(lnSetup.defaultClientBalance, unit);
 		setTextFieldValue(result);
+		// ignore lnSetup.defaultClientBalance
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [lightningBalance]);
+	}, []);
 
 	const onSliderChange = useCallback(
 		(value: number) => {
@@ -116,16 +105,16 @@ const Setup = ({ navigation }: TransferScreenProps<'Setup'>): ReactElement => {
 	};
 
 	const onMax = useCallback(() => {
-		const result = getNumberPadText(spendingLimit, unit);
+		const result = getNumberPadText(lnSetup.slider.maxValue, unit);
 		setTextFieldValue(result);
-	}, [spendingLimit, unit]);
+	}, [lnSetup.slider.maxValue, unit]);
 
 	const onDone = useCallback(() => {
 		setShowNumberPad(false);
 	}, []);
 
 	const onContinue = useCallback(async (): Promise<void> => {
-		if (isTransferringToSavings) {
+		if (lnSetup.isTransferringToSavings) {
 			navigation.push('Confirm', {
 				spendingAmount,
 			});
@@ -137,7 +126,7 @@ const Setup = ({ navigation }: TransferScreenProps<'Setup'>): ReactElement => {
 		const remoteBalance = spendingAmount - lightningBalance;
 		// Ensure local balance is bigger than remote balance
 		const localBalance = Math.max(
-			Math.round(remoteBalance + remoteBalance * diff),
+			Math.round(remoteBalance + remoteBalance * DIFF),
 			blocktankInfo.options.minChannelSizeSat,
 		);
 
@@ -165,7 +154,7 @@ const Setup = ({ navigation }: TransferScreenProps<'Setup'>): ReactElement => {
 		}
 	}, [
 		blocktankInfo,
-		isTransferringToSavings,
+		lnSetup.isTransferringToSavings,
 		lightningBalance,
 		spendingAmount,
 		selectedNetwork,
@@ -211,19 +200,28 @@ const Setup = ({ navigation }: TransferScreenProps<'Setup'>): ReactElement => {
 									<FancySlider
 										value={spendingAmount}
 										startValue={0}
-										endValue={totalBalance}
-										maxValue={spendingLimit}
-										snapPoint={lightningBalance}
+										// endValue={totalBalance}
+										// maxValue={spendingLimit}
+										maxValue={lnSetup.slider.maxValue}
+										endValue={lnSetup.slider.endValue}
+										// snapPoint={lightningBalance}
+										snapPoint={lnSetup.slider.snapPoint}
 										onValueChange={onSliderChange}
 									/>
 								</View>
 								<View style={styles.percentages}>
-									<Percentage value={spendingPercentage} type="spending" />
-									<Percentage value={savingsPercentage} type="savings" />
+									<Percentage
+									// value={spendingPercentage}
+									value={lnSetup.percentage.spendings}
+									type="spending" />
+									<Percentage
+									// value={savingsPercentage}
+									value={lnSetup.percentage.savings}
+									type="savings" />
 								</View>
 							</AnimatedView>
 
-							{spendingAmount === Math.round(btSpendingLimitBalanced) && (
+							{spendingAmount === Math.round(lnSetup.btSpendingLimitBalanced) && (
 								<AnimatedView
 									style={styles.note}
 									entering={FadeIn}
@@ -236,7 +234,7 @@ const Setup = ({ navigation }: TransferScreenProps<'Setup'>): ReactElement => {
 								</AnimatedView>
 							)}
 
-							{spendingAmount === spendableBalance && (
+							{spendingAmount === lnSetup.spendableBalance && (
 								<AnimatedView
 									style={styles.note}
 									entering={FadeIn}
@@ -279,7 +277,8 @@ const Setup = ({ navigation }: TransferScreenProps<'Setup'>): ReactElement => {
 							text={t('continue')}
 							size="large"
 							loading={loading}
-							disabled={isButtonDisabled}
+							// disabled={isButtonDisabled}
+							disabled={lnSetup.isButtonDisabled}
 							onPress={onContinue}
 						/>
 					</AnimatedView>
@@ -289,7 +288,8 @@ const Setup = ({ navigation }: TransferScreenProps<'Setup'>): ReactElement => {
 					<NumberPadLightning
 						style={styles.numberpad}
 						value={textFieldValue}
-						maxAmount={spendingLimit}
+						// maxAmount={spendingLimit}
+						maxAmount={lnSetup.slider.maxValue}
 						onChange={setTextFieldValue}
 						onChangeUnit={onChangeUnit}
 						onMax={onMax}

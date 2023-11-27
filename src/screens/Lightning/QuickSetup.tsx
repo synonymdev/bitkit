@@ -40,7 +40,7 @@ import {
 } from '../../store/reselect/wallet';
 import { blocktankInfoSelector } from '../../store/reselect/blocktank';
 import { primaryUnitSelector } from '../../store/reselect/settings';
-import { lnSetupSelector } from '../../store/reselect/lightning';
+import { lnSetupSelector } from '../../store/reselect/aggregations';
 import NumberPadTextField from '../../components/NumberPadTextField';
 import { getNumberPadText } from '../../utils/numberpad';
 import { useAppSelector } from '../../hooks/redux';

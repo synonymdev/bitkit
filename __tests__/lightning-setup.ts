@@ -1,7 +1,7 @@
 import cloneDeep from 'lodash/cloneDeep';
 
 import '../src/utils/i18n';
-import { lnSetupSelector } from '../src/store/reselect/lightning';
+import { lnSetupSelector } from '../src/store/reselect/aggregations';
 import store from '../src/store';
 import Store from '../src/store/types';
 import { updateWallet } from '../src/store/actions/wallet';

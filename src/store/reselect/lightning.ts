@@ -21,6 +21,7 @@ import {
 	selectedNetworkSelector,
 	selectedWalletSelector,
 } from './wallet';
+import { balanceSelector } from './aggregations';
 
 export const lightningState = (state: Store): ILightning => state.lightning;
 export const nodesState = (state: Store): TNodes => state.lightning.nodes;
@@ -180,123 +181,6 @@ export const claimableBalanceSelector = createSelector(
 	(lightning, selectedWallet, selectedNetwork): number => {
 		const node = lightning.nodes[selectedWallet];
 		return node?.claimableBalance[selectedNetwork] ?? 0;
-	},
-);
-
-export type TLnSetup = {
-	slider: {
-		startValue: number;
-		endValue: number;
-		maxValue: number;
-	};
-	percentage: {
-		spendings: number;
-		savings: number;
-	};
-	spendableBalance: number;
-	btSpendingLimitBalanced: number;
-	defaultClientBalance: number;
-};
-
-export const lnSetupSelector = createSelector(
-	[
-		blocktankInfoSelector,
-		onChainBalanceSelector,
-		(_, spendingAmount): number => spendingAmount,
-	],
-	(blocktankInfo, onchainBalance, spendingAmount: number): TLnSetup => {
-		if (onchainBalance === 0) {
-			throw new TypeError('Cannot setup LN with 0 onchain balance');
-		}
-
-		const btMaxClientBalanceSat = blocktankInfo.options.maxClientBalanceSat;
-		const btMaxChannelSizeSat = blocktankInfo.options.maxChannelSizeSat;
-
-		const btSpendingLimitBalanced = Math.min(
-			Math.round(btMaxChannelSizeSat / 2 - btMaxChannelSizeSat * DIFF),
-			btMaxClientBalanceSat,
-		);
-		const spendableBalance = Math.round(onchainBalance * SPENDING_LIMIT_RATIO);
-		const spendingLimit = Math.min(spendableBalance, btSpendingLimitBalanced);
-
-		const savingsAmount = onchainBalance - spendingAmount;
-		const savingsPercentage = Math.round(
-			(savingsAmount / onchainBalance) * 100,
-		);
-		const spendingsPercentage = Math.round(
-			(spendingAmount / onchainBalance) * 100,
-		);
-
-		const defaultClientBalance = Math.min(
-			Math.round(onchainBalance * 0.2),
-			btSpendingLimitBalanced,
-		);
-
-		return {
-			slider: {
-				startValue: 0,
-				maxValue: spendingLimit,
-				endValue: onchainBalance,
-			},
-			percentage: {
-				spendings: spendingsPercentage,
-				savings: savingsPercentage,
-			},
-			spendableBalance,
-			btSpendingLimitBalanced,
-			defaultClientBalance,
-		};
-	},
-);
-
-export const lnTransferSelector = createSelector(
-	[
-		blocktankInfoSelector,
-		onChainBalanceSelector,
-		(_, spendingAmount): number => spendingAmount,
-	],
-	(blocktankInfo, onchainBalance, spendingAmount: number): TLnSetup => {
-		if (onchainBalance === 0) {
-			throw new TypeError('Cannot setup LN with 0 onchain balance');
-		}
-
-		const btMaxClientBalanceSat = blocktankInfo.options.maxClientBalanceSat;
-		const btMaxChannelSizeSat = blocktankInfo.options.maxChannelSizeSat;
-
-		const btSpendingLimitBalanced = Math.min(
-			Math.round(btMaxChannelSizeSat / 2 - btMaxChannelSizeSat * DIFF),
-			btMaxClientBalanceSat,
-		);
-		const spendableBalance = Math.round(onchainBalance * SPENDING_LIMIT_RATIO);
-		const spendingLimit = Math.min(spendableBalance, btSpendingLimitBalanced);
-
-		const savingsAmount = onchainBalance - spendingAmount;
-		const savingsPercentage = Math.round(
-			(savingsAmount / onchainBalance) * 100,
-		);
-		const spendingsPercentage = Math.round(
-			(spendingAmount / onchainBalance) * 100,
-		);
-
-		const defaultClientBalance = Math.min(
-			Math.round(onchainBalance * LIGHTNING_DEFAULT_SLIDER),
-			btSpendingLimitBalanced,
-		);
-
-		return {
-			slider: {
-				startValue: 0,
-				maxValue: spendingLimit,
-				endValue: onchainBalance,
-			},
-			percentage: {
-				spendings: spendingsPercentage,
-				savings: savingsPercentage,
-			},
-			spendableBalance,
-			btSpendingLimitBalanced,
-			defaultClientBalance,
-		};
 	},
 );
 
