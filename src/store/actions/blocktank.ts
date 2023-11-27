@@ -301,8 +301,9 @@ export const startChannelPurchase = async ({
 	if (min0ConfTxFee.isErr()) {
 		return err(min0ConfTxFee.error.message);
 	}
+	const satPerVByteFee = Math.ceil(min0ConfTxFee.value.satPerVByte); // might be float
 	let txFeeInSats = getTotalFee({
-		satsPerByte: min0ConfTxFee.value.satPerVByte + 1,
+		satsPerByte: satPerVByteFee,
 		selectedWallet,
 		selectedNetwork,
 	});
@@ -335,7 +336,7 @@ export const startChannelPurchase = async ({
 	});
 
 	const feeRes = updateFee({
-		satsPerByte: min0ConfTxFee.value.satPerVByte + 1,
+		satsPerByte: satPerVByteFee,
 		selectedWallet,
 		selectedNetwork,
 	});
