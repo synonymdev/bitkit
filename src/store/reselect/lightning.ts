@@ -10,18 +10,7 @@ import {
 import Store from '../types';
 import { TWalletName } from '../types/wallet';
 import { TAvailableNetworks } from '../../utils/networks';
-import {
-	SPENDING_LIMIT_RATIO,
-	DIFF,
-	LIGHTNING_DEFAULT_SLIDER,
-} from '../../utils/wallet/constants';
-import { blocktankInfoSelector } from './blocktank';
-import {
-	onChainBalanceSelector,
-	selectedNetworkSelector,
-	selectedWalletSelector,
-} from './wallet';
-import { balanceSelector } from './aggregations';
+import { selectedNetworkSelector, selectedWalletSelector } from './wallet';
 
 export const lightningState = (state: Store): ILightning => state.lightning;
 export const nodesState = (state: Store): TNodes => state.lightning.nodes;

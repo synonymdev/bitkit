@@ -58,24 +58,28 @@ describe('Reselect', () => {
 				channel_id: 'channel1',
 				is_channel_ready: true,
 				outbound_capacity_sat: 1,
-				balance_sat: 2
+				balance_sat: 2,
 			} as TChannel;
 			const channel2 = {
 				channel_id: 'channel2',
 				is_channel_ready: true,
 				outbound_capacity_sat: 1,
-				balance_sat: 2
+				balance_sat: 2,
 			} as TChannel;
 			const channel3 = {
 				channel_id: 'channel3',
 				is_channel_ready: false,
 				outbound_capacity_sat: 1,
-				balance_sat: 2
+				balance_sat: 2,
 			} as TChannel;
 
 			const lnWallet = state.lightning.nodes.wallet0;
 			lnWallet.channels.bitcoinRegtest = { channel1, channel2, channel3 };
-			lnWallet.openChannelIds.bitcoinRegtest = ['channel1', 'channel2', 'channel3'];
+			lnWallet.openChannelIds.bitcoinRegtest = [
+				'channel1',
+				'channel2',
+				'channel3',
+			];
 			lnWallet.claimableBalance.bitcoinRegtest = 3;
 
 			assert.deepEqual(balanceSelector(state), {
@@ -88,6 +92,5 @@ describe('Reselect', () => {
 				totalSpendableBalance: 3,
 			});
 		});
-
 	});
 });

@@ -28,7 +28,7 @@ import {
 } from '../../store/actions/blocktank';
 import { convertToSats } from '../../utils/conversion';
 import { getNumberPadText } from '../../utils/numberpad';
-import { DIFF, SPENDING_LIMIT_RATIO } from '../../utils/wallet/constants';
+import { DIFF } from '../../utils/wallet/constants';
 import { showToast } from '../../utils/notifications';
 import { getFiatDisplayValues } from '../../utils/displayValues';
 import {
@@ -47,7 +47,7 @@ import { lnSetupSelector } from '../../store/reselect/aggregations';
 const Setup = ({ navigation }: TransferScreenProps<'Setup'>): ReactElement => {
 	const { t } = useTranslation('lightning');
 	const [nextUnit, switchUnit] = useSwitchUnit();
-	const { totalBalance, lightningBalance } = useBalance();
+	const { lightningBalance } = useBalance();
 
 	const [textFieldValue, setTextFieldValue] = useState('');
 	const [showNumberPad, setShowNumberPad] = useState(false);
@@ -153,14 +153,14 @@ const Setup = ({ navigation }: TransferScreenProps<'Setup'>): ReactElement => {
 			});
 		}
 	}, [
+		t,
+		navigation,
+		selectedNetwork,
+		selectedWallet,
 		blocktankInfo,
 		lnSetup.isTransferringToSavings,
 		lightningBalance,
 		spendingAmount,
-		selectedNetwork,
-		selectedWallet,
-		navigation,
-		t,
 	]);
 
 	return (
@@ -211,17 +211,20 @@ const Setup = ({ navigation }: TransferScreenProps<'Setup'>): ReactElement => {
 								</View>
 								<View style={styles.percentages}>
 									<Percentage
-									// value={spendingPercentage}
-									value={lnSetup.percentage.spendings}
-									type="spending" />
+										// value={spendingPercentage}
+										value={lnSetup.percentage.spendings}
+										type="spending"
+									/>
 									<Percentage
-									// value={savingsPercentage}
-									value={lnSetup.percentage.savings}
-									type="savings" />
+										// value={savingsPercentage}
+										value={lnSetup.percentage.savings}
+										type="savings"
+									/>
 								</View>
 							</AnimatedView>
 
-							{spendingAmount === Math.round(lnSetup.btSpendingLimitBalanced) && (
+							{spendingAmount ===
+								Math.round(lnSetup.btSpendingLimitBalanced) && (
 								<AnimatedView
 									style={styles.note}
 									entering={FadeIn}

@@ -7,7 +7,6 @@ import Store from '../src/store/types';
 import { updateWallet } from '../src/store/actions/wallet';
 import { createNewWallet } from '../src/utils/startup';
 
-
 // const blocktankInfo: IBtInfo = {
 // 	version: 2,
 // 	nodes: [],
@@ -71,7 +70,6 @@ describe('lightning setup selector', () => {
 				spendings: 80,
 			},
 		});
-
 	});
 
 	it('should calculate btSpendingLimitBalanced correctly', () => {
@@ -83,7 +81,7 @@ describe('lightning setup selector', () => {
 			minChannelSizeSat: 10,
 			maxChannelSizeSat: 200,
 			maxClientBalanceSat: 100,
-		}
+		};
 
 		expect(lnSetupSelector(s1, 0)).toMatchObject({
 			slider: {
@@ -104,7 +102,7 @@ describe('lightning setup selector', () => {
 			minChannelSizeSat: 10,
 			maxChannelSizeSat: 200,
 			maxClientBalanceSat: 50,
-		}
+		};
 
 		expect(lnSetupSelector(s2, 0)).toMatchObject({
 			slider: {
@@ -125,7 +123,7 @@ describe('lightning setup selector', () => {
 			minChannelSizeSat: 10,
 			maxChannelSizeSat: 200,
 			maxClientBalanceSat: 100,
-		}
+		};
 
 		expect(lnSetupSelector(s3, 0)).toMatchObject({
 			slider: {
