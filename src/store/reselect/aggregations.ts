@@ -69,13 +69,14 @@ export const lnSetupSelector = createSelector(
 		const savingsAmount = totalBalance - spendingAmount;
 		const spendingsPercentage = Math.round((spendingAmount / totalBalance) * 100);
 		const savingsPercentage = Math.round((savingsAmount / totalBalance) * 100);
-		const isTransferringToSavings = spendingAmount < lightningBalance;
 		const spendingLimit = Math.max(Math.min(spendableBalance, btSpendingLimitBalanced), lightningBalance)
 
 		const defaultClientBalance = lightningBalance ? lightningBalance : Math.min(
 			Math.round(balance.onchainBalance * 0.2),
 			btSpendingLimitBalanced,
 		)
+		const isTransferringToSavings = spendingAmount < lightningBalance;
+		const canContinue = spendingAmount !== lightningBalance && spendingAmount <= spendingLimit;
 
 		return {
 			slider: {
@@ -90,9 +91,9 @@ export const lnSetupSelector = createSelector(
 			},
 			spendableBalance,
 			btSpendingLimitBalanced,
-			isTransferringToSavings,
-			canContinue: spendingAmount !== lightningBalance && spendingAmount <= spendingLimit,
 			defaultClientBalance,
+			isTransferringToSavings,
+			canContinue,
 		};
 	},
 );
