@@ -1,6 +1,4 @@
-import assert from 'node:assert';
 import cloneDeep from 'lodash/cloneDeep';
-import { IBtInfo } from '@synonymdev/blocktank-lsp-http-client';
 
 import '../src/utils/i18n';
 import { lnSetupSelector } from '../src/store/reselect/lightning';
@@ -9,27 +7,26 @@ import Store from '../src/store/types';
 import { updateWallet } from '../src/store/actions/wallet';
 import { createNewWallet } from '../src/utils/startup';
 
-// const BTCUSD = 50000;
 
-export const defaultBlocktankInfoShape: IBtInfo = {
-	version: 2,
-	nodes: [],
-	options: {
-		minChannelSizeSat: 10000,
-		maxChannelSizeSat: 1980000, // 990 USD
-		minExpiryWeeks: 1,
-		maxExpiryWeeks: 12,
-		minPaymentConfirmations: 0,
-		minHighRiskPaymentConfirmations: 1,
-		max0ConfClientBalanceSat: 0,
-		maxClientBalanceSat: 990000, // 495 USD
-	},
-	versions: {
-		http: '0.0.0',
-		btc: '0.0.0',
-		ln2: '0.0.0',
-	},
-};
+// const blocktankInfo: IBtInfo = {
+// 	version: 2,
+// 	nodes: [],
+// 	options: {
+// 		minChannelSizeSat: 10,
+// 		maxChannelSizeSat: 200,
+// 		minExpiryWeeks: 1,
+// 		maxExpiryWeeks: 12,
+// 		minPaymentConfirmations: 0,
+// 		minHighRiskPaymentConfirmations: 1,
+// 		max0ConfClientBalanceSat: 0,
+// 		maxClientBalanceSat: 100,
+// 	},
+// 	versions: {
+// 		http: '0.0.0',
+// 		btc: '0.0.0',
+// 		ln2: '0.0.0',
+// 	},
+// };
 
 describe('lightning setup selector', () => {
 	let s: Store;
@@ -47,28 +44,6 @@ describe('lightning setup selector', () => {
 	it('should throw if onchain balance is 0', () => {
 		const state = cloneDeep(s);
 		expect(() => lnSetupSelector(state, 0)).toThrow(TypeError);
-	});
-
-	it('should calculate correctly if onchain balance < minChannelSizeSat', () => {
-		const state = cloneDeep(s);
-
-		state.wallet.wallets.wallet0.balance.bitcoinRegtest = 1000;
-
-		assert.deepEqual(lnSetupSelector(state, 0), {
-			slider: { startValue: 0, endValue: 1000, maxValue: 800 },
-			percentage: { spendings: 0, savings: 100 },
-			spendableBalance: 800,
-			btSpendingLimitBalanced: 856487,
-			defaultClientBalance: 200,
-		});
-
-		assert.deepEqual(lnSetupSelector(state, 800), {
-			slider: { startValue: 0, endValue: 1000, maxValue: 800 },
-			percentage: { spendings: 80, savings: 20 },
-			spendableBalance: 800,
-			btSpendingLimitBalanced: 856487,
-			defaultClientBalance: 200,
-		});
 	});
 
 	it('should calculate percentage corectly', () => {
@@ -97,28 +72,70 @@ describe('lightning setup selector', () => {
 			},
 		});
 
-		// balance over maxChannelSizeSat
-		state.wallet.wallets.wallet0.balance.bitcoinRegtest = 2000000;
+	});
 
-		expect(lnSetupSelector(state, 0)).toMatchObject({
-			percentage: {
-				savings: 100,
-				spendings: 0,
+	it('should calculate btSpendingLimitBalanced correctly', () => {
+		// max value is limited by btMaxChannelSizeSat / 2 - btMaxChannelSizeSat * DIFF
+		const s1 = cloneDeep(s);
+		s1.wallet.wallets.wallet0.balance.bitcoinRegtest = 1000;
+		s1.blocktank.info.options = {
+			...s1.blocktank.info.options,
+			minChannelSizeSat: 10,
+			maxChannelSizeSat: 200,
+			maxClientBalanceSat: 100,
+		}
+
+		expect(lnSetupSelector(s1, 0)).toMatchObject({
+			slider: {
+				startValue: 0,
+				maxValue: 98,
+				endValue: 1000,
 			},
+			btSpendingLimitBalanced: 98,
+			spendableBalance: 800,
+			defaultClientBalance: 98,
 		});
 
-		expect(lnSetupSelector(state, 10000)).toMatchObject({
-			percentage: {
-				savings: 50,
-				spendings: 50,
+		// max value is limited by btMaxClientBalanceSat
+		const s2 = cloneDeep(s);
+		s2.wallet.wallets.wallet0.balance.bitcoinRegtest = 1000;
+		s2.blocktank.info.options = {
+			...s2.blocktank.info.options,
+			minChannelSizeSat: 10,
+			maxChannelSizeSat: 200,
+			maxClientBalanceSat: 50,
+		}
+
+		expect(lnSetupSelector(s2, 0)).toMatchObject({
+			slider: {
+				startValue: 0,
+				maxValue: 50,
+				endValue: 1000,
 			},
+			btSpendingLimitBalanced: 50,
+			spendableBalance: 800,
+			defaultClientBalance: 50,
 		});
 
-		expect(lnSetupSelector(state, 16000)).toMatchObject({
-			percentage: {
-				savings: 20,
-				spendings: 80,
+		// max value is limited by onchain balance
+		const s3 = cloneDeep(s);
+		s3.wallet.wallets.wallet0.balance.bitcoinRegtest = 50;
+		s3.blocktank.info.options = {
+			...s3.blocktank.info.options,
+			minChannelSizeSat: 10,
+			maxChannelSizeSat: 200,
+			maxClientBalanceSat: 100,
+		}
+
+		expect(lnSetupSelector(s3, 0)).toMatchObject({
+			slider: {
+				startValue: 0,
+				maxValue: 40,
+				endValue: 50,
 			},
+			btSpendingLimitBalanced: 98,
+			spendableBalance: 40,
+			defaultClientBalance: 10,
 		});
 	});
 });

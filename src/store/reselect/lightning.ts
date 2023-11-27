@@ -10,7 +10,11 @@ import {
 import Store from '../types';
 import { TWalletName } from '../types/wallet';
 import { TAvailableNetworks } from '../../utils/networks';
-import { SPENDING_LIMIT_RATIO, DIFF } from '../../utils/wallet/constants';
+import {
+	SPENDING_LIMIT_RATIO,
+	DIFF,
+	LIGHTNING_DEFAULT_SLIDER,
+} from '../../utils/wallet/constants';
 import { blocktankInfoSelector } from './blocktank';
 import {
 	onChainBalanceSelector,
@@ -231,8 +235,8 @@ export const lnSetupSelector = createSelector(
 		return {
 			slider: {
 				startValue: 0,
-				endValue: onchainBalance,
 				maxValue: spendingLimit,
+				endValue: onchainBalance,
 			},
 			percentage: {
 				spendings: spendingsPercentage,
@@ -275,15 +279,15 @@ export const lnTransferSelector = createSelector(
 		);
 
 		const defaultClientBalance = Math.min(
-			Math.round(onchainBalance * 0.2),
+			Math.round(onchainBalance * LIGHTNING_DEFAULT_SLIDER),
 			btSpendingLimitBalanced,
 		);
 
 		return {
 			slider: {
 				startValue: 0,
-				endValue: onchainBalance,
 				maxValue: spendingLimit,
+				endValue: onchainBalance,
 			},
 			percentage: {
 				spendings: spendingsPercentage,
