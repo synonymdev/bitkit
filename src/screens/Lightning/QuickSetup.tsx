@@ -264,7 +264,7 @@ const QuickSetup = ({
 							loading={loading}
 							text={t('continue')}
 							size="large"
-							disabled={spendingAmount > lnSetup.slider.maxValue}
+							disabled={!lnSetup.canContinue}
 							testID="QuickSetupContinue"
 							onPress={onContinue}
 						/>

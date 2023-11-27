@@ -42,7 +42,7 @@ import {
 } from '../../store/reselect/wallet';
 import { primaryUnitSelector } from '../../store/reselect/settings';
 import { blocktankInfoSelector } from '../../store/reselect/blocktank';
-import { lnTransferSelector } from '../../store/reselect/aggregations';
+import { lnSetupSelector } from '../../store/reselect/aggregations';
 
 const Setup = ({ navigation }: TransferScreenProps<'Setup'>): ReactElement => {
 	const { t } = useTranslation('lightning');
@@ -70,7 +70,7 @@ const Setup = ({ navigation }: TransferScreenProps<'Setup'>): ReactElement => {
 	}, [textFieldValue, unit]);
 
 	const lnSetup = useSelector((state) =>
-		lnTransferSelector(state, spendingAmount),
+		lnSetupSelector(state, spendingAmount),
 	);
 
 	const btSpendingLimitBalancedUsd = useMemo((): string => {
@@ -278,7 +278,7 @@ const Setup = ({ navigation }: TransferScreenProps<'Setup'>): ReactElement => {
 							size="large"
 							loading={loading}
 							// disabled={isButtonDisabled}
-							disabled={lnSetup.isButtonDisabled}
+							disabled={!lnSetup.canContinue}
 							onPress={onContinue}
 						/>
 					</AnimatedView>
