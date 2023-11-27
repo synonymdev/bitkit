@@ -81,7 +81,7 @@ export const lnSetupSelector = createSelector(
 		);
 
 		let defaultClientBalance = lightningBalance;
-		if (lightningBalance === 0) {
+		if (!defaultClientBalance) {
 			defaultClientBalance = Math.min(
 				Math.round(balance.onchainBalance * LIGHTNING_DEFAULT_SLIDER),
 				btSpendingLimitBalanced,
