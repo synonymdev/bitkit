@@ -7,7 +7,10 @@ import store from '../src/store';
 import Store from '../src/store/types';
 import { createNewWallet } from '../src/utils/startup';
 import { updateWallet } from '../src/store/actions/wallet';
-import { balanceSelector, lnSetupSelector } from '../src/store/reselect/aggregations';
+import {
+	balanceSelector,
+	lnSetupSelector,
+} from '../src/store/reselect/aggregations';
 
 describe('Reselect', () => {
 	let s: Store;
@@ -110,6 +113,7 @@ describe('Reselect', () => {
 					savings: 100,
 					spendings: 0,
 				},
+				canContinue: false,
 			});
 
 			expect(lnSetupSelector(state, 10000)).toMatchObject({
@@ -117,6 +121,7 @@ describe('Reselect', () => {
 					savings: 50,
 					spendings: 50,
 				},
+				canContinue: true,
 			});
 
 			expect(lnSetupSelector(state, 16000)).toMatchObject({
@@ -124,10 +129,11 @@ describe('Reselect', () => {
 					savings: 20,
 					spendings: 80,
 				},
+				canContinue: true,
 			});
 		});
 
-		it('should calculate btSpendingLimitBalanced correctly', () => {
+		it('should calculate btSpendingLimitBalanced without LN channels', () => {
 			// max value is limited by btMaxChannelSizeSat / 2 - btMaxChannelSizeSat * DIFF
 			const s1 = cloneDeep(s);
 			s1.wallet.wallets.wallet0.balance.bitcoinRegtest = 1000;
@@ -189,6 +195,40 @@ describe('Reselect', () => {
 				btSpendingLimitBalanced: 98,
 				spendableBalance: 40,
 				defaultClientBalance: 10,
+			});
+		});
+
+		it('should calculate btSpendingLimitBalanced with LN channels', () => {
+			// max value is limited by btMaxChannelSizeSat / 2 - btMaxChannelSizeSat * DIFF
+			const s1 = cloneDeep(s);
+			s1.wallet.wallets.wallet0.balance.bitcoinRegtest = 1000;
+			s1.blocktank.info.options = {
+				...s1.blocktank.info.options,
+				minChannelSizeSat: 10,
+				maxChannelSizeSat: 200,
+				maxClientBalanceSat: 100,
+			};
+			const channel1 = {
+				channel_id: 'channel1',
+				is_channel_ready: true,
+				outbound_capacity_sat: 1,
+				balance_sat: 2,
+			} as TChannel;
+			const lnWallet = s1.lightning.nodes.wallet0;
+			lnWallet.channels.bitcoinRegtest = { channel1 };
+			lnWallet.openChannelIds.bitcoinRegtest = [ 'channel1' ];
+			lnWallet.claimableBalance.bitcoinRegtest = 3;
+
+			expect(lnSetupSelector(s1, 20)).toMatchObject({
+				slider: {
+					startValue: 0,
+					maxValue: 98,
+					endValue: 1005,
+				},
+				btSpendingLimitBalanced: 98,
+				spendableBalance: 804,
+				defaultClientBalance: 5,
+				canContinue: true,
 			});
 		});
 	});

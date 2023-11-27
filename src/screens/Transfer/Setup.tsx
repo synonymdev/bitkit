@@ -200,23 +200,18 @@ const Setup = ({ navigation }: TransferScreenProps<'Setup'>): ReactElement => {
 									<FancySlider
 										value={spendingAmount}
 										startValue={0}
-										// endValue={totalBalance}
-										// maxValue={spendingLimit}
 										maxValue={lnSetup.slider.maxValue}
 										endValue={lnSetup.slider.endValue}
-										// snapPoint={lightningBalance}
 										snapPoint={lnSetup.slider.snapPoint}
 										onValueChange={onSliderChange}
 									/>
 								</View>
 								<View style={styles.percentages}>
 									<Percentage
-										// value={spendingPercentage}
 										value={lnSetup.percentage.spendings}
 										type="spending"
 									/>
 									<Percentage
-										// value={savingsPercentage}
 										value={lnSetup.percentage.savings}
 										type="savings"
 									/>
@@ -280,7 +275,6 @@ const Setup = ({ navigation }: TransferScreenProps<'Setup'>): ReactElement => {
 							text={t('continue')}
 							size="large"
 							loading={loading}
-							// disabled={isButtonDisabled}
 							disabled={!lnSetup.canContinue}
 							onPress={onContinue}
 						/>
@@ -291,7 +285,6 @@ const Setup = ({ navigation }: TransferScreenProps<'Setup'>): ReactElement => {
 					<NumberPadLightning
 						style={styles.numberpad}
 						value={textFieldValue}
-						// maxAmount={spendingLimit}
 						maxAmount={lnSetup.slider.maxValue}
 						onChange={setTextFieldValue}
 						onChangeUnit={onChangeUnit}
