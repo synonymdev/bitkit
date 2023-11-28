@@ -6,7 +6,7 @@ import React, {
 	useRef,
 	useState,
 } from 'react';
-import { AppState, Linking, Platform } from 'react-native';
+import { AppState, Linking } from 'react-native';
 import { useSelector } from 'react-redux';
 import {
 	LinkingOptions,
@@ -199,12 +199,7 @@ const RootNavigator = (): ReactElement => {
 
 	return (
 		<NavigationContainer ref={navigationRef} linking={linking}>
-			<Stack.Navigator
-				screenOptions={screenOptions}
-				// adding this because we are using @react-navigation/stack instead of
-				// @react-navigation/native-stack header
-				// https://github.com/react-navigation/react-navigation/issues/9015#issuecomment-828700138
-				detachInactiveScreens={Platform.OS !== 'ios'}>
+			<Stack.Navigator screenOptions={screenOptions}>
 				<Stack.Screen name="Wallet" component={WalletNavigator} />
 				<Stack.Screen name="ActivityDetail" component={ActivityDetail} />
 				<Stack.Screen
