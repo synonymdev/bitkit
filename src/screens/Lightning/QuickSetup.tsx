@@ -20,7 +20,7 @@ import Percentage from '../../components/Percentage';
 import Button from '../../components/Button';
 import FancySlider from '../../components/FancySlider';
 import NumberPadLightning from './NumberPadLightning';
-import { useBalance, useSwitchUnit } from '../../hooks/wallet';
+import { useSwitchUnit } from '../../hooks/wallet';
 import {
 	resetSendTransaction,
 	setupOnChainTransaction,
@@ -32,7 +32,7 @@ import {
 import { showToast } from '../../utils/notifications';
 import { convertToSats } from '../../utils/conversion';
 import { getFiatDisplayValues } from '../../utils/displayValues';
-import { SPENDING_LIMIT_RATIO } from '../../utils/wallet/constants';
+import { LIGHTNING_DIFF } from '../../utils/wallet/constants';
 import type { LightningScreenProps } from '../../navigation/types';
 import {
 	selectedNetworkSelector,
@@ -40,24 +40,33 @@ import {
 } from '../../store/reselect/wallet';
 import { blocktankInfoSelector } from '../../store/reselect/blocktank';
 import { primaryUnitSelector } from '../../store/reselect/settings';
+import { lnSetupSelector } from '../../store/reselect/aggregations';
 import NumberPadTextField from '../../components/NumberPadTextField';
 import { getNumberPadText } from '../../utils/numberpad';
+import { useAppSelector } from '../../hooks/redux';
 import { DEFAULT_CHANNEL_DURATION } from './CustomConfirm';
 
 const QuickSetup = ({
 	navigation,
 }: LightningScreenProps<'QuickSetup'>): ReactElement => {
 	const { t } = useTranslation('lightning');
-	const { onchainBalance } = useBalance();
 	const [nextUnit, onSwitchUnit] = useSwitchUnit();
-	const unit = useSelector(primaryUnitSelector);
-	const selectedWallet = useSelector(selectedWalletSelector);
-	const selectedNetwork = useSelector(selectedNetworkSelector);
-	const blocktankInfo = useSelector(blocktankInfoSelector);
+	const unit = useAppSelector(primaryUnitSelector);
+	const selectedWallet = useAppSelector(selectedWalletSelector);
+	const selectedNetwork = useAppSelector(selectedNetworkSelector);
+	const blocktankInfo = useAppSelector(blocktankInfoSelector);
 
 	const [loading, setLoading] = useState(false);
 	const [showNumberPad, setShowNumberPad] = useState(false);
 	const [textFieldValue, setTextFieldValue] = useState('');
+
+	const spendingAmount = useMemo((): number => {
+		return convertToSats(textFieldValue, unit);
+	}, [textFieldValue, unit]);
+
+	const lnSetup = useSelector((state) =>
+		lnSetupSelector(state, spendingAmount),
+	);
 
 	useFocusEffect(
 		useCallback(() => {
@@ -67,59 +76,29 @@ const QuickSetup = ({
 		}, [selectedNetwork, selectedWallet]),
 	);
 
-	const spendingAmount = useMemo((): number => {
-		return convertToSats(textFieldValue, unit);
-	}, [textFieldValue, unit]);
-
-	const btMaxChannelSizeSat = useMemo(() => {
-		return blocktankInfo.options.maxChannelSizeSat;
-	}, [blocktankInfo.options.maxChannelSizeSat]);
-	const btMaxClientBalanceSat = useMemo(() => {
-		return blocktankInfo.options.maxClientBalanceSat;
-	}, [blocktankInfo.options.maxClientBalanceSat]);
-
-	const diff = 0.01;
-	const btSpendingLimitBalanced = Math.min(
-		Math.round(btMaxChannelSizeSat / 2 - btMaxChannelSizeSat * diff),
-		btMaxClientBalanceSat,
-	);
-	const spendableBalance = Math.round(onchainBalance * SPENDING_LIMIT_RATIO);
-	const savingsAmount = onchainBalance - spendingAmount;
-	const savingsPercentage = Math.round((savingsAmount / onchainBalance) * 100);
-	const spendingPercentage = Math.round(
-		(spendingAmount / onchainBalance) * 100,
-	);
-
-	const spendingLimit = useMemo(() => {
-		return Math.min(spendableBalance, btSpendingLimitBalanced);
-	}, [spendableBalance, btSpendingLimitBalanced]);
-
 	const btSpendingLimitBalancedUsd = useMemo((): string => {
 		const { fiatWhole } = getFiatDisplayValues({
-			satoshis: btSpendingLimitBalanced,
+			satoshis: lnSetup.btSpendingLimitBalanced,
 			currency: 'USD',
 		});
 
 		return fiatWhole;
-	}, [btSpendingLimitBalanced]);
+	}, [lnSetup.btSpendingLimitBalanced]);
 
 	const setDefaultClientBalance = useCallback(() => {
-		const value = Math.min(
-			Math.round(onchainBalance * 0.2),
-			btSpendingLimitBalanced,
-		);
+		const value = lnSetup.defaultClientBalance;
 		const result = getNumberPadText(value, unit);
 		setTextFieldValue(result);
-	}, [btSpendingLimitBalanced, onchainBalance, unit]);
+	}, [lnSetup.defaultClientBalance, unit]);
 
 	const onMax = useCallback(() => {
-		const result = getNumberPadText(spendingLimit, unit);
+		const result = getNumberPadText(lnSetup.slider.maxValue, unit);
 		setTextFieldValue(result);
-	}, [spendingLimit, unit]);
+	}, [lnSetup.slider.maxValue, unit]);
 
 	useEffect(() => {
 		setDefaultClientBalance();
-	}, [setDefaultClientBalance, onchainBalance, unit]);
+	}, [setDefaultClientBalance, unit]);
 
 	const onChangeUnit = (): void => {
 		const result = getNumberPadText(spendingAmount, nextUnit);
@@ -143,11 +122,11 @@ const QuickSetup = ({
 		setLoading(true);
 
 		const maxUsableLspBalance = Math.round(
-			blocktankInfo.options.maxChannelSizeSat - spendingAmount!,
+			blocktankInfo.options.maxChannelSizeSat - spendingAmount,
 		);
 		const minUsableLspBalance = Math.round(maxUsableLspBalance / 3);
 		let lspBalance = Math.max(
-			Math.round(spendingAmount + spendingAmount * diff),
+			Math.round(spendingAmount + spendingAmount * LIGHTNING_DIFF),
 			minUsableLspBalance,
 		);
 		const purchaseResponse = await startChannelPurchase({
@@ -157,6 +136,8 @@ const QuickSetup = ({
 			localBalance: lspBalance,
 			channelExpiry: DEFAULT_CHANNEL_DURATION,
 			lspNodeId: blocktankInfo.nodes[0].pubkey,
+			turboChannel:
+				spendingAmount <= blocktankInfo.options.max0ConfClientBalanceSat,
 		});
 
 		setLoading(false);
@@ -212,19 +193,22 @@ const QuickSetup = ({
 							<View style={styles.sliderContainer}>
 								<FancySlider
 									value={spendingAmount}
-									startValue={0}
-									endValue={onchainBalance}
-									maxValue={spendingLimit}
+									startValue={lnSetup.slider.startValue}
+									endValue={lnSetup.slider.endValue}
+									maxValue={lnSetup.slider.maxValue}
 									onValueChange={onSliderChange}
 								/>
 							</View>
 							<View style={styles.percentages}>
-								<Percentage value={spendingPercentage} type="spending" />
-								<Percentage value={savingsPercentage} type="savings" />
+								<Percentage
+									value={lnSetup.percentage.spendings}
+									type="spending"
+								/>
+								<Percentage value={lnSetup.percentage.savings} type="savings" />
 							</View>
 						</AnimatedView>
 
-						{spendingAmount >= Math.round(btSpendingLimitBalanced) && (
+						{spendingAmount >= Math.round(lnSetup.btSpendingLimitBalanced) && (
 							<AnimatedView
 								style={styles.note}
 								entering={FadeIn}
@@ -238,7 +222,7 @@ const QuickSetup = ({
 							</AnimatedView>
 						)}
 
-						{spendingAmount >= spendableBalance && (
+						{spendingAmount >= lnSetup.spendableBalance && (
 							<AnimatedView
 								style={styles.note}
 								entering={FadeIn}
@@ -282,7 +266,7 @@ const QuickSetup = ({
 							loading={loading}
 							text={t('continue')}
 							size="large"
-							disabled={spendingAmount > spendingLimit}
+							disabled={!lnSetup.canContinue}
 							testID="QuickSetupContinue"
 							onPress={onContinue}
 						/>
@@ -293,7 +277,7 @@ const QuickSetup = ({
 					<NumberPadLightning
 						style={styles.numberpad}
 						value={textFieldValue}
-						maxAmount={spendingLimit}
+						maxAmount={lnSetup.slider.maxValue}
 						onChange={setTextFieldValue}
 						onChangeUnit={onChangeUnit}
 						onMax={onMax}

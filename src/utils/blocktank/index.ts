@@ -96,7 +96,6 @@ export const createOrder = async (
 			{
 				...data.options,
 				couponCode: data.options?.couponCode ?? 'bitkit',
-				turboChannel: true,
 				zeroReserve: true,
 			},
 		);
@@ -104,6 +103,31 @@ export const createOrder = async (
 			await refreshOrder(buyRes.id);
 		}
 		return ok(buyRes);
+	} catch (e) {
+		console.log(e);
+		return err(e);
+	}
+};
+
+/**
+ * @param {ICreateOrderRequest} data
+ * @returns {Promise<Result<number>>}
+ */
+export const estimateOrderFee = async (
+	data: ICreateOrderRequest,
+): Promise<Result<number>> => {
+	try {
+		const estimateRes = await bt.estimateOrderFee(
+			data.lspBalanceSat,
+			data.channelExpiryWeeks,
+			{
+				...data.options,
+				couponCode: data.options?.couponCode ?? 'bitkit',
+				turboChannel: true,
+				zeroReserve: true,
+			},
+		);
+		return ok(estimateRes.feeSat);
 	} catch (e) {
 		console.log(e);
 		return err(e);

@@ -247,6 +247,7 @@ export const startChannelPurchase = async ({
 	channelExpiry = 6,
 	lspNodeId,
 	couponCode,
+	turboChannel = true,
 	selectedWallet,
 	selectedNetwork,
 }: {
@@ -255,6 +256,7 @@ export const startChannelPurchase = async ({
 	channelExpiry?: number;
 	lspNodeId?: string;
 	couponCode?: string;
+	turboChannel?: boolean;
 	selectedWallet?: TWalletName;
 	selectedNetwork?: TAvailableNetworks;
 }): Promise<
@@ -279,6 +281,7 @@ export const startChannelPurchase = async ({
 			clientBalanceSat: remoteBalance,
 			lspNodeId,
 			couponCode,
+			turboChannel,
 		},
 	});
 	if (buyChannelResponse.isErr()) {
@@ -301,8 +304,9 @@ export const startChannelPurchase = async ({
 	if (min0ConfTxFee.isErr()) {
 		return err(min0ConfTxFee.error.message);
 	}
+	const satPerVByteFee = Math.ceil(min0ConfTxFee.value.satPerVByte); // might be float
 	let txFeeInSats = getTotalFee({
-		satsPerByte: min0ConfTxFee.value.satPerVByte + 1,
+		satsPerByte: satPerVByteFee,
 		selectedWallet,
 		selectedNetwork,
 	});
@@ -335,7 +339,7 @@ export const startChannelPurchase = async ({
 	});
 
 	const feeRes = updateFee({
-		satsPerByte: min0ConfTxFee.value.satPerVByte + 1,
+		satsPerByte: satPerVByteFee,
 		selectedWallet,
 		selectedNetwork,
 	});

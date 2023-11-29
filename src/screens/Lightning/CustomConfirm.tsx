@@ -80,6 +80,7 @@ const CustomConfirm = ({
 			remoteBalance: order.clientBalanceSat,
 			localBalance: order.lspBalanceSat,
 			channelExpiry: Math.max(weeks, 1),
+			turboChannel: order.zeroConf,
 			selectedWallet,
 			selectedNetwork,
 		});

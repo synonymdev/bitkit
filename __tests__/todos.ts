@@ -1,11 +1,12 @@
 import assert from 'node:assert';
 import cloneDeep from 'lodash/cloneDeep';
+import { TChannel } from '@synonymdev/react-native-ldk';
+import { IBtOrder } from '@synonymdev/blocktank-lsp-http-client';
 
 import '../src/utils/i18n';
 import { todosFullSelector } from '../src/store/reselect/todos';
 import store from '../src/store';
 import Store from '../src/store/types';
-import { createNewWallet } from '../src/utils/startup';
 import { updateWallet } from '../src/store/actions/wallet';
 import {
 	backupSeedPhraseTodo,
@@ -20,8 +21,7 @@ import {
 	transferToSavingsTodo,
 	transferToSpendingTodo,
 } from '../src/store/shapes/todos';
-import { IBtOrder } from '@synonymdev/blocktank-lsp-http-client';
-import { TChannel } from '@synonymdev/react-native-ldk';
+import { createNewWallet } from '../src/utils/startup';
 
 describe('Todos selector', () => {
 	let s: Store;

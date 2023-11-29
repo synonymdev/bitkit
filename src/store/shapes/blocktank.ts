@@ -25,6 +25,11 @@ export const defaultBlocktankInfoShape: IBtInfo = {
 		max0ConfClientBalanceSat: 856487,
 		maxClientBalanceSat: 856487,
 	},
+	versions: {
+		http: '0.0.0',
+		btc: '0.0.0',
+		ln2: '0.0.0',
+	},
 };
 
 export const defaultBlocktankShape: IBlocktank = {

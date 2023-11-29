@@ -110,7 +110,9 @@ const CustomSetup = ({
 	const blocktankInfo = useSelector(blocktankInfoSelector);
 
 	const [textFieldValue, setTextFieldValue] = useState('');
-	const [channelOpenFee, setChannelOpenFee] = useState('');
+	const [channelOpenFee, setChannelOpenFee] = useState<{
+		[key: string]: string;
+	}>({});
 	const [showNumberPad, setShowNumberPad] = useState(false);
 	const [loading, setLoading] = useState(false);
 	const [spendingPackages, setSpendingPackages] = useState<TPackage[]>([]); // Packages the user can afford.
@@ -260,36 +262,65 @@ const CustomSetup = ({
 
 	// fetch approximate channel open cost on ReceiveAmount screen
 	useEffect(() => {
-		if (!spending && receivingPackages.length) {
-			const defaultPackage = receivingPackages.find((p) => p.id === 'big')!;
-			const getChannelOpenCost = async (): Promise<void> => {
-				const response = await startChannelPurchase({
-					remoteBalance: spendingAmount!,
-					localBalance: defaultPackage.satoshis,
-					channelExpiry: DEFAULT_CHANNEL_DURATION,
-					selectedWallet,
-					selectedNetwork,
-					lspNodeId: blocktankInfo.nodes[0].pubkey,
-				});
-				if (response.isOk()) {
-					const { fiatSymbol, fiatValue } = getFiatDisplayValues({
-						satoshis:
-							response.value.channelOpenFee +
-							response.value.transactionFeeEstimate,
-					});
-					setChannelOpenFee(`${fiatSymbol} ${fiatValue.toFixed(2)}`);
-				}
-			};
-
-			getChannelOpenCost();
+		if (spendingAmount === undefined) {
+			return;
 		}
+
+		// if fee exists in cache, do not fetch again
+		if (channelOpenFee[`${spendingAmount}-${amount}`]) {
+			return;
+		}
+
+		const getChannelOpenCost = async (): Promise<void> => {
+			// TODO: replace with estimateOrderFee
+			// const response2 = await estimateOrderFee({
+			// 	lspBalanceSat: spendingAmount,
+			// 	channelExpiryWeeks: DEFAULT_CHANNEL_DURATION,
+			// 	options: {
+			// 		clientBalanceSat: amount,
+			// 		couponCode: 'bitkit',
+			// 		lspNodeId: blocktankInfo.nodes[0].pubkey,
+			// 	}
+			// 	// localBalance: amount,
+			// 	// selectedWallet,
+			// 	// selectedNetwork,
+			// });
+			const response = await startChannelPurchase({
+				remoteBalance: spendingAmount,
+				localBalance: amount,
+				channelExpiry: DEFAULT_CHANNEL_DURATION,
+				selectedWallet,
+				selectedNetwork,
+				lspNodeId: blocktankInfo.nodes[0].pubkey,
+				turboChannel:
+					spendingAmount <= blocktankInfo.options.max0ConfClientBalanceSat,
+			});
+			if (response.isErr()) {
+				return;
+			}
+			const { fiatSymbol, fiatValue } = getFiatDisplayValues({
+				satoshis:
+					response.value.channelOpenFee + response.value.transactionFeeEstimate,
+			});
+
+			setChannelOpenFee((value) => ({
+				...value,
+				[`${spendingAmount}-${amount}`]: `${fiatSymbol} ${fiatValue.toFixed(
+					2,
+				)}`,
+			}));
+		};
+
+		getChannelOpenCost();
 	}, [
+		amount,
 		spending,
-		receivingPackages,
+		channelOpenFee,
 		spendingAmount,
 		selectedWallet,
 		selectedNetwork,
 		blocktankInfo.nodes,
+		blocktankInfo.options.max0ConfClientBalanceSat,
 	]);
 
 	const getBarrels = useCallback((): ReactElement[] => {
@@ -382,6 +413,8 @@ const CustomSetup = ({
 			remoteBalance: spendingAmount!,
 			localBalance: amount,
 			channelExpiry: DEFAULT_CHANNEL_DURATION,
+			turboChannel:
+				spendingAmount! <= blocktankInfo.options.max0ConfClientBalanceSat,
 			selectedWallet,
 			selectedNetwork,
 		});
@@ -408,14 +441,15 @@ const CustomSetup = ({
 			});
 		}
 	}, [
+		t,
 		spending,
 		spendingAmount,
 		amount,
 		selectedWallet,
 		selectedNetwork,
 		navigation,
-		t,
 		maxChannelSizeSat,
+		blocktankInfo.options.max0ConfClientBalanceSat,
 	]);
 
 	return (
@@ -479,10 +513,12 @@ const CustomSetup = ({
 							<Caption13Up style={styles.amountCaption} color="purple">
 								{t(spending ? 'spending_label' : 'receiving_label')}
 							</Caption13Up>
-							{channelOpenFee && (
-								<Caption13Up style={styles.amountCaptionCost} color="gray1">
-									(Cost: {channelOpenFee})
-								</Caption13Up>
+							{channelOpenFee[`${spendingAmount}-${amount}`] && (
+								<AnimatedView entering={FadeIn} exiting={FadeOut}>
+									<Caption13Up style={styles.amountCaptionCost} color="gray1">
+										(Cost: {channelOpenFee[`${spendingAmount}-${amount}`]})
+									</Caption13Up>
+								</AnimatedView>
 							)}
 						</View>
 					)}
