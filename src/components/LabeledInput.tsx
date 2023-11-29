@@ -1,10 +1,12 @@
 import React, { ReactElement, RefObject } from 'react';
 import { View, StyleSheet, ViewStyle, StyleProp } from 'react-native';
 import { TextInput, BottomSheetTextInput } from '../styles/components';
-import { Caption13Up } from '../styles/text';
+import { Caption13Up, Text02S } from '../styles/text';
+import { IThemeColors } from '../styles/themes';
 
 type LabeledInputProps = {
 	label: string;
+	error?: string;
 	children?: JSX.Element | JSX.Element[];
 	ref?: RefObject<any>;
 	autoFocus?: boolean;
@@ -17,10 +19,12 @@ type LabeledInputProps = {
 	onChange?: (value: string) => void;
 	maxLength?: number;
 	testID?: string;
+	color?: keyof IThemeColors;
 };
 
 const LabeledInput = ({
 	label,
+	error,
 	children,
 	ref,
 	autoFocus,
@@ -33,6 +37,7 @@ const LabeledInput = ({
 	style,
 	maxLength,
 	testID,
+	color = 'white',
 }: LabeledInputProps): ReactElement => {
 	const numberOfChildren = React.Children.toArray(children).length;
 
@@ -41,9 +46,19 @@ const LabeledInput = ({
 
 	return (
 		<View style={style}>
-			<Caption13Up color="gray1" style={styles.label}>
-				{label}
-			</Caption13Up>
+			<View style={styles.header}>
+				<Caption13Up style={styles.label} color="gray1">
+					{label}
+				</Caption13Up>
+				{error && (
+					<Text02S
+						color="brand"
+						style={styles.error}
+						testID={testID ? testID + '-error' : undefined}>
+						{error}
+					</Text02S>
+				)}
+			</View>
 			<View style={onChange ? styles.inputContainer : styles.readOnlyInput}>
 				{bottomSheet ? (
 					<BottomSheetTextInput
@@ -60,12 +75,12 @@ const LabeledInput = ({
 						editable={!!onChange}
 						returnKeyType={returnKeyType}
 						testID={testID}
+						color={color}
 					/>
 				) : (
 					<TextInput
 						style={textInputStyle}
 						defaultValue={value}
-						color="white"
 						autoCapitalize="none"
 						autoCorrect={false}
 						autoFocus={autoFocus}
@@ -77,6 +92,7 @@ const LabeledInput = ({
 						returnKeyType={returnKeyType}
 						maxLength={maxLength}
 						testID={testID}
+						color={color}
 					/>
 				)}
 				{children && (
@@ -97,8 +113,18 @@ const LabeledInput = ({
 };
 
 const styles = StyleSheet.create({
-	label: {
+	header: {
+		flexDirection: 'row',
+		alignItems: 'center',
+		justifyContent: 'space-between',
+		flexWrap: 'wrap',
 		marginBottom: 8,
+	},
+	label: {
+		marginRight: 8,
+	},
+	error: {
+		marginVertical: -1,
 	},
 	inputContainer: {
 		position: 'relative',

@@ -3326,10 +3326,10 @@
     turbo-hash-map "^1.0.3"
     ws "^8.8.1"
 
-"@synonymdev/slashtags-url@1.0.0-alpha.4", "@synonymdev/slashtags-url@^1.0.0-alpha.3":
-  version "1.0.0-alpha.4"
-  resolved "https://registry.yarnpkg.com/@synonymdev/slashtags-url/-/slashtags-url-1.0.0-alpha.4.tgz#f9f47a59dc57aa5efbb2e9ad0cb2a33399fdca67"
-  integrity sha512-6+ac8h2MqF0H+h4km4dqmyhomvDvyXB7ny1QsvwwwPNPmyVbSyatjsnGLmEkzpNTVO7PHVCkEbDWGrZmdUVksQ==
+"@synonymdev/slashtags-url@1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@synonymdev/slashtags-url/-/slashtags-url-1.0.1.tgz#b1d5d350e4774c1397fdd35a572be17bd93a3b36"
+  integrity sha512-b5cAc73itbWRur/cp9H+eW8oqamnfLBY8ji8bV0ADXTdfN0xpeR3xJDsgMV1HYkaGvCm5ZVUXioQfCUWdNoqaA==
   dependencies:
     b4a "^1.6.0"
     z32 "^1.0.0"
@@ -3346,6 +3346,14 @@
   version "1.0.0-wip.1"
   resolved "https://registry.yarnpkg.com/@synonymdev/slashtags-url/-/slashtags-url-1.0.0-wip.1.tgz#2caa607aa5b8a9908b3d4e9cf19668f58ca82a01"
   integrity sha512-NDoK/QtK3PvzreKyRvdhz/7y7vuMC2y+4by1/vZ5Y5vWV5C6SxLkEZ9k73qPUtPHIRXW8qYPGBdpr+MXaRqcZQ==
+  dependencies:
+    b4a "^1.6.0"
+    z32 "^1.0.0"
+
+"@synonymdev/slashtags-url@^1.0.0-alpha.3":
+  version "1.0.0-alpha.4"
+  resolved "https://registry.yarnpkg.com/@synonymdev/slashtags-url/-/slashtags-url-1.0.0-alpha.4.tgz#f9f47a59dc57aa5efbb2e9ad0cb2a33399fdca67"
+  integrity sha512-6+ac8h2MqF0H+h4km4dqmyhomvDvyXB7ny1QsvwwwPNPmyVbSyatjsnGLmEkzpNTVO7PHVCkEbDWGrZmdUVksQ==
   dependencies:
     b4a "^1.6.0"
     z32 "^1.0.0"

@@ -129,11 +129,13 @@ d('Profile and Contacts', () => {
 
 			// self
 			await element(by.id('AddContact')).tap();
-			await element(by.id('ContactURLInput')).typeText(slashtagsUrl + '\n');
-			await expect(element(by.id('ContactError'))).toBeVisible();
+			await element(by.id('ContactURLInput')).typeText(slashtagsUrl);
+			await element(by.id('AddContactButton')).tap();
+			await expect(element(by.id('ContactURLInput-error'))).toBeVisible();
 
 			// Satoshi
 			await element(by.id('ContactURLInput')).replaceText(satoshi.url);
+			await element(by.id('AddContactButton')).tap();
 			await waitFor(element(by.id('NameInput')))
 				.toBeVisible()
 				.withTimeout(30000);
@@ -147,6 +149,7 @@ d('Profile and Contacts', () => {
 			// Hal
 			await element(by.id('AddContact')).tap();
 			await element(by.id('ContactURLInput')).replaceText(hal.url);
+			await element(by.id('AddContactButton')).tap();
 			await waitFor(element(by.id('NameInput')))
 				.toBeVisible()
 				.withTimeout(30000);

@@ -7,6 +7,7 @@
 	"contact_add": "Add contact",
 	"contact_add_capital": "Add Contact",
 	"contact_add_explain": "Add a new contact by scanning their QR or by pasting their key below.",
+	"contact_add_button": "Add",
 	"contact_key_paste": "Paste a key",
 	"contact_error_yourself": "You cannot add yourself as a contact.",
 	"contact_error_key": "This is not a valid key.",
