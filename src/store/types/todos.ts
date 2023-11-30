@@ -12,7 +12,8 @@ export type TTodoType =
 	| 'transferToSavings'
 	| 'transferClosingChannel'
 	| 'slashtagsProfile'
-	| 'buyBitcoin';
+	| 'buyBitcoin'
+	| 'btFailed';
 
 export interface ITodo {
 	id: TTodoType;

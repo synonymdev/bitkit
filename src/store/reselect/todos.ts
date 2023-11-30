@@ -16,6 +16,7 @@ import {
 	transferClosingChannel,
 	transferToSavingsTodo,
 	transferToSpendingTodo,
+	btFailedTodo,
 } from '../shapes/todos';
 import {
 	backupVerifiedSelector,
@@ -81,9 +82,28 @@ export const todosFullSelector = createSelector(
 			res.push(backupSeedPhraseTodo);
 		}
 
+		const showFailedBTOrder = paidOrders.expired.some((order) => {
+			// ignore orders older than 1 week
+			if (
+				Date.now() - Number(new Date(order.orderExpiresAt)) >
+				7 * 24 * 60 * 60 * 1000
+			) {
+				return false;
+			}
+
+			if (!hide.btFailed) {
+				return true;
+			}
+
+			return Number(new Date(order.orderExpiresAt)) > hide.btFailed;
+		});
+
 		// lightning
-		// no open channels - inital setup
-		if (openChannels.length === 0 && closedChannels.length === 0) {
+		if (showFailedBTOrder) {
+			// failed blocktank order
+			res.push(btFailedTodo);
+		} else if (openChannels.length === 0 && closedChannels.length === 0) {
+			// no open channels - inital setup
 			if (pendingChannels.length > 0) {
 				res.push(lightningConnectingTodo);
 			} else if (Object.keys(paidOrders.created).length > 0) {
@@ -94,6 +114,7 @@ export const todosFullSelector = createSelector(
 				res.push(lightningTodo);
 			}
 		} else {
+			// some channels exist
 			if (startCoopCloseTimestamp > 0) {
 				res.push(transferClosingChannel);
 			} else if (Object.keys(paidOrders.created).length > 0) {

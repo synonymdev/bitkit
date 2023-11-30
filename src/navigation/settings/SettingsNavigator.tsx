@@ -84,7 +84,7 @@ export type SettingsStackParamList = {
 	ResetAndRestore: undefined;
 	BitcoinNetworkSelection: undefined;
 	LightningNodeInfo: undefined;
-	Channels: undefined;
+	Channels?: { showClosed: boolean };
 	ChannelDetails: { channel: TChannel };
 	CloseConnection: { channelId: string };
 	OpenConnectionSuccess: { name: string };

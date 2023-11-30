@@ -104,6 +104,13 @@ const Suggestions = (): ReactElement => {
 			if (id === 'buyBitcoin') {
 				navigation.navigate('BuyBitcoin');
 			}
+
+			if (id === 'btFailed') {
+				navigation.navigate('Settings', {
+					screen: 'Channels',
+					params: { showClosed: true },
+				});
+			}
 		},
 		[onchainBalance, navigation, pinTodoDone],
 	);

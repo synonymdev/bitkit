@@ -10,6 +10,7 @@ import Store from '../src/store/types';
 import { updateWallet } from '../src/store/actions/wallet';
 import {
 	backupSeedPhraseTodo,
+	btFailedTodo,
 	buyBitcoinTodo,
 	lightningConnectingTodo,
 	lightningReadyTodo,
@@ -75,12 +76,25 @@ describe('Todos selector', () => {
 
 	it('should not return hidden todos', () => {
 		const state = cloneDeep(s);
+
+		const order = {
+			id: 'order1',
+			state: 'expired',
+			// expired 10 days ago
+			orderExpiresAt: new Date(
+				new Date().getTime() - 10 * 24 * 60 * 60 * 1000,
+			).toISOString(),
+		} as IBtOrder;
+		state.blocktank.paidOrders = { order1: 'txid' };
+		state.blocktank.orders = [order];
+
 		state.todos.hide = {
 			backupSeedPhrase: +new Date(),
-			pin: +new Date(),
-			slashtagsProfile: +new Date(),
+			btFailed: +new Date(),
 			buyBitcoin: +new Date(),
 			lightning: +new Date(),
+			pin: +new Date(),
+			slashtagsProfile: +new Date(),
 		};
 
 		assert.deepEqual(todosFullSelector(state), []);
@@ -195,6 +209,22 @@ describe('Todos selector', () => {
 
 		expect(todosFullSelector(state)).not.toEqual(
 			expect.arrayContaining([lightningReadyTodo]),
+		);
+	});
+
+	it('should return btFailedTodo if there is a failed BT order', () => {
+		const state = cloneDeep(s);
+
+		const order = {
+			id: 'order1',
+			state: 'expired',
+			orderExpiresAt: new Date().toISOString(),
+		} as IBtOrder;
+		state.blocktank.paidOrders = { order1: 'txid' };
+		state.blocktank.orders = [order];
+
+		expect(todosFullSelector(state)).toEqual(
+			expect.arrayContaining([btFailedTodo]),
 		);
 	});
 });

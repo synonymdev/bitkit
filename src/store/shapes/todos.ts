@@ -73,6 +73,12 @@ export const buyBitcoinTodo: ITodo = {
 	image: imageBitcoin,
 	dismissable: true,
 };
+export const btFailedTodo: ITodo = {
+	id: 'btFailed',
+	color: 'gray',
+	image: imageLightning,
+	dismissable: true,
+};
 
 export const defaultTodosShape = {
 	hide: {},

@@ -46,6 +46,10 @@
 		"title": "Get Bitcoin",
 		"description": "Stack some sats"
 	},
+	"btFailed": {
+		"title": "Setup Failed",
+		"description": "Please try again"
+	},
 	"lightning_no_funds_title": "No Funds Yet",
 	"lightning_no_funds_desc": "Before you can set up your instant spending balance, you need to send some on-chain Bitcoin to your wallet.",
 	"suggestions": "Suggestions"

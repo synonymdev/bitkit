@@ -221,10 +221,13 @@ const ChannelList = memo(
 
 const Channels = ({
 	navigation,
+	route,
 }: SettingsScreenProps<'Channels'>): ReactElement => {
 	const { t } = useTranslation('lightning');
 	const [peer, setPeer] = useState('');
-	const [showClosed, setShowClosed] = useState(false);
+	const [showClosed, setShowClosed] = useState(
+		route.params?.showClosed ?? false,
+	);
 	const [payingInvoice, setPayingInvoice] = useState(false);
 	const [refreshingLdk, setRefreshingLdk] = useState(false);
 	const [restartingLdk, setRestartingLdk] = useState(false);
