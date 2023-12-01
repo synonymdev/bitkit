@@ -24,6 +24,9 @@ const LoadingSpinner = memo(
 		const spinValue = useSharedValue(0);
 
 		useEffect(() => {
+			if (__E2E__) {
+				return;
+			}
 			spinValue.value = withRepeat(
 				withTiming(360, {
 					duration: 1000,
@@ -44,7 +47,7 @@ const LoadingSpinner = memo(
 		return (
 			<Animated.Image
 				style={[
-					{ ...(!__E2E__ ? animatedStyle : {}) },
+					{ ...(__E2E__ ? {} : animatedStyle) },
 					{ height: size, width: size },
 					style,
 				]}

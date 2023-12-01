@@ -273,6 +273,7 @@ d('Settings', () => {
 			// check same address in Address Viewer
 			await element(by.id('Settings')).tap();
 			await element(by.id('AdvancedSettings')).tap();
+			await element(by.id('WebRelay')).swipe('up');
 			await element(by.id('AddressViewer')).tap();
 			await sleep(1000);
 			await waitFor(element(by.id('Address-0')))
@@ -293,11 +294,14 @@ d('Settings', () => {
 
 			// now switch to Legacy
 			await element(by.id('NavigationBack')).tap();
+			await element(by.id('NavigationBack')).tap();
+			await element(by.id('AdvancedSettings')).tap();
 			await element(by.id('AddressTypePreference')).tap();
 			await element(by.id('p2pkh')).tap();
 			await sleep(1000); // We need a second after switching address types.
 
 			// check address in Address Viewer
+			await element(by.id('WebRelay')).swipe('up');
 			await element(by.id('AddressViewer')).tap();
 			await sleep(1000);
 			await waitFor(element(by.id('Address-0')))

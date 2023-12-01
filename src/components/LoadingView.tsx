@@ -30,6 +30,9 @@ const LoadingView = memo(
 		const [showLoading, setShowLoading] = useState(false);
 
 		useEffect(() => {
+			if (__E2E__) {
+				return;
+			}
 			const timeout = setTimeout(() => setShowLoading(true), delay);
 
 			spinValue.value = withRepeat(
@@ -59,7 +62,7 @@ const LoadingView = memo(
 					<View style={styles.loading}>
 						<Animated.Image
 							style={[
-								{ ...(!__E2E__ ? animatedStyle : {}) },
+								{ ...(__E2E__ ? {} : animatedStyle) },
 								{ height: spinnerSize, width: spinnerSize },
 							]}
 							source={imageSrc}

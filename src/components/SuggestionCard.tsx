@@ -22,6 +22,7 @@ import { XIcon } from '../styles/icons';
 import { ITodo, TTodoType } from '../store/types/todos';
 import useColors from '../hooks/colors';
 import Card from './Card';
+import { __E2E__ } from '../constants/env';
 
 const CARD_SIZE = 152;
 const CARD_BORDER_RADIUS = 16;
@@ -105,6 +106,9 @@ const SuggestionCard = ({
 	);
 
 	useEffect(() => {
+		if (__E2E__) {
+			return;
+		}
 		glowOpacity.value = withRepeat(withTiming(1, { duration: 1100 }), -1, true);
 	}, [glowOpacity]);
 

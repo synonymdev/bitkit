@@ -1,55 +1,40 @@
-import React, { ReactElement, useState, useEffect } from 'react';
+import React, { ReactElement } from 'react';
 import { View, StyleSheet, Image } from 'react-native';
-import { Keyframe, FadeOut } from 'react-native-reanimated';
+import { FadeOut, withRepeat, withTiming } from 'react-native-reanimated';
 import { Trans, useTranslation } from 'react-i18next';
 
 import { AnimatedView } from '../../styles/components';
 import { Display } from '../../styles/text';
 import SafeAreaInset from '../../components/SafeAreaInset';
+import { __E2E__ } from '../../constants/env';
 
 const imageSrc = require('../../assets/illustrations/rocket.png');
 
-const DURATION = 40000;
-
-const enteringAnimation = new Keyframe({
-	0: { originX: -1000, originY: 1000 }, // bottom-left
-	5: { originX: 1000, originY: -1000 }, // top-right
-	10: { originX: -1000, originY: -1000 }, // top-left
-
-	15: { originX: -1000, originY: 1000 }, // bottom-left
-	20: { originX: 1000, originY: -1000 }, // top-right
-	25: { originX: -1000, originY: -1000 }, // top-left
-
-	30: { originX: -1000, originY: 1000 }, // bottom-left
-	35: { originX: 1000, originY: -1000 }, // top-right
-	40: { originX: -1000, originY: -1000 }, // top-left
-
-	45: { originX: -1000, originY: 1000 }, // bottom-left
-	50: { originX: 1000, originY: -1000 }, // top-right
-	55: { originX: -1000, originY: -1000 }, // top-left
-
-	60: { originX: -1000, originY: 1000 }, // bottom-left
-	65: { originX: 1000, originY: -1000 }, // top-right
-	70: { originX: -1000, originY: -1000 }, // top-left
-
-	75: { originX: -1000, originY: 1000 }, // bottom-left
-	80: { originX: 1000, originY: -1000 }, // top-right
-	85: { originX: -1000, originY: -1000 }, // top-left
-
-	90: { originX: -1000, originY: 1000 }, // bottom-left
-	95: { originX: 1000, originY: -1000 }, // top-right
-	100: { originX: -1000, originY: -1000 }, // top-left
-}).duration(DURATION);
-
 const LoadingWalletScreen = (): ReactElement => {
 	const { t } = useTranslation('onboarding');
-	const [key, setKey] = useState(false);
 
-	useEffect(() => {
-		// repeat entering animation every DURATION seconds
-		const interval = setInterval(() => setKey((v) => !v), DURATION);
-		return () => clearInterval(interval);
-	}, []);
+	const entering = (): { initialValues: {}; animations: {} } => {
+		'worklet';
+		const initialValues = {
+			transform: [{ translateX: -1000 }, { translateY: 1000 }],
+		};
+
+		const animations = {
+			transform: [
+				{
+					translateX: withRepeat(withTiming(1000, { duration: 5000 }), -1),
+				},
+				{
+					translateY: withRepeat(withTiming(-1000, { duration: 5000 }), -1),
+				},
+			],
+		};
+
+		return {
+			initialValues,
+			animations,
+		};
+	};
 
 	return (
 		<View style={styles.container}>
@@ -67,9 +52,8 @@ const LoadingWalletScreen = (): ReactElement => {
 			</View>
 			<View style={styles.animationContainer}>
 				<AnimatedView
-					key={key.toString()}
-					entering={enteringAnimation}
-					exiting={FadeOut}
+					entering={__E2E__ ? undefined : entering}
+					exiting={__E2E__ ? undefined : FadeOut}
 					color="transparent">
 					<Image source={imageSrc} />
 				</AnimatedView>

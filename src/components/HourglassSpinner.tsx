@@ -5,6 +5,7 @@ import { withRepeat, withTiming } from 'react-native-reanimated';
 import { AnimatedView } from '../styles/components';
 import GlowImage from './GlowImage';
 import { IColors } from '../styles/colors';
+import { __E2E__ } from '../constants/env';
 
 const imageSrc = require('../assets/illustrations/hourglass.png');
 
@@ -37,7 +38,7 @@ const HourglassSpinner = ({
 	return (
 		<AnimatedView
 			style={[styles.container, style]}
-			entering={entering}
+			entering={__E2E__ ? undefined : entering}
 			color="transparent"
 			testID="HourglassSpinner">
 			<GlowImage image={imageSrc} imageSize={230} glowColor={glowColor} />

@@ -11,8 +11,9 @@ import { useSelector } from 'react-redux';
 import { updateUi } from '../store/actions/ui';
 import { pinOnIdleSelector, pinSelector } from '../store/reselect/settings';
 import { isAuthenticatedSelector } from '../store/reselect/ui';
+import { __E2E__ } from '../constants/env';
 
-const INACTIVITY_DELAY = 1000 * 90; // 90 seconds;
+const INACTIVITY_DELAY = __E2E__ ? 5000 : 1000 * 90; // 90 seconds;
 
 const InactivityTracker = ({
 	children,
