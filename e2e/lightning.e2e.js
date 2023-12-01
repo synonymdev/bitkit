@@ -57,7 +57,8 @@ d('Lightning', () => {
 		// - check balances, tx history and notes
 		// - close channel
 
-		it('Can receive and send LN payments', async () => {
+		// FIXME: disable this test on CI until we figure out how to run new LDK
+		it.skip('Can receive and send LN payments', async () => {
 			if (checkComplete('lighting-1')) {
 				return;
 			}

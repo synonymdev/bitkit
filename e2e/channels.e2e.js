@@ -156,7 +156,7 @@ d('LN Channel Onboarding', () => {
 			jestExpect(buttonEnabled2).toBe(false);
 
 			// go back and change to 2nd card
-			await element(by.id('NavigationBack')).atIndex(1).tap();
+			await element(by.id('NavigationBack')).tap();
 			await element(by.id('Barrel-medium')).tap();
 			await element(by.id('CustomSetupContinue')).tap();
 			await element(by.id('Barrel-medium')).tap();

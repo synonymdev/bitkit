@@ -97,7 +97,10 @@ const AddContact = ({
 					title={t('contact_add_capital')}
 					displayBackButton={false}
 				/>
-				<Text01S color="gray1" style={styles.addContactNote}>
+				<Text01S
+					testID="AddContactNote"
+					color="gray1"
+					style={styles.addContactNote}>
 					{t('contact_add_explain')}
 				</Text01S>
 				<View style={styles.content}>

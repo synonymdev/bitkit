@@ -73,6 +73,9 @@ jobs:
         env:
           HUSKY: 0
 
+      - name: Replace react-native-ldk with v0.0.121
+        run: yarn add @synonymdev/react-native-ldk@0.0.121
+
       - name: Cache Pods
         uses: actions/cache@v3
         id: podcache

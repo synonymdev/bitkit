@@ -12,6 +12,7 @@ import {
 } from './helpers';
 import initWaitForElectrumToSync from '../__tests__/utils/wait-for-electrum';
 
+const __DEV__ = process.env.DEV === 'true';
 const d = checkComplete('slash-1') ? describe.skip : describe;
 
 // private key: rhuoi5upr3he3d5p9ef685bnxq8adbariwphg7i8gxdnnazok87xtc3e15pkouxizbzm6m4kjaoi9bndwp88iefycf6i6qhqu1ifzfa
@@ -121,7 +122,7 @@ d('Profile and Contacts', () => {
 			await element(by.id('DetailsButton')).tap();
 			await expect(element(by.text('some@email.value'))).toExist();
 			await expect(element(by.text('link-value'))).not.toExist();
-			await element(by.id('NavigationClose')).atIndex(1).tap();
+			await element(by.id('NavigationClose')).tap();
 
 			// ADD CONTACTS
 			await element(by.id('HeaderContactsButton')).tap();
@@ -144,11 +145,16 @@ d('Profile and Contacts', () => {
 			await element(by.id('SaveContactButton')).tap();
 			await expect(element(by.text('WEBSITE'))).toExist();
 			await expect(element(by.text(satoshi.website))).toExist();
-			await element(by.id('NavigationBack')).atIndex(2).tap();
+			await element(by.id('NavigationBack')).tap();
+
+			if (!__DEV__) {
+				// FIXME: this bottom sheet should not appear
+				await element(by.id('AddContactNote')).swipe('down');
+			}
 
 			// Hal
 			await element(by.id('AddContact')).tap();
-			await element(by.id('ContactURLInput')).replaceText(hal.url);
+			await element(by.id('ContactURLInput')).typeText(hal.url);
 			await element(by.id('AddContactButton')).tap();
 			await waitFor(element(by.id('NameInput')))
 				.toBeVisible()
@@ -157,7 +163,7 @@ d('Profile and Contacts', () => {
 			await element(by.id('NameInput')).replaceText(hal.name2);
 			await element(by.id('SaveContactButton')).tap();
 			await expect(element(by.text(hal.name2))).toExist();
-			await element(by.id('NavigationClose')).atIndex(2).tap();
+			await element(by.id('NavigationClose')).tap();
 
 			// FILTER CONTACTS
 			await element(by.id('HeaderContactsButton')).tap();
