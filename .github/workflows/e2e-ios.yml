@@ -42,13 +42,31 @@ jobs:
       - name: Run regtest setup
         run: cd docker && mkdir lnd && chmod 777 lnd && docker-compose up -d
 
-      - name: Wait for bitcoind
-        timeout-minutes: 2
-        run: while ! nc -z '127.0.0.1' 43782; do sleep 1; done
-
       - name: Wait for electrum server
-        timeout-minutes: 2
-        run: while ! nc -z '127.0.0.1' 60001; do sleep 1; done
+        timeout-minutes: 20
+        run: |
+          while true
+          do
+            for i in {1..60}; do
+              nc -z '127.0.0.1' 60001
+              if [ $? -eq 0 ]; then
+                echo "port is open"
+                exit 0
+              fi
+              echo "port is closed, attempt $i"
+              sleep 1
+            done
+            echo "colima restart"
+            colima restart
+          done
+
+      # - name: Wait for bitcoind
+      #   timeout-minutes: 2
+      #   run: while ! nc -z '127.0.0.1' 43782; do sleep 1; done
+
+      # - name: Wait for electrum server
+      #   timeout-minutes: 2
+      #   run: while ! nc -z '127.0.0.1' 60001; do sleep 1; done
 
       - name: Setup Node
         uses: actions/setup-node@v3
@@ -116,6 +134,12 @@ jobs:
         id: test4
         if: steps.test1.outcome != 'success' && steps.test2.outcome != 'success' && steps.test3.outcome != 'success'
         run: yarn e2e:test:ios-release --record-videos all --take-screenshots all --record-logs all
+
+      # - uses: mdelillo/ssh-server-action@73e3eb79c1a94eade0c179b2365419717f6ea8c9
+      #   if: failure()
+      #   with:
+      #     ngrok-authtoken: 'xxx'
+      #     ssh-public-key: 'xxx'
 
       - uses: actions/upload-artifact@v3
         if: failure()

@@ -2,7 +2,7 @@ version: '3'
 services:
   bitcoind:
     container_name: bitcoin
-    image: btcpayserver/bitcoin:25.0
+    image: btcpayserver/bitcoin:25.1
     restart: unless-stopped
     expose:
       - '43782'
@@ -31,7 +31,7 @@ services:
         zmqpubhashblock=tcp://0.0.0.0:28336
 
   bitcoinsetup:
-    image: btcpayserver/bitcoin:25.0
+    image: btcpayserver/bitcoin:25.1
     depends_on:
       - bitcoind
     restart: 'no'
