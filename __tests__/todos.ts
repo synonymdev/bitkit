@@ -227,4 +227,23 @@ describe('Todos selector', () => {
 			expect.arrayContaining([btFailedTodo]),
 		);
 	});
+
+	it('should return btFailedTodo if there is a failed BT order and the previous one was hidden', () => {
+		const state = cloneDeep(s);
+
+		const order = {
+			id: 'order1',
+			state: 'expired',
+			orderExpiresAt: new Date().toISOString(),
+		} as IBtOrder;
+		state.blocktank.paidOrders = { order1: 'txid' };
+		state.blocktank.orders = [order];
+
+		// mark btFinishedTodo as hidden
+		state.todos.hide.btFailed = +new Date() - 60 * 1000;
+
+		expect(todosFullSelector(state)).toEqual(
+			expect.arrayContaining([btFailedTodo]),
+		);
+	});
 });
