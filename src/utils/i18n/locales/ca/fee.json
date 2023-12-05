@@ -1,1 +1,38 @@
-{}
+{
+  "instant": {
+    "title": "Instant",
+    "description": "±2-10 segons",
+    "shortRange": "2-10s",
+    "shortDescription": "±2s"
+  },
+  "fast": {
+    "title": "Ràpid",
+    "description": "±10-20 minuts",
+    "shortRange": "10-20m",
+    "shortDescription": "±10m"
+  },
+  "normal": {
+    "title": "Normal",
+    "description": "±20-60 minuts",
+    "shortRange": "20-60m",
+    "shortDescription": "±20m"
+  },
+  "slow": {
+    "title": "Lent",
+    "description": "±1-2 hores",
+    "shortRange": "1-2h",
+    "shortDescription": "±1h"
+  },
+  "minimum": {
+    "title": "Mínim",
+    "description": "+2 hores",
+    "shortRange": "+2h",
+    "shortDescription": "+2h"
+  },
+  "custom": {
+    "title": "Personalitzat",
+    "description": "Depèn de la tarifa",
+    "shortRange": "Depèn de la tarifa",
+    "shortDescription": "Depèn de la tarifa"
+  }
+}

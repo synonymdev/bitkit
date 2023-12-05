@@ -7,6 +7,7 @@
   "contact_add": "Añadir contacto",
   "contact_add_capital": "Añadir contacto",
   "contact_add_explain": "Añada un nuevo contacto escaneando su QR o pegando su clave a continuación.",
+  "contact_add_button": "Añadir",
   "contact_key_paste": "Pegar una llave",
   "contact_error_yourself": "No puede añadirse a sí mismo como contacto.",
   "contact_error_key": "No es una llave válida.",

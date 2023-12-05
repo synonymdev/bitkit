@@ -6,6 +6,7 @@
   "about_title": "Sobre",
   "about": {
     "title": "Sobre Bitkit",
+    "support": "Suport",
     "legal": "Legal",
     "version": "Versió"
   },
@@ -17,10 +18,12 @@
     "unit_title": "Unitat per defecte",
     "unit_bitcoin": "Bitcoin",
     "unit_satoshis": "Satoshis",
+    "speed_fee_custom": "Estableix una tarifa personalitzada",
     "suggestions": "Sugeriments",
     "suggestions_visible": "Visible",
     "suggestions_hidden": "Amagat",
-    "tags": "Etiquetes"
+    "tags": "Etiquetes",
+    "tags_previously": "Etiquetes prèviament utilitzades"
   },
   "security": {
     "pin": "Codi Pin",
@@ -45,6 +48,32 @@
   "adv": {
     "section_payments": "Pagaments",
     "section_networks": "Xarxes",
-    "section_other": "Altres"
+    "section_other": "Altres",
+    "coin_selection": "Selecció de monedes",
+    "pp_footer": "* Això requereix compartir les dades de pagament.",
+    "pp_contacts_switch": "Habilitar pagaments amb contactes*",
+    "lightning_connections": "Connexions Lightning",
+    "lightning_node": "Node de Lightning"
+  },
+  "fee": {
+    "fast": {
+      "value": "Ràpid"
+    },
+    "normal": {
+      "label": "Normal",
+      "value": "Normal"
+    },
+    "custom": {
+      "label": "Personalitzat",
+      "value": "Personalitzat"
+    }
+  },
+  "es": {
+    "disconnected": "desconnectat",
+    "host": "Amfitrió",
+    "port": "Port"
+  },
+  "rgs": {
+    "button_connect": "Conecta"
   }
 }

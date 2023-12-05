@@ -8,6 +8,7 @@
   "add_instant_payments": "Okamžité platby",
   "error_channel_purchase": "Nastavení okamžitých plateb se nezdařilo",
   "error_channel_receiving": "Přijímaná částka musí být vyšší než ${usdValue}",
+  "error_channel_fee": "Chyba odhadu poplatku.",
   "spending_money": "Peníze k útratě",
   "spending_balance": "Disponibilní zůstatek.",
   "enter_money": "Zadejte částku, kterou chcete mít k okamžitým platbám.",

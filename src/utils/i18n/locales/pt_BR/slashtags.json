@@ -7,6 +7,7 @@
   "contact_add": "Adicionar contato",
   "contact_add_capital": "Adicionar Contato",
   "contact_add_explain": "Adicione um novo contato digitalizando o código QR ou colando sua chave abaixo.",
+  "contact_add_button": "Adicionar",
   "contact_key_paste": "Colar uma chave",
   "contact_error_yourself": "Não é possível adicionar você mesmo como como contato.",
   "contact_error_key": "Esta não é uma chave válida.",

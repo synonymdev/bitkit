@@ -7,6 +7,7 @@
   "contact_add": "Contact toevoegen",
   "contact_add_capital": "Contact toevoegen",
   "contact_add_explain": "Voeg een nieuw contact toe door hun QR code te scannen of hun sleutel hieronder te plakken.",
+  "contact_add_button": "Toevoegen",
   "contact_key_paste": "Plak een sleutel",
   "contact_error_yourself": "U kunt uzelf niet als contact toevoegen.",
   "contact_error_key": "Dit is geen valide sleutel. ",

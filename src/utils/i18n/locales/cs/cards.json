@@ -46,6 +46,10 @@
     "title": "Získat Bitcoin",
     "description": "Stackuj Saty"
   },
+  "btFailed": {
+    "title": "Nastavení se nezdařilo",
+    "description": "Prosím, zkuste to znovu."
+  },
   "lightning_no_funds_title": "Zatím žádné prostředky",
   "lightning_no_funds_desc": "Abyste si mohli nastavit zůstatek pro okamžité platby, musíte nejdříve uskutečnit Bitcoinovou on-chain transakci do své peněženky.",
   "suggestions": "Návrhy"
