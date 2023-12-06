@@ -39,6 +39,10 @@ do
   echo " failed!"
   echo "::endgroup::"
 
+  echo "::group::docker-compose ps"
+  docker-compose -f docker/docker-compose.yml ps
+  echo "::endgroup::"
+
   echo "::group::colima restart"
   colima restart
   echo "::endgroup::"
