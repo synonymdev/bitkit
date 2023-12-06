@@ -419,7 +419,6 @@ export const subscribeToLightningPayments = ({
 	selectedNetwork?: TAvailableNetworks;
 }): void => {
 	if (!paymentSubscription) {
-		// @ts-ignore
 		paymentSubscription = ldk.onEvent(
 			EEventTypes.channel_manager_payment_claimed,
 			(res: TChannelManagerClaim) => {
@@ -439,7 +438,6 @@ export const subscribeToLightningPayments = ({
 		);
 	}
 	if (!onChannelSubscription) {
-		// @ts-ignore
 		onChannelSubscription = ldk.onEvent(
 			EEventTypes.new_channel,
 			async (_res: TChannelUpdate) => {
@@ -460,7 +458,6 @@ export const subscribeToLightningPayments = ({
 		);
 	}
 	if (!onSpendableOutputsSubscription) {
-		// @ts-ignore
 		onSpendableOutputsSubscription = ldk.onEvent(
 			EEventTypes.channel_manager_spendable_outputs,
 			() => {},
@@ -555,9 +552,10 @@ export const refreshLdk = async ({
 
 		await Promise.all([
 			updateLightningChannels({ selectedWallet, selectedNetwork }),
-			updateClaimableBalance({ selectedNetwork, selectedWallet }),
 			syncLightningTxsWithActivityList(),
 		]);
+
+		await updateClaimableBalance({ selectedNetwork, selectedWallet });
 
 		const accountVersion = getLightningStore()?.accountVersion;
 		if (!accountVersion || accountVersion < 2) {
