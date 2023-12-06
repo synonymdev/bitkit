@@ -36,37 +36,15 @@ jobs:
         uses: docker-practice/actions-setup-docker@1.0.12
         timeout-minutes: 30
 
+      - name: Run regtest setup
+        run: cd docker && mkdir lnd && chmod 777 lnd && docker-compose up --quiet-pull -d
+
       - name: Install AppleSimulatorUtils
         run: HOMEBREW_NO_AUTO_UPDATE=1 brew tap wix/brew && brew install applesimutils
 
-      - name: Run regtest setup
-        run: cd docker && mkdir lnd && chmod 777 lnd && docker-compose up -d
-
-      - name: Wait for electrum server
+      - name: Wait for docker testing environment
         timeout-minutes: 20
-        run: |
-          while true
-          do
-            for i in {1..60}; do
-              nc -z '127.0.0.1' 60001
-              if [ $? -eq 0 ]; then
-                echo "port is open"
-                exit 0
-              fi
-              echo "port is closed, attempt $i"
-              sleep 1
-            done
-            echo "colima restart"
-            colima restart
-          done
-
-      # - name: Wait for bitcoind
-      #   timeout-minutes: 2
-      #   run: while ! nc -z '127.0.0.1' 43782; do sleep 1; done
-
-      # - name: Wait for electrum server
-      #   timeout-minutes: 2
-      #   run: while ! nc -z '127.0.0.1' 60001; do sleep 1; done
+        run: ./.github/workflows/wait-for-env.sh
 
       - name: Setup Node
         uses: actions/setup-node@v3
