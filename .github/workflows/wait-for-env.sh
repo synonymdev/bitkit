@@ -5,6 +5,8 @@ ATTEMPTS=60
 
 while true
 do
+  docker-compose -f docker/docker-compose.yml ps
+
   echo "::group::check ports"
 
   echo -n "Bitcoin port 43782 "
