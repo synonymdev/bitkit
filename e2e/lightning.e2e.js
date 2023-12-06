@@ -57,8 +57,7 @@ d('Lightning', () => {
 		// - check balances, tx history and notes
 		// - close channel
 
-		// FIXME: disable this test on CI until we figure out how to run new LDK
-		it.skip('Can receive and send LN payments', async () => {
+		it('Can receive and send LN payments', async () => {
 			if (checkComplete('lighting-1')) {
 				return;
 			}
@@ -188,6 +187,9 @@ d('Lightning', () => {
 				by.id('ReceiveLightningInvoice'),
 			).getAttributes();
 			await lnd.sendPaymentSync({ paymentRequest: invoice2 });
+			await waitFor(element(by.id('NewTxPrompt')))
+				.toBeVisible()
+				.withTimeout(10000);
 			await element(by.id('NewTxPrompt')).swipe('down');
 			await waitFor(
 				element(by.id('MoneyPrimary').withAncestor(by.id('TotalBalance'))),
