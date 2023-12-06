@@ -3,7 +3,7 @@ import { err, ok, Result } from '@synonymdev/result';
 import actions from './actions';
 import { resetSendTransaction, updateSendTransaction } from './wallet';
 import { setLightningSettingUpStep } from './user';
-import { getBlocktankStore, getDispatch } from '../helpers';
+import { getBlocktankStore, getDispatch, getWalletStore } from '../helpers';
 import * as blocktank from '../../utils/blocktank';
 import {
 	createOrder,
@@ -370,7 +370,7 @@ export const confirmChannelPurchase = async ({
 	orderId: string;
 	selectedNetwork?: TAvailableNetworks;
 	selectedWallet?: TWalletName;
-}): Promise<Result<string>> => {
+}): Promise<Result<{ txid: string; useUnconfirmedInputs: boolean }>> => {
 	if (!selectedNetwork) {
 		selectedNetwork = getSelectedNetwork();
 	}
@@ -387,6 +387,11 @@ export const confirmChannelPurchase = async ({
 		});
 		return err(rawTx.error.message);
 	}
+
+	const useUnconfirmedInputs = getWalletStore().wallets[
+		selectedWallet!
+	].transaction[selectedNetwork!].inputs.some(({ height }) => height === 0);
+
 	const broadcastResponse = await broadcastTransaction({
 		rawTx: rawTx.value.hex,
 		subscribeToOutputAddress: false,
@@ -415,7 +420,7 @@ export const confirmChannelPurchase = async ({
 		selectedNetwork,
 	}).then();
 
-	return ok(broadcastResponse.value);
+	return ok({ txid: broadcastResponse.value, useUnconfirmedInputs });
 };
 
 /**

@@ -73,7 +73,8 @@ const QuickConfirm = ({
 			setLoading(false);
 			return;
 		}
-		navigation.navigate('SettingUp');
+		const zeroConf = order?.zeroConf && !res.value.useUnconfirmedInputs;
+		navigation.navigate(zeroConf ? 'SettingUp' : 'Success');
 	};
 
 	return (

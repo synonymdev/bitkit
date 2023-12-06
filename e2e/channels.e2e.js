@@ -131,6 +131,8 @@ d('LN Channel Onboarding', () => {
 				.toBeVisible()
 				.withTimeout(10000);
 
+			await rpc.generateToAddress(1, await rpc.getNewAddress());
+
 			// CustomSetup
 			await launchAndWait();
 			await waitFor(element(by.id('Suggestion-lightningSettingUp')))
