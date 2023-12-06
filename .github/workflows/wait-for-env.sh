@@ -1,7 +1,7 @@
 #!/bin/bash
 # wait for the colima env to be ready, restart if not ready after 60 seconds
 
-ATTEMPTS=30
+ATTEMPTS=60
 
 while true
 do
@@ -44,7 +44,10 @@ do
   echo "::endgroup::"
 
   echo "::group::colima restart"
-  colima restart
+  # colima restart
+  docker-compose -f docker/docker-compose.yml ps down -t 60
+  docker-compose -f docker/docker-compose.yml ps up -d
+  sleep 10
   echo "::endgroup::"
 done
 
