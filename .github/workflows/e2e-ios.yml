@@ -21,26 +21,32 @@ jobs:
         uses: mikehardy/buildcache-action@v2
 
       - name: Setup Docker Colima 1
-        uses: douglascamata/setup-docker-macos-action@v1-alpha
+        uses: limpbrains/setup-docker-macos-action@e4216b347f8992aa26308d9a0a43216f4386b278
         id: docker1
         continue-on-error: true
+        with:
+          lima: v0.18.0
+          colima: v0.5.6
 
       - name: Setup Docker Colima 2
         if: steps.docker1.outcome != 'success'
-        uses: douglascamata/setup-docker-macos-action@v1-alpha
+        uses: limpbrains/setup-docker-macos-action@e4216b347f8992aa26308d9a0a43216f4386b278
         id: docker2
         continue-on-error: true
+        with:
+          lima: v0.18.0
+          colima: v0.5.6
 
       - name: Setup Docker Default
         if: steps.docker1.outcome != 'success' && steps.docker2.outcome != 'success'
         uses: docker-practice/actions-setup-docker@1.0.12
         timeout-minutes: 30
 
+      - name: Run regtest setup
+        run: cd docker && mkdir lnd && chmod 777 lnd && docker-compose up --quiet-pull -d
+
       - name: Install AppleSimulatorUtils
         run: HOMEBREW_NO_AUTO_UPDATE=1 brew tap wix/brew && brew install applesimutils
-
-      - name: Run regtest setup
-        run: cd docker && mkdir lnd && chmod 777 lnd && docker-compose up -d
 
       - name: Wait for electrum server
         timeout-minutes: 20
@@ -124,7 +130,7 @@ jobs:
       - name: Restart docker before last attempt
         if: steps.test1.outcome != 'success' && steps.test2.outcome != 'success' && steps.test3.outcome != 'success'
         run: |
-          cd docker && docker-compose down -t 60 && docker-compose up -d && cd ..
+          cd docker && docker-compose down -t 60 && docker-compose up --quiet-pull -d && cd ..
           while ! nc -z '127.0.0.1' 60001; do sleep 1; done
 
       - name: Test attempt 4
