@@ -24,6 +24,8 @@ jobs:
         uses: douglascamata/setup-docker-macos-action@v1-alpha
         id: docker1
         continue-on-error: true
+        with:
+          upgrade-qemu: true
 
       - name: Setup Docker Colima 2
         if: steps.docker1.outcome != 'success'
