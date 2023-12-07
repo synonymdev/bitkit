@@ -46,10 +46,14 @@ do
   echo "::endgroup::"
 
   echo "::group::colima restart"
-  # colima restart
+  colima restart
   docker-compose -f docker/docker-compose.yml ps down -t 60
   docker-compose -f docker/docker-compose.yml ps up -d
   sleep 10
+  echo "::endgroup::"
+
+  echo "::group::docker-compose ps"
+  docker-compose -f docker/docker-compose.yml ps
   echo "::endgroup::"
 done
 
