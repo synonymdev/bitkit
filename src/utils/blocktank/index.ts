@@ -265,8 +265,10 @@ export const openChannel = async (
  * @returns {void}
  */
 export const watchPendingOrders = (): void => {
-	const pendingOrders = getPendingOrders();
-	pendingOrders.forEach((order) => watchOrder(order.id));
+	const orders = getBlocktankStore().orders.filter((order) => {
+		return order.state === BtOrderState.CREATED;
+	});
+	orders.forEach((order) => watchOrder(order.id));
 };
 
 /**
