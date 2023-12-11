@@ -208,6 +208,22 @@ d('Settings', () => {
 
 			markComplete('settings-tags');
 		});
+
+		d('About', () => {
+			it('Can show EasterEgg screen', async () => {
+				if (checkComplete('settings-about')) {
+					return;
+				}
+
+				// no tags, menu entry should be hidden
+				await element(by.id('Settings')).tap();
+				await element(by.id('About')).tap();
+				await element(by.id('Logo')).tap();
+				await expect(element(by.id('EasterEgg'))).toBeVisible();
+
+				markComplete('settings-about');
+			});
+		});
 	});
 
 	d('Backup or restore', () => {

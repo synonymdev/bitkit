@@ -41,7 +41,7 @@ const EasterEgg = ({
 					navigation.navigate('Wallet');
 				}}
 			/>
-			<View style={styles.root}>
+			<View style={styles.root} testID="EasterEgg">
 				<View style={styles.alignCenter}>
 					<Image source={imageSrc} />
 				</View>

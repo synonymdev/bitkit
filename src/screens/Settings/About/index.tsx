@@ -186,6 +186,7 @@ const About = ({
 							onPress={(): void => {
 								navigation.navigate('EasterEgg');
 							}}
+							testID="Logo"
 						/>
 						<BitkitIcon height={64} width={184} />
 						<Image style={styles.poweredBy} source={imageSrc} />
