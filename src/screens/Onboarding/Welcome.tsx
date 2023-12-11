@@ -63,6 +63,7 @@ const OnboardingWelcomeScreen = ({
 								onPress={onGetStarted}
 								text={t('get_started')}
 								style={[styles.button, styles.restoreButton]}
+								testID="GetStarted"
 							/>
 							<Button
 								size="large"

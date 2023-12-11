@@ -234,6 +234,7 @@ const RestoreFromSeed = (): ReactElement => {
 							onSubmitEditing={handleSubmitEditing}
 							placeholder={t('restore_passphrase_placeholder')}
 							valid={true}
+							testID="PassphraseInput"
 						/>
 						<Text02S color="gray1" style={styles.explanation}>
 							{t('restore_passphrase_meaning')}
@@ -250,6 +251,7 @@ const RestoreFromSeed = (): ReactElement => {
 							variant="secondary"
 							disabled={!enableButtons}
 							onPress={handleAdvanced}
+							testID="AdvancedButton"
 						/>
 					)}
 

@@ -95,7 +95,7 @@ const Slideshow = ({
 			{
 				topLeftColor: 'brand',
 				slide: (): ReactElement => (
-					<View style={styles.slide}>
+					<View style={styles.slide} testID="Slide1">
 						<View style={styles.imageContainer}>
 							<Image style={illustrationStyles} source={shieldImageSrc} />
 						</View>
@@ -119,7 +119,7 @@ const Slideshow = ({
 			{
 				topLeftColor: 'purple',
 				slide: (): ReactElement => (
-					<View style={styles.slide}>
+					<View style={styles.slide} testID="Slide2">
 						<View style={styles.imageContainer}>
 							<Image style={illustrationStyles} source={lightningImageSrc} />
 						</View>
@@ -143,7 +143,7 @@ const Slideshow = ({
 			{
 				topLeftColor: 'blue',
 				slide: (): ReactElement => (
-					<View style={styles.slide}>
+					<View style={styles.slide} testID="Slide3">
 						<View style={styles.imageContainer}>
 							<Image style={illustrationStyles} source={sparkImageSrc} />
 						</View>
@@ -306,7 +306,8 @@ const Slideshow = ({
 										return;
 									}
 									navigation.navigate('Passphrase');
-								}}>
+								}}
+								testID="Passphrase">
 								<Caption13M color="gray1">{t('advanced_setup')}</Caption13M>
 							</TouchableOpacity>
 						</AnimatedView>
@@ -327,7 +328,10 @@ const Slideshow = ({
 					<AnimatedView
 						color="transparent"
 						style={[styles.headerButtonContainer, skipOpacity]}>
-						<Pressable style={styles.skipButton} onPress={onSkip}>
+						<Pressable
+							style={styles.skipButton}
+							onPress={onSkip}
+							testID="SkipButton">
 							<SafeAreaInset type="top" />
 							<Text01M color="gray1">{t('skip')}</Text01M>
 						</Pressable>

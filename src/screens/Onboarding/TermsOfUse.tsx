@@ -42,7 +42,7 @@ const TermsOfUse = ({
 		<GlowingBackground topLeft="brand">
 			<SafeAreaInset type="top" />
 			<View style={styles.content}>
-				<ScrollView style={styles.tos}>
+				<ScrollView style={styles.tos} testID="TOS">
 					<Trans
 						t={t}
 						i18nKey="tos_header"

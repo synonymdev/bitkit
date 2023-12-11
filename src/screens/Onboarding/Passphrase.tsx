@@ -79,6 +79,7 @@ const Passphrase = ({
 							autoCompleteType="off"
 							autoCorrect={false}
 							placeholder={t('passphrase')}
+							testID="PassphraseInput"
 						/>
 					</View>
 
@@ -90,6 +91,7 @@ const Passphrase = ({
 							onPress={(): void => {
 								navigation.navigate('Slideshow', { bip39Passphrase });
 							}}
+							testID="CreateNewWallet"
 						/>
 					</View>
 					<SafeAreaInset type="bottom" minPadding={16} />
