@@ -501,11 +501,51 @@ d('Settings', () => {
 
 			markComplete('settings-10');
 		});
+
+		it('Can connect to different Rappid Gosip Sync Server', async () => {
+			if (checkComplete('settings-11')) {
+				return;
+			}
+
+			await element(by.id('Settings')).tap();
+			await element(by.id('AdvancedSettings')).tap();
+			await element(by.id('RGSServer')).tap();
+
+			const { label: origValue } = await element(
+				by.id('ConnectedUrl'),
+			).getAttributes();
+
+			// add slash at the end
+			const newUrl = origValue + '/';
+			await element(by.id('RGSUrl')).replaceText(newUrl);
+			await element(by.id('RGSUrl')).tapReturnKey();
+			await element(by.id('ConnectToHost')).tap();
+			await sleep(1000);
+
+			// url should be updated
+			let { label: newValue } = await element(
+				by.id('ConnectedUrl'),
+			).getAttributes();
+
+			jestExpect(newValue).toBe(newUrl);
+
+			// switch back to default
+			await element(by.id('ResetToDefault')).tap();
+			await element(by.id('ConnectToHost')).tap();
+
+			let { label: resetValue } = await element(
+				by.id('ConnectedUrl'),
+			).getAttributes();
+
+			jestExpect(resetValue).toBe(origValue);
+
+			markComplete('settings-11');
+		});
 	});
 
 	d('Dev Settings', () => {
 		it('Shows the crash error screen when triggering render error', async () => {
-			if (checkComplete('settings-11')) {
+			if (checkComplete('settings-12')) {
 				return;
 			}
 
@@ -526,7 +566,7 @@ d('Settings', () => {
 			await expect(element(by.id('ErrorClose'))).toBeVisible();
 			await expect(element(by.id('ErrorReport'))).toBeVisible();
 
-			markComplete('settings-11');
+			markComplete('settings-12');
 		});
 	});
 
@@ -540,7 +580,7 @@ d('Settings', () => {
 			// - login with PIN
 			// - disable PIN
 			// - enter wrong PIN 10 times and reset the app
-			if (checkComplete('settings-12')) {
+			if (checkComplete('settings-13')) {
 				return;
 			}
 
@@ -664,7 +704,7 @@ d('Settings', () => {
 			// await device.launchApp({ newInstance: true });
 			// await waitFor(element(by.id('Check1'))).toBeVisible();
 
-			markComplete('settings-12');
+			markComplete('settings-13');
 		});
 	});
 });

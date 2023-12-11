@@ -105,7 +105,7 @@ const RGSServer = ({
 						<Text01S color="gray1">{t('es.connected_to')}</Text01S>
 						<View style={styles.row}>
 							<View style={styles.connectedPeer} testID="Status">
-								<Text01S color="green" testID="Connected">
+								<Text01S color="green" testID="ConnectedUrl">
 									{rapidGossipSyncUrl}
 								</Text01S>
 							</View>
@@ -130,7 +130,7 @@ const RGSServer = ({
 						setRGSUrl(txt.trim());
 					}}
 					returnKeyType="done"
-					testID="rgsUrl"
+					testID="RGSUrl"
 				/>
 
 				<View style={styles.buttons}>
