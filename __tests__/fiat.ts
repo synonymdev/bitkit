@@ -5,7 +5,38 @@ import { getDisplayValues } from '../src/utils/displayValues';
 import { resetExchangeRates } from '../src/store/actions/wallet';
 import { EUnit } from '../src/store/types/wallet';
 
-global.fetch = require('node-fetch');
+// @ts-ignore
+global.fetch = jest.fn(() =>
+	Promise.resolve({
+		json: () =>
+			Promise.resolve({
+				tickers: [
+					{
+						symbol: 'BTCRUB',
+						lastPrice: '3832499',
+						base: 'BTC',
+						baseName: 'Bitcoin',
+						quote: 'RUB',
+						quoteName: 'Russian Ruble',
+						currencySymbol: '₽',
+						currencyFlag: '🇷🇺',
+						lastUpdatedAt: 1702295587246,
+					},
+					{
+						symbol: 'BTCUSD',
+						lastPrice: '42373.00',
+						base: 'BTC',
+						baseName: 'Bitcoin',
+						quote: 'USD',
+						quoteName: 'US Dollar',
+						currencySymbol: '$',
+						currencyFlag: '🇺🇸',
+						lastUpdatedAt: 1702295629052,
+					},
+				],
+			}),
+	}),
+);
 
 describe('Pulls latest fiat exchange rates and checks the wallet store for valid conversions', () => {
 	jest.setTimeout(10000);
