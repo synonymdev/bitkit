@@ -14,18 +14,18 @@ import {
 const __DEV__ = process.env.DEV === 'true';
 
 const d = checkComplete([
-	'settings-1',
-	'settings-2',
-	'settings-3',
-	'settings-4',
-	'settings-5',
-	'settings-6',
-	'settings-7',
-	'settings-8',
-	'settings-9',
-	'settings-10',
-	'settings-11',
-	'settings-12',
+	'settings-currency',
+	'settings-unit',
+	'settings-speed',
+	'settings-suggestions',
+	'settings-tags',
+	'settings-backup',
+	'settings-addr-type',
+	'settings-ln-settings',
+	'settings-electrum',
+	'settings-webrelay',
+	'settings-rgs',
+	'settings-dev',
 ])
 	? describe.skip
 	: describe;
@@ -41,7 +41,7 @@ d('Settings', () => {
 
 	d('General', () => {
 		it('Can switch local currency', async () => {
-			if (checkComplete('settings-1')) {
+			if (checkComplete('settings-currency')) {
 				return;
 			}
 
@@ -68,11 +68,11 @@ d('Settings', () => {
 			// switch back to sats
 			await element(by.id('TotalBalance')).tap();
 			await element(by.id('TotalBalance')).tap();
-			markComplete('settings-1');
+			markComplete('settings-currency');
 		});
 
 		it('Can switch Bitcoin Unit', async () => {
-			if (checkComplete('settings-2')) {
+			if (checkComplete('settings-unit')) {
 				return;
 			}
 
@@ -91,11 +91,11 @@ d('Settings', () => {
 			await expect(
 				element(by.id('Value').withAncestor(by.id('UnitSettings'))),
 			).toHaveText('Satoshis');
-			markComplete('settings-2');
+			markComplete('settings-unit');
 		});
 
 		it('Can switch transaction speed', async () => {
-			if (checkComplete('settings-3')) {
+			if (checkComplete('settings-speed')) {
 				return;
 			}
 
@@ -125,11 +125,11 @@ d('Settings', () => {
 			await expect(
 				element(by.id('Value').withAncestor(by.id('TransactionSpeedSettings'))),
 			).toHaveText('Normal');
-			markComplete('settings-3');
+			markComplete('settings-speed');
 		});
 
 		it('Can change hide and reset Suggestions', async () => {
-			if (checkComplete('settings-4')) {
+			if (checkComplete('settings-suggestions')) {
 				return;
 			}
 
@@ -163,11 +163,11 @@ d('Settings', () => {
 
 			// backupSeedPhrase should be visible again
 			await expect(element(by.id('Suggestion-backupSeedPhrase'))).toBeVisible();
-			markComplete('settings-4');
+			markComplete('settings-suggestions');
 		});
 
 		it('Can remove last used tags', async () => {
-			if (checkComplete('settings-5')) {
+			if (checkComplete('settings-tags')) {
 				return;
 			}
 
@@ -206,13 +206,13 @@ d('Settings', () => {
 			await element(by.id('TagsAdd')).tap();
 			await expect(element(by.text(tag))).not.toBeVisible();
 
-			markComplete('settings-5');
+			markComplete('settings-tags');
 		});
 	});
 
 	d('Backup or restore', () => {
 		it('Can show backup and validate it', async () => {
-			if (checkComplete('settings-6')) {
+			if (checkComplete('settings-backup')) {
 				return;
 			}
 
@@ -243,13 +243,13 @@ d('Settings', () => {
 			await element(by.id('OK')).tap();
 			await element(by.id('OK')).tap();
 			await sleep(1000);
-			markComplete('settings-6');
+			markComplete('settings-backup');
 		});
 	});
 
 	d('Advanced', () => {
 		it('Can switch address types', async () => {
-			if (checkComplete('settings-7')) {
+			if (checkComplete('settings-addr-type')) {
 				return;
 			}
 			// wallet be in regtest mode by default
@@ -339,11 +339,11 @@ d('Settings', () => {
 			await element(by.id('p2wpkh')).tap();
 			await element(by.id('NavigationClose')).tap();
 			await sleep(1000);
-			markComplete('settings-7');
+			markComplete('settings-addr-type');
 		});
 
 		it('Can open LN settings screens', async () => {
-			if (checkComplete('settings-8')) {
+			if (checkComplete('settings-ln-settings')) {
 				return;
 			}
 
@@ -373,11 +373,11 @@ d('Settings', () => {
 				await element(by.id('DevOptions')).multiTap(5); // disable dev mode
 			}
 			await sleep(1000);
-			markComplete('settings-8');
+			markComplete('settings-ln-settings');
 		});
 
 		it('Can enter wrong Electrum server and get an error message', async () => {
-			if (checkComplete('settings-9')) {
+			if (checkComplete('settings-electrum')) {
 				return;
 			}
 
@@ -461,11 +461,11 @@ d('Settings', () => {
 			await waitFor(element(by.id('Connected'))).toBeVisible();
 			await sleep(1000);
 
-			markComplete('settings-9');
+			markComplete('settings-electrum');
 		});
 
 		it('Can connect to different Slashtags Web Relay', async () => {
-			if (checkComplete('settings-10')) {
+			if (checkComplete('settings-webrelay')) {
 				return;
 			}
 
@@ -499,11 +499,11 @@ d('Settings', () => {
 			await element(by.id('Status')).tap(); // close keyboard
 			await element(by.id('ConnectToUrl')).tap();
 
-			markComplete('settings-10');
+			markComplete('settings-webrelay');
 		});
 
 		it('Can connect to different Rappid Gosip Sync Server', async () => {
-			if (checkComplete('settings-11')) {
+			if (checkComplete('settings-rgs')) {
 				return;
 			}
 
@@ -539,13 +539,13 @@ d('Settings', () => {
 
 			jestExpect(resetValue).toBe(origValue);
 
-			markComplete('settings-11');
+			markComplete('settings-rgs');
 		});
 	});
 
 	d('Dev Settings', () => {
 		it('Shows the crash error screen when triggering render error', async () => {
-			if (checkComplete('settings-12')) {
+			if (checkComplete('settings-dev')) {
 				return;
 			}
 
@@ -558,7 +558,7 @@ d('Settings', () => {
 
 			// Error screen will not be rendered in development mode
 			if (__DEV__) {
-				markComplete('settings-10');
+				markComplete('settings-dev');
 				return;
 			}
 
@@ -566,7 +566,7 @@ d('Settings', () => {
 			await expect(element(by.id('ErrorClose'))).toBeVisible();
 			await expect(element(by.id('ErrorReport'))).toBeVisible();
 
-			markComplete('settings-12');
+			markComplete('settings-dev');
 		});
 	});
 });
