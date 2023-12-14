@@ -26,10 +26,6 @@ import { blocktankInfoSelector } from '../../../store/reselect/blocktank';
 import { refreshBlocktankInfo } from '../../../store/actions/blocktank';
 import type { ReceiveScreenProps } from '../../../navigation/types';
 
-// hardcoded to be above fee (1092)
-// TODO: fee is dynamic so this should be fetched from the API
-const MINIMUM_AMOUNT = 5000;
-
 const ReceiveAmount = ({
 	navigation,
 }: ReceiveScreenProps<'ReceiveAmount'>): ReactElement => {
@@ -39,6 +35,9 @@ const ReceiveAmount = ({
 	const [isLoading, setIsLoading] = useState(false);
 	const invoice = useSelector(receiveSelector);
 	const blocktank = useSelector(blocktankInfoSelector);
+
+	const { minChannelSizeSat } = blocktank.options;
+	const MINIMUM_AMOUNT = minChannelSizeSat;
 
 	const { maxChannelSizeSat } = blocktank.options;
 	// channel size must be at least 2x the invoice amount
