@@ -122,6 +122,12 @@ export type TLnUrlAddress = {
 	lnUrlParams: LNURLPayParams;
 	network?: EAvailableNetwork;
 };
+export type TLnUrlAddress = {
+	qrDataType: EQRDataType.lnurlAddress;
+	address: string;
+	lnUrlParams: LNURLPayParams;
+	network?: TAvailableNetworks;
+};
 export type TNodeId = {
 	qrDataType: EQRDataType.nodeId;
 	network: EAvailableNetwork;
