@@ -71,20 +71,6 @@ services:
       - ELECTRS_DAEMON_P2P_ADDR=bitcoind:39388
       - ELECTRS_LOG_FILTERS=INFO
 
-  darkhttpd:
-    image: p3terx/darkhttpd:1.14
-    restart: unless-stopped
-    depends_on:
-      - bitcoinsetup
-    expose:
-      - '80'
-    ports:
-      - '80:80'
-    volumes:
-      - './btc-fee-estimates.json:/www/btc-fee-estimates.json'
-    command:
-      - '/www'
-
   lnd:
     container_name: lnd
     image: polarlightning/lnd:0.16.2-beta
@@ -117,7 +103,25 @@ services:
       - '--listen=0.0.0.0:9735'
       - '--rpclisten=0.0.0.0:10009'
       - '--restlisten=0.0.0.0:8080'
-      - '--feeurl=http://darkhttpd:80/btc-fee-estimates.json'
+      - '--feeurl=http://nginx:9090/btc-fee-estimates.json'
+
+  nginx:
+    container_name: nginx
+    image: nginx:1.25.1
+    restart: unless-stopped
+    depends_on:
+      - bitcoinsetup
+    volumes:
+      - './nginx.conf:/etc/nginx/conf.d/default.conf'
+      - './btc-fee-estimates.json:/www/btc-fee-estimates.json'
+      - './localhost.crt:/www/localhost.crt'
+      - './localhost.key:/www/localhost.key'
+    expose:
+      - '443'
+      - '9090'
+    ports:
+      - '443:443'
+      - '9090:9090'
 
 volumes:
   bitcoin_home:

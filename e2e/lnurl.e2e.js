@@ -1,6 +1,7 @@
 import BitcoinJsonRpc from 'bitcoin-json-rpc';
 import createLndRpc from '@radar/lnrpc';
 import LNURL from 'lnurl';
+import URLParse from 'url-parse';
 
 import {
 	sleep,
@@ -58,8 +59,9 @@ d('LNURL', () => {
 		);
 
 		lnurl = LNURL.createServer({
-			host: 'localhost',
+			host: '0.0.0.0',
 			port: 30001,
+			url: 'http://localhost:30001',
 			lightning: {
 				backend: 'lnd',
 				config: { hostname: '127.0.0.1:8080', macaroon, cert: tls },
@@ -67,7 +69,30 @@ d('LNURL', () => {
 			store: { config: { noWarning: true } },
 		});
 
+		await new Promise((resolve) => {
+			lnurl.app.webServer.on('listening', resolve);
+		});
+
 		await completeOnboarding();
+
+		// redirect Lightning Address requests to LNURL pay
+		lnurl.app.get('/.well-known/lnurlp/:username', (req, res, next) => {
+			lnurl
+				.generateNewUrl('payRequest', {
+					minSendable: 100000, // msats
+					maxSendable: 200000, // msats
+					metadata: '[["text/plain", "lnurl-node1"]]',
+				})
+				.then((pay) => {
+					const newUrl = pay.url.split(URLParse(pay.url).host)[1];
+					res.redirect(newUrl);
+					next();
+				});
+		});
+
+		// inject handler before 404 handler
+		const myView = lnurl.app._router.stack.pop();
+		lnurl.app._router.stack.splice(4, 0, myView);
 	});
 
 	afterAll(async () => {
@@ -176,6 +201,22 @@ d('LNURL', () => {
 			.toBeVisible()
 			.withTimeout(30000);
 		await element(by.id('LNURLChannelSuccess-button')).tap();
+
+		// // test Lightning Address
+		// await element(by.id('Scan')).tap();
+		// await element(by.id('ScanPrompt')).tap();
+		// await element(by.type('_UIAlertControllerTextField')).replaceText(
+		// 	'satohi@localhost',
+		// );
+		// await element(
+		// 	by.label('OK').and(by.type('_UIAlertControllerActionView')),
+		// ).tap();
+		// await element(by.id('ContinueAmount')).tap();
+		// await element(by.id('GRAB')).swipe('right'); // Swipe to confirm
+		// await waitFor(element(by.id('SendSuccess')))
+		// 	.toBeVisible()
+		// 	.withTimeout(10000);
+		// await element(by.id('Close')).tap();
 
 		// test lnurl-pay, with min !== max amount
 		const payRequest1 = await lnurl.generateNewUrl('payRequest', {

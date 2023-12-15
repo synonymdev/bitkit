@@ -110,6 +110,9 @@ jobs:
       - name: Build
         run: yarn e2e:build:ios-release || yarn e2e:build:ios-release
 
+      - name: Add self signed certificate for lnurl tests
+        run: xcrun simctl keychain "iPhone 14 Pro" add-root-cert ./docker/localhost.crt
+
       - name: Test attempt 1
         continue-on-error: true
         id: test1
