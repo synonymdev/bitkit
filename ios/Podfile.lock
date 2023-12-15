@@ -577,7 +577,7 @@ PODS:
     - React-Core
     - SSZipArchive (~> 2.2)
   - SocketRocket (0.6.1)
-  - sodium-react-native (0.3.0):
+  - sodium-react-native-direct (0.4.0):
     - RCT-Folly (= 2021.07.22.00)
     - React-Core
   - SSZipArchive (2.4.3)
@@ -684,7 +684,7 @@ DEPENDENCIES:
   - RNShare (from `../node_modules/react-native-share`)
   - RNSVG (from `../node_modules/react-native-svg`)
   - RNZipArchive (from `../node_modules/react-native-zip-archive`)
-  - sodium-react-native (from `../node_modules/sodium-react-native-direct`)
+  - sodium-react-native-direct (from `../node_modules/sodium-react-native-direct`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
@@ -856,7 +856,7 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-svg"
   RNZipArchive:
     :path: "../node_modules/react-native-zip-archive"
-  sodium-react-native:
+  sodium-react-native-direct:
     :path: "../node_modules/sodium-react-native-direct"
   Yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
@@ -951,7 +951,7 @@ SPEC CHECKSUMS:
   RNSVG: d00c8f91c3cbf6d476451313a18f04d220d4f396
   RNZipArchive: ef9451b849c45a29509bf44e65b788829ab07801
   SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17
-  sodium-react-native: a3a46a692c6855ab8db5f8470b11c064078cc356
+  sodium-react-native-direct: 9329173e4741e0bf301c1aba6499056013244620
   SSZipArchive: fe6a26b2a54d5a0890f2567b5cc6de5caa600aef
   Yoga: 4c3aa327e4a6a23eeacd71f61c81df1bcdf677d5
   ZXingObjC: 8898711ab495761b2dbbdec76d90164a6d7e14c5
