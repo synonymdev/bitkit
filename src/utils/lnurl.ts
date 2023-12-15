@@ -45,6 +45,20 @@ export const findlnurl = (text: string): string | null => {
 };
 
 /**
+ * Checks if a string is a valid LN Address.
+ * @param {string} address
+ * @returns {boolean}
+ */
+export const isLnurlAddress = (address: string): boolean => {
+	// ensure only 1 `@` present:
+	const splitted = address.split('@');
+	if (splitted.length !== 2) {
+		return false;
+	}
+	return !!splitted[0].trim() && !!splitted[1].trim();
+};
+
+/**
  * Handles LNURL Pay Requests.
  * @param {LNURLPayParams} params
  * @param {TWalletName} [selectedWallet]
