@@ -30,6 +30,15 @@ export const defaultBlocktankInfoShape: IBtInfo = {
 		btc: '0.0.0',
 		ln2: '0.0.0',
 	},
+	// @ts-ignore
+	onchain: {
+		feeRates: {
+			fast: 20,
+			mid: 10,
+			slow: 5,
+			isHigh: false,
+		},
+	},
 };
 
 export const initialBlocktankState: IBlocktank = {

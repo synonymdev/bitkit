@@ -40,6 +40,9 @@ export const uiSlice = createSlice({
 		updateProfileLink: (state, action: PayloadAction<TProfileLink>) => {
 			state.profileLink = Object.assign(state.profileLink, action.payload);
 		},
+		confirmHighFee: (state) => {
+			state.hasFeeWarningShown = true;
+		},
 		resetUiState: () => initialUiState,
 	},
 });
@@ -52,6 +55,7 @@ export const {
 	showSheet,
 	closeSheet,
 	updateProfileLink,
+	confirmHighFee,
 	resetUiState,
 } = actions;
 

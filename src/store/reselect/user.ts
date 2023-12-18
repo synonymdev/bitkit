@@ -39,6 +39,11 @@ export const ignoreHighBalanceCountSelector = createSelector(
 	(user): number => user.ignoreHighBalanceCount,
 );
 
+export const ignoreHighFeeTimestampSelector = createSelector(
+	[userState],
+	(user): number => user.ignoreHighFeeTimestamp,
+);
+
 export const startCoopCloseTimestampSelector = createSelector(
 	[userState],
 	(user): number => user.startCoopCloseTimestamp,

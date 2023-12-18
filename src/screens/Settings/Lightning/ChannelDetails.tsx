@@ -373,7 +373,14 @@ const ChannelDetails = ({
 									{blocktankOrder.id}
 								</Caption13M>
 							}
-							onPress={(): void => Clipboard.setString(blocktankOrder.id)}
+							onPress={(): void => {
+								Clipboard.setString(blocktankOrder.id);
+								showToast({
+									type: 'success',
+									title: t('copied'),
+									description: blocktankOrder.id,
+								});
+							}}
 						/>
 						<Section
 							name={t('created_on')}

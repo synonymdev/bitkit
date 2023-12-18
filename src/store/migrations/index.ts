@@ -276,6 +276,25 @@ const migrations = {
 			},
 		};
 	},
+	29: (state): PersistedState => {
+		return {
+			...state,
+			blocktank: {
+				...state.blocktank,
+				info: {
+					...state.blocktank.info,
+					onchain: {
+						feeRates: {
+							fast: 20,
+							mid: 10,
+							slow: 5,
+							isHigh: false,
+						},
+					},
+				},
+			},
+		};
+	},
 };
 
 export default migrations;

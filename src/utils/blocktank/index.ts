@@ -29,6 +29,7 @@ import { setGeoBlock } from '../../store/utils/user';
 import { refreshWallet } from '../wallet';
 import { DEFAULT_CHANNEL_DURATION } from '../../screens/Lightning/CustomConfirm';
 import { __BLOCKTANK_HOST__ } from '../../constants/env';
+import { IBt0ConfMinTxFeeWindow } from '@synonymdev/blocktank-lsp-http-client/dist/shared/IBt0ConfMinTxFeeWindow';
 
 const bt = new BlocktankClient();
 
@@ -205,9 +206,7 @@ export const getOrder = async (orderId: string): Promise<Result<IBtOrder>> => {
 
 export const getMin0ConfTxFee = async (
 	orderId: string,
-): Promise<
-	Result<{ id: string; validityEndsAt: string; satPerVByte: number }>
-> => {
+): Promise<Result<IBt0ConfMinTxFeeWindow>> => {
 	try {
 		const res = await bt.getMin0ConfTxFee(orderId);
 		return ok(res);

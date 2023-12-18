@@ -3,7 +3,7 @@ import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
 import { __E2E__ } from '../../constants/env';
-import { Caption13Up, Display, Text02S } from '../../styles/text';
+import { Caption13Up, Display, Text01S } from '../../styles/text';
 import BottomSheetWrapper from '../../components/BottomSheetWrapper';
 import BottomSheetNavigationHeader from '../../components/BottomSheetNavigationHeader';
 import SafeAreaInset from '../../components/SafeAreaInset';
@@ -162,9 +162,9 @@ const HighBalanceWarning = ({
 					<Caption13Up color="gray1">{t('high_text1')}</Caption13Up>
 					<Amount style={styles.amount} />
 				</View>
-				<Text02S style={styles.text} color="gray1">
+				<Text01S style={styles.text} color="gray1">
 					{t('high_text2_beta')}
-				</Text02S>
+				</Text01S>
 				<GlowImage image={imageSrc} imageSize={180} glowColor="yellow" />
 				<View style={styles.buttonContainer}>
 					{!BETA && (

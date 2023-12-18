@@ -88,6 +88,10 @@
 	"high_text2": "For safety reasons, we recommend moving some of your savings to an offline cold wallet or multisig solution.",
 	"high_text2_beta": "Please consider moving some of your funds. We recommend using only small amounts while Bitkit is in beta.",
 	"high_button_more": "Learn More",
+	"high_fee_title": "High Transaction Fees",
+	"high_fee_text": "Spending money from your savings balance or setting up instant payments can be more costly than usual.",
+	"high_fee_dismiss": "Don’t Warn",
+	"high_fee_confirm": "Understood",
 	"caution_header": "Caution:\n<yellow>Beta Risk.</yellow>",
 	"caution_text": "Beta software may put your money at risk. We recommend using only small amounts while Bitkit is in beta."
 }

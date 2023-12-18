@@ -13,6 +13,7 @@ export type ViewControllerParamList = {
 	forceTransfer: undefined;
 	forgotPIN: undefined;
 	highBalance: undefined;
+	highFee: undefined;
 	newTxPrompt: { activityItem: IActivityItem };
 	PINNavigation: { showLaterButton: boolean };
 	profileAddDataForm: undefined;
@@ -65,6 +66,7 @@ export type TAvailableUpdate = {
 
 export type TUiState = {
 	availableUpdate: TAvailableUpdate | null;
+	hasFeeWarningShown: boolean;
 	isAuthenticated: boolean;
 	isConnectedToElectrum: boolean;
 	isOnline: boolean;

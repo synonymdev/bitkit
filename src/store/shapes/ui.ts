@@ -15,6 +15,7 @@ export const defaultViewControllers: TUiState['viewControllers'] = {
 	forceTransfer: defaultViewController,
 	forgotPIN: defaultViewController,
 	highBalance: defaultViewController,
+	highFee: defaultViewController,
 	newTxPrompt: defaultViewController,
 	PINNavigation: defaultViewController,
 	profileAddDataForm: defaultViewController,
@@ -30,6 +31,7 @@ export const defaultViewControllers: TUiState['viewControllers'] = {
 
 export const initialUiState: TUiState = {
 	availableUpdate: null,
+	hasFeeWarningShown: false,
 	isAuthenticated: false,
 	isConnectedToElectrum: true,
 	isOnline: true,

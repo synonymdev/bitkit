@@ -67,6 +67,11 @@ export const profileLinkSelector = createSelector(
 	(ui) => ui.profileLink,
 );
 
+export const hasFeeWarningShownSelector = createSelector(
+	[uiState],
+	(ui) => ui.hasFeeWarningShown,
+);
+
 export const isAuthenticatedSelector = createSelector(
 	[uiState],
 	(ui) => ui.isAuthenticated,

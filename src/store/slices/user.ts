@@ -9,6 +9,7 @@ export type TUser = {
 	ignoreBackupTimestamp: number;
 	ignoreHighBalanceCount: number;
 	ignoreHighBalanceTimestamp: number;
+	ignoreHighFeeTimestamp: number;
 	isGeoBlocked: boolean;
 	lightningSettingUpStep: number;
 	requiresRemoteRestore: boolean;
@@ -22,6 +23,7 @@ export const initialUserState: TUser = {
 	ignoreBackupTimestamp: 0,
 	ignoreHighBalanceCount: 0,
 	ignoreHighBalanceTimestamp: 0,
+	ignoreHighFeeTimestamp: 0,
 	isGeoBlocked: false,
 	lightningSettingUpStep: 0,
 	requiresRemoteRestore: false,
@@ -45,6 +47,9 @@ export const userSlice = createSlice({
 			const increment = action.payload ? MAX_WARNINGS : 1;
 			state.ignoreHighBalanceCount += increment;
 			state.ignoreHighBalanceTimestamp = Number(new Date());
+		},
+		ignoreHighFee: (state) => {
+			state.ignoreHighFeeTimestamp = Number(new Date());
 		},
 		setLightningSetupStep: (state, action: PayloadAction<number>) => {
 			state.lightningSettingUpStep = action.payload;
@@ -72,6 +77,7 @@ export const {
 	ignoreAppUpdate,
 	ignoreBackup,
 	ignoreHighBalance,
+	ignoreHighFee,
 	setLightningSetupStep,
 	startCoopCloseTimer,
 	clearCoopCloseTimer,
