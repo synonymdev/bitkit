@@ -22,7 +22,6 @@ import DetectSwipe from '../../components/DetectSwipe';
 import BalanceHeader from '../../components/BalanceHeader';
 import Suggestions from '../../components/Suggestions';
 import Widgets from '../../components/Widgets';
-import ConnectivityIndicator from '../../components/ConnectivityIndicator';
 import SafeAreaView from '../../components/SafeAreaView';
 import BetaWarning from '../../components/BetaWarning';
 import Assets from '../../components/Assets';
@@ -120,7 +119,6 @@ const Wallets = ({ navigation, onFocus }: Props): ReactElement => {
 						<>
 							<Suggestions />
 							<View style={styles.contentPadding}>
-								<ConnectivityIndicator />
 								<Assets />
 								<Widgets />
 								<ActivityListShort />
