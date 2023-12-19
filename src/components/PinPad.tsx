@@ -9,36 +9,45 @@ import { StyleSheet, View, Pressable } from 'react-native';
 import { FadeIn, FadeOut } from 'react-native-reanimated';
 import { useTranslation } from 'react-i18next';
 
-import { AnimatedView } from '../styles/components';
 import { Text02S, Subtitle } from '../styles/text';
-import NumberPad from './NumberPad';
+import { AnimatedView } from '../styles/components';
+import { FaceIdIcon, TouchIdIcon } from '../styles/icons';
 import SafeAreaInset from './SafeAreaInset';
 import GlowingBackground from './GlowingBackground';
+import NavigationHeader from './NavigationHeader';
+import { IsSensorAvailableResult } from './Biometrics';
+import NumberPad from './NumberPad';
+import Button from './Button';
 import useColors from '../hooks/colors';
 import { wipeApp } from '../store/utils/settings';
+import { showBottomSheet } from '../store/utils/ui';
 import { vibrate } from '../utils/helpers';
+import rnBiometrics from '../utils/biometrics';
+import { showToast } from '../utils/notifications';
 import { setKeychainValue, getKeychainValue } from '../utils/keychain';
 import BitkitLogo from '../assets/bitkit-logo.svg';
-import { showBottomSheet } from '../store/utils/ui';
-import NavigationHeader from './NavigationHeader';
-import { showToast } from '../utils/notifications';
 
 export const PIN_ATTEMPTS = '8';
 
 const PinPad = ({
-	onSuccess,
 	showLogoOnPIN,
+	allowBiometrics,
 	showBackNavigation = true,
+	onSuccess,
+	onShowBiotmetrics,
 }: {
-	onSuccess: () => void;
 	showLogoOnPIN: boolean;
+	allowBiometrics: boolean;
 	showBackNavigation?: boolean;
+	onSuccess: () => void;
+	onShowBiotmetrics?: () => void;
 }): ReactElement => {
 	const { t } = useTranslation('security');
+	const { brand, brand08 } = useColors();
 	const [pin, setPin] = useState('');
 	const [isLoading, setIsLoading] = useState(true);
 	const [attemptsRemaining, setAttemptsRemaining] = useState(0);
-	const { brand, brand08 } = useColors();
+	const [biometryData, setBiometricData] = useState<IsSensorAvailableResult>();
 
 	const handleOnPress = (key: string): void => {
 		if (key === 'delete') {
@@ -84,11 +93,15 @@ const PinPad = ({
 		})();
 	}, [attemptsRemaining]);
 
-	// on mount wait for initial keychain read
+	// on mount
 	useEffect(() => {
 		(async (): Promise<void> => {
 			setIsLoading(true);
+			// wait for initial keychain read
 			await getKeychainValue({ key: 'pinAttemptsRemaining' });
+			// get available biometrics
+			const data = await rnBiometrics.isSensorAvailable();
+			setBiometricData(data);
 			setIsLoading(false);
 		})();
 	}, []);
@@ -143,6 +156,13 @@ const PinPad = ({
 
 	const isLastAttempt = attemptsRemaining === 1;
 
+	const biometricsName =
+		biometryData?.biometryType === 'TouchID'
+			? t('bio_touch_id')
+			: biometryData?.biometryType === 'FaceID'
+			? t('bio_face_id')
+			: biometryData?.biometryType ?? t('bio');
+
 	return (
 		<GlowingBackground topLeft="brand">
 			<View style={styles.header}>
@@ -184,6 +204,21 @@ const PinPad = ({
 										</Pressable>
 									)}
 								</AnimatedView>
+							)}
+
+							{allowBiometrics && (
+								<Button
+									style={styles.biometrics}
+									text={t('pin_use_biometrics', { biometricsName })}
+									icon={
+										biometryData?.biometryType === 'FaceID' ? (
+											<FaceIdIcon height={16} width={16} color="brand" />
+										) : (
+											<TouchIdIcon height={16} width={16} color="brand" />
+										)
+									}
+									onPress={onShowBiotmetrics}
+								/>
 							)}
 
 							<View style={styles.dots}>
@@ -248,14 +283,18 @@ const styles = StyleSheet.create({
 		flexWrap: 'wrap',
 		justifyContent: 'center',
 		paddingHorizontal: 16,
+		marginBottom: 16,
 	},
 	attemptsRemaining: {
 		textAlign: 'center',
 	},
+	biometrics: {
+		alignSelf: 'center',
+		marginBottom: 16,
+	},
 	dots: {
 		flexDirection: 'row',
 		justifyContent: 'center',
-		marginTop: 16,
 		marginBottom: 32,
 	},
 	dot: {

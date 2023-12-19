@@ -49,6 +49,7 @@
 	"pin_forgot_text": "Forgot your PIN? Reset and recover your Bitkit wallet with your recovery phrase. Set a new PIN after completing recovery.",
 	"pin_forgot_reset": "Reset (Requires Recovery Phrase)",
 	"pin_send": "Please enter your PIN code to confirm and send out this payment.",
+	"pin_use_biometrics": "Use {biometricsName}",
 	"bio": "Biometrics",
 	"bio_auth_with": "Authenticate with {biometricsName}",
 	"bio_no": "It appears that your device does not support Biometric security.",
