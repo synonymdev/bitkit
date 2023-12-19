@@ -262,7 +262,6 @@ const ChannelDetails = ({
 		}
 		getTransactions({
 			txHashes: [{ tx_hash: channel.funding_txid }],
-			selectedNetwork,
 		}).then((txResponse) => {
 			if (txResponse.isErr()) {
 				return;

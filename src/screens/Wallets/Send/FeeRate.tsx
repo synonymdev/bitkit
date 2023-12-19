@@ -8,7 +8,6 @@ import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigati
 import GradientView from '../../../components/GradientView';
 import Button from '../../../components/Button';
 import Store from '../../../store/types';
-import { EFeeId } from '../../../store/types/fees';
 import { useBalance } from '../../../hooks/wallet';
 import { showToast } from '../../../utils/notifications';
 import {
@@ -24,6 +23,7 @@ import {
 	transactionSelector,
 } from '../../../store/reselect/wallet';
 import SafeAreaInset from '../../../components/SafeAreaInset';
+import { EFeeId } from 'beignet';
 
 const FeeRate = ({ navigation }: SendScreenProps<'FeeRate'>): ReactElement => {
 	const { t } = useTranslation('wallet');
@@ -59,8 +59,6 @@ const FeeRate = ({ navigation }: SendScreenProps<'FeeRate'>): ReactElement => {
 	const _updateFee = useCallback(
 		(feeId: EFeeId, _satsPerByte: number) => {
 			const res = updateFee({
-				selectedWallet,
-				selectedNetwork,
 				transaction,
 				satsPerByte: _satsPerByte,
 				selectedFeeId: feeId,
@@ -73,7 +71,7 @@ const FeeRate = ({ navigation }: SendScreenProps<'FeeRate'>): ReactElement => {
 				});
 			}
 		},
-		[selectedNetwork, selectedWallet, transaction, t],
+		[transaction, t],
 	);
 
 	const displayFast = useMemo(() => {

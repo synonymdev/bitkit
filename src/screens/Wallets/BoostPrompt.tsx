@@ -18,7 +18,6 @@ import {
 	canBoost,
 	setupBoost,
 	updateFee,
-	validateTransaction,
 } from '../../utils/wallet/transactions';
 import { showToast } from '../../utils/notifications';
 import { btcToSats } from '../../utils/conversion';
@@ -40,6 +39,7 @@ import {
 	selectedWalletSelector,
 	transactionSelector,
 } from '../../store/reselect/wallet';
+import { validateTransaction } from 'beignet';
 
 const BoostForm = ({
 	activityItem,
@@ -87,7 +87,7 @@ const BoostForm = ({
 		})();
 
 		return (): void => {
-			resetSendTransaction({ selectedNetwork, selectedWallet });
+			resetSendTransaction();
 		};
 	}, [activityItem.id, selectedNetwork, selectedWallet]);
 
@@ -97,8 +97,6 @@ const BoostForm = ({
 			const res = updateFee({
 				satsPerByte: recommendedFee,
 				transaction,
-				selectedNetwork,
-				selectedWallet,
 			});
 			if (res.isErr()) {
 				showToast({

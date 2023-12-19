@@ -6,17 +6,20 @@ import Url from 'url-parse';
 import { useTranslation } from 'react-i18next';
 import isEqual from 'lodash/isEqual';
 
-import { View, TextInput, ScrollView } from '../../../styles/components';
-import { Text01S, Caption13Up } from '../../../styles/text';
+import { ScrollView, TextInput, View } from '../../../styles/components';
+import { Caption13Up, Text01S } from '../../../styles/text';
 import { ScanIcon } from '../../../styles/icons';
 import { addElectrumPeer } from '../../../store/actions/settings';
-import { TProtocol } from '../../../store/types/settings';
 import { updateUi } from '../../../store/actions/ui';
 import { selectedNetworkSelector } from '../../../store/reselect/wallet';
 import { customElectrumPeersSelector } from '../../../store/reselect/settings';
 import Store from '../../../store/types';
 import { origCustomElectrumPeers } from '../../../store/shapes/settings';
-import { connectToElectrum } from '../../../utils/wallet/electrum';
+import {
+	connectToElectrum,
+	getConnectedPeer,
+	IPeerData,
+} from '../../../utils/wallet/electrum';
 import NavigationHeader from '../../../components/NavigationHeader';
 import SafeAreaInset from '../../../components/SafeAreaInset';
 import { RadioButtonGroup } from '../../../components/RadioButton';
@@ -27,14 +30,14 @@ import {
 	getProtocolForPort,
 } from '../../../utils/electrum';
 import { showToast } from '../../../utils/notifications';
-import { getConnectedPeer, IPeerData } from '../../../utils/wallet/electrum';
 import type { SettingsScreenProps } from '../../../navigation/types';
+import { EProtocol } from 'beignet';
 
-type RadioButtonItem = { label: string; value: TProtocol };
+type RadioButtonItem = { label: string; value: EProtocol };
 
 const radioButtons: RadioButtonItem[] = [
-	{ label: 'TCP', value: 'tcp' },
-	{ label: 'TLS', value: 'ssl' },
+	{ label: 'TCP', value: EProtocol.tcp },
+	{ label: 'TLS', value: EProtocol.ssl },
 ];
 
 const isValidURL = (data: string): boolean => {
@@ -93,18 +96,17 @@ const ElectrumConfig = ({
 	const [connectedPeer, setConnectedPeer] = useState<IPeerData>();
 	const [loading, setLoading] = useState(false);
 	const [host, setHost] = useState(savedPeer.host);
-	const [protocol, setProtocol] = useState<TProtocol>(savedPeer.protocol);
+	const [protocol, setProtocol] = useState<EProtocol>(savedPeer.protocol);
 	const [port, setPort] = useState<string>(
 		savedPeer[savedPeer.protocol].toString(),
 	);
 
 	useEffect(() => {
 		getAndUpdateConnectedPeer();
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	const getAndUpdateConnectedPeer = async (): Promise<void> => {
-		const peerInfo = await getConnectedPeer(selectedNetwork);
+		const peerInfo = await getConnectedPeer();
 		if (peerInfo.isOk()) {
 			setConnectedPeer({
 				host: peerInfo.value.host,
@@ -119,7 +121,7 @@ const ElectrumConfig = ({
 	const connectAndAddPeer = async (peerData: {
 		host: string;
 		port: string;
-		protocol: TProtocol;
+		protocol: EProtocol;
 	}): Promise<void> => {
 		setLoading(true);
 
@@ -134,8 +136,8 @@ const ElectrumConfig = ({
 				return;
 			}
 			const defaultPorts = {
-				ssl: getDefaultPort(selectedNetwork, 'ssl'),
-				tcp: getDefaultPort(selectedNetwork, 'tcp'),
+				ssl: getDefaultPort(selectedNetwork, EProtocol.ssl),
+				tcp: getDefaultPort(selectedNetwork, EProtocol.tcp),
 			};
 			const connectData = {
 				...defaultPorts,
@@ -190,11 +192,11 @@ const ElectrumConfig = ({
 
 		if (!data.startsWith('http://') && !data.startsWith('https://')) {
 			let [_host, _port, shortProtocol] = data.split(':');
-			let _protocol: TProtocol = 'tcp';
+			let _protocol = EProtocol.tcp;
 
 			if (shortProtocol) {
 				// Support Umbrel connection URL format
-				_protocol = shortProtocol === 's' ? 'ssl' : 'tcp';
+				_protocol = shortProtocol === 's' ? EProtocol.ssl : EProtocol.tcp;
 			} else {
 				// Prefix protocol for common ports if missing
 				_protocol = getProtocolForPort(_port, selectedNetwork);
@@ -211,7 +213,7 @@ const ElectrumConfig = ({
 			connectData = {
 				host: url.hostname,
 				port: url.port,
-				protocol: url.protocol === 'https:' ? 'ssl' : 'tcp',
+				protocol: url.protocol === 'https:' ? EProtocol.ssl : EProtocol.tcp,
 			};
 
 			// Add default port back in
@@ -314,7 +316,7 @@ const ElectrumConfig = ({
 						data={radioButtons}
 						value={protocol}
 						onPress={(value): void => {
-							const radioValue = value as TProtocol;
+							const radioValue = value as EProtocol;
 							setProtocol(radioValue);
 
 							// Toggle the port if the protocol changes and the default ports are still set.

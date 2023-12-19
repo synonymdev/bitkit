@@ -1,7 +1,7 @@
 import i18n, { i18nTime } from '../../utils/i18n';
 import { btcToSats } from '../conversion';
 import { TPaidBlocktankOrders } from '../../store/types/blocktank';
-import { EPaymentType, IFormattedTransaction } from '../../store/types/wallet';
+import { EPaymentType } from '../../store/types/wallet';
 import {
 	EActivityType,
 	IActivityItem,
@@ -10,6 +10,7 @@ import {
 import { err, ok, Result } from '@synonymdev/result';
 import { getActivityStore } from '../../store/helpers';
 import { IBtOrder } from '@synonymdev/blocktank-lsp-http-client';
+import { IFormattedTransaction } from 'beignet';
 
 /**
  * Converts a formatted transaction to an activity item
@@ -46,14 +47,14 @@ export const onChainTransactionToActivityItem = ({
 	});
 
 	return {
-		exists: true,
+		exists: transaction?.exists ?? true,
 		id: transaction.txid,
 		activityType: EActivityType.onchain,
 		txType: transaction.type,
 		txId: transaction.txid,
 		value: btcToSats(Math.abs(amount)),
 		fee: btcToSats(Math.abs(transaction.fee)),
-		feeRate: transaction.satsPerByte,
+		feeRate: Math.round(transaction.satsPerByte),
 		address: transaction.address,
 		confirmed: transaction.height > 0,
 		isBoosted: false,

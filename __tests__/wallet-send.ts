@@ -5,11 +5,11 @@ import '../src/utils/i18n';
 import store from '../src/store';
 import { createNewWallet, startWalletServices } from '../src/utils/startup';
 import {
-	updateAddressIndexes,
-	updateWallet,
 	resetSendTransaction,
-	updateSendTransaction,
 	setupOnChainTransaction,
+	updateAddressIndexes,
+	updateSendTransaction,
+	updateWallet,
 } from '../src/store/actions/wallet';
 import { connectToElectrum } from '../src/utils/wallet/electrum';
 import {
@@ -17,12 +17,12 @@ import {
 	createTransaction,
 	sendMax,
 	updateFee,
-	validateTransaction,
 } from '../src/utils/wallet/transactions';
 import { addElectrumPeer } from '../src/store/actions/settings';
 import { getScriptHash } from '../src/utils/wallet';
 import initWaitForElectrumToSync from './utils/wait-for-electrum';
 import { runStorageCheck } from '../src/utils/wallet/checks';
+import { EProtocol, validateTransaction } from 'beignet';
 
 jest.setTimeout(60_000);
 
@@ -76,7 +76,12 @@ describe('Wallet - new wallet, send and receive', () => {
 		expect(store.getState().wallet.selectedNetwork).toEqual('bitcoinRegtest');
 
 		res = await addElectrumPeer({
-			peer: { host: '127.0.0.1', ssl: 60002, tcp: 60001, protocol: 'tcp' },
+			peer: {
+				host: '127.0.0.1',
+				ssl: 60002,
+				tcp: 60001,
+				protocol: EProtocol.tcp,
+			},
 		});
 		if (res.isErr()) {
 			throw res.error;
@@ -243,7 +248,7 @@ describe('Wallet - new wallet, send and receive', () => {
 		const receivingAddress2 = await rpc.getNewAddress();
 
 		// setup new transaction
-		res = resetSendTransaction();
+		res = await resetSendTransaction();
 		if (res.isErr()) {
 			throw res.error;
 		}
@@ -260,7 +265,7 @@ describe('Wallet - new wallet, send and receive', () => {
 			},
 		});
 
-		res = sendMax();
+		res = await sendMax();
 		if (res.isErr()) {
 			throw res.error;
 		}

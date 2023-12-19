@@ -61,10 +61,11 @@ const QuickSetup = ({
 
 	useFocusEffect(
 		useCallback(() => {
-			resetSendTransaction({ selectedNetwork, selectedWallet });
-			setupOnChainTransaction({ selectedNetwork, selectedWallet }).then();
+			resetSendTransaction().then(() => {
+				setupOnChainTransaction().then();
+			});
 			refreshBlocktankInfo().then();
-		}, [selectedNetwork, selectedWallet]),
+		}, []),
 	);
 
 	const spendingAmount = useMemo((): number => {

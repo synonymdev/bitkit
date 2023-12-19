@@ -322,7 +322,7 @@ export const calculateBoostTransactionValue = ({
 		const parents = boostedTransaction.parentTransactions;
 		parents.forEach((parentTxid) => {
 			const parent = boostedTransactions[parentTxid];
-			value = value - parent.fee;
+			value = Math.round(value - parent.fee);
 		});
 	}
 

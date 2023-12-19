@@ -31,14 +31,8 @@ const Contacts = ({
 
 	const handlePress = async (contact: IContactRecord): Promise<void> => {
 		// make sure we start with a clean transaction state
-		resetSendTransaction({
-			selectedWallet,
-			selectedNetwork,
-		});
-		await setupOnChainTransaction({
-			selectedNetwork,
-			selectedWallet,
-		});
+		await resetSendTransaction();
+		await setupOnChainTransaction({});
 		setLoading(true);
 		const res = await processInputData({
 			data: contact.url,

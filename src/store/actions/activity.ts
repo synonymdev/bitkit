@@ -8,7 +8,7 @@ import {
 } from '../types/activity';
 import { getBlocktankStore, getDispatch } from '../helpers';
 import { onChainTransactionToActivityItem } from '../../utils/activity';
-import { getCurrentWallet } from '../../utils/wallet';
+import { getCurrentWallet, getOnChainWalletData } from '../../utils/wallet';
 import { formatBoostedActivityItems } from '../../utils/boost';
 import { TChannel } from '@synonymdev/react-native-ldk';
 import { EPaymentType } from '../types/wallet';
@@ -121,25 +121,28 @@ export const updateActivityList = (): Result<string> => {
 	return ok('Activity items updated');
 };
 
+let updatingActivityList = false;
 /**
  * Converts on-chain transactions to activity items and saves them to store
  * @returns {Result<string>}
  */
 export const updateOnChainActivityList = (): Result<string> => {
-	const { currentWallet, selectedNetwork, selectedWallet } = getCurrentWallet();
-	const blocktankTransactions = getBlocktankStore().paidOrders;
-	const blocktankOrders = getBlocktankStore().orders;
-	const boostedTransactions =
-		currentWallet.boostedTransactions[selectedNetwork];
-
+	if (updatingActivityList) return ok('');
+	updatingActivityList = true;
+	let currentWallet = getOnChainWalletData();
 	if (!currentWallet) {
 		console.warn(
 			'No wallet found. Cannot update activity list with transactions.',
 		);
+		updatingActivityList = false;
 		return ok('');
 	}
+	const { selectedNetwork, selectedWallet } = getCurrentWallet();
+	const blocktankTransactions = getBlocktankStore().paidOrders;
+	const blocktankOrders = getBlocktankStore().orders;
+	const boostedTransactions = currentWallet.boostedTransactions;
 
-	const transactions = currentWallet.transactions[selectedNetwork];
+	const transactions = currentWallet.transactions;
 	const activityItems = Object.values(transactions).map((tx) => {
 		return onChainTransactionToActivityItem({
 			transaction: tx,
@@ -159,6 +162,8 @@ export const updateOnChainActivityList = (): Result<string> => {
 		type: actions.UPDATE_ACTIVITY_ITEMS,
 		payload: boostFormattedItems,
 	});
+
+	updatingActivityList = false;
 
 	return ok('On chain transaction activity items updated');
 };

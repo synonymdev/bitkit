@@ -10,6 +10,7 @@ import {
 } from '../types/ui';
 import { getActivityStore, getDispatch } from '../helpers';
 import actions from './actions';
+import { EActivityType } from '../types/activity';
 
 const releaseUrl =
 	'https://github.com/synonymdev/bitkit/releases/download/updater/release.json';
@@ -37,6 +38,24 @@ export const showBottomSheet = <View extends keyof ViewControllerParamList>(
 	});
 
 	return ok('');
+};
+
+export const showNewOnchainTxPrompt = ({
+	id,
+	value,
+}: {
+	id: string;
+	value: number;
+}): void => {
+	// const activityItem = getActivityStore().items.find((data) => data.id === id);
+	// if (activityItem) {
+	// 	showBottomSheet('newTxPrompt', { activityItem });
+	// 	closeBottomSheet('receiveNavigation');
+	// }
+	showBottomSheet('newTxPrompt', {
+		activityItem: { id, activityType: EActivityType.onchain, value },
+	});
+	closeBottomSheet('receiveNavigation');
 };
 
 export const showNewTxPrompt = (txId: string): void => {

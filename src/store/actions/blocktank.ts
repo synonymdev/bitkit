@@ -297,18 +297,23 @@ export const startChannelPurchase = async ({
 	}
 
 	const { onchainBalance } = getBalance({ selectedNetwork, selectedWallet });
-	const min0ConfTxFee = await getMin0ConfTxFee(orderData.value.id);
-	if (min0ConfTxFee.isErr()) {
-		return err(min0ConfTxFee.error.message);
+	const min0ConfTxFeeRes = await getMin0ConfTxFee(orderData.value.id);
+	if (min0ConfTxFeeRes.isErr()) {
+		return err(min0ConfTxFeeRes.error.message);
 	}
+	const min0ConfTxFee = Math.round(min0ConfTxFeeRes.value.satPerVByte);
 	let txFeeInSats = getTotalFee({
-		satsPerByte: min0ConfTxFee.value.satPerVByte + 1,
+		satsPerByte: min0ConfTxFee + 1,
 		selectedWallet,
 		selectedNetwork,
 	});
-	const channelOpenCost = buyChannelData.feeSat;
+	const buyChannelDataFeeSat = Math.round(buyChannelData.feeSat);
+	const buyChannelDataClientBalanceFeeSat = Math.round(
+		buyChannelData.clientBalanceSat,
+	);
+	const channelOpenCost = buyChannelDataFeeSat;
 	const channelOpenFee = Math.abs(
-		buyChannelData.clientBalanceSat - buyChannelData.feeSat,
+		buyChannelDataClientBalanceFeeSat - buyChannelDataFeeSat,
 	);
 	// Ensure we have enough funds to pay for both the channel and the fee to broadcast the transaction.
 	if (channelOpenCost > onchainBalance) {
@@ -327,7 +332,7 @@ export const startChannelPurchase = async ({
 			outputs: [
 				{
 					address: buyChannelData.payment.onchain.address,
-					value: buyChannelData.feeSat,
+					value: buyChannelDataFeeSat,
 					index: 0,
 				},
 			],
@@ -335,13 +340,12 @@ export const startChannelPurchase = async ({
 	});
 
 	const feeRes = updateFee({
-		satsPerByte: min0ConfTxFee.value.satPerVByte + 1,
-		selectedWallet,
-		selectedNetwork,
+		satsPerByte: min0ConfTxFee + 1,
 	});
-	if (feeRes.isOk()) {
-		txFeeInSats = feeRes.value.fee;
+	if (feeRes.isErr()) {
+		return err(feeRes.error.message);
 	}
+	txFeeInSats = Math.round(feeRes.value.fee);
 
 	return ok({
 		order: buyChannelData,
@@ -400,7 +404,7 @@ export const confirmChannelPurchase = async ({
 	addPaidBlocktankOrder({ orderId, txid: broadcastResponse.value });
 
 	// Reset tx data.
-	resetSendTransaction({ selectedWallet, selectedNetwork });
+	await resetSendTransaction();
 
 	watchOrder(orderId).then();
 	setLightningSettingUpStep(0);

@@ -10,6 +10,7 @@ import {
 	electrumHost,
 	electrumPort,
 } from './helpers';
+import { EProtocol } from 'beignet';
 
 const __DEV__ = process.env.DEV === 'true';
 
@@ -397,13 +398,13 @@ d('Settings', () => {
 				url: `${electrumHost}:${electrumPort}:t`,
 				expectedHost: electrumHost,
 				expectedPort: electrumPort.toString(),
-				expectedProtocol: 'tcp',
+				expectedProtocol: EProtocol.tcp,
 			};
 			const umbrel2 = {
 				url: `${electrumHost}:${electrumPort}:s`,
 				expectedHost: electrumHost,
 				expectedPort: electrumPort.toString(),
-				expectedProtocol: 'ssl',
+				expectedProtocol: EProtocol.ssl,
 			};
 
 			// should detect protocol for common ports
@@ -411,13 +412,13 @@ d('Settings', () => {
 				url: `${electrumHost}:50001`,
 				expectedHost: electrumHost,
 				expectedPort: '50001',
-				expectedProtocol: 'tcp',
+				expectedProtocol: EProtocol.tcp,
 			};
 			const noProto2 = {
 				url: `${electrumHost}:50002`,
 				expectedHost: electrumHost,
 				expectedPort: '50002',
-				expectedProtocol: 'ssl',
+				expectedProtocol: EProtocol.ssl,
 			};
 
 			// HTTP URL
@@ -425,13 +426,13 @@ d('Settings', () => {
 				url: `http://${electrumHost}:${electrumPort}`,
 				expectedHost: electrumHost,
 				expectedPort: electrumPort.toString(),
-				expectedProtocol: 'tcp',
+				expectedProtocol: EProtocol.tcp,
 			};
 			const http2 = {
 				url: `https://${electrumHost}:${electrumPort}`,
 				expectedHost: electrumHost,
 				expectedPort: electrumPort.toString(),
-				expectedProtocol: 'ssl',
+				expectedProtocol: EProtocol.ssl,
 			};
 
 			const conns = [umbrel1, umbrel2, noProto1, noProto2, http1, http2];

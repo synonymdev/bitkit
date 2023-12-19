@@ -7,10 +7,7 @@ import { useTranslation } from 'react-i18next';
 import RootNavigator from './navigation/root/RootNavigator';
 import InactivityTracker from './components/InactivityTracker';
 import { startWalletServices } from './utils/startup';
-import { electrumConnection } from './utils/electrum';
 import { unsubscribeFromLightningSubscriptions } from './utils/lightning';
-import i18n from './utils/i18n';
-import { getStore } from './store/helpers';
 import { updateUi } from './store/actions/ui';
 import { isOnlineSelector } from './store/reselect/ui';
 import { pinOnLaunchSelector, pinSelector } from './store/reselect/settings';
@@ -20,29 +17,13 @@ import {
 	selectedWalletSelector,
 } from './store/reselect/wallet';
 import { useMigrateSlashtags2 } from './hooks/slashtags2';
+import {
+	getCustomElectrumPeers,
+	getOnChainWalletElectrum,
+} from './utils/wallet';
+import { EAvailableNetworks } from 'beignet';
 
-const onElectrumConnectionChange = (isConnected: boolean): void => {
-	// get state fresh from store everytime
-	const { isConnectedToElectrum } = getStore().ui;
-
-	if (!isConnectedToElectrum && isConnected) {
-		updateUi({ isConnectedToElectrum: isConnected });
-		showToast({
-			type: 'success',
-			title: i18n.t('other:connection_restored_title'),
-			description: i18n.t('other:connection_restored_message'),
-		});
-	}
-
-	if (isConnectedToElectrum && !isConnected) {
-		updateUi({ isConnectedToElectrum: isConnected });
-		showToast({
-			type: 'error',
-			title: i18n.t('other:connection_reconnect_title'),
-			description: i18n.t('other:connection_reconnect_msg'),
-		});
-	}
-};
+const electrum = getOnChainWalletElectrum();
 
 const AppOnboarded = (): ReactElement => {
 	const { t } = useTranslation('other');
@@ -71,10 +52,6 @@ const AppOnboarded = (): ReactElement => {
 	}, []);
 
 	useEffect(() => {
-		let electrumSubscription = electrumConnection.subscribe(
-			onElectrumConnectionChange,
-		);
-
 		// on AppState change
 		const appStateSubscription = AppState.addEventListener(
 			'change',
@@ -84,10 +61,16 @@ const AppOnboarded = (): ReactElement => {
 					appState.current.match(/inactive|background/) &&
 					nextAppState === 'active'
 				) {
+					const customPeers = getCustomElectrumPeers({ selectedNetwork });
 					// resubscribe to electrum connection changes
-					electrumSubscription = electrumConnection.subscribe(
-						onElectrumConnectionChange,
-					);
+					electrum
+						?.connectToElectrum({
+							network: EAvailableNetworks[selectedNetwork],
+							servers: customPeers,
+						})
+						.then(() => {
+							electrum?.startConnectionPolling();
+						});
 				}
 
 				// on App to background
@@ -95,8 +78,7 @@ const AppOnboarded = (): ReactElement => {
 					appState.current.match(/active|inactive/) &&
 					nextAppState === 'background'
 				) {
-					// resetLdk().then();
-					electrumSubscription.remove();
+					electrum?.disconnect();
 				}
 
 				appState.current = nextAppState;
@@ -105,10 +87,9 @@ const AppOnboarded = (): ReactElement => {
 
 		return () => {
 			appStateSubscription.remove();
-			electrumSubscription.remove();
 		};
 		// onMount
-	}, []);
+	}, [selectedNetwork]);
 
 	useEffect(() => {
 		// subscribe to connection information

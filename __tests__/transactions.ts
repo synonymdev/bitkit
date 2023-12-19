@@ -10,7 +10,7 @@ import { getSelectedWallet } from '../src/utils/wallet';
 import { TAvailableNetworks } from '../src/utils/networks';
 import { mnemonic, walletState } from './utils/dummy-wallet';
 import { createTransaction } from '../src/utils/wallet/transactions';
-import { isValidBech32mEncodedString } from '../src/utils/scanner';
+import { isValidBech32mEncodedString } from 'beignet';
 
 const selectedNetwork: TAvailableNetworks = 'bitcoinTestnet';
 
@@ -28,7 +28,7 @@ describe('On chain transactions', () => {
 
 		updateWallet({ wallets: { wallet0: walletState } });
 
-		await setupOnChainTransaction({ selectedNetwork });
+		setupOnChainTransaction({});
 	});
 
 	it('Creates a transaction sending to a taproot address', async () => {
@@ -41,8 +41,6 @@ describe('On chain transactions', () => {
 		expect(network).toEqual('bitcoinTestnet');
 
 		updateSendTransaction({
-			selectedNetwork,
-			selectedWallet,
 			transaction: {
 				rbf: true,
 				outputs: [
@@ -77,8 +75,6 @@ describe('On chain transactions', () => {
 		const selectedWallet = getSelectedWallet();
 
 		updateSendTransaction({
-			selectedNetwork,
-			selectedWallet,
 			transaction: {
 				rbf: true,
 				outputs: [

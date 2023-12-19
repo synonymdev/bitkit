@@ -11,6 +11,7 @@ import {
 import { connectToElectrum } from '../src/utils/wallet/electrum';
 import { addElectrumPeer } from '../src/store/actions/settings';
 import initWaitForElectrumToSync from './utils/wait-for-electrum';
+import { EProtocol } from 'beignet';
 
 jest.setTimeout(60_000);
 
@@ -71,7 +72,12 @@ describe('Wallet - wallet restore and receive', () => {
 		expect(store.getState().wallet.selectedNetwork).toEqual('bitcoinRegtest');
 
 		res = await addElectrumPeer({
-			peer: { host: '127.0.0.1', ssl: 60002, tcp: 60001, protocol: 'tcp' },
+			peer: {
+				host: '127.0.0.1',
+				ssl: 60002,
+				tcp: 60001,
+				protocol: EProtocol.tcp,
+			},
 		});
 		if (res.isErr()) {
 			throw res.error;

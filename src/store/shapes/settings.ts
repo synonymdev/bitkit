@@ -16,18 +16,12 @@ import {
 	__ELECTRUM_SIGNET_TCP_PORT__,
 	__WEB_RELAY__,
 } from '../../constants/env';
-import {
-	ETransactionSpeed,
-	ICustomElectrumPeer,
-	ISettings,
-} from '../types/settings';
+import { ETransactionSpeed, ISettings } from '../types/settings';
 import { EUnit } from '../types/wallet';
+import { EProtocol, TServer } from 'beignet';
 
 //TODO: Remove the public Electrum servers below once we spin up our own.
-export const origCustomElectrumPeers: Record<
-	TAvailableNetworks,
-	ICustomElectrumPeer[]
-> = {
+export const origCustomElectrumPeers: Record<TAvailableNetworks, TServer[]> = {
 	bitcoin: [
 		{
 			host: __ELECTRUM_BITCOIN_HOST__,
@@ -41,25 +35,25 @@ export const origCustomElectrumPeers: Record<
 			host: 'testnet.hsmiths.com',
 			ssl: 53012,
 			tcp: 53012,
-			protocol: 'ssl',
+			protocol: EProtocol.ssl,
 		},
 		{
 			host: 'tn.not.fyi',
 			ssl: 55002,
 			tcp: 55002,
-			protocol: 'ssl',
+			protocol: EProtocol.ssl,
 		},
 		{
 			host: 'testnet.aranguren.org',
 			ssl: 51002,
 			tcp: 51001,
-			protocol: 'ssl',
+			protocol: EProtocol.ssl,
 		},
 		{
 			host: 'blackie.c3-soft.com',
 			ssl: 57006,
 			tcp: 57006,
-			protocol: 'ssl',
+			protocol: EProtocol.ssl,
 		},
 	],
 	bitcoinRegtest: [

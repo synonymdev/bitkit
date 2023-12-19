@@ -1,6 +1,7 @@
 import net from 'net';
 import BitcoinJsonRpc from 'bitcoin-json-rpc';
 import ElectrumClient from 'electrum-client';
+import { EProtocol } from 'beignet';
 
 export const sleep = (ms): Promise<void> => {
 	return new Promise((resolve) => {
@@ -22,7 +23,7 @@ const initWaitForElectrumToSync = async (
 		false,
 		elAddr.port,
 		elAddr.host,
-		'tcp',
+		EProtocol.tcp,
 	);
 
 	electrum.subscribe.on('blockchain.headers.subscribe', (params) => {

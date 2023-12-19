@@ -1,5 +1,5 @@
 import { LNURLWithdrawParams, LNURLPayParams } from 'js-lnurl';
-import { IActivityItem, TOnchainActivityItem } from './activity';
+import { EActivityType, TOnchainActivityItem } from './activity';
 import { SendStackParamList } from '../../navigation/bottom-sheet/SendNavigation';
 
 export type ViewControllerParamList = {
@@ -13,7 +13,9 @@ export type ViewControllerParamList = {
 	forceTransfer: undefined;
 	forgotPIN: undefined;
 	highBalance: undefined;
-	newTxPrompt: { activityItem: IActivityItem };
+	newTxPrompt: {
+		activityItem: { id: string; activityType: EActivityType; value: number };
+	};
 	PINNavigation: { showLaterButton: boolean };
 	profileAddDataForm: undefined;
 	receiveNavigation: undefined;
@@ -37,7 +39,7 @@ export type TUiViewController = {
 // this type is needed because reselect doesn't offer good parameter typing
 export type IViewControllerData = {
 	isOpen: boolean;
-	activityItem?: IActivityItem;
+	activityItem?: { id: string; activityType: EActivityType; value: number };
 	chestId?: string;
 	onchainActivityItem?: TOnchainActivityItem;
 	id?: string;

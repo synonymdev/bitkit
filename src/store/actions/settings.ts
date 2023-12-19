@@ -70,15 +70,15 @@ export const wipeApp = async ({
 			selectedWallet = getSelectedWallet();
 		}
 
+		// Reset Redux stores & persisted storage
+		dispatch({ type: actions.WIPE_APP });
+
 		// Reset everything else
 		await Promise.all([
 			removePin(),
 			wipeKeychain(),
 			wipeLdkStorage({ selectedWallet }),
 		]);
-
-		// Reset Redux stores & persisted storage
-		dispatch({ type: actions.WIPE_APP });
 
 		if (showNotification) {
 			showToast({

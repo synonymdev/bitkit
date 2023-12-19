@@ -17,6 +17,6 @@ export const defaultLightningStoreShape: ILightning = {
 		c_bindings: '',
 	},
 	nodes: {
-		[defaultWalletShape.id]: defaultLightningShape,
+		[defaultWalletShape.name]: defaultLightningShape,
 	},
 };

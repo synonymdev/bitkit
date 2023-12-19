@@ -686,13 +686,8 @@ const AddressViewer = ({
 			if (utxosLength <= 0) {
 				return;
 			}
-			resetSendTransaction({
-				selectedWallet,
-				selectedNetwork,
-			});
+			resetSendTransaction();
 			const transactionRes = await setupOnChainTransaction({
-				selectedWallet,
-				selectedNetwork,
 				utxos: selectedUtxosLength > 0 ? selectedUtxos : utxos,
 				rbf: true,
 			});
@@ -700,7 +695,6 @@ const AddressViewer = ({
 				return;
 			}
 			const receiveAddress = await getReceiveAddress({
-				selectedWallet,
 				selectedNetwork,
 			});
 			if (receiveAddress.isErr()) {
@@ -711,14 +705,12 @@ const AddressViewer = ({
 					...transactionRes.value,
 					outputs: [{ address: receiveAddress.value, value: 0, index: 0 }],
 				},
-				selectedWallet,
-				selectedNetwork,
 			});
 			updateUi({ fromAddressViewer: true });
-			sendMax({ selectedWallet, selectedNetwork });
+			await sendMax({});
 			showBottomSheet('sendNavigation', { screen: 'ReviewAndSend' });
 		},
-		[selectedNetwork, selectedUtxos, selectedWallet, utxos],
+		[selectedNetwork, selectedUtxos, utxos],
 	);
 
 	/**
@@ -847,7 +839,6 @@ const AddressViewer = ({
 				];
 				if (_allAddresses.length > 0) {
 					const utxosRes = await getAddressUtxos({
-						selectedNetwork,
 						allAddresses: _allAddresses,
 					});
 					if (utxosRes.isErr()) {

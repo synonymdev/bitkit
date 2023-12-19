@@ -7,13 +7,15 @@ import {
 	defaultWalletStoreShape,
 	defaultSendTransaction,
 } from '../shapes/wallet';
+import { getDefaultWalletData } from 'beignet';
 
 const wallet = (
 	state: IWalletStore = defaultWalletStoreShape,
 	action,
 ): IWalletStore => {
-	let selectedWallet = state.selectedWallet;
-	let selectedNetwork = state.selectedNetwork;
+	let selectedWallet = state?.selectedWallet ?? 'wallet0';
+	let selectedNetwork = state?.selectedNetwork ?? 'bitcoin';
+
 	if (action.payload?.selectedWallet) {
 		selectedWallet = action.payload.selectedWallet;
 	}
@@ -30,6 +32,44 @@ const wallet = (
 			return {
 				...state,
 				...action.payload,
+			};
+
+		case actions.UPDATE_WALLET_DATA:
+			const { value, data } = action.payload;
+			const network = action.payload?.network ?? selectedNetwork;
+			if (!(value in state.wallets[selectedWallet])) {
+				state.wallets[selectedWallet] = {
+					...state.wallets[selectedWallet],
+					[value]: getDefaultWalletData()[value],
+				};
+			}
+
+			// Values that are not nested and do not have a network
+			if (value === 'name' || value === 'id' || value === 'seedHash') {
+				return {
+					...state,
+					wallets: {
+						...state.wallets,
+						[selectedWallet]: {
+							...state.wallets[selectedWallet],
+							[value]: data,
+						},
+					},
+				};
+			}
+
+			return {
+				...state,
+				wallets: {
+					...state.wallets,
+					[selectedWallet]: {
+						...state.wallets[selectedWallet],
+						[value]: {
+							...state.wallets[selectedWallet][value],
+							[network]: data,
+						},
+					},
+				},
 			};
 
 		case actions.CREATE_WALLET:

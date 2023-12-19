@@ -4,12 +4,10 @@ import { __WALLET_DEFAULT_SELECTED_NETWORK__ } from '../../constants/env';
 import { IHeader } from '../../utils/types/electrum';
 import { EAvailableNetworks } from '../../utils/networks';
 import { objectKeys } from '../../utils/objectKeys';
-import { EFeeId } from '../types/fees';
 import {
 	IWalletItem,
 	IWallet,
 	IWalletStore,
-	ISendTransaction,
 	IKeyDerivationPath,
 	IAddressTypes,
 	IAddresses,
@@ -17,6 +15,7 @@ import {
 	EAddressType,
 	EBoostType,
 } from '../types/wallet';
+import { EFeeId, ISendTransaction } from 'beignet';
 
 export const addressTypes: Readonly<IAddressTypes> = {
 	[EAddressType.p2wpkh]: {
@@ -149,8 +148,9 @@ export const defaultHeader: Readonly<IHeader> = {
 };
 
 export const defaultWalletShape: Readonly<IWallet> = {
-	id: 'wallet0',
-	name: '',
+	id: '',
+	name: 'wallet0',
+	seedHash: '',
 	addresses: getAddressesShape(),
 	addressIndex: getAddressIndexShape(),
 	lastUsedAddressIndex: getAddressIndexShape(),

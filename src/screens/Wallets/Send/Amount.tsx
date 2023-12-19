@@ -120,8 +120,8 @@ const Amount = ({ navigation }: SendScreenProps<'Amount'>): ReactElement => {
 	const onMaxAmount = useCallback((): void => {
 		const result = getNumberPadText(availableAmount, unit);
 		setText(result);
-		sendMax({ selectedWallet, selectedNetwork });
-	}, [availableAmount, unit, selectedWallet, selectedNetwork]);
+		sendMax({});
+	}, [availableAmount, unit]);
 
 	const onError = (): void => {
 		setError(true);

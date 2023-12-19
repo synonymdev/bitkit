@@ -166,7 +166,10 @@ const Money = (props: IMoney): ReactElement => {
 				{prim}
 			</Text>
 			{secd !== '' && (
-				<Text lineHeight={lineHeight} color="white5" testID="MoneySecondary">
+				<Text
+					lineHeight={lineHeight}
+					color={color ?? 'white5'}
+					testID="MoneySecondary">
 					{secd}
 				</Text>
 			)}

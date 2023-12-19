@@ -1,9 +1,5 @@
-import React, { ReactElement, useEffect } from 'react';
-import {
-	createNativeStackNavigator,
-	NativeStackNavigationProp,
-} from '@react-navigation/native-stack';
-import { useSelector } from 'react-redux';
+import React, { ReactElement } from 'react';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import TermsOfUse from '../../screens/Onboarding/TermsOfUse';
 import WelcomeScreen from '../../screens/Onboarding/Welcome';
@@ -12,11 +8,6 @@ import RestoreFromSeed from '../../screens/Onboarding/RestoreFromSeed';
 import MultipleDevices from '../../screens/Onboarding/MultipleDevices';
 import Passphrase from '../../screens/Onboarding/Passphrase';
 import { NavigationContainer } from '../../styles/components';
-import { connectToElectrum } from '../../utils/wallet/electrum';
-import { selectedNetworkSelector } from '../../store/reselect/wallet';
-
-export type OnboardingNavigationProp =
-	NativeStackNavigationProp<OnboardingStackParamList>;
 
 export type OnboardingStackParamList = {
 	TermsOfUse: undefined;
@@ -35,12 +26,6 @@ const navOptionHandler = {
 };
 
 const OnboardingNavigator = (): ReactElement => {
-	const selectedNetwork = useSelector(selectedNetworkSelector);
-
-	useEffect(() => {
-		connectToElectrum({ selectedNetwork });
-	}, [selectedNetwork]);
-
 	return (
 		<NavigationContainer>
 			<Stack.Navigator initialRouteName="TermsOfUse">

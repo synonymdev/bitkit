@@ -4,18 +4,21 @@ import actions from './actions';
 import { getDispatch, getFeesStore } from '../helpers';
 import { getFeeEstimates } from '../../utils/wallet/transactions';
 import { TAvailableNetworks } from '../../utils/networks';
-import { IOnchainFees } from '../types/fees';
+import { getSelectedNetwork } from '../../utils/wallet';
+import { IOnchainFees } from 'beignet';
 
 const dispatch = getDispatch();
 
 export const REFRESH_INTERVAL = 60 * 30; // in seconds, 30 minutes
 
 export const updateOnchainFeeEstimates = async ({
-	selectedNetwork,
+	selectedNetwork = getSelectedNetwork(),
 	forceUpdate = false,
+	feeEstimates,
 }: {
-	selectedNetwork: TAvailableNetworks;
+	selectedNetwork?: TAvailableNetworks;
 	forceUpdate?: boolean;
+	feeEstimates?: IOnchainFees;
 }): Promise<Result<string>> => {
 	const feesStore = getFeesStore();
 	const timestamp = feesStore.onchain.timestamp;
@@ -29,14 +32,17 @@ export const updateOnchainFeeEstimates = async ({
 		return ok('On-chain fee estimates are up to date.');
 	}
 
-	const feeEstimates = await getFeeEstimates(selectedNetwork);
-	if (feeEstimates.isErr()) {
-		return err(feeEstimates.error);
+	if (!feeEstimates) {
+		const feeEstimatesRes = await getFeeEstimates(selectedNetwork);
+		if (feeEstimatesRes.isErr()) {
+			return err(feeEstimatesRes.error);
+		}
+		feeEstimates = feeEstimatesRes.value;
 	}
 
 	dispatch({
 		type: actions.UPDATE_ONCHAIN_FEE_ESTIMATES,
-		payload: feeEstimates.value,
+		payload: feeEstimates,
 	});
 
 	return ok('Successfully updated on-chain fee estimates.');

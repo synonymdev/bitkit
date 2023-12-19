@@ -115,7 +115,6 @@ export const updateSlashPayConfig2 = debounce(
 			({ type }) => type === addressType,
 		)?.value;
 		const newAddress = await getReceiveAddress({
-			selectedWallet,
 			selectedNetwork,
 		});
 		if (newAddress.isOk() && currentAddress !== newAddress.value) {

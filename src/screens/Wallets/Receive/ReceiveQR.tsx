@@ -62,6 +62,7 @@ import { receiveSelector } from '../../../store/reselect/receive';
 import { ReceiveScreenProps } from '../../../navigation/types';
 import { isGeoBlockedSelector } from '../../../store/reselect/user';
 import { lightningSelector } from '../../../store/reselect/lightning';
+import { getWalletStore } from '../../../store/helpers';
 
 type Slide = () => ReactElement;
 
@@ -82,6 +83,7 @@ const ReceiveQR = ({
 
 	const selectedWallet = useSelector(selectedWalletSelector);
 	const selectedNetwork = useSelector(selectedNetworkSelector);
+	const selectedAddressType = useSelector(addressTypeSelector);
 	const addressType = useSelector(addressTypeSelector);
 	const isGeoBlocked = useSelector(isGeoBlockedSelector);
 	const lightning = useSelector(lightningSelector);
@@ -144,8 +146,6 @@ const ReceiveQR = ({
 		if (amount > 0) {
 			console.info('getting fresh address');
 			const response = await generateNewReceiveAddress({
-				selectedNetwork,
-				selectedWallet,
 				addressType,
 			});
 			if (response.isOk()) {
@@ -154,21 +154,31 @@ const ReceiveQR = ({
 			}
 		} else {
 			const response = await getReceiveAddress({
-				selectedNetwork,
-				selectedWallet,
 				addressType,
 			});
 			if (response.isOk()) {
 				console.info(`reusing address ${response.value}`);
 				setReceiveAddress(response.value);
+			} else {
+				try {
+					const address =
+						getWalletStore().wallets[selectedWallet]?.addressIndex[
+							selectedNetwork
+						][selectedAddressType]?.address;
+					if (address) {
+						console.info(`reusing address ${address}`);
+						setReceiveAddress(address);
+					}
+				} catch {}
 			}
 		}
 	}, [
-		amount,
 		receiveNavigationIsOpen,
+		amount,
 		selectedNetwork,
 		selectedWallet,
 		addressType,
+		selectedAddressType,
 	]);
 
 	const setInvoiceDetails = useCallback(async (): Promise<void> => {

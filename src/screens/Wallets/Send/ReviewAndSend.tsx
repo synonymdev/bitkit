@@ -34,7 +34,6 @@ import {
 	createTransaction,
 	getTotalFee,
 	getTransactionOutputValue,
-	validateTransaction,
 } from '../../../utils/wallet/transactions';
 import {
 	updateWalletBalance,
@@ -82,6 +81,7 @@ import { EUnit } from '../../../store/types/wallet';
 import { updateLastPaidContacts } from '../../../store/actions/slashtags';
 import AmountToggle from '../../../components/AmountToggle';
 import LightningSyncing from '../../../components/LightningSyncing';
+import { validateTransaction } from 'beignet';
 
 const Section = memo(
 	({
@@ -304,8 +304,6 @@ const ReviewAndSend = ({
 		//Temporarily update the balance until the Electrum mempool catches up in a few seconds.
 		updateWalletBalance({
 			balance: onChainBalance - transactionTotal,
-			selectedWallet,
-			selectedNetwork,
 		});
 
 		// save tags to metadata
@@ -327,7 +325,6 @@ const ReviewAndSend = ({
 		onChainBalance,
 		rawTx,
 		selectedNetwork,
-		selectedWallet,
 		transactionTotal,
 		_onError,
 		navigation,
@@ -430,7 +427,7 @@ const ReviewAndSend = ({
 
 	const handleTagRemove = useCallback(
 		(tag: string) => {
-			const res = removeTxTag({ tag, selectedNetwork, selectedWallet });
+			const res = removeTxTag({ tag });
 			if (res.isErr()) {
 				console.log(res.error.message);
 				showToast({
@@ -440,7 +437,7 @@ const ReviewAndSend = ({
 				});
 			}
 		},
-		[selectedWallet, selectedNetwork, t],
+		[t],
 	);
 
 	const onSwipeToPay = useCallback(async () => {

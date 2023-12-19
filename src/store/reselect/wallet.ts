@@ -8,7 +8,6 @@ import {
 	IBoostedTransactions,
 	IFormattedTransactions,
 	IFormattedTransaction,
-	ISendTransaction,
 	IUtxo,
 	EAddressType,
 } from '../types/wallet';
@@ -16,6 +15,7 @@ import { defaultSendTransaction } from '../shapes/wallet';
 import { TAvailableNetworks } from '../../utils/networks';
 import { IExchangeRates } from '../../utils/exchange-rate';
 import { EFeeId } from '../types/fees';
+import { ISendTransaction } from 'beignet';
 
 export const walletState = (state: Store): IWalletStore => state.wallet;
 export const walletsState = (state: Store): IWallets => state.wallet.wallets;
