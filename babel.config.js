@@ -2,7 +2,7 @@ const { types } = require('@babel/core');
 const { E2E_TESTS } = process.env;
 
 module.exports = {
-	presets: ['module:metro-react-native-babel-preset'],
+	presets: ['module:@react-native/babel-preset'],
 	plugins: [
 		// Support bigint literal `0n`
 		transformBigIntLiteral,
