@@ -41,6 +41,7 @@ import { ignoreHideBalanceToast } from '../../store/slices/user';
 
 // Workaround for crash on Android
 // https://github.com/software-mansion/react-native-reanimated/issues/4306#issuecomment-1538184321
+// TODO: check if this is still needed
 const AnimatedRefreshControl = Animated.createAnimatedComponent(RefreshControl);
 
 type Props = WalletScreenProps<'Wallets'> & {

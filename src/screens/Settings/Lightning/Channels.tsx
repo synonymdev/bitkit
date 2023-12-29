@@ -74,6 +74,7 @@ import { EUnit } from '../../../store/types/wallet';
 
 // Workaround for crash on Android
 // https://github.com/software-mansion/react-native-reanimated/issues/4306#issuecomment-1538184321
+// TODO: check if this is still needed
 const AnimatedRefreshControl = Animated.createAnimatedComponent(RefreshControl);
 
 /**
@@ -384,6 +385,7 @@ const Channels = ({
 			<ScrollView
 				contentContainerStyle={styles.content}
 				refreshControl={
+					// @ts-ignore
 					<AnimatedRefreshControl
 						refreshing={refreshingLdk}
 						exiting={FadeOut}
