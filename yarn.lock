@@ -11615,10 +11615,10 @@ sodium-native@^4.0.0:
   dependencies:
     node-gyp-build "^4.3.0"
 
-sodium-react-native-direct@0.4.0:
-  version "0.4.0"
-  resolved "https://registry.yarnpkg.com/sodium-react-native-direct/-/sodium-react-native-direct-0.4.0.tgz#7bcfcbf0126bb5ecc92bf5a9907f3e137e3ffd97"
-  integrity sha512-AjXW03oDKwRHgHoyxRTOT0yWx/vtcxWSAMbaxyGUhOc2zyyZdLuLwLP1WTYTVay/QT8g+jkBfg9zBcEgcrMOzA==
+sodium-react-native-direct@0.4.1:
+  version "0.4.1"
+  resolved "https://registry.yarnpkg.com/sodium-react-native-direct/-/sodium-react-native-direct-0.4.1.tgz#fec484fe42803a53acdd944e59e8164613a15b6a"
+  integrity sha512-+gzqIdBRDo4EfIn+KZfbBNw6GTsUn1QcYKnyPmYzWW1OJO/OsaNh7KtbyfhNT4bxg0G7cQ6ZmDPONvIKdFcjng==
 
 sodium-secretstream@^1.1.0:
   version "1.1.0"

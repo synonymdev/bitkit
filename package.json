@@ -131,7 +131,7 @@
     "rn-electrum-client": "github:synonymdev/react-native-electrum-client#a32a292d4e4918a04d280137e24e5961c74c543f",
     "rn-qr-generator": "1.3.1",
     "secp256k1": "4.0.3",
-    "sodium-react-native-direct": "0.4.0",
+    "sodium-react-native-direct": "0.4.1",
     "stream-browserify": "3.0.0",
     "styled-components": "5.3.11",
     "url-parse": "1.5.10",
