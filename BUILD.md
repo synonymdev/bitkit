@@ -34,4 +34,7 @@ yarn setup-android
 
 For iOS: Open the `ios` folder in Xcode to build the project.
 
-For Android: `yarn bundle`
+For Android:
+
+- `yarn bundle` to build the app
+- `yarn bundle:regtest` to build the regtest app variant
