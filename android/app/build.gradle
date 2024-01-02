@@ -122,6 +122,19 @@ android {
         pickFirst 'lib/armeabi-v7a/liblog.so'
         pickFirst 'lib/arm64-v8a/liblog.so'
     }
+
+    flavorDimensions = ["network"]
+
+    productFlavors {
+        mainnet {
+            isDefault true
+            dimension 'network'
+        }
+        regtest {
+            applicationIdSuffix '.regtest'
+            dimension 'network'
+        }
+    }
 }
 
 dependencies {
