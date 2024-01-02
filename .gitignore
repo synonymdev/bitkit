@@ -70,6 +70,7 @@ buck-out/
 # Environment
 .env*
 !.env*.template
+!.env.production.regtest
 
 # NodeJS-Mobile
 /nodejs-assets/build-native-modules-MacOS-helper-script-node.sh

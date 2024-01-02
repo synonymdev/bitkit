@@ -24,8 +24,11 @@
     "clean:rn": "watchman watch-del-all && npx del-cli node_modules nodejs-assets/nodejs-project/node_modules && yarn && npx del-cli /tmp/metro-*",
     "clean:android": "cd android && npx del-cli build app/build",
     "clean:ios": "cd ios && npx del-cli Pods Podfile.lock build && pod deintegrate && pod install",
-    "bundle": "yarn clean:android && react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.jsbundle --assets-dest android/app/build/intermediates/res/merged/release/ && cd android && ./gradlew assembleRelease --no-daemon",
+    "bundle": "yarn clean:android && react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.jsbundle --assets-dest android/app/build/intermediates/res/merged/release/ && cd android && ./gradlew assembleMainnetRelease --no-daemon",
     "prepare": "husky install",
+    "prebundle:regtest": "node ./scripts/pre-regtest-bundle.js",
+    "postbundle:regtest": "node ./scripts/post-regtest-bundle.js",
+    "bundle:regtest": "yarn clean:android && react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.jsbundle --assets-dest android/app/build/intermediates/res/merged/release/ && cd android && ./gradlew assembleRegtestRelease --no-daemon",
     "postinstall": "node postinstall.js"
   },
   "dependencies": {
