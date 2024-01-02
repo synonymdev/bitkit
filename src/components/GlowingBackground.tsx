@@ -6,14 +6,8 @@ import React, {
 	useEffect,
 } from 'react';
 import { View, StyleSheet, LayoutChangeEvent } from 'react-native';
-import {
-	Canvas,
-	RadialGradient,
-	Rect,
-	runTiming,
-	useValue,
-	vec,
-} from '@shopify/react-native-skia';
+import { useSharedValue, withTiming } from 'react-native-reanimated';
+import { Canvas, RadialGradient, Rect, vec } from '@shopify/react-native-skia';
 
 import { View as ThemedView } from '../styles/components';
 import { IColors } from '../styles/colors';
@@ -35,10 +29,10 @@ const Glow = memo(
 		width: number;
 		height: number;
 	}) => {
-		const opacity = useValue(0);
+		const opacity = useSharedValue(0);
 
 		useEffect(() => {
-			runTiming(opacity, fadeout ? 0 : 1, { duration: DURATION });
+			opacity.value = withTiming(fadeout ? 0 : 1, { duration: DURATION });
 		}, [opacity, fadeout]);
 
 		return (

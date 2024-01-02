@@ -412,7 +412,7 @@ PODS:
     - React-Core
   - react-native-safe-area-context (4.7.4):
     - React-Core
-  - react-native-skia (0.1.225):
+  - react-native-skia (0.1.230):
     - RCT-Folly (= 2021.07.22.00)
     - React
     - React-callinvoker
@@ -913,7 +913,7 @@ SPEC CHECKSUMS:
   react-native-randombytes: 421f1c7d48c0af8dbcd471b0324393ebf8fe7846
   react-native-restart: 7595693413fe3ca15893702f2c8306c62a708162
   react-native-safe-area-context: 2cd91d532de12acdb0a9cbc8d43ac72a8e4c897c
-  react-native-skia: 0af8dd48ce9332d1dedcb1bc8a648f7d57a04b6c
+  react-native-skia: a395bbbb438d593e525f65d0886c36d1c30f0604
   react-native-tcp-socket: c1b7297619616b4c9caae6889bcb0aba78086989
   React-NativeModulesApple: b6868ee904013a7923128892ee4a032498a1024a
   React-perflogger: 31ea61077185eb1428baf60c0db6e2886f141a5a

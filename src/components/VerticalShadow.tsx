@@ -1,20 +1,13 @@
-import React, { ReactElement, useState, useEffect } from 'react';
+import React, { ReactElement, useState } from 'react';
 import { LayoutChangeEvent, StyleSheet, View } from 'react-native';
-import {
-	Canvas,
-	LinearGradient,
-	Rect,
-	runTiming,
-	useValue,
-	vec,
-} from '@shopify/react-native-skia';
+import { Canvas, LinearGradient, Rect, vec } from '@shopify/react-native-skia';
 
 /**
- * This component draws vertical gradint, it has opacity animation on mount
+ * This component draws vertical gradient, it has opacity animation on mount
  */
 const VerticalShadow = (): ReactElement => {
 	const [layout, setLayout] = useState({ width: 1, height: 1 });
-	const opacity = useValue(0);
+	const { height, width } = layout;
 
 	const handleLayout = (event: LayoutChangeEvent): void => {
 		setLayout({
@@ -23,16 +16,10 @@ const VerticalShadow = (): ReactElement => {
 		});
 	};
 
-	const { height, width } = layout;
-
-	useEffect(() => {
-		runTiming(opacity, 1);
-	}, [opacity]);
-
 	return (
 		<View style={styles.shadowCanvas} onLayout={handleLayout}>
 			<Canvas style={styles.shadowCanvas}>
-				<Rect x={0} y={0} width={width} height={height} opacity={opacity}>
+				<Rect x={0} y={0} width={width} height={height}>
 					<LinearGradient
 						start={vec(0, 0)}
 						end={vec(0, height)}

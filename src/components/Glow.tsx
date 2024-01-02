@@ -1,18 +1,12 @@
 import React, { memo, ReactElement, useMemo, useEffect } from 'react';
-import {
-	Canvas,
-	RadialGradient,
-	Rect,
-	runTiming,
-	useValue,
-	vec,
-} from '@shopify/react-native-skia';
+import { useSharedValue, withTiming } from 'react-native-reanimated';
+import { Canvas, RadialGradient, Rect, vec } from '@shopify/react-native-skia';
 
 import useColors from '../hooks/colors';
 import { IThemeColors } from '../styles/themes';
 
 /**
- * This component draws round gradint
+ * This component draws round gradient
  */
 
 type GlowProps = {
@@ -23,14 +17,14 @@ type GlowProps = {
 
 export const Glow = memo(
 	({ color, size = 600, style }: GlowProps): ReactElement => {
-		const opacity = useValue(0);
+		const opacity = useSharedValue(0);
 		const cstyle = useMemo(
 			() => ({ width: size, height: size, ...style }),
 			[size, style],
 		);
 
 		useEffect(() => {
-			runTiming(opacity, 0.4, { duration: 300 });
+			opacity.value = withTiming(0.4, { duration: 300 });
 		}, [opacity]);
 
 		return (
