@@ -26,7 +26,8 @@ For iOS: Open the `ios` folder in Xcode to build the project.
 
 ### Android
 
-For Android: `yarn bundle`.
+- `yarn bundle` to build the app
+- `yarn bundle:regtest` to build the regtest app variant
 
 Moreover, to build the Android APK, it is necessary to configure a signing store to sign
 the apk, as explained by [React Docs](https://reactnative.dev/docs/signed-apk-android).
