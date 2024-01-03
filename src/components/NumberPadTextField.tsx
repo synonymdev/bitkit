@@ -104,7 +104,7 @@ const NumberPadTextField = ({
 				<Display color="white" lineHeight="57px">
 					{value !== placeholder && value}
 					<Display
-						color={showPlaceholder ? 'white5' : 'white'}
+						color={showPlaceholder ? 'white50' : 'white'}
 						lineHeight="57px">
 						{placeholder}
 					</Display>

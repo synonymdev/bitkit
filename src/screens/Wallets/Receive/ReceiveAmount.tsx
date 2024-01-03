@@ -84,7 +84,7 @@ const ReceiveAmount = ({
 							<View style={styles.actionButtonContainer}>
 								<TouchableOpacity
 									style={styles.actionButton}
-									color="white08"
+									color="white10"
 									testID="ReceiveNumberPadUnit"
 									onPress={onChangeUnit}>
 									<SwitchIcon color="brand" width={16.44} height={13.22} />

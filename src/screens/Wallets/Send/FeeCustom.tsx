@@ -84,7 +84,7 @@ const FeeCustom = ({
 				<Amount value={feeRate} />
 
 				{isValid && (
-					<Text01S style={styles.text} color="white5">
+					<Text01S style={styles.text} color="white50">
 						{totalFeeText}
 					</Text01S>
 				)}

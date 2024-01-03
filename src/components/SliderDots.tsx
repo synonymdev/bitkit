@@ -1,6 +1,7 @@
 import React, { ReactElement } from 'react';
 import { StyleSheet } from 'react-native';
 import Animated, {
+	SharedValue,
 	interpolate,
 	useAnimatedStyle,
 } from 'react-native-reanimated';
@@ -15,7 +16,7 @@ const Dot = ({
 }: {
 	index: number;
 	length: number;
-	animValue: Animated.SharedValue<number>;
+	animValue: SharedValue<number>;
 }): ReactElement => {
 	const width = DOT_SIZE;
 
@@ -50,7 +51,7 @@ const styles = StyleSheet.create({
 		height: DOT_SIZE,
 		borderRadius: 5,
 		overflow: 'hidden',
-		marginRight: 4,
+		marginRight: 7,
 	},
 	dot: {
 		borderRadius: 5,

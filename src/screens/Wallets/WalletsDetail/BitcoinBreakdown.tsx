@@ -63,8 +63,8 @@ const BitcoinBreakdown = (): ReactElement => {
 			<View style={styles.transferRow}>
 				<ThemedView color="gray4" style={styles.line} />
 				<TouchableOpacity testID="TransferButton" onPress={onRebalancePress}>
-					<ThemedView style={styles.transferButton} color="white08">
-						<TransferIcon height={13} color="white" />
+					<ThemedView style={styles.transferButton} color="white16">
+						<TransferIcon height={12} color="white" />
 					</ThemedView>
 				</TouchableOpacity>
 				<ThemedView color="gray4" style={styles.line} />
@@ -103,8 +103,9 @@ const styles = StyleSheet.create({
 	},
 	transferButton: {
 		paddingHorizontal: 15,
-		height: 36,
-		borderRadius: 34,
+		height: 40,
+		width: 48,
+		borderRadius: 54,
 		flexDirection: 'row',
 		justifyContent: 'center',
 		alignItems: 'center',

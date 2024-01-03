@@ -148,6 +148,7 @@ const styles = StyleSheet.create({
 		borderWidth: 1,
 	},
 	numberpad: {
+		backgroundColor: 'black',
 		maxHeight: 350,
 	},
 });

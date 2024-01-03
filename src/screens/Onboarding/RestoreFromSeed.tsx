@@ -195,7 +195,7 @@ const RestoreFromSeed = (): ReactElement => {
 					<View style={styles.title}>
 						<Display>{t('restore_header')}</Display>
 					</View>
-					<Text01S color="white8">{t('restore_phrase')}</Text01S>
+					<Text01S color="white80">{t('restore_phrase')}</Text01S>
 				</View>
 				<View style={styles.inputsContainer}>
 					<View style={styles.inputsColumn}>

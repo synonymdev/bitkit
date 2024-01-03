@@ -20,14 +20,14 @@ const MoneySymbol = ({
 			{unit === EUnit.fiat && (
 				<Display
 					style={styles.fiatSymbol}
-					color="white5"
+					color="white50"
 					testID="MoneyFiatSymbol">
 					{fiatSymbol}
 				</Display>
 			)}
 			{unit === EUnit.satoshi && (
 				<LightningIcon
-					color="white5"
+					color="white50"
 					height={40}
 					width={28}
 					testID="MoneyLightningSymbol"
@@ -35,7 +35,7 @@ const MoneySymbol = ({
 			)}
 			{unit === EUnit.BTC && (
 				<BIcon
-					color="white5"
+					color="white50"
 					height={40}
 					width={28}
 					testID="MoneyBitcoinSymbol"

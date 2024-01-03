@@ -185,7 +185,7 @@ const Widgets = (): ReactElement => {
 
 			<TouchableOpacity
 				style={styles.add}
-				color="white08"
+				color="white10"
 				onPress={onAdd}
 				testID="WidgetsAdd">
 				<View color="green16" style={styles.iconCircle}>

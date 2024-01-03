@@ -73,12 +73,12 @@ const Address = ({}: SendScreenProps<'Address'>): ReactElement => {
 
 				<ThemedView
 					style={[styles.inputWrapper, keyboardShown && styles.inputKeyboard]}
-					color="white04">
+					color="white06">
 					<BottomSheetTextInput
 						style={styles.input}
 						value={textFieldValue}
 						selectionColor={colors.brand}
-						placeholderTextColor={colors.white5}
+						placeholderTextColor={colors.white50}
 						selectTextOnFocus={true}
 						multiline={true}
 						placeholder={t('send_address_placeholder')}

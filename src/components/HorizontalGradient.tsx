@@ -1,13 +1,6 @@
-import React, { ReactElement, useState, useEffect } from 'react';
+import React, { ReactElement, useState } from 'react';
 import { LayoutChangeEvent, StyleProp, View, ViewStyle } from 'react-native';
-import {
-	Canvas,
-	LinearGradient,
-	Rect,
-	runTiming,
-	useValue,
-	vec,
-} from '@shopify/react-native-skia';
+import { Canvas, LinearGradient, Rect, vec } from '@shopify/react-native-skia';
 
 type HorizontalGradientProps = {
 	color: string;
@@ -22,7 +15,7 @@ const HorizontalGradient = ({
 	style,
 }: HorizontalGradientProps): ReactElement => {
 	const [layout, setLayout] = useState({ width: 1, height: 1 });
-	const opacity = useValue(0);
+	const { height, width } = layout;
 
 	const handleLayout = (event: LayoutChangeEvent): void => {
 		setLayout({
@@ -31,16 +24,10 @@ const HorizontalGradient = ({
 		});
 	};
 
-	const { height, width } = layout;
-
-	useEffect(() => {
-		runTiming(opacity, 0.7);
-	}, [opacity]);
-
 	return (
 		<View style={style} onLayout={handleLayout}>
 			<Canvas style={style}>
-				<Rect x={0} y={0} width={width} height={height} opacity={opacity}>
+				<Rect x={0} y={0} width={width} height={height} opacity={0.7}>
 					<LinearGradient
 						start={vec(0, 0)}
 						end={vec(width, 0)}

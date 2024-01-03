@@ -112,26 +112,27 @@ const RestoringScreen = (): ReactElement => {
 		content = (
 			<View style={styles.content}>
 				<Display style={styles.title}>{title}</Display>
-				<Text01S color="white8">{subtitle}</Text01S>
+				<Text01S color="white80">{subtitle}</Text01S>
 
 				<GlowImage image={imageSrc} imageSize={200} glowColor={color} />
 
 				<View style={styles.buttonContainer}>
 					<Button
-						onPress={onPress}
 						size="large"
 						text={buttonText}
 						testID={showRestored ? 'GetStartedButton' : 'TryAgainButton'}
+						onPress={onPress}
 					/>
 					{tryAgainCount > 1 && showFailed && (
 						<Button
-							loading={proceedWBIsLoading}
 							style={styles.proceedButton}
+							text={t('restore_no_backup_button')}
+							size="large"
+							loading={proceedWBIsLoading}
+							variant="secondary"
 							onPress={(): void => {
 								setShowCautionDialog(true);
 							}}
-							size="large"
-							text={t('restore_no_backup_button')}
 						/>
 					)}
 				</View>
@@ -168,7 +169,7 @@ const styles = StyleSheet.create({
 		marginTop: 'auto',
 	},
 	proceedButton: {
-		marginTop: 5,
+		marginTop: 10,
 	},
 });
 

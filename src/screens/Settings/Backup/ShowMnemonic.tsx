@@ -27,7 +27,7 @@ export const Word = ({
 }): ReactElement => {
 	return (
 		<Text01M style={styles.word}>
-			<Text01M color="white5">{number}.</Text01M>
+			<Text01M color="white50">{number}.</Text01M>
 			<Text01M> {word}</Text01M>
 		</Text01M>
 	);
@@ -81,7 +81,7 @@ const ShowMnemonic = ({
 				style={styles.seedContainer}
 				testID="SeedContaider"
 				accessibilityLabel={seed.join(' ')}>
-				<ThemedView color="gray324" style={styles.seed}>
+				<ThemedView color="white10" style={styles.seed}>
 					<TouchableOpacity
 						style={styles.seed2}
 						activeOpacity={1}

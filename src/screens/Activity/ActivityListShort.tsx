@@ -80,7 +80,7 @@ const ActivityListShort = (): ReactElement => {
 					{groupedItems.map((item, index) => renderItem({ item, index }))}
 					<Button
 						style={styles.button}
-						text={<Text02M color="white8">{t('activity_show_all')}</Text02M>}
+						text={<Text02M color="white80">{t('activity_show_all')}</Text02M>}
 						size="large"
 						variant="transparent"
 						onPress={navigateToActivityFiltered}

@@ -21,7 +21,7 @@ const Word = ({
 }): ReactElement => {
 	return (
 		<Text01M style={styles.word}>
-			<Text01M color="white5">{number}. </Text01M>
+			<Text01M color="white50">{number}. </Text01M>
 			<Text01M color={correct ? 'green' : 'red'}> {word}</Text01M>
 		</Text01M>
 	);
@@ -92,7 +92,7 @@ const ConfirmMnemonic = ({
 							key={i}
 							text={w}
 							style={styles.button}
-							color={pressed[i] ? 'white32' : 'white08'}
+							color={pressed[i] ? 'white32' : 'white16'}
 							onPress={(): void => handleWordPress(w, i)}
 							testID={`Word-${w}`}
 						/>

@@ -36,7 +36,7 @@ const CloseChannelSuccess = (): ReactElement => {
 					title="Connection closed"
 					displayBackButton={false}
 				/>
-				<Text01S color="white5">
+				<Text01S color="white50">
 					Part of your instant balance has been moved to your savings because a
 					Lightning connection has closed.
 				</Text01S>

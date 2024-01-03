@@ -31,12 +31,12 @@ export interface IColors {
 	white05: string;
 	white06: string;
 	white08: string;
-	white1: string;
-	white3: string;
-	white5: string;
-	white8: string;
+	white10: string;
 	white16: string;
+	white30: string;
 	white32: string;
+	white50: string;
+	white80: string;
 	white84: string;
 	red16: string;
 	orange16: string;
@@ -85,7 +85,7 @@ const colors: IColors = {
 	destructive: '#E43B44',
 
 	// Gray Base
-	gray6: '#101010',
+	gray6: '#151515',
 	gray5: '#1C1C1D',
 	gray4: '#3A3A3C',
 	gray3: '#48484A',
@@ -102,12 +102,12 @@ const colors: IColors = {
 	white05: 'rgba(255, 255, 255, 0.05)',
 	white06: 'rgba(255, 255, 255, 0.06)',
 	white08: 'rgba(255, 255, 255, 0.08)',
-	white1: 'rgba(255, 255, 255, 0.1)',
-	white3: 'rgba(255, 255, 255, 0.3)',
-	white5: 'rgba(255, 255, 255, 0.5)',
-	white8: 'rgba(255, 255, 255, 0.8)',
+	white10: 'rgba(255, 255, 255, 0.10)',
 	white16: 'rgba(255, 255, 255, 0.16)',
+	white30: 'rgba(255, 255, 255, 0.30)',
 	white32: 'rgba(255, 255, 255, 0.32)',
+	white50: 'rgba(255, 255, 255, 0.50)',
+	white80: 'rgba(255, 255, 255, 0.80)',
 	white84: 'rgba(255, 255, 255, 0.84)',
 	red16: 'rgba(233, 81, 100, 0.16)',
 	orange16: 'rgba(247, 147, 26, 0.16)',

@@ -40,7 +40,7 @@ const ForgotPIN = (): ReactElement => {
 					title={t('pin_forgot_title')}
 					displayBackButton={false}
 				/>
-				<Text01S color="white5">{t('pin_forgot_text')}</Text01S>
+				<Text01S color="white50">{t('pin_forgot_text')}</Text01S>
 
 				<GlowImage image={imageSrc} imageSize={192} />
 

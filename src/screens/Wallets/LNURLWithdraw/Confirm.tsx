@@ -67,7 +67,7 @@ const Confirm = ({ route }: LNURLWithdrawProps<'Confirm'>): ReactElement => {
 						reverse={true}
 						space={12}
 					/>
-					<Text01S color="white5">{t('lnurl_w_text')}</Text01S>
+					<Text01S color="white50">{t('lnurl_w_text')}</Text01S>
 					<GlowImage image={imageSrc} imageSize={170} glowColor="brand" />
 					<View style={styles.buttonContainer}>
 						<Button

@@ -23,7 +23,7 @@ const LightningChannel = ({
 
 	let spendingColor: keyof IThemeColors = 'purple5';
 	let spendingAvailableColor: keyof IThemeColors = 'purple';
-	let receivingColor: keyof IThemeColors = 'white5';
+	let receivingColor: keyof IThemeColors = 'white50';
 	let receivingAvailableColor: keyof IThemeColors = 'white';
 
 	if (status === 'closed') {

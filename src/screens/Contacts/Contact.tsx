@@ -143,7 +143,7 @@ const Contact = ({
 					editable={false}
 					resolving={false}
 				/>
-				<View style={styles.divider} color="white1" />
+				<View style={styles.divider} color="white10" />
 				<View style={styles.bottom}>
 					<View style={styles.bottomHeader}>
 						<IconButton

@@ -3010,10 +3010,10 @@
   resolved "https://registry.yarnpkg.com/@scure/base/-/base-1.1.1.tgz#ebb651ee52ff84f420097055f4bf46cfba403938"
   integrity sha512-ZxOhsSyxYwLJj3pLZCefNitxsj093tb2vq90mp2txoYeBqbcjDjqFhyM8eUjq/uFm6zJ+mUuqxlS2FkuSY1MTA==
 
-"@shopify/react-native-skia@0.1.225":
-  version "0.1.225"
-  resolved "https://registry.yarnpkg.com/@shopify/react-native-skia/-/react-native-skia-0.1.225.tgz#78fe35fa6a080e5b10b25110490868638250295b"
-  integrity sha512-EVqFd8JmE2Phh1CQpIKbJqjS9tacB0wKMJYjQZxc7W9xkXy7euKDNAps+xwG/yVToHNXqT6qP4AGSTT4mtu5Jg==
+"@shopify/react-native-skia@0.1.230":
+  version "0.1.230"
+  resolved "https://registry.yarnpkg.com/@shopify/react-native-skia/-/react-native-skia-0.1.230.tgz#ef07c90bd40e33422f5d67ba7aee77055ae0ebfc"
+  integrity sha512-62YrOKfh5cJ+mLnV9/suzDHny8XD7EYHnixnjrhWRsrfsnrjgnRTtcK3zwUVoUyQkX7M4t7ZeTl1aAFrnFq3+w==
   dependencies:
     canvaskit-wasm "0.39.1"
     react-reconciler "^0.27.0"

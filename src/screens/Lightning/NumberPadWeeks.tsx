@@ -49,7 +49,7 @@ const NumberPadWeeks = ({
 			onPress={onPress}>
 			<GradientView>
 				<NumberPadButtons
-					color="purple"
+					color="white"
 					showUnitButton={false}
 					onMax={(): void => onChange(MAX_WEEKS)}
 					onDone={handleDone}

@@ -87,7 +87,7 @@ const Money = (props: IMoney): ReactElement => {
 					<Text
 						style={styles.symbol}
 						lineHeight={lineHeight}
-						color={color ?? 'white5'}
+						color={color ?? 'white50'}
 						testID="MoneyFiatSymbol">
 						{dv.fiatSymbol}
 					</Text>
@@ -96,7 +96,7 @@ const Money = (props: IMoney): ReactElement => {
 				return (
 					<LightningIcon
 						style={styles.symbol}
-						color={color ?? 'white5'}
+						color={color ?? 'white50'}
 						height={iconHeight}
 						width={iconWidth}
 						testID="MoneyLightningSymbol"
@@ -106,7 +106,7 @@ const Money = (props: IMoney): ReactElement => {
 				return (
 					<BIcon
 						style={styles.symbol}
-						color={color ?? 'white5'}
+						color={color ?? 'white50'}
 						height={iconHeight}
 						width={iconWidth}
 						testID="MoneyBitcoinSymbol"
@@ -156,7 +156,7 @@ const Money = (props: IMoney): ReactElement => {
 				<Text
 					style={styles.sign}
 					lineHeight={lineHeight}
-					color={color ?? 'white5'}
+					color={color ?? 'white50'}
 					testID="MoneySign">
 					{sign}
 				</Text>
@@ -166,7 +166,7 @@ const Money = (props: IMoney): ReactElement => {
 				{prim}
 			</Text>
 			{secd !== '' && (
-				<Text lineHeight={lineHeight} color="white5" testID="MoneySecondary">
+				<Text lineHeight={lineHeight} color="white50" testID="MoneySecondary">
 					{secd}
 				</Text>
 			)}

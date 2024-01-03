@@ -108,7 +108,7 @@ const Amount = ({
 							<View style={styles.actionButtonContainer}>
 								<TouchableOpacity
 									style={styles.actionButton}
-									color="white08"
+									color="white10"
 									testID="SendNumberPadMax"
 									onPress={onMaxAmount}>
 									<Text02B
@@ -122,7 +122,7 @@ const Amount = ({
 							<View style={styles.actionButtonContainer}>
 								<TouchableOpacity
 									style={styles.actionButton}
-									color="white08"
+									color="white10"
 									onPress={onChangeUnit}
 									testID="SendNumberPadUnit">
 									<SwitchIcon color="brand" width={16.44} height={13.22} />

@@ -13,12 +13,13 @@ import {
 	StyleSheet,
 	TouchableOpacity,
 } from 'react-native';
-import { SkiaMutableValue } from '@shopify/react-native-skia/src/values/types';
 
 import {
 	Easing,
 	FadeIn,
 	FadeOut,
+	SharedValue,
+	useDerivedValue,
 	useSharedValue,
 	withTiming,
 } from 'react-native-reanimated';
@@ -27,8 +28,6 @@ import {
 	RadialGradient,
 	Rect,
 	rect,
-	useComputedValue,
-	useValue,
 	vec,
 } from '@shopify/react-native-skia';
 
@@ -64,11 +63,11 @@ const Glow = ({
 	size,
 }: {
 	color: string;
-	size: SkiaMutableValue<{ width: number; height: number }>;
+	size: SharedValue<{ width: number; height: number }>;
 }): ReactElement => {
-	const rct = useComputedValue(
-		() => rect(0, 0, size.current.width, size.current.height),
-		[size],
+	const rct = useDerivedValue(
+		() => rect(0, 0, size.value.width, size.value.height),
+		[size.value.width, size.value.height],
 	);
 
 	return (
@@ -91,7 +90,7 @@ const WalletsDetail = ({
 	const hideBalance = useAppSelector(hideBalanceSelector);
 	const [_, switchUnit] = useSwitchUnit();
 	const colors = useColors();
-	const size = useValue({ width: 0, height: 0 });
+	const size = useSharedValue({ width: 0, height: 0 });
 	const title = capitalize(assetType);
 	const [showDetails, setShowDetails] = useState(true);
 	const [radiusContainerHeight, setRadiusContainerHeight] = useState(400);

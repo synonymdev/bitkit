@@ -32,6 +32,7 @@ import {
 	transactionSelector,
 } from '../../../store/reselect/wallet';
 import { useSlashtags } from '../../../components/SlashtagsProvider';
+import AmountToggle from '../../../components/AmountToggle';
 import { processInputData } from '../../../utils/scanner';
 import { showToast } from '../../../utils/notifications';
 
@@ -58,21 +59,20 @@ const Result = ({
 	let imageSrc;
 	let title;
 	let glowColor;
-	let closeText;
 	let retryText;
 	let error;
+
+	const isSlashpay = transaction.lightningInvoice && transaction.slashTagsUrl;
 
 	if (success) {
 		imageSrc = require('../../../assets/illustrations/check.png');
 		title = t('send_sent');
 		glowColor = 'green';
-		closeText = t('close');
-		error = <View style={styles.error} />;
+		error = <></>;
 	} else if (transaction.lightningInvoice && transaction.slashTagsUrl) {
 		imageSrc = require('../../../assets/illustrations/exclamation-mark.png');
 		title = t('send_instant_failed');
 		glowColor = 'yellow';
-		closeText = t('cancel');
 		retryText = loading ? (
 			<>
 				<ActivityIndicator />
@@ -81,26 +81,21 @@ const Result = ({
 		) : (
 			t('send_regular')
 		);
-		error = (
-			<View style={styles.error}>
-				<Text01S>{t('send_error_slash_ln')}</Text01S>
-			</View>
-		);
+		error = <Text01S color="gray1">{t('send_error_slash_ln')}</Text01S>;
 	} else {
 		imageSrc = require('../../../assets/illustrations/cross.png');
 		title = t('send_error_tx_failed');
 		glowColor = 'red';
-		closeText = t('cancel');
 		retryText = t('try_again');
 		error = (
-			<View style={styles.error}>
+			<>
 				{errorTitle && (
 					<Subtitle style={styles.errorTitle} color="red">
 						{errorTitle}
 					</Subtitle>
 				)}
 				{errorMessage && <Text01S color="red">{errorMessage}</Text01S>}
-			</View>
+			</>
 		);
 	}
 
@@ -195,45 +190,67 @@ const Result = ({
 
 			<BottomSheetNavigationHeader title={title} displayBackButton={!success} />
 
-			{error}
-
-			<GlowImage image={imageSrc} imageSize={200} glowColor={glowColor} />
-
-			<View style={styles.buttonContainer}>
-				{success && (
-					<>
-						<Button
-							style={styles.button}
-							variant="primary"
-							size="large"
-							disabled={!activityItem}
-							text={t('send_details')}
-							onPress={navigateToTxDetails}
-						/>
-						<View style={styles.divider} />
-					</>
+			<View style={styles.content}>
+				{activityItem && (
+					<AmountToggle
+						sats={activityItem.value}
+						reverse={true}
+						space={12}
+						testID="NewTxPrompt"
+						onPress={navigateToTxDetails}
+					/>
 				)}
-				<Button
-					style={styles.button}
-					variant="secondary"
-					size="large"
-					text={closeText}
-					onPress={handleClose}
-					testID="Close"
-				/>
-				{!success && (
-					<>
-						<View style={styles.divider} />
-						<Button
-							style={styles.button}
-							variant="primary"
-							size="large"
-							text={retryText}
-							onPress={handleRetry}
-							disabled={loading}
-						/>
-					</>
-				)}
+
+				{error}
+
+				<GlowImage image={imageSrc} imageSize={200} glowColor={glowColor} />
+
+				<View style={styles.buttonContainer}>
+					{success ? (
+						<>
+							<Button
+								style={styles.button}
+								variant="secondary"
+								size="large"
+								disabled={!activityItem}
+								text={t('send_details')}
+								onPress={navigateToTxDetails}
+							/>
+							<View style={styles.divider} />
+							<Button
+								style={styles.button}
+								size="large"
+								text={t('close')}
+								testID="Close"
+								onPress={handleClose}
+							/>
+						</>
+					) : (
+						<>
+							{isSlashpay && (
+								<>
+									<Button
+										style={styles.button}
+										variant="secondary"
+										size="large"
+										text={t('cancel')}
+										testID="Close"
+										onPress={handleClose}
+									/>
+									<View style={styles.divider} />
+								</>
+							)}
+							<Button
+								style={styles.button}
+								variant="primary"
+								size="large"
+								text={retryText}
+								disabled={loading}
+								onPress={handleRetry}
+							/>
+						</>
+					)}
+				</View>
 			</View>
 			<SafeAreaInset type="bottom" minPadding={16} />
 		</GradientView>
@@ -254,8 +271,9 @@ const styles = StyleSheet.create({
 		}),
 		zIndex: 1,
 	},
-	error: {
-		marginHorizontal: 32,
+	content: {
+		flex: 1,
+		paddingHorizontal: 16,
 	},
 	errorTitle: {
 		marginBottom: 8,
@@ -263,7 +281,6 @@ const styles = StyleSheet.create({
 	buttonContainer: {
 		flexDirection: 'row',
 		justifyContent: 'center',
-		paddingHorizontal: 16,
 		marginTop: 'auto',
 	},
 	button: {

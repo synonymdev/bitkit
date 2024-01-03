@@ -92,10 +92,10 @@ const Section = memo(
 		value: ReactNode;
 		onPress?: () => void;
 	}) => {
-		const { white1 } = useColors();
+		const { white10 } = useColors();
 		return (
 			<TouchableOpacity
-				style={[styles.sRoot, { borderBottomColor: white1 }]}
+				style={[styles.sRoot, { borderBottomColor: white10 }]}
 				activeOpacity={onPress ? 0.6 : 1}
 				onPress={onPress}>
 				<View style={styles.sText}>

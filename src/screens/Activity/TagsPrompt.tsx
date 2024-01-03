@@ -7,6 +7,7 @@ import BottomSheetWrapper from '../../components/BottomSheetWrapper';
 import SafeAreaInset from '../../components/SafeAreaInset';
 import Tag from '../../components/Tag';
 import { closeSheet } from '../../store/slices/ui';
+import { lastUsedTagsSelector } from '../../store/reselect/metadata';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import {
 	useBottomSheetBackPress,
@@ -14,18 +15,17 @@ import {
 } from '../../hooks/bottomSheet';
 
 const TagsPrompt = ({
-	onAddTag,
 	tags,
+	onAddTag,
 }: {
+	tags: string[];
 	onAddTag: (tag: string) => void;
-	tags: Array<string>;
 }): ReactElement => {
 	const { t } = useTranslation('wallet');
 	const snapPoints = useSnapPoints('medium');
 	const dispatch = useAppDispatch();
-	const suggestions = useAppSelector((store) => {
-		return store.metadata.lastUsedTags.filter((tg) => !tags.includes(tg));
-	});
+	const lastUsed = useAppSelector(lastUsedTagsSelector);
+	const suggestions = lastUsed.filter((tg) => !tags.includes(tg));
 
 	useBottomSheetBackPress('tagsPrompt');
 

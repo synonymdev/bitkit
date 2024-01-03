@@ -32,7 +32,7 @@ const AddressViewerListItem = (props: ListItemProps): ReactElement => {
 			<View style={styles.contentRow}>
 				<View style={styles.container}>
 					<Text01M
-						color={'white8'}
+						color="white80"
 						numberOfLines={1}
 						ellipsizeMode="middle"
 						testID={`Address-${item.index}`}>
@@ -41,7 +41,7 @@ const AddressViewerListItem = (props: ListItemProps): ReactElement => {
 				</View>
 				{balance >= 0 && (
 					<View style={styles.balanceRow}>
-						<Subtitle style={styles.balance} color={'white8'}>
+						<Subtitle style={styles.balance} color="white80">
 							{balance} sats
 						</Subtitle>
 						<TouchableOpacity

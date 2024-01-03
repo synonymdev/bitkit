@@ -77,7 +77,7 @@ export const getOrderStatus = (
 		case 'refunded':
 			return (): ReactElement => (
 				<View style={styles.statusRow}>
-					<ThemedView color="white1" style={styles.statusIcon}>
+					<ThemedView color="white10" style={styles.statusIcon}>
 						<ArrowCounterClock color="gray1" width={16} height={16} />
 					</ThemedView>
 					<Text01M color="gray1">{getStateMessage(order)}</Text01M>
@@ -102,7 +102,7 @@ export const getOrderStatus = (
 				if (!channelIsOpen) {
 					return (): ReactElement => (
 						<View style={styles.statusRow}>
-							<ThemedView color="white1" style={styles.statusIcon}>
+							<ThemedView color="white10" style={styles.statusIcon}>
 								<LightningIcon color="gray1" width={16} height={16} />
 							</ThemedView>
 							<Text01M color="gray1">
@@ -122,7 +122,7 @@ export const getOrderStatus = (
 			case 'closed':
 				return (): ReactElement => (
 					<View style={styles.statusRow}>
-						<ThemedView color="white1" style={styles.statusIcon}>
+						<ThemedView color="white10" style={styles.statusIcon}>
 							<LightningIcon color="gray1" width={16} height={16} />
 						</ThemedView>
 						<Text01M color="gray1">{getStateMessage(order)}</Text01M>
@@ -166,7 +166,7 @@ export const getOrderStatus = (
 
 	return (): ReactElement => (
 		<View style={styles.statusRow}>
-			<ThemedView color="white1" style={styles.statusIcon}>
+			<ThemedView color="white10" style={styles.statusIcon}>
 				<LightningIcon color="gray1" width={16} height={16} />
 			</ThemedView>
 			<Text01M>{getStateMessage(order)}</Text01M>

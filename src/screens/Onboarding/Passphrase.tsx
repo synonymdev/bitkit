@@ -85,17 +85,17 @@ const Passphrase = ({
 
 					<View style={styles.buttonContainer}>
 						<Button
+							style={styles.button}
 							text={t('create_new_wallet')}
 							size="large"
-							style={[styles.button, styles.customButton]}
+							testID="CreateNewWallet"
 							onPress={(): void => {
 								navigation.navigate('Slideshow', { bip39Passphrase });
 							}}
-							testID="CreateNewWallet"
 						/>
 					</View>
-					<SafeAreaInset type="bottom" minPadding={16} />
 				</ScrollView>
+				<SafeAreaInset type="bottom" minPadding={16} />
 			</KeyboardAvoidingView>
 		</GlowingBackground>
 	);
@@ -147,9 +147,6 @@ const styles = StyleSheet.create({
 	},
 	button: {
 		flex: 1,
-	},
-	customButton: {
-		marginLeft: 6,
 	},
 });
 

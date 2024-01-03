@@ -7,7 +7,7 @@ interface DividerProps extends PropsWithChildren<any> {
 }
 
 const Divider = ({ style }: DividerProps): ReactElement => {
-	return <View color="white1" style={[styles.root, style]} />;
+	return <View color="white10" style={[styles.root, style]} />;
 };
 
 const styles = StyleSheet.create({

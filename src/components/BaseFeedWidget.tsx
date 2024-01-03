@@ -62,7 +62,7 @@ const BaseFeedWidget = ({
 		<>
 			<TouchableOpacity
 				style={[styles.root, style]}
-				color="white08"
+				color="white10"
 				activeOpacity={0.9}
 				testID={testID}
 				onPress={onPress}

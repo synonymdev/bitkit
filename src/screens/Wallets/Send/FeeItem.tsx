@@ -58,7 +58,7 @@ const FeeItem = ({
 				onPress={onPress}
 				style={[
 					styles.root,
-					isSelected && { backgroundColor: colors.white04 },
+					isSelected && { backgroundColor: colors.white06 },
 				]}>
 				<View style={styles.imageContainer}>{icon}</View>
 

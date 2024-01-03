@@ -106,7 +106,7 @@ const Status = ({
 				<Caption13M color="gray1">{subtitle}</Caption13M>
 			</View>
 			{failed && isSyncedKey && !hideRetry && (
-				<TouchableOpacity onPress={retry} color="white08" style={styles.button}>
+				<TouchableOpacity onPress={retry} color="white16" style={styles.button}>
 					<ArrowClockwise color="brand" width={16} height={16} />
 				</TouchableOpacity>
 			)}

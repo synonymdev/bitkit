@@ -41,7 +41,6 @@ const AskForBiometrics = ({
 		})();
 	}, []);
 
-	const buttonText = t(!biometryData?.available ? 'skip' : 'continue');
 	const biometricsName =
 		biometryData?.biometryType === 'TouchID'
 			? t('bio_touch_id')
@@ -59,7 +58,12 @@ const AskForBiometrics = ({
 			: Linking.sendIntent('android.settings.SETTINGS');
 	};
 
-	const handleButtonPress = useCallback((): void => {
+	const onSkip = (): void => {
+		const bioType = biometryData?.biometryType ?? 'Biometrics';
+		navigation.navigate('Result', { bio: false, type: bioType });
+	};
+
+	const onContinue = useCallback((): void => {
 		const bioType = biometryData?.biometryType ?? 'Biometrics';
 
 		if (!biometryData?.available || !shouldEnableBiometrics) {
@@ -132,27 +136,33 @@ const AskForBiometrics = ({
 				)}
 
 				<View style={styles.buttonContainer}>
-					{!biometryData?.available && (
+					{biometryData?.available ? (
+						<Button
+							style={styles.button}
+							size="large"
+							text={t('continue')}
+							testID="ContinueButton"
+							onPress={onContinue}
+						/>
+					) : (
 						<>
 							<Button
 								style={styles.button}
 								size="large"
+								text={t('skip')}
 								variant="secondary"
+								testID="SkipButton"
+								onPress={onSkip}
+							/>
+							<View style={styles.divider} />
+							<Button
+								style={styles.button}
+								size="large"
 								text={t('bio_phone_settings')}
 								onPress={goToSettings}
 							/>
-							<View style={styles.divider} />
 						</>
 					)}
-
-					<Button
-						style={styles.button}
-						size="large"
-						text={buttonText}
-						onPress={handleButtonPress}
-						disabled={!biometryData}
-						testID="ContinueButton"
-					/>
 				</View>
 				<SafeAreaInset type="bottom" minPadding={16} />
 			</View>

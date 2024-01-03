@@ -38,7 +38,7 @@ const ScannerComponent = ({
 	onRead,
 }: ScannerComponentProps): ReactElement => {
 	const { t } = useTranslation('other');
-	const { white08, white5 } = useColors();
+	const { white10, white50 } = useColors();
 	const dimensions = useWindowDimensions();
 	const [torchMode, setTorchMode] = useState(false);
 	const [isChooingFile, setIsChoosingFile] = useState(false);
@@ -136,7 +136,7 @@ const ScannerComponent = ({
 							{bottomSheet && <View style={styles.maskRing} />}
 							<View style={styles.actionsRow}>
 								<TouchableOpacity
-									style={[styles.actionButton, { backgroundColor: white08 }]}
+									style={[styles.actionButton, { backgroundColor: white10 }]}
 									activeOpacity={1}
 									disabled={isChooingFile}
 									onPress={onPickFile}>
@@ -145,7 +145,7 @@ const ScannerComponent = ({
 								<TouchableOpacity
 									style={[
 										styles.actionButton,
-										{ backgroundColor: torchMode ? white5 : white08 },
+										{ backgroundColor: torchMode ? white50 : white10 },
 									]}
 									activeOpacity={1}
 									onPress={(): void => setTorchMode((prevState) => !prevState)}>

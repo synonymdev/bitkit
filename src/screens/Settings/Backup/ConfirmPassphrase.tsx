@@ -32,6 +32,7 @@ const ConfirmPassphrase = ({
 					<BottomSheetTextInput
 						value={bip39Passphrase}
 						placeholder={capitalize(t('pass'))}
+						backgroundColor="white10"
 						returnKeyType="done"
 						onChangeText={setPassphrase}
 						autoCapitalize="none"

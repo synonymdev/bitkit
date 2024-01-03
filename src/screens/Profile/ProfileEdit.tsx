@@ -150,6 +150,7 @@ const ProfileEdit = ({
 					<Button
 						style={styles.addLinkButton}
 						text={t('profile_add_link')}
+						color="white10"
 						icon={
 							<PlusIcon color="brand" width={16} style={styles.addLinkButton} />
 						}

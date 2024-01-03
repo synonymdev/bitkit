@@ -109,7 +109,7 @@ const BackupPrompt = ({ enabled }: { enabled: boolean }): ReactElement => {
 					title={t('backup_wallet')}
 					displayBackButton={false}
 				/>
-				<Text01S color="white5">{text}</Text01S>
+				<Text01S color="white50">{text}</Text01S>
 				<GlowImage image={imageSrc} imageSize={170} glowColor="blue" />
 				<View style={styles.buttonContainer}>
 					<Button

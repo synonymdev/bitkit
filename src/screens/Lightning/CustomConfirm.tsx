@@ -4,7 +4,7 @@ import { FadeIn, FadeOut } from 'react-native-reanimated';
 import { Trans, useTranslation } from 'react-i18next';
 
 import { AnimatedView } from '../../styles/components';
-import { Caption13Up, Display, Text01S, Text01M } from '../../styles/text';
+import { Caption13Up, Display, Text01S } from '../../styles/text';
 import { LightningIcon, PencileIcon } from '../../styles/icons';
 import SafeAreaInset from '../../components/SafeAreaInset';
 import GlowingBackground from '../../components/GlowingBackground';
@@ -180,10 +180,10 @@ const CustomConfirm = ({
 						color="transparent"
 						entering={FadeIn}
 						exiting={FadeOut}>
-						<Display>{weeks}</Display>
-						<Text01M style={styles.text} color="gray1">
+						<Caption13Up style={styles.text} color="purple">
 							{t('duration_week', { count: weeks })}
-						</Text01M>
+						</Caption13Up>
+						<Display>{weeks}</Display>
 					</AnimatedView>
 				)}
 
@@ -214,7 +214,7 @@ const styles = StyleSheet.create({
 	},
 	text: {
 		marginTop: 4,
-		marginBottom: 40,
+		marginBottom: 16,
 	},
 	space: {
 		marginBottom: 8,

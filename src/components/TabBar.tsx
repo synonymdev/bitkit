@@ -52,7 +52,7 @@ const TabBar = ({
 
 	const borderStyles = useMemo(() => {
 		const androidStyles = {
-			borderColor: white08,
+			borderColor: '#282828',
 			borderTopColor: '#272727',
 			borderBottomColor: '#272727',
 		};
@@ -133,6 +133,14 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		borderRadius: 30,
 		elevation: 6,
+		...Platform.select({
+			ios: {
+				backgroundColor: 'rgba(255, 255, 255, 0.2)',
+			},
+			android: {
+				backgroundColor: 'rgba(40, 40, 40, 0.95)',
+			},
+		}),
 	},
 	send: {
 		paddingRight: 30,

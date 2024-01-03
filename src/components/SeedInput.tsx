@@ -27,7 +27,7 @@ const SeedInput = forwardRef<any, SeedInputProps>(
 				{index !== undefined && (
 					<View style={styles.index}>
 						<Text01S
-							color={valid ? 'white5' : 'red'}
+							color={valid ? 'white50' : 'red'}
 							style={styles.indexText}
 							testID={`WordIndex-${index}`}>
 							{index + 1}.

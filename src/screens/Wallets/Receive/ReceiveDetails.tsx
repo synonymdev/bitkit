@@ -215,7 +215,7 @@ const ReceiveDetails = ({
 								</View>
 								<View style={styles.tagsContainer}>
 									<Button
-										color="white04"
+										color="white06"
 										text={t('tags_add')}
 										icon={<TagIcon color="brand" width={16} />}
 										testID="TagsAdd"
@@ -227,7 +227,7 @@ const ReceiveDetails = ({
 									<GlowImage
 										style={styles.image}
 										image={imageSrc}
-										glowColor="white3"
+										glowColor="white30"
 									/>
 								)}
 							</AnimatedView>
@@ -251,7 +251,7 @@ const ReceiveDetails = ({
 								<View style={styles.actionButtonContainer}>
 									<TouchableOpacity
 										style={styles.actionButton}
-										color="white08"
+										color="white10"
 										testID="ReceiveNumberPadUnit"
 										onPress={onChangeUnit}>
 										<SwitchIcon color="brand" width={16.44} height={13.22} />

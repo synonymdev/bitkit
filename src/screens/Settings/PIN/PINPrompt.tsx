@@ -38,7 +38,7 @@ const PINPrompt = ({
 				title={t('pin_security_header')}
 				displayBackButton={false}
 			/>
-			<Text01S color="white5">{t('pin_security_text')}</Text01S>
+			<Text01S color="white50">{t('pin_security_text')}</Text01S>
 
 			<GlowImage image={imageSrc} imageSize={150} glowColor="green" />
 

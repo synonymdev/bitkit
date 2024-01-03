@@ -26,7 +26,7 @@ const IconButton = ({
 	return (
 		<TouchableOpacity
 			style={[buttonStyles, style]}
-			color="white08"
+			color="white16"
 			activeOpacity={0.7}
 			disabled={disabled}
 			onPress={onPress}

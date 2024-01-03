@@ -97,10 +97,10 @@ import { contactsSelector } from '../../store/reselect/slashtags';
 
 const Section = memo(
 	({ title, value }: { title: string; value: ReactNode }) => {
-		const { white1 } = useColors();
+		const { white10 } = useColors();
 
 		return (
-			<View style={[styles.sRoot, { borderBottomColor: white1 }]}>
+			<View style={[styles.sRoot, { borderBottomColor: white10 }]}>
 				<View style={styles.sText}>
 					<Caption13Up color="gray1">{title}</Caption13Up>
 				</View>

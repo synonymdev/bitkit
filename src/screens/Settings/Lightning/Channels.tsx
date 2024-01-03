@@ -474,7 +474,7 @@ const Channels = ({
 				{(closedChannels.length > 0 || failedOrders.length > 0) && (
 					<Button
 						text={t(showClosed ? 'conn_closed_hide' : 'conn_closed_show')}
-						textStyle={{ color: colors.white8 }}
+						textStyle={{ color: colors.white80 }}
 						size="large"
 						variant="transparent"
 						onPress={(): void => setShowClosed((prevState) => !prevState)}

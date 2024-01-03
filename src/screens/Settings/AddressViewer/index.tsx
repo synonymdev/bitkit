@@ -157,7 +157,7 @@ const EmptyComponent = memo(
 		}
 		return (
 			<View style={styles.emptyComponent}>
-				<Subtitle style={styles.emptyText} color="white8">
+				<Subtitle style={styles.emptyText} color="white80">
 					{txt}
 				</Subtitle>
 			</View>

@@ -31,7 +31,7 @@ const ContactSmall = ({
 				size === 'large' && styles.containerLarge,
 				style,
 			]}
-			color="white05"
+			color="white10"
 			activeOpacity={onPress ? 0.6 : 1}
 			onPress={onPress}
 			testID={testID}>

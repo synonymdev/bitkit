@@ -111,7 +111,7 @@ const SwipeToConfirm = ({
 	}, [confirmed, endPosition, panX]);
 
 	return (
-		<ThemedView color="white08" style={[styles.root, style]}>
+		<ThemedView color="white16" style={[styles.root, style]}>
 			<View
 				style={styles.container}
 				onLayout={(e): void => {

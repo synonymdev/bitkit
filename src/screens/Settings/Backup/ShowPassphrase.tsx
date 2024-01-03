@@ -27,9 +27,9 @@ const ShowPassphrase = ({
 			<View style={styles.container}>
 				<Text01S color="gray1">{t('pass_text')}</Text01S>
 
-				<ThemedView color="gray324" style={styles.passphrase}>
+				<ThemedView color="white10" style={styles.passphrase}>
 					<BottomSheetScrollView>
-						<Text01M color="white5" style={styles.p}>
+						<Text01M color="white50" style={styles.p}>
 							{t('pass')}
 						</Text01M>
 						<Text01M>{bip39Passphrase}</Text01M>

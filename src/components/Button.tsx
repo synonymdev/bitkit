@@ -33,10 +33,10 @@ const Button = ({
 	icon,
 	...props
 }: IButton): ReactElement => {
-	const { white08, white32 } = useColors();
+	const { white16, white32 } = useColors();
 
 	const buttonStyle = useMemo(() => {
-		const borderColor = variant === 'transparent' ? undefined : white08;
+		const borderColor = variant === 'transparent' ? undefined : white16;
 
 		return StyleSheet.compose(
 			{
@@ -48,17 +48,17 @@ const Button = ({
 				...(disabled && !icon
 					? { backgroundColor: 'transparent', borderColor: 'transparent' }
 					: {}),
-				...(disabled && icon ? { opacity: disabled ? 0.5 : 1 } : {}),
+				...(disabled && icon ? { opacity: disabled ? 0.4 : 1 } : {}),
 			},
 			style,
 		);
-	}, [variant, size, icon, disabled, white08, style]);
+	}, [variant, size, icon, disabled, white16, style]);
 
 	const buttonColor = useMemo(() => {
 		if (color) {
 			return color;
 		}
-		return variant === 'primary' ? 'white08' : 'transparent';
+		return variant === 'primary' ? 'white16' : 'transparent';
 	}, [color, variant]);
 
 	const textStyles = useMemo(() => {

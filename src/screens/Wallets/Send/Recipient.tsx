@@ -45,7 +45,7 @@ const Button = ({
 }): ReactElement => (
 	<Pressable
 		style={styles.button}
-		color="white04"
+		color="white06"
 		testID={testID}
 		onPress={onPress}>
 		<View style={styles.buttonIcon}>{icon}</View>
@@ -163,7 +163,7 @@ const Recipient = ({
 				{!isSmallScreen && (
 					<View style={styles.bottom}>
 						<View style={styles.image}>
-							<GlowImage image={imageSrc} glowColor="white3" />
+							<GlowImage image={imageSrc} glowColor="white30" />
 						</View>
 					</View>
 				)}

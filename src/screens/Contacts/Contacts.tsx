@@ -72,7 +72,7 @@ const ContactsScreen = ({
 					/>
 					<ThemedTouchableOpacity
 						style={styles.addButton}
-						color="white08"
+						color="white16"
 						activeOpacity={0.8}
 						onPress={(): void => {
 							Keyboard.dismiss();

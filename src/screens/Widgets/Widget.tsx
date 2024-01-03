@@ -188,7 +188,7 @@ const Widget = ({
 									testID={testID}
 								/>
 							) : (
-								<ThemedView style={styles.previewLoading} color="white08">
+								<ThemedView style={styles.previewLoading} color="white10">
 									<Spinner />
 								</ThemedView>
 							);

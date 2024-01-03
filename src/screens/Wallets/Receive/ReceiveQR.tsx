@@ -381,6 +381,7 @@ const ReceiveQR = ({
 				<View style={styles.actions}>
 					<Button
 						style={styles.actionButton}
+						color="white10"
 						icon={<PencileIcon width={18} color="brand" />}
 						text={t('edit')}
 						testID="SpecifyInvoiceButton"
@@ -389,6 +390,7 @@ const ReceiveQR = ({
 					<View style={styles.buttonSpacer} />
 					<Button
 						style={styles.actionButton}
+						color="white10"
 						icon={<CopyIcon width={18} color="brand" />}
 						text={t('copy')}
 						testID="ReceiveCopyQR"
@@ -397,6 +399,7 @@ const ReceiveQR = ({
 					<View style={styles.buttonSpacer} />
 					<Button
 						style={styles.actionButton}
+						color="white10"
 						text={t('share')}
 						icon={<ShareIcon width={18} color="brand" />}
 						disabled={isSharing}
@@ -435,7 +438,7 @@ const ReceiveQR = ({
 	const Slide2 = useCallback((): ReactElement => {
 		return (
 			<View style={styles.slide}>
-				<ThemedView style={styles.invoices} color="white04">
+				<ThemedView style={styles.invoices} color="white06">
 					{(!jitInvoice || !enableInstant) && (
 						<View style={styles.invoice} testID="ReceiveOnchainInvoice">
 							<View style={styles.invoiceLabel}>
@@ -463,6 +466,7 @@ const ReceiveQR = ({
 							<View style={styles.actions}>
 								<Button
 									style={styles.actionButton}
+									color="white10"
 									icon={<CopyIcon width={18} color="brand" />}
 									text={t('copy')}
 									onPress={(): void => {
@@ -472,6 +476,7 @@ const ReceiveQR = ({
 								<View style={styles.buttonSpacer} />
 								<Button
 									style={styles.actionButton}
+									color="white10"
 									text={t('share')}
 									icon={<ShareIcon width={18} color="brand" />}
 									disabled={isSharing}
@@ -516,6 +521,7 @@ const ReceiveQR = ({
 								<View style={styles.actions}>
 									<Button
 										style={styles.actionButton}
+										color="white10"
 										icon={<CopyIcon width={18} color="purple" />}
 										text={t('copy')}
 										onPress={(): void => {
@@ -525,6 +531,7 @@ const ReceiveQR = ({
 									<View style={styles.buttonSpacer} />
 									<Button
 										style={styles.actionButton}
+										color="white10"
 										text={t('share')}
 										icon={<ShareIcon width={18} color="purple" />}
 										disabled={isSharing}
@@ -662,7 +669,6 @@ const styles = StyleSheet.create({
 		width: 16,
 	},
 	invoices: {
-		backgroundColor: '#171717',
 		borderRadius: 9,
 		padding: 32,
 		width: '100%',

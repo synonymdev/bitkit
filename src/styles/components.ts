@@ -12,7 +12,7 @@ import {
 	TextInputProps as RNTextInputProps,
 	SwitchProps,
 } from 'react-native';
-import Animated, { AnimateProps } from 'react-native-reanimated';
+import Animated, { AnimatedProps } from 'react-native-reanimated';
 import { SafeAreaProvider as _SafeAreaProvider } from 'react-native-safe-area-context';
 import { BottomSheetTextInput as _BottomSheetTextInput } from '@gorhom/bottom-sheet';
 import {
@@ -75,7 +75,7 @@ export const View = styled.View<ViewProps & ColorProps>((props) => ({
 }));
 
 export const AnimatedView = styled(Animated.View)<
-	AnimateProps<ViewProps> & ColorProps
+	AnimatedProps<ViewProps> & ColorProps
 >((props) => ({
 	backgroundColor: props.color
 		? props.theme.colors[props.color]
@@ -112,13 +112,13 @@ export const Pressable = styled(RNPressable)<PressableProps & ColorProps>(
 export const Switch = styled(RNSwitch).attrs<SwitchProps & ColorProps>(
 	(props) => ({
 		trackColor: {
-			false: '#767577',
+			false: '#3A3A3C',
 			true: props.color
 				? props.theme.colors[props.color]
 				: props.theme.colors.brand,
 		},
 		thumbColor: 'white',
-		ios_backgroundColor: '#3e3e3e',
+		ios_backgroundColor: '#3A3A3C',
 		...props,
 	}),
 )<SwitchProps & ColorProps>(() => ({}));
@@ -133,7 +133,7 @@ export const TextInput = styled(RNTextInput).attrs<TextInputProps>((props) => ({
 	...props.theme.fonts.semibold,
 	backgroundColor: props.backgroundColor
 		? props.theme.colors[props.backgroundColor]
-		: props.theme.colors.white08,
+		: props.theme.colors.white10,
 	color: props.color
 		? props.theme.colors[props.color]
 		: props.theme.colors.text,
@@ -171,12 +171,12 @@ export const BottomSheetTextInput = styled(
 	selectionColor: colors.brand,
 	placeholderTextColor: props.placeholderTextColor
 		? props.placeholderTextColor
-		: props.theme.colors.white5,
+		: props.theme.colors.white50,
 }))<TextInputProps>((props) => ({
 	...props.theme.fonts.semibold,
 	backgroundColor: props.backgroundColor
 		? props.theme.colors[props.backgroundColor]
-		: props.theme.colors.white04,
+		: props.theme.colors.white06,
 	color: props.color
 		? props.theme.colors[props.color]
 		: props.theme.colors.text,

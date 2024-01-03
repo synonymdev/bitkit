@@ -38,7 +38,7 @@ const NumberPadButtons = ({
 				{onMax && (
 					<TouchableOpacity
 						style={styles.button}
-						color="white08"
+						color="white10"
 						testID="NumberPadButtonsMax"
 						onPress={onMax}>
 						<Caption13Up color={isMaxAmount ? 'orange' : color}>
@@ -52,7 +52,7 @@ const NumberPadButtons = ({
 				{showUnitButton && (
 					<TouchableOpacity
 						style={styles.button}
-						color="white08"
+						color="white10"
 						testID="NumberPadButtonsUnit"
 						onPress={onChangeUnit}>
 						<SwitchIcon color={color} width={16.44} height={13.22} />
@@ -69,7 +69,7 @@ const NumberPadButtons = ({
 				{onDone && (
 					<TouchableOpacity
 						style={styles.button}
-						color="white08"
+						color="white10"
 						testID="NumberPadButtonsDone"
 						onPress={onDone}>
 						<Caption13Up color={color}>{t('send_done')}</Caption13Up>

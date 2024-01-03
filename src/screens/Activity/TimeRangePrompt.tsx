@@ -70,7 +70,7 @@ const Day = ({
 			today = true;
 			back = (
 				<View style={styles.sRoot}>
-					<ThemedView color="white1" style={styles.sCircleSingle} />
+					<ThemedView color="white10" style={styles.sCircleSingle} />
 				</View>
 			);
 			break;

@@ -40,7 +40,7 @@ const CheckButton = memo(
 				<View style={styles.rightColumn}>
 					<StyledView
 						style={[styles.checkbox, checked && styles.checked]}
-						color={checked ? 'brand32' : 'white1'}>
+						color={checked ? 'brand32' : 'white10'}>
 						{checked && <Checkmark color="brand" height={22} width={22} />}
 					</StyledView>
 				</View>

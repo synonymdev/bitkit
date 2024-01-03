@@ -28,7 +28,7 @@
 	"spending_amount_bitcoin": "Choose how much bitcoin you want to have available as your instant spending balance.",
 	"receiving_amount_money": "Choose how much money you want to be able to receive instantly.",
 	"receiving_amount_bitcoin": "Enter the amount of Bitcoin you want to be able to receive instantly.",
-	"enter_custom_amount": "Enter Custom Amount",
+	"enter_custom_amount": "Enter Amount",
 	"custom_confirm_header": "<purple>Please\nConfirm.</purple>",
 	"custom_confirm_cost": "It costs <white>{txFee}</white> in network fees and <white>{lspFee}</white> in server provider fees to connect you and set up your balance. Your Lightning connection should stay open for at least <whiteWithKeyboard>{weeks} week(s)</whiteWithKeyboard>.<whiteWithKeyboard><penIcon/></whiteWithKeyboard>",
 	"duration_header": "Connection Duration.",
