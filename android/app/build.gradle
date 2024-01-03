@@ -158,3 +158,10 @@ dependencies {
 }
 
 apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)
+
+// Alias to keep functionality of react-native-cli together with multiple flavours
+tasks.register('installDebug') {
+    group = 'install'
+    description = "Alias for 'installMainnetDebug'."
+    dependsOn 'installMainnetDebug'
+}
