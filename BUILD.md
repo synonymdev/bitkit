@@ -32,9 +32,15 @@ yarn setup-android
 
 ## Build
 
-For iOS: Open the `ios` folder in Xcode to build the project.
+- For iOS: Open the `ios` folder in Xcode to build the project.
+- For Android `yarn bundle` to build the app
 
-For Android:
+### Regtest Builds for Testing
 
-- `yarn bundle` to build the app
-- `yarn bundle:regtest` to build the regtest app variant
+For Android: run `yarn bundle:regtest` to build the regtest app variant for release.
+
+For iOS:
+
+1. Run `yarn bundle:regtest:ios`
+2. In XCode, switch to the `bitkit.regtest` scheme
+3. Proceed the same as for the default scheme to build/archive the app.
