@@ -375,12 +375,11 @@ const styles = StyleSheet.create({
 		flex: Platform.OS === 'ios' ? 3.2 : 3.5,
 	},
 	text: {
-		flex: 0.35,
 		marginTop: 8,
 	},
 	buttonsContainer: {
 		flexDirection: 'row',
-		marginTop: 20,
+		marginTop: 42,
 	},
 	button: {
 		flex: 1,
