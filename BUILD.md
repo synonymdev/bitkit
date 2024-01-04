@@ -42,5 +42,5 @@ For Android: run `yarn bundle:regtest` to build the regtest app variant for rele
 For iOS:
 
 1. Run `yarn bundle:regtest:ios`
-2. In XCode, switch to the `bitkit.regtest` scheme
+2. In Xcode, switch to the `bitkit.regtest` scheme
 3. Proceed the same as for the default scheme to build/archive the app.
