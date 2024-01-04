@@ -694,7 +694,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = D922A5161F7D7F5B96A19BEC /* Pods-bitkit.debug.xcconfig */;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon.Regtest;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 92;
 				DEVELOPMENT_TEAM = KYH47R284B;
@@ -713,8 +713,8 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = to.synonym.bitkit;
-				PRODUCT_NAME = bitkit;
+				PRODUCT_BUNDLE_IDENTIFIER = to.synonym.bitkit.regtest;
+				PRODUCT_NAME = "Bitkit Regtest";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
