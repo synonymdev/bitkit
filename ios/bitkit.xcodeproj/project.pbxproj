@@ -700,7 +700,7 @@
 				DEVELOPMENT_TEAM = KYH47R284B;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = bitkit/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = Bitkit;
+				INFOPLIST_KEY_CFBundleDisplayName = "Bitkit Regtest";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
