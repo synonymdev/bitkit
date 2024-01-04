@@ -107,7 +107,6 @@ const ProfileScreen = ({
 		<ThemedView style={styles.container}>
 			<SafeAreaInset type="top" />
 			<NavigationHeader
-				style={styles.header}
 				title={t('profile')}
 				actionIcon={<UsersIcon height={24} width={24} />}
 				onClosePress={(): void => {
@@ -236,9 +235,6 @@ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		paddingBottom: 16,
-	},
-	header: {
-		paddingBottom: 12,
 	},
 	content: {
 		flexGrow: 1,
