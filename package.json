@@ -30,6 +30,9 @@
     "prebundle:regtest": "node ./scripts/pre-regtest-bundle.js",
     "postbundle:regtest": "node ./scripts/post-regtest-bundle.js",
     "bundle:regtest": "yarn clean:android && react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.jsbundle --assets-dest android/app/build/intermediates/res/merged/release/ && cd android && ./gradlew assembleRegtestRelease --no-daemon",
+    "prebundle:regtest:ios": "node ./scripts/pre-regtest-bundle.js",
+    "postbundle:regtest:ios": "node ./scripts/post-regtest-bundle.js",
+    "bundle:regtest:ios": "react-native bundle --reset-cache --platform ios --dev false --entry-file index.js --bundle-output ios/main.jsbundle",
     "postinstall": "node postinstall.js"
   },
   "dependencies": {
