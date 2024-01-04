@@ -62,7 +62,7 @@
       </BuildableProductRunnable>
    </LaunchAction>
    <ProfileAction
-      buildConfiguration = "Debug.Regtest"
+      buildConfiguration = "Release.Regtest"
       shouldUseLaunchSchemeArgsEnv = "YES"
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
@@ -82,7 +82,7 @@
       buildConfiguration = "Debug.Regtest">
    </AnalyzeAction>
    <ArchiveAction
-      buildConfiguration = "Debug.Regtest"
+      buildConfiguration = "Release.Regtest"
       revealArchiveInOrganizer = "YES">
    </ArchiveAction>
 </Scheme>
