@@ -1,5 +1,6 @@
 import React, { ReactElement, memo } from 'react';
-import { useTranslation } from 'react-i18next';
+import { Trans, useTranslation } from 'react-i18next';
+import { Text01B } from '../../styles/text';
 import InfoScreen from '../../components/InfoScreen';
 import type { LightningScreenProps } from '../../navigation/types';
 
@@ -21,7 +22,13 @@ const Success = ({
 			navTitle={t('add_instant_payments')}
 			displayBackButton={false}
 			title={t('result_header')}
-			description={t('result_text')}
+			description={
+				<Trans
+					t={t}
+					i18nKey="result_text"
+					components={{ highlight: <Text01B color="white" /> }}
+				/>
+			}
 			image={imageSrc}
 			buttonText={t('awesome')}
 			testID="LightningSuccess"

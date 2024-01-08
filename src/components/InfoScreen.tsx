@@ -23,7 +23,7 @@ const InfoScreen = ({
 	accentColor: keyof IColors;
 	navTitle: string;
 	title: string;
-	description: string;
+	description: string | ReactElement;
 	image: ImageSourcePropType;
 	buttonText: string;
 	displayBackButton?: boolean;
