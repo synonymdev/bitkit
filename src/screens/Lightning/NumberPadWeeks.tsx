@@ -2,7 +2,6 @@ import React, { ReactElement, useState } from 'react';
 import { StyleSheet, StyleProp, ViewStyle } from 'react-native';
 
 import NumberPad from '../../components/NumberPad';
-import GradientView from '../../components/GradientView';
 import NumberPadButtons from '../Wallets/NumberPadButtons';
 import { vibrate } from '../../utils/helpers';
 import { handleNumberPadPress } from '../../utils/numberpad';
@@ -47,14 +46,12 @@ const NumberPadWeeks = ({
 			type="simple"
 			errorKey={errorKey}
 			onPress={onPress}>
-			<GradientView>
-				<NumberPadButtons
-					color="white"
-					showUnitButton={false}
-					onMax={(): void => onChange(MAX_WEEKS)}
-					onDone={handleDone}
-				/>
-			</GradientView>
+			<NumberPadButtons
+				color="white"
+				showUnitButton={false}
+				onMax={(): void => onChange(MAX_WEEKS)}
+				onDone={handleDone}
+			/>
 		</NumberPad>
 	);
 };

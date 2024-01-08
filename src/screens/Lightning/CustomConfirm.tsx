@@ -4,7 +4,7 @@ import { FadeIn, FadeOut } from 'react-native-reanimated';
 import { Trans, useTranslation } from 'react-i18next';
 
 import { AnimatedView } from '../../styles/components';
-import { Caption13Up, Display, Text01S } from '../../styles/text';
+import { Caption13Up, Display, Text01B, Text01S } from '../../styles/text';
 import { LightningIcon, PencileIcon } from '../../styles/icons';
 import SafeAreaInset from '../../components/SafeAreaInset';
 import GlowingBackground from '../../components/GlowingBackground';
@@ -114,9 +114,9 @@ const CustomConfirm = ({
 								t={t}
 								i18nKey="custom_confirm_cost"
 								components={{
-									white: <Text01S color="white" />,
-									whiteWithKeyboard: (
-										<Text01S
+									highlight: <Text01B color="white" />,
+									highlightWithKeyboard: (
+										<Text01B
 											color="white"
 											testID="CustomConfirmWeeks"
 											onPress={(): void => setShowNumberPad(true)}

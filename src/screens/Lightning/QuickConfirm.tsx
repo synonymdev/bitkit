@@ -2,7 +2,7 @@ import React, { ReactElement, useMemo, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Trans, useTranslation } from 'react-i18next';
 
-import { Caption13Up, Display, Text01S } from '../../styles/text';
+import { Caption13Up, Display, Text01B, Text01S } from '../../styles/text';
 import { LightningIcon } from '../../styles/icons';
 import SafeAreaInset from '../../components/SafeAreaInset';
 import GlowingBackground from '../../components/GlowingBackground';
@@ -86,7 +86,7 @@ const QuickConfirm = ({
 					<Trans
 						t={t}
 						i18nKey="quick_confirm_cost"
-						components={{ white: <Text01S color="white" /> }}
+						components={{ highlight: <Text01B color="white" /> }}
 						values={{
 							txFee: `${fiatSymbol}${txFee.toFixed(2)}`,
 							lspFee: `${fiatSymbol}${lspFee.toFixed(2)}`,

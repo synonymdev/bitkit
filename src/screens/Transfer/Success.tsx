@@ -41,9 +41,7 @@ const Success = ({
 						i18nKey={
 							type === 'savings' ? 'ts_savings_text' : 'ts_spendings_text'
 						}
-						components={{
-							purple: <Text01B color="purple" />,
-						}}
+						components={{ highlight: <Text01B color="white" /> }}
 					/>
 				</Text01S>
 

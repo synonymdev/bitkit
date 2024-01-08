@@ -2,7 +2,7 @@ import React, { memo, ReactElement, useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Trans, useTranslation } from 'react-i18next';
 
-import { Caption13Up, Text01S } from '../../../styles/text';
+import { Caption13Up, Text01B, Text01S } from '../../../styles/text';
 import GradientView from '../../../components/GradientView';
 import AmountToggle from '../../../components/AmountToggle';
 import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
@@ -97,7 +97,7 @@ const ReceiveConnect = ({
 								? 'receive_connect_initial'
 								: 'receive_connect_additional'
 						}
-						components={{ white: <Text01S color="white" /> }}
+						components={{ highlight: <Text01B color="white" /> }}
 						values={{ lspFee: `${fiatSymbol}${displayFee.fiatFormatted}` }}
 					/>
 				</Text01S>

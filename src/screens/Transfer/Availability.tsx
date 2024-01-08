@@ -63,9 +63,7 @@ const Availability = ({
 					<Trans
 						t={t}
 						i18nKey="availability_text"
-						components={{
-							purple: <Text01B color="purple" />,
-						}}
+						components={{ highlight: <Text01B color="white" /> }}
 					/>
 				</Text01S>
 
