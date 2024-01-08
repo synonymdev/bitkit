@@ -2,6 +2,7 @@ import React, { ReactElement, memo, useState, useMemo } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
+import { View as ThemedView } from '../../../styles/components';
 import { Caption13Up, Text01S } from '../../../styles/text';
 import { customFeeRateSelector } from '../../../store/reselect/settings';
 import { updateSettings } from '../../../store/slices/settings';
@@ -58,7 +59,7 @@ const FeeCustom = ({
 	const isValid = feeRate !== 0;
 
 	return (
-		<>
+		<ThemedView style={styles.root}>
 			<SafeAreaInset type="top" />
 			<NavigationHeader title={t('general.speed_fee_custom')} />
 			<View style={styles.container} testID="CustomFee">
@@ -84,11 +85,14 @@ const FeeCustom = ({
 				</View>
 				<SafeAreaInset type="bottom" minPadding={16} />
 			</View>
-		</>
+		</ThemedView>
 	);
 };
 
 const styles = StyleSheet.create({
+	root: {
+		flex: 1,
+	},
 	container: {
 		flex: 1,
 		paddingHorizontal: 16,
