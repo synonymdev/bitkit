@@ -120,7 +120,7 @@ export type TLnUrlAddress = {
 	qrDataType: EQRDataType.lnurlAddress;
 	address: string;
 	lnUrlParams: LNURLPayParams;
-	network?: TAvailableNetworks;
+	network?: EAvailableNetwork;
 };
 export type TNodeId = {
 	qrDataType: EQRDataType.nodeId;
