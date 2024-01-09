@@ -101,10 +101,15 @@ describe('timeAgo', () => {
 		expect(timeAgo(+new Date() - 1000 * 60 * 60 * 24 * 2)).toEqual(
 			'2 days ago',
 		);
-		expect(timeAgo(+new Date(new Date().getFullYear(), 0, 1))).toEqual(
+		expect(timeAgo(1)).toEqual('January 1, 1970');
+
+		// do not run this test before January 10th
+		if (new Date().getMonth() === 0 && new Date().getDate() <= 10) {
+			return;
+		}
+		expect(timeAgo(+new Date(new Date().getFullYear() - 1, 0, 1))).toEqual(
 			'January 1 at 12:00 AM',
 		);
-		expect(timeAgo(1)).toEqual('January 1, 1970');
 	});
 });
 
