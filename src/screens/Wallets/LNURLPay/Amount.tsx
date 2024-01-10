@@ -26,7 +26,7 @@ import {
 } from '../../../store/reselect/wallet';
 import { primaryUnitSelector } from '../../../store/reselect/settings';
 import { useAppSelector } from '../../../hooks/redux';
-import { useSwitchUnit } from '../../../hooks/wallet';
+import { useBalance, useSwitchUnit } from '../../../hooks/wallet';
 import { useCurrency } from '../../../hooks/displayValues';
 import { getNumberPadText } from '../../../utils/numberpad';
 import { convertToSats } from '../../../utils/conversion';
@@ -42,6 +42,7 @@ const Amount = ({
 	const { minSendable, maxSendable } = pParams;
 	const { fiatTicker } = useCurrency();
 	const [nextUnit, switchUnit] = useSwitchUnit();
+	const balance = useBalance();
 	const selectedWallet = useAppSelector(selectedWalletSelector);
 	const selectedNetwork = useAppSelector(selectedNetworkSelector);
 	const unit = useAppSelector(primaryUnitSelector);
@@ -58,11 +59,17 @@ const Amount = ({
 		return convertToSats(text, unit);
 	}, [text, unit]);
 
+	const max = useMemo(() => {
+		// TODO: get routing fee
+		const fee = 1;
+		return Math.min(balance.spendingBalance - fee, maxSendable);
+	}, [maxSendable, balance.spendingBalance]);
+
 	const maxSendableProps = {
 		...(error && { color: 'brand' as keyof IColors }),
 	};
 
-	const isMaxSendAmount = amount === maxSendable;
+	const isMaxSendAmount = amount === max;
 
 	const onChangeUnit = (): void => {
 		const result = getNumberPadText(amount, nextUnit);
@@ -71,17 +78,17 @@ const Amount = ({
 	};
 
 	const onMaxAmount = useCallback((): void => {
-		const result = getNumberPadText(maxSendable, unit);
+		const result = getNumberPadText(max, unit);
 		setText(result);
 		sendMax({ selectedWallet, selectedNetwork });
-	}, [maxSendable, unit, selectedWallet, selectedNetwork]);
+	}, [max, unit, selectedWallet, selectedNetwork]);
 
 	const onError = (): void => {
 		setError(true);
 		setTimeout(() => setError(false), 500);
 	};
 
-	const isValid = amount >= minSendable && amount <= maxSendable;
+	const isValid = amount >= minSendable && amount <= max;
 
 	return (
 		<GradientView style={styles.container}>
@@ -97,7 +104,7 @@ const Amount = ({
 							</Caption13Up>
 							<Money
 								key="small"
-								sats={maxSendable}
+								sats={max}
 								size="text02m"
 								decimalLength="long"
 								testID="maxSendable"
