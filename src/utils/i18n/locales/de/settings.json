@@ -24,9 +24,7 @@
     "currency_footer": "Preise bereitgestellt von Bitfinex & CoinGecko.",
     "currency_most_used": "Meist genutzt",
     "currency_other": "Andere Währungen",
-    "unit_bitcoin": "Bitcoin",
-    "suggestions": "Verbesserungsvorschläge",
-    "reset_desc": "Bist du dir sicher, dass du die Vorschläge löschen willst? Diese werden erneut auftauchen, wenn du diese von deiner Bitkit Wallet Übersicht entfernt hast. "
+    "unit_bitcoin": "Bitcoin"
   },
   "security": {
     "use_bio": "Nutze {biometryTypeName} stattdessen",
@@ -38,6 +36,7 @@
   "adv": {
     "section_other": "Andere",
     "address_type": "Bitcoin Adressen-Typ",
+    "reset_desc": "Bist du dir sicher, dass du die Vorschläge löschen willst? Diese werden erneut auftauchen, wenn du diese von deiner Bitkit Wallet Übersicht entfernt hast. ",
     "lightning_connections": "Lightning Verbindungen",
     "lightning_node": "Lightning Node",
     "bitcoin_network": "Bitcoin Netzwerk"

@@ -40,19 +40,14 @@
     "speed_fee_custom": "Nastavit vlastní poplatek",
     "speed_fee_total": "{feeSats} satů za průměrnou transakci",
     "speed_fee_total_fiat": "{feeSats} satů za průměrnou transakci ({fiatSymbol}{fiatFormatted})",
-    "suggestions": "Návrhy",
-    "suggestions_visible": "Viditelné",
-    "suggestions_hidden": "Skrytý",
-    "suggestions_display": "Zobrazit návrhy",
-    "suggestions_reset": "Resetovat návrhy",
     "tags": "Tagy",
     "tags_previously": "Dříve použité tagy",
-    "reset_title": "Resetovat návrhy?",
-    "reset_desc": "Opravdu chcete návrhy resetovat? Znovu se objeví v případě, že jste je odstranili z přehledu peněženky Bitkit.",
-    "reset_confirm": "Ano, resetovat"
+    "widgets": "Widgety"
   },
   "security": {
     "title": "Zabezpečení a soukromí",
+    "swipe_balance_to_hide": "Skrýt zůstatek přejetím",
+    "hide_balance_on_open": "Skrýt zůstatek při otevření",
     "clipboard": "Číst schránku pro snadné použití",
     "warn_100": "Upozornit při odesílání více než $100",
     "pin": "PIN kód",
@@ -89,15 +84,18 @@
     "section_payments": "Platby",
     "section_networks": "Sítě",
     "section_other": "Další",
-    "address_type": "Typ Bitcoin adresy",
+    "address_type": "Typ bitcoinové adresy",
     "coin_selection": "Výběr mince",
     "cs_method": "Metoda výběru mince",
     "cs_manual": "Manuální",
     "cs_auto": "Autopilot",
     "cs_auto_mode": "Autopilot mód",
+    "cs_max": "Více soukromí",
+    "cs_max_description": "Seřaďte a použijte nejmenší UTXO jako první. Vyšší poplatek, ale skryje vaše největší UTXO.",
+    "cs_min": "Nejnižší poplatek",
+    "cs_min_description": "Seřaďte a použijte největší UTXO jako první. Nejnižší poplatek, ale odhaluje vaše největší UTXO.",
     "cs_consolidate": "Konsolidovat",
-    "cs_max": "Maximální soukromí",
-    "cs_min": "Minimálně UTXO",
+    "cs_consolidate_description": "Použijte všechny dostupné UTXO bez ohledu na částku, která se odesílá. Použijte tuto metodu, když jsou poplatky nízké, abyste snížili poplatky v budoucích transakcích.",
     "payment_preference": "Platební preference",
     "pp_header": "Vyberte, jak chcete přijímat peníze, když uživatelé pošlou prostředky na váš profilový klíč.",
     "pp_footer": "* Toto vyžaduje sdílení dat o platbě",
@@ -106,12 +104,16 @@
     "pp_contacts_switch": "Povolit platby s kontakty*",
     "address_viewer": "Prohlížeč adres",
     "rescan": "Znovu naskenovat adresy",
+    "suggestions_reset": "Resetovat návrhy",
+    "reset_title": "Resetovat návrhy?",
+    "reset_desc": "Opravdu chcete návrhy resetovat? Znovu se objeví v případě, že jste je odstranili z přehledu peněženky Bitkit.",
+    "reset_confirm": "Ano, resetovat",
     "lightning_connections": "Lightning spojení",
     "lightning_node": "Lightning uzel",
     "electrum_server": "Electrum server",
     "rgs_server": "Server Rapid-Gossip-Sync",
     "web_relay": "Slashtags web přenos",
-    "bitcoin_network": "Bitcoinová síť"
+    "bitcoin_network": "bitcoinová síť"
   },
   "fee": {
     "fast": {
@@ -190,8 +192,6 @@
     "error_https": "Není platná url HTTPS adresa.",
     "error_healthcheck": "Kontrola stavu se nezdařila",
     "url_updated_title": "Webový přenos aktualizován",
-    "url_updated_message": "Úspěšně připojeno k {url}",
-    "trust": "Důvěřovat tomuto přenosu",
-    "trust_description": "Přeskočení ověření záznamu pro tento webový přenos"
+    "url_updated_message": "Úspěšně připojeno k {url}"
   }
 }

@@ -18,6 +18,7 @@
   "restore": "Restaurar",
   "restore_wallet": "Restaurar cartera",
   "advanced_setup": "Configuración avanzada",
+  "advanced": "Avanzado",
   "passphrase_text": "Puedes añadir una frase de secreta a la frase de recuperación de 12 palabras. Si lo hace, asegúrese de no olvidarla.",
   "passphrase": "Frase de acesso",
   "create_new_wallet": "Crear nueva cartera",

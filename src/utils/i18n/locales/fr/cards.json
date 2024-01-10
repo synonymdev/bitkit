@@ -24,7 +24,7 @@
   },
   "transferToSpending": {
     "title": "Transfert",
-    "description": "Prêt dans ±20min"
+    "description": "Prêt dans ±10m"
   },
   "transferToSavings": {
     "title": "Transfert",

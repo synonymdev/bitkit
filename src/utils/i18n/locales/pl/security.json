@@ -47,6 +47,7 @@
   "pin_forgot_text": "Zapomniałeś kodu PIN? Zresetuj i odzyskaj swój portfel Bitkit używając mnemonika. Ustaw nowy kod PIN po zakończeniu odzyskiwania portfela.",
   "pin_forgot_reset": "Reset (wymaga mnemonika)",
   "pin_send": "Proszę podaj swój kod PIN aby potwierdzić i wysłać płatność.",
+  "pin_use_biometrics": "Użyj {biometricsName}",
   "bio": "Biometria",
   "bio_auth_with": "Autoryzuj przy pomocy {biometricsName}",
   "bio_no": "Wygląda, że twoje urządzenie nie wspiera zabezpieczeń biometrycznych.",

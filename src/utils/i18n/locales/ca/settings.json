@@ -19,11 +19,9 @@
     "unit_bitcoin": "Bitcoin",
     "unit_satoshis": "Satoshis",
     "speed_fee_custom": "Estableix una tarifa personalitzada",
-    "suggestions": "Sugeriments",
-    "suggestions_visible": "Visible",
-    "suggestions_hidden": "Amagat",
     "tags": "Etiquetes",
-    "tags_previously": "Etiquetes prèviament utilitzades"
+    "tags_previously": "Etiquetes prèviament utilitzades",
+    "widgets": "Ginys"
   },
   "security": {
     "pin": "Codi Pin",

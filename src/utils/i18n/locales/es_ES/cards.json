@@ -24,7 +24,7 @@
   },
   "transferToSpending": {
     "title": "Transfiriendo",
-    "description": "Listo en unos 20 minutos"
+    "description": "Listo en unos 10 minutos"
   },
   "transferToSavings": {
     "title": "Transfiriendo",
@@ -45,6 +45,10 @@
   "buyBitcoin": {
     "title": "Obtener Bitcoin",
     "description": "Apile algunos satoshis"
+  },
+  "btFailed": {
+    "title": "Instalación fallida",
+    "description": "Inténtalo de nuevo"
   },
   "lightning_no_funds_title": "Sin fondos, todavia",
   "lightning_no_funds_desc": "Antes de que pueda configurar su saldo de gasto instantáneo, necesita enviar un poco de Bitcoin on-chain a su monedero.",

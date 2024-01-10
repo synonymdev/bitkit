@@ -2,6 +2,5 @@
   "quick_confirm_header": "Por favor\nConfirme.",
   "custom_confirm_header": "<purple>Por favor\nConfirme.</purple>",
   "transfer_header": "Por favor\nConfirme.",
-  "availability_text": "A transferência de fundos para a poupança geralmente leva\n±1 hora, mas a liquidação pode levar <purple>14 dias</purple> em determinadas condições da rede.",
   "close_text": "Há um pequeno custo para finalizar essa conexão Lightning e transferir o saldo total de gastos de volta para sua poupança. A taxa exata depende das condições da rede.\n\nA transferência de fundos para a poupança normalmente leva ±1 hora, mas a liquidação pode levar <white>14 dias</white> em determinadas condições de rede."
 }

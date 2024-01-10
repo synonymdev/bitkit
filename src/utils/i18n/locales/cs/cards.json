@@ -24,7 +24,7 @@
   },
   "transferToSpending": {
     "title": "Probíhající přenos",
-    "description": "Připraveno za ±20 m"
+    "description": "Připraveno za ±10 m"
   },
   "transferToSavings": {
     "title": "Probíhající přenos",
@@ -43,7 +43,7 @@
     "description": "Doplňte své údaje"
   },
   "buyBitcoin": {
-    "title": "Získat Bitcoin",
+    "title": "Získat bitcoin",
     "description": "Stackuj Saty"
   },
   "btFailed": {
@@ -51,6 +51,6 @@
     "description": "Prosím, zkuste to znovu."
   },
   "lightning_no_funds_title": "Zatím žádné prostředky",
-  "lightning_no_funds_desc": "Abyste si mohli nastavit zůstatek pro okamžité platby, musíte nejdříve uskutečnit Bitcoinovou on-chain transakci do své peněženky.",
+  "lightning_no_funds_desc": "Abyste si mohli nastavit zůstatek pro okamžité platby, musíte nejdříve uskutečnit bitcoinovou on-chain transakci do své peněženky.",
   "suggestions": "Návrhy"
 }

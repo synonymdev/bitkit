@@ -1,44 +1,136 @@
 {
+  "settings": "Configuración",
+  "dev_enabled_title": "Opciones de desarrollo activadas",
+  "dev_disabled_title": "Opciones de desarrollo desactivadas",
+  "security_title": "Seguridad y Privacidad",
+  "advanced_title": "Avanzado",
+  "about": {
+    "title": "Sobre Bitkit",
+    "support": "Soporte",
+    "report_bug": "Informar un error o contribuir",
+    "version": "Versión",
+    "op_share": "Comparte Bitkit con amigos"
+  },
+  "dev_title": "Ajustes de desarrollo",
   "general": {
+    "section_title": "Categorías",
+    "currency_local": "Moneda local",
+    "currency_local_title": "Moneda local",
+    "currency_footer": "Precios proporcionados por Bitfinex y CoinGecko.",
+    "currency_most_used": "Más utilizados",
+    "currency_other": "Otras monedas",
+    "unit": "Unidad predeterminada",
+    "unit_title": "Unidad Predeterminada",
+    "unit_display": "Mostrar cantidades en",
+    "unit_bitcoin": "Bitcoin",
+    "unit_satoshis": "Satoshis",
+    "speed": "Velocidad de transacción",
+    "speed_title": "Velocidad de la Transacción",
+    "speed_default": "Velocidad de transacción predeterminada",
     "speed_fee_custom": "Fijar tarifa personalizada",
-    "suggestions": "Sugerencias",
     "tags": "Etiquetas",
-    "tags_previously": "Etiquetas utilizadas anteriormente"
+    "tags_previously": "Etiquetas utilizadas anteriormente",
+    "widgets": "Widgets"
+  },
+  "security": {
+    "title": "Seguridad y Privacidad",
+    "swipe_balance_to_hide": "Desliza el saldo para ocultar",
+    "hide_balance_on_open": "Ocultar saldo al abrir",
+    "warn_100": "Advertir al enviar más de $100",
+    "pin": "Código PIN",
+    "pin_change": "Cambiar código PIN",
+    "pin_launch": "Pedir PIN al iniciar",
+    "pin_idle": "Pedir PIN en reposo",
+    "pin_payments": "Pedir PIN al realizar pagos",
+    "pin_enabled": "Activado",
+    "pin_disabled": "Desactivado"
   },
   "backup": {
+    "wallet": "Respalda tu monedero",
+    "export": "Exportar datos del monedero al teléfono",
+    "reset": "Borrar y restaurar monedero",
+    "status_failed": "Respaldo fallido: {time}",
+    "status_success": "Último respaldo: {time}",
+    "status_empty": "Respaldo no necesario",
+    "category_connections": "Conexiones",
+    "category_transaction_log": "Registro de Transacciones",
+    "category_settings": "Ajustes",
+    "category_widgets": "Widgets",
     "category_tags": "Etiquetas",
     "category_profile": "Perfil",
     "category_contacts": "Contactos"
   },
   "adv": {
-    "section_other": "Otros"
+    "section_payments": "Pagos",
+    "section_networks": "Redes",
+    "section_other": "Otros",
+    "address_type": "Tipo de dirección Bitcoin",
+    "coin_selection": "Selección de monedas",
+    "cs_method": "Método de selección de monedas",
+    "cs_manual": "Manual",
+    "cs_auto": "Piloto automático",
+    "cs_auto_mode": "Modo de piloto automático",
+    "cs_min": "Fee más baja",
+    "cs_consolidate": "Consolidar",
+    "payment_preference": "Preferencia de pago",
+    "pp_contacts": "Pagar a/desde contactos",
+    "pp_contacts_switch": "Habilitar pagos con contactos*",
+    "address_viewer": "Visualizador de direcciones",
+    "rescan": "Volver a escanear direcciones",
+    "suggestions_reset": "Restablecer sugerencias",
+    "reset_title": "¿Restablecer sugerencias?",
+    "reset_desc": "¿Estás seguro de que deseas restablecer las sugerencias? Volverán a aparecer en caso de que las hayas eliminado de la vista general de tu monedero Bitkit.",
+    "reset_confirm": "Sí, restaurar",
+    "electrum_server": "Servidor Electrum",
+    "bitcoin_network": "Red Bitcoin"
   },
   "fee": {
     "fast": {
-      "value": "Rápido"
+      "label": "Rápido (más caro)",
+      "value": "Rápido",
+      "description": "± 10-20 minutos"
     },
     "normal": {
       "label": "Normal",
-      "value": "Normal"
+      "value": "Normal",
+      "description": "± 20-60 minutos"
+    },
+    "slow": {
+      "label": "Lento (más barato)",
+      "value": "Lento ",
+      "description": "± 1-2 horas"
     },
     "custom": {
       "label": "Personalizar",
-      "value": "Personalizar"
+      "value": "Personalizar",
+      "description": "Depende de la comisión"
     }
   },
   "addr": {
+    "no_addrs": "No hay direcciones para mostrar",
+    "loading": "Cargando direcciones...",
+    "rescan_error": "Fallo en la reexploración",
+    "rescan_error_description": "Bitkit no ha podido comprobar los saldos de las direcciones.",
+    "path": "Ruta: {path}",
     "private_hide": "Ocultar clave privada",
     "private_view": "Ver clave privada",
+    "private_key": "Clave privada: {privateKey}",
     "addr_change": "Cambiar direcciones",
     "addr_receiving": "Direcciones de recibimiento",
+    "sats_found": "{totalBalance} sats encontrados",
     "gen_20": "Generar 20 más",
-    "check_balances": "Consultar Saldos"
+    "check_balances": "Consultar Saldos",
+    "copied": "Copiado al portapapeles"
   },
   "es": {
     "error_host_port": "Especifique un host y una puerta al que conectarse.",
     "error_host": "Por favor, especifique un host para conectarse.",
     "error_port": "Especifique una puerta para conectarse.",
+    "error_port_invalid": "Indica un puerto válido.",
+    "error_invalid_http": "Indica una URL válida.",
+    "error_peer": "Error de Electrum",
     "server_updated_title": "Servidor Electrum actualizado",
+    "server_updated_message": "Conexión exitosa a {host}:{port}",
     "connected_to": "Actualmente conectado a",
     "disconnected": "desconectado",
     "host": "Anfitrión",
@@ -49,5 +141,8 @@
   },
   "rgs": {
     "button_connect": "Conectar"
+  },
+  "wr": {
+    "url_updated_message": "Conexión exitosa a {url}"
   }
 }

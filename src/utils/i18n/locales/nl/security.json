@@ -47,6 +47,7 @@
   "pin_forgot_text": "Uw pincode vergeten? Reset en herstel uw Bitkit wallet met de herstelwoorden. Na het herstel kunt u een niewe pincode configureren.",
   "pin_forgot_reset": "Reset (Vereist de Herstelwooden)",
   "pin_send": "Voer uw pincode in om deze betaling te bevestigen en versturen. ",
+  "pin_use_biometrics": "Gebruik {biometricsName}",
   "bio": "Biometrie",
   "bio_auth_with": "Identiteit verifiëren met {biometricsName}",
   "bio_no": "Het lijkt er op dat uw apparaat biometrische beveiliging niet ondersteunt.",

@@ -1,5 +1,6 @@
 {
   "pin_forgot_text": "PIN vergessen? Setze hier dein Bitkit Wallet zurück und stelle es mit deiner Wiederherstellungsphrase wieder her. Vergebe eine neue PIN nach deiner Wiederherstellung.",
+  "pin_use_biometrics": "Nutze {biometricsName}",
   "bio": "Biometrie",
   "bio_auth_with": "Authentifiziere mit {biometricsName}",
   "bio_no": "Anscheinend unterstützt dein Gerät die biometrische Sicherheitsfunktion nicht.",

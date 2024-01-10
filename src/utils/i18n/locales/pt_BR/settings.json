@@ -40,16 +40,9 @@
     "speed_fee_custom": "Definir taxa personalizada",
     "speed_fee_total": "{feeSats} sats para uma transação média",
     "speed_fee_total_fiat": "{feeSats} sats para uma transação média ({fiatSymbol}{fiatFormatted})",
-    "suggestions": "Sugestões",
-    "suggestions_visible": "Visível",
-    "suggestions_hidden": "Oculto",
-    "suggestions_display": "Mostrar sugestões",
-    "suggestions_reset": "Resetar Sugestões",
     "tags": "Tags",
     "tags_previously": "Tags usadas anteriormente",
-    "reset_title": "Redefinir Sugestões?",
-    "reset_desc": "Tem certeza de que deseja redefinir as sugestões? Eles reaparecerão na tela inicial caso você tenha removido.",
-    "reset_confirm": "Sim, Redefinir"
+    "widgets": "Widgets"
   },
   "security": {
     "title": "Segurança e Privacidade",
@@ -96,8 +89,6 @@
     "cs_auto": "Piloto automático",
     "cs_auto_mode": "Modo de Piloto Automático",
     "cs_consolidate": "Consolidação máxima",
-    "cs_max": "Privacidade máxima",
-    "cs_min": "UTXOs mínimos",
     "payment_preference": "Preferência de Recebimento",
     "pp_header": "Escolha como prefere receber quando for pago por meio da chave do seu perfil.",
     "pp_footer": "* Requer o compartilhamento de dados de pagamento.",
@@ -106,6 +97,10 @@
     "pp_contacts_switch": "Habilitar pagamentos com contatos*",
     "address_viewer": "Visualizador de Endereços",
     "rescan": "Reescanear Endereços",
+    "suggestions_reset": "Resetar Sugestões",
+    "reset_title": "Redefinir Sugestões?",
+    "reset_desc": "Tem certeza de que deseja redefinir as sugestões? Eles reaparecerão na tela inicial caso você tenha removido.",
+    "reset_confirm": "Sim, Redefinir",
     "lightning_connections": "Conexões Lightning",
     "lightning_node": "Nó Lightning",
     "electrum_server": "Servidor Electrum",
@@ -188,8 +183,6 @@
     "error_https": "URL HTTPS inválida.",
     "error_healthcheck": "Falha no Healthcheck.",
     "url_updated_title": "Web Relay Atualizado",
-    "url_updated_message": "Conectado com sucesso a {url}",
-    "trust": "Confiar neste relay.",
-    "trust_description": "Pular verificação de registro para este web relay"
+    "url_updated_message": "Conectado com sucesso a {url}"
   }
 }

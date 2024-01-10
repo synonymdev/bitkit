@@ -44,9 +44,12 @@
   "profile_link_public": "Nota: Cualquier enlace que añada será públicamente visible.",
   "profile_link_suggestions": "Sugerencias",
   "profile_link_suggestions_to_add": "Sugerencias para añadir",
+  "offline_enable": "Habilitar pagos con contactos*",
+  "widgets": "Widgets",
   "widget_add": "Añadir Widget",
   "widget_price": "Precio del Bitcoin",
   "widget_qr": "O escanear QR",
   "widget_edit_custom": "Personalizar",
-  "widget_delete_yes": "Sí, Borrar"
+  "widget_delete_yes": "Sí, Borrar",
+  "error_sdk_msg": "Un componente imprescindible no está funcionando bien. Reinicia Bitkit."
 }

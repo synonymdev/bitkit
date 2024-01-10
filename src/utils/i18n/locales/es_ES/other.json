@@ -10,6 +10,8 @@
   "buy_button": "Comprar Bitcoin",
   "connection_lost_title": "Conexión a Bitkit perdida",
   "connection_lost_message": "Por favor, verifique la configuración de servidor Electrum.",
+  "connection_restored_message": "Reconectado con éxito a Electrum.",
+  "connection_back_msg": "Reconectado con éxito a Internet.",
   "up_title": "Actualización Crítica",
   "up_text": "Hay una actualización crítica disponible para Bitkit. Debe actualizar para seguir utilizando Bitkit.",
   "up_button": "Actualizar Bitkit",

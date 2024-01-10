@@ -49,6 +49,7 @@
   "pin_forgot_text": "Vous avez oublié votre code PIN ? Réinitialisez et récupérez votre portefeuille Bitkit avec votre phrase de récupération. Définissez un nouveau code PIN après avoir terminé la récupération.",
   "pin_forgot_reset": "Réinitialisation (nécessite une phrase de récupération)",
   "pin_send": "Veuillez saisir votre code PIN pour confirmer et envoyer ce paiement.",
+  "pin_use_biometrics": "Utiliser {biometricsName}",
   "bio": "Biométrie",
   "bio_auth_with": "S'authentifier avec {biometricsName}",
   "bio_no": "Il semble que votre appareil ne prenne pas en charge la sécurité biométrique.",

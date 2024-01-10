@@ -44,6 +44,7 @@
   "pin_forgot_text": "¿Ha olvidado su PIN? Reinicie y recupere su monedero Bitkit con su frase de recuperación. Establezca un nuevo PIN después de completar la recuperación.",
   "pin_forgot_reset": "Reempezar a los padrones iniciales (requiere frase de recuperación)",
   "pin_send": "Por favor, introduzca su código PIN para confirmar y enviar este pago.",
+  "pin_use_biometrics": "Usar {biometricsName}",
   "bio": "Biometría",
   "bio_auth_with": "Autentificarse con {biometricsName}",
   "bio_no": "Parece que su dispositivo no es compatible con la seguridad biométrica.",

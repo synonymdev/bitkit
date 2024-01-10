@@ -49,6 +49,7 @@
   "pin_forgot_text": "Zapomněli jste svůj PIN? Resetujte a obnovte svou peněženku Bitkit pomocí vaší obnovovací fráze. Po dokončení obnovení nastavte nový PIN.",
   "pin_forgot_reset": "Resetovat (vyžaduje obnovovací frázi)",
   "pin_send": "Pro potvrzení a odeslání této platby prosím zadejte svůj PIN kód.",
+  "pin_use_biometrics": "Použít {biometricsName}",
   "bio": "Biometrické údaje",
   "bio_auth_with": "Ověřit pomocí {biometricsName}",
   "bio_no": "Zdá se, že vaše zařízení nepodporuje biometrické zabezpečení.",

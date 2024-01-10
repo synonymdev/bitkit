@@ -49,6 +49,7 @@
   "pin_forgot_text": "Esqueceu seu PIN? Redefina e recupere sua carteira Bitkit com a sua frase de recuperação. Defina um novo PIN após concluir a recuperação.",
   "pin_forgot_reset": "Restaurar (Requer a Frase de Recuperação)",
   "pin_send": "Digite seu código PIN para confirmar e enviar esse pagamento.",
+  "pin_use_biometrics": "Usar {biometricsName}",
   "bio": "Biometria",
   "bio_auth_with": "Autenticar com {biometricsName}",
   "bio_no": "Parece que seu dispositivo não é compatível com a segurança Biométrica.",
