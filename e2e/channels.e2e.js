@@ -127,7 +127,7 @@ d('LN Channel Onboarding', () => {
 
 			// Swipe to confirm (set x offset to avoid navigating back)
 			await element(by.id('GRAB')).swipe('right', 'slow', NaN, 0.8);
-			await waitFor(element(by.id('LightningSettingUp')))
+			await waitFor(element(by.id('LightningSuccess')))
 				.toBeVisible()
 				.withTimeout(10000);
 
@@ -181,7 +181,7 @@ d('LN Channel Onboarding', () => {
 
 			// Swipe to confirm (set x offset to avoid navigating back)
 			await element(by.id('GRAB')).swipe('right', 'slow', NaN, 0.8);
-			await waitFor(element(by.id('LightningSettingUp')))
+			await waitFor(element(by.id('LightningSuccess')))
 				.toBeVisible()
 				.withTimeout(10000);
 
