@@ -107,7 +107,7 @@ describe('timeAgo', () => {
 		if (new Date().getMonth() === 0 && new Date().getDate() <= 10) {
 			return;
 		}
-		expect(timeAgo(+new Date(new Date().getFullYear() - 1, 0, 1))).toEqual(
+		expect(timeAgo(+new Date(new Date().getFullYear(), 0, 1))).toEqual(
 			'January 1 at 12:00 AM',
 		);
 	});
