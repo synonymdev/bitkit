@@ -16,49 +16,62 @@ jobs:
         with:
           fetch-depth: 1
 
-      #      - name: Setup Docker Colima 1
-      #        uses: limpbrains/setup-docker-macos-action@48929bfd0b688ddb9e259c8ed1efb12ba3db863c
-      #        id: docker1
-      #        continue-on-error: true
-      #        with:
-      #          lima: v0.18.0
-      #          colima: v0.5.6
-      #          # colima-params: --vm-type=vz --vz-rosetta
-      #          colima-params: --cpu 1 --memory 1
+      - name: Setup Docker Colima 1
+        uses: limpbrains/setup-docker-macos-action@e4216b347f8992aa26308d9a0a43216f4386b278
+        id: docker1
+        continue-on-error: true
+        with:
+          lima: v0.18.0
+          colima: v0.5.6
 
-      #      - name: Setup Docker Colima 2
-      #        if: steps.docker1.outcome != 'success'
-      #        uses: limpbrains/setup-docker-macos-action@48929bfd0b688ddb9e259c8ed1efb12ba3db863c
-      #        id: docker2
-      #        continue-on-error: true
-      #        with:
-      #          lima: v0.18.0
-      #          colima: v0.5.6
-      #
+      - name: Setup Docker Colima 2
+        if: steps.docker1.outcome != 'success'
+        uses: limpbrains/setup-docker-macos-action@e4216b347f8992aa26308d9a0a43216f4386b278
+        id: docker2
+        continue-on-error: true
+        with:
+          lima: v0.18.0
+          colima: v0.5.6
+
       - name: Setup Docker Default
-        # if: steps.docker1.outcome != 'success' && steps.docker2.outcome != 'success'
-        uses: limpbrains/actions-setup-docker@8759dd88ef3cbc871ad83e699d6ca94af1ebbaf3
+        if: steps.docker1.outcome != 'success' && steps.docker2.outcome != 'success'
+        uses: docker-practice/actions-setup-docker@1.0.12
         timeout-minutes: 30
 
       - name: Run regtest setup
         run: cd docker && mkdir lnd && chmod 777 lnd && docker-compose up -d && cd ..
+
+      - name: Wait for electrum server
+        timeout-minutes: 20
+        run: |
+          while true
+          do
+            for i in {1..60}; do
+              nc -z '127.0.0.1' 60001
+              if [ $? -eq 0 ]; then
+                echo "port is open"
+                exit 0
+              fi
+              echo "port is closed, attempt $i"
+              sleep 1
+            done
+            echo "colima restart"
+            colima restart
+          done
+
+      # - name: Wait for bitcoind
+      #   timeout-minutes: 2
+      #   run: while ! nc -z '127.0.0.1' 43782; do sleep 1; done
+
+      # - name: Wait for electrum server
+      #   timeout-minutes: 2
+      #   run: while ! nc -z '127.0.0.1' 60001; do sleep 1; done
 
       - name: Setup Node
         uses: actions/setup-node@v3
         with:
           node-version: 18.17
           cache: 'yarn' # cache packages, but not node_modules
-
-      - name: Wait for bitcoind
-        timeout-minutes: 2
-        run: while ! nc -z '127.0.0.1' 43782; do sleep 1; done
-
-      - name: Wait for electrum server
-        timeout-minutes: 2
-        run: while ! nc -z '127.0.0.1' 60001; do sleep 1; done
-
-      - name: Chmod
-        run: chmod -R 777 docker
 
       - name: Activate enviroment variables
         run: cp .env.test.template .env
@@ -87,37 +100,89 @@ jobs:
         run: yarn e2e:build:android-release || yarn e2e:build:android-release
 
       - name: Kill java processes
-        run: pkill -9 -f java || true
+        run:
+          pkill -9 -f java || true
 
-      - name: Test onboarding
+          # ram-size: 2048M
+          # heap-size: 512M
+          # target: aosp_atd
+          # disk-size: 2048M
+
+      - name: Test attempt 1
         uses: reactivecircus/android-emulator-runner@v2
+        continue-on-error: true
+        id: test1
         with:
           api-level: 31
           cores: 2
-          # ram-size: 2048M
-          # heap-size: 512M
-          # disk-size: 2048M
           profile: 5.4in FWVGA
           avd-name: Pixel_API_31_AOSP
-          # target: aosp_atd
           force-avd-creation: false
           emulator-options: -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim -camera-back none -camera-front none -partition-size 2047
           arch: x86_64
           script: |
             sleep 1
             adb root
-            echo "::group::attempt 1"
-            yarn e2e:test:android-release --record-videos all --take-screenshots all --record-logs all e2e/onboarding.e2e.js || true
-            echo "::endgroup::"
-            echo "::group::attempt 2"
-            yarn e2e:test:android-release --record-videos all --take-screenshots all --record-logs all e2e/onboarding.e2e.js || true
-            echo "::endgroup::"
-            echo "::group::attempt 3"
-            yarn e2e:test:android-release --record-videos all --take-screenshots all --record-logs all e2e/onboarding.e2e.js || true
-            echo "::endgroup::"
-            echo "::group::attempt 4"
             yarn e2e:test:android-release --record-videos all --take-screenshots all --record-logs all e2e/onboarding.e2e.js
-            echo "::endgroup::"
+
+      - name: Test attempt 2
+        uses: reactivecircus/android-emulator-runner@v2
+        continue-on-error: true
+        id: test2
+        if: steps.test1.outcome != 'success'
+        with:
+          api-level: 31
+          cores: 2
+          profile: 5.4in FWVGA
+          avd-name: Pixel_API_31_AOSP
+          force-avd-creation: false
+          emulator-options: -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim -camera-back none -camera-front none -partition-size 2047
+          arch: x86_64
+          script: |
+            sleep 1
+            adb root
+            yarn e2e:test:android-release --record-videos all --take-screenshots all --record-logs all e2e/onboarding.e2e.js
+
+      - name: Test attempt 3
+        uses: reactivecircus/android-emulator-runner@v2
+        continue-on-error: true
+        id: test3
+        if: steps.test1.outcome != 'success' && steps.test2.outcome != 'success'
+        with:
+          api-level: 31
+          cores: 2
+          profile: 5.4in FWVGA
+          avd-name: Pixel_API_31_AOSP
+          force-avd-creation: false
+          emulator-options: -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim -camera-back none -camera-front none -partition-size 2047
+          arch: x86_64
+          script: |
+            sleep 1
+            adb root
+            yarn e2e:test:android-release --record-videos all --take-screenshots all --record-logs all e2e/onboarding.e2e.js
+
+      - name: Restart docker before last attempt
+        if: steps.test1.outcome != 'success' && steps.test2.outcome != 'success' && steps.test3.outcome != 'success'
+        run: |
+          cd docker && docker-compose down -t 60 && docker-compose up --quiet-pull -d && cd ..
+          while ! nc -z '127.0.0.1' 60001; do sleep 1; done
+
+      - name: Test attempt 4
+        uses: reactivecircus/android-emulator-runner@v2
+        id: test4
+        if: steps.test1.outcome != 'success' && steps.test2.outcome != 'success' && steps.test3.outcome != 'success'
+        with:
+          api-level: 31
+          cores: 2
+          profile: 5.4in FWVGA
+          avd-name: Pixel_API_31_AOSP
+          force-avd-creation: false
+          emulator-options: -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim -camera-back none -camera-front none -partition-size 2047
+          arch: x86_64
+          script: |
+            sleep 1
+            adb root
+            yarn e2e:test:android-release --record-videos all --take-screenshots all --record-logs all e2e/onboarding.e2e.js
 
       # - name: Test backup
       #   uses: reactivecircus/android-emulator-runner@v2
