@@ -1,4 +1,5 @@
 import BitcoinJsonRpc from 'bitcoin-json-rpc';
+// import { device } from 'detox';
 
 import {
 	bitcoinURL,
@@ -77,6 +78,8 @@ d('Profile and Contacts', () => {
 				return;
 			}
 
+			// const isIos = device.getPlatform() === 'ios';
+
 			// CREATE NEW PROFILE
 			await element(by.id('Header')).tap();
 			await element(by.id('OnboardingContinue')).tap();
@@ -143,7 +146,7 @@ d('Profile and Contacts', () => {
 			await expect(element(by.text(satoshi.website))).toExist();
 			await element(by.id('NavigationBack')).tap();
 
-			if (!__DEV__) {
+			if (!__DEV__ && device.getPlatform() === 'ios') {
 				// FIXME: this bottom sheet should not appear
 				await element(by.id('AddContactNote')).swipe('down');
 			}

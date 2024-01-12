@@ -304,9 +304,6 @@ const Slideshow = ({
 							<TouchableOpacity
 								style={styles.advTouchable}
 								onPress={(): void => {
-									if (index !== slides.length - 1) {
-										return;
-									}
 									navigation.navigate('Passphrase');
 								}}
 								testID="Passphrase">

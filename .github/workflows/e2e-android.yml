@@ -1,0 +1,474 @@
+name: e2e-android
+
+on: pull_request
+
+env:
+  E2E_TESTS: 1 # build without transform-remove-console babel plugin
+  DEBUG: 'lnurl* lnurl server'
+
+jobs:
+  e2e:
+    runs-on: macos-12
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 1
+
+      #      - name: Setup Docker Colima 1
+      #        uses: limpbrains/setup-docker-macos-action@48929bfd0b688ddb9e259c8ed1efb12ba3db863c
+      #        id: docker1
+      #        continue-on-error: true
+      #        with:
+      #          lima: v0.18.0
+      #          colima: v0.5.6
+      #          # colima-params: --vm-type=vz --vz-rosetta
+      #          colima-params: --cpu 1 --memory 1
+
+      #      - name: Setup Docker Colima 2
+      #        if: steps.docker1.outcome != 'success'
+      #        uses: limpbrains/setup-docker-macos-action@48929bfd0b688ddb9e259c8ed1efb12ba3db863c
+      #        id: docker2
+      #        continue-on-error: true
+      #        with:
+      #          lima: v0.18.0
+      #          colima: v0.5.6
+      #
+      - name: Setup Docker Default
+        # if: steps.docker1.outcome != 'success' && steps.docker2.outcome != 'success'
+        uses: limpbrains/actions-setup-docker@8759dd88ef3cbc871ad83e699d6ca94af1ebbaf3
+        timeout-minutes: 30
+
+      - name: Run regtest setup
+        run: cd docker && mkdir lnd && chmod 777 lnd && docker-compose up -d && cd ..
+
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.17
+          cache: 'yarn' # cache packages, but not node_modules
+
+      - name: Wait for bitcoind
+        timeout-minutes: 2
+        run: while ! nc -z '127.0.0.1' 43782; do sleep 1; done
+
+      - name: Wait for electrum server
+        timeout-minutes: 2
+        run: while ! nc -z '127.0.0.1' 60001; do sleep 1; done
+
+      - name: Chmod
+        run: chmod -R 777 docker
+
+      - name: Activate enviroment variables
+        run: cp .env.test.template .env
+
+      - name: Activate react-native-skia-stub
+        run: patch -p1 < .github/workflows/react-native-skia-stub.patch
+
+      - name: Activate Gradle variables
+        run: mkdir -p ~/.gradle/; cp .github/workflows/gradle.properties ~/.gradle/gradle.properties
+
+      - name: Use specific Java version for sdkmanager to work
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Setup Gradle
+        uses: gradle/gradle-build-action@v2
+
+      - name: Yarn Install
+        run: yarn --no-audit --prefer-offline || yarn --no-audit --prefer-offline
+        env:
+          HUSKY: 0
+
+      - name: Build
+        run: yarn e2e:build:android-release || yarn e2e:build:android-release
+
+      - name: Kill java processes
+        run: pkill -9 -f java || true
+
+      - name: Test onboarding
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 31
+          cores: 2
+          # ram-size: 2048M
+          # heap-size: 512M
+          # disk-size: 2048M
+          profile: 5.4in FWVGA
+          avd-name: Pixel_API_31_AOSP
+          # target: aosp_atd
+          force-avd-creation: false
+          emulator-options: -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim -camera-back none -camera-front none -partition-size 2047
+          arch: x86_64
+          script: |
+            sleep 1
+            adb root
+            echo "::group::attempt 1"
+            yarn e2e:test:android-release --record-videos all --take-screenshots all --record-logs all e2e/onboarding.e2e.js || true
+            echo "::endgroup::"
+            echo "::group::attempt 2"
+            yarn e2e:test:android-release --record-videos all --take-screenshots all --record-logs all e2e/onboarding.e2e.js || true
+            echo "::endgroup::"
+            echo "::group::attempt 3"
+            yarn e2e:test:android-release --record-videos all --take-screenshots all --record-logs all e2e/onboarding.e2e.js || true
+            echo "::endgroup::"
+            echo "::group::attempt 4"
+            yarn e2e:test:android-release --record-videos all --take-screenshots all --record-logs all e2e/onboarding.e2e.js
+            echo "::endgroup::"
+
+      # - name: Test backup
+      #   uses: reactivecircus/android-emulator-runner@v2
+      #   with:
+      #     api-level: 31
+      #     cores: 1
+      #     ram-size: 2048M
+      #     heap-size: 512M
+      #     disk-size: 2048M
+      #     profile: 5.4in FWVGA
+      #     avd-name: Pixel_API_31_AOSP
+      #     force-avd-creation: false
+      #     emulator-options: -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim -camera-back none -camera-front none -partition-size 2047
+      #     arch: x86_64
+      #     script: |
+      #       sleep 1
+      #       adb root
+      #       echo "::group::attempt 1"
+      #       yarn e2e:test:android-release --record-videos all --take-screenshots all --record-logs all e2e/backup.e2e.js || true
+      #       echo "::endgroup::"
+      #       echo "::group::attempt 2"
+      #       yarn e2e:test:android-release --record-videos all --take-screenshots all --record-logs all e2e/backup.e2e.js || true
+      #       echo "::endgroup::"
+      #       echo "::group::attempt 3"
+      #       yarn e2e:test:android-release --record-videos all --take-screenshots all --record-logs all e2e/backup.e2e.js || true
+      #       echo "::endgroup::"
+      #       echo "::group::attempt 4"
+      #       yarn e2e:test:android-release --record-videos all --take-screenshots all --record-logs all e2e/backup.e2e.js || true
+      #       echo "::endgroup::"
+
+      # - name: Memory
+      #   run: |
+      #     df -h
+      #     top -l 1 | grep -E "^CPU|^Phys"
+      #     ps x -o rss,vsz,command | awk 'NR>1 {$1=int($1/1024)"M"; $2=int($2/1024)"M";}{ print ;}'
+
+      # - name: Test channels
+      #   uses: reactivecircus/android-emulator-runner@v2
+      #   with:
+      #     api-level: 31
+      #     cores: 1
+      #     ram-size: 2048M
+      #     heap-size: 512M
+      #     disk-size: 2048M
+      #     profile: 5.4in FWVGA
+      #     avd-name: Pixel_API_31_AOSP
+      #     force-avd-creation: false
+      #     emulator-options: -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim -camera-back none -camera-front none -partition-size 2047
+      #     arch: x86_64
+      #     script: |
+      #       sleep 1
+      #       adb root
+      #       echo "::group::attempt 1"
+      #       yarn e2e:test:android-release --record-videos all --take-screenshots all --record-logs all e2e/channels.e2e.js || true
+      #       echo "::endgroup::"
+      #       echo "::group::attempt 2"
+      #       yarn e2e:test:android-release --record-videos all --take-screenshots all --record-logs all e2e/channels.e2e.js || true
+      #       echo "::endgroup::"
+      #       echo "::group::attempt 3"
+      #       yarn e2e:test:android-release --record-videos all --take-screenshots all --record-logs all e2e/channels.e2e.js || true
+      #       echo "::endgroup::"
+      #       echo "::group::attempt 4"
+      #       yarn e2e:test:android-release --record-videos all --take-screenshots all --record-logs all e2e/channels.e2e.js || true
+      #       echo "::endgroup::"
+
+      # - name: Memory
+      #   run: |
+      #     df -h
+      #     top -l 1 | grep -E "^CPU|^Phys"
+      #     ps x -o rss,vsz,command | awk 'NR>1 {$1=int($1/1024)"M"; $2=int($2/1024)"M";}{ print ;}'
+
+      # - name: Test lightning
+      #   uses: reactivecircus/android-emulator-runner@v2
+      #   with:
+      #     api-level: 31
+      #     cores: 1
+      #     ram-size: 2048M
+      #     heap-size: 512M
+      #     disk-size: 2048M
+      #     profile: 5.4in FWVGA
+      #     avd-name: Pixel_API_31_AOSP
+      #     force-avd-creation: false
+      #     emulator-options: -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim -camera-back none -camera-front none -partition-size 2047
+      #     arch: x86_64
+      #     script: |
+      #       sleep 1
+      #       adb root
+      #       echo "::group::attempt 1"
+      #       yarn e2e:test:android-release --record-videos all --take-screenshots all --record-logs all e2e/lightning.e2e.js || true
+      #       echo "::endgroup::"
+      #       echo "::group::attempt 2"
+      #       yarn e2e:test:android-release --record-videos all --take-screenshots all --record-logs all e2e/lightning.e2e.js || true
+      #       echo "::endgroup::"
+      #       echo "::group::attempt 3"
+      #       yarn e2e:test:android-release --record-videos all --take-screenshots all --record-logs all e2e/lightning.e2e.js || true
+      #       echo "::endgroup::"
+      #       echo "::group::attempt 4"
+      #       yarn e2e:test:android-release --record-videos all --take-screenshots all --record-logs all e2e/lightning.e2e.js || true
+      #       echo "::endgroup::"
+
+      # - name: Memory
+      #   run: |
+      #     df -h
+      #     top -l 1 | grep -E "^CPU|^Phys"
+      #     ps x -o rss,vsz,command | awk 'NR>1 {$1=int($1/1024)"M"; $2=int($2/1024)"M";}{ print ;}'
+
+      # - name: Test lnurl
+      #   uses: reactivecircus/android-emulator-runner@v2
+      #   with:
+      #     api-level: 31
+      #     cores: 1
+      #     ram-size: 2048M
+      #     heap-size: 512M
+      #     disk-size: 2048M
+      #     profile: 5.4in FWVGA
+      #     avd-name: Pixel_API_31_AOSP
+      #     force-avd-creation: false
+      #     emulator-options: -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim -camera-back none -camera-front none -partition-size 2047
+      #     arch: x86_64
+      #     script: |
+      #       sleep 1
+      #       adb root
+      #       echo "::group::attempt 1"
+      #       yarn e2e:test:android-release --record-videos all --take-screenshots all --record-logs all e2e/lnurl.e2e.js || true
+      #       echo "::endgroup::"
+      #       echo "::group::attempt 2"
+      #       yarn e2e:test:android-release --record-videos all --take-screenshots all --record-logs all e2e/lnurl.e2e.js || true
+      #       echo "::endgroup::"
+      #       echo "::group::attempt 3"
+      #       yarn e2e:test:android-release --record-videos all --take-screenshots all --record-logs all e2e/lnurl.e2e.js || true
+      #       echo "::endgroup::"
+      #       echo "::group::attempt 4"
+      #       yarn e2e:test:android-release --record-videos all --take-screenshots all --record-logs all e2e/lnurl.e2e.js || true
+      #       echo "::endgroup::"
+
+      # - name: Memory
+      #   run: |
+      #     df -h
+      #     top -l 1 | grep -E "^CPU|^Phys"
+      #     ps x -o rss,vsz,command | awk 'NR>1 {$1=int($1/1024)"M"; $2=int($2/1024)"M";}{ print ;}'
+
+      # - name: Test numberpad
+      #   uses: reactivecircus/android-emulator-runner@v2
+      #   with:
+      #     api-level: 31
+      #     cores: 1
+      #     ram-size: 2048M
+      #     heap-size: 512M
+      #     disk-size: 2048M
+      #     profile: 5.4in FWVGA
+      #     avd-name: Pixel_API_31_AOSP
+      #     force-avd-creation: false
+      #     emulator-options: -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim -camera-back none -camera-front none -partition-size 2047
+      #     arch: x86_64
+      #     script: |
+      #       sleep 1
+      #       adb root
+      #       echo "::group::attempt 1"
+      #       yarn e2e:test:android-release --record-videos all --take-screenshots all --record-logs all e2e/numberpad.e2e.js || true
+      #       echo "::endgroup::"
+      #       echo "::group::attempt 2"
+      #       yarn e2e:test:android-release --record-videos all --take-screenshots all --record-logs all e2e/numberpad.e2e.js || true
+      #       echo "::endgroup::"
+      #       echo "::group::attempt 3"
+      #       yarn e2e:test:android-release --record-videos all --take-screenshots all --record-logs all e2e/numberpad.e2e.js || true
+      #       echo "::endgroup::"
+      #       echo "::group::attempt 4"
+      #       yarn e2e:test:android-release --record-videos all --take-screenshots all --record-logs all e2e/numberpad.e2e.js || true
+      #       echo "::endgroup::"
+
+      # - name: Memory
+      #   run: |
+      #     df -h
+      #     top -l 1 | grep -E "^CPU|^Phys"
+      #     ps x -o rss,vsz,command | awk 'NR>1 {$1=int($1/1024)"M"; $2=int($2/1024)"M";}{ print ;}'
+
+      # - name: Test onchain
+      #   uses: reactivecircus/android-emulator-runner@v2
+      #   with:
+      #     api-level: 31
+      #     cores: 1
+      #     ram-size: 2048M
+      #     heap-size: 512M
+      #     disk-size: 2048M
+      #     profile: 5.4in FWVGA
+      #     avd-name: Pixel_API_31_AOSP
+      #     force-avd-creation: false
+      #     emulator-options: -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim -camera-back none -camera-front none -partition-size 2047
+      #     arch: x86_64
+      #     script: |
+      #       sleep 1
+      #       adb root
+      #       echo "::group::attempt 1"
+      #       yarn e2e:test:android-release --record-videos all --take-screenshots all --record-logs all e2e/onchain.e2e.js || true
+      #       echo "::endgroup::"
+      #       echo "::group::attempt 2"
+      #       yarn e2e:test:android-release --record-videos all --take-screenshots all --record-logs all e2e/onchain.e2e.js || true
+      #       echo "::endgroup::"
+      #       echo "::group::attempt 3"
+      #       yarn e2e:test:android-release --record-videos all --take-screenshots all --record-logs all e2e/onchain.e2e.js || true
+      #       echo "::endgroup::"
+      #       echo "::group::attempt 4"
+      #       yarn e2e:test:android-release --record-videos all --take-screenshots all --record-logs all e2e/onchain.e2e.js || true
+      #       echo "::endgroup::"
+
+      # - name: Memory
+      #   run: |
+      #     df -h
+      #     top -l 1 | grep -E "^CPU|^Phys"
+      #     ps x -o rss,vsz,command | awk 'NR>1 {$1=int($1/1024)"M"; $2=int($2/1024)"M";}{ print ;}'
+
+      # - name: Test receive
+      #   uses: reactivecircus/android-emulator-runner@v2
+      #   with:
+      #     api-level: 31
+      #     cores: 1
+      #     ram-size: 2048M
+      #     heap-size: 512M
+      #     disk-size: 2048M
+      #     profile: 5.4in FWVGA
+      #     avd-name: Pixel_API_31_AOSP
+      #     force-avd-creation: false
+      #     emulator-options: -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim -camera-back none -camera-front none -partition-size 2047
+      #     arch: x86_64
+      #     script: |
+      #       sleep 1
+      #       adb root
+      #       echo "::group::attempt 1"
+      #       yarn e2e:test:android-release --record-videos all --take-screenshots all --record-logs all e2e/receive.e2e.js || true
+      #       echo "::endgroup::"
+      #       echo "::group::attempt 2"
+      #       yarn e2e:test:android-release --record-videos all --take-screenshots all --record-logs all e2e/receive.e2e.js || true
+      #       echo "::endgroup::"
+      #       echo "::group::attempt 3"
+      #       yarn e2e:test:android-release --record-videos all --take-screenshots all --record-logs all e2e/receive.e2e.js || true
+      #       echo "::endgroup::"
+      #       echo "::group::attempt 4"
+      #       yarn e2e:test:android-release --record-videos all --take-screenshots all --record-logs all e2e/receive.e2e.js || true
+      #       echo "::endgroup::"
+
+      # - name: Memory
+      #   run: |
+      #     df -h
+      #     top -l 1 | grep -E "^CPU|^Phys"
+      #     ps x -o rss,vsz,command | awk 'NR>1 {$1=int($1/1024)"M"; $2=int($2/1024)"M";}{ print ;}'
+
+      # - name: Test settings
+      #   uses: reactivecircus/android-emulator-runner@v2
+      #   with:
+      #     api-level: 31
+      #     cores: 1
+      #     ram-size: 2048M
+      #     heap-size: 512M
+      #     disk-size: 2048M
+      #     profile: 5.4in FWVGA
+      #     avd-name: Pixel_API_31_AOSP
+      #     force-avd-creation: false
+      #     emulator-options: -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim -camera-back none -camera-front none -partition-size 2047
+      #     arch: x86_64
+      #     script: |
+      #       sleep 1
+      #       adb root
+      #       echo "::group::attempt 1"
+      #       yarn e2e:test:android-release --record-videos all --take-screenshots all --record-logs all e2e/settings.e2e.js || true
+      #       echo "::endgroup::"
+      #       echo "::group::attempt 2"
+      #       yarn e2e:test:android-release --record-videos all --take-screenshots all --record-logs all e2e/settings.e2e.js || true
+      #       echo "::endgroup::"
+      #       echo "::group::attempt 3"
+      #       yarn e2e:test:android-release --record-videos all --take-screenshots all --record-logs all e2e/settings.e2e.js || true
+      #       echo "::endgroup::"
+      #       echo "::group::attempt 4"
+      #       yarn e2e:test:android-release --record-videos all --take-screenshots all --record-logs all e2e/settings.e2e.js || true
+      #       echo "::endgroup::"
+
+      # - name: Memory
+      #   run: |
+      #     df -h
+      #     top -l 1 | grep -E "^CPU|^Phys"
+      #     ps x -o rss,vsz,command | awk 'NR>1 {$1=int($1/1024)"M"; $2=int($2/1024)"M";}{ print ;}'
+
+      # - name: Test slashtags
+      #   uses: reactivecircus/android-emulator-runner@v2
+      #   with:
+      #     api-level: 31
+      #     cores: 1
+      #     ram-size: 2048M
+      #     heap-size: 512M
+      #     disk-size: 2048M
+      #     profile: 5.4in FWVGA
+      #     avd-name: Pixel_API_31_AOSP
+      #     force-avd-creation: false
+      #     emulator-options: -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim -camera-back none -camera-front none -partition-size 2047
+      #     arch: x86_64
+      #     script: |
+      #       sleep 1
+      #       adb root
+      #       echo "::group::attempt 1"
+      #       yarn e2e:test:android-release --record-videos all --take-screenshots all --record-logs all e2e/slashtags.e2e.js || true
+      #       echo "::endgroup::"
+      #       echo "::group::attempt 2"
+      #       yarn e2e:test:android-release --record-videos all --take-screenshots all --record-logs all e2e/slashtags.e2e.js || true
+      #       echo "::endgroup::"
+      #       echo "::group::attempt 3"
+      #       yarn e2e:test:android-release --record-videos all --take-screenshots all --record-logs all e2e/slashtags.e2e.js || true
+      #       echo "::endgroup::"
+      #       echo "::group::attempt 4"
+      #       yarn e2e:test:android-release --record-videos all --take-screenshots all --record-logs all e2e/slashtags.e2e.js || true
+      #       echo "::endgroup::"
+
+      # - name: Memory
+      #   run: |
+      #     df -h
+      #     top -l 1 | grep -E "^CPU|^Phys"
+      #     ps x -o rss,vsz,command | awk 'NR>1 {$1=int($1/1024)"M"; $2=int($2/1024)"M";}{ print ;}'
+
+      # - name: Test widgets
+      #   uses: reactivecircus/android-emulator-runner@v2
+      #   with:
+      #     api-level: 31
+      #     cores: 1
+      #     ram-size: 2048M
+      #     heap-size: 512M
+      #     disk-size: 2048M
+      #     profile: 5.4in FWVGA
+      #     avd-name: Pixel_API_31_AOSP
+      #     force-avd-creation: false
+      #     emulator-options: -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim -camera-back none -camera-front none -partition-size 2047
+      #     arch: x86_64
+      #     script: |
+      #       sleep 1
+      #       adb root
+      #       echo "::group::attempt 1"
+      #       yarn e2e:test:android-release --record-videos all --take-screenshots all --record-logs all e2e/widgets.e2e.js || true
+      #       echo "::endgroup::"
+      #       echo "::group::attempt 2"
+      #       yarn e2e:test:android-release --record-videos all --take-screenshots all --record-logs all e2e/widgets.e2e.js || true
+      #       echo "::endgroup::"
+      #       echo "::group::attempt 3"
+      #       yarn e2e:test:android-release --record-videos all --take-screenshots all --record-logs all e2e/widgets.e2e.js || true
+      #       echo "::endgroup::"
+      #       echo "::group::attempt 4"
+      #       yarn e2e:test:android-release --record-videos all --take-screenshots all --record-logs all e2e/widgets.e2e.js || true
+      #       echo "::endgroup::"
+
+      - uses: actions/upload-artifact@v3
+        if: failure()
+        with:
+          name: e2e-test-videos
+          path: ./artifacts/
+
+      - name: Dump docker logs on failure
+        if: failure()
+        uses: jwalton/gh-docker-logs@v2
