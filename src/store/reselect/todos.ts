@@ -127,6 +127,8 @@ export const todosFullSelector = createSelector(
 				res.push(transferToSpendingTodo);
 			} else if (balanceInTransfer?.amount_satoshis) {
 				res.push(transferToSavingsTodo); // TODO: find a way to distinguish between transfer to and from spendings
+			} else if (pendingChannels.length > 0) {
+				res.push(lightningConnectingTodo);
 			}
 		}
 

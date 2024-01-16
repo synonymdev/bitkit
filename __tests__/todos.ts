@@ -129,6 +129,31 @@ describe('Todos selector', () => {
 		);
 	});
 
+	it('should return lightningConnectingTodo if there is a pending channel and open channels', () => {
+		const state = cloneDeep(s);
+
+		const channel1 = {
+			channel_id: 'channel1',
+			is_channel_ready: true,
+		} as TChannel;
+		const channel2 = {
+			channel_id: 'channel2',
+			is_channel_ready: false,
+		} as TChannel;
+		state.lightning.nodes.wallet0.channels.bitcoinRegtest = {
+			channel1,
+			channel2,
+		};
+		state.lightning.nodes.wallet0.openChannelIds.bitcoinRegtest = [
+			'channel1',
+			'channel2',
+		];
+
+		expect(todosFullSelector(state)).toEqual(
+			expect.arrayContaining([lightningConnectingTodo]),
+		);
+	});
+
 	it('should return transferClosingChannel if there are gracefully closing channels', () => {
 		const state = cloneDeep(s);
 
