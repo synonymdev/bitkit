@@ -140,6 +140,6 @@ export const useLightningChannelName = (
 		return `Connection ${index + 1}`;
 	} else {
 		const shortChannelId = ellipsis(channel.channel_id, 10);
-		return channel.inbound_scid_alias ?? shortChannelId;
+		return channel.inbound_scid_alias || shortChannelId;
 	}
 };
