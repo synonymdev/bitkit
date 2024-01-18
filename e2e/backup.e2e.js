@@ -12,7 +12,7 @@ import {
 } from './helpers';
 import initWaitForElectrumToSync from '../__tests__/utils/wait-for-electrum';
 
-d = checkComplete('backup-1') ? describe.skip : describe.skip;
+d = checkComplete('backup-1') ? describe.skip : describe;
 
 d('Backup', () => {
 	let waitForElectrum;
