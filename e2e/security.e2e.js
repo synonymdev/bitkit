@@ -84,7 +84,9 @@ d('Settings Security And Privacy', () => {
 			.withTimeout(10000);
 		await sleep(100);
 		await device.matchFace();
+		await sleep(100);
 		await device.enableSynchronization();
+		await sleep(100);
 		// app unlocked now
 		await expect(element(by.id('TotalBalance'))).toBeVisible();
 		await sleep(1000);
@@ -133,11 +135,15 @@ d('Settings Security And Privacy', () => {
 			by.id('N000').withAncestor(by.id('SendAmountNumberPad')),
 		).multiTap(2);
 		await element(by.id('ContinueAmount')).tap();
+		await sleep(100);
 		await device.disableSynchronization();
+		await sleep(100);
 		await element(by.id('GRAB')).swipe('right'); // Swipe to confirm
 		await sleep(100);
 		await device.matchFace();
+		await sleep(100);
 		await device.enableSynchronization();
+		await sleep(100);
 		await waitFor(element(by.id('SendSuccess')))
 			.toBeVisible()
 			.withTimeout(10000);
@@ -220,6 +226,7 @@ d('Settings Security And Privacy', () => {
 		// now lets restart the app and fail to enter correct PIN 8 times
 		await device.launchApp({ newInstance: true });
 		await waitFor(element(by.id('PinPad'))).toBeVisible();
+		await sleep(1000);
 		await element(by.id('N2').withAncestor(by.id('PinPad'))).multiTap(4);
 		await waitFor(element(by.id('AttemptsRemaining'))).toBeVisible();
 		for (let i = 0; i < 6; i++) {
