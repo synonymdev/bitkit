@@ -70,6 +70,7 @@ d('Settings Security And Privacy', () => {
 		await element(by.id('ContinueButton')).tap();
 		await sleep(1000);
 		await device.matchFace();
+		await sleep(1000);
 
 		await element(by.id('ToggleBioForPayments')).tap();
 		await element(by.id('OK')).tap();
@@ -86,7 +87,7 @@ d('Settings Security And Privacy', () => {
 		await device.matchFace();
 		await sleep(100);
 		await device.enableSynchronization();
-		await sleep(100);
+		await sleep(1000);
 		// app unlocked now
 		await expect(element(by.id('TotalBalance'))).toBeVisible();
 		await sleep(1000);
@@ -143,7 +144,7 @@ d('Settings Security And Privacy', () => {
 		await device.matchFace();
 		await sleep(100);
 		await device.enableSynchronization();
-		await sleep(100);
+		await sleep(1000);
 		await waitFor(element(by.id('SendSuccess')))
 			.toBeVisible()
 			.withTimeout(10000);
@@ -158,13 +159,15 @@ d('Settings Security And Privacy', () => {
 			.toBeVisible()
 			.withTimeout(100000);
 		await device.matchFace();
+		await sleep(1000);
 		await element(by.id('EnablePinOnIdle')).tap();
 		await device.matchFace();
-		await sleep(3000);
+		await sleep(1000);
 
 		// disable FaceID, change PIN, restart the app and try it
 		await element(by.id('UseBiometryInstead')).tap();
 		await device.matchFace();
+		await sleep(1000);
 		await element(by.id('ChangePIN')).tap();
 		await element(by.id('N1').withAncestor(by.id('ChangePIN'))).multiTap(4);
 		await sleep(1000);
