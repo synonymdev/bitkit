@@ -137,7 +137,6 @@ const Setup = ({ navigation }: TransferScreenProps<'Setup'>): ReactElement => {
 			localBalance,
 			turboChannel:
 				remoteBalance <= blocktankInfo.options.max0ConfClientBalanceSat,
-			channelExpiry: 12,
 		});
 
 		setLoading(false);

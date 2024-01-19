@@ -124,7 +124,6 @@ export const estimateOrderFee = async (
 			{
 				...data.options,
 				couponCode: data.options?.couponCode ?? 'bitkit',
-				turboChannel: true,
 				zeroReserve: true,
 			},
 		);
@@ -266,10 +265,14 @@ export const openChannel = async (
  * @returns {void}
  */
 export const watchPendingOrders = (): void => {
-	const orders = getBlocktankStore().orders.filter((order) => {
-		return order.state === BtOrderState.CREATED;
-	});
-	orders.forEach((order) => watchOrder(order.id));
+	const { orders, paidOrders } = getBlocktankStore();
+	orders
+		.filter((order) => {
+			return order.state === BtOrderState.CREATED && order.id in paidOrders;
+		})
+		.forEach((order) => {
+			watchOrder(order.id);
+		});
 };
 
 /**
@@ -298,6 +301,8 @@ export const getPendingCJitEntries = (): ICJitEntry[] => {
 	});
 };
 
+const watchingOrders: string[] = [];
+
 /**
  * Continuously checks a given order until it is finalized, the response errors out or the order expires.
  * @param {string} orderId
@@ -307,13 +312,16 @@ export const watchOrder = async (
 	orderId: string,
 	frequency = 15000,
 ): Promise<Result<string>> => {
-	let settled = false;
-	let error: string = '';
+	if (watchingOrders.includes(orderId)) {
+		return err('Already watching this order.');
+	}
 	const orderData = getOrderFromStorage(orderId);
 	if (orderData.isErr()) {
 		return err(orderData.error.message);
 	}
-	const expiry = orderData.value.orderExpiresAt;
+	watchingOrders.push(orderId); // Add to watchingOrders
+	let settled = false;
+	let error: string = '';
 	while (!settled && !error) {
 		const res = await refreshOrder(orderId);
 		if (res.isErr()) {
@@ -331,6 +339,8 @@ export const watchOrder = async (
 		}
 		await sleep(frequency);
 	}
+	watchingOrders.splice(watchingOrders.indexOf(orderId), 1); // Remove from watchingOrders
+	const expiry = orderData.value.orderExpiresAt;
 	return ok(`Watching order (${orderId}) until it expires at ${expiry}`);
 };
 

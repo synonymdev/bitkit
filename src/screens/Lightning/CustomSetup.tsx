@@ -33,6 +33,7 @@ import {
 } from '../../utils/conversion';
 import { getFiatDisplayValues } from '../../utils/displayValues';
 import { showToast } from '../../utils/notifications';
+import { estimateOrderFee } from '../../utils/blocktank';
 import { startChannelPurchase } from '../../store/utils/blocktank';
 import { EUnit } from '../../store/types/wallet';
 import {
@@ -272,35 +273,23 @@ const CustomSetup = ({
 		}
 
 		const getChannelOpenCost = async (): Promise<void> => {
-			// TODO: replace with estimateOrderFee
-			// const response2 = await estimateOrderFee({
-			// 	lspBalanceSat: spendingAmount,
-			// 	channelExpiryWeeks: DEFAULT_CHANNEL_DURATION,
-			// 	options: {
-			// 		clientBalanceSat: amount,
-			// 		couponCode: 'bitkit',
-			// 		lspNodeId: blocktankInfo.nodes[0].pubkey,
-			// 	}
-			// 	// localBalance: amount,
-			// 	// selectedWallet,
-			// 	// selectedNetwork,
-			// });
-			const response = await startChannelPurchase({
-				remoteBalance: spendingAmount,
-				localBalance: amount,
-				channelExpiry: DEFAULT_CHANNEL_DURATION,
-				selectedWallet,
-				selectedNetwork,
-				lspNodeId: blocktankInfo.nodes[0].pubkey,
-				turboChannel:
-					spendingAmount <= blocktankInfo.options.max0ConfClientBalanceSat,
+			const res = await estimateOrderFee({
+				lspBalanceSat: amount,
+				channelExpiryWeeks: DEFAULT_CHANNEL_DURATION,
+				options: {
+					clientBalanceSat: spendingAmount,
+					couponCode: 'bitkit',
+					lspNodeId: blocktankInfo.nodes[0].pubkey,
+					turboChannel:
+						spendingAmount <= blocktankInfo.options.max0ConfClientBalanceSat,
+				},
 			});
-			if (response.isErr()) {
+			if (res.isErr()) {
 				return;
 			}
+
 			const { fiatSymbol, fiatValue } = getFiatDisplayValues({
-				satoshis:
-					response.value.channelOpenFee + response.value.transactionFeeEstimate,
+				satoshis: res.value,
 			});
 
 			setChannelOpenFee((value) => ({

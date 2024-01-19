@@ -46,6 +46,7 @@ import {
 	updateBlocktankOrder,
 	updateCjitEntry,
 } from '../slices/blocktank';
+import { DEFAULT_CHANNEL_DURATION } from '../../screens/Lightning/CustomConfirm';
 
 /**
  * Retrieves & updates the status of stored orders that may have changed.
@@ -216,7 +217,7 @@ export const refreshBlocktankInfo = async (): Promise<Result<string>> => {
 export const startChannelPurchase = async ({
 	remoteBalance,
 	localBalance,
-	channelExpiry = 6,
+	channelExpiry = DEFAULT_CHANNEL_DURATION,
 	lspNodeId,
 	couponCode,
 	turboChannel = true,
