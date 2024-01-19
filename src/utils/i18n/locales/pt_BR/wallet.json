@@ -154,6 +154,7 @@
   },
   "details_savings_title": "Saldo da Poupança",
   "details_savings_subtitle": "BTC",
+  "transfer_text": "Transferência",
   "details_spending_title": "Saldo de Gastos",
   "details_spending_subtitle": "BTC instantâneo",
   "tx_invalid": "Transação Inválida",

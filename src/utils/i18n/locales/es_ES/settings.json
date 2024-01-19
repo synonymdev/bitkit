@@ -4,6 +4,7 @@
   "dev_disabled_title": "Opciones de desarrollo desactivadas",
   "security_title": "Seguridad y Privacidad",
   "advanced_title": "Avanzado",
+  "support_title": "Soporte",
   "about": {
     "title": "Sobre Bitkit",
     "support": "Soporte",
@@ -59,6 +60,11 @@
     "category_tags": "Etiquetas",
     "category_profile": "Perfil",
     "category_contacts": "Contactos"
+  },
+  "support": {
+    "text_button": "Enviar",
+    "text_success_button": "OK",
+    "text_unsuccess_button": "Inténtelo de nuevo"
   },
   "adv": {
     "section_payments": "Pagos",

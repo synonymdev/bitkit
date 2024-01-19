@@ -117,6 +117,7 @@
     "other": "Overige"
   },
   "details_savings_title": "Spaarsaldo",
+  "transfer_text": "Overboeken",
   "details_spending_title": "Bestedingssaldo",
   "details_spending_subtitle": "Direct Beschikbare BTC",
   "tx_invalid": "Transactie Ongeldig",

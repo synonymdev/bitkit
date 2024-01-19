@@ -6,6 +6,7 @@
   "security_title": "Sicherheit und Privatsphäre",
   "backup_title": "Back up oder Wiederherstellung",
   "advanced_title": "Fortgeschritten",
+  "support_title": "Support",
   "about": {
     "title": "Über Bitkit",
     "text": "Bitkit übergibt dir die Keys zu deinem Geld, Profil, deinen Kontakten und deinen Web Accounts.",
@@ -32,6 +33,10 @@
   },
   "backup": {
     "category_settings": "Einstellungen"
+  },
+  "support": {
+    "text_success_button": "OK",
+    "text_unsuccess_button": "Versuche es nochmal"
   },
   "adv": {
     "section_other": "Andere",

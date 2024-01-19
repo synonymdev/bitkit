@@ -158,6 +158,7 @@
   },
   "details_savings_title": "Zůstatek úspor",
   "details_savings_subtitle": "BTC",
+  "transfer_text": "Převod",
   "details_spending_title": "Dostupný zůstatek",
   "details_spending_subtitle": "Okamžité BTC",
   "tx_invalid": "Neplatná transakce",
@@ -190,5 +191,9 @@
   "lnurl_w_success_title": "Úspěch",
   "lnurl_w_success_description": "Úspěšná žádost o výběr",
   "lnurl_p_title": "Poslat bitcoin",
-  "lnurl_p_max": "Maximální částka"
+  "lnurl_p_max": "Maximální částka",
+  "balance_hidden_title": "Skrytý zůstatek peněženky",
+  "balance_hidden_message": "Přejeďte prstem po zůstatku v peněžence a znovu jej odkryjte.",
+  "balance_unit_switched_title": "Přepnuto na {unit}",
+  "balance_unit_switched_message": "Klepnutím na zůstatek v peněžence jej přepnete zpět na {unit}."
 }

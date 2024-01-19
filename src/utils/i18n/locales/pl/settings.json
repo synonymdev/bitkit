@@ -3,6 +3,11 @@
   "backup": {
     "category_settings": "Ustawienia"
   },
+  "support": {
+    "text_button": "Wyślij",
+    "text_success_button": "OK",
+    "text_unsuccess_button": "Spróbuj ponownie"
+  },
   "es": {
     "host": "Host",
     "port": "Port"

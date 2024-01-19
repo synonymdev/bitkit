@@ -6,6 +6,7 @@
   "security_title": "Безопасность и Конфиденциальность",
   "backup_title": "Резервное копирование",
   "advanced_title": "Расширенные",
+  "support_title": "Поддержка",
   "about": {
     "title": "О Bitkit",
     "text": "c Bitkit ключи от ваших денег, профиля, контактов и веб-аккаунтов принадлежат Вам.\n\nЭта <easterEgg>Оранжевая Пилюля</easterEgg> была тщательно разработана в Synonym Software Ltd.",
@@ -54,6 +55,11 @@
     "category_tags": "Теги",
     "category_profile": "Профиль",
     "category_contacts": "Контакты"
+  },
+  "support": {
+    "text_button": "Отправить",
+    "text_success_button": "Ок",
+    "text_unsuccess_button": "Попробовать Снова"
   },
   "adv": {
     "section_payments": "Платежи",

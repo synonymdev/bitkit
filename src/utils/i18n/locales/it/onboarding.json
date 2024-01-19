@@ -1,4 +1,5 @@
 {
+  "tos_header": "Bitkit\n<brand>Termini</brand><brand>\ndi Utilizzo.</brand>",
   "tos_checkbox": "Termini di Utilizzo",
   "tos_checkbox_value": "<gray>Dichiaro di aver letto e accettato le <brand>condizioni di utilizzo</brand>.</gray>",
   "pp_checkbox": "Informativa Privacy",
@@ -32,12 +33,17 @@
   "restore_suggestions": "CONSIGLI",
   "restore_passphrase_placeholder": "Passphrase*",
   "restore_passphrase_meaning": "*Opzionale, da inserire solo se ne hai impostata una.",
+  "restore_error_title": "Ripristino del portafoglio non riuscito",
+  "restore_error_description": "Bitkit non è riuscito a ripristinare il tuo portafoglio dalla frase di backup o ripristino.",
   "loading_header": "Configurando\n<brand>il tuo Wallet.</brand>",
   "restore_success_header": "Wallet ripristinato.",
   "restore_success_text": "Hai ripristinato con successo il tuo wallet dal backup. Goditi Bitkit!",
+  "restore_failed_header": "Errore del saldo delle spese",
+  "restore_failed_text": "Bitkit ha ripristinato i tuoi risparmi, ma non è riuscito a ripristinare il saldo delle spese e i dati.",
   "restore_no_backup_button": "Procedi Senza Backup",
   "restore_no_backup_warn": "Se in precedenza possedevi un backup lightning, questo verrà sovrascritto e perso. Ciò potrebbe causare una perdita di fondi.",
   "empty_wallet": "Per iniziare invia\n<brand>Bitcoin</brand> sul tuo wallet.",
+  "error_create": "Creazione del portafoglio non riuscita",
   "multiple_header": "Attenzione:\n<yellow>Dispositivi multipli</yellow>",
   "multiple_text": "Non installare la frase di recupero Bitkit su più telefoni contemporaneamente, per non danneggiare i dati."
 }

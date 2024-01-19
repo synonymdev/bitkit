@@ -139,6 +139,7 @@
     "other": "Altres"
   },
   "details_savings_subtitle": "BTC",
+  "transfer_text": "Transferir",
   "details_spending_subtitle": "BTC Instantani",
   "tx_invalid": "Transacció no vàlida",
   "boost": "Impulsar",

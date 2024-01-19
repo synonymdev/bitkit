@@ -119,6 +119,7 @@
     "other": "Autre"
   },
   "details_savings_title": "Solde de l'épargne",
+  "transfer_text": "Transfert",
   "details_spending_title": "Solde des dépenses",
   "details_spending_subtitle": "BTC instantané",
   "tx_invalid": "Transaction invalide",

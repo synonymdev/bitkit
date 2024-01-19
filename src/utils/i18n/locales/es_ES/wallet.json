@@ -123,6 +123,7 @@
   },
   "details_savings_title": "Saldo de ahorro",
   "details_savings_subtitle": "BTC",
+  "transfer_text": "Transferir",
   "details_spending_title": "Saldo de gastos",
   "details_spending_subtitle": "BTC instantáneo",
   "tx_invalid": "Transacción no válida",

@@ -1,4 +1,8 @@
 {
+  "support": {
+    "text_success_button": "ΟΚ",
+    "text_unsuccess_button": "Προσπαθείστε Ξανά"
+  },
   "fee": {
     "fast": {
       "value": "Γρήγορα"

@@ -6,6 +6,7 @@
   "security_title": "Seguridad y Privacidad",
   "backup_title": "Copia de seguridad o restauración",
   "advanced_title": "Avanzado",
+  "support_title": "Soporte",
   "about": {
     "title": "Acerca de Bitkit",
     "text": "Bitkit le entrega las llaves de su dinero, perfil, contactos y cuentas web. Esta <easterEgg>píldora</easterEgg> naranja ha sido cuidadosamente elaborada por Synonym Software Ltd.",
@@ -58,6 +59,11 @@
     "category_tags": "Etiquetas",
     "category_profile": "Perfil",
     "category_contacts": "Contactos"
+  },
+  "support": {
+    "text_button": "Enviar",
+    "text_success_button": "OK",
+    "text_unsuccess_button": "Inténtelo de nuevo"
   },
   "adv": {
     "section_payments": "Pagos",

@@ -4,6 +4,7 @@
   "security_title": "Seguretat i privacitat",
   "advanced_title": "Avançat",
   "about_title": "Sobre",
+  "support_title": "Suport",
   "about": {
     "title": "Sobre Bitkit",
     "support": "Suport",
@@ -42,6 +43,11 @@
     "category_tags": "Etiquetes",
     "category_profile": "Perfil",
     "category_contacts": "Contactes"
+  },
+  "support": {
+    "text_button": "Envia",
+    "text_success_button": "OK",
+    "text_unsuccess_button": "Torna a intentar"
   },
   "adv": {
     "section_payments": "Pagaments",

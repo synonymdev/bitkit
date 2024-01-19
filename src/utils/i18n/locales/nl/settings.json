@@ -6,6 +6,7 @@
   "security_title": "Beveiliging en Privacy",
   "backup_title": "Backup of Herstellen",
   "advanced_title": "Geavanceerd",
+  "support_title": "Ondersteuning",
   "about": {
     "title": "Over Bitkit",
     "text": "Bitkit geeft u de sleutels voor uw geld, profiel, contacten en webaccounts. \n\nDeze <easterEgg>'Orange Pill'</easterEgg>is zorgvuldig ontworpen door Synonym Software Ltd.",
@@ -66,6 +67,11 @@
     "category_tags": "Labels",
     "category_profile": "Profiel",
     "category_contacts": "Contacten"
+  },
+  "support": {
+    "text_button": "Verstuur",
+    "text_success_button": "OK",
+    "text_unsuccess_button": "Opnieuw proberen"
   },
   "adv": {
     "section_payments": "Betalingen",

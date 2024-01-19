@@ -46,6 +46,10 @@
     "title": "Ottieni Bitcoin",
     "description": "Stack sats"
   },
+  "btFailed": {
+    "title": "Setup Fallito",
+    "description": "Per favore riprova"
+  },
   "lightning_no_funds_title": "Non ci sono ancora fondi",
   "lightning_no_funds_desc": "Prima di poter impostare il saldo di spesa istantaneo, è necessario inviare alcuni Bitcoin sul proprio wallet on-chain.",
   "suggestions": "Consigli"

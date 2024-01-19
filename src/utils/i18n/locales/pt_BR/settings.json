@@ -9,6 +9,7 @@
   "backup_title": "Fazer backup ou Restaurar",
   "advanced_title": "Avançado",
   "about_title": "Sobre",
+  "support_title": "Suporte",
   "about": {
     "title": "Sobre a Bitkit",
     "text": "A Bitkit lhe entrega as chaves do seu dinheiro, perfil, contatos e contas.\n\nEsta <easterEgg>Pílula Laranja</easterEgg> foi cuidadosamente desenvolvida pela Synonym Software Ltd.",
@@ -77,6 +78,11 @@
     "category_tags": "Tags",
     "category_profile": "Perfil",
     "category_contacts": "Contatos"
+  },
+  "support": {
+    "text_button": "Enviar",
+    "text_success_button": "OK",
+    "text_unsuccess_button": "Tente novamente"
   },
   "adv": {
     "section_payments": "Pagamentos",
