@@ -75,7 +75,7 @@ const BlocksWidget = ({
 		// get data once then subscribe to updates
 		getData();
 
-		let unsubscribe: () => void;
+		let unsubscribe: () => void = () => {};
 
 		// subscriptions are breaking e2e tests
 		if (!__E2E__) {

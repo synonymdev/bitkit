@@ -343,6 +343,26 @@ const migrations = {
 			},
 		};
 	},
+	33: (state): PersistedState => {
+		const widgets = state.widgets.widgets;
+
+		for (const url in widgets) {
+			const widget = widgets[url]!;
+			const isFeedWidget = Object.hasOwn(widget, 'type');
+
+			if (isFeedWidget && widget.extras.showTitle === undefined) {
+				widget.extras.showTitle = true;
+			}
+		}
+
+		return {
+			...state,
+			widgets: {
+				...state.widgets,
+				widgets: widgets,
+			},
+		};
+	},
 };
 
 export default migrations;
