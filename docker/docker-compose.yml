@@ -119,6 +119,19 @@ services:
       - '--restlisten=0.0.0.0:8080'
       - '--feeurl=http://darkhttpd:80/btc-fee-estimates.json'
 
+  ldk-backup-server:
+    container_name: ldk-backup-server
+    image: synonymsoft/ldk-backup-server:1.0.0
+    expose:
+      - '3003'
+    ports:
+      - '3003:3003'
+    environment:
+      HOST: '0.0.0.0'
+      PORT: '3003'
+      SECRET_KEY: 'e3e2d2e410569be1f2219e1ef21f188f7ccff1ce721ea2624263d3fe9878f69e'
+      PUBLIC_KEY: '0319c4ff23820afec0c79ce3a42031d7fef1dff78b7bdd69b5560684f3e1827675'
+
 volumes:
   bitcoin_home:
 
