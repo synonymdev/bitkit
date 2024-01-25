@@ -576,15 +576,11 @@ d('Settings', () => {
 
 			await expect(element(by.id('Suggestions'))).toBeVisible();
 
-			// hide backupSeedPhrase suggestion card
+			// hide lightningTodo suggestion card
 			await element(
-				by
-					.id('SuggestionDismiss')
-					.withAncestor(by.id('Suggestion-backupSeedPhrase')),
+				by.id('SuggestionDismiss').withAncestor(by.id('Suggestion-lightning')),
 			).tap();
-			await expect(
-				element(by.id('Suggestion-backupSeedPhrase')),
-			).not.toBeVisible();
+			await expect(element(by.id('Suggestion-lightning'))).not.toBeVisible();
 
 			// reset suggestions
 			await element(by.id('Settings')).tap();
@@ -593,8 +589,8 @@ d('Settings', () => {
 			await element(by.id('ResetSuggestions')).tap();
 			await element(by.id('DialogConfirm')).tap();
 
-			// backupSeedPhrase should be visible again
-			await expect(element(by.id('Suggestion-backupSeedPhrase'))).toBeVisible();
+			// lightning should be visible again
+			await expect(element(by.id('Suggestion-lightning'))).toBeVisible();
 			markComplete('settings-suggestions');
 		});
 	});
