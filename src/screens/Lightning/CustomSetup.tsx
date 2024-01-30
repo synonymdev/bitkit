@@ -403,7 +403,7 @@ const CustomSetup = ({
 			remoteBalance: spendingAmount!,
 			localBalance: amount,
 			channelExpiry: DEFAULT_CHANNEL_DURATION,
-			turboChannel:
+			zeroConfPayment:
 				spendingAmount! <= blocktankInfo.options.max0ConfClientBalanceSat,
 			selectedWallet,
 			selectedNetwork,

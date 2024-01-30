@@ -135,7 +135,7 @@ const Setup = ({ navigation }: TransferScreenProps<'Setup'>): ReactElement => {
 			selectedWallet,
 			remoteBalance,
 			localBalance,
-			turboChannel:
+			zeroConfPayment:
 				remoteBalance <= blocktankInfo.options.max0ConfClientBalanceSat,
 		});
 

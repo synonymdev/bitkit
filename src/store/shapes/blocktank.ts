@@ -30,12 +30,13 @@ export const defaultBlocktankInfoShape: IBtInfo = {
 		btc: '0.0.0',
 		ln2: '0.0.0',
 	},
-	// @ts-ignore
 	onchain: {
+		// @ts-ignore enum not exported from blocktank-lsp-http-client
+		network: 'mainnet',
 		feeRates: {
-			fast: 10,
-			mid: 5,
-			slow: 1,
+			fast: 0,
+			mid: 0,
+			slow: 0,
 			isHigh: false,
 		},
 	},

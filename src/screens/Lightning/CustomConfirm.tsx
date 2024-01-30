@@ -66,8 +66,7 @@ const CustomConfirm = ({
 			setLoading(false);
 			return;
 		}
-		const zeroConf = order.zeroConf && !res.value.useUnconfirmedInputs;
-		navigation.navigate(zeroConf ? 'SettingUp' : 'Success');
+		navigation.navigate('SettingUp');
 	};
 
 	const updateOrderExpiration = async (): Promise<void> => {
@@ -75,7 +74,7 @@ const CustomConfirm = ({
 			remoteBalance: order.clientBalanceSat,
 			localBalance: order.lspBalanceSat,
 			channelExpiry: Math.max(weeks, 1),
-			turboChannel: order.zeroConf,
+			zeroConfPayment: order.zeroConf,
 			selectedWallet,
 			selectedNetwork,
 		});

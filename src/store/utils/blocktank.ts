@@ -221,6 +221,7 @@ export const startChannelPurchase = async ({
 	lspNodeId,
 	couponCode,
 	turboChannel = true,
+	zeroConfPayment = false,
 	selectedWallet,
 	selectedNetwork,
 }: {
@@ -230,6 +231,7 @@ export const startChannelPurchase = async ({
 	lspNodeId?: string;
 	couponCode?: string;
 	turboChannel?: boolean;
+	zeroConfPayment?: boolean;
 	selectedWallet?: TWalletName;
 	selectedNetwork?: EAvailableNetwork;
 }): Promise<
@@ -255,6 +257,7 @@ export const startChannelPurchase = async ({
 			lspNodeId,
 			couponCode,
 			turboChannel,
+			zeroConfPayment,
 		},
 	});
 	if (buyChannelResponse.isErr()) {

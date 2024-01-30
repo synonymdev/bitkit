@@ -9,6 +9,7 @@ import {
 import { err, ok, Result } from '@synonymdev/result';
 import { CJitStateEnum } from '@synonymdev/blocktank-lsp-http-client/dist/shared/CJitStateEnum';
 import { BtOpenChannelState } from '@synonymdev/blocktank-lsp-http-client/dist/shared/BtOpenChannelState';
+import { IBt0ConfMinTxFeeWindow } from '@synonymdev/blocktank-lsp-http-client/dist/shared/IBt0ConfMinTxFeeWindow';
 
 import { EAvailableNetwork } from '../networks';
 import { addPeers, getNodeId, refreshLdk } from '../lightning';
@@ -29,7 +30,6 @@ import { setGeoBlock } from '../../store/utils/user';
 import { refreshWallet } from '../wallet';
 import { DEFAULT_CHANNEL_DURATION } from '../../screens/Lightning/CustomConfirm';
 import { __BLOCKTANK_HOST__ } from '../../constants/env';
-import { IBt0ConfMinTxFeeWindow } from '@synonymdev/blocktank-lsp-http-client/dist/shared/IBt0ConfMinTxFeeWindow';
 
 const bt = new BlocktankClient();
 

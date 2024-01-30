@@ -136,7 +136,7 @@ const QuickSetup = ({
 			localBalance: lspBalance,
 			channelExpiry: DEFAULT_CHANNEL_DURATION,
 			lspNodeId: blocktankInfo.nodes[0].pubkey,
-			turboChannel:
+			zeroConfPayment:
 				spendingAmount <= blocktankInfo.options.max0ConfClientBalanceSat,
 		});
 
