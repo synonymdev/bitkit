@@ -104,9 +104,17 @@ d('Onchain', () => {
 
 			// Amount / NumberPad
 			await element(by.id('SendNumberPadMax')).tap();
+			// cat't use .multitap here, doesn't work properly
+			// maybe some race condition in beignet library ?
 			await element(
 				by.id('NRemove').withAncestor(by.id('SendAmountNumberPad')),
-			).multiTap(3);
+			).tap();
+			await element(
+				by.id('NRemove').withAncestor(by.id('SendAmountNumberPad')),
+			).tap();
+			await element(
+				by.id('NRemove').withAncestor(by.id('SendAmountNumberPad')),
+			).tap();
 			// Switch to BTC
 			await element(by.id('SendNumberPadUnit')).multiTap(2);
 			await expect(element(by.text('0.00199999'))).toBeVisible();
@@ -273,6 +281,7 @@ d('Onchain', () => {
 			amount = amount.replace(/\s/g, '');
 			amount = amount - 300;
 			for (const num of String(amount)) {
+				await sleep(200);
 				await element(
 					by.id(`N${num}`).withAncestor(by.id('SendAmountNumberPad')),
 				).tap();
