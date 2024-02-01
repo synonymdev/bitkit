@@ -130,6 +130,7 @@ d('Settings Security And Privacy', () => {
 		await element(by.id('RecipientManual')).tap();
 		await element(by.id('RecipientInput')).replaceText(coreAddress);
 		await element(by.id('RecipientInput')).tapReturnKey();
+		await sleep(1000); // wait for keyboard to hide
 		await element(by.id('AddressContinue')).tap();
 		await element(by.id('N1').withAncestor(by.id('SendAmountNumberPad'))).tap();
 		await element(
@@ -192,6 +193,7 @@ d('Settings Security And Privacy', () => {
 		await element(by.id('RecipientManual')).tap();
 		await element(by.id('RecipientInput')).replaceText(coreAddress);
 		await element(by.id('RecipientInput')).tapReturnKey();
+		await sleep(1000); // wait for keyboard to hide
 		await element(by.id('AddressContinue')).tap();
 		await element(by.id('N1').withAncestor(by.id('SendAmountNumberPad'))).tap();
 		await element(

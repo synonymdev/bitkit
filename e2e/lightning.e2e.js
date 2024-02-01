@@ -206,6 +206,7 @@ d('Lightning', () => {
 			await element(by.id('RecipientManual')).tap();
 			await element(by.id('RecipientInput')).replaceText(invoice3);
 			await element(by.id('RecipientInput')).tapReturnKey();
+			await sleep(1000); // wait for keyboard to hide
 			await element(by.id('AddressContinue')).tap();
 			await element(
 				by.id('N1').withAncestor(by.id('SendAmountNumberPad')),
@@ -230,6 +231,7 @@ d('Lightning', () => {
 			await element(by.id('RecipientManual')).tap();
 			await element(by.id('RecipientInput')).replaceText(invoice4);
 			await element(by.id('RecipientInput')).tapReturnKey();
+			await sleep(1000); // wait for keyboard to hide
 			await element(by.id('AddressContinue')).tap();
 
 			// Review & Send

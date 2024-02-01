@@ -100,6 +100,7 @@ d('Onchain', () => {
 			await element(by.id('RecipientManual')).tap();
 			await element(by.id('RecipientInput')).replaceText(coreAddress);
 			await element(by.id('RecipientInput')).tapReturnKey();
+			await sleep(1000); // wait for keyboard to hide
 			await element(by.id('AddressContinue')).tap();
 
 			// Amount / NumberPad
@@ -272,6 +273,7 @@ d('Onchain', () => {
 			await element(by.id('RecipientManual')).tap();
 			await element(by.id('RecipientInput')).replaceText(coreAddress);
 			await element(by.id('RecipientInput')).tapReturnKey();
+			await sleep(1000); // wait for keyboard to hide
 			await element(by.id('AddressContinue')).tap();
 
 			// enter amount that would leave dust
