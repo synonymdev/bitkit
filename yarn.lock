@@ -5563,10 +5563,10 @@ bech32@^1.1.2, bech32@^1.1.4:
   resolved "https://registry.yarnpkg.com/bech32/-/bech32-1.1.4.tgz#e38c9f37bf179b8eb16ae3a772b40c356d4832e9"
   integrity sha512-s0IrSOzLlbvX7yp4WBfPITzpAU8sqQcpsmwXDiKwrG4r491vwCO/XpejasRNl0piBMe/DvP4Tz0mIS/X1DPJBQ==
 
-beignet@0.0.20:
-  version "0.0.20"
-  resolved "https://registry.yarnpkg.com/beignet/-/beignet-0.0.20.tgz#2f11389dacac1957eb36bf26b7bb7319d69ff241"
-  integrity sha512-m816N3mJ/wfIcHpX+bpFMsyrvn6yviXQqekMvmqcB1QNKNJ0MFp4Nt9b3+rRB4HvwmayJqyHDvhI+TAyZ+UUJA==
+beignet@0.0.21:
+  version "0.0.21"
+  resolved "https://registry.yarnpkg.com/beignet/-/beignet-0.0.21.tgz#138521a28f58400a0cacf9f58c9914c06d3d8b4e"
+  integrity sha512-jB9USbYcoVbPnyKtwBQcp/rZonU31ynOHASivvQey7PGrhh6xDRAT/SvpqgdQ4Qc6fgtdDefYx5i9MTCwQBYfQ==
   dependencies:
     "@bitcoinerlab/secp256k1" "1.0.5"
     bech32 "2.0.0"
@@ -5579,7 +5579,7 @@ beignet@0.0.20:
     ecpair "2.1.0"
     lodash.clonedeep "4.5.0"
     net "1.0.2"
-    rn-electrum-client "0.0.10"
+    rn-electrum-client "0.0.11"
 
 bencode@^2.0.0, bencode@^2.0.3:
   version "2.0.3"
@@ -13131,10 +13131,10 @@ rn-android-keyboard-adjust@2.1.2:
   resolved "https://registry.yarnpkg.com/rn-android-keyboard-adjust/-/rn-android-keyboard-adjust-2.1.2.tgz#f2b792628700dcb026215420192317ce43fd954f"
   integrity sha512-pUYiMT7aucw5YnV4geGdalyl6o6rEwRYhDnw2oPQwDym1BZHtmKsxFLupky1Kj2ZNkNKadpEyoyHOElLo+f3sA==
 
-rn-electrum-client@0.0.10:
-  version "0.0.10"
-  resolved "https://registry.yarnpkg.com/rn-electrum-client/-/rn-electrum-client-0.0.10.tgz#a889e30967484b1312c2afd260501e9b19cd845d"
-  integrity sha512-sYP9mdPGEnDjQZtMrv1JWc4pWEFTUBcGqe/K64whnmmz67aYppUAyblPCzyndsNr3Eu4KdjUK3tgmMh+Ha4v9g==
+rn-electrum-client@0.0.11:
+  version "0.0.11"
+  resolved "https://registry.yarnpkg.com/rn-electrum-client/-/rn-electrum-client-0.0.11.tgz#150372294c9712ffd54b237820042c63a5b38081"
+  integrity sha512-XfpUPyWf+/Bqcc67DmvBvCtlzc/FLaCSikOrUtFaba6zunWDCmXRgNNtvHQEoC40FrfDIo1bh8wv4oymyx+2xg==
 
 "rn-electrum-client@github:synonymdev/react-native-electrum-client#a32a292d4e4918a04d280137e24e5961c74c543f":
   version "0.0.8"
