@@ -12,6 +12,7 @@ import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 import { closeSheet } from '../../../store/slices/ui';
 import { backupSelector } from '../../../store/reselect/backup';
 import { i18nTime } from '../../../utils/i18n';
+import { EBackupCategories } from '../../../store/utils/backup';
 
 const imageSrc = require('../../../assets/illustrations/tag.png');
 
@@ -21,16 +22,11 @@ const Metadata = (): ReactElement => {
 	const dispatch = useAppDispatch();
 	const backup = useAppSelector(backupSelector);
 
-	const arr = [
-		backup.remoteLdkBackupLastSync,
-		backup.remoteSettingsBackupLastSync,
-		backup.remoteWidgetsBackupLastSync,
-		backup.remoteMetadataBackupLastSync,
-		backup.remoteLdkActivityBackupLastSync,
-		backup.remoteBlocktankBackupLastSync,
-	].filter((i) => i !== undefined) as Array<number>;
-
-	const max = Math.max(...arr);
+	const max = Math.max(
+		...Object.values(EBackupCategories).map((key) => {
+			return backup[key].synced;
+		}),
+	);
 
 	const handleButtonPress = (): void => {
 		dispatch(closeSheet('backupNavigation'));

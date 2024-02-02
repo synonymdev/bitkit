@@ -1,11 +1,8 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-import { updateActivityItems } from './activity';
-import { addPaidBlocktankOrder, updateBlocktankOrder } from './blocktank';
-import { updateSettings } from './settings';
-import { addContact, addContacts, deleteContact } from './slashtags';
-import { setFeedWidget } from './widgets';
+
 import { initialBackupState } from '../shapes/backup';
-import { TBackupState } from '../types/backup';
+import { EBackupCategories } from '../utils/backup';
+import { addPaidBlocktankOrder, updateBlocktankOrder } from './blocktank';
 import {
 	addLastUsedTag,
 	addMetaTxSlashtagsUrl,
@@ -18,68 +15,51 @@ import {
 	updateMetaTxTags,
 	updatePendingInvoice,
 } from './metadata';
+import { updateSettings } from './settings';
+import { addContact, addContacts, deleteContact } from './slashtags';
+import { setFeedWidget } from './widgets';
+import { updateActivityItems } from './activity';
 import { EActivityType } from '../types/activity';
 
 export const backupSlice = createSlice({
 	name: 'backup',
 	initialState: initialBackupState,
 	reducers: {
-		updateBackup: (state, action: PayloadAction<Partial<TBackupState>>) => {
-			state = Object.assign(state, action.payload);
-		},
-		startBackupSeederCheck: (state) => {
-			state.hyperProfileCheckRequested =
-				state.hyperProfileCheckRequested ?? new Date().getTime();
-			state.hyperContactsCheckRequested =
-				state.hyperContactsCheckRequested ?? new Date().getTime();
-		},
-		endBackupSeederCheck: (
-			state,
-			action: PayloadAction<{
-				profile: boolean;
-				contacts: boolean;
-			}>,
-		) => {
-			state.hyperProfileCheckRequested = action.payload.profile
-				? undefined
-				: state.hyperProfileCheckRequested;
-			state.hyperContactsCheckRequested = action.payload.contacts
-				? undefined
-				: state.hyperContactsCheckRequested;
-			state.hyperProfileSeedCheckSuccess = action.payload.profile
-				? new Date().getTime()
-				: state.hyperProfileSeedCheckSuccess;
-			state.hyperContactsCheckSuccess = action.payload.contacts
-				? new Date().getTime()
-				: state.hyperContactsCheckSuccess;
-		},
 		resetBackupState: () => initialBackupState,
+		backupStart: (state, action: PayloadAction<{ category: string }>) => {
+			const { category } = action.payload;
+			state[category].running = true;
+		},
+		backupSuccess: (state, action: PayloadAction<{ category: string }>) => {
+			const { category } = action.payload;
+			state[category].running = false;
+			state[category].synced = Date.now();
+		},
+		backupError: (state, action: PayloadAction<{ category: string }>) => {
+			const { category } = action.payload;
+			state[category].running = false;
+		},
+		forceBackup: (state, action: PayloadAction<{ category: string }>) => {
+			const { category } = action.payload;
+			state[category].required = Date.now();
+			state[category].running = true;
+		},
 	},
 	extraReducers: (builder) => {
 		const blocktankReducer = (state): void => {
-			state.remoteBlocktankBackupSynced = false;
-			state.remoteBlocktankBackupSyncRequired =
-				state.remoteBlocktankBackupSyncRequired ?? new Date().getTime();
+			state[EBackupCategories.blocktank].required = Date.now();
 		};
 		const metadataReducer = (state): void => {
-			state.remoteMetadataBackupSynced = false;
-			state.remoteMetadataBackupSyncRequired =
-				state.remoteMetadataBackupSyncRequired ?? new Date().getTime();
+			state[EBackupCategories.metadata].required = Date.now();
 		};
 		const settingsReducer = (state): void => {
-			state.remoteSettingsBackupSynced = false;
-			state.remoteSettingsBackupSyncRequired =
-				state.remoteSettingsBackupSyncRequired ?? new Date().getTime();
+			state[EBackupCategories.settings].required = Date.now();
 		};
 		const slashtagsReducer = (state): void => {
-			state.remoteSlashtagsBackupSynced = false;
-			state.remoteSlashtagsBackupSyncRequired =
-				state.remoteSlashtagsBackupSyncRequired ?? new Date().getTime();
+			state[EBackupCategories.slashtags].required = Date.now();
 		};
 		const widgetsReducer = (state): void => {
-			state.remoteWidgetsBackupSynced = false;
-			state.remoteWidgetsBackupSyncRequired =
-				state.remoteWidgetsBackupSyncRequired ?? new Date().getTime();
+			state[EBackupCategories.widgets].required = Date.now();
 		};
 
 		builder
@@ -106,9 +86,7 @@ export const backupSlice = createSlice({
 					(item) => item.activityType === EActivityType.lightning,
 				);
 				if (hasLnActivity) {
-					state.remoteLdkActivityBackupSynced = false;
-					state.remoteLdkActivityBackupSyncRequired =
-						state.remoteLdkActivityBackupSyncRequired ?? new Date().getTime();
+					state[EBackupCategories.ldkActivity].required = Date.now();
 				}
 			});
 	},
@@ -117,10 +95,11 @@ export const backupSlice = createSlice({
 const { actions, reducer } = backupSlice;
 
 export const {
-	updateBackup,
-	startBackupSeederCheck,
-	endBackupSeederCheck,
 	resetBackupState,
+	backupStart,
+	backupSuccess,
+	backupError,
+	forceBackup,
 } = actions;
 
 export default reducer;

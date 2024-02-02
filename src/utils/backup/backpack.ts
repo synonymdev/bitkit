@@ -2,7 +2,6 @@ import BackupProtocol from 'backpack-client/src/backup-protocol.js';
 import { ok, err, Result } from '@synonymdev/result';
 import { Slashtag } from '@synonymdev/slashtags-sdk';
 
-import { name as appName, version as appVersion } from '../../../package.json';
 import { EAvailableNetwork } from '../networks';
 import {
 	__BACKUPS_SERVER_SLASHTAG__,
@@ -10,11 +9,11 @@ import {
 } from '../../constants/env';
 
 const categoryWithNetwork = (
-	category: EBackupCategories,
+	category: EBackupCategoriesOld,
 	network: EAvailableNetwork,
 ): string => `${category}.${network}`.toLowerCase();
 
-export enum EBackupCategories {
+export enum EBackupCategoriesOld {
 	jest = 'bitkit.jest',
 	transactions = 'bitkit.transactions',
 	ldkComplete = 'bitkit.ldk.complete',
@@ -47,50 +46,6 @@ const backupsFactory = async (slashtag: Slashtag): Promise<BackupProtocol> => {
 	return backupsInstances[key];
 };
 
-/**
- * Uploads a backup to the server
- * @param {Slashtag} slashtag
- * @param {Uint8Array} content
- * @param {EBackupCategories} category
- * @param {EAvailableNetwork} network
- * @returns {Promise<Result<number>>}
- */
-export const uploadBackup = async (
-	slashtag: Slashtag,
-	content: Uint8Array,
-	category: EBackupCategories,
-	network: EAvailableNetwork,
-): Promise<Result<number>> => {
-	try {
-		const backups = await backupsFactory(slashtag);
-
-		const encryptedContent = backups.encrypt(content, slashtag.key);
-
-		// Prepare some data to back up
-		const data = {
-			appName,
-			appVersion,
-			category: categoryWithNetwork(category, network),
-			content: encryptedContent,
-		};
-
-		const { error, results, success } = await backups.backupData(
-			__BACKUPS_SERVER_SLASHTAG__,
-			data,
-		);
-
-		if (!success) {
-			return err(error);
-		}
-
-		const { timestamp } = results;
-
-		return ok(timestamp);
-	} catch (e) {
-		return err(e);
-	}
-};
-
 type TFetchResult = {
 	appName: string;
 	appVersion: string;
@@ -103,14 +58,14 @@ type TFetchResult = {
  * Fetches a backup from the server
  * @param {Slashtag} slashtag
  * @param {number} timestamp
- * @param {EBackupCategories} category
+ * @param {EBackupCategoriesOld} category
  * @param {EAvailableNetwork} network
  * @returns {Promise<Result<TFetchResult>>}
  */
 export const fetchBackup = async (
 	slashtag: Slashtag,
 	timestamp: number,
-	category: EBackupCategories,
+	category: EBackupCategoriesOld,
 	network: EAvailableNetwork,
 ): Promise<Result<TFetchResult>> => {
 	try {
@@ -139,13 +94,13 @@ export const fetchBackup = async (
 /**
  * Returns list of backups in order of newest to oldest
  * @param {Slashtag} slashtag
- * @param {EBackupCategories} category
+ * @param {EBackupCategoriesOld} category
  * @param {EAvailableNetwork} network
  * @returns {Promise<Result<{ timestamp: number }[]>>}
  */
 export const listBackups = async (
 	slashtag: Slashtag,
-	category: EBackupCategories,
+	category: EBackupCategoriesOld,
 	network: EAvailableNetwork,
 ): Promise<Result<{ timestamp: number }[]>> => {
 	try {

@@ -1,22 +1,24 @@
 // Add migrations for every persisted store version change
 
+import { EAddressType } from 'beignet';
+import { defaultAddressContent } from 'beignet/src/shapes/wallet';
 import { PersistedState } from 'redux-persist';
-import { initialActivityState } from '../slices/activity';
+
+import { __WEB_RELAY__ } from '../../constants/env';
+import { getDefaultSettings } from '../../screens/Widgets/WidgetEdit';
+import { EAvailableNetwork } from '../../utils/networks';
+import { initialBackupState } from '../shapes/backup';
 import { defaultBlocktankInfoShape } from '../shapes/blocktank';
 import { initialTodosState } from '../shapes/todos';
 import { defaultViewControllers } from '../shapes/ui';
-import { initialChecksState } from '../slices/checks';
-import { initialBackupState } from '../shapes/backup';
-import { initialWidgetsState } from '../slices/widgets';
 import {
 	getDefaultWalletStoreShape,
 	getNetworkContent,
 } from '../shapes/wallet';
-import { getDefaultSettings } from '../../screens/Widgets/WidgetEdit';
-import { __WEB_RELAY__ } from '../../constants/env';
-import { EAvailableNetwork } from '../../utils/networks';
-import { defaultAddressContent } from 'beignet/src/shapes/wallet';
-import { EAddressType } from 'beignet';
+import { initialActivityState } from '../slices/activity';
+import { initialChecksState } from '../slices/checks';
+import { initialWidgetsState } from '../slices/widgets';
+import cloneDeep from 'lodash/cloneDeep';
 
 const migrations = {
 	0: (state): PersistedState => {
@@ -429,6 +431,34 @@ const migrations = {
 				addressTypesToMonitor:
 					getDefaultWalletStoreShape().addressTypesToMonitor,
 				wallets: walletsState,
+			},
+		};
+	},
+	35: (state): PersistedState => {
+		const newNodes = { ...state.lightning.nodes };
+		// Loop through all nodes
+		for (const walletName in newNodes) {
+			newNodes[walletName] = {
+				...newNodes[walletName],
+				backup: getNetworkContent({}),
+			};
+		}
+
+		// force backup
+		const backup = cloneDeep(initialBackupState);
+		for (const key in initialBackupState) {
+			backup[key].synced = backup[key].required - 10;
+		}
+
+		return {
+			...state,
+			backup: {
+				...backup,
+				...state.backup,
+			},
+			lightning: {
+				...state.lightning,
+				nodes: newNodes,
 			},
 		};
 	},

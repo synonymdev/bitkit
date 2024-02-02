@@ -17,7 +17,7 @@ import { useSelectedSlashtag } from '../../hooks/slashtags';
 import { SlashtagsProvider } from '../../components/SlashtagsProvider';
 import { SlashtagsProvider2 } from '../../components/SlashtagsProvider2';
 import {
-	EBackupCategories,
+	EBackupCategoriesOld,
 	fetchBackup,
 	listBackups,
 } from '../../utils/backup/backpack';
@@ -70,7 +70,7 @@ const LightningWithSlashtags = ({
 		const listLdkBackups = async (): Promise<void> => {
 			const res = await listBackups(
 				slashtag.slashtag,
-				EBackupCategories.ldkComplete,
+				EBackupCategoriesOld.ldkComplete,
 				__DEV__ ? selectedNetwork : EAvailableNetwork.bitcoin,
 			);
 
@@ -116,7 +116,7 @@ const LightningWithSlashtags = ({
 		const res = await fetchBackup(
 			slashtag.slashtag,
 			timestamp,
-			EBackupCategories.ldkComplete,
+			EBackupCategoriesOld.ldkComplete,
 			selectedNetwork,
 		);
 

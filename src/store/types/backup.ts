@@ -1,47 +1,14 @@
 import { ENetworks, TAccount } from '@synonymdev/react-native-ldk';
+import { EBackupCategories } from '../utils/backup';
+
+export type TBackupItem = {
+	running: boolean;
+	required: number; // timestamp of last time this backup was required
+	synced: number; // timestamp of last time this backup was synced
+};
 
 export type TBackupState = {
-	//Backpack
-	remoteBackupsEnabled: boolean;
-	remoteLdkBackupSynced: boolean;
-	remoteLdkBackupLastSync?: number;
-	remoteLdkBackupLastSyncRequired?: number;
-	remoteSettingsBackupSynced: boolean;
-	remoteSettingsBackupLastSync?: number;
-	remoteSettingsBackupSyncRequired?: number;
-	remoteWidgetsBackupSynced: boolean;
-	remoteWidgetsBackupLastSync?: number;
-	remoteWidgetsBackupSyncRequired?: number;
-	remoteMetadataBackupSynced: boolean;
-	remoteMetadataBackupLastSync?: number;
-	remoteMetadataBackupSyncRequired?: number;
-	remoteLdkActivityBackupSynced: boolean;
-	remoteLdkActivityBackupLastSync?: number;
-	remoteLdkActivityBackupSyncRequired?: number;
-	remoteBlocktankBackupSynced: boolean;
-	remoteBlocktankBackupLastSync?: number;
-	remoteBlocktankBackupSyncRequired?: number;
-	remoteSlashtagsBackupSynced: boolean;
-	remoteSlashtagsBackupLastSync?: number;
-	remoteSlashtagsBackupSyncRequired?: number;
-
-	//Hyperdrives
-	hyperProfileSeedCheckSuccess?: number;
-	hyperProfileCheckRequested?: number;
-	hyperContactsCheckSuccess?: number;
-	hyperContactsCheckRequested?: number;
-
-	//iCloud
-	iCloudBackupsEnabled: boolean;
-	iCloudLdkBackupsSynced: boolean;
-	iCloudLdkBackupLastSync?: number;
-	//TODO transactions, slashtags, metadata, etc.
-
-	//Google Drive
-	gDriveBackupsEnabled: boolean;
-	gDriveLdkBackupsSynced: boolean;
-	gDriveLdkBackupLastSync?: number;
-	//TODO transactions, slashtags, metadata, etc.
+	[key in EBackupCategories]: TBackupItem;
 };
 
 export declare type TAccountBackup<T> = {
@@ -49,4 +16,10 @@ export declare type TAccountBackup<T> = {
 	package_version: string;
 	network: ENetworks;
 	data: T;
+};
+
+export type TBackupMetadata = {
+	category: EBackupCategories;
+	timestamp: number;
+	version: number;
 };

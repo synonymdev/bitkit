@@ -10,7 +10,6 @@ import lm, {
 	EEventTypes,
 	ENetworks,
 	TAccount,
-	TAccountBackup,
 	TChannel,
 	TChannelManagerClaim,
 	TChannelManagerPaymentSent,
@@ -24,6 +23,7 @@ import lm, {
 	TTransactionData,
 	TTransactionPosition,
 	TGetFees,
+	TBackupStateUpdate,
 } from '@synonymdev/react-native-ldk';
 
 import {
@@ -51,6 +51,7 @@ import {
 } from '../../store/helpers';
 import { defaultHeader } from '../../store/shapes/wallet';
 import {
+	updateBackupState,
 	updateLdkAccountVersion,
 	updateLightningNodeId,
 } from '../../store/slices/lightning';
@@ -114,6 +115,7 @@ export const FALLBACK_BLOCKTANK_PEERS: IWalletItem<string[]> = {
 let paymentSubscription: EmitterSubscription | undefined;
 let onChannelSubscription: EmitterSubscription | undefined;
 let onSpendableOutputsSubscription: EmitterSubscription | undefined;
+let onBackupStateUpdate: EmitterSubscription | undefined;
 
 /**
  * Wipes LDK data from storage
@@ -277,6 +279,18 @@ export const setupLdk = async ({
 			return err(storageRes.error);
 		}
 		const rapidGossipSyncUrl = getStore().settings.rapidGossipSyncUrl;
+		const backupRes = await ldk.backupSetup({
+			network,
+			seed: account.value.seed,
+			details: {
+				host: __BACKUPS_SERVER_HOST__,
+				serverPubKey: __BACKUPS_SERVER_PUBKEY__,
+			},
+		});
+		if (backupRes.isErr()) {
+			return err(backupRes.error);
+		}
+
 		const lmStart = await lm.start({
 			account: account.value,
 			getFees,
@@ -300,10 +314,6 @@ export const setupLdk = async ({
 				manually_accept_inbound_channels: true,
 			},
 			trustedZeroConfPeers: __TRUSTED_ZERO_CONF_PEERS__,
-			backupServerDetails: {
-				host: __BACKUPS_SERVER_HOST__,
-				serverPubKey: __BACKUPS_SERVER_PUBKEY__,
-			},
 			rapidGossipSyncUrl,
 			skipParamCheck: true, //Switch off for debugging LDK networking issues
 		});
@@ -467,12 +477,34 @@ export const subscribeToLightningPayments = ({
 			() => {},
 		);
 	}
+	if (!onBackupStateUpdate) {
+		onBackupStateUpdate = ldk.onEvent(
+			EEventTypes.backup_state_update,
+			(res: TBackupStateUpdate) => {
+				if (!selectedWallet) {
+					selectedWallet = getSelectedWallet();
+				}
+				if (!selectedNetwork) {
+					selectedNetwork = getSelectedNetwork();
+				}
+
+				dispatch(
+					updateBackupState({
+						backup: res,
+						selectedWallet,
+						selectedNetwork,
+					}),
+				);
+			},
+		);
+	}
 };
 
 export const unsubscribeFromLightningSubscriptions = (): void => {
 	paymentSubscription?.remove();
 	onChannelSubscription?.remove();
 	onSpendableOutputsSubscription?.remove();
+	onBackupStateUpdate?.remove();
 };
 
 let isRefreshing = false;
@@ -978,27 +1010,6 @@ export const getSha256 = (str: string): string => {
 	const buffer = Buffer.from(str, 'utf8');
 	const hash = bitcoin.crypto.sha256(buffer);
 	return hash.toString('hex');
-};
-
-/**
- * Exports complete backup string for current LDK account.
- * @param account
- * @returns {Promise<Result<TAccountBackup>>}
- */
-export const exportBackup = async (
-	account?: TAccount,
-): Promise<Result<TAccountBackup>> => {
-	if (!account) {
-		const res = await getLdkAccount();
-		if (res.isErr()) {
-			return err(res.error);
-		}
-
-		account = res.value;
-	}
-	return await lm.backupAccount({
-		account,
-	});
 };
 
 /**
