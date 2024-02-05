@@ -18,7 +18,7 @@ import {
 import { initialActivityState } from '../slices/activity';
 import { initialChecksState } from '../slices/checks';
 import { initialWidgetsState } from '../slices/widgets';
-import cloneDeep from 'lodash/cloneDeep';
+import { EBackupCategories } from '../utils/backup';
 
 const migrations = {
 	0: (state): PersistedState => {
@@ -444,18 +444,42 @@ const migrations = {
 			};
 		}
 
-		// force backup
-		const backup = cloneDeep(initialBackupState);
-		for (const key in initialBackupState) {
-			backup[key].synced = backup[key].required - 10;
+		const now = Date.now();
+		const old = state.backup;
+		const backup = {};
+
+		for (const [oldKey, newKey] of [
+			['remoteBlocktankBackup', EBackupCategories.blocktank],
+			['remoteLdkActivityBackup', EBackupCategories.ldkActivity],
+			['remoteMetadataBackup', EBackupCategories.metadata],
+			['remoteSettingsBackup', EBackupCategories.settings],
+			['remoteSlashtagsBackup', EBackupCategories.slashtags],
+			['remoteWidgetsBackup', EBackupCategories.widgets],
+		]) {
+			const oldLastSync = old[`${oldKey}LastSync`];
+			const oldSynced = old[`${oldKey}Synced`];
+			const oldSyncRequired = old[`${oldKey}SyncRequired`];
+
+			if (oldSynced === false && !oldSyncRequired) {
+				// backup not required
+				backup[newKey] = {
+					required: now - 1000,
+					synced: now,
+					running: false,
+				};
+			} else {
+				// force backup
+				backup[newKey] = {
+					required: now,
+					synced: oldLastSync ?? now - 1000,
+					running: false,
+				};
+			}
 		}
 
 		return {
 			...state,
-			backup: {
-				...backup,
-				...state.backup,
-			},
+			backup,
 			lightning: {
 				...state.lightning,
 				nodes: newNodes,
