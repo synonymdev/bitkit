@@ -39,6 +39,7 @@ import { checkBackup } from '../../utils/slashtags';
 import { showToast } from '../../utils/notifications';
 import { FAILED_BACKUP_CHECK_TIME } from '../../utils/backup/backups-subscriber';
 import i18n from '../../utils/i18n';
+import { EUnit } from '../types/wallet';
 import { TSlashtagsState } from '../types/slashtags';
 import {
 	__BACKUPS_SERVER_HOST__,
@@ -403,6 +404,8 @@ export const performSettingsRestore = async ({
 		updateSettings({
 			...expectedBackupShape,
 			...backup,
+			// @ts-ignore migrate unit
+			unit: backup.unit === 'satoshi' ? EUnit.BTC : backup.unit,
 			biometrics: false,
 			pin: false,
 			pinForPayments: false,

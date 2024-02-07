@@ -11,6 +11,7 @@ import { initialWidgetsState } from '../slices/widgets';
 import { getNetworkContent } from '../shapes/wallet';
 import { getDefaultSettings } from '../../screens/Widgets/WidgetEdit';
 import { __WEB_RELAY__ } from '../../constants/env';
+import { EDenomination, EUnit } from '../types/wallet';
 
 const migrations = {
 	0: (state): PersistedState => {
@@ -340,6 +341,16 @@ const migrations = {
 				...state.user,
 				ignoresHideBalanceToast: false,
 				ignoresSwitchUnitToast: false,
+			},
+		};
+	},
+	33: (state): PersistedState => {
+		return {
+			...state,
+			settings: {
+				...state.settings,
+				unit: EUnit.BTC,
+				denomination: EDenomination.modern,
 			},
 		};
 	},

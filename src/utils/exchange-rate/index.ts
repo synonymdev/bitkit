@@ -99,11 +99,7 @@ export const getExchangeRates = async (): Promise<Result<IExchangeRates>> => {
 	}
 };
 
-export const getExchangeRate = (currency = 'EUR'): number => {
-	try {
-		const exchangeRates = getWalletStore().exchangeRates;
-		return exchangeRates[currency]?.rate ?? 0;
-	} catch {
-		return 0;
-	}
+export const getExchangeRate = (currency = 'USD'): number => {
+	const exchangeRates = getWalletStore().exchangeRates;
+	return exchangeRates[currency]?.rate ?? 0;
 };

@@ -4,7 +4,7 @@ import { RootState } from '..';
 import themes, { IThemeColors } from '../../styles/themes';
 import { TSettings } from '../slices/settings';
 import { EAvailableNetwork } from '../../utils/networks';
-import { EUnit } from '../types/wallet';
+import { EConversionUnit, EDenomination, EUnit } from '../types/wallet';
 import {
 	ICustomElectrumPeer,
 	TCoinSelectPreference,
@@ -134,25 +134,53 @@ export const enableSendAmountWarningSelector = createSelector(
 	[settingsState],
 	(settings): boolean => settings.enableSendAmountWarning,
 );
-export const primaryUnitSelector = createSelector(
+export const unitSelector = createSelector(
 	[settingsState],
 	(settings) => settings.unit,
 );
-export const secondaryUnitSelector = createSelector(
+export const nextUnitSelector = createSelector([settingsState], (settings) => {
+	return settings.unit === EUnit.fiat ? EUnit.BTC : EUnit.fiat;
+});
+export const conversionUnitSelector = createSelector(
 	[settingsState],
 	(settings) => {
-		if (settings.unit === EUnit.fiat) {
-			return EUnit.satoshi;
+		const { unit, denomination } = settings;
+		if (unit === EUnit.BTC) {
+			return denomination === EDenomination.modern
+				? EConversionUnit.satoshi
+				: EConversionUnit.BTC;
 		}
-		return EUnit.fiat;
+		return EConversionUnit.fiat;
 	},
 );
-export const nonFiatUnitSelector = createSelector(
+export const denominationSelector = createSelector(
 	[settingsState],
-	(settings) => {
-		return settings.unit === EUnit.fiat ? EUnit.satoshi : EUnit.fiat;
-	},
+	(settings) => settings.denomination,
 );
+
+export enum ENumberPadType {
+	decimal = 'decimal',
+	integer = 'integer',
+}
+
+export const numberPadSelector = createSelector([settingsState], (settings) => {
+	const { unit, denomination } = settings;
+	const isBtc = unit === EUnit.BTC;
+	const isModern = denomination === EDenomination.modern;
+	const isClassic = denomination === EDenomination.classic;
+
+	const maxLength = isModern && isBtc ? 10 : 20;
+	const maxDecimals = isClassic && isBtc ? 8 : 2;
+	const type =
+		isModern && isBtc ? ENumberPadType.integer : ENumberPadType.decimal;
+
+	return {
+		maxLength,
+		maxDecimals,
+		type,
+	};
+});
+
 export const webRelaySelector = createSelector(
 	[settingsState],
 	(settings): string => settings.webRelay,

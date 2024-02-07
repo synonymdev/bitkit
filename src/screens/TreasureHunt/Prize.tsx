@@ -16,12 +16,11 @@ import GradientView from '../../components/GradientView';
 import SafeAreaInset from '../../components/SafeAreaInset';
 import Title from './Title';
 import GradientText from './GradientText';
-import { EUnit } from '../../store/types/wallet';
 import { emptyPrize, prizes } from './prizes';
 import BitkitLogo from '../../assets/bitkit-logo.svg';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { useScreenSize } from '../../hooks/screen';
-import useDisplayValues from '../../hooks/displayValues';
+import { useDisplayValues } from '../../hooks/displayValues';
 import { useLightningMaxInboundCapacity } from '../../hooks/lightning';
 import { getNodeIdFromStorage, waitForLdk } from '../../utils/lightning';
 import { updateTreasureChest } from '../../store/slices/settings';
@@ -74,7 +73,7 @@ const Prize = ({
 		prize = prizes[chestIndex].find((p) => p.winType === winType)!;
 	}
 
-	const dv = useDisplayValues(prize.amount, EUnit.satoshi);
+	const dv = useDisplayValues(prize.amount);
 	const isWinner = prize.winType === 'winning';
 
 	// TEMP: fix iOS animation autoPlay

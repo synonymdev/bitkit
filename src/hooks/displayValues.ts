@@ -1,51 +1,35 @@
 import { useMemo } from 'react';
 import { useAppSelector } from '../hooks/redux';
-
-import { getExchangeRate } from '../utils/exchange-rate';
 import { getDisplayValues } from '../utils/displayValues';
 import { IDisplayValues } from '../utils/displayValues/types';
-import { EUnit } from '../store/types/wallet';
-import { exchangeRatesSelector } from '../store/reselect/wallet';
 import {
-	primaryUnitSelector,
+	denominationSelector,
 	selectedCurrencySelector,
 } from '../store/reselect/settings';
+import {
+	exchangeRateSelector,
+	exchangeRatesSelector,
+} from '../store/reselect/wallet';
 
-export default function useDisplayValues(
-	satoshis: number,
-	unit?: EUnit,
-): IDisplayValues {
-	const primaryUnit = useAppSelector(primaryUnitSelector);
+export const useDisplayValues = (satoshis: number): IDisplayValues => {
+	const { fiatSymbol } = useCurrency();
 	const selectedCurrency = useAppSelector(selectedCurrencySelector);
-	const exchangeRates = useAppSelector(exchangeRatesSelector);
-	const exchangeRate = useMemo(
-		() => getExchangeRate(selectedCurrency),
-		[selectedCurrency],
-	);
-	const unit2 = useMemo(() => {
-		if (unit) {
-			return unit;
-		}
-		if (primaryUnit !== EUnit.fiat) {
-			return primaryUnit;
-		}
-		return EUnit.satoshi;
-	}, [unit, primaryUnit]);
-	const currencySymbol = useMemo(
-		() => exchangeRates[selectedCurrency]?.currencySymbol,
-		[exchangeRates, selectedCurrency],
-	);
+	const denomination = useAppSelector(denominationSelector);
+	const exchangeRate = useAppSelector((state) => {
+		return exchangeRateSelector(state, selectedCurrency);
+	});
+
 	return useMemo(() => {
 		return getDisplayValues({
 			satoshis,
+			denomination,
 			exchangeRate,
 			currency: selectedCurrency,
-			currencySymbol,
-			unit: unit2,
+			currencySymbol: fiatSymbol,
 			locale: 'en-US', //TODO get from native module
 		});
-	}, [satoshis, exchangeRate, selectedCurrency, currencySymbol, unit2]);
-}
+	}, [satoshis, denomination, selectedCurrency, exchangeRate, fiatSymbol]);
+};
 
 /**
  * Returns the symbol for the currently selected fiat currency
@@ -65,12 +49,11 @@ export const useCurrency = (): {
 };
 
 /**
- * Returns 0 if no exchange rate for currency found or something goes wrong
+ * Returns the exchange rate for the currently selected fiat currency
  */
-export const useExchangeRate = (currency = 'EUR'): number => {
+export const useExchangeRate = (currency = 'USD'): number => {
 	const exchangeRates = useAppSelector(exchangeRatesSelector);
-	return useMemo(
-		() => exchangeRates[currency]?.rate ?? 0,
-		[currency, exchangeRates],
-	);
+	return useMemo(() => {
+		return exchangeRates[currency]?.rate ?? 0;
+	}, [currency, exchangeRates]);
 };

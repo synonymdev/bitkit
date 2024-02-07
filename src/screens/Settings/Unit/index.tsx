@@ -4,27 +4,20 @@ import { useTranslation } from 'react-i18next';
 import { EItemType, IListData } from '../../../components/List';
 import SettingsView from '../SettingsView';
 import { updateSettings } from '../../../store/slices/settings';
+import { UnitBitcoinIcon, UnitFiatIcon } from '../../../styles/icons';
 import {
-	UnitBitcoinIcon,
-	UnitSatoshiIcon,
-	UnitFiatIcon,
-} from '../../../styles/icons';
-import {
-	primaryUnitSelector,
+	denominationSelector,
+	unitSelector,
 	selectedCurrencySelector,
 } from '../../../store/reselect/settings';
-import { EUnit } from '../../../store/types/wallet';
+import { EDenomination, EUnit } from '../../../store/types/wallet';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
-import { useCurrency } from '../../../hooks/displayValues';
-import type { SettingsScreenProps } from '../../../navigation/types';
 
-const UnitSettings = ({
-	navigation,
-}: SettingsScreenProps<'UnitSettings'>): ReactElement => {
-	const { fiatSymbol } = useCurrency();
+const UnitSettings = (): ReactElement => {
 	const { t } = useTranslation('settings');
 	const dispatch = useAppDispatch();
-	const selectedUnit = useAppSelector(primaryUnitSelector);
+	const selectedUnit = useAppSelector(unitSelector);
+	const selectedDenomination = useAppSelector(denominationSelector);
 	const selectedCurrency = useAppSelector(selectedCurrencySelector);
 
 	const currencyListData: IListData[] = useMemo(() => {
@@ -32,40 +25,57 @@ const UnitSettings = ({
 			{
 				label: t('general.unit_bitcoin'),
 				unit: EUnit.BTC,
-				labelExample: '(0.00001000)',
 				Icon: UnitBitcoinIcon,
-			},
-			{
-				label: t('general.unit_satoshis'),
-				unit: EUnit.satoshi,
-				labelExample: '(1 000)',
-				Icon: UnitSatoshiIcon,
 			},
 			{
 				label: selectedCurrency,
 				unit: EUnit.fiat,
-				labelExample: `(${fiatSymbol}1,000)`,
 				Icon: UnitFiatIcon,
+			},
+		];
+
+		const denominations = [
+			{
+				label: t('general.denomination_modern'),
+				value: EDenomination.modern,
+				testId: 'DenominationModern',
+			},
+			{
+				label: t('general.denomination_classic'),
+				value: EDenomination.classic,
+				testId: 'DenominationClassic',
 			},
 		];
 
 		return [
 			{
 				title: t('general.unit_display'),
+				description: t('general.unit_note', { currency: selectedCurrency }),
 				data: units.map((unit) => ({
-					title: `${unit.label} ${unit.labelExample}`,
+					title: unit.label,
 					value: unit.unit === selectedUnit,
 					type: EItemType.button,
 					Icon: unit.Icon,
+					testID: unit.label,
 					onPress: (): void => {
-						navigation.goBack();
 						dispatch(updateSettings({ unit: unit.unit }));
 					},
-					testID: unit.label,
+				})),
+			},
+			{
+				title: t('general.denomination_label'),
+				data: denominations.map((denomination) => ({
+					title: denomination.label,
+					value: denomination.value === selectedDenomination,
+					type: EItemType.button,
+					testID: denomination.testId,
+					onPress: (): void => {
+						dispatch(updateSettings({ denomination: denomination.value }));
+					},
 				})),
 			},
 		];
-	}, [selectedUnit, selectedCurrency, fiatSymbol, navigation, t, dispatch]);
+	}, [selectedUnit, selectedCurrency, selectedDenomination, t, dispatch]);
 
 	return (
 		<SettingsView

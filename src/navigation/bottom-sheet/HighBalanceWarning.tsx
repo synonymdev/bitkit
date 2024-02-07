@@ -21,7 +21,6 @@ import {
 	useBottomSheetBackPress,
 	useSnapPoints,
 } from '../../hooks/bottomSheet';
-import { EUnit } from '../../store/types/wallet';
 import { closeSheet } from '../../store/slices/ui';
 import { showBottomSheet } from '../../store/utils/ui';
 import {
@@ -88,7 +87,6 @@ const HighBalanceWarning = ({
 	const { fiatValue } = getFiatDisplayValues({
 		satoshis: totalBalance,
 		currency: 'USD',
-		unit: EUnit.BTC,
 		exchangeRates,
 	});
 

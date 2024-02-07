@@ -16,6 +16,7 @@ import {
 import { defaultSendTransaction } from '../shapes/wallet';
 import { EAvailableNetwork } from '../../utils/networks';
 import { IExchangeRates } from '../../utils/exchange-rate';
+import { TSettings } from '../slices/settings';
 
 export const walletState = (state: RootState): IWalletStore => state.wallet;
 export const walletsState = (state: RootState): IWallets =>
@@ -79,6 +80,19 @@ export const addressTypeSelector = createSelector(
 export const exchangeRatesSelector = createSelector([walletState], (wallet) => {
 	return wallet.exchangeRates;
 });
+
+/**
+ * Returns exchange rate for specific fiat currency.
+ */
+export const exchangeRateSelector = createSelector(
+	[
+		walletState,
+		(_wallet, currency: TSettings['selectedCurrency']): string => currency,
+	],
+	(wallet, currency) => {
+		return wallet.exchangeRates[currency]?.rate ?? 0;
+	},
+);
 
 /**
  * Returns object of on-chain transactions for the currently selected wallet & network.

@@ -8,10 +8,7 @@ import { EyeIcon } from '../styles/icons';
 import Money from './Money';
 import { useBalance, useSwitchUnitAnnounced } from '../hooks/wallet';
 import { updateSettings } from '../store/slices/settings';
-import {
-	primaryUnitSelector,
-	hideBalanceSelector,
-} from '../store/reselect/settings';
+import { unitSelector, hideBalanceSelector } from '../store/reselect/settings';
 
 /**
  * Displays the total available balance for the current wallet & network.
@@ -21,7 +18,7 @@ const BalanceHeader = (): ReactElement => {
 	const onSwitchUnit = useSwitchUnitAnnounced();
 	const { totalBalance, claimableBalance } = useBalance();
 	const dispatch = useAppDispatch();
-	const unit = useAppSelector(primaryUnitSelector);
+	const unit = useAppSelector(unitSelector);
 	const hideBalance = useAppSelector(hideBalanceSelector);
 
 	const toggleHideBalance = (): void => {

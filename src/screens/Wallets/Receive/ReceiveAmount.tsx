@@ -3,9 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useFocusEffect } from '@react-navigation/native';
 
-import { TouchableOpacity } from '../../../styles/components';
-import { Caption13Up, Text02B } from '../../../styles/text';
-import { SwitchIcon } from '../../../styles/icons';
+import { Caption13Up } from '../../../styles/text';
 import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
 import NumberPadTextField from '../../../components/NumberPadTextField';
 import SafeAreaInset from '../../../components/SafeAreaInset';
@@ -13,14 +11,17 @@ import Money from '../../../components/Money';
 import Button from '../../../components/Button';
 import GradientView from '../../../components/GradientView';
 import ReceiveNumberPad from './ReceiveNumberPad';
+import UnitButton from '../UnitButton';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
-import { useSwitchUnit } from '../../../hooks/wallet';
-import { useCurrency } from '../../../hooks/displayValues';
 import { updateInvoice } from '../../../store/slices/receive';
 import { receiveSelector } from '../../../store/reselect/receive';
 import { getNumberPadText } from '../../../utils/numberpad';
 import { blocktankInfoSelector } from '../../../store/reselect/blocktank';
 import { refreshBlocktankInfo } from '../../../store/utils/blocktank';
+import {
+	nextUnitSelector,
+	denominationSelector,
+} from '../../../store/reselect/settings';
 import type { ReceiveScreenProps } from '../../../navigation/types';
 
 // hardcoded to be above fee (1092)
@@ -31,9 +32,9 @@ const ReceiveAmount = ({
 	navigation,
 }: ReceiveScreenProps<'ReceiveAmount'>): ReactElement => {
 	const { t } = useTranslation('wallet');
-	const { fiatTicker } = useCurrency();
-	const [nextUnit, switchUnit] = useSwitchUnit();
 	const dispatch = useAppDispatch();
+	const nextUnit = useAppSelector(nextUnitSelector);
+	const denomination = useAppSelector(denominationSelector);
 	const invoice = useAppSelector(receiveSelector);
 	const blocktank = useAppSelector(blocktankInfoSelector);
 
@@ -48,9 +49,8 @@ const ReceiveAmount = ({
 	);
 
 	const onChangeUnit = (): void => {
-		const result = getNumberPadText(invoice.amount, nextUnit);
+		const result = getNumberPadText(invoice.amount, denomination, nextUnit);
 		dispatch(updateInvoice({ numberPadText: result }));
-		switchUnit();
 	};
 
 	const onContinue = (): void => {
@@ -82,21 +82,10 @@ const ReceiveAmount = ({
 						</View>
 						<View style={styles.actionButtons}>
 							<View style={styles.actionButtonContainer}>
-								<TouchableOpacity
-									style={styles.actionButton}
-									color="white10"
+								<UnitButton
 									testID="ReceiveNumberPadUnit"
-									onPress={onChangeUnit}>
-									<SwitchIcon color="brand" width={16.44} height={13.22} />
-									<Text02B
-										style={styles.actionButtonText}
-										size="12px"
-										color="brand">
-										{nextUnit === 'BTC' && fiatTicker}
-										{nextUnit === 'satoshi' && 'BTC'}
-										{nextUnit === 'fiat' && 'sats'}
-									</Text02B>
-								</TouchableOpacity>
+									onPress={onChangeUnit}
+								/>
 							</View>
 						</View>
 					</View>
@@ -151,17 +140,6 @@ const styles = StyleSheet.create({
 	},
 	actionButtonContainer: {
 		alignItems: 'center',
-	},
-	actionButton: {
-		marginLeft: 16,
-		paddingVertical: 7,
-		paddingHorizontal: 8,
-		borderRadius: 8,
-		flexDirection: 'row',
-		alignItems: 'center',
-	},
-	actionButtonText: {
-		marginLeft: 11,
 	},
 	buttonContainer: {
 		marginTop: 'auto',

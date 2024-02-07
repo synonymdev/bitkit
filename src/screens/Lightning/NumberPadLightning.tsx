@@ -4,8 +4,10 @@ import { useAppSelector } from '../../hooks/redux';
 
 import NumberPad from '../../components/NumberPad';
 import NumberPadButtons from '../Wallets/NumberPadButtons';
-import { EUnit } from '../../store/types/wallet';
-import { primaryUnitSelector } from '../../store/reselect/settings';
+import {
+	conversionUnitSelector,
+	numberPadSelector,
+} from '../../store/reselect/settings';
 import { handleNumberPadPress } from '../../utils/numberpad';
 import { convertToSats } from '../../utils/conversion';
 import { vibrate } from '../../utils/helpers';
@@ -28,11 +30,8 @@ const NumberPadLightning = ({
 	style?: StyleProp<ViewStyle>;
 }): ReactElement => {
 	const [errorKey, setErrorKey] = useState<string>();
-	const unit = useAppSelector(primaryUnitSelector);
-
-	const maxDecimals = unit === EUnit.BTC ? 8 : 2;
-	const maxLength = unit === EUnit.satoshi ? 10 : 20;
-	const numberPadType = unit === EUnit.satoshi ? 'integer' : 'decimal';
+	const conversionUnit = useAppSelector(conversionUnitSelector);
+	const { maxLength, maxDecimals, type } = useAppSelector(numberPadSelector);
 
 	const onPress = (key: string): void => {
 		const newValue = handleNumberPadPress(key, value, {
@@ -40,7 +39,7 @@ const NumberPadLightning = ({
 			maxDecimals,
 		});
 
-		const amount = convertToSats(newValue, unit);
+		const amount = convertToSats(newValue, conversionUnit);
 
 		if (amount <= maxAmount) {
 			onChange(newValue);
@@ -54,7 +53,7 @@ const NumberPadLightning = ({
 	return (
 		<NumberPad
 			style={[styles.numberpad, style]}
-			type={numberPadType}
+			type={type}
 			errorKey={errorKey}
 			onPress={onPress}>
 			<NumberPadButtons

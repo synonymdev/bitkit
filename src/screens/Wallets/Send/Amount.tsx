@@ -11,8 +11,7 @@ import { useTranslation } from 'react-i18next';
 import { useRoute } from '@react-navigation/native';
 
 import { TouchableOpacity } from '../../../styles/components';
-import { Caption13Up, Text02B } from '../../../styles/text';
-import { SwitchIcon } from '../../../styles/icons';
+import { Caption13Up } from '../../../styles/text';
 import { IColors } from '../../../styles/colors';
 import GradientView from '../../../components/GradientView';
 import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
@@ -22,6 +21,7 @@ import ContactImage from '../../../components/ContactImage';
 import NumberPadTextField from '../../../components/NumberPadTextField';
 import SendNumberPad from './SendNumberPad';
 import Button from '../../../components/Button';
+import UnitButton from '../UnitButton';
 import {
 	getTransactionOutputValue,
 	getMaxSendAmount,
@@ -35,13 +35,14 @@ import {
 	transactionSelector,
 } from '../../../store/reselect/wallet';
 import {
-	primaryUnitSelector,
+	unitSelector,
 	coinSelectAutoSelector,
+	denominationSelector,
+	conversionUnitSelector,
+	nextUnitSelector,
 } from '../../../store/reselect/settings';
 import { useAppSelector } from '../../../hooks/redux';
 import { useSwitchUnit } from '../../../hooks/wallet';
-import { useCurrency } from '../../../hooks/displayValues';
-import { EUnit } from '../../../store/types/wallet';
 import { updateSendTransaction } from '../../../store/actions/wallet';
 import { getNumberPadText } from '../../../utils/numberpad';
 import { showToast } from '../../../utils/notifications';
@@ -52,13 +53,15 @@ import type { SendScreenProps } from '../../../navigation/types';
 const Amount = ({ navigation }: SendScreenProps<'Amount'>): ReactElement => {
 	const route = useRoute();
 	const { t } = useTranslation('wallet');
-	const { fiatTicker } = useCurrency();
-	const [nextUnit, switchUnit] = useSwitchUnit();
+	const switchUnit = useSwitchUnit();
 	const selectedWallet = useAppSelector(selectedWalletSelector);
 	const selectedNetwork = useAppSelector(selectedNetworkSelector);
 	const coinSelectAuto = useAppSelector(coinSelectAutoSelector);
 	const transaction = useAppSelector(transactionSelector);
-	const unit = useAppSelector(primaryUnitSelector);
+	const unit = useAppSelector(unitSelector);
+	const nextUnit = useAppSelector(nextUnitSelector);
+	const conversionUnit = useAppSelector(conversionUnitSelector);
+	const denomination = useAppSelector(denominationSelector);
 	const isMaxSendAmount = useAppSelector(transactionMaxSelector);
 	const [text, setText] = useState('');
 	const [error, setError] = useState(false);
@@ -70,14 +73,14 @@ const Amount = ({ navigation }: SendScreenProps<'Amount'>): ReactElement => {
 			selectedNetwork,
 		});
 
-		const result = getNumberPadText(transactionOutputValue, unit);
+		const result = getNumberPadText(transactionOutputValue, denomination, unit);
 		setText(result);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [transaction.outputs, selectedWallet, selectedNetwork]);
 
 	const amount = useMemo((): number => {
-		return convertToSats(text, unit);
-	}, [text, unit]);
+		return convertToSats(text, conversionUnit);
+	}, [text, conversionUnit]);
 
 	const availableAmount = useMemo(() => {
 		const maxAmountResponse = getMaxSendAmount({
@@ -112,16 +115,16 @@ const Amount = ({ navigation }: SendScreenProps<'Amount'>): ReactElement => {
 	}, [isMaxSendAmount, amount, availableAmount]);
 
 	const onChangeUnit = (): void => {
-		const result = getNumberPadText(amount, nextUnit);
+		const result = getNumberPadText(amount, denomination, nextUnit);
 		setText(result);
 		switchUnit();
 	};
 
 	const onMaxAmount = useCallback((): void => {
-		const result = getNumberPadText(availableAmount, unit);
+		const result = getNumberPadText(availableAmount, denomination, unit);
 		setText(result);
 		sendMax({ selectedWallet, selectedNetwork });
-	}, [availableAmount, unit, selectedWallet, selectedNetwork]);
+	}, [availableAmount, denomination, unit, selectedWallet, selectedNetwork]);
 
 	const onError = (): void => {
 		setError(true);
@@ -226,30 +229,18 @@ const Amount = ({ navigation }: SendScreenProps<'Amount'>): ReactElement => {
 									color="white10"
 									testID="SendNumberPadMax"
 									onPress={onMaxAmount}>
-									<Text02B
-										size="12px"
-										color={isMaxSendAmount ? 'orange' : 'brand'}>
+									<Caption13Up color={isMaxSendAmount ? 'orange' : 'brand'}>
 										{t('send_max')}
-									</Text02B>
+									</Caption13Up>
 								</TouchableOpacity>
 							</View>
 
 							<View style={styles.actionButtonContainer}>
-								<TouchableOpacity
+								<UnitButton
 									style={styles.actionButton}
-									color="white10"
+									testID="SendNumberPadUnit"
 									onPress={onChangeUnit}
-									testID="SendNumberPadUnit">
-									<SwitchIcon color="brand" width={16.44} height={13.22} />
-									<Text02B
-										style={styles.actionButtonText}
-										size="12px"
-										color="brand">
-										{nextUnit === EUnit.BTC && fiatTicker}
-										{nextUnit === EUnit.satoshi && 'BTC'}
-										{nextUnit === EUnit.fiat && 'sats'}
-									</Text02B>
-								</TouchableOpacity>
+								/>
 							</View>
 						</View>
 					</View>
@@ -318,9 +309,6 @@ const styles = StyleSheet.create({
 		borderRadius: 8,
 		flexDirection: 'row',
 		alignItems: 'center',
-	},
-	actionButtonText: {
-		marginLeft: 11,
 	},
 	buttonContainer: {
 		justifyContent: 'flex-end',

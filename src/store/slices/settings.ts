@@ -10,7 +10,7 @@ import {
 	TTheme,
 } from '../types/settings';
 import { EAvailableNetwork } from '../../utils/networks';
-import { EUnit } from '../types/wallet';
+import { EDenomination, EUnit } from '../types/wallet';
 
 export type TSettings = {
 	enableAutoReadClipboard: boolean;
@@ -24,6 +24,7 @@ export type TSettings = {
 	rbf: boolean;
 	theme: TTheme;
 	unit: EUnit;
+	denomination: EDenomination;
 	customElectrumPeers: TCustomElectrumPeers;
 	rapidGossipSyncUrl: string;
 	selectedCurrency: string;

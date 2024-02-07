@@ -14,7 +14,7 @@ import {
 import { TSettings } from '../slices/settings';
 import { EAvailableNetwork } from '../../utils/networks';
 import { ETransactionSpeed, ICustomElectrumPeer } from '../types/settings';
-import { EUnit } from '../types/wallet';
+import { EDenomination, EUnit } from '../types/wallet';
 
 export const defaultElectrumPeer: Record<
 	EAvailableNetwork,
@@ -86,7 +86,8 @@ export const initialSettingsState: TSettings = {
 	biometrics: false,
 	rbf: false,
 	theme: 'dark',
-	unit: EUnit.satoshi,
+	unit: EUnit.BTC,
+	denomination: EDenomination.modern,
 	selectedCurrency: 'USD',
 	selectedLanguage: 'english',
 	customElectrumPeers: defaultElectrumPeer,

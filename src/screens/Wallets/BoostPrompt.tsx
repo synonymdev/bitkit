@@ -273,10 +273,11 @@ const BoostForm = ({
 };
 
 const BoostPrompt = (): ReactElement => {
+	const { t } = useTranslation('wallet');
 	const snapPoints = useSnapPoints('small');
-	const { isOpen, onchainActivityItem } = useAppSelector((state) =>
-		viewControllerSelector(state, 'boostPrompt'),
-	);
+	const { isOpen, onchainActivityItem } = useAppSelector((state) => {
+		return viewControllerSelector(state, 'boostPrompt');
+	});
 
 	useBottomSheetBackPress('boostPrompt');
 
@@ -287,7 +288,7 @@ const BoostPrompt = (): ReactElement => {
 			backdrop={true}>
 			<View style={styles.root}>
 				<BottomSheetNavigationHeader
-					title="Boost transaction"
+					title={t('boost_title')}
 					displayBackButton={false}
 				/>
 

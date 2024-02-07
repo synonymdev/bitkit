@@ -7,7 +7,7 @@ import SettingsView from './../SettingsView';
 import type { SettingsScreenProps } from '../../../navigation/types';
 import { lastUsedTagsSelector } from '../../../store/reselect/metadata';
 import {
-	primaryUnitSelector,
+	unitSelector,
 	selectedCurrencySelector,
 	showWidgetsSelector,
 	transactionSpeedSelector,
@@ -24,7 +24,7 @@ const GeneralSettings = ({
 	const showWidgets = useAppSelector(showWidgetsSelector);
 	const selectedTransactionSpeed = useAppSelector(transactionSpeedSelector);
 	const selectedCurrency = useAppSelector(selectedCurrencySelector);
-	const selectedUnit = useAppSelector(primaryUnitSelector);
+	const selectedUnit = useAppSelector(unitSelector);
 
 	const settingsListData: IListData[] = useMemo(() => {
 		const transactionSpeeds = {
@@ -47,8 +47,6 @@ const GeneralSettings = ({
 				value:
 					selectedUnit === EUnit.BTC
 						? t('general.unit_bitcoin')
-						: selectedUnit === EUnit.satoshi
-						? t('general.unit_satoshis')
 						: selectedCurrency,
 				type: EItemType.button,
 				testID: 'UnitSettings',

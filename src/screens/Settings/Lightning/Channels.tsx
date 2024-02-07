@@ -399,7 +399,7 @@ const Channels = ({
 								sats={localBalance}
 								color="purple"
 								size="title"
-								unit={EUnit.satoshi}
+								unit={EUnit.BTC}
 							/>
 						</View>
 					</View>
@@ -411,7 +411,7 @@ const Channels = ({
 								sats={remoteBalance}
 								color="white"
 								size="title"
-								unit={EUnit.satoshi}
+								unit={EUnit.BTC}
 							/>
 						</View>
 					</View>

@@ -44,7 +44,7 @@
 	},
 	"buyBitcoin": {
 		"title": "Get Bitcoin",
-		"description": "Stack some sats"
+		"description": "Buy some bitcoin"
 	},
 	"btFailed": {
 		"title": "Setup Failed",

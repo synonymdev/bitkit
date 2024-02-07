@@ -40,19 +40,27 @@ import {
 	selectedNetworkSelector,
 	selectedWalletSelector,
 } from '../../store/reselect/wallet';
-import { primaryUnitSelector } from '../../store/reselect/settings';
+import {
+	conversionUnitSelector,
+	denominationSelector,
+	nextUnitSelector,
+	unitSelector,
+} from '../../store/reselect/settings';
 import { blocktankInfoSelector } from '../../store/reselect/blocktank';
 import { lnSetupSelector } from '../../store/reselect/aggregations';
 
 const Setup = ({ navigation }: TransferScreenProps<'Setup'>): ReactElement => {
 	const { t } = useTranslation('lightning');
-	const [nextUnit, switchUnit] = useSwitchUnit();
+	const switchUnit = useSwitchUnit();
 	const { lightningBalance } = useBalance();
 
 	const [textFieldValue, setTextFieldValue] = useState('');
 	const [showNumberPad, setShowNumberPad] = useState(false);
 	const [loading, setLoading] = useState(false);
-	const unit = useAppSelector(primaryUnitSelector);
+	const unit = useAppSelector(unitSelector);
+	const nextUnit = useAppSelector(nextUnitSelector);
+	const conversionUnit = useAppSelector(conversionUnitSelector);
+	const denomination = useAppSelector(denominationSelector);
 	const selectedWallet = useAppSelector(selectedWalletSelector);
 	const selectedNetwork = useAppSelector(selectedNetworkSelector);
 	const blocktankInfo = useAppSelector(blocktankInfoSelector);
@@ -66,8 +74,8 @@ const Setup = ({ navigation }: TransferScreenProps<'Setup'>): ReactElement => {
 	);
 
 	const spendingAmount = useMemo((): number => {
-		return convertToSats(textFieldValue, unit);
-	}, [textFieldValue, unit]);
+		return convertToSats(textFieldValue, conversionUnit);
+	}, [textFieldValue, conversionUnit]);
 
 	const lnSetup = useAppSelector((state) =>
 		lnSetupSelector(state, spendingAmount),
@@ -84,7 +92,11 @@ const Setup = ({ navigation }: TransferScreenProps<'Setup'>): ReactElement => {
 
 	// set initial value
 	useEffect(() => {
-		const result = getNumberPadText(lnSetup.defaultClientBalance, unit);
+		const result = getNumberPadText(
+			lnSetup.defaultClientBalance,
+			denomination,
+			unit,
+		);
 		setTextFieldValue(result);
 		// ignore lnSetup.defaultClientBalance
 		// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -92,22 +104,26 @@ const Setup = ({ navigation }: TransferScreenProps<'Setup'>): ReactElement => {
 
 	const onSliderChange = useCallback(
 		(value: number) => {
-			const result = getNumberPadText(Math.round(value), unit);
+			const result = getNumberPadText(Math.round(value), denomination, unit);
 			setTextFieldValue(result);
 		},
-		[unit],
+		[denomination, unit],
 	);
 
 	const onChangeUnit = (): void => {
-		const result = getNumberPadText(spendingAmount, nextUnit);
+		const result = getNumberPadText(spendingAmount, denomination, nextUnit);
 		setTextFieldValue(result);
 		switchUnit();
 	};
 
 	const onMax = useCallback(() => {
-		const result = getNumberPadText(lnSetup.slider.maxValue, unit);
+		const result = getNumberPadText(
+			lnSetup.slider.maxValue,
+			denomination,
+			unit,
+		);
 		setTextFieldValue(result);
-	}, [lnSetup.slider.maxValue, unit]);
+	}, [lnSetup.slider.maxValue, denomination, unit]);
 
 	const onDone = useCallback(() => {
 		setShowNumberPad(false);

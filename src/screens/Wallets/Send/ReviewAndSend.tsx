@@ -46,7 +46,7 @@ import {
 } from '../../../store/slices/metadata';
 import useColors from '../../../hooks/colors';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
-import useDisplayValues from '../../../hooks/displayValues';
+import { useDisplayValues } from '../../../hooks/displayValues';
 import { useLightningBalance } from '../../../hooks/lightning';
 import { EFeeId } from '../../../store/types/fees';
 import {
@@ -74,7 +74,6 @@ import {
 	pinForPaymentsSelector,
 	pinSelector,
 } from '../../../store/reselect/settings';
-import { EUnit } from '../../../store/types/wallet';
 import { onChainFeesSelector } from '../../../store/reselect/fees';
 import { updateOnChainActivityList } from '../../../store/utils/activity';
 import { updateLastPaidContacts } from '../../../store/slices/slashtags';
@@ -467,14 +466,12 @@ const ReviewAndSend = ({
 			satoshis: amount,
 			currency: 'USD',
 			exchangeRates,
-			unit: EUnit.BTC,
 		});
 
 		const { fiatValue: feeFiat } = getFiatDisplayValues({
 			satoshis: feeSats,
 			currency: 'USD',
 			exchangeRates,
-			unit: EUnit.BTC,
 		});
 
 		// amount > 50% of total balance
