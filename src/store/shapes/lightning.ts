@@ -8,6 +8,7 @@ export const defaultLightningShape: TNode = {
 	openChannelIds: getNetworkContent([]),
 	peers: getNetworkContent([]),
 	claimableBalances: getNetworkContent([]),
+	backup: getNetworkContent({}),
 };
 
 export const initialLightningState: TLightningState = {

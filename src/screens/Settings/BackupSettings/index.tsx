@@ -1,19 +1,21 @@
-import React, { ReactElement, ReactNode, memo, useMemo, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import React, { ReactElement, ReactNode, memo, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
+import { StyleSheet, View } from 'react-native';
 
 import { EItemType, IListData } from '../../../components/List';
-import SettingsView from '../SettingsView';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
-import { showBottomSheet } from '../../../store/utils/ui';
 import { SettingsScreenProps } from '../../../navigation/types';
-import { Caption13M, Caption13Up, Text01M } from '../../../styles/text';
+import { backupSelector } from '../../../store/reselect/backup';
+import { lightningBackupSelector } from '../../../store/reselect/lightning';
+import { forceBackup } from '../../../store/slices/backup';
+import { TBackupItem } from '../../../store/types/backup';
+import { EBackupCategories } from '../../../store/utils/backup';
+import { showBottomSheet } from '../../../store/utils/ui';
 import {
 	ScrollView,
-	TouchableOpacity,
 	View as ThemedView,
+	TouchableOpacity,
 } from '../../../styles/components';
-import { backupSelector } from '../../../store/reselect/backup';
 import {
 	ArrowClockwise,
 	LightningHollow,
@@ -23,54 +25,44 @@ import {
 	TagIcon,
 	TransferIcon,
 	UsersIcon,
-	UserRectangleIcon,
 } from '../../../styles/icons';
-import { FAILED_BACKUP_CHECK_TIME } from '../../../utils/backup/backups-subscriber';
-import { updateBackup } from '../../../store/slices/backup';
+import { Caption13M, Caption13Up, Text01M } from '../../../styles/text';
+import { IThemeColors } from '../../../styles/themes';
 import { i18nTime } from '../../../utils/i18n';
+import SettingsView from '../SettingsView';
 
 const Status = ({
 	Icon,
 	title,
-	isSyncedKey,
-	lastSync,
-	syncRequired,
+	status,
+	category,
+	disableRetry,
 }: {
 	Icon: React.FunctionComponent<any>;
 	title: ReactNode;
-	isSyncedKey?: string;
-	lastSync?: number;
-	syncRequired?: number;
+	status: TBackupItem;
+	category?: EBackupCategories;
+	disableRetry?: boolean;
 }): ReactElement => {
 	const { t } = useTranslation('settings');
 	const { t: tTime } = useTranslation('intl', { i18n: i18nTime });
 	const dispatch = useAppDispatch();
-	const [hideRetry, setHideRetry] = useState<boolean>(false);
 
-	const failed =
-		syncRequired &&
-		new Date().getTime() - syncRequired > FAILED_BACKUP_CHECK_TIME;
+	let subtitle: string;
+	let iconColor: keyof IThemeColors;
+	let iconBackground: keyof IThemeColors;
+	let showRetry = false;
 
-	let subtitle;
-	if (failed) {
-		subtitle = t('backup.status_failed', {
-			time: tTime('dateTime', {
-				v: new Date(syncRequired),
-				formatParams: {
-					v: {
-						year: 'numeric',
-						month: 'long',
-						day: 'numeric',
-						hour: 'numeric',
-						minute: 'numeric',
-					},
-				},
-			}),
-		});
-	} else if (lastSync) {
+	if (status.running) {
+		iconColor = 'yellow';
+		iconBackground = 'yellow16';
+		subtitle = 'Running';
+	} else if (status.synced >= status.required) {
+		iconColor = 'green';
+		iconBackground = 'green16';
 		subtitle = t('backup.status_success', {
 			time: tTime('dateTime', {
-				v: new Date(lastSync),
+				v: new Date(status.synced),
 				formatParams: {
 					v: {
 						year: 'numeric',
@@ -83,29 +75,44 @@ const Status = ({
 			}),
 		});
 	} else {
-		subtitle = t('backup.status_empty');
+		iconColor = 'red';
+		iconBackground = 'red16';
+		showRetry = true;
+		subtitle = t('backup.status_failed', {
+			time: tTime('dateTime', {
+				v: new Date(status.synced),
+				formatParams: {
+					v: {
+						year: 'numeric',
+						month: 'long',
+						day: 'numeric',
+						hour: 'numeric',
+						minute: 'numeric',
+					},
+				},
+			}),
+		});
 	}
 
 	const retry = (): void => {
-		if (isSyncedKey === undefined) {
+		if (!category) {
 			return;
 		}
-		setHideRetry(true);
-		dispatch(updateBackup({ [isSyncedKey]: false }));
+		dispatch(forceBackup({ category }));
 	};
 
 	return (
 		<View style={styles.status}>
 			<View style={styles.iconContainer}>
-				<ThemedView color={failed ? 'red16' : 'green16'} style={styles.icon}>
-					<Icon width={16} height={16} color={failed ? 'red' : 'green'} />
+				<ThemedView color={iconBackground} style={styles.icon}>
+					<Icon width={16} height={16} color={iconColor} />
 				</ThemedView>
 			</View>
 			<View style={styles.desc}>
 				<Text01M>{title}</Text01M>
 				<Caption13M color="gray1">{subtitle}</Caption13M>
 			</View>
-			{failed && isSyncedKey && !hideRetry && (
+			{!disableRetry && showRetry && (
 				<TouchableOpacity onPress={retry} color="white16" style={styles.button}>
 					<ArrowClockwise color="brand" width={16} height={16} />
 				</TouchableOpacity>
@@ -114,69 +121,92 @@ const Status = ({
 	);
 };
 
+type TBackupCategory = {
+	Icon: React.FunctionComponent<any>;
+	title: string;
+	category?: EBackupCategories;
+	status: TBackupItem;
+	disableRetry?: boolean;
+};
+
 const BackupSettings = ({
 	navigation,
 }: SettingsScreenProps<'BackupSettings'>): ReactElement => {
 	const { t } = useTranslation('settings');
 	const pin = useAppSelector((state) => state.settings.pin);
 	const backup = useAppSelector(backupSelector);
+	const lightningBackup = useAppSelector(lightningBackupSelector);
 
-	const categories = [
-		{
-			Icon: LightningHollow,
-			title: t('backup.category_connections'),
-			isSyncedKey: 'remoteLdkBackupSynced',
-			lastSync: backup.remoteLdkBackupLastSync,
-			syncRequired: backup.remoteLdkBackupLastSyncRequired,
-		},
+	// find lightning latest backup item to show
+	const lightning = useMemo(() => {
+		const channels = Object.entries(lightningBackup).filter(([key]) =>
+			key.startsWith('channel_'),
+		);
+		if (channels.length === 0) {
+			return;
+		}
+		return channels.reduce((acc, [, value]) => {
+			return value.lastQueued > acc.lastQueued ? value : acc;
+		}, channels[0][1]);
+	}, [lightningBackup]);
+
+	const categories: Array<TBackupCategory> = [
 		{
 			Icon: NoteIcon,
 			title: t('backup.category_connection_receipts'),
-			isSyncedKey: 'remoteBlocktankBackupSynced',
-			lastSync: backup.remoteBlocktankBackupLastSync,
-			syncRequired: backup.remoteBlocktankBackupSyncRequired,
+			category: EBackupCategories.blocktank,
+			status: backup[EBackupCategories.blocktank],
 		},
 		{
 			Icon: TransferIcon,
 			title: t('backup.category_transaction_log'),
-			isSyncedKey: 'remoteLdkActivityBackupSynced',
-			lastSync: backup.remoteLdkActivityBackupLastSync,
-			syncRequired: backup.remoteLdkActivityBackupSyncRequired,
+			category: EBackupCategories.ldkActivity,
+			status: backup[EBackupCategories.ldkActivity],
 		},
 		{
 			Icon: SettingsIcon,
 			title: t('backup.category_settings'),
-			isSyncedKey: 'remoteSettingsBackupSynced',
-			lastSync: backup.remoteSettingsBackupLastSync,
-			syncRequired: backup.remoteSettingsBackupSyncRequired,
+			category: EBackupCategories.settings,
+			status: backup[EBackupCategories.settings],
 		},
 		{
 			Icon: RectanglesTwo,
 			title: t('backup.category_widgets'),
-			isSyncedKey: 'remoteWidgetsBackupSynced',
-			lastSync: backup.remoteWidgetsBackupLastSync,
-			syncRequired: backup.remoteWidgetsBackupSyncRequired,
+			category: EBackupCategories.widgets,
+			status: backup[EBackupCategories.widgets],
 		},
 		{
 			Icon: TagIcon,
 			title: t('backup.category_tags'),
-			isSyncedKey: 'remoteMetadataBackupSynced',
-			lastSync: backup.remoteMetadataBackupLastSync,
-			syncRequired: backup.remoteMetadataBackupSyncRequired,
+			category: EBackupCategories.metadata,
+			status: backup[EBackupCategories.metadata],
 		},
-		{
-			Icon: UserRectangleIcon,
-			title: t('backup.category_profile'),
-			lastSync: backup.hyperProfileSeedCheckSuccess,
-			syncRequired: backup.hyperProfileCheckRequested,
-		},
+		// {
+		// 	Icon: UserRectangleIcon,
+		// 	title: t('backup.category_profile'),
+		// 	lastSync: backup.hyperProfileSeedCheckSuccess,
+		// 	syncRequired: backup.hyperProfileCheckRequested,
+		// },
 		{
 			Icon: UsersIcon,
 			title: t('backup.category_contacts'),
-			lastSync: backup.hyperContactsCheckSuccess,
-			syncRequired: backup.hyperContactsCheckRequested,
+			category: EBackupCategories.slashtags,
+			status: backup[EBackupCategories.slashtags],
 		},
 	];
+
+	if (lightning) {
+		categories.unshift({
+			Icon: LightningHollow,
+			title: t('backup.category_connections'),
+			status: {
+				running: false,
+				synced: lightning.lastPersisted ?? 0,
+				required: lightning.lastQueued,
+			},
+			disableRetry: true,
+		});
+	}
 
 	const settingsListData: IListData[] = useMemo(
 		() => [

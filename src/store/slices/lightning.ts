@@ -1,5 +1,8 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-import { TClaimableBalance } from '@synonymdev/react-native-ldk';
+import {
+	TBackupStateUpdate,
+	TClaimableBalance,
+} from '@synonymdev/react-native-ldk';
 
 import { initialLightningState } from '../shapes/lightning';
 import { EAvailableNetwork } from '../../utils/networks';
@@ -87,6 +90,17 @@ export const lightningSlice = createSlice({
 			state.nodes[selectedWallet].claimableBalances[selectedNetwork] =
 				claimableBalances;
 		},
+		updateBackupState: (
+			state,
+			action: PayloadAction<{
+				backup: TBackupStateUpdate;
+				selectedWallet: TWalletName;
+				selectedNetwork: EAvailableNetwork;
+			}>,
+		) => {
+			const { backup, selectedWallet, selectedNetwork } = action.payload;
+			state.nodes[selectedWallet].backup[selectedNetwork] = backup;
+		},
 		updateLdkAccountVersion: (
 			state,
 			action: PayloadAction<TLdkAccountVersion>,
@@ -106,6 +120,7 @@ export const {
 	saveLightningPeer,
 	removeLightningPeer,
 	updateClaimableBalances,
+	updateBackupState,
 	updateLdkAccountVersion,
 	resetLightningState,
 } = actions;

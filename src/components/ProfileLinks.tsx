@@ -38,10 +38,12 @@ const ProfileLinks = ({
 	links,
 	editable = false,
 	style,
+	linksText = true,
 }: {
 	links: LocalLink[];
 	editable?: boolean;
 	style?: StyleProp<ViewStyle>;
+	linksText?: boolean;
 }): ReactElement => {
 	const { t } = useTranslation('slashtags');
 	const dispatch = useAppDispatch();
@@ -56,7 +58,7 @@ const ProfileLinks = ({
 
 	return (
 		<View style={style}>
-			{!editable && links?.length === 0 ? (
+			{!editable && links?.length === 0 && linksText ? (
 				<>
 					<Text02S color="gray1">{t('contact_no_links')}</Text02S>
 					<Divider />

@@ -1,28 +1,12 @@
 import React, { ReactElement, useEffect, useMemo, useState } from 'react';
-import lm from '@synonymdev/react-native-ldk';
-import { useAppSelector } from '../../hooks/redux';
 import { useTranslation } from 'react-i18next';
 
-import {
-	checkProfileAndContactsBackup,
-	performRemoteBackup,
-	performRemoteLdkBackup,
-} from '../../store/utils/backup';
-import { __DISABLE_SLASHTAGS__ } from '../../constants/env';
-import { useSelectedSlashtag } from '../../hooks/slashtags';
-import { backupSelector } from '../../store/reselect/backup';
-import { selectedNetworkSelector } from '../../store/reselect/wallet';
-import { EBackupCategories } from './backpack';
+import { __DISABLE_SLASHTAGS__, __E2E__ } from '../../constants/env';
 import { useDebouncedEffect } from '../../hooks/helpers';
-import { settingsSelector } from '../../store/reselect/settings';
-import { metadataState } from '../../store/reselect/metadata';
-import { widgetsState } from '../../store/reselect/widgets';
-import { activityItemsState } from '../../store/reselect/activity';
-import { EActivityType } from '../../store/types/activity';
-import { blocktankSelector } from '../../store/reselect/blocktank';
-import { slashtagsSelector } from '../../store/reselect/slashtags';
+import { useAppSelector } from '../../hooks/redux';
+import { backupSelector } from '../../store/reselect/backup';
+import { EBackupCategories, performBackup } from '../../store/utils/backup';
 import { showToast } from '../notifications';
-import { __E2E__ } from '../../constants/env';
 
 const BACKUP_DEBOUNCE = 5000; // 5 seconds
 const BACKUP_CHECK_INTERVAL = 60 * 1000; // 1 minute
@@ -31,174 +15,74 @@ const FAILED_BACKUP_NOTIFICATION_INTERVAL = 10 * 60 * 1000; // 10 minutes
 
 const EnabledSlashtag = (): ReactElement => {
 	const { t } = useTranslation('settings');
-	const selectedNetwork = useAppSelector(selectedNetworkSelector);
-	const { slashtag } = useSelectedSlashtag();
 	const backup = useAppSelector(backupSelector);
-	const settings = useAppSelector(settingsSelector);
-	const metadata = useAppSelector(metadataState);
-	const widgets = useAppSelector(widgetsState);
-	const activity = useAppSelector(activityItemsState);
-	const blocktank = useAppSelector(blocktankSelector);
-	const slashtags = useAppSelector(slashtagsSelector);
 	const [now, setNow] = useState<number>(new Date().getTime());
 
-	useEffect(() => {
-		const sub = lm.subscribeToBackups((res) => {
-			performRemoteLdkBackup(
-				slashtag,
-				res.isOk() ? res.value : undefined,
-			).catch((e) => {
-				console.error('LDK backup error', e);
-			});
-		});
+	const backupSettings = backup[EBackupCategories.settings];
+	const backupWidgets = backup[EBackupCategories.widgets];
+	const backupMetadata = backup[EBackupCategories.metadata];
+	const backupBlocktank = backup[EBackupCategories.blocktank];
+	const backupSlashtags = backup[EBackupCategories.slashtags];
+	const backupLDKActivity = backup[EBackupCategories.ldkActivity];
 
-		return () => lm.unsubscribeFromBackups(sub);
-	}, [slashtag]);
-
-	// Attempts to backup settings anytime remoteSettingsBackupSynced is set to false.
 	useDebouncedEffect(
 		() => {
-			if (backup.remoteSettingsBackupSynced) {
+			if (backupSettings.synced > backupSettings.required) {
 				return;
 			}
-			performRemoteBackup({
-				slashtag,
-				isSyncedKey: 'remoteSettingsBackupSynced',
-				syncRequiredKey: 'remoteSettingsBackupSyncRequired',
-				syncCompletedKey: 'remoteSettingsBackupLastSync',
-				backupCategory: EBackupCategories.settings,
-				selectedNetwork,
-				backup: settings,
-			}).then();
+			performBackup(EBackupCategories.settings);
 		},
-		[backup.remoteSettingsBackupSynced, slashtag, settings, selectedNetwork],
+		[backupSettings.synced, backupSettings.required],
 		BACKUP_DEBOUNCE,
 	);
-
-	// Attempts to backup widgets anytime remoteWidgetsBackupSynced is set to false.
 	useDebouncedEffect(
 		() => {
-			if (backup.remoteWidgetsBackupSynced) {
+			if (backupWidgets.synced > backupWidgets.required) {
 				return;
 			}
-			performRemoteBackup({
-				slashtag,
-				isSyncedKey: 'remoteWidgetsBackupSynced',
-				syncRequiredKey: 'remoteWidgetsBackupSyncRequired',
-				syncCompletedKey: 'remoteWidgetsBackupLastSync',
-				backupCategory: EBackupCategories.widgets,
-				selectedNetwork,
-				backup: widgets,
-			}).then();
+			performBackup(EBackupCategories.widgets);
 		},
-		[backup.remoteWidgetsBackupSynced, slashtag, widgets, selectedNetwork],
+		[backupWidgets.synced, backupWidgets.required],
 		BACKUP_DEBOUNCE,
 	);
-
-	// Attempts to backup metadata anytime remoteMetadataBackupSynced is set to false.
 	useDebouncedEffect(
 		() => {
-			if (backup.remoteMetadataBackupSynced) {
+			if (backupMetadata.synced > backupMetadata.required) {
 				return;
 			}
-			performRemoteBackup({
-				slashtag,
-				isSyncedKey: 'remoteMetadataBackupSynced',
-				syncRequiredKey: 'remoteMetadataBackupSyncRequired',
-				syncCompletedKey: 'remoteMetadataBackupLastSync',
-				backupCategory: EBackupCategories.metadata,
-				selectedNetwork,
-				backup: metadata,
-			}).then();
+			performBackup(EBackupCategories.metadata);
 		},
-		[backup.remoteMetadataBackupSynced, slashtag, metadata, selectedNetwork],
+		[backupMetadata.synced, backupMetadata.required],
 		BACKUP_DEBOUNCE,
 	);
-
-	// Attempts to backup ldkActivity anytime remoteLdkActivityBackupSynced is set to false.
 	useDebouncedEffect(
 		() => {
-			if (backup.remoteLdkActivityBackupSynced) {
+			if (backupBlocktank.synced > backupBlocktank.required) {
 				return;
 			}
-
-			const ldkActivity = activity.filter(
-				(a) => a.activityType === EActivityType.lightning,
-			);
-
-			performRemoteBackup({
-				slashtag,
-				isSyncedKey: 'remoteLdkActivityBackupSynced',
-				syncRequiredKey: 'remoteLdkActivityBackupSyncRequired',
-				syncCompletedKey: 'remoteLdkActivityBackupLastSync',
-				backupCategory: EBackupCategories.ldkActivity,
-				selectedNetwork,
-				backup: ldkActivity,
-			}).then();
+			performBackup(EBackupCategories.blocktank);
 		},
-		[backup.remoteLdkActivityBackupSynced, slashtag, activity, selectedNetwork],
+		[backupBlocktank.synced, backupBlocktank.required],
 		BACKUP_DEBOUNCE,
 	);
-
-	// Attempts to backup blocktank anytime remoteBlocktankBackupSynced is set to false.
 	useDebouncedEffect(
 		() => {
-			if (backup.remoteBlocktankBackupSynced) {
+			if (backupSlashtags.synced > backupSlashtags.required) {
 				return;
 			}
-
-			const back = {
-				orders: blocktank.orders,
-				paidOrders: blocktank.paidOrders,
-			};
-
-			performRemoteBackup({
-				slashtag,
-				isSyncedKey: 'remoteBlocktankBackupSynced',
-				syncRequiredKey: 'remoteBlocktankBackupSyncRequired',
-				syncCompletedKey: 'remoteBlocktankBackupLastSync',
-				backupCategory: EBackupCategories.blocktank,
-				selectedNetwork,
-				backup: back,
-			}).then();
+			performBackup(EBackupCategories.slashtags);
 		},
-		[
-			backup.remoteBlocktankBackupSynced,
-			slashtag,
-			blocktank.orders,
-			blocktank.paidOrders,
-			selectedNetwork,
-		],
+		[backupSlashtags.synced, backupSlashtags.required],
 		BACKUP_DEBOUNCE,
 	);
-
-	// Attempts to backup contacts anytime remoteSlashtagsBackupSynced is set to false.
 	useDebouncedEffect(
 		() => {
-			if (backup.remoteSlashtagsBackupSynced) {
+			if (backupLDKActivity.synced > backupLDKActivity.required) {
 				return;
 			}
-
-			const back = {
-				contacts: slashtags.contacts,
-			};
-
-			performRemoteBackup({
-				slashtag,
-				isSyncedKey: 'remoteSlashtagsBackupSynced',
-				syncRequiredKey: 'remoteSlashtagsBackupSyncRequired',
-				syncCompletedKey: 'remoteSlashtagsBackupLastSync',
-				backupCategory: EBackupCategories.slashtags,
-				selectedNetwork,
-				backup: back,
-			}).then();
+			performBackup(EBackupCategories.ldkActivity);
 		},
-		[
-			backup.remoteSlashtagsBackupSynced,
-			slashtag,
-			slashtags.contacts,
-			selectedNetwork,
-		],
+		[backupLDKActivity.synced, backupLDKActivity.required],
 		BACKUP_DEBOUNCE,
 	);
 
@@ -207,32 +91,13 @@ const EnabledSlashtag = (): ReactElement => {
 			return false;
 		}
 
-		if (
-			(backup.remoteSettingsBackupSyncRequired &&
-				now - backup.remoteSettingsBackupSyncRequired >
-					FAILED_BACKUP_CHECK_TIME) ||
-			(backup.remoteWidgetsBackupSyncRequired &&
-				now - backup.remoteWidgetsBackupSyncRequired >
-					FAILED_BACKUP_CHECK_TIME) ||
-			(backup.remoteMetadataBackupSyncRequired &&
-				now - backup.remoteMetadataBackupSyncRequired >
-					FAILED_BACKUP_CHECK_TIME) ||
-			(backup.remoteLdkBackupLastSyncRequired &&
-				now - backup.remoteLdkBackupLastSyncRequired >
-					FAILED_BACKUP_CHECK_TIME) ||
-			(backup.remoteBlocktankBackupSyncRequired &&
-				now - backup.remoteBlocktankBackupSyncRequired >
-					FAILED_BACKUP_CHECK_TIME) ||
-			(backup.remoteSlashtagsBackupSyncRequired &&
-				now - backup.remoteSlashtagsBackupSyncRequired >
-					FAILED_BACKUP_CHECK_TIME) ||
-			(backup.remoteLdkActivityBackupSyncRequired &&
-				now - backup.remoteLdkActivityBackupSyncRequired >
-					FAILED_BACKUP_CHECK_TIME)
-		) {
-			return true;
-		}
-		return false;
+		// find if there are any backup categories that have been failing for more than 30 minutes
+		return Object.values(EBackupCategories).some((key) => {
+			return (
+				backup[key].synced < backup[key].required &&
+				now - backup[key].required > FAILED_BACKUP_CHECK_TIME
+			);
+		});
 	}, [backup, now]);
 
 	useEffect(() => {
@@ -262,20 +127,6 @@ const EnabledSlashtag = (): ReactElement => {
 			clearInterval(timer);
 		};
 	}, [t, shouldShowBackupWarning]);
-
-	useEffect(() => {
-		if (__E2E__) {
-			return;
-		}
-
-		const timer = setInterval(() => {
-			checkProfileAndContactsBackup(slashtag);
-		}, BACKUP_CHECK_INTERVAL);
-
-		return (): void => {
-			clearInterval(timer);
-		};
-	}, [slashtag]);
 
 	return <></>;
 };

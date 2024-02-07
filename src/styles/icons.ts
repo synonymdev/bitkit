@@ -27,7 +27,6 @@ import {
 	clipboardTextIcon,
 	usersIcon,
 	userIcon,
-	userRectangleIcon,
 	speedFastIcon,
 	speedNormalIcon,
 	speedSlowIcon,
@@ -276,16 +275,6 @@ export const UsersIcon = styled(SvgXml).attrs((props) => ({
 
 export const UserIcon = styled(SvgXml).attrs((props) => ({
 	xml: userIcon(props.color ? props.theme.colors[props.color] : 'white'),
-	height: props.height ?? '32px',
-	width: props.width ?? '32px',
-}))<IconProps>((props) => ({
-	color: props.color ? props.theme.colors[props.color] : 'white',
-}));
-
-export const UserRectangleIcon = styled(SvgXml).attrs((props) => ({
-	xml: userRectangleIcon(
-		props.color ? props.theme.colors[props.color] : 'white',
-	),
 	height: props.height ?? '32px',
 	width: props.width ?? '32px',
 }))<IconProps>((props) => ({

@@ -1,188 +1,73 @@
+import lm, {
+	ENetworks,
+	ldk,
+	TBackupServerDetails,
+	TLdkData,
+} from '@synonymdev/react-native-ldk';
 import { err, ok, Result } from '@synonymdev/result';
-import lm, { ldk, ENetworks, TLdkData } from '@synonymdev/react-native-ldk';
 
-import { getBackupStore, dispatch } from '../helpers';
 import {
-	EBackupCategories,
-	fetchBackup,
-	listBackups,
-	uploadBackup,
-} from '../../utils/backup/backpack';
-import { bytesToString, stringToBytes } from '../../utils/converters';
+	__BACKUPS_SERVER_HOST__,
+	__BACKUPS_SERVER_PUBKEY__,
+} from '../../constants/env';
 import { Slashtag } from '../../hooks/slashtags';
 import {
+	EBackupCategoriesOld,
+	fetchBackup,
+	listBackups,
+} from '../../utils/backup/backpack';
+import { bytesToString } from '../../utils/converters';
+import { isObjPartialMatch } from '../../utils/helpers';
+import {
 	checkAccountVersion,
-	exportBackup,
 	getLdkAccount,
 	setAccount,
 	setLdkStoragePath,
 } from '../../utils/lightning';
 import { EAvailableNetwork } from '../../utils/networks';
 import { getSelectedNetwork } from '../../utils/wallet';
-import { TBackupState, TAccountBackup } from '../types/backup';
-import { isObjPartialMatch } from '../../utils/helpers';
-import { getDefaultSettingsShape } from '../shapes/settings';
-import { addActivityItems, TActivity } from '../slices/activity';
-import { initialMetadataState, updateMetadata } from '../slices/metadata';
-import { updateSettings, TSettings } from '../slices/settings';
 import {
-	updateWidgets,
+	dispatch,
+	getActivityStore,
+	getBlocktankStore,
+	getMetaDataStore,
+	getSettingsStore,
+	getSlashtagsStore,
+	getStore,
+	getWidgetsStore,
+} from '../helpers';
+import { getDefaultSettingsShape } from '../shapes/settings';
+import { backupError, backupStart, backupSuccess } from '../slices/backup';
+import { updateBlocktank } from '../slices/blocktank';
+import { initialMetadataState, updateMetadata } from '../slices/metadata';
+import { TSettings, updateSettings } from '../slices/settings';
+import { addContacts } from '../slices/slashtags';
+import {
 	initialWidgetsState,
 	TWidgetsState,
+	updateWidgets,
 } from '../slices/widgets';
-import { updateBlocktank } from '../slices/blocktank';
-import { addContacts } from '../slices/slashtags';
-import { EActivityType } from '../types/activity';
+import { TAccountBackup, TBackupMetadata } from '../types/backup';
 import { IBlocktank } from '../types/blocktank';
 import { TMetadataState } from '../types/metadata';
-import { checkBackup } from '../../utils/slashtags';
-import { showToast } from '../../utils/notifications';
-import { FAILED_BACKUP_CHECK_TIME } from '../../utils/backup/backups-subscriber';
-import i18n from '../../utils/i18n';
 import { TSlashtagsState } from '../types/slashtags';
-import {
-	__BACKUPS_SERVER_HOST__,
-	__BACKUPS_SERVER_PUBKEY__,
-} from '../../constants/env';
-import {
-	endBackupSeederCheck,
-	startBackupSeederCheck,
-	updateBackup,
-} from '../slices/backup';
+import { addActivityItems, TActivity } from '../slices/activity';
+import { EActivityType } from '../types/activity';
 
-/**
- * Triggers a full remote backup
- * @return {Promise<Result<string>>}
- */
-export const performFullBackup = async (
-	slashtag: Slashtag,
-): Promise<Result<string>> => {
-	const ldkRemoteRes = await performRemoteLdkBackup(slashtag);
-	//TODO perform other backup types
-
-	//TODO(slashtags): Send all drives (public + contacts) to the seeding server.
-
-	//TODO check results of each time and return errors if any
-
-	if (ldkRemoteRes.isErr()) {
-		return err(ldkRemoteRes.error);
-	}
-
-	return ok('Backup success');
-};
-
-export const performRemoteLdkBackup = async (
-	slashtag: Slashtag,
-	backup?: TAccountBackup<TLdkData>,
-): Promise<Result<string>> => {
-	dispatch(updateBackup({ remoteLdkBackupSynced: false }));
-
-	let ldkBackup: TAccountBackup<TLdkData>;
-	//Automated backup events pass the latest state through
-	if (backup) {
-		ldkBackup = backup;
-	} else {
-		const res = await exportBackup();
-		if (res.isErr()) {
-			return err(res.error);
-		}
-
-		ldkBackup = res.value;
-	}
-
-	//Translate LDK type to our wallet type
-	let network = EAvailableNetwork.bitcoin;
-	switch (ldkBackup.network) {
-		case ENetworks.regtest: {
-			network = EAvailableNetwork.bitcoinRegtest;
-			break;
-		}
-		case ENetworks.testnet: {
-			network = EAvailableNetwork.bitcoinTestnet;
-			break;
-		}
-		case ENetworks.mainnet: {
-			network = EAvailableNetwork.bitcoin;
-			break;
-		}
-	}
-
-	const res = await uploadBackup(
-		slashtag,
-		stringToBytes(JSON.stringify(backup)),
-		EBackupCategories.ldkComplete,
-		network,
-	);
-
-	if (res.isErr()) {
-		return err(res.error);
-	}
-
-	dispatch(
-		updateBackup({
-			remoteLdkBackupSynced: true,
-			remoteLdkBackupLastSync: new Date().getTime(),
-			remoteLdkBackupLastSyncRequired: undefined,
-		}),
-	);
-
-	return ok('Backup success');
-};
-
-export const performRemoteBackup = async <T>({
-	slashtag,
-	isSyncedKey,
-	syncRequiredKey,
-	syncCompletedKey,
-	backupCategory,
-	backup,
-	selectedNetwork,
-}: {
-	slashtag: Slashtag;
-	isSyncedKey: keyof TBackupState;
-	syncRequiredKey: keyof TBackupState;
-	syncCompletedKey: keyof TBackupState;
-	backupCategory: EBackupCategories;
-	backup?: T;
-	selectedNetwork?: EAvailableNetwork;
-}): Promise<Result<string>> => {
-	//Automated backup events pass the latest state through
-	if (!backup) {
-		return ok('Nothing to backup.');
-	}
-
-	if (!selectedNetwork) {
-		selectedNetwork = getSelectedNetwork();
-	}
-
-	const backupJson = JSON.stringify(backup);
-	const bytes = stringToBytes(backupJson);
-
-	const res = await uploadBackup(
-		slashtag,
-		bytes,
-		backupCategory,
-		selectedNetwork,
-	);
-
-	if (res.isErr()) {
-		return err(res.error);
-	}
-
-	dispatch(
-		updateBackup({
-			[isSyncedKey]: true,
-			[syncRequiredKey]: undefined,
-			[syncCompletedKey]: new Date().getTime(),
-		}),
-	);
-
-	return ok('Backup success');
-};
+export enum EBackupCategories {
+	settings = 'bitkit_settings',
+	widgets = 'bitkit_widgets',
+	metadata = 'bitkit_metadata',
+	blocktank = 'bitkit_blocktank_orders',
+	slashtags = 'bitkit_slashtags_contacts',
+	ldkActivity = 'bitkit_lightning_activity',
+}
 
 export const performLdkRestore = async ({
+	backupServerDetails,
 	selectedNetwork,
 }: {
+	backupServerDetails: TBackupServerDetails;
 	selectedNetwork?: EAvailableNetwork;
 }): Promise<Result<{ backupExists: boolean }>> => {
 	if (!selectedNetwork) {
@@ -213,10 +98,6 @@ export const performLdkRestore = async ({
 			break;
 	}
 
-	const backupServerDetails = {
-		host: __BACKUPS_SERVER_HOST__,
-		serverPubKey: __BACKUPS_SERVER_PUBKEY__,
-	};
 	const backupSetupRes = await ldk.backupSetup({
 		seed: lightningAccount.value.seed,
 		network,
@@ -269,7 +150,7 @@ export const performLdkRestoreDeprecated = async ({
 	}
 	const res = await listBackups(
 		slashtag,
-		EBackupCategories.ldkComplete,
+		EBackupCategoriesOld.ldkComplete,
 		selectedNetwork,
 	);
 	if (res.isErr()) {
@@ -284,7 +165,7 @@ export const performLdkRestoreDeprecated = async ({
 	const fetchRes = await fetchBackup(
 		slashtag,
 		res.value[0].timestamp,
-		EBackupCategories.ldkComplete,
+		EBackupCategoriesOld.ldkComplete,
 		selectedNetwork,
 	);
 	if (fetchRes.isErr()) {
@@ -312,316 +193,19 @@ export const performLdkRestoreDeprecated = async ({
 	return ok({ backupExists: true });
 };
 
-/**
- * Retrieves the backup data for the provided backupCategory.
- * @param {Slashtag} slashtag
- * @param {EBackupCategories} backupCategory
- * @param {EAvailableNetwork} [selectedNetwork]
- * @returns {Promise<Result<T | undefined>>}
- */
-export const getBackup = async <T>({
-	slashtag,
-	backupCategory,
-	selectedNetwork,
-}: {
-	slashtag: Slashtag;
-	backupCategory: EBackupCategories;
-	selectedNetwork?: EAvailableNetwork;
-}): Promise<Result<T | undefined>> => {
-	if (!selectedNetwork) {
-		selectedNetwork = getSelectedNetwork();
-	}
-	const res = await listBackups(slashtag, backupCategory, selectedNetwork);
-	if (res.isErr()) {
-		return err(res.error);
-	}
-
-	// No backup exists for the provided slashtag.
-	if (res.value.length === 0) {
-		return ok(undefined);
-	}
-
-	const fetchRes = await fetchBackup(
-		slashtag,
-		res.value[0].timestamp,
-		backupCategory,
-		selectedNetwork,
-	);
-	if (fetchRes.isErr()) {
-		return err(fetchRes.error);
-	}
-
-	let jsonString = bytesToString(fetchRes.value.content);
-
-	if (
-		backupCategory === EBackupCategories.ldkActivity ||
-		backupCategory === EBackupCategories.metadata
-	) {
-		// Remove previously incorrectly encoded emojis from the backup
-		// eslint-disable-next-line no-control-regex
-		jsonString = jsonString.replace(/([\u0000-\u001F])/g, '');
-	}
-
-	const backup: T = JSON.parse(jsonString);
-
-	// Restore success
-	return ok(backup);
-};
-
-export const performSettingsRestore = async ({
-	slashtag,
-	selectedNetwork,
-}: {
-	slashtag: Slashtag;
-	selectedNetwork?: EAvailableNetwork;
-}): Promise<Result<{ backupExists: boolean }>> => {
-	if (!selectedNetwork) {
-		selectedNetwork = getSelectedNetwork();
-	}
-
-	const backupRes = await getBackup<TSettings>({
-		slashtag,
-		backupCategory: EBackupCategories.settings,
-		selectedNetwork,
-	});
-	if (backupRes.isErr()) {
-		return err(backupRes.error.message);
-	}
-
-	const backup = backupRes.value;
-	if (!backup) {
-		return ok({ backupExists: false });
-	}
-
-	const expectedBackupShape = getDefaultSettingsShape();
-	//If the keys in the backup object are not found in the reference object assume the backup does not exist.
-	if (!isObjPartialMatch(backup, expectedBackupShape)) {
-		return ok({ backupExists: false });
-	}
-
-	dispatch(
-		updateSettings({
-			...expectedBackupShape,
-			...backup,
-			biometrics: false,
-			pin: false,
-			pinForPayments: false,
-			pinOnLaunch: true,
-		}),
-	);
-	dispatch(updateBackup({ remoteSettingsBackupSynced: true }));
-
-	// Restore success
-	return ok({ backupExists: true });
-};
-
-export const performWidgetsRestore = async ({
-	slashtag,
-	selectedNetwork,
-}: {
-	slashtag: Slashtag;
-	selectedNetwork?: EAvailableNetwork;
-}): Promise<Result<{ backupExists: boolean }>> => {
-	if (!selectedNetwork) {
-		selectedNetwork = getSelectedNetwork();
-	}
-	const backupRes = await getBackup<TWidgetsState>({
-		slashtag,
-		backupCategory: EBackupCategories.widgets,
-		selectedNetwork,
-	});
-	if (backupRes.isErr()) {
-		return err(backupRes.error.message);
-	}
-
-	const backup = backupRes.value;
-	if (!backup) {
-		return ok({ backupExists: false });
-	}
-
-	const expectedBackupShape = initialWidgetsState;
-	//If the keys in the backup object are not found in the reference object assume the backup does not exist.
-	if (!isObjPartialMatch(backup, expectedBackupShape, ['widgets'])) {
-		return ok({ backupExists: false });
-	}
-
-	dispatch(
-		updateWidgets({
-			...expectedBackupShape,
-			...backup,
-			onboardedWidgets: true,
-		}),
-	);
-	dispatch(updateBackup({ remoteWidgetsBackupSynced: true }));
-
-	// Restore success
-	return ok({ backupExists: true });
-};
-
-export const performMetadataRestore = async ({
-	slashtag,
-	selectedNetwork,
-}: {
-	slashtag: Slashtag;
-	selectedNetwork?: EAvailableNetwork;
-}): Promise<Result<{ backupExists: boolean }>> => {
-	if (!selectedNetwork) {
-		selectedNetwork = getSelectedNetwork();
-	}
-
-	const backupRes = await getBackup<TMetadataState>({
-		slashtag,
-		backupCategory: EBackupCategories.metadata,
-		selectedNetwork,
-	});
-	if (backupRes.isErr()) {
-		return err(backupRes.error.message);
-	}
-
-	const backup = backupRes.value;
-
-	if (!backup) {
-		return ok({ backupExists: false });
-	}
-
-	const expectedBackupShape = initialMetadataState;
-	//If the keys in the backup object are not found in the reference object assume the backup does not exist.
-	if (
-		!isObjPartialMatch(backup, expectedBackupShape, ['tags', 'slashTagsUrls'])
-	) {
-		return ok({ backupExists: false });
-	}
-
-	dispatch(updateMetadata({ ...expectedBackupShape, ...backup }));
-	dispatch(updateBackup({ remoteMetadataBackupSynced: true }));
-
-	// Restore success
-	return ok({ backupExists: true });
-};
-
-export const performLdkActivityRestore = async ({
-	slashtag,
-	selectedNetwork,
-}: {
-	slashtag: Slashtag;
-	selectedNetwork?: EAvailableNetwork;
-}): Promise<Result<{ backupExists: boolean }>> => {
-	if (!selectedNetwork) {
-		selectedNetwork = getSelectedNetwork();
-	}
-
-	const backupRes = await getBackup<TActivity['items']>({
-		slashtag,
-		backupCategory: EBackupCategories.ldkActivity,
-		selectedNetwork,
-	});
-	if (backupRes.isErr()) {
-		return err(backupRes.error.message);
-	}
-
-	const backup = backupRes.value;
-
-	if (!backup) {
-		return ok({ backupExists: false });
-	}
-
-	if (
-		!(
-			Array.isArray(backup) &&
-			backup.every((i) => i.activityType === EActivityType.lightning)
-		)
-	) {
-		return ok({ backupExists: false });
-	}
-
-	dispatch(addActivityItems(backup));
-	dispatch(updateBackup({ remoteLdkActivityBackupSynced: true }));
-
-	// Restore success
-	return ok({ backupExists: true });
-};
-
-export const performBlocktankRestore = async ({
-	slashtag,
-	selectedNetwork,
-}: {
-	slashtag: Slashtag;
-	selectedNetwork?: EAvailableNetwork;
-}): Promise<Result<{ backupExists: boolean }>> => {
-	if (!selectedNetwork) {
-		selectedNetwork = getSelectedNetwork();
-	}
-
-	const backupRes = await getBackup<Partial<IBlocktank>>({
-		slashtag,
-		backupCategory: EBackupCategories.blocktank,
-		selectedNetwork,
-	});
-	if (backupRes.isErr()) {
-		return err(backupRes.error.message);
-	}
-
-	const backup = backupRes.value;
-
-	if (!backup) {
-		return ok({ backupExists: false });
-	}
-
-	if (!('orders' in backup && 'paidOrders' in backup)) {
-		return ok({ backupExists: false });
-	}
-
-	dispatch(updateBlocktank(backup));
-	dispatch(updateBackup({ remoteBlocktankBackupSynced: true }));
-
-	// Restore success
-	return ok({ backupExists: true });
-};
-
-export const performSlashtagsRestore = async ({
-	slashtag,
-	selectedNetwork,
-}: {
-	slashtag: Slashtag;
-	selectedNetwork?: EAvailableNetwork;
-}): Promise<Result<{ backupExists: boolean }>> => {
-	if (!selectedNetwork) {
-		selectedNetwork = getSelectedNetwork();
-	}
-
-	const backupRes = await getBackup<Partial<TSlashtagsState>>({
-		slashtag,
-		backupCategory: EBackupCategories.slashtags,
-		selectedNetwork,
-	});
-	if (backupRes.isErr()) {
-		return err(backupRes.error.message);
-	}
-
-	const backup = backupRes.value;
-
-	if (!backup) {
-		return ok({ backupExists: false });
-	}
-
-	if (!('contacts' in backup)) {
-		return ok({ backupExists: false });
-	}
-
-	dispatch(addContacts(backup.contacts!));
-	dispatch(updateBackup({ remoteSlashtagsBackupSynced: true }));
-
-	// Restore success
-	return ok({ backupExists: true });
-};
-
 export const performFullRestoreFromLatestBackup = async (
 	slashtag: Slashtag,
 ): Promise<Result<{ backupExists: boolean }>> => {
 	try {
+		const backupServerDetails = {
+			host: __BACKUPS_SERVER_HOST__,
+			serverPubKey: __BACKUPS_SERVER_PUBKEY__,
+		};
+
 		// ldk restore should be performed for all networks
 		for (const network of Object.values(EAvailableNetwork)) {
 			const ldkBackupRes = await performLdkRestore({
+				backupServerDetails,
 				selectedNetwork: network,
 			});
 			if (ldkBackupRes.isErr()) {
@@ -641,60 +225,51 @@ export const performFullRestoreFromLatestBackup = async (
 			}
 		}
 
+		// reset backup settings once again before restoring all other backups
 		const selectedNetwork = getSelectedNetwork();
-
-		const settingsBackupRes = await performSettingsRestore({
-			slashtag,
-			selectedNetwork,
+		let network: ENetworks;
+		switch (selectedNetwork) {
+			case 'bitcoin':
+				network = ENetworks.mainnet;
+				break;
+			case 'bitcoinTestnet':
+				network = ENetworks.testnet;
+				break;
+			default:
+				network = ENetworks.regtest;
+				break;
+		}
+		const version = await checkAccountVersion();
+		const lightningAccount = await getLdkAccount({ selectedNetwork, version });
+		if (lightningAccount.isErr()) {
+			return err(lightningAccount.error);
+		}
+		const backupSetupRes = await ldk.backupSetup({
+			seed: lightningAccount.value.seed,
+			network,
+			details: backupServerDetails,
 		});
-		if (settingsBackupRes.isErr()) {
-			//Since this backup feature is not critical and mostly for user convenience there's no reason to throw an error here.
-			console.log('Error backing up settings', settingsBackupRes.error.message);
+
+		if (backupSetupRes.isErr()) {
+			return err(backupSetupRes.error);
 		}
 
-		const widgetsBackupRes = await performWidgetsRestore({
-			slashtag,
-			selectedNetwork,
-		});
-		if (widgetsBackupRes.isErr()) {
-			//Since this backup feature is not critical and mostly for user convenience there's no reason to throw an error here.
-			console.log('Error backing up widgets', widgetsBackupRes.error.message);
-		}
+		const backups = [
+			['settings', performSettingsRestore],
+			['widgets', performWidgetsRestore],
+			['metadata', performMetadataRestore],
+			['blocktank', performBlocktankRestore],
+			['slashtags', performSlashtagsRestore],
+			['activity', performLDKActivityRestore],
+		] as const;
 
-		const metadataBackupRes = await performMetadataRestore({
-			slashtag,
-			selectedNetwork,
-		});
-		if (metadataBackupRes.isErr()) {
-			//Since this backup feature is not critical and mostly for user convenience there's no reason to throw an error here.
-			console.log('Error backing up metadata', metadataBackupRes.error.message);
-		}
-
-		const ldkActivityRes = await performLdkActivityRestore({
-			slashtag,
-			selectedNetwork,
-		});
-		if (ldkActivityRes.isErr()) {
-			//Since this backup feature is not critical and mostly for user convenience there's no reason to throw an error here.
-			console.log('Error backing up ldkActivity', ldkActivityRes.error.message);
-		}
-
-		const btBackupRes = await performBlocktankRestore({
-			slashtag,
-			selectedNetwork,
-		});
-		if (btBackupRes.isErr()) {
-			//Since this backup feature is not critical and mostly for user convenience there's no reason to throw an error here.
-			console.log('Error backing up blocktank', btBackupRes.error.message);
-		}
-
-		const slashBackupRes = await performSlashtagsRestore({
-			slashtag,
-			selectedNetwork,
-		});
-		if (slashBackupRes.isErr()) {
-			//Since this backup feature is not critical and mostly for user convenience there's no reason to throw an error here.
-			console.log('Error backing up contacts', slashBackupRes.error.message);
+		for (const [name, func] of backups) {
+			const res = await func();
+			if (res.isErr()) {
+				// Since this backup feature is not critical and mostly for user convenience
+				// there's no reason to throw an error here.
+				console.log(`Error restoring ${name}`, res.error.message);
+			}
 		}
 
 		// Restore success
@@ -705,26 +280,261 @@ export const performFullRestoreFromLatestBackup = async (
 	}
 };
 
-export const checkProfileAndContactsBackup = async (
-	slashtag: Slashtag,
-): Promise<void> => {
-	dispatch(startBackupSeederCheck());
-	const payload = await checkBackup(slashtag);
-	dispatch(endBackupSeederCheck(payload));
+export const performBackup = async (
+	category: EBackupCategories,
+): Promise<Result<string>> => {
+	try {
+		let data: {};
+		switch (category) {
+			case EBackupCategories.settings:
+				data = getSettingsStore();
+				break;
+			case EBackupCategories.widgets:
+				data = getWidgetsStore();
+				break;
+			case EBackupCategories.metadata:
+				data = getMetaDataStore();
+				break;
+			case EBackupCategories.blocktank:
+				const { paidOrders, orders } = getBlocktankStore();
+				data = { paidOrders, orders };
+				break;
+			case EBackupCategories.slashtags:
+				const { contacts } = getSlashtagsStore();
+				data = { contacts };
+				break;
+			case EBackupCategories.ldkActivity:
+				data = getActivityStore().items.filter(
+					(a) => a.activityType === EActivityType.lightning,
+				);
+				break;
+		}
 
-	// now check if backup is too old and show warning if it is
-	const now = new Date().getTime();
-	const backup = getBackupStore();
-	if (
-		(backup.hyperProfileCheckRequested &&
-			now - backup.hyperProfileCheckRequested > FAILED_BACKUP_CHECK_TIME) ||
-		(backup.hyperContactsCheckRequested &&
-			now - backup.hyperContactsCheckRequested > FAILED_BACKUP_CHECK_TIME)
-	) {
-		showToast({
-			type: 'error',
-			title: i18n.t('settings:backup.failed_title'),
-			description: i18n.t('settings:backup.failed_message'),
-		});
+		const metadata: TBackupMetadata = {
+			category,
+			timestamp: Date.now(),
+			version: getStore()._persist.version,
+		};
+
+		const content = JSON.stringify({ data, metadata });
+
+		dispatch(backupStart({ category }));
+		const backupRes = await ldk.backupFile(category, content);
+		if (backupRes.isErr()) {
+			throw backupRes.error;
+		}
+		dispatch(backupSuccess({ category }));
+		return ok(`Backup ${category} success`);
+	} catch (e) {
+		console.log(`Backup ${category} error`, e.message);
+		dispatch(backupError({ category }));
+		return err(e);
+	}
+};
+
+/**
+ * Retrieves the backup data for the provided backupCategory.
+ * @param {EBackupCategories} category
+ * @returns {Promise<Result<T | null>>}
+ */
+const getBackup = async <T>(
+	category: EBackupCategories,
+): Promise<Result<{ data: T; metadata: TBackupMetadata }>> => {
+	try {
+		const fetchRes = await ldk.fetchBackupFile(category);
+		if (fetchRes.isErr()) {
+			return err(fetchRes.error);
+		}
+
+		const content = JSON.parse(fetchRes.value);
+		return ok(content);
+	} catch (e) {
+		console.log(`GetBackup ${category} error`, e.message);
+		return err(e);
+	}
+};
+
+const performSettingsRestore = async (): Promise<
+	Result<{ backupExists: boolean }>
+> => {
+	try {
+		const backupRes = await getBackup<TSettings>(EBackupCategories.settings);
+		if (backupRes.isErr()) {
+			return err(backupRes.error.message);
+		}
+
+		const backup = backupRes.value.data;
+		const expectedBackupShape = getDefaultSettingsShape();
+		//If the keys in the backup object are not found in the reference object assume the backup does not exist.
+		if (!isObjPartialMatch(backup, expectedBackupShape)) {
+			return ok({ backupExists: false });
+		}
+
+		dispatch(
+			updateSettings({
+				...expectedBackupShape,
+				...backup,
+				biometrics: false,
+				pin: false,
+				pinForPayments: false,
+				pinOnLaunch: true,
+			}),
+		);
+		dispatch(backupSuccess({ category: EBackupCategories.settings }));
+
+		// Restore success
+		return ok({ backupExists: true });
+	} catch (e) {
+		console.log(`Restore ${EBackupCategories.settings} error`, e.message);
+		return err(e);
+	}
+};
+
+const performWidgetsRestore = async (): Promise<
+	Result<{ backupExists: boolean }>
+> => {
+	try {
+		const backupRes = await getBackup<TWidgetsState>(EBackupCategories.widgets);
+		if (backupRes.isErr()) {
+			return err(backupRes.error.message);
+		}
+
+		const backup = backupRes.value.data;
+		const expectedBackupShape = initialWidgetsState;
+		//If the keys in the backup object are not found in the reference object assume the backup does not exist.
+		if (!isObjPartialMatch(backup, expectedBackupShape, ['widgets'])) {
+			return ok({ backupExists: false });
+		}
+
+		dispatch(
+			updateWidgets({
+				...expectedBackupShape,
+				...backup,
+				onboardedWidgets: true,
+			}),
+		);
+		dispatch(backupSuccess({ category: EBackupCategories.widgets }));
+
+		// Restore success
+		return ok({ backupExists: true });
+	} catch (e) {
+		console.log(`Restore ${EBackupCategories.widgets} error`, e.message);
+		return err(e);
+	}
+};
+
+const performMetadataRestore = async (): Promise<
+	Result<{ backupExists: boolean }>
+> => {
+	try {
+		const backupRes = await getBackup<TMetadataState>(
+			EBackupCategories.metadata,
+		);
+		if (backupRes.isErr()) {
+			return err(backupRes.error.message);
+		}
+
+		const backup = backupRes.value.data;
+		const expectedBackupShape = initialMetadataState;
+		//If the keys in the backup object are not found in the reference object assume the backup does not exist.
+		if (
+			!isObjPartialMatch(backup, expectedBackupShape, ['tags', 'slashTagsUrls'])
+		) {
+			return ok({ backupExists: false });
+		}
+
+		dispatch(updateMetadata({ ...expectedBackupShape, ...backup }));
+		dispatch(backupSuccess({ category: EBackupCategories.metadata }));
+
+		// Restore success
+		return ok({ backupExists: true });
+	} catch (e) {
+		console.log(`Restore ${EBackupCategories.metadata} error`, e.message);
+		return err(e);
+	}
+};
+
+const performBlocktankRestore = async (): Promise<
+	Result<{ backupExists: boolean }>
+> => {
+	try {
+		const backupRes = await getBackup<Partial<IBlocktank>>(
+			EBackupCategories.blocktank,
+		);
+		if (backupRes.isErr()) {
+			return err(backupRes.error.message);
+		}
+
+		const backup = backupRes.value.data;
+		//If the keys in the backup object are not found in the reference object assume the backup does not exist.
+		if (!('orders' in backup && 'paidOrders' in backup)) {
+			return ok({ backupExists: false });
+		}
+
+		dispatch(updateBlocktank(backup));
+		dispatch(backupSuccess({ category: EBackupCategories.blocktank }));
+
+		// Restore success
+		return ok({ backupExists: true });
+	} catch (e) {
+		console.log(`Restore ${EBackupCategories.blocktank} error`, e.message);
+		return err(e);
+	}
+};
+
+const performSlashtagsRestore = async (): Promise<
+	Result<{ backupExists: boolean }>
+> => {
+	try {
+		const backupRes = await getBackup<Partial<TSlashtagsState>>(
+			EBackupCategories.slashtags,
+		);
+		if (backupRes.isErr()) {
+			return err(backupRes.error.message);
+		}
+
+		const backup = backupRes.value.data;
+		//If the keys in the backup object are not found in the reference object assume the backup does not exist.
+		if (!('contacts' in backup)) {
+			return ok({ backupExists: false });
+		}
+
+		dispatch(addContacts(backup.contacts!));
+		dispatch(backupSuccess({ category: EBackupCategories.slashtags }));
+
+		// Restore success
+		return ok({ backupExists: true });
+	} catch (e) {
+		console.log(`Restore ${EBackupCategories.slashtags} error`, e.message);
+		return err(e);
+	}
+};
+
+const performLDKActivityRestore = async (): Promise<
+	Result<{ backupExists: boolean }>
+> => {
+	try {
+		const backupRes = await getBackup<TActivity['items']>(
+			EBackupCategories.ldkActivity,
+		);
+		if (backupRes.isErr()) {
+			return err(backupRes.error.message);
+		}
+
+		const backup = backupRes.value.data;
+		//If the keys in the backup object are not found in the reference object assume the backup does not exist.
+		!(
+			Array.isArray(backup) &&
+			backup.every((i) => i.activityType === EActivityType.lightning)
+		);
+
+		dispatch(addActivityItems(backup));
+		dispatch(backupSuccess({ category: EBackupCategories.ldkActivity }));
+
+		// Restore success
+		return ok({ backupExists: true });
+	} catch (e) {
+		console.log(`Restore ${EBackupCategories.ldkActivity} error`, e.message);
+		return err(e);
 	}
 };

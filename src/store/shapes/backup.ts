@@ -1,36 +1,17 @@
-import { TBackupState } from '../types/backup';
+import { TBackupItem, TBackupState } from '../types/backup';
+import { EBackupCategories } from '../utils/backup';
+
+const item: TBackupItem = {
+	required: Date.now() - 1000,
+	synced: Date.now(),
+	running: false,
+};
 
 export const initialBackupState: TBackupState = {
-	remoteBackupsEnabled: false,
-	remoteLdkBackupSynced: false,
-	remoteLdkBackupLastSyncRequired: undefined,
-	remoteSettingsBackupSynced: false,
-	remoteSettingsBackupLastSync: undefined,
-	remoteSettingsBackupSyncRequired: undefined,
-	remoteWidgetsBackupSynced: false,
-	remoteWidgetsBackupLastSync: undefined,
-	remoteWidgetsBackupSyncRequired: undefined,
-	remoteMetadataBackupSynced: false,
-	remoteMetadataBackupLastSync: undefined,
-	remoteMetadataBackupSyncRequired: undefined,
-	remoteLdkActivityBackupSynced: false,
-	remoteLdkActivityBackupLastSync: undefined,
-	remoteLdkActivityBackupSyncRequired: undefined,
-	remoteBlocktankBackupSynced: false,
-	remoteBlocktankBackupLastSync: undefined,
-	remoteBlocktankBackupSyncRequired: undefined,
-	remoteSlashtagsBackupSynced: false,
-	remoteSlashtagsBackupLastSync: undefined,
-	remoteSlashtagsBackupSyncRequired: undefined,
-
-	hyperProfileSeedCheckSuccess: undefined,
-	hyperProfileCheckRequested: undefined,
-	hyperContactsCheckSuccess: undefined,
-	hyperContactsCheckRequested: undefined,
-
-	iCloudBackupsEnabled: false,
-	iCloudLdkBackupsSynced: false,
-
-	gDriveBackupsEnabled: false,
-	gDriveLdkBackupsSynced: false,
+	[EBackupCategories.widgets]: { ...item },
+	[EBackupCategories.settings]: { ...item },
+	[EBackupCategories.metadata]: { ...item },
+	[EBackupCategories.blocktank]: { ...item },
+	[EBackupCategories.slashtags]: { ...item },
+	[EBackupCategories.ldkActivity]: { ...item },
 };
