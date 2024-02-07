@@ -37,6 +37,7 @@ import {
 	getWidgetsStore,
 } from '../helpers';
 import { getDefaultSettingsShape } from '../shapes/settings';
+import { addActivityItems, TActivity } from '../slices/activity';
 import { backupError, backupStart, backupSuccess } from '../slices/backup';
 import { updateBlocktank } from '../slices/blocktank';
 import { initialMetadataState, updateMetadata } from '../slices/metadata';
@@ -47,13 +48,12 @@ import {
 	TWidgetsState,
 	updateWidgets,
 } from '../slices/widgets';
-import { EUnit } from '../types/wallet';
+import { EActivityType } from '../types/activity';
 import { TAccountBackup, TBackupMetadata } from '../types/backup';
 import { IBlocktank } from '../types/blocktank';
 import { TMetadataState } from '../types/metadata';
 import { TSlashtagsState } from '../types/slashtags';
-import { addActivityItems, TActivity } from '../slices/activity';
-import { EActivityType } from '../types/activity';
+import { EUnit } from '../types/wallet';
 
 export enum EBackupCategories {
 	settings = 'bitkit_settings',
@@ -371,12 +371,16 @@ const performSettingsRestore = async (): Promise<
 			return ok({ backupExists: false });
 		}
 
+		// apply migrations
+		if (backupRes.value.metadata.version < 36) {
+			// @ts-ignore migrate unit
+			backup.unit = backup.unit === 'satoshi' ? EUnit.BTC : backup.unit;
+		}
+
 		dispatch(
 			updateSettings({
 				...expectedBackupShape,
 				...backup,
-				// @ts-ignore migrate unit
-				unit: backup.unit === 'satoshi' ? EUnit.BTC : backup.unit,
 				biometrics: false,
 				pin: false,
 				pinForPayments: false,
