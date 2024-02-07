@@ -7,7 +7,7 @@ import MoneySymbol from './MoneySymbol';
 
 const Amount = ({
 	value,
-	unit = EUnit.satoshi,
+	unit = EUnit.BTC,
 	style,
 }: {
 	value: number;

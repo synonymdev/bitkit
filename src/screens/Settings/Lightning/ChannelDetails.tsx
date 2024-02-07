@@ -426,9 +426,10 @@ const ChannelDetails = ({
 								<Money
 									sats={blocktankOrder.feeSat - blocktankOrder.clientBalanceSat}
 									size="caption13M"
-									symbol={true}
 									color="white"
-									unit={EUnit.satoshi}
+									symbol={true}
+									symbolColor="gray1"
+									unit={EUnit.BTC}
 								/>
 							}
 						/>
@@ -446,8 +447,9 @@ const ChannelDetails = ({
 								sats={receivingAvailable}
 								size="caption13M"
 								symbol={true}
+								symbolColor="gray1"
 								color="white"
-								unit={EUnit.satoshi}
+								unit={EUnit.BTC}
 							/>
 						}
 					/>
@@ -458,8 +460,9 @@ const ChannelDetails = ({
 								sats={spendingAvailable}
 								size="caption13M"
 								symbol={true}
+								symbolColor="gray1"
 								color="white"
-								unit={EUnit.satoshi}
+								unit={EUnit.BTC}
 							/>
 						}
 					/>
@@ -470,8 +473,9 @@ const ChannelDetails = ({
 								sats={Number(channel.unspendable_punishment_reserve)}
 								size="caption13M"
 								symbol={true}
+								symbolColor="gray1"
 								color="white"
-								unit={EUnit.satoshi}
+								unit={EUnit.BTC}
 							/>
 						}
 					/>
@@ -483,8 +487,9 @@ const ChannelDetails = ({
 								sats={capacity}
 								size="caption13M"
 								symbol={true}
+								symbolColor="gray1"
 								color="white"
-								unit={EUnit.satoshi}
+								unit={EUnit.BTC}
 							/>
 						}
 					/>
@@ -502,6 +507,7 @@ const ChannelDetails = ({
 								sats={123}
 								size="caption13M"
 								symbol={true}
+								symbolColor="gray1"
 								color="white"
 								unit={EBitcoinUnit.satoshi}
 							/>
@@ -514,6 +520,7 @@ const ChannelDetails = ({
 								sats={123}
 								size="caption13M"
 								symbol={true}
+								symbolColor="gray1"
 								color="white"
 								unit={EBitcoinUnit.satoshi}
 							/>

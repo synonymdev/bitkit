@@ -9,7 +9,7 @@ import { useTranslation } from 'react-i18next';
 
 import { Text01M, Text02M } from '../../../styles/text';
 import {
-	LightningIcon,
+	BitcoinIcon,
 	SettingsIcon,
 	SpeedFastIcon,
 	SpeedNormalIcon,
@@ -17,7 +17,7 @@ import {
 } from '../../../styles/icons';
 import { EFeeId } from '../../../store/types/fees';
 import useColors from '../../../hooks/colors';
-import useDisplayValues from '../../../hooks/displayValues';
+import { useDisplayValues } from '../../../hooks/displayValues';
 
 const FeeItem = ({
 	id,
@@ -67,7 +67,7 @@ const FeeItem = ({
 						<Text01M>{title}</Text01M>
 						{sats !== 0 && (
 							<View style={styles.sats}>
-								<LightningIcon height={16} color="gray1" />
+								<BitcoinIcon height={14} width={16} color="gray1" />
 								<Text01M>{sats}</Text01M>
 							</View>
 						)}

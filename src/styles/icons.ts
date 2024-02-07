@@ -40,7 +40,6 @@ import {
 	savingsIcon,
 	bIcon,
 	unitBitcoinIcon,
-	unitSatoshiIcon,
 	unitFiatIcon,
 	trashIcon,
 	plusIcon,
@@ -366,7 +365,7 @@ export const SavingsIcon = styled(SvgXml).attrs((props) => ({
 	color: props.color ? props.theme.colors[props.color] : 'white',
 }));
 
-export const BIcon = styled(SvgXml).attrs((props) => ({
+export const BitcoinIcon = styled(SvgXml).attrs((props) => ({
 	xml: bIcon(props.color ? props.theme.colors[props.color] : 'white'),
 	height: props.height ?? '42px',
 	width: props.width ?? '26px',
@@ -433,19 +432,7 @@ export const UnifiedIcon = styled(SvgXml).attrs((props) => ({
 }))<IconProps>(() => ({}));
 
 export const UnitBitcoinIcon = styled(SvgXml).attrs((props) => ({
-	xml: unitBitcoinIcon(
-		props.color ? props.theme.colors[props.color] : props.theme.colors.brand,
-	),
-	height: props.height ?? '32px',
-	width: props.width ?? '32px',
-}))<IconProps>((props) => ({
-	color: props.color ? props.theme.colors[props.color] : 'white',
-}));
-
-export const UnitSatoshiIcon = styled(SvgXml).attrs((props) => ({
-	xml: unitSatoshiIcon(
-		props.color ? props.theme.colors[props.color] : props.theme.colors.brand,
-	),
+	xml: unitBitcoinIcon(props.color ? props.theme.colors[props.color] : 'white'),
 	height: props.height ?? '32px',
 	width: props.width ?? '32px',
 }))<IconProps>((props) => ({
@@ -453,9 +440,7 @@ export const UnitSatoshiIcon = styled(SvgXml).attrs((props) => ({
 }));
 
 export const UnitFiatIcon = styled(SvgXml).attrs((props) => ({
-	xml: unitFiatIcon(
-		props.color ? props.theme.colors[props.color] : props.theme.colors.brand,
-	),
+	xml: unitFiatIcon(props.color ? props.theme.colors[props.color] : 'white'),
 	height: props.height ?? '32px',
 	width: props.width ?? '32px',
 }))<IconProps>((props) => ({

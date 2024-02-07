@@ -47,6 +47,7 @@ import {
 	TWidgetsState,
 	updateWidgets,
 } from '../slices/widgets';
+import { EUnit } from '../types/wallet';
 import { TAccountBackup, TBackupMetadata } from '../types/backup';
 import { IBlocktank } from '../types/blocktank';
 import { TMetadataState } from '../types/metadata';
@@ -374,6 +375,8 @@ const performSettingsRestore = async (): Promise<
 			updateSettings({
 				...expectedBackupShape,
 				...backup,
+				// @ts-ignore migrate unit
+				unit: backup.unit === 'satoshi' ? EUnit.BTC : backup.unit,
 				biometrics: false,
 				pin: false,
 				pinForPayments: false,

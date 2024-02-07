@@ -13,7 +13,7 @@ import Tag from '../../../components/Tag';
 
 import useColors from '../../../hooks/colors';
 import { useAppSelector } from '../../../hooks/redux';
-import useDisplayValues from '../../../hooks/displayValues';
+import { useDisplayValues } from '../../../hooks/displayValues';
 import {
 	getTransactionInputValue,
 	getTransactionOutputValue,

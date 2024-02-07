@@ -19,6 +19,7 @@ import { initialActivityState } from '../slices/activity';
 import { initialChecksState } from '../slices/checks';
 import { initialWidgetsState } from '../slices/widgets';
 import { EBackupCategories } from '../utils/backup';
+import { EDenomination, EUnit } from '../types/wallet';
 
 const migrations = {
 	0: (state): PersistedState => {
@@ -483,6 +484,16 @@ const migrations = {
 			lightning: {
 				...state.lightning,
 				nodes: newNodes,
+			},
+		};
+	},
+	36: (state): PersistedState => {
+		return {
+			...state,
+			settings: {
+				...state.settings,
+				unit: EUnit.BTC,
+				denomination: EDenomination.modern,
 			},
 		};
 	},

@@ -86,15 +86,13 @@ export const Text02M = styled.Text<TextProps>(({ theme, color }) => ({
 	letterSpacing: 0.4,
 }));
 
-export const Text02B = styled.Text<TextProps & { size?: string }>(
-	({ theme, color, size }) => ({
-		...theme.fonts.bold,
-		fontSize: size ? size : '15px',
-		lineHeight: '20px',
-		color: theme.colors[color ?? 'text'],
-		letterSpacing: 0.4,
-	}),
-);
+export const Text02B = styled.Text<TextProps>(({ theme, color }) => ({
+	...theme.fonts.bold,
+	fontSize: '15px',
+	lineHeight: '20px',
+	color: theme.colors[color ?? 'text'],
+	letterSpacing: 0.4,
+}));
 
 export const Text13S = styled.Text<TextProps>(({ theme, color }) => ({
 	...theme.fonts.regular,

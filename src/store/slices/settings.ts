@@ -1,4 +1,6 @@
+import { TServer } from 'beignet';
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+
 import { initialSettingsState } from '../shapes/settings';
 import {
 	ETransactionSpeed,
@@ -9,8 +11,7 @@ import {
 	TTheme,
 } from '../types/settings';
 import { EAvailableNetwork } from '../../utils/networks';
-import { EUnit } from '../types/wallet';
-import { TServer } from 'beignet';
+import { EDenomination, EUnit } from '../types/wallet';
 
 export type TSettings = {
 	enableAutoReadClipboard: boolean;
@@ -24,6 +25,7 @@ export type TSettings = {
 	rbf: boolean;
 	theme: TTheme;
 	unit: EUnit;
+	denomination: EDenomination;
 	customElectrumPeers: Record<EAvailableNetwork, TServer[]>;
 	rapidGossipSyncUrl: string;
 	selectedCurrency: string;

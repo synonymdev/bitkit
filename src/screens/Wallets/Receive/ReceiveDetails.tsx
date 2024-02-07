@@ -9,13 +9,9 @@ import { StyleSheet, View } from 'react-native';
 import { FadeIn, FadeOut } from 'react-native-reanimated';
 import { useTranslation } from 'react-i18next';
 
-import {
-	AnimatedView,
-	BottomSheetTextInput,
-	TouchableOpacity,
-} from '../../../styles/components';
-import { Caption13Up, Text02B } from '../../../styles/text';
-import { SwitchIcon, TagIcon } from '../../../styles/icons';
+import { AnimatedView, BottomSheetTextInput } from '../../../styles/components';
+import { Caption13Up } from '../../../styles/text';
+import { TagIcon } from '../../../styles/icons';
 import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
 import NumberPadTextField from '../../../components/NumberPadTextField';
 import SafeAreaInset from '../../../components/SafeAreaInset';
@@ -26,7 +22,7 @@ import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 import useKeyboard, { Keyboard } from '../../../hooks/keyboard';
 import GradientView from '../../../components/GradientView';
 import ReceiveNumberPad from './ReceiveNumberPad';
-import { useCurrency } from '../../../hooks/displayValues';
+import UnitButton from '../UnitButton';
 import { ReceiveScreenProps } from '../../../navigation/types';
 import { receiveSelector } from '../../../store/reselect/receive';
 import GlowImage from '../../../components/GlowImage';
@@ -43,6 +39,10 @@ import { blocktankInfoSelector } from '../../../store/reselect/blocktank';
 import { isGeoBlockedSelector } from '../../../store/reselect/user';
 import { useLightningBalance } from '../../../hooks/lightning';
 import { accountVersionSelector } from '../../../store/reselect/lightning';
+import {
+	denominationSelector,
+	nextUnitSelector,
+} from '../../../store/reselect/settings';
 
 const imageSrc = require('../../../assets/illustrations/coin-stack-4.png');
 
@@ -57,11 +57,12 @@ const ReceiveDetails = ({
 	const { t } = useTranslation('wallet');
 	const { keyboardShown } = useKeyboard();
 	const { isSmallScreen } = useScreenSize();
-	const [nextUnit, switchUnit] = useSwitchUnit();
+	const switchUnit = useSwitchUnit();
 	const [showNumberPad, setShowNumberPad] = useState(false);
 	const dispatch = useAppDispatch();
 	const invoice = useAppSelector(receiveSelector);
-	const { fiatTicker } = useCurrency();
+	const nextUnit = useAppSelector(nextUnitSelector);
+	const denomination = useAppSelector(denominationSelector);
 	const { receiveAddress, lightningInvoice, enableInstant } = route.params;
 	const blocktank = useAppSelector(blocktankInfoSelector);
 	const lightningBalance = useLightningBalance(false);
@@ -71,7 +72,7 @@ const ReceiveDetails = ({
 	const { maxChannelSizeSat } = blocktank.options;
 
 	const onChangeUnit = (): void => {
-		const result = getNumberPadText(invoice.amount, nextUnit);
+		const result = getNumberPadText(invoice.amount, denomination, nextUnit);
 		dispatch(updateInvoice({ numberPadText: result }));
 		switchUnit();
 	};
@@ -249,21 +250,10 @@ const ReceiveDetails = ({
 						<View style={styles.actions}>
 							<View style={styles.actionButtons}>
 								<View style={styles.actionButtonContainer}>
-									<TouchableOpacity
-										style={styles.actionButton}
-										color="white10"
+									<UnitButton
 										testID="ReceiveNumberPadUnit"
-										onPress={onChangeUnit}>
-										<SwitchIcon color="brand" width={16.44} height={13.22} />
-										<Text02B
-											style={styles.actionButtonText}
-											size="12px"
-											color="brand">
-											{nextUnit === 'BTC' && fiatTicker}
-											{nextUnit === 'satoshi' && 'BTC'}
-											{nextUnit === 'fiat' && 'sats'}
-										</Text02B>
-									</TouchableOpacity>
+										onPress={onChangeUnit}
+									/>
 								</View>
 							</View>
 						</View>
@@ -328,17 +318,6 @@ const styles = StyleSheet.create({
 	},
 	actionButtonContainer: {
 		alignItems: 'center',
-	},
-	actionButton: {
-		marginLeft: 16,
-		paddingVertical: 7,
-		paddingHorizontal: 8,
-		borderRadius: 8,
-		flexDirection: 'row',
-		alignItems: 'center',
-	},
-	actionButtonText: {
-		marginLeft: 11,
 	},
 	bottom: {
 		flex: 1,

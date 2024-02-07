@@ -11,8 +11,9 @@ import { useNavigation } from '@react-navigation/native';
 import { Subtitle, Title } from '../styles/text';
 import { BackIcon, XIcon } from '../styles/icons';
 import { Keyboard } from '../hooks/keyboard';
-import { HEADER_HEIGHT } from '../screens/Wallets/Header';
 import { Pressable } from '../styles/components';
+
+export const HEADER_HEIGHT = 46;
 
 const ActionButton = memo(
 	({

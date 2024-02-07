@@ -12,7 +12,7 @@ import NavigationHeader from '../../components/NavigationHeader';
 import SwipeToConfirm from '../../components/SwipeToConfirm';
 import AmountToggle from '../../components/AmountToggle';
 import { useAppSelector } from '../../hooks/redux';
-import useDisplayValues, { useCurrency } from '../../hooks/displayValues';
+import { useCurrency, useDisplayValues } from '../../hooks/displayValues';
 import NumberPadWeeks from './NumberPadWeeks';
 import { LightningScreenProps } from '../../navigation/types';
 import { sleep } from '../../utils/helpers';

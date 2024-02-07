@@ -194,23 +194,6 @@ const WalletsDetail = ({
 									<Title style={styles.title}>{title}</Title>
 								</View>
 
-								{showDetails && (
-									<AnimatedView
-										color="transparent"
-										style={styles.cell}
-										entering={FadeIn}
-										exiting={FadeOut}>
-										<Money
-											sats={totalBalance}
-											enableHide={true}
-											highlight={true}
-											size="caption13M"
-											unitType="secondary"
-											color="gray1"
-										/>
-									</AnimatedView>
-								)}
-
 								{!showDetails && (
 									<AnimatedView
 										color="transparent"
@@ -246,6 +229,8 @@ const WalletsDetail = ({
 													sats={totalBalance}
 													enableHide={true}
 													highlight={true}
+													symbol={true}
+													symbolColor="white40"
 												/>
 												{hideBalance && (
 													<TouchableOpacity

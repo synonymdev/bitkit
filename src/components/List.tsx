@@ -43,8 +43,32 @@ const _ItemHeader = memo(
 	},
 );
 
+const _ItemFooter = memo(
+	({
+		description,
+		style,
+	}: {
+		description?: string;
+		style?: StyleProp<ViewStyle>;
+	}): ReactElement => {
+		if (!description) {
+			return <View />;
+		}
+
+		return (
+			<View style={[styles.itemFooter, style]}>
+				<Text02S color="gray1">{description}</Text02S>
+			</View>
+		);
+	},
+);
+
 const ItemHeader = memo(_ItemHeader, (prevProps, nextProps) => {
 	return prevProps.title === nextProps.title;
+});
+
+const ItemFooter = memo(_ItemFooter, (prevProps, nextProps) => {
+	return prevProps.description === nextProps.description;
 });
 
 export enum EItemType {
@@ -294,8 +318,9 @@ const Item = memo(_Item, (prevProps, nextProps) => {
 });
 
 export interface IListData {
-	title?: string;
 	data: ItemData[];
+	title?: string;
+	description?: string;
 }
 
 const List = ({
@@ -316,17 +341,13 @@ const List = ({
 					? (e): void => onScrollDownChange(e.nativeEvent.contentOffset.y > 15)
 					: undefined
 			}
-			// @ts-ignore section title is not optional but it works
 			sections={data}
 			extraData={data}
 			keyExtractor={(item, index): string => `${item.title}-${index}`}
 			showsVerticalScrollIndicator={false}
 			renderSectionHeader={useCallback(
-				({
-					section: { title },
-				}: {
-					section: { title: string };
-				}): ReactElement => {
+				({ section }): ReactElement => {
+					const { title } = section;
 					const isFirst = title === data[0].title;
 					return (
 						<ItemHeader
@@ -337,6 +358,10 @@ const List = ({
 				},
 				[data],
 			)}
+			renderSectionFooter={({ section }): ReactElement => {
+				const { description } = section;
+				return <ItemFooter description={description} />;
+			}}
 			renderItem={useCallback(
 				({ item }: { item: ItemData }): ReactElement | null => {
 					return item.hide ? null : <Item {...item} />;
@@ -356,6 +381,13 @@ const styles = StyleSheet.create({
 	itemHeader: {
 		marginBottom: 10,
 		justifyContent: 'center',
+	},
+	itemFooter: {
+		marginTop: 16,
+		paddingBottom: 16,
+		justifyContent: 'center',
+		borderBottomColor: 'rgba(255, 255, 255, 0.1)',
+		borderBottomWidth: 1,
 	},
 	valueText: {
 		marginRight: 8,
@@ -390,7 +422,7 @@ const styles = StyleSheet.create({
 		marginTop: 4,
 	},
 	sectionSpacing: {
-		marginTop: 41,
+		marginTop: 32,
 	},
 });
 

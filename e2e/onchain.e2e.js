@@ -116,15 +116,7 @@ d('Onchain', () => {
 			await element(
 				by.id('NRemove').withAncestor(by.id('SendAmountNumberPad')),
 			).tap();
-			// Switch to BTC
-			await element(by.id('SendNumberPadUnit')).multiTap(2);
-			await expect(element(by.text('0.00199999'))).toBeVisible();
-			// Switch to sats
-			await element(by.id('SendNumberPadUnit')).multiTap(1);
-			await element(
-				by.id('N9').withAncestor(by.id('SendAmountNumberPad')),
-			).multiTap(5);
-			await expect(element(by.text('19 999 999'))).toBeVisible();
+			await expect(element(by.text('199 999'))).toBeVisible();
 			await element(by.id('SendNumberPadMax')).tap();
 			await element(by.id('ContinueAmount')).tap();
 
@@ -156,7 +148,7 @@ d('Onchain', () => {
 				element(by.id('MoneyPrimary').withAncestor(by.id('TotalBalance'))),
 			).toHaveText('0');
 
-			//check Activity
+			// check Activity
 			await element(by.id('AssetsTitle')).swipe('up');
 			await expect(element(by.id('ActivityShort-1'))).toBeVisible();
 			await expect(element(by.id('ActivityShort-2'))).toBeVisible();

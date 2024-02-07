@@ -35,10 +35,13 @@ import { getFiatDisplayValues } from '../../utils/displayValues';
 import { showToast } from '../../utils/notifications';
 import { estimateOrderFee } from '../../utils/blocktank';
 import { startChannelPurchase } from '../../store/utils/blocktank';
-import { EUnit } from '../../store/types/wallet';
+import { EConversionUnit } from '../../store/types/wallet';
 import {
-	primaryUnitSelector,
+	nextUnitSelector,
+	unitSelector,
 	selectedCurrencySelector,
+	conversionUnitSelector,
+	denominationSelector,
 } from '../../store/reselect/settings';
 import { blocktankInfoSelector } from '../../store/reselect/blocktank';
 import {
@@ -50,7 +53,7 @@ import { getNumberPadText } from '../../utils/numberpad';
 import { DEFAULT_CHANNEL_DURATION } from './CustomConfirm';
 import { SPENDING_LIMIT_RATIO } from '../../utils/wallet/constants';
 import { refreshBlocktankInfo } from '../../store/utils/blocktank';
-import useDisplayValues from '../../hooks/displayValues';
+import { useDisplayValues } from '../../hooks/displayValues';
 
 export type TPackage = {
 	id: 'small' | 'medium' | 'big';
@@ -101,10 +104,13 @@ const CustomSetup = ({
 }: LightningScreenProps<'CustomSetup'>): ReactElement => {
 	const { spending, spendingAmount } = route.params;
 	const { t } = useTranslation('lightning');
-	const [nextUnit, switchUnit] = useSwitchUnit();
+	const switchUnit = useSwitchUnit();
 	const { onchainBalance } = useBalance();
 	const { fiatValue: onchainFiatBalance } = useDisplayValues(onchainBalance);
-	const unit = useAppSelector(primaryUnitSelector);
+	const unit = useAppSelector(unitSelector);
+	const nextUnit = useAppSelector(nextUnitSelector);
+	const conversionUnit = useAppSelector(conversionUnitSelector);
+	const denomination = useAppSelector(denominationSelector);
 	const selectedWallet = useAppSelector(selectedWalletSelector);
 	const selectedNetwork = useAppSelector(selectedNetworkSelector);
 	const selectedCurrency = useAppSelector(selectedCurrencySelector);
@@ -125,9 +131,8 @@ const CustomSetup = ({
 		}
 		return (
 			fiatToBitcoinUnit({
-				fiatValue: 989, // 989 instead of 999 to allow for exchange rate variances.
+				amount: 989, // 989 instead of 999 to allow for exchange rate variances.
 				currency: 'USD',
-				unit: EUnit.satoshi,
 			}) - (spendingAmount ?? 0)
 		);
 	}, [blocktankInfo.options.maxChannelSizeSat, spendingAmount]);
@@ -156,14 +161,17 @@ const CustomSetup = ({
 					from: 'USD',
 					to: selectedCurrency,
 				});
-				const satoshis = convertToSats(convertedAmount.fiatValue, EUnit.fiat);
+				const satoshis = convertToSats(
+					convertedAmount.fiatValue,
+					EConversionUnit.fiat,
+				);
 				availSpendingPackages.push({
 					...p,
 					fiatAmount: convertedAmount.fiatValue,
 					satoshis,
 				});
 			} else {
-				const satoshis = convertToSats(spendableBalance, EUnit.fiat);
+				const satoshis = convertToSats(spendableBalance, EConversionUnit.fiat);
 				const convertedAmount = convertCurrency({
 					amount: PACKAGES_SPENDING[i].fiatAmount,
 					from: 'USD',
@@ -201,7 +209,7 @@ const CustomSetup = ({
 				packageFiatAmount = minChannelSizeFiat.fiatValue;
 			}
 
-			const satoshis = convertToSats(packageFiatAmount, EUnit.fiat);
+			const satoshis = convertToSats(packageFiatAmount, EConversionUnit.fiat);
 			const satoshisCapped = Math.min(satoshis, maxReceiving);
 
 			maxReceiving = Number((maxReceiving - delta / 3).toFixed(0));
@@ -219,7 +227,12 @@ const CustomSetup = ({
 	useEffect(() => {
 		if (spending && spendingPackages.length) {
 			const defaultPackage = spendingPackages.find((p) => p.id === 'small')!;
-			const result = getNumberPadText(defaultPackage.satoshis, unit, true);
+			const result = getNumberPadText(
+				defaultPackage.satoshis,
+				denomination,
+				unit,
+				true,
+			);
 			setTextFieldValue(result);
 		}
 
@@ -242,7 +255,7 @@ const CustomSetup = ({
 					? blocktankInfo.options.minChannelSizeSat
 					: 0;
 
-			const result = getNumberPadText(amount, unit);
+			const result = getNumberPadText(amount, denomination, unit);
 			setTextFieldValue(result);
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -255,8 +268,8 @@ const CustomSetup = ({
 	]);
 
 	const amount = useMemo((): number => {
-		return convertToSats(textFieldValue, unit);
-	}, [textFieldValue, unit]);
+		return convertToSats(textFieldValue, conversionUnit);
+	}, [textFieldValue, conversionUnit]);
 
 	const maxAmount = useMemo((): number => {
 		return spending ? onchainBalance : maxChannelSizeSat;
@@ -319,7 +332,7 @@ const CustomSetup = ({
 				? spendingPackages.find((p) => p.id === id)!
 				: receivingPackages.find((p) => p.id === id)!;
 
-			const result = getNumberPadText(pkg.satoshis, unit);
+			const result = getNumberPadText(pkg.satoshis, denomination, unit);
 			setTextFieldValue(result);
 		};
 
@@ -355,11 +368,12 @@ const CustomSetup = ({
 		spending,
 		amount,
 		spendingAmount,
+		denomination,
 		unit,
 	]);
 
 	const onChangeUnit = (): void => {
-		const result = getNumberPadText(amount, nextUnit);
+		const result = getNumberPadText(amount, denomination, nextUnit);
 		setTextFieldValue(result);
 		switchUnit();
 	};
@@ -370,17 +384,17 @@ const CustomSetup = ({
 			const maxPackage = spendingPackages.reduce((a, b) => {
 				return a.fiatAmount > b.fiatAmount ? a : b;
 			});
-			const result = getNumberPadText(maxPackage.satoshis, unit);
+			const result = getNumberPadText(maxPackage.satoshis, denomination, unit);
 			setTextFieldValue(result);
 		} else {
 			// Select highest available receive package.
 			const maxPackage = receivingPackages.reduce((a, b) => {
 				return a.fiatAmount > b.fiatAmount ? a : b;
 			});
-			const result = getNumberPadText(maxPackage.satoshis, unit);
+			const result = getNumberPadText(maxPackage.satoshis, denomination, unit);
 			setTextFieldValue(result);
 		}
-	}, [spending, spendingPackages, receivingPackages, unit]);
+	}, [spending, spendingPackages, receivingPackages, denomination, unit]);
 
 	const onDone = useCallback(() => {
 		setShowNumberPad(false);

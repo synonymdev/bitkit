@@ -10,8 +10,7 @@ import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
 import { TouchableOpacity } from '../../../styles/components';
-import { Caption13Up, Text02B } from '../../../styles/text';
-import { SwitchIcon } from '../../../styles/icons';
+import { Caption13Up } from '../../../styles/text';
 import { IColors } from '../../../styles/colors';
 import GradientView from '../../../components/GradientView';
 import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
@@ -19,19 +18,24 @@ import SafeAreaInset from '../../../components/SafeAreaInset';
 import Money from '../../../components/Money';
 import NumberPadTextField from '../../../components/NumberPadTextField';
 import Button from '../../../components/Button';
+import UnitButton from '../UnitButton';
+import SendNumberPad from '../Send/SendNumberPad';
 import { sendMax } from '../../../utils/wallet/transactions';
 import {
 	selectedNetworkSelector,
 	selectedWalletSelector,
 } from '../../../store/reselect/wallet';
-import { primaryUnitSelector } from '../../../store/reselect/settings';
+import {
+	conversionUnitSelector,
+	denominationSelector,
+	nextUnitSelector,
+	unitSelector,
+} from '../../../store/reselect/settings';
 import { useAppSelector } from '../../../hooks/redux';
 import { useBalance, useSwitchUnit } from '../../../hooks/wallet';
-import { useCurrency } from '../../../hooks/displayValues';
 import { getNumberPadText } from '../../../utils/numberpad';
 import { convertToSats } from '../../../utils/conversion';
 import type { LNURLPayProps } from '../../../navigation/types';
-import SendNumberPad from '../Send/SendNumberPad';
 
 const Amount = ({
 	navigation,
@@ -40,24 +44,26 @@ const Amount = ({
 	const { t } = useTranslation('wallet');
 	const { pParams } = route.params;
 	const { minSendable, maxSendable } = pParams;
-	const { fiatTicker } = useCurrency();
-	const [nextUnit, switchUnit] = useSwitchUnit();
 	const balance = useBalance();
+	const switchUnit = useSwitchUnit();
 	const selectedWallet = useAppSelector(selectedWalletSelector);
 	const selectedNetwork = useAppSelector(selectedNetworkSelector);
-	const unit = useAppSelector(primaryUnitSelector);
+	const unit = useAppSelector(unitSelector);
+	const nextUnit = useAppSelector(nextUnitSelector);
+	const conversionUnit = useAppSelector(conversionUnitSelector);
+	const denomination = useAppSelector(denominationSelector);
 	const [text, setText] = useState('');
 	const [error, setError] = useState(false);
 
 	// Set initial text for NumberPadTextField
 	useEffect(() => {
-		const result = getNumberPadText(minSendable, unit);
+		const result = getNumberPadText(minSendable, denomination, unit);
 		setText(result);
-	}, [selectedWallet, selectedNetwork, minSendable, unit]);
+	}, [selectedWallet, selectedNetwork, minSendable, denomination, unit]);
 
 	const amount = useMemo((): number => {
-		return convertToSats(text, unit);
-	}, [text, unit]);
+		return convertToSats(text, conversionUnit);
+	}, [text, conversionUnit]);
 
 	const max = useMemo(() => {
 		// TODO: get routing fee
@@ -72,19 +78,16 @@ const Amount = ({
 	const isMaxSendAmount = amount === max;
 
 	const onChangeUnit = (): void => {
-		const result = getNumberPadText(amount, nextUnit);
+		const result = getNumberPadText(amount, denomination, nextUnit);
 		setText(result);
 		switchUnit();
 	};
 
 	const onMaxAmount = useCallback((): void => {
-		const result = getNumberPadText(max, unit);
+		const result = getNumberPadText(max, denomination, unit);
 		setText(result);
-		sendMax({
-			selectedWallet,
-			selectedNetwork,
-		});
-	}, [max, selectedNetwork, selectedWallet, unit]);
+		sendMax({ selectedWallet, selectedNetwork });
+	}, [max, denomination, unit, selectedNetwork, selectedWallet]);
 
 	const onError = (): void => {
 		setError(true);
@@ -122,30 +125,18 @@ const Amount = ({
 									color="white10"
 									testID="SendNumberPadMax"
 									onPress={onMaxAmount}>
-									<Text02B
-										size="12px"
-										color={isMaxSendAmount ? 'orange' : 'brand'}>
+									<Caption13Up color={isMaxSendAmount ? 'orange' : 'brand'}>
 										{t('send_max')}
-									</Text02B>
+									</Caption13Up>
 								</TouchableOpacity>
 							</View>
 
 							<View style={styles.actionButtonContainer}>
-								<TouchableOpacity
+								<UnitButton
 									style={styles.actionButton}
-									color="white10"
+									testID="SendNumberPadUnit"
 									onPress={onChangeUnit}
-									testID="SendNumberPadUnit">
-									<SwitchIcon color="brand" width={16.44} height={13.22} />
-									<Text02B
-										style={styles.actionButtonText}
-										size="12px"
-										color="brand">
-										{nextUnit === 'BTC' && fiatTicker}
-										{nextUnit === 'satoshi' && 'BTC'}
-										{nextUnit === 'fiat' && 'sats'}
-									</Text02B>
-								</TouchableOpacity>
+								/>
 							</View>
 						</View>
 					</View>
@@ -216,9 +207,6 @@ const styles = StyleSheet.create({
 		borderRadius: 8,
 		flexDirection: 'row',
 		alignItems: 'center',
-	},
-	actionButtonText: {
-		marginLeft: 11,
 	},
 	buttonContainer: {
 		justifyContent: 'flex-end',

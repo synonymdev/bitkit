@@ -11,8 +11,7 @@ import { useTranslation } from 'react-i18next';
 import { useFocusEffect, useRoute } from '@react-navigation/native';
 
 import { TouchableOpacity } from '../../../styles/components';
-import { Caption13Up, Text02B } from '../../../styles/text';
-import { SwitchIcon } from '../../../styles/icons';
+import { Caption13Up } from '../../../styles/text';
 import { IColors } from '../../../styles/colors';
 import GradientView from '../../../components/GradientView';
 import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
@@ -22,6 +21,7 @@ import ContactImage from '../../../components/ContactImage';
 import NumberPadTextField from '../../../components/NumberPadTextField';
 import SendNumberPad from './SendNumberPad';
 import Button from '../../../components/Button';
+import UnitButton from '../UnitButton';
 import {
 	getTransactionOutputValue,
 	getMaxSendAmount,
@@ -36,13 +36,14 @@ import {
 	utxosSelector,
 } from '../../../store/reselect/wallet';
 import {
-	primaryUnitSelector,
+	unitSelector,
 	coinSelectAutoSelector,
+	denominationSelector,
+	conversionUnitSelector,
+	nextUnitSelector,
 } from '../../../store/reselect/settings';
 import { useAppSelector } from '../../../hooks/redux';
 import { useBalance, useSwitchUnit } from '../../../hooks/wallet';
-import { useCurrency } from '../../../hooks/displayValues';
-import { EUnit } from '../../../store/types/wallet';
 import {
 	setupOnChainTransaction,
 	updateSendTransaction,
@@ -56,13 +57,15 @@ import type { SendScreenProps } from '../../../navigation/types';
 const Amount = ({ navigation }: SendScreenProps<'Amount'>): ReactElement => {
 	const route = useRoute();
 	const { t } = useTranslation('wallet');
-	const { fiatTicker } = useCurrency();
-	const [nextUnit, switchUnit] = useSwitchUnit();
+	const switchUnit = useSwitchUnit();
 	const selectedWallet = useAppSelector(selectedWalletSelector);
 	const selectedNetwork = useAppSelector(selectedNetworkSelector);
 	const coinSelectAuto = useAppSelector(coinSelectAutoSelector);
 	const transaction = useAppSelector(transactionSelector);
-	const unit = useAppSelector(primaryUnitSelector);
+	const unit = useAppSelector(unitSelector);
+	const nextUnit = useAppSelector(nextUnitSelector);
+	const conversionUnit = useAppSelector(conversionUnitSelector);
+	const denomination = useAppSelector(denominationSelector);
 	const isMaxSendAmount = useAppSelector(transactionMaxSelector);
 	const [text, setText] = useState('');
 	const [error, setError] = useState(false);
@@ -106,7 +109,7 @@ const Amount = ({ navigation }: SendScreenProps<'Amount'>): ReactElement => {
 					satsPerByte: transaction.satsPerByte,
 					outputs: [output],
 				});
-				const result = getNumberPadText(0, unit);
+				const result = getNumberPadText(0, denomination, unit);
 				setText(result);
 			}
 		}, [
@@ -116,6 +119,7 @@ const Amount = ({ navigation }: SendScreenProps<'Amount'>): ReactElement => {
 			transaction.lightningInvoice,
 			transaction.outputs,
 			transaction.satsPerByte,
+			denomination,
 			unit,
 			utxos,
 		]),
@@ -123,15 +127,15 @@ const Amount = ({ navigation }: SendScreenProps<'Amount'>): ReactElement => {
 
 	// Set initial text for NumberPadTextField
 	useEffect(() => {
-		const result = getNumberPadText(outputAmount, unit);
+		const result = getNumberPadText(outputAmount, denomination, unit);
 		setText(result);
 		// Only update this if the outputs/wallet/network changes, so we can ignore unit in the dependency array.
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [transaction.outputs, outputAmount, selectedWallet, selectedNetwork]);
 
 	const amount = useMemo((): number => {
-		return convertToSats(text, unit);
-	}, [text, unit]);
+		return convertToSats(text, conversionUnit);
+	}, [text, conversionUnit]);
 
 	const availableAmountProps = {
 		...(error && { color: 'brand' as keyof IColors }),
@@ -152,25 +156,23 @@ const Amount = ({ navigation }: SendScreenProps<'Amount'>): ReactElement => {
 	}, [isMaxSendAmount, amount, availableAmount, transaction?.lightningInvoice]);
 
 	const onChangeUnit = (): void => {
-		const result = getNumberPadText(amount, nextUnit);
+		const result = getNumberPadText(amount, denomination, nextUnit);
 		setText(result);
 		switchUnit();
 	};
 
 	const onMaxAmount = useCallback((): void => {
 		if (!transaction.lightningInvoice) {
-			const result = getNumberPadText(availableAmount, unit);
+			const result = getNumberPadText(availableAmount, denomination, unit);
 			setText(result);
 		}
-		sendMax({
-			selectedWallet,
-			selectedNetwork,
-		});
+		sendMax({ selectedWallet, selectedNetwork });
 	}, [
 		availableAmount,
 		selectedNetwork,
 		selectedWallet,
 		transaction.lightningInvoice,
+		denomination,
 		unit,
 	]);
 
@@ -277,34 +279,23 @@ const Amount = ({ navigation }: SendScreenProps<'Amount'>): ReactElement => {
 									color="white10"
 									testID="SendNumberPadMax"
 									onPress={onMaxAmount}>
-									<Text02B
-										size="12px"
+									<Caption13Up
 										color={
 											isMaxSendAmount || transaction?.lightningInvoice
 												? 'orange'
-												: 'white'
+												: 'brand'
 										}>
 										{t('send_max')}
-									</Text02B>
+									</Caption13Up>
 								</TouchableOpacity>
 							</View>
 
 							<View style={styles.actionButtonContainer}>
-								<TouchableOpacity
+								<UnitButton
 									style={styles.actionButton}
-									color="white10"
+									testID="SendNumberPadUnit"
 									onPress={onChangeUnit}
-									testID="SendNumberPadUnit">
-									<SwitchIcon color="brand" width={16.44} height={13.22} />
-									<Text02B
-										style={styles.actionButtonText}
-										size="12px"
-										color="brand">
-										{nextUnit === EUnit.BTC && fiatTicker}
-										{nextUnit === EUnit.satoshi && 'BTC'}
-										{nextUnit === EUnit.fiat && 'sats'}
-									</Text02B>
-								</TouchableOpacity>
+								/>
 							</View>
 						</View>
 					</View>
@@ -373,9 +364,6 @@ const styles = StyleSheet.create({
 		borderRadius: 8,
 		flexDirection: 'row',
 		alignItems: 'center',
-	},
-	actionButtonText: {
-		marginLeft: 11,
 	},
 	buttonContainer: {
 		justifyContent: 'flex-end',

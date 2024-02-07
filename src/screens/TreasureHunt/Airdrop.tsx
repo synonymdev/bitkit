@@ -15,11 +15,10 @@ import SafeAreaInset from '../../components/SafeAreaInset';
 import Title from './Title';
 import GradientText from './GradientText';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
-import useDisplayValues from '../../hooks/displayValues';
+import { useDisplayValues } from '../../hooks/displayValues';
 import { airdrop } from './prizes';
 import { useLightningMaxInboundCapacity } from '../../hooks/lightning';
 import { getNodeIdFromStorage, waitForLdk } from '../../utils/lightning';
-import { EUnit } from '../../store/types/wallet';
 import { updateTreasureChest } from '../../store/slices/settings';
 import { createLightningInvoice } from '../../store/utils/lightning';
 import { __TREASURE_HUNT_HOST__ } from '../../constants/env';
@@ -60,7 +59,7 @@ const Airdrop = ({
 
 	const prize = winType !== 'empty' ? airdrop[1] : airdrop[0];
 
-	const dv = useDisplayValues(prize.amount, EUnit.satoshi);
+	const dv = useDisplayValues(prize.amount);
 
 	const getLightningInvoice = useCallback(async (): Promise<string> => {
 		const response = await createLightningInvoice({

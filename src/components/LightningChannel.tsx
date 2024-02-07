@@ -50,7 +50,7 @@ const LightningChannel = ({
 						sats={spendingAvailable}
 						color={spendingAvailableColor}
 						size="caption13M"
-						unit={EUnit.satoshi}
+						unit={EUnit.BTC}
 					/>
 				</View>
 				<View style={styles.balance}>
@@ -59,7 +59,7 @@ const LightningChannel = ({
 						sats={receivingAvailable}
 						color={receivingAvailableColor}
 						size="caption13M"
-						unit={EUnit.satoshi}
+						unit={EUnit.BTC}
 					/>
 				</View>
 			</View>

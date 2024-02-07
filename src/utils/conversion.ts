@@ -1,5 +1,5 @@
 import { default as bitcoinUnits } from 'bitcoin-units';
-import { EUnit } from '../store/types/wallet';
+import { EConversionUnit, EDenomination } from '../store/types/wallet';
 import { getSettingsStore } from '../store/helpers';
 import { getExchangeRate } from './exchange-rate';
 import { IFiatDisplayValues } from './displayValues/types';
@@ -8,7 +8,10 @@ import { getFiatDisplayValues } from './displayValues';
 export const btcToSats = (balance: number): number => {
 	try {
 		return Number(
-			bitcoinUnits(balance, 'BTC').to('satoshi').value().toFixed(0),
+			bitcoinUnits(balance, EConversionUnit.BTC)
+				.to(EConversionUnit.satoshi)
+				.value()
+				.toFixed(0),
 		);
 	} catch (e) {
 		return 0;
@@ -22,51 +25,52 @@ export const satsToBtc = (balance: number): number => {
 /**
  * Converts an amount of currency in a specific unit to satoshis
  */
-export const convertToSats = (value: number | string, unit: EUnit): number => {
+export const convertToSats = (
+	value: number | string,
+	unit: EConversionUnit,
+): number => {
 	let amount = Number(value);
 
-	if (unit === EUnit.BTC) {
+	if (unit === EConversionUnit.BTC) {
 		return btcToSats(amount);
 	}
 
-	if (unit === EUnit.fiat) {
-		return fiatToBitcoinUnit({
-			fiatValue: amount,
-			unit: EUnit.satoshi,
-		});
+	if (unit === EConversionUnit.fiat) {
+		return fiatToBitcoinUnit({ amount });
 	}
 
 	return amount;
 };
 
 export const fiatToBitcoinUnit = ({
-	fiatValue,
+	amount,
 	exchangeRate,
 	currency,
-	unit,
 }: {
-	fiatValue: string | number;
+	amount: string | number;
 	exchangeRate?: number;
 	currency?: string;
-	unit?: EUnit;
 }): number => {
+	const denomination = getSettingsStore().denomination;
+
 	if (!currency) {
 		currency = getSettingsStore().selectedCurrency;
 	}
 	if (!exchangeRate) {
 		exchangeRate = getExchangeRate(currency);
 	}
-	if (!unit) {
-		unit = getSettingsStore().unit;
-	}
+	const unit =
+		denomination === EDenomination.modern
+			? EConversionUnit.satoshi
+			: EConversionUnit.BTC;
 
 	try {
 		// this throws if exchangeRate is 0
 		bitcoinUnits.setFiat(currency, exchangeRate);
-		const value = bitcoinUnits(Number(fiatValue), currency)
+		const value = bitcoinUnits(Number(amount), currency)
 			.to(unit)
 			.value()
-			.toFixed(unit === EUnit.satoshi ? 0 : 8); // satoshi cannot be a fractional number
+			.toFixed(denomination === EDenomination.modern ? 0 : 8); // satoshi cannot be a fractional number
 
 		return Number(value);
 	} catch (e) {
@@ -87,13 +91,11 @@ export const convertCurrency = ({
 	to: string;
 }): IFiatDisplayValues => {
 	const sats = fiatToBitcoinUnit({
-		fiatValue: amount,
-		unit: EUnit.satoshi,
+		amount,
 		currency: from,
 	});
 	return getFiatDisplayValues({
 		satoshis: sats,
-		unit: EUnit.satoshi,
 		currency: to,
 	});
 };

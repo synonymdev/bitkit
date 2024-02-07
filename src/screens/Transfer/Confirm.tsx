@@ -14,7 +14,7 @@ import SwipeToConfirm from '../../components/SwipeToConfirm';
 import PieChart from '../Lightning/PieChart';
 import { confirmChannelPurchase } from '../../store/utils/blocktank';
 import { useBalance } from '../../hooks/wallet';
-import useDisplayValues, { useCurrency } from '../../hooks/displayValues';
+import { useCurrency, useDisplayValues } from '../../hooks/displayValues';
 import type { TransferScreenProps } from '../../navigation/types';
 import { blocktankOrdersSelector } from '../../store/reselect/blocktank';
 import {

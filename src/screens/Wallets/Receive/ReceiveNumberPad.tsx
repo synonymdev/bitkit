@@ -4,8 +4,10 @@ import NumberPad from '../../../components/NumberPad';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 import { convertToSats } from '../../../utils/conversion';
 import { handleNumberPadPress } from '../../../utils/numberpad';
-import { EUnit } from '../../../store/types/wallet';
-import { primaryUnitSelector } from '../../../store/reselect/settings';
+import {
+	conversionUnitSelector,
+	numberPadSelector,
+} from '../../../store/reselect/settings';
 import { updateInvoice } from '../../../store/slices/receive';
 import { receiveSelector } from '../../../store/reselect/receive';
 import { vibrate } from '../../../utils/helpers';
@@ -17,11 +19,8 @@ const ReceiveNumberPad = (): ReactElement => {
 	const [errorKey, setErrorKey] = useState<string>();
 	const dispatch = useAppDispatch();
 	const invoice = useAppSelector(receiveSelector);
-	const unit = useAppSelector(primaryUnitSelector);
-
-	const maxDecimals = unit === EUnit.BTC ? 8 : 2;
-	const maxLength = 10;
-	const numberPadType = unit === EUnit.satoshi ? 'integer' : 'decimal';
+	const conversionUnit = useAppSelector(conversionUnitSelector);
+	const { maxLength, maxDecimals, type } = useAppSelector(numberPadSelector);
 
 	const onPress = (key: string): void => {
 		const numberPadText = handleNumberPadPress(key, invoice.numberPadText, {
@@ -29,7 +28,7 @@ const ReceiveNumberPad = (): ReactElement => {
 			maxDecimals,
 		});
 
-		const amount = convertToSats(numberPadText, unit);
+		const amount = convertToSats(numberPadText, conversionUnit);
 
 		if (amount <= MAX_AMOUNT) {
 			dispatch(updateInvoice({ amount, numberPadText }));
@@ -40,9 +39,7 @@ const ReceiveNumberPad = (): ReactElement => {
 		}
 	};
 
-	return (
-		<NumberPad type={numberPadType} errorKey={errorKey} onPress={onPress} />
-	);
+	return <NumberPad type={type} errorKey={errorKey} onPress={onPress} />;
 };
 
 export default memo(ReceiveNumberPad);

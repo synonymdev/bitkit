@@ -11,8 +11,12 @@ import {
 import { Display } from '../styles/text';
 import Money from './Money';
 import MoneySymbol from './MoneySymbol';
-import { EUnit } from '../store/types/wallet';
-import { primaryUnitSelector } from '../store/reselect/settings';
+import { EDenomination, EUnit } from '../store/types/wallet';
+import {
+	conversionUnitSelector,
+	denominationSelector,
+	unitSelector,
+} from '../store/reselect/settings';
 import { convertToSats } from '../utils/conversion';
 import {
 	getDisplayValues,
@@ -34,13 +38,15 @@ const NumberPadTextField = ({
 	testID?: string;
 	onPress?: () => void;
 }): ReactElement => {
-	const unit = useAppSelector(primaryUnitSelector);
-	const satoshis = convertToSats(value, unit);
+	const unit = useAppSelector(unitSelector);
+	const conversionUnit = useAppSelector(conversionUnitSelector);
+	const denomination = useAppSelector(denominationSelector);
+	const satoshis = convertToSats(value, conversionUnit);
 
 	let placeholder = '0';
 	let placeholderFractional = '';
 
-	if (unit === EUnit.BTC) {
+	if (denomination === EDenomination.classic) {
 		placeholderFractional = '00000000';
 	}
 	if (unit === EUnit.fiat) {
@@ -72,11 +78,8 @@ const NumberPadTextField = ({
 				value = `${fiatWhole}.${fractional.substring(0, 2)}`;
 			}
 		} else {
-			if (unit === EUnit.satoshi) {
-				const displayValue = getDisplayValues({
-					satoshis: Number(value),
-					unit: EUnit.satoshi,
-				});
+			if (denomination === EDenomination.modern && unit === EUnit.BTC) {
+				const displayValue = getDisplayValues({ satoshis: Number(value) });
 				value = displayValue.bitcoinFormatted;
 
 				placeholder = '';
