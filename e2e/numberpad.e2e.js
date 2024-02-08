@@ -58,7 +58,9 @@ d('NumberPad', () => {
 		await element(
 			by.id('NRemove').withAncestor(by.id('ReceiveNumberPad')),
 		).multiTap(8);
-		await expect(element(by.text('0.00'))).toBeVisible();
+		await expect(
+			element(by.text('0.00').withAncestor(by.id('ReceiveNumberPadTextField'))),
+		).toBeVisible();
 		await element(by.id('N0').withAncestor(by.id('ReceiveNumberPad'))).multiTap(
 			2,
 		);
