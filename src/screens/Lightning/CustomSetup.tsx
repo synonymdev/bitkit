@@ -274,6 +274,9 @@ const CustomSetup = ({
 		}
 
 		const getChannelOpenCost = async (): Promise<void> => {
+			if (amount === 0) {
+				return;
+			}
 			const res = await estimateOrderFee({
 				lspBalanceSat: amount,
 				channelExpiryWeeks: DEFAULT_CHANNEL_DURATION,
