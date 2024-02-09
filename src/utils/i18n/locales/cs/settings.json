@@ -34,13 +34,16 @@
     "unit_title": "Výchozí jednotka",
     "unit_display": "Zobrazit částky v",
     "unit_bitcoin": "Bitcoin",
-    "unit_satoshis": "Satoshi",
+    "unit_note": "Tip: Klepnutím na zůstatek v peněžence můžete rychle přepínat mezi bitcoiny a {currency}.",
+    "denomination_label": "Nominální hodnota bitcoinu",
+    "denomination_modern": "Moderní (₿ 10 000)",
+    "denomination_classic": "Klasický (₿ 0.00010000)",
     "speed": "Rychlost transakce",
     "speed_title": "Rychlost transakce",
     "speed_default": "Výchozí rychlost transakce",
     "speed_fee_custom": "Nastavit vlastní poplatek",
-    "speed_fee_total": "{feeSats} satů za průměrnou transakci",
-    "speed_fee_total_fiat": "{feeSats} satů za průměrnou transakci ({fiatSymbol}{fiatFormatted})",
+    "speed_fee_total": "{feeSats} bitcoinu za průměrnou transakci",
+    "speed_fee_total_fiat": "{feeSats} bitcoinů za průměrnou transakci ({fiatSymbol}{fiatFormatted} ).",
     "tags": "Tagy",
     "tags_previously": "Dříve použité tagy",
     "widgets": "Widgety"
@@ -85,6 +88,7 @@
     "text": "Potřebujete pomoc? Nahlaste svůj problém přímo v Bitkitu, navštivte centrum nápovědy nebo nás kontaktujte prostřednictvím našich sociálních kanálů.",
     "report": "Nahlásit problém",
     "help": "Centrum pomoci",
+    "status": "Stav aplikace",
     "help_url": "https://help.bitkit.to",
     "report_text": "Popište prosím problém, se kterým se setkáváte, nebo položte obecnou otázku.",
     "label_address": "E-mailová adresa",
@@ -98,6 +102,39 @@
     "title_unsuccess": "Odeslání se nezdařilo",
     "text_unsuccess": "Něco se pokazilo při pokusu o odeslání vašeho problému nebo otázky. Prosím, zkuste to znovu.",
     "text_unsuccess_button": "Zkusit znovu"
+  },
+  "status": {
+    "title": "Stav aplikace",
+    "internet": {
+      "title": "Internet",
+      "ready": "Připojeno",
+      "pending": "Obnovování spojení...",
+      "error": "Odpojeno"
+    },
+    "bitcoin_node": {
+      "title": "Bitcoinový uzel",
+      "ready": "Připojeno",
+      "pending": "Připojování...",
+      "error": "Nelze se připojit k Electrum"
+    },
+    "lightning_node": {
+      "title": "Lightning uzel",
+      "ready": "Synchronizováno",
+      "pending": "Synchronizace...",
+      "error": "Nemohlo být spuštěno"
+    },
+    "lightning_connection": {
+      "title": "Připojení lightning",
+      "ready": "Otevřít",
+      "pending": "Otevírání...",
+      "error": "Žádná otevřená spojení"
+    },
+    "full_backup": {
+      "title": "Nejnovější úplná záloha dat",
+      "ready": "Zálohováno",
+      "pending": "Zálohování...",
+      "error": "Selhalo dokončení úplné zálohy"
+    }
   },
   "adv": {
     "section_payments": "Platby",
@@ -165,7 +202,7 @@
     "no_addrs_str": "Při hledání „{searchTxt}“ nebyly nalezeny žádné adresy",
     "rescan_error": "Obnovení skenování se nezdařilo",
     "rescan_error_description": "Bitkit nebyl schopen zkontrolovat zůstatky adres.",
-    "spend_number": "{count, plural, one {Strávit {fundsToSpend} sats Od # adresa} few {Strávit {fundsToSpend} sats Od # adresy} many {Strávit {fundsToSpend} sats Od # adresy} other {Utratit {fundsToSpend} satů z # adresy}}",
+    "spend_number": "{count, plural, one {Utratit {fundsToSpend} bitcoin Od # adresa} few {Utratit {fundsToSpend} bitcoin Z # adres} many {Utratit {fundsToSpend} bitcoin Z # adres} other {Utratit {fundsToSpend} bitcoin Z # addresses}}",
     "spend_all": "{count, plural, one {Utratit všechny prostředky z # adresa} few {Utratit všechny prostředky z # adres} many {Utratit všechny prostředky z # adres} other {Utratit všechny prostředky z # adres}}",
     "index": "Index: {index}",
     "path": "Path: {path}",
@@ -174,7 +211,7 @@
     "private_key": "Privátní klíč: {privateKey}",
     "addr_change": "Změnit adresu",
     "addr_receiving": "Adresy pro příjem",
-    "sats_found": "{totalBalance} satů nalezeno",
+    "sats_found": "nalezeno {totalBalance} bitcoinů",
     "gen_20": "Vygenerovat 20 dalších",
     "check_balances": "Kontrola zůstatků",
     "copied": "Zkopírováno do schránky"

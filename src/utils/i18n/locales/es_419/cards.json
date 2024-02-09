@@ -43,8 +43,7 @@
     "description": "Agrega tus detalles"
   },
   "buyBitcoin": {
-    "title": "Obtenga Bitcoin",
-    "description": "Apilar algunos sats"
+    "title": "Obtenga Bitcoin"
   },
   "lightning_no_funds_title": "Sin fondos, todavia",
   "lightning_no_funds_desc": "Antes de que pueda configurar su saldo de gasto instantáneo, necesita enviar un poco de Bitcoin on-chain a su monedero.",

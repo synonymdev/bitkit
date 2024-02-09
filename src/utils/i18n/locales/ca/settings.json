@@ -18,7 +18,6 @@
     "unit": "Unitat per defecte",
     "unit_title": "Unitat per defecte",
     "unit_bitcoin": "Bitcoin",
-    "unit_satoshis": "Satoshis",
     "speed_fee_custom": "Estableix una tarifa personalitzada",
     "tags": "Etiquetes",
     "tags_previously": "Etiquetes prèviament utilitzades",
@@ -48,6 +47,11 @@
     "text_button": "Envia",
     "text_success_button": "OK",
     "text_unsuccess_button": "Torna a intentar"
+  },
+  "status": {
+    "lightning_node": {
+      "title": "Node de Lightning"
+    }
   },
   "adv": {
     "section_payments": "Pagaments",

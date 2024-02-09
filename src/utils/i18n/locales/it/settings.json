@@ -15,7 +15,7 @@
     "text": "Bitkit ti consegna le chiavi del tuo denaro, del tuo profilo, dei tuoi contatti e dei tuoi account web.\n\nQuesta <easterEgg>Orange-Pillazione</easterEgg> è stata accuratamente realizzata da Synonym Software Ltd.",
     "support": "Supporto",
     "report_bug": "Segnala un bug o contribuisci",
-    "legal": "Termini di Utilizzo",
+    "legal": "Termini di Servizio",
     "version": "Versione",
     "op_title": "Orange Pillato",
     "op_text": "Chi <brand>Orange-Pillerai?</brand>",
@@ -34,13 +34,10 @@
     "unit_title": "Unità predefinita",
     "unit_display": "Visualizza gli importi in",
     "unit_bitcoin": "Bitcoin",
-    "unit_satoshis": "Satoshis",
     "speed": "Velocità transazione",
     "speed_title": "Velocità Transazione",
     "speed_default": "Velocità Transazione di Default",
     "speed_fee_custom": "Imposta commissione personalizzata",
-    "speed_fee_total": "{feeSats} sats per la transazione media",
-    "speed_fee_total_fiat": "{feeSats} sats per la transazione media ({fiatSymbol}{fiatFormatted} )",
     "tags": "Tag",
     "tags_previously": "Tag usati in precedenza",
     "widgets": "Widget"
@@ -85,6 +82,7 @@
     "text": "Hai bisogno di aiuto? Segnala il tuo problema da Bitkit, visita il centro assistenza o contattaci sui nostri canali social.",
     "report": "Segnala un problema",
     "help": "Centro assistenza",
+    "status": "Stato dell'app",
     "help_url": "https://help.bitkit.to",
     "report_text": "Descrivi il problema che stai riscontrando o fai una domanda generale.",
     "label_address": "Indirizzo e-mail",
@@ -98,6 +96,39 @@
     "title_unsuccess": "Impossibile inviare",
     "text_unsuccess": "Qualcosa è andato storto durante il tentativo di inviare il problema o la domanda. Per favore riprova.",
     "text_unsuccess_button": "Riprova"
+  },
+  "status": {
+    "title": "Stato dell'app",
+    "internet": {
+      "title": "Internet",
+      "ready": "Connesso",
+      "pending": "Riconnessione...",
+      "error": "Disconnesso"
+    },
+    "bitcoin_node": {
+      "title": "Nodo Bitcoin",
+      "ready": "Connesso",
+      "pending": "In connessione...",
+      "error": "Impossibile connettersi ad Electrum"
+    },
+    "lightning_node": {
+      "title": "Nodo Lightning",
+      "ready": "Sincronizzato",
+      "pending": "Sincronizzazione...",
+      "error": "Impossibile avviare"
+    },
+    "lightning_connection": {
+      "title": "Connessione Lightning",
+      "ready": "Aperta",
+      "pending": "In apertura...",
+      "error": "Nessuna connessione aperta"
+    },
+    "full_backup": {
+      "title": "Ultimo backup completo dei dati",
+      "ready": "Backup eseguito",
+      "pending": "Backup in esecuzione...",
+      "error": "Impossibile completare un backup completo"
+    }
   },
   "adv": {
     "section_payments": "Pagamenti",
@@ -165,7 +196,6 @@
     "no_addrs_str": "Nessun indirizzo trovato durante la ricerca di \"{searchTxt}\".",
     "rescan_error": "Nuova scansione non riuscita",
     "rescan_error_description": "Bitkit non è stato in grado di controllare i saldi degli indirizzi.",
-    "spend_number": "{count, plural, one {Spendi {fundsToSpend} sats Da # indirizzo} many {Spendere {fundsToSpend} sats Da # indirizzi} other {Spendi {fundsToSpend} sats da # indirizzi}}",
     "spend_all": "{count, plural, one {Spendere tutti i fondi da # indirizzo} many {Spendere tutti i fondi da # indirizzi} other {Spendi tutti i fondi da # indirizzi}}",
     "index": "Indice: {index}",
     "path": "Percorso: {path}",
@@ -174,7 +204,6 @@
     "private_key": "Chiave Privata: {privateKey}",
     "addr_change": "Cambia Indirizzi",
     "addr_receiving": "Indirizzi di ricezione",
-    "sats_found": "{totalBalance} sats trovati",
     "gen_20": "Genera altri 20",
     "check_balances": "Controlla Saldi",
     "copied": "Copiato negli appunti"

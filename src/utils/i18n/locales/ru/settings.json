@@ -27,7 +27,6 @@
     "currency_most_used": "Наиболее Используемое",
     "currency_other": "Другие",
     "unit_bitcoin": "Биткоин",
-    "unit_satoshis": "Сатоши",
     "speed": "Скорость транзакций",
     "speed_title": "Скорость Транзакций",
     "speed_default": "Значение По Умолчанию",
@@ -60,6 +59,11 @@
     "text_button": "Отправить",
     "text_success_button": "Ок",
     "text_unsuccess_button": "Попробовать Снова"
+  },
+  "status": {
+    "lightning_node": {
+      "title": "Лайтнинг Нода"
+    }
   },
   "adv": {
     "section_payments": "Платежи",
@@ -123,7 +127,6 @@
     "private_key": "Закрытый ключ: {privateKey}",
     "addr_change": "Адреса Сдачи",
     "addr_receiving": "Адреса Получения",
-    "sats_found": "Найдено {totalBalance} сатоши",
     "gen_20": "Еще 20",
     "check_balances": "Проверить баланс",
     "copied": "Скопировано в буфер"

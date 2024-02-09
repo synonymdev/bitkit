@@ -43,8 +43,7 @@
     "description": "Dodaj swoje detale"
   },
   "buyBitcoin": {
-    "title": "Kup Bitcoina",
-    "description": "Stackuj trochę satów"
+    "title": "Kup Bitcoina"
   },
   "lightning_no_funds_title": "Brak funduszy",
   "lightning_no_funds_desc": "Zanim będziesz móc ustawić natychmiastowe wypłaty, potrzebujesz dokonać wpłaty on-chain na swój portfel",

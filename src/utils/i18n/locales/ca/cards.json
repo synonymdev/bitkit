@@ -43,8 +43,7 @@
     "description": "Afegeix els teus detalls"
   },
   "buyBitcoin": {
-    "title": "Obtenir bitcoin",
-    "description": "Apilar alguns sats"
+    "title": "Obtenir bitcoin"
   },
   "lightning_no_funds_title": "Encara sense fons",
   "lightning_no_funds_desc": "Abans de poder configurar el vostre saldo de despesa instantània, heu d'enviar una mica de Bitcoin onchain al vostre moneder",

@@ -43,8 +43,7 @@
     "description": "Προσθέστε τα στοιχεία σας"
   },
   "buyBitcoin": {
-    "title": "Πάρτε Bitcoin",
-    "description": "Πάρτε λίγα sats"
+    "title": "Πάρτε Bitcoin"
   },
   "lightning_no_funds_title": "Δεν υπάρχουν ακόμη κεφάλαια",
   "lightning_no_funds_desc": "Για να μπορέσετε να ρυθμίσετε τις πληρωμές σας, πρέπει να στείλετε Bitcoin στο πορτοφόλι σας.",

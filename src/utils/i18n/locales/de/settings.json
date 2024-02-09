@@ -38,6 +38,11 @@
     "text_success_button": "OK",
     "text_unsuccess_button": "Versuche es nochmal"
   },
+  "status": {
+    "lightning_node": {
+      "title": "Lightning Node"
+    }
+  },
   "adv": {
     "section_other": "Andere",
     "address_type": "Bitcoin Adressen-Typ",

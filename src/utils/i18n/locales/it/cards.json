@@ -43,8 +43,7 @@
     "description": "Aggiungi i tuoi dettagli"
   },
   "buyBitcoin": {
-    "title": "Ottieni Bitcoin",
-    "description": "Stack sats"
+    "title": "Ottieni Bitcoin"
   },
   "btFailed": {
     "title": "Setup Fallito",

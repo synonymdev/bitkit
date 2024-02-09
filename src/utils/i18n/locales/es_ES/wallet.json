@@ -128,15 +128,13 @@
   "details_spending_subtitle": "BTC instantáneo",
   "tx_invalid": "Transacción no válida",
   "boost": "Impulso",
-  "boost_title": "Impulsar transacción",
   "boost_success_title": "Impulsada!",
   "boost_success_msg": "La transacción se ha impulsado satisfactoriamente.",
   "boost_error_title": "Impulso fallido",
   "boost_fee_custom": "Su transacción puede liquidarse más rápidamente si incluye una tasa de red adicional. Establezca su tarifa personalizada a continuación.",
   "boost_fee_recomended": "Su transacción puede liquidarse más rápidamente si incluye una comisión de red adicional. He aquí una recomendación:",
   "boost_swipe": "Deslizar para impulsar",
-  "payment_received": "Pago recibido",
-  "instant_payment_received": "Pago instantáneo recibido",
+  "payment_received": "Bitcoin recibido",
   "payment_confirming": "Confirmando",
   "lnurl_p_title": "Enviar Bitcoin"
 }
