@@ -43,7 +43,8 @@
     "description": "Aggiungi i tuoi dettagli"
   },
   "buyBitcoin": {
-    "title": "Ottieni Bitcoin"
+    "title": "Ottieni Bitcoin",
+    "description": "Acquista dei bitcoin"
   },
   "btFailed": {
     "title": "Setup Fallito",

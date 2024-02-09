@@ -6,6 +6,8 @@
   "yes_proceed": "Sì, Procedi",
   "try_again": "Riprova",
   "dialog_cancel": "No, Annulla",
+  "sat_vbyte": "bitcoin / vbyte",
+  "sat_vbyte_compact": "bitcoin/vbyte",
   "edit": "Modifica",
   "copy": "Copia",
   "share": "Condividi",

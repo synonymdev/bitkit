@@ -78,6 +78,7 @@
   "lightning_recovery_title": "Recupero Lightning",
   "lightning_recovery_desc": "Attenzione: ciò forzerà la chiusura di tutti i tuoi canali ({channelCount}) e recupererà tutti i fondi sul tuo portafoglio on-chain. Utilizza questa opzione solo se non riesci ad accedere al tuo portafoglio Lightning a causa di un errore di ripristino.",
   "lightning_recovery_success": "Lightning ripristinato con successo",
+  "lightning_recovery_success_message": "Saldo in sospeso di {sats} bitcoin recuperato. Riapri l'app per vedere il saldo recuperato.",
   "lightning_recovery_error": "Errore nel ripristino Lightning",
   "lightning_recovery_no_channels": "Nessun canale Lightning trovato in questo backup da ripristinare.",
   "display_seed": "Mostra la Seed Phrase",
