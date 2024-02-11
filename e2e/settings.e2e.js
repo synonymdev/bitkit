@@ -1,5 +1,4 @@
 import jestExpect from 'expect';
-import parse from 'url-parse';
 
 import {
 	sleep,
@@ -537,12 +536,8 @@ d('Settings', () => {
 				by.id('ConnectedUrl'),
 			).getAttributes();
 
-			// add port to url
-			const url = parse(origRelay, true);
-			url.set('hostname', url.hostname + ':443');
-			const relayUrl = url.toString();
-
-			await element(by.id('UrlInput')).replaceText(relayUrl);
+			const alteredRelay = origRelay + '/';
+			await element(by.id('UrlInput')).replaceText(alteredRelay);
 			await element(by.id('Status')).tap(); // close keyboard
 			await element(by.id('ConnectToUrl')).tap();
 			await sleep(1000);
@@ -552,7 +547,7 @@ d('Settings', () => {
 				by.id('ConnectedUrl'),
 			).getAttributes();
 
-			jestExpect(newRelay).toBe(relayUrl);
+			jestExpect(newRelay).toBe(alteredRelay);
 
 			// now change it back
 			await element(by.id('UrlInput')).replaceText(origRelay);

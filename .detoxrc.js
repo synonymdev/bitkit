@@ -1,3 +1,6 @@
+// run iPhone 14 on local machine, iPhone 15 Pro on mac mini
+const iOSDevice = process.env.MACMINI ? 'iPhone 15 Pro' : 'iPhone 14';
+
 module.exports = {
 	testRunner: {
 		$0: 'jest',
@@ -37,7 +40,7 @@ module.exports = {
 		simulator: {
 			type: 'ios.simulator',
 			device: {
-				type: 'iPhone 14 Pro',
+				type: iOSDevice,
 			},
 		},
 		emulator: {

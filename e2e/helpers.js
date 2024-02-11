@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 
-const LOCK_PATH = '/tmp/';
+const LOCK_PATH = '/tmp/lock/';
 
 export const bitcoinURL = 'http://polaruser:polarpass@127.0.0.1:43782';
 export const electrumHost = '127.0.0.1';
@@ -31,6 +31,7 @@ export const markComplete = (name) => {
 		return;
 	}
 
+	fs.mkdirSync(LOCK_PATH, { recursive: true });
 	fs.writeFileSync(path.join(LOCK_PATH, 'lock-' + name), '1');
 };
 
@@ -97,6 +98,9 @@ export const launchAndWait = async () => {
 	});
 
 	// wait for AssetsTitle to appear and be accessible
+	await waitFor(element(by.id('AssetsTitle')))
+		.toBeVisible()
+		.withTimeout(300000); // 5 min
 	for (let i = 0; i < 60; i++) {
 		try {
 			await element(by.id('AssetsTitle')).tap();
