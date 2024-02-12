@@ -1,6 +1,18 @@
 import { err, ok, Result } from '@synonymdev/result';
+import { CJitStateEnum } from '@synonymdev/blocktank-lsp-http-client/dist/shared/CJitStateEnum';
+import {
+	BtOrderState,
+	BtPaymentState,
+	IBtOrder,
+	ICJitEntry,
+} from '@synonymdev/blocktank-lsp-http-client';
 
-import { resetSendTransaction, updateSendTransaction } from '../actions/wallet';
+import {
+	addTransfer,
+	removeTransfer,
+	resetSendTransaction,
+	updateSendTransaction,
+} from '../actions/wallet';
 import { setLightningSetupStep } from '../slices/user';
 import {
 	getBlocktankStore,
@@ -36,14 +48,7 @@ import { showToast } from '../../utils/notifications';
 import { getDisplayValues } from '../../utils/displayValues';
 import i18n from '../../utils/i18n';
 import { refreshLdk } from '../../utils/lightning';
-import { TWalletName } from '../types/wallet';
-import {
-	BtOrderState,
-	BtPaymentState,
-	IBtOrder,
-	ICJitEntry,
-} from '@synonymdev/blocktank-lsp-http-client';
-import { CJitStateEnum } from '@synonymdev/blocktank-lsp-http-client/dist/shared/CJitStateEnum';
+import { ETransferStatus, ETransferType, TWalletName } from '../types/wallet';
 import {
 	addPaidBlocktankOrder,
 	resetBlocktankOrders,
@@ -349,11 +354,11 @@ export const startChannelPurchase = async ({
  * @returns {Promise<Result<string>>}
  */
 export const confirmChannelPurchase = async ({
-	orderId,
+	order,
 	selectedNetwork,
 	selectedWallet,
 }: {
-	orderId: string;
+	order: IBtOrder;
 	selectedNetwork?: EAvailableNetwork;
 	selectedWallet?: TWalletName;
 }): Promise<Result<{ txid: string; useUnconfirmedInputs: boolean }>> => {
@@ -364,7 +369,7 @@ export const confirmChannelPurchase = async ({
 		selectedWallet = getSelectedWallet();
 	}
 
-	const rawTx = await createTransaction({});
+	const rawTx = await createTransaction();
 	if (rawTx.isErr()) {
 		showToast({
 			type: 'error',
@@ -391,12 +396,21 @@ export const confirmChannelPurchase = async ({
 		});
 		return err(broadcastResponse.error.message);
 	}
-	dispatch(addPaidBlocktankOrder({ orderId, txid: broadcastResponse.value }));
+	dispatch(
+		addPaidBlocktankOrder({ orderId: order.id, txId: broadcastResponse.value }),
+	);
+	addTransfer({
+		txId: broadcastResponse.value,
+		type: ETransferType.open,
+		status: ETransferStatus.pending,
+		orderId: order.id,
+		amount: order.clientBalanceSat,
+	});
 
 	// Reset tx data.
 	await resetSendTransaction();
 
-	watchOrder(orderId).then();
+	watchOrder(order.id).then();
 	dispatch(setLightningSetupStep(0));
 	refreshWallet({
 		onchain: true,
@@ -413,6 +427,8 @@ export const confirmChannelPurchase = async ({
  * @param {IBtOrder} order
  */
 const handleOrderStateChange = (order: IBtOrder): void => {
+	const paymentTxId = order.payment.onchain.transactions[0].txId;
+
 	// queued for opening
 	if (!order.channel?.state) {
 		dispatch(setLightningSetupStep(2));
@@ -430,6 +446,7 @@ const handleOrderStateChange = (order: IBtOrder): void => {
 			title: i18n.t('lightning:order_given_up_title'),
 			description: i18n.t('lightning:order_given_up_msg'),
 		});
+		removeTransfer(paymentTxId);
 	}
 
 	// order expired
@@ -439,12 +456,13 @@ const handleOrderStateChange = (order: IBtOrder): void => {
 			title: i18n.t('lightning:order_expired_title'),
 			description: i18n.t('lightning:order_expired_msg'),
 		});
+		removeTransfer(paymentTxId);
 	}
 
 	// new channel open
 	if (order.state === BtOrderState.OPEN) {
 		// refresh LDK after channel open
-		refreshLdk({});
+		refreshLdk();
 	}
 };
 

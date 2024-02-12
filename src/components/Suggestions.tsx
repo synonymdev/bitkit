@@ -13,7 +13,7 @@ import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { Caption13Up } from '../styles/text';
 import { View as ThemedView } from '../styles/components';
 import { showToast } from '../utils/notifications';
-import { TTodoType } from '../store/types/todos';
+import { ITodo, TTodoType } from '../store/types/todos';
 import { channelsNotificationsShown, hideTodo } from '../store/slices/todos';
 import { showBottomSheet } from '../store/utils/ui';
 import {
@@ -114,9 +114,11 @@ const Suggestions = (): ReactElement => {
 	);
 
 	const handleRenderItem = useCallback(
-		({ item }): ReactElement => {
+		// eslint-disable-next-line react/no-unused-prop-types
+		({ item }: { item: ITodo }): ReactElement => {
 			const title = t(`${item.id}.title`);
-			let description = t(`${item.id}.description`);
+			const duration = item.duration;
+			let description = t(`${item.id}.description`, { duration });
 
 			if (item.id === 'lightningSettingUp') {
 				description = t(`${item.id}.description${lightningSettingUpStep}`);

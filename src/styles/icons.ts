@@ -132,8 +132,8 @@ export const SettingsIcon = styled(SvgXml).attrs((props) => ({
 
 export const TransferIcon = styled(SvgXml).attrs((props) => ({
 	xml: transferIcon(props.color ? props.theme.colors[props.color] : 'white'),
-	height: props.height ?? '19.8px',
-	width: props.width ?? '21.6px',
+	height: props.height ?? '17px',
+	width: props.width ?? '16px',
 }))<IconProps>((props) => ({
 	color: props.color ? props.theme.colors[props.color] : 'white',
 }));

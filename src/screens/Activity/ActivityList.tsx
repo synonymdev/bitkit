@@ -22,7 +22,7 @@ import {
 } from 'react-native-gesture-handler';
 import { useTranslation } from 'react-i18next';
 
-import { Caption13Up, Subtitle, Text01S } from '../../styles/text';
+import { Caption13Up, Text01S } from '../../styles/text';
 import { refreshWallet } from '../../utils/wallet';
 import {
 	groupActivityItems,
@@ -35,20 +35,11 @@ import { activityItemsSelector } from '../../store/reselect/activity';
 import { tagsSelector } from '../../store/reselect/metadata';
 import { IActivityItem } from '../../store/types/activity';
 
-const ListHeaderComponent = memo(
-	(): ReactElement => {
-		const { t } = useTranslation('wallet');
-		return <Subtitle style={styles.title}>{t('activity')}</Subtitle>;
-	},
-	() => true,
-);
-
 const ActivityList = ({
 	style,
 	panGestureRef,
 	contentContainerStyle,
 	progressViewOffset,
-	showTitle = true,
 	filter = {},
 	onScroll,
 }: {
@@ -56,7 +47,6 @@ const ActivityList = ({
 	panGestureRef?: MutableRefObject<GestureType>;
 	contentContainerStyle?: StyleProp<ViewStyle>;
 	progressViewOffset?: number;
-	showTitle?: boolean;
 	filter?: TActivityFilter;
 	onScroll?: (event: NativeSyntheticEvent<NativeScrollEvent>) => void;
 }): ReactElement => {
@@ -133,7 +123,6 @@ const ActivityList = ({
 					progressViewOffset={progressViewOffset}
 				/>
 			}
-			ListHeaderComponent={showTitle ? ListHeaderComponent : undefined}
 			ListEmptyComponent={<Text01S color="gray1">{t('activity_no')}</Text01S>}
 		/>
 	);
@@ -146,9 +135,6 @@ const styles = StyleSheet.create({
 	},
 	category: {
 		marginBottom: 16,
-	},
-	title: {
-		marginBottom: 23,
 	},
 });
 

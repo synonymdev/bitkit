@@ -158,11 +158,11 @@ const WalletsDetail = ({
 		<AnimatedView style={styles.container}>
 			<View color="transparent" style={styles.txListContainer}>
 				<ActivityList
-					onScroll={onScroll}
 					style={styles.txList}
 					contentContainerStyle={activityPadding}
 					progressViewOffset={radiusContainerHeight + 10}
 					filter={{ includeTransfers: true }}
+					onScroll={onScroll}
 				/>
 			</View>
 			<View color="transparent" style={styles.radiusContainer}>
@@ -182,7 +182,6 @@ const WalletsDetail = ({
 
 						<AnimatedView
 							color="transparent"
-							//@ts-ignore
 							style={[styles.header, { minHeight: height }]}
 							onLayout={(e): void => {
 								const hh = e.nativeEvent.layout.height;
@@ -261,7 +260,7 @@ const styles = StyleSheet.create({
 		flex: 1,
 	},
 	assetDetailContainer: {
-		paddingBottom: 20,
+		paddingBottom: 16,
 	},
 	radiusContainer: {
 		overflow: 'hidden',
@@ -278,7 +277,7 @@ const styles = StyleSheet.create({
 		paddingHorizontal: 16,
 	},
 	balanceContainer: {
-		marginTop: 20,
+		marginTop: 8,
 		marginBottom: 30,
 	},
 	largeValueContainer: {

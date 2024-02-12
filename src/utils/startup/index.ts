@@ -1,5 +1,6 @@
 import { InteractionManager } from 'react-native';
 import { err, ok, Result } from '@synonymdev/result';
+import { generateMnemonic, TServer } from 'beignet';
 
 import {
 	getAddressTypesToMonitor,
@@ -23,7 +24,6 @@ import { promiseTimeout } from '../helpers';
 import { EAvailableNetwork } from '../networks';
 import { TWalletName } from '../../store/types/wallet';
 import { runChecks } from '../wallet/checks';
-import { generateMnemonic, TServer } from 'beignet';
 
 /**
  * Creates a new wallet from scratch

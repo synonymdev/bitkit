@@ -4,7 +4,11 @@ import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 
 import { View as ThemedView } from '../../../styles/components';
-import { TransferIcon, SavingsIcon, CoinsIcon } from '../../../styles/icons';
+import {
+	TransferIcon,
+	SavingsIcon,
+	LightningHollow,
+} from '../../../styles/icons';
 import { Caption13M } from '../../../styles/text';
 import { useBalance } from '../../../hooks/wallet';
 import { useAppSelector } from '../../../hooks/redux';
@@ -12,7 +16,6 @@ import { RootNavigationProp } from '../../../navigation/types';
 import { isGeoBlockedSelector } from '../../../store/reselect/user';
 import { accountVersionSelector } from '../../../store/reselect/lightning';
 import { showToast } from '../../../utils/notifications';
-import { openChannelIdsSelector } from '../../../store/reselect/lightning';
 import NetworkRow from './NetworkRow';
 
 const BitcoinBreakdown = (): ReactElement => {
@@ -20,16 +23,12 @@ const BitcoinBreakdown = (): ReactElement => {
 	const navigation = useNavigation<RootNavigationProp>();
 	const isGeoBlocked = useAppSelector(isGeoBlockedSelector);
 	const accountVersion = useAppSelector(accountVersionSelector);
-	const openChannelIds = useAppSelector(openChannelIdsSelector);
 	const {
 		onchainBalance,
-		lightningBalance,
 		spendingBalance,
-		reserveBalance,
-		claimableBalance,
+		balanceInTransferToSpending,
+		balanceInTransferToSavings,
 	} = useBalance();
-
-	const isTransferToSavings = openChannelIds.length === 0;
 
 	const onRebalancePress = (): void => {
 		if (accountVersion < 2) {
@@ -40,7 +39,8 @@ const BitcoinBreakdown = (): ReactElement => {
 			});
 			return;
 		}
-		if (lightningBalance && !isGeoBlocked) {
+
+		if (spendingBalance && !isGeoBlocked) {
 			navigation.navigate('Transfer', { screen: 'Setup' });
 		} else {
 			navigation.navigate('LightningRoot', { screen: 'Introduction' });
@@ -51,40 +51,31 @@ const BitcoinBreakdown = (): ReactElement => {
 		<>
 			<NetworkRow
 				title={t('details_savings_title')}
-				subtitle={t('details_savings_subtitle')}
 				balance={onchainBalance}
-				pendingBalance={isTransferToSavings ? claimableBalance : 0}
-				color="brand"
+				pendingBalance={balanceInTransferToSavings}
 				icon={
 					<ThemedView style={styles.icon} color="brand16">
-						<SavingsIcon color="brand" width={17} height={17} />
+						<SavingsIcon color="brand" width={16} height={16} />
 					</ThemedView>
 				}
 			/>
 			<View style={styles.transferRow}>
-				<ThemedView color="gray4" style={styles.line} />
+				<ThemedView color="brand16" style={styles.line} />
 				<TouchableOpacity testID="TransferButton" onPress={onRebalancePress}>
-					<ThemedView style={styles.transferButton} color="white16">
-						<TransferIcon
-							style={styles.transferIcon}
-							height={12}
-							color="white"
-						/>
+					<ThemedView style={styles.transferButton} color="brand16">
+						<TransferIcon style={styles.transferIcon} color="white" />
 						<Caption13M>{t('transfer_text')}</Caption13M>
 					</ThemedView>
 				</TouchableOpacity>
-				<ThemedView color="gray4" style={styles.line} />
+				<ThemedView color="brand16" style={styles.line} />
 			</View>
 			<NetworkRow
 				title={t('details_spending_title')}
-				subtitle={t('details_spending_subtitle')}
 				balance={spendingBalance}
-				pendingBalance={isTransferToSavings ? 0 : claimableBalance}
-				reserveBalance={reserveBalance}
-				color="purple"
+				pendingBalance={balanceInTransferToSpending}
 				icon={
 					<ThemedView style={styles.icon} color="purple16">
-						<CoinsIcon color="purple" width={13} height={13} />
+						<LightningHollow color="purple" width={16} height={16} />
 					</ThemedView>
 				}
 			/>
@@ -105,7 +96,7 @@ const styles = StyleSheet.create({
 	transferRow: {
 		flexDirection: 'row',
 		alignItems: 'center',
-		paddingVertical: 16,
+		paddingVertical: 10,
 	},
 	transferButton: {
 		paddingHorizontal: 15,

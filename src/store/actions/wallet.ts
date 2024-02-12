@@ -3,6 +3,8 @@ import { err, ok, Result } from '@synonymdev/result';
 import actions from './actions';
 import {
 	EBoostType,
+	ETransferStatus,
+	ETransferType,
 	IAddress,
 	ICreateWallet,
 	IFormattedTransactions,
@@ -10,6 +12,8 @@ import {
 	IUtxo,
 	IWallets,
 	IWalletStore,
+	TTransfer,
+	TTransferToSavings,
 	TWalletName,
 } from '../types/wallet';
 import {
@@ -24,6 +28,7 @@ import {
 } from '../../utils/wallet';
 import {
 	dispatch,
+	getBlocktankStore,
 	getFeesStore,
 	getSettingsStore,
 	getWalletStore,
@@ -294,6 +299,78 @@ export const injectFakeTransaction = ({
 	} catch (e) {
 		return err(e);
 	}
+};
+
+/**
+ * Adds a new transfer transaction to the store.
+ * @param {TTransfer} payload
+ */
+export const addTransfer = (payload: TTransfer): void => {
+	dispatch({ type: actions.ADD_TRANSFER, payload });
+};
+
+export const updateTransfer = ({
+	txId,
+	type,
+	confirmations,
+}: {
+	txId: string;
+	type: ETransferType;
+	confirmations?: number;
+}): void => {
+	switch (type) {
+		case ETransferType.open: {
+			const orders = getBlocktankStore().orders;
+			const order = orders.find((o) => o.channel?.fundingTx.id === txId);
+			if (order) {
+				const paymentTxId = order.payment.onchain.transactions[0].txId;
+				dispatch({
+					type: actions.UPDATE_TRANSFER,
+					payload: { txId: paymentTxId },
+				});
+			}
+			break;
+		}
+		case ETransferType.coopClose:
+		case ETransferType.forceClose: {
+			dispatch({
+				type: actions.UPDATE_TRANSFER,
+				payload: { txId, confirmations },
+			});
+			break;
+		}
+	}
+};
+
+export const updatePendingTransfers = (headerHeight: number): void => {
+	const { currentWallet, selectedNetwork } = getCurrentWallet();
+	const transactions = currentWallet.transactions[selectedNetwork];
+	const transfers = currentWallet.transfers[selectedNetwork];
+	const pendingTransfers = transfers.filter((t) => {
+		return (
+			t.type !== ETransferType.open && t.status === ETransferStatus.pending
+		);
+	}) as TTransferToSavings[];
+
+	pendingTransfers.forEach((transfer) => {
+		const tx = transactions[transfer.txId];
+		if (tx && transfer.confirmations <= 6) {
+			const confs = tx.height < 1 ? 0 : headerHeight - tx.height + 1;
+			updateTransfer({
+				txId: transfer.txId,
+				type: ETransferType.coopClose,
+				confirmations: confs,
+			});
+		}
+	});
+};
+
+/**
+ * Removes a transfer from the store.
+ * @param {string} txId
+ */
+export const removeTransfer = (txId: string): void => {
+	dispatch({ type: actions.REMOVE_TRANSFER, payload: txId });
 };
 
 /**
@@ -809,10 +886,10 @@ export const setWalletData = async <K extends keyof IWalletData>(
 	try {
 		switch (value) {
 			case 'header':
-				updateHeader({
-					header: data as IHeader,
-					selectedNetwork: getNetworkFromBeignet(network),
-				});
+				const header = data as IHeader;
+				const selectedNetwork = getNetworkFromBeignet(network);
+				updateHeader({ header, selectedNetwork });
+				updatePendingTransfers(header.height);
 				break;
 			case 'feeEstimates':
 				updateOnchainFeeEstimates({

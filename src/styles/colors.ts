@@ -119,13 +119,13 @@ const colors: IColors = {
 	black5: 'rgba(0, 0, 0, 0.5)',
 	black92: 'rgba(0, 0, 0, 0.92)',
 	brand08: 'rgba(255, 102, 0, 0.08)',
+	brand16: 'rgba(255, 102, 0, 0.16)',
+	brand32: 'rgba(255, 102, 0, 0.32)',
 	yellow08: 'rgba(255, 174, 0, 0.08)',
 	yellow16: 'rgba(255, 174, 0, 0.16)',
 	purple5: 'rgba(185, 92, 232, 0.5)',
 	purple16: 'rgba(185, 92, 232, 0.16)',
 	purple32: 'rgba(185, 92, 232, 0.32)',
-	brand16: 'rgba(255, 102, 0, 0.16)',
-	brand32: 'rgba(255, 102, 0, 0.32)',
 };
 
 export default colors;

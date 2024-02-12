@@ -184,6 +184,35 @@ export interface IBoostedTransactions {
 	[txId: string]: IBoostedTransaction;
 }
 
+export type TTransfer = TTransferToSpending | TTransferToSavings;
+
+export enum ETransferType {
+	open = 'open',
+	coopClose = 'coop-close',
+	forceClose = 'force-close',
+}
+
+export enum ETransferStatus {
+	pending = 'pending',
+	done = 'done',
+}
+
+export type TTransferToSpending = {
+	txId: string; // The txId of the transaction that paid for the channel.
+	type: ETransferType.open;
+	orderId: string;
+	status: ETransferStatus.pending | ETransferStatus.done;
+	amount: number;
+};
+
+export type TTransferToSavings = {
+	txId: string; // The txId of the transaction that closed the channel.
+	type: ETransferType.coopClose | ETransferType.forceClose;
+	status: ETransferStatus.pending | ETransferStatus.done;
+	amount: number;
+	confirmations: number;
+};
+
 export interface IWallet {
 	id: string;
 	name: string;
@@ -198,6 +227,7 @@ export interface IWallet {
 	blacklistedUtxos: IWalletItem<[]>;
 	boostedTransactions: IWalletItem<IBoostedTransactions>;
 	unconfirmedTransactions: IWalletItem<IFormattedTransactions>;
+	transfers: IWalletItem<TTransfer[]>;
 	transactions: IWalletItem<IFormattedTransactions>;
 	transaction: IWalletItem<ISendTransaction>;
 	balance: IWalletItem<number>;

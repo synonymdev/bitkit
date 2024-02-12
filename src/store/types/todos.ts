@@ -8,8 +8,7 @@ export type TTodoType =
 	| 'lightningSettingUp'
 	| 'lightningConnecting'
 	| 'lightningReady'
-	| 'transferToSpending'
-	| 'transferToSavings'
+	| 'transferPending'
 	| 'transferClosingChannel'
 	| 'slashtagsProfile'
 	| 'buyBitcoin'
@@ -20,6 +19,7 @@ export interface ITodo {
 	color: keyof IColors;
 	image: ImageSourcePropType;
 	dismissable: boolean;
+	duration?: number;
 }
 
 export interface IOpenChannelNotification {

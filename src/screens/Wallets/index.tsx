@@ -26,7 +26,7 @@ import Widgets from '../../components/Widgets';
 import SafeAreaInset from '../../components/SafeAreaInset';
 import BetaWarning from '../../components/BetaWarning';
 import Assets from '../../components/Assets';
-import Header, { HEADER_HEIGHT } from './Header';
+import Header from './Header';
 import type { WalletScreenProps } from '../../navigation/types';
 import {
 	enableSwipeToHideBalanceSelector,
@@ -38,6 +38,8 @@ import { showToast } from '../../utils/notifications';
 import { useTranslation } from 'react-i18next';
 import { ignoresHideBalanceToastSelector } from '../../store/reselect/user';
 import { ignoreHideBalanceToast } from '../../store/slices/user';
+
+const HEADER_HEIGHT = 46;
 
 // Workaround for crash on Android
 // https://github.com/software-mansion/react-native-reanimated/issues/4306#issuecomment-1538184321

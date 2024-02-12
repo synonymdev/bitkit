@@ -1,50 +1,41 @@
-import i18n, { i18nTime } from '../../utils/i18n';
+import { err, ok, Result } from '@synonymdev/result';
+import { IFormattedTransaction } from 'beignet';
+
 import { btcToSats } from '../conversion';
-import { TPaidBlocktankOrders } from '../../store/types/blocktank';
+import { getCurrentWallet } from '../wallet';
+import i18n, { i18nTime } from '../../utils/i18n';
+import { getActivityStore } from '../../store/helpers';
 import { EPaymentType } from '../../store/types/wallet';
 import {
 	EActivityType,
 	IActivityItem,
 	TOnchainActivityItem,
 } from '../../store/types/activity';
-import { err, ok, Result } from '@synonymdev/result';
-import { getActivityStore } from '../../store/helpers';
-import { IBtOrder } from '@synonymdev/blocktank-lsp-http-client';
-import { IFormattedTransaction } from 'beignet';
 
 /**
  * Converts a formatted transaction to an activity item
  * @param {IFormattedTransaction} transaction
- * @param {TPaidBlocktankOrders} blocktankTransactions
- * @param {IBtOrder[]} blocktankOrders
  * @returns {TOnchainActivityItem} activityItem
  */
 export const onChainTransactionToActivityItem = ({
 	transaction,
-	blocktankTransactions,
-	blocktankOrders,
 }: {
 	transaction: IFormattedTransaction;
-	blocktankTransactions: TPaidBlocktankOrders;
-	blocktankOrders: IBtOrder[];
 }): TOnchainActivityItem => {
+	const { currentWallet, selectedNetwork } = getCurrentWallet();
+	const { transfers } = currentWallet;
+
+	const transfer = transfers[selectedNetwork].find((t) => {
+		return t.txId === transaction.txid;
+	});
+	const isTransferToSpending = transfer?.type === 'open' ?? false;
+	const isTransferToSavings = transfer?.type === 'coop-close' ?? false;
+
 	// subtract fee from amount if applicable
 	const amount =
 		transaction.type === 'sent'
 			? transaction.value + transaction.fee
 			: transaction.value;
-
-	// check if tx is a payment to Blocktank (i.e. transfer to spending)
-	const isTransferToSpending = !!Object.values(blocktankTransactions).find(
-		(txId) => transaction.txid === txId,
-	);
-
-	// check if tx is a payment from Blocktank (i.e. transfer to savings)
-	const isTransferToSavings = !!blocktankOrders.find((order) => {
-		return !!transaction.vin.find(
-			(input) => input.txid === order.channel?.close?.txId,
-		);
-	});
 
 	return {
 		exists: transaction?.exists ?? true,

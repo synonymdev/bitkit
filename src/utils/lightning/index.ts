@@ -3,6 +3,8 @@ import Keychain from 'react-native-keychain';
 import * as bitcoin from 'bitcoinjs-lib';
 import RNFS from 'react-native-fs';
 import { err, ok, Result } from '@synonymdev/result';
+import { TBroadcastTransaction } from '@synonymdev/react-native-ldk/dist/utils/types';
+import { TGetAddressHistory } from 'beignet';
 import lm, {
 	ldk,
 	DefaultTransactionDataShape,
@@ -73,6 +75,8 @@ import { addActivityItem } from '../../store/slices/activity';
 import { addCJitActivityItem } from '../../store/utils/activity';
 import {
 	EPaymentType,
+	ETransferStatus,
+	ETransferType,
 	IWalletItem,
 	TWalletName,
 } from '../../store/types/wallet';
@@ -91,8 +95,8 @@ import {
 	__BACKUPS_SERVER_PUBKEY__,
 	__TRUSTED_ZERO_CONF_PEERS__,
 } from '../../constants/env';
-import { TBroadcastTransaction } from '@synonymdev/react-native-ldk/dist/utils/types';
-import { TGetAddressHistory } from 'beignet';
+import { addTransfer } from '../../store/actions/wallet';
+import { decodeRawTx } from '../wallet/txdecoder';
 
 let LDKIsStayingSynced = false;
 
@@ -170,10 +174,26 @@ const broadcastTransaction: TBroadcastTransaction = async (
 	rawTx: string,
 ): Promise<Result<string>> => {
 	const electrum = getOnChainWalletElectrum();
-	return await electrum.broadcastTransaction({
+	const res = await electrum.broadcastTransaction({
 		rawTx,
 		subscribeToOutputAddress: false,
 	});
+	if (res.isErr()) {
+		return err('');
+	}
+
+	const transaction = decodeRawTx(rawTx, bitcoin.networks.regtest);
+
+	// TODO: distinguish between different coop and force-close
+	addTransfer({
+		txId: transaction.txid,
+		type: ETransferType.coopClose,
+		status: ETransferStatus.pending,
+		amount: transaction.outputs[0].satoshi,
+		confirmations: 0,
+	});
+
+	return ok(res.value);
 };
 
 const getScriptPubKeyHistory = async (
@@ -1414,7 +1434,7 @@ export const getOpenChannels = async ({
 	fromStorage?: boolean;
 	selectedWallet?: TWalletName;
 	selectedNetwork?: EAvailableNetwork;
-}): Promise<Result<TChannel[]>> => {
+} = {}): Promise<Result<TChannel[]>> => {
 	if (!selectedWallet) {
 		selectedWallet = getSelectedWallet();
 	}

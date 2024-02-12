@@ -131,9 +131,7 @@ const Setup = ({ navigation }: TransferScreenProps<'Setup'>): ReactElement => {
 
 	const onContinue = useCallback(async (): Promise<void> => {
 		if (lnSetup.isTransferringToSavings) {
-			navigation.push('Confirm', {
-				spendingAmount,
-			});
+			navigation.push('Confirm', { spendingAmount });
 			return;
 		}
 

@@ -25,31 +25,19 @@ export const lightningSettingUpTodo: ITodo = {
 	image: imageLightning,
 	dismissable: false,
 };
-export const lightningConnectingTodo: ITodo = {
-	id: 'lightningConnecting',
-	color: 'purple',
-	image: imageLightning,
-	dismissable: false,
-};
 export const lightningReadyTodo: ITodo = {
 	id: 'lightningReady',
 	color: 'purple',
 	image: imageLightning,
 	dismissable: false,
 };
-export const transferToSpendingTodo: ITodo = {
-	id: 'transferToSpending',
+export const transferPendingTodo: ITodo = {
+	id: 'transferPending',
 	color: 'purple',
 	image: imageTransfer,
 	dismissable: false,
 };
-export const transferToSavingsTodo: ITodo = {
-	id: 'transferToSavings',
-	color: 'purple',
-	image: imageTransfer,
-	dismissable: false,
-};
-export const transferClosingChannel: ITodo = {
+export const transferClosingChannelTodo: ITodo = {
 	id: 'transferClosingChannel',
 	color: 'purple',
 	image: imageTransfer,

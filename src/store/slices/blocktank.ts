@@ -38,9 +38,9 @@ export const blocktankSlice = createSlice({
 		},
 		addPaidBlocktankOrder: (
 			state,
-			action: PayloadAction<{ orderId: string; txid: string }>,
+			action: PayloadAction<{ orderId: string; txId: string }>,
 		) => {
-			state.paidOrders[action.payload.orderId] = action.payload.txid;
+			state.paidOrders[action.payload.orderId] = action.payload.txId;
 		},
 		addCjitEntry: (state, action: PayloadAction<ICJitEntry>) => {
 			state.cJitEntries.push(action.payload);

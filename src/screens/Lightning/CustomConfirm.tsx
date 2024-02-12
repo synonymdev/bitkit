@@ -59,9 +59,12 @@ const CustomConfirm = ({
 	const lspFee = purchaseFeeValue.fiatValue - clientBalance.fiatValue;
 
 	const handleConfirm = async (): Promise<void> => {
+		if (!order) {
+			return;
+		}
 		setLoading(true);
 		await sleep(5);
-		const res = await confirmChannelPurchase({ orderId, selectedNetwork });
+		const res = await confirmChannelPurchase({ order, selectedNetwork });
 		if (res.isErr()) {
 			setLoading(false);
 			return;

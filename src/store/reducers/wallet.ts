@@ -1,7 +1,7 @@
 import { produce } from 'immer';
 
 import actions from '../actions/actions';
-import { IWalletStore } from '../types/wallet';
+import { ETransferStatus, ETransferType, IWalletStore } from '../types/wallet';
 import {
 	getDefaultWalletShape,
 	defaultWalletStoreShape,
@@ -214,6 +214,53 @@ const wallet = (
 					},
 				},
 			};
+
+		case actions.ADD_TRANSFER: {
+			return produce(state, (draftState) => {
+				draftState.wallets[selectedWallet].transfers[selectedNetwork].push(
+					action.payload,
+				);
+			});
+		}
+
+		case actions.UPDATE_TRANSFER: {
+			return produce(state, (draftState) => {
+				const current =
+					state.wallets[selectedWallet].transfers[selectedNetwork];
+				const { txId, confirmations } = action.payload;
+				const updated = current.map((transfer) => {
+					if (transfer.txId === txId) {
+						let status = ETransferStatus.done;
+						if (transfer.type !== ETransferType.open) {
+							status =
+								confirmations < 6
+									? ETransferStatus.pending
+									: ETransferStatus.done;
+						}
+						return {
+							...transfer,
+							status,
+							confirmations,
+						};
+					} else {
+						return transfer;
+					}
+				});
+
+				draftState.wallets[selectedWallet].transfers[selectedNetwork] = updated;
+			});
+		}
+
+		case actions.REMOVE_TRANSFER: {
+			return produce(state, (draftState) => {
+				const current =
+					state.wallets[selectedWallet].transfers[selectedNetwork];
+				const updated = current.filter((transfer) => {
+					return transfer.txId !== action.payload;
+				});
+				draftState.wallets[selectedWallet].transfers[selectedNetwork] = updated;
+			});
+		}
 
 		case actions.UPDATE_TRANSACTIONS:
 			return {

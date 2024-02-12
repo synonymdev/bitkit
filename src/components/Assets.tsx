@@ -12,7 +12,7 @@ import type { WalletNavigationProp } from '../navigation/wallet/WalletNavigator'
 const Assets = (): ReactElement => {
 	const { t } = useTranslation('wallet');
 	const navigation = useNavigation<WalletNavigationProp>();
-	const { totalBalance, claimableBalance } = useBalance();
+	const { totalBalance } = useBalance();
 
 	return (
 		<>
@@ -23,7 +23,6 @@ const Assets = (): ReactElement => {
 				name="Bitcoin"
 				ticker="BTC"
 				satoshis={totalBalance}
-				pending={claimableBalance > 0}
 				icon={<BitcoinCircleIcon color="bitcoin" />}
 				testID="BitcoinAsset"
 				onPress={(): void => {

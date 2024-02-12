@@ -14,6 +14,7 @@ import {
 	updateLightningNodeVersion,
 } from '../slices/lightning';
 import { moveMetaIncTxTag } from '../slices/metadata';
+import { updateTransfer } from '../actions/wallet';
 import { EAvailableNetwork } from '../../utils/networks';
 import { getActivityItemById } from '../../utils/activity';
 import { getSelectedNetwork, getSelectedWallet } from '../../utils/wallet';
@@ -33,7 +34,7 @@ import {
 	TCreateLightningInvoice,
 	TLightningNodeVersion,
 } from '../types/lightning';
-import { EPaymentType, TWalletName } from '../types/wallet';
+import { EPaymentType, ETransferType, TWalletName } from '../types/wallet';
 import { EActivityType, TLightningActivityItem } from '../types/activity';
 
 /**
@@ -95,25 +96,33 @@ export const updateLightningChannelsThunk = async ({
 }: {
 	selectedWallet?: TWalletName;
 	selectedNetwork?: EAvailableNetwork;
-}): Promise<Result<TChannel[]>> => {
+}): Promise<Result<string>> => {
 	if (!selectedNetwork) {
 		selectedNetwork = getSelectedNetwork();
 	}
 	if (!selectedWallet) {
 		selectedWallet = getSelectedWallet();
 	}
-	const lightningChannels = await getLightningChannels();
-	if (lightningChannels.isErr()) {
-		return err(lightningChannels.error.message);
+	const lightningChannelsRes = await getLightningChannels();
+	if (lightningChannelsRes.isErr()) {
+		return err(lightningChannelsRes.error.message);
 	}
 
 	const channels: { [channelId: string]: TChannel } = {};
 	const openChannelIds: string[] = [];
+	const lightningChannels = lightningChannelsRes.value;
 
-	lightningChannels.value.forEach((channel) => {
+	lightningChannels.forEach((channel) => {
 		channels[channel.channel_id] = channel;
 		if (!openChannelIds.includes(channel.channel_id)) {
 			openChannelIds.push(channel.channel_id);
+
+			if (channel.is_channel_ready && channel.funding_txid) {
+				updateTransfer({
+					txId: channel.funding_txid,
+					type: ETransferType.open,
+				});
+			}
 		}
 	});
 
@@ -126,7 +135,7 @@ export const updateLightningChannelsThunk = async ({
 		}),
 	);
 
-	return ok(lightningChannels.value);
+	return ok('Updated Lightning Channels');
 };
 
 /**

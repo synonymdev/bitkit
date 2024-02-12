@@ -9,7 +9,7 @@
 	},
 	"lightningSettingUp": {
 		"title": "Setting Up",
-		"description0": "Awaiting Payment",
+		"description0": "Processing Payment",
 		"description1": "Paid",
 		"description2": "Queued",
 		"description3": "Opening"
@@ -22,13 +22,9 @@
 		"title": "Ready",
 		"description": "Connected!"
 	},
-	"transferToSpending": {
+	"transferPending": {
 		"title": "Transferring",
-		"description": "Ready in ±10m"
-	},
-	"transferToSavings": {
-		"title": "Transferring",
-		"description": "Ready in ±60m"
+		"description": "Ready in ±{duration}m"
 	},
 	"transferClosingChannel": {
 		"title": "Initiating...",

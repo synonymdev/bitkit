@@ -93,7 +93,6 @@ import {
 import { TServer } from 'beignet/src/types/electrum';
 import { showToast } from '../notifications';
 import { updateUi } from '../../store/slices/ui';
-import { startWalletServices } from '../startup';
 import { ICustomGetScriptHash } from 'beignet/src/types/wallet';
 import { ldk } from '@synonymdev/react-native-ldk';
 import { resetActivityState } from '../../store/slices/activity';
@@ -134,9 +133,7 @@ export const refreshWallet = async ({
 		let notificationTxid: string | undefined;
 
 		if (onchain) {
-			await wallet.refreshWallet({
-				scanAllAddresses,
-			});
+			await wallet.refreshWallet({ scanAllAddresses });
 		}
 
 		if (lightning) {
@@ -854,12 +851,6 @@ export const getCurrentWallet = ({
 	const walletStore = getWalletStore();
 	const lightning = getLightningStore();
 	const currentLightningNode = lightning.nodes[selectedWallet];
-	if (!selectedNetwork) {
-		selectedNetwork = walletStore.selectedNetwork;
-	}
-	if (!selectedWallet) {
-		selectedWallet = walletStore.selectedWallet;
-	}
 	const currentWallet = walletStore.wallets[selectedWallet];
 	return {
 		currentWallet,
@@ -1468,10 +1459,20 @@ const onMessage: TOnMessage = (key, data) => {
 				!wallet?.isSwitchingNetworks
 			) {
 				const txMsg: TTransactionMessage = data as TTransactionMessage;
-				showNewOnchainTxPrompt({
-					id: txMsg.transaction.txid,
-					value: btcToSats(txMsg.transaction.value),
+				const txId = txMsg.transaction.txid;
+				const { currentWallet, selectedNetwork } = getCurrentWallet();
+
+				const transfer = currentWallet.transfers[selectedNetwork].find((t) => {
+					return t.txId === txId;
 				});
+				const isTransferToSavings = transfer?.type === 'coop-close' ?? false;
+
+				if (!isTransferToSavings) {
+					showNewOnchainTxPrompt({
+						id: txId,
+						value: btcToSats(txMsg.transaction.value),
+					});
+				}
 			}
 			setTimeout(() => {
 				updateActivityList();
@@ -2288,9 +2289,7 @@ export const switchNetwork = async (
 ): Promise<Result<boolean>> => {
 	const originalNetwork = getSelectedNetwork();
 	if (!servers) {
-		servers = getCustomElectrumPeers({
-			selectedNetwork,
-		});
+		servers = getCustomElectrumPeers({ selectedNetwork });
 	}
 	await promiseTimeout(2000, ldk.stop());
 	// Wipe existing activity
@@ -2305,12 +2304,6 @@ export const switchNetwork = async (
 		updateWallet({ selectedNetwork: originalNetwork });
 		return err(response.error.message);
 	}
-	// Start wallet services with the newly selected network.
-	await startWalletServices({
-		selectedNetwork,
-	});
-	setTimeout(() => {
-		updateActivityList();
-	}, 500);
+	setTimeout(updateActivityList, 500);
 	return ok(true);
 };

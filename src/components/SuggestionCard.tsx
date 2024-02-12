@@ -155,7 +155,9 @@ const SuggestionCard = ({
 				</View>
 				<View>
 					<Text01M>{title}</Text01M>
-					<Caption13M color={dismissable ? 'lightGray' : 'purple'}>
+					<Caption13M
+						color={dismissable ? 'lightGray' : 'purple'}
+						numberOfLines={1}>
 						{description}
 					</Caption13M>
 				</View>

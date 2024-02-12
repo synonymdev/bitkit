@@ -7,15 +7,13 @@ import { ITodo } from '../types/todos';
 import {
 	backupSeedPhraseTodo,
 	buyBitcoinTodo,
-	lightningConnectingTodo,
 	lightningReadyTodo,
 	lightningSettingUpTodo,
 	lightningTodo,
 	pinTodo,
 	slashtagsProfileTodo,
-	transferClosingChannel,
-	transferToSavingsTodo,
-	transferToSpendingTodo,
+	transferPendingTodo,
+	transferClosingChannelTodo,
 	btFailedTodo,
 } from '../shapes/todos';
 import {
@@ -24,13 +22,10 @@ import {
 } from './user';
 import { pinSelector } from './settings';
 import { onboardingProfileStepSelector } from './slashtags';
-import {
-	claimableBalancesSelector,
-	closedChannelsSelector,
-	openChannelsSelector,
-	pendingChannelsSelector,
-} from './lightning';
+import { closedChannelsSelector, openChannelsSelector } from './lightning';
 import { blocktankPaidOrdersFullSelector } from './blocktank';
+import { transfersSelector } from './wallet';
+import { ETransferType, TTransferToSavings } from '../types/wallet';
 
 export const todosSelector = (state: RootState): TTodosState => state.todos;
 
@@ -55,28 +50,26 @@ export const todosFullSelector = createSelector(
 	pinSelector,
 	onboardingProfileStepSelector,
 	openChannelsSelector,
-	pendingChannelsSelector,
 	closedChannelsSelector,
 	startCoopCloseTimestampSelector,
-	claimableBalancesSelector,
 	blocktankPaidOrdersFullSelector,
 	newChannelsNotificationsSelector,
+	transfersSelector,
 	(
 		todos,
 		backupVerified,
 		pinTodoDone,
 		onboardingStep,
 		openChannels,
-		pendingChannels,
 		closedChannels,
 		startCoopCloseTimestamp,
-		claimableBalances,
 		paidOrders,
 		newChannels,
-	): Array<ITodo> => {
+		transfers,
+	): ITodo[] => {
 		const { hide } = todos;
 
-		const res: Array<ITodo> = [];
+		const res: ITodo[] = [];
 
 		if (!hide.backupSeedPhrase && !backupVerified) {
 			res.push(backupSeedPhraseTodo);
@@ -98,43 +91,50 @@ export const todosFullSelector = createSelector(
 			return Number(new Date(order.orderExpiresAt)) > hide.btFailed;
 		});
 
-		// TODO: wait for improvements to `Balance` in LDK v0.0.120
-		const claimableOnChannelClose = claimableBalances.find(
-			(b) => b.type === 'ClaimableOnChannelClose',
-		);
-		const balanceInTransfer = claimableOnChannelClose;
+		const transferToSpending = transfers.find((t) => {
+			const isOpen = t.type === ETransferType.open;
+			const isPending = t.status === 'pending';
+			return isOpen && isPending;
+		});
+
+		const transferToSavings = transfers.find((t) => {
+			const isClose =
+				t.type === ETransferType.coopClose ||
+				t.type === ETransferType.forceClose;
+
+			return isClose && t.confirmations < 6;
+		});
 
 		// lightning
-		if (showFailedBTOrder) {
+		if (newChannels.length > 0) {
+			// Show lightningReadyTodo if we have one channel opened recently
+			res.push(lightningReadyTodo);
+		} else if (showFailedBTOrder) {
 			// failed blocktank order
 			res.push(btFailedTodo);
 		} else if (openChannels.length === 0 && closedChannels.length === 0) {
-			// no open channels - inital setup
-			if (pendingChannels.length > 0) {
-				res.push(lightningConnectingTodo);
-			} else if (Object.keys(paidOrders.created).length > 0) {
+			if (transferToSpending) {
 				res.push(lightningSettingUpTodo);
-			} else if (balanceInTransfer?.amount_satoshis) {
-				res.push(transferToSavingsTodo); // TODO: find a way to distinguish between transfer to and from spendings
+			} else if (transferToSavings) {
+				const transfer = transferToSavings as TTransferToSavings;
+				const requiredConfs = 6;
+				const duration = (requiredConfs - transfer.confirmations) * 10;
+				res.push({ ...transferPendingTodo, duration }); // TODO: distinguish between coop and force close
 			} else if (!hide.lightning) {
 				res.push(lightningTodo);
 			}
 		} else {
 			// some channels exist
 			if (startCoopCloseTimestamp > 0) {
-				res.push(transferClosingChannel);
-			} else if (Object.keys(paidOrders.created).length > 0) {
-				res.push(transferToSpendingTodo);
-			} else if (balanceInTransfer?.amount_satoshis) {
-				res.push(transferToSavingsTodo); // TODO: find a way to distinguish between transfer to and from spendings
-			} else if (pendingChannels.length > 0) {
-				res.push(lightningConnectingTodo);
+				res.push(transferClosingChannelTodo);
+			} else if (transferToSpending) {
+				res.push({ ...transferPendingTodo, duration: 10 });
+			} else if (transferToSavings) {
+				const transfer = transferToSavings as TTransferToSavings;
+				const requiredConfs = 6;
+				const duration = (requiredConfs - transfer.confirmations) * 10;
+				res.push({ ...transferPendingTodo, duration }); // TODO: find a way to distinguish between transfer to and from spendings
 			}
-		}
-
-		// Show lightningReadyTodo if we have one channel opened recently
-		if (newChannels.length > 0) {
-			res.push(lightningReadyTodo);
 		}
 
 		if (!hide.pin && !pinTodoDone) {

@@ -1,58 +1,47 @@
 import React, { ReactElement } from 'react';
 import { View, StyleSheet } from 'react-native';
+import { useTranslation } from 'react-i18next';
 
-import { IColors } from '../../../styles/colors';
-import { ClockIcon, LockIcon } from '../../../styles/icons';
-import { Caption13M, Text01M } from '../../../styles/text';
+import { TransferIcon } from '../../../styles/icons';
+import { Title, Caption13M } from '../../../styles/text';
 import Money from '../../../components/Money';
 
 const NetworkRow = ({
 	title,
-	subtitle,
 	balance,
 	pendingBalance,
-	reserveBalance,
-	color,
 	icon,
 }: {
 	title: string;
-	subtitle: string;
 	balance: number;
 	pendingBalance?: number;
-	reserveBalance?: number;
-	color: keyof IColors;
 	icon: ReactElement;
 }): ReactElement => {
+	const { t } = useTranslation('wallet');
+
 	return (
 		<View style={styles.root}>
-			{icon}
-			<View style={styles.text}>
-				<Text01M>{title}</Text01M>
-				<Caption13M color="gray1">{subtitle}</Caption13M>
+			<View>{icon}</View>
+			<View>
+				<Title>{title}</Title>
+				{pendingBalance !== 0 && (
+					<View style={styles.subtitle}>
+						<TransferIcon style={styles.subtitleIcon} color="white50" />
+						<Caption13M color="white50">
+							{t('details_transfer_subtitle')}
+						</Caption13M>
+					</View>
+				)}
 			</View>
 			<View style={styles.amount}>
-				<Money sats={balance} size="text01m" enableHide={true} />
+				<Money sats={balance} size="title" enableHide={true} symbol={true} />
 				{pendingBalance ? (
 					<View style={styles.pendingBalance}>
-						<ClockIcon color={color} />
 						<Money
 							style={styles.pendingBalanceAmount}
 							sats={pendingBalance}
 							size="caption13M"
-							color={color}
-							enableHide={true}
-						/>
-					</View>
-				) : null}
-
-				{pendingBalance === 0 && reserveBalance ? (
-					<View style={styles.pendingBalance}>
-						<LockIcon color={color} />
-						<Money
-							style={styles.pendingBalanceAmount}
-							sats={reserveBalance}
-							size="caption13M"
-							color={color}
+							color="white50"
 							enableHide={true}
 						/>
 					</View>
@@ -66,10 +55,13 @@ const styles = StyleSheet.create({
 	root: {
 		flexDirection: 'row',
 		justifyContent: 'space-between',
-		minHeight: 40,
 	},
-	text: {
-		justifyContent: 'space-between',
+	subtitle: {
+		flexDirection: 'row',
+		alignItems: 'center',
+	},
+	subtitleIcon: {
+		marginRight: 3,
 	},
 	amount: {
 		justifyContent: 'space-between',

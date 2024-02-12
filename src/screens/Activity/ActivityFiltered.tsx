@@ -206,7 +206,6 @@ const ActivityFiltered = ({
 						<ActivityList
 							style={styles.txList}
 							panGestureRef={panGestureRef}
-							showTitle={false}
 							contentContainerStyle={activityPadding}
 							progressViewOffset={radiusContainerHeight + 10}
 							filter={filter}

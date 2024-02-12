@@ -12,6 +12,7 @@ import { TWalletName } from '../types/wallet';
 import { reduceValue } from '../../utils/helpers';
 import { EAvailableNetwork } from '../../utils/networks';
 import { selectedNetworkSelector, selectedWalletSelector } from './wallet';
+import { blocktankOrderSelector } from './blocktank';
 
 export const lightningState = (state: RootState): TLightningState => {
 	return state.lightning;
@@ -225,5 +226,18 @@ export const lightningBackupSelector = createSelector(
 	(lightning, selectedWallet, selectedNetwork) => {
 		const node = lightning.nodes[selectedWallet];
 		return node?.backup[selectedNetwork] ?? {};
+	},
+);
+
+/**
+ * Find the channel that corresponds to the provided order.
+ */
+export const channelForOrderSelector = createSelector(
+	[openChannelsSelector, blocktankOrderSelector],
+	(openChannels, order) => {
+		const channel = openChannels.find((c) => {
+			return order.channel?.fundingTx.id === c.funding_txid;
+		});
+		return channel;
 	},
 );

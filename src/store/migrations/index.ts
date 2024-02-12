@@ -497,6 +497,18 @@ const migrations = {
 			},
 		};
 	},
+	37: (state): PersistedState => {
+		const newState = { ...state };
+		// Loop through all wallets
+		for (const walletName in newState.wallet.wallets) {
+			// Add transfers to each wallet, with the initial value set.
+			newState.wallet.wallets[walletName] = {
+				...newState.wallet.wallets[walletName],
+				transfers: getNetworkContent([]),
+			};
+		}
+		return newState;
+	},
 };
 
 export default migrations;

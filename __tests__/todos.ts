@@ -12,18 +12,17 @@ import {
 	backupSeedPhraseTodo,
 	btFailedTodo,
 	buyBitcoinTodo,
-	lightningConnectingTodo,
 	lightningReadyTodo,
 	lightningSettingUpTodo,
 	lightningTodo,
 	pinTodo,
 	slashtagsProfileTodo,
-	transferClosingChannel,
-	transferToSavingsTodo,
-	transferToSpendingTodo,
+	transferPendingTodo,
+	transferClosingChannelTodo,
 } from '../src/store/shapes/todos';
 import { createNewWallet } from '../src/utils/startup';
 import { EAvailableNetwork } from '../src/utils/networks';
+import { ETransferStatus, ETransferType } from '../src/store/types/wallet';
 
 describe('Todos selector', () => {
 	let s: RootState;
@@ -101,56 +100,17 @@ describe('Todos selector', () => {
 		assert.deepEqual(todosFullSelector(state), []);
 	});
 
-	it('should return lightningSettingUpTodo if there is a pending BT order', () => {
+	it('should return lightningSettingUpTodo if there is a pending transfer to spending', () => {
 		const state = cloneDeep(s);
-		state.blocktank.orders.push({
-			id: 'order1',
-			state: 'created',
-		} as IBtOrder);
-		state.blocktank.paidOrders = { order1: 'txid' };
-
+		state.wallet.wallets.wallet0.transfers.bitcoinRegtest.push({
+			txId: 'txid',
+			type: ETransferType.open,
+			status: ETransferStatus.pending,
+			amount: 100000,
+			orderId: 'order1',
+		});
 		expect(todosFullSelector(state)).toEqual(
 			expect.arrayContaining([lightningSettingUpTodo]),
-		);
-	});
-
-	it('should return lightningConnectingTodo if there is a pending channel', () => {
-		const state = cloneDeep(s);
-
-		const channel1 = {
-			channel_id: 'channel1',
-			is_channel_ready: false,
-		} as TChannel;
-		state.lightning.nodes.wallet0.channels.bitcoinRegtest = { channel1 };
-		state.lightning.nodes.wallet0.openChannelIds.bitcoinRegtest = ['channel1'];
-
-		expect(todosFullSelector(state)).toEqual(
-			expect.arrayContaining([lightningConnectingTodo]),
-		);
-	});
-
-	it('should return lightningConnectingTodo if there is a pending channel and open channels', () => {
-		const state = cloneDeep(s);
-
-		const channel1 = {
-			channel_id: 'channel1',
-			is_channel_ready: true,
-		} as TChannel;
-		const channel2 = {
-			channel_id: 'channel2',
-			is_channel_ready: false,
-		} as TChannel;
-		state.lightning.nodes.wallet0.channels.bitcoinRegtest = {
-			channel1,
-			channel2,
-		};
-		state.lightning.nodes.wallet0.openChannelIds.bitcoinRegtest = [
-			'channel1',
-			'channel2',
-		];
-
-		expect(todosFullSelector(state)).toEqual(
-			expect.arrayContaining([lightningConnectingTodo]),
 		);
 	});
 
@@ -166,42 +126,41 @@ describe('Todos selector', () => {
 		state.user.startCoopCloseTimestamp = 123;
 
 		expect(todosFullSelector(state)).toEqual(
-			expect.arrayContaining([transferClosingChannel]),
+			expect.arrayContaining([transferClosingChannelTodo]),
 		);
 	});
 
-	it('should return transferToSpendingTodo if there are new pending BT orders', () => {
+	it('should return transferPendingTodo for addtional pending transfers to spending', () => {
 		const state = cloneDeep(s);
-
 		const channel1 = {
 			channel_id: 'channel1',
 			is_channel_ready: true,
 		} as TChannel;
 		state.lightning.nodes.wallet0.channels.bitcoinRegtest = { channel1 };
 		state.lightning.nodes.wallet0.openChannelIds.bitcoinRegtest = ['channel1'];
-		state.blocktank.orders.push({ id: 'order1', state: 'created' } as IBtOrder);
-		state.blocktank.paidOrders = { order1: 'txid' };
-
+		state.wallet.wallets.wallet0.transfers.bitcoinRegtest.push({
+			txId: 'txid',
+			type: ETransferType.open,
+			status: ETransferStatus.pending,
+			amount: 100000,
+			orderId: 'order1',
+		});
 		expect(todosFullSelector(state)).toEqual(
-			expect.arrayContaining([transferToSpendingTodo]),
+			expect.arrayContaining([{ ...transferPendingTodo, duration: 10 }]),
 		);
 	});
 
-	it('should return transferToSavingsTodo if there is a new claimable balance', () => {
+	it('should return transferPendingTodo if there is a transfer to savings', () => {
 		const state = cloneDeep(s);
-
-		const channel1 = {
-			channel_id: 'channel1',
-			is_channel_ready: true,
-		} as TChannel;
-		state.lightning.nodes.wallet0.channels.bitcoinRegtest = { channel1 };
-		state.lightning.nodes.wallet0.openChannelIds.bitcoinRegtest = ['channel1'];
-		state.lightning.nodes.wallet0.claimableBalances.bitcoinRegtest = [
-			{ amount_satoshis: 123, type: 'ClaimableOnChannelClose' },
-		];
-
+		state.wallet.wallets.wallet0.transfers.bitcoinRegtest.push({
+			txId: 'txid',
+			type: ETransferType.coopClose,
+			status: ETransferStatus.pending,
+			amount: 100000,
+			confirmations: 1,
+		});
 		expect(todosFullSelector(state)).toEqual(
-			expect.arrayContaining([transferToSavingsTodo]),
+			expect.arrayContaining([{ ...transferPendingTodo, duration: 50 }]),
 		);
 	});
 

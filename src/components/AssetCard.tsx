@@ -1,19 +1,17 @@
 import React, { memo, ReactElement } from 'react';
 import { View, GestureResponderEvent, StyleSheet } from 'react-native';
 
-import { ClockIcon } from '../styles/icons';
+import { TransferIcon } from '../styles/icons';
 import { Text01M, Caption13M } from '../styles/text';
 import { TouchableOpacity } from '../styles/components';
+import { useBalance } from '../hooks/wallet';
 import Money from '../components/Money';
-import { useAppSelector } from '../hooks/redux';
-import { openChannelIdsSelector } from '../store/reselect/lightning';
 
 const AssetCard = ({
 	name,
 	ticker,
 	icon,
 	satoshis,
-	pending,
 	testID,
 	onPress,
 }: {
@@ -21,13 +19,11 @@ const AssetCard = ({
 	ticker: string;
 	icon: ReactElement;
 	satoshis: number;
-	pending?: boolean;
 	testID?: string;
 	onPress: (event: GestureResponderEvent) => void;
 }): ReactElement => {
-	const openChannelIds = useAppSelector(openChannelIdsSelector);
-
-	const isTransferToSavings = openChannelIds.length === 0;
+	const { balanceInTransferToSpending, balanceInTransferToSavings } =
+		useBalance();
 
 	return (
 		<View style={styles.container}>
@@ -43,8 +39,11 @@ const AssetCard = ({
 
 				<View style={styles.amount}>
 					<View style={styles.primary}>
-						{pending && (
-							<ClockIcon color={isTransferToSavings ? 'orange' : 'purple'} />
+						{balanceInTransferToSpending !== 0 && (
+							<TransferIcon color="purple" />
+						)}
+						{balanceInTransferToSavings !== 0 && (
+							<TransferIcon color="orange" />
 						)}
 						<Money
 							style={styles.primaryAmount}
@@ -52,6 +51,7 @@ const AssetCard = ({
 							enableHide={true}
 							size="text01m"
 							unitType="primary"
+							symbol={true}
 						/>
 					</View>
 					<Money

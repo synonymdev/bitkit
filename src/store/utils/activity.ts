@@ -81,7 +81,7 @@ export const updateActivityList = (): Result<string> => {
  * @returns {Result<string>}
  */
 export const updateOnChainActivityList = (): Result<string> => {
-	let { currentWallet } = getCurrentWallet({});
+	let { currentWallet } = getCurrentWallet();
 	if (!currentWallet) {
 		console.warn(
 			'No wallet found. Cannot update activity list with transactions.',
@@ -89,18 +89,12 @@ export const updateOnChainActivityList = (): Result<string> => {
 		return ok('');
 	}
 	const { selectedNetwork, selectedWallet } = getCurrentWallet();
-	const blocktankTransactions = getBlocktankStore().paidOrders;
-	const blocktankOrders = getBlocktankStore().orders;
 	const boostedTransactions =
 		currentWallet.boostedTransactions[selectedNetwork];
 
 	const transactions = currentWallet.transactions[selectedNetwork];
-	const activityItems = Object.values(transactions).map((transaction) => {
-		return onChainTransactionToActivityItem({
-			transaction,
-			blocktankTransactions,
-			blocktankOrders,
-		});
+	const activityItems = Object.values(transactions).map((tx) => {
+		return onChainTransactionToActivityItem({ transaction: tx });
 	});
 
 	const boostFormattedItems = formatBoostedActivityItems({

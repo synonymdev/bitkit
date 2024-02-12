@@ -26,6 +26,7 @@ const EnabledSlashtagsProfileButton = (): ReactElement => {
 	return (
 		<Pressable
 			style={[styles.leftColumn, styles.pressed]}
+			color="transparent"
 			onPressIn={openProfile}
 			hitSlop={{ top: 15, bottom: 15, left: 5, right: 5 }}
 			testID="Header">
@@ -49,6 +50,7 @@ const ProfileButton = (): ReactElement => {
 	return __DISABLE_SLASHTAGS__ ? (
 		<Pressable
 			style={[styles.leftColumn, styles.pressed]}
+			color="transparent"
 			hitSlop={{ top: 15, bottom: 15, left: 5, right: 5 }}
 			onPressIn={(): void => {}}>
 			<ProfileImage size={32} url="" image="" style={styles.profileImage} />
@@ -80,6 +82,7 @@ const Header = (): ReactElement => {
 			<View style={styles.rightColumn}>
 				<Pressable
 					style={[styles.profileIcon, styles.pressed]}
+					color="transparent"
 					hitSlop={{ top: 15, bottom: 15, left: 5, right: 5 }}
 					onPressIn={openContacts}
 					testID="HeaderContactsButton">
@@ -87,6 +90,7 @@ const Header = (): ReactElement => {
 				</Pressable>
 				<Pressable
 					style={[styles.cogIcon, styles.pressed]}
+					color="transparent"
 					hitSlop={{ top: 15, bottom: 15, left: 5, right: 5 }}
 					onPressIn={openSettings}
 					testID="Settings">

@@ -8,6 +8,7 @@ import { selectedNetworkSelector } from '../../../store/reselect/wallet';
 import { networkLabels } from '../../../utils/networks';
 import { switchNetwork } from '../../../utils/wallet';
 import { SettingsScreenProps } from '../../../navigation/types';
+import { startWalletServices } from '../../../utils/startup';
 
 const BitcoinNetworkSelection = ({
 	navigation,
@@ -28,6 +29,8 @@ const BitcoinNetworkSelection = ({
 						onPress: async (): Promise<void> => {
 							setLoading(true);
 							await switchNetwork(network.id);
+							// Start wallet services with the newly selected network.
+							await startWalletServices({ selectedNetwork });
 							setLoading(false);
 							navigation.goBack();
 						},

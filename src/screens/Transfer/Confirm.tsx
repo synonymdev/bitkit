@@ -64,10 +64,10 @@ const Confirm = ({
 	const handleConfirm = async (): Promise<void> => {
 		setLoading(true);
 
-		if (orderId) {
+		if (order) {
 			// savings -> spending
 			setLoading(true);
-			const res = await confirmChannelPurchase({ orderId, selectedNetwork });
+			const res = await confirmChannelPurchase({ order, selectedNetwork });
 			if (res.isErr()) {
 				setLoading(false);
 				return;
