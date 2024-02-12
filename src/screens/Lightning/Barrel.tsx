@@ -2,7 +2,7 @@ import React, { memo, ReactElement } from 'react';
 import { Image, ImageSourcePropType, StyleSheet } from 'react-native';
 
 import useColors from '../../hooks/colors';
-import useDisplayValues from '../../hooks/displayValues';
+import { useDisplayValues } from '../../hooks/displayValues';
 import { TouchableOpacity } from '../../styles/components';
 import { Subtitle } from '../../styles/text';
 import { TPackage } from './CustomSetup';

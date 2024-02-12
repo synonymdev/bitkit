@@ -78,7 +78,7 @@
 	"lightning_recovery_title": "Lightning Recovery",
 	"lightning_recovery_desc": "Warning: This will force close all of your channels ({channelCount}) and recover any funds to your on-chain wallet. Only use this option if you are unable to access your lightning wallet due to a restore error.",
 	"lightning_recovery_success": "Lightning Recovery Success",
-	"lightning_recovery_success_message": "Pending balance {sats} sats recovered. Please reopen the app to see your recovered balance.",
+	"lightning_recovery_success_message": "Pending balance {sats} bitcoin recovered. Please reopen the app to see your recovered balance.",
 	"lightning_recovery_error": "Lightning Recovery Error",
 	"lightning_recovery_no_channels": "No lightning channels found in this backup to recover.",
 	"display_seed": "Show Seed Phrase",

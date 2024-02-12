@@ -1,22 +1,25 @@
 // Add migrations for every persisted store version change
 
+import { EAddressType } from 'beignet';
+import { defaultAddressContent } from 'beignet/src/shapes/wallet';
 import { PersistedState } from 'redux-persist';
-import { initialActivityState } from '../slices/activity';
+
+import { __WEB_RELAY__ } from '../../constants/env';
+import { getDefaultSettings } from '../../screens/Widgets/WidgetEdit';
+import { EAvailableNetwork } from '../../utils/networks';
+import { initialBackupState } from '../shapes/backup';
 import { defaultBlocktankInfoShape } from '../shapes/blocktank';
 import { initialTodosState } from '../shapes/todos';
 import { defaultViewControllers } from '../shapes/ui';
-import { initialChecksState } from '../slices/checks';
-import { initialBackupState } from '../shapes/backup';
-import { initialWidgetsState } from '../slices/widgets';
 import {
 	getDefaultWalletStoreShape,
 	getNetworkContent,
 } from '../shapes/wallet';
-import { getDefaultSettings } from '../../screens/Widgets/WidgetEdit';
-import { __WEB_RELAY__ } from '../../constants/env';
-import { EAvailableNetwork } from '../../utils/networks';
-import { defaultAddressContent } from 'beignet/src/shapes/wallet';
-import { EAddressType } from 'beignet';
+import { initialActivityState } from '../slices/activity';
+import { initialChecksState } from '../slices/checks';
+import { initialWidgetsState } from '../slices/widgets';
+import { EBackupCategories } from '../utils/backup';
+import { EDenomination, EUnit } from '../types/wallet';
 
 const migrations = {
 	0: (state): PersistedState => {
@@ -429,6 +432,68 @@ const migrations = {
 				addressTypesToMonitor:
 					getDefaultWalletStoreShape().addressTypesToMonitor,
 				wallets: walletsState,
+			},
+		};
+	},
+	35: (state): PersistedState => {
+		const newNodes = { ...state.lightning.nodes };
+		// Loop through all nodes
+		for (const walletName in newNodes) {
+			newNodes[walletName] = {
+				...newNodes[walletName],
+				backup: getNetworkContent({}),
+			};
+		}
+
+		const now = Date.now();
+		const old = state.backup;
+		const backup = {};
+
+		for (const [oldKey, newKey] of [
+			['remoteBlocktankBackup', EBackupCategories.blocktank],
+			['remoteLdkActivityBackup', EBackupCategories.ldkActivity],
+			['remoteMetadataBackup', EBackupCategories.metadata],
+			['remoteSettingsBackup', EBackupCategories.settings],
+			['remoteSlashtagsBackup', EBackupCategories.slashtags],
+			['remoteWidgetsBackup', EBackupCategories.widgets],
+		]) {
+			const oldLastSync = old[`${oldKey}LastSync`];
+			const oldSynced = old[`${oldKey}Synced`];
+			const oldSyncRequired = old[`${oldKey}SyncRequired`];
+
+			if (oldSynced === false && !oldSyncRequired) {
+				// backup not required
+				backup[newKey] = {
+					required: now - 1000,
+					synced: now,
+					running: false,
+				};
+			} else {
+				// force backup
+				backup[newKey] = {
+					required: now,
+					synced: oldLastSync ?? now - 1000,
+					running: false,
+				};
+			}
+		}
+
+		return {
+			...state,
+			backup,
+			lightning: {
+				...state.lightning,
+				nodes: newNodes,
+			},
+		};
+	},
+	36: (state): PersistedState => {
+		return {
+			...state,
+			settings: {
+				...state.settings,
+				unit: EUnit.BTC,
+				denomination: EDenomination.modern,
 			},
 		};
 	},

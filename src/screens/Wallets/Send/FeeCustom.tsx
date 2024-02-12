@@ -13,7 +13,7 @@ import { getTotalFee, updateFee } from '../../../utils/wallet/transactions';
 import { handleNumberPadPress } from '../../../utils/numberpad';
 import { showToast } from '../../../utils/notifications';
 import { useAppSelector } from '../../../hooks/redux';
-import useDisplayValues from '../../../hooks/displayValues';
+import { useDisplayValues } from '../../../hooks/displayValues';
 import { transactionSelector } from '../../../store/reselect/wallet';
 import type { SendScreenProps } from '../../../navigation/types';
 

@@ -2,7 +2,12 @@ import { err, ok, Result } from '@synonymdev/result';
 
 import { resetSendTransaction, updateSendTransaction } from '../actions/wallet';
 import { setLightningSetupStep } from '../slices/user';
-import { getBlocktankStore, getWalletStore, dispatch } from '../helpers';
+import {
+	getBlocktankStore,
+	getWalletStore,
+	dispatch,
+	getFeesStore,
+} from '../helpers';
 import * as blocktank from '../../utils/blocktank';
 import {
 	createOrder,
@@ -276,14 +281,20 @@ export const startChannelPurchase = async ({
 	}
 
 	const { onchainBalance } = getBalance({ selectedNetwork, selectedWallet });
-	const min0ConfTxFee = await getMin0ConfTxFee(orderData.value.id);
-	if (min0ConfTxFee.isErr()) {
-		return err(min0ConfTxFee.error.message);
+
+	// Get transaction fee
+	const fees = getFeesStore().onchain;
+	let satPerVByteFee = fees.fast;
+	if (remoteBalance === 0) {
+		// For orders with 0 client balance, we use the min 0-conf tx fee from BT to get a turbo channel.
+		const min0ConfTxFee = await getMin0ConfTxFee(orderData.value.id);
+		if (min0ConfTxFee.isErr()) {
+			return err(min0ConfTxFee.error.message);
+		}
+		satPerVByteFee = Math.ceil(min0ConfTxFee.value.satPerVByte); // might be float
 	}
-	const satPerVByteFee = Math.ceil(min0ConfTxFee.value.satPerVByte); // might be float
-	let txFeeInSats = getTotalFee({
-		satsPerByte: satPerVByteFee,
-	});
+
+	let txFeeInSats = getTotalFee({ satsPerByte: satPerVByteFee });
 	const buyChannelDataFeeSat = Math.ceil(buyChannelData.feeSat);
 	const buyChannelDataClientBalanceFeeSat = Math.ceil(
 		buyChannelData.clientBalanceSat,
@@ -316,9 +327,7 @@ export const startChannelPurchase = async ({
 		},
 	});
 
-	const feeRes = updateFee({
-		satsPerByte: satPerVByteFee,
-	});
+	const feeRes = updateFee({ satsPerByte: satPerVByteFee });
 	if (feeRes.isErr()) {
 		return err(feeRes.error.message);
 	}

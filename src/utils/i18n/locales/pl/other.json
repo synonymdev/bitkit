@@ -1,5 +1,4 @@
 {
-  "buy_text": "Nie masz jeszcze Bitcoinów do wysłania do swojego portfela Bitkit? Zbierz trochę satów.",
   "buy_button": "Kup Bitcoina",
   "connection_lost_title": "Utracono połączenie Bitkit",
   "connection_lost_message": "Sprawdź ustawienia serwera Electrum.",

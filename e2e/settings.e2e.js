@@ -1,5 +1,4 @@
 import jestExpect from 'expect';
-import parse from 'url-parse';
 
 import {
 	sleep,
@@ -70,7 +69,7 @@ d('Settings', () => {
 
 			// switch back to sats
 			await element(by.id('TotalBalance')).tap();
-			await element(by.id('TotalBalance')).tap();
+
 			markComplete('settings-currency');
 		});
 
@@ -79,21 +78,54 @@ d('Settings', () => {
 				return;
 			}
 
-			// switch to Bitcoins
+			const fiatSymbol = await element(
+				by.id('MoneyFiatSymbol').withAncestor(by.id('TotalBalance')),
+			);
+			const balancePrim = await element(
+				by.id('MoneyPrimary').withAncestor(by.id('TotalBalance')),
+			);
+			const balanceSecd = await element(
+				by.id('MoneySecondary').withAncestor(by.id('TotalBalance')),
+			);
+			const unitRow = await element(
+				by.id('Value').withAncestor(by.id('UnitSettings')),
+			);
+
+			await element(by.id('Settings')).tap();
+			await element(by.id('GeneralSettings')).tap();
+			// check default unit
+			await expect(unitRow).toHaveText('Bitcoin');
+
+			// switch to GBP
+			await element(by.id('UnitSettings')).tap();
+			await element(by.id('GBP')).tap();
+			await element(by.id('NavigationBack')).tap();
+			await expect(unitRow).toHaveText('GBP');
+			await element(by.id('NavigationClose')).tap();
+			await expect(fiatSymbol).toHaveText('£');
+			await expect(balancePrim).toHaveText('0');
+			await expect(balanceSecd).toHaveText('.00');
+
+			// switch back to BTC
 			await element(by.id('Settings')).tap();
 			await element(by.id('GeneralSettings')).tap();
 			await element(by.id('UnitSettings')).tap();
 			await element(by.id('Bitcoin')).tap();
-			await expect(
-				element(by.id('Value').withAncestor(by.id('UnitSettings'))),
-			).toHaveText('Bitcoin');
+			await element(by.id('NavigationBack')).tap();
+			await expect(unitRow).toHaveText('Bitcoin');
+			await element(by.id('NavigationClose')).tap();
+			await expect(balancePrim).toHaveText('0');
 
-			// switch back to Satoshis
+			// switch to classic denomination
+			await element(by.id('Settings')).tap();
+			await element(by.id('GeneralSettings')).tap();
 			await element(by.id('UnitSettings')).tap();
-			await element(by.id('Satoshis')).tap();
-			await expect(
-				element(by.id('Value').withAncestor(by.id('UnitSettings'))),
-			).toHaveText('Satoshis');
+			await element(by.id('DenominationClassic')).tap();
+			await element(by.id('NavigationBack')).tap();
+			await expect(unitRow).toHaveText('Bitcoin');
+			await element(by.id('NavigationClose')).tap();
+			await expect(balancePrim).toHaveText('0.00000000');
+
 			markComplete('settings-unit');
 		});
 
@@ -504,12 +536,8 @@ d('Settings', () => {
 				by.id('ConnectedUrl'),
 			).getAttributes();
 
-			// add port to url
-			const url = parse(origRelay, true);
-			url.set('hostname', url.hostname + ':443');
-			const relayUrl = url.toString();
-
-			await element(by.id('UrlInput')).replaceText(relayUrl);
+			const alteredRelay = origRelay + '/';
+			await element(by.id('UrlInput')).replaceText(alteredRelay);
 			await element(by.id('Status')).tap(); // close keyboard
 			await element(by.id('ConnectToUrl')).tap();
 			await sleep(1000);
@@ -519,7 +547,7 @@ d('Settings', () => {
 				by.id('ConnectedUrl'),
 			).getAttributes();
 
-			jestExpect(newRelay).toBe(relayUrl);
+			jestExpect(newRelay).toBe(alteredRelay);
 
 			// now change it back
 			await element(by.id('UrlInput')).replaceText(origRelay);

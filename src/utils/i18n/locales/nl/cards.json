@@ -43,8 +43,7 @@
     "description": "Vul uw gegevens in"
   },
   "buyBitcoin": {
-    "title": "Bitcoin ontvangen",
-    "description": "Verzamel wat sats"
+    "title": "Bitcoin ontvangen"
   },
   "lightning_no_funds_title": "Nog Geen Geld",
   "lightning_no_funds_desc": "Het instellen van instant payments vereist dat u eerst on-chain Bitcoin overmaakt naar uw wallet. ",

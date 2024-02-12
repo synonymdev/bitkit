@@ -22,10 +22,20 @@ export type TKeyDerivationChange = '0' | '1'; //"Receiving Address" | "Change Ad
 export type TKeyDerivationAddressIndex = string;
 export type TAssetType = 'bitcoin' | 'tether';
 
-export enum EUnit {
+export enum EConversionUnit {
 	satoshi = 'satoshi',
 	BTC = 'BTC',
 	fiat = 'fiat',
+}
+
+export enum EUnit {
+	BTC = 'BTC',
+	fiat = 'fiat',
+}
+
+export enum EDenomination {
+	modern = 'modern',
+	classic = 'classic',
 }
 
 export type TGetByteCountInput =

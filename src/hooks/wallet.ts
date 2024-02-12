@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { useAppDispatch, useAppSelector } from '../hooks/redux';
 import {
@@ -6,19 +6,18 @@ import {
 	openChannelsSelector,
 } from '../store/reselect/lightning';
 import { updateSettings } from '../store/slices/settings';
-import { EUnit } from '../store/types/wallet';
-import { primaryUnitSelector } from '../store/reselect/settings';
+import { unitSelector, nextUnitSelector } from '../store/reselect/settings';
 import {
 	currentWalletSelector,
 	selectedNetworkSelector,
 	selectedWalletSelector,
 } from '../store/reselect/wallet';
 import { useCurrency } from './displayValues';
-import { useTranslation } from 'react-i18next';
 import i18n from '../utils/i18n';
 import { showToast } from '../utils/notifications';
 import { ignoresSwitchUnitToastSelector } from '../store/reselect/user';
 import { ignoreSwitchUnitToast } from '../store/slices/user';
+import { EUnit } from '../store/types/wallet';
 
 /**
  * Retrieves wallet balances for the currently selected wallet and network.
@@ -87,47 +86,35 @@ export function useNoTransactions(): boolean {
 	return empty;
 }
 
-export const useSwitchUnit = (): [EUnit, () => void] => {
-	const unit = useAppSelector(primaryUnitSelector);
+export const useSwitchUnit = (): (() => void) => {
 	const dispatch = useAppDispatch();
-
-	// BTC -> satoshi -> fiat
-	const nextUnit = useMemo(() => {
-		if (unit === EUnit.BTC) {
-			return EUnit.satoshi;
-		}
-		if (unit === EUnit.satoshi) {
-			return EUnit.fiat;
-		}
-		return EUnit.BTC;
-	}, [unit]);
+	const nextUnit = useAppSelector(nextUnitSelector);
 
 	const switchUnit = (): void => {
 		dispatch(updateSettings({ unit: nextUnit }));
 	};
 
-	return [nextUnit, switchUnit];
+	return switchUnit;
 };
 
-export function useSwitchUnitAnnounced(): () => void {
+export const useSwitchUnitAnnounced = (): (() => void) => {
 	const dispatch = useAppDispatch();
-	const [nextUnit, switchUnit] = useSwitchUnit();
-	const unit = useAppSelector(primaryUnitSelector);
+	const switchUnit = useSwitchUnit();
+	const unit = useAppSelector(unitSelector);
+	const nextUnit = useAppSelector(nextUnitSelector);
 	const ignoresSwitchUnitToast = useAppSelector(ignoresSwitchUnitToastSelector);
 	const { fiatTicker } = useCurrency();
 	const { t } = useTranslation('wallet');
 
-	const toUnitText: (unit: EUnit) => string = (u) => {
+	const toUnitText = (u: EUnit): string => {
 		if (u === EUnit.BTC) {
 			return i18n.t('settings:general.unit_bitcoin');
 		}
-		if (u === EUnit.satoshi) {
-			return i18n.t('settings:general.unit_satoshis');
-		}
+
 		return fiatTicker;
 	};
 
-	return (): void => {
+	const switchUnitAnnounced = (): void => {
 		switchUnit();
 		if (!ignoresSwitchUnitToast) {
 			showToast({
@@ -140,4 +127,6 @@ export function useSwitchUnitAnnounced(): () => void {
 			dispatch(ignoreSwitchUnitToast());
 		}
 	};
-}
+
+	return switchUnitAnnounced;
+};

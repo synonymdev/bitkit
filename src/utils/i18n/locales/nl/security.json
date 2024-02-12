@@ -21,7 +21,6 @@
   "mnemonic_confirm": "Herstelwoorden Bevestigen",
   "mnemonic_confirm_tap": "Tik de 12 woorden aan in de juiste volgorde.",
   "mnemonic_result_header": "Succesvol",
-  "mnemonic_result_text": "Bewaar uw herstelwoorden op een veilige plek, dit is de enige manier om uw geld te herstellen (!)",
   "mnemonic_keep_header": "Hou Het Geheim",
   "mnemonic_keep_text": "Onthou goed om nooit uw hersteldwoorden met iemand te delen! Als iemand uw herstelwoorden eenmaal heeft hebben ze toegang tot uw geld, profiel en andere data.",
   "mnemonic_data_header": "Wallet Data",

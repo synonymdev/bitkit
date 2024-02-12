@@ -71,6 +71,7 @@ export type TUiState = {
 	isConnectedToElectrum: boolean;
 	isOnline: boolean;
 	isLDKReady: boolean;
+	isProfiling: boolean;
 	profileLink: TProfileLink;
 	viewControllers: TUiViewController;
 	timeZone: string;

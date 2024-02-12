@@ -16,7 +16,6 @@ import {
 let isSetup = false;
 const methods = {
 	[ENodeJsMethod.setup]: {},
-	[ENodeJsMethod.generateMnemonic]: {},
 	[ENodeJsMethod.getPrivateKey]: {},
 	[ENodeJsMethod.getScriptHash]: {},
 	[ENodeJsMethod.getAddress]: {},

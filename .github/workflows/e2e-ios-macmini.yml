@@ -1,0 +1,106 @@
+name: e2e-ios-macmini
+
+on: pull_request
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  NO_FLIPPER: 1
+  E2E_TESTS: 1 # build without transform-remove-console babel plugin
+  DEBUG: 'lnurl* lnurl server'
+  MACMINI: 1 # use iPhone 15 in .detoxrc
+
+jobs:
+  e2e:
+    runs-on: self-hosted
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 1
+
+      - name: Reset testing enviroment
+        continue-on-error: true
+        run: |
+          pkill -f react-native || echo 0
+          pkill -f Simulator || echo 0
+          rm -rf /tmp/lock/*
+          cd docker && docker compose down -v
+
+      - name: Docker info
+        run: |
+          docker --version
+          docker volume ls
+          docker ps
+
+      - name: Run regtest setup
+        run: |
+          cd docker
+          mkdir lnd && chmod 777 lnd
+          docker-compose pull --quiet
+          docker compose up -d
+
+      - name: Wait for electrum server
+        timeout-minutes: 10
+        run: while ! nc -z '127.0.0.1' 60001; do sleep 1; done
+
+      - name: Activate enviroment variables
+        run: cp .env.test.template .env
+
+      - name: Yarn Install
+        run: yarn --no-audit --prefer-offline || yarn --no-audit --prefer-offline
+        env:
+          HUSKY: 0
+
+      - name: Pod Install
+        run: pod install --project-directory=ios || pod install --project-directory=ios
+
+      - name: Build
+        run: yarn e2e:build:ios-release || yarn e2e:build:ios-release
+
+      - name: Test attempt 1
+        continue-on-error: true
+        id: test1
+        run: yarn e2e:test:ios-release --record-videos all --take-screenshots all --record-logs all
+
+      - name: Test attempt 2
+        continue-on-error: true
+        id: test2
+        if: steps.test1.outcome != 'success'
+        run: yarn e2e:test:ios-release --record-videos all --take-screenshots all --record-logs all
+
+      - name: Test attempt 3
+        continue-on-error: true
+        id: test3
+        if: steps.test1.outcome != 'success' && steps.test2.outcome != 'success'
+        run: yarn e2e:test:ios-release --record-videos all --take-screenshots all --record-logs all
+
+      - name: Restart docker before last attempt
+        if: steps.test1.outcome != 'success' && steps.test2.outcome != 'success' && steps.test3.outcome != 'success'
+        run: |
+          cd docker && docker compose down -t 60 && docker compose up --quiet-pull -d && cd ..
+          while ! nc -z '127.0.0.1' 60001; do sleep 1; done
+
+      - name: Test attempt 4
+        id: test4
+        if: steps.test1.outcome != 'success' && steps.test2.outcome != 'success' && steps.test3.outcome != 'success'
+        run: yarn e2e:test:ios-release --record-videos all --take-screenshots all --record-logs all
+
+      - uses: actions/upload-artifact@v3
+        if: failure()
+        # if: ${{ always() }}
+        with:
+          name: e2e-test-videos
+          path: ./artifacts/
+
+      - name: Dump docker logs on failure
+        if: failure()
+        uses: jwalton/gh-docker-logs@v2
+
+      - name: Clean docker
+        if: ${{ always() }}
+        run: |
+          cd docker && docker compose down -v

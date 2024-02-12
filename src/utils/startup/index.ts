@@ -2,7 +2,6 @@ import { InteractionManager } from 'react-native';
 import { err, ok, Result } from '@synonymdev/result';
 
 import {
-	generateMnemonic,
 	getAddressTypesToMonitor,
 	getBip39Passphrase,
 	getMnemonicPhrase,
@@ -24,7 +23,7 @@ import { promiseTimeout } from '../helpers';
 import { EAvailableNetwork } from '../networks';
 import { TWalletName } from '../../store/types/wallet';
 import { runChecks } from '../wallet/checks';
-import { TServer } from 'beignet';
+import { generateMnemonic, TServer } from 'beignet';
 
 /**
  * Creates a new wallet from scratch
@@ -35,7 +34,7 @@ export const createNewWallet = async ({
 }: {
 	bip39Passphrase?: string;
 } = {}): Promise<Result<string>> => {
-	const mnemonic = await generateMnemonic();
+	const mnemonic = generateMnemonic();
 	if (!mnemonic) {
 		return err('Unable to generate mnemonic.');
 	}

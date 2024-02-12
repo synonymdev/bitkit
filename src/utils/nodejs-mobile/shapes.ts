@@ -1,7 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
 import {
 	ENodeJsMethod,
-	INodeJsGenerateMnemonic,
 	INodeJsGetAddress,
 	INodeJsGetPrivateKey,
 	INodeJsGetScriptHash,
@@ -17,15 +16,6 @@ export const DefaultNodeJsMethodsShape = {
 				mnemonic: '',
 				bip39Passphrase: '',
 				selectedNetwork: undefined,
-			},
-		};
-	},
-	generateMnemonic: (): INodeJsGenerateMnemonic => {
-		return {
-			id: uuidv4(),
-			method: ENodeJsMethod.generateMnemonic,
-			data: {
-				strength: 256,
 			},
 		};
 	},

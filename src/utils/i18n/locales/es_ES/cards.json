@@ -43,8 +43,7 @@
     "description": "Introduzca sus datos"
   },
   "buyBitcoin": {
-    "title": "Obtener Bitcoin",
-    "description": "Apile algunos satoshis"
+    "title": "Obtener Bitcoin"
   },
   "btFailed": {
     "title": "Instalación fallida",

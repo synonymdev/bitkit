@@ -21,7 +21,6 @@
   "mnemonic_confirm": "Potwierdź hasło",
   "mnemonic_confirm_tap": "Wpisz 12 słów w poprawnej kolejności.",
   "mnemonic_result_header": "Sukces",
-  "mnemonic_result_text": "Upewnij się, że twoje hasło jest w bezpiecznym miejscu, ponieważ jest to jedyna opcja odzyskania Twoich środków (!)",
   "mnemonic_keep_header": "Zachowaj to w sekrecie",
   "mnemonic_keep_text": "Pamiętaj aby nigdy nikomu nie udostępniać swojego hasła. Ktokolwiek uzyska do niego dostęp będzie mógł ukraść twoje środki, profil i inne dane.",
   "mnemonic_data_header": "Dane portfela",

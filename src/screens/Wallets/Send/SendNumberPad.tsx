@@ -6,8 +6,10 @@ import { useAppSelector } from '../../../hooks/redux';
 import { vibrate } from '../../../utils/helpers';
 import { convertToSats } from '../../../utils/conversion';
 import { handleNumberPadPress } from '../../../utils/numberpad';
-import { EUnit } from '../../../store/types/wallet';
-import { primaryUnitSelector } from '../../../store/reselect/settings';
+import {
+	conversionUnitSelector,
+	numberPadSelector,
+} from '../../../store/reselect/settings';
 
 const SendNumberPad = ({
 	value,
@@ -23,11 +25,8 @@ const SendNumberPad = ({
 	style?: StyleProp<ViewStyle>;
 }): ReactElement => {
 	const [errorKey, setErrorKey] = useState<string>();
-	const unit = useAppSelector(primaryUnitSelector);
-
-	const maxDecimals = unit === EUnit.BTC ? 8 : 2;
-	const maxLength = unit === EUnit.satoshi ? 10 : 20;
-	const numberPadType = unit === EUnit.satoshi ? 'integer' : 'decimal';
+	const conversionUnit = useAppSelector(conversionUnitSelector);
+	const { maxLength, maxDecimals, type } = useAppSelector(numberPadSelector);
 
 	const onPress = (key: string): void => {
 		const newValue = handleNumberPadPress(key, value, {
@@ -35,7 +34,7 @@ const SendNumberPad = ({
 			maxDecimals,
 		});
 
-		const amount = convertToSats(newValue, unit);
+		const amount = convertToSats(newValue, conversionUnit);
 
 		if (amount <= maxAmount) {
 			onChange(newValue);
@@ -50,7 +49,7 @@ const SendNumberPad = ({
 	return (
 		<NumberPad
 			style={style}
-			type={numberPadType}
+			type={type}
 			errorKey={errorKey}
 			onPress={onPress}
 		/>

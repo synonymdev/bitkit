@@ -1,12 +1,7 @@
-import { EUnit } from '../../store/types/wallet';
-
 export interface IBitcoinDisplayValues {
 	bitcoinFormatted: string;
 	bitcoinWhole: string; // Value before decimal point
 	bitcoinDecimal: string; // Value after decimal point
-	bitcoinSymbol: string; // ₿, ⚡,
-	bitcoinTicker: EUnit;
-	satoshis: number;
 }
 
 export interface IFiatDisplayValues {
@@ -25,9 +20,6 @@ export const defaultBitcoinDisplayValues: IBitcoinDisplayValues = {
 	bitcoinFormatted: '—',
 	bitcoinWhole: '',
 	bitcoinDecimal: '',
-	bitcoinSymbol: '',
-	bitcoinTicker: EUnit.satoshi,
-	satoshis: 0,
 };
 
 export const defaultFiatDisplayValues: IFiatDisplayValues = {

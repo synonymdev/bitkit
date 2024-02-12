@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react';
 import { View, StyleProp, ViewStyle, StyleSheet } from 'react-native';
 
 import { Display } from '../styles/text';
-import { BIcon, LightningIcon } from '../styles/icons';
+import { BitcoinIcon } from '../styles/icons';
 import { EUnit } from '../store/types/wallet';
 import { useCurrency } from '../hooks/displayValues';
 
@@ -19,22 +19,15 @@ const MoneySymbol = ({
 		<View style={[styles.root, style]}>
 			{unit === EUnit.fiat && (
 				<Display
-					style={styles.fiatSymbol}
+					style={[styles.symbol, styles.fiatSymbol]}
 					color="white50"
 					testID="MoneyFiatSymbol">
 					{fiatSymbol}
 				</Display>
 			)}
-			{unit === EUnit.satoshi && (
-				<LightningIcon
-					color="white50"
-					height={40}
-					width={28}
-					testID="MoneyLightningSymbol"
-				/>
-			)}
 			{unit === EUnit.BTC && (
-				<BIcon
+				<BitcoinIcon
+					style={styles.symbol}
 					color="white50"
 					height={40}
 					width={28}
@@ -50,6 +43,9 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		alignItems: 'center',
 		position: 'relative',
+	},
+	symbol: {
+		marginRight: 4,
 	},
 	fiatSymbol: {
 		fontSize: 46,

@@ -10,7 +10,7 @@ import { ScrollView, StyleSheet } from 'react-native';
 
 import { View } from '../../../styles/components';
 import { Text } from '../../../styles/text';
-import useDisplayValues from '../../../hooks/displayValues';
+import { useDisplayValues } from '../../../hooks/displayValues';
 import { useAppSelector } from '../../../hooks/redux';
 import { channelIsOpenSelector } from '../../../store/reselect/lightning';
 import NavigationHeader from '../../../components/NavigationHeader';

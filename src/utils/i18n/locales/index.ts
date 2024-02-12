@@ -26,6 +26,7 @@ export default {
 	cs,
 	de,
 	el,
+	es: es_419, // es_419 is the fallback for es because it's the most common variant
 	'es-ES': es_ES,
 	'es-419': es_419,
 	fa,
@@ -36,6 +37,7 @@ export default {
 	nl,
 	no,
 	pl,
+	pt: pt_BR, // pt_BR is the fallback for pt because it's the most common variant
 	'pt-BR': pt_BR,
 	'pt-PT': pt_PT,
 	ru,

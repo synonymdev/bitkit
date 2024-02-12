@@ -1,4 +1,5 @@
 import {
+	TBackupStateUpdate,
 	TChannel,
 	TClaimableBalance,
 	TCreatePaymentReq,
@@ -27,6 +28,7 @@ export type TNode = {
 	info: IWalletItem<{}>;
 	peers: IWalletItem<string[]>;
 	claimableBalances: IWalletItem<TClaimableBalance[]>;
+	backup: IWalletItem<TBackupStateUpdate>;
 };
 
 export type TNodes = {

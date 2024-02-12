@@ -25,13 +25,10 @@
     "currency_most_used": "Más utilizados",
     "currency_other": "Otras monedas",
     "unit_bitcoin": "Bitcoin",
-    "unit_satoshis": "Satoshis",
     "speed": "Velocidad de transacción",
     "speed_title": "Velocidad de la transacción",
     "speed_default": "Velocidad de transacción predeterminada",
     "speed_fee_custom": "Fijar tarifa personalizada",
-    "speed_fee_total": "{feeSats} sats para la transacción media",
-    "speed_fee_total_fiat": "{fiatSats} sats para la transacción media ({fiatSymbol}{fiatFormatted})",
     "tags": "Etiquetas",
     "tags_previously": "Etiquetas utilizadas anteriormente",
     "widgets": "Widgets"
@@ -64,6 +61,11 @@
     "text_button": "Enviar",
     "text_success_button": "OK",
     "text_unsuccess_button": "Inténtelo de nuevo"
+  },
+  "status": {
+    "lightning_node": {
+      "title": "Nodo Lightning"
+    }
   },
   "adv": {
     "section_payments": "Pagos",
@@ -127,7 +129,6 @@
     "private_key": "Clave privada: {privateKey}",
     "addr_change": "Cambiar direcciones",
     "addr_receiving": "Direcciones de recibimiento",
-    "sats_found": "{totalBalance} sats encontrados",
     "gen_20": "Generar 20 más",
     "check_balances": "Consultar Saldos"
   },

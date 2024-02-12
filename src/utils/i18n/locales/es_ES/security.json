@@ -19,7 +19,6 @@
   "mnemonic_confirm": "Confirmar frase de recuperación",
   "mnemonic_confirm_tap": "Pulse las 12 palabras en el orden correcto.",
   "mnemonic_result_header": "Éxito",
-  "mnemonic_result_text": "Asegúrese de guardar su frase de recuperación en un lugar seguro, ya que es la única forma de recuperar su dinero (!)",
   "mnemonic_keep_header": "Manténgala en secreto",
   "mnemonic_keep_text": "Recuerde, ¡nunca comparta su frase de recuperación con nadie! Si alguien tiene acceso a su frase de recuperación puede robarle su dinero, su perfil y otros datos.",
   "mnemonic_data_header": "Datos del monedero",

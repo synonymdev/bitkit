@@ -33,13 +33,10 @@
     "unit_title": "Unité par défaut",
     "unit_display": "Afficher les montants en",
     "unit_bitcoin": "Bitcoin",
-    "unit_satoshis": "Satoshis",
     "speed": "Vitesse de transaction",
     "speed_title": "Vitesse de transaction",
     "speed_default": "Vitesse de transaction par défaut",
     "speed_fee_custom": "Fixer des frais personnalisés",
-    "speed_fee_total": "{feeSats} sats en moyenne pour une transaction",
-    "speed_fee_total_fiat": "{feeSats} sats en moyenne pour une transaction ({fiatSymbol}{fiatFormatted} )",
     "tags": "Tags",
     "tags_previously": "Étiquettes précédemment utilisées",
     "widgets": "Widgets"
@@ -80,6 +77,11 @@
     "text_button": "Envoyer",
     "text_success_button": "OK",
     "text_unsuccess_button": "Réessayer"
+  },
+  "status": {
+    "lightning_node": {
+      "title": "Nœud Lightning"
+    }
   },
   "adv": {
     "section_payments": "Paiements",
@@ -138,7 +140,6 @@
     "no_funds_change": "Aucun fonds n'a été trouvé sous le type d'adresse {addressType}, changez d'adresse jusqu'à l'index {index}.",
     "no_addrs_with_funds": "Aucune adresse avec fonds n'a été trouvée lors de la recherche de \"{searchTxt}\"",
     "no_addrs_str": "Aucune adresse trouvée lors de la recherche de \"{searchTxt}\"",
-    "spend_number": "{count, plural, one {Spend {fundsToSpend} sats From # address} many {Spend {fundsToSpend} sats From # addresses} other {Dépenser {fundsToSpend} sats depuis les adresses #}}",
     "spend_all": "{count, plural, one {Dépenser tous les fonds de l'adresse #.} many {Dépenser tous les fonds des adresses #.} other {Dépenser tous les fonds des adresses #.}}",
     "index": "Index : {index}",
     "path": "Chemin: {path}",
@@ -147,7 +148,6 @@
     "private_key": "Clé privée : {privateKey}",
     "addr_change": "Changement d'adresse",
     "addr_receiving": "Adresses de réception",
-    "sats_found": "{totalBalance} sats trouvé",
     "gen_20": "Générez 20 autres",
     "check_balances": "Soldes de chèques",
     "copied": "Copié dans le presse-papiers"

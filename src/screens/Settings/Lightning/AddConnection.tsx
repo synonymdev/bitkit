@@ -59,7 +59,7 @@ const AddConnection = ({
 							size="caption13M"
 							symbol={true}
 							color="white"
-							unit={EUnit.satoshi}
+							unit={EUnit.BTC}
 						/>
 					}
 				/>
@@ -71,7 +71,7 @@ const AddConnection = ({
 							size="caption13M"
 							symbol={true}
 							color="white"
-							unit={EUnit.satoshi}
+							unit={EUnit.BTC}
 						/>
 					}
 				/>
@@ -83,7 +83,7 @@ const AddConnection = ({
 							size="caption13M"
 							symbol={true}
 							color="white"
-							unit={EUnit.satoshi}
+							unit={EUnit.BTC}
 						/>
 					}
 				/>
@@ -95,7 +95,7 @@ const AddConnection = ({
 							size="caption13M"
 							symbol={true}
 							color="white"
-							unit={EUnit.satoshi}
+							unit={EUnit.BTC}
 						/>
 					}
 				/>

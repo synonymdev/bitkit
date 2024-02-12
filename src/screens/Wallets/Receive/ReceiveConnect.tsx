@@ -12,16 +12,16 @@ import GlowImage from '../../../components/GlowImage';
 import Money from '../../../components/Money';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 import { useScreenSize } from '../../../hooks/screen';
-import useDisplayValues, { useCurrency } from '../../../hooks/displayValues';
+import { useCurrency, useDisplayValues } from '../../../hooks/displayValues';
 import { useLightningBalance } from '../../../hooks/lightning';
 import { receiveSelector } from '../../../store/reselect/receive';
-import type { ReceiveScreenProps } from '../../../navigation/types';
 import { DEFAULT_CHANNEL_DURATION } from '../../Lightning/CustomConfirm';
 import { addCjitEntry } from '../../../store/slices/blocktank';
 import { updateInvoice } from '../../../store/slices/receive';
 import { createCJitEntry, estimateOrderFee } from '../../../utils/blocktank';
 import { showToast } from '../../../utils/notifications';
 import { blocktankInfoSelector } from '../../../store/reselect/blocktank';
+import type { ReceiveScreenProps } from '../../../navigation/types';
 
 const imageSrc = require('../../../assets/illustrations/lightning.png');
 

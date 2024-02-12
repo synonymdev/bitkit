@@ -39,7 +39,12 @@ import {
 	selectedWalletSelector,
 } from '../../store/reselect/wallet';
 import { blocktankInfoSelector } from '../../store/reselect/blocktank';
-import { primaryUnitSelector } from '../../store/reselect/settings';
+import {
+	conversionUnitSelector,
+	denominationSelector,
+	nextUnitSelector,
+	unitSelector,
+} from '../../store/reselect/settings';
 import { lnSetupSelector } from '../../store/reselect/aggregations';
 import NumberPadTextField from '../../components/NumberPadTextField';
 import { getNumberPadText } from '../../utils/numberpad';
@@ -49,8 +54,11 @@ const QuickSetup = ({
 	navigation,
 }: LightningScreenProps<'QuickSetup'>): ReactElement => {
 	const { t } = useTranslation('lightning');
-	const [nextUnit, onSwitchUnit] = useSwitchUnit();
-	const unit = useAppSelector(primaryUnitSelector);
+	const switchUnit = useSwitchUnit();
+	const unit = useAppSelector(unitSelector);
+	const nextUnit = useAppSelector(nextUnitSelector);
+	const conversionUnit = useAppSelector(conversionUnitSelector);
+	const denomination = useAppSelector(denominationSelector);
 	const selectedWallet = useAppSelector(selectedWalletSelector);
 	const selectedNetwork = useAppSelector(selectedNetworkSelector);
 	const blocktankInfo = useAppSelector(blocktankInfoSelector);
@@ -69,8 +77,8 @@ const QuickSetup = ({
 	);
 
 	const spendingAmount = useMemo((): number => {
-		return convertToSats(textFieldValue, unit);
-	}, [textFieldValue, unit]);
+		return convertToSats(textFieldValue, conversionUnit);
+	}, [textFieldValue, conversionUnit]);
 
 	const lnSetup = useAppSelector((state) =>
 		lnSetupSelector(state, spendingAmount),
@@ -87,31 +95,35 @@ const QuickSetup = ({
 
 	const setDefaultClientBalance = useCallback(() => {
 		const value = lnSetup.defaultClientBalance;
-		const result = getNumberPadText(value, unit);
+		const result = getNumberPadText(value, denomination, unit);
 		setTextFieldValue(result);
-	}, [lnSetup.defaultClientBalance, unit]);
+	}, [lnSetup.defaultClientBalance, denomination, unit]);
 
 	const onMax = useCallback(() => {
-		const result = getNumberPadText(lnSetup.slider.maxValue, unit);
+		const result = getNumberPadText(
+			lnSetup.slider.maxValue,
+			denomination,
+			unit,
+		);
 		setTextFieldValue(result);
-	}, [lnSetup.slider.maxValue, unit]);
+	}, [lnSetup.slider.maxValue, denomination, unit]);
 
 	useEffect(() => {
 		setDefaultClientBalance();
 	}, [setDefaultClientBalance, unit]);
 
 	const onChangeUnit = (): void => {
-		const result = getNumberPadText(spendingAmount, nextUnit);
+		const result = getNumberPadText(spendingAmount, denomination, nextUnit);
 		setTextFieldValue(result);
-		onSwitchUnit();
+		switchUnit();
 	};
 
 	const onSliderChange = useCallback(
 		(value: number) => {
-			const result = getNumberPadText(Math.round(value), unit);
+			const result = getNumberPadText(Math.round(value), denomination, unit);
 			setTextFieldValue(result);
 		},
-		[unit],
+		[denomination, unit],
 	);
 
 	const onDone = useCallback(() => {

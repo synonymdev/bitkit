@@ -27,13 +27,10 @@
     "currency_most_used": "Meest Gebruikt",
     "currency_other": "Andere Valuta",
     "unit_bitcoin": "Bitcoin",
-    "unit_satoshis": "Satoshis",
     "speed": "Transactiesnelheid",
     "speed_title": "Transactiesnelheid",
     "speed_default": "Standaard Transactiesnelheid",
     "speed_fee_custom": "Stel Een Aangepaste Vergoeding In",
-    "speed_fee_total": "{feeSats}sats voor een gemiddelde transactie",
-    "speed_fee_total_fiat": "{feeSats}voor een gemmidelde transactie ({fiatSymbol}{fiatFormatted})",
     "tags": "Labels",
     "tags_previously": "Eerder gebruikte labels",
     "widgets": "Widgets"
@@ -72,6 +69,11 @@
     "text_button": "Verstuur",
     "text_success_button": "OK",
     "text_unsuccess_button": "Opnieuw proberen"
+  },
+  "status": {
+    "lightning_node": {
+      "title": "Lightning Node"
+    }
   },
   "adv": {
     "section_payments": "Betalingen",
@@ -129,7 +131,6 @@
     "no_funds_change": "Geen geld gevonden voor het {addressType}adres type, wisselgeld adressen tot index {index}. ",
     "no_addrs_with_funds": "Geen adressen met geld gevonden voor de zoekterm \"{searchTxt}\"",
     "no_addrs_str": "Geen adressen gevonden voor de zoekterm \"{searchTxt}\"",
-    "spend_number": "{count, plural, one {Geef {fundsToSpend}sats uit Vanuit # adres} other {Geef {fundsToSpend}sats uit Vanuit # adressen}}",
     "spend_all": "{count, plural, one {Geef Al Het Geld Uit Voor # adres} other {Geef Al Het Geld UIt Voor # adressen}}",
     "index": "Index: {index}",
     "path": "Pad: {path}",
@@ -138,7 +139,6 @@
     "private_key": "Privésleutel: {privateKey}",
     "addr_change": "Wisselgeld Adressen",
     "addr_receiving": "Ontvangstadressen",
-    "sats_found": "{totalBalance}sats gevonden",
     "gen_20": "Genereer Er 20 Bij",
     "check_balances": "Inspecteer Uw Saldo's",
     "copied": "Gekopieerd naar het klembord"

@@ -1,4 +1,4 @@
-import { EUnit } from '../../store/types/wallet';
+import { EDenomination, EUnit } from '../../store/types/wallet';
 import { getDisplayValues } from '../displayValues';
 
 /**
@@ -63,31 +63,23 @@ export const handleNumberPadPress = (
  */
 export const getNumberPadText = (
 	amount: number,
-	unit?: EUnit,
+	denomination: EDenomination,
+	unit: EUnit,
 	shouldRound?: boolean,
 ): string => {
 	if (amount === 0) {
 		return '';
 	}
 
-	if (unit === EUnit.BTC) {
-		const displayValue = getDisplayValues({
-			satoshis: amount,
-			unit: EUnit.BTC,
-		});
+	const displayValue = getDisplayValues({ satoshis: amount });
 
+	if (denomination === EDenomination.classic) {
 		const { bitcoinWhole, bitcoinDecimal } = displayValue;
 		const decimalPart = Number(bitcoinDecimal) ? `.${bitcoinDecimal}` : '';
-
 		return `${bitcoinWhole}${decimalPart}`;
 	}
 
 	if (unit === EUnit.fiat) {
-		const displayValue = getDisplayValues({
-			satoshis: amount,
-			unit: EUnit.satoshi,
-		});
-
 		if (shouldRound) {
 			return displayValue.fiatValue.toFixed(0);
 		} else {
@@ -95,10 +87,5 @@ export const getNumberPadText = (
 		}
 	}
 
-	const displayValue = getDisplayValues({
-		satoshis: amount,
-		unit: EUnit.satoshi,
-	});
-
-	return displayValue.satoshis.toString();
+	return displayValue.bitcoinWhole;
 };

@@ -43,8 +43,7 @@
     "description": "Füge deine Angaben hinzu"
   },
   "buyBitcoin": {
-    "title": "Erhalte Bitcoin",
-    "description": "Stacke ein paar Sats"
+    "title": "Erhalte Bitcoin"
   },
   "lightning_no_funds_title": "Kein Guthaben verfügbar",
   "lightning_no_funds_desc": "Bevor Du ein instantzahlungs-fähiges Konto einrichtest, musst Du ein wenig on-chain Bitcoin an dein Wallet senden.",

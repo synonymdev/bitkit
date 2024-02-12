@@ -1,10 +1,24 @@
-import { SettingsScreenProps } from '../../../navigation/types';
 import React, { memo, ReactElement, useEffect, useMemo, useState } from 'react';
-import { ScrollView, View as ThemedView } from '../../../styles/components';
-import SettingsView from '../SettingsView';
-import { Caption13M, Text01M } from '../../../styles/text';
-import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import { StyleSheet, View } from 'react-native';
+
+import { useAppSelector } from '../../../hooks/redux';
+import { SettingsScreenProps } from '../../../navigation/types';
+import { backupSelector } from '../../../store/reselect/backup';
+import { blocktankPaidOrdersFullSelector } from '../../../store/reselect/blocktank';
+import {
+	openChannelsSelector,
+	pendingChannelsSelector,
+} from '../../../store/reselect/lightning';
+import {
+	isConnectedToElectrumSelector,
+	isLDKReadySelector,
+	isOnlineSelector,
+} from '../../../store/reselect/ui';
+import { TBackupItem } from '../../../store/types/backup';
+import { EBackupCategories } from '../../../store/utils/backup';
+import { IColors } from '../../../styles/colors';
+import { ScrollView, View as ThemedView } from '../../../styles/components';
 import {
 	BitcoinSlantedIcon,
 	BroadcastIcon,
@@ -12,21 +26,10 @@ import {
 	GlobeSimpleIcon,
 	LightningHollow,
 } from '../../../styles/icons';
-import { IColors } from '../../../styles/colors';
-import { useAppSelector } from '../../../hooks/redux';
-import {
-	isConnectedToElectrumSelector,
-	isLDKReadySelector,
-	isOnlineSelector,
-} from '../../../store/reselect/ui';
-import {
-	openChannelsSelector,
-	pendingChannelsSelector,
-} from '../../../store/reselect/lightning';
-import { blocktankPaidOrdersFullSelector } from '../../../store/reselect/blocktank';
-import { backupSelector } from '../../../store/reselect/backup';
-import { i18nTime } from '../../../utils/i18n';
+import { Caption13M, Text01M } from '../../../styles/text';
 import { FAILED_BACKUP_CHECK_TIME } from '../../../utils/backup/backups-subscriber';
+import { i18nTime } from '../../../utils/i18n';
+import SettingsView from '../SettingsView';
 
 type TStatusItem =
 	| 'internet'
@@ -128,19 +131,15 @@ const AppStatus = ({}: SettingsScreenProps<'AppStatus'>): ReactElement => {
 	}, []);
 
 	const isBackupSyncOk = useMemo(() => {
-		const isSyncOk = (key: number | undefined): boolean => {
-			// undefined = no sync required = ok
-			return key ? now - key < FAILED_BACKUP_CHECK_TIME : true;
+		const isSyncOk = (b: TBackupItem): boolean => {
+			return (
+				b.synced > b.required || now - b.required < FAILED_BACKUP_CHECK_TIME
+			);
 		};
 
-		return (
-			isSyncOk(backup.remoteLdkBackupLastSyncRequired) &&
-			isSyncOk(backup.remoteLdkActivityBackupSyncRequired) &&
-			isSyncOk(backup.remoteBlocktankBackupSyncRequired) &&
-			isSyncOk(backup.remoteSettingsBackupSyncRequired) &&
-			isSyncOk(backup.remoteMetadataBackupSyncRequired) &&
-			isSyncOk(backup.remoteWidgetsBackupSyncRequired)
-		);
+		return Object.values(EBackupCategories).every((key) => {
+			return isSyncOk(backup[key]);
+		});
 	}, [backup, now]);
 
 	const fullBackupState: { state: TItemState; subtitle?: string } =
@@ -148,14 +147,9 @@ const AppStatus = ({}: SettingsScreenProps<'AppStatus'>): ReactElement => {
 			if (!isBackupSyncOk) {
 				return { state: 'error' };
 			}
-			const syncTimes = [
-				backup.remoteLdkBackupLastSync,
-				backup.remoteLdkActivityBackupLastSync,
-				backup.remoteBlocktankBackupLastSync,
-				backup.remoteSettingsBackupLastSync,
-				backup.remoteMetadataBackupLastSync,
-				backup.remoteWidgetsBackupLastSync,
-			].filter((i) => i !== undefined) as Array<number>;
+			const syncTimes = Object.values(EBackupCategories).map((key) => {
+				return backup[key].synced;
+			});
 			const max = Math.max(...syncTimes);
 			let subtitle = tTime('dateTime', {
 				v: new Date(max),

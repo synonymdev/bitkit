@@ -46,22 +46,6 @@ class BitcoinActions {
         });
     }
 
-    generateMnemonic({
-        id,
-        method = 'generateMnemonic',
-        data: {
-            strength = 128,
-        }}) {
-        return new Promise((resolve) => {
-            try {
-                const mnemonic = bip39.generateMnemonic(strength);
-                return resolve({id, method, error: false, value: mnemonic});
-            } catch (e) {
-                return resolve({id, method, error: true, value: e});
-            }
-        });
-    }
-
     getPrivateKey({
         id,
         method = 'getPrivateKey',

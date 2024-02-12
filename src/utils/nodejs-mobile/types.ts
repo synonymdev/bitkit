@@ -2,7 +2,6 @@ import { EAvailableNetwork } from '../networks';
 
 export enum ENodeJsMethod {
 	setup = 'setup',
-	generateMnemonic = 'generateMnemonic',
 	getPrivateKey = 'getPrivateKey',
 	getScriptHash = 'getScriptHash',
 	getAddress = 'getAddress',
@@ -11,7 +10,6 @@ export enum ENodeJsMethod {
 export type TNodeJsMethodsData =
 	| INodeJsSetup
 	| INodeJsGetPrivateKey
-	| INodeJsGenerateMnemonic
 	| INodeJsGetAddress
 	| INodeJsGetScriptHash;
 
@@ -26,14 +24,6 @@ export interface INodeJsSetup {
 		mnemonic: string;
 		bip39Passphrase?: string;
 		selectedNetwork?: EAvailableNetwork;
-	};
-}
-
-export interface INodeJsGenerateMnemonic {
-	id: string;
-	method: ENodeJsMethod.generateMnemonic;
-	data: {
-		strength?: number;
 	};
 }
 

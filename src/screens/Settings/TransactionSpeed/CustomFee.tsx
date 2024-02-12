@@ -14,7 +14,7 @@ import Amount from '../../../components/Amount';
 import NumberPad from '../../../components/NumberPad';
 import Button from '../../../components/Button';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
-import useDisplayValues from '../../../hooks/displayValues';
+import { useDisplayValues } from '../../../hooks/displayValues';
 import { TRANSACTION_DEFAULTS } from '../../../utils/wallet/constants';
 import type { SettingsScreenProps } from '../../../navigation/types';
 
@@ -64,7 +64,7 @@ const FeeCustom = ({
 			<NavigationHeader title={t('general.speed_fee_custom')} />
 			<View style={styles.container} testID="CustomFee">
 				<Caption13Up color="gray1" style={styles.title}>
-					Sat / vbyte
+					{t('sat_vbyte')}
 				</Caption13Up>
 				<Amount value={feeRate} />
 

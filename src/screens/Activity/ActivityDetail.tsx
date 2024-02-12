@@ -175,7 +175,7 @@ const OnchainActivityDetail = ({
 
 	const { t } = useTranslation('wallet');
 	const { t: tTime } = useTranslation('intl', { i18n: i18nTime });
-	const [_, switchUnit] = useSwitchUnit();
+	const switchUnit = useSwitchUnit();
 	const dispatch = useAppDispatch();
 	const contacts = useAppSelector(contactsSelector);
 	const tags = useAppSelector((state) => tagSelector(state, id));
@@ -354,6 +354,7 @@ const OnchainActivityDetail = ({
 				size="caption13Up"
 				color="gray1"
 				unitType="secondary"
+				symbol={true}
 			/>
 			<TouchableOpacity style={styles.title} onPress={switchUnit}>
 				<View style={styles.titleBlock}>
@@ -644,7 +645,7 @@ const LightningActivityDetail = ({
 }): ReactElement => {
 	const { t } = useTranslation('wallet');
 	const { t: tTime } = useTranslation('intl', { i18n: i18nTime });
-	const [_, switchUnit] = useSwitchUnit();
+	const switchUnit = useSwitchUnit();
 	const colors = useColors();
 	const { id, txType, value, fee, message, timestamp, address } = item;
 
@@ -707,6 +708,7 @@ const LightningActivityDetail = ({
 				unitType="secondary"
 				size="caption13Up"
 				color="gray1"
+				symbol={true}
 			/>
 			<TouchableOpacity style={styles.title} onPress={switchUnit}>
 				<View style={styles.titleBlock}>

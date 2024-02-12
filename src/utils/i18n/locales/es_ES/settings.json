@@ -24,7 +24,6 @@
     "unit_title": "Unidad Predeterminada",
     "unit_display": "Mostrar cantidades en",
     "unit_bitcoin": "Bitcoin",
-    "unit_satoshis": "Satoshis",
     "speed": "Velocidad de transacción",
     "speed_title": "Velocidad de la Transacción",
     "speed_default": "Velocidad de transacción predeterminada",
@@ -123,7 +122,6 @@
     "private_key": "Clave privada: {privateKey}",
     "addr_change": "Cambiar direcciones",
     "addr_receiving": "Direcciones de recibimiento",
-    "sats_found": "{totalBalance} sats encontrados",
     "gen_20": "Generar 20 más",
     "check_balances": "Consultar Saldos",
     "copied": "Copiado al portapapeles"

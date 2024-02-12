@@ -1,19 +1,14 @@
 import React, { memo, ReactElement } from 'react';
 import { View, StyleSheet } from 'react-native';
-import { useAppSelector } from '../../hooks/redux';
 import { useTranslation } from 'react-i18next';
 
 import { Pressable } from '../../styles/components';
 import { Caption13Up } from '../../styles/text';
-import { SwitchIcon } from '../../styles/icons';
-import { useCurrency } from '../../hooks/displayValues';
+import UnitButton from './UnitButton';
 import { IColors } from '../../styles/colors';
-import { primaryUnitSelector } from '../../store/reselect/settings';
-import { EUnit } from '../../store/types/wallet';
 
 type NumberPadButtons = {
 	color?: keyof IColors;
-	showUnitButton?: boolean;
 	isMaxAmount?: boolean;
 	onMax?: () => void;
 	onChangeUnit?: () => void;
@@ -22,15 +17,12 @@ type NumberPadButtons = {
 
 const NumberPadButtons = ({
 	color = 'brand',
-	showUnitButton = true,
 	isMaxAmount = false,
 	onMax,
 	onChangeUnit,
 	onDone,
 }: NumberPadButtons): ReactElement => {
 	const { t } = useTranslation('wallet');
-	const { fiatTicker } = useCurrency();
-	const unit = useAppSelector(primaryUnitSelector);
 
 	return (
 		<View style={styles.container}>
@@ -49,19 +41,12 @@ const NumberPadButtons = ({
 			</View>
 
 			<View style={styles.buttonContainer}>
-				{showUnitButton && (
-					<Pressable
-						style={styles.button}
-						color="white10"
+				{onChangeUnit && (
+					<UnitButton
+						color={color}
 						testID="NumberPadButtonsUnit"
-						onPressIn={onChangeUnit}>
-						<SwitchIcon color={color} width={16.44} height={13.22} />
-						<Caption13Up color={color} style={styles.middleButtonText}>
-							{unit === EUnit.BTC && 'BTC'}
-							{unit === EUnit.satoshi && 'sats'}
-							{unit === EUnit.fiat && fiatTicker}
-						</Caption13Up>
-					</Pressable>
+						onPress={onChangeUnit}
+					/>
 				)}
 			</View>
 
@@ -98,9 +83,6 @@ const styles = StyleSheet.create({
 		borderRadius: 8,
 		flexDirection: 'row',
 		alignItems: 'center',
-	},
-	middleButtonText: {
-		marginLeft: 11,
 	},
 });
 

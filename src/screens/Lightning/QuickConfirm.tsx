@@ -14,7 +14,7 @@ import PieChart from './PieChart';
 import { sleep } from '../../utils/helpers';
 import { useBalance } from '../../hooks/wallet';
 import { useAppSelector } from '../../hooks/redux';
-import useDisplayValues, { useCurrency } from '../../hooks/displayValues';
+import { useCurrency, useDisplayValues } from '../../hooks/displayValues';
 import type { LightningScreenProps } from '../../navigation/types';
 import { confirmChannelPurchase } from '../../store/utils/blocktank';
 import { blocktankOrdersSelector } from '../../store/reselect/blocktank';

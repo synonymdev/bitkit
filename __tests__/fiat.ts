@@ -3,7 +3,7 @@ import { getWalletStore } from '../src/store/helpers';
 import { updateExchangeRates } from '../src/store/actions/wallet';
 import { getDisplayValues } from '../src/utils/displayValues';
 import { resetExchangeRates } from '../src/store/actions/wallet';
-import { EUnit } from '../src/store/types/wallet';
+import { EDenomination } from '../src/store/types/wallet';
 
 // @ts-ignore
 global.fetch = jest.fn(() =>
@@ -44,10 +44,7 @@ describe('Pulls latest fiat exchange rates and checks the wallet store for valid
 	beforeAll(() => resetExchangeRates());
 
 	it('handles missing exchange rate by returning the correct fiat fallback', () => {
-		const dv = getDisplayValues({
-			satoshis: 1010101,
-			unit: EUnit.BTC,
-		});
+		const dv = getDisplayValues({ satoshis: 1010101 });
 
 		// expected fiat fallback
 		expect(dv.fiatFormatted).toBe('—');
@@ -59,10 +56,7 @@ describe('Pulls latest fiat exchange rates and checks the wallet store for valid
 		expect(dv.fiatValue).toBe(0);
 
 		// expected BTC conversion
-		expect(dv.bitcoinFormatted).toBe('0.01010101');
-		expect(dv.bitcoinSymbol).toBe('₿');
-		expect(dv.bitcoinTicker).toBe('BTC');
-		expect(dv.satoshis).toBe(1010101);
+		expect(dv.bitcoinFormatted).toBe('1 010 101');
 	});
 
 	it('Blocktank FX rates with default selected currency', async () => {
@@ -96,7 +90,6 @@ describe('Pulls latest fiat exchange rates and checks the wallet store for valid
 			satoshis: 1010101,
 			exchangeRate: 100000,
 			currency: 'USD',
-			unit: EUnit.BTC,
 			locale: 'en-US',
 		});
 
@@ -107,10 +100,7 @@ describe('Pulls latest fiat exchange rates and checks the wallet store for valid
 		expect(dv.fiatSymbol).toBe('$');
 		expect(dv.fiatTicker).toBe('USD');
 		expect(dv.fiatValue).toBe(1010.101);
-		expect(dv.bitcoinFormatted).toBe('0.01010101');
-		expect(dv.bitcoinSymbol).toBe('₿');
-		expect(dv.bitcoinTicker).toBe('BTC');
-		expect(dv.satoshis).toBe(1010101);
+		expect(dv.bitcoinFormatted).toBe('1 010 101');
 	});
 
 	it('Formats all display values in RUB formatted with correct locale', () => {
@@ -120,7 +110,6 @@ describe('Pulls latest fiat exchange rates and checks the wallet store for valid
 			exchangeRate: 100000,
 			currency: 'RUB',
 			currencySymbol: '₽',
-			unit: EUnit.satoshi,
 			locale: 'en-US',
 		});
 
@@ -132,18 +121,22 @@ describe('Pulls latest fiat exchange rates and checks the wallet store for valid
 		expect(dv.fiatTicker).toBe('RUB');
 		expect(dv.fiatValue).toBe(1010.101);
 		expect(dv.bitcoinFormatted).toBe('1 010 101');
-		expect(dv.bitcoinSymbol).toBe('⚡');
-		expect(dv.bitcoinTicker).toBe('satoshi');
-		expect(dv.satoshis).toBe(1010101);
 	});
 
 	it('Can convert small amount of sats without scientific notation', () => {
-		const dv = getDisplayValues({
-			satoshis: 10,
-			unit: EUnit.BTC,
-		});
+		const dv = getDisplayValues({ satoshis: 10 });
+		expect(dv.bitcoinFormatted).toBe('10');
+		expect(dv.bitcoinWhole).toBe('10');
+		expect(dv.bitcoinDecimal).toBe(undefined);
+	});
 
-		expect(dv.bitcoinFormatted).toBe('0.0000001');
-		expect(dv.bitcoinWhole).toBe('0');
+	it('Can format to classic Bitcoin denomination', () => {
+		const dv = getDisplayValues({
+			satoshis: 123456789,
+			denomination: EDenomination.classic,
+		});
+		expect(dv.bitcoinFormatted).toBe('1.23456789');
+		expect(dv.bitcoinWhole).toBe('1');
+		expect(dv.bitcoinDecimal).toBe('23456789');
 	});
 });

@@ -1371,18 +1371,22 @@ const runCoinSelect = async ({
  */
 export const setupBoost = async ({
 	txid,
-	selectedWallet,
-	selectedNetwork,
+	selectedWallet = getSelectedWallet(),
+	selectedNetwork = getSelectedNetwork(),
 }: {
 	txid: string;
 	selectedWallet?: TWalletName;
 	selectedNetwork?: EAvailableNetwork;
 }): Promise<Result<Partial<ISendTransaction>>> => {
-	if (!selectedNetwork) {
-		selectedNetwork = getSelectedNetwork();
-	}
-	if (!selectedWallet) {
-		selectedWallet = getSelectedWallet();
+	// Ensure all utxos are up-to-date if attempting to boost immediately after a transaction.
+	const refreshResponse = await refreshWallet({
+		onchain: true,
+		lightning: false,
+		selectedWallet,
+		selectedNetwork,
+	});
+	if (refreshResponse.isErr()) {
+		return err(refreshResponse.error.message);
 	}
 	const canBoostResponse = canBoost(txid);
 	if (!canBoostResponse.canBoost) {

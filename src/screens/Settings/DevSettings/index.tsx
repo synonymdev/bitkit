@@ -3,6 +3,7 @@ import RNFS, { unlink, writeFile } from 'react-native-fs';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Share from 'react-native-share';
 import { useTranslation } from 'react-i18next';
+import { startProfiling, stopProfiling } from 'react-native-release-profiler';
 
 import { __DISABLE_SLASHTAGS__ } from '../../../constants/env';
 import actions from '../../../store/actions/actions';
@@ -47,6 +48,7 @@ import { getFakeTransaction } from '../../../utils/wallet/testing';
 import { createDefaultLdkAccount, setupLdk } from '../../../utils/lightning';
 import Dialog from '../../../components/Dialog';
 import { resetBackupState } from '../../../store/slices/backup';
+import { updateUi } from '../../../store/slices/ui';
 
 const DevSettings = ({
 	navigation,
@@ -59,6 +61,7 @@ const DevSettings = ({
 	const selectedNetwork = useAppSelector(selectedNetworkSelector);
 	const addressType = useAppSelector(addressTypeSelector);
 	const accountVersion = useAppSelector(accountVersionSelector);
+	const isProfiling = useAppSelector((state) => state.ui.isProfiling);
 	const warnings = useAppSelector((state) => {
 		return warningsSelector(state, selectedWallet, selectedNetwork);
 	});
@@ -136,6 +139,39 @@ const DevSettings = ({
 			title: 'Debug',
 			data: [
 				{
+					title: isProfiling ? 'Stop Profiler' : 'Start Profiler',
+					type: EItemType.button,
+					value: isProfiling,
+					loading: isProfiling,
+					onPress: async (): Promise<void> => {
+						if (isProfiling) {
+							const path = await stopProfiling(true);
+							dispatch(updateUi({ isProfiling: false }));
+							console.log('profile file: ', path);
+						} else {
+							dispatch(updateUi({ isProfiling: true }));
+							startProfiling();
+						}
+					},
+				},
+				{
+					title: 'Inject Fake Transaction',
+					type: EItemType.button,
+					testID: 'InjectFakeTransaction',
+					onPress: (): void => {
+						const id =
+							'9c0bed5b4c0833824210d29c3c847f47132c03f231ef8df228862132b3a8d80a';
+						const fakeTx = getFakeTransaction(id);
+						fakeTx[id].height = 0;
+						injectFakeTransaction({
+							selectedWallet,
+							selectedNetwork,
+							fakeTx,
+						});
+						refreshWallet({ selectedWallet, selectedNetwork }).then();
+					},
+				},
+				{
 					title: 'Trigger exception in React render',
 					type: EItemType.button,
 					testID: 'TriggerRenderError',
@@ -188,23 +224,6 @@ const DevSettings = ({
 						});
 						updateWallet(wallet);
 						runChecks({ selectedWallet, selectedNetwork }).then();
-					},
-				},
-				{
-					title: 'Inject Fake Transaction',
-					type: EItemType.button,
-					testID: 'InjectFakeTransaction',
-					onPress: (): void => {
-						const id =
-							'9c0bed5b4c0833824210d29c3c847f47132c03f231ef8df228862132b3a8d80a';
-						const fakeTx = getFakeTransaction(id);
-						fakeTx[id].height = 0;
-						injectFakeTransaction({
-							selectedWallet,
-							selectedNetwork,
-							fakeTx,
-						});
-						refreshWallet({ selectedWallet, selectedNetwork }).then();
 					},
 				},
 			],

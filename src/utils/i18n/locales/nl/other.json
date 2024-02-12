@@ -7,7 +7,6 @@
   "qr_error_network_text": "Bitkit is momenteel aangesloten op {selectedNetwork}maar toont data voor {dataNetwork}. ",
   "qr_paste": "Plak de QR Code",
   "buy_header": "Bitcoin\n<orange>voor Bitkit.</orange>",
-  "buy_text": "Nog geen bitcoin om naar uw Bitkit wallet te versturen? Stapel wat sats.",
   "buy_button": "Koop Bitcoin",
   "connection_lost_title": "Bitkit Verbinding Verbroken",
   "connection_lost_message": "Controleer de configuraties voor uw Electrum Server.",

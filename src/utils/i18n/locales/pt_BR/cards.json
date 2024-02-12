@@ -43,8 +43,7 @@
     "description": "Adicione seus detalhes"
   },
   "buyBitcoin": {
-    "title": "Compre bitcoin",
-    "description": "Acumule sats"
+    "title": "Compre bitcoin"
   },
   "lightning_no_funds_title": "Sem fundos",
   "lightning_no_funds_desc": "Para configurar pagamentos instantâneos, você precisa receber bitcoins na sua carteira.",

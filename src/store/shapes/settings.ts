@@ -1,3 +1,4 @@
+import { EProtocol, TServer } from 'beignet';
 import cloneDeep from 'lodash/cloneDeep';
 
 import {
@@ -14,8 +15,7 @@ import {
 import { TSettings } from '../slices/settings';
 import { EAvailableNetwork } from '../../utils/networks';
 import { ETransactionSpeed } from '../types/settings';
-import { EUnit } from '../types/wallet';
-import { EProtocol, TServer } from 'beignet';
+import { EDenomination, EUnit } from '../types/wallet';
 
 export const defaultElectrumPeer: Record<EAvailableNetwork, TServer[]> = {
 	bitcoin: [
@@ -84,7 +84,8 @@ export const initialSettingsState: TSettings = {
 	biometrics: false,
 	rbf: false,
 	theme: 'dark',
-	unit: EUnit.satoshi,
+	unit: EUnit.BTC,
+	denomination: EDenomination.modern,
 	selectedCurrency: 'USD',
 	selectedLanguage: 'english',
 	customElectrumPeers: defaultElectrumPeer,

@@ -395,26 +395,6 @@ export const getMnemonicPhrase = async (
 };
 
 /**
- * Generate a mnemonic phrase.
- * @async
- * @param {number} strength
- * @return {Promise<string>}
- */
-export const generateMnemonic = async (strength = 128): Promise<string> => {
-	try {
-		const data = DefaultNodeJsMethodsShape.generateMnemonic();
-		data.data.strength = strength;
-		const generatedMnemonic = await invokeNodeJsMethod<string>(data);
-		if (generatedMnemonic.error) {
-			return '';
-		}
-		return generatedMnemonic.value;
-	} catch (e) {
-		return '';
-	}
-};
-
-/**
  * Get bip39 passphrase for a specified wallet.
  * @async
  * @param {TWalletName} selectedWallet

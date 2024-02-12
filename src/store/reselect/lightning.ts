@@ -219,3 +219,11 @@ export const lightningBalanceSelector = createSelector(
 		};
 	},
 );
+
+export const lightningBackupSelector = createSelector(
+	[lightningState, selectedWalletSelector, selectedNetworkSelector],
+	(lightning, selectedWallet, selectedNetwork) => {
+		const node = lightning.nodes[selectedWallet];
+		return node?.backup[selectedNetwork] ?? {};
+	},
+);

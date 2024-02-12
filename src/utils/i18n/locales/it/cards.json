@@ -44,7 +44,7 @@
   },
   "buyBitcoin": {
     "title": "Ottieni Bitcoin",
-    "description": "Stack sats"
+    "description": "Acquista dei bitcoin"
   },
   "btFailed": {
     "title": "Setup Fallito",

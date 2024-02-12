@@ -39,6 +39,7 @@ import Tooltip from '../../components/Tooltip';
 import Divider from '../../components/Divider';
 import IconButton from '../../components/IconButton';
 import ProfileImage from '../../components/ProfileImage';
+import ProfileLinks from '../../components/ProfileLinks';
 import ProfileEdit from './ProfileEdit';
 import { ProfileIntro, OfflinePayments } from './ProfileOnboarding';
 import type { RootStackScreenProps } from '../../navigation/types';
@@ -142,21 +143,27 @@ const ProfileScreen = ({
 						<PencileIcon height={20} width={20} color="brand" />
 					</IconButton>
 				</View>
-				<QRView
-					url={url}
-					profile={profile}
-					qrRef={qrRef}
-					onPress={handleCopy}
-				/>
-				{showCopy && (
-					<AnimatedView
-						style={styles.tooltip}
-						color="transparent"
-						entering={FadeIn.duration(500)}
-						exiting={FadeOut.duration(500)}>
-						<Tooltip testID="ContactCopiedTooltip" text={t('contact_copied')} />
-					</AnimatedView>
-				)}
+				<View style={styles.qrContainer}>
+					<QRView
+						url={url}
+						profile={profile}
+						qrRef={qrRef}
+						onPress={handleCopy}
+					/>
+					{showCopy && (
+						<AnimatedView
+							style={styles.tooltip}
+							color="transparent"
+							entering={FadeIn.duration(500)}
+							exiting={FadeOut.duration(500)}>
+							<Tooltip
+								testID="ContactCopiedTooltip"
+								text={t('contact_copied')}
+							/>
+						</AnimatedView>
+					)}
+				</View>
+				<ProfileLinksView profile={profile} />
 				<SafeAreaInset type="bottom" minPadding={16} />
 			</ScrollView>
 		</ThemedView>
@@ -231,6 +238,25 @@ const QRView = ({
 	);
 };
 
+const ProfileLinksView = ({
+	profile,
+}: {
+	profile?: BasicProfile;
+}): ReactElement => {
+	const profileLinks = profile?.links ?? [];
+	const profileLinksWithIds = profileLinks.map((link) => ({
+		...link,
+		id: `${link.title}:${link.url}`,
+	}));
+	return (
+		<ProfileLinks
+			style={styles.links}
+			links={profileLinksWithIds}
+			linksText={false}
+		/>
+	);
+};
+
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
@@ -238,7 +264,6 @@ const styles = StyleSheet.create({
 	},
 	content: {
 		flexGrow: 1,
-		paddingTop: 23,
 		paddingHorizontal: 16,
 	},
 	actions: {
@@ -271,10 +296,17 @@ const styles = StyleSheet.create({
 	qrViewNote: {
 		marginTop: 16,
 	},
+	qrContainer: {
+		position: 'relative',
+	},
 	tooltip: {
 		position: 'absolute',
 		alignSelf: 'center',
-		top: '70%',
+		top: '58%',
+	},
+	links: {
+		marginTop: 32,
+		paddingHorizontal: 8,
 	},
 });
 

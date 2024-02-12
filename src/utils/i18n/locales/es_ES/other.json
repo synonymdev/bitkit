@@ -6,7 +6,6 @@
   "qr_error_network_header": "Red incorrecta",
   "qr_paste": "Pegar código QR",
   "buy_header": "Bitcoin\n<orange>para Bitkit.</orange>",
-  "buy_text": "¿Aún no tiene Bitcoin para enviar a su monedero Bitkit? Apile algunos sats.",
   "buy_button": "Comprar Bitcoin",
   "connection_lost_title": "Conexión a Bitkit perdida",
   "connection_lost_message": "Por favor, verifique la configuración de servidor Electrum.",

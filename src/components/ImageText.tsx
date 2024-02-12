@@ -1,7 +1,7 @@
 import React, { memo, ReactElement } from 'react';
 import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import { Text01M, Text02M } from '../styles/text';
-import { PenIcon } from '../styles/icons';
+import { PencileIcon } from '../styles/icons';
 import Money from '../components/Money';
 
 const ImageText = ({
@@ -41,7 +41,7 @@ const ImageText = ({
 						symbol={true}
 						enableHide={true}
 					/>
-					<PenIcon style={styles.valueIcon} height={14} width={14} />
+					<PencileIcon style={styles.valueIcon} height={13} width={13} />
 				</View>
 				<Money
 					style={styles.value}
@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 	},
 	valueIcon: {
-		marginLeft: 2,
+		marginLeft: 4,
 	},
 });
 
