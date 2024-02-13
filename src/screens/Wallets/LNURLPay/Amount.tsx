@@ -67,7 +67,7 @@ const Amount = ({
 
 	const max = useMemo(() => {
 		// TODO: get routing fee
-		const fee = 1;
+		const fee = 100;
 		return Math.min(balance.spendingBalance - fee, maxSendable);
 	}, [maxSendable, balance.spendingBalance]);
 

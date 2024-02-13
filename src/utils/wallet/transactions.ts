@@ -968,7 +968,7 @@ export const getMaxSendAmount = ({
 				selectedNetwork,
 			});
 			// TODO: get routing fee
-			const fee = 1;
+			const fee = 100;
 			const maxAmount = {
 				amount: spendingBalance - fee,
 				fee,
@@ -1033,7 +1033,7 @@ export const sendMax = async ({
 				selectedNetwork,
 			});
 			// TODO: get actual routing fee (Currently generous with the fee for wiggle room to prevent routing failures)
-			let fee = 50;
+			let fee = 100;
 			let amount = 0;
 			if (spendingBalance > fee) {
 				amount = spendingBalance - fee;
