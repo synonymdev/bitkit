@@ -6,6 +6,10 @@ env:
   NO_FLIPPER: 1
   E2E_TESTS: 1 # build without transform-remove-console babel plugin
   DEBUG: 'lnurl* lnurl server'
+  CCACHE_SLOPPINESS: clang_index_store,file_stat_matches,include_file_ctime,include_file_mtime,ivfsoverlay,pch_defines,modules,system_headers,time_macros
+  CCACHE_FILECLONE: true
+  CCACHE_DEPEND: true
+  CCACHE_INODECACHE: true
 
 jobs:
   e2e:
@@ -17,8 +21,16 @@ jobs:
         with:
           fetch-depth: 1
 
-      - name: Setup Buildcache
-        uses: mikehardy/buildcache-action@v2
+      - name: Which gcc
+        run: which gcc
+
+      - name: Ccache
+        uses: hendrikmuhs/ccache-action@v1.2
+        with:
+          create-symlink: true
+
+      - name: Which gcc
+        run: which gcc
 
       - name: Setup Docker Colima 1
         uses: limpbrains/setup-docker-macos-action@e4216b347f8992aa26308d9a0a43216f4386b278

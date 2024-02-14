@@ -69,9 +69,9 @@ target 'bitkit' do
       config[:reactNativePath],
       :mac_catalyst_enabled => false
     )
-    __apply_Xcode_12_5_M1_post_install_workaround(installer)
 
-    # buildcache begin
+    # ccache begin
+    # https://reactnative.dev/docs/build-speed#xcode-specific-setup
     installer.pods_project.targets.each do |target|
       target.build_configurations.each do |config|
         config.build_settings["CC"] = "clang"
@@ -80,6 +80,8 @@ target 'bitkit' do
         config.build_settings["LDPLUSPLUS"] = "clang++"
       end
     end
-    # buildcache end
+    # ccache end
+
+    __apply_Xcode_12_5_M1_post_install_workaround(installer)
   end
 end
