@@ -216,17 +216,25 @@ export const refreshBlocktankInfo = async (): Promise<Result<string>> => {
 
 /**
  * Attempts to start the purchase of a Blocktank channel.
- * @param {string} [productId]
- * @param {number} remoteBalance
- * @param {number} localBalance
- * @param {number} [channelExpiry]
- * @param {TWalletName} [selectedWallet]
- * @param {EAvailableNetwork} [selectedNetwork]
- * @returns {Promise<Result<string>>}
+ *
+ * The function promises a Result object containing:
+ * - order: The blocktank order details.
+ * - channelOpenCost: The cost of opening the channel = channel user balance + fee for blocktank, aka. onchain tx sum.
+ * - channelOpenFee: The fee for opening the channel, paid to blocktank.
+ * - transactionFeeEstimate: An estimate of the onchain transaction fee.
+ * @param {Object} params - An object containing the parameters for the function.
+ * @param {number} params.clientBalanceSat - The client's balance in satoshis, aka. `remoteBalance`, `spending` on UI
+ * @param {number} params.lspBalanceSat - The LSP's balance in satoshis, aka. `localBalance`, `saving` on UI
+ * @param {number} [params.channelExpiry] - The expiry time of the channel.
+ * @param {string} [params.lspNodeId] - The ID of the LSP node.
+ * @param {string} [params.couponCode] - A coupon code for the purchase.
+ * @param {boolean} [params.turboChannel] - Whether the channel is a turbo channel.
+ * @param {boolean} [params.zeroConfPayment] - Whether zero confirmation payment is allowed.
+ * @returns {Promise<Result<{order: IBtOrder, channelOpenCost: number, channelOpenFee: number, transactionFeeEstimate: number}>>}
  */
 export const startChannelPurchase = async ({
-	remoteBalance,
-	localBalance,
+	clientBalanceSat,
+	lspBalanceSat,
 	channelExpiry = DEFAULT_CHANNEL_DURATION,
 	lspNodeId,
 	couponCode,
@@ -235,8 +243,8 @@ export const startChannelPurchase = async ({
 	selectedWallet = getSelectedWallet(),
 	selectedNetwork = getSelectedNetwork(),
 }: {
-	remoteBalance: number;
-	localBalance: number;
+	clientBalanceSat: number;
+	lspBalanceSat: number;
 	channelExpiry?: number;
 	lspNodeId?: string;
 	couponCode?: string;
@@ -253,10 +261,10 @@ export const startChannelPurchase = async ({
 	}>
 > => {
 	const buyChannelResponse = await createOrder({
-		lspBalanceSat: localBalance,
+		lspBalanceSat,
 		channelExpiryWeeks: channelExpiry,
 		options: {
-			clientBalanceSat: remoteBalance,
+			clientBalanceSat,
 			lspNodeId,
 			couponCode,
 			turboChannel,
@@ -266,9 +274,7 @@ export const startChannelPurchase = async ({
 	if (buyChannelResponse.isErr()) {
 		return err(buyChannelResponse.error.message);
 	}
-	const buyChannelData = buyChannelResponse.value;
-
-	const orderData = await getOrder(buyChannelData.id);
+	const orderData = await getOrder(buyChannelResponse.value.id);
 	if (orderData.isErr()) {
 		showToast({
 			type: 'error',
@@ -277,30 +283,26 @@ export const startChannelPurchase = async ({
 		});
 		return err(orderData.error.message);
 	}
+	const order = orderData.value;
 
 	const { onchainBalance } = getBalance({ selectedNetwork, selectedWallet });
 
 	// Get transaction fee
-	const fees = getFeesStore().onchain;
-	let satPerVByteFee = fees.fast;
-	if (remoteBalance === 0) {
+	let { fast: satsPerByte } = getFeesStore().onchain;
+	if (clientBalanceSat === 0) {
 		// For orders with 0 client balance, we use the min 0-conf tx fee from BT to get a turbo channel.
-		const min0ConfTxFee = await getMin0ConfTxFee(orderData.value.id);
+		const min0ConfTxFee = await getMin0ConfTxFee(order.id);
 		if (min0ConfTxFee.isErr()) {
 			return err(min0ConfTxFee.error.message);
 		}
-		satPerVByteFee = Math.ceil(min0ConfTxFee.value.satPerVByte); // might be float
+		satsPerByte = Math.ceil(min0ConfTxFee.value.satPerVByte); // might be float
 	}
 
-	let txFeeInSats = getTotalFee({ satsPerByte: satPerVByteFee });
-	const buyChannelDataFeeSat = Math.ceil(buyChannelData.feeSat);
-	const buyChannelDataClientBalanceFeeSat = Math.ceil(
-		buyChannelData.clientBalanceSat,
-	);
-	const channelOpenCost = buyChannelDataFeeSat;
-	const channelOpenFee = Math.abs(
-		buyChannelDataClientBalanceFeeSat - buyChannelDataFeeSat,
-	);
+	let transactionFeeEstimate = getTotalFee({ satsPerByte });
+	const channelOpenCost = Math.ceil(order.feeSat);
+	const orderClientBalance = Math.ceil(order.clientBalanceSat);
+	const channelOpenFee = Math.abs(orderClientBalance - channelOpenCost);
+
 	// Ensure we have enough funds to pay for both the channel and the fee to broadcast the transaction.
 	if (channelOpenCost > onchainBalance) {
 		// TODO: Attempt to re-calculate a lower fee channel-open that's not instant if unable to pay.
@@ -317,25 +319,25 @@ export const startChannelPurchase = async ({
 		transaction: {
 			outputs: [
 				{
-					address: buyChannelData.payment.onchain.address,
-					value: buyChannelDataFeeSat,
+					address: order.payment.onchain.address,
+					value: channelOpenCost,
 					index: 0,
 				},
 			],
 		},
 	});
 
-	const feeRes = updateFee({ satsPerByte: satPerVByteFee });
+	const feeRes = updateFee({ satsPerByte });
 	if (feeRes.isErr()) {
 		return err(feeRes.error.message);
 	}
-	txFeeInSats = feeRes.value.fee;
+	transactionFeeEstimate = feeRes.value.fee;
 
 	return ok({
-		order: buyChannelData,
+		order,
 		channelOpenCost,
 		channelOpenFee,
-		transactionFeeEstimate: txFeeInSats,
+		transactionFeeEstimate,
 	});
 };
 

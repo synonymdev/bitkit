@@ -144,8 +144,8 @@ const QuickSetup = ({
 		const purchaseResponse = await startChannelPurchase({
 			selectedNetwork,
 			selectedWallet,
-			remoteBalance: spendingAmount!,
-			localBalance: lspBalance,
+			clientBalanceSat: spendingAmount!,
+			lspBalanceSat: lspBalance,
 			channelExpiry: DEFAULT_CHANNEL_DURATION,
 			lspNodeId: blocktankInfo.nodes[0].pubkey,
 			zeroConfPayment:

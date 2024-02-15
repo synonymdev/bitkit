@@ -417,8 +417,8 @@ const CustomSetup = ({
 		setLoading(true);
 
 		const purchaseResponse = await startChannelPurchase({
-			remoteBalance: spendingAmount!,
-			localBalance: amount,
+			clientBalanceSat: spendingAmount!,
+			lspBalanceSat: amount,
 			channelExpiry: DEFAULT_CHANNEL_DURATION,
 			zeroConfPayment:
 				spendingAmount! <= blocktankInfo.options.max0ConfClientBalanceSat,

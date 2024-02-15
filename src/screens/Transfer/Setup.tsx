@@ -147,8 +147,8 @@ const Setup = ({ navigation }: TransferScreenProps<'Setup'>): ReactElement => {
 		const purchaseResponse = await startChannelPurchase({
 			selectedNetwork,
 			selectedWallet,
-			remoteBalance,
-			localBalance,
+			clientBalanceSat: remoteBalance,
+			lspBalanceSat: localBalance,
 			zeroConfPayment:
 				remoteBalance <= blocktankInfo.options.max0ConfClientBalanceSat,
 		});

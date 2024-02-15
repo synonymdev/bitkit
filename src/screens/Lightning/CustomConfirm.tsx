@@ -74,8 +74,8 @@ const CustomConfirm = ({
 
 	const updateOrderExpiration = async (): Promise<void> => {
 		const purchaseResponse = await startChannelPurchase({
-			remoteBalance: order.clientBalanceSat,
-			localBalance: order.lspBalanceSat,
+			clientBalanceSat: order.clientBalanceSat,
+			lspBalanceSat: order.lspBalanceSat,
 			channelExpiry: Math.max(weeks, 1),
 			zeroConfPayment: order.zeroConf,
 			selectedWallet,
