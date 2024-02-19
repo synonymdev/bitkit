@@ -23,6 +23,7 @@ import {
 import * as blocktank from '../../utils/blocktank';
 import {
 	createOrder,
+	estimateOrderFee,
 	getBlocktankInfo,
 	getCJitEntry,
 	getMin0ConfTxFee,
@@ -212,6 +213,50 @@ export const refreshBlocktankInfo = async (): Promise<Result<string>> => {
 		return ok('Blocktank info updated.');
 	}
 	return err('Unable to update Blocktank info.');
+};
+
+export const getMaxChannelClientBalance = async ({
+	lspBalance,
+	spendingAmount,
+	channelExpiryWeeks,
+	lspNodeId,
+	turboChannel,
+}: {
+	lspBalance: number;
+	spendingAmount: number;
+	channelExpiryWeeks: number;
+	lspNodeId: string;
+	turboChannel: boolean;
+}): Promise<Result<number>> => {
+	// 1. estimating bt order fee
+	const estimateRes = await estimateOrderFee({
+		lspBalanceSat: lspBalance,
+		channelExpiryWeeks: channelExpiryWeeks,
+		options: {
+			clientBalanceSat: spendingAmount,
+			couponCode: 'bitkit',
+			lspNodeId,
+			turboChannel,
+		},
+	});
+
+	if (estimateRes.isErr()) {
+		return estimateRes;
+	}
+
+	// 2. subtracting bt order fee from client balance
+	const channelOpenFeeEstimate = estimateRes.value;
+	let clientBalanceSat = spendingAmount - channelOpenFeeEstimate;
+
+	// 3. estimating tx fee
+	let { fast: satsPerByte } = getFeesStore().onchain;
+	let transactionFeeEstimate = getTotalFee({ satsPerByte });
+
+	// 4. subtracting tx fee from client balance
+	clientBalanceSat = clientBalanceSat - transactionFeeEstimate;
+	console.log('maxOrderClientBalance:', clientBalanceSat);
+
+	return ok(clientBalanceSat);
 };
 
 /**

@@ -26,13 +26,17 @@ import {
 	setupOnChainTransaction,
 } from '../../store/actions/wallet';
 import {
+	getMaxChannelClientBalance,
 	refreshBlocktankInfo,
 	startChannelPurchase,
 } from '../../store/utils/blocktank';
 import { showToast } from '../../utils/notifications';
 import { convertToSats } from '../../utils/conversion';
 import { getFiatDisplayValues } from '../../utils/displayValues';
-import { LIGHTNING_DIFF } from '../../utils/wallet/constants';
+import {
+	LIGHTNING_DIFF,
+	SPENDING_LIMIT_MAX,
+} from '../../utils/wallet/constants';
 import type { LightningScreenProps } from '../../navigation/types';
 import {
 	selectedNetworkSelector,
@@ -76,7 +80,7 @@ const QuickSetup = ({
 		}, []),
 	);
 
-	const spendingAmount = useMemo((): number => {
+	let spendingAmount = useMemo((): number => {
 		return convertToSats(textFieldValue, conversionUnit);
 	}, [textFieldValue, conversionUnit]);
 
@@ -92,6 +96,10 @@ const QuickSetup = ({
 
 		return fiatWhole;
 	}, [lnSetup.btSpendingLimitBalanced]);
+
+	const isHighBalance = useMemo((): boolean => {
+		return spendingAmount > lnSetup.slider.maxValue * SPENDING_LIMIT_MAX;
+	}, [spendingAmount, lnSetup.slider.maxValue]);
 
 	const setDefaultClientBalance = useCallback(() => {
 		const value = lnSetup.defaultClientBalance;
@@ -141,10 +149,33 @@ const QuickSetup = ({
 			Math.round(spendingAmount + spendingAmount * LIGHTNING_DIFF),
 			minUsableLspBalance,
 		);
+
+		// if the spendingAmount is set to max we calculate fees and subtract
+		// them from the final clientBalance passed to BT's createOrder api.
+		// TODO: should move this to an `useEffect`
+		let clientBalanceSat = spendingAmount;
+		const isMax = spendingAmount >= lnSetup.slider.maxValue;
+		if (isMax) {
+			const estimate = await getMaxChannelClientBalance({
+				lspBalance,
+				spendingAmount,
+				channelExpiryWeeks: DEFAULT_CHANNEL_DURATION,
+				lspNodeId: blocktankInfo.nodes[0].pubkey,
+				turboChannel:
+					spendingAmount <= blocktankInfo.options.max0ConfClientBalanceSat,
+			});
+			if (!estimate.isErr()) {
+				clientBalanceSat = estimate.value;
+				// TEMP hack, should be properly done
+				// eslint-disable-next-line react-hooks/exhaustive-deps
+				spendingAmount = clientBalanceSat;
+			}
+		}
+
 		const purchaseResponse = await startChannelPurchase({
 			selectedNetwork,
 			selectedWallet,
-			clientBalanceSat: spendingAmount!,
+			clientBalanceSat: clientBalanceSat!,
 			lspBalanceSat: lspBalance,
 			channelExpiry: DEFAULT_CHANNEL_DURATION,
 			lspNodeId: blocktankInfo.nodes[0].pubkey,
@@ -214,6 +245,7 @@ const QuickSetup = ({
 							<View style={styles.percentages}>
 								<Percentage
 									value={lnSetup.percentage.spendings}
+									isMax={isHighBalance}
 									type="spending"
 								/>
 								<Percentage value={lnSetup.percentage.savings} type="savings" />
@@ -234,13 +266,16 @@ const QuickSetup = ({
 							</AnimatedView>
 						)}
 
-						{spendingAmount >= lnSetup.spendableBalance && (
+						{isHighBalance && (
 							<AnimatedView
 								style={styles.note}
 								entering={FadeIn}
 								exiting={FadeOut}
 								testID="QuickSetupReserveNote">
-								<Text02S color="gray1">{t('note_reserve_limit')}</Text02S>
+								<Text02S color="gray1">
+									{'The fees to setup and connect you to Lightning will be subtracted from your spending balance. \n' +
+										'You will see the final amount before confirming.'}
+								</Text02S>
 							</AnimatedView>
 						)}
 

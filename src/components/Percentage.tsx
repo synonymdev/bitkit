@@ -5,11 +5,17 @@ import { CoinsIcon, SavingsIcon } from '../styles/icons';
 
 type PercentageProps = {
 	value: number;
+	isMax?: boolean;
 	type: 'spending' | 'savings';
 	style?: StyleProp<ViewStyle>;
 };
 
-const Percentage = ({ value, type, style }: PercentageProps): ReactElement => (
+const Percentage = ({
+	value,
+	isMax = false,
+	type,
+	style,
+}: PercentageProps): ReactElement => (
 	<View style={[styles.root, style]}>
 		{type === 'spending' ? (
 			<CoinsIcon color="purple" height={26} width={26} />
@@ -18,8 +24,16 @@ const Percentage = ({ value, type, style }: PercentageProps): ReactElement => (
 		)}
 
 		<Headline lineHeight="40px" style={styles.text}>
-			{value}
-			<Text01S>%</Text01S>
+			{isMax ? (
+				<>
+					Max
+					<Text01S />
+				</>
+			) : (
+				<>
+					{value} <Text01S>%</Text01S>
+				</>
+			)}
 		</Headline>
 	</View>
 );

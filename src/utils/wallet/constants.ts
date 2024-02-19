@@ -14,10 +14,11 @@ export const CHUNK_LIMIT = 15;
 //How much of the users funds we allow to be used for Lightning.
 export const SPENDING_LIMIT_RATIO = 1;
 
+export const SPENDING_LIMIT_MAX = 0.8;
+
 export const LIGHTNING_DIFF = 0.01;
 
-// TODO remote; temp to make it easier for testing 100% cap
-export const LIGHTNING_DEFAULT_SLIDER = 1;
+export const LIGHTNING_DEFAULT_SLIDER = 0.8;
 
 export const TRANSACTION_DEFAULTS = {
 	recommendedBaseFee: 256, // Total recommended tx base fee in sats
