@@ -53,7 +53,7 @@
   "transfer_open": "Stojí to <highlight>{txFee}</highlight> za poplatky sítě a <highlight>{lspFee}</highlight> za poplatky poskytovatele serveru při převodu dalších prostředků na váš výdajový zůstatek.",
   "transfer_swipe": "Přejeďte prstem k provedení převodu",
   "transfer_successful": "Přenos úspěšný",
-  "ts_savings_title": "Převádění do úspor",
+  "ts_savings_title": "Převádění do úspor.",
   "ts_savings_text": "Převod finančních prostředků z vašeho výdajového účtu do úspor. Tyto prostředky budete moci použít za <highlight>±1 hodinu</highlight>.",
   "ts_spendings_title": "Převádění do útrat.",
   "ts_spendings_text": "Převod finančních prostředků z vašeho spořícího účtu na váš účet pro výdaje. Tyto prostředky budete moci použít za <highlight>±10 minut</highlight>.",

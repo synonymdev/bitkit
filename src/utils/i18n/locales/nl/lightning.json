@@ -41,8 +41,6 @@
   "transfer_close": "Al uw bestedingsgeld weer naar uw spaargeld omzetten vereist een kleine vergoeding. De hoogte daarvan is afhankelijk van netwerk omstandigheden. ",
   "transfer_swipe": "Veeg om over te Maken",
   "transfer_successful": "Betaling Voltooid",
-  "ts_savings_title": "Wordt Overgemaakt naar uw Spaarbalans.",
-  "ts_spendings_title": "Wordt Overgemaakt naar uw Bestedingsbalans.",
   "interrupted_title": "Overdracht Onderbroken",
   "interrupted_header": "Bitkit open houden. ",
   "interrupted_text": "Het geld is nog niet overgemaakt. Bitkit zal de overdracht proberen te maken gedurende de volgende 30 minuten. Houd de app graag open. ",

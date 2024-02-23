@@ -9,7 +9,6 @@
   },
   "lightningSettingUp": {
     "title": "Aan het installeren",
-    "description0": "In Afwachting Van Betaling",
     "description1": "Betaald",
     "description2": "In de wacht",
     "description3": "Wordt geopened"
@@ -22,13 +21,8 @@
     "title": "Gereed",
     "description": "Verbonden!"
   },
-  "transferToSpending": {
-    "title": "Bezig met verzenden",
-    "description": "Klaar in ±10m"
-  },
-  "transferToSavings": {
-    "title": "Bezig met verzenden",
-    "description": "Gereed in ±60m"
+  "transferPending": {
+    "title": "Bezig met verzenden"
   },
   "transferClosingChannel": {
     "title": "Aan het opstarten...",

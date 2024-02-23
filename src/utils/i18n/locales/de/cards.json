@@ -9,7 +9,6 @@
   },
   "lightningSettingUp": {
     "title": "Einrichtung",
-    "description0": "Zahlung wird erwartet",
     "description1": "Gezahlt",
     "description2": "in Warteschlange",
     "description3": "Öffnen"
@@ -22,13 +21,8 @@
     "title": "Bereit",
     "description": "Verbunden!"
   },
-  "transferToSpending": {
-    "title": "Übertragung",
-    "description": "bereit in ca. 10 Minuten"
-  },
-  "transferToSavings": {
-    "title": "Übertragung",
-    "description": "bereit in ca. 60 Minuten"
+  "transferPending": {
+    "title": "Übertragung"
   },
   "transferClosingChannel": {
     "title": "Initialisiere…",

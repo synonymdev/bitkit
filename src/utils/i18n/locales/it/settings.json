@@ -234,6 +234,10 @@
     "button_reset": "Ripristina Impostazioni di Default",
     "button_connect": "Connetti all'Host"
   },
+  "gap": {
+    "save": "Salva",
+    "reset": "Ripristino"
+  },
   "rgs": {
     "server_url": "URL del server Rapid-Gossip-Sync",
     "button_connect": "Connetti",

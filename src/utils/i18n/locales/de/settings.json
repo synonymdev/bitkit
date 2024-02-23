@@ -67,6 +67,9 @@
   "es": {
     "disconnected": "getrennt"
   },
+  "gap": {
+    "save": "Sichern"
+  },
   "rgs": {
     "button_connect": "Verbinden"
   }

@@ -143,6 +143,9 @@
     "button_reset": "Restablecer configuraciones iniciales",
     "button_connect": "Conectar con el anfitrión"
   },
+  "gap": {
+    "save": "Guarde"
+  },
   "rgs": {
     "button_connect": "Conectar"
   },

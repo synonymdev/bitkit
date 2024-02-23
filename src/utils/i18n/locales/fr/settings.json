@@ -166,6 +166,10 @@
     "button_reset": "Réinitialisation des valeurs par défaut",
     "button_connect": "Connexion à un hôte"
   },
+  "gap": {
+    "save": "Enregistrer",
+    "reset": "Réinitialiser"
+  },
   "rgs": {
     "button_connect": "Connecter"
   }

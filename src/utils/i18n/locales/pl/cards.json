@@ -9,7 +9,6 @@
   },
   "lightningSettingUp": {
     "title": "Ustawienia",
-    "description0": "Oczekująca płatność",
     "description1": "Zapłacono",
     "description2": "W kolejce",
     "description3": "Otwieranie"
@@ -22,13 +21,8 @@
     "title": "Gotowe",
     "description": "Połączone!"
   },
-  "transferToSpending": {
-    "title": "Transferuję",
-    "description": "Gotowe w ±10 minut"
-  },
-  "transferToSavings": {
-    "title": "Transferuję",
-    "description": "Gotowe w ±60 minut"
+  "transferPending": {
+    "title": "Transferuję"
   },
   "transferClosingChannel": {
     "title": "Instaluję",

@@ -2,7 +2,6 @@
   "send": "Wyślij",
   "receive": "Otrzymaj",
   "balance_total": "Saldo",
-  "balance_total_pending": "<text>Saldo (</text><pending/><text> w toku)</text>",
   "assets": "Aktywa",
   "send_bitcoin": "Wyślij Bitcoin",
   "send_to": "Do",

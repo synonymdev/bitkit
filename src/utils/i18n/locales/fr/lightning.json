@@ -42,8 +42,6 @@
   "transfer_close": "Le transfert de l'intégralité de votre solde du compte courant vers votre compte d'épargne entraîne des frais minimes. Les frais exacts dépendent des conditions du réseau.",
   "transfer_swipe": "Glissez pour transférer",
   "transfer_successful": "Transfert réussi",
-  "ts_savings_title": "Transfert vers l'épargne.",
-  "ts_spendings_title": "Transfert vers le compte courant.",
   "interrupted_title": "Transfert interrompu",
   "interrupted_header": "S'il vous plaît, laissez Bitkit ouvert.",
   "interrupted_text": "Les fonds n'ont pas encore été transférés. Bitkit va essayer d'initier le transfert au cours des 30 prochaines minutes. Veuillez garder votre application ouverte.",

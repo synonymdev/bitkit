@@ -156,5 +156,8 @@
     "protocol": "Protocol",
     "button_reset": "Resetten Naar Standaardwaarden",
     "button_connect": "Verbind Met Hostcomputer"
+  },
+  "gap": {
+    "save": "Opslaan"
   }
 }

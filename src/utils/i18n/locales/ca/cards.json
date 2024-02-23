@@ -9,7 +9,6 @@
   },
   "lightningSettingUp": {
     "title": "Preparant",
-    "description0": "Esperant el pagament",
     "description1": "Pagat",
     "description2": "A la cua",
     "description3": "Obrint"
@@ -22,13 +21,8 @@
     "title": "Llest",
     "description": "Conectat!"
   },
-  "transferToSpending": {
-    "title": "Transferint",
-    "description": "Llest en ±10m"
-  },
-  "transferToSavings": {
-    "title": "Transferint",
-    "description": "Llest en ±60m"
+  "transferPending": {
+    "title": "Transferint"
   },
   "transferClosingChannel": {
     "title": "Iniciant...",

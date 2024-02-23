@@ -30,7 +30,6 @@
   "transfer_header_nokeybrd": "Gastos\ny el Ahorro.",
   "transfer_swipe": "Deslizar para transferir",
   "transfer_successful": "Transferencia exitosa",
-  "ts_savings_title": "Transferencia al ahorro.",
   "interrupted_title": "Transferencia interrumpida",
   "interrupted_header": "Por favor, mantenga Bitkit abierto.",
   "interrupted_text": "Los fondos aún no han sido transferidos. Bitkit intentará iniciar la transferencia durante los próximos 30 minutos. Por favor, mantenga su aplicación abierta.",

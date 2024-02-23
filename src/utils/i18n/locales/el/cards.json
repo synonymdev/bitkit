@@ -9,7 +9,6 @@
   },
   "lightningSettingUp": {
     "title": "Ρυθμίσεις",
-    "description0": "Αναμονή Πληρωμής",
     "description1": "Πληρώθηκε",
     "description2": "Σε αναμονή",
     "description3": "Σε αναμονή"
@@ -22,13 +21,8 @@
     "title": "Έτοιμο",
     "description": "Συνδέθηκε!"
   },
-  "transferToSpending": {
-    "title": "Μεταφορά",
-    "description": "Έτοιμο σε ±10 λεπτά"
-  },
-  "transferToSavings": {
-    "title": "Μεταφορά",
-    "description": "Έτοιμο σε ±60 λεπτά"
+  "transferPending": {
+    "title": "Μεταφορά"
   },
   "transferClosingChannel": {
     "title": "Έναρξη...",

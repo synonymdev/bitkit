@@ -42,8 +42,6 @@
   "transfer_close": "Há um pequeno custo para transferir o saldo total de gastos de volta para sua poupança. A tarifa exata depende das condições da rede.",
   "transfer_swipe": "Deslizar Para Transferir",
   "transfer_successful": "Transferência bem-sucedida",
-  "ts_savings_title": "Transferindo para poupança.",
-  "ts_spendings_title": "Transferindo para Despesas.",
   "interrupted_title": "Transferência Interrompida",
   "interrupted_header": "Por favor, mantenha o Bitkit aberto.",
   "interrupted_text": "Os fundos ainda não foram transferidos. Bitkit tentará iniciar a transferência durante os próximos 30 minutos. Por favor, mantenha seu aplicativo aberto.",

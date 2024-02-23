@@ -42,8 +42,6 @@
   "transfer_close": "Es fallen geringe Kosten an, um dein gesamtes Ausgabenguthaben wieder auf dein Sparkonto zu übertragen. Die genaue Gebühr hängt von den Netzwerkbedingungen ab.",
   "transfer_swipe": "Swipe zum Übertragen",
   "transfer_successful": "Übertragung erfolgreich",
-  "ts_savings_title": "Übertrage zu Sparkonto.",
-  "ts_spendings_title": "Übertrage auf Zahlungskonto.",
   "interrupted_title": "Übertragung unterbrochen",
   "interrupted_header": "Bitte lasse Bitkit offen.",
   "interrupted_text": "Guthaben wurde noch nicht übertragen. Bitkit wird versuchen den Übertrag während der nächsten 30 minuten zu initiieren. Bitte lasse die App offen.",

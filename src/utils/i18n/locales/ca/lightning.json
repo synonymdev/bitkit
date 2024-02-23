@@ -42,8 +42,6 @@
   "transfer_close": "Hi ha un petit cost per transferir el teu saldo total de despesa de tornada als teus estalvis. La tarifa exacta depèn de les condicions de la xarxa.",
   "transfer_swipe": "Desplaçar per Transferir",
   "transfer_successful": "Transferència realitzada",
-  "ts_savings_title": "Transferència a Estalvis.",
-  "ts_spendings_title": "Transferint a Despesa.",
   "interrupted_title": "Transferència interrompuda",
   "interrupted_header": "Si us plau, mantingueu obert Bitkit.",
   "interrupted_text": "Els fons encara no s'han transferit. Bitkit intentarà iniciar la transferència durant els pròxims 30 minuts. Si us plau, mantingueu l'aplicació oberta.",

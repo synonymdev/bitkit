@@ -9,7 +9,6 @@
   },
   "lightningSettingUp": {
     "title": "Arreglando todo",
-    "description0": "Esperando pago",
     "description1": "Pagado",
     "description2": "En cola",
     "description3": "Apertura"
@@ -22,13 +21,8 @@
     "title": "Listo",
     "description": "¡Conectado!"
   },
-  "transferToSpending": {
-    "title": "Transfiriendo",
-    "description": "Listo en ±10m"
-  },
-  "transferToSavings": {
-    "title": "Transfiriendo",
-    "description": "Listo en ±60m"
+  "transferPending": {
+    "title": "Transfiriendo"
   },
   "transferClosingChannel": {
     "title": "Arrancando",

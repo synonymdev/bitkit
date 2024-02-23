@@ -177,6 +177,10 @@
     "button_reset": "Redefinir para o Padrão",
     "button_connect": "Conectar ao Host"
   },
+  "gap": {
+    "save": "Salvar",
+    "reset": "Redefinir"
+  },
   "rgs": {
     "server_url": "URL do Servidor de Rapid-Gossip-Sync",
     "button_connect": "Conectar",

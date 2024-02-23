@@ -145,5 +145,8 @@
     "protocol": "Protocolo",
     "button_reset": "Restablecer padrones iniciales",
     "button_connect": "Conectar con el anfitrión"
+  },
+  "gap": {
+    "save": "Guardar"
   }
 }

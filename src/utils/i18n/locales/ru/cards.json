@@ -13,12 +13,8 @@
   "lightningConnecting": {
     "title": "Вы\nподключены!"
   },
-  "transferToSpending": {
+  "transferPending": {
     "title": "Перенос"
-  },
-  "transferToSavings": {
-    "title": "Перенос",
-    "description": "Готово ±60м"
   },
   "transferClosingChannel": {
     "title": "Инициализация...",

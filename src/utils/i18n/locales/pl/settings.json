@@ -11,5 +11,8 @@
   "es": {
     "host": "Host",
     "port": "Port"
+  },
+  "gap": {
+    "save": "Zapisz"
   }
 }

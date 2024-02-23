@@ -9,7 +9,7 @@
   },
   "lightningSettingUp": {
     "title": "Nastavování",
-    "description0": "Očekávaná platba",
+    "description0": "Zpracování platby",
     "description1": "Uhrazeno",
     "description2": "Ve frontě",
     "description3": "Otevírání"
@@ -22,13 +22,9 @@
     "title": "Připraveno",
     "description": "Připojeno!"
   },
-  "transferToSpending": {
+  "transferPending": {
     "title": "Probíhající přenos",
-    "description": "Připraveno za ±10 m"
-  },
-  "transferToSavings": {
-    "title": "Probíhající přenos",
-    "description": "Připraveno za ±60 m"
+    "description": "Bude připraveno za ±{duration}m"
   },
   "transferClosingChannel": {
     "title": "Inicializace...",

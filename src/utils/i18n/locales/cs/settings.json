@@ -141,6 +141,10 @@
     "section_networks": "Sítě",
     "section_other": "Další",
     "address_type": "Typ bitcoinové adresy",
+    "monitored_address_types": "Sledované typy adres",
+    "monitored_address_types_update_title": "Aktualizace sledovaných typů adres",
+    "monitored_address_types_update_description": "Změny se plně projeví po restartu aplikace.",
+    "gap_limit": "Limit mezery v adrese",
     "coin_selection": "Výběr mince",
     "cs_method": "Metoda výběru mince",
     "cs_manual": "Manuální",
@@ -234,6 +238,12 @@
     "protocol": "Protokol",
     "button_reset": "Obnovit do základního nastavení",
     "button_connect": "Připojit se k Host"
+  },
+  "gap": {
+    "save": "Uložit",
+    "reset": "Obnovit",
+    "gap_limit_update_title": "Aktualizovaný limit mezery v adrese",
+    "gap_limit_update_description": "Změny se plně projeví po restartu aplikace."
   },
   "rgs": {
     "server_url": "URL dresa serveru Rapid-Gossip-Sync",
