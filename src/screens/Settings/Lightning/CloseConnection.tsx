@@ -55,7 +55,6 @@ const CloseConnection = ({
 			return;
 		}
 
-		// TODO: remove and use CloseChannelSuccess bottom-sheet instead
 		showToast({
 			type: 'success',
 			title: t('close_success_title'),

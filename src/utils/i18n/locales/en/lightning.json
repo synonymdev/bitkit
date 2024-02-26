@@ -105,11 +105,15 @@
 	"is_usable": "Is Usable?",
 	"is_ready": "Is Ready?",
 	"support": "Support",
+	"connection_closed": {
+		"title": "Connection Closed",
+		"description": "A Lightning Connection has closed. The funds will move back to your savings."
+	},
 	"close_conn": "Close Connection",
 	"close_error": "Transfer Failed",
 	"close_success_title": "Transfer Successful",
 	"close_success_msg": "Your funds have been moved back to your savings.",
-	"close_text": "There is a small cost to close this Lightning Connection and transfer your full spending balance back to your savings. The exact fee depends on network conditions.\n\nTransferring funds to savings usually takes ±1 hour, but settlement may take <white>14 days</white> under certain network conditions.",
+	"close_text": "There is a small cost to close this Lightning Connection and transfer your full spending balance back to your savings. The exact fee depends on network conditions.\n\nTransferring funds to savings usually takes <white>±1 hour</white>, but settlement may take <white>14 days</white> under certain network conditions.",
 	"close_button": "Close",
 	"force_title": "Force Transfer",
 	"force_text": "Could not initiate transfer. Do you want to force this transfer? You won’t be able to use these funds for ±14 days (!)",

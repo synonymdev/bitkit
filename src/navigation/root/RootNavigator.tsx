@@ -56,7 +56,7 @@ import ReceiveNavigation from '../bottom-sheet/ReceiveNavigation';
 import BackupNavigation from '../bottom-sheet/BackupNavigation';
 import PINNavigation from '../bottom-sheet/PINNavigation';
 import ForceTransfer from '../bottom-sheet/ForceTransfer';
-import CloseChannelSuccess from '../bottom-sheet/CloseChannelSuccess';
+import ConnectionClosed from '../bottom-sheet/ConnectionClosed';
 import LNURLWithdrawNavigation from '../bottom-sheet/LNURLWithdrawNavigation';
 import LNURLPayNavigation from '../bottom-sheet/LNURLPayNavigation';
 import TreasureHuntNavigation from '../bottom-sheet/TreasureHuntNavigation';
@@ -240,7 +240,7 @@ const RootNavigator = (): ReactElement => {
 			<NewTxPrompt />
 			<SlashAuthModal />
 			<ForceTransfer />
-			<CloseChannelSuccess />
+			<ConnectionClosed />
 			<BackupSubscriber />
 			<LNURLWithdrawNavigation />
 			<LNURLPayNavigation />

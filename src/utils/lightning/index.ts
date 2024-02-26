@@ -3,7 +3,10 @@ import Keychain from 'react-native-keychain';
 import * as bitcoin from 'bitcoinjs-lib';
 import RNFS from 'react-native-fs';
 import { err, ok, Result } from '@synonymdev/result';
-import { TBroadcastTransaction } from '@synonymdev/react-native-ldk/dist/utils/types';
+import {
+	TBroadcastTransaction,
+	TChannelManagerChannelClosed,
+} from '@synonymdev/react-native-ldk/dist/utils/types';
 import { EPaymentType, TGetAddressHistory } from 'beignet';
 import lm, {
 	ldk,
@@ -117,6 +120,7 @@ export const FALLBACK_BLOCKTANK_PEERS: IWalletItem<string[]> = {
 
 let paymentSubscription: EmitterSubscription | undefined;
 let onChannelSubscription: EmitterSubscription | undefined;
+let onChannelClose: EmitterSubscription | undefined;
 let onSpendableOutputsSubscription: EmitterSubscription | undefined;
 let onBackupStateUpdate: EmitterSubscription | undefined;
 
@@ -463,6 +467,17 @@ export const subscribeToLightningPayments = ({
 			},
 		);
 	}
+	if (!onChannelClose) {
+		onChannelClose = ldk.onEvent(
+			EEventTypes.channel_manager_channel_closed,
+			(res: TChannelManagerChannelClosed) => {
+				if (res.reason === 'CommitmentTxConfirmed') {
+					// our counterparty force closed the channel
+					showBottomSheet('connectionClosed');
+				}
+			},
+		);
+	}
 	if (!onSpendableOutputsSubscription) {
 		onSpendableOutputsSubscription = ldk.onEvent(
 			EEventTypes.channel_manager_spendable_outputs,
@@ -488,6 +503,7 @@ export const subscribeToLightningPayments = ({
 export const unsubscribeFromLightningSubscriptions = (): void => {
 	paymentSubscription?.remove();
 	onChannelSubscription?.remove();
+	onChannelClose?.remove();
 	onSpendableOutputsSubscription?.remove();
 	onBackupStateUpdate?.remove();
 };

@@ -9,7 +9,7 @@ export type ViewControllerParamList = {
 	backupNavigation: undefined;
 	backupPrompt: undefined;
 	boostPrompt: { onchainActivityItem: TOnchainActivityItem };
-	closeChannelSuccess: undefined;
+	connectionClosed: undefined;
 	forceTransfer: undefined;
 	forgotPIN: undefined;
 	highBalance: undefined;

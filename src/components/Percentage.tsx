@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
 import { Platform, StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import { Headline, Text01S } from '../styles/text';
-import { CoinsIcon, SavingsIcon } from '../styles/icons';
+import { LightningHollow, SavingsIcon } from '../styles/icons';
 
 type PercentageProps = {
 	value: number;
@@ -12,7 +12,7 @@ type PercentageProps = {
 const Percentage = ({ value, type, style }: PercentageProps): ReactElement => (
 	<View style={[styles.root, style]}>
 		{type === 'spending' ? (
-			<CoinsIcon color="purple" height={26} width={26} />
+			<LightningHollow color="purple" height={32} width={32} />
 		) : (
 			<SavingsIcon color="orange" height={32} width={32} />
 		)}

@@ -11,7 +11,7 @@ export const defaultViewControllers: TUiState['viewControllers'] = {
 	backupNavigation: defaultViewController,
 	backupPrompt: defaultViewController,
 	boostPrompt: defaultViewController,
-	closeChannelSuccess: defaultViewController,
+	connectionClosed: defaultViewController,
 	forceTransfer: defaultViewController,
 	forgotPIN: defaultViewController,
 	highBalance: defaultViewController,
