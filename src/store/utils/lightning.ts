@@ -2,6 +2,7 @@ import { LNURLChannelParams } from 'js-lnurl';
 import { err, ok, Result } from '@synonymdev/result';
 import { ldk, TChannel, TInvoice } from '@synonymdev/react-native-ldk';
 import { getLNURLParams, lnurlChannel } from '@synonymdev/react-native-lnurl';
+import { EPaymentType } from 'beignet';
 
 import { dispatch, getLightningStore, getMetaDataStore } from '../helpers';
 import { updateActivityItems } from '../slices/activity';
@@ -17,12 +18,10 @@ import {
 import { moveMetaIncTxTag } from '../slices/metadata';
 import { updateTransfer } from '../actions/wallet';
 import { EAvailableNetwork } from '../../utils/networks';
-import { getActivityItemById } from '../../utils/activity';
 import { getSelectedNetwork, getSelectedWallet } from '../../utils/wallet';
 import {
 	addPeers,
 	createPaymentRequest,
-	decodeLightningInvoice,
 	getClaimableBalances,
 	getClaimedLightningPayments,
 	getCustomLightningPeers,
@@ -38,7 +37,6 @@ import {
 } from '../types/lightning';
 import { ETransferType, TWalletName } from '../types/wallet';
 import { EActivityType, TLightningActivityItem } from '../types/activity';
-import { EPaymentType } from 'beignet';
 
 /**
  * Attempts to update the node id for the selected wallet and network.
@@ -335,24 +333,12 @@ export const syncLightningTxsWithActivityList = async (): Promise<
 			continue;
 		}
 
-		// Decode invoice to get description
-		// TODO: Persist description in react-native-ldk so we don't have to decode here
-		let invoiceNote = '';
-		if (payment.bolt11_invoice) {
-			const decodeInvoiceResponse = await decodeLightningInvoice({
-				paymentRequest: payment.bolt11_invoice,
-			});
-			if (decodeInvoiceResponse.isOk()) {
-				invoiceNote = decodeInvoiceResponse.value.description ?? '';
-			}
-		}
-
 		items.push({
 			id: payment.payment_hash,
 			activityType: EActivityType.lightning,
 			txType: EPaymentType.sent,
 			status: payment.state,
-			message: invoiceNote,
+			message: payment.description ?? '',
 			address: payment.bolt11_invoice ?? '',
 			confirmed: payment.state === 'successful',
 			value: payment.amount_sat,
@@ -360,18 +346,6 @@ export const syncLightningTxsWithActivityList = async (): Promise<
 			timestamp: payment.unix_timestamp * 1000,
 		});
 	}
-
-	// TODO: remove temp hack when this is complete and descriptions/bolt11 can be added from stored tx: https://github.com/synonymdev/react-native-ldk/issues/156
-	items.forEach((item) => {
-		const res = getActivityItemById(item.id);
-		if (res.isOk()) {
-			const existingItem = res.value;
-			if (existingItem.activityType === EActivityType.lightning) {
-				item.message = existingItem.message;
-				item.address = existingItem.address;
-			}
-		}
-	});
 
 	dispatch(updateActivityItems(items));
 

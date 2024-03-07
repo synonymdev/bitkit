@@ -1,8 +1,5 @@
-// import { TPaymentState } from '@synonymdev/react-native-ldk';
+import { TPaymentState } from '@synonymdev/react-native-ldk';
 import { EPaymentType } from 'beignet';
-
-// TODO: update react-native-ldk and remove
-type TPaymentState = 'pending' | 'successful' | 'failed';
 
 export enum EActivityType {
 	onchain = 'onchain',
