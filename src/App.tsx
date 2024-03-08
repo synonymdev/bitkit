@@ -31,6 +31,9 @@ import { walletExistsSelector } from './store/reselect/wallet';
 import { requiresRemoteRestoreSelector } from './store/reselect/user';
 import { criticalUpdateSelector } from './store/reselect/ui';
 
+import XX from './utils/ledger';
+console.info('XX', XX);
+
 const App = (): ReactElement => {
 	const [isReady, setIsReady] = useState(false);
 	const [showRecovery, setShowRecovery] = useState(false);

@@ -137,7 +137,8 @@
     "stream-browserify": "3.0.0",
     "styled-components": "5.3.11",
     "url-parse": "1.5.10",
-    "uuid": "9.0.1"
+    "uuid": "9.0.1",
+    "ledger": "../ledger/"
   },
   "devDependencies": {
     "@babel/core": "^7.23.2",

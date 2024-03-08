@@ -4384,6 +4384,14 @@
     bech32 "^2.0.0"
     bitcoinjs-lib "^6.0.2"
 
+"@synonymdev/react-native-ldk@^0.0.133":
+  version "0.0.133"
+  resolved "https://registry.yarnpkg.com/@synonymdev/react-native-ldk/-/react-native-ldk-0.0.133.tgz#ef885a477fb2d28bf41130ab100669068714908f"
+  integrity sha512-6gKrtbKqPQiK6nlm+A5iFJ71Ye7cMox+0H2MCq4cRYy+Y7qvjY4UNq5V3BTrhoqBnqktPQli/cdGtMSUNWGD8g==
+  dependencies:
+    bech32 "^2.0.0"
+    bitcoinjs-lib "^6.0.2"
+
 "@synonymdev/react-native-lnurl@0.0.7":
   version "0.0.7"
   resolved "https://registry.yarnpkg.com/@synonymdev/react-native-lnurl/-/react-native-lnurl-0.0.7.tgz#deb91bdb327764ad43566a6b3fac343a0fb8d5ce"
@@ -10363,6 +10371,12 @@ knex@2.5.1:
     resolve-from "^5.0.0"
     tarn "^3.0.2"
     tildify "2.0.0"
+
+ledger@../ledger/:
+  version "0.0.0"
+  dependencies:
+    "@synonymdev/react-native-ldk" "^0.0.133"
+    beignet "^0.0.24"
 
 level-supports@^4.0.0:
   version "4.0.1"

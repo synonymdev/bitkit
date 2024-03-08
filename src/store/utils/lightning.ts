@@ -282,6 +282,9 @@ export const syncLightningTxsWithActivityList = async (): Promise<
 	const items: TLightningActivityItem[] = [];
 
 	const claimed = await getClaimedLightningPayments();
+
+	console.info('claimed', claimed);
+
 	for (const payment of claimed) {
 		// Required to add in bolt11 and description
 		const invoice = await getPendingInvoice(payment.payment_hash);
@@ -301,6 +304,7 @@ export const syncLightningTxsWithActivityList = async (): Promise<
 
 	// Remove pending payments from store that are no longer pending
 	const sent = await getSentLightningPayments();
+	console.info('sent', sent);
 	const pendingPayments = sent.filter((p) => p.state === 'pending');
 	const pendingWatched = getLightningStore().pendingPayments;
 	const pendingToRemove = pendingWatched.filter((p) => {
