@@ -1,5 +1,6 @@
 import React, { ReactElement, memo, useState } from 'react';
 import { Alert, StyleSheet, View } from 'react-native';
+import { TBitkitTransaction } from 'ledger/dist/bitkit-ledger';
 
 import { SettingsScreenProps } from '../../../navigation/types';
 import { Caption13Up, Text01S } from '../../../styles/text';
@@ -14,11 +15,28 @@ import {
 } from '../../../utils/ledger';
 import { useBalance } from '../../../hooks/wallet';
 
-const TransactionItem = (tx) => {
+const Transaction = ({tx}: {tx: TBitkitTransaction}) => {
+	const { id, balancesBefore, amount, fromAcc, toAcc } = tx;
+
+	const isSend = toAcc.wallet.includes('_remote')
+
+	console.info('tx', tx)
+
+
 	return (
-		<View style={styles.item}>
-			<View />
-		</View>
+		<ThemedView style={styles.item} color={isSend ? 'green16': 'red16'}>
+			<View style={styles.amount}>
+				<Caption13Up>{amount}</Caption13Up>
+			</View>
+			<View>
+			<View style={styles.from}>
+				<Caption13Up>{fromAcc.wallet} {fromAcc.account}</Caption13Up>
+			</View>
+			<View style={styles.from}>
+				<Caption13Up>{toAcc.wallet} {toAcc.account}</Caption13Up>
+			</View>
+			</View>
+		</ThemedView>
 	);
 };
 
@@ -47,9 +65,6 @@ const Ledger = ({}: SettingsScreenProps<'Ledger'>): ReactElement => {
 		Alert.alert('Init', res.isErr() ? res.error.message : 'Success');
 		reRender();
 	};
-
-	console.info('rerender');
-	console.info('bitkitLedger', bitkitLedger?.ledger.wallets);
 
 	return (
 		<ThemedView style={styles.container}>
@@ -176,6 +191,10 @@ const Ledger = ({}: SettingsScreenProps<'Ledger'>): ReactElement => {
 					Transactions
 				</Caption13Up>
 
+						{bitkitLedger.ledger.getTransactions().map(tx => {
+							return <Transaction key={tx.id} tx={tx} />
+						})}
+
 					</>
 				)}
 
@@ -219,6 +238,19 @@ const styles = StyleSheet.create({
 		minWidth: 64,
 		marginBottom: 8,
 	},
+	tx: {
+		flexDirection: 'row',
+		alignItems: 'center',
+		justifyContent: 'space-between',
+		borderBottomColor: 'rgba(255, 255, 255, 0.1)',
+		borderBottomWidth: 1,
+		paddingVertical: 8,
+	},
+	amount: {
+		minWidth: 100,
+		paddingLeft: 4,
+		// backgroundColor: 'red',
+	}
 });
 
 export default memo(Ledger);
