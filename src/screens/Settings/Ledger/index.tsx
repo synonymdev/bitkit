@@ -16,7 +16,7 @@ import {
 	bitkitLedger,
 	initLedger,
 	resetLedger,
-	syncLedger,
+	syncLedger2,
 } from '../../../utils/ledger';
 import { useBalance } from '../../../hooks/wallet';
 
@@ -48,7 +48,7 @@ const Transaction = ({
 }: {
 	tx: TBitkitTransaction;
 	onPress: () => void;
-}) => {
+}): ReactElement => {
 	const { id, amount, fromAcc, toAcc } = tx;
 	const isSend = toAcc.wallet.includes('_remote');
 	const fromText = accToEmoji(fromAcc);
@@ -57,7 +57,7 @@ const Transaction = ({
 	return (
 		<ThemedTouchableOpacity
 			style={styles.item}
-			color={isSend ? 'green16' : 'red16'}
+			color={isSend ? 'red16' : 'green16'}
 			onPress={onPress}>
 			<View style={styles.id}>
 				<Caption13Up>{id}</Caption13Up>
@@ -80,7 +80,8 @@ const Ledger = ({
 	const [_, setRerender] = useState(0);
 	const balance = useBalance();
 
-	const reRender = () => setTimeout(() => setRerender((prev) => prev + 1), 10);
+	const reRender = (): NodeJS.Timeout =>
+		setTimeout(() => setRerender((prev) => prev + 1), 10);
 
 	const handleInit = async (): Promise<void> => {
 		const res = await initLedger();
@@ -89,7 +90,7 @@ const Ledger = ({
 	};
 
 	const handleSync = async (): Promise<void> => {
-		const res = await syncLedger();
+		const res = await syncLedger2();
 		Alert.alert('Init', res.isErr() ? res.error.message : 'Success');
 		reRender();
 	};
@@ -236,17 +237,20 @@ const Ledger = ({
 							Transactions
 						</Caption13Up>
 
-						{bitkitLedger.ledger.getTransactions().map((tx) => {
-							return (
-								<Transaction
-									key={tx.id}
-									tx={tx}
-									onPress={(): void => {
-										handleTransaction(tx.id);
-									}}
-								/>
-							);
-						})}
+						{bitkitLedger.ledger
+							.getTransactions()
+							.reverse()
+							.map((tx) => {
+								return (
+									<Transaction
+										key={tx.id}
+										tx={tx}
+										onPress={(): void => {
+											handleTransaction(tx.id);
+										}}
+									/>
+								);
+							})}
 					</>
 				)}
 

@@ -55,7 +55,6 @@ export const syncLedger = async (): Promise<Result<string>> => {
 		const txLenBefore = bitkitLedger.ledger.getTransactions().length;
 		// lightning
 		const sent = await getSentLightningPayments();
-		console.info('sent', sent);
 		const received = await getClaimedLightningPayments();
 		bitkitLedger.syncLNHistory({ sent, received });
 
@@ -65,6 +64,38 @@ export const syncLedger = async (): Promise<Result<string>> => {
 		const onchain =
 			getWalletStore().wallets[selectedWallet].transactions[selectedNetwork];
 		bitkitLedger.syncOnchainHistory(onchain);
+
+		const txLenAfter = bitkitLedger.ledger.getTransactions().length;
+		if (txLenAfter > txLenBefore) {
+			const save = await saveLedger();
+			if (save.isErr()) {
+				return err(save.error);
+			}
+		}
+	} catch (e) {
+		return err(e);
+	}
+	return ok('ledger sync success');
+};
+
+export const syncLedger2 = async (): Promise<Result<string>> => {
+	if (!bitkitLedger) {
+		return ok('ledger not initialized');
+	}
+
+	try {
+		const txLenBefore = bitkitLedger.ledger.getTransactions().length;
+		// lightning
+		const lnSent = await getSentLightningPayments();
+		const lnClaim = await getClaimedLightningPayments();
+		// onchain
+		const selectedWallet = getSelectedWallet();
+		const selectedNetwork = getSelectedNetwork();
+		const onchain =
+			getWalletStore().wallets[selectedWallet].transactions[selectedNetwork];
+
+		// sync
+		bitkitLedger.syncHistory({ lnClaim, lnSent, onchain });
 
 		const txLenAfter = bitkitLedger.ledger.getTransactions().length;
 		if (txLenAfter > txLenBefore) {
