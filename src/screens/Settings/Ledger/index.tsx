@@ -5,14 +5,17 @@ import { TDestination } from 'ledger/dist/ledger';
 
 import { SettingsScreenProps } from '../../../navigation/types';
 import { Caption13Up, Text01S } from '../../../styles/text';
-import { ScrollView, View as ThemedView } from '../../../styles/components';
+import {
+	ScrollView,
+	View as ThemedView,
+	TouchableOpacity as ThemedTouchableOpacity,
+} from '../../../styles/components';
 import Button from '../../../components/Button';
 import SafeAreaInset from '../../../components/SafeAreaInset';
 import {
 	bitkitLedger,
 	initLedger,
 	resetLedger,
-	saveLedger,
 	syncLedger,
 } from '../../../utils/ledger';
 import { useBalance } from '../../../hooks/wallet';
@@ -37,51 +40,51 @@ const accToEmoji = (acc: TDestination): string => {
 	}
 
 	return wallet + account;
-}
+};
 
-const Transaction = ({ tx }: { tx: TBitkitTransaction }) => {
-	const { id, balancesBefore, amount, fromAcc, toAcc } = tx;
-
+const Transaction = ({
+	tx,
+	onPress,
+}: {
+	tx: TBitkitTransaction;
+	onPress: () => void;
+}) => {
+	const { id, amount, fromAcc, toAcc } = tx;
 	const isSend = toAcc.wallet.includes('_remote');
-
 	const fromText = accToEmoji(fromAcc);
 	const toText = accToEmoji(toAcc);
 
-	console.info('tx', tx);
-
 	return (
-		<ThemedView style={styles.item} color={isSend ? 'green16' : 'red16'}>
+		<ThemedTouchableOpacity
+			style={styles.item}
+			color={isSend ? 'green16' : 'red16'}
+			onPress={onPress}>
+			<View style={styles.id}>
+				<Caption13Up>{id}</Caption13Up>
+			</View>
 			<View style={styles.amount}>
 				<Caption13Up>{amount}</Caption13Up>
 			</View>
 			<View>
-				<View style={styles.from}>
-					<Caption13Up>
-						{fromText} ⟶ {toText}
-					</Caption13Up>
-				</View>
+				<Caption13Up>
+					{fromText} ⟶ {toText}
+				</Caption13Up>
 			</View>
-		</ThemedView>
+		</ThemedTouchableOpacity>
 	);
 };
 
-const Ledger = ({}: SettingsScreenProps<'Ledger'>): ReactElement => {
+const Ledger = ({
+	navigation,
+}: SettingsScreenProps<'Ledger'>): ReactElement => {
 	const [_, setRerender] = useState(0);
 	const balance = useBalance();
-
-	console.info('balance', balance);
 
 	const reRender = () => setTimeout(() => setRerender((prev) => prev + 1), 10);
 
 	const handleInit = async (): Promise<void> => {
 		const res = await initLedger();
 		Alert.alert('Init', res.isErr() ? res.error.message : 'Success');
-		reRender();
-	};
-
-	const handleSave = async (): Promise<void> => {
-		const res = await saveLedger();
-		Alert.alert('Save', res.isErr() ? res.error.message : 'Success');
 		reRender();
 	};
 
@@ -95,6 +98,10 @@ const Ledger = ({}: SettingsScreenProps<'Ledger'>): ReactElement => {
 		const res = await resetLedger();
 		Alert.alert('Reset', res.isErr() ? res.error.message : 'Success');
 		reRender();
+	};
+
+	const handleTransaction = (id: number): void => {
+		navigation.navigate('LedgerTransaction', { ledgerTxId: id });
 	};
 
 	return (
@@ -230,7 +237,15 @@ const Ledger = ({}: SettingsScreenProps<'Ledger'>): ReactElement => {
 						</Caption13Up>
 
 						{bitkitLedger.ledger.getTransactions().map((tx) => {
-							return <Transaction key={tx.id} tx={tx} />;
+							return (
+								<Transaction
+									key={tx.id}
+									tx={tx}
+									onPress={(): void => {
+										handleTransaction(tx.id);
+									}}
+								/>
+							);
 						})}
 					</>
 				)}
@@ -275,18 +290,13 @@ const styles = StyleSheet.create({
 		minWidth: 64,
 		marginBottom: 8,
 	},
-	tx: {
-		flexDirection: 'row',
-		alignItems: 'center',
-		justifyContent: 'space-between',
-		borderBottomColor: 'rgba(255, 255, 255, 0.1)',
-		borderBottomWidth: 1,
-		paddingVertical: 8,
+	id: {
+		minWidth: 5,
+		paddingLeft: 4,
 	},
 	amount: {
 		minWidth: 100,
 		paddingLeft: 4,
-		// backgroundColor: 'red',
 	},
 });
 

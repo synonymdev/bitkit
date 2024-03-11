@@ -55,7 +55,7 @@ export const syncLedger = async (): Promise<Result<string>> => {
 		const txLenBefore = bitkitLedger.ledger.getTransactions().length;
 		// lightning
 		const sent = await getSentLightningPayments();
-		console.info('sent', sent)
+		console.info('sent', sent);
 		const received = await getClaimedLightningPayments();
 		bitkitLedger.syncLNHistory({ sent, received });
 
