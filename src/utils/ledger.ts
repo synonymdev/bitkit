@@ -55,6 +55,7 @@ export const syncLedger = async (): Promise<Result<string>> => {
 		const txLenBefore = bitkitLedger.ledger.getTransactions().length;
 		// lightning
 		const sent = await getSentLightningPayments();
+		console.info('sent', sent)
 		const received = await getClaimedLightningPayments();
 		bitkitLedger.syncLNHistory({ sent, received });
 
@@ -78,13 +79,14 @@ export const syncLedger = async (): Promise<Result<string>> => {
 	return ok('ledger sync success');
 };
 
-export const reset = async (): Promise<Result<string>> => {
+export const resetLedger = async (): Promise<Result<string>> => {
 	if (!bitkitLedger) {
 		return ok('ledger not initialized');
 	}
 
 	try {
 		mmkv.delete(MMKV_LEDGER_KEY);
+		bitkitLedger = undefined;
 	} catch (e) {
 		return err(e);
 	}

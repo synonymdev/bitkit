@@ -1,6 +1,7 @@
 import React, { ReactElement, memo, useState } from 'react';
 import { Alert, StyleSheet, View } from 'react-native';
 import { TBitkitTransaction } from 'ledger/dist/bitkit-ledger';
+import { TDestination } from 'ledger/dist/ledger';
 
 import { SettingsScreenProps } from '../../../navigation/types';
 import { Caption13Up, Text01S } from '../../../styles/text';
@@ -10,31 +11,55 @@ import SafeAreaInset from '../../../components/SafeAreaInset';
 import {
 	bitkitLedger,
 	initLedger,
+	resetLedger,
 	saveLedger,
 	syncLedger,
 } from '../../../utils/ledger';
 import { useBalance } from '../../../hooks/wallet';
 
-const Transaction = ({tx}: {tx: TBitkitTransaction}) => {
+const accToEmoji = (acc: TDestination): string => {
+	let wallet = '';
+	if (acc.wallet === 'onchain') {
+		wallet = '🏠🔗';
+	} else if (acc.wallet === 'lightning') {
+		wallet = '🏠⚡️';
+	} else if (acc.wallet === 'onchain_remote') {
+		wallet = '🌐🔗';
+	} else if (acc.wallet === 'lightning_remote') {
+		wallet = '🌐⚡️';
+	}
+
+	let account = '';
+	if (acc.account === 'available') {
+		account = '💰';
+	} else if (acc.account === 'hold') {
+		account = '🔒';
+	}
+
+	return wallet + account;
+}
+
+const Transaction = ({ tx }: { tx: TBitkitTransaction }) => {
 	const { id, balancesBefore, amount, fromAcc, toAcc } = tx;
 
-	const isSend = toAcc.wallet.includes('_remote')
+	const isSend = toAcc.wallet.includes('_remote');
 
-	console.info('tx', tx)
+	const fromText = accToEmoji(fromAcc);
+	const toText = accToEmoji(toAcc);
 
+	console.info('tx', tx);
 
 	return (
-		<ThemedView style={styles.item} color={isSend ? 'green16': 'red16'}>
+		<ThemedView style={styles.item} color={isSend ? 'green16' : 'red16'}>
 			<View style={styles.amount}>
 				<Caption13Up>{amount}</Caption13Up>
 			</View>
 			<View>
-			<View style={styles.from}>
-				<Caption13Up>{fromAcc.wallet} {fromAcc.account}</Caption13Up>
-			</View>
-			<View style={styles.from}>
-				<Caption13Up>{toAcc.wallet} {toAcc.account}</Caption13Up>
-			</View>
+				<View style={styles.from}>
+					<Caption13Up>
+						{fromText} ⟶ {toText}
+					</Caption13Up>
+				</View>
 			</View>
 		</ThemedView>
 	);
@@ -66,6 +91,12 @@ const Ledger = ({}: SettingsScreenProps<'Ledger'>): ReactElement => {
 		reRender();
 	};
 
+	const handleReset = async (): Promise<void> => {
+		const res = await resetLedger();
+		Alert.alert('Reset', res.isErr() ? res.error.message : 'Success');
+		reRender();
+	};
+
 	return (
 		<ThemedView style={styles.container}>
 			<ScrollView
@@ -87,12 +118,13 @@ const Ledger = ({}: SettingsScreenProps<'Ledger'>): ReactElement => {
 				) : (
 					<>
 						<Button text="Sync" style={styles.button} onPress={handleSync} />
-				<Caption13Up style={styles.caption} color="gray1">
-					Balances
-				</Caption13Up>
+						<Button text="Reset" style={styles.button} onPress={handleReset} />
+						<Caption13Up style={styles.caption} color="gray1">
+							Balances
+						</Caption13Up>
 						<View style={styles.item}>
 							<View style={styles.column4}>
-								<Text01S color="gray1"></Text01S>
+								<Text01S color="gray1" />
 							</View>
 							<View style={styles.column4}>
 								<Caption13Up>Actual</Caption13Up>
@@ -117,7 +149,7 @@ const Ledger = ({}: SettingsScreenProps<'Ledger'>): ReactElement => {
 								</Caption13Up>
 							</View>
 							<View style={styles.column4}>
-								<Caption13Up color='gray1'>
+								<Caption13Up color="gray1">
 									{bitkitLedger?.ledger.getWalletBalance('onchain').hold}
 								</Caption13Up>
 							</View>
@@ -135,25 +167,22 @@ const Ledger = ({}: SettingsScreenProps<'Ledger'>): ReactElement => {
 								</Caption13Up>
 							</View>
 							<View style={styles.column4}>
-								<Caption13Up color='gray1'>
+								<Caption13Up color="gray1">
 									{bitkitLedger?.ledger.getWalletBalance('lightning').hold}
 								</Caption13Up>
 							</View>
 						</View>
 
-				<Caption13Up style={styles.caption} color="gray1">
-					Remote wallets
-				</Caption13Up>
+						<Caption13Up style={styles.caption} color="gray1">
+							Remote wallets
+						</Caption13Up>
 						<View style={styles.item}>
-							<View style={styles.column3}>
-							</View>
+							<View style={styles.column3} />
 							<View style={styles.column3}>
 								<Caption13Up>available</Caption13Up>
 							</View>
 							<View style={styles.column3}>
-								<Caption13Up>
-									hold
-								</Caption13Up>
+								<Caption13Up>hold</Caption13Up>
 							</View>
 						</View>
 						<View style={styles.item}>
@@ -162,11 +191,14 @@ const Ledger = ({}: SettingsScreenProps<'Ledger'>): ReactElement => {
 							</View>
 							<View style={styles.column3}>
 								<Caption13Up>
-									{bitkitLedger?.ledger.getWalletBalance('onchain_remote').available}
+									{
+										bitkitLedger?.ledger.getWalletBalance('onchain_remote')
+											.available
+									}
 								</Caption13Up>
 							</View>
 							<View style={styles.column3}>
-								<Caption13Up color='gray1'>
+								<Caption13Up color="gray1">
 									{bitkitLedger?.ledger.getWalletBalance('onchain_remote').hold}
 								</Caption13Up>
 							</View>
@@ -177,24 +209,29 @@ const Ledger = ({}: SettingsScreenProps<'Ledger'>): ReactElement => {
 							</View>
 							<View style={styles.column3}>
 								<Caption13Up>
-									{bitkitLedger?.ledger.getWalletBalance('lightning_remote').available}
+									{
+										bitkitLedger?.ledger.getWalletBalance('lightning_remote')
+											.available
+									}
 								</Caption13Up>
 							</View>
 							<View style={styles.column3}>
-								<Caption13Up color='gray1'>
-									{bitkitLedger?.ledger.getWalletBalance('lightning_remote').hold}
+								<Caption13Up color="gray1">
+									{
+										bitkitLedger?.ledger.getWalletBalance('lightning_remote')
+											.hold
+									}
 								</Caption13Up>
 							</View>
 						</View>
 
-				<Caption13Up style={styles.caption} color="gray1">
-					Transactions
-				</Caption13Up>
+						<Caption13Up style={styles.caption} color="gray1">
+							Transactions
+						</Caption13Up>
 
-						{bitkitLedger.ledger.getTransactions().map(tx => {
-							return <Transaction key={tx.id} tx={tx} />
+						{bitkitLedger.ledger.getTransactions().map((tx) => {
+							return <Transaction key={tx.id} tx={tx} />;
 						})}
-
 					</>
 				)}
 
@@ -250,7 +287,7 @@ const styles = StyleSheet.create({
 		minWidth: 100,
 		paddingLeft: 4,
 		// backgroundColor: 'red',
-	}
+	},
 });
 
 export default memo(Ledger);
