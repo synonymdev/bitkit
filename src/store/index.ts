@@ -24,6 +24,7 @@ import {
 import mmkvStorage from './mmkv-storage';
 import rootReducer, { RootReducer } from './reducers';
 import migrations from './migrations';
+import Reactotron from '../../ReactotronConfig';
 
 const devMiddleware: Middleware[] = [];
 if (__ENABLE_REDUX_FLIPPER__) {
@@ -67,6 +68,9 @@ const store = configureStore({
 		} else {
 			return defaultMiddleware;
 		}
+	},
+	enhancers: (getDefaultEnhancers) => {
+		return getDefaultEnhancers().concat(Reactotron.createEnhancer());
 	},
 });
 
