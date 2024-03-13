@@ -69,6 +69,7 @@ const Header = (): ReactElement => {
 	}, [navigation]);
 	const openSettings = useCallback(
 		() => navigation.navigate('Settings', { screen: 'Ledger' }),
+		// () => navigation.navigate('Settings'),
 		[navigation],
 	);
 

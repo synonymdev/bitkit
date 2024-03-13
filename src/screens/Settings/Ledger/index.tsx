@@ -19,6 +19,7 @@ import {
 	syncLedger2,
 } from '../../../utils/ledger';
 import { useBalance } from '../../../hooks/wallet';
+import { getLightningChannels } from '../../../utils/lightning';
 
 const accToEmoji = (acc: TDestination): string => {
 	let wallet = '';
@@ -54,10 +55,19 @@ const Transaction = ({
 	const fromText = accToEmoji(fromAcc);
 	const toText = accToEmoji(toAcc);
 
+	let color;
+	if (toAcc.account === 'hold') {
+		color = 'white16'
+	} else if (toAcc.wallet.includes('_remote')) {
+		color = 'red16'
+	} else {
+		color = 'green16'
+	}
+
 	return (
 		<ThemedTouchableOpacity
 			style={styles.item}
-			color={isSend ? 'red16' : 'green16'}
+			color={color}
 			onPress={onPress}>
 			<View style={styles.id}>
 				<Caption13Up>{id}</Caption13Up>
@@ -101,6 +111,16 @@ const Ledger = ({
 		reRender();
 	};
 
+	const xxx = async () => {
+		const res = await getLightningChannels();
+		if (res.isErr()) {
+			Alert.alert('getLightningChannels', res.isErr() ? res.error.message : 'Success');
+			return
+		}
+
+		console.info('channels', res.value)
+	}
+
 	const handleTransaction = (id: number): void => {
 		navigation.navigate('LedgerTransaction', { ledgerTxId: id });
 	};
@@ -127,6 +147,7 @@ const Ledger = ({
 					<>
 						<Button text="Sync" style={styles.button} onPress={handleSync} />
 						<Button text="Reset" style={styles.button} onPress={handleReset} />
+						<Button text="Channels" style={styles.button} onPress={xxx} />
 						<Caption13Up style={styles.caption} color="gray1">
 							Balances
 						</Caption13Up>
