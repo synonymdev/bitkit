@@ -40,3 +40,23 @@ BITKIT_UPLOAD_STORE_PASSWORD=android
 BITKIT_UPLOAD_KEY_ALIAS=androiddebugkey
 BITKIT_UPLOAD_KEY_PASSWORD=android
 ```
+
+### Regtest Builds for Testing
+
+Building for release the app variant which has the `Bitcoin Regtest` network selected by default
+involves configuration both inside React Native code via dotenv files and in each native projects.
+To facilitate this and ensure the 2 configurations are in sync, a script is involved to create
+an overriding dotenv file (`.env.production.local`), which should be manually removed immediately after
+to avoid accidentally building the main app defaulting to Regtest.
+
+#### For Android:
+
+1. Run `yarn regtest:set`
+2. Run `yarn bundle:regtest` to build the regtest app variant for release
+3. Run `yarn regtest:unset`.
+
+#### For iOS:
+
+1. Run `yarn regtest:set`
+2. In Xcode, switch to the `bitkit.regtest` scheme, then Create archive and export for distribution
+3. Run `yarn regtest:unset`.
