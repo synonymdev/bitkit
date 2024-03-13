@@ -105,11 +105,15 @@
   "is_usable": "Je použitelný?",
   "is_ready": "Je připravený?",
   "support": "Podpora",
+  "connection_closed": {
+    "title": "Připojení uzavřeno",
+    "description": "Lightning připojení bylo uzavřeno. Prostředky se přesunou zpět do vašich úspor."
+  },
   "close_conn": "Uzavřít spojení",
   "close_error": "Přenos se nezdařil",
   "close_success_title": "Přenos úspěšný",
   "close_success_msg": "Vaše prostředky byly přesunuty zpět do úspor.",
-  "close_text": "Uzavření tohoto Lightning spojení a převedení celého disponibilního zůstatku zpět do úspor stojí určitou menší částku. Přesný poplatek závisí na podmínkách sítě.\n\nPřevod prostředků na spoření obvykle trvá ±1 hodinu, ale vypořádání může za určitých podmínek sítě trvat až <white>14 dní</white>.",
+  "close_text": "S uzavřením tohoto lightning připojení a převedením celého výdajového zůstatku zpět do úspor jsou spojeny drobné náklady. Přesná výše poplatku závisí na podmínkách sítě.\n\nPřevod prostředků do úspor obvykle <white>trvá ±1 hodinu</white>, ale za určitých síťových podmínek může vypořádání trvat <white>14 dní</white>.",
   "close_button": "Zavřít",
   "force_title": "Vynutit převod",
   "force_text": "Nelze zahájit přenos. Chcete tento převod vynutit? Tyto prostředky nebudete moci použít po dobu ±14 dní (!)",

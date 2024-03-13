@@ -47,6 +47,7 @@
     "title": "Copia de seguridad o restauración",
     "wallet": "Haga una copia de seguridad de su cartera",
     "export": "Exportar los datos del monedero al teléfono",
+    "failed_title": "Falla en la copia de seguridad de los datos",
     "status_failed": "Copia de seguridad falló: {time}",
     "status_success": "Última Copia de Seguridad: {time}",
     "status_empty": "Copia de seguridad no és necesaria",

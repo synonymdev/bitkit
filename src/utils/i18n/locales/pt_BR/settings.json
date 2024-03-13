@@ -24,7 +24,6 @@
   },
   "dev_title": "Modo Desenvolvedor",
   "general": {
-    "section_title": "Categorias",
     "currency_local": "Moeda local",
     "currency_local_title": "Moeda Local",
     "currency_footer": "Preços fornecidos pela Bitfinex & CoinGecko.",
@@ -61,8 +60,7 @@
     "wallet": "Faça backup da sua carteira",
     "export": "Exportar dados da carteira para seu celular",
     "reset": "Reiniciar e restaurar carteira",
-    "failed_title": "Falha no Backup de Dados",
-    "failed_message": "O Bitkit falhou ao fazer o backup dos dados da carteira. Por favor, verifique sua conexão.",
+    "failed_title": "Falha no Backup",
     "latest": "backups de dados mais recentes",
     "status_failed": "Falha no backup: {time}",
     "status_success": "Último backup: {time}",

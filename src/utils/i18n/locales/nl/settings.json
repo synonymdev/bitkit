@@ -53,6 +53,7 @@
     "wallet": "Backup uw wallet",
     "export": "Exporteer wallet data naar de telefoon",
     "reset": "Reset en herstel wallet",
+    "failed_title": "Data Backup Mislukt",
     "status_failed": "Mislukte Backups: {time}",
     "status_success": "Meest Recente Backup: {time}",
     "status_empty": "Backup niet nodig",

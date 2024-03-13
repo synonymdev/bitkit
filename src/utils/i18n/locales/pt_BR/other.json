@@ -51,7 +51,6 @@
   "lnurl_channel_host": "Host",
   "lnurl_channel_port": "Porta",
   "lnurl_channel_connecting": "Conectando.",
-  "lnurl_channel_connecting_text": "Conexão Lightning iniciada. Você poderá usar pagamentos instantâneos em ±30 minutos (depende da configuração do nó).",
   "lnurl_blocktank_error": "O Bitkit não conseguiu se conectar ao Blocktank.",
   "lnurl_channel_success_title": "Canal Solicitado",
   "lnurl_channel_success_msg_peer": "Solicitou com sucesso o canal de: {peer}",

@@ -109,7 +109,6 @@
   "activity_error_get": "Falha na Recuperação da Transação",
   "activity_error_get_description": "Bitkit não conseguiu buscar os dados da transação.",
   "activity_error_tx_not_found": "A transação não foi encontrada.",
-  "activity_copied_tx": "Copiado para Área de Transferência ",
   "activity_confirming": "Confirmando",
   "activity_confirmed": "Confirmado",
   "activity_removed": "Removido da Mempool",

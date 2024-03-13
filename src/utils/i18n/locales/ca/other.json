@@ -43,7 +43,6 @@
   "lnurl_channel_host": "Amfitrió",
   "lnurl_channel_port": "Port",
   "lnurl_channel_connecting": "Connectant.",
-  "lnurl_channel_connecting_text": "Connexió Lightning iniciada. Podreu utilitzar pagaments instantanis en ±30 minuts (depèn de la configuració del node).",
   "lnurl_blocktank_error": "Bitkit no ha pogut connectar-se a Blocktank.",
   "lnurl_channel_success_title": "Canal Sol·licitat",
   "lnurl_channel_success_msg_no_peer": "S'ha sol·licitat el canal amb èxit.",

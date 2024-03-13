@@ -63,7 +63,6 @@
   "support": "Soporte",
   "close_conn": "Terminar conexión",
   "close_success_title": "Transferencia exitosa",
-  "close_text": "Existe un costo pequeño para cerrar esta conexión Lightning y transferir todo su saldo de gastos a sus ahorros. La tarifa exacta depende de las condiciones de la red.\n\nLa transferencia de fondos a los ahorros suele tardar ±1 hora, pero la liquidación puede tardar <white>14 días</white> en determinadas condiciones de la red.",
   "close_button": "Cerrar",
   "force_title": "Fuerzar transferencia",
   "force_text": "No se ha podido iniciar la transferencia. ¿Desea forzar esta transferencia? No podrá utilizar estos fondos durante ±14 días (!)",

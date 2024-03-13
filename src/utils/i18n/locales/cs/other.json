@@ -58,7 +58,7 @@
   "lnurl_channel_host": "Host",
   "lnurl_channel_port": "Port",
   "lnurl_channel_connecting": "Připojování.",
-  "lnurl_channel_connecting_text": "Iniciováno připojení Lightning. Okamžité platby budete moci používat do ±30 minut (závisí na konfiguraci uzlu).",
+  "lnurl_channel_connecting_text": "Iniciováno připojení lightning. Okamžité platby budete moci používat do <highlight>±30 minut</highlight> (závisí na konfiguraci uzlu).",
   "lnurl_blocktank_error": "Bitkit se nepodařilo připojit k Blocktank.",
   "lnurl_channel_success_title": "Kanál vyžádán",
   "lnurl_channel_success_msg_peer": "Úspěšně vyžádaný kanál od: {peer}",

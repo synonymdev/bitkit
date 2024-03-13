@@ -87,7 +87,6 @@
   "activity_tether_sent": "Tether enviado",
   "activity_tether_received": "Tether recibido",
   "activity_error_tx_not_found": "Transacción no encontrada.",
-  "activity_copied_tx": "Copiado Al Portapapeles",
   "activity_confirming": "Confirmando",
   "activity_confirmed": "Confirmado",
   "activity_boosting": "Impulsando",

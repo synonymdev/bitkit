@@ -23,7 +23,6 @@
   "lnurl_channel_host": "Host",
   "lnurl_channel_port": "Port",
   "lnurl_channel_connecting": "Łączenie.",
-  "lnurl_channel_connecting_text": "Rozpoczęto połączenie Ligthning. Będziesz mógł korzystać z płatności natychmiastowych w ciągu ±30 minut (w zależności od konfiguracji węzła).",
   "lnurl_channel_success_msg_peer": "Pomyślnie zażądano kanału z: {peer}",
   "lnurl_channel_success_msg_no_peer": "Pomyślnie zażądano kanału.",
   "phone_settings": "Otwórz ustawienia telefonu",

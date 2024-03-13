@@ -99,7 +99,6 @@
   "activity_tether_sent": "Envia Tether",
   "activity_tether_received": "Rebut Tether",
   "activity_error_tx_not_found": "La transacció no s'ha trobat.",
-  "activity_copied_tx": "Copiat al porta-retalls",
   "activity_confirming": "Confirmant",
   "activity_confirmed": "Confirmat",
   "activity_removed": "Eliminat de la Mempool",

@@ -24,7 +24,6 @@
   },
   "dev_title": "Impostazioni Sviluppatore",
   "general": {
-    "section_title": "Categorie",
     "currency_local": "Valuta locale",
     "currency_local_title": "Valuta Locale",
     "currency_footer": "Prezzi forniti da Bitfinex & CoinGecko.",
@@ -69,8 +68,8 @@
     "wallet": "Esegui il backup del tuo wallet",
     "export": "Esportazione dei dati del wallet sul telefono",
     "reset": "Resettare e ripristinare il wallet",
-    "failed_title": "Backup dei dati non riuscito",
-    "failed_message": "Bitkit non è riuscito a eseguire il backup dei dati del portafoglio. Per favore controlla la tua connessione.",
+    "failed_title": "Fallimento del backup dei dati",
+    "failed_message": "Bitkit non è riuscito a eseguire il backup dei dati del portafoglio. Riprova tra {interval, plural, one {# minute} o {# minutes}}.",
     "latest": "ultimi backup dei dati",
     "status_failed": "Backup fallito: {time}",
     "status_success": "Ultimo backup: {time}",
@@ -141,6 +140,10 @@
     "section_networks": "Reti",
     "section_other": "Altro",
     "address_type": "Tipologia Indirizzo Bitcoin",
+    "monitored_address_types": "Tipi di indirizzi monitorati",
+    "monitored_address_types_update_title": "Tipi di indirizzi monitorati aggiornati",
+    "monitored_address_types_update_description": "Le modifiche avranno pieno effetto dopo il riavvio dell'app.",
+    "gap_limit": "Limite del gap di indirizzi",
     "coin_selection": "Coin Selection",
     "cs_method": "Metodo di Coin Selection",
     "cs_manual": "Manuale",
@@ -236,7 +239,9 @@
   },
   "gap": {
     "save": "Salva",
-    "reset": "Ripristino"
+    "reset": "Ripristino",
+    "gap_limit_update_title": "Limite del gap di indirizzi aggiornato",
+    "gap_limit_update_description": "Le modifiche avranno pieno effetto dopo il riavvio dell'app."
   },
   "rgs": {
     "server_url": "URL del server Rapid-Gossip-Sync",

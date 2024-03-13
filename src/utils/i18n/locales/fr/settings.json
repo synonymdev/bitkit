@@ -23,7 +23,6 @@
   },
   "dev_title": "Paramètres de développement",
   "general": {
-    "section_title": "Catégories",
     "currency_local": "Monnaie locale",
     "currency_local_title": "Monnaie locale",
     "currency_footer": "Prix fournis par Bitfinex et CoinGecko.",
@@ -60,6 +59,7 @@
     "wallet": "Sauvegardez votre portefeuille",
     "export": "Exporter les données du portefeuille vers le téléphone",
     "reset": "Réinitialiser et restaurer le portefeuille",
+    "failed_title": "Échec de la sauvegarde des données",
     "latest": "les dernières sauvegardes de données",
     "status_failed": "Échec de la sauvegarde : {time}",
     "status_success": "Dernière sauvegarde : {time}",

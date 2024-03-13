@@ -93,7 +93,6 @@
   "close_error": "Échec de transfer ",
   "close_success_title": "Transfert réussi",
   "close_success_msg": "Vos fonds ont été transférés sur votre compte d'épargne.",
-  "close_text": "La fermeture de la connexion Lightning et le transfert de l'intégralité du solde de votre compte courant vers votre épargne entraînent des frais minimes. Les frais exacts dépendent des conditions du réseau.\n\nLe transfert de fonds vers l'épargne prend généralement ±1 heure, mais le virement peut prendre <white>14 jours</white> dans certaines conditions de réseau.",
   "close_button": "Fermer",
   "force_title": "Transfert forcé",
   "force_text": "Impossible d'initier le transfert. Voulez-vous forcer ce transfert ? Vous ne pourrez pas utiliser ces fonds pendant ±14 jours ( !)",

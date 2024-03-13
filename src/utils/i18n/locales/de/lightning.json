@@ -84,7 +84,6 @@
   "support": "Support",
   "close_conn": "Schließe Verbindung",
   "close_success_title": "Übertragung erfolgreich",
-  "close_text": "Es fallen geringe Kosten an, um diese Lightning-Verbindung zu schließen und dein gesamtes Ausgabenguthaben zurück auf dein Sparkonto zu übertragen. Die genaue Gebühr hängt von den Netzwerkbedingungen ab.\n\nÜbertragung des Guthabens auf das Sparkonto dauert in der Regel ±1 hour, aber das Settlement kann bis zu <white>14 Tage</white> unter gewissen Netzwerkbedingungen dauern.",
   "close_button": "Schließen",
   "force_title": "Forciere Übertragung",
   "force_text": "Übertragung konnte nicht initiiert werden. Willst du diese Übertragung forcieren? Du wirst dieses Guthaben für ±14 Tage (!) nicht verwenden können",

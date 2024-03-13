@@ -23,7 +23,8 @@
     "description": "Connesso!"
   },
   "transferPending": {
-    "title": "Trasferimento"
+    "title": "Trasferimento",
+    "description": "Pronto in ±{duration}m"
   },
   "transferClosingChannel": {
     "title": "Inizializzazione...",

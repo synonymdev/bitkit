@@ -93,7 +93,6 @@
   "close_error": "A Transferência Falhou",
   "close_success_title": "Transferência bem-sucedida",
   "close_success_msg": "Seus fundos foram movidos de volta para sua poupança.",
-  "close_text": "Há um pequeno custo para finalizar essa conexão Lightning e transferir o saldo total de gastos de volta para sua poupança. A taxa exata depende das condições da rede.\n\nA transferência de fundos para a poupança normalmente leva ±1 hora, mas a liquidação pode levar <white>14 dias</white> em determinadas condições de rede.",
   "close_button": "Fechar",
   "force_title": "Forçar Transferência",
   "force_text": "Não foi possível iniciar a transferência. Deseja forçar essa transferência? Vocè não poderá usar esses fundos por ±14 dias (!)",

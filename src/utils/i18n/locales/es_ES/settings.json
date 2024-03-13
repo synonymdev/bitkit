@@ -14,7 +14,6 @@
   },
   "dev_title": "Ajustes de desarrollo",
   "general": {
-    "section_title": "Categorías",
     "currency_local": "Moneda local",
     "currency_local_title": "Moneda local",
     "currency_footer": "Precios proporcionados por Bitfinex y CoinGecko.",

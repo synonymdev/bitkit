@@ -82,7 +82,6 @@
   "support": "Ondersteuning",
   "close_conn": "Verbinding Sluiten",
   "close_success_title": "Betaling Voltooid",
-  "close_text": "Het sluiten van deze verbinding en uw volledige saldo weer naar uw spaargeld omzetten vereist een kleine vergoeding. De exacte hoogte van de vergoeding is afhankelijk van netwerk omstandigheden. \n\nHet overmaken naar uw spaargeld duurt meestal ±1 uur, maar kan soms tot <white>14 dagen</white>duren onder sommige netwerk omstandigheden. ",
   "close_button": "Sluiten",
   "force_title": "Forceer Overdracht",
   "force_text": "Kon de overdracht niet opstarten. Wilt u deze overdracht forceren? Zo ja kunt u dit geld voor ±14 dagen niet gebruiken (!)",

@@ -12,7 +12,6 @@
     "version": "Versió"
   },
   "general": {
-    "section_title": "Categories",
     "currency_local": "Moneda local",
     "currency_local_title": "Moneda local",
     "unit": "Unitat per defecte",

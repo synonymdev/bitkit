@@ -24,7 +24,6 @@
   },
   "dev_title": "Vývojářské nastavení",
   "general": {
-    "section_title": "Kategorie",
     "currency_local": "Lokální měna",
     "currency_local_title": "Lokální měna",
     "currency_footer": "Ceny zprostředkované společnostmi Bitfinex & CoinGecko.",
@@ -69,8 +68,8 @@
     "wallet": "Zálohujte svou peněženku",
     "export": "Exportovat data peněženky do telefonu",
     "reset": "Resetovat a obnovit peněženku",
-    "failed_title": "Zálohování dat se nezdařilo",
-    "failed_message": "Bitkit se nepodařilo zálohovat data peněženky. Zkontrolujte prosím vaše připojení.",
+    "failed_title": "Zálohování dat selhalo",
+    "failed_message": "Bitkitu se nepodařilo zálohovat data peněženky. Opakovaný pokus za {interval, plural, one {# minute} dalších {# minutes}}.",
     "latest": "nejnovější zálohy dat",
     "status_failed": "Zálohování se nezdařilo: {time}",
     "status_success": "Poslední záloha: {time}",
