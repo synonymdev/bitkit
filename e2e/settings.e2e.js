@@ -71,6 +71,12 @@ d('Settings', () => {
 			// switch back to sats
 			await element(by.id('TotalBalance')).tap();
 
+			// switch to USD
+			await element(by.id('Settings')).tap();
+			await element(by.id('GeneralSettings')).tap();
+			await element(by.id('CurrenciesSettings')).tap();
+			await element(by.text('USD ($)')).tap();
+
 			markComplete('settings-currency');
 		});
 
@@ -94,13 +100,13 @@ d('Settings', () => {
 			// check default unit
 			await expect(unitRow).toHaveText('Bitcoin');
 
-			// switch to GBP
+			// switch to USD
 			await element(by.id('UnitSettings')).tap();
-			await element(by.id('GBP')).tap();
-			await element(by.id('NavigationBack')).tap();
-			await expect(unitRow).toHaveText('GBP');
-			await element(by.id('NavigationClose')).tap();
-			await expect(fiatSymbol).toHaveText('£');
+			await element(by.id('USD')).tap();
+			await element(by.id('NavigationBack')).atIndex(0).tap();
+			await expect(unitRow).toHaveText('USD');
+			await element(by.id('NavigationClose')).atIndex(0).tap();
+			await expect(fiatSymbol).toHaveText('$');
 			await expect(balance).toHaveText('0.00');
 
 			// switch back to BTC
@@ -108,9 +114,9 @@ d('Settings', () => {
 			await element(by.id('GeneralSettings')).tap();
 			await element(by.id('UnitSettings')).tap();
 			await element(by.id('Bitcoin')).tap();
-			await element(by.id('NavigationBack')).tap();
+			await element(by.id('NavigationBack')).atIndex(0).tap();
 			await expect(unitRow).toHaveText('Bitcoin');
-			await element(by.id('NavigationClose')).tap();
+			await element(by.id('NavigationClose')).atIndex(0).tap();
 			await expect(balance).toHaveText('0');
 
 			// switch to classic denomination
@@ -118,9 +124,9 @@ d('Settings', () => {
 			await element(by.id('GeneralSettings')).tap();
 			await element(by.id('UnitSettings')).tap();
 			await element(by.id('DenominationClassic')).tap();
-			await element(by.id('NavigationBack')).tap();
+			await element(by.id('NavigationBack')).atIndex(0).tap();
 			await expect(unitRow).toHaveText('Bitcoin');
-			await element(by.id('NavigationClose')).tap();
+			await element(by.id('NavigationClose')).atIndex(0).tap();
 			await expect(balance).toHaveText('0.00000000');
 
 			markComplete('settings-unit');
@@ -242,7 +248,7 @@ d('Settings', () => {
 			await element(by.id('Settings')).tap();
 			await element(by.id('SecuritySettings')).tap();
 			await element(by.id('SwipeBalanceToHide')).tap();
-			await element(by.id('NavigationClose')).tap();
+			await element(by.id('NavigationClose')).atIndex(0).tap();
 
 			// Balance should be visible
 			await expect(element(by.id('ShowBalance'))).not.toBeVisible();
@@ -416,7 +422,7 @@ d('Settings', () => {
 			await waitFor(element(by.id('NavigationBack')).atIndex(0))
 				.toBeVisible()
 				.withTimeout(5000);
-			await element(by.id('NavigationBack')).tap();
+			await element(by.id('NavigationBack')).atIndex(0).tap();
 
 			await element(by.id('LightningNodeInfo')).tap();
 			// TODO: this fails too often on CI
@@ -673,7 +679,7 @@ d('Settings', () => {
 			await expect(element(by.id('Status-lightning_connection'))).toBeVisible();
 			await expect(element(by.id('Status-full_backup'))).toBeVisible();
 
-			await element(by.id('NavigationClose')).tap();
+			await element(by.id('NavigationClose')).atIndex(0).tap();
 
 			markComplete('settings-support-status');
 		});

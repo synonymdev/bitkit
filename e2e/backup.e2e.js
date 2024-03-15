@@ -81,7 +81,7 @@ d('Backup', () => {
 		await element(by.id('TagInput')).replaceText(tag);
 		await element(by.id('TagInput')).tapReturnKey();
 		await sleep(1000); // animation
-		await element(by.id('NavigationClose')).tap();
+		await element(by.id('NavigationClose')).atIndex(0).tap();
 
 		// change currency to GBP
 		await element(by.id('TotalBalance')).tap(); // switch to local currency
