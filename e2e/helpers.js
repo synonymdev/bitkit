@@ -71,6 +71,8 @@ export const completeOnboarding = async () => {
 
 	await waitFor(element(by.id('SkipIntro'))).toBeVisible();
 	await element(by.id('SkipIntro')).tap();
+	await waitFor(element(by.id('NewWallet'))).toBeVisible();
+	await sleep(100); // wtf?
 	await element(by.id('NewWallet')).tap();
 
 	// wait for wallet to be created

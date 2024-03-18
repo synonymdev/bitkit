@@ -6,7 +6,7 @@ buildscript {
         minSdkVersion = 24
         compileSdkVersion = 33
         targetSdkVersion = 33
-        kotlin_version = '1.8.0'
+        kotlin_version = "1.8.21"
         ndkVersion = "25.2.9519653"
     }
     repositories {
@@ -28,5 +28,11 @@ subprojects {
                 compileSdkVersion 33
             }
         }
+    }
+}
+
+allprojects {
+    repositories {
+        maven { url("$rootDir/../node_modules/detox/Detox-android") }
     }
 }

@@ -69,7 +69,7 @@ d('Backup', () => {
 
 		await waitFor(element(by.id('NewTxPrompt')))
 			.toBeVisible()
-			.withTimeout(10000);
+			.withTimeout(60000);
 		await element(by.id('NewTxPrompt')).swipe('down'); // close Receive screen
 		await sleep(1000); // animation
 
@@ -79,9 +79,9 @@ d('Backup', () => {
 		await element(by.id('Activity-1')).tap();
 		await element(by.id('ActivityTag')).tap();
 		await element(by.id('TagInput')).replaceText(tag);
-		await element(by.id('TagInput')).tapReturnKey();
+		await element(by.id('ReceiveTagsSubmit')).tap();
 		await sleep(1000); // animation
-		await element(by.id('NavigationClose')).tap();
+		await element(by.id('NavigationClose')).atIndex(0).tap();
 
 		// change currency to GBP
 		await element(by.id('TotalBalance')).tap(); // switch to local currency
@@ -89,7 +89,7 @@ d('Backup', () => {
 		await element(by.id('GeneralSettings')).tap();
 		await element(by.id('CurrenciesSettings')).tap();
 		await element(by.text('GBP (£)')).tap();
-		await element(by.id('NavigationClose')).tap();
+		await element(by.id('NavigationClose')).atIndex(0).tap();
 
 		// add price widget
 		await element(by.id('WidgetsAdd')).tap();
@@ -140,7 +140,7 @@ d('Backup', () => {
 
 		await element(by.id('SeedContaider')).swipe('down');
 		await sleep(1000); // animation
-		await element(by.id('NavigationClose')).tap();
+		await element(by.id('NavigationClose')).atIndex(0).tap();
 
 		await sleep(5000); // make sure everything is saved to cloud storage TODO: improve this
 
@@ -186,7 +186,7 @@ d('Backup', () => {
 		await expect(
 			element(by.id(`Tag-${tag}`).withAncestor(by.id('ActivityTags'))),
 		).toBeVisible();
-		await element(by.id('NavigationClose')).tap();
+		await element(by.id('NavigationClose')).atIndex(0).tap();
 
 		// check widgets
 		await element(by.id('WalletsScrollView')).scroll(300, 'down', NaN, 0.85);

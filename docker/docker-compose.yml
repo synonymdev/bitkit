@@ -48,7 +48,7 @@ services:
 
   electrs:
     container_name: electrum
-    image: getumbrel/electrs:v0.9.10
+    image: getumbrel/electrs:v0.10.1
     restart: unless-stopped
     depends_on:
       - bitcoind
@@ -87,7 +87,7 @@ services:
 
   lnd:
     container_name: lnd
-    image: polarlightning/lnd:0.16.2-beta
+    image: polarlightning/lnd:0.17.3-beta
     restart: unless-stopped
     depends_on:
       - bitcoind

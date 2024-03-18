@@ -70,10 +70,12 @@ d('Receive', () => {
 
 		// ReceiveDetail
 		await element(by.id('ReceiveScreen')).swipe('right');
+		await sleep(100);
 		await element(by.id('SpecifyInvoiceButton')).tap();
 
 		// NumberPad
 		await element(by.id('ReceiveNumberPadTextField')).tap();
+		await sleep(100);
 		// Unit set to sats
 		await element(by.id('N1').withAncestor(by.id('ReceiveNumberPad'))).tap();
 		await element(by.id('N2').withAncestor(by.id('ReceiveNumberPad'))).tap();
