@@ -244,6 +244,8 @@ const Channels = ({
 		return state.blocktank.info.nodes[0].pubkey;
 	});
 
+	console.info('openChannels', openChannels);
+
 	const { pendingOrders, failedOrders } = getPendingBlocktankChannels(
 		blocktankOrders,
 		paidOrders,

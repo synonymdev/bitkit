@@ -24,15 +24,13 @@ import AppOnboarded from './AppOnboarded';
 
 import './utils/i18n';
 import './utils/quick-actions';
+import './utils/ledger';
 import { useAppSelector } from './hooks/redux';
 import { checkForAppUpdate } from './store/utils/ui';
 import { themeSelector } from './store/reselect/settings';
 import { walletExistsSelector } from './store/reselect/wallet';
 import { requiresRemoteRestoreSelector } from './store/reselect/user';
 import { criticalUpdateSelector } from './store/reselect/ui';
-
-import XX from './utils/ledger';
-console.info('XX', XX);
 
 const App = (): ReactElement => {
 	const [isReady, setIsReady] = useState(false);

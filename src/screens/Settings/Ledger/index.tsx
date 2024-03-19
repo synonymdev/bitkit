@@ -16,10 +16,9 @@ import {
 	bitkitLedger,
 	initLedger,
 	resetLedger,
-	syncLedger2,
+	syncLedger,
 } from '../../../utils/ledger';
 import { useBalance } from '../../../hooks/wallet';
-import { getLightningChannels } from '../../../utils/lightning';
 
 const accToEmoji = (acc: TDestination): string => {
 	let wallet = '';
@@ -51,24 +50,20 @@ const Transaction = ({
 	onPress: () => void;
 }): ReactElement => {
 	const { id, amount, fromAcc, toAcc } = tx;
-	const isSend = toAcc.wallet.includes('_remote');
 	const fromText = accToEmoji(fromAcc);
 	const toText = accToEmoji(toAcc);
 
 	let color;
 	if (toAcc.account === 'hold') {
-		color = 'white16'
+		color = 'white16';
 	} else if (toAcc.wallet.includes('_remote')) {
-		color = 'red16'
+		color = 'red16';
 	} else {
-		color = 'green16'
+		color = 'green16';
 	}
 
 	return (
-		<ThemedTouchableOpacity
-			style={styles.item}
-			color={color}
-			onPress={onPress}>
+		<ThemedTouchableOpacity style={styles.item} color={color} onPress={onPress}>
 			<View style={styles.id}>
 				<Caption13Up>{id}</Caption13Up>
 			</View>
@@ -100,7 +95,7 @@ const Ledger = ({
 	};
 
 	const handleSync = async (): Promise<void> => {
-		const res = await syncLedger2();
+		const res = await syncLedger();
 		Alert.alert('Init', res.isErr() ? res.error.message : 'Success');
 		reRender();
 	};
@@ -110,16 +105,6 @@ const Ledger = ({
 		Alert.alert('Reset', res.isErr() ? res.error.message : 'Success');
 		reRender();
 	};
-
-	const xxx = async () => {
-		const res = await getLightningChannels();
-		if (res.isErr()) {
-			Alert.alert('getLightningChannels', res.isErr() ? res.error.message : 'Success');
-			return
-		}
-
-		console.info('channels', res.value)
-	}
 
 	const handleTransaction = (id: number): void => {
 		navigation.navigate('LedgerTransaction', { ledgerTxId: id });
@@ -147,7 +132,6 @@ const Ledger = ({
 					<>
 						<Button text="Sync" style={styles.button} onPress={handleSync} />
 						<Button text="Reset" style={styles.button} onPress={handleReset} />
-						<Button text="Channels" style={styles.button} onPress={xxx} />
 						<Caption13Up style={styles.caption} color="gray1">
 							Balances
 						</Caption13Up>
