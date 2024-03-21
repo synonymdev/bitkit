@@ -1,13 +1,15 @@
-import { BitkitLedger } from 'ledger';
 import { err, ok, Result } from '@synonymdev/result';
+import { BitkitLedger } from 'ledger';
 
+import { getWalletStore } from '../store/helpers';
 import { storage as mmkv } from '../store/mmkv-storage';
+import { TWalletName } from '../store/types/wallet';
 import {
 	getClaimedLightningPayments,
 	getLightningChannels,
 	getSentLightningPayments,
 } from './lightning';
-import { getWalletStore } from '../store/helpers';
+import { EAvailableNetwork } from './networks';
 import { getSelectedNetwork, getSelectedWallet } from './wallet';
 import { getTransactions } from './wallet/electrum';
 
@@ -15,10 +17,17 @@ const MMKV_LEDGER_KEY = 'ledger';
 
 export let bitkitLedger: BitkitLedger | undefined;
 
-export const initLedger = async (): Promise<Result<string>> => {
+export const setupLedger = ({
+	selectedWallet = getSelectedWallet(),
+	selectedNetwork = getSelectedNetwork(),
+}: {
+	selectedWallet?: TWalletName;
+	selectedNetwork?: EAvailableNetwork;
+} = {}): Result<string> => {
 	// try to restore the ledger from storage
 	try {
-		const restored = mmkv.getString(MMKV_LEDGER_KEY);
+		const key = `${MMKV_LEDGER_KEY}-${selectedNetwork}-${selectedWallet}`;
+		const restored = mmkv.getString(key);
 		const newLedger = new BitkitLedger();
 
 		if (restored) {
@@ -31,16 +40,19 @@ export const initLedger = async (): Promise<Result<string>> => {
 		return err(e);
 	}
 
-	return ok('ledger init success');
+	return ok('ledger setup success');
 };
 
-export const saveLedger = async (): Promise<Result<string>> => {
+export const saveLedger = (): Result<string> => {
 	if (!bitkitLedger) {
 		return ok('ledger not initialized');
 	}
 
 	try {
-		mmkv.set('ledger', bitkitLedger.ledger.jsonDump());
+		const selectedWallet = getSelectedWallet();
+		const selectedNetwork = getSelectedNetwork();
+		const key = `${MMKV_LEDGER_KEY}-${selectedNetwork}-${selectedWallet}`;
+		mmkv.set(key, bitkitLedger.ledger.jsonDump());
 	} catch (e) {
 		return err(e);
 	}
@@ -114,17 +126,16 @@ export const syncLedger = async (): Promise<Result<string>> => {
 	return ok('ledger sync success');
 };
 
-export const resetLedger = async (): Promise<Result<string>> => {
-	if (!bitkitLedger) {
-		return ok('ledger not initialized');
-	}
-
+export const deleteLedger = (): Result<string> => {
 	try {
-		mmkv.delete(MMKV_LEDGER_KEY);
+		const keys = mmkv.getAllKeys().filter((k) => k.startsWith(MMKV_LEDGER_KEY));
+		for (const key of keys) {
+			mmkv.delete(key);
+		}
 		bitkitLedger = undefined;
 	} catch (e) {
 		return err(e);
 	}
 
-	return ok('ledger reset success');
+	return ok('ledger delete success');
 };

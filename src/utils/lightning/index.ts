@@ -104,6 +104,7 @@ import { addTransfer } from '../../store/actions/wallet';
 import { decodeRawTx } from '../wallet/txdecoder';
 import { showToast } from '../notifications';
 import i18n from '../i18n';
+import { bitkitLedger, syncLedger } from '../ledger';
 
 const PAYMENT_TIMEOUT = 8 * 1000; // 8 seconds
 
@@ -485,6 +486,9 @@ export const subscribeToLightningPayments = ({
 						title: i18n.t('wallet:toast_payment_success_title'),
 						description: i18n.t('wallet:toast_payment_success_description'),
 					});
+					bitkitLedger?.handleLNTx({ ...res, amount_sat: found.amount });
+				} else {
+					syncLedger(); // TChannelManagerPaymentSent doesn't have amount_sat
 				}
 			},
 		);
@@ -516,6 +520,7 @@ export const subscribeToLightningPayments = ({
 					selectedNetwork,
 					selectedWallet,
 				}).then();
+				bitkitLedger?.handleLNTx(res);
 			},
 		);
 	}
@@ -539,6 +544,7 @@ export const subscribeToLightningPayments = ({
 
 				// Check if this is a CJIT Entry that needs to be added to the activity list.
 				addCJitActivityItem(res.channel_id).then();
+				syncLedger(); // we need to sync the ledger because TChannelUpdate doesn't have enough data
 			},
 		);
 	}
@@ -550,6 +556,7 @@ export const subscribeToLightningPayments = ({
 					// our counterparty force closed the channel
 					showBottomSheet('connectionClosed');
 				}
+				bitkitLedger?.handleChannelClose(res);
 			},
 		);
 	}
@@ -1677,6 +1684,7 @@ export const getClaimableBalances = async ({
 	ignoreOpenChannels?: boolean;
 } = {}): Promise<TClaimableBalance[]> => {
 	const result = await ldk.claimableBalances(ignoreOpenChannels);
+	console.info('claimableBalances', result.value);
 	const claimableBalances = result.isOk() ? result.value : [];
 	return claimableBalances;
 };
