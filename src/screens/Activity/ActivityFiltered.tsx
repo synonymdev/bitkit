@@ -1,41 +1,28 @@
 import React, { ReactElement, memo, useMemo, useState, useRef } from 'react';
+import { StyleSheet, TouchableOpacity, View, Keyboard } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Gesture, GestureType } from 'react-native-gesture-handler';
-import { EPaymentType } from 'beignet';
-import { Canvas, LinearGradient, Rect, vec } from '@shopify/react-native-skia';
 import { SharedValue, useSharedValue } from 'react-native-reanimated';
-import {
-	StyleSheet,
-	TouchableOpacity,
-	View,
-	GestureResponderEvent,
-	Keyboard,
-} from 'react-native';
+import { Canvas, LinearGradient, Rect, vec } from '@shopify/react-native-skia';
 import { useTranslation } from 'react-i18next';
+import { EPaymentType } from 'beignet';
 
 import { View as ThemedView, ScrollView } from '../../styles/components';
-import { Caption13M } from '../../styles/text';
 import { CalendarIcon, TagIcon } from '../../styles/icons';
 import NavigationHeader from '../../components/NavigationHeader';
 import SearchInput from '../../components/SearchInput';
-import ActivityList from './ActivityList';
 import BlurView from '../../components/BlurView';
 import SafeAreaInset from '../../components/SafeAreaInset';
+import DetectSwipe from '../../components/DetectSwipe';
+import Tabs, { TTab } from '../../components/Tabs';
 import Tag from '../../components/Tag';
-import useColors from '../../hooks/colors';
+import TagsPrompt from './TagsPrompt';
+import ActivityList from './ActivityList';
+import TimeRangePrompt from './TimeRangePrompt';
 import { useAppDispatch } from '../../hooks/redux';
 import { closeSheet } from '../../store/slices/ui';
 import { showBottomSheet } from '../../store/utils/ui';
-import DetectSwipe from '../../components/DetectSwipe';
 import type { WalletScreenProps } from '../../navigation/types';
-import TimeRangePrompt from './TimeRangePrompt';
-import TagsPrompt from './TagsPrompt';
-import { TActivityFilter } from '../../utils/activity';
-
-type TTab = {
-	id: string;
-	filter: TActivityFilter;
-};
 
 const tabs: TTab[] = [
 	{ id: 'all', filter: { includeTransfers: true } },
@@ -43,35 +30,6 @@ const tabs: TTab[] = [
 	{ id: 'received', filter: { txType: EPaymentType.received } },
 	{ id: 'other', filter: { includeTransfers: true, onlyTransfers: true } },
 ];
-
-const Tab = ({
-	text,
-	active = false,
-	onPress,
-	testID,
-}: {
-	text: string;
-	active?: boolean;
-	onPress: (event: GestureResponderEvent) => void;
-	testID?: string;
-}): ReactElement => {
-	const colors = useColors();
-	const style = useMemo(
-		() => ({
-			borderColor: active ? colors.brand : colors.gray1,
-		}),
-		[active, colors],
-	);
-
-	return (
-		<TouchableOpacity
-			style={[styles.tab, style]}
-			onPress={onPress}
-			testID={testID}>
-			<Caption13M color={active ? 'white' : 'gray1'}>{text}</Caption13M>
-		</TouchableOpacity>
-	);
-};
 
 const Glow = ({
 	size,
@@ -178,11 +136,11 @@ const ActivityFiltered = ({
 									)}
 									<TouchableOpacity
 										style={styles.filterButton}
+										testID="TagsPrompt"
 										onPress={(): void => {
 											Keyboard.dismiss();
 											showBottomSheet('tagsPrompt');
-										}}
-										testID="TagsPrompt">
+										}}>
 										<TagIcon
 											height={25}
 											width={25}
@@ -191,11 +149,11 @@ const ActivityFiltered = ({
 									</TouchableOpacity>
 									<TouchableOpacity
 										style={styles.filterButton}
+										testID="TimeRangePrompt"
 										onPress={(): void => {
 											Keyboard.dismiss();
 											showBottomSheet('timeRangePrompt');
-										}}
-										testID="TimeRangePrompt">
+										}}>
 										<CalendarIcon
 											height={25}
 											width={25}
@@ -204,17 +162,11 @@ const ActivityFiltered = ({
 									</TouchableOpacity>
 								</View>
 							</SearchInput>
-							<View style={styles.tabContainer}>
-								{tabs.map((tab, index) => (
-									<Tab
-										key={tab.id}
-										text={t('activity_tabs.' + tab.id)}
-										active={currentTab === index}
-										onPress={(): void => setCurrentTab(index)}
-										testID={`Tab-${tab.id}`}
-									/>
-								))}
-							</View>
+							<Tabs
+								tabs={tabs}
+								activeTab={currentTab}
+								onPress={setCurrentTab}
+							/>
 						</View>
 					</BlurView>
 				</View>
@@ -273,19 +225,6 @@ const styles = StyleSheet.create({
 	},
 	searchInput: {
 		marginBottom: 16,
-	},
-	tabContainer: {
-		marginHorizontal: -2,
-		flexDirection: 'row',
-	},
-	tab: {
-		flex: 1,
-		paddingVertical: 10,
-		paddingHorizontal: 4,
-		alignItems: 'center',
-		justifyContent: 'center',
-		marginHorizontal: 4,
-		borderBottomWidth: 2,
 	},
 	tag: {
 		marginRight: 8,
