@@ -1698,7 +1698,6 @@ export const getClaimableBalances = async ({
 	ignoreOpenChannels?: boolean;
 } = {}): Promise<TClaimableBalance[]> => {
 	const result = await ldk.claimableBalances(ignoreOpenChannels);
-	console.info('claimableBalances', result.value);
 	const claimableBalances = result.isOk() ? result.value : [];
 	return claimableBalances;
 };

@@ -6,6 +6,7 @@ import { storage as mmkv } from '../store/mmkv-storage';
 import { TWalletName } from '../store/types/wallet';
 import {
 	getClaimedLightningPayments,
+	getClosedChannels,
 	getLightningChannels,
 	getSentLightningPayments,
 } from './lightning';
@@ -66,33 +67,62 @@ export const syncLedger = async (): Promise<Result<string>> => {
 	}
 
 	try {
-		// onchain
+		// onchain transactions
 		const selectedWallet = getSelectedWallet();
 		const selectedNetwork = getSelectedNetwork();
 		const onchain =
 			getWalletStore().wallets[selectedWallet].transactions[selectedNetwork];
 		const txLenBefore = bitkitLedger.ledger.getTransactions().length;
-		// lightning
+
+		// lightning transactions
 		const lnSent = await getSentLightningPayments();
 		const lnClaim = await getClaimedLightningPayments();
-		// lightning channels
-		const cResp = await getLightningChannels();
+
+		// lightning open channels
+		const oResp = await getLightningChannels();
+		if (oResp.isErr()) {
+			return err(oResp.error.message);
+		}
+		const open = oResp.value;
+
+		// lightning close channels
+		const cResp = await getClosedChannels();
 		if (cResp.isErr()) {
 			return err(cResp.error.message);
 		}
-		const channels = cResp.value;
+		const close = cResp.value;
+
 		const txsResp = await getTransactions({
-			txHashes: channels
-				.filter((c) => Boolean(c.funding_txid))
-				.map((c) => ({ tx_hash: c.funding_txid! })),
+			txHashes: [
+				...open
+					.filter((c) => Boolean(c.funding_txid))
+					.map((c) => ({ tx_hash: c.funding_txid! })),
+				...close.map((o) => ({ tx_hash: o.funding_txo })),
+			],
 		});
 		if (txsResp.isErr()) {
 			return err(txsResp.error.message);
 		}
-		const channelsWithTimestap = channels.map((c) => {
+		const lnChannelOpen = open.map((c) => {
 			const tx = txsResp.value.data.find(
 				(t) => t.data.tx_hash === c.funding_txid,
 			);
+			if (!tx) {
+				throw new Error('tx not found');
+			}
+			if (!tx.result.time) {
+				throw new Error('tx time not found');
+			}
+			return {
+				...c,
+				timestamp: tx.result.time * 1000,
+			};
+		});
+		const lnChannelClose = close.map((c) => {
+			const tx = txsResp.value.data.find(
+				(t) => t.data.tx_hash === c.funding_txo,
+			);
+			console.info('txsResp', tx);
 			if (!tx) {
 				throw new Error('tx not found');
 			}
@@ -110,12 +140,13 @@ export const syncLedger = async (): Promise<Result<string>> => {
 			lnClaim,
 			lnSent,
 			onchain,
-			channels: channelsWithTimestap,
+			lnChannelOpen,
+			lnChannelClose,
 		});
 
 		const txLenAfter = bitkitLedger.ledger.getTransactions().length;
 		if (txLenAfter > txLenBefore) {
-			const save = await saveLedger();
+			const save = saveLedger();
 			if (save.isErr()) {
 				return err(save.error);
 			}
