@@ -3,33 +3,33 @@ import Keychain from 'react-native-keychain';
 import * as bitcoin from 'bitcoinjs-lib';
 import RNFS from 'react-native-fs';
 import { err, ok, Result } from '@synonymdev/result';
-import {
-	TBroadcastTransaction,
-	TChannelManagerChannelClosed,
-	TChannelManagerPaymentFailed,
-} from '@synonymdev/react-native-ldk/dist/utils/types';
 import { EPaymentType, TGetAddressHistory } from 'beignet';
 import lm, {
 	ldk,
-	DefaultTransactionDataShape,
 	defaultUserConfig,
+	DefaultTransactionDataShape,
 	EEventTypes,
 	ENetworks,
 	TAccount,
 	TChannel as TLdkChannel,
+	TBackupStateUpdate,
+	TBroadcastTransaction,
+	TChannel,
+	TChannelManagerChannelClosed,
 	TChannelManagerClaim,
+	TChannelManagerPaymentFailed,
 	TChannelManagerPaymentSent,
+	TChannelMonitor,
 	TChannelUpdate,
 	TClaimableBalance,
 	TCloseChannelReq,
 	TCreatePaymentReq,
+	TGetFees,
 	THeader,
 	TInvoice,
 	TPaymentReq,
 	TTransactionData,
 	TTransactionPosition,
-	TGetFees,
-	TBackupStateUpdate,
 } from '@synonymdev/react-native-ldk';
 
 import {
@@ -1403,8 +1403,22 @@ export const getLdkChannels = (): Promise<Result<TLdkChannel[]>> => {
 };
 
 /**
- * Returns lightning channels from redux store.
- * @returns {TChannel[]}
+ * Returns an array of closed channels
+ * @returns Promise<Result<TChannelMonitor[]>>
+ */
+export const getClosedChannels2 = async (): Promise<
+	Result<TChannelMonitor[]>
+> => {
+	return ldk.listChannelMonitors(false);
+};
+
+/**
+ * Returns an array of unconfirmed/pending lightning channels from either storage or directly from the LDK node.
+ * CURRENTLY UNUSED
+ * @param {boolean} [fromStorage]
+ * @param {TWalletName} [selectedWallet]
+ * @param {EAvailableNetwork} [selectedNetwork]
+ * @returns {Promise<Result<TChannel[]>>}
  */
 export const getChannels = (): TChannel[] => {
 	const selectedWallet = getSelectedWallet();
