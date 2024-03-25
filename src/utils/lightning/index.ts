@@ -14,7 +14,6 @@ import lm, {
 	TChannel as TLdkChannel,
 	TBackupStateUpdate,
 	TBroadcastTransaction,
-	TChannel,
 	TChannelManagerChannelClosed,
 	TChannelManagerClaim,
 	TChannelManagerPaymentFailed,
@@ -1406,10 +1405,10 @@ export const getLdkChannels = (): Promise<Result<TLdkChannel[]>> => {
  * Returns an array of closed channels
  * @returns Promise<Result<TChannelMonitor[]>>
  */
-export const getClosedChannels2 = async (): Promise<
-	Result<TChannelMonitor[]>
-> => {
-	return ldk.listChannelMonitors(false);
+export const getChannelMonitors = async (
+	ignoreOpenChannels: boolean = true,
+): Promise<Result<TChannelMonitor[]>> => {
+	return ldk.listChannelMonitors(ignoreOpenChannels);
 };
 
 /**

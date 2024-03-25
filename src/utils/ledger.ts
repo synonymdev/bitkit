@@ -6,8 +6,8 @@ import { storage as mmkv } from '../store/mmkv-storage';
 import { TWalletName } from '../store/types/wallet';
 import {
 	getClaimedLightningPayments,
-	getClosedChannels,
-	getLightningChannels,
+	getChannelMonitors,
+	getLdkChannels,
 	getSentLightningPayments,
 } from './lightning';
 import { EAvailableNetwork } from './networks';
@@ -79,14 +79,14 @@ export const syncLedger = async (): Promise<Result<string>> => {
 		const lnClaim = await getClaimedLightningPayments();
 
 		// lightning open channels
-		const oResp = await getLightningChannels();
+		const oResp = await getLdkChannels();
 		if (oResp.isErr()) {
 			return err(oResp.error.message);
 		}
 		const open = oResp.value;
 
 		// lightning close channels
-		const cResp = await getClosedChannels();
+		const cResp = await getChannelMonitors();
 		if (cResp.isErr()) {
 			return err(cResp.error.message);
 		}
