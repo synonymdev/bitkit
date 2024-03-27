@@ -203,6 +203,12 @@ export const processInputData = async ({
 	showErrors?: boolean;
 }): Promise<Result<TProcessedData>> => {
 	data = data.trim();
+
+	// Remove prefix from Bitkit specific deep links
+	if (data.startsWith('bitkit://')) {
+		data = data.replace('bitkit://', '');
+	}
+
 	try {
 		const decodeRes = await decodeQRData(data, selectedNetwork);
 		if (decodeRes.isErr()) {
