@@ -190,10 +190,6 @@ export const BottomSheetTextInput = styled(
 	textAlignVertical: props.multiline ? 'top' : 'center',
 }));
 
-export const RefreshControl = styled.RefreshControl.attrs((props) => ({
-	tintColor: props.theme.colors.refreshControl,
-}))({});
-
 export const StatusBar = styled.StatusBar.attrs((props) => ({
 	animated: true,
 	translucent: true,

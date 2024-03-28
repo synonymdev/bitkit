@@ -58,7 +58,6 @@ import {
 	EAddressType,
 	EAvailableNetworks,
 	EElectrumNetworks,
-	Electrum,
 	getByteCount,
 	IAddress,
 	ICustomGetAddress,
@@ -78,11 +77,14 @@ import {
 	TKeyDerivationCoinType,
 	TKeyDerivationPurpose,
 	TOnMessage,
-	Transaction,
 	TTransactionMessage,
+	TServer,
+	// @ts-ignore
 	Wallet,
 } from 'beignet';
-import { TServer } from 'beignet/src/types/electrum';
+import type { Electrum } from 'beignet/dist/types/electrum';
+import type { Transaction } from 'beignet/dist/types/transaction';
+import type { Wallet as TWallet } from 'beignet/dist/types/wallet';
 import { showToast } from '../notifications';
 import { updateUi } from '../../store/slices/ui';
 import { ICustomGetScriptHash } from 'beignet/src/types/wallet';
@@ -92,7 +94,7 @@ import { resetActivityState } from '../../store/slices/activity';
 bitcoin.initEccLib(ecc);
 const bip32 = BIP32Factory(ecc);
 
-let wallet: Wallet;
+let wallet: TWallet;
 
 export const refreshWallet = async ({
 	onchain = true,
