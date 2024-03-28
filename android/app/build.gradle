@@ -1,4 +1,5 @@
 apply plugin: "com.android.application"
+apply plugin: "org.jetbrains.kotlin.android"
 apply plugin: "com.facebook.react"
 
 /**
@@ -71,7 +72,8 @@ def jscFlavor = 'org.webkit:android-jsc-intl:+'
 android {
     ndkVersion rootProject.ext.ndkVersion
 
-    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
+    compileSdk rootProject.ext.compileSdkVersion
 
     namespace "com.bitkit"
     defaultConfig {
@@ -129,14 +131,8 @@ dependencies {
     implementation("com.facebook.react:react-android")
     implementation files("../../node_modules/@synonymdev/react-native-ldk/android/libs/LDK-release.aar")
     implementation "androidx.multidex:multidex:2.0.1"
-    debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}")
-    debugImplementation("com.facebook.flipper:flipper-network-plugin:${FLIPPER_VERSION}") {
-        exclude group:'com.squareup.okhttp3', module:'okhttp'
-    }
+    implementation("com.facebook.react:flipper-integration")
 
-    // 0.182.0 is the latest one on https://mvnrepository.com/artifact/com.facebook.flipper/flipper-fresco-plugin
-    // debugImplementation("com.facebook.flipper:flipper-fresco-plugin:${FLIPPER_VERSION}")
-    debugImplementation("com.facebook.flipper:flipper-fresco-plugin:0.182.0")
     if (hermesEnabled.toBoolean()) {
         implementation("com.facebook.react:hermes-android")
     } else {

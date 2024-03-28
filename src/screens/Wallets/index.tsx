@@ -1,13 +1,13 @@
 import React, { memo, ReactElement, useState, useCallback } from 'react';
-import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { StyleSheet, View } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import { RefreshControl, ScrollView } from 'react-native-gesture-handler';
-import Animated, { FadeOut } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useTranslation } from 'react-i18next';
 
 import { useBalance } from '../../hooks/wallet';
 import useColors from '../../hooks/colors';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { updateSettings } from '../../store/slices/settings';
 import { widgetsSelector } from '../../store/reselect/widgets';
 import { refreshWallet } from '../../utils/wallet';
@@ -29,15 +29,10 @@ import {
 	showWidgetsSelector,
 } from '../../store/reselect/settings';
 import { showToast } from '../../utils/notifications';
-import { useTranslation } from 'react-i18next';
 import { ignoresHideBalanceToastSelector } from '../../store/reselect/user';
 import { ignoreHideBalanceToast } from '../../store/slices/user';
 
 const HEADER_HEIGHT = 46;
-
-// Workaround for crash on Android
-// https://github.com/software-mansion/react-native-reanimated/issues/4306#issuecomment-1538184321
-const AnimatedRefreshControl = Animated.createAnimatedComponent(RefreshControl);
 
 type Props = WalletScreenProps<'Wallets'> & {
 	onFocus: (isFocused: boolean) => void;
@@ -119,11 +114,10 @@ const Wallets = ({ navigation, onFocus }: Props): ReactElement => {
 					showsVerticalScrollIndicator={false}
 					testID="WalletsScrollView"
 					refreshControl={
-						<AnimatedRefreshControl
+						<RefreshControl
 							refreshing={refreshing}
 							tintColor={colors.refreshControl}
 							progressViewOffset={HEADER_HEIGHT}
-							exiting={FadeOut}
 							onRefresh={onRefresh}
 						/>
 					}>

@@ -96,6 +96,7 @@ export const SlashtagsProvider = ({
 
 		const relaySocket = new WebSocket(relayAddress);
 		relaySocket.onopen = (): void => {
+			// eslint-disable-next-line @typescript-eslint/no-misused-promises
 			relaySocket.onclose = reconnect;
 		};
 
@@ -143,6 +144,7 @@ export const SlashtagsProvider = ({
 
 			if (connected) {
 				console.log('Reconnected to dht relay');
+				// eslint-disable-next-line @typescript-eslint/no-misused-promises
 				connected.onclose = reconnect;
 				createSDK(connected);
 			}

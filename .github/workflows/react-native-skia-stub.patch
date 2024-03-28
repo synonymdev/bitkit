@@ -1,11 +1,11 @@
 diff --git a/package.json b/package.json
-index 935aa860..3139603f 100644
+index 34d9af05..f30d8004 100644
 --- a/package.json
 +++ b/package.json
-@@ -182,5 +182,8 @@
+@@ -180,5 +180,8 @@
+     "react-native-svg-transformer": "^1.3.0",
      "redux-flipper": "^2.0.2",
-     "rimraf": "^5.0.5",
-     "typescript": "5.2.2"
+     "typescript": "5.3.3"
 +  },
 +  "react-native": {
 +    "@shopify/react-native-skia": "react-native-skia-stub"

@@ -1,7 +1,13 @@
 import React, { ReactElement, memo, useState, useCallback } from 'react';
-import { StyleSheet, View, ScrollView, TouchableOpacity } from 'react-native';
+import {
+	StyleSheet,
+	View,
+	ScrollView,
+	TouchableOpacity,
+	RefreshControl,
+} from 'react-native';
 import Share from 'react-native-share';
-import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
+import { FadeIn, FadeOut } from 'react-native-reanimated';
 import { useTranslation } from 'react-i18next';
 import Clipboard from '@react-native-clipboard/clipboard';
 import { IBtOrder } from '@synonymdev/blocktank-lsp-http-client';
@@ -9,7 +15,6 @@ import { BtOrderState2 } from '@synonymdev/blocktank-lsp-http-client/dist/shared
 
 import {
 	AnimatedView,
-	RefreshControl,
 	View as ThemedView,
 	TextInput,
 } from '../../../styles/components';
@@ -72,10 +77,6 @@ import { TPaidBlocktankOrders } from '../../../store/types/blocktank';
 import { EUnit } from '../../../store/types/wallet';
 import { EChannelStatus, TChannel } from '../../../store/types/lightning';
 import { isGeoBlockedSelector } from '../../../store/reselect/user';
-
-// Workaround for crash on Android
-// https://github.com/software-mansion/react-native-reanimated/issues/4306#issuecomment-1538184321
-const AnimatedRefreshControl = Animated.createAnimatedComponent(RefreshControl);
 
 /**
  * Convert pending (non-channel) blocktank orders to (fake) channels.
@@ -382,9 +383,9 @@ const Channels = ({
 			<ScrollView
 				contentContainerStyle={styles.content}
 				refreshControl={
-					<AnimatedRefreshControl
+					<RefreshControl
 						refreshing={refreshingLdk}
-						exiting={FadeOut}
+						tintColor={colors.refreshControl}
 						onRefresh={onRefreshLdk}
 					/>
 				}>
