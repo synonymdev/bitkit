@@ -32,6 +32,7 @@ type MoneyProps = {
 	color?: keyof IColors;
 	enableHide?: boolean; // if true and settings.hideBalance === true it will replace number with dots
 	sign?: string;
+	shouldRoundUp?: boolean;
 	style?: StyleProp<ViewStyle>;
 	testID?: string;
 	size?:
@@ -59,9 +60,10 @@ const Money = (props: MoneyProps): ReactElement => {
 	const symbolColor = props.symbolColor;
 	const hide = (props.enableHide ?? false) && hideBalance;
 	const sign = props.sign;
+	const shouldRoundUp = props.shouldRoundUp ?? false;
 	const testID = props.testID;
 
-	const dv = useDisplayValues(sats);
+	const dv = useDisplayValues(sats, shouldRoundUp);
 
 	const [Text, lineHeight, iconHeight, iconWidth, iconMargin] = useMemo(() => {
 		switch (size) {

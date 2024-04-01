@@ -7,6 +7,7 @@ import {
 	EUnit,
 } from '../../store/types/wallet';
 import { IExchangeRates, mostUsedExchangeTickers } from '../exchange-rate';
+import { roundUpToTwoDecimals } from '../helpers';
 import {
 	defaultFiatDisplayValues,
 	defaultBitcoinDisplayValues,
@@ -74,6 +75,7 @@ export const getFiatDisplayValues = ({
 	currency,
 	currencySymbol,
 	locale = 'en-US',
+	shouldRoundUp = false,
 }: {
 	satoshis: number;
 	exchangeRate?: number;
@@ -81,6 +83,7 @@ export const getFiatDisplayValues = ({
 	currency?: string;
 	currencySymbol?: string;
 	locale?: string;
+	shouldRoundUp?: boolean;
 }): IFiatDisplayValues => {
 	const denomination = getSettingsStore().denomination;
 
@@ -124,6 +127,10 @@ export const getFiatDisplayValues = ({
 		let fiatValue: number = bitcoinUnits(satoshis, 'satoshi')
 			.to(currency)
 			.value();
+
+		if (shouldRoundUp) {
+			fiatValue = roundUpToTwoDecimals(fiatValue);
+		}
 
 		return getFiatDisplayValuesForFiat({
 			value: fiatValue,
@@ -221,6 +228,7 @@ export const getDisplayValues = ({
 	currency,
 	currencySymbol,
 	locale = 'en-US',
+	shouldRoundUpFiat = false,
 }: {
 	satoshis: number;
 	denomination?: EDenomination;
@@ -228,6 +236,7 @@ export const getDisplayValues = ({
 	currency?: string;
 	currencySymbol?: string;
 	locale?: string;
+	shouldRoundUpFiat?: boolean;
 }): IDisplayValues => {
 	if (!denomination) {
 		denomination = getSettingsStore().denomination;
@@ -243,6 +252,7 @@ export const getDisplayValues = ({
 		currency,
 		currencySymbol,
 		locale,
+		shouldRoundUp: shouldRoundUpFiat,
 	});
 
 	return {

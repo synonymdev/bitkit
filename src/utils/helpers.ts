@@ -177,6 +177,10 @@ export const getLastWordInString = (phrase: string): string => {
 	}
 };
 
+export const roundUpToTwoDecimals = (num: number): number => {
+	return Math.ceil(num * 100) / 100;
+};
+
 /**
  * Determines if the two arrays passed as params match.
  * @param arr1

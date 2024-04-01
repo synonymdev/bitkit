@@ -78,7 +78,12 @@ const ReceiveAmount = ({
 							<Caption13Up style={styles.minimumText} color="gray1">
 								{t('minimum')}
 							</Caption13Up>
-							<Money sats={MINIMUM_AMOUNT} size="text02m" symbol={true} />
+							<Money
+								sats={MINIMUM_AMOUNT}
+								size="text02m"
+								symbol={true}
+								shouldRoundUp={true}
+							/>
 						</View>
 						<View style={styles.actionButtons}>
 							<View style={styles.actionButtonContainer}>

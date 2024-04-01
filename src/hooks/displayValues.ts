@@ -11,7 +11,10 @@ import {
 	exchangeRatesSelector,
 } from '../store/reselect/wallet';
 
-export const useDisplayValues = (satoshis: number): IDisplayValues => {
+export const useDisplayValues = (
+	satoshis: number,
+	shouldRoundUpFiat = false,
+): IDisplayValues => {
 	const { fiatSymbol } = useCurrency();
 	const selectedCurrency = useAppSelector(selectedCurrencySelector);
 	const denomination = useAppSelector(denominationSelector);
@@ -27,8 +30,16 @@ export const useDisplayValues = (satoshis: number): IDisplayValues => {
 			currency: selectedCurrency,
 			currencySymbol: fiatSymbol,
 			locale: 'en-US', //TODO get from native module
+			shouldRoundUpFiat,
 		});
-	}, [satoshis, denomination, selectedCurrency, exchangeRate, fiatSymbol]);
+	}, [
+		satoshis,
+		denomination,
+		selectedCurrency,
+		exchangeRate,
+		fiatSymbol,
+		shouldRoundUpFiat,
+	]);
 };
 
 /**
