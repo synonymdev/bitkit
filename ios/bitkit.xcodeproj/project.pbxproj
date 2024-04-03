@@ -12,10 +12,14 @@
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		6D0C0A12EC09012FC2C7B093 /* libPods-bitkit-bitkitTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 11679ABA5E5432F056AD0BAB /* libPods-bitkit-bitkitTests.a */; };
+		776284622BBD8CDA00690407 /* Mobile.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 776284612BBD8CDA00690407 /* Mobile.xcframework */; };
+		776284642BBD8CF600690407 /* mobile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 776284632BBD8CF600690407 /* mobile.swift */; };
 		777F5BE129EDEB75005E0E4B /* InterTight-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 777F5BDD29EDEB75005E0E4B /* InterTight-Bold.ttf */; };
 		777F5BE229EDEB75005E0E4B /* InterTight-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 777F5BDE29EDEB75005E0E4B /* InterTight-Regular.ttf */; };
 		777F5BE329EDEB75005E0E4B /* InterTight-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 777F5BDF29EDEB75005E0E4B /* InterTight-SemiBold.ttf */; };
 		777F5BE429EDEB75005E0E4B /* InterTight-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 777F5BE029EDEB75005E0E4B /* InterTight-Medium.ttf */; };
+		779BC2F82BBCDDA100E7243E /* BitcoinAddressGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 779BC2F72BBCDDA100E7243E /* BitcoinAddressGenerator.swift */; };
+		779BC2FA2BBCDDCA00E7243E /* BitcoinAddressGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = 779BC2F92BBCDDCA00E7243E /* BitcoinAddressGenerator.m */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		ED47B6FC01ED219648939E4A /* libPods-bitkit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DA86E416E5DED8B397FC4C1 /* libPods-bitkit.a */; };
 /* End PBXBuildFile section */
@@ -45,10 +49,15 @@
 		1B1154C81634DBBF100D0F29 /* Pods-bitkit-bitkitTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-bitkit-bitkitTests.release.xcconfig"; path = "Target Support Files/Pods-bitkit-bitkitTests/Pods-bitkit-bitkitTests.release.xcconfig"; sourceTree = "<group>"; };
 		1DA86E416E5DED8B397FC4C1 /* libPods-bitkit.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-bitkit.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3FD55CD80EB91F35B33FACF6 /* Pods-bitkit.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-bitkit.release.xcconfig"; path = "Target Support Files/Pods-bitkit/Pods-bitkit.release.xcconfig"; sourceTree = "<group>"; };
+		776284612BBD8CDA00690407 /* Mobile.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = Mobile.xcframework; path = ../../ios/rust_bitcoin_address_generator/ios/Mobile.xcframework; sourceTree = "<group>"; };
+		776284632BBD8CF600690407 /* mobile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = mobile.swift; path = ../../ios/rust_bitcoin_address_generator/bindings/mobile.swift; sourceTree = "<group>"; };
 		777F5BDD29EDEB75005E0E4B /* InterTight-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "InterTight-Bold.ttf"; sourceTree = "<group>"; };
 		777F5BDE29EDEB75005E0E4B /* InterTight-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "InterTight-Regular.ttf"; sourceTree = "<group>"; };
 		777F5BDF29EDEB75005E0E4B /* InterTight-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "InterTight-SemiBold.ttf"; sourceTree = "<group>"; };
 		777F5BE029EDEB75005E0E4B /* InterTight-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "InterTight-Medium.ttf"; sourceTree = "<group>"; };
+		779BC2F42BBCDD7100E7243E /* bitkit-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "bitkit-Bridging-Header.h"; sourceTree = "<group>"; };
+		779BC2F72BBCDDA100E7243E /* BitcoinAddressGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BitcoinAddressGenerator.swift; sourceTree = "<group>"; };
+		779BC2F92BBCDDCA00E7243E /* BitcoinAddressGenerator.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BitcoinAddressGenerator.m; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = bitkit/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		8FAF58C247E68AB7EC511BBF /* Pods-bitkit-bitkitTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-bitkit-bitkitTests.debug.xcconfig"; path = "Target Support Files/Pods-bitkit-bitkitTests/Pods-bitkit-bitkitTests.debug.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
@@ -68,6 +77,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				ED47B6FC01ED219648939E4A /* libPods-bitkit.a in Frameworks */,
+				776284622BBD8CDA00690407 /* Mobile.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -94,12 +104,16 @@
 		13B07FAE1A68108700A75B9A /* bitkit */ = {
 			isa = PBXGroup;
 			children = (
+				776284632BBD8CF600690407 /* mobile.swift */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.mm */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
 				13B07FB71A68108700A75B9A /* main.m */,
+				779BC2F42BBCDD7100E7243E /* bitkit-Bridging-Header.h */,
+				779BC2F72BBCDDA100E7243E /* BitcoinAddressGenerator.swift */,
+				779BC2F92BBCDDCA00E7243E /* BitcoinAddressGenerator.m */,
 			);
 			name = bitkit;
 			sourceTree = "<group>";
@@ -136,6 +150,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				776284612BBD8CDA00690407 /* Mobile.xcframework */,
 				77BFF90929C3932F000E7921 /* fonts */,
 				13B07FAE1A68108700A75B9A /* bitkit */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
@@ -231,7 +246,7 @@
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 					13B07F861A680F5B00A75B9A = {
-						LastSwiftMigration = 1120;
+						LastSwiftMigration = 1530;
 					};
 				};
 			};
@@ -462,6 +477,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */,
+				776284642BBD8CF600690407 /* mobile.swift in Sources */,
+				779BC2F82BBCDDA100E7243E /* BitcoinAddressGenerator.swift in Sources */,
+				779BC2FA2BBCDDCA00E7243E /* BitcoinAddressGenerator.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -555,6 +573,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = to.synonym.bitkit;
 				PRODUCT_NAME = bitkit;
+				SWIFT_OBJC_BRIDGING_HEADER = "bitkit-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -586,6 +605,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = to.synonym.bitkit;
 				PRODUCT_NAME = bitkit;
+				SWIFT_OBJC_BRIDGING_HEADER = "bitkit-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};

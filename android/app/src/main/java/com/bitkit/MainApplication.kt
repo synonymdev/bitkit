@@ -1,6 +1,7 @@
 package com.bitkit
 
 import android.app.Application
+import com.bitkit.modules.BitcoinAddressGenerator.BitcoinAddressGeneratorPackage
 import com.facebook.react.PackageList
 import com.facebook.react.ReactApplication
 import com.facebook.react.ReactHost
@@ -22,6 +23,7 @@ class MainApplication : Application(), ReactApplication {
             // Packages that cannot be autolinked yet can be added manually here, for example:
             // add(MyReactNativePackage())
             add(SplashScreenPackage());
+            add(BitcoinAddressGeneratorPackage());
           }
 
         override fun getJSMainModuleName(): String = "index"
