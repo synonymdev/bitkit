@@ -27,8 +27,6 @@ const config = {
 			'sodium-universal': path.resolve(__dirname, './node_modules/sodium-react-native-direct'),
 		},
 		blacklistRE: exclusionList([
-			/android\/build\/nodejs-native-assets-temp-build\/.*/,
-			/\/nodejs-assets\/.*/,
 			/\/node_modules\/sodium-universal\/.*/,
 			/\/android\/build\/*/,
 		]),

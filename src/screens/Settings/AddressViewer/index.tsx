@@ -29,6 +29,7 @@ import {
 	getKeyDerivationPathObject,
 	getPrivateKey,
 	getReceiveAddress,
+	setupAddressGenerator,
 } from '../../../utils/wallet';
 import {
 	addressTypeSelector,
@@ -49,7 +50,6 @@ import {
 	sendMax,
 } from '../../../utils/wallet/transactions';
 import { openURL } from '../../../utils/helpers';
-import { setupNodejsMobile } from '../../../utils/nodejs-mobile';
 import { getAddressUtxos } from '../../../utils/wallet/electrum';
 import { enableDevOptionsSelector } from '../../../store/reselect/settings';
 import {
@@ -744,7 +744,7 @@ const AddressViewer = ({
 			setPrivateKey(undefined);
 			return;
 		}
-		const setupRes = await setupNodejsMobile({
+		const setupRes = await setupAddressGenerator({
 			selectedWallet,
 			selectedNetwork: config.selectedNetwork,
 		});
