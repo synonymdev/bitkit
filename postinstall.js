@@ -22,4 +22,6 @@ if (os.type() === 'Darwin') {
 	}
 }
 
-exec(installNodeDeps);
+if (installNodeDeps !== '') {
+    exec(installNodeDeps);
+}
