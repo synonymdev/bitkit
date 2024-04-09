@@ -12503,10 +12503,10 @@ react-is@^17.0.1:
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-17.0.2.tgz#e691d4a8e9c789365655539ab372762b0efb54f0"
   integrity sha512-w2GsyukL62IJnlaff/nRegPQR94C/XXamvMWmSHRJ4y7Ts/4ocGRmTHvOs8PSE6pB3dWOrD/nueuU5sduBsQ4w==
 
-react-native-address-generator@^0.2.1:
-  version "0.2.1"
-  resolved "https://registry.yarnpkg.com/react-native-address-generator/-/react-native-address-generator-0.2.1.tgz#224ccc98ff27b03669c183315df9ce2294202b2e"
-  integrity sha512-Xi+owspC9kCNrwgV2oRR5DIM+ugYKz2S3rxVTErl6G7g9BqI0NG1jukbDSZhr5jNPv3T3kJHU7Ad7kaTyk0XEg==
+react-native-address-generator@0.2.2:
+  version "0.2.2"
+  resolved "https://registry.yarnpkg.com/react-native-address-generator/-/react-native-address-generator-0.2.2.tgz#f377026bc67dc8708041de06579dbfe022f2ab77"
+  integrity sha512-UAZV51cqSx2vrDIXl9QXpo6tNZMOY2qSb1g/3+a/fmiQzNKA1IN4VHFh8DmXMd73YMK+xN7Il+Qc7svg4UZraQ==
   dependencies:
     "@synonymdev/result" "^0.0.2"
 
