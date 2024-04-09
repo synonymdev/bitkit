@@ -13,10 +13,10 @@ fs.access(devEnvFile, fs.constants.F_OK, (err) => {
 	}
 });
 
-let installNodeDeps = `yarn install --no-audit --prefer-offline --production --cwd nodejs-assets/nodejs-project`;
+let installNodeDeps = ``;
 
 if (os.type() === 'Darwin') {
-	installNodeDeps += '&& react-native setup-ios-permissions';
+	installNodeDeps += 'react-native setup-ios-permissions';
 	if (!process.env.CI) {
 		installNodeDeps += '&& pod install --project-directory=ios';
 	}

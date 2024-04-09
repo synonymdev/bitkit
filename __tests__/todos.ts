@@ -27,7 +27,6 @@ describe('Todos selector', () => {
 	let s: RootState;
 
 	beforeAll(async () => {
-		require('../nodejs-assets/nodejs-project/main.js');
 		let res = await createNewWallet();
 		if (res.isErr()) {
 			throw res.error;

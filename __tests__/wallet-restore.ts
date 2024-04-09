@@ -20,8 +20,6 @@ describe('Wallet - wallet restore and receive', () => {
 	const rpc = new BitcoinJsonRpc(bitcoinURL);
 
 	beforeAll(async () => {
-		require('../nodejs-assets/nodejs-project/main.js');
-
 		// Mine at least 10 Bitcoins before each test
 		let balance = await rpc.getBalance();
 		const address = await rpc.getNewAddress();

@@ -12,7 +12,6 @@ export interface IResponse<T> {
 
 export interface IGetAddress {
 	path: string;
-	type: EAddressType;
 	selectedNetwork?: EAvailableNetwork;
 }
 

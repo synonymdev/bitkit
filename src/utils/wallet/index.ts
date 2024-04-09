@@ -41,8 +41,6 @@ import {
 import { TCoinSelectPreference } from '../../store/types/settings';
 import { updateActivityList } from '../../store/utils/activity';
 import { getBlockHeader } from './electrum';
-import { invokeNodeJsMethod } from '../nodejs-mobile';
-import { DefaultNodeJsMethodsShape } from '../nodejs-mobile/shapes';
 import {
 	getLightningBalance,
 	getLightningReserveBalance,
@@ -90,11 +88,43 @@ import { updateUi } from '../../store/slices/ui';
 import { ICustomGetScriptHash } from 'beignet/src/types/wallet';
 import { ldk } from '@synonymdev/react-native-ldk';
 import { resetActivityState } from '../../store/slices/activity';
+import BitcoinActions from '../bitcoin-actions/bitcoin-actions.ts';
 
 bitcoin.initEccLib(ecc);
 const bip32 = BIP32Factory(ecc);
 
 let wallet: TWallet;
+let addressGenerator: BitcoinActions | undefined;
+
+export const setupAddressGenerator = async ({
+	selectedWallet = getSelectedWallet(),
+	selectedNetwork = getSelectedNetwork(),
+	mnemonic,
+}: {
+	selectedWallet?: TWalletName;
+	selectedNetwork?: EAvailableNetwork;
+	mnemonic?: string;
+} = {}): Promise<Result<string>> => {
+	if (!mnemonic) {
+		const mnemonicResponse = await getMnemonicPhrase(selectedWallet);
+		if (mnemonicResponse.isErr()) {
+			return err(mnemonicResponse.error.message);
+		}
+		mnemonic = mnemonicResponse.value;
+	}
+	addressGenerator = new BitcoinActions();
+	const bip39Passphrase = await getBip39Passphrase();
+	const setupRes = addressGenerator.setup({
+		mnemonic,
+		selectedNetwork,
+		bip39Passphrase,
+	});
+	if (setupRes.isErr()) {
+		addressGenerator = undefined;
+		return err(setupRes.error.message);
+	}
+	return ok(setupRes.value);
+};
 
 export const refreshWallet = async ({
 	onchain = true,
@@ -245,20 +275,19 @@ export const getPrivateKey = async ({
 	selectedNetwork?: EAvailableNetwork;
 }): Promise<Result<string>> => {
 	try {
-		if (!addressData) {
-			return err('No addressContent specified.');
+		if (!addressGenerator) {
+			const res = await setupAddressGenerator({});
+			if (res.isErr()) {
+				return err(res.error.message);
+			}
+			if (!addressGenerator) {
+				return err('Unable to setup address generator.');
+			}
 		}
-
-		const getPrivateKeyShapeShape = DefaultNodeJsMethodsShape.getPrivateKey();
-		getPrivateKeyShapeShape.data.path = addressData.path;
-		getPrivateKeyShapeShape.data.selectedNetwork = selectedNetwork;
-		const getPrivateKeyResponse = await invokeNodeJsMethod(
-			getPrivateKeyShapeShape,
-		);
-		if (getPrivateKeyResponse.error) {
-			return err(getPrivateKeyResponse.value);
-		}
-		return ok(getPrivateKeyResponse.value);
+		return await addressGenerator.getPrivateKey({
+			path: addressData.path,
+			selectedNetwork,
+		});
 	} catch (e) {
 		return err(e);
 	}
@@ -369,14 +398,23 @@ export const getScriptHash = async (
 		if (!address) {
 			return '';
 		}
-		const data = DefaultNodeJsMethodsShape.getScriptHash();
-		data.data.address = address;
-		data.data.selectedNetwork = selectedNetwork;
-		const getScriptHashResponse = await invokeNodeJsMethod<string>(data);
-		if (getScriptHashResponse.error) {
+		if (!addressGenerator) {
+			const res = await setupAddressGenerator({});
+			if (res.isErr()) {
+				return '';
+			}
+			if (!addressGenerator) {
+				return '';
+			}
+		}
+		const getScriptHashRes = await addressGenerator.getScriptHash({
+			address,
+			selectedNetwork,
+		});
+		if (getScriptHashRes.isErr()) {
 			return '';
 		}
-		return getScriptHashResponse.value;
+		return getScriptHashRes.value;
 	} catch {
 		return '';
 	}
@@ -396,14 +434,17 @@ export const getCustomScriptHash = async ({
 		if (!address) {
 			return '';
 		}
-		const data = DefaultNodeJsMethodsShape.getScriptHash();
-		data.data.address = address;
-		data.data.selectedNetwork = electrumNetworkToBitkitNetwork(selectedNetwork);
-		const getScriptHashResponse = await invokeNodeJsMethod<string>(data);
-		if (getScriptHashResponse.error) {
-			return '';
+		if (!addressGenerator) {
+			const res = await setupAddressGenerator({});
+			if (res.isErr()) {
+				return '';
+			}
+			if (!addressGenerator) {
+				return '';
+			}
 		}
-		return getScriptHashResponse.value;
+		const network = electrumNetworkToBitkitNetwork(selectedNetwork);
+		return await getScriptHash(address, network);
 	} catch {
 		return '';
 	}
@@ -432,21 +473,23 @@ export const electrumNetworkToBitkitNetwork = (
 export const getAddress = async ({
 	path,
 	selectedNetwork = getSelectedNetwork(),
-	type,
 }: IGetAddress): Promise<Result<IGetAddressResponse>> => {
 	if (!path) {
 		return err('No path specified');
 	}
-	try {
-		const data = DefaultNodeJsMethodsShape.getAddress();
-		data.data.path = path;
-		data.data.type = type;
-		data.data.selectedNetwork = selectedNetwork;
-		const addressResponse = await invokeNodeJsMethod<IGetAddressResponse>(data);
-		return ok(addressResponse.value);
-	} catch (e) {
-		return err(e);
+	if (!addressGenerator) {
+		const res = await setupAddressGenerator({});
+		if (res.isErr()) {
+			return err(res.error.message);
+		}
+		if (!addressGenerator) {
+			return err('Unable to setup address generator.');
+		}
 	}
+	return await addressGenerator.getAddress({
+		path,
+		selectedNetwork,
+	});
 };
 
 /**
@@ -459,18 +502,28 @@ export const getAddress = async ({
 export const customGetAddress = async ({
 	path,
 	selectedNetwork,
-	type,
 }: ICustomGetAddress): Promise<Result<IGetAddressResponse>> => {
 	if (!path) {
 		return err('No path specified');
 	}
 	try {
-		const data = DefaultNodeJsMethodsShape.getAddress();
-		data.data.path = path;
-		data.data.type = type;
-		data.data.selectedNetwork = electrumNetworkToBitkitNetwork(selectedNetwork);
-		const addressResponse = await invokeNodeJsMethod<IGetAddressResponse>(data);
-		return ok(addressResponse.value);
+		if (!addressGenerator) {
+			const res = await setupAddressGenerator({});
+			if (res.isErr()) {
+				return err(res.error.message);
+			}
+			if (!addressGenerator) {
+				return err('Unable to setup address generator.');
+			}
+		}
+		const getAddrRes = await addressGenerator.getAddress({
+			path,
+			selectedNetwork: electrumNetworkToBitkitNetwork(selectedNetwork),
+		});
+		if (getAddrRes.isErr()) {
+			return err(getAddrRes.error.message);
+		}
+		return getAddrRes;
 	} catch (e) {
 		return err(e);
 	}
