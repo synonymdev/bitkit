@@ -71,9 +71,6 @@ buck-out/
 .env*
 !.env*.template
 
-# NodeJS-Mobile
-android/app/pepk.jar
-
 # sublime
 *.sublime-project
 *.sublime-workspace
