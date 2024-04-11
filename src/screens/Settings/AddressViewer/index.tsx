@@ -51,7 +51,6 @@ import {
 } from '../../../utils/wallet/transactions';
 import { openURL } from '../../../utils/helpers';
 import { getAddressUtxos } from '../../../utils/wallet/electrum';
-import { enableDevOptionsSelector } from '../../../store/reselect/settings';
 import {
 	resetSendTransaction,
 	setupOnChainTransaction,
@@ -233,7 +232,6 @@ const AddressViewer = ({
 	const selectedWallet = useAppSelector(selectedWalletSelector);
 	const selectedNetwork = useAppSelector(selectedNetworkSelector);
 	const addressType = useAppSelector(addressTypeSelector);
-	const enableDevOptions = useAppSelector(enableDevOptionsSelector);
 	const currentWallet = useAppSelector((state) =>
 		currentWalletSelector(state, selectedWallet),
 	);
@@ -278,9 +276,6 @@ const AddressViewer = ({
 		[],
 	);
 	const [loadingAddresses, setLoadingAddresses] = useState(true);
-	const [loadingNetwork, setLoadingNetwork] = useState<
-		EAvailableNetwork | undefined
-	>(undefined);
 	const [isCheckingBalances, setIsCheckingBalances] = useState(false);
 	const [isGeneratingMoreAddresses, setIsGeneratingMoreAddresses] =
 		useState(false);
@@ -506,58 +501,6 @@ const AddressViewer = ({
 			updateSelectedAddress(newConfig, allAddresses);
 		},
 		[allAddresses, config, updateSelectedAddress],
-	);
-
-	/**
-	 * Updates the selected network locally for the address viewer.
-	 */
-	const updateNetwork = useCallback(
-		async (n: EAvailableNetwork): Promise<void> => {
-			if (n === config.selectedNetwork) {
-				return;
-			}
-			setLoadingNetwork(n);
-			if (privateKey) {
-				setPrivateKey(undefined);
-			}
-			resetUtxos();
-			const newConfig = {
-				...config,
-				addressIndex: 0,
-				selectedNetwork: n,
-			};
-			const getAllAddressesRes = await getAllAddresses({
-				config: newConfig,
-				selectedWallet,
-				addressAmount: ADDRESS_AMOUNT,
-			});
-			if (getAllAddressesRes.isErr()) {
-				setLoadingNetwork(undefined);
-				return;
-			}
-			const type = config.addressType;
-			const indexes = getAllAddressesRes.value[type].addresses.map(
-				(a) => a.index,
-			);
-			const maxIndex = Math.max(...indexes);
-			setConfig({
-				...newConfig,
-				addressIndex: maxIndex + 1,
-			});
-			updateSelectedAddress(newConfig, getAllAddressesRes.value);
-			setAllAddresses(getAllAddressesRes.value);
-			updateSearchableAddresses(getAllAddressesRes.value).then();
-			setLoadingNetwork(undefined);
-			handleScroll(maxIndex);
-		},
-		[
-			config,
-			handleScroll,
-			privateKey,
-			resetUtxos,
-			selectedWallet,
-			updateSelectedAddress,
-		],
 	);
 
 	/**
@@ -972,38 +915,6 @@ const AddressViewer = ({
 					onChangeText={onSearch}
 					autoCapitalize="none"
 				/>
-				{enableDevOptions && (
-					<View style={styles.row}>
-						<Button
-							loading={loadingNetwork === EAvailableNetwork.bitcoinTestnet}
-							color={getAddressTypeButtonColor(
-								EAvailableNetwork.bitcoinTestnet,
-							)}
-							text="Testnet"
-							onPress={(): void => {
-								updateNetwork(EAvailableNetwork.bitcoinTestnet).then();
-							}}
-						/>
-						<Button
-							loading={loadingNetwork === EAvailableNetwork.bitcoinRegtest}
-							color={getAddressTypeButtonColor(
-								EAvailableNetwork.bitcoinRegtest,
-							)}
-							text="Regtest"
-							onPress={(): void => {
-								updateNetwork(EAvailableNetwork.bitcoinRegtest).then();
-							}}
-						/>
-						<Button
-							loading={loadingNetwork === EAvailableNetwork.bitcoin}
-							color={getAddressTypeButtonColor(EAvailableNetwork.bitcoin)}
-							text="Mainnet"
-							onPress={(): void => {
-								updateNetwork(EAvailableNetwork.bitcoin).then();
-							}}
-						/>
-					</View>
-				)}
 				{!searchTxt && (
 					<View style={styles.row}>
 						<ScrollView
