@@ -11,13 +11,16 @@
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
-		777F5BE129EDEB75005E0E4B /* InterTight-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 777F5BDD29EDEB75005E0E4B /* InterTight-Bold.ttf */; };
-		777F5BE229EDEB75005E0E4B /* InterTight-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 777F5BDE29EDEB75005E0E4B /* InterTight-Regular.ttf */; };
-		777F5BE329EDEB75005E0E4B /* InterTight-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 777F5BDF29EDEB75005E0E4B /* InterTight-SemiBold.ttf */; };
-		777F5BE429EDEB75005E0E4B /* InterTight-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 777F5BE029EDEB75005E0E4B /* InterTight-Medium.ttf */; };
-		7CF2D36CE0F42AC79AD55E4C /* libPods-bitkit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E9A175F340E1C915BBC43B4A /* libPods-bitkit.a */; };
+		17074219BB5847259EAFC7A6 /* InterTight-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3815D562618543E7A9BC191E /* InterTight-Black.ttf */; };
+		4839A057ADF0C8FE7EEC259D /* libPods-bitkit-bitkitTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 756B6099CFE6B0CE6E64E9F8 /* libPods-bitkit-bitkitTests.a */; };
+		57072143CA0F49089AE64F61 /* InterTight-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A223BA795CEB4CB2B344FBAF /* InterTight-ExtraBold.ttf */; };
+		6980B602E6DC4429841BE5EE /* InterTight-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D67AECF5F543462F90EC89AD /* InterTight-Medium.ttf */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
-		E0AE196E6BBBA29A6445E043 /* libPods-bitkit-bitkitTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D407FEB115B55DFBC7DB9177 /* libPods-bitkit-bitkitTests.a */; };
+		8BD8301E3A1B44DDA3C8A10D /* Damion-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DEC74C5375A34FFCAEBA0781 /* Damion-Regular.ttf */; };
+		925570EA7B1D43CC8AD07B91 /* InterTight-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CA37793F82F144678099A00D /* InterTight-Bold.ttf */; };
+		9952E811473D46FB9003A56D /* InterTight-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 50A8DA09F2974D05A3C58E87 /* InterTight-SemiBold.ttf */; };
+		B3BE07A9843E4B7DA375B877 /* InterTight-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 79DFAC55B0D745DE815EC2E0 /* InterTight-Regular.ttf */; };
+		F7E4650057356D2A9D70436B /* libPods-bitkit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 92CC9422B5991B733B412331 /* libPods-bitkit.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -34,23 +37,26 @@
 		00E356EE1AD99517003FC87E /* bitkitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = bitkitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* bitkitTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = bitkitTests.m; sourceTree = "<group>"; };
+		0ECE7CF95E1043CF65880AE5 /* Pods-bitkit-bitkitTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-bitkit-bitkitTests.debug.xcconfig"; path = "Target Support Files/Pods-bitkit-bitkitTests/Pods-bitkit-bitkitTests.debug.xcconfig"; sourceTree = "<group>"; };
+		10A8D83942CB07F6EF71D7EF /* Pods-bitkit-bitkitTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-bitkit-bitkitTests.release.xcconfig"; path = "Target Support Files/Pods-bitkit-bitkitTests/Pods-bitkit-bitkitTests.release.xcconfig"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* bitkit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = bitkit.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = bitkit/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = AppDelegate.mm; path = bitkit/AppDelegate.mm; sourceTree = "<group>"; };
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = bitkit/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = bitkit/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = bitkit/main.m; sourceTree = "<group>"; };
-		5A70A12E3CE1B199836EFFFF /* Pods-bitkit.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-bitkit.debug.xcconfig"; path = "Target Support Files/Pods-bitkit/Pods-bitkit.debug.xcconfig"; sourceTree = "<group>"; };
-		61AC38F9C4FEA22E726B9F09 /* Pods-bitkit-bitkitTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-bitkit-bitkitTests.release.xcconfig"; path = "Target Support Files/Pods-bitkit-bitkitTests/Pods-bitkit-bitkitTests.release.xcconfig"; sourceTree = "<group>"; };
-		705D0514E8887D963CF4CEA3 /* Pods-bitkit-bitkitTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-bitkit-bitkitTests.debug.xcconfig"; path = "Target Support Files/Pods-bitkit-bitkitTests/Pods-bitkit-bitkitTests.debug.xcconfig"; sourceTree = "<group>"; };
-		732C23B3BB0EF7E5D0109F55 /* Pods-bitkit.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-bitkit.release.xcconfig"; path = "Target Support Files/Pods-bitkit/Pods-bitkit.release.xcconfig"; sourceTree = "<group>"; };
-		777F5BDD29EDEB75005E0E4B /* InterTight-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "InterTight-Bold.ttf"; sourceTree = "<group>"; };
-		777F5BDE29EDEB75005E0E4B /* InterTight-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "InterTight-Regular.ttf"; sourceTree = "<group>"; };
-		777F5BDF29EDEB75005E0E4B /* InterTight-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "InterTight-SemiBold.ttf"; sourceTree = "<group>"; };
-		777F5BE029EDEB75005E0E4B /* InterTight-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "InterTight-Medium.ttf"; sourceTree = "<group>"; };
+		3815D562618543E7A9BC191E /* InterTight-Black.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "InterTight-Black.ttf"; path = "../src/assets/fonts/InterTight-Black.ttf"; sourceTree = "<group>"; };
+		50A8DA09F2974D05A3C58E87 /* InterTight-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "InterTight-SemiBold.ttf"; path = "../src/assets/fonts/InterTight-SemiBold.ttf"; sourceTree = "<group>"; };
+		6F811CE173528CA267201A9C /* Pods-bitkit.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-bitkit.release.xcconfig"; path = "Target Support Files/Pods-bitkit/Pods-bitkit.release.xcconfig"; sourceTree = "<group>"; };
+		756B6099CFE6B0CE6E64E9F8 /* libPods-bitkit-bitkitTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-bitkit-bitkitTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		79DFAC55B0D745DE815EC2E0 /* InterTight-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "InterTight-Regular.ttf"; path = "../src/assets/fonts/InterTight-Regular.ttf"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = bitkit/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		D407FEB115B55DFBC7DB9177 /* libPods-bitkit-bitkitTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-bitkit-bitkitTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		E9A175F340E1C915BBC43B4A /* libPods-bitkit.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-bitkit.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		92CC9422B5991B733B412331 /* libPods-bitkit.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-bitkit.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		A223BA795CEB4CB2B344FBAF /* InterTight-ExtraBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "InterTight-ExtraBold.ttf"; path = "../src/assets/fonts/InterTight-ExtraBold.ttf"; sourceTree = "<group>"; };
+		CA37793F82F144678099A00D /* InterTight-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "InterTight-Bold.ttf"; path = "../src/assets/fonts/InterTight-Bold.ttf"; sourceTree = "<group>"; };
+		D3E17C94F78DE5BA2952C089 /* Pods-bitkit.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-bitkit.debug.xcconfig"; path = "Target Support Files/Pods-bitkit/Pods-bitkit.debug.xcconfig"; sourceTree = "<group>"; };
+		D67AECF5F543462F90EC89AD /* InterTight-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "InterTight-Medium.ttf"; path = "../src/assets/fonts/InterTight-Medium.ttf"; sourceTree = "<group>"; };
+		DEC74C5375A34FFCAEBA0781 /* Damion-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Damion-Regular.ttf"; path = "../src/assets/fonts/Damion-Regular.ttf"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -59,7 +65,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E0AE196E6BBBA29A6445E043 /* libPods-bitkit-bitkitTests.a in Frameworks */,
+				4839A057ADF0C8FE7EEC259D /* libPods-bitkit-bitkitTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -67,7 +73,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7CF2D36CE0F42AC79AD55E4C /* libPods-bitkit.a in Frameworks */,
+				F7E4650057356D2A9D70436B /* libPods-bitkit.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -108,8 +114,8 @@
 			isa = PBXGroup;
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
-				E9A175F340E1C915BBC43B4A /* libPods-bitkit.a */,
-				D407FEB115B55DFBC7DB9177 /* libPods-bitkit-bitkitTests.a */,
+				92CC9422B5991B733B412331 /* libPods-bitkit.a */,
+				756B6099CFE6B0CE6E64E9F8 /* libPods-bitkit-bitkitTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -117,10 +123,6 @@
 		77BFF90929C3932F000E7921 /* fonts */ = {
 			isa = PBXGroup;
 			children = (
-				777F5BDD29EDEB75005E0E4B /* InterTight-Bold.ttf */,
-				777F5BE029EDEB75005E0E4B /* InterTight-Medium.ttf */,
-				777F5BDE29EDEB75005E0E4B /* InterTight-Regular.ttf */,
-				777F5BDF29EDEB75005E0E4B /* InterTight-SemiBold.ttf */,
 			);
 			name = fonts;
 			path = ../src/assets/fonts;
@@ -143,6 +145,7 @@
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				BBD78D7AC51CEA395F1C20DB /* Pods */,
+				ABDF0989A32947C490AA709C /* Resources */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -158,13 +161,27 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		ABDF0989A32947C490AA709C /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				DEC74C5375A34FFCAEBA0781 /* Damion-Regular.ttf */,
+				3815D562618543E7A9BC191E /* InterTight-Black.ttf */,
+				CA37793F82F144678099A00D /* InterTight-Bold.ttf */,
+				A223BA795CEB4CB2B344FBAF /* InterTight-ExtraBold.ttf */,
+				D67AECF5F543462F90EC89AD /* InterTight-Medium.ttf */,
+				79DFAC55B0D745DE815EC2E0 /* InterTight-Regular.ttf */,
+				50A8DA09F2974D05A3C58E87 /* InterTight-SemiBold.ttf */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
 		BBD78D7AC51CEA395F1C20DB /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				5A70A12E3CE1B199836EFFFF /* Pods-bitkit.debug.xcconfig */,
-				732C23B3BB0EF7E5D0109F55 /* Pods-bitkit.release.xcconfig */,
-				705D0514E8887D963CF4CEA3 /* Pods-bitkit-bitkitTests.debug.xcconfig */,
-				61AC38F9C4FEA22E726B9F09 /* Pods-bitkit-bitkitTests.release.xcconfig */,
+				D3E17C94F78DE5BA2952C089 /* Pods-bitkit.debug.xcconfig */,
+				6F811CE173528CA267201A9C /* Pods-bitkit.release.xcconfig */,
+				0ECE7CF95E1043CF65880AE5 /* Pods-bitkit-bitkitTests.debug.xcconfig */,
+				10A8D83942CB07F6EF71D7EF /* Pods-bitkit-bitkitTests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -176,12 +193,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "bitkitTests" */;
 			buildPhases = (
-				4BE29EB684661D953B6E7C47 /* [CP] Check Pods Manifest.lock */,
+				74559E295B7B83DC7D970EC0 /* [CP] Check Pods Manifest.lock */,
 				00E356EA1AD99517003FC87E /* Sources */,
 				00E356EB1AD99517003FC87E /* Frameworks */,
 				00E356EC1AD99517003FC87E /* Resources */,
-				3D12AE21F73C55F363CB8C40 /* [CP] Embed Pods Frameworks */,
-				241DAAF3C3E08952539B7732 /* [CP] Copy Pods Resources */,
+				B7101F7676DDC35E23697104 /* [CP] Embed Pods Frameworks */,
+				B3302BBF15BD19B12AD956AB /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -197,17 +214,17 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "bitkit" */;
 			buildPhases = (
-				B07BF1F6E39D1EAD6F59E3C5 /* [CP] Check Pods Manifest.lock */,
+				6ECD6D803D43BA5DB7F10489 /* [CP] Check Pods Manifest.lock */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
-				3944737F7D4DD0CF6EF5C54E /* [CP] Embed Pods Frameworks */,
-				BBD823C3784DB30113F1AF89 /* [CP] Copy Pods Resources */,
-				C9D0E7FDF64413473706BE52 /* [CP-User] [NODEJS MOBILE] Copy Node.js Project files */,
-				7FA791C7F9D81D45AD86DF81 /* [CP-User] [NODEJS MOBILE] Build Native Modules */,
-				4475941AF2DA75B931BCC230 /* [CP-User] [NODEJS MOBILE] Sign Native Modules */,
-				B5E7B255D4E31A20A10E096A /* [CP-User] [NODEJS MOBILE] Remove Simulator Strip */,
+				B8F7250AB0E6A2BDFA5A909D /* [CP] Embed Pods Frameworks */,
+				E10D45B09158A901F86EADB8 /* [CP] Copy Pods Resources */,
+				6831A99FC850C6914B07225A /* [CP-User] [NODEJS MOBILE] Copy Node.js Project files */,
+				D4B6C1287E2A3BA6DB7E2606 /* [CP-User] [NODEJS MOBILE] Build Native Modules */,
+				BE08E62B0BC6813875C4CDE1 /* [CP-User] [NODEJS MOBILE] Sign Native Modules */,
+				D32164735854330E5B1E9298 /* [CP-User] [NODEJS MOBILE] Remove Simulator Strip */,
 			);
 			buildRules = (
 			);
@@ -266,12 +283,15 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				777F5BE329EDEB75005E0E4B /* InterTight-SemiBold.ttf in Resources */,
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
-				777F5BE229EDEB75005E0E4B /* InterTight-Regular.ttf in Resources */,
-				777F5BE129EDEB75005E0E4B /* InterTight-Bold.ttf in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
-				777F5BE429EDEB75005E0E4B /* InterTight-Medium.ttf in Resources */,
+				8BD8301E3A1B44DDA3C8A10D /* Damion-Regular.ttf in Resources */,
+				17074219BB5847259EAFC7A6 /* InterTight-Black.ttf in Resources */,
+				925570EA7B1D43CC8AD07B91 /* InterTight-Bold.ttf in Resources */,
+				57072143CA0F49089AE64F61 /* InterTight-ExtraBold.ttf in Resources */,
+				6980B602E6DC4429841BE5EE /* InterTight-Medium.ttf in Resources */,
+				B3BE07A9843E4B7DA375B877 /* InterTight-Regular.ttf in Resources */,
+				9952E811473D46FB9003A56D /* InterTight-SemiBold.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -294,100 +314,17 @@
 			shellPath = /bin/sh;
 			shellScript = "set -e\n\nWITH_ENVIRONMENT=\"../node_modules/react-native/scripts/xcode/with-environment.sh\"\nREACT_NATIVE_XCODE=\"../node_modules/react-native/scripts/react-native-xcode.sh\"\n\n/bin/sh -c \"$WITH_ENVIRONMENT $REACT_NATIVE_XCODE\"\n";
 		};
-		241DAAF3C3E08952539B7732 /* [CP] Copy Pods Resources */ = {
+		6831A99FC850C6914B07225A /* [CP-User] [NODEJS MOBILE] Copy Node.js Project files */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-bitkit-bitkitTests/Pods-bitkit-bitkitTests-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-bitkit-bitkitTests/Pods-bitkit-bitkitTests-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
+			name = "[CP-User] [NODEJS MOBILE] Copy Node.js Project files";
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-bitkit-bitkitTests/Pods-bitkit-bitkitTests-resources.sh\"\n";
-			showEnvVarsInLog = 0;
+			shellScript = "#!/bin/sh\nset -e\n\nNODEJS_ASSETS_DIR=\"$( cd \"$PROJECT_DIR\" && cd ../nodejs-assets/ && pwd )\"\nNODEJS_BUILT_IN_MODULES_DIR=\"$( cd \"$PROJECT_DIR\" && cd ../node_modules/nodejs-mobile-react-native/install/resources/nodejs-modules/ && pwd )\"\n\nif [ -d \"$CODESIGNING_FOLDER_PATH/nodejs-project/\" ]; then\n  rm -rf \"$CODESIGNING_FOLDER_PATH/nodejs-project/\"\nfi\n\nif [ -d \"$CODESIGNING_FOLDER_PATH/builtin_modules/\" ]; then\n  rm -rf \"$CODESIGNING_FOLDER_PATH/builtin_modules/\"\nfi\n\nrsync --archive --delete \"$NODEJS_ASSETS_DIR/nodejs-project\" \"$CODESIGNING_FOLDER_PATH\"\nrsync --archive --delete \"$NODEJS_BUILT_IN_MODULES_DIR/builtin_modules\" \"$CODESIGNING_FOLDER_PATH\"\n";
 		};
-		3944737F7D4DD0CF6EF5C54E /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-bitkit/Pods-bitkit-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-bitkit/Pods-bitkit-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-bitkit/Pods-bitkit-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		3D12AE21F73C55F363CB8C40 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-bitkit-bitkitTests/Pods-bitkit-bitkitTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-bitkit-bitkitTests/Pods-bitkit-bitkitTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-bitkit-bitkitTests/Pods-bitkit-bitkitTests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		4475941AF2DA75B931BCC230 /* [CP-User] [NODEJS MOBILE] Sign Native Modules */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			name = "[CP-User] [NODEJS MOBILE] Sign Native Modules";
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "#!/bin/sh\nset -e\n\nif [ -f ./.xcode.env ]; then\n  source \"./.xcode.env\";\nfi\nif [ -f ./.xcode.env.local ]; then\n  source \"./.xcode.env.local\";\nfi\n\nDESIRED_NODE_VERSION=\"18\"\nCURRENT_NODE_VERSION=\"$(node -p \"process.versions.node.split('.')[0]\")\"\nif [ \"$CURRENT_NODE_VERSION\" -ne \"$DESIRED_NODE_VERSION\" ]; then\n  echo \"nodejs-mobile-react-native's ios-build-native-modules script requires \\\nNode.js version $DESIRED_NODE_VERSION, but found \\\n$(node -p 'process.versions.node')\"\n  exit 1\nfi\n\nif [ -z \"$NODEJS_MOBILE_BUILD_NATIVE_MODULES\" ]; then\n# If build native modules preference is not set, look for it in the project's\n#nodejs-assets/BUILD_NATIVE_MODULES.txt file.\nNODEJS_ASSETS_DIR=\"$( cd \"$PROJECT_DIR\" && cd ../nodejs-assets/ && pwd )\"\nPREFERENCE_FILE_PATH=\"$NODEJS_ASSETS_DIR/BUILD_NATIVE_MODULES.txt\"\n  if [ -f \"$PREFERENCE_FILE_PATH\" ]; then\n    NODEJS_MOBILE_BUILD_NATIVE_MODULES=\"$(cat $PREFERENCE_FILE_PATH | xargs)\"\n  fi\nfi\n\nif [ -z \"$NODEJS_MOBILE_BUILD_NATIVE_MODULES\" ]; then\n# If build native modules preference is not set, try to find .gyp files\n#to turn it on.\n  gypfiles=($(find \"$CODESIGNING_FOLDER_PATH/nodejs-project/\" -type f -name \"*.gyp\"))\n  if [ ${#gypfiles[@]} -gt 0 ]; then\n    NODEJS_MOBILE_BUILD_NATIVE_MODULES=1\n  else\n    NODEJS_MOBILE_BUILD_NATIVE_MODULES=0\n  fi\nfi\n\nif [ \"1\" != \"$NODEJS_MOBILE_BUILD_NATIVE_MODULES\" ]; then exit 0; fi\n\n# Delete object files\nfind \"$CODESIGNING_FOLDER_PATH/nodejs-project/\" -name \"*.o\" -type f -delete\nfind \"$CODESIGNING_FOLDER_PATH/nodejs-project/\" -name \"*.a\" -type f -delete\n\n# Create Info.plist for each framework built and loader override.\nPATCH_SCRIPT_DIR=\"$( cd \"$PROJECT_DIR\" && cd ../node_modules/nodejs-mobile-react-native/scripts/ && pwd )\"\nNODEJS_PROJECT_DIR=\"$( cd \"$CODESIGNING_FOLDER_PATH\" && cd nodejs-project/ && pwd )\"\nnode \"$PATCH_SCRIPT_DIR\"/ios-create-plists-and-dlopen-override.js $NODEJS_PROJECT_DIR\n\n# Embed every resulting .framework in the application and delete them afterwards.\nembed_framework()\n{\n  FRAMEWORK_NAME=\"$(basename \"$1\")\"\n  cp -r \"$1\" \"$TARGET_BUILD_DIR/$FRAMEWORKS_FOLDER_PATH/\"\n  /usr/bin/codesign --force --sign $EXPANDED_CODE_SIGN_IDENTITY --preserve-metadata=identifier,entitlements,flags --timestamp=none \"$TARGET_BUILD_DIR/$FRAMEWORKS_FOLDER_PATH/$FRAMEWORK_NAME\"\n}\nfind \"$CODESIGNING_FOLDER_PATH/nodejs-project/\" -name \"*.framework\" -type d | while read frmwrk_path; do embed_framework \"$frmwrk_path\"; done\n\n#Delete gyp temporary .deps dependency folders from the project structure.\nfind \"$CODESIGNING_FOLDER_PATH/nodejs-project/\" -path \"*/.deps/*\" -delete\nfind \"$CODESIGNING_FOLDER_PATH/nodejs-project/\" -name \".deps\" -type d -delete\n\n#Delete frameworks from their build paths\nfind \"$CODESIGNING_FOLDER_PATH/nodejs-project/\" -path \"*/*.framework/*\" -delete\nfind \"$CODESIGNING_FOLDER_PATH/nodejs-project/\" -name \"*.framework\" -type d -delete\n";
-		};
-		4BE29EB684661D953B6E7C47 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-bitkit-bitkitTests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		7FA791C7F9D81D45AD86DF81 /* [CP-User] [NODEJS MOBILE] Build Native Modules */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			name = "[CP-User] [NODEJS MOBILE] Build Native Modules";
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "#!/bin/sh\nset -e\n\nif [ -f ./.xcode.env ]; then\n  source \"./.xcode.env\";\nfi\nif [ -f ./.xcode.env.local ]; then\n  source \"./.xcode.env.local\";\nfi\n\nDESIRED_NODE_VERSION=\"18\"\nCURRENT_NODE_VERSION=\"$(node -p \"process.versions.node.split('.')[0]\")\"\nif [ \"$CURRENT_NODE_VERSION\" -ne \"$DESIRED_NODE_VERSION\" ]; then\n  echo \"nodejs-mobile-react-native requires Node.js version \\\n$DESIRED_NODE_VERSION accessible from Xcode, but found \\\n$(node -p 'process.versions.node')\"\n  exit 1\nfi\n\n# This is our nodejs-project folder that was copied to the Xcode build folder\nNODEPROJ=\"$CODESIGNING_FOLDER_PATH/nodejs-project\"\n\nif [ -z \"$NODEJS_MOBILE_BUILD_NATIVE_MODULES\" ]; then\n# If build native modules preference is not set, look for it in the project's\n#nodejs-assets/BUILD_NATIVE_MODULES.txt file.\nNODEJS_ASSETS_DIR=\"$( cd \"$PROJECT_DIR\" && cd ../nodejs-assets/ && pwd )\"\nPREFERENCE_FILE_PATH=\"$NODEJS_ASSETS_DIR/BUILD_NATIVE_MODULES.txt\"\n  if [ -f \"$PREFERENCE_FILE_PATH\" ]; then\n    NODEJS_MOBILE_BUILD_NATIVE_MODULES=\"$(cat $PREFERENCE_FILE_PATH | xargs)\"\n  fi\nfi\n\nif [ -z \"$NODEJS_MOBILE_BUILD_NATIVE_MODULES\" ]; then\n# If build native modules preference is not set, try to find .gyp files\n#to turn it on.\n  gypfiles=($(find \"$NODEPROJ\" -type f -name \"*.gyp\"))\n  if [ ${#gypfiles[@]} -gt 0 ]; then\n    NODEJS_MOBILE_BUILD_NATIVE_MODULES=1\n  else\n    NODEJS_MOBILE_BUILD_NATIVE_MODULES=0\n  fi\nfi\n\nif [ \"1\" != \"$NODEJS_MOBILE_BUILD_NATIVE_MODULES\" ]; then exit 0; fi\n\n# Delete object files that may already come from within the npm package.\nfind \"$NODEPROJ\" -name \"*.o\" -type f -delete\nfind \"$NODEPROJ\" -name \"*.a\" -type f -delete\n\n# Function to skip compilation of a prebuilt module\npreparePrebuiltModule()\n{\n  local DOT_NODE_PATH=\"$1\"\n  local DOT_NODE_FULL=\"$(cd \"$(dirname -- \"$DOT_NODE_PATH\")\" >/dev/null; pwd -P)/$(basename -- \"$DOT_NODE_PATH\")\"\n  local MODULE_ROOT=\"$(cd $DOT_NODE_PATH && cd .. && cd .. && cd .. && pwd)\"\n  local MODULE_NAME=\"$(basename $MODULE_ROOT)\"\n  echo \"Preparing to use the prebuild in $MODULE_NAME\"\n  # Move the prebuild to the correct folder:\n  rm -rf $MODULE_ROOT/build\n  mkdir -p $MODULE_ROOT/build/Release\n  mv $DOT_NODE_FULL $MODULE_ROOT/build/Release/\n  # Hack the npm package to forcefully disable compile-on-install:\n  rm -rf $MODULE_ROOT/binding.gyp\n  sed -i.bak 's/\"install\"/\"dontinstall\"/g; s/\"rebuild\"/\"dontrebuild\"/g; s/\"gypfile\"/\"dontgypfile\"/g' $MODULE_ROOT/package.json\n}\n\n# Delete bundle contents that may be there from previous builds.\n# Handle the special case where the module has a prebuild that we want to use\nif [ \"$PLATFORM_PREFERRED_ARCH\" == \"arm64\" ]; then\n  PREBUILD_ARCH=\"arm64\"\nelse\n  PREBUILD_ARCH=\"x64\"\nfi\nif [ \"$PLATFORM_NAME\" == \"iphonesimulator\" ] && [ \"$NATIVE_ARCH\" == \"arm64\" ]; then\n  SUFFIX=\"-simulator\"\n  PREBUILD_ARCH=\"arm64\"\nelse\n  SUFFIX=\"\"\nfi\nfind -E \"$NODEPROJ\" \\\n    ! -regex \".*/prebuilds/ios-$PREBUILD_ARCH$SUFFIX\" \\\n    -regex '.*/prebuilds/[^/]*$' -type d \\\n    -prune -exec rm -rf \"{}\" \\;\nfind -E \"$NODEPROJ\" \\\n    ! -regex \".*/prebuilds/ios-$PREBUILD_ARCH$SUFFIX/.*\\.node$\" \\\n    -name '*.node' -type f \\\n    -exec rm \"{}\" \\;\nfind \"$NODEPROJ\" \\\n    -name \"*.framework\" -type d \\\n    -prune -exec rm -rf \"{}\" \\;\nfor DOT_NODE in `find -E \"$NODEPROJ\" -regex \".*/prebuilds/ios-$PREBUILD_ARCH$SUFFIX/.*\\.node$\"`; do\n  preparePrebuiltModule \"$DOT_NODE\"\ndone\n\n# Apply patches to the modules package.json\nif [ -d \"$NODEPROJ\"/node_modules/ ]; then\n  PATCH_SCRIPT_DIR=\"$( cd \"$PROJECT_DIR\" && cd ../node_modules/nodejs-mobile-react-native/scripts/ && pwd )\"\n  NODEJS_PROJECT_MODULES_DIR=\"$( cd \"$NODEPROJ\" && cd node_modules && pwd )\"\n  node \"$PATCH_SCRIPT_DIR\"/patch-package.js $NODEJS_PROJECT_MODULES_DIR\nfi\n\n# Get the nodejs-mobile-gyp location\nNODEJS_MOBILE_GYP_BIN_FILE=\"$( cd \"$PROJECT_DIR\" && cd .. && node -p 'require.resolve(`nodejs-mobile-gyp/bin/node-gyp.js`)' )\"\n\n# Support building neon-bindings (Rust) native modules\nif [ -f ~/.cargo/env ]; then\n  source ~/.cargo/env;\nfi\n\n# Rebuild modules with right environment\nNODEJS_HEADERS_DIR=\"$( cd \"$PROJECT_DIR\" && cd ../node_modules/nodejs-mobile-react-native/ios/libnode/ && pwd )\"\npushd $NODEPROJ\nif [ \"$PLATFORM_NAME\" == \"iphoneos\" ]; then\n  GYP_DEFINES=\"OS=ios\" \\\n  CARGO_BUILD_TARGET=\"aarch64-apple-ios iossim=false\" \\\n  NODEJS_MOBILE_GYP=\"$NODEJS_MOBILE_GYP_BIN_FILE\" \\\n  npm_config_node_gyp=\"$NODEJS_MOBILE_GYP_BIN_FILE\" \\\n  npm_config_nodedir=\"$NODEJS_HEADERS_DIR\" \\\n  npm_config_platform=\"ios\" \\\n  npm_config_format=\"make-ios\" \\\n  npm_config_arch=\"arm64\" \\\n  npm --verbose --foreground-scripts rebuild --build-from-source\nelif [ \"$NATIVE_ARCH\" == \"arm64\" ]; then\n  GYP_DEFINES=\"OS=ios target_arch=arm64 iossim=true\" \\\n  CARGO_BUILD_TARGET=\"aarch64-apple-ios-sim\" \\\n  NODEJS_MOBILE_GYP=\"$NODEJS_MOBILE_GYP_BIN_FILE\" \\\n  npm_config_node_gyp=\"$NODEJS_MOBILE_GYP_BIN_FILE\" \\\n  npm_config_nodedir=\"$NODEJS_HEADERS_DIR\" \\\n  npm_config_platform=\"ios\" \\\n  npm_config_format=\"make-ios\" \\\n  npm_config_arch=\"arm64\" \\\n  npm --verbose --foreground-scripts rebuild --build-from-source\nelse\n  GYP_DEFINES=\"OS=ios target_arch=x64 iossim=true\" \\\n  CARGO_BUILD_TARGET=\"x86_64-apple-ios\" \\\n  NODEJS_MOBILE_GYP=\"$NODEJS_MOBILE_GYP_BIN_FILE\" \\\n  npm_config_node_gyp=\"$NODEJS_MOBILE_GYP_BIN_FILE\" \\\n  npm_config_nodedir=\"$NODEJS_HEADERS_DIR\" \\\n  npm_config_platform=\"ios\" \\\n  npm_config_format=\"make-ios\" \\\n  npm_config_arch=\"x64\" \\\n  npm --verbose --foreground-scripts rebuild --build-from-source\nfi\npopd\n";
-		};
-		B07BF1F6E39D1EAD6F59E3C5 /* [CP] Check Pods Manifest.lock */ = {
+		6ECD6D803D43BA5DB7F10489 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -409,7 +346,90 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		B5E7B255D4E31A20A10E096A /* [CP-User] [NODEJS MOBILE] Remove Simulator Strip */ = {
+		74559E295B7B83DC7D970EC0 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-bitkit-bitkitTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		B3302BBF15BD19B12AD956AB /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-bitkit-bitkitTests/Pods-bitkit-bitkitTests-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-bitkit-bitkitTests/Pods-bitkit-bitkitTests-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-bitkit-bitkitTests/Pods-bitkit-bitkitTests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		B7101F7676DDC35E23697104 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-bitkit-bitkitTests/Pods-bitkit-bitkitTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-bitkit-bitkitTests/Pods-bitkit-bitkitTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-bitkit-bitkitTests/Pods-bitkit-bitkitTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		B8F7250AB0E6A2BDFA5A909D /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-bitkit/Pods-bitkit-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-bitkit/Pods-bitkit-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-bitkit/Pods-bitkit-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		BE08E62B0BC6813875C4CDE1 /* [CP-User] [NODEJS MOBILE] Sign Native Modules */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			name = "[CP-User] [NODEJS MOBILE] Sign Native Modules";
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "#!/bin/sh\nset -e\n\nif [ -f ./.xcode.env ]; then\n  source \"./.xcode.env\";\nfi\nif [ -f ./.xcode.env.local ]; then\n  source \"./.xcode.env.local\";\nfi\n\nDESIRED_NODE_VERSION=\"18\"\nCURRENT_NODE_VERSION=\"$(node -p \"process.versions.node.split('.')[0]\")\"\nif [ \"$CURRENT_NODE_VERSION\" -ne \"$DESIRED_NODE_VERSION\" ]; then\n  echo \"nodejs-mobile-react-native's ios-build-native-modules script requires \\\nNode.js version $DESIRED_NODE_VERSION, but found \\\n$(node -p 'process.versions.node')\"\n  exit 1\nfi\n\nif [ -z \"$NODEJS_MOBILE_BUILD_NATIVE_MODULES\" ]; then\n# If build native modules preference is not set, look for it in the project's\n#nodejs-assets/BUILD_NATIVE_MODULES.txt file.\nNODEJS_ASSETS_DIR=\"$( cd \"$PROJECT_DIR\" && cd ../nodejs-assets/ && pwd )\"\nPREFERENCE_FILE_PATH=\"$NODEJS_ASSETS_DIR/BUILD_NATIVE_MODULES.txt\"\n  if [ -f \"$PREFERENCE_FILE_PATH\" ]; then\n    NODEJS_MOBILE_BUILD_NATIVE_MODULES=\"$(cat $PREFERENCE_FILE_PATH | xargs)\"\n  fi\nfi\n\nif [ -z \"$NODEJS_MOBILE_BUILD_NATIVE_MODULES\" ]; then\n# If build native modules preference is not set, try to find .gyp files\n#to turn it on.\n  gypfiles=($(find \"$CODESIGNING_FOLDER_PATH/nodejs-project/\" -type f -name \"*.gyp\"))\n  if [ ${#gypfiles[@]} -gt 0 ]; then\n    NODEJS_MOBILE_BUILD_NATIVE_MODULES=1\n  else\n    NODEJS_MOBILE_BUILD_NATIVE_MODULES=0\n  fi\nfi\n\nif [ \"1\" != \"$NODEJS_MOBILE_BUILD_NATIVE_MODULES\" ]; then exit 0; fi\n\n# Delete object files\nfind \"$CODESIGNING_FOLDER_PATH/nodejs-project/\" -name \"*.o\" -type f -delete\nfind \"$CODESIGNING_FOLDER_PATH/nodejs-project/\" -name \"*.a\" -type f -delete\n\n# Create Info.plist for each framework built and loader override.\nPATCH_SCRIPT_DIR=\"$( cd \"$PROJECT_DIR\" && cd ../node_modules/nodejs-mobile-react-native/scripts/ && pwd )\"\nNODEJS_PROJECT_DIR=\"$( cd \"$CODESIGNING_FOLDER_PATH\" && cd nodejs-project/ && pwd )\"\nnode \"$PATCH_SCRIPT_DIR\"/ios-create-plists-and-dlopen-override.js $NODEJS_PROJECT_DIR\n\n# Embed every resulting .framework in the application and delete them afterwards.\nembed_framework()\n{\n  FRAMEWORK_NAME=\"$(basename \"$1\")\"\n  cp -r \"$1\" \"$TARGET_BUILD_DIR/$FRAMEWORKS_FOLDER_PATH/\"\n  /usr/bin/codesign --force --sign $EXPANDED_CODE_SIGN_IDENTITY --preserve-metadata=identifier,entitlements,flags --timestamp=none \"$TARGET_BUILD_DIR/$FRAMEWORKS_FOLDER_PATH/$FRAMEWORK_NAME\"\n}\nfind \"$CODESIGNING_FOLDER_PATH/nodejs-project/\" -name \"*.framework\" -type d | while read frmwrk_path; do embed_framework \"$frmwrk_path\"; done\n\n#Delete gyp temporary .deps dependency folders from the project structure.\nfind \"$CODESIGNING_FOLDER_PATH/nodejs-project/\" -path \"*/.deps/*\" -delete\nfind \"$CODESIGNING_FOLDER_PATH/nodejs-project/\" -name \".deps\" -type d -delete\n\n#Delete frameworks from their build paths\nfind \"$CODESIGNING_FOLDER_PATH/nodejs-project/\" -path \"*/*.framework/*\" -delete\nfind \"$CODESIGNING_FOLDER_PATH/nodejs-project/\" -name \"*.framework\" -type d -delete\n";
+		};
+		D32164735854330E5B1E9298 /* [CP-User] [NODEJS MOBILE] Remove Simulator Strip */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -419,7 +439,17 @@
 			shellPath = /bin/sh;
 			shellScript = "#!/bin/sh\nset -e\n\nFRAMEWORK_BINARY_PATH=\"$TARGET_BUILD_DIR/$FRAMEWORKS_FOLDER_PATH/NodeMobile.framework/NodeMobile\"\nFRAMEWORK_STRIPPED_PATH=\"$FRAMEWORK_BINARY_PATH-strip\"\n\nif [ \"$PLATFORM_NAME\" != \"iphonesimulator\" ]; then\n  if $(lipo \"$FRAMEWORK_BINARY_PATH\" -verify_arch \"x86_64\") ; then\n    lipo -output \"$FRAMEWORK_STRIPPED_PATH\" -remove \"x86_64\" \"$FRAMEWORK_BINARY_PATH\"\n    rm \"$FRAMEWORK_BINARY_PATH\"\n    mv \"$FRAMEWORK_STRIPPED_PATH\" \"$FRAMEWORK_BINARY_PATH\"\n    echo \"Removed simulator strip from NodeMobile.framework\"\n  fi\nfi\n";
 		};
-		BBD823C3784DB30113F1AF89 /* [CP] Copy Pods Resources */ = {
+		D4B6C1287E2A3BA6DB7E2606 /* [CP-User] [NODEJS MOBILE] Build Native Modules */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			name = "[CP-User] [NODEJS MOBILE] Build Native Modules";
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "#!/bin/sh\nset -e\n\nif [ -f ./.xcode.env ]; then\n  source \"./.xcode.env\";\nfi\nif [ -f ./.xcode.env.local ]; then\n  source \"./.xcode.env.local\";\nfi\n\nDESIRED_NODE_VERSION=\"18\"\nCURRENT_NODE_VERSION=\"$(node -p \"process.versions.node.split('.')[0]\")\"\nif [ \"$CURRENT_NODE_VERSION\" -ne \"$DESIRED_NODE_VERSION\" ]; then\n  echo \"nodejs-mobile-react-native requires Node.js version \\\n$DESIRED_NODE_VERSION accessible from Xcode, but found \\\n$(node -p 'process.versions.node')\"\n  exit 1\nfi\n\n# This is our nodejs-project folder that was copied to the Xcode build folder\nNODEPROJ=\"$CODESIGNING_FOLDER_PATH/nodejs-project\"\n\nif [ -z \"$NODEJS_MOBILE_BUILD_NATIVE_MODULES\" ]; then\n# If build native modules preference is not set, look for it in the project's\n#nodejs-assets/BUILD_NATIVE_MODULES.txt file.\nNODEJS_ASSETS_DIR=\"$( cd \"$PROJECT_DIR\" && cd ../nodejs-assets/ && pwd )\"\nPREFERENCE_FILE_PATH=\"$NODEJS_ASSETS_DIR/BUILD_NATIVE_MODULES.txt\"\n  if [ -f \"$PREFERENCE_FILE_PATH\" ]; then\n    NODEJS_MOBILE_BUILD_NATIVE_MODULES=\"$(cat $PREFERENCE_FILE_PATH | xargs)\"\n  fi\nfi\n\nif [ -z \"$NODEJS_MOBILE_BUILD_NATIVE_MODULES\" ]; then\n# If build native modules preference is not set, try to find .gyp files\n#to turn it on.\n  gypfiles=($(find \"$NODEPROJ\" -type f -name \"*.gyp\"))\n  if [ ${#gypfiles[@]} -gt 0 ]; then\n    NODEJS_MOBILE_BUILD_NATIVE_MODULES=1\n  else\n    NODEJS_MOBILE_BUILD_NATIVE_MODULES=0\n  fi\nfi\n\nif [ \"1\" != \"$NODEJS_MOBILE_BUILD_NATIVE_MODULES\" ]; then exit 0; fi\n\n# Delete object files that may already come from within the npm package.\nfind \"$NODEPROJ\" -name \"*.o\" -type f -delete\nfind \"$NODEPROJ\" -name \"*.a\" -type f -delete\n\n# Function to skip compilation of a prebuilt module\npreparePrebuiltModule()\n{\n  local DOT_NODE_PATH=\"$1\"\n  local DOT_NODE_FULL=\"$(cd \"$(dirname -- \"$DOT_NODE_PATH\")\" >/dev/null; pwd -P)/$(basename -- \"$DOT_NODE_PATH\")\"\n  local MODULE_ROOT=\"$(cd $DOT_NODE_PATH && cd .. && cd .. && cd .. && pwd)\"\n  local MODULE_NAME=\"$(basename $MODULE_ROOT)\"\n  echo \"Preparing to use the prebuild in $MODULE_NAME\"\n  # Move the prebuild to the correct folder:\n  rm -rf $MODULE_ROOT/build\n  mkdir -p $MODULE_ROOT/build/Release\n  mv $DOT_NODE_FULL $MODULE_ROOT/build/Release/\n  # Hack the npm package to forcefully disable compile-on-install:\n  rm -rf $MODULE_ROOT/binding.gyp\n  sed -i.bak 's/\"install\"/\"dontinstall\"/g; s/\"rebuild\"/\"dontrebuild\"/g; s/\"gypfile\"/\"dontgypfile\"/g' $MODULE_ROOT/package.json\n}\n\n# Delete bundle contents that may be there from previous builds.\n# Handle the special case where the module has a prebuild that we want to use\nif [ \"$PLATFORM_PREFERRED_ARCH\" == \"arm64\" ]; then\n  PREBUILD_ARCH=\"arm64\"\nelse\n  PREBUILD_ARCH=\"x64\"\nfi\nif [ \"$PLATFORM_NAME\" == \"iphonesimulator\" ] && [ \"$NATIVE_ARCH\" == \"arm64\" ]; then\n  SUFFIX=\"-simulator\"\n  PREBUILD_ARCH=\"arm64\"\nelse\n  SUFFIX=\"\"\nfi\nfind -E \"$NODEPROJ\" \\\n    ! -regex \".*/prebuilds/ios-$PREBUILD_ARCH$SUFFIX\" \\\n    -regex '.*/prebuilds/[^/]*$' -type d \\\n    -prune -exec rm -rf \"{}\" \\;\nfind -E \"$NODEPROJ\" \\\n    ! -regex \".*/prebuilds/ios-$PREBUILD_ARCH$SUFFIX/.*\\.node$\" \\\n    -name '*.node' -type f \\\n    -exec rm \"{}\" \\;\nfind \"$NODEPROJ\" \\\n    -name \"*.framework\" -type d \\\n    -prune -exec rm -rf \"{}\" \\;\nfor DOT_NODE in `find -E \"$NODEPROJ\" -regex \".*/prebuilds/ios-$PREBUILD_ARCH$SUFFIX/.*\\.node$\"`; do\n  preparePrebuiltModule \"$DOT_NODE\"\ndone\n\n# Apply patches to the modules package.json\nif [ -d \"$NODEPROJ\"/node_modules/ ]; then\n  PATCH_SCRIPT_DIR=\"$( cd \"$PROJECT_DIR\" && cd ../node_modules/nodejs-mobile-react-native/scripts/ && pwd )\"\n  NODEJS_PROJECT_MODULES_DIR=\"$( cd \"$NODEPROJ\" && cd node_modules && pwd )\"\n  node \"$PATCH_SCRIPT_DIR\"/patch-package.js $NODEJS_PROJECT_MODULES_DIR\nfi\n\n# Get the nodejs-mobile-gyp location\nNODEJS_MOBILE_GYP_BIN_FILE=\"$( cd \"$PROJECT_DIR\" && cd .. && node -p 'require.resolve(`nodejs-mobile-gyp/bin/node-gyp.js`)' )\"\n\n# Support building neon-bindings (Rust) native modules\nif [ -f ~/.cargo/env ]; then\n  source ~/.cargo/env;\nfi\n\n# Rebuild modules with right environment\nNODEJS_HEADERS_DIR=\"$( cd \"$PROJECT_DIR\" && cd ../node_modules/nodejs-mobile-react-native/ios/libnode/ && pwd )\"\npushd $NODEPROJ\nif [ \"$PLATFORM_NAME\" == \"iphoneos\" ]; then\n  GYP_DEFINES=\"OS=ios\" \\\n  CARGO_BUILD_TARGET=\"aarch64-apple-ios iossim=false\" \\\n  NODEJS_MOBILE_GYP=\"$NODEJS_MOBILE_GYP_BIN_FILE\" \\\n  npm_config_node_gyp=\"$NODEJS_MOBILE_GYP_BIN_FILE\" \\\n  npm_config_nodedir=\"$NODEJS_HEADERS_DIR\" \\\n  npm_config_platform=\"ios\" \\\n  npm_config_format=\"make-ios\" \\\n  npm_config_arch=\"arm64\" \\\n  npm --verbose --foreground-scripts rebuild --build-from-source\nelif [ \"$NATIVE_ARCH\" == \"arm64\" ]; then\n  GYP_DEFINES=\"OS=ios target_arch=arm64 iossim=true\" \\\n  CARGO_BUILD_TARGET=\"aarch64-apple-ios-sim\" \\\n  NODEJS_MOBILE_GYP=\"$NODEJS_MOBILE_GYP_BIN_FILE\" \\\n  npm_config_node_gyp=\"$NODEJS_MOBILE_GYP_BIN_FILE\" \\\n  npm_config_nodedir=\"$NODEJS_HEADERS_DIR\" \\\n  npm_config_platform=\"ios\" \\\n  npm_config_format=\"make-ios\" \\\n  npm_config_arch=\"arm64\" \\\n  npm --verbose --foreground-scripts rebuild --build-from-source\nelse\n  GYP_DEFINES=\"OS=ios target_arch=x64 iossim=true\" \\\n  CARGO_BUILD_TARGET=\"x86_64-apple-ios\" \\\n  NODEJS_MOBILE_GYP=\"$NODEJS_MOBILE_GYP_BIN_FILE\" \\\n  npm_config_node_gyp=\"$NODEJS_MOBILE_GYP_BIN_FILE\" \\\n  npm_config_nodedir=\"$NODEJS_HEADERS_DIR\" \\\n  npm_config_platform=\"ios\" \\\n  npm_config_format=\"make-ios\" \\\n  npm_config_arch=\"x64\" \\\n  npm --verbose --foreground-scripts rebuild --build-from-source\nfi\npopd\n";
+		};
+		E10D45B09158A901F86EADB8 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -435,16 +465,6 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-bitkit/Pods-bitkit-resources.sh\"\n";
 			showEnvVarsInLog = 0;
-		};
-		C9D0E7FDF64413473706BE52 /* [CP-User] [NODEJS MOBILE] Copy Node.js Project files */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			name = "[CP-User] [NODEJS MOBILE] Copy Node.js Project files";
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "#!/bin/sh\nset -e\n\nNODEJS_ASSETS_DIR=\"$( cd \"$PROJECT_DIR\" && cd ../nodejs-assets/ && pwd )\"\nNODEJS_BUILT_IN_MODULES_DIR=\"$( cd \"$PROJECT_DIR\" && cd ../node_modules/nodejs-mobile-react-native/install/resources/nodejs-modules/ && pwd )\"\n\nif [ -d \"$CODESIGNING_FOLDER_PATH/nodejs-project/\" ]; then\n  rm -rf \"$CODESIGNING_FOLDER_PATH/nodejs-project/\"\nfi\n\nif [ -d \"$CODESIGNING_FOLDER_PATH/builtin_modules/\" ]; then\n  rm -rf \"$CODESIGNING_FOLDER_PATH/builtin_modules/\"\nfi\n\nrsync --archive --delete \"$NODEJS_ASSETS_DIR/nodejs-project\" \"$CODESIGNING_FOLDER_PATH\"\nrsync --archive --delete \"$NODEJS_BUILT_IN_MODULES_DIR/builtin_modules\" \"$CODESIGNING_FOLDER_PATH\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -479,7 +499,7 @@
 /* Begin XCBuildConfiguration section */
 		00E356F61AD99517003FC87E /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 705D0514E8887D963CF4CEA3 /* Pods-bitkit-bitkitTests.debug.xcconfig */;
+			baseConfigurationReference = 0ECE7CF95E1043CF65880AE5 /* Pods-bitkit-bitkitTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -507,7 +527,7 @@
 		};
 		00E356F71AD99517003FC87E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 61AC38F9C4FEA22E726B9F09 /* Pods-bitkit-bitkitTests.release.xcconfig */;
+			baseConfigurationReference = 10A8D83942CB07F6EF71D7EF /* Pods-bitkit-bitkitTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -532,7 +552,7 @@
 		};
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5A70A12E3CE1B199836EFFFF /* Pods-bitkit.debug.xcconfig */;
+			baseConfigurationReference = D3E17C94F78DE5BA2952C089 /* Pods-bitkit.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -563,7 +583,7 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 732C23B3BB0EF7E5D0109F55 /* Pods-bitkit.release.xcconfig */;
+			baseConfigurationReference = 6F811CE173528CA267201A9C /* Pods-bitkit.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
