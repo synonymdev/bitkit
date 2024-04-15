@@ -6,6 +6,39 @@ import * as bip39 from 'bip39';
 import { BIP32Factory } from 'bip32';
 import ecc from '@bitcoinerlab/secp256k1';
 import { err, ok, Result } from '@synonymdev/result';
+import { ldk } from '@synonymdev/react-native-ldk';
+import {
+	EAddressType,
+	EAvailableNetworks,
+	EElectrumNetworks,
+	IAddress,
+	ICustomGetAddress,
+	ICustomGetScriptHash,
+	IFormattedTransaction,
+	IFormattedTransactions,
+	IGenerateAddressesResponse,
+	IGetAddressResponse,
+	IKeyDerivationPath,
+	IOutput,
+	IRbfData,
+	ISendTransaction,
+	IUtxo,
+	IWalletData,
+	TGapLimitOptions,
+	TKeyDerivationAccount,
+	TKeyDerivationChange,
+	TKeyDerivationCoinType,
+	TKeyDerivationPurpose,
+	TOnMessage,
+	TServer,
+	TTransactionMessage,
+	// @ts-ignore
+	Wallet,
+	getByteCount,
+} from 'beignet';
+import type { Electrum } from 'beignet/dist/types/electrum';
+import type { Transaction } from 'beignet/dist/types/transaction';
+import type { Wallet as TWallet } from 'beignet/dist/types/wallet';
 
 import { EAvailableNetwork, networks } from '../networks';
 import {
@@ -54,42 +87,10 @@ import { refreshOrdersList } from '../../store/utils/blocktank';
 import { TNode } from '../../store/types/lightning';
 import { showNewOnchainTxPrompt, showNewTxPrompt } from '../../store/utils/ui';
 import { promiseTimeout, reduceValue } from '../helpers';
-import {
-	EAddressType,
-	EAvailableNetworks,
-	EElectrumNetworks,
-	getByteCount,
-	IAddress,
-	ICustomGetAddress,
-	IFormattedTransaction,
-	IFormattedTransactions,
-	IGenerateAddressesResponse,
-	IGetAddressResponse,
-	IKeyDerivationPath,
-	IOutput,
-	IRbfData,
-	ISendTransaction,
-	IUtxo,
-	IWalletData,
-	TGapLimitOptions,
-	TKeyDerivationAccount,
-	TKeyDerivationChange,
-	TKeyDerivationCoinType,
-	TKeyDerivationPurpose,
-	TOnMessage,
-	TTransactionMessage,
-	TServer,
-	// @ts-ignore
-	Wallet,
-} from 'beignet';
-import type { Electrum } from 'beignet/dist/types/electrum';
-import type { Transaction } from 'beignet/dist/types/transaction';
-import type { Wallet as TWallet } from 'beignet/dist/types/wallet';
 import { showToast } from '../notifications';
 import { updateUi } from '../../store/slices/ui';
-import { ICustomGetScriptHash } from 'beignet/src/types/wallet';
-import { ldk } from '@synonymdev/react-native-ldk';
 import { resetActivityState } from '../../store/slices/activity';
+import { bitkitLedger, syncLedger } from '../ledger';
 
 bitcoin.initEccLib(ecc);
 const bip32 = BIP32Factory(ecc);
@@ -943,12 +944,12 @@ const onElectrumConnectionChange = (isConnected: boolean): void => {
 let receivedTxids: string[] = [];
 const onMessage: TOnMessage = (key, data) => {
 	switch (key) {
-		case 'transactionReceived':
+		case 'transactionReceived': {
+			const txMsg = data as TTransactionMessage;
 			if (
 				wallet?.isSwitchingNetworks !== undefined &&
 				!wallet?.isSwitchingNetworks
 			) {
-				const txMsg: TTransactionMessage = data as TTransactionMessage;
 				const txId = txMsg.transaction.txid;
 				const { currentWallet, selectedNetwork } = getCurrentWallet();
 
@@ -969,11 +970,15 @@ const onMessage: TOnMessage = (key, data) => {
 			setTimeout(() => {
 				updateActivityList();
 			}, 500);
+			bitkitLedger?.handleOnchainTx(txMsg.transaction);
 			break;
+		}
 		case 'transactionSent':
+			const txMsg = data as TTransactionMessage;
 			setTimeout(() => {
 				updateActivityList();
 			}, 500);
+			bitkitLedger?.handleOnchainTx(txMsg.transaction);
 			break;
 		case 'connectedToElectrum':
 			onElectrumConnectionChange(data as boolean);
@@ -1008,6 +1013,7 @@ const onMessage: TOnMessage = (key, data) => {
 			refreshWallet({
 				onchain: false, // Beignet will handle this.
 			}).then();
+			syncLedger();
 	}
 };
 

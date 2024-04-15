@@ -3,33 +3,32 @@ import Keychain from 'react-native-keychain';
 import * as bitcoin from 'bitcoinjs-lib';
 import RNFS from 'react-native-fs';
 import { err, ok, Result } from '@synonymdev/result';
-import {
-	TBroadcastTransaction,
-	TChannelManagerChannelClosed,
-	TChannelManagerPaymentFailed,
-} from '@synonymdev/react-native-ldk/dist/utils/types';
 import { EPaymentType, TGetAddressHistory } from 'beignet';
 import lm, {
 	ldk,
-	DefaultTransactionDataShape,
 	defaultUserConfig,
+	DefaultTransactionDataShape,
 	EEventTypes,
 	ENetworks,
 	TAccount,
 	TChannel as TLdkChannel,
+	TBackupStateUpdate,
+	TBroadcastTransaction,
+	TChannelManagerChannelClosed,
 	TChannelManagerClaim,
+	TChannelManagerPaymentFailed,
 	TChannelManagerPaymentSent,
+	TChannelMonitor,
 	TChannelUpdate,
 	TClaimableBalance,
 	TCloseChannelReq,
 	TCreatePaymentReq,
+	TGetFees,
 	THeader,
 	TInvoice,
 	TPaymentReq,
 	TTransactionData,
 	TTransactionPosition,
-	TGetFees,
-	TBackupStateUpdate,
 } from '@synonymdev/react-native-ldk';
 
 import {
@@ -104,6 +103,7 @@ import { addTransfer } from '../../store/actions/wallet';
 import { decodeRawTx } from '../wallet/txdecoder';
 import { showToast } from '../notifications';
 import i18n from '../i18n';
+import { bitkitLedger, syncLedger } from '../ledger';
 
 const PAYMENT_TIMEOUT = 8 * 1000; // 8 seconds
 
@@ -485,6 +485,9 @@ export const subscribeToLightningPayments = ({
 						title: i18n.t('wallet:toast_payment_success_title'),
 						description: i18n.t('wallet:toast_payment_success_description'),
 					});
+					bitkitLedger?.handleLNTx({ ...res, amount_sat: found.amount });
+				} else {
+					syncLedger(); // TChannelManagerPaymentSent doesn't have amount_sat
 				}
 			},
 		);
@@ -516,6 +519,7 @@ export const subscribeToLightningPayments = ({
 					selectedNetwork,
 					selectedWallet,
 				}).then();
+				bitkitLedger?.handleLNTx(res);
 			},
 		);
 	}
@@ -539,6 +543,7 @@ export const subscribeToLightningPayments = ({
 
 				// Check if this is a CJIT Entry that needs to be added to the activity list.
 				addCJitActivityItem(res.channel_id).then();
+				syncLedger(); // we need to sync the ledger because TChannelUpdate doesn't have enough data
 			},
 		);
 	}
@@ -550,6 +555,7 @@ export const subscribeToLightningPayments = ({
 					// our counterparty force closed the channel
 					showBottomSheet('connectionClosed');
 				}
+				syncLedger(); // TChannelManagerChannelClosed is different from TChannelMonitor
 			},
 		);
 	}
@@ -1396,8 +1402,22 @@ export const getLdkChannels = (): Promise<Result<TLdkChannel[]>> => {
 };
 
 /**
- * Returns lightning channels from redux store.
- * @returns {TChannel[]}
+ * Returns an array of closed channels
+ * @returns Promise<Result<TChannelMonitor[]>>
+ */
+export const getChannelMonitors = async (
+	ignoreOpenChannels: boolean = true,
+): Promise<Result<TChannelMonitor[]>> => {
+	return ldk.listChannelMonitors(ignoreOpenChannels);
+};
+
+/**
+ * Returns an array of unconfirmed/pending lightning channels from either storage or directly from the LDK node.
+ * CURRENTLY UNUSED
+ * @param {boolean} [fromStorage]
+ * @param {TWalletName} [selectedWallet]
+ * @param {EAvailableNetwork} [selectedNetwork]
+ * @returns {Promise<Result<TChannel[]>>}
  */
 export const getChannels = (): TChannel[] => {
 	const selectedWallet = getSelectedWallet();

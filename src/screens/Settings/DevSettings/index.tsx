@@ -133,6 +133,14 @@ const DevSettings = ({
 						navigation.navigate('FeeSettings');
 					},
 				},
+				{
+					title: 'Ledger',
+					type: EItemType.button,
+					testID: 'FeeSettings',
+					onPress: (): void => {
+						navigation.navigate('Ledger');
+					},
+				},
 			],
 		},
 		{

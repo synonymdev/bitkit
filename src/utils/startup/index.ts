@@ -25,6 +25,7 @@ import { promiseTimeout } from '../helpers';
 import { EAvailableNetwork } from '../networks';
 import { TWalletName } from '../../store/types/wallet';
 import { runChecks } from '../wallet/checks';
+import { setupLedger, syncLedger } from '../ledger';
 
 /**
  * Creates a new wallet from scratch
@@ -109,6 +110,8 @@ export const startWalletServices = async ({
 			refreshBlocktankInfo().then();
 		});
 
+		setupLedger({ selectedWallet, selectedNetwork });
+
 		const mnemonicResponse = await getMnemonicPhrase();
 		if (mnemonicResponse.isErr()) {
 			return err(mnemonicResponse.error.message);
@@ -171,6 +174,8 @@ export const startWalletServices = async ({
 
 		// Refresh slashpay config
 		updateSlashPayConfig2({ selectedNetwork, forceUpdate: true });
+
+		await syncLedger();
 
 		return ok('Wallet started');
 	} catch (e) {
