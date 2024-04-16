@@ -100,10 +100,12 @@ export const setupAddressGenerator = async ({
 	selectedWallet = getSelectedWallet(),
 	selectedNetwork = getSelectedNetwork(),
 	mnemonic,
+	bip39Passphrase,
 }: {
 	selectedWallet?: TWalletName;
 	selectedNetwork?: EAvailableNetwork;
 	mnemonic?: string;
+	bip39Passphrase?: string;
 } = {}): Promise<Result<string>> => {
 	if (!mnemonic) {
 		const mnemonicResponse = await getMnemonicPhrase(selectedWallet);
@@ -112,8 +114,10 @@ export const setupAddressGenerator = async ({
 		}
 		mnemonic = mnemonicResponse.value;
 	}
+	if (!bip39Passphrase) {
+		bip39Passphrase = await getBip39Passphrase();
+	}
 	addressGenerator = new BitcoinActions();
-	const bip39Passphrase = await getBip39Passphrase();
 	const setupRes = addressGenerator.setup({
 		mnemonic,
 		selectedNetwork,
@@ -1094,6 +1098,12 @@ export const setupOnChainWallet = async ({
 		}
 		mnemonic = mnemonicRes.value;
 	}
+	await setupAddressGenerator({
+		mnemonic,
+		bip39Passphrase,
+		selectedWallet: name,
+		selectedNetwork,
+	});
 	// Fetch any stored custom peers.
 	const customPeers = servers ?? getCustomElectrumPeers({ selectedNetwork });
 	let storage;
