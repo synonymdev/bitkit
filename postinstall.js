@@ -13,15 +13,10 @@ fs.access(devEnvFile, fs.constants.F_OK, (err) => {
 	}
 });
 
-let installNodeDeps = ``;
-
 if (os.type() === 'Darwin') {
-	installNodeDeps += 'react-native setup-ios-permissions';
+	let cmd = 'react-native setup-ios-permissions';
 	if (!process.env.CI) {
-		installNodeDeps += '&& pod install --project-directory=ios';
+		cmd += '&& pod install --project-directory=ios';
 	}
-}
-
-if (installNodeDeps !== '') {
-    exec(installNodeDeps);
+	exec(cmd);
 }
