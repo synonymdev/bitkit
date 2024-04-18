@@ -56,7 +56,7 @@ jobs:
           HUSKY: 0
 
       - name: Pod Install
-        run: pod install --project-directory=ios || pod install --project-directory=ios
+        run: pod install --project-directory=ios --repo-update || pod install --project-directory=ios
 
       - name: Build
         run: yarn e2e:build:ios-release || yarn e2e:build:ios-release

@@ -76,9 +76,9 @@ PODS:
   - lottie-react-native (5.1.6):
     - lottie-ios (~> 3.4.0)
     - React-Core
-  - MMKV (1.3.3):
-    - MMKVCore (~> 1.3.3)
-  - MMKVCore (1.3.3)
+  - MMKV (1.3.4):
+    - MMKVCore (~> 1.3.4)
+  - MMKVCore (1.3.4)
   - nodejs-mobile-react-native (18.17.6):
     - React-Core
   - OpenSSL-Universal (1.1.1100)
@@ -955,22 +955,26 @@ PODS:
     - React-debug
   - react-native-biometrics (3.0.1):
     - React-Core
-  - react-native-blur (4.3.2):
+  - react-native-blur (4.4.0):
+    - glog
+    - RCT-Folly (= 2022.05.16.00)
     - React-Core
   - react-native-flipper (0.212.0):
     - React-Core
-  - react-native-image-picker (7.0.2):
+  - react-native-image-picker (7.1.2):
+    - glog
+    - RCT-Folly (= 2022.05.16.00)
     - React-Core
-  - react-native-keep-awake (1.2.2):
+  - react-native-keep-awake (1.2.3):
     - React-Core
   - react-native-ldk (0.0.137):
     - React
-  - react-native-mmkv (2.11.0):
-    - MMKV (>= 1.2.13)
+  - react-native-mmkv (2.12.2):
+    - glog
+    - MMKV (>= 1.3.3)
+    - RCT-Folly (= 2022.05.16.00)
     - React-Core
-  - react-native-netinfo (11.0.0):
-    - React-Core
-  - react-native-quick-base64 (2.0.8):
+  - react-native-netinfo (11.3.1):
     - React-Core
   - react-native-quick-crypto (0.6.1):
     - OpenSSL-Universal
@@ -985,7 +989,7 @@ PODS:
     - React-Core
   - react-native-restart (0.0.27):
     - React-Core
-  - react-native-safe-area-context (4.8.2):
+  - react-native-safe-area-context (4.9.0):
     - React-Core
   - react-native-skia (0.1.230):
     - glog
@@ -1169,13 +1173,13 @@ PODS:
     - React-Core
   - RNCClipboard (1.12.1):
     - React-Core
-  - RNDeviceInfo (10.11.0):
+  - RNDeviceInfo (10.13.1):
     - React-Core
   - RNExitApp (2.0.0):
     - React-Core
   - RNFS (2.20.0):
     - React-Core
-  - RNGestureHandler (2.14.0):
+  - RNGestureHandler (2.15.0):
     - glog
     - RCT-Folly (= 2022.05.16.00)
     - React-Core
@@ -1185,14 +1189,14 @@ PODS:
     - React-Core
   - RNPermissions (3.10.1):
     - React-Core
-  - RNQrGenerator (1.3.1):
+  - RNQrGenerator (1.4.0):
     - React
     - ZXingObjC
   - RNQuickAction (0.3.13):
     - React
   - RNReactNativeHapticFeedback (2.2.0):
     - React-Core
-  - RNReanimated (3.6.1):
+  - RNReanimated (3.8.1):
     - glog
     - RCT-Folly (= 2022.05.16.00)
     - React-Core
@@ -1203,7 +1207,7 @@ PODS:
     - React-Core
   - RNShare (9.4.1):
     - React-Core
-  - RNSVG (14.0.0):
+  - RNSVG (15.1.0):
     - React-Core
   - RNZipArchive (6.1.0):
     - React-Core
@@ -1254,6 +1258,7 @@ DEPENDENCIES:
   - lottie-react-native (from `../node_modules/lottie-react-native`)
   - nodejs-mobile-react-native (from `../node_modules/nodejs-mobile-react-native`)
   - OpenSSL-Universal (= 1.1.1100)
+  - OpenSSL-Universal (~> 1.1.1100)
   - RCT-Folly (from `../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec`)
   - RCT-Folly/Fabric (from `../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec`)
   - RCTRequired (from `../node_modules/react-native/Libraries/RCTRequired`)
@@ -1286,7 +1291,6 @@ DEPENDENCIES:
   - "react-native-ldk (from `../node_modules/@synonymdev/react-native-ldk`)"
   - react-native-mmkv (from `../node_modules/react-native-mmkv`)
   - "react-native-netinfo (from `../node_modules/@react-native-community/netinfo`)"
-  - react-native-quick-base64 (from `../node_modules/react-native-quick-base64`)
   - react-native-quick-crypto (from `../node_modules/react-native-quick-crypto`)
   - react-native-randombytes (from `../node_modules/react-native-randombytes`)
   - react-native-release-profiler (from `../node_modules/react-native-release-profiler`)
@@ -1432,8 +1436,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-mmkv"
   react-native-netinfo:
     :path: "../node_modules/@react-native-community/netinfo"
-  react-native-quick-base64:
-    :path: "../node_modules/react-native-quick-base64"
   react-native-quick-crypto:
     :path: "../node_modules/react-native-quick-crypto"
   react-native-randombytes:
@@ -1549,8 +1551,8 @@ SPEC CHECKSUMS:
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
   lottie-ios: 8f97d3271e155c2d688875c29cd3c74908aef5f8
   lottie-react-native: 8f9d4be452e23f6e5ca0fdc11669dc99ab52be81
-  MMKV: f902fb6719da13c2ab0965233d8963a59416f911
-  MMKVCore: d26e4d3edd5cb8588c2569222cbd8be4231374e9
+  MMKV: ed58ad794b3f88c24d604a5b74f3fba17fcbaf74
+  MMKVCore: a67a1cede26175c413176f404a7cedec43f96a0b
   nodejs-mobile-react-native: 9968fc921fcaf4b1f1d158cdbecd6bf5c3ac6a78
   OpenSSL-Universal: ebc357f1e6bc71fa463ccb2fe676756aff50e88c
   RCT-Folly: 7169b2b1c44399c76a47b5deaaba715eeeb476c0
@@ -1575,19 +1577,18 @@ SPEC CHECKSUMS:
   React-logger: 3eb80a977f0d9669468ef641a5e1fabbc50a09ec
   React-Mapbuffer: 84ea43c6c6232049135b1550b8c60b2faac19fab
   react-native-biometrics: 352e5a794bfffc46a0c86725ea7dc62deb085bdc
-  react-native-blur: cfdad7b3c01d725ab62a8a729f42ea463998afa2
+  react-native-blur: 799045500f56146afc46245148080e7b7623cb75
   react-native-flipper: 9c1957af24b76493ba74f46d000a5c1d485e7731
-  react-native-image-picker: 2e2e82aba9b6a91a7c78f7d9afde341a2659c7b8
-  react-native-keep-awake: ad1d67f617756b139536977a0bf06b27cec0714a
+  react-native-image-picker: d3db110a3ded6e48c93aef7e8e51afdde8b16ed0
+  react-native-keep-awake: 5cfb49d1b2ee4321b2ffbc651e2d6d64d6f66772
   react-native-ldk: a292b13294c179e89a922ae7b357ace4f34b3a7f
-  react-native-mmkv: e97c0c79403fb94577e5d902ab1ebd42b0715b43
-  react-native-netinfo: 5ddbf20865bcffab6b43d0e4e1fd8b3896beb898
-  react-native-quick-base64: 777057ea4286f806b00259ede65dc79c7c706320
+  react-native-mmkv: 1fdc81aa70c1aba09370718e6a63a09cbbbac8d2
+  react-native-netinfo: bdb108d340cdb41875c9ced535977cac6d2ff321
   react-native-quick-crypto: 455c1b411db006dba1026a30681ececb19180187
   react-native-randombytes: 421f1c7d48c0af8dbcd471b0324393ebf8fe7846
   react-native-release-profiler: 0d212252f56756942eb44e6873a2047185084aa0
   react-native-restart: 7595693413fe3ca15893702f2c8306c62a708162
-  react-native-safe-area-context: 0ee144a6170530ccc37a0fd9388e28d06f516a89
+  react-native-safe-area-context: b97eb6f9e3b7f437806c2ce5983f479f8eb5de4b
   react-native-skia: df3eef3c51a745819464c5839fa551d29f28b28f
   react-native-tcp-socket: c1b7297619616b4c9caae6889bcb0aba78086989
   React-nativeconfig: b4d4e9901d4cabb57be63053fd2aa6086eb3c85f
@@ -1613,27 +1614,27 @@ SPEC CHECKSUMS:
   ReactNativeCameraKit: d95d3e19c514526a234d9f93c6db7e7f10eef9ea
   RNCAsyncStorage: 618d03a5f52fbccb3d7010076bc54712844c18ef
   RNCClipboard: d77213bfa269013bf4b857b7a9ca37ee062d8ef1
-  RNDeviceInfo: bf8a32acbcb875f568217285d1793b0e8588c974
+  RNDeviceInfo: 4f9c7cfd6b9db1b05eb919620a001cf35b536423
   RNExitApp: 00036cabe7bacbb413d276d5520bf74ba39afa6a
   RNFS: 4ac0f0ea233904cb798630b3c077808c06931688
-  RNGestureHandler: a4c4561307e67f2942f5a4fe1526ff78cf3f5280
+  RNGestureHandler: 67fb54b3e6ca338a8044e85cd6f340265aa41091
   RNKeychain: bfe3d12bf4620fe488771c414530bf16e88f3678
   RNLocalize: dbea38dcb344bf80ff18a1757b1becf11f70cae4
   RNPermissions: 2c0eec471f4de66d04d226c339898d10a6e123c4
-  RNQrGenerator: 90461ba3ca88c1d38ef73da50fade35d9648215d
+  RNQrGenerator: 1676221c08bfabec978242989c733810dad20959
   RNQuickAction: 6d404a869dc872cde841ad3147416a670d13fa93
   RNReactNativeHapticFeedback: ec56a5f81c3941206fd85625fa669ffc7b4545f9
-  RNReanimated: dee37576492f1a375017515f5c77e66e5eec696b
+  RNReanimated: 8a4d86eb951a4a99d8e86266dc71d7735c0c30a9
   RNScreens: c9fce64c458144c55ffda7e779ef1d85a24e7a29
   RNShare: 32e97adc8d8c97d4a26bcdd3c45516882184f8b6
-  RNSVG: 255767813dac22db1ec2062c8b7e7b856d4e5ae6
+  RNSVG: 50cf2c7018e57cf5d3522d98d0a3a4dd6bf9d093
   RNZipArchive: ef9451b849c45a29509bf44e65b788829ab07801
   SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17
   sodium-react-native-direct: 102289e2a55688b5c6c489c88b2a7915d4e31ec1
   SSZipArchive: fe6a26b2a54d5a0890f2567b5cc6de5caa600aef
-  Yoga: 805bf71192903b20fc14babe48080582fee65a80
+  Yoga: d17d2cc8105eed528474683b42e2ea310e1daf61
   ZXingObjC: 8898711ab495761b2dbbdec76d90164a6d7e14c5
 
-PODFILE CHECKSUM: cfff77e82df814cd659ff975f089a1e36e95b1b1
+PODFILE CHECKSUM: f1db7fbaede04f515e7d2d3da93b734f24be618e
 
 COCOAPODS: 1.15.2

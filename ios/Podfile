@@ -38,6 +38,8 @@ if linkage != nil
 end
 
 target 'bitkit' do
+  # lock OpenSSL otherwise it breaks react-native-quick-crypto
+  pod "OpenSSL-Universal", "~> 1.1.1100"
   config = use_native_modules!
 
   use_react_native!(
