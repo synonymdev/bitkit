@@ -5,8 +5,7 @@ import React, {
 	useEffect,
 	useRef,
 } from 'react';
-import { AppState, Platform, StyleSheet, View } from 'react-native';
-import { useFocusEffect } from '@react-navigation/native';
+import { StyleSheet, View } from 'react-native';
 import { SvgXml } from 'react-native-svg';
 import Lottie from 'lottie-react-native';
 import { ldk } from '@synonymdev/react-native-ldk';
@@ -54,8 +53,6 @@ const Prize = ({
 }: TreasureHuntScreenProps<'Prize'>): ReactElement => {
 	const { chestId } = route.params;
 	const interval = useRef<NodeJS.Timer>();
-	const animationRef = useRef<Lottie>(null);
-	const appState = useRef(AppState.currentState);
 	const { isSmallScreen } = useScreenSize();
 	const dispatch = useAppDispatch();
 	const { treasureChests } = useAppSelector((state) => state.settings);
@@ -75,40 +72,6 @@ const Prize = ({
 
 	const dv = useDisplayValues(prize.amount);
 	const isWinner = prize.winType === 'winning';
-
-	// TEMP: fix iOS animation autoPlay
-	// @see https://github.com/lottie-react-native/lottie-react-native/issues/832
-	useFocusEffect(
-		useCallback(() => {
-			if (Platform.OS === 'ios') {
-				animationRef.current?.reset();
-				setTimeout(() => {
-					animationRef.current?.play();
-				}, 0);
-			}
-		}, []),
-	);
-
-	// TEMP: fix iOS animation on app to foreground
-	useEffect(() => {
-		const appStateSubscription = AppState.addEventListener(
-			'change',
-			(nextAppState) => {
-				if (
-					appState.current.match(/inactive|background/) &&
-					nextAppState === 'active'
-				) {
-					animationRef.current?.play();
-				}
-
-				appState.current = nextAppState;
-			},
-		);
-
-		return () => {
-			appStateSubscription.remove();
-		};
-	}, []);
 
 	const getLightningInvoice = useCallback(async (): Promise<string> => {
 		const response = await createLightningInvoice({
@@ -247,9 +210,9 @@ const Prize = ({
 			{isWinner && (
 				<View style={styles.confetti} pointerEvents="none">
 					<Lottie
-						ref={animationRef}
-						onLayout={(_): void => animationRef.current?.play()}
 						source={confettiSrc}
+						style={styles.lottie}
+						resizeMode="cover"
 						autoPlay
 						loop
 					/>
@@ -273,7 +236,7 @@ const Prize = ({
 					{prize.description}
 				</Text01M>
 				{/* eslint-disable-next-line react-native/no-inline-styles */}
-				<View style={[styles.note, { marginTop: isSmallScreen ? 40 : 80 }]}>
+				<View style={{ marginTop: isSmallScreen ? 40 : 80 }}>
 					{prize.note ? (
 						<Caption13M style={styles.noteText} color="yellow">
 							{prize.note}
@@ -306,13 +269,9 @@ const styles = StyleSheet.create({
 	},
 	confetti: {
 		...StyleSheet.absoluteFillObject,
-		// fix Android confetti height
-		...Platform.select({
-			android: {
-				width: '180%',
-			},
-		}),
-		// zIndex: 1,
+	},
+	lottie: {
+		height: '100%',
 	},
 	logo: {
 		flexDirection: 'row',
@@ -340,7 +299,6 @@ const styles = StyleSheet.create({
 		marginTop: 'auto',
 		textAlign: 'center',
 	},
-	note: {},
 	noteText: {
 		opacity: 0.6,
 		textAlign: 'center',

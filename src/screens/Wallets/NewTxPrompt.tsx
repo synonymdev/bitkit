@@ -1,12 +1,5 @@
-import React, {
-	memo,
-	ReactElement,
-	useCallback,
-	useEffect,
-	useRef,
-} from 'react';
-import { AppState, Image, Platform, StyleSheet, View } from 'react-native';
-import { useFocusEffect } from '@react-navigation/native';
+import React, { memo, ReactElement } from 'react';
+import { Image, StyleSheet, View } from 'react-native';
 import Lottie from 'lottie-react-native';
 import { useTranslation } from 'react-i18next';
 
@@ -32,48 +25,12 @@ const imageSrc = require('../../assets/illustrations/coin-stack-x.png');
 const NewTxPrompt = (): ReactElement => {
 	const { t } = useTranslation('wallet');
 	const snapPoints = useSnapPoints('large');
-	const animationRef = useRef<Lottie>(null);
-	const appState = useRef(AppState.currentState);
 	const dispatch = useAppDispatch();
 	const { activityItem } = useAppSelector((state) => {
 		return viewControllerSelector(state, 'newTxPrompt');
 	});
 
 	useBottomSheetBackPress('newTxPrompt');
-
-	// TEMP: fix iOS animation autoPlay
-	// @see https://github.com/lottie-react-native/lottie-react-native/issues/832
-	useFocusEffect(
-		useCallback(() => {
-			if (Platform.OS === 'ios') {
-				animationRef.current?.reset();
-				setTimeout(() => {
-					animationRef.current?.play();
-				}, 0);
-			}
-		}, []),
-	);
-
-	// TEMP: fix iOS animation on app to foreground
-	useEffect(() => {
-		const appStateSubscription = AppState.addEventListener(
-			'change',
-			(nextAppState) => {
-				if (
-					appState.current.match(/inactive|background/) &&
-					nextAppState === 'active'
-				) {
-					animationRef.current?.play();
-				}
-
-				appState.current = nextAppState;
-			},
-		);
-
-		return () => {
-			appStateSubscription.remove();
-		};
-	}, []);
 
 	const handlePress = (): void => {
 		dispatch(closeSheet('newTxPrompt'));
@@ -90,8 +47,9 @@ const NewTxPrompt = (): ReactElement => {
 			<View style={styles.container}>
 				<View style={styles.confetti} pointerEvents="none">
 					<Lottie
-						ref={animationRef}
 						source={isOnchainItem ? confettiOrangeSrc : confettiPurpleSrc}
+						style={styles.lottie}
+						resizeMode="cover"
 						autoPlay
 						loop
 					/>
@@ -135,13 +93,10 @@ const styles = StyleSheet.create({
 	},
 	confetti: {
 		...StyleSheet.absoluteFillObject,
-		// fix Android confetti height
-		...Platform.select({
-			android: {
-				width: '200%',
-			},
-		}),
 		zIndex: 1,
+	},
+	lottie: {
+		height: '100%',
 	},
 	imageContainer: {
 		marginTop: 'auto',

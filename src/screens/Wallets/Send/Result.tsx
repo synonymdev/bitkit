@@ -1,12 +1,5 @@
-import React, {
-	memo,
-	ReactElement,
-	useCallback,
-	useRef,
-	useState,
-} from 'react';
-import { StyleSheet, View, Platform, ActivityIndicator } from 'react-native';
-import { useFocusEffect } from '@react-navigation/native';
+import React, { memo, ReactElement, useState } from 'react';
+import { StyleSheet, View, ActivityIndicator } from 'react-native';
 import Lottie from 'lottie-react-native';
 import { useTranslation } from 'react-i18next';
 
@@ -44,7 +37,6 @@ const Result = ({
 }: SendScreenProps<'Result'>): ReactElement => {
 	const { t } = useTranslation('wallet');
 	const { success, txId, errorTitle, errorMessage } = route.params;
-	const animationRef = useRef<Lottie>(null);
 	const dispatch = useAppDispatch();
 	const selectedWallet = useAppSelector(selectedWalletSelector);
 	const selectedNetwork = useAppSelector(selectedNetworkSelector);
@@ -98,19 +90,6 @@ const Result = ({
 			</>
 		);
 	}
-
-	// TEMP: fix iOS animation autoPlay
-	// @see https://github.com/lottie-react-native/lottie-react-native/issues/832
-	useFocusEffect(
-		useCallback(() => {
-			if (Platform.OS === 'ios') {
-				animationRef.current?.reset();
-				setTimeout(() => {
-					animationRef.current?.play();
-				}, 0);
-			}
-		}, []),
-	);
 
 	const navigateToTxDetails = (): void => {
 		if (activityItem) {
@@ -174,7 +153,13 @@ const Result = ({
 						testID="SendSuccess"
 						style={styles.confetti}
 						pointerEvents="none">
-						<Lottie ref={animationRef} source={confettiSrc} autoPlay loop />
+						<Lottie
+							source={confettiSrc}
+							style={styles.lottie}
+							resizeMode="cover"
+							autoPlay
+							loop
+						/>
 					</View>
 				)}
 			</>
@@ -254,13 +239,10 @@ const styles = StyleSheet.create({
 	},
 	confetti: {
 		...StyleSheet.absoluteFillObject,
-		// fix Android confetti height
-		...Platform.select({
-			android: {
-				width: '200%',
-			},
-		}),
 		zIndex: 1,
+	},
+	lottie: {
+		height: '100%',
 	},
 	content: {
 		flex: 1,
