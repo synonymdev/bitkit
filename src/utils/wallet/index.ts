@@ -916,26 +916,42 @@ export const createDefaultWallet = async ({
 	}
 };
 
+// Only show the alert if no new connection has been established within 20 seconds.
+const CONNECTION_ALERT_TIMEOUT = 20000;
+let connectionAlertShown = false;
+let connectionAlertTimeout: NodeJS.Timeout;
 const onElectrumConnectionChange = (isConnected: boolean): void => {
 	// get state fresh from store everytime
 	const { isConnectedToElectrum } = getStore().ui;
 
-	if (!isConnectedToElectrum && isConnected) {
+	if (isConnectedToElectrum !== isConnected) {
 		dispatch(updateUi({ isConnectedToElectrum: isConnected }));
+	}
+
+	if (!isConnectedToElectrum && isConnected && connectionAlertShown) {
 		showToast({
 			type: 'success',
 			title: i18n.t('other:connection_restored_title'),
 			description: i18n.t('other:connection_restored_message'),
 		});
+		connectionAlertShown = false;
 	}
 
 	if (isConnectedToElectrum && !isConnected) {
-		dispatch(updateUi({ isConnectedToElectrum: isConnected }));
-		showToast({
-			type: 'warning',
-			title: i18n.t('other:connection_reconnect_title'),
-			description: i18n.t('other:connection_reconnect_msg'),
-		});
+		clearTimeout(connectionAlertTimeout);
+		connectionAlertTimeout = setTimeout(() => {
+			const { isConnectedToElectrum: isConnectedToElectrum2 } = getStore().ui;
+			if (isConnectedToElectrum2) {
+				// If the connection has been re-established, don't show the alert.
+				return;
+			}
+			showToast({
+				type: 'warning',
+				title: i18n.t('other:connection_reconnect_title'),
+				description: i18n.t('other:connection_reconnect_msg'),
+			});
+			connectionAlertShown = true;
+		}, CONNECTION_ALERT_TIMEOUT);
 	}
 };
 
