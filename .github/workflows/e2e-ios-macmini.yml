@@ -51,7 +51,7 @@ jobs:
         run: cp .env.test.template .env
 
       - name: Yarn Install
-        run: yarn --no-audit --prefer-offline || yarn --no-audit --prefer-offline
+        run: yarn --no-audit --prefer-offline || yarn --no-audit --prefer-offline || yarn
         env:
           HUSKY: 0
 
