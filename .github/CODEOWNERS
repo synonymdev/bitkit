@@ -7,9 +7,9 @@
 #
 # Github workflows need approval from the following users 
 #
-/.github/workflows/ @limpbrains @rbndg
+/.github/workflows/ @limpbrains
 
 #
 # Github E2E need approval from the following user
 #
-/e2e/ @limpbrains @rbndg
+/e2e/ @limpbrains
