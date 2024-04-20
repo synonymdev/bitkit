@@ -14,6 +14,18 @@ import initWaitForElectrumToSync from '../__tests__/utils/wait-for-electrum';
 
 const d = checkComplete(['security-1']) ? describe.skip : describe;
 
+const waitForPinScreen = async () => {
+	for (let i = 0; i < 60; i++) {
+		try {
+			await sleep(1000);
+			await element(by.id('NRemove').withAncestor(by.id('PinPad'))).tap();
+			break;
+		} catch (e) {
+			continue;
+		}
+	}
+};
+
 d('Settings Security And Privacy', () => {
 	let waitForElectrum;
 	const rpc = new BitcoinJsonRpc(bitcoinURL);
@@ -181,8 +193,10 @@ d('Settings Security And Privacy', () => {
 		await element(by.id('OK')).tap();
 
 		await device.launchApp({ newInstance: true });
-		await waitFor(element(by.id('PinPad'))).toBeVisible();
-		await sleep(1000);
+		await waitFor(
+			element(by.id('N2').withAncestor(by.id('PinPad'))),
+		).toBeVisible();
+		await waitForPinScreen();
 		await element(by.id('N2').withAncestor(by.id('PinPad'))).multiTap(4);
 		await waitFor(element(by.id('TotalBalance')))
 			.toBeVisible()
@@ -232,8 +246,10 @@ d('Settings Security And Privacy', () => {
 
 		// now lets restart the app and fail to enter correct PIN 8 times
 		await device.launchApp({ newInstance: true });
-		await waitFor(element(by.id('PinPad'))).toBeVisible();
-		await sleep(1000);
+		await waitFor(
+			element(by.id('N2').withAncestor(by.id('PinPad'))),
+		).toBeVisible();
+		await waitForPinScreen();
 		await element(by.id('N2').withAncestor(by.id('PinPad'))).multiTap(4);
 		await waitFor(element(by.id('AttemptsRemaining'))).toBeVisible();
 		for (let i = 0; i < 6; i++) {

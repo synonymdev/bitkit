@@ -181,7 +181,9 @@ const PinPad = ({
 							color="transparent"
 							entering={FadeIn}
 							exiting={FadeOut}>
-							<Subtitle style={styles.title}>{t('pin_enter')}</Subtitle>
+							<Subtitle testID="PinEnterSubtitle" style={styles.title}>
+								{t('pin_enter')}
+							</Subtitle>
 
 							{attemptsRemaining !== Number(PIN_ATTEMPTS) && (
 								<AnimatedView
