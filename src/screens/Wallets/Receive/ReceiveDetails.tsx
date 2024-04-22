@@ -68,7 +68,9 @@ const ReceiveDetails = ({
 	const isGeoBlocked = useAppSelector(isGeoBlockedSelector);
 	const accountVersion = useAppSelector(accountVersionSelector);
 
-	const { maxChannelSizeSat } = blocktank.options;
+	const { minChannelSizeSat, maxChannelSizeSat } = blocktank.options;
+	const minChannelSize = Math.max(minChannelSizeSat, 2.5 * invoice.amount);
+	const channelSize = Math.min(minChannelSize, maxChannelSizeSat);
 
 	const onChangeUnit = (): void => {
 		const result = getNumberPadText(invoice.amount, denomination, nextUnit);
@@ -94,7 +96,7 @@ const ReceiveDetails = ({
 		// Ensure the CJIT entry is within an acceptable range.
 		if (invoice.amount >= MINIMUM_AMOUNT && invoice.amount <= maxAmount) {
 			const cJitEntryResponse = await createCJitEntry({
-				channelSizeSat: maxChannelSizeSat,
+				channelSizeSat: channelSize,
 				invoiceSat: invoice.amount,
 				invoiceDescription: invoice.message,
 			});
@@ -107,6 +109,7 @@ const ReceiveDetails = ({
 			navigation.navigate('ReceiveConnect');
 		}
 	}, [
+		channelSize,
 		maxChannelSizeSat,
 		enableInstant,
 		invoice.amount,
