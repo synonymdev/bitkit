@@ -73,6 +73,7 @@ target 'bitkit' do
         config.build_settings["LD"] = "clang"
         config.build_settings["CXX"] = "clang++"
         config.build_settings["LDPLUSPLUS"] = "clang++"
+        config.build_settings["EXCLUDED_ARCHS[sdk=iphonesimulator*]"] = "x86_64"
       end
     end
     # buildcache end
