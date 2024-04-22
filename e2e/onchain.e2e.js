@@ -240,6 +240,8 @@ d('Onchain', () => {
 			} catch (e) {}
 			await sleep(1000); // animation
 			// get address from qrcode
+			await waitFor(element(by.id('QRCode'))).toBeVisible();
+			await sleep(100); // wait for qr code to render
 			let { label: wAddress } = await element(by.id('QRCode')).getAttributes();
 			wAddress = wAddress.replace('bitcoin:', '');
 
