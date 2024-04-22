@@ -69,6 +69,7 @@ import { startWalletServices } from '../../../utils/startup';
 import { updateOnchainFeeEstimates } from '../../../store/utils/fees';
 import { viewControllerIsOpenSelector } from '../../../store/reselect/ui';
 import { EAddressType, IAddress, IUtxo } from 'beignet';
+import { setupLedger, syncLedger } from '../../../utils/ledger';
 
 export type TAddressViewerData = {
 	[EAddressType.p2tr]: {
@@ -749,6 +750,7 @@ const AddressViewer = ({
 		if (selectedNetwork !== config.selectedNetwork) {
 			// Wipe existing activity
 			dispatch(resetActivityState());
+			setupLedger({ selectedWallet, selectedNetwork });
 			ldk.stop();
 			// Switch to new network.
 			updateWallet({ selectedNetwork: config.selectedNetwork });
@@ -763,6 +765,7 @@ const AddressViewer = ({
 				forceUpdate: true,
 			});
 			updateActivityList();
+			await syncLedger();
 		}
 
 		let _utxos: IUtxo[] = [];

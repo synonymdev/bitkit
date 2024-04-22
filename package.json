@@ -81,6 +81,7 @@
     "immer": "10.0.4",
     "intl-messageformat": "10.5.11",
     "jdenticon": "3.2.0",
+    "@synonymdev/ledger": "0.0.3",
     "lodash": "4.17.21",
     "lottie-react-native": "6.7.2",
     "mime": "3.0.0",

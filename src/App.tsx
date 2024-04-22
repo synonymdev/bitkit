@@ -24,6 +24,7 @@ import AppOnboarded from './AppOnboarded';
 
 import './utils/i18n';
 import './utils/quick-actions';
+import './utils/ledger';
 import { useAppSelector } from './hooks/redux';
 import { checkForAppUpdate } from './store/utils/ui';
 import { themeSelector } from './store/reselect/settings';

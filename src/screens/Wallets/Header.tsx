@@ -68,7 +68,7 @@ const Header = (): ReactElement => {
 		!__DISABLE_SLASHTAGS__ && navigation.navigate('Contacts');
 	}, [navigation]);
 	const openSettings = useCallback(
-		() => navigation.navigate('Settings', { screen: 'MainSettings' }),
+		() => navigation.navigate('Settings'),
 		[navigation],
 	);
 

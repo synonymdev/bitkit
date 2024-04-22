@@ -70,6 +70,8 @@ d('LN Channel Onboarding', () => {
 			await element(by.id('Receive')).tap();
 			await element(by.id('UnderstoodButton')).tap();
 			// get address from qrcode
+			await waitFor(element(by.id('QRCode'))).toBeVisible();
+			await sleep(100); // wait for qr code to render
 			let { label: wAddress } = await element(by.id('QRCode')).getAttributes();
 			wAddress = wAddress.replace('bitcoin:', '');
 

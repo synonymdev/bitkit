@@ -52,6 +52,8 @@ import LightningNavigator, {
 	LightningStackParamList,
 } from '../lightning/LightningNavigator';
 import WebRelay from '../../screens/Settings/WebRelay';
+import Ledger from '../../screens/Settings/Ledger';
+import LedgerTransaction from '../../screens/Settings/Ledger/LedgerTransaction';
 import { __E2E__ } from '../../constants/env';
 import AppStatus from '../../screens/Settings/AppStatus';
 import { TChannel } from '../../store/types/lightning';
@@ -107,6 +109,8 @@ export type SettingsStackParamList = {
 	AddressViewer: undefined;
 	FeeSettings: undefined;
 	WebRelay: undefined;
+	Ledger: undefined;
+	LedgerTransaction: { ledgerTxId: number };
 };
 
 const Stack = createStackNavigator<SettingsStackParamList>();
@@ -185,6 +189,8 @@ const SettingsNavigator = (): ReactElement => {
 			<Stack.Screen name="TagsSettings" component={TagsSettings} />
 			<Stack.Screen name="FeeSettings" component={FeeSettings} />
 			<Stack.Screen name="WebRelay" component={WebRelay} />
+			<Stack.Screen name="Ledger" component={Ledger} />
+			<Stack.Screen name="LedgerTransaction" component={LedgerTransaction} />
 		</Stack.Navigator>
 	);
 };
