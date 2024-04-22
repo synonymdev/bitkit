@@ -955,7 +955,7 @@ PODS:
   - React-Mapbuffer (0.73.6):
     - glog
     - React-debug
-  - react-native-address-generator (0.3.2):
+  - react-native-address-generator (0.3.3):
     - glog
     - RCT-Folly (= 2022.05.16.00)
     - React-Core
@@ -1584,7 +1584,7 @@ SPEC CHECKSUMS:
   React-jsinspector: 85583ef014ce53d731a98c66a0e24496f7a83066
   React-logger: 3eb80a977f0d9669468ef641a5e1fabbc50a09ec
   React-Mapbuffer: 84ea43c6c6232049135b1550b8c60b2faac19fab
-  react-native-address-generator: 7f02259ebf5951feb4bc617b42e560a512be9284
+  react-native-address-generator: fef3a05e58c1185b892b7ebf1a95a11ffaab1733
   react-native-biometrics: 352e5a794bfffc46a0c86725ea7dc62deb085bdc
   react-native-blur: 799045500f56146afc46245148080e7b7623cb75
   react-native-flipper: 9c1957af24b76493ba74f46d000a5c1d485e7731
