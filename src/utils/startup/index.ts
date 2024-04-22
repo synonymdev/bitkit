@@ -175,7 +175,7 @@ export const startWalletServices = async ({
 		// Refresh slashpay config
 		updateSlashPayConfig2({ selectedNetwork, forceUpdate: true });
 
-		await syncLedger();
+		syncLedger();
 
 		return ok('Wallet started');
 	} catch (e) {
