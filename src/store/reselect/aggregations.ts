@@ -7,6 +7,7 @@ import {
 	LIGHTNING_DIFF,
 	DEFAULT_SPENDING_PERCENTAGE,
 	MAX_SPENDING_PERCENTAGE,
+	BT_MIN_CHANNEL_SIZE_SAT_MULTIPLIER,
 } from '../../utils/wallet/constants';
 
 /**
@@ -66,7 +67,11 @@ export const lnSetupSelector = createSelector(
 		const { totalBalance, onchainBalance, lightningBalance } = balance;
 		const clientBalance = spendingAmount - lightningBalance;
 		const maxTotalChannelSize = blocktankInfo.options.maxChannelSizeSat;
-		const minChannelSize = blocktankInfo.options.minChannelSizeSat;
+		const minChannelSize = Math.round(
+			blocktankInfo.options.minChannelSizeSat +
+				blocktankInfo.options.minChannelSizeSat *
+					BT_MIN_CHANNEL_SIZE_SAT_MULTIPLIER,
+		);
 		const maxChannelSize = Math.max(0, maxTotalChannelSize - channelsSize);
 
 		// LSP balance must be at least 1.5% of the channel size

@@ -26,3 +26,7 @@ export const MAX_SPENDING_PERCENTAGE = 0.8;
 export const LIGHTNING_DIFF = 0.01;
 
 export const DEFAULT_CHANNEL_DURATION = 6;
+
+// Because BT /info minChannelSizeSat constantly changes depending on network fees,
+// we use a multiplier to calculate the minimum channel size.
+export const BT_MIN_CHANNEL_SIZE_SAT_MULTIPLIER = 0.1;

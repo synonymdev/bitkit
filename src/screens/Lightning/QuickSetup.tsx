@@ -66,9 +66,19 @@ const QuickSetup = ({
 			const setupTransfer = async (): Promise<void> => {
 				await resetSendTransaction();
 				await setupOnChainTransaction();
-				refreshBlocktankInfo().then();
 			};
 			setupTransfer();
+		}, []),
+	);
+
+	// refresh BT info every 20 seconds, because minChannelSizeSat changes
+	useFocusEffect(
+		useCallback(() => {
+			refreshBlocktankInfo().then();
+			const interval = setInterval(() => {
+				refreshBlocktankInfo().then();
+			}, 20000);
+			return (): void => clearInterval(interval);
 		}, []),
 	);
 
