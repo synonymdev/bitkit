@@ -97,9 +97,16 @@ export const pendingChannelsSelector = createSelector(
 		const node = lightning.nodes[selectedWallet];
 		const channels = node.channels[selectedNetwork];
 
-		return Object.values(channels).filter((channel) => {
+		console.info('node', node);
+		console.info('channels', channels);
+
+		const z = Object.values(channels).filter((channel) => {
 			return channel.status === EChannelStatus.pending;
 		});
+
+		console.info('pendingChannelsSelector return value', z);
+
+		return z;
 	},
 );
 
@@ -128,6 +135,8 @@ export const closedChannelsSelector = createSelector(
 export const channelsSizeSelector = createSelector(
 	[openChannelsSelector, pendingChannelsSelector],
 	(openChannels, pendingChannels) => {
+		console.info('kekeke openChannels', openChannels);
+		console.info('kekeke pendingChannels', pendingChannels);
 		const openResult = reduceValue(openChannels, 'channel_value_satoshis');
 		const pendingResult = reduceValue(
 			pendingChannels,
