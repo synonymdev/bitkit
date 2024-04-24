@@ -1,9 +1,16 @@
-import React, { ReactElement, memo, useCallback } from 'react';
+import React, {
+	ReactElement,
+	memo,
+	useCallback,
+	useEffect,
+	useState,
+} from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useFocusEffect } from '@react-navigation/native';
 
 import { Caption13Up } from '../../../styles/text';
+import { TouchableOpacity } from '../../../styles/components';
 import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
 import NumberPadTextField from '../../../components/NumberPadTextField';
 import SafeAreaInset from '../../../components/SafeAreaInset';
@@ -15,38 +22,56 @@ import UnitButton from '../UnitButton';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 import { updateInvoice } from '../../../store/slices/receive';
 import { receiveSelector } from '../../../store/reselect/receive';
+import { estimateOrderFee } from '../../../utils/blocktank';
 import { getNumberPadText } from '../../../utils/numberpad';
 import { blocktankInfoSelector } from '../../../store/reselect/blocktank';
 import { refreshBlocktankInfo } from '../../../store/utils/blocktank';
 import {
 	nextUnitSelector,
 	denominationSelector,
+	unitSelector,
 } from '../../../store/reselect/settings';
 import type { ReceiveScreenProps } from '../../../navigation/types';
-
-// hardcoded to be above fee (1092)
-// TODO: fee is dynamic so this should be fetched from the API
-const MINIMUM_AMOUNT = 20000;
 
 const ReceiveAmount = ({
 	navigation,
 }: ReceiveScreenProps<'ReceiveAmount'>): ReactElement => {
 	const { t } = useTranslation('wallet');
 	const dispatch = useAppDispatch();
+	const unit = useAppSelector(unitSelector);
 	const nextUnit = useAppSelector(nextUnitSelector);
 	const denomination = useAppSelector(denominationSelector);
 	const invoice = useAppSelector(receiveSelector);
 	const blocktank = useAppSelector(blocktankInfoSelector);
+	const [minimumAmount, setMinimumAmount] = useState(0);
 
 	const { maxChannelSizeSat } = blocktank.options;
-	// channel size must be at least 2x the invoice amount
-	const maxAmount = maxChannelSizeSat / 2;
+	const channelSize = Math.round(maxChannelSizeSat / 2);
 
 	useFocusEffect(
 		useCallback(() => {
 			refreshBlocktankInfo().then();
 		}, []),
 	);
+
+	useEffect(() => {
+		// The minimum amount is the fee for the channel plus a buffer
+		const getFeeEstimation = async (): Promise<void> => {
+			const feeResult = await estimateOrderFee({ lspBalance: channelSize });
+			if (feeResult.isOk()) {
+				// round up to the nearest 1000 to avoid fee fluctuations
+				const minimum = Math.round(feeResult.value / 1000) * 1000;
+				setMinimumAmount(minimum);
+			}
+		};
+
+		getFeeEstimation();
+	}, [channelSize]);
+
+	const onMinimum = (): void => {
+		const result = getNumberPadText(minimumAmount, denomination, unit);
+		dispatch(updateInvoice({ amount: minimumAmount, numberPadText: result }));
+	};
 
 	const onChangeUnit = (): void => {
 		const result = getNumberPadText(invoice.amount, denomination, nextUnit);
@@ -58,7 +83,7 @@ const ReceiveAmount = ({
 	};
 
 	const continueDisabled =
-		invoice.amount < MINIMUM_AMOUNT || invoice.amount > maxAmount;
+		invoice.amount < minimumAmount || invoice.amount > channelSize;
 
 	return (
 		<GradientView style={styles.container}>
@@ -74,17 +99,17 @@ const ReceiveAmount = ({
 
 				<View style={styles.numberPad} testID="ReceiveNumberPad">
 					<View style={styles.actions}>
-						<View>
+						<TouchableOpacity onPress={onMinimum}>
 							<Caption13Up style={styles.minimumText} color="gray1">
 								{t('minimum')}
 							</Caption13Up>
 							<Money
-								sats={MINIMUM_AMOUNT}
+								sats={minimumAmount}
 								size="text02m"
 								symbol={true}
 								shouldRoundUp={true}
 							/>
-						</View>
+						</TouchableOpacity>
 						<View style={styles.actionButtons}>
 							<View style={styles.actionButtonContainer}>
 								<UnitButton
