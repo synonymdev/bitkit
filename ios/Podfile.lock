@@ -1201,7 +1201,7 @@ PODS:
     - glog
     - RCT-Folly (= 2022.05.16.00)
     - React-Core
-  - RNShare (9.4.1):
+  - RNShare (10.2.0):
     - React-Core
   - RNSVG (14.0.0):
     - React-Core
@@ -1625,7 +1625,7 @@ SPEC CHECKSUMS:
   RNReactNativeHapticFeedback: ec56a5f81c3941206fd85625fa669ffc7b4545f9
   RNReanimated: dee37576492f1a375017515f5c77e66e5eec696b
   RNScreens: c9fce64c458144c55ffda7e779ef1d85a24e7a29
-  RNShare: 32e97adc8d8c97d4a26bcdd3c45516882184f8b6
+  RNShare: 554a91f5cfbe4adac4cfe3654826ee8b299fe365
   RNSVG: 255767813dac22db1ec2062c8b7e7b856d4e5ae6
   RNZipArchive: ef9451b849c45a29509bf44e65b788829ab07801
   SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17
