@@ -278,11 +278,7 @@ export const watchPendingOrders = (): void => {
 export const getPendingOrders = (): IBtOrder[] => {
 	const orders = getBlocktankStore().orders;
 	return orders.filter((order) => {
-		return [
-			BtOrderState2.CREATED,
-			BtOrderState2.EXECUTED,
-			BtOrderState2.EXPIRED,
-		].includes(order.state2);
+		return [BtOrderState2.CREATED, BtOrderState2.PAID].includes(order.state2);
 	});
 };
 

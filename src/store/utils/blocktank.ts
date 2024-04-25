@@ -1,11 +1,8 @@
 import { err, ok, Result } from '@synonymdev/result';
 import { CJitStateEnum } from '@synonymdev/blocktank-lsp-http-client/dist/shared/CJitStateEnum';
-import {
-	BtOrderState,
-	BtPaymentState,
-	IBtOrder,
-	ICJitEntry,
-} from '@synonymdev/blocktank-lsp-http-client';
+import { IBtOrder, ICJitEntry } from '@synonymdev/blocktank-lsp-http-client';
+import { BtOrderState2 } from '@synonymdev/blocktank-lsp-http-client/dist/shared/BtOrderState2';
+import { BtPaymentState2 } from '@synonymdev/blocktank-lsp-http-client/dist/shared/BtPaymentState2';
 
 import {
 	addTransfer,
@@ -132,8 +129,8 @@ export const refreshOrder = async (
 
 		// Attempt to finalize the channel open.
 		if (
-			order.state === BtOrderState.CREATED &&
-			order.payment.state === BtPaymentState.PAID
+			order.state2 === BtOrderState2.PAID &&
+			order.payment.state2 === BtPaymentState2.PAID
 		) {
 			dispatch(setLightningSetupStep(1));
 			const finalizeRes = await openChannel(orderId);
@@ -409,7 +406,7 @@ const handleOrderStateChange = (order: IBtOrder): void => {
 	}
 
 	// order expired
-	if (order.state === BtOrderState.EXPIRED) {
+	if (order.state2 === BtOrderState2.EXPIRED) {
 		showToast({
 			type: 'warning',
 			title: i18n.t('lightning:order_expired_title'),
@@ -419,7 +416,7 @@ const handleOrderStateChange = (order: IBtOrder): void => {
 	}
 
 	// new channel open
-	if (order.state === BtOrderState.OPEN) {
+	if (order.state2 === BtOrderState2.EXECUTED) {
 		// refresh LDK after channel open
 		refreshLdk();
 	}

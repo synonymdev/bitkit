@@ -1,42 +1,49 @@
-import React, { ReactElement, memo, useState, useEffect } from 'react';
-import { StyleSheet, View, ScrollView, TouchableOpacity } from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
-import { useTranslation } from 'react-i18next';
-import { BtOrderState2 } from '@synonymdev/blocktank-lsp-http-client/dist/shared/BtOrderState2';
-import { BtPaymentState2 } from '@synonymdev/blocktank-lsp-http-client/dist/shared/BtPaymentState2';
 import {
 	BtOpenChannelState,
 	IBtOrder,
 } from '@synonymdev/blocktank-lsp-http-client';
+import { BtOrderState2 } from '@synonymdev/blocktank-lsp-http-client/dist/shared/BtOrderState2';
+import { BtPaymentState2 } from '@synonymdev/blocktank-lsp-http-client/dist/shared/BtPaymentState2';
+import React, { ReactElement, memo, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import {
+	RefreshControl,
+	ScrollView,
+	StyleSheet,
+	TouchableOpacity,
+	View,
+} from 'react-native';
 
-import { View as ThemedView } from '../../../styles/components';
-import { Caption13Up, CaptionB } from '../../../styles/text';
-import SafeAreaInset from '../../../components/SafeAreaInset';
 import Button from '../../../components/Button';
-import NavigationHeader from '../../../components/NavigationHeader';
 import LightningChannel, {
 	TStatus,
 } from '../../../components/LightningChannel';
-import ChannelStatus from './ChannelStatus';
 import Money from '../../../components/Money';
-import { useAppSelector } from '../../../hooks/redux';
+import NavigationHeader from '../../../components/NavigationHeader';
+import SafeAreaInset from '../../../components/SafeAreaInset';
 import { usePaidBlocktankOrders } from '../../../hooks/blocktank';
+import useColors from '../../../hooks/colors';
 import {
 	useLightningChannelBalance,
 	useLightningChannelName,
 } from '../../../hooks/lightning';
+import { useAppSelector } from '../../../hooks/redux';
+import type { SettingsScreenProps } from '../../../navigation/types';
+import { enableDevOptionsSelector } from '../../../store/reselect/settings';
+import { selectedNetworkSelector } from '../../../store/reselect/wallet';
+import { EChannelStatus } from '../../../store/types/lightning';
+import { EUnit } from '../../../store/types/wallet';
+import { refreshOrder, updateOrder } from '../../../store/utils/blocktank';
+import { View as ThemedView } from '../../../styles/components';
+import { Caption13Up, CaptionB } from '../../../styles/text';
+import { openURL, sleep } from '../../../utils/helpers';
+import { i18nTime } from '../../../utils/i18n';
 import { showToast } from '../../../utils/notifications';
+import { createOrderSupportLink } from '../../../utils/support';
 import { getTransactions } from '../../../utils/wallet/electrum';
 import { getBlockExplorerLink } from '../../../utils/wallet/transactions';
-import { openURL } from '../../../utils/helpers';
-import { createOrderSupportLink } from '../../../utils/support';
-import { EUnit } from '../../../store/types/wallet';
-import { selectedNetworkSelector } from '../../../store/reselect/wallet';
-import { enableDevOptionsSelector } from '../../../store/reselect/settings';
-import { i18nTime } from '../../../utils/i18n';
-import { updateOrder } from '../../../store/utils/blocktank';
-import { EChannelStatus } from '../../../store/types/lightning';
-import type { SettingsScreenProps } from '../../../navigation/types';
+import ChannelStatus from './ChannelStatus';
 
 const Section = memo(
 	({
@@ -73,6 +80,8 @@ const ChannelDetails = ({
 	const { t } = useTranslation('lightning');
 	const { t: tTime } = useTranslation('intl', { i18n: i18nTime });
 	const { channel } = route.params;
+	const [refreshing, setRefreshing] = useState(false);
+	const colors = useColors();
 
 	const [txTime, setTxTime] = useState<string>();
 	const { spendingAvailable, receivingAvailable, capacity } =
@@ -136,6 +145,15 @@ const ChannelDetails = ({
 			setTxTime(formattedDate);
 		});
 	}, [selectedNetwork, channel.funding_txid, tTime]);
+
+	const handleRefresh = async (): Promise<void> => {
+		setRefreshing(true);
+		await sleep(1000);
+		if (blocktankOrder) {
+			await refreshOrder(blocktankOrder.id);
+		}
+		setRefreshing(false);
+	};
 
 	const openSupportLink = async (order: IBtOrder): Promise<void> => {
 		const link = await createOrderSupportLink(
@@ -203,7 +221,14 @@ const ChannelDetails = ({
 			/>
 			<ScrollView
 				contentContainerStyle={styles.content}
-				testID="ChannelScrollView">
+				testID="ChannelScrollView"
+				refreshControl={
+					<RefreshControl
+						refreshing={refreshing}
+						onRefresh={handleRefresh}
+						tintColor={colors.refreshControl}
+					/>
+				}>
 				<View style={styles.channel}>
 					<LightningChannel channel={channel} status={getChannelStatus()} />
 				</View>

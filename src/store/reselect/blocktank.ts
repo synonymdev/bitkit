@@ -1,11 +1,8 @@
 import { createSelector } from '@reduxjs/toolkit';
 import { RootState } from '..';
 import { IBlocktank, TPaidBlocktankOrders } from '../types/blocktank';
-import {
-	BtOrderState,
-	IBtInfo,
-	IBtOrder,
-} from '@synonymdev/blocktank-lsp-http-client';
+import { IBtInfo, IBtOrder } from '@synonymdev/blocktank-lsp-http-client';
+import { BtOrderState2 } from '@synonymdev/blocktank-lsp-http-client/dist/shared/BtOrderState2';
 
 const blocktankState = (state: RootState): IBlocktank => state.blocktank;
 
@@ -41,13 +38,13 @@ export const blocktankPaidOrdersFullSelector = createSelector(
 	): {
 		created: IBtOrder[];
 		expired: IBtOrder[];
-		open: IBtOrder[];
-		closed: IBtOrder[];
+		executed: IBtOrder[];
+		paid: IBtOrder[];
 	} => {
 		const created: IBtOrder[] = [];
 		const expired: IBtOrder[] = [];
-		const open: IBtOrder[] = [];
-		const closed: IBtOrder[] = [];
+		const executed: IBtOrder[] = [];
+		const paid: IBtOrder[] = [];
 
 		Object.keys(blocktank.paidOrders).forEach((orderId) => {
 			const order = blocktank.orders.find(
@@ -60,23 +57,23 @@ export const blocktankPaidOrdersFullSelector = createSelector(
 				return;
 			}
 
-			switch (order.state) {
-				case BtOrderState.CREATED:
+			switch (order.state2) {
+				case BtOrderState2.CREATED:
 					created.push(order);
 					break;
-				case BtOrderState.EXPIRED:
+				case BtOrderState2.EXPIRED:
 					expired.push(order);
 					break;
-				case BtOrderState.OPEN:
-					open.push(order);
+				case BtOrderState2.EXECUTED:
+					executed.push(order);
 					break;
-				case BtOrderState.CLOSED:
-					closed.push(order);
+				case BtOrderState2.PAID:
+					paid.push(order);
 					break;
 			}
 		});
 
-		return { created, expired, open, closed };
+		return { created, expired, executed, paid };
 	},
 );
 /**

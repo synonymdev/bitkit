@@ -1,6 +1,7 @@
 import assert from 'node:assert';
 import cloneDeep from 'lodash/cloneDeep';
 import { IBtOrder } from '@synonymdev/blocktank-lsp-http-client';
+import { BtOrderState2 } from '@synonymdev/blocktank-lsp-http-client/dist/shared/BtOrderState2';
 
 import '../src/utils/i18n';
 import { todosFullSelector } from '../src/store/reselect/todos';
@@ -83,16 +84,16 @@ describe('Todos selector', () => {
 	it('should not return hidden todos', () => {
 		const state = cloneDeep(s);
 
-		const order = {
+		const order: Partial<IBtOrder> = {
 			id: 'order1',
-			state: 'expired',
+			state2: BtOrderState2.EXPIRED,
 			// expired 10 days ago
 			orderExpiresAt: new Date(
 				new Date().getTime() - 10 * 24 * 60 * 60 * 1000,
 			).toISOString(),
-		} as IBtOrder;
+		};
 		state.blocktank.paidOrders = { order1: 'txid' };
-		state.blocktank.orders = [order];
+		state.blocktank.orders = [order as IBtOrder];
 
 		state.todos.hide = {
 			backupSeedPhrase: +new Date(),
@@ -125,12 +126,14 @@ describe('Todos selector', () => {
 	it('should return transferClosingChannel if there are gracefully closing channels', () => {
 		const state = cloneDeep(s);
 
-		const channel1 = {
+		const channel1: Partial<TChannel> = {
 			channel_id: 'channel1',
 			status: EChannelStatus.open,
 			is_channel_ready: true,
-		} as TChannel;
-		state.lightning.nodes.wallet0.channels.bitcoinRegtest = { channel1 };
+		};
+		state.lightning.nodes.wallet0.channels.bitcoinRegtest = {
+			channel1: channel1 as TChannel,
+		};
 		state.user.startCoopCloseTimestamp = 123;
 
 		expect(todosFullSelector(state)).toEqual(
@@ -140,12 +143,14 @@ describe('Todos selector', () => {
 
 	it('should return lightningSettingUpTodo for addtional pending transfers to spending', () => {
 		const state = cloneDeep(s);
-		const channel1 = {
+		const channel1: Partial<TChannel> = {
 			channel_id: 'channel1',
 			status: EChannelStatus.open,
 			is_channel_ready: true,
-		} as TChannel;
-		state.lightning.nodes.wallet0.channels.bitcoinRegtest = { channel1 };
+		};
+		state.lightning.nodes.wallet0.channels.bitcoinRegtest = {
+			channel1: channel1 as TChannel,
+		};
 		state.wallet.wallets.wallet0.transfers.bitcoinRegtest.push({
 			txId: 'txid',
 			type: ETransferType.open,
@@ -175,14 +180,16 @@ describe('Todos selector', () => {
 	it('should return lightningReadyTodo if there is a new open channel', () => {
 		const state = cloneDeep(s);
 
-		const channel1 = {
+		const channel1: Partial<TChannel> = {
 			channel_id: 'channel1',
 			status: EChannelStatus.open,
 			is_channel_ready: true,
 			confirmations: 1,
 			confirmations_required: 1,
-		} as TChannel;
-		state.lightning.nodes.wallet0.channels.bitcoinRegtest = { channel1 };
+		};
+		state.lightning.nodes.wallet0.channels.bitcoinRegtest = {
+			channel1: channel1 as TChannel,
+		};
 
 		expect(todosFullSelector(state)).toEqual(
 			expect.arrayContaining([lightningReadyTodo]),
@@ -192,14 +199,16 @@ describe('Todos selector', () => {
 	it('should return not lightningReadyTodo if notification has already been shown', () => {
 		const state = cloneDeep(s);
 
-		const channel1 = {
+		const channel1: Partial<TChannel> = {
 			channel_id: 'channel1',
 			status: EChannelStatus.open,
 			is_channel_ready: true,
 			confirmations: 1,
 			confirmations_required: 1,
-		} as TChannel;
-		state.lightning.nodes.wallet0.channels.bitcoinRegtest = { channel1 };
+		};
+		state.lightning.nodes.wallet0.channels.bitcoinRegtest = {
+			channel1: channel1 as TChannel,
+		};
 		state.todos.newChannelsNotifications = { channel1: +new Date() };
 
 		expect(todosFullSelector(state)).not.toEqual(
@@ -210,13 +219,13 @@ describe('Todos selector', () => {
 	it('should return btFailedTodo if there is a failed BT order', () => {
 		const state = cloneDeep(s);
 
-		const order = {
+		const order: Partial<IBtOrder> = {
 			id: 'order1',
-			state: 'expired',
+			state2: BtOrderState2.EXPIRED,
 			orderExpiresAt: new Date().toISOString(),
-		} as IBtOrder;
+		};
 		state.blocktank.paidOrders = { order1: 'txid' };
-		state.blocktank.orders = [order];
+		state.blocktank.orders = [order as IBtOrder];
 
 		expect(todosFullSelector(state)).toEqual(
 			expect.arrayContaining([btFailedTodo]),
@@ -226,13 +235,13 @@ describe('Todos selector', () => {
 	it('should return btFailedTodo if there is a failed BT order and the previous one was hidden', () => {
 		const state = cloneDeep(s);
 
-		const order = {
+		const order: Partial<IBtOrder> = {
 			id: 'order1',
-			state: 'expired',
+			state2: BtOrderState2.EXPIRED,
 			orderExpiresAt: new Date().toISOString(),
-		} as IBtOrder;
+		};
 		state.blocktank.paidOrders = { order1: 'txid' };
-		state.blocktank.orders = [order];
+		state.blocktank.orders = [order as IBtOrder];
 
 		// mark btFinishedTodo as hidden
 		state.todos.hide.btFailed = +new Date() - 60 * 1000;

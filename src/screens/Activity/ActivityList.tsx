@@ -1,39 +1,39 @@
+import { useNavigation } from '@react-navigation/native';
 import React, {
-	memo,
-	ReactElement,
-	useCallback,
-	useState,
-	useMemo,
 	MutableRefObject,
+	ReactElement,
+	memo,
+	useCallback,
+	useMemo,
+	useState,
 } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
 	NativeScrollEvent,
 	NativeSyntheticEvent,
+	RefreshControl,
 	StyleProp,
 	StyleSheet,
 	View,
 	ViewStyle,
-	RefreshControl,
 } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
 import { FlatList, GestureType } from 'react-native-gesture-handler';
-import { useTranslation } from 'react-i18next';
 
-import { Caption13Up, BodyM, BodySSB } from '../../styles/text';
 import Button from '../../components/Button';
-import ListItem from './ListItem';
 import useColors from '../../hooks/colors';
 import { useAppSelector } from '../../hooks/redux';
-import { refreshWallet } from '../../utils/wallet';
-import {
-	groupActivityItems,
-	filterActivityItems,
-	TActivityFilter,
-} from '../../utils/activity';
 import { RootNavigationProp } from '../../navigation/types';
 import { activityItemsSelector } from '../../store/reselect/activity';
 import { tagsSelector } from '../../store/reselect/metadata';
 import { IActivityItem } from '../../store/types/activity';
+import { BodyM, BodySSB, Caption13Up } from '../../styles/text';
+import {
+	TActivityFilter,
+	filterActivityItems,
+	groupActivityItems,
+} from '../../utils/activity';
+import { refreshWallet } from '../../utils/wallet';
+import ListItem from './ListItem';
 
 const ListFooter = ({ showButton }: { showButton?: boolean }): ReactElement => {
 	const { t } = useTranslation('wallet');
@@ -81,6 +81,7 @@ const ActivityList = ({
 }): ReactElement => {
 	const colors = useColors();
 	const { t } = useTranslation('wallet');
+	const colors = useColors();
 	const navigation = useNavigation<RootNavigationProp>();
 	const items = useAppSelector(activityItemsSelector);
 	const tags = useAppSelector(tagsSelector);
