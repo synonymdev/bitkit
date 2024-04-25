@@ -90,6 +90,7 @@ import { updateUi } from '../../store/slices/ui';
 import { ICustomGetScriptHash } from 'beignet/src/types/wallet';
 import { ldk } from '@synonymdev/react-native-ldk';
 import { resetActivityState } from '../../store/slices/activity';
+import { TGetTotalFeeObj } from 'beignet/dist/types/types';
 
 bitcoin.initEccLib(ecc);
 const bip32 = BIP32Factory(ecc);
@@ -1524,4 +1525,31 @@ export const switchNetwork = async (
 	wallet = response.value;
 	setTimeout(updateActivityList, 500);
 	return ok(true);
+};
+
+/**
+ * Returns a fee object for the current/provided transaction.
+ * @param {number} [satsPerByte]
+ * @param {string} [message]
+ * @param {Partial<ISendTransaction>} [transaction]
+ * @param {boolean} [fundingLightning]
+ * @returns {Result<TGetTotalFeeObj>}
+ */
+export const getFeeInfo = ({
+	satsPerByte,
+	transaction,
+	message,
+	fundingLightning,
+}: {
+	satsPerByte: number;
+	message?: string;
+	transaction?: Partial<ISendTransaction>;
+	fundingLightning?: boolean;
+}): Result<TGetTotalFeeObj> => {
+	return wallet.getFeeInfo({
+		satsPerByte,
+		transaction,
+		message,
+		fundingLightning,
+	});
 };

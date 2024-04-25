@@ -1,4 +1,4 @@
-import React, { ReactElement, memo, useMemo, useState } from 'react';
+import React, { ReactElement, memo, useMemo, useState, useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
@@ -16,6 +16,7 @@ import { useAppSelector } from '../../../hooks/redux';
 import { useDisplayValues } from '../../../hooks/displayValues';
 import { transactionSelector } from '../../../store/reselect/wallet';
 import type { SendScreenProps } from '../../../navigation/types';
+import { getFeeInfo } from '../../../utils/wallet';
 
 const FeeCustom = ({
 	navigation,
@@ -23,6 +24,17 @@ const FeeCustom = ({
 	const { t } = useTranslation('wallet');
 	const transaction = useAppSelector(transactionSelector);
 	const [feeRate, setFeeRate] = useState(transaction.satsPerByte);
+	const [maxFee, setMaxFee] = useState(0);
+
+	useEffect(() => {
+		const feeInfo = getFeeInfo({
+			satsPerByte: transaction.satsPerByte,
+			transaction,
+		});
+		if (feeInfo.isOk()) {
+			setMaxFee(feeInfo.value.maxSatPerByte);
+		}
+	}, [transaction]);
 
 	const totalFee = getTotalFee({
 		satsPerByte: feeRate,
@@ -43,7 +55,15 @@ const FeeCustom = ({
 
 	const onPress = (key: string): void => {
 		const current = feeRate.toString();
-		const newAmount = handleNumberPadPress(key, current, { maxLength: 3 });
+		const newAmount = handleNumberPadPress(key, current, { maxLength: 4 });
+		if (Number(newAmount) > maxFee) {
+			showToast({
+				type: 'info',
+				title: 'Max possible fee rate',
+				description: `${maxFee} sats/vbyte`,
+			});
+			return;
+		}
 		setFeeRate(Number(newAmount));
 	};
 

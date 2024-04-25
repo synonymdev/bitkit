@@ -1,4 +1,11 @@
-import React, { memo, ReactElement, useMemo, useCallback } from 'react';
+import React, {
+	memo,
+	ReactElement,
+	useMemo,
+	useCallback,
+	useState,
+	useEffect,
+} from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
@@ -24,6 +31,7 @@ import {
 } from '../../../store/reselect/wallet';
 import SafeAreaInset from '../../../components/SafeAreaInset';
 import { EFeeId } from 'beignet';
+import { getFeeInfo } from '../../../utils/wallet';
 
 const FeeRate = ({ navigation }: SendScreenProps<'FeeRate'>): ReactElement => {
 	const { t } = useTranslation('wallet');
@@ -32,9 +40,17 @@ const FeeRate = ({ navigation }: SendScreenProps<'FeeRate'>): ReactElement => {
 	const selectedNetwork = useAppSelector(selectedNetworkSelector);
 	const transaction = useAppSelector(transactionSelector);
 	const feeEstimates = useAppSelector((store) => store.fees.onchain);
-
+	const [maxFee, setMaxFee] = useState(0);
 	const selectedFeeId = transaction.selectedFeeId;
 	const satsPerByte = transaction.satsPerByte;
+
+	useEffect(() => {
+		const feeInfo = getFeeInfo({ satsPerByte, transaction });
+		if (feeInfo.isOk()) {
+			setMaxFee(feeInfo.value.maxSatPerByte);
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [transaction]);
 
 	const transactionTotal = useCallback(() => {
 		return getTransactionOutputValue({
@@ -73,40 +89,46 @@ const FeeRate = ({ navigation }: SendScreenProps<'FeeRate'>): ReactElement => {
 
 	const displayFast = useMemo(() => {
 		return (
-			onchainBalance >= transactionTotal() + getFee(feeEstimates.fast) ||
-			transaction.max
+			maxFee >= feeEstimates.fast &&
+			(onchainBalance >= transactionTotal() + getFee(feeEstimates.fast) ||
+				transaction.max)
 		);
 	}, [
-		onchainBalance,
+		maxFee,
 		feeEstimates.fast,
-		getFee,
+		onchainBalance,
 		transactionTotal,
+		getFee,
 		transaction.max,
 	]);
 
 	const displayNormal = useMemo(() => {
 		return (
-			onchainBalance >= transactionTotal() + getFee(feeEstimates.normal) ||
-			transaction.max
+			feeEstimates.normal <= maxFee &&
+			(onchainBalance >= transactionTotal() + getFee(feeEstimates.normal) ||
+				transaction.max)
 		);
 	}, [
-		onchainBalance,
+		maxFee,
 		feeEstimates.normal,
-		getFee,
+		onchainBalance,
 		transactionTotal,
+		getFee,
 		transaction.max,
 	]);
 
 	const displaySlow = useMemo(() => {
 		return (
-			onchainBalance >= transactionTotal() + getFee(feeEstimates.slow) ||
-			transaction.max
+			maxFee >= feeEstimates.slow &&
+			(onchainBalance >= transactionTotal() + getFee(feeEstimates.slow) ||
+				transaction.max)
 		);
 	}, [
-		onchainBalance,
+		maxFee,
 		feeEstimates.slow,
-		getFee,
+		onchainBalance,
 		transactionTotal,
+		getFee,
 		transaction.max,
 	]);
 

@@ -638,8 +638,11 @@ export const setupFeeForOnChainTransaction = (): Result<string> => {
 		transactionSpeed === ETransactionSpeed.custom
 			? customFeeRate
 			: fees[transactionSpeed];
-	const selectedFeeId = txSpeedToFeeId(getSettingsStore().transactionSpeed);
-	const satsPerByte =
+	const selectedFeeId =
+		transaction.selectedFeeId === 'none'
+			? txSpeedToFeeId(getSettingsStore().transactionSpeed)
+			: transaction.selectedFeeId;
+	let satsPerByte =
 		transaction.selectedFeeId === 'none'
 			? preferredFeeRate
 			: transaction.satsPerByte;
@@ -650,8 +653,19 @@ export const setupFeeForOnChainTransaction = (): Result<string> => {
 	if (feeSetupRes.isOk()) {
 		return feeSetupRes;
 	}
-	// If unable to set up fee using the selectedFeeId, attempt 1 satsPerByte. Otherwise, return error.
-	const updateRes = updateFee({ satsPerByte: 1, transaction });
+
+	// If unable to set up fee using the selectedFeeId set maxSatPerByte from getFeeInfo.
+	const txFeeInfo = wallet.getFeeInfo({
+		satsPerByte,
+		transaction,
+	});
+	if (txFeeInfo.isErr()) {
+		return err(txFeeInfo.error.message);
+	}
+	if (txFeeInfo.value.maxSatPerByte < satsPerByte) {
+		satsPerByte = txFeeInfo.value.maxSatPerByte;
+	}
+	const updateRes = updateFee({ satsPerByte, transaction });
 	if (updateRes.isErr()) {
 		return err(feeSetupRes.error.message);
 	}
