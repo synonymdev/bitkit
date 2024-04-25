@@ -55,12 +55,12 @@ const FeeCustom = ({
 
 	const onPress = (key: string): void => {
 		const current = feeRate.toString();
-		const newAmount = handleNumberPadPress(key, current, { maxLength: 4 });
+		const newAmount = handleNumberPadPress(key, current, { maxLength: 3 });
 		if (Number(newAmount) > maxFee) {
 			showToast({
 				type: 'info',
-				title: 'Max possible fee rate',
-				description: `${maxFee} sats/vbyte`,
+				title: t('max_possible_fee_rate'),
+				description: `${maxFee} ${t('sats_per_vbyte')}`,
 			});
 			return;
 		}

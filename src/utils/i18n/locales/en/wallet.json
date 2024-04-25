@@ -58,6 +58,8 @@
 	"send_fee_and_speed": "Speed and fee",
 	"send_fee_speed": "Speed",
 	"send_fee_error": "Fee Invalid",
+	"max_possible_fee_rate": "Max possible fee rate",
+	"sats_per_vbyte": "sats/vbyte",
 	"send_output_to_small_title": "Send Amount Too Small",
 	"send_output_to_small_description": "Please increase your send amount to proceed.",
 	"send_coin_selection_output_to_small_description": "Please remove UTXO's or increase your send amount to proceed.",
