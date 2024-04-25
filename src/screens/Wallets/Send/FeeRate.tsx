@@ -45,11 +45,13 @@ const FeeRate = ({ navigation }: SendScreenProps<'FeeRate'>): ReactElement => {
 	const satsPerByte = transaction.satsPerByte;
 
 	useEffect(() => {
-		const feeInfo = getFeeInfo({ satsPerByte, transaction });
+		const feeInfo = getFeeInfo({
+			satsPerByte: transaction.satsPerByte,
+			transaction,
+		});
 		if (feeInfo.isOk()) {
 			setMaxFee(feeInfo.value.maxSatPerByte);
 		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [transaction]);
 
 	const transactionTotal = useCallback(() => {
