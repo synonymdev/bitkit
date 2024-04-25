@@ -64,19 +64,19 @@ jobs:
       - name: Test attempt 1
         continue-on-error: true
         id: test1
-        run: yarn e2e:test:ios-release --record-videos all --take-screenshots all --record-logs all
+        run: yarn e2e:test:ios-release --record-videos all --take-screenshots all --record-logs all --cleanup
 
       - name: Test attempt 2
         continue-on-error: true
         id: test2
         if: steps.test1.outcome != 'success'
-        run: yarn e2e:test:ios-release --record-videos all --take-screenshots all --record-logs all
+        run: yarn e2e:test:ios-release --record-videos all --take-screenshots all --record-logs all --cleanup
 
       - name: Test attempt 3
         continue-on-error: true
         id: test3
         if: steps.test1.outcome != 'success' && steps.test2.outcome != 'success'
-        run: yarn e2e:test:ios-release --record-videos all --take-screenshots all --record-logs all
+        run: yarn e2e:test:ios-release --record-videos all --take-screenshots all --record-logs all --cleanup
 
       - name: Restart docker before last attempt
         if: steps.test1.outcome != 'success' && steps.test2.outcome != 'success' && steps.test3.outcome != 'success'
@@ -87,7 +87,7 @@ jobs:
       - name: Test attempt 4
         id: test4
         if: steps.test1.outcome != 'success' && steps.test2.outcome != 'success' && steps.test3.outcome != 'success'
-        run: yarn e2e:test:ios-release --record-videos all --take-screenshots all --record-logs all
+        run: yarn e2e:test:ios-release --record-videos all --take-screenshots all --record-logs all --cleanup
 
       - uses: actions/upload-artifact@v3
         if: failure()
