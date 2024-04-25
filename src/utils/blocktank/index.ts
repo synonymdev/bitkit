@@ -137,14 +137,14 @@ export const estimateOrderFee = async ({
  * @returns {Promise<Result<ICJitEntry>>}
  */
 export const createCJitEntry = async ({
-	channelSizeSat,
-	invoiceSat,
+	channelSize,
+	invoiceAmount,
 	invoiceDescription,
 	channelExpiryWeeks = DEFAULT_CHANNEL_DURATION,
 	couponCode = 'bitkit',
 }: {
-	channelSizeSat: number;
-	invoiceSat: number;
+	channelSize: number;
+	invoiceAmount: number;
 	invoiceDescription: string;
 	channelExpiryWeeks?: number;
 	couponCode?: string;
@@ -163,8 +163,8 @@ export const createCJitEntry = async ({
 		}
 
 		const createRes = await bt.createCJitEntry(
-			channelSizeSat,
-			invoiceSat,
+			channelSize,
+			invoiceAmount,
 			invoiceDescription,
 			nodeId,
 			channelExpiryWeeks,

@@ -37,9 +37,10 @@ const ReceiveConnect = ({
 	const blocktank = useAppSelector(blocktankInfoSelector);
 	const { amount, message } = useAppSelector(receiveSelector);
 
-	const { minChannelSizeSat, maxChannelSizeSat } = blocktank.options;
-	const minChannelSize = Math.max(minChannelSizeSat, 2.5 * amount);
-	const channelSize = Math.min(minChannelSize, maxChannelSizeSat);
+	const { maxChannelSizeSat } = blocktank.options;
+	const minChannelSize = Math.round(amount * 2.5);
+	const maxChannelSize = Math.round(maxChannelSizeSat / 2);
+	const channelSize = Math.max(minChannelSize, maxChannelSize);
 	const lspBalance = channelSize - amount;
 	const payAmount = amount - feeEstimate;
 	const displayFee = useDisplayValues(feeEstimate);
@@ -58,8 +59,8 @@ const ReceiveConnect = ({
 	const onContinue = async (): Promise<void> => {
 		setIsLoading(true);
 		const cJitEntryResponse = await createCJitEntry({
-			channelSizeSat: channelSize,
-			invoiceSat: amount,
+			channelSize: channelSize,
+			invoiceAmount: amount,
 			invoiceDescription: message,
 		});
 		if (cJitEntryResponse.isErr()) {
