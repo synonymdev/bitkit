@@ -81,7 +81,6 @@ const ActivityList = ({
 }): ReactElement => {
 	const colors = useColors();
 	const { t } = useTranslation('wallet');
-	const colors = useColors();
 	const navigation = useNavigation<RootNavigationProp>();
 	const items = useAppSelector(activityItemsSelector);
 	const tags = useAppSelector(tagsSelector);
