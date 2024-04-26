@@ -19,7 +19,7 @@ class MainActivity : ReactActivity() {
    * We override the [onCreate] method to show the splash screen.
    */
   override fun onCreate(savedInstanceState: Bundle?) {
-      super.onCreate(savedInstanceState)
+      super.onCreate(null)
       SplashScreenModule.show(this)
   }
 
