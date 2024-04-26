@@ -1,6 +1,11 @@
 import { err, ok, Result } from '@synonymdev/result';
 import { CJitStateEnum } from '@synonymdev/blocktank-lsp-http-client/dist/shared/CJitStateEnum';
-import { IBtOrder, ICJitEntry } from '@synonymdev/blocktank-lsp-http-client';
+import {
+	BtBolt11PaymentState,
+	BtOpenChannelState,
+	IBtOrder,
+	ICJitEntry,
+} from '@synonymdev/blocktank-lsp-http-client';
 import { BtOrderState2 } from '@synonymdev/blocktank-lsp-http-client/dist/shared/BtOrderState2';
 import { BtPaymentState2 } from '@synonymdev/blocktank-lsp-http-client/dist/shared/BtPaymentState2';
 
@@ -146,8 +151,8 @@ export const refreshOrder = async (
 
 		// Order state has not changed
 		if (
-			currentOrder?.state === order.state &&
-			currentOrder?.payment.state === order.payment.state &&
+			currentOrder?.state2 === order.state2 &&
+			currentOrder?.payment.state2 === order.payment.state2 &&
 			currentOrder?.channel?.state === order.channel?.state
 		) {
 			return ok(order);
@@ -160,8 +165,8 @@ export const refreshOrder = async (
 		if (
 			currentOrder &&
 			isPaidOrder &&
-			(currentOrder.state !== order.state ||
-				currentOrder.payment.state !== order.payment.state)
+			(currentOrder.state2 !== order.state2 ||
+				currentOrder.payment.state2 !== order.payment.state2)
 		) {
 			handleOrderStateChange(order);
 		}
@@ -391,12 +396,12 @@ const handleOrderStateChange = (order: IBtOrder): void => {
 	}
 
 	// opening connection
-	if (order.channel?.state === 'opening') {
+	if (order.channel?.state === BtOpenChannelState.OPENING) {
 		dispatch(setLightningSetupStep(3));
 	}
 
 	// given up
-	if (order.payment.bolt11Invoice.state === 'failed') {
+	if (order.payment.bolt11Invoice.state === BtBolt11PaymentState.FAILED) {
 		showToast({
 			type: 'warning',
 			title: i18n.t('lightning:order_given_up_title'),
