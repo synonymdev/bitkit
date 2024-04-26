@@ -106,7 +106,7 @@ const ActivityList = ({
 		}): ReactElement => {
 			if (typeof item === 'string') {
 				return (
-					<Caption13Up color="white50" style={styles.category} key={item}>
+					<Caption13Up key={item} style={styles.category} color="white50">
 						{item}
 					</Caption13Up>
 				);
@@ -114,9 +114,9 @@ const ActivityList = ({
 
 			return (
 				<ListItem
-					testID={`Activity-${index}`}
 					key={item.id}
 					item={item}
+					testID={`Activity-${index}`}
 					onPress={(): void => {
 						navigation.navigate('ActivityDetail', { id: item.id });
 					}}
@@ -153,7 +153,11 @@ const ActivityList = ({
 					onRefresh={onRefresh}
 				/>
 			}
-			ListEmptyComponent={<BodyM color="white50">{t('activity_no')}</BodyM>}
+			ListEmptyComponent={
+				<BodyM style={styles.empty} color="white50">
+					{t('activity_no')}
+				</BodyM>
+			}
 			ListFooterComponent={<ListFooter showButton={showFooterButton} />}
 			onScroll={onScroll}
 		/>
@@ -166,6 +170,9 @@ const styles = StyleSheet.create({
 	},
 	category: {
 		marginBottom: 16,
+	},
+	empty: {
+		marginBottom: 32,
 	},
 	button: {
 		marginTop: -24,
