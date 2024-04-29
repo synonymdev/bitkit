@@ -174,19 +174,15 @@ const ReviewAndSend = ({
 	const address = transaction?.outputs[outputIndex]?.address ?? '';
 
 	const onError = useCallback(
-		(errorTitle: string, errorMessage: string) => {
-			navigation.navigate('Result', {
-				success: false,
-				errorTitle,
-				errorMessage,
-			});
+		(errorMessage: string) => {
+			navigation.navigate('Error', { errorMessage });
 		},
 		[navigation],
 	);
 
 	const createLightningTransaction = useCallback(async () => {
 		if (!transaction.lightningInvoice || !decodedInvoice) {
-			onError(t('send_error_create_tx'), t('error_no_invoice'));
+			onError(`${t('send_error_create_tx')}. ${t('error_no_invoice')}`);
 			setIsLoading(false);
 			return;
 		}
@@ -234,14 +230,16 @@ const ReviewAndSend = ({
 				return;
 			}
 
-			onError(t('send_error_create_tx'), payInvoiceResponse.error.message);
+			onError(
+				`${t('send_error_create_tx')}. ${payInvoiceResponse.error.message}`,
+			);
 			return;
 		}
 
 		refreshWallet({ onchain: false, lightning: true }).then();
 
-		navigation.navigate('Result', {
-			success: true,
+		navigation.navigate('Success', {
+			amount,
 			txId: decodedInvoice.payment_hash,
 		});
 		// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -262,13 +260,15 @@ const ReviewAndSend = ({
 			const transactionIsValid = validateTransaction(transaction);
 			if (transactionIsValid.isErr()) {
 				setIsLoading(false);
-				onError(t('send_error_create_tx'), transactionIsValid.error.message);
+				onError(
+					`${t('send_error_create_tx')}. ${transactionIsValid.error.message}`,
+				);
 				return;
 			}
 			const response = await createTransaction({});
 			if (response.isErr()) {
 				setIsLoading(false);
-				onError(t('send_error_create_tx'), response.error.message);
+				onError(`${t('send_error_create_tx')}. ${response.error.message}`);
 				return;
 			}
 			if (__DEV__) {
@@ -276,14 +276,14 @@ const ReviewAndSend = ({
 			}
 			setRawTx(response.value);
 		} catch (error) {
-			onError(t('send_error_create_tx'), (error as Error).message);
+			onError(`${t('send_error_create_tx')}. ${(error as Error).message}`);
 			setIsLoading(false);
 		}
 	}, [transaction, onError, t]);
 
 	const _broadcast = useCallback(async () => {
 		if (!rawTx?.id || !rawTx?.hex) {
-			onError(t('error_no_tx_title'), t('error_no_tx_msg'));
+			onError(`${t('error_no_tx_title')}. ${t('error_no_tx_msg')}`);
 			return;
 		}
 		const response = await broadcastTransaction({
@@ -292,15 +292,14 @@ const ReviewAndSend = ({
 		if (response.isErr()) {
 			// Check if it failed to broadcast due to low fee.
 			if (response.error.message.includes('min relay fee not met')) {
-				onError(t('error_min_fee_title'), t('error_min_fee_msg'));
+				onError(`${(t('error_min_fee_title'), t('error_min_fee_msg'))}`);
 			} else {
 				// Most likely a connection error with the Electrum server.
 				// TODO: Add a backup method to broadcast via an api if unable to broadcast through Electrum.
 				onError(
-					t('error_broadcast_tx'),
-					t('error_broadcast_tx_connection', {
+					`${t('error_broadcast_tx')}. ${t('error_broadcast_tx_connection', {
 						message: response.error.message,
-					}),
+					})}`,
 				);
 			}
 			setIsLoading(false);
@@ -326,8 +325,8 @@ const ReviewAndSend = ({
 			dispatch(updateLastPaidContacts(transaction.slashTagsUrl));
 		}
 
-		navigation.navigate('Result', { success: true, txId: rawTx.id });
-	}, [rawTx, onError, navigation, transaction, dispatch, t]);
+		navigation.navigate('Success', { amount, txId: rawTx.id });
+	}, [rawTx, transaction, amount, onError, navigation, dispatch, t]);
 
 	useEffect(() => {
 		if (rawTx) {

@@ -1,66 +1,51 @@
 import React, { memo, ReactElement, useState } from 'react';
 import { StyleSheet, View, ActivityIndicator, Image } from 'react-native';
-import Lottie from 'lottie-react-native';
 import { useTranslation } from 'react-i18next';
 
-import { Subtitle, BodyM } from '../../../styles/text';
+import { BodyM } from '../../../styles/text';
 import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
+import { useSlashtags } from '../../../components/SlashtagsProvider';
 import SafeAreaInset from '../../../components/SafeAreaInset';
 import GradientView from '../../../components/GradientView';
 import Button from '../../../components/Button';
-import { rootNavigation } from '../../../navigation/root/RootNavigator';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
-
+import { processInputData } from '../../../utils/scanner';
+import { showToast } from '../../../utils/notifications';
 import type { SendScreenProps } from '../../../navigation/types';
 import {
 	resetSendTransaction,
 	setupOnChainTransaction,
 } from '../../../store/actions/wallet';
 import { closeSheet } from '../../../store/slices/ui';
-import { activityItemSelector } from '../../../store/reselect/activity';
 import {
 	selectedNetworkSelector,
 	selectedWalletSelector,
 	transactionSelector,
 } from '../../../store/reselect/wallet';
-import { useSlashtags } from '../../../components/SlashtagsProvider';
-import AmountToggle from '../../../components/AmountToggle';
-import { processInputData } from '../../../utils/scanner';
-import { showToast } from '../../../utils/notifications';
 
-const confettiSrc = require('../../../assets/lottie/confetti-green.json');
-
-const Result = ({
+const Error = ({
 	navigation,
 	route,
-}: SendScreenProps<'Result'>): ReactElement => {
+}: SendScreenProps<'Error'>): ReactElement => {
 	const { t } = useTranslation('wallet');
-	const { success, txId, errorTitle, errorMessage } = route.params;
+	let { errorMessage } = route.params;
 	const dispatch = useAppDispatch();
 	const selectedWallet = useAppSelector(selectedWalletSelector);
 	const selectedNetwork = useAppSelector(selectedNetworkSelector);
 	const transaction = useAppSelector(transactionSelector);
-	const activityItem = useAppSelector((state) => {
-		// TODO: make sure txId is always defined
-		return activityItemSelector(state, txId ?? '');
-	});
 	const { sdk } = useSlashtags();
 	const [loading, setLoading] = useState(false);
 
-	let imageSrc;
-	let title;
-	let retryText;
-	let error;
-
 	const isSlashpay = transaction.lightningInvoice && transaction.slashTagsUrl;
 
-	if (success) {
-		imageSrc = require('../../../assets/illustrations/check.png');
-		title = t('send_sent');
-		error = <></>;
-	} else if (transaction.lightningInvoice && transaction.slashTagsUrl) {
+	let navTitle = t('send_error_tx_failed');
+	let imageSrc = require('../../../assets/illustrations/cross.png');
+	let retryText: string | ReactElement = t('try_again');
+
+	if (transaction.lightningInvoice && transaction.slashTagsUrl) {
 		imageSrc = require('../../../assets/illustrations/exclamation-mark.png');
-		title = t('send_instant_failed');
+		navTitle = t('send_instant_failed');
+		errorMessage = t('send_error_slash_ln');
 		retryText = loading ? (
 			<>
 				<ActivityIndicator />
@@ -69,32 +54,7 @@ const Result = ({
 		) : (
 			t('send_regular')
 		);
-		error = <BodyM color="white50">{t('send_error_slash_ln')}</BodyM>;
-	} else {
-		imageSrc = require('../../../assets/illustrations/cross.png');
-		title = t('send_error_tx_failed');
-		retryText = t('try_again');
-		error = (
-			<>
-				{errorTitle && (
-					<Subtitle style={styles.errorTitle} color="red">
-						{errorTitle}
-					</Subtitle>
-				)}
-				{errorMessage && <BodyM color="red">{errorMessage}</BodyM>}
-			</>
-		);
 	}
-
-	const navigateToTxDetails = (): void => {
-		if (activityItem) {
-			dispatch(closeSheet('sendNavigation'));
-			rootNavigation.navigate('ActivityDetail', {
-				id: activityItem.id,
-				extended: false,
-			});
-		}
-	};
 
 	const handleClose = (): void => {
 		dispatch(closeSheet('sendNavigation'));
@@ -134,7 +94,7 @@ const Result = ({
 		*/
 		//If unable to broadcast for any reason, reset the transaction object and try again.
 		await resetSendTransaction();
-		await setupOnChainTransaction({});
+		await setupOnChainTransaction();
 		// The transaction was reset due to an unknown broadcast or construction error.
 		// Navigate back to the main send screen to re-enter information.
 		navigation.navigate('Recipient');
@@ -142,81 +102,32 @@ const Result = ({
 
 	return (
 		<GradientView style={styles.root}>
-			<>
-				{success && (
-					<View
-						style={styles.confetti}
-						pointerEvents="none"
-						testID="SendSuccess">
-						<Lottie
-							style={styles.lottie}
-							source={confettiSrc}
-							resizeMode="cover"
-							autoPlay
-							loop
-						/>
-					</View>
-				)}
-			</>
-
-			<BottomSheetNavigationHeader title={title} displayBackButton={!success} />
+			<BottomSheetNavigationHeader title={navTitle} />
 
 			<View style={styles.content}>
-				{activityItem && (
-					<AmountToggle
-						amount={activityItem.value}
-						testID="NewTxPrompt"
-						onPress={navigateToTxDetails}
-					/>
-				)}
-
-				{error}
-
+				<BodyM color="white50">{errorMessage}</BodyM>
 				<View style={styles.imageContainer}>
 					<Image style={styles.image} source={imageSrc} />
 				</View>
-
 				<View style={styles.buttonContainer}>
-					{success ? (
-						<>
-							<Button
-								style={styles.button}
-								variant="secondary"
-								size="large"
-								disabled={!activityItem}
-								text={t('send_details')}
-								onPress={navigateToTxDetails}
-							/>
-							<Button
-								style={styles.button}
-								size="large"
-								text={t('close')}
-								testID="Close"
-								onPress={handleClose}
-							/>
-						</>
-					) : (
-						<>
-							{isSlashpay && (
-								<Button
-									style={styles.button}
-									variant="secondary"
-									size="large"
-									text={t('cancel')}
-									testID="Close"
-									onPress={handleClose}
-								/>
-							)}
-							<Button
-								style={styles.button}
-								variant="primary"
-								size="large"
-								text={retryText}
-								disabled={loading}
-								onPress={handleRetry}
-							/>
-						</>
+					{isSlashpay && (
+						<Button
+							style={styles.button}
+							variant="secondary"
+							size="large"
+							text={t('cancel')}
+							testID="Close"
+							onPress={handleClose}
+						/>
 					)}
+					<Button
+						style={styles.button}
+						variant="primary"
+						size="large"
+						text={retryText}
+						disabled={loading}
+						onPress={handleRetry}
+					/>
 				</View>
 			</View>
 			<SafeAreaInset type="bottom" minPadding={16} />
@@ -228,19 +139,9 @@ const styles = StyleSheet.create({
 	root: {
 		flex: 1,
 	},
-	confetti: {
-		...StyleSheet.absoluteFillObject,
-		zIndex: 0,
-	},
-	lottie: {
-		height: '100%',
-	},
 	content: {
 		flex: 1,
 		paddingHorizontal: 16,
-	},
-	errorTitle: {
-		marginBottom: 8,
 	},
 	imageContainer: {
 		flexShrink: 1,
@@ -266,4 +167,4 @@ const styles = StyleSheet.create({
 	},
 });
 
-export default memo(Result);
+export default memo(Error);
