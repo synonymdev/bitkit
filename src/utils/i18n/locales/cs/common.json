@@ -1,4 +1,5 @@
 {
+  "advanced": "Pokročilé",
   "continue": "Pokračovat",
   "cancel": "Zrušit",
   "close": "Zavřít",
@@ -17,6 +18,7 @@
   "done": "Hotovo",
   "delete": "Smazat",
   "ok": "OK",
+  "awesome": "Skvělé!",
   "retry": "Opakovat",
   "later": "Později",
   "skip": "Přeskočit",

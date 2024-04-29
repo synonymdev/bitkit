@@ -9,14 +9,8 @@
   "support_title": "Support",
   "about": {
     "title": "Über Bitkit",
-    "text": "Bitkit übergibt dir die Keys zu deinem Geld, Profil, deinen Kontakten und deinen Web Accounts.",
-    "support": "Support",
-    "report_bug": "Repote einen Bug oder wirke mit",
     "legal": "Rechtliches",
-    "op_title": "Orange-Pilled",
-    "op_text": "Wen wirst du <accent>orangepillen?</accent>",
-    "op_share": "Teile Bitkit mit einem Freund",
-    "op_message": "Downloade Bitkit, dein ultimatives Bitcoin Toolkit. Nimm die Keys in deine Hand und reformiere dein digitales Leben. {appStoreUrl}"
+    "share": "Teilen"
   },
   "dev_title": "Entwickler-Einstellungen",
   "general": {
@@ -35,6 +29,7 @@
     "category_settings": "Einstellungen"
   },
   "support": {
+    "title": "Support",
     "text_success_button": "OK",
     "text_unsuccess_button": "Versuche es nochmal"
   },

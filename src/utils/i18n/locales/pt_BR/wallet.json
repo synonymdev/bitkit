@@ -4,7 +4,6 @@
   "balance_total": "Saldo total",
   "create_wallet_mnemonic_error": "Frase de recuperação inválida.",
   "create_wallet_mnemonic_restore_error": "Por favor, verifique novamente se sua frase de recuperação está correta.",
-  "assets": "Ativos",
   "send_bitcoin": "Enviar Bitcoin",
   "send_to": "Para",
   "recipient_contact": "Contato",
@@ -83,7 +82,6 @@
   "receive_lightning_invoice": "Fatura Lightning",
   "receive_note_placeholder": "Nota opcional para o pagador",
   "receive_show_qr": "Mostrar código QR",
-  "receive_instantly": "Receber Instantaneamente",
   "receive_error_min_title": "Abaixo do Valor Mínimo",
   "receive_error_min_description": "A fatura deve ser no mínimo {txt}",
   "receive_error_max_title": "Acima do Valor Máximo",
@@ -97,6 +95,7 @@
   "activity_no_explain": "Receba alguns fundos para começar",
   "activity_sent": "Enviado",
   "activity_received": "Recebido",
+  "activity_transfer": "Transferência",
   "activity_transfer_spending": "Saldo de Gastos",
   "activity_transfer_savings": "Saldo da Poupança",
   "activity_confirms_in": "Confirma em {feeRateDescription}",
@@ -145,9 +144,13 @@
     "other": "Outros"
   },
   "details_savings_title": "Poupança",
-  "details_savings_subtitle": "BTC",
-  "transfer_text": "Transferência",
   "details_spending_title": "Gastos",
+  "savings": {
+    "title": "Poupança"
+  },
+  "spending": {
+    "title": "Gastos"
+  },
   "tx_invalid": "Transação Inválida",
   "boost": "Impulsionar",
   "boost_success_title": "Acelerado!",

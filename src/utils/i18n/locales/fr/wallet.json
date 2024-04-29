@@ -2,7 +2,6 @@
   "send": "Envoyer",
   "receive": "Recevoir",
   "balance_total": "Solde total",
-  "assets": "Actifs",
   "send_bitcoin": "Envoyer des bitcoins",
   "send_to": "Pour",
   "recipient_contact": "Contact",
@@ -67,6 +66,7 @@
   "activity_no_explain": "Recevoir des fonds pour démarrer",
   "activity_sent": "Envoyé",
   "activity_received": "Reçu",
+  "activity_transfer": "Transfert",
   "activity_transfer_spending": "Solde des dépenses",
   "activity_transfer_savings": "Solde de l'épargne",
   "activity_confirms_in": "Confirmé dans {feeRateDescription}",
@@ -111,8 +111,13 @@
     "other": "Autre"
   },
   "details_savings_title": "Épargner",
-  "transfer_text": "Transfert",
   "details_spending_title": "Dépenser",
+  "savings": {
+    "title": "Épargner"
+  },
+  "spending": {
+    "title": "Dépenser"
+  },
   "tx_invalid": "Transaction invalide",
   "boost": "Boost",
   "boost_fee_custom": "Votre transaction peut être confirmée plus rapidement si vous incluez des frais de réseau supplémentaires. Définissez vos frais personnalisés ci-dessous.",

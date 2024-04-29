@@ -1,4 +1,5 @@
 {
+  "advanced": "Geavanceerd",
   "continue": "Ga verder",
   "cancel": "Annuleren",
   "close": "Sluiten",
@@ -14,6 +15,7 @@
   "done": "Gereed",
   "delete": "Verwijderen",
   "ok": "OK",
+  "awesome": "Fantastisch!",
   "retry": "Opnieuw proberen",
   "later": "Later",
   "skip": "Overslaan",

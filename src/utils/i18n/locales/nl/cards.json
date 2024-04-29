@@ -1,14 +1,12 @@
 {
   "backupSeedPhrase": {
-    "title": "Backup",
-    "description": "Bewaar uw geld"
+    "title": "Backup"
   },
-  "lightning": {
-    "title": "Directe betalingen",
-    "description": "Gebruik Lightning"
+  "discount": {
+    "description": "Bestedingssaldo"
   },
   "lightningSettingUp": {
-    "title": "Aan het installeren",
+    "title": "Overboeken",
     "description1": "Betaald",
     "description2": "In de wacht",
     "description3": "Wordt geopened"
@@ -22,24 +20,21 @@
     "description": "Verbonden!"
   },
   "transferPending": {
-    "title": "Bezig met verzenden"
+    "title": "Overboeken"
   },
   "transferClosingChannel": {
     "title": "Aan het opstarten...",
     "description": "Houd de app open"
   },
   "pin": {
-    "title": "Beveiliging verbeteren",
     "description": "Pincode instellen"
   },
   "slashtagsProfile": {
-    "title": "Openbaar profiel",
+    "title": "Profiel",
     "description": "Vul uw gegevens in"
   },
-  "buyBitcoin": {
-    "title": "Bitcoin ontvangen"
+  "support": {
+    "title": "Ondersteuning"
   },
-  "lightning_no_funds_title": "Nog Geen Geld",
-  "lightning_no_funds_desc": "Het instellen van instant payments vereist dat u eerst on-chain Bitcoin overmaakt naar uw wallet. ",
   "suggestions": "Suggesties"
 }

@@ -1,14 +1,8 @@
 {
   "backupSeedPhrase": {
-    "title": "Back up",
-    "description": "Verwahre dein Geld"
-  },
-  "lightning": {
-    "title": "Zahle sofort",
-    "description": "Benutze Lightning"
+    "title": "Back up"
   },
   "lightningSettingUp": {
-    "title": "Einrichtung",
     "description1": "Gezahlt",
     "description2": "in Warteschlange",
     "description3": "Öffnen"
@@ -21,25 +15,18 @@
     "title": "Bereit",
     "description": "Verbunden!"
   },
-  "transferPending": {
-    "title": "Übertragung"
-  },
   "transferClosingChannel": {
     "title": "Initialisiere…",
     "description": "Halte App offen"
   },
   "pin": {
-    "title": "Bessere Sicherheit",
     "description": "Lege einen PIN fest"
   },
   "slashtagsProfile": {
-    "title": "Öffentliches Profil",
     "description": "Füge deine Angaben hinzu"
   },
-  "buyBitcoin": {
-    "title": "Erhalte Bitcoin"
+  "support": {
+    "title": "Support"
   },
-  "lightning_no_funds_title": "Kein Guthaben verfügbar",
-  "lightning_no_funds_desc": "Bevor Du ein instantzahlungs-fähiges Konto einrichtest, musst Du ein wenig on-chain Bitcoin an dein Wallet senden.",
   "suggestions": "Verbesserungsvorschläge"
 }

@@ -1,4 +1,5 @@
 {
+  "advanced": "Benutzerdefiniert",
   "continue": "Weiter",
   "cancel": "Abbrechen",
   "close": "Schließen",
@@ -14,6 +15,7 @@
   "done": "Fertig",
   "delete": "Löschen",
   "ok": "OK",
+  "awesome": "Wunderbar!",
   "retry": "Wiederhole",
   "later": "Später",
   "skip": "Überspringe",

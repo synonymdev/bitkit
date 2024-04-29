@@ -2,7 +2,6 @@
   "send": "Enviar",
   "receive": "Reciba",
   "balance_total": "Saldo total",
-  "assets": "Activos",
   "send_bitcoin": "Enviar Bitcoin",
   "send_to": "Para",
   "recipient_contact": "Contactar",
@@ -64,6 +63,7 @@
   "activity_no_explain": "Reciba algunos fondos para empezar",
   "activity_sent": "Enviado",
   "activity_received": "Recibido",
+  "activity_transfer": "Transferir",
   "activity_transfer_spending": "Saldo de gastos",
   "activity_transfer_savings": "Saldo de ahorro",
   "activity_confirms_in": "Confirma en {feeRateDescription}",
@@ -104,7 +104,9 @@
     "other": "Otros"
   },
   "details_savings_title": "Ahorro",
-  "transfer_text": "Transferir",
+  "savings": {
+    "title": "Ahorro"
+  },
   "tx_invalid": "Transacción no válida",
   "boost": "Impulsar",
   "boost_fee_custom": "Su transacción puede liquidarse más rápidamente si incluye una tasa de red adicional. Establezca su tarifa personalizada a continuación.",

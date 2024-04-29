@@ -1,4 +1,5 @@
 {
+  "advanced": "Avancé",
   "continue": "Continue",
   "cancel": "Annuler",
   "close": "Fermer",
@@ -15,6 +16,7 @@
   "done": "Terminé",
   "delete": "Supprimer",
   "ok": "OK",
+  "awesome": "Génial !",
   "retry": "Réessayer",
   "later": "Plus tard",
   "skip": "Ignorer",

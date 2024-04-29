@@ -12,15 +12,10 @@
   "support_title": "Podpora",
   "about": {
     "title": "O Bitkit",
-    "text": "Bitkit vám předává klíče k vašim penězům, profilu, kontaktům a webovým účtům.\n\nTato <easterEgg>Oranžová Pilulka</easterEgg> byla pečlivě vytvořena společností Synonym Software Ltd.",
-    "support": "Podpora",
-    "report_bug": "Nahlásit chybu nebo přispět",
+    "text": "Děkujeme, že jste zodpovědní uživatelé bitcoinu.\nZměňte svou peněženku, změňte svět.\n\nBitkit vám předá klíče k vašim penězům, profilu, kontaktům a webovým účtům.\n\nBitkit byl vytvořen společností Synonym Software Ltd.",
     "legal": "Právní",
-    "version": "Verze",
-    "op_title": "\"Orange Pilled\"",
-    "op_text": "Koho budete <accent>\"Orange-Pill\"?</accent>",
-    "op_share": "Sdílet Bitkit s přítelem",
-    "op_message": "Stáhněte si Bitkit, váš ultimátní bitcoinový nástroj. Předáváme vám klíče k přetvoření vašeho digitálního života. {appStoreUrl}"
+    "share": "Sdílet",
+    "version": "Verze"
   },
   "dev_title": "Vývojářské nastavení",
   "general": {
@@ -44,8 +39,12 @@
     "speed_fee_total": "₿ {feeSats} za průměrnou transakci",
     "speed_fee_total_fiat": "₿ {feeSats} za průměrnou transakci ({fiatSymbol}{fiatFormatted} ).",
     "tags": "Tagy",
-    "tags_previously": "Dříve použité tagy",
-    "widgets": "Widgety"
+    "tags_previously": "Dříve použité tagy"
+  },
+  "widgets": {
+    "nav_title": "Widgety",
+    "showWidgets": "Widgety",
+    "showWidgetTitles": "Zobrazit názvy widgetů"
   },
   "security": {
     "title": "Zabezpečení a soukromí",
@@ -84,7 +83,8 @@
     "category_contacts": "Kontakty"
   },
   "support": {
-    "text": "Potřebujete pomoc? Nahlaste svůj problém přímo v Bitkitu, navštivte centrum nápovědy nebo nás kontaktujte prostřednictvím našich sociálních kanálů.",
+    "title": "Podpora",
+    "text": "Potřebujete pomoc? Nahlaste svůj problém přímo ze služby Bitkit, navštivte centrum nápovědy, zkontrolujte stav nebo nás kontaktujte na našich sociálních sítích.",
     "report": "Nahlásit problém",
     "help": "Centrum pomoci",
     "status": "Stav aplikace",
@@ -170,7 +170,7 @@
     "lightning_connections": "Lightning spojení",
     "lightning_node": "Lightning uzel",
     "electrum_server": "Electrum server",
-    "rgs_server": "Server Rapid-Gossip-Sync",
+    "rgs_server": "Rapid-Gossip-Sync",
     "web_relay": "Slashtags web přenos",
     "bitcoin_network": "bitcoinová síť"
   },
@@ -205,7 +205,7 @@
     "no_addrs_str": "Při hledání „{searchTxt}“ nebyly nalezeny žádné adresy",
     "rescan_error": "Obnovení skenování se nezdařilo",
     "rescan_error_description": "Bitkit nebyl schopen zkontrolovat zůstatky adres.",
-    "spend_number": "{count, plural, one {Utratit {fundsToSpend} bitcoin Od # adresa} few {Utratit {fundsToSpend} bitcoin Z # adres} many {Utratit {fundsToSpend} bitcoin Z # adres} other {Utratit {fundsToSpend} bitcoin Z # addresses}}",
+    "spend_number": "{count, plural, one {Utratit ₿ {fundsToSpend} Od # adresa} few {Utratit ₿ {fundsToSpend} Z # adres} many {Utratit ₿ {fundsToSpend} Z # adres} other {Utratit ₿ {fundsToSpend} z # adres}}",
     "spend_all": "{count, plural, one {Utratit všechny prostředky z # adresa} few {Utratit všechny prostředky z # adres} many {Utratit všechny prostředky z # adres} other {Utratit všechny prostředky z # adres}}",
     "index": "Index: {index}",
     "path": "Path: {path}",
@@ -214,7 +214,7 @@
     "private_key": "Privátní klíč: {privateKey}",
     "addr_change": "Změnit adresu",
     "addr_receiving": "Adresy pro příjem",
-    "sats_found": "nalezeno {totalBalance} bitcoinů",
+    "sats_found": "₿ {totalBalance} nalezeno",
     "gen_20": "Vygenerovat 20 dalších",
     "check_balances": "Kontrola zůstatků",
     "copied": "Zkopírováno do schránky"

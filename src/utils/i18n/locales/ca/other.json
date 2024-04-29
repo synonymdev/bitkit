@@ -1,6 +1,5 @@
 {
   "beta": "BETA",
-  "beta_software": "Bitkit és un programari beta.",
   "beta_warn": "No guardis tots els teus diners a Bitkit.",
   "qr_scan": "Escanegi el codi QR",
   "qr_error_header": "No es pot llegir el codi QR",
@@ -9,7 +8,6 @@
   "qr_error_no_data_text": "Bitkit no ha pogut llegir les dades proporcionades.",
   "qr_error_network_header": "Xarxa incorrecta",
   "qr_paste": "Enganxa el codi QR",
-  "buy_header": "Bitcoin\n<accent>per Bitkit.</accent>",
   "buy_button": "Comprar Bitcoin",
   "connection_lost_title": "Connexió perduda de Bitkit",
   "connection_lost_message": "Si us plau, verifiqueu la configuració del vostre servidor Electrum.",
@@ -37,12 +35,10 @@
   "rate_error_title": "Actualització fallida del preu de Bitcoin.",
   "rate_error_msg_nodate": "Bitkit no ha pogut actualitzar el tipus de canvi actual de Bitcoin. Si us plau, torna-ho a provar més tard.",
   "lnurl_pay_error": "Incapaç de pagar (LNURL)",
-  "lnurl_channel_header": "Pagaments Instantanis",
   "lnurl_channel_lsp": "Proveïdor de servei Lightning",
   "lnurl_channel_node": "ID de Node",
   "lnurl_channel_host": "Amfitrió",
   "lnurl_channel_port": "Port",
-  "lnurl_channel_connecting": "Connectant.",
   "lnurl_blocktank_error": "Bitkit no ha pogut connectar-se a Blocktank.",
   "lnurl_channel_success_title": "Canal Sol·licitat",
   "lnurl_channel_success_msg_no_peer": "S'ha sol·licitat el canal amb èxit.",
@@ -62,7 +58,6 @@
   "update_text": "Si us plau, actualitzeu Bitkit a la darrera versió per a noves funcionalitats i correccions de errors!",
   "update_button": "Actualització",
   "high_title": "Saldo alt.",
-  "high_text2": "Per raons de seguretat, recomanem moure part dels teus estalvis a una cartera freda fora de línia o una solució multisig.",
   "high_button_more": "Aprèn més",
   "caution_text": "El software Beta pot posar els teus diners en risc. Recomanem utilitzar només petites quantitats mentre Bitkit estigui en versió beta."
 }

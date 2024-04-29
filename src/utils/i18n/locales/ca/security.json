@@ -8,7 +8,6 @@
   "pass": "frase de pas",
   "pass_your": "La teva frase de pas",
   "pass_text": "Has afegit una contraseña a la teva frase de recuperació durant la configuració de la cartera.",
-  "pass_never_share": "<accent>Mai comparteixis</accent> la vostra frase de contrasenya amb qualsevol persona, ja que això pot provocar la pèrdua de fons.",
   "pass_confirm": "Confirmar la frase de pas",
   "pass_confirm_text": "Introduïu la frase de pas que heu afegit mentre configureu i creeu la vostra cartera.",
   "mnemonic_phrase": "Frase Mnemotècnica",

@@ -9,13 +9,9 @@
   "support_title": "Soporte",
   "about": {
     "title": "Acerca de Bitkit",
-    "text": "Bitkit le entrega las llaves de su dinero, perfil, contactos y cuentas web. Esta <easterEgg>píldora</easterEgg> naranja ha sido cuidadosamente elaborada por Synonym Software Ltd.",
-    "support": "Soporte",
-    "report_bug": "Informar un error o contribuir",
     "legal": "Legal",
-    "version": "Versión",
-    "op_share": "Comparta Bitkit con un amigo",
-    "op_message": "Descargue Bitkit, su kit definitivo de herramientas Bitcoin. Entregándole las claves para remodelar su vida digital. {appStoreUrl}"
+    "share": "Compartir",
+    "version": "Versión"
   },
   "dev_title": "Ajustes de desarrollo",
   "general": {
@@ -30,8 +26,11 @@
     "speed_default": "Velocidad de transacción predeterminada",
     "speed_fee_custom": "Fijar tarifa personalizada",
     "tags": "Etiquetas",
-    "tags_previously": "Etiquetas utilizadas anteriormente",
-    "widgets": "Widgets"
+    "tags_previously": "Etiquetas utilizadas anteriormente"
+  },
+  "widgets": {
+    "nav_title": "Widgets",
+    "showWidgets": "Widgets"
   },
   "security": {
     "pin": "Código PIN",
@@ -59,6 +58,7 @@
     "category_contacts": "Contactos"
   },
   "support": {
+    "title": "Soporte",
     "text_button": "Enviar",
     "text_success_button": "OK",
     "text_unsuccess_button": "Inténtelo de nuevo"

@@ -1,7 +1,4 @@
 {
-  "about": {
-    "text": "A Bitkit lhe entrega as chaves do seu dinheiro, perfil, contatos e contas.\n\nEsta <easterEgg>Pílula Laranja</easterEgg> foi cuidadosamente desenvolvida pela Synonym Software Ltd."
-  },
   "addr": {
     "no_addrs_with_funds": "Não foi encontrado nenhum endereço contendo \"{searchTxt}\" com fundos ",
     "no_addrs_str": "Nenhum endereço foi encontrado ao pesquisar por \"{searchTxt}\""

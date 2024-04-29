@@ -1,14 +1,10 @@
 {
   "tos_checkbox": "Termes d'ús",
-  "tos_checkbox_value": "Declaro que he llegit i accepto <accent>les condicions d'ús.</accent>",
   "pp_checkbox": "Política de privadesa",
-  "pp_checkbox_value": "Declaro que he llegit i accpeto <accent>les polítiques de privacitat.</accent>",
-  "toolkit_text": "Bitkit et dóna les claus del teu diners, perfil, contactes i comptes web.",
   "get_started": "Començar",
   "skip_intro": "Ometre introducció",
   "skip": "Salta",
-  "slide1_text": "Paga a qualsevol persona, en qualsevol lloc, en qualsevol moment i gasta els teus bitcoins en allò que valoris a la vida.",
-  "slide3_text": "Mantingueu les claus de perfils portàtils, contactes dinàmics, fils distribuïts i comptes sense contrasenya.",
+  "slide0_text": "Bitkit et dóna les claus del teu diners, perfil, contactes i comptes web.",
   "new_wallet": "Nova cartera",
   "restore": "Restaurar",
   "restore_wallet": "Restaurar cartera",
@@ -20,7 +16,6 @@
   "restore_suggestions": "SUGGERIMENTS",
   "restore_error_title": "La restauració de la cartera ha fallat",
   "restore_error_description": "Bitkit no ha pogut restaurar la teva cartera des de la còpia de seguretat o la frase de recuperació.",
-  "restore_success_header": "Cartera restaurada.",
   "restore_no_backup_button": "Continuar sense còpia de seguretat",
   "error_create": "Creació de cartera fallida",
   "multiple_text": "No instal·leu la vostra frase de recuperació de Bitkit en múltiples telèfons simultàniament, ja que això pot corrompre les vostres dades."

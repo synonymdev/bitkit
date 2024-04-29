@@ -12,15 +12,9 @@
   "support_title": "Supporto",
   "about": {
     "title": "Informazioni su Bitkit",
-    "text": "Bitkit ti consegna le chiavi del tuo denaro, del tuo profilo, dei tuoi contatti e dei tuoi account web.\n\nQuesta <easterEgg>Orange-Pillazione</easterEgg> è stata accuratamente realizzata da Synonym Software Ltd.",
-    "support": "Supporto",
-    "report_bug": "Segnala un bug o contribuisci",
     "legal": "Termini di Utilizzo",
-    "version": "Versione",
-    "op_title": "Orange Pillato",
-    "op_text": "Chi <accent>Orange-Pillerai?</accent>",
-    "op_share": "Condividi BitKit Con Un Amico",
-    "op_message": "Scarica Bitkit, il tuo kit di strumenti Bitcoin definitivo. Ti consegna le chiavi per rimodellare la tua vita digitale. {appStoreUrl}"
+    "share": "Condividi",
+    "version": "Versione"
   },
   "dev_title": "Impostazioni Sviluppatore",
   "general": {
@@ -41,11 +35,12 @@
     "speed_title": "Velocità Transazione",
     "speed_default": "Velocità Transazione di Default",
     "speed_fee_custom": "Imposta commissione personalizzata",
-    "speed_fee_total": "₿ {feeSats} per la transazione media",
-    "speed_fee_total_fiat": "₿ {feeSats} per la transazione media ({fiatSymbol}{fiatFormatted})",
     "tags": "Tag",
-    "tags_previously": "Tag usati in precedenza",
-    "widgets": "Widget"
+    "tags_previously": "Tag usati in precedenza"
+  },
+  "widgets": {
+    "nav_title": "Widget",
+    "showWidgets": "Widget"
   },
   "security": {
     "title": "Sicurezza e privacy",
@@ -84,7 +79,7 @@
     "category_contacts": "Contatti"
   },
   "support": {
-    "text": "Hai bisogno di aiuto? Segnala il tuo problema da Bitkit, visita il centro assistenza o contattaci sui nostri canali social.",
+    "title": "Supporto",
     "report": "Segnala un problema",
     "help": "Centro assistenza",
     "status": "Stato dell'app",
@@ -170,7 +165,6 @@
     "lightning_connections": "Connessioni Lightning",
     "lightning_node": "Nodo Lightning",
     "electrum_server": "Server Electrum",
-    "rgs_server": "Rapid-Gossip-Sync",
     "web_relay": "Slashtags Web Relay",
     "bitcoin_network": "Rete Bitcoin"
   },
@@ -213,7 +207,6 @@
     "private_key": "Chiave Privata: {privateKey}",
     "addr_change": "Cambia Indirizzi",
     "addr_receiving": "Indirizzi di ricezione",
-    "sats_found": "{totalBalance} bitcoin trovati",
     "gen_20": "Genera altri 20",
     "check_balances": "Controlla Saldi",
     "copied": "Copiato negli appunti"

@@ -66,7 +66,6 @@
   "is_ready": "¿Está preparado?",
   "support": "Soporte",
   "close_conn": "Terminar conexión",
-  "close_success_title": "Transferencia exitosa",
   "close_button": "Cerrar",
   "force_title": "Fuerzar transferencia",
   "force_text": "No se ha podido iniciar la transferencia. ¿Desea forzar esta transferencia? No podrá utilizar estos fondos durante ±14 días (!)",

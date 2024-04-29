@@ -15,14 +15,11 @@
   "scan_err_interpret_title": "Nie można zinterpretować dostarczonych danych",
   "scan_err_interpret_msg": "Bitkit nie jest w stanie zinterpretować dostarczonych danych.",
   "lnurl_pay_error_no_capacity": "Niewystarczająca pojemność wychodząca/wysyłająca, aby ukończyć żądanie lnurl-pay.",
-  "lnurl_channel_header": "Płatności natychmiastowe",
-  "lnurl_channel_title": "Nowe\nPołączenie\nLigthning",
   "lnurl_channel_message": "Czy chcesz otworzyć połączenie Lightning z tym dostawcą usług Lightning?",
   "lnurl_channel_lsp": "Dostawca usługi Ligthning",
   "lnurl_channel_node": "ID węzła",
   "lnurl_channel_host": "Host",
   "lnurl_channel_port": "Port",
-  "lnurl_channel_connecting": "Łączenie.",
   "lnurl_channel_success_msg_peer": "Pomyślnie zażądano kanału z: {peer}",
   "lnurl_channel_success_msg_no_peer": "Pomyślnie zażądano kanału.",
   "phone_settings": "Otwórz ustawienia telefonu",
@@ -34,8 +31,6 @@
   "update_button": "Aktualizacja",
   "high_title": "Wysokie saldo",
   "high_text1": "Saldo portfela przekroczone",
-  "high_text2": "Dla bezpieczeństwa sugerujemy przetransferowanie części środków do cold walletu offline lub rozwiązania multisig.",
-  "high_text2_beta": "Rozważ proszę wytransferowanie części środków. Sugerujemy operowanie małymi kwotami dopóki Bitkit jest w wersji beta.",
   "high_button_more": "Dowiedz się więcej",
   "caution_text": "Używanie oprogramowania w wersji beta może być ryzykowne. Sugerujemy operowanie małymi kwotami dopóki Bitkit jest w wersji beta."
 }

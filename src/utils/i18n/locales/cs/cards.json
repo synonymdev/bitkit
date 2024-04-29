@@ -1,14 +1,26 @@
 {
   "backupSeedPhrase": {
     "title": "Záloha",
-    "description": "Uložit peníze"
+    "description": "Uložte si svůj bitcoin"
+  },
+  "discount": {
+    "title": "Sleva",
+    "description": "Dostupný zůstatek"
+  },
+  "fastpay": {
+    "title": "Fastpay",
+    "description": "Naskenuj a zaplať"
+  },
+  "invite": {
+    "title": "Pozvat",
+    "description": "Sdílet Bitkit"
   },
   "lightning": {
-    "title": "Okamžitá úhrada",
-    "description": "Převést na Lightning"
+    "title": "Utratit",
+    "description": "Vyvážení finančních prostředků"
   },
   "lightningSettingUp": {
-    "title": "Nastavování",
+    "title": "Převod",
     "description0": "Zpracování platby",
     "description1": "Uhrazeno",
     "description2": "Ve frontě",
@@ -23,7 +35,7 @@
     "description": "Připojeno!"
   },
   "transferPending": {
-    "title": "Probíhající přenos",
+    "title": "Převod",
     "description": "Bude připraveno za ±{duration}m"
   },
   "transferClosingChannel": {
@@ -31,22 +43,24 @@
     "description": "Nechte aplikaci otevřenou"
   },
   "pin": {
-    "title": "Lepší ochrana",
+    "title": "Zabezpečit",
     "description": "Nastavte PIN kód"
   },
   "slashtagsProfile": {
-    "title": "Veřejný profil",
+    "title": "Profil",
     "description": "Doplňte své údaje"
   },
+  "support": {
+    "title": "Podpora",
+    "description": "Získejte pomoc"
+  },
   "buyBitcoin": {
-    "title": "Získat bitcoin",
+    "title": "Koupit",
     "description": "Koupit bitcoin"
   },
   "btFailed": {
-    "title": "Nastavení se nezdařilo",
+    "title": "Selhání",
     "description": "Prosím, zkuste to znovu."
   },
-  "lightning_no_funds_title": "Zatím žádné prostředky",
-  "lightning_no_funds_desc": "Abyste si mohli nastavit zůstatek pro okamžité platby, musíte nejdříve uskutečnit bitcoinovou on-chain transakci do své peněženky.",
   "suggestions": "Návrhy"
 }

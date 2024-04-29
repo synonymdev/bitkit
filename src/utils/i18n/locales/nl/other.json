@@ -1,12 +1,10 @@
 {
   "beta": "BETA",
-  "beta_software": "Bitkit is beta software.",
   "beta_warn": "Bewaar nooit al uw geld in Bitkit.",
   "qr_scan": "QR Code Scannen",
   "qr_error_network_header": "Netwerk Onjuist",
   "qr_error_network_text": "Bitkit is momenteel aangesloten op {selectedNetwork}maar toont data voor {dataNetwork}. ",
   "qr_paste": "Plak de QR Code",
-  "buy_header": "Bitcoin\n<accent>voor Bitkit.</accent>",
   "buy_button": "Koop Bitcoin",
   "connection_lost_title": "Bitkit Verbinding Verbroken",
   "connection_lost_message": "Controleer de configuraties voor uw Electrum Server.",
@@ -22,7 +20,6 @@
   "scan_err_decoding": "Decoderingsfout",
   "scan_err_interpret_title": "De Ingevoerde Data Kan Niet Worden Gedecodeerd",
   "scan_err_interpret_msg": "Bitkit kan de ingevoerde data niet decoderen.",
-  "lnurl_channel_header": "Directe betalingen",
   "lnurl_channel_host": "Hostcomputer",
   "lnurl_channel_port": "Poort",
   "lnurl_channel_success_msg_peer": "Succesvol verzoek om een kanaal met: {peer}",
@@ -36,8 +33,6 @@
   "update_button": "Update",
   "high_title": "Hoog Saldo",
   "high_text1": "Wallet saldo overschrijdt",
-  "high_text2": "Voor veiligheidsredenen raden wij aan om wat van uw spaargeld naar een offline cold wallet of multisig oplossing te verhuizen.",
-  "high_text2_beta": "Overweeg om wat van uw geld te verplaatsen. Wij raden aan om alleen Bitkit te gebruiken met kleine hoeveelheden geld. ",
   "high_button_more": "Meer Weten",
   "caution_header": "Pas op: <yellow>Beta Risico.</yellow>"
 }

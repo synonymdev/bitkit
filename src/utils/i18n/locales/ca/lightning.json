@@ -83,8 +83,6 @@
   "support": "Suport",
   "close_conn": "Tanca la connexió",
   "close_error": "Transferència fallida",
-  "close_success_title": "Transferència realitzada",
-  "close_success_msg": "Els teus fons han estat traslladats de nou al teu estalvi.",
   "close_button": "Tancar",
   "force_init_msg": "Els vostres fons seran accessibles en ±14 dies.",
   "force_failed_msg": "No es possible transferir els teus fons de tornada a estalvi. Si us plau, intenta-ho de nou.",

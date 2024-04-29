@@ -7,8 +7,8 @@
   "support_title": "Suport",
   "about": {
     "title": "Sobre Bitkit",
-    "support": "Suport",
     "legal": "Legal",
+    "share": "Compartir",
     "version": "Versió"
   },
   "general": {
@@ -19,8 +19,11 @@
     "unit_bitcoin": "Bitcoin",
     "speed_fee_custom": "Estableix una tarifa personalitzada",
     "tags": "Etiquetes",
-    "tags_previously": "Etiquetes prèviament utilitzades",
-    "widgets": "Ginys"
+    "tags_previously": "Etiquetes prèviament utilitzades"
+  },
+  "widgets": {
+    "nav_title": "Ginys",
+    "showWidgets": "Ginys"
   },
   "security": {
     "pin": "Codi Pin",
@@ -43,6 +46,7 @@
     "category_contacts": "Contactes"
   },
   "support": {
+    "title": "Suport",
     "text_button": "Envia",
     "text_success_button": "OK",
     "text_unsuccess_button": "Torna a intentar"

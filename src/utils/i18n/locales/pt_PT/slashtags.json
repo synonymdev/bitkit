@@ -1,10 +1,5 @@
 {
   "contact_your_name": "Nome público\ndo seu perfil",
   "contact_retrieving": "Recebimento\ninformações de contato...",
-  "onboarding_header": "Dinâmico\n<accent>Contatos.</accent>",
-  "onboarding_profile1_header": "Seja dono do seu\n<accent>Perfil social.</accent>",
-  "onboarding_profile2_header": "Pague seus\n<accent>Contatos.</accent>",
-  "onboarding_widgets1_header": "Adeus,\n<accent>Senhas.</accent>",
-  "onboarding_widgets2_header": "Olá,\n<accent>Widgets.</accent>",
   "profile_link_label_placeholder": "Por exemplo, \"Website\"."
 }

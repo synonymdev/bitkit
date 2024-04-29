@@ -1,4 +1,7 @@
 {
+  "about": {
+    "share": "Διαμοιρασμός"
+  },
   "support": {
     "text_success_button": "ΟΚ",
     "text_unsuccess_button": "Προσπαθείστε Ξανά"

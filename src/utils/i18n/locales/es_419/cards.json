@@ -1,14 +1,12 @@
 {
   "backupSeedPhrase": {
-    "title": "Cópia de seguridad",
-    "description": "Guarde su dinero"
+    "title": "Cópia de seguridad"
   },
-  "lightning": {
-    "title": "Pague instantáneamente",
-    "description": "Ir a Lightning"
+  "discount": {
+    "description": "Saldo de gastos"
   },
   "lightningSettingUp": {
-    "title": "Arreglando todo",
+    "title": "Transferir",
     "description1": "Pagado",
     "description2": "En cola",
     "description3": "Apertura"
@@ -22,24 +20,21 @@
     "description": "¡Conectado!"
   },
   "transferPending": {
-    "title": "Transfiriendo"
+    "title": "Transferir"
   },
   "transferClosingChannel": {
     "title": "Arrancando",
     "description": "Mantenga la aplicación abierta"
   },
   "pin": {
-    "title": "Mayor seguridad",
     "description": "Configurar un código PIN"
   },
   "slashtagsProfile": {
-    "title": "Perfil público",
+    "title": "Perfil",
     "description": "Agrega tus detalles"
   },
-  "buyBitcoin": {
-    "title": "Obtenga Bitcoin"
+  "support": {
+    "title": "Soporte"
   },
-  "lightning_no_funds_title": "Sin fondos, todavia",
-  "lightning_no_funds_desc": "Antes de que pueda configurar su saldo de gasto instantáneo, necesita enviar un poco de Bitcoin on-chain a su monedero.",
   "suggestions": "Sugerencias"
 }

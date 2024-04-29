@@ -1,12 +1,10 @@
 {
   "beta": "BETA",
-  "beta_software": "Bitkit es un software beta.",
   "beta_warn": "No guarde todo su dinero en Bitkit.",
   "qr_scan": "Escanear código QR",
   "qr_error_network_header": "Red incorrecta",
   "qr_error_network_text": "Bitkit está actualmente configurado para {selectedNetwork} pero los datos son para {dataNetwork}.",
   "qr_paste": "Pegar código QR",
-  "buy_header": "Bitcoin\n<accent>para Bitkit.</accent>",
   "buy_button": "Comprar Bitcoin",
   "connection_lost_title": "Conexión a Bitkit perdida",
   "connection_lost_message": "Por favor, verifique la configuración de servidor Electrum.",
@@ -22,7 +20,6 @@
   "scan_err_decoding": "Error de descodificación",
   "scan_err_interpret_title": "Incapaz de Interpretar los Datos Proporcionados",
   "scan_err_interpret_msg": "Bitkit no puede interpretar los datos proporcionados.",
-  "lnurl_channel_header": "Pagos instantáneos",
   "lnurl_channel_host": "Anfitrión",
   "lnurl_channel_port": "Puerta",
   "lnurl_channel_success_msg_peer": "Canal solicitado con éxito a: {peer}",
@@ -34,7 +31,6 @@
   "update_title": "Actualización Disponible",
   "update_text": "¡Por favor, actualice Bitkit a la última versión para obtener nuevas características y correcciones de errores!",
   "high_title": "Saldo Elevado",
-  "high_text2_beta": "Por favor, considere mover algunos de sus fondos. Le recomendamos utilizar sólo pequeñas cantidades mientras Bitkit esté en fase beta.",
   "high_button_more": "Más informaciónes",
   "caution_header": "Precaución:\n<yellow>Riesgo Beta.</yellow>"
 }

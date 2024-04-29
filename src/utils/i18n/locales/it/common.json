@@ -1,4 +1,5 @@
 {
+  "advanced": "Avanzate",
   "continue": "Continua",
   "cancel": "Annulla",
   "close": "Chiudi",
@@ -6,8 +7,6 @@
   "yes_proceed": "Sì, Procedi",
   "try_again": "Riprova",
   "dialog_cancel": "No, Annulla",
-  "sat_vbyte": "₿ / vbyte",
-  "sat_vbyte_compact": "₿/vbyte",
   "edit": "Modifica",
   "copy": "Copia",
   "share": "Condividi",
@@ -17,6 +16,7 @@
   "done": "Fatto",
   "delete": "Elimina",
   "ok": "OK",
+  "awesome": "Fantastico!",
   "retry": "Riprova",
   "later": "Più tardi",
   "skip": "Salta",

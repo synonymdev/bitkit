@@ -1,14 +1,12 @@
 {
   "backupSeedPhrase": {
-    "title": "Sauvegarder",
-    "description": "Stockez votre argent"
+    "title": "Sauvegarder"
   },
-  "lightning": {
-    "title": "Payez instantanément",
-    "description": "Utilise Lightning"
+  "discount": {
+    "description": "Solde des dépenses"
   },
   "lightningSettingUp": {
-    "title": "Mise en place",
+    "title": "Transfert",
     "description1": "Payé",
     "description2": "En attente",
     "description3": "Ouverture"
@@ -29,17 +27,14 @@
     "description": "Maintenir l'application ouverte"
   },
   "pin": {
-    "title": "Une sécurité renforcée",
     "description": "Définir un code PIN"
   },
   "slashtagsProfile": {
-    "title": "Profil public",
+    "title": "Profil",
     "description": "Ajouter vos informations"
   },
-  "buyBitcoin": {
-    "title": "Obtenir du Bitcoin"
+  "support": {
+    "title": "Support"
   },
-  "lightning_no_funds_title": "Pas encore de fonds",
-  "lightning_no_funds_desc": "Avant de pouvoir établir votre solde de dépenses instantanées, vous devez envoyer des bitcoins à votre porte-monnaie.",
   "suggestions": "Suggestions"
 }

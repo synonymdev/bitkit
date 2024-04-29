@@ -1,14 +1,12 @@
 {
   "backupSeedPhrase": {
-    "title": "Faça backup",
-    "description": "Guarde seu dinheiro"
+    "title": "Faça backup"
   },
-  "lightning": {
-    "title": "Pague instantaneamente",
-    "description": "Conecte-se à Lightning"
+  "discount": {
+    "description": "Saldo de Gastos"
   },
   "lightningSettingUp": {
-    "title": "Conectando",
+    "title": "Transferência",
     "description1": "Pago",
     "description2": "Na Fila",
     "description3": "Abrindo"
@@ -22,24 +20,21 @@
     "description": "Conectado!"
   },
   "transferPending": {
-    "title": "Transferindo"
+    "title": "Transferência"
   },
   "transferClosingChannel": {
     "title": "Iniciando...",
     "description": "Mantenha o app aberto"
   },
   "pin": {
-    "title": "Proteja sua carteira",
     "description": "Configure um PIN"
   },
   "slashtagsProfile": {
-    "title": "Perfil público",
+    "title": "Perfil",
     "description": "Adicione seus detalhes"
   },
-  "buyBitcoin": {
-    "title": "Compre bitcoin"
+  "support": {
+    "title": "Suporte"
   },
-  "lightning_no_funds_title": "Sem fundos",
-  "lightning_no_funds_desc": "Para configurar pagamentos instantâneos, você precisa receber bitcoins na sua carteira.",
   "suggestions": "Sugestões"
 }

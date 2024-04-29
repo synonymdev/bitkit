@@ -2,7 +2,6 @@
   "send": "Enviar",
   "receive": "Reciba",
   "balance_total": "Saldo total",
-  "assets": "Activos",
   "send_bitcoin": "Enviar Bitcoin",
   "send_to": "Para",
   "recipient_contact": "Contactar",
@@ -69,7 +68,6 @@
   "receive_lightning_invoice": "Factura Lightning",
   "receive_note_placeholder": "Nota opcional para el pagador",
   "receive_show_qr": "Mostrar código QR",
-  "receive_instantly": "Recepción instantánea",
   "receive_error_min_title": "Cantidad por debajo del mínimo",
   "receive_error_max_title": "Por encima del máximo",
   "receive_will": "Recibirás",
@@ -80,6 +78,7 @@
   "activity_no_explain": "Reciba algunos fondos para empezar",
   "activity_sent": "Enviado",
   "activity_received": "Recibido",
+  "activity_transfer": "Transferir",
   "activity_transfer_spending": "Saldo de gastos",
   "activity_transfer_savings": "Saldo de ahorro",
   "activity_bitcoin_sent": "Bitcoin enviado",
@@ -117,9 +116,13 @@
     "other": "Otros"
   },
   "details_savings_title": "Ahorro",
-  "details_savings_subtitle": "BTC",
-  "transfer_text": "Transferir",
   "details_spending_title": "Gasto",
+  "savings": {
+    "title": "Ahorro"
+  },
+  "spending": {
+    "title": "Gasto"
+  },
   "tx_invalid": "Transacción no válida",
   "boost": "Impulso",
   "boost_success_title": "Impulsada!",

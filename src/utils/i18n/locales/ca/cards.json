@@ -1,14 +1,9 @@
 {
   "backupSeedPhrase": {
-    "title": "Còpia de seguretat",
-    "description": "Guarda els teus diners"
-  },
-  "lightning": {
-    "title": "Paga instantàniament",
-    "description": "Anar a Lightning"
+    "title": "Còpia de seguretat"
   },
   "lightningSettingUp": {
-    "title": "Preparant",
+    "title": "Transferir",
     "description1": "Pagat",
     "description2": "A la cua",
     "description3": "Obrint"
@@ -22,24 +17,21 @@
     "description": "Conectat!"
   },
   "transferPending": {
-    "title": "Transferint"
+    "title": "Transferir"
   },
   "transferClosingChannel": {
     "title": "Iniciant...",
     "description": "Mantenir l'aplicació oberta"
   },
   "pin": {
-    "title": "Milor seguretat",
     "description": "Configurar un codi PIN"
   },
   "slashtagsProfile": {
-    "title": "Perfil públic",
+    "title": "Perfil",
     "description": "Afegeix els teus detalls"
   },
-  "buyBitcoin": {
-    "title": "Obtenir bitcoin"
+  "support": {
+    "title": "Suport"
   },
-  "lightning_no_funds_title": "Encara sense fons",
-  "lightning_no_funds_desc": "Abans de poder configurar el vostre saldo de despesa instantània, heu d'enviar una mica de Bitcoin onchain al vostre moneder",
   "suggestions": "Sugeriments"
 }

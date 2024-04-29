@@ -2,7 +2,6 @@
   "send": "Отправить",
   "receive": "Получить",
   "balance_total": "Всего",
-  "assets": "Активы",
   "send_bitcoin": "Отправить Биткоин",
   "send_to": "Кому",
   "recipient_contact": "Контакт",
@@ -64,6 +63,7 @@
   "activity_no_explain": "Получите немного средств, чтобы начать",
   "activity_sent": "Отправлено",
   "activity_received": "Получено",
+  "activity_transfer": "Перенос",
   "activity_transfer_spending": "Баланс Расходов",
   "activity_transfer_savings": "Баланс Сбережений",
   "activity_confirms_in": "Подтверждение через {feeRateDescription}",
@@ -103,8 +103,13 @@
     "other": "Другие"
   },
   "details_savings_title": "Сбережения",
-  "transfer_text": "Перенос",
   "details_spending_title": "Расходы",
+  "savings": {
+    "title": "Сбережения"
+  },
+  "spending": {
+    "title": "Расходы"
+  },
   "tx_invalid": "Неверная Транзакция",
   "boost": "Ускорить",
   "boost_fee_custom": "Ваша транзакция может быть подтверждена быстрее, если вы включите дополнительную комиссию. Установите значение ниже.",

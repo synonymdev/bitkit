@@ -9,15 +9,9 @@
   "support_title": "Поддержка",
   "about": {
     "title": "О Bitkit",
-    "text": "c Bitkit ключи от ваших денег, профиля, контактов и веб-аккаунтов принадлежат Вам.\n\nЭта <easterEgg>Оранжевая Пилюля</easterEgg> была тщательно разработана в Synonym Software Ltd.",
-    "support": "Поддержка",
-    "report_bug": "Сообщить об ошибке",
     "legal": "Документы",
-    "version": "Версия",
-    "op_title": "Запилюлить",
-    "op_text": "Кому отправить <accent>Биткоин-Пилюлю?</accent>",
-    "op_share": "Поделиться Bitkit с другом",
-    "op_message": "Скачай Bitkit - идеальный набор инструментов для работы с биткоинами. Управляй сам своей цифровой жизнью! {appStoreUrl}"
+    "share": "Поделиться",
+    "version": "Версия"
   },
   "dev_title": "Настройки Разработчика",
   "general": {
@@ -32,8 +26,11 @@
     "speed_default": "Значение По Умолчанию",
     "speed_fee_custom": "Set Custom Fee",
     "tags": "Теги",
-    "tags_previously": "Ранее использовавшиеся теги",
-    "widgets": "Виджеты"
+    "tags_previously": "Ранее использовавшиеся теги"
+  },
+  "widgets": {
+    "nav_title": "Виджеты",
+    "showWidgets": "Виджеты"
   },
   "security": {
     "clipboard": "Читать буфер обмена",
@@ -56,6 +53,7 @@
     "category_contacts": "Контакты"
   },
   "support": {
+    "title": "Поддержка",
     "text_button": "Отправить",
     "text_success_button": "Ок",
     "text_unsuccess_button": "Попробовать Снова"
@@ -147,5 +145,8 @@
   },
   "gap": {
     "save": "Сохранить"
+  },
+  "rgs": {
+    "button_connect": "Подключиться"
   }
 }

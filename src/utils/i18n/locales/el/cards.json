@@ -1,14 +1,8 @@
 {
   "backupSeedPhrase": {
-    "title": "Αντίγραφο ασφαλείας",
-    "description": "Φυλάξτε τα χρήματά σας"
-  },
-  "lightning": {
-    "title": "Πληρώστε άμεσα",
-    "description": "Ελάτε στο Lightning"
+    "title": "Αντίγραφο ασφαλείας"
   },
   "lightningSettingUp": {
-    "title": "Ρυθμίσεις",
     "description1": "Πληρώθηκε",
     "description2": "Σε αναμονή",
     "description3": "Σε αναμονή"
@@ -21,25 +15,15 @@
     "title": "Έτοιμο",
     "description": "Συνδέθηκε!"
   },
-  "transferPending": {
-    "title": "Μεταφορά"
-  },
   "transferClosingChannel": {
     "title": "Έναρξη...",
     "description": "Κρατήστε την εφαρμογή ανοιχτή"
   },
   "pin": {
-    "title": "Καλύτερη ασφάλεια",
     "description": "Καταχωρήστε κωδικό PIN"
   },
   "slashtagsProfile": {
-    "title": "Δημόσιο Προφίλ",
     "description": "Προσθέστε τα στοιχεία σας"
   },
-  "buyBitcoin": {
-    "title": "Πάρτε Bitcoin"
-  },
-  "lightning_no_funds_title": "Δεν υπάρχουν ακόμη κεφάλαια",
-  "lightning_no_funds_desc": "Για να μπορέσετε να ρυθμίσετε τις πληρωμές σας, πρέπει να στείλετε Bitcoin στο πορτοφόλι σας.",
   "suggestions": "Προτάσεις"
 }

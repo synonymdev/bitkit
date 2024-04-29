@@ -91,8 +91,6 @@
   "support": "Support",
   "close_conn": "Fermer la connexion",
   "close_error": "Échec de transfer ",
-  "close_success_title": "Transfert réussi",
-  "close_success_msg": "Vos fonds ont été transférés sur votre compte d'épargne.",
   "close_button": "Fermer",
   "force_title": "Transfert forcé",
   "force_text": "Impossible d'initier le transfert. Voulez-vous forcer ce transfert ? Vous ne pourrez pas utiliser ces fonds pendant ±14 jours ( !)",

@@ -8,6 +8,12 @@
   },
   "details_savings_title": "Sparkonto",
   "details_spending_title": "Ausgaben",
+  "savings": {
+    "title": "Sparkonto"
+  },
+  "spending": {
+    "title": "Ausgaben"
+  },
   "lnurl_w_success_description": "Abhebe-Request erfolgreich",
   "lnurl_p_title": "Sende Bitcoin",
   "lnurl_p_max": "Maximale Menge"

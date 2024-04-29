@@ -12,15 +12,9 @@
   "support_title": "Suporte",
   "about": {
     "title": "Sobre a Bitkit",
-    "text": "A Bitkit lhe entrega as chaves do seu dinheiro, perfil, contatos e contas.\n\nEsta <easterEgg>Pílula Laranja</easterEgg> foi cuidadosamente desenvolvida pela Synonym Software Ltd.",
-    "support": "Suporte",
-    "report_bug": "Relatar um bug ou contribuir",
     "legal": "Legal",
-    "version": "Versão",
-    "op_title": "Pílula Laranja",
-    "op_text": "Para quem você recomendará a <accent>pílula laranja?</accent>",
-    "op_share": "Recomende a Bitkit a um Amigo",
-    "op_message": "Baixe a Bitkit, seu kit de ferramentas definitivo para o Bitcoin. Entregando as chaves para você remodelar sua vida digital. {appStoreUrl}"
+    "share": "Compartilhar",
+    "version": "Versão"
   },
   "dev_title": "Modo Desenvolvedor",
   "general": {
@@ -38,8 +32,11 @@
     "speed_default": "Velocidade de transação padrão",
     "speed_fee_custom": "Definir taxa personalizada",
     "tags": "Tags",
-    "tags_previously": "Tags usadas anteriormente",
-    "widgets": "Widgets"
+    "tags_previously": "Tags usadas anteriormente"
+  },
+  "widgets": {
+    "nav_title": "Widgets",
+    "showWidgets": "Widgets"
   },
   "security": {
     "title": "Segurança e Privacidade",
@@ -75,6 +72,7 @@
     "category_contacts": "Contatos"
   },
   "support": {
+    "title": "Suporte",
     "text_button": "Enviar",
     "text_success_button": "OK",
     "text_unsuccess_button": "Tente novamente"
@@ -110,7 +108,6 @@
     "lightning_connections": "Conexões Lightning",
     "lightning_node": "Nó Lightning",
     "electrum_server": "Servidor Electrum",
-    "rgs_server": "Servidor Rapid-Gossip-Sync",
     "web_relay": "Web Relay de Slashtags",
     "bitcoin_network": "Rede Bitcoin"
   },

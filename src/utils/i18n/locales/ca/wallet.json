@@ -4,7 +4,6 @@
   "balance_total": "Saldo total",
   "create_wallet_mnemonic_error": "Frase de recuperació no vàlida.",
   "create_wallet_mnemonic_restore_error": "Si us plau, comproveu si la vostra frase de recuperació és precisa.",
-  "assets": "Actius",
   "send_bitcoin": "Envia Bitcoin",
   "send_to": "A",
   "recipient_contact": "Contacte",
@@ -79,7 +78,6 @@
   "receive_lightning_invoice": "Factura Lightning",
   "receive_note_placeholder": "Nota opcional per al pagador.",
   "receive_show_qr": "Mostra el codi QR",
-  "receive_instantly": "Rebre Instantàniament",
   "receive_error_min_title": "Sota l'import mínim",
   "receive_error_min_description": "La factura ha de ser com a mínim {txt}",
   "receive_error_max_title": "Per sobre de l'import màxim",
@@ -93,6 +91,7 @@
   "activity_no_explain": "Rebi alguns fons per començar",
   "activity_sent": "Enviat",
   "activity_received": "Rebut",
+  "activity_transfer": "Transferir",
   "activity_confirms_in": "Confirma en {feeRateDescription}",
   "activity_bitcoin_sent": "Envia Bitcoin",
   "activity_bitcoin_received": "Rebut Bitcoin",
@@ -130,9 +129,13 @@
     "other": "Altres"
   },
   "details_savings_title": "Estalvis",
-  "details_savings_subtitle": "BTC",
-  "transfer_text": "Transferir",
   "details_spending_title": "Despesa",
+  "savings": {
+    "title": "Estalvis"
+  },
+  "spending": {
+    "title": "Despesa"
+  },
   "tx_invalid": "Transacció no vàlida",
   "boost": "Impulsar",
   "boost_success_title": "Impulsat!",

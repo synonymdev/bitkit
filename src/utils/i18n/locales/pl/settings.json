@@ -1,5 +1,8 @@
 {
   "settings": "Ustawienia",
+  "about": {
+    "share": "Udostępnij"
+  },
   "backup": {
     "category_settings": "Ustawienia"
   },

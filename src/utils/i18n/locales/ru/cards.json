@@ -1,37 +1,47 @@
 {
   "backupSeedPhrase": {
-    "title": "Бекап",
-    "description": "Сохранить"
+    "title": "Бекап"
   },
-  "lightning": {
-    "title": "Лайтнинг",
-    "description": "Настроить"
+  "discount": {
+    "description": "Баланс Расходов"
   },
   "lightningSettingUp": {
-    "title": "Настройка"
+    "title": "Перенос",
+    "description1": "Оплачено",
+    "description2": "В очереди",
+    "description3": "Открывается"
   },
   "lightningConnecting": {
-    "title": "Вы\nподключены!"
+    "title": "Вы\nподключены!",
+    "description": "Готовность ±10м"
+  },
+  "lightningReady": {
+    "title": "Готово",
+    "description": "Подключено!"
   },
   "transferPending": {
-    "title": "Перенос"
+    "title": "Перенос",
+    "description": "Готовность ±{duration}м"
   },
   "transferClosingChannel": {
     "title": "Инициализация...",
     "description": "Не закрывайте приложение"
   },
   "pin": {
-    "title": "PIN-код",
     "description": "Установить"
   },
   "slashtagsProfile": {
     "title": "Профиль",
     "description": "Редактировать"
   },
-  "buyBitcoin": {
-    "title": "Биткоин"
+  "support": {
+    "title": "Поддержка"
   },
-  "lightning_no_funds_title": "Пока нет средств",
-  "lightning_no_funds_desc": "Прежде чем вы сможете настроить свой Мгновенный баланс расходов, вам нужно отправить немного биткоинов ончейн на свой кошелек.",
+  "buyBitcoin": {
+    "description": "Купить биткоин"
+  },
+  "btFailed": {
+    "description": "Пожалуйста, попробуйте снова"
+  },
   "suggestions": "Рекомендации"
 }

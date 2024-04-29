@@ -1,14 +1,8 @@
 {
   "backupSeedPhrase": {
-    "title": "Kopia bezpieczeństwa",
-    "description": "Przechowuj swoje pieniądze"
-  },
-  "lightning": {
-    "title": "Zapłać natychmiast",
-    "description": "Przejdź do sieci Lightning"
+    "title": "Kopia bezpieczeństwa"
   },
   "lightningSettingUp": {
-    "title": "Ustawienia",
     "description1": "Zapłacono",
     "description2": "W kolejce",
     "description3": "Otwieranie"
@@ -21,25 +15,15 @@
     "title": "Gotowe",
     "description": "Połączone!"
   },
-  "transferPending": {
-    "title": "Transferuję"
-  },
   "transferClosingChannel": {
     "title": "Instaluję",
     "description": "Pozostaw aplikację włączoną"
   },
   "pin": {
-    "title": "Lepsze bezpieczeństwo",
     "description": "Ustaw kod PIN"
   },
   "slashtagsProfile": {
-    "title": "Profil publiczny",
     "description": "Dodaj swoje detale"
   },
-  "buyBitcoin": {
-    "title": "Kup Bitcoina"
-  },
-  "lightning_no_funds_title": "Brak funduszy",
-  "lightning_no_funds_desc": "Zanim będziesz móc ustawić natychmiastowe wypłaty, potrzebujesz dokonać wpłaty on-chain na swój portfel",
   "suggestions": "Sugestie"
 }

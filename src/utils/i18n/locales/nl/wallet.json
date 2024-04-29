@@ -2,7 +2,6 @@
   "send": "Verstuur",
   "receive": "Ontvang",
   "balance_total": "Totale saldo",
-  "assets": "Bezittingen",
   "send_bitcoin": "Bitcoin Versturen",
   "send_to": "Naar",
   "recipient_contact": "Contact",
@@ -67,6 +66,7 @@
   "activity_no_explain": "Ontvang wat geld om te beginnen",
   "activity_sent": "Verstuurd",
   "activity_received": "Ontvangen",
+  "activity_transfer": "Overboeken",
   "activity_transfer_spending": "Bestedingssaldo",
   "activity_transfer_savings": "Spaarsaldo",
   "activity_confirms_in": "Zal bevestigen in {feeRateDescription}",
@@ -110,8 +110,13 @@
     "other": "Overige"
   },
   "details_savings_title": "Spaargeld",
-  "transfer_text": "Overboeken",
   "details_spending_title": "Bestedingsgeld",
+  "savings": {
+    "title": "Spaargeld"
+  },
+  "spending": {
+    "title": "Bestedingsgeld"
+  },
   "tx_invalid": "Transactie Ongeldig",
   "boost": "Boost",
   "boost_fee_custom": "Uw transactie kan sneller bevestigd worden als u een hogere vergoeding betaalt. Hieronder kunt u een aangepaste vergoeding instellen. ",

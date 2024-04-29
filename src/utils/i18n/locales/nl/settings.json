@@ -9,15 +9,9 @@
   "support_title": "Ondersteuning",
   "about": {
     "title": "Over Bitkit",
-    "text": "Bitkit geeft u de sleutels voor uw geld, profiel, contacten en webaccounts. \n\nDeze <easterEgg>'Orange Pill'</easterEgg>is zorgvuldig ontworpen door Synonym Software Ltd.",
-    "support": "Ondersteuning",
-    "report_bug": "Meldt een bug of draag anders bij aan het project",
     "legal": "Juridisch",
-    "version": "Versie",
-    "op_title": "Orange Pilled",
-    "op_text": "Wie gaat u <accent>Orange Pillen?",
-    "op_share": "Deel Bitkit Met Iemand",
-    "op_message": "Download Bitkit, De Ultieme Bitcoin Toolkit. Alle sleutels om uw digitale leven te hervormen. {appStoreUrl}"
+    "share": "Delen",
+    "version": "Versie"
   },
   "dev_title": "Dev Instellingen",
   "general": {
@@ -32,8 +26,11 @@
     "speed_default": "Standaard Transactiesnelheid",
     "speed_fee_custom": "Stel Een Aangepaste Vergoeding In",
     "tags": "Labels",
-    "tags_previously": "Eerder gebruikte labels",
-    "widgets": "Widgets"
+    "tags_previously": "Eerder gebruikte labels"
+  },
+  "widgets": {
+    "nav_title": "Widgets",
+    "showWidgets": "Widgets"
   },
   "security": {
     "clipboard": "Klembord lezen voor gemak in gebruik",
@@ -67,6 +64,7 @@
     "category_contacts": "Contacten"
   },
   "support": {
+    "title": "Ondersteuning",
     "text_button": "Verstuur",
     "text_success_button": "OK",
     "text_unsuccess_button": "Opnieuw proberen"
