@@ -78,8 +78,7 @@ export const useBalance = (): {
 		inTransferToSpending = 0;
 	}
 
-	// we don't include the LN reserve balance in the total balance
-	const totalBalance = onchainBalance + spendingBalance + inTransferToSpending;
+	const totalBalance = onchainBalance + lightningBalance + inTransferToSpending;
 
 	return {
 		onchainBalance,

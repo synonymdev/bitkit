@@ -507,6 +507,19 @@ export const canBoost = (txid: string): ICanBoostResponse => {
 	}
 };
 
+// TODO: get actual routing fee (Currently generous with the fee for wiggle room to prevent routing failures)
+const getEstimatedRoutingFee = (amount: number): number => {
+	const fee = 100;
+	if (amount > fee) {
+		return fee;
+	} else if (amount > 25) {
+		return 25;
+	} else {
+		// Make an attempt to spend it all, but will likely fail without a proper routing fee allotment.
+		return 0;
+	}
+};
+
 /**
  * Calculates the max amount able to send for onchain/lightning
  * @param {ISendTransaction} [transaction]
@@ -538,12 +551,9 @@ export const getMaxSendAmount = ({
 				selectedWallet,
 				selectedNetwork,
 			});
-			// TODO: get routing fee
-			const fee = 100;
-			const maxAmount = {
-				amount: spendingBalance - fee,
-				fee,
-			};
+			const fee = getEstimatedRoutingFee(spendingBalance);
+			const amount = spendingBalance - fee;
+			const maxAmount = { amount, fee };
 			return ok(maxAmount);
 		} else {
 			const wallet = getOnChainWallet();
@@ -603,18 +613,10 @@ export const sendMax = async ({
 				selectedWallet,
 				selectedNetwork,
 			});
-			// TODO: get actual routing fee (Currently generous with the fee for wiggle room to prevent routing failures)
-			let fee = 100;
-			let amount = 0;
-			if (spendingBalance > fee) {
-				amount = spendingBalance - fee;
-			} else if (spendingBalance > 25) {
-				fee = 25;
-				amount = spendingBalance - fee;
-			} else {
-				fee = 0;
-				amount = spendingBalance; // Make an attempt to spend it all, but will likely fail without a proper routing fee allotment.
-			}
+
+			const fee = getEstimatedRoutingFee(spendingBalance);
+			const amount = spendingBalance - fee;
+
 			const outputs = transaction.outputs ?? [];
 			// No address specified, attempt to assign the address currently specified in the current output index.
 			if (!address) {

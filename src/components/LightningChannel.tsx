@@ -18,7 +18,7 @@ const LightningChannel = ({
 	channel: TChannel;
 	status: TStatus;
 }): ReactElement => {
-	const { spendingAvailable, receivingAvailable, capacity } =
+	const { spendingTotal, receivingAvailable, capacity } =
 		useLightningChannelBalance(channel);
 
 	let spendingColor: keyof IThemeColors = 'purple50';
@@ -34,7 +34,7 @@ const LightningChannel = ({
 	}
 
 	const spendingAvailableStyle = {
-		width: `${100 * (spendingAvailable / capacity)}%` as DimensionValue,
+		width: `${100 * (spendingTotal / capacity)}%` as DimensionValue,
 	};
 
 	const receivingAvailableStyle = {
@@ -47,7 +47,7 @@ const LightningChannel = ({
 				<View style={styles.balance}>
 					<UpArrow color={spendingAvailableColor} width={14} height={14} />
 					<Money
-						sats={spendingAvailable}
+						sats={spendingTotal}
 						color={spendingAvailableColor}
 						size="captionB"
 						unit={EUnit.BTC}

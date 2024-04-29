@@ -1488,9 +1488,9 @@ export const getBalance = ({
 	});
 	const claimableBalances = node?.claimableBalances[selectedNetwork];
 
-	// Get the total spending & reserved balance of all open channels
-	const { localBalance: spendingBalance } = getLightningBalance();
+	const { localBalance } = getLightningBalance();
 	const reserveBalance = getLightningReserveBalance();
+	const spendingBalance = localBalance - reserveBalance;
 
 	// TODO: filter out some types of claimable balances
 	const result = reduceValue(claimableBalances, 'amount_satoshis');
@@ -1498,9 +1498,9 @@ export const getBalance = ({
 
 	const onchainBalance =
 		wallet.getBalance() ?? currentWallet.balance[selectedNetwork];
-	const lightningBalance = spendingBalance + claimableBalance;
-	const spendableBalance = onchainBalance + spendingBalance - reserveBalance;
-	const totalBalance = onchainBalance + spendingBalance + claimableBalance;
+	const lightningBalance = localBalance + claimableBalance;
+	const spendableBalance = onchainBalance + spendingBalance;
+	const totalBalance = onchainBalance + lightningBalance;
 
 	return {
 		onchainBalance,

@@ -24,12 +24,12 @@ const Balances = (): ReactElement => {
 	const accountVersion = useAppSelector(accountVersionSelector);
 	const {
 		onchainBalance,
-		spendingBalance,
+		lightningBalance,
 		balanceInTransferToSpending,
 		balanceInTransferToSavings,
 	} = useBalance();
 
-	const canTransfer = (onchainBalance || spendingBalance) && !isGeoBlocked;
+	const canTransfer = (onchainBalance || lightningBalance) && !isGeoBlocked;
 
 	const onSavingsPress = (): void => {
 		navigation.navigate('Wallet', { screen: 'ActivitySavings' });
@@ -78,7 +78,7 @@ const Balances = (): ReactElement => {
 			</View>
 			<NetworkRow
 				title={t('details_spending_title')}
-				balance={spendingBalance}
+				balance={lightningBalance}
 				pendingBalance={balanceInTransferToSpending}
 				icon={<LightningCircleIcon width={32} height={32} />}
 				testID="ActivitySpending"

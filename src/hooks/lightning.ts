@@ -4,7 +4,6 @@ import { useTranslation } from 'react-i18next';
 
 import { ellipsis } from '../utils/helpers';
 import { useAppSelector } from '../hooks/redux';
-import { TUseChannelBalance } from '../store/types/lightning';
 import { usePaidBlocktankOrders } from './blocktank';
 import {
 	channelsSelector,
@@ -45,20 +44,16 @@ export const useLightningBalance = (
 
 /**
  * Returns channel balance information for a given channel.
- * @param {TChannel} channel
- * @returns {TUseChannelBalance}
  */
 export const useLightningChannelBalance = (
 	channel: TChannel,
-): TUseChannelBalance => {
-	const balance: TUseChannelBalance = {
-		spendingTotal: 0, // How many sats the user has reserved in the channel. (Outbound capacity + Punishment Reserve)
-		spendingAvailable: 0, // How much the user is able to spend from a channel. (Outbound capacity - Punishment Reserve)
-		receivingTotal: 0, // How many sats the counterparty has reserved in the channel. (Inbound capacity + Punishment Reserve)
-		receivingAvailable: 0, // How many sats the user is able to receive in a channel. (Inbound capacity - Punishment Reserve)
-		capacity: 0, // Total capacity of the channel. (spendingTotal + receivingTotal)
-	};
-
+): {
+	spendingTotal: number; // How many sats the user has reserved in the channel. (Outbound capacity + Punishment Reserve)
+	spendingAvailable: number; // How much the user is able to spend from a channel. (Outbound capacity - Punishment Reserve)
+	receivingTotal: number; // How many sats the counterparty has reserved in the channel. (Inbound capacity + Punishment Reserve)
+	receivingAvailable: number; // How many sats the user is able to receive in a channel. (Inbound capacity - Punishment Reserve)
+	capacity: number; // Total capacity of the channel. (spendingTotal + receivingTotal)
+} => {
 	const {
 		channel_value_satoshis,
 		balance_sat,
@@ -70,13 +65,13 @@ export const useLightningChannelBalance = (
 	// user punishment reserve balance
 	const localReserve = unspendable_punishment_reserve ?? 0;
 
-	balance.spendingTotal = outbound_capacity_sat + localReserve;
-	balance.spendingAvailable = outbound_capacity_sat;
-	balance.receivingTotal = channel_value_satoshis - balance_sat;
-	balance.receivingAvailable = inbound_capacity_sat;
-	balance.capacity = channel_value_satoshis;
-
-	return balance;
+	return {
+		spendingTotal: outbound_capacity_sat + localReserve,
+		spendingAvailable: outbound_capacity_sat,
+		receivingTotal: channel_value_satoshis - balance_sat,
+		receivingAvailable: inbound_capacity_sat,
+		capacity: channel_value_satoshis,
+	};
 };
 
 /**

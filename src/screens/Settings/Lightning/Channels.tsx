@@ -230,7 +230,7 @@ const Channels = ({
 
 	const colors = useColors();
 	const { onchainBalance } = useBalance();
-	const { localBalance, remoteBalance } = useLightningBalance(false);
+	const { localBalance, remoteBalance } = useLightningBalance();
 	const selectedWallet = useAppSelector(selectedWalletSelector);
 	const selectedNetwork = useAppSelector(selectedNetworkSelector);
 	const enableDevOptions = useAppSelector(enableDevOptionsSelector);
