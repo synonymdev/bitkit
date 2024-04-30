@@ -58,6 +58,7 @@
 	"send_fee_speed": "Speed",
 	"send_fee_error": "Fee Invalid",
 	"max_possible_fee_rate": "Max possible fee rate",
+	"min_possible_fee_rate": "Min possible fee rate",
 	"sats_per_vbyte": "sats/vbyte",
 	"send_output_to_small_title": "Send Amount Too Small",
 	"send_output_to_small_description": "Please increase your send amount to proceed.",

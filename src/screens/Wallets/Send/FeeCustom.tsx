@@ -15,6 +15,7 @@ import { showToast } from '../../../utils/notifications';
 import { useAppSelector } from '../../../hooks/redux';
 import { useDisplayValues } from '../../../hooks/displayValues';
 import { transactionSelector } from '../../../store/reselect/wallet';
+import { onChainFeesSelector } from '../../../store/reselect/fees';
 import type { SendScreenProps } from '../../../navigation/types';
 import { getFeeInfo } from '../../../utils/wallet';
 
@@ -22,9 +23,11 @@ const FeeCustom = ({
 	navigation,
 }: SendScreenProps<'FeeCustom'>): ReactElement => {
 	const { t } = useTranslation('wallet');
+	const feeEstimates = useAppSelector(onChainFeesSelector);
 	const transaction = useAppSelector(transactionSelector);
-	const [feeRate, setFeeRate] = useState(transaction.satsPerByte);
+	const [feeRate, setFeeRate] = useState<number>(transaction.satsPerByte);
 	const [maxFee, setMaxFee] = useState(0);
+	const minFee = feeEstimates.minimum;
 
 	useEffect(() => {
 		const feeInfo = getFeeInfo({
@@ -56,7 +59,11 @@ const FeeCustom = ({
 	const onPress = (key: string): void => {
 		const current = feeRate.toString();
 		const newAmount = handleNumberPadPress(key, current, { maxLength: 3 });
-		if (Number(newAmount) > maxFee) {
+		setFeeRate(Number(newAmount));
+	};
+
+	const onContinue = (): void => {
+		if (feeRate > maxFee) {
 			showToast({
 				type: 'info',
 				title: t('max_possible_fee_rate'),
@@ -64,10 +71,14 @@ const FeeCustom = ({
 			});
 			return;
 		}
-		setFeeRate(Number(newAmount));
-	};
-
-	const onContinue = (): void => {
+		if (minFee < maxFee) {
+			showToast({
+				type: 'info',
+				title: t('min_possible_fee_rate'),
+				description: `${maxFee} ${t('sats_per_vbyte')}`,
+			});
+			return;
+		}
 		const res = updateFee({
 			satsPerByte: Number(feeRate),
 			transaction,
@@ -104,12 +115,7 @@ const FeeCustom = ({
 				<NumberPad style={styles.numberPad} type="simple" onPress={onPress} />
 
 				<View style={styles.buttonContainer}>
-					<Button
-						size="large"
-						text={t('continue')}
-						disabled={!isValid}
-						onPress={onContinue}
-					/>
+					<Button size="large" text={t('continue')} onPress={onContinue} />
 				</View>
 			</View>
 			<SafeAreaInset type="bottom" minPadding={16} />
