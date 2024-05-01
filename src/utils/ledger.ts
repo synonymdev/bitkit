@@ -191,7 +191,11 @@ export const syncLedger = async (): Promise<Result<string>> => {
 				throw new Error('tx not found');
 			}
 			if (!tx.result.time) {
-				throw new Error('tx time not found');
+				// unconfirmed tx
+				return {
+					...c,
+					timestamp: Date.now(),
+				};
 			}
 			return {
 				...c,
