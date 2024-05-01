@@ -12,15 +12,16 @@
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		17074219BB5847259EAFC7A6 /* InterTight-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3815D562618543E7A9BC191E /* InterTight-Black.ttf */; };
-		28261FBA65C51D6B1E3DC7DA /* libPods-bitkit-bitkitTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2EF003C33A98E1BE574AD132 /* libPods-bitkit-bitkitTests.a */; };
 		57072143CA0F49089AE64F61 /* InterTight-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A223BA795CEB4CB2B344FBAF /* InterTight-ExtraBold.ttf */; };
+		6132EF182BDFF13200BBE14D /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 6132EF172BDFF13200BBE14D /* PrivacyInfo.xcprivacy */; };
 		6980B602E6DC4429841BE5EE /* InterTight-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D67AECF5F543462F90EC89AD /* InterTight-Medium.ttf */; };
-		7A4B1A311E26749E01B249CB /* libPods-bitkit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E198980F3673F8C1CFC50C9B /* libPods-bitkit.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		8BD8301E3A1B44DDA3C8A10D /* Damion-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DEC74C5375A34FFCAEBA0781 /* Damion-Regular.ttf */; };
 		925570EA7B1D43CC8AD07B91 /* InterTight-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CA37793F82F144678099A00D /* InterTight-Bold.ttf */; };
 		9952E811473D46FB9003A56D /* InterTight-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 50A8DA09F2974D05A3C58E87 /* InterTight-SemiBold.ttf */; };
 		B3BE07A9843E4B7DA375B877 /* InterTight-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 79DFAC55B0D745DE815EC2E0 /* InterTight-Regular.ttf */; };
+		E1DFE188CAB27EE16BD2079E /* libPods-bitkit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2633C924B358FFEC202323C3 /* libPods-bitkit.a */; };
+		FEBB7A6D5994CF5307DC444F /* libPods-bitkit-bitkitTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F8111C09F74436DF8D3D1E39 /* libPods-bitkit-bitkitTests.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -37,27 +38,28 @@
 		00E356EE1AD99517003FC87E /* bitkitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = bitkitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* bitkitTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = bitkitTests.m; sourceTree = "<group>"; };
+		09381D26DB8142B34372A368 /* Pods-bitkit.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-bitkit.debug.xcconfig"; path = "Target Support Files/Pods-bitkit/Pods-bitkit.debug.xcconfig"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* bitkit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = bitkit.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = bitkit/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = AppDelegate.mm; path = bitkit/AppDelegate.mm; sourceTree = "<group>"; };
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = bitkit/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = bitkit/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = bitkit/main.m; sourceTree = "<group>"; };
-		2EF003C33A98E1BE574AD132 /* libPods-bitkit-bitkitTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-bitkit-bitkitTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		2633C924B358FFEC202323C3 /* libPods-bitkit.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-bitkit.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		285E05CC53D54CC69BD0938A /* Pods-bitkit-bitkitTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-bitkit-bitkitTests.release.xcconfig"; path = "Target Support Files/Pods-bitkit-bitkitTests/Pods-bitkit-bitkitTests.release.xcconfig"; sourceTree = "<group>"; };
 		3815D562618543E7A9BC191E /* InterTight-Black.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "InterTight-Black.ttf"; path = "../src/assets/fonts/InterTight-Black.ttf"; sourceTree = "<group>"; };
-		3851F1437A043BE69C75A8E1 /* Pods-bitkit-bitkitTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-bitkit-bitkitTests.debug.xcconfig"; path = "Target Support Files/Pods-bitkit-bitkitTests/Pods-bitkit-bitkitTests.debug.xcconfig"; sourceTree = "<group>"; };
 		50A8DA09F2974D05A3C58E87 /* InterTight-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "InterTight-SemiBold.ttf"; path = "../src/assets/fonts/InterTight-SemiBold.ttf"; sourceTree = "<group>"; };
+		6132EF172BDFF13200BBE14D /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = PrivacyInfo.xcprivacy; path = bitkit/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		79DFAC55B0D745DE815EC2E0 /* InterTight-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "InterTight-Regular.ttf"; path = "../src/assets/fonts/InterTight-Regular.ttf"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = bitkit/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		88AB9CEE960771BD739E689F /* Pods-bitkit.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-bitkit.release.xcconfig"; path = "Target Support Files/Pods-bitkit/Pods-bitkit.release.xcconfig"; sourceTree = "<group>"; };
+		A1454C623FA7417B0E1B98E4 /* Pods-bitkit-bitkitTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-bitkit-bitkitTests.debug.xcconfig"; path = "Target Support Files/Pods-bitkit-bitkitTests/Pods-bitkit-bitkitTests.debug.xcconfig"; sourceTree = "<group>"; };
 		A223BA795CEB4CB2B344FBAF /* InterTight-ExtraBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "InterTight-ExtraBold.ttf"; path = "../src/assets/fonts/InterTight-ExtraBold.ttf"; sourceTree = "<group>"; };
-		A5675FEDD7F2F4DB7372BE3F /* Pods-bitkit.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-bitkit.debug.xcconfig"; path = "Target Support Files/Pods-bitkit/Pods-bitkit.debug.xcconfig"; sourceTree = "<group>"; };
-		AE0A0F30D02B325A999E8D1C /* Pods-bitkit.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-bitkit.release.xcconfig"; path = "Target Support Files/Pods-bitkit/Pods-bitkit.release.xcconfig"; sourceTree = "<group>"; };
 		CA37793F82F144678099A00D /* InterTight-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "InterTight-Bold.ttf"; path = "../src/assets/fonts/InterTight-Bold.ttf"; sourceTree = "<group>"; };
 		D67AECF5F543462F90EC89AD /* InterTight-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "InterTight-Medium.ttf"; path = "../src/assets/fonts/InterTight-Medium.ttf"; sourceTree = "<group>"; };
 		DEC74C5375A34FFCAEBA0781 /* Damion-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Damion-Regular.ttf"; path = "../src/assets/fonts/Damion-Regular.ttf"; sourceTree = "<group>"; };
-		E198980F3673F8C1CFC50C9B /* libPods-bitkit.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-bitkit.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		EB58E7066DF2011B2E1E6DEF /* Pods-bitkit-bitkitTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-bitkit-bitkitTests.release.xcconfig"; path = "Target Support Files/Pods-bitkit-bitkitTests/Pods-bitkit-bitkitTests.release.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
+		F8111C09F74436DF8D3D1E39 /* libPods-bitkit-bitkitTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-bitkit-bitkitTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -65,7 +67,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				28261FBA65C51D6B1E3DC7DA /* libPods-bitkit-bitkitTests.a in Frameworks */,
+				FEBB7A6D5994CF5307DC444F /* libPods-bitkit-bitkitTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -73,7 +75,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7A4B1A311E26749E01B249CB /* libPods-bitkit.a in Frameworks */,
+				E1DFE188CAB27EE16BD2079E /* libPods-bitkit.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -106,6 +108,7 @@
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
 				13B07FB71A68108700A75B9A /* main.m */,
+				6132EF172BDFF13200BBE14D /* PrivacyInfo.xcprivacy */,
 			);
 			name = bitkit;
 			sourceTree = "<group>";
@@ -114,8 +117,8 @@
 			isa = PBXGroup;
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
-				E198980F3673F8C1CFC50C9B /* libPods-bitkit.a */,
-				2EF003C33A98E1BE574AD132 /* libPods-bitkit-bitkitTests.a */,
+				2633C924B358FFEC202323C3 /* libPods-bitkit.a */,
+				F8111C09F74436DF8D3D1E39 /* libPods-bitkit-bitkitTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -178,10 +181,10 @@
 		BBD78D7AC51CEA395F1C20DB /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				A5675FEDD7F2F4DB7372BE3F /* Pods-bitkit.debug.xcconfig */,
-				AE0A0F30D02B325A999E8D1C /* Pods-bitkit.release.xcconfig */,
-				3851F1437A043BE69C75A8E1 /* Pods-bitkit-bitkitTests.debug.xcconfig */,
-				EB58E7066DF2011B2E1E6DEF /* Pods-bitkit-bitkitTests.release.xcconfig */,
+				09381D26DB8142B34372A368 /* Pods-bitkit.debug.xcconfig */,
+				88AB9CEE960771BD739E689F /* Pods-bitkit.release.xcconfig */,
+				A1454C623FA7417B0E1B98E4 /* Pods-bitkit-bitkitTests.debug.xcconfig */,
+				285E05CC53D54CC69BD0938A /* Pods-bitkit-bitkitTests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -193,12 +196,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "bitkitTests" */;
 			buildPhases = (
-				685C1698852E9ABE1FC80AA6 /* [CP] Check Pods Manifest.lock */,
+				6208BF7743AAD6546A8FA557 /* [CP] Check Pods Manifest.lock */,
 				00E356EA1AD99517003FC87E /* Sources */,
 				00E356EB1AD99517003FC87E /* Frameworks */,
 				00E356EC1AD99517003FC87E /* Resources */,
-				01551653D691BA8AE8EE7DB4 /* [CP] Embed Pods Frameworks */,
-				F15D4054F314B565CEF0182F /* [CP] Copy Pods Resources */,
+				BAF49551543470305EE8DC1E /* [CP] Embed Pods Frameworks */,
+				1D485C8E1D21709C776C4E4A /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -214,13 +217,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "bitkit" */;
 			buildPhases = (
-				DD5321E1B115356801A3438E /* [CP] Check Pods Manifest.lock */,
+				0A8A3EEC6687419B38E975D4 /* [CP] Check Pods Manifest.lock */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
-				65DABDEE52180F41AD277429 /* [CP] Embed Pods Frameworks */,
-				3B919B37C97F3CEB5082BEBB /* [CP] Copy Pods Resources */,
+				E5B046FE6B7B2164093367D4 /* [CP] Embed Pods Frameworks */,
+				78423B479FB1503344E846E2 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -279,6 +282,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6132EF182BDFF13200BBE14D /* PrivacyInfo.xcprivacy in Resources */,
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				8BD8301E3A1B44DDA3C8A10D /* Damion-Regular.ttf in Resources */,
@@ -310,80 +314,7 @@
 			shellPath = /bin/sh;
 			shellScript = "set -e\n\nWITH_ENVIRONMENT=\"../node_modules/react-native/scripts/xcode/with-environment.sh\"\nREACT_NATIVE_XCODE=\"../node_modules/react-native/scripts/react-native-xcode.sh\"\n\n/bin/sh -c \"$WITH_ENVIRONMENT $REACT_NATIVE_XCODE\"\n";
 		};
-		01551653D691BA8AE8EE7DB4 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-bitkit-bitkitTests/Pods-bitkit-bitkitTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-bitkit-bitkitTests/Pods-bitkit-bitkitTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-bitkit-bitkitTests/Pods-bitkit-bitkitTests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		3B919B37C97F3CEB5082BEBB /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-bitkit/Pods-bitkit-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-bitkit/Pods-bitkit-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-bitkit/Pods-bitkit-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		65DABDEE52180F41AD277429 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-bitkit/Pods-bitkit-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-bitkit/Pods-bitkit-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-bitkit/Pods-bitkit-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		685C1698852E9ABE1FC80AA6 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-bitkit-bitkitTests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		DD5321E1B115356801A3438E /* [CP] Check Pods Manifest.lock */ = {
+		0A8A3EEC6687419B38E975D4 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -405,7 +336,7 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		F15D4054F314B565CEF0182F /* [CP] Copy Pods Resources */ = {
+		1D485C8E1D21709C776C4E4A /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -420,6 +351,79 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-bitkit-bitkitTests/Pods-bitkit-bitkitTests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		6208BF7743AAD6546A8FA557 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-bitkit-bitkitTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		78423B479FB1503344E846E2 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-bitkit/Pods-bitkit-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-bitkit/Pods-bitkit-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-bitkit/Pods-bitkit-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		BAF49551543470305EE8DC1E /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-bitkit-bitkitTests/Pods-bitkit-bitkitTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-bitkit-bitkitTests/Pods-bitkit-bitkitTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-bitkit-bitkitTests/Pods-bitkit-bitkitTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		E5B046FE6B7B2164093367D4 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-bitkit/Pods-bitkit-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-bitkit/Pods-bitkit-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-bitkit/Pods-bitkit-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -455,7 +459,7 @@
 /* Begin XCBuildConfiguration section */
 		00E356F61AD99517003FC87E /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3851F1437A043BE69C75A8E1 /* Pods-bitkit-bitkitTests.debug.xcconfig */;
+			baseConfigurationReference = A1454C623FA7417B0E1B98E4 /* Pods-bitkit-bitkitTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -483,7 +487,7 @@
 		};
 		00E356F71AD99517003FC87E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = EB58E7066DF2011B2E1E6DEF /* Pods-bitkit-bitkitTests.release.xcconfig */;
+			baseConfigurationReference = 285E05CC53D54CC69BD0938A /* Pods-bitkit-bitkitTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -508,7 +512,7 @@
 		};
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = A5675FEDD7F2F4DB7372BE3F /* Pods-bitkit.debug.xcconfig */;
+			baseConfigurationReference = 09381D26DB8142B34372A368 /* Pods-bitkit.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconOrange;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
@@ -540,7 +544,7 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = AE0A0F30D02B325A999E8D1C /* Pods-bitkit.release.xcconfig */;
+			baseConfigurationReference = 88AB9CEE960771BD739E689F /* Pods-bitkit.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconOrange;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
