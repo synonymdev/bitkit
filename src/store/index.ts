@@ -1,5 +1,4 @@
 import { configureStore, Middleware } from '@reduxjs/toolkit';
-import createDebugger from 'redux-flipper';
 import logger from 'redux-logger';
 import autoMergeLevel2 from 'redux-persist/lib/stateReconciler/autoMergeLevel2';
 import {
@@ -16,7 +15,6 @@ import {
 
 import {
 	__ENABLE_MIGRATION_DEBUG__,
-	__ENABLE_REDUX_FLIPPER__,
 	__ENABLE_REDUX_IMMUTABLE_CHECK__,
 	__ENABLE_REDUX_LOGGER__,
 	__JEST__,
@@ -26,11 +24,6 @@ import rootReducer, { RootReducer } from './reducers';
 import migrations from './migrations';
 
 const devMiddleware: Middleware[] = [];
-if (__ENABLE_REDUX_FLIPPER__) {
-	const reduxFlipperDebugger = createDebugger();
-	// @ts-ignore
-	devMiddleware.push(reduxFlipperDebugger);
-}
 if (__ENABLE_REDUX_LOGGER__) {
 	// @ts-ignore
 	devMiddleware.push(logger);
