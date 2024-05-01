@@ -36,7 +36,6 @@ import { createCJitEntry } from '../../../utils/blocktank';
 import { blocktankInfoSelector } from '../../../store/reselect/blocktank';
 import { isGeoBlockedSelector } from '../../../store/reselect/user';
 import { useLightningBalance } from '../../../hooks/lightning';
-import { accountVersionSelector } from '../../../store/reselect/lightning';
 import {
 	denominationSelector,
 	nextUnitSelector,
@@ -65,7 +64,6 @@ const ReceiveDetails = ({
 	const blocktank = useAppSelector(blocktankInfoSelector);
 	const lightningBalance = useLightningBalance(false);
 	const isGeoBlocked = useAppSelector(isGeoBlockedSelector);
-	const accountVersion = useAppSelector(accountVersionSelector);
 
 	const { maxChannelSizeSat } = blocktank.options;
 	const minChannelSize = Math.round(2.5 * invoice.amount);
@@ -84,8 +82,7 @@ const ReceiveDetails = ({
 		if (
 			!enableInstant ||
 			isGeoBlocked ||
-			lightningBalance.remoteBalance >= invoice.amount ||
-			accountVersion < 2
+			lightningBalance.remoteBalance >= invoice.amount
 		) {
 			return;
 		}
@@ -115,7 +112,6 @@ const ReceiveDetails = ({
 		invoice.amount,
 		invoice.message,
 		isGeoBlocked,
-		accountVersion,
 		lightningBalance.remoteBalance,
 		navigation,
 		dispatch,

@@ -17,20 +17,15 @@ import { resetUserState } from '../../../store/slices/user';
 import { resetActivityState } from '../../../store/slices/activity';
 import { resetBlocktankState } from '../../../store/slices/blocktank';
 import { resetFeesState } from '../../../store/slices/fees';
-import {
-	updateLdkAccountVersion,
-	resetLightningState,
-} from '../../../store/slices/lightning';
+import { resetLightningState } from '../../../store/slices/lightning';
 import { resetMetadataState } from '../../../store/slices/metadata';
 import { resetSettingsState } from '../../../store/slices/settings';
 import { resetSlashtagsState } from '../../../store/slices/slashtags';
 import { resetWidgetsState } from '../../../store/slices/widgets';
-import { updateLightningNodeIdThunk } from '../../../store/utils/lightning';
 import { resetTodosState } from '../../../store/slices/todos';
 import { wipeApp } from '../../../store/utils/settings';
 import { getStore, getWalletStore } from '../../../store/helpers';
 import { warningsSelector } from '../../../store/reselect/checks';
-import { accountVersionSelector } from '../../../store/reselect/lightning';
 import {
 	addressTypeSelector,
 	selectedNetworkSelector,
@@ -45,7 +40,6 @@ import { zipLogs } from '../../../utils/lightning/logs';
 import { runChecks } from '../../../utils/wallet/checks';
 import { showToast } from '../../../utils/notifications';
 import { getFakeTransaction } from '../../../utils/wallet/testing';
-import { createDefaultLdkAccount, setupLdk } from '../../../utils/lightning';
 import Dialog from '../../../components/Dialog';
 import { resetBackupState } from '../../../store/slices/backup';
 import { updateUi } from '../../../store/slices/ui';
@@ -60,7 +54,6 @@ const DevSettings = ({
 	const selectedWallet = useAppSelector(selectedWalletSelector);
 	const selectedNetwork = useAppSelector(selectedNetworkSelector);
 	const addressType = useAppSelector(addressTypeSelector);
-	const accountVersion = useAppSelector(accountVersionSelector);
 	const isProfiling = useAppSelector((state) => state.ui.isProfiling);
 	const warnings = useAppSelector((state) => {
 		return warningsSelector(state, selectedWallet, selectedNetwork);
@@ -244,55 +237,6 @@ const DevSettings = ({
 					type: EItemType.textButton,
 					value: '',
 					testID: 'Warnings',
-				},
-			],
-		},
-		{
-			title: 'LDK Account Migration',
-			data: [
-				{
-					title: `LDK Account Version: ${accountVersion}`,
-					type: EItemType.textButton,
-					value: '',
-					testID: 'LDKAccountVersion',
-				},
-				{
-					title: 'Force LDK V2 Account Migration',
-					type: EItemType.button,
-					testID: 'ForceV2Migration',
-					onPress: async (): Promise<void> => {
-						dispatch(updateLdkAccountVersion(2));
-						await createDefaultLdkAccount({
-							version: 2,
-							selectedWallet,
-							selectedNetwork,
-						});
-						await setupLdk({
-							selectedWallet,
-							selectedNetwork,
-							shouldRefreshLdk: true,
-						});
-						await updateLightningNodeIdThunk();
-					},
-				},
-				{
-					title: 'Revert to LDK V1 Account',
-					type: EItemType.button,
-					testID: 'RevertToLDKV1',
-					onPress: async (): Promise<void> => {
-						dispatch(updateLdkAccountVersion(1));
-						await createDefaultLdkAccount({
-							version: 1,
-							selectedWallet,
-							selectedNetwork,
-						});
-						await setupLdk({
-							selectedWallet,
-							selectedNetwork,
-							shouldRefreshLdk: true,
-						});
-						await updateLightningNodeIdThunk();
-					},
 				},
 			],
 		},

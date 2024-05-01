@@ -17,7 +17,7 @@ export type TCreateLightningInvoice = TCreatePaymentReq & {
 	selectedWallet?: TWalletName;
 };
 
-export type TLdkAccountVersion = 1 | 2;
+export type TLdkAccountVersion = 1;
 
 export enum EChannelStatus {
 	open = 'open',

@@ -8,12 +8,10 @@ import {
 import { getAddressBalance } from './wallet/electrum';
 import { err, ok, Result } from '@synonymdev/result';
 import { TWalletName } from '../store/types/wallet';
-import { addWarning, updateWarning } from '../store/slices/checks';
+import { updateWarning } from '../store/slices/checks';
 import { dispatch, getChecksStore } from '../store/helpers';
 import { Platform } from 'react-native';
 import { version } from '../../package.json';
-import { TChannel } from '@synonymdev/react-native-ldk';
-import { v4 as uuidv4 } from 'uuid';
 
 /**
  * Reports the balance of all impacted addresses stored on the device.
@@ -81,65 +79,6 @@ export const reportImpactedAddressBalance = async ({
 	}
 
 	return ok(balance);
-};
-
-export const reportLdkChannelMigrations = async ({
-	selectedNetwork = getSelectedNetwork(),
-	channels,
-}: {
-	selectedNetwork: EAvailableNetwork;
-	channels: TChannel[];
-}): Promise<Result<string>> => {
-	const selectedWallet = getSelectedWallet();
-	const warnings = getWarnings({ selectedNetwork });
-	const ldkMigrationWarnings = warnings.filter(
-		(w) => w.warningId === EWarningIds.ldkMigration,
-	);
-	const reportedChannelIds = ldkMigrationWarnings
-		.filter((warning) => warning.warningId === EWarningIds.ldkMigration)
-		.map((warning) => (warning.data as TChannel).channel_id);
-
-	const url =
-		selectedNetwork === 'bitcoin'
-			? 'https://api.blocktank.to/bk-info'
-			: 'http://35.233.47.252/bitkit-alerts';
-
-	for (const channel of channels) {
-		if (reportedChannelIds.includes(channel.channel_id)) {
-			continue;
-		}
-		const res = await fetch(url, {
-			method: 'POST',
-			body: JSON.stringify({
-				id: EWarningIds.ldkMigration,
-				channelId: channel.channel_id,
-				platform: Platform.OS,
-				version,
-				network: selectedNetwork,
-				timestamp: Date.now(),
-			}),
-			headers: { 'Content-Type': 'application/json' },
-		});
-
-		if (!res.ok) {
-			return err('Failed to report channel migrations for force-close.');
-		}
-
-		dispatch(
-			addWarning({
-				warning: {
-					id: uuidv4(),
-					warningId: EWarningIds.storageCheck,
-					data: channel,
-					warningReported: true,
-					timestamp: new Date().getTime(),
-				},
-				selectedWallet,
-				selectedNetwork,
-			}),
-		);
-	}
-	return ok('Reported LDK channel migrations for force-close.');
 };
 
 /**

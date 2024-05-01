@@ -19,7 +19,6 @@ import {
 import { bytesToString } from '../../utils/converters';
 import { isObjPartialMatch } from '../../utils/helpers';
 import {
-	checkAccountVersion,
 	getLdkAccount,
 	setAccount,
 	setLdkStoragePath,
@@ -76,8 +75,7 @@ export const performLdkRestore = async ({
 		return err(storageRes.error);
 	}
 
-	const version = await checkAccountVersion();
-	const lightningAccount = await getLdkAccount({ selectedNetwork, version });
+	const lightningAccount = await getLdkAccount({ selectedNetwork });
 	if (lightningAccount.isErr()) {
 		return err(lightningAccount.error);
 	}
@@ -233,8 +231,7 @@ export const performFullRestoreFromLatestBackup = async (
 				network = ENetworks.regtest;
 				break;
 		}
-		const version = await checkAccountVersion();
-		const lightningAccount = await getLdkAccount({ selectedNetwork, version });
+		const lightningAccount = await getLdkAccount({ selectedNetwork });
 		if (lightningAccount.isErr()) {
 			return err(lightningAccount.error);
 		}

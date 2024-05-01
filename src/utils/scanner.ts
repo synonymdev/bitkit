@@ -23,7 +23,7 @@ import {
 	getOnchainTransactionData,
 	getTransactionInputValue,
 } from './wallet/transactions';
-import { dispatch, getLightningStore } from '../store/helpers';
+import { dispatch } from '../store/helpers';
 import { showToast, ToastOptions } from './notifications';
 import {
 	resetSendTransaction,
@@ -925,12 +925,6 @@ export const handleData = async ({
 			return ok({ type: qrDataType });
 		}
 		case EQRDataType.lnurlChannel: {
-			const accountVersion = getLightningStore().accountVersion;
-			if (accountVersion < 2) {
-				return err(
-					'LDK is currently in the process of migrating. Please restart your app, wait a few blocks and try again.',
-				);
-			}
 			const params = data.lnUrlParams! as LNURLChannelParams;
 			rootNavigation.navigate('LightningRoot', {
 				screen: 'LNURLChannel',
@@ -943,12 +937,6 @@ export const handleData = async ({
 			return await handleLnurlAuth({ params, selectedWallet, selectedNetwork });
 		}
 		case EQRDataType.lnurlWithdraw: {
-			const accountVersion = getLightningStore().accountVersion;
-			if (accountVersion < 2) {
-				return err(
-					'LDK is currently in the process of migrating. Please restart your app, wait a few blocks and try again.',
-				);
-			}
 			let params = data.lnUrlParams as LNURLWithdrawParams;
 
 			//Convert msats to sats.

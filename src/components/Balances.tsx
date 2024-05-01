@@ -14,14 +14,11 @@ import { useBalance } from '../hooks/wallet';
 import { useAppSelector } from '../hooks/redux';
 import { RootNavigationProp } from '../navigation/types';
 import { isGeoBlockedSelector } from '../store/reselect/user';
-import { accountVersionSelector } from '../store/reselect/lightning';
-import { showToast } from '../utils/notifications';
 
 const Balances = (): ReactElement => {
 	const { t } = useTranslation('wallet');
 	const navigation = useNavigation<RootNavigationProp>();
 	const isGeoBlocked = useAppSelector(isGeoBlockedSelector);
-	const accountVersion = useAppSelector(accountVersionSelector);
 	const {
 		onchainBalance,
 		lightningBalance,
@@ -40,15 +37,6 @@ const Balances = (): ReactElement => {
 	};
 
 	const onTransfer = (): void => {
-		if (accountVersion < 2) {
-			showToast({
-				type: 'warning',
-				title: t('migrating_ldk_title'),
-				description: t('migrating_ldk_description'),
-			});
-			return;
-		}
-
 		if (canTransfer) {
 			navigation.navigate('LightningRoot', { screen: 'QuickSetup' });
 		}

@@ -48,10 +48,10 @@ export const getChannelCloseTime = async (
 	}
 
 	// search for channel address
-	const vout = fundingTx.result.vout[funding_txo_index];
-	if (!vout) {
+	if (!fundingTx.result?.vout?.[funding_txo_index]) {
 		return err('channel address not found');
 	}
+	const vout = fundingTx.result.vout[funding_txo_index];
 	const address = vout.scriptPubKey.address;
 	if (!address) {
 		return err('channel address not found');
