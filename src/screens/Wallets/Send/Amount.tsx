@@ -114,12 +114,14 @@ const Amount = ({ navigation }: SendScreenProps<'Amount'>): ReactElement => {
 				const result = getNumberPadText(0, denomination, unit);
 				setText(result);
 			}
+			// ignore transaction.outputs here because it causes infinite loop
+			// eslint-disable-next-line react-hooks/exhaustive-deps
 		}, [
 			availableAmount,
 			onchainBalance,
 			transaction.inputs.length,
 			transaction.lightningInvoice,
-			transaction.outputs,
+			// transaction.outputs,
 			transaction.satsPerByte,
 			denomination,
 			unit,
