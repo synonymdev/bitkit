@@ -131,6 +131,20 @@ export const setupAddressGenerator = async ({
 	}
 };
 
+/*
+ * Wait for wallet to be ready
+ */
+const waitForWallet = async (): Promise<void> => {
+	if (wallet) {
+		return;
+	}
+	return new Promise((resolve) => {
+		setTimeout(() => {
+			resolve(waitForWallet());
+		}, 100);
+	});
+};
+
 export const refreshWallet = async ({
 	onchain = true,
 	lightning = true,
@@ -151,6 +165,8 @@ export const refreshWallet = async ({
 		await new Promise((resolve) => {
 			InteractionManager.runAfterInteractions(() => resolve(null));
 		});
+
+		await waitForWallet();
 
 		let notificationTxid: string | undefined;
 
