@@ -59,6 +59,7 @@ export enum EQRDataType {
 	lnurlAuth = 'lnurlAuth',
 	lnurlWithdraw = 'lnurlWithdraw',
 	lnurlAddress = 'lnurlAddress',
+	orangeTicket = 'orangeTicket',
 	slashAuthURL = 'slashAuthURL',
 	slashtagURL = 'slashURL',
 	slashFeedURL = 'slashFeedURL',
@@ -78,6 +79,7 @@ export type QRData =
 	| TBitcoinUrl
 	| TLightningUrl
 	| TLnUrlData
+	| TOrangeTicketUrl
 	| TNodeId
 	| TSlashTagUrl
 	| TSlashAuthUrl
@@ -124,6 +126,10 @@ export type TLnUrlAddress = {
 	address: string;
 	lnUrlParams: LNURLPayParams;
 	network?: EAvailableNetwork;
+};
+export type TOrangeTicketUrl = {
+	qrDataType: EQRDataType.orangeTicket;
+	ticketId: string;
 };
 export type TNodeId = {
 	qrDataType: EQRDataType.nodeId;
@@ -344,8 +350,17 @@ export const decodeQRData = async (
 		return err('No data provided.');
 	}
 
-	// Treasure hunt
 	if (__DEV__ || selectedNetwork === EAvailableNetwork.bitcoin) {
+		// Orange Ticket
+		if (data.startsWith('ticket-')) {
+			const [_, ...rest] = data.split('-');
+			const ticketId = rest.join('-');
+			if (ticketId) {
+				return ok([{ qrDataType: EQRDataType.orangeTicket, ticketId }]);
+			}
+		}
+
+		// Treasure hunt
 		// Airdrop
 		if (data.includes('cutt.ly/VwQFzhJJ') || data.includes('bitkit.to/drone')) {
 			const chestId = '2gZxrqhc';
@@ -973,6 +988,10 @@ export const handleData = async ({
 			showBottomSheet('lnurlWithdraw', { wParams: params });
 			return ok({ type: EQRDataType.lnurlWithdraw });
 		}
+		case EQRDataType.orangeTicket: {
+			showBottomSheet('orangeTicket', { ticketId: data.ticketId });
+			return ok({ type: EQRDataType.orangeTicket });
+		}
 		case EQRDataType.nodeId: {
 			const peer = data?.url;
 			if (!peer) {
@@ -1017,7 +1036,7 @@ export const handleData = async ({
 		}
 		case EQRDataType.treasureHunt: {
 			showBottomSheet('treasureHunt', { chestId: data.chestId });
-			return ok({ type: EQRDataType.lnurlWithdraw });
+			return ok({ type: EQRDataType.treasureHunt });
 		}
 
 		default:

@@ -16,6 +16,7 @@ export const defaultViewControllers: TUiState['viewControllers'] = {
 	forgotPIN: defaultViewController,
 	highBalance: defaultViewController,
 	newTxPrompt: defaultViewController,
+	orangeTicket: defaultViewController,
 	PINNavigation: defaultViewController,
 	profileAddDataForm: defaultViewController,
 	receiveNavigation: defaultViewController,

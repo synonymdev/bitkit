@@ -17,6 +17,7 @@ export type ViewControllerParamList = {
 	newTxPrompt: {
 		activityItem: { id: string; activityType: EActivityType; value: number };
 	};
+	orangeTicket: { ticketId: string };
 	PINNavigation: { showLaterButton: boolean };
 	profileAddDataForm: undefined;
 	receiveNavigation: { receiveScreen: keyof ReceiveStackParamList } | undefined;
@@ -47,6 +48,7 @@ export type IViewControllerData = {
 	screen?: keyof SendStackParamList;
 	receiveScreen?: keyof ReceiveStackParamList;
 	showLaterButton?: boolean;
+	ticketId?: string;
 	txId?: string;
 	url?: string;
 	wParams?: LNURLWithdrawParams;

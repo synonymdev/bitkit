@@ -57,6 +57,7 @@ import ForceTransfer from '../bottom-sheet/ForceTransfer';
 import ConnectionClosed from '../bottom-sheet/ConnectionClosed';
 import LNURLWithdrawNavigation from '../bottom-sheet/LNURLWithdrawNavigation';
 import LNURLPayNavigation from '../bottom-sheet/LNURLPayNavigation';
+import OrangeTicket from '../../screens/OrangeTicket';
 import TreasureHuntNavigation from '../bottom-sheet/TreasureHuntNavigation';
 import WidgetsSuggestions from '../../screens/Widgets/WidgetsSuggestions';
 import {
@@ -227,6 +228,7 @@ const RootNavigator = (): ReactElement => {
 				<Stack.Screen name="WidgetEdit" component={WidgetEdit} />
 			</Stack.Navigator>
 
+			<OrangeTicket />
 			<TreasureHuntNavigation />
 			<SendNavigation />
 			<ReceiveNavigation />

@@ -3,6 +3,7 @@
 
   <uses-permission android:name="android.permission.INTERNET" />
   <uses-permission android:name="android.permission.CAMERA" />
+  <uses-permission android:name="android.permission.NFC" />
   <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
   <uses-permission android:name="android.permission.USE_FINGERPRINT" />
   <uses-permission android:name="android.permission.VIBRATE" />
@@ -19,6 +20,8 @@
   <uses-permission
     tools:node="remove"
     android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+
+  <uses-feature android:name="android.hardware.nfc" android:required="false" />
 
   <application
     android:name=".MainApplication"
@@ -45,10 +48,8 @@
       <!-- Universal Links -->
       <intent-filter android:autoVerify="true">
         <action android:name="android.intent.action.VIEW" />
-
         <category android:name="android.intent.category.DEFAULT" />
         <category android:name="android.intent.category.BROWSABLE" />
-
         <data
           android:scheme="https"
           android:host="www.bitkit.to"
@@ -58,10 +59,27 @@
       <!-- Deeplinks -->
       <intent-filter>
         <action android:name="android.intent.action.VIEW" />
-
         <category android:name="android.intent.category.DEFAULT" />
         <category android:name="android.intent.category.BROWSABLE" />
+        <data android:scheme="bitkit" />
+        <data android:scheme="slash" />
+        <data android:scheme="slashauth" />
+        <data android:scheme="slashfeed" />
+        <data android:scheme="bitcoin" />
+        <data android:scheme="BITCOIN" />
+        <data android:scheme="lightning" />
+        <data android:scheme="LIGHTNING" />
+        <data android:scheme="lnurl" />
+        <data android:scheme="lnurlw" />
+        <data android:scheme="lnurlc" />
+        <data android:scheme="lnurlp" />
+      </intent-filter>
 
+      <!-- NFC -->
+      <intent-filter>
+        <action android:name="android.nfc.action.NDEF_DISCOVERED" />
+        <category android:name="android.intent.category.DEFAULT" />
+        <category android:name="android.intent.category.BROWSABLE" />
         <data android:scheme="bitkit" />
         <data android:scheme="slash" />
         <data android:scheme="slashauth" />
