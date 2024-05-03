@@ -63,7 +63,7 @@ const FeeCustom = ({
 	};
 
 	const onContinue = (): void => {
-		if (feeRate > maxFee) {
+		if (Number(feeRate) > maxFee) {
 			showToast({
 				type: 'info',
 				title: t('max_possible_fee_rate'),
@@ -71,7 +71,7 @@ const FeeCustom = ({
 			});
 			return;
 		}
-		if (minFee < maxFee) {
+		if (Number(feeRate) < minFee) {
 			showToast({
 				type: 'info',
 				title: t('min_possible_fee_rate'),
