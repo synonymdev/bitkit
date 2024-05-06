@@ -65,14 +65,21 @@ const AskForBiometrics = ({
 
 	const onSkip = (): void => {
 		const bioType = biometryData?.biometryType ?? 'Biometrics';
-		navigation.navigate('Result', { bio: false, type: bioType });
+		// use navigation.reset to prevent user from going back to previous screen
+		navigation.reset({
+			index: 0,
+			routes: [{ name: 'Result', params: { bio: false, type: bioType } }],
+		});
 	};
 
 	const onContinue = useCallback((): void => {
 		const bioType = biometryData?.biometryType ?? 'Biometrics';
 
 		if (!biometryData?.available || !shouldEnableBiometrics) {
-			navigation.navigate('Result', { bio: false, type: bioType });
+			navigation.reset({
+				index: 0,
+				routes: [{ name: 'Result', params: { bio: false, type: bioType } }],
+			});
 			return;
 		}
 
@@ -81,7 +88,10 @@ const AskForBiometrics = ({
 			.then(({ success }) => {
 				if (success) {
 					dispatch(updateSettings({ biometrics: true }));
-					navigation.navigate('Result', { bio: true, type: bioType });
+					navigation.reset({
+						index: 0,
+						routes: [{ name: 'Result', params: { bio: true, type: bioType } }],
+					});
 				}
 			})
 			.catch(() => {
@@ -103,7 +113,10 @@ const AskForBiometrics = ({
 
 	return (
 		<GradientView style={styles.root}>
-			<BottomSheetNavigationHeader title={biometricsName} />
+			<BottomSheetNavigationHeader
+				title={biometricsName}
+				displayBackButton={false}
+			/>
 
 			<View style={styles.content}>
 				{!biometryData && <BodyM color="white50">{t('bio_loading')}</BodyM>}

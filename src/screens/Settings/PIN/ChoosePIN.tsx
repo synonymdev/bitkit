@@ -65,7 +65,11 @@ const ChoosePIN = ({
 			if (pinsAreEqual) {
 				addPin(pin);
 				dispatch(hideTodo(pinTodo.id));
-				navigation.navigate('AskForBiometrics');
+				// replace the navigation stack to avoid going back to the PIN screen
+				navigation.reset({
+					index: 0,
+					routes: [{ name: 'AskForBiometrics' }],
+				});
 			} else {
 				vibrate({ type: 'notificationWarning' });
 				setPin('');
