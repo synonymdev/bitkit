@@ -24,15 +24,9 @@
 		"title_numpad": "Spending <accent>Balance</accent>",
 		"text_slider": "Choose how much money you want to be able to spend instantly and how much you want to keep in savings.",
 		"text_numpad": "Enter the amount of money you want to be able to spend instantly.",
-		"swipe": "Swipe To Transfer"
-	},
-	"quick_setup": {
-		"nav_title": "Transfer Funds",
-		"title_slider": "Balance\n<accent>your funds</accent>",
-		"title_numpad": "Spending <accent>Balance</accent>",
-		"text_slider": "Choose how much money you want to be able to spend instantly and how much you want to keep in savings.",
-		"text_numpad": "Enter the amount of money you want to be able to spend instantly.",
-		"swipe": "Swipe To Transfer"
+		"swipe": "Swipe To Transfer",
+		"error_min_amount": "Spending amount needs to be at least ₿ {amount}",
+		"error_max_amount": "Spending amount needs to be smaller than ₿ {amount}"
 	},
 	"error_channel_purchase": "Instant Payments Setup Failed",
 	"error_channel_receiving": "Receiving amount needs to be greater than ${usdValue}",
@@ -134,7 +128,7 @@
 	"support": "Support",
 	"connection_closed": {
 		"title": "Connection Closed",
-		"description": "A Lightning Connection has closed. The funds will move back to your savings."
+		"description": "Your Lightning Connection has successfully closed. Your funds will be transferred to your savings."
 	},
 	"close_conn": "Close Connection",
 	"close_error": "Transfer Failed",

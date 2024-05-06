@@ -20,7 +20,7 @@ import FancySlider from '../../components/FancySlider';
 import TransferTextField from '../../components/TransferTextField';
 import NumberPadLightning from './NumberPadLightning';
 import { useAppSelector } from '../../hooks/redux';
-import { useSwitchUnit } from '../../hooks/wallet';
+import { useBalance, useSwitchUnit } from '../../hooks/wallet';
 import {
 	resetSendTransaction,
 	setupOnChainTransaction,
@@ -48,6 +48,7 @@ const QuickSetup = ({
 }: LightningScreenProps<'QuickSetup'>): ReactElement => {
 	const { t } = useTranslation('lightning');
 	const switchUnit = useSwitchUnit();
+	const { lightningBalance } = useBalance();
 	const unit = useAppSelector(unitSelector);
 	const nextUnit = useAppSelector(nextUnitSelector);
 	const conversionUnit = useAppSelector(conversionUnitSelector);
@@ -325,6 +326,7 @@ const QuickSetup = ({
 					<NumberPadLightning
 						style={styles.numberpad}
 						value={textFieldValue}
+						minAmount={lightningBalance}
 						maxAmount={lnSetup.slider.maxValue}
 						onChange={setTextFieldValue}
 						onChangeUnit={onChangeUnit}
