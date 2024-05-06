@@ -1,6 +1,7 @@
 import React, { memo, ReactElement, ReactNode } from 'react';
 import {
-	ImageBackground,
+	View,
+	Image,
 	ImageSourcePropType,
 	StyleProp,
 	StyleSheet,
@@ -18,14 +19,24 @@ const GradientView = ({
 	image?: ImageSourcePropType;
 	children?: ReactNode;
 }): ReactElement => (
-	<ImageBackground style={[styles.root, style]} source={image}>
+	<View style={[styles.root, style]}>
+		<Image style={styles.background} source={image} />
 		{children}
-	</ImageBackground>
+	</View>
 );
 
 const styles = StyleSheet.create({
 	root: {
 		flex: 1,
+		position: 'relative',
+	},
+	background: {
+		position: 'absolute',
+		resizeMode: 'stretch',
+		top: 0,
+		bottom: 0,
+		width: '100%',
+		height: undefined,
 	},
 });
 
