@@ -93,6 +93,13 @@ export const mergeActivityItems = (
 			needsSorting = true;
 			break;
 		}
+		if (
+			mergedItems[i].timestamp === mergedItems[i - 1].timestamp &&
+			mergedItems[i].txType === 'sent'
+		) {
+			needsSorting = true;
+			break;
+		}
 	}
 
 	if (!needsSorting) {
