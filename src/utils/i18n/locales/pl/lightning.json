@@ -1,9 +1,5 @@
 {
-  "int_text": "Połącz się z Lightning Network i błyskawicznie wysyłaj lub odbieraj bitcoina.",
-  "int_header": "Błyskawiczne\n<purple>Płatności.</purple>",
-  "int_quick": "Szybka konfiguracja",
-  "int_custom": "Własna konfiguracja",
-  "add_instant_payments": "Płatności natychmiastowe",
+  "quick_setup": "Szybka konfiguracja",
   "channel_node_id": "ID węzła",
   "close_button": "Zamknij"
 }

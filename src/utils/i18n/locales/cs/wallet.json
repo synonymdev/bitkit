@@ -58,6 +58,7 @@
   "send_fee_speed": "Rychlost",
   "send_fee_error": "Neplatný poplatek",
   "max_possible_fee_rate": "Maximální možná sazba poplatku",
+  "min_possible_fee_rate": "Minimální možná sazba poplatku",
   "sats_per_vbyte": "sats/vbyte",
   "send_output_to_small_title": "Odeslaná částka příliš nízká",
   "send_output_to_small_description": "Chcete-li pokračovat, zvyšte prosím odesílanou částku.",

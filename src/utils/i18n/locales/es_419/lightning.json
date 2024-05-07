@@ -1,9 +1,15 @@
 {
-  "int_text": "Abra una conexión Lightning y envíe o reciba bitcoin al instante.",
-  "int_header": "Al instante\n<purple>Pagamientos.</purple>",
-  "int_quick": "Configuración rápida",
-  "int_custom": "Configuración personalizada",
-  "add_instant_payments": "Pagos instantáneos",
+  "introduction": {
+    "button": "Empezar"
+  },
+  "funding": {
+    "nav_title": "Saldo de gastos"
+  },
+  "transfer": {
+    "nav_title": "Transferir fondos",
+    "text_numpad": "Introduzca la cantidad de dinero que desea poder gastar al instante.",
+    "swipe": "Deslizar para transferir"
+  },
   "error_channel_purchase": "Falló la Configuración de Pagos Instantáneos",
   "error_channel_receiving": "El importe a recibir hay de ser superior a ${usdValue}",
   "spending_money": "Gastando\nDinero.",
@@ -14,28 +20,16 @@
   "receiving_label": "Capacidad de recepción",
   "note_blocktank_limit": "El importe que puede transferir a su saldo de gastos está limitado actualmente a ${usdValue}.",
   "note_reserve_limit": "La cantidad que puede transferir a su saldo de gastos está limitada al 80%. Deberá mantener fondos en reserva para volver a transferir este bitcoin a sus ahorros.",
-  "quick_confirm_header": "Por favor\nConfirme.",
-  "connect_swipe": "Deslizar para conectarse",
-  "connect_swipe_pay": "Deslizar para pagar y conectarse",
+  "quick_setup": "Configuración rápida",
   "receiving_amount_money": "Elija cuánto dinero desea poder recibir al instante.",
   "receiving_amount_bitcoin": "Introduzca la cantidad de Bitcoin que desea poder recibir al instante.",
-  "custom_confirm_header": "<purple>Por favor\nConfirme.</purple>",
-  "duration_header": "Duración de la conexión.",
-  "duration_text": "Elija el número mínimo de semanas que desea que su conexión permanezca abierta.",
   "setting_up_step2": "Pago Efectuado",
   "setting_up_step3": "En Cola Para la Apertura",
-  "timeout_header": "Por favor, mantenga Bitkit abierto.",
-  "timeout_text": "Bitkit seguirá intentando abrir su conexión Lightning en segundo plano. Por favor, mantenga la aplicación abierta.",
   "transfer_funds": "Transferir fondos",
   "transfer_header": "Por favor\nConfirme.",
   "transfer_header_nokeybrd": "Gastos\ny el Ahorro.",
-  "transfer_swipe": "Deslizar para transferir",
-  "transfer_successful": "Transferencia exitosa",
   "interrupted_title": "Transferencia interrumpida",
-  "interrupted_header": "Por favor, mantenga Bitkit abierto.",
-  "interrupted_text": "Los fondos aún no han sido transferidos. Bitkit intentará iniciar la transferencia durante los próximos 30 minutos. Por favor, mantenga su aplicación abierta.",
   "availability_title": "Disponibilidad de fondos",
-  "availability_header": "Disponibilidad de sus fondos.",
   "node_info": "Nodo Lightning",
   "node_id": "ID del nodo LDK",
   "node_disconnected": "desconectado",
@@ -72,7 +66,6 @@
   "force_button": "Fuerzar transferencia",
   "force_init_msg": "Sus fondos estarán accesibles en ±14 días.",
   "force_failed_title": "Transferencia forzada falló",
-  "channel_opened_title": "Pagos instantáneos listos",
   "channel_opened_msg": "Ahora puede pagar a cualquier persona, en cualquier lugar y al instante.",
   "order_given_up_title": "Falló la configuración de Pagos Instantáneos",
   "order_expired_title": "Falló la Configuración de Pagos Instantáneos"
