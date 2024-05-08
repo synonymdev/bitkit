@@ -11,6 +11,7 @@ import Root from './src/Root';
 import { name as appName } from './app.json';
 import './src/utils/fetch-polyfill';
 import { __E2E__, __JEST__ } from './src/constants/env';
+import 'react-native-console-time-polyfill';
 
 // TEMP: disable font scaling globally
 Text.defaultProps = Text.defaultProps || {};

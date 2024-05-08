@@ -10151,6 +10151,11 @@ react-native-camera-kit@14.0.0-beta13:
   resolved "https://registry.yarnpkg.com/react-native-camera-kit/-/react-native-camera-kit-14.0.0-beta13.tgz#7d1c40571e7e7ce2c4b6bd6f58807f7573217c3c"
   integrity sha512-49q6l/Y3j1QMUDPGqIqkUzdraNtKWVQz5X4U8qfixSe+MeWe0N1vWlWWr8iH1apxQCS5v0dKPlYot0e3VKy05g==
 
+react-native-console-time-polyfill@^1.2.3:
+  version "1.2.3"
+  resolved "https://registry.yarnpkg.com/react-native-console-time-polyfill/-/react-native-console-time-polyfill-1.2.3.tgz#1039dab1bb9e2d8040f5e19de68e0da781dc9b60"
+  integrity sha512-C7CUb1c6GsCssqvjtRuqVqnGwlfEHXxXDvCUuGNbq/gpZZt+9YbZD3ODmXBDxis3tDQA0k1lbT1VMTqWQw9rDg==
+
 react-native-device-info@10.13.1:
   version "10.13.1"
   resolved "https://registry.yarnpkg.com/react-native-device-info/-/react-native-device-info-10.13.1.tgz#f87f44ba7b67933248be10ca302a4f2f6dbbdd4f"
