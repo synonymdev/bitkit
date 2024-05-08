@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.os.Build;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 
 import com.bitkit.R;
 import com.facebook.react.bridge.ReactApplicationContext;
@@ -17,7 +18,6 @@ public class SplashScreenModule extends ReactContextBaseJavaModule {
     private static WeakReference<Activity> mainActivityRef;
     private static Dialog splashDialog;
 
-    /* Boilerplate */
     SplashScreenModule(@NonNull ReactApplicationContext reactContext) {
         super(reactContext);
     }
@@ -28,7 +28,6 @@ public class SplashScreenModule extends ReactContextBaseJavaModule {
         return "SplashScreenModule";
     }
 
-    /* React Native method */
     @ReactMethod
     public void hide() {
         Activity currentActivity = getCurrentActivity();
@@ -63,13 +62,18 @@ public class SplashScreenModule extends ReactContextBaseJavaModule {
         });
     }
 
-    /* Native util */
     public static void show(@NonNull final Activity activity) {
         mainActivityRef = new WeakReference<>(activity);
+
+        // Set app background color back to black
+        activity.getWindow().setBackgroundDrawableResource(R.color.black);
 
         activity.runOnUiThread(() -> {
             // Leave out the second argument if you're not using animations
             splashDialog = new Dialog(activity, R.style.AppTheme_SplashDialog);
+            // Set splash screen status & navigation bar color
+            splashDialog.getWindow().setStatusBarColor(ContextCompat.getColor(activity, R.color.brand));
+            splashDialog.getWindow().setNavigationBarColor(ContextCompat.getColor(activity, R.color.brand));
             splashDialog.setContentView(R.layout.splash_screen);
             splashDialog.setCancelable(false);
 
