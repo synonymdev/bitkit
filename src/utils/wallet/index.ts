@@ -90,6 +90,7 @@ import { resetActivityState } from '../../store/slices/activity';
 import BitcoinActions from '../bitcoin-actions';
 import { bitkitLedger, syncLedger } from '../ledger';
 import { TGetTotalFeeObj } from 'beignet/dist/types/types';
+import TimeLog, { timers } from '../dev-logs';
 
 bitcoin.initEccLib(ecc);
 const bip32 = BIP32Factory(ecc);
@@ -160,6 +161,7 @@ export const refreshWallet = async ({
 	selectedNetwork?: EAvailableNetwork;
 } = {}): Promise<Result<string>> => {
 	try {
+		timers.refreshWallet = new TimeLog('refreshWallet');
 		// wait for interactions/animations to be completed
 		await new Promise((resolve) => {
 			InteractionManager.runAfterInteractions(() => resolve(null));
@@ -170,12 +172,16 @@ export const refreshWallet = async ({
 		let notificationTxid: string | undefined;
 
 		if (onchain) {
+			timers.refreshBeignet = new TimeLog('refreshWallet.refreshBeignet');
 			await refreshBeignet(scanAllAddresses);
+			timers.refreshBeignet.end();
 		}
 
 		if (lightning) {
+			timers.refreshLdk = new TimeLog('refreshWallet.refreshLdk');
 			await refreshLdk({ selectedWallet, selectedNetwork });
 			await refreshOrdersList();
+			timers.refreshLdk.end();
 		}
 
 		if (onchain || lightning) {
@@ -186,6 +192,7 @@ export const refreshWallet = async ({
 		if (showNotification && notificationTxid) {
 			showNewTxPrompt(notificationTxid);
 		}
+		timers.refreshWallet.end();
 
 		return ok('');
 	} catch (e) {
