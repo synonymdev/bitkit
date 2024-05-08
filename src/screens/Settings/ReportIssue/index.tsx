@@ -162,8 +162,9 @@ const styles = StyleSheet.create({
 		flexGrow: 1,
 	},
 	form: {
-		paddingHorizontal: 16,
 		flex: 1,
+		paddingTop: 16,
+		paddingHorizontal: 16,
 	},
 	text: {
 		paddingBottom: 32,

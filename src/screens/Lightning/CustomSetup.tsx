@@ -473,6 +473,8 @@ const CustomSetup = ({
 		blocktankInfo.options.max0ConfClientBalanceSat,
 	]);
 
+	const title = spending ? 'transfer.title_numpad' : 'transfer.title_receive';
+
 	return (
 		<ThemedView style={styles.root}>
 			<SafeAreaInset type="top" />
@@ -489,7 +491,7 @@ const CustomSetup = ({
 				<Display>
 					<Trans
 						t={t}
-						i18nKey="transfer.title_numpad"
+						i18nKey={title}
 						components={{ accent: <Display color="purple" /> }}
 					/>
 				</Display>

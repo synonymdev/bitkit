@@ -207,7 +207,6 @@ const Slideshow = ({
 						ref={ref}
 						loop={false}
 						width={dimensions.width}
-						height={dimensions.height}
 						data={slides}
 						defaultIndex={skipIntro ? slides.length - 1 : 0}
 						onProgressChange={(_, absoluteProgress): void => {

@@ -22,6 +22,7 @@
 		"nav_title": "Transfer Funds",
 		"title_slider": "Balance\n<accent>your funds</accent>",
 		"title_numpad": "Spending <accent>Balance</accent>",
+		"title_receive": "Receiving <accent>Capacity</accent>",
 		"text_slider": "Choose how much money you want to be able to spend instantly and how much you want to keep in savings.",
 		"text_numpad": "Enter the amount of money you want to be able to spend instantly.",
 		"swipe": "Swipe To Transfer",
