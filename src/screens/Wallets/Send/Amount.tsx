@@ -109,7 +109,6 @@ const Amount = ({ navigation }: SendScreenProps<'Amount'>): ReactElement => {
 					utxos,
 					satsPerByte: transaction.satsPerByte,
 					outputs: [output],
-					rbf: true,
 				});
 				const result = getNumberPadText(0, denomination, unit);
 				setText(result);

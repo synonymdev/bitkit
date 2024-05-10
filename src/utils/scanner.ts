@@ -631,7 +631,7 @@ export const processBitcoinTransactionData = async ({
 	try {
 		// Reset existing transaction state and prepare for a new one.
 		await resetSendTransaction();
-		await setupOnChainTransaction({ rbf: true });
+		await setupOnChainTransaction({});
 
 		let response;
 		let error: ToastOptions | undefined; //Information that will be passed as a notification.
