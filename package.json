@@ -177,11 +177,10 @@
     "node-fetch": "^2.6.7",
     "prettier": "^2.8.8",
     "react-native-bundle-visualizer": "^3.1.3",
-    "react-native-flipper": "0.212.0",
-    "react-native-mmkv-flipper-plugin": "^1.0.0",
     "react-native-skia-stub": "0.0.1",
     "react-native-svg-transformer": "^1.3.0",
-    "redux-flipper": "^2.0.3",
+    "reactotron-react-native": "^5.1.6",
+    "reactotron-redux": "^3.1.9",
     "typescript": "5.4.5"
   }
 }

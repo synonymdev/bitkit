@@ -21,8 +21,6 @@ import {
 	ENABLE_I18NEXT_DEBUGGER,
 	ENABLE_LDK_LOGS,
 	ENABLE_MIGRATION_DEBUG,
-	ENABLE_MMKV_FLIPPER,
-	ENABLE_REDUX_FLIPPER,
 	ENABLE_REDUX_IMMUTABLE_CHECK,
 	ENABLE_REDUX_LOGGER,
 	SLASHTAGS_SEEDER_BASE_URL,
@@ -60,8 +58,6 @@ if (!BACKUPS_SERVER_HOST || !BACKUPS_SERVER_PUBKEY) {
 
 export const __JEST__ = process.env.JEST_WORKER_ID !== undefined;
 
-export const __ENABLE_REDUX_FLIPPER__ =
-	ENABLE_REDUX_FLIPPER === 'true' ?? false;
 export const __ENABLE_REDUX_LOGGER__ = ENABLE_REDUX_LOGGER === 'true' ?? true;
 export const __ENABLE_MIGRATION_DEBUG__ =
 	ENABLE_MIGRATION_DEBUG === 'true' ?? false;
@@ -70,8 +66,6 @@ export const __ENABLE_REDUX_IMMUTABLE_CHECK__ =
 		? ENABLE_REDUX_IMMUTABLE_CHECK === 'true'
 		: false;
 
-export const __ENABLE_MMKV_FLIPPER__ =
-	ENABLE_MMKV_FLIPPER === 'true' ?? __DEV__;
 export const __ENABLE_I18NEXT_DEBUGGER__ =
 	ENABLE_I18NEXT_DEBUGGER === 'true' ?? __DEV__;
 
