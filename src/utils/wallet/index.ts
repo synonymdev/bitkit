@@ -896,7 +896,10 @@ export const createDefaultWallet = async ({
 		const seed = await bip39.mnemonicToSeed(mnemonic, bip39Passphrase);
 		await setKeychainSlashtagsPrimaryKey(seed);
 
-		await createDefaultWalletStructure({ walletName });
+		await createDefaultWalletStructure({
+			walletName,
+			seedHash: seedHash(seed),
+		});
 
 		let gapLimitOptions = getDefaultGapLimitOptions();
 		if (restore) {

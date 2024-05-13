@@ -1,11 +1,4 @@
-import React, {
-	memo,
-	ReactElement,
-	useMemo,
-	useEffect,
-	useCallback,
-	useState,
-} from 'react';
+import React, { memo, ReactElement, useMemo, useEffect, useState } from 'react';
 import { Platform, NativeModules } from 'react-native';
 import Toast from 'react-native-toast-message';
 import QuickActions from 'react-native-quick-actions';
@@ -60,45 +53,29 @@ const App = (): ReactElement => {
 		checkForAppUpdate();
 	}, []);
 
-	const RootComponent = useCallback((): ReactElement => {
-		if (!isReady) {
-			return <></>;
-		}
-
-		if (showRecovery) {
-			return <RecoveryNavigator />;
-		}
-
-		if (hasCriticalUpdate) {
-			return <AppUpdate />;
-		}
-
-		if (walletExists) {
-			return (
-				<SlashtagsProvider>
-					<SlashtagsProvider2>
-						{requiresRemoteRestore ? <RestoringScreen /> : <AppOnboarded />}
-					</SlashtagsProvider2>
-				</SlashtagsProvider>
-			);
-		}
-
-		return <OnboardingNavigator />;
-	}, [
-		isReady,
-		showRecovery,
-		hasCriticalUpdate,
-		walletExists,
-		requiresRemoteRestore,
-	]);
-
 	const currentTheme = useMemo(() => getTheme(theme), [theme]);
 
 	return (
 		<ThemeProvider theme={currentTheme}>
 			<SafeAreaProvider>
 				<StatusBar />
-				<RootComponent />
+
+				{!isReady ? (
+					<></>
+				) : showRecovery ? (
+					<RecoveryNavigator />
+				) : hasCriticalUpdate ? (
+					<AppUpdate />
+				) : walletExists ? (
+					<SlashtagsProvider>
+						<SlashtagsProvider2>
+							{requiresRemoteRestore ? <RestoringScreen /> : <AppOnboarded />}
+						</SlashtagsProvider2>
+					</SlashtagsProvider>
+				) : (
+					<OnboardingNavigator />
+				)}
+
 				<Toast config={toastConfig} />
 			</SafeAreaProvider>
 		</ThemeProvider>

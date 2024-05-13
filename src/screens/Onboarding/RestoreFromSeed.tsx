@@ -108,6 +108,9 @@ const RestoreFromSeed = (): ReactElement => {
 		setIsRestoringWallet(true);
 		dispatch(verifyBackup());
 
+		// Tells component within slashtags provider that it needs to handle restoring from remote backup
+		dispatch(updateUser({ requiresRemoteRestore: true }));
+
 		const res = await restoreSeed({
 			mnemonic: seed.join(' '),
 			bip39Passphrase,
@@ -120,9 +123,6 @@ const RestoreFromSeed = (): ReactElement => {
 			});
 			return;
 		}
-
-		//Tells component within slashtags provider that it needs to handle restoring from remote backup
-		dispatch(updateUser({ requiresRemoteRestore: true }));
 	};
 
 	const handleAdvanced = (): void => {
