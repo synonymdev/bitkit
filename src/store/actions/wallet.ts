@@ -120,13 +120,16 @@ export const createWallet = async ({
 
 export const createDefaultWalletStructure = async ({
 	walletName = 'wallet0',
+	seedHash,
 }: {
 	walletName?: TWalletName;
+	seedHash: string;
 }): Promise<Result<string>> => {
 	try {
 		const payload: IWallets = {
 			[walletName]: getDefaultWalletShape(),
 		};
+		payload[walletName].seedHash = seedHash;
 		dispatch({
 			type: actions.CREATE_WALLET,
 			payload,
