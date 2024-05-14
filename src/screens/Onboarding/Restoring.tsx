@@ -1,4 +1,10 @@
-import React, { ReactElement, useCallback, useEffect, useState } from 'react';
+import React, {
+	ReactElement,
+	useCallback,
+	useEffect,
+	useMemo,
+	useState,
+} from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Trans, useTranslation } from 'react-i18next';
 
@@ -86,11 +92,16 @@ const RestoringScreen = (): ReactElement => {
 		}
 	}, [profile.name, onboardingStep, dispatch]);
 
-	let color: keyof IColors = 'brand';
-	let content = <LoadingWalletScreen />;
+	let content = useMemo(() => {
+		const hasResult = showRestored || showFailed;
 
-	if (showRestored || showFailed) {
-		color = showRestored ? 'green' : 'red';
+		if (!hasResult) {
+			return <LoadingWalletScreen />;
+		}
+
+		// TODO: extract to separate component
+
+		let color: keyof IColors = showRestored ? 'green' : 'red';
 		const title = t(
 			showRestored ? 'restore_success_header' : 'restore_failed_header',
 		);
@@ -110,7 +121,7 @@ const RestoringScreen = (): ReactElement => {
 			}
 		};
 
-		content = (
+		return (
 			<View style={styles.content}>
 				<Display style={styles.title}>
 					<Trans
@@ -160,7 +171,17 @@ const RestoringScreen = (): ReactElement => {
 				<SafeAreaInset type="bottom" minPadding={16} />
 			</View>
 		);
-	}
+	}, [
+		showRestored,
+		showFailed,
+		t,
+		tryAgainCount,
+		proceedWBIsLoading,
+		showCautionDialog,
+		proceedWithoutBackup,
+		dispatch,
+		onRemoteRestore,
+	]);
 
 	useEffect(() => {
 		const hasResult = showRestored || showFailed;
