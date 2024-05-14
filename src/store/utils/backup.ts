@@ -179,19 +179,19 @@ export const performFullRestoreFromLatestBackup = async (): Promise<
 			['activity', performLDKActivityRestore],
 		] as const;
 
-		for (const [name, func] of backups) {
+		for (const [, func] of backups) {
 			const res = await func();
 			if (res.isErr()) {
 				// Since this backup feature is not critical and mostly for user convenience
 				// there's no reason to throw an error here.
-				console.log(`Error restoring ${name}`, res.error.message);
+				// console.debug(`Error restoring ${name}`, res.error.message);
 			}
 		}
 
 		// Restore success
 		return ok({ backupExists: true });
 	} catch (e) {
-		console.log(e);
+		// console.log(e);
 		return err(e);
 	} finally {
 		timers.fullRestore.end();
