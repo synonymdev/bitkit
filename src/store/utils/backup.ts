@@ -41,6 +41,7 @@ import { IBlocktank } from '../types/blocktank';
 import { TMetadataState } from '../types/metadata';
 import { TSlashtagsState } from '../types/slashtags';
 import { EUnit } from '../types/wallet';
+import { TimeLog, timers } from '../../utils/dev-logs';
 
 export enum EBackupCategories {
 	settings = 'bitkit_settings',
@@ -124,6 +125,7 @@ export const performFullRestoreFromLatestBackup = async (): Promise<
 	Result<{ backupExists: boolean }>
 > => {
 	try {
+		timers.fullRestore = new TimeLog('performFullRestoreFromLatestBackup');
 		const backupServerDetails = {
 			host: __BACKUPS_SERVER_HOST__,
 			serverPubKey: __BACKUPS_SERVER_PUBKEY__,
@@ -191,6 +193,8 @@ export const performFullRestoreFromLatestBackup = async (): Promise<
 	} catch (e) {
 		console.log(e);
 		return err(e);
+	} finally {
+		timers.fullRestore.end();
 	}
 };
 

@@ -25,6 +25,7 @@ import { EAvailableNetwork } from '../networks';
 import { TWalletName } from '../../store/types/wallet';
 import { runChecks } from '../wallet/checks';
 import { setupLedger, syncLedger } from '../ledger';
+import { TimeLog, timers } from '../dev-logs';
 
 /**
  * Creates a new wallet from scratch
@@ -99,6 +100,7 @@ export const startWalletServices = async ({
 	selectedNetwork?: EAvailableNetwork;
 }): Promise<Result<string>> => {
 	try {
+		timers.startWalletServices = new TimeLog('startWalletServices');
 		// wait for interactions/animations to be completed
 		await new Promise((resolve) => {
 			InteractionManager.runAfterInteractions(() => resolve(null));
@@ -173,6 +175,7 @@ export const startWalletServices = async ({
 		updateSlashPayConfig2({ selectedNetwork, forceUpdate: true });
 
 		syncLedger();
+		timers.startWalletServices.end();
 
 		return ok('Wallet started');
 	} catch (e) {

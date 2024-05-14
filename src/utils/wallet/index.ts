@@ -90,7 +90,7 @@ import { resetActivityState } from '../../store/slices/activity';
 import BitcoinActions from '../bitcoin-actions';
 import { bitkitLedger, syncLedger } from '../ledger';
 import { TGetTotalFeeObj } from 'beignet/dist/types/types';
-import TimeLog, { timers } from '../dev-logs';
+import { TimeLog, timers } from '../dev-logs';
 
 bitcoin.initEccLib(ecc);
 const bip32 = BIP32Factory(ecc);
@@ -877,6 +877,7 @@ export const createDefaultWallet = async ({
 	servers?: TServer | TServer[];
 }): Promise<Result<IWallets>> => {
 	try {
+		timers.createDefaultWallet = new TimeLog('createDefaultWallet');
 		const selectedAddressType = getSelectedAddressType();
 
 		if (!bip39Passphrase) {
@@ -1004,6 +1005,7 @@ export const createDefaultWallet = async ({
 				id: walletData.id,
 			},
 		};
+		timers.createDefaultWallet.end();
 		return ok(payload);
 	} catch (e) {
 		return err(e);
@@ -1149,6 +1151,7 @@ export const setupOnChainWallet = async ({
 	addressTypesToMonitor?: EAddressType[];
 	gapLimitOptions?: TGapLimitOptions;
 }): Promise<Result<Wallet>> => {
+	timers.setupOnChainWallet = new TimeLog('setupOnChainWallet');
 	if (!mnemonic) {
 		const mnemonicRes = await getMnemonicPhrase(name);
 		if (mnemonicRes.isErr()) {
@@ -1195,6 +1198,7 @@ export const setupOnChainWallet = async ({
 		return err(createWalletResponse.error.message);
 	}
 	wallet = createWalletResponse.value;
+	timers.setupOnChainWallet.end();
 	return ok(wallet);
 };
 

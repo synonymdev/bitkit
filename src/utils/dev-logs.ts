@@ -1,4 +1,4 @@
-export default class TimeLog {
+export class TimeLog {
 	static readonly TAG = '[DEV]';
 	private readonly _label: string;
 
@@ -9,7 +9,7 @@ export default class TimeLog {
 
 	private start(): void {
 		console.time(this._label);
-		console.debug(`${this._label}: started timer`);
+		console.log(`${this._label}: ▶️ started timer`);
 	}
 
 	log(...optionalParams: any[]): void {
