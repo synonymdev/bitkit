@@ -105,6 +105,8 @@ const RestoreFromSeed = (): ReactElement => {
 		});
 	};
 
+	// #region UI buttons events
+
 	const handleRestore = async (): Promise<void> => {
 		timers.handleRestore = new TimeLog(
 			'RestoreFromSeed.handleRestore → restoreSeed',
@@ -134,6 +136,8 @@ const RestoreFromSeed = (): ReactElement => {
 		setShowPassphrase(true);
 		setTimeout(() => passRef.current?.focus(), 100);
 	};
+
+	// #endregion
 
 	const handleSubmitEditing = (): void => {
 		if (focused === null || focused > numberOfWords - 2) {

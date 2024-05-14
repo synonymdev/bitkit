@@ -43,6 +43,8 @@ const RestoringScreen = (): ReactElement => {
 	const [tryAgainCount, setTryAgainCount] = useState(0);
 	const [showCautionDialog, setShowCautionDialog] = useState(false);
 
+	// #region UI events
+
 	const onRemoteRestore = useCallback(async (): Promise<void> => {
 		log.debug('RestoringScreen.onRemoteRestore → fullRestoreFromLatestBackup');
 		attemptedAutoRestore = true;
@@ -76,6 +78,8 @@ const RestoringScreen = (): ReactElement => {
 		// This will navigate the user to the main wallet view once startWalletServices has run successfully.
 		dispatch(updateUser({ requiresRemoteRestore: false }));
 	}, [t, dispatch]);
+
+	// #endregion
 
 	useEffect(() => {
 		if (attemptedAutoRestore) {
