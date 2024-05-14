@@ -18,6 +18,7 @@ import { useProfile2, useSelectedSlashtag2 } from '../../hooks/slashtags2';
 import { setOnboardingProfileStep } from '../../store/slices/slashtags';
 import { onboardingProfileStepSelector } from '../../store/reselect/slashtags';
 import { Image } from 'react-native';
+import { log } from '../../utils/dev-logs';
 
 const checkImageSrc = require('../../assets/illustrations/check.png');
 const crossImageSrc = require('../../assets/illustrations/cross.png');
@@ -37,6 +38,7 @@ const RestoringScreen = (): ReactElement => {
 	const [showCautionDialog, setShowCautionDialog] = useState(false);
 
 	const onRemoteRestore = useCallback(async (): Promise<void> => {
+		log.debug('RestoringScreen.onRemoteRestore → fullRestoreFromLatestBackup');
 		attemptedAutoRestore = true;
 		setShowFailed(false);
 		setShowRestored(false);
@@ -51,6 +53,7 @@ const RestoringScreen = (): ReactElement => {
 	}, []);
 
 	const proceedWithoutBackup = useCallback(async () => {
+		log.debug('RestoringScreen.proceedWithoutBackup → startWalletServices');
 		setShowCautionDialog(false);
 		setProceedWBIsLoading(true);
 		const res = await startWalletServices({ restore: false });
@@ -158,6 +161,14 @@ const RestoringScreen = (): ReactElement => {
 			</View>
 		);
 	}
+
+	useEffect(() => {
+		const hasResult = showRestored || showFailed;
+		log.debug(
+			'🔵 RestoringScreen →',
+			hasResult ? 'Result' : 'LoadingWalletScreen',
+		);
+	}, [showRestored, showFailed]);
 
 	return <ThemedView style={styles.root}>{content}</ThemedView>;
 };

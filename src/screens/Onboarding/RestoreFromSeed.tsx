@@ -35,7 +35,7 @@ import { restoreSeed } from '../../utils/startup';
 import { showToast } from '../../utils/notifications';
 import NavigationHeader from '../../components/NavigationHeader';
 import { updateUser, verifyBackup } from '../../store/slices/user';
-import { TimeLog, timers } from '../../utils/dev-logs';
+import { TimeLog, flowLog, timers } from '../../utils/dev-logs';
 
 const RestoreFromSeed = (): ReactElement => {
 	const numberOfWords = 12;
@@ -106,7 +106,9 @@ const RestoreFromSeed = (): ReactElement => {
 	};
 
 	const handleRestore = async (): Promise<void> => {
-		timers.handleRestore = new TimeLog('RestoreFromSeed.handleRestore');
+		timers.handleRestore = new TimeLog(
+			'RestoreFromSeed.handleRestore → restoreSeed',
+		);
 		setIsRestoringWallet(true);
 		dispatch(verifyBackup());
 
@@ -172,6 +174,17 @@ const RestoreFromSeed = (): ReactElement => {
 			/>
 		);
 	};
+
+	if (isRestoringWallet) {
+		flowLog.debug('🔵 RestoreFromSeed → LoadingWalletScreen');
+		return (
+			<ThemedView style={styles.root}>
+				<LoadingWalletScreen />
+			</ThemedView>
+		);
+	}
+
+	flowLog.debug('🔵 RestoreFromSeed');
 
 	return (
 		<ThemedView style={styles.root}>

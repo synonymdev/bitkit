@@ -23,6 +23,7 @@ import { themeSelector } from './store/reselect/settings';
 import { walletExistsSelector } from './store/reselect/wallet';
 import { requiresRemoteRestoreSelector } from './store/reselect/user';
 import { criticalUpdateSelector } from './store/reselect/ui';
+import { rootLog } from './utils/dev-logs';
 
 const App = (): ReactElement => {
 	const [isReady, setIsReady] = useState(false);
@@ -53,6 +54,14 @@ const App = (): ReactElement => {
 	}, []);
 
 	const currentTheme = useMemo(() => getTheme(theme), [theme]);
+
+	const requiresRestore = useMemo(() => {
+		rootLog.debug(
+			'🔵 App.requiresRemoteRestore',
+			requiresRemoteRestore ? 'RestoringScreen' : 'AppOnboarded',
+		);
+		return requiresRemoteRestore;
+	}, [requiresRemoteRestore]);
 
 	return (
 		<ThemeProvider theme={currentTheme}>

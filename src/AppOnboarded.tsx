@@ -28,6 +28,7 @@ import {
 } from './utils/wallet';
 import { connectToElectrum } from './utils/wallet/electrum';
 import { updateExchangeRates } from './store/actions/wallet';
+import { rootLog } from './utils/dev-logs';
 
 const electrum = getOnChainWalletElectrum();
 
@@ -43,6 +44,7 @@ const AppOnboarded = (): ReactElement => {
 
 	// on App start
 	useEffect(() => {
+		rootLog.debug('AppOnboarded → startWalletServices');
 		startWalletServices({ selectedNetwork, selectedWallet });
 
 		const needsAuth = pin && pinOnLaunch;

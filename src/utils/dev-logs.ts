@@ -8,10 +8,18 @@ const config: configLoggerType = {
 			error: 'red',
 			debug: 'green',
 		},
+		extensionColors: {
+			root: 'red',
+			flow: 'magenta',
+		},
 	},
+	enabledExtensions: ['root', 'flow'],
 };
 
 export const log = logger.createLogger(config);
+
+export const rootLog = log.extend('root');
+export const flowLog = log.extend('flow');
 
 export class TimeLog {
 	static readonly TAG = '[DEV]';
