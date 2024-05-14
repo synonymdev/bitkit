@@ -1,15 +1,30 @@
+import { configLoggerType, logger } from 'react-native-logs';
+
+const config: configLoggerType = {
+	transportOptions: {
+		colors: {
+			info: 'blue',
+			warn: 'yellow',
+			error: 'red',
+			debug: 'green',
+		},
+	},
+};
+
+export const log = logger.createLogger(config);
+
 export class TimeLog {
 	static readonly TAG = '[DEV]';
 	private readonly _label: string;
 
 	constructor(label: string) {
-		this._label = `[⏱ ${label}]`;
+		this._label = `⏱ ${label}`;
 		this.start();
 	}
 
 	private start(): void {
 		console.time(this._label);
-		console.log(`${this._label}: ▶️ started timer`);
+		console.log(`${this._label} ▶️`);
 	}
 
 	log(...optionalParams: any[]): void {
