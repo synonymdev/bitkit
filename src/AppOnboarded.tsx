@@ -66,11 +66,10 @@ const AppOnboarded = (): ReactElement => {
 		const appStateSubscription = AppState.addEventListener(
 			'change',
 			(nextAppState) => {
-				// on App to foreground
-				if (
+				const isOnAppToForeground =
 					appState.current.match(/inactive|background/) &&
-					nextAppState === 'active'
-				) {
+					nextAppState === 'active';
+				if (isOnAppToForeground) {
 					const customPeers = getCustomElectrumPeers({ selectedNetwork });
 					// resubscribe to electrum connection changes
 					connectToElectrum({
@@ -82,11 +81,10 @@ const AppOnboarded = (): ReactElement => {
 					});
 				}
 
-				// on App to background
-				if (
+				const isOnAppToBackground =
 					appState.current.match(/active|inactive/) &&
-					nextAppState === 'background'
-				) {
+					nextAppState === 'background';
+				if (isOnAppToBackground) {
 					electrum?.disconnect();
 				}
 
