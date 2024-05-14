@@ -25,7 +25,7 @@ import { EAvailableNetwork } from '../networks';
 import { TWalletName } from '../../store/types/wallet';
 import { runChecks } from '../wallet/checks';
 import { setupLedger, syncLedger } from '../ledger';
-import { TimeLog, timers } from '../dev-logs';
+import { log, TimeLog, timers } from '../dev-logs';
 
 /**
  * Creates a new wallet from scratch
@@ -120,11 +120,13 @@ export const startWalletServices = async ({
 
 		const walletExists = getWalletStore()?.walletExists;
 		if (!walletExists) {
+			log.debug('startWalletServices !walletExists → createWallet');
 			const createRes = await createWallet({ mnemonic, bip39Passphrase });
 			if (createRes.isErr()) {
 				return err(createRes.error.message);
 			}
 		} else {
+			log.debug('startWalletServices walletExists → setupOnChainWallet');
 			const addressType = getSelectedAddressType({
 				selectedWallet,
 				selectedNetwork,
