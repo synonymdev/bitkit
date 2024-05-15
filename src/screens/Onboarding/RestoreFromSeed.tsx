@@ -186,13 +186,13 @@ const RestoreFromSeed = (): ReactElement => {
 		);
 	}, [isRestoringWallet]);
 
-	if (isRestoringWallet) {
-		return (
-			<ThemedView style={styles.root}>
-				<LoadingWalletScreen />
-			</ThemedView>
-		);
-	}
+	// if (isRestoringWallet) {
+	// 	return (
+	// 		<ThemedView style={styles.root}>
+	// 			<LoadingWalletScreen />
+	// 		</ThemedView>
+	// 	);
+	// }
 
 	return (
 		<ThemedView style={styles.root}>
