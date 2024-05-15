@@ -120,13 +120,13 @@ export const startWalletServices = async ({
 
 		const walletExists = getWalletStore()?.walletExists;
 		if (!walletExists) {
-			log.debug('startWalletServices !walletExists → createWallet');
+			log.info('startWalletServices !walletExists → createWallet');
 			const createRes = await createWallet({ mnemonic, bip39Passphrase });
 			if (createRes.isErr()) {
 				return err(createRes.error.message);
 			}
 		} else {
-			log.debug('startWalletServices walletExists → setupOnChainWallet');
+			log.info('startWalletServices walletExists → setupOnChainWallet');
 			const addressType = getSelectedAddressType({
 				selectedWallet,
 				selectedNetwork,

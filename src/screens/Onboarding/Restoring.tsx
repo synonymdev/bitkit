@@ -45,7 +45,7 @@ const RestoringScreen = (): ReactElement => {
 	// #region UI events
 
 	const onRemoteRestore = useCallback(async (): Promise<void> => {
-		log.debug('RestoringScreen.onRemoteRestore → fullRestoreFromLatestBackup');
+		log.info('RestoringScreen.onRemoteRestore');
 		attemptedAutoRestore = true;
 		setShowFailed(false);
 		setShowRestored(false);
@@ -60,7 +60,7 @@ const RestoringScreen = (): ReactElement => {
 	}, []);
 
 	const proceedWithoutBackup = useCallback(async () => {
-		log.debug('RestoringScreen.proceedWithoutBackup → startWalletServices');
+		log.info('RestoringScreen.proceedWithoutBackup');
 		setShowCautionDialog(false);
 		setProceedWBIsLoading(true);
 		const res = await startWalletServices({ restore: false });
