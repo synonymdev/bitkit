@@ -13,6 +13,7 @@ const config: configLoggerType = {
 			flow: 'magenta',
 		},
 	},
+	fixedExtLvlLength: true,
 	enabledExtensions: ['root', 'flow'],
 };
 
