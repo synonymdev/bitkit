@@ -1,5 +1,9 @@
 import { LogBox } from 'react-native';
-import { __E2E__, __ENABLE_LDK_LOGS__ } from '../constants/env';
+import {
+	__E2E__,
+	__ENABLE_LDK_LOGS__,
+	__ENABLE_LOGBOX__,
+} from '../constants/env';
 
 if (__DEV__) {
 	const ignoredLogs: string[] = [];
@@ -8,7 +12,12 @@ if (__DEV__) {
 	const ignoredErrors: string[] = [];
 
 	// disable all logs for E2E tests running in debug mode
-	if (__E2E__) {
+	if (__E2E__ || !__ENABLE_LOGBOX__) {
+		LogBox.ignoreAllLogs();
+	}
+
+	// disable log box UI via env config
+	if (!__ENABLE_LOGBOX__) {
 		LogBox.ignoreAllLogs();
 	}
 
