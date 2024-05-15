@@ -131,7 +131,7 @@ const RestoringScreen = (): ReactElement => {
 		const hasResult = showRestored || showFailed;
 		log.debug(
 			'🔵 RestoringScreen →',
-			hasResult ? 'Result' : 'LoadingWalletScreen',
+			hasResult ? 'RestoreResultScreen' : 'LoadingWalletScreen',
 		);
 	}, [showRestored, showFailed]);
 

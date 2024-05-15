@@ -44,7 +44,7 @@ const AppOnboarded = (): ReactElement => {
 
 	// on App start
 	useEffect(() => {
-		rootLog.debug('AppOnboarded → startWalletServices');
+		rootLog.debug('🔵 AppOnboarded');
 		startWalletServices({ selectedNetwork, selectedWallet });
 
 		const needsAuth = pin && pinOnLaunch;

@@ -55,12 +55,11 @@ const App = (): ReactElement => {
 
 	const currentTheme = useMemo(() => getTheme(theme), [theme]);
 
-	const requiresRestore = useMemo(() => {
+	useEffect(() => {
 		rootLog.debug(
-			'🔵 App.requiresRemoteRestore',
+			'🔵 App →',
 			requiresRemoteRestore ? 'RestoringScreen' : 'AppOnboarded',
 		);
-		return requiresRemoteRestore;
 	}, [requiresRemoteRestore]);
 
 	return (
