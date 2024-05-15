@@ -190,6 +190,7 @@ const SecuritySettings = ({
 						testID: 'UseBiometryInstead',
 						onPress: (): void => {
 							navigation.navigate('AuthCheck', {
+								requireBiometrics: true,
 								onSuccess: () => {
 									navigation.pop();
 									dispatch(updateSettings({ biometrics: !biometrics }));
