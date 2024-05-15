@@ -89,5 +89,5 @@
 	"error_pay_title": "Unable To Pay Contact",
 	"error_pay_empty_msg": "There is no payment data available for this contact.",
 	"auth_depricated_title": "Deprecated",
-	"auth_depricated_msg": "Slashauth is deprecated. Please Bitkit Beta."
+	"auth_depricated_msg": "Slashauth is deprecated. Please use Bitkit Beta."
 }
