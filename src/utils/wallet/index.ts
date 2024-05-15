@@ -1,6 +1,5 @@
 import { InteractionManager } from 'react-native';
 import { getAddressInfo } from 'bitcoin-address-validation';
-import { constants } from '@synonymdev/slashtags-sdk';
 import * as bitcoin from 'bitcoinjs-lib';
 import * as bip39 from 'bip39';
 import { BIP32Factory } from 'bip32';
@@ -327,7 +326,8 @@ export const slashtagsPrimaryKey = async (seed: Buffer): Promise<string> => {
 	const network = networks.bitcoin;
 	const root = bip32.fromSeed(seed, network);
 
-	const path = constants.PRIMARY_KEY_DERIVATION_PATH;
+	// https://github.com/synonymdev/slashtags/blob/master/packages/sdk/lib/constants.js
+	const path = "m/123456'";
 	const keyPair = root.derivePath(path);
 
 	return keyPair.privateKey?.toString('hex') as string;

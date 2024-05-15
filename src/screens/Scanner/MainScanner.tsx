@@ -10,7 +10,6 @@ import { showToast } from '../../utils/notifications';
 import ScannerComponent from './ScannerComponent';
 import type { RootStackScreenProps } from '../../navigation/types';
 import DetectSwipe from '../../components/DetectSwipe';
-import { useSlashtagsSDK } from '../../components/SlashtagsProvider';
 import { resetSendTransaction } from '../../store/actions/wallet';
 import {
 	selectedNetworkSelector,
@@ -25,7 +24,6 @@ const ScannerScreen = ({
 	const onScan = route.params?.onScan;
 	const selectedNetwork = useAppSelector(selectedNetworkSelector);
 	const selectedWallet = useAppSelector(selectedWalletSelector);
-	const sdk = useSlashtagsSDK();
 
 	const onSwipeRight = (): void => {
 		navigation.navigate('Wallet');
@@ -52,7 +50,6 @@ const ScannerScreen = ({
 			processInputData({
 				data,
 				source: 'mainScanner',
-				sdk,
 				selectedNetwork,
 				selectedWallet,
 			}).then();

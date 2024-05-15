@@ -8,7 +8,6 @@ import ContactsList from '../../../components/ContactsList';
 import { useAppSelector } from '../../../hooks/redux';
 import { processInputData } from '../../../utils/scanner';
 import { showToast } from '../../../utils/notifications';
-import { useSlashtags } from '../../../components/SlashtagsProvider';
 import type { SendScreenProps } from '../../../navigation/types';
 import type { IContactRecord } from '../../../store/types/slashtags';
 import {
@@ -27,7 +26,6 @@ const Contacts = ({
 	const [loading, setLoading] = useState(false);
 	const selectedWallet = useAppSelector(selectedWalletSelector);
 	const selectedNetwork = useAppSelector(selectedNetworkSelector);
-	const { sdk } = useSlashtags();
 
 	const handlePress = async (contact: IContactRecord): Promise<void> => {
 		// make sure we start with a clean transaction state
@@ -37,7 +35,6 @@ const Contacts = ({
 		const res = await processInputData({
 			data: contact.url,
 			source: 'send',
-			sdk,
 			selectedNetwork,
 			selectedWallet,
 		});

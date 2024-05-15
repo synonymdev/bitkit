@@ -20,7 +20,6 @@ import SafeAreaInset from '../../components/SafeAreaInset';
 import ProfileCard from '../../components/ProfileCard';
 import ProfileLinks from '../../components/ProfileLinks';
 import { processInputData } from '../../utils/scanner';
-import { useSlashtagsSDK } from '../../components/SlashtagsProvider';
 import { useProfile2 } from '../../hooks/slashtags2';
 import { useBalance } from '../../hooks/wallet';
 import { truncate } from '../../utils/helpers';
@@ -51,7 +50,6 @@ const Contact = ({
 	const selectedWallet = useAppSelector(selectedWalletSelector);
 	const selectedNetwork = useAppSelector(selectedNetworkSelector);
 	const contacts = useAppSelector(contactsSelector);
-	const sdk = useSlashtagsSDK();
 
 	const { profile } = useProfile2(url);
 	const savedContact = useMemo(() => {
@@ -85,7 +83,6 @@ const Contact = ({
 		const res = await processInputData({
 			data: url,
 			source: 'send',
-			sdk,
 			selectedNetwork,
 			selectedWallet,
 		});

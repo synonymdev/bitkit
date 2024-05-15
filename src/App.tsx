@@ -7,7 +7,6 @@ import { ThemeProvider } from 'styled-components/native';
 import { SafeAreaProvider, StatusBar } from './styles/components';
 import { getTheme } from './styles/themes';
 import OnboardingNavigator from './navigation/onboarding/OnboardingNavigator';
-import { SlashtagsProvider } from './components/SlashtagsProvider';
 import { SlashtagsProvider2 } from './components/SlashtagsProvider2';
 import { toastConfig } from './components/Toast';
 import RecoveryNavigator from './screens/Recovery/RecoveryNavigator';
@@ -67,11 +66,9 @@ const App = (): ReactElement => {
 				) : hasCriticalUpdate ? (
 					<AppUpdate />
 				) : walletExists ? (
-					<SlashtagsProvider>
-						<SlashtagsProvider2>
-							{requiresRemoteRestore ? <RestoringScreen /> : <AppOnboarded />}
-						</SlashtagsProvider2>
-					</SlashtagsProvider>
+					<SlashtagsProvider2>
+						{requiresRemoteRestore ? <RestoringScreen /> : <AppOnboarded />}
+					</SlashtagsProvider2>
 				) : (
 					<OnboardingNavigator />
 				)}

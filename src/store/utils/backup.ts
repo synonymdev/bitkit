@@ -2,7 +2,6 @@ import lm, {
 	ENetworks,
 	ldk,
 	TBackupServerDetails,
-	TLdkData,
 } from '@synonymdev/react-native-ldk';
 import { err, ok, Result } from '@synonymdev/result';
 
@@ -10,19 +9,8 @@ import {
 	__BACKUPS_SERVER_HOST__,
 	__BACKUPS_SERVER_PUBKEY__,
 } from '../../constants/env';
-import { Slashtag } from '../../hooks/slashtags';
-import {
-	EBackupCategoriesOld,
-	fetchBackup,
-	listBackups,
-} from '../../utils/backup/backpack';
-import { bytesToString } from '../../utils/converters';
 import { isObjPartialMatch } from '../../utils/helpers';
-import {
-	getLdkAccount,
-	setAccount,
-	setLdkStoragePath,
-} from '../../utils/lightning';
+import { getLdkAccount, setLdkStoragePath } from '../../utils/lightning';
 import { EAvailableNetwork } from '../../utils/networks';
 import { getSelectedNetwork } from '../../utils/wallet';
 import {
@@ -48,7 +36,7 @@ import {
 	updateWidgets,
 } from '../slices/widgets';
 import { EActivityType } from '../types/activity';
-import { TAccountBackup, TBackupMetadata } from '../types/backup';
+import { TBackupMetadata } from '../types/backup';
 import { IBlocktank } from '../types/blocktank';
 import { TMetadataState } from '../types/metadata';
 import { TSlashtagsState } from '../types/slashtags';
@@ -132,62 +120,9 @@ export const performLdkRestore = async ({
 	return ok({ backupExists });
 };
 
-export const performLdkRestoreDeprecated = async ({
-	slashtag,
-	selectedNetwork = getSelectedNetwork(),
-}: {
-	slashtag: Slashtag;
-	selectedNetwork?: EAvailableNetwork;
-}): Promise<Result<{ backupExists: boolean }>> => {
-	console.warn(`Restoring ${selectedNetwork} from deprecated backup server.`);
-	const res = await listBackups(
-		slashtag,
-		EBackupCategoriesOld.ldkComplete,
-		selectedNetwork,
-	);
-	if (res.isErr()) {
-		return err(res.error);
-	}
-
-	// No backup exists for the provided slashtag.
-	if (res.value.length === 0) {
-		return ok({ backupExists: false });
-	}
-
-	const fetchRes = await fetchBackup(
-		slashtag,
-		res.value[0].timestamp,
-		EBackupCategoriesOld.ldkComplete,
-		selectedNetwork,
-	);
-	if (fetchRes.isErr()) {
-		return err(fetchRes.error);
-	}
-
-	const storageRes = await setLdkStoragePath();
-	if (storageRes.isErr()) {
-		return err(storageRes.error);
-	}
-
-	const jsonString = bytesToString(fetchRes.value.content);
-	const backup: TAccountBackup<TLdkData> = JSON.parse(jsonString);
-
-	//TODO add "sweepChannelsOnStartup: true" when lib has been updated
-	const importRes = await lm.importAccount({
-		backup,
-	});
-	if (importRes.isErr()) {
-		return err(importRes.error);
-	}
-
-	await setAccount({ name: backup.account.name, seed: backup.account.seed });
-	// Restore success
-	return ok({ backupExists: true });
-};
-
-export const performFullRestoreFromLatestBackup = async (
-	slashtag: Slashtag,
-): Promise<Result<{ backupExists: boolean }>> => {
+export const performFullRestoreFromLatestBackup = async (): Promise<
+	Result<{ backupExists: boolean }>
+> => {
 	try {
 		const backupServerDetails = {
 			host: __BACKUPS_SERVER_HOST__,
@@ -202,18 +137,6 @@ export const performFullRestoreFromLatestBackup = async (
 			});
 			if (ldkBackupRes.isErr()) {
 				return err(ldkBackupRes.error.message);
-			}
-
-			//No backup found on new server, try deprecated backup server
-			if (!ldkBackupRes.value.backupExists) {
-				const ldkBackupDeprecatedRes = await performLdkRestoreDeprecated({
-					slashtag,
-					selectedNetwork: network,
-				});
-
-				if (ldkBackupDeprecatedRes.isErr()) {
-					return err(ldkBackupDeprecatedRes.error.message);
-				}
 			}
 		}
 

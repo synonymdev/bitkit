@@ -8,7 +8,6 @@ import { IColors } from '../../styles/colors';
 import { restoreRemoteBackups, startWalletServices } from '../../utils/startup';
 import { showToast } from '../../utils/notifications';
 import { sleep } from '../../utils/helpers';
-import { useSelectedSlashtag } from '../../hooks/slashtags';
 import { updateUser } from '../../store/slices/user';
 import SafeAreaInset from '../../components/SafeAreaInset';
 import Button from '../../components/Button';
@@ -27,7 +26,6 @@ let attemptedAutoRestore = false;
 
 const RestoringScreen = (): ReactElement => {
 	const { t } = useTranslation('onboarding');
-	const slashtag = useSelectedSlashtag();
 	const { url } = useSelectedSlashtag2();
 	const { profile } = useProfile2(url);
 	const dispatch = useAppDispatch();
@@ -43,14 +41,14 @@ const RestoringScreen = (): ReactElement => {
 		setShowFailed(false);
 		setShowRestored(false);
 
-		const res = await restoreRemoteBackups(slashtag.slashtag);
+		const res = await restoreRemoteBackups();
 		await sleep(1000);
 		if (res.isErr()) {
 			return setShowFailed(true);
 		}
 
 		setShowRestored(true);
-	}, [slashtag]);
+	}, []);
 
 	const proceedWithoutBackup = useCallback(async () => {
 		setShowCautionDialog(false);

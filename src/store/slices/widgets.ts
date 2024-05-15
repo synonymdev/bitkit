@@ -20,15 +20,6 @@ export const widgetsSlice = createSlice({
 		updateWidgets: (state, action: PayloadAction<Partial<TWidgetsState>>) => {
 			state = Object.assign(state, action.payload);
 		},
-		setAuthWidget: (
-			state,
-			action: PayloadAction<{ url: string; magiclink: boolean }>,
-		) => {
-			state.sortOrder.push(action.payload.url);
-			state.widgets[action.payload.url] = {
-				magiclink: action.payload.magiclink,
-			};
-		},
 		setFeedWidget: (
 			state,
 			action: PayloadAction<{
@@ -60,7 +51,6 @@ const { actions, reducer } = widgetsSlice;
 
 export const {
 	updateWidgets,
-	setAuthWidget,
 	setFeedWidget,
 	deleteWidget,
 	setWidgetsOnboarding,

@@ -11,7 +11,6 @@ import {
 	ClipboardTextIcon,
 	ScanIcon,
 } from '../../../styles/icons';
-import { useSlashtagsSDK } from '../../../components/SlashtagsProvider';
 import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
 import SafeAreaInset from '../../../components/SafeAreaInset';
 import ContactImage from '../../../components/ContactImage';
@@ -56,7 +55,6 @@ const Button = ({
 const Recipient = ({
 	navigation,
 }: SendScreenProps<'Recipient'>): ReactElement => {
-	const sdk = useSlashtagsSDK();
 	const { t } = useTranslation('wallet');
 	const { isSmallScreen } = useScreenSize();
 	const selectedWallet = useAppSelector(selectedWalletSelector);
@@ -73,7 +71,6 @@ const Recipient = ({
 		await processInputData({
 			data: url,
 			source: 'send',
-			sdk,
 			selectedNetwork,
 			selectedWallet,
 		});

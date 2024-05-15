@@ -624,7 +624,6 @@ d('Settings', () => {
 				await element(by.id('DevOptions')).multiTap(5); // enable dev mode
 			}
 			await element(by.id('DevSettings')).tap();
-			await expect(element(by.id('SlashtagsSettings'))).toBeVisible();
 
 			// Error screen will not be rendered in development mode
 			if (__DEV__) {

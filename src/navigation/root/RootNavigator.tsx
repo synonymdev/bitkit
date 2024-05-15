@@ -45,7 +45,6 @@ import ProfileEdit from '../../screens/Profile/ProfileEdit';
 import Contacts from '../../screens/Contacts/Contacts';
 import Contact from '../../screens/Contacts/Contact';
 import ContactEdit from '../../screens/Contacts/ContactEdit';
-import SlashAuthModal from '../../screens/Widgets/SlashAuthModal';
 import Widget from '../../screens/Widgets/Widget';
 import WidgetEdit from '../../screens/Widgets/WidgetEdit';
 import BackupSubscriber from '../../utils/backup/backups-subscriber';
@@ -236,7 +235,6 @@ const RootNavigator = (): ReactElement => {
 			<PINNavigation />
 			<BoostPrompt />
 			<NewTxPrompt />
-			<SlashAuthModal />
 			<ForceTransfer />
 			<ConnectionClosed />
 			<BackupSubscriber />
