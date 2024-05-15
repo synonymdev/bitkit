@@ -40,7 +40,6 @@ const RestoringScreen = (): ReactElement => {
 	const [showRestored, setShowRestored] = useState(false);
 	const [showFailed, setShowFailed] = useState(false);
 	const [proceedWBIsLoading, setProceedWBIsLoading] = useState(false);
-	const [tryAgainCount, setTryAgainCount] = useState(0);
 	const [showCautionDialog, setShowCautionDialog] = useState(false);
 
 	// #region UI events
@@ -103,88 +102,29 @@ const RestoringScreen = (): ReactElement => {
 			return <LoadingWalletScreen />;
 		}
 
-		// TODO: extract to separate component
-
-		let color: keyof IColors = showRestored ? 'green' : 'red';
-		const title = t(
-			showRestored ? 'restore_success_header' : 'restore_failed_header',
-		);
-		const subtitle = t(
-			showRestored ? 'restore_success_text' : 'restore_failed_text',
-		);
-		const imageSrc = showRestored ? checkImageSrc : crossImageSrc;
-		const buttonText = t(showRestored ? 'get_started' : 'try_again');
-
-		const onPress = (): void => {
-			if (showRestored) {
-				//App.tsx will show wallet now
-				dispatch(updateUser({ requiresRemoteRestore: false }));
-			} else {
-				onRemoteRestore().then().catch(console.error);
-				setTryAgainCount(tryAgainCount + 1);
-			}
-		};
-
 		return (
-			<View style={styles.content}>
-				<Display style={styles.title}>
-					<Trans
-						t={t}
-						i18nKey={title}
-						components={{ accent: <Display color={color} /> }}
-					/>
-				</Display>
-				<BodyM color="white80">{subtitle}</BodyM>
-
-				<View style={styles.imageContainer}>
-					<Image style={styles.image} source={imageSrc} />
-				</View>
-
-				<View style={styles.buttonContainer}>
-					<Button
-						size="large"
-						text={buttonText}
-						testID={showRestored ? 'GetStartedButton' : 'TryAgainButton'}
-						onPress={onPress}
-					/>
-					{tryAgainCount > 1 && showFailed && (
-						<Button
-							style={styles.proceedButton}
-							text={t('restore_no_backup_button')}
-							size="large"
-							loading={proceedWBIsLoading}
-							variant="secondary"
-							onPress={(): void => {
-								setShowCautionDialog(true);
-							}}
-						/>
-					)}
-				</View>
-
-				<Dialog
-					visible={showCautionDialog}
-					title={t('are_you_sure')}
-					description={t('restore_no_backup_warn')}
-					confirmText={t('yes_proceed')}
-					onCancel={(): void => {
-						setShowCautionDialog(false);
-					}}
-					onConfirm={proceedWithoutBackup}
-				/>
-
-				<SafeAreaInset type="bottom" minPadding={16} />
-			</View>
+			<RestoreResultScreen
+				showRestored={showRestored}
+				showFailed={showFailed}
+				showCautionDialog={showCautionDialog}
+				onRemoteRestore={onRemoteRestore}
+				onProceedWithoutBackup={(): void => {
+					setShowCautionDialog(true);
+				}}
+				proceedWithoutBackup={proceedWithoutBackup}
+				onDialogCancel={(): void => {
+					setShowCautionDialog(false);
+				}}
+				proceedWBIsLoading={proceedWBIsLoading}
+			/>
 		);
 	}, [
 		showRestored,
 		showFailed,
-		t,
-		tryAgainCount,
-		proceedWBIsLoading,
 		showCautionDialog,
-		proceedWithoutBackup,
-		dispatch,
 		onRemoteRestore,
+		proceedWithoutBackup,
+		proceedWBIsLoading,
 	]);
 
 	useEffect(() => {
@@ -196,6 +136,97 @@ const RestoringScreen = (): ReactElement => {
 	}, [showRestored, showFailed]);
 
 	return <ThemedView style={styles.root}>{content}</ThemedView>;
+};
+
+const RestoreResultScreen = ({
+	showRestored,
+	showFailed,
+	showCautionDialog,
+	onRemoteRestore,
+	onProceedWithoutBackup,
+	proceedWithoutBackup,
+	onDialogCancel,
+	proceedWBIsLoading,
+}: {
+	showRestored: boolean;
+	showFailed: boolean;
+	showCautionDialog: boolean;
+	onRemoteRestore: () => Promise<void>;
+	onProceedWithoutBackup: () => void;
+	proceedWithoutBackup: () => Promise<void>;
+	onDialogCancel: () => void;
+	proceedWBIsLoading: boolean;
+}): ReactElement => {
+	const { t } = useTranslation('onboarding');
+	const dispatch = useAppDispatch();
+	const [tryAgainCount, setTryAgainCount] = useState(0);
+
+	let color: keyof IColors = showRestored ? 'green' : 'red';
+	const title = t(
+		showRestored ? 'restore_success_header' : 'restore_failed_header',
+	);
+	const subtitle = t(
+		showRestored ? 'restore_success_text' : 'restore_failed_text',
+	);
+	const imageSrc = showRestored ? checkImageSrc : crossImageSrc;
+	const buttonText = t(showRestored ? 'get_started' : 'try_again');
+
+	const onPress = (): void => {
+		if (showRestored) {
+			//App.tsx will show wallet now
+			dispatch(updateUser({ requiresRemoteRestore: false }));
+		} else {
+			onRemoteRestore().then().catch(console.error);
+			setTryAgainCount(tryAgainCount + 1);
+		}
+	};
+
+	return (
+		<View style={styles.content}>
+			<Display style={styles.title}>
+				<Trans
+					t={t}
+					i18nKey={title}
+					components={{ accent: <Display color={color} /> }}
+				/>
+			</Display>
+			<BodyM color="white80">{subtitle}</BodyM>
+
+			<View style={styles.imageContainer}>
+				<Image style={styles.image} source={imageSrc} />
+			</View>
+
+			<View style={styles.buttonContainer}>
+				<Button
+					size="large"
+					text={buttonText}
+					testID={showRestored ? 'GetStartedButton' : 'TryAgainButton'}
+					onPress={onPress}
+				/>
+				{tryAgainCount > 1 && showFailed && (
+					<Button
+						style={styles.proceedButton}
+						text={t('restore_no_backup_button')}
+						size="large"
+						loading={proceedWBIsLoading}
+						variant="secondary"
+						onPress={onProceedWithoutBackup}
+					/>
+				)}
+			</View>
+
+			<Dialog
+				visible={showCautionDialog}
+				title={t('are_you_sure')}
+				description={t('restore_no_backup_warn')}
+				confirmText={t('yes_proceed')}
+				onCancel={onDialogCancel}
+				onConfirm={proceedWithoutBackup}
+			/>
+
+			<SafeAreaInset type="bottom" minPadding={16} />
+		</View>
+	);
 };
 
 const styles = StyleSheet.create({
