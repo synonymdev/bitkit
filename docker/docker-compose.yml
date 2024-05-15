@@ -118,6 +118,8 @@ services:
       - '--rpclisten=0.0.0.0:10009'
       - '--restlisten=0.0.0.0:8080'
       - '--feeurl=http://darkhttpd:80/btc-fee-estimates.json'
+      - '--protocol.option-scid-alias'
+      - '--protocol.zero-conf'
 
   ldk-backup-server:
     container_name: ldk-backup-server
