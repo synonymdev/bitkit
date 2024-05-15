@@ -179,16 +179,20 @@ const RestoreFromSeed = (): ReactElement => {
 		);
 	};
 
+	useEffect(() => {
+		flowLog.debug(
+			'🔵 RestoreFromSeed',
+			isRestoringWallet ? '→ LoadingWalletScreen' : '',
+		);
+	}, [isRestoringWallet]);
+
 	if (isRestoringWallet) {
-		flowLog.debug('🔵 RestoreFromSeed → LoadingWalletScreen');
 		return (
 			<ThemedView style={styles.root}>
 				<LoadingWalletScreen />
 			</ThemedView>
 		);
 	}
-
-	flowLog.debug('🔵 RestoreFromSeed');
 
 	return (
 		<ThemedView style={styles.root}>
