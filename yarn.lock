@@ -3536,10 +3536,10 @@
   dependencies:
     b4a "^1.5.3"
 
-"@synonymdev/ledger@0.0.3":
-  version "0.0.3"
-  resolved "https://registry.yarnpkg.com/@synonymdev/ledger/-/ledger-0.0.3.tgz#02d85a671a7824c134cf432ed4b2e4d703c69065"
-  integrity sha512-qWZZifwm+BJqkZhNsIHegpVDdYS3hTHlMYTsij8V99akbkDVcddJyn6KfI5/+j7vQupYc8OLE0W6J07gjwc9Ww==
+"@synonymdev/ledger@0.0.5":
+  version "0.0.5"
+  resolved "https://registry.yarnpkg.com/@synonymdev/ledger/-/ledger-0.0.5.tgz#a55a5873e3f4b197711cd747b69a02295c83449f"
+  integrity sha512-bp5UBV4hB21c+6kEyZEleeNbft5FLbGSJkcocaahSG3dJ4PuqtMYd/zf0OSQGEUSC0cv+7TpuFI9icCkE4AtpA==
 
 "@synonymdev/react-native-ldk@0.0.139":
   version "0.0.139"
