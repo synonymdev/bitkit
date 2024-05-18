@@ -218,5 +218,36 @@ describe('Reselect', () => {
 
 			expect(received1).toMatchObject(expected1);
 		});
+
+		it('should not produce different slider.maxVlalue for the different spending amount', () => {
+			const s1 = cloneDeep(s);
+			s1.wallet.wallets.wallet0.balance.bitcoinRegtest = 600000;
+			s1.blocktank.info.options = {
+				...s1.blocktank.info.options,
+				max0ConfClientBalanceSat: 0,
+				maxChannelSizeSat: 1500000,
+				maxClientBalanceSat: 1450000,
+				minChannelSizeSat: 100000,
+			};
+			const channel1 = {
+				channel_id: 'channel1',
+				status: EChannelStatus.open,
+				is_channel_ready: true,
+				balance_sat: 370000,
+				channel_value_satoshis: 700000,
+				outbound_capacity_sat: 400000,
+			} as TChannel;
+			const lnWallet = s1.lightning.nodes.wallet0;
+			lnWallet.channels.bitcoinRegtest = { channel1 };
+
+			const r0 = lnSetupSelector(s1, 0);
+			const r1 = lnSetupSelector(s1, 1000);
+			const r2 = lnSetupSelector(s1, 8000);
+			const r3 = lnSetupSelector(s1, 500000);
+
+			expect(r0.slider.maxValue).toEqual(r1.slider.maxValue);
+			expect(r0.slider.maxValue).toEqual(r2.slider.maxValue);
+			expect(r0.slider.maxValue).toEqual(r3.slider.maxValue);
+		});
 	});
 });
