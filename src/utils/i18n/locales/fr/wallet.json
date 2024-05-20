@@ -66,6 +66,7 @@
   "activity_no_explain": "Recevoir des fonds pour démarrer",
   "activity_sent": "Envoyé",
   "activity_received": "Reçu",
+  "activity_failed": "Échec",
   "activity_transfer": "Transfert",
   "activity_transfer_spending": "Solde des dépenses",
   "activity_transfer_savings": "Solde de l'épargne",

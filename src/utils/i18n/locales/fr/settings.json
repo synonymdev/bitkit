@@ -3,6 +3,7 @@
   "dev_enabled_title": "Options de développement activées",
   "dev_enabled_message": "Les options pour les développeurs sont désormais activées dans l'ensemble de l'application.",
   "dev_disabled_title": "Options de développement désactivées",
+  "dev_disabled_message": "Les options pour les développeurs sont désormais désactivées dans l'ensemble de l'application.",
   "general_title": "Général",
   "security_title": "Sécurité et vie privée",
   "backup_title": "Sauvegarde ou restauration",
@@ -11,6 +12,7 @@
   "support_title": "Support",
   "about": {
     "title": "À propos de Bitkit",
+    "text": "Merci d'être un bitcoiner responsable.\nChangez votre portefeuille, changez le monde.\n\nBitkit vous donne les clés de votre argent, de votre profil, de vos contacts et de vos comptes web.\n\nBitkit a été conçu par Synonym Software Ltd.",
     "legal": "Juridique",
     "share": "Partager",
     "version": "Version"
@@ -26,19 +28,27 @@
     "unit_title": "Unité par défaut",
     "unit_display": "Afficher les montants en",
     "unit_bitcoin": "Bitcoin",
+    "unit_note": "Astuce : Basculez rapidement entre Bitcoin et {currency} en tapant sur le solde de votre portefeuille.",
+    "denomination_label": "Dénomination du bitcoin",
+    "denomination_modern": "Moderne (₿ 10 000)",
+    "denomination_classic": "Classique (₿ 0.00010000)",
     "speed": "Vitesse de transaction",
     "speed_title": "Vitesse de transaction",
     "speed_default": "Vitesse de transaction par défaut",
     "speed_fee_custom": "Fixer des frais personnalisés",
+    "speed_fee_total_fiat": "₿ {feeSats} pour une transaction moyenne ({fiatSymbol}{fiatFormatted} )",
     "tags": "Tags",
     "tags_previously": "Étiquettes précédemment utilisées"
   },
   "widgets": {
     "nav_title": "Widgets",
-    "showWidgets": "Widgets"
+    "showWidgets": "Widgets",
+    "showWidgetTitles": "Afficher les titres des widgets"
   },
   "security": {
     "title": "Sécurité et vie privée",
+    "swipe_balance_to_hide": "Balayer pour masquer la balance",
+    "hide_balance_on_open": "Masquer le solde à l'ouverture",
     "clipboard": "Lire le presse-papiers pour faciliter l'utilisation",
     "warn_100": "Avertir en cas d'envoi de plus de 100$",
     "pin": "Code PIN",
@@ -57,6 +67,7 @@
     "export": "Exporter les données du portefeuille vers le téléphone",
     "reset": "Réinitialiser et restaurer le portefeuille",
     "failed_title": "Échec de la sauvegarde des données",
+    "failed_message": "Bitkit n'a pas réussi à sauvegarder les données du portefeuille. Réessayez dans {interval, plural, one {# minute} other {# minutes}}.",
     "latest": "les dernières sauvegardes de données",
     "status_failed": "Échec de la sauvegarde : {time}",
     "status_success": "Dernière sauvegarde : {time}",
@@ -72,6 +83,7 @@
   },
   "support": {
     "title": "Support",
+    "text": "Besoin d'aide ? Signalez votre problème depuis Bitkit, visitez le centre d'aide, vérifiez le statut ou contactez-nous sur nos canaux sociaux.",
     "text_button": "Envoyer",
     "text_success_button": "OK",
     "text_unsuccess_button": "Réessayer"

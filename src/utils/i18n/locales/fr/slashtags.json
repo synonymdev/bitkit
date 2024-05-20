@@ -26,12 +26,6 @@
   "contact_assign": "Attribuer un contact",
   "contacts_no_found": "Aucun contact trouvé",
   "disabled": "Slashtags désactivés",
-  "signin_to": "Connectez-vous à {serviceName} avec votre profil ?",
-  "signin_to_loading": "Connectez-vous à {serviceName}...",
-  "signin_to_success_header": "Signé en",
-  "signin_to_success_text_noname": "Vous vous êtes connecté avec succès.",
-  "signin_title": "S'inscrire",
-  "signin_title_loading": "S'inscrire...",
   "onboarding_profile2_text": "Vous et vos contacts pouvez utiliser Bitkit pour envoyer des paiements directement, sans banque, à tout moment et en tout lieu.",
   "my_profile": "Mon profil",
   "profile": "Profil",
@@ -73,6 +67,5 @@
   "widget_delete_yes": "Oui, Supprimer",
   "widget_delete_title": "Supprimer le widget ?",
   "widget_delete_desc": "Êtes-vous sûr de vouloir supprimer '{name}' de vos widgets ?",
-  "auth_signin": "S'inscrire",
   "auth_error_open": "Erreur d'ouverture du lien de connexion"
 }

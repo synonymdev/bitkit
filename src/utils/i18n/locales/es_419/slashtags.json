@@ -24,8 +24,6 @@
   "contact_assign": "Asignar contacto",
   "contacts_no_found": "No se han encontrado contactos",
   "disabled": "Slashtags desactivadas",
-  "signin_to": "Regístrese en {serviceName} con su perfil?",
-  "signin_to_loading": "Iniciando sesión en {serviceName}...",
   "onboarding_profile2_text": "Usted y sus contactos pueden utilizar Bitkit para enviar pagos directamente, sin bancos, en cualquier momento y en cualquier lugar.",
   "my_profile": "Mi perfil",
   "profile": "Perfil",

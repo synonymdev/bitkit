@@ -1,9 +1,23 @@
 {
   "backupSeedPhrase": {
-    "title": "Backup"
+    "title": "Backup",
+    "description": "Conserva i tuoi bitcoin"
   },
   "discount": {
+    "title": "Sconto",
     "description": "Conto Spendibile"
+  },
+  "fastpay": {
+    "title": "Pagamento veloce",
+    "description": "Scansiona e paga"
+  },
+  "invite": {
+    "title": "Invitare",
+    "description": "Condividi Bitkit"
+  },
+  "lightning": {
+    "title": "Spendi",
+    "description": "Bilancia i tuoi fondi"
   },
   "lightningSettingUp": {
     "title": "Trasferisci",
@@ -29,6 +43,7 @@
     "description": "Tieni l'app aperta"
   },
   "pin": {
+    "title": "Sicuro",
     "description": "Imposta un codice PIN"
   },
   "slashtagsProfile": {
@@ -36,9 +51,11 @@
     "description": "Aggiungi i tuoi dettagli"
   },
   "support": {
-    "title": "Supporto"
+    "title": "Supporto",
+    "description": "Ottieni assistenza"
   },
   "buyBitcoin": {
+    "title": "Compra",
     "description": "Acquista dei bitcoin"
   },
   "btFailed": {

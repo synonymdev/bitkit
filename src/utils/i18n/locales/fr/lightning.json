@@ -27,6 +27,7 @@
   "receiving_amount_money": "Choisissez le montant de bitcoins que vous souhaitez recevoir instantanément.",
   "receiving_amount_bitcoin": "Saisissez le montant de bitcoins que vous souhaitez recevoir instantanément.",
   "duration_week": "{count, plural, one {semaine} many {semaines} other {semaines}}",
+  "setting_up_step1": "Traitement des paiements",
   "setting_up_step2": "Paiement réussi",
   "setting_up_step3": "En attente d'ouverture",
   "setting_up_step4": "Ouverture de la connexion",

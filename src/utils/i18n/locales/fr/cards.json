@@ -1,12 +1,27 @@
 {
   "backupSeedPhrase": {
-    "title": "Sauvegarder"
+    "title": "Sauvegarder",
+    "description": "Conservez vos bitcoins"
   },
   "discount": {
+    "title": "Réductions",
     "description": "Solde des dépenses"
+  },
+  "fastpay": {
+    "title": "Paiement rapide",
+    "description": "Scannez et payez"
+  },
+  "invite": {
+    "title": "Inviter",
+    "description": "Partager Bitkit"
+  },
+  "lightning": {
+    "title": "Dépenser",
+    "description": "Équilibrer vos fonds"
   },
   "lightningSettingUp": {
     "title": "Transfert",
+    "description0": "Traitement des paiements",
     "description1": "Payé",
     "description2": "En attente",
     "description3": "Ouverture"
@@ -20,13 +35,15 @@
     "description": "Connecté !"
   },
   "transferPending": {
-    "title": "Transfert"
+    "title": "Transfert",
+    "description": "Prêt dans ±{duration}m"
   },
   "transferClosingChannel": {
     "title": "Démarrage...",
     "description": "Maintenir l'application ouverte"
   },
   "pin": {
+    "title": "Sécurisé",
     "description": "Définir un code PIN"
   },
   "slashtagsProfile": {
@@ -34,7 +51,16 @@
     "description": "Ajouter vos informations"
   },
   "support": {
-    "title": "Support"
+    "title": "Support",
+    "description": "Obtenir de l'aide"
+  },
+  "buyBitcoin": {
+    "title": "Acheter",
+    "description": "Achetez des bitcoins"
+  },
+  "btFailed": {
+    "title": "Échec",
+    "description": "Veuillez réessayer"
   },
   "suggestions": "Suggestions"
 }

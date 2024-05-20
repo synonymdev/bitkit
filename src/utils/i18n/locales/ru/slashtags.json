@@ -26,9 +26,6 @@
   "contact_assign": "Привязать Контакт",
   "contacts_no_found": "Контакты не найдены",
   "disabled": "Slashtags выключен",
-  "signin_to": "Войти в {serviceName} используя Ваш профиль?",
-  "signin_to_loading": "Входим в {serviceName}...",
-  "signin_title_loading": "Входим...",
   "onboarding_profile2_text": "Вы и ваши контакты можете использовать Bitkit для отправки платежей напрямую, без банков, в любое время и в любом месте.",
   "my_profile": "Мой профиль",
   "profile": "Профиль",
@@ -60,6 +57,5 @@
   "widget_delete_yes": "Да,\nУдалить",
   "widget_delete_title": "Удалить виджет?",
   "widget_delete_desc": "Вы уверены что хотите удалить {name} из виджетов?",
-  "auth_signin": "Войти",
   "auth_error_open": "Ошибка открытия ссылки для входа"
 }
