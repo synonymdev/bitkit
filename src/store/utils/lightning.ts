@@ -1,6 +1,10 @@
 import { LNURLChannelParams } from 'js-lnurl';
 import { err, ok, Result } from '@synonymdev/result';
-import { ldk, TInvoice } from '@synonymdev/react-native-ldk';
+import {
+	ldk,
+	TChannelManagerChannelClosed,
+	TInvoice,
+} from '@synonymdev/react-native-ldk';
 import { getLNURLParams, lnurlChannel } from '@synonymdev/react-native-lnurl';
 import { EPaymentType } from 'beignet';
 
@@ -10,19 +14,19 @@ import {
 	removeLightningPeer,
 	removePendingPayment,
 	saveLightningPeer,
-	updateClaimableBalances,
-	updateLightningChannels,
+	updateChannel,
+	updateChannels,
 	updateLightningNodeId,
 	updateLightningNodeVersion,
 } from '../slices/lightning';
 import { moveMetaIncTxTag } from '../slices/metadata';
-import { updateTransfer } from '../actions/wallet';
+import { addTransfer, updateTransfer } from '../actions/wallet';
 import { EAvailableNetwork } from '../../utils/networks';
 import { getSelectedNetwork, getSelectedWallet } from '../../utils/wallet';
 import {
 	addPeers,
 	createPaymentRequest,
-	getClaimableBalances,
+	getChannelMonitors,
 	getClaimedLightningPayments,
 	getCustomLightningPeers,
 	getLdkChannels,
@@ -32,11 +36,15 @@ import {
 	parseUri,
 } from '../../utils/lightning';
 import {
+	EChannelClosureReason,
+	EChannelStatus,
 	TCreateLightningInvoice,
 	TLightningNodeVersion,
 } from '../types/lightning';
-import { ETransferType, TWalletName } from '../types/wallet';
+import { ETransferStatus, ETransferType, TWalletName } from '../types/wallet';
 import { EActivityType, TLightningActivityItem } from '../types/activity';
+import { reduceValue } from '../../utils/helpers';
+import { getBlockHeader } from '../../utils/wallet/electrum';
 
 /**
  * Attempts to update the node id for the selected wallet and network.
@@ -89,33 +97,128 @@ export const updateLightningNodeVersionThunk = async (): Promise<
  * Attempts to update the lightning channels for the current wallet and network.
  * This method will save all channels (both pending, open & closed) to redux.
  */
-export const updateLightningChannelsThunk = async (): Promise<
-	Result<string>
-> => {
+export const updateChannelsThunk = async (): Promise<Result<string>> => {
+	const blockHeight = getBlockHeader().height;
 	const selectedWallet = getSelectedWallet();
 	const selectedNetwork = getSelectedNetwork();
 
-	const result = await getLdkChannels();
-	if (result.isErr()) {
-		return err(result.error.message);
+	const channelsResult = await getLdkChannels();
+	if (channelsResult.isErr()) {
+		return err(channelsResult.error.message);
 	}
-	const channels = result.value;
+	const channelMonitorsResult = await getChannelMonitors();
+	if (channelMonitorsResult.isErr()) {
+		return err(channelMonitorsResult.error.message);
+	}
+	const channels = channelsResult.value;
+	const channelMonitors = channelMonitorsResult.value;
 
-	// Update the transfer status for any open channels.
+	// Update the transfer status for pending channels.
 	channels.forEach((channel) => {
 		if (channel.is_channel_ready && channel.funding_txid) {
-			updateTransfer({
-				txId: channel.funding_txid,
-				type: ETransferType.open,
-			});
+			updateTransfer({ type: ETransferType.open, txId: channel.funding_txid });
 		}
 	});
 
+	// Update the transfer for closed channels.
+	channelMonitors.forEach(({ funding_txo_txid, claimable_balances }) => {
+		const amountRes = reduceValue(claimable_balances, 'amount_satoshis');
+		const amount = amountRes.isOk() ? amountRes.value : 0;
+
+		let confirmationHeight = 0;
+		if (claimable_balances.length > 0) {
+			// Default to 6 confirmations if no confirmation height (closing transaction has not yet appeared in a block)
+			confirmationHeight =
+				claimable_balances[0].confirmation_height ?? blockHeight + 6;
+		}
+
+		updateTransfer({
+			type: 'close',
+			txId: funding_txo_txid,
+			amount,
+			confirmsIn: Math.max(confirmationHeight - blockHeight, 0),
+		});
+	});
+
 	dispatch(
-		updateLightningChannels({ channels, selectedWallet, selectedNetwork }),
+		updateChannels({
+			channels,
+			channelMonitors,
+			selectedWallet,
+			selectedNetwork,
+		}),
 	);
 
 	return ok('Updated Lightning Channels');
+};
+
+export const closeChannelThunk = async (
+	res: TChannelManagerChannelClosed,
+): Promise<void> => {
+	const selectedWallet = getSelectedWallet();
+	const selectedNetwork = getSelectedNetwork();
+
+	const channelMonitorsResult = await getChannelMonitors();
+	if (channelMonitorsResult.isErr()) {
+		console.error(channelMonitorsResult.error.message);
+		return;
+	}
+	const channelMonitors = channelMonitorsResult.value;
+	const channelMonitor = channelMonitors.find(({ channel_id }) => {
+		return channel_id === res.channel_id;
+	});
+
+	if (channelMonitor) {
+		// update the channel with the closure reason
+		dispatch(
+			updateChannel({
+				channelData: {
+					channel_id: res.channel_id,
+					status: EChannelStatus.closed,
+					claimable_balances: channelMonitor.claimable_balances,
+					closureReason: res.reason as EChannelClosureReason,
+					is_channel_ready: false,
+					is_usable: false,
+				},
+				selectedWallet,
+				selectedNetwork,
+			}),
+		);
+
+		const claimableBalances = channelMonitor.claimable_balances;
+		const amountRes = reduceValue(claimableBalances, 'amount_satoshis');
+		const amount = amountRes.isOk() ? amountRes.value : 0;
+
+		// add a transfer item for closed channels
+		if (res.reason === EChannelClosureReason.CooperativeClosure) {
+			addTransfer({
+				type: ETransferType.coopClose,
+				status: ETransferStatus.done,
+				txId: channelMonitor.funding_txo_txid,
+				amount,
+				confirmsIn: 0,
+			});
+		} else {
+			const blockHeight = getBlockHeader().height;
+
+			let confirmationHeight = 0;
+			if (claimableBalances.length > 0) {
+				// Default to 6 confirmations if no confirmation height (closing transaction has not yet appeared in a block)
+				confirmationHeight =
+					claimableBalances[0].confirmation_height ?? blockHeight + 6;
+			}
+
+			const confirmsIn = Math.max(confirmationHeight - blockHeight, 0);
+
+			addTransfer({
+				type: ETransferType.forceClose,
+				status: ETransferStatus.pending,
+				txId: channelMonitor.funding_txo_txid,
+				amount,
+				confirmsIn,
+			});
+		}
+	}
 };
 
 /**
@@ -257,23 +360,6 @@ export const removePeer = ({
 	};
 	dispatch(removeLightningPeer(payload));
 	return ok('Successfully Removed Lightning Peer');
-};
-
-export const updateClaimableBalancesThunk = async (): Promise<
-	Result<string>
-> => {
-	const selectedWallet = getSelectedWallet();
-	const selectedNetwork = getSelectedNetwork();
-
-	const claimableBalances = await getClaimableBalances();
-
-	const payload = {
-		claimableBalances,
-		selectedNetwork,
-		selectedWallet,
-	};
-	dispatch(updateClaimableBalances(payload));
-	return ok('Successfully Updated Claimable Balance.');
 };
 
 export const syncLightningTxsWithActivityList = async (): Promise<

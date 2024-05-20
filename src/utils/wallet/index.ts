@@ -38,6 +38,7 @@ import {
 import type { Electrum } from 'beignet/dist/types/electrum';
 import type { Transaction } from 'beignet/dist/types/transaction';
 import type { Wallet as TWallet } from 'beignet/dist/types/wallet';
+import { TGetTotalFeeObj } from 'beignet/dist/types/types';
 
 import { EAvailableNetwork, networks } from '../networks';
 import {
@@ -83,13 +84,13 @@ import { moveMetaIncTxTags } from '../../store/utils/metadata';
 import { refreshOrdersList } from '../../store/utils/blocktank';
 import { TNode } from '../../store/types/lightning';
 import { showNewOnchainTxPrompt, showNewTxPrompt } from '../../store/utils/ui';
-import { promiseTimeout, reduceValue } from '../helpers';
+import { promiseTimeout } from '../helpers';
 import { showToast } from '../notifications';
 import { updateUi } from '../../store/slices/ui';
 import { resetActivityState } from '../../store/slices/activity';
 import BitcoinActions from '../bitcoin-actions';
 import { bitkitLedger, syncLedger } from '../ledger';
-import { TGetTotalFeeObj } from 'beignet/dist/types/types';
+import { getTransferForTx } from './transfer';
 
 bitcoin.initEccLib(ecc);
 const bip32 = BIP32Factory(ecc);
@@ -1044,7 +1045,9 @@ const onElectrumConnectionChange = (isConnected: boolean): void => {
 
 // Used to prevent duplicate notifications for the same txid that seems to occur when Bitkit is brought from background to foreground.
 let receivedTxids: string[] = [];
-const onMessage: TOnMessage = (key, data) => {
+
+// eslint-disable-next-line @typescript-eslint/no-misused-promises
+const onMessage: TOnMessage = async (key, data): Promise<void> => {
 	switch (key) {
 		case 'transactionReceived': {
 			const txMsg = data as TTransactionMessage;
@@ -1052,21 +1055,16 @@ const onMessage: TOnMessage = (key, data) => {
 				wallet?.isSwitchingNetworks !== undefined &&
 				!wallet?.isSwitchingNetworks
 			) {
-				const txId = txMsg.transaction.txid;
-				const { currentWallet, selectedNetwork } = getCurrentWallet();
+				const { transaction } = txMsg;
+				const isDuplicate = receivedTxids.includes(transaction.txid);
+				const transfer = await getTransferForTx(transaction);
 
-				const transfer = currentWallet.transfers[selectedNetwork].find((t) => {
-					return t.txId === txId;
-				});
-				const isTransferToSavings = transfer?.type === 'coop-close' ?? false;
-
-				const isDuplicate = receivedTxids.includes(txId);
-				if (!isTransferToSavings && !isDuplicate) {
+				if (!transfer && !isDuplicate) {
 					showNewOnchainTxPrompt({
-						id: txId,
-						value: btcToSats(txMsg.transaction.value),
+						id: transaction.txid,
+						value: btcToSats(transaction.value),
 					});
-					receivedTxids.push(txId);
+					receivedTxids.push(transaction.txid);
 				}
 			}
 			setTimeout(() => {
@@ -1504,41 +1502,37 @@ export const getBalance = ({
 	selectedNetwork?: EAvailableNetwork;
 }): {
 	onchainBalance: number; // Total onchain funds
-	lightningBalance: number; // Total lightning funds (spendable + reserved + claimable)
+	// lightningBalance: number; // Total lightning funds (spendable + reserved + claimable)
 	spendingBalance: number; // Share of lightning funds that are spendable
 	reserveBalance: number; // Share of lightning funds that are locked up in channels
-	claimableBalance: number; // Funds that will be available after a channel opens/closes
+	// claimableBalance: number; // Funds that will be available after a channel opens/closes
 	spendableBalance: number; // Total spendable funds (onchain + spendable lightning)
-	totalBalance: number; // Total funds (all of the above)
+	// totalBalance: number; // Total funds (all of the above)
 } => {
-	const { currentWallet, currentLightningNode: node } = getCurrentWallet({
+	const { currentWallet } = getCurrentWallet({
 		selectedWallet,
 		selectedNetwork,
 	});
-	const claimableBalances = node?.claimableBalances[selectedNetwork];
 
 	const { localBalance } = getLightningBalance();
 	const reserveBalance = getLightningReserveBalance();
 	const spendingBalance = localBalance - reserveBalance;
 
-	// TODO: filter out some types of claimable balances
-	const result = reduceValue(claimableBalances, 'amount_satoshis');
-	const claimableBalance = result.isOk() ? result.value : 0;
-
 	const onchainBalance =
 		wallet.getBalance() ?? currentWallet.balance[selectedNetwork];
-	const lightningBalance = localBalance + claimableBalance;
+	// const lightningBalance = localBalance + claimableBalance;
 	const spendableBalance = onchainBalance + spendingBalance;
-	const totalBalance = onchainBalance + lightningBalance;
+	// const totalBalance = onchainBalance + lightningBalance;
 
+	// check and re-add unused balance types when needed
 	return {
 		onchainBalance,
-		lightningBalance,
+		// lightningBalance,
 		spendingBalance,
 		reserveBalance,
-		claimableBalance,
+		// claimableBalance,
 		spendableBalance,
-		totalBalance,
+		// totalBalance,
 	};
 };
 

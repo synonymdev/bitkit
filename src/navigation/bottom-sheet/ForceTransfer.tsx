@@ -1,4 +1,4 @@
-import React, { memo, ReactElement, useEffect } from 'react';
+import React, { memo, ReactElement, useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { useTranslation } from 'react-i18next';
@@ -36,6 +36,7 @@ const ForceTransfer = (): ReactElement => {
 	const startTime = useAppSelector(startCoopCloseTimestampSelector);
 	const selectedWallet = useAppSelector(selectedWalletSelector);
 	const selectedNetwork = useAppSelector(selectedNetworkSelector);
+	const [isPending, setIsPending] = useState(false);
 
 	useBottomSheetBackPress('forceTransfer');
 
@@ -88,7 +89,7 @@ const ForceTransfer = (): ReactElement => {
 	};
 
 	const onContinue = async (): Promise<void> => {
-		console.log('trying force close...');
+		setIsPending(true);
 
 		const closeResponse = await closeAllChannels({
 			force: true,
@@ -99,11 +100,12 @@ const ForceTransfer = (): ReactElement => {
 				title: t('close_error'),
 				description: closeResponse.error.message,
 			});
+			setIsPending(false);
 			return;
 		}
 		if (closeResponse.isOk()) {
+			setIsPending(false);
 			if (closeResponse.value.length === 0) {
-				console.log('force close success.');
 				showToast({
 					type: 'success',
 					title: t('force_init_title'),
@@ -111,13 +113,11 @@ const ForceTransfer = (): ReactElement => {
 				});
 				dispatch(closeSheet('forceTransfer'));
 			} else {
-				console.log('force close failed.');
 				showToast({
 					type: 'warning',
 					title: t('force_failed_title'),
 					description: t('force_failed_msg'),
 				});
-				console.log({ closeResponse: closeResponse.value });
 			}
 		}
 	};
@@ -151,6 +151,7 @@ const ForceTransfer = (): ReactElement => {
 						style={styles.button}
 						size="large"
 						text={t('force_button')}
+						loading={isPending}
 						onPress={onContinue}
 					/>
 				</View>

@@ -76,13 +76,13 @@ describe('Reselect', () => {
 				is_channel_ready: false,
 				outbound_capacity_sat: 1,
 				balance_sat: 2,
+				claimable_balances: [
+					{ amount_satoshis: 3, type: 'ClaimableOnChannelClose' },
+				],
 			} as TChannel;
 
 			const lnWallet = state.lightning.nodes.wallet0;
 			lnWallet.channels.bitcoinRegtest = { channel1, channel2, channel3 };
-			lnWallet.claimableBalances.bitcoinRegtest = [
-				{ amount_satoshis: 3, type: 'ClaimableOnChannelClose' },
-			];
 
 			assert.deepEqual(balanceSelector(state), {
 				lightningBalance: 4,

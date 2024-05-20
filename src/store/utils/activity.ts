@@ -75,7 +75,7 @@ export const updateActivityList = (): Result<string> => {
  * Converts on-chain transactions to activity items and saves them to store
  * @returns {Result<string>}
  */
-export const updateOnChainActivityList = (): Result<string> => {
+export const updateOnChainActivityList = async (): Promise<Result<string>> => {
 	let { currentWallet } = getCurrentWallet();
 	if (!currentWallet) {
 		console.warn(
@@ -88,9 +88,10 @@ export const updateOnChainActivityList = (): Result<string> => {
 		currentWallet.boostedTransactions[selectedNetwork];
 
 	const transactions = currentWallet.transactions[selectedNetwork];
-	const activityItems = Object.values(transactions).map((tx) => {
-		return onChainTransactionToActivityItem({ transaction: tx });
+	const promises = Object.values(transactions).map(async (tx) => {
+		return await onChainTransactionToActivityItem({ transaction: tx });
 	});
+	const activityItems = await Promise.all(promises);
 
 	const boostFormattedItems = formatBoostedActivityItems({
 		items: activityItems,

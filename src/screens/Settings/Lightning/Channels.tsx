@@ -72,6 +72,7 @@ import {
 } from '../../../store/reselect/blocktank';
 import { TPaidBlocktankOrders } from '../../../store/types/blocktank';
 import { EUnit } from '../../../store/types/wallet';
+import { showBottomSheet } from '../../../store/utils/ui';
 import { EChannelStatus, TChannel } from '../../../store/types/lightning';
 
 /**
@@ -121,6 +122,7 @@ const getPendingBlocktankChannels = (
 			short_channel_id: order.id,
 			config_forwarding_fee_base_msat: 0,
 			config_forwarding_fee_proportional_millionths: 0,
+			claimable_balances: [],
 			createdAt: new Date().getTime(),
 		};
 
@@ -456,7 +458,7 @@ const Channels = ({
 				)}
 
 				{enableDevOptions && (
-					<>
+					<View style={styles.devButtons}>
 						<Caption13Up color="white50" style={styles.sectionTitle}>
 							Dev Options
 						</Caption13Up>
@@ -536,6 +538,13 @@ const Channels = ({
 									});
 								}
 								setSpendingStuckOutputs(false);
+							}}
+						/>
+						<Button
+							style={styles.devButton}
+							text="Force close channels"
+							onPress={(): void => {
+								showBottomSheet('forceTransfer');
 							}}
 						/>
 						<Button
@@ -636,7 +645,7 @@ const Channels = ({
 								)}
 							</>
 						)}
-					</>
+					</View>
 				)}
 
 				<View style={styles.buttons}>
@@ -712,6 +721,9 @@ const styles = StyleSheet.create({
 		fontWeight: 'bold',
 		fontSize: 16,
 		marginTop: 8,
+	},
+	devButtons: {
+		marginTop: 'auto',
 	},
 	devButton: {
 		marginTop: 8,

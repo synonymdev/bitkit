@@ -27,7 +27,7 @@ const Success = ({
 
 	return (
 		<InfoScreen
-			navTitle={t('transfer.nav_title')}
+			navTitle={t('transfer_successful')}
 			displayBackButton={false}
 			title={
 				<Trans

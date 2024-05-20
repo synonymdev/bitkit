@@ -25,9 +25,27 @@ export enum EChannelStatus {
 	closed = 'closed',
 }
 
+// TODO: move to react-native-ldk
+export enum EChannelClosureReason {
+	CommitmentTxConfirmed = 'CommitmentTxConfirmed',
+	CooperativeClosure = 'CooperativeClosure',
+	CounterpartyCoopClosedUnfundedChannel = 'CounterpartyCoopClosedUnfundedChannel',
+	CounterpartyForceClosed = 'CounterpartyForceClosed',
+	DisconnectedPeer = 'DisconnectedPeer',
+	FundingBatchClosure = 'FundingBatchClosure',
+	FundingTimedOut = 'FundingTimedOut',
+	HolderForceClosed = 'HolderForceClosed',
+	OutdatedChannelManager = 'OutdatedChannelManager',
+	ProcessingError = 'ProcessingError',
+	Unknown = 'Unknown',
+}
+
+// We collect all info about a channel from `TChannel`, `TChannelMonitor` and `TChannelManagerChannelClosed` plus some extra info.
 export type TChannel = TLdkChannel & {
 	status: EChannelStatus;
+	claimable_balances: TClaimableBalance[];
 	createdAt: number;
+	closureReason?: EChannelClosureReason;
 };
 
 export type TNode = {
@@ -35,7 +53,6 @@ export type TNode = {
 	channels: IWalletItem<{ [key: string]: TChannel }>;
 	info: IWalletItem<{}>;
 	peers: IWalletItem<string[]>;
-	claimableBalances: IWalletItem<TClaimableBalance[]>;
 	backup: IWalletItem<TBackupStateUpdate>;
 };
 

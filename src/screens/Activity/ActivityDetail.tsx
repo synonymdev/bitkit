@@ -995,7 +995,9 @@ const ActivityDetail = ({
 		: t('activity_bitcoin_received');
 
 	if (isTransfer) {
-		title = t('activity_transfer_spending_done');
+		title = isSend
+			? t('activity_transfer_spending_done')
+			: t('activity_transfer_savings_done');
 	}
 
 	return (

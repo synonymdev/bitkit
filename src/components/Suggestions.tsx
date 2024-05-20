@@ -25,6 +25,7 @@ import { pinSelector } from '../store/reselect/settings';
 import { useAppDispatch, useAppSelector } from '../hooks/redux';
 import type { RootNavigationProp } from '../navigation/types';
 import { appName, shareText } from '../constants/app';
+import { getDurationForBlocks } from '../utils/helpers';
 
 const Suggestions = (): ReactElement => {
 	const { t } = useTranslation('cards');
@@ -117,8 +118,12 @@ const Suggestions = (): ReactElement => {
 		// eslint-disable-next-line react/no-unused-prop-types
 		({ item }: { item: ITodo }): ReactElement => {
 			const title = t(`${item.id}.title`);
-			const duration = item.duration;
-			let description = t(`${item.id}.description`, { duration });
+			let description = t(`${item.id}.description`);
+
+			if (item.confirmsIn) {
+				const duration = getDurationForBlocks(item.confirmsIn);
+				description = t(`${item.id}.description`, { duration });
+			}
 
 			if (item.id === 'lightningSettingUp') {
 				description = t(`${item.id}.description${lightningSettingUpStep}`);

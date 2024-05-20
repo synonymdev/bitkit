@@ -23,7 +23,7 @@ export interface ITodo {
 	color: keyof IColors;
 	image: ImageSourcePropType;
 	dismissable: boolean;
-	duration?: number;
+	confirmsIn?: number;
 }
 
 export interface IOpenChannelNotification {

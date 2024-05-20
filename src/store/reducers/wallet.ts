@@ -225,22 +225,24 @@ const wallet = (
 
 		case actions.UPDATE_TRANSFER: {
 			return produce(state, (draftState) => {
-				const current =
+				const transfers =
 					state.wallets[selectedWallet].transfers[selectedNetwork];
-				const { txId, confirmations } = action.payload;
-				const updated = current.map((transfer) => {
+				const { txId, amount, confirmsIn } = action.payload;
+				const updated = transfers.map((transfer) => {
 					if (transfer.txId === txId) {
 						let status = ETransferStatus.done;
-						if (transfer.type !== ETransferType.open) {
+						if (transfer.type === ETransferType.forceClose) {
 							status =
-								confirmations < 6
+								confirmsIn !== 0
 									? ETransferStatus.pending
 									: ETransferStatus.done;
 						}
 						return {
 							...transfer,
 							status,
-							confirmations,
+							// don't overwrite amount if it's already set
+							amount: amount || transfer.amount,
+							confirmsIn,
 						};
 					} else {
 						return transfer;
