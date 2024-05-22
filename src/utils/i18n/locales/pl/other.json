@@ -1,13 +1,10 @@
 {
   "buy_button": "Kup Bitcoina",
-  "connection_lost_title": "Utracono połączenie Bitkit",
-  "connection_lost_message": "Sprawdź ustawienia serwera Electrum.",
   "up_title": "Aktualizacja krytyczna",
   "up_text": "Dostępna jest krytyczna aktualizacja dla Bitkit. Aby dalej korzystać z Bitkita, musisz dokonać aktualizacji.",
   "up_button": "Aktualizuj Bitkit",
   "camera_ask_title": "Zezwolenie na korzystanie z kamery",
   "camera_ask_msg": "Bitkit potrzebuje pozwolenia na używanie Twojej kamery",
-  "camera_no_title": "Zezwolenie",
   "clipboard_redirect_title": "Wykryto dane w schowku",
   "clipboard_redirect_msg": "Czy chcesz zostać przekierowany do odpowiedniego ekranu?",
   "swipe": "Przesuń, aby potwierdzić",
@@ -23,7 +20,6 @@
   "lnurl_channel_success_msg_peer": "Pomyślnie zażądano kanału z: {peer}",
   "lnurl_channel_success_msg_no_peer": "Pomyślnie zażądano kanału.",
   "phone_settings": "Otwórz ustawienia telefonu",
-  "bt_channel_purchase_fee_error": "Brak wystarczających środków aby pokryć opłaty transakcyjne.",
   "bt_channel_purchase_cost_error": "Potrzebujesz {delta}aby ukończyć transakcję.",
   "earlier": "WCZEŚNIEJ",
   "update_title": "Aktualizacja dostępna",
@@ -31,6 +27,5 @@
   "update_button": "Aktualizacja",
   "high_title": "Wysokie saldo",
   "high_text1": "Saldo portfela przekroczone",
-  "high_button_more": "Dowiedz się więcej",
-  "caution_text": "Używanie oprogramowania w wersji beta może być ryzykowne. Sugerujemy operowanie małymi kwotami dopóki Bitkit jest w wersji beta."
+  "high_button_more": "Dowiedz się więcej"
 }

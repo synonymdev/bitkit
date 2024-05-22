@@ -3,8 +3,6 @@
   "backup_funds": "Ahora que tiene fondos en su cartera, ¡és el momento de hacer una copia de seguridad de su dinero!",
   "backup_funds_no": "Todavía no hay fondos en su cartera, pero puede crear una copia de seguridad si lo desea.",
   "backup_button": "Realizar copia de seguridad",
-  "backup_data_title": "Crear copia de seguridad de los datos",
-  "backup_data_text": "Su perfil, contactos, cuentas, etiquetas y actividad se cifrarán y se realizará una copia de seguridad automática en nuestro servicio gratuito en la nube.",
   "pass": "frase de acesso",
   "pass_your": "Su frase de acesso",
   "pass_confirm": "Confirmar frase de acesso",

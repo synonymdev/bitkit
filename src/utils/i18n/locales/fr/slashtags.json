@@ -47,7 +47,6 @@
   "offline_enable_explain": "* Cela nécessite le partage des données de paiement.",
   "widgets": "Widgets",
   "widget_add": "Ajouter un widget",
-  "widget_loading_title": "Chargement du widget...",
   "widget_loading_description": "Chargement de la description du widget...",
   "widget_failed_description": "Échec du chargement du widget",
   "widget_source": "Source",
@@ -66,6 +65,5 @@
   "widget_preview": "Aperçu",
   "widget_delete_yes": "Oui, Supprimer",
   "widget_delete_title": "Supprimer le widget ?",
-  "widget_delete_desc": "Êtes-vous sûr de vouloir supprimer '{name}' de vos widgets ?",
-  "auth_error_open": "Erreur d'ouverture du lien de connexion"
+  "widget_delete_desc": "Êtes-vous sûr de vouloir supprimer '{name}' de vos widgets ?"
 }

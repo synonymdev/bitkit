@@ -3,8 +3,6 @@
   "backup_funds": "Ara que tens alguns fons a la teva cartera, és hora de fer una còpia de seguretat del teu diners!",
   "backup_funds_no": "Encara no hi ha fons a la teva cartera, però pots fer una còpia de seguretat si ho desitges.",
   "backup_button": "Còpia de seguretat",
-  "backup_data_title": "Còpia de seguretat de dades",
-  "backup_data_text": "El teu perfil, contactes, comptes, etiquetes i activitat seran encriptats i guardats automàticament al nostre servei gratuït de núvol.",
   "pass": "frase de pas",
   "pass_your": "La teva frase de pas",
   "pass_text": "Has afegit una contraseña a la teva frase de recuperació durant la configuració de la cartera.",

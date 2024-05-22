@@ -9,10 +9,6 @@
   },
   "error_channel_purchase": "Configuració de pagaments instantanis fallida",
   "error_channel_receiving": "L'import a rebre ha de ser superior a ${usdValue}",
-  "error_channel_fee": "Error d'estimació de la tarifa",
-  "spending_money": "Gastar\nDiners.",
-  "spending_balance": "Gastar\nSaldo.",
-  "enter_amount": "Tria quant de bitcoin vols poder gastar instantàniament i quant vols mantenir estalviat.",
   "spending": "Despesa",
   "savings": "Estalvis",
   "spending_label": "Saldo de despesa",
@@ -20,18 +16,12 @@
   "note_blocktank_limit": "L'import que podeu transferir al vostre saldo de despeses està actualment limitat a ${usdValue}.",
   "note_reserve_limit": "La quantitat que pots transferir al teu saldo de despeses est limitada al 80%. Has de mantenir fons en reserva per moure aquest bitcoin de tornada als estalvis.",
   "quick_setup": "Configuració ràpida",
-  "spending_header": "<purple>Diners per gastar.</purple>",
-  "receiving_header": "<purple>Diners rebuts.</purple>",
   "receiving_amount_money": "Trieu la quantitat de diners que voleu poder rebre de forma immediata.",
   "receiving_amount_bitcoin": "Introduïu la quantitat de Bitcoin que voleu poder rebre instantàniament.",
   "setting_up_step2": "Pagament realitzat amb èxit",
   "setting_up_step3": "Esperant per a obrir",
   "setting_up_step4": "Obertura de connexió",
   "awesome": "Impressionant!",
-  "transfer_funds": "Transferir fons",
-  "transfer_header": "Si us plau\nConfirma.",
-  "transfer_header_keybrd": "Gastar diners.",
-  "transfer_header_nokeybrd": "Despesa\n& Estalvi.",
   "interrupted_title": "Transferència interrompuda",
   "availability_title": "Disponibilitat de fons",
   "node_info": "Node de Lightning",
@@ -85,6 +75,5 @@
     "open": "Connexió oberta"
   },
   "wait_text_top": "Si us plau, espereu que Bitkit es connecti a la xarxa de pagament (±10 segons).",
-  "wait_text_bottom": "Connectant-se i sincronitzant...",
-  "migrating_ldk_title": "Migració en curs"
+  "wait_text_bottom": "Connectant-se i sincronitzant..."
 }

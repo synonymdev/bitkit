@@ -72,7 +72,6 @@
     "latest": "nejnovější zálohy dat",
     "status_failed": "Zálohování se nezdařilo: {time}",
     "status_success": "Poslední záloha: {time}",
-    "status_empty": "Zálohování není potřeba",
     "category_connections": "Spojení",
     "category_connection_receipts": "Potvrzení o připojení",
     "category_transaction_log": "Transakční protokol",
@@ -88,7 +87,6 @@
     "report": "Nahlásit problém",
     "help": "Centrum pomoci",
     "status": "Stav aplikace",
-    "help_url": "https://help.bitkit.to",
     "report_text": "Popište prosím problém, se kterým se setkáváte, nebo položte obecnou otázku.",
     "label_address": "E-mailová adresa",
     "label_message": "Problém nebo otázka",
@@ -247,7 +245,6 @@
   "rgs": {
     "server_url": "URL dresa serveru Rapid-Gossip-Sync",
     "button_connect": "Připojit",
-    "button_reconnect": "Opětovné připojení",
     "update_success_title": "Server Rapid-Gossip-Sync aktualizován",
     "update_success_description": "Aby se tato změna projevila, může být nutné aplikaci jednou nebo dvakrát restartovat."
   },

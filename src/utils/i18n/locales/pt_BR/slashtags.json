@@ -48,7 +48,6 @@
   "offline_enable_explain": "* Requer o compartilhamento de dados de pagamento.",
   "widgets": "Widgets",
   "widget_add": "Adicionar Widget",
-  "widget_loading_title": "Carregando widget...",
   "widget_loading_description": "Carregando descrição do widget...",
   "widget_failed_description": "Falha ao carregar o widget",
   "widget_source": "Fonte",
@@ -69,13 +68,8 @@
   "widget_delete_yes": "Sim, Excluir",
   "widget_delete_title": "Excluir o Widget?",
   "widget_delete_desc": "Tem certeza de que deseja excluir '{name}' dos seus widgets?",
-  "auth_error_link": "Falha no Login",
-  "auth_error_open": "Erro ao abrir o link de login",
   "error_saving_contact": "Não é possível salvar o contato.",
   "error_saving_profile": "Não foi possível salvar o perfil.",
-  "error_delete_contact": "Não foi possível excluir contato",
-  "error_sdk_title": "Por favor, reinicie o Bitkit.",
-  "error_sdk_msg": "Um componente essencial não está funcionando corretamente. Reinicie o Bitkit.",
   "error_pay_title": "Não foi Possível Pagar Contato",
   "error_pay_empty_msg": "Não há dados de pagamento disponíveis para este contato."
 }

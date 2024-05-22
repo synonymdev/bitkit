@@ -40,6 +40,5 @@
   "widget_price": "Precio del Bitcoin",
   "widget_qr": "O escanear QR",
   "widget_edit_custom": "Personalizar",
-  "widget_delete_yes": "Sí, Borrar",
-  "error_sdk_msg": "Un componente imprescindible no está funcionando bien. Reinicia Bitkit."
+  "widget_delete_yes": "Sí, Borrar"
 }

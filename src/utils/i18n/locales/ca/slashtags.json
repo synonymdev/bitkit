@@ -48,7 +48,6 @@
   "offline_enable_explain": "* Això requereix compartir les dades de pagament.",
   "widgets": "Ginys",
   "widget_add": "Afegir ginys",
-  "widget_loading_title": "Carregant giny...",
   "widget_loading_description": "Carregant la descripció del giny...",
   "widget_failed_description": "Ha fallat en carregar el giny",
   "widget_source": "Origen",
@@ -68,13 +67,8 @@
   "widget_delete_yes": "Sí, Elimina",
   "widget_delete_title": "Esborrar el giny?",
   "widget_delete_desc": "Estàs segur que vols eliminar '{name}' dels teus ginys?",
-  "auth_error_link": "Ha fallat l'inici de sessió",
-  "auth_error_open": "Error obrint l'enllaç d'inici de sessió",
   "error_saving_contact": "No s'ha pogut desar el contacte.",
   "error_saving_profile": "No es pot desar el perfil",
-  "error_delete_contact": "No es pot eliminar el contacte.",
-  "error_sdk_title": "Si us plau, reinicieu Bitkit.",
-  "error_sdk_msg": "Un component essencial no està funcionant correctament. Si us plau, reinicieu Bitkit.",
   "error_pay_title": "No s'ha pogut pagar el contacte.",
   "error_pay_empty_msg": "No hi ha dades de pagament disponibles per a aquest contacte."
 }

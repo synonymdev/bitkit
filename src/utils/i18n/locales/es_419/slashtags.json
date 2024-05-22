@@ -52,6 +52,5 @@
   "widget_loading_options": "Cargando opciones del widget...",
   "widget_delete_yes": "Sí, Borrar",
   "widget_delete_title": "¿Borrar Widget?",
-  "widget_delete_desc": "¿Está seguro de que desea eliminar '{name}' de sus widgets?",
-  "auth_error_open": "Error al abrir el enlace de inicio de sesión"
+  "widget_delete_desc": "¿Está seguro de que desea eliminar '{name}' de sus widgets?"
 }

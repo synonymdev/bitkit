@@ -4,8 +4,6 @@
   "backup_funds": "Ora che ha dei fondi nel tuo wallet, è il momento di fare il backup!",
   "backup_funds_no": "Non ci sono ancora fondi nel tuo wallet, ma puoi comunque creare un backup.",
   "backup_button": "Backup",
-  "backup_data_title": "Backup dei Dati",
-  "backup_data_text": "Il tuo profilo, i contatti, gli account, i tag e le attività saranno criptati e sottoposti a backup automatico sul nostro servizio cloud gratuito.",
   "pass": "passphrase",
   "pass_your": "La Tua Passphrase",
   "pass_text": "Ha aggiunto una passphrase alla tua recovery phrase durante la configurazione del wallett.",

@@ -3,8 +3,6 @@
   "backup_funds": "Er staat nu geld op uw wallet, tijd om een backup te maken!",
   "backup_funds_no": "Er is nog geen geld in uw wallet, maar u kunt wel alvast een backup maken.",
   "backup_button": "Backup",
-  "backup_data_title": "Data Backup",
-  "backup_data_text": "Uw profiel, contacten, web accounts, labels en activiteiten zullen cryptografisch versleuteld worden en automatisch worden opgeslagen op onze gratis cloud dienst. ",
   "pass": "Wachtwoordzin",
   "pass_your": "Uw Wachtwoordzin",
   "pass_text": "U heeft een wachtwoordzin aan de herstelwoorden toegevoegd tijdens de configuratie van uw wallet. ",

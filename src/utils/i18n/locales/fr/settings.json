@@ -71,7 +71,6 @@
     "latest": "les dernières sauvegardes de données",
     "status_failed": "Échec de la sauvegarde : {time}",
     "status_success": "Dernière sauvegarde : {time}",
-    "status_empty": "Sauvegarde non nécessaire",
     "category_connections": "Connexions",
     "category_connection_receipts": "Reçus de connexion",
     "category_transaction_log": "Journal des transactions",

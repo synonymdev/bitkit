@@ -3,8 +3,6 @@
   "backup_funds": "Agora que o você tem fundos na sua carteira, é hora de fazer o backup do seu dinheiro!",
   "backup_funds_no": "Ainda não há fundos em sua carteira, mas você pode criar um backup, se desejar.",
   "backup_button": "Cópia de Segurança",
-  "backup_data_title": "Backup de Dados",
-  "backup_data_text": "Seu perfil, seus contatos, suas contas, suas tags e suas atividades serão criptografados e terão backup automático em nosso serviço de nuvem gratuito.",
   "pass": "frase secreta",
   "pass_your": "Sua Frase Secreta",
   "pass_text": "Você adicionou uma frase secreta durante a configuração da carteira.",

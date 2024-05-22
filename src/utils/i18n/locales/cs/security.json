@@ -4,8 +4,6 @@
   "backup_funds": "Nyní, když máte v peněžence nějaké prostředky, je čas je zálohovat!",
   "backup_funds_no": "Ve vaší peněžence zatím nejsou žádné prostředky, ale pokud chcete, můžete si vytvořit zálohu.",
   "backup_button": "Zálohování",
-  "backup_data_title": "Záložní data",
-  "backup_data_text": "Váš profil, kontakty, účty, tagy a aktivita budou zašifrovány a automaticky zálohovány do naší bezplatné cloudové služby.",
   "pass": "přístupová fráze",
   "pass_your": "Vaše přístupová fráze",
   "pass_text": "Během nastavení peněženky jste do fráze pro obnovení přidali přístupovou frázi.",

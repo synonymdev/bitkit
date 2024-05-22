@@ -35,8 +35,7 @@
     "description": "Connesso!"
   },
   "transferPending": {
-    "title": "Trasferisci",
-    "description": "Pronto in ±{duration}m"
+    "title": "Trasferisci"
   },
   "transferClosingChannel": {
     "title": "Inizializzazione...",

@@ -4,8 +4,6 @@
   "backup_funds": "Maintenant que vous avez des fonds dans votre portefeuille, il est temps de sécuriser votre argent !",
   "backup_funds_no": "Il n'y a pas encore de fonds dans votre portefeuille, mais vous pouvez créer une sauvegarde si vous le souhaitez.",
   "backup_button": "Sauvegarder",
-  "backup_data_title": "Sauvegarder vos données",
-  "backup_data_text": "Votre profil, vos contacts, vos comptes, vos tags et votre activité seront chiffrés et sauvegardés automatiquement sur notre service cloud gratuit.",
   "pass": "phrase secrète",
   "pass_your": "Votre phrase secrète",
   "pass_text": "Vous avez ajouté une phrase secrète à votre phrase de récupération lors de la configuration du portefeuille.",

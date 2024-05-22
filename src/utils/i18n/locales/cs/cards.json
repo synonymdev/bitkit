@@ -36,7 +36,7 @@
   },
   "transferPending": {
     "title": "Převod",
-    "description": "Bude připraveno za ±{duration}m"
+    "description": "Připraveno za ±{duration}"
   },
   "transferClosingChannel": {
     "title": "Inicializace...",

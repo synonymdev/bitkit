@@ -57,6 +57,5 @@
   "widget_loading_options": "Widget opties aan het laden...",
   "widget_delete_yes": "Ja, Verwijder",
   "widget_delete_title": "Widget Verwijderen?",
-  "widget_delete_desc": "Weet u zeker dat u '{name}' wilt wissen van uw widgetlijst?",
-  "auth_error_open": "Fout opgetreden met het openen van de link om in te loggen"
+  "widget_delete_desc": "Weet u zeker dat u '{name}' wilt wissen van uw widgetlijst?"
 }
