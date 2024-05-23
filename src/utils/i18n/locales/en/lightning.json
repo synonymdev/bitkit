@@ -37,7 +37,7 @@
 	"spending_label": "Spending balance",
 	"receiving_label": "Receiving capacity",
 	"note_blocktank_limit": "The amount you can transfer to your spending balance is currently limited to ${usdValue}.",
-	"note_reserve_limit": "The amount you can transfer to your spending balance is limited to 80%. You need to keep funds in reserve to move this bitcoin back to savings.",
+	"note_reserve_limit": "The amount you can transfer to your spending balance is limited to {percentage}%. You need to keep funds in reserve to move this bitcoin back to savings.",
 	"quick_setup": "Quick Setup",
 	"quick_confirm_header": "Please\n<accent>confirm</accent>",
 	"quick_confirm_cost": "It costs <accent>{txFee}</accent> in network fees and <accent>{lspFee}</accent> in service provider fees to transfer your funds.",
