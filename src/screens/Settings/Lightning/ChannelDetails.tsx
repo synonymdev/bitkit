@@ -235,7 +235,7 @@ const ChannelDetails = ({
 
 				<View style={styles.status}>
 					<View style={styles.sectionTitle}>
-						<Caption13Up color="white50">{t('status')}</Caption13Up>
+						<Caption13Up color="secondary">{t('status')}</Caption13Up>
 					</View>
 					<ChannelStatus status={channel.status} order={blocktankOrder} />
 				</View>
@@ -243,7 +243,7 @@ const ChannelDetails = ({
 				{blocktankOrder && (
 					<View style={styles.section}>
 						<View style={styles.sectionTitle}>
-							<Caption13Up color="white50">{t('order_details')}</Caption13Up>
+							<Caption13Up color="secondary">{t('order_details')}</Caption13Up>
 						</View>
 						<Section
 							name={t('order')}
@@ -308,7 +308,7 @@ const ChannelDetails = ({
 									size="captionB"
 									color="white"
 									symbol={true}
-									symbolColor="white50"
+									symbolColor="secondary"
 									unit={EUnit.BTC}
 								/>
 							}
@@ -318,7 +318,7 @@ const ChannelDetails = ({
 
 				<View style={styles.section}>
 					<View style={styles.sectionTitle}>
-						<Caption13Up color="white50">{t('balance')}</Caption13Up>
+						<Caption13Up color="secondary">{t('balance')}</Caption13Up>
 					</View>
 					<Section
 						name={t('receiving_label')}
@@ -327,7 +327,7 @@ const ChannelDetails = ({
 								sats={receivingAvailable}
 								size="captionB"
 								symbol={true}
-								symbolColor="white50"
+								symbolColor="secondary"
 								color="white"
 								unit={EUnit.BTC}
 							/>
@@ -340,7 +340,7 @@ const ChannelDetails = ({
 								sats={spendingAvailable}
 								size="captionB"
 								symbol={true}
-								symbolColor="white50"
+								symbolColor="secondary"
 								color="white"
 								unit={EUnit.BTC}
 							/>
@@ -353,7 +353,7 @@ const ChannelDetails = ({
 								sats={Number(channel.unspendable_punishment_reserve)}
 								size="captionB"
 								symbol={true}
-								symbolColor="white50"
+								symbolColor="secondary"
 								color="white"
 								unit={EUnit.BTC}
 							/>
@@ -367,7 +367,7 @@ const ChannelDetails = ({
 								sats={capacity}
 								size="captionB"
 								symbol={true}
-								symbolColor="white50"
+								symbolColor="secondary"
 								color="white"
 								unit={EUnit.BTC}
 							/>
@@ -378,7 +378,7 @@ const ChannelDetails = ({
 				{/* TODO: show fees */}
 				{/* <View style={styles.section}>
 					<View style={styles.sectionTitle}>
-						<Caption13Up color="white50">Fees</Caption13Up>
+						<Caption13Up color="secondary">Fees</Caption13Up>
 					</View>
 					<Section
 						name="Spending base fee"
@@ -387,7 +387,7 @@ const ChannelDetails = ({
 								sats={123}
 								size="captionB"
 								symbol={true}
-								symbolColor="white50"
+								symbolColor="secondary"
 								color="white"
 								unit={EUnit.BTC}
 							/>
@@ -400,7 +400,7 @@ const ChannelDetails = ({
 								sats={123}
 								size="captionB"
 								symbol={true}
-								symbolColor="white50"
+								symbolColor="secondary"
 								color="white"
 								unit={EUnit.BTC}
 							/>
@@ -410,7 +410,7 @@ const ChannelDetails = ({
 
 				<View style={styles.section}>
 					<View style={styles.sectionTitle}>
-						<Caption13Up color="white50">{t('other')}</Caption13Up>
+						<Caption13Up color="secondary">{t('other')}</Caption13Up>
 					</View>
 					{txTime && (
 						<Section
@@ -445,7 +445,7 @@ const ChannelDetails = ({
 				{enableDevOptions && (
 					<View style={styles.section}>
 						<View style={styles.sectionTitle}>
-							<Caption13Up color="white50">{t('debug')}</Caption13Up>
+							<Caption13Up color="secondary">{t('debug')}</Caption13Up>
 						</View>
 						{blocktankOrder?.orderExpiresAt && (
 							<Section

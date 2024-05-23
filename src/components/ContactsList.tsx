@@ -53,7 +53,7 @@ export const ContactItem = ({
 						style={size !== 'small' ? cstyles.name : undefined}>
 						{name}
 					</BodyMSB>
-					<SlashtagURL url={contact.url} color="white50" size="small" />
+					<SlashtagURL url={contact.url} color="secondary" size="small" />
 				</View>
 			</View>
 		</TouchableOpacity>
@@ -137,7 +137,7 @@ const ContactsList = ({
 				<ThemedView
 					color={sectionBackgroundColor}
 					style={!isFirst && styles.sectionSpacing}>
-					<Caption13Up color="white50">{title}</Caption13Up>
+					<Caption13Up color="secondary">{title}</Caption13Up>
 				</ThemedView>
 			);
 		},

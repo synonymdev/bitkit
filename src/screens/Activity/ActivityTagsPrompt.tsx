@@ -63,7 +63,7 @@ const ActivityTagsPrompt = (): ReactElement => {
 					<>
 						{lastUsedTags.length !== 0 && (
 							<>
-								<Text13UP style={styles.label} color="white50">
+								<Text13UP style={styles.label} color="secondary">
 									{t('tags_previously')}
 								</Text13UP>
 								<View style={styles.tagsContainer}>
@@ -81,7 +81,7 @@ const ActivityTagsPrompt = (): ReactElement => {
 							</>
 						)}
 
-						<Text13UP style={styles.label} color="white50">
+						<Text13UP style={styles.label} color="secondary">
 							{t('tags_new')}
 						</Text13UP>
 						<BottomSheetTextInput

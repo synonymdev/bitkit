@@ -54,7 +54,7 @@ export const ListItem = ({
 		{icon}
 		<View style={styles.text}>
 			<BodyMSB color={exists ? undefined : 'red'}>{title}</BodyMSB>
-			<CaptionB color={exists ? 'white50' : 'red'}>
+			<CaptionB color={exists ? 'secondary' : 'red'}>
 				{truncate(description, 35)}
 			</CaptionB>
 		</View>
@@ -73,7 +73,7 @@ export const ListItem = ({
 					sats={amount}
 					enableHide={true}
 					size="captionB"
-					color={exists ? 'white50' : 'red'}
+					color={exists ? 'secondary' : 'red'}
 					unitType="secondary"
 				/>
 			</View>

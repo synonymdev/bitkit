@@ -96,7 +96,7 @@ const Amount = ({
 				<View style={styles.numberPad} testID="SendAmountNumberPad">
 					<View style={styles.actions}>
 						<View>
-							<Caption13Up style={styles.maxWithdrawableText} color="white50">
+							<Caption13Up style={styles.maxWithdrawableText} color="secondary">
 								{t('lnurl_w_max')}
 							</Caption13Up>
 							<Money

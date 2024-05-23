@@ -49,7 +49,7 @@ const OnboardingWelcomeScreen = ({
 							components={{ accent: <Display color="brand" /> }}
 						/>
 
-						<BodyM style={styles.text} color="white50">
+						<BodyM style={styles.text} color="secondary">
 							{t('welcome_text')}
 						</BodyM>
 

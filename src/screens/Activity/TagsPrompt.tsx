@@ -42,7 +42,7 @@ const TagsPrompt = ({
 			<View style={styles.root}>
 				<Subtitle style={styles.title}>{t('tags_filter_title')}</Subtitle>
 
-				<Text13UP color="white50">{t('tags_filter')}</Text13UP>
+				<Text13UP color="secondary">{t('tags_filter')}</Text13UP>
 
 				<View style={styles.suggestionsRow}>
 					{suggestions.map((tag) => (

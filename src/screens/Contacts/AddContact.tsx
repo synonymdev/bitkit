@@ -101,7 +101,7 @@ const AddContact = ({
 				/>
 
 				<View style={styles.content}>
-					<BodyM style={styles.text} color="white50" testID="AddContactNote">
+					<BodyM style={styles.text} color="secondary" testID="AddContactNote">
 						{t('contact_add_explain')}
 					</BodyM>
 					<LabeledInput

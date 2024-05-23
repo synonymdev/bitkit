@@ -16,7 +16,7 @@ const PinCheck = ({ route }: SendScreenProps<'PinCheck'>): ReactElement => {
 		<GradientView style={styles.container}>
 			<BottomSheetNavigationHeader title="Enter PIN Code" />
 			<View style={styles.content}>
-				<BodyM style={styles.text} color="white50">
+				<BodyM style={styles.text} color="secondary">
 					{t('pin_send')}
 				</BodyM>
 

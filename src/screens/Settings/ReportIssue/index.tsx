@@ -101,7 +101,7 @@ const ReportIssue = ({
 						}}
 					/>
 					<View style={styles.form}>
-						<BodyM style={styles.text} color="white50">
+						<BodyM style={styles.text} color="secondary">
 							{t('support.report_text')}
 						</BodyM>
 

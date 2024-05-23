@@ -138,16 +138,16 @@ const HighBalanceWarning = ({
 					displayBackButton={false}
 				/>
 				<View style={styles.amountContainer}>
-					<Caption13Up color="white50">{t('high_text1')}</Caption13Up>
+					<Caption13Up color="secondary">{t('high_text1')}</Caption13Up>
 					<View style={styles.amount}>
-						<Display style={styles.symbol} color="white50">
+						<Display style={styles.symbol} color="secondary">
 							{fiatSymbol}
 						</Display>
 						<Display>{fiatWhole}</Display>
 					</View>
 				</View>
 
-				<BodyM style={styles.text} color="white50">
+				<BodyM style={styles.text} color="secondary">
 					{t('high_text2')}
 				</BodyM>
 

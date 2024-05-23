@@ -57,7 +57,7 @@ const UtxoRow = ({
 		<View style={[styles.coinRoot, { borderBottomColor: white10 }]}>
 			<View>
 				<BodyMSB>{displayValue.bitcoinFormatted}</BodyMSB>
-				<BodySSB color="white50">
+				<BodySSB color="secondary">
 					{displayValue.fiatSymbol} {displayValue.fiatFormatted}
 				</BodySSB>
 			</View>
@@ -213,13 +213,13 @@ const CoinSelection = ({
 							styles.totalBorder,
 							{ borderBottomColor: white10 },
 						]}>
-						<Caption13Up color="white50">
+						<Caption13Up color="secondary">
 							{t('selection_total_required')}
 						</Caption13Up>
 						<Subtitle>{txOutputDV.bitcoinFormatted}</Subtitle>
 					</View>
 					<View style={styles.totalRow}>
-						<Caption13Up color="white50">
+						<Caption13Up color="secondary">
 							{t('selection_total_selected')}
 						</Caption13Up>
 						<Subtitle color="green">{txInputDV.bitcoinFormatted}</Subtitle>

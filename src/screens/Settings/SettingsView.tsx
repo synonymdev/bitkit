@@ -77,7 +77,7 @@ const SettingsView = ({
 
 			{headerText && (
 				<View style={styles.headerText}>
-					<BodyM color="white50">{headerText}</BodyM>
+					<BodyM color="secondary">{headerText}</BodyM>
 				</View>
 			)}
 
@@ -101,7 +101,7 @@ const SettingsView = ({
 
 			{footerText && (
 				<View style={styles.footerText}>
-					<BodyS color="white50">{footerText}</BodyS>
+					<BodyS color="secondary">{footerText}</BodyS>
 				</View>
 			)}
 

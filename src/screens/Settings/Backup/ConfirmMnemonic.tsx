@@ -21,7 +21,7 @@ const Word = ({
 }): ReactElement => {
 	return (
 		<BodyMSB style={styles.word}>
-			<BodyMSB color="white50">{number}. </BodyMSB>
+			<BodyMSB color="secondary">{number}. </BodyMSB>
 			<BodyMSB color={correct ? 'green' : 'red'}> {word}</BodyMSB>
 		</BodyMSB>
 	);
@@ -81,7 +81,7 @@ const ConfirmMnemonic = ({
 		<GradientView style={styles.container}>
 			<BottomSheetNavigationHeader title={t('mnemonic_confirm')} />
 
-			<BodyM color="white50" style={styles.text}>
+			<BodyM color="secondary" style={styles.text}>
 				{t('mnemonic_confirm_tap')}
 			</BodyM>
 

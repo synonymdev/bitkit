@@ -157,7 +157,7 @@ const ProfileEdit = ({
 						onPress={onAddLink}
 					/>
 					<Divider />
-					<BodyS color="white50">{t('profile_public_warn')}</BodyS>
+					<BodyS color="secondary">{t('profile_public_warn')}</BodyS>
 
 					{/* leave button visible over keyboard for onboarding */}
 					<View style={onboardedProfile && styles.bottom}>

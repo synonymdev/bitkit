@@ -162,7 +162,7 @@ const SuggestionCard = ({
 				<View>
 					<BodyMSB style={styles.title}>{title}</BodyMSB>
 					<CaptionB
-						color={dismissable ? 'white50' : 'purple'}
+						color={dismissable ? 'secondary' : 'purple'}
 						numberOfLines={1}>
 						{description}
 					</CaptionB>
@@ -175,7 +175,7 @@ const SuggestionCard = ({
 					style={styles.dismiss}
 					onPress={(): void => onClose(id)}
 					testID="SuggestionDismiss">
-					<XIcon width={18} height={18} color="white50" />
+					<XIcon width={18} height={18} color="secondary" />
 				</Pressable>
 			)}
 		</Card>

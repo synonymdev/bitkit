@@ -128,7 +128,7 @@ export const TextInput = styled(RNTextInput).attrs<TextInputProps>((props) => ({
 	selectionColor: colors.brand,
 	placeholderTextColor: props.placeholderTextColor
 		? props.placeholderTextColor
-		: props.theme.colors.white50,
+		: props.theme.colors.secondary,
 }))<TextInputProps>((props) => ({
 	...props.theme.fonts.semiBold,
 	backgroundColor: props.backgroundColor
@@ -153,7 +153,7 @@ export const TextInputNoOutline = styled(RNTextInput).attrs<TextInputProps>(
 		selectionColor: colors.brand,
 		placeholderTextColor: props.placeholderTextColor
 			? props.placeholderTextColor
-			: props.theme.colors.white50,
+			: props.theme.colors.secondary,
 	}),
 )<TextInputProps>((props) => ({
 	...props.theme.fonts.semiBold,
@@ -171,7 +171,7 @@ export const BottomSheetTextInput = styled(
 	selectionColor: colors.brand,
 	placeholderTextColor: props.placeholderTextColor
 		? props.placeholderTextColor
-		: props.theme.colors.white50,
+		: props.theme.colors.secondary,
 }))<TextInputProps>((props) => ({
 	...props.theme.fonts.semiBold,
 	backgroundColor: props.backgroundColor

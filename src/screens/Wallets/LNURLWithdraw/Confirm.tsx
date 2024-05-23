@@ -61,7 +61,7 @@ const Confirm = ({ route }: LNURLWithdrawProps<'Confirm'>): ReactElement => {
 				/>
 				<View style={styles.content}>
 					<AmountToggle style={styles.amountToggle} amount={amount} />
-					<BodyM color="white50">{t('lnurl_w_text')}</BodyM>
+					<BodyM color="secondary">{t('lnurl_w_text')}</BodyM>
 
 					<View style={styles.imageContainer}>
 						<Image style={styles.image} source={imageSrc} />

@@ -102,7 +102,7 @@ const Error = ({
 			<BottomSheetNavigationHeader title={navTitle} />
 
 			<View style={styles.content}>
-				<BodyM color="white50">{errorMessage}</BodyM>
+				<BodyM color="secondary">{errorMessage}</BodyM>
 				<View style={styles.imageContainer}>
 					<Image style={styles.image} source={imageSrc} />
 				</View>

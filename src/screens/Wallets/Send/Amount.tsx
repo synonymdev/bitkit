@@ -271,7 +271,7 @@ const Amount = ({ navigation }: SendScreenProps<'Amount'>): ReactElement => {
 				<View style={styles.numberPad} testID="SendAmountNumberPad">
 					<View style={styles.actions}>
 						<View>
-							<Caption13Up style={styles.availableAmountText} color="white50">
+							<Caption13Up style={styles.availableAmountText} color="secondary">
 								{t(
 									transaction.lightningInvoice
 										? 'send_availabe_spending'

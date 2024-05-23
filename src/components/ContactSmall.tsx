@@ -48,7 +48,7 @@ const ContactSmall = ({
 					style={styles.delete}
 					color="transparent"
 					onPress={onDelete}>
-					<XIcon color="white50" width={16} />
+					<XIcon color="secondary" width={16} />
 				</TouchableOpacity>
 			)}
 		</TouchableOpacity>

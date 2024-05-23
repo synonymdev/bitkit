@@ -76,7 +76,7 @@ const GapLimit = ({}: SettingsScreenProps<'GapLimit'>): ReactElement => {
 			<SafeAreaInset type="top" />
 			<NavigationHeader title={t('adv.gap_limit')} />
 			<ScrollView contentContainerStyle={styles.content} bounces={false}>
-				<BodyM color="white50">Look Behind</BodyM>
+				<BodyM color="secondary">Look Behind</BodyM>
 				<TextInput
 					style={styles.textInput}
 					value={lookBehind}
@@ -94,7 +94,7 @@ const GapLimit = ({}: SettingsScreenProps<'GapLimit'>): ReactElement => {
 					testID="LookBehind"
 				/>
 
-				<Caption13Up color="white50" style={styles.label}>
+				<Caption13Up color="secondary" style={styles.label}>
 					{'Look Ahead'}
 				</Caption13Up>
 				<TextInput

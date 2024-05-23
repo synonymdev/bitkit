@@ -81,7 +81,7 @@ const ChangePin2 = ({
 				}}
 			/>
 
-			<BodyM style={styles.text} color="white50">
+			<BodyM style={styles.text} color="secondary">
 				{t(origPIN ? 'cp_retype_text' : 'cp_setnew_text')}
 			</BodyM>
 

@@ -110,7 +110,7 @@ const Status = ({
 			</View>
 			<View style={styles.desc}>
 				<BodyMSB>{title}</BodyMSB>
-				<CaptionB color="white50">{subtitle}</CaptionB>
+				<CaptionB color="secondary">{subtitle}</CaptionB>
 			</View>
 			{!disableRetry && showRetry && (
 				<TouchableOpacity onPress={retry} color="white16" style={styles.button}>
@@ -263,7 +263,7 @@ const BackupSettings = ({
 				fullHeight={false}
 			/>
 			<ScrollView style={styles.statusRoot}>
-				<Caption13Up style={styles.caption} color="white50">
+				<Caption13Up style={styles.caption} color="secondary">
 					{t('backup.latest')}
 				</Caption13Up>
 				{categories.map((c) => (

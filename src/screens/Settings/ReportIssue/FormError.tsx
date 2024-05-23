@@ -30,7 +30,7 @@ const FormError = ({
 				}}
 			/>
 			<View style={styles.content}>
-				<BodyM style={styles.text} color="white50">
+				<BodyM style={styles.text} color="secondary">
 					{t('support.text_unsuccess')}
 				</BodyM>
 

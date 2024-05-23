@@ -32,10 +32,10 @@ const BalanceHeader = (): ReactElement => {
 						t={t}
 						i18nKey="balance_total_pending"
 						components={{
-							text: <Caption13Up color="white50" />,
+							text: <Caption13Up color="secondary" />,
 							pending: (
 								<Money
-									color="white50"
+									color="secondary"
 									size="caption13Up"
 									sats={pendingPaymentsBalance}
 									enableHide={true}
@@ -45,7 +45,7 @@ const BalanceHeader = (): ReactElement => {
 						}}
 					/>
 				) : (
-					<Caption13Up color="white50">{t('balance_total')}</Caption13Up>
+					<Caption13Up color="secondary">{t('balance_total')}</Caption13Up>
 				)}
 			</View>
 

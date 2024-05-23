@@ -105,7 +105,7 @@ const Recovery = ({
 			<SafeAreaInset type="top" />
 			<NavigationHeader title={t('recovery')} displayBackButton={false} />
 			<View style={styles.content}>
-				<BodyM color="white50">{t('recovery_text')}</BodyM>
+				<BodyM color="secondary">{t('recovery_text')}</BodyM>
 
 				<View style={styles.buttons}>
 					<Button

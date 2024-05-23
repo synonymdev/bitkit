@@ -34,7 +34,7 @@ const SeedInputAccessory = ({
 
 	const content = (
 		<View style={styles.suggestions}>
-			<Text13UP color="white50">{label}</Text13UP>
+			<Text13UP color="secondary">{label}</Text13UP>
 			<View style={styles.suggestionsRow}>
 				{suggestions.map((s) => (
 					<Word text={s} key={s} onPress={(): void => setWord(s)} />

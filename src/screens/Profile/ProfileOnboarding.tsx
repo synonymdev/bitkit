@@ -51,7 +51,7 @@ export const ProfileIntro = memo(
 						components={{ accent: <Display color="brand" /> }}
 					/>
 				</Display>
-				<BodyM color="white50" style={styles.introText}>
+				<BodyM color="secondary" style={styles.introText}>
 					{t('onboarding_profile1_text')}
 				</BodyM>
 			</Layout>
@@ -88,7 +88,7 @@ export const OfflinePayments = ({
 					components={{ accent: <Display color="brand" /> }}
 				/>
 			</Display>
-			<BodyM color="white50" style={styles.introText}>
+			<BodyM color="secondary" style={styles.introText}>
 				{t('onboarding_profile2_text')}
 			</BodyM>
 
@@ -99,7 +99,7 @@ export const OfflinePayments = ({
 					onPress={(): void => setOfflinePayments(!enableOfflinePayments)}>
 					<BodyM>{t('offline_enable')}</BodyM>
 				</SwitchRow>
-				<BodyS color="white50">{t('offline_enable_explain')}</BodyS>
+				<BodyS color="secondary">{t('offline_enable_explain')}</BodyS>
 			</View>
 		</Layout>
 	);

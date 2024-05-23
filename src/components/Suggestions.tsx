@@ -159,7 +159,7 @@ const Suggestions = (): ReactElement => {
 		<>
 			<Caption13Up
 				style={styles.title}
-				color="white50"
+				color="secondary"
 				testID="SuggestionsLabel">
 				{t('suggestions')}
 			</Caption13Up>

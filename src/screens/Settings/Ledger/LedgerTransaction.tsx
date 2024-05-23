@@ -69,7 +69,7 @@ const LedgerTransaction = ({
 			<ScrollView contentContainerStyle={styles.content}>
 				<View style={styles.section}>
 					<View style={styles.sectionTitle}>
-						<Caption13Up color="white50">Details</Caption13Up>
+						<Caption13Up color="secondary">Details</Caption13Up>
 					</View>
 					<Section
 						name="id"
@@ -130,7 +130,7 @@ const LedgerTransaction = ({
 					<View style={styles.row}>
 						<View style={styles.column}>
 							<View style={styles.sectionTitle}>
-								<Caption13Up color="white50">Balance before From</Caption13Up>
+								<Caption13Up color="secondary">Balance before From</Caption13Up>
 							</View>
 							<Section
 								name="Available"
@@ -151,7 +151,7 @@ const LedgerTransaction = ({
 						</View>
 						<View style={styles.column}>
 							<View style={styles.sectionTitle}>
-								<Caption13Up color="white50">Balance before To</Caption13Up>
+								<Caption13Up color="secondary">Balance before To</Caption13Up>
 							</View>
 							<Section
 								name="Available"
@@ -175,7 +175,7 @@ const LedgerTransaction = ({
 
 				<View style={styles.section}>
 					<View style={styles.sectionTitle}>
-						<Caption13Up color="white50">Metadata</Caption13Up>
+						<Caption13Up color="secondary">Metadata</Caption13Up>
 					</View>
 
 					<CaptionB>{`${meta}`}</CaptionB>

@@ -10,7 +10,7 @@ import {
 	Title,
 	DisplayT,
 } from '../styles/text';
-import { IColors } from '../styles/colors';
+import { IThemeColors } from '../styles/themes';
 import { useAppSelector } from '../hooks/redux';
 import { useDisplayValues } from '../hooks/displayValues';
 import { abbreviateNumber } from '../utils/helpers';
@@ -37,8 +37,8 @@ type MoneyProps = {
 	unit?: EUnit; // force value formatting
 	decimalLength?: 'long' | 'short'; // whether to show 5 or 8 decimals for BTC
 	symbol?: boolean; // show symbol icon
-	symbolColor?: keyof IColors;
-	color?: keyof IColors;
+	symbolColor?: keyof IThemeColors;
+	color?: keyof IThemeColors;
 	enableHide?: boolean; // if true and settings.hideBalance === true it will replace number with dots
 	sign?: string;
 	shouldRoundUp?: boolean;
@@ -97,7 +97,7 @@ const Money = (props: MoneyProps): ReactElement => {
 		return (
 			<Text
 				style={style}
-				color={symbolColor ?? color ?? 'white50'}
+				color={symbolColor ?? color ?? 'secondary'}
 				testID="MoneyFiatSymbol">
 				{unit === EUnit.BTC ? '₿' : dv.fiatSymbol}
 			</Text>
@@ -139,7 +139,10 @@ const Money = (props: MoneyProps): ReactElement => {
 	return (
 		<View style={[styles.root, props.style]} testID={testID}>
 			{sign && (
-				<Text style={styles.sign} color={color ?? 'white50'} testID="MoneySign">
+				<Text
+					style={styles.sign}
+					color={color ?? 'secondary'}
+					testID="MoneySign">
 					{sign}
 				</Text>
 			)}

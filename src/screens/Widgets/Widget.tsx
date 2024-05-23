@@ -111,7 +111,7 @@ const Widget = ({
 					</View>
 
 					{config.description && (
-						<BodyM style={styles.description} color="white50">
+						<BodyM style={styles.description} color="secondary">
 							{config.description}
 						</BodyM>
 					)}
@@ -132,13 +132,13 @@ const Widget = ({
 										? t('widget_edit_custom')
 										: t('widget_edit_default')}
 								</BodyM>
-								<ChevronRight color="white50" width={24} height={24} />
+								<ChevronRight color="secondary" width={24} height={24} />
 							</View>
 						</TouchableOpacity>
 					)}
 
 					<View style={styles.footer}>
-						<Caption13Up style={styles.caption} color="white50">
+						<Caption13Up style={styles.caption} color="secondary">
 							{t('widget_preview')}
 						</Caption13Up>
 

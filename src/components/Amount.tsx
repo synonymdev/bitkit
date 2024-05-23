@@ -17,10 +17,10 @@ const Amount = ({
 	const { fiatSymbol } = useCurrency();
 	return (
 		<View style={[styles.row, style]}>
-			<Display style={styles.symbol} color="white50">
+			<Display style={styles.symbol} color="secondary">
 				{unit === EUnit.BTC ? '₿' : fiatSymbol}
 			</Display>
-			<Display color={value ? 'text' : 'white50'}>{value}</Display>
+			<Display color={value ? 'primary' : 'secondary'}>{value}</Display>
 		</View>
 	);
 };

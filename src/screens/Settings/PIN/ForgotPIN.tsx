@@ -39,7 +39,7 @@ const ForgotPIN = (): ReactElement => {
 					title={t('pin_forgot_title')}
 					displayBackButton={false}
 				/>
-				<BodyM color="white50">{t('pin_forgot_text')}</BodyM>
+				<BodyM color="secondary">{t('pin_forgot_text')}</BodyM>
 
 				<View style={styles.imageContainer}>
 					<Image style={styles.image} source={imageSrc} />

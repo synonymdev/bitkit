@@ -77,7 +77,7 @@ const Status = ({
 			</View>
 			<View style={styles.desc}>
 				<BodyMSB>{t(`status.${item}.title`)}</BodyMSB>
-				<CaptionB color="white50">{subtitle}</CaptionB>
+				<CaptionB color="secondary">{subtitle}</CaptionB>
 			</View>
 		</View>
 	);

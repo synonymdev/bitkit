@@ -60,7 +60,7 @@ const Passphrase = ({
 							components={{ accent: <Display color="brand" /> }}
 						/>
 
-						<BodyM color="white50" style={styles.text}>
+						<BodyM color="secondary" style={styles.text}>
 							{t('passphrase_text')}
 						</BodyM>
 

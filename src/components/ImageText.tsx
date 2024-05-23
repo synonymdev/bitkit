@@ -28,7 +28,7 @@ const ImageText = ({
 				{icon}
 				<View style={styles.titleContainer}>
 					<BodyMSB>{title}</BodyMSB>
-					<BodySSB color="white50">{description}</BodySSB>
+					<BodySSB color="secondary">{description}</BodySSB>
 				</View>
 			</View>
 
@@ -47,7 +47,7 @@ const ImageText = ({
 					style={styles.value}
 					sats={value}
 					size="bodySSB"
-					color="white50"
+					color="secondary"
 					symbol={true}
 					unitType="secondary"
 					enableHide={true}

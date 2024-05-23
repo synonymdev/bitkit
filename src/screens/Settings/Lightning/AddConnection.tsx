@@ -36,7 +36,7 @@ const AddConnection = ({
 
 			<ScrollView contentContainerStyle={styles.content}>
 				<View style={styles.sectionTitle}>
-					<Caption13Up color="white50">New connection</Caption13Up>
+					<Caption13Up color="secondary">New connection</Caption13Up>
 				</View>
 				<BodyMSB>LNBIG Lightning Node</BodyMSB>
 				<View style={styles.channel}>
@@ -45,7 +45,7 @@ const AddConnection = ({
 				</View>
 
 				<View style={styles.sectionTitle}>
-					<Caption13Up color="white50">CONNECTION DETAILS</Caption13Up>
+					<Caption13Up color="secondary">CONNECTION DETAILS</Caption13Up>
 				</View>
 				<Section
 					name="Node ID"

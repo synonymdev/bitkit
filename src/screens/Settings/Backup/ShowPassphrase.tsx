@@ -25,18 +25,18 @@ const ShowPassphrase = ({
 		<GradientView style={styles.gradient}>
 			<BottomSheetNavigationHeader title={t('pass_your')} />
 			<View style={styles.container}>
-				<BodyM color="white50">{t('pass_text')}</BodyM>
+				<BodyM color="secondary">{t('pass_text')}</BodyM>
 
 				<ThemedView color="white10" style={styles.passphrase}>
 					<BottomSheetScrollView>
-						<BodyMSB color="white50" style={styles.p}>
+						<BodyMSB color="secondary" style={styles.p}>
 							{t('pass')}
 						</BodyMSB>
 						<BodyMSB>{bip39Passphrase}</BodyMSB>
 					</BottomSheetScrollView>
 				</ThemedView>
 
-				<BodyS color="white50">
+				<BodyS color="secondary">
 					<Trans
 						t={t}
 						i18nKey="pass_never_share"

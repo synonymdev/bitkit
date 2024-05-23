@@ -94,7 +94,7 @@ const QuickConfirm = ({
 						components={{ accent: <Display color="purple" /> }}
 					/>
 				</Display>
-				<BodyM style={styles.text} color="white50">
+				<BodyM style={styles.text} color="secondary">
 					{isTransferToSavings ? (
 						t('transfer_close')
 					) : (

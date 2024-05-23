@@ -214,17 +214,17 @@ const BoostForm = ({
 			<Money
 				sats={boostFee}
 				size="bodySSB"
-				color="white50"
+				color="secondary"
 				symbol={true}
 				unitType="secondary"
 			/>
-			<BodySSB color="white50"> {duration}</BodySSB>
+			<BodySSB color="secondary"> {duration}</BodySSB>
 		</View>
 	);
 
 	return (
 		<>
-			<BodyS color="white50">
+			<BodyS color="secondary">
 				{t(showCustom ? 'boost_fee_custom' : 'boost_fee_recomended')}
 			</BodyS>
 

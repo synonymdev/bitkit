@@ -10,7 +10,7 @@ const SeedInput = forwardRef<any, SeedInputProps>(
 		return (
 			<ThemedView style={styles.inputWrapper} color="white10">
 				<BodyMSB
-					color={valid ? 'white50' : 'red'}
+					color={valid ? 'secondary' : 'red'}
 					testID={`WordIndex-${index}`}>
 					{index + 1}.
 				</BodyMSB>

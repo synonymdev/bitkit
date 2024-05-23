@@ -50,9 +50,11 @@ const Result = ({ route }: PinScreenProps<'Result'>): ReactElement => {
 
 			<View style={styles.content}>
 				{bio ? (
-					<BodyM color="white50">{t('success_bio', { biometricsName })}</BodyM>
+					<BodyM color="secondary">
+						{t('success_bio', { biometricsName })}
+					</BodyM>
 				) : (
-					<BodyM color="white50">{t('success_no_bio')}</BodyM>
+					<BodyM color="secondary">{t('success_no_bio')}</BodyM>
 				)}
 
 				<View style={styles.imageContainer}>

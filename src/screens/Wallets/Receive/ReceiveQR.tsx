@@ -447,12 +447,12 @@ const ReceiveQR = ({
 					{(!jitInvoice || !enableInstant) && (
 						<View testID="ReceiveOnchainInvoice">
 							<View style={styles.invoiceLabel}>
-								<Caption13Up color="white50">
+								<Caption13Up color="secondary">
 									{t('receive_bitcoin_invoice')}
 								</Caption13Up>
 								<BitcoinSlantedIcon
 									style={styles.invoiceLabelIcon}
-									color="white50"
+									color="secondary"
 									height={14}
 									width={20}
 								/>
@@ -497,12 +497,12 @@ const ReceiveQR = ({
 							{!jitInvoice && <View style={styles.divider} />}
 							<View>
 								<View style={styles.invoiceLabel}>
-									<Caption13Up color="white50">
+									<Caption13Up color="secondary">
 										{t('receive_lightning_invoice')}
 									</Caption13Up>
 									<LightningIcon
 										style={styles.invoiceLabelIcon}
-										color="white50"
+										color="secondary"
 										height={14}
 										width={15}
 									/>
@@ -626,7 +626,7 @@ const ReceiveQR = ({
 						isEnabled={enableInstant}
 						showDivider={false}
 						onPress={onToggleInstant}>
-						{!enableInstant && <ArrowLNFunds color="white50" />}
+						{!enableInstant && <ArrowLNFunds color="secondary" />}
 						<BodyM>{t('receive_spending')}</BodyM>
 					</SwitchRow>
 				</View>

@@ -74,7 +74,7 @@ const ProfileLink = ({
 					dispatch(updateProfileLink({ ...form, url: value }));
 				}}
 			/>
-			<BodyS style={styles.note} color="white50">
+			<BodyS style={styles.note} color="secondary">
 				{t('profile_link_public')}
 			</BodyS>
 

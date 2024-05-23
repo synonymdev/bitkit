@@ -130,16 +130,16 @@ const Widgets = (): ReactElement => {
 	return (
 		<View style={styles.root}>
 			<View style={styles.title} testID="WidgetsTitle">
-				<Caption13Up color="white50">{t('widgets')}</Caption13Up>
+				<Caption13Up color="secondary">{t('widgets')}</Caption13Up>
 				{sortedWidgets.length > 0 && (
 					<TouchableOpacity
 						hitSlop={{ top: 15, right: 15, bottom: 15, left: 15 }}
 						testID="WidgetsEdit"
 						onPress={(): void => setEditing(!editing)}>
 						{editing ? (
-							<Checkmark width={24} height={24} color="white50" />
+							<Checkmark width={24} height={24} color="secondary" />
 						) : (
-							<SortAscendingIcon color="white50" />
+							<SortAscendingIcon color="secondary" />
 						)}
 					</TouchableOpacity>
 				)}

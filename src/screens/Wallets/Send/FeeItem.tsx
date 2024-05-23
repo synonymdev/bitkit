@@ -46,7 +46,7 @@ const FeeItem = ({
 			case EFeeId.slow:
 				return <SpeedSlowIcon color="brand" />;
 			case EFeeId.custom:
-				return <SettingsIcon color="white50" width={32} height={32} />;
+				return <SettingsIcon color="secondary" width={32} height={32} />;
 		}
 	}, [id]);
 
@@ -67,15 +67,15 @@ const FeeItem = ({
 						{sats !== 0 && (
 							<View style={styles.sats}>
 								<BodyMSB>
-									<BodyMSB color="white50">₿</BodyMSB> {sats}
+									<BodyMSB color="secondary">₿</BodyMSB> {sats}
 								</BodyMSB>
 							</View>
 						)}
 					</View>
 					<View style={styles.cell}>
-						<BodySSB color="white50">{description}</BodySSB>
+						<BodySSB color="secondary">{description}</BodySSB>
 						{sats !== 0 && (
-							<BodySSB color="white50">
+							<BodySSB color="secondary">
 								{totalFeeDisplay.fiatSymbol} {totalFeeDisplay.fiatFormatted}
 							</BodySSB>
 						)}

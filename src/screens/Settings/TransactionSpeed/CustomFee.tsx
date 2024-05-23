@@ -63,13 +63,13 @@ const FeeCustom = ({
 			<SafeAreaInset type="top" />
 			<NavigationHeader title={t('general.speed_fee_custom')} />
 			<View style={styles.container} testID="CustomFee">
-				<Caption13Up color="white50" style={styles.title}>
+				<Caption13Up color="secondary" style={styles.title}>
 					{t('sat_vbyte')}
 				</Caption13Up>
 				<Amount value={feeRate} />
 
 				{isValid && (
-					<BodyM style={styles.text} color="white50">
+					<BodyM style={styles.text} color="secondary">
 						{totalFeeText}
 					</BodyM>
 				)}

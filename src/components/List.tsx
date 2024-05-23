@@ -37,7 +37,7 @@ const _SectionHeader = memo(
 
 		return (
 			<View style={[styles.sectionHeader, style]}>
-				<Caption13Up color="white50">{title.toUpperCase()}</Caption13Up>
+				<Caption13Up color="secondary">{title.toUpperCase()}</Caption13Up>
 			</View>
 		);
 	},
@@ -57,7 +57,7 @@ const _SectionFooter = memo(
 
 		return (
 			<View style={[styles.sectionFooter, style]}>
-				<BodyS color="white50">{description}</BodyS>
+				<BodyS color="secondary">{description}</BodyS>
 			</View>
 		);
 	},
@@ -214,13 +214,13 @@ const _Item = memo((item: ItemData): ReactElement => {
 						<BodyM color="white">{title}</BodyM>
 						{description && (
 							<View>
-								<Caption color="white50">{description}</Caption>
+								<Caption color="secondary">{description}</Caption>
 							</View>
 						)}
 					</View>
 				</View>
 				<View style={styles.rightColumn}>
-					<BodyM color="white50">{value}</BodyM>
+					<BodyM color="secondary">{value}</BodyM>
 				</View>
 			</TouchableOpacity>
 		);
@@ -279,7 +279,7 @@ const _Item = memo((item: ItemData): ReactElement => {
 						{subtitle ? (
 							<View>
 								<BodyMSB color="white">{title}</BodyMSB>
-								{subtitle && <BodySSB color="white50">{subtitle}</BodySSB>}
+								{subtitle && <BodySSB color="secondary">{subtitle}</BodySSB>}
 							</View>
 						) : (
 							<View>
@@ -290,7 +290,7 @@ const _Item = memo((item: ItemData): ReactElement => {
 					<View style={styles.rightColumn}>
 						{useCheckmark ? (
 							loading && value ? (
-								<ActivityIndicator color={'white'} />
+								<ActivityIndicator color="white" />
 							) : (
 								value && <Checkmark color="brand" width={32} height={32} />
 							)
@@ -299,14 +299,14 @@ const _Item = memo((item: ItemData): ReactElement => {
 								<BodyM style={styles.valueText} testID="Value">
 									{value}
 								</BodyM>
-								<ChevronRight color="white50" width={24} height={24} />
+								<ChevronRight color="secondary" width={24} height={24} />
 							</>
 						)}
 					</View>
 				</View>
 
 				{description && (
-					<BodyS style={styles.description} color="white50">
+					<BodyS style={styles.description} color="secondary">
 						{description}
 					</BodyS>
 				)}

@@ -132,7 +132,7 @@ const LightningSyncing = ({
 			<GradientView style={styles.root}>
 				<BottomSheetNavigationHeader title={title} />
 				<View style={styles.content}>
-					<BodyM color="white50">{t('wait_text_top')}</BodyM>
+					<BodyM color="secondary">{t('wait_text_top')}</BodyM>
 
 					<View style={styles.imageContainer}>
 						<View style={styles.animation}>

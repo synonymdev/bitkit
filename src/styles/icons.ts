@@ -585,7 +585,9 @@ export const ProfileIcon = styled(SvgXml).attrs((props) => ({
 
 export const ListIcon = styled(SvgXml).attrs((props) => ({
 	xml: listIcon(
-		props.color ? props.theme.colors[props.color] : props.theme.colors.white50,
+		props.color
+			? props.theme.colors[props.color]
+			: props.theme.colors.secondary,
 	),
 	height: props.height ?? '24px',
 	width: props.width ?? '24px',

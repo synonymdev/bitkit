@@ -170,12 +170,12 @@ const Channel = memo(
 				<View style={styles.nTitle}>
 					<BodyMSB
 						style={styles.nName}
-						color={closed ? 'white50' : 'white'}
+						color={closed ? 'secondary' : 'white'}
 						numberOfLines={1}
 						ellipsizeMode="middle">
 						{channelName}
 					</BodyMSB>
-					<ChevronRight color="white50" height={24} />
+					<ChevronRight color="secondary" height={24} />
 				</View>
 				<LightningChannel channel={channel} status={getChannelStatus()} />
 			</TouchableOpacity>
@@ -368,7 +368,7 @@ const Channels = ({
 				}>
 				<View style={styles.balances}>
 					<View style={styles.balance}>
-						<Caption13Up color="white50">{t('spending_label')}</Caption13Up>
+						<Caption13Up color="secondary">{t('spending_label')}</Caption13Up>
 						<View style={styles.row}>
 							<UpArrow color="purple" width={22} height={22} />
 							<Money
@@ -380,7 +380,7 @@ const Channels = ({
 						</View>
 					</View>
 					<View style={styles.balance}>
-						<Caption13Up color="white50">{t('receiving_label')}</Caption13Up>
+						<Caption13Up color="secondary">{t('receiving_label')}</Caption13Up>
 						<View style={styles.row}>
 							<DownArrow color="white" width={22} height={22} />
 							<Money
@@ -395,7 +395,7 @@ const Channels = ({
 
 				{pendingConnections.length > 0 && (
 					<>
-						<Caption13Up color="white50" style={styles.sectionTitle}>
+						<Caption13Up color="secondary" style={styles.sectionTitle}>
 							{t('conn_pending')}
 						</Caption13Up>
 						<ChannelList
@@ -408,7 +408,7 @@ const Channels = ({
 
 				{openChannels.length > 0 && (
 					<>
-						<Caption13Up color="white50" style={styles.sectionTitle}>
+						<Caption13Up color="secondary" style={styles.sectionTitle}>
 							{t('conn_open')}
 						</Caption13Up>
 						<ChannelList
@@ -422,7 +422,7 @@ const Channels = ({
 					<AnimatedView entering={FadeIn} exiting={FadeOut}>
 						{closedChannels.length > 0 && (
 							<>
-								<Caption13Up color="white50" style={styles.sectionTitle}>
+								<Caption13Up color="secondary" style={styles.sectionTitle}>
 									{t('conn_closed')}
 								</Caption13Up>
 								<ChannelList
@@ -434,7 +434,7 @@ const Channels = ({
 						)}
 						{failedOrders.length > 0 && (
 							<>
-								<Caption13Up color="white50" style={styles.sectionTitle}>
+								<Caption13Up color="secondary" style={styles.sectionTitle}>
 									{t('conn_failed')}
 								</Caption13Up>
 								<ChannelList
@@ -459,7 +459,7 @@ const Channels = ({
 
 				{enableDevOptions && (
 					<View style={styles.devButtons}>
-						<Caption13Up color="white50" style={styles.sectionTitle}>
+						<Caption13Up color="secondary" style={styles.sectionTitle}>
 							Dev Options
 						</Caption13Up>
 						<TextInput

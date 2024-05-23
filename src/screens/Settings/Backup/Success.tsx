@@ -28,7 +28,7 @@ const Success = ({
 		<GradientView style={styles.container}>
 			<BottomSheetNavigationHeader title={t('mnemonic_result_header')} />
 
-			<BodyM style={styles.text} color="white50">
+			<BodyM style={styles.text} color="secondary">
 				<Trans
 					t={t}
 					i18nKey="mnemonic_result_text"

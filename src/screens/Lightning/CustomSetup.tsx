@@ -487,22 +487,22 @@ const CustomSetup = ({
 					/>
 				</Display>
 				{spending && !showNumberPad && (
-					<BodyM color="white50" style={styles.text}>
+					<BodyM color="secondary" style={styles.text}>
 						{t('spending_amount_bitcoin')}
 					</BodyM>
 				)}
 				{spending && showNumberPad && (
-					<BodyM color="white50" style={styles.text}>
+					<BodyM color="secondary" style={styles.text}>
 						{t('enter_money')}
 					</BodyM>
 				)}
 				{!spending && !showNumberPad && (
-					<BodyM color="white50" style={styles.text}>
+					<BodyM color="secondary" style={styles.text}>
 						{t('receiving_amount_money')}
 					</BodyM>
 				)}
 				{!spending && showNumberPad && (
-					<BodyM color="white50" style={styles.text}>
+					<BodyM color="secondary" style={styles.text}>
 						{t('receiving_amount_bitcoin')}
 					</BodyM>
 				)}

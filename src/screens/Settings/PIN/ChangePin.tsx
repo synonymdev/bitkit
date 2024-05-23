@@ -91,7 +91,7 @@ const ChangePin = ({
 			/>
 
 			<View style={styles.text}>
-				<BodyM color="white50">{t('cp_text')}</BodyM>
+				<BodyM color="secondary">{t('cp_text')}</BodyM>
 			</View>
 
 			<View style={styles.wrongPin}>

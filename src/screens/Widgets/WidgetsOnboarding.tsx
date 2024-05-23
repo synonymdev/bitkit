@@ -37,7 +37,7 @@ export const HelloWidgets = ({
 					components={{ accent: <Display color="brand" /> }}
 				/>
 			</Display>
-			<BodyM style={styles.introText} color="white50">
+			<BodyM style={styles.introText} color="secondary">
 				{t('onboarding_widgets2_text')}
 			</BodyM>
 		</Layout>
@@ -64,7 +64,7 @@ export const GoodbyePasswords = ({
 					components={{ accent: <Display color="brand" /> }}
 				/>
 			</Display>
-			<BodyM style={styles.introText} color="white50">
+			<BodyM style={styles.introText} color="secondary">
 				{t('onboarding_widgets1_text')}
 			</BodyM>
 		</Layout>

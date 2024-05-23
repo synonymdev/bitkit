@@ -26,7 +26,7 @@ const ConfirmPassphrase = ({
 		<GradientView style={styles.gradient}>
 			<BottomSheetNavigationHeader title={t('pass_confirm')} />
 			<View style={styles.container}>
-				<BodyM color="white50">{t('pass_confirm_text')}</BodyM>
+				<BodyM color="secondary">{t('pass_confirm_text')}</BodyM>
 
 				<View style={styles.input}>
 					<BottomSheetTextInput

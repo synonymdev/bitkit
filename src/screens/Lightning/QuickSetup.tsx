@@ -212,7 +212,7 @@ const QuickSetup = ({
 						components={{ accent: <Display color="purple" /> }}
 					/>
 				</Display>
-				<BodyM style={styles.text} color="white50">
+				<BodyM style={styles.text} color="secondary">
 					{text}
 				</BodyM>
 
@@ -251,7 +251,7 @@ const QuickSetup = ({
 								entering={FadeIn}
 								exiting={FadeOut}
 								testID="QuickSetupBlocktankNote">
-								<BodyS color="white50">
+								<BodyS color="secondary">
 									{t('note_blocktank_limit', {
 										usdValue: btSpendingLimitBalancedUsd,
 									})}
@@ -265,7 +265,7 @@ const QuickSetup = ({
 								entering={FadeIn}
 								exiting={FadeOut}
 								testID="QuickSetupReserveNote">
-								<BodyS color="white50">
+								<BodyS color="secondary">
 									{t('note_reserve_limit', {
 										percentage: maxSpendingPercentage,
 									})}

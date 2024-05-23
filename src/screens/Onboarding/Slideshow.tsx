@@ -97,7 +97,7 @@ const Slide = ({
 				parent={Display}
 				components={{ accent: <Display color={color} /> }}
 			/>
-			<BodyM style={styles.text} color="white50">
+			<BodyM style={styles.text} color="secondary">
 				{t(`slide${index}_text`)}
 			</BodyM>
 
@@ -227,14 +227,14 @@ const Slideshow = ({
 					<Animated.View style={[styles.headerButtonContainer, startOpacity]}>
 						<Pressable testID="SkipButton" onPress={onHeaderButton}>
 							<SafeAreaInset type="top" />
-							<BodyMSB color="white50">{t('skip')}</BodyMSB>
+							<BodyMSB color="secondary">{t('skip')}</BodyMSB>
 						</Pressable>
 					</Animated.View>
 
 					<Animated.View style={[styles.headerButtonContainer, endOpacity]}>
 						<Pressable testID="Passphrase" onPress={onHeaderButton}>
 							<SafeAreaInset type="top" />
-							<BodyMSB color="white50">{t('advanced_setup')}</BodyMSB>
+							<BodyMSB color="secondary">{t('advanced_setup')}</BodyMSB>
 						</Pressable>
 					</Animated.View>
 

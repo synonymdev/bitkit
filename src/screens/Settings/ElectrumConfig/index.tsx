@@ -266,7 +266,7 @@ const ElectrumConfig = ({
 				onActionPress={navigateToScanner}
 			/>
 			<ScrollView contentContainerStyle={styles.content} bounces={false}>
-				<BodyM color="white50">{t('es.connected_to')}</BodyM>
+				<BodyM color="secondary">{t('es.connected_to')}</BodyM>
 				<View style={styles.connectedPeer} testID="ElectrumStatus">
 					{connectedPeer ? (
 						<BodyM color="green" testID="Connected">
@@ -279,7 +279,7 @@ const ElectrumConfig = ({
 					)}
 				</View>
 
-				<Caption13Up style={styles.label} color="white50">
+				<Caption13Up style={styles.label} color="secondary">
 					{t('es.host')}
 				</Caption13Up>
 				<TextInput
@@ -297,7 +297,7 @@ const ElectrumConfig = ({
 					testID="HostInput"
 				/>
 
-				<Caption13Up style={styles.label} color="white50">
+				<Caption13Up style={styles.label} color="secondary">
 					{t('es.port')}
 				</Caption13Up>
 				<TextInput
@@ -318,7 +318,7 @@ const ElectrumConfig = ({
 					style={styles.protocol}
 					accessibilityLabel={protocol}
 					testID="ElectrumProtocol">
-					<Caption13Up style={styles.label} color="white50">
+					<Caption13Up style={styles.label} color="secondary">
 						{t('es.protocol')}
 					</Caption13Up>
 					<RadioButtonGroup

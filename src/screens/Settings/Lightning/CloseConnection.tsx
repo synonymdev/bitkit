@@ -71,7 +71,7 @@ const CloseConnection = ({
 				onClosePress={(): void => navigation.navigate('Wallet')}
 			/>
 			<View style={styles.content}>
-				<BodyM color="white50">
+				<BodyM color="secondary">
 					<Trans
 						t={t}
 						i18nKey="close_text"

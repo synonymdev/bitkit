@@ -107,7 +107,7 @@ const ReceiveAmount = ({
 				<View style={styles.numberPad} testID="ReceiveNumberPad">
 					<View style={styles.actions}>
 						<TouchableOpacity onPress={onMinimum}>
-							<Caption13Up style={styles.minimumText} color="white50">
+							<Caption13Up style={styles.minimumText} color="secondary">
 								{t('minimum')}
 							</Caption13Up>
 							<Money

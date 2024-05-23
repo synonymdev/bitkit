@@ -103,7 +103,7 @@ const RGSServer = ({
 			<ScrollView contentContainerStyle={styles.content} bounces={false}>
 				<TouchableOpacity activeOpacity={1} onPress={handleConnectedPress}>
 					<>
-						<BodyM color="white50">{t('es.connected_to')}</BodyM>
+						<BodyM color="secondary">{t('es.connected_to')}</BodyM>
 						<View style={styles.connectedPeer} testID="Status">
 							<BodyM color="green" testID="ConnectedUrl">
 								{rapidGossipSyncUrl}
@@ -112,7 +112,7 @@ const RGSServer = ({
 					</>
 				</TouchableOpacity>
 
-				<Caption13Up color="white50" style={styles.label}>
+				<Caption13Up color="secondary" style={styles.label}>
 					{t('rgs.server_url')}
 				</Caption13Up>
 				<TextInput

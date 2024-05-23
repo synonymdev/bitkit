@@ -102,7 +102,7 @@ const AppUpdatePrompt = ({ enabled }: { enabled: boolean }): ReactElement => {
 					title={t('update_title')}
 					displayBackButton={false}
 				/>
-				<BodyM color="white50">{t('update_text')}</BodyM>
+				<BodyM color="secondary">{t('update_text')}</BodyM>
 
 				<View style={styles.imageContainer}>
 					<Image style={styles.image} source={imageSrc} />

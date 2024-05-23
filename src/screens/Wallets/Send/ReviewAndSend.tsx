@@ -96,7 +96,7 @@ const Section = memo(
 				activeOpacity={onPress ? 0.6 : 1}
 				onPress={onPress}>
 				<View style={styles.sText}>
-					<Caption13Up color="white50">{title}</Caption13Up>
+					<Caption13Up color="secondary">{title}</Caption13Up>
 				</View>
 				<View style={styles.sValue}>{value}</View>
 			</TouchableOpacity>
@@ -566,7 +566,7 @@ const ReviewAndSend = ({
 				return (
 					<SettingsIcon
 						style={styles.icon}
-						color="white50"
+						color="secondary"
 						width={16}
 						height={16}
 					/>

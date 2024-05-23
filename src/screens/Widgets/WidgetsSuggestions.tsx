@@ -81,7 +81,7 @@ const Feed = ({
 					</View>
 					<View style={styles.text}>
 						<BodyMSB numberOfLines={1}>{url}</BodyMSB>
-						<CaptionB color="white50" numberOfLines={1}>
+						<CaptionB color="secondary" numberOfLines={1}>
 							{failed
 								? t('widget_failed_description')
 								: t('widget_loading_description')}
@@ -89,7 +89,7 @@ const Feed = ({
 					</View>
 					<ChevronRight
 						style={styles.arrow}
-						color="white50"
+						color="secondary"
 						width={24}
 						height={24}
 					/>
@@ -114,13 +114,13 @@ const Feed = ({
 				</View>
 				<View style={styles.text}>
 					<BodyMSB numberOfLines={1}>{config.name}</BodyMSB>
-					<CaptionB color="white50" numberOfLines={1}>
+					<CaptionB color="secondary" numberOfLines={1}>
 						{config.description}
 					</CaptionB>
 				</View>
 				<ChevronRight
 					style={styles.arrow}
-					color="white50"
+					color="secondary"
 					width={24}
 					height={24}
 				/>

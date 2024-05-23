@@ -58,7 +58,7 @@ const LightningNodeInfo = ({
 
 			<View style={styles.content}>
 				<View style={styles.label}>
-					<Caption13Up color="white50">{t('node_id')}</Caption13Up>
+					<Caption13Up color="secondary">{t('node_id')}</Caption13Up>
 				</View>
 
 				{!error && (

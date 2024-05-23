@@ -69,8 +69,8 @@ const LNURLChannel = ({
 						components={{ accent: <Display color="purple" /> }}
 					/>
 				</Display>
-				<BodyM color="white50">{t('lnurl_channel_message')}</BodyM>
-				<Caption13Up color="white50" style={styles.lsp}>
+				<BodyM color="secondary">{t('lnurl_channel_message')}</BodyM>
+				<Caption13Up color="secondary" style={styles.lsp}>
 					{t('lnurl_channel_lsp')}
 				</Caption13Up>
 				<View style={styles.row}>

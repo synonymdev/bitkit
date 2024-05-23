@@ -126,12 +126,12 @@ const HeadlinesWidget = ({
 						}
 					}}>
 					<View style={styles.columnLeft}>
-						<CaptionB color="white50" numberOfLines={1}>
+						<CaptionB color="secondary" numberOfLines={1}>
 							{t('widget_source')}
 						</CaptionB>
 					</View>
 					<View style={styles.columnRight}>
-						<CaptionB color="white50" numberOfLines={1}>
+						<CaptionB color="secondary" numberOfLines={1}>
 							{article?.publisher.title}
 						</CaptionB>
 					</View>

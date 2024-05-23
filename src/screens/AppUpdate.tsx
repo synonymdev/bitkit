@@ -25,7 +25,7 @@ const AppUpdate = (): ReactElement => {
 			<SafeAreaInset type="top" />
 			<Title style={styles.header}>{t('up_title')}</Title>
 			<View style={styles.content}>
-				<BodyM color="white50">{t('up_text')}</BodyM>
+				<BodyM color="secondary">{t('up_text')}</BodyM>
 
 				<View style={styles.imageContainer}>
 					<Image style={styles.image} source={imageSrc} />

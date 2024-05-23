@@ -30,7 +30,7 @@ const TagsSettings = ({
 				{lastUsedTags.length !== 0 && (
 					<>
 						<View style={styles.label}>
-							<Caption13Up color="white50">
+							<Caption13Up color="secondary">
 								{t('general.tags_previously')}
 							</Caption13Up>
 						</View>
