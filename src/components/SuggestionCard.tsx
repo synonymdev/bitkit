@@ -187,7 +187,7 @@ const styles = StyleSheet.create({
 		width: CARD_SIZE,
 		height: CARD_SIZE,
 		borderRadius: CARD_BORDER_RADIUS,
-		paddingHorizontal: 16,
+		paddingHorizontal: 15,
 		paddingBottom: 14,
 	},
 	pressable: {

@@ -121,7 +121,9 @@ const HeadlinesWidget = ({
 					activeOpacity={0.9}
 					hitSlop={{ right: 15, bottom: 15, left: 15 }}
 					onPress={(): void => {
-						if (link) openAppURL(link);
+						if (link) {
+							openAppURL(link);
+						}
 					}}>
 					<View style={styles.columnLeft}>
 						<CaptionB color="white50" numberOfLines={1}>

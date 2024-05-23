@@ -74,6 +74,7 @@ import { TPaidBlocktankOrders } from '../../../store/types/blocktank';
 import { EUnit } from '../../../store/types/wallet';
 import { showBottomSheet } from '../../../store/utils/ui';
 import { EChannelStatus, TChannel } from '../../../store/types/lightning';
+import useBreakpoints from '../../../styles/breakpoints';
 
 /**
  * Convert pending (non-channel) blocktank orders to (fake) channels.
@@ -227,6 +228,7 @@ const Channels = ({
 	const [spendingStuckOutputs, setSpendingStuckOutputs] = useState(false);
 
 	const colors = useColors();
+	const br = useBreakpoints();
 	const { localBalance, remoteBalance } = useLightningBalance();
 	const selectedWallet = useAppSelector(selectedWalletSelector);
 	const selectedNetwork = useAppSelector(selectedNetworkSelector);
@@ -648,7 +650,7 @@ const Channels = ({
 					</View>
 				)}
 
-				<View style={styles.buttons}>
+				<View style={[styles.buttons, br.up('smphone') && styles.buttonsRow]}>
 					<Button
 						style={styles.button}
 						text={t('conn_button_export_logs')}
@@ -724,15 +726,17 @@ const styles = StyleSheet.create({
 	},
 	devButtons: {
 		marginTop: 'auto',
+		marginBottom: 16,
 	},
 	devButton: {
 		marginTop: 8,
 	},
 	buttons: {
-		flexDirection: 'row',
-		alignItems: 'center',
 		marginTop: 'auto',
 		gap: 16,
+	},
+	buttonsRow: {
+		flexDirection: 'row',
 	},
 	button: {
 		flex: 1,
