@@ -570,6 +570,28 @@ const migrations = {
 			},
 		};
 	},
+	42: (state): PersistedState => {
+		// remove ST v1 AuthWidgets
+
+		const widgets = { ...state.widgets.widgets };
+		let sortOrder = { ...state.widgets.sortOrder };
+
+		for (const [url, w] of Object.entries(widgets)) {
+			if ('magiclink' in (w as any)) {
+				delete widgets[url];
+				sortOrder = sortOrder.filter((i) => i !== url);
+			}
+		}
+
+		return {
+			...state,
+			widgets: {
+				...state.widgets,
+				widgets,
+				sortOrder,
+			},
+		};
+	},
 };
 
 export default migrations;

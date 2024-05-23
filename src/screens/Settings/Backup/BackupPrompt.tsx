@@ -112,7 +112,9 @@ const BackupPrompt = ({ enabled }: { enabled: boolean }): ReactElement => {
 					title={t('backup_wallet')}
 					displayBackButton={false}
 				/>
-				<Image style={styles.image} source={imageSrc} />
+				<View style={styles.imageContainer}>
+					<Image style={styles.image} source={imageSrc} />
+				</View>
 				<Display>
 					<Trans
 						t={t}
@@ -147,13 +149,16 @@ const styles = StyleSheet.create({
 		flex: 1,
 		marginHorizontal: 32,
 	},
+	imageContainer: {
+		alignSelf: 'center',
+		alignItems: 'center',
+		marginTop: 'auto',
+		aspectRatio: 1,
+		width: 256,
+	},
 	image: {
 		flex: 1,
-		alignSelf: 'center',
-		width: 256,
-		aspectRatio: 1,
 		resizeMode: 'contain',
-		marginTop: 'auto',
 	},
 	buttonContainer: {
 		flexDirection: 'row',

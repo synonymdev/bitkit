@@ -62,8 +62,8 @@ import {
 	moveMetaIncPaymentTags,
 	removePeer,
 	syncLightningTxsWithActivityList,
-	updateClaimableBalancesThunk,
-	updateLightningChannelsThunk,
+	closeChannelThunk,
+	updateChannelsThunk,
 	updateLightningNodeIdThunk,
 	updateLightningNodeVersionThunk,
 } from '../../store/utils/lightning';
@@ -80,12 +80,7 @@ import {
 } from '../../store/types/activity';
 import { addActivityItem } from '../../store/slices/activity';
 import { addCJitActivityItem } from '../../store/utils/activity';
-import {
-	ETransferStatus,
-	ETransferType,
-	IWalletItem,
-	TWalletName,
-} from '../../store/types/wallet';
+import { IWalletItem, TWalletName } from '../../store/types/wallet';
 import { closeSheet, updateUi } from '../../store/slices/ui';
 import { showBottomSheet } from '../../store/utils/ui';
 import { updateSlashPayConfig2 } from '../slashtags2';
@@ -94,6 +89,7 @@ import {
 	TLightningNodeVersion,
 	TChannel,
 	EChannelStatus,
+	EChannelClosureReason,
 } from '../../store/types/lightning';
 import { getBlocktankInfo, isGeoBlocked, logToBlocktank } from '../blocktank';
 import { refreshOnchainFeeEstimates } from '../../store/utils/fees';
@@ -102,8 +98,6 @@ import {
 	__BACKUPS_SERVER_PUBKEY__,
 	__TRUSTED_ZERO_CONF_PEERS__,
 } from '../../constants/env';
-import { addTransfer } from '../../store/actions/wallet';
-import { decodeRawTx } from '../wallet/txdecoder';
 import { showToast } from '../notifications';
 import i18n from '../i18n';
 import { bitkitLedger, syncLedger } from '../ledger';
@@ -189,20 +183,6 @@ const broadcastTransaction: TBroadcastTransaction = async (
 	});
 	if (res.isErr()) {
 		return err('');
-	}
-
-	const transaction = decodeRawTx(rawTx, bitcoin.networks.regtest);
-
-	// only show transfer if transaction has an output to our wallet
-	if (transaction.outputs.length > 1) {
-		// TODO: distinguish between coop and force-close
-		addTransfer({
-			txId: transaction.txid,
-			type: ETransferType.coopClose,
-			status: ETransferStatus.pending,
-			amount: transaction.outputs[0].satoshi,
-			confirmations: 0,
-		});
 	}
 
 	return ok(res.value);
@@ -547,9 +527,10 @@ export const subscribeToLightningPayments = ({
 	if (!onChannelClose) {
 		onChannelClose = ldk.onEvent(
 			EEventTypes.channel_manager_channel_closed,
-			(res: TChannelManagerChannelClosed) => {
-				if (res.reason === 'CommitmentTxConfirmed') {
-					// our counterparty force closed the channel
+			async (res: TChannelManagerChannelClosed) => {
+				await closeChannelThunk(res);
+				if (res.reason === EChannelClosureReason.CommitmentTxConfirmed) {
+					// counterparty force closed the channel
 					showBottomSheet('connectionClosed');
 				}
 				syncLedger(); // TChannelManagerChannelClosed is different from TChannelMonitor
@@ -659,33 +640,34 @@ export const refreshLdk = async ({
 
 		// Calls that don't require sequential execution.
 		const promises: Promise<Result<any>>[] = [
-			lm.syncLdk(),
 			lm.setFees(),
 			addPeers({ selectedNetwork, selectedWallet }),
 		];
 		const results = await Promise.all(promises);
 		// Handle & Return syncLdk errors.
-		if (results[0].isErr()) {
-			showToast({
-				type: 'error',
-				title: i18n.t('wallet:ldk_sync_error_title'),
-				description: results[0].error.message,
-			});
-			return handleRefreshError(results[0].error.message);
-		}
 		for (const result of results) {
 			if (result.isErr()) {
 				//setFees & addPeers can fail, but we should still continue and make UI ready so payments can be attempted
-				console.error(result.error.message);
+				console.error(
+					`refreshLdk setFees/addPeers error: ${result.error.message}`,
+				);
 			}
 		}
 
+		const syncResult = await lm.syncLdk();
+		if (syncResult.isErr()) {
+			showToast({
+				type: 'error',
+				title: i18n.t('wallet:ldk_sync_error_title'),
+				description: syncResult.error.message,
+			});
+			return handleRefreshError(syncResult.error.message);
+		}
+
 		await Promise.all([
-			updateLightningChannelsThunk(),
+			updateChannelsThunk(),
 			syncLightningTxsWithActivityList(),
 		]);
-
-		await updateClaimableBalancesThunk();
 
 		dispatch(updateUi({ isLDKReady: true }));
 
@@ -1332,7 +1314,7 @@ export const closeAllChannels = async ({
 				const closeResponse = await closeChannel({
 					channelId: channel_id,
 					counterPartyNodeId: counterparty_node_id,
-					force: false,
+					force,
 				});
 				if (closeResponse.isErr()) {
 					channelsUnableToCoopClose.push(channel);

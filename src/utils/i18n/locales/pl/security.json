@@ -3,8 +3,6 @@
   "backup_funds": "Ponieważ posiadasz już środki na swoim portfelu, to czas aby zarobić kopię zapasową!",
   "backup_funds_no": "Obecnie brak środków na twoim portfelu ale możesz wykonać kopię zapasową. ",
   "backup_button": "Kopia zapasowa",
-  "backup_data_title": "Kopia zapasowa danych",
-  "backup_data_text": "Twój profil, kontakty, konta, tagi oraz aktywność będzie zaszyfrowana i skopiowana automatycznie do naszego darmowego serwisu w chmurze.",
   "pass": "hasło",
   "pass_your": "Twoje hasło",
   "pass_text": "Dodałeś hasło do swojego mnemonika podczas tworzenia portfela",

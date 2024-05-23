@@ -72,7 +72,6 @@
 		"latest": "latest data backups",
 		"status_failed": "Failed Backup: {time}",
 		"status_success": "Latest Backup: {time}",
-		"status_empty": "Backup not needed",
 		"category_connections": "Connections",
 		"category_connection_receipts": "Connection Receipts",
 		"category_transaction_log": "Transaction Log",
@@ -88,7 +87,6 @@
 		"report": "Report Issue",
 		"help": "Help Center",
 		"status": "App Status",
-		"help_url": "https://help.bitkit.to",
 		"report_text": "Please describe the issue you are experiencing or ask a general question.",
 		"label_address": "Email address",
 		"label_message": "Issue or question",
@@ -247,7 +245,6 @@
 	"rgs": {
 		"server_url": "Rapid-Gossip-Sync Server URL",
 		"button_connect": "Connect",
-		"button_reconnect": "Re-Connect",
 		"update_success_title": "Rapid-Gossip-Sync Server Updated",
 		"update_success_description": "You may need to restart the app once or twice for this change to take effect."
 	},

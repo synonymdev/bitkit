@@ -36,7 +36,7 @@
 	},
 	"transferPending": {
 		"title": "Transfer",
-		"description": "Ready in ±{duration}m"
+		"description": "Ready in ±{duration}"
 	},
 	"transferClosingChannel": {
 		"title": "Initiating...",

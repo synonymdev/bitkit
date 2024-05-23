@@ -10,7 +10,13 @@ import {
 import { createSelector } from '@reduxjs/toolkit';
 
 import { RootState } from '..';
-import { IWalletStore, IWallets, IWallet, TWalletName } from '../types/wallet';
+import {
+	IWalletStore,
+	IWallets,
+	IWallet,
+	TWalletName,
+	ETransferStatus,
+} from '../types/wallet';
 import { defaultSendTransaction } from '../shapes/wallet';
 import { EAvailableNetwork } from '../../utils/networks';
 import { IExchangeRates } from '../../utils/exchange-rate';
@@ -114,6 +120,22 @@ export const transfersSelector = createSelector([walletState], (wallet) => {
 	const { selectedWallet, selectedNetwork } = wallet;
 	return wallet.wallets[selectedWallet].transfers[selectedNetwork];
 });
+
+/**
+ * Returns pending transfers for the currently selected wallet.
+ */
+export const pendingTransfersSelector = createSelector(
+	[walletState],
+	(wallet) => {
+		const { selectedWallet, selectedNetwork } = wallet;
+		const transfers = wallet.wallets[selectedWallet].transfers[selectedNetwork];
+		const pendingTransfers = transfers.filter((transfer) => {
+			return transfer.status === ETransferStatus.pending;
+		});
+
+		return pendingTransfers;
+	},
+);
 
 /**
  * Returns transfers for the currently selected wallet.

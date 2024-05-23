@@ -5,12 +5,11 @@ import React, {
 	useEffect,
 	useState,
 } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, TouchableOpacity } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useFocusEffect } from '@react-navigation/native';
 
 import { Caption13Up } from '../../../styles/text';
-import { TouchableOpacity } from '../../../styles/components';
 import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
 import NumberPadTextField from '../../../components/NumberPadTextField';
 import SafeAreaInset from '../../../components/SafeAreaInset';
@@ -32,6 +31,7 @@ import {
 	unitSelector,
 } from '../../../store/reselect/settings';
 import type { ReceiveScreenProps } from '../../../navigation/types';
+import { useSwitchUnit } from '../../../hooks/wallet';
 
 const ReceiveAmount = ({
 	navigation,
@@ -43,6 +43,7 @@ const ReceiveAmount = ({
 	const denomination = useAppSelector(denominationSelector);
 	const invoice = useAppSelector(receiveSelector);
 	const blocktank = useAppSelector(blocktankInfoSelector);
+	const switchUnit = useSwitchUnit();
 	const [minimumAmount, setMinimumAmount] = useState(0);
 
 	const { maxChannelSizeSat } = blocktank.options;
@@ -76,10 +77,15 @@ const ReceiveAmount = ({
 	const onChangeUnit = (): void => {
 		const result = getNumberPadText(invoice.amount, denomination, nextUnit);
 		dispatch(updateInvoice({ numberPadText: result }));
+		switchUnit();
 	};
 
 	const onContinue = (): void => {
 		navigation.navigate('ReceiveConnect');
+	};
+
+	const onNumberPadPress = (): void => {
+		onChangeUnit();
 	};
 
 	const continueDisabled =
@@ -95,6 +101,7 @@ const ReceiveAmount = ({
 				<NumberPadTextField
 					value={invoice.numberPadText}
 					testID="ReceiveNumberPadTextField"
+					onPress={onNumberPadPress}
 				/>
 
 				<View style={styles.numberPad} testID="ReceiveNumberPad">

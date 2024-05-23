@@ -116,21 +116,26 @@ const Widget = ({
 						</BodyM>
 					)}
 
-					<TouchableOpacity
-						style={styles.item}
-						activeOpacity={0.6}
-						testID="WidgetEdit"
-						onPress={onEdit}>
-						<View style={styles.columnLeft}>
-							<BodyM color="white">{t('widget_edit')}</BodyM>
-						</View>
-						<View style={styles.columnRight}>
-							<BodyM style={styles.valueText} testID="Value">
-								{hasEdited ? t('widget_edit_custom') : t('widget_edit_default')}
-							</BodyM>
-							<ChevronRight color="white50" width={24} height={24} />
-						</View>
-					</TouchableOpacity>
+					{(config.type === SUPPORTED_FEED_TYPES.PRICE_FEED ||
+						config.type === SUPPORTED_FEED_TYPES.BLOCKS_FEED) && (
+						<TouchableOpacity
+							style={styles.item}
+							activeOpacity={0.6}
+							testID="WidgetEdit"
+							onPress={onEdit}>
+							<View style={styles.columnLeft}>
+								<BodyM color="white">{t('widget_edit')}</BodyM>
+							</View>
+							<View style={styles.columnRight}>
+								<BodyM style={styles.valueText} testID="Value">
+									{hasEdited
+										? t('widget_edit_custom')
+										: t('widget_edit_default')}
+								</BodyM>
+								<ChevronRight color="white50" width={24} height={24} />
+							</View>
+						</TouchableOpacity>
+					)}
 
 					<View style={styles.footer}>
 						<Caption13Up style={styles.caption} color="white50">

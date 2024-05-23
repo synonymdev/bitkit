@@ -5,7 +5,6 @@ import { useTranslation } from 'react-i18next';
 import { useAppSelector } from '../../../hooks/redux';
 import { processInputData, validateInputData } from '../../../utils/scanner';
 import { showToast } from '../../../utils/notifications';
-import { useSlashtagsSDK } from '../../../components/SlashtagsProvider';
 import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
 import SafeAreaInset from '../../../components/SafeAreaInset';
 import ScannerComponent from '../../Scanner/ScannerComponent';
@@ -18,7 +17,6 @@ const ScannerScreen = (): ReactElement => {
 	const { t } = useTranslation('other');
 	const selectedNetwork = useAppSelector(selectedNetworkSelector);
 	const selectedWallet = useAppSelector(selectedWalletSelector);
-	const sdk = useSlashtagsSDK();
 
 	const onRead = async (data: string): Promise<void> => {
 		if (!data) {
@@ -33,14 +31,12 @@ const ScannerScreen = (): ReactElement => {
 		const decodeRes = await validateInputData({
 			data,
 			source: 'send',
-			sdk,
 			showErrors: true,
 		});
 		if (decodeRes.isOk()) {
 			await processInputData({
 				data,
 				source: 'send',
-				sdk,
 				selectedNetwork,
 				selectedWallet,
 			});

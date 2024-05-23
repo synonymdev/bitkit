@@ -1,4 +1,5 @@
 import { createSelector } from '@reduxjs/toolkit';
+import { TClaimableBalance } from '@synonymdev/react-native-ldk';
 
 import {
 	TChannel,
@@ -6,6 +7,7 @@ import {
 	TLightningState,
 	TNode,
 	TNodes,
+	EChannelClosureReason,
 } from '../types/lightning';
 import { RootState } from '..';
 import { TWalletName } from '../types/wallet';
@@ -138,26 +140,24 @@ export const channelsSizeSelector = createSelector(
 );
 
 /**
- * Returns claimable balances.
- * @param {RootState} state
- * @returns {number}
- */
-export const claimableBalancesSelector = createSelector(
-	[lightningState, selectedWalletSelector, selectedNetworkSelector],
-	(lightning, selectedWallet, selectedNetwork) => {
-		const node = lightning.nodes[selectedWallet];
-		return node?.claimableBalances[selectedNetwork] ?? [];
-	},
-);
-
-/**
- * Returns sum of all claimable balances.
+ * Returns sum of claimable balances from all force closed channels.
+ * We are only interested in force closed channels since funds from mutual closes are included in the onchain balance.
  */
 export const claimableBalanceSelector = createSelector(
-	[lightningState, selectedWalletSelector, selectedNetworkSelector],
-	(lightning, selectedWallet, selectedNetwork) => {
-		const node = lightning.nodes[selectedWallet];
-		const claimableBalances = node?.claimableBalances[selectedNetwork] ?? [];
+	[closedChannelsSelector],
+	(closedChannels) => {
+		const forceClosed = closedChannels.filter((channel) => {
+			// TODO: Probably need to be more specific here
+			return channel.closureReason !== EChannelClosureReason.CooperativeClosure;
+		});
+
+		const claimableBalances = forceClosed.reduce(
+			(acc: TClaimableBalance[], channel) => {
+				return acc.concat(channel.claimable_balances);
+			},
+			[],
+		);
+
 		const result = reduceValue(claimableBalances, 'amount_satoshis');
 		const claimableBalance = result.isOk() ? result.value : 0;
 		return claimableBalance;

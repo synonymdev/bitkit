@@ -390,6 +390,16 @@ export const timeAgo = (timestamp: string | number | Date): string => {
 	});
 };
 
+export const getDurationForBlocks = (blocks: number): string => {
+	if (blocks > 143) {
+		return `${Math.round((blocks * 10) / 60 / 24)} days`;
+	}
+	if (blocks > 6) {
+		return `${Math.round((blocks * 10) / 60)}h`;
+	}
+	return `${blocks * 10}m`;
+};
+
 export const openURL = async (url: string): Promise<boolean> => {
 	const supported = await Linking.canOpenURL(url);
 	try {

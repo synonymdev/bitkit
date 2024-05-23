@@ -26,7 +26,7 @@ import { pinSelector } from './settings';
 import { onboardingProfileStepSelector } from './slashtags';
 import { closedChannelsSelector, openChannelsSelector } from './lightning';
 import { blocktankPaidOrdersFullSelector } from './blocktank';
-import { transfersSelector } from './wallet';
+import { pendingTransfersSelector } from './wallet';
 import { ETransferType, TTransferToSavings } from '../types/wallet';
 
 export const todosSelector = (state: RootState): TTodosState => state.todos;
@@ -56,7 +56,7 @@ export const todosFullSelector = createSelector(
 	startCoopCloseTimestampSelector,
 	blocktankPaidOrdersFullSelector,
 	newChannelsNotificationsSelector,
-	transfersSelector,
+	pendingTransfersSelector,
 	(
 		todos,
 		backupVerified,
@@ -93,18 +93,14 @@ export const todosFullSelector = createSelector(
 			return Number(new Date(order.orderExpiresAt)) > hide.btFailed;
 		});
 
+		const hasTransferred = openChannels.length > 0 || closedChannels.length > 0;
+
 		const transferToSpending = transfers.find((t) => {
-			const isOpen = t.type === ETransferType.open;
-			const isPending = t.status === 'pending';
-			return isOpen && isPending;
+			return t.type === ETransferType.open;
 		});
 
 		const transferToSavings = transfers.find((t) => {
-			const isClose =
-				t.type === ETransferType.coopClose ||
-				t.type === ETransferType.forceClose;
-
-			return isClose && t.confirmations < 6;
+			return t.type !== ETransferType.open;
 		});
 
 		// lightning
@@ -116,24 +112,15 @@ export const todosFullSelector = createSelector(
 			res.push(btFailedTodo);
 		} else if (transferToSpending) {
 			res.push(lightningSettingUpTodo);
-		} else if (openChannels.length === 0 && closedChannels.length === 0) {
-			if (transferToSavings) {
-				const transfer = transferToSavings as TTransferToSavings;
-				const requiredConfs = 6;
-				const duration = (requiredConfs - transfer.confirmations) * 10;
-				res.push({ ...transferPendingTodo, duration }); // TODO: distinguish between coop and force close
-			} else if (!hide.lightning) {
-				res.push(lightningTodo);
-			}
+		} else if (transferToSavings) {
+			const { confirmsIn } = transferToSavings as TTransferToSavings;
+			res.push({ ...transferPendingTodo, confirmsIn });
+		} else if (!hasTransferred && !hide.lightning) {
+			res.push(lightningTodo);
 		} else {
 			// some channels exist
 			if (startCoopCloseTimestamp > 0) {
 				res.push(transferClosingChannelTodo);
-			} else if (transferToSavings) {
-				const transfer = transferToSavings as TTransferToSavings;
-				const requiredConfs = 6;
-				const duration = (requiredConfs - transfer.confirmations) * 10;
-				res.push({ ...transferPendingTodo, duration }); // TODO: find a way to distinguish between transfer to and from spendings
 			}
 		}
 

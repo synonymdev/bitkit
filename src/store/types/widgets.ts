@@ -34,11 +34,7 @@ export type TFeedWidget = {
 	extras?: TWidgetSettings['extras'];
 };
 
-export type TAuthWidget = {
-	magiclink: boolean;
-};
-
-export type TWidget = TFeedWidget | TAuthWidget;
+export type TWidget = TFeedWidget;
 
 export type TWidgets = {
 	[url: string]: TWidget | undefined;

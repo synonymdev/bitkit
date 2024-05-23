@@ -4,7 +4,7 @@ import validate, { getAddressInfo } from 'bitcoin-address-validation';
 import { __E2E__ } from '../../constants/env';
 import { EAvailableNetwork } from '../networks';
 import { reduceValue } from '../helpers';
-import { btcToSats, satsToBtc } from '../conversion';
+import { btcToSats } from '../conversion';
 import { TWalletName } from '../../store/types/wallet';
 import {
 	getBalance,
@@ -962,6 +962,20 @@ export const setupCpfp = async ({
 	satsPerByte?: number;
 }): Promise<Result<ISendTransaction>> => {
 	const transaction = getOnChainWalletTransaction();
+	// Set fastest fee-rate, if able. Otherwise, set the highest fee-rate.
+	if (!satsPerByte) {
+		const fees = getFeesStore().onchain;
+		satsPerByte = fees[ETransactionSpeed.fast];
+		const wallet = getOnChainWallet();
+		const feeInfo = wallet.getFeeInfo();
+		if (feeInfo.isErr()) {
+			return err(feeInfo.error.message);
+		}
+		const { maxSatPerByte } = feeInfo.value;
+		if (!satsPerByte || satsPerByte > maxSatPerByte) {
+			satsPerByte = maxSatPerByte;
+		}
+	}
 	return await transaction.setupCpfp({ txid, satsPerByte });
 };
 
@@ -1103,7 +1117,7 @@ export const broadcastBoost = async ({
 		const updatedActivityItemData: Partial<TOnchainActivityItem> = {
 			txId: newTxId,
 			address: transaction.changeAddress,
-			fee: oldFee + satsToBtc(transaction.fee),
+			fee: oldFee + transaction.fee,
 			isBoosted: true,
 			timestamp: new Date().getTime(),
 		};

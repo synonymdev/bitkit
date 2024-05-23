@@ -10,7 +10,6 @@ import { Caption13Up } from '../../../styles/text';
 import Button from '../../../components/Button';
 import GradientView from '../../../components/GradientView';
 import SafeAreaInset from '../../../components/SafeAreaInset';
-import { useSlashtagsSDK } from '../../../components/SlashtagsProvider';
 import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
 import { processInputData, validateInputData } from '../../../utils/scanner';
 import useColors from '../../../hooks/colors';
@@ -24,7 +23,6 @@ import {
 
 const Address = ({}: SendScreenProps<'Address'>): ReactElement => {
 	const colors = useColors();
-	const sdk = useSlashtagsSDK();
 	const { t } = useTranslation('wallet');
 	const { keyboardShown } = useKeyboard();
 	const [textFieldValue, setTextFieldValue] = useState('');
@@ -41,7 +39,6 @@ const Address = ({}: SendScreenProps<'Address'>): ReactElement => {
 		const result = await validateInputData({
 			data: text,
 			source: 'send',
-			sdk,
 			showErrors: hasPasted,
 		});
 		if (result.isErr()) {
@@ -57,7 +54,6 @@ const Address = ({}: SendScreenProps<'Address'>): ReactElement => {
 		await processInputData({
 			data: textFieldValue,
 			source: 'send',
-			sdk,
 			selectedNetwork,
 			selectedWallet,
 		});

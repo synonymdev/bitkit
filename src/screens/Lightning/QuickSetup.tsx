@@ -101,11 +101,11 @@ const QuickSetup = ({
 
 	useEffect(() => {
 		// set to initial client balance
-		const value = lnSetup.initialClientBalance;
+		const value = lnSetup.slider.initialValue;
 		const result = getNumberPadText(value, denomination, unit);
 		setTextFieldValue(result);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [lnSetup.initialClientBalance]);
+	}, [lnSetup.slider.initialValue]);
 
 	const onMax = useCallback(() => {
 		const result = getNumberPadText(
@@ -193,6 +193,7 @@ const QuickSetup = ({
 
 	const showMaxSpendingNote = spendingAmount >= lnSetup.limits.local;
 	const showLspLimitNote = spendingAmount >= Math.round(lnSetup.limits.lsp);
+	const maxSpendingPercentage = Math.max(lnSetup.percentage.spending, 80);
 
 	return (
 		<ThemedView style={styles.root}>
@@ -237,7 +238,7 @@ const QuickSetup = ({
 							</View>
 							<View style={styles.percentages}>
 								<Percentage
-									value={lnSetup.percentage.spendings}
+									value={lnSetup.percentage.spending}
 									type="spending"
 								/>
 								<Percentage value={lnSetup.percentage.savings} type="savings" />
@@ -264,7 +265,11 @@ const QuickSetup = ({
 								entering={FadeIn}
 								exiting={FadeOut}
 								testID="QuickSetupReserveNote">
-								<BodyS color="white50">{t('note_reserve_limit')}</BodyS>
+								<BodyS color="white50">
+									{t('note_reserve_limit', {
+										percentage: maxSpendingPercentage,
+									})}
+								</BodyS>
 							</AnimatedView>
 						)}
 

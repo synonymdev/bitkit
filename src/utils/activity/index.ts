@@ -2,8 +2,8 @@ import { err, ok, Result } from '@synonymdev/result';
 import { EPaymentType, IFormattedTransaction } from 'beignet';
 
 import { btcToSats } from '../conversion';
-import { getCurrentWallet } from '../wallet';
 import i18n, { i18nTime } from '../../utils/i18n';
+import { getTransferForTx } from '../wallet/transfer';
 import { getActivityStore } from '../../store/helpers';
 import {
 	EActivityType,
@@ -16,19 +16,12 @@ import {
  * @param {IFormattedTransaction} transaction
  * @returns {TOnchainActivityItem} activityItem
  */
-export const onChainTransactionToActivityItem = ({
+export const onChainTransactionToActivityItem = async ({
 	transaction,
 }: {
 	transaction: IFormattedTransaction;
-}): TOnchainActivityItem => {
-	const { currentWallet, selectedNetwork } = getCurrentWallet();
-	const { transfers } = currentWallet;
-
-	const transfer = transfers[selectedNetwork].find((t) => {
-		return t.txId === transaction.txid;
-	});
-	const isTransferToSpending = transfer?.type === 'open' ?? false;
-	const isTransferToSavings = transfer?.type === 'coop-close' ?? false;
+}): Promise<TOnchainActivityItem> => {
+	const transfer = await getTransferForTx(transaction);
 
 	// subtract fee from amount if applicable
 	const amount =
@@ -37,8 +30,8 @@ export const onChainTransactionToActivityItem = ({
 			: transaction.value;
 
 	return {
+		id: transfer ? transfer.txId : transaction.txid,
 		exists: transaction?.exists ?? true,
-		id: transaction.txid,
 		activityType: EActivityType.onchain,
 		txType: transaction.type,
 		txId: transaction.txid,
@@ -48,7 +41,7 @@ export const onChainTransactionToActivityItem = ({
 		address: transaction.address,
 		confirmed: transaction.height > 0,
 		isBoosted: false,
-		isTransfer: isTransferToSavings || isTransferToSpending,
+		isTransfer: !!transfer,
 		timestamp: transaction.timestamp,
 		confirmTimestamp: transaction.confirmTimestamp,
 	};

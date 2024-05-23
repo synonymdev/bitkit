@@ -5,14 +5,8 @@ declare module '@env' {
 	export const ENABLE_MIGRATION_DEBUG: string;
 	export const ENABLE_LDK_LOGS: string;
 
-	export const BACKUPS_SHARED_SECRET: string;
-	export const BACKUPS_SERVER_SLASHTAG: string;
 	export const BACKUPS_SERVER_HOST: string;
 	export const BACKUPS_SERVER_PUBKEY: string;
-
-	export const DISABLE_SLASHTAGS: string;
-	export const SLASHTAGS_SEEDER_BASE_URL: string;
-	export const SLASHTAGS_SEEDER_TOPIC: string;
 
 	export const BLOCKTANK_HOST: string;
 

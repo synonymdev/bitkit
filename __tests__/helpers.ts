@@ -5,6 +5,7 @@ import {
 	isObjPartialMatch,
 	ellipsis,
 	generateCalendar,
+	getDurationForBlocks,
 } from '../src/utils/helpers';
 
 describe('removeKeysFromObject', () => {
@@ -110,6 +111,17 @@ describe('timeAgo', () => {
 		expect(timeAgo(+new Date(new Date().getFullYear(), 0, 1))).toEqual(
 			'January 1 at 12:00 AM',
 		);
+	});
+});
+
+describe('getDurationForBlocks', () => {
+	it('return human readable duration for number of blocks', () => {
+		expect(getDurationForBlocks(1)).toEqual('10m');
+		expect(getDurationForBlocks(6)).toEqual('60m');
+		expect(getDurationForBlocks(7)).toEqual('1h');
+		expect(getDurationForBlocks(25)).toEqual('4h');
+		expect(getDurationForBlocks(144)).toEqual('1 days');
+		expect(getDurationForBlocks(2016)).toEqual('14 days');
 	});
 });
 

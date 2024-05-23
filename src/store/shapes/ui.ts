@@ -21,7 +21,6 @@ export const defaultViewControllers: TUiState['viewControllers'] = {
 	profileAddDataForm: defaultViewController,
 	receiveNavigation: defaultViewController,
 	sendNavigation: defaultViewController,
-	slashauthModal: defaultViewController,
 	timeRangePrompt: defaultViewController,
 	treasureHunt: defaultViewController,
 	tagsPrompt: defaultViewController,

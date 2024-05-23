@@ -45,10 +45,7 @@ import {
 import { blocktankInfoSelector } from '../../store/reselect/blocktank';
 import TransferTextField from '../../components/TransferTextField';
 import { getNumberPadText } from '../../utils/numberpad';
-import {
-	BT_MIN_CHANNEL_SIZE_SAT_MULTIPLIER,
-	MAX_SPENDING_PERCENTAGE,
-} from '../../utils/wallet/constants';
+import { MAX_SPENDING_PERCENTAGE } from '../../utils/wallet/constants';
 import { refreshBlocktankInfo } from '../../store/utils/blocktank';
 import { lnSetupSelector } from '../../store/reselect/aggregations';
 import { useDisplayValues } from '../../hooks/displayValues';
@@ -249,12 +246,6 @@ const CustomSetup = ({
 			const medium = receivingPackages.find((p) => p.id === 'medium')!;
 			const big = receivingPackages.find((p) => p.id === 'big')!;
 
-			const minChannelSize = Math.round(
-				blocktankInfo.options.minChannelSizeSat +
-					blocktankInfo.options.minChannelSizeSat *
-						BT_MIN_CHANNEL_SIZE_SAT_MULTIPLIER,
-			);
-
 			// Attempt to suggest a receiving balance 10x greater than current on-chain balance.
 			// May not be able to afford anything much larger.
 			const balanceMultiplied = onchainBalance * 10;
@@ -265,8 +256,8 @@ const CustomSetup = ({
 					? medium.satoshis
 					: balanceMultiplied > small.satoshis
 					? small.satoshis
-					: balanceMultiplied > minChannelSize
-					? minChannelSize
+					: balanceMultiplied > limits.minChannelSize
+					? limits.minChannelSize
 					: 0;
 
 			const result = getNumberPadText(amount, denomination, unit);
@@ -275,7 +266,7 @@ const CustomSetup = ({
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [
 		maxChannelSizeSat,
-		blocktankInfo.options.minChannelSizeSat,
+		limits.minChannelSize,
 		onchainBalance,
 		receivingPackages,
 		spending,

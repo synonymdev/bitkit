@@ -33,7 +33,6 @@ import { useAppDispatch } from '../../hooks/redux';
 import { validateMnemonic } from '../../utils/wallet';
 import { restoreSeed } from '../../utils/startup';
 import { showToast } from '../../utils/notifications';
-import LoadingWalletScreen from './Loading';
 import NavigationHeader from '../../components/NavigationHeader';
 import { updateUser, verifyBackup } from '../../store/slices/user';
 
@@ -51,10 +50,11 @@ const RestoreFromSeed = (): ReactElement => {
 	const { t } = useTranslation('onboarding');
 	const enableButtons = useMemo(
 		() =>
+			!isRestoringWallet &&
 			!seed.includes(undefined) &&
 			!validWords.includes(false) &&
 			validateMnemonic(seed.join(' ')),
-		[seed, validWords],
+		[isRestoringWallet, seed, validWords],
 	);
 	const showRedExplanation = useMemo(
 		() => seed.some((word, index) => word !== undefined && !validWords[index]),
@@ -169,14 +169,6 @@ const RestoreFromSeed = (): ReactElement => {
 			/>
 		);
 	};
-
-	if (isRestoringWallet) {
-		return (
-			<ThemedView style={styles.root}>
-				<LoadingWalletScreen />
-			</ThemedView>
-		);
-	}
 
 	return (
 		<ThemedView style={styles.root}>

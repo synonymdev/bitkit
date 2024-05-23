@@ -2,13 +2,10 @@ import { err, ok, Result } from '@synonymdev/result';
 
 import actions from './actions';
 import {
-	ETransferStatus,
-	ETransferType,
 	ICreateWallet,
 	IWallets,
 	IWalletStore,
 	TTransfer,
-	TTransferToSavings,
 	TWalletName,
 } from '../types/wallet';
 import {
@@ -299,16 +296,18 @@ export const addTransfer = (payload: TTransfer): void => {
 };
 
 export const updateTransfer = ({
-	txId,
 	type,
-	confirmations,
+	txId,
+	amount,
+	confirmsIn,
 }: {
+	type: 'open' | 'close';
 	txId: string;
-	type: ETransferType;
-	confirmations?: number;
+	amount?: number;
+	confirmsIn?: number;
 }): void => {
 	switch (type) {
-		case ETransferType.open: {
+		case 'open': {
 			const orders = getBlocktankStore().orders;
 			const order = orders.find((o) => o.channel?.fundingTx.id === txId);
 			if (order) {
@@ -320,38 +319,14 @@ export const updateTransfer = ({
 			}
 			break;
 		}
-		case ETransferType.coopClose:
-		case ETransferType.forceClose: {
+		case 'close': {
 			dispatch({
 				type: actions.UPDATE_TRANSFER,
-				payload: { txId, confirmations },
+				payload: { txId, amount, confirmsIn },
 			});
 			break;
 		}
 	}
-};
-
-export const updatePendingTransfers = (headerHeight: number): void => {
-	const { currentWallet, selectedNetwork } = getCurrentWallet();
-	const transactions = currentWallet.transactions[selectedNetwork];
-	const transfers = currentWallet.transfers[selectedNetwork];
-	const pendingTransfers = transfers.filter((t) => {
-		return (
-			t.type !== ETransferType.open && t.status === ETransferStatus.pending
-		);
-	}) as TTransferToSavings[];
-
-	pendingTransfers.forEach((transfer) => {
-		const tx = transactions[transfer.txId];
-		if (tx && transfer.confirmations <= 6) {
-			const confs = tx.height <= 0 ? 0 : headerHeight - tx.height + 1;
-			updateTransfer({
-				txId: transfer.txId,
-				type: ETransferType.coopClose,
-				confirmations: confs,
-			});
-		}
-	});
 };
 
 /**
@@ -874,7 +849,6 @@ export const setWalletData = async <K extends keyof IWalletData>(
 				updateHeader({ header, selectedNetwork });
 				// Make sure transactions are updated after a new block is received.
 				await refreshWallet({ lightning: false });
-				updatePendingTransfers(header.height);
 				break;
 			case 'feeEstimates':
 				updateOnchainFeeEstimates({

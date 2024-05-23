@@ -67,21 +67,6 @@ const Recovery = ({
 		}
 	};
 
-	const onShowLdkRecovery = async (): Promise<void> => {
-		if (pin) {
-			navigation.navigate('AuthCheck', {
-				onSuccess: () => {
-					// hack needed for Android
-					setTimeout(() => {
-						navigation.navigate('Lightning');
-					}, 100);
-				},
-			});
-		} else {
-			navigation.navigate('Lightning');
-		}
-	};
-
 	const onContactSupport = async (): Promise<void> => {
 		const link = await createSupportLink();
 		const res = await openURL(link);
@@ -138,14 +123,6 @@ const Recovery = ({
 						variant="secondary"
 						disabled={locked || !walletExists}
 						onPress={onShowSeed}
-					/>
-					<Button
-						style={styles.button}
-						text={t('lightning_recovery_title')}
-						size="large"
-						variant="secondary"
-						disabled={locked || !walletExists}
-						onPress={onShowLdkRecovery}
 					/>
 					<Button
 						style={styles.button}

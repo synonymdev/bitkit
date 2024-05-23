@@ -569,10 +569,10 @@ const OnchainActivityDetail = ({
 				<>
 					<TouchableOpacity
 						style={styles.sectionContainer}
-						onPress={(): void => onCopy(id)}>
+						onPress={(): void => onCopy(txId)}>
 						<Section
 							title={t('activity_tx_id')}
-							value={<BodySSB>{id}</BodySSB>}
+							value={<BodySSB>{txId}</BodySSB>}
 						/>
 					</TouchableOpacity>
 					<TouchableOpacity
@@ -995,7 +995,9 @@ const ActivityDetail = ({
 		: t('activity_bitcoin_received');
 
 	if (isTransfer) {
-		title = t('activity_transfer_spending_done');
+		title = isSend
+			? t('activity_transfer_spending_done')
+			: t('activity_transfer_savings_done');
 	}
 
 	return (

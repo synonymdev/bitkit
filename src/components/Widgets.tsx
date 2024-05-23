@@ -13,22 +13,20 @@ import DraggableFlatList, {
 	ScaleDecorator,
 } from 'react-native-draggable-flatlist';
 
-import { __DISABLE_SLASHTAGS__ } from '../constants/env';
 import { rootNavigation } from '../navigation/root/RootNavigator';
 import { TouchableOpacity, View } from '../styles/components';
-import { Caption13Up, Text, BodyMSB } from '../styles/text';
+import { Caption13Up, BodyMSB } from '../styles/text';
 import { PlusIcon, SortAscendingIcon, Checkmark } from '../styles/icons';
 import { useAppDispatch, useAppSelector } from '../hooks/redux';
 import { SUPPORTED_FEED_TYPES } from '../utils/widgets';
 import { setWidgetsSortOrder } from '../store/slices/widgets';
 import PriceWidget from './PriceWidget';
-import AuthWidget from './AuthWidget';
 import FeedWidget from './FeedWidget';
 import HeadlinesWidget from './HeadlinesWidget';
 import BlocksWidget from './BlocksWidget';
 import FactsWidget from './FactsWidget';
 import LuganoFeedWidget from './LuganoFeedWidget';
-import { TAuthWidget, TFeedWidget, TWidget } from '../store/types/widgets';
+import { TFeedWidget, TWidget } from '../store/types/widgets';
 import {
 	onboardedWidgetsSelector,
 	widgetsOrderSelector,
@@ -75,22 +73,6 @@ const Widgets = (): ReactElement => {
 					drag();
 				}
 			};
-
-			if (!Object.hasOwn(widget, 'type')) {
-				const authWidget = widget as TAuthWidget;
-				return (
-					<ScaleDecorator>
-						<AuthWidget
-							style={styles.widget}
-							url={url}
-							widget={authWidget}
-							isEditing={editing}
-							onLongPress={_drag}
-							onPressIn={_drag}
-						/>
-					</ScaleDecorator>
-				);
-			}
 
 			const feedWidget = widget as TFeedWidget;
 
@@ -144,17 +126,6 @@ const Widgets = (): ReactElement => {
 		},
 		[editing, sortedWidgets.length],
 	);
-
-	if (__DISABLE_SLASHTAGS__) {
-		return (
-			<>
-				<View style={styles.title}>
-					<Caption13Up color="white50">{t('widgets')}</Caption13Up>
-				</View>
-				<Text color="gray">{t('disabled')}</Text>
-			</>
-		);
-	}
 
 	return (
 		<View style={styles.root}>

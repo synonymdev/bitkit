@@ -51,7 +51,6 @@
     "reset": "Borrar y restaurar monedero",
     "status_failed": "Respaldo fallido: {time}",
     "status_success": "Último respaldo: {time}",
-    "status_empty": "Respaldo no necesario",
     "category_connections": "Conexiones",
     "category_transaction_log": "Registro de Transacciones",
     "category_settings": "Ajustes",

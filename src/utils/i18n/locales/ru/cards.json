@@ -3,16 +3,29 @@
     "title": "Бекап"
   },
   "discount": {
+    "title": "Скидка",
     "description": "Баланс Расходов"
+  },
+  "fastpay": {
+    "title": "Fastpay",
+    "description": "Сканируйте и платите"
+  },
+  "invite": {
+    "title": "Пригласить",
+    "description": "Поделитесь Bitkit"
+  },
+  "lightning": {
+    "title": "Тратить"
   },
   "lightningSettingUp": {
     "title": "Перенос",
+    "description0": "Обработка платежа",
     "description1": "Оплачено",
     "description2": "В очереди",
     "description3": "Открывается"
   },
   "lightningConnecting": {
-    "title": "Вы\nподключены!",
+    "title": "Подключение",
     "description": "Готовность ±10м"
   },
   "lightningReady": {
@@ -28,20 +41,24 @@
     "description": "Не закрывайте приложение"
   },
   "pin": {
-    "description": "Установить"
+    "title": "Безопасность",
+    "description": "Установите PIN-код"
   },
   "slashtagsProfile": {
     "title": "Профиль",
-    "description": "Редактировать"
+    "description": "Добавьте свои данные"
   },
   "support": {
-    "title": "Поддержка"
+    "title": "Поддержка",
+    "description": "Получите помощь"
   },
   "buyBitcoin": {
-    "description": "Купить биткоин"
+    "title": "Купить",
+    "description": "Купите биткоин"
   },
   "btFailed": {
-    "description": "Пожалуйста, попробуйте снова"
+    "title": "Не удалось",
+    "description": "Попробуйте снова"
   },
   "suggestions": "Рекомендации"
 }

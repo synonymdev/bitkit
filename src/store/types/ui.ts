@@ -22,7 +22,6 @@ export type ViewControllerParamList = {
 	profileAddDataForm: undefined;
 	receiveNavigation: { receiveScreen: keyof ReceiveStackParamList } | undefined;
 	sendNavigation: { screen: keyof SendStackParamList } | undefined;
-	slashauthModal: { url: string };
 	timeRangePrompt: undefined;
 	treasureHunt: { chestId: string };
 	tagsPrompt: undefined;

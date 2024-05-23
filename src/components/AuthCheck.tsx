@@ -12,8 +12,14 @@ import { biometricsSelector } from '../store/reselect/settings';
 type AuthCheckProps = {
 	showBackNavigation?: boolean;
 	showLogoOnPIN?: boolean;
-	route?: RouteProp<{ params: { requirePin: boolean; onSuccess: () => void } }>;
 	onSuccess?: () => void;
+	route?: RouteProp<{
+		params: {
+			requirePin?: boolean;
+			requireBiometrics?: boolean;
+			onSuccess: () => void;
+		};
+	}>;
 };
 
 /**
@@ -26,18 +32,19 @@ const AuthCheck = ({
 	onSuccess,
 }: AuthCheckProps): ReactElement => {
 	const biometrics = useAppSelector(biometricsSelector);
-	const [requireBiometrics, setRequireBiometrics] = useState(biometrics);
+	const [bioEnabled, setBioEnabled] = useState(biometrics);
 
 	const requirePin = route?.params?.requirePin ?? false;
+	const requireBiometrics = route?.params?.requireBiometrics ?? false;
 	onSuccess = route?.params?.onSuccess ?? onSuccess;
 
-	if (requireBiometrics && !requirePin) {
+	if ((bioEnabled && !requirePin) || requireBiometrics) {
 		return (
 			<Animated.View style={StyleSheet.absoluteFillObject} exiting={FadeOut}>
 				<ThemedView style={styles.root}>
 					<Biometrics
 						onSuccess={(): void => onSuccess?.()}
-						onFailure={(): void => setRequireBiometrics(false)}
+						onFailure={(): void => setBioEnabled(false)}
 					/>
 				</ThemedView>
 			</Animated.View>
@@ -50,7 +57,7 @@ const AuthCheck = ({
 				showBackNavigation={showBackNavigation}
 				showLogoOnPIN={showLogoOnPIN}
 				allowBiometrics={biometrics && !requirePin}
-				onShowBiotmetrics={(): void => setRequireBiometrics(true)}
+				onShowBiotmetrics={(): void => setBioEnabled(true)}
 				onSuccess={(): void => onSuccess?.()}
 			/>
 		</Animated.View>

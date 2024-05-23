@@ -5,6 +5,7 @@ import {
 	Image,
 	useWindowDimensions,
 	TextInput,
+	Platform,
 } from 'react-native';
 import Animated, {
 	Easing,
@@ -136,7 +137,9 @@ const LoadingWalletScreen = (): ReactElement => {
 			<View style={styles.rocketContainer}>
 				<AnimatedView
 					entering={__E2E__ ? undefined : rocketAnimation}
-					exiting={__E2E__ ? undefined : FadeOut}
+					// exiting animation is disabled on Android due to a bug in reanimated
+					// Black screen appears after wallet restore
+					exiting={__E2E__ || Platform.OS === 'android' ? undefined : FadeOut}
 					color="transparent">
 					<Image style={styles.rocketImage} source={rocketSrc} />
 				</AnimatedView>

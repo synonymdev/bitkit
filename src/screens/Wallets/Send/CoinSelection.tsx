@@ -28,7 +28,6 @@ import {
 	transactionSelector,
 	utxosSelector,
 } from '../../../store/reselect/wallet';
-import { coinSelectPreferenceSelector } from '../../../store/reselect/settings';
 import { TRANSACTION_DEFAULTS } from '../../../utils/wallet/constants';
 import { IUtxo } from 'beignet';
 import { showToast } from '../../../utils/notifications';
@@ -87,7 +86,6 @@ const CoinSelection = ({
 
 	const transaction = useAppSelector(transactionSelector);
 	const utxos = useAppSelector(utxosSelector);
-	const coinSelectPreference = useAppSelector(coinSelectPreferenceSelector);
 	const [autoSelectionEnabled, setAutoSelectionEnabled] = useState(
 		transaction.inputs.length === utxos.length,
 	);
@@ -116,11 +114,6 @@ const CoinSelection = ({
 		combinedAndUnique.sort((a, b) => b.value - a.value);
 		return combinedAndUnique;
 	}, [inputs, utxos]);
-
-	const preference = useMemo(
-		() => t(`preference_${coinSelectPreference}`),
-		[coinSelectPreference, t],
-	);
 
 	const txInputValue = useMemo(
 		() => getTransactionInputValue({ inputs: transaction.inputs }),
@@ -181,7 +174,6 @@ const CoinSelection = ({
 					<View style={[styles.coinRoot, { borderBottomColor: white10 }]}>
 						<View style={styles.coinAmount}>
 							<BodyMSB>{t('selection_auto')}</BodyMSB>
-							<BodySSB color="white50">{preference}</BodySSB>
 						</View>
 						<Switch
 							value={autoSelectionEnabled}

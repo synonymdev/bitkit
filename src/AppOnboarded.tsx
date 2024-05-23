@@ -8,7 +8,6 @@ import InactivityTracker from './components/InactivityTracker';
 import { startWalletServices } from './utils/startup';
 import { unsubscribeFromLightningSubscriptions } from './utils/lightning';
 import { useAppSelector } from './hooks/redux';
-import { useMigrateSlashtags2 } from './hooks/slashtags2';
 import { dispatch } from './store/helpers';
 import { updateUi } from './store/slices/ui';
 import { isOnlineSelector } from './store/reselect/ui';
@@ -28,6 +27,7 @@ import {
 	getOnChainWalletElectrum,
 } from './utils/wallet';
 import { connectToElectrum } from './utils/wallet/electrum';
+import { updateExchangeRates } from './store/actions/wallet';
 
 const electrum = getOnChainWalletElectrum();
 
@@ -40,9 +40,6 @@ const AppOnboarded = (): ReactElement => {
 	const pin = useAppSelector(pinSelector);
 	const pinOnLaunch = useAppSelector(pinOnLaunchSelector);
 	const isOnline = useAppSelector(isOnlineSelector);
-
-	// migrate slashtags from v1 to v2
-	useMigrateSlashtags2();
 
 	// on App start
 	useEffect(() => {
@@ -114,6 +111,7 @@ const AppOnboarded = (): ReactElement => {
 					});
 				}
 				dispatch(updateUi({ isOnline: true }));
+				updateExchangeRates();
 			} else {
 				showToast({
 					type: 'warning',

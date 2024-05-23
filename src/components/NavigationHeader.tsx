@@ -130,7 +130,7 @@ const NavigationHeader = ({
 				<View style={styles.title}>
 					{icon && <View style={styles.titleIcon}>{icon}</View>}
 					<Text
-						style={styles.titleText}
+						style={[styles.titleText, !icon && styles.titleText100]}
 						numberOfLines={1}
 						ellipsizeMode="middle">
 						{title}
@@ -165,7 +165,6 @@ const styles = StyleSheet.create({
 	},
 	containerLg: {
 		height: HEADER_HEIGHT,
-		// marginBottom: 32,
 		marginBottom: 16,
 	},
 	containerSm: {
@@ -196,6 +195,11 @@ const styles = StyleSheet.create({
 	},
 	titleText: {
 		textAlign: 'center',
+	},
+	titleText100: {
+		// on android title sometimes get shrinked. So if there is no icon, make sure it takes the full width
+		// https://github.com/synonymdev/bitkit/issues/1758
+		width: '100%',
 	},
 	action: {
 		flex: 1,

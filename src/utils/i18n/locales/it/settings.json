@@ -12,6 +12,7 @@
   "support_title": "Supporto",
   "about": {
     "title": "Informazioni su Bitkit",
+    "text": "Grazie per essere un Bitcoiner responsabile.\nCambia il tuo portafoglio, cambia il mondo.\n\nBitkit ti consegna le chiavi del tuo denaro, del tuo profilo, dei tuoi contatti e dei tuoi account web.\n\nBitkit è stato realizzato da Synonym Software Ltd.",
     "legal": "Termini di Utilizzo",
     "share": "Condividi",
     "version": "Versione"
@@ -35,12 +36,15 @@
     "speed_title": "Velocità Transazione",
     "speed_default": "Velocità Transazione di Default",
     "speed_fee_custom": "Imposta commissione personalizzata",
+    "speed_fee_total": "₿ {feeSats} per la transazione media",
+    "speed_fee_total_fiat": "₿ {feeSats} per la transazione media ({fiatSymbol}{fiatFormatted})",
     "tags": "Tag",
     "tags_previously": "Tag usati in precedenza"
   },
   "widgets": {
     "nav_title": "Widget",
-    "showWidgets": "Widget"
+    "showWidgets": "Widget",
+    "showWidgetTitles": "Mostra titoli dei widget"
   },
   "security": {
     "title": "Sicurezza e privacy",
@@ -68,7 +72,6 @@
     "latest": "ultimi backup dei dati",
     "status_failed": "Backup fallito: {time}",
     "status_success": "Ultimo backup: {time}",
-    "status_empty": "Backup non necessario",
     "category_connections": "Connessioni",
     "category_connection_receipts": "Ricevute di Connessione",
     "category_transaction_log": "Log delle transazioni",
@@ -80,10 +83,10 @@
   },
   "support": {
     "title": "Supporto",
+    "text": "Ho bisogno di aiuto? Segnala il tuo problema da Bitkit, visita il centro assistenza, controlla lo stato o contattaci sui nostri canali social.",
     "report": "Segnala un problema",
     "help": "Centro assistenza",
     "status": "Stato dell'app",
-    "help_url": "https://help.bitkit.to",
     "report_text": "Descrivi il problema che stai riscontrando o fai una domanda generale.",
     "label_address": "Indirizzo e-mail",
     "label_message": "Problema o domanda",
@@ -165,6 +168,7 @@
     "lightning_connections": "Connessioni Lightning",
     "lightning_node": "Nodo Lightning",
     "electrum_server": "Server Electrum",
+    "rgs_server": "Rapid-Gossip-Sync",
     "web_relay": "Slashtags Web Relay",
     "bitcoin_network": "Rete Bitcoin"
   },
@@ -199,6 +203,7 @@
     "no_addrs_str": "Nessun indirizzo trovato durante la ricerca di \"{searchTxt}\".",
     "rescan_error": "Nuova scansione non riuscita",
     "rescan_error_description": "Bitkit non è stato in grado di controllare i saldi degli indirizzi.",
+    "spend_number": "{count, plural, one {Spendo ₿ {fundsToSpend} Da # indirizzo} many {Spendi ₿ {fundsToSpend} Da # indirizzi} other {Spendi ₿ {fundsToSpend} Da # indirizzi}}",
     "spend_all": "{count, plural, one {Spendere tutti i fondi da # indirizzo} many {Spendere tutti i fondi da # indirizzi} other {Spendi tutti i fondi da # indirizzi}}",
     "index": "Indice: {index}",
     "path": "Percorso: {path}",
@@ -207,6 +212,7 @@
     "private_key": "Chiave Privata: {privateKey}",
     "addr_change": "Cambia Indirizzi",
     "addr_receiving": "Indirizzi di ricezione",
+    "sats_found": "₿ {totalBalance} trovati",
     "gen_20": "Genera altri 20",
     "check_balances": "Controlla Saldi",
     "copied": "Copiato negli appunti"
@@ -239,7 +245,6 @@
   "rgs": {
     "server_url": "URL del server Rapid-Gossip-Sync",
     "button_connect": "Connetti",
-    "button_reconnect": "Riconnettiti",
     "update_success_title": "Server Rapid-Gossip-Sync aggiornato",
     "update_success_description": "Potrebbe essere necessario riavviare l'app una o due volte affinché la modifica abbia effetto."
   },

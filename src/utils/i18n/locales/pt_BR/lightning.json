@@ -12,9 +12,6 @@
   },
   "error_channel_purchase": "Falha na Configuração de Pagamentos Instantâneos",
   "error_channel_receiving": "O valor a ser recebido precisa ser maior que ${usdValue}",
-  "spending_money": "Saldo\nde Dinheiro.",
-  "spending_balance": "Saldo\nde Gastos.",
-  "enter_amount": "Escolha quanto bitcoin você quer poder gastar instantaneamente e quanto quer manter em poupança.",
   "spending": "Gastos",
   "savings": "Poupança",
   "spending_label": "Saldo de despesas",
@@ -22,8 +19,6 @@
   "note_blocktank_limit": "O valor que você pode transferir para seu saldo de gastos está atualmente limitado a US${usdValue}.",
   "note_reserve_limit": "O valor que você pode transferir para seu saldo de gastos é limitado a 80%. Você precisa manter fundos em reserva para transferir esse bitcoin de volta para a poupança.",
   "quick_setup": "Configuração Rápida",
-  "spending_header": "<purple>Gastando dinheiro.</purple>",
-  "receiving_header": "<purple>Recebendo dinheiro.</purple>",
   "receiving_amount_money": "Escolha quanto dinheiro você deseja receber instantaneamente.",
   "receiving_amount_bitcoin": "Digite a quantidade de Bitcoin que você deseja receber instantaneamente.",
   "duration_week": "{count, plural, one {semana} many {semanas} other {semanas}}",
@@ -31,10 +26,6 @@
   "setting_up_step3": "Na Fila Para Abertura",
   "setting_up_step4": "Abrindo Conexão",
   "awesome": "Fantástico!",
-  "transfer_funds": "Transferência de fundos",
-  "transfer_header": "Por favor\nConfirme.",
-  "transfer_header_keybrd": "Gastar dinheiro.",
-  "transfer_header_nokeybrd": "Gastos\ne Poupança.",
   "interrupted_title": "Transferência Interrompida",
   "availability_title": "Disponibilidade de Fundos",
   "node_info": "Nó Lightning",
@@ -106,7 +97,5 @@
     "open": "Conexão aberta"
   },
   "wait_text_top": "Por favor, aguarde o Bitkit se conectar à rede de pagamento (±10 segundos).",
-  "wait_text_bottom": "Conectando e Sincronizando...",
-  "migrating_ldk_title": "Migração em Andamento",
-  "migrating_ldk_description": "O LDK está atualmente em processo de migração. Por favor, reinicie seu aplicativo, aguarde alguns blocos e tente novamente."
+  "wait_text_bottom": "Conectando e Sincronizando..."
 }

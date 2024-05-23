@@ -4,7 +4,6 @@
 
 import bip21 from 'bip21';
 import { err, ok, Result } from '@synonymdev/result';
-import SDK from '@synonymdev/slashtags-sdk';
 import { TInvoice } from '@synonymdev/react-native-ldk';
 import {
 	getLNURLParams,
@@ -186,7 +185,6 @@ export type TProcessedData = {
  * This method processes, decodes and handles all scanned/pasted information provided by the user.
  * @param {string} data
  * @param {'mainScanner' | 'send'} [source]
- * @param {SDK} sdk
  * @param {EAvailableNetwork} [selectedNetwork]
  * @param {TWalletName} [selectedWallet]
  * @param {Array} [skip]
@@ -195,7 +193,6 @@ export type TProcessedData = {
 export const processInputData = async ({
 	data,
 	source = 'mainScanner',
-	sdk,
 	selectedWallet = getSelectedWallet(),
 	selectedNetwork = getSelectedNetwork(),
 	skip = [],
@@ -205,7 +202,6 @@ export const processInputData = async ({
 	source?: 'mainScanner' | 'send';
 	selectedNetwork?: EAvailableNetwork;
 	selectedWallet?: TWalletName;
-	sdk?: SDK;
 	skip?: Array<string>;
 	showErrors?: boolean;
 }): Promise<Result<TProcessedData>> => {
@@ -265,13 +261,6 @@ export const processInputData = async ({
 			source === 'send' &&
 			decodeRes.value[0].qrDataType === 'slashURL'
 		) {
-			if (!sdk) {
-				const msg =
-					'Slashtags SDK was not provided to processInputData method.';
-				console.log(msg);
-				return err(msg);
-			}
-
 			// Check if this is a slashtag url, and we want to send funds to it.
 			const url = decodeRes.value[0].url ?? '';
 			const response = await processSlashPayURL({ url });
@@ -350,38 +339,36 @@ export const decodeQRData = async (
 		return err('No data provided.');
 	}
 
-	if (__DEV__ || selectedNetwork === EAvailableNetwork.bitcoin) {
-		// Orange Ticket
-		if (data.startsWith('ticket-')) {
-			const [_, ...rest] = data.split('-');
-			const ticketId = rest.join('-');
-			if (ticketId) {
-				return ok([{ qrDataType: EQRDataType.orangeTicket, ticketId }]);
-			}
+	// Orange Ticket
+	if (data.startsWith('ticket-')) {
+		const [_, ...rest] = data.split('-');
+		const ticketId = rest.join('-');
+		if (ticketId) {
+			return ok([{ qrDataType: EQRDataType.orangeTicket, ticketId }]);
 		}
+	}
 
-		// Treasure hunt
-		// Airdrop
-		if (data.includes('cutt.ly/VwQFzhJJ') || data.includes('bitkit.to/drone')) {
-			const chestId = '2gZxrqhc';
+	// Treasure hunt
+	// Airdrop
+	if (data.includes('cutt.ly/VwQFzhJJ') || data.includes('bitkit.to/drone')) {
+		const chestId = '2gZxrqhc';
+		return ok([{ qrDataType: EQRDataType.treasureHunt, chestId }]);
+	}
+	// Universal links
+	if (data.includes('bitkit.to/treasure-hunt')) {
+		const url = new URLParse(data, true);
+		const chestId = url.query.chest!;
+
+		if (chestId) {
 			return ok([{ qrDataType: EQRDataType.treasureHunt, chestId }]);
 		}
-		// Universal links
-		if (data.includes('bitkit.to/treasure-hunt')) {
-			const url = new URLParse(data, true);
-			const chestId = url.query.chest!;
+	}
+	// Deeplinks (fallback)
+	if (data.includes('bitkit:chest')) {
+		const chestId = data.split('-')[1];
 
-			if (chestId) {
-				return ok([{ qrDataType: EQRDataType.treasureHunt, chestId }]);
-			}
-		}
-		// Deeplinks (fallback)
-		if (data.includes('bitkit:chest')) {
-			const chestId = data.split('-')[1];
-
-			if (chestId) {
-				return ok([{ qrDataType: EQRDataType.treasureHunt, chestId }]);
-			}
+		if (chestId) {
+			return ok([{ qrDataType: EQRDataType.treasureHunt, chestId }]);
 		}
 	}
 
@@ -840,7 +827,11 @@ export const handleData = async ({
 			return ok({ type: EQRDataType.slashFeedURL });
 		}
 		case EQRDataType.slashAuthURL: {
-			showBottomSheet('slashauthModal', { url: data.url });
+			showToast({
+				type: 'error',
+				title: i18n.t('slashtags:auth_depricated_title'),
+				description: i18n.t('slashtags:auth_depricated_msg'),
+			});
 			return ok({ type: EQRDataType.slashAuthURL });
 		}
 		case EQRDataType.bitcoinAddress: {
@@ -1048,7 +1039,6 @@ export const handleData = async ({
  * This method decodes and validates a URI and returns the data in a QRData object.
  * @param {string} data
  * @param {'mainScanner' | 'send'} [source]
- * @param {SDK} [sdk]
  * @param {boolean} [showErrors]
  * @param {EAvailableNetwork} [selectedNetwork]
  * @param {TWalletName} [selectedWallet]
@@ -1056,14 +1046,12 @@ export const handleData = async ({
 export const validateInputData = async ({
 	data,
 	source = 'mainScanner',
-	sdk,
 	showErrors,
 	selectedWallet = getSelectedWallet(),
 	selectedNetwork = getSelectedNetwork(),
 }: {
 	data: string;
 	source?: 'mainScanner' | 'send';
-	sdk?: SDK;
 	showErrors?: boolean;
 	selectedNetwork?: EAvailableNetwork;
 	selectedWallet?: TWalletName;
@@ -1108,13 +1096,6 @@ export const validateInputData = async ({
 		}
 
 		if (decodedData.qrDataType === 'slashURL') {
-			if (!sdk) {
-				const msg =
-					'Slashtags SDK was not provided to processInputData method.';
-				console.error(msg);
-				return err(msg);
-			}
-
 			// If we're on the send screen, we need to additionally check for payment data.
 			if (source === 'send') {
 				const response = await processSlashPayURL({
@@ -1149,19 +1130,12 @@ export const validateInputData = async ({
 		}
 
 		if (decodedData.qrDataType === 'slashAuthURL') {
-			if (source === 'send') {
-				const errorMessage = i18n.t('other:scan_err_not_payable_msg');
-				if (showErrors) {
-					showToast({
-						type: 'warning',
-						title: i18n.t('slashtags:error_pay_title'),
-						description: errorMessage,
-					});
-				}
-				return err(errorMessage);
-			} else {
-				return ok(decodedData);
-			}
+			showToast({
+				type: 'error',
+				title: i18n.t('slashtags:auth_depricated_title'),
+				description: i18n.t('slashtags:auth_depricated_msg'),
+			});
+			return err('Slashauth deprecated');
 		}
 
 		if (decodedData.qrDataType === 'slashFeedURL') {

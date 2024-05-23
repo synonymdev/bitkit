@@ -10,16 +10,16 @@ import { updateSettings } from '../store/slices/settings';
 import { unitSelector, nextUnitSelector } from '../store/reselect/settings';
 import {
 	currentWalletSelector,
+	pendingTransfersSelector,
 	selectedNetworkSelector,
 	selectedWalletSelector,
-	transfersSelector,
 } from '../store/reselect/wallet';
 import { useCurrency } from './displayValues';
 import i18n from '../utils/i18n';
 import { showToast } from '../utils/notifications';
 import { ignoresSwitchUnitToastSelector } from '../store/reselect/user';
 import { ignoreSwitchUnitToast } from '../store/slices/user';
-import { EUnit } from '../store/types/wallet';
+import { ETransferType, EUnit } from '../store/types/wallet';
 import { newChannelsNotificationsSelector } from '../store/reselect/todos';
 
 /**
@@ -33,7 +33,6 @@ export const useBalance = (): {
 	claimableBalance: number; // Funds that will be available after a channel opens/closes
 	spendableBalance: number; // Total spendable funds (onchain + spendable lightning)
 	pendingPaymentsBalance: number; // LN funds that have not been claimed by payee (hold invoices)
-	balanceInTransfer: number; // Funds that are currently in transfer
 	balanceInTransferToSpending: number;
 	balanceInTransferToSavings: number;
 	totalBalance: number; // Total funds (all of the above)
@@ -43,7 +42,7 @@ export const useBalance = (): {
 	const currentWallet = useAppSelector((state) => {
 		return currentWalletSelector(state, selectedWallet);
 	});
-	const transfers = useAppSelector(transfersSelector);
+	const pendingTransfers = useAppSelector(pendingTransfersSelector);
 	const pendingPayments = useAppSelector(pendingPaymentsSelector);
 	const claimableBalance = useAppSelector(claimableBalanceSelector);
 	const newChannels = useAppSelector(newChannelsNotificationsSelector);
@@ -58,27 +57,20 @@ export const useBalance = (): {
 		0,
 	);
 
-	let inTransferToSpending = transfers.reduce((acc, transfer) => {
-		if (transfer.type === 'open' && transfer.status === 'pending') {
-			return acc + transfer.amount;
+	let inTransferToSpending = pendingTransfers.reduce((acc, transfer) => {
+		if (transfer.type === ETransferType.open) {
+			acc += transfer.amount;
 		}
 		return acc;
 	}, 0);
-	let inTransferToSavings = transfers.reduce((acc, transfer) => {
-		if (transfer.type === 'coop-close' && transfer.status === 'pending') {
-			return acc + transfer.amount;
-		}
-		return acc;
-	}, 0);
-
-	const inTransfer = inTransferToSpending + inTransferToSavings;
 
 	if (newChannels.length > 0) {
 		// avoid flashing wrong balance on channel open
 		inTransferToSpending = 0;
 	}
 
-	const totalBalance = onchainBalance + lightningBalance + inTransferToSpending;
+	const totalBalance =
+		onchainBalance + lightningBalance + claimableBalance + inTransferToSpending;
 
 	return {
 		onchainBalance,
@@ -88,9 +80,8 @@ export const useBalance = (): {
 		claimableBalance,
 		spendableBalance,
 		pendingPaymentsBalance,
-		balanceInTransfer: inTransfer,
 		balanceInTransferToSpending: inTransferToSpending,
-		balanceInTransferToSavings: inTransferToSavings,
+		balanceInTransferToSavings: claimableBalance,
 		totalBalance,
 	};
 };

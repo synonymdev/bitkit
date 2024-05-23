@@ -167,13 +167,13 @@ describe('Todos selector', () => {
 		const state = cloneDeep(s);
 		state.wallet.wallets.wallet0.transfers.bitcoinRegtest.push({
 			txId: 'txid',
-			type: ETransferType.coopClose,
+			type: ETransferType.forceClose,
 			status: ETransferStatus.pending,
 			amount: 100000,
-			confirmations: 1,
+			confirmsIn: 5,
 		});
 		expect(todosFullSelector(state)).toEqual(
-			expect.arrayContaining([{ ...transferPendingTodo, duration: 50 }]),
+			expect.arrayContaining([{ ...transferPendingTodo, confirmsIn: 5 }]),
 		);
 	});
 

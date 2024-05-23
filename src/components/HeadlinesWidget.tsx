@@ -90,6 +90,8 @@ const HeadlinesWidget = ({
 		};
 	}, [url, t, webRelayClient, webRelayUrl]);
 
+	const link = article?.comments || article?.link;
+
 	return (
 		<BaseFeedWidget
 			style={style}
@@ -101,8 +103,8 @@ const HeadlinesWidget = ({
 			onPressIn={onPressIn}
 			onLongPress={onLongPress}
 			onPress={(): void => {
-				if (!isEditing && article?.link) {
-					openAppURL(article.link);
+				if (!isEditing && link) {
+					openAppURL(link);
 				}
 			}}>
 			<>
@@ -119,11 +121,7 @@ const HeadlinesWidget = ({
 					activeOpacity={0.9}
 					hitSlop={{ right: 15, bottom: 15, left: 15 }}
 					onPress={(): void => {
-						if (article?.comments) {
-							openAppURL(article.comments);
-						} else {
-							openAppURL(article!.link);
-						}
+						if (link) openAppURL(link);
 					}}>
 					<View style={styles.columnLeft}>
 						<CaptionB color="white50" numberOfLines={1}>

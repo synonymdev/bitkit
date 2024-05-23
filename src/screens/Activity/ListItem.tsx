@@ -24,9 +24,13 @@ import {
 import { useAppSelector } from '../../hooks/redux';
 import { useProfile2 } from '../../hooks/slashtags2';
 import { useFeeText } from '../../hooks/fees';
-import { TTransferToSavings } from '../../store/types/wallet';
+import {
+	ETransferStatus,
+	TTransferToSavings,
+	TTransferToSpending,
+} from '../../store/types/wallet';
 import { slashTagsUrlSelector } from '../../store/reselect/metadata';
-import { truncate } from '../../utils/helpers';
+import { getDurationForBlocks, truncate } from '../../utils/helpers';
 import { getActivityItemDate } from '../../utils/activity';
 import { transferSelector } from '../../store/reselect/wallet';
 import { EPaymentType } from 'beignet';
@@ -86,6 +90,7 @@ const OnchainListItem = ({
 }): ReactElement => {
 	const { t } = useTranslation('wallet');
 	const {
+		id,
 		txId,
 		txType,
 		value,
@@ -95,14 +100,17 @@ const OnchainListItem = ({
 		confirmTimestamp,
 		timestamp,
 		isBoosted,
-		isTransfer,
 		exists = true,
 	} = item;
 	const { shortRange: feeRateDescription } = useFeeText(feeRate);
-	const transfer = useAppSelector((state) => transferSelector(state, txId));
-
 	const isSend = txType === EPaymentType.sent;
-	const isTransferToSpending = isTransfer && isSend;
+
+	const transferToSpending = useAppSelector((state) => {
+		return transferSelector(state, txId);
+	}) as TTransferToSpending;
+	const transferToSavings = useAppSelector((state) => {
+		return transferSelector(state, id);
+	}) as TTransferToSavings;
 
 	let title = t(isSend ? 'activity_sent' : 'activity_received');
 	const amount = isSend ? value + fee : value;
@@ -124,36 +132,34 @@ const OnchainListItem = ({
 		description = t('activity_low_fee');
 	}
 
-	if (transfer) {
-		if (isTransferToSpending) {
-			title = t('activity_transfer');
-			if (confirmed) {
-				description = t('activity_transfer_spending_done');
-			} else {
-				const duration = 10;
-				description = t('activity_transfer_spending_pending', { duration });
-			}
-			icon = (
-				<ThemedView style={styles.icon} color="brand16">
-					<TransferIcon color="brand" />
-				</ThemedView>
-			);
+	if (transferToSavings) {
+		title = t('activity_transfer');
+		if (transferToSavings.status === ETransferStatus.done) {
+			description = t('activity_transfer_savings_done');
 		} else {
-			const transferToSavings = transfer as TTransferToSavings;
-			const requiredConfs = 6;
-			title = t('activity_transfer');
-			if (transferToSavings.confirmations >= requiredConfs) {
-				description = t('activity_transfer_savings_done');
-			} else {
-				const duration = (requiredConfs - transferToSavings.confirmations) * 10;
-				description = t('activity_transfer_savings_pending', { duration });
-			}
-			icon = (
-				<ThemedView style={styles.icon} color="brand16">
-					<TransferIcon color="brand" />
-				</ThemedView>
-			);
+			const duration = getDurationForBlocks(transferToSavings.confirmsIn);
+			description = t('activity_transfer_savings_pending', { duration });
 		}
+		icon = (
+			<ThemedView style={styles.icon} color="brand16">
+				<TransferIcon color="brand" />
+			</ThemedView>
+		);
+	}
+
+	if (transferToSpending) {
+		title = t('activity_transfer');
+		if (confirmed) {
+			description = t('activity_transfer_spending_done');
+		} else {
+			const duration = getDurationForBlocks(1);
+			description = t('activity_transfer_spending_pending', { duration });
+		}
+		icon = (
+			<ThemedView style={styles.icon} color="brand16">
+				<TransferIcon color="brand" />
+			</ThemedView>
+		);
 	}
 
 	return (

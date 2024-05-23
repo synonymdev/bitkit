@@ -49,7 +49,6 @@
     "failed_title": "Falla en la copia de seguridad de los datos",
     "status_failed": "Copia de seguridad falló: {time}",
     "status_success": "Última Copia de Seguridad: {time}",
-    "status_empty": "Copia de seguridad no és necesaria",
     "category_transaction_log": "Registro de transacciones",
     "category_settings": "Ajustes",
     "category_widgets": "Widgets",

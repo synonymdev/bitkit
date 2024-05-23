@@ -19,7 +19,6 @@ import { refreshBlocktankInfo } from '../../store/utils/blocktank';
 import { keepLdkSynced, setupLdk } from '../lightning';
 import { setupBlocktank, watchPendingOrders } from '../blocktank';
 import { updateSlashPayConfig2 } from '../slashtags2';
-import { Slashtag } from '../../hooks/slashtags';
 import { performFullRestoreFromLatestBackup } from '../../store/utils/backup';
 import { promiseTimeout } from '../helpers';
 import { EAvailableNetwork } from '../networks';
@@ -71,10 +70,8 @@ export const restoreSeed = async ({
 	return ok('Seed restored');
 };
 
-export const restoreRemoteBackups = async (
-	slashtag: Slashtag,
-): Promise<Result<string>> => {
-	const res = await performFullRestoreFromLatestBackup(slashtag);
+export const restoreRemoteBackups = async (): Promise<Result<string>> => {
+	const res = await performFullRestoreFromLatestBackup();
 	if (res.isErr()) {
 		return err(res.error);
 	}

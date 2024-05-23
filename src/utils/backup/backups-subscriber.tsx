@@ -1,7 +1,7 @@
 import React, { ReactElement, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { __DISABLE_SLASHTAGS__, __E2E__ } from '../../constants/env';
+import { __E2E__ } from '../../constants/env';
 import { useDebouncedEffect } from '../../hooks/helpers';
 import { useAppSelector } from '../../hooks/redux';
 import { backupSelector } from '../../store/reselect/backup';
@@ -134,7 +134,7 @@ const EnabledSlashtag = (): ReactElement => {
 };
 
 const BackupSubscriber = (): ReactElement => {
-	return !__DISABLE_SLASHTAGS__ ? <EnabledSlashtag /> : <></>;
+	return <EnabledSlashtag />;
 };
 
 export default BackupSubscriber;

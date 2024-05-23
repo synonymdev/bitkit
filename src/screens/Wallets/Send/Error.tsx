@@ -4,7 +4,6 @@ import { useTranslation } from 'react-i18next';
 
 import { BodyM } from '../../../styles/text';
 import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
-import { useSlashtags } from '../../../components/SlashtagsProvider';
 import SafeAreaInset from '../../../components/SafeAreaInset';
 import GradientView from '../../../components/GradientView';
 import Button from '../../../components/Button';
@@ -33,7 +32,6 @@ const Error = ({
 	const selectedWallet = useAppSelector(selectedWalletSelector);
 	const selectedNetwork = useAppSelector(selectedNetworkSelector);
 	const transaction = useAppSelector(transactionSelector);
-	const { sdk } = useSlashtags();
 	const [loading, setLoading] = useState(false);
 
 	const isSlashpay = transaction.lightningInvoice && transaction.slashTagsUrl;
@@ -68,7 +66,6 @@ const Error = ({
 			const res = await processInputData({
 				data: transaction.slashTagsUrl,
 				source: 'send',
-				sdk,
 				selectedNetwork,
 				selectedWallet,
 				skip: ['lightningPaymentRequest'],

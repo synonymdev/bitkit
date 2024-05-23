@@ -61,7 +61,6 @@
     "latest": "backups de dados mais recentes",
     "status_failed": "Falha no backup: {time}",
     "status_success": "Último backup: {time}",
-    "status_empty": "Backup desnecessário",
     "category_connections": "Conexões",
     "category_connection_receipts": "Detalhes da Conexão",
     "category_transaction_log": "Histórico de transações",
@@ -179,7 +178,6 @@
   "rgs": {
     "server_url": "URL do Servidor de Rapid-Gossip-Sync",
     "button_connect": "Conectar",
-    "button_reconnect": "Reconectar",
     "update_success_title": "Servidor de Rapid-Gossip-Sync Atualizado",
     "update_success_description": "Pode ser necessário reiniciar o aplicativo uma ou duas vezes para que essa alteração seja aplicada."
   },

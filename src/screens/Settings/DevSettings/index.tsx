@@ -5,7 +5,6 @@ import Share from 'react-native-share';
 import { useTranslation } from 'react-i18next';
 import { startProfiling, stopProfiling } from 'react-native-release-profiler';
 
-import { __DISABLE_SLASHTAGS__ } from '../../../constants/env';
 import actions from '../../../store/actions/actions';
 import {
 	clearUtxos,
@@ -109,15 +108,6 @@ const DevSettings = ({
 	const settingsListData: IListData[] = [
 		{
 			data: [
-				{
-					title: 'Slashtags Settings',
-					type: EItemType.button,
-					enabled: !__DISABLE_SLASHTAGS__,
-					testID: 'SlashtagsSettings',
-					onPress: (): void => {
-						navigation.navigate('SlashtagsSettings');
-					},
-				},
 				{
 					title: 'Fee Settings',
 					type: EItemType.button,

@@ -3,7 +3,6 @@ import { StyleSheet, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 
-import { __DISABLE_SLASHTAGS__ } from '../../constants/env';
 import { Title } from '../../styles/text';
 import { Pressable } from '../../styles/components';
 import { ProfileIcon, SettingsIcon } from '../../styles/icons';
@@ -45,27 +44,11 @@ const EnabledSlashtagsProfileButton = (): ReactElement => {
 	);
 };
 
-const ProfileButton = (): ReactElement => {
-	const { t } = useTranslation('slashtags');
-	return __DISABLE_SLASHTAGS__ ? (
-		<Pressable
-			style={[styles.leftColumn, styles.pressed]}
-			color="transparent"
-			hitSlop={{ top: 15, bottom: 15, left: 5, right: 5 }}
-			onPressIn={(): void => {}}>
-			<ProfileImage size={32} url="" image="" style={styles.profileImage} />
-			<Title color="gray">{t('disabled')}</Title>
-		</Pressable>
-	) : (
-		<EnabledSlashtagsProfileButton />
-	);
-};
-
 const Header = (): ReactElement => {
 	const navigation = useNavigation<RootNavigationProp>();
 
 	const openContacts = useCallback(() => {
-		!__DISABLE_SLASHTAGS__ && navigation.navigate('Contacts');
+		navigation.navigate('Contacts');
 	}, [navigation]);
 	const openSettings = useCallback(
 		() => navigation.navigate('Settings'),
@@ -77,7 +60,7 @@ const Header = (): ReactElement => {
 			<View style={styles.shadowContainer}>
 				<VerticalShadow />
 			</View>
-			<ProfileButton />
+			<EnabledSlashtagsProfileButton />
 			<View style={styles.middleColumn} />
 			<View style={styles.rightColumn}>
 				<Pressable

@@ -125,7 +125,7 @@ const AddContact = ({
 					<Button
 						style={styles.button}
 						size="large"
-						disabled={!url}
+						disabled={!url || Boolean(error)}
 						text={t('contact_add_button')}
 						testID="AddContactButton"
 						onPress={(): void => handleAddContact()}

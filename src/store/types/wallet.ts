@@ -90,7 +90,7 @@ export type TTransferToSavings = {
 	type: ETransferType.coopClose | ETransferType.forceClose;
 	status: ETransferStatus.pending | ETransferStatus.done;
 	amount: number;
-	confirmations: number;
+	confirmsIn: number;
 };
 
 export interface IWallet {

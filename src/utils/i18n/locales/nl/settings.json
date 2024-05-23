@@ -53,7 +53,6 @@
     "failed_title": "Data Backup Mislukt",
     "status_failed": "Mislukte Backups: {time}",
     "status_success": "Meest Recente Backup: {time}",
-    "status_empty": "Backup niet nodig",
     "category_connections": "Verbindingen",
     "category_connection_receipts": "Overzichten Van Verbindingen",
     "category_transaction_log": "Transactie Log",

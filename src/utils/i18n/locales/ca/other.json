@@ -9,8 +9,6 @@
   "qr_error_network_header": "Xarxa incorrecta",
   "qr_paste": "Enganxa el codi QR",
   "buy_button": "Comprar Bitcoin",
-  "connection_lost_title": "Connexió perduda de Bitkit",
-  "connection_lost_message": "Si us plau, verifiqueu la configuració del vostre servidor Electrum.",
   "connection_restored_title": "Connexió a Electrum restablerta",
   "connection_restored_message": "Bitkit s'ha tornat a connectar amb èxit a Electrum.",
   "connection_issue": "Problemes de connexió a Internet",
@@ -24,7 +22,6 @@
   "up_button": "Actualitza Bitkit",
   "camera_ask_title": "Permis per utilitzar la càmera",
   "camera_ask_msg": "Bitkit necessita permís per utilitzar la càmera.",
-  "camera_no_title": "Permis",
   "clipboard_redirect_title": "Dades del porta-retalls detectades",
   "clipboard_redirect_msg": "Vols ser redirigit a la pantalla rellevant?",
   "pay_insufficient_savings": "Estalvi insuficient",
@@ -52,12 +49,10 @@
   "lnurl_withdr_success_msg": "El teu retir s'ha sol·licitat amb èxit.",
   "phone_settings": "Obre la configuració del telèfon",
   "bt_error_retrieve": "Transferència fallida",
-  "bt_channel_purchase_fee_error": "No hi ha suficients fons per cobrir la comissió de la transacció.",
   "bt_channel_purchase_cost_error": "Necessites {delta} més per completar aquesta transacció.",
   "update_title": "Actualització disponible",
   "update_text": "Si us plau, actualitzeu Bitkit a la darrera versió per a noves funcionalitats i correccions de errors!",
   "update_button": "Actualització",
   "high_title": "Saldo alt.",
-  "high_button_more": "Aprèn més",
-  "caution_text": "El software Beta pot posar els teus diners en risc. Recomanem utilitzar només petites quantitats mentre Bitkit estigui en versió beta."
+  "high_button_more": "Aprèn més"
 }

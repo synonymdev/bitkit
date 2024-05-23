@@ -76,13 +76,13 @@ describe('Reselect', () => {
 				is_channel_ready: false,
 				outbound_capacity_sat: 1,
 				balance_sat: 2,
+				claimable_balances: [
+					{ amount_satoshis: 3, type: 'ClaimableOnChannelClose' },
+				],
 			} as TChannel;
 
 			const lnWallet = state.lightning.nodes.wallet0;
 			lnWallet.channels.bitcoinRegtest = { channel1, channel2, channel3 };
-			lnWallet.claimableBalances.bitcoinRegtest = [
-				{ amount_satoshis: 3, type: 'ClaimableOnChannelClose' },
-			];
 
 			assert.deepEqual(balanceSelector(state), {
 				lightningBalance: 4,
@@ -97,7 +97,7 @@ describe('Reselect', () => {
 	});
 
 	describe('lnSetupSelector', () => {
-		it('should calculate percentage corectly', () => {
+		it('should calculate percentage correctly', () => {
 			const state = cloneDeep(s);
 			// balance under maxChannelSizeSat
 			state.wallet.wallets.wallet0.balance.bitcoinRegtest = 20000;
@@ -105,7 +105,7 @@ describe('Reselect', () => {
 			expect(lnSetupSelector(state, 0)).toMatchObject({
 				percentage: {
 					savings: 100,
-					spendings: 0,
+					spending: 0,
 				},
 				canContinue: false,
 			});
@@ -113,7 +113,7 @@ describe('Reselect', () => {
 			expect(lnSetupSelector(state, 10000)).toMatchObject({
 				percentage: {
 					savings: 50,
-					spendings: 50,
+					spending: 50,
 				},
 				canContinue: true,
 			});
@@ -121,14 +121,14 @@ describe('Reselect', () => {
 			expect(lnSetupSelector(state, 16000)).toMatchObject({
 				percentage: {
 					savings: 20,
-					spendings: 80,
+					spending: 80,
 				},
 				canContinue: true,
 			});
 		});
 
 		it('should calculate client balance limits without LN channels', () => {
-			// max value is limited by btMaxChannelSizeSat / 2 - btMaxChannelSizeSat * DIFF
+			// max value is limited by maxChannelSizeSat / 2
 			const s1 = cloneDeep(s);
 			s1.wallet.wallets.wallet0.balance.bitcoinRegtest = 1000;
 			s1.blocktank.info.options = {
@@ -142,14 +142,14 @@ describe('Reselect', () => {
 			const expected1 = {
 				slider: {
 					startValue: 0,
-					maxValue: 98,
 					endValue: 1000,
+					initialValue: 100,
+					maxValue: 100,
 				},
 				limits: {
 					local: 800,
-					lsp: 98,
+					lsp: 100,
 				},
-				initialClientBalance: 98,
 			};
 
 			expect(received1).toMatchObject(expected1);
@@ -168,14 +168,14 @@ describe('Reselect', () => {
 			const expected2 = {
 				slider: {
 					startValue: 0,
-					maxValue: 40,
 					endValue: 50,
+					initialValue: 10,
+					maxValue: 40,
 				},
 				limits: {
 					local: 40,
-					lsp: 98,
+					lsp: 100,
 				},
-				initialClientBalance: 10,
 			};
 
 			expect(received2).toMatchObject(expected2);
@@ -205,18 +205,49 @@ describe('Reselect', () => {
 			const expected1 = {
 				slider: {
 					startValue: 0,
-					maxValue: 51,
 					endValue: 1002,
+					initialValue: 2,
+					maxValue: 52,
 				},
 				limits: {
 					local: 802,
-					lsp: 51,
+					lsp: 52,
 				},
-				initialClientBalance: 2,
 				canContinue: true,
 			};
 
 			expect(received1).toMatchObject(expected1);
+		});
+
+		it('should not produce different slider.maxVlalue for the different spending amount', () => {
+			const s1 = cloneDeep(s);
+			s1.wallet.wallets.wallet0.balance.bitcoinRegtest = 600000;
+			s1.blocktank.info.options = {
+				...s1.blocktank.info.options,
+				max0ConfClientBalanceSat: 0,
+				maxChannelSizeSat: 1500000,
+				maxClientBalanceSat: 1450000,
+				minChannelSizeSat: 100000,
+			};
+			const channel1 = {
+				channel_id: 'channel1',
+				status: EChannelStatus.open,
+				is_channel_ready: true,
+				balance_sat: 370000,
+				channel_value_satoshis: 700000,
+				outbound_capacity_sat: 400000,
+			} as TChannel;
+			const lnWallet = s1.lightning.nodes.wallet0;
+			lnWallet.channels.bitcoinRegtest = { channel1 };
+
+			const r0 = lnSetupSelector(s1, 0);
+			const r1 = lnSetupSelector(s1, 1000);
+			const r2 = lnSetupSelector(s1, 8000);
+			const r3 = lnSetupSelector(s1, 500000);
+
+			expect(r0.slider.maxValue).toEqual(r1.slider.maxValue);
+			expect(r0.slider.maxValue).toEqual(r2.slider.maxValue);
+			expect(r0.slider.maxValue).toEqual(r3.slider.maxValue);
 		});
 	});
 });
