@@ -44,7 +44,6 @@
   "restore_failed_text": "Bitkit ha ripristinato i tuoi risparmi, ma non è riuscito a ripristinare il saldo delle spese e i dati.",
   "restore_no_backup_button": "Procedi Senza Backup",
   "restore_no_backup_warn": "Se in precedenza possedevi un backup lightning, questo verrà sovrascritto e perso. Ciò potrebbe causare una perdita di fondi.",
-  "empty_wallet": "Per iniziare <accent>invia Bitcoin</accent> al tuo portafoglio.",
   "error_create": "Creazione del portafoglio non riuscita",
   "multiple_header": "<accent>Attenzione:</accent>\ndispositivi multipli",
   "multiple_text": "Non installare la frase di recupero Bitkit su più telefoni contemporaneamente, per non danneggiare i dati."

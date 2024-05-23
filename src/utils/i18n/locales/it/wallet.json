@@ -161,12 +161,10 @@
   "details_savings_title": "Risparmi",
   "details_spending_title": "Spesa",
   "savings": {
-    "title": "Risparmi",
-    "onboarding": "<accent>Invia bitcoin</accent> al tuo conto di risparmio."
+    "title": "Risparmi"
   },
   "spending": {
-    "title": "Spesa",
-    "onboarding": "<accent>Invia bitcoin</accent> al tuo saldo spendibile."
+    "title": "Spesa"
   },
   "details_transfer_subtitle": "Trasferimento in entrata",
   "tx_invalid": "Transazione non valida",

@@ -1,6 +1,7 @@
 import React, { memo, ReactElement, useMemo, useState, useEffect } from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import {
+	LayoutChangeEvent,
 	StyleProp,
 	StyleSheet,
 	TouchableOpacity,
@@ -24,6 +25,8 @@ const WalletOnboarding = ({
 }): ReactElement => {
 	const insets = useSafeAreaInsets();
 	const [showClose, setShowClose] = useState(!__E2E__);
+	const [rootWidth, setRootWidth] = useState(0);
+	const [textWidth, setTextWidth] = useState(0);
 
 	useEffect(() => {
 		if (__E2E__) {
@@ -36,8 +39,26 @@ const WalletOnboarding = ({
 		return [styles.root, { marginBottom: 105 + insets.bottom }];
 	}, [insets.bottom]);
 
+	const handleTextLayout = (e: LayoutChangeEvent): void => {
+		if (!textWidth) {
+			setTextWidth(e.nativeEvent.layout.width);
+		}
+	};
+
+	const handleRootLayout = (e: LayoutChangeEvent): void => {
+		if (!rootWidth) {
+			setRootWidth(e.nativeEvent.layout.width);
+		}
+	};
+
+	// if the text is too long, move the arrow below the text
+	const arrowAbsolute = rootWidth && textWidth && rootWidth - textWidth < 80;
+
 	return (
-		<View style={[rootStyles, style]} testID="WalletOnboarding">
+		<View
+			onLayout={handleRootLayout}
+			style={[rootStyles, style]}
+			testID="WalletOnboarding">
 			{showClose && onHide && (
 				<TouchableOpacity
 					style={styles.closeButton}
@@ -46,8 +67,10 @@ const WalletOnboarding = ({
 					<XIcon color="white50" width={16} height={16} />
 				</TouchableOpacity>
 			)}
-			<Display style={styles.text}>{text}</Display>
-			<Arrow style={styles.arrow} />
+			<Display style={styles.text} onLayout={handleTextLayout}>
+				{text}
+			</Display>
+			<Arrow style={arrowAbsolute ? styles.arrowAbsolute : styles.arrow} />
 		</View>
 	);
 };
@@ -56,7 +79,6 @@ const styles = StyleSheet.create({
 	root: {
 		flexDirection: 'row',
 		alignItems: 'flex-end',
-		// paddingHorizontal: 16,
 		marginTop: 'auto',
 	},
 	closeButton: {
@@ -70,10 +92,17 @@ const styles = StyleSheet.create({
 		zIndex: 1,
 	},
 	text: {
-		width: '61%',
+		zIndex: 101, // above arrow
 	},
 	arrow: {
 		marginBottom: 10,
+		marginLeft: -10,
+	},
+	arrowAbsolute: {
+		position: 'absolute',
+		bottom: 10,
+		right: 80,
+		zIndex: 100, // below text
 	},
 });
 

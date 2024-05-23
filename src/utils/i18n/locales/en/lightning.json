@@ -20,6 +20,7 @@
 	},
 	"transfer": {
 		"nav_title": "Transfer Funds",
+		"nav_successful": "Transfer Successful",
 		"title_slider": "Balance\n<accent>your funds</accent>",
 		"title_numpad": "Spending <accent>Balance</accent>",
 		"title_receive": "Receiving <accent>Capacity</accent>",

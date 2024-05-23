@@ -163,12 +163,10 @@
   "details_savings_title": "Úspory",
   "details_spending_title": "Útraty",
   "savings": {
-    "title": "Úspory",
-    "onboarding": "<accent>Pošlete bitcoin</accent> na svůj spořicí účet."
+    "title": "Úspory"
   },
   "spending": {
-    "title": "Útraty",
-    "onboarding": "<accent>Pošlete bitcoin</accent> na svůj disponibilní zůstatek."
+    "title": "Útraty"
   },
   "details_transfer_subtitle": "Příchozí převod",
   "tx_invalid": "Neplatná transakce",

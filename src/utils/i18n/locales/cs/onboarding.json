@@ -44,7 +44,6 @@
   "restore_failed_text": "Bitkit obnovil vaše úspory, ale nepodařilo se obnovit disponibilní zůstatek a data.",
   "restore_no_backup_button": "Pokračovat bez zálohy",
   "restore_no_backup_warn": "Pokud jste dříve měli lightning zálohu, bude přepsána a ztracena. To by mohlo vést ke ztrátě finančních prostředků.",
-  "empty_wallet": "Chcete-li začít, <accent>pošlete bitcoin</accent> do své peněženky.",
   "error_create": "Vytvoření peněženky se nezdařilo",
   "multiple_header": "<accent>Upozornění:</accent>\nvíce zařízení",
   "multiple_text": "Neinstalujte frázi pro obnovení Bitkit do více telefonů současně, protože by to mohlo poškodit vaše data."
