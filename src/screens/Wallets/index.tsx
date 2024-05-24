@@ -72,6 +72,7 @@ const Wallets = ({ navigation, onFocus }: Props): ReactElement => {
 				type: 'info',
 				title: t('balance_hidden_title'),
 				description: t('balance_hidden_message'),
+				visibilityTime: 5000,
 			});
 			dispatch(ignoreHideBalanceToast());
 		}

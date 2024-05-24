@@ -515,6 +515,7 @@ export const subscribeToLightningPayments = ({
 						type: 'lightning',
 						title: i18n.t('lightning:channel_opened_title'),
 						description: i18n.t('lightning:channel_opened_msg'),
+						visibilityTime: 5000,
 					});
 				}
 

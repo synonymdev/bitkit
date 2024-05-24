@@ -6,6 +6,7 @@ export type ToastOptions = {
 	title: string;
 	description: string;
 	autoHide?: boolean;
+	visibilityTime?: number;
 };
 
 const defaultOptions = {
@@ -20,6 +21,7 @@ export const showToast = ({
 	title,
 	description,
 	autoHide,
+	visibilityTime,
 }: ToastOptions): void => {
 	if (__E2E__) {
 		console.log('showToast', { type, title, description });
@@ -33,5 +35,6 @@ export const showToast = ({
 		text2: description,
 		position: 'top',
 		autoHide,
+		visibilityTime,
 	});
 };
