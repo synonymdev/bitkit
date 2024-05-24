@@ -21,7 +21,7 @@ const Success = ({
 
 	const handleButtonPress = (): void => {
 		dispatch(verifyBackup());
-		navigation.navigate('Warning');
+		navigation.navigate('MultipleDevices');
 	};
 
 	return (

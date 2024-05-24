@@ -4,8 +4,7 @@ import { BodyMB, Display } from '../../styles/text';
 import InfoScreen from '../../components/InfoScreen';
 import type { LightningScreenProps } from '../../navigation/types';
 
-const readyImage = require('../../assets/illustrations/check.png');
-const transferImage = require('../../assets/illustrations/transfer.png');
+const imageSrc = require('../../assets/illustrations/check.png');
 
 const Success = ({
 	navigation,
@@ -22,7 +21,6 @@ const Success = ({
 	const isTransferToSavings = type === 'savings';
 	const title = isTransferToSavings ? 'ts_savings_title' : 'result_header';
 	const description = isTransferToSavings ? 'ts_savings_text' : 'result_text';
-	const image = isTransferToSavings ? transferImage : readyImage;
 	const buttonText = isTransferToSavings ? t('ok') : t('awesome');
 
 	return (
@@ -43,7 +41,7 @@ const Success = ({
 					components={{ accent: <BodyMB color="white" /> }}
 				/>
 			}
-			image={image}
+			image={imageSrc}
 			buttonText={buttonText}
 			testID="TransferSuccess"
 			onButtonPress={onContinue}

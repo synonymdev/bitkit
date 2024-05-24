@@ -46,7 +46,7 @@ const ConfirmPassphrase = ({
 						disabled={bip39Passphrase !== origPass}
 						size="large"
 						text={t('continue')}
-						onPress={(): void => navigation.navigate('Success')}
+						onPress={(): void => navigation.navigate('Warning')}
 					/>
 				</View>
 			</View>

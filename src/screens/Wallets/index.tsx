@@ -19,7 +19,6 @@ import Suggestions from '../../components/Suggestions';
 import Widgets from '../../components/Widgets';
 import SafeAreaInset from '../../components/SafeAreaInset';
 import WalletOnboarding from '../../components/WalletOnboarding';
-import WalletWarning from '../../components/WalletWarning';
 import Balances from '../../components/Balances';
 import Header from './Header';
 import type { WalletScreenProps } from '../../navigation/types';
@@ -138,7 +137,6 @@ const Wallets = ({ navigation, onFocus }: Props): ReactElement => {
 								<Balances />
 								{showWidgets && <Widgets />}
 								<ActivityListShort />
-								<WalletWarning />
 							</View>
 						</>
 					) : (

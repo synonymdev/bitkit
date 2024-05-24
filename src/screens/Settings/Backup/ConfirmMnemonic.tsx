@@ -128,7 +128,7 @@ const ConfirmMnemonic = ({
 						if (bip39Passphrase) {
 							navigation.navigate('ConfirmPassphrase', { bip39Passphrase });
 						} else {
-							navigation.navigate('Success');
+							navigation.navigate('Warning');
 						}
 					}}
 				/>

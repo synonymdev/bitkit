@@ -59,10 +59,7 @@ import LNURLPayNavigation from '../bottom-sheet/LNURLPayNavigation';
 import OrangeTicket from '../../screens/OrangeTicket';
 import TreasureHuntNavigation from '../bottom-sheet/TreasureHuntNavigation';
 import WidgetsSuggestions from '../../screens/Widgets/WidgetsSuggestions';
-import {
-	HelloWidgets,
-	GoodbyePasswords,
-} from '../../screens/Widgets/WidgetsOnboarding';
+import WidgetsOnboarding from '../../screens/Widgets/WidgetsOnboarding';
 import { __E2E__ } from '../../constants/env';
 import type { RootStackParamList } from '../types';
 
@@ -217,8 +214,7 @@ const RootNavigator = (): ReactElement => {
 				<Stack.Screen name="ContactEdit" component={ContactEdit} />
 				<Stack.Screen name="Contact" component={Contact} />
 				<Stack.Screen name="BuyBitcoin" component={BuyBitcoin} />
-				<Stack.Screen name="HelloWidgets" component={HelloWidgets} />
-				<Stack.Screen name="GoodbyePasswords" component={GoodbyePasswords} />
+				<Stack.Screen name="WidgetsOnboarding" component={WidgetsOnboarding} />
 				<Stack.Screen
 					name="WidgetsSuggestions"
 					component={WidgetsSuggestions}

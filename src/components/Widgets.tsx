@@ -59,7 +59,9 @@ const Widgets = (): ReactElement => {
 	);
 
 	const onAdd = (): void => {
-		const screen = onboardedWidgets ? 'WidgetsSuggestions' : 'HelloWidgets';
+		const screen = onboardedWidgets
+			? 'WidgetsSuggestions'
+			: 'WidgetsOnboarding';
 		rootNavigation.navigate(screen);
 	};
 

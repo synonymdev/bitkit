@@ -20,7 +20,6 @@ import {
 	newChannelsNotificationsSelector,
 	todosFullSelector,
 } from '../store/reselect/todos';
-import { lightningSettingUpStepSelector } from '../store/reselect/user';
 import { pinSelector } from '../store/reselect/settings';
 import { useAppDispatch, useAppSelector } from '../hooks/redux';
 import type { RootNavigationProp } from '../navigation/types';
@@ -34,7 +33,6 @@ const Suggestions = (): ReactElement => {
 	const dispatch = useAppDispatch();
 	const pinTodoDone = useAppSelector(pinSelector);
 	const suggestions = useAppSelector(todosFullSelector);
-	const lightningSettingUpStep = useAppSelector(lightningSettingUpStepSelector);
 	const newChannels = useAppSelector(newChannelsNotificationsSelector);
 	const [index, setIndex] = useState(0);
 
@@ -126,7 +124,7 @@ const Suggestions = (): ReactElement => {
 			}
 
 			if (item.id === 'lightningSettingUp') {
-				description = t(`${item.id}.description${lightningSettingUpStep}`);
+				description = t(`${item.id}.description`);
 			}
 
 			return (
@@ -145,7 +143,7 @@ const Suggestions = (): ReactElement => {
 				/>
 			);
 		},
-		[t, handleOnPress, lightningSettingUpStep, dispatch],
+		[t, handleOnPress, dispatch],
 	);
 
 	if (!suggestions.length) {

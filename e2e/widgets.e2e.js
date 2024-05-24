@@ -28,8 +28,7 @@ d('Widgets', () => {
 
 		// add price widget
 		await element(by.id('WidgetsAdd')).tap();
-		await element(by.id('ContinueWidgets-0')).tap();
-		await element(by.id('ContinueWidgets-1')).tap();
+		await element(by.id('WidgetsOnboarding-button')).tap();
 		await element(by.id('PriceWidget')).tap();
 		await waitFor(element(by.id('WidgetEdit')))
 			.toBeVisible()

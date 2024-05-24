@@ -17,14 +17,11 @@
 	},
 	"lightning": {
 		"title": "Spend",
-		"description": "Balance your funds"
+		"description": "Instant payments"
 	},
 	"lightningSettingUp": {
 		"title": "Transfer",
-		"description0": "Processing Payment",
-		"description1": "Paid",
-		"description2": "Queued",
-		"description3": "Opening"
+		"description": "In progress..."
 	},
 	"lightningConnecting": {
 		"title": "Connecting",

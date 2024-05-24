@@ -17,7 +17,7 @@ const Warning = ({
 	const { t } = useTranslation('security');
 
 	const handleButtonPress = (): void => {
-		navigation.navigate('MultipleDevices');
+		navigation.navigate('Success');
 	};
 
 	return (
