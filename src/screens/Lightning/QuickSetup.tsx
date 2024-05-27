@@ -58,6 +58,7 @@ const QuickSetup = ({
 	const [loading, setLoading] = useState(false);
 	const [showNumberPad, setShowNumberPad] = useState(false);
 	const [textFieldValue, setTextFieldValue] = useState('');
+	const [sliderActive, setSliderActive] = useState(false);
 
 	const max0ConfClientBalance = blocktankInfo.options.max0ConfClientBalanceSat;
 
@@ -130,6 +131,10 @@ const QuickSetup = ({
 		[denomination, unit],
 	);
 
+	const onSliderPanStart = useCallback(() => setSliderActive(true), []);
+
+	const onSliderPanEnd = useCallback(() => setSliderActive(false), []);
+
 	const onCustomAmount = (): void => {
 		setShowNumberPad(true);
 		setTextFieldValue('0');
@@ -146,40 +151,44 @@ const QuickSetup = ({
 	const onContinue = useCallback(async (): Promise<void> => {
 		const { clientBalance, lspBalance, isTransferringToSavings } = lnSetup;
 
+		if (sliderActive) {
+			return;
+		}
+
 		if (isTransferringToSavings) {
 			navigation.navigate('QuickConfirm', { spendingAmount });
 			return;
 		}
 
 		setLoading(true);
-
 		const purchaseResponse = await startChannelPurchase({
 			clientBalance,
 			lspBalance,
 			lspNodeId: blocktankInfo.nodes[0].pubkey,
 			zeroConfPayment: clientBalance <= max0ConfClientBalance,
 		});
-
 		setLoading(false);
+
 		if (purchaseResponse.isErr()) {
 			showToast({
 				type: 'warning',
 				title: t('error_channel_purchase'),
 				description: purchaseResponse.error.message,
 			});
+			return;
 		}
-		if (purchaseResponse.isOk()) {
-			navigation.push('QuickConfirm', {
-				spendingAmount,
-				orderId: purchaseResponse.value.id,
-			});
-		}
+
+		navigation.push('QuickConfirm', {
+			spendingAmount,
+			orderId: purchaseResponse.value.id,
+		});
 	}, [
-		lnSetup,
 		blocktankInfo.nodes,
+		lnSetup,
 		max0ConfClientBalance,
-		spendingAmount,
 		navigation,
+		sliderActive,
+		spendingAmount,
 		t,
 	]);
 
@@ -234,6 +243,8 @@ const QuickSetup = ({
 									endValue={lnSetup.slider.endValue}
 									snapPoint={lnSetup.slider.snapPoint}
 									onValueChange={onSliderChange}
+									onPanStart={onSliderPanStart}
+									onPanEnd={onSliderPanEnd}
 								/>
 							</View>
 							<View style={styles.percentages}>
