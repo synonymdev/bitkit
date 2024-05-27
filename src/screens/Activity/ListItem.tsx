@@ -132,7 +132,7 @@ const OnchainListItem = ({
 		description = t('activity_low_fee');
 	}
 
-	if (transferToSavings) {
+	if (transferToSavings && !transferToSpending) {
 		title = t('activity_transfer');
 		if (transferToSavings.status === ETransferStatus.done) {
 			description = t('activity_transfer_savings_done');
