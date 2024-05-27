@@ -4,11 +4,11 @@ import { Dimensions } from 'react-native';
 const { width } = Dimensions.get('window');
 
 enum BREAKPOINTS {
-	// xsphone = 320,
-	smphone = 360, // small android phone: 360
-	// mdphone = 375, // iphoneSE and up
-	// lgphone = 390, // iphone15 and up
-	// xlphone = 400,
+	// xs = 320,
+	sm = 360, // small android phone: 360
+	// md = 375, // iphoneSE and up
+	// lg = 390, // iphone15 and up
+	// xl = 400,
 }
 
 /**
