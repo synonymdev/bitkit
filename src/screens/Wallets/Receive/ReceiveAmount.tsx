@@ -60,8 +60,8 @@ const ReceiveAmount = ({
 		const getFeeEstimation = async (): Promise<void> => {
 			const feeResult = await estimateOrderFee({ lspBalance: channelSize });
 			if (feeResult.isOk()) {
-				// round up to the nearest 1000 to avoid fee fluctuations
-				const minimum = Math.round(feeResult.value / 1000) * 1000;
+				// add 10% buffer and round up to the nearest 1000 to avoid fee fluctuations
+				const minimum = Math.ceil((feeResult.value * 1.1) / 1000) * 1000;
 				setMinimumAmount(minimum);
 			}
 		};

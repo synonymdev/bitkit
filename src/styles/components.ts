@@ -59,7 +59,7 @@ export const NavigationContainer = styled(_NavigationContainer).attrs(
 			colors: {
 				...DefaultTheme.colors,
 				card: 'transparent',
-				text: props.theme.colors.text,
+				text: props.theme.colors.primary,
 				background: 'transparent',
 				primary: 'transparent',
 				border: 'transparent',
@@ -136,10 +136,10 @@ export const TextInput = styled(RNTextInput).attrs<TextInputProps>((props) => ({
 		: props.theme.colors.white10,
 	color: props.color
 		? props.theme.colors[props.color]
-		: props.theme.colors.text,
+		: props.theme.colors.primary,
 	borderColor: props.color
 		? props.theme.colors[props.color]
-		: props.theme.colors.text,
+		: props.theme.colors.primary,
 	borderRadius: 8,
 	fontSize: '15px',
 	minHeight: props.minHeight ? props.minHeight : 52,
@@ -160,7 +160,7 @@ export const TextInputNoOutline = styled(RNTextInput).attrs<TextInputProps>(
 	fontSize: '15px',
 	color: props.color
 		? props.theme.colors[props.color]
-		: props.theme.colors.text,
+		: props.theme.colors.primary,
 	textAlignVertical: props.multiline ? 'top' : 'center',
 }));
 
@@ -179,10 +179,10 @@ export const BottomSheetTextInput = styled(
 		: props.theme.colors.white06,
 	color: props.color
 		? props.theme.colors[props.color]
-		: props.theme.colors.text,
+		: props.theme.colors.primary,
 	borderColor: props.color
 		? props.theme.colors[props.color]
-		: props.theme.colors.text,
+		: props.theme.colors.primary,
 	borderRadius: 8,
 	fontSize: '15px',
 	minHeight: props.minHeight ? props.minHeight : 52,
