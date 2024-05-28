@@ -650,7 +650,7 @@ const Channels = ({
 					</View>
 				)}
 
-				<View style={[styles.buttons, br.up('smphone') && styles.buttonsRow]}>
+				<View style={[styles.buttons, br.up('sm') && styles.buttonsRow]}>
 					<Button
 						style={styles.button}
 						text={t('conn_button_export_logs')}

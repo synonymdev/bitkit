@@ -5,7 +5,7 @@ const { width } = Dimensions.get('window');
 
 enum BREAKPOINTS {
 	// xs = 320,
-	sm = 360, // small android phone: 360
+	sm = 360, // small android phone
 	// md = 375, // iphoneSE and up
 	// lg = 390, // iphone15 and up
 	// xl = 400,
