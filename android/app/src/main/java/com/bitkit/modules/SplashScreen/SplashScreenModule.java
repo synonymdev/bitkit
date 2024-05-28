@@ -67,6 +67,7 @@ public class SplashScreenModule extends ReactContextBaseJavaModule {
 
         // Set app background color back to black
         activity.getWindow().setBackgroundDrawableResource(R.color.black);
+        activity.getWindow().setNavigationBarColor(ContextCompat.getColor(activity, R.color.black));
 
         activity.runOnUiThread(() -> {
             // Leave out the second argument if you're not using animations
