@@ -25,7 +25,7 @@ import Animated, {
 import { Trans, useTranslation } from 'react-i18next';
 
 import { View as ThemedView } from '../../styles/components';
-import { Display, BodyMSB, BodyM } from '../../styles/text';
+import { Display, BodyMSB, BodyM, BodyMB } from '../../styles/text';
 import { IThemeColors } from '../../styles/themes';
 import SafeAreaInset from '../../components/SafeAreaInset';
 import Dot from '../../components/SliderDots';
@@ -97,9 +97,14 @@ const Slide = ({
 				parent={Display}
 				components={{ accent: <Display color={color} /> }}
 			/>
-			<BodyM style={styles.text} color="white50">
-				{t(`slide${index}_text`)}
-			</BodyM>
+			<Trans
+				style={styles.text}
+				t={t}
+				i18nKey={`slide${index}_text`}
+				parent={BodyM}
+				color="secondary"
+				components={{ accent: <BodyMB color="primary" /> }}
+			/>
 
 			{isLast ? (
 				<View style={styles.buttonsContainer}>
@@ -227,14 +232,14 @@ const Slideshow = ({
 					<Animated.View style={[styles.headerButtonContainer, startOpacity]}>
 						<Pressable testID="SkipButton" onPress={onHeaderButton}>
 							<SafeAreaInset type="top" />
-							<BodyMSB color="white50">{t('skip')}</BodyMSB>
+							<BodyMSB color="secondary">{t('skip')}</BodyMSB>
 						</Pressable>
 					</Animated.View>
 
 					<Animated.View style={[styles.headerButtonContainer, endOpacity]}>
 						<Pressable testID="Passphrase" onPress={onHeaderButton}>
 							<SafeAreaInset type="top" />
-							<BodyMSB color="white50">{t('advanced_setup')}</BodyMSB>
+							<BodyMSB color="secondary">{t('advanced_setup')}</BodyMSB>
 						</Pressable>
 					</Animated.View>
 

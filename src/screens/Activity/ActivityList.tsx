@@ -106,7 +106,7 @@ const ActivityList = ({
 		}): ReactElement => {
 			if (typeof item === 'string') {
 				return (
-					<Caption13Up key={item} style={styles.category} color="white50">
+					<Caption13Up key={item} style={styles.category} color="secondary">
 						{item}
 					</Caption13Up>
 				);
@@ -154,7 +154,7 @@ const ActivityList = ({
 				/>
 			}
 			ListEmptyComponent={
-				<BodyM style={styles.empty} color="white50">
+				<BodyM style={styles.empty} color="secondary">
 					{t('activity_no')}
 				</BodyM>
 			}

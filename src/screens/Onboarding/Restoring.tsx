@@ -14,7 +14,7 @@ import Button from '../../components/Button';
 import Dialog from '../../components/Dialog';
 import LoadingWalletScreen from './Loading';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
-import { useProfile2, useSelectedSlashtag2 } from '../../hooks/slashtags2';
+import { useProfile, useSlashtags } from '../../hooks/slashtags';
 import { setOnboardingProfileStep } from '../../store/slices/slashtags';
 import { onboardingProfileStepSelector } from '../../store/reselect/slashtags';
 import { Image } from 'react-native';
@@ -26,8 +26,8 @@ let attemptedAutoRestore = false;
 
 const RestoringScreen = (): ReactElement => {
 	const { t } = useTranslation('onboarding');
-	const { url } = useSelectedSlashtag2();
-	const { profile } = useProfile2(url);
+	const { url } = useSlashtags();
+	const { profile } = useProfile(url);
 	const dispatch = useAppDispatch();
 	const onboardingStep = useAppSelector(onboardingProfileStepSelector);
 	const [showRestored, setShowRestored] = useState(false);

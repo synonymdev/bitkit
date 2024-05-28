@@ -30,7 +30,7 @@ const FormSuccess = ({
 				}}
 			/>
 			<View style={styles.content}>
-				<BodyM style={styles.text} color="white50">
+				<BodyM style={styles.text} color="secondary">
 					{t('support.text_success')}
 				</BodyM>
 

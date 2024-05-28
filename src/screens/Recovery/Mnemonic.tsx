@@ -48,7 +48,7 @@ const Mnemonic = ({
 			<SafeAreaInset type="top" />
 			<NavigationHeader title={t('mnemonic_phrase')} />
 			<View style={styles.content}>
-				<BodyM style={styles.text} color="white50">
+				<BodyM style={styles.text} color="secondary">
 					{t('mnemonic_write', { length: seed.length })}
 				</BodyM>
 
@@ -67,14 +67,14 @@ const Mnemonic = ({
 
 				{passphrase !== '' && (
 					<View style={styles.passphrase}>
-						<BodyM style={styles.passphrase} color="white50">
+						<BodyM style={styles.passphrase} color="secondary">
 							{t('pass_text')}
 						</BodyM>
 						<BodyMSB>
 							<Trans
 								t={t}
 								i18nKey="pass_recovery"
-								components={{ accent: <BodyMSB color="white50" /> }}
+								components={{ accent: <BodyMSB color="secondary" /> }}
 								values={{ passphrase }}
 							/>
 						</BodyMSB>

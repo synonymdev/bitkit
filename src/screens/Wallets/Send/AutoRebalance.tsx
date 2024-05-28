@@ -43,7 +43,7 @@ const AutoRebalance = ({
 		<GradientView style={styles.container}>
 			<BottomSheetNavigationHeader title="Auto Rebalance?" />
 
-			<BodyM color="white50" style={styles.text}>
+			<BodyM color="secondary" style={styles.text}>
 				You don’t have enough instant spending balance for this transaction.
 				Would you like Bitkit to rebalance automatically?
 			</BodyM>

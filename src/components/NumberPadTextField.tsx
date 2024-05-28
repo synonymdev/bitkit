@@ -97,19 +97,19 @@ const NumberPadTextField = ({
 					style={styles.secondary}
 					sats={satoshis}
 					size="caption13Up"
-					color="white50"
+					color="secondary"
 					symbol={true}
 					unitType="secondary"
 				/>
 			)}
 
 			<View style={styles.primary}>
-				<Display style={styles.symbol} color="white50">
+				<Display style={styles.symbol} color="secondary">
 					{unit === EUnit.BTC ? '₿' : fiatSymbol}
 				</Display>
 				<Display>
 					{value !== placeholder && value}
-					<Display color={showPlaceholder ? 'white50' : 'white'}>
+					<Display color={showPlaceholder ? 'secondary' : 'white'}>
 						{placeholder}
 					</Display>
 				</Display>
@@ -119,7 +119,7 @@ const NumberPadTextField = ({
 				<Money
 					sats={satoshis}
 					size="bodyMSB"
-					color="white50"
+					color="secondary"
 					symbol={true}
 					unitType="secondary"
 				/>

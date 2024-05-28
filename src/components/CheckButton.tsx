@@ -32,7 +32,7 @@ const CheckButton = memo(
 				<View style={styles.leftColumn}>
 					<View>
 						<BodyM color="white">{label}</BodyM>
-						{description && <Caption color="white50">{description}</Caption>}
+						{description && <Caption color="secondary">{description}</Caption>}
 					</View>
 				</View>
 				<View style={styles.rightColumn}>

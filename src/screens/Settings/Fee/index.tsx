@@ -66,7 +66,7 @@ const FeeInput = ({
 				</View>
 			)}
 			<View style={styles.rightColumn}>
-				<BodyM color="white50">{value}</BodyM>
+				<BodyM color="secondary">{value}</BodyM>
 			</View>
 		</View>
 	);
@@ -164,7 +164,7 @@ const FeeSettings = ({}: SettingsScreenProps<'FeeSettings'>): ReactElement => {
 			<ScrollView
 				style={styles.override}
 				contentContainerStyle={styles.override}>
-				<Caption13Up style={styles.caption} color="white50">
+				<Caption13Up style={styles.caption} color="secondary">
 					Values
 				</Caption13Up>
 				{order.map((o) => (

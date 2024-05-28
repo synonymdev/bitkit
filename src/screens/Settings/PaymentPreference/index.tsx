@@ -7,7 +7,7 @@ import { EItemType, IListData } from '../../../components/List';
 import SettingsView from '../SettingsView';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 import { arraysMatch } from '../../../utils/helpers';
-import { updateSlashPayConfig2 } from '../../../utils/slashtags2';
+import { updateSlashPayConfig } from '../../../utils/slashtags';
 import { updateSettings } from '../../../store/slices/settings';
 import {
 	enableOfflinePaymentsSelector,
@@ -39,7 +39,7 @@ const PaymentPreference = (): ReactElement => {
 							dispatch(updateSettings({ receivePreference: data }));
 
 							if (!arraysMatch(receivePreference, data)) {
-								updateSlashPayConfig2({
+								updateSlashPayConfig({
 									forceUpdate: true,
 									selectedWallet,
 									selectedNetwork,
@@ -62,7 +62,7 @@ const PaymentPreference = (): ReactElement => {
 									enableOfflinePayments: !enableOfflinePayments,
 								}),
 							);
-							updateSlashPayConfig2({ selectedWallet, selectedNetwork });
+							updateSlashPayConfig({ selectedWallet, selectedNetwork });
 						},
 					},
 				],

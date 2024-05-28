@@ -52,7 +52,7 @@ const Funding = ({
 						components={{ accent: <Display color="purple" /> }}
 					/>
 				</Display>
-				<BodyM color="white50" style={styles.text}>
+				<BodyM color="secondary" style={styles.text}>
 					{text}
 				</BodyM>
 

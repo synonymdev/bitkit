@@ -50,18 +50,7 @@ export type TSlashtagsState = {
 	links: LocalLink[];
 	onboardedContacts: boolean;
 	onboardingProfileStep: TOnboardingProfileStep;
-	// cache seen profiles!
-	profiles: {
-		[url: string]: {
-			fork: number;
-			version: number;
-			profile: BasicProfile;
-		};
-	};
 	profilesCache: {
 		[id: string]: BasicProfile;
-	};
-	seeder: {
-		lastSent: number;
 	};
 };

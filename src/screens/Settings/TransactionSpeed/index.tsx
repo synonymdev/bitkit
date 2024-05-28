@@ -50,7 +50,7 @@ const TransactionSpeedSettings = ({
 				value: ETransactionSpeed.custom,
 				description: t('fee.custom.description'),
 				Icon: SettingsIcon,
-				iconColor: 'white50',
+				iconColor: 'secondary',
 			},
 		];
 

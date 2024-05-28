@@ -8,15 +8,15 @@ import { Pressable } from '../../styles/components';
 import { ProfileIcon, SettingsIcon } from '../../styles/icons';
 import ProfileImage from '../../components/ProfileImage';
 import { truncate } from '../../utils/helpers';
-import { useProfile2, useSelectedSlashtag2 } from '../../hooks/slashtags2';
+import { useProfile, useSlashtags } from '../../hooks/slashtags';
 import { RootNavigationProp } from '../../navigation/types';
 import VerticalShadow from '../../components/VerticalShadow';
 
 const EnabledSlashtagsProfileButton = (): ReactElement => {
 	const { t } = useTranslation('slashtags');
 	const navigation = useNavigation<RootNavigationProp>();
-	const { url } = useSelectedSlashtag2();
-	const { profile } = useProfile2(url);
+	const { url } = useSlashtags();
+	const { profile } = useProfile(url);
 
 	const openProfile = useCallback(() => {
 		navigation.navigate('Profile');

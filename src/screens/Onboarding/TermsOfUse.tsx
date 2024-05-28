@@ -58,7 +58,7 @@ const TermsOfUse = ({
 							components={{ accent: <Display color="brand" /> }}
 						/>
 
-						<BodyM color="white50" style={styles.text}>
+						<BodyM color="secondary" style={styles.text}>
 							{termsOfUseText}
 						</BodyM>
 					</ScrollView>
@@ -72,7 +72,7 @@ const TermsOfUse = ({
 					<CheckButton
 						label={<BodyMSB>{t('tos_checkbox')}</BodyMSB>}
 						description={
-							<BodySSB color="white50">
+							<BodySSB color="secondary">
 								<Trans
 									t={t}
 									i18nKey="tos_checkbox_value"
@@ -89,7 +89,7 @@ const TermsOfUse = ({
 					<CheckButton
 						label={<BodyMSB>{t('pp_checkbox')}</BodyMSB>}
 						description={
-							<BodySSB color="white50">
+							<BodySSB color="secondary">
 								<Trans
 									t={t}
 									i18nKey="pp_checkbox_value"

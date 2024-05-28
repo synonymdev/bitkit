@@ -18,7 +18,7 @@ import { getWalletStore } from '../../store/helpers';
 import { refreshBlocktankInfo } from '../../store/utils/blocktank';
 import { keepLdkSynced, setupLdk } from '../lightning';
 import { setupBlocktank, watchPendingOrders } from '../blocktank';
-import { updateSlashPayConfig2 } from '../slashtags2';
+import { updateSlashPayConfig } from '../slashtags';
 import { performFullRestoreFromLatestBackup } from '../../store/utils/backup';
 import { promiseTimeout } from '../helpers';
 import { EAvailableNetwork } from '../networks';
@@ -170,7 +170,7 @@ export const startWalletServices = async ({
 		}
 
 		// Refresh slashpay config
-		updateSlashPayConfig2({ selectedNetwork, forceUpdate: true });
+		updateSlashPayConfig({ selectedNetwork, forceUpdate: true });
 
 		syncLedger();
 

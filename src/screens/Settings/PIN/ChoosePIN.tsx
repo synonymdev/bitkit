@@ -86,7 +86,7 @@ const ChoosePIN = ({
 				title={t(origPIN ? 'pin_retype_header' : 'pin_choose_header')}
 			/>
 
-			<BodyM style={styles.text} color="white50">
+			<BodyM style={styles.text} color="secondary">
 				{t(origPIN ? 'pin_retype_text' : 'pin_choose_text')}
 			</BodyM>
 

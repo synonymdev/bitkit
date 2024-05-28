@@ -12,7 +12,7 @@ import Reader from '@synonymdev/slashtags-widget-news-feed/lib/reader';
 import { BodyM, CaptionB, Title } from '../styles/text';
 import { openAppURL, timeAgo } from '../utils/helpers';
 import { showToast } from '../utils/notifications';
-import { useSlashtags2 } from '../hooks/slashtags2';
+import { useSlashtags } from '../hooks/slashtags';
 import BaseFeedWidget from './BaseFeedWidget';
 
 type Article = {
@@ -49,7 +49,7 @@ const HeadlinesWidget = ({
 	const { t } = useTranslation('slashtags');
 	const [article, setArticle] = useState<Article>();
 	const [isLoading, setIsLoading] = useState(false);
-	const { webRelayClient, webRelayUrl } = useSlashtags2();
+	const { webRelayClient, webRelayUrl } = useSlashtags();
 
 	useEffect(() => {
 		let unmounted = false;
@@ -121,15 +121,17 @@ const HeadlinesWidget = ({
 					activeOpacity={0.9}
 					hitSlop={{ right: 15, bottom: 15, left: 15 }}
 					onPress={(): void => {
-						if (link) openAppURL(link);
+						if (link) {
+							openAppURL(link);
+						}
 					}}>
 					<View style={styles.columnLeft}>
-						<CaptionB color="white50" numberOfLines={1}>
+						<CaptionB color="secondary" numberOfLines={1}>
 							{t('widget_source')}
 						</CaptionB>
 					</View>
 					<View style={styles.columnRight}>
-						<CaptionB color="white50" numberOfLines={1}>
+						<CaptionB color="secondary" numberOfLines={1}>
 							{article?.publisher.title}
 						</CaptionB>
 					</View>

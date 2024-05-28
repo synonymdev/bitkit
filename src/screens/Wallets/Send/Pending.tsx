@@ -54,7 +54,7 @@ const Pending = ({ route }: SendScreenProps<'Pending'>): ReactElement => {
 					/>
 				)}
 
-				<BodyM style={styles.text} color="white50">
+				<BodyM style={styles.text} color="secondary">
 					{t('send_pending_note')}
 				</BodyM>
 

@@ -138,7 +138,7 @@ const ActivityFiltered = ({
 										<TagIcon
 											height={25}
 											width={25}
-											color={tags.length === 0 ? 'white50' : 'brand'}
+											color={tags.length === 0 ? 'secondary' : 'brand'}
 										/>
 									</TouchableOpacity>
 									<TouchableOpacity
@@ -151,7 +151,7 @@ const ActivityFiltered = ({
 										<CalendarIcon
 											height={25}
 											width={25}
-											color={timerange.length === 0 ? 'white50' : 'brand'}
+											color={timerange.length === 0 ? 'secondary' : 'brand'}
 										/>
 									</TouchableOpacity>
 								</View>

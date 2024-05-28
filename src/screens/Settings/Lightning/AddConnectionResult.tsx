@@ -18,7 +18,7 @@ const AddConnectionResult = ({
 			<SafeAreaInset type="top" />
 			<NavigationHeader title="Connection opened" />
 			<View style={styles.content}>
-				<BodyM color="white50" style={styles.text}>
+				<BodyM color="secondary" style={styles.text}>
 					You successfully opened a connection with ‘LNBIG Lightning Node’. It
 					might take a while for the connection to become ready for use.
 				</BodyM>

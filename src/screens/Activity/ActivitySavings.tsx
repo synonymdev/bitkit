@@ -57,15 +57,13 @@ const ActivitySavings = ({
 				{balanceInTransferToSavings !== 0 && (
 					<View style={styles.transfer}>
 						<View style={styles.transferText}>
-							<TransferIcon style={styles.transferIcon} color="white50" />
-							<CaptionB color="white50">
-								{t('details_transfer_subtitle')}
-							</CaptionB>
+							<TransferIcon style={styles.transferIcon} color="red" />
+							<CaptionB color="red">{t('details_transfer_subtitle')}</CaptionB>
 						</View>
 						<Money
 							sats={balanceInTransferToSavings}
 							size="captionB"
-							color="white50"
+							color="red"
 						/>
 					</View>
 				)}

@@ -11,6 +11,7 @@ import { showToast } from '../../utils/notifications';
 import { wipeLdkStorage } from '../../utils/lightning';
 import { getSelectedWallet } from '../../utils/wallet';
 import { TWalletName } from '../types/wallet';
+import { __E2E__ } from '../../constants/env';
 
 /**
  * This method will wipe all data for the specified wallet.
@@ -48,7 +49,7 @@ export const wipeApp = async ({
 			});
 		}
 
-		if (restartApp) {
+		if (restartApp && !__E2E__) {
 			// avoid freeze on iOS
 			await sleep(1000);
 			RNRestart.Restart();

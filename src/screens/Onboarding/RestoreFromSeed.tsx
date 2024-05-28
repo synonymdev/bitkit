@@ -211,7 +211,7 @@ const RestoreFromSeed = (): ReactElement => {
 				</View>
 
 				{showRedExplanation && (
-					<BodyS color="white50" style={styles.explanation}>
+					<BodyS color="secondary" style={styles.explanation}>
 						<Trans
 							t={t}
 							i18nKey="restore_red_explain"
@@ -241,7 +241,7 @@ const RestoreFromSeed = (): ReactElement => {
 							onChangeText={setPassphrase}
 							onSubmitEditing={handleSubmitEditing}
 						/>
-						<BodyS color="white50" style={styles.explanation}>
+						<BodyS color="secondary" style={styles.explanation}>
 							{t('restore_passphrase_meaning')}
 						</BodyS>
 					</>

@@ -14,7 +14,7 @@ import KeyboardAvoidingView from '../../components/KeyboardAvoidingView';
 import ProfileCard, { MAX_NAME_LENGTH } from '../../components/ProfileCard';
 import { RootStackScreenProps } from '../../navigation/types';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
-import { useProfile2, useSelectedSlashtag2 } from '../../hooks/slashtags2';
+import { useProfile, useSlashtags } from '../../hooks/slashtags';
 import { addContact } from '../../store/slices/slashtags';
 import { contactSelector } from '../../store/reselect/slashtags';
 
@@ -28,8 +28,8 @@ const ContactEdit = ({
 	const savedContact = useAppSelector((state) => {
 		return contactSelector(state, url);
 	});
-	const contact = useProfile2(url);
-	const { url: myProfileUrl } = useSelectedSlashtag2();
+	const contact = useProfile(url);
+	const { url: myProfileUrl } = useSlashtags();
 	const [name, setName] = useState<string | null>(savedContact?.name || null);
 
 	const profile = useMemo(

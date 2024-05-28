@@ -40,7 +40,7 @@ const FeedWidget = ({
 					return (
 						<View key={field.name} style={styles.row}>
 							<View style={styles.columnLeft}>
-								<BodySSB color="white50" numberOfLines={1}>
+								<BodySSB color="secondary" numberOfLines={1}>
 									{field.name}
 								</BodySSB>
 							</View>
@@ -56,12 +56,12 @@ const FeedWidget = ({
 				{widget.extras?.showSource && config?.source && (
 					<View style={styles.source}>
 						<View style={styles.columnLeft}>
-							<CaptionB color="white50" numberOfLines={1}>
+							<CaptionB color="secondary" numberOfLines={1}>
 								{t('widget_source')}
 							</CaptionB>
 						</View>
 						<View style={styles.columnRight}>
-							<CaptionB color="white50" numberOfLines={1}>
+							<CaptionB color="secondary" numberOfLines={1}>
 								{config.source.name}
 							</CaptionB>
 						</View>

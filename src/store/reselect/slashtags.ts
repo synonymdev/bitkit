@@ -17,10 +17,6 @@ export const slashtagsSelector = (state: RootState): TSlashtagsState => {
 	return state.slashtags;
 };
 
-export const lastSentSelector = createSelector(
-	[slashtagsState],
-	(slashtags): number | undefined => slashtags.seeder?.lastSent,
-);
 export const onboardingProfileStepSelector = createSelector(
 	[slashtagsState],
 	(slashtags): TOnboardingProfileStep => slashtags.onboardingProfileStep,

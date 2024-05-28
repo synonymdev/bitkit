@@ -45,7 +45,7 @@ const Tags = ({ navigation }: ReceiveScreenProps<'Tags'>): ReactElement => {
 			<View style={styles.content}>
 				{lastUsedTags.length !== 0 && (
 					<>
-						<Caption13Up color="white50" style={styles.section}>
+						<Caption13Up color="secondary" style={styles.section}>
 							{t('tags_previously')}
 						</Caption13Up>
 						<View style={styles.tagsContainer}>
@@ -62,7 +62,7 @@ const Tags = ({ navigation }: ReceiveScreenProps<'Tags'>): ReactElement => {
 						</View>
 					</>
 				)}
-				<Caption13Up color="white50" style={styles.section}>
+				<Caption13Up color="secondary" style={styles.section}>
 					{t('tags_new')}
 				</Caption13Up>
 				<BottomSheetTextInput

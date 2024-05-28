@@ -23,7 +23,7 @@
 	"mnemonic_confirm_tap": "Tap the 12 words in the correct order.",
 	"mnemonic_result_header": "Successful",
 	"mnemonic_result_text": "Make sure you store your recovery phrase in a <accent>secure place</accent>, as this is the <accent>only way to recover</accent> your money!",
-	"mnemonic_keep_header": "Keep It Secret",
+	"mnemonic_keep_header": "Keep It Safe",
 	"mnemonic_keep_text": "Remember, <accent>never share your recovery phrase</accent> with anyone! If you do, they can steal your money, profile and other data.",
 	"mnemonic_data_header": "Wallet Data",
 	"mnemonic_data_text": "Your profile, contacts, accounts, tags, and activity will be backed up automatically to our free cloud service.",

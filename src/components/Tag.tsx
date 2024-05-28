@@ -33,9 +33,9 @@ const Tag = ({
 					onPress={onDelete}
 					testID={`Tag-${value}-delete`}>
 					{icon === 'close' ? (
-						<XIcon color="white50" width={16} />
+						<XIcon color="secondary" width={16} />
 					) : (
-						<TrashIcon color="white50" width={16} />
+						<TrashIcon color="secondary" width={16} />
 					)}
 				</TouchableOpacity>
 			)}

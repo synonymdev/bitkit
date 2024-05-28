@@ -45,7 +45,7 @@ const PINPrompt = ({
 					components={{ accent: <Display color="green" /> }}
 				/>
 			</Display>
-			<BodyM color="white50">{t('pin_security_text')}</BodyM>
+			<BodyM color="secondary">{t('pin_security_text')}</BodyM>
 			<View style={styles.buttonContainer}>
 				{showLaterButton && (
 					<Button

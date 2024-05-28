@@ -14,7 +14,7 @@ import { handleSlashtagURL } from '../../utils/slashtags';
 import { useSlashfeed } from '../../hooks/widgets';
 import type { RootStackScreenProps } from '../../navigation/types';
 
-const PriceFeedURL =
+export const PriceFeedURL =
 	'slashfeed:9ckhj7ea31ugskdewy9eiod5trhtbgcu9juza8aypjyugsp5f4oo/Bitcoin Price';
 const NewsFeedURL =
 	'slashfeed:tdm8gwcuh6nfw4w8remadpzid9cff4tpoyazeokzbrfnjrxyf9ho/Bitcoin Headlines';
@@ -81,7 +81,7 @@ const Feed = ({
 					</View>
 					<View style={styles.text}>
 						<BodyMSB numberOfLines={1}>{url}</BodyMSB>
-						<CaptionB color="white50" numberOfLines={1}>
+						<CaptionB color="secondary" numberOfLines={1}>
 							{failed
 								? t('widget_failed_description')
 								: t('widget_loading_description')}
@@ -89,7 +89,7 @@ const Feed = ({
 					</View>
 					<ChevronRight
 						style={styles.arrow}
-						color="white50"
+						color="secondary"
 						width={24}
 						height={24}
 					/>
@@ -114,13 +114,13 @@ const Feed = ({
 				</View>
 				<View style={styles.text}>
 					<BodyMSB numberOfLines={1}>{config.name}</BodyMSB>
-					<CaptionB color="white50" numberOfLines={1}>
+					<CaptionB color="secondary" numberOfLines={1}>
 						{config.description}
 					</CaptionB>
 				</View>
 				<ChevronRight
 					style={styles.arrow}
-					color="white50"
+					color="secondary"
 					width={24}
 					height={24}
 				/>

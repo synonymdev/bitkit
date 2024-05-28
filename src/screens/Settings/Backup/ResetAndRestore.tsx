@@ -28,7 +28,7 @@ const ResetAndRestore = ({
 				onClosePress={(): void => navigation.navigate('Wallet')}
 			/>
 			<View style={styles.container}>
-				<BodyM color="white50">{t('reset_text')}</BodyM>
+				<BodyM color="secondary">{t('reset_text')}</BodyM>
 
 				<View style={styles.imageContainer}>
 					<Image style={styles.image} source={imageSrc} />

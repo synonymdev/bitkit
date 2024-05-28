@@ -42,7 +42,7 @@ const IntroScreen = ({
 							components={{ accent: <Display color={accentColor} /> }}
 						/>
 					</Display>
-					<BodyM style={styles.description} color="white50">
+					<BodyM style={styles.description} color="secondary">
 						{description}
 					</BodyM>
 				</View>

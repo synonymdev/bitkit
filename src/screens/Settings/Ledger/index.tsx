@@ -143,12 +143,12 @@ const Ledger = ({
 								onPress={handleExport}
 							/>
 						</View>
-						<Caption13Up style={styles.caption} color="white50">
+						<Caption13Up style={styles.caption} color="secondary">
 							Balances
 						</Caption13Up>
 						<View style={styles.item}>
 							<View style={styles.column4}>
-								<BodyM color="white50" />
+								<BodyM color="secondary" />
 							</View>
 							<View style={styles.column4}>
 								<Caption13Up>Actual</Caption13Up>
@@ -191,13 +191,13 @@ const Ledger = ({
 								</Caption13Up>
 							</View>
 							<View style={styles.column4}>
-								<Caption13Up color="white50">
+								<Caption13Up color="secondary">
 									{bitkitLedger?.ledger.getWalletBalance('lightning').hold}
 								</Caption13Up>
 							</View>
 						</View>
 
-						<Caption13Up style={styles.caption} color="white50">
+						<Caption13Up style={styles.caption} color="secondary">
 							Remote wallets
 						</Caption13Up>
 						<View style={styles.item}>
@@ -222,7 +222,7 @@ const Ledger = ({
 								</Caption13Up>
 							</View>
 							<View style={styles.column3}>
-								<Caption13Up color="white50">
+								<Caption13Up color="secondary">
 									{bitkitLedger?.ledger.getWalletBalance('onchain_remote').hold}
 								</Caption13Up>
 							</View>
@@ -240,7 +240,7 @@ const Ledger = ({
 								</Caption13Up>
 							</View>
 							<View style={styles.column3}>
-								<Caption13Up color="white50">
+								<Caption13Up color="secondary">
 									{
 										bitkitLedger?.ledger.getWalletBalance('lightning_remote')
 											.hold
@@ -249,7 +249,7 @@ const Ledger = ({
 							</View>
 						</View>
 
-						<Caption13Up style={styles.caption} color="white50">
+						<Caption13Up style={styles.caption} color="secondary">
 							Transactions
 						</Caption13Up>
 

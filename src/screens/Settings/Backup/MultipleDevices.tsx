@@ -24,7 +24,7 @@ const MultipleDevices = ({
 		<GradientView style={styles.container}>
 			<BottomSheetNavigationHeader title={t('mnemonic_multiple_header')} />
 
-			<BodyM color="white50" style={styles.text}>
+			<BodyM color="secondary" style={styles.text}>
 				{t('mnemonic_multiple_text')}
 			</BodyM>
 

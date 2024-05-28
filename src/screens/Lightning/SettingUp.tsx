@@ -48,7 +48,7 @@ const SettingUp = ({
 			/>
 			<View style={styles.content} testID="LightningSettingUp">
 				<Display color="purple">{t('setting_up_header')}</Display>
-				<BodyM style={styles.text} color="white50">
+				<BodyM style={styles.text} color="secondary">
 					<Trans
 						t={t}
 						i18nKey="setting_up_text"

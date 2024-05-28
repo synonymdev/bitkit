@@ -43,7 +43,7 @@ const AdjustValue = ({
 			<View style={styles.text}>
 				<BodyMSB style={styles.title}>{value}</BodyMSB>
 				{description && (
-					<BodySSB style={styles.description} color="white50">
+					<BodySSB style={styles.description} color="secondary">
 						{description}
 					</BodySSB>
 				)}

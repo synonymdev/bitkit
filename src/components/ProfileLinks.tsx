@@ -60,7 +60,7 @@ const ProfileLinks = ({
 		<View style={style}>
 			{!editable && links?.length === 0 && linksText ? (
 				<>
-					<BodyS color="white50">{t('contact_no_links')}</BodyS>
+					<BodyS color="secondary">{t('contact_no_links')}</BodyS>
 					<Divider />
 				</>
 			) : (
@@ -88,7 +88,7 @@ const ProfileLinks = ({
 							onPress={(): void => {
 								openAppURL(link.url);
 							}}>
-							<Caption13Up style={styles.label} color="white50">
+							<Caption13Up style={styles.label} color="secondary">
 								{link.title}
 							</Caption13Up>
 							<BodySSB numberOfLines={1}>{trimmedUrl}</BodySSB>

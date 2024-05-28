@@ -41,7 +41,7 @@ const DisablePin = ({
 			/>
 
 			<View style={styles.message}>
-				<BodyM color="white50">{t('pin_disable_text')}</BodyM>
+				<BodyM color="secondary">{t('pin_disable_text')}</BodyM>
 			</View>
 
 			<View style={styles.imageContainer}>

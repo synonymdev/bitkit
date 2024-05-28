@@ -37,7 +37,7 @@ const ConnectionClosed = (): ReactElement => {
 					title={t('connection_closed.title')}
 					displayBackButton={false}
 				/>
-				<BodyM color="white50">{t('connection_closed.description')}</BodyM>
+				<BodyM color="secondary">{t('connection_closed.description')}</BodyM>
 
 				<View style={styles.imageContainer}>
 					<Image style={styles.image} source={imageSrc} />

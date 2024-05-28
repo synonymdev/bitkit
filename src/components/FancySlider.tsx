@@ -66,6 +66,8 @@ interface IFancySlider {
 	value: number;
 	snapPoint?: number;
 	onValueChange: (value: number) => void;
+	onPanStart: () => void;
+	onPanEnd: () => void;
 }
 
 const FancySlider = ({
@@ -75,6 +77,8 @@ const FancySlider = ({
 	value,
 	snapPoint,
 	onValueChange,
+	onPanStart,
+	onPanEnd,
 }: IFancySlider): ReactElement => {
 	const pan = useRef<any>(new Animated.ValueXY()).current;
 	const active = useRef(false);
@@ -102,6 +106,15 @@ const FancySlider = ({
 		[throttledOnValueChange, startValue, endValue, endPosition],
 	);
 
+	const handlePanEnd = useCallback(() => {
+		// timeout to make sure onVavalueChange is already called
+		setTimeout(() => {
+			if (!active.current) {
+				onPanEnd();
+			}
+		}, 200);
+	}, [onPanEnd]);
+
 	const panResponder = useMemo(() => {
 		// wait for containerWidth to be set
 		if (endPosition === 1) {
@@ -117,6 +130,7 @@ const FancySlider = ({
 					y: pan.y._value,
 				});
 				active.current = true;
+				onPanStart();
 			},
 			onPanResponderMove: Animated.event([null, { dx: pan.x }], {
 				useNativeDriver: false,
@@ -132,7 +146,9 @@ const FancySlider = ({
 						speed: 1000,
 					}).start(() => {
 						active.current = false;
+						handlePanEnd();
 					});
+					return;
 				}
 
 				// snap to max
@@ -143,7 +159,9 @@ const FancySlider = ({
 						speed: 1000,
 					}).start(() => {
 						active.current = false;
+						handlePanEnd();
 					});
+					return;
 				}
 
 				// handle snapPoint
@@ -159,6 +177,7 @@ const FancySlider = ({
 						}).start(() => {
 							pan.setValue({ x: 0, y: pan.y._value });
 							active.current = false;
+							handlePanEnd();
 						});
 					}
 
@@ -170,12 +189,26 @@ const FancySlider = ({
 						}).start(() => {
 							pan.setValue({ x: snapPointX, y: pan.y._value });
 							active.current = false;
+							handlePanEnd();
 						});
 					}
+					return;
 				}
+
+				active.current = false;
+				handlePanEnd();
 			},
 		});
-	}, [endPosition, maxEndPosition, pan, snapPoint, startValue, endValue]);
+	}, [
+		endPosition,
+		maxEndPosition,
+		pan,
+		snapPoint,
+		startValue,
+		endValue,
+		onPanStart,
+		handlePanEnd,
+	]);
 
 	const circleTranslateX = pan.x.interpolate({
 		inputRange: [0, endPosition],

@@ -1,4 +1,4 @@
-import { getNewProfileUrl } from '../src/utils/slashtags2';
+import { getNewProfileUrl } from '../src/utils/slashtags';
 
 describe('Slashtags', () => {
 	it('profile url convert function woks', () => {

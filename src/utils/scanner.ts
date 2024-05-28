@@ -33,7 +33,7 @@ import { getBalance, getSelectedNetwork, getSelectedWallet } from './wallet';
 import { closeSheet } from '../store/slices/ui';
 import { showBottomSheet } from '../store/utils/ui';
 import { handleSlashtagURL } from './slashtags';
-import { getSlashPayConfig2 } from './slashtags2';
+import { getSlashPayConfig } from './slashtags';
 import {
 	addPeer,
 	decodeLightningInvoice,
@@ -559,7 +559,7 @@ export const processSlashPayURL = async ({
 	url: string;
 }): Promise<Result<QRData[]>> => {
 	try {
-		const payConfig = await getSlashPayConfig2(url);
+		const payConfig = await getSlashPayConfig(url);
 		const qrData: QRData[] = [];
 
 		payConfig.forEach(({ type, value }) => {

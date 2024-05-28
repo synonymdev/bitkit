@@ -184,7 +184,7 @@ const Calendar = ({
 			<View style={styles.weekCaption}>
 				{weekDays.map((day) => (
 					<View key={day} style={styles.weekDay}>
-						<Caption13Up color="white50">{day}</Caption13Up>
+						<Caption13Up color="secondary">{day}</Caption13Up>
 					</View>
 				))}
 			</View>

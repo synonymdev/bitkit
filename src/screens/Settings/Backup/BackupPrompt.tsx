@@ -122,7 +122,7 @@ const BackupPrompt = ({ enabled }: { enabled: boolean }): ReactElement => {
 						components={{ accent: <Display color="blue" /> }}
 					/>
 				</Display>
-				<BodyM color="white50">{text}</BodyM>
+				<BodyM color="secondary">{text}</BodyM>
 				<View style={styles.buttonContainer}>
 					<Button
 						style={styles.button}

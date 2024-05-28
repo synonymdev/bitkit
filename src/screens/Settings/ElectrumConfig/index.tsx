@@ -31,6 +31,7 @@ import { EProtocol } from 'beignet';
 import { refreshWallet, rescanAddresses } from '../../../utils/wallet';
 import { EAvailableNetwork } from '../../../utils/networks';
 import { updateActivityList } from '../../../store/utils/activity';
+import useBreakpoints from '../../../styles/breakpoints';
 
 type RadioButtonItem = { label: string; value: EProtocol };
 
@@ -87,6 +88,7 @@ const ElectrumConfig = ({
 	navigation,
 }: SettingsScreenProps<'ElectrumConfig'>): ReactElement => {
 	const { t } = useTranslation('settings');
+	const br = useBreakpoints();
 	const dispatch = useAppDispatch();
 	const selectedNetwork = useAppSelector(selectedNetworkSelector);
 	const customElectrumPeers = useAppSelector((state) => {
@@ -266,7 +268,7 @@ const ElectrumConfig = ({
 				onActionPress={navigateToScanner}
 			/>
 			<ScrollView contentContainerStyle={styles.content} bounces={false}>
-				<BodyM color="white50">{t('es.connected_to')}</BodyM>
+				<BodyM color="secondary">{t('es.connected_to')}</BodyM>
 				<View style={styles.connectedPeer} testID="ElectrumStatus">
 					{connectedPeer ? (
 						<BodyM color="green" testID="Connected">
@@ -279,7 +281,7 @@ const ElectrumConfig = ({
 					)}
 				</View>
 
-				<Caption13Up style={styles.label} color="white50">
+				<Caption13Up style={styles.label} color="secondary">
 					{t('es.host')}
 				</Caption13Up>
 				<TextInput
@@ -297,7 +299,7 @@ const ElectrumConfig = ({
 					testID="HostInput"
 				/>
 
-				<Caption13Up style={styles.label} color="white50">
+				<Caption13Up style={styles.label} color="secondary">
 					{t('es.port')}
 				</Caption13Up>
 				<TextInput
@@ -318,7 +320,7 @@ const ElectrumConfig = ({
 					style={styles.protocol}
 					accessibilityLabel={protocol}
 					testID="ElectrumProtocol">
-					<Caption13Up style={styles.label} color="white50">
+					<Caption13Up style={styles.label} color="secondary">
 						{t('es.protocol')}
 					</Caption13Up>
 					<RadioButtonGroup
@@ -337,7 +339,7 @@ const ElectrumConfig = ({
 					/>
 				</View>
 
-				<View style={styles.buttons}>
+				<View style={[styles.buttons, br.up('smphone') && styles.buttonsRow]}>
 					<Button
 						style={styles.button}
 						text={t('es.button_reset')}
@@ -388,9 +390,11 @@ const styles = StyleSheet.create({
 		marginTop: 11,
 	},
 	buttons: {
-		flexDirection: 'row',
 		marginTop: 'auto',
 		gap: 16,
+	},
+	buttonsRow: {
+		flexDirection: 'row',
 	},
 	button: {
 		flex: 1,

@@ -26,7 +26,7 @@ const PinChanged = ({
 			<NavigationHeader title={t('cp_changed_title')} />
 
 			<View style={styles.message}>
-				<BodyM color="white50">{t('cp_changed_text')}</BodyM>
+				<BodyM color="secondary">{t('cp_changed_text')}</BodyM>
 			</View>
 
 			<View style={styles.imageContainer}>

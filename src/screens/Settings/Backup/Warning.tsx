@@ -17,14 +17,14 @@ const Warning = ({
 	const { t } = useTranslation('security');
 
 	const handleButtonPress = (): void => {
-		navigation.navigate('MultipleDevices');
+		navigation.navigate('Success');
 	};
 
 	return (
 		<GradientView style={styles.container}>
 			<BottomSheetNavigationHeader title={t('mnemonic_keep_header')} />
 
-			<BodyM style={styles.text} color="white50">
+			<BodyM style={styles.text} color="secondary">
 				<Trans
 					t={t}
 					i18nKey="mnemonic_keep_text"

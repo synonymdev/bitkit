@@ -49,7 +49,7 @@ const OnboardingScreen = ({
 				</View>
 
 				<Display>{title}</Display>
-				<BodyM style={styles.description} color="white50">
+				<BodyM style={styles.description} color="secondary">
 					{description}
 				</BodyM>
 

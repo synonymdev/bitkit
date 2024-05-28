@@ -63,7 +63,7 @@ const Address = ({}: SendScreenProps<'Address'>): ReactElement => {
 		<GradientView style={styles.container}>
 			<BottomSheetNavigationHeader title={t('send_bitcoin')} />
 			<View style={styles.content}>
-				<Caption13Up color="white50" style={styles.label} testID="Caption">
+				<Caption13Up color="secondary" style={styles.label} testID="Caption">
 					{t('send_to')}
 				</Caption13Up>
 
@@ -74,7 +74,6 @@ const Address = ({}: SendScreenProps<'Address'>): ReactElement => {
 						style={styles.input}
 						value={textFieldValue}
 						selectionColor={colors.brand}
-						placeholderTextColor={colors.white50}
 						selectTextOnFocus={true}
 						multiline={true}
 						placeholder={t('send_address_placeholder')}

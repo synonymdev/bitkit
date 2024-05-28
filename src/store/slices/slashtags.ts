@@ -14,11 +14,7 @@ export const initialSlashtagsState: TSlashtagsState = {
 	links: [],
 	onboardedContacts: false,
 	onboardingProfileStep: 'Intro',
-	profiles: {},
 	profilesCache: {},
-	seeder: {
-		lastSent: 0,
-	},
 };
 
 export const slashtagsSlice = createSlice({
@@ -33,9 +29,6 @@ export const slashtagsSlice = createSlice({
 		},
 		setOnboardedContacts: (state, action: PayloadAction<boolean>) => {
 			state.onboardedContacts = action.payload;
-		},
-		setLastSeederRequest: (state, action: PayloadAction<number>) => {
-			state.seeder.lastSent = action.payload;
 		},
 		setLinks: (state, action: PayloadAction<LocalLink[]>) => {
 			state.links = action.payload;
@@ -81,21 +74,6 @@ export const slashtagsSlice = createSlice({
 		},
 		cacheProfile: (
 			state,
-			action: PayloadAction<{
-				url: string;
-				fork: number;
-				version: number;
-				profile: BasicProfile;
-			}>,
-		) => {
-			state.profiles[action.payload.url] = {
-				fork: action.payload.fork,
-				version: action.payload.version,
-				profile: action.payload.profile,
-			};
-		},
-		cacheProfile2: (
-			state,
 			action: PayloadAction<{ url: string; profile: BasicProfile }>,
 		) => {
 			const { id } = parse(action.payload.url);
@@ -110,7 +88,6 @@ const { actions, reducer } = slashtagsSlice;
 export const {
 	setOnboardingProfileStep,
 	setOnboardedContacts,
-	setLastSeederRequest,
 	setLinks,
 	addLink,
 	editLink,
@@ -120,7 +97,6 @@ export const {
 	deleteContact,
 	updateLastPaidContacts,
 	cacheProfile,
-	cacheProfile2,
 	resetSlashtagsState,
 } = actions;
 

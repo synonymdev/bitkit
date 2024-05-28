@@ -77,7 +77,7 @@ const WidgetEdit = ({
 			) : (
 				<View style={styles.content}>
 					{config.name && (
-						<BodyM style={styles.description} color="white50">
+						<BodyM style={styles.description} color="secondary">
 							{t('widget_edit_description', { name: config.name })}
 						</BodyM>
 					)}
@@ -86,7 +86,7 @@ const WidgetEdit = ({
 						showsVerticalScrollIndicator={false}
 						testID="WidgetEditScrollView">
 						{loading && (
-							<BodyM style={styles.loading} color="white50">
+							<BodyM style={styles.loading} color="secondary">
 								{t('widget_loading_options')}
 							</BodyM>
 						)}
@@ -117,7 +117,7 @@ const WidgetEdit = ({
 												}}>
 												<View style={styles.fieldContainer}>
 													<View style={styles.fieldLeftContainer}>
-														<BodySSB color="white50">{field.name}</BodySSB>
+														<BodySSB color="secondary">{field.name}</BodySSB>
 													</View>
 													<View style={styles.fieldRightContainer}>
 														<BodySSB numberOfLines={1} ellipsizeMode="middle">
@@ -193,9 +193,9 @@ const WidgetEdit = ({
 											}));
 										}}>
 										<View style={styles.fieldContainer}>
-											<CaptionB color="white50">Source</CaptionB>
+											<CaptionB color="secondary">Source</CaptionB>
 											<View style={styles.fieldRightContainer}>
-												<CaptionB color="white50">
+												<CaptionB color="secondary">
 													{config.source.name}
 												</CaptionB>
 											</View>

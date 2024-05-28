@@ -5,7 +5,7 @@ import { Reader } from '@synonymdev/slashtags-widget-facts-feed';
 
 import { Title } from '../styles/text';
 import { showToast } from '../utils/notifications';
-import { useSlashtags2 } from '../hooks/slashtags2';
+import { useSlashtags } from '../hooks/slashtags';
 import BaseFeedWidget from './BaseFeedWidget';
 
 const FactsWidget = ({
@@ -24,7 +24,7 @@ const FactsWidget = ({
 	onLongPress?: () => void;
 }): ReactElement => {
 	const { t } = useTranslation('slashtags');
-	const { webRelayClient, webRelayUrl } = useSlashtags2();
+	const { webRelayClient, webRelayUrl } = useSlashtags();
 	const [fact, setFact] = useState<string>();
 	const [isLoading, setIsLoading] = useState(false);
 

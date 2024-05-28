@@ -8,7 +8,7 @@ import { setOnboardedContacts } from '../../store/slices/slashtags';
 import { RootStackParamList } from '../../navigation/types';
 import OnboardingScreen from '../../components/OnboardingScreen';
 
-const imageSrc = require('../../assets/illustrations/book.png');
+const imageSrc = require('../../assets/illustrations/group.png');
 
 type ContactsOnboardingProps = StackScreenProps<RootStackParamList, 'Contacts'>;
 

@@ -14,6 +14,7 @@ import {
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
+import colors from '../styles/colors';
 import { CaptionB } from '../styles/text';
 import { TActivityFilter } from '../utils/activity';
 
@@ -38,7 +39,7 @@ const Tab = ({
 		activeOpacity={0.8}
 		testID={testID}
 		onPress={onPress}>
-		<CaptionB color={active ? 'white' : 'white50'}>{text}</CaptionB>
+		<CaptionB color={active ? 'white' : 'secondary'}>{text}</CaptionB>
 	</TouchableOpacity>
 );
 
@@ -92,11 +93,11 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		justifyContent: 'center',
 		borderBottomWidth: 2,
-		borderColor: '#8E8E93',
+		borderColor: colors.white64,
 		paddingVertical: 10,
 	},
 	activeTab: {
-		backgroundColor: '#FF4400',
+		backgroundColor: colors.brand,
 		height: 2,
 		position: 'absolute',
 		top: '95%',

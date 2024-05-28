@@ -167,7 +167,7 @@ const ReceiveDetails = ({
 				{!showNumberPad && (
 					<>
 						<View style={styles.inputContainer}>
-							<Caption13Up style={styles.label} color="white50">
+							<Caption13Up style={styles.label} color="secondary">
 								{t('note')}
 							</Caption13Up>
 							<View style={styles.inputWrapper}>
@@ -195,7 +195,7 @@ const ReceiveDetails = ({
 								color="transparent"
 								entering={FadeIn}
 								exiting={FadeOut}>
-								<Caption13Up style={styles.label} color="white50">
+								<Caption13Up style={styles.label} color="secondary">
 									{t('tags')}
 								</Caption13Up>
 								<View style={styles.tagsContainer}>

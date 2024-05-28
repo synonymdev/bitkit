@@ -22,7 +22,7 @@ import {
 	TOnchainActivityItem,
 } from '../../store/types/activity';
 import { useAppSelector } from '../../hooks/redux';
-import { useProfile2 } from '../../hooks/slashtags2';
+import { useProfile } from '../../hooks/slashtags';
 import { useFeeText } from '../../hooks/fees';
 import {
 	ETransferStatus,
@@ -54,7 +54,7 @@ export const ListItem = ({
 		{icon}
 		<View style={styles.text}>
 			<BodyMSB color={exists ? undefined : 'red'}>{title}</BodyMSB>
-			<CaptionB color={exists ? 'white50' : 'red'}>
+			<CaptionB color={exists ? 'secondary' : 'red'}>
 				{truncate(description, 35)}
 			</CaptionB>
 		</View>
@@ -73,7 +73,7 @@ export const ListItem = ({
 					sats={amount}
 					enableHide={true}
 					size="captionB"
-					color={exists ? 'white50' : 'red'}
+					color={exists ? 'secondary' : 'red'}
 					unitType="secondary"
 				/>
 			</View>
@@ -245,7 +245,7 @@ export const EmptyItem = ({
 };
 
 const Avatar = ({ url }: { url: string }): ReactElement => {
-	const { profile } = useProfile2(url);
+	const { profile } = useProfile(url);
 	return (
 		<ProfileImage
 			style={styles.icon}

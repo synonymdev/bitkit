@@ -91,21 +91,21 @@ const store = new Store('slashtags.db') as unknown as Client.Store;
 export let webRelayClient: IWebRelayClient;
 let profile: SlashtagsProfile;
 
-export interface TSlashtagsStateContext2 {
+export interface TSlashtagsStateContext {
 	webRelayClient: Client;
 	webRelayUrl: string;
 	url: string;
 	profile: SlashtagsProfile;
 }
 
-export const SlashtagsContext2 = createContext<TSlashtagsStateContext2>({
+export const SlashtagsContext = createContext<TSlashtagsStateContext>({
 	webRelayClient: {} as Client,
 	webRelayUrl: '',
 	url: '',
 	profile: {} as SlashtagsProfile,
 });
 
-export const SlashtagsProvider2 = ({
+export const SlashtagsProvider = ({
 	children,
 }: {
 	children: ReactElement;
@@ -156,7 +156,7 @@ export const SlashtagsProvider2 = ({
 
 	return (
 		// Do not render children until we have a url
-		<SlashtagsContext2.Provider
+		<SlashtagsContext.Provider
 			value={{
 				webRelayClient: client,
 				webRelayUrl,
@@ -164,6 +164,6 @@ export const SlashtagsProvider2 = ({
 				profile,
 			}}>
 			{url && children}
-		</SlashtagsContext2.Provider>
+		</SlashtagsContext.Provider>
 	);
 };

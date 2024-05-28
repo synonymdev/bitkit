@@ -85,7 +85,7 @@ const ReceiveConnect = ({
 			<View style={styles.content}>
 				<AmountToggle amount={amount} />
 
-				<BodyM style={styles.text} color="white50">
+				<BodyM style={styles.text} color="secondary">
 					<Trans
 						t={t}
 						i18nKey={
@@ -99,7 +99,7 @@ const ReceiveConnect = ({
 				</BodyM>
 
 				<View style={styles.payAmount}>
-					<Caption13Up style={styles.payAmountText} color="white50">
+					<Caption13Up style={styles.payAmountText} color="secondary">
 						{t('receive_will')}
 					</Caption13Up>
 					<Money

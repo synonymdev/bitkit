@@ -7,26 +7,19 @@ import {
 	contactSelector,
 	profileCacheSelector,
 } from '../store/reselect/slashtags';
-import { cacheProfile2 } from '../store/slices/slashtags';
+import { cacheProfile } from '../store/slices/slashtags';
 import {
-	TSlashtagsStateContext2,
-	SlashtagsContext2,
-} from '../components/SlashtagsProvider2';
+	TSlashtagsStateContext,
+	SlashtagsContext,
+} from '../components/SlashtagsProvider';
 import { __E2E__ } from '../constants/env';
 import { useAppDispatch, useAppSelector } from './redux';
 
-export const useSelectedSlashtag2 = (): {
-	url: string;
-} => {
-	const { url } = useSlashtags2();
-	return { url };
+export const useSlashtags = (): TSlashtagsStateContext => {
+	return useContext(SlashtagsContext);
 };
 
-export const useSlashtags2 = (): TSlashtagsStateContext2 => {
-	return useContext(SlashtagsContext2);
-};
-
-export const useProfile2 = (
+export const useProfile = (
 	origUrl: string,
 	opts?: { resolve?: boolean },
 ): {
@@ -35,7 +28,7 @@ export const useProfile2 = (
 	url: string;
 } => {
 	const dispatch = useAppDispatch();
-	const { webRelayClient, webRelayUrl } = useSlashtags2();
+	const { webRelayClient, webRelayUrl } = useSlashtags();
 	const [resolving, setResolving] = useState(true);
 	const [url, profileUrl] = useMemo(() => {
 		const parsed = parse(origUrl);
@@ -78,7 +71,7 @@ export const useProfile2 = (
 				setResolving(false);
 
 				if (pr) {
-					dispatch(cacheProfile2({ url: profileUrl, profile: pr }));
+					dispatch(cacheProfile({ url: profileUrl, profile: pr }));
 				}
 
 				if (!unmounted) {
@@ -99,7 +92,7 @@ export const useProfile2 = (
 				return;
 			}
 
-			dispatch(cacheProfile2({ url: profileUrl, profile: pr }));
+			dispatch(cacheProfile({ url: profileUrl, profile: pr }));
 		});
 
 		let unmounted = false;

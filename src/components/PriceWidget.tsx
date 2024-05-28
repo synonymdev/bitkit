@@ -10,7 +10,7 @@ import { TFeedWidget } from '../store/types/widgets';
 import BaseFeedWidget from './BaseFeedWidget';
 import { Change, Chart, getChange } from './PriceChart';
 import { decodeWidgetFieldValue, SUPPORTED_FEED_TYPES } from '../utils/widgets';
-import { useSlashtags2 } from '../hooks/slashtags2';
+import { useSlashtags } from '../hooks/slashtags';
 import { __E2E__ } from '../constants/env';
 
 type TField = {
@@ -39,7 +39,7 @@ const PriceWidget = ({
 	onPressIn?: () => void;
 }): ReactElement => {
 	const { t } = useTranslation('slashtags');
-	const { webRelayClient, webRelayUrl } = useSlashtags2();
+	const { webRelayClient, webRelayUrl } = useSlashtags();
 	const [data, setData] = useState<TField[]>([]);
 	const [error, setError] = useState(false);
 	const { config, loading } = useSlashfeed({
@@ -154,7 +154,7 @@ const PriceWidget = ({
 							style={styles.row}
 							testID={`PriceWidgetRow-${field.name}`}>
 							<View style={styles.columnLeft}>
-								<BodySSB color="white50" numberOfLines={1}>
+								<BodySSB color="secondary" numberOfLines={1}>
 									{field.name}
 								</BodySSB>
 							</View>
@@ -171,7 +171,7 @@ const PriceWidget = ({
 				{(data.length === 0 || !data[0].pastValues || error) && (
 					<View style={styles.row}>
 						<View style={styles.columnLeft}>
-							<CaptionB color="white50" numberOfLines={1}>
+							<CaptionB color="secondary" numberOfLines={1}>
 								No historical data
 							</CaptionB>
 						</View>
@@ -190,12 +190,12 @@ const PriceWidget = ({
 				{widget.extras?.showSource && config?.source && (
 					<View style={styles.source} testID="PriceWidgetSource">
 						<View style={styles.columnLeft}>
-							<CaptionB color="white50" numberOfLines={1}>
+							<CaptionB color="secondary" numberOfLines={1}>
 								{t('widget_source')}
 							</CaptionB>
 						</View>
 						<View style={styles.columnRight}>
-							<CaptionB color="white50" numberOfLines={1}>
+							<CaptionB color="secondary" numberOfLines={1}>
 								{config.source.name}
 							</CaptionB>
 						</View>

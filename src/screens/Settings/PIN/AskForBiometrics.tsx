@@ -119,11 +119,11 @@ const AskForBiometrics = ({
 			/>
 
 			<View style={styles.content}>
-				{!biometryData && <BodyM color="white50">{t('bio_loading')}</BodyM>}
+				{!biometryData && <BodyM color="secondary">{t('bio_loading')}</BodyM>}
 
 				{!biometryData?.available && (
 					<>
-						<BodyM color="white50">{t('bio_not_available')}</BodyM>
+						<BodyM color="secondary">{t('bio_not_available')}</BodyM>
 						<View style={styles.imageContainer}>
 							<Image style={styles.image} source={imageSrc} />
 						</View>
@@ -132,7 +132,7 @@ const AskForBiometrics = ({
 
 				{biometryData?.biometryType && (
 					<>
-						<BodyM color="white50">{t('bio_ask', { biometricsName })}</BodyM>
+						<BodyM color="secondary">{t('bio_ask', { biometricsName })}</BodyM>
 						<View style={styles.imageContainer} pointerEvents="none">
 							{biometryData?.biometryType === 'FaceID' ? (
 								<FaceIdIcon />

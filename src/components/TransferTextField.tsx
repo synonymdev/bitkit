@@ -76,12 +76,12 @@ const NumberPadTextField = ({
 
 	return (
 		<Pressable style={[styles.root, style]} testID={testID} onPress={onPress}>
-			<DisplayT style={styles.symbol} color="white50">
+			<DisplayT style={styles.symbol} color="secondary">
 				{unit === EUnit.BTC ? '₿' : fiatSymbol}
 			</DisplayT>
 			<DisplayT>
 				{value !== placeholder && value}
-				<DisplayT color={showPlaceholder ? 'white50' : 'white'}>
+				<DisplayT color={showPlaceholder ? 'secondary' : 'white'}>
 					{placeholder}
 				</DisplayT>
 			</DisplayT>

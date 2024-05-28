@@ -28,7 +28,7 @@ import {
 	selectedNetworkSelector,
 	selectedWalletSelector,
 } from '../../store/reselect/wallet';
-import { updateSlashPayConfig2 } from '../../utils/slashtags2';
+import { updateSlashPayConfig } from '../../utils/slashtags';
 
 const crownImageSrc = require('../../assets/illustrations/crown.png');
 const coinsImageSrc = require('../../assets/illustrations/coins.png');
@@ -51,7 +51,7 @@ export const ProfileIntro = memo(
 						components={{ accent: <Display color="brand" /> }}
 					/>
 				</Display>
-				<BodyM color="white50" style={styles.introText}>
+				<BodyM color="secondary" style={styles.introText}>
 					{t('onboarding_profile1_text')}
 				</BodyM>
 			</Layout>
@@ -70,7 +70,7 @@ export const OfflinePayments = ({
 
 	const savePaymentConfig = useCallback((): void => {
 		dispatch(updateSettings({ enableOfflinePayments }));
-		updateSlashPayConfig2({ selectedWallet, selectedNetwork });
+		updateSlashPayConfig({ selectedWallet, selectedNetwork });
 	}, [enableOfflinePayments, selectedNetwork, selectedWallet, dispatch]);
 
 	return (
@@ -88,7 +88,7 @@ export const OfflinePayments = ({
 					components={{ accent: <Display color="brand" /> }}
 				/>
 			</Display>
-			<BodyM color="white50" style={styles.introText}>
+			<BodyM color="secondary" style={styles.introText}>
 				{t('onboarding_profile2_text')}
 			</BodyM>
 
@@ -99,7 +99,7 @@ export const OfflinePayments = ({
 					onPress={(): void => setOfflinePayments(!enableOfflinePayments)}>
 					<BodyM>{t('offline_enable')}</BodyM>
 				</SwitchRow>
-				<BodyS color="white50">{t('offline_enable_explain')}</BodyS>
+				<BodyS color="secondary">{t('offline_enable_explain')}</BodyS>
 			</View>
 		</Layout>
 	);

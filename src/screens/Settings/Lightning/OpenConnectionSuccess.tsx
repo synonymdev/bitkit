@@ -26,7 +26,7 @@ const OpenConnectionSuccess = ({
 			<SafeAreaInset type="top" />
 			<NavigationHeader title="Connection Opened" displayBackButton={false} />
 			<View style={styles.content}>
-				<BodyM color="white50">
+				<BodyM color="secondary">
 					You succesfully opened a connection with ‘{name}’. It might take a
 					while for the connection to become ready for use.
 				</BodyM>

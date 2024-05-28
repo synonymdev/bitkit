@@ -127,10 +127,10 @@ const LuganoWidget = ({
 				{schedule.map((event) => (
 					<View key={event.name} style={styles.row}>
 						<View style={styles.columnLeft}>
-							<BodySSB color="white50" style={styles.time}>
+							<BodySSB color="secondary" style={styles.time}>
 								{event.time}
 							</BodySSB>
-							<BodySSB color="white50" numberOfLines={1}>
+							<BodySSB color="secondary" numberOfLines={1}>
 								{event.location}
 							</BodySSB>
 						</View>
@@ -176,7 +176,7 @@ const LuganoWidget = ({
 				)}
 				<View style={styles.source}>
 					<View style={styles.sourceColumnLeft}>
-						<CaptionB color="white50" numberOfLines={1}>
+						<CaptionB color="secondary" numberOfLines={1}>
 							Treasure Chests Found: {numberOfChests} of 6
 						</CaptionB>
 					</View>
@@ -186,7 +186,7 @@ const LuganoWidget = ({
 							onPress={(): void => {
 								openURL('https://bitkit.to/treasure-hunt');
 							}}>
-							<CaptionB color="white50" numberOfLines={1}>
+							<CaptionB color="secondary" numberOfLines={1}>
 								bitkit.to
 							</CaptionB>
 						</TouchableOpacity>

@@ -20,7 +20,7 @@ import SafeAreaInset from '../../components/SafeAreaInset';
 import ProfileCard from '../../components/ProfileCard';
 import ProfileLinks from '../../components/ProfileLinks';
 import { processInputData } from '../../utils/scanner';
-import { useProfile2 } from '../../hooks/slashtags2';
+import { useProfile } from '../../hooks/slashtags';
 import { useBalance } from '../../hooks/wallet';
 import { truncate } from '../../utils/helpers';
 import { showToast } from '../../utils/notifications';
@@ -51,7 +51,7 @@ const Contact = ({
 	const selectedNetwork = useAppSelector(selectedNetworkSelector);
 	const contacts = useAppSelector(contactsSelector);
 
-	const { profile } = useProfile2(url);
+	const { profile } = useProfile(url);
 	const savedContact = useMemo(() => {
 		const { id } = parse(url);
 		return contacts[id];

@@ -27,7 +27,7 @@ export const Word = ({
 }): ReactElement => {
 	return (
 		<BodyMSB style={styles.word}>
-			<BodyMSB color="white50">{number}.</BodyMSB>
+			<BodyMSB color="secondary">{number}.</BodyMSB>
 			<BodyMSB> {word}</BodyMSB>
 		</BodyMSB>
 	);
@@ -71,7 +71,7 @@ const ShowMnemonic = ({
 				displayBackButton={false}
 			/>
 
-			<BodyM color="white50">
+			<BodyM color="secondary">
 				{show
 					? t('mnemonic_write', { length: seedToShow.length })
 					: t('mnemonic_use')}
@@ -115,7 +115,7 @@ const ShowMnemonic = ({
 				)}
 			</View>
 
-			<BodyS color="white50">
+			<BodyS color="secondary">
 				<Trans
 					t={t}
 					i18nKey="mnemonic_never_share"

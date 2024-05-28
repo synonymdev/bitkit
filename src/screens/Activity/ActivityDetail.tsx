@@ -99,7 +99,7 @@ const Section = memo(
 		return (
 			<View style={[styles.sRoot, { borderBottomColor: white10 }]}>
 				<View style={styles.sText}>
-					<Caption13Up color="white50">{title}</Caption13Up>
+					<Caption13Up color="secondary">{title}</Caption13Up>
 				</View>
 				<View style={styles.sText}>{value}</View>
 			</View>
@@ -364,7 +364,7 @@ const OnchainActivityDetail = ({
 			<Money
 				sats={total}
 				size="caption13Up"
-				color="white50"
+				color="secondary"
 				unitType="secondary"
 				symbol={true}
 			/>
@@ -760,7 +760,7 @@ const LightningActivityDetail = ({
 				sats={total}
 				unitType="secondary"
 				size="caption13Up"
-				color="white50"
+				color="secondary"
 				symbol={true}
 			/>
 			<TouchableOpacity style={styles.title} onPress={switchUnit}>
@@ -893,7 +893,7 @@ const LightningActivityDetail = ({
 
 					{message ? (
 						<View style={styles.invoiceNote}>
-							<Caption13Up style={styles.sText} color="white50">
+							<Caption13Up style={styles.sText} color="secondary">
 								{t('activity_invoice_note')}
 							</Caption13Up>
 							<ThemedView color="white10">

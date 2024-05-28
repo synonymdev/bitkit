@@ -65,6 +65,7 @@ const Button = ({
 		return {
 			...textStyle,
 			...(text && icon && { marginLeft: 8 }),
+			...(text && !icon && { maxWidth: '100%', textAlign: 'center' }), // on android text sometimes get shrinked. So if there is no icon, make sure it takes the full width
 			...(variant === 'primary' ? {} : { color: white80 }),
 			...(disabled && !icon && { color: white32 }),
 			...Platform.select({

@@ -18,7 +18,6 @@ import {
 	selectedWalletSelector,
 } from '../../../store/reselect/wallet';
 import { rapidGossipSyncUrlSelector } from '../../../store/reselect/settings';
-
 import { initialSettingsState } from '../../../store/shapes/settings';
 import NavigationHeader from '../../../components/NavigationHeader';
 import SafeAreaInset from '../../../components/SafeAreaInset';
@@ -26,6 +25,7 @@ import Button from '../../../components/Button';
 import type { SettingsScreenProps } from '../../../navigation/types';
 import { setupLdk } from '../../../utils/lightning';
 import { showToast } from '../../../utils/notifications';
+import useBreakpoints from '../../../styles/breakpoints';
 
 const isValidURL = (data: string): boolean => {
 	const pattern = new RegExp(
@@ -48,6 +48,7 @@ const RGSServer = ({
 	navigation,
 }: SettingsScreenProps<'RGSServer'>): ReactElement => {
 	const { t } = useTranslation('settings');
+	const br = useBreakpoints();
 	const dispatch = useAppDispatch();
 	const selectedNetwork = useAppSelector(selectedNetworkSelector);
 	const selectedWallet = useAppSelector(selectedWalletSelector);
@@ -103,7 +104,7 @@ const RGSServer = ({
 			<ScrollView contentContainerStyle={styles.content} bounces={false}>
 				<TouchableOpacity activeOpacity={1} onPress={handleConnectedPress}>
 					<>
-						<BodyM color="white50">{t('es.connected_to')}</BodyM>
+						<BodyM color="secondary">{t('es.connected_to')}</BodyM>
 						<View style={styles.connectedPeer} testID="Status">
 							<BodyM color="green" testID="ConnectedUrl">
 								{rapidGossipSyncUrl}
@@ -112,7 +113,7 @@ const RGSServer = ({
 					</>
 				</TouchableOpacity>
 
-				<Caption13Up color="white50" style={styles.label}>
+				<Caption13Up color="secondary" style={styles.label}>
 					{t('rgs.server_url')}
 				</Caption13Up>
 				<TextInput
@@ -132,7 +133,7 @@ const RGSServer = ({
 					testID="RGSUrl"
 				/>
 
-				<View style={styles.buttons}>
+				<View style={[styles.buttons, br.up('smphone') && styles.buttonsRow]}>
 					<Button
 						style={styles.button}
 						text={t('es.button_reset')}
@@ -179,9 +180,11 @@ const styles = StyleSheet.create({
 		marginTop: 5,
 	},
 	buttons: {
-		flexDirection: 'row',
 		marginTop: 'auto',
 		gap: 16,
+	},
+	buttonsRow: {
+		flexDirection: 'row',
 	},
 	button: {
 		flex: 1,

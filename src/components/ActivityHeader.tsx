@@ -40,7 +40,7 @@ const ActivityHeader = ({
 	return (
 		<View style={style}>
 			<View style={styles.label}>
-				<Caption13Up color="white50">{label}</Caption13Up>
+				<Caption13Up color="secondary">{label}</Caption13Up>
 			</View>
 
 			<DetectSwipe

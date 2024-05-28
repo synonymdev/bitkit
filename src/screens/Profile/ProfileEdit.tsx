@@ -21,7 +21,7 @@ import ProfileCard from '../../components/ProfileCard';
 import ProfileLinks from '../../components/ProfileLinks';
 import Divider from '../../components/Divider';
 import { Keyboard } from '../../hooks/keyboard';
-import { useProfile2, useSlashtags2 } from '../../hooks/slashtags2';
+import { useProfile, useSlashtags } from '../../hooks/slashtags';
 import {
 	setLinks,
 	setOnboardingProfileStep,
@@ -33,14 +33,14 @@ import { onboardingProfileStepSelector } from '../../store/reselect/slashtags';
 import { arraysMatch } from '../../utils/helpers';
 import ProfileLinkNavigation from '../../navigation/bottom-sheet/ProfileLinkNavigation';
 import type { RootStackScreenProps } from '../../navigation/types';
-import { saveProfile2 } from '../../utils/slashtags2';
+import { saveProfile } from '../../utils/slashtags';
 
 const ProfileEdit = ({
 	navigation,
 }: RootStackScreenProps<'Profile' | 'ProfileEdit'>): ReactElement => {
 	const { t } = useTranslation('slashtags');
-	const { url, profile: slashtagsProfile } = useSlashtags2();
-	const { profile: savedProfile } = useProfile2(url);
+	const { url, profile: slashtagsProfile } = useSlashtags();
+	const { profile: savedProfile } = useProfile(url);
 	const [hasEdited, setHasEdited] = useState(false);
 	const [isSaving, setIsSaving] = useState(false);
 	const [fields, setFields] = useState<Omit<BasicProfile, 'links'>>({});
@@ -96,7 +96,7 @@ const ProfileEdit = ({
 
 	const onSave = async (): Promise<void> => {
 		setIsSaving(true);
-		const res = await saveProfile2(url, profile, slashtagsProfile);
+		const res = await saveProfile(url, profile, slashtagsProfile);
 		setIsSaving(false);
 		if (res.isErr()) {
 			return;
@@ -157,7 +157,7 @@ const ProfileEdit = ({
 						onPress={onAddLink}
 					/>
 					<Divider />
-					<BodyS color="white50">{t('profile_public_warn')}</BodyS>
+					<BodyS color="secondary">{t('profile_public_warn')}</BodyS>
 
 					{/* leave button visible over keyboard for onboarding */}
 					<View style={onboardedProfile && styles.bottom}>

@@ -83,7 +83,7 @@ import { addCJitActivityItem } from '../../store/utils/activity';
 import { IWalletItem, TWalletName } from '../../store/types/wallet';
 import { closeSheet, updateUi } from '../../store/slices/ui';
 import { showBottomSheet } from '../../store/utils/ui';
-import { updateSlashPayConfig2 } from '../slashtags2';
+import { updateSlashPayConfig } from '../slashtags';
 import {
 	TLdkAccountVersion,
 	TLightningNodeVersion,
@@ -422,7 +422,7 @@ export const handleLightningPaymentSubscription = async ({
 	dispatch(addActivityItem(activityItem));
 
 	await refreshLdk({ selectedWallet, selectedNetwork });
-	updateSlashPayConfig2({ selectedWallet, selectedNetwork });
+	updateSlashPayConfig({ selectedWallet, selectedNetwork });
 };
 
 /**
@@ -515,6 +515,7 @@ export const subscribeToLightningPayments = ({
 						type: 'lightning',
 						title: i18n.t('lightning:channel_opened_title'),
 						description: i18n.t('lightning:channel_opened_msg'),
+						visibilityTime: 5000,
 					});
 				}
 

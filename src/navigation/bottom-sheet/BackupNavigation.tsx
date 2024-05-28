@@ -28,8 +28,8 @@ export type BackupStackParamList = {
 	ShowPassphrase: { seed: string[]; bip39Passphrase: string };
 	ConfirmMnemonic: { seed: string[]; bip39Passphrase: string };
 	ConfirmPassphrase: { bip39Passphrase: string };
-	Success: undefined;
 	Warning: undefined;
+	Success: undefined;
 	MultipleDevices: undefined;
 	Metadata: undefined;
 };
@@ -59,8 +59,8 @@ const BackupNavigation = (): ReactElement => {
 							name="ConfirmPassphrase"
 							component={ConfirmPassphrase}
 						/>
-						<Stack.Screen name="Success" component={Success} />
 						<Stack.Screen name="Warning" component={Warning} />
+						<Stack.Screen name="Success" component={Success} />
 						<Stack.Screen name="MultipleDevices" component={MultipleDevices} />
 						<Stack.Screen name="Metadata" component={Metadata} />
 					</Stack.Group>

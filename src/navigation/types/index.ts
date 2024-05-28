@@ -44,8 +44,7 @@ export type RootStackParamList = {
 	ContactEdit: { url: string };
 	Contact: { url: string };
 	BuyBitcoin: undefined;
-	GoodbyePasswords: undefined;
-	HelloWidgets: undefined;
+	WidgetsOnboarding: undefined;
 	WidgetsSuggestions: undefined;
 	Widget: {
 		url: string;

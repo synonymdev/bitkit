@@ -35,7 +35,7 @@ const Metadata = (): ReactElement => {
 		<GradientView style={styles.container}>
 			<BottomSheetNavigationHeader title={t('mnemonic_data_header')} />
 
-			<BodyM color="white50" style={styles.text}>
+			<BodyM color="secondary" style={styles.text}>
 				{t('mnemonic_data_text')}
 			</BodyM>
 

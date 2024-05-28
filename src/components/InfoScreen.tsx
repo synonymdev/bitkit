@@ -35,7 +35,7 @@ const InfoScreen = ({
 			/>
 			<View style={styles.content} testID={testID}>
 				<Display>{title}</Display>
-				<BodyM style={styles.description} color="white50">
+				<BodyM style={styles.description} color="secondary">
 					{description}
 				</BodyM>
 

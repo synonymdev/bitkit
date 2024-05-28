@@ -27,6 +27,7 @@ export interface IColors {
 	white16: string;
 	white32: string;
 	white50: string;
+	white64: string;
 	white80: string;
 	bitcoin50: string;
 	blue24: string;
@@ -75,6 +76,7 @@ const colors: IColors = {
 	white16: 'rgba(255, 255, 255, 0.16)',
 	white32: 'rgba(255, 255, 255, 0.32)',
 	white50: 'rgba(255, 255, 255, 0.50)',
+	white64: 'rgba(255, 255, 255, 0.64)',
 	white80: 'rgba(255, 255, 255, 0.80)',
 	blue24: 'rgba(0, 133, 255, 0.24)',
 	bitcoin50: 'rgba(247, 147, 26, 0.5)',

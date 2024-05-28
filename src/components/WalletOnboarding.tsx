@@ -64,7 +64,7 @@ const WalletOnboarding = ({
 					style={styles.closeButton}
 					testID="WalletOnboardingClose"
 					onPress={onHide}>
-					<XIcon color="white50" width={16} height={16} />
+					<XIcon color="secondary" width={16} height={16} />
 				</TouchableOpacity>
 			)}
 			<Display style={styles.text} onLayout={handleTextLayout}>

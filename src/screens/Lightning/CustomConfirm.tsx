@@ -106,7 +106,7 @@ const CustomConfirm = ({
 								components={{ accent: <Display color="purple" /> }}
 							/>
 						</Display>
-						<BodyM color="white50" style={styles.text}>
+						<BodyM color="secondary" style={styles.text}>
 							<Trans
 								t={t}
 								i18nKey="custom_confirm_cost"
@@ -171,7 +171,7 @@ const CustomConfirm = ({
 								components={{ accent: <Display color="purple" /> }}
 							/>
 						</Display>
-						<BodyM style={styles.text} color="white50">
+						<BodyM style={styles.text} color="secondary">
 							{t('duration_text')}
 						</BodyM>
 					</AnimatedView>

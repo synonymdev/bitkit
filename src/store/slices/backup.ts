@@ -17,7 +17,7 @@ import {
 } from './metadata';
 import { updateSettings } from './settings';
 import { addContact, addContacts, deleteContact } from './slashtags';
-import { setFeedWidget } from './widgets';
+import { setFeedWidget, deleteWidget } from './widgets';
 import { updateActivityItems } from './activity';
 import { EActivityType } from '../types/activity';
 
@@ -80,6 +80,7 @@ export const backupSlice = createSlice({
 			.addCase(addContacts, slashtagsReducer)
 			.addCase(deleteContact, slashtagsReducer)
 			.addCase(setFeedWidget, widgetsReducer)
+			.addCase(deleteWidget, widgetsReducer)
 			.addCase(updateActivityItems, (state, action) => {
 				// we only listen for LN activity here
 				const hasLnActivity = action.payload.some(

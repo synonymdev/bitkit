@@ -8,7 +8,7 @@ import BaseFeedWidget from './BaseFeedWidget';
 import { TFeedWidget } from '../store/types/widgets';
 import { useSlashfeed } from '../hooks/widgets';
 import { decodeWidgetFieldValue, SUPPORTED_FEED_TYPES } from '../utils/widgets';
-import { useSlashtags2 } from '../hooks/slashtags2';
+import { useSlashtags } from '../hooks/slashtags';
 import { __E2E__ } from '../constants/env';
 
 const mapping = {
@@ -41,7 +41,7 @@ const BlocksWidget = ({
 	onPressIn?: () => void;
 }): ReactElement => {
 	const { t } = useTranslation('slashtags');
-	const { webRelayClient, webRelayUrl } = useSlashtags2();
+	const { webRelayClient, webRelayUrl } = useSlashtags();
 	const { config, fields, loading } = useSlashfeed({ url });
 	const [data, setData] = useState(fields);
 
@@ -113,7 +113,7 @@ const BlocksWidget = ({
 				{data.map((field) => (
 					<View key={field.name} style={styles.row}>
 						<View style={styles.columnLeft}>
-							<BodySSB color="white50" numberOfLines={1}>
+							<BodySSB color="secondary" numberOfLines={1}>
 								{field.name}
 							</BodySSB>
 						</View>
@@ -128,12 +128,12 @@ const BlocksWidget = ({
 				{widget.extras?.showSource && config?.source && (
 					<View style={styles.source}>
 						<View style={styles.columnLeft}>
-							<CaptionB color="white50" numberOfLines={1}>
+							<CaptionB color="secondary" numberOfLines={1}>
 								{t('widget_source')}
 							</CaptionB>
 						</View>
 						<View style={styles.columnRight}>
-							<CaptionB color="white50" numberOfLines={1}>
+							<CaptionB color="secondary" numberOfLines={1}>
 								{config.source.name}
 							</CaptionB>
 						</View>

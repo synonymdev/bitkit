@@ -14,7 +14,7 @@ import SafeAreaInset from '../../components/SafeAreaInset';
 import SearchInput from '../../components/SearchInput';
 import ContactsList from '../../components/ContactsList';
 import { showBottomSheet } from '../../store/utils/ui';
-import { useProfile2, useSelectedSlashtag2 } from '../../hooks/slashtags2';
+import { useProfile, useSlashtags } from '../../hooks/slashtags';
 import { RootStackScreenProps } from '../../navigation/types';
 import AddContact from './AddContact';
 import {
@@ -41,8 +41,8 @@ const ContactsScreen = ({
 }: RootStackScreenProps<'Contacts'>): ReactElement => {
 	const { t } = useTranslation('slashtags');
 	const [searchFilter, setSearchFilter] = useState('');
-	const { url: myProfileURL } = useSelectedSlashtag2();
-	const { profile } = useProfile2(myProfileURL);
+	const { url: myProfileURL } = useSlashtags();
+	const { profile } = useProfile(myProfileURL);
 
 	const handleChangeText = (text: string): void => {
 		const txt = text.trim();

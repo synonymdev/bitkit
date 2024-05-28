@@ -119,7 +119,7 @@ const ProfileCard = ({
 				<TextInputNoOutline
 					ref={bioRef}
 					style={[theme.fonts.regular, styles.bioInput]}
-					color="white50"
+					color="secondary"
 					value={bio}
 					placeholder={t('profile_bio')}
 					multiline={true}
@@ -130,7 +130,7 @@ const ProfileCard = ({
 					testID="BioInput"
 				/>
 			) : (
-				<Text color="white50" style={[theme.fonts.regular, styles.bio]}>
+				<Text color="secondary" style={[theme.fonts.regular, styles.bio]}>
 					{bio?.slice(0, MAX_BIO_LENGTH)}
 				</Text>
 			)}

@@ -11,15 +11,13 @@ export interface IDefaultColors extends IColors {
 }
 
 export interface IThemeColors extends IDefaultColors {
-	text: string;
 	primary: string;
+	secondary: string;
 	background: string;
 	surface: string;
 	onBackground: string;
 	onSurface: string;
-	logText: string;
 	refreshControl: string;
-	tabBackground: string;
 }
 
 interface IFont {
@@ -68,15 +66,13 @@ const light: ITheme = {
 	id: 'light',
 	colors: {
 		...defaultThemeValues.colors,
-		text: '#121212',
 		primary: '#121212',
+		secondary: '#121212',
 		background: colors.white80,
 		surface: '#E8E8E8',
 		onBackground: '#121212',
 		onSurface: '#D6D6D6',
-		logText: '#121212',
 		refreshControl: '#121212',
-		tabBackground: '#f2f2f2',
 	},
 };
 
@@ -85,15 +81,13 @@ const dark: ITheme = {
 	id: 'dark',
 	colors: {
 		...defaultThemeValues.colors,
-		text: '#FFFFFF',
-		primary: '#FFFFFF',
+		primary: colors.white,
+		secondary: colors.white64,
 		background: colors.black,
 		surface: '#101010',
 		onBackground: '#FFFFFF',
 		onSurface: colors.gray6,
-		logText: '#16ff00',
 		refreshControl: '#FFFFFF',
-		tabBackground: '#101010',
 	},
 };
 

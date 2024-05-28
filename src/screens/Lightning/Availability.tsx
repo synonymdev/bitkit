@@ -55,7 +55,7 @@ const Availability = ({
 						components={{ accent: <Display color="purple" /> }}
 					/>
 				</Display>
-				<BodyM color="white50" style={styles.text}>
+				<BodyM color="secondary" style={styles.text}>
 					<Trans
 						t={t}
 						i18nKey="availability_text"

@@ -69,7 +69,7 @@ const ActivityListShort = (): ReactElement => {
 
 	return (
 		<View style={styles.content}>
-			<Caption13Up color="white50" style={styles.title}>
+			<Caption13Up color="secondary" style={styles.title}>
 				{t('activity')}
 			</Caption13Up>
 

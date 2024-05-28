@@ -46,9 +46,9 @@ const ChannelStatus = ({
 			return (
 				<View style={styles.statusRow}>
 					<ThemedView style={styles.statusIcon} color="white10">
-						<LightningIcon color="white50" width={16} height={16} />
+						<LightningIcon color="secondary" width={16} height={16} />
 					</ThemedView>
-					<BodyMSB color="white50">{t('order_state.closed')}</BodyMSB>
+					<BodyMSB color="secondary">{t('order_state.closed')}</BodyMSB>
 				</View>
 			);
 		}
@@ -115,9 +115,9 @@ const ChannelStatus = ({
 				return (
 					<View style={styles.statusRow}>
 						<ThemedView style={styles.statusIcon} color="white10">
-							<ArrowCounterClock color="white50" width={16} height={16} />
+							<ArrowCounterClock color="secondary" width={16} height={16} />
 						</ThemedView>
-						<BodyMSB color="white50">{t('order_state.refunded')}</BodyMSB>
+						<BodyMSB color="secondary">{t('order_state.refunded')}</BodyMSB>
 					</View>
 				);
 			}

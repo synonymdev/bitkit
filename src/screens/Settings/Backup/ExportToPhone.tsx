@@ -89,7 +89,7 @@ const ExportToPhone = ({
 				}}
 			/>
 			<KeyboardAvoidingView style={styles.content}>
-				<BodyM color="white50">{t('export_text')}</BodyM>
+				<BodyM color="secondary">{t('export_text')}</BodyM>
 				<TextInput
 					style={styles.textField}
 					placeholder={t('export_password')}

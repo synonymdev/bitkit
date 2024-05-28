@@ -9,7 +9,7 @@ import SlashtagURL from './SlashtagURL';
 import Divider from './Divider';
 import { View as ThemedView } from '../styles/components';
 import { Caption13Up, BodyMSB } from '../styles/text';
-import { useProfile2, useSelectedSlashtag2 } from '../hooks/slashtags2';
+import { useProfile, useSlashtags } from '../hooks/slashtags';
 import { IContactRecord } from '../store/types/slashtags';
 import { truncate } from '../utils/helpers';
 import { IThemeColors } from '../styles/themes';
@@ -25,8 +25,8 @@ export const ContactItem = ({
 	onPress?: (contact: IContactRecord) => void;
 }): ReactElement => {
 	const { t } = useTranslation('slashtags');
-	const { url: myProfileURL } = useSelectedSlashtag2();
-	const { profile } = useProfile2(contact.url);
+	const { url: myProfileURL } = useSlashtags();
+	const { profile } = useProfile(contact.url);
 
 	const name = useMemo(() => {
 		const fallbackName =
@@ -53,7 +53,7 @@ export const ContactItem = ({
 						style={size !== 'small' ? cstyles.name : undefined}>
 						{name}
 					</BodyMSB>
-					<SlashtagURL url={contact.url} color="white50" size="small" />
+					<SlashtagURL url={contact.url} color="secondary" size="small" />
 				</View>
 			</View>
 		</TouchableOpacity>
@@ -87,7 +87,7 @@ const ContactsList = ({
 }): ReactElement => {
 	const { t } = useTranslation('slashtags');
 	const contacts = useAppSelector(contactsSelector);
-	const { url: myProfileURL } = useSelectedSlashtag2();
+	const { url: myProfileURL } = useSlashtags();
 
 	const filteredContacts = useMemo(() => {
 		return Object.values(contacts)
@@ -137,7 +137,7 @@ const ContactsList = ({
 				<ThemedView
 					color={sectionBackgroundColor}
 					style={!isFirst && styles.sectionSpacing}>
-					<Caption13Up color="white50">{title}</Caption13Up>
+					<Caption13Up color="secondary">{title}</Caption13Up>
 				</ThemedView>
 			);
 		},

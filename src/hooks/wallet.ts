@@ -123,6 +123,7 @@ export const useSwitchUnitAnnounced = (): (() => void) => {
 				description: t('balance_unit_switched_message', {
 					unit: toUnitText(unit),
 				}),
+				visibilityTime: 5000,
 			});
 			dispatch(ignoreSwitchUnitToast());
 		}

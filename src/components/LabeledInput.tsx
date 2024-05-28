@@ -51,7 +51,7 @@ const LabeledInput = ({
 	return (
 		<View style={style}>
 			<View style={styles.header}>
-				<Caption13Up style={styles.label} color="white50">
+				<Caption13Up style={styles.label} color="secondary">
 					{label}
 				</Caption13Up>
 				{error && (

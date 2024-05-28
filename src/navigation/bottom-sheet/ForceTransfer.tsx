@@ -133,7 +133,7 @@ const ForceTransfer = (): ReactElement => {
 					displayBackButton={false}
 				/>
 
-				<BodyM color="white50">{t('force_text')}</BodyM>
+				<BodyM color="secondary">{t('force_text')}</BodyM>
 
 				<View style={styles.imageContainer}>
 					<Image style={styles.image} source={imageSrc} />
