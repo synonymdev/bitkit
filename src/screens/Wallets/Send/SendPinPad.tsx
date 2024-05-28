@@ -18,16 +18,15 @@ const SendPinPad = ({ onSuccess }: { onSuccess: () => void }): ReactElement => {
 	const { brand, brand08 } = useColors();
 
 	const handleOnPress = (key: string): void => {
+		vibrate();
 		if (key === 'delete') {
-			if (pin.length !== 0) {
-				vibrate();
-				setPin((p) => p.slice(0, -1));
-			}
+			setPin((p) => {
+				return p.length === 0 ? '' : p.slice(0, -1);
+			});
 		} else {
-			if (pin.length !== 4) {
-				vibrate();
-				setPin((p) => p + key);
-			}
+			setPin((p) => {
+				return p.length === 4 ? p : p + key;
+			});
 		}
 	};
 
