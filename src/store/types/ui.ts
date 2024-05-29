@@ -23,6 +23,7 @@ export type ViewControllerParamList = {
 	receiveNavigation: { receiveScreen: keyof ReceiveStackParamList } | undefined;
 	sendNavigation: { screen: keyof SendStackParamList } | undefined;
 	timeRangePrompt: undefined;
+	transferFailed: undefined;
 	treasureHunt: { chestId: string };
 	tagsPrompt: undefined;
 	lnurlWithdraw: { wParams: LNURLWithdrawParams };

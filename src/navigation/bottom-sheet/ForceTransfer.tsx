@@ -1,13 +1,10 @@
 import React, { memo, ReactElement, useEffect, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
-import { useTranslation } from 'react-i18next';
+import { Trans, useTranslation } from 'react-i18next';
 
-import { BodyM } from '../../styles/text';
+import { Display } from '../../styles/text';
 import BottomSheetWrapper from '../../components/BottomSheetWrapper';
-import BottomSheetNavigationHeader from '../../components/BottomSheetNavigationHeader';
-import SafeAreaInset from '../../components/SafeAreaInset';
-import Button from '../../components/Button';
+import BottomSheetScreen from '../../components/BottomSheetScreen';
 import { closeAllChannels } from '../../utils/lightning';
 import { showToast } from '../../utils/notifications';
 import {
@@ -22,7 +19,6 @@ import {
 	selectedNetworkSelector,
 	selectedWalletSelector,
 } from '../../store/reselect/wallet';
-import { Image } from 'react-native';
 
 const imageSrc = require('../../assets/illustrations/exclamation-mark.png');
 
@@ -49,7 +45,7 @@ const ForceTransfer = (): ReactElement => {
 		}
 
 		const tryChannelCoopClose = async (): Promise<void> => {
-			console.log('trying coop close');
+			console.log('trying coop close...');
 			const closeResponse = await closeAllChannels();
 			if (closeResponse.isErr()) {
 				console.log('coop close failed.');
@@ -123,70 +119,27 @@ const ForceTransfer = (): ReactElement => {
 	};
 
 	return (
-		<BottomSheetWrapper
-			view="forceTransfer"
-			snapPoints={snapPoints}
-			backdrop={true}>
-			<View style={styles.root}>
-				<BottomSheetNavigationHeader
-					title={t('force_title')}
-					displayBackButton={false}
-				/>
-
-				<BodyM color="secondary">{t('force_text')}</BodyM>
-
-				<View style={styles.imageContainer}>
-					<Image style={styles.image} source={imageSrc} />
-				</View>
-
-				<View style={styles.buttonContainer}>
-					<Button
-						style={styles.button}
-						variant="secondary"
-						size="large"
-						text={t('cancel')}
-						onPress={onCancel}
+		<BottomSheetWrapper view="forceTransfer" snapPoints={snapPoints}>
+			<BottomSheetScreen
+				navTitle={t('force_nav_title')}
+				title={
+					<Trans
+						t={t}
+						i18nKey="force_title"
+						components={{ accent: <Display color="yellow" /> }}
 					/>
-					<Button
-						style={styles.button}
-						size="large"
-						text={t('force_button')}
-						loading={isPending}
-						onPress={onContinue}
-					/>
-				</View>
-				<SafeAreaInset type="bottom" minPadding={16} />
-			</View>
+				}
+				description={t('force_text')}
+				image={imageSrc}
+				isLoading={isPending}
+				continueText={t('force_button')}
+				cancelText={t('cancel')}
+				testID="ForceTransfer"
+				onContinue={onContinue}
+				onCancel={onCancel}
+			/>
 		</BottomSheetWrapper>
 	);
 };
-
-const styles = StyleSheet.create({
-	root: {
-		flex: 1,
-		paddingHorizontal: 32,
-	},
-	imageContainer: {
-		flexShrink: 1,
-		justifyContent: 'center',
-		alignItems: 'center',
-		alignSelf: 'center',
-		width: 256,
-		aspectRatio: 1,
-		marginTop: 'auto',
-	},
-	image: {
-		flex: 1,
-		resizeMode: 'contain',
-	},
-	buttonContainer: {
-		flexDirection: 'row',
-		marginTop: 'auto',
-		gap: 16,
-	},
-	button: {
-		flex: 1,
-	},
-});
 
 export default memo(ForceTransfer);

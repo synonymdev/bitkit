@@ -53,6 +53,7 @@ import ReceiveNavigation from '../bottom-sheet/ReceiveNavigation';
 import BackupNavigation from '../bottom-sheet/BackupNavigation';
 import PINNavigation from '../bottom-sheet/PINNavigation';
 import ForceTransfer from '../bottom-sheet/ForceTransfer';
+// import TransferFailed from '../bottom-sheet/TransferFailed';
 import ConnectionClosed from '../bottom-sheet/ConnectionClosed';
 import LNURLWithdrawNavigation from '../bottom-sheet/LNURLWithdrawNavigation';
 import LNURLPayNavigation from '../bottom-sheet/LNURLPayNavigation';
@@ -232,6 +233,7 @@ const RootNavigator = (): ReactElement => {
 			<BoostPrompt />
 			<NewTxPrompt />
 			<ForceTransfer />
+			{/* <TransferFailed /> */}
 			<ConnectionClosed />
 			<BackupSubscriber />
 			<LNURLWithdrawNavigation />

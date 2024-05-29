@@ -1,16 +1,13 @@
 import React, { memo, ReactElement, useMemo, useEffect } from 'react';
-import { Image, StyleSheet, View } from 'react-native';
 import { Trans, useTranslation } from 'react-i18next';
 
 import { __E2E__ } from '../../../constants/env';
-import { BodyM, Display } from '../../../styles/text';
+import { Display } from '../../../styles/text';
 import BottomSheetWrapper from '../../../components/BottomSheetWrapper';
-import SafeAreaInset from '../../../components/SafeAreaInset';
-import Button from '../../../components/Button';
+import BottomSheetScreen from '../../../components/BottomSheetScreen';
 import { closeSheet } from '../../../store/slices/ui';
 import { ignoreBackup } from '../../../store/slices/user';
 import { showBottomSheet } from '../../../store/utils/ui';
-import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
 import { useBalance } from '../../../hooks/wallet';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 import { objectKeys } from '../../../utils/objectKeys';
@@ -107,68 +104,25 @@ const BackupPrompt = ({ enabled }: { enabled: boolean }): ReactElement => {
 			onClose={(): void => {
 				dispatch(ignoreBackup());
 			}}>
-			<View style={styles.container}>
-				<BottomSheetNavigationHeader
-					title={t('backup_wallet')}
-					displayBackButton={false}
-				/>
-				<View style={styles.imageContainer}>
-					<Image style={styles.image} source={imageSrc} />
-				</View>
-				<Display>
+			<BottomSheetScreen
+				navTitle={t('backup_wallet')}
+				title={
 					<Trans
 						t={t}
 						i18nKey="backup_title"
 						components={{ accent: <Display color="blue" /> }}
 					/>
-				</Display>
-				<BodyM color="secondary">{text}</BodyM>
-				<View style={styles.buttonContainer}>
-					<Button
-						style={styles.button}
-						size="large"
-						variant="secondary"
-						text={t('later')}
-						onPress={handleLater}
-					/>
-					<Button
-						style={styles.button}
-						size="large"
-						text={t('backup_button')}
-						onPress={handleBackup}
-					/>
-				</View>
-				<SafeAreaInset type="bottom" minPadding={16} />
-			</View>
+				}
+				description={text}
+				image={imageSrc}
+				continueText={t('backup_button')}
+				cancelText={t('later')}
+				testID="BackupPrompt"
+				onContinue={handleBackup}
+				onCancel={handleLater}
+			/>
 		</BottomSheetWrapper>
 	);
 };
-
-const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		marginHorizontal: 32,
-	},
-	imageContainer: {
-		alignSelf: 'center',
-		alignItems: 'center',
-		marginTop: 'auto',
-		aspectRatio: 1,
-		width: 256,
-	},
-	image: {
-		flex: 1,
-		resizeMode: 'contain',
-	},
-	buttonContainer: {
-		flexDirection: 'row',
-		justifyContent: 'center',
-		marginTop: 32,
-		gap: 16,
-	},
-	button: {
-		flex: 1,
-	},
-});
 
 export default memo(BackupPrompt);

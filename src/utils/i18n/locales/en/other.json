@@ -21,9 +21,17 @@
 	"connection_reconnect_msg": "Lost connection to Electrum, trying to reconnect...",
 	"connection_back_title": "Internet Connection Restored",
 	"connection_back_msg": "Bitkit successfully reconnected to the Internet.",
-	"up_title": "Critical Update",
-	"up_text": "There is a critical update available for Bitkit. You must update to continue using Bitkit.",
-	"up_button": "Update Bitkit",
+	"high_balance": {
+		"nav_title": "High Balance",
+		"title": "High\n<accent>Balance</accent>",
+		"text": "<accent>Your wallet balance exceeds $500.</accent>\nFor your security, consider moving some of your savings to an offline wallet.",
+		"continue": "Understood",
+		"cancel": "Learn More"
+	},
+	"update_critical_nav_title": "Critical Update",
+	"update_critical_title": "Update\n<accent>Bitkit now</accent>",
+	"update_critical_text": "There is a critical update for Bitkit. You must update to continue using Bitkit.",
+	"update_critical_button": "Update Bitkit",
 	"camera_ask_title": "Permission to use camera",
 	"camera_ask_msg": "Bitkit needs permission to use your camera",
 	"camera_no_text": "<bold>It appears Bitkit does not have permission to access your camera.</bold>\n\nTo utilize this feature in the future you will need to enable camera permissions for this app from your phone's settings.",
@@ -74,11 +82,8 @@
 	"bt_error_retrieve": "Transfer Failed",
 	"bt_channel_purchase_cost_error": "You need {delta} more to complete this transaction.",
 	"earlier": "EARLIER",
-	"update_title": "Update Available",
+	"update_nav_title": "Update Available",
+	"update_title": "Update\n<accent>Bitkit</accent>",
 	"update_text": "Please update Bitkit to the latest version for new features and bug fixes!",
-	"update_button": "Update",
-	"high_title": "High Balance",
-	"high_text1": "Wallet balance exceeds",
-	"high_text2": "For your security, please consider moving some of your savings to an offline wallet soon.",
-	"high_button_more": "Learn More"
+	"update_button": "Update"
 }

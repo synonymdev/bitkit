@@ -73,7 +73,7 @@ d('Settings Security And Privacy', () => {
 		await element(by.id('Settings')).tap();
 		await element(by.id('SecuritySettings')).tap();
 		await element(by.id('PINCode')).tap();
-		await element(by.id('SecureWallet')).tap();
+		await element(by.id('SecureWallet-button-continue')).tap();
 		await element(by.id('N1')).multiTap(4); // enter PIN
 		await element(by.id('N2')).multiTap(4); // retype wrong PIN
 		await expect(element(by.id('WrongPIN'))).toBeVisible(); // WrongPIN warning should appear
@@ -238,7 +238,7 @@ d('Settings Security And Privacy', () => {
 		await element(by.id('Settings')).tap();
 		await element(by.id('SecuritySettings')).tap();
 		await element(by.id('PINCode')).tap();
-		await element(by.id('SecureWallet')).tap();
+		await element(by.id('SecureWallet-button-continue')).tap();
 		await element(by.id('N1')).multiTap(4); // enter PIN
 		await element(by.id('N1')).multiTap(4); // enter PIN
 		await element(by.id('ToggleBiometrics')).tap();
