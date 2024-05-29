@@ -114,7 +114,8 @@ export const DEFAULT_LIGHTNING_PEERS: IWalletItem<string[]> = {
 
 export const FALLBACK_BLOCKTANK_PEERS: IWalletItem<string[]> = {
 	bitcoin: [
-		'0296b2db342fcf87ea94d981757fdf4d3e545bd5cef4919f58b5d38dfdd73bf5c9@130.211.95.29:9735',
+		'039b8b4dd1d88c2c5db374290cda397a8f5d79f312d6ea5d5bfdfc7c6ff363eae3@34.65.111.104:9735',
+		'03342eac98d8c07ac8a4f303b2ad09a34b3350357730013d534d0537a4d1d8a14d@34.65.217.210:9735',
 	],
 	bitcoinRegtest: [
 		'03b9a456fb45d5ac98c02040d39aec77fa3eeb41fd22cf40b862b393bcfc43473a@35.233.47.252:9400',
@@ -1109,8 +1110,9 @@ export const addPeers = async ({
 		// No need to add Blocktank peer if geo-blocked.
 		if (!geoBlocked) {
 			// Set Blocktank node uri array if able.
-			blocktankNodeUris =
-				getBlocktankStore()?.info?.nodes[0]?.connectionStrings ?? [];
+			for (const node of getBlocktankStore().info.nodes) {
+				blocktankNodeUris.push(...node.connectionStrings);
+			}
 			if (!blocktankNodeUris.length) {
 				// Fall back to hardcoded Blocktank peer if the blocktankNodeUris array is empty.
 				blocktankNodeUris = FALLBACK_BLOCKTANK_PEERS[selectedNetwork];

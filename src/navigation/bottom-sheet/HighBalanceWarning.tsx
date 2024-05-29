@@ -1,30 +1,24 @@
 import React, { memo, ReactElement, useEffect, useMemo } from 'react';
-import { Image, StyleSheet, View } from 'react-native';
-import { useTranslation } from 'react-i18next';
+import { Trans, useTranslation } from 'react-i18next';
 
 import { __E2E__ } from '../../constants/env';
-import { Caption13Up, Display, BodyM } from '../../styles/text';
+import { BodyMB, Display } from '../../styles/text';
 import BottomSheetWrapper from '../../components/BottomSheetWrapper';
-import BottomSheetNavigationHeader from '../../components/BottomSheetNavigationHeader';
-import SafeAreaInset from '../../components/SafeAreaInset';
-import Button from '../../components/Button';
-import { ignoreHighBalance, MAX_WARNINGS } from '../../store/slices/user';
-import { viewControllersSelector } from '../../store/reselect/ui';
-import { useBalance } from '../../hooks/wallet';
-import { useAppDispatch, useAppSelector } from '../../hooks/redux';
-import {
-	getFiatDisplayValues,
-	getFiatDisplayValuesForFiat,
-} from '../../utils/displayValues';
+import BottomSheetScreen from '../../components/BottomSheetScreen';
 import { openURL } from '../../utils/helpers';
 import { objectKeys } from '../../utils/objectKeys';
-import { exchangeRatesSelector } from '../../store/reselect/wallet';
+import { getFiatDisplayValues } from '../../utils/displayValues';
+import { useBalance } from '../../hooks/wallet';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import {
 	useBottomSheetBackPress,
 	useSnapPoints,
 } from '../../hooks/bottomSheet';
 import { closeSheet } from '../../store/slices/ui';
 import { showBottomSheet } from '../../store/utils/ui';
+import { viewControllersSelector } from '../../store/reselect/ui';
+import { exchangeRatesSelector } from '../../store/reselect/wallet';
+import { ignoreHighBalance, MAX_WARNINGS } from '../../store/slices/user';
 import {
 	ignoreHighBalanceCountSelector,
 	ignoreHighBalanceTimestampSelector,
@@ -33,7 +27,7 @@ import {
 const imageSrc = require('../../assets/illustrations/exclamation-mark.png');
 
 const BALANCE_THRESHOLD_USD = 500; // how high the balance must be to show this warning to the user (in USD)
-const BALANCE_THRESHOLD_SATS = 650000; // how high the balance must be to show this warning to the user (in Sats)
+const BALANCE_THRESHOLD_SATS = 700000; // how high the balance must be to show this warning to the user (in Sats)
 const ASK_INTERVAL = 1000 * 60 * 60 * 24; // 1 day - how long this prompt will be hidden if user taps Later
 const CHECK_DELAY = 3000; // how long user needs to stay on Wallets screen before he will see this prompt
 
@@ -44,7 +38,7 @@ const HighBalanceWarning = ({
 }): ReactElement => {
 	const { t } = useTranslation('other');
 	const { totalBalance } = useBalance();
-	const snapPoints = useSnapPoints('medium');
+	const snapPoints = useSnapPoints('large');
 	const dispatch = useAppDispatch();
 	const count = useAppSelector(ignoreHighBalanceCountSelector);
 	const exchangeRates = useAppSelector(exchangeRatesSelector);
@@ -64,11 +58,6 @@ const HighBalanceWarning = ({
 		satoshis: totalBalance,
 		currency: 'USD',
 		exchangeRates,
-	});
-
-	const { fiatWhole, fiatSymbol } = getFiatDisplayValuesForFiat({
-		value: BALANCE_THRESHOLD_USD,
-		currency: 'USD',
 	});
 
 	// if balance over BALANCE_THRESHOLD
@@ -128,94 +117,34 @@ const HighBalanceWarning = ({
 		<BottomSheetWrapper
 			view="highBalance"
 			snapPoints={snapPoints}
-			backdrop={true}
 			onClose={(): void => {
 				dispatch(ignoreHighBalance(false));
 			}}>
-			<View style={styles.root}>
-				<BottomSheetNavigationHeader
-					title={t('high_title')}
-					displayBackButton={false}
-				/>
-				<View style={styles.amountContainer}>
-					<Caption13Up color="secondary">{t('high_text1')}</Caption13Up>
-					<View style={styles.amount}>
-						<Display style={styles.symbol} color="secondary">
-							{fiatSymbol}
-						</Display>
-						<Display>{fiatWhole}</Display>
-					</View>
-				</View>
-
-				<BodyM style={styles.text} color="secondary">
-					{t('high_text2')}
-				</BodyM>
-
-				<View style={styles.imageContainer}>
-					<Image style={styles.image} source={imageSrc} />
-				</View>
-
-				<View style={styles.buttonContainer}>
-					<Button
-						style={styles.button}
-						text={t('high_button_more')}
-						variant="secondary"
-						size="large"
-						onPress={onMore}
+			<BottomSheetScreen
+				navTitle={t('high_balance.nav_title')}
+				title={
+					<Trans
+						t={t}
+						i18nKey="high_balance.title"
+						components={{ accent: <Display color="yellow" /> }}
 					/>
-					<Button
-						style={styles.button}
-						text={t('understood')}
-						size="large"
-						onPress={onDismiss}
+				}
+				description={
+					<Trans
+						t={t}
+						i18nKey="high_balance.text"
+						components={{ accent: <BodyMB color="white" /> }}
 					/>
-				</View>
-				<SafeAreaInset type="bottom" minPadding={16} />
-			</View>
+				}
+				image={imageSrc}
+				continueText={t('high_balance.continue')}
+				cancelText={t('high_balance.cancel')}
+				testID="HighBalance"
+				onContinue={onDismiss}
+				onCancel={onMore}
+			/>
 		</BottomSheetWrapper>
 	);
 };
-
-const styles = StyleSheet.create({
-	root: {
-		flex: 1,
-		paddingHorizontal: 32,
-	},
-	amountContainer: {
-		marginTop: 8,
-	},
-	amount: {
-		flexDirection: 'row',
-		marginTop: 12,
-	},
-	symbol: {
-		marginRight: 8,
-	},
-	text: {
-		marginTop: 16,
-	},
-	imageContainer: {
-		flexShrink: 1,
-		justifyContent: 'center',
-		alignItems: 'center',
-		alignSelf: 'center',
-		width: 256,
-		aspectRatio: 1,
-		marginTop: 'auto',
-	},
-	image: {
-		flex: 1,
-		resizeMode: 'contain',
-	},
-	buttonContainer: {
-		flexDirection: 'row',
-		justifyContent: 'center',
-		marginTop: 'auto',
-		gap: 16,
-	},
-	button: {
-		flex: 1,
-	},
-});
 
 export default memo(HighBalanceWarning);

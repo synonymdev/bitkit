@@ -133,7 +133,7 @@ const RGSServer = ({
 					testID="RGSUrl"
 				/>
 
-				<View style={[styles.buttons, br.up('smphone') && styles.buttonsRow]}>
+				<View style={[styles.buttons, br.up('sm') && styles.buttonsRow]}>
 					<Button
 						style={styles.button}
 						text={t('es.button_reset')}

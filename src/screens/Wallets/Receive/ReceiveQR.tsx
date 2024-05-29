@@ -64,6 +64,7 @@ import { receiveSelector } from '../../../store/reselect/receive';
 import { ReceiveScreenProps } from '../../../navigation/types';
 import { isGeoBlockedSelector } from '../../../store/reselect/user';
 import { getWalletStore } from '../../../store/helpers';
+import { showToast } from '../../../utils/notifications';
 
 type Slide = () => ReactElement;
 
@@ -113,11 +114,17 @@ const ReceiveQR = ({
 	}, [jitInvoice, lightningBalance.remoteBalance]);
 
 	const getLightningInvoice = useCallback(async (): Promise<void> => {
-		if (
-			!receiveNavigationIsOpen ||
-			!lightningBalance.remoteBalance ||
-			lightningBalance.remoteBalance < amount
-		) {
+		if (!receiveNavigationIsOpen || !lightningBalance.remoteBalance) {
+			return;
+		}
+
+		if (lightningBalance.remoteBalance < amount) {
+			setLightningInvoice('');
+			showToast({
+				type: 'error',
+				title: t('receive_insufficient_title'),
+				description: t('receive_insufficient_text'),
+			});
 			return;
 		}
 

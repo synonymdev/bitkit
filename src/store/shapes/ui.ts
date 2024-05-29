@@ -22,6 +22,7 @@ export const defaultViewControllers: TUiState['viewControllers'] = {
 	receiveNavigation: defaultViewController,
 	sendNavigation: defaultViewController,
 	timeRangePrompt: defaultViewController,
+	transferFailed: defaultViewController,
 	treasureHunt: defaultViewController,
 	tagsPrompt: defaultViewController,
 	lnurlWithdraw: defaultViewController,

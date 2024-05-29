@@ -208,5 +208,7 @@
 	"refresh_error_title": "Refresh Failed",
 	"refresh_error_throttle_title": "Connection Throttled",
 	"refresh_error_throttle_description": "Electrum server connection is throttled. Please wait several minutes before trying again.",
-	"ldk_sync_error_title": "Lightning Sync Error"
+	"ldk_sync_error_title": "Lightning Sync Error",
+	"receive_insufficient_title": "Insufficient receiving balance.",
+	"receive_insufficient_text": "Insufficient receiving capacity to receive this amount over Lightning."
 }

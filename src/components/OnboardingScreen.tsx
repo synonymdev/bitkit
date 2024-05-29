@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
 import { View, Image, ImageSourcePropType, StyleSheet } from 'react-native';
 
-import { Display, BodyM } from '../styles/text';
+import { Display, BodyM, Title } from '../styles/text';
 import { View as ThemedView } from '../styles/components';
 import SafeAreaInset from './SafeAreaInset';
 import Button from './Button';
@@ -15,6 +15,7 @@ const OnboardingScreen = ({
 	imagePosition,
 	buttonText,
 	displayBackButton = true,
+	disableNav = false,
 	testID,
 	onClosePress,
 	onButtonPress,
@@ -26,6 +27,7 @@ const OnboardingScreen = ({
 	imagePosition?: 'center' | 'bottom';
 	buttonText: string;
 	displayBackButton?: boolean;
+	disableNav?: boolean;
 	testID?: string;
 	onClosePress?: () => void;
 	onButtonPress: () => void;
@@ -33,11 +35,16 @@ const OnboardingScreen = ({
 	return (
 		<ThemedView style={styles.root}>
 			<SafeAreaInset type="top" />
-			<NavigationHeader
-				title={navTitle}
-				displayBackButton={displayBackButton}
-				onClosePress={onClosePress}
-			/>
+			{disableNav ? (
+				<Title style={styles.header}>{navTitle}</Title>
+			) : (
+				<NavigationHeader
+					title={navTitle}
+					displayBackButton={displayBackButton}
+					onClosePress={onClosePress}
+				/>
+			)}
+
 			<View style={styles.content} testID={testID}>
 				<View
 					style={[
@@ -71,6 +78,10 @@ const OnboardingScreen = ({
 const styles = StyleSheet.create({
 	root: {
 		flex: 1,
+	},
+	header: {
+		textAlign: 'center',
+		paddingBottom: 35,
 	},
 	content: {
 		flex: 1,

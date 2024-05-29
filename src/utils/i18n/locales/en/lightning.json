@@ -30,6 +30,13 @@
 		"error_min_amount": "Spending amount needs to be at least ₿ {amount}",
 		"error_max_amount": "Spending amount needs to be smaller than ₿ {amount}"
 	},
+	"transfer_failed": {
+		"nav_title": "Transfer Failure",
+		"title": "Transfer\n<accent>failed</accent>",
+		"text": "Sorry, Bitkit could not set up your spending balance or complete your transfer. Please try again.",
+		"cancel": "Inspect Error",
+		"continue": "Try Again"
+	},
 	"error_channel_purchase": "Instant Payments Setup Failed",
 	"error_channel_receiving": "Receiving amount needs to be greater than ${usdValue}",
 	"enter_money": "Enter the amount of bitcoin you want to be able to spend instantly.",
@@ -123,7 +130,8 @@
 	"close_success_msg": "Your funds are being transferred back to your savings.",
 	"close_text": "The fee to close this Lightning Connection and transfer your funds back to your savings depends on network conditions.\n\nFunds transfer to savings is usually instant, but settlement may take up to <accent>14 days</accent> under certain network conditions.",
 	"close_button": "Close",
-	"force_title": "Force Transfer",
+	"force_nav_title": "Force Transfer",
+	"force_title": "Force\n<accent>Transfer</accent>",
 	"force_text": "Could not initiate transfer. Do you want to force this transfer? You won’t be able to use these funds for ±14 days (!)",
 	"force_button": "Force Transfer",
 	"force_init_title": "Force Transfer Initiated",

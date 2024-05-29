@@ -25,19 +25,19 @@ export const getBoostedTransactions = ({
 
 /**
  * Returns an array of parents for a boosted transaction id.
- * @param {string} txid
+ * @param {string} txId
  * @param {IBoostedTransactions} [boostedTransactions]
  * @param {TWalletName} [selectedWallet]
  * @param {EAvailableNetwork} [selectedNetwork]
  * @returns {string[]}
  */
 export const getBoostedTransactionParents = ({
-	txid,
+	txId,
 	boostedTransactions,
 	selectedWallet = getSelectedWallet(),
 	selectedNetwork = getSelectedNetwork(),
 }: {
-	txid: string;
+	txId: string;
 	boostedTransactions?: IBoostedTransactions;
 	selectedWallet?: TWalletName;
 	selectedNetwork?: EAvailableNetwork;
@@ -49,28 +49,28 @@ export const getBoostedTransactionParents = ({
 		});
 	}
 	const boostObj = Object.values(boostedTransactions).find((boostObject) => {
-		return boostObject.childTransaction === txid;
+		return boostObject.childTransaction === txId;
 	});
 
 	return boostObj?.parentTransactions ?? [];
 };
 
 /**
- * Determines if a given txid has any boosted parents.
+ * Determines if a given txId has any boosted parents.
  * // TODO: Migrate to Beignet
- * @param {string} txid
+ * @param {string} txId
  * @param {IBoostedTransactions} [boostedTransactions]
  * @param {TWalletName} [selectedWallet]
  * @param {EAvailableNetwork} [selectedNetwork]
  * @returns {boolean}
  */
 export const hasBoostedParents = ({
-	txid,
+	txId,
 	boostedTransactions,
 	selectedWallet = getSelectedWallet(),
 	selectedNetwork = getSelectedNetwork(),
 }: {
-	txid: string;
+	txId: string;
 	boostedTransactions?: IBoostedTransactions;
 	selectedWallet?: TWalletName;
 	selectedNetwork?: EAvailableNetwork;
@@ -82,15 +82,15 @@ export const hasBoostedParents = ({
 		});
 	}
 	const boostedParents = getBoostedTransactionParents({
-		txid,
+		txId,
 		boostedTransactions,
 	});
 	return boostedParents.length > 0;
 };
 
 /**
- * Returns the initially boosted transaction's activity item for a given txid.
- * @param {string} txid
+ * Returns the initially boosted transaction's activity item for a given txId.
+ * @param {string} txId
  * @param {IActivityItem[]} [items]
  * @param {IBoostedTransactions} [boostedTransactions]
  * @param {TWalletName} [selectedWallet]
@@ -98,13 +98,13 @@ export const hasBoostedParents = ({
  * @returns {TOnchainActivityItem|undefined}
  */
 export const getRootParentActivity = ({
-	txid,
+	txId,
 	items,
 	boostedTransactions,
 	selectedWallet = getSelectedWallet(),
 	selectedNetwork = getSelectedNetwork(),
 }: {
-	txid: string;
+	txId: string;
 	items: TOnchainActivityItem[];
 	boostedTransactions?: IBoostedTransactions;
 	selectedWallet?: TWalletName;
@@ -117,7 +117,7 @@ export const getRootParentActivity = ({
 		});
 	}
 	const boostedParents = getBoostedTransactionParents({
-		txid,
+		txId,
 		boostedTransactions,
 	});
 	if (!boostedParents.length) {
@@ -169,7 +169,7 @@ export const formatBoostedActivityItems = ({
 	const formattedItems: TOnchainActivityItem[] = [];
 
 	items.forEach((item) => {
-		const txid = item.id;
+		const txId = item.id;
 
 		// if boosted tx don't add for now
 		if (item.id in boostedTransactions) {
@@ -177,7 +177,7 @@ export const formatBoostedActivityItems = ({
 		}
 
 		const rootParent = getRootParentActivity({
-			txid,
+			txId,
 			items,
 			boostedTransactions,
 			selectedWallet,
@@ -246,7 +246,7 @@ export const calculateBoostTransactionValue = ({
 		return currentActivityItem.value;
 	}
 	const rootParent = getRootParentActivity({
-		txid: currentActivityItem.id,
+		txId: currentActivityItem.id,
 		items,
 		boostedTransactions,
 	});
