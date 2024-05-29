@@ -170,7 +170,7 @@ const OnchainActivityDetail = ({
 			return;
 		}
 
-		getTransactions({ txHashes: [{ tx_hash: id }] }).then((txResponse) => {
+		getTransactions({ txHashes: [{ tx_hash: txId }] }).then((txResponse) => {
 			if (txResponse.isErr()) {
 				showToast({
 					type: 'warning',
@@ -191,21 +191,21 @@ const OnchainActivityDetail = ({
 			const data = txData[0].result;
 			setTxDetails(data);
 		});
-	}, [id, activityType, extended, selectedNetwork, txDetails, t]);
+	}, [txId, activityType, extended, selectedNetwork, txDetails, t]);
 
 	const showBoost = useMemo(() => {
 		if (confirmed || isBoosted) {
 			return false;
 		}
-		return canBoost(id).canBoost;
-	}, [confirmed, isBoosted, id]);
+		return canBoost(txId).canBoost;
+	}, [confirmed, isBoosted, txId]);
 
 	const boostedParents = useMemo(() => {
 		return getBoostedTransactionParents({
-			txid: id,
+			txId,
 			boostedTransactions,
 		});
-	}, [boostedTransactions, id]);
+	}, [boostedTransactions, txId]);
 
 	const hasBoostedParents = useMemo(() => {
 		return boostedParents.length > 0;
@@ -213,7 +213,11 @@ const OnchainActivityDetail = ({
 
 	const handleBoostParentPress = useCallback(
 		(parentTxId) => {
-			const activityItem = activityItems.find((i) => i.id === parentTxId);
+			const activityItem = activityItems.find((i) => {
+				return (
+					i.activityType === EActivityType.onchain && i.txId === parentTxId
+				);
+			});
 			if (activityItem) {
 				navigation.push('ActivityDetail', { id: activityItem.id });
 			}
@@ -250,7 +254,7 @@ const OnchainActivityDetail = ({
 		}
 	};
 
-	const blockExplorerUrl = getBlockExplorerLink(id);
+	const blockExplorerUrl = getBlockExplorerLink(txId);
 
 	const handleExplore = (): void => {
 		navigation.push('ActivityDetail', {
@@ -589,10 +593,8 @@ const OnchainActivityDetail = ({
 								<Section
 									title={t('activity_input', { count: txDetails.vin.length })}
 									value={txDetails.vin.map((v) => {
-										const txid = v.txid;
-										const vout = v.vout;
-										const i = txid + ':' + vout;
-										return <BodySSB key={i}>{i}</BodySSB>;
+										const input = `${v.txid}:${v.vout}`;
+										return <BodySSB key={input}>{input}</BodySSB>;
 									})}
 								/>
 							</View>
@@ -626,7 +628,7 @@ const OnchainActivityDetail = ({
 													onPress={(): void => {
 														handleBoostParentPress(parent);
 													}}>
-													<BodySSB numberOfLines={1} ellipsizeMode={'middle'}>
+													<BodySSB numberOfLines={1} ellipsizeMode="middle">
 														{parent}
 													</BodySSB>
 												</TouchableOpacity>
