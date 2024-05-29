@@ -84,7 +84,7 @@ const RestoringScreen = (): ReactElement => {
 	}, [profile.name, onboardingStep, dispatch]);
 
 	let color: keyof IColors = 'brand';
-	let content = <LoadingWalletScreen />;
+	let content = <LoadingWalletScreen isRestoring={true} />;
 
 	if (showRestored || showFailed) {
 		color = showRestored ? 'green' : 'red';
