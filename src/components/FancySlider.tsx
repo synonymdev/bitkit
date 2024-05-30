@@ -179,6 +179,7 @@ const FancySlider = ({
 							active.current = false;
 							handlePanEnd();
 						});
+						return;
 					}
 
 					if (pan.x._value < snapPointX && pan.x._value >= snapPointX * 0.65) {
@@ -191,8 +192,8 @@ const FancySlider = ({
 							active.current = false;
 							handlePanEnd();
 						});
+						return;
 					}
-					return;
 				}
 
 				active.current = false;
