@@ -164,7 +164,6 @@ const QuickSetup = ({
 		const purchaseResponse = await startChannelPurchase({
 			clientBalance,
 			lspBalance,
-			lspNodeId: blocktankInfo.nodes[0].pubkey,
 			zeroConfPayment: clientBalance <= max0ConfClientBalance,
 		});
 		setLoading(false);
@@ -183,7 +182,6 @@ const QuickSetup = ({
 			orderId: purchaseResponse.value.id,
 		});
 	}, [
-		blocktankInfo.nodes,
 		lnSetup,
 		max0ConfClientBalance,
 		navigation,

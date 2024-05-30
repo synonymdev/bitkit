@@ -299,7 +299,6 @@ const CustomSetup = ({
 				lspBalance: amount,
 				options: {
 					clientBalanceSat: spendingAmount,
-					lspNodeId: blocktankInfo.nodes[0].pubkey,
 					turboChannel:
 						spendingAmount <= blocktankInfo.options.max0ConfClientBalanceSat,
 				},
