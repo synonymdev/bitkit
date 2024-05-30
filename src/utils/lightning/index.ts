@@ -1163,8 +1163,9 @@ export const getLightningNodePeers = async ({
 		// No need to add Blocktank peer if geo-blocked.
 		if (!geoBlocked) {
 			// Set Blocktank node uri array if able.
-			blocktankNodeUris =
-				getBlocktankStore()?.info?.nodes[0].connectionStrings ?? [];
+			for (const node of getBlocktankStore().info.nodes) {
+				blocktankNodeUris.push(...node.connectionStrings);
+			}
 			if (!blocktankNodeUris.length) {
 				// Fall back to hardcoded Blocktank peer if the blocktankNodeUris array is empty.
 				blocktankNodeUris = FALLBACK_BLOCKTANK_PEERS[selectedNetwork];
@@ -1534,14 +1535,14 @@ export const removeUnusedPeers = async ({
 		(channel) => channel.counterparty_node_id,
 	);
 	const blocktankInfo = await getBlocktankInfo(true);
-	const blocktankPubKey = blocktankInfo.nodes[0].pubkey;
+	const blocktankPubKeys = blocktankInfo.nodes.map((n) => n.pubkey);
 	const peers = await lm.getPeers();
 
 	await Promise.all(
 		peers.map((peer) => {
 			if (
 				!channelNodeIds.includes(peer.pubKey) && // If no channels exist for a given peer, remove them.
-				peer.pubKey !== blocktankPubKey // Ensure we don't disconnect from Blocktank if it was previously added as a peer.
+				!blocktankPubKeys.includes(peer.pubKey) // Ensure we don't disconnect from Blocktank if it was previously added as a peer.
 			) {
 				const peerStr = `${peer.pubKey}@${peer.address}:${peer.port}`;
 				// Remove peer from local storage.
