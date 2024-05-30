@@ -1,6 +1,15 @@
 import React, { ReactElement, memo, useEffect, useState } from 'react';
 import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import { Gesture, GestureDetector } from 'react-native-gesture-handler';
+import Animated, {
+	clamp,
+	runOnJS,
+	useAnimatedStyle,
+	useSharedValue,
+	withSpring,
+	withTiming,
+} from 'react-native-reanimated';
 
 import { View as ThemedView } from '../styles/components';
 import { BodySSB } from '../styles/text';
@@ -8,16 +17,6 @@ import { RightArrow } from '../styles/icons';
 import { IThemeColors } from '../styles/themes';
 import useColors from '../hooks/colors';
 import LoadingSpinner from './Spinner';
-
-import Animated, {
-	runOnJS,
-	useAnimatedGestureHandler,
-	useAnimatedStyle,
-	useSharedValue,
-	withSpring,
-	withTiming,
-} from 'react-native-reanimated';
-import { PanGestureHandler } from 'react-native-gesture-handler';
 
 const CIRCLE_SIZE = 60;
 const GRAB_SIZE = 120;
@@ -48,29 +47,28 @@ const SwipeToConfirm = ({
 	const colors = useColors();
 	const trailColor = color ? `${colors[color]}24` : colors.green24;
 	const circleColor = color ? colors[color] : colors.green;
-	const [containerWidth, setContainerWidth] = useState(0);
-	const endPosition = containerWidth === 0 ? 1 : containerWidth - CIRCLE_SIZE;
+	const [swiperWidth, setSwiperWidth] = useState(0);
+	const maxPanX = swiperWidth === 0 ? 1 : swiperWidth - CIRCLE_SIZE;
 
 	const panX = useSharedValue(0);
+	const prevPanX = useSharedValue(0);
 	const loadingOpacity = useSharedValue(loading ? 1 : 0);
 
-	const panGestureHandler = useAnimatedGestureHandler({
-		onStart: (_, ctx) => {
-			ctx.offsetX = panX.value;
-		},
-		onActive: (event, ctx) => {
-			// @ts-ignore
-			panX.value = ctx.offsetX + event.translationX;
-		},
-		onEnd: (_) => {
-			const finished = panX.value > endPosition * 0.8;
-			panX.value = withSpring(finished ? endPosition : 0);
+	const panGesture = Gesture.Pan()
+		.onStart(() => {
+			prevPanX.value = panX.value;
+		})
+		.onUpdate((event) => {
+			panX.value = clamp(prevPanX.value + event.translationX, 0, maxPanX);
+		})
+		.onEnd(() => {
+			const swiped = panX.value > maxPanX * 0.8;
+			panX.value = withSpring(swiped ? maxPanX : 0);
 
-			if (finished) {
-				runOnJS(onConfirm)?.();
+			if (swiped) {
+				runOnJS(onConfirm)();
 			}
-		},
-	});
+		});
 
 	// Animated styles
 	const trailStyle = useAnimatedStyle(() => {
@@ -78,25 +76,24 @@ const SwipeToConfirm = ({
 		return { width };
 	});
 
-	const circleTranslateXStyle = useAnimatedStyle(() => {
-		const translateX = panX.value;
-		return { transform: [{ translateX }] };
-	});
+	const circleStyle = useAnimatedStyle(() => ({
+		transform: [{ translateX: panX.value }],
+	}));
 
 	const textOpacityStyle = useAnimatedStyle(() => {
-		const opacity = 1 - panX.value / endPosition;
+		const opacity = 1 - panX.value / maxPanX;
 		return { opacity };
 	});
 
 	const startIconOpacityStyle = useAnimatedStyle(() => {
-		const opacity = 1 - panX.value / (endPosition / 2);
+		const opacity = 1 - panX.value / (maxPanX / 2);
 		return { opacity };
 	});
 
 	// hide if loading is visible
 	const endIconOpacityStyle = useAnimatedStyle(() => {
 		const opacity =
-			(panX.value - endPosition / 2) / (endPosition / 2) - loadingOpacity.value;
+			(panX.value - maxPanX / 2) / (maxPanX / 2) - loadingOpacity.value;
 		return { opacity };
 	});
 
@@ -111,8 +108,8 @@ const SwipeToConfirm = ({
 	}, [loading, loadingOpacity]);
 
 	useEffect(() => {
-		panX.value = withTiming(confirmed ? endPosition : 0);
-	}, [confirmed, endPosition, panX]);
+		panX.value = withTiming(confirmed ? maxPanX : 0);
+	}, [confirmed, maxPanX, panX]);
 
 	return (
 		<ThemedView color="white16" style={[styles.root, style]}>
@@ -120,7 +117,7 @@ const SwipeToConfirm = ({
 				style={styles.container}
 				onLayout={(e): void => {
 					const ww = e.nativeEvent.layout.width;
-					setContainerWidth((w) => (w === 0 ? ww : w));
+					setSwiperWidth((w) => (w === 0 ? ww : w));
 				}}>
 				<Animated.View
 					style={[styles.trail, { backgroundColor: trailColor }, trailStyle]}
@@ -128,17 +125,8 @@ const SwipeToConfirm = ({
 				<Animated.View style={textOpacityStyle}>
 					<BodySSB>{text}</BodySSB>
 				</Animated.View>
-				<PanGestureHandler onGestureEvent={panGestureHandler}>
-					<Animated.View
-						style={[
-							styles.grab,
-							{
-								height: GRAB_SIZE,
-								width: GRAB_SIZE,
-							},
-							circleTranslateXStyle,
-						]}
-						testID="GRAB">
+				<GestureDetector gesture={panGesture}>
+					<Animated.View style={[styles.grab, circleStyle]} testID="GRAB">
 						<Animated.View
 							style={[styles.circle, { backgroundColor: circleColor }]}>
 							<Animated.View style={[styles.icon, startIconOpacityStyle]}>
@@ -152,7 +140,7 @@ const SwipeToConfirm = ({
 							</Animated.View>
 						</Animated.View>
 					</Animated.View>
-				</PanGestureHandler>
+				</GestureDetector>
 			</View>
 		</ThemedView>
 	);
@@ -186,6 +174,8 @@ const styles = StyleSheet.create({
 		top: -INVISIBLE_BORDER,
 		alignItems: 'center',
 		justifyContent: 'center',
+		height: GRAB_SIZE,
+		width: GRAB_SIZE,
 	},
 	circle: {
 		height: CIRCLE_SIZE,
