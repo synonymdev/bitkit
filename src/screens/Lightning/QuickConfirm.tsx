@@ -52,10 +52,10 @@ const QuickConfirm = ({
 	const lspFee = purchaseFeeValue.fiatValue - clientBalance.fiatValue;
 
 	const savingsAmount = onchainBalance - spendingAmount;
-	const spendingPercentage = Math.round(
-		(spendingAmount / onchainBalance) * 100,
-	);
-	const savingsPercentage = Math.round((savingsAmount / onchainBalance) * 100);
+	const spendingPercentage =
+		Math.round((spendingAmount / onchainBalance) * 100) || 0;
+	const savingsPercentage =
+		Math.round((savingsAmount / onchainBalance) * 100) || 0;
 
 	const handleConfirm = async (): Promise<void> => {
 		setLoading(true);
