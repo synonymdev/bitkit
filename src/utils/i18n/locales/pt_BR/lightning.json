@@ -7,8 +7,12 @@
   },
   "transfer": {
     "nav_title": "Transferência de fundos",
+    "nav_successful": "Transferência bem-sucedida",
     "text_numpad": "Digite a quantia de dinheiro que deseja poder gastar instantaneamente.",
     "swipe": "Deslizar Para Transferir"
+  },
+  "transfer_failed": {
+    "continue": "Tente novamente"
   },
   "error_channel_purchase": "Falha na Configuração de Pagamentos Instantâneos",
   "error_channel_receiving": "O valor a ser recebido precisa ser maior que ${usdValue}",
@@ -17,7 +21,6 @@
   "spending_label": "Saldo de despesas",
   "receiving_label": "Capacidade de recebimento",
   "note_blocktank_limit": "O valor que você pode transferir para seu saldo de gastos está atualmente limitado a US${usdValue}.",
-  "note_reserve_limit": "O valor que você pode transferir para seu saldo de gastos é limitado a 80%. Você precisa manter fundos em reserva para transferir esse bitcoin de volta para a poupança.",
   "quick_setup": "Configuração Rápida",
   "receiving_amount_money": "Escolha quanto dinheiro você deseja receber instantaneamente.",
   "receiving_amount_bitcoin": "Digite a quantidade de Bitcoin que você deseja receber instantaneamente.",
@@ -73,7 +76,7 @@
   "close_conn": "Fechar Conexão",
   "close_error": "A Transferência Falhou",
   "close_button": "Fechar",
-  "force_title": "Forçar Transferência",
+  "force_nav_title": "Forçar Transferência",
   "force_text": "Não foi possível iniciar a transferência. Deseja forçar essa transferência? Vocè não poderá usar esses fundos por ±14 dias (!)",
   "force_button": "Forçar Transferência",
   "force_init_title": "Transferência Forçada Iniciada",

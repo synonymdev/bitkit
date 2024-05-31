@@ -16,15 +16,10 @@
     "description": "Condividi Bitkit"
   },
   "lightning": {
-    "title": "Spendi",
-    "description": "Bilancia i tuoi fondi"
+    "title": "Spendi"
   },
   "lightningSettingUp": {
-    "title": "Trasferisci",
-    "description0": "Elaborazione del pagamento",
-    "description1": "Pagato",
-    "description2": "In coda",
-    "description3": "Apertura"
+    "title": "Trasferisci"
   },
   "lightningConnecting": {
     "title": "Collegamento",

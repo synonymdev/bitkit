@@ -18,11 +18,7 @@
     "title": "Тратить"
   },
   "lightningSettingUp": {
-    "title": "Перенос",
-    "description0": "Обработка платежа",
-    "description1": "Оплачено",
-    "description2": "В очереди",
-    "description3": "Открывается"
+    "title": "Перенос"
   },
   "lightningConnecting": {
     "title": "Подключение",

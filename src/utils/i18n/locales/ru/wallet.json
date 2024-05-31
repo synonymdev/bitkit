@@ -161,12 +161,10 @@
   "details_savings_title": "Сбережения",
   "details_spending_title": "Расходы",
   "savings": {
-    "title": "Сбережения",
-    "onboarding": "<accent>Отправьте\nбиткоин</accent>\nна баланс\nсбережений."
+    "title": "Сбережения"
   },
   "spending": {
-    "title": "Расходы",
-    "onboarding": "<accent>Отправьте\nбиткоин</accent>\nна баланс\nрасходов."
+    "title": "Расходы"
   },
   "details_transfer_subtitle": "Входящий Перенос",
   "tx_invalid": "Неверная Транзакция",

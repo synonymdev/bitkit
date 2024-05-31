@@ -9,7 +9,6 @@
   "qr_error_network_header": "Rede Incorreta",
   "qr_error_network_text": "O Bitkit está atualmente definido com a {selectedNetwork} mas os dados são para {dataNetwork}.",
   "qr_paste": "Colar código QR",
-  "buy_button": "Comprar Bitcoin",
   "connection_restored_title": "Conexão Electrum Restaurada",
   "connection_restored_message": "O Bitkit reconectou ao Electrum com sucesso.",
   "connection_issue": "Problemas de Conectividade com a Internet",
@@ -18,9 +17,13 @@
   "connection_reconnect_msg": "A conexão com o Electrum foi perdida, tentando reconectar...",
   "connection_back_title": "Conexão com a Internet Restaurada.",
   "connection_back_msg": "O Bitkit reconectou à Internet com sucesso.",
-  "up_title": "Atualização Crítica",
-  "up_text": "Há uma atualização crítica disponível para o Bitkit. Você precisa atualizar para continuar usando o Bitkit.",
-  "up_button": "Atualizar o Bitkit",
+  "high_balance": {
+    "nav_title": "Saldo Alto",
+    "continue": "Entendido",
+    "cancel": "Saiba Mais"
+  },
+  "update_critical_nav_title": "Atualização Crítica",
+  "update_critical_button": "Atualizar o Bitkit",
   "camera_ask_title": "Permissão para usar a câmera",
   "camera_ask_msg": "O Bitkit precisa de permissão para usar a câmera",
   "camera_no_text": "<bold>Parece que o Bitkit não tem permissão para acessar sua câmera.</bold>\n\n\nPara utilizar esse recurso no futuro, você precisará ativar as permissões da câmera para este aplicativo nas configurações do seu telefone.",
@@ -62,10 +65,7 @@
   "bt_error_retrieve": "A Transferência Falhou",
   "bt_channel_purchase_cost_error": "Você precisa de mais {delta} para concluir essa transação.",
   "earlier": "MAIS ANTIGOS",
-  "update_title": "Atualização disponível",
+  "update_nav_title": "Atualização disponível",
   "update_text": "Atualize o Bitkit para obter novos recursos e correções de bugs!",
-  "update_button": "Atualizar",
-  "high_title": "Saldo Alto",
-  "high_text1": "O saldo da carteira excede capacidade",
-  "high_button_more": "Saiba Mais"
+  "update_button": "Atualizar"
 }

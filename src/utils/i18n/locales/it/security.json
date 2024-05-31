@@ -23,7 +23,6 @@
   "mnemonic_confirm_tap": "Tocca le 12 parole nell'ordine corretto.",
   "mnemonic_result_header": "Successo",
   "mnemonic_result_text": "Assicurati di conservare la frase di recupero in un <accent>luogo sicuro</accent>, poiché questo è <accent>l'unico modo per recuperare</accent> i tuoi soldi!",
-  "mnemonic_keep_header": "Mantenila Segreta",
   "mnemonic_keep_text": "Ricorda, <accent>non condividere mai la tua frase di recupero</accent> con nessuno! Se lo fai, possono rubare i tuoi soldi, il tuo profilo e altri dati.",
   "mnemonic_data_header": "Dati del Wallet",
   "mnemonic_data_text": "Il tuo profilo, i tuoi contatti, i tuoi account, i tuoi tag e le tue attività saranno sottoposti a backup automatico sul nostro servizio cloud gratuito.",

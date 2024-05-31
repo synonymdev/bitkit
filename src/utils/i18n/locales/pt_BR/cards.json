@@ -6,10 +6,7 @@
     "description": "Saldo de Gastos"
   },
   "lightningSettingUp": {
-    "title": "Transferência",
-    "description1": "Pago",
-    "description2": "Na Fila",
-    "description3": "Abrindo"
+    "title": "Transferência"
   },
   "lightningConnecting": {
     "title": "Conectando",

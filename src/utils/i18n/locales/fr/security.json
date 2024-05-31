@@ -23,7 +23,7 @@
   "mnemonic_confirm_tap": "Tapez les 12 mots dans le bon ordre.",
   "mnemonic_result_header": "Succès",
   "mnemonic_result_text": "Veillez à conserver votre phrase de récupération dans un <accent>endroit sûr</accent>, car c'est le <accent>seul moyen de récupérer votre</accent> argent !",
-  "mnemonic_keep_header": "Gardez la secrètement ",
+  "mnemonic_keep_header": "Gardez-le en sécurité",
   "mnemonic_keep_text": "N'oubliez pas de <accent>ne jamais communiquer votre phrase de récupération</accent> à qui que ce soit ! Si vous le faites, cette personne peut vous voler votre argent, votre profil et d'autres données.",
   "mnemonic_data_header": "Données du portefeuille",
   "mnemonic_data_text": "Votre profil, vos contacts, vos comptes, vos tags et votre activité seront sauvegardés automatiquement sur notre service cloud gratuit.",

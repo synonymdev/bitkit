@@ -2,11 +2,6 @@
   "backupSeedPhrase": {
     "title": "Back up"
   },
-  "lightningSettingUp": {
-    "description1": "Gezahlt",
-    "description2": "in Warteschlange",
-    "description3": "Öffnen"
-  },
   "lightningConnecting": {
     "title": "Verbinden",
     "description": "bereit in ca. 10 Minuten"

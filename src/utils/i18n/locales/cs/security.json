@@ -23,7 +23,7 @@
   "mnemonic_confirm_tap": "Klepněte na 12 slov ve správném pořadí.",
   "mnemonic_result_header": "Úspěšné",
   "mnemonic_result_text": "Ujistěte se, že jste uložili frázi pro obnovení na <accent>bezpečném místě</accent>, protože to je <accent>jediný způsob, jak získat</accent> své peníze <accent>zpět</accent>!",
-  "mnemonic_keep_header": "Udržujte to v tajnosti",
+  "mnemonic_keep_header": "Udržujte to v bezpečí",
   "mnemonic_keep_text": "Pamatujte, že <accent>nikdy nesmíte nikomu sdělovat svou obnovovací frázi</accent>! Pokud tak učiníte, může vám ukrást peníze, profil a další údaje.",
   "mnemonic_data_header": "Údaje o peněžence",
   "mnemonic_data_text": "Váš profil, kontakty, účty, tagy a aktivita budou automaticky zálohovány do naší bezplatné cloudové služby.",

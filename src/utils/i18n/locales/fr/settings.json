@@ -36,6 +36,7 @@
     "speed_title": "Vitesse de transaction",
     "speed_default": "Vitesse de transaction par défaut",
     "speed_fee_custom": "Fixer des frais personnalisés",
+    "speed_fee_total": "₿ {feeSats} pour une transaction moyenne",
     "speed_fee_total_fiat": "₿ {feeSats} pour une transaction moyenne ({fiatSymbol}{fiatFormatted} )",
     "tags": "Tags",
     "tags_previously": "Étiquettes précédemment utilisées"
@@ -83,13 +84,41 @@
   "support": {
     "title": "Support",
     "text": "Besoin d'aide ? Signalez votre problème depuis Bitkit, visitez le centre d'aide, vérifiez le statut ou contactez-nous sur nos canaux sociaux.",
+    "report": "Rapporter un problème",
+    "help": "Centre d'aide",
+    "status": "Statut de l'application",
+    "report_text": "Veuillez décrire le problème que vous rencontrez ou poser une question.",
+    "label_address": "Adresse email",
+    "label_message": "Problème ou question",
+    "placeholder_address": "satoshi@satoshi.com",
+    "placeholder_message": "Décrivez le problème ou posez une question",
     "text_button": "Envoyer",
+    "title_success": "Envoyé avec succès",
+    "text_success": "Merci de nous avoir contactés ! Nous essaierons de vous répondre dans les plus brefs délais.",
     "text_success_button": "OK",
+    "title_unsuccess": "Échec de l'envoi",
+    "text_unsuccess": "Un problème s'est produit lors de l'envoi de votre problème ou de votre question. Veuillez réessayer.",
     "text_unsuccess_button": "Réessayer"
   },
   "status": {
+    "title": "Statut de l'application",
+    "internet": {
+      "title": "Internet",
+      "ready": "Connecté",
+      "pending": "Se reconnecte...",
+      "error": "Déconnecté"
+    },
+    "bitcoin_node": {
+      "title": "Nœud Bitcoin",
+      "ready": "Connecté",
+      "pending": "Connexion...",
+      "error": "Impossible de se connecter à Electrum"
+    },
     "lightning_node": {
-      "title": "Nœud Lightning"
+      "title": "Nœud Lightning",
+      "ready": "Synchronisé",
+      "pending": "Synchronisation...",
+      "error": "Impossible d'initier"
     }
   },
   "adv": {

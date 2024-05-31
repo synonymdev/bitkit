@@ -17,14 +17,11 @@
   },
   "lightning": {
     "title": "Utratit",
-    "description": "Vyvážení finančních prostředků"
+    "description": "Okamžité platby"
   },
   "lightningSettingUp": {
     "title": "Převod",
-    "description0": "Zpracování platby",
-    "description1": "Uhrazeno",
-    "description2": "Ve frontě",
-    "description3": "Otevírání"
+    "description": "Probíhá..."
   },
   "lightningConnecting": {
     "title": "Připojování",

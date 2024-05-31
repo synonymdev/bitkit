@@ -1,8 +1,11 @@
 {
-  "buy_button": "Kup Bitcoina",
-  "up_title": "Aktualizacja krytyczna",
-  "up_text": "Dostępna jest krytyczna aktualizacja dla Bitkit. Aby dalej korzystać z Bitkita, musisz dokonać aktualizacji.",
-  "up_button": "Aktualizuj Bitkit",
+  "high_balance": {
+    "nav_title": "Wysokie saldo",
+    "continue": "Rozumiem",
+    "cancel": "Dowiedz się więcej"
+  },
+  "update_critical_nav_title": "Aktualizacja krytyczna",
+  "update_critical_button": "Aktualizuj Bitkit",
   "camera_ask_title": "Zezwolenie na korzystanie z kamery",
   "camera_ask_msg": "Bitkit potrzebuje pozwolenia na używanie Twojej kamery",
   "clipboard_redirect_title": "Wykryto dane w schowku",
@@ -22,10 +25,7 @@
   "phone_settings": "Otwórz ustawienia telefonu",
   "bt_channel_purchase_cost_error": "Potrzebujesz {delta}aby ukończyć transakcję.",
   "earlier": "WCZEŚNIEJ",
-  "update_title": "Aktualizacja dostępna",
+  "update_nav_title": "Aktualizacja dostępna",
   "update_text": "Zaktualizuj proszę aplikację Bitkit do najnowszej wersji aby cieszyć się nowymi funkcjami i poprawkami. ",
-  "update_button": "Aktualizacja",
-  "high_title": "Wysokie saldo",
-  "high_text1": "Saldo portfela przekroczone",
-  "high_button_more": "Dowiedz się więcej"
+  "update_button": "Aktualizacja"
 }

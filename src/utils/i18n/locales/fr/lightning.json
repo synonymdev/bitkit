@@ -7,8 +7,12 @@
   },
   "transfer": {
     "nav_title": "Transfert de fonds",
+    "nav_successful": "Transfert réussi",
     "text_numpad": "Saisissez le montant que vous souhaitez pouvoir dépenser instantanément.",
     "swipe": "Glissez pour transférer"
+  },
+  "transfer_failed": {
+    "continue": "Réessayer"
   },
   "error_channel_purchase": "Échec de la configuration des paiements instantanés",
   "error_channel_receiving": "Le montant reçu doit être supérieur à $.{usdValue}",
@@ -17,7 +21,6 @@
   "spending_label": "Solde du compte courant",
   "receiving_label": "Capacité de réception",
   "note_blocktank_limit": "Le montant que vous pouvez transférer vers votre solde du compte courant est actuellement limité à ${usdValue}.",
-  "note_reserve_limit": "Le montant que vous pouvez transférer vers votre solde du compte courant est limité à 80 %. Vous devez garder des fonds en réserve pour transférer ce bitcoin vers l'épargne.",
   "quick_setup": "Configuration rapide",
   "receiving_amount_money": "Choisissez le montant de bitcoins que vous souhaitez recevoir instantanément.",
   "receiving_amount_bitcoin": "Saisissez le montant de bitcoins que vous souhaitez recevoir instantanément.",
@@ -74,7 +77,7 @@
   "close_conn": "Fermer la connexion",
   "close_error": "Échec de transfer ",
   "close_button": "Fermer",
-  "force_title": "Transfert forcé",
+  "force_nav_title": "Forcer le transfert",
   "force_text": "Impossible d'initier le transfert. Voulez-vous forcer ce transfert ? Vous ne pourrez pas utiliser ces fonds pendant ±14 jours ( !)",
   "force_button": "Forcer le transfert",
   "force_init_title": "Transfert forcé initié",

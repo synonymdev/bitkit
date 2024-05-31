@@ -1,4 +1,7 @@
 {
+  "high_balance": {
+    "continue": "Verstanden"
+  },
   "lnurl_pay_error_no_capacity": "Nicht genug ausgehende/sendefähige Kapazität um lnurl-pay request zu vervollständigen.",
   "lnurl_channel_node": "Node ID"
 }

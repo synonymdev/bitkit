@@ -163,10 +163,12 @@
   "details_savings_title": "Úspory",
   "details_spending_title": "Útraty",
   "savings": {
-    "title": "Úspory"
+    "title": "Úspory",
+    "onboarding": "<accent>Odeslat\nbitcoin</accent>\ndo vašeho\nspořicího zůstatku."
   },
   "spending": {
-    "title": "Útraty"
+    "title": "Útraty",
+    "onboarding": "<accent>Odeslat\nbitcoin</accent>\ndo vašeho\ndisponibilního zůstatku."
   },
   "details_transfer_subtitle": "Příchozí převod",
   "tx_invalid": "Neplatná transakce",
@@ -206,5 +208,7 @@
   "refresh_error_title": "Obnovení se nezdařilo",
   "refresh_error_throttle_title": "Připojení omezeno",
   "refresh_error_throttle_description": "Připojení k serveru Electrum je omezené. Před dalším pokusem vyčkejte několik minut.",
-  "ldk_sync_error_title": "Chyba synchronizace lightning"
+  "ldk_sync_error_title": "Chyba synchronizace lightning",
+  "receive_insufficient_title": "Nedostatečný zůstatek na příjmovém účtu.",
+  "receive_insufficient_text": "Nedostatečná přijímací kapacita pro příjem této částky přes lightning."
 }

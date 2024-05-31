@@ -2,11 +2,6 @@
   "backupSeedPhrase": {
     "title": "Αντίγραφο ασφαλείας"
   },
-  "lightningSettingUp": {
-    "description1": "Πληρώθηκε",
-    "description2": "Σε αναμονή",
-    "description3": "Σε αναμονή"
-  },
   "lightningConnecting": {
     "title": "Σύνδεση",
     "description": "Έτοιμο σε ±10 λεπτά"

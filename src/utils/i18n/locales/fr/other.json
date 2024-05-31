@@ -9,7 +9,6 @@
   "qr_error_network_header": "Réseau incorrect",
   "qr_error_network_text": "Bitkit est actuellement réglé sur {selectedNetwork} mais les données sont pour {dataNetwork}.",
   "qr_paste": "Collez le QR code ",
-  "buy_button": "Acheter du bitcoin",
   "connection_restored_title": "Connection Electrum restauré",
   "connection_restored_message": "Bitkit reconnecté avec succès à Electrum.",
   "connection_issue": "Problèmes de connectivité Internet",
@@ -18,9 +17,13 @@
   "connection_reconnect_msg": "J'ai perdu la connexion à Electrum, j'essaie de me reconnecter...",
   "connection_back_title": "Connexion Internet rétabli",
   "connection_back_msg": "Bitkit a réussi à se reconnecter à Internet.",
-  "up_title": "Mise à jour critique",
-  "up_text": "Une mise à jour critique est disponible pour Bitkit. Vous devez la mettre à jour pour continuer à utiliser Bitkit.",
-  "up_button": "Mise à jour de Bitkit",
+  "high_balance": {
+    "nav_title": "Solde élevé",
+    "continue": "Compris",
+    "cancel": "En savoir plus"
+  },
+  "update_critical_nav_title": "Mise à jour critique",
+  "update_critical_button": "Mise à jour de Bitkit",
   "camera_ask_title": "Autorisation d'utiliser l'appareil photo",
   "camera_ask_msg": "Bitkit a besoin d'une autorisation pour utiliser votre appareil photo",
   "camera_no_text": "<bold>Il semble que Bitkit n'ait pas l'autorisation d'accéder à votre appareil photo.</bold>\n\nPour utiliser cette fonction à l'avenir, vous devrez activer les autorisations de caméra pour cette application dans les paramètres de votre téléphone.",
@@ -62,10 +65,7 @@
   "bt_error_retrieve": "Échec de transfer ",
   "bt_channel_purchase_cost_error": "Vous avez besoin de {delta} pour effectuer cette transaction.",
   "earlier": "PLUS TÔT",
-  "update_title": "Mise à jour disponible",
+  "update_nav_title": "Mise à jour disponible",
   "update_text": "Veuillez mettre à jour Bitkit à la dernière version pour bénéficier des nouvelles fonctionnalités et des corrections de bugs !",
-  "update_button": "Mise à jour",
-  "high_title": "Solde élevé",
-  "high_text1": "Dépasse le solde du portefeuille",
-  "high_button_more": "En savoir plus"
+  "update_button": "Mise à jour"
 }

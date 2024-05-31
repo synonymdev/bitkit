@@ -20,6 +20,7 @@
   },
   "transfer": {
     "nav_title": "Trasferimento Fondi",
+    "nav_successful": "Trasferimento Riuscito",
     "title_slider": "Bilancia\n<accent>i tuoi fondi</accent>",
     "title_numpad": "Saldo <accent>Spendibile</accent>",
     "title_receive": "Capacità di <accent>Ricezione</accent>",
@@ -29,6 +30,9 @@
     "error_min_amount": "L'importo della spesa deve essere almeno ₿ {amount}",
     "error_max_amount": "L'importo della spesa deve essere inferiore a ₿ {amount}"
   },
+  "transfer_failed": {
+    "continue": "Riprova"
+  },
   "error_channel_purchase": "Configurazione dei Pagamenti Istantanei Fallita",
   "error_channel_receiving": "L'importo da ricevere deve essere maggiore di ${usdValue}.",
   "enter_money": "Inserisci la quantità di bitcoin che desideri poter spendere istantaneamente.",
@@ -37,7 +41,6 @@
   "spending_label": "Saldo da spendere.",
   "receiving_label": "Capacità di ricezione",
   "note_blocktank_limit": "L'importo che puoi trasferire al tuo saldo da spendere è attualmente limitato a ${usdValue}.",
-  "note_reserve_limit": "L'importo che puoi trasferire al tuo saldo da spendere è limitato all'80%. Devi conservare dei fondi di riserva per spostare questi bitcoin nei risparmi.",
   "quick_setup": "Configurazione Rapida",
   "quick_confirm_header": "Per favore\n<accent>conferma</accent>",
   "quick_confirm_cost": "Il trasferimento dei fondi costa <accent>{txFee}</accent> in commissioni di rete e <accent>{lspFee}</accent> in commissioni del fornitore dei servizi.",
@@ -51,7 +54,6 @@
   "duration_text": "Scegli il numero minimo di settimane in cui desideri che questa parte del tuo saldo di spesa (Canale Lightning) rimanga attiva.",
   "duration_week": "{count, plural, one {settimane} many {Tuo nome} other {settimane}}",
   "setting_up_header": "In trasferimento",
-  "setting_up_text": "<accent>Attendi e mantieni Bitkit aperto</accent> durante la configurazione della connessione Lightning. Questo processo richiede circa <accent>±10 minuti.</accent>",
   "setting_up_step1": "Elaborazione del pagamento",
   "setting_up_step2": "Pagamento Riuscito",
   "setting_up_step3": "In Coda Per l'Apertura",
@@ -64,11 +66,9 @@
   "awesome": "Fantastico!",
   "transfer_close": "Il trasferimento del tuo saldo di spesa al tuo saldo di risparmio richiede una commissione di rete. La tariffa esatta dipende dalle condizioni della rete.",
   "ts_savings_title": "Transferimento\n<accent>a Risparmi</accent>",
-  "ts_savings_text": "Trasferimento dei fondi dal tuo saldo di spesa ai tuoi risparmi. Potrai utilizzare questi fondi in <accent>±1 ora</accent>.",
   "interrupted_title": "Trasferimento Interrotto",
   "availability_title": "Disponibilità Fondi",
   "availability_header": "Disponibilità\n<accent>dei fondi</accent>",
-  "availability_text": "Il trasferimento di fondi al risparmio richiede solitamente\n<accent>±1 ora</accent>, ma il pagamento può richiedere <accent>14 days</accent> in determinate condizioni di rete.",
   "node_info": "Nodo Lightning",
   "node_id": "ID Nodo LDK",
   "node_disconnected": "disconnesso",
@@ -113,16 +113,14 @@
   "is_ready": "È pronto?",
   "support": "Supporto",
   "connection_closed": {
-    "title": "Connessione chiusa",
-    "description": "La tua connessione Lightning è stata chiusa correttamente. I tuoi fondi verranno trasferiti ai tuoi risparmi."
+    "title": "Connessione chiusa"
   },
   "close_conn": "Chiusura Connessione",
   "close_error": "Trasferimento non riuscito",
   "close_success_title": "Trasferimento avviato",
   "close_success_msg": "I tuoi fondi verranno trasferiti nuovamente ai tuoi risparmi.",
-  "close_text": "La commissione per chiudere questa connessione Lightning e trasferire nuovamente i fondi nei tuoi risparmi dipende dalle condizioni della rete.\nIl trasferimento di fondi al risparmio richiede solitamente <accent>±1 ora</accent>, ma il pagamento può richiedere <accent>14 days</accent> in determinate condizioni di rete.",
   "close_button": "Chiudi",
-  "force_title": "Trasferimento Forzato",
+  "force_nav_title": "Trasferimento Forzato",
   "force_text": "Non è stato possibile avviare il trasferimento. Vuoi forzare questo trasferimento? Non postrai utilizzare questi fondi per ±14 giorni (!)",
   "force_button": "Trasferimento Forzato",
   "force_init_title": "Trasferimento Forzato Avviato",

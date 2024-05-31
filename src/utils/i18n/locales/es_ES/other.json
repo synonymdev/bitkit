@@ -4,12 +4,13 @@
   "qr_scan": "Escanear código QR",
   "qr_error_network_header": "Red incorrecta",
   "qr_paste": "Pegar código QR",
-  "buy_button": "Comprar Bitcoin",
   "connection_restored_message": "Reconectado con éxito a Electrum.",
   "connection_back_msg": "Reconectado con éxito a Internet.",
-  "up_title": "Actualización Crítica",
-  "up_text": "Hay una actualización crítica disponible para Bitkit. Debe actualizar para seguir utilizando Bitkit.",
-  "up_button": "Actualizar Bitkit",
+  "high_balance": {
+    "continue": "Entendido"
+  },
+  "update_critical_nav_title": "Actualización Crítica",
+  "update_critical_button": "Actualizar Bitkit",
   "camera_ask_title": "Permiso para utilizar la cámara",
   "camera_ask_msg": "Bitkit necesita permiso para utilizar su cámara",
   "swipe": "Deslizar para confirmar",

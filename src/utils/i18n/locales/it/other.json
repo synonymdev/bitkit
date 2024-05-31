@@ -10,9 +10,7 @@
   "qr_error_network_header": "Rete Non Corretta",
   "qr_error_network_text": "Bitkit è attualmente impostato su {selectedNetwork} ma i dati sono per la {dataNetwork}.",
   "qr_paste": "Incolla il QR Code",
-  "buy_header": "Bitcoin\n<accent>per Bitkit</accent>",
   "buy_text": "Non hai Bitcoin o ne vuoi ancora di più?",
-  "buy_button": "Compra Bitcoin",
   "connection_restored_title": "Connessione Electrum ripristinata",
   "connection_restored_message": "Bitkit si è ricollegato con successo ad Electrum.",
   "connection_issue": "Problemi di connettività Internet",
@@ -21,9 +19,13 @@
   "connection_reconnect_msg": "Connessione con Electrum persa, tentativo di riconnessione...",
   "connection_back_title": "Connessione Internet ripristinata",
   "connection_back_msg": "Bitkit si è ricollegato correttamente a Internet.",
-  "up_title": "Aggiornamento Critico",
-  "up_text": "È disponibile un aggiornamento critico per Bitkit. Devi aggiornare per continuare a usare Bitkit.",
-  "up_button": "Aggiorna Bitkit",
+  "high_balance": {
+    "nav_title": "Saldo Elevato",
+    "continue": "Ho Capito",
+    "cancel": "Scopri di Più"
+  },
+  "update_critical_nav_title": "Aggiornamento Critico",
+  "update_critical_button": "Aggiorna Bitkit",
   "camera_ask_title": "Permesso di usare la fotocamera",
   "camera_ask_msg": "Bitkit ha bisogno del permesso per utilizzare la tua fotocamera",
   "camera_no_text": "<bold>Sembra che Bitkit non abbia l'autorizzazione per accedere alla tua fotocamera.</bold>\n\nPer utilizzare questa funzione in futuro dovrai abilitare le autorizzazioni della fotocamera per questa app dalle impostazioni del tuo telefono.",
@@ -74,11 +76,7 @@
   "bt_error_retrieve": "Trasferimento non riuscito",
   "bt_channel_purchase_cost_error": "Ha bisogno di {delta} aggiuntivi per completare questa transazione.",
   "earlier": "ANTEPRIMA",
-  "update_title": "Aggiornamento Disponibile",
+  "update_nav_title": "Aggiornamento Disponibile",
   "update_text": "Aggiorna Bitkit all'ultima versione per le nuove funzioni e la correzione dei bug!",
-  "update_button": "Aggiornamento",
-  "high_title": "Saldo Elevato",
-  "high_text1": "Saldo del wallet in eccesso",
-  "high_text2": "Per la tua sicurezza, valuta la possibilità di spostare presto parte dei tuoi risparmi su un portafoglio offline.",
-  "high_button_more": "Scopri di Più"
+  "update_button": "Aggiornamento"
 }
