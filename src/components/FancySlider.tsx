@@ -327,6 +327,7 @@ const styles = StyleSheet.create({
 	root: {
 		height: CIRCLE_SIZE,
 		flexDirection: 'row',
+		zIndex: 10, // To make sure slider is always on top
 	},
 	container: {
 		flexDirection: 'row',
