@@ -50,12 +50,11 @@ const QuickConfirm = ({
 	const isTransferToSavings = spendingAmount < lightningBalance;
 	const txFee = fiatTransactionFee.fiatValue;
 	const lspFee = purchaseFeeValue.fiatValue - clientBalance.fiatValue;
+	const totalBalance = onchainBalance + lightningBalance;
+	const savingsAmount = totalBalance - spendingAmount;
 
-	const savingsAmount = onchainBalance - spendingAmount;
-	const spendingPercentage =
-		Math.round((spendingAmount / onchainBalance) * 100) || 0;
-	const savingsPercentage =
-		Math.round((savingsAmount / onchainBalance) * 100) || 0;
+	const spendingPercentage = Math.round((spendingAmount / totalBalance) * 100);
+	const savingsPercentage = Math.round((savingsAmount / totalBalance) * 100);
 
 	const handleConfirm = async (): Promise<void> => {
 		setLoading(true);
