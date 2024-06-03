@@ -169,11 +169,11 @@
 	"details_spending_title": "Spending",
 	"savings": {
 		"title": "Savings",
-		"onboarding": "<accent>Send\nbitcoin</accent>\nto your\nsavings balance."
+		"onboarding": "<accent>Send\nbitcoin</accent>\nto your\nsavings balance"
 	},
 	"spending": {
 		"title": "Spending",
-		"onboarding": "<accent>Send\nbitcoin</accent>\nto your\nspending balance."
+		"onboarding": "<accent>Send\nbitcoin</accent>\nto your\nspending balance"
 	},
 	"details_transfer_subtitle": "Incoming Transfer",
 	"tx_invalid": "Transaction Invalid",

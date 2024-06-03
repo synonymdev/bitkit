@@ -12,7 +12,7 @@
 	"qr_paste": "Paste QR Code",
 	"buy_header": "Buy some\n<accent>Bitcoin</accent>",
 	"buy_text": "Don’t have any Bitcoin or need more?",
-	"buy_button": "Choose exchange",
+	"buy_button": "Choose Exchange",
 	"error_keychain": "Data Connection Issue",
 	"error_keychain_msg": "An error occured: Could not load primaryKey.",
 	"connection_restored_title": "Electrum Connection Restored",
