@@ -26,7 +26,7 @@ const Address = ({}: SendScreenProps<'Address'>): ReactElement => {
 	const { t } = useTranslation('wallet');
 	const { keyboardShown } = useKeyboard();
 	const [textFieldValue, setTextFieldValue] = useState('');
-	const [isValid, setIsValid] = useState(false);
+	const [isValid, setIsValid] = useState({});
 	const selectedWallet = useAppSelector(selectedWalletSelector);
 	const selectedNetwork = useAppSelector(selectedNetworkSelector);
 
@@ -41,11 +41,8 @@ const Address = ({}: SendScreenProps<'Address'>): ReactElement => {
 			source: 'send',
 			showErrors: hasPasted,
 		});
-		if (result.isErr()) {
-			setIsValid(false);
-		} else {
-			setIsValid(true);
-		}
+
+		setIsValid((s) => ({ ...s, [text]: !result.isErr() }));
 	};
 
 	const onContinue = async (): Promise<void> => {
@@ -90,7 +87,7 @@ const Address = ({}: SendScreenProps<'Address'>): ReactElement => {
 					<Button
 						text={t('continue')}
 						size="large"
-						disabled={!isValid}
+						disabled={!isValid[textFieldValue]}
 						testID="AddressContinue"
 						onPress={onContinue}
 					/>
