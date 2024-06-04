@@ -32,9 +32,14 @@ const rocketSize = 256;
 Animated.addWhitelistedNativeProps({ text: true });
 const AnimatedText = Animated.createAnimatedComponent(TextInput);
 
-const LoadingWalletScreen = (): ReactElement => {
+const LoadingWalletScreen = ({
+	isRestoring = false,
+}: {
+	isRestoring?: boolean;
+}): ReactElement => {
 	const { t } = useTranslation('onboarding');
 	const { width } = useWindowDimensions();
+	const animationDuration = isRestoring ? 16000 : 1500;
 
 	const progressValue = useSharedValue(0);
 	const progressText = useDerivedValue(() => {
@@ -46,7 +51,7 @@ const LoadingWalletScreen = (): ReactElement => {
 
 	useEffect(() => {
 		progressValue.value = withTiming(100, {
-			duration: 4000,
+			duration: animationDuration,
 			easing: Easing.linear,
 		});
 		// eslint-disable-next-line react-hooks/exhaustive-deps

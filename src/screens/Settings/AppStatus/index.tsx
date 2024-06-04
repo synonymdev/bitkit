@@ -105,13 +105,16 @@ const AppStatus = ({}: SettingsScreenProps<'AppStatus'>): ReactElement => {
 			return 'pending';
 		}
 		return isConnectedToElectrum ? 'ready' : 'error';
-	}, [isConnectedToElectrum, isElectrumThrottled, isOnline]);
+	}, [isOnline, isConnectedToElectrum, isElectrumThrottled]);
 
 	const lightningNodeState: TItemState = useMemo(() => {
-		return isLDKReady ? 'ready' : 'error';
-	}, [isLDKReady]);
+		return isOnline && isLDKReady ? 'ready' : 'error';
+	}, [isOnline, isLDKReady]);
 
 	const lightningConnectionState: TItemState = useMemo(() => {
+		if (!isOnline) {
+			return 'error';
+		}
 		if (openChannels.length > 0) {
 			return 'ready';
 		} else if (
@@ -121,7 +124,12 @@ const AppStatus = ({}: SettingsScreenProps<'AppStatus'>): ReactElement => {
 			return 'pending';
 		}
 		return 'error';
-	}, [openChannels, pendingChannels, paidOrders]);
+	}, [
+		isOnline,
+		openChannels.length,
+		pendingChannels.length,
+		paidOrders.created,
+	]);
 
 	// Keep checking backup status
 	useEffect(() => {
