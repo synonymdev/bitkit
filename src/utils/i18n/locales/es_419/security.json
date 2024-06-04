@@ -9,6 +9,8 @@
   "pass_confirm_text": "Introduzca la frase de acesso que añadió al configurar y crear su monedero.",
   "mnemonic_phrase": "Frase mnemotécnica",
   "mnemonic_your": "Su frase de recuperación",
+  "mnemonic_error": "Falla de la billetera",
+  "mnemonic_error_description": "BitKit no podría leer tu frase de recuperación",
   "mnemonic_write": "Anote estas palabras {longitud} en el orden correcto y guárdelas en un lugar seguro.",
   "mnemonic_use": "Utilice las 12 palabras siguientes para recuperar su dinero más adelante.",
   "mnemonic_reveal": "Toque para revelar",

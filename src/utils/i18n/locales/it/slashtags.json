@@ -31,6 +31,7 @@
   "onboarding_text": "Ricevi aggiornamenti automatici dai tuoi contatti Bitkit, pagali e segui i loro profili pubblici.",
   "onboarding_button": "Aggiungi il primo contatto",
   "onboarding_profile1_header": "Possiedi il tuo\n<accent>profilo</accent>",
+  "onboarding_profile1_text": "Configura il tuo profilo pubblico e i tuoi collegamenti, in modo che i tuoi contatti Bitkit possano raggiungerti o pagarti sempre e ovunque.",
   "onboarding_profile2_header": "Paga <accent>Bitkit\ncontatti</accent>",
   "onboarding_profile2_text": "Tu e i tuoi contatti potete usare BitKit per inviarvi pagamenti direttamente, senza banche, sempre, ovunque.",
   "onboarding_widgets_header": "Ciao,\n<accent>Widgets</accent>",
@@ -78,7 +79,7 @@
   "error_saving_contact": "Impossibile salvare il profilo",
   "error_saving_profile": "Impossibile salvare il profilo",
   "error_pay_title": "Impossibile pagare questo contatto",
-  "error_pay_empty_msg": "Non sono disponibili dati di pagamento per questo contatto.",
+  "error_pay_empty_msg": "Questo contatto non ha dati di pagamento.",
   "auth_depricated_title": "Deprecato",
   "auth_depricated_msg": "Slashauth è deprecato. Si prega di utilizzare Bitkit Beta."
 }

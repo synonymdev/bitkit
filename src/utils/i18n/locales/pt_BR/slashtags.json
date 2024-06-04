@@ -70,6 +70,5 @@
   "widget_delete_desc": "Tem certeza de que deseja excluir '{name}' dos seus widgets?",
   "error_saving_contact": "Não é possível salvar o contato.",
   "error_saving_profile": "Não foi possível salvar o perfil.",
-  "error_pay_title": "Não foi Possível Pagar Contato",
-  "error_pay_empty_msg": "Não há dados de pagamento disponíveis para este contato."
+  "error_pay_title": "Não foi Possível Pagar Contato"
 }

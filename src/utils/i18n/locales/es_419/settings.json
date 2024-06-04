@@ -21,6 +21,9 @@
     "currency_most_used": "Más utilizados",
     "currency_other": "Otras monedas",
     "unit_bitcoin": "Bitcoin",
+    "denomination_label": "Bitcoin denominación",
+    "denomination_modern": "Moderno (₿ 10 000)",
+    "denomination_classic": "Clásico (₿ 0.00010000)",
     "speed": "Velocidad de transacción",
     "speed_title": "Velocidad de la transacción",
     "speed_default": "Velocidad de transacción predeterminada",
@@ -49,6 +52,7 @@
     "failed_title": "Falla en la copia de seguridad de los datos",
     "status_failed": "Copia de seguridad falló: {time}",
     "status_success": "Última Copia de Seguridad: {time}",
+    "category_connections": "Conexiones",
     "category_transaction_log": "Registro de transacciones",
     "category_settings": "Ajustes",
     "category_widgets": "Widgets",
@@ -63,8 +67,18 @@
     "text_unsuccess_button": "Inténtelo de nuevo"
   },
   "status": {
+    "internet": {
+      "ready": "Conectado"
+    },
+    "bitcoin_node": {
+      "ready": "Conectado"
+    },
     "lightning_node": {
       "title": "Nodo Lightning"
+    },
+    "lightning_connection": {
+      "ready": "Abierta",
+      "pending": "Abriendo..."
     }
   },
   "adv": {

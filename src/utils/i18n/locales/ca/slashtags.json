@@ -69,6 +69,5 @@
   "widget_delete_desc": "Estàs segur que vols eliminar '{name}' dels teus ginys?",
   "error_saving_contact": "No s'ha pogut desar el contacte.",
   "error_saving_profile": "No es pot desar el perfil",
-  "error_pay_title": "No s'ha pogut pagar el contacte.",
-  "error_pay_empty_msg": "No hi ha dades de pagament disponibles per a aquest contacte."
+  "error_pay_title": "No s'ha pogut pagar el contacte."
 }

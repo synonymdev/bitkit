@@ -78,7 +78,6 @@
   "error_saving_contact": "Не удалось сохранить контакт",
   "error_saving_profile": "Не удалось сохранить профиль",
   "error_pay_title": "Невозможно Заплатить Контакту",
-  "error_pay_empty_msg": "Нет доступных данных для оплаты этого контакта.",
   "auth_depricated_title": "Устарело",
   "auth_depricated_msg": "Slashauth устарел. Пожалуйста, используйте Bitkit Beta."
 }

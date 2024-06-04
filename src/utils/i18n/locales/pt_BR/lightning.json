@@ -75,6 +75,7 @@
   "support": "Suporte",
   "close_conn": "Fechar Conexão",
   "close_error": "A Transferência Falhou",
+  "close_error_msg": "Não foi possível transferir seus fundos de volta para sua poupança. Por favor, tente novamente.",
   "close_button": "Fechar",
   "force_nav_title": "Forçar Transferência",
   "force_text": "Não foi possível iniciar a transferência. Deseja forçar essa transferência? Vocè não poderá usar esses fundos por ±14 dias (!)",

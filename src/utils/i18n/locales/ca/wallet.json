@@ -34,7 +34,6 @@
   "send_error_slash_ln": "Desafortunadament, el contacte no es pot pagar instantàniament. Podeu provar un pagament regular (més car, més lent).",
   "send_error_tx_failed": "Transacció fallida",
   "send_error_contact": "Incapaç de pagar a aquest contacte",
-  "send_error_create_tx": "Error creant la transacció",
   "tag_remove_error_title": "Eliminar l'etiqueta ha fallat",
   "tag_remove_error_description": "Bitkit no ha pogut trobar les dades de la transacció.",
   "error_no_invoice": "No s'ha trobat cap factura lightning.",

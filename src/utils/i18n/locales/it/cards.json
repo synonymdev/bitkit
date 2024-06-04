@@ -16,10 +16,12 @@
     "description": "Condividi Bitkit"
   },
   "lightning": {
-    "title": "Spendi"
+    "title": "Spendi",
+    "description": "Pagamenti istantanei"
   },
   "lightningSettingUp": {
-    "title": "Trasferisci"
+    "title": "Trasferisci",
+    "description": "In corso..."
   },
   "lightningConnecting": {
     "title": "Collegamento",
@@ -30,7 +32,8 @@
     "description": "Connesso!"
   },
   "transferPending": {
-    "title": "Trasferisci"
+    "title": "Trasferisci",
+    "description": "Pronto in ±{duration}"
   },
   "transferClosingChannel": {
     "title": "Inizializzazione...",

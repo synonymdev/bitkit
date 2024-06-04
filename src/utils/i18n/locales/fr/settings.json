@@ -119,6 +119,18 @@
       "ready": "Synchronisé",
       "pending": "Synchronisation...",
       "error": "Impossible d'initier"
+    },
+    "lightning_connection": {
+      "title": "Connexion Lightning",
+      "ready": "Ouvrir",
+      "pending": "Ouverture...",
+      "error": "Pas de connexions ouvertes"
+    },
+    "full_backup": {
+      "title": "Dernière sauvegarde complète",
+      "ready": "Sauvegardé",
+      "pending": "Sauvegarde...",
+      "error": "Échec de la sauvegarde"
     }
   },
   "adv": {
@@ -126,12 +138,21 @@
     "section_networks": "Réseaux",
     "section_other": "Autre",
     "address_type": "Type d'adresse Bitcoin",
+    "monitored_address_types": "Types d'adresses suivies",
+    "monitored_address_types_update_title": "Mise à jour des types d'adresses suivies",
+    "monitored_address_types_update_description": "Les modifications prendront effet après le redémarrage de l'application.",
+    "gap_limit": "Limite de l'écart d'adresse",
     "coin_selection": "Sélection des UTXOs",
     "cs_method": "Méthode de sélection des UTXOs",
     "cs_manual": "Manuel",
     "cs_auto": "Pilote automatique",
     "cs_auto_mode": "Mode Autopilote",
+    "cs_max": "Plus privé",
+    "cs_max_description": "Triez par et utilisez le plus petit UTXO en premier. Frais plus élevés, mais cache vos plus grands UTXO.",
+    "cs_min": "Frais les plus bas",
+    "cs_min_description": "Triez par et utilisez le plus grand UTXO en premier. Les frais sont plus bas, mais ils révèlent vos plus grands UTXO.",
     "cs_consolidate": "Consolider",
+    "cs_consolidate_description": "Utilisez toutes les UTXO disponibles, quel que soit le montant envoyé. Utilisez cette méthode lorsque les frais sont peu élevés afin de réduire les frais lors de transactions futures.",
     "payment_preference": "Préférence de paiement",
     "pp_header": "Choisissez comment vous préférez recevoir de l'argent lorsque les utilisateurs envoient des fonds via votre profil.",
     "pp_footer": "* Cela nécessite le partage des données de paiement.",
@@ -147,6 +168,8 @@
     "lightning_connections": "Connexions Lightning",
     "lightning_node": "Nœud Lightning",
     "electrum_server": "Serveur Electrum",
+    "rgs_server": "Rapid-Gossip-Sync",
+    "web_relay": "Slashtags Web Relay",
     "bitcoin_network": "Réseau Bitcoin"
   },
   "fee": {
@@ -178,6 +201,9 @@
     "no_funds_change": "Aucun fonds n'a été trouvé sous le type d'adresse {addressType}, changez d'adresse jusqu'à l'index {index}.",
     "no_addrs_with_funds": "Aucune adresse avec fonds n'a été trouvée lors de la recherche de \"{searchTxt}\"",
     "no_addrs_str": "Aucune adresse trouvée lors de la recherche de \"{searchTxt}\"",
+    "rescan_error": "Échec de la réanalyse",
+    "rescan_error_description": "Bitkit n'a pas été en mesure de vérifier le solde des adresses.",
+    "spend_number": "{count, plural, one {Spend ₿ {fundsToSpend} From # address} many {Spend ₿ {fundsToSpend} From # addresses} other {Spend ₿ {fundsToSpend} From # addresses}}",
     "spend_all": "{count, plural, one {Dépenser tous les fonds de l'adresse #.} many {Dépenser tous les fonds des adresses #.} other {Dépenser tous les fonds des adresses #.}}",
     "index": "Index : {index}",
     "path": "Chemin: {path}",
@@ -186,6 +212,7 @@
     "private_key": "Clé privée : {privateKey}",
     "addr_change": "Changement d'adresse",
     "addr_receiving": "Adresses de réception",
+    "sats_found": "₿ {totalBalance} trouvé",
     "gen_20": "Générez 20 autres",
     "check_balances": "Soldes de chèques",
     "copied": "Copié dans le presse-papiers"
@@ -194,8 +221,13 @@
     "error_host_port": "Veuillez indiquer un hôte et un port pour vous connecter.",
     "error_host": "Veuillez indiquer un hôte auquel vous connecter.",
     "error_port": "Veuillez indiquer un port auquel vous connecter.",
+    "error_port_invalid": "Veuillez indiquer un port valide.",
+    "error_invalid_http": "Veuillez indiquer une adresse URL valide.",
+    "error_peer": "Erreur d'électrum",
     "server_updated_title": "Mise à jour du serveur Electrum",
     "server_updated_message": "Connexion réussie à {host}:{port}",
+    "server_error": "Échec de la connexion d'Electrum",
+    "server_error_description": "Bitkit n'a pas pu établir de connexion avec Electrum.",
     "connected_to": "Actuellement connecté à",
     "disconnected": "déconnecté",
     "host": "Hôte",
@@ -206,9 +238,22 @@
   },
   "gap": {
     "save": "Enregistrer",
-    "reset": "Réinitialiser"
+    "reset": "Réinitialiser",
+    "gap_limit_update_title": "Limite de l'écart d'adressage Mise à jour",
+    "gap_limit_update_description": "Les modifications prendront effet après le redémarrage de l'application."
   },
   "rgs": {
-    "button_connect": "Connecter"
+    "server_url": "URL du serveur Rapid-Gossip-Sync",
+    "button_connect": "Connecter",
+    "update_success_title": "Mise à jour du serveur Rapid-Gossip-Sync",
+    "update_success_description": "Il se peut que vous deviez redémarrer l'application une ou deux fois pour que cette modification prenne effet."
+  },
+  "wr": {
+    "error_wr": "Erreur Web Relay",
+    "error_url": "Veuillez indiquer une URL à laquelle vous connecter.",
+    "error_https": "L'url HTTPS n'est pas valide.",
+    "error_healthcheck": "Échec du contrôle",
+    "url_updated_title": "Mise à jour du Web Relay",
+    "url_updated_message": "Connexion réussie à {url}"
   }
 }

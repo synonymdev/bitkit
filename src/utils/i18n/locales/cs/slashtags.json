@@ -79,7 +79,7 @@
   "error_saving_contact": "Nelze uložit kontakt",
   "error_saving_profile": "Nelze uložit profil",
   "error_pay_title": "Není možné zaplatit kontaktu",
-  "error_pay_empty_msg": "Pro tento kontakt nejsou k dispozici žádné údaje o platbách.",
+  "error_pay_empty_msg": "Tento kontakt nemá žádné platební údaje.",
   "auth_depricated_title": "Nedoporučený",
   "auth_depricated_msg": "Slashauth je zastaralý. Používejte prosím Bitkit Beta."
 }
