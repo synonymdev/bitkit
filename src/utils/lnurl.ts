@@ -191,7 +191,9 @@ export const handleLnurlChannel = async ({
 		showToast({
 			type: 'warning',
 			title: i18n.t('other:lnurl_channel_error'),
-			description: `An error occurred: ${callbackRes.error.message}`,
+			description: i18n.t('other:lnurl_channel_error', {
+				raw: callbackRes.error.message,
+			}),
 		});
 		return err(callbackRes.error.message);
 	}
@@ -259,7 +261,9 @@ export const handleLnurlAuth = async ({
 		showToast({
 			type: 'warning',
 			title: i18n.t('other:lnurl_auth_error'),
-			description: `An error occurred: ${authRes.error.message}`,
+			description: i18n.t('other:lnurl_auth_error_msg', {
+				raw: authRes.error.message,
+			}),
 		});
 		return err(authRes.error.message);
 	}

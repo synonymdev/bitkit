@@ -78,7 +78,7 @@ const Error = ({
 			showToast({
 				type: 'warning',
 				title: t('send_error_contact'),
-				description: res.error.message,
+				description: t('other:try_again'),
 			});
 
 			return;

@@ -5,10 +5,13 @@
   "qr_error_network_header": "Red incorrecta",
   "qr_error_network_text": "Bitkit está actualmente configurado para {selectedNetwork} pero los datos son para {dataNetwork}.",
   "qr_paste": "Pegar código QR",
-  "buy_button": "Comprar Bitcoin",
-  "up_title": "Actualización Crítica",
-  "up_text": "Hay una actualización crítica disponible para Bitkit. Debe actualizar para seguir utilizando Bitkit.",
-  "up_button": "Actualizar Bitkit",
+  "high_balance": {
+    "nav_title": "Saldo Elevado",
+    "continue": "Comprendido",
+    "cancel": "Más informaciónes"
+  },
+  "update_critical_nav_title": "Actualización Crítica",
+  "update_critical_button": "Actualizar Bitkit",
   "camera_ask_title": "Permiso para utilizar la cámara",
   "camera_ask_msg": "Bitkit necesita permiso para utilizar su cámara",
   "clipboard_redirect_title": "Datos del portapapeles detectados",
@@ -24,8 +27,6 @@
   "lnurl_withdr_success_title": "Retirada solicitada",
   "bt_channel_purchase_cost_error": "Necesitas {delta} más para completar esta transacción.",
   "earlier": "MÁS RÁPIDO",
-  "update_title": "Actualización Disponible",
-  "update_text": "¡Por favor, actualice Bitkit a la última versión para obtener nuevas características y correcciones de errores!",
-  "high_title": "Saldo Elevado",
-  "high_button_more": "Más informaciónes"
+  "update_nav_title": "Actualización Disponible",
+  "update_text": "¡Por favor, actualice Bitkit a la última versión para obtener nuevas características y correcciones de errores!"
 }

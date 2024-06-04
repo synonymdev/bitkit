@@ -13,6 +13,7 @@ import { seedHashSelector } from '../store/reselect/wallet';
 import { showToast } from '../utils/notifications';
 import { useAppSelector } from '../hooks/redux';
 import { webRelaySelector } from '../store/reselect/settings';
+import i18n from '../utils/i18n';
 
 class Store {
 	location: string;
@@ -128,9 +129,8 @@ export const SlashtagsProvider = ({
 			) {
 				showToast({
 					type: 'warning',
-					title: 'Data Connection Issue',
-					description:
-						'An error occurred: Could not load primary key from keychain.',
+					title: i18n.t('other:error_keychain'),
+					description: i18n.t('other:error_keychain_msg'),
 				});
 				return;
 			}

@@ -6,10 +6,7 @@
     "description": "Bestedingssaldo"
   },
   "lightningSettingUp": {
-    "title": "Overboeken",
-    "description1": "Betaald",
-    "description2": "In de wacht",
-    "description3": "Wordt geopened"
+    "title": "Overboeken"
   },
   "lightningConnecting": {
     "title": "Verbinding aan het maken",

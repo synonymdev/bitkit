@@ -78,7 +78,7 @@ const HeadlinesWidget = ({
 				showToast({
 					type: 'warning',
 					title: t('widget_error_drive'),
-					description: `An error occurred: ${error.message}`,
+					description: t('other:try_again'),
 				});
 			}
 		};

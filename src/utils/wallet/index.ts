@@ -226,11 +226,10 @@ const handleRefreshError = (msg): void => {
 		});
 		dispatch(updateUi({ isElectrumThrottled: true }));
 	} else {
-		// If the error is not due to the batch limit, show a toast with the error message.
 		showToast({
 			type: 'warning',
 			title: i18n.t('wallet:refresh_error_title'),
-			description: msg,
+			description: i18n.t('wallet:refresh_error_msg'),
 		});
 	}
 };
@@ -879,14 +878,17 @@ export const createDefaultWallet = async ({
 
 		const wallets = getWalletStore().wallets;
 		if (walletName in wallets && wallets[walletName]?.id) {
-			return err(`Wallet "${walletName}" already exists.`);
+			const msg = i18n.t('wallet:create_wallet_existing_error', { walletName });
+			console.error(msg);
+			return err(msg);
 		}
 		if (!validateMnemonic(mnemonic)) {
+			let msg = i18n.t('wallet:create_wallet_mnemonic_error');
 			if (restore) {
-				return err(i18n.t('wallet:create_wallet_mnemonic_restore_error'));
-			} else {
-				return err(i18n.t('wallet:create_wallet_mnemonic_error'));
+				msg = i18n.t('wallet:create_wallet_mnemonic_restore_error');
 			}
+			console.error(msg);
+			return err(msg);
 		}
 		await setKeychainValue({ key: walletName, value: mnemonic });
 		await setKeychainValue({
@@ -1627,6 +1629,7 @@ export const switchNetwork = async (
 	);
 	if (response.isErr()) {
 		updateWallet({ selectedNetwork: originalNetwork });
+		console.error(response.error.message);
 		return err(response.error.message);
 	}
 	wallet = response.value;

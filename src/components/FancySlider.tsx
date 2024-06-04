@@ -179,6 +179,7 @@ const FancySlider = ({
 							active.current = false;
 							handlePanEnd();
 						});
+						return;
 					}
 
 					if (pan.x._value < snapPointX && pan.x._value >= snapPointX * 0.65) {
@@ -191,8 +192,8 @@ const FancySlider = ({
 							active.current = false;
 							handlePanEnd();
 						});
+						return;
 					}
-					return;
 				}
 
 				active.current = false;
@@ -326,6 +327,7 @@ const styles = StyleSheet.create({
 	root: {
 		height: CIRCLE_SIZE,
 		flexDirection: 'row',
+		zIndex: 10, // To make sure slider is always on top
 	},
 	container: {
 		flexDirection: 'row',

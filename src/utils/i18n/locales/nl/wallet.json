@@ -27,7 +27,6 @@
   "send_error_slash_ln": "Helaas kon het contact niet direct worden betaald. U kunt proberen een normale betaling te doen (deze is langzamer en duurder). ",
   "send_error_tx_failed": "Transactie Mislukt",
   "send_error_contact": "Contactpersoon kan niet betaald worden",
-  "send_error_create_tx": "Fout opgetreden met het aanmaken van de transactie",
   "error_no_invoice": "Geen lightning factuur gedetecteerd",
   "error_no_tx_title": "Geen transactie beschikbaar om te verzenden",
   "error_no_tx_msg": "Controleer de transactiegevens en probeer het nogmaals.",

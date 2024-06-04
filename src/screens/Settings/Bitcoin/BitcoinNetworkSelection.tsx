@@ -35,7 +35,7 @@ const BitcoinNetworkSelection = ({
 								showToast({
 									type: 'error',
 									title: 'Error Switching Networks',
-									description: switchNetworkRes.error.message,
+									description: 'Please try again.',
 								});
 								return;
 							}

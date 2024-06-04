@@ -25,6 +25,7 @@ import { EAvailableNetwork } from '../networks';
 import { TWalletName } from '../../store/types/wallet';
 import { runChecks } from '../wallet/checks';
 import { setupLedger, syncLedger } from '../ledger';
+import i18n from '../i18n';
 
 /**
  * Creates a new wallet from scratch
@@ -41,7 +42,7 @@ export const createNewWallet = async ({
 	}
 	const createRes = await createWallet({ mnemonic, bip39Passphrase });
 	if (createRes.isErr()) {
-		return err(createRes.error.message);
+		return err(i18n.t('wallet:create_wallet_error'));
 	}
 	return ok('Wallet created');
 };

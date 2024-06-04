@@ -62,7 +62,7 @@ export const saveProfile = async (
 		showToast({
 			type: 'warning',
 			title: i18n.t('slashtags:error_saving_contact'),
-			description: `An error occurred: ${e.message}`,
+			description: i18n.t('other:try_again'),
 		});
 		return err(e);
 	}

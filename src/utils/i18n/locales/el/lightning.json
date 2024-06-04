@@ -1,3 +1,6 @@
 {
+  "transfer_failed": {
+    "continue": "Προσπαθείστε Ξανά"
+  },
   "close_button": "Κλείσιμο"
 }

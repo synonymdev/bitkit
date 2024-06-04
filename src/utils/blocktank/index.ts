@@ -24,6 +24,7 @@ import { updateUser } from '../../store/slices/user';
 import { setGeoBlock } from '../../store/utils/user';
 import { refreshWallet } from '../wallet';
 import { __BLOCKTANK_HOST__ } from '../../constants/env';
+import i18n from '../i18n';
 
 const bt = new BlocktankClient();
 
@@ -86,7 +87,7 @@ export const createOrder = async ({
 		// Ensure we're properly connected to the Blocktank node prior to buying a channel.
 		const addPeersRes = await addPeers();
 		if (addPeersRes.isErr()) {
-			return err('Unable to add Blocktank node as a peer at this time.');
+			return err(i18n.t('other:bt_error_connect'));
 		}
 		const buyRes = await bt.createOrder(lspBalance, channelExpiryWeeks, {
 			...options,
@@ -156,7 +157,7 @@ export const createCJitEntry = async ({
 		// Ensure we're properly connected to the Blocktank node prior to buying a channel.
 		const addPeersRes = await addPeers();
 		if (addPeersRes.isErr()) {
-			return err('Unable to add Blocktank node as a peer at this time.');
+			return err(i18n.t('other:bt_error_connect'));
 		}
 
 		const createRes = await bt.createCJitEntry(
@@ -171,7 +172,7 @@ export const createCJitEntry = async ({
 		return ok(createRes);
 	} catch (e) {
 		console.log(e);
-		return err(e);
+		return err(i18n.t('wallet:receive_cjit_error_msg', { raw: e }));
 	}
 };
 

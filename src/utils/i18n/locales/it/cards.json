@@ -17,14 +17,11 @@
   },
   "lightning": {
     "title": "Spendi",
-    "description": "Bilancia i tuoi fondi"
+    "description": "Pagamenti istantanei"
   },
   "lightningSettingUp": {
     "title": "Trasferisci",
-    "description0": "Elaborazione del pagamento",
-    "description1": "Pagato",
-    "description2": "In coda",
-    "description3": "Apertura"
+    "description": "In corso..."
   },
   "lightningConnecting": {
     "title": "Collegamento",
@@ -35,7 +32,8 @@
     "description": "Connesso!"
   },
   "transferPending": {
-    "title": "Trasferisci"
+    "title": "Trasferisci",
+    "description": "Pronto in ±{duration}"
   },
   "transferClosingChannel": {
     "title": "Inizializzazione...",

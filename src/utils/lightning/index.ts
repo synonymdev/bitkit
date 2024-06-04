@@ -414,12 +414,9 @@ export const handleLightningPaymentSubscription = async ({
 		timestamp: new Date().getTime(),
 	};
 
-	if (message !== 'Orange Ticket') {
-		vibrate({ type: 'default' });
-		showBottomSheet('newTxPrompt', { activityItem });
-		dispatch(closeSheet('receiveNavigation'));
-	}
-
+	vibrate({ type: 'default' });
+	showBottomSheet('newTxPrompt', { activityItem });
+	dispatch(closeSheet('receiveNavigation'));
 	dispatch(addActivityItem(activityItem));
 
 	await refreshLdk({ selectedWallet, selectedNetwork });
@@ -661,7 +658,7 @@ export const refreshLdk = async ({
 			showToast({
 				type: 'error',
 				title: i18n.t('wallet:ldk_sync_error_title'),
-				description: syncResult.error.message,
+				description: i18n.t('other:try_again'),
 			});
 			return handleRefreshError(syncResult.error.message);
 		}
@@ -1034,11 +1031,11 @@ export const parseUri = (
 	const uri = str.split('@');
 	const publicKey = uri[0];
 	if (uri.length !== 2) {
-		return err('The URI appears to be invalid.');
+		return err(i18n.t('lightning:error_add_uri'));
 	}
 	const parsed = uri[1].split(':');
 	if (parsed.length < 2) {
-		return err('The URI appears to be invalid.');
+		return err(i18n.t('lightning:error_add_uri'));
 	}
 	const ip = parsed[0];
 	const port = Number(parsed[1]);
@@ -1065,12 +1062,21 @@ export const addPeer = async ({
 	if (parsedUri.isErr()) {
 		return err(parsedUri.error.message);
 	}
-	return await lm.addPeer({
+
+	const res = await lm.addPeer({
 		pubKey: parsedUri.value.publicKey,
 		address: parsedUri.value.ip,
 		port: parsedUri.value.port,
 		timeout,
 	});
+
+	if (res.isErr()) {
+		res.error.message = i18n.t('lightning:error_add_msg', {
+			raw: res.error.message,
+		});
+	}
+
+	return res;
 };
 
 /**
@@ -1163,8 +1169,9 @@ export const getLightningNodePeers = async ({
 		// No need to add Blocktank peer if geo-blocked.
 		if (!geoBlocked) {
 			// Set Blocktank node uri array if able.
-			blocktankNodeUris =
-				getBlocktankStore()?.info?.nodes[0].connectionStrings ?? [];
+			for (const node of getBlocktankStore().info.nodes) {
+				blocktankNodeUris.push(...node.connectionStrings);
+			}
 			if (!blocktankNodeUris.length) {
 				// Fall back to hardcoded Blocktank peer if the blocktankNodeUris array is empty.
 				blocktankNodeUris = FALLBACK_BLOCKTANK_PEERS[selectedNetwork];
@@ -1534,14 +1541,14 @@ export const removeUnusedPeers = async ({
 		(channel) => channel.counterparty_node_id,
 	);
 	const blocktankInfo = await getBlocktankInfo(true);
-	const blocktankPubKey = blocktankInfo.nodes[0].pubkey;
+	const blocktankPubKeys = blocktankInfo.nodes.map((n) => n.pubkey);
 	const peers = await lm.getPeers();
 
 	await Promise.all(
 		peers.map((peer) => {
 			if (
 				!channelNodeIds.includes(peer.pubKey) && // If no channels exist for a given peer, remove them.
-				peer.pubKey !== blocktankPubKey // Ensure we don't disconnect from Blocktank if it was previously added as a peer.
+				!blocktankPubKeys.includes(peer.pubKey) // Ensure we don't disconnect from Blocktank if it was previously added as a peer.
 			) {
 				const peerStr = `${peer.pubKey}@${peer.address}:${peer.port}`;
 				// Remove peer from local storage.

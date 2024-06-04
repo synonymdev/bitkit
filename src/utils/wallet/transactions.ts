@@ -153,7 +153,9 @@ export const createTransaction = async ({
 			showToast({
 				type: 'warning',
 				title: i18n.t('wallet:error_create_tx'),
-				description: createTxRes.error.message,
+				description: i18n.t('wallet:error_create_tx_msg', {
+					raw: createTxRes.error.message,
+				}),
 			});
 			return err(createTxRes.error.message);
 		}

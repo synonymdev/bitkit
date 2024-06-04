@@ -1,15 +1,25 @@
 {
   "backupSeedPhrase": {
-    "title": "Cópia de seguridad"
+    "title": "Cópia de seguridad",
+    "description": "Almacena tu Bitcoin"
   },
   "discount": {
+    "title": "Descuento",
     "description": "Saldo de gastos"
+  },
+  "fastpay": {
+    "description": "Escanear y pagar"
+  },
+  "invite": {
+    "title": "Invitar",
+    "description": "Compatir BitKit"
+  },
+  "lightning": {
+    "title": "Gastar"
   },
   "lightningSettingUp": {
     "title": "Transferir",
-    "description1": "Pagado",
-    "description2": "En cola",
-    "description3": "Apertura"
+    "description": "En curso"
   },
   "lightningConnecting": {
     "title": "Conectandose",
@@ -35,6 +45,14 @@
   },
   "support": {
     "title": "Soporte"
+  },
+  "buyBitcoin": {
+    "title": "Comprar",
+    "description": "Comprar Bitcoin"
+  },
+  "btFailed": {
+    "title": "Fallido",
+    "description": "Inténtalo de nuevo"
   },
   "suggestions": "Sugerencias"
 }

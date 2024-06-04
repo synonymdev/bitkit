@@ -182,8 +182,8 @@ const ReviewAndSend = ({
 
 	const createLightningTransaction = useCallback(async () => {
 		if (!transaction.lightningInvoice || !decodedInvoice) {
-			onError(`${t('send_error_create_tx')}. ${t('error_no_invoice')}`);
 			setIsLoading(false);
+			onError(t('send_error_create_tx'));
 			return;
 		}
 
@@ -230,9 +230,8 @@ const ReviewAndSend = ({
 				return;
 			}
 
-			onError(
-				`${t('send_error_create_tx')}. ${payInvoiceResponse.error.message}`,
-			);
+			console.error(errorMessage);
+			onError(t('send_error_create_tx'));
 			return;
 		}
 
@@ -259,25 +258,17 @@ const ReviewAndSend = ({
 			setIsLoading(true);
 			const transactionIsValid = validateTransaction(transaction);
 			if (transactionIsValid.isErr()) {
-				setIsLoading(false);
-				onError(
-					`${t('send_error_create_tx')}. ${transactionIsValid.error.message}`,
-				);
-				return;
+				throw Error(transactionIsValid.error.message);
 			}
 			const response = await createTransaction({});
 			if (response.isErr()) {
-				setIsLoading(false);
-				onError(`${t('send_error_create_tx')}. ${response.error.message}`);
-				return;
-			}
-			if (__DEV__) {
-				console.log(response.value);
+				throw Error(response.error.message);
 			}
 			setRawTx(response.value);
 		} catch (error) {
-			onError(`${t('send_error_create_tx')}. ${(error as Error).message}`);
 			setIsLoading(false);
+			console.error(error.message);
+			onError(t('send_error_create_tx'));
 		}
 	}, [transaction, onError, t]);
 

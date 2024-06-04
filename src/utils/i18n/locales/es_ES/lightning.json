@@ -7,8 +7,12 @@
   },
   "transfer": {
     "nav_title": "Transferir fondos",
+    "nav_successful": "Transferencia exitosa",
     "text_numpad": "Introduzca la cantidad de dinero que desea poder gastar al instante.",
     "swipe": "Deslizar para transferir"
+  },
+  "transfer_failed": {
+    "continue": "Inténtelo de nuevo"
   },
   "error_channel_purchase": "Error en la Configuración de Pago Instántaneo",
   "error_channel_receiving": "La cantidad a recibir debe ser mayor de $ 1 {usdValue}",
@@ -50,7 +54,7 @@
   "support": "Soporte",
   "close_conn": "Terminar conexión",
   "close_button": "Cerrar",
-  "force_title": "Fuerzar transferencia",
+  "force_nav_title": "Fuerzar transferencia",
   "force_text": "No se ha podido iniciar la transferencia. ¿Desea forzar esta transferencia? No podrá utilizar estos fondos durante ±14 días (!)",
   "force_button": "Fuerzar transferencia",
   "force_init_msg": "Sus fondos estarán accesibles en ±14 días.",

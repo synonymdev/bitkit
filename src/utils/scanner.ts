@@ -270,7 +270,7 @@ export const processInputData = async ({
 					showToast({
 						type: 'warning',
 						title: i18n.t('slashtags:error_pay_title'),
-						description: `An error occurred: ${response.error.message}`,
+						description: i18n.t('other:try_again'),
 					});
 				}
 				return err(response.error.message);
@@ -1107,7 +1107,7 @@ export const validateInputData = async ({
 						showToast({
 							type: 'warning',
 							title: i18n.t('slashtags:error_pay_title'),
-							description: `An error occurred: ${errorMessage}`,
+							description: i18n.t('other:try_again'),
 						});
 					}
 					return err(errorMessage);

@@ -16,7 +16,6 @@
   "mnemonic_reveal": "Toqueu per revelar",
   "mnemonic_confirm": "Confirmar la Frase de Recuperació",
   "mnemonic_confirm_tap": "Toqueu les 12 paraules en l'ordre correcte.",
-  "mnemonic_keep_header": "Mantingueu-ho en secret",
   "mnemonic_data_header": "Dades de la cartera",
   "mnemonic_multiple_header": "Múltiples dispositius",
   "pin_security_header": "Incrementa la seguretat",

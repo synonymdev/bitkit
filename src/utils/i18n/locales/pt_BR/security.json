@@ -18,7 +18,6 @@
   "mnemonic_confirm": "Confirmar frase de recuperação",
   "mnemonic_confirm_tap": "Insira as 12 palavras na ordem correta.",
   "mnemonic_result_header": "Sucesso",
-  "mnemonic_keep_header": "Mantenha em segredo",
   "mnemonic_data_header": "Dados da carteira",
   "mnemonic_data_text": "O backup de seu perfil, contatos, contas, tags e atividades será feito automaticamente em nosso serviço de nuvem gratuito.",
   "mnemonic_multiple_header": "Vários Dispositivos",

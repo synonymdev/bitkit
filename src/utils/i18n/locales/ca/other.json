@@ -8,7 +8,6 @@
   "qr_error_no_data_text": "Bitkit no ha pogut llegir les dades proporcionades.",
   "qr_error_network_header": "Xarxa incorrecta",
   "qr_paste": "Enganxa el codi QR",
-  "buy_button": "Comprar Bitcoin",
   "connection_restored_title": "Connexió a Electrum restablerta",
   "connection_restored_message": "Bitkit s'ha tornat a connectar amb èxit a Electrum.",
   "connection_issue": "Problemes de connexió a Internet",
@@ -17,9 +16,13 @@
   "connection_reconnect_msg": "Pèrdua de connexió amb Electrum, intentant tornar a connectar...",
   "connection_back_title": "Connexió a Internet restaurada",
   "connection_back_msg": "Bitkit s'ha reconnectat amb èxit a Internet.",
-  "up_title": "Actualització crítica",
-  "up_text": "Hi ha una actualització crítica disponible per a Bitkit. Heu de actualitzar per continuar utilitzant Bitkit.",
-  "up_button": "Actualitza Bitkit",
+  "high_balance": {
+    "nav_title": "Saldo alt.",
+    "continue": "Entès.",
+    "cancel": "Aprèn més"
+  },
+  "update_critical_nav_title": "Actualització crítica",
+  "update_critical_button": "Actualitza Bitkit",
   "camera_ask_title": "Permis per utilitzar la càmera",
   "camera_ask_msg": "Bitkit necessita permís per utilitzar la càmera.",
   "clipboard_redirect_title": "Dades del porta-retalls detectades",
@@ -50,9 +53,7 @@
   "phone_settings": "Obre la configuració del telèfon",
   "bt_error_retrieve": "Transferència fallida",
   "bt_channel_purchase_cost_error": "Necessites {delta} més per completar aquesta transacció.",
-  "update_title": "Actualització disponible",
+  "update_nav_title": "Actualització disponible",
   "update_text": "Si us plau, actualitzeu Bitkit a la darrera versió per a noves funcionalitats i correccions de errors!",
-  "update_button": "Actualització",
-  "high_title": "Saldo alt.",
-  "high_button_more": "Aprèn més"
+  "update_button": "Actualització"
 }

@@ -2,11 +2,6 @@
   "backupSeedPhrase": {
     "title": "Kopia bezpieczeństwa"
   },
-  "lightningSettingUp": {
-    "description1": "Zapłacono",
-    "description2": "W kolejce",
-    "description3": "Otwieranie"
-  },
   "lightningConnecting": {
     "title": "Łączenie",
     "description": "Gotowe w ±10 minut"

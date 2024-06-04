@@ -94,7 +94,7 @@ const ForceTransfer = (): ReactElement => {
 			showToast({
 				type: 'warning',
 				title: t('close_error'),
-				description: closeResponse.error.message,
+				description: t('close_error_msg'),
 			});
 			setIsPending(false);
 			return;

@@ -79,7 +79,7 @@
 	"error_saving_contact": "Unable To Save Contact",
 	"error_saving_profile": "Unable To Save Profile",
 	"error_pay_title": "Unable To Pay Contact",
-	"error_pay_empty_msg": "There is no payment data available for this contact.",
+	"error_pay_empty_msg": "This contact has no payment data.",
 	"auth_depricated_title": "Deprecated",
 	"auth_depricated_msg": "Slashauth is deprecated. Please use Bitkit Beta."
 }

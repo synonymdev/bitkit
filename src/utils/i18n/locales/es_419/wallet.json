@@ -1,6 +1,6 @@
 {
   "send": "Enviar",
-  "receive": "Reciba",
+  "receive": "Recibir",
   "balance_total": "Saldo total",
   "send_bitcoin": "Enviar Bitcoin",
   "send_to": "Para",
@@ -27,7 +27,6 @@
   "send_error_slash_ln": "Lamentablemente, el contacto no se puede pagar al instante. Puede intentar un pago regular (más caro, más lento).",
   "send_error_tx_failed": "Transacción ha fallado",
   "send_error_contact": "No se puede pagar a este contacto",
-  "send_error_create_tx": "Error al crear la transacción",
   "error_no_invoice": "No se ha encontrado ninguna factura Lightning",
   "error_no_tx_title": "No hay ninguna transacción disponible para emitir.",
   "error_no_tx_msg": "Por favor, verifique la información de su transacción e inténtelo de nuevo.",
@@ -54,12 +53,16 @@
   "receive_lightning_invoice": "Factura Lightning",
   "receive_note_placeholder": "Nota opcional para el pagador",
   "receive_show_qr": "Mostrar código QR",
+  "receive_text_lnfunds": "Quiero recibir",
+  "receive_spending": "Recibir en Saldo de Gastos",
+  "receive_will": "Recibirás",
   "activity": "Actividad",
   "activity_show_all": "Mostrar toda la actividad",
   "activity_no": "Aún no hay actividad",
   "activity_no_explain": "Reciba algunos fondos para empezar",
   "activity_sent": "Enviado",
   "activity_received": "Recibido",
+  "activity_failed": "Fallido",
   "activity_transfer": "Transferir",
   "activity_transfer_spending": "Saldo de gastos",
   "activity_transfer_savings": "Saldo de ahorro",
@@ -113,5 +116,6 @@
   "filter_clear": "Limpiar",
   "filter_apply": "Aplicarse",
   "reorg_msg_end": "Por favor, compruebe su lista de actividades para ver las transacciones afectadas.",
-  "lnurl_p_title": "Enviar Bitcoin"
+  "lnurl_p_title": "Enviar Bitcoin",
+  "receive_insufficient_text": "Capacidad de recepción insuficiente para recibir esta cantidad a través de Lightning."
 }

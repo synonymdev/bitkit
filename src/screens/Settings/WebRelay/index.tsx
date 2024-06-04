@@ -109,7 +109,7 @@ const WebRelay = ({
 			showToast({
 				type: 'warning',
 				title: t('slashtags:error_saving_profile'),
-				description: res.error.message,
+				description: t('other:try_again'),
 			});
 		});
 

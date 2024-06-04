@@ -15,7 +15,6 @@
   "mnemonic_confirm": "Confirmar frase de recuperación",
   "mnemonic_confirm_tap": "Pulse las 12 palabras en el orden correcto.",
   "mnemonic_result_header": "Éxito",
-  "mnemonic_keep_header": "Manténgala en secreto",
   "mnemonic_data_header": "Datos del monedero",
   "mnemonic_data_text": "Se realizará una copia de seguridad automática de su perfil, contactos, cuentas, etiquetas y actividad en nuestro servicio gratuito en la nube.",
   "mnemonic_multiple_header": "Múltiples dispositivos",

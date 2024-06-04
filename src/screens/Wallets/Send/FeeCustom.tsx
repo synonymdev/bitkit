@@ -67,7 +67,7 @@ const FeeCustom = ({
 			showToast({
 				type: 'info',
 				title: t('max_possible_fee_rate'),
-				description: `${maxFee} ${t('sats_per_vbyte')}`,
+				description: t('max_possible_fee_rate_msg'),
 			});
 			return;
 		}
@@ -75,7 +75,7 @@ const FeeCustom = ({
 			showToast({
 				type: 'info',
 				title: t('min_possible_fee_rate'),
-				description: `${minFee} ${t('sats_per_vbyte')}`,
+				description: t('min_possible_fee_rate_msg'),
 			});
 			return;
 		}

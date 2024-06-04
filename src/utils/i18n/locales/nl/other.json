@@ -5,10 +5,13 @@
   "qr_error_network_header": "Netwerk Onjuist",
   "qr_error_network_text": "Bitkit is momenteel aangesloten op {selectedNetwork}maar toont data voor {dataNetwork}. ",
   "qr_paste": "Plak de QR Code",
-  "buy_button": "Koop Bitcoin",
-  "up_title": "Kritieke Update",
-  "up_text": "Er is een kritieke update voor Bitkit beschikbaar. U moet de update installeren voordat u verder kunt gaan met Bitkit. ",
-  "up_button": "Bitkit Updaten",
+  "high_balance": {
+    "nav_title": "Hoog Saldo",
+    "continue": "Begrepen",
+    "cancel": "Meer Weten"
+  },
+  "update_critical_nav_title": "Kritieke Update",
+  "update_critical_button": "Bitkit Updaten",
   "camera_ask_title": "Toestemming om de camera te gebruiken",
   "camera_ask_msg": "Bitkit heeft toestemming nodig om de camera te gebruiken",
   "clipboard_redirect_title": "Klembord Data Gedetecteerd",
@@ -24,10 +27,7 @@
   "lnurl_withdr_success_title": "Opname Verzocht",
   "bt_channel_purchase_cost_error": "U heeft {delta}meer nodig om deze transactie te voltooien.",
   "earlier": "EERDER",
-  "update_title": "Update Beschikbaar",
+  "update_nav_title": "Update Beschikbaar",
   "update_text": "Update Bitkit naar de laatste versie voor nieuwe functionaliteiten en bug fixes!",
-  "update_button": "Update",
-  "high_title": "Hoog Saldo",
-  "high_text1": "Wallet saldo overschrijdt",
-  "high_button_more": "Meer Weten"
+  "update_button": "Update"
 }

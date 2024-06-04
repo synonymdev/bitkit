@@ -1,4 +1,7 @@
 {
+  "transfer_failed": {
+    "continue": "Spróbuj ponownie"
+  },
   "quick_setup": "Szybka konfiguracja",
   "channel_node_id": "ID węzła",
   "close_button": "Zamknij"

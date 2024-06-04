@@ -164,7 +164,6 @@ const QuickSetup = ({
 		const purchaseResponse = await startChannelPurchase({
 			clientBalance,
 			lspBalance,
-			lspNodeId: blocktankInfo.nodes[0].pubkey,
 			zeroConfPayment: clientBalance <= max0ConfClientBalance,
 		});
 		setLoading(false);
@@ -173,7 +172,9 @@ const QuickSetup = ({
 			showToast({
 				type: 'warning',
 				title: t('error_channel_purchase'),
-				description: purchaseResponse.error.message,
+				description: t('error_channel_setup_msg', {
+					raw: purchaseResponse.error.message,
+				}),
 			});
 			return;
 		}
@@ -183,7 +184,6 @@ const QuickSetup = ({
 			orderId: purchaseResponse.value.id,
 		});
 	}, [
-		blocktankInfo.nodes,
 		lnSetup,
 		max0ConfClientBalance,
 		navigation,

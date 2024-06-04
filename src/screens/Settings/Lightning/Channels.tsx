@@ -80,12 +80,10 @@ import useBreakpoints from '../../../styles/breakpoints';
  * Convert pending (non-channel) blocktank orders to (fake) channels.
  * @param {IBtOrder[]} orders
  * @param {TPaidBlocktankOrders} paidOrders
- * @param {string} nodeKey
  */
 const getPendingBlocktankChannels = (
 	orders: IBtOrder[],
 	paidOrders: TPaidBlocktankOrders,
-	nodeKey: string,
 ): {
 	pendingOrders: TChannel[];
 	failedOrders: TChannel[];
@@ -112,7 +110,7 @@ const getPendingBlocktankChannels = (
 			is_channel_ready: false,
 			is_outbound: false,
 			balance_sat: order.lspBalanceSat,
-			counterparty_node_id: nodeKey,
+			counterparty_node_id: '',
 			funding_txid: order.channel?.fundingTx.id,
 			user_channel_id: '0',
 			inbound_scid_alias: '',
@@ -239,14 +237,10 @@ const Channels = ({
 	const openChannels = useAppSelector(openChannelsSelector);
 	const pendingChannels = useAppSelector(pendingChannelsSelector);
 	const closedChannels = useAppSelector(closedChannelsSelector);
-	const blocktankNodeKey = useAppSelector((state) => {
-		return state.blocktank.info.nodes[0]?.pubkey;
-	});
 
 	const { pendingOrders, failedOrders } = getPendingBlocktankChannels(
 		blocktankOrders,
 		paidOrders,
-		blocktankNodeKey,
 	);
 	const pendingConnections = [...pendingOrders, ...pendingChannels];
 

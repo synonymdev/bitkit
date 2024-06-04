@@ -17,14 +17,11 @@
   },
   "lightning": {
     "title": "Dépenser",
-    "description": "Équilibrer vos fonds"
+    "description": "Paiements instantanés"
   },
   "lightningSettingUp": {
     "title": "Transfert",
-    "description0": "Traitement des paiements",
-    "description1": "Payé",
-    "description2": "En attente",
-    "description3": "Ouverture"
+    "description": "En cours..."
   },
   "lightningConnecting": {
     "title": "Connexion",
@@ -35,7 +32,8 @@
     "description": "Connecté !"
   },
   "transferPending": {
-    "title": "Transfert"
+    "title": "Transfert",
+    "description": "Prêt dans ±{duration}"
   },
   "transferClosingChannel": {
     "title": "Démarrage...",

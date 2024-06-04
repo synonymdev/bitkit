@@ -7,8 +7,12 @@
   },
   "transfer": {
     "nav_title": "Geld Overmaken",
+    "nav_successful": "Betaling Voltooid",
     "text_numpad": "Voer het bedrag in wat uw direct wenst te kunnen uitgeven",
     "swipe": "Veeg om over te Maken"
+  },
+  "transfer_failed": {
+    "continue": "Opnieuw proberen"
   },
   "error_channel_purchase": "Directe Betalingen Instellen Mislukt",
   "error_channel_receiving": "De hoeveelheid te ontvangen moet hoger zijn dan ${usdValue}",
@@ -17,7 +21,6 @@
   "spending_label": "Bestedingssaldo",
   "receiving_label": "Ontvangstcapaciteit",
   "note_blocktank_limit": "De hoeveelheid die u momenteel kunt overmaken is maximaal {usdValue}",
-  "note_reserve_limit": "U kunt maximaal 80% verplaatsen naar uw bestedingsgeld. Een gedeelte moet in reserve blijven om uw te besteden bitcoin weer terug te plaatsen naar spaargeld. ",
   "quick_setup": "Snelle installatie",
   "receiving_amount_money": "Kies hoeveel geld u direct wilt kunnen ontvangen. ",
   "receiving_amount_bitcoin": "Geef de hoeveelheid bitcoin aan die u direct wilt kunnen ontvangen. ",
@@ -64,7 +67,7 @@
   "support": "Ondersteuning",
   "close_conn": "Verbinding Sluiten",
   "close_button": "Sluiten",
-  "force_title": "Forceer Overdracht",
+  "force_nav_title": "Forceer Overdracht",
   "force_text": "Kon de overdracht niet opstarten. Wilt u deze overdracht forceren? Zo ja kunt u dit geld voor ±14 dagen niet gebruiken (!)",
   "force_button": "Forceer Overdracht",
   "force_init_title": "Opgestart om Overdracht te Forceren",

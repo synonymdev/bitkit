@@ -82,7 +82,9 @@ const CustomConfirm = ({
 			showToast({
 				type: 'warning',
 				title: t('error_channel_purchase'),
-				description: purchaseResponse.error.message,
+				description: t('error_channel_setup_msg', {
+					raw: purchaseResponse.error.message,
+				}),
 			});
 			return;
 		}

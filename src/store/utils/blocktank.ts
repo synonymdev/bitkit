@@ -265,7 +265,9 @@ export const startChannelPurchase = async ({
 		showToast({
 			type: 'warning',
 			title: i18n.t('other:bt_error_retrieve'),
-			description: `An error occurred: ${orderData.error.message}`,
+			description: i18n.t('other:bt_error_retrieve_msg', {
+				raw: orderData.error.message,
+			}),
 		});
 		return err(orderData.error.message);
 	}
@@ -336,11 +338,7 @@ export const confirmChannelPurchase = async ({
 }): Promise<Result<{ txid: string; useUnconfirmedInputs: boolean }>> => {
 	const rawTx = await createTransaction();
 	if (rawTx.isErr()) {
-		showToast({
-			type: 'warning',
-			title: i18n.t('wallet:error_create_tx'),
-			description: rawTx.error.message,
-		});
+		// toast shown from createTransaction
 		return err(rawTx.error.message);
 	}
 
@@ -356,7 +354,9 @@ export const confirmChannelPurchase = async ({
 		showToast({
 			type: 'warning',
 			title: i18n.t('wallet:error_broadcast_tx'),
-			description: broadcastResponse.error.message,
+			description: i18n.t('wallet:error_broadcast_tx', {
+				raw: broadcastResponse.error.message,
+			}),
 		});
 		return err(broadcastResponse.error.message);
 	}
