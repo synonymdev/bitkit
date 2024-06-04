@@ -8,7 +8,6 @@ import { ETransferType } from '../types/wallet';
 import { blocktankInfoSelector } from './blocktank';
 import {
 	channelsSizeSelector,
-	claimableBalanceSelector,
 	lightningBalanceSelector,
 	pendingPaymentsSelector,
 } from './lightning';
@@ -41,7 +40,6 @@ export const balanceSelector = createSelector(
 		onChainBalanceSelector,
 		pendingTransfersSelector,
 		pendingPaymentsSelector,
-		claimableBalanceSelector,
 		newChannelsNotificationsSelector,
 		lightningBalanceSelector,
 	],
@@ -49,11 +47,15 @@ export const balanceSelector = createSelector(
 		onchainBalance,
 		pendingTransfers,
 		pendingPayments,
-		claimableBalance,
 		newChannels,
 		lnBalance,
 	): TBalance => {
-		const { lightningBalance, spendingBalance, reserveBalance } = lnBalance;
+		const {
+			lightningBalance,
+			spendingBalance,
+			reserveBalance,
+			claimableBalance,
+		} = lnBalance;
 		const spendableBalance = onchainBalance + spendingBalance;
 		const pendingPaymentsBalance = pendingPayments.reduce(
 			(acc, payment) => acc + payment.amount,
@@ -127,7 +129,8 @@ export const lnSetupSelector = createSelector(
 		(_, spending): number => spending,
 	],
 	(blocktankInfo, balance, channelsSize, spending: number): TLnSetup => {
-		const { totalBalance, onchainBalance, lightningBalance } = balance;
+		const { onchainBalance, lightningBalance } = balance;
+		const totalBalance = onchainBalance + lightningBalance;
 		const clientBalance = spending - lightningBalance;
 		const { minChannelSizeSat, maxChannelSizeSat } = blocktankInfo.options;
 		// Because BT /info minChannelSizeSat constantly changes depending on network fees,
