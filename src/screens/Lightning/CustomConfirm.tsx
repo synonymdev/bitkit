@@ -10,6 +10,7 @@ import SafeAreaInset from '../../components/SafeAreaInset';
 import NavigationHeader from '../../components/NavigationHeader';
 import SwipeToConfirm from '../../components/SwipeToConfirm';
 import Money from '../../components/Money';
+import { useBalance } from '../../hooks/wallet';
 import { useAppSelector } from '../../hooks/redux';
 import { useCurrency, useDisplayValues } from '../../hooks/displayValues';
 import NumberPadWeeks from './NumberPadWeeks';
@@ -40,6 +41,7 @@ const CustomConfirm = ({
 	const [loading, setLoading] = useState(false);
 	const [orderId, setOrderId] = useState(route.params.orderId);
 	const [showNumberPad, setShowNumberPad] = useState(false);
+	const { lightningBalance } = useBalance();
 	const transactionFee = useAppSelector(transactionFeeSelector);
 	const selectedNetwork = useAppSelector(selectedNetworkSelector);
 	const blocktankInfo = useAppSelector(blocktankInfoSelector);
@@ -91,6 +93,14 @@ const CustomConfirm = ({
 		setOrderId(purchaseResponse.value.id);
 	};
 
+	const spendingLabel = lightningBalance
+		? t('spending_label_additional')
+		: t('spending_label');
+
+	const receivingLabel = lightningBalance
+		? t('receiving_label_additional')
+		: t('receiving_label');
+
 	return (
 		<ThemedView style={styles.root}>
 			<SafeAreaInset type="top" />
@@ -133,14 +143,14 @@ const CustomConfirm = ({
 
 						<View style={styles.balance}>
 							<Caption13Up style={styles.balanceLabel} color="purple">
-								{t('spending_label')}
+								{spendingLabel}
 							</Caption13Up>
 							<Money sats={spendingAmount} size="displayT" symbol={true} />
 						</View>
 
 						<View style={styles.balance}>
 							<Caption13Up style={styles.balanceLabel} color="purple">
-								{t('receiving_label')}
+								{receivingLabel}
 							</Caption13Up>
 							<Money sats={receivingAmount} size="displayT" symbol={true} />
 						</View>

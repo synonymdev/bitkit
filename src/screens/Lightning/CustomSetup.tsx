@@ -9,7 +9,6 @@ import React, {
 import { ImageSourcePropType, StyleSheet, View } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import { FadeIn, FadeOut } from 'react-native-reanimated';
-import { useAppSelector } from '../../hooks/redux';
 import { Trans, useTranslation } from 'react-i18next';
 
 import { View as ThemedView, AnimatedView } from '../../styles/components';
@@ -17,24 +16,30 @@ import { Caption13Up, Display, BodyM } from '../../styles/text';
 import SafeAreaInset from '../../components/SafeAreaInset';
 import Barrel from '../../components/Barrel';
 import NavigationHeader from '../../components/NavigationHeader';
+import TransferTextField from '../../components/TransferTextField';
 import Button from '../../components/Button';
 import NumberPadLightning from './NumberPadLightning';
 import type { LightningScreenProps } from '../../navigation/types';
+import { useAppSelector } from '../../hooks/redux';
+import { useDisplayValues } from '../../hooks/displayValues';
 import { useBalance, useSwitchUnit } from '../../hooks/wallet';
 import {
 	resetSendTransaction,
 	setupOnChainTransaction,
 } from '../../store/actions/wallet';
-import {
-	convertCurrency,
-	convertToSats,
-	fiatToBitcoinUnit,
-} from '../../utils/conversion';
+import { convertCurrency, convertToSats } from '../../utils/conversion';
 import { getFiatDisplayValues } from '../../utils/displayValues';
 import { showToast } from '../../utils/notifications';
+import { getNumberPadText } from '../../utils/numberpad';
 import { estimateOrderFee } from '../../utils/blocktank';
-import { startChannelPurchase } from '../../store/utils/blocktank';
+import { MAX_SPENDING_PERCENTAGE } from '../../utils/wallet/constants';
 import { EConversionUnit } from '../../store/types/wallet';
+import { channelsSizeSelector } from '../../store/reselect/lightning';
+import { blocktankInfoSelector } from '../../store/reselect/blocktank';
+import {
+	startChannelPurchase,
+	refreshBlocktankInfo,
+} from '../../store/utils/blocktank';
 import {
 	nextUnitSelector,
 	unitSelector,
@@ -42,13 +47,6 @@ import {
 	conversionUnitSelector,
 	denominationSelector,
 } from '../../store/reselect/settings';
-import { blocktankInfoSelector } from '../../store/reselect/blocktank';
-import TransferTextField from '../../components/TransferTextField';
-import { getNumberPadText } from '../../utils/numberpad';
-import { MAX_SPENDING_PERCENTAGE } from '../../utils/wallet/constants';
-import { refreshBlocktankInfo } from '../../store/utils/blocktank';
-import { lnSetupSelector } from '../../store/reselect/aggregations';
-import { useDisplayValues } from '../../hooks/displayValues';
 
 export type TPackage = {
 	id: 'small' | 'medium' | 'big';
@@ -77,9 +75,9 @@ const PACKAGES_SPENDING: Omit<TPackage, 'satoshis'>[] = [
 
 const PACKAGES_RECEIVING: Omit<TPackage, 'satoshis'>[] = [
 	{
-		id: 'big',
-		img: require('../../assets/illustrations/coin-stack-3.png'),
-		fiatAmount: 999,
+		id: 'small',
+		img: require('../../assets/illustrations/coin-stack-1.png'),
+		fiatAmount: 250,
 	},
 	{
 		id: 'medium',
@@ -87,9 +85,9 @@ const PACKAGES_RECEIVING: Omit<TPackage, 'satoshis'>[] = [
 		fiatAmount: 500,
 	},
 	{
-		id: 'small',
-		img: require('../../assets/illustrations/coin-stack-1.png'),
-		fiatAmount: 250,
+		id: 'big',
+		img: require('../../assets/illustrations/coin-stack-3.png'),
+		fiatAmount: 999,
 	},
 ];
 
@@ -97,10 +95,10 @@ const CustomSetup = ({
 	navigation,
 	route,
 }: LightningScreenProps<'CustomSetup'>): ReactElement => {
-	const { spending, spendingAmount } = route.params;
+	const { spending, spendingAmount = 0 } = route.params;
 	const { t } = useTranslation('lightning');
 	const switchUnit = useSwitchUnit();
-	const { onchainBalance } = useBalance();
+	const { onchainBalance, lightningBalance } = useBalance();
 	const { fiatValue: onchainFiatBalance } = useDisplayValues(onchainBalance);
 	const unit = useAppSelector(unitSelector);
 	const nextUnit = useAppSelector(nextUnitSelector);
@@ -108,10 +106,7 @@ const CustomSetup = ({
 	const denomination = useAppSelector(denominationSelector);
 	const selectedCurrency = useAppSelector(selectedCurrencySelector);
 	const blocktankInfo = useAppSelector(blocktankInfoSelector);
-
-	const { limits } = useAppSelector((state) => {
-		return lnSetupSelector(state, spendingAmount);
-	});
+	const channelsSize = useAppSelector(channelsSizeSelector);
 
 	const [textFieldValue, setTextFieldValue] = useState('');
 	const [channelOpenFee, setChannelOpenFee] = useState<{
@@ -122,17 +117,15 @@ const CustomSetup = ({
 	const [spendingPackages, setSpendingPackages] = useState<TPackage[]>([]); // Packages the user can afford.
 	const [receivingPackages, setReceivingPackages] = useState<TPackage[]>([]);
 
-	const maxChannelSizeSat = useMemo(() => {
-		if (blocktankInfo.options.maxChannelSizeSat > 0) {
-			return blocktankInfo.options.maxChannelSizeSat - (spendingAmount ?? 0);
-		}
-		return (
-			fiatToBitcoinUnit({
-				amount: 989, // 989 instead of 999 to allow for exchange rate variances.
-				currency: 'USD',
-			}) - (spendingAmount ?? 0)
-		);
-	}, [blocktankInfo.options.maxChannelSizeSat, spendingAmount]);
+	// Calculate limits
+	const { maxChannelSizeSat } = blocktankInfo.options;
+
+	const localLimit = Math.round(onchainBalance * MAX_SPENDING_PERCENTAGE);
+	// The maximum channel size the user can open including existing channels
+	const maxChannelSize = Math.max(0, maxChannelSizeSat - channelsSize);
+	const minLspBalance = Math.round(maxChannelSize / 2);
+	const maxClientBalance = Math.min(localLimit, minLspBalance);
+	const maxLspBalance = maxChannelSize - spendingAmount;
 
 	useFocusEffect(
 		useCallback(() => {
@@ -146,15 +139,15 @@ const CustomSetup = ({
 	);
 
 	useEffect(() => {
-		const spendableBalanceFiat = Math.round(
-			onchainFiatBalance * MAX_SPENDING_PERCENTAGE,
-		);
-
 		let reachedSpendingCap = false;
 		const availSpendingPackages: TPackage[] = [];
+		const maxClientBalanceFiat = getFiatDisplayValues({
+			satoshis: maxClientBalance,
+		});
+
 		PACKAGES_SPENDING.every((p, i) => {
-			// This ensures we have enough money to actually pay for the channel.
-			if (spendableBalanceFiat > p.fiatAmount) {
+			// Ensure we have enough onchain to actually pay for the channel
+			if (p.fiatAmount < maxClientBalanceFiat.fiatValue) {
 				const convertedAmount = convertCurrency({
 					amount: p.fiatAmount,
 					from: 'USD',
@@ -171,15 +164,10 @@ const CustomSetup = ({
 				});
 			} else {
 				// if we can't afford a package, add a package with the maximum amount we can afford.
-				const convertedAmount = convertCurrency({
-					amount: PACKAGES_SPENDING[i].fiatAmount,
-					from: 'USD',
-					to: selectedCurrency,
-				});
 				availSpendingPackages.push({
 					...PACKAGES_SPENDING[i],
-					fiatAmount: convertedAmount.fiatValue,
-					satoshis: limits.local,
+					fiatAmount: maxClientBalanceFiat.fiatValue,
+					satoshis: maxClientBalance,
 				});
 				reachedSpendingCap = true;
 			}
@@ -187,45 +175,40 @@ const CustomSetup = ({
 		});
 		setSpendingPackages(availSpendingPackages);
 
-		let maxReceiving = maxChannelSizeSat;
-		let minReceiving = spendingAmount! ?? 0;
-		const minChannelSizeFiat = getFiatDisplayValues({
-			satoshis: minReceiving,
-		});
-		let availReceivingPackages: TPackage[] = [];
+		const availReceivingPackages: TPackage[] = [];
+		// LSP balance must be at least half the channel size
+		const minReceiving = spendingAmount;
+		const minLspBalanceFiat = getFiatDisplayValues({ satoshis: minReceiving });
+		const maxLspBalanceFiat = getFiatDisplayValues({ satoshis: maxLspBalance });
+		let reachedReceivingCap = false;
+
 		PACKAGES_RECEIVING.forEach((p) => {
-			const maxChannelSizeFiat = getFiatDisplayValues({
-				satoshis: maxReceiving,
-			});
+			let fiatAmount = p.fiatAmount;
 
-			const delta = Math.abs(maxReceiving - minReceiving);
-			let packageFiatAmount = p.fiatAmount;
-
-			// Ensure the fiatAmount is within the range of minReceiving and maxChannelSizeFiat.fiatValue
-			if (packageFiatAmount > maxChannelSizeFiat.fiatValue) {
-				packageFiatAmount = maxChannelSizeFiat.fiatValue;
-			} else if (packageFiatAmount < minChannelSizeFiat.fiatValue) {
-				packageFiatAmount = minChannelSizeFiat.fiatValue;
+			// Ensure amount is above minimum LSP balance
+			if (fiatAmount < minLspBalanceFiat.fiatValue) {
+				fiatAmount = minLspBalanceFiat.fiatValue;
 			}
 
-			const satoshis = convertToSats(packageFiatAmount, EConversionUnit.fiat);
-			const satoshisCapped = Math.min(satoshis, maxReceiving);
+			let satoshis = convertToSats(fiatAmount, EConversionUnit.fiat);
 
-			maxReceiving = Number((maxReceiving - delta / 3).toFixed(0));
-			availReceivingPackages.push({
-				...p,
-				fiatAmount: packageFiatAmount,
-				satoshis: satoshisCapped,
-			});
+			// Ensure amount is below maximum LSP balance
+			if (fiatAmount > maxLspBalanceFiat.fiatValue && !reachedReceivingCap) {
+				fiatAmount = maxLspBalanceFiat.fiatValue;
+				satoshis = maxLspBalance;
+				reachedReceivingCap = true;
+			}
+
+			availReceivingPackages.push({ ...p, fiatAmount, satoshis });
 		});
-		availReceivingPackages.sort((a, b) => a.satoshis - b.satoshis);
 		setReceivingPackages(availReceivingPackages);
 	}, [
-		maxChannelSizeSat,
+		maxClientBalance,
+		maxLspBalance,
 		onchainFiatBalance,
 		selectedCurrency,
 		spendingAmount,
-		limits.local,
+		localLimit,
 	]);
 
 	// set initial spending/receiving amount
@@ -242,43 +225,23 @@ const CustomSetup = ({
 		}
 
 		if (!spending && receivingPackages.length) {
-			const small = receivingPackages.find((p) => p.id === 'small')!;
-			const medium = receivingPackages.find((p) => p.id === 'medium')!;
-			const big = receivingPackages.find((p) => p.id === 'big')!;
-
-			// Attempt to suggest a receiving balance 10x greater than current on-chain balance.
-			// May not be able to afford anything much larger.
-			const balanceMultiplied = onchainBalance * 10;
-			const amount =
-				balanceMultiplied > big.satoshis
-					? big.satoshis
-					: balanceMultiplied > medium.satoshis
-					? medium.satoshis
-					: balanceMultiplied > small.satoshis
-					? small.satoshis
-					: balanceMultiplied > limits.minChannelSize
-					? limits.minChannelSize
-					: 0;
-
-			const result = getNumberPadText(amount, denomination, unit);
+			// Pre-select largest receiving balance possible
+			const largest = receivingPackages.findLast((p) => {
+				return p.satoshis <= maxLspBalance;
+			});
+			const result = getNumberPadText(largest!.satoshis, denomination, unit);
 			setTextFieldValue(result);
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [
-		maxChannelSizeSat,
-		limits.minChannelSize,
-		onchainBalance,
-		receivingPackages,
-		spending,
-	]);
+	}, [spending, spendingPackages, receivingPackages, maxLspBalance]);
 
 	const amount = useMemo((): number => {
 		return convertToSats(textFieldValue, conversionUnit);
 	}, [textFieldValue, conversionUnit]);
 
 	const maxAmount = useMemo((): number => {
-		return spending ? limits.local : maxChannelSizeSat;
-	}, [spending, limits.local, maxChannelSizeSat]);
+		return spending ? maxClientBalance : maxLspBalance;
+	}, [spending, maxClientBalance, maxLspBalance]);
 
 	// fetch approximate channel open cost on ReceiveAmount screen
 	useEffect(() => {
@@ -359,20 +322,20 @@ const CustomSetup = ({
 					amount={p.satoshis}
 					img={p.img}
 					active={p.satoshis === amount}
-					disabled={p.satoshis <= spendingAmount!}
+					disabled={p.satoshis > maxLspBalance}
 					testID={`Barrel-${p.id}`}
 					onPress={onBarrelPress}
 				/>
 			));
 		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [
+		spending,
 		spendingPackages,
 		receivingPackages,
-		spending,
 		amount,
 		spendingAmount,
-		denomination,
-		unit,
+		maxLspBalance,
 	]);
 
 	const onChangeUnit = (): void => {
@@ -383,21 +346,28 @@ const CustomSetup = ({
 
 	const onMax = useCallback(() => {
 		if (spending) {
-			// Select highest available spend package.
+			// Select largest available spending package.
 			const maxPackage = spendingPackages.reduce((a, b) => {
 				return a.fiatAmount > b.fiatAmount ? a : b;
 			});
 			const result = getNumberPadText(maxPackage.satoshis, denomination, unit);
 			setTextFieldValue(result);
 		} else {
-			// Select highest available receive package.
-			const maxPackage = receivingPackages.reduce((a, b) => {
-				return a.fiatAmount > b.fiatAmount ? a : b;
+			// Select largest available receive package.
+			const largest = receivingPackages.findLast((p) => {
+				return p.satoshis <= maxLspBalance;
 			});
-			const result = getNumberPadText(maxPackage.satoshis, denomination, unit);
+			const result = getNumberPadText(largest!.satoshis, denomination, unit);
 			setTextFieldValue(result);
 		}
-	}, [spending, spendingPackages, receivingPackages, denomination, unit]);
+	}, [
+		spending,
+		spendingPackages,
+		receivingPackages,
+		maxLspBalance,
+		denomination,
+		unit,
+	]);
 
 	const onCustomAmount = (): void => {
 		setShowNumberPad(true);
@@ -439,7 +409,7 @@ const CustomSetup = ({
 				type: 'warning',
 				title: t('error_channel_purchase'),
 				description: msg.includes('Local channel balance is too small')
-					? t('error_channel_receiving', { usdValue: maxChannelSizeSat })
+					? t('error_channel_receiving', { usdValue: maxLspBalance })
 					: t('error_channel_setup_msg', { raw: msg }),
 			});
 		}
@@ -456,11 +426,18 @@ const CustomSetup = ({
 		spendingAmount,
 		amount,
 		navigation,
-		maxChannelSizeSat,
+		maxLspBalance,
 		blocktankInfo.options.max0ConfClientBalanceSat,
 	]);
 
 	const title = spending ? 'transfer.title_numpad' : 'transfer.title_receive';
+	const spendingLabel = lightningBalance
+		? t('spending_label_additional')
+		: t('spending_label');
+	const receivingLabel = lightningBalance
+		? t('receiving_label_additional')
+		: t('receiving_label');
+	const label = spending ? spendingLabel : receivingLabel;
 
 	return (
 		<ThemedView style={styles.root}>
@@ -471,8 +448,6 @@ const CustomSetup = ({
 					navigation.navigate('Wallet');
 				}}
 			/>
-
-			{/* TODO: add scrolling on small screens */}
 
 			<View style={styles.content} testID="CustomSetup">
 				<Display>
@@ -506,23 +481,19 @@ const CustomSetup = ({
 				{!showNumberPad && (
 					<AnimatedView color="transparent" entering={FadeIn} exiting={FadeOut}>
 						<View style={styles.barrels}>{getBarrels()}</View>
-						{spending && (
-							<Button
-								style={styles.buttonCustom}
-								text={t('enter_custom_amount')}
-								testID="CustomSetupCustomAmount"
-								onPress={onCustomAmount}
-							/>
-						)}
+						<Button
+							style={styles.buttonCustom}
+							text={t('enter_custom_amount')}
+							testID="CustomSetupCustomAmount"
+							onPress={onCustomAmount}
+						/>
 					</AnimatedView>
 				)}
 
 				<View style={styles.amountContainer}>
 					{!showNumberPad && (
 						<View style={styles.amountLabel}>
-							<Caption13Up color="purple">
-								{t(spending ? 'spending_label' : 'receiving_label')}
-							</Caption13Up>
+							<Caption13Up color="purple">{label}</Caption13Up>
 							{channelOpenFee[`${spendingAmount}-${amount}`] && (
 								<AnimatedView entering={FadeIn} exiting={FadeOut}>
 									<Caption13Up style={styles.amountCaptionCost} color="gray2">
@@ -569,6 +540,7 @@ const CustomSetup = ({
 					<NumberPadLightning
 						style={styles.numberpad}
 						value={textFieldValue}
+						minAmount={spending ? 0 : minLspBalance}
 						maxAmount={maxAmount}
 						onChange={setTextFieldValue}
 						onChangeUnit={onChangeUnit}
@@ -599,6 +571,8 @@ const styles = StyleSheet.create({
 		marginHorizontal: -8,
 		marginTop: 32,
 		marginBottom: 16,
+		// avoid layout shift on loading
+		minHeight: 147,
 	},
 	buttonCustom: {
 		alignSelf: 'flex-start',
