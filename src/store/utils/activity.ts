@@ -1,18 +1,19 @@
-import { ok, Result } from '@synonymdev/result';
+import { ICJitEntry } from '@synonymdev/blocktank-lsp-http-client';
 import { TChannel } from '@synonymdev/react-native-ldk';
+import { ok, Result } from '@synonymdev/result';
 import { EPaymentType } from 'beignet';
 
-import { EActivityType, TLightningActivityItem } from '../types/activity';
-import { getBlocktankStore, dispatch } from '../helpers';
-import { vibrate } from '../../utils/helpers';
-import { getCurrentWallet } from '../../utils/wallet';
-import { getChannels } from '../../utils/lightning';
-import { formatBoostedActivityItems } from '../../utils/boost';
 import { onChainTransactionToActivityItem } from '../../utils/activity';
-import { checkPendingCJitEntries } from './blocktank';
+import { formatBoostedActivityItems } from '../../utils/boost';
+import { sleep, vibrate } from '../../utils/helpers';
+import { getChannels } from '../../utils/lightning';
+import { getCurrentWallet } from '../../utils/wallet';
+import { dispatch, getBlocktankStore } from '../helpers';
+import { addActivityItem, updateActivityItems } from '../slices/activity';
 import { updateSettings } from '../slices/settings';
 import { closeSheet } from '../slices/ui';
-import { addActivityItem, updateActivityItems } from '../slices/activity';
+import { EActivityType, TLightningActivityItem } from '../types/activity';
+import { checkPendingCJitEntries } from './blocktank';
 import { showBottomSheet } from './ui';
 
 /**
@@ -30,13 +31,25 @@ export const addCJitActivityItem = async (channelId: string): Promise<void> => {
 		return; // No need to take action.
 	}
 
-	// Update any pending CJIT entries.
-	await checkPendingCJitEntries();
+	// Try to find the CJIT entry for this channel by funding_txid.
+	let cJitEntry: ICJitEntry | undefined;
+	let i = 0;
+	while (!cJitEntry && i < 5) {
+		await sleep(1000); // wait until Blocktank has updated its database.
+		await checkPendingCJitEntries(); // Update any pending CJIT entries.
+		cJitEntry = getBlocktankStore().cJitEntries.find((entry) => {
+			return entry?.channel?.fundingTx.id === channel.funding_txid;
+		});
+		i++;
+	}
 
-	// Check if we have a CJIT entry for this channel.
-	const cJitEntry = getBlocktankStore().cJitEntries.find((entry) => {
-		return entry?.channel?.fundingTx.id === channel.funding_txid;
-	});
+	// If not found by channel id, try to find it by channel size.
+	if (!cJitEntry) {
+		cJitEntry = getBlocktankStore().cJitEntries.find((entry) => {
+			return entry.channelSizeSat === channel.channel_value_satoshis;
+		});
+	}
+
 	if (!cJitEntry) {
 		// No CJIT entry found for this channel.
 		// Most likely a normal channel open.
