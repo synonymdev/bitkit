@@ -1,30 +1,94 @@
 import { createSelector } from '@reduxjs/toolkit';
 
-import { blocktankInfoSelector } from './blocktank';
-import { channelsSizeSelector, lightningBalanceSelector } from './lightning';
-import { onChainBalanceSelector } from './wallet';
 import {
 	DEFAULT_SPENDING_PERCENTAGE,
 	MAX_SPENDING_PERCENTAGE,
 } from '../../utils/wallet/constants';
+import { ETransferType } from '../types/wallet';
+import { blocktankInfoSelector } from './blocktank';
+import {
+	channelsSizeSelector,
+	claimableBalanceSelector,
+	lightningBalanceSelector,
+	pendingPaymentsSelector,
+} from './lightning';
+import { newChannelsNotificationsSelector } from './todos';
+import { onChainBalanceSelector, pendingTransfersSelector } from './wallet';
 
-/**
- * Returns all balances
- */
+export type TBalance = {
+	/** Total onchain funds */
+	onchainBalance: number;
+	/** Total lightning funds (spendable + reserved + claimable) */
+	lightningBalance: number;
+	/** Share of lightning funds that are spendable */
+	spendingBalance: number;
+	/** Share of lightning funds that are locked up in channels */
+	reserveBalance: number;
+	/** Funds that will be available after a channel opens/closes */
+	claimableBalance: number;
+	/** Total spendable funds (onchain + spendable lightning) */
+	spendableBalance: number;
+	/** LN funds that have not been claimed by payee (hold invoices) */
+	pendingPaymentsBalance: number;
+	balanceInTransferToSpending: number;
+	balanceInTransferToSavings: number;
+	/** Total funds (all of the above) */
+	totalBalance: number;
+};
+
 export const balanceSelector = createSelector(
-	[lightningBalanceSelector, onChainBalanceSelector],
-	(lightning, onchain) => {
-		const totalSpendableBalance = onchain + lightning.spendingBalance;
-		const totalBalance = onchain + lightning.lightningBalance;
+	[
+		onChainBalanceSelector,
+		pendingTransfersSelector,
+		pendingPaymentsSelector,
+		claimableBalanceSelector,
+		newChannelsNotificationsSelector,
+		lightningBalanceSelector,
+	],
+	(
+		onchainBalance,
+		pendingTransfers,
+		pendingPayments,
+		claimableBalance,
+		newChannels,
+		lnBalance,
+	): TBalance => {
+		const { lightningBalance, spendingBalance, reserveBalance } = lnBalance;
+		const spendableBalance = onchainBalance + spendingBalance;
+		const pendingPaymentsBalance = pendingPayments.reduce(
+			(acc, payment) => acc + payment.amount,
+			0,
+		);
+
+		let inTransferToSpending = pendingTransfers.reduce((acc, transfer) => {
+			if (transfer.type === ETransferType.open) {
+				acc += transfer.amount;
+			}
+			return acc;
+		}, 0);
+
+		if (newChannels.length > 0) {
+			// avoid flashing wrong balance on channel open
+			inTransferToSpending = 0;
+		}
+
+		const totalBalance =
+			onchainBalance +
+			lightningBalance +
+			claimableBalance +
+			inTransferToSpending;
 
 		return {
-			onchainBalance: onchain,
-			lightningBalance: lightning.lightningBalance,
-			lightningSpendingBalance: lightning.spendingBalance,
-			lightningReserveBalance: lightning.reserveBalance,
-			lightningClaimableBalance: lightning.claimableBalance,
+			onchainBalance,
+			lightningBalance,
+			spendingBalance,
+			reserveBalance,
+			claimableBalance,
+			spendableBalance,
+			pendingPaymentsBalance,
+			balanceInTransferToSpending: inTransferToSpending,
+			balanceInTransferToSavings: claimableBalance,
 			totalBalance,
-			totalSpendableBalance,
 		};
 	},
 );

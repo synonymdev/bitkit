@@ -1,16 +1,17 @@
-import assert from 'node:assert';
 import cloneDeep from 'lodash/cloneDeep';
+import assert from 'node:assert';
 
 import '../src/utils/i18n';
 import store, { RootState } from '../src/store';
-import { createNewWallet } from '../src/utils/startup';
 import { updateWallet } from '../src/store/actions/wallet';
-import { EAvailableNetwork } from '../src/utils/networks';
 import {
+	TBalance,
 	balanceSelector,
 	lnSetupSelector,
 } from '../src/store/reselect/aggregations';
-import { TChannel, EChannelStatus } from '../src/store/types/lightning';
+import { EChannelStatus, TChannel } from '../src/store/types/lightning';
+import { EAvailableNetwork } from '../src/utils/networks';
+import { createNewWallet } from '../src/utils/startup';
 
 describe('Reselect', () => {
 	let s: RootState;
@@ -27,29 +28,41 @@ describe('Reselect', () => {
 	describe('balanceSelector', () => {
 		it('should return zeros by default', () => {
 			const state = cloneDeep(s);
-			assert.deepEqual(balanceSelector(state), {
+
+			const balance: TBalance = {
+				balanceInTransferToSavings: 0,
+				balanceInTransferToSpending: 0,
+				claimableBalance: 0,
 				lightningBalance: 0,
-				lightningClaimableBalance: 0,
-				lightningReserveBalance: 0,
-				lightningSpendingBalance: 0,
 				onchainBalance: 0,
+				pendingPaymentsBalance: 0,
+				reserveBalance: 0,
+				spendableBalance: 0,
+				spendingBalance: 0,
 				totalBalance: 0,
-				totalSpendableBalance: 0,
-			});
+			};
+
+			assert.deepEqual(balanceSelector(state), balance);
 		});
 
 		it('should return onchain balance for current wallet', () => {
 			const state = cloneDeep(s);
 			state.wallet.wallets.wallet0.balance.bitcoinRegtest = 1;
-			assert.deepEqual(balanceSelector(state), {
+
+			const balance: TBalance = {
+				balanceInTransferToSavings: 0,
+				balanceInTransferToSpending: 0,
+				claimableBalance: 0,
 				lightningBalance: 0,
-				lightningClaimableBalance: 0,
-				lightningReserveBalance: 0,
-				lightningSpendingBalance: 0,
 				onchainBalance: 1,
+				pendingPaymentsBalance: 0,
+				reserveBalance: 0,
+				spendableBalance: 1,
+				spendingBalance: 0,
 				totalBalance: 1,
-				totalSpendableBalance: 1,
-			});
+			};
+
+			assert.deepEqual(balanceSelector(state), balance);
 		});
 
 		it('should calculate balance for LN wallet', () => {
@@ -84,15 +97,20 @@ describe('Reselect', () => {
 			const lnWallet = state.lightning.nodes.wallet0;
 			lnWallet.channels.bitcoinRegtest = { channel1, channel2, channel3 };
 
-			assert.deepEqual(balanceSelector(state), {
+			const balance: TBalance = {
+				balanceInTransferToSavings: 3,
+				balanceInTransferToSpending: 0,
+				claimableBalance: 3,
 				lightningBalance: 4,
-				lightningClaimableBalance: 3,
-				lightningReserveBalance: 2,
-				lightningSpendingBalance: 2,
 				onchainBalance: 1,
-				totalBalance: 5,
-				totalSpendableBalance: 3,
-			});
+				pendingPaymentsBalance: 0,
+				reserveBalance: 2,
+				spendableBalance: 3,
+				spendingBalance: 2,
+				totalBalance: 8,
+			};
+
+			assert.deepEqual(balanceSelector(state), balance);
 		});
 	});
 
