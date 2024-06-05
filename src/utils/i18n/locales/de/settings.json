@@ -1,71 +1,249 @@
 {
-  "settings": "Einstellungen",
-  "dev_enabled_title": "Entwickler-Einstellungen an",
-  "dev_disabled_title": "Entwickler-Einstellungen aus",
-  "general_title": "Allgemein",
-  "security_title": "Sicherheit und Privatsphäre",
-  "backup_title": "Back up oder Wiederherstellung",
-  "advanced_title": "Fortgeschritten",
-  "support_title": "Support",
-  "about": {
-    "title": "Über Bitkit",
-    "legal": "Rechtliches",
-    "share": "Teilen"
-  },
-  "dev_title": "Entwickler-Einstellungen",
-  "general": {
-    "currency_local": "Lokale Währung",
-    "currency_local_title": "Lokale Währung",
-    "currency_footer": "Preise bereitgestellt von Bitfinex & CoinGecko.",
-    "currency_most_used": "Meist genutzt",
-    "currency_other": "Andere Währungen",
-    "unit_bitcoin": "Bitcoin"
-  },
-  "security": {
-    "use_bio": "Nutze {biometryTypeName} stattdessen",
-    "footer": "Wenn eingeschaltet, kannst du {biometryTypeName} an Stelle von deinem PIN code verwenden, um dein Wallet zu entsperren oder Zahlungen zu senden."
-  },
-  "backup": {
-    "category_settings": "Einstellungen"
-  },
-  "support": {
-    "title": "Support",
-    "text_success_button": "OK",
-    "text_unsuccess_button": "Versuche es nochmal"
-  },
-  "status": {
-    "lightning_node": {
-      "title": "Lightning Node"
-    }
-  },
-  "adv": {
-    "section_other": "Andere",
-    "address_type": "Bitcoin Adressen-Typ",
-    "reset_desc": "Bist du dir sicher, dass du die Vorschläge löschen willst? Diese werden erneut auftauchen, wenn du diese von deiner Bitkit Wallet Übersicht entfernt hast. ",
-    "lightning_connections": "Lightning Verbindungen",
-    "lightning_node": "Lightning Node",
-    "bitcoin_network": "Bitcoin Netzwerk"
-  },
-  "fee": {
-    "fast": {
-      "value": "Schnell"
-    },
-    "normal": {
-      "label": "Normal",
-      "value": "Normal"
-    },
-    "custom": {
-      "label": "Benutzerdefiniert",
-      "value": "Benutzerdefiniert"
-    }
-  },
-  "es": {
-    "disconnected": "getrennt"
-  },
-  "gap": {
-    "save": "Sichern"
-  },
-  "rgs": {
-    "button_connect": "Verbinden"
-  }
+	"settings": "Einstellungen",
+	"dev_enabled_title": "Entwickler-Einstellungen aktiviert",
+	"dev_enabled_message": "Entwickler-Einstellungen sind jetzt in der gesamten App aktiviert.",
+	"dev_disabled_title": "Entwickler-Einstellungen deaktiviert",
+	"dev_disabled_message": "Entwickler-Einstellungen sind jetzt in der gesamten App deaktiviert.",
+	"general_title": "Allgemein",
+	"security_title": "Sicherheit und Privatsphäre",
+	"backup_title": "Backup und Wiederherstellung",
+	"advanced_title": "Fortgeschritten",
+	"about_title": "Über",
+	"support_title": "Support",
+	"about": {
+		"title": "Über Bitkit",
+		"legal": "Rechtliches",
+		"share": "Teilen",
+		"version": "Version"
+	},
+	"dev_title": "Entwickler-Einstellungen",
+	"general": {
+		"currency_local": "Lokale Währung",
+		"currency_local_title": "Lokale Währung",
+		"currency_footer": "Preise bereitgestellt von Bitfinex & CoinGecko.",
+		"currency_most_used": "Meist genutzt",
+		"currency_other": "Andere Währungen",
+		"unit": "Einheit",
+		"unit_title": "Einheit",
+		"unit_display": "Beträge anzeigen in",
+		"unit_bitcoin": "Bitcoin",
+		"unit_note": "Tipp: Du kannst schnell zwischen Bitcoin und {currency} umschalten indem du auf den Kontostand tippst.",
+		"denomination_label": "Bitcoin-Stückelung",
+		"denomination_modern": "Modern (₿ 10 000)",
+		"denomination_classic": "Klassisch (₿ 0.00010000)",
+		"speed": "Transaktionsgeschwindigkeit",
+		"speed_title": "Geschwindigkeit",
+		"speed_default": "Transaktionsgeschwindigkeit",
+		"speed_fee_custom": "Gebühr",
+		"speed_fee_total": "₿ {feeSats} für die durschnittliche Transaktion",
+		"speed_fee_total_fiat": "₿ {feeSats} für die durschnittliche Transaktion ({fiatSymbol}{fiatFormatted})",
+		"tags": "Tags",
+		"tags_previously": "Zuvor benutzte Tags"
+	},
+	"widgets": {
+		"nav_title": "Widgets",
+		"showWidgets": "Widgets anzeigen",
+		"showWidgetTitles": "Titel anzeigen"
+	},
+	"security": {
+		"title": "Sicherheit Und Privatsphäre",
+		"swipe_balance_to_hide": "Wischen um Kontostand zu verbergen",
+		"hide_balance_on_open": "Kontostand beim Start verbergen",
+		"clipboard": "Lesen der Zwischenablage erlauben",
+		"warn_100": "Warnen beim Senden von über $100",
+		"pin": "PIN Code",
+		"pin_change": "PIN Code ändern",
+		"pin_launch": "PIN beim Start anfordern",
+		"pin_idle": "PIN nach Inaktiviät anfordern",
+		"pin_payments": "PIN für Zahlungen anfordern",
+		"pin_enabled": "Aktiviert",
+		"pin_disabled": "Deaktiviert",
+		"use_bio": "Nutze {biometryTypeName}",
+		"footer": "Wenn eingeschaltet, kannst du {biometryTypeName} an Stelle von deinem PIN code verwenden, um dein Wallet zu entsperren oder Zahlungen zu senden."
+	},
+	"backup": {
+		"title": "Backup und Wiederherstellung",
+		"wallet": "Sichere dein Wallet",
+		"reset": "Wallet zurücksetzen",
+		"failed_title": "Backup fehlgeschlagen",
+		"failed_message": "Bitkit failed to back up wallet data. Retrying in {interval, plural, one {# minute} other {# minutes}}.",
+		"latest": "Letzte Backups",
+		"status_failed": "Gescheitertes Backup: {time}",
+		"status_success": "Letztes Backup: {time}",
+		"category_connections": "Verbindungen",
+		"category_connection_receipts": "Verbindungsstatus",
+		"category_transaction_log": "Transaktionshistorie",
+		"category_settings": "Einstellungen",
+		"category_widgets": "Widgets",
+		"category_tags": "Tags",
+		"category_profile": "Profil",
+		"category_contacts": "Kontakte"
+	},
+	"support": {
+		"title": "Support",
+		"text": "Brauchst du Hilfe? Melde dein Problem von innerhalb Bitkit, besuche das Hilfezentrum, überprüfe den Status, oder kontaktiere uns auf den sozialen Medien.",
+		"report": "Problem melden",
+		"help": "Hilfezentrum",
+		"status": "App Status",
+		"report_text": "Bitte beschreibe das Problem oder stelle eine allgemeine Frage.",
+		"label_address": "Email-Adresse",
+		"label_message": "Problem oder Frage",
+		"placeholder_address": "satoshi@satoshi.com",
+		"placeholder_message": "Beschreibe das Problem oder stelle eine Frage",
+		"text_button": "Absenden",
+		"title_success": "Erfolgreich gesendet",
+		"text_success": "Vielen Dank für deine Nachricht. Wir werden uns so schnell wie möglich bei dir melden.",
+		"text_success_button": "OK",
+		"title_unsuccess": "Senden fehlgeschlagen",
+		"text_unsuccess": "Es gab ein Problem beim Senden deiner Nachricht. Bitte versuche es erneut.",
+		"text_unsuccess_button": "Erneut versuchen"
+	},
+	"status": {
+		"title": "App Status",
+		"internet": {
+			"title": "Internet",
+			"ready": "Verbunden",
+			"pending": "Verbinden...",
+			"error": "Nicht verbunden"
+		},
+		"bitcoin_node": {
+			"title": "Bitcoin Node",
+			"ready": "Verbunden",
+			"pending": "Verbinden...",
+			"error": "Konnte nicht verbinden"
+		},
+		"lightning_node": {
+			"title": "Lightning Node",
+			"ready": "Synchronisiert",
+			"pending": "Synchronisiert...",
+			"error": "Konnte nicht synchronisieren"
+		},
+		"lightning_connection": {
+			"title": "Lightning-Verbindung",
+			"ready": "Geöffnet",
+			"pending": "In Vorbereitung...",
+			"error": "Keine offenen Verbindungen"
+		},
+		"full_backup": {
+			"title": "Vollständiges Backup",
+			"ready": "Abgeschlossen",
+			"pending": "In Bearbeitung...",
+			"error": "Fehlgeschlagen"
+		}
+	},
+	"adv": {
+		"section_payments": "Zahlungen",
+		"section_networks": "Netzwerke",
+		"section_other": "Anderes",
+		"address_type": "Bitcoin Adressen-Typ",
+		"monitored_address_types": "Überwachte Adress-Typen",
+		"monitored_address_types_update_title": "Überwachte Adress-Typen aktualisiert",
+		"monitored_address_types_update_description": "Änderungen werden nach dem Neustart der App vollständig wirksam.",
+		"gap_limit": "Address Gap Limit",
+		"coin_selection": "Coin-Auswahl",
+		"cs_method": "Coin-Auswahlmethode",
+		"cs_manual": "Manuell",
+		"cs_auto": "Autopilot",
+		"cs_auto_mode": "Autopilot-Modus",
+		"cs_max": "Mehr privat",
+		"cs_max_description": "Sortiere und verwende zuerst die kleinsten UTXOs. Höhere Gebühr, aber versteckt deine größten UTXOs.",
+		"cs_min": "Niedrigste Gebühr",
+		"cs_min_description": "Sortiere und verwende zuerst die größten UTXOs. Niedrigste Gebühr, aber zeigt deine größten UTXOs.",
+		"cs_consolidate": "Konsolidieren",
+		"cs_consolidate_description": "Verwende alle verfügbaren UTXOs unabhängig von der gesendeten Menge. Verwende diese Methode, wenn die Gebühren niedrig sind, um Gebühren bei zukünftigen Transaktionen zu reduzieren.",
+		"payment_preference": "Zahlungspräferenz",
+		"pp_header": "Wähle, wie du bevorzugt Geld erhalten möchtest, wenn Nutzer Gelder an deinen Profil-Schlüssel senden.",
+		"pp_footer": "* Dies erfordert das Teilen von Zahlungsdaten.",
+		"pp_drag": "Zahlungspräferenz (zum Neuanordnen ziehen)",
+		"pp_contacts": "Zu/von Kontakten bezahlen",
+		"pp_contacts_switch": "Zahlungen mit Kontakten aktivieren*",
+		"address_viewer": "Adressanzeige",
+		"rescan": "Adressen erneut scannen",
+		"suggestions_reset": "Vorschläge zurücksetzen",
+		"reset_title": "Vorschläge zurücksetzen?",
+		"reset_desc": "Bist du dir sicher, dass du die Vorschläge löschen möchtest? Diese werden erneut angezeigt, wenn du sie aus deiner Bitkit Wallet Übersicht entfernt hast.",
+		"reset_confirm": "Ja, zurücksetzen",
+		"lightning_connections": "Lightning-Verbindungen",
+		"lightning_node": "Lightning-Node",
+		"electrum_server": "Electrum-Server",
+		"rgs_server": "Rapid-Gossip-Sync",
+		"web_relay": "Slashtags Web-Relay",
+		"bitcoin_network": "Bitcoin-Netzwerk"
+	},
+	"fee": {
+		"fast": {
+			"label": "Schnell (teurer)",
+			"value": "Schnell",
+			"description": "± 10-20 Minuten"
+		},
+		"normal": {
+			"label": "Normal",
+			"value": "Normal",
+			"description": "± 20-60 Minuten"
+		},
+		"slow": {
+			"label": "Langsam (günstiger)",
+			"value": "Langsam",
+			"description": "± 1-2 Stunden"
+		},
+		"custom": {
+			"label": "Benutzerdefiniert",
+			"value": "Benutzerdefiniert",
+			"description": "Abhängig von der Gebühr"
+		}
+	},
+	"addr": {
+		"no_addrs": "Keine Adressen zum Anzeigen",
+		"loading": "Lade Adressen...",
+		"no_funds_receiving": "Keine Gelder unter dem {addressType} Adresstyp gefunden, Empfangsadressen bis Index {index}.",
+		"no_funds_change": "Keine Gelder unter dem {addressType} Adresstyp gefunden, Wechseladressen bis Index {index}.",
+		"no_addrs_with_funds": "Keine Adressen mit Geldern gefunden bei der Suche nach \"{searchTxt}\"",
+		"no_addrs_str": "Keine Adressen gefunden bei der Suche nach \"{searchTxt}\"",
+		"rescan_error": "Neuscan fehlgeschlagen",
+		"rescan_error_description": "Bitkit konnte die Adressenguthaben nicht überprüfen.",
+		"spend_number": "{count, plural, one {Gib ₿ {fundsToSpend} von # Adresse aus} other {Gib ₿ {fundsToSpend} von # Adressen aus}}",
+		"spend_all": "{count, plural, one {Gib alle Gelder von # Adresse aus} other {Gib alle Gelder von # Adressen aus}}",
+		"index": "Index: {index}",
+		"path": "Pfad: {path}",
+		"private_hide": "Private Key verstecken",
+		"private_view": "Private Key anzeigen",
+		"private_key": "Private Key: {privateKey}",
+		"addr_change": "Wechseladressen",
+		"addr_receiving": "Empfangsadressen",
+		"sats_found": "₿ {totalBalance} gefunden",
+		"gen_20": "Erzeuge 20 mehr",
+		"check_balances": "Guthaben prüfen",
+		"copied": "In die Zwischenablage kopiert"
+	},
+	"es": {
+		"error_host_port": "Bitte gib einen Host und einen Port zum Verbinden an.",
+		"error_host": "Bitte gib einen Host zum Verbinden an.",
+		"error_port": "Bitte gib einen Port zum Verbinden an.",
+		"error_port_invalid": "Bitte gib einen gültigen Port an.",
+		"error_invalid_http": "Bitte gib eine gültige URL an.",
+		"error_peer": "Electrum Fehler",
+		"server_updated_title": "Electrum-Server aktualisiert",
+		"server_updated_message": "Erfolgreich verbunden mit {host}:{port}",
+		"server_error": "Electrum-Verbindung fehlgeschlagen",
+		"server_error_description": "Bitkit konnte keine Verbindung zu Electrum herstellen.",
+		"connected_to": "Derzeit verbunden mit",
+		"disconnected": "getrennt",
+		"host": "Host",
+		"port": "Port",
+		"protocol": "Protokoll",
+		"button_reset": "Zurücksetzen",
+		"button_connect": "Verbinden"
+	},
+	"gap": {
+		"save": "Speichern",
+		"reset": "Zurücksetzen",
+		"gap_limit_update_title": "Address Gap Limit aktualisiert",
+		"gap_limit_update_description": "Änderungen werden nach dem Neustart der App vollständig wirksam."
+	},
+	"rgs": {
+		"server_url": "Rapid-Gossip-Sync-Server-URL",
+		"button_connect": "Verbinden",
+		"update_success_title": "Rapid-Gossip-Sync-Server aktualisiert",
+		"update_success_description": "Möglicherweise musst du die App ein- oder zweimal neu starten, damit diese Änderung wirksam wird."
+	}
 }

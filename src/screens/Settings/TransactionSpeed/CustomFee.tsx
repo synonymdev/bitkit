@@ -77,7 +77,7 @@ const FeeCustom = ({
 				<View style={styles.buttonContainer}>
 					<Button
 						size="large"
-						text="Continue"
+						text={t('continue')}
 						disabled={!isValid}
 						testID="Continue"
 						onPress={onContinue}
