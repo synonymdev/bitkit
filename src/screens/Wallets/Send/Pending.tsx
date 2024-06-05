@@ -58,7 +58,9 @@ const Pending = ({ route }: SendScreenProps<'Pending'>): ReactElement => {
 					{t('send_pending_note')}
 				</BodyM>
 
-				<HourglassSpinner />
+				<View style={styles.image}>
+					<HourglassSpinner />
+				</View>
 
 				<View style={styles.buttonContainer}>
 					<Button
@@ -93,6 +95,11 @@ const styles = StyleSheet.create({
 	},
 	text: {
 		marginTop: 16,
+	},
+	image: {
+		flex: 1,
+		justifyContent: 'center',
+		alignItems: 'center',
 	},
 	buttonContainer: {
 		flexDirection: 'row',
