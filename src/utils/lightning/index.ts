@@ -417,6 +417,7 @@ export const handleLightningPaymentSubscription = async ({
 	vibrate({ type: 'default' });
 	showBottomSheet('newTxPrompt', { activityItem });
 	dispatch(closeSheet('receiveNavigation'));
+	dispatch(closeSheet('orangeTicket'));
 	dispatch(addActivityItem(activityItem));
 
 	await refreshLdk({ selectedWallet, selectedNetwork });
