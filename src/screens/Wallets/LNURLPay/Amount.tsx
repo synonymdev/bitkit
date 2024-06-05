@@ -20,7 +20,10 @@ import NumberPadTextField from '../../../components/NumberPadTextField';
 import Button from '../../../components/Button';
 import UnitButton from '../UnitButton';
 import SendNumberPad from '../Send/SendNumberPad';
-import { sendMax } from '../../../utils/wallet/transactions';
+import {
+	getEstimatedRoutingFee,
+	sendMax,
+} from '../../../utils/wallet/transactions';
 import {
 	selectedNetworkSelector,
 	selectedWalletSelector,
@@ -66,8 +69,7 @@ const Amount = ({
 	}, [text, conversionUnit]);
 
 	const max = useMemo(() => {
-		// TODO: get routing fee
-		const fee = 100;
+		const fee = getEstimatedRoutingFee(spendingBalance);
 		return Math.min(spendingBalance - fee, maxSendable);
 	}, [maxSendable, spendingBalance]);
 
