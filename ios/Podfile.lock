@@ -911,7 +911,7 @@ PODS:
     - glog
     - RCT-Folly (= 2022.05.16.00)
     - React-Core
-  - react-native-ldk (0.0.140):
+  - react-native-ldk (0.0.142):
     - React
   - react-native-mmkv (2.12.2):
     - glog
@@ -1479,7 +1479,7 @@ SPEC CHECKSUMS:
   react-native-biometrics: 352e5a794bfffc46a0c86725ea7dc62deb085bdc
   react-native-blur: 799045500f56146afc46245148080e7b7623cb75
   react-native-image-picker: d3db110a3ded6e48c93aef7e8e51afdde8b16ed0
-  react-native-ldk: c5037d5c182a25d23569ae79083bb18c8bc0a69a
+  react-native-ldk: a9ecc561c5a186d6d8259c4713d09f957039bad1
   react-native-mmkv: 1fdc81aa70c1aba09370718e6a63a09cbbbac8d2
   react-native-netinfo: bdb108d340cdb41875c9ced535977cac6d2ff321
   react-native-quick-crypto: 455c1b411db006dba1026a30681ececb19180187
