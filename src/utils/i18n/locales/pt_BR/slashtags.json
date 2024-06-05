@@ -27,7 +27,15 @@
   "contact_assign": "Atribuir Contato",
   "contacts_no_found": "Nenhum Contato encontrado",
   "disabled": "Slashtags desativadas",
+  "onboarding_header": "Contatos\n<accent>dinâmicos</accent>",
+  "onboarding_text": "Receba atualizações automáticas dos seus contatos, pague-os e siga seus perfis públicos.",
+  "onboarding_button": "Adicionar Primeiro Contato",
+  "onboarding_profile1_header": "Tenha seu próprio\n<accent>perfil</accent>",
+  "onboarding_profile1_text": "Configure seu perfil público e seus links, para que seus contatos possam pagá-lo a qualquer hora e em qualquer lugar.",
+  "onboarding_profile2_header": "Pagar <accent>contatos\nBitkit</accent>",
   "onboarding_profile2_text": "Você e seus contatos podem usar o Bitkit para enviar pagamentos diretamente, sem bancos, a qualquer hora, em qualquer lugar.",
+  "onboarding_widgets_header": "Olá,\n<accent>Widgets</accent>",
+  "onboarding_widgets_text": "Aproveite os feeds descentralizados de seus serviços da web favoritos, adicionando widgets divertidos e úteis à sua carteira Bitkit.",
   "my_profile": "Meu perfil",
   "profile": "Perfil",
   "profile_save": "Salvar Perfil",
@@ -70,5 +78,8 @@
   "widget_delete_desc": "Tem certeza de que deseja excluir '{name}' dos seus widgets?",
   "error_saving_contact": "Não é possível salvar o contato.",
   "error_saving_profile": "Não foi possível salvar o perfil.",
-  "error_pay_title": "Não foi Possível Pagar Contato"
+  "error_pay_title": "Não foi Possível Pagar Contato",
+  "error_pay_empty_msg": "Esse contato não possui dados de pagamento.",
+  "auth_depricated_title": "Desativado",
+  "auth_depricated_msg": "O Slashauth está desativado."
 }
