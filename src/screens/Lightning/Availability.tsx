@@ -12,6 +12,7 @@ import { refreshWallet } from '../../utils/wallet';
 import { closeAllChannels } from '../../utils/lightning';
 import { startCoopCloseTimer } from '../../store/slices/user';
 import type { LightningScreenProps } from '../../navigation/types';
+import { sleep } from '../../utils/helpers';
 
 const imageSrc = require('../../assets/illustrations/exclamation-mark.png');
 
@@ -32,6 +33,7 @@ const Availability = ({
 
 		if (closeResponse.isOk() && closeResponse.value.length === 0) {
 			await refreshWallet();
+			await sleep(5000); // give beignet some time to process
 			navigation.navigate('Success', { type: 'savings' });
 			return;
 		} else {
