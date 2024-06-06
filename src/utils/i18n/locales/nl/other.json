@@ -20,6 +20,7 @@
   "scan_err_decoding": "Decoderingsfout",
   "scan_err_interpret_title": "De Ingevoerde Data Kan Niet Worden Gedecodeerd",
   "scan_err_interpret_msg": "Bitkit kan de ingevoerde data niet decoderen.",
+  "lnurl_channel_header": "Lightning-verbinding",
   "lnurl_channel_host": "Hostcomputer",
   "lnurl_channel_port": "Poort",
   "lnurl_channel_success_msg_peer": "Succesvol verzoek om een kanaal met: {peer}",

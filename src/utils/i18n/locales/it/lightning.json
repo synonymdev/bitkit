@@ -55,7 +55,6 @@
   "receiving_amount_bitcoin": "Inserisci l'importo di Bitcoin che vuoi ricevere istantaneamente.",
   "enter_custom_amount": "Inserire l'importo",
   "custom_confirm_header": "Per favore\n<accent>conferma</accent>",
-  "custom_confirm_cost": "Il trasferimento dei fondi costa <accent>{txFee}</accent> in commissioni di rete e <accent>{lspFee}</accent> in commissioni del fornitore dei servizi. Il tuo saldo di spesa dovrebbe rimanere attivo per almeno <accentWithKeyboard>{weeks, plural, one {# week} o {# weeks}}.<penIcon/></accentWithKeyboard>",
   "duration_header": "Saldo <accent>durata</accent>",
   "duration_text": "Scegli il numero minimo di settimane in cui desideri che questa parte del tuo saldo di spesa (Canale Lightning) rimanga attiva.",
   "duration_week": "{count, plural, one {settimane} many {Tuo nome} other {settimane}}",

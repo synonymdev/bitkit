@@ -1,14 +1,18 @@
 {
   "settings": "Instellingen",
   "dev_enabled_title": "Dev Instellingen ingeschakeld",
+  "dev_enabled_message": "Opties voor ontwikkelaars zijn nu in de hele app ingeschakeld.",
   "dev_disabled_title": "Dev Instellingen Uitgeschakeld",
+  "dev_disabled_message": "Opties voor ontwikkelaars zijn nu in de hele app uitgeschakeld.",
   "general_title": "Algemeen",
   "security_title": "Beveiliging en Privacy",
   "backup_title": "Backup of Herstellen",
   "advanced_title": "Geavanceerd",
+  "about_title": "Over",
   "support_title": "Ondersteuning",
   "about": {
     "title": "Over Bitkit",
+    "text": "Bedankt dat u een verantwoordelijke Bitcoiner bent.\nVerander uw portemonnee, verander de wereld.\n\nBitkit geeft u de sleutels tot uw geld, profiel, contacten en webaccounts.\n\nBitkit is gemaakt door Synonym Software Ltd.",
     "legal": "Juridisch",
     "share": "Delen",
     "version": "Versie"
@@ -20,19 +24,32 @@
     "currency_footer": "Prijzen verzorgd door Bitfinex & CoinGecko.",
     "currency_most_used": "Meest Gebruikt",
     "currency_other": "Andere Valuta",
+    "unit": "Standaard eenheid",
+    "unit_title": "Standaard eenheid",
+    "unit_display": "Bedragen weergeven in",
     "unit_bitcoin": "Bitcoin",
+    "unit_note": "Tip: Schakel snel tussen Bitcoin en {currency} door op uw wallet saldo te tikken.",
+    "denomination_label": "Bitcoin-denominatie",
+    "denomination_modern": "Modern (₿ 10 000)",
+    "denomination_classic": "Klassiek (₿ 0.00010000)",
     "speed": "Transactiesnelheid",
     "speed_title": "Transactiesnelheid",
     "speed_default": "Standaard Transactiesnelheid",
     "speed_fee_custom": "Stel Een Aangepaste Vergoeding In",
+    "speed_fee_total": "₿ {feeSats} voor de gemiddelde transactie",
+    "speed_fee_total_fiat": "₿ {feeSats} voor de gemiddelde transactie ({fiatSymbol}{fiatFormatted} )",
     "tags": "Labels",
     "tags_previously": "Eerder gebruikte labels"
   },
   "widgets": {
     "nav_title": "Widgets",
-    "showWidgets": "Widgets"
+    "showWidgets": "Widgets",
+    "showWidgetTitles": "Widget titels tonen"
   },
   "security": {
+    "title": "Veiligheid en privacy",
+    "swipe_balance_to_hide": "Veeg de balans om te verbergen",
+    "hide_balance_on_open": "Saldo verbergen bij open",
     "clipboard": "Klembord lezen voor gemak in gebruik",
     "warn_100": "Waarschuur mij met betalingen over $100",
     "pin": "Pincode",
@@ -51,6 +68,8 @@
     "export": "Exporteer wallet data naar de telefoon",
     "reset": "Reset en herstel wallet",
     "failed_title": "Data Backup Mislukt",
+    "failed_message": "Bitkit heeft geen back-up gemaakt van uw wallet gegevens. Opnieuw proberen in {interval, plural, one {# minute} andere {# minutes}}.",
+    "latest": "laatste back-ups van gegevens",
     "status_failed": "Mislukte Backups: {time}",
     "status_success": "Meest Recente Backup: {time}",
     "category_connections": "Verbindingen",
@@ -64,13 +83,54 @@
   },
   "support": {
     "title": "Ondersteuning",
+    "text": "Hulp nodig? Meld uw probleem vanuit Bitkit, bezoek het helpcentrum, controleer de status of neem contact met ons op via onze sociale kanalen.",
+    "report": "Probleem rapporteren",
+    "help": "Helpcentrum",
+    "status": "App-status",
+    "report_text": "Beschrijf het probleem dat u ondervindt of stel maar een vraag.",
+    "label_address": "E-mailadres",
+    "label_message": "Probleem of vraag",
+    "placeholder_address": "satoshi@satoshi.com",
+    "placeholder_message": "Beschrijf het probleem of stel een vraag",
     "text_button": "Verstuur",
+    "title_success": "Succesvol verzonden",
+    "text_success": "Bedankt dat u contact met ons heeft opgenomen! Wij proberen zo snel mogelijk contact met u op te nemen.",
     "text_success_button": "OK",
+    "title_unsuccess": "Niet verzonden",
+    "text_unsuccess": "Er is iets misgegaan tijdens het verzenden van uw vraag of probleem. Probeer het opnieuw.",
     "text_unsuccess_button": "Opnieuw proberen"
   },
   "status": {
+    "title": "App-status",
+    "internet": {
+      "title": "Internet",
+      "ready": "Aangesloten",
+      "pending": "Opnieuw verbinden...",
+      "error": "Ontkoppeld"
+    },
+    "bitcoin_node": {
+      "title": "Bitcoin-node",
+      "ready": "Aangesloten",
+      "pending": "Aansluiten...",
+      "error": "Kan geen verbinding maken met Electrum"
+    },
     "lightning_node": {
-      "title": "Lightning Node"
+      "title": "Lightning Node",
+      "ready": "Gesynchroniseerd",
+      "pending": "Synchroniseren...",
+      "error": "Kon niet starten"
+    },
+    "lightning_connection": {
+      "title": "Lightning-verbinding",
+      "ready": "Open",
+      "pending": "Openen...",
+      "error": "Geen open verbindingen"
+    },
+    "full_backup": {
+      "title": "Laatste volledige gegevensback-up",
+      "ready": "Back-up klaar",
+      "pending": "Een back-up maken...",
+      "error": "Volledige back-up niet voltooid"
     }
   },
   "adv": {
@@ -78,12 +138,21 @@
     "section_networks": "Netwerken",
     "section_other": "Overige",
     "address_type": "Bitcoin adres type",
+    "monitored_address_types": "Bewaakte adrestypes",
+    "monitored_address_types_update_title": "Bewaakte adrestypes bijgewerkt",
+    "monitored_address_types_update_description": "Wijzigingen worden volledig van kracht nadat de app opnieuw is opgestart.",
+    "gap_limit": "Adres Gap Limit",
     "coin_selection": "Coin selectie",
     "cs_method": "Coin Selectie Methode",
     "cs_manual": "Manueel",
     "cs_auto": "Autopilot",
     "cs_auto_mode": "Autopilot Mode",
+    "cs_max": "Meer privé",
+    "cs_max_description": "Sorteer op en gebruik eerst de kleinste UTXO. Hogere kosten, maar verbergt uw grootste UTXO's.",
+    "cs_min": "Laagste kosten",
+    "cs_min_description": "Sorteer op en gebruik de grootste UTXO eerst. Laagste kosten, maar onthult uw grootste UTXO's.",
     "cs_consolidate": "Consolideren",
+    "cs_consolidate_description": "Gebruik alle beschikbare UTXO's, ongeacht het bedrag dat verzonden wordt. Gebruik deze methode wanneer de kosten laag zijn om de kosten bij toekomstige transacties te verlagen.",
     "payment_preference": "Betaalvoorkeuren",
     "pp_header": "Selecteer op welke manier u het liefst geld ontvangt wanneer andere geld sturen naar uw profielsleutel.",
     "pp_footer": "*Dit vereist het delen van data om betalingen te kunnen maken",
@@ -98,6 +167,8 @@
     "lightning_connections": "Lightning Verbindingen",
     "lightning_node": "Lightning Node",
     "electrum_server": "Electrum Server",
+    "rgs_server": "Rapid-Gossip-Sync",
+    "web_relay": "Slashtags Web Relais",
     "bitcoin_network": "Bitcoin Netwerk"
   },
   "fee": {
@@ -129,6 +200,7 @@
     "no_funds_change": "Geen geld gevonden voor het {addressType}adres type, wisselgeld adressen tot index {index}. ",
     "no_addrs_with_funds": "Geen adressen met geld gevonden voor de zoekterm \"{searchTxt}\"",
     "no_addrs_str": "Geen adressen gevonden voor de zoekterm \"{searchTxt}\"",
+    "rescan_error": "Rescan mislukt",
     "spend_all": "{count, plural, one {Geef Al Het Geld Uit Voor # adres} other {Geef Al Het Geld UIt Voor # adressen}}",
     "index": "Index: {index}",
     "path": "Pad: {path}",
@@ -156,6 +228,7 @@
     "button_connect": "Verbind Met Hostcomputer"
   },
   "gap": {
-    "save": "Opslaan"
+    "save": "Opslaan",
+    "gap_limit_update_description": "Wijzigingen worden volledig van kracht nadat de app opnieuw is opgestart."
   }
 }

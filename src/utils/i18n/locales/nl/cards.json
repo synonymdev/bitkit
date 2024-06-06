@@ -1,12 +1,27 @@
 {
   "backupSeedPhrase": {
-    "title": "Backup"
+    "title": "Backup",
+    "description": "Bewaar uw bitcoin"
   },
   "discount": {
+    "title": "Korting",
     "description": "Bestedingssaldo"
   },
+  "fastpay": {
+    "title": "Fastpay",
+    "description": "Scan en betaal"
+  },
+  "invite": {
+    "title": "Uitnodiging",
+    "description": "Deel Bitkit"
+  },
+  "lightning": {
+    "title": "Besteed",
+    "description": "Onmiddellijke betalingen"
+  },
   "lightningSettingUp": {
-    "title": "Overboeken"
+    "title": "Overboeken",
+    "description": "Bezig..."
   },
   "lightningConnecting": {
     "title": "Verbinding aan het maken",
@@ -17,13 +32,15 @@
     "description": "Verbonden!"
   },
   "transferPending": {
-    "title": "Overboeken"
+    "title": "Overboeken",
+    "description": "Klaar in ±{duration}"
   },
   "transferClosingChannel": {
     "title": "Aan het opstarten...",
     "description": "Houd de app open"
   },
   "pin": {
+    "title": "Beveilig",
     "description": "Pincode instellen"
   },
   "slashtagsProfile": {
@@ -31,7 +48,16 @@
     "description": "Vul uw gegevens in"
   },
   "support": {
-    "title": "Ondersteuning"
+    "title": "Ondersteuning",
+    "description": "Hulp krijgen"
+  },
+  "buyBitcoin": {
+    "title": "Koop",
+    "description": "Bitcoin kopen"
+  },
+  "btFailed": {
+    "title": "Mislukt",
+    "description": "Probeer het opnieuw"
   },
   "suggestions": "Suggesties"
 }

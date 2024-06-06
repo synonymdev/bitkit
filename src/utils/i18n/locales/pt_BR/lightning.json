@@ -55,7 +55,6 @@
   "receiving_amount_bitcoin": "Digite a quantidade de Bitcoin que você deseja receber instantaneamente.",
   "enter_custom_amount": "Digite o Valor",
   "custom_confirm_header": "Por favor\n<accent>confirme</accent>",
-  "custom_confirm_cost": "Custa <accent>{txFee}</accent> em taxas da rede e <accent>{lspFee}</accent> em taxas de provedor de serviços para transferir seus fundos. Seu saldo de gastos deve permanecer ativo por pelo menos <accentWithKeyboard>{weeks, plural, one {# week} outros {# weeks}}.<penIcon/></accentWithKeyboard>",
   "duration_header": "<accent>Duração</accent> do Saldo",
   "duration_text": "Escolha o número mínimo de semanas que o senhor deseja que essa parte do seu saldo de gastos (conexão Lightning) permaneça ativa.",
   "duration_week": "{count, plural, one {semana} many {semanas} other {semanas}}",

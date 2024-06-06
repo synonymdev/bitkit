@@ -62,6 +62,7 @@
   "activity_no_explain": "Ontvang wat geld om te beginnen",
   "activity_sent": "Verstuurd",
   "activity_received": "Ontvangen",
+  "activity_failed": "Mislukt",
   "activity_transfer": "Overboeken",
   "activity_transfer_spending": "Bestedingssaldo",
   "activity_transfer_savings": "Spaarsaldo",
