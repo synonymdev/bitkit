@@ -1,9 +1,27 @@
 {
   "backupSeedPhrase": {
-    "title": "Còpia de seguretat"
+    "title": "Còpia de seguretat",
+    "description": "Emmagatzema els teus bitcoin"
+  },
+  "discount": {
+    "title": "Descompte",
+    "description": "Balanç de despesa"
+  },
+  "fastpay": {
+    "title": "Pagament ràpid",
+    "description": "Escaneja i paga"
+  },
+  "invite": {
+    "title": "Convidar",
+    "description": "Comparteix Bitkit"
+  },
+  "lightning": {
+    "title": "Gastar",
+    "description": "Pagaments instantanis"
   },
   "lightningSettingUp": {
-    "title": "Transferir"
+    "title": "Transferir",
+    "description": "En progrés..."
   },
   "lightningConnecting": {
     "title": "Conectant",
@@ -14,13 +32,15 @@
     "description": "Conectat!"
   },
   "transferPending": {
-    "title": "Transferir"
+    "title": "Transferir",
+    "description": "Llest en ±{duration}"
   },
   "transferClosingChannel": {
     "title": "Iniciant...",
     "description": "Mantenir l'aplicació oberta"
   },
   "pin": {
+    "title": "Segur",
     "description": "Configurar un codi PIN"
   },
   "slashtagsProfile": {
@@ -28,7 +48,16 @@
     "description": "Afegeix els teus detalls"
   },
   "support": {
-    "title": "Suport"
+    "title": "Suport",
+    "description": "Obteniu ajuda"
+  },
+  "buyBitcoin": {
+    "title": "Comprar",
+    "description": "Comprar bitcoin"
+  },
+  "btFailed": {
+    "title": "Ha fallat",
+    "description": "Si us plau torna-ho a provar"
   },
   "suggestions": "Sugeriments"
 }

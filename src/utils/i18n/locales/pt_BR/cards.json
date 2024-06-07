@@ -1,12 +1,27 @@
 {
   "backupSeedPhrase": {
-    "title": "Faça backup"
+    "title": "Faça backup",
+    "description": "Guarde seu bitcoin"
   },
   "discount": {
+    "title": "Desconto",
     "description": "Saldo de Gastos"
   },
+  "fastpay": {
+    "title": "Pagamentos rápidos",
+    "description": "Escanear e pagar"
+  },
+  "invite": {
+    "title": "Convide",
+    "description": "Compartilhe a Bitkit"
+  },
+  "lightning": {
+    "title": "Pagar",
+    "description": "Pagamentos instantâneos"
+  },
   "lightningSettingUp": {
-    "title": "Transferência"
+    "title": "Transferência",
+    "description": "Em andamento..."
   },
   "lightningConnecting": {
     "title": "Conectando",
@@ -17,13 +32,15 @@
     "description": "Conectado!"
   },
   "transferPending": {
-    "title": "Transferência"
+    "title": "Transferência",
+    "description": "Pronto em ±{duration}"
   },
   "transferClosingChannel": {
     "title": "Iniciando...",
     "description": "Mantenha o app aberto"
   },
   "pin": {
+    "title": "Segurança",
     "description": "Configure um PIN"
   },
   "slashtagsProfile": {
@@ -31,7 +48,16 @@
     "description": "Adicione seus detalhes"
   },
   "support": {
-    "title": "Suporte"
+    "title": "Suporte",
+    "description": "Obtenha ajuda"
+  },
+  "buyBitcoin": {
+    "title": "Comprar",
+    "description": "Compre bitcoin"
+  },
+  "btFailed": {
+    "title": "Falha",
+    "description": "Tente novamente"
   },
   "suggestions": "Sugestões"
 }

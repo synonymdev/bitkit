@@ -140,6 +140,7 @@
     "monitored_address_types": "Отслеживаемые Типы Адресов",
     "monitored_address_types_update_title": "Обновлены отслеживаемые типы адресов",
     "monitored_address_types_update_description": "Изменения вступят в силу после перезапуска приложения.",
+    "gap_limit": "Gap Limit Адресов",
     "coin_selection": "Выбор Монет",
     "cs_method": "Метод Выбора Монет",
     "cs_manual": "Вручную",
@@ -233,6 +234,7 @@
   "gap": {
     "save": "Сохранить",
     "reset": "Сбросить",
+    "gap_limit_update_title": "Gap Limit Обновлен",
     "gap_limit_update_description": "Изменения вступят в силу после перезапуска приложения."
   },
   "rgs": {

@@ -1,5 +1,8 @@
 {
   "settings": "Configuracions",
+  "dev_enabled_title": "Opcions de Dev activades",
+  "dev_disabled_title": "Opcions de Dev desactivades",
+  "dev_disabled_message": "Les opcions per a desenvolupadors ara estan desactivades a tota l'aplicació.",
   "general_title": "General",
   "security_title": "Seguretat i privacitat",
   "advanced_title": "Avançat",
@@ -11,12 +14,23 @@
     "share": "Compartir",
     "version": "Versió"
   },
+  "dev_title": "Configuració de Desenvolupador",
   "general": {
     "currency_local": "Moneda local",
     "currency_local_title": "Moneda local",
+    "currency_footer": "Preus proporcionats per Bitfinex i CoinGecko.",
+    "currency_most_used": "Més utilitzat",
+    "currency_other": "Altres monedes",
     "unit": "Unitat per defecte",
     "unit_title": "Unitat per defecte",
+    "unit_display": "Mostra les quantitats en",
     "unit_bitcoin": "Bitcoin",
+    "denomination_label": "Denominacions de Bitcoin",
+    "denomination_modern": "Modern (₿ 10 000)",
+    "denomination_classic": "Clàssic (₿ 0.00010000)",
+    "speed": "Velocitat de transacció",
+    "speed_title": "Velocitat de transacció",
+    "speed_default": "Velocitat de transacció per defecte",
     "speed_fee_custom": "Estableix una tarifa personalitzada",
     "tags": "Etiquetes",
     "tags_previously": "Etiquetes prèviament utilitzades"
@@ -26,6 +40,7 @@
     "showWidgets": "Ginys"
   },
   "security": {
+    "title": "Seguretat i privacitat",
     "pin": "Codi Pin",
     "pin_change": "Canviar el codi PIN",
     "pin_launch": "Requereix un PIN per activar-se",
@@ -47,13 +62,36 @@
   },
   "support": {
     "title": "Suport",
+    "help": "Centre d'ajuda",
+    "status": "Estat de l'Aplicació",
+    "label_address": "Adreça de correu electrònic",
+    "placeholder_address": "satoshi@satoshi.com",
     "text_button": "Envia",
+    "title_success": "Enviat correctament",
     "text_success_button": "OK",
     "text_unsuccess_button": "Torna a intentar"
   },
   "status": {
+    "title": "Estat de l'Aplicació",
+    "internet": {
+      "title": "Internet",
+      "ready": "Conectat",
+      "pending": "Reconectant ...",
+      "error": "Desconectat"
+    },
+    "bitcoin_node": {
+      "title": "Node Bitcoin",
+      "ready": "Conectat",
+      "pending": "Conectant ..."
+    },
     "lightning_node": {
-      "title": "Node de Lightning"
+      "title": "Node de Lightning",
+      "ready": "Sincronitzat",
+      "pending": "Sincronitzant ..."
+    },
+    "lightning_connection": {
+      "ready": "Obrir",
+      "pending": "Obrint ..."
     }
   },
   "adv": {
@@ -61,25 +99,47 @@
     "section_networks": "Xarxes",
     "section_other": "Altres",
     "coin_selection": "Selecció de monedes",
+    "cs_manual": "Manual",
+    "cs_max": "Més privacitat",
+    "payment_preference": "Preferències de pagament",
     "pp_footer": "* Això requereix compartir les dades de pagament.",
     "pp_contacts_switch": "Habilitar pagaments amb contactes*",
+    "address_viewer": "Visor de adreces",
+    "reset_confirm": "Si, reinicia",
     "lightning_connections": "Connexions Lightning",
-    "lightning_node": "Node de Lightning"
+    "lightning_node": "Node de Lightning",
+    "electrum_server": "Servidor Electrum",
+    "bitcoin_network": "Xarxa Bitcoin"
   },
   "fee": {
     "fast": {
-      "value": "Ràpid"
+      "label": "Ràpid (més car)",
+      "value": "Ràpid",
+      "description": "± 10-20 minuts"
     },
     "normal": {
       "label": "Normal",
-      "value": "Normal"
+      "value": "Normal",
+      "description": "± 20-60 minuts"
+    },
+    "slow": {
+      "label": "Lent (més barat)",
+      "value": "Lent",
+      "description": "± 1-2 hores"
     },
     "custom": {
       "label": "Personalitzat",
       "value": "Personalitzat"
     }
   },
+  "addr": {
+    "index": "Index: {index}",
+    "private_hide": "Amaga la clau privada",
+    "private_view": "Veure la clau privada",
+    "private_key": "Clau privada: {privateKey}"
+  },
   "es": {
+    "error_peer": "Error Electrum",
     "disconnected": "desconnectat",
     "host": "Amfitrió",
     "port": "Port"

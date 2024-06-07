@@ -510,12 +510,16 @@ export const canBoost = (txid: string): ICanBoostResponse => {
 };
 
 // TODO: get actual routing fee (Currently generous with the fee for wiggle room to prevent routing failures)
-const getEstimatedRoutingFee = (amount: number): number => {
+export const getEstimatedRoutingFee = (amount: number): number => {
 	const fee = 100;
 	if (amount > fee) {
 		return fee;
 	} else if (amount > 25) {
 		return 25;
+	} else if (amount > 10) {
+		return 10;
+	} else if (amount > 3) {
+		return 1;
 	} else {
 		// Make an attempt to spend it all, but will likely fail without a proper routing fee allotment.
 		return 0;

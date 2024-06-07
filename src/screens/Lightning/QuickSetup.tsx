@@ -203,6 +203,7 @@ const QuickSetup = ({
 	const showMaxSpendingNote = spendingAmount >= lnSetup.limits.local;
 	const showLspLimitNote = spendingAmount >= Math.round(lnSetup.limits.lsp);
 	const maxSpendingPercentage = Math.max(lnSetup.percentage.spending, 80);
+	const { canOnlyClose } = lnSetup;
 
 	return (
 		<ThemedView style={styles.root}>
@@ -323,6 +324,7 @@ const QuickSetup = ({
 							text={t('advanced')}
 							size="large"
 							variant="secondary"
+							disabled={canOnlyClose}
 							testID="QuickSetupAdvanced"
 							onPress={onSwitch}
 						/>

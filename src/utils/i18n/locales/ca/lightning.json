@@ -2,6 +2,10 @@
   "introduction": {
     "button": "Començar"
   },
+  "funding": {
+    "nav_title": "Balanç de despesa",
+    "button2": "Utilitza un altre moneder"
+  },
   "transfer": {
     "nav_title": "Transferir fons",
     "nav_successful": "Transferència realitzada",
@@ -19,11 +23,14 @@
   "receiving_label": "Capacitat de recepció",
   "note_blocktank_limit": "L'import que podeu transferir al vostre saldo de despeses està actualment limitat a ${usdValue}.",
   "quick_setup": "Configuració ràpida",
+  "quick_confirm_header": "Si us plau\n<accent>confirma</accent>",
   "receiving_amount_money": "Trieu la quantitat de diners que voleu poder rebre de forma immediata.",
   "receiving_amount_bitcoin": "Introduïu la quantitat de Bitcoin que voleu poder rebre instantàniament.",
+  "custom_confirm_header": "Si us plau\n<accent>confirma</accent>",
   "setting_up_step2": "Pagament realitzat amb èxit",
   "setting_up_step3": "Esperant per a obrir",
   "setting_up_step4": "Obertura de connexió",
+  "setting_up_button": "Continua utilitzant Bitkit",
   "awesome": "Impressionant!",
   "interrupted_title": "Transferència interrompuda",
   "availability_title": "Disponibilitat de fons",
@@ -44,6 +51,7 @@
   "error_invoice": "No s'ha pogut crear la factura.",
   "error_add_tor": "Bitkit no pot afegir nodes tor.",
   "invoice_copied": "Factura copiada al porta-retalls",
+  "connection": "Connexió",
   "status": "Estat",
   "order_details": "Detalls de la comanda",
   "order": "Comanda",
@@ -61,9 +69,13 @@
   "is_usable": "És utilitzable?",
   "is_ready": "Està a punt?",
   "support": "Suport",
+  "connection_closed": {
+    "title": "Connexió tancada"
+  },
   "close_conn": "Tanca la connexió",
   "close_error": "Transferència fallida",
   "close_error_msg": "No es possible transferir els teus fons de tornada a estalvi. Si us plau, intenta-ho de nou.",
+  "close_success_title": "Transferència iniciada",
   "close_button": "Tancar",
   "force_init_msg": "Els vostres fons seran accessibles en ±14 dies.",
   "force_failed_msg": "No es possible transferir els teus fons de tornada a estalvi. Si us plau, intenta-ho de nou.",
@@ -71,6 +83,7 @@
   "order_given_up_title": "Configuració de pagaments instantanis fallida",
   "order_expired_title": "Configuració de pagaments instantanis fallida",
   "order_state": {
+    "payment_canceled": "Pagament cancelat",
     "paid": "Pagament realitzat amb èxit.",
     "refunded": "Pagament retornat",
     "opening": "Obertura de connexió",

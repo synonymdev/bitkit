@@ -1,13 +1,14 @@
 {
   "backupSeedPhrase": {
-    "title": "Бекап"
+    "title": "Бекап",
+    "description": "Храните ваш биткоин"
   },
   "discount": {
     "title": "Скидка",
-    "description": "Баланс Расходов"
+    "description": "Баланс расходов"
   },
   "fastpay": {
-    "title": "Fastpay",
+    "title": "Быстроплата",
     "description": "Сканируйте и платите"
   },
   "invite": {
@@ -15,14 +16,16 @@
     "description": "Поделитесь Bitkit"
   },
   "lightning": {
-    "title": "Тратить"
+    "title": "Тратить",
+    "description": "Мгновенные платежи"
   },
   "lightningSettingUp": {
-    "title": "Перенос"
+    "title": "Настройка",
+    "description": "Идёт процесс..."
   },
   "lightningConnecting": {
     "title": "Подключение",
-    "description": "Готовность ±10м"
+    "description": "Готово за ±10м"
   },
   "lightningReady": {
     "title": "Готово",
@@ -30,11 +33,11 @@
   },
   "transferPending": {
     "title": "Перенос",
-    "description": "Готовность ±{duration}м"
+    "description": "Готово за ±{duration}"
   },
   "transferClosingChannel": {
-    "title": "Инициализация...",
-    "description": "Не закрывайте приложение"
+    "title": "Запуск...",
+    "description": "Держите приложение открытым"
   },
   "pin": {
     "title": "Безопасность",
@@ -42,7 +45,7 @@
   },
   "slashtagsProfile": {
     "title": "Профиль",
-    "description": "Добавьте свои данные"
+    "description": "Добавьте детали"
   },
   "support": {
     "title": "Поддержка",

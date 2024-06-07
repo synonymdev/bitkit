@@ -168,10 +168,12 @@
   "details_savings_title": "Épargner",
   "details_spending_title": "Dépenser",
   "savings": {
-    "title": "Épargner"
+    "title": "Épargner",
+    "onboarding": "<accent>Envoyer\nles bitcoins</accent>\nsur votre\ncompte épargne"
   },
   "spending": {
-    "title": "Dépenser"
+    "title": "Dépenser",
+    "onboarding": "<accent>Envoyer\nles bitcoins</accent>\nsur votre\ncompte courant"
   },
   "details_transfer_subtitle": "Transfert entrant",
   "tx_invalid": "Transaction invalide",

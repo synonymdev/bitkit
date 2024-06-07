@@ -38,7 +38,6 @@ import {
 	addPeer,
 	decodeLightningInvoice,
 	getLightningBalance,
-	getOpenChannels,
 } from './lightning';
 import { EAvailableNetwork } from './networks';
 import { savePeer } from '../store/utils/lightning';
@@ -618,7 +617,7 @@ export const processBitcoinTransactionData = async ({
 	try {
 		// Reset existing transaction state and prepare for a new one.
 		await resetSendTransaction();
-		await setupOnChainTransaction({});
+		await setupOnChainTransaction();
 
 		let response;
 		let error: ToastOptions | undefined; //Information that will be passed as a notification.
@@ -639,16 +638,15 @@ export const processBitcoinTransactionData = async ({
 		if (inputValue > onchainBalance) {
 			onchainBalance = inputValue;
 		}
-		const openChannels = getOpenChannels();
 
-		// Filter for the lightning invoice.
-		const filteredLightningInvoice = data.find(
-			(d) => d.qrDataType === EQRDataType.lightningPaymentRequest,
-		) as TLightningUrl;
+		// Look for a Lightning invoice
+		const lightningInvoice = data.find((d) => {
+			return d.qrDataType === EQRDataType.lightningPaymentRequest;
+		}) as TLightningUrl;
 		let decodedLightningInvoice: TInvoice | undefined;
-		if (filteredLightningInvoice) {
+		if (lightningInvoice) {
 			const decodeInvoiceRes = await decodeLightningInvoice({
-				paymentRequest: filteredLightningInvoice.lightningPaymentRequest ?? '',
+				paymentRequest: lightningInvoice.lightningPaymentRequest,
 			});
 			if (decodeInvoiceRes.isOk()) {
 				decodedLightningInvoice = decodeInvoiceRes.value;
@@ -664,19 +662,10 @@ export const processBitcoinTransactionData = async ({
 		}
 
 		// Attempt to pay with lightning first.
-		// 1. Check we have a lightning invoice
-		// 2. Ensure the invoice has not expired.
-		// 3. Ensure we have some open channels.
-		// 4. Ensure we have a lightning balance.
-		if (
-			decodedLightningInvoice &&
-			!decodedLightningInvoice.is_expired &&
-			openChannels.length &&
-			spendingBalance
-		) {
+		if (decodedLightningInvoice && !decodedLightningInvoice.is_expired) {
 			// Ensure we can afford to pay the lightning invoice. If so, pass it through.
-			if (spendingBalance >= requestedAmount) {
-				response = filteredLightningInvoice;
+			if (spendingBalance !== 0 && spendingBalance >= requestedAmount) {
+				response = lightningInvoice;
 			} else {
 				const amount = requestedAmount - spendingBalance;
 				const { bitcoinFormatted } = getBitcoinDisplayValues({

@@ -48,8 +48,9 @@ export type TLnSetup = {
 	};
 	clientBalance: number;
 	lspBalance: number;
-	canContinue: boolean;
 	isTransferringToSavings: boolean;
+	canOnlyClose: boolean;
+	canContinue: boolean;
 };
 
 /**
@@ -97,6 +98,7 @@ export const lnSetupSelector = createSelector(
 		const spendingPercentage = Math.round((spending / totalBalance) * 100);
 		const savingsPercentage = Math.round((savings / totalBalance) * 100);
 		const isTransferringToSavings = spending < lightningBalance;
+		const canOnlyClose = limit === lightningBalance;
 		const canContinue = spending !== lightningBalance && spending <= limit;
 
 		// Default value for the slider (20% of onchain). Cap it at the spending limit.
@@ -129,6 +131,7 @@ export const lnSetupSelector = createSelector(
 			clientBalance,
 			lspBalance,
 			isTransferringToSavings,
+			canOnlyClose,
 			canContinue,
 		};
 	},

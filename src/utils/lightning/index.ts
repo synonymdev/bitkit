@@ -417,6 +417,7 @@ export const handleLightningPaymentSubscription = async ({
 	vibrate({ type: 'default' });
 	showBottomSheet('newTxPrompt', { activityItem });
 	dispatch(closeSheet('receiveNavigation'));
+	dispatch(closeSheet('orangeTicket'));
 	dispatch(addActivityItem(activityItem));
 
 	await refreshLdk({ selectedWallet, selectedNetwork });
@@ -450,7 +451,7 @@ export const subscribeToLightningPayments = ({
 	if (!paymentSentSubscription) {
 		paymentSentSubscription = ldk.onEvent(
 			EEventTypes.channel_manager_payment_sent,
-			(res: TChannelManagerPaymentSent) => {
+			async (res: TChannelManagerPaymentSent) => {
 				const pending = getLightningStore().pendingPayments;
 				const found = pending.find((p) => p.payment_hash === res.payment_hash);
 
@@ -460,6 +461,7 @@ export const subscribeToLightningPayments = ({
 						title: i18n.t('wallet:toast_payment_success_title'),
 						description: i18n.t('wallet:toast_payment_success_description'),
 					});
+					await refreshLdk();
 					bitkitLedger?.handleLNTx({ ...res, amount_sat: found.amount });
 				} else {
 					syncLedger(); // TChannelManagerPaymentSent doesn't have amount_sat

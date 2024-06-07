@@ -25,6 +25,7 @@ import {
 	UpArrow,
 	PlusIcon,
 } from '../../../styles/icons';
+import useBreakpoints from '../../../styles/breakpoints';
 import SafeAreaInset from '../../../components/SafeAreaInset';
 import Button from '../../../components/Button';
 import NavigationHeader from '../../../components/NavigationHeader';
@@ -74,7 +75,7 @@ import { TPaidBlocktankOrders } from '../../../store/types/blocktank';
 import { EUnit } from '../../../store/types/wallet';
 import { showBottomSheet } from '../../../store/utils/ui';
 import { EChannelStatus, TChannel } from '../../../store/types/lightning';
-import useBreakpoints from '../../../styles/breakpoints';
+import { lnSetupSelector } from '../../../store/reselect/aggregations';
 
 /**
  * Convert pending (non-channel) blocktank orders to (fake) channels.
@@ -237,6 +238,7 @@ const Channels = ({
 	const openChannels = useAppSelector(openChannelsSelector);
 	const pendingChannels = useAppSelector(pendingChannelsSelector);
 	const closedChannels = useAppSelector(closedChannelsSelector);
+	const { canOnlyClose } = useAppSelector((state) => lnSetupSelector(state, 0));
 
 	const { pendingOrders, failedOrders } = getPendingBlocktankChannels(
 		blocktankOrders,
@@ -245,7 +247,10 @@ const Channels = ({
 	const pendingConnections = [...pendingOrders, ...pendingChannels];
 
 	const handleAdd = useCallback((): void => {
-		navigation.navigate('LightningRoot', { screen: 'Funding' });
+		navigation.navigate('LightningRoot', {
+			screen: 'CustomSetup',
+			params: { spending: true },
+		});
 
 		// TODO: Update this view once we enable creating channels with nodes other than Blocktank.
 		// navigation.navigate('LightningAddConnection');
@@ -350,8 +355,10 @@ const Channels = ({
 			<SafeAreaInset type="top" />
 			<NavigationHeader
 				title={t('connections')}
-				actionIcon={<PlusIcon width={24} height={24} />}
-				onActionPress={handleAdd}
+				onActionPress={canOnlyClose ? undefined : handleAdd}
+				actionIcon={
+					canOnlyClose ? undefined : <PlusIcon width={24} height={24} />
+				}
 			/>
 			<ScrollView
 				contentContainerStyle={styles.content}
@@ -656,6 +663,7 @@ const Channels = ({
 						style={styles.button}
 						text={t('conn_button_add')}
 						size="large"
+						disabled={canOnlyClose}
 						onPress={handleAdd}
 					/>
 				</View>

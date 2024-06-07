@@ -5,8 +5,8 @@ import ca from './ca';
 import cs from './cs';
 import de from './de';
 import el from './el';
-import es_ES from './es_ES';
 import es_419 from './es_419';
+import es_ES from './es_ES';
 import fa from './fa';
 import fr from './fr';
 import it from './it';
@@ -17,7 +17,10 @@ import no from './no';
 import pl from './pl';
 import pt_BR from './pt_BR';
 import pt_PT from './pt_PT';
+import ro from './ro';
 import ru from './ru';
+import uk from './uk';
+import yo from './yo';
 
 export default {
 	en,
@@ -40,5 +43,8 @@ export default {
 	pt: pt_BR, // pt_BR is the fallback for pt because it's the most common variant
 	'pt-BR': pt_BR,
 	'pt-PT': pt_PT,
+	ro,
 	ru,
+	uk,
+	yo,
 } as const;

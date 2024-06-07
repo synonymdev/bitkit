@@ -1,19 +1,43 @@
-import React, { memo, ReactElement, useCallback, useEffect } from 'react';
+import React, {
+	memo,
+	ReactElement,
+	useCallback,
+	useEffect,
+	useState,
+} from 'react';
+import { ActivityIndicator, Image, StyleSheet, View } from 'react-native';
 import { ldk } from '@synonymdev/react-native-ldk';
 
+import { BodyM } from '../styles/text';
+import AmountToggle from '../components/AmountToggle';
+import SafeAreaInset from '../components/SafeAreaInset';
+import BottomSheetWrapper from '../components/BottomSheetWrapper';
+import BottomSheetNavigationHeader from '../components/BottomSheetNavigationHeader';
 import { useAppSelector } from '../hooks/redux';
 import { useLightningMaxInboundCapacity } from '../hooks/lightning';
+import { useBottomSheetBackPress, useSnapPoints } from '../hooks/bottomSheet';
 import { showToast } from '../utils/notifications';
-import { getNodeIdFromStorage, waitForLdk } from '../utils/lightning';
+import {
+	getNodeId,
+	getNodeIdFromStorage,
+	waitForLdk,
+} from '../utils/lightning';
 import { viewControllerSelector } from '../store/reselect/ui';
 import { createLightningInvoice } from '../store/utils/lightning';
 import { __TREASURE_HUNT_HOST__ } from '../constants/env';
 
+const imageSrc = require('../assets/illustrations/bitcoin-emboss.png');
+
 const OrangeTicket = (): ReactElement => {
+	const snapPoints = useSnapPoints('large');
 	const maxInboundCapacitySat = useLightningMaxInboundCapacity();
+	const [isLoading, setIsLoading] = useState(true);
+	const [amount, setAmount] = useState<number>();
 	const { isOpen, ticketId } = useAppSelector((state) => {
 		return viewControllerSelector(state, 'orangeTicket');
 	});
+
+	useBottomSheetBackPress('orangeTicket');
 
 	const getPrize = useCallback(async (): Promise<void> => {
 		const getLightningInvoice = async (): Promise<string> => {
@@ -52,7 +76,8 @@ const OrangeTicket = (): ReactElement => {
 		const openChest = async (): Promise<any> => {
 			await waitForLdk();
 
-			const nodePublicKey = getNodeIdFromStorage();
+			const nodeId = await getNodeId();
+			const nodePublicKey = nodeId.isOk() ? nodeId.value : '';
 			const input = { chestId: ticketId, nodePublicKey };
 			const signResult = await ldk.nodeSign({
 				message: JSON.stringify(input),
@@ -128,27 +153,94 @@ const OrangeTicket = (): ReactElement => {
 		if (chestResponse.error) {
 			return;
 		}
+		setAmount(chestResponse.amountSat);
 
 		const openResponse = await openChest();
 		if (openResponse.error) {
 			return;
 		}
+		setIsLoading(false);
+		setAmount(openResponse.amountSat);
 
 		const claimResponse = await claimPrize();
 		if (claimResponse.error) {
 			return;
 		}
-	}, [ticketId, maxInboundCapacitySat]);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [ticketId]);
 
 	useEffect(() => {
 		if (!isOpen) {
+			setIsLoading(true);
 			return;
 		}
 
 		getPrize();
 	}, [isOpen, getPrize]);
 
-	return <></>;
+	if (isLoading) {
+		return <></>;
+	}
+
+	return (
+		<BottomSheetWrapper view="orangeTicket" snapPoints={snapPoints}>
+			<View style={styles.root}>
+				<BottomSheetNavigationHeader
+					title="Won Bitcoin!"
+					displayBackButton={false}
+				/>
+
+				<View style={styles.content}>
+					{amount && <AmountToggle amount={amount} />}
+
+					<BodyM style={styles.text} color="secondary">
+						You've just won some Bitcoin! Your coins will arrive in ±30 seconds.
+						Please wait.
+					</BodyM>
+
+					<View style={styles.imageContainer}>
+						<Image style={styles.image} source={imageSrc} />
+					</View>
+
+					<View style={styles.footer}>
+						<ActivityIndicator size={34} color="white" />
+					</View>
+				</View>
+				<SafeAreaInset type="bottom" minPadding={16} />
+			</View>
+		</BottomSheetWrapper>
+	);
 };
+
+const styles = StyleSheet.create({
+	root: {
+		flex: 1,
+	},
+	content: {
+		flex: 1,
+		paddingHorizontal: 16,
+	},
+	text: {
+		marginTop: 32,
+	},
+	imageContainer: {
+		flexShrink: 1,
+		justifyContent: 'center',
+		alignItems: 'center',
+		alignSelf: 'center',
+		width: 256,
+		aspectRatio: 1,
+		marginTop: 'auto',
+	},
+	image: {
+		flex: 1,
+		resizeMode: 'contain',
+	},
+	footer: {
+		marginTop: 'auto',
+		marginBottom: 16,
+		width: '100%',
+	},
+});
 
 export default memo(OrangeTicket);

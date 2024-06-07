@@ -12,6 +12,7 @@
   "qr_paste": "Collez le QR code ",
   "buy_header": "Achetez des\n<accent>Bitcoin</accent>",
   "buy_text": "Vous n'avez pas de bitcoin ou vous avez besoin de plus d'informations ?",
+  "buy_button": "Choisissez une plateforme d'échange",
   "error_keychain": "Problème de connexion des données",
   "error_keychain_msg": "Une erreur s'est produite : Impossible de charger primaryKey.",
   "connection_restored_title": "Connection Electrum restauré",

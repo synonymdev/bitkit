@@ -12,6 +12,7 @@
   "support_title": "Suporte",
   "about": {
     "title": "Sobre a Bitkit",
+    "text": "Obrigado por ser um Bitcoiner responsável.\nMude sua carteira, mude o mundo.\n\nA Bitkit lhe entrega as chaves do seu dinheiro, perfil, contatos e contas web.\n\nA Bitkit foi criada pela Synonym Software Ltd.",
     "legal": "Legal",
     "share": "Compartilhar",
     "version": "Versão"
@@ -27,19 +28,28 @@
     "unit_title": "Unidade padrão",
     "unit_display": "Exibir valores em",
     "unit_bitcoin": "Bitcoin",
+    "unit_note": "Dica: Alterne rapidamente entre Bitcoin e {currency} tocando no saldo de sua carteira.",
+    "denomination_label": "Denominação do Bitcoin",
+    "denomination_modern": "Moderna (₿ 10 000)",
+    "denomination_classic": "Clássica (₿ 0,00010000)",
     "speed": "Velocidade da transação",
     "speed_title": "Velocidade da transação",
     "speed_default": "Velocidade de transação padrão",
     "speed_fee_custom": "Definir taxa personalizada",
+    "speed_fee_total": "₿ {feeSats} para uma transação média",
+    "speed_fee_total_fiat": "₿ {feeSats} para uma transação média ({fiatSymbol}{fiatFormatted} )",
     "tags": "Tags",
     "tags_previously": "Tags usadas anteriormente"
   },
   "widgets": {
     "nav_title": "Widgets",
-    "showWidgets": "Widgets"
+    "showWidgets": "Widgets",
+    "showWidgetTitles": "Mostrar Títulos dos Widgets"
   },
   "security": {
     "title": "Segurança e Privacidade",
+    "swipe_balance_to_hide": "Deslize o saldo para ocultar",
+    "hide_balance_on_open": "Ocultar saldo ao abrir o app",
     "clipboard": "Ler área de transferência",
     "warn_100": "Avisar ao enviar mais de US$ 100",
     "pin": "Código PIN",
@@ -58,6 +68,7 @@
     "export": "Exportar dados da carteira para seu celular",
     "reset": "Reiniciar e restaurar carteira",
     "failed_title": "Falha no Backup",
+    "failed_message": "A Bitkit falhou ao fazer o backup dos dados da carteira. Tentando novamente em {interval, plural, one {# minute} outros {# minutes}}.",
     "latest": "backups de dados mais recentes",
     "status_failed": "Falha no backup: {time}",
     "status_success": "Último backup: {time}",
@@ -72,13 +83,54 @@
   },
   "support": {
     "title": "Suporte",
+    "text": "Precisa de ajuda? Relate seu problema pela Bitkit, visite a central de ajuda, verifique o status ou entre em contato conosco em nossos canais sociais.",
+    "report": "Relatar problema",
+    "help": "Central de Ajuda",
+    "status": "Status do Aplicativo",
+    "report_text": "Descreva o problema que está enfrentando ou faça uma pergunta.",
+    "label_address": "Endereço de e-mail",
+    "label_message": "Problema ou pergunta",
+    "placeholder_address": "satoshi@satoshi.com",
+    "placeholder_message": "Descreva o problema ou faça uma pergunta",
     "text_button": "Enviar",
+    "title_success": "Enviado com Sucesso",
+    "text_success": "Obrigado por entrar em contato! Responderemos o mais rápido possível.",
     "text_success_button": "OK",
+    "title_unsuccess": "Falha no Envio",
+    "text_unsuccess": "Algo deu errado ao enviar seu problema ou pergunta. Por favor, tente novamente.",
     "text_unsuccess_button": "Tente novamente"
   },
   "status": {
+    "title": "Status do Aplicativo",
+    "internet": {
+      "title": "Internet",
+      "ready": "Conectado",
+      "pending": "Reconectando...",
+      "error": "Desconectado"
+    },
+    "bitcoin_node": {
+      "title": "Nó de Bitcoin",
+      "ready": "Conectado",
+      "pending": "Conectando...",
+      "error": "Não foi possível conectar-se ao servidor Electrum"
+    },
     "lightning_node": {
-      "title": "Nó Lightning"
+      "title": "Nó Lightning",
+      "ready": "Sincronizado",
+      "pending": "Sincronizando...",
+      "error": "Não foi possível iniciar"
+    },
+    "lightning_connection": {
+      "title": "Conexões Lightning",
+      "ready": "Ativa",
+      "pending": "Ativando...",
+      "error": "Nenhuma conexão ativa"
+    },
+    "full_backup": {
+      "title": "Último Backup Completo",
+      "ready": "Backup Feito",
+      "pending": "Fazendo o backup...",
+      "error": "Falha ao concluir backup"
     }
   },
   "adv": {
@@ -86,12 +138,21 @@
     "section_networks": "Redes",
     "section_other": "Outros",
     "address_type": "Tipo de endereço Bitcoin",
+    "monitored_address_types": "Tipos de Endereços Monitorados",
+    "monitored_address_types_update_title": "Tipos de Endereços Monitorados Atualizados",
+    "monitored_address_types_update_description": "As alterações terão após a reinicialização do aplicativo.",
+    "gap_limit": "Limite de Endereços",
     "coin_selection": "Controle de Moedas",
     "cs_method": "Método de Controle de Moedas",
     "cs_manual": "Manual",
     "cs_auto": "Piloto automático",
     "cs_auto_mode": "Modo de Piloto Automático",
+    "cs_max": "Mais Privacidade",
+    "cs_max_description": "Prioriza UTXOs menores. A taxa é mais alta, mas oculta os maiores UTXOs.",
+    "cs_min": "Menos Taxas",
+    "cs_min_description": "Prioriza UTXOs maiores. A taxa é mais baixa, mas revela seus maiores UTXOs.",
     "cs_consolidate": "Consolidação máxima",
+    "cs_consolidate_description": "Gasta todos UTXOs, independentemente do valor enviado. Use esse método quando as taxas estiverem baixas para minimizar as taxas em transações futuras.",
     "payment_preference": "Preferência de Recebimento",
     "pp_header": "Escolha como prefere receber quando for pago por meio da chave do seu perfil.",
     "pp_footer": "* Requer o compartilhamento de dados de pagamento.",
@@ -107,6 +168,7 @@
     "lightning_connections": "Conexões Lightning",
     "lightning_node": "Nó Lightning",
     "electrum_server": "Servidor Electrum",
+    "rgs_server": "Servidor Rapid-Gossip-Sync",
     "web_relay": "Web Relay de Slashtags",
     "bitcoin_network": "Rede Bitcoin"
   },
@@ -141,6 +203,8 @@
     "no_addrs_str": "Nenhum endereço foi encontrado ao pesquisar por \"{searchTxt}\"",
     "rescan_error": "O Re-escaneamento Falhou.",
     "rescan_error_description": "O Bitkit não conseguiu verificar os saldos do endereço.",
+    "spend_number": "{count, plural, one {Spend ₿ {fundsToSpend} From # address} many {Spend ₿ {fundsToSpend} From # addresses} other {Gastar ₿ {fundsToSpend} de # endereços}}",
+    "spend_all": "{count, plural, one {Gastar todos os fundos do endereço.} many {Gastar todos os fundos de # endereços} other {Gastar todos os fundos de # endereços}}",
     "index": "Índice: {index}",
     "path": "Caminho: {caminho}",
     "private_hide": "Ocultar Chave Privada",
@@ -148,6 +212,7 @@
     "private_key": "Chave Privada: {privateKey}",
     "addr_change": "Endereços de Troco",
     "addr_receiving": "Endereços de Recebimento",
+    "sats_found": "₿ {totalBalance} encontrados",
     "gen_20": "Gerar mais 20",
     "check_balances": "Verificar Fundos",
     "copied": "Copiado para a área de transferência"
@@ -173,7 +238,9 @@
   },
   "gap": {
     "save": "Salvar",
-    "reset": "Redefinir"
+    "reset": "Redefinir",
+    "gap_limit_update_title": "Limite de Endereços Atualizado",
+    "gap_limit_update_description": "As alterações terão após a reinicialização do aplicativo."
   },
   "rgs": {
     "server_url": "URL do Servidor de Rapid-Gossip-Sync",
