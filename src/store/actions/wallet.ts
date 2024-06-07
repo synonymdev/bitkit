@@ -17,6 +17,7 @@ import {
 	getSelectedNetwork,
 	getSelectedWallet,
 	refreshWallet,
+	waitForWallet,
 } from '../../utils/wallet';
 import {
 	dispatch,
@@ -483,6 +484,7 @@ export const updateSendTransaction = ({
  * @returns {Result<string>}
  */
 export const resetSendTransaction = async (): Promise<Result<string>> => {
+	await waitForWallet();
 	const transaction = getOnChainWalletTransaction();
 	return transaction.resetSendTransaction();
 };

@@ -134,7 +134,7 @@ export const setupAddressGenerator = async ({
 /*
  * Wait for wallet to be ready
  */
-const waitForWallet = async (): Promise<void> => {
+export const waitForWallet = async (): Promise<void> => {
 	if (wallet) {
 		return;
 	}
