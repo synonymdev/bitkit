@@ -2,14 +2,14 @@ import React, { ReactElement, useState } from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
 import { Trans, useTranslation } from 'react-i18next';
 
-import { Display, BodyM, BodyMSB, BodySSB } from '../../styles/text';
+import { Display, BodyMSB, BodySSB } from '../../styles/text';
 import SafeAreaInset from '../../components/SafeAreaInset';
 import Button from '../../components/Button';
 import CheckButton from '../../components/CheckButton';
 import VerticalShadow from '../../components/VerticalShadow';
 import { openURL } from '../../utils/helpers';
 import { wipeApp } from '../../store/utils/settings';
-import termsOfUseText from '../../assets/tos';
+import TOS from '../../assets/tos';
 import type { OnboardingStackScreenProps } from '../../navigation/types';
 
 const TermsOfUse = ({
@@ -58,9 +58,7 @@ const TermsOfUse = ({
 							components={{ accent: <Display color="brand" /> }}
 						/>
 
-						<BodyM color="secondary" style={styles.text}>
-							{termsOfUseText}
-						</BodyM>
+						<TOS />
 					</ScrollView>
 
 					<View style={styles.shadowContainer}>
@@ -132,7 +130,6 @@ const styles = StyleSheet.create({
 	scrollView: {
 		flex: 1,
 		paddingTop: 48,
-		textTransform: 'uppercase',
 	},
 	shadowContainer: {
 		position: 'absolute',
@@ -141,9 +138,6 @@ const styles = StyleSheet.create({
 		right: 0,
 		height: 70,
 		pointerEvents: 'none',
-	},
-	text: {
-		marginTop: 8,
 	},
 	checkboxes: {
 		marginTop: 'auto',
