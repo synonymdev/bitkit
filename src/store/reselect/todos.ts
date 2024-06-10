@@ -26,7 +26,7 @@ import { onboardingProfileStepSelector } from './slashtags';
 import { closedChannelsSelector, openChannelsSelector } from './lightning';
 import { blocktankPaidOrdersFullSelector } from './blocktank';
 import { transfersSelector } from './wallet';
-import { ETransferType, TTransferToSavings } from '../types/wallet';
+import { ETransferType } from '../types/wallet';
 
 export const todosSelector = (state: RootState): TTodosState => state.todos;
 
@@ -102,14 +102,6 @@ export const todosFullSelector = createSelector(
 			return isOpen && isPending;
 		});
 
-		const transferToSavings = transfers.find((t) => {
-			const isClose =
-				t.type === ETransferType.coopClose ||
-				t.type === ETransferType.forceClose;
-
-			return isClose && t.confirmations < 6;
-		});
-
 		// lightning
 		if (newChannels.length > 0) {
 			// Show lightningReadyTodo if we have one channel opened recently
@@ -120,11 +112,6 @@ export const todosFullSelector = createSelector(
 		} else if (openChannels.length === 0 && closedChannels.length === 0) {
 			if (transferToSpending) {
 				res.push(lightningSettingUpTodo);
-			} else if (transferToSavings) {
-				const transfer = transferToSavings as TTransferToSavings;
-				const requiredConfs = 6;
-				const duration = (requiredConfs - transfer.confirmations) * 10;
-				res.push({ ...transferPendingTodo, duration }); // TODO: distinguish between coop and force close
 			} else if (!hide.lightning) {
 				res.push(lightningTodo);
 			}
@@ -134,11 +121,6 @@ export const todosFullSelector = createSelector(
 				res.push(transferClosingChannelTodo);
 			} else if (transferToSpending) {
 				res.push({ ...transferPendingTodo, duration: 10 });
-			} else if (transferToSavings) {
-				const transfer = transferToSavings as TTransferToSavings;
-				const requiredConfs = 6;
-				const duration = (requiredConfs - transfer.confirmations) * 10;
-				res.push({ ...transferPendingTodo, duration }); // TODO: find a way to distinguish between transfer to and from spendings
 			}
 		}
 

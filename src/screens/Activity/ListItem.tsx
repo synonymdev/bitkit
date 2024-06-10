@@ -24,7 +24,6 @@ import {
 import { useAppSelector } from '../../hooks/redux';
 import { useProfile2 } from '../../hooks/slashtags2';
 import { useFeeText } from '../../hooks/fees';
-import { TTransferToSavings } from '../../store/types/wallet';
 import { slashTagsUrlSelector } from '../../store/reselect/metadata';
 import { truncate } from '../../utils/helpers';
 import { getActivityItemDate } from '../../utils/activity';
@@ -139,15 +138,8 @@ const OnchainListItem = ({
 				</ThemedView>
 			);
 		} else {
-			const transferToSavings = transfer as TTransferToSavings;
-			const requiredConfs = 6;
 			title = t('activity_transfer_savings');
-			if (transferToSavings.confirmations >= requiredConfs) {
-				description = t('activity_transfer_savings_done');
-			} else {
-				const duration = (requiredConfs - transferToSavings.confirmations) * 10;
-				description = t('activity_transfer_savings_pending', { duration });
-			}
+			description = t('activity_transfer_savings_done');
 			icon = (
 				<ThemedView style={styles.icon} color="brand16">
 					<TransferIcon color="brand" />
