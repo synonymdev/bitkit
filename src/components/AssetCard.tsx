@@ -22,8 +22,7 @@ const AssetCard = ({
 	testID?: string;
 	onPress: (event: GestureResponderEvent) => void;
 }): ReactElement => {
-	const { balanceInTransferToSpending, balanceInTransferToSavings } =
-		useBalance();
+	const { balanceInTransferToSpending } = useBalance();
 
 	return (
 		<View style={styles.container}>
@@ -41,9 +40,6 @@ const AssetCard = ({
 					<View style={styles.primary}>
 						{balanceInTransferToSpending !== 0 && (
 							<TransferIcon color="purple" />
-						)}
-						{balanceInTransferToSavings !== 0 && (
-							<TransferIcon color="orange" />
 						)}
 						<Money
 							style={styles.primaryAmount}

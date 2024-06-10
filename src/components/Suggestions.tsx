@@ -103,6 +103,10 @@ const Suggestions = (): ReactElement => {
 					params: { showClosed: true },
 				});
 			}
+
+			if (id === 'upgrade') {
+				showBottomSheet('upgrade');
+			}
 		},
 		[onchainBalance, navigation, pinTodoDone],
 	);

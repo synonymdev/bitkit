@@ -21,11 +21,13 @@ export type ViewControllerParamList = {
 	receiveNavigation: undefined;
 	sendNavigation: { screen: keyof SendStackParamList } | undefined;
 	slashauthModal: { url: string };
+	slashauthWarning: undefined;
 	timeRangePrompt: undefined;
 	treasureHunt: { chestId: string };
 	tagsPrompt: undefined;
 	lnurlWithdraw: { wParams: LNURLWithdrawParams };
 	lnurlPay: { pParams: LNURLPayParams };
+	upgrade: undefined;
 };
 
 export type TViewController = keyof ViewControllerParamList;
@@ -78,4 +80,5 @@ export type TUiState = {
 	timeZone: string;
 	language: string;
 	fromAddressViewer: boolean;
+	hasSeenUpgradePrompt: boolean;
 };

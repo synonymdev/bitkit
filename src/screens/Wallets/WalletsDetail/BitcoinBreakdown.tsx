@@ -23,12 +23,8 @@ const BitcoinBreakdown = (): ReactElement => {
 	const navigation = useNavigation<RootNavigationProp>();
 	const isGeoBlocked = useAppSelector(isGeoBlockedSelector);
 	const accountVersion = useAppSelector(accountVersionSelector);
-	const {
-		onchainBalance,
-		spendingBalance,
-		balanceInTransferToSpending,
-		balanceInTransferToSavings,
-	} = useBalance();
+	const { onchainBalance, spendingBalance, balanceInTransferToSpending } =
+		useBalance();
 
 	const onRebalancePress = (): void => {
 		if (accountVersion < 2) {
@@ -52,7 +48,7 @@ const BitcoinBreakdown = (): ReactElement => {
 			<NetworkRow
 				title={t('details_savings_title')}
 				balance={onchainBalance}
-				pendingBalance={balanceInTransferToSavings}
+				pendingBalance={0}
 				icon={
 					<ThemedView style={styles.icon} color="brand16">
 						<SavingsIcon color="brand" width={16} height={16} />

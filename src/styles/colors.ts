@@ -9,6 +9,7 @@ export interface IColors {
 	green2: string;
 	red: string;
 	brand: string;
+	brand2: string;
 	tether: string;
 	blue: string;
 	yellow: string;
@@ -37,6 +38,7 @@ export interface IColors {
 	white32: string;
 	white40: string;
 	white50: string;
+	white64: string;
 	white80: string;
 	white84: string;
 	red16: string;
@@ -59,6 +61,7 @@ export interface IColors {
 const colors: IColors = {
 	// Brand
 	brand: '#FF6600',
+	brand2: '#FF4400',
 	tether: '#009393',
 
 	// Accents
@@ -106,6 +109,7 @@ const colors: IColors = {
 	white32: 'rgba(255, 255, 255, 0.32)',
 	white40: 'rgba(255, 255, 255, 0.40)',
 	white50: 'rgba(255, 255, 255, 0.50)',
+	white64: 'rgba(255, 255, 255, 0.64)',
 	white80: 'rgba(255, 255, 255, 0.80)',
 	white84: 'rgba(255, 255, 255, 0.84)',
 	red16: 'rgba(233, 81, 100, 0.16)',

@@ -21,11 +21,13 @@ export const defaultViewControllers: TUiState['viewControllers'] = {
 	receiveNavigation: defaultViewController,
 	sendNavigation: defaultViewController,
 	slashauthModal: defaultViewController,
+	slashauthWarning: defaultViewController,
 	timeRangePrompt: defaultViewController,
 	treasureHunt: defaultViewController,
 	tagsPrompt: defaultViewController,
 	lnurlWithdraw: defaultViewController,
 	lnurlPay: defaultViewController,
+	upgrade: defaultViewController,
 };
 
 export const initialUiState: TUiState = {
@@ -42,4 +44,5 @@ export const initialUiState: TUiState = {
 	// Used to control bottom-sheets throughout the app
 	viewControllers: defaultViewControllers,
 	fromAddressViewer: false, // When true, ensures tx inputs are not cleared when sweeping from address viewer.
+	hasSeenUpgradePrompt: false,
 };

@@ -11,12 +11,13 @@ import { useTranslation } from 'react-i18next';
 
 import { Text01M } from '../styles/text';
 import { TouchableOpacity } from '../styles/components';
-import { KeyIcon, ListIcon, TrashIcon } from '../styles/icons';
+import { InfoIcon, KeyIcon, ListIcon, TrashIcon } from '../styles/icons';
 import { useAppDispatch } from '../hooks/redux';
 import { useProfile, useSelectedSlashtag } from '../hooks/slashtags';
 import { showToast } from '../utils/notifications';
 import { TAuthWidget } from '../store/types/widgets';
 import { deleteWidget } from '../store/slices/widgets';
+import { showBottomSheet } from '../store/utils/ui';
 import Button from './Button';
 import Dialog from './Dialog';
 import ProfileImage from './ProfileImage';
@@ -81,6 +82,10 @@ const AuthWidget = ({
 		setShowDialog(true);
 	};
 
+	const onNotePress = (): void => {
+		showBottomSheet('slashauthWarning');
+	};
+
 	return (
 		<>
 			<TouchableOpacity
@@ -137,6 +142,17 @@ const AuthWidget = ({
 				</View>
 			</TouchableOpacity>
 
+			<TouchableOpacity
+				style={styles.note}
+				activeOpacity={0.9}
+				color="yellow16"
+				onPress={onNotePress}>
+				<Text01M style={styles.name} color="yellow" numberOfLines={1}>
+					This widget will stop working
+				</Text01M>
+				<InfoIcon color="yellow" width={20} height={20} />
+			</TouchableOpacity>
+
 			<Dialog
 				visible={showDialog}
 				title={t('widget_delete_title')}
@@ -156,7 +172,8 @@ const AuthWidget = ({
 
 const styles = StyleSheet.create({
 	root: {
-		borderRadius: 16,
+		borderTopLeftRadius: 16,
+		borderTopRightRadius: 16,
 		padding: 16,
 	},
 	header: {
@@ -200,6 +217,14 @@ const styles = StyleSheet.create({
 		height: 32,
 		paddingHorizontal: 16,
 		minWidth: 0,
+	},
+	note: {
+		borderBottomLeftRadius: 16,
+		borderBottomRightRadius: 16,
+		padding: 16,
+		flexDirection: 'row',
+		alignItems: 'center',
+		justifyContent: 'space-between',
 	},
 });
 
