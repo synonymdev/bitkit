@@ -11,7 +11,7 @@ import WalletsScreen from '../../screens/Wallets';
 import WalletsDetail from '../../screens/Wallets/WalletsDetail';
 import ActivityFiltered from '../../screens/Activity/ActivityFiltered';
 import BackupPrompt from '../../screens/Settings/Backup/BackupPrompt';
-import AppUpdatePrompt from '../bottom-sheet/AppUpdatePrompt';
+import UpgradeNavigation from '../bottom-sheet/UpgradeNavigation';
 import HighBalanceWarning from '../bottom-sheet/HighBalanceWarning';
 import TabBar from '../../components/TabBar';
 import type { RootStackScreenProps } from '../types';
@@ -55,7 +55,7 @@ const WalletsStack = ({
 			{/* Should only ever show when user is on the main wallet screen */}
 			<BackupPrompt enabled={isWalletsScreenFocused} />
 			<HighBalanceWarning enabled={isWalletsScreenFocused} />
-			<AppUpdatePrompt enabled={isWalletsScreenFocused} />
+			<UpgradeNavigation enabled={isWalletsScreenFocused} />
 		</>
 	);
 };

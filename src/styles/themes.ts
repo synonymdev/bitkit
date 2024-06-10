@@ -31,6 +31,7 @@ interface IFonts {
 	medium: IFont | undefined;
 	semibold: IFont | undefined;
 	bold: IFont | undefined;
+	black: IFont | undefined;
 }
 
 export interface ITheme {
@@ -58,6 +59,7 @@ const defaultFontsValues: IFonts = {
 	medium: {},
 	semibold: {},
 	bold: {},
+	black: {},
 };
 
 const light: ITheme = {
@@ -111,6 +113,9 @@ export const getTheme = (theme: string): ITheme => {
 			},
 			bold: {
 				fontFamily: 'InterTight-Bold',
+			},
+			black: {
+				fontFamily: 'InterTight-Black',
 			},
 		},
 	};

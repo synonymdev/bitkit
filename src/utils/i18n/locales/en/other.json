@@ -89,5 +89,54 @@
 	"high_text2_beta": "Please consider moving some of your funds. We recommend using only small amounts while Bitkit is in beta.",
 	"high_button_more": "Learn More",
 	"caution_header": "Caution:\n<yellow>Beta Risk.</yellow>",
-	"caution_text": "Beta software may put your money at risk. We recommend using only small amounts while Bitkit is in beta."
+	"caution_text": "Beta software may put your money at risk. We recommend using only small amounts while Bitkit is in beta.",
+
+	"upgrade": {
+		"intro": {
+			"nav_title": "Upgrade Available",
+			"title": "Upgrade to\n<accent>Bitkit v1.0</accent>",
+			"text": "Thank you for testing Bitkit beta and helping us improve the wallet! To safely upgrade you need to follow a few steps. ",
+			"cancel": "Later",
+			"continue": "Start"
+		},
+		"transfer": {
+			"nav_title": "Transfer Funds",
+			"title": "Move funds\n<accent>to savings</accent>",
+			"text": "First move your funds from spending back to savings. The fee to transfer your funds depends on network conditions.",
+			"cancel": "Back",
+			"continue": "Transfer Funds"
+		},
+		"pending": {
+			"nav_title": "Transfer Funds",
+			"title": "Transfer\n<accent>in progress</accent>",
+			"text": "Please wait, your funds transfer is in progress. This should take ±10 seconds."
+		},
+		"success": {
+			"nav_title": "Transfer Funds",
+			"title": "Transfer\n<accent>successful</accent>",
+			"text": "The funds from your spending balance have been moved back to your savings.",
+			"continue": "Next"
+		},
+		"download": {
+			"nav_title": "Download Bitkit",
+			"title": "Download\n<accent>Bitkit v1.0</accent>",
+			"text": "The funds from your spending balance have been moved back to your savings.",
+			"cancel": "Back",
+			"continue": "Next"
+		},
+		"restore": {
+			"nav_title": "Wallet Restore",
+			"title": "Restore\n<accent>wallet</accent>",
+			"text": "<bold>Close this beta version of Bitkit,</bold> then enter your <brand>recovery phrase</brand> from your (paper) backup in Bitkit v1.0.",
+			"cancel": "Back",
+			"continue": "Next"
+		},
+		"complete": {
+			"nav_title": "Upgrade Complete",
+			"title": "Enjoy\n<accent>Bitkit</accent>",
+			"text": "Please verify your funds and wallet data in Bitkit v1.0. If all is correct, you can safely delete this beta version.",
+			"cancel": "Back",
+			"continue": "Close Beta"
+		}
+	}
 }

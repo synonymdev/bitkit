@@ -26,6 +26,7 @@ export type ViewControllerParamList = {
 	tagsPrompt: undefined;
 	lnurlWithdraw: { wParams: LNURLWithdrawParams };
 	lnurlPay: { pParams: LNURLPayParams };
+	upgrade: undefined;
 };
 
 export type TViewController = keyof ViewControllerParamList;
@@ -78,4 +79,5 @@ export type TUiState = {
 	timeZone: string;
 	language: string;
 	fromAddressViewer: boolean;
+	hasSeenUpgradePrompt: boolean;
 };

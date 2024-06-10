@@ -6,6 +6,7 @@ const imageTransfer = require('../../assets/illustrations/transfer.png');
 const imageShield = require('../../assets/illustrations/shield.png');
 const imageCrown = require('../../assets/illustrations/crown-no-margins.png');
 const imageBitcoin = require('../../assets/illustrations/b-emboss.png');
+const imageWand = require('../../assets/illustrations/wand.png');
 
 export const backupSeedPhraseTodo: ITodo = {
 	id: 'backupSeedPhrase',
@@ -65,6 +66,12 @@ export const btFailedTodo: ITodo = {
 	id: 'btFailed',
 	color: 'gray',
 	image: imageLightning,
+	dismissable: true,
+};
+export const upgradeTodo: ITodo = {
+	id: 'upgrade',
+	color: 'brand',
+	image: imageWand,
 	dismissable: true,
 };
 

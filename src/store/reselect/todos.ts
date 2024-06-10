@@ -15,6 +15,7 @@ import {
 	transferPendingTodo,
 	transferClosingChannelTodo,
 	btFailedTodo,
+	upgradeTodo,
 } from '../shapes/todos';
 import {
 	backupVerifiedSelector,
@@ -70,6 +71,10 @@ export const todosFullSelector = createSelector(
 		const { hide } = todos;
 
 		const res: ITodo[] = [];
+
+		if (!hide.upgrade) {
+			res.push(upgradeTodo);
+		}
 
 		if (!hide.backupSeedPhrase && !backupVerified) {
 			res.push(backupSeedPhraseTodo);
