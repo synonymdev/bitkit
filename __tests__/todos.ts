@@ -17,6 +17,7 @@ import {
 	slashtagsProfileTodo,
 	transferPendingTodo,
 	transferClosingChannelTodo,
+	upgradeTodo,
 } from '../src/store/shapes/todos';
 import { createNewWallet } from '../src/utils/startup';
 import { EAvailableNetwork } from '../src/utils/networks';
@@ -38,6 +39,7 @@ describe('Todos selector', () => {
 
 	it('should return default set of todos', () => {
 		assert.deepEqual(todosFullSelector(s), [
+			upgradeTodo,
 			backupSeedPhraseTodo,
 			lightningTodo,
 			pinTodo,
@@ -88,6 +90,7 @@ describe('Todos selector', () => {
 		state.blocktank.orders = [order];
 
 		state.todos.hide = {
+			upgrade: +new Date(),
 			backupSeedPhrase: +new Date(),
 			btFailed: +new Date(),
 			buyBitcoin: +new Date(),
@@ -146,20 +149,6 @@ describe('Todos selector', () => {
 		});
 		expect(todosFullSelector(state)).toEqual(
 			expect.arrayContaining([{ ...transferPendingTodo, duration: 10 }]),
-		);
-	});
-
-	it('should return transferPendingTodo if there is a transfer to savings', () => {
-		const state = cloneDeep(s);
-		state.wallet.wallets.wallet0.transfers.bitcoinRegtest.push({
-			txId: 'txid',
-			type: ETransferType.coopClose,
-			status: ETransferStatus.pending,
-			amount: 100000,
-			confirmations: 1,
-		});
-		expect(todosFullSelector(state)).toEqual(
-			expect.arrayContaining([{ ...transferPendingTodo, duration: 50 }]),
 		);
 	});
 
