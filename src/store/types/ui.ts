@@ -21,6 +21,7 @@ export type ViewControllerParamList = {
 	receiveNavigation: undefined;
 	sendNavigation: { screen: keyof SendStackParamList } | undefined;
 	slashauthModal: { url: string };
+	slashauthWarning: undefined;
 	timeRangePrompt: undefined;
 	treasureHunt: { chestId: string };
 	tagsPrompt: undefined;
