@@ -2,12 +2,8 @@ import { Platform } from 'react-native';
 import { getBundleId } from 'react-native-device-info';
 
 export const appName = 'Bitkit';
-const appleAppId = '6443905609';
-const androidPackageName = getBundleId();
+const appStoreUrl = 'https://apps.apple.com/app/bitkit-wallet/id6502440655';
+const playStoreUrl = `https://play.google.com/store/apps/details?id=${getBundleId()}`;
+const storeUrl = Platform.OS === 'ios' ? appStoreUrl : playStoreUrl;
 
-const appStoreUrl =
-	Platform.OS === 'ios'
-		? `https://apps.apple.com/us/app/bitkit/id${appleAppId}`
-		: `https://play.google.com/store/apps/details?id=${androidPackageName}`;
-
-export const shareText = `Download Bitkit, Your Ultimate Bitcoin Toolkit. Handing you the keys to reshape your digital life. ${appStoreUrl}`;
+export const shareText = `Download Bitkit, a self-custodial wallet powering lightning-fast bitcoin payments. Hold your keys, unlock your sovereignty. ${storeUrl}`;
