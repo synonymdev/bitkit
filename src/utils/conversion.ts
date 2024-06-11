@@ -36,7 +36,9 @@ export const convertToSats = (
 	}
 
 	if (unit === EConversionUnit.fiat) {
-		return fiatToBitcoinUnit({ amount });
+		const denomination = getSettingsStore().denomination;
+		const btcUnit = fiatToBitcoinUnit({ amount });
+		return denomination === EDenomination.modern ? btcUnit : btcToSats(btcUnit);
 	}
 
 	return amount;

@@ -70,6 +70,7 @@ export const getBitcoinDisplayValues = ({
 
 export const getFiatDisplayValues = ({
 	satoshis,
+	denomination,
 	exchangeRate,
 	exchangeRates,
 	currency,
@@ -78,6 +79,7 @@ export const getFiatDisplayValues = ({
 	shouldRoundUp = false,
 }: {
 	satoshis: number;
+	denomination?: EDenomination;
 	exchangeRate?: number;
 	exchangeRates?: IExchangeRates;
 	currency?: string;
@@ -85,7 +87,9 @@ export const getFiatDisplayValues = ({
 	locale?: string;
 	shouldRoundUp?: boolean;
 }): IFiatDisplayValues => {
-	const denomination = getSettingsStore().denomination;
+	if (!denomination) {
+		denomination = getSettingsStore().denomination;
+	}
 
 	if (!exchangeRates) {
 		exchangeRates = getWalletStore().exchangeRates;
@@ -248,6 +252,7 @@ export const getDisplayValues = ({
 	});
 	const fiatDisplayValues = getFiatDisplayValues({
 		satoshis,
+		denomination,
 		exchangeRate,
 		currency,
 		currencySymbol,

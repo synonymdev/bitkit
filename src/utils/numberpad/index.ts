@@ -71,9 +71,9 @@ export const getNumberPadText = (
 		return '';
 	}
 
-	const displayValue = getDisplayValues({ satoshis: amount });
+	const displayValue = getDisplayValues({ satoshis: amount, denomination });
 
-	if (denomination === EDenomination.classic) {
+	if (denomination === EDenomination.classic && unit === EUnit.BTC) {
 		const { bitcoinWhole, bitcoinDecimal } = displayValue;
 		const decimalPart = Number(bitcoinDecimal) ? `.${bitcoinDecimal}` : '';
 		return `${bitcoinWhole}${decimalPart}`;

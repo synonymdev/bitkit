@@ -1,9 +1,14 @@
 import '../src/utils/i18n';
-import { getWalletStore } from '../src/store/helpers';
+import { dispatch, getWalletStore } from '../src/store/helpers';
 import { updateExchangeRates } from '../src/store/actions/wallet';
 import { getDisplayValues } from '../src/utils/displayValues';
 import { resetExchangeRates } from '../src/store/actions/wallet';
-import { EDenomination } from '../src/store/types/wallet';
+import { EConversionUnit, EDenomination } from '../src/store/types/wallet';
+import { convertToSats } from '../src/utils/conversion';
+import {
+	resetSettingsState,
+	updateSettings,
+} from '../src/store/slices/settings';
 
 // @ts-ignore
 global.fetch = jest.fn(() =>
@@ -13,7 +18,7 @@ global.fetch = jest.fn(() =>
 				tickers: [
 					{
 						symbol: 'BTCRUB',
-						lastPrice: '3832499',
+						lastPrice: '4000000',
 						base: 'BTC',
 						baseName: 'Bitcoin',
 						quote: 'RUB',
@@ -24,7 +29,7 @@ global.fetch = jest.fn(() =>
 					},
 					{
 						symbol: 'BTCUSD',
-						lastPrice: '42373.00',
+						lastPrice: '50000.00',
 						base: 'BTC',
 						baseName: 'Bitcoin',
 						quote: 'USD',
@@ -39,24 +44,30 @@ global.fetch = jest.fn(() =>
 );
 
 describe('Pulls latest fiat exchange rates and checks the wallet store for valid conversions', () => {
-	jest.setTimeout(10000);
-
 	beforeAll(() => resetExchangeRates());
 
 	it('handles missing exchange rate by returning the correct fiat fallback', () => {
-		const dv = getDisplayValues({ satoshis: 1010101 });
+		const dv1 = getDisplayValues({ satoshis: 1010101 });
 
 		// expected fiat fallback
-		expect(dv.fiatFormatted).toBe('—');
-		expect(dv.fiatWhole).toBe('—');
-		expect(dv.fiatDecimal).toBe('');
-		expect(dv.fiatDecimalSymbol).toBe('');
-		expect(dv.fiatSymbol).toBe('$');
-		expect(dv.fiatTicker).toBe('USD');
-		expect(dv.fiatValue).toBe(0);
+		expect(dv1.fiatFormatted).toBe('—');
+		expect(dv1.fiatWhole).toBe('—');
+		expect(dv1.fiatDecimal).toBe('');
+		expect(dv1.fiatDecimalSymbol).toBe('');
+		expect(dv1.fiatSymbol).toBe('$');
+		expect(dv1.fiatTicker).toBe('USD');
+		expect(dv1.fiatValue).toBe(0);
 
 		// expected BTC conversion
-		expect(dv.bitcoinFormatted).toBe('1 010 101');
+		expect(dv1.bitcoinFormatted).toBe('1 010 101');
+
+		const dv2 = getDisplayValues({
+			satoshis: 1010101,
+			denomination: EDenomination.classic,
+		});
+
+		// expected BTC conversion
+		expect(dv2.bitcoinFormatted).toBe('0.01010101');
 	});
 
 	it('Blocktank FX rates with default selected currency', async () => {
@@ -138,5 +149,58 @@ describe('Pulls latest fiat exchange rates and checks the wallet store for valid
 		expect(dv.bitcoinFormatted).toBe('1.23456789');
 		expect(dv.bitcoinWhole).toBe('1');
 		expect(dv.bitcoinDecimal).toBe('23456789');
+	});
+});
+
+describe('convertToSats', () => {
+	describe('can work with exchange rates', () => {
+		beforeAll(async () => {
+			const res = await updateExchangeRates({});
+			if (res.isErr()) {
+				throw res.error;
+			}
+		});
+
+		it('can convert fiat to sats', () => {
+			const r1 = convertToSats(500, EConversionUnit.fiat);
+			expect(r1).toBe(1000000);
+			dispatch(updateSettings({ denomination: EDenomination.classic }));
+			const r2 = convertToSats(500, EConversionUnit.fiat);
+			expect(r2).toBe(1000000);
+			resetSettingsState();
+		});
+
+		it('can convert sats to sats', () => {
+			const r = convertToSats(10, EConversionUnit.satoshi);
+			expect(r).toBe(10);
+		});
+
+		it('can convert BTC to sats', () => {
+			const r = convertToSats(0.000005, EConversionUnit.BTC);
+			expect(r).toBe(500);
+		});
+	});
+
+	describe('can work without exchange rates', () => {
+		beforeAll(() => resetExchangeRates());
+
+		it('can convert fiat to sats', () => {
+			const r1 = convertToSats(500, EConversionUnit.fiat);
+			expect(r1).toBe(0);
+			dispatch(updateSettings({ denomination: EDenomination.classic }));
+			const r2 = convertToSats(500, EConversionUnit.fiat);
+			expect(r2).toBe(0);
+			resetSettingsState();
+		});
+
+		it('can convert sats to sats', () => {
+			const r = convertToSats(500, EConversionUnit.satoshi);
+			expect(r).toBe(500);
+		});
+
+		it('can convert BTC to sats', () => {
+			const r = convertToSats(0.000005, EConversionUnit.BTC);
+			expect(r).toBe(500);
+		});
 	});
 });
