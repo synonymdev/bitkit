@@ -1,4 +1,4 @@
-import React, { memo, ReactElement, useMemo, useState } from 'react';
+import React, { memo, ReactElement, useMemo } from 'react';
 import { Image, StyleSheet, TouchableOpacity } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
@@ -6,9 +6,12 @@ import { View as ThemedView } from '../../styles/components';
 import { EItemType, IListData, ItemData } from '../../components/List';
 import SafeAreaInset from '../../components/SafeAreaInset';
 import SettingsView from './SettingsView';
-import { useAppDispatch, useAppSelector } from '../../hooks/redux';
-import { updateSettings } from '../../store/slices/settings';
-import { showToast } from '../../utils/notifications';
+import {
+	// useAppDispatch,
+	useAppSelector,
+} from '../../hooks/redux';
+// import { updateSettings } from '../../store/slices/settings';
+// import { showToast } from '../../utils/notifications';
 import { SettingsScreenProps } from '../../navigation/types';
 import { enableDevOptionsSelector } from '../../store/reselect/settings';
 import {
@@ -27,26 +30,26 @@ const MainSettings = ({
 	navigation,
 }: SettingsScreenProps<'MainSettings'>): ReactElement => {
 	const { t } = useTranslation('settings');
-	const dispatch = useAppDispatch();
+	// const dispatch = useAppDispatch();
 	const enableDevOptions = useAppSelector(enableDevOptionsSelector);
-	const [enableDevOptionsCount, setEnableDevOptionsCount] = useState(0);
+	// const [enableDevOptionsCount, setEnableDevOptionsCount] = useState(0);
 
-	const updateDevOptions = (): void => {
-		const count = enableDevOptionsCount + 1;
-		setEnableDevOptionsCount(count);
-		if (count >= 5) {
-			const enabled = !enableDevOptions;
-			dispatch(updateSettings({ enableDevOptions: enabled }));
-			showToast({
-				type: 'success',
-				title: t(enabled ? 'dev_enabled_title' : 'dev_disabled_title'),
-				description: t(
-					enabled ? 'dev_enabled_message' : 'dev_disabled_message',
-				),
-			});
-			setEnableDevOptionsCount(0);
-		}
-	};
+	// const updateDevOptions = (): void => {
+	// 	const count = enableDevOptionsCount + 1;
+	// 	setEnableDevOptionsCount(count);
+	// 	if (count >= 5) {
+	// 		const enabled = !enableDevOptions;
+	// 		dispatch(updateSettings({ enableDevOptions: enabled }));
+	// 		showToast({
+	// 			type: 'success',
+	// 			title: t(enabled ? 'dev_enabled_title' : 'dev_disabled_title'),
+	// 			description: t(
+	// 				enabled ? 'dev_enabled_message' : 'dev_disabled_message',
+	// 			),
+	// 		});
+	// 		setEnableDevOptionsCount(0);
+	// 	}
+	// };
 
 	const listData: IListData[] = useMemo(() => {
 		const data: ItemData[] = [
@@ -116,7 +119,8 @@ const MainSettings = ({
 				style={styles.imageContainer}
 				activeOpacity={1}
 				testID="DevOptions"
-				onPress={updateDevOptions}>
+				// onPress={updateDevOptions}
+			>
 				<Image style={styles.image} source={imageSrc} />
 			</TouchableOpacity>
 			<SafeAreaInset type="bottom" minPadding={16} />
