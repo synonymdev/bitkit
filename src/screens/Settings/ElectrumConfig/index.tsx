@@ -4,10 +4,12 @@ import { err, ok, Result } from '@synonymdev/result';
 import Url from 'url-parse';
 import { useTranslation } from 'react-i18next';
 import isEqual from 'lodash/isEqual';
+import { EProtocol } from 'beignet';
 
 import { View, TextInput, ScrollView } from '../../../styles/components';
 import { BodyM, Caption13Up } from '../../../styles/text';
 import { ScanIcon } from '../../../styles/icons';
+import useBreakpoints from '../../../styles/breakpoints';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 import { updateUi } from '../../../store/slices/ui';
 import { addElectrumPeer } from '../../../store/slices/settings';
@@ -26,12 +28,11 @@ import {
 } from '../../../utils/electrum';
 import { showToast } from '../../../utils/notifications';
 import { getConnectedPeer, IPeerData } from '../../../utils/wallet/electrum';
-import type { SettingsScreenProps } from '../../../navigation/types';
-import { EProtocol } from 'beignet';
 import { refreshWallet, rescanAddresses } from '../../../utils/wallet';
 import { EAvailableNetwork } from '../../../utils/networks';
 import { updateActivityList } from '../../../store/utils/activity';
-import useBreakpoints from '../../../styles/breakpoints';
+import { isConnectedToElectrumSelector } from '../../../store/reselect/ui';
+import type { SettingsScreenProps } from '../../../navigation/types';
 
 type RadioButtonItem = { label: string; value: EProtocol };
 
@@ -90,6 +91,7 @@ const ElectrumConfig = ({
 	const { t } = useTranslation('settings');
 	const br = useBreakpoints();
 	const dispatch = useAppDispatch();
+	const isConnectedToElectrum = useAppSelector(isConnectedToElectrumSelector);
 	const selectedNetwork = useAppSelector(selectedNetworkSelector);
 	const customElectrumPeers = useAppSelector((state) => {
 		return customElectrumPeersSelector(state, selectedNetwork);
@@ -98,27 +100,25 @@ const ElectrumConfig = ({
 	const [connectedPeer, setConnectedPeer] = useState<IPeerData>();
 	const [loading, setLoading] = useState(false);
 	const [host, setHost] = useState(savedPeer.host);
-	const [protocol, setProtocol] = useState<EProtocol>(savedPeer.protocol);
-	const [port, setPort] = useState<string>(
-		savedPeer[savedPeer.protocol].toString(),
-	);
+	const [port, setPort] = useState(savedPeer[savedPeer.protocol].toString());
+	const [protocol, setProtocol] = useState(savedPeer.protocol);
 
 	useEffect(() => {
-		getAndUpdateConnectedPeer();
-	}, []);
+		const getAndUpdateConnectedPeer = async (): Promise<void> => {
+			const peerInfo = await getConnectedPeer();
+			if (peerInfo.isOk()) {
+				setConnectedPeer({
+					host: peerInfo.value.host,
+					port: peerInfo.value.port.toString(),
+					protocol: peerInfo.value.protocol,
+				});
+			} else {
+				setConnectedPeer(undefined);
+			}
+		};
 
-	const getAndUpdateConnectedPeer = async (): Promise<void> => {
-		const peerInfo = await getConnectedPeer();
-		if (peerInfo.isOk()) {
-			setConnectedPeer({
-				host: peerInfo.value.host,
-				port: peerInfo.value.port.toString(),
-				protocol: peerInfo.value.protocol,
-			});
-		} else {
-			setConnectedPeer(undefined);
-		}
-	};
+		getAndUpdateConnectedPeer();
+	}, [isConnectedToElectrum]);
 
 	const connectAndAddPeer = async (peerData: {
 		host: string;
@@ -169,7 +169,7 @@ const ElectrumConfig = ({
 						shouldClearAddresses: false,
 						shouldClearTransactions: true,
 					});
-					await refreshWallet({});
+					await refreshWallet();
 					updateActivityList();
 				}
 			} else {
@@ -181,7 +181,6 @@ const ElectrumConfig = ({
 					description: t('es.server_error_description'),
 				});
 			}
-			await getAndUpdateConnectedPeer();
 		} catch (e) {
 			console.log(e);
 		} finally {
