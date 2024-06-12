@@ -55,6 +55,7 @@
 	"spending_amount_bitcoin": "Choose how much money you want to be able to spend instantly.",
 	"receiving_amount_money": "Choose how much money you want to be able to receive instantly.",
 	"receiving_amount_bitcoin": "Enter the amount of Bitcoin you want to be able to receive instantly.",
+	"cost": "(Cost: {amount})",
 	"enter_custom_amount": "Enter Amount",
 	"custom_confirm_header": "Please\n<accent>confirm</accent>",
 	"custom_confirm_cost": "It costs <accent>{txFee}</accent> in network fees and <accent>{lspFee}</accent> in service provider fees to transfer your funds. Your spending balance should stay active for at least <accentWithKeyboard>{weeks, plural, one {# week} other {# weeks}}.<penIcon/></accentWithKeyboard>",

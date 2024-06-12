@@ -5,11 +5,13 @@ import { IDisplayValues } from '../utils/displayValues/types';
 import {
 	denominationSelector,
 	selectedCurrencySelector,
+	unitSelector,
 } from '../store/reselect/settings';
 import {
 	exchangeRateSelector,
 	exchangeRatesSelector,
 } from '../store/reselect/wallet';
+import { EUnit } from '../store/types/wallet';
 
 export const useDisplayValues = (
 	satoshis: number,
@@ -67,4 +69,17 @@ export const useExchangeRate = (currency = 'USD'): number => {
 	return useMemo(() => {
 		return exchangeRates[currency]?.rate ?? 0;
 	}, [currency, exchangeRates]);
+};
+
+/**
+ * Returns the formatted display value for the current unit
+ */
+export const useCurrentDisplayValue = (
+	...props: Parameters<typeof useDisplayValues>
+): string => {
+	const unit = useAppSelector(unitSelector);
+	const dv = useDisplayValues(...props);
+	return unit === EUnit.BTC
+		? '₿' + dv.bitcoinFormatted
+		: dv.fiatSymbol + dv.fiatFormatted;
 };

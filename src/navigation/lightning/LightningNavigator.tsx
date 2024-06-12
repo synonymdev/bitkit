@@ -19,6 +19,7 @@ import Success from '../../screens/Lightning/Success';
 import LNURLChannel from '../../screens/Lightning/LNURLChannel';
 import LNURLChannelSuccess from '../../screens/Lightning/LNURLChannelSuccess';
 import { __E2E__ } from '../../constants/env';
+import { EUnit } from '../../store/types/wallet';
 
 export type LightningNavigationProp =
 	NativeStackNavigationProp<LightningStackParamList>;
@@ -30,6 +31,7 @@ export type LightningStackParamList = {
 	QuickConfirm: {
 		spendingAmount: number;
 		orderId?: string;
+		onChangeUnitOutside: (nextUnit: EUnit) => void;
 	};
 	CustomSetup: { spending: boolean; spendingAmount?: number };
 	CustomConfirm: {

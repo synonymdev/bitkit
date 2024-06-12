@@ -1,5 +1,5 @@
 import React, { ReactElement, useMemo, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { Pressable, StyleSheet, View } from 'react-native';
 import { Trans, useTranslation } from 'react-i18next';
 
 import { Caption13Up, Display, BodyMB, BodyM } from '../../styles/text';
@@ -11,9 +11,9 @@ import Percentage from '../../components/Percentage';
 import SwipeToConfirm from '../../components/SwipeToConfirm';
 import Money from '../../components/Money';
 import PieChart from './PieChart';
-import { useBalance } from '../../hooks/wallet';
+import { useBalance, useSwitchUnit } from '../../hooks/wallet';
 import { useAppSelector } from '../../hooks/redux';
-import { useCurrency, useDisplayValues } from '../../hooks/displayValues';
+import { useCurrentDisplayValue } from '../../hooks/displayValues';
 import type { LightningScreenProps } from '../../navigation/types';
 import { confirmChannelPurchase } from '../../store/utils/blocktank';
 import { blocktankOrdersSelector } from '../../store/reselect/blocktank';
@@ -21,6 +21,7 @@ import {
 	selectedNetworkSelector,
 	transactionFeeSelector,
 } from '../../store/reselect/wallet';
+import { unitSelector } from '../../store/reselect/settings';
 
 const PIE_SIZE = 140;
 const PIE_SHIFT = 70;
@@ -29,32 +30,32 @@ const QuickConfirm = ({
 	navigation,
 	route,
 }: LightningScreenProps<'QuickConfirm'>): ReactElement => {
-	const { spendingAmount, orderId } = route.params;
+	const { spendingAmount, orderId, onChangeUnitOutside } = route.params;
 	const { onchainBalance, lightningBalance } = useBalance();
 	const { t } = useTranslation('lightning');
 	const orders = useAppSelector(blocktankOrdersSelector);
 	const transactionFee = useAppSelector(transactionFeeSelector);
 	const selectedNetwork = useAppSelector(selectedNetworkSelector);
+	const switchUnit = useSwitchUnit();
+	const unit = useAppSelector(unitSelector);
 	const [loading, setLoading] = useState(false);
 
 	const order = useMemo(() => {
 		return orders.find((o) => o.id === orderId);
 	}, [orderId, orders]);
 
-	const { fiatSymbol } = useCurrency();
 	const purchaseFee = useMemo(() => order?.feeSat ?? 0, [order]);
-	const purchaseFeeValue = useDisplayValues(purchaseFee);
-	const fiatTransactionFee = useDisplayValues(transactionFee);
-	const clientBalance = useDisplayValues(order?.clientBalanceSat ?? 0);
+	const clientBalance = useMemo(() => order?.clientBalanceSat ?? 0, [order]);
 
 	const isTransferToSavings = spendingAmount < lightningBalance;
-	const txFee = fiatTransactionFee.fiatValue;
-	const lspFee = purchaseFeeValue.fiatValue - clientBalance.fiatValue;
 	const totalBalance = onchainBalance + lightningBalance;
 	const savingsAmount = totalBalance - spendingAmount;
 
 	const spendingPercentage = Math.round((spendingAmount / totalBalance) * 100);
 	const savingsPercentage = Math.round((savingsAmount / totalBalance) * 100);
+
+	const txFee = useCurrentDisplayValue(transactionFee);
+	const lspFee = useCurrentDisplayValue(purchaseFee - clientBalance);
 
 	const handleConfirm = async (): Promise<void> => {
 		setLoading(true);
@@ -84,6 +85,9 @@ const QuickConfirm = ({
 				onClosePress={(): void => {
 					navigation.navigate('Wallet');
 				}}
+				onBackPress={(): void => {
+					onChangeUnitOutside(unit);
+				}}
 			/>
 			<View style={styles.content} testID="Confirm">
 				<Display>
@@ -101,10 +105,7 @@ const QuickConfirm = ({
 							t={t}
 							i18nKey="quick_confirm_cost"
 							components={{ accent: <BodyMB color="white" /> }}
-							values={{
-								txFee: `${fiatSymbol}${txFee.toFixed(2)}`,
-								lspFee: `${fiatSymbol}${lspFee.toFixed(2)}`,
-							}}
+							values={{ txFee, lspFee }}
 						/>
 					)}
 				</BodyM>
@@ -135,7 +136,9 @@ const QuickConfirm = ({
 					<Caption13Up style={styles.amountCaption} color="purple">
 						{t('spending_label')}
 					</Caption13Up>
-					<Money sats={spendingAmount} size="displayT" symbol={true} />
+					<Pressable onPress={switchUnit}>
+						<Money sats={spendingAmount} size="displayT" symbol={true} />
+					</Pressable>
 				</View>
 
 				<SwipeToConfirm

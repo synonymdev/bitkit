@@ -497,7 +497,9 @@ const CustomSetup = ({
 							{channelOpenFee[`${spendingAmount}-${amount}`] && (
 								<AnimatedView entering={FadeIn} exiting={FadeOut}>
 									<Caption13Up style={styles.amountCaptionCost} color="gray2">
-										(Cost: {channelOpenFee[`${spendingAmount}-${amount}`]})
+										{t('cost', {
+											amount: channelOpenFee[`${spendingAmount}-${amount}`],
+										})}
 									</Caption13Up>
 								</AnimatedView>
 							)}

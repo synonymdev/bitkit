@@ -42,6 +42,7 @@ import {
 	nextUnitSelector,
 	unitSelector,
 } from '../../store/reselect/settings';
+import { EUnit } from '../../store/types/wallet';
 
 const QuickSetup = ({
 	navigation,
@@ -117,11 +118,20 @@ const QuickSetup = ({
 		setTextFieldValue(result);
 	}, [lnSetup.slider.maxValue, denomination, unit]);
 
-	const onChangeUnit = (): void => {
+	const onChangeUnit = useCallback((): void => {
 		const result = getNumberPadText(spendingAmount, denomination, nextUnit);
 		setTextFieldValue(result);
 		switchUnit();
-	};
+	}, [denomination, spendingAmount, nextUnit, switchUnit]);
+
+	/** Used to update the unit on other screens */
+	const onChangeUnitOutside = useCallback(
+		(newUnit: EUnit): void => {
+			const result = getNumberPadText(spendingAmount, denomination, newUnit);
+			setTextFieldValue(result);
+		},
+		[denomination, spendingAmount],
+	);
 
 	const onSliderChange = useCallback(
 		(value: number) => {
@@ -156,7 +166,10 @@ const QuickSetup = ({
 		}
 
 		if (isTransferringToSavings) {
-			navigation.navigate('QuickConfirm', { spendingAmount });
+			navigation.navigate('QuickConfirm', {
+				spendingAmount,
+				onChangeUnitOutside,
+			});
 			return;
 		}
 
@@ -182,6 +195,7 @@ const QuickSetup = ({
 		navigation.push('QuickConfirm', {
 			spendingAmount,
 			orderId: purchaseResponse.value.id,
+			onChangeUnitOutside,
 		});
 	}, [
 		lnSetup,
@@ -189,6 +203,7 @@ const QuickSetup = ({
 		navigation,
 		sliderActive,
 		spendingAmount,
+		onChangeUnitOutside,
 		t,
 	]);
 
