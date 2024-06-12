@@ -55,6 +55,7 @@
   "widget_edit": "Widget Feed",
   "widget_edit_custom": "Op maat",
   "widget_loading_options": "Widget opties aan het laden...",
+  "widget_reset": "Resetten",
   "widget_delete_yes": "Ja, Verwijder",
   "widget_delete_title": "Widget Verwijderen?",
   "widget_delete_desc": "Weet u zeker dat u '{name}' wilt wissen van uw widgetlijst?"

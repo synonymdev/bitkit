@@ -1,9 +1,14 @@
 {
   "introduction": {
+    "title": "Bestedings\n<accent>Saldo</accent>",
+    "text": "Activeer uw bestedingsaldo en profiteer van directe en goedkope transacties met vrienden, familie en winkeliers.",
     "button": "Starten"
   },
   "funding": {
-    "nav_title": "Bestedingssaldo"
+    "nav_title": "Bestedingssaldo",
+    "title": "Vul uw <accent>bestedingssaldo</accent> ",
+    "text": "U kunt uw Bitkit spaargeld gebruiken of bitcoin versturen vanaf een andere portemonnee.",
+    "button1": "Overdracht van Spaargeld"
   },
   "transfer": {
     "nav_title": "Geld Overmaken",
@@ -16,9 +21,10 @@
   },
   "error_channel_purchase": "Directe Betalingen Instellen Mislukt",
   "error_channel_receiving": "De hoeveelheid te ontvangen moet hoger zijn dan ${usdValue}",
-  "spending": "Bestedingsgeld",
+  "spending": "Bestedingssaldo",
   "savings": "Spaargeld",
   "spending_label": "Bestedingssaldo",
+  "spending_label_additional": "Aanvullend Bestedingssaldo",
   "receiving_label": "Ontvangstcapaciteit",
   "note_blocktank_limit": "De hoeveelheid die u momenteel kunt overmaken is maximaal {usdValue}",
   "quick_setup": "Snelle installatie",

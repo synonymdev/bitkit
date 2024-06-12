@@ -55,6 +55,7 @@
   "spending_amount_bitcoin": "Zvolte si, kolik peněz chcete mít možnost utrácet okamžitě.",
   "receiving_amount_money": "Vyberte si, kolik peněz chcete být schopni přijímat okamžitě.",
   "receiving_amount_bitcoin": "Zadejte množství bitcoinů, které chcete být schopni přijímat okamžitě.",
+  "cost": "(Náklady: {amount})",
   "enter_custom_amount": "Zadejte částku",
   "custom_confirm_header": "Prosím,\n<accent>potvrďte</accent>",
   "custom_confirm_cost": "Stojí to <accent>{txFee}</accent> na síťových poplatcích a <accent>{lspFee}</accent> poplatcích poskytovateli služeb za převod vašich prostředků. Váš zůstatek na účtu by měl zůstat aktivní alespoň po dobu <accentWithKeyboard>{weeks, plural, one {# week} další {# weeks}</accentWithKeyboard> }. <accentWithKeyboard><penIcon/></accentWithKeyboard>",
