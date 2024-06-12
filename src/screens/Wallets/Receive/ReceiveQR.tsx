@@ -352,7 +352,7 @@ const ReceiveQR = ({
 						<LightningCircleIcon width={50} height={50} />
 					) : (
 						<>
-							{enableInstant ? (
+							{enableInstant && lightningInvoice ? (
 								<UnifiedIcon width={50} height={50} />
 							) : (
 								<BitcoinCircleIcon width={50} height={50} />
@@ -362,7 +362,7 @@ const ReceiveQR = ({
 				</View>
 			</View>
 		);
-	}, [jitInvoice, enableInstant]);
+	}, [jitInvoice, enableInstant, lightningInvoice]);
 
 	const Slide1 = useCallback((): ReactElement => {
 		return (
