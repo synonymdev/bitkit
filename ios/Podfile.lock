@@ -1111,8 +1111,6 @@ PODS:
     - React-jsi (= 0.73.8)
     - React-logger (= 0.73.8)
     - React-perflogger (= 0.73.8)
-  - ReactNativeCameraKit (14.0.0-beta13):
-    - React-Core
   - RNCAsyncStorage (1.21.0):
     - React-Core
   - RNCClipboard (1.12.1):
@@ -1131,7 +1129,7 @@ PODS:
     - React-Core
   - RNLocalize (3.0.2):
     - React-Core
-  - RNPermissions (3.10.1):
+  - RNPermissions (4.1.5):
     - React-Core
   - RNQrGenerator (1.4.0):
     - React
@@ -1166,6 +1164,12 @@ PODS:
     - RCT-Folly (= 2022.05.16.00)
     - React-Core
   - SSZipArchive (2.4.3)
+  - VisionCamera (4.3.1):
+    - VisionCamera/Core (= 4.3.1)
+    - VisionCamera/React (= 4.3.1)
+  - VisionCamera/Core (4.3.1)
+  - VisionCamera/React (4.3.1):
+    - React-Core
   - Yoga (1.14.0)
   - ZXingObjC (3.6.9):
     - ZXingObjC/All (= 3.6.9)
@@ -1238,7 +1242,6 @@ DEPENDENCIES:
   - React-runtimescheduler (from `../node_modules/react-native/ReactCommon/react/renderer/runtimescheduler`)
   - React-utils (from `../node_modules/react-native/ReactCommon/react/utils`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
-  - ReactNativeCameraKit (from `../node_modules/react-native-camera-kit`)
   - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
   - "RNCClipboard (from `../node_modules/@react-native-clipboard/clipboard`)"
   - RNDeviceInfo (from `../node_modules/react-native-device-info`)
@@ -1257,6 +1260,7 @@ DEPENDENCIES:
   - RNSVG (from `../node_modules/react-native-svg`)
   - RNZipArchive (from `../node_modules/react-native-zip-archive`)
   - sodium-react-native-direct (from `../node_modules/sodium-react-native-direct`)
+  - VisionCamera (from `../node_modules/react-native-vision-camera`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
@@ -1398,8 +1402,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/react/utils"
   ReactCommon:
     :path: "../node_modules/react-native/ReactCommon"
-  ReactNativeCameraKit:
-    :path: "../node_modules/react-native-camera-kit"
   RNCAsyncStorage:
     :path: "../node_modules/@react-native-async-storage/async-storage"
   RNCClipboard:
@@ -1436,6 +1438,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-zip-archive"
   sodium-react-native-direct:
     :path: "../node_modules/sodium-react-native-direct"
+  VisionCamera:
+    :path: "../node_modules/react-native-vision-camera"
   Yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
@@ -1509,7 +1513,6 @@ SPEC CHECKSUMS:
   React-runtimescheduler: 1c40cfe98dcc7b06354d96a1cd8ee10cbc4cc797
   React-utils: 4cc2ba652f5df1c8f0461d4ae9e3ee474c1354ea
   ReactCommon: 1da3fc14d904883c46327b3322325eebf60a720a
-  ReactNativeCameraKit: d95d3e19c514526a234d9f93c6db7e7f10eef9ea
   RNCAsyncStorage: 618d03a5f52fbccb3d7010076bc54712844c18ef
   RNCClipboard: d77213bfa269013bf4b857b7a9ca37ee062d8ef1
   RNDeviceInfo: 4f9c7cfd6b9db1b05eb919620a001cf35b536423
@@ -1518,7 +1521,7 @@ SPEC CHECKSUMS:
   RNGestureHandler: 67fb54b3e6ca338a8044e85cd6f340265aa41091
   RNKeychain: bfe3d12bf4620fe488771c414530bf16e88f3678
   RNLocalize: dbea38dcb344bf80ff18a1757b1becf11f70cae4
-  RNPermissions: 2c0eec471f4de66d04d226c339898d10a6e123c4
+  RNPermissions: 8e5f8de95db3a4345df798a41c3633dc93143207
   RNQrGenerator: 1676221c08bfabec978242989c733810dad20959
   RNQuickAction: 6d404a869dc872cde841ad3147416a670d13fa93
   RNReactNativeHapticFeedback: ec56a5f81c3941206fd85625fa669ffc7b4545f9
@@ -1530,6 +1533,7 @@ SPEC CHECKSUMS:
   SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17
   sodium-react-native-direct: 102289e2a55688b5c6c489c88b2a7915d4e31ec1
   SSZipArchive: fe6a26b2a54d5a0890f2567b5cc6de5caa600aef
+  VisionCamera: 58d2120e6e23c155b25f4702b7912dc2b1e5e8c2
   Yoga: e5b887426cee15d2a326bdd34afc0282fc0486ad
   ZXingObjC: 8898711ab495761b2dbbdec76d90164a6d7e14c5
 
