@@ -613,31 +613,31 @@ d('Settings', () => {
 		});
 	});
 
-	d('Dev Settings', () => {
-		it('Shows the crash error screen when triggering render error', async () => {
-			if (checkComplete('settings-dev')) {
-				return;
-			}
+	// d('Dev Settings', () => {
+	// 	it('Shows the crash error screen when triggering render error', async () => {
+	// 		if (checkComplete('settings-dev')) {
+	// 			return;
+	// 		}
 
-			await element(by.id('Settings')).tap();
-			if (!__DEV__) {
-				await element(by.id('DevOptions')).multiTap(5); // enable dev mode
-			}
-			await element(by.id('DevSettings')).tap();
+	// 		await element(by.id('Settings')).tap();
+	// 		if (!__DEV__) {
+	// 			await element(by.id('DevOptions')).multiTap(5); // enable dev mode
+	// 		}
+	// 		await element(by.id('DevSettings')).tap();
 
-			// Error screen will not be rendered in development mode
-			if (__DEV__) {
-				markComplete('settings-dev');
-				return;
-			}
+	// 		// Error screen will not be rendered in development mode
+	// 		if (__DEV__) {
+	// 			markComplete('settings-dev');
+	// 			return;
+	// 		}
 
-			await element(by.id('TriggerRenderError')).tap();
-			await expect(element(by.id('ErrorClose'))).toBeVisible();
-			await expect(element(by.id('ErrorReport'))).toBeVisible();
+	// 		await element(by.id('TriggerRenderError')).tap();
+	// 		await expect(element(by.id('ErrorClose'))).toBeVisible();
+	// 		await expect(element(by.id('ErrorReport'))).toBeVisible();
 
-			markComplete('settings-dev');
-		});
-	});
+	// 		markComplete('settings-dev');
+	// 	});
+	// });
 
 	d('Support', () => {
 		it('Can see app status', async () => {

@@ -49,7 +49,7 @@ const DevSettings = ({
 	const dispatch = useAppDispatch();
 	const { t } = useTranslation('lightning');
 	const [showDialog, setShowDialog] = useState(false);
-	const [throwError, setThrowError] = useState(false);
+	// const [throwError, setThrowError] = useState(false);
 	const selectedWallet = useAppSelector(selectedWalletSelector);
 	const selectedNetwork = useAppSelector(selectedNetworkSelector);
 	const addressType = useAppSelector(addressTypeSelector);
@@ -162,14 +162,14 @@ const DevSettings = ({
 						refreshWallet({ selectedWallet, selectedNetwork }).then();
 					},
 				},
-				{
-					title: 'Trigger exception in React render',
-					type: EItemType.button,
-					testID: 'TriggerRenderError',
-					onPress: (): void => {
-						setThrowError(true);
-					},
-				},
+				// {
+				// 	title: 'Trigger exception in React render',
+				// 	type: EItemType.button,
+				// 	testID: 'TriggerRenderError',
+				// 	onPress: (): void => {
+				// 		setThrowError(true);
+				// 	},
+				// },
 				{
 					title: 'Trigger exception in action handler',
 					type: EItemType.button,
@@ -331,9 +331,9 @@ const DevSettings = ({
 		},
 	];
 
-	if (throwError) {
-		throw new Error('test render error');
-	}
+	// if (throwError) {
+	// 	throw new Error('test render error');
+	// }
 
 	return (
 		<>
