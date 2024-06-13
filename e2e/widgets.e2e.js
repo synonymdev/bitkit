@@ -26,6 +26,14 @@ d('Widgets', () => {
 			return;
 		}
 
+		// delete all default widgets
+		await element(by.id('WidgetsEdit')).tap();
+		for (const w of ['PriceWidget', 'HeadlinesWidget', 'BlocksWidget']) {
+			await element(by.id('WidgetActionDelete').withAncestor(by.id(w))).tap();
+			await element(by.text('Yes, Delete')).tap();
+			await expect(element(by.id(w))).not.toBeVisible();
+		}
+
 		// add price widget
 		await element(by.id('WalletsScrollView')).scroll(300, 'down', NaN, 0.85);
 		await element(by.id('WidgetsAdd')).tap();
@@ -58,12 +66,6 @@ d('Widgets', () => {
 		await expect(element(by.id('PriceWidget'))).toBeVisible();
 		await expect(element(by.id('PriceWidgetRow-BTC/EUR'))).not.toBeVisible();
 		await expect(element(by.id('PriceWidgetSource'))).not.toBeVisible();
-
-		// delete price widget
-		await element(by.id('WidgetsEdit')).tap();
-		await element(by.id('WidgetActionDelete')).tap();
-		await element(by.text('Yes, Delete')).tap();
-		await expect(element(by.id('PriceWidget'))).not.toBeVisible();
 
 		markComplete('widgets-1');
 	});
