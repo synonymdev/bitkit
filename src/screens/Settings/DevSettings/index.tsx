@@ -42,6 +42,7 @@ import { getFakeTransaction } from '../../../utils/wallet/testing';
 import Dialog from '../../../components/Dialog';
 import { resetBackupState } from '../../../store/slices/backup';
 import { updateUi } from '../../../store/slices/ui';
+import { __E2E__ } from '../../../constants/env';
 
 const DevSettings = ({
 	navigation,
@@ -49,7 +50,7 @@ const DevSettings = ({
 	const dispatch = useAppDispatch();
 	const { t } = useTranslation('lightning');
 	const [showDialog, setShowDialog] = useState(false);
-	// const [throwError, setThrowError] = useState(false);
+	const [throwError, setThrowError] = useState(false);
 	const selectedWallet = useAppSelector(selectedWalletSelector);
 	const selectedNetwork = useAppSelector(selectedNetworkSelector);
 	const addressType = useAppSelector(addressTypeSelector);
@@ -143,78 +144,6 @@ const DevSettings = ({
 							dispatch(updateUi({ isProfiling: true }));
 							startProfiling();
 						}
-					},
-				},
-				{
-					title: 'Inject Fake Transaction',
-					type: EItemType.button,
-					testID: 'InjectFakeTransaction',
-					onPress: (): void => {
-						const id =
-							'9c0bed5b4c0833824210d29c3c847f47132c03f231ef8df228862132b3a8d80a';
-						const fakeTx = getFakeTransaction(id);
-						fakeTx[id].height = 0;
-						injectFakeTransaction({
-							selectedWallet,
-							selectedNetwork,
-							fakeTx,
-						});
-						refreshWallet({ selectedWallet, selectedNetwork }).then();
-					},
-				},
-				// {
-				// 	title: 'Trigger exception in React render',
-				// 	type: EItemType.button,
-				// 	testID: 'TriggerRenderError',
-				// 	onPress: (): void => {
-				// 		setThrowError(true);
-				// 	},
-				// },
-				{
-					title: 'Trigger exception in action handler',
-					type: EItemType.button,
-					testID: 'TriggerActionError',
-					onPress: (): void => {
-						throw new Error('test action error');
-					},
-				},
-				{
-					title: 'Trigger unhandled async exception',
-					type: EItemType.button,
-					testID: 'TriggerAsyncError',
-					onPress: (): void => {
-						throw new Error('test async error');
-					},
-				},
-				{
-					title: 'Trigger Storage Warning',
-					type: EItemType.button,
-					hide: selectedNetwork !== 'bitcoinRegtest',
-					testID: 'TriggerStorageWarning',
-					onPress: (): void => {
-						const wallet = getWalletStore();
-						const addresses =
-							wallet.wallets[selectedWallet].addresses[selectedNetwork][
-								addressType
-							];
-						Object.keys(addresses).map((key) => {
-							if (addresses[key].index === 0) {
-								addresses[key].address =
-									'bcrt1qjp22nm804mtl6vtzf65z2jgmeaedrlvzlxffjv';
-							}
-						});
-						const changeAddresses =
-							wallet.wallets[selectedWallet].changeAddresses[selectedNetwork][
-								addressType
-							];
-						Object.keys(changeAddresses).map((key) => {
-							if (changeAddresses[key].index === 0) {
-								changeAddresses[key].address =
-									'bcrt1qwxfllzxchc9eq95zrcc9cjxhzqpkgtznc4wpzc';
-							}
-						});
-						updateWallet(wallet);
-						runChecks({ selectedWallet, selectedNetwork }).then();
 					},
 				},
 			],
@@ -331,9 +260,88 @@ const DevSettings = ({
 		},
 	];
 
-	// if (throwError) {
-	// 	throw new Error('test render error');
-	// }
+	// add only in dev or e2e mode
+	if (__DEV__ || __E2E__) {
+		settingsListData[1].data = [
+			...settingsListData[1].data,
+			{
+				title: 'Inject Fake Transaction',
+				type: EItemType.button,
+				testID: 'InjectFakeTransaction',
+				onPress: (): void => {
+					const id =
+						'9c0bed5b4c0833824210d29c3c847f47132c03f231ef8df228862132b3a8d80a';
+					const fakeTx = getFakeTransaction(id);
+					fakeTx[id].height = 0;
+					injectFakeTransaction({
+						selectedWallet,
+						selectedNetwork,
+						fakeTx,
+					});
+					refreshWallet({ selectedWallet, selectedNetwork }).then();
+				},
+			},
+			{
+				title: 'Trigger exception in React render',
+				type: EItemType.button,
+				testID: 'TriggerRenderError',
+				onPress: (): void => {
+					setThrowError(true);
+				},
+			},
+			{
+				title: 'Trigger exception in action handler',
+				type: EItemType.button,
+				testID: 'TriggerActionError',
+				onPress: (): void => {
+					throw new Error('test action error');
+				},
+			},
+			{
+				title: 'Trigger unhandled async exception',
+				type: EItemType.button,
+				testID: 'TriggerAsyncError',
+				onPress: (): void => {
+					throw new Error('test async error');
+				},
+			},
+			{
+				title: 'Trigger Storage Warning',
+				type: EItemType.button,
+				hide: selectedNetwork !== 'bitcoinRegtest',
+				testID: 'TriggerStorageWarning',
+				onPress: (): void => {
+					const wallet = getWalletStore();
+					const addresses =
+						wallet.wallets[selectedWallet].addresses[selectedNetwork][
+							addressType
+						];
+					Object.keys(addresses).map((key) => {
+						if (addresses[key].index === 0) {
+							addresses[key].address =
+								'bcrt1qjp22nm804mtl6vtzf65z2jgmeaedrlvzlxffjv';
+						}
+					});
+					const changeAddresses =
+						wallet.wallets[selectedWallet].changeAddresses[selectedNetwork][
+							addressType
+						];
+					Object.keys(changeAddresses).map((key) => {
+						if (changeAddresses[key].index === 0) {
+							changeAddresses[key].address =
+								'bcrt1qwxfllzxchc9eq95zrcc9cjxhzqpkgtznc4wpzc';
+						}
+					});
+					updateWallet(wallet);
+					runChecks({ selectedWallet, selectedNetwork }).then();
+				},
+			},
+		];
+	}
+
+	if (throwError) {
+		throw new Error('test render error');
+	}
 
 	return (
 		<>
