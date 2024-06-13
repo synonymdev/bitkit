@@ -23,7 +23,7 @@ import {
 import { pinSelector } from '../store/reselect/settings';
 import { useAppDispatch, useAppSelector } from '../hooks/redux';
 import type { RootNavigationProp } from '../navigation/types';
-import { appName, shareText } from '../constants/app';
+import { appName, appStoreUrl, playStoreUrl } from '../constants/app';
 import { getDurationForBlocks } from '../utils/helpers';
 
 const Suggestions = (): ReactElement => {
@@ -60,9 +60,11 @@ const Suggestions = (): ReactElement => {
 	useFocusEffect(useCallback(() => setIndex(0), []));
 
 	const onShare = useCallback(async (): Promise<void> => {
-		await Share.share({ title: appName, message: shareText });
-		dispatch(hideTodo('invite'));
-	}, [dispatch]);
+		await Share.share({
+			title: appName,
+			message: t('settings:about.shareText', { playStoreUrl, appStoreUrl }),
+		});
+	}, [t]);
 
 	const handleOnPress = useCallback(
 		(id: TTodoType): void => {

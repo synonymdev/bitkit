@@ -15,7 +15,8 @@
 		"text": "Thank you for being a responsible Bitcoiner.\nChange your wallet, change the world.\n\nBitkit hands you the keys to your money, profile, contacts, and web accounts.\n\nBitkit was crafted by Synonym Software Ltd.",
 		"legal": "Legal",
 		"share": "Share",
-		"version": "Version"
+		"version": "Version",
+		"shareText": "Change your wallet, change the world. Download Bitkit for iPhone {appStoreUrl} or Android {playStoreUrl}"
 	},
 	"dev_title": "Dev Settings",
 	"general": {

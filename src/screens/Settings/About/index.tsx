@@ -16,7 +16,7 @@ import SafeAreaInset from '../../../components/SafeAreaInset';
 import Social from '../../../components/Social';
 import SettingsView from '../SettingsView';
 import { openURL } from '../../../utils/helpers';
-import { appName, shareText } from '../../../constants/app';
+import { appName, appStoreUrl, playStoreUrl } from '../../../constants/app';
 
 const imageSrc = require('../../../assets/logo.png');
 
@@ -45,8 +45,11 @@ const About = (): ReactElement => {
 	// }, []);
 
 	const onShare = useCallback(async (): Promise<void> => {
-		await Share.share({ title: appName, message: shareText });
-	}, []);
+		await Share.share({
+			title: appName,
+			message: t('about.shareText', { playStoreUrl, appStoreUrl }),
+		});
+	}, [t]);
 
 	const listData: IListData[] = useMemo(
 		() => [
