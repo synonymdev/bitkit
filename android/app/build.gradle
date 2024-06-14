@@ -83,7 +83,6 @@ android {
         versionCode 126
         versionName "1.0.1"
         multiDexEnabled true
-        missingDimensionStrategy 'react-native-camera', 'general'
     }
 
     signingConfigs {
