@@ -22,7 +22,7 @@
     "tsc:check": "tsc -p tsconfig.json --noEmit",
     "clean": "yarn clean:rn && yarn clean:ios && yarn clean:android && yarn start --reset-cache",
     "clean:rn": "watchman watch-del-all && npx del-cli node_modules && yarn && npx del-cli /tmp/metro-*",
-    "clean:android": "cd android && npx del-cli build app/build",
+    "clean:android": "cd android && npx del-cli build app/build app/release",
     "clean:ios": "cd ios && npx del-cli Pods Podfile.lock build && pod deintegrate && pod install",
     "bundle": "yarn clean:android && react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.jsbundle --assets-dest android/app/build/intermediates/res/merged/release/ && cd android && ./gradlew assembleRelease --no-daemon",
     "prepare": "husky",
