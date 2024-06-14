@@ -11,7 +11,7 @@ jobs:
 
     steps:
       - name: Check out Git repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 1
 
@@ -27,9 +27,9 @@ jobs:
         run: wait-for-it -h 127.0.0.1 -p 60001 -t 60
 
       - name: Set up Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
-          node-version: 18.17
+          node-version: 20
           cache: 'yarn'
 
       - name: Install Node.js dependencies
