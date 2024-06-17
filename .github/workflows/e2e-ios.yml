@@ -11,7 +11,6 @@ concurrency:
 env:
   E2E_TESTS: 1 # build without transform-remove-console babel plugin
   DEBUG: 'lnurl* lnurl server'
-  MACMINI: 1 # use iPhone 15 in .detoxrc
 
 jobs:
   e2e:
