@@ -79,10 +79,10 @@ d('Backup', () => {
 		await element(by.id('ActivitySavings')).tap();
 		await element(by.id('Activity-1')).tap();
 		await element(by.id('ActivityTag')).tap();
-		await element(by.id('TagInput')).replaceText(tag);
+		await element(by.id('TagInput')).typeText(tag);
 		await element(by.id('TagInput')).tapReturnKey();
 		await sleep(200); // animation
-		await element(by.id('NavigationClose')).tap();
+		await element(by.id('NavigationClose')).atIndex(0).tap();
 
 		// change currency to GBP
 		await element(by.id('TotalBalance')).tap(); // switch to local currency
@@ -90,10 +90,10 @@ d('Backup', () => {
 		await element(by.id('GeneralSettings')).tap();
 		await element(by.id('CurrenciesSettings')).tap();
 		await element(by.text('GBP (£)')).tap();
-		await element(by.id('NavigationClose')).tap();
+		await element(by.id('NavigationClose')).atIndex(0).tap();
 
 		// remove 2 default widgets, leave PriceWidget
-		await element(by.id('WalletsScrollView')).scroll(100, 'down', NaN, 0.85);
+		await element(by.id('WalletsScrollView')).scroll(200, 'down', NaN, 0.85);
 		await element(by.id('WidgetsEdit')).tap();
 		for (const w of ['HeadlinesWidget', 'BlocksWidget']) {
 			await element(by.id('WidgetActionDelete').withAncestor(by.id(w))).tap();
@@ -119,7 +119,7 @@ d('Backup', () => {
 
 		await element(by.id('SeedContaider')).swipe('down');
 		await sleep(200); // animation
-		await element(by.id('NavigationClose')).tap();
+		await element(by.id('NavigationClose')).atIndex(0).tap();
 
 		await sleep(5000); // make sure everything is saved to cloud storage TODO: improve this
 
@@ -165,7 +165,7 @@ d('Backup', () => {
 		await expect(
 			element(by.id(`Tag-${tag}`).withAncestor(by.id('ActivityTags'))),
 		).toBeVisible();
-		await element(by.id('NavigationClose')).tap();
+		await element(by.id('NavigationClose')).atIndex(0).tap();
 
 		// check widgets
 		await element(by.id('WalletsScrollView')).scroll(300, 'down', NaN, 0.85);

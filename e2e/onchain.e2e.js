@@ -120,7 +120,8 @@ d('Onchain', () => {
 			await element(by.id('TagsAddSend')).tap(); // add tag
 			await element(by.id('TagInputSend')).typeText('stag');
 			await element(by.id('TagInputSend')).tapReturnKey();
-			await element(by.id('GRAB')).swipe('right'); // Swipe to confirm
+			await sleep(500); // wait for keyboard to close
+			await element(by.id('GRAB')).swipe('right', 'slow', 0.95, 0.5, 0.5); // Swipe to confirm
 
 			await sleep(1000); // animation
 			await waitFor(element(by.id('SendDialog2'))) // sending over 50% of balance warning
@@ -253,7 +254,7 @@ d('Onchain', () => {
 			await element(by.id('Settings')).tap();
 			await element(by.id('SecuritySettings')).tap();
 			await element(by.id('SendAmountWarning')).tap();
-			await element(by.id('NavigationClose')).tap();
+			await element(by.id('NavigationClose')).atIndex(0).tap();
 
 			await element(by.id('Send')).tap();
 			await element(by.id('RecipientManual')).tap();
@@ -277,7 +278,7 @@ d('Onchain', () => {
 			await element(by.id('ContinueAmount')).tap();
 
 			// Review & Send
-			await element(by.id('GRAB')).swipe('right'); // Swipe to confirm
+			await element(by.id('GRAB')).swipe('right', 'slow', 0.95, 0.5, 0.5); // Swipe to confirm
 
 			// TODO: check correct fee
 

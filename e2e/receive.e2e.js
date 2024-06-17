@@ -69,10 +69,12 @@ d('Receive', () => {
 
 		// ReceiveDetail
 		await element(by.id('ReceiveScreen')).swipe('right');
+		await sleep(100);
 		await element(by.id('SpecifyInvoiceButton')).tap();
 
 		// NumberPad
 		await element(by.id('ReceiveNumberPadTextField')).tap();
+		await sleep(100);
 		// Unit set to sats
 		await element(by.id('N1').withAncestor(by.id('ReceiveNumberPad'))).tap();
 		await element(by.id('N2').withAncestor(by.id('ReceiveNumberPad'))).tap();
@@ -86,6 +88,7 @@ d('Receive', () => {
 		const note = 'iPhone Refurbished';
 		await element(by.id('ReceiveNote')).typeText(note);
 		await element(by.id('ReceiveNote')).tapReturnKey();
+		await sleep(200);
 
 		// Tags
 		const tag = 'test123';

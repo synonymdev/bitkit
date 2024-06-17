@@ -1,6 +1,9 @@
 // run iPhone 14 on local machine, iPhone 15 Pro on mac mini
 const iOSDevice = process.env.MACMINI ? 'iPhone 15 Pro' : 'iPhone 14';
 
+const reversePorts = [3003, 8080, 8081, 9735, 10009, 28334, 28335, 28336, 39388, 43782, 60001];
+
+/** @type {Detox.DetoxConfig} */
 module.exports = {
 	testRunner: {
 		$0: 'jest',
@@ -25,15 +28,19 @@ module.exports = {
 		},
 		'android.debug': {
 			type: 'android.apk',
-			binaryPath: 'android/app/build/outputs/apk/debug/app-debug.apk',
+			testBinaryPath: 'android/app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk',
+			binaryPath: 'android/app/build/outputs/apk/debug/app-universal-debug.apk',
 			build:
 				'cd android && ./gradlew assembleDebug assembleAndroidTest -DtestBuildType=debug && cd .. ',
+			reversePorts,
 		},
 		'android.release': {
 			type: 'android.apk',
-			binaryPath: 'android/app/build/outputs/apk/release/app-release.apk',
+			testBinaryPath: 'android/app/build/outputs/apk/androidTest/release/app-release-androidTest.apk',
+			binaryPath: 'android/app/build/outputs/apk/release/app-universal-release.apk',
 			build:
 				'cd android && ./gradlew assembleRelease assembleAndroidTest -DtestBuildType=release && cd ..',
+			reversePorts,
 		},
 	},
 	devices: {
@@ -46,7 +53,7 @@ module.exports = {
 		emulator: {
 			type: 'android.emulator',
 			device: {
-				avdName: 'Pixel_API_29_AOSP',
+				avdName: 'Pixel_API_31_AOSP',
 			},
 		},
 	},

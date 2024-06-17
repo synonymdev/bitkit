@@ -1111,7 +1111,7 @@ PODS:
     - React-jsi (= 0.73.8)
     - React-logger (= 0.73.8)
     - React-perflogger (= 0.73.8)
-  - ReactNativeCameraKit (14.0.0-beta13):
+  - ReactNativeCameraKit (14.0.0-beta15):
     - React-Core
   - RNCAsyncStorage (1.21.0):
     - React-Core
@@ -1509,7 +1509,7 @@ SPEC CHECKSUMS:
   React-runtimescheduler: 1c40cfe98dcc7b06354d96a1cd8ee10cbc4cc797
   React-utils: 4cc2ba652f5df1c8f0461d4ae9e3ee474c1354ea
   ReactCommon: 1da3fc14d904883c46327b3322325eebf60a720a
-  ReactNativeCameraKit: d95d3e19c514526a234d9f93c6db7e7f10eef9ea
+  ReactNativeCameraKit: 71343efc1256720184ce980f164c7eedb78d5c16
   RNCAsyncStorage: 618d03a5f52fbccb3d7010076bc54712844c18ef
   RNCClipboard: d77213bfa269013bf4b857b7a9ca37ee062d8ef1
   RNDeviceInfo: 4f9c7cfd6b9db1b05eb919620a001cf35b536423
@@ -1530,7 +1530,7 @@ SPEC CHECKSUMS:
   SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17
   sodium-react-native-direct: 102289e2a55688b5c6c489c88b2a7915d4e31ec1
   SSZipArchive: fe6a26b2a54d5a0890f2567b5cc6de5caa600aef
-  Yoga: e5b887426cee15d2a326bdd34afc0282fc0486ad
+  Yoga: 2a16e58450c48e110211dae1159fb114bbcdcfc0
   ZXingObjC: 8898711ab495761b2dbbdec76d90164a6d7e14c5
 
 PODFILE CHECKSUM: a25ec9d4205c8710cfcf7ec52d853eaf4b026cc5

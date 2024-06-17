@@ -1,0 +1,13 @@
+diff --git a/node_modules/react-native-quick-crypto/android/build.gradle b/node_modules/react-native-quick-crypto/android/build.gradle
+index 2ac6c0db..57afa566 100644
+--- a/node_modules/react-native-quick-crypto/android/build.gradle
++++ b/node_modules/react-native-quick-crypto/android/build.gradle
+@@ -94,6 +94,8 @@ android {
+             ""
+     ]
+     doNotStrip '**/*.so'
++    pickFirst 'META-INF/com.android.tools/proguard/coroutines.pro'
++    pickFirst 'META-INF/proguard/coroutines.pro'
+   }
+ 
+   buildTypes {

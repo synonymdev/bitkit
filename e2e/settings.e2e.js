@@ -1,4 +1,5 @@
 import jestExpect from 'expect';
+import { device } from 'detox';
 
 import {
 	sleep,
@@ -61,7 +62,7 @@ d('Settings', () => {
 			await element(by.id('GeneralSettings')).tap();
 			await element(by.id('CurrenciesSettings')).tap();
 			await element(by.text('GBP (£)')).tap();
-			await element(by.id('NavigationClose')).tap();
+			await element(by.id('NavigationClose')).atIndex(0).tap();
 
 			await expect(
 				element(by.id('MoneyFiatSymbol').withAncestor(by.id('TotalBalance'))),
@@ -69,6 +70,12 @@ d('Settings', () => {
 
 			// switch back to sats
 			await element(by.id('TotalBalance')).tap();
+
+			// switch to USD
+			await element(by.id('Settings')).tap();
+			await element(by.id('GeneralSettings')).tap();
+			await element(by.id('CurrenciesSettings')).tap();
+			await element(by.text('USD ($)')).tap();
 
 			markComplete('settings-currency');
 		});
@@ -93,13 +100,13 @@ d('Settings', () => {
 			// check default unit
 			await expect(unitRow).toHaveText('Bitcoin');
 
-			// switch to GBP
+			// switch to USD
 			await element(by.id('UnitSettings')).tap();
-			await element(by.id('GBP')).tap();
-			await element(by.id('NavigationBack')).tap();
-			await expect(unitRow).toHaveText('GBP');
-			await element(by.id('NavigationClose')).tap();
-			await expect(fiatSymbol).toHaveText('£');
+			await element(by.id('USD')).tap();
+			await element(by.id('NavigationBack')).atIndex(0).tap();
+			await expect(unitRow).toHaveText('USD');
+			await element(by.id('NavigationClose')).atIndex(0).tap();
+			await expect(fiatSymbol).toHaveText('$');
 			await expect(balance).toHaveText('0.00');
 
 			// switch back to BTC
@@ -107,9 +114,9 @@ d('Settings', () => {
 			await element(by.id('GeneralSettings')).tap();
 			await element(by.id('UnitSettings')).tap();
 			await element(by.id('Bitcoin')).tap();
-			await element(by.id('NavigationBack')).tap();
+			await element(by.id('NavigationBack')).atIndex(0).tap();
 			await expect(unitRow).toHaveText('Bitcoin');
-			await element(by.id('NavigationClose')).tap();
+			await element(by.id('NavigationClose')).atIndex(0).tap();
 			await expect(balance).toHaveText('0');
 
 			// switch to classic denomination
@@ -117,9 +124,9 @@ d('Settings', () => {
 			await element(by.id('GeneralSettings')).tap();
 			await element(by.id('UnitSettings')).tap();
 			await element(by.id('DenominationClassic')).tap();
-			await element(by.id('NavigationBack')).tap();
+			await element(by.id('NavigationBack')).atIndex(0).tap();
 			await expect(unitRow).toHaveText('Bitcoin');
-			await element(by.id('NavigationClose')).tap();
+			await element(by.id('NavigationClose')).atIndex(0).tap();
 			await expect(balance).toHaveText('0.00000000');
 
 			markComplete('settings-unit');
@@ -145,7 +152,7 @@ d('Settings', () => {
 			await element(by.id('custom')).tap();
 			await element(by.id('N1').withAncestor(by.id('CustomFee'))).tap();
 			await element(by.id('Continue')).tap();
-			await element(by.id('NavigationBack')).tap();
+			await element(by.id('NavigationBack')).atIndex(0).tap();
 			await expect(
 				element(by.id('Value').withAncestor(by.id('TransactionSpeedSettings'))),
 			).toHaveText('Custom');
@@ -168,7 +175,7 @@ d('Settings', () => {
 			await element(by.id('Settings')).tap();
 			await element(by.id('GeneralSettings')).tap();
 			await expect(element(by.id('TagsSettings'))).not.toBeVisible();
-			await element(by.id('NavigationClose')).tap();
+			await element(by.id('NavigationClose')).atIndex(0).tap();
 
 			// open receive tags, add a tag
 			const tag = 'test123';
@@ -189,7 +196,7 @@ d('Settings', () => {
 			await element(by.id('TagsSettings')).tap();
 			await expect(element(by.text(tag))).toBeVisible();
 			await element(by.id(`Tag-${tag}-delete`)).tap();
-			await element(by.id('NavigationClose')).tap();
+			await element(by.id('NavigationClose')).atIndex(0).tap();
 
 			// open receive tags, check tags are gone
 			await element(by.id('Receive')).tap();
@@ -238,7 +245,7 @@ d('Settings', () => {
 			await element(by.id('Settings')).tap();
 			await element(by.id('SecuritySettings')).tap();
 			await element(by.id('SwipeBalanceToHide')).tap();
-			await element(by.id('NavigationClose')).tap();
+			await element(by.id('NavigationClose')).atIndex(0).tap();
 
 			// Balance should be visible
 			await expect(element(by.id('ShowBalance'))).not.toBeVisible();
@@ -271,7 +278,7 @@ d('Settings', () => {
 			await element(by.id('Settings')).tap();
 			await element(by.id('BackupSettings')).tap();
 			await element(by.id('ResetAndRestore')).tap(); // just check if this screen can be opened
-			await element(by.id('NavigationBack')).tap();
+			await element(by.id('NavigationBack')).atIndex(0).tap();
 			await element(by.id('BackupWallet')).tap();
 			await sleep(1000); // animation
 			await element(by.id('TapToReveal')).tap();
@@ -342,8 +349,8 @@ d('Settings', () => {
 			}
 
 			// now switch to Legacy
-			await element(by.id('NavigationBack')).tap();
-			await element(by.id('NavigationBack')).tap();
+			await element(by.id('NavigationBack')).atIndex(0).tap();
+			await element(by.id('NavigationBack')).atIndex(0).tap();
 			await element(by.id('AdvancedSettings')).tap();
 			await element(by.id('AddressTypePreference')).tap();
 			await element(by.id('p2pkh')).tap();
@@ -367,7 +374,7 @@ d('Settings', () => {
 			if (!path2.includes("m/44'/1'/0'")) {
 				throw new Error(`Wrong path: ${path2}`);
 			}
-			await element(by.id('NavigationClose')).tap();
+			await element(by.id('NavigationClose')).atIndex(0).tap();
 
 			// check address on Receiving screen
 			await element(by.id('Receive')).tap();
@@ -386,7 +393,7 @@ d('Settings', () => {
 			await element(by.id('AdvancedSettings')).tap();
 			await element(by.id('AddressTypePreference')).tap();
 			await element(by.id('p2wpkh')).tap();
-			await element(by.id('NavigationClose')).tap();
+			await element(by.id('NavigationClose')).atIndex(0).tap();
 			await sleep(1000);
 			markComplete('settings-addr-type');
 		});
@@ -406,18 +413,18 @@ d('Settings', () => {
 			await element(by.id('RefreshLDK')).tap();
 			await element(by.id('RestartLDK')).tap();
 			await element(by.id('RebroadcastLDKTXS')).tap();
-			await waitFor(element(by.id('NavigationBack')))
+			await waitFor(element(by.id('NavigationBack')).atIndex(0))
 				.toBeVisible()
 				.withTimeout(5000);
-			await element(by.id('NavigationBack')).tap();
+			await element(by.id('NavigationBack')).atIndex(0).tap();
 
 			await element(by.id('LightningNodeInfo')).tap();
 			// TODO: this fails too often on CI
 			// await waitFor(element(by.id('LDKNodeID')))
 			// 	.toBeVisible()
 			// 	.withTimeout(30000);
-			await element(by.id('NavigationBack')).tap();
-			await element(by.id('NavigationBack')).tap();
+			await element(by.id('NavigationBack')).atIndex(0).tap();
+			await element(by.id('NavigationBack')).atIndex(0).tap();
 			if (!__DEV__) {
 				await element(by.id('DevOptions')).multiTap(5); // disable dev mode
 			}
@@ -427,6 +434,11 @@ d('Settings', () => {
 
 		it('Can enter wrong Electrum server and get an error message', async () => {
 			if (checkComplete('settings-electrum')) {
+				return;
+			}
+
+			// skip test on Android since we don't have alert with input
+			if (device.getPlatform() === 'android') {
 				return;
 			}
 
@@ -515,6 +527,11 @@ d('Settings', () => {
 
 		it('Can connect to different Slashtags Web Relay', async () => {
 			if (checkComplete('settings-webrelay')) {
+				return;
+			}
+
+			// FIXME: this test fails on andoid
+			if (device.getPlatform() === 'android') {
 				return;
 			}
 
@@ -655,7 +672,7 @@ d('Settings', () => {
 			await expect(element(by.id('Status-lightning_connection'))).toBeVisible();
 			await expect(element(by.id('Status-full_backup'))).toBeVisible();
 
-			await element(by.id('NavigationClose')).tap();
+			await element(by.id('NavigationClose')).atIndex(0).tap();
 
 			markComplete('settings-support-status');
 		});

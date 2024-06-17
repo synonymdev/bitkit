@@ -3,14 +3,14 @@ import jestExpect from 'expect';
 
 import initWaitForElectrumToSync from '../__tests__/utils/wait-for-electrum';
 import {
-	checkComplete,
-	markComplete,
-	launchAndWait,
-	completeOnboarding,
-	isButtonEnabled,
 	bitcoinURL,
+	checkComplete,
+	completeOnboarding,
 	electrumHost,
 	electrumPort,
+	isButtonEnabled,
+	launchAndWait,
+	markComplete,
 	sleep,
 } from './helpers';
 
@@ -80,7 +80,7 @@ d('LN Channel Onboarding', () => {
 
 			await waitFor(element(by.id('NewTxPrompt')))
 				.toBeVisible()
-				.withTimeout(10000);
+				.withTimeout(20000);
 			await element(by.id('NewTxPrompt')).swipe('down'); // close Receive screen
 
 			await element(by.id('Suggestion-lightning')).tap();
@@ -130,7 +130,7 @@ d('LN Channel Onboarding', () => {
 			await expect(element(by.text('200 000'))).toBeVisible();
 
 			// Swipe to confirm (set x offset to avoid navigating back)
-			await element(by.id('GRAB')).swipe('right', 'slow', NaN, 0.8);
+			await element(by.id('GRAB')).swipe('right', 'slow', 0.95, 0.5, 0.5);
 			await waitFor(element(by.id('LightningSettingUp')))
 				.toBeVisible()
 				.withTimeout(10000);
@@ -183,7 +183,7 @@ d('LN Channel Onboarding', () => {
 			// await expect(element(by.text('1 week'))).toBeVisible();
 
 			// Swipe to confirm (set x offset to avoid navigating back)
-			await element(by.id('GRAB')).swipe('right', 'slow', NaN, 0.8);
+			await element(by.id('GRAB')).swipe('right', 'slow', 0.95, 0.5, 0.5);
 			await waitFor(element(by.id('LightningSettingUp')))
 				.toBeVisible()
 				.withTimeout(10000);

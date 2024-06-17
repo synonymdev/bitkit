@@ -1,0 +1,192 @@
+name: e2e-android
+
+on:
+  workflow_dispatch:
+  pull_request:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  E2E_TESTS: 1 # build without transform-remove-console babel plugin
+  DEBUG: 'lnurl* lnurl server'
+
+jobs:
+  e2e:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Enable KVM group perms
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+
+      - name: Free Disk Space
+        uses: jlumbroso/free-disk-space@main
+        with:
+          # this might remove tools that are actually needed,
+          # if set to "true" but frees about 6 GB
+          tool-cache: false
+          android: false
+          dotnet: true
+          haskell: true
+          large-packages: true
+          docker-images: true
+          swap-storage: true
+
+      - name: yarn and gradle caches in /mnt
+        run: |
+          rm -rf ~/.yarn
+          rm -rf ~/.gradle
+          sudo mkdir -p /mnt/.yarn
+          sudo mkdir -p /mnt/.gradle
+          sudo chown -R runner /mnt/.yarn
+          sudo chown -R runner /mnt/.gradle
+          ln -s /mnt/.yarn /home/runner/
+          ln -s /mnt/.gradle /home/runner/
+
+      - name: Create artifacts directory on /mnt
+        run: |
+          sudo mkdir -p /mnt/artifacts
+          sudo chown -R runner /mnt/artifacts
+
+      - name: Specify node version
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Use gradle caches
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+      - name: Use yarn caches
+        uses: actions/cache@v4
+        with:
+          path: ~/.yarn
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+
+      - name: Activate enviroment variables
+        run: cp .env.test.template .env
+
+      - name: Yarn Install
+        run: yarn || yarn
+        env:
+          HUSKY: 0
+
+      - name: Activate Gradle variables
+        run: |
+          cp .github/workflows/gradle.properties ~/.gradle/gradle.properties
+          patch -p1 -i ./.github/workflows/react-native-quick-crypto.patch
+
+      - name: Use specific Java version for sdkmanager to work
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Build
+        run: yarn e2e:build:android-release || yarn e2e:build:android-release
+
+      - name: Show build outputs
+        run: tree android/app/build/outputs/
+
+      - name: Kill java processes
+        run: pkill -9 -f java || true
+
+      - name: Run regtest setup
+        run: |
+          cd docker
+          mkdir lnd && chmod 777 lnd
+          docker-compose pull --quiet
+          docker compose up -d
+
+      - name: Wait for electrum server and LND
+        timeout-minutes: 10
+        run: |
+          while ! nc -z '127.0.0.1' 60001; do sleep 1; done
+          while ! nc -z '127.0.0.1' 10009; do sleep 1; done
+          sudo chmod -R 777 docker/lnd
+
+      - name: Test attempt 1
+        continue-on-error: true
+        id: test1
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          profile: 5.4in FWVGA # devices list: avdmanager list device
+          api-level: 31
+          avd-name: Pixel_API_31_AOSP
+          force-avd-creation: false
+          emulator-options: -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim -camera-back none -camera-front none -partition-size 2047
+          arch: x86_64
+          script: yarn e2e:test:android-release  --record-videos all --record-logs all --take-screenshots all --headless -d 200000 --artifacts-location /mnt/artifacts
+
+      - name: Test attempt 2
+        continue-on-error: true
+        id: test2
+        if: steps.test1.outcome != 'success'
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          profile: 5.4in FWVGA # devices list: avdmanager list device
+          api-level: 31
+          avd-name: Pixel_API_31_AOSP
+          force-avd-creation: false
+          emulator-options: -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim -camera-back none -camera-front none -partition-size 2047
+          arch: x86_64
+          script: yarn e2e:test:android-release  --record-videos all --record-logs all --take-screenshots all --headless -d 200000 --artifacts-location /mnt/artifacts
+
+      - name: Test attempt 3
+        continue-on-error: true
+        id: test3
+        if: steps.test1.outcome != 'success' && steps.test2.outcome != 'success'
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          profile: 5.4in FWVGA # devices list: avdmanager list device
+          api-level: 31
+          avd-name: Pixel_API_31_AOSP
+          force-avd-creation: false
+          emulator-options: -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim -camera-back none -camera-front none -partition-size 2047
+          arch: x86_64
+          script: yarn e2e:test:android-release  --record-videos all --record-logs all --take-screenshots all --headless -d 200000 --artifacts-location /mnt/artifacts
+
+      - name: Restart docker before last attempt
+        if: steps.test1.outcome != 'success' && steps.test2.outcome != 'success' && steps.test3.outcome != 'success'
+        run: |
+          cd docker && docker compose down -t 60 && docker compose up --quiet-pull -d && cd ..
+          while ! nc -z '127.0.0.1' 60001; do sleep 1; done
+
+      - name: Test attempt 4
+        if: steps.test1.outcome != 'success' && steps.test2.outcome != 'success' && steps.test3.outcome != 'success'
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          profile: 5.4in FWVGA # devices list: avdmanager list device
+          api-level: 31
+          avd-name: Pixel_API_31_AOSP
+          force-avd-creation: false
+          emulator-options: -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim -camera-back none -camera-front none -partition-size 2047
+          arch: x86_64
+          script: yarn e2e:test:android-release  --record-videos all --record-logs all --take-screenshots all --headless -d 200000 --artifacts-location /mnt/artifacts
+
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: e2e-test-videos
+          path: /mnt/artifacts/
+
+      - name: Dump docker logs on failure
+        if: failure()
+        uses: jwalton/gh-docker-logs@v2

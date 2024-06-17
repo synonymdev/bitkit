@@ -64,7 +64,7 @@ d('Onboarding', () => {
 			by.id('SeedContaider'),
 		).getAttributes();
 		await element(by.id('SeedContaider')).swipe('down');
-		await element(by.id('NavigationClose')).tap();
+		await element(by.id('NavigationClose')).atIndex(0).tap();
 		console.info('seed: ', seed);
 
 		// get receing address

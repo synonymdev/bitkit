@@ -1,4 +1,4 @@
-name: e2e-ios-macmini
+name: e2e-ios
 
 on:
   workflow_dispatch:

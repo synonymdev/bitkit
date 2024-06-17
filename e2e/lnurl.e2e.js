@@ -1,6 +1,7 @@
 import BitcoinJsonRpc from 'bitcoin-json-rpc';
 import createLndRpc from '@radar/lnrpc';
 import LNURL from 'lnurl';
+import { device } from 'detox';
 
 import {
 	sleep,
@@ -19,7 +20,11 @@ const __DEV__ = process.env.DEV === 'true';
 const tls = `${__dirname}/../docker/lnd/tls.cert`;
 const macaroon = `${__dirname}/../docker/lnd/data/chain/bitcoin/regtest/admin.macaroon`;
 
-const d = checkComplete('lnurl-1') ? describe.skip : describe;
+// disable lnurl tests on android since we don't have alert with input
+const d =
+	checkComplete('lnurl-1') || device.getPlatform() === 'android'
+		? describe.skip
+		: describe;
 
 const waitForEvent = (lnurl, name) => {
 	let timer;
@@ -105,7 +110,7 @@ d('LNURL', () => {
 		let { label: ldkNodeID } = await element(
 			by.id('LDKNodeID'),
 		).getAttributes();
-		await element(by.id('NavigationClose')).tap();
+		await element(by.id('NavigationClose')).atIndex(0).tap();
 
 		// send funds to LND node and open a channel
 		const lnd = await createLndRpc({
@@ -193,7 +198,7 @@ d('LNURL', () => {
 		).tap();
 
 		await element(by.id('ContinueAmount')).tap();
-		await element(by.id('GRAB')).swipe('right'); // Swipe to confirm
+		await element(by.id('GRAB')).swipe('right', 'slow', 0.95, 0.5, 0.5); // Swipe to confirm
 		await waitFor(element(by.id('SendSuccess')))
 			.toBeVisible()
 			.withTimeout(10000);
@@ -213,7 +218,7 @@ d('LNURL', () => {
 		await element(
 			by.label('OK').and(by.type('_UIAlertControllerActionView')),
 		).tap();
-		await element(by.id('GRAB')).swipe('right'); // Swipe to confirm
+		await element(by.id('GRAB')).swipe('right', 'slow', 0.95, 0.5, 0.5); // Swipe to confirm
 		await waitFor(element(by.id('SendSuccess')))
 			.toBeVisible()
 			.withTimeout(10000);

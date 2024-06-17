@@ -6,8 +6,7 @@ import React, {
 	useRef,
 	useState,
 } from 'react';
-import { AppState, Linking } from 'react-native';
-import { useAppDispatch, useAppSelector } from '../../hooks/redux';
+import { AppState, Linking, Platform } from 'react-native';
 import {
 	LinkingOptions,
 	createNavigationContainerRef,
@@ -19,11 +18,13 @@ import {
 	StackNavigationOptions,
 	TransitionPresets,
 } from '@react-navigation/stack';
+import type { TransitionSpec } from '@react-navigation/stack/lib/typescript/src/types';
 
 import { NavigationContainer } from '../../styles/components';
 import { processInputData } from '../../utils/scanner';
 import { checkClipboardData } from '../../utils/clipboard';
 import { useRenderCount } from '../../hooks/helpers';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { getStore } from '../../store/helpers';
 import { updateUi } from '../../store/slices/ui';
 import { resetSendTransaction } from '../../store/actions/wallet';
@@ -69,8 +70,36 @@ const Stack = createStackNavigator<RootStackParamList>();
 const screenOptions: StackNavigationOptions = {
 	...TransitionPresets.SlideFromRightIOS,
 	headerShown: false,
-	animationEnabled: !__E2E__,
+	// we can't use it because bottom-sheet components
+	// are starting to appear on the screen even they are closed
+	// animationEnabled: !__E2E__,
 };
+
+if (__E2E__) {
+	if (Platform.OS === 'ios') {
+		screenOptions.animationEnabled = false;
+	} else {
+		// can't use animationEnabled = false for android because
+		// it causes a bug where bottom-sheet components are
+		// appearing on the screen even they are closed
+		const config: TransitionSpec = {
+			animation: 'spring',
+			config: {
+				stiffness: 100000000, // make it fast
+				damping: 500,
+				mass: 3,
+				overshootClamping: true,
+				restDisplacementThreshold: 0.01,
+				restSpeedThreshold: 0.01,
+			},
+		};
+
+		screenOptions.transitionSpec = {
+			open: config,
+			close: config,
+		};
+	}
+}
 
 /**
  * Helper function to navigate from outside components.

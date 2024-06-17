@@ -1,4 +1,5 @@
 import BitcoinJsonRpc from 'bitcoin-json-rpc';
+import { device } from 'detox';
 
 import {
 	sleep,
@@ -65,6 +66,11 @@ d('Settings Security And Privacy', () => {
 		// - disable PIN
 		// - enter wrong PIN 10 times and reset the app
 		if (checkComplete('security-1')) {
+			return;
+		}
+
+		// skip test on Android we don't support bitometrics there
+		if (device.getPlatform() === 'android') {
 			return;
 		}
 

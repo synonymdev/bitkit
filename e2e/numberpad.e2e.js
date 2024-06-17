@@ -89,7 +89,7 @@ d('NumberPad', () => {
 		await element(by.id('GeneralSettings')).tap();
 		await element(by.id('UnitSettings')).tap();
 		await element(by.id('DenominationClassic')).tap();
-		await element(by.id('NavigationClose')).tap();
+		await element(by.id('NavigationClose')).atIndex(0).tap();
 
 		await element(by.id('Receive')).tap();
 		await element(by.id('SpecifyInvoiceButton')).tap();
