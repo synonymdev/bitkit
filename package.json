@@ -63,7 +63,7 @@
     "@synonymdev/slashtags-widget-price-feed": "1.1.0",
     "@synonymdev/web-relay": "1.0.7",
     "bech32": "2.0.0",
-    "beignet": "0.0.39",
+    "beignet": "0.0.40",
     "bip21": "2.0.3",
     "bip32": "4.0.0",
     "bip39": "3.1.0",
