@@ -87,7 +87,7 @@ const Wallets = ({ navigation, onFocus }: Props): ReactElement => {
 
 	const onRefresh = async (): Promise<void> => {
 		setRefreshing(true);
-		await refreshWallet();
+		await refreshWallet({ scanAllAddresses: true });
 		setRefreshing(false);
 	};
 
