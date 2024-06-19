@@ -58,3 +58,8 @@ export const ignoresSwitchUnitToastSelector = createSelector(
 	[userState],
 	(user): boolean => user.ignoresSwitchUnitToast,
 );
+
+export const scanAllAddressesTimestampSelector = createSelector(
+	[userState],
+	(user): number => user.scanAllAddressesTimestamp,
+);

@@ -27,8 +27,11 @@ import {
 	showWidgetsSelector,
 } from '../../store/reselect/settings';
 import { showToast } from '../../utils/notifications';
-import { ignoresHideBalanceToastSelector } from '../../store/reselect/user';
-import { ignoreHideBalanceToast } from '../../store/slices/user';
+import {
+	ignoresHideBalanceToastSelector,
+	scanAllAddressesTimestampSelector,
+} from '../../store/reselect/user';
+import { ignoreHideBalanceToast, updateUser } from '../../store/slices/user';
 import MainOnboarding from './MainOnboarding';
 
 const HEADER_HEIGHT = 46;
@@ -48,6 +51,9 @@ const Wallets = ({ navigation, onFocus }: Props): ReactElement => {
 	const hideBalance = useAppSelector(hideBalanceSelector);
 	const ignoresHideBalanceToast = useAppSelector(
 		ignoresHideBalanceToastSelector,
+	);
+	const scanAllAddressesTimestamp = useAppSelector(
+		scanAllAddressesTimestampSelector,
 	);
 	const hideOnboardingSetting = useAppSelector(hideOnboardingMessageSelector);
 	const showWidgets = useAppSelector(showWidgetsSelector);
@@ -86,8 +92,12 @@ const Wallets = ({ navigation, onFocus }: Props): ReactElement => {
 	};
 
 	const onRefresh = async (): Promise<void> => {
+		// only scan all addresses once per hour
+		const scanAllAddresses =
+			Date.now() - scanAllAddressesTimestamp > 1000 * 60 * 60;
+		dispatch(updateUser({ scanAllAddressesTimestamp: Date.now() }));
 		setRefreshing(true);
-		await refreshWallet({ scanAllAddresses: true });
+		await refreshWallet({ scanAllAddresses });
 		setRefreshing(false);
 	};
 

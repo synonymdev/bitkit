@@ -14,6 +14,7 @@ export type TUser = {
 	startCoopCloseTimestamp: number;
 	ignoresHideBalanceToast: boolean;
 	ignoresSwitchUnitToast: boolean;
+	scanAllAddressesTimestamp: number;
 };
 
 export const initialUserState: TUser = {
@@ -28,6 +29,7 @@ export const initialUserState: TUser = {
 	startCoopCloseTimestamp: 0,
 	ignoresHideBalanceToast: false,
 	ignoresSwitchUnitToast: false,
+	scanAllAddressesTimestamp: 0,
 };
 
 export const userSlice = createSlice({
