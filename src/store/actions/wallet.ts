@@ -1,3 +1,4 @@
+import { AppState } from 'react-native';
 import { err, ok, Result } from '@synonymdev/result';
 
 import actions from './actions';
@@ -849,8 +850,15 @@ export const setWalletData = async <K extends keyof IWalletData>(
 				const header = data as IHeader;
 				const selectedNetwork = getNetworkFromBeignet(network);
 				updateHeader({ header, selectedNetwork });
-				// Make sure transactions are updated after a new block is received.
-				await refreshWallet({ lightning: false });
+
+				const appState = AppState.currentState;
+				const appInBackground = ['background', 'inactive'].includes(appState);
+
+				// If the app is in the background, refreshing will fail.
+				if (!appInBackground) {
+					// Make sure transactions are updated after a new block is received.
+					await refreshWallet({ lightning: false });
+				}
 				break;
 			case 'feeEstimates':
 				updateOnchainFeeEstimates({

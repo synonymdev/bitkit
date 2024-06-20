@@ -217,7 +217,7 @@ const refreshBeignet = async (
 	checkGapLimit();
 };
 
-const handleRefreshError = (msg): void => {
+const handleRefreshError = (msg: string): void => {
 	// If the error is due to the batch limit being exceeded, show a toast and set the throttled state.
 	if (msg.includes('Batch limit exceeded')) {
 		showToast({

@@ -224,7 +224,7 @@ export const connectToElectrum = async ({
 	const electrum = getOnChainWalletElectrum();
 
 	// Attempt to disconnect from any old/lingering connections
-	await electrum.disconnect();
+	await electrum?.disconnect();
 
 	// Fetch any stored custom peers.
 	if (!customPeers) {
