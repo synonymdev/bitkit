@@ -6,6 +6,8 @@ import { BIP32Factory } from 'bip32';
 import ecc from '@bitcoinerlab/secp256k1';
 import { err, ok, Result } from '@synonymdev/result';
 import { ldk } from '@synonymdev/react-native-ldk';
+import net from 'net';
+import tls from 'tls';
 import {
 	EAddressType,
 	EAvailableNetworks,
@@ -31,7 +33,6 @@ import {
 	TOnMessage,
 	TServer,
 	TTransactionMessage,
-	// @ts-ignore
 	Wallet,
 	getByteCount,
 } from 'beignet';
@@ -1173,8 +1174,8 @@ export const setupOnChainWallet = async ({
 		network: EAvailableNetworks[selectedNetwork],
 		electrumOptions: {
 			servers: customPeers,
-			tls: global.tls,
-			net: global.net,
+			net,
+			tls,
 		},
 		gapLimitOptions,
 		storage,

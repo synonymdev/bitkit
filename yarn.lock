@@ -4546,10 +4546,10 @@ bech32@^1.1.2, bech32@^1.1.4:
   resolved "https://registry.yarnpkg.com/bech32/-/bech32-1.1.4.tgz#e38c9f37bf179b8eb16ae3a772b40c356d4832e9"
   integrity sha512-s0IrSOzLlbvX7yp4WBfPITzpAU8sqQcpsmwXDiKwrG4r491vwCO/XpejasRNl0piBMe/DvP4Tz0mIS/X1DPJBQ==
 
-beignet@0.0.40:
-  version "0.0.40"
-  resolved "https://registry.yarnpkg.com/beignet/-/beignet-0.0.40.tgz#f0960241af10b774b499887474b6a65bcf230cc7"
-  integrity sha512-FW9/0ynnIl6FdBv6zY+BxXQ+l7NQ3mvSaBzstfM+QmMnW9ipSoU7L2PeXV1BQGmV9mpOzk/xk36P/vn+J8ImCg==
+beignet@0.0.41:
+  version "0.0.41"
+  resolved "https://registry.yarnpkg.com/beignet/-/beignet-0.0.41.tgz#2edb25e5ae9083afb3e11b476237e387863615ea"
+  integrity sha512-mtY8PWUM85V+Z+HBauuNMciHu5oYu9IqlWgw6NGDvGqh++f3dUQqHgON9+6YF39wmhAFmI8HLoYTcyb/fzFU1g==
   dependencies:
     "@bitcoinerlab/secp256k1" "1.0.5"
     bech32 "2.0.0"
@@ -4562,7 +4562,7 @@ beignet@0.0.40:
     ecpair "2.1.0"
     lodash.clonedeep "4.5.0"
     net "1.0.2"
-    rn-electrum-client "0.0.17"
+    rn-electrum-client "0.0.18"
 
 big.js@^5.2.2:
   version "5.2.2"
@@ -10382,10 +10382,10 @@ react-native-svg@15.1.0:
     css-select "^5.1.0"
     css-tree "^1.1.3"
 
-react-native-tcp-socket@5.6.2:
-  version "5.6.2"
-  resolved "https://registry.yarnpkg.com/react-native-tcp-socket/-/react-native-tcp-socket-5.6.2.tgz#8f09c13f73f6592a34cee5f441acc7a0aefbdf0a"
-  integrity sha512-doijFOAJd9p8KmduhfbZaPfqRVd3CZuTLAimJx0yxIqFWy/EDPGHeFVrOEOqRZ3lWBVDcssiCIQJhV0baKu5Pg==
+react-native-tcp-socket@6.0.6:
+  version "6.0.6"
+  resolved "https://registry.yarnpkg.com/react-native-tcp-socket/-/react-native-tcp-socket-6.0.6.tgz#8e124e5d347b0ef4ea6dc6d38b8f1771f47bfbce"
+  integrity sha512-FIFSP+3S5OnJRjl7ddD7G9NfVbVEiQ4WROEmOBei1cKE0pDz2R/Kcm4XkFlnMd5sdoG6Wbv830Yd/ZsmOjkEKw==
   dependencies:
     buffer "^5.4.3"
     eventemitter3 "^4.0.7"
@@ -10757,10 +10757,10 @@ rn-android-keyboard-adjust@2.1.2:
   resolved "https://registry.yarnpkg.com/rn-android-keyboard-adjust/-/rn-android-keyboard-adjust-2.1.2.tgz#f2b792628700dcb026215420192317ce43fd954f"
   integrity sha512-pUYiMT7aucw5YnV4geGdalyl6o6rEwRYhDnw2oPQwDym1BZHtmKsxFLupky1Kj2ZNkNKadpEyoyHOElLo+f3sA==
 
-rn-electrum-client@0.0.17:
-  version "0.0.17"
-  resolved "https://registry.yarnpkg.com/rn-electrum-client/-/rn-electrum-client-0.0.17.tgz#e054e6c089aa1dfb745fba51616115130d9aef8f"
-  integrity sha512-HeCcVqw7dB6THrFZNVUlc2hzFL6WHyKWBbkeTgDYam8DOUGwS72GPgn9OMH1nz7qTWMx0FaIN9H0ny4kFUuJgg==
+rn-electrum-client@0.0.18:
+  version "0.0.18"
+  resolved "https://registry.yarnpkg.com/rn-electrum-client/-/rn-electrum-client-0.0.18.tgz#e5dcbd5d0ef81a339d210b361a0aab5a5d1f18e1"
+  integrity sha512-g4uORu0lH3pifLo8T3OfXwXLn5fJhin9UmkfURCfMTnjBLClbPkd7vCqr+aYGmXHjGuaXplTPIEIOkcDUj15aw==
 
 rn-qr-generator@1.4.0:
   version "1.4.0"

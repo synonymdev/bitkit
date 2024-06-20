@@ -1,5 +1,5 @@
-import { EAvailableNetwork } from '../networks';
 import { EProtocol } from 'beignet';
+import { EAvailableNetwork } from '../networks';
 
 export const defaultElectrumPorts = ['51002', '50002', '51001', '50001'];
 

@@ -6,9 +6,6 @@ require('crypto');
 // https://github.com/anonyco/FastestSmallestTextEncoderDecoder
 require('fastestsmallesttextencoderdecoder-encodeinto');
 
-global.net = require('./src/utils/electrum/net');
-global.tls = require('./src/utils/electrum/tls');
-
 // RN still doesn't support full spec of Intl API
 if (!Intl.Locale) {
 	require('@formatjs/intl-locale/polyfill');

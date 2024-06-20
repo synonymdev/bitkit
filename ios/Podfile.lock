@@ -941,7 +941,7 @@ PODS:
     - React
     - React-callinvoker
     - React-Core
-  - react-native-tcp-socket (5.6.2):
+  - react-native-tcp-socket (6.0.6):
     - CocoaAsyncSocket
     - React-Core
   - React-nativeconfig (0.73.8)
@@ -1488,7 +1488,7 @@ SPEC CHECKSUMS:
   react-native-restart: 7595693413fe3ca15893702f2c8306c62a708162
   react-native-safe-area-context: b97eb6f9e3b7f437806c2ce5983f479f8eb5de4b
   react-native-skia: 24d41bf966446b911930f7f15aebae6310413cd3
-  react-native-tcp-socket: c1b7297619616b4c9caae6889bcb0aba78086989
+  react-native-tcp-socket: e724380c910c2e704816ec817ed28f1342246ff7
   React-nativeconfig: 2e44d0d2dd222b12a5183f4bcaa4a91881497acb
   React-NativeModulesApple: 8aa032fe6c92c1a3c63e4809d42816284a56a9b0
   React-perflogger: f9367428cf475f4606b5965c1d5a71781bb95299
