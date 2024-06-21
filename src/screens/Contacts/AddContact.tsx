@@ -114,10 +114,16 @@ const AddContact = ({
 						onChange={handleChangeUrl}
 						testID="ContactURLInput"
 						color={error ? 'brand' : undefined}>
-						<TouchableOpacity hitSlop={styles.hitSlop} onPress={handleScanner}>
+						<TouchableOpacity
+							style={styles.action}
+							hitSlop={styles.hitSlop}
+							onPress={handleScanner}>
 							<CornersOutIcon width={24} height={24} color="brand" />
 						</TouchableOpacity>
-						<TouchableOpacity hitSlop={styles.hitSlop} onPress={handlePaste}>
+						<TouchableOpacity
+							style={styles.action}
+							hitSlop={styles.hitSlop}
+							onPress={handlePaste}>
 							<ClipboardTextIcon width={24} height={24} color="brand" />
 						</TouchableOpacity>
 					</LabeledInput>
@@ -151,6 +157,9 @@ const styles = StyleSheet.create({
 	},
 	button: {
 		marginTop: 'auto',
+	},
+	action: {
+		width: 40,
 	},
 	hitSlop: {
 		top: 10,
