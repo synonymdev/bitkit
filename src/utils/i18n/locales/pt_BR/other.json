@@ -14,7 +14,6 @@
   "buy_text": "Não possui Bitcoin ou deseja comprar mais?",
   "buy_button": "Escolher Corretora",
   "error_keychain": "Problema de Conexão de Dados",
-  "error_keychain_msg": "Ocorreu um erro: Não foi possível carregar primaryKey.",
   "connection_restored_title": "Conexão Electrum Restaurada",
   "connection_restored_message": "O Bitkit reconectou ao Electrum com sucesso.",
   "connection_issue": "Problemas de Conectividade com a Internet",

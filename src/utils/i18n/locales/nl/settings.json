@@ -12,10 +12,11 @@
   "support_title": "Ondersteuning",
   "about": {
     "title": "Over Bitkit",
-    "text": "Bedankt dat u een verantwoordelijke Bitcoiner bent.\nVerander uw portemonnee, verander de wereld.\n\nBitkit geeft u de sleutels tot uw geld, profiel, contacten en webaccounts.\n\nBitkit is gemaakt door Synonym Software Ltd.",
+    "text": "Bedankt dat u als Bitcoiner verantwoordelijkheid neemt.\nVerander van wallet, verander de wereld.\n\nBitkit geeft u de sleutels tot uw geld, profiel, contacten en webaccounts.\n\nBitkit is gemaakt door Synonym Software Ltd.",
     "legal": "Juridisch",
     "share": "Delen",
-    "version": "Versie"
+    "version": "Versie",
+    "shareText": "Verander van wallet, verander de wereld. Download Bitkit voor iPhone {appStoreUrl} of Android {playStoreUrl}"
   },
   "dev_title": "Dev Instellingen",
   "general": {
@@ -204,7 +205,7 @@
     "rescan_error": "Rescan mislukt",
     "rescan_error_description": "Bitkit kon de saldi van de adressen niet controleren.",
     "spend_number": "{count, plural, one {Geef ₿ {fundsToSpend} uit vanuit # adres} other {Geef ₿ {fundsToSpend} uit vanuit # adressen}}",
-    "spend_all": "{count, plural, one {Geef Al Het Geld Uit Voor # adres} other {Geef Al Het Geld UIt Voor # adressen}}",
+    "spend_all": "{count, plural, one {Geef Al Het Geld Uit Voor # adres} other {Geef Al Het Geld Uit Voor # adressen}}",
     "index": "Index: {index}",
     "path": "Pad: {path}",
     "private_hide": "Verberg De Privésleutel",

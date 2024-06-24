@@ -14,7 +14,6 @@
   "buy_text": "У вас нет биткоинов или нужно больше?",
   "buy_button": "Выбрать Биржу",
   "error_keychain": "Проблема с данными",
-  "error_keychain_msg": "Произошла ошибка: не удалось загрузить primaryKey.",
   "connection_restored_title": "Подключение к Electrum восстановлено",
   "connection_restored_message": "Bitkit успешно переподключился к Electrum.",
   "connection_issue": "Проблемы с подключением к Интернету",

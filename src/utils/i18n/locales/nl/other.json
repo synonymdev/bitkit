@@ -26,6 +26,7 @@
   "lnurl_channel_success_msg_peer": "Succesvol verzoek om een kanaal met: {peer}",
   "lnurl_channel_success_msg_no_peer": "Verzoek om een kanaal succesvol.",
   "lnurl_withdr_success_title": "Opname Verzocht",
+  "bt_error_retrieve": "Overboeking Mislukt",
   "bt_channel_purchase_cost_error": "U heeft {delta}meer nodig om deze transactie te voltooien.",
   "earlier": "EERDER",
   "update_nav_title": "Update Beschikbaar",

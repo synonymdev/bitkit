@@ -13,7 +13,6 @@
   "buy_header": "Compra un po' di\n<accent>Bitcoin</accent>",
   "buy_text": "Non hai Bitcoin o ne vuoi ancora di più?",
   "error_keychain": "Problema di connessione dati",
-  "error_keychain_msg": "Si è verificato un errore: impossibile caricare la chiave primaria.",
   "connection_restored_title": "Connessione Electrum ripristinata",
   "connection_restored_message": "Bitkit si è ricollegato con successo ad Electrum.",
   "connection_issue": "Problemi di connettività Internet",

@@ -14,7 +14,7 @@
   "buy_text": "Nemáte žádné bitcoiny nebo jich potřebujete více?",
   "buy_button": "Zvolte si burzu",
   "error_keychain": "Problém s datovým připojením",
-  "error_keychain_msg": "Došlo k chybě: Nepodařilo se nahrát primaryKey.",
+  "error_keychain_msg": "Nelze načíst primární klíč z klíčenky.",
   "connection_restored_title": "Electrum spojení obnoveno",
   "connection_restored_message": "Bitkit se opětovně úspěšně připojil k Electrum.",
   "connection_issue": "Problémy s připojením k internetu",

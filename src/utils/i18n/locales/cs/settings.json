@@ -15,7 +15,8 @@
     "text": "Děkujeme, že jste zodpovědní uživatelé bitcoinu.\nZměňte svou peněženku, změňte svět.\n\nBitkit vám předá klíče k vašim penězům, profilu, kontaktům a webovým účtům.\n\nBitkit byl vytvořen společností Synonym Software Ltd.",
     "legal": "Právní",
     "share": "Sdílet",
-    "version": "Verze"
+    "version": "Verze",
+    "shareText": "Změňte svou peněženku, změňte svět. Stáhněte si Bitkit pro iPhone {appStoreUrl} nebo Android {playStoreUrl}"
   },
   "dev_title": "Vývojářské nastavení",
   "general": {
