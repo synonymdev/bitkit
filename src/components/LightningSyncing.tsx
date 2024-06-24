@@ -1,5 +1,5 @@
 import React, { ReactElement, useEffect, useState } from 'react';
-import { Image, StyleSheet, View, ViewStyle } from 'react-native';
+import { Image, StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import Animated, {
 	Easing,
 	cancelAnimation,
@@ -26,11 +26,11 @@ const imageSyncSmall = require('../assets/illustrations/ln-sync-small.png');
 const imageSyncLarge = require('../assets/illustrations/ln-sync-large.png');
 
 const LightningSyncing = ({
-	style,
 	title,
+	style,
 }: {
-	style: ViewStyle;
 	title: string;
+	style?: StyleProp<ViewStyle>;
 }): ReactElement => {
 	const { t } = useTranslation('lightning');
 	const glowOpacity = useSharedValue(0.5);

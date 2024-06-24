@@ -55,6 +55,7 @@ import Button from '../../../components/Button';
 import Tooltip from '../../../components/Tooltip';
 import Dot from '../../../components/SliderDots';
 import SwitchRow from '../../../components/SwitchRow';
+import LightningSyncing from '../../../components/LightningSyncing';
 import {
 	addressTypeSelector,
 	selectedNetworkSelector,
@@ -571,75 +572,81 @@ const ReceiveQR = ({
 	const slides = useMemo((): Slide[] => [Slide1, Slide2], [Slide1, Slide2]);
 
 	return (
-		<GradientView style={styles.container}>
-			<BottomSheetNavigationHeader
-				title={t('receive_bitcoin')}
-				displayBackButton={false}
-			/>
+		<>
+			<GradientView style={styles.container}>
+				<BottomSheetNavigationHeader
+					title={t('receive_bitcoin')}
+					displayBackButton={false}
+				/>
 
-			{loading && (
-				<View style={[styles.loading, { height: qrSize }]}>
-					<ActivityIndicator color="white" />
-				</View>
-			)}
-
-			{!loading && (
-				<View style={styles.carouselWrapper}>
-					<Carousel
-						ref={carouselRef}
-						style={styles.carousel}
-						data={slides}
-						width={dimensions.width}
-						height={qrMaxHeight + 64}
-						loop={false}
-						scrollAnimationDuration={100}
-						panGestureHandlerProps={{ activeOffsetX: [-10, 10] }}
-						testID="ReceiveSlider"
-						renderItem={({ index }): ReactElement => {
-							const Slide = slides[index];
-							return <Slide key={index} />;
-						}}
-						onProgressChange={(_, absoluteProgress): void => {
-							progressValue.value = absoluteProgress;
-						}}
-					/>
-					<View style={styles.dots} pointerEvents="none">
-						{slides.map((_slide, index) => (
-							<Dot
-								key={index}
-								index={index}
-								animValue={progressValue}
-								length={slides.length}
-							/>
-						))}
+				{loading && (
+					<View style={[styles.loading, { height: qrSize }]}>
+						<ActivityIndicator color="white" />
 					</View>
-				</View>
-			)}
+				)}
 
-			{displayReceiveInstantlySwitch && (
-				<View style={styles.buttonContainer}>
-					{!enableInstant && (
-						<Headline>
-							<Trans
-								t={t}
-								i18nKey="receive_text_lnfunds"
-								components={{ accent: <Headline color="purple" /> }}
-							/>
-						</Headline>
-					)}
-					<SwitchRow
-						style={styles.switchRow}
-						color="purple"
-						isEnabled={enableInstant}
-						showDivider={false}
-						onPress={onToggleInstant}>
-						{!enableInstant && <ArrowLNFunds color="secondary" />}
-						<BodyM>{t('receive_spending')}</BodyM>
-					</SwitchRow>
-				</View>
+				{!loading && (
+					<View style={styles.carouselWrapper}>
+						<Carousel
+							ref={carouselRef}
+							style={styles.carousel}
+							data={slides}
+							width={dimensions.width}
+							height={qrMaxHeight + 64}
+							loop={false}
+							scrollAnimationDuration={100}
+							panGestureHandlerProps={{ activeOffsetX: [-10, 10] }}
+							testID="ReceiveSlider"
+							renderItem={({ index }): ReactElement => {
+								const Slide = slides[index];
+								return <Slide key={index} />;
+							}}
+							onProgressChange={(_, absoluteProgress): void => {
+								progressValue.value = absoluteProgress;
+							}}
+						/>
+						<View style={styles.dots} pointerEvents="none">
+							{slides.map((_slide, index) => (
+								<Dot
+									key={index}
+									index={index}
+									animValue={progressValue}
+									length={slides.length}
+								/>
+							))}
+						</View>
+					</View>
+				)}
+
+				{displayReceiveInstantlySwitch && (
+					<View style={styles.buttonContainer}>
+						{!enableInstant && (
+							<Headline>
+								<Trans
+									t={t}
+									i18nKey="receive_text_lnfunds"
+									components={{ accent: <Headline color="purple" /> }}
+								/>
+							</Headline>
+						)}
+						<SwitchRow
+							style={styles.switchRow}
+							color="purple"
+							isEnabled={enableInstant}
+							showDivider={false}
+							onPress={onToggleInstant}>
+							{!enableInstant && <ArrowLNFunds color="secondary" />}
+							<BodyM>{t('receive_spending')}</BodyM>
+						</SwitchRow>
+					</View>
+				)}
+				<SafeAreaInset type="bottom" minPadding={16} />
+			</GradientView>
+
+			{lightningBalance.remoteBalance > 0 && (
+				<LightningSyncing style={styles.syncing} title={t('receive_bitcoin')} />
 			)}
-			<SafeAreaInset type="bottom" minPadding={16} />
-		</GradientView>
+		</>
 	);
 };
 
@@ -731,6 +738,9 @@ const styles = StyleSheet.create({
 	},
 	switchRow: {
 		paddingVertical: 0,
+	},
+	syncing: {
+		...StyleSheet.absoluteFillObject,
 	},
 });
 
