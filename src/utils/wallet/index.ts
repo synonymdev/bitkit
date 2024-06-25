@@ -717,8 +717,8 @@ export interface ITransaction<T> {
 	param: string;
 	data: T;
 	result: {
-		blockhash: string;
-		confirmations: number;
+		blockhash?: string;
+		confirmations?: number;
 		hash: string;
 		hex: string;
 		locktime: number;

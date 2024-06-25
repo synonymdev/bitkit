@@ -481,7 +481,7 @@ export const canBoost = (txid: string): ICanBoostResponse => {
 			transactionResponse.value;
 
 		// transaction already confirmed
-		if (height > 0) {
+		if (height && height > 0) {
 			return failure;
 		}
 

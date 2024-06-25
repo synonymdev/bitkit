@@ -39,7 +39,7 @@ export const onChainTransactionToActivityItem = async ({
 		fee: btcToSats(Math.abs(transaction.fee)),
 		feeRate: Math.round(transaction.satsPerByte),
 		address: transaction.address,
-		confirmed: transaction.height > 0,
+		confirmed: (transaction.height ?? 0) > 0,
 		isBoosted: false,
 		isTransfer: !!transfer,
 		timestamp: transaction.timestamp,

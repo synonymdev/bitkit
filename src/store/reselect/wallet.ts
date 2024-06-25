@@ -252,7 +252,7 @@ export const unconfirmedTransactionsSelector = createSelector(
 		const { selectedWallet, selectedNetwork } = wallet;
 		const transactions: IFormattedTransactions =
 			wallet.wallets[selectedWallet]?.transactions[selectedNetwork] || {};
-		return Object.values(transactions).filter((tx) => tx.height < 1);
+		return Object.values(transactions).filter((tx) => (tx.height ?? 0) < 1);
 	},
 );
 
