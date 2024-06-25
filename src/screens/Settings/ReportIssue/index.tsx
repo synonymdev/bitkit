@@ -70,7 +70,7 @@ const ReportIssue = ({
 				logs: logs,
 				logsFileName: logsFileName,
 			});
-			navigation.navigate('FormError');
+			navigation.navigate('FormSuccess');
 			setEmail('');
 			setMessage('');
 			setIsLoading(false);
@@ -109,7 +109,7 @@ const ReportIssue = ({
 							style={styles.addressInput}
 							label={t('support.label_address')}
 							placeholder={t('support.placeholder_address')}
-							maxLength={25}
+							maxLength={50}
 							value={email}
 							testID="emailValueInput"
 							onChange={(value: string): void => {
