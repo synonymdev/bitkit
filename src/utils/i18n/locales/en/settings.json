@@ -241,7 +241,11 @@
 		"save": "Save",
 		"reset": "Reset",
 		"gap_limit_update_title": "Address Gap Limit Updated",
-		"gap_limit_update_description": "Changes will take full effect after app restarts."
+		"gap_limit_update_description": "Changes will take full effect after app restarts.",
+		"look_behind": "Look Behind",
+		"look_ahead": "Look Ahead",
+		"look_behind_change": "Look Behind Change",
+		"look_ahead_change": "Look Ahead Change"
 	},
 	"rgs": {
 		"server_url": "Rapid-Gossip-Sync Server URL",

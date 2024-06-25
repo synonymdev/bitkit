@@ -911,6 +911,8 @@ export const createDefaultWallet = async ({
 			gapLimitOptions = {
 				lookAhead: 20,
 				lookBehind: 20,
+				lookAheadChange: 10,
+				lookBehindChange: 10,
 			};
 		}
 

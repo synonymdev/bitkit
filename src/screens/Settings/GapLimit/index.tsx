@@ -1,18 +1,18 @@
 import React, { memo, ReactElement, useMemo, useState } from 'react';
-import { StyleSheet } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import { StyleSheet } from 'react-native';
 
-import { View, TextInput, ScrollView } from '../../../styles/components';
-import { BodyM, Caption13Up } from '../../../styles/text';
-import { useAppSelector } from '../../../hooks/redux';
-import { gapLimitOptionsSelector } from '../../../store/reselect/wallet';
+import Button from '../../../components/Button';
 import NavigationHeader from '../../../components/NavigationHeader';
 import SafeAreaInset from '../../../components/SafeAreaInset';
-import Button from '../../../components/Button';
+import { useAppSelector } from '../../../hooks/redux';
 import type { SettingsScreenProps } from '../../../navigation/types';
-import { getOnChainWallet, refreshWallet } from '../../../utils/wallet';
 import { updateWallet } from '../../../store/actions/wallet';
+import { gapLimitOptionsSelector } from '../../../store/reselect/wallet';
+import { ScrollView, TextInput, View } from '../../../styles/components';
+import { Caption13Up } from '../../../styles/text';
 import { showToast } from '../../../utils/notifications';
+import { getOnChainWallet, refreshWallet } from '../../../utils/wallet';
 
 const GapLimit = ({}: SettingsScreenProps<'GapLimit'>): ReactElement => {
 	const { t } = useTranslation('settings');
@@ -24,26 +24,45 @@ const GapLimit = ({}: SettingsScreenProps<'GapLimit'>): ReactElement => {
 	const [lookAhead, setLookAhead] = useState<string>(
 		String(gapLimitOptions.lookAhead),
 	);
+	const [lookBehindChange, setLookBehindChange] = useState<string>(
+		String(gapLimitOptions.lookBehindChange),
+	);
+	const [lookAheadChange, setLookAheadChange] = useState<string>(
+		String(gapLimitOptions.lookAheadChange),
+	);
 
 	const hasEdited = useMemo(() => {
 		return (
 			Number(lookBehind) !== gapLimitOptions.lookBehind ||
-			Number(lookAhead) !== gapLimitOptions.lookAhead
+			Number(lookAhead) !== gapLimitOptions.lookAhead ||
+			Number(lookBehindChange) !== gapLimitOptions.lookBehindChange ||
+			Number(lookAheadChange) !== gapLimitOptions.lookAheadChange
 		);
 	}, [
 		gapLimitOptions.lookAhead,
 		gapLimitOptions.lookBehind,
+		gapLimitOptions.lookAheadChange,
+		gapLimitOptions.lookBehindChange,
 		lookAhead,
 		lookBehind,
+		lookAheadChange,
+		lookBehindChange,
 	]);
 
 	const areValid = useMemo(() => {
-		return Number(lookBehind) > 0 && Number(lookAhead) > 0;
-	}, [lookAhead, lookBehind]);
+		return (
+			Number(lookBehind) > 0 &&
+			Number(lookAhead) > 0 &&
+			Number(lookBehindChange) > 0 &&
+			Number(lookAheadChange) > 0
+		);
+	}, [lookAhead, lookBehind, lookAheadChange, lookBehindChange]);
 
 	const clearChanges = (): void => {
 		setLookBehind(String(gapLimitOptions.lookBehind));
 		setLookAhead(String(gapLimitOptions.lookAhead));
+		setLookBehindChange(String(gapLimitOptions.lookBehindChange));
+		setLookAheadChange(String(gapLimitOptions.lookAheadChange));
 	};
 
 	const saveGapLimit = async (): Promise<void> => {
@@ -52,6 +71,8 @@ const GapLimit = ({}: SettingsScreenProps<'GapLimit'>): ReactElement => {
 		const res = wallet.updateGapLimit({
 			lookAhead: Number(lookAhead),
 			lookBehind: Number(lookBehind),
+			lookAheadChange: Number(lookAheadChange),
+			lookBehindChange: Number(lookBehindChange),
 		});
 		if (res.isOk()) {
 			updateWallet({
@@ -76,7 +97,9 @@ const GapLimit = ({}: SettingsScreenProps<'GapLimit'>): ReactElement => {
 			<SafeAreaInset type="top" />
 			<NavigationHeader title={t('adv.gap_limit')} />
 			<ScrollView contentContainerStyle={styles.content} bounces={false}>
-				<BodyM color="secondary">Look Behind</BodyM>
+				<Caption13Up color="secondary" style={styles.label}>
+					{t('gap.look_behind')}
+				</Caption13Up>
 				<TextInput
 					style={styles.textInput}
 					value={lookBehind}
@@ -95,7 +118,7 @@ const GapLimit = ({}: SettingsScreenProps<'GapLimit'>): ReactElement => {
 				/>
 
 				<Caption13Up color="secondary" style={styles.label}>
-					{'Look Ahead'}
+					{t('gap.look_ahead')}
 				</Caption13Up>
 				<TextInput
 					style={styles.textInput}
@@ -111,6 +134,45 @@ const GapLimit = ({}: SettingsScreenProps<'GapLimit'>): ReactElement => {
 						setLookAhead(txt);
 					}}
 					testID="LookAhead"
+				/>
+
+				<Caption13Up color="secondary" style={styles.label}>
+					{t('gap.look_behind_change')}
+				</Caption13Up>
+				<TextInput
+					style={styles.textInput}
+					value={lookBehindChange}
+					placeholder="20"
+					textAlignVertical="center"
+					underlineColorAndroid="transparent"
+					autoCapitalize="none"
+					autoComplete="off"
+					keyboardType="number-pad"
+					autoCorrect={false}
+					onChangeText={(txt): void => {
+						setLookBehindChange(txt);
+					}}
+					returnKeyType="done"
+					testID="LookBehindChange"
+				/>
+
+				<Caption13Up color="secondary" style={styles.label}>
+					{t('gap.look_ahead_change')}
+				</Caption13Up>
+				<TextInput
+					style={styles.textInput}
+					value={lookAheadChange}
+					placeholder="20"
+					textAlignVertical="center"
+					underlineColorAndroid="transparent"
+					autoCapitalize="none"
+					autoComplete="off"
+					keyboardType="number-pad"
+					autoCorrect={false}
+					onChangeText={(txt): void => {
+						setLookAheadChange(txt);
+					}}
+					testID="LookAheadChange"
 				/>
 
 				<View style={styles.buttons}>
