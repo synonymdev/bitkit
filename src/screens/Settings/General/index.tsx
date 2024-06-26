@@ -5,12 +5,14 @@ import { EItemType, IListData, ItemData } from '../../../components/List';
 import SettingsView from './../SettingsView';
 import { useAppSelector } from '../../../hooks/redux';
 import type { SettingsScreenProps } from '../../../navigation/types';
+import { capitalize } from '../../../utils/helpers';
 import { lastUsedTagsSelector } from '../../../store/reselect/metadata';
 import { EUnit } from '../../../store/types/wallet';
 import {
 	unitSelector,
 	selectedCurrencySelector,
 	transactionSpeedSelector,
+	appIconSelector,
 } from '../../../store/reselect/settings';
 
 const GeneralSettings = ({
@@ -19,6 +21,7 @@ const GeneralSettings = ({
 	const { t } = useTranslation('settings');
 	const lastUsedTags = useAppSelector(lastUsedTagsSelector);
 	const selectedTransactionSpeed = useAppSelector(transactionSpeedSelector);
+	const appIcon = useAppSelector(appIconSelector);
 	const selectedCurrency = useAppSelector(selectedCurrencySelector);
 	const selectedUnit = useAppSelector(unitSelector);
 
@@ -56,6 +59,13 @@ const GeneralSettings = ({
 				onPress: (): void => navigation.navigate('TransactionSpeedSettings'),
 			},
 			{
+				title: t('general.app_icon'),
+				value: capitalize(appIcon),
+				type: EItemType.button,
+				testID: 'AppIconSettings',
+				onPress: (): void => navigation.navigate('AppIconSettings'),
+			},
+			{
 				title: t('widgets.nav_title'),
 				type: EItemType.button,
 				testID: 'WidgetsSettings',
@@ -77,6 +87,7 @@ const GeneralSettings = ({
 		selectedCurrency,
 		selectedUnit,
 		selectedTransactionSpeed,
+		appIcon,
 		navigation,
 		t,
 	]);

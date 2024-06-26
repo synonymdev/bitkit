@@ -22,7 +22,7 @@ const TransactionSpeedSettings = ({
 	const dispatch = useAppDispatch();
 	const selectedTransactionSpeed = useAppSelector(transactionSpeedSelector);
 
-	const currencyListData: IListData[] = useMemo(() => {
+	const listData: IListData[] = useMemo(() => {
 		const transactionSpeeds = [
 			{
 				label: t('fee.fast.label'),
@@ -78,12 +78,7 @@ const TransactionSpeedSettings = ({
 		];
 	}, [selectedTransactionSpeed, navigation, t, dispatch]);
 
-	return (
-		<SettingsView
-			title={t('general.speed_title')}
-			listData={currencyListData}
-		/>
-	);
+	return <SettingsView title={t('general.speed_title')} listData={listData} />;
 };
 
 export default memo(TransactionSpeedSettings);

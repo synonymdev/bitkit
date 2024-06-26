@@ -3,6 +3,7 @@ import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
 import { initialSettingsState } from '../shapes/settings';
 import {
+	EAppIcon,
 	ETransactionSpeed,
 	ICustomElectrumPeer,
 	TChest,
@@ -37,6 +38,7 @@ export type TSettings = {
 	showWidgets: boolean;
 	showWidgetTitles: boolean;
 	transactionSpeed: ETransactionSpeed;
+	appIcon: EAppIcon;
 	customFeeRate: number;
 	hideBalance: boolean;
 	hideBalanceOnOpen: boolean;

@@ -12,6 +12,7 @@ import {
 	TReceiveOption,
 	TTheme,
 	ETransactionSpeed,
+	EAppIcon,
 } from '../types/settings';
 
 export const settingsState = (state: RootState): TSettings => state.settings;
@@ -97,6 +98,10 @@ export const rapidGossipSyncUrlSelector = createSelector(
 export const transactionSpeedSelector = createSelector(
 	[settingsState],
 	(settings): ETransactionSpeed => settings.transactionSpeed,
+);
+export const appIconSelector = createSelector(
+	[settingsState],
+	(settings): EAppIcon => settings.appIcon,
 );
 export const customFeeRateSelector = createSelector(
 	[settingsState],

@@ -17,6 +17,11 @@ export enum ETransactionSpeed {
 	custom = 'custom',
 }
 
+export enum EAppIcon {
+	orange = 'orange',
+	black = 'black',
+}
+
 /**
  * large = Sort by and use largest UTXO first. Lowest fee, but reveals your largest UTXO's.
  * small = Sort by and use smallest UTXO first. Higher fee, but hides your largest UTXO's.

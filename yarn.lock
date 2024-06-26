@@ -10159,6 +10159,10 @@ react-native-camera-kit@14.0.0-beta15:
   resolved "https://registry.yarnpkg.com/react-native-camera-kit/-/react-native-camera-kit-14.0.0-beta15.tgz#0c2bbd57e0208e8032365fed49836725083c5e59"
   integrity sha512-u4zXLRy0k2OxDCKnZPlkVeXPL6CIsK2vGSWy3ofjzqht1We6LYqn1itBo8pIglI4apU5qgJ/1hz8HCzaR/dMHw==
 
+"react-native-change-icon@github:sidferreira/react-native-change-icon.git#simplified-android-code":
+  version "5.0.0"
+  resolved "https://codeload.github.com/sidferreira/react-native-change-icon/tar.gz/57a0b1ce958b31ef134bf3b4b5292dccd18718c0"
+
 react-native-device-info@10.13.1:
   version "10.13.1"
   resolved "https://registry.yarnpkg.com/react-native-device-info/-/react-native-device-info-10.13.1.tgz#f87f44ba7b67933248be10ca302a4f2f6dbbdd4f"
@@ -10229,7 +10233,7 @@ react-native-keyboard-accessory@0.1.16:
   resolved "https://registry.yarnpkg.com/react-native-keyboard-accessory/-/react-native-keyboard-accessory-0.1.16.tgz#f0babba9e6568c0c2c8f3fd774fcb2b90b8274ba"
   integrity sha512-zpdaduoGjp/spLtM0XxxyxFpCqFQu3fospy/HeYpaIfsXTqGdT1MIajS8tahDxeG6fHLDrWvEIYA6zWM5jni0w==
 
-"react-native-keychain@github::synonymdev/react-native-keychain.git#refactor/android-data-store":
+"react-native-keychain@github:synonymdev/react-native-keychain.git#refactor/android-data-store":
   version "8.2.0"
   resolved "https://codeload.github.com/synonymdev/react-native-keychain/tar.gz/7378c469afe81195487a3163295be425af79fa7a"
 

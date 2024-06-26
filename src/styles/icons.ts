@@ -74,6 +74,7 @@ import {
 	arrowLNfunds,
 } from '../assets/icons/wallet';
 import {
+	appIcon,
 	chevronRightIcon,
 	rightArrowIcon,
 	upArrowIcon,
@@ -112,6 +113,14 @@ import {
 type IconProps = {
 	color?: keyof IThemeColors;
 };
+
+export const AppIcon = styled(SvgXml).attrs((props) => ({
+	xml: appIcon(props.color ? props.theme.colors[props.color] : 'brand'),
+	height: props.height ?? '32px',
+	width: props.width ?? '32px',
+}))<IconProps>((props) => ({
+	color: props.color ? props.theme.colors[props.color] : 'white',
+}));
 
 export const ScanIcon = styled(SvgXml).attrs((props) => ({
 	xml: scanIcon(props.color ? props.theme.colors[props.color] : 'white'),

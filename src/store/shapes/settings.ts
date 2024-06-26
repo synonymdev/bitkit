@@ -14,7 +14,7 @@ import {
 } from '../../constants/env';
 import { TSettings } from '../slices/settings';
 import { EAvailableNetwork } from '../../utils/networks';
-import { ETransactionSpeed } from '../types/settings';
+import { EAppIcon, ETransactionSpeed } from '../types/settings';
 import { EDenomination, EUnit } from '../types/wallet';
 
 export const defaultElectrumPeer: Record<EAvailableNetwork, TServer[]> = {
@@ -97,6 +97,7 @@ export const initialSettingsState: TSettings = {
 	showWidgets: true,
 	showWidgetTitles: false,
 	transactionSpeed: ETransactionSpeed.normal,
+	appIcon: EAppIcon.orange,
 	customFeeRate: 0,
 	hideBalance: false,
 	hideBalanceOnOpen: false,

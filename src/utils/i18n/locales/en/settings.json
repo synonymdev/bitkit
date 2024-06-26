@@ -34,6 +34,7 @@
 		"denomination_modern": "Modern (₿ 10 000)",
 		"denomination_classic": "Classic (₿ 0.00010000)",
 		"speed": "Transaction speed",
+		"app_icon": "App Icon",
 		"speed_title": "Transaction Speed",
 		"speed_default": "Default Transaction Speed",
 		"speed_fee_custom": "Set Custom Fee",
@@ -41,6 +42,18 @@
 		"speed_fee_total_fiat": "₿ {feeSats} for the average transaction ({fiatSymbol}{fiatFormatted})",
 		"tags": "Tags",
 		"tags_previously": "Previously used tags"
+	},
+	"app_icon": {
+		"nav_title": "App Icon",
+		"label": "Choose App Icon",
+		"orange": {
+			"label": "Orange",
+			"description": "Bitkit brand mark on orange"
+		},
+		"black": {
+			"label": "Black",
+			"description": "Bitkit brand mark on black"
+		}
 	},
 	"widgets": {
 		"nav_title": "Widgets",

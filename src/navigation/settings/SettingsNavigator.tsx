@@ -20,6 +20,7 @@ import AddressViewer from '../../screens/Settings/AddressViewer';
 import LightningNodeInfo from '../../screens/Settings/Lightning/LightningNodeInfo';
 import UnitSettings from '../../screens/Settings/Unit';
 import TransactionSpeedSettings from '../../screens/Settings/TransactionSpeed';
+import AppIconSettings from '../../screens/Settings/AppIcon';
 import CustomFee from '../../screens/Settings/TransactionSpeed/CustomFee';
 import WidgetSettings from '../../screens/Settings/Widgets';
 import AuthCheck from '../../components/AuthCheck';
@@ -84,6 +85,7 @@ export type SettingsStackParamList = {
 	CurrenciesSettings: undefined;
 	UnitSettings: undefined;
 	TransactionSpeedSettings: undefined;
+	AppIconSettings: undefined;
 	CustomFee: undefined;
 	ElectrumConfig: undefined;
 	GapLimit: undefined;
@@ -148,6 +150,7 @@ const SettingsNavigator = (): ReactElement => {
 				name="TransactionSpeedSettings"
 				component={TransactionSpeedSettings}
 			/>
+			<Stack.Screen name="AppIconSettings" component={AppIconSettings} />
 			<Stack.Screen name="CustomFee" component={CustomFee} />
 			<Stack.Screen name="WidgetSettings" component={WidgetSettings} />
 			<Stack.Screen name="ElectrumConfig" component={ElectrumConfig} />
