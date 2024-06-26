@@ -3557,10 +3557,10 @@
     bech32 "^2.0.0"
     bitcoinjs-lib "^6.0.2"
 
-"@synonymdev/react-native-lnurl@0.0.7":
-  version "0.0.7"
-  resolved "https://registry.yarnpkg.com/@synonymdev/react-native-lnurl/-/react-native-lnurl-0.0.7.tgz#deb91bdb327764ad43566a6b3fac343a0fb8d5ce"
-  integrity sha512-cpek9bKx9kWn9VGvFwTpRmsRE9Jekopbk3z5AzjSsDS05zHFneajPQv+KiblDwXAgQQv90UMEsZwzpTWcNXOUQ==
+"@synonymdev/react-native-lnurl@0.0.9":
+  version "0.0.9"
+  resolved "https://registry.yarnpkg.com/@synonymdev/react-native-lnurl/-/react-native-lnurl-0.0.9.tgz#fbded0d4f02bf7f1305eb58cca05bcf9300d939d"
+  integrity sha512-tdDCLIHUDaDzOpvoiKtCCv8X40e8FvJvCa3YF0aEi9EQq8KB6CiTRdtDB1yhVbUpPkjCq6IXuTP8G6FzjSRgIA==
   dependencies:
     base64-js "^1.5.1"
     bip32 "^2.0.6"
