@@ -82,7 +82,7 @@ const BottomSheetWrapper = forwardRef(
 		// https://github.com/gorhom/react-native-bottom-sheet/issues/770#issuecomment-1072113936
 		// do not activate BottomSheet if swipe horizontally, this allows using Swiper inside of it
 		const activeOffsetX = useMemo(() => [-999, 999], []);
-		const activeOffsetY = useMemo(() => [-5, 5], []);
+		const activeOffsetY = useMemo(() => [-10, 10], []);
 
 		useEffect(() => {
 			if (data.isOpen) {
@@ -156,8 +156,7 @@ const BottomSheetWrapper = forwardRef(
 				backgroundComponent={backgroundComponent}
 				handleIndicatorStyle={handleIndicatorStyle}
 				handleStyle={styles.handle}
-				animateOnMount
-				enablePanDownToClose
+				enablePanDownToClose={true}
 				keyboardBlurBehavior="restore"
 				ref={bottomSheetRef}
 				index={index}
