@@ -4,7 +4,7 @@ import {
 	StyleProp,
 	StyleSheet,
 	ViewStyle,
-	LayoutChangeEvent,
+	useWindowDimensions,
 } from 'react-native';
 import {
 	Skia,
@@ -46,6 +46,8 @@ export const getChange = (pastValues: number[]): Change => {
 	};
 };
 
+const chartHeight = 96;
+
 export const Chart = ({
 	values,
 	positive,
@@ -58,20 +60,15 @@ export const Chart = ({
 	style?: StyleProp<ViewStyle>;
 }): ReactElement => {
 	const { green, red } = useColors();
-	const [{ height, width }, setLayout] = useState({ width: 1, height: 1 });
+	const { width: windowWidth } = useWindowDimensions();
 
 	const font = useFont(require('../assets/fonts/InterTight-SemiBold.ttf'), 13);
 
-	const handleLayout = (event: LayoutChangeEvent): void => {
-		setLayout({
-			width: event.nativeEvent.layout.width,
-			height: event.nativeEvent.layout.height,
-		});
-	};
-
+	// subtract padding
+	const chartWidth = windowWidth - 64;
 	const line = Skia.Path.Make();
 	const steps = values.length;
-	const step = width / (steps - 1);
+	const step = chartWidth / (steps - 1);
 
 	const normalized = useMemo(() => {
 		const min = values.reduce((prev, curr) => Math.min(prev, curr), Infinity);
@@ -81,7 +78,7 @@ export const Chart = ({
 	}, [values]);
 
 	for (let i = 0; i < steps; i++) {
-		const value = height - normalized[i] * height;
+		const value = chartHeight - normalized[i] * chartHeight;
 		if (i === 0) {
 			line.moveTo(0, value);
 		} else {
@@ -90,8 +87,8 @@ export const Chart = ({
 	}
 
 	const mask = line.copy();
-	mask.lineTo(width, height);
-	mask.lineTo(0, height);
+	mask.lineTo(chartWidth, chartHeight);
+	mask.lineTo(0, chartHeight);
 	mask.close();
 
 	const redGradient = ['rgba(233, 81, 100, 0.8)', 'rgba(233, 81, 100, 0.3)'];
@@ -101,7 +98,7 @@ export const Chart = ({
 	];
 
 	return (
-		<View style={[styles.chart, style]} onLayout={handleLayout}>
+		<View style={[styles.chart, style]}>
 			<Canvas style={styles.canvas}>
 				<Path
 					path={line}
@@ -118,10 +115,10 @@ export const Chart = ({
 							<CornerPathEffect r={8} />
 						</Path>
 					}>
-					<Rect x={0} y={0} width={width} height={height}>
+					<Rect x={0} y={0} width={chartWidth} height={chartHeight}>
 						<LinearGradient
 							start={vec(0, 0)}
-							end={vec(0, height)}
+							end={vec(0, chartHeight)}
 							positions={[0, 1]}
 							colors={positive ? greenGradient : redGradient}
 						/>
@@ -131,7 +128,7 @@ export const Chart = ({
 				{period && font && (
 					<Text
 						x={7}
-						y={height - 7}
+						y={chartHeight - 7}
 						text={period}
 						font={font}
 						color="rgba(255, 255, 255, 0.2)"
@@ -210,7 +207,7 @@ const styles = StyleSheet.create({
 		minHeight: 60, // static width + height is really important to avoid rerenders of chart
 	},
 	chart: {
-		minHeight: 96, // static width + height is really important to avoid rerenders of chart
+		minHeight: chartHeight, // static width + height is really important to avoid rerenders of chart
 	},
 	canvas: {
 		flex: 1,
