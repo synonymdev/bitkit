@@ -29,6 +29,7 @@ jobs:
           pkill -f react-native || echo 0
           pkill -f Simulator || echo 0
           rm -rf /tmp/lock/*
+          watchman watch-del-all
           cd docker && docker compose down -v
 
       - name: Docker info

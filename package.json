@@ -51,7 +51,7 @@
     "@synonymdev/blocktank-lsp-http-client": "1.1.2",
     "@synonymdev/feeds": "2.1.1",
     "@synonymdev/ledger": "0.0.5",
-    "@synonymdev/react-native-ldk": "0.0.144",
+    "@synonymdev/react-native-ldk": "0.0.146",
     "@synonymdev/react-native-lnurl": "0.0.9",
     "@synonymdev/result": "0.0.2",
     "@synonymdev/slashtags-keychain": "1.0.0",
