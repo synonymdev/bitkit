@@ -5,7 +5,7 @@ import * as bip39 from 'bip39';
 import { BIP32Factory } from 'bip32';
 import ecc from '@bitcoinerlab/secp256k1';
 import { err, ok, Result } from '@synonymdev/result';
-import { ldk } from '@synonymdev/react-native-ldk';
+import lm, { ldk } from '@synonymdev/react-native-ldk';
 import net from 'net';
 import tls from 'tls';
 import {
@@ -205,7 +205,18 @@ export const refreshWallet = async ({
 const refreshBeignet = async (
 	scanAllAddresses: boolean = false,
 ): Promise<void> => {
-	const refreshWalletRes = await wallet.refreshWallet({ scanAllAddresses });
+	// Read additional addresses from LDK. They are used for channel closure transactions.
+	let additionalAddresses: undefined | string[];
+	try {
+		additionalAddresses = await lm.readAddressesFromFile();
+	} catch (e) {
+		console.error('Error reading additional addresses from LDK:', e);
+	}
+
+	const refreshWalletRes = await wallet.refreshWallet({
+		scanAllAddresses,
+		additionalAddresses,
+	});
 	if (refreshWalletRes.isErr()) {
 		handleRefreshError(refreshWalletRes.error.message);
 	} else {
