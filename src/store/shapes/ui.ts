@@ -36,6 +36,7 @@ export const initialUiState: TUiState = {
 	isElectrumThrottled: false,
 	isOnline: true,
 	isLDKReady: false, // LDK node running and connected
+	isProfiling: false,
 	language: 'en',
 	profileLink: { title: '', url: '' },
 	timeZone: 'UTC',

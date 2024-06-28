@@ -3,6 +3,7 @@ import RNFS, { unlink, writeFile } from 'react-native-fs';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Share from 'react-native-share';
 import { useTranslation } from 'react-i18next';
+import { startProfiling, stopProfiling } from 'react-native-release-profiler';
 
 import actions from '../../../store/actions/actions';
 import {
@@ -40,6 +41,7 @@ import { showToast } from '../../../utils/notifications';
 import { getFakeTransaction } from '../../../utils/wallet/testing';
 import Dialog from '../../../components/Dialog';
 import { resetBackupState } from '../../../store/slices/backup';
+import { updateUi } from '../../../store/slices/ui';
 import { __E2E__ } from '../../../constants/env';
 
 const DevSettings = ({
@@ -52,6 +54,7 @@ const DevSettings = ({
 	const selectedWallet = useAppSelector(selectedWalletSelector);
 	const selectedNetwork = useAppSelector(selectedNetworkSelector);
 	const addressType = useAppSelector(addressTypeSelector);
+	const isProfiling = useAppSelector((state) => state.ui.isProfiling);
 	const warnings = useAppSelector((state) => {
 		return warningsSelector(state, selectedWallet, selectedNetwork);
 	});
@@ -126,7 +129,24 @@ const DevSettings = ({
 		},
 		{
 			title: 'Debug',
-			data: [],
+			data: [
+				{
+					title: isProfiling ? 'Stop Profiler' : 'Start Profiler',
+					type: EItemType.button,
+					value: isProfiling,
+					loading: isProfiling,
+					onPress: async (): Promise<void> => {
+						if (isProfiling) {
+							const path = await stopProfiling(true);
+							dispatch(updateUi({ isProfiling: false }));
+							console.log('profile file: ', path);
+						} else {
+							dispatch(updateUi({ isProfiling: true }));
+							startProfiling();
+						}
+					},
+				},
+			],
 		},
 		{
 			title: 'Wallet Checks',
