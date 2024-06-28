@@ -2,6 +2,7 @@ import Clipboard from '@react-native-clipboard/clipboard';
 import {
 	BtOpenChannelState,
 	IBtOrder,
+	ICJitEntry,
 } from '@synonymdev/blocktank-lsp-http-client';
 import { BtOrderState2 } from '@synonymdev/blocktank-lsp-http-client/dist/shared/BtOrderState2';
 import { BtPaymentState2 } from '@synonymdev/blocktank-lsp-http-client/dist/shared/BtPaymentState2';
@@ -30,7 +31,7 @@ import {
 } from '../../../hooks/lightning';
 import { useAppSelector } from '../../../hooks/redux';
 import type { SettingsScreenProps } from '../../../navigation/types';
-import { enableDevOptionsSelector } from '../../../store/reselect/settings';
+import { cjitEntriesSelector } from '../../../store/reselect/blocktank';
 import { selectedNetworkSelector } from '../../../store/reselect/wallet';
 import { EChannelStatus } from '../../../store/types/lightning';
 import { EUnit } from '../../../store/types/wallet';
@@ -87,8 +88,15 @@ const ChannelDetails = ({
 	const { spendingAvailable, receivingAvailable, capacity } =
 		useLightningChannelBalance(channel);
 	const selectedNetwork = useAppSelector(selectedNetworkSelector);
-	const enableDevOptions = useAppSelector(enableDevOptionsSelector);
+	const cjitEntries = useAppSelector(cjitEntriesSelector);
 	const paidBlocktankOrders = usePaidBlocktankOrders();
+
+	// Check if the channel was opened via CJIT
+	const cjitEntry = cjitEntries.find((entry) => {
+		return entry.channel?.fundingTx.id === channel.funding_txid;
+	});
+
+	// Check if the channel was opened via order
 	const blocktankOrder = Object.values(paidBlocktankOrders).find((order) => {
 		// real channel
 		if (channel.funding_txid) {
@@ -99,8 +107,10 @@ const ChannelDetails = ({
 		return order.id === channel.channel_id;
 	});
 
+	const order = blocktankOrder ?? cjitEntry;
 	const channelName = useLightningChannelName(channel);
 	const channelIsOpen = channel.status === EChannelStatus.open;
+	const channelIsPending = channel.status === EChannelStatus.pending;
 
 	useEffect(() => {
 		if (blocktankOrder) {
@@ -155,10 +165,12 @@ const ChannelDetails = ({
 		setRefreshing(false);
 	};
 
-	const openSupportLink = async (order: IBtOrder): Promise<void> => {
+	const openSupportLink = async (
+		_order: IBtOrder | ICJitEntry,
+	): Promise<void> => {
 		const link = await createOrderSupportLink(
-			order.id,
-			`Transaction ID: ${order?.channel?.fundingTx.id}`,
+			_order.id,
+			`Transaction ID: ${_order.channel?.fundingTx.id}`,
 		);
 		const res = await openURL(link);
 		if (!res) {
@@ -196,9 +208,9 @@ const ChannelDetails = ({
 	};
 
 	let channelCloseTime: string | undefined;
-	if (blocktankOrder?.channel?.close) {
+	if (order?.channel?.close) {
 		channelCloseTime = tTime('dateTime', {
-			v: new Date(blocktankOrder.channel.close.registeredAt),
+			v: new Date(order.channel.close.registeredAt),
 			formatParams: {
 				v: {
 					year: 'numeric',
@@ -211,6 +223,10 @@ const ChannelDetails = ({
 			},
 		});
 	}
+
+	const orderFee = blocktankOrder
+		? blocktankOrder.feeSat - blocktankOrder.clientBalanceSat
+		: order?.feeSat;
 
 	return (
 		<ThemedView style={styles.root}>
@@ -240,7 +256,7 @@ const ChannelDetails = ({
 					<ChannelStatus status={channel.status} order={blocktankOrder} />
 				</View>
 
-				{blocktankOrder && (
+				{order && (
 					<View style={styles.section}>
 						<View style={styles.sectionTitle}>
 							<Caption13Up color="secondary">{t('order_details')}</Caption13Up>
@@ -249,15 +265,15 @@ const ChannelDetails = ({
 							name={t('order')}
 							value={
 								<CaptionB ellipsizeMode="middle" numberOfLines={1}>
-									{blocktankOrder.id}
+									{order.id}
 								</CaptionB>
 							}
 							onPress={(): void => {
-								Clipboard.setString(blocktankOrder.id);
+								Clipboard.setString(order.id);
 								showToast({
 									type: 'success',
 									title: t('copied'),
-									description: blocktankOrder.id,
+									description: order.id,
 								});
 							}}
 						/>
@@ -266,7 +282,7 @@ const ChannelDetails = ({
 							value={
 								<CaptionB>
 									{tTime('dateTime', {
-										v: new Date(blocktankOrder.createdAt),
+										v: new Date(order.createdAt),
 										formatParams: {
 											v: {
 												year: 'numeric',
@@ -281,6 +297,28 @@ const ChannelDetails = ({
 								</CaptionB>
 							}
 						/>
+						{blocktankOrder?.orderExpiresAt && channelIsPending && (
+							<Section
+								name={t('order_expiry')}
+								value={
+									<CaptionB>
+										{tTime('dateTime', {
+											v: new Date(blocktankOrder.orderExpiresAt),
+											formatParams: {
+												v: {
+													year: 'numeric',
+													month: 'short',
+													day: 'numeric',
+													hour: 'numeric',
+													minute: 'numeric',
+													hour12: false,
+												},
+											},
+										})}
+									</CaptionB>
+								}
+							/>
+						)}
 						{channel.funding_txid && (
 							<Section
 								name={t('transaction')}
@@ -300,19 +338,22 @@ const ChannelDetails = ({
 								}}
 							/>
 						)}
-						<Section
-							name={t('order_fee')}
-							value={
-								<Money
-									sats={blocktankOrder.feeSat - blocktankOrder.clientBalanceSat}
-									size="captionB"
-									color="white"
-									symbol={true}
-									symbolColor="secondary"
-									unit={EUnit.BTC}
-								/>
-							}
-						/>
+
+						{orderFee && (
+							<Section
+								name={t('order_fee')}
+								value={
+									<Money
+										sats={orderFee}
+										size="captionB"
+										color="white"
+										symbol={true}
+										symbolColor="secondary"
+										unit={EUnit.BTC}
+									/>
+								}
+							/>
+						)}
 					</View>
 				)}
 
@@ -375,16 +416,15 @@ const ChannelDetails = ({
 					/>
 				</View>
 
-				{/* TODO: show fees */}
-				{/* <View style={styles.section}>
+				<View style={styles.section}>
 					<View style={styles.sectionTitle}>
-						<Caption13Up color="secondary">Fees</Caption13Up>
+						<Caption13Up color="secondary">{t('fees')}</Caption13Up>
 					</View>
 					<Section
-						name="Spending base fee"
+						name={t('base_fee')}
 						value={
 							<Money
-								sats={123}
+								sats={channel.config_forwarding_fee_base_msat / 1000}
 								size="captionB"
 								symbol={true}
 								symbolColor="secondary"
@@ -394,24 +434,25 @@ const ChannelDetails = ({
 						}
 					/>
 					<Section
-						name="Receiving base fee"
+						name={t('fee_rate')}
 						value={
-							<Money
-								sats={123}
-								size="captionB"
-								symbol={true}
-								symbolColor="secondary"
-								color="white"
-								unit={EUnit.BTC}
-							/>
+							<CaptionB>
+								{channel.config_forwarding_fee_proportional_millionths} ppm
+							</CaptionB>
 						}
 					/>
-				</View> */}
+				</View>
 
 				<View style={styles.section}>
 					<View style={styles.sectionTitle}>
 						<Caption13Up color="secondary">{t('other')}</Caption13Up>
 					</View>
+					<Section
+						name={t('is_usable')}
+						value={
+							<CaptionB>{t(channel.is_usable ? t('yes') : t('no'))}</CaptionB>
+						}
+					/>
 					{txTime && (
 						<Section
 							name={t('opened_on')}
@@ -424,64 +465,41 @@ const ChannelDetails = ({
 							value={<CaptionB>{channelCloseTime}</CaptionB>}
 						/>
 					)}
-					<Section
-						name={t('channel_node_id')}
-						value={
-							<CaptionB ellipsizeMode="middle" numberOfLines={1}>
-								{channel.counterparty_node_id}
-							</CaptionB>
-						}
-						onPress={(): void => {
-							Clipboard.setString(channel.counterparty_node_id);
-							showToast({
-								type: 'success',
-								title: t('copied'),
-								description: channel.counterparty_node_id,
-							});
-						}}
-					/>
-				</View>
-
-				{enableDevOptions && (
-					<View style={styles.section}>
-						<View style={styles.sectionTitle}>
-							<Caption13Up color="secondary">{t('debug')}</Caption13Up>
-						</View>
-						{blocktankOrder?.orderExpiresAt && (
-							<Section
-								name="Order Expiry"
-								value={
-									<CaptionB>
-										{new Date(blocktankOrder.orderExpiresAt).toLocaleString()}
-									</CaptionB>
-								}
-							/>
-						)}
+					{channel.counterparty_node_id && (
 						<Section
-							name={t('is_usable')}
-							value={<CaptionB>{t(channel.is_usable ? 'yes' : 'no')}</CaptionB>}
-						/>
-						<Section
-							name={t('is_ready')}
-							testID={channel.is_channel_ready ? 'IsReadyYes' : 'IsReadyNo'}
+							name={t('channel_node_id')}
 							value={
-								<CaptionB>
-									{t(channel.is_channel_ready ? 'yes' : 'no')}
+								<CaptionB ellipsizeMode="middle" numberOfLines={1}>
+									{channel.counterparty_node_id}
 								</CaptionB>
 							}
+							onPress={(): void => {
+								Clipboard.setString(channel.counterparty_node_id);
+								showToast({
+									type: 'success',
+									title: t('copied'),
+									description: channel.counterparty_node_id,
+								});
+							}}
 						/>
-					</View>
-				)}
+					)}
+					{channel.closureReason && (
+						<Section
+							name={t('closure_reason')}
+							value={<CaptionB>{channel.closureReason}</CaptionB>}
+						/>
+					)}
+				</View>
 
 				<View style={styles.buttons}>
-					{blocktankOrder && (
+					{order && (
 						<Button
 							style={styles.button}
 							text={t('support')}
 							size="large"
 							variant="secondary"
 							onPress={(): void => {
-								openSupportLink(blocktankOrder);
+								openSupportLink(order);
 							}}
 						/>
 					)}

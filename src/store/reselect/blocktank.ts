@@ -47,11 +47,7 @@ export const blocktankPaidOrdersFullSelector = createSelector(
 		const paid: IBtOrder[] = [];
 
 		Object.keys(blocktank.paidOrders).forEach((orderId) => {
-			const order = blocktank.orders.find(
-				// check o._id in the event it was paid for using the old api.
-				// @ts-ignore
-				(o) => o.id === orderId || o._id === orderId,
-			);
+			const order = blocktank.orders.find((o) => o.id === orderId);
 
 			if (!order) {
 				return;
@@ -88,4 +84,12 @@ export const blocktankPaidOrderSelector = createSelector(
 		}
 		return '';
 	},
+);
+
+/**
+ * Returns the list of CJIT entries.
+ */
+export const cjitEntriesSelector = createSelector(
+	blocktankState,
+	(blocktank) => blocktank.cJitEntries,
 );
