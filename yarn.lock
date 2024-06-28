@@ -4603,11 +4603,19 @@
   dependencies:
     b4a "^1.5.3"
 
-"@synonymdev/react-native-ldk@0.0.138":
-  version "0.0.138"
-  resolved "https://registry.yarnpkg.com/@synonymdev/react-native-ldk/-/react-native-ldk-0.0.138.tgz#4fa87d392b3f0bb898ad0ec42f48f58f54511b7d"
-  integrity sha512-y2yWkd9BzRSD9c2qbkdl6qBZlQN61IRsDn/ytia/sp9Buw4D1K3IldG9pH6kMBHkKh4GfASekVsQtf5FeK/P5g==
+"@synonymdev/raw-transaction-decoder@1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@synonymdev/raw-transaction-decoder/-/raw-transaction-decoder-1.1.0.tgz#9777fd4e3b696974594338ad7271aa4fe2133d8a"
+  integrity sha512-X9v/HZ7b0MUKcvEOMtuqNRB7bzWzK/GkLeh/BsqPIDnjS3yoRF4jHiIGhW2WQunBR1PUPXo5qB8LoFFGqCpUoA==
   dependencies:
+    bitcoinjs-lib "6.1.4"
+
+"@synonymdev/react-native-ldk@0.0.146":
+  version "0.0.146"
+  resolved "https://registry.yarnpkg.com/@synonymdev/react-native-ldk/-/react-native-ldk-0.0.146.tgz#5a7e6b448df7e151123521095b6a884e89edb008"
+  integrity sha512-IHqx8a7GtUmcsMLedB+Gf2ltGQhfbqo/ByezrGRu2ncdx8e/Kd0mAY3zIRgZfUWbW1xOnGLA+cAYYykAzlo63w==
+  dependencies:
+    "@synonymdev/raw-transaction-decoder" "1.1.0"
     bech32 "^2.0.0"
     bitcoinjs-lib "^6.0.2"
 
