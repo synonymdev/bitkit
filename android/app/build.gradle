@@ -80,7 +80,7 @@ android {
         applicationId "to.bitkit"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 127
+        versionCode 128
         versionName "1.0.2"
         multiDexEnabled true
         missingDimensionStrategy 'react-native-camera', 'general'
