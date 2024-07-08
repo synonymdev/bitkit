@@ -1,8 +1,8 @@
 {
   "introduction": {
-    "title": "Compte courant\n<accent>Solde</accent>",
-    "text": "Alimentez votre compte courant pour profiter de transactions instantanées et bon marché avec vos amis, votre famille et les commerçants.",
-    "button": "Commencez"
+    "title": "Compte de dépenses\n<accent>Solde</accent>",
+    "text": "Alimentez votre solde de dépenses pour profiter de transactions instantanées et bon marché avec vos amis, votre famille et les commerçants.",
+    "button": "Commencer"
   },
   "funding": {
     "nav_title": "Solde des dépenses",
@@ -15,14 +15,14 @@
   },
   "no_funds": {
     "title": "Pas de fonds disponibles",
-    "description": "Avant de pouvoir transférer des fonds depuis votre compte épargne, vous devez envoyer des bitcoins à votre portefeuille Bitkit.",
+    "description": "Avant de pouvoir transférer des fonds depuis votre solde d'épargne, vous devez envoyer des bitcoins à votre portefeuille Bitkit.",
     "fund": "Alimentez votre portefeuille"
   },
   "transfer": {
     "nav_title": "Transfert de fonds",
     "nav_successful": "Transfert réussi",
     "title_slider": "Équilibrer\n<accent>vos fonds</accent>",
-    "title_numpad": "<accent>Solde</accent> du compte courant",
+    "title_numpad": "<accent>Solde</accent> du compte de dépenses",
     "title_receive": "<accent>Capacité</accent> de réception",
     "text_slider": "Choisissez le montant que vous souhaitez pouvoir dépenser immédiatement et combien vous souhaitez conserver en épargne.",
     "text_numpad": "Saisissez le montant que vous souhaitez pouvoir dépenser instantanément.",
@@ -43,11 +43,11 @@
   "enter_money": "Saisissez le montant de bitcoins que vous souhaitez pouvoir dépenser instantanément.",
   "spending": "Dépenser",
   "savings": "Épargner",
-  "spending_label": "Solde du compte courant",
-  "spending_label_additional": "Solde du compte courant",
+  "spending_label": "Solde du compte de dépenses",
+  "spending_label_additional": "Solde du compte de dépenses",
   "receiving_label": "Capacité de réception",
   "receiving_label_additional": "Capacité de réception supplémentaire",
-  "note_blocktank_limit": "Le montant que vous pouvez transférer vers votre solde du compte courant est actuellement limité à ${usdValue}.",
+  "note_blocktank_limit": "Le montant que vous pouvez transférer vers votre solde du compte de dépenses est actuellement limité à ${usdValue}.",
   "note_reserve_limit": "Le montant que vous pouvez transférer vers votre compte courant est limité à {percentage}%. Vous devez garder des fonds en réserve pour transférer ce bitcoin vers l'épargne.",
   "quick_setup": "Configuration rapide",
   "quick_confirm_header": "Veuillez confirmer\n<accent>confirmer</accent>",

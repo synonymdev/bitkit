@@ -5,14 +5,14 @@
   },
   "discount": {
     "title": "Sconto",
-    "description": "Conto Spendibile"
+    "description": "Conto di spesa"
   },
   "fastpay": {
     "title": "Pagamento veloce",
     "description": "Scansiona e paga"
   },
   "invite": {
-    "title": "Invitare",
+    "title": "Invita",
     "description": "Condividi Bitkit"
   },
   "lightning": {

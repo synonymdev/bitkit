@@ -40,7 +40,7 @@
     "description": "Maintenir l'application ouverte"
   },
   "pin": {
-    "title": "Sécurisé",
+    "title": "Sécurité",
     "description": "Définir un code PIN"
   },
   "slashtagsProfile": {
