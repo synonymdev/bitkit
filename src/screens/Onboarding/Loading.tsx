@@ -180,6 +180,8 @@ const styles = StyleSheet.create({
 		fontSize: 48,
 		color: '#FF4400',
 		letterSpacing: -1,
+		flex: 1,
+		textAlign: 'center',
 	},
 	circleContainer: {
 		position: 'absolute',

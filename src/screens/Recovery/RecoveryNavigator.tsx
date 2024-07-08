@@ -14,7 +14,6 @@ export type RecoveryStackParamList = {
 	AuthCheck: { onSuccess: () => void };
 	Recovery: undefined;
 	Mnemonic: undefined;
-	Lightning: undefined;
 };
 
 const Stack = createStackNavigator<RecoveryStackParamList>();
