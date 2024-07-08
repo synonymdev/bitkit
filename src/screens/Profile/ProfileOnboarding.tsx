@@ -95,7 +95,6 @@ export const OfflinePayments = ({
 			<View style={styles.enableOfflineRow}>
 				<SwitchRow
 					isEnabled={enableOfflinePayments}
-					showDivider={false}
 					onPress={(): void => setOfflinePayments(!enableOfflinePayments)}>
 					<BodyM>{t('offline_enable')}</BodyM>
 				</SwitchRow>

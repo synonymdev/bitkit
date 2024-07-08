@@ -102,6 +102,7 @@
 	"receive_cjit_error": "Transaction Failed",
 	"receive_cjit_error_msg": "Failed to send funds to your spending account.",
 	"receive_will": "You will receive",
+	"receive_ldk_init": "Spending Balance Initializing...",
 	"minimum": "MINIMUM",
 	"activity": "Activity",
 	"activity_show_all": "Show All Activity",

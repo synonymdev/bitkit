@@ -40,7 +40,10 @@ import { Caption13Up, BodyM, BodyS, Headline } from '../../../styles/text';
 import { createLightningInvoice } from '../../../store/utils/lightning';
 import { updatePendingInvoice } from '../../../store/slices/metadata';
 import { generateNewReceiveAddress } from '../../../store/actions/wallet';
-import { viewControllerIsOpenSelector } from '../../../store/reselect/ui';
+import {
+	isLDKReadySelector,
+	viewControllerIsOpenSelector,
+} from '../../../store/reselect/ui';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 import { useLightningBalance } from '../../../hooks/lightning';
 import { useBottomSheetBackPress } from '../../../hooks/bottomSheet';
@@ -55,7 +58,6 @@ import Button from '../../../components/Button';
 import Tooltip from '../../../components/Tooltip';
 import Dot from '../../../components/SliderDots';
 import SwitchRow from '../../../components/SwitchRow';
-import LightningSyncing from '../../../components/LightningSyncing';
 import {
 	addressTypeSelector,
 	selectedNetworkSelector,
@@ -90,6 +92,7 @@ const ReceiveQR = ({
 	const selectedAddressType = useAppSelector(addressTypeSelector);
 	const addressType = useAppSelector(addressTypeSelector);
 	const isGeoBlocked = useAppSelector(isGeoBlockedSelector);
+	const isLDKReady = useAppSelector(isLDKReadySelector);
 	const { id, amount, message, tags, jitOrder } =
 		useAppSelector(receiveSelector);
 	const lightningBalance = useLightningBalance(false);
@@ -276,13 +279,19 @@ const ReceiveQR = ({
 		receiveNavigationIsOpen,
 	]);
 
-	const onToggleInstant = (): void => {
+	const onToggleInstant = useCallback((): void => {
 		if (!isGeoBlocked && !jitInvoice && lightningBalance.remoteBalance === 0) {
 			navigation.navigate('ReceiveAmount');
 		} else {
 			setEnableInstant(!enableInstant);
 		}
-	};
+	}, [
+		enableInstant,
+		isGeoBlocked,
+		jitInvoice,
+		lightningBalance.remoteBalance,
+		navigation,
+	]);
 
 	const onEdit = useCallback((): void => {
 		if (jitInvoice) {
@@ -340,10 +349,6 @@ const ReceiveQR = ({
 	const qrMaxHeight = dimensions.height / 2.2;
 	const qrMaxWidth = dimensions.width - 16 * 2;
 	const qrSize = Math.min(qrMaxWidth, qrMaxHeight);
-
-	const displayReceiveInstantlySwitch = useMemo((): boolean => {
-		return !(isGeoBlocked && !lightningBalance.remoteBalance);
-	}, [isGeoBlocked, lightningBalance.remoteBalance]);
 
 	const QrIcon = useCallback((): ReactElement => {
 		return (
@@ -571,6 +576,56 @@ const ReceiveQR = ({
 
 	const slides = useMemo((): Slide[] => [Slide1, Slide2], [Slide1, Slide2]);
 
+	const ReceiveInstantlySwitch = useCallback((): ReactElement => {
+		if (isGeoBlocked && !lightningBalance.remoteBalance) {
+			return <></>;
+		}
+
+		if (!isLDKReady) {
+			return (
+				<View style={styles.buttonContainer}>
+					<View style={styles.ldkStarting}>
+						<View style={styles.ldkStartingLeft}>
+							<BodyM>{t('receive_ldk_init')}</BodyM>
+						</View>
+						<View style={styles.ldkStartingRight}>
+							<ActivityIndicator color="white" />
+						</View>
+					</View>
+				</View>
+			);
+		}
+
+		return (
+			<View style={styles.buttonContainer}>
+				{!enableInstant && (
+					<Headline>
+						<Trans
+							t={t}
+							i18nKey="receive_text_lnfunds"
+							components={{ accent: <Headline color="purple" /> }}
+						/>
+					</Headline>
+				)}
+				<SwitchRow
+					style={styles.switchRow}
+					color="purple"
+					isEnabled={enableInstant}
+					onPress={onToggleInstant}>
+					{!enableInstant && <ArrowLNFunds color="secondary" />}
+					<BodyM>{t('receive_spending')}</BodyM>
+				</SwitchRow>
+			</View>
+		);
+	}, [
+		t,
+		isLDKReady,
+		enableInstant,
+		onToggleInstant,
+		isGeoBlocked,
+		lightningBalance.remoteBalance,
+	]);
+
 	return (
 		<>
 			<GradientView style={styles.container}>
@@ -618,34 +673,10 @@ const ReceiveQR = ({
 					</View>
 				)}
 
-				{displayReceiveInstantlySwitch && (
-					<View style={styles.buttonContainer}>
-						{!enableInstant && (
-							<Headline>
-								<Trans
-									t={t}
-									i18nKey="receive_text_lnfunds"
-									components={{ accent: <Headline color="purple" /> }}
-								/>
-							</Headline>
-						)}
-						<SwitchRow
-							style={styles.switchRow}
-							color="purple"
-							isEnabled={enableInstant}
-							showDivider={false}
-							onPress={onToggleInstant}>
-							{!enableInstant && <ArrowLNFunds color="secondary" />}
-							<BodyM>{t('receive_spending')}</BodyM>
-						</SwitchRow>
-					</View>
-				)}
+				<ReceiveInstantlySwitch />
+
 				<SafeAreaInset type="bottom" minPadding={16} />
 			</GradientView>
-
-			{lightningBalance.remoteBalance > 0 && (
-				<LightningSyncing style={styles.syncing} title={t('receive_bitcoin')} />
-			)}
 		</>
 	);
 };
@@ -739,8 +770,20 @@ const styles = StyleSheet.create({
 	switchRow: {
 		paddingVertical: 0,
 	},
-	syncing: {
-		...StyleSheet.absoluteFillObject,
+	ldkStarting: {
+		flexDirection: 'row',
+		justifyContent: 'flex-start',
+		alignItems: 'center',
+		paddingVertical: 8,
+	},
+	ldkStartingLeft: {
+		flex: 1,
+		justifyContent: 'center',
+	},
+	ldkStartingRight: {
+		justifyContent: 'center',
+		alignItems: 'flex-end',
+		alignSelf: 'center',
 	},
 });
 
