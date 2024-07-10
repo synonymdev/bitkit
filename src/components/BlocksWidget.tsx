@@ -94,7 +94,7 @@ const BlocksWidget = ({
 			});
 		}
 
-		return () => {
+		return (): void => {
 			unsubscribe();
 		};
 	}, [url, widget.fields, webRelayUrl, webRelayClient]);

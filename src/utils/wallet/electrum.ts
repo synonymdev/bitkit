@@ -108,16 +108,12 @@ interface IGetTransactions {
  */
 export const transactionExists = (txData: ITransaction<IUtxo>): boolean => {
 	if (
-		//TODO: Update types for electrum response.
+		// TODO: Update types for electrum response.
 		// @ts-ignore
-		txData?.error &&
-		//TODO: Update types for electrum response.
-		// @ts-ignore
-		txData?.error?.message &&
+		txData.error?.message &&
 		/No such mempool or blockchain transaction|Invalid tx hash/.test(
-			//TODO: Update types for electrum response.
 			// @ts-ignore
-			txData?.error?.message,
+			txData.error.message,
 		)
 	) {
 		//Transaction was removed/bumped from the mempool or potentially reorg'd out.

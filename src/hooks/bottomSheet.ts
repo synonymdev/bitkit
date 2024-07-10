@@ -69,7 +69,7 @@ export const useBottomSheetBackPress = (
 			},
 		);
 
-		return () => {
+		return (): void => {
 			backHandlerSubscriptionRef.current?.remove();
 			backHandlerSubscriptionRef.current = null;
 		};

@@ -1,10 +1,10 @@
-// Make sure crypto is loaded first, so it can populate global.crypto
-// needed for sodium-javascript/randombytes.js
-require('crypto');
+const { install } = require('react-native-quick-crypto');
 
-// Polyfill TextEncoder/TextDecoder including TextEncoder().encodeInto
-// https://github.com/anonyco/FastestSmallestTextEncoderDecoder
-require('fastestsmallesttextencoderdecoder-encodeinto');
+// Patch global.crypto with quickcrypto and global.Buffer with react-native-buffer.
+install();
+
+// Polyfill TextDecoder (TextEncoder is already supported by hermes)
+require('./src/polyfills/textdecoder-polyfill');
 
 // RN still doesn't support full spec of Intl API
 if (!Intl.Locale) {

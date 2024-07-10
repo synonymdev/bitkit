@@ -9,7 +9,6 @@ export const getKeychainValue = async ({
 }): Promise<IResponse<string>> => {
 	try {
 		const result = await Keychain.getGenericPassword({ service: key });
-		// eslint-disable-next-line @typescript-eslint/prefer-optional-chain
 		if (!result || !result.password) {
 			return { error: true, data: '' };
 		}

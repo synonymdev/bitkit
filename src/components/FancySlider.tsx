@@ -241,7 +241,7 @@ const FancySlider = ({
 
 	useEffect(() => {
 		const l = pan.addListener(({ x }: { x: number }) => handleValueChange(x));
-		return () => pan.removeListener(l);
+		return (): void => pan.removeListener(l);
 	}, [pan, handleValueChange]);
 
 	useEffect(() => {

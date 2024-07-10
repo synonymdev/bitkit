@@ -89,9 +89,7 @@ jobs:
           HUSKY: 0
 
       - name: Activate Gradle variables
-        run: |
-          cp .github/workflows/gradle.properties ~/.gradle/gradle.properties
-          patch -p1 -i ./.github/workflows/react-native-quick-crypto.patch
+        run: cp .github/workflows/gradle.properties ~/.gradle/gradle.properties
 
       - name: Use specific Java version for sdkmanager to work
         uses: actions/setup-java@v4

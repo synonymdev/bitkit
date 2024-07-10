@@ -48,6 +48,7 @@ target 'bitkit' do
       installer,
       config[:reactNativePath],
       :mac_catalyst_enabled => false
+      # :ccache_enabled => true
     )
 
     # buildcache begin

@@ -48,7 +48,7 @@ const Suggestions = (): ReactElement => {
 			dispatch(channelsNotificationsShown(ids));
 		}, 4000);
 
-		return () => clearTimeout(timer);
+		return (): void => clearTimeout(timer);
 	}, [newChannels, dispatch]);
 
 	const panGestureHandlerProps = useMemo(

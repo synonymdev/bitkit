@@ -131,7 +131,7 @@ const PriceWidget = ({
 			});
 		}
 
-		return () => {
+		return (): void => {
 			subscriptions.forEach((unsubscribe) => unsubscribe());
 		};
 	}, [url, widget.fields, period, webRelayClient, webRelayUrl]);

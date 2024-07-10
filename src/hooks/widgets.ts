@@ -123,7 +123,7 @@ export const useSlashfeed = (options: {
 
 		getData();
 
-		return () => {
+		return (): void => {
 			unmounted = true;
 		};
 	}, [reader, options.url, options.fields]);

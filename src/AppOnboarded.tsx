@@ -52,7 +52,7 @@ const AppOnboarded = (): ReactElement => {
 			dispatch(updateSettings({ hideBalance: true }));
 		}
 
-		return () => {
+		return (): void => {
 			unsubscribeFromLightningSubscriptions();
 		};
 		// onMount
@@ -92,7 +92,7 @@ const AppOnboarded = (): ReactElement => {
 			},
 		);
 
-		return () => {
+		return (): void => {
 			appStateSubscription.remove();
 		};
 		// onMount
@@ -122,7 +122,7 @@ const AppOnboarded = (): ReactElement => {
 			}
 		});
 
-		return () => {
+		return (): void => {
 			unsubscribeNetInfo();
 		};
 	}, [isOnline, t]);

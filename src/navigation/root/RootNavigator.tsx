@@ -215,7 +215,7 @@ const RootNavigator = (): ReactElement => {
 			},
 		);
 
-		return () => {
+		return (): void => {
 			appStateSubscription.remove();
 		};
 

@@ -87,7 +87,7 @@ const RestoreFromSeed = (): ReactElement => {
 	useEffect(() => {
 		rnAndroidKeyboardAdjust.setAdjustResize();
 
-		return () => {
+		return (): void => {
 			rnAndroidKeyboardAdjust.setAdjustPan();
 		};
 	}, []);

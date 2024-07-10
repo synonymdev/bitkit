@@ -7,7 +7,7 @@ const { assetExts, sourceExts } = defaultConfig.resolver;
 
 /**
  * Metro configuration
- * https://facebook.github.io/metro/docs/configuration
+ * https://reactnative.dev/docs/metro
  *
  * @type {import('metro-config').MetroConfig}
  */
@@ -23,7 +23,7 @@ const config = {
 		extraNodeModules: {
 			buffer: path.resolve(__dirname, './node_modules/@craftzdog/react-native-buffer'),
 			crypto: path.resolve(__dirname, './node_modules/react-native-quick-crypto'),
-			stream: path.resolve(__dirname, './node_modules/stream-browserify'),
+			stream: path.resolve(__dirname, './node_modules/readable-stream'),
 			'sodium-universal': path.resolve(__dirname, './node_modules/sodium-react-native-direct'),
 		},
 		blacklistRE: exclusionList([

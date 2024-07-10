@@ -32,7 +32,7 @@ const useKeyboard = (): {
 			},
 		);
 
-		return () => {
+		return (): void => {
 			keyboardWillShowListener.remove();
 			keyboardDidShowListener.remove();
 			keyboardDidHideListener.remove();

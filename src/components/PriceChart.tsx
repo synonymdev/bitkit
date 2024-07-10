@@ -178,7 +178,7 @@ const PriceChart = ({
 
 		getHistory();
 
-		return () => {
+		return (): void => {
 			unmounted = true;
 		};
 	}, [url, field, period, webRelayClient, webRelayUrl]);

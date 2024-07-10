@@ -85,7 +85,7 @@ const HeadlinesWidget = ({
 
 		getData();
 
-		return () => {
+		return (): void => {
 			unmounted = true;
 		};
 	}, [url, t, webRelayClient, webRelayUrl]);
