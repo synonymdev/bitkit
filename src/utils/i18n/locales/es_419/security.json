@@ -1,81 +1,239 @@
 {
-  "backup_wallet": "Copia de seguridad de la cartera",
-  "backup_funds": "Ahora que tiene fondos en su cartera, ¡és el momento de hacer una copia de seguridad de su dinero!",
-  "backup_funds_no": "Todavía no hay fondos en su cartera, pero puede crear una copia de seguridad si lo desea.",
-  "backup_button": "Realizar copia de seguridad",
-  "pass": "frase de acesso",
-  "pass_your": "Su frase de acesso",
-  "pass_confirm": "Confirmar frase de acesso",
-  "pass_confirm_text": "Introduzca la frase de acesso que añadió al configurar y crear su monedero.",
-  "mnemonic_phrase": "Frase mnemotécnica",
-  "mnemonic_your": "Su frase de recuperación",
-  "mnemonic_error": "Falla de la billetera",
-  "mnemonic_error_description": "BitKit no podría leer tu frase de recuperación",
-  "mnemonic_write": "Anote estas palabras {longitud} en el orden correcto y guárdelas en un lugar seguro.",
-  "mnemonic_use": "Utilice las 12 palabras siguientes para recuperar su dinero más adelante.",
-  "mnemonic_reveal": "Toque para revelar",
-  "mnemonic_confirm": "Confirmar frase de recuperación",
-  "mnemonic_confirm_tap": "Pulse las 12 palabras en el orden correcto.",
-  "mnemonic_result_header": "Éxito",
-  "mnemonic_data_header": "Datos del monedero",
-  "mnemonic_data_text": "Se realizará una copia de seguridad automática de su perfil, contactos, cuentas, etiquetas y actividad en nuestro servicio gratuito en la nube.",
-  "mnemonic_multiple_header": "Múltiples Dispositivos",
-  "mnemonic_multiple_text": "No utilice su frase de recuperación Bitkit en varios teléfonos simultáneamente, ya que esto puede corromper sus datos.",
-  "mnemonic_latest_backup": "<bold>Última copia de seguridad:</bold> {time}",
-  "pin_security_header": "Aumentar la seguridad",
-  "pin_choose_header": "Elija el PIN de 4 dígitos",
-  "pin_choose_text": "Por favor, utilice un PIN que recuerde. Si olvida su PIN puede restablecerlo, pero para ello tendrá que restaurar su monedero.",
-  "pin_retype_header": "Vuelva a introducir el PIN de 4 dígitos",
-  "pin_retype_text": "Vuelva a introducir su PIN de 4 dígitos para completar el proceso de configuración.",
-  "pin_not_match": "Inténtelo de nuevo, no es el mismo PIN.",
-  "pin_disable_title": "Desactivar PIN",
-  "pin_disable_text": "El código PIN está actualmente activado. Si desea desactivar su PIN, deberá introducir primero su código PIN actual.",
-  "pin_disable_button": "Desactivar PIN",
-  "pin_enter": "Por favor, introduzca su código PIN",
-  "pin_last_attempt": "Último intento. Si vuelve a introducir un PIN erróneo, se reiniciará su monedero.",
-  "pin_attempts": "{attemptsRemaining} intentos restantes. ¿Ha olvidado su PIN?",
-  "pin_forgot_title": "¿Ha olvidado el PIN?",
-  "pin_forgot_text": "¿Ha olvidado su PIN? Reinicie y recupere su monedero Bitkit con su frase de recuperación. Establezca un nuevo PIN después de completar la recuperación.",
-  "pin_forgot_reset": "Reempezar a los padrones iniciales (requiere frase de recuperación)",
-  "pin_send": "Por favor, introduzca su código PIN para confirmar y enviar este pago.",
-  "pin_use_biometrics": "Usar {biometricsName}",
-  "bio": "Biometría",
-  "bio_auth_with": "Autentificarse con {biometricsName}",
-  "bio_no": "Parece que su dispositivo no es compatible con la seguridad biométrica.",
-  "bio_face_id": "Face ID",
-  "bio_touch_id": "Touch ID",
-  "bio_confirm": "Confirme {biometricsName}",
-  "bio_error_title": "la configuración de los datos biométricos he fallado",
-  "bio_loading": "Cargando...",
-  "bio_use": "Usar {biometricsName}",
-  "bio_phone_settings": "Ajustes del teléfono",
-  "success_title": "Cartera asegurada",
-  "success_no_bio": "Ha configurado correctamente un código PIN para mejorar la seguridad de su monedero.",
-  "success_payments": "También se requiere para los pagos",
-  "reset_title": "Restablecer y restaurar",
-  "reset_text": "Haga primero una copia de seguridad de su monedero para evitar la pérdida de sus fondos y datos de monedero. Al restablecer sobrescribirá su configuración actual de Bitkit.",
-  "reset_button_backup": "Primero, la copia de seguridad",
-  "reset_button_reset": "Restablecer cartera",
-  "reset_dialog_title": "¿Restablecer Bitkit a los padrones iniciales?",
-  "reset_dialog_desc": "¿Está seguro de que desea restablecer su monedero Bitkit? ¿Tiene una copia de seguridad de su frase de recuperación y de los datos de su monedero?",
-  "reset_confirm": "Sí, Restaurar",
-  "recovery": "Recuperación",
-  "contact_support": "Contactar servicio de asistencia",
-  "wipe_app": "Borrar App",
-  "close_app": "Cerrar Bitkit",
-  "export_title": "Exportar a teléfono",
-  "export_password": "Contraseña",
-  "export_button": "Exportar",
-  "export_share": "Compartir el archivo de copia de seguridad",
-  "cp_title": "Cambiar PIN",
-  "cp_text": "Puede cambiar su código PIN por una nueva\ncombinación de 4 dígitos. Por favor, introduzca primero su código PIN actual.",
-  "cp_forgot": "¿Ha olvidado su PIN?",
-  "cp_retype_title": "Reintroducir nuevo PIN",
-  "cp_retype_text": "Vuelva a introducir su PIN de 4 dígitos para completar el proceso de configuración.",
-  "cp_setnew_title": "Establecer nuevo PIN",
-  "cp_setnew_text": "Por favor, utilice un PIN que recuerde. Si olvida su PIN puede restablecerlo, pero para ello tendrá que restaurar su monedero.",
-  "cp_try_again": "Inténtelo de nuevo, no es el mismo PIN.",
-  "cp_changed_title": "PIN cambiado",
-  "cp_changed_text": "Ha cambiado correctamente su PIN por una nueva combinación de 4 dígitos.",
-  "use_pin": "Utilizar código PIN"
+  "backup_wallet": {
+    "string": "Copia de seguridad de la cartera"
+  },
+  "backup_funds": {
+    "string": "Ahora que tiene fondos en su cartera, ¡és el momento de hacer una copia de seguridad de su dinero!"
+  },
+  "backup_funds_no": {
+    "string": "Todavía no hay fondos en su cartera, pero puede crear una copia de seguridad si lo desea."
+  },
+  "backup_button": {
+    "string": "Realizar copia de seguridad"
+  },
+  "pass": {
+    "string": "frase de acesso"
+  },
+  "pass_your": {
+    "string": "Su frase de acesso"
+  },
+  "pass_confirm": {
+    "string": "Confirmar frase de acesso"
+  },
+  "pass_confirm_text": {
+    "string": "Introduzca la frase de acesso que añadió al configurar y crear su monedero."
+  },
+  "mnemonic_phrase": {
+    "string": "Frase mnemotécnica"
+  },
+  "mnemonic_your": {
+    "string": "Su frase de recuperación"
+  },
+  "mnemonic_error": {
+    "string": "Falla de la billetera"
+  },
+  "mnemonic_error_description": {
+    "string": "BitKit no podría leer tu frase de recuperación"
+  },
+  "mnemonic_write": {
+    "string": "Anote estas palabras {longitud} en el orden correcto y guárdelas en un lugar seguro."
+  },
+  "mnemonic_use": {
+    "string": "Utilice las 12 palabras siguientes para recuperar su dinero más adelante."
+  },
+  "mnemonic_reveal": {
+    "string": "Toque para revelar"
+  },
+  "mnemonic_confirm": {
+    "string": "Confirmar frase de recuperación"
+  },
+  "mnemonic_confirm_tap": {
+    "string": "Pulse las 12 palabras en el orden correcto."
+  },
+  "mnemonic_result_header": {
+    "string": "Éxito"
+  },
+  "mnemonic_data_header": {
+    "string": "Datos del monedero"
+  },
+  "mnemonic_data_text": {
+    "string": "Se realizará una copia de seguridad automática de su perfil, contactos, cuentas, etiquetas y actividad en nuestro servicio gratuito en la nube."
+  },
+  "mnemonic_multiple_header": {
+    "string": "Múltiples Dispositivos"
+  },
+  "mnemonic_multiple_text": {
+    "string": "No utilice su frase de recuperación Bitkit en varios teléfonos simultáneamente, ya que esto puede corromper sus datos."
+  },
+  "mnemonic_latest_backup": {
+    "string": "<bold>Última copia de seguridad:</bold> {time}"
+  },
+  "pin_security_header": {
+    "string": "Aumentar la seguridad"
+  },
+  "pin_choose_header": {
+    "string": "Elija el PIN de 4 dígitos"
+  },
+  "pin_choose_text": {
+    "string": "Por favor, utilice un PIN que recuerde. Si olvida su PIN puede restablecerlo, pero para ello tendrá que restaurar su monedero."
+  },
+  "pin_retype_header": {
+    "string": "Vuelva a introducir el PIN de 4 dígitos"
+  },
+  "pin_retype_text": {
+    "string": "Vuelva a introducir su PIN de 4 dígitos para completar el proceso de configuración."
+  },
+  "pin_not_match": {
+    "string": "Inténtelo de nuevo, no es el mismo PIN."
+  },
+  "pin_disable_title": {
+    "string": "Desactivar PIN"
+  },
+  "pin_disable_text": {
+    "string": "El código PIN está actualmente activado. Si desea desactivar su PIN, deberá introducir primero su código PIN actual."
+  },
+  "pin_disable_button": {
+    "string": "Desactivar PIN"
+  },
+  "pin_enter": {
+    "string": "Por favor, introduzca su código PIN"
+  },
+  "pin_last_attempt": {
+    "string": "Último intento. Si vuelve a introducir un PIN erróneo, se reiniciará su monedero."
+  },
+  "pin_attempts": {
+    "string": "{attemptsRemaining} intentos restantes. ¿Ha olvidado su PIN?"
+  },
+  "pin_forgot_title": {
+    "string": "¿Ha olvidado el PIN?"
+  },
+  "pin_forgot_text": {
+    "string": "¿Ha olvidado su PIN? Reinicie y recupere su monedero Bitkit con su frase de recuperación. Establezca un nuevo PIN después de completar la recuperación."
+  },
+  "pin_forgot_reset": {
+    "string": "Reempezar a los padrones iniciales (requiere frase de recuperación)"
+  },
+  "pin_send": {
+    "string": "Por favor, introduzca su código PIN para confirmar y enviar este pago."
+  },
+  "pin_use_biometrics": {
+    "string": "Usar {biometricsName}"
+  },
+  "bio": {
+    "string": "Biometría"
+  },
+  "bio_auth_with": {
+    "string": "Autentificarse con {biometricsName}"
+  },
+  "bio_no": {
+    "string": "Parece que su dispositivo no es compatible con la seguridad biométrica."
+  },
+  "bio_face_id": {
+    "string": "Face ID"
+  },
+  "bio_touch_id": {
+    "string": "Touch ID"
+  },
+  "bio_confirm": {
+    "string": "Confirme {biometricsName}"
+  },
+  "bio_error_title": {
+    "string": "la configuración de los datos biométricos he fallado"
+  },
+  "bio_loading": {
+    "string": "Cargando..."
+  },
+  "bio_use": {
+    "string": "Usar {biometricsName}"
+  },
+  "bio_phone_settings": {
+    "string": "Ajustes del teléfono"
+  },
+  "success_title": {
+    "string": "Cartera asegurada"
+  },
+  "success_no_bio": {
+    "string": "Ha configurado correctamente un código PIN para mejorar la seguridad de su monedero."
+  },
+  "success_payments": {
+    "string": "También se requiere para los pagos"
+  },
+  "reset_title": {
+    "string": "Restablecer y restaurar"
+  },
+  "reset_text": {
+    "string": "Haga primero una copia de seguridad de su monedero para evitar la pérdida de sus fondos y datos de monedero. Al restablecer sobrescribirá su configuración actual de Bitkit."
+  },
+  "reset_button_backup": {
+    "string": "Primero, la copia de seguridad"
+  },
+  "reset_button_reset": {
+    "string": "Restablecer cartera"
+  },
+  "reset_dialog_title": {
+    "string": "¿Restablecer Bitkit a los padrones iniciales?"
+  },
+  "reset_dialog_desc": {
+    "string": "¿Está seguro de que desea restablecer su monedero Bitkit? ¿Tiene una copia de seguridad de su frase de recuperación y de los datos de su monedero?"
+  },
+  "reset_confirm": {
+    "string": "Sí, Restaurar"
+  },
+  "recovery": {
+    "string": "Recuperación"
+  },
+  "contact_support": {
+    "string": "Contactar servicio de asistencia"
+  },
+  "wipe_app": {
+    "string": "Borrar App"
+  },
+  "close_app": {
+    "string": "Cerrar Bitkit"
+  },
+  "export_title": {
+    "string": "Exportar a teléfono"
+  },
+  "export_password": {
+    "string": "Contraseña"
+  },
+  "export_button": {
+    "string": "Exportar"
+  },
+  "export_share": {
+    "string": "Compartir el archivo de copia de seguridad"
+  },
+  "cp_title": {
+    "string": "Cambiar PIN"
+  },
+  "cp_text": {
+    "string": "Puede cambiar su código PIN por una nueva\ncombinación de 4 dígitos. Por favor, introduzca primero su código PIN actual."
+  },
+  "cp_forgot": {
+    "string": "¿Ha olvidado su PIN?"
+  },
+  "cp_retype_title": {
+    "string": "Reintroducir nuevo PIN"
+  },
+  "cp_retype_text": {
+    "string": "Vuelva a introducir su PIN de 4 dígitos para completar el proceso de configuración."
+  },
+  "cp_setnew_title": {
+    "string": "Establecer nuevo PIN"
+  },
+  "cp_setnew_text": {
+    "string": "Por favor, utilice un PIN que recuerde. Si olvida su PIN puede restablecerlo, pero para ello tendrá que restaurar su monedero."
+  },
+  "cp_try_again": {
+    "string": "Inténtelo de nuevo, no es el mismo PIN."
+  },
+  "cp_changed_title": {
+    "string": "PIN cambiado"
+  },
+  "cp_changed_text": {
+    "string": "Ha cambiado correctamente su PIN por una nueva combinación de 4 dígitos."
+  },
+  "use_pin": {
+    "string": "Utilizar código PIN"
+  }
 }

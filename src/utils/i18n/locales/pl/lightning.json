@@ -1,8 +1,16 @@
 {
   "transfer_failed": {
-    "continue": "Spróbuj ponownie"
+    "continue": {
+      "string": "Spróbuj ponownie"
+    }
   },
-  "quick_setup": "Szybka konfiguracja",
-  "channel_node_id": "ID węzła",
-  "close_button": "Zamknij"
+  "quick_setup": {
+    "string": "Szybka konfiguracja"
+  },
+  "channel_node_id": {
+    "string": "ID węzła"
+  },
+  "close_button": {
+    "string": "Zamknij"
+  }
 }

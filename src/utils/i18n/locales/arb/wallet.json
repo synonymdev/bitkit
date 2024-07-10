@@ -1,4 +1,8 @@
 {
-  "recipient_contact": "جهة الاتصال",
-  "activity_contact": "جهة الاتصال"
+  "recipient_contact": {
+    "string": "جهة الاتصال"
+  },
+  "activity_contact": {
+    "string": "جهة الاتصال"
+  }
 }

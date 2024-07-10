@@ -1,63 +1,125 @@
 {
   "backupSeedPhrase": {
-    "title": "Còpia de seguretat",
-    "description": "Emmagatzema els teus bitcoin"
+    "title": {
+      "string": "Còpia de seguretat"
+    },
+    "description": {
+      "string": "Emmagatzema els teus bitcoin"
+    }
   },
   "discount": {
-    "title": "Descompte",
-    "description": "Balanç de despesa"
+    "title": {
+      "string": "Descompte"
+    },
+    "description": {
+      "string": "Balanç de despesa"
+    }
   },
   "fastpay": {
-    "title": "Pagament ràpid",
-    "description": "Escaneja i paga"
+    "title": {
+      "string": "Pagament ràpid"
+    },
+    "description": {
+      "string": "Escaneja i paga"
+    }
   },
   "invite": {
-    "title": "Convidar",
-    "description": "Comparteix Bitkit"
+    "title": {
+      "string": "Convidar"
+    },
+    "description": {
+      "string": "Comparteix Bitkit"
+    }
   },
   "lightning": {
-    "title": "Gastar",
-    "description": "Pagaments instantanis"
+    "title": {
+      "string": "Gastar"
+    },
+    "description": {
+      "string": "Pagaments instantanis"
+    }
   },
   "lightningSettingUp": {
-    "title": "Transferir",
-    "description": "En progrés..."
+    "title": {
+      "string": "Transferir"
+    },
+    "description": {
+      "string": "En progrés..."
+    }
   },
   "lightningConnecting": {
-    "title": "Conectant",
-    "description": "Llest en ±10m"
+    "title": {
+      "string": "Conectant"
+    },
+    "description": {
+      "string": "Llest en ±10m"
+    }
   },
   "lightningReady": {
-    "title": "Llest",
-    "description": "Conectat!"
+    "title": {
+      "string": "Llest"
+    },
+    "description": {
+      "string": "Conectat!"
+    }
   },
   "transferPending": {
-    "title": "Transferir",
-    "description": "Llest en ±{duration}"
+    "title": {
+      "string": "Transferir"
+    },
+    "description": {
+      "string": "Llest en ±{duration}"
+    }
   },
   "transferClosingChannel": {
-    "title": "Iniciant...",
-    "description": "Mantenir l'aplicació oberta"
+    "title": {
+      "string": "Iniciant..."
+    },
+    "description": {
+      "string": "Mantenir l'aplicació oberta"
+    }
   },
   "pin": {
-    "title": "Segur",
-    "description": "Configurar un codi PIN"
+    "title": {
+      "string": "Segur"
+    },
+    "description": {
+      "string": "Configurar un codi PIN"
+    }
   },
   "slashtagsProfile": {
-    "title": "Perfil",
-    "description": "Afegeix els teus detalls"
+    "title": {
+      "string": "Perfil"
+    },
+    "description": {
+      "string": "Afegeix els teus detalls"
+    }
   },
   "support": {
-    "title": "Suport",
-    "description": "Obteniu ajuda"
+    "title": {
+      "string": "Suport"
+    },
+    "description": {
+      "string": "Obteniu ajuda"
+    }
   },
   "buyBitcoin": {
-    "title": "Comprar",
-    "description": "Comprar bitcoin"
+    "title": {
+      "string": "Comprar"
+    },
+    "description": {
+      "string": "Comprar bitcoin"
+    }
   },
   "btFailed": {
-    "title": "Ha fallat",
-    "description": "Si us plau torna-ho a provar"
+    "title": {
+      "string": "Ha fallat"
+    },
+    "description": {
+      "string": "Si us plau torna-ho a provar"
+    }
   },
-  "suggestions": "Sugeriments"
+  "suggestions": {
+    "string": "Sugeriments"
+  }
 }

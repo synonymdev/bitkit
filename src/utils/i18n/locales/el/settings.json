@@ -1,25 +1,43 @@
 {
   "about": {
-    "share": "Διαμοιρασμός"
+    "share": {
+      "string": "Διαμοιρασμός"
+    }
   },
   "support": {
-    "text_success_button": "ΟΚ",
-    "text_unsuccess_button": "Προσπαθείστε Ξανά"
+    "text_success_button": {
+      "string": "ΟΚ"
+    },
+    "text_unsuccess_button": {
+      "string": "Προσπαθείστε Ξανά"
+    }
   },
   "fee": {
     "fast": {
-      "value": "Γρήγορα"
+      "value": {
+        "string": "Γρήγορα"
+      }
     },
     "normal": {
-      "label": "Κανονικά",
-      "value": "Κανονικά"
+      "label": {
+        "string": "Κανονικά"
+      },
+      "value": {
+        "string": "Κανονικά"
+      }
     },
     "custom": {
-      "label": "Προσαρμοσμένο",
-      "value": "Προσαρμοσμένο"
+      "label": {
+        "string": "Προσαρμοσμένο"
+      },
+      "value": {
+        "string": "Προσαρμοσμένο"
+      }
     }
   },
   "gap": {
-    "save": "Καταχώρηση"
+    "save": {
+      "string": "Καταχώρηση"
+    }
   }
 }

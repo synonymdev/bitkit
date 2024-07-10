@@ -1,222 +1,650 @@
 {
-	"send": "Send",
-	"receive": "Receive",
-	"balance_total": "Total balance",
-	"balance_total_pending": "<text>Total balance (</text><pending/><text> pending)</text>",
-	"create_wallet_error": "Please reopen the app and try again.",
-	"create_wallet_existing_error": "Wallet \"{walletName}\" already exists.",
-	"create_wallet_mnemonic_error": "Invalid recovery phrase.",
-	"create_wallet_mnemonic_restore_error": "Please double-check if your recovery phrase is accurate.",
-	"send_bitcoin": "Send Bitcoin",
-	"send_to": "To",
-	"recipient_contact": "Contact",
-	"recipient_invoice": "Paste Invoice",
-	"recipient_manual": "Enter Manually",
-	"recipient_scan": "Scan QR",
-	"send_invoice": "Invoice",
-	"send_address_placeholder": "Enter a Bitcoin or Lightning invoice or address",
-	"send_clipboard_empty_title": "Clipboard Empty",
-	"send_clipboard_empty_text": "Please copy an address or an invoice.",
-	"send_amount": "Bitcoin Amount",
-	"send_max": "MAX",
-	"send_done": "DONE",
-	"send_availabe_spending": "Available (spending)",
-	"send_availabe_savings": "Available (savings)",
-	"send_review": "Review & Send",
-	"send_confirming_in": "Confirming in",
-	"send_invoice_expiration": "Invoice expiration",
-	"send_swipe": "Swipe To Pay",
-	"send_yes": "Yes, Send",
-	"send_dialog1": "It appears you are sending over $100. Do you want to continue?",
-	"send_dialog2": "It appears you are sending over 50% of your total balance. Do you want to continue?",
-	"send_dialog3": "The transaction fee appears to be over 50% of the amount you are sending. Do you want to continue?",
-	"send_dialog4": "The transaction fee appears to be over $10. Do you want to continue?",
-	"send_dialog5_title": "Fee is potentially too low",
-	"send_dialog5_description": "Current network conditions require that your fee should be greater than {minimumFee} ₿/vbyte. This transaction may fail, take a while to confirm, or get trimmed from the mempool. Do you wish to proceed?",
-	"send_sent": "Bitcoin Sent",
-	"send_pending": "Payment Pending",
-	"send_pending_note": "This payment is taking a bit longer than expected. You can continue using Bitkit.",
-	"send_instant_failed": "Instant Payment Failed",
-	"send_regular": "Regular Payment",
-	"send_error_slash_ln": "Unfortunately contact could not be paid instantly. You can try a regular payment (more expensive, slower).",
-	"send_error_tx_failed": "Transaction Failed",
-	"send_error_create_tx": "Unable to broadcast the transaction. Please try again.",
-	"tag_remove_error_title": "Removing Tag Failed",
-	"tag_remove_error_description": "Bitkit was unable to find the transaction data.",
-	"error_no_invoice": "No lightning invoice found.",
-	"error_no_tx_title": "No transaction is available to broadcast.",
-	"error_no_tx_msg": "Please check your transaction info and try again.",
-	"error_min_fee_title": "Minimum relay fee not met",
-	"error_min_fee_msg": "Please increase your fee and try again.",
-	"send_amount_error_title": "Amount Invalid",
-	"send_amount_error_balance": "The amount is greater than your current balance.",
-	"send_amount_error_fee": "The amount indicated does not allow a fee to be included.",
-	"send_details": "Details",
-	"send_fee_and_speed": "Speed and fee",
-	"send_fee_speed": "Speed",
-	"send_fee_error": "Fee Invalid",
-	"max_possible_fee_rate": "Fee Exceeds Maximum Limit",
-	"max_possible_fee_rate_msg": "Lower the custom fee and try again.",
-	"min_possible_fee_rate": "Fee Below Minimum Limit",
-	"min_possible_fee_rate_msg": "Increase the custom fee and try again.",
-	"sats_per_vbyte": "sats/vbyte",
-	"send_output_to_small_title": "Send Amount Too Small",
-	"send_output_to_small_description": "Please increase your send amount to proceed.",
-	"send_coin_selection_output_to_small_description": "Please remove UTXO's or increase your send amount to proceed.",
-	"send_fee_error_min": "Unable to decrease the fee any further.",
-	"send_fee_custom": "Set Custom Fee",
-	"send_fee_total": "₿ {feeSats} for this transaction",
-	"send_fee_total_fiat": "₿ {feeSats} for this transaction ({fiatSymbol}{fiatFormatted})",
-	"note": "Note",
-	"tags": "Tags",
-	"tags_add": "Add Tag",
-	"tags_add_button": "Add",
-	"tags_add_error_header": "Adding Tag Failed",
-	"tags_add_error_description": "Bitkit was unable to find the transaction data.",
-	"tags_new": "New tag",
-	"tags_new_enter": "Enter a new tag",
-	"tags_previously": "Previously used tags",
-	"tags_filter": "Filter activity using tags",
-	"tags_filter_title": "Select Tag",
-	"tags_no": "No tags available yet",
-	"toast_payment_success_title": "Payment Sent",
-	"toast_payment_success_description": "Your instant payment was sent successfully.",
-	"toast_payment_failed_title": "Payment Failed",
-	"toast_payment_failed_description": "Your instant payment failed. Please try again.",
-	"selection_title": "Coin Selection",
-	"selection_auto": "Auto",
-	"selection_total_required": "Total required",
-	"selection_total_selected": "Total selected",
-	"receive_bitcoin": "Receive Bitcoin",
-	"receive_specify": "Edit Invoice",
-	"receive_copied": "Invoice copied to clipboard",
-	"receive_share_address": "Share receiving address",
-	"receive_bitcoin_invoice": "Bitcoin invoice",
-	"receive_lightning_invoice": "Lightning invoice",
-	"receive_note_placeholder": "Optional note to payer",
-	"receive_show_qr": "Show QR Code",
-	"receive_text_lnfunds": "Want to receive <accent>Lightning</accent> funds?",
-	"receive_spending": "Receive on Spending Balance",
-	"receive_connect_initial": "To set up your spending balance, a <accent>{lspFee}</accent> service provider fee will be deducted.",
-	"receive_connect_additional": "To receive more instant Bitcoin, Bitkit has to increase your liquidity. A <accent>{lspFee}</accent> service provider fee will be  deducted from the amount you specified.",
-	"receive_cjit_error": "Transaction Failed",
-	"receive_cjit_error_msg": "Failed to send funds to your spending account.",
-	"receive_will": "You will receive",
-	"receive_ldk_init": "Spending Balance Initializing...",
-	"minimum": "MINIMUM",
-	"activity": "Activity",
-	"activity_show_all": "Show All Activity",
-	"activity_no": "No activity yet",
-	"activity_no_explain": "Receive some funds to get started",
-	"activity_sent": "Sent",
-	"activity_received": "Received",
-	"activity_pending": "Pending",
-	"activity_failed": "Failed",
-	"activity_transfer": "Transfer",
-	"activity_transfer_spending": "Spending Balance",
-	"activity_transfer_savings": "Savings Balance",
-	"activity_transfer_savings_pending": "From Spending (±{duration})",
-	"activity_transfer_savings_done": "From Spending",
-	"activity_transfer_spending_pending": "From Savings (±{duration})",
-	"activity_transfer_spending_done": "From Savings",
-	"activity_transfer_to_spending": "To Spending",
-	"activity_transfer_pending": "Transfer (±{duration}m)",
-	"activity_confirms_in": "Confirms in {feeRateDescription}",
-	"activity_confirms_in_boosted": "Boosting. Confirms in {feeRateDescription}",
-	"activity_low_fee": "Fee potentially too low",
-	"activity_bitcoin_sent": "Sent Bitcoin",
-	"activity_bitcoin_received": "Received Bitcoin",
-	"activity_error_get": "Transaction Retrieval Failed",
-	"activity_error_get_description": "Bitkit was not able to fetch the transaction data.",
-	"activity_error_tx_not_found": "The transaction was not found.",
-	"activity_confirming": "Confirming",
-	"activity_confirmed": "Confirmed",
-	"activity_removed": "Removed from Mempool",
-	"activity_removed_title": "Transactions Removed From Mempool",
-	"activity_removed_msg": "Please check your activity list. The {count} impacted transaction(s) will be highlighted in red.",
-	"activity_boosting": "Boosting",
-	"activity_fee": "Fee",
-	"activity_payment": "Payment",
-	"activity_status": "Status",
-	"activity_date": "Date",
-	"activity_time": "Time",
-	"activity_contact": "Contact",
-	"activity_assign": "Assign",
-	"activity_detach": "Detach",
-	"activity_tag": "Tag",
-	"activity_boost": "Boost",
-	"activity_boosted": "Already Boosted",
-	"activity_explore": "Explore",
-	"activity_tx_id": "Transaction ID",
-	"activity_payment_hash": "Payment hash",
-	"activity_address": "Address",
-	"activity_input": "{count, plural, one {INPUT} other {INPUTS (#)}}",
-	"activity_output": "{count, plural, one {OUTPUT} other {OUTPUTS (#)}}",
-	"activity_boosted_cpfp": "BOOSTED TRANSACTION {num} (CPFP)",
-	"activity_boosted_rbf": "BOOSTED TRANSACTION {num} (RBF)",
-	"activity_explorer": "Open Block Explorer",
-	"activity_successful": "Successful",
-	"activity_invoice_note": "Invoice note",
-	"activity_invoice": "Invoice",
-	"activity_all": "All Activity",
-	"activity_tabs": {
-		"all": "All",
-		"sent": "Sent",
-		"received": "Received",
-		"other": "Other"
-	},
-	"details_savings_title": "Savings",
-	"details_spending_title": "Spending",
-	"savings": {
-		"title": "Savings",
-		"onboarding": "<accent>Send\nbitcoin</accent>\nto your\nsavings balance"
-	},
-	"spending": {
-		"title": "Spending",
-		"onboarding": "<accent>Send\nbitcoin</accent>\nto your\nspending balance"
-	},
-	"details_transfer_subtitle": "Incoming Transfer",
-	"tx_invalid": "Transaction Invalid",
-	"boost": "Boost",
-	"boost_title": "Boost Transaction",
-	"boost_success_title": "Boosted!",
-	"boost_success_msg": "The transaction was successfully boosted.",
-	"boost_error_title": "Boost Failed",
-	"boost_error_msg": "Bitkit was unable to boost the transaction.",
-	"boost_fee_custom": "Your transaction may settle faster if you include an additional network fee. Set your custom fee below.",
-	"boost_fee_recomended": "Your transaction may settle faster if you include an additional network fee. Here is a recommendation:",
-	"boost_recomended_button": "Use Suggested Fee",
-	"boost_swipe": "Swipe To Boost",
-	"payment_received": "Received Bitcoin",
-	"instant_payment_received": "Received Instant Bitcoin",
-	"error_create_tx": "Transaction Creation Failed",
-	"error_create_tx_msg": "An error occurred. Please try again {raw}",
-	"error_broadcast_tx": "Transaction Broadcast Failed",
-	"error_broadcast_tx_msg": "An error occurred when broadcasting your transaction. {raw}",
-	"error_broadcast_tx_connection": "Please check your connection and try again.\n{message}",
-	"filter_title": "Select Range",
-	"filter_clear": "Clear",
-	"filter_apply": "Apply",
-	"reorg_detected": "Blockchain Reorg Detected",
-	"reorg_msg_begin": "{count, plural, one {# of your transactions is no longer confirmed.} other {# of your transactions are no longer confirmed.}} Please wait.",
-	"reorg_msg_end": "Please check your activity list for affected transactions.",
-	"lnurl_w_title": "Withdraw Bitcoin",
-	"lnurl_w_max": "AvailablE TO WITHDRAW",
-	"lnurl_w_text": "The funds you withdraw will be deposited into your Bitkit spending balance.",
-	"lnurl_w_button": "Withdraw",
-	"lnurl_w_success_title": "Success",
-	"lnurl_w_success_description": "Withdraw Requested Successful",
-	"lnurl_p_title": "Send Bitcoin",
-	"lnurl_p_max": "Maximum amount",
-	"balance_hidden_title": "Wallet Balance Hidden",
-	"balance_hidden_message": "Swipe your wallet balance to reveal it again.",
-	"balance_unit_switched_title": "Switched to {unit}",
-	"balance_unit_switched_message": "Tap your wallet balance to switch it back to {unit}.",
-	"refresh_error_title": "Refresh Failed",
-	"refresh_error_msg": "An error occurred and couldn't refresh the wallet. Please try again.",
-	"refresh_error_throttle_title": "Connection Throttled",
-	"refresh_error_throttle_description": "Electrum server connection is throttled. Please wait several minutes before trying again.",
-	"ldk_sync_error_title": "Lightning Sync Error",
-	"receive_insufficient_title": "Insufficient receiving balance.",
-	"receive_insufficient_text": "Insufficient receiving capacity to receive this amount over Lightning."
+  "send": {
+    "string": "Send"
+  },
+  "receive": {
+    "string": "Receive"
+  },
+  "balance_total": {
+    "string": "Total balance"
+  },
+  "balance_total_pending": {
+    "string": "<text>Total balance (</text><pending/><text> pending)</text>"
+  },
+  "create_wallet_error": {
+    "string": "Please reopen the app and try again."
+  },
+  "create_wallet_existing_error": {
+    "string": "Wallet \"{walletName}\" already exists."
+  },
+  "create_wallet_mnemonic_error": {
+    "string": "Invalid recovery phrase."
+  },
+  "create_wallet_mnemonic_restore_error": {
+    "string": "Please double-check if your recovery phrase is accurate."
+  },
+  "send_bitcoin": {
+    "string": "Send Bitcoin"
+  },
+  "send_to": {
+    "string": "To"
+  },
+  "recipient_contact": {
+    "string": "Contact"
+  },
+  "recipient_invoice": {
+    "string": "Paste Invoice"
+  },
+  "recipient_manual": {
+    "string": "Enter Manually"
+  },
+  "recipient_scan": {
+    "string": "Scan QR"
+  },
+  "send_invoice": {
+    "string": "Invoice"
+  },
+  "send_address_placeholder": {
+    "string": "Enter a Bitcoin or Lightning invoice or address"
+  },
+  "send_clipboard_empty_title": {
+    "string": "Clipboard Empty"
+  },
+  "send_clipboard_empty_text": {
+    "string": "Please copy an address or an invoice."
+  },
+  "send_amount": {
+    "string": "Bitcoin Amount"
+  },
+  "send_max": {
+    "string": "MAX"
+  },
+  "send_done": {
+    "string": "DONE"
+  },
+  "send_availabe_spending": {
+    "string": "Available (spending)"
+  },
+  "send_availabe_savings": {
+    "string": "Available (savings)"
+  },
+  "send_review": {
+    "string": "Review & Send"
+  },
+  "send_confirming_in": {
+    "string": "Confirming in"
+  },
+  "send_invoice_expiration": {
+    "string": "Invoice expiration"
+  },
+  "send_swipe": {
+    "string": "Swipe To Pay"
+  },
+  "send_yes": {
+    "string": "Yes, Send"
+  },
+  "send_dialog1": {
+    "string": "It appears you are sending over $100. Do you want to continue?"
+  },
+  "send_dialog2": {
+    "string": "It appears you are sending over 50% of your total balance. Do you want to continue?"
+  },
+  "send_dialog3": {
+    "string": "The transaction fee appears to be over 50% of the amount you are sending. Do you want to continue?"
+  },
+  "send_dialog4": {
+    "string": "The transaction fee appears to be over $10. Do you want to continue?"
+  },
+  "send_dialog5_title": {
+    "string": "Fee is potentially too low"
+  },
+  "send_dialog5_description": {
+    "string": "Current network conditions require that your fee should be greater than {minimumFee} ₿/vbyte. This transaction may fail, take a while to confirm, or get trimmed from the mempool. Do you wish to proceed?"
+  },
+  "send_sent": {
+    "string": "Bitcoin Sent"
+  },
+  "send_pending": {
+    "string": "Payment Pending"
+  },
+  "send_pending_note": {
+    "string": "This payment is taking a bit longer than expected. You can continue using Bitkit."
+  },
+  "send_instant_failed": {
+    "string": "Instant Payment Failed"
+  },
+  "send_regular": {
+    "string": "Regular Payment"
+  },
+  "send_error_slash_ln": {
+    "string": "Unfortunately contact could not be paid instantly. You can try a regular payment (more expensive, slower)."
+  },
+  "send_error_tx_failed": {
+    "string": "Transaction Failed"
+  },
+  "send_error_create_tx": {
+    "string": "Unable to broadcast the transaction. Please try again."
+  },
+  "tag_remove_error_title": {
+    "string": "Removing Tag Failed"
+  },
+  "tag_remove_error_description": {
+    "string": "Bitkit was unable to find the transaction data."
+  },
+  "error_no_invoice": {
+    "string": "No lightning invoice found."
+  },
+  "error_no_tx_title": {
+    "string": "No transaction is available to broadcast."
+  },
+  "error_no_tx_msg": {
+    "string": "Please check your transaction info and try again."
+  },
+  "error_min_fee_title": {
+    "string": "Minimum relay fee not met"
+  },
+  "error_min_fee_msg": {
+    "string": "Please increase your fee and try again."
+  },
+  "send_amount_error_title": {
+    "string": "Amount Invalid"
+  },
+  "send_amount_error_balance": {
+    "string": "The amount is greater than your current balance."
+  },
+  "send_amount_error_fee": {
+    "string": "The amount indicated does not allow a fee to be included."
+  },
+  "send_details": {
+    "string": "Details"
+  },
+  "send_fee_and_speed": {
+    "string": "Speed and fee"
+  },
+  "send_fee_speed": {
+    "string": "Speed"
+  },
+  "send_fee_error": {
+    "string": "Fee Invalid"
+  },
+  "max_possible_fee_rate": {
+    "string": "Fee Exceeds Maximum Limit"
+  },
+  "max_possible_fee_rate_msg": {
+    "string": "Lower the custom fee and try again."
+  },
+  "min_possible_fee_rate": {
+    "string": "Fee Below Minimum Limit"
+  },
+  "min_possible_fee_rate_msg": {
+    "string": "Increase the custom fee and try again."
+  },
+  "sats_per_vbyte": {
+    "string": "sats/vbyte"
+  },
+  "send_output_to_small_title": {
+    "string": "Send Amount Too Small"
+  },
+  "send_output_to_small_description": {
+    "string": "Please increase your send amount to proceed."
+  },
+  "send_coin_selection_output_to_small_description": {
+    "string": "Please remove UTXO's or increase your send amount to proceed."
+  },
+  "send_fee_error_min": {
+    "string": "Unable to decrease the fee any further."
+  },
+  "send_fee_custom": {
+    "string": "Set Custom Fee"
+  },
+  "send_fee_total": {
+    "string": "₿ {feeSats} for this transaction"
+  },
+  "send_fee_total_fiat": {
+    "string": "₿ {feeSats} for this transaction ({fiatSymbol}{fiatFormatted})"
+  },
+  "note": {
+    "string": "Note"
+  },
+  "tags": {
+    "string": "Tags"
+  },
+  "tags_add": {
+    "string": "Add Tag"
+  },
+  "tags_add_button": {
+    "string": "Add"
+  },
+  "tags_add_error_header": {
+    "string": "Adding Tag Failed"
+  },
+  "tags_add_error_description": {
+    "string": "Bitkit was unable to find the transaction data."
+  },
+  "tags_new": {
+    "string": "New tag"
+  },
+  "tags_new_enter": {
+    "string": "Enter a new tag"
+  },
+  "tags_previously": {
+    "string": "Previously used tags"
+  },
+  "tags_filter": {
+    "string": "Filter activity using tags"
+  },
+  "tags_filter_title": {
+    "string": "Select Tag"
+  },
+  "tags_no": {
+    "string": "No tags available yet"
+  },
+  "toast_payment_success_title": {
+    "string": "Payment Sent"
+  },
+  "toast_payment_success_description": {
+    "string": "Your instant payment was sent successfully."
+  },
+  "toast_payment_failed_title": {
+    "string": "Payment Failed"
+  },
+  "toast_payment_failed_description": {
+    "string": "Your instant payment failed. Please try again."
+  },
+  "selection_title": {
+    "string": "Coin Selection"
+  },
+  "selection_auto": {
+    "string": "Auto"
+  },
+  "selection_total_required": {
+    "string": "Total required"
+  },
+  "selection_total_selected": {
+    "string": "Total selected"
+  },
+  "receive_bitcoin": {
+    "string": "Receive Bitcoin"
+  },
+  "receive_specify": {
+    "string": "Edit Invoice"
+  },
+  "receive_copied": {
+    "string": "Invoice copied to clipboard"
+  },
+  "receive_share_address": {
+    "string": "Share receiving address"
+  },
+  "receive_bitcoin_invoice": {
+    "string": "Bitcoin invoice"
+  },
+  "receive_lightning_invoice": {
+    "string": "Lightning invoice"
+  },
+  "receive_note_placeholder": {
+    "string": "Optional note to payer"
+  },
+  "receive_show_qr": {
+    "string": "Show QR Code"
+  },
+  "receive_text_lnfunds": {
+    "string": "Want to receive <accent>Lightning</accent> funds?"
+  },
+  "receive_spending": {
+    "string": "Receive on Spending Balance"
+  },
+  "receive_connect_initial": {
+    "string": "To set up your spending balance, a <accent>{lspFee}</accent> service provider fee will be deducted."
+  },
+  "receive_connect_additional": {
+    "string": "To receive more instant Bitcoin, Bitkit has to increase your liquidity. A <accent>{lspFee}</accent> service provider fee will be  deducted from the amount you specified."
+  },
+  "receive_cjit_error": {
+    "string": "Transaction Failed"
+  },
+  "receive_cjit_error_msg": {
+    "string": "Failed to send funds to your spending account."
+  },
+  "receive_will": {
+    "string": "You will receive"
+  },
+  "receive_ldk_init": {
+    "string": "Spending Balance Initializing..."
+  },
+  "minimum": {
+    "string": "MINIMUM"
+  },
+  "activity": {
+    "string": "Activity"
+  },
+  "activity_show_all": {
+    "string": "Show All Activity"
+  },
+  "activity_no": {
+    "string": "No activity yet"
+  },
+  "activity_no_explain": {
+    "string": "Receive some funds to get started"
+  },
+  "activity_sent": {
+    "string": "Sent"
+  },
+  "activity_received": {
+    "string": "Received"
+  },
+  "activity_pending": {
+    "string": "Pending"
+  },
+  "activity_failed": {
+    "string": "Failed"
+  },
+  "activity_transfer": {
+    "string": "Transfer"
+  },
+  "activity_transfer_spending": {
+    "string": "Spending Balance"
+  },
+  "activity_transfer_savings": {
+    "string": "Savings Balance"
+  },
+  "activity_transfer_savings_pending": {
+    "string": "From Spending (±{duration})"
+  },
+  "activity_transfer_savings_done": {
+    "string": "From Spending"
+  },
+  "activity_transfer_spending_pending": {
+    "string": "From Savings (±{duration})"
+  },
+  "activity_transfer_spending_done": {
+    "string": "From Savings"
+  },
+  "activity_transfer_to_spending": {
+    "string": "To Spending"
+  },
+  "activity_transfer_pending": {
+    "string": "Transfer (±{duration}m)"
+  },
+  "activity_confirms_in": {
+    "string": "Confirms in {feeRateDescription}"
+  },
+  "activity_confirms_in_boosted": {
+    "string": "Boosting. Confirms in {feeRateDescription}"
+  },
+  "activity_low_fee": {
+    "string": "Fee potentially too low"
+  },
+  "activity_bitcoin_sent": {
+    "string": "Sent Bitcoin"
+  },
+  "activity_bitcoin_received": {
+    "string": "Received Bitcoin"
+  },
+  "activity_error_get": {
+    "string": "Transaction Retrieval Failed"
+  },
+  "activity_error_get_description": {
+    "string": "Bitkit was not able to fetch the transaction data."
+  },
+  "activity_error_tx_not_found": {
+    "string": "The transaction was not found."
+  },
+  "activity_confirming": {
+    "string": "Confirming"
+  },
+  "activity_confirmed": {
+    "string": "Confirmed"
+  },
+  "activity_removed": {
+    "string": "Removed from Mempool"
+  },
+  "activity_removed_title": {
+    "string": "Transactions Removed From Mempool"
+  },
+  "activity_removed_msg": {
+    "string": "Please check your activity list. The {count} impacted transaction(s) will be highlighted in red."
+  },
+  "activity_boosting": {
+    "string": "Boosting"
+  },
+  "activity_fee": {
+    "string": "Fee"
+  },
+  "activity_payment": {
+    "string": "Payment"
+  },
+  "activity_status": {
+    "string": "Status"
+  },
+  "activity_date": {
+    "string": "Date"
+  },
+  "activity_time": {
+    "string": "Time"
+  },
+  "activity_contact": {
+    "string": "Contact"
+  },
+  "activity_assign": {
+    "string": "Assign"
+  },
+  "activity_detach": {
+    "string": "Detach"
+  },
+  "activity_tag": {
+    "string": "Tag"
+  },
+  "activity_boost": {
+    "string": "Boost"
+  },
+  "activity_boosted": {
+    "string": "Already Boosted"
+  },
+  "activity_explore": {
+    "string": "Explore"
+  },
+  "activity_tx_id": {
+    "string": "Transaction ID"
+  },
+  "activity_payment_hash": {
+    "string": "Payment hash"
+  },
+  "activity_address": {
+    "string": "Address"
+  },
+  "activity_input": {
+    "string": "{count, plural, one {INPUT} other {INPUTS (#)}}"
+  },
+  "activity_output": {
+    "string": "{count, plural, one {OUTPUT} other {OUTPUTS (#)}}"
+  },
+  "activity_boosted_cpfp": {
+    "string": "BOOSTED TRANSACTION {num} (CPFP)"
+  },
+  "activity_boosted_rbf": {
+    "string": "BOOSTED TRANSACTION {num} (RBF)"
+  },
+  "activity_explorer": {
+    "string": "Open Block Explorer"
+  },
+  "activity_successful": {
+    "string": "Successful"
+  },
+  "activity_invoice_note": {
+    "string": "Invoice note"
+  },
+  "activity_invoice": {
+    "string": "Invoice"
+  },
+  "activity_all": {
+    "string": "All Activity"
+  },
+  "activity_tabs": {
+    "all": {
+      "string": "All"
+    },
+    "sent": {
+      "string": "Sent"
+    },
+    "received": {
+      "string": "Received"
+    },
+    "other": {
+      "string": "Other"
+    }
+  },
+  "details_savings_title": {
+    "string": "Savings"
+  },
+  "details_spending_title": {
+    "string": "Spending"
+  },
+  "savings": {
+    "title": {
+      "string": "Savings"
+    },
+    "onboarding": {
+      "string": "<accent>Send\nbitcoin</accent>\nto your\nsavings balance"
+    }
+  },
+  "spending": {
+    "title": {
+      "string": "Spending"
+    },
+    "onboarding": {
+      "string": "<accent>Send\nbitcoin</accent>\nto your\nspending balance"
+    }
+  },
+  "details_transfer_subtitle": {
+    "string": "Incoming Transfer"
+  },
+  "tx_invalid": {
+    "string": "Transaction Invalid"
+  },
+  "boost": {
+    "string": "Boost"
+  },
+  "boost_title": {
+    "string": "Boost Transaction"
+  },
+  "boost_success_title": {
+    "string": "Boosted!"
+  },
+  "boost_success_msg": {
+    "string": "The transaction was successfully boosted."
+  },
+  "boost_error_title": {
+    "string": "Boost Failed"
+  },
+  "boost_error_msg": {
+    "string": "Bitkit was unable to boost the transaction."
+  },
+  "boost_fee_custom": {
+    "string": "Your transaction may settle faster if you include an additional network fee. Set your custom fee below."
+  },
+  "boost_fee_recomended": {
+    "string": "Your transaction may settle faster if you include an additional network fee. Here is a recommendation:"
+  },
+  "boost_recomended_button": {
+    "string": "Use Suggested Fee"
+  },
+  "boost_swipe": {
+    "string": "Swipe To Boost"
+  },
+  "payment_received": {
+    "string": "Received Bitcoin"
+  },
+  "instant_payment_received": {
+    "string": "Received Instant Bitcoin"
+  },
+  "error_create_tx": {
+    "string": "Transaction Creation Failed"
+  },
+  "error_create_tx_msg": {
+    "string": "An error occurred. Please try again {raw}"
+  },
+  "error_broadcast_tx": {
+    "string": "Transaction Broadcast Failed"
+  },
+  "error_broadcast_tx_msg": {
+    "string": "An error occurred when broadcasting your transaction. {raw}"
+  },
+  "error_broadcast_tx_connection": {
+    "string": "Please check your connection and try again.\n{message}"
+  },
+  "filter_title": {
+    "string": "Select Range"
+  },
+  "filter_clear": {
+    "string": "Clear"
+  },
+  "filter_apply": {
+    "string": "Apply"
+  },
+  "reorg_detected": {
+    "string": "Blockchain Reorg Detected"
+  },
+  "reorg_msg_begin": {
+    "string": "{count, plural, one {# of your transactions is no longer confirmed.} other {# of your transactions are no longer confirmed.}} Please wait."
+  },
+  "reorg_msg_end": {
+    "string": "Please check your activity list for affected transactions."
+  },
+  "lnurl_w_title": {
+    "string": "Withdraw Bitcoin"
+  },
+  "lnurl_w_max": {
+    "string": "AvailablE TO WITHDRAW"
+  },
+  "lnurl_w_text": {
+    "string": "The funds you withdraw will be deposited into your Bitkit spending balance."
+  },
+  "lnurl_w_button": {
+    "string": "Withdraw"
+  },
+  "lnurl_w_success_title": {
+    "string": "Success"
+  },
+  "lnurl_w_success_description": {
+    "string": "Withdraw Requested Successful"
+  },
+  "lnurl_p_title": {
+    "string": "Send Bitcoin"
+  },
+  "lnurl_p_max": {
+    "string": "Maximum amount"
+  },
+  "balance_hidden_title": {
+    "string": "Wallet Balance Hidden"
+  },
+  "balance_hidden_message": {
+    "string": "Swipe your wallet balance to reveal it again."
+  },
+  "balance_unit_switched_title": {
+    "string": "Switched to {unit}"
+  },
+  "balance_unit_switched_message": {
+    "string": "Tap your wallet balance to switch it back to {unit}."
+  },
+  "refresh_error_title": {
+    "string": "Refresh Failed"
+  },
+  "refresh_error_msg": {
+    "string": "An error occurred and couldn't refresh the wallet. Please try again."
+  },
+  "refresh_error_throttle_title": {
+    "string": "Connection Throttled"
+  },
+  "refresh_error_throttle_description": {
+    "string": "Electrum server connection is throttled. Please wait several minutes before trying again."
+  },
+  "ldk_sync_error_title": {
+    "string": "Lightning Sync Error"
+  },
+  "receive_insufficient_title": {
+    "string": "Insufficient receiving balance."
+  },
+  "receive_insufficient_text": {
+    "string": "Insufficient receiving capacity to receive this amount over Lightning."
+  }
 }

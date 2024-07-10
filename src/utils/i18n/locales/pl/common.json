@@ -1,24 +1,68 @@
 {
-  "continue": "Dalej",
-  "cancel": "Anuluj",
-  "close": "Zamknij",
-  "are_you_sure": "Na pewno?",
-  "yes_proceed": "Tak, kontynuuj",
-  "try_again": "Spróbuj ponownie",
-  "dialog_cancel": "Nie, anuluj",
-  "copy": "Kopiuj",
-  "share": "Udostępnij",
-  "search": "Szukaj",
-  "discard": "Odrzuć",
-  "save": "Zapisz",
-  "done": "Ukończono",
-  "delete": "Usuń",
-  "ok": "OK",
-  "retry": "Spróbuj ponownie",
-  "later": "Później",
-  "skip": "Pomiń",
-  "yes": "Tak",
-  "no": "Nie",
-  "back": "Wstecz",
-  "understood": "Rozumiem"
+  "continue": {
+    "string": "Dalej"
+  },
+  "cancel": {
+    "string": "Anuluj"
+  },
+  "close": {
+    "string": "Zamknij"
+  },
+  "are_you_sure": {
+    "string": "Na pewno?"
+  },
+  "yes_proceed": {
+    "string": "Tak, kontynuuj"
+  },
+  "try_again": {
+    "string": "Spróbuj ponownie"
+  },
+  "dialog_cancel": {
+    "string": "Nie, anuluj"
+  },
+  "copy": {
+    "string": "Kopiuj"
+  },
+  "share": {
+    "string": "Udostępnij"
+  },
+  "search": {
+    "string": "Szukaj"
+  },
+  "discard": {
+    "string": "Odrzuć"
+  },
+  "save": {
+    "string": "Zapisz"
+  },
+  "done": {
+    "string": "Ukończono"
+  },
+  "delete": {
+    "string": "Usuń"
+  },
+  "ok": {
+    "string": "OK"
+  },
+  "retry": {
+    "string": "Spróbuj ponownie"
+  },
+  "later": {
+    "string": "Później"
+  },
+  "skip": {
+    "string": "Pomiń"
+  },
+  "yes": {
+    "string": "Tak"
+  },
+  "no": {
+    "string": "Nie"
+  },
+  "back": {
+    "string": "Wstecz"
+  },
+  "understood": {
+    "string": "Rozumiem"
+  }
 }

@@ -1,62 +1,182 @@
 {
-  "your_name": "Uw naam",
-  "your_name_capital": "Uw Naam",
-  "contact_name": "Naam Contactpersoon",
-  "contact": "Contact",
-  "contacts": "Contacten",
-  "contact_add": "Contact toevoegen",
-  "contact_add_capital": "Contact toevoegen",
-  "contact_add_explain": "Voeg een nieuw contact toe door hun QR code te scannen of hun sleutel hieronder te plakken.",
-  "contact_add_button": "Toevoegen",
-  "contact_key_paste": "Plak een sleutel",
-  "contact_error_yourself": "U kunt uzelf niet als contact toevoegen.",
-  "contact_error_key": "Dit is geen valide sleutel. ",
-  "contact_edit_capital": "Contact Bewerken",
-  "contacts_name": "Naam van contact",
-  "contact_your_name": "Naam van uw\npublieke profiel",
-  "contact_retrieving": "Gegevens van contact\naan het ophalen...",
-  "contact_no_links": "Er zijn nog geen links toegevoegd...",
-  "contact_share": "Profielsleutel delen",
-  "contact_this": "deze contact",
-  "contact_copied": "Profielsleutel Gekopieerd Naar Klembord",
-  "contact_delete_title": "{name}wissen?",
-  "contact_delete_text": "Weet u zeker dat u {name}wilt verwijderen uit uw contactenlijst?",
-  "contact_delete_yes": "Ja, Verwijder",
-  "contact_select": "Selecteer Een Contact",
-  "contact_assign": "Contact Toewijzen",
-  "contacts_no_found": "Geen Contacten Gevonden",
-  "disabled": "Slashtags uitgeschakeld",
-  "onboarding_profile2_text": "U en uw contacten kunnen Bitkit gebruiken voor directe betalingen zonder banken, waar u wilt, wanneer u wilt.",
-  "my_profile": "Mijn profiel",
-  "profile": "Profiel",
-  "profile_save": "Profiel Opslaan",
-  "profile_pay_contacts": "Betaal Uw Contacten",
-  "profile_create": "Profiel Aanmaken",
-  "profile_public_warn": "Let op, al uw profiel informatie is openbaar beschikbaar.",
-  "profile_bio": "Korte bio. Zeg iets over uzelf. ",
-  "profile_add_link": "Link Toevoegen",
-  "profile_link_label": "Label",
-  "profile_link_label_placeholder": "Bijvoorbeeld 'Website'",
-  "profile_link_value": "Link of text",
-  "profile_link_public": "Let op: Iedere link die u toevoegd is openbaar beschikbaar.",
-  "profile_link_suggestions": "Suggesties",
-  "profile_link_suggestions_to_add": "Suggesties Om Toe Te Voegen",
-  "profile_scan_to_add": "Scan om {name}toe te voegen",
-  "profile_edit": "Profiel Bewerken",
-  "offline_enable": "Activeer betalingen met contacten*",
-  "offline_enable_explain": "*Dit vereist het delen van data om betalingen te kunnen maken",
-  "widgets": "Widgets",
-  "widget_add": "Widget Toevoegen",
-  "widget_price": "Bitcoinprijs",
-  "widget_headlines": "Bitcoin Nieuwes",
-  "widget_blocks": "Bitcoin Blokken",
-  "widget_facts": "Bitcoin Feiten",
-  "widget_qr": "Of Scan QR Code",
-  "widget_edit": "Widget Feed",
-  "widget_edit_custom": "Op maat",
-  "widget_loading_options": "Widget opties aan het laden...",
-  "widget_reset": "Resetten",
-  "widget_delete_yes": "Ja, Verwijder",
-  "widget_delete_title": "Widget Verwijderen?",
-  "widget_delete_desc": "Weet u zeker dat u '{name}' wilt wissen van uw widgetlijst?"
+  "your_name": {
+    "string": "Uw naam"
+  },
+  "your_name_capital": {
+    "string": "Uw Naam"
+  },
+  "contact_name": {
+    "string": "Naam Contactpersoon"
+  },
+  "contact": {
+    "string": "Contact"
+  },
+  "contacts": {
+    "string": "Contacten"
+  },
+  "contact_add": {
+    "string": "Contact toevoegen"
+  },
+  "contact_add_capital": {
+    "string": "Contact toevoegen"
+  },
+  "contact_add_explain": {
+    "string": "Voeg een nieuw contact toe door hun QR code te scannen of hun sleutel hieronder te plakken."
+  },
+  "contact_add_button": {
+    "string": "Toevoegen"
+  },
+  "contact_key_paste": {
+    "string": "Plak een sleutel"
+  },
+  "contact_error_yourself": {
+    "string": "U kunt uzelf niet als contact toevoegen."
+  },
+  "contact_error_key": {
+    "string": "Dit is geen valide sleutel. "
+  },
+  "contact_edit_capital": {
+    "string": "Contact Bewerken"
+  },
+  "contacts_name": {
+    "string": "Naam van contact"
+  },
+  "contact_your_name": {
+    "string": "Naam van uw\npublieke profiel"
+  },
+  "contact_retrieving": {
+    "string": "Gegevens van contact\naan het ophalen..."
+  },
+  "contact_no_links": {
+    "string": "Er zijn nog geen links toegevoegd..."
+  },
+  "contact_share": {
+    "string": "Profielsleutel delen"
+  },
+  "contact_this": {
+    "string": "deze contact"
+  },
+  "contact_copied": {
+    "string": "Profielsleutel Gekopieerd Naar Klembord"
+  },
+  "contact_delete_title": {
+    "string": "{name}wissen?"
+  },
+  "contact_delete_text": {
+    "string": "Weet u zeker dat u {name}wilt verwijderen uit uw contactenlijst?"
+  },
+  "contact_delete_yes": {
+    "string": "Ja, Verwijder"
+  },
+  "contact_select": {
+    "string": "Selecteer Een Contact"
+  },
+  "contact_assign": {
+    "string": "Contact Toewijzen"
+  },
+  "contacts_no_found": {
+    "string": "Geen Contacten Gevonden"
+  },
+  "disabled": {
+    "string": "Slashtags uitgeschakeld"
+  },
+  "onboarding_profile2_text": {
+    "string": "U en uw contacten kunnen Bitkit gebruiken voor directe betalingen zonder banken, waar u wilt, wanneer u wilt."
+  },
+  "my_profile": {
+    "string": "Mijn profiel"
+  },
+  "profile": {
+    "string": "Profiel"
+  },
+  "profile_save": {
+    "string": "Profiel Opslaan"
+  },
+  "profile_pay_contacts": {
+    "string": "Betaal Uw Contacten"
+  },
+  "profile_create": {
+    "string": "Profiel Aanmaken"
+  },
+  "profile_public_warn": {
+    "string": "Let op, al uw profiel informatie is openbaar beschikbaar."
+  },
+  "profile_bio": {
+    "string": "Korte bio. Zeg iets over uzelf. "
+  },
+  "profile_add_link": {
+    "string": "Link Toevoegen"
+  },
+  "profile_link_label": {
+    "string": "Label"
+  },
+  "profile_link_label_placeholder": {
+    "string": "Bijvoorbeeld 'Website'"
+  },
+  "profile_link_value": {
+    "string": "Link of text"
+  },
+  "profile_link_public": {
+    "string": "Let op: Iedere link die u toevoegd is openbaar beschikbaar."
+  },
+  "profile_link_suggestions": {
+    "string": "Suggesties"
+  },
+  "profile_link_suggestions_to_add": {
+    "string": "Suggesties Om Toe Te Voegen"
+  },
+  "profile_scan_to_add": {
+    "string": "Scan om {name}toe te voegen"
+  },
+  "profile_edit": {
+    "string": "Profiel Bewerken"
+  },
+  "offline_enable": {
+    "string": "Activeer betalingen met contacten*"
+  },
+  "offline_enable_explain": {
+    "string": "*Dit vereist het delen van data om betalingen te kunnen maken"
+  },
+  "widgets": {
+    "string": "Widgets"
+  },
+  "widget_add": {
+    "string": "Widget Toevoegen"
+  },
+  "widget_price": {
+    "string": "Bitcoinprijs"
+  },
+  "widget_headlines": {
+    "string": "Bitcoin Nieuwes"
+  },
+  "widget_blocks": {
+    "string": "Bitcoin Blokken"
+  },
+  "widget_facts": {
+    "string": "Bitcoin Feiten"
+  },
+  "widget_qr": {
+    "string": "Of Scan QR Code"
+  },
+  "widget_edit": {
+    "string": "Widget Feed"
+  },
+  "widget_edit_custom": {
+    "string": "Op maat"
+  },
+  "widget_loading_options": {
+    "string": "Widget opties aan het laden..."
+  },
+  "widget_reset": {
+    "string": "Resetten"
+  },
+  "widget_delete_yes": {
+    "string": "Ja, Verwijder"
+  },
+  "widget_delete_title": {
+    "string": "Widget Verwijderen?"
+  },
+  "widget_delete_desc": {
+    "string": "Weet u zeker dat u '{name}' wilt wissen van uw widgetlijst?"
+  }
 }

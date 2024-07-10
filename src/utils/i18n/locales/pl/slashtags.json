@@ -1,3 +1,5 @@
 {
-  "profile_link_suggestions": "Sugestie"
+  "profile_link_suggestions": {
+    "string": "Sugestie"
+  }
 }

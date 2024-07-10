@@ -1,63 +1,128 @@
 {
-	"backupSeedPhrase": {
-		"title": "Back up",
-		"description": "Store your bitcoin"
-	},
-	"discount": {
-		"title": "Discount",
-		"description": "Spending Balance"
-	},
-	"fastpay": {
-		"title": "Fastpay",
-		"description": "Scan and pay"
-	},
-	"invite": {
-		"title": "Invite",
-		"description": "Share Bitkit"
-	},
-	"lightning": {
-		"title": "Spend",
-		"description": "Instant payments"
-	},
-	"lightningSettingUp": {
-		"title": "Transfer",
-		"description": "In progress..."
-	},
-	"lightningConnecting": {
-		"title": "Connecting",
-		"description": "Ready in ±10m"
-	},
-	"lightningReady": {
-		"title": "Ready",
-		"description": "Connected!"
-	},
-	"transferPending": {
-		"title": "Transfer",
-		"description": "Ready in ±{duration}"
-	},
-	"transferClosingChannel": {
-		"title": "Initiating...",
-		"description": "Keep app open"
-	},
-	"pin": {
-		"title": "Secure",
-		"description": "Set up a PIN code"
-	},
-	"slashtagsProfile": {
-		"title": "Profile",
-		"description": "Add your details"
-	},
-	"support": {
-		"title": "Support",
-		"description": "Get assistance"
-	},
-	"buyBitcoin": {
-		"title": "Buy",
-		"description": "Buy some bitcoin"
-	},
-	"btFailed": {
-		"title": "Failed",
-		"description": "Please try again"
-	},
-	"suggestions": "Suggestions"
+  "backupSeedPhrase": {
+    "title": {
+      "string": "Back up",
+      "context": "Context",
+      "developer_comment": "Developer comment",
+      "character_limit": 10
+    },
+    "description": {
+      "string": "Store your bitcoin"
+    }
+  },
+  "discount": {
+    "title": {
+      "string": "Discount"
+    },
+    "description": {
+      "string": "Spending Balance"
+    }
+  },
+  "fastpay": {
+    "title": {
+      "string": "Fastpay"
+    },
+    "description": {
+      "string": "Scan and pay"
+    }
+  },
+  "invite": {
+    "title": {
+      "string": "Invite"
+    },
+    "description": {
+      "string": "Share Bitkit"
+    }
+  },
+  "lightning": {
+    "title": {
+      "string": "Spend"
+    },
+    "description": {
+      "string": "Instant payments"
+    }
+  },
+  "lightningSettingUp": {
+    "title": {
+      "string": "Transfer"
+    },
+    "description": {
+      "string": "In progress..."
+    }
+  },
+  "lightningConnecting": {
+    "title": {
+      "string": "Connecting"
+    },
+    "description": {
+      "string": "Ready in ±10m"
+    }
+  },
+  "lightningReady": {
+    "title": {
+      "string": "Ready"
+    },
+    "description": {
+      "string": "Connected!"
+    }
+  },
+  "transferPending": {
+    "title": {
+      "string": "Transfer"
+    },
+    "description": {
+      "string": "Ready in ±{duration}"
+    }
+  },
+  "transferClosingChannel": {
+    "title": {
+      "string": "Initiating..."
+    },
+    "description": {
+      "string": "Keep app open"
+    }
+  },
+  "pin": {
+    "title": {
+      "string": "Secure"
+    },
+    "description": {
+      "string": "Set up a PIN code"
+    }
+  },
+  "slashtagsProfile": {
+    "title": {
+      "string": "Profile"
+    },
+    "description": {
+      "string": "Add your details"
+    }
+  },
+  "support": {
+    "title": {
+      "string": "Support"
+    },
+    "description": {
+      "string": "Get assistance"
+    }
+  },
+  "buyBitcoin": {
+    "title": {
+      "string": "Buy"
+    },
+    "description": {
+      "string": "Buy some bitcoin"
+    }
+  },
+  "btFailed": {
+    "title": {
+      "string": "Failed"
+    },
+    "description": {
+      "string": "Please try again"
+    }
+  },
+  "suggestions": {
+    "string": "Suggestions"
+  }
 }

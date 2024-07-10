@@ -1,31 +1,85 @@
 {
   "high_balance": {
-    "nav_title": "Wysokie saldo",
-    "continue": "Rozumiem",
-    "cancel": "Dowiedz się więcej"
+    "nav_title": {
+      "string": "Wysokie saldo"
+    },
+    "continue": {
+      "string": "Rozumiem"
+    },
+    "cancel": {
+      "string": "Dowiedz się więcej"
+    }
   },
-  "update_critical_nav_title": "Aktualizacja krytyczna",
-  "update_critical_button": "Aktualizuj Bitkit",
-  "camera_ask_title": "Zezwolenie na korzystanie z kamery",
-  "camera_ask_msg": "Bitkit potrzebuje pozwolenia na używanie Twojej kamery",
-  "clipboard_redirect_title": "Wykryto dane w schowku",
-  "clipboard_redirect_msg": "Czy chcesz zostać przekierowany do odpowiedniego ekranu?",
-  "swipe": "Przesuń, aby potwierdzić",
-  "scan_err_decoding": "Błąd dekodowania",
-  "scan_err_interpret_title": "Nie można zinterpretować dostarczonych danych",
-  "scan_err_interpret_msg": "Bitkit nie jest w stanie zinterpretować dostarczonych danych.",
-  "lnurl_pay_error_no_capacity": "Niewystarczająca pojemność wychodząca/wysyłająca, aby ukończyć żądanie lnurl-pay.",
-  "lnurl_channel_message": "Czy chcesz otworzyć połączenie Lightning z tym dostawcą usług Lightning?",
-  "lnurl_channel_lsp": "Dostawca usługi Ligthning",
-  "lnurl_channel_node": "ID węzła",
-  "lnurl_channel_host": "Host",
-  "lnurl_channel_port": "Port",
-  "lnurl_channel_success_msg_peer": "Pomyślnie zażądano kanału z: {peer}",
-  "lnurl_channel_success_msg_no_peer": "Pomyślnie zażądano kanału.",
-  "phone_settings": "Otwórz ustawienia telefonu",
-  "bt_channel_purchase_cost_error": "Potrzebujesz {delta}aby ukończyć transakcję.",
-  "earlier": "WCZEŚNIEJ",
-  "update_nav_title": "Aktualizacja dostępna",
-  "update_text": "Zaktualizuj proszę aplikację Bitkit do najnowszej wersji aby cieszyć się nowymi funkcjami i poprawkami. ",
-  "update_button": "Aktualizacja"
+  "update_critical_nav_title": {
+    "string": "Aktualizacja krytyczna"
+  },
+  "update_critical_button": {
+    "string": "Aktualizuj Bitkit"
+  },
+  "camera_ask_title": {
+    "string": "Zezwolenie na korzystanie z kamery"
+  },
+  "camera_ask_msg": {
+    "string": "Bitkit potrzebuje pozwolenia na używanie Twojej kamery"
+  },
+  "clipboard_redirect_title": {
+    "string": "Wykryto dane w schowku"
+  },
+  "clipboard_redirect_msg": {
+    "string": "Czy chcesz zostać przekierowany do odpowiedniego ekranu?"
+  },
+  "swipe": {
+    "string": "Przesuń, aby potwierdzić"
+  },
+  "scan_err_decoding": {
+    "string": "Błąd dekodowania"
+  },
+  "scan_err_interpret_title": {
+    "string": "Nie można zinterpretować dostarczonych danych"
+  },
+  "scan_err_interpret_msg": {
+    "string": "Bitkit nie jest w stanie zinterpretować dostarczonych danych."
+  },
+  "lnurl_pay_error_no_capacity": {
+    "string": "Niewystarczająca pojemność wychodząca/wysyłająca, aby ukończyć żądanie lnurl-pay."
+  },
+  "lnurl_channel_message": {
+    "string": "Czy chcesz otworzyć połączenie Lightning z tym dostawcą usług Lightning?"
+  },
+  "lnurl_channel_lsp": {
+    "string": "Dostawca usługi Ligthning"
+  },
+  "lnurl_channel_node": {
+    "string": "ID węzła"
+  },
+  "lnurl_channel_host": {
+    "string": "Host"
+  },
+  "lnurl_channel_port": {
+    "string": "Port"
+  },
+  "lnurl_channel_success_msg_peer": {
+    "string": "Pomyślnie zażądano kanału z: {peer}"
+  },
+  "lnurl_channel_success_msg_no_peer": {
+    "string": "Pomyślnie zażądano kanału."
+  },
+  "phone_settings": {
+    "string": "Otwórz ustawienia telefonu"
+  },
+  "bt_channel_purchase_cost_error": {
+    "string": "Potrzebujesz {delta}aby ukończyć transakcję."
+  },
+  "earlier": {
+    "string": "WCZEŚNIEJ"
+  },
+  "update_nav_title": {
+    "string": "Aktualizacja dostępna"
+  },
+  "update_text": {
+    "string": "Zaktualizuj proszę aplikację Bitkit do najnowszej wersji aby cieszyć się nowymi funkcjami i poprawkami. "
+  },
+  "update_button": {
+    "string": "Aktualizacja"
+  }
 }

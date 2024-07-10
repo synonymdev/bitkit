@@ -1,5 +1,7 @@
 {
   "backup": {
-    "category_contacts": "جهات الاتصال"
+    "category_contacts": {
+      "string": "جهات الاتصال"
+    }
   }
 }

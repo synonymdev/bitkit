@@ -1,22 +1,58 @@
 {
-  "beta": "BETA",
-  "beta_warn": "No guarde todo su dinero en Bitkit.",
-  "qr_scan": "Escanear código QR",
-  "qr_error_network_header": "Red incorrecta",
-  "qr_paste": "Pegar código QR",
-  "connection_restored_message": "Reconectado con éxito a Electrum.",
-  "connection_back_msg": "Reconectado con éxito a Internet.",
-  "high_balance": {
-    "continue": "Entendido"
+  "beta": {
+    "string": "BETA"
   },
-  "update_critical_nav_title": "Actualización Crítica",
-  "update_critical_button": "Actualizar Bitkit",
-  "camera_ask_title": "Permiso para utilizar la cámara",
-  "camera_ask_msg": "Bitkit necesita permiso para utilizar su cámara",
-  "swipe": "Deslizar para confirmar",
-  "scan_err_decoding": "Error de descodificación",
-  "lnurl_channel_host": "Anfitrión",
-  "lnurl_channel_port": "Puerta",
-  "lnurl_channel_success_msg_no_peer": "Canal solicitado con éxito.",
-  "lnurl_withdr_success_title": "Retirada solicitada"
+  "beta_warn": {
+    "string": "No guarde todo su dinero en Bitkit."
+  },
+  "qr_scan": {
+    "string": "Escanear código QR"
+  },
+  "qr_error_network_header": {
+    "string": "Red incorrecta"
+  },
+  "qr_paste": {
+    "string": "Pegar código QR"
+  },
+  "connection_restored_message": {
+    "string": "Reconectado con éxito a Electrum."
+  },
+  "connection_back_msg": {
+    "string": "Reconectado con éxito a Internet."
+  },
+  "high_balance": {
+    "continue": {
+      "string": "Entendido"
+    }
+  },
+  "update_critical_nav_title": {
+    "string": "Actualización Crítica"
+  },
+  "update_critical_button": {
+    "string": "Actualizar Bitkit"
+  },
+  "camera_ask_title": {
+    "string": "Permiso para utilizar la cámara"
+  },
+  "camera_ask_msg": {
+    "string": "Bitkit necesita permiso para utilizar su cámara"
+  },
+  "swipe": {
+    "string": "Deslizar para confirmar"
+  },
+  "scan_err_decoding": {
+    "string": "Error de descodificación"
+  },
+  "lnurl_channel_host": {
+    "string": "Anfitrión"
+  },
+  "lnurl_channel_port": {
+    "string": "Puerta"
+  },
+  "lnurl_channel_success_msg_no_peer": {
+    "string": "Canal solicitado con éxito."
+  },
+  "lnurl_withdr_success_title": {
+    "string": "Retirada solicitada"
+  }
 }

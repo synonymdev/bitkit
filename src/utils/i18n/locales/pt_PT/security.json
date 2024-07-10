@@ -1,3 +1,5 @@
 {
-  "cp_text": "Você pode alterar seu código PIN para uma nova\ncombinação de 4 dígitos. Primeiro, digite seu código PIN atual."
+  "cp_text": {
+    "string": "Você pode alterar seu código PIN para uma nova\ncombinação de 4 dígitos. Primeiro, digite seu código PIN atual."
+  }
 }

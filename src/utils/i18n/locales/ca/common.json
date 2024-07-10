@@ -1,31 +1,89 @@
 {
-  "advanced": "Avançat",
-  "continue": "Continua",
-  "cancel": "Cancel·lar",
-  "close": "Tancar",
-  "are_you_sure": "Estàs segur?",
-  "yes_proceed": "Sí, continua.",
-  "try_again": "Torna a intentar",
-  "dialog_cancel": "No, cancela",
-  "sat_vbyte": "₿ / vbyte",
-  "sat_vbyte_compact": "₿/vbyte",
-  "edit": "Editar",
-  "copy": "Còpia",
-  "share": "Compartir",
-  "search": "Busca",
-  "discard": "Descartar",
-  "save": "Guardar",
-  "done": "Fet",
-  "delete": "Suprimir",
-  "ok": "OK",
-  "awesome": "Impressionant!",
-  "retry": "Reintentar",
-  "later": "Després",
-  "skip": "Salta",
-  "copied": "Copiat al porta-retalls",
-  "yes": "Sí",
-  "no": "No",
-  "back": "Enrere",
-  "understood": "Entès.",
-  "connect": "Conecta"
+  "advanced": {
+    "string": "Avançat"
+  },
+  "continue": {
+    "string": "Continua"
+  },
+  "cancel": {
+    "string": "Cancel·lar"
+  },
+  "close": {
+    "string": "Tancar"
+  },
+  "are_you_sure": {
+    "string": "Estàs segur?"
+  },
+  "yes_proceed": {
+    "string": "Sí, continua."
+  },
+  "try_again": {
+    "string": "Torna a intentar"
+  },
+  "dialog_cancel": {
+    "string": "No, cancela"
+  },
+  "sat_vbyte": {
+    "string": "₿ / vbyte"
+  },
+  "sat_vbyte_compact": {
+    "string": "₿/vbyte"
+  },
+  "edit": {
+    "string": "Editar"
+  },
+  "copy": {
+    "string": "Còpia"
+  },
+  "share": {
+    "string": "Compartir"
+  },
+  "search": {
+    "string": "Busca"
+  },
+  "discard": {
+    "string": "Descartar"
+  },
+  "save": {
+    "string": "Guardar"
+  },
+  "done": {
+    "string": "Fet"
+  },
+  "delete": {
+    "string": "Suprimir"
+  },
+  "ok": {
+    "string": "OK"
+  },
+  "awesome": {
+    "string": "Impressionant!"
+  },
+  "retry": {
+    "string": "Reintentar"
+  },
+  "later": {
+    "string": "Després"
+  },
+  "skip": {
+    "string": "Salta"
+  },
+  "copied": {
+    "string": "Copiat al porta-retalls"
+  },
+  "yes": {
+    "string": "Sí"
+  },
+  "no": {
+    "string": "No"
+  },
+  "back": {
+    "string": "Enrere"
+  },
+  "understood": {
+    "string": "Entès."
+  },
+  "connect": {
+    "string": "Conecta"
+  }
 }

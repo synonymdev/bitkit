@@ -1,31 +1,89 @@
 {
-	"advanced": "Advanced",
-	"continue": "Continue",
-	"cancel": "Cancel",
-	"close": "Close",
-	"are_you_sure": "Are You Sure?",
-	"yes_proceed": "Yes, Proceed",
-	"try_again": "Try Again",
-	"dialog_cancel": "No, Cancel",
-	"sat_vbyte": "₿ / vbyte",
-	"sat_vbyte_compact": "₿/vbyte",
-	"edit": "Edit",
-	"copy": "Copy",
-	"share": "Share",
-	"search": "Search",
-	"discard": "Discard",
-	"save": "Save",
-	"done": "Done",
-	"delete": "Delete",
-	"ok": "OK",
-	"awesome": "Awesome!",
-	"retry": "Retry",
-	"later": "Later",
-	"skip": "Skip",
-	"copied": "Copied To Clipboard",
-	"yes": "Yes",
-	"no": "No",
-	"back": "Back",
-	"understood": "Understood",
-	"connect": "Connect"
+  "advanced": {
+    "string": "Advanced"
+  },
+  "continue": {
+    "string": "Continue"
+  },
+  "cancel": {
+    "string": "Cancel"
+  },
+  "close": {
+    "string": "Close"
+  },
+  "are_you_sure": {
+    "string": "Are You Sure?"
+  },
+  "yes_proceed": {
+    "string": "Yes, Proceed"
+  },
+  "try_again": {
+    "string": "Try Again"
+  },
+  "dialog_cancel": {
+    "string": "No, Cancel"
+  },
+  "sat_vbyte": {
+    "string": "₿ / vbyte"
+  },
+  "sat_vbyte_compact": {
+    "string": "₿/vbyte"
+  },
+  "edit": {
+    "string": "Edit"
+  },
+  "copy": {
+    "string": "Copy"
+  },
+  "share": {
+    "string": "Share"
+  },
+  "search": {
+    "string": "Search"
+  },
+  "discard": {
+    "string": "Discard"
+  },
+  "save": {
+    "string": "Save"
+  },
+  "done": {
+    "string": "Done"
+  },
+  "delete": {
+    "string": "Delete"
+  },
+  "ok": {
+    "string": "OK"
+  },
+  "awesome": {
+    "string": "Awesome!"
+  },
+  "retry": {
+    "string": "Retry"
+  },
+  "later": {
+    "string": "Later"
+  },
+  "skip": {
+    "string": "Skip"
+  },
+  "copied": {
+    "string": "Copied To Clipboard"
+  },
+  "yes": {
+    "string": "Yes"
+  },
+  "no": {
+    "string": "No"
+  },
+  "back": {
+    "string": "Back"
+  },
+  "understood": {
+    "string": "Understood"
+  },
+  "connect": {
+    "string": "Connect"
+  }
 }

@@ -1,259 +1,681 @@
 {
-  "settings": "Impostazioni",
-  "dev_enabled_title": "Opzioni Sviluppatore Attivate",
-  "dev_enabled_message": "Le opzioni sviluppatore sono ora abilitate in tutta l'app.",
-  "dev_disabled_title": "Opzioni Sviluppatore Disattivate",
-  "dev_disabled_message": "Le opzioni sviluppatore sono ora disabilitate in tutta l'app.",
-  "general_title": "Generale",
-  "security_title": "Sicurezza e Privacy",
-  "backup_title": "Backup o Ripristino",
-  "advanced_title": "Avanzate",
-  "about_title": "Informazioni",
-  "support_title": "Supporto",
-  "about": {
-    "title": "Informazioni su Bitkit",
-    "text": "Grazie per essere un Bitcoiner responsabile.\nCambia il tuo portafoglio, cambia il mondo.\n\nBitkit ti consegna le chiavi del tuo denaro, del tuo profilo, dei tuoi contatti e dei tuoi account web.\n\nBitkit è stato realizzato da Synonym Software Ltd.",
-    "legal": "Termini di Utilizzo",
-    "share": "Condividi",
-    "version": "Versione"
+  "settings": {
+    "string": "Impostazioni"
   },
-  "dev_title": "Impostazioni Sviluppatore",
+  "dev_enabled_title": {
+    "string": "Opzioni Sviluppatore Attivate"
+  },
+  "dev_enabled_message": {
+    "string": "Le opzioni sviluppatore sono ora abilitate in tutta l'app."
+  },
+  "dev_disabled_title": {
+    "string": "Opzioni Sviluppatore Disattivate"
+  },
+  "dev_disabled_message": {
+    "string": "Le opzioni sviluppatore sono ora disabilitate in tutta l'app."
+  },
+  "general_title": {
+    "string": "Generale"
+  },
+  "security_title": {
+    "string": "Sicurezza e Privacy"
+  },
+  "backup_title": {
+    "string": "Backup o Ripristino"
+  },
+  "advanced_title": {
+    "string": "Avanzate"
+  },
+  "about_title": {
+    "string": "Informazioni"
+  },
+  "support_title": {
+    "string": "Supporto"
+  },
+  "about": {
+    "title": {
+      "string": "Informazioni su Bitkit"
+    },
+    "text": {
+      "string": "Grazie per essere un Bitcoiner responsabile.\nCambia il tuo portafoglio, cambia il mondo.\n\nBitkit ti consegna le chiavi del tuo denaro, del tuo profilo, dei tuoi contatti e dei tuoi account web.\n\nBitkit è stato realizzato da Synonym Software Ltd."
+    },
+    "legal": {
+      "string": "Termini di Utilizzo"
+    },
+    "share": {
+      "string": "Condividi"
+    },
+    "version": {
+      "string": "Versione"
+    }
+  },
+  "dev_title": {
+    "string": "Impostazioni Sviluppatore"
+  },
   "general": {
-    "currency_local": "Valuta locale",
-    "currency_local_title": "Valuta Locale",
-    "currency_footer": "Prezzi forniti da Bitfinex & CoinGecko.",
-    "currency_most_used": "Più Utilizzati",
-    "currency_other": "Altre Valute",
-    "unit": "Unità predefinita",
-    "unit_title": "Unità predefinita",
-    "unit_display": "Visualizza gli importi in",
-    "unit_bitcoin": "Bitcoin",
-    "unit_note": "Suggerimento: alterna rapidamente tra Bitcoin e {currency} toccando il saldo del tuo portafoglio.",
-    "denomination_label": "Denominazione Bitcoin",
-    "denomination_modern": "Moderno (₿ 10 000)",
-    "denomination_classic": "Classico (₿ 0.00010000)",
-    "speed": "Velocità transazione",
-    "speed_title": "Velocità Transazione",
-    "speed_default": "Velocità Transazione di Default",
-    "speed_fee_custom": "Imposta commissione personalizzata",
-    "speed_fee_total": "₿ {feeSats} per la transazione media",
-    "speed_fee_total_fiat": "₿ {feeSats} per la transazione media ({fiatSymbol}{fiatFormatted})",
-    "tags": "Tag",
-    "tags_previously": "Tag usati in precedenza"
+    "currency_local": {
+      "string": "Valuta locale"
+    },
+    "currency_local_title": {
+      "string": "Valuta Locale"
+    },
+    "currency_footer": {
+      "string": "Prezzi forniti da Bitfinex & CoinGecko."
+    },
+    "currency_most_used": {
+      "string": "Più Utilizzati"
+    },
+    "currency_other": {
+      "string": "Altre Valute"
+    },
+    "unit": {
+      "string": "Unità predefinita"
+    },
+    "unit_title": {
+      "string": "Unità predefinita"
+    },
+    "unit_display": {
+      "string": "Visualizza gli importi in"
+    },
+    "unit_bitcoin": {
+      "string": "Bitcoin"
+    },
+    "unit_note": {
+      "string": "Suggerimento: alterna rapidamente tra Bitcoin e {currency} toccando il saldo del tuo portafoglio."
+    },
+    "denomination_label": {
+      "string": "Denominazione Bitcoin"
+    },
+    "denomination_modern": {
+      "string": "Moderno (₿ 10 000)"
+    },
+    "denomination_classic": {
+      "string": "Classico (₿ 0.00010000)"
+    },
+    "speed": {
+      "string": "Velocità transazione"
+    },
+    "speed_title": {
+      "string": "Velocità Transazione"
+    },
+    "speed_default": {
+      "string": "Velocità Transazione di Default"
+    },
+    "speed_fee_custom": {
+      "string": "Imposta commissione personalizzata"
+    },
+    "speed_fee_total": {
+      "string": "₿ {feeSats} per la transazione media"
+    },
+    "speed_fee_total_fiat": {
+      "string": "₿ {feeSats} per la transazione media ({fiatSymbol}{fiatFormatted})"
+    },
+    "tags": {
+      "string": "Tag"
+    },
+    "tags_previously": {
+      "string": "Tag usati in precedenza"
+    }
   },
   "widgets": {
-    "nav_title": "Widget",
-    "showWidgets": "Widget",
-    "showWidgetTitles": "Mostra titoli dei widget"
+    "nav_title": {
+      "string": "Widget"
+    },
+    "showWidgets": {
+      "string": "Widget"
+    },
+    "showWidgetTitles": {
+      "string": "Mostra titoli dei widget"
+    }
   },
   "security": {
-    "title": "Sicurezza e privacy",
-    "swipe_balance_to_hide": "Scorri per nascondere il saldo",
-    "hide_balance_on_open": "Nascondi il saldo all'apertura",
-    "clipboard": "Leggi gli appunti per facilitare l'uso",
-    "warn_100": "Avvisa quando invii più di $100",
-    "pin": "Codice PIN",
-    "pin_change": "Cambia codice PIN",
-    "pin_launch": "Richiedi PIN all'avvio",
-    "pin_idle": "Richiedi il PIN quando è inattivo",
-    "pin_payments": "Richiedi PIN per i pagamenti",
-    "pin_enabled": "Attivato",
-    "pin_disabled": "Disattivato",
-    "use_bio": "Usa {biometryTypeName} invece",
-    "footer": "Quanto attivato, puoi usare {biometryTypeName} invece del tuo codice PIN per sbloccare il tuo wallet o inviare pagamenti."
+    "title": {
+      "string": "Sicurezza e privacy"
+    },
+    "swipe_balance_to_hide": {
+      "string": "Scorri per nascondere il saldo"
+    },
+    "hide_balance_on_open": {
+      "string": "Nascondi il saldo all'apertura"
+    },
+    "clipboard": {
+      "string": "Leggi gli appunti per facilitare l'uso"
+    },
+    "warn_100": {
+      "string": "Avvisa quando invii più di $100"
+    },
+    "pin": {
+      "string": "Codice PIN"
+    },
+    "pin_change": {
+      "string": "Cambia codice PIN"
+    },
+    "pin_launch": {
+      "string": "Richiedi PIN all'avvio"
+    },
+    "pin_idle": {
+      "string": "Richiedi il PIN quando è inattivo"
+    },
+    "pin_payments": {
+      "string": "Richiedi PIN per i pagamenti"
+    },
+    "pin_enabled": {
+      "string": "Attivato"
+    },
+    "pin_disabled": {
+      "string": "Disattivato"
+    },
+    "use_bio": {
+      "string": "Usa {biometryTypeName} invece"
+    },
+    "footer": {
+      "string": "Quanto attivato, puoi usare {biometryTypeName} invece del tuo codice PIN per sbloccare il tuo wallet o inviare pagamenti."
+    }
   },
   "backup": {
-    "title": "Backup o ripristino",
-    "wallet": "Esegui il backup del tuo wallet",
-    "export": "Esportazione dei dati del wallet sul telefono",
-    "reset": "Resettare e ripristinare il wallet",
-    "failed_title": "Fallimento del backup dei dati",
-    "failed_message": "Bitkit non è riuscito a eseguire il backup dei dati del portafoglio. Riprova tra {interval, plural, one {# minute} o {# minutes}}.",
-    "latest": "ultimi backup dei dati",
-    "status_failed": "Backup fallito: {time}",
-    "status_success": "Ultimo backup: {time}",
-    "category_connections": "Connessioni",
-    "category_connection_receipts": "Ricevute di Connessione",
-    "category_transaction_log": "Log delle transazioni",
-    "category_settings": "Impostazioni",
-    "category_widgets": "Widget",
-    "category_tags": "Tag",
-    "category_profile": "Profilo",
-    "category_contacts": "Contatti"
+    "title": {
+      "string": "Backup o ripristino"
+    },
+    "wallet": {
+      "string": "Esegui il backup del tuo wallet"
+    },
+    "export": {
+      "string": "Esportazione dei dati del wallet sul telefono"
+    },
+    "reset": {
+      "string": "Resettare e ripristinare il wallet"
+    },
+    "failed_title": {
+      "string": "Fallimento del backup dei dati"
+    },
+    "failed_message": {
+      "string": "Bitkit non è riuscito a eseguire il backup dei dati del portafoglio. Riprova tra {interval, plural, one {# minute} o {# minutes}}."
+    },
+    "latest": {
+      "string": "ultimi backup dei dati"
+    },
+    "status_failed": {
+      "string": "Backup fallito: {time}"
+    },
+    "status_success": {
+      "string": "Ultimo backup: {time}"
+    },
+    "category_connections": {
+      "string": "Connessioni"
+    },
+    "category_connection_receipts": {
+      "string": "Ricevute di Connessione"
+    },
+    "category_transaction_log": {
+      "string": "Log delle transazioni"
+    },
+    "category_settings": {
+      "string": "Impostazioni"
+    },
+    "category_widgets": {
+      "string": "Widget"
+    },
+    "category_tags": {
+      "string": "Tag"
+    },
+    "category_profile": {
+      "string": "Profilo"
+    },
+    "category_contacts": {
+      "string": "Contatti"
+    }
   },
   "support": {
-    "title": "Supporto",
-    "text": "Ho bisogno di aiuto? Segnala il tuo problema da Bitkit, visita il centro assistenza, controlla lo stato o contattaci sui nostri canali social.",
-    "report": "Segnala un problema",
-    "help": "Centro assistenza",
-    "status": "Stato dell'app",
-    "report_text": "Descrivi il problema che stai riscontrando o fai una domanda generale.",
-    "label_address": "Indirizzo e-mail",
-    "label_message": "Problema o domanda",
-    "placeholder_address": "satoshi@satoshi.com",
-    "placeholder_message": "Descrivi il problema o fai una domanda",
-    "text_button": "Invia",
-    "title_success": "Inviato con successo",
-    "text_success": "Grazie per averci contattato! Cercheremo di risponderti il prima possibile.",
-    "text_success_button": "OK",
-    "title_unsuccess": "Impossibile inviare",
-    "text_unsuccess": "Qualcosa è andato storto durante il tentativo di inviare il problema o la domanda. Per favore riprova.",
-    "text_unsuccess_button": "Riprova"
+    "title": {
+      "string": "Supporto"
+    },
+    "text": {
+      "string": "Ho bisogno di aiuto? Segnala il tuo problema da Bitkit, visita il centro assistenza, controlla lo stato o contattaci sui nostri canali social."
+    },
+    "report": {
+      "string": "Segnala un problema"
+    },
+    "help": {
+      "string": "Centro assistenza"
+    },
+    "status": {
+      "string": "Stato dell'app"
+    },
+    "report_text": {
+      "string": "Descrivi il problema che stai riscontrando o fai una domanda generale."
+    },
+    "label_address": {
+      "string": "Indirizzo e-mail"
+    },
+    "label_message": {
+      "string": "Problema o domanda"
+    },
+    "placeholder_address": {
+      "string": "satoshi@satoshi.com"
+    },
+    "placeholder_message": {
+      "string": "Descrivi il problema o fai una domanda"
+    },
+    "text_button": {
+      "string": "Invia"
+    },
+    "title_success": {
+      "string": "Inviato con successo"
+    },
+    "text_success": {
+      "string": "Grazie per averci contattato! Cercheremo di risponderti il prima possibile."
+    },
+    "text_success_button": {
+      "string": "OK"
+    },
+    "title_unsuccess": {
+      "string": "Impossibile inviare"
+    },
+    "text_unsuccess": {
+      "string": "Qualcosa è andato storto durante il tentativo di inviare il problema o la domanda. Per favore riprova."
+    },
+    "text_unsuccess_button": {
+      "string": "Riprova"
+    }
   },
   "status": {
-    "title": "Stato dell'app",
+    "title": {
+      "string": "Stato dell'app"
+    },
     "internet": {
-      "title": "Internet",
-      "ready": "Connesso",
-      "pending": "Riconnessione...",
-      "error": "Disconnesso"
+      "title": {
+        "string": "Internet"
+      },
+      "ready": {
+        "string": "Connesso"
+      },
+      "pending": {
+        "string": "Riconnessione..."
+      },
+      "error": {
+        "string": "Disconnesso"
+      }
     },
     "bitcoin_node": {
-      "title": "Nodo Bitcoin",
-      "ready": "Connesso",
-      "pending": "In connessione...",
-      "error": "Impossibile connettersi ad Electrum"
+      "title": {
+        "string": "Nodo Bitcoin"
+      },
+      "ready": {
+        "string": "Connesso"
+      },
+      "pending": {
+        "string": "In connessione..."
+      },
+      "error": {
+        "string": "Impossibile connettersi ad Electrum"
+      }
     },
     "lightning_node": {
-      "title": "Nodo Lightning",
-      "ready": "Sincronizzato",
-      "pending": "Sincronizzazione...",
-      "error": "Impossibile avviare"
+      "title": {
+        "string": "Nodo Lightning"
+      },
+      "ready": {
+        "string": "Sincronizzato"
+      },
+      "pending": {
+        "string": "Sincronizzazione..."
+      },
+      "error": {
+        "string": "Impossibile avviare"
+      }
     },
     "lightning_connection": {
-      "title": "Connessione Lightning",
-      "ready": "Aperta",
-      "pending": "In apertura...",
-      "error": "Nessuna connessione aperta"
+      "title": {
+        "string": "Connessione Lightning"
+      },
+      "ready": {
+        "string": "Aperta"
+      },
+      "pending": {
+        "string": "In apertura..."
+      },
+      "error": {
+        "string": "Nessuna connessione aperta"
+      }
     },
     "full_backup": {
-      "title": "Ultimo backup completo dei dati",
-      "ready": "Backup eseguito",
-      "pending": "Backup in esecuzione...",
-      "error": "Impossibile completare un backup completo"
+      "title": {
+        "string": "Ultimo backup completo dei dati"
+      },
+      "ready": {
+        "string": "Backup eseguito"
+      },
+      "pending": {
+        "string": "Backup in esecuzione..."
+      },
+      "error": {
+        "string": "Impossibile completare un backup completo"
+      }
     }
   },
   "adv": {
-    "section_payments": "Pagamenti",
-    "section_networks": "Reti",
-    "section_other": "Altro",
-    "address_type": "Tipologia Indirizzo Bitcoin",
-    "monitored_address_types": "Tipi di indirizzi monitorati",
-    "monitored_address_types_update_title": "Tipi di indirizzi monitorati aggiornati",
-    "monitored_address_types_update_description": "Le modifiche avranno pieno effetto dopo il riavvio dell'app.",
-    "gap_limit": "Limite del gap di indirizzi",
-    "coin_selection": "Coin Selection",
-    "cs_method": "Metodo di Coin Selection",
-    "cs_manual": "Manuale",
-    "cs_auto": "Autopilot",
-    "cs_auto_mode": "Modalità Autopilot",
-    "cs_max": "Più privato",
-    "cs_max_description": "Ordina e utilizza prima l'UTXO più piccolo. Commissione più alta, ma nasconde i tuoi UTXO più grandi.",
-    "cs_min": "Commissione più bassa",
-    "cs_min_description": "Ordina e utilizza prima l'UTXO più grande. Commissione più bassa, ma rivela i tuoi UTXO più grandi.",
-    "cs_consolidate": "Consolidare",
-    "cs_consolidate_description": "Utilizza tutti gli UTXO disponibili indipendentemente dall'importo inviato. Utilizza questo metodo quando le commissioni sono basse per ridurre le commissioni nelle transazioni future.",
-    "payment_preference": "Preferenze Pagamento",
-    "pp_header": "Scegli come preferisce ricevere il denaro quando gli utenti inviano fondi alla chiave del tuo profilo.",
-    "pp_footer": "* Questo richiede la condivisione dei dati di pagamento.",
-    "pp_drag": "Preferenze per i pagamenti (trascina per riordinare)",
-    "pp_contacts": "Pagamenti a/da contatti",
-    "pp_contacts_switch": "Abilita i pagamenti con i contatti*",
-    "address_viewer": "Visualizzatore di Indirizzi",
-    "rescan": "Riscansiona Indirizzi",
-    "suggestions_reset": "Reimposta suggerimenti",
-    "reset_title": "Resettare i Suggerimenti?",
-    "reset_desc": "Sei sicuro di voler resettare i suggerimenti? Riappariranno nel caso in cui li abbia rimossi dalla panoramica del portafoglio Bitkit.",
-    "reset_confirm": "Sì, resetta",
-    "lightning_connections": "Connessioni Lightning",
-    "lightning_node": "Nodo Lightning",
-    "electrum_server": "Server Electrum",
-    "rgs_server": "Rapid-Gossip-Sync",
-    "web_relay": "Slashtags Web Relay",
-    "bitcoin_network": "Rete Bitcoin"
+    "section_payments": {
+      "string": "Pagamenti"
+    },
+    "section_networks": {
+      "string": "Reti"
+    },
+    "section_other": {
+      "string": "Altro"
+    },
+    "address_type": {
+      "string": "Tipologia Indirizzo Bitcoin"
+    },
+    "monitored_address_types": {
+      "string": "Tipi di indirizzi monitorati"
+    },
+    "monitored_address_types_update_title": {
+      "string": "Tipi di indirizzi monitorati aggiornati"
+    },
+    "monitored_address_types_update_description": {
+      "string": "Le modifiche avranno pieno effetto dopo il riavvio dell'app."
+    },
+    "gap_limit": {
+      "string": "Limite del gap di indirizzi"
+    },
+    "coin_selection": {
+      "string": "Coin Selection"
+    },
+    "cs_method": {
+      "string": "Metodo di Coin Selection"
+    },
+    "cs_manual": {
+      "string": "Manuale"
+    },
+    "cs_auto": {
+      "string": "Autopilot"
+    },
+    "cs_auto_mode": {
+      "string": "Modalità Autopilot"
+    },
+    "cs_max": {
+      "string": "Più privato"
+    },
+    "cs_max_description": {
+      "string": "Ordina e utilizza prima l'UTXO più piccolo. Commissione più alta, ma nasconde i tuoi UTXO più grandi."
+    },
+    "cs_min": {
+      "string": "Commissione più bassa"
+    },
+    "cs_min_description": {
+      "string": "Ordina e utilizza prima l'UTXO più grande. Commissione più bassa, ma rivela i tuoi UTXO più grandi."
+    },
+    "cs_consolidate": {
+      "string": "Consolidare"
+    },
+    "cs_consolidate_description": {
+      "string": "Utilizza tutti gli UTXO disponibili indipendentemente dall'importo inviato. Utilizza questo metodo quando le commissioni sono basse per ridurre le commissioni nelle transazioni future."
+    },
+    "payment_preference": {
+      "string": "Preferenze Pagamento"
+    },
+    "pp_header": {
+      "string": "Scegli come preferisce ricevere il denaro quando gli utenti inviano fondi alla chiave del tuo profilo."
+    },
+    "pp_footer": {
+      "string": "* Questo richiede la condivisione dei dati di pagamento."
+    },
+    "pp_drag": {
+      "string": "Preferenze per i pagamenti (trascina per riordinare)"
+    },
+    "pp_contacts": {
+      "string": "Pagamenti a/da contatti"
+    },
+    "pp_contacts_switch": {
+      "string": "Abilita i pagamenti con i contatti*"
+    },
+    "address_viewer": {
+      "string": "Visualizzatore di Indirizzi"
+    },
+    "rescan": {
+      "string": "Riscansiona Indirizzi"
+    },
+    "suggestions_reset": {
+      "string": "Reimposta suggerimenti"
+    },
+    "reset_title": {
+      "string": "Resettare i Suggerimenti?"
+    },
+    "reset_desc": {
+      "string": "Sei sicuro di voler resettare i suggerimenti? Riappariranno nel caso in cui li abbia rimossi dalla panoramica del portafoglio Bitkit."
+    },
+    "reset_confirm": {
+      "string": "Sì, resetta"
+    },
+    "lightning_connections": {
+      "string": "Connessioni Lightning"
+    },
+    "lightning_node": {
+      "string": "Nodo Lightning"
+    },
+    "electrum_server": {
+      "string": "Server Electrum"
+    },
+    "rgs_server": {
+      "string": "Rapid-Gossip-Sync"
+    },
+    "web_relay": {
+      "string": "Slashtags Web Relay"
+    },
+    "bitcoin_network": {
+      "string": "Rete Bitcoin"
+    }
   },
   "fee": {
     "fast": {
-      "label": "Veloce (più costoso)",
-      "value": "Veloce",
-      "description": "± 10-20 minuti"
+      "label": {
+        "string": "Veloce (più costoso)"
+      },
+      "value": {
+        "string": "Veloce"
+      },
+      "description": {
+        "string": "± 10-20 minuti"
+      }
     },
     "normal": {
-      "label": "Normale",
-      "value": "Normale",
-      "description": "± 20-60 minuti"
+      "label": {
+        "string": "Normale"
+      },
+      "value": {
+        "string": "Normale"
+      },
+      "description": {
+        "string": "± 20-60 minuti"
+      }
     },
     "slow": {
-      "label": "Lento (più economico)",
-      "value": "Lento",
-      "description": "± 1-2 ore"
+      "label": {
+        "string": "Lento (più economico)"
+      },
+      "value": {
+        "string": "Lento"
+      },
+      "description": {
+        "string": "± 1-2 ore"
+      }
     },
     "custom": {
-      "label": "Personalizzate",
-      "value": "Personalizzate",
-      "description": "Dipende dalla commissione"
+      "label": {
+        "string": "Personalizzate"
+      },
+      "value": {
+        "string": "Personalizzate"
+      },
+      "description": {
+        "string": "Dipende dalla commissione"
+      }
     }
   },
   "addr": {
-    "no_addrs": "Nessun indirizzo da mostrare",
-    "loading": "Caricamento Indirizzi...",
-    "no_funds_receiving": "Non sono stati trovati fondi sotto il tipo di indirizzo {addressType}, ricevendo indirizzi fino all'indice {index}.",
-    "no_funds_change": "Non sono stati trovati fondi sotto il tipo di indirizzo {addressType}, cambiare indirizzo fino all'indice {index}.",
-    "no_addrs_with_funds": "Nessun indirizzo con fondi trovato durante la ricerca di \"{searchTxt}\".",
-    "no_addrs_str": "Nessun indirizzo trovato durante la ricerca di \"{searchTxt}\".",
-    "rescan_error": "Nuova scansione non riuscita",
-    "rescan_error_description": "Bitkit non è stato in grado di controllare i saldi degli indirizzi.",
-    "spend_number": "{count, plural, one {Spendo ₿ {fundsToSpend} Da # indirizzo} many {Spendi ₿ {fundsToSpend} Da # indirizzi} other {Spendi ₿ {fundsToSpend} Da # indirizzi}}",
-    "spend_all": "{count, plural, one {Spendere tutti i fondi da # indirizzo} many {Spendere tutti i fondi da # indirizzi} other {Spendi tutti i fondi da # indirizzi}}",
-    "index": "Indice: {index}",
-    "path": "Percorso: {path}",
-    "private_hide": "Nascondi Chiave Privata",
-    "private_view": "Mostra Chiave Privata",
-    "private_key": "Chiave Privata: {privateKey}",
-    "addr_change": "Cambia Indirizzi",
-    "addr_receiving": "Indirizzi di ricezione",
-    "sats_found": "₿ {totalBalance} trovati",
-    "gen_20": "Genera altri 20",
-    "check_balances": "Controlla Saldi",
-    "copied": "Copiato negli appunti"
+    "no_addrs": {
+      "string": "Nessun indirizzo da mostrare"
+    },
+    "loading": {
+      "string": "Caricamento Indirizzi..."
+    },
+    "no_funds_receiving": {
+      "string": "Non sono stati trovati fondi sotto il tipo di indirizzo {addressType}, ricevendo indirizzi fino all'indice {index}."
+    },
+    "no_funds_change": {
+      "string": "Non sono stati trovati fondi sotto il tipo di indirizzo {addressType}, cambiare indirizzo fino all'indice {index}."
+    },
+    "no_addrs_with_funds": {
+      "string": "Nessun indirizzo con fondi trovato durante la ricerca di \"{searchTxt}\"."
+    },
+    "no_addrs_str": {
+      "string": "Nessun indirizzo trovato durante la ricerca di \"{searchTxt}\"."
+    },
+    "rescan_error": {
+      "string": "Nuova scansione non riuscita"
+    },
+    "rescan_error_description": {
+      "string": "Bitkit non è stato in grado di controllare i saldi degli indirizzi."
+    },
+    "spend_number": {
+      "string": "{count, plural, one {Spendo ₿ {fundsToSpend} Da # indirizzo} many {Spendi ₿ {fundsToSpend} Da # indirizzi} other {Spendi ₿ {fundsToSpend} Da # indirizzi}}"
+    },
+    "spend_all": {
+      "string": "{count, plural, one {Spendere tutti i fondi da # indirizzo} many {Spendere tutti i fondi da # indirizzi} other {Spendi tutti i fondi da # indirizzi}}"
+    },
+    "index": {
+      "string": "Indice: {index}"
+    },
+    "path": {
+      "string": "Percorso: {path}"
+    },
+    "private_hide": {
+      "string": "Nascondi Chiave Privata"
+    },
+    "private_view": {
+      "string": "Mostra Chiave Privata"
+    },
+    "private_key": {
+      "string": "Chiave Privata: {privateKey}"
+    },
+    "addr_change": {
+      "string": "Cambia Indirizzi"
+    },
+    "addr_receiving": {
+      "string": "Indirizzi di ricezione"
+    },
+    "sats_found": {
+      "string": "₿ {totalBalance} trovati"
+    },
+    "gen_20": {
+      "string": "Genera altri 20"
+    },
+    "check_balances": {
+      "string": "Controlla Saldi"
+    },
+    "copied": {
+      "string": "Copiato negli appunti"
+    }
   },
   "es": {
-    "error_host_port": "Per favore specifica un host e una porta a cui connettersi.",
-    "error_host": "Per favore specifica un host a cui connettersi.",
-    "error_port": "Per favore specifica una porta a cui connettersi.",
-    "error_port_invalid": "Si prega di specificare una porta valida.",
-    "error_invalid_http": "Si prega di specificare un URL valido.",
-    "error_peer": "Errore Electrum",
-    "server_updated_title": "Server Electrum Aggiornato",
-    "server_updated_message": "Connessione a {host}:{port} avvenuta con successo",
-    "server_error": "Connessione Electrum non riuscita",
-    "server_error_description": "Bitkit non è riuscito a stabilire una connessione con Electrum.",
-    "connected_to": "Attualmente connesso a",
-    "disconnected": "disconnesso",
-    "host": "Host",
-    "port": "Porta",
-    "protocol": "Protocollo",
-    "button_reset": "Ripristina Impostazioni di Default",
-    "button_connect": "Connetti all'Host"
+    "error_host_port": {
+      "string": "Per favore specifica un host e una porta a cui connettersi."
+    },
+    "error_host": {
+      "string": "Per favore specifica un host a cui connettersi."
+    },
+    "error_port": {
+      "string": "Per favore specifica una porta a cui connettersi."
+    },
+    "error_port_invalid": {
+      "string": "Si prega di specificare una porta valida."
+    },
+    "error_invalid_http": {
+      "string": "Si prega di specificare un URL valido."
+    },
+    "error_peer": {
+      "string": "Errore Electrum"
+    },
+    "server_updated_title": {
+      "string": "Server Electrum Aggiornato"
+    },
+    "server_updated_message": {
+      "string": "Connessione a {host}:{port} avvenuta con successo"
+    },
+    "server_error": {
+      "string": "Connessione Electrum non riuscita"
+    },
+    "server_error_description": {
+      "string": "Bitkit non è riuscito a stabilire una connessione con Electrum."
+    },
+    "connected_to": {
+      "string": "Attualmente connesso a"
+    },
+    "disconnected": {
+      "string": "disconnesso"
+    },
+    "host": {
+      "string": "Host"
+    },
+    "port": {
+      "string": "Porta"
+    },
+    "protocol": {
+      "string": "Protocollo"
+    },
+    "button_reset": {
+      "string": "Ripristina Impostazioni di Default"
+    },
+    "button_connect": {
+      "string": "Connetti all'Host"
+    }
   },
   "gap": {
-    "save": "Salva",
-    "reset": "Ripristino",
-    "gap_limit_update_title": "Limite del gap di indirizzi aggiornato",
-    "gap_limit_update_description": "Le modifiche avranno pieno effetto dopo il riavvio dell'app."
+    "save": {
+      "string": "Salva"
+    },
+    "reset": {
+      "string": "Ripristino"
+    },
+    "gap_limit_update_title": {
+      "string": "Limite del gap di indirizzi aggiornato"
+    },
+    "gap_limit_update_description": {
+      "string": "Le modifiche avranno pieno effetto dopo il riavvio dell'app."
+    }
   },
   "rgs": {
-    "server_url": "URL del server Rapid-Gossip-Sync",
-    "button_connect": "Connetti",
-    "update_success_title": "Server Rapid-Gossip-Sync aggiornato",
-    "update_success_description": "Potrebbe essere necessario riavviare l'app una o due volte affinché la modifica abbia effetto."
+    "server_url": {
+      "string": "URL del server Rapid-Gossip-Sync"
+    },
+    "button_connect": {
+      "string": "Connetti"
+    },
+    "update_success_title": {
+      "string": "Server Rapid-Gossip-Sync aggiornato"
+    },
+    "update_success_description": {
+      "string": "Potrebbe essere necessario riavviare l'app una o due volte affinché la modifica abbia effetto."
+    }
   },
   "wr": {
-    "error_wr": "Errore Web Relay",
-    "error_url": "Specifica un URL a cui connetterti.",
-    "error_https": "URL HTTPS non valido.",
-    "error_healthcheck": "Controllo dello stato non riuscito",
-    "url_updated_title": "Web Relay Aggiornato",
-    "url_updated_message": "Connessione riuscita con {url}"
+    "error_wr": {
+      "string": "Errore Web Relay"
+    },
+    "error_url": {
+      "string": "Specifica un URL a cui connetterti."
+    },
+    "error_https": {
+      "string": "URL HTTPS non valido."
+    },
+    "error_healthcheck": {
+      "string": "Controllo dello stato non riuscito"
+    },
+    "url_updated_title": {
+      "string": "Web Relay Aggiornato"
+    },
+    "url_updated_message": {
+      "string": "Connessione riuscita con {url}"
+    }
   }
 }

@@ -1,24 +1,44 @@
 {
   "backupSeedPhrase": {
-    "title": "Αντίγραφο ασφαλείας"
+    "title": {
+      "string": "Αντίγραφο ασφαλείας"
+    }
   },
   "lightningConnecting": {
-    "title": "Σύνδεση",
-    "description": "Έτοιμο σε ±10 λεπτά"
+    "title": {
+      "string": "Σύνδεση"
+    },
+    "description": {
+      "string": "Έτοιμο σε ±10 λεπτά"
+    }
   },
   "lightningReady": {
-    "title": "Έτοιμο",
-    "description": "Συνδέθηκε!"
+    "title": {
+      "string": "Έτοιμο"
+    },
+    "description": {
+      "string": "Συνδέθηκε!"
+    }
   },
   "transferClosingChannel": {
-    "title": "Έναρξη...",
-    "description": "Κρατήστε την εφαρμογή ανοιχτή"
+    "title": {
+      "string": "Έναρξη..."
+    },
+    "description": {
+      "string": "Κρατήστε την εφαρμογή ανοιχτή"
+    }
   },
   "pin": {
-    "description": "Καταχωρήστε κωδικό PIN"
+    "description": {
+      "string": "Καταχωρήστε κωδικό PIN"
+    }
   },
   "slashtagsProfile": {
-    "description": "Προσθέστε τα στοιχεία σας"
+    "description": {
+      "string": "Προσθέστε τα στοιχεία σας"
+    }
   },
-  "suggestions": "Προτάσεις"
+  "suggestions": {
+    "string": "Προτάσεις"
+  }
 }

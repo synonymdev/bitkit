@@ -5,58 +5,58 @@ host = https://www.transifex.com
 file_filter  = src/utils/i18n/locales/<lang>/cards.json
 source_file  = src/utils/i18n/locales/en/cards.json
 source_lang  = en
-type         = KEYVALUEJSON
+type         = STRUCTURED_JSON
 
 [o:synonym:p:bitkit:r:common]
 file_filter  = src/utils/i18n/locales/<lang>/common.json
 source_file  = src/utils/i18n/locales/en/common.json
 source_lang  = en
-type         = KEYVALUEJSON
+type         = STRUCTURED_JSON
 
 [o:synonym:p:bitkit:r:fee]
 file_filter  = src/utils/i18n/locales/<lang>/fee.json
 source_file  = src/utils/i18n/locales/en/fee.json
 source_lang  = en
-type         = KEYVALUEJSON
+type         = STRUCTURED_JSON
 
 [o:synonym:p:bitkit:r:lightning]
 file_filter  = src/utils/i18n/locales/<lang>/lightning.json
 source_file  = src/utils/i18n/locales/en/lightning.json
 source_lang  = en
-type         = KEYVALUEJSON
+type         = STRUCTURED_JSON
 
 [o:synonym:p:bitkit:r:onboarding]
 file_filter  = src/utils/i18n/locales/<lang>/onboarding.json
 source_file  = src/utils/i18n/locales/en/onboarding.json
 source_lang  = en
-type         = KEYVALUEJSON
+type         = STRUCTURED_JSON
 
 [o:synonym:p:bitkit:r:other]
 file_filter  = src/utils/i18n/locales/<lang>/other.json
 source_file  = src/utils/i18n/locales/en/other.json
 source_lang  = en
-type         = KEYVALUEJSON
+type         = STRUCTURED_JSON
 
 [o:synonym:p:bitkit:r:security]
 file_filter  = src/utils/i18n/locales/<lang>/security.json
 source_file  = src/utils/i18n/locales/en/security.json
 source_lang  = en
-type         = KEYVALUEJSON
+type         = STRUCTURED_JSON
 
 [o:synonym:p:bitkit:r:settingss]
 file_filter  = src/utils/i18n/locales/<lang>/settings.json
 source_file  = src/utils/i18n/locales/en/settings.json
 source_lang  = en
-type         = KEYVALUEJSON
+type         = STRUCTURED_JSON
 
 [o:synonym:p:bitkit:r:slashtags]
 file_filter  = src/utils/i18n/locales/<lang>/slashtags.json
 source_file  = src/utils/i18n/locales/en/slashtags.json
 source_lang  = en
-type         = KEYVALUEJSON
+type         = STRUCTURED_JSON
 
 [o:synonym:p:bitkit:r:wallet]
 file_filter  = src/utils/i18n/locales/<lang>/wallet.json
 source_file  = src/utils/i18n/locales/en/wallet.json
 source_lang  = en
-type         = KEYVALUEJSON
+type         = STRUCTURED_JSON

@@ -1,26 +1,74 @@
 {
-  "your_name": "اسمك",
-  "your_name_capital": "اسمك",
-  "contact_name": "اسم جهة الاتصال",
-  "contact": "جهة الاتصال",
-  "contacts": "جهات الاتصال",
-  "contact_add": "أضف جهة اتصال",
-  "contact_add_capital": "أضف جهة اتصال",
-  "contact_add_explain": "أضف جهة اتصال بمسح رمز استجابتها السريع أو بلصق مفتاحها أدناه",
-  "contact_key_paste": "الصق مفتاحًا",
-  "contact_error_yourself": "ليس لك أن تضيف نفسك في جهات اتصالك.",
-  "contact_error_key": "هذا ليس مفتاحًا صالحًا.",
-  "contact_edit_capital": "تعديل جهة الاتصال",
-  "contacts_name": "اسم جهة الاتصال",
-  "contact_your_name": "اسم ملفك الشخصي العام",
-  "contact_retrieving": "جلب معلومات جهة الاتصال...",
-  "contact_no_links": "لم تُضَف أي روابط بعد...",
-  "contact_share": "مشاركة مفتاح الملف الشخصي",
-  "contact_this": "جهة الاتصال هذه",
-  "contact_copied": "نُسخ مفتاح الملف الشخصي إلى الحافظة",
-  "contact_delete_title": "حذف {name}؟",
-  "contact_delete_text": "هل أنت متأكد من إرادتك حذف {name} من جهات اتصالك؟",
-  "contact_delete_yes": "نعم، احذف",
-  "contact_select": "اختر جهة اتصال",
-  "widget_delete_yes": "نعم، احذف"
+  "your_name": {
+    "string": "اسمك"
+  },
+  "your_name_capital": {
+    "string": "اسمك"
+  },
+  "contact_name": {
+    "string": "اسم جهة الاتصال"
+  },
+  "contact": {
+    "string": "جهة الاتصال"
+  },
+  "contacts": {
+    "string": "جهات الاتصال"
+  },
+  "contact_add": {
+    "string": "أضف جهة اتصال"
+  },
+  "contact_add_capital": {
+    "string": "أضف جهة اتصال"
+  },
+  "contact_add_explain": {
+    "string": "أضف جهة اتصال بمسح رمز استجابتها السريع أو بلصق مفتاحها أدناه"
+  },
+  "contact_key_paste": {
+    "string": "الصق مفتاحًا"
+  },
+  "contact_error_yourself": {
+    "string": "ليس لك أن تضيف نفسك في جهات اتصالك."
+  },
+  "contact_error_key": {
+    "string": "هذا ليس مفتاحًا صالحًا."
+  },
+  "contact_edit_capital": {
+    "string": "تعديل جهة الاتصال"
+  },
+  "contacts_name": {
+    "string": "اسم جهة الاتصال"
+  },
+  "contact_your_name": {
+    "string": "اسم ملفك الشخصي العام"
+  },
+  "contact_retrieving": {
+    "string": "جلب معلومات جهة الاتصال..."
+  },
+  "contact_no_links": {
+    "string": "لم تُضَف أي روابط بعد..."
+  },
+  "contact_share": {
+    "string": "مشاركة مفتاح الملف الشخصي"
+  },
+  "contact_this": {
+    "string": "جهة الاتصال هذه"
+  },
+  "contact_copied": {
+    "string": "نُسخ مفتاح الملف الشخصي إلى الحافظة"
+  },
+  "contact_delete_title": {
+    "string": "حذف {name}؟"
+  },
+  "contact_delete_text": {
+    "string": "هل أنت متأكد من إرادتك حذف {name} من جهات اتصالك؟"
+  },
+  "contact_delete_yes": {
+    "string": "نعم، احذف"
+  },
+  "contact_select": {
+    "string": "اختر جهة اتصال"
+  },
+  "widget_delete_yes": {
+    "string": "نعم، احذف"
+  }
 }

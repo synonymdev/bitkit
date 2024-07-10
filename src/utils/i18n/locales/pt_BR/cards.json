@@ -1,63 +1,125 @@
 {
   "backupSeedPhrase": {
-    "title": "Faça backup",
-    "description": "Guarde seu bitcoin"
+    "title": {
+      "string": "Faça backup"
+    },
+    "description": {
+      "string": "Guarde seu bitcoin"
+    }
   },
   "discount": {
-    "title": "Desconto",
-    "description": "Saldo de Gastos"
+    "title": {
+      "string": "Desconto"
+    },
+    "description": {
+      "string": "Saldo de Gastos"
+    }
   },
   "fastpay": {
-    "title": "Pagamentos rápidos",
-    "description": "Escanear e pagar"
+    "title": {
+      "string": "Pagamentos rápidos"
+    },
+    "description": {
+      "string": "Escanear e pagar"
+    }
   },
   "invite": {
-    "title": "Convide",
-    "description": "Compartilhe a Bitkit"
+    "title": {
+      "string": "Convide"
+    },
+    "description": {
+      "string": "Compartilhe a Bitkit"
+    }
   },
   "lightning": {
-    "title": "Pagar",
-    "description": "Pagamentos instantâneos"
+    "title": {
+      "string": "Pagar"
+    },
+    "description": {
+      "string": "Pagamentos instantâneos"
+    }
   },
   "lightningSettingUp": {
-    "title": "Transferência",
-    "description": "Em andamento..."
+    "title": {
+      "string": "Transferência"
+    },
+    "description": {
+      "string": "Em andamento..."
+    }
   },
   "lightningConnecting": {
-    "title": "Conectando",
-    "description": "Pronto em ±10m"
+    "title": {
+      "string": "Conectando"
+    },
+    "description": {
+      "string": "Pronto em ±10m"
+    }
   },
   "lightningReady": {
-    "title": "Pronto",
-    "description": "Conectado!"
+    "title": {
+      "string": "Pronto"
+    },
+    "description": {
+      "string": "Conectado!"
+    }
   },
   "transferPending": {
-    "title": "Transferência",
-    "description": "Pronto em ±{duration}"
+    "title": {
+      "string": "Transferência"
+    },
+    "description": {
+      "string": "Pronto em ±{duration}"
+    }
   },
   "transferClosingChannel": {
-    "title": "Iniciando...",
-    "description": "Mantenha o app aberto"
+    "title": {
+      "string": "Iniciando..."
+    },
+    "description": {
+      "string": "Mantenha o app aberto"
+    }
   },
   "pin": {
-    "title": "Segurança",
-    "description": "Configure um PIN"
+    "title": {
+      "string": "Segurança"
+    },
+    "description": {
+      "string": "Configure um PIN"
+    }
   },
   "slashtagsProfile": {
-    "title": "Perfil",
-    "description": "Adicione seus detalhes"
+    "title": {
+      "string": "Perfil"
+    },
+    "description": {
+      "string": "Adicione seus detalhes"
+    }
   },
   "support": {
-    "title": "Suporte",
-    "description": "Obtenha ajuda"
+    "title": {
+      "string": "Suporte"
+    },
+    "description": {
+      "string": "Obtenha ajuda"
+    }
   },
   "buyBitcoin": {
-    "title": "Comprar",
-    "description": "Compre bitcoin"
+    "title": {
+      "string": "Comprar"
+    },
+    "description": {
+      "string": "Compre bitcoin"
+    }
   },
   "btFailed": {
-    "title": "Falha",
-    "description": "Tente novamente"
+    "title": {
+      "string": "Falha"
+    },
+    "description": {
+      "string": "Tente novamente"
+    }
   },
-  "suggestions": "Sugestões"
+  "suggestions": {
+    "string": "Sugestões"
+  }
 }

@@ -1,65 +1,175 @@
 {
   "introduction": {
-    "button": "Empezar"
+    "button": {
+      "string": "Empezar"
+    }
   },
   "funding": {
-    "nav_title": "Saldo de gastos"
+    "nav_title": {
+      "string": "Saldo de gastos"
+    }
   },
   "transfer": {
-    "nav_title": "Transferir fondos",
-    "nav_successful": "Transferencia exitosa",
-    "text_numpad": "Introduzca la cantidad de dinero que desea poder gastar al instante.",
-    "swipe": "Deslizar para transferir"
+    "nav_title": {
+      "string": "Transferir fondos"
+    },
+    "nav_successful": {
+      "string": "Transferencia exitosa"
+    },
+    "text_numpad": {
+      "string": "Introduzca la cantidad de dinero que desea poder gastar al instante."
+    },
+    "swipe": {
+      "string": "Deslizar para transferir"
+    }
   },
   "transfer_failed": {
-    "continue": "Inténtelo de nuevo"
+    "continue": {
+      "string": "Inténtelo de nuevo"
+    }
   },
-  "error_channel_purchase": "Error en la Configuración de Pago Instántaneo",
-  "error_channel_receiving": "La cantidad a recibir debe ser mayor de $ 1 {usdValue}",
-  "spending": "Gasto",
-  "savings": "Ahorro",
-  "spending_label": "Saldo para gastos",
-  "receiving_label": "Capacidad de recepción",
-  "note_blocktank_limit": "La cantidad que puedes transferir a tu balance de gastos está actualmente limitada a $ 1 {usdValue}",
-  "quick_setup": "Configuración rápida",
-  "receiving_amount_money": "Elija cuánto dinero desea poder recibir al instante.",
-  "receiving_amount_bitcoin": "Introduzca la cantidad de Bitcoin que desea poder recibir al instante.",
-  "interrupted_title": "Transferencia interrumpida",
-  "availability_title": "Disponibilidad de fondos",
-  "node_id": "ID del nodo LDK",
-  "node_disconnected": "desconectado",
-  "node_failed": "Bitkit ha fallado al inicializar el nodo Lightning.",
-  "conn_pending": "Conexiones pendientes",
-  "conn_open": "Conexiones abiertas",
-  "conn_closed": "Conexiones cerradas",
-  "conn_failed": "Conexiones fallidas",
-  "conn_button_export_logs": "Exportar registros",
-  "conn_button_add": "Añadir conexión",
-  "error_invoice": "Falla al crear la factura",
-  "error_save": "No se puede guardar el par Lightning",
-  "error_decode": "No se puede descodificar la factura",
-  "status": "Estatus",
-  "order_details": "Detalles del pedido",
-  "order": "Ordene",
-  "created_on": "Creado en",
-  "transaction": "Transacción",
-  "order_fee": "Tarifa de pedido",
-  "balance": "Saldo",
-  "reserve_balance": "Saldo de reserva",
-  "total_size": "Tamaño total del canal",
-  "other": "Otros",
-  "opened_on": "Abierto en",
-  "is_usable": "¿Es utilizable?",
-  "is_ready": "¿Está preparado?",
-  "support": "Soporte",
-  "close_conn": "Terminar conexión",
-  "close_button": "Cerrar",
-  "force_nav_title": "Fuerzar transferencia",
-  "force_text": "No se ha podido iniciar la transferencia. ¿Desea forzar esta transferencia? No podrá utilizar estos fondos durante ±14 días (!)",
-  "force_button": "Fuerzar transferencia",
-  "force_init_msg": "Sus fondos estarán accesibles en ±14 días.",
-  "force_failed_title": "Transferencia forzada falló",
-  "channel_opened_msg": "Ahora puede pagar a cualquier persona, en cualquier lugar y al instante.",
-  "order_given_up_title": "Error en la Configuración de Pago Instántaneo",
-  "order_expired_title": "Error en la Configuración de Pago Instántaneo"
+  "error_channel_purchase": {
+    "string": "Error en la Configuración de Pago Instántaneo"
+  },
+  "error_channel_receiving": {
+    "string": "La cantidad a recibir debe ser mayor de $ 1 {usdValue}"
+  },
+  "spending": {
+    "string": "Gasto"
+  },
+  "savings": {
+    "string": "Ahorro"
+  },
+  "spending_label": {
+    "string": "Saldo para gastos"
+  },
+  "receiving_label": {
+    "string": "Capacidad de recepción"
+  },
+  "note_blocktank_limit": {
+    "string": "La cantidad que puedes transferir a tu balance de gastos está actualmente limitada a $ 1 {usdValue}"
+  },
+  "quick_setup": {
+    "string": "Configuración rápida"
+  },
+  "receiving_amount_money": {
+    "string": "Elija cuánto dinero desea poder recibir al instante."
+  },
+  "receiving_amount_bitcoin": {
+    "string": "Introduzca la cantidad de Bitcoin que desea poder recibir al instante."
+  },
+  "interrupted_title": {
+    "string": "Transferencia interrumpida"
+  },
+  "availability_title": {
+    "string": "Disponibilidad de fondos"
+  },
+  "node_id": {
+    "string": "ID del nodo LDK"
+  },
+  "node_disconnected": {
+    "string": "desconectado"
+  },
+  "node_failed": {
+    "string": "Bitkit ha fallado al inicializar el nodo Lightning."
+  },
+  "conn_pending": {
+    "string": "Conexiones pendientes"
+  },
+  "conn_open": {
+    "string": "Conexiones abiertas"
+  },
+  "conn_closed": {
+    "string": "Conexiones cerradas"
+  },
+  "conn_failed": {
+    "string": "Conexiones fallidas"
+  },
+  "conn_button_export_logs": {
+    "string": "Exportar registros"
+  },
+  "conn_button_add": {
+    "string": "Añadir conexión"
+  },
+  "error_invoice": {
+    "string": "Falla al crear la factura"
+  },
+  "error_save": {
+    "string": "No se puede guardar el par Lightning"
+  },
+  "error_decode": {
+    "string": "No se puede descodificar la factura"
+  },
+  "status": {
+    "string": "Estatus"
+  },
+  "order_details": {
+    "string": "Detalles del pedido"
+  },
+  "order": {
+    "string": "Ordene"
+  },
+  "created_on": {
+    "string": "Creado en"
+  },
+  "transaction": {
+    "string": "Transacción"
+  },
+  "order_fee": {
+    "string": "Tarifa de pedido"
+  },
+  "balance": {
+    "string": "Saldo"
+  },
+  "reserve_balance": {
+    "string": "Saldo de reserva"
+  },
+  "total_size": {
+    "string": "Tamaño total del canal"
+  },
+  "other": {
+    "string": "Otros"
+  },
+  "opened_on": {
+    "string": "Abierto en"
+  },
+  "is_usable": {
+    "string": "¿Es utilizable?"
+  },
+  "is_ready": {
+    "string": "¿Está preparado?"
+  },
+  "support": {
+    "string": "Soporte"
+  },
+  "close_conn": {
+    "string": "Terminar conexión"
+  },
+  "close_button": {
+    "string": "Cerrar"
+  },
+  "force_nav_title": {
+    "string": "Fuerzar transferencia"
+  },
+  "force_text": {
+    "string": "No se ha podido iniciar la transferencia. ¿Desea forzar esta transferencia? No podrá utilizar estos fondos durante ±14 días (!)"
+  },
+  "force_button": {
+    "string": "Fuerzar transferencia"
+  },
+  "force_init_msg": {
+    "string": "Sus fondos estarán accesibles en ±14 días."
+  },
+  "force_failed_title": {
+    "string": "Transferencia forzada falló"
+  },
+  "channel_opened_msg": {
+    "string": "Ahora puede pagar a cualquier persona, en cualquier lugar y al instante."
+  },
+  "order_given_up_title": {
+    "string": "Error en la Configuración de Pago Instántaneo"
+  },
+  "order_expired_title": {
+    "string": "Error en la Configuración de Pago Instántaneo"
+  }
 }

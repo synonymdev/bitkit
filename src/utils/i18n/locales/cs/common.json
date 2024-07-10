@@ -1,31 +1,89 @@
 {
-  "advanced": "Pokročilé",
-  "continue": "Pokračovat",
-  "cancel": "Zrušit",
-  "close": "Zavřít",
-  "are_you_sure": "Jste si jistí?",
-  "yes_proceed": "Ano, pokračovat",
-  "try_again": "Zkusit znovu",
-  "dialog_cancel": "Ne, zrušit",
-  "sat_vbyte": "₿ / vbyte",
-  "sat_vbyte_compact": "₿/vbyte",
-  "edit": "Upravit",
-  "copy": "Kopírovat",
-  "share": "Sdílet",
-  "search": "Vyhledat",
-  "discard": "Vyřadit",
-  "save": "Uložit",
-  "done": "Hotovo",
-  "delete": "Smazat",
-  "ok": "OK",
-  "awesome": "Skvělé!",
-  "retry": "Opakovat",
-  "later": "Později",
-  "skip": "Přeskočit",
-  "copied": "Zkopírováno do schránky",
-  "yes": "Ano",
-  "no": "Ne",
-  "back": "Zpět",
-  "understood": "Rozumím",
-  "connect": "Připojit"
+  "advanced": {
+    "string": "Pokročilé"
+  },
+  "continue": {
+    "string": "Pokračovat"
+  },
+  "cancel": {
+    "string": "Zrušit"
+  },
+  "close": {
+    "string": "Zavřít"
+  },
+  "are_you_sure": {
+    "string": "Jste si jistí?"
+  },
+  "yes_proceed": {
+    "string": "Ano, pokračovat"
+  },
+  "try_again": {
+    "string": "Zkusit znovu"
+  },
+  "dialog_cancel": {
+    "string": "Ne, zrušit"
+  },
+  "sat_vbyte": {
+    "string": "₿ / vbyte"
+  },
+  "sat_vbyte_compact": {
+    "string": "₿/vbyte"
+  },
+  "edit": {
+    "string": "Upravit"
+  },
+  "copy": {
+    "string": "Kopírovat"
+  },
+  "share": {
+    "string": "Sdílet"
+  },
+  "search": {
+    "string": "Vyhledat"
+  },
+  "discard": {
+    "string": "Vyřadit"
+  },
+  "save": {
+    "string": "Uložit"
+  },
+  "done": {
+    "string": "Hotovo"
+  },
+  "delete": {
+    "string": "Smazat"
+  },
+  "ok": {
+    "string": "OK"
+  },
+  "awesome": {
+    "string": "Skvělé!"
+  },
+  "retry": {
+    "string": "Opakovat"
+  },
+  "later": {
+    "string": "Později"
+  },
+  "skip": {
+    "string": "Přeskočit"
+  },
+  "copied": {
+    "string": "Zkopírováno do schránky"
+  },
+  "yes": {
+    "string": "Ano"
+  },
+  "no": {
+    "string": "Ne"
+  },
+  "back": {
+    "string": "Zpět"
+  },
+  "understood": {
+    "string": "Rozumím"
+  },
+  "connect": {
+    "string": "Připojit"
+  }
 }

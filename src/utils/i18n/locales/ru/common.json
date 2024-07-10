@@ -1,31 +1,89 @@
 {
-  "advanced": "Дополнительно",
-  "continue": "Продолжить",
-  "cancel": "Отмена",
-  "close": "Закрыть",
-  "are_you_sure": "Вы уверены?",
-  "yes_proceed": "Да,\nПродолжить",
-  "try_again": "Попробовать снова",
-  "dialog_cancel": "Нет,\nОтменить",
-  "sat_vbyte": "₿ / vbyte",
-  "sat_vbyte_compact": "₿/vbyte",
-  "edit": "Редактировать",
-  "copy": "Копировать",
-  "share": "Поделиться",
-  "search": "Поиск",
-  "discard": "Отменить",
-  "save": "Сохранить",
-  "done": "Готово",
-  "delete": "Удалить",
-  "ok": "Ок",
-  "awesome": "Отлично!",
-  "retry": "Повторить",
-  "later": "Позже",
-  "skip": "Пропустить",
-  "copied": "Скопировано в буфер обмена",
-  "yes": "Да",
-  "no": "Нет",
-  "back": "Назад",
-  "understood": "Понял",
-  "connect": "Подключиться"
+  "advanced": {
+    "string": "Дополнительно"
+  },
+  "continue": {
+    "string": "Продолжить"
+  },
+  "cancel": {
+    "string": "Отмена"
+  },
+  "close": {
+    "string": "Закрыть"
+  },
+  "are_you_sure": {
+    "string": "Вы уверены?"
+  },
+  "yes_proceed": {
+    "string": "Да,\nПродолжить"
+  },
+  "try_again": {
+    "string": "Попробовать снова"
+  },
+  "dialog_cancel": {
+    "string": "Нет,\nОтменить"
+  },
+  "sat_vbyte": {
+    "string": "₿ / vbyte"
+  },
+  "sat_vbyte_compact": {
+    "string": "₿/vbyte"
+  },
+  "edit": {
+    "string": "Редактировать"
+  },
+  "copy": {
+    "string": "Копировать"
+  },
+  "share": {
+    "string": "Поделиться"
+  },
+  "search": {
+    "string": "Поиск"
+  },
+  "discard": {
+    "string": "Отменить"
+  },
+  "save": {
+    "string": "Сохранить"
+  },
+  "done": {
+    "string": "Готово"
+  },
+  "delete": {
+    "string": "Удалить"
+  },
+  "ok": {
+    "string": "Ок"
+  },
+  "awesome": {
+    "string": "Отлично!"
+  },
+  "retry": {
+    "string": "Повторить"
+  },
+  "later": {
+    "string": "Позже"
+  },
+  "skip": {
+    "string": "Пропустить"
+  },
+  "copied": {
+    "string": "Скопировано в буфер обмена"
+  },
+  "yes": {
+    "string": "Да"
+  },
+  "no": {
+    "string": "Нет"
+  },
+  "back": {
+    "string": "Назад"
+  },
+  "understood": {
+    "string": "Понял"
+  },
+  "connect": {
+    "string": "Подключиться"
+  }
 }

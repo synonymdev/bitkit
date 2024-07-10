@@ -1,38 +1,86 @@
 {
   "instant": {
-    "title": "Instantané",
-    "description": "±2-10 secondes",
-    "shortRange": "2-10s",
-    "shortDescription": "±2s"
+    "title": {
+      "string": "Instantané"
+    },
+    "description": {
+      "string": "±2-10 secondes"
+    },
+    "shortRange": {
+      "string": "2-10s"
+    },
+    "shortDescription": {
+      "string": "±2s"
+    }
   },
   "fast": {
-    "title": "Rapide",
-    "description": "±10-20 minutes",
-    "shortRange": "10-20min",
-    "shortDescription": "±10min"
+    "title": {
+      "string": "Rapide"
+    },
+    "description": {
+      "string": "±10-20 minutes"
+    },
+    "shortRange": {
+      "string": "10-20min"
+    },
+    "shortDescription": {
+      "string": "±10min"
+    }
   },
   "normal": {
-    "title": "Normal",
-    "description": "±20-60 minutes",
-    "shortRange": "20-60min",
-    "shortDescription": "±20min"
+    "title": {
+      "string": "Normal"
+    },
+    "description": {
+      "string": "±20-60 minutes"
+    },
+    "shortRange": {
+      "string": "20-60min"
+    },
+    "shortDescription": {
+      "string": "±20min"
+    }
   },
   "slow": {
-    "title": "Lent",
-    "description": "±1-2 heures",
-    "shortRange": "1-2h",
-    "shortDescription": "±1h"
+    "title": {
+      "string": "Lent"
+    },
+    "description": {
+      "string": "±1-2 heures"
+    },
+    "shortRange": {
+      "string": "1-2h"
+    },
+    "shortDescription": {
+      "string": "±1h"
+    }
   },
   "minimum": {
-    "title": "Minimum",
-    "description": "+2 heures",
-    "shortRange": "+2h",
-    "shortDescription": "+2h"
+    "title": {
+      "string": "Minimum"
+    },
+    "description": {
+      "string": "+2 heures"
+    },
+    "shortRange": {
+      "string": "+2h"
+    },
+    "shortDescription": {
+      "string": "+2h"
+    }
   },
   "custom": {
-    "title": "Personnalisé",
-    "description": "Dépend des frais",
-    "shortRange": "Dépend des frais",
-    "shortDescription": "Dépend des frais"
+    "title": {
+      "string": "Personnalisé"
+    },
+    "description": {
+      "string": "Dépend des frais"
+    },
+    "shortRange": {
+      "string": "Dépend des frais"
+    },
+    "shortDescription": {
+      "string": "Dépend des frais"
+    }
   }
 }

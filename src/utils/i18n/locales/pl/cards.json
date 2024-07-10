@@ -1,24 +1,44 @@
 {
   "backupSeedPhrase": {
-    "title": "Kopia bezpieczeństwa"
+    "title": {
+      "string": "Kopia bezpieczeństwa"
+    }
   },
   "lightningConnecting": {
-    "title": "Łączenie",
-    "description": "Gotowe w ±10 minut"
+    "title": {
+      "string": "Łączenie"
+    },
+    "description": {
+      "string": "Gotowe w ±10 minut"
+    }
   },
   "lightningReady": {
-    "title": "Gotowe",
-    "description": "Połączone!"
+    "title": {
+      "string": "Gotowe"
+    },
+    "description": {
+      "string": "Połączone!"
+    }
   },
   "transferClosingChannel": {
-    "title": "Instaluję",
-    "description": "Pozostaw aplikację włączoną"
+    "title": {
+      "string": "Instaluję"
+    },
+    "description": {
+      "string": "Pozostaw aplikację włączoną"
+    }
   },
   "pin": {
-    "description": "Ustaw kod PIN"
+    "description": {
+      "string": "Ustaw kod PIN"
+    }
   },
   "slashtagsProfile": {
-    "description": "Dodaj swoje detale"
+    "description": {
+      "string": "Dodaj swoje detale"
+    }
   },
-  "suggestions": "Sugestie"
+  "suggestions": {
+    "string": "Sugestie"
+  }
 }

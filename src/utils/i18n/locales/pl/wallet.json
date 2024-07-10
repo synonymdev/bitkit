@@ -1,23 +1,65 @@
 {
-  "send": "Wyślij",
-  "receive": "Otrzymaj",
-  "balance_total": "Saldo",
-  "send_bitcoin": "Wyślij Bitcoin",
-  "send_to": "Do",
-  "send_invoice": "Faktura",
-  "send_amount": "Kwota bitcoinów",
-  "send_max": "MAX",
-  "send_done": "GOTOWE",
-  "send_availabe_spending": "Dostępne (na wydawanie)",
-  "send_availabe_savings": "Dostępne (oszczędności)",
-  "send_review": "Przejrzyj i wyślij",
-  "send_confirming_in": "Potwierdzone w ciągu",
-  "send_invoice_expiration": "Termin faktury",
-  "send_swipe": "Przesuń palcem by zapłacić",
-  "send_yes": "Tak, wyślij",
-  "send_dialog1": "Wygląda na to, że wysyłasz ponad $100. Czy kontynuować?",
-  "send_dialog2": "Wygląda na to, że wysyłasz ponad 50% swojego salda. Czy kontynuować?",
-  "activity_successful": "Sukces",
-  "activity_invoice": "Faktura",
-  "lnurl_p_title": "Wyślij Bitcoin"
+  "send": {
+    "string": "Wyślij"
+  },
+  "receive": {
+    "string": "Otrzymaj"
+  },
+  "balance_total": {
+    "string": "Saldo"
+  },
+  "send_bitcoin": {
+    "string": "Wyślij Bitcoin"
+  },
+  "send_to": {
+    "string": "Do"
+  },
+  "send_invoice": {
+    "string": "Faktura"
+  },
+  "send_amount": {
+    "string": "Kwota bitcoinów"
+  },
+  "send_max": {
+    "string": "MAX"
+  },
+  "send_done": {
+    "string": "GOTOWE"
+  },
+  "send_availabe_spending": {
+    "string": "Dostępne (na wydawanie)"
+  },
+  "send_availabe_savings": {
+    "string": "Dostępne (oszczędności)"
+  },
+  "send_review": {
+    "string": "Przejrzyj i wyślij"
+  },
+  "send_confirming_in": {
+    "string": "Potwierdzone w ciągu"
+  },
+  "send_invoice_expiration": {
+    "string": "Termin faktury"
+  },
+  "send_swipe": {
+    "string": "Przesuń palcem by zapłacić"
+  },
+  "send_yes": {
+    "string": "Tak, wyślij"
+  },
+  "send_dialog1": {
+    "string": "Wygląda na to, że wysyłasz ponad $100. Czy kontynuować?"
+  },
+  "send_dialog2": {
+    "string": "Wygląda na to, że wysyłasz ponad 50% swojego salda. Czy kontynuować?"
+  },
+  "activity_successful": {
+    "string": "Sukces"
+  },
+  "activity_invoice": {
+    "string": "Faktura"
+  },
+  "lnurl_p_title": {
+    "string": "Wyślij Bitcoin"
+  }
 }

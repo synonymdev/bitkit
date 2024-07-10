@@ -1,40 +1,72 @@
 {
   "backupSeedPhrase": {
-    "title": "Copia de seguridad"
+    "title": {
+      "string": "Copia de seguridad"
+    }
   },
   "discount": {
-    "description": "Saldo de gastos"
+    "description": {
+      "string": "Saldo de gastos"
+    }
   },
   "lightningSettingUp": {
-    "title": "Transferir"
+    "title": {
+      "string": "Transferir"
+    }
   },
   "lightningConnecting": {
-    "title": "Conectando",
-    "description": "Listo en unos 10 minutos"
+    "title": {
+      "string": "Conectando"
+    },
+    "description": {
+      "string": "Listo en unos 10 minutos"
+    }
   },
   "lightningReady": {
-    "title": "Preparado",
-    "description": "¡Conectado!"
+    "title": {
+      "string": "Preparado"
+    },
+    "description": {
+      "string": "¡Conectado!"
+    }
   },
   "transferPending": {
-    "title": "Transferir"
+    "title": {
+      "string": "Transferir"
+    }
   },
   "transferClosingChannel": {
-    "title": "Iniciando...",
-    "description": "Mantenga abierta la app"
+    "title": {
+      "string": "Iniciando..."
+    },
+    "description": {
+      "string": "Mantenga abierta la app"
+    }
   },
   "pin": {
-    "description": "Establezca un código PIN"
+    "description": {
+      "string": "Establezca un código PIN"
+    }
   },
   "slashtagsProfile": {
-    "title": "Perfil",
-    "description": "Introduzca sus datos"
+    "title": {
+      "string": "Perfil"
+    },
+    "description": {
+      "string": "Introduzca sus datos"
+    }
   },
   "support": {
-    "title": "Soporte"
+    "title": {
+      "string": "Soporte"
+    }
   },
   "btFailed": {
-    "description": "Inténtalo de nuevo"
+    "description": {
+      "string": "Inténtalo de nuevo"
+    }
   },
-  "suggestions": "Sugerencias"
+  "suggestions": {
+    "string": "Sugerencias"
+  }
 }

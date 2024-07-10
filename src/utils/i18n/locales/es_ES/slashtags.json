@@ -1,44 +1,128 @@
 {
-  "your_name": "Apellido",
-  "your_name_capital": "Su Apellido",
-  "contact_name": "Nombre de contacto",
-  "contact": "Contactar",
-  "contacts": "Contactos",
-  "contact_add": "Añadir contacto",
-  "contact_add_capital": "Añadir contacto",
-  "contact_add_explain": "Añada un nuevo contacto escaneando su QR o pegando su clave a continuación.",
-  "contact_add_button": "Añadir",
-  "contact_key_paste": "Pegar una llave",
-  "contact_error_yourself": "No puede añadirse a sí mismo como contacto.",
-  "contact_error_key": "No es una llave válida.",
-  "contact_edit_capital": "Editar contacto",
-  "contacts_name": "Apellido del contacto",
-  "contact_retrieving": "Confirmando\ninformación de contacto...",
-  "contact_no_links": "Aún no se han añadido enlaces...",
-  "contact_share": "Compartir clave de perfil",
-  "contact_this": "este contacto",
-  "contact_delete_yes": "Sí, Borrar",
-  "contact_select": "Seleccionar contacto",
-  "contact_assign": "Asignar contacto",
-  "contacts_no_found": "No se han encontrado contactos",
-  "disabled": "Slashtags desactivadas",
-  "onboarding_profile2_text": "Usted y sus contactos pueden utilizar Bitkit para enviar pagos directamente, sin bancos, en cualquier momento y en cualquier lugar.",
-  "my_profile": "Mi perfil",
-  "profile": "Perfil",
-  "profile_save": "Guardar perfil",
-  "profile_pay_contacts": "Pague a sus contactos",
-  "profile_create": "Crear perfil",
-  "profile_add_link": "Añadir enlace",
-  "profile_link_label_placeholder": "Por ejemplo \"Sitio web\"",
-  "profile_link_value": "Enlace o texto",
-  "profile_link_public": "Nota: Cualquier enlace que añada será públicamente visible.",
-  "profile_link_suggestions": "Sugerencias",
-  "profile_link_suggestions_to_add": "Sugerencias para añadir",
-  "offline_enable": "Habilitar pagos con contactos*",
-  "widgets": "Widgets",
-  "widget_add": "Añadir Widget",
-  "widget_price": "Precio del Bitcoin",
-  "widget_qr": "O escanear QR",
-  "widget_edit_custom": "Personalizar",
-  "widget_delete_yes": "Sí, Borrar"
+  "your_name": {
+    "string": "Apellido"
+  },
+  "your_name_capital": {
+    "string": "Su Apellido"
+  },
+  "contact_name": {
+    "string": "Nombre de contacto"
+  },
+  "contact": {
+    "string": "Contactar"
+  },
+  "contacts": {
+    "string": "Contactos"
+  },
+  "contact_add": {
+    "string": "Añadir contacto"
+  },
+  "contact_add_capital": {
+    "string": "Añadir contacto"
+  },
+  "contact_add_explain": {
+    "string": "Añada un nuevo contacto escaneando su QR o pegando su clave a continuación."
+  },
+  "contact_add_button": {
+    "string": "Añadir"
+  },
+  "contact_key_paste": {
+    "string": "Pegar una llave"
+  },
+  "contact_error_yourself": {
+    "string": "No puede añadirse a sí mismo como contacto."
+  },
+  "contact_error_key": {
+    "string": "No es una llave válida."
+  },
+  "contact_edit_capital": {
+    "string": "Editar contacto"
+  },
+  "contacts_name": {
+    "string": "Apellido del contacto"
+  },
+  "contact_retrieving": {
+    "string": "Confirmando\ninformación de contacto..."
+  },
+  "contact_no_links": {
+    "string": "Aún no se han añadido enlaces..."
+  },
+  "contact_share": {
+    "string": "Compartir clave de perfil"
+  },
+  "contact_this": {
+    "string": "este contacto"
+  },
+  "contact_delete_yes": {
+    "string": "Sí, Borrar"
+  },
+  "contact_select": {
+    "string": "Seleccionar contacto"
+  },
+  "contact_assign": {
+    "string": "Asignar contacto"
+  },
+  "contacts_no_found": {
+    "string": "No se han encontrado contactos"
+  },
+  "disabled": {
+    "string": "Slashtags desactivadas"
+  },
+  "onboarding_profile2_text": {
+    "string": "Usted y sus contactos pueden utilizar Bitkit para enviar pagos directamente, sin bancos, en cualquier momento y en cualquier lugar."
+  },
+  "my_profile": {
+    "string": "Mi perfil"
+  },
+  "profile": {
+    "string": "Perfil"
+  },
+  "profile_save": {
+    "string": "Guardar perfil"
+  },
+  "profile_pay_contacts": {
+    "string": "Pague a sus contactos"
+  },
+  "profile_create": {
+    "string": "Crear perfil"
+  },
+  "profile_add_link": {
+    "string": "Añadir enlace"
+  },
+  "profile_link_label_placeholder": {
+    "string": "Por ejemplo \"Sitio web\""
+  },
+  "profile_link_value": {
+    "string": "Enlace o texto"
+  },
+  "profile_link_public": {
+    "string": "Nota: Cualquier enlace que añada será públicamente visible."
+  },
+  "profile_link_suggestions": {
+    "string": "Sugerencias"
+  },
+  "profile_link_suggestions_to_add": {
+    "string": "Sugerencias para añadir"
+  },
+  "offline_enable": {
+    "string": "Habilitar pagos con contactos*"
+  },
+  "widgets": {
+    "string": "Widgets"
+  },
+  "widget_add": {
+    "string": "Añadir Widget"
+  },
+  "widget_price": {
+    "string": "Precio del Bitcoin"
+  },
+  "widget_qr": {
+    "string": "O escanear QR"
+  },
+  "widget_edit_custom": {
+    "string": "Personalizar"
+  },
+  "widget_delete_yes": {
+    "string": "Sí, Borrar"
+  }
 }

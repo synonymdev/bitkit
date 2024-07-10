@@ -1,31 +1,89 @@
 {
-  "advanced": "Fortgeschritten",
-  "continue": "Weiter",
-  "cancel": "Abbrechen",
-  "close": "Schließen",
-  "are_you_sure": "Bist du dir sicher?",
-  "yes_proceed": "Ja, Weiter",
-  "try_again": "Erneut versuchen",
-  "dialog_cancel": "Abbrechen",
-  "sat_vbyte": "₿ / vbyte",
-  "sat_vbyte_compact": "₿ / vByte",
-  "edit": "Bearbeiten",
-  "copy": "Kopieren",
-  "share": "Teilen",
-  "search": "Suchen",
-  "discard": "Verwerfen",
-  "save": "Speichern",
-  "done": "Fertig",
-  "delete": "Löschen",
-  "ok": "OK",
-  "awesome": "Wunderbar!",
-  "retry": "Wiederholen",
-  "later": "Später",
-  "skip": "Überspringen",
-  "copied": "In die Zwischenablage kopiert",
-  "yes": "Ja",
-  "no": "Nein",
-  "back": "Zurück",
-  "understood": "Verstanden",
-  "connect": "Verbinden"
+  "advanced": {
+    "string": "Fortgeschritten"
+  },
+  "continue": {
+    "string": "Weiter"
+  },
+  "cancel": {
+    "string": "Abbrechen"
+  },
+  "close": {
+    "string": "Schließen"
+  },
+  "are_you_sure": {
+    "string": "Bist du dir sicher?"
+  },
+  "yes_proceed": {
+    "string": "Ja, Weiter"
+  },
+  "try_again": {
+    "string": "Erneut versuchen"
+  },
+  "dialog_cancel": {
+    "string": "Abbrechen"
+  },
+  "sat_vbyte": {
+    "string": "₿ / vbyte"
+  },
+  "sat_vbyte_compact": {
+    "string": "₿ / vByte"
+  },
+  "edit": {
+    "string": "Bearbeiten"
+  },
+  "copy": {
+    "string": "Kopieren"
+  },
+  "share": {
+    "string": "Teilen"
+  },
+  "search": {
+    "string": "Suchen"
+  },
+  "discard": {
+    "string": "Verwerfen"
+  },
+  "save": {
+    "string": "Speichern"
+  },
+  "done": {
+    "string": "Fertig"
+  },
+  "delete": {
+    "string": "Löschen"
+  },
+  "ok": {
+    "string": "OK"
+  },
+  "awesome": {
+    "string": "Wunderbar!"
+  },
+  "retry": {
+    "string": "Wiederholen"
+  },
+  "later": {
+    "string": "Später"
+  },
+  "skip": {
+    "string": "Überspringen"
+  },
+  "copied": {
+    "string": "In die Zwischenablage kopiert"
+  },
+  "yes": {
+    "string": "Ja"
+  },
+  "no": {
+    "string": "Nein"
+  },
+  "back": {
+    "string": "Zurück"
+  },
+  "understood": {
+    "string": "Verstanden"
+  },
+  "connect": {
+    "string": "Verbinden"
+  }
 }

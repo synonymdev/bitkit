@@ -1,38 +1,86 @@
 {
   "instant": {
-    "title": "Okamžitě",
-    "description": "+/- 2-10 sekund",
-    "shortRange": "2-10s",
-    "shortDescription": "+/- 2s"
+    "title": {
+      "string": "Okamžitě"
+    },
+    "description": {
+      "string": "+/- 2-10 sekund"
+    },
+    "shortRange": {
+      "string": "2-10s"
+    },
+    "shortDescription": {
+      "string": "+/- 2s"
+    }
   },
   "fast": {
-    "title": "Rychle",
-    "description": "+/- 10-20 minut",
-    "shortRange": "10-20m",
-    "shortDescription": "+/- 10m"
+    "title": {
+      "string": "Rychle"
+    },
+    "description": {
+      "string": "+/- 10-20 minut"
+    },
+    "shortRange": {
+      "string": "10-20m"
+    },
+    "shortDescription": {
+      "string": "+/- 10m"
+    }
   },
   "normal": {
-    "title": "Standardní",
-    "description": "+/- 20-60 minut",
-    "shortRange": "20-60m",
-    "shortDescription": "+/- 20m"
+    "title": {
+      "string": "Standardní"
+    },
+    "description": {
+      "string": "+/- 20-60 minut"
+    },
+    "shortRange": {
+      "string": "20-60m"
+    },
+    "shortDescription": {
+      "string": "+/- 20m"
+    }
   },
   "slow": {
-    "title": "Pomalu",
-    "description": "+/- 1-2 hodiny",
-    "shortRange": "1-2h",
-    "shortDescription": "+/- 1h"
+    "title": {
+      "string": "Pomalu"
+    },
+    "description": {
+      "string": "+/- 1-2 hodiny"
+    },
+    "shortRange": {
+      "string": "1-2h"
+    },
+    "shortDescription": {
+      "string": "+/- 1h"
+    }
   },
   "minimum": {
-    "title": "Minimum",
-    "description": "+2 hodiny",
-    "shortRange": "+2h",
-    "shortDescription": "+ 2h"
+    "title": {
+      "string": "Minimum"
+    },
+    "description": {
+      "string": "+2 hodiny"
+    },
+    "shortRange": {
+      "string": "+2h"
+    },
+    "shortDescription": {
+      "string": "+ 2h"
+    }
   },
   "custom": {
-    "title": "Vlastní",
-    "description": "Odvíjí se od poplatku",
-    "shortRange": "Odvíjí se od poplatku",
-    "shortDescription": "Odvíjí se od poplatku"
+    "title": {
+      "string": "Vlastní"
+    },
+    "description": {
+      "string": "Odvíjí se od poplatku"
+    },
+    "shortRange": {
+      "string": "Odvíjí se od poplatku"
+    },
+    "shortDescription": {
+      "string": "Odvíjí se od poplatku"
+    }
   }
 }

@@ -1,63 +1,125 @@
 {
   "backupSeedPhrase": {
-    "title": "Бекап",
-    "description": "Храните ваш биткоин"
+    "title": {
+      "string": "Бекап"
+    },
+    "description": {
+      "string": "Храните ваш биткоин"
+    }
   },
   "discount": {
-    "title": "Скидка",
-    "description": "Баланс расходов"
+    "title": {
+      "string": "Скидка"
+    },
+    "description": {
+      "string": "Баланс расходов"
+    }
   },
   "fastpay": {
-    "title": "Быстроплата",
-    "description": "Сканируйте и платите"
+    "title": {
+      "string": "Быстроплата"
+    },
+    "description": {
+      "string": "Сканируйте и платите"
+    }
   },
   "invite": {
-    "title": "Пригласить",
-    "description": "Поделитесь Bitkit"
+    "title": {
+      "string": "Пригласить"
+    },
+    "description": {
+      "string": "Поделитесь Bitkit"
+    }
   },
   "lightning": {
-    "title": "Тратить",
-    "description": "Мгновенные платежи"
+    "title": {
+      "string": "Тратить"
+    },
+    "description": {
+      "string": "Мгновенные платежи"
+    }
   },
   "lightningSettingUp": {
-    "title": "Настройка",
-    "description": "Идёт процесс..."
+    "title": {
+      "string": "Настройка"
+    },
+    "description": {
+      "string": "Идёт процесс..."
+    }
   },
   "lightningConnecting": {
-    "title": "Подключение",
-    "description": "Готово за ±10м"
+    "title": {
+      "string": "Подключение"
+    },
+    "description": {
+      "string": "Готово за ±10м"
+    }
   },
   "lightningReady": {
-    "title": "Готово",
-    "description": "Подключено!"
+    "title": {
+      "string": "Готово"
+    },
+    "description": {
+      "string": "Подключено!"
+    }
   },
   "transferPending": {
-    "title": "Перенос",
-    "description": "Готово за ±{duration}"
+    "title": {
+      "string": "Перенос"
+    },
+    "description": {
+      "string": "Готово за ±{duration}"
+    }
   },
   "transferClosingChannel": {
-    "title": "Запуск...",
-    "description": "Держите приложение открытым"
+    "title": {
+      "string": "Запуск..."
+    },
+    "description": {
+      "string": "Держите приложение открытым"
+    }
   },
   "pin": {
-    "title": "Безопасность",
-    "description": "Установите PIN-код"
+    "title": {
+      "string": "Безопасность"
+    },
+    "description": {
+      "string": "Установите PIN-код"
+    }
   },
   "slashtagsProfile": {
-    "title": "Профиль",
-    "description": "Добавьте детали"
+    "title": {
+      "string": "Профиль"
+    },
+    "description": {
+      "string": "Добавьте детали"
+    }
   },
   "support": {
-    "title": "Поддержка",
-    "description": "Получите помощь"
+    "title": {
+      "string": "Поддержка"
+    },
+    "description": {
+      "string": "Получите помощь"
+    }
   },
   "buyBitcoin": {
-    "title": "Купить",
-    "description": "Купите биткоин"
+    "title": {
+      "string": "Купить"
+    },
+    "description": {
+      "string": "Купите биткоин"
+    }
   },
   "btFailed": {
-    "title": "Не удалось",
-    "description": "Попробуйте снова"
+    "title": {
+      "string": "Не удалось"
+    },
+    "description": {
+      "string": "Попробуйте снова"
+    }
   },
-  "suggestions": "Рекомендации"
+  "suggestions": {
+    "string": "Рекомендации"
+  }
 }

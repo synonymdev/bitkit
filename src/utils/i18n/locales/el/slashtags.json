@@ -1,4 +1,8 @@
 {
-  "profile_link_suggestions": "Προτάσεις",
-  "widget_edit_custom": "Προσαρμοσμένο"
+  "profile_link_suggestions": {
+    "string": "Προτάσεις"
+  },
+  "widget_edit_custom": {
+    "string": "Προσαρμοσμένο"
+  }
 }

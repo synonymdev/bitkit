@@ -1,38 +1,86 @@
 {
   "instant": {
-    "title": "Instant",
-    "description": "±2-10 segons",
-    "shortRange": "2-10s",
-    "shortDescription": "±2s"
+    "title": {
+      "string": "Instant"
+    },
+    "description": {
+      "string": "±2-10 segons"
+    },
+    "shortRange": {
+      "string": "2-10s"
+    },
+    "shortDescription": {
+      "string": "±2s"
+    }
   },
   "fast": {
-    "title": "Ràpid",
-    "description": "±10-20 minuts",
-    "shortRange": "10-20m",
-    "shortDescription": "±10m"
+    "title": {
+      "string": "Ràpid"
+    },
+    "description": {
+      "string": "±10-20 minuts"
+    },
+    "shortRange": {
+      "string": "10-20m"
+    },
+    "shortDescription": {
+      "string": "±10m"
+    }
   },
   "normal": {
-    "title": "Normal",
-    "description": "±20-60 minuts",
-    "shortRange": "20-60m",
-    "shortDescription": "±20m"
+    "title": {
+      "string": "Normal"
+    },
+    "description": {
+      "string": "±20-60 minuts"
+    },
+    "shortRange": {
+      "string": "20-60m"
+    },
+    "shortDescription": {
+      "string": "±20m"
+    }
   },
   "slow": {
-    "title": "Lent",
-    "description": "±1-2 hores",
-    "shortRange": "1-2h",
-    "shortDescription": "±1h"
+    "title": {
+      "string": "Lent"
+    },
+    "description": {
+      "string": "±1-2 hores"
+    },
+    "shortRange": {
+      "string": "1-2h"
+    },
+    "shortDescription": {
+      "string": "±1h"
+    }
   },
   "minimum": {
-    "title": "Mínim",
-    "description": "+2 hores",
-    "shortRange": "+2h",
-    "shortDescription": "+2h"
+    "title": {
+      "string": "Mínim"
+    },
+    "description": {
+      "string": "+2 hores"
+    },
+    "shortRange": {
+      "string": "+2h"
+    },
+    "shortDescription": {
+      "string": "+2h"
+    }
   },
   "custom": {
-    "title": "Personalitzat",
-    "description": "Depèn de la tarifa",
-    "shortRange": "Depèn de la tarifa",
-    "shortDescription": "Depèn de la tarifa"
+    "title": {
+      "string": "Personalitzat"
+    },
+    "description": {
+      "string": "Depèn de la tarifa"
+    },
+    "shortRange": {
+      "string": "Depèn de la tarifa"
+    },
+    "shortDescription": {
+      "string": "Depèn de la tarifa"
+    }
   }
 }

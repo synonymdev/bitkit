@@ -1,63 +1,125 @@
 {
   "backupSeedPhrase": {
-    "title": "Záloha",
-    "description": "Uložte si svůj bitcoin"
+    "title": {
+      "string": "Záloha"
+    },
+    "description": {
+      "string": "Uložte si svůj bitcoin"
+    }
   },
   "discount": {
-    "title": "Sleva",
-    "description": "Dostupný zůstatek"
+    "title": {
+      "string": "Sleva"
+    },
+    "description": {
+      "string": "Dostupný zůstatek"
+    }
   },
   "fastpay": {
-    "title": "Fastpay",
-    "description": "Naskenuj a zaplať"
+    "title": {
+      "string": "Fastpay"
+    },
+    "description": {
+      "string": "Naskenuj a zaplať"
+    }
   },
   "invite": {
-    "title": "Pozvat",
-    "description": "Sdílet Bitkit"
+    "title": {
+      "string": "Pozvat"
+    },
+    "description": {
+      "string": "Sdílet Bitkit"
+    }
   },
   "lightning": {
-    "title": "Utratit",
-    "description": "Okamžité platby"
+    "title": {
+      "string": "Utratit"
+    },
+    "description": {
+      "string": "Okamžité platby"
+    }
   },
   "lightningSettingUp": {
-    "title": "Převod",
-    "description": "Probíhá..."
+    "title": {
+      "string": "Převod"
+    },
+    "description": {
+      "string": "Probíhá..."
+    }
   },
   "lightningConnecting": {
-    "title": "Připojování",
-    "description": "Připraveno za ±10 m"
+    "title": {
+      "string": "Připojování"
+    },
+    "description": {
+      "string": "Připraveno za ±10 m"
+    }
   },
   "lightningReady": {
-    "title": "Připraveno",
-    "description": "Připojeno!"
+    "title": {
+      "string": "Připraveno"
+    },
+    "description": {
+      "string": "Připojeno!"
+    }
   },
   "transferPending": {
-    "title": "Převod",
-    "description": "Připraveno za ±{duration}"
+    "title": {
+      "string": "Převod"
+    },
+    "description": {
+      "string": "Připraveno za ±{duration}"
+    }
   },
   "transferClosingChannel": {
-    "title": "Inicializace...",
-    "description": "Nechte aplikaci otevřenou"
+    "title": {
+      "string": "Inicializace..."
+    },
+    "description": {
+      "string": "Nechte aplikaci otevřenou"
+    }
   },
   "pin": {
-    "title": "Zabezpečit",
-    "description": "Nastavte PIN kód"
+    "title": {
+      "string": "Zabezpečit"
+    },
+    "description": {
+      "string": "Nastavte PIN kód"
+    }
   },
   "slashtagsProfile": {
-    "title": "Profil",
-    "description": "Doplňte své údaje"
+    "title": {
+      "string": "Profil"
+    },
+    "description": {
+      "string": "Doplňte své údaje"
+    }
   },
   "support": {
-    "title": "Podpora",
-    "description": "Získejte pomoc"
+    "title": {
+      "string": "Podpora"
+    },
+    "description": {
+      "string": "Získejte pomoc"
+    }
   },
   "buyBitcoin": {
-    "title": "Koupit",
-    "description": "Koupit bitcoin"
+    "title": {
+      "string": "Koupit"
+    },
+    "description": {
+      "string": "Koupit bitcoin"
+    }
   },
   "btFailed": {
-    "title": "Selhání",
-    "description": "Prosím, zkuste to znovu."
+    "title": {
+      "string": "Selhání"
+    },
+    "description": {
+      "string": "Prosím, zkuste to znovu."
+    }
   },
-  "suggestions": "Návrhy"
+  "suggestions": {
+    "string": "Návrhy"
+  }
 }

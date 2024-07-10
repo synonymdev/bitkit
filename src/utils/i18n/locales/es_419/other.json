@@ -1,32 +1,88 @@
 {
-  "beta": "BETA",
-  "beta_warn": "No guarde todo su dinero en Bitkit.",
-  "qr_scan": "Escanear código QR",
-  "qr_error_network_header": "Red incorrecta",
-  "qr_error_network_text": "Bitkit está actualmente configurado para {selectedNetwork} pero los datos son para {dataNetwork}.",
-  "qr_paste": "Pegar código QR",
-  "high_balance": {
-    "nav_title": "Saldo Elevado",
-    "continue": "Comprendido",
-    "cancel": "Más informaciónes"
+  "beta": {
+    "string": "BETA"
   },
-  "update_critical_nav_title": "Actualización Crítica",
-  "update_critical_button": "Actualizar Bitkit",
-  "camera_ask_title": "Permiso para utilizar la cámara",
-  "camera_ask_msg": "Bitkit necesita permiso para utilizar su cámara",
-  "clipboard_redirect_title": "Datos del portapapeles detectados",
-  "clipboard_redirect_msg": "¿Desea ser redirigido a la pantalla correspondiente?",
-  "swipe": "Deslizar para confirmar",
-  "scan_err_decoding": "Error de descodificación",
-  "scan_err_interpret_title": "Incapaz de Interpretar los Datos Proporcionados",
-  "scan_err_interpret_msg": "Bitkit no puede interpretar los datos proporcionados.",
-  "lnurl_channel_host": "Anfitrión",
-  "lnurl_channel_port": "Puerta",
-  "lnurl_channel_success_msg_peer": "Canal solicitado con éxito a: {peer}",
-  "lnurl_channel_success_msg_no_peer": "Canal solicitado con éxito.",
-  "lnurl_withdr_success_title": "Retirada solicitada",
-  "bt_channel_purchase_cost_error": "Necesitas {delta} más para completar esta transacción.",
-  "earlier": "MÁS RÁPIDO",
-  "update_nav_title": "Actualización Disponible",
-  "update_text": "¡Por favor, actualice Bitkit a la última versión para obtener nuevas características y correcciones de errores!"
+  "beta_warn": {
+    "string": "No guarde todo su dinero en Bitkit."
+  },
+  "qr_scan": {
+    "string": "Escanear código QR"
+  },
+  "qr_error_network_header": {
+    "string": "Red incorrecta"
+  },
+  "qr_error_network_text": {
+    "string": "Bitkit está actualmente configurado para {selectedNetwork} pero los datos son para {dataNetwork}."
+  },
+  "qr_paste": {
+    "string": "Pegar código QR"
+  },
+  "high_balance": {
+    "nav_title": {
+      "string": "Saldo Elevado"
+    },
+    "continue": {
+      "string": "Comprendido"
+    },
+    "cancel": {
+      "string": "Más informaciónes"
+    }
+  },
+  "update_critical_nav_title": {
+    "string": "Actualización Crítica"
+  },
+  "update_critical_button": {
+    "string": "Actualizar Bitkit"
+  },
+  "camera_ask_title": {
+    "string": "Permiso para utilizar la cámara"
+  },
+  "camera_ask_msg": {
+    "string": "Bitkit necesita permiso para utilizar su cámara"
+  },
+  "clipboard_redirect_title": {
+    "string": "Datos del portapapeles detectados"
+  },
+  "clipboard_redirect_msg": {
+    "string": "¿Desea ser redirigido a la pantalla correspondiente?"
+  },
+  "swipe": {
+    "string": "Deslizar para confirmar"
+  },
+  "scan_err_decoding": {
+    "string": "Error de descodificación"
+  },
+  "scan_err_interpret_title": {
+    "string": "Incapaz de Interpretar los Datos Proporcionados"
+  },
+  "scan_err_interpret_msg": {
+    "string": "Bitkit no puede interpretar los datos proporcionados."
+  },
+  "lnurl_channel_host": {
+    "string": "Anfitrión"
+  },
+  "lnurl_channel_port": {
+    "string": "Puerta"
+  },
+  "lnurl_channel_success_msg_peer": {
+    "string": "Canal solicitado con éxito a: {peer}"
+  },
+  "lnurl_channel_success_msg_no_peer": {
+    "string": "Canal solicitado con éxito."
+  },
+  "lnurl_withdr_success_title": {
+    "string": "Retirada solicitada"
+  },
+  "bt_channel_purchase_cost_error": {
+    "string": "Necesitas {delta} más para completar esta transacción."
+  },
+  "earlier": {
+    "string": "MÁS RÁPIDO"
+  },
+  "update_nav_title": {
+    "string": "Actualización Disponible"
+  },
+  "update_text": {
+    "string": "¡Por favor, actualice Bitkit a la última versión para obtener nuevas características y correcciones de errores!"
+  }
 }

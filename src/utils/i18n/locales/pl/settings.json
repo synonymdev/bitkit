@@ -1,21 +1,39 @@
 {
-  "settings": "Ustawienia",
+  "settings": {
+    "string": "Ustawienia"
+  },
   "about": {
-    "share": "Udostępnij"
+    "share": {
+      "string": "Udostępnij"
+    }
   },
   "backup": {
-    "category_settings": "Ustawienia"
+    "category_settings": {
+      "string": "Ustawienia"
+    }
   },
   "support": {
-    "text_button": "Wyślij",
-    "text_success_button": "OK",
-    "text_unsuccess_button": "Spróbuj ponownie"
+    "text_button": {
+      "string": "Wyślij"
+    },
+    "text_success_button": {
+      "string": "OK"
+    },
+    "text_unsuccess_button": {
+      "string": "Spróbuj ponownie"
+    }
   },
   "es": {
-    "host": "Host",
-    "port": "Port"
+    "host": {
+      "string": "Host"
+    },
+    "port": {
+      "string": "Port"
+    }
   },
   "gap": {
-    "save": "Zapisz"
+    "save": {
+      "string": "Zapisz"
+    }
   }
 }

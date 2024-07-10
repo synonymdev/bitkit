@@ -1,63 +1,125 @@
 {
   "backupSeedPhrase": {
-    "title": "Backup",
-    "description": "Conserva i tuoi bitcoin"
+    "title": {
+      "string": "Backup"
+    },
+    "description": {
+      "string": "Conserva i tuoi bitcoin"
+    }
   },
   "discount": {
-    "title": "Sconto",
-    "description": "Conto di spesa"
+    "title": {
+      "string": "Sconto"
+    },
+    "description": {
+      "string": "Conto di spesa"
+    }
   },
   "fastpay": {
-    "title": "Pagamento veloce",
-    "description": "Scansiona e paga"
+    "title": {
+      "string": "Pagamento veloce"
+    },
+    "description": {
+      "string": "Scansiona e paga"
+    }
   },
   "invite": {
-    "title": "Invita",
-    "description": "Condividi Bitkit"
+    "title": {
+      "string": "Invita"
+    },
+    "description": {
+      "string": "Condividi Bitkit"
+    }
   },
   "lightning": {
-    "title": "Spendi",
-    "description": "Pagamenti istantanei"
+    "title": {
+      "string": "Spendi"
+    },
+    "description": {
+      "string": "Pagamenti istantanei"
+    }
   },
   "lightningSettingUp": {
-    "title": "Trasferisci",
-    "description": "In corso..."
+    "title": {
+      "string": "Trasferisci"
+    },
+    "description": {
+      "string": "In corso..."
+    }
   },
   "lightningConnecting": {
-    "title": "Collegamento",
-    "description": "Pronto in ±10m"
+    "title": {
+      "string": "Collegamento"
+    },
+    "description": {
+      "string": "Pronto in ±10m"
+    }
   },
   "lightningReady": {
-    "title": "Pronto",
-    "description": "Connesso!"
+    "title": {
+      "string": "Pronto"
+    },
+    "description": {
+      "string": "Connesso!"
+    }
   },
   "transferPending": {
-    "title": "Trasferisci",
-    "description": "Pronto in ±{duration}"
+    "title": {
+      "string": "Trasferisci"
+    },
+    "description": {
+      "string": "Pronto in ±{duration}"
+    }
   },
   "transferClosingChannel": {
-    "title": "Inizializzazione...",
-    "description": "Tieni l'app aperta"
+    "title": {
+      "string": "Inizializzazione..."
+    },
+    "description": {
+      "string": "Tieni l'app aperta"
+    }
   },
   "pin": {
-    "title": "Sicuro",
-    "description": "Imposta un codice PIN"
+    "title": {
+      "string": "Sicuro"
+    },
+    "description": {
+      "string": "Imposta un codice PIN"
+    }
   },
   "slashtagsProfile": {
-    "title": "Profilo",
-    "description": "Aggiungi i tuoi dettagli"
+    "title": {
+      "string": "Profilo"
+    },
+    "description": {
+      "string": "Aggiungi i tuoi dettagli"
+    }
   },
   "support": {
-    "title": "Supporto",
-    "description": "Ottieni assistenza"
+    "title": {
+      "string": "Supporto"
+    },
+    "description": {
+      "string": "Ottieni assistenza"
+    }
   },
   "buyBitcoin": {
-    "title": "Compra",
-    "description": "Acquista dei bitcoin"
+    "title": {
+      "string": "Compra"
+    },
+    "description": {
+      "string": "Acquista dei bitcoin"
+    }
   },
   "btFailed": {
-    "title": "Fallito",
-    "description": "Per favore riprova"
+    "title": {
+      "string": "Fallito"
+    },
+    "description": {
+      "string": "Per favore riprova"
+    }
   },
-  "suggestions": "Consigli"
+  "suggestions": {
+    "string": "Consigli"
+  }
 }

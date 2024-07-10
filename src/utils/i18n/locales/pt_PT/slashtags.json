@@ -1,5 +1,11 @@
 {
-  "contact_your_name": "Nome público\ndo seu perfil",
-  "contact_retrieving": "Recebimento\ninformações de contato...",
-  "profile_link_label_placeholder": "Por exemplo, \"Website\"."
+  "contact_your_name": {
+    "string": "Nome público\ndo seu perfil"
+  },
+  "contact_retrieving": {
+    "string": "Recebimento\ninformações de contato..."
+  },
+  "profile_link_label_placeholder": {
+    "string": "Por exemplo, \"Website\"."
+  }
 }

@@ -1,155 +1,393 @@
 {
-  "settings": "Configuración",
-  "dev_enabled_title": "Opciones de desarrollo activadas",
-  "dev_disabled_title": "Opciones de desarrollo desactivadas",
-  "security_title": "Seguridad y Privacidad",
-  "advanced_title": "Avanzado",
-  "support_title": "Soporte",
-  "about": {
-    "title": "Sobre Bitkit",
-    "share": "Compartir",
-    "version": "Versión"
+  "settings": {
+    "string": "Configuración"
   },
-  "dev_title": "Ajustes de desarrollo",
+  "dev_enabled_title": {
+    "string": "Opciones de desarrollo activadas"
+  },
+  "dev_disabled_title": {
+    "string": "Opciones de desarrollo desactivadas"
+  },
+  "security_title": {
+    "string": "Seguridad y Privacidad"
+  },
+  "advanced_title": {
+    "string": "Avanzado"
+  },
+  "support_title": {
+    "string": "Soporte"
+  },
+  "about": {
+    "title": {
+      "string": "Sobre Bitkit"
+    },
+    "share": {
+      "string": "Compartir"
+    },
+    "version": {
+      "string": "Versión"
+    }
+  },
+  "dev_title": {
+    "string": "Ajustes de desarrollo"
+  },
   "general": {
-    "currency_local": "Moneda local",
-    "currency_local_title": "Moneda local",
-    "currency_footer": "Precios proporcionados por Bitfinex y CoinGecko.",
-    "currency_most_used": "Más utilizados",
-    "currency_other": "Otras monedas",
-    "unit": "Unidad predeterminada",
-    "unit_title": "Unidad Predeterminada",
-    "unit_display": "Mostrar cantidades en",
-    "unit_bitcoin": "Bitcoin",
-    "speed": "Velocidad de transacción",
-    "speed_title": "Velocidad de la Transacción",
-    "speed_default": "Velocidad de transacción predeterminada",
-    "speed_fee_custom": "Fijar tarifa personalizada",
-    "tags": "Etiquetas",
-    "tags_previously": "Etiquetas utilizadas anteriormente"
+    "currency_local": {
+      "string": "Moneda local"
+    },
+    "currency_local_title": {
+      "string": "Moneda local"
+    },
+    "currency_footer": {
+      "string": "Precios proporcionados por Bitfinex y CoinGecko."
+    },
+    "currency_most_used": {
+      "string": "Más utilizados"
+    },
+    "currency_other": {
+      "string": "Otras monedas"
+    },
+    "unit": {
+      "string": "Unidad predeterminada"
+    },
+    "unit_title": {
+      "string": "Unidad Predeterminada"
+    },
+    "unit_display": {
+      "string": "Mostrar cantidades en"
+    },
+    "unit_bitcoin": {
+      "string": "Bitcoin"
+    },
+    "speed": {
+      "string": "Velocidad de transacción"
+    },
+    "speed_title": {
+      "string": "Velocidad de la Transacción"
+    },
+    "speed_default": {
+      "string": "Velocidad de transacción predeterminada"
+    },
+    "speed_fee_custom": {
+      "string": "Fijar tarifa personalizada"
+    },
+    "tags": {
+      "string": "Etiquetas"
+    },
+    "tags_previously": {
+      "string": "Etiquetas utilizadas anteriormente"
+    }
   },
   "widgets": {
-    "nav_title": "Widgets",
-    "showWidgets": "Widgets"
+    "nav_title": {
+      "string": "Widgets"
+    },
+    "showWidgets": {
+      "string": "Widgets"
+    }
   },
   "security": {
-    "title": "Seguridad y Privacidad",
-    "swipe_balance_to_hide": "Desliza el saldo para ocultar",
-    "hide_balance_on_open": "Ocultar saldo al abrir",
-    "warn_100": "Advertir al enviar más de $100",
-    "pin": "Código PIN",
-    "pin_change": "Cambiar código PIN",
-    "pin_launch": "Pedir PIN al iniciar",
-    "pin_idle": "Pedir PIN en reposo",
-    "pin_payments": "Pedir PIN al realizar pagos",
-    "pin_enabled": "Activado",
-    "pin_disabled": "Desactivado"
+    "title": {
+      "string": "Seguridad y Privacidad"
+    },
+    "swipe_balance_to_hide": {
+      "string": "Desliza el saldo para ocultar"
+    },
+    "hide_balance_on_open": {
+      "string": "Ocultar saldo al abrir"
+    },
+    "warn_100": {
+      "string": "Advertir al enviar más de $100"
+    },
+    "pin": {
+      "string": "Código PIN"
+    },
+    "pin_change": {
+      "string": "Cambiar código PIN"
+    },
+    "pin_launch": {
+      "string": "Pedir PIN al iniciar"
+    },
+    "pin_idle": {
+      "string": "Pedir PIN en reposo"
+    },
+    "pin_payments": {
+      "string": "Pedir PIN al realizar pagos"
+    },
+    "pin_enabled": {
+      "string": "Activado"
+    },
+    "pin_disabled": {
+      "string": "Desactivado"
+    }
   },
   "backup": {
-    "wallet": "Respalda tu monedero",
-    "export": "Exportar datos del monedero al teléfono",
-    "reset": "Borrar y restaurar monedero",
-    "status_failed": "Respaldo fallido: {time}",
-    "status_success": "Último respaldo: {time}",
-    "category_connections": "Conexiones",
-    "category_transaction_log": "Registro de Transacciones",
-    "category_settings": "Ajustes",
-    "category_widgets": "Widgets",
-    "category_tags": "Etiquetas",
-    "category_profile": "Perfil",
-    "category_contacts": "Contactos"
+    "wallet": {
+      "string": "Respalda tu monedero"
+    },
+    "export": {
+      "string": "Exportar datos del monedero al teléfono"
+    },
+    "reset": {
+      "string": "Borrar y restaurar monedero"
+    },
+    "status_failed": {
+      "string": "Respaldo fallido: {time}"
+    },
+    "status_success": {
+      "string": "Último respaldo: {time}"
+    },
+    "category_connections": {
+      "string": "Conexiones"
+    },
+    "category_transaction_log": {
+      "string": "Registro de Transacciones"
+    },
+    "category_settings": {
+      "string": "Ajustes"
+    },
+    "category_widgets": {
+      "string": "Widgets"
+    },
+    "category_tags": {
+      "string": "Etiquetas"
+    },
+    "category_profile": {
+      "string": "Perfil"
+    },
+    "category_contacts": {
+      "string": "Contactos"
+    }
   },
   "support": {
-    "title": "Soporte",
-    "text_button": "Enviar",
-    "text_success_button": "OK",
-    "text_unsuccess_button": "Inténtelo de nuevo"
+    "title": {
+      "string": "Soporte"
+    },
+    "text_button": {
+      "string": "Enviar"
+    },
+    "text_success_button": {
+      "string": "OK"
+    },
+    "text_unsuccess_button": {
+      "string": "Inténtelo de nuevo"
+    }
   },
   "adv": {
-    "section_payments": "Pagos",
-    "section_networks": "Redes",
-    "section_other": "Otros",
-    "address_type": "Tipo de dirección Bitcoin",
-    "coin_selection": "Selección de monedas",
-    "cs_method": "Método de selección de monedas",
-    "cs_manual": "Manual",
-    "cs_auto": "Piloto automático",
-    "cs_auto_mode": "Modo de piloto automático",
-    "cs_min": "Fee más baja",
-    "cs_consolidate": "Consolidar",
-    "payment_preference": "Preferencia de pago",
-    "pp_contacts": "Pagar a/desde contactos",
-    "pp_contacts_switch": "Habilitar pagos con contactos*",
-    "address_viewer": "Visualizador de direcciones",
-    "rescan": "Volver a escanear direcciones",
-    "suggestions_reset": "Restablecer sugerencias",
-    "reset_title": "¿Restablecer sugerencias?",
-    "reset_desc": "¿Estás seguro de que deseas restablecer las sugerencias? Volverán a aparecer en caso de que las hayas eliminado de la vista general de tu monedero Bitkit.",
-    "reset_confirm": "Sí, restaurar",
-    "electrum_server": "Servidor Electrum",
-    "bitcoin_network": "Red Bitcoin"
+    "section_payments": {
+      "string": "Pagos"
+    },
+    "section_networks": {
+      "string": "Redes"
+    },
+    "section_other": {
+      "string": "Otros"
+    },
+    "address_type": {
+      "string": "Tipo de dirección Bitcoin"
+    },
+    "coin_selection": {
+      "string": "Selección de monedas"
+    },
+    "cs_method": {
+      "string": "Método de selección de monedas"
+    },
+    "cs_manual": {
+      "string": "Manual"
+    },
+    "cs_auto": {
+      "string": "Piloto automático"
+    },
+    "cs_auto_mode": {
+      "string": "Modo de piloto automático"
+    },
+    "cs_min": {
+      "string": "Fee más baja"
+    },
+    "cs_consolidate": {
+      "string": "Consolidar"
+    },
+    "payment_preference": {
+      "string": "Preferencia de pago"
+    },
+    "pp_contacts": {
+      "string": "Pagar a/desde contactos"
+    },
+    "pp_contacts_switch": {
+      "string": "Habilitar pagos con contactos*"
+    },
+    "address_viewer": {
+      "string": "Visualizador de direcciones"
+    },
+    "rescan": {
+      "string": "Volver a escanear direcciones"
+    },
+    "suggestions_reset": {
+      "string": "Restablecer sugerencias"
+    },
+    "reset_title": {
+      "string": "¿Restablecer sugerencias?"
+    },
+    "reset_desc": {
+      "string": "¿Estás seguro de que deseas restablecer las sugerencias? Volverán a aparecer en caso de que las hayas eliminado de la vista general de tu monedero Bitkit."
+    },
+    "reset_confirm": {
+      "string": "Sí, restaurar"
+    },
+    "electrum_server": {
+      "string": "Servidor Electrum"
+    },
+    "bitcoin_network": {
+      "string": "Red Bitcoin"
+    }
   },
   "fee": {
     "fast": {
-      "label": "Rápido (más caro)",
-      "value": "Rápido",
-      "description": "± 10-20 minutos"
+      "label": {
+        "string": "Rápido (más caro)"
+      },
+      "value": {
+        "string": "Rápido"
+      },
+      "description": {
+        "string": "± 10-20 minutos"
+      }
     },
     "normal": {
-      "label": "Normal",
-      "value": "Normal",
-      "description": "± 20-60 minutos"
+      "label": {
+        "string": "Normal"
+      },
+      "value": {
+        "string": "Normal"
+      },
+      "description": {
+        "string": "± 20-60 minutos"
+      }
     },
     "slow": {
-      "label": "Lento (más barato)",
-      "value": "Lento ",
-      "description": "± 1-2 horas"
+      "label": {
+        "string": "Lento (más barato)"
+      },
+      "value": {
+        "string": "Lento "
+      },
+      "description": {
+        "string": "± 1-2 horas"
+      }
     },
     "custom": {
-      "label": "Personalizar",
-      "value": "Personalizar",
-      "description": "Depende de la comisión"
+      "label": {
+        "string": "Personalizar"
+      },
+      "value": {
+        "string": "Personalizar"
+      },
+      "description": {
+        "string": "Depende de la comisión"
+      }
     }
   },
   "addr": {
-    "no_addrs": "No hay direcciones para mostrar",
-    "loading": "Cargando direcciones...",
-    "rescan_error": "Fallo en la reexploración",
-    "rescan_error_description": "Bitkit no ha podido comprobar los saldos de las direcciones.",
-    "path": "Ruta: {path}",
-    "private_hide": "Ocultar clave privada",
-    "private_view": "Ver clave privada",
-    "private_key": "Clave privada: {privateKey}",
-    "addr_change": "Cambiar direcciones",
-    "addr_receiving": "Direcciones de recibimiento",
-    "gen_20": "Generar 20 más",
-    "check_balances": "Consultar Saldos",
-    "copied": "Copiado al portapapeles"
+    "no_addrs": {
+      "string": "No hay direcciones para mostrar"
+    },
+    "loading": {
+      "string": "Cargando direcciones..."
+    },
+    "rescan_error": {
+      "string": "Fallo en la reexploración"
+    },
+    "rescan_error_description": {
+      "string": "Bitkit no ha podido comprobar los saldos de las direcciones."
+    },
+    "path": {
+      "string": "Ruta: {path}"
+    },
+    "private_hide": {
+      "string": "Ocultar clave privada"
+    },
+    "private_view": {
+      "string": "Ver clave privada"
+    },
+    "private_key": {
+      "string": "Clave privada: {privateKey}"
+    },
+    "addr_change": {
+      "string": "Cambiar direcciones"
+    },
+    "addr_receiving": {
+      "string": "Direcciones de recibimiento"
+    },
+    "gen_20": {
+      "string": "Generar 20 más"
+    },
+    "check_balances": {
+      "string": "Consultar Saldos"
+    },
+    "copied": {
+      "string": "Copiado al portapapeles"
+    }
   },
   "es": {
-    "error_host_port": "Especifique un host y una puerta al que conectarse.",
-    "error_host": "Por favor, especifique un host para conectarse.",
-    "error_port": "Especifique una puerta para conectarse.",
-    "error_port_invalid": "Indica un puerto válido.",
-    "error_invalid_http": "Indica una URL válida.",
-    "error_peer": "Error de Electrum",
-    "server_updated_title": "Servidor Electrum actualizado",
-    "server_updated_message": "Conexión exitosa a {host}:{port}",
-    "connected_to": "Actualmente conectado a",
-    "disconnected": "desconectado",
-    "host": "Anfitrión",
-    "port": "Puerta",
-    "protocol": "Protocolo",
-    "button_reset": "Restablecer configuraciones iniciales",
-    "button_connect": "Conectar con el anfitrión"
+    "error_host_port": {
+      "string": "Especifique un host y una puerta al que conectarse."
+    },
+    "error_host": {
+      "string": "Por favor, especifique un host para conectarse."
+    },
+    "error_port": {
+      "string": "Especifique una puerta para conectarse."
+    },
+    "error_port_invalid": {
+      "string": "Indica un puerto válido."
+    },
+    "error_invalid_http": {
+      "string": "Indica una URL válida."
+    },
+    "error_peer": {
+      "string": "Error de Electrum"
+    },
+    "server_updated_title": {
+      "string": "Servidor Electrum actualizado"
+    },
+    "server_updated_message": {
+      "string": "Conexión exitosa a {host}:{port}"
+    },
+    "connected_to": {
+      "string": "Actualmente conectado a"
+    },
+    "disconnected": {
+      "string": "desconectado"
+    },
+    "host": {
+      "string": "Anfitrión"
+    },
+    "port": {
+      "string": "Puerta"
+    },
+    "protocol": {
+      "string": "Protocolo"
+    },
+    "button_reset": {
+      "string": "Restablecer configuraciones iniciales"
+    },
+    "button_connect": {
+      "string": "Conectar con el anfitrión"
+    }
   },
   "gap": {
-    "save": "Guarde"
+    "save": {
+      "string": "Guarde"
+    }
   },
   "rgs": {
-    "button_connect": "Conectar"
+    "button_connect": {
+      "string": "Conectar"
+    }
   },
   "wr": {
-    "url_updated_message": "Conexión exitosa a {url}"
+    "url_updated_message": {
+      "string": "Conexión exitosa a {url}"
+    }
   }
 }

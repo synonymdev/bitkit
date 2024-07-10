@@ -1,5 +1,7 @@
 {
   "high_balance": {
-    "continue": "Κατανοητό"
+    "continue": {
+      "string": "Κατανοητό"
+    }
   }
 }

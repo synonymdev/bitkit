@@ -1,38 +1,86 @@
 {
   "instant": {
-    "title": "Мгновенно",
-    "description": "±2-10 секунд",
-    "shortRange": "2-10с",
-    "shortDescription": "±2с"
+    "title": {
+      "string": "Мгновенно"
+    },
+    "description": {
+      "string": "±2-10 секунд"
+    },
+    "shortRange": {
+      "string": "2-10с"
+    },
+    "shortDescription": {
+      "string": "±2с"
+    }
   },
   "fast": {
-    "title": "Быстро",
-    "description": "±10-20 минут",
-    "shortRange": "10-20м",
-    "shortDescription": "±10м"
+    "title": {
+      "string": "Быстро"
+    },
+    "description": {
+      "string": "±10-20 минут"
+    },
+    "shortRange": {
+      "string": "10-20м"
+    },
+    "shortDescription": {
+      "string": "±10м"
+    }
   },
   "normal": {
-    "title": "Нормально",
-    "description": "±20-60 минут",
-    "shortRange": "20-60м",
-    "shortDescription": "±20м"
+    "title": {
+      "string": "Нормально"
+    },
+    "description": {
+      "string": "±20-60 минут"
+    },
+    "shortRange": {
+      "string": "20-60м"
+    },
+    "shortDescription": {
+      "string": "±20м"
+    }
   },
   "slow": {
-    "title": "Медленно",
-    "description": "±1-2 часов",
-    "shortRange": "1-2ч",
-    "shortDescription": "±1ч"
+    "title": {
+      "string": "Медленно"
+    },
+    "description": {
+      "string": "±1-2 часов"
+    },
+    "shortRange": {
+      "string": "1-2ч"
+    },
+    "shortDescription": {
+      "string": "±1ч"
+    }
   },
   "minimum": {
-    "title": "Минимум",
-    "description": "+2 часа",
-    "shortRange": "+2ч",
-    "shortDescription": "+2ч"
+    "title": {
+      "string": "Минимум"
+    },
+    "description": {
+      "string": "+2 часа"
+    },
+    "shortRange": {
+      "string": "+2ч"
+    },
+    "shortDescription": {
+      "string": "+2ч"
+    }
   },
   "custom": {
-    "title": "Другое",
-    "description": "Зависит от комиссии",
-    "shortRange": "Зависит от комиссии",
-    "shortDescription": "Зависит от комиссии"
+    "title": {
+      "string": "Другое"
+    },
+    "description": {
+      "string": "Зависит от комиссии"
+    },
+    "shortRange": {
+      "string": "Зависит от комиссии"
+    },
+    "shortDescription": {
+      "string": "Зависит от комиссии"
+    }
   }
 }

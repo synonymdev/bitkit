@@ -1,31 +1,89 @@
 {
-  "advanced": "Avancé",
-  "continue": "Continue",
-  "cancel": "Annuler",
-  "close": "Fermer",
-  "are_you_sure": "Êtes-vous sûr ?",
-  "yes_proceed": "Oui, poursuivre",
-  "try_again": "Réessayer",
-  "dialog_cancel": "Non, annuler",
-  "sat_vbyte": "₿ / vbyte",
-  "sat_vbyte_compact": "₿/vbyte",
-  "edit": "Éditer",
-  "copy": "Copier",
-  "share": "Partager",
-  "search": "Recherche",
-  "discard": "Abandon",
-  "save": "Enregistrer",
-  "done": "Terminé",
-  "delete": "Supprimer",
-  "ok": "OK",
-  "awesome": "Génial !",
-  "retry": "Réessayer",
-  "later": "Plus tard",
-  "skip": "Ignorer",
-  "copied": "Copié dans le presse-papiers",
-  "yes": "Oui",
-  "no": "Non",
-  "back": "Retour",
-  "understood": "Compris",
-  "connect": "Connecter"
+  "advanced": {
+    "string": "Avancé"
+  },
+  "continue": {
+    "string": "Continue"
+  },
+  "cancel": {
+    "string": "Annuler"
+  },
+  "close": {
+    "string": "Fermer"
+  },
+  "are_you_sure": {
+    "string": "Êtes-vous sûr ?"
+  },
+  "yes_proceed": {
+    "string": "Oui, poursuivre"
+  },
+  "try_again": {
+    "string": "Réessayer"
+  },
+  "dialog_cancel": {
+    "string": "Non, annuler"
+  },
+  "sat_vbyte": {
+    "string": "₿ / vbyte"
+  },
+  "sat_vbyte_compact": {
+    "string": "₿/vbyte"
+  },
+  "edit": {
+    "string": "Éditer"
+  },
+  "copy": {
+    "string": "Copier"
+  },
+  "share": {
+    "string": "Partager"
+  },
+  "search": {
+    "string": "Recherche"
+  },
+  "discard": {
+    "string": "Abandon"
+  },
+  "save": {
+    "string": "Enregistrer"
+  },
+  "done": {
+    "string": "Terminé"
+  },
+  "delete": {
+    "string": "Supprimer"
+  },
+  "ok": {
+    "string": "OK"
+  },
+  "awesome": {
+    "string": "Génial !"
+  },
+  "retry": {
+    "string": "Réessayer"
+  },
+  "later": {
+    "string": "Plus tard"
+  },
+  "skip": {
+    "string": "Ignorer"
+  },
+  "copied": {
+    "string": "Copié dans le presse-papiers"
+  },
+  "yes": {
+    "string": "Oui"
+  },
+  "no": {
+    "string": "Non"
+  },
+  "back": {
+    "string": "Retour"
+  },
+  "understood": {
+    "string": "Compris"
+  },
+  "connect": {
+    "string": "Connecter"
+  }
 }

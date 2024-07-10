@@ -5,8 +5,8 @@ import {
 	signK1,
 } from '@synonymdev/react-native-lnurl';
 import { LNURLAuthParams } from 'js-lnurl';
-import { EAvailableNetwork } from '../src/utils/networks';
 import { EAvailableNetworks } from '@synonymdev/react-native-lnurl/dist/utils/types';
+import { EAvailableNetwork } from '../src/utils/networks';
 
 const mnemonic =
 	'stable inch effort skull suggest circle charge lemon amazing clean giant quantum party grow visa best rule icon gown disagree win drop smile love';

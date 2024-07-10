@@ -1,3 +1,5 @@
 {
-  "skip": "Pomiń"
+  "skip": {
+    "string": "Pomiń"
+  }
 }

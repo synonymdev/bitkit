@@ -1,28 +1,80 @@
 {
-  "advanced": "Avanzado",
-  "continue": "Continúe en",
-  "cancel": "Cancelar",
-  "close": "Cerrar",
-  "are_you_sure": "¿Está seguro?",
-  "yes_proceed": "Sí, proceda",
-  "try_again": "Inténtelo de nuevo",
-  "dialog_cancel": "No, Cancelar",
-  "edit": "Editar",
-  "copy": "Copiar",
-  "share": "Compartir",
-  "search": "Busqueda",
-  "discard": "Descarte",
-  "save": "Guarde",
-  "done": "Listo",
-  "delete": "Borrar",
-  "ok": "OK",
-  "retry": "Vuelva a intentarlo",
-  "later": "Más tarde",
-  "skip": "Saltar",
-  "copied": "Copiado Al Portapapeles",
-  "yes": "Sí",
-  "no": "No",
-  "back": "Volver",
-  "understood": "Entendido",
-  "connect": "Conectar"
+  "advanced": {
+    "string": "Avanzado"
+  },
+  "continue": {
+    "string": "Continúe en"
+  },
+  "cancel": {
+    "string": "Cancelar"
+  },
+  "close": {
+    "string": "Cerrar"
+  },
+  "are_you_sure": {
+    "string": "¿Está seguro?"
+  },
+  "yes_proceed": {
+    "string": "Sí, proceda"
+  },
+  "try_again": {
+    "string": "Inténtelo de nuevo"
+  },
+  "dialog_cancel": {
+    "string": "No, Cancelar"
+  },
+  "edit": {
+    "string": "Editar"
+  },
+  "copy": {
+    "string": "Copiar"
+  },
+  "share": {
+    "string": "Compartir"
+  },
+  "search": {
+    "string": "Busqueda"
+  },
+  "discard": {
+    "string": "Descarte"
+  },
+  "save": {
+    "string": "Guarde"
+  },
+  "done": {
+    "string": "Listo"
+  },
+  "delete": {
+    "string": "Borrar"
+  },
+  "ok": {
+    "string": "OK"
+  },
+  "retry": {
+    "string": "Vuelva a intentarlo"
+  },
+  "later": {
+    "string": "Más tarde"
+  },
+  "skip": {
+    "string": "Saltar"
+  },
+  "copied": {
+    "string": "Copiado Al Portapapeles"
+  },
+  "yes": {
+    "string": "Sí"
+  },
+  "no": {
+    "string": "No"
+  },
+  "back": {
+    "string": "Volver"
+  },
+  "understood": {
+    "string": "Entendido"
+  },
+  "connect": {
+    "string": "Conectar"
+  }
 }

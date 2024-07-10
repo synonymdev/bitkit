@@ -4,15 +4,18 @@ import ICU from 'i18next-icu';
 import * as RNLocalize from 'react-native-localize';
 
 import { __ENABLE_I18NEXT_DEBUGGER__ } from '../../constants/env';
-import resources from './locales';
+import locales from './locales';
 import { dispatch } from '../../store/helpers';
 import { updateUi } from '../../store/slices/ui';
+import convert from './convert';
 
 const getDeviceLanguage = (): string => {
 	const lang =
-		RNLocalize.findBestLanguageTag(Object.keys(resources))?.languageTag ?? 'en';
+		RNLocalize.findBestLanguageTag(Object.keys(locales))?.languageTag ?? 'en';
 	return lang;
 };
+
+const resources = convert(locales);
 
 export const defaultNS = 'common';
 

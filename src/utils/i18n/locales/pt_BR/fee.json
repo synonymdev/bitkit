@@ -1,38 +1,86 @@
 {
   "instant": {
-    "title": "Instantâneo",
-    "description": "±2-10 segundos",
-    "shortRange": "2-10s",
-    "shortDescription": "±2s"
+    "title": {
+      "string": "Instantâneo"
+    },
+    "description": {
+      "string": "±2-10 segundos"
+    },
+    "shortRange": {
+      "string": "2-10s"
+    },
+    "shortDescription": {
+      "string": "±2s"
+    }
   },
   "fast": {
-    "title": "Rápido",
-    "description": "±10-20 minutos",
-    "shortRange": "10-20m",
-    "shortDescription": "±10m"
+    "title": {
+      "string": "Rápido"
+    },
+    "description": {
+      "string": "±10-20 minutos"
+    },
+    "shortRange": {
+      "string": "10-20m"
+    },
+    "shortDescription": {
+      "string": "±10m"
+    }
   },
   "normal": {
-    "title": "Normal",
-    "description": "±20-60 minutos",
-    "shortRange": "20-60m",
-    "shortDescription": "±20m"
+    "title": {
+      "string": "Normal"
+    },
+    "description": {
+      "string": "±20-60 minutos"
+    },
+    "shortRange": {
+      "string": "20-60m"
+    },
+    "shortDescription": {
+      "string": "±20m"
+    }
   },
   "slow": {
-    "title": "Devagar",
-    "description": "±1-2 horas",
-    "shortRange": "1-2h",
-    "shortDescription": "±1h"
+    "title": {
+      "string": "Devagar"
+    },
+    "description": {
+      "string": "±1-2 horas"
+    },
+    "shortRange": {
+      "string": "1-2h"
+    },
+    "shortDescription": {
+      "string": "±1h"
+    }
   },
   "minimum": {
-    "title": "Mínimo",
-    "description": "+2 horas",
-    "shortRange": "+2h",
-    "shortDescription": "+2h"
+    "title": {
+      "string": "Mínimo"
+    },
+    "description": {
+      "string": "+2 horas"
+    },
+    "shortRange": {
+      "string": "+2h"
+    },
+    "shortDescription": {
+      "string": "+2h"
+    }
   },
   "custom": {
-    "title": "Personalizada",
-    "description": "Depende da taxa",
-    "shortRange": "Depende da taxa",
-    "shortDescription": "Depende da taxa"
+    "title": {
+      "string": "Personalizada"
+    },
+    "description": {
+      "string": "Depende da taxa"
+    },
+    "shortRange": {
+      "string": "Depende da taxa"
+    },
+    "shortDescription": {
+      "string": "Depende da taxa"
+    }
   }
 }

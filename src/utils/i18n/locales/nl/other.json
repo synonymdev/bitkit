@@ -1,35 +1,97 @@
 {
-  "beta": "BETA",
-  "beta_warn": "Bewaar nooit al uw geld in Bitkit.",
-  "qr_scan": "QR Code Scannen",
-  "qr_error_network_header": "Netwerk Onjuist",
-  "qr_error_network_text": "Bitkit is momenteel aangesloten op {selectedNetwork}maar toont data voor {dataNetwork}. ",
-  "qr_paste": "Plak de QR Code",
-  "high_balance": {
-    "nav_title": "Hoog Saldo",
-    "continue": "Begrepen",
-    "cancel": "Meer Weten"
+  "beta": {
+    "string": "BETA"
   },
-  "update_critical_nav_title": "Kritieke Update",
-  "update_critical_button": "Bitkit Updaten",
-  "camera_ask_title": "Toestemming om de camera te gebruiken",
-  "camera_ask_msg": "Bitkit heeft toestemming nodig om de camera te gebruiken",
-  "clipboard_redirect_title": "Klembord Data Gedetecteerd",
-  "clipboard_redirect_msg": "Wilt u doorgestuurd worden naar het desbetreffende scherm?",
-  "swipe": "Veeg Om Te Bevestigen",
-  "scan_err_decoding": "Decoderingsfout",
-  "scan_err_interpret_title": "De Ingevoerde Data Kan Niet Worden Gedecodeerd",
-  "scan_err_interpret_msg": "Bitkit kan de ingevoerde data niet decoderen.",
-  "lnurl_channel_header": "Lightning-verbinding",
-  "lnurl_channel_host": "Hostcomputer",
-  "lnurl_channel_port": "Poort",
-  "lnurl_channel_success_msg_peer": "Succesvol verzoek om een kanaal met: {peer}",
-  "lnurl_channel_success_msg_no_peer": "Verzoek om een kanaal succesvol.",
-  "lnurl_withdr_success_title": "Opname Verzocht",
-  "bt_error_retrieve": "Overboeking Mislukt",
-  "bt_channel_purchase_cost_error": "U heeft {delta}meer nodig om deze transactie te voltooien.",
-  "earlier": "EERDER",
-  "update_nav_title": "Update Beschikbaar",
-  "update_text": "Update Bitkit naar de laatste versie voor nieuwe functionaliteiten en bug fixes!",
-  "update_button": "Update"
+  "beta_warn": {
+    "string": "Bewaar nooit al uw geld in Bitkit."
+  },
+  "qr_scan": {
+    "string": "QR Code Scannen"
+  },
+  "qr_error_network_header": {
+    "string": "Netwerk Onjuist"
+  },
+  "qr_error_network_text": {
+    "string": "Bitkit is momenteel aangesloten op {selectedNetwork}maar toont data voor {dataNetwork}. "
+  },
+  "qr_paste": {
+    "string": "Plak de QR Code"
+  },
+  "high_balance": {
+    "nav_title": {
+      "string": "Hoog Saldo"
+    },
+    "continue": {
+      "string": "Begrepen"
+    },
+    "cancel": {
+      "string": "Meer Weten"
+    }
+  },
+  "update_critical_nav_title": {
+    "string": "Kritieke Update"
+  },
+  "update_critical_button": {
+    "string": "Bitkit Updaten"
+  },
+  "camera_ask_title": {
+    "string": "Toestemming om de camera te gebruiken"
+  },
+  "camera_ask_msg": {
+    "string": "Bitkit heeft toestemming nodig om de camera te gebruiken"
+  },
+  "clipboard_redirect_title": {
+    "string": "Klembord Data Gedetecteerd"
+  },
+  "clipboard_redirect_msg": {
+    "string": "Wilt u doorgestuurd worden naar het desbetreffende scherm?"
+  },
+  "swipe": {
+    "string": "Veeg Om Te Bevestigen"
+  },
+  "scan_err_decoding": {
+    "string": "Decoderingsfout"
+  },
+  "scan_err_interpret_title": {
+    "string": "De Ingevoerde Data Kan Niet Worden Gedecodeerd"
+  },
+  "scan_err_interpret_msg": {
+    "string": "Bitkit kan de ingevoerde data niet decoderen."
+  },
+  "lnurl_channel_header": {
+    "string": "Lightning-verbinding"
+  },
+  "lnurl_channel_host": {
+    "string": "Hostcomputer"
+  },
+  "lnurl_channel_port": {
+    "string": "Poort"
+  },
+  "lnurl_channel_success_msg_peer": {
+    "string": "Succesvol verzoek om een kanaal met: {peer}"
+  },
+  "lnurl_channel_success_msg_no_peer": {
+    "string": "Verzoek om een kanaal succesvol."
+  },
+  "lnurl_withdr_success_title": {
+    "string": "Opname Verzocht"
+  },
+  "bt_error_retrieve": {
+    "string": "Overboeking Mislukt"
+  },
+  "bt_channel_purchase_cost_error": {
+    "string": "U heeft {delta}meer nodig om deze transactie te voltooien."
+  },
+  "earlier": {
+    "string": "EERDER"
+  },
+  "update_nav_title": {
+    "string": "Update Beschikbaar"
+  },
+  "update_text": {
+    "string": "Update Bitkit naar de laatste versie voor nieuwe functionaliteiten en bug fixes!"
+  },
+  "update_button": {
+    "string": "Update"
+  }
 }

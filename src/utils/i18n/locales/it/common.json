@@ -1,31 +1,89 @@
 {
-  "advanced": "Avanzate",
-  "continue": "Continua",
-  "cancel": "Annulla",
-  "close": "Chiudi",
-  "are_you_sure": "Sei Sicuro?",
-  "yes_proceed": "Sì, Procedi",
-  "try_again": "Riprova",
-  "dialog_cancel": "No, Annulla",
-  "sat_vbyte": "₿ / vbyte",
-  "sat_vbyte_compact": "₿/vbyte",
-  "edit": "Modifica",
-  "copy": "Copia",
-  "share": "Condividi",
-  "search": "Cerca",
-  "discard": "Scarta",
-  "save": "Salva",
-  "done": "Fatto",
-  "delete": "Elimina",
-  "ok": "OK",
-  "awesome": "Fantastico!",
-  "retry": "Riprova",
-  "later": "Più tardi",
-  "skip": "Salta",
-  "copied": "Copiato negli appunti",
-  "yes": "Sì",
-  "no": "No",
-  "back": "Indietro",
-  "understood": "Ho Capito",
-  "connect": "Connetti"
+  "advanced": {
+    "string": "Avanzate"
+  },
+  "continue": {
+    "string": "Continua"
+  },
+  "cancel": {
+    "string": "Annulla"
+  },
+  "close": {
+    "string": "Chiudi"
+  },
+  "are_you_sure": {
+    "string": "Sei Sicuro?"
+  },
+  "yes_proceed": {
+    "string": "Sì, Procedi"
+  },
+  "try_again": {
+    "string": "Riprova"
+  },
+  "dialog_cancel": {
+    "string": "No, Annulla"
+  },
+  "sat_vbyte": {
+    "string": "₿ / vbyte"
+  },
+  "sat_vbyte_compact": {
+    "string": "₿/vbyte"
+  },
+  "edit": {
+    "string": "Modifica"
+  },
+  "copy": {
+    "string": "Copia"
+  },
+  "share": {
+    "string": "Condividi"
+  },
+  "search": {
+    "string": "Cerca"
+  },
+  "discard": {
+    "string": "Scarta"
+  },
+  "save": {
+    "string": "Salva"
+  },
+  "done": {
+    "string": "Fatto"
+  },
+  "delete": {
+    "string": "Elimina"
+  },
+  "ok": {
+    "string": "OK"
+  },
+  "awesome": {
+    "string": "Fantastico!"
+  },
+  "retry": {
+    "string": "Riprova"
+  },
+  "later": {
+    "string": "Più tardi"
+  },
+  "skip": {
+    "string": "Salta"
+  },
+  "copied": {
+    "string": "Copiato negli appunti"
+  },
+  "yes": {
+    "string": "Sì"
+  },
+  "no": {
+    "string": "No"
+  },
+  "back": {
+    "string": "Indietro"
+  },
+  "understood": {
+    "string": "Ho Capito"
+  },
+  "connect": {
+    "string": "Connetti"
+  }
 }

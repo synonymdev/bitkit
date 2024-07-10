@@ -1,58 +1,110 @@
 {
   "backupSeedPhrase": {
-    "title": "Cópia de seguridad",
-    "description": "Almacena tu Bitcoin"
+    "title": {
+      "string": "Cópia de seguridad"
+    },
+    "description": {
+      "string": "Almacena tu Bitcoin"
+    }
   },
   "discount": {
-    "title": "Descuento",
-    "description": "Saldo de gastos"
+    "title": {
+      "string": "Descuento"
+    },
+    "description": {
+      "string": "Saldo de gastos"
+    }
   },
   "fastpay": {
-    "description": "Escanear y pagar"
+    "description": {
+      "string": "Escanear y pagar"
+    }
   },
   "invite": {
-    "title": "Invitar",
-    "description": "Compatir BitKit"
+    "title": {
+      "string": "Invitar"
+    },
+    "description": {
+      "string": "Compatir BitKit"
+    }
   },
   "lightning": {
-    "title": "Gastar"
+    "title": {
+      "string": "Gastar"
+    }
   },
   "lightningSettingUp": {
-    "title": "Transferir",
-    "description": "En curso"
+    "title": {
+      "string": "Transferir"
+    },
+    "description": {
+      "string": "En curso"
+    }
   },
   "lightningConnecting": {
-    "title": "Conectandose",
-    "description": "Listo en ±10m"
+    "title": {
+      "string": "Conectandose"
+    },
+    "description": {
+      "string": "Listo en ±10m"
+    }
   },
   "lightningReady": {
-    "title": "Listo",
-    "description": "¡Conectado!"
+    "title": {
+      "string": "Listo"
+    },
+    "description": {
+      "string": "¡Conectado!"
+    }
   },
   "transferPending": {
-    "title": "Transferir"
+    "title": {
+      "string": "Transferir"
+    }
   },
   "transferClosingChannel": {
-    "title": "Arrancando",
-    "description": "Mantenga la aplicación abierta"
+    "title": {
+      "string": "Arrancando"
+    },
+    "description": {
+      "string": "Mantenga la aplicación abierta"
+    }
   },
   "pin": {
-    "description": "Configurar un código PIN"
+    "description": {
+      "string": "Configurar un código PIN"
+    }
   },
   "slashtagsProfile": {
-    "title": "Perfil",
-    "description": "Agrega tus detalles"
+    "title": {
+      "string": "Perfil"
+    },
+    "description": {
+      "string": "Agrega tus detalles"
+    }
   },
   "support": {
-    "title": "Soporte"
+    "title": {
+      "string": "Soporte"
+    }
   },
   "buyBitcoin": {
-    "title": "Comprar",
-    "description": "Comprar Bitcoin"
+    "title": {
+      "string": "Comprar"
+    },
+    "description": {
+      "string": "Comprar Bitcoin"
+    }
   },
   "btFailed": {
-    "title": "Fallido",
-    "description": "Inténtalo de nuevo"
+    "title": {
+      "string": "Fallido"
+    },
+    "description": {
+      "string": "Inténtalo de nuevo"
+    }
   },
-  "suggestions": "Sugerencias"
+  "suggestions": {
+    "string": "Sugerencias"
+  }
 }

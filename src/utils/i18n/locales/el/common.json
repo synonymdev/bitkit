@@ -1,24 +1,68 @@
 {
-  "continue": "Συνέχεια",
-  "cancel": "Ακύρωση",
-  "close": "Κλείσιμο",
-  "are_you_sure": "Είσαι σίγουρος;",
-  "yes_proceed": "Ναι, Προχώρα",
-  "try_again": "Προσπαθείστε Ξανά",
-  "dialog_cancel": "Όχι, Ακύρωσε",
-  "copy": "Αντιγραφή",
-  "share": "Διαμοιρασμός",
-  "search": "Αναζήτηση",
-  "discard": "Απόρριψη",
-  "save": "Καταχώρηση",
-  "done": "Ολοκληρώθηκε",
-  "delete": "Διαγραφή",
-  "ok": "ΟΚ",
-  "retry": "Δοκιμάστε Ξανά",
-  "later": "Αργότερα",
-  "skip": "Παράλειψη",
-  "yes": "Ναι",
-  "no": "Όχι",
-  "back": "Επιστροφή",
-  "understood": "Κατανοητό"
+  "continue": {
+    "string": "Συνέχεια"
+  },
+  "cancel": {
+    "string": "Ακύρωση"
+  },
+  "close": {
+    "string": "Κλείσιμο"
+  },
+  "are_you_sure": {
+    "string": "Είσαι σίγουρος;"
+  },
+  "yes_proceed": {
+    "string": "Ναι, Προχώρα"
+  },
+  "try_again": {
+    "string": "Προσπαθείστε Ξανά"
+  },
+  "dialog_cancel": {
+    "string": "Όχι, Ακύρωσε"
+  },
+  "copy": {
+    "string": "Αντιγραφή"
+  },
+  "share": {
+    "string": "Διαμοιρασμός"
+  },
+  "search": {
+    "string": "Αναζήτηση"
+  },
+  "discard": {
+    "string": "Απόρριψη"
+  },
+  "save": {
+    "string": "Καταχώρηση"
+  },
+  "done": {
+    "string": "Ολοκληρώθηκε"
+  },
+  "delete": {
+    "string": "Διαγραφή"
+  },
+  "ok": {
+    "string": "ΟΚ"
+  },
+  "retry": {
+    "string": "Δοκιμάστε Ξανά"
+  },
+  "later": {
+    "string": "Αργότερα"
+  },
+  "skip": {
+    "string": "Παράλειψη"
+  },
+  "yes": {
+    "string": "Ναι"
+  },
+  "no": {
+    "string": "Όχι"
+  },
+  "back": {
+    "string": "Επιστροφή"
+  },
+  "understood": {
+    "string": "Κατανοητό"
+  }
 }
