@@ -6406,7 +6406,7 @@ __metadata:
     bitcoin-units: 0.3.0
     bitcoinjs-lib: 6.1.5
     detox: 20.20.2
-    electrum-client: "github:BlueWallet/rn-electrum-client#47acb51149e97fab249c3f8a314f708dbee4fb6e"
+    electrum-client: "BlueWallet/rn-electrum-client#47acb51149e97fab249c3f8a314f708dbee4fb6e"
     eslint: ^8.57.0
     eslint-plugin-ft-flow: ^3.0.7
     events: 3.3.0
@@ -6418,7 +6418,7 @@ __metadata:
     intl-messageformat: 10.5.11
     jdenticon: 3.2.0
     jest: ^29.7.0
-    lnurl: "github:limpbrains/lnurl-node#private"
+    lnurl: "limpbrains/lnurl-node#private"
     lodash: 4.17.21
     lottie-react-native: 6.7.2
     mime: 3.0.0
@@ -6444,7 +6444,7 @@ __metadata:
     react-native-haptic-feedback: 2.2.0
     react-native-image-picker: 7.1.2
     react-native-keyboard-accessory: 0.1.16
-    react-native-keychain: "github:synonymdev/react-native-keychain.git#7378c469afe81195487a3163295be425af79fa7a"
+    react-native-keychain: "synonymdev/react-native-keychain#refactor/android-data-store"
     react-native-localize: 3.0.2
     react-native-mmkv: 2.12.2
     react-native-modal: 13.0.1
@@ -8220,7 +8220,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"electrum-client@github:BlueWallet/rn-electrum-client#47acb51149e97fab249c3f8a314f708dbee4fb6e":
+"electrum-client@BlueWallet/rn-electrum-client#47acb51149e97fab249c3f8a314f708dbee4fb6e":
   version: 2.0.0
   resolution: "electrum-client@https://github.com/BlueWallet/rn-electrum-client.git#commit=47acb51149e97fab249c3f8a314f708dbee4fb6e"
   checksum: 227ff604773a9acaf441c85190344be2bb0c8bd5a38a97b0e07c3018898a48d8516de8215ddbda4e44d1c6729561758fb71279568a80fdb43150437290a34872
@@ -11687,7 +11687,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lnurl@github:limpbrains/lnurl-node#private":
+"lnurl@limpbrains/lnurl-node#private":
   version: 0.24.2
   resolution: "lnurl@https://github.com/limpbrains/lnurl-node.git#commit=486551e88ff68bac791ced3b339c21f50f4e8fa6"
   dependencies:
@@ -14166,7 +14166,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-keychain@github:synonymdev/react-native-keychain.git#7378c469afe81195487a3163295be425af79fa7a":
+"react-native-keychain@synonymdev/react-native-keychain#refactor/android-data-store":
   version: 8.2.0
   resolution: "react-native-keychain@https://github.com/synonymdev/react-native-keychain.git#commit=7378c469afe81195487a3163295be425af79fa7a"
   checksum: 94297964de510a7a47f27e4175cdc85a977f36092afa0749648ad102c0f818f3fc41a9a92cf5e3e70d52c93e1e922ce4247860017ec4cee72f331f6410cbe02a

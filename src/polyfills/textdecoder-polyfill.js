@@ -1,3 +1,6 @@
+// TextDecoder polyfill taken from
+// https://github.com/anonyco/FastestSmallestTextEncoderDecoder/blob/master/individual/FastestTextDecoderPolyfill.src.js
+
 (function (window) {
 	'use strict';
 	var log = Math.log;
