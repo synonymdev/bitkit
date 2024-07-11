@@ -31,9 +31,9 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - MMKV (1.3.3):
-    - MMKVCore (~> 1.3.3)
-  - MMKVCore (1.3.3)
+  - MMKV (1.3.7):
+    - MMKVCore (~> 1.3.7)
+  - MMKVCore (1.3.7)
   - OpenSSL-Universal (1.1.1100)
   - RCT-Folly (2024.01.01.00):
     - boost
@@ -1780,8 +1780,8 @@ SPEC CHECKSUMS:
   hermes-engine: 1f547997900dd0752dc0cc0ae6dd16173c49e09b
   lottie-ios: e047b1d2e6239b787cc5e9755b988869cf190494
   lottie-react-native: 4279da8b681e89c29a2adb9f99985d6cf372d49d
-  MMKV: f902fb6719da13c2ab0965233d8963a59416f911
-  MMKVCore: d26e4d3edd5cb8588c2569222cbd8be4231374e9
+  MMKV: 36a22a9ec84c9bb960613a089ddf6f48be9312b0
+  MMKVCore: 158e61c8516401a9fac730288acb29e6fc19bbf9
   OpenSSL-Universal: ebc357f1e6bc71fa463ccb2fe676756aff50e88c
   RCT-Folly: 02617c592a293bd6d418e0a88ff4ee1f88329b47
   RCTDeprecation: 4c7eeb42be0b2e95195563c49be08d0b839d22b4

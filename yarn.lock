@@ -3033,9 +3033,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@gorhom/bottom-sheet@npm:4.6.1":
-  version: 4.6.1
-  resolution: "@gorhom/bottom-sheet@npm:4.6.1"
+"@gorhom/bottom-sheet@npm:4.6.3":
+  version: 4.6.3
+  resolution: "@gorhom/bottom-sheet@npm:4.6.3"
   dependencies:
     "@gorhom/portal": 1.0.14
     invariant: ^2.2.4
@@ -3051,7 +3051,7 @@ __metadata:
       optional: true
     "@types/react-native":
       optional: true
-  checksum: fc30da15c5d7e7c7b81ad2450e6ecb3884f0e040bc1ed5f467b1f846e2598519608a21c14cd50ea8288caac3cdfd9ad2c7742c31c77dd137804f94148105f389
+  checksum: 718c55a89b0e18581eae6080d1d21caabf4895088e01f0dfe17b5891835a110d7aee1d0cb1b9e623efc16b598fdb28c2ec929e0ed74bfbca283306191d8a5c41
   languageName: node
   linkType: hard
 
@@ -6352,7 +6352,7 @@ __metadata:
     "@formatjs/intl-numberformat": 8.10.1
     "@formatjs/intl-pluralrules": 5.2.12
     "@formatjs/intl-relativetimeformat": 11.2.12
-    "@gorhom/bottom-sheet": 4.6.1
+    "@gorhom/bottom-sheet": 4.6.3
     "@ptsecurity/commitlint-config": ^2.0.0
     "@radar/lnrpc": ^0.11.1-beta.1
     "@react-native-async-storage/async-storage": 1.22.3

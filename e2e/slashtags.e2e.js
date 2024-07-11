@@ -12,7 +12,6 @@ import {
 } from './helpers';
 import initWaitForElectrumToSync from '../__tests__/utils/wait-for-electrum';
 
-const __DEV__ = process.env.DEV === 'true';
 const d = checkComplete('slash-1') ? describe.skip : describe;
 
 // private key: rhuoi5upr3he3d5p9ef685bnxq8adbariwphg7i8gxdnnazok87xtc3e15pkouxizbzm6m4kjaoi9bndwp88iefycf6i6qhqu1ifzfa
@@ -143,9 +142,10 @@ d('Profile and Contacts', () => {
 			await expect(element(by.text(satoshi.website))).toExist();
 			await element(by.id('NavigationBack')).tap();
 
-			if (!__DEV__ && device.getPlatform() === 'ios') {
+			if (device.getPlatform() === 'ios') {
 				// FIXME: this bottom sheet should not appear
-				await element(by.id('AddContactNote')).swipe('down');
+				// Tap on background to dismiss
+				await element(by.label('Close')).atIndex(0).tap({ x: 10, y: 10 });
 			}
 
 			// Hal

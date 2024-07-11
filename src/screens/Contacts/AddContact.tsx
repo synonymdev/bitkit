@@ -68,7 +68,8 @@ const AddContact = ({
 
 		const onContact = (): void => {
 			setUrl('');
-			dispatch(closeSheet('addContactModal'));
+			// Add delay to prevent sheet from staying open
+			setTimeout(() => dispatch(closeSheet('addContactModal')), 500);
 		};
 
 		handleSlashtagURL(contactUrl, onError, onContact);

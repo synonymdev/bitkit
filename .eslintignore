@@ -9,4 +9,5 @@ metro.config.js
 postinstall.js
 __mocks__/**
 
+src/polyfills/**
 src/**/*_deprecated.tsx

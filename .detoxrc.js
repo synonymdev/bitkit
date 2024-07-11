@@ -31,7 +31,7 @@ module.exports = {
 			testBinaryPath: 'android/app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk',
 			binaryPath: 'android/app/build/outputs/apk/debug/app-universal-debug.apk',
 			build:
-				'cd android && ./gradlew assembleDebug assembleAndroidTest -DtestBuildType=debug && cd .. ',
+				'cd android && ./gradlew app:assembleDebug app:assembleAndroidTest -DtestBuildType=debug && cd .. ',
 			reversePorts,
 		},
 		'android.release': {
@@ -39,7 +39,7 @@ module.exports = {
 			testBinaryPath: 'android/app/build/outputs/apk/androidTest/release/app-release-androidTest.apk',
 			binaryPath: 'android/app/build/outputs/apk/release/app-universal-release.apk',
 			build:
-				'cd android && ./gradlew assembleRelease assembleAndroidTest -DtestBuildType=release && cd ..',
+				'cd android && ./gradlew app:assembleRelease app:assembleAndroidTest -DtestBuildType=release && cd ..',
 			reversePorts,
 		},
 	},

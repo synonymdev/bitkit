@@ -29,12 +29,12 @@ import React, {
 	useMemo,
 } from 'react';
 import { StyleSheet } from 'react-native';
+import { useReducedMotion } from 'react-native-reanimated';
 import BottomSheet, {
 	BottomSheetView,
 	BottomSheetBackdrop,
 	BottomSheetBackgroundProps,
 	BottomSheetBackdropProps,
-	useBottomSheetTimingConfigs,
 } from '@gorhom/bottom-sheet';
 import { useTheme } from 'styled-components/native';
 
@@ -69,6 +69,7 @@ const BottomSheetWrapper = forwardRef(
 		ref,
 	): ReactElement => {
 		const bottomSheetRef = useRef<BottomSheet>(null);
+		const reducedMotion = useReducedMotion();
 		const dispatch = useAppDispatch();
 		const data = useAppSelector((state) => viewControllerSelector(state, view));
 		const theme = useTheme();
@@ -76,8 +77,6 @@ const BottomSheetWrapper = forwardRef(
 			() => ({ backgroundColor: theme.colors.gray2 }),
 			[theme.colors.gray2],
 		);
-
-		const testAnimationConfigs = useBottomSheetTimingConfigs({ duration: 1 });
 
 		// https://github.com/gorhom/react-native-bottom-sheet/issues/770#issuecomment-1072113936
 		// do not activate BottomSheet if swipe horizontally, this allows using Swiper inside of it
@@ -135,6 +134,7 @@ const BottomSheetWrapper = forwardRef(
 						{...props}
 						disappearsOnIndex={-1}
 						appearsOnIndex={0}
+						accessibilityLabel="Close"
 					/>
 				);
 			},
@@ -153,19 +153,19 @@ const BottomSheetWrapper = forwardRef(
 
 		return (
 			<BottomSheet
+				ref={bottomSheetRef}
 				backgroundComponent={backgroundComponent}
+				backdropComponent={renderBackdrop}
 				handleIndicatorStyle={handleIndicatorStyle}
 				handleStyle={styles.handle}
+				index={index}
+				snapPoints={snapPoints}
+				animateOnMount={!reducedMotion && !__E2E__}
 				enablePanDownToClose={true}
 				keyboardBlurBehavior="restore"
-				ref={bottomSheetRef}
-				index={index}
-				onChange={handleSheetChanges}
-				backdropComponent={renderBackdrop}
-				snapPoints={snapPoints}
 				activeOffsetX={activeOffsetX}
 				activeOffsetY={activeOffsetY}
-				animationConfigs={__E2E__ ? testAnimationConfigs : undefined}>
+				onChange={handleSheetChanges}>
 				<BottomSheetView style={styles.container} testID={testID}>
 					{children}
 				</BottomSheetView>
