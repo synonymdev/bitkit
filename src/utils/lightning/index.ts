@@ -506,6 +506,7 @@ export const subscribeToLightningPayments = ({
 			EEventTypes.new_channel,
 			async (res: TChannelUpdate) => {
 				await refreshLdk({ selectedWallet, selectedNetwork });
+				updateSlashPayConfig({ selectedWallet, selectedNetwork });
 
 				const openChannels = getOpenChannels();
 				const closedChannels = getClosedChannels();
@@ -535,6 +536,7 @@ export const subscribeToLightningPayments = ({
 					// counterparty force closed the channel
 					showBottomSheet('connectionClosed');
 				}
+				updateSlashPayConfig({ selectedWallet, selectedNetwork });
 				syncLedger(); // TChannelManagerChannelClosed is different from TChannelMonitor
 			},
 		);
