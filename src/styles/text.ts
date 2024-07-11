@@ -1,3 +1,5 @@
+import { Platform } from 'react-native';
+
 import styled from './styled-components';
 import { IThemeColors } from './themes';
 
@@ -85,7 +87,7 @@ export const BodyM = styled.Text<TextProps>(({ theme, color }) => ({
 	fontSize: '17px',
 	lineHeight: '22px',
 	color: theme.colors[color ?? 'primary'],
-	letterSpacing: 0.4,
+	letterSpacing: Platform.OS === 'ios' ? 0.4 : undefined,
 }));
 
 export const BodyMSB = styled.Text<TextProps>(({ theme, color }) => ({
@@ -93,7 +95,7 @@ export const BodyMSB = styled.Text<TextProps>(({ theme, color }) => ({
 	fontSize: '17px',
 	lineHeight: '22px',
 	color: theme.colors[color ?? 'primary'],
-	letterSpacing: 0.4,
+	letterSpacing: Platform.OS === 'ios' ? 0.4 : undefined,
 }));
 
 export const BodyMB = styled.Text<TextProps>(({ theme, color }) => ({
@@ -101,7 +103,7 @@ export const BodyMB = styled.Text<TextProps>(({ theme, color }) => ({
 	fontSize: '17px',
 	lineHeight: '22px',
 	color: theme.colors[color ?? 'primary'],
-	letterSpacing: 0.4,
+	letterSpacing: Platform.OS === 'ios' ? 0.4 : undefined,
 }));
 
 export const BodyS = styled.Text<TextProps>(({ theme, color }) => ({
@@ -109,7 +111,7 @@ export const BodyS = styled.Text<TextProps>(({ theme, color }) => ({
 	fontSize: '15px',
 	lineHeight: '20px',
 	color: theme.colors[color ?? 'primary'],
-	letterSpacing: 0.4,
+	letterSpacing: Platform.OS === 'ios' ? 0.4 : undefined,
 }));
 
 export const BodySSB = styled.Text<TextProps>(({ theme, color }) => ({
@@ -117,7 +119,7 @@ export const BodySSB = styled.Text<TextProps>(({ theme, color }) => ({
 	fontSize: '15px',
 	lineHeight: '20px',
 	color: theme.colors[color ?? 'primary'],
-	letterSpacing: 0.4,
+	letterSpacing: Platform.OS === 'ios' ? 0.4 : undefined,
 }));
 
 export const BodySB = styled.Text<TextProps>(({ theme, color }) => ({
@@ -125,7 +127,7 @@ export const BodySB = styled.Text<TextProps>(({ theme, color }) => ({
 	fontSize: '15px',
 	lineHeight: '20px',
 	color: theme.colors[color ?? 'primary'],
-	letterSpacing: 0.4,
+	letterSpacing: Platform.OS === 'ios' ? 0.4 : undefined,
 }));
 
 export const Text13UP = styled.Text<TextProps>(({ theme, color }) => ({
@@ -134,7 +136,7 @@ export const Text13UP = styled.Text<TextProps>(({ theme, color }) => ({
 	lineHeight: '18px',
 	textTransform: 'uppercase',
 	color: theme.colors[color ?? 'primary'],
-	letterSpacing: 0.4,
+	letterSpacing: Platform.OS === 'ios' ? 0.4 : undefined,
 }));
 
 export const Caption = styled.Text<TextProps>(({ theme, color }) => ({
@@ -142,7 +144,7 @@ export const Caption = styled.Text<TextProps>(({ theme, color }) => ({
 	fontSize: '13px',
 	lineHeight: '18px',
 	color: theme.colors[color ?? 'primary'],
-	letterSpacing: 0.4,
+	letterSpacing: Platform.OS === 'ios' ? 0.4 : undefined,
 }));
 
 export const CaptionB = styled.Text<TextProps>(({ theme, color }) => ({
@@ -150,7 +152,7 @@ export const CaptionB = styled.Text<TextProps>(({ theme, color }) => ({
 	fontSize: '13px',
 	lineHeight: '18px',
 	color: theme.colors[color ?? 'primary'],
-	letterSpacing: 0.4,
+	letterSpacing: Platform.OS === 'ios' ? 0.4 : undefined,
 }));
 
 export const Caption13Up = styled.Text<TextProps>(({ theme, color }) => ({
@@ -159,5 +161,5 @@ export const Caption13Up = styled.Text<TextProps>(({ theme, color }) => ({
 	lineHeight: '18px',
 	textTransform: 'uppercase',
 	color: theme.colors[color ?? 'primary'],
-	letterSpacing: 0.8,
+	letterSpacing: Platform.OS === 'ios' ? 0.8 : undefined,
 }));
