@@ -86,7 +86,6 @@ android {
         versionCode 130
         versionName "1.0.3"
         multiDexEnabled true
-        missingDimensionStrategy 'react-native-camera', 'general'
         testBuildType System.getProperty('testBuildType', 'debug')
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
