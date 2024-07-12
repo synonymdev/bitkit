@@ -1,14 +1,26 @@
-import React, { ReactElement, useState, useEffect } from 'react';
-import { StyleSheet, Platform, View } from 'react-native';
+import React, {
+	ReactElement,
+	useState,
+	useEffect,
+	useRef,
+	useCallback,
+} from 'react';
+import { StyleSheet } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
-import { check, request, PERMISSIONS, RESULTS } from 'react-native-permissions';
-import { Camera as CameraKit, CameraType } from 'react-native-camera-kit';
-import { useTranslation } from 'react-i18next';
+import {
+	Camera as VisionCamera,
+	Point,
+	useCameraDevice,
+	useCodeScanner,
+	useCameraPermission,
+} from 'react-native-vision-camera';
 
 import CameraNoAuth from './CameraNoAuth';
 import GradientView from './GradientView';
+import { Gesture, GestureDetector } from 'react-native-gesture-handler';
+import { runOnJS } from 'react-native-reanimated';
 
-enum Status {
+enum EAuthStatus {
 	AUTHORIZED = 'AUTHORIZED',
 	NOT_AUTHORIZED = 'NOT_AUTHORIZED',
 	UNKNOWN = 'UNKNOWN',
@@ -25,72 +37,72 @@ const Camera = ({
 	bottomSheet?: boolean;
 	onBarCodeRead: (data: string) => void;
 }): ReactElement => {
-	const { t } = useTranslation('other');
+	const camera = useRef<VisionCamera>(null);
+	const scannedCode = useRef('');
 	const isFocused = useIsFocused();
-	const [_data, setData] = useState('');
-	const [cameraStatus, setCameraStatus] = useState<Status>(Status.UNKNOWN);
+	const [authStatus, setAuthStatus] = useState(EAuthStatus.UNKNOWN);
+
+	const device = useCameraDevice('back');
+	const { hasPermission, requestPermission } = useCameraPermission();
 
 	useEffect(() => {
-		(async (): Promise<void> => {
-			const cameraPermission =
-				Platform.OS === 'ios'
-					? PERMISSIONS.IOS.CAMERA
-					: PERMISSIONS.ANDROID.CAMERA;
-			const checkResponse = await check(cameraPermission);
-			switch (checkResponse) {
-				case RESULTS.UNAVAILABLE:
-				case RESULTS.BLOCKED:
-					setCameraStatus(Status.NOT_AUTHORIZED);
-					break;
-				case RESULTS.DENIED:
-					const rationale = {
-						title: t('camera_ask_title'),
-						message: t('camera_ask_msg'),
-						buttonPositive: t('ok'),
-						buttonNegative: t('cancel'),
-					};
-					const requestResponse = await request(cameraPermission, rationale);
-					setCameraStatus(
-						requestResponse === RESULTS.GRANTED
-							? Status.AUTHORIZED
-							: Status.NOT_AUTHORIZED,
-					);
-					break;
-				case RESULTS.LIMITED:
-				case RESULTS.GRANTED:
-					setCameraStatus(Status.AUTHORIZED);
-					break;
+		const checkPermission = async (): Promise<void> => {
+			if (hasPermission) {
+				setAuthStatus(EAuthStatus.AUTHORIZED);
+			} else {
+				const granted = await requestPermission();
+				if (granted) {
+					setAuthStatus(EAuthStatus.AUTHORIZED);
+				} else {
+					setAuthStatus(EAuthStatus.NOT_AUTHORIZED);
+				}
 			}
-		})();
-	}, [t]);
+		};
 
-	const handleCodeRead = (event): void => {
-		const { codeStringValue } = event.nativeEvent;
-		if (_data !== codeStringValue) {
-			setData(codeStringValue);
-			onBarCodeRead(codeStringValue);
-		}
-	};
+		checkPermission();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
 
-	if (!isFocused) {
-		return <View style={styles.container} />;
-	}
+	const codeScanner = useCodeScanner({
+		codeTypes: ['qr'],
+		onCodeScanned: (codes) => {
+			const code = codes.find((c) => c.value);
+			if (code?.value && scannedCode.current !== code.value) {
+				scannedCode.current = code.value;
+				onBarCodeRead(code.value);
+			}
+		},
+	});
+
+	const focus = useCallback((point: Point) => {
+		camera.current?.focus(point);
+	}, []);
+
+	const gesture = Gesture.Tap().onEnd(({ x, y }) => {
+		runOnJS(focus)({ x, y });
+	});
 
 	return (
 		<GradientView style={styles.container}>
-			{cameraStatus === Status.AUTHORIZED && (
+			{authStatus === EAuthStatus.AUTHORIZED && (
 				<>
-					<CameraKit
-						style={styles.camera}
-						scanBarcode={true}
-						onReadCode={handleCodeRead}
-						torchMode={torchMode ? 'on' : 'off'}
-						cameraType={CameraType.Back}
-					/>
+					{device && (
+						<GestureDetector gesture={gesture}>
+							<VisionCamera
+								style={styles.camera}
+								device={device}
+								codeScanner={codeScanner}
+								torch={torchMode ? 'on' : 'off'}
+								enableZoomGesture={true}
+								isActive={isFocused}
+								onError={(error): void => console.error(error)}
+							/>
+						</GestureDetector>
+					)}
 					{children}
 				</>
 			)}
-			{cameraStatus === Status.NOT_AUTHORIZED && (
+			{authStatus === EAuthStatus.NOT_AUTHORIZED && (
 				<CameraNoAuth bottomSheet={bottomSheet} />
 			)}
 		</GradientView>
