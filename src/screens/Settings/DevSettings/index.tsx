@@ -1,6 +1,5 @@
 import React, { memo, ReactElement, useState } from 'react';
 import RNFS, { unlink, writeFile } from 'react-native-fs';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import Share from 'react-native-share';
 import { useTranslation } from 'react-i18next';
 
@@ -40,6 +39,7 @@ import { showToast } from '../../../utils/notifications';
 import { getFakeTransaction } from '../../../utils/wallet/testing';
 import Dialog from '../../../components/Dialog';
 import { resetBackupState } from '../../../store/slices/backup';
+import { storage } from '../../../store/mmkv-storage';
 import { __E2E__ } from '../../../constants/env';
 
 const DevSettings = ({
@@ -55,6 +55,15 @@ const DevSettings = ({
 	const warnings = useAppSelector((state) => {
 		return warningsSelector(state, selectedWallet, selectedNetwork);
 	});
+
+	const clearWebRelayCache = (): void => {
+		const keys = storage.getAllKeys();
+		keys.forEach((key) => {
+			if (key.includes('WEB-RELAY-CLIENT')) {
+				storage.delete(key);
+			}
+		});
+	};
 
 	const exportLdkLogs = async (): Promise<void> => {
 		const result = await zipLogs({
@@ -143,9 +152,9 @@ const DevSettings = ({
 			title: 'App Cache',
 			data: [
 				{
-					title: 'Clear AsyncStorage',
+					title: 'Clear WebRelay Cache',
 					type: EItemType.button,
-					onPress: AsyncStorage.clear,
+					onPress: clearWebRelayCache,
 				},
 				{
 					title: "Clear UTXO's",

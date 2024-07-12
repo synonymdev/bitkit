@@ -14,9 +14,6 @@ jest.mock('react-native-permissions', () =>
 jest.mock('@react-native-community/netinfo', () => mockRNCNetInfo);
 jest.mock('react-native-localize', () => mockRNLocalize);
 jest.mock('@synonymdev/react-native-ldk', () => mockLDK);
-jest.mock('@react-native-async-storage/async-storage', () =>
-	require('@react-native-async-storage/async-storage/jest/async-storage-mock'),
-);
 
 global.net = require('net'); // needed by Electrum client. For RN it is proviced in shim.js
 global.tls = require('tls'); // needed by Electrum client. For RN it is proviced in shim.js

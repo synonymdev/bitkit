@@ -3835,17 +3835,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-native-async-storage/async-storage@npm:1.22.3":
-  version: 1.22.3
-  resolution: "@react-native-async-storage/async-storage@npm:1.22.3"
-  dependencies:
-    merge-options: ^3.0.4
-  peerDependencies:
-    react-native: ^0.0.0-0 || >=0.60 <1.0
-  checksum: bbf0f49c4441361d24f5c7a236862757d1addb7332d4c11ed7238b7023e882d2280290059602d9099cee094f60aeb11aad3f2017652ab6e143544e61dccadb73
-  languageName: node
-  linkType: hard
-
 "@react-native-clipboard/clipboard@npm:1.14.1":
   version: 1.14.1
   resolution: "@react-native-clipboard/clipboard@npm:1.14.1"
@@ -6355,7 +6344,6 @@ __metadata:
     "@gorhom/bottom-sheet": 4.6.3
     "@ptsecurity/commitlint-config": ^2.0.0
     "@radar/lnrpc": ^0.11.1-beta.1
-    "@react-native-async-storage/async-storage": 1.22.3
     "@react-native-clipboard/clipboard": 1.14.1
     "@react-native-community/blur": 4.4.0
     "@react-native-community/netinfo": 11.3.1
@@ -6469,6 +6457,7 @@ __metadata:
     react-native-zip-archive: 6.1.0
     react-redux: 9.1.1
     reactotron-react-native: ^5.1.6
+    reactotron-react-native-mmkv: ^0.2.6
     reactotron-redux: ^3.1.9
     readable-stream: 4.5.2
     redux: 5.0.1
@@ -12072,15 +12061,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"merge-options@npm:^3.0.4":
-  version: 3.0.4
-  resolution: "merge-options@npm:3.0.4"
-  dependencies:
-    is-plain-obj: ^2.1.0
-  checksum: d86ddb3dd6e85d558dbf25dc944f3527b6bacb944db3fdda6e84a3f59c4e4b85231095f58b835758b9a57708342dee0f8de0dffa352974a48221487fe9f4584f
-  languageName: node
-  linkType: hard
-
 "merge-stream@npm:^2.0.0":
   version: 2.0.0
   resolution: "merge-stream@npm:2.0.0"
@@ -14573,6 +14553,16 @@ __metadata:
   version: 0.2.3
   resolution: "reactotron-core-contract@npm:0.2.3"
   checksum: 956a6bf3cf845ac52ff90533da9714f2766e84570a391069601ed7ec8795ec6051c40ba6788f91ef1c34da808f98415e06a1cbd47a755fb7d4e821c6eb0d2377
+  languageName: node
+  linkType: hard
+
+"reactotron-react-native-mmkv@npm:^0.2.6":
+  version: 0.2.6
+  resolution: "reactotron-react-native-mmkv@npm:0.2.6"
+  peerDependencies:
+    react-native-mmkv: "*"
+    reactotron-core-client: "*"
+  checksum: e96aa47608e4ed361893203b72d604fa527fccd0e4c8c90f91ea8347bb31d71a8b6ccd3a4f4c839b625df7d73bb8fa41238494399206359465ed2c96f95b70df
   languageName: node
   linkType: hard
 

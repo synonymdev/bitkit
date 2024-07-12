@@ -18,7 +18,7 @@ import {
 	__ENABLE_REDUX_LOGGER__,
 	__JEST__,
 } from '../constants/env';
-import mmkvStorage from './mmkv-storage';
+import { reduxStorage } from './mmkv-storage';
 import rootReducer, { RootReducer } from './reducers';
 import migrations from './migrations';
 
@@ -30,7 +30,7 @@ if (__ENABLE_REDUX_LOGGER__) {
 
 const persistConfig = {
 	key: 'root',
-	storage: mmkvStorage,
+	storage: reduxStorage,
 	// increase version after store shape changes
 	version: 43,
 	stateReconciler: autoMergeLevel2,
