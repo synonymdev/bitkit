@@ -246,7 +246,12 @@ const ChannelDetails = ({
 					/>
 				}>
 				<View style={styles.channel}>
-					<LightningChannel channel={channel} status={getChannelStatus()} />
+					<LightningChannel
+						capacity={capacity}
+						localBalance={spendingAvailable}
+						remoteBalance={receivingAvailable}
+						status={getChannelStatus()}
+					/>
 				</View>
 
 				<View style={styles.status}>

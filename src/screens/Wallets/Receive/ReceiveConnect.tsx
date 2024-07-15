@@ -24,7 +24,9 @@ const imageSrc = require('../../../assets/illustrations/lightning.png');
 
 const ReceiveConnect = ({
 	navigation,
+	route,
 }: ReceiveScreenProps<'ReceiveConnect'>): ReactElement => {
+	const isAdditional = route.params?.isAdditional ?? false;
 	const { t } = useTranslation('wallet');
 	// const { isSmallScreen } = useScreenSize();
 	const { fiatSymbol } = useCurrency();
@@ -53,6 +55,14 @@ const ReceiveConnect = ({
 
 		getFeeEstimation();
 	}, [lspBalance]);
+
+	const onMore = (): void => {
+		navigation.navigate('Liquidity', {
+			channelSize,
+			localBalance: payAmount,
+			isAdditional,
+		});
+	};
 
 	const onContinue = async (): Promise<void> => {
 		setIsLoading(true);
@@ -116,6 +126,15 @@ const ReceiveConnect = ({
 
 				<View style={styles.buttonContainer}>
 					<Button
+						style={styles.button}
+						size="large"
+						text={t('learn_more')}
+						variant="secondary"
+						testID="ReceiveConnectMore"
+						onPress={onMore}
+					/>
+					<Button
+						style={styles.button}
 						size="large"
 						text={t('continue')}
 						loading={isLoading}
@@ -159,7 +178,13 @@ const styles = StyleSheet.create({
 		resizeMode: 'contain',
 	},
 	buttonContainer: {
+		flexDirection: 'row',
+		justifyContent: 'center',
 		marginTop: 'auto',
+		gap: 16,
+	},
+	button: {
+		flex: 1,
 	},
 });
 

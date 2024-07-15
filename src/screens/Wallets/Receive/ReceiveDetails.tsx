@@ -103,7 +103,7 @@ const ReceiveDetails = ({
 			}
 			const order = cJitEntryResponse.value;
 			dispatch(updateInvoice({ jitOrder: order }));
-			navigation.navigate('ReceiveConnect');
+			navigation.navigate('ReceiveConnect', { isAdditional: true });
 		}
 	}, [
 		channelSize,

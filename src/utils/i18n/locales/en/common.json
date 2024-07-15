@@ -80,6 +80,9 @@
   "back": {
     "string": "Back"
   },
+  "learn_more": {
+    "string": "Learn More"
+  },
   "understood": {
     "string": "Understood"
   },

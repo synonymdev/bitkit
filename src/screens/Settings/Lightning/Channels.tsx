@@ -50,6 +50,7 @@ import { showToast } from '../../../utils/notifications';
 import {
 	useLightningChannelName,
 	useLightningBalance,
+	useLightningChannelBalance,
 } from '../../../hooks/lightning';
 import {
 	createLightningInvoice,
@@ -146,6 +147,8 @@ const Channel = memo(
 		onPress: (channel: TChannel) => void;
 	}): ReactElement => {
 		const channelName = useLightningChannelName(channel);
+		const { capacity, spendingTotal, receivingAvailable } =
+			useLightningChannelBalance(channel);
 
 		const getChannelStatus = (): TStatus => {
 			if (pending) {
@@ -172,7 +175,12 @@ const Channel = memo(
 					</BodyMSB>
 					<ChevronRight color="secondary" height={24} />
 				</View>
-				<LightningChannel channel={channel} status={getChannelStatus()} />
+				<LightningChannel
+					capacity={capacity}
+					localBalance={spendingTotal}
+					remoteBalance={receivingAvailable}
+					status={getChannelStatus()}
+				/>
 			</TouchableOpacity>
 		);
 	},

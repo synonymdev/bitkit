@@ -12,6 +12,7 @@ import ReceiveDetails from '../../screens/Wallets/Receive/ReceiveDetails';
 import Tags from '../../screens/Wallets/Receive/Tags';
 import ReceiveAmount from '../../screens/Wallets/Receive/ReceiveAmount';
 import ReceiveConnect from '../../screens/Wallets/Receive/ReceiveConnect';
+import Liquidity from '../../screens/Wallets/Receive/Liquidity';
 import { useSnapPoints } from '../../hooks/bottomSheet';
 import { NavigationContainer } from '../../styles/components';
 import { resetInvoice } from '../../store/slices/receive';
@@ -30,7 +31,12 @@ export type ReceiveStackParamList = {
 	};
 	Tags: undefined;
 	ReceiveAmount: undefined;
-	ReceiveConnect: undefined;
+	ReceiveConnect: { isAdditional: boolean } | undefined;
+	Liquidity: {
+		channelSize: number;
+		localBalance: number;
+		isAdditional: boolean;
+	};
 };
 
 const Stack = createNativeStackNavigator<ReceiveStackParamList>();
@@ -68,6 +74,7 @@ const ReceiveNavigation = (): ReactElement => {
 					<Stack.Screen name="Tags" component={Tags} />
 					<Stack.Screen name="ReceiveAmount" component={ReceiveAmount} />
 					<Stack.Screen name="ReceiveConnect" component={ReceiveConnect} />
+					<Stack.Screen name="Liquidity" component={Liquidity} />
 				</Stack.Navigator>
 			</NavigationContainer>
 		</BottomSheetWrapper>

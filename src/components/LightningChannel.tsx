@@ -1,10 +1,10 @@
 import React, { ReactElement, memo } from 'react';
-import { DimensionValue, StyleSheet, View } from 'react-native';
-import { TChannel } from '@synonymdev/react-native-ldk';
+import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
+import { useTranslation } from 'react-i18next';
 
-import { useLightningChannelBalance } from '../hooks/lightning';
-import { View as ThemedView } from '../styles/components';
+import { Caption13Up } from '../styles/text';
 import { DownArrow, UpArrow } from '../styles/icons';
+import { View as ThemedView } from '../styles/components';
 import { IThemeColors } from '../styles/themes';
 import { EUnit } from '../store/types/wallet';
 import Money from './Money';
@@ -12,14 +12,21 @@ import Money from './Money';
 export type TStatus = 'pending' | 'open' | 'closed';
 
 const LightningChannel = ({
-	channel,
+	capacity,
+	localBalance,
+	remoteBalance,
 	status = 'pending',
+	showLabels = false,
+	style,
 }: {
-	channel: TChannel;
-	status: TStatus;
+	capacity: number;
+	localBalance: number;
+	remoteBalance: number;
+	status?: TStatus;
+	showLabels?: boolean;
+	style?: StyleProp<ViewStyle>;
 }): ReactElement => {
-	const { spendingTotal, receivingAvailable, capacity } =
-		useLightningChannelBalance(channel);
+	const { t } = useTranslation('lightning');
 
 	let spendingColor: keyof IThemeColors = 'purple50';
 	let spendingAvailableColor: keyof IThemeColors = 'purple';
@@ -34,29 +41,35 @@ const LightningChannel = ({
 	}
 
 	const spendingAvailableStyle = {
-		width: `${100 * (spendingTotal / capacity)}%` as DimensionValue,
+		width: `${100 * (localBalance / capacity)}%`,
 	};
 
 	const receivingAvailableStyle = {
-		width: `${100 * (receivingAvailable / capacity)}%` as DimensionValue,
+		width: `${100 * (remoteBalance / capacity)}%`,
 	};
 
 	return (
-		<View style={status === 'pending' && styles.pending}>
-			<View style={styles.balances}>
-				<View style={styles.balance}>
+		<View style={[status === 'pending' && styles.pending, style]}>
+			{showLabels && (
+				<View style={styles.labels}>
+					<Caption13Up color="secondary">{t('spending_label')}</Caption13Up>
+					<Caption13Up color="secondary">{t('receiving_label')}</Caption13Up>
+				</View>
+			)}
+			<View style={styles.amounts}>
+				<View style={styles.amount}>
 					<UpArrow color={spendingAvailableColor} width={14} height={14} />
 					<Money
-						sats={spendingTotal}
+						sats={localBalance}
 						color={spendingAvailableColor}
 						size="captionB"
 						unit={EUnit.BTC}
 					/>
 				</View>
-				<View style={styles.balance}>
+				<View style={styles.amount}>
 					<DownArrow color={receivingAvailableColor} width={14} height={14} />
 					<Money
-						sats={receivingAvailable}
+						sats={remoteBalance}
 						color={receivingAvailableColor}
 						size="captionB"
 						unit={EUnit.BTC}
@@ -64,19 +77,19 @@ const LightningChannel = ({
 				</View>
 			</View>
 			<View style={styles.bars}>
-				<ThemedView color={spendingColor} style={[styles.bar, styles.barLeft]}>
+				<ThemedView style={[styles.bar, styles.barLeft]} color={spendingColor}>
 					<ThemedView
-						color={spendingAvailableColor}
 						style={[styles.barLeft, spendingAvailableStyle]}
+						color={spendingAvailableColor}
 					/>
 				</ThemedView>
 				<View style={styles.divider} />
 				<ThemedView
-					color={receivingColor}
-					style={[styles.bar, styles.barRight]}>
+					style={[styles.bar, styles.barRight]}
+					color={receivingColor}>
 					<ThemedView
-						color={receivingAvailableColor}
 						style={[styles.barRight, receivingAvailableStyle]}
+						color={receivingAvailableColor}
 					/>
 				</ThemedView>
 			</View>
@@ -85,19 +98,24 @@ const LightningChannel = ({
 };
 
 const styles = StyleSheet.create({
-	balances: {
-		flexDirection: 'row',
-		justifyContent: 'space-between',
-	},
 	pending: {
 		opacity: 0.5,
 	},
-	balance: {
-		alignItems: 'center',
+	labels: {
 		flexDirection: 'row',
+		justifyContent: 'space-between',
+		marginBottom: 8,
+	},
+	amounts: {
+		flexDirection: 'row',
+		justifyContent: 'space-between',
+		marginBottom: 8,
+	},
+	amount: {
+		flexDirection: 'row',
+		alignItems: 'center',
 	},
 	bars: {
-		marginTop: 8,
 		flexDirection: 'row',
 		alignItems: 'center',
 	},
