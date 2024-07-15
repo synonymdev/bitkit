@@ -8,14 +8,16 @@ import { View as ThemedView } from '../../styles/components';
 import NavigationHeader from '../../components/NavigationHeader';
 import SafeAreaInset from '../../components/SafeAreaInset';
 import ActivityHeader from '../../components/ActivityHeader';
+import Button from '../../components/Button';
 import WalletOnboarding from '../../components/WalletOnboarding';
 import Money from '../../components/Money';
 import ActivityList from './ActivityList';
 import { useBalance } from '../../hooks/wallet';
 import { useAppSelector } from '../../hooks/redux';
 import { EActivityType } from '../../store/types/activity';
+import { isGeoBlockedSelector } from '../../store/reselect/user';
 import { activityItemsSelector } from '../../store/reselect/activity';
-import type { WalletScreenProps } from '../../navigation/types';
+import { WalletScreenProps } from '../../navigation/types';
 
 const ActivitySavings = ({
 	navigation,
@@ -23,6 +25,7 @@ const ActivitySavings = ({
 	const { t } = useTranslation('wallet');
 	const { onchainBalance, balanceInTransferToSavings } = useBalance();
 	const items = useAppSelector(activityItemsSelector);
+	const isGeoBlocked = useAppSelector(isGeoBlockedSelector);
 
 	const savingsItems = useMemo(() => {
 		return items.filter((item) => {
@@ -39,13 +42,18 @@ const ActivitySavings = ({
 
 	const showOnboarding = onchainBalance === 0 && savingsItems.length === 0;
 
+	const onTransfer = (): void => {
+		navigation.navigate('LightningRoot', { screen: 'QuickSetup' });
+	};
+
+	const canTransfer = onchainBalance && !isGeoBlocked;
+
 	return (
 		<ThemedView style={styles.root}>
 			<SafeAreaInset type="top" />
 			<NavigationHeader
 				title={t('savings.title')}
 				icon={<BitcoinCircleIcon width={32} height={32} />}
-				onClosePress={navigation.popToTop}
 			/>
 
 			<View style={styles.content}>
@@ -81,9 +89,20 @@ const ActivitySavings = ({
 						}
 					/>
 				) : (
-					<View style={styles.activity}>
-						<ActivityList filter={filter} showFooterButton={true} />
-					</View>
+					<>
+						<Button
+							style={styles.button}
+							text="Transfer To Spending"
+							variant="secondary"
+							size="large"
+							icon={<TransferIcon height={16} width={16} />}
+							disabled={!canTransfer}
+							onPress={onTransfer}
+						/>
+						<View style={styles.activity}>
+							<ActivityList filter={filter} showFooterButton={true} />
+						</View>
+					</>
 				)}
 			</View>
 		</ThemedView>
@@ -117,9 +136,11 @@ const styles = StyleSheet.create({
 		borderTopWidth: 1,
 		marginTop: 8,
 	},
+	button: {
+		marginTop: 16,
+	},
 	activity: {
 		flex: 1,
-		marginTop: 16,
 	},
 });
 

@@ -32,7 +32,7 @@ const PieChart = ({
 	let content;
 	if (primary === 0 || primary === 100) {
 		// full circle
-		const color = primary === 100 ? colors.purple : colors.bitcoin;
+		const color = primary === 100 ? colors.purple : colors.brand;
 		content = (
 			<Path
 				color={color}
@@ -64,7 +64,7 @@ const PieChart = ({
 		content = (
 			<>
 				<Path
-					color={colors.bitcoin}
+					color={colors.brand}
 					style="stroke"
 					strokeJoin="round"
 					strokeWidth={1.5}

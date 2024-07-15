@@ -84,8 +84,8 @@ const FancySlider = ({
 	const active = useRef(false);
 	const colors = useColors();
 	const minTrackColor = colors.purple;
-	const maxTrackColor = colors.bitcoin;
-	const disabledTrackColor = colors.bitcoin50;
+	const maxTrackColor = colors.brand;
+	const disabledTrackColor = colors.brand50;
 	const [containerWidth, setContainerWidth] = useState(0);
 	const endPosition = containerWidth === 0 ? 1 : containerWidth - CIRCLE_SIZE;
 	const maxEndPosition = valueToX(maxValue, startValue, endValue, endPosition);

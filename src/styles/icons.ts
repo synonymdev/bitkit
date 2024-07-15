@@ -399,10 +399,16 @@ export const FingerPrintIcon = styled(SvgXml).attrs((props) => ({
 }));
 
 export const BitcoinCircleIcon = styled(SvgXml).attrs((props) => ({
-	xml: bitcoinCircleIcon(),
+	xml: bitcoinCircleIcon(
+		props.color ? props.theme.colors[props.color] : props.theme.colors.brand,
+	),
 	height: props.height ?? '32px',
 	width: props.width ?? '32px',
-}))<IconProps>(() => {});
+}))<IconProps>((props) => ({
+	color: props.color
+		? props.theme.colors[props.color]
+		: props.theme.colors.brand,
+}));
 
 export const LightningCircleIcon = styled(SvgXml).attrs((props) => ({
 	xml: lightningCircleIcon(),

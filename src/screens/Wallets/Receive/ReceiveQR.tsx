@@ -522,9 +522,10 @@ const ReceiveQR = ({
 								</View>
 								<View style={styles.invoiceText}>
 									<BodyS
-										testID="ReceiveLightningInvoice"
-										accessibilityLabel={lInvoice}>
-										{ellipsis(lInvoice, 33)}
+										accessibilityLabel={lInvoice}
+										numberOfLines={1}
+										testID="ReceiveLightningInvoice">
+										{lInvoice.toUpperCase()}
 									</BodyS>
 									{showTooltip.lightning && (
 										<AnimatedView

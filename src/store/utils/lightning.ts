@@ -382,6 +382,7 @@ export const syncLightningTxsWithActivityList = async (): Promise<
 			confirmed: payment.state === 'successful',
 			value: payment.amount_sat,
 			timestamp: payment.unix_timestamp * 1000,
+			preimage: payment.payment_preimage,
 		});
 	}
 
@@ -415,6 +416,7 @@ export const syncLightningTxsWithActivityList = async (): Promise<
 			value: payment.amount_sat,
 			fee: payment.fee_paid_sat ?? 0,
 			timestamp: payment.unix_timestamp * 1000,
+			preimage: payment.payment_preimage,
 		});
 	}
 

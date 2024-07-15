@@ -1,6 +1,5 @@
 export interface IColors {
 	// Accents
-	bitcoin: string;
 	blue: string;
 	brand: string;
 	green: string;
@@ -29,12 +28,12 @@ export interface IColors {
 	white50: string;
 	white64: string;
 	white80: string;
-	bitcoin50: string;
 	blue24: string;
 	brand08: string;
 	brand16: string;
 	brand24: string;
 	brand32: string;
+	brand50: string;
 	green16: string;
 	green24: string;
 	purple50: string;
@@ -49,7 +48,6 @@ export interface IColors {
 
 const colors: IColors = {
 	// Accents
-	bitcoin: '#F7931A',
 	blue: '#0085FF',
 	brand: '#FF4400',
 	green: '#75BF72',
@@ -79,11 +77,11 @@ const colors: IColors = {
 	white64: 'rgba(255, 255, 255, 0.64)',
 	white80: 'rgba(255, 255, 255, 0.80)',
 	blue24: 'rgba(0, 133, 255, 0.24)',
-	bitcoin50: 'rgba(247, 147, 26, 0.5)',
 	brand08: 'rgba(255, 68, 0, 0.08)',
 	brand16: 'rgba(255, 68, 0, 0.16)',
 	brand24: 'rgba(255, 68, 0, 0.24)',
 	brand32: 'rgba(255, 68, 0, 0.32)',
+	brand50: 'rgba(255, 68, 0, 0.50)',
 	green16: 'rgba(117, 191, 114, 0.16)',
 	green24: 'rgba(117, 191, 114, 0.24)',
 	purple16: 'rgba(185, 92, 232, 0.16)',

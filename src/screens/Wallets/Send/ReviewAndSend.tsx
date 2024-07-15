@@ -16,13 +16,13 @@ import { Caption13Up, BodySSB } from '../../../styles/text';
 import {
 	Checkmark,
 	ClockIcon,
+	LightningHollow,
 	PencileIcon,
 	SettingsIcon,
 	SpeedFastIcon,
 	SpeedNormalIcon,
 	SpeedSlowIcon,
 	TagIcon,
-	TimerIcon,
 } from '../../../styles/icons';
 import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
 import GradientView from '../../../components/GradientView';
@@ -78,6 +78,7 @@ import { truncate } from '../../../utils/helpers';
 import AmountToggle from '../../../components/AmountToggle';
 import LightningSyncing from '../../../components/LightningSyncing';
 import { i18nTime } from '../../../utils/i18n';
+import { EActivityType } from '../../../store/types/activity';
 
 const Section = memo(
 	({
@@ -238,6 +239,7 @@ const ReviewAndSend = ({
 		refreshWallet({ onchain: false, lightning: true }).then();
 
 		navigation.navigate('Success', {
+			type: EActivityType.lightning,
 			amount,
 			txId: decodedInvoice.payment_hash,
 		});
@@ -316,7 +318,11 @@ const ReviewAndSend = ({
 			dispatch(updateLastPaidContacts(transaction.slashTagsUrl));
 		}
 
-		navigation.navigate('Success', { amount, txId: rawTx.id });
+		navigation.navigate('Success', {
+			type: EActivityType.onchain,
+			amount,
+			txId: rawTx.id,
+		});
 	}, [rawTx, transaction, amount, onError, navigation, dispatch, t]);
 
 	useEffect(() => {
@@ -639,7 +645,12 @@ const ReviewAndSend = ({
 								title={t('send_fee_and_speed')}
 								value={
 									<>
-										<TimerIcon style={styles.icon} color="purple" />
+										<LightningHollow
+											style={styles.icon}
+											color="purple"
+											height={16}
+											width={16}
+										/>
 										<BodySSB>{FeeText.instant.title} (±$0.01)</BodySSB>
 									</>
 								}

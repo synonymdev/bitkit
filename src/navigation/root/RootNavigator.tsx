@@ -106,6 +106,13 @@ if (__E2E__) {
  */
 export const navigationRef = createNavigationContainerRef<RootStackParamList>();
 export const rootNavigation = {
+	getCurrenRoute: (): string | undefined => {
+		if (navigationRef.isReady()) {
+			const route = navigationRef.getCurrentRoute();
+			return route ? route.name : undefined;
+		}
+		return undefined;
+	},
 	navigate<RouteName extends keyof RootStackParamList>(
 		...args: RouteName extends unknown
 			? undefined extends RootStackParamList[RouteName]

@@ -32,6 +32,7 @@ import {
 	setupFeeForOnChainTransaction,
 } from '../../store/actions/wallet';
 import { __E2E__ } from '../../constants/env';
+import { EActivityType } from '../../store/types/activity';
 import { updateOnchainFeeEstimates } from '../../store/utils/fees';
 import { useLightningBalance } from '../../hooks/lightning';
 import {
@@ -57,7 +58,7 @@ export type SendStackParamList = {
 	Tags: undefined;
 	AutoRebalance: undefined;
 	Pending: { txId: string };
-	Success: { amount: number; txId: string };
+	Success: { type: EActivityType; amount: number; txId: string };
 	Error: { errorMessage: string };
 };
 

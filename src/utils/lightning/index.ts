@@ -413,6 +413,7 @@ export const handleLightningPaymentSubscription = async ({
 		value: payment.amount_sat,
 		confirmed: true,
 		timestamp: new Date().getTime(),
+		preimage: payment.payment_preimage,
 	};
 
 	vibrate({ type: 'default' });

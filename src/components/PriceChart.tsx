@@ -190,7 +190,6 @@ const PriceChart = ({
 	return (
 		<View style={[styles.root, style]}>
 			<Chart
-				style={styles.priceChart}
 				values={history.pastValues}
 				positive={history.change.color === 'green'}
 				period={period}
@@ -203,11 +202,8 @@ const styles = StyleSheet.create({
 	root: {
 		flex: 1,
 	},
-	priceChart: {
-		minHeight: 60, // static width + height is really important to avoid rerenders of chart
-	},
 	chart: {
-		minHeight: chartHeight, // static width + height is really important to avoid rerenders of chart
+		height: chartHeight, // static width + height is really important to avoid rerenders of chart
 	},
 	canvas: {
 		flex: 1,

@@ -13,17 +13,21 @@ import { closeSheet } from '../../../store/slices/ui';
 import { activityItemSelector } from '../../../store/reselect/activity';
 import { rootNavigation } from '../../../navigation/root/RootNavigator';
 import type { SendScreenProps } from '../../../navigation/types';
+import { EActivityType } from '../../../store/types/activity';
 
-const confettiSrc = require('../../../assets/lottie/confetti-green.json');
+const confettiOrangeSrc = require('../../../assets/lottie/confetti-orange.json');
+const confettiPurpleSrc = require('../../../assets/lottie/confetti-purple.json');
 const imageSrc = require('../../../assets/illustrations/check.png');
 
 const Success = ({ route }: SendScreenProps<'Success'>): ReactElement => {
 	const { t } = useTranslation('wallet');
-	const { amount, txId } = route.params;
+	const { type, amount, txId } = route.params;
 	const dispatch = useAppDispatch();
 	const activityItem = useAppSelector((state) => {
 		return activityItemSelector(state, txId);
 	});
+
+	const isOnchain = type === EActivityType.onchain;
 
 	const navigateToTxDetails = (): void => {
 		if (activityItem) {
@@ -41,7 +45,7 @@ const Success = ({ route }: SendScreenProps<'Success'>): ReactElement => {
 			<View style={styles.confetti} pointerEvents="none" testID="SendSuccess">
 				<Lottie
 					style={styles.lottie}
-					source={confettiSrc}
+					source={isOnchain ? confettiOrangeSrc : confettiPurpleSrc}
 					resizeMode="cover"
 					autoPlay
 					loop

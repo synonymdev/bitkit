@@ -21,6 +21,7 @@ import { BodySSB } from '../styles/text';
 import { ScanIcon } from '../styles/icons';
 import { AnimatedView, Pressable } from '../styles/components';
 import BlurView from '../components/BlurView';
+import { rootNavigation } from '../navigation/root/RootNavigator';
 import type { RootNavigationProp } from '../navigation/types';
 
 const TabBar = ({
@@ -39,7 +40,14 @@ const TabBar = ({
 	}, [viewControllers]);
 
 	const onReceivePress = (): void => {
-		toggleBottomSheet('receiveNavigation');
+		const currentRoute = rootNavigation.getCurrenRoute();
+		if (currentRoute === 'ActivitySpending') {
+			toggleBottomSheet('receiveNavigation', {
+				receiveScreen: 'ReceiveAmount',
+			});
+		} else {
+			toggleBottomSheet('receiveNavigation');
+		}
 	};
 
 	const onSendPress = (): void => {

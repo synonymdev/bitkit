@@ -10,12 +10,13 @@ import SafeAreaInset from '../../components/SafeAreaInset';
 import ActivityHeader from '../../components/ActivityHeader';
 import WalletOnboarding from '../../components/WalletOnboarding';
 import Money from '../../components/Money';
+import Button from '../../components/Button';
 import ActivityList from './ActivityList';
 import { useBalance } from '../../hooks/wallet';
 import { useAppSelector } from '../../hooks/redux';
 import { EActivityType } from '../../store/types/activity';
 import { activityItemsSelector } from '../../store/reselect/activity';
-import type { WalletScreenProps } from '../../navigation/types';
+import { WalletScreenProps } from '../../navigation/types';
 
 const ActivitySpending = ({
 	navigation,
@@ -39,13 +40,18 @@ const ActivitySpending = ({
 
 	const showOnboarding = lightningBalance === 0 && spendingItems.length === 0;
 
+	const onTransfer = (): void => {
+		navigation.navigate('LightningRoot', { screen: 'QuickSetup' });
+	};
+
+	const canTransfer = !!lightningBalance;
+
 	return (
 		<ThemedView style={styles.root}>
 			<SafeAreaInset type="top" />
 			<NavigationHeader
 				title={t('spending.title')}
 				icon={<LightningCircleIcon width={32} height={32} />}
-				onClosePress={navigation.popToTop}
 			/>
 
 			<View style={styles.content}>
@@ -83,9 +89,20 @@ const ActivitySpending = ({
 						}
 					/>
 				) : (
-					<View style={styles.activity}>
-						<ActivityList filter={filter} showFooterButton={true} />
-					</View>
+					<>
+						<Button
+							style={styles.button}
+							text="Transfer To Savings"
+							variant="secondary"
+							size="large"
+							icon={<TransferIcon height={16} width={16} />}
+							disabled={!canTransfer}
+							onPress={onTransfer}
+						/>
+						<View style={styles.activity}>
+							<ActivityList filter={filter} showFooterButton={true} />
+						</View>
+					</>
 				)}
 			</View>
 		</ThemedView>
@@ -119,9 +136,11 @@ const styles = StyleSheet.create({
 		borderTopWidth: 1,
 		marginTop: 8,
 	},
+	button: {
+		marginTop: 16,
+	},
 	activity: {
 		flex: 1,
-		marginTop: 16,
 	},
 });
 

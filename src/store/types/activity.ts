@@ -37,4 +37,5 @@ export type TLightningActivityItem = {
 	confirmed: boolean;
 	message: string;
 	timestamp: number;
+	preimage?: string;
 };

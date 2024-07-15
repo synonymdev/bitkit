@@ -466,6 +466,9 @@
 	"activity_tx_id": {
 		"string": "Transaction ID"
 	},
+	"activity_preimage": {
+		"string": "Preimage"
+	},
 	"activity_payment_hash": {
 		"string": "Payment hash"
 	},

@@ -48,7 +48,7 @@ const Balances = (): ReactElement => {
 				title={t('details_savings_title')}
 				balance={onchainBalance}
 				pendingBalance={balanceInTransferToSavings}
-				icon={<BitcoinCircleIcon color="bitcoin" width={32} height={32} />}
+				icon={<BitcoinCircleIcon color="brand" width={32} height={32} />}
 				testID="ActivitySavings"
 				onPress={onSavingsPress}
 			/>

@@ -667,7 +667,17 @@ const LightningActivityDetail = ({
 	const { t: tTime } = useTranslation('intl', { i18n: i18nTime });
 	const switchUnit = useSwitchUnit();
 	const colors = useColors();
-	const { id, txType, status, value, fee, message, timestamp, address } = item;
+	const {
+		id,
+		txType,
+		status,
+		value,
+		fee,
+		message,
+		timestamp,
+		address,
+		preimage,
+	} = item;
 
 	const dispatch = useAppDispatch();
 	const tags = useAppSelector((state) => tagSelector(state, id));
@@ -952,6 +962,16 @@ const LightningActivityDetail = ({
 				</>
 			) : (
 				<>
+					{preimage && (
+						<TouchableOpacity
+							style={styles.sectionContainer}
+							onPress={(): void => onCopy(preimage)}>
+							<Section
+								title={t('activity_preimage')}
+								value={<BodySSB>{preimage}</BodySSB>}
+							/>
+						</TouchableOpacity>
+					)}
 					<TouchableOpacity
 						style={styles.sectionContainer}
 						onPress={(): void => onCopy(id)}>

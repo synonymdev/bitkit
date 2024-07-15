@@ -249,7 +249,7 @@ const QuickSetup = ({
 							exiting={FadeOut}>
 							<View style={styles.row}>
 								<Caption13Up color="purple">{t('spending')}</Caption13Up>
-								<Caption13Up color="bitcoin">{t('savings')}</Caption13Up>
+								<Caption13Up color="brand">{t('savings')}</Caption13Up>
 							</View>
 							<View style={styles.sliderContainer}>
 								<FancySlider

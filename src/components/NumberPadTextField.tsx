@@ -137,7 +137,7 @@ const styles = StyleSheet.create({
 		marginBottom: 16,
 	},
 	symbol: {
-		fontFamily: 'InterTight-Bold',
+		fontFamily: 'InterTight-ExtraBold',
 		marginRight: 6,
 	},
 });
