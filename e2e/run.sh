@@ -66,7 +66,18 @@ fi
 
 # Start the Docker Compose environment
 docker compose -f docker/docker-compose.yml up -d
-sleep 2 # short wait for Electrum and LND
+
+# Wait for Electrum and LND
+T=60
+while ! (nc -z '127.0.0.1' 60001 && nc -z '127.0.0.1' 10009); do
+  if [ $T -le 0 ]; then
+    echo "Timeout reached waiting for Electrum and LND. Exiting."
+    exit 1
+  else
+    sleep 1
+    (( T-- ))
+  fi
+done
 
 # Run the E2E tests
 yarn e2e:test:$PLATFORM-$BUILD_TYPE --cleanup

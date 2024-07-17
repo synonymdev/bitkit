@@ -12,6 +12,7 @@ E2E tests are automatically triggered on pull requests for this repository. When
 
 You can run the end-to-end (E2E) tests locally if the correct environment is set up:
 
+- Docker must be installed.
 - For iOS Tests:
   - The host must be running macOS.
   - iOS Simulator must be installed, which comes with Xcode.
@@ -19,24 +20,26 @@ You can run the end-to-end (E2E) tests locally if the correct environment is set
   - An Android Virtual Device (AVD) must be set up.
   - The Android Debug Bridge (ADB) must be installed.
 
-Additionally, you may need to update the `devices.emulator.device.avdName` and/or `devices.simulator.device.type` settings in the .detoxrc.js configuration file to match your environment.
-
-### Using `act`
-
-You can run the E2E tests using the [`act`](https://github.com/nektos/act) tool, which allows you to run GitHub Actions locally. Here's an example of how to run the iOS tests:
-
-```sh
-act -W .github/workflows/e2e-ios.yml -j e2e -P self-hosted=-self-hosted
-```
+Additionally, you may need to update the `devices.emulator.device.avdName` and/or `devices.simulator.device.type` values in the .detoxrc.js configuration file to match your environment.
 
 ### Bash script
 
-Alternatively, you can run the E2E tests directly with the `e2e/run.sh` script.
+You can run the E2E tests locally with the `e2e/run.sh` script.
 
     Usage: run.sh <platform> <build|skip-build> [debug|release]
     Where <platform> is either 'android' or 'ios'
           <build|skip-build> specifies whether to build or skip the build step
           [debug|release] is an optional argument for the build type, defaulting to 'release'
+
+### Using `act`
+
+Alternatively, you can run the E2E tests using the [`act`](https://github.com/nektos/act) tool. This allows you to run the GitHub Actions workflows locally.
+
+```sh
+act -W .github/workflows/e2e-ios.yml -j e2e -P self-hosted=-self-hosted
+
+act -W .github/workflows/e2e-android.yml -j e2e -P self-hosted=-self-hosted
+```
 
 ## Contributing
 
