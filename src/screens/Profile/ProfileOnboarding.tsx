@@ -6,7 +6,7 @@ import React, {
 	useState,
 } from 'react';
 import { View, StyleSheet, Image, ImageSourcePropType } from 'react-native';
-import { StackNavigationProp } from '@react-navigation/stack';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { Trans, useTranslation } from 'react-i18next';
 
@@ -114,7 +114,7 @@ const Layout = memo(
 		children,
 		onNext,
 	}: {
-		navigation: StackNavigationProp<RootStackParamList, 'Profile'>;
+		navigation: NativeStackNavigationProp<RootStackParamList, 'Profile'>;
 		illustration: ImageSourcePropType;
 		nextStep: TSlashtagsState['onboardingProfileStep'];
 		buttonText: string;

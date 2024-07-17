@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react';
-import { StackScreenProps } from '@react-navigation/stack';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { Trans, useTranslation } from 'react-i18next';
 
 import { Display } from '../../styles/text';
@@ -10,7 +10,10 @@ import OnboardingScreen from '../../components/OnboardingScreen';
 
 const imageSrc = require('../../assets/illustrations/group.png');
 
-type ContactsOnboardingProps = StackScreenProps<RootStackParamList, 'Contacts'>;
+type ContactsOnboardingProps = NativeStackScreenProps<
+	RootStackParamList,
+	'Contacts'
+>;
 
 const ContactsOnboarding = ({
 	navigation,

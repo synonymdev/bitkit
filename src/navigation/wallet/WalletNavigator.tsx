@@ -1,10 +1,9 @@
 import React, { ReactElement, useState } from 'react';
 import {
-	createStackNavigator,
-	StackNavigationOptions,
-	StackNavigationProp,
-	TransitionPresets,
-} from '@react-navigation/stack';
+	createNativeStackNavigator,
+	NativeStackNavigationOptions,
+	NativeStackNavigationProp,
+} from '@react-navigation/native-stack';
 
 import WalletsScreen from '../../screens/Wallets';
 import ActivitySavings from '../../screens/Activity/ActivitySavings';
@@ -24,13 +23,13 @@ export type WalletStackParamList = {
 	ActivityFiltered: undefined;
 };
 
-export type WalletNavigationProp = StackNavigationProp<WalletStackParamList>;
+export type WalletNavigationProp =
+	NativeStackNavigationProp<WalletStackParamList>;
 
-const Stack = createStackNavigator<WalletStackParamList>();
-const screenOptions: StackNavigationOptions = {
-	...TransitionPresets.SlideFromRightIOS,
+const Stack = createNativeStackNavigator<WalletStackParamList>();
+const screenOptions: NativeStackNavigationOptions = {
 	headerShown: false,
-	animationEnabled: !__E2E__,
+	animation: __E2E__ ? 'none' : 'default',
 };
 
 const WalletsStack = ({

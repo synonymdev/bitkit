@@ -34,6 +34,7 @@ import { useProfile, useSlashtags } from '../../hooks/slashtags';
 import { truncate } from '../../utils/helpers';
 import NavigationHeader from '../../components/NavigationHeader';
 import SafeAreaInset from '../../components/SafeAreaInset';
+import DetectSwipe from '../../components/DetectSwipe';
 import ProfileCard from '../../components/ProfileCard';
 import Tooltip from '../../components/Tooltip';
 import Divider from '../../components/Divider';
@@ -70,6 +71,10 @@ const ProfileScreen = ({
 
 	const [showCopy, setShowCopy] = useState(false);
 	const [isSharing, setIsSharing] = useState(false);
+
+	const onSwipeLeft = (): void => {
+		navigation.navigate('Wallet');
+	};
 
 	const handleCopy = useCallback((): void => {
 		setShowCopy(() => true);
@@ -118,54 +123,56 @@ const ProfileScreen = ({
 				}}
 			/>
 
-			<ScrollView contentContainerStyle={styles.content}>
-				<ProfileCard url={url} profile={profile} resolving={false} />
-				<Divider />
-				<View style={styles.actions}>
-					<IconButton
-						testID="CopyButton"
-						style={styles.iconButton}
-						onPress={handleCopy}>
-						<CopyIcon height={24} width={24} color="brand" />
-					</IconButton>
-					<IconButton
-						style={styles.iconButton}
-						disabled={isSharing}
-						onPress={handleShare}>
-						<ShareIcon height={24} width={24} color="brand" />
-					</IconButton>
-					<IconButton
-						testID="EditButton"
-						style={styles.iconButton}
-						onPress={(): void => {
-							navigation.navigate('ProfileEdit');
-						}}>
-						<PencileIcon height={20} width={20} color="brand" />
-					</IconButton>
-				</View>
-				<View style={styles.qrContainer}>
-					<QRView
-						url={url}
-						profile={profile}
-						qrRef={qrRef}
-						onPress={handleCopy}
-					/>
-					{showCopy && (
-						<AnimatedView
-							style={styles.tooltip}
-							color="transparent"
-							entering={FadeIn.duration(500)}
-							exiting={FadeOut.duration(500)}>
-							<Tooltip
-								testID="ContactCopiedTooltip"
-								text={t('contact_copied')}
-							/>
-						</AnimatedView>
-					)}
-				</View>
-				<ProfileLinksView profile={profile} />
-				<SafeAreaInset type="bottom" minPadding={16} />
-			</ScrollView>
+			<DetectSwipe onSwipeLeft={onSwipeLeft}>
+				<ScrollView contentContainerStyle={styles.content}>
+					<ProfileCard url={url} profile={profile} resolving={false} />
+					<Divider />
+					<View style={styles.actions}>
+						<IconButton
+							testID="CopyButton"
+							style={styles.iconButton}
+							onPress={handleCopy}>
+							<CopyIcon height={24} width={24} color="brand" />
+						</IconButton>
+						<IconButton
+							style={styles.iconButton}
+							disabled={isSharing}
+							onPress={handleShare}>
+							<ShareIcon height={24} width={24} color="brand" />
+						</IconButton>
+						<IconButton
+							testID="EditButton"
+							style={styles.iconButton}
+							onPress={(): void => {
+								navigation.navigate('ProfileEdit');
+							}}>
+							<PencileIcon height={20} width={20} color="brand" />
+						</IconButton>
+					</View>
+					<View style={styles.qrContainer}>
+						<QRView
+							url={url}
+							profile={profile}
+							qrRef={qrRef}
+							onPress={handleCopy}
+						/>
+						{showCopy && (
+							<AnimatedView
+								style={styles.tooltip}
+								color="transparent"
+								entering={FadeIn.duration(500)}
+								exiting={FadeOut.duration(500)}>
+								<Tooltip
+									testID="ContactCopiedTooltip"
+									text={t('contact_copied')}
+								/>
+							</AnimatedView>
+						)}
+					</View>
+					<ProfileLinksView profile={profile} />
+					<SafeAreaInset type="bottom" minPadding={16} />
+				</ScrollView>
+			</DetectSwipe>
 		</ThemedView>
 	);
 };

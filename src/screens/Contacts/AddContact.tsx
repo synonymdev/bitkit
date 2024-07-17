@@ -1,6 +1,6 @@
 import React, { ReactElement, useState } from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
-import { StackNavigationProp } from '@react-navigation/stack';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import Clipboard from '@react-native-clipboard/clipboard';
 import { parse } from '@synonymdev/slashtags-url';
 import { useTranslation } from 'react-i18next';
@@ -25,7 +25,7 @@ import {
 const AddContact = ({
 	navigation,
 }: {
-	navigation: StackNavigationProp<RootStackParamList, 'Contacts'>;
+	navigation: NativeStackNavigationProp<RootStackParamList, 'Contacts'>;
 }): ReactElement => {
 	const { t } = useTranslation('slashtags');
 	const snapPoints = useSnapPoints('small');

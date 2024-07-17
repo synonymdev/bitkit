@@ -1,8 +1,8 @@
 import React, { ReactElement } from 'react';
 import {
-	createStackNavigator,
-	StackNavigationOptions,
-} from '@react-navigation/stack';
+	createNativeStackNavigator,
+	NativeStackNavigationOptions,
+} from '@react-navigation/native-stack';
 
 import { NavigationContainer } from '../../styles/components';
 import AuthCheck from '../../components/AuthCheck';
@@ -16,11 +16,11 @@ export type RecoveryStackParamList = {
 	Mnemonic: undefined;
 };
 
-const Stack = createStackNavigator<RecoveryStackParamList>();
+const Stack = createNativeStackNavigator<RecoveryStackParamList>();
 
-const screenOptions: StackNavigationOptions = {
+const screenOptions: NativeStackNavigationOptions = {
 	headerShown: false,
-	animationEnabled: !__E2E__,
+	animation: __E2E__ ? 'none' : 'default',
 };
 
 const RecoveryNavigator = (): ReactElement => {

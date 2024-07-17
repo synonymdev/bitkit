@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react';
-import { StackScreenProps } from '@react-navigation/stack';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { Trans, useTranslation } from 'react-i18next';
 
 import { Display } from '../../styles/text';
@@ -10,7 +10,7 @@ import OnboardingScreen from '../../components/OnboardingScreen';
 
 const imageSrc = require('../../assets/illustrations/puzzle.png');
 
-type WidgetsOnboardingProps = StackScreenProps<
+type WidgetsOnboardingProps = NativeStackScreenProps<
 	RootStackParamList,
 	'WidgetsOnboarding'
 >;

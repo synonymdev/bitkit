@@ -1,5 +1,5 @@
 import React, { memo, ReactElement, useMemo } from 'react';
-import { StyleSheet, View, Pressable } from 'react-native';
+import { StyleSheet, View, Pressable, Image } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
 import { Switch } from '../../../styles/components';
@@ -13,7 +13,6 @@ import { closeSheet } from '../../../store/slices/ui';
 import { updateSettings } from '../../../store/slices/settings';
 import { pinForPaymentsSelector } from '../../../store/reselect/settings';
 import type { PinScreenProps } from '../../../navigation/types';
-import { Image } from 'react-native';
 
 const imageSrc = require('../../../assets/illustrations/check.png');
 

@@ -1,11 +1,10 @@
 import React, { ReactElement } from 'react';
-import { Platform } from 'react-native';
 import { NavigatorScreenParams } from '@react-navigation/native';
 import {
-	createStackNavigator,
-	StackNavigationOptions,
-	StackNavigationProp,
-} from '@react-navigation/stack';
+	createNativeStackNavigator,
+	NativeStackNavigationOptions,
+	NativeStackNavigationProp,
+} from '@react-navigation/native-stack';
 
 import MainSettings from '../../screens/Settings';
 import CurrenciesSettings from '../../screens/Settings/Currencies';
@@ -58,7 +57,7 @@ import AppStatus from '../../screens/Settings/AppStatus';
 import { TChannel } from '../../store/types/lightning';
 
 export type SettingsNavigationProp =
-	StackNavigationProp<SettingsStackParamList>;
+	NativeStackNavigationProp<SettingsStackParamList>;
 
 export type SettingsStackParamList = {
 	AuthCheck: {
@@ -112,13 +111,11 @@ export type SettingsStackParamList = {
 	LedgerTransaction: { ledgerTxId: number };
 };
 
-const Stack = createStackNavigator<SettingsStackParamList>();
+const Stack = createNativeStackNavigator<SettingsStackParamList>();
 
-const screenOptions: StackNavigationOptions = {
-	// prevent flickering issue on Android
-	presentation: Platform.OS === 'ios' ? 'card' : 'transparentModal',
+const screenOptions: NativeStackNavigationOptions = {
 	headerShown: false,
-	animationEnabled: !__E2E__,
+	animation: __E2E__ ? 'none' : 'default',
 };
 
 const SettingsNavigator = (): ReactElement => {

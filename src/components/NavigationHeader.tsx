@@ -37,7 +37,7 @@ const ActionButton = memo(
 				color="transparent"
 				hitSlop={{ top: 15, bottom: 15, left: 15, right: 15 }}
 				testID={testID}
-				onPress={onPress}>
+				onPressIn={onPress}>
 				{children}
 			</Pressable>
 		);

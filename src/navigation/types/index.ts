@@ -1,12 +1,11 @@
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import {
+	NativeStackNavigationProp,
+	NativeStackScreenProps,
+} from '@react-navigation/native-stack';
 import type {
 	NavigatorScreenParams,
 	CompositeScreenProps,
 } from '@react-navigation/native';
-import type {
-	StackNavigationProp,
-	StackScreenProps,
-} from '@react-navigation/stack';
 
 import type { IActivityItem } from '../../store/types/activity';
 import type { TWidgetSettings } from '../../store/types/widgets';
@@ -27,7 +26,7 @@ import type { TreasureHuntStackParamList } from '../bottom-sheet/TreasureHuntNav
 // TODO: move all navigation related types here
 // https://reactnavigation.org/docs/typescript#organizing-types
 
-export type RootNavigationProp = StackNavigationProp<RootStackParamList>;
+export type RootNavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
 export type RootStackParamList = {
 	Wallet: NavigatorScreenParams<WalletStackParamList> | undefined;
@@ -58,7 +57,7 @@ export type RootStackParamList = {
 
 // Root Stack Navigator
 export type RootStackScreenProps<T extends keyof RootStackParamList> =
-	StackScreenProps<RootStackParamList, T>;
+	NativeStackScreenProps<RootStackParamList, T>;
 
 export type OnboardingStackScreenProps<
 	T extends keyof OnboardingStackParamList,

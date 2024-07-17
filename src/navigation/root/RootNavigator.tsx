@@ -6,7 +6,7 @@ import React, {
 	useRef,
 	useState,
 } from 'react';
-import { AppState, Linking, Platform } from 'react-native';
+import { AppState, Linking } from 'react-native';
 import {
 	LinkingOptions,
 	createNavigationContainerRef,
@@ -14,11 +14,9 @@ import {
 import Clipboard from '@react-native-clipboard/clipboard';
 import { useTranslation } from 'react-i18next';
 import {
-	createStackNavigator,
-	StackNavigationOptions,
-	TransitionPresets,
-} from '@react-navigation/stack';
-import type { TransitionSpec } from '@react-navigation/stack/lib/typescript/src/types';
+	createNativeStackNavigator,
+	NativeStackNavigationOptions,
+} from '@react-navigation/native-stack';
 
 import { NavigationContainer } from '../../styles/components';
 import { processInputData } from '../../utils/scanner';
@@ -65,41 +63,12 @@ import WidgetsOnboarding from '../../screens/Widgets/WidgetsOnboarding';
 import { __E2E__ } from '../../constants/env';
 import type { RootStackParamList } from '../types';
 
-const Stack = createStackNavigator<RootStackParamList>();
+const Stack = createNativeStackNavigator<RootStackParamList>();
 
-const screenOptions: StackNavigationOptions = {
-	...TransitionPresets.SlideFromRightIOS,
+const screenOptions: NativeStackNavigationOptions = {
 	headerShown: false,
-	// we can't use it because bottom-sheet components
-	// are starting to appear on the screen even they are closed
-	// animationEnabled: !__E2E__,
+	animation: __E2E__ ? 'none' : 'default',
 };
-
-if (__E2E__) {
-	if (Platform.OS === 'ios') {
-		screenOptions.animationEnabled = false;
-	} else {
-		// can't use animationEnabled = false for android because
-		// it causes a bug where bottom-sheet components are
-		// appearing on the screen even they are closed
-		const config: TransitionSpec = {
-			animation: 'spring',
-			config: {
-				stiffness: 100000000, // make it fast
-				damping: 500,
-				mass: 3,
-				overshootClamping: true,
-				restDisplacementThreshold: 0.01,
-				restSpeedThreshold: 0.01,
-			},
-		};
-
-		screenOptions.transitionSpec = {
-			open: config,
-			close: config,
-		};
-	}
-}
 
 /**
  * Helper function to navigate from outside components.
@@ -238,13 +207,17 @@ const RootNavigator = (): ReactElement => {
 					name="ActivityAssignContact"
 					component={ActivityAssignContact}
 				/>
-				<Stack.Screen name="Scanner" component={ScannerScreen} />
+				<Stack.Screen
+					name="Scanner"
+					component={ScannerScreen}
+					options={{ animation: 'slide_from_right' }}
+				/>
 				<Stack.Screen name="LightningRoot" component={LightningNavigator} />
 				<Stack.Screen name="Settings" component={SettingsNavigator} />
 				<Stack.Screen
 					name="Profile"
 					component={Profile}
-					options={{ gestureDirection: 'horizontal-inverted' }}
+					options={{ animation: 'slide_from_left' }}
 				/>
 				<Stack.Screen name="ProfileEdit" component={ProfileEdit} />
 				<Stack.Screen name="Contacts" component={Contacts} />

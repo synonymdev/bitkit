@@ -6,10 +6,10 @@ import React, {
 	useState,
 } from 'react';
 import {
-	createStackNavigator,
-	StackNavigationProp,
-	StackNavigationOptions,
-} from '@react-navigation/stack';
+	createNativeStackNavigator,
+	NativeStackNavigationProp,
+	NativeStackNavigationOptions,
+} from '@react-navigation/native-stack';
 
 import BottomSheetWrapper from '../../components/BottomSheetWrapper';
 import { __E2E__ } from '../../constants/env';
@@ -26,7 +26,7 @@ import { addTreasureChest } from '../../store/slices/settings';
 import { __TREASURE_HUNT_HOST__ } from '../../constants/env';
 
 export type TreasureHuntNavigationProp =
-	StackNavigationProp<TreasureHuntStackParamList>;
+	NativeStackNavigationProp<TreasureHuntStackParamList>;
 
 export type TreasureHuntStackParamList = {
 	Chest: undefined;
@@ -36,12 +36,12 @@ export type TreasureHuntStackParamList = {
 	Error: undefined;
 };
 
-const Stack = createStackNavigator<TreasureHuntStackParamList>();
+const Stack = createNativeStackNavigator<TreasureHuntStackParamList>();
 
-const screenOptions: StackNavigationOptions = {
+const screenOptions: NativeStackNavigationOptions = {
 	presentation: 'transparentModal',
 	headerShown: false,
-	animationEnabled: __E2E__ ? false : true,
+	animation: __E2E__ ? 'none' : 'default',
 };
 
 const TreasureHuntNavigation = (): ReactElement => {
