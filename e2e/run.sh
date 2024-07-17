@@ -48,18 +48,24 @@ fi
 echo "Using platform: $PLATFORM"
 echo "Using build type: $BUILD_TYPE"
 
-# Set up the environment variables
-cp .env.test.template .env
-
 # Prepare the LND state dir
 rm -rf docker/lnd/
 mkdir -p docker/lnd
 chmod 777 docker/lnd
 
-# Build the release unless skip-build option is provided
+# Build the app unless skip-build option is provided
 if [ "$BUILD_OPTION" == "build" ]; then
   echo "Building the app..."
+  # Preserve the existing .env file if it exists
+  if [ -f .env ]; then
+    cp .env .env.bak
+  fi
+  cp .env.test.template .env
   yarn e2e:build:$PLATFORM-$BUILD_TYPE
+  # Restore the original .env file if it was backed up
+  if [ -f .env.bak ]; then
+    mv .env.bak .env
+  fi
 else
   echo "Skipping build..."
 fi
