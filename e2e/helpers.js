@@ -59,6 +59,29 @@ export const isButtonEnabled = async (element) => {
 	}
 };
 
+export async function waitForElementAttribute(
+	elementId,
+	attribute,
+	expectedValue = true,
+	timeout = 10,
+) {
+	while (timeout >= 0) {
+		const attributes = await element(by.id(elementId)).getAttributes();
+		if (attributes[attribute] === expectedValue) {
+			console.log(`${elementId} has attribute ${attribute}=${expectedValue}`);
+			break;
+		} else {
+			console.log(
+				`Waiting for ${elementId} to have attribute ${attribute}=${expectedValue}...`,
+			);
+			await new Promise((resolve) => {
+				setTimeout(resolve, 1000);
+			});
+			timeout--;
+		}
+	}
+}
+
 export const completeOnboarding = async () => {
 	await device.launchApp();
 

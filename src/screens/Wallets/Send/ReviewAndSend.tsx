@@ -582,6 +582,7 @@ const ReviewAndSend = ({
 						style={styles.amountToggle}
 						amount={amount}
 						onPress={goBackToAmount}
+						testID="ReviewAmount"
 					/>
 
 					<View style={styles.sectionContainer}>

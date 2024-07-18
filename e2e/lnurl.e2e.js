@@ -11,6 +11,7 @@ import {
 	bitcoinURL,
 	electrumHost,
 	electrumPort,
+	waitForElementAttribute,
 } from './helpers';
 import initWaitForElectrumToSync from '../__tests__/utils/wait-for-electrum';
 
@@ -205,6 +206,31 @@ d('LNURL', () => {
 		await element(by.id('QRInput')).replaceText(payRequest2.encoded);
 		await element(by.id('DialogConfirm')).tap();
 		await waitFor(element(by.id('CommentInput'))).not.toBeVisible();
+		await element(by.id('GRAB')).swipe('right', 'slow', 0.95, 0.5, 0.5); // Swipe to confirm
+		await waitFor(element(by.id('SendSuccess')))
+			.toBeVisible()
+			.withTimeout(10000);
+		await element(by.id('Close')).tap();
+
+		// test lnurl-pay, using manual entry
+		const minSendable = 321000;
+		const minSendableSats = minSendable / 1000;
+		const payRequest3 = await lnurl.generateNewUrl('payRequest', {
+			minSendable: minSendable, // msats
+			maxSendable: 350000, // msats
+			metadata: '[["text/plain", "lnurl-node2"]]',
+		});
+		await element(by.id('Send')).tap();
+		await element(by.id('RecipientManual')).tap();
+		await element(by.id('RecipientInput')).replaceText(payRequest3.encoded);
+		await element(by.id('RecipientInput')).tapReturnKey();
+		await waitForElementAttribute('AddressContinue', 'enabled');
+		await element(by.id('AddressContinue')).tap();
+		await waitFor(
+			element(by.id('MoneyText').withAncestor(by.id('ReviewAmount-primary'))),
+		).toHaveText(minSendableSats.toString());
+		await waitFor(element(by.id('ContinueAmount'))).toBeVisible();
+		await element(by.id('ContinueAmount')).tap();
 		await element(by.id('GRAB')).swipe('right', 'slow', 0.95, 0.5, 0.5); // Swipe to confirm
 		await waitFor(element(by.id('SendSuccess')))
 			.toBeVisible()

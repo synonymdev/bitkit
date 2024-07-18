@@ -228,8 +228,9 @@ d('Lightning', () => {
 				.withTimeout(10000);
 
 			// send funds to LND, 10000 invoice
+			const value = 1000;
 			const { paymentRequest: invoice4 } = await lnd.addInvoice({
-				value: '1000',
+				value: value,
 			});
 			await element(by.id('Send')).tap();
 			await element(by.id('RecipientManual')).tap();
@@ -239,6 +240,9 @@ d('Lightning', () => {
 			await element(by.id('AddressContinue')).tap();
 
 			// Review & Send
+			await waitFor(
+				element(by.id('MoneyText').withAncestor(by.id('ReviewAmount-primary'))),
+			).toHaveText(value.toString());
 			await expect(element(by.id('TagsAddSend'))).toBeVisible();
 			await element(by.id('TagsAddSend')).tap(); // add tag
 			await element(by.id('TagInputSend')).typeText('stag');
