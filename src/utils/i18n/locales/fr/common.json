@@ -56,8 +56,8 @@
   "ok": {
     "string": "OK"
   },
-  "awesome": {
-    "string": "Génial !"
+  "ok_random": {
+    "string": "Génial!"
   },
   "retry": {
     "string": "Réessayer"

@@ -138,9 +138,6 @@
   "timeout_text": {
     "string": "Het geld is nog niet overgeboekt. Bitkit zal proberen de overboeking gedurende<accent>30 minuten</accent> te initiëren. Houd uw app open."
   },
-  "awesome": {
-    "string": "Fantastisch!"
-  },
   "transfer_close": {
     "string": "Voor het terugboeken van uw bestedingssaldo naar uw spaarrekening worden netwerkkosten in rekening gebracht. De exacte kosten zijn afhankelijk van de drukte op het netwerk."
   },

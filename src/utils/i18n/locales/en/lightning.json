@@ -201,9 +201,6 @@
   "timeout_text": {
     "string": "Funds were not transferred yet. Bitkit will try to initiate the transfer during the next <accent>30 minutes</accent>. Please keep your app open."
   },
-  "awesome": {
-    "string": "Awesome!"
-  },
   "transfer_close": {
     "string": "Transferring your spending balance back to your savings requires a network fee. The exact fee depends on network conditions."
   },

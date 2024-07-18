@@ -3,6 +3,7 @@ import { Trans, useTranslation } from 'react-i18next';
 
 import { BodyMB, Display } from '../../styles/text';
 import InfoScreen from '../../components/InfoScreen';
+import { getRandomOkText } from '../../utils/i18n/helpers';
 import type { LightningScreenProps } from '../../navigation/types';
 
 const imageSrc = require('../../assets/illustrations/switch.png');
@@ -36,7 +37,7 @@ const LNURLChannelSuccess = ({
 				/>
 			}
 			image={imageSrc}
-			buttonText={t('lightning:awesome')}
+			buttonText={getRandomOkText()}
 			testID="LNURLChannelSuccess"
 			onButtonPress={handleAwesome}
 		/>

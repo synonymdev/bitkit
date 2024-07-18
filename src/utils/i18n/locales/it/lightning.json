@@ -201,9 +201,6 @@
   "timeout_text": {
     "string": "I fondi non sono stati ancora trasferiti. Bitkit tenterà di avviare il trasferimento durante i prossimi <accent>30 minuti</accent>.  Per favore mantieni l'app aperta."
   },
-  "awesome": {
-    "string": "Fantastico!"
-  },
   "transfer_close": {
     "string": "Il trasferimento del tuo conto di spesa al tuo conto di risparmio richiede una commissione di rete. La tariffa esatta dipende dalle condizioni della rete."
   },

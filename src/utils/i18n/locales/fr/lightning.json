@@ -198,9 +198,6 @@
   "timeout_text": {
     "string": "Les fonds n'ont pas encore été transférés. Bitkit va essayer d'initier le transfert au cours des <accent>30</accent> prochaines <accent>minutes</accent>. Veuillez garder votre application ouverte."
   },
-  "awesome": {
-    "string": "Génial !"
-  },
   "transfer_close": {
     "string": "Le transfert du solde de votre compte courant vers votre compte d'épargne est soumis à des frais de réseau. Le montant exact des frais dépend des conditions du réseau."
   },

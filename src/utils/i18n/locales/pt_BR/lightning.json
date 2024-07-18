@@ -189,9 +189,6 @@
   "timeout_text": {
     "string": "Os fundos ainda não foram transferidos. A Bitkit tentará iniciar a transferência durante os próximos <accent>30 minutos</accent>. Por favor, mantenha o aplicativo aberto."
   },
-  "awesome": {
-    "string": "Fantástico!"
-  },
   "transfer_close": {
     "string": "A transferência do saldo de gastos de volta para a poupança exige uma tarifa de rede. A tarifa exata depende das condições da rede."
   },

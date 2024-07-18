@@ -9,6 +9,7 @@ import { closeSheet } from '../../store/slices/ui';
 import BottomSheetNavigationHeader from '../../components/BottomSheetNavigationHeader';
 import SafeAreaInset from '../../components/SafeAreaInset';
 import { rootNavigation } from '../../navigation/root/RootNavigator';
+import { getRandomOkText } from '../../utils/i18n/helpers';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import {
 	useBottomSheetBackPress,
@@ -85,7 +86,7 @@ const NewTxPrompt = (): ReactElement => {
 					<View style={styles.buttonContainer}>
 						<Button
 							style={styles.button}
-							text={t('awesome')}
+							text={getRandomOkText()}
 							size="large"
 							testID="NewTxPromptButton"
 							onPress={onButtonPress}

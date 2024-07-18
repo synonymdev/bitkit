@@ -2,6 +2,7 @@ import React, { ReactElement, memo } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 import { BodyMB, Display } from '../../styles/text';
 import InfoScreen from '../../components/InfoScreen';
+import { getRandomOkText } from '../../utils/i18n/helpers';
 import type { LightningScreenProps } from '../../navigation/types';
 
 const imageSrc = require('../../assets/illustrations/check.png');
@@ -21,7 +22,7 @@ const Success = ({
 	const isTransferToSavings = type === 'savings';
 	const title = isTransferToSavings ? 'ts_savings_title' : 'result_header';
 	const description = isTransferToSavings ? 'ts_savings_text' : 'result_text';
-	const buttonText = isTransferToSavings ? t('ok') : t('awesome');
+	const buttonText = isTransferToSavings ? t('ok') : getRandomOkText();
 
 	return (
 		<InfoScreen

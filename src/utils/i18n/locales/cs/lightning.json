@@ -201,9 +201,6 @@
   "timeout_text": {
     "string": "Prostředky dosud nebyly převedeny. Bitkit se pokusí převod iniciovat během následujících <accent>30 minut</accent>. Nechte prosím aplikaci otevřenou."
   },
-  "awesome": {
-    "string": "Skvělé!"
-  },
   "transfer_close": {
     "string": "Převod disponibilního zůstatku zpět na spoření vyžaduje síťový poplatek. Přesná výše poplatku závisí na podmínkách sítě."
   },

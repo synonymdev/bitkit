@@ -183,9 +183,6 @@
   "timeout_text": {
     "string": "Die Gelder wurden noch nicht übertragen. Bitkit wird versuchen, die Übertragung in den nächsten <accent>30 Minuten</accent> zu initiieren. Bitte halte deine App offen."
   },
-  "awesome": {
-    "string": "Wunderbar!"
-  },
   "transfer_close": {
     "string": "Das Übertragen deines Ausgabenguthabens zurück zu deinen Ersparnissen erfordert eine Netzwerkgebühr. Die genaue Gebühr hängt von den Netzwerkbedingungen ab."
   },
