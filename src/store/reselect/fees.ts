@@ -1,16 +1,10 @@
-import { createSelector } from '@reduxjs/toolkit';
-import { RootState } from '..';
-import { TFeesState } from '../slices/fees';
 import { IOnchainFees } from 'beignet';
+import { RootState } from '..';
 
-const feesState = (state: RootState): TFeesState => state.fees;
+export const onChainFeesSelector = (state: RootState): IOnchainFees => {
+	return state.fees.onchain;
+};
 
-export const onChainFeesSelector = createSelector(
-	[feesState],
-	(fees): IOnchainFees => fees.onchain,
-);
-
-export const overrideFeeSelector = createSelector(
-	[feesState],
-	(fees): boolean => fees.override,
-);
+export const overrideFeeSelector = (state: RootState): boolean => {
+	return state.fees.override;
+};

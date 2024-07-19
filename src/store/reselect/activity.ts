@@ -1,16 +1,15 @@
 import { createSelector } from '@reduxjs/toolkit';
 import { RootState } from '..';
-import { TActivity } from '../slices/activity';
 import { IActivityItem } from '../types/activity';
+import { createShallowEqualSelector } from './utils';
+import { TActivity } from '../slices/activity';
 
-const activityState = (state: RootState): TActivity => state.activity;
-
-export const activityItemsState = (state: RootState): IActivityItem[] => {
-	return state.activity.items;
+export const activitySelector = (state: RootState): TActivity => {
+	return state.activity;
 };
 
-export const activityItemsSelector = createSelector(
-	[activityState],
+export const activityItemsSelector = createShallowEqualSelector(
+	[(state): TActivity => state.activity],
 	(activity): IActivityItem[] => activity.items,
 );
 
@@ -21,10 +20,7 @@ export const activityItemsSelector = createSelector(
  * @returns {string}
  */
 export const activityItemSelector = createSelector(
-	[
-		activityItemsState,
-		(_activityItems, activityId: string): string => activityId,
-	],
+	[activityItemsSelector, (_state, activityId: string): string => activityId],
 	(activityItems, activityId): IActivityItem | undefined => {
 		return activityItems.find((item) => item.id === activityId);
 	},

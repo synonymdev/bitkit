@@ -1,9 +1,7 @@
-import { createSelector } from '@reduxjs/toolkit';
 import { TChannel } from '@synonymdev/react-native-ldk';
 
 import { RootState } from '..';
-import { TTodosState } from '../types/todos';
-import { ITodo } from '../types/todos';
+import { TTodosState, ITodo } from '../types/todos';
 import {
 	backupSeedPhraseTodo,
 	buyBitcoinTodo,
@@ -28,12 +26,12 @@ import { closedChannelsSelector, openChannelsSelector } from './lightning';
 import { blocktankPaidOrdersFullSelector } from './blocktank';
 import { pendingTransfersSelector } from './wallet';
 import { ETransferType, TTransferToSavings } from '../types/wallet';
+import { createShallowEqualSelector } from './utils';
 
 export const todosSelector = (state: RootState): TTodosState => state.todos;
 
-export const newChannelsNotificationsSelector = createSelector(
-	todosSelector,
-	openChannelsSelector,
+export const newChannelsNotificationsSelector = createShallowEqualSelector(
+	[todosSelector, openChannelsSelector],
 	(todos, openChannels): TChannel[] => {
 		const { newChannelsNotifications } = todos;
 		const newChannels = openChannels.filter((c) => {
@@ -46,17 +44,19 @@ export const newChannelsNotificationsSelector = createSelector(
 	},
 );
 
-export const todosFullSelector = createSelector(
-	todosSelector,
-	backupVerifiedSelector,
-	pinSelector,
-	onboardingProfileStepSelector,
-	openChannelsSelector,
-	closedChannelsSelector,
-	startCoopCloseTimestampSelector,
-	blocktankPaidOrdersFullSelector,
-	newChannelsNotificationsSelector,
-	pendingTransfersSelector,
+export const todosFullSelector = createShallowEqualSelector(
+	[
+		todosSelector,
+		backupVerifiedSelector,
+		pinSelector,
+		onboardingProfileStepSelector,
+		openChannelsSelector,
+		closedChannelsSelector,
+		startCoopCloseTimestampSelector,
+		blocktankPaidOrdersFullSelector,
+		newChannelsNotificationsSelector,
+		pendingTransfersSelector,
+	],
 	(
 		todos,
 		backupVerified,

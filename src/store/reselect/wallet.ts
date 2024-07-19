@@ -24,30 +24,20 @@ import { EFeeId } from '../types/fees';
 import { TSettings } from '../slices/settings';
 
 export const walletState = (state: RootState): IWalletStore => state.wallet;
-export const walletsState = (state: RootState): IWallets =>
-	state.wallet.wallets;
-export const exchangeRatesState = (state: RootState): IExchangeRates =>
-	state.wallet.exchangeRates;
-export const selectedWalletState = (state: RootState): TWalletName =>
-	state.wallet.selectedWallet;
-export const selectedNetworkState = (state: RootState): EAvailableNetwork =>
-	state.wallet.selectedNetwork;
-
-/**
- * Returns the selected wallet id.
- */
-export const selectedWalletSelector = createSelector(
-	[walletState],
-	(wallet): TWalletName => wallet.selectedWallet,
-);
-
-/**
- * Returns the selected network id (EAvailableNetwork)
- */
-export const selectedNetworkSelector = createSelector(
-	[walletState],
-	(wallet): EAvailableNetwork => wallet.selectedNetwork,
-);
+export const walletsState = (state: RootState): IWallets => {
+	return state.wallet.wallets;
+};
+export const exchangeRatesState = (state: RootState): IExchangeRates => {
+	return state.wallet.exchangeRates;
+};
+export const selectedWalletSelector = (state: RootState): TWalletName => {
+	return state.wallet.selectedWallet;
+};
+export const selectedNetworkSelector = (
+	state: RootState,
+): EAvailableNetwork => {
+	return state.wallet.selectedNetwork;
+};
 
 /**
  * Returns wallet data for the currently selected wallet.
@@ -58,7 +48,7 @@ export const selectedNetworkSelector = createSelector(
 export const currentWalletSelector = createSelector(
 	[
 		walletState,
-		(_wallet, selectedWallet: TWalletName): TWalletName => selectedWallet,
+		(_state, selectedWallet: TWalletName): TWalletName => selectedWallet,
 	],
 	(wallet, selectedWallet): IWallet => {
 		return wallet.wallets[selectedWallet];
@@ -96,20 +86,20 @@ export const addressTypeSelector = createSelector(
 /**
  * Returns exchange rate information.
  */
-export const exchangeRatesSelector = createSelector([walletState], (wallet) => {
-	return wallet.exchangeRates;
-});
+export const exchangeRatesSelector = (state: RootState): IExchangeRates => {
+	return state.wallet.exchangeRates;
+};
 
 /**
  * Returns exchange rate for specific fiat currency.
  */
 export const exchangeRateSelector = createSelector(
 	[
-		walletState,
-		(_wallet, currency: TSettings['selectedCurrency']): string => currency,
+		exchangeRatesSelector,
+		(_state, currency: TSettings['selectedCurrency']): string => currency,
 	],
-	(wallet, currency) => {
-		return wallet.exchangeRates[currency]?.rate ?? 0;
+	(exchangeRates, currency) => {
+		return exchangeRates[currency]?.rate ?? 0;
 	},
 );
 
@@ -141,7 +131,7 @@ export const pendingTransfersSelector = createSelector(
  * Returns transfers for the currently selected wallet.
  */
 export const transferSelector = createSelector(
-	[walletState, (_wallet, txId: string): string => txId],
+	[walletState, (_state, txId: string): string => txId],
 	(wallet, txId) => {
 		const { selectedWallet, selectedNetwork } = wallet;
 		const transfers = wallet.wallets[selectedWallet].transfers[selectedNetwork];
@@ -265,18 +255,21 @@ export const walletSelector = (state: RootState): IWalletStore => state.wallet;
  * Returns the current on-chain balance.
  */
 export const onChainBalanceSelector = createSelector(
-	walletState,
+	[walletState],
 	(wallet): number => {
 		const { selectedWallet, selectedNetwork } = wallet;
 		return wallet.wallets[selectedWallet]?.balance[selectedNetwork] || 0;
 	},
 );
 
-export const utxosSelector = createSelector(walletState, (wallet): IUtxo[] => {
-	const { selectedWallet } = wallet;
-	const selectedNetwork = wallet.selectedNetwork;
-	return wallet.wallets[selectedWallet]?.utxos[selectedNetwork] || [];
-});
+export const utxosSelector = createSelector(
+	[walletState],
+	(wallet): IUtxo[] => {
+		const { selectedWallet } = wallet;
+		const selectedNetwork = wallet.selectedNetwork;
+		return wallet.wallets[selectedWallet]?.utxos[selectedNetwork] || [];
+	},
+);
 
 export const walletExistsSelector = createSelector(
 	[walletState],
@@ -290,18 +283,6 @@ export const seedHashSelector = createSelector(
 		return wallet.wallets[selectedWallet]?.seedHash;
 	},
 );
-
-// export const changeAddressSelector = createSelector(
-// 	[walletState],
-// 	(wallet): IAddress => {
-// 		const { selectedWallet } = wallet;
-// 		const selectedNetwork = wallet.selectedNetwork;
-// 		return (
-// 			wallet.wallets[selectedWallet]?.changeAddressIndex[selectedNetwork]
-// 				?.address || ''
-// 		);
-// 	},
-// );
 
 export const selectedFeeIdSelector = createSelector(
 	[walletState],

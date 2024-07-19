@@ -10,10 +10,8 @@ import {
 	EChannelClosureReason,
 } from '../types/lightning';
 import { RootState } from '..';
-import { TWalletName } from '../types/wallet';
 import { reduceValue } from '../../utils/helpers';
-import { EAvailableNetwork } from '../../utils/networks';
-import { selectedNetworkSelector, selectedWalletSelector } from './wallet';
+import { selectedWalletSelector, selectedNetworkSelector } from './wallet';
 import { blocktankOrderSelector } from './blocktank';
 
 export const lightningState = (state: RootState): TLightningState => {
@@ -22,24 +20,21 @@ export const lightningState = (state: RootState): TLightningState => {
 export const nodesState = (state: RootState): TNodes => state.lightning.nodes;
 
 export const pendingPaymentsSelector = createSelector(
-	lightningState,
+	[lightningState],
 	(lightning) => lightning.pendingPayments,
 );
 
 export const nodeSelector = createSelector(
-	[
-		lightningState,
-		(_lightning, selectedWallet: TWalletName): TWalletName => selectedWallet,
-	],
+	[lightningState, selectedWalletSelector],
 	(lightning, selectedWallet): TNode => {
 		return lightning.nodes[selectedWallet];
 	},
 );
 
 export const channelsSelector = createSelector(
-	[lightningState, selectedWalletSelector, selectedNetworkSelector],
-	(lightning, selectedWallet, selectedNetwork): { [key: string]: TChannel } => {
-		return lightning.nodes[selectedWallet]?.channels[selectedNetwork];
+	[nodeSelector, selectedNetworkSelector],
+	(node, selectedNetwork): { [key: string]: TChannel } => {
+		return node.channels[selectedNetwork];
 	},
 );
 
@@ -47,23 +42,10 @@ export const channelsSelector = createSelector(
  * Returns channel information for the provided channel ID.
  */
 export const channelSelector = createSelector(
-	[
-		lightningState,
-		(_nodes, selectedWallet: TWalletName): TWalletName => selectedWallet,
-		(
-			_lightning,
-			_selectedWallet,
-			selectedNetwork: EAvailableNetwork,
-		): EAvailableNetwork => selectedNetwork,
-		(
-			_lightning,
-			_selectedWallet,
-			_selectedNetwork,
-			channelId: string,
-		): string => channelId,
-	],
-	(lightning, selectedWallet, selectedNetwork, channelId): TChannel =>
-		lightning.nodes[selectedWallet]?.channels[selectedNetwork][channelId] ?? '',
+	[channelsSelector, (_state, channelId: string): string => channelId],
+	(channels, channelId): TChannel => {
+		return channels[channelId];
+	},
 );
 
 /**
@@ -72,11 +54,8 @@ export const channelSelector = createSelector(
  * @returns {TChannel[]}
  */
 export const openChannelsSelector = createSelector(
-	[lightningState, selectedWalletSelector, selectedNetworkSelector],
-	(lightning, selectedWallet, selectedNetwork): TChannel[] => {
-		const node = lightning.nodes[selectedWallet];
-		const channels = node.channels[selectedNetwork];
-
+	[channelsSelector],
+	(channels): TChannel[] => {
 		return Object.values(channels).filter((channel) => {
 			return channel.status === EChannelStatus.open;
 		});
@@ -89,11 +68,8 @@ export const openChannelsSelector = createSelector(
  * @returns {TChannel[]}
  */
 export const pendingChannelsSelector = createSelector(
-	[lightningState, selectedWalletSelector, selectedNetworkSelector],
-	(lightning, selectedWallet, selectedNetwork): TChannel[] => {
-		const node = lightning.nodes[selectedWallet];
-		const channels = node.channels[selectedNetwork];
-
+	[channelsSelector],
+	(channels): TChannel[] => {
 		return Object.values(channels).filter((channel) => {
 			return channel.status === EChannelStatus.pending;
 		});
@@ -106,11 +82,8 @@ export const pendingChannelsSelector = createSelector(
  * @returns {TChannel[]}
  */
 export const closedChannelsSelector = createSelector(
-	[lightningState, selectedWalletSelector, selectedNetworkSelector],
-	(lightning, selectedWallet, selectedNetwork): TChannel[] => {
-		const node = lightning.nodes[selectedWallet];
-		const channels = node.channels[selectedNetwork];
-
+	[channelsSelector],
+	(channels): TChannel[] => {
 		return Object.values(channels).filter((channel) => {
 			return channel.status === EChannelStatus.closed;
 		});

@@ -30,7 +30,7 @@ const CloseConnection = ({
 	const selectedWallet = useAppSelector(selectedWalletSelector);
 	const selectedNetwork = useAppSelector(selectedNetworkSelector);
 	const channel = useAppSelector((state) => {
-		return channelSelector(state, selectedWallet, selectedNetwork, channelId);
+		return channelSelector(state, channelId);
 	});
 
 	const onContinue = async (): Promise<void> => {

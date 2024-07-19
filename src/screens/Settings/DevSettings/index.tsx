@@ -52,9 +52,7 @@ const DevSettings = ({
 	const selectedWallet = useAppSelector(selectedWalletSelector);
 	const selectedNetwork = useAppSelector(selectedNetworkSelector);
 	const addressType = useAppSelector(addressTypeSelector);
-	const warnings = useAppSelector((state) => {
-		return warningsSelector(state, selectedWallet, selectedNetwork);
-	});
+	const warnings = useAppSelector(warningsSelector);
 
 	const clearWebRelayCache = (): void => {
 		const keys = storage.getAllKeys();

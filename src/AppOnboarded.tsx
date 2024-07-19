@@ -27,7 +27,7 @@ import {
 	getOnChainWalletElectrum,
 } from './utils/wallet';
 import { connectToElectrum } from './utils/wallet/electrum';
-import { updateExchangeRates } from './store/actions/wallet';
+// import { updateExchangeRates } from './store/actions/wallet';
 
 const electrum = getOnChainWalletElectrum();
 
@@ -111,7 +111,8 @@ const AppOnboarded = (): ReactElement => {
 					});
 				}
 				dispatch(updateUi({ isOnline: true }));
-				updateExchangeRates();
+				// FIXME: this runs too often
+				// updateExchangeRates();
 			} else {
 				showToast({
 					type: 'warning',

@@ -1,5 +1,3 @@
-import { createSelector } from '@reduxjs/toolkit';
-
 import {
 	DEFAULT_SPENDING_PERCENTAGE,
 	MAX_SPENDING_PERCENTAGE,
@@ -13,6 +11,7 @@ import {
 } from './lightning';
 import { newChannelsNotificationsSelector } from './todos';
 import { onChainBalanceSelector, pendingTransfersSelector } from './wallet';
+import { createShallowEqualSelector } from './utils';
 
 export type TBalance = {
 	/** Total onchain funds */
@@ -35,7 +34,7 @@ export type TBalance = {
 	totalBalance: number;
 };
 
-export const balanceSelector = createSelector(
+export const balanceSelector = createShallowEqualSelector(
 	[
 		onChainBalanceSelector,
 		pendingTransfersSelector,
@@ -122,12 +121,12 @@ export type TLnSetup = {
 /**
  * Returns the setup for the LN slider.
  */
-export const lnSetupSelector = createSelector(
+export const lnSetupSelector = createShallowEqualSelector(
 	[
 		blocktankInfoSelector,
 		balanceSelector,
 		channelsSizeSelector,
-		(_, spending): number => spending,
+		(_state, spending): number => spending,
 	],
 	(blocktankInfo, balance, channelsSize, spending: number): TLnSetup => {
 		const { onchainBalance, lightningBalance } = balance;

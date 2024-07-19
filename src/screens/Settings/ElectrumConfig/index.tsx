@@ -93,9 +93,7 @@ const ElectrumConfig = ({
 	const dispatch = useAppDispatch();
 	const isConnectedToElectrum = useAppSelector(isConnectedToElectrumSelector);
 	const selectedNetwork = useAppSelector(selectedNetworkSelector);
-	const customElectrumPeers = useAppSelector((state) => {
-		return customElectrumPeersSelector(state, selectedNetwork);
-	});
+	const customElectrumPeers = useAppSelector(customElectrumPeersSelector);
 	const savedPeer = customElectrumPeers[0];
 	const [connectedPeer, setConnectedPeer] = useState<IPeerData>();
 	const [loading, setLoading] = useState(false);

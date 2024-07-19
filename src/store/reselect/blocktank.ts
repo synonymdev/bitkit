@@ -11,28 +11,28 @@ export const blocktankSelector = (state: RootState): IBlocktank => {
 };
 
 export const blocktankInfoSelector = createSelector(
-	blocktankState,
+	[blocktankState],
 	(blocktank): IBtInfo => blocktank.info,
 );
 export const blocktankOrdersSelector = createSelector(
-	blocktankState,
+	[blocktankState],
 	(blocktank): IBtOrder[] => blocktank.orders,
 );
 /**
  * Returns a blocktank order for a given order ID.
  */
 export const blocktankOrderSelector = createSelector(
-	[blocktankState, (_blocktank, orderId: string): string => orderId],
+	[blocktankState, (_state, orderId: string): string => orderId],
 	(blocktank, orderId): IBtOrder => {
 		return blocktank.orders.find((o) => o.id === orderId)!;
 	},
 );
 export const blocktankPaidOrdersSelector = createSelector(
-	blocktankState,
+	[blocktankState],
 	(blocktank): TPaidBlocktankOrders => blocktank.paidOrders,
 );
 export const blocktankPaidOrdersFullSelector = createSelector(
-	blocktankState,
+	[blocktankState],
 	(
 		blocktank,
 	): {
@@ -76,7 +76,7 @@ export const blocktankPaidOrdersFullSelector = createSelector(
  * Returns a paid blocktank order txid given its order ID.
  */
 export const blocktankPaidOrderSelector = createSelector(
-	[blocktankState, (_blocktank, orderId: string): string => orderId],
+	[blocktankState, (_state, orderId: string): string => orderId],
 	(blocktank, orderId): string => {
 		const paidBlocktankOrders = blocktank.paidOrders;
 		if (orderId in paidBlocktankOrders) {
@@ -90,6 +90,6 @@ export const blocktankPaidOrderSelector = createSelector(
  * Returns the list of CJIT entries.
  */
 export const cjitEntriesSelector = createSelector(
-	blocktankState,
+	[blocktankState],
 	(blocktank) => blocktank.cJitEntries,
 );

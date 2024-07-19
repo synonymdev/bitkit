@@ -22,6 +22,35 @@ type Cache = {
 // Cache widget data to reduce layout shifts while loading.
 const cache: Cache = {};
 
+export const useSlashfeedConfig = (options: { url: string }): SlashFeedJSON => {
+	const { webRelayClient, webRelayUrl } = useSlashtags();
+	const [config, setConfig] = useState<SlashFeedJSON>(
+		cache[options.url]?.config,
+	);
+
+	const reader = useMemo(() => {
+		return new Reader(webRelayClient, `${options.url}?relay=${webRelayUrl}`);
+	}, [options.url, webRelayUrl, webRelayClient]);
+
+	useEffect(() => {
+		const getData = async (): Promise<void> => {
+			try {
+				await reader.ready();
+
+				if (reader.config) {
+					setConfig(reader.config as SlashFeedJSON);
+				}
+			} catch (error) {
+				console.error(error);
+			}
+		};
+
+		getData();
+	}, [reader, options.url]);
+
+	return config;
+};
+
 export const useSlashfeed = (options: {
 	url: string;
 	fields?: SlashFeedJSON['fields'];

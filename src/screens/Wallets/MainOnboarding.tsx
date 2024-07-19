@@ -4,7 +4,7 @@ import { StyleProp, ViewStyle } from 'react-native';
 
 import WalletOnboarding from '../../components/WalletOnboarding';
 import { useAppDispatch } from '../../hooks/redux';
-import { useSlashfeed } from '../../hooks/widgets';
+import { useSlashfeedConfig } from '../../hooks/widgets';
 import { updateSettings } from '../../store/slices/settings';
 import { setFeedWidget } from '../../store/slices/widgets';
 import { Display } from '../../styles/text';
@@ -22,9 +22,9 @@ const MainOnboarding = ({
 }): ReactElement => {
 	const dispatch = useAppDispatch();
 	const { t } = useTranslation('onboarding');
-	const { config: priceConfig } = useSlashfeed({ url: PriceFeedURL });
-	const { config: newsConfig } = useSlashfeed({ url: NewsFeedURL });
-	const { config: blocksConfig } = useSlashfeed({ url: BlocksFeedURL });
+	const priceConfig = useSlashfeedConfig({ url: PriceFeedURL });
+	const newsConfig = useSlashfeedConfig({ url: NewsFeedURL });
+	const blocksConfig = useSlashfeedConfig({ url: BlocksFeedURL });
 
 	const onHideOnboarding = (): void => {
 		// add default widgets

@@ -17,7 +17,7 @@ export const widgetsSelector = createSelector(
  * Return specified widget by url.
  */
 export const widgetSelector = createSelector(
-	[widgetsState, (_widgets, url: string): string => url],
+	[widgetsState, (_state, url: string): string => url],
 	(widgets, url): TWidget | undefined => widgets.widgets[url],
 );
 
@@ -26,7 +26,6 @@ export const widgetsOrderSelector = createSelector(
 	(widgets) => widgets.sortOrder,
 );
 
-export const onboardedWidgetsSelector = createSelector(
-	[widgetsState],
-	(widgets): boolean => widgets.onboardedWidgets,
-);
+export const onboardedWidgetsSelector = (state: RootState): boolean => {
+	return state.widgets.onboardedWidgets;
+};

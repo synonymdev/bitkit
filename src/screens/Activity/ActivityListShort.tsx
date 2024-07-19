@@ -6,11 +6,11 @@ import React, {
 	useMemo,
 } from 'react';
 import { View, StyleSheet } from 'react-native';
-import { useAppSelector } from '../../hooks/redux';
 import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 
 import { Caption13Up } from '../../styles/text';
+import { useAppSelector } from '../../hooks/redux';
 import { groupActivityItems } from '../../utils/activity';
 import { showBottomSheet } from '../../store/utils/ui';
 import { IActivityItem } from '../../store/types/activity';
