@@ -16,6 +16,7 @@
 
 		// TODO: remove these rules & add types
 		"noImplicitAny": false,
-		"useUnknownInCatchVariables": false
+		"useUnknownInCatchVariables": false,
+		"module": "esnext",
 	}
 }

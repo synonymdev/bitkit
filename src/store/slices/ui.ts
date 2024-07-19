@@ -29,6 +29,7 @@ export const uiSlice = createSlice({
 			state.viewControllers[action.payload.view] = {
 				...action.payload.params,
 				isOpen: !state.viewControllers[action.payload.view].isOpen,
+				isMounted: true,
 			};
 		},
 		showSheet: (
@@ -41,13 +42,17 @@ export const uiSlice = createSlice({
 			state.viewControllers[action.payload.view] = {
 				...action.payload.params,
 				isOpen: true,
+				isMounted: true,
 			};
 		},
 		closeSheet: (
 			state,
 			action: PayloadAction<keyof ViewControllerParamList>,
 		) => {
-			state.viewControllers[action.payload] = { isOpen: false };
+			state.viewControllers[action.payload] = {
+				isOpen: false,
+				isMounted: true,
+			};
 		},
 		updateProfileLink: (state, action: PayloadAction<TProfileLink>) => {
 			state.profileLink = Object.assign(state.profileLink, action.payload);

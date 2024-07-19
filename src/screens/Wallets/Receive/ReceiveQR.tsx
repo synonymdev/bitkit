@@ -635,13 +635,11 @@ const ReceiveQR = ({
 					displayBackButton={false}
 				/>
 
-				{loading && (
+				{loading || !uri ? (
 					<View style={[styles.loading, { height: qrSize }]}>
 						<ActivityIndicator color="white" />
 					</View>
-				)}
-
-				{!loading && (
+				) : (
 					<View style={styles.carouselWrapper}>
 						<Carousel
 							ref={carouselRef}

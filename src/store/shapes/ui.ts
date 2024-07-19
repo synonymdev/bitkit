@@ -2,7 +2,7 @@
 
 import { TUiState } from '../types/ui';
 
-export const defaultViewController = { isOpen: false };
+export const defaultViewController = { isOpen: false, isMounted: false };
 
 export const defaultViewControllers: TUiState['viewControllers'] = {
 	activityTagsPrompt: defaultViewController,

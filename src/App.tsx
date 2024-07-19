@@ -1,28 +1,40 @@
-import React, { memo, ReactElement, useMemo, useEffect, useState } from 'react';
-import { Platform, NativeModules } from 'react-native';
-import Toast from 'react-native-toast-message';
+import React, {
+	ReactElement,
+	Suspense,
+	lazy,
+	memo,
+	useEffect,
+	useMemo,
+	useState,
+} from 'react';
+import { NativeModules, Platform } from 'react-native';
 import QuickActions from 'react-native-quick-actions';
+import Toast from 'react-native-toast-message';
 import { ThemeProvider } from 'styled-components/native';
-
-import { SafeAreaProvider, StatusBar } from './styles/components';
-import { getTheme } from './styles/themes';
-import OnboardingNavigator from './navigation/onboarding/OnboardingNavigator';
-import { SlashtagsProvider } from './components/SlashtagsProvider';
-import { toastConfig } from './components/Toast';
-import RecoveryNavigator from './screens/Recovery/RecoveryNavigator';
-import RestoringScreen from './screens/Onboarding/Restoring';
-import AppUpdate from './screens/AppUpdate';
-import AppOnboarded from './AppOnboarded';
 
 import './utils/i18n';
 import './utils/quick-actions';
 import './utils/ledger';
+import AppOnboarded from './AppOnboarded';
+import { SlashtagsProvider } from './components/SlashtagsProvider';
+import { toastConfig } from './components/Toast';
 import { useAppSelector } from './hooks/redux';
-import { checkForAppUpdate } from './store/utils/ui';
+import AppUpdate from './screens/AppUpdate';
+import RestoringScreen from './screens/Onboarding/Restoring';
 import { themeSelector } from './store/reselect/settings';
-import { walletExistsSelector } from './store/reselect/wallet';
-import { requiresRemoteRestoreSelector } from './store/reselect/user';
 import { criticalUpdateSelector } from './store/reselect/ui';
+import { requiresRemoteRestoreSelector } from './store/reselect/user';
+import { walletExistsSelector } from './store/reselect/wallet';
+import { checkForAppUpdate } from './store/utils/ui';
+import { SafeAreaProvider, StatusBar } from './styles/components';
+import { getTheme } from './styles/themes';
+
+const RecoveryNavigator = lazy(
+	() => import('./screens/Recovery/RecoveryNavigator'),
+);
+const OnboardingNavigator = lazy(
+	() => import('./navigation/onboarding/OnboardingNavigator'),
+);
 
 const App = (): ReactElement => {
 	const [isReady, setIsReady] = useState(false);
@@ -62,7 +74,9 @@ const App = (): ReactElement => {
 				{!isReady ? (
 					<></>
 				) : showRecovery ? (
-					<RecoveryNavigator />
+					<Suspense fallback={null}>
+						<RecoveryNavigator />
+					</Suspense>
 				) : hasCriticalUpdate ? (
 					<AppUpdate />
 				) : walletExists ? (
@@ -70,7 +84,9 @@ const App = (): ReactElement => {
 						{requiresRemoteRestore ? <RestoringScreen /> : <AppOnboarded />}
 					</SlashtagsProvider>
 				) : (
-					<OnboardingNavigator />
+					<Suspense fallback={null}>
+						<OnboardingNavigator />
+					</Suspense>
 				)}
 
 				<Toast config={toastConfig} />

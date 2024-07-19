@@ -9,11 +9,12 @@ import SafeAreaInset from '../../../components/SafeAreaInset';
 import Button from '../../../components/buttons/Button';
 import { closeSheet } from '../../../store/slices/ui';
 import { wipeApp } from '../../../store/utils/settings';
-import { useAppDispatch } from '../../../hooks/redux';
+import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 import {
 	useBottomSheetBackPress,
 	useSnapPoints,
 } from '../../../hooks/bottomSheet';
+import { viewControllerSelector } from '../../../store/reselect/ui';
 
 const imageSrc = require('../../../assets/illustrations/restore.png');
 
@@ -21,6 +22,9 @@ const ForgotPIN = (): ReactElement => {
 	const { t } = useTranslation('security');
 	const snapPoints = useSnapPoints('large');
 	const dispatch = useAppDispatch();
+	const { isMounted } = useAppSelector((state) => {
+		return viewControllerSelector(state, 'forgotPIN');
+	});
 
 	useBottomSheetBackPress('forgotPIN');
 
@@ -29,6 +33,10 @@ const ForgotPIN = (): ReactElement => {
 		dispatch(closeSheet('forgotPIN'));
 	};
 
+	if (!isMounted) {
+		return <></>;
+	}
+
 	return (
 		<BottomSheetWrapper view="forgotPIN" snapPoints={snapPoints}>
 			<View style={styles.container}>
@@ -36,7 +44,9 @@ const ForgotPIN = (): ReactElement => {
 					title={t('pin_forgot_title')}
 					displayBackButton={false}
 				/>
-				<BodyM color="secondary">{t('pin_forgot_text')}</BodyM>
+				<BodyM testID="ForgotPIN" color="secondary">
+					{t('pin_forgot_text')}
+				</BodyM>
 
 				<View style={styles.imageContainer}>
 					<Image style={styles.image} source={imageSrc} />

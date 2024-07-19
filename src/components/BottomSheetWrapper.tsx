@@ -27,6 +27,7 @@ import React, {
 	useEffect,
 	useCallback,
 	useMemo,
+	useState,
 } from 'react';
 import { StyleSheet } from 'react-native';
 import { useReducedMotion } from 'react-native-reanimated';
@@ -48,7 +49,7 @@ import { __E2E__ } from '../constants/env';
 export interface BottomSheetWrapperProps {
 	children: ReactElement;
 	view: TViewController;
-	snapPoints: (string | number)[];
+	snapPoints: number[];
 	backdrop?: boolean;
 	testID?: string;
 	onOpen?: () => void;
@@ -77,6 +78,7 @@ const BottomSheetWrapper = forwardRef(
 			() => ({ backgroundColor: theme.colors.gray2 }),
 			[theme.colors.gray2],
 		);
+		const [mounted, setMounted] = useState(false);
 
 		// https://github.com/gorhom/react-native-bottom-sheet/issues/770#issuecomment-1072113936
 		// do not activate BottomSheet if swipe horizontally, this allows using Swiper inside of it
@@ -89,6 +91,7 @@ const BottomSheetWrapper = forwardRef(
 			} else {
 				bottomSheetRef.current?.close();
 			}
+			setTimeout(() => setMounted(true), 500);
 		}, [data.isOpen]);
 
 		useImperativeHandle(ref, () => ({
@@ -148,6 +151,11 @@ const BottomSheetWrapper = forwardRef(
 			[],
 		);
 
+		const style = useMemo(
+			() => [styles.container, !mounted && { minHeight: snapPoints[0] - 30 }],
+			[snapPoints, mounted],
+		);
+
 		// Determine initial snapPoint index based on provided data.
 		const index = useMemo((): number => (data.isOpen ? 0 : -1), [data.isOpen]);
 
@@ -166,7 +174,7 @@ const BottomSheetWrapper = forwardRef(
 				activeOffsetX={activeOffsetX}
 				activeOffsetY={activeOffsetY}
 				onChange={handleSheetChanges}>
-				<BottomSheetView style={styles.container} testID={testID}>
+				<BottomSheetView style={style} testID={testID}>
 					{children}
 				</BottomSheetView>
 			</BottomSheet>

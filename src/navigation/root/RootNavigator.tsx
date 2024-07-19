@@ -36,9 +36,6 @@ import BuyBitcoin from '../../screens/BuyBitcoin';
 import ScannerScreen from '../../screens/Scanner/MainScanner';
 import SettingsNavigator from '../settings/SettingsNavigator';
 import LightningNavigator from '../lightning/LightningNavigator';
-import ForgotPIN from '../../screens/Settings/PIN/ForgotPIN';
-import BoostPrompt from '../../screens/Wallets/BoostPrompt';
-import NewTxPrompt from '../../screens/Wallets/NewTxPrompt';
 import Profile from '../../screens/Profile/Profile';
 import ProfileEdit from '../../screens/Profile/ProfileEdit';
 import Contacts from '../../screens/Contacts/Contacts';
@@ -46,22 +43,13 @@ import Contact from '../../screens/Contacts/Contact';
 import ContactEdit from '../../screens/Contacts/ContactEdit';
 import Widget from '../../screens/Widgets/Widget';
 import WidgetEdit from '../../screens/Widgets/WidgetEdit';
-import BackupSubscriber from '../../utils/backup/backups-subscriber';
-import SendNavigation from '../bottom-sheet/SendNavigation';
-import ReceiveNavigation from '../bottom-sheet/ReceiveNavigation';
-import BackupNavigation from '../bottom-sheet/BackupNavigation';
-import PINNavigation from '../bottom-sheet/PINNavigation';
-import ForceTransfer from '../bottom-sheet/ForceTransfer';
-// import TransferFailed from '../bottom-sheet/TransferFailed';
-import ConnectionClosed from '../bottom-sheet/ConnectionClosed';
-import LNURLWithdrawNavigation from '../bottom-sheet/LNURLWithdrawNavigation';
-import LNURLPayNavigation from '../bottom-sheet/LNURLPayNavigation';
-import OrangeTicket from '../../screens/OrangeTicket';
-import TreasureHuntNavigation from '../bottom-sheet/TreasureHuntNavigation';
 import WidgetsSuggestions from '../../screens/Widgets/WidgetsSuggestions';
 import WidgetsOnboarding from '../../screens/Widgets/WidgetsOnboarding';
+import BackupSubscriber from '../../utils/backup/backups-subscriber';
 import { __E2E__ } from '../../constants/env';
 import type { RootStackParamList } from '../types';
+import BottomSheetsLazy from '../bottom-sheet/BottomSheetsLazy';
+import ForgotPIN from '../../screens/Settings/PIN/ForgotPIN';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -233,20 +221,8 @@ const RootNavigator = (): ReactElement => {
 				<Stack.Screen name="WidgetEdit" component={WidgetEdit} />
 			</Stack.Navigator>
 
-			<OrangeTicket />
-			<TreasureHuntNavigation />
-			<SendNavigation />
-			<ReceiveNavigation />
-			<BackupNavigation />
-			<PINNavigation />
-			<BoostPrompt />
-			<NewTxPrompt />
-			<ForceTransfer />
-			{/* <TransferFailed /> */}
-			<ConnectionClosed />
+			<BottomSheetsLazy />
 			<BackupSubscriber />
-			<LNURLWithdrawNavigation />
-			<LNURLPayNavigation />
 
 			<Dialog
 				visible={showDialog && isAuthenticated}
@@ -264,6 +240,7 @@ const RootNavigator = (): ReactElement => {
 				/>
 			)}
 
+			{/* Should be above AuthCheck */}
 			<ForgotPIN />
 		</NavigationContainer>
 	);

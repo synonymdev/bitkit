@@ -259,6 +259,8 @@ d('Settings Security And Privacy', () => {
 		await waitForPinScreen();
 		await element(by.id('N2').withAncestor(by.id('PinPad'))).multiTap(4);
 		await waitFor(element(by.id('AttemptsRemaining'))).toBeVisible();
+		await element(by.id('AttemptsRemaining')).tap();
+		await element(by.id('ForgotPIN')).swipe('down'); // close ForgotPIN screen
 		for (let i = 0; i < 6; i++) {
 			await element(by.id('N2').withAncestor(by.id('PinPad'))).multiTap(4); // repeat 6 times
 		}

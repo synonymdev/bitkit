@@ -32,15 +32,18 @@ export type ViewControllerParamList = {
 
 export type TViewController = keyof ViewControllerParamList;
 
+type TViewProps = { isOpen: boolean; isMounted: boolean };
+
 export type TUiViewController = {
 	[key in TViewController]: undefined extends ViewControllerParamList[key]
-		? { isOpen: boolean }
-		: Partial<ViewControllerParamList[key]> & { isOpen: boolean };
+		? TViewProps
+		: Partial<ViewControllerParamList[key]> & TViewProps;
 };
 
 // this type is needed because reselect doesn't offer good parameter typing
 export type IViewControllerData = {
 	isOpen: boolean;
+	isMounted: boolean;
 	activityItem?: { id: string; activityType: EActivityType; value: number };
 	chestId?: string;
 	onchainActivityItem?: TOnchainActivityItem;
