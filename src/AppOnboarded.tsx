@@ -5,7 +5,9 @@ import { useTranslation } from 'react-i18next';
 
 import RootNavigator from './navigation/root/RootNavigator';
 import InactivityTracker from './components/InactivityTracker';
+import { showToast } from './utils/notifications';
 import { startWalletServices } from './utils/startup';
+import { getOnChainWalletElectrum } from './utils/wallet';
 import { unsubscribeFromLightningSubscriptions } from './utils/lightning';
 import { useAppSelector } from './hooks/redux';
 import { dispatch } from './store/helpers';
@@ -16,17 +18,11 @@ import {
 	pinOnLaunchSelector,
 	pinSelector,
 } from './store/reselect/settings';
-import { showToast } from './utils/notifications';
 import {
 	selectedNetworkSelector,
 	selectedWalletSelector,
 } from './store/reselect/wallet';
 import { updateSettings } from './store/slices/settings';
-import {
-	getCustomElectrumPeers,
-	getOnChainWalletElectrum,
-} from './utils/wallet';
-import { connectToElectrum } from './utils/wallet/electrum';
 // import { updateExchangeRates } from './store/actions/wallet';
 
 const electrum = getOnChainWalletElectrum();
@@ -69,15 +65,8 @@ const AppOnboarded = (): ReactElement => {
 					appState.current.match(/inactive|background/) &&
 					nextAppState === 'active'
 				) {
-					const customPeers = getCustomElectrumPeers({ selectedNetwork });
 					// resubscribe to electrum connection changes
-					connectToElectrum({
-						selectedNetwork,
-						customPeers,
-						showNotification: false,
-					}).then(() => {
-						electrum?.startConnectionPolling();
-					});
+					electrum?.startConnectionPolling();
 				}
 
 				// on App to background
@@ -85,7 +74,7 @@ const AppOnboarded = (): ReactElement => {
 					appState.current.match(/active|inactive/) &&
 					nextAppState === 'background'
 				) {
-					electrum?.disconnect();
+					electrum?.stopConnectionPolling();
 				}
 
 				appState.current = nextAppState;
