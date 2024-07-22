@@ -9,6 +9,7 @@ import { StyleSheet, View } from 'react-native';
 import { SvgXml } from 'react-native-svg';
 import Lottie from 'lottie-react-native';
 import { ldk } from '@synonymdev/react-native-ldk';
+import { useReducedMotion } from 'react-native-reanimated';
 
 import { CaptionB, BodyMSB } from '../../styles/text';
 import GradientView from '../../components/GradientView';
@@ -24,7 +25,7 @@ import { useLightningMaxInboundCapacity } from '../../hooks/lightning';
 import { getNodeIdFromStorage, waitForLdk } from '../../utils/lightning';
 import { updateTreasureChest } from '../../store/slices/settings';
 import { createLightningInvoice } from '../../store/utils/lightning';
-import { __TREASURE_HUNT_HOST__ } from '../../constants/env';
+import { __E2E__, __TREASURE_HUNT_HOST__ } from '../../constants/env';
 import type { TreasureHuntScreenProps } from '../../navigation/types';
 
 const confettiSrc = require('../../assets/lottie/confetti-yellow.json');
@@ -54,6 +55,7 @@ const Prize = ({
 	const { chestId } = route.params;
 	const interval = useRef<NodeJS.Timer>();
 	const { isSmallScreen } = useScreenSize();
+	const reducedMotion = useReducedMotion();
 	const dispatch = useAppDispatch();
 	const { treasureChests } = useAppSelector((state) => state.settings);
 	const maxInboundCapacitySat = useLightningMaxInboundCapacity();
@@ -213,7 +215,7 @@ const Prize = ({
 						source={confettiSrc}
 						style={styles.lottie}
 						resizeMode="cover"
-						autoPlay
+						autoPlay={!(__E2E__ || reducedMotion)}
 						loop
 					/>
 				</View>

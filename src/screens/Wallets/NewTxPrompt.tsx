@@ -2,6 +2,7 @@ import React, { memo, ReactElement } from 'react';
 import { Image, StyleSheet, View } from 'react-native';
 import Lottie from 'lottie-react-native';
 import { useTranslation } from 'react-i18next';
+import { useReducedMotion } from 'react-native-reanimated';
 
 import BottomSheetWrapper from '../../components/BottomSheetWrapper';
 import AmountToggle from '../../components/AmountToggle';
@@ -18,12 +19,14 @@ import {
 import { viewControllerSelector } from '../../store/reselect/ui';
 import { EActivityType } from '../../store/types/activity';
 import Button from '../../components/buttons/Button';
+import { __E2E__ } from '../../constants/env';
 
 const confettiOrangeSrc = require('../../assets/lottie/confetti-orange.json');
 const confettiPurpleSrc = require('../../assets/lottie/confetti-purple.json');
 const imageSrc = require('../../assets/illustrations/coin-stack-x.png');
 
 const NewTxPrompt = (): ReactElement => {
+	const reducedMotion = useReducedMotion();
 	const { t } = useTranslation('wallet');
 	const snapPoints = useSnapPoints('large');
 	const dispatch = useAppDispatch();
@@ -53,7 +56,7 @@ const NewTxPrompt = (): ReactElement => {
 							source={isOnchainItem ? confettiOrangeSrc : confettiPurpleSrc}
 							style={styles.lottie}
 							resizeMode="cover"
-							autoPlay
+							autoPlay={!(__E2E__ || reducedMotion)}
 							loop
 						/>
 					</View>

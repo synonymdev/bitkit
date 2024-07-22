@@ -2,6 +2,7 @@ import React, { memo, ReactElement } from 'react';
 import { StyleSheet, View, Image } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import Lottie from 'lottie-react-native';
+import { useReducedMotion } from 'react-native-reanimated';
 
 import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
 import SafeAreaInset from '../../../components/SafeAreaInset';
@@ -14,6 +15,7 @@ import { activityItemSelector } from '../../../store/reselect/activity';
 import { rootNavigation } from '../../../navigation/root/RootNavigator';
 import type { SendScreenProps } from '../../../navigation/types';
 import { EActivityType } from '../../../store/types/activity';
+import { __E2E__ } from '../../../constants/env';
 
 const confettiOrangeSrc = require('../../../assets/lottie/confetti-orange.json');
 const confettiPurpleSrc = require('../../../assets/lottie/confetti-purple.json');
@@ -22,6 +24,7 @@ const imageSrc = require('../../../assets/illustrations/check.png');
 const Success = ({ route }: SendScreenProps<'Success'>): ReactElement => {
 	const { t } = useTranslation('wallet');
 	const { type, amount, txId } = route.params;
+	const reducedMotion = useReducedMotion();
 	const dispatch = useAppDispatch();
 	const activityItem = useAppSelector((state) => {
 		return activityItemSelector(state, txId);
@@ -47,7 +50,7 @@ const Success = ({ route }: SendScreenProps<'Success'>): ReactElement => {
 					style={styles.lottie}
 					source={isOnchain ? confettiOrangeSrc : confettiPurpleSrc}
 					resizeMode="cover"
-					autoPlay
+					autoPlay={!(__E2E__ || reducedMotion)}
 					loop
 				/>
 			</View>
