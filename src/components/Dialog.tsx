@@ -16,6 +16,7 @@ type DialogProps = {
 	visible: boolean;
 	title: string;
 	description: string;
+	children?: ReactElement;
 	buttonColor?: keyof IThemeColors;
 	cancelText?: string;
 	confirmText?: string;
@@ -29,6 +30,7 @@ const Dialog = ({
 	visible,
 	title,
 	description,
+	children,
 	buttonColor,
 	cancelText,
 	confirmText,
@@ -63,6 +65,9 @@ const Dialog = ({
 					<Text style={styles.title}>{title}</Text>
 					<Text style={styles.description}>{description}</Text>
 				</View>
+
+				{children && <View style={styles.children}>{children}</View>}
+
 				<View
 					style={styles.buttons}
 					testID={visible ? visibleTestID : undefined}>
@@ -181,6 +186,11 @@ const styles = StyleSheet.create({
 		textAlign: 'center',
 		letterSpacing: -0.41,
 		color: colors.brand,
+	},
+	children: {
+		padding: 16,
+		marginBottom: 8,
+		width: '100%',
 	},
 });
 

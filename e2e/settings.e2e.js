@@ -437,11 +437,6 @@ d('Settings', () => {
 				return;
 			}
 
-			// skip test on Android since we don't have alert with input
-			if (device.getPlatform() === 'android') {
-				return;
-			}
-
 			await element(by.id('Settings')).tap();
 			await element(by.id('AdvancedSettings')).tap();
 			await element(by.id('ElectrumConfig')).tap();
@@ -504,12 +499,8 @@ d('Settings', () => {
 			for (const conn of conns) {
 				await element(by.id('NavigationAction')).tap();
 				await element(by.id('ScanPrompt')).tap();
-				await element(by.type('_UIAlertControllerTextField')).replaceText(
-					conn.url,
-				);
-				await element(
-					by.label('OK').and(by.type('_UIAlertControllerActionView')),
-				).tap();
+				await element(by.id('QRInput')).replaceText(conn.url);
+				await element(by.id('DialogConfirm')).tap();
 				await expect(element(by.id('HostInput'))).toHaveText(conn.expectedHost);
 				await expect(element(by.id('PortInput'))).toHaveText(conn.expectedPort);
 				const attrs = await element(by.id('ElectrumProtocol')).getAttributes();

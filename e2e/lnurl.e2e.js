@@ -1,7 +1,6 @@
 import BitcoinJsonRpc from 'bitcoin-json-rpc';
 import createLndRpc from '@radar/lnrpc';
 import LNURL from 'lnurl';
-import { device } from 'detox';
 
 import {
 	sleep,
@@ -20,11 +19,7 @@ const __DEV__ = process.env.DEV === 'true';
 const tls = `${__dirname}/../docker/lnd/tls.cert`;
 const macaroon = `${__dirname}/../docker/lnd/data/chain/bitcoin/regtest/admin.macaroon`;
 
-// disable lnurl tests on android since we don't have alert with input
-const d =
-	checkComplete('lnurl-1') || device.getPlatform() === 'android'
-		? describe.skip
-		: describe;
+const d = checkComplete('lnurl-1') ? describe.skip : describe;
 
 const waitForEvent = (lnurl, name) => {
 	let timer;
@@ -132,12 +127,8 @@ d('LNURL', () => {
 
 		await element(by.id('Scan')).tap();
 		await element(by.id('ScanPrompt')).tap();
-		await element(by.type('_UIAlertControllerTextField')).replaceText(
-			channelReq.encoded,
-		);
-		await element(
-			by.label('OK').and(by.type('_UIAlertControllerActionView')),
-		).tap();
+		await element(by.id('QRInput')).replaceText(channelReq.encoded);
+		await element(by.id('DialogConfirm')).tap();
 		const channelRequestPromise = waitForEvent(lnurl, 'channelRequest:action'); // init event listener
 		await waitFor(element(by.id('ConnectButton')))
 			.toBeVisible()
@@ -190,12 +181,8 @@ d('LNURL', () => {
 		});
 		await element(by.id('Scan')).tap();
 		await element(by.id('ScanPrompt')).tap();
-		await element(by.type('_UIAlertControllerTextField')).replaceText(
-			payRequest1.encoded,
-		);
-		await element(
-			by.label('OK').and(by.type('_UIAlertControllerActionView')),
-		).tap();
+		await element(by.id('QRInput')).replaceText(payRequest1.encoded);
+		await element(by.id('DialogConfirm')).tap();
 
 		await element(by.id('ContinueAmount')).tap();
 		await element(by.id('GRAB')).swipe('right', 'slow', 0.95, 0.5, 0.5); // Swipe to confirm
@@ -212,12 +199,8 @@ d('LNURL', () => {
 		});
 		await element(by.id('Scan')).tap();
 		await element(by.id('ScanPrompt')).tap();
-		await element(by.type('_UIAlertControllerTextField')).replaceText(
-			payRequest2.encoded,
-		);
-		await element(
-			by.label('OK').and(by.type('_UIAlertControllerActionView')),
-		).tap();
+		await element(by.id('QRInput')).replaceText(payRequest2.encoded);
+		await element(by.id('DialogConfirm')).tap();
 		await element(by.id('GRAB')).swipe('right', 'slow', 0.95, 0.5, 0.5); // Swipe to confirm
 		await waitFor(element(by.id('SendSuccess')))
 			.toBeVisible()
@@ -232,12 +215,8 @@ d('LNURL', () => {
 		});
 		await element(by.id('Scan')).tap();
 		await element(by.id('ScanPrompt')).tap();
-		await element(by.type('_UIAlertControllerTextField')).replaceText(
-			withdrawRequest1.encoded,
-		);
-		await element(
-			by.label('OK').and(by.type('_UIAlertControllerActionView')),
-		).tap();
+		await element(by.id('QRInput')).replaceText(withdrawRequest1.encoded);
+		await element(by.id('DialogConfirm')).tap();
 		await element(by.id('ContinueAmount')).tap();
 		await element(by.id('WithdrawConfirmButton')).tap();
 		await waitFor(element(by.id('NewTxPrompt')))
@@ -253,12 +232,8 @@ d('LNURL', () => {
 		});
 		await element(by.id('Scan')).tap();
 		await element(by.id('ScanPrompt')).tap();
-		await element(by.type('_UIAlertControllerTextField')).replaceText(
-			withdrawRequest2.encoded,
-		);
-		await element(
-			by.label('OK').and(by.type('_UIAlertControllerActionView')),
-		).tap();
+		await element(by.id('QRInput')).replaceText(withdrawRequest2.encoded);
+		await element(by.id('DialogConfirm')).tap();
 		await element(by.id('WithdrawConfirmButton')).tap();
 		await waitFor(element(by.id('NewTxPrompt')))
 			.toBeVisible()
@@ -269,16 +244,11 @@ d('LNURL', () => {
 		const loginRequest1 = await lnurl.generateNewUrl('login');
 		await element(by.id('Scan')).tap();
 		await element(by.id('ScanPrompt')).tap();
-		await element(by.type('_UIAlertControllerTextField')).replaceText(
-			loginRequest1.encoded,
-		);
-
+		await element(by.id('QRInput')).replaceText(loginRequest1.encoded);
 		const loginRequestPromise1 = new Promise((resolve) => {
 			lnurl.once('login', resolve);
 		});
-		await element(
-			by.label('OK').and(by.type('_UIAlertControllerActionView')),
-		).tap();
+		await element(by.id('DialogConfirm')).tap();
 		await loginRequestPromise1;
 
 		markComplete('lnurl-1');

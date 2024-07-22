@@ -1,12 +1,12 @@
 import React, { ReactElement, ReactNode, useMemo, useState } from 'react';
-import { Alert, View, StyleSheet, useWindowDimensions } from 'react-native';
+import { View, StyleSheet, useWindowDimensions } from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
 import { FadeIn, FadeOut } from 'react-native-reanimated';
 import { launchImageLibrary } from 'react-native-image-picker';
 import RNQRGenerator from 'rn-qr-generator';
 import { useTranslation } from 'react-i18next';
 
-import { AnimatedView } from '../../styles/components';
+import { AnimatedView, TextInput } from '../../styles/components';
 import { BodySSB } from '../../styles/text';
 import {
 	ClipboardTextIcon,
@@ -18,6 +18,7 @@ import GradientView from '../../components/CameraGradientView';
 import BlurView from '../../components/BlurView';
 import Button from '../../components/buttons/Button';
 import { __E2E__ } from '../../constants/env';
+import Dialog from '../../components/Dialog';
 
 type ScannerComponentProps = {
 	children: ReactNode;
@@ -35,6 +36,8 @@ const ScannerComponent = ({
 	const [torchMode, setTorchMode] = useState(false);
 	const [isChooingFile, setIsChoosingFile] = useState(false);
 	const [error, setError] = useState('');
+	const [showDebug, setShowDebug] = useState(false);
+	const [textDebug, setTextDebug] = useState('');
 
 	const backgroundStyles = useMemo(() => {
 		if (!bottomSheet) {
@@ -103,9 +106,7 @@ const ScannerComponent = ({
 	};
 
 	const onReadDebug = (): void => {
-		Alert.prompt('Enter QRCode string', undefined, (text) => {
-			onRead(text);
-		});
+		setShowDebug(true);
 	};
 
 	const TopBackground = bottomSheet ? GradientView : BlurView;
@@ -178,6 +179,19 @@ const ScannerComponent = ({
 						)}
 					</Background>
 				</View>
+				<Dialog
+					visible={showDebug}
+					visibleTestID="QRDialog"
+					title="Debug"
+					description="Enter QRCode string"
+					onConfirm={(): void => onRead(textDebug)}
+					onCancel={(): void => setShowDebug(false)}>
+					<TextInput
+						value={textDebug}
+						testID="QRInput"
+						onChangeText={setTextDebug}
+					/>
+				</Dialog>
 			</>
 		</Camera>
 	);
