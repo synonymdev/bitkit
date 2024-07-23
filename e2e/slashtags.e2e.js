@@ -209,7 +209,6 @@ d('Profile and Contacts', () => {
 			await sleep(100); // wait for qr code to render
 			let { label: wAddress } = await element(by.id('QRCode')).getAttributes();
 			wAddress = await wAddress.replace('bitcoin:', '');
-			//await sleep(1000); // wait for wAddress
 			await rpc.sendToAddress(wAddress, '1');
 			await rpc.generateToAddress(1, await rpc.getNewAddress());
 			await waitForElectrum();
