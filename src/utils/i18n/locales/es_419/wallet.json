@@ -342,9 +342,6 @@
   "reorg_msg_end": {
     "string": "Por favor, compruebe su lista de actividades para ver las transacciones afectadas."
   },
-  "lnurl_p_title": {
-    "string": "Enviar Bitcoin"
-  },
   "receive_insufficient_text": {
     "string": "Capacidad de recepción insuficiente para recibir esta cantidad a través de Lightning."
   }

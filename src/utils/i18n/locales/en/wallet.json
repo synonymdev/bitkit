@@ -206,6 +206,9 @@
 	"note": {
 		"string": "Note"
 	},
+	"note": {
+		"string": "Comment"
+	},
 	"tags": {
 		"string": "Tags"
 	},
@@ -632,7 +635,7 @@
 		"string": "Withdraw Requested Successful"
 	},
 	"lnurl_p_title": {
-		"string": "Send Bitcoin"
+		"string": "Pay Bitcoin"
 	},
 	"lnurl_p_max": {
 		"string": "Maximum amount"

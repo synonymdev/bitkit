@@ -599,9 +599,6 @@
   "lnurl_w_success_description": {
     "string": "Retrait Demandé Réussi"
   },
-  "lnurl_p_title": {
-    "string": "Envoyer des bitcoins"
-  },
   "lnurl_p_max": {
     "string": "Montant maximum"
   },

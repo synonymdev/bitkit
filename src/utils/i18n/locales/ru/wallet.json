@@ -593,9 +593,6 @@
   "lnurl_w_success_description": {
     "string": "Запрос на вывод выполнен успешно"
   },
-  "lnurl_p_title": {
-    "string": "Отправить Биткоин"
-  },
   "lnurl_p_max": {
     "string": "Максимальная сумма"
   },

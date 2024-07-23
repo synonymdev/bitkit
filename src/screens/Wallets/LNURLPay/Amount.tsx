@@ -38,14 +38,14 @@ import { useAppSelector } from '../../../hooks/redux';
 import { useBalance, useSwitchUnit } from '../../../hooks/wallet';
 import { getNumberPadText } from '../../../utils/numberpad';
 import { convertToSats } from '../../../utils/conversion';
-import type { LNURLPayProps } from '../../../navigation/types';
+import type { SendScreenProps } from '../../../navigation/types';
 
-const Amount = ({
+const LNURLAmount = ({
 	navigation,
 	route,
-}: LNURLPayProps<'Amount'>): ReactElement => {
+}: SendScreenProps<'LNURLAmount'>): ReactElement => {
 	const { t } = useTranslation('wallet');
-	const { pParams } = route.params;
+	const { pParams, url } = route.params;
 	const { minSendable, maxSendable } = pParams;
 	const { spendingBalance } = useBalance();
 	const switchUnit = useSwitchUnit();
@@ -154,7 +154,7 @@ const Amount = ({
 						disabled={!isValid}
 						testID="ContinueAmount"
 						onPress={(): void => {
-							navigation.navigate('Confirm', { amount, pParams });
+							navigation.navigate('LNURLConfirm', { amount, pParams, url });
 						}}
 					/>
 				</View>
@@ -211,4 +211,4 @@ const styles = StyleSheet.create({
 	},
 });
 
-export default memo(Amount);
+export default memo(LNURLAmount);

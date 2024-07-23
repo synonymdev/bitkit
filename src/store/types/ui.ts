@@ -21,13 +21,17 @@ export type ViewControllerParamList = {
 	PINNavigation: { showLaterButton: boolean };
 	profileAddDataForm: undefined;
 	receiveNavigation: { receiveScreen: keyof ReceiveStackParamList } | undefined;
-	sendNavigation: { screen: keyof SendStackParamList } | undefined;
+	sendNavigation:
+		| { screen: keyof SendStackParamList }
+		| { screen: 'LNURLAmount'; pParams: LNURLPayParams; url: string }
+		// prettier-ignore
+		| { screen: 'LNURLConfirm'; pParams: LNURLPayParams; url: string; amount?: number; }
+		| undefined;
 	timeRangePrompt: undefined;
 	transferFailed: undefined;
 	treasureHunt: { chestId: string };
 	tagsPrompt: undefined;
 	lnurlWithdraw: { wParams: LNURLWithdrawParams };
-	lnurlPay: { pParams: LNURLPayParams };
 };
 
 export type TViewController = keyof ViewControllerParamList;
@@ -56,6 +60,7 @@ export type IViewControllerData = {
 	url?: string;
 	wParams?: LNURLWithdrawParams;
 	pParams?: LNURLPayParams;
+	amount?: number;
 };
 
 export type TProfileLink = {

@@ -593,9 +593,6 @@
   "lnurl_w_success_description": {
     "string": "Prelievo richiesto con successo"
   },
-  "lnurl_p_title": {
-    "string": "Invia Bitcoin"
-  },
   "lnurl_p_max": {
     "string": "Importo massimo"
   },

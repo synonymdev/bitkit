@@ -608,9 +608,6 @@
   "lnurl_w_success_description": {
     "string": "Abhebung erfolgreich angefordert"
   },
-  "lnurl_p_title": {
-    "string": "Bitcoin senden"
-  },
   "lnurl_p_max": {
     "string": "Maximaler Betrag"
   },

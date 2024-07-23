@@ -68,9 +68,11 @@ export const isLnurlAddress = (address: string): boolean => {
 export const handleLnurlPay = async ({
 	params,
 	amountSats,
+	comment,
 }: {
 	params: LNURLPayParams;
 	amountSats: number;
+	comment?: string;
 }): Promise<Result<string>> => {
 	const nodeId = getNodeIdFromStorage();
 
@@ -90,10 +92,7 @@ export const handleLnurlPay = async ({
 		const callbackRes = await lnurlPay({
 			params,
 			milliSats,
-			// comment should only be included if server asks for it with "commentAllowed"
-			// https://github.com/lnurl/luds/blob/luds/12.md
-			// comment: 'Bitkit LNURL-Pay',
-			comment: '',
+			comment,
 		});
 
 		if (callbackRes.isErr()) {

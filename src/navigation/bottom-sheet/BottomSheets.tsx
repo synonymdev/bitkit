@@ -7,7 +7,6 @@ import BackupNavigation from './BackupNavigation';
 import BoostPrompt from '../../screens/Wallets/BoostPrompt';
 import ConnectionClosed from './ConnectionClosed';
 import ForceTransfer from './ForceTransfer';
-import LNURLPayNavigation from './LNURLPayNavigation';
 import LNURLWithdrawNavigation from './LNURLWithdrawNavigation';
 import NewTxPrompt from '../../screens/Wallets/NewTxPrompt';
 import OrangeTicket from '../../screens/OrangeTicket';
@@ -25,7 +24,6 @@ const BottomSheets = (): JSX.Element => {
 			{views.boostPrompt.isMounted && <BoostPrompt />}
 			{views.connectionClosed.isMounted && <ConnectionClosed />}
 			{views.forceTransfer.isMounted && <ForceTransfer />}
-			{views.lnurlPay.isMounted && <LNURLPayNavigation />}
 			{views.lnurlWithdraw.isMounted && <LNURLWithdrawNavigation />}
 			{views.newTxPrompt.isMounted && <NewTxPrompt />}
 			{views.orangeTicket.isMounted && <OrangeTicket />}

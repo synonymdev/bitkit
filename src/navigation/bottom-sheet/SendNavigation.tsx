@@ -1,11 +1,11 @@
 import React, { ReactElement, memo } from 'react';
-import { useAppSelector } from '../../hooks/redux';
 import { createNavigationContainerRef } from '@react-navigation/native';
 import {
 	createNativeStackNavigator,
 	NativeStackNavigationOptions,
 	NativeStackNavigationProp,
 } from '@react-navigation/native-stack';
+import { LNURLPayParams } from 'js-lnurl';
 
 import BottomSheetWrapper from '../../components/BottomSheetWrapper';
 import Recipient from '../../screens/Wallets/Send/Recipient';
@@ -23,6 +23,8 @@ import Contacts from '../../screens/Wallets/Send/Contacts';
 import Address from '../../screens/Wallets/Send/Address';
 import Scanner from '../../screens/Wallets/Send/Scanner';
 import CoinSelection from '../../screens/Wallets/Send/CoinSelection';
+import LNURLAmount from '../../screens/Wallets/LNURLPay/Amount';
+import LNURLConfirm from '../../screens/Wallets/LNURLPay/Confirm';
 import { NavigationContainer } from '../../styles/components';
 import { TProcessedData } from '../../utils/scanner';
 import { useSnapPoints } from '../../hooks/bottomSheet';
@@ -35,6 +37,7 @@ import { __E2E__ } from '../../constants/env';
 import { EActivityType } from '../../store/types/activity';
 import { updateOnchainFeeEstimates } from '../../store/utils/fees';
 import { useLightningBalance } from '../../hooks/lightning';
+import { useAppSelector } from '../../hooks/redux';
 import {
 	selectedNetworkSelector,
 	selectedWalletSelector,
@@ -60,6 +63,8 @@ export type SendStackParamList = {
 	Pending: { txId: string };
 	Success: { type: EActivityType; amount: number; txId: string };
 	Error: { errorMessage: string };
+	LNURLAmount: { pParams: LNURLPayParams; url: string };
+	LNURLConfirm: { amount: number; pParams: LNURLPayParams; url: string };
 };
 
 const Stack = createNativeStackNavigator<SendStackParamList>();
@@ -104,7 +109,7 @@ const SendNavigation = (): ReactElement => {
 	const lightningBalance = useLightningBalance(false);
 	const selectedWallet = useAppSelector(selectedWalletSelector);
 	const selectedNetwork = useAppSelector(selectedNetworkSelector);
-	const { isOpen, screen } = useAppSelector((state) => {
+	const { isOpen, screen, pParams, amount, url } = useAppSelector((state) => {
 		return viewControllerSelector(state, 'sendNavigation');
 	});
 	const transaction = useAppSelector(transactionSelector);
@@ -149,6 +154,16 @@ const SendNavigation = (): ReactElement => {
 					<Stack.Screen name="Pending" component={Pending} />
 					<Stack.Screen name="Success" component={Success} />
 					<Stack.Screen name="Error" component={Error} />
+					<Stack.Screen
+						name="LNURLAmount"
+						component={LNURLAmount}
+						initialParams={{ pParams, url }}
+					/>
+					<Stack.Screen
+						name="LNURLConfirm"
+						component={LNURLConfirm}
+						initialParams={{ pParams, url, amount }}
+					/>
 				</Stack.Navigator>
 			</NavigationContainer>
 		</BottomSheetWrapper>

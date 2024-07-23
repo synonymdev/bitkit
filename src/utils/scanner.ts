@@ -314,6 +314,7 @@ export const processInputData = async ({
 
 		return await handleData({
 			data: dataToHandle,
+			rawData: data,
 			selectedNetwork,
 			selectedWallet,
 		});
@@ -766,10 +767,12 @@ export const processBitcoinTransactionData = async ({
  */
 export const handleData = async ({
 	data,
+	rawData,
 	selectedWallet = getSelectedWallet(),
 	selectedNetwork = getSelectedNetwork(),
 }: {
 	data: QRData;
+	rawData: string;
 	selectedWallet?: TWalletName;
 	selectedNetwork?: EAvailableNetwork;
 }): Promise<Result<TProcessedData>> => {
@@ -894,18 +897,18 @@ export const handleData = async ({
 		}
 		case EQRDataType.lnurlAddress:
 		case EQRDataType.lnurlPay: {
-			const params = data.lnUrlParams! as LNURLPayParams;
+			const pParams = data.lnUrlParams! as LNURLPayParams;
 
 			//Convert msats to sats.
-			params.minSendable = Math.floor(params.minSendable / 1000);
-			params.maxSendable = Math.floor(params.maxSendable / 1000);
+			pParams.minSendable = Math.floor(pParams.minSendable / 1000);
+			pParams.maxSendable = Math.floor(pParams.maxSendable / 1000);
 
 			// Determine if we have enough sending capacity before proceeding.
 			const lightningBalance = getLightningBalance({
 				includeReserve: false,
 			});
 
-			if (lightningBalance.localBalance < params.minSendable) {
+			if (lightningBalance.localBalance < pParams.minSendable) {
 				showToast({
 					type: 'warning',
 					title: i18n.t('other:lnurl_pay_error'),
@@ -916,7 +919,28 @@ export const handleData = async ({
 				);
 			}
 
-			showBottomSheet('lnurlPay', { pParams: params });
+			if (pParams.minSendable === pParams.maxSendable) {
+				const amount = pParams.minSendable;
+				showBottomSheet('sendNavigation', {
+					screen: 'LNURLConfirm',
+					pParams,
+					amount,
+					url: rawData,
+				});
+				sendNavigation.navigate('LNURLConfirm', {
+					pParams,
+					amount,
+					url: rawData,
+				});
+			} else {
+				showBottomSheet('sendNavigation', {
+					screen: 'LNURLAmount',
+					pParams: pParams,
+					url: rawData,
+				});
+				sendNavigation.navigate('LNURLAmount', { pParams, url: rawData });
+			}
+
 			return ok({ type: qrDataType });
 		}
 		case EQRDataType.lnurlChannel: {

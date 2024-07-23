@@ -605,9 +605,6 @@
   "lnurl_w_success_description": {
     "string": "Úspěšná žádost o výběr"
   },
-  "lnurl_p_title": {
-    "string": "Poslat bitcoin"
-  },
   "lnurl_p_max": {
     "string": "Maximální částka"
   },

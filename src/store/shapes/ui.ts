@@ -26,7 +26,6 @@ export const defaultViewControllers: TUiState['viewControllers'] = {
 	treasureHunt: defaultViewController,
 	tagsPrompt: defaultViewController,
 	lnurlWithdraw: defaultViewController,
-	lnurlPay: defaultViewController,
 };
 
 export const initialUiState: TUiState = {

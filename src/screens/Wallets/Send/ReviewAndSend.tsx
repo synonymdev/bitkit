@@ -52,7 +52,7 @@ import {
 import { FeeText } from '../../../utils/fees';
 import { getFiatDisplayValues } from '../../../utils/displayValues';
 import { showToast } from '../../../utils/notifications';
-import { refreshWallet } from '../../../utils/wallet';
+// import { refreshWallet } from '../../../utils/wallet';
 import type { SendScreenProps } from '../../../navigation/types';
 import SafeAreaInset from '../../../components/SafeAreaInset';
 import Dialog from '../../../components/Dialog';
@@ -235,8 +235,6 @@ const ReviewAndSend = ({
 			onError(t('send_error_create_tx'));
 			return;
 		}
-
-		refreshWallet({ onchain: false, lightning: true }).then();
 
 		navigation.navigate('Success', {
 			type: EActivityType.lightning,

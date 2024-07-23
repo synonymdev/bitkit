@@ -84,6 +84,7 @@ d('LNURL', () => {
 	it('Can process lnurl channel, withdraw, pay and login requests', async () => {
 		// Test plan:
 		// - connect to LND node`with lnurl-channel
+		// - test lnurl-channel
 		// - test lnurl-pay
 		// - test lnrul-withdraw
 		// - test lnurl-auth
@@ -173,11 +174,12 @@ d('LNURL', () => {
 			.withTimeout(30000);
 		await element(by.id('LNURLChannelSuccess-button')).tap();
 
-		// test lnurl-pay, with min !== max amount
+		// test lnurl-pay, with min !== max amount and comment
 		const payRequest1 = await lnurl.generateNewUrl('payRequest', {
 			minSendable: 100000, // msats
 			maxSendable: 200000, // msats
 			metadata: '[["text/plain", "lnurl-node1"]]',
+			commentAllowed: 12,
 		});
 		await element(by.id('Scan')).tap();
 		await element(by.id('ScanPrompt')).tap();
@@ -185,13 +187,14 @@ d('LNURL', () => {
 		await element(by.id('DialogConfirm')).tap();
 
 		await element(by.id('ContinueAmount')).tap();
+		await element(by.id('CommentInput')).typeText('test comment');
 		await element(by.id('GRAB')).swipe('right', 'slow', 0.95, 0.5, 0.5); // Swipe to confirm
 		await waitFor(element(by.id('SendSuccess')))
 			.toBeVisible()
 			.withTimeout(10000);
 		await element(by.id('Close')).tap();
 
-		// test lnurl-pay, with min == max amount
+		// test lnurl-pay, with min == max amount, no comment
 		const payRequest2 = await lnurl.generateNewUrl('payRequest', {
 			minSendable: 222000, // msats
 			maxSendable: 222000, // msats
@@ -201,6 +204,7 @@ d('LNURL', () => {
 		await element(by.id('ScanPrompt')).tap();
 		await element(by.id('QRInput')).replaceText(payRequest2.encoded);
 		await element(by.id('DialogConfirm')).tap();
+		await waitFor(element(by.id('CommentInput'))).not.toBeVisible();
 		await element(by.id('GRAB')).swipe('right', 'slow', 0.95, 0.5, 0.5); // Swipe to confirm
 		await waitFor(element(by.id('SendSuccess')))
 			.toBeVisible()
