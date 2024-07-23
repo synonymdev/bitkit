@@ -3176,7 +3176,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@istanbuljs/schema@npm:^0.1.2, @istanbuljs/schema@npm:^0.1.3":
+"@istanbuljs/schema@npm:^0.1.2":
   version: 0.1.3
   resolution: "@istanbuljs/schema@npm:0.1.3"
   checksum: 5282759d961d61350f33d9118d16bcaed914ebf8061a52f4fa474b2cb08720c9c81d165e13b82f2e5a8a212cc5af482f0c6fc1ac27b9e067e5394c9a6ed186c9
@@ -4992,13 +4992,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/mime@npm:^3.0.3":
-  version: 3.0.4
-  resolution: "@types/mime@npm:3.0.4"
-  checksum: a6139c8e1f705ef2b064d072f6edc01f3c099023ad7c4fce2afc6c2bf0231888202adadbdb48643e8e20da0ce409481a49922e737eca52871b3dc08017455843
-  languageName: node
-  linkType: hard
-
 "@types/node-forge@npm:^1.3.0":
   version: 1.3.11
   resolution: "@types/node-forge@npm:1.3.11"
@@ -5817,7 +5810,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"b4a@npm:^1.0.1, b4a@npm:^1.1.0, b4a@npm:^1.5.3, b4a@npm:^1.6.0, b4a@npm:^1.6.3":
+"b4a@npm:^1.0.1, b4a@npm:^1.5.3, b4a@npm:^1.6.0, b4a@npm:^1.6.3":
   version: 1.6.3
   resolution: "b4a@npm:1.6.3"
   checksum: 9038fce3688b3b2d6965be32123623e6bdbd62e07d1dad3bdf063500d03ccd7583fcb8fe21603f08f92c9bb175ae8d2ae0f85643cbfbd5cb4222fcea31b252d5
@@ -6329,7 +6322,6 @@ __metadata:
     "@types/bip21": ^2.0.3
     "@types/jest": ^29.5.12
     "@types/lodash": ^4.17.0
-    "@types/mime": ^3.0.3
     "@types/react": ^18.3.3
     "@types/react-native-dotenv": ^0.2.2
     "@types/redux-logger": ^3.0.13
@@ -6364,12 +6356,9 @@ __metadata:
     lnurl: 0.26.2
     lodash: 4.17.21
     lottie-react-native: 6.7.2
-    mime: 3.0.0
     nano-staged: ^0.8.0
     node-fetch: ^2.6.7
     prettier: ^2.8.8
-    process: 0.11.10
-    random-access-web-storage: 2.0.0
     react: 18.3.1
     react-i18next: 14.1.0
     react-native: 0.74.3
@@ -6380,7 +6369,6 @@ __metadata:
     react-native-device-info: 11.1.0
     react-native-dotenv: 3.4.11
     react-native-draggable-flatlist: 4.0.1
-    react-native-exit-app: 2.0.0
     react-native-fetch-api: 3.0.0
     react-native-fs: 2.20.0
     react-native-gesture-handler: 2.15.0
@@ -6400,7 +6388,6 @@ __metadata:
     react-native-randombytes: 3.6.1
     react-native-reanimated: 3.9.0
     react-native-reanimated-carousel: 3.5.1
-    react-native-restart: 0.0.27
     react-native-safe-area-context: 4.10.1
     react-native-screens: 3.31.1
     react-native-share: 10.2.0
@@ -6418,7 +6405,6 @@ __metadata:
     redux: 5.0.1
     redux-logger: 3.0.6
     redux-persist: 6.0.0
-    redux-thunk: 3.1.0
     rn-android-keyboard-adjust: 2.1.2
     rn-qr-generator: 1.4.0
     secp256k1: 4.0.3
@@ -6543,23 +6529,6 @@ __metadata:
   dependencies:
     fill-range: ^7.0.1
   checksum: e2a8e769a863f3d4ee887b5fe21f63193a891c68b612ddb4b68d82d1b5f3ff9073af066c343e9867a393fe4c2555dcb33e89b937195feb9c1613d259edfcd459
-  languageName: node
-  linkType: hard
-
-"brittle@npm:^3.1.0":
-  version: 3.2.1
-  resolution: "brittle@npm:3.2.1"
-  dependencies:
-    b4a: ^1.6.0
-    c8: ^7.11.3
-    error-stack-parser: ^2.1.4
-    glob: ^8.0.3
-    minimist: ^1.2.6
-    same-object: ^1.0.2
-    tmatch: ^5.0.0
-  bin:
-    brittle: cmd.js
-  checksum: 663740164b5cfb997be47188a6d37168fe191b54460298f196ede372bea7c320e5af1edcd299e60df36981b4c246d506a20ad1d5bcbb5dfdf0abe5d48baabd6c
   languageName: node
   linkType: hard
 
@@ -6815,28 +6784,6 @@ __metadata:
   version: 3.1.2
   resolution: "bytes@npm:3.1.2"
   checksum: e4bcd3948d289c5127591fbedf10c0b639ccbf00243504e4e127374a15c3bc8eed0d28d4aaab08ff6f1cf2abc0cce6ba3085ed32f4f90e82a5683ce0014e1b6e
-  languageName: node
-  linkType: hard
-
-"c8@npm:^7.11.3":
-  version: 7.13.0
-  resolution: "c8@npm:7.13.0"
-  dependencies:
-    "@bcoe/v8-coverage": ^0.2.3
-    "@istanbuljs/schema": ^0.1.3
-    find-up: ^5.0.0
-    foreground-child: ^2.0.0
-    istanbul-lib-coverage: ^3.2.0
-    istanbul-lib-report: ^3.0.0
-    istanbul-reports: ^3.1.4
-    rimraf: ^3.0.2
-    test-exclude: ^6.0.0
-    v8-to-istanbul: ^9.0.0
-    yargs: ^16.2.0
-    yargs-parser: ^20.2.9
-  bin:
-    c8: bin/c8.js
-  checksum: 491abf4cf3097cdcfd24dbac49162f1383861c22c77fdd9280bcd38240e1e07d2c6a59da5d4df59a61a8204e2fc297d31fd526e495faf8d2f20dcc12a37b144c
   languageName: node
   linkType: hard
 
@@ -8288,7 +8235,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"error-stack-parser@npm:^2.0.6, error-stack-parser@npm:^2.1.4":
+"error-stack-parser@npm:^2.0.6":
   version: 2.1.4
   resolution: "error-stack-parser@npm:2.1.4"
   dependencies:
@@ -9217,16 +9164,6 @@ __metadata:
   dependencies:
     is-callable: ^1.1.3
   checksum: 6c48ff2bc63362319c65e2edca4a8e1e3483a2fabc72fbe7feaf8c73db94fc7861bd53bc02c8a66a0c1dd709da6b04eec42e0abdd6b40ce47305ae92a25e5d28
-  languageName: node
-  linkType: hard
-
-"foreground-child@npm:^2.0.0":
-  version: 2.0.0
-  resolution: "foreground-child@npm:2.0.0"
-  dependencies:
-    cross-spawn: ^7.0.0
-    signal-exit: ^3.0.2
-  checksum: f77ec9aff621abd6b754cb59e690743e7639328301fbea6ff09df27d2befaf7dd5b77cec51c32323d73a81a7d91caaf9413990d305cbe3d873eec4fe58960956
   languageName: node
   linkType: hard
 
@@ -10645,7 +10582,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"istanbul-reports@npm:^3.1.3, istanbul-reports@npm:^3.1.4":
+"istanbul-reports@npm:^3.1.3":
   version: 3.1.5
   resolution: "istanbul-reports@npm:3.1.5"
   dependencies:
@@ -12295,15 +12232,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mime@npm:3.0.0":
-  version: 3.0.0
-  resolution: "mime@npm:3.0.0"
-  bin:
-    mime: cli.js
-  checksum: f43f9b7bfa64534e6b05bd6062961681aeb406a5b53673b53b683f27fcc4e739989941836a355eef831f4478923651ecc739f4a5f6e20a76487b432bfd4db928
-  languageName: node
-  linkType: hard
-
 "mime@npm:^2.4.1":
   version: 2.6.0
   resolution: "mime@npm:2.6.0"
@@ -13582,7 +13510,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"process@npm:0.11.10, process@npm:^0.11.10":
+"process@npm:^0.11.10":
   version: 0.11.10
   resolution: "process@npm:0.11.10"
   checksum: bfcce49814f7d172a6e6a14d5fa3ac92cc3d0c3b9feb1279774708a719e19acd673995226351a082a9ae99978254e320ccda4240ddc474ba31a76c79491ca7c3
@@ -13815,40 +13743,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"queue-tick@npm:^1.0.0":
-  version: 1.0.1
-  resolution: "queue-tick@npm:1.0.1"
-  checksum: 57c3292814b297f87f792fbeb99ce982813e4e54d7a8bdff65cf53d5c084113913289d4a48ec8bbc964927a74b847554f9f4579df43c969a6c8e0f026457ad01
-  languageName: node
-  linkType: hard
-
 "queue@npm:6.0.2":
   version: 6.0.2
   resolution: "queue@npm:6.0.2"
   dependencies:
     inherits: ~2.0.3
   checksum: ebc23639248e4fe40a789f713c20548e513e053b3dc4924b6cb0ad741e3f264dcff948225c8737834dd4f9ec286dbc06a1a7c13858ea382d9379f4303bcc0916
-  languageName: node
-  linkType: hard
-
-"random-access-storage@npm:^2.2.1":
-  version: 2.3.0
-  resolution: "random-access-storage@npm:2.3.0"
-  dependencies:
-    events: ^3.3.0
-    queue-tick: ^1.0.0
-  checksum: 8060d6e59960dac137297cfe90e613882075b9200057c79f14e5c51ee19518303e7109229ddaffe81dee45abadbd6e26e95227720fd47399d3db1c2c652db423
-  languageName: node
-  linkType: hard
-
-"random-access-web-storage@npm:2.0.0":
-  version: 2.0.0
-  resolution: "random-access-web-storage@npm:2.0.0"
-  dependencies:
-    b4a: ^1.1.0
-    brittle: ^3.1.0
-    random-access-storage: ^2.2.1
-  checksum: c4e677e8ab42d14832a80e0ef047be7a90e8b0a716b8f85da1ae66b1f10419e9a88496cb8e373fc1f45303227e2d71ef70e1f12d34fe7a0f3deb93d7e4a52f63
   languageName: node
   linkType: hard
 
@@ -14024,13 +13924,6 @@ __metadata:
     react-native-gesture-handler: ">=2.0.0"
     react-native-reanimated: ">=2.8.0"
   checksum: f904e3f30737a883b683e12e119856188e81d7b6cd8811e38124353630391326385bec040a3c200a06535bcd4bbbe973e504c2e0546f7aa4cc96aa573787813d
-  languageName: node
-  linkType: hard
-
-"react-native-exit-app@npm:2.0.0":
-  version: 2.0.0
-  resolution: "react-native-exit-app@npm:2.0.0"
-  checksum: d455ddd3a688625ec0521c0260a709e9e1dedaa7ef5bdebc76b87017056950f79366e2b4686f864c8127555a5359b6bfc5b2636477f99f86ad1920ea1d87360e
   languageName: node
   linkType: hard
 
@@ -14284,16 +14177,6 @@ __metadata:
     react: "*"
     react-native: "*"
   checksum: 95b5d5e4e7a988696765d90fe62a331a50d3fd7c05e2f3733525e226554f5b69a4afc2b9c148682ec98eaf933d21e82a99aaf07b069504edd0968c4838215620
-  languageName: node
-  linkType: hard
-
-"react-native-restart@npm:0.0.27":
-  version: 0.0.27
-  resolution: "react-native-restart@npm:0.0.27"
-  peerDependencies:
-    react: "*"
-    react-native: "*"
-  checksum: 49cfaa954f12c37c6e34988cb47bf0626f4a2cd68ecc15be3d8d6acc7a5ca3032729545ddb66b6d3a5c30dfe626e46010e3e2148e709487354907997fde64255
   languageName: node
   linkType: hard
 
@@ -14634,7 +14517,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"redux-thunk@npm:3.1.0, redux-thunk@npm:^3.1.0":
+"redux-thunk@npm:^3.1.0":
   version: 3.1.0
   resolution: "redux-thunk@npm:3.1.0"
   peerDependencies:
@@ -15032,13 +14915,6 @@ __metadata:
   version: 2.1.2
   resolution: "safer-buffer@npm:2.1.2"
   checksum: cab8f25ae6f1434abee8d80023d7e72b598cf1327164ddab31003c51215526801e40b66c5e65d658a0af1e9d6478cadcb4c745f4bd6751f97d8644786c0978b0
-  languageName: node
-  linkType: hard
-
-"same-object@npm:^1.0.2":
-  version: 1.0.2
-  resolution: "same-object@npm:1.0.2"
-  checksum: 016ba4eb9229748016e83fad89dddfdca3059a82f30ab7fc2c9719c233456717cac8afe0eb436a26f6b16c54f35ac6c9f1415d73ebb7a5237be3e095c6713a86
   languageName: node
   linkType: hard
 
@@ -16109,13 +15985,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tmatch@npm:^5.0.0":
-  version: 5.0.0
-  resolution: "tmatch@npm:5.0.0"
-  checksum: c25b7eea30ba8e2aa254be5dfce81fc29cf14409a675318b0ef920ab2a9acd823d3468f215504a4f34b2c6938913c03844c2505df185b4ee013104072faaaa35
-  languageName: node
-  linkType: hard
-
 "tmpl@npm:1.0.5":
   version: 1.0.5
   resolution: "tmpl@npm:1.0.5"
@@ -16573,7 +16442,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"v8-to-istanbul@npm:^9.0.0, v8-to-istanbul@npm:^9.0.1":
+"v8-to-istanbul@npm:^9.0.1":
   version: 9.1.0
   resolution: "v8-to-istanbul@npm:9.1.0"
   dependencies:
@@ -16979,7 +16848,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"yargs-parser@npm:^20.2.2, yargs-parser@npm:^20.2.9":
+"yargs-parser@npm:^20.2.2":
   version: 20.2.9
   resolution: "yargs-parser@npm:20.2.9"
   checksum: 8bb69015f2b0ff9e17b2c8e6bfe224ab463dd00ca211eece72a4cd8a906224d2703fb8a326d36fdd0e68701e201b2a60ed7cf81ce0fd9b3799f9fe7745977ae3

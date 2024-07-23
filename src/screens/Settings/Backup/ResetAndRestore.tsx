@@ -36,18 +36,19 @@ const ResetAndRestore = ({
 
 				<View style={styles.buttonContainer}>
 					<Button
+						style={styles.button}
 						size="large"
 						variant="secondary"
-						style={styles.button}
 						text={t('reset_button_backup')}
 						onPress={(): void => {
 							showBottomSheet('backupNavigation');
 						}}
 					/>
 					<Button
-						size="large"
 						style={styles.button}
+						size="large"
 						text={t('reset_button_reset')}
+						testID="ResetButton"
 						onPress={(): void => setShowDialog(true)}
 					/>
 				</View>
