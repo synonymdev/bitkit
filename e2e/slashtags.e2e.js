@@ -34,6 +34,16 @@ d('Profile and Contacts', () => {
 	let waitForElectrum;
 	const rpc = new BitcoinJsonRpc(bitcoinURL);
 
+	const waitForSuggestionsLabel = async () => {
+		for (let i = 0; i < 60; i++) {
+			await sleep(1000);
+			try {
+				await element(by.id('SuggestionsLabel')).tap();
+				break;
+			} catch (e) {}
+		}
+	};
+
 	beforeAll(async () => {
 		await completeOnboarding();
 
@@ -175,15 +185,7 @@ d('Profile and Contacts', () => {
 
 			// RESTART APP
 			await device.launchApp({ newInstance: true, delete: false });
-
-			// wait for SuggestionsLabel to appear and be accessible
-			for (let i = 0; i < 60; i++) {
-				await sleep(1000);
-				try {
-					await element(by.id('SuggestionsLabel')).tap();
-					break;
-				} catch (e) {}
-			}
+			await waitForSuggestionsLabel();
 
 			await waitFor(element(by.text('NewTestName')))
 				.toBeVisible()
@@ -260,15 +262,7 @@ d('Profile and Contacts', () => {
 				.toBeVisible()
 				.withTimeout(300000); // 5 min
 			await element(by.id('GetStartedButton')).tap();
-
-			// wait for SuggestionsLabel to appear and be accessible
-			for (let i = 0; i < 60; i++) {
-				await sleep(1000);
-				try {
-					await element(by.id('SuggestionsLabel')).tap();
-					break;
-				} catch (e) {}
-			}
+			await waitForSuggestionsLabel();
 
 			// CHECK PROFILE, CONTACTS, TRANSACTION
 			await waitFor(element(by.text('NewTestName')))
