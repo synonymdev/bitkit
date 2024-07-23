@@ -173,6 +173,28 @@ d('Profile and Contacts', () => {
 			await expect(element(by.text(satoshi.name))).not.toBeVisible();
 			await expect(element(by.text(hal.name2))).toBeVisible();
 
+			// RESTART APP
+			await device.launchApp({ newInstance: true, delete: false });
+
+			// wait for SuggestionsLabel to appear and be accessible
+			for (let i = 0; i < 60; i++) {
+				await sleep(1000);
+				try {
+					await element(by.id('SuggestionsLabel')).tap();
+					break;
+				} catch (e) {}
+			}
+
+			await waitFor(element(by.text('NewTestName')))
+				.toBeVisible()
+				.withTimeout(60000);
+
+			await element(by.id('HeaderContactsButton')).tap();
+			// check un-edited contact
+			await expect(element(by.text(satoshi.name))).toBeVisible();
+			// check edited contact retains new name
+			await expect(element(by.text(hal.name2))).toBeVisible();
+
 			// REMOVE CONTACT
 			await element(by.text(hal.name2)).tap();
 			await element(by.id('DeleteContactButton')).tap();
@@ -186,7 +208,8 @@ d('Profile and Contacts', () => {
 			await waitFor(element(by.id('QRCode'))).toBeVisible();
 			await sleep(100); // wait for qr code to render
 			let { label: wAddress } = await element(by.id('QRCode')).getAttributes();
-			wAddress = wAddress.replace('bitcoin:', '');
+			wAddress = await wAddress.replace('bitcoin:', '');
+			//await sleep(1000); // wait for wAddress
 			await rpc.sendToAddress(wAddress, '1');
 			await rpc.generateToAddress(1, await rpc.getNewAddress());
 			await waitForElectrum();
@@ -219,57 +242,51 @@ d('Profile and Contacts', () => {
 			await element(by.id('SeedContaider')).swipe('down');
 			console.info('seed: ', seed);
 
-			// define the final checks to perform after restarting the app and restoring the wallet
-			const finalCheck = async () => {
-				await waitFor(element(by.id('Check1'))).toBeVisible();
-				await element(by.id('Check1')).tap();
-				await element(by.id('Check2')).tap();
-				await element(by.id('Continue')).tap();
-				await waitFor(element(by.id('SkipIntro'))).toBeVisible();
-				await element(by.id('SkipIntro')).tap();
-				await element(by.id('RestoreWallet')).tap();
-				await element(by.id('MultipleDevices-button')).tap();
-				await element(by.id('Word-0')).replaceText(seed);
-				await element(by.id('WordIndex-4')).swipe('up');
-				await element(by.id('RestoreButton')).tap();
-
-				await waitFor(element(by.id('GetStartedButton')))
-					.toBeVisible()
-					.withTimeout(300000); // 5 min
-				await element(by.id('GetStartedButton')).tap();
-
-				// wait for SuggestionsLabel to appear and be accessible
-				for (let i = 0; i < 60; i++) {
-					await sleep(1000);
-					try {
-						await element(by.id('SuggestionsLabel')).tap();
-						break;
-					} catch (e) {}
-				}
-
-				// CHECK PROFILE, CONTACTS, TRANSACTION
-				await waitFor(element(by.text('NewTestName')))
-					.toBeVisible()
-					.withTimeout(60000);
-
-				await element(by.id('HeaderContactsButton')).tap();
-				await expect(element(by.text(satoshi.name))).toBeVisible();
-				await element(by.id('NavigationClose')).tap();
-
-				await element(by.id('ActivitySavings')).tap();
-				await element(by.id('Activity-1')).tap();
-				await expect(
-					element(by.text(satoshi.name).withAncestor(by.id('ContactSmall'))),
-				).toBeVisible();
-			};
-
-			// RESTART APP
-			await device.launchApp({ delete: true });
-			await finalCheck();
-
 			// WIPE APP AND RESTORE FROM THE SEED
 			await device.launchApp({ delete: true });
-			await finalCheck();
+
+			await waitFor(element(by.id('Check1'))).toBeVisible();
+			await element(by.id('Check1')).tap();
+			await element(by.id('Check2')).tap();
+			await element(by.id('Continue')).tap();
+			await waitFor(element(by.id('SkipIntro'))).toBeVisible();
+			await element(by.id('SkipIntro')).tap();
+			await element(by.id('RestoreWallet')).tap();
+			await element(by.id('MultipleDevices-button')).tap();
+			await element(by.id('Word-0')).replaceText(seed);
+			await element(by.id('WordIndex-4')).swipe('up');
+			await element(by.id('RestoreButton')).tap();
+
+			await waitFor(element(by.id('GetStartedButton')))
+				.toBeVisible()
+				.withTimeout(300000); // 5 min
+			await element(by.id('GetStartedButton')).tap();
+
+			// wait for SuggestionsLabel to appear and be accessible
+			for (let i = 0; i < 60; i++) {
+				await sleep(1000);
+				try {
+					await element(by.id('SuggestionsLabel')).tap();
+					break;
+				} catch (e) {}
+			}
+
+			// CHECK PROFILE, CONTACTS, TRANSACTION
+			await waitFor(element(by.text('NewTestName')))
+				.toBeVisible()
+				.withTimeout(60000);
+
+			await element(by.id('HeaderContactsButton')).tap();
+			await expect(element(by.text(satoshi.name))).toBeVisible();
+			await expect(element(by.text(hal.name1))).not.toBeVisible();
+			await expect(element(by.text(hal.name2))).not.toBeVisible();
+			await element(by.id('NavigationClose')).tap();
+
+			await element(by.id('ActivitySavings')).tap();
+			await element(by.id('Activity-1')).tap();
+			await expect(
+				element(by.text(satoshi.name).withAncestor(by.id('ContactSmall'))),
+			).toBeVisible();
 
 			markComplete('slash-1');
 		});
