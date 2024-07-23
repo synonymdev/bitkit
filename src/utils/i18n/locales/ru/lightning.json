@@ -300,9 +300,6 @@
   "order_details": {
     "string": "Детали Ордера"
   },
-  "order": {
-    "string": "Ордер"
-  },
   "created_on": {
     "string": "Создан"
   },
@@ -315,9 +312,6 @@
   "balance": {
     "string": "Баланс"
   },
-  "reserve_balance": {
-    "string": "Резервный Баланс"
-  },
   "total_size": {
     "string": "Общий Размер Канала"
   },
@@ -329,18 +323,6 @@
   },
   "closed_on": {
     "string": "Закрыт"
-  },
-  "channel_node_id": {
-    "string": "ID Узла Канала"
-  },
-  "debug": {
-    "string": "Дебаг"
-  },
-  "is_usable": {
-    "string": "Используемый?"
-  },
-  "is_ready": {
-    "string": "Готов к использованию?"
   },
   "support": {
     "string": "Поддержка"

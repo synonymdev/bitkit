@@ -1,8 +1,5 @@
 {
   "backupSeedPhrase": {
-    "title": {
-      "string": "Backup"
-    },
     "description": {
       "string": "Conserva i tuoi bitcoin"
     }
@@ -12,7 +9,7 @@
       "string": "Sconto"
     },
     "description": {
-      "string": "Conto di spesa"
+      "string": "Conto Spendibile"
     }
   },
   "fastpay": {

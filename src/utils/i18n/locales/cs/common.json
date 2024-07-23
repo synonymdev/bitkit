@@ -57,7 +57,7 @@
     "string": "OK"
   },
   "ok_random": {
-    "string": "Skvělé!"
+    "string": "Úžasné!\nPěkné!\nFajn!\nSkvělé!\nFantastické!\nMilé!\nMimořádné!\nOhromující!"
   },
   "retry": {
     "string": "Opakovat"
@@ -79,6 +79,9 @@
   },
   "back": {
     "string": "Zpět"
+  },
+  "learn_more": {
+    "string": "Další informace"
   },
   "understood": {
     "string": "Rozumím"

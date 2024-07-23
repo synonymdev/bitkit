@@ -47,6 +47,9 @@
     },
     "version": {
       "string": "Versione"
+    },
+    "shareText": {
+      "string": "Cambia il tuo portafoglio, cambia il mondo. Scarica Bitkit per iPhone {appStoreUrl} o Android {playStoreUrl}"
     }
   },
   "dev_title": {
@@ -502,10 +505,10 @@
     },
     "custom": {
       "label": {
-        "string": "Personalizzate"
+        "string": "Custom"
       },
       "value": {
-        "string": "Personalizzate"
+        "string": "Custom"
       },
       "description": {
         "string": "Dipende dalla commissione"
@@ -571,7 +574,7 @@
       "string": "Genera altri 20"
     },
     "check_balances": {
-      "string": "Controlla Saldi"
+      "string": "Controlla Conti"
     },
     "copied": {
       "string": "Copiato negli appunti"

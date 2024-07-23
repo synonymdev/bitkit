@@ -15,13 +15,13 @@
     "string": "Je déclare avoir lu et accepté la <accent>politique de confidentialité</accent>."
   },
   "welcome_title": {
-    "string": "Vous pouvez être \n<accent>le changement</accent>"
+    "string": "Soyez\n<accent>le changement</accent>"
   },
   "welcome_text": {
     "string": "Utilisez Bitkit pour payer n'importe qui, n'importe où, n'importe quand, et dépensez vos bitcoins pour les choses qui vous tiennent à cœur."
   },
   "get_started": {
-    "string": "Commencez"
+    "string": "Commencer"
   },
   "skip_intro": {
     "string": "Sauter intro"
@@ -36,7 +36,7 @@
     "string": "Bitkit vous donne les clés pour gérer votre argent. Dépensez maintenant ou économisez pour plus tard. C'est à vous de choisir."
   },
   "slide1_header": {
-    "string": "Instantanés\n<accent>Paiements</accent>"
+    "string": "Paiements\n<accent>Instantanés</accent>"
   },
   "slide1_text": {
     "string": "Dépensez des bitcoins plus rapidement que jamais. Profitez de paiements instantanés et bon marché avec vos amis, votre famille et les commerçants."
@@ -60,7 +60,7 @@
     "string": "Créez votre portefeuille. Veuillez noter que Bitkit est un logiciel mobile. <accent>Ne stockez pas tout votre argent dans Bitkit.</accent>"
   },
   "new_wallet": {
-    "string": "Nouveau portefeuille"
+    "string": "Créer"
   },
   "restore": {
     "string": "Restaurer"
@@ -114,7 +114,7 @@
     "string": "Bitkit n'a pas pu restaurer votre portefeuille à partir d'une phrase de sauvegarde ou de récupération."
   },
   "loading_header": {
-    "string": "Mettre en place\n<accent>votre portefeuille</accent>"
+    "string": "Restauration de\n<accent>votre portefeuille</accent>"
   },
   "restore_success_header": {
     "string": "Portefeuille <accent>restauré</accent>"
@@ -135,7 +135,7 @@
     "string": "Si vous disposiez auparavant d'une sauvegarde Lightning, celle-ci sera écrasée et perdue. Cela pourrait entraîner une perte de fonds."
   },
   "empty_wallet": {
-    "string": "Pour\ncommencer\n<accent>envoyez\nBitcoin</accent>\nà votre\nportefeuille"
+    "string": "Pour\ncommencer\n<accent>envoyez\ndu Bitcoin</accent>\nsur votre\nportefeuille"
   },
   "error_create": {
     "string": "Échec de la création d'un portefeuille"

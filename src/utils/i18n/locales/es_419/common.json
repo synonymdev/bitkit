@@ -65,6 +65,9 @@
   "back": {
     "string": "Volver"
   },
+  "learn_more": {
+    "string": "Más informaciónes"
+  },
   "understood": {
     "string": "Comprendido"
   }

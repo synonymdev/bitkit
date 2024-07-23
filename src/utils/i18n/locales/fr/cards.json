@@ -1,8 +1,5 @@
 {
   "backupSeedPhrase": {
-    "title": {
-      "string": "Sauvegarder"
-    },
     "description": {
       "string": "Conservez vos bitcoins"
     }

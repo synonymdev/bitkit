@@ -315,6 +315,9 @@
   "created_on": {
     "string": "Vytvořeno"
   },
+  "order_expiry": {
+    "string": "Vypršení platnosti objednávky"
+  },
   "transaction": {
     "string": "Transakce"
   },
@@ -330,8 +333,20 @@
   "total_size": {
     "string": "Celková velikost kanálu"
   },
+  "fees": {
+    "string": "Poplatky"
+  },
+  "base_fee": {
+    "string": "Základní poplatek za transakci"
+  },
+  "fee_rate": {
+    "string": "Sazba poplatku"
+  },
   "other": {
     "string": "Další"
+  },
+  "is_usable": {
+    "string": "Je použitelný?"
   },
   "opened_on": {
     "string": "Otevřeno"
@@ -342,14 +357,8 @@
   "channel_node_id": {
     "string": "ID uzlu"
   },
-  "debug": {
-    "string": "Debug"
-  },
-  "is_usable": {
-    "string": "Je použitelný?"
-  },
-  "is_ready": {
-    "string": "Je připravený?"
+  "closure_reason": {
+    "string": "Důvod uzavření"
   },
   "support": {
     "string": "Podpora"

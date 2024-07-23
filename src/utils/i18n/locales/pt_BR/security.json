@@ -108,7 +108,7 @@
     "string": "Escolha o PIN de 4 dígitos"
   },
   "pin_choose_text": {
-    "string": "Use um PIN que o senhor se lembrará. Se você esquecer o PIN, poderá redefini-lo mas isso exigirá a restauração da carteira."
+    "string": "Use um PIN que você se lembrará. Se você esquecer o PIN, poderá redefini-lo mas isso exigirá a restauração da carteira."
   },
   "pin_retype_header": {
     "string": "Digite novamente o PIN de 4 dígitos"

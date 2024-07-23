@@ -130,14 +130,11 @@
   "other": {
     "string": "Otros"
   },
-  "opened_on": {
-    "string": "Abierto en"
-  },
   "is_usable": {
     "string": "¿Es utilizable?"
   },
-  "is_ready": {
-    "string": "¿Está preparado?"
+  "opened_on": {
+    "string": "Abierto en"
   },
   "support": {
     "string": "Soporte"

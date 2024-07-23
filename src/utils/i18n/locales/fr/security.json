@@ -210,10 +210,10 @@
     "string": "Sauvegardez d'abord votre portefeuille afin d'éviter de perdre vos fonds et les données de votre portefeuille. La réinitialisation écrasera votre configuration Bitkit actuelle."
   },
   "reset_button_backup": {
-    "string": "Sauvegarder d'abord"
+    "string": "Sauvegarder"
   },
   "reset_button_reset": {
-    "string": "Réinitialiser le portefeuille"
+    "string": "Réinitialiser"
   },
   "reset_dialog_title": {
     "string": "Réinitialiser Bitkit ?"

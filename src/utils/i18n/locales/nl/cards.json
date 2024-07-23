@@ -1,8 +1,5 @@
 {
   "backupSeedPhrase": {
-    "title": {
-      "string": "Backup"
-    },
     "description": {
       "string": "Bewaar uw bitcoin"
     }

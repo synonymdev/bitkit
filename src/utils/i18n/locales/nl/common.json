@@ -56,9 +56,6 @@
   "ok": {
     "string": "OK"
   },
-  "ok_random": {
-    "string": "Fantastisch!"
-  },
   "retry": {
     "string": "Opnieuw proberen"
   },
@@ -79,6 +76,9 @@
   },
   "back": {
     "string": "Teruggaan"
+  },
+  "learn_more": {
+    "string": "Meer Weten"
   },
   "understood": {
     "string": "Begrepen"

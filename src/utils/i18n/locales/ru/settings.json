@@ -24,7 +24,7 @@
     "string": "Резервное копирование"
   },
   "advanced_title": {
-    "string": "Расширенные"
+    "string": "Дополнительно"
   },
   "about_title": {
     "string": "О программе"
@@ -376,7 +376,7 @@
       "string": "Gap Limit Адресов"
     },
     "coin_selection": {
-      "string": "Выбор Монет"
+      "string": "Управление монетами"
     },
     "cs_method": {
       "string": "Метод Выбора Монет"
@@ -445,7 +445,7 @@
       "string": "Да,\nСбросить"
     },
     "lightning_connections": {
-      "string": "Лайтнинг Соединения"
+      "string": "Соединения Lightning"
     },
     "lightning_node": {
       "string": "Лайтнинг Нода"

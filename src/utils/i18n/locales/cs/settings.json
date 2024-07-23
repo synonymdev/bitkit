@@ -615,7 +615,7 @@
       "string": "Aktuálně připojeno k"
     },
     "disconnected": {
-      "string": "odpojeno"
+      "string": "Odpojeno"
     },
     "host": {
       "string": "Host"
@@ -645,6 +645,18 @@
     },
     "gap_limit_update_description": {
       "string": "Změny se plně projeví po restartu aplikace."
+    },
+    "look_behind": {
+      "string": "Podívat se za sebe"
+    },
+    "look_ahead": {
+      "string": "Podívat se před sebe"
+    },
+    "look_behind_change": {
+      "string": "Podívat se za změnu"
+    },
+    "look_ahead_change": {
+      "string": "Podívat se před změnu"
     }
   },
   "rgs": {

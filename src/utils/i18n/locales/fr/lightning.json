@@ -133,7 +133,7 @@
     "string": "Configuration rapide"
   },
   "quick_confirm_header": {
-    "string": "Veuillez confirmer\n<accent>confirmer</accent>"
+    "string": "Veuillez\n<accent>confirmer</accent>"
   },
   "quick_confirm_cost": {
     "string": "Il coûte <accent>{txFee}</accent> de frais de réseau et <accent>{lspFee}</accent> de frais de fournisseur de services pour le transfert de vos fonds."
@@ -306,9 +306,6 @@
   "order_details": {
     "string": "Détails de la commande"
   },
-  "order": {
-    "string": "Commande"
-  },
   "created_on": {
     "string": "Créé le"
   },
@@ -321,9 +318,6 @@
   "balance": {
     "string": "Solde"
   },
-  "reserve_balance": {
-    "string": "Solde de la réserve"
-  },
   "total_size": {
     "string": "Taille totale du canal"
   },
@@ -335,18 +329,6 @@
   },
   "closed_on": {
     "string": "Fermé le"
-  },
-  "channel_node_id": {
-    "string": "ID du nœud"
-  },
-  "debug": {
-    "string": "Débogage"
-  },
-  "is_usable": {
-    "string": "Est-ce utilisable ?"
-  },
-  "is_ready": {
-    "string": "Est-ce prêt ?"
   },
   "support": {
     "string": "Support"

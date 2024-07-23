@@ -248,7 +248,7 @@
     "string": "Otevřít nastavení telefonu"
   },
   "bt_error_retrieve": {
-    "string": "Převod se nezdařil"
+    "string": "Přenos se nezdařil"
   },
   "bt_error_connect": {
     "string": "V tuto chvíli nelze přidat uzel LSP jako protistranu."

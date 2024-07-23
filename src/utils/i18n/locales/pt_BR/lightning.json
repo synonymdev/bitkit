@@ -112,10 +112,16 @@
     "string": "Poupança"
   },
   "spending_label": {
-    "string": "Saldo de despesas"
+    "string": "Saldo de gastos"
+  },
+  "spending_label_additional": {
+    "string": "Saldo de gastos adicional"
   },
   "receiving_label": {
     "string": "Capacidade de recebimento"
+  },
+  "receiving_label_additional": {
+    "string": "Capacidade de recebimento adicional"
   },
   "note_blocktank_limit": {
     "string": "O valor que você pode transferir para seu saldo de gastos está atualmente limitado a US${usdValue}."
@@ -146,6 +152,9 @@
   },
   "custom_confirm_header": {
     "string": "Por favor\n<accent>confirme</accent>"
+  },
+  "custom_confirm_cost": {
+    "string": "Custa <accent>{txFee}</accent> em taxas da rede e <accent>{lspFee}</accent> em taxas de provedor de serviços para transferir seus fundos. Seu saldo de gastos deve permanecer ativo por pelo menos <accentWithKeyboard>{weeks, plural, one {# week} outros {# weeks}}.<penIcon/></accentWithKeyboard>"
   },
   "duration_header": {
     "string": "<accent>Duração</accent> do Saldo"
@@ -298,7 +307,7 @@
     "string": "Detalhes do Pedido"
   },
   "order": {
-    "string": "Pedido"
+    "string": "ID do pedido"
   },
   "created_on": {
     "string": "Criado em"
@@ -312,11 +321,11 @@
   "balance": {
     "string": "Saldo"
   },
-  "reserve_balance": {
-    "string": "Saldo reserva"
-  },
   "total_size": {
     "string": "Tamanho total do canal"
+  },
+  "fees": {
+    "string": "Taxas"
   },
   "other": {
     "string": "Outros"
@@ -326,18 +335,6 @@
   },
   "closed_on": {
     "string": "Fechado em"
-  },
-  "channel_node_id": {
-    "string": "ID do nó"
-  },
-  "debug": {
-    "string": "Debug"
-  },
-  "is_usable": {
-    "string": "É Utilizável?"
-  },
-  "is_ready": {
-    "string": "Está Pronta?"
   },
   "support": {
     "string": "Suporte"

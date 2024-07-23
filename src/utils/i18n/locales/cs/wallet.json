@@ -299,6 +299,26 @@
   "receive_connect_additional": {
     "string": "Chcete-li získat více okamžitých bitcoinů, musí Bitkit zvýšit vaši likviditu. Bude odečten poplatek <accent>{lspFee}</accent> z vámi zadané částky pro poskytovatele služeb."
   },
+  "receive_liquidity": {
+    "nav_title": {
+      "string": "Nastavení disponibilního zůstatku"
+    },
+    "nav_title_additional": {
+      "string": "Zvýšení přijímací kapacity"
+    },
+    "text": {
+      "string": "Váš disponibilní zůstatek v síti Bitkit je jako vaše internetové připojení. Místo šířky pásma platíte za likviditu a směrování plateb.\n\nPlatby z vašeho disponibilního zůstatku jsou levnější, rychlejší a soukromější než běžné bitcoinové transakce.\n\nSíťový poplatek a poplatek poskytovateli služeb jsou jednorázové náklady na zřízení vašeho zůstatku."
+    },
+    "text_additional": {
+      "string": "Váš disponibilní zůstatek v síti Bitkit je jako vaše internetové připojení. Místo šířky pásma platíte za likviditu a směrování plateb.\n\nPlatby z vašeho výdajového zůstatku jsou levnější, rychlejší a soukromější než běžné bitcoinové transakce.\n\nBitkit potřebuje zvýšit přijímací kapacitu vašeho disponibilního zůstatku, aby mohl tuto platbu zpracovat."
+    },
+    "label": {
+      "string": "Likvidita disponibilního zůstatku"
+    },
+    "label_additional": {
+      "string": "Dodatečná likvidita disponibilního zůstatku"
+    }
+  },
   "receive_cjit_error": {
     "string": "Transakce selhala"
   },
@@ -307,6 +327,9 @@
   },
   "receive_will": {
     "string": "Obdržíte"
+  },
+  "receive_ldk_init": {
+    "string": "Inicializace disponibilního zůstatku..."
   },
   "minimum": {
     "string": "MINIMUM"
@@ -442,6 +465,9 @@
   },
   "activity_tx_id": {
     "string": "ID transakce"
+  },
+  "activity_preimage": {
+    "string": "Preimage"
   },
   "activity_payment_hash": {
     "string": "Hash platby"
@@ -604,6 +630,9 @@
   },
   "lnurl_w_success_description": {
     "string": "Úspěšná žádost o výběr"
+  },
+  "lnurl_p_title": {
+    "string": "Poslat bitcoin"
   },
   "lnurl_p_max": {
     "string": "Maximální částka"

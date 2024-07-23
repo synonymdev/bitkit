@@ -51,7 +51,7 @@
     "string": "Nenhum link adicionado ainda..."
   },
   "contact_pay_error": {
-    "string": "Incapaz de Pagar Contato"
+    "string": "Não foi Possível Pagar Contato"
   },
   "contact_share": {
     "string": "Compartilhar Chave do Perfil"

@@ -58,5 +58,8 @@
   },
   "activity_invoice": {
     "string": "Faktura"
+  },
+  "lnurl_p_title": {
+    "string": "Wyślij Bitcoin"
   }
 }

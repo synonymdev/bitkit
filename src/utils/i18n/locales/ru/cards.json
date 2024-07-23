@@ -1,8 +1,5 @@
 {
   "backupSeedPhrase": {
-    "title": {
-      "string": "Бекап"
-    },
     "description": {
       "string": "Храните ваш биткоин"
     }
@@ -12,7 +9,7 @@
       "string": "Скидка"
     },
     "description": {
-      "string": "Баланс расходов"
+      "string": "Баланс Расходов"
     }
   },
   "fastpay": {
@@ -41,7 +38,7 @@
   },
   "lightningSettingUp": {
     "title": {
-      "string": "Настройка"
+      "string": "Перенос"
     },
     "description": {
       "string": "Идёт процесс..."

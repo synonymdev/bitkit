@@ -358,5 +358,8 @@
   },
   "payment_received": {
     "string": "Bitcoin recibido"
+  },
+  "lnurl_p_title": {
+    "string": "Enviar Bitcoin"
   }
 }

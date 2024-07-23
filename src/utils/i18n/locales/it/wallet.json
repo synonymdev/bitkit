@@ -173,6 +173,9 @@
   "max_possible_fee_rate_msg": {
     "string": "Diminuisci la commissione personalizzata e riprova."
   },
+  "min_possible_fee_rate": {
+    "string": "Commissione inferiore al limite minimo"
+  },
   "min_possible_fee_rate_msg": {
     "string": "Aumenta la commissione personalizzata e riprova."
   },
@@ -298,6 +301,9 @@
   },
   "receive_cjit_error": {
     "string": "Transazione Fallita"
+  },
+  "receive_cjit_error_msg": {
+    "string": "Impossibile inviare fondi al tuo conto di spesa."
   },
   "receive_will": {
     "string": "Riceverai"
@@ -493,11 +499,17 @@
   "savings": {
     "title": {
       "string": "Risparmi"
+    },
+    "onboarding": {
+      "string": "<accent>Invia\nbitcoin</accent>\nal tuo\nconto di risparmio"
     }
   },
   "spending": {
     "title": {
       "string": "Spesa"
+    },
+    "onboarding": {
+      "string": "<accent>Invia\nbitcoin</accent>\nal tuo\nconto di spesa"
     }
   },
   "details_transfer_subtitle": {
@@ -592,6 +604,9 @@
   },
   "lnurl_w_success_description": {
     "string": "Prelievo richiesto con successo"
+  },
+  "lnurl_p_title": {
+    "string": "Invia Bitcoin"
   },
   "lnurl_p_max": {
     "string": "Importo massimo"

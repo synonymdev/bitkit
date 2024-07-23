@@ -333,6 +333,9 @@
   "other": {
     "string": "Altro"
   },
+  "is_usable": {
+    "string": "È utilizzabile?"
+  },
   "opened_on": {
     "string": "Aperto il"
   },
@@ -341,15 +344,6 @@
   },
   "channel_node_id": {
     "string": "ID del nodo"
-  },
-  "debug": {
-    "string": "Debug"
-  },
-  "is_usable": {
-    "string": "È utilizzabile?"
-  },
-  "is_ready": {
-    "string": "È pronto?"
   },
   "support": {
     "string": "Supporto"

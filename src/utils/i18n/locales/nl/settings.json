@@ -105,7 +105,7 @@
       "string": "Standaard Transactiesnelheid"
     },
     "speed_fee_custom": {
-      "string": "Stel Een Aangepaste Vergoeding In"
+      "string": "Vergoeding Instellen"
     },
     "speed_fee_total": {
       "string": "₿ {feeSats} voor de gemiddelde transactie"

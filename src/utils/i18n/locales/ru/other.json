@@ -164,7 +164,7 @@
     "string": "Не удалось открыть канал (LNURL)"
   },
   "lnurl_channel_header": {
-    "string": "Лайтнинг Подключение"
+    "string": "Лайтнинг Соединение"
   },
   "lnurl_channel_title": {
     "string": "Новое\nлайтнинг\n<accent>соединение</accent>"
@@ -176,7 +176,7 @@
     "string": "Поставщик услуг Лайтнинг"
   },
   "lnurl_channel_node": {
-    "string": "ID узла"
+    "string": "ID Узла Канала"
   },
   "lnurl_channel_host": {
     "string": "Хост"
@@ -239,7 +239,7 @@
     "string": "Открыть Настройки Телефона"
   },
   "bt_error_retrieve": {
-    "string": "Ошибка Перевода"
+    "string": "Перевод Неудачен"
   },
   "bt_error_connect": {
     "string": "На данный момент невозможно добавить узел LSP в качестве пира."

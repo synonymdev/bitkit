@@ -102,7 +102,7 @@
       "string": "Velocidade de transação padrão"
     },
     "speed_fee_custom": {
-      "string": "Definir taxa personalizada"
+      "string": "Definir Taxa Personalizada"
     },
     "speed_fee_total": {
       "string": "₿ {feeSats} para uma transação média"
@@ -427,7 +427,7 @@
       "string": "Pagar ou receber de contatos"
     },
     "pp_contacts_switch": {
-      "string": "Habilitar pagamentos com contatos*"
+      "string": "Habilitar pagamentos para contatos*"
     },
     "address_viewer": {
       "string": "Visualizador de Endereços"

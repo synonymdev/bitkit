@@ -115,9 +115,6 @@
   "order_details": {
     "string": "Detalles del pedido"
   },
-  "order": {
-    "string": "Ordene"
-  },
   "created_on": {
     "string": "Creado en"
   },
@@ -130,9 +127,6 @@
   "balance": {
     "string": "Saldo"
   },
-  "reserve_balance": {
-    "string": "Saldo de reserva"
-  },
   "total_size": {
     "string": "Tamaño total del canal"
   },
@@ -144,12 +138,6 @@
   },
   "closed_on": {
     "string": "Cerrado el"
-  },
-  "is_usable": {
-    "string": "¿Es utilizable?"
-  },
-  "is_ready": {
-    "string": "¿Está preparado?"
   },
   "support": {
     "string": "Soporte"
@@ -179,7 +167,7 @@
     "string": "Ahora puede pagar a cualquier persona, en cualquier lugar y al instante."
   },
   "order_given_up_title": {
-    "string": "Falló la configuración de Pagos Instantáneos"
+    "string": "Falló la Configuración de Pagos Instantáneos"
   },
   "order_expired_title": {
     "string": "Falló la Configuración de Pagos Instantáneos"

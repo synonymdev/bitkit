@@ -169,6 +169,9 @@
   "other": {
     "string": "Altres"
   },
+  "is_usable": {
+    "string": "És utilitzable?"
+  },
   "opened_on": {
     "string": "Obert el"
   },
@@ -177,15 +180,6 @@
   },
   "channel_node_id": {
     "string": "ID de Node"
-  },
-  "debug": {
-    "string": "Depurar"
-  },
-  "is_usable": {
-    "string": "És utilitzable?"
-  },
-  "is_ready": {
-    "string": "Està a punt?"
   },
   "support": {
     "string": "Suport"

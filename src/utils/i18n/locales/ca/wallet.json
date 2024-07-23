@@ -422,6 +422,9 @@
   "lnurl_w_success_description": {
     "string": "Retirada sol·licitada amb èxit"
   },
+  "lnurl_p_title": {
+    "string": "Envia Bitcoin"
+  },
   "lnurl_p_max": {
     "string": "Quantitat màxima"
   }

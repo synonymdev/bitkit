@@ -123,16 +123,19 @@
     "string": "Hai ripristinato con successo il tuo wallet dal backup. Goditi Bitkit!"
   },
   "restore_failed_header": {
-    "string": "Saldo di spesa <accent>errore</accent>"
+    "string": "Conto di spesa <accent>errore</accent>"
   },
   "restore_failed_text": {
-    "string": "Bitkit ha ripristinato i tuoi risparmi, ma non è riuscito a ripristinare il saldo di spesa corrente (stato Lightning) e i dati del portafoglio."
+    "string": "Bitkit ha ripristinato i tuoi risparmi, ma non è riuscito a ripristinare il conto di spesa corrente (stato Lightning) e i dati del portafoglio."
   },
   "restore_no_backup_button": {
     "string": "Procedi Senza Backup"
   },
   "restore_no_backup_warn": {
     "string": "Se in precedenza possedevi un backup lightning, questo verrà sovrascritto e perso. Ciò potrebbe causare una perdita di fondi."
+  },
+  "empty_wallet": {
+    "string": "Per\niniziare\n<accent>invia\nBitcoin</accent>\nal tuo\nportafoglio"
   },
   "error_create": {
     "string": "Creazione del portafoglio non riuscita"

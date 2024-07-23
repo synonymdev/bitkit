@@ -1,6 +1,6 @@
 {
   "backup_wallet": {
-    "string": "Backup del Wallet"
+    "string": "Backup del portafoglio"
   },
   "backup_title": {
     "string": "<accent>Conserva in sicurezza</accent> i tuoi Bitcoin"
@@ -21,7 +21,7 @@
     "string": "La Tua Passphrase"
   },
   "pass_text": {
-    "string": "Ha aggiunto una passphrase alla tua recovery phrase durante la configurazione del wallett."
+    "string": "Hai aggiunto una passphrase alla tua recovery phrase durante la configurazione del wallet."
   },
   "pass_never_share": {
     "string": "<accent>Non condividere mai</accent> la tua passphrase con nessuno poiché ciò potrebbe comportare la perdita dei fondi."
@@ -42,7 +42,7 @@
     "string": "La Tua Recovery Phrase"
   },
   "mnemonic_error": {
-    "string": "Errore nel portafoglio"
+    "string": "Errore nel wallet"
   },
   "mnemonic_error_description": {
     "string": "Bitkit non è in grado di leggere la tua frase di ripristino."
@@ -213,13 +213,13 @@
     "string": "Esegui Prima il Backup"
   },
   "reset_button_reset": {
-    "string": "Reset Wallet"
+    "string": "Resettare Wallet"
   },
   "reset_dialog_title": {
     "string": "Resettare Bitkit?"
   },
   "reset_dialog_desc": {
-    "string": "Sei sicuro di voler resettare il tuo Wallet Bitkit ? Hai un backup della recovery phrase e dei dati del wallet?"
+    "string": "Sei sicuro di voler resettare il tuo Wallet Bitkit? Hai un backup della recovery phrase e dei dati del wallet?"
   },
   "reset_confirm": {
     "string": "Sì, resetta"
@@ -237,7 +237,7 @@
     "string": "Contatta l'Assistenza"
   },
   "wipe_app": {
-    "string": "Wipe App"
+    "string": "Resetta App"
   },
   "close_app": {
     "string": "Chiudi Bitkit"

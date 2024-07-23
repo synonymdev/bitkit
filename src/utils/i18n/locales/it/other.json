@@ -38,8 +38,14 @@
   "buy_text": {
     "string": "Non hai Bitcoin o ne vuoi ancora di più?"
   },
+  "buy_button": {
+    "string": "Scegli Exchange"
+  },
   "error_keychain": {
     "string": "Problema di connessione dati"
+  },
+  "error_keychain_msg": {
+    "string": "Impossibile caricare la chiave primaria dalla keychain."
   },
   "connection_restored_title": {
     "string": "Connessione Electrum ripristinata"
@@ -113,7 +119,7 @@
     "string": "Risparmi insufficienti"
   },
   "pay_insufficient_spending": {
-    "string": "Saldo di spesa insufficiente"
+    "string": "Conto di spesa insufficiente"
   },
   "pay_insufficient_savings_description": {
     "string": "Sono necessari più ₿ per pagare questa fattura Bitcoin."
@@ -188,7 +194,7 @@
     "string": "Connessione\n<accent>avviata</accent>"
   },
   "lnurl_channel_connecting_text": {
-    "string": "Connessione Lightning avviata. Potrai utilizzare il tuo saldo di spesa in <accent>±30 minuti</accent> (dipende dalla configurazione del nodo)."
+    "string": "Connessione Lightning avviata. Potrai utilizzare il tuo conto di spesa in <accent>±30 minuti</accent> (dipende dalla configurazione del nodo)."
   },
   "lnurl_blocktank_error": {
     "string": "Bitkit non è riuscito a connettersi a Blocktank."

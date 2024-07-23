@@ -599,6 +599,9 @@
   "lnurl_w_success_description": {
     "string": "Opname Succesvol Aangevraagd"
   },
+  "lnurl_p_title": {
+    "string": "Bitcoin Versturen"
+  },
   "lnurl_p_max": {
     "string": "Maximumbedrag"
   },

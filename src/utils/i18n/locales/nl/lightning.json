@@ -216,9 +216,6 @@
   "order_details": {
     "string": "Ordergegevens"
   },
-  "order": {
-    "string": "Order"
-  },
   "created_on": {
     "string": "Aangemaakt op"
   },
@@ -231,9 +228,6 @@
   "balance": {
     "string": "Saldo"
   },
-  "reserve_balance": {
-    "string": "Reservesaldo"
-  },
   "total_size": {
     "string": "Grootte van kanaal"
   },
@@ -245,15 +239,6 @@
   },
   "closed_on": {
     "string": "Gesloten op"
-  },
-  "debug": {
-    "string": "Debuggen"
-  },
-  "is_usable": {
-    "string": "Bruikbaar?"
-  },
-  "is_ready": {
-    "string": "Gereed?"
   },
   "support": {
     "string": "Ondersteuning"
@@ -294,7 +279,7 @@
     "string": "Kon de overboeking niet opstarten. Wilt u deze overboeking forceren? Zo ja kunt u dit geld voor ±14 dagen niet gebruiken (!)"
   },
   "force_button": {
-    "string": "Forceer Overdracht"
+    "string": "Forceer Overboeking"
   },
   "force_init_title": {
     "string": "Geforceerde Overboeking Gestart"
@@ -306,7 +291,7 @@
     "string": "Geforceerde Overboeking Mislukt"
   },
   "force_failed_msg": {
-    "string": "Kon uw geld niet terugboeken naar spaarsaldo. Probeer het opnieuw."
+    "string": "Het geld kon niet worden teruggeboekt naar uw spaarsaldo. Probeer het opnieuw."
   },
   "channel_opened_msg": {
     "string": "U kunt nu directe betalingen maken aan wie u wilt, wanneer u wilt. "

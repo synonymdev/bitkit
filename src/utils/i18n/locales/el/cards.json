@@ -1,9 +1,4 @@
 {
-  "backupSeedPhrase": {
-    "title": {
-      "string": "Αντίγραφο ασφαλείας"
-    }
-  },
   "lightningConnecting": {
     "title": {
       "string": "Σύνδεση"
