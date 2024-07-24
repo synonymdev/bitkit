@@ -214,19 +214,16 @@ const OnchainActivityDetail = ({
 		return boostedParents.length > 0;
 	}, [boostedParents.length]);
 
-	const handleBoostParentPress = useCallback(
-		(parentTxId) => {
-			const activityItem = activityItems.find((i) => {
-				return (
-					i.activityType === EActivityType.onchain && i.txId === parentTxId
-				);
-			});
-			if (activityItem) {
-				navigation.push('ActivityDetail', { id: activityItem.id });
-			}
-		},
-		[activityItems, navigation],
-	);
+	const handleBoostParentPress = (parentTxId): void => {
+		const activityItem = activityItems.find((i) => {
+			return i.activityType === EActivityType.onchain && i.txId === parentTxId;
+		});
+		if (activityItem) {
+			navigation.push('ActivityDetail', { id: activityItem.id });
+		} else {
+			onCopy(parentTxId);
+		}
+	};
 
 	const handleBoost = (): void => {
 		showBottomSheet('boostPrompt', { onchainActivityItem: item });
@@ -628,20 +625,20 @@ const OnchainActivityDetail = ({
 
 								return (
 									<View key={parent} style={styles.sectionContainer}>
-										<Section
-											title={title}
-											value={
-												<TouchableOpacity
-													activeOpacity={0.7}
-													onPress={(): void => {
-														handleBoostParentPress(parent);
-													}}>
+										<TouchableOpacity
+											activeOpacity={0.7}
+											onPress={(): void => {
+												handleBoostParentPress(parent);
+											}}>
+											<Section
+												title={title}
+												value={
 													<BodySSB numberOfLines={1} ellipsizeMode="middle">
 														{parent}
 													</BodySSB>
-												</TouchableOpacity>
-											}
-										/>
+												}
+											/>
+										</TouchableOpacity>
 									</View>
 								);
 							})}
