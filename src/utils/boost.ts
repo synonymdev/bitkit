@@ -169,10 +169,10 @@ export const formatBoostedActivityItems = ({
 	const formattedItems: TOnchainActivityItem[] = [];
 
 	items.forEach((item) => {
-		const txId = item.id;
+		const { txId } = item;
 
 		// if boosted tx don't add for now
-		if (item.id in boostedTransactions) {
+		if (txId in boostedTransactions) {
 			return;
 		}
 
@@ -240,13 +240,13 @@ export const calculateBoostTransactionValue = ({
 	includeFee?: boolean;
 }): number => {
 	const boostedTransaction = Object.values(boostedTransactions).find(
-		(tx) => tx.childTransaction === currentActivityItem.id,
+		(tx) => tx.childTransaction === currentActivityItem.txId,
 	);
 	if (!boostedTransaction) {
 		return currentActivityItem.value;
 	}
 	const rootParent = getRootParentActivity({
-		txId: currentActivityItem.id,
+		txId: currentActivityItem.txId,
 		items,
 		boostedTransactions,
 	});

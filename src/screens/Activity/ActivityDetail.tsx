@@ -134,6 +134,7 @@ const OnchainActivityDetail = ({
 	const {
 		id,
 		txId,
+		transferTxId,
 		activityType,
 		txType,
 		value,
@@ -159,7 +160,9 @@ const OnchainActivityDetail = ({
 	const selectedNetwork = useAppSelector(selectedNetworkSelector);
 	const activityItems = useAppSelector(activityItemsSelector);
 	const boostedTransactions = useAppSelector(boostedTransactionsSelector);
-	const transfer = useAppSelector((state) => transferSelector(state, txId));
+	const transfer = useAppSelector((state) => {
+		return transferSelector(state, transferTxId);
+	});
 	const [txDetails, setTxDetails] = useState<ITransaction<ITxHash>['result']>();
 	const slashTagsUrl = useAppSelector((state) => {
 		return slashTagsUrlSelector(state, id);
@@ -303,34 +306,6 @@ const OnchainActivityDetail = ({
 			<BodySSB color="brand">{t('activity_confirming')}</BodySSB>
 		</View>
 	);
-
-	if (isBoosted) {
-		status = (
-			<View style={styles.row}>
-				<TimerIconAlt style={styles.rowIcon} color="yellow" height={14} />
-				<BodySSB color="yellow">{t('activity_boosting')}</BodySSB>
-			</View>
-		);
-	}
-
-	if (confirmed) {
-		status = (
-			<View style={styles.row}>
-				<CheckCircleIcon style={styles.rowIcon} color="green" />
-				<BodySSB color="green">{t('activity_confirmed')}</BodySSB>
-			</View>
-		);
-	}
-
-	if (activityType === EActivityType.onchain && !exists) {
-		status = (
-			<View style={styles.row}>
-				<XIcon style={styles.rowIcon} color="red" height={18} width={16} />
-				<BodySSB color="red">{t('activity_removed')}</BodySSB>
-			</View>
-		);
-	}
-
 	let icon = isSend ? (
 		<ThemedView style={styles.icon} color="brand16">
 			<SendIcon height={19} color="brand" />
@@ -360,6 +335,33 @@ const OnchainActivityDetail = ({
 			<ThemedView style={styles.icon} color="brand16">
 				<TransferIcon height={24} width={24} color="brand" />
 			</ThemedView>
+		);
+	}
+
+	if (isBoosted) {
+		status = (
+			<View style={styles.row}>
+				<TimerIconAlt style={styles.rowIcon} color="yellow" height={14} />
+				<BodySSB color="yellow">{t('activity_boosting')}</BodySSB>
+			</View>
+		);
+	}
+
+	if (confirmed) {
+		status = (
+			<View style={styles.row}>
+				<CheckCircleIcon style={styles.rowIcon} color="green" />
+				<BodySSB color="green">{t('activity_confirmed')}</BodySSB>
+			</View>
+		);
+	}
+
+	if (activityType === EActivityType.onchain && !exists) {
+		status = (
+			<View style={styles.row}>
+				<XIcon style={styles.rowIcon} color="red" height={18} width={16} />
+				<BodySSB color="red">{t('activity_removed')}</BodySSB>
+			</View>
 		);
 	}
 

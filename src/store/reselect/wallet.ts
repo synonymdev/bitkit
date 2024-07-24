@@ -131,7 +131,7 @@ export const pendingTransfersSelector = createSelector(
  * Returns transfers for the currently selected wallet.
  */
 export const transferSelector = createSelector(
-	[walletState, (_state, txId: string): string => txId],
+	[walletState, (_state, txId?: string): string | undefined => txId],
 	(wallet, txId) => {
 		const { selectedWallet, selectedNetwork } = wallet;
 		const transfers = wallet.wallets[selectedWallet].transfers[selectedNetwork];

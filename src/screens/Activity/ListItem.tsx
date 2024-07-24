@@ -24,11 +24,7 @@ import {
 import { useAppSelector } from '../../hooks/redux';
 import { useProfile } from '../../hooks/slashtags';
 import { useFeeText } from '../../hooks/fees';
-import {
-	ETransferStatus,
-	TTransferToSavings,
-	TTransferToSpending,
-} from '../../store/types/wallet';
+import { ETransferStatus, ETransferType } from '../../store/types/wallet';
 import { slashTagsUrlSelector } from '../../store/reselect/metadata';
 import { getDurationForBlocks, truncate } from '../../utils/helpers';
 import { getActivityItemDate } from '../../utils/activity';
@@ -90,8 +86,7 @@ const OnchainListItem = ({
 }): ReactElement => {
 	const { t } = useTranslation('wallet');
 	const {
-		id,
-		txId,
+		transferTxId,
 		txType,
 		value,
 		fee,
@@ -105,12 +100,9 @@ const OnchainListItem = ({
 	const { shortRange: feeRateDescription } = useFeeText(feeRate);
 	const isSend = txType === EPaymentType.sent;
 
-	const transferToSpending = useAppSelector((state) => {
-		return transferSelector(state, txId);
-	}) as TTransferToSpending;
-	const transferToSavings = useAppSelector((state) => {
-		return transferSelector(state, id);
-	}) as TTransferToSavings;
+	const transfer = useAppSelector((state) => {
+		return transferSelector(state, transferTxId);
+	});
 
 	let title = t(isSend ? 'activity_sent' : 'activity_received');
 	const amount = isSend ? value + fee : value;
@@ -132,34 +124,29 @@ const OnchainListItem = ({
 		description = t('activity_low_fee');
 	}
 
-	if (transferToSavings && !transferToSpending) {
+	if (transfer) {
 		title = t('activity_transfer');
-		if (transferToSavings.status === ETransferStatus.done) {
-			description = t('activity_transfer_savings_done');
-		} else {
-			const duration = getDurationForBlocks(transferToSavings.confirmsIn);
-			description = t('activity_transfer_savings_pending', { duration });
-		}
 		icon = (
 			<ThemedView style={styles.icon} color="brand16">
 				<TransferIcon color="brand" />
 			</ThemedView>
 		);
-	}
 
-	if (transferToSpending) {
-		title = t('activity_transfer');
-		if (confirmed) {
-			description = t('activity_transfer_spending_done');
+		if (transfer.type === ETransferType.open) {
+			if (confirmed) {
+				description = t('activity_transfer_spending_done');
+			} else {
+				const duration = getDurationForBlocks(1);
+				description = t('activity_transfer_spending_pending', { duration });
+			}
 		} else {
-			const duration = getDurationForBlocks(1);
-			description = t('activity_transfer_spending_pending', { duration });
+			if (transfer.status === ETransferStatus.done) {
+				description = t('activity_transfer_savings_done');
+			} else {
+				const duration = getDurationForBlocks(transfer.confirmsIn);
+				description = t('activity_transfer_savings_pending', { duration });
+			}
 		}
-		icon = (
-			<ThemedView style={styles.icon} color="brand16">
-				<TransferIcon color="brand" />
-			</ThemedView>
-		);
 	}
 
 	return (
