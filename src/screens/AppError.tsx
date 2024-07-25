@@ -8,7 +8,6 @@ import {
 	Image,
 	Platform,
 } from 'react-native';
-import RNExitApp from 'react-native-exit-app';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import SafeAreaInset from '../components/SafeAreaInset';
@@ -20,10 +19,6 @@ const imageSrc = require('../assets/illustrations/cross.png');
 type ReactError = Error & ErrorInfo;
 
 const AppError = ({ error }: { error: ReactError }): ReactElement => {
-	const onClose = (): void => {
-		RNExitApp.exitApp();
-	};
-
 	const onSend = async (): Promise<void> => {
 		const message = `Error: ${error.message}
 \nComponent Stack: ${error.componentStack}
@@ -62,13 +57,6 @@ const AppError = ({ error }: { error: ReactError }): ReactElement => {
 					</View>
 
 					<View style={styles.buttonContainer}>
-						<TouchableOpacity
-							style={[styles.button, styles.buttonSecondary]}
-							activeOpacity={0.7}
-							testID="ErrorClose"
-							onPress={onClose}>
-							<Text style={styles.buttonText}>Close Bitkit</Text>
-						</TouchableOpacity>
 						<TouchableOpacity
 							style={[styles.button, styles.buttonPrimary]}
 							activeOpacity={0.7}
@@ -156,10 +144,6 @@ const styles = StyleSheet.create({
 	},
 	buttonPrimary: {
 		backgroundColor: 'rgba(255, 255, 255, 0.08)',
-	},
-	buttonSecondary: {
-		borderColor: 'rgba(255, 255, 255, 0.08)',
-		borderWidth: 2,
 	},
 	buttonText: {
 		color: 'white',

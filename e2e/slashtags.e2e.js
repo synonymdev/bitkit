@@ -242,9 +242,14 @@ d('Profile and Contacts', () => {
 			).getAttributes();
 			await element(by.id('SeedContaider')).swipe('down');
 			console.info('seed: ', seed);
+			await element(by.id('NavigationClose')).atIndex(0).tap();
 
-			// WIPE APP AND RESTORE FROM THE SEED
-			await device.launchApp({ delete: true });
+			// WIPE APP AND RESTORE FROM SEED
+			await element(by.id('Settings')).tap();
+			await element(by.id('BackupSettings')).tap();
+			await element(by.id('ResetAndRestore')).tap();
+			await element(by.id('ResetButton')).tap();
+			await element(by.id('DialogConfirm')).tap();
 
 			await waitFor(element(by.id('Check1'))).toBeVisible();
 			await element(by.id('Check1')).tap();

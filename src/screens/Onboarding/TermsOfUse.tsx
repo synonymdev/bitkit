@@ -34,7 +34,6 @@ const TermsOfUse = ({
 		const wipeAppRes = await wipeApp({
 			selectedWallet: 'wallet0',
 			showNotification: false,
-			restartApp: false,
 		});
 		setLoading(false);
 		if (wipeAppRes.isErr()) {
