@@ -241,7 +241,7 @@ const handleRefreshError = (msg: string): void => {
 		showToast({
 			type: 'warning',
 			title: i18n.t('wallet:refresh_error_title'),
-			description: i18n.t('wallet:refresh_error_msg'),
+			description: msg,
 		});
 	}
 };
