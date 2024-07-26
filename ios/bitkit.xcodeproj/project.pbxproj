@@ -53,7 +53,7 @@
 		79DFAC55B0D745DE815EC2E0 /* InterTight-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "InterTight-Regular.ttf"; path = "../src/assets/fonts/InterTight-Regular.ttf"; sourceTree = "<group>"; };
 		81767485E82F0D9B4AB722B5 /* Pods-bitkit-bitkitTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-bitkit-bitkitTests.debug.xcconfig"; path = "Target Support Files/Pods-bitkit-bitkitTests/Pods-bitkit-bitkitTests.debug.xcconfig"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = bitkit/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		919FE2A2B4A7605C9F606896 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; name = PrivacyInfo.xcprivacy; path = bitkit/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		919FE2A2B4A7605C9F606896 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xml; name = PrivacyInfo.xcprivacy; path = bitkit/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		A223BA795CEB4CB2B344FBAF /* InterTight-ExtraBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "InterTight-ExtraBold.ttf"; path = "../src/assets/fonts/InterTight-ExtraBold.ttf"; sourceTree = "<group>"; };
 		B280297988208E1BF1BC559F /* Pods-bitkit.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-bitkit.release.xcconfig"; path = "Target Support Files/Pods-bitkit/Pods-bitkit.release.xcconfig"; sourceTree = "<group>"; };
 		C520B2A69FF77BE430CF7DDF /* Pods-bitkit-bitkitTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-bitkit-bitkitTests.release.xcconfig"; path = "Target Support Files/Pods-bitkit-bitkitTests/Pods-bitkit-bitkitTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -519,7 +519,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconOrange;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CLANG_ENABLE_MODULES = YES;
-				CURRENT_PROJECT_VERSION = 128;
+				CURRENT_PROJECT_VERSION = 130;
 				DEVELOPMENT_TEAM = KYH47R284B;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = bitkit/Info.plist;
@@ -530,7 +530,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.2;
+				MARKETING_VERSION = 1.0.3;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -551,8 +551,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconOrange;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CLANG_ENABLE_MODULES = YES;
-				CURRENT_PROJECT_VERSION = 111;
-				DEVELOPMENT_TEAM = G864RK99VK;
+				CURRENT_PROJECT_VERSION = 130;
+				DEVELOPMENT_TEAM = KYH47R284B;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = bitkit/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Bitkit;
@@ -562,7 +562,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.2;
+				MARKETING_VERSION = 1.0.3;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
