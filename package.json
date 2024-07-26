@@ -53,7 +53,7 @@
     "@synonymdev/react-native-lnurl": "0.0.10",
     "@synonymdev/result": "0.0.2",
     "@synonymdev/slashtags-keychain": "1.0.0",
-    "@synonymdev/slashtags-profile": "1.0.2",
+    "@synonymdev/slashtags-profile": "2.0.0",
     "@synonymdev/slashtags-url": "1.0.1",
     "@synonymdev/slashtags-widget-bitcoin-feed": "1.0.0",
     "@synonymdev/slashtags-widget-facts-feed": "1.1.0",

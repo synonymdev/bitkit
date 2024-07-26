@@ -4710,14 +4710,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@synonymdev/slashtags-profile@npm:1.0.2":
-  version: 1.0.2
-  resolution: "@synonymdev/slashtags-profile@npm:1.0.2"
+"@synonymdev/slashtags-profile@npm:2.0.0":
+  version: 2.0.0
+  resolution: "@synonymdev/slashtags-profile@npm:2.0.0"
   dependencies:
     "@synonymdev/slashtags-url": ^1.0.0-alpha.3
     ajv: ^8.12.0
-    b4a: ^1.6.3
-  checksum: 582d43e7b72562b2d88ada51554e60c6d12a13e985420ac3f49bbc401c18094ffccb0875d2476cc21da0d85cd97dd91b294851875cf74f3de13e937be2f99963
+  checksum: a9e61ede1d97fc3b1c40b478c6afb53a7b8d04c3c9bb9ee3eac1ed37616a2c97774c28493bdf8955592ab2cc5b6aa6a1f682890305c900ee11d218b36a5b9948
   languageName: node
   linkType: hard
 
@@ -5817,7 +5816,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"b4a@npm:^1.0.1, b4a@npm:^1.1.0, b4a@npm:^1.5.3, b4a@npm:^1.6.0, b4a@npm:^1.6.3":
+"b4a@npm:^1.0.1, b4a@npm:^1.1.0, b4a@npm:^1.5.3, b4a@npm:^1.6.0":
   version: 1.6.3
   resolution: "b4a@npm:1.6.3"
   checksum: 9038fce3688b3b2d6965be32123623e6bdbd62e07d1dad3bdf063500d03ccd7583fcb8fe21603f08f92c9bb175ae8d2ae0f85643cbfbd5cb4222fcea31b252d5
@@ -6318,7 +6317,7 @@ __metadata:
     "@synonymdev/react-native-lnurl": 0.0.10
     "@synonymdev/result": 0.0.2
     "@synonymdev/slashtags-keychain": 1.0.0
-    "@synonymdev/slashtags-profile": 1.0.2
+    "@synonymdev/slashtags-profile": 2.0.0
     "@synonymdev/slashtags-url": 1.0.1
     "@synonymdev/slashtags-widget-bitcoin-feed": 1.0.0
     "@synonymdev/slashtags-widget-facts-feed": 1.1.0
