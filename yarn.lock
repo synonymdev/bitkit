@@ -4626,21 +4626,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@synonymdev/feeds@npm:2.1.1":
-  version: 2.1.1
-  resolution: "@synonymdev/feeds@npm:2.1.1"
+"@synonymdev/feeds@npm:3.0.0, @synonymdev/feeds@npm:^2.0.0, @synonymdev/feeds@npm:^2.1.0":
+  version: 3.0.0
+  resolution: "@synonymdev/feeds@npm:3.0.0"
   dependencies:
-    b4a: ^1.5.3
-  checksum: 8f09b7cb2b5bd8156f585a5601e88ecaaae41daa3a1f31595da31596df70ca6ab5f1df4b787f37a7240c3dc5a6bb213791dcc2b07ec89709875d16e96dced6f0
-  languageName: node
-  linkType: hard
-
-"@synonymdev/feeds@npm:^2.0.0, @synonymdev/feeds@npm:^2.1.0":
-  version: 2.1.0
-  resolution: "@synonymdev/feeds@npm:2.1.0"
-  dependencies:
-    b4a: ^1.5.3
-  checksum: f34e80b1ea64c7e58767a85d2d055ccbc8cf6e62538aff008a73c58eddaf7042383b0e14ebfba8f27fb395ccdf1787b5a534d167eb91ac5b36d6287b49a9a934
+    "@synonymdev/slashtags-url": ^1.0.1
+  checksum: a5c4cf3b8c70df31b35acce5cac2823ef13629675d3e1c416319079c905ce7c02dbc7e473bcc8f78a7ddbaf9de346191af50614161e555cd590e56c3d2ff6e63
   languageName: node
   linkType: hard
 
@@ -4720,7 +4711,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@synonymdev/slashtags-url@npm:1.0.1":
+"@synonymdev/slashtags-url@npm:1.0.1, @synonymdev/slashtags-url@npm:^1.0.1":
   version: 1.0.1
   resolution: "@synonymdev/slashtags-url@npm:1.0.1"
   dependencies:
@@ -6311,7 +6302,7 @@ __metadata:
     "@shopify/react-native-skia": 1.2.1
     "@synonymdev/blocktank-client": 0.0.50
     "@synonymdev/blocktank-lsp-http-client": 1.1.2
-    "@synonymdev/feeds": 2.1.1
+    "@synonymdev/feeds": 3.0.0
     "@synonymdev/ledger": 0.0.5
     "@synonymdev/react-native-ldk": 0.0.148
     "@synonymdev/react-native-lnurl": 0.0.10
