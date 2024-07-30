@@ -122,7 +122,7 @@ services:
 
   ldk-backup-server:
     container_name: ldk-backup-server
-    image: synonymsoft/ldk-backup-server:latest
+    image: synonymsoft/ldk-backup-server:0.0.146
     expose:
       - '3003'
     ports:

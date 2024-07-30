@@ -151,6 +151,7 @@ d('Lightning', () => {
 				element(by.id('MoneyText').withAncestor(by.id('TotalSize'))),
 			).toHaveText('100 000');
 			await element(by.id('ChannelScrollView')).scrollTo('bottom', NaN, 0.1);
+			await expect(element(by.id('IsUsableYes'))).toBeVisible();
 			await element(by.id('NavigationClose')).atIndex(0).tap();
 
 			await sleep(500);
@@ -409,6 +410,7 @@ d('Lightning', () => {
 			await element(by.id('Channels')).tap();
 			await element(by.id('Channel')).atIndex(0).tap();
 			await element(by.id('ChannelScrollView')).scrollTo('bottom', NaN, 0.1);
+			await expect(element(by.id('IsUsableYes'))).toBeVisible();
 
 			// close channel
 			await element(by.id('CloseConnection')).tap();

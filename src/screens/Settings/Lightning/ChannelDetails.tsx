@@ -454,6 +454,7 @@ const ChannelDetails = ({
 					</View>
 					<Section
 						name={t('is_usable')}
+						testID={channel.is_usable ? 'IsUsableYes' : 'IsUsableNo'}
 						value={
 							<CaptionB>{t(channel.is_usable ? t('yes') : t('no'))}</CaptionB>
 						}
