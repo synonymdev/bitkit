@@ -14,22 +14,19 @@ export const getTransferForTx = async (
 	const { currentWallet, selectedNetwork } = getCurrentWallet();
 	const transfers = currentWallet.transfers[selectedNetwork];
 
-	const transfer = transfers.find((t) => {
-		// check if the tx is a transfer to spending
-		const isTransferToSpending = t.txId === tx.txid;
-		if (isTransferToSpending) {
-			return true;
-		}
+	// check if the tx is a transfer to spending
+	const transferToSpending = transfers.find((t) => t.txId === tx.txid);
+	if (transferToSpending) {
+		return transferToSpending;
+	}
 
-		// if the funding tx is in the transfer list it's a mutual close
+	// if the funding tx is in the transfer list it's a mutual close
+	const transferToSavings = transfers.find((t) => {
 		const txInput = tx.vin.find((vin) => t.txId === vin.txid);
-		if (txInput) {
-			return true;
-		}
+		return !!txInput;
 	});
-
-	if (transfer) {
-		return transfer;
+	if (transferToSavings) {
+		return transferToSavings;
 	}
 
 	// If we haven't found a transfer yet, check if the tx is a sweep from a force close

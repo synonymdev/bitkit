@@ -144,7 +144,6 @@ const OnchainActivityDetail = ({
 		confirmTimestamp,
 		isTransfer,
 		isBoosted,
-		address,
 		exists,
 	} = item;
 
@@ -582,15 +581,6 @@ const OnchainActivityDetail = ({
 							value={<BodySSB>{txId}</BodySSB>}
 						/>
 					</TouchableOpacity>
-					<TouchableOpacity
-						style={styles.sectionContainer}
-						activeOpacity={0.7}
-						onPress={(): void => onCopy(address)}>
-						<Section
-							title={t('activity_address')}
-							value={<BodySSB>{address}</BodySSB>}
-						/>
-					</TouchableOpacity>
 					{txDetails ? (
 						<>
 							<View style={styles.sectionContainer}>
@@ -990,17 +980,15 @@ const LightningActivityDetail = ({
 							value={<BodySSB>{id}</BodySSB>}
 						/>
 					</TouchableOpacity>
-					{address && (
-						<TouchableOpacity
-							style={styles.sectionContainer}
-							activeOpacity={0.7}
-							onPress={(): void => onCopy(address)}>
-							<Section
-								title={t('activity_invoice')}
-								value={<BodySSB>{address}</BodySSB>}
-							/>
-						</TouchableOpacity>
-					)}
+					<TouchableOpacity
+						style={styles.sectionContainer}
+						activeOpacity={0.7}
+						onPress={(): void => onCopy(address)}>
+						<Section
+							title={t('activity_invoice')}
+							value={<BodySSB>{address}</BodySSB>}
+						/>
+					</TouchableOpacity>
 				</>
 			)}
 		</>

@@ -56,7 +56,10 @@ const BoostForm = ({
 	const [preparing, setPreparing] = useState(true);
 	const [loading, setLoading] = useState(false);
 	const [showCustom, setShowCustom] = useState(false);
-	const boostData = useMemo(() => canBoost(activityItem.id), [activityItem.id]);
+	const boostData = useMemo(
+		() => canBoost(activityItem.txId),
+		[activityItem.txId],
+	);
 
 	const activityItemFee = activityItem.fee;
 	const recommendedFee = feeEstimates.fast;
@@ -77,7 +80,7 @@ const BoostForm = ({
 			const res = await setupBoost({
 				selectedWallet,
 				selectedNetwork,
-				txid: activityItem.id,
+				txid: activityItem.txId,
 			});
 			setPreparing(false);
 
@@ -90,7 +93,7 @@ const BoostForm = ({
 		return (): void => {
 			resetSendTransaction();
 		};
-	}, [activityItem.id, selectedNetwork, selectedWallet, dispatch]);
+	}, [activityItem.txId, selectedNetwork, selectedWallet, dispatch]);
 
 	// Set fee to recommended value
 	useEffect(() => {
