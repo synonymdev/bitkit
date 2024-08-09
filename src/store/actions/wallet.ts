@@ -1,14 +1,24 @@
 import { AppState } from 'react-native';
 import { err, ok, Result } from '@synonymdev/result';
-
-import actions from './actions';
 import {
-	ICreateWallet,
-	IWallets,
-	IWalletStore,
-	TTransfer,
-	TWalletName,
-} from '../types/wallet';
+	EAddressType,
+	EAvailableNetworks,
+	EBoostType,
+	EFeeId,
+	getDefaultWalletData,
+	getStorageKeyValues,
+	IAddress,
+	IBoostedTransaction,
+	IFormattedTransactions,
+	IKeyDerivationPath,
+	IOutput,
+	ISendTransaction,
+	IUtxo,
+	IWalletData,
+	TSetupTransactionResponse,
+} from 'beignet';
+
+import { ICreateWallet, TWalletName } from '../types/wallet';
 import {
 	blockHeightToConfirmations,
 	createDefaultWallet,
@@ -29,43 +39,22 @@ import {
 } from '../helpers';
 import { EAvailableNetwork } from '../../utils/networks';
 import { removeKeyFromObject } from '../../utils/helpers';
-import { IHeader } from '../../utils/types/electrum';
-import { getDefaultWalletShape } from '../shapes/wallet';
 import { TGetImpactedAddressesRes } from '../types/checks';
-import { getFakeTransaction } from '../../utils/wallet/testing';
 import { updateActivityList } from '../utils/activity';
-import {
-	EAddressType,
-	EAvailableNetworks,
-	EBoostType,
-	EFeeId,
-	getDefaultWalletData,
-	getStorageKeyValues,
-	IAddress,
-	IBoostedTransaction,
-	IFormattedTransactions,
-	IKeyDerivationPath,
-	IOnchainFees,
-	IOutput,
-	ISendTransaction,
-	IUtxo,
-	IWalletData,
-	TSetupTransactionResponse,
-} from 'beignet';
 import { ETransactionSpeed } from '../types/settings';
 import { updateOnchainFeeEstimates } from '../utils/fees';
 import { getMaxSendAmount, updateFee } from '../../utils/wallet/transactions';
 import { getExchangeRates, IExchangeRates } from '../../utils/exchange-rate';
-
-export const updateWallet = (
-	payload: Partial<IWalletStore>,
-): Result<string> => {
-	dispatch({
-		type: actions.UPDATE_WALLET,
-		payload,
-	});
-	return ok('');
-};
+import {
+	addUnconfirmedTransactions,
+	createWallet,
+	replaceImpactedAddresses,
+	updateHeader,
+	updateTransactions,
+	updateTransfer,
+	updateWallet,
+	updateWalletData,
+} from '../slices/wallet';
 
 /**
  * Creates and stores a newly specified wallet.
@@ -75,7 +64,7 @@ export const updateWallet = (
  * @param {EAddressType[]} [addressTypesToCreate]
  * @return {Promise<Result<string>>}
  */
-export const createWallet = async ({
+export const createWalletThunk = async ({
 	walletName = 'wallet0',
 	mnemonic,
 	bip39Passphrase = '',
@@ -88,12 +77,9 @@ export const createWallet = async ({
 		if (!addressTypesToCreate && restore) {
 			// If restoring a wallet, create and monitor all address types
 			addressTypesToCreate = Object.values(EAddressType);
-			dispatch({
-				type: actions.UPDATE_WALLET,
-				payload: {
-					addressTypesToMonitor: Object.values(EAddressType),
-				},
-			});
+			dispatch(
+				updateWallet({ addressTypesToMonitor: Object.values(EAddressType) }),
+			);
 		}
 		const response = await createDefaultWallet({
 			walletName,
@@ -107,32 +93,7 @@ export const createWallet = async ({
 		if (response.isErr()) {
 			return err(response.error.message);
 		}
-		dispatch({
-			type: actions.CREATE_WALLET,
-			payload: response.value,
-		});
-		return ok('');
-	} catch (e) {
-		return err(e);
-	}
-};
-
-export const createDefaultWalletStructure = async ({
-	walletName = 'wallet0',
-	seedHash,
-}: {
-	walletName?: TWalletName;
-	seedHash: string;
-}): Promise<Result<string>> => {
-	try {
-		const payload: IWallets = {
-			[walletName]: getDefaultWalletShape(),
-		};
-		payload[walletName].seedHash = seedHash;
-		dispatch({
-			type: actions.CREATE_WALLET,
-			payload,
-		});
+		dispatch(createWallet(response.value));
 		return ok('');
 	} catch (e) {
 		return err(e);
@@ -150,10 +111,7 @@ export const updateExchangeRates = async (
 		exchangeRates = res.value;
 	}
 
-	dispatch({
-		type: actions.UPDATE_WALLET,
-		payload: { exchangeRates },
-	});
+	dispatch(updateWallet({ exchangeRates }));
 
 	return ok('Successfully updated the exchange rate.');
 };
@@ -203,15 +161,9 @@ export const updateWalletBalance = ({
  * @param {IFormattedTransactions} transactions
  * @returns {Result<string>}
  */
-export const addUnconfirmedTransactions = ({
-	selectedWallet = getSelectedWallet(),
-	selectedNetwork = getSelectedNetwork(),
-	transactions,
-}: {
-	selectedWallet?: TWalletName;
-	selectedNetwork?: EAvailableNetwork;
-	transactions: IFormattedTransactions;
-}): Result<string> => {
+export const addUnconfirmedTransactionsThunk = (
+	transactions: IFormattedTransactions,
+): Result<string> => {
 	try {
 		let unconfirmedTransactions: IFormattedTransactions = {};
 		Object.keys(transactions).forEach((key) => {
@@ -227,16 +179,7 @@ export const addUnconfirmedTransactions = ({
 			return ok('No unconfirmed transactions found.');
 		}
 
-		const payload = {
-			selectedNetwork,
-			selectedWallet,
-			unconfirmedTransactions,
-		};
-
-		dispatch({
-			type: actions.ADD_UNCONFIRMED_TRANSACTIONS,
-			payload,
-		});
+		dispatch(addUnconfirmedTransactions(unconfirmedTransactions));
 		return ok('Successfully updated unconfirmed transactions.');
 	} catch (e) {
 		console.log(e);
@@ -247,57 +190,19 @@ export const addUnconfirmedTransactions = ({
 /**
  * FOR TESTING PURPOSES ONLY. DO NOT USE.
  * Injects a fake transaction into the store for testing.
- * @param {string} [id]
  * @param {IFormattedTransactions} [fakeTx]
- * @param {boolean} [shouldRefreshWallet]
- * @param {TWalletName} [selectedWallet]
- * @param {EAvailableNetwork} [selectedNetwork]
  */
-export const injectFakeTransaction = ({
-	id = 'fake-transaction',
-	fakeTx,
-	selectedWallet = getSelectedWallet(),
-	selectedNetwork = getSelectedNetwork(),
-}: {
-	id?: string;
-	fakeTx?: IFormattedTransactions;
-	selectedWallet?: TWalletName;
-	selectedNetwork?: EAvailableNetwork;
-}): Result<string> => {
-	try {
-		const fakeTransaction = fakeTx ?? getFakeTransaction(id);
+export const injectFakeTransaction = (
+	fakeTx: IFormattedTransactions,
+): Result<string> => {
+	dispatch(updateTransactions(fakeTx));
+	addUnconfirmedTransactionsThunk(fakeTx);
+	updateActivityList();
 
-		const payload = {
-			selectedNetwork,
-			selectedWallet,
-			transactions: fakeTransaction,
-		};
-		dispatch({
-			type: actions.UPDATE_TRANSACTIONS,
-			payload,
-		});
-		addUnconfirmedTransactions({
-			selectedNetwork,
-			selectedWallet,
-			transactions: fakeTransaction,
-		});
-		updateActivityList();
-
-		return ok('Successfully injected fake transactions.');
-	} catch (e) {
-		return err(e);
-	}
+	return ok('Successfully injected fake transactions.');
 };
 
-/**
- * Adds a new transfer transaction to the store.
- * @param {TTransfer} payload
- */
-export const addTransfer = (payload: TTransfer): void => {
-	dispatch({ type: actions.ADD_TRANSFER, payload });
-};
-
-export const updateTransfer = ({
+export const updateTransferThunk = ({
 	type,
 	txId,
 	amount,
@@ -314,49 +219,36 @@ export const updateTransfer = ({
 			const order = orders.find((o) => o.channel?.fundingTx.id === txId);
 			if (order) {
 				const paymentTxId = order.payment.onchain.transactions[0].txId;
-				dispatch({
-					type: actions.UPDATE_TRANSFER,
-					payload: { txId: paymentTxId },
-				});
+				dispatch(updateTransfer({ txId: paymentTxId }));
 			}
 			break;
 		}
 		case 'close': {
-			dispatch({
-				type: actions.UPDATE_TRANSFER,
-				payload: { txId, amount, confirmsIn },
-			});
+			dispatch(updateTransfer({ txId, amount, confirmsIn }));
 			break;
 		}
 	}
 };
 
-/**
- * Removes a transfer from the store.
- * @param {string} txId
- */
-export const removeTransfer = (txId: string): void => {
-	dispatch({ type: actions.REMOVE_TRANSFER, payload: txId });
-};
-
-/**
- * Retrieves, formats & stores the transaction history for the selected wallet/network.
- * @param {boolean} [scanAllAddresses]
- * @param {boolean} [replaceStoredTransactions] Setting this to true will set scanAllAddresses to true as well.
- */
-export const updateTransactions = async ({
-	scanAllAddresses = false,
-	replaceStoredTransactions = false,
-}: {
-	scanAllAddresses?: boolean;
-	replaceStoredTransactions?: boolean;
-}): Promise<Result<string | undefined>> => {
-	const wallet = getOnChainWallet();
-	return await wallet.updateTransactions({
-		scanAllAddresses,
-		replaceStoredTransactions,
-	});
-};
+// /**
+// CURRENTLY UNUSED
+//  * Retrieves, formats & stores the transaction history for the selected wallet/network.
+//  * @param {boolean} [scanAllAddresses]
+//  * @param {boolean} [replaceStoredTransactions] Setting this to true will set scanAllAddresses to true as well.
+//  */
+// export const updateTransactions = async ({
+// 	scanAllAddresses = false,
+// 	replaceStoredTransactions = false,
+// }: {
+// 	scanAllAddresses?: boolean;
+// 	replaceStoredTransactions?: boolean;
+// }): Promise<Result<string | undefined>> => {
+// 	const wallet = getOnChainWallet();
+// 	return await wallet.updateTransactions({
+// 		scanAllAddresses,
+// 		replaceStoredTransactions,
+// 	});
+// };
 
 /**
  * Deletes a given on-chain trnsaction by id.
@@ -397,22 +289,6 @@ export const addBoostedTransaction = async ({
 		type,
 		fee,
 	});
-};
-
-/**
- * This does not delete the stored mnemonic phrase for a given wallet.
- * This resets a given wallet to defaultWalletShape
- */
-export const resetSelectedWallet = async ({
-	selectedWallet = getSelectedWallet(),
-}: {
-	selectedWallet?: TWalletName;
-}): Promise<void> => {
-	dispatch({
-		type: actions.RESET_SELECTED_WALLET,
-		payload: { selectedWallet },
-	});
-	await refreshWallet();
 };
 
 /**
@@ -501,9 +377,7 @@ export const updateSelectedAddressType = async ({
 		// Append the new address type so we monitor it in subsequent sessions.
 		addressTypesToMonitor.push(addressType);
 	}
-	updateWallet({
-		addressTypesToMonitor,
-	});
+	dispatch(updateWallet({ addressTypesToMonitor }));
 	return await wallet.updateAddressType(addressType);
 };
 
@@ -669,42 +543,13 @@ const txSpeedToFeeId = (txSpeed: ETransactionSpeed): EFeeId => {
 };
 
 /**
- * Saves block header information to storage.
- * @param {IHeader} header
- * @param {EAvailableNetwork} [selectedNetwork]
- */
-export const updateHeader = ({
-	header,
-	selectedNetwork = getSelectedNetwork(),
-}: {
-	header: IHeader;
-	selectedNetwork?: EAvailableNetwork;
-}): void => {
-	dispatch({
-		type: actions.UPDATE_HEADER,
-		payload: { header, selectedNetwork },
-	});
-};
-
-/**
- * This method will reset all exchange rate data to the default.
- */
-export const resetExchangeRates = (): Result<string> => {
-	dispatch({
-		type: actions.RESET_EXCHANGE_RATES,
-	});
-
-	return ok('');
-};
-
-/**
  * Used to update/replace mismatched addresses.
  * @param {TWalletName} [selectedWallet]
  * @param {EAvailableNetwork} [selectedNetwork]
  * @param {TGetImpactedAddressesRes} impactedAddresses
  * @returns {Promise<Result<string>>}
  */
-export const replaceImpactedAddresses = async ({
+export const replaceImpactedAddressesThunk = ({
 	selectedWallet = getSelectedWallet(),
 	selectedNetwork = getSelectedNetwork(),
 	impactedAddresses,
@@ -712,7 +557,7 @@ export const replaceImpactedAddresses = async ({
 	selectedWallet?: TWalletName;
 	selectedNetwork?: EAvailableNetwork;
 	impactedAddresses: TGetImpactedAddressesRes; // Retrieved from getImpactedAddresses
-}): Promise<Result<string>> => {
+}): Result<string> => {
 	try {
 		const { currentWallet } = getCurrentWallet({
 			selectedWallet,
@@ -771,19 +616,14 @@ export const replaceImpactedAddresses = async ({
 			});
 		});
 
-		const payload = {
-			newAddresses,
-			newAddressIndex,
-			newChangeAddresses,
-			newChangeAddressIndex,
-			selectedWallet,
-			selectedNetwork,
-		};
-
-		dispatch({
-			type: actions.REPLACE_IMPACTED_ADDRESSES,
-			payload,
-		});
+		dispatch(
+			replaceImpactedAddresses({
+				newAddresses,
+				newAddressIndex,
+				newChangeAddresses,
+				newChangeAddressIndex,
+			}),
+		);
 
 		return ok('Replaced impacted addresses');
 	} catch (e) {
@@ -846,10 +686,10 @@ export const setWalletData = async <K extends keyof IWalletData>(
 	const { walletName, network, value } = getStorageKeyValues(key);
 	try {
 		switch (value) {
-			case 'header':
-				const header = data as IHeader;
+			case 'header': {
+				const header = data as IWalletData[typeof value];
 				const selectedNetwork = getNetworkFromBeignet(network);
-				updateHeader({ header, selectedNetwork });
+				dispatch(updateHeader({ header, selectedNetwork }));
 
 				const appState = AppState.currentState;
 				const appInBackground = ['background', 'inactive'].includes(appState);
@@ -860,25 +700,32 @@ export const setWalletData = async <K extends keyof IWalletData>(
 					await refreshWallet({ lightning: false });
 				}
 				break;
-			case 'feeEstimates':
+			}
+			case 'feeEstimates': {
+				const feeEstimates = data as IWalletData[typeof value];
 				updateOnchainFeeEstimates({
 					selectedNetwork: getNetworkFromBeignet(network),
-					feeEstimates: data as IOnchainFees,
+					feeEstimates,
 					forceUpdate: true,
 				});
 				break;
-			default:
-				const payload = {
-					selectedWallet: walletName,
-					network: getNetworkFromBeignet(network),
-					value,
-					data,
-				};
-				dispatch({
-					type: actions.UPDATE_WALLET_DATA,
-					payload,
-				});
+			}
+			case 'selectedFeeId': {
+				break;
+			}
+			default: {
+				const walletData = data as IWalletData[typeof value];
+				dispatch(
+					updateWalletData({
+						selectedWallet: walletName,
+						network: getNetworkFromBeignet(network),
+						key: value,
+						data: walletData,
+					}),
+				);
+			}
 		}
+
 		return ok(true);
 	} catch (e) {
 		console.error('Error in setWalletData:', e);

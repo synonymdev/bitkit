@@ -3,7 +3,8 @@ import assert from 'node:assert';
 
 import '../src/utils/i18n';
 import store, { RootState } from '../src/store';
-import { updateWallet } from '../src/store/actions/wallet';
+import { dispatch } from '../src/store/helpers';
+import { updateWallet } from '../src/store/slices/wallet';
 import {
 	TBalance,
 	balanceSelector,
@@ -21,7 +22,9 @@ describe('Reselect', () => {
 		if (res.isErr()) {
 			throw res.error;
 		}
-		updateWallet({ selectedNetwork: EAvailableNetwork.bitcoinRegtest });
+		dispatch(
+			updateWallet({ selectedNetwork: EAvailableNetwork.bitcoinRegtest }),
+		);
 		s = store.getState();
 	});
 

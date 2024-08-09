@@ -1,23 +1,22 @@
 import React, { memo, ReactElement, useMemo, useState } from 'react';
 import { useAppSelector } from '../../../hooks/redux';
 import { useTranslation } from 'react-i18next';
+import { EAddressType } from 'beignet';
 
 import { EItemType, IListData } from '../../../components/List';
 import SettingsView from '../SettingsView';
 import { refreshWallet } from '../../../utils/wallet';
-import {
-	updateSelectedAddressType,
-	updateWallet,
-} from '../../../store/actions/wallet';
+import { showToast } from '../../../utils/notifications';
+import { dispatch } from '../../../store/helpers';
+import { addressTypes } from '../../../store/shapes/wallet';
+import { updateWallet } from '../../../store/slices/wallet';
+import { enableDevOptionsSelector } from '../../../store/reselect/settings';
+import { updateSelectedAddressType } from '../../../store/actions/wallet';
 import {
 	addressTypeSelector,
 	addressTypesToMonitorSelector,
 } from '../../../store/reselect/wallet';
-import { addressTypes } from '../../../store/shapes/wallet';
 import type { SettingsScreenProps } from '../../../navigation/types';
-import { enableDevOptionsSelector } from '../../../store/reselect/settings';
-import { EAddressType } from 'beignet';
-import { showToast } from '../../../utils/notifications';
 
 const AddressTypeSettings = ({
 	navigation,
@@ -84,9 +83,11 @@ const AddressTypeSettings = ({
 								(type) => type !== addressType.type,
 							);
 						}
-						updateWallet({
-							addressTypesToMonitor: newAddressTypesToMonitor,
-						});
+						dispatch(
+							updateWallet({
+								addressTypesToMonitor: newAddressTypesToMonitor,
+							}),
+						);
 						if (!hasShownMonitorNotification) {
 							showToast({
 								type: 'success',

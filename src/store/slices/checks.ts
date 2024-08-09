@@ -3,6 +3,7 @@ import { EAvailableNetwork } from '../../utils/networks';
 import { getNetworkContent } from '../shapes/wallet';
 import { TWalletName, IWallets } from '../types/wallet';
 import { IChecksContent, IChecksShape, TStorageWarning } from '../types/checks';
+import { createWallet } from './wallet';
 
 type TPayload = {
 	warning: TStorageWarning;
@@ -41,13 +42,10 @@ export const checksSlice = createSlice({
 		resetChecksState: () => initialChecksState,
 	},
 	extraReducers: (builder) => {
-		builder.addMatcher(
-			(action) => action.type === 'CREATE_WALLET',
-			(state, action: PayloadAction<IWallets>) => {
-				const walletName = Object.keys(action.payload)[0];
-				state[walletName] = defaultChecksContent;
-			},
-		);
+		builder.addCase(createWallet, (state, action: PayloadAction<IWallets>) => {
+			const walletName = Object.keys(action.payload)[0];
+			state[walletName] = defaultChecksContent;
+		});
 	},
 });
 

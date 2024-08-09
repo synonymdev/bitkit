@@ -9,11 +9,8 @@ import {
 import { BtOrderState2 } from '@synonymdev/blocktank-lsp-http-client/dist/shared/BtOrderState2';
 import { BtPaymentState2 } from '@synonymdev/blocktank-lsp-http-client/dist/shared/BtPaymentState2';
 
-import {
-	addTransfer,
-	removeTransfer,
-	updateSendTransaction,
-} from '../actions/wallet';
+import { addTransfer, removeTransfer } from '../slices/wallet';
+import { updateSendTransaction } from '../actions/wallet';
 import { setLightningSetupStep } from '../slices/user';
 import {
 	getBlocktankStore,
@@ -363,13 +360,15 @@ export const confirmChannelPurchase = async ({
 	dispatch(
 		addPaidBlocktankOrder({ orderId: order.id, txId: broadcastResponse.value }),
 	);
-	addTransfer({
-		txId: broadcastResponse.value,
-		type: ETransferType.open,
-		status: ETransferStatus.pending,
-		orderId: order.id,
-		amount: order.clientBalanceSat,
-	});
+	dispatch(
+		addTransfer({
+			txId: broadcastResponse.value,
+			type: ETransferType.open,
+			status: ETransferStatus.pending,
+			orderId: order.id,
+			amount: order.clientBalanceSat,
+		}),
+	);
 
 	watchOrder(order.id).then();
 	dispatch(setLightningSetupStep(0));
@@ -407,7 +406,7 @@ const handleOrderStateChange = (order: IBtOrder): void => {
 			title: i18n.t('lightning:order_given_up_title'),
 			description: i18n.t('lightning:order_given_up_msg'),
 		});
-		removeTransfer(paymentTxId);
+		dispatch(removeTransfer(paymentTxId));
 	}
 
 	// order expired
@@ -417,7 +416,7 @@ const handleOrderStateChange = (order: IBtOrder): void => {
 			title: i18n.t('lightning:order_expired_title'),
 			description: i18n.t('lightning:order_expired_msg'),
 		});
-		removeTransfer(paymentTxId);
+		dispatch(removeTransfer(paymentTxId));
 	}
 
 	// new channel open

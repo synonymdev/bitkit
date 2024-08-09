@@ -15,7 +15,7 @@ import slashtags from '../slices/slashtags';
 import todos from '../slices/todos';
 import ui from '../slices/ui';
 import user from '../slices/user';
-import wallet from './wallet';
+import wallet from '../slices/wallet';
 import widgets from '../slices/widgets';
 
 const appReducer = combineReducers({
