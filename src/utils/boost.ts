@@ -17,7 +17,7 @@ export const getBoostedTransactions = ({
 }: {
 	selectedWallet?: TWalletName;
 	selectedNetwork?: EAvailableNetwork;
-}): IBoostedTransactions => {
+} = {}): IBoostedTransactions => {
 	return getWalletStore().wallets[selectedWallet]?.boostedTransactions[
 		selectedNetwork
 	];

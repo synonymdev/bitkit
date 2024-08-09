@@ -56,6 +56,8 @@ import { ETransactionSpeed } from '../types/settings';
 import { updateOnchainFeeEstimates } from '../utils/fees';
 import { getMaxSendAmount, updateFee } from '../../utils/wallet/transactions';
 import { getExchangeRates, IExchangeRates } from '../../utils/exchange-rate';
+import { requireBackup } from '../slices/backup';
+import { EBackupCategories } from '../utils/backup';
 
 export const updateWallet = (
 	payload: Partial<IWalletStore>,
@@ -391,6 +393,8 @@ export const addBoostedTransaction = async ({
 	fee: number;
 }): Promise<Result<IBoostedTransaction>> => {
 	const wallet = getOnChainWallet();
+	dispatch(requireBackup(EBackupCategories.wallet));
+
 	return await wallet.addBoostedTransaction({
 		newTxId,
 		oldTxId,
