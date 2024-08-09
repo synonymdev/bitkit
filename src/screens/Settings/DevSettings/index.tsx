@@ -5,10 +5,12 @@ import { useTranslation } from 'react-i18next';
 
 import actions from '../../../store/actions/actions';
 import {
+	updateWallet,
+	resetSelectedWallet,
+} from '../../../store/slices/wallet';
+import {
 	clearUtxos,
 	injectFakeTransaction,
-	resetSelectedWallet,
-	updateWallet,
 } from '../../../store/actions/wallet';
 import { resetUserState } from '../../../store/slices/user';
 import { resetActivityState } from '../../../store/slices/activity';
@@ -195,7 +197,8 @@ const DevSettings = ({
 					title: 'Reset Current Wallet State',
 					type: EItemType.button,
 					onPress: async (): Promise<void> => {
-						await resetSelectedWallet({ selectedWallet });
+						dispatch(resetSelectedWallet());
+						await refreshWallet();
 					},
 				},
 				{
@@ -260,11 +263,7 @@ const DevSettings = ({
 						'9c0bed5b4c0833824210d29c3c847f47132c03f231ef8df228862132b3a8d80a';
 					const fakeTx = getFakeTransaction(id);
 					fakeTx[id].height = 0;
-					injectFakeTransaction({
-						selectedWallet,
-						selectedNetwork,
-						fakeTx,
-					});
+					injectFakeTransaction(fakeTx);
 					refreshWallet({ selectedWallet, selectedNetwork }).then();
 				},
 			},
@@ -319,7 +318,7 @@ const DevSettings = ({
 								'bcrt1qwxfllzxchc9eq95zrcc9cjxhzqpkgtznc4wpzc';
 						}
 					});
-					updateWallet(wallet);
+					dispatch(updateWallet(wallet));
 					runChecks({ selectedWallet, selectedNetwork }).then();
 				},
 			},

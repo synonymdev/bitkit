@@ -6,7 +6,8 @@ import { BtOrderState2 } from '@synonymdev/blocktank-lsp-http-client/dist/shared
 import '../src/utils/i18n';
 import { todosFullSelector } from '../src/store/reselect/todos';
 import store, { RootState } from '../src/store';
-import { updateWallet } from '../src/store/actions/wallet';
+import { dispatch } from '../src/store/helpers';
+import { updateWallet } from '../src/store/slices/wallet';
 import {
 	backupSeedPhraseTodo,
 	btFailedTodo,
@@ -36,7 +37,9 @@ describe('Todos selector', () => {
 		if (res.isErr()) {
 			throw res.error;
 		}
-		updateWallet({ selectedNetwork: EAvailableNetwork.bitcoinRegtest });
+		dispatch(
+			updateWallet({ selectedNetwork: EAvailableNetwork.bitcoinRegtest }),
+		);
 		s = store.getState();
 	});
 

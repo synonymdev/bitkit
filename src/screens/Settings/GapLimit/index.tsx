@@ -5,9 +5,9 @@ import { StyleSheet } from 'react-native';
 import Button from '../../../components/buttons/Button';
 import NavigationHeader from '../../../components/NavigationHeader';
 import SafeAreaInset from '../../../components/SafeAreaInset';
-import { useAppSelector } from '../../../hooks/redux';
+import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 import type { SettingsScreenProps } from '../../../navigation/types';
-import { updateWallet } from '../../../store/actions/wallet';
+import { updateWallet } from '../../../store/slices/wallet';
 import { gapLimitOptionsSelector } from '../../../store/reselect/wallet';
 import { ScrollView, TextInput, View } from '../../../styles/components';
 import { Caption13Up } from '../../../styles/text';
@@ -16,6 +16,7 @@ import { getOnChainWallet, refreshWallet } from '../../../utils/wallet';
 
 const GapLimit = ({}: SettingsScreenProps<'GapLimit'>): ReactElement => {
 	const { t } = useTranslation('settings');
+	const dispatch = useAppDispatch();
 	const gapLimitOptions = useAppSelector(gapLimitOptionsSelector);
 	const [loading, setLoading] = useState(false);
 	const [lookBehind, setLookBehind] = useState<string>(
@@ -75,9 +76,7 @@ const GapLimit = ({}: SettingsScreenProps<'GapLimit'>): ReactElement => {
 			lookBehindChange: Number(lookBehindChange),
 		});
 		if (res.isOk()) {
-			updateWallet({
-				gapLimitOptions: res.value,
-			});
+			dispatch(updateWallet({ gapLimitOptions: res.value }));
 			await refreshWallet({
 				lightning: false,
 				onchain: true,

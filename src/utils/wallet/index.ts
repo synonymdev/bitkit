@@ -64,13 +64,12 @@ import {
 	getStore,
 	getWalletStore,
 } from '../../store/helpers';
+import { updateWallet } from '../../store/slices/wallet';
 import {
-	createDefaultWalletStructure,
 	generateNewReceiveAddress,
 	getWalletData,
 	setWalletData,
 	updateExchangeRates,
-	updateWallet,
 } from '../../store/actions/wallet';
 import { TCoinSelectPreference } from '../../store/types/settings';
 import { updateActivityList } from '../../store/utils/activity';
@@ -92,6 +91,7 @@ import { resetActivityState } from '../../store/slices/activity';
 import BitcoinActions from '../bitcoin-actions';
 import { bitkitLedger, syncLedger } from '../ledger';
 import { getTransferForTx } from './transfer';
+import { createWallet } from '../../store/slices/wallet';
 
 bitcoin.initEccLib(ecc);
 const bip32 = BIP32Factory(ecc);
@@ -911,10 +911,11 @@ export const createDefaultWallet = async ({
 		const seed = await bip39.mnemonicToSeed(mnemonic, bip39Passphrase);
 		await setKeychainSlashtagsPrimaryKey(seed);
 
-		await createDefaultWalletStructure({
-			walletName,
-			seedHash: seedHash(seed),
-		});
+		dispatch(
+			createWallet({
+				[walletName]: { ...getDefaultWalletShape(), seedHash: seedHash(seed) },
+			}),
+		);
 
 		let gapLimitOptions = getDefaultGapLimitOptions();
 		if (restore) {
@@ -1636,13 +1637,13 @@ export const switchNetwork = async (
 	// Wipe existing activity
 	dispatch(resetActivityState());
 	// Switch to new network.
-	updateWallet({ selectedNetwork });
+	dispatch(updateWallet({ selectedNetwork }));
 	const response = await wallet.switchNetwork(
 		EAvailableNetworks[selectedNetwork],
 		servers,
 	);
 	if (response.isErr()) {
-		updateWallet({ selectedNetwork: originalNetwork });
+		dispatch(updateWallet({ selectedNetwork: originalNetwork }));
 		console.error(response.error.message);
 		return err(response.error.message);
 	}

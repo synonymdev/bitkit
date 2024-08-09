@@ -20,7 +20,7 @@ import {
 	updateLightningNodeVersion,
 } from '../slices/lightning';
 import { moveMetaIncTxTag } from '../slices/metadata';
-import { addTransfer, updateTransfer } from '../actions/wallet';
+import { addTransfer } from '../slices/wallet';
 import { EAvailableNetwork } from '../../utils/networks';
 import { getSelectedNetwork, getSelectedWallet } from '../../utils/wallet';
 import {
@@ -45,6 +45,7 @@ import { ETransferStatus, ETransferType, TWalletName } from '../types/wallet';
 import { EActivityType, TLightningActivityItem } from '../types/activity';
 import { reduceValue } from '../../utils/helpers';
 import { getBlockHeader } from '../../utils/wallet/electrum';
+import { updateTransferThunk } from '../actions/wallet';
 
 /**
  * Attempts to update the node id for the selected wallet and network.
@@ -116,7 +117,10 @@ export const updateChannelsThunk = async (): Promise<Result<string>> => {
 	// Update the transfer status for pending channels.
 	channels.forEach((channel) => {
 		if (channel.is_channel_ready && channel.funding_txid) {
-			updateTransfer({ type: ETransferType.open, txId: channel.funding_txid });
+			updateTransferThunk({
+				type: ETransferType.open,
+				txId: channel.funding_txid,
+			});
 		}
 	});
 
@@ -132,7 +136,7 @@ export const updateChannelsThunk = async (): Promise<Result<string>> => {
 				claimable_balances[0].confirmation_height ?? blockHeight + 6;
 		}
 
-		updateTransfer({
+		updateTransferThunk({
 			type: 'close',
 			txId: funding_txo_txid,
 			amount,
@@ -191,13 +195,15 @@ export const closeChannelThunk = async (
 
 		// add a transfer item for closed channels
 		if (res.reason === EChannelClosureReason.CooperativeClosure) {
-			addTransfer({
-				type: ETransferType.coopClose,
-				status: ETransferStatus.done,
-				txId: channelMonitor.funding_txo_txid,
-				amount,
-				confirmsIn: 0,
-			});
+			dispatch(
+				addTransfer({
+					type: ETransferType.coopClose,
+					status: ETransferStatus.done,
+					txId: channelMonitor.funding_txo_txid,
+					amount,
+					confirmsIn: 0,
+				}),
+			);
 		} else {
 			const blockHeight = getBlockHeader().height;
 
@@ -210,13 +216,15 @@ export const closeChannelThunk = async (
 
 			const confirmsIn = Math.max(confirmationHeight - blockHeight, 0);
 
-			addTransfer({
-				type: ETransferType.forceClose,
-				status: ETransferStatus.pending,
-				txId: channelMonitor.funding_txo_txid,
-				amount,
-				confirmsIn,
-			});
+			dispatch(
+				addTransfer({
+					type: ETransferType.forceClose,
+					status: ETransferStatus.pending,
+					txId: channelMonitor.funding_txo_txid,
+					amount,
+					confirmsIn,
+				}),
+			);
 		}
 	}
 };

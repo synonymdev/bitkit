@@ -51,11 +51,11 @@ import {
 } from '../../../utils/wallet/transactions';
 import { openURL } from '../../../utils/helpers';
 import { getAddressUtxos } from '../../../utils/wallet/electrum';
+import { updateWallet } from '../../../store/slices/wallet';
 import {
 	resetSendTransaction,
 	setupOnChainTransaction,
 	updateSendTransaction,
-	updateWallet,
 } from '../../../store/actions/wallet';
 import { updateUi } from '../../../store/slices/ui';
 import { showBottomSheet } from '../../../store/utils/ui';
@@ -753,7 +753,7 @@ const AddressViewer = ({
 			setupLedger({ selectedWallet, selectedNetwork });
 			ldk.stop();
 			// Switch to new network.
-			updateWallet({ selectedNetwork: config.selectedNetwork });
+			dispatch(updateWallet({ selectedNetwork: config.selectedNetwork }));
 			// Switching networks requires us to reset LDK.
 			await setupLdk({ selectedWallet, selectedNetwork });
 			// Start wallet services with the newly selected network.
