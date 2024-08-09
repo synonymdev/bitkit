@@ -1,4 +1,4 @@
-import React, { memo, ReactElement } from 'react';
+import React, { memo, ReactElement, useMemo } from 'react';
 import { Image, StyleSheet, View } from 'react-native';
 import Lottie from 'lottie-react-native';
 import { useTranslation } from 'react-i18next';
@@ -47,6 +47,8 @@ const NewTxPrompt = (): ReactElement => {
 
 	const isOnchainItem = activityItem?.activityType === EActivityType.onchain;
 
+	const buttonText = useMemo(() => getRandomOkText(), []);
+
 	return (
 		<BottomSheetWrapper view="newTxPrompt" snapPoints={snapPoints}>
 			<View style={styles.root}>
@@ -89,7 +91,7 @@ const NewTxPrompt = (): ReactElement => {
 					<View style={styles.buttonContainer}>
 						<Button
 							style={styles.button}
-							text={getRandomOkText()}
+							text={buttonText}
 							size="large"
 							testID="NewTxPromptButton"
 							onPress={onButtonPress}
