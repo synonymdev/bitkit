@@ -110,7 +110,7 @@ jobs:
         run: |
           cd docker
           mkdir lnd && chmod 777 lnd
-          docker-compose pull --quiet
+          docker compose pull --quiet
           docker compose up -d
 
       - name: Wait for electrum server and LND
