@@ -1,18 +1,19 @@
-import lm, {
-	ENetworks,
-	ldk,
-	TBackupServerDetails,
-} from '@synonymdev/react-native-ldk';
+import lm, { ldk, TBackupServerDetails } from '@synonymdev/react-native-ldk';
 import { err, ok, Result } from '@synonymdev/result';
+import { IBoostedTransactions } from 'beignet';
 
 import {
 	__BACKUPS_SERVER_HOST__,
 	__BACKUPS_SERVER_PUBKEY__,
 } from '../../constants/env';
-import { isObjPartialMatch } from '../../utils/helpers';
-import { getLdkAccount, setLdkStoragePath } from '../../utils/lightning';
+import { deepCompareStructure, isObjPartialMatch } from '../../utils/helpers';
+import {
+	getLdkAccount,
+	getNetwork,
+	setLdkStoragePath,
+} from '../../utils/lightning';
 import { EAvailableNetwork } from '../../utils/networks';
-import { getSelectedNetwork } from '../../utils/wallet';
+import { getSelectedNetwork, getSelectedWallet } from '../../utils/wallet';
 import {
 	dispatch,
 	getActivityStore,
@@ -21,6 +22,7 @@ import {
 	getSettingsStore,
 	getSlashtagsStore,
 	getStore,
+	getWalletStore,
 	getWidgetsStore,
 } from '../helpers';
 import { getDefaultSettingsShape } from '../shapes/settings';
@@ -40,9 +42,12 @@ import { TBackupMetadata } from '../types/backup';
 import { IBlocktank } from '../types/blocktank';
 import { TMetadataState } from '../types/metadata';
 import { TSlashtagsState } from '../types/slashtags';
-import { EUnit } from '../types/wallet';
+import actions from '../actions/actions';
+import { getDefaultWalletShape } from '../shapes/wallet';
+import { IWalletItem, TTransfer } from '../types/wallet';
 
 export enum EBackupCategories {
+	wallet = 'bitkit_wallet',
 	settings = 'bitkit_settings',
 	widgets = 'bitkit_widgets',
 	metadata = 'bitkit_metadata',
@@ -68,18 +73,7 @@ export const performLdkRestore = async ({
 		return err(lightningAccount.error);
 	}
 
-	let network: ENetworks;
-	switch (selectedNetwork) {
-		case 'bitcoin':
-			network = ENetworks.mainnet;
-			break;
-		case 'bitcoinTestnet':
-			network = ENetworks.testnet;
-			break;
-		default:
-			network = ENetworks.regtest;
-			break;
-	}
+	const network = getNetwork(selectedNetwork);
 
 	const backupSetupRes = await ldk.backupSetup({
 		seed: lightningAccount.value.seed,
@@ -129,7 +123,7 @@ export const performFullRestoreFromLatestBackup = async (): Promise<
 			serverPubKey: __BACKUPS_SERVER_PUBKEY__,
 		};
 
-		// ldk restore should be performed for all networks
+		// LDK restore should be performed for all networks
 		for (const network of Object.values(EAvailableNetwork)) {
 			const ldkBackupRes = await performLdkRestore({
 				backupServerDetails,
@@ -142,18 +136,7 @@ export const performFullRestoreFromLatestBackup = async (): Promise<
 
 		// reset backup settings once again before restoring all other backups
 		const selectedNetwork = getSelectedNetwork();
-		let network: ENetworks;
-		switch (selectedNetwork) {
-			case 'bitcoin':
-				network = ENetworks.mainnet;
-				break;
-			case 'bitcoinTestnet':
-				network = ENetworks.testnet;
-				break;
-			default:
-				network = ENetworks.regtest;
-				break;
-		}
+		const network = getNetwork(selectedNetwork);
 		const lightningAccount = await getLdkAccount({ selectedNetwork });
 		if (lightningAccount.isErr()) {
 			return err(lightningAccount.error);
@@ -169,6 +152,7 @@ export const performFullRestoreFromLatestBackup = async (): Promise<
 		}
 
 		const backups = [
+			['wallet', performWalletRestore],
 			['settings', performSettingsRestore],
 			['widgets', performWidgetsRestore],
 			['metadata', performMetadataRestore],
@@ -200,6 +184,12 @@ export const performBackup = async (
 	try {
 		let data: {};
 		switch (category) {
+			case EBackupCategories.wallet:
+				const selectedWallet = getSelectedWallet();
+				const wallet = getWalletStore().wallets[selectedWallet];
+				const { transfers, boostedTransactions } = wallet;
+				data = { boostedTransactions, transfers };
+				break;
 			case EBackupCategories.settings:
 				data = getSettingsStore();
 				break;
@@ -268,6 +258,51 @@ const getBackup = async <T>(
 	}
 };
 
+type TWalletBackup = {
+	boostedTransactions: IWalletItem<IBoostedTransactions>;
+	transfers: IWalletItem<TTransfer[]>;
+};
+
+const performWalletRestore = async (): Promise<
+	Result<{ backupExists: boolean }>
+> => {
+	try {
+		const backupRes = await getBackup<TWalletBackup>(EBackupCategories.wallet);
+		if (backupRes.isErr()) {
+			return err(backupRes.error.message);
+		}
+
+		const backup = backupRes.value.data;
+		const defaultWalletShape = getDefaultWalletShape();
+		const expectedBackupShape = {
+			boostedTransactions: defaultWalletShape.boostedTransactions,
+			transfers: defaultWalletShape.transfers,
+		};
+
+		// If the keys in the backup object are not found in the reference object assume the backup does not exist.
+		if (!deepCompareStructure(backup, expectedBackupShape, 1)) {
+			console.log('Backup does not exist');
+			return ok({ backupExists: false });
+		}
+
+		dispatch({
+			type: actions.RESTORE_BOOSTED_TRANSACTIONS,
+			payload: backup.boostedTransactions,
+		});
+		dispatch({
+			type: actions.RESTORE_TRANSFERS,
+			payload: backup.transfers,
+		});
+		dispatch(backupSuccess({ category: EBackupCategories.wallet }));
+
+		// Restore success
+		return ok({ backupExists: true });
+	} catch (e) {
+		console.log(`Restore ${EBackupCategories.wallet} error`, e.message);
+		return err(e);
+	}
+};
+
 const performSettingsRestore = async (): Promise<
 	Result<{ backupExists: boolean }>
 > => {
@@ -282,12 +317,6 @@ const performSettingsRestore = async (): Promise<
 		//If the keys in the backup object are not found in the reference object assume the backup does not exist.
 		if (!isObjPartialMatch(backup, expectedBackupShape)) {
 			return ok({ backupExists: false });
-		}
-
-		// apply migrations
-		if (backupRes.value.metadata.version < 36) {
-			// @ts-ignore migrate unit
-			backup.unit = backup.unit === 'satoshi' ? EUnit.BTC : backup.unit;
 		}
 
 		dispatch(

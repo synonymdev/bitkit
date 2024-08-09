@@ -8,6 +8,7 @@ const item: TBackupItem = {
 };
 
 export const initialBackupState: TBackupState = {
+	[EBackupCategories.wallet]: { ...item },
 	[EBackupCategories.widgets]: { ...item },
 	[EBackupCategories.settings]: { ...item },
 	[EBackupCategories.metadata]: { ...item },

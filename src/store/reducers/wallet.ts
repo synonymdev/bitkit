@@ -253,6 +253,12 @@ const wallet = (
 			});
 		}
 
+		case actions.RESTORE_TRANSFERS: {
+			return produce(state, (draftState) => {
+				draftState.wallets[selectedWallet].transfers = action.payload;
+			});
+		}
+
 		case actions.REMOVE_TRANSFER: {
 			return produce(state, (draftState) => {
 				const current =
@@ -481,6 +487,12 @@ const wallet = (
 					},
 				},
 			};
+
+		case actions.RESTORE_BOOSTED_TRANSACTIONS: {
+			return produce(state, (draftState) => {
+				draftState.wallets[selectedWallet].boostedTransactions = action.payload;
+			});
+		}
 
 		case actions.UPDATE_HEADER:
 			return {

@@ -242,6 +242,66 @@ export const isObjPartialMatch = (
 	});
 };
 
+export const deepCompareStructure = (
+	obj1: any,
+	obj2: any,
+	maxDepth: number = Infinity,
+	currentDepth: number = 0,
+): boolean => {
+	if (
+		typeof obj1 !== 'object' ||
+		typeof obj2 !== 'object' ||
+		obj1 === null ||
+		obj2 === null
+	) {
+		// If either of the objects is not an object or is null, keys do not match
+		return false;
+	}
+
+	// If current depth exceeds max depth, stop further comparison
+	if (currentDepth > maxDepth) {
+		return true; // Consider it a match since we're ignoring deeper levels
+	}
+
+	// Get keys from both objects
+	const keys1 = Object.keys(obj1);
+	const keys2 = Object.keys(obj2);
+
+	// If the number of keys is different, objects do not match
+	if (keys1.length !== keys2.length) {
+		return false;
+	}
+
+	// Check if all keys from obj1 exist in obj2 and recursively compare their nested objects
+	for (const key of keys1) {
+		if (!keys2.includes(key)) {
+			return false; // Key from obj1 is missing in obj2
+		}
+
+		const value1 = obj1[key];
+		const value2 = obj2[key];
+
+		// If the types are different, return false
+		if (typeof value1 !== typeof value2) {
+			return false;
+		}
+
+		// If both are arrays, skip deep comparison for this key
+		if (Array.isArray(value1) && Array.isArray(value2)) {
+			continue;
+		}
+
+		// If the value is an object (and not an array), recurse; otherwise, just check the presence of the key
+		if (typeof value1 === 'object' && typeof value2 === 'object') {
+			if (!deepCompareStructure(value1, value2, maxDepth, currentDepth + 1)) {
+				return false; // Nested objects' keys do not match
+			}
+		}
+	}
+
+	return true; // All keys and types match
+};
+
 /**
  * Removes keys from an object and returns the result as a new object
  * @param object

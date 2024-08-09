@@ -18,6 +18,7 @@ const EnabledSlashtag = (): ReactElement => {
 	const backup = useAppSelector(backupSelector);
 	const [now, setNow] = useState<number>(new Date().getTime());
 
+	const backupWallet = backup[EBackupCategories.wallet];
 	const backupSettings = backup[EBackupCategories.settings];
 	const backupWidgets = backup[EBackupCategories.widgets];
 	const backupMetadata = backup[EBackupCategories.metadata];
@@ -25,6 +26,16 @@ const EnabledSlashtag = (): ReactElement => {
 	const backupSlashtags = backup[EBackupCategories.slashtags];
 	const backupLDKActivity = backup[EBackupCategories.ldkActivity];
 
+	useDebouncedEffect(
+		() => {
+			if (backupWallet.synced > backupWallet.required) {
+				return;
+			}
+			performBackup(EBackupCategories.wallet);
+		},
+		[backupWallet.synced, backupWallet.required],
+		BACKUP_DEBOUNCE,
+	);
 	useDebouncedEffect(
 		() => {
 			if (backupSettings.synced > backupSettings.required) {

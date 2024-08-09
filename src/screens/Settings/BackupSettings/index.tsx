@@ -21,6 +21,7 @@ import {
 	RectanglesTwo,
 	SettingsIcon,
 	TagIcon,
+	TimerIconAlt,
 	TransferIcon,
 	UsersIcon,
 } from '../../../styles/icons';
@@ -162,6 +163,12 @@ const BackupSettings = ({
 			title: t('backup.category_transaction_log'),
 			category: EBackupCategories.ldkActivity,
 			status: backup[EBackupCategories.ldkActivity],
+		},
+		{
+			Icon: TimerIconAlt,
+			title: t('backup.category_wallet'),
+			category: EBackupCategories.wallet,
+			status: backup[EBackupCategories.wallet],
 		},
 		{
 			Icon: SettingsIcon,
