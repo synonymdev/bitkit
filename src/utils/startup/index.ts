@@ -13,7 +13,7 @@ import {
 	refreshWallet,
 	setupOnChainWallet,
 } from '../wallet';
-import { createWallet } from '../../store/actions/wallet';
+import { createWalletThunk } from '../../store/actions/wallet';
 import { getWalletStore } from '../../store/helpers';
 import { refreshBlocktankInfo } from '../../store/utils/blocktank';
 import { keepLdkSynced, setupLdk } from '../lightning';
@@ -40,7 +40,7 @@ export const createNewWallet = async ({
 	if (!mnemonic) {
 		return err('Unable to generate mnemonic.');
 	}
-	const createRes = await createWallet({ mnemonic, bip39Passphrase });
+	const createRes = await createWalletThunk({ mnemonic, bip39Passphrase });
 	if (createRes.isErr()) {
 		return err(i18n.t('wallet:create_wallet_error'));
 	}
@@ -58,7 +58,7 @@ export const restoreSeed = async ({
 	selectedNetwork?: EAvailableNetwork;
 	servers?: TServer | TServer[];
 }): Promise<Result<string>> => {
-	const res = await createWallet({
+	const res = await createWalletThunk({
 		mnemonic,
 		bip39Passphrase,
 		restore: true,
@@ -119,7 +119,7 @@ export const startWalletServices = async ({
 
 		const walletExists = getWalletStore()?.walletExists;
 		if (!walletExists) {
-			const createRes = await createWallet({ mnemonic, bip39Passphrase });
+			const createRes = await createWalletThunk({ mnemonic, bip39Passphrase });
 			if (createRes.isErr()) {
 				return err(createRes.error.message);
 			}

@@ -1,10 +1,9 @@
 import '../src/store/utils/ui';
-import {
-	resetExchangeRates,
-	updateExchangeRates,
-} from '../src/store/actions/wallet';
+import { resetExchangeRates } from '../src/store/slices/wallet';
+import { updateExchangeRates } from '../src/store/actions/wallet';
 import { EDenomination, EUnit } from '../src/store/types/wallet';
 import { getNumberPadText, handleNumberPadPress } from '../src/utils/numberpad';
+import { dispatch } from '../src/store/helpers';
 
 // @ts-ignore
 global.fetch = jest.fn(() =>
@@ -104,7 +103,7 @@ describe('Receive/Send NumberPad', () => {
 
 describe('getNumberPadText', () => {
 	describe('can work without exchange rates', () => {
-		beforeAll(() => resetExchangeRates());
+		beforeAll(() => dispatch(resetExchangeRates()));
 
 		it('can convert to BTC with classic denomination', () => {
 			const r = getNumberPadText(100000, EDenomination.classic, EUnit.BTC);

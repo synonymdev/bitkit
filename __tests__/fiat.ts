@@ -1,8 +1,8 @@
 import '../src/utils/i18n';
 import { dispatch, getWalletStore } from '../src/store/helpers';
+import { resetExchangeRates } from '../src/store/slices/wallet';
 import { updateExchangeRates } from '../src/store/actions/wallet';
 import { getDisplayValues } from '../src/utils/displayValues';
-import { resetExchangeRates } from '../src/store/actions/wallet';
 import { EConversionUnit, EDenomination } from '../src/store/types/wallet';
 import { convertToSats } from '../src/utils/conversion';
 import {
@@ -44,7 +44,7 @@ global.fetch = jest.fn(() =>
 );
 
 describe('Pulls latest fiat exchange rates and checks the wallet store for valid conversions', () => {
-	beforeAll(() => resetExchangeRates());
+	beforeAll(() => dispatch(resetExchangeRates()));
 
 	it('handles missing exchange rate by returning the correct fiat fallback', () => {
 		const dv1 = getDisplayValues({ satoshis: 1010101 });
@@ -182,7 +182,7 @@ describe('convertToSats', () => {
 	});
 
 	describe('can work without exchange rates', () => {
-		beforeAll(() => resetExchangeRates());
+		beforeAll(() => dispatch(resetExchangeRates()));
 
 		it('can convert fiat to sats', () => {
 			const r1 = convertToSats(500, EConversionUnit.fiat);

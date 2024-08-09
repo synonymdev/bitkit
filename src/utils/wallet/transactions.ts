@@ -1105,12 +1105,11 @@ export const broadcastBoost = async ({
 		const newTxId = broadcastResult.value;
 		let transactions =
 			getWalletStore().wallets[selectedWallet].transactions[selectedNetwork];
-		const boostedFee = transaction.fee;
 		await addBoostedTransaction({
 			newTxId,
 			oldTxId,
 			type: transaction.boostType,
-			fee: boostedFee,
+			fee: transaction.fee,
 		});
 
 		// Only delete the old transaction if it was an RBF, not a CPFP.

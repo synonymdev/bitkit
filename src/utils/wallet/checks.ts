@@ -17,7 +17,7 @@ import {
 } from './index';
 import {
 	clearUtxos,
-	replaceImpactedAddresses,
+	replaceImpactedAddressesThunk,
 } from '../../store/actions/wallet';
 import { addWarning } from '../../store/slices/checks';
 import {
@@ -110,7 +110,7 @@ export const runStorageCheck = async ({
 		return err('Invalid getImpactedAddresses Check');
 	}
 	// Once we have the impacted addresses in storage we need to replace them with the newly generated addresses.
-	const replaceImpactedAddressesRes = await replaceImpactedAddresses({
+	const replaceImpactedAddressesRes = replaceImpactedAddressesThunk({
 		impactedAddresses: getImpactedAddressesRes.value,
 	});
 
