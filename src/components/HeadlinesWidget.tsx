@@ -65,7 +65,7 @@ const HeadlinesWidget = ({
 
 				const allArticles = await reader.getAllArticles();
 				const _article = allArticles
-					.sort((a, b) => b.published - a.published)
+					?.sort((a, b) => b.published - a.published)
 					.slice(0, 10)[Math.floor(Math.random() * 10)];
 
 				if (!unmounted && _article) {
