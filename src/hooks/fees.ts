@@ -1,4 +1,5 @@
 import { useAppSelector } from '../hooks/redux';
+import { onChainFeesSelector } from '../store/reselect/fees';
 import { FeeText, TFeeText } from '../utils/fees';
 
 /**
@@ -7,7 +8,7 @@ import { FeeText, TFeeText } from '../utils/fees';
  * @returns {TFeeText}
  */
 export const useFeeText = (satsPerByte: number): TFeeText => {
-	const feeEstimates = useAppSelector((store) => store.fees.onchain);
+	const feeEstimates = useAppSelector(onChainFeesSelector);
 
 	let feeText = FeeText.none;
 

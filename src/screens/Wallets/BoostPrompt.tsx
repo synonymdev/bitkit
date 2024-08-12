@@ -39,6 +39,7 @@ import {
 	selectedWalletSelector,
 	transactionSelector,
 } from '../../store/reselect/wallet';
+import { onChainFeesSelector } from '../../store/reselect/fees';
 import { EUnit } from '../../store/types/wallet';
 
 const BoostForm = ({
@@ -48,7 +49,7 @@ const BoostForm = ({
 }): ReactElement => {
 	const { t } = useTranslation('wallet');
 	const dispatch = useAppDispatch();
-	const feeEstimates = useAppSelector((store) => store.fees.onchain);
+	const feeEstimates = useAppSelector(onChainFeesSelector);
 	const transaction = useAppSelector(transactionSelector);
 	const selectedNetwork = useAppSelector(selectedNetworkSelector);
 	const selectedWallet = useAppSelector(selectedWalletSelector);

@@ -22,11 +22,13 @@ const FeeItem = ({
 	id,
 	sats,
 	isSelected = false,
+	isDisabled = false,
 	onPress,
 }: {
 	id: EFeeId;
 	sats: number;
 	isSelected?: boolean;
+	isDisabled?: boolean;
 	onPress?: (event: GestureResponderEvent) => void;
 }): ReactElement => {
 	const colors = useColors();
@@ -37,18 +39,22 @@ const FeeItem = ({
 
 	const icon = useMemo(() => {
 		switch (id) {
-			case EFeeId.instant:
-				return <SpeedFastIcon color="purple" />;
 			case EFeeId.fast:
-				return <SpeedFastIcon color="brand" />;
+				return <SpeedFastIcon color={isDisabled ? 'gray3' : 'brand'} />;
 			case EFeeId.normal:
-				return <SpeedNormalIcon color="brand" />;
+				return <SpeedNormalIcon color={isDisabled ? 'gray3' : 'brand'} />;
 			case EFeeId.slow:
-				return <SpeedSlowIcon color="brand" />;
+				return <SpeedSlowIcon color={isDisabled ? 'gray3' : 'brand'} />;
 			case EFeeId.custom:
-				return <SettingsIcon color="secondary" width={32} height={32} />;
+				return (
+					<SettingsIcon
+						color={isDisabled ? 'gray3' : 'secondary'}
+						width={32}
+						height={32}
+					/>
+				);
 		}
-	}, [id]);
+	}, [id, isDisabled]);
 
 	return (
 		<>
@@ -56,24 +62,29 @@ const FeeItem = ({
 			<TouchableOpacity
 				style={[styles.root, isSelected && { backgroundColor: colors.white06 }]}
 				activeOpacity={0.7}
-				onPress={onPress}>
+				onPress={isDisabled ? undefined : onPress}>
 				<View style={styles.imageContainer}>{icon}</View>
 
 				<View style={styles.row}>
 					<View style={styles.cell}>
-						<BodyMSB>{title}</BodyMSB>
+						<BodyMSB color={isDisabled ? 'gray3' : undefined}>{title}</BodyMSB>
 						{sats !== 0 && (
 							<View style={styles.sats}>
-								<BodyMSB>
-									<BodyMSB color="secondary">₿</BodyMSB> {sats}
+								<BodyMSB color={isDisabled ? 'gray3' : undefined}>
+									<BodyMSB color={isDisabled ? 'gray3' : 'secondary'}>
+										₿
+									</BodyMSB>{' '}
+									{sats}
 								</BodyMSB>
 							</View>
 						)}
 					</View>
 					<View style={styles.cell}>
-						<BodySSB color="secondary">{description}</BodySSB>
+						<BodySSB color={isDisabled ? 'gray3' : 'secondary'}>
+							{description}
+						</BodySSB>
 						{sats !== 0 && (
-							<BodySSB color="secondary">
+							<BodySSB color={isDisabled ? 'gray3' : 'secondary'}>
 								{totalFeeDisplay.fiatSymbol} {totalFeeDisplay.fiatFormatted}
 							</BodySSB>
 						)}
