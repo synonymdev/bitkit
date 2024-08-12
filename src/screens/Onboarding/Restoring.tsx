@@ -44,7 +44,8 @@ const RestoringScreen = (): ReactElement => {
 		const res = await restoreRemoteBackups();
 		await sleep(1000);
 		if (res.isErr()) {
-			return setShowFailed(true);
+			setShowFailed(true);
+			return;
 		}
 
 		setShowRestored(true);

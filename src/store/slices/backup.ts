@@ -26,20 +26,35 @@ export const backupSlice = createSlice({
 	initialState: initialBackupState,
 	reducers: {
 		resetBackupState: () => initialBackupState,
-		backupStart: (state, action: PayloadAction<{ category: string }>) => {
+		requireBackup: (state, action: PayloadAction<EBackupCategories>) => {
+			state[action.payload].required = Date.now();
+		},
+		backupStart: (
+			state,
+			action: PayloadAction<{ category: EBackupCategories }>,
+		) => {
 			const { category } = action.payload;
 			state[category].running = true;
 		},
-		backupSuccess: (state, action: PayloadAction<{ category: string }>) => {
+		backupSuccess: (
+			state,
+			action: PayloadAction<{ category: EBackupCategories }>,
+		) => {
 			const { category } = action.payload;
 			state[category].running = false;
 			state[category].synced = Date.now();
 		},
-		backupError: (state, action: PayloadAction<{ category: string }>) => {
+		backupError: (
+			state,
+			action: PayloadAction<{ category: EBackupCategories }>,
+		) => {
 			const { category } = action.payload;
 			state[category].running = false;
 		},
-		forceBackup: (state, action: PayloadAction<{ category: string }>) => {
+		forceBackup: (
+			state,
+			action: PayloadAction<{ category: EBackupCategories }>,
+		) => {
 			const { category } = action.payload;
 			state[category].required = Date.now();
 			state[category].running = true;
@@ -57,6 +72,9 @@ export const backupSlice = createSlice({
 		};
 		const slashtagsReducer = (state): void => {
 			state[EBackupCategories.slashtags].required = Date.now();
+		};
+		const walletReducer = (state): void => {
+			state[EBackupCategories.wallet].required = Date.now();
 		};
 		const widgetsReducer = (state): void => {
 			state[EBackupCategories.widgets].required = Date.now();
@@ -89,7 +107,10 @@ export const backupSlice = createSlice({
 				if (hasLnActivity) {
 					state[EBackupCategories.ldkActivity].required = Date.now();
 				}
-			});
+			})
+			.addMatcher((action) => action.type === 'ADD_TRANSFER', walletReducer)
+			.addMatcher((action) => action.type === 'UPDATE_TRANSFER', walletReducer)
+			.addMatcher((action) => action.type === 'REMOVE_TRANSFER', walletReducer);
 	},
 });
 
@@ -97,6 +118,7 @@ const { actions, reducer } = backupSlice;
 
 export const {
 	resetBackupState,
+	requireBackup,
 	backupStart,
 	backupSuccess,
 	backupError,
