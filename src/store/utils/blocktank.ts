@@ -8,7 +8,9 @@ import {
 } from '@synonymdev/blocktank-lsp-http-client';
 import { BtOrderState2 } from '@synonymdev/blocktank-lsp-http-client/dist/shared/BtOrderState2';
 import { BtPaymentState2 } from '@synonymdev/blocktank-lsp-http-client/dist/shared/BtPaymentState2';
+import notifee, { TimestampTrigger, TriggerType } from '@notifee/react-native';
 
+import { __E2E__ } from '../../constants/env';
 import { addTransfer, removeTransfer } from '../slices/wallet';
 import { updateSendTransaction } from '../actions/wallet';
 import { setLightningSetupStep } from '../slices/user';
@@ -379,6 +381,10 @@ export const confirmChannelPurchase = async ({
 		selectedNetwork,
 	}).then();
 
+	if (!__E2E__) {
+		await scheduleNotifications();
+	}
+
 	return ok({ txid: broadcastResponse.value, useUnconfirmedInputs });
 };
 
@@ -423,6 +429,9 @@ const handleOrderStateChange = (order: IBtOrder): void => {
 	if (order.state2 === BtOrderState2.EXECUTED) {
 		// refresh LDK after channel open
 		refreshLdk();
+
+		// Cancel scheduled notifications
+		notifee.cancelTriggerNotifications();
 	}
 };
 
@@ -436,9 +445,7 @@ export const refreshAllBlocktankOrders = async (): Promise<Result<string>> => {
 	dispatch(resetBlocktankOrders());
 	await Promise.all(
 		orders.map(async (order): Promise<void> => {
-			// @ts-ignore
-			const orderId = order?._id ? order._id : order.id;
-			const getUpdatedOrderResult = await blocktank.getOrder(orderId);
+			const getUpdatedOrderResult = await blocktank.getOrder(order.id);
 			if (getUpdatedOrderResult.isErr()) {
 				return;
 			}
@@ -447,4 +454,49 @@ export const refreshAllBlocktankOrders = async (): Promise<Result<string>> => {
 		}),
 	);
 	return ok('All orders refreshed.');
+};
+
+export const scheduleNotifications = async (): Promise<void> => {
+	// Request permissions (required for iOS)
+	await notifee.requestPermission();
+
+	// Create a channel (required for Android)
+	const channelId = await notifee.createChannel({
+		id: 'default',
+		name: 'Default Channel',
+	});
+
+	try {
+		// First notification after 24h
+		const date1 = new Date(Date.now());
+		date1.setHours(date1.getHours() + 24);
+		const trigger1: TimestampTrigger = {
+			type: TriggerType.TIMESTAMP,
+			timestamp: date1.getTime(),
+		};
+
+		// Second notification after 40h
+		const date2 = new Date(Date.now());
+		date2.setHours(date2.getHours() + 40);
+		const trigger2: TimestampTrigger = {
+			type: TriggerType.TIMESTAMP,
+			timestamp: date2.getTime(),
+		};
+
+		const options = {
+			title: i18n.t('other:transfer_notification.title'),
+			body: i18n.t('other:transfer_notification.title'),
+			android: {
+				channelId,
+				smallIcon: 'ic_launcher_transparent',
+				pressAction: { id: 'default' },
+			},
+		};
+
+		// Schedule notifications
+		await notifee.createTriggerNotification(options, trigger1);
+		await notifee.createTriggerNotification(options, trigger2);
+	} catch (e) {
+		console.log(e);
+	}
 };

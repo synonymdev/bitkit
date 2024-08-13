@@ -3712,6 +3712,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@notifee/react-native@npm:7.8.2":
+  version: 7.8.2
+  resolution: "@notifee/react-native@npm:7.8.2"
+  peerDependencies:
+    react-native: "*"
+  checksum: f3b3ea116653d4dc7b50f8124898f9e22567ae30306225841d2057bc9ce40d451b15436dff3e60e0e042ffd7f34338054b202cd2dc61c5dc5eab7676b625b9f9
+  languageName: node
+  linkType: hard
+
 "@npmcli/agent@npm:^2.0.0":
   version: 2.2.2
   resolution: "@npmcli/agent@npm:2.2.2"
@@ -6287,6 +6296,7 @@ __metadata:
     "@formatjs/intl-pluralrules": 5.2.12
     "@formatjs/intl-relativetimeformat": 11.2.12
     "@gorhom/bottom-sheet": 4.6.3
+    "@notifee/react-native": 7.8.2
     "@ptsecurity/commitlint-config": ^2.0.0
     "@radar/lnrpc": ^0.11.1-beta.1
     "@react-native-clipboard/clipboard": 1.14.1
@@ -14108,7 +14118,7 @@ __metadata:
 "react-native-keychain@synonymdev/react-native-keychain#refactor/android-data-store":
   version: 8.2.0
   resolution: "react-native-keychain@https://github.com/synonymdev/react-native-keychain.git#commit=7378c469afe81195487a3163295be425af79fa7a"
-  checksum: 96008e384e055b2c812a8271e758fac6f50e7018cd43644adbe2a0902fe5a3fa64698bc1056e507a5b4612da4a6ecc79144d52de4e01b8ee7e017ad550c83662
+  checksum: 94297964de510a7a47f27e4175cdc85a977f36092afa0749648ad102c0f818f3fc41a9a92cf5e3e70d52c93e1e922ce4247860017ec4cee72f331f6410cbe02a
   languageName: node
   linkType: hard
 

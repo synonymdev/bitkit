@@ -1394,6 +1394,11 @@ PODS:
     - React-Core
   - RNLocalize (3.0.2):
     - React-Core
+  - RNNotifee (7.8.2):
+    - React-Core
+    - RNNotifee/NotifeeCore (= 7.8.2)
+  - RNNotifee/NotifeeCore (7.8.2):
+    - React-Core
   - RNPermissions (3.10.1):
     - React-Core
   - RNQrGenerator (1.4.0):
@@ -1565,6 +1570,7 @@ DEPENDENCIES:
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - RNKeychain (from `../node_modules/react-native-keychain`)
   - RNLocalize (from `../node_modules/react-native-localize`)
+  - "RNNotifee (from `../node_modules/@notifee/react-native`)"
   - RNPermissions (from `../node_modules/react-native-permissions`)
   - RNQrGenerator (from `../node_modules/rn-qr-generator`)
   - RNQuickAction (from `../node_modules/react-native-quick-actions`)
@@ -1742,6 +1748,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-keychain"
   RNLocalize:
     :path: "../node_modules/react-native-localize"
+  RNNotifee:
+    :path: "../node_modules/@notifee/react-native"
   RNPermissions:
     :path: "../node_modules/react-native-permissions"
   RNQrGenerator:
@@ -1847,6 +1855,7 @@ SPEC CHECKSUMS:
   RNGestureHandler: 9b113eb9b7a4cbe66e1dbf4d9914281863ee0703
   RNKeychain: bfe3d12bf4620fe488771c414530bf16e88f3678
   RNLocalize: dbea38dcb344bf80ff18a1757b1becf11f70cae4
+  RNNotifee: 8e2d3df3f0e9ce8f5d1fe4c967431138190b6175
   RNPermissions: 2c0eec471f4de66d04d226c339898d10a6e123c4
   RNQrGenerator: 1676221c08bfabec978242989c733810dad20959
   RNQuickAction: 6d404a869dc872cde841ad3147416a670d13fa93
