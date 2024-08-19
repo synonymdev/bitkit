@@ -133,7 +133,7 @@ export const Switch = styled(RNSwitch).attrs<SwitchProps & ColorProps>(
 				? props.theme.colors[props.color]
 				: props.theme.colors.brand,
 		},
-		thumbColor: 'white',
+		thumbColor: props.disabled ? '#A0A0A0' : 'white',
 		ios_backgroundColor: '#3A3A3C',
 		...props,
 	}),

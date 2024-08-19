@@ -25,8 +25,7 @@ import rnBiometrics from '../utils/biometrics';
 import { showToast } from '../utils/notifications';
 import { setKeychainValue, getKeychainValue } from '../utils/keychain';
 import BitkitLogo from '../assets/bitkit-logo.svg';
-
-export const PIN_ATTEMPTS = '8';
+import { PIN_ATTEMPTS } from '../constants/app';
 
 const PinPad = ({
 	showLogoOnPIN,
@@ -121,7 +120,7 @@ const PinPad = ({
 				return;
 			}
 
-			// in correct pin
+			// incorrect pin
 			if (pin !== realPIN?.data) {
 				if (attemptsRemaining <= 1) {
 					vibrate({ type: 'default' });

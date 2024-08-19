@@ -88,6 +88,7 @@
     "react-native-address-generator": "0.3.3",
     "react-native-biometrics": "3.0.1",
     "react-native-camera-kit": "14.0.0-beta15",
+    "react-native-change-icon": "pwltr/react-native-change-icon",
     "react-native-device-info": "11.1.0",
     "react-native-dotenv": "3.4.11",
     "react-native-draggable-flatlist": "4.0.1",

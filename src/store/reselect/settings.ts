@@ -28,6 +28,9 @@ export const biometricsSelector = (state: RootState): boolean => {
 export const coinSelectAutoSelector = (state: RootState): boolean => {
 	return state.settings.coinSelectAuto;
 };
+export const enableStealthModeSelector = (state: RootState): boolean => {
+	return state.settings.enableStealthMode;
+};
 export const enableSwipeToHideBalanceSelector = (state: RootState): boolean => {
 	return state.settings.enableSwipeToHideBalance;
 };

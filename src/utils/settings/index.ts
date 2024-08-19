@@ -1,7 +1,8 @@
+import { changeIcon } from 'react-native-change-icon';
 import { resetKeychainValue, setKeychainValue } from '../keychain';
-import { dispatch } from '../../store/helpers';
+import { dispatch, getSettingsStore } from '../../store/helpers';
 import { updateSettings } from '../../store/slices/settings';
-import { PIN_ATTEMPTS } from '../../components/PinPad';
+import { appIcon, PIN_ATTEMPTS } from '../../constants/app';
 
 /**
  * @async
@@ -29,7 +30,18 @@ export const editPin = async (newPin: string): Promise<void> => {
  * Wipes PIN data from device memory.
  */
 export const removePin = async (): Promise<void> => {
-	// reset to defaults
+	const { enableStealthMode } = getSettingsStore();
+
+	// reset app icon
+	if (enableStealthMode) {
+		try {
+			await changeIcon(appIcon.default);
+		} catch (error) {
+			console.error(error);
+		}
+	}
+
+	// reset settings
 	dispatch(
 		updateSettings({
 			pin: false,
@@ -37,9 +49,11 @@ export const removePin = async (): Promise<void> => {
 			pinOnIdle: false,
 			pinForPayments: false,
 			biometrics: false,
+			enableStealthMode: false,
 		}),
 	);
 
+	// reset PIN keychain data
 	await Promise.all([
 		setKeychainValue({ key: 'pinAttemptsRemaining', value: PIN_ATTEMPTS }),
 		resetKeychainValue({ key: 'pin' }),

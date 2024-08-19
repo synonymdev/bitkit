@@ -91,6 +91,7 @@ export type SwitchItem = {
 	Icon?: React.FC<SvgProps>;
 	iconColor?: string;
 	enabled?: boolean;
+	disabled?: boolean;
 	hide?: boolean;
 	onPress?: () => void;
 	testID?: string;
@@ -143,14 +144,8 @@ const _Item = memo((item: ItemData): ReactElement => {
 	}
 
 	if (type === EItemType.switch) {
-		const {
-			title,
-			enabled = true,
-			Icon,
-			iconColor,
-			onPress,
-			testID,
-		} = item as SwitchItem;
+		const { title, enabled, disabled, Icon, iconColor, onPress, testID } =
+			item as SwitchItem;
 
 		const _onPress = (): void => onPress?.();
 
@@ -158,8 +153,9 @@ const _Item = memo((item: ItemData): ReactElement => {
 			<TouchableOpacity
 				style={styles.row}
 				activeOpacity={0.7}
-				onPress={_onPress}
-				testID={testID}>
+				disabled={disabled}
+				testID={testID}
+				onPress={_onPress}>
 				<View style={styles.leftColumn}>
 					{Icon && (
 						<Icon
@@ -173,7 +169,11 @@ const _Item = memo((item: ItemData): ReactElement => {
 					<BodyM color="white">{title}</BodyM>
 				</View>
 				<View style={styles.rightColumn}>
-					<Switch onValueChange={_onPress} value={enabled} />
+					<Switch
+						value={enabled}
+						disabled={disabled}
+						onValueChange={_onPress}
+					/>
 				</View>
 			</TouchableOpacity>
 		);

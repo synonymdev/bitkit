@@ -147,6 +147,9 @@
     "warn_100": {
       "string": "Warn when sending over $100"
     },
+    "stealth_mode": {
+      "string": "Stealth Mode"
+    },
     "pin": {
       "string": "PIN Code"
     },
@@ -175,6 +178,25 @@
       "string": "When enabled, you can use {biometryTypeName} instead of your PIN code to unlock your wallet or send payments."
     }
   },
+  "stealth_mode": {
+		"nav_title": {
+			"string": "Stealth Mode"
+		},
+		"toggle": {
+			"string": "Enable Stealth Mode"
+		},
+		"description": {
+			"enabled": {
+				"string": "Stealth Mode turns Bitkit and its icon into a calculator. Enter your PIN on the calculator and tap = to reveal your Bitkit wallet."
+			},
+			"disabled": {
+				"string": "Stealth Mode turns Bitkit and its icon into a calculator. You first need to set up a PIN code before you can enable Stealth Mode."
+			}
+		},
+		"button": {
+			"string": "Set PIN Code"
+		}
+	},
   "backup": {
     "title": {
       "string": "Back Up Or Restore"

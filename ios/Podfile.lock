@@ -1007,6 +1007,27 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
+  - react-native-change-icon (5.0.0):
+    - DoubleConversion
+    - glog
+    - hermes-engine
+    - RCT-Folly (= 2024.01.01.00)
+    - RCTRequired
+    - RCTTypeSafety
+    - React-Codegen
+    - React-Core
+    - React-debug
+    - React-Fabric
+    - React-featureflags
+    - React-graphics
+    - React-ImageManager
+    - React-NativeModulesApple
+    - React-RCTFabric
+    - React-rendererdebug
+    - React-utils
+    - ReactCommon/turbomodule/bridging
+    - ReactCommon/turbomodule/core
+    - Yoga
   - react-native-image-picker (7.1.2):
     - DoubleConversion
     - glog
@@ -1528,6 +1549,7 @@ DEPENDENCIES:
   - react-native-address-generator (from `../node_modules/react-native-address-generator`)
   - react-native-biometrics (from `../node_modules/react-native-biometrics`)
   - "react-native-blur (from `../node_modules/@react-native-community/blur`)"
+  - react-native-change-icon (from `../node_modules/react-native-change-icon`)
   - react-native-image-picker (from `../node_modules/react-native-image-picker`)
   - "react-native-ldk (from `../node_modules/@synonymdev/react-native-ldk`)"
   - react-native-mmkv (from `../node_modules/react-native-mmkv`)
@@ -1664,6 +1686,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-biometrics"
   react-native-blur:
     :path: "../node_modules/@react-native-community/blur"
+  react-native-change-icon:
+    :path: "../node_modules/react-native-change-icon"
   react-native-image-picker:
     :path: "../node_modules/react-native-image-picker"
   react-native-ldk:
@@ -1813,6 +1837,7 @@ SPEC CHECKSUMS:
   react-native-address-generator: 7034f33d6e63c1c5e123b3c8a3c97f4fe4aa2d93
   react-native-biometrics: 352e5a794bfffc46a0c86725ea7dc62deb085bdc
   react-native-blur: a2acf22fd7bd13621df5e0b1c130b81adea7009c
+  react-native-change-icon: a7cfe810b8d7cc159cb32903bde8ae17a598df5c
   react-native-image-picker: c3afe5472ef870d98a4b28415fc0b928161ee5f7
   react-native-ldk: fda4d4381d40401bdc5c3a9965937d19b232ed08
   react-native-mmkv: 8c9a677e64a1ac89b0c6cf240feea528318b3074

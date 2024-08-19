@@ -234,6 +234,7 @@ const RootNavigator = (): ReactElement => {
 
 			{!isAuthenticated && (
 				<AuthCheck
+					isAppStart={true}
 					showBackNavigation={false}
 					showLogoOnPIN={true}
 					onSuccess={onAuthSuccess}

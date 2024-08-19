@@ -111,6 +111,14 @@ const SecuritySettings = ({
 						},
 					},
 					{
+						title: t('security.stealth_mode'),
+						type: EItemType.button,
+						testID: 'StealthMode',
+						onPress: (): void => {
+							navigation.navigate('StealthMode');
+						},
+					},
+					{
 						title: t('security.pin'),
 						value: t(pin ? 'security.pin_enabled' : 'security.pin_disabled'),
 						type: EItemType.button,

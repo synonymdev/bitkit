@@ -8,7 +8,7 @@ import Button from '../../components/buttons/Button';
 import CheckButton from '../../components/buttons/CheckButton';
 import VerticalShadow from '../../components/VerticalShadow';
 import { openURL } from '../../utils/helpers';
-import { wipeApp } from '../../store/utils/settings';
+import { wipeKeychain } from '../../utils/keychain';
 import TOS from '../../assets/tos';
 import type { OnboardingStackScreenProps } from '../../navigation/types';
 
@@ -29,21 +29,24 @@ const TermsOfUse = ({
 	};
 
 	const onPress = async (): Promise<void> => {
-		setLoading(true);
-		// Ensure the app is sufficiently wiped of data from any previous install.
-		const wipeAppRes = await wipeApp({
-			selectedWallet: 'wallet0',
-			showNotification: false,
-			restartApp: false,
-		});
-		setLoading(false);
-		if (wipeAppRes.isErr()) {
+		if (loading) {
 			return;
 		}
-		navigation.navigate('Welcome');
+
+		setLoading(true);
+
+		try {
+			// Ensure keychain data is wiped from any previous install
+			await wipeKeychain();
+			navigation.navigate('Welcome');
+		} catch (e) {
+			console.log(e);
+		}
+
+		setLoading(false);
 	};
 
-	const isValid = termsOfUse && privacyPolicy && !loading;
+	const isValid = termsOfUse && privacyPolicy;
 
 	return (
 		<>
