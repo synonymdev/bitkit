@@ -54,13 +54,13 @@ export const lightningReadyTodo: ITodo = {
 };
 export const transferPendingTodo: ITodo = {
 	id: 'transferPending',
-	color: 'purple24',
+	color: 'brand24',
 	image: imageTransfer,
 	dismissable: false,
 };
 export const transferClosingChannelTodo: ITodo = {
 	id: 'transferClosingChannel',
-	color: 'purple24',
+	color: 'brand24',
 	image: imageTransfer,
 	dismissable: false,
 };

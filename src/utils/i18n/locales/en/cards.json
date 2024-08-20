@@ -76,7 +76,7 @@
   },
   "transferClosingChannel": {
     "title": {
-      "string": "Initiating..."
+      "string": "Initiating"
     },
     "description": {
       "string": "Keep app open"

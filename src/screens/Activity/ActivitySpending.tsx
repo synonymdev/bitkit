@@ -1,5 +1,5 @@
 import React, { ReactElement, memo, useMemo } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { Image, StyleSheet, View } from 'react-native';
 import { Trans, useTranslation } from 'react-i18next';
 
 import { CaptionB, Display } from '../../styles/text';
@@ -17,6 +17,8 @@ import { useAppSelector } from '../../hooks/redux';
 import { EActivityType } from '../../store/types/activity';
 import { activityItemsSelector } from '../../store/reselect/activity';
 import { WalletScreenProps } from '../../navigation/types';
+
+const imageSrc = require('../../assets/illustrations/coin-stack-x-2.png');
 
 const ActivitySpending = ({
 	navigation,
@@ -53,6 +55,10 @@ const ActivitySpending = ({
 				title={t('spending.title')}
 				icon={<LightningCircleIcon width={32} height={32} />}
 			/>
+
+			<View style={styles.imageContainer} pointerEvents="none">
+				<Image style={styles.image} source={imageSrc} />
+			</View>
 
 			<View style={styles.content}>
 				<ActivityHeader
@@ -97,6 +103,7 @@ const ActivitySpending = ({
 							size="large"
 							icon={<TransferIcon height={16} width={16} />}
 							disabled={!canTransfer}
+							testID="TransferToSavings"
 							onPress={onTransfer}
 						/>
 						<View style={styles.activity}>
@@ -113,6 +120,16 @@ const styles = StyleSheet.create({
 	root: {
 		flex: 1,
 	},
+	imageContainer: {
+		position: 'absolute',
+		top: -15,
+		right: -155,
+		zIndex: 1,
+	},
+	image: {
+		width: 330,
+		height: 330,
+	},
 	content: {
 		flex: 1,
 		paddingTop: 16,
@@ -120,8 +137,7 @@ const styles = StyleSheet.create({
 	},
 	transfer: {
 		flexDirection: 'row',
-		justifyContent: 'space-between',
-		paddingTop: 4,
+		paddingTop: 8,
 		paddingBottom: 10,
 	},
 	transferText: {

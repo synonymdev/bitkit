@@ -18,11 +18,12 @@ import {
 } from '@shopify/react-native-skia';
 
 import { XIcon } from '../styles/icons';
-import { View as ThemeedView, Pressable } from '../styles/components';
+import { IColors } from '../styles/colors';
 import { BodyMSB, CaptionB } from '../styles/text';
-import { ITodo, TTodoType } from '../store/types/todos';
+import { View as ThemedView, Pressable } from '../styles/components';
 import useColors from '../hooks/colors';
 import { __E2E__ } from '../constants/env';
+import { ITodo, TTodoType } from '../store/types/todos';
 
 const CARD_SIZE = 152;
 const CARD_BORDER_RADIUS = 16;
@@ -30,51 +31,99 @@ const GLOW_OFFSET = 25;
 
 const Shade = memo((): ReactElement => {
 	return (
-		<RoundedRect
-			x={GLOW_OFFSET}
-			y={GLOW_OFFSET}
-			width={CARD_SIZE}
-			height={CARD_SIZE}
-			r={CARD_BORDER_RADIUS}>
-			<LinearGradient
-				start={vec(0, 0)}
-				end={vec(0, CARD_SIZE)}
-				positions={[0.4, 1]}
-				colors={['transparent', 'black']}
-			/>
-		</RoundedRect>
+		<View style={styles.canvasWrapper}>
+			<Canvas style={styles.canvas}>
+				<RoundedRect
+					x={GLOW_OFFSET}
+					y={GLOW_OFFSET}
+					width={CARD_SIZE}
+					height={CARD_SIZE}
+					r={CARD_BORDER_RADIUS}>
+					<LinearGradient
+						start={vec(0, 0)}
+						end={vec(0, CARD_SIZE)}
+						positions={[0.4, 1]}
+						colors={['transparent', 'black']}
+					/>
+				</RoundedRect>
+			</Canvas>
+		</View>
 	);
 });
 
-const Glow = memo((): ReactElement => {
+const Glow = memo(({ color }: { color: keyof IColors }): ReactElement => {
+	const colors = useColors();
+	const glowOpacity = useSharedValue(0);
+
 	const shadowBlur = 15;
 	const shadowSpread = 5;
 	const borderSpread = 1;
 
+	useEffect(() => {
+		if (__E2E__) {
+			return;
+		}
+
+		glowOpacity.value = withRepeat(withTiming(1, { duration: 1100 }), -1, true);
+	}, [glowOpacity]);
+
+	let shadowColor = 'rgb(130, 65, 175)';
+	let borderColor = 'rgb(185, 92, 232)';
+	let gradientColor = 'rgb(65, 32, 80)';
+
+	if (color === 'brand24') {
+		shadowColor = 'rgb(200,48,0)';
+		borderColor = 'rgb(255,68,0)';
+		gradientColor = 'rgb(100, 24, 0)';
+	}
+
 	return (
-		<Box
-			box={rrect(
-				rect(GLOW_OFFSET, GLOW_OFFSET, CARD_SIZE - 2, CARD_SIZE - 2),
-				CARD_BORDER_RADIUS,
-				CARD_BORDER_RADIUS,
-			)}>
-			<BoxShadow
-				blur={shadowBlur}
-				spread={shadowSpread}
-				color="rgb(130, 65, 175)"
-			/>
-			<BoxShadow
-				blur={shadowBlur}
-				spread={shadowSpread}
-				color="rgb(130, 65, 175)"
-				inner
-			/>
-			<BoxShadow
-				blur={borderSpread}
-				spread={borderSpread}
-				color="rgb(185, 92, 232)"
-			/>
-		</Box>
+		<>
+			<Animated.View style={[styles.canvasWrapper, { opacity: glowOpacity }]}>
+				<Canvas style={styles.canvas}>
+					<Box
+						box={rrect(
+							rect(GLOW_OFFSET, GLOW_OFFSET, CARD_SIZE - 2, CARD_SIZE - 2),
+							CARD_BORDER_RADIUS,
+							CARD_BORDER_RADIUS,
+						)}>
+						<BoxShadow
+							blur={shadowBlur}
+							spread={shadowSpread}
+							color={shadowColor}
+						/>
+						<BoxShadow
+							blur={shadowBlur}
+							spread={shadowSpread}
+							color={shadowColor}
+							inner
+						/>
+						<BoxShadow
+							blur={borderSpread}
+							spread={borderSpread}
+							color={borderColor}
+						/>
+					</Box>
+				</Canvas>
+			</Animated.View>
+			<View style={styles.canvasWrapper}>
+				<Canvas style={styles.canvas}>
+					<RoundedRect
+						x={GLOW_OFFSET}
+						y={GLOW_OFFSET}
+						width={CARD_SIZE}
+						height={CARD_SIZE}
+						r={CARD_BORDER_RADIUS}
+						opacity={0.4}>
+						<RadialGradient
+							c={vec(100, 100)}
+							r={100}
+							colors={[gradientColor, colors[color]]}
+						/>
+					</RoundedRect>
+				</Canvas>
+			</View>
+		</>
 	);
 });
 
@@ -96,76 +145,36 @@ const SuggestionCard = ({
 	onClose,
 }: CardProps): ReactElement => {
 	const colors = useColors();
-	const glowOpacity = useSharedValue(0);
+
+	// purple24 -> purple
+	const accentColor = color.replace('24', '');
+	const captionColor = dismissable ? 'secondary' : accentColor;
 
 	const containerStyle = useMemo(
 		() => [
 			styles.container,
-			!dismissable && {
-				borderColor: colors.purple,
-				borderWidth: 1,
-			},
+			!dismissable && { borderColor: colors[accentColor], borderWidth: 1 },
 		],
-		[dismissable, colors.purple],
+		[dismissable, colors, accentColor],
 	);
 
-	useEffect(() => {
-		if (__E2E__) {
-			return;
-		}
-		glowOpacity.value = withRepeat(withTiming(1, { duration: 1100 }), -1, true);
-	}, [glowOpacity]);
-
 	return (
-		<ThemeedView
+		<ThemedView
 			style={containerStyle}
 			color={color}
 			testID={`Suggestion-${id}`}>
-			{dismissable ? (
-				<View style={styles.canvasWrapper}>
-					<Canvas style={styles.canvas}>
-						<Shade />
-					</Canvas>
-				</View>
-			) : (
-				<>
-					<Animated.View
-						style={[styles.canvasWrapper, { opacity: glowOpacity }]}>
-						<Canvas style={styles.canvas}>
-							<Glow />
-						</Canvas>
-					</Animated.View>
-					<View style={styles.canvasWrapper}>
-						<Canvas style={styles.canvas}>
-							<RoundedRect
-								x={GLOW_OFFSET}
-								y={GLOW_OFFSET}
-								width={CARD_SIZE}
-								height={CARD_SIZE}
-								r={CARD_BORDER_RADIUS}
-								opacity={0.4}>
-								<RadialGradient
-									c={vec(100, 100)}
-									r={100}
-									colors={['rgb(65, 32, 80)', colors[color]]}
-								/>
-							</RoundedRect>
-						</Canvas>
-					</View>
-				</>
-			)}
+			{dismissable ? <Shade /> : <Glow color={color} />}
+
 			<Pressable
 				style={styles.pressable}
 				color="transparent"
 				onPress={(): void => onPress(id)}>
 				<View style={styles.iconContainer}>
-					<Image style={styles.image} resizeMode="contain" source={image} />
+					<Image style={styles.image} source={image} resizeMode="contain" />
 				</View>
 				<View>
 					<BodyMSB style={styles.title}>{title}</BodyMSB>
-					<CaptionB
-						color={dismissable ? 'secondary' : 'purple'}
-						numberOfLines={1}>
+					<CaptionB color={captionColor} numberOfLines={1}>
 						{description}
 					</CaptionB>
 				</View>
@@ -175,12 +184,12 @@ const SuggestionCard = ({
 				<Pressable
 					color="transparent"
 					style={styles.dismiss}
-					onPress={(): void => onClose(id)}
-					testID="SuggestionDismiss">
-					<XIcon width={18} height={18} color="secondary" />
+					testID="SuggestionDismiss"
+					onPress={(): void => onClose(id)}>
+					<XIcon color="secondary" width={18} height={18} />
 				</Pressable>
 			)}
-		</ThemeedView>
+		</ThemedView>
 	);
 };
 

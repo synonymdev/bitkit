@@ -1,33 +1,63 @@
 import React, { memo, ReactElement } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 
-import { View as ThemedView } from '../styles/components';
 import {
-	TransferIcon,
 	BitcoinCircleIcon,
 	LightningCircleIcon,
+	TransferIcon,
 } from '../styles/icons';
-import Button from './buttons/Button';
-import NetworkRow from './NetworkRow';
+import { Caption13Up } from '../styles/text';
+import { View as ThemedView } from '../styles/components';
+import Money from './Money';
 import { useBalance } from '../hooks/wallet';
-import { useAppSelector } from '../hooks/redux';
 import { RootNavigationProp } from '../navigation/types';
-import { isGeoBlockedSelector } from '../store/reselect/user';
+
+const Balance = ({
+	label,
+	balance,
+	icon,
+	hasPending,
+	testID,
+	onPress,
+}: {
+	label: string;
+	balance: number;
+	icon: ReactElement;
+	hasPending?: boolean;
+	testID?: string;
+	onPress?: () => void;
+}): ReactElement => (
+	<TouchableOpacity
+		style={styles.balance}
+		activeOpacity={0.7}
+		testID={testID}
+		onPress={onPress}>
+		<Caption13Up color="secondary">{label}</Caption13Up>
+		<View style={styles.content}>
+			{icon}
+			<Money
+				style={styles.amount}
+				sats={balance}
+				size="bodyMSB"
+				enableHide={true}
+				symbolColor="white"
+			/>
+			{hasPending && <TransferIcon color="white50" height={16} width={16} />}
+		</View>
+	</TouchableOpacity>
+);
 
 const Balances = (): ReactElement => {
 	const { t } = useTranslation('wallet');
 	const navigation = useNavigation<RootNavigationProp>();
-	const isGeoBlocked = useAppSelector(isGeoBlockedSelector);
 	const {
 		onchainBalance,
 		lightningBalance,
 		balanceInTransferToSpending,
 		balanceInTransferToSavings,
 	} = useBalance();
-
-	const canTransfer = (onchainBalance || lightningBalance) && !isGeoBlocked;
 
 	const onSavingsPress = (): void => {
 		navigation.navigate('Wallet', { screen: 'ActivitySavings' });
@@ -37,39 +67,22 @@ const Balances = (): ReactElement => {
 		navigation.navigate('Wallet', { screen: 'ActivitySpending' });
 	};
 
-	const onTransfer = (): void => {
-		if (canTransfer) {
-			navigation.navigate('LightningRoot', { screen: 'QuickSetup' });
-		}
-	};
-
 	return (
 		<View style={styles.root}>
-			<NetworkRow
-				title={t('details_savings_title')}
+			<Balance
+				label={t('details_savings_title')}
 				balance={onchainBalance}
-				pendingBalance={balanceInTransferToSavings}
-				icon={<BitcoinCircleIcon color="brand" width={32} height={32} />}
+				icon={<BitcoinCircleIcon width={24} height={24} />}
+				hasPending={balanceInTransferToSavings !== 0}
 				testID="ActivitySavings"
 				onPress={onSavingsPress}
 			/>
-			<View style={styles.transferRow}>
-				<ThemedView style={styles.line} color="white16" />
-				<Button
-					style={styles.transferButton}
-					color="white16"
-					icon={<TransferIcon color="white" />}
-					disabled={!canTransfer}
-					testID="TransferButton"
-					onPress={onTransfer}
-				/>
-				<ThemedView style={styles.line} color="white16" />
-			</View>
-			<NetworkRow
-				title={t('details_spending_title')}
+			<ThemedView style={styles.divider} color="white16" />
+			<Balance
+				label={t('details_spending_title')}
 				balance={lightningBalance}
-				pendingBalance={balanceInTransferToSpending}
-				icon={<LightningCircleIcon width={32} height={32} />}
+				icon={<LightningCircleIcon width={24} height={24} />}
+				hasPending={balanceInTransferToSpending !== 0}
 				testID="ActivitySpending"
 				onPress={onSpendingPress}
 			/>
@@ -79,25 +92,26 @@ const Balances = (): ReactElement => {
 
 const styles = StyleSheet.create({
 	root: {
-		marginTop: 32,
-	},
-	transferRow: {
+		marginTop: 22,
+		paddingHorizontal: 16,
 		flexDirection: 'row',
-		alignItems: 'center',
-		paddingVertical: 10,
+		justifyContent: 'space-between',
 	},
-	transferButton: {
-		paddingHorizontal: 15,
-		height: 40,
-		borderRadius: 54,
-		flexDirection: 'row',
-		justifyContent: 'center',
-		alignItems: 'center',
-		marginHorizontal: 16,
+	divider: {
+		width: 1,
+		marginRight: 16,
 	},
-	line: {
+	balance: {
 		flex: 1,
-		height: 1,
+	},
+	content: {
+		flexDirection: 'row',
+		alignItems: 'center',
+		marginTop: 8,
+	},
+	amount: {
+		marginLeft: 8,
+		marginRight: 3,
 	},
 });
 

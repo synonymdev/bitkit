@@ -359,13 +359,13 @@ const styles = StyleSheet.create({
 	actionButtons: {
 		flexDirection: 'row',
 		justifyContent: 'flex-end',
+		gap: 8,
 		marginLeft: 'auto',
 	},
 	actionButtonContainer: {
 		alignItems: 'center',
 	},
 	actionButton: {
-		marginLeft: 16,
 		paddingVertical: 5,
 		paddingHorizontal: 8,
 		borderRadius: 8,

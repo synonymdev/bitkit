@@ -89,8 +89,17 @@ export const createOrder = async ({
 		if (addPeersRes.isErr()) {
 			return err(i18n.t('other:bt_error_connect'));
 		}
+
+		// Get the node ID to use for the order.
+		const nodeIdResult = await getNodeId();
+		if (nodeIdResult.isErr()) {
+			return err(nodeIdResult.error.message);
+		}
+		const nodeId = nodeIdResult.value;
+
 		const buyRes = await bt.createOrder(lspBalance, channelExpiryWeeks, {
 			...options,
+			nodeId,
 			couponCode: options?.couponCode ?? 'bitkit',
 			zeroReserve: true,
 		});

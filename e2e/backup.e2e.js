@@ -103,8 +103,6 @@ d('Backup', () => {
 		await element(by.id('WidgetsEdit')).tap();
 		await expect(element(by.id('PriceWidget'))).toBeVisible();
 
-		await element(by.id('TransferButton')).swipe('up');
-
 		// get seed
 		await element(by.id('Settings')).tap();
 		await element(by.id('BackupSettings')).tap();

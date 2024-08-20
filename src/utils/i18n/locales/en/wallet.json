@@ -542,7 +542,7 @@
 		}
 	},
 	"details_transfer_subtitle": {
-		"string": "Incoming Transfer"
+		"string": "Incoming Transfer: "
 	},
 	"tx_invalid": {
 		"string": "Transaction Invalid"

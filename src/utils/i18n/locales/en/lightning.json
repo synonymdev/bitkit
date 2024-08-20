@@ -368,7 +368,7 @@
       "string": "Connection Closed"
     },
     "description": {
-      "string": "Your Lightning Connection has closed. Your funds transferred to your savings."
+      "string": "The funds on your spending balance have been transferred to your savings."
     }
   },
   "close_conn": {

@@ -1,5 +1,5 @@
 import React, { ReactElement, memo, useMemo } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { Image, StyleSheet, View } from 'react-native';
 import { Trans, useTranslation } from 'react-i18next';
 
 import { CaptionB, Display } from '../../styles/text';
@@ -18,6 +18,8 @@ import { EActivityType } from '../../store/types/activity';
 import { isGeoBlockedSelector } from '../../store/reselect/user';
 import { activityItemsSelector } from '../../store/reselect/activity';
 import { WalletScreenProps } from '../../navigation/types';
+
+const imageSrc = require('../../assets/illustrations/piggybank.png');
 
 const ActivitySavings = ({
 	navigation,
@@ -55,6 +57,10 @@ const ActivitySavings = ({
 				title={t('savings.title')}
 				icon={<BitcoinCircleIcon width={32} height={32} />}
 			/>
+
+			<View style={styles.imageContainer} pointerEvents="none">
+				<Image style={styles.image} source={imageSrc} />
+			</View>
 
 			<View style={styles.content}>
 				<ActivityHeader
@@ -97,6 +103,7 @@ const ActivitySavings = ({
 							size="large"
 							icon={<TransferIcon height={16} width={16} />}
 							disabled={!canTransfer}
+							testID="TransferToSpending"
 							onPress={onTransfer}
 						/>
 						<View style={styles.activity}>
@@ -113,6 +120,16 @@ const styles = StyleSheet.create({
 	root: {
 		flex: 1,
 	},
+	imageContainer: {
+		position: 'absolute',
+		top: 8,
+		right: -124,
+		zIndex: 1,
+	},
+	image: {
+		width: 268,
+		height: 268,
+	},
 	content: {
 		flex: 1,
 		paddingTop: 16,
@@ -120,7 +137,6 @@ const styles = StyleSheet.create({
 	},
 	transfer: {
 		flexDirection: 'row',
-		justifyContent: 'space-between',
 		paddingTop: 4,
 		paddingBottom: 10,
 	},

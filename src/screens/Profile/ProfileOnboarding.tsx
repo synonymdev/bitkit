@@ -31,7 +31,7 @@ import {
 import { updateSlashPayConfig } from '../../utils/slashtags';
 
 const crownImageSrc = require('../../assets/illustrations/crown.png');
-const coinsImageSrc = require('../../assets/illustrations/coins.png');
+const coinsImageSrc = require('../../assets/illustrations/coin-stack.png');
 
 export const ProfileIntro = memo(
 	({ navigation }: RootStackScreenProps<'Profile'>): ReactElement => {

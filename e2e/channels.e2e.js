@@ -142,7 +142,8 @@ d('LN Channel Onboarding', () => {
 			await waitFor(element(by.id('Suggestion-lightningSettingUp')))
 				.toBeVisible()
 				.withTimeout(10000);
-			await element(by.id('TransferButton')).tap();
+			await element(by.id('ActivitySavings')).tap();
+			await element(by.id('TransferToSpending')).tap();
 			await element(by.id('QuickSetupAdvanced')).tap();
 
 			// NumberPad

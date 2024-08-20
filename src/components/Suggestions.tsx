@@ -182,7 +182,7 @@ const Suggestions = (): ReactElement => {
 
 const styles = StyleSheet.create({
 	title: {
-		marginTop: 25,
+		marginTop: 32,
 		marginBottom: 6,
 		marginLeft: 16,
 	},

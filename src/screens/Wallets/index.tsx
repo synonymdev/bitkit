@@ -142,9 +142,9 @@ const Wallets = ({ navigation, onFocus }: Props): ReactElement => {
 
 					{hideOnboarding ? (
 						<>
+							<Balances />
 							<Suggestions />
 							<View style={styles.contentPadding}>
-								<Balances />
 								{showWidgets && <Widgets />}
 								<ActivityListShort />
 							</View>

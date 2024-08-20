@@ -81,9 +81,9 @@ const Money = (props: MoneyProps): ReactElement => {
 			case 'title':
 				return [Title, 6];
 			case 'displayT':
-				return [DisplayT, 8];
+				return [DisplayT, 6];
 			default:
-				return [Display, 10];
+				return [Display, 6];
 		}
 	}, [size]);
 
