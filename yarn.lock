@@ -4610,10 +4610,10 @@
   dependencies:
     bitcoinjs-lib "6.1.4"
 
-"@synonymdev/react-native-ldk@0.0.146":
-  version "0.0.146"
-  resolved "https://registry.yarnpkg.com/@synonymdev/react-native-ldk/-/react-native-ldk-0.0.146.tgz#5a7e6b448df7e151123521095b6a884e89edb008"
-  integrity sha512-IHqx8a7GtUmcsMLedB+Gf2ltGQhfbqo/ByezrGRu2ncdx8e/Kd0mAY3zIRgZfUWbW1xOnGLA+cAYYykAzlo63w==
+"@synonymdev/react-native-ldk@0.0.149":
+  version "0.0.149"
+  resolved "https://registry.yarnpkg.com/@synonymdev/react-native-ldk/-/react-native-ldk-0.0.149.tgz#a4c31626800c655cdadfe3635e0ffd16b05a0e06"
+  integrity sha512-X+t1SV9xZlX0+iZyTuYgYwjkOmnvSn+t70pDgNTkcTdHrctQPYZm5Hp05nz/a2DSrsTnCsJgbfF/n1agIRyiGg==
   dependencies:
     "@synonymdev/raw-transaction-decoder" "1.1.0"
     bech32 "^2.0.0"
