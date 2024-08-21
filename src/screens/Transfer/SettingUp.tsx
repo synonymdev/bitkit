@@ -11,11 +11,11 @@ import ProgressSteps from '../../components/ProgressSteps';
 import Button from '../../components/buttons/Button';
 import { useAppSelector } from '../../hooks/redux';
 import { lightningSettingUpStepSelector } from '../../store/reselect/user';
-import type { LightningScreenProps } from '../../navigation/types';
+import type { TransferScreenProps } from '../../navigation/types';
 
 const SettingUp = ({
 	navigation,
-}: LightningScreenProps<'SettingUp'>): ReactElement => {
+}: TransferScreenProps<'SettingUp'>): ReactElement => {
 	const { t } = useTranslation('lightning');
 	const lightningSettingUpStep = useAppSelector(lightningSettingUpStepSelector);
 

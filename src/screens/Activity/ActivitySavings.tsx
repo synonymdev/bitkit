@@ -45,7 +45,7 @@ const ActivitySavings = ({
 	const showOnboarding = onchainBalance === 0 && savingsItems.length === 0;
 
 	const onTransfer = (): void => {
-		navigation.navigate('LightningRoot', { screen: 'QuickSetup' });
+		navigation.navigate('TransferRoot', { screen: 'QuickSetup' });
 	};
 
 	const canTransfer = onchainBalance && !isGeoBlocked;

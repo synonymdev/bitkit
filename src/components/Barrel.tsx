@@ -5,7 +5,7 @@ import { Subtitle } from '../styles/text';
 import { TouchableOpacity } from '../styles/components';
 import useColors from '../hooks/colors';
 import { useDisplayValues } from '../hooks/displayValues';
-import { TPackage } from '../screens/Lightning/CustomSetup';
+import { TPackage } from '../screens/Transfer/CustomSetup';
 
 const Barrel = ({
 	id,

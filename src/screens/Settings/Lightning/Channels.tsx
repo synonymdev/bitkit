@@ -251,7 +251,7 @@ const Channels = ({
 	const pendingConnections = [...pendingOrders, ...pendingChannels];
 
 	const handleAdd = useCallback((): void => {
-		navigation.navigate('LightningRoot', {
+		navigation.navigate('TransferRoot', {
 			screen: 'CustomSetup',
 			params: { spending: true },
 		});

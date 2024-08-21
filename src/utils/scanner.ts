@@ -945,7 +945,7 @@ export const handleData = async ({
 		}
 		case EQRDataType.lnurlChannel: {
 			const params = data.lnUrlParams! as LNURLChannelParams;
-			rootNavigation.navigate('LightningRoot', {
+			rootNavigation.navigate('TransferRoot', {
 				screen: 'LNURLChannel',
 				params: { cParams: params },
 			});

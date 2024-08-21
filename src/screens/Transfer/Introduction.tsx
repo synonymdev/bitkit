@@ -3,13 +3,13 @@ import { Trans, useTranslation } from 'react-i18next';
 
 import { Display } from '../../styles/text';
 import OnboardingScreen from '../../components/OnboardingScreen';
-import type { LightningScreenProps } from '../../navigation/types';
+import type { TransferScreenProps } from '../../navigation/types';
 
 const imageSrc = require('../../assets/illustrations/lightning.png');
 
 const Introduction = ({
 	navigation,
-}: LightningScreenProps<'Introduction'>): ReactElement => {
+}: TransferScreenProps<'Introduction'>): ReactElement => {
 	const { t } = useTranslation('lightning');
 
 	const onContinue = (): void => {

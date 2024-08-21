@@ -14,7 +14,7 @@ import PieChart from './PieChart';
 import { useBalance, useSwitchUnit } from '../../hooks/wallet';
 import { useAppSelector } from '../../hooks/redux';
 import { useCurrentDisplayValue } from '../../hooks/displayValues';
-import type { LightningScreenProps } from '../../navigation/types';
+import type { TransferScreenProps } from '../../navigation/types';
 import { confirmChannelPurchase } from '../../store/utils/blocktank';
 import { blocktankOrdersSelector } from '../../store/reselect/blocktank';
 import {
@@ -29,7 +29,7 @@ const PIE_SHIFT = 70;
 const QuickConfirm = ({
 	navigation,
 	route,
-}: LightningScreenProps<'QuickConfirm'>): ReactElement => {
+}: TransferScreenProps<'QuickConfirm'>): ReactElement => {
 	const { spendingAmount, orderId, onChangeUnitOutside } = route.params;
 	const { onchainBalance, lightningBalance } = useBalance();
 	const { t } = useTranslation('lightning');

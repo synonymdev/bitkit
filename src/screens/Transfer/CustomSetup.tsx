@@ -19,7 +19,7 @@ import NavigationHeader from '../../components/NavigationHeader';
 import TransferTextField from '../../components/TransferTextField';
 import Button from '../../components/buttons/Button';
 import NumberPadLightning from './NumberPadLightning';
-import type { LightningScreenProps } from '../../navigation/types';
+import type { TransferScreenProps } from '../../navigation/types';
 import { useAppSelector } from '../../hooks/redux';
 import { useDisplayValues } from '../../hooks/displayValues';
 import { useBalance, useSwitchUnit } from '../../hooks/wallet';
@@ -94,7 +94,7 @@ const PACKAGES_RECEIVING: Omit<TPackage, 'satoshis'>[] = [
 const CustomSetup = ({
 	navigation,
 	route,
-}: LightningScreenProps<'CustomSetup'>): ReactElement => {
+}: TransferScreenProps<'CustomSetup'>): ReactElement => {
 	const { spending, spendingAmount = 0 } = route.params;
 	const { t } = useTranslation('lightning');
 	const switchUnit = useSwitchUnit();

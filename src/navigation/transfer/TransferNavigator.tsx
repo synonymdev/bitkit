@@ -6,25 +6,25 @@ import {
 } from '@react-navigation/native-stack';
 import { LNURLChannelParams } from 'js-lnurl';
 
-import Introduction from '../../screens/Lightning/Introduction';
-import Funding from '../../screens/Lightning/Funding';
-import QuickSetup from '../../screens/Lightning/QuickSetup';
-import QuickConfirm from '../../screens/Lightning/QuickConfirm';
-import CustomSetup from '../../screens/Lightning/CustomSetup';
-import CustomConfirm from '../../screens/Lightning/CustomConfirm';
-import SettingUp from '../../screens/Lightning/SettingUp';
-import Availability from '../../screens/Lightning/Availability';
-import Interrupted from '../../screens/Lightning/Interrupted';
-import Success from '../../screens/Lightning/Success';
-import LNURLChannel from '../../screens/Lightning/LNURLChannel';
-import LNURLChannelSuccess from '../../screens/Lightning/LNURLChannelSuccess';
+import Introduction from '../../screens/Transfer/Introduction';
+import Funding from '../../screens/Transfer/Funding';
+import QuickSetup from '../../screens/Transfer/QuickSetup';
+import QuickConfirm from '../../screens/Transfer/QuickConfirm';
+import CustomSetup from '../../screens/Transfer/CustomSetup';
+import CustomConfirm from '../../screens/Transfer/CustomConfirm';
+import SettingUp from '../../screens/Transfer/SettingUp';
+import Availability from '../../screens/Transfer/Availability';
+import Interrupted from '../../screens/Transfer/Interrupted';
+import Success from '../../screens/Transfer/Success';
+import LNURLChannel from '../../screens/Transfer/LNURLChannel';
+import LNURLChannelSuccess from '../../screens/Transfer/LNURLChannelSuccess';
 import { __E2E__ } from '../../constants/env';
 import { EUnit } from '../../store/types/wallet';
 
-export type LightningNavigationProp =
-	NativeStackNavigationProp<LightningStackParamList>;
+export type TransferNavigationProp =
+	NativeStackNavigationProp<TransferStackParamList>;
 
-export type LightningStackParamList = {
+export type TransferStackParamList = {
 	Introduction: undefined;
 	Funding: undefined;
 	QuickSetup: undefined;
@@ -47,13 +47,13 @@ export type LightningStackParamList = {
 	LNURLChannelSuccess: undefined;
 };
 
-const Stack = createNativeStackNavigator<LightningStackParamList>();
+const Stack = createNativeStackNavigator<TransferStackParamList>();
 const screenOptions: NativeStackNavigationOptions = {
 	headerShown: false,
 	animation: __E2E__ ? 'none' : 'default',
 };
 
-const LightningStack = (): ReactElement => {
+const Transfer = (): ReactElement => {
 	return (
 		<Stack.Navigator
 			screenOptions={screenOptions}
@@ -77,4 +77,4 @@ const LightningStack = (): ReactElement => {
 	);
 };
 
-export default LightningStack;
+export default Transfer;

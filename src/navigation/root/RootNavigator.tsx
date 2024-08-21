@@ -35,7 +35,7 @@ import ActivityAssignContact from '../../screens/Activity/ActivityAssignContact'
 import BuyBitcoin from '../../screens/BuyBitcoin';
 import ScannerScreen from '../../screens/Scanner/MainScanner';
 import SettingsNavigator from '../settings/SettingsNavigator';
-import LightningNavigator from '../lightning/LightningNavigator';
+import TransferNavigator from '../transfer/TransferNavigator';
 import Profile from '../../screens/Profile/Profile';
 import ProfileEdit from '../../screens/Profile/ProfileEdit';
 import Contacts from '../../screens/Contacts/Contacts';
@@ -200,7 +200,7 @@ const RootNavigator = (): ReactElement => {
 					component={ScannerScreen}
 					options={{ animation: 'slide_from_right' }}
 				/>
-				<Stack.Screen name="LightningRoot" component={LightningNavigator} />
+				<Stack.Screen name="TransferRoot" component={TransferNavigator} />
 				<Stack.Screen name="Settings" component={SettingsNavigator} />
 				<Stack.Screen
 					name="Profile"

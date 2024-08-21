@@ -47,9 +47,9 @@ import ExportToPhone from '../../screens/Settings/Backup/ExportToPhone';
 import ResetAndRestore from '../../screens/Settings/Backup/ResetAndRestore';
 import TagsSettings from '../../screens/Settings/Tags';
 import FeeSettings from '../../screens/Settings/Fee';
-import LightningNavigator, {
-	LightningStackParamList,
-} from '../lightning/LightningNavigator';
+import TransferNavigator, {
+	TransferStackParamList,
+} from '../transfer/TransferNavigator';
 import WebRelay from '../../screens/Settings/WebRelay';
 import Ledger from '../../screens/Settings/Ledger';
 import LedgerTransaction from '../../screens/Settings/Ledger/LedgerTransaction';
@@ -103,7 +103,7 @@ export type SettingsStackParamList = {
 	OpenConnectionSuccess: { name: string };
 	LightningAddConnection: undefined;
 	LightningAddConnectionResult: undefined;
-	LightningRoot: NavigatorScreenParams<LightningStackParamList>;
+	TransferRoot: NavigatorScreenParams<TransferStackParamList>;
 	TagsSettings: undefined;
 	WidgetSettings: undefined;
 	AddressViewer: undefined;
@@ -183,7 +183,7 @@ const SettingsNavigator = (): ReactElement => {
 				name="LightningAddConnectionResult"
 				component={AddConnectionResult}
 			/>
-			<Stack.Screen name="LightningRoot" component={LightningNavigator} />
+			<Stack.Screen name="TransferRoot" component={TransferNavigator} />
 			<Stack.Screen name="TagsSettings" component={TagsSettings} />
 			<Stack.Screen name="FeeSettings" component={FeeSettings} />
 			<Stack.Screen name="WebRelay" component={WebRelay} />

@@ -3,14 +3,14 @@ import { Trans, useTranslation } from 'react-i18next';
 import { BodyMB, Display } from '../../styles/text';
 import InfoScreen from '../../components/InfoScreen';
 import { getRandomOkText } from '../../utils/i18n/helpers';
-import type { LightningScreenProps } from '../../navigation/types';
+import type { TransferScreenProps } from '../../navigation/types';
 
 const imageSrc = require('../../assets/illustrations/check.png');
 
 const Success = ({
 	navigation,
 	route,
-}: LightningScreenProps<'Success'>): ReactElement => {
+}: TransferScreenProps<'Success'>): ReactElement => {
 	const { t } = useTranslation('lightning');
 	const { type } = route.params;
 

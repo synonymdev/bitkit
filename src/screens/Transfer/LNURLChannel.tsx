@@ -8,7 +8,7 @@ import { View as ThemedView } from '../../styles/components';
 import SafeAreaInset from '../../components/SafeAreaInset';
 import NavigationHeader from '../../components/NavigationHeader';
 import { ellipsis } from '../../utils/helpers';
-import type { LightningScreenProps } from '../../navigation/types';
+import type { TransferScreenProps } from '../../navigation/types';
 import {
 	selectedNetworkSelector,
 	selectedWalletSelector,
@@ -20,7 +20,7 @@ import { handleLnurlChannel } from '../../utils/lnurl';
 const LNURLChannel = ({
 	navigation,
 	route,
-}: LightningScreenProps<'LNURLChannel'>): ReactElement => {
+}: TransferScreenProps<'LNURLChannel'>): ReactElement => {
 	const { cParams } = route.params;
 	const { t } = useTranslation('other');
 	const selectedWallet = useAppSelector(selectedWalletSelector);

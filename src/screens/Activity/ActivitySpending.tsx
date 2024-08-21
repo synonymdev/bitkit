@@ -43,7 +43,7 @@ const ActivitySpending = ({
 	const showOnboarding = lightningBalance === 0 && spendingItems.length === 0;
 
 	const onTransfer = (): void => {
-		navigation.navigate('LightningRoot', { screen: 'QuickSetup' });
+		navigation.navigate('TransferRoot', { screen: 'QuickSetup' });
 	};
 
 	const canTransfer = !!lightningBalance;

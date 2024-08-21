@@ -73,11 +73,11 @@ const Suggestions = (): ReactElement => {
 			}
 
 			if (id === 'lightning') {
-				navigation.navigate('LightningRoot', { screen: 'Introduction' });
+				navigation.navigate('TransferRoot', { screen: 'Introduction' });
 			}
 
 			if (id === 'lightningSettingUp') {
-				navigation.navigate('LightningRoot', { screen: 'SettingUp' });
+				navigation.navigate('TransferRoot', { screen: 'SettingUp' });
 			}
 
 			if (id === 'pin') {

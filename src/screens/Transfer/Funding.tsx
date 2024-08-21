@@ -14,11 +14,11 @@ import { useBalance } from '../../hooks/wallet';
 import { isGeoBlockedSelector } from '../../store/reselect/user';
 import { TRANSACTION_DEFAULTS } from '../../utils/wallet/constants';
 import { showBottomSheet } from '../../store/utils/ui';
-import type { LightningScreenProps } from '../../navigation/types';
+import type { TransferScreenProps } from '../../navigation/types';
 
 const Funding = ({
 	navigation,
-}: LightningScreenProps<'Funding'>): ReactElement => {
+}: TransferScreenProps<'Funding'>): ReactElement => {
 	const { t } = useTranslation('lightning');
 	const { onchainBalance } = useBalance();
 	const isGeoBlocked = useAppSelector(isGeoBlockedSelector);

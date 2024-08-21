@@ -33,7 +33,7 @@ import { showToast } from '../../utils/notifications';
 import { convertToSats } from '../../utils/conversion';
 import { getNumberPadText } from '../../utils/numberpad';
 import { getFiatDisplayValues } from '../../utils/displayValues';
-import type { LightningScreenProps } from '../../navigation/types';
+import type { TransferScreenProps } from '../../navigation/types';
 import { lnSetupSelector } from '../../store/reselect/aggregations';
 import { blocktankInfoSelector } from '../../store/reselect/blocktank';
 import {
@@ -46,7 +46,7 @@ import { EUnit } from '../../store/types/wallet';
 
 const QuickSetup = ({
 	navigation,
-}: LightningScreenProps<'QuickSetup'>): ReactElement => {
+}: TransferScreenProps<'QuickSetup'>): ReactElement => {
 	const { t } = useTranslation('lightning');
 	const switchUnit = useSwitchUnit();
 	const { lightningBalance } = useBalance();

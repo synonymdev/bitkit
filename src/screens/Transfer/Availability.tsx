@@ -11,14 +11,14 @@ import { useAppDispatch } from '../../hooks/redux';
 import { refreshWallet } from '../../utils/wallet';
 import { closeAllChannels } from '../../utils/lightning';
 import { startCoopCloseTimer } from '../../store/slices/user';
-import type { LightningScreenProps } from '../../navigation/types';
+import type { TransferScreenProps } from '../../navigation/types';
 import { sleep } from '../../utils/helpers';
 
 const imageSrc = require('../../assets/illustrations/exclamation-mark.png');
 
 const Availability = ({
 	navigation,
-}: LightningScreenProps<'Availability'>): ReactElement => {
+}: TransferScreenProps<'Availability'>): ReactElement => {
 	const { t } = useTranslation('lightning');
 	const [isLoading, setIsLoading] = useState(false);
 	const dispatch = useAppDispatch();

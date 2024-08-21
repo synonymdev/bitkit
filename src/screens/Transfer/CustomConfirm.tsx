@@ -14,7 +14,7 @@ import { useBalance } from '../../hooks/wallet';
 import { useAppSelector } from '../../hooks/redux';
 import { useCurrency, useDisplayValues } from '../../hooks/displayValues';
 import NumberPadWeeks from './NumberPadWeeks';
-import { LightningScreenProps } from '../../navigation/types';
+import { TransferScreenProps } from '../../navigation/types';
 import { sleep } from '../../utils/helpers';
 import {
 	blocktankInfoSelector,
@@ -34,7 +34,7 @@ import {
 const CustomConfirm = ({
 	navigation,
 	route,
-}: LightningScreenProps<'CustomConfirm'>): ReactElement => {
+}: TransferScreenProps<'CustomConfirm'>): ReactElement => {
 	const { t } = useTranslation('lightning');
 	const { spendingAmount, receivingAmount } = route.params;
 	const [weeks, setWeeks] = useState(DEFAULT_CHANNEL_DURATION);

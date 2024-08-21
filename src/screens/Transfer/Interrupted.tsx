@@ -3,13 +3,13 @@ import { Trans, useTranslation } from 'react-i18next';
 
 import { BodyMB, Display } from '../../styles/text';
 import InfoScreen from '../../components/InfoScreen';
-import type { LightningScreenProps } from '../../navigation/types';
+import type { TransferScreenProps } from '../../navigation/types';
 
 const imageSrc = require('../../assets/illustrations/exclamation-mark.png');
 
 const Interrupted = ({
 	navigation,
-}: LightningScreenProps<'Interrupted'>): ReactElement => {
+}: TransferScreenProps<'Interrupted'>): ReactElement => {
 	const { t } = useTranslation('lightning');
 
 	const onContinue = (): void => {

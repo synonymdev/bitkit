@@ -4,13 +4,13 @@ import { Trans, useTranslation } from 'react-i18next';
 import { BodyMB, Display } from '../../styles/text';
 import InfoScreen from '../../components/InfoScreen';
 import { getRandomOkText } from '../../utils/i18n/helpers';
-import type { LightningScreenProps } from '../../navigation/types';
+import type { TransferScreenProps } from '../../navigation/types';
 
 const imageSrc = require('../../assets/illustrations/switch.png');
 
 const LNURLChannelSuccess = ({
 	navigation,
-}: LightningScreenProps<'LNURLChannelSuccess'>): ReactElement => {
+}: TransferScreenProps<'LNURLChannelSuccess'>): ReactElement => {
 	const { t } = useTranslation('other');
 
 	const handleAwesome = (): void => {
