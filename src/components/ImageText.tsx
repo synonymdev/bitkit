@@ -9,18 +9,21 @@ const ImageText = ({
 	description,
 	icon,
 	value,
+	testID,
 	onPress,
 }: {
 	title: string;
 	description: string;
 	icon: ReactElement;
 	value: number;
+	testID?: string;
 	onPress?: () => void;
 }): ReactElement => {
 	// TODO: make this component more reusable
 
 	return (
 		<TouchableOpacity
+			testID={testID}
 			style={styles.container}
 			activeOpacity={onPress ? 0.7 : 1}
 			onPress={onPress}>

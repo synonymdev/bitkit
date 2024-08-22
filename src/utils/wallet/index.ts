@@ -795,68 +795,6 @@ export const getRbfData = async ({
 };
 
 /**
- * Converts IRbfData to ISendTransaction.
- * CURRENTLY NOT USED
- * @param {IRbfData} data
- */
-// export const formatRbfData = async (
-// 	data: IRbfData,
-// ): Promise<Partial<ISendTransaction>> => {
-// 	const { selectedWallet, inputs, outputs, fee, selectedNetwork, message } =
-// 		data;
-
-// 	let changeAddress: undefined | string;
-// 	let satsPerByte = 1;
-// 	let selectedFeeId = EFeeId.none;
-// 	let transactionSize = TRANSACTION_DEFAULTS.baseTransactionSize; //In bytes (250 is about normal)
-// 	let label = ''; // User set label for a given transaction.
-
-// 	const { currentWallet } = getCurrentWallet({
-// 		selectedWallet,
-// 		selectedNetwork,
-// 	});
-// 	const changeAddressesObj = currentWallet.changeAddresses[selectedNetwork];
-// 	const changeAddresses = Object.values(changeAddressesObj).map(
-// 		({ address }) => address.address,
-// 	);
-
-// 	let newOutputs = outputs;
-// 	outputs.map(({ address }, index) => {
-// 		if (address && changeAddresses.includes(address)) {
-// 			changeAddress = address;
-// 			newOutputs.splice(index, 1);
-// 		}
-// 	});
-
-// 	let newFee = 0;
-// 	let newSatsPerByte = satsPerByte;
-// 	while (fee > newFee) {
-// 		newFee = getTotalFee({
-// 			selectedWallet,
-// 			satsPerByte: newSatsPerByte,
-// 			selectedNetwork,
-// 			message,
-// 		});
-// 		newSatsPerByte = newSatsPerByte + 1;
-// 	}
-
-// 	const newFiatAmount = getTransactionOutputValue({ outputs });
-
-// 	return {
-// 		changeAddress: changeAddress || '',
-// 		message,
-// 		label,
-// 		outputs: newOutputs,
-// 		inputs,
-// 		fee: newFee,
-// 		satsPerByte: newSatsPerByte,
-// 		fiatAmount: newFiatAmount,
-// 		selectedFeeId,
-// 		transactionSize,
-// 	};
-// };
-
-/**
  * Generates a newly specified wallet.
  * @param {string} [wallet]
  * @param {string} [mnemonic]
@@ -1180,7 +1118,9 @@ export const setupOnChainWallet = async ({
 		};
 	}
 	updateExchangeRates();
+	const rbf = getSettingsStore().rbf;
 	const createWalletResponse = await Wallet.create({
+		rbf,
 		name,
 		mnemonic,
 		onMessage,

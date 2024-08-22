@@ -336,7 +336,7 @@ const OnchainActivityDetail = ({
 
 	if (isBoosted) {
 		status = (
-			<View style={styles.row}>
+			<View testID="StatusBoosting" style={styles.row}>
 				<TimerIconAlt style={styles.rowIcon} color="yellow" height={14} />
 				<BodySSB color="yellow">{t('activity_boosting')}</BodySSB>
 			</View>
@@ -345,7 +345,7 @@ const OnchainActivityDetail = ({
 
 	if (confirmed) {
 		status = (
-			<View style={styles.row}>
+			<View testID="StatusConfirmed" style={styles.row}>
 				<CheckCircleIcon style={styles.rowIcon} color="green" />
 				<BodySSB color="green">{t('activity_confirmed')}</BodySSB>
 			</View>
@@ -439,7 +439,7 @@ const OnchainActivityDetail = ({
 								<Section
 									title={t('activity_transfer_to_spending')}
 									value={
-										<View style={styles.row}>
+										<View testID="ActivityAmount" style={styles.row}>
 											<LightningHollow
 												style={styles.rowIcon}
 												width={16}
@@ -458,7 +458,7 @@ const OnchainActivityDetail = ({
 								<Section
 									title={t('activity_payment')}
 									value={
-										<View style={styles.row}>
+										<View testID="ActivityAmount" style={styles.row}>
 											<UserIcon
 												style={styles.rowIcon}
 												width={16}
@@ -478,7 +478,7 @@ const OnchainActivityDetail = ({
 							<Section
 								title={t('activity_fee')}
 								value={
-									<View style={styles.row}>
+									<View testID="ActivityFee" style={styles.row}>
 										<TimerIcon style={styles.rowIcon} color="brand" />
 										<Money
 											sats={fees}
@@ -557,6 +557,13 @@ const OnchainActivityDetail = ({
 								text={t(isBoosted ? 'activity_boosted' : 'activity_boost')}
 								icon={<TimerIconAlt color="brand" />}
 								disabled={!showBoost}
+								testID={
+									isBoosted
+										? 'BoostedButton'
+										: showBoost
+										? 'BoostButton'
+										: 'BoostDisabled'
+								}
 								onPress={handleBoost}
 							/>
 							<Button
@@ -578,7 +585,7 @@ const OnchainActivityDetail = ({
 						onPress={(): void => onCopy(txId)}>
 						<Section
 							title={t('activity_tx_id')}
-							value={<BodySSB>{txId}</BodySSB>}
+							value={<BodySSB testID="TXID">{txId}</BodySSB>}
 						/>
 					</TouchableOpacity>
 					{txDetails ? (
@@ -608,13 +615,17 @@ const OnchainActivityDetail = ({
 					{hasBoostedParents && (
 						<>
 							{boostedParents.map((parent, i) => {
-								const title =
-									boostedTransactions[parent].type === EBoostType.rbf
-										? t('activity_boosted_rbf', { num: i + 1 })
-										: t('activity_boosted_cpfp', { num: i + 1 });
+								const rbf = boostedTransactions[parent].type === EBoostType.rbf;
+								const testID = rbf ? 'RBFBoosted' : 'CPFPBoosted';
+								const title = rbf
+									? t('activity_boosted_rbf', { num: i + 1 })
+									: t('activity_boosted_cpfp', { num: i + 1 });
 
 								return (
-									<View key={parent} style={styles.sectionContainer}>
+									<View
+										testID={testID}
+										key={parent}
+										style={styles.sectionContainer}>
 										<TouchableOpacity
 											activeOpacity={0.7}
 											onPress={(): void => {
@@ -622,11 +633,7 @@ const OnchainActivityDetail = ({
 											}}>
 											<Section
 												title={title}
-												value={
-													<BodySSB numberOfLines={1} ellipsizeMode="middle">
-														{parent}
-													</BodySSB>
-												}
+												value={<BodySSB>{parent}</BodySSB>}
 											/>
 										</TouchableOpacity>
 									</View>

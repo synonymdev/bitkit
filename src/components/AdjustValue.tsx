@@ -11,7 +11,7 @@ import { MinusCircledIcon, PlusCircledIcon } from '../styles/icons';
 
 type AdjustValueProps = {
 	value: ReactNode;
-	description?: ReactNode;
+	description: ReactNode;
 	decreaseValue: () => void;
 	increaseValue: () => void;
 	decreaseDisabled?: boolean;
@@ -29,12 +29,13 @@ const AdjustValue = ({
 	style,
 }: AdjustValueProps): ReactElement => {
 	return (
-		<View style={[styles.root, style]}>
+		<View style={[styles.root, style]} testID="AdjustValue">
 			<TouchableOpacity
 				style={styles.icon}
 				activeOpacity={0.9}
 				disabled={decreaseDisabled}
-				onPress={decreaseValue}>
+				onPress={decreaseValue}
+				testID="Minus">
 				<MinusCircledIcon
 					color={decreaseDisabled ? 'gray2' : 'red'}
 					width={36}
@@ -43,17 +44,16 @@ const AdjustValue = ({
 			</TouchableOpacity>
 			<View style={styles.text}>
 				<BodyMSB style={styles.title}>{value}</BodyMSB>
-				{description && (
-					<BodySSB style={styles.description} color="secondary">
-						{description}
-					</BodySSB>
-				)}
+				<BodySSB style={styles.description} color="secondary">
+					{description}
+				</BodySSB>
 			</View>
 			<TouchableOpacity
 				style={styles.icon}
 				activeOpacity={0.9}
 				disabled={increaseDisabled}
-				onPress={increaseValue}>
+				onPress={increaseValue}
+				testID="Plus">
 				<PlusCircledIcon
 					color={increaseDisabled ? 'gray2' : 'green'}
 					width={36}

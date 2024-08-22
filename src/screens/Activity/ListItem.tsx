@@ -114,7 +114,7 @@ const OnchainListItem = ({
 	} else if (isBoosted) {
 		description = t('activity_confirms_in_boosted', { feeRateDescription });
 		icon = (
-			<ThemedView style={styles.icon} color="yellow16">
+			<ThemedView testID="BoostingIcon" style={styles.icon} color="yellow16">
 				<TimerIconAlt height={13} color="yellow" />
 			</ThemedView>
 		);

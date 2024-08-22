@@ -1,9 +1,14 @@
-import { getSelectedNetwork, getSelectedWallet } from './wallet';
-import { EAvailableNetwork } from './networks';
+import { EBoostType, IBoostedTransactions } from 'beignet';
+
 import { getActivityStore, getWalletStore } from '../store/helpers';
 import { IActivityItem, TOnchainActivityItem } from '../store/types/activity';
 import { TWalletName } from '../store/types/wallet';
-import { EBoostType, IBoostedTransactions } from 'beignet';
+import { EAvailableNetwork } from './networks';
+import {
+	getOnChainWallet,
+	getSelectedNetwork,
+	getSelectedWallet,
+} from './wallet';
 
 /**
  * Returns boosted transactions object.
@@ -27,32 +32,19 @@ export const getBoostedTransactions = ({
  * Returns an array of parents for a boosted transaction id.
  * @param {string} txId
  * @param {IBoostedTransactions} [boostedTransactions]
- * @param {TWalletName} [selectedWallet]
- * @param {EAvailableNetwork} [selectedNetwork]
  * @returns {string[]}
  */
 export const getBoostedTransactionParents = ({
 	txId,
 	boostedTransactions,
-	selectedWallet = getSelectedWallet(),
-	selectedNetwork = getSelectedNetwork(),
 }: {
 	txId: string;
 	boostedTransactions?: IBoostedTransactions;
-	selectedWallet?: TWalletName;
-	selectedNetwork?: EAvailableNetwork;
 }): string[] => {
-	if (!boostedTransactions) {
-		boostedTransactions = getBoostedTransactions({
-			selectedWallet,
-			selectedNetwork,
-		});
-	}
-	const boostObj = Object.values(boostedTransactions).find((boostObject) => {
-		return boostObject.childTransaction === txId;
+	return getOnChainWallet().getBoostedTransactionParents({
+		txid: txId,
+		boostedTransactions,
 	});
-
-	return boostObj?.parentTransactions ?? [];
 };
 
 /**
@@ -192,9 +184,9 @@ export const formatBoostedActivityItems = ({
 
 		const parentBoostType = boostedTransactions[rootParent.txId].type;
 
-		// if not a CPFP tx leave as is
+		// if it's an RBF tx leave as is, only mark as boosted
 		if (parentBoostType === EBoostType.rbf) {
-			formattedItems.push(item);
+			formattedItems.push({ ...item, isBoosted: true });
 			return;
 		}
 

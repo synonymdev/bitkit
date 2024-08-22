@@ -1,5 +1,6 @@
 import { AppState } from 'react-native';
 import { err, ok, Result } from '@synonymdev/result';
+import cloneDeep from 'lodash/cloneDeep';
 import {
 	EAddressType,
 	EAvailableNetworks,
@@ -305,7 +306,7 @@ export const setupOnChainTransaction = async ({
 	//addressType,
 	inputTxHashes,
 	utxos,
-	rbf = false,
+	rbf,
 	satsPerByte,
 	outputs,
 }: {
@@ -316,6 +317,7 @@ export const setupOnChainTransaction = async ({
 	satsPerByte?: number; // Set the sats per byte for the transaction.
 	outputs?: IOutput[]; // Used to pre-specify outputs to use.
 } = {}): Promise<TSetupTransactionResponse> => {
+	rbf = rbf ?? getSettingsStore().rbf;
 	const transaction = getOnChainWalletTransaction();
 	return await transaction.setupTransaction({
 		inputTxHashes,
@@ -685,9 +687,10 @@ export const setWalletData = async <K extends keyof IWalletData>(
 	}
 	const { walletName, network, value } = getStorageKeyValues(key);
 	try {
+		const data2 = cloneDeep(data);
 		switch (value) {
 			case 'header': {
-				const header = data as IWalletData[typeof value];
+				const header = data2 as IWalletData[typeof value];
 				const selectedNetwork = getNetworkFromBeignet(network);
 				dispatch(updateHeader({ header, selectedNetwork }));
 
@@ -702,7 +705,7 @@ export const setWalletData = async <K extends keyof IWalletData>(
 				break;
 			}
 			case 'feeEstimates': {
-				const feeEstimates = data as IWalletData[typeof value];
+				const feeEstimates = data2 as IWalletData[typeof value];
 				updateOnchainFeeEstimates({
 					selectedNetwork: getNetworkFromBeignet(network),
 					feeEstimates,
@@ -714,7 +717,7 @@ export const setWalletData = async <K extends keyof IWalletData>(
 				break;
 			}
 			default: {
-				const walletData = data as IWalletData[typeof value];
+				const walletData = data2 as IWalletData[typeof value];
 				dispatch(
 					updateWalletData({
 						selectedWallet: walletName,

@@ -86,6 +86,11 @@ export const rootNavigation = {
 			console.log('rootNavigation not ready');
 		}
 	},
+	goBack(): void {
+		if (navigationRef.isReady()) {
+			navigationRef.goBack();
+		}
+	},
 };
 
 const RootNavigator = (): ReactElement => {

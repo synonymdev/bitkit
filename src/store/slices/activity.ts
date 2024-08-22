@@ -1,10 +1,6 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { mergeActivityItems } from '../../utils/activity';
-import {
-	EActivityType,
-	IActivityItem,
-	TOnchainActivityItem,
-} from '../types/activity';
+import { IActivityItem } from '../types/activity';
 
 export type TActivity = { items: IActivityItem[] };
 
@@ -23,21 +19,8 @@ export const activitySlice = createSlice({
 		updateActivityItems: (state, action: PayloadAction<IActivityItem[]>) => {
 			state.items = mergeActivityItems(state.items, action.payload);
 		},
-		updateOnchainActivityItem: (
-			state,
-			action: PayloadAction<{
-				id: string;
-				data: Partial<TOnchainActivityItem>;
-			}>,
-		) => {
-			state.items = state.items.map((item) => {
-				const isOnchain = item.activityType === EActivityType.onchain;
-				if (isOnchain && item.id === action.payload.id) {
-					return { ...item, ...action.payload.data };
-				} else {
-					return item;
-				}
-			});
+		removeActivityItem: (state, action: PayloadAction<string>) => {
+			state.items = state.items.filter((item) => item.id !== action.payload);
 		},
 		resetActivityState: () => initialActivityState,
 	},
@@ -48,9 +31,9 @@ const { actions, reducer } = activitySlice;
 export const {
 	addActivityItem,
 	addActivityItems,
-	updateOnchainActivityItem,
-	updateActivityItems,
+	removeActivityItem,
 	resetActivityState,
+	updateActivityItems,
 } = actions;
 
 export default reducer;

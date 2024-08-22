@@ -1,18 +1,36 @@
 import React, { memo, ReactElement, useEffect, useMemo, useState } from 'react';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { validateTransaction } from 'beignet';
+import { EBoostType, validateTransaction } from 'beignet';
 
-import colors from '../../styles/colors';
-import { BodyMSB, BodySSB, BodyS } from '../../styles/text';
-import { TimerIconAlt } from '../../styles/icons';
-import BottomSheetWrapper from '../../components/BottomSheetWrapper';
-import SwipeToConfirm from '../../components/SwipeToConfirm';
-import SafeAreaInset from '../../components/SafeAreaInset';
 import AdjustValue from '../../components/AdjustValue';
-
-import { closeSheet } from '../../store/slices/ui';
+import BottomSheetNavigationHeader from '../../components/BottomSheetNavigationHeader';
+import BottomSheetWrapper from '../../components/BottomSheetWrapper';
+import Button from '../../components/buttons/Button';
+import ImageText from '../../components/ImageText';
+import Money from '../../components/Money';
+import SafeAreaInset from '../../components/SafeAreaInset';
+import SwipeToConfirm from '../../components/SwipeToConfirm';
+import {
+	useBottomSheetBackPress,
+	useSnapPoints,
+} from '../../hooks/bottomSheet';
+import { useFeeText } from '../../hooks/fees';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { resetSendTransaction } from '../../store/actions/wallet';
+import { viewControllerSelector } from '../../store/reselect/ui';
+import {
+	selectedNetworkSelector,
+	selectedWalletSelector,
+	transactionSelector,
+} from '../../store/reselect/wallet';
+import { closeSheet } from '../../store/slices/ui';
+import { TOnchainActivityItem } from '../../store/types/activity';
+import { EUnit } from '../../store/types/wallet';
+import colors from '../../styles/colors';
+import { TimerIconAlt } from '../../styles/icons';
+import { BodyMSB, BodyS, BodySSB } from '../../styles/text';
+import { showToast } from '../../utils/notifications';
 import {
 	adjustFee,
 	broadcastBoost,
@@ -20,27 +38,7 @@ import {
 	setupBoost,
 	updateFee,
 } from '../../utils/wallet/transactions';
-import { showToast } from '../../utils/notifications';
-import { TOnchainActivityItem } from '../../store/types/activity';
-import {
-	useBottomSheetBackPress,
-	useSnapPoints,
-} from '../../hooks/bottomSheet';
-import BottomSheetNavigationHeader from '../../components/BottomSheetNavigationHeader';
-import Button from '../../components/buttons/Button';
-import ImageText from '../../components/ImageText';
-import Money from '../../components/Money';
-import { useFeeText } from '../../hooks/fees';
-import { useAppDispatch, useAppSelector } from '../../hooks/redux';
-import { viewControllerSelector } from '../../store/reselect/ui';
-import { updateOnchainActivityItem } from '../../store/slices/activity';
-import {
-	selectedNetworkSelector,
-	selectedWalletSelector,
-	transactionSelector,
-} from '../../store/reselect/wallet';
-import { onChainFeesSelector } from '../../store/reselect/fees';
-import { EUnit } from '../../store/types/wallet';
+import { rootNavigation } from '../../navigation/root/RootNavigator';
 
 const BoostForm = ({
 	activityItem,
@@ -49,7 +47,6 @@ const BoostForm = ({
 }): ReactElement => {
 	const { t } = useTranslation('wallet');
 	const dispatch = useAppDispatch();
-	const feeEstimates = useAppSelector(onChainFeesSelector);
 	const transaction = useAppSelector(transactionSelector);
 	const selectedNetwork = useAppSelector(selectedNetworkSelector);
 	const selectedWallet = useAppSelector(selectedWalletSelector);
@@ -57,24 +54,17 @@ const BoostForm = ({
 	const [preparing, setPreparing] = useState(true);
 	const [loading, setLoading] = useState(false);
 	const [showCustom, setShowCustom] = useState(false);
+	const [origFee, setOrigFee] = useState(1);
 	const boostData = useMemo(
 		() => canBoost(activityItem.txId),
 		[activityItem.txId],
 	);
 
-	const activityItemFee = activityItem.fee;
-	const recommendedFee = feeEstimates.fast;
 	const { description: duration } = useFeeText(transaction.satsPerByte);
 
 	const boostFee = useMemo(() => {
-		if (!boostData.canBoost) {
-			return 0;
-		}
-		if (!boostData.rbf) {
-			return transaction.fee;
-		}
-		return Math.abs(transaction.fee - activityItemFee);
-	}, [boostData.canBoost, boostData.rbf, transaction.fee, activityItemFee]);
+		return boostData.canBoost ? transaction.fee : 0;
+	}, [boostData.canBoost, transaction.fee]);
 
 	useEffect(() => {
 		(async (): Promise<void> => {
@@ -84,11 +74,11 @@ const BoostForm = ({
 				txid: activityItem.txId,
 			});
 			setPreparing(false);
-
 			if (res.isErr()) {
-				console.log(res.error.message);
 				dispatch(closeSheet('boostPrompt'));
+				return;
 			}
+			setOrigFee(res.value.satsPerByte!);
 		})();
 
 		return (): void => {
@@ -96,25 +86,10 @@ const BoostForm = ({
 		};
 	}, [activityItem.txId, selectedNetwork, selectedWallet, dispatch]);
 
-	// Set fee to recommended value
-	useEffect(() => {
-		if (!preparing && !showCustom) {
-			const res = updateFee({
-				satsPerByte: recommendedFee,
-				transaction,
-			});
-			if (res.isErr()) {
-				showToast({
-					type: 'warning',
-					title: t('send_fee_error'),
-					description: res.error.message,
-				});
-			}
-		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [preparing, showCustom, selectedNetwork, selectedWallet]);
-
 	const onSwitchView = (): void => {
+		if (showCustom) {
+			updateFee({ satsPerByte: origFee });
+		}
 		setShowCustom((prevState) => !prevState);
 	};
 
@@ -160,20 +135,11 @@ const BoostForm = ({
 		}
 
 		try {
+			rootNavigation.goBack();
 			const response = await broadcastBoost({
-				selectedWallet,
-				selectedNetwork,
 				oldTxId: activityItem.txId,
-				oldFee: activityItem.fee,
 			});
 			if (response.isOk()) {
-				// Optimistically/immediately update activity item
-				dispatch(
-					updateOnchainActivityItem({
-						id: activityItem.id,
-						data: response.value,
-					}),
-				);
 				dispatch(closeSheet('boostPrompt'));
 				showToast({
 					type: 'success',
@@ -208,7 +174,7 @@ const BoostForm = ({
 				sats={transaction.satsPerByte}
 				unit={EUnit.BTC}
 				size="bodyMSB"
-				symbol={true}
+				symbol={false}
 			/>
 			<BodyMSB> {t('sat_vbyte_compact')}</BodyMSB>
 		</View>
@@ -223,7 +189,11 @@ const BoostForm = ({
 				symbol={true}
 				unitType="secondary"
 			/>
-			<BodySSB color="secondary"> {duration}</BodySSB>
+			{/* we can only show duration for RBF, because in case of CPFP we need to calculate averate fee */}
+			<BodySSB color="secondary">
+				{' '}
+				{transaction.boostType === EBoostType.rbf && duration}
+			</BodySSB>
 		</View>
 	);
 
@@ -233,7 +203,11 @@ const BoostForm = ({
 				{t(showCustom ? 'boost_fee_custom' : 'boost_fee_recomended')}
 			</BodyS>
 
-			<View style={styles.boostForm}>
+			<View
+				style={styles.boostForm}
+				testID={
+					transaction.boostType === EBoostType.rbf ? 'RBFBoost' : 'CPFPBoost'
+				}>
 				{showCustom ? (
 					<AdjustValue
 						value={Title}
@@ -247,6 +221,7 @@ const BoostForm = ({
 						title={t('boost')}
 						description={duration}
 						value={Number(boostFee.toFixed(0))}
+						testID="CostomFeeButton"
 						icon={<TimerIconAlt color="yellow" width={26} height={26} />}
 						onPress={onSwitchView}
 					/>
@@ -259,6 +234,7 @@ const BoostForm = ({
 							text={t('boost_recomended_button')}
 							textStyle={styles.buttonText}
 							onPress={onSwitchView}
+							testID="RecomendedFeeButton"
 						/>
 					)}
 

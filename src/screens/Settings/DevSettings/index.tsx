@@ -18,7 +18,10 @@ import { resetBlocktankState } from '../../../store/slices/blocktank';
 import { resetFeesState } from '../../../store/slices/fees';
 import { resetLightningState } from '../../../store/slices/lightning';
 import { resetMetadataState } from '../../../store/slices/metadata';
-import { resetSettingsState } from '../../../store/slices/settings';
+import {
+	resetSettingsState,
+	updateSettings,
+} from '../../../store/slices/settings';
 import { resetSlashtagsState } from '../../../store/slices/slashtags';
 import { resetWidgetsState } from '../../../store/slices/widgets';
 import { resetTodosState } from '../../../store/slices/todos';
@@ -30,6 +33,7 @@ import {
 	selectedNetworkSelector,
 	selectedWalletSelector,
 } from '../../../store/reselect/wallet';
+import { settingsSelector } from '../../../store/reselect/settings';
 import SettingsView from './../SettingsView';
 import { EItemType, IListData } from '../../../components/List';
 import type { SettingsScreenProps } from '../../../navigation/types';
@@ -55,6 +59,7 @@ const DevSettings = ({
 	const selectedNetwork = useAppSelector(selectedNetworkSelector);
 	const addressType = useAppSelector(addressTypeSelector);
 	const warnings = useAppSelector(warningsSelector);
+	const { rbf } = useAppSelector(settingsSelector);
 
 	const clearWebRelayCache = (): void => {
 		const keys = storage.getAllKeys();
@@ -129,6 +134,15 @@ const DevSettings = ({
 					testID: 'FeeSettings',
 					onPress: (): void => {
 						navigation.navigate('Ledger');
+					},
+				},
+				{
+					title: t('RBF'),
+					type: EItemType.switch,
+					testID: 'RBF',
+					enabled: rbf,
+					onPress: (): void => {
+						dispatch(updateSettings({ rbf: !rbf }));
 					},
 				},
 			],

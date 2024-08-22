@@ -1,50 +1,10 @@
 import { err, ok, Result } from '@synonymdev/result';
-import validate, { getAddressInfo } from 'bitcoin-address-validation';
-
-import { __E2E__ } from '../../constants/env';
-import { EAvailableNetwork } from '../networks';
-import { reduceValue } from '../helpers';
-import { btcToSats } from '../conversion';
-import { TWalletName } from '../../store/types/wallet';
-import {
-	getBalance,
-	getCurrentWallet,
-	getOnChainBalance,
-	getOnChainWallet,
-	getOnChainWalletElectrum,
-	getOnChainWalletTransaction,
-	getRbfData,
-	getSelectedNetwork,
-	getSelectedWallet,
-	getTransactionById,
-	refreshWallet,
-} from './index';
-import {
-	getFeesStore,
-	getSettingsStore,
-	getWalletStore,
-} from '../../store/helpers';
-import {
-	addBoostedTransaction,
-	deleteOnChainTransactionById,
-	setupOnChainTransaction,
-	updateSendTransaction,
-} from '../../store/actions/wallet';
-import {
-	ETransactionSpeed,
-	TCoinSelectPreference,
-} from '../../store/types/settings';
-import { showToast } from '../notifications';
-import { TOnchainActivityItem } from '../../store/types/activity';
-import { initialFeesState } from '../../store/slices/fees';
-import { TRANSACTION_DEFAULTS } from './constants';
-import i18n from '../i18n';
 import {
 	EAddressType,
 	EBoostType,
 	EFeeId,
-	EPaymentType,
 	getByteCount,
+	ICanBoostResponse,
 	IOnchainFees,
 	IOutput,
 	ISendTransaction,
@@ -52,6 +12,35 @@ import {
 	TGetByteCountInputs,
 	TGetByteCountOutputs,
 } from 'beignet';
+import validate, { getAddressInfo } from 'bitcoin-address-validation';
+
+import { __E2E__ } from '../../constants/env';
+import {
+	addBoostedTransaction,
+	updateSendTransaction,
+} from '../../store/actions/wallet';
+import { dispatch, getFeesStore, getSettingsStore } from '../../store/helpers';
+import { removeActivityItem } from '../../store/slices/activity';
+import { initialFeesState } from '../../store/slices/fees';
+import {
+	ETransactionSpeed,
+	TCoinSelectPreference,
+} from '../../store/types/settings';
+import { TWalletName } from '../../store/types/wallet';
+import { reduceValue } from '../helpers';
+import i18n from '../i18n';
+import { EAvailableNetwork } from '../networks';
+import { showToast } from '../notifications';
+import { TRANSACTION_DEFAULTS } from './constants';
+import {
+	getBalance,
+	getOnChainWallet,
+	getOnChainWalletElectrum,
+	getOnChainWalletTransaction,
+	getSelectedNetwork,
+	getSelectedWallet,
+	refreshWallet,
+} from './index';
 
 /**
  * Constructs the parameter for getByteCount via an array of addresses.
@@ -91,43 +80,13 @@ export const getTotalFee = ({
 	transaction?: Partial<ISendTransaction>;
 	fundingLightning?: boolean;
 }): number => {
-	const baseTransactionSize = TRANSACTION_DEFAULTS.recommendedBaseFee;
-	try {
-		if (!transaction) {
-			const txDataResponse = getOnchainTransactionData();
-			if (txDataResponse.isErr()) {
-				// If error, return minimum fallback fee.
-				return baseTransactionSize * satsPerByte;
-			}
-			transaction = txDataResponse.value;
-		}
-
-		const inputs = transaction.inputs || [];
-		const outputs = transaction.outputs || [];
-		const changeAddress = transaction.changeAddress;
-
-		//Group all input & output addresses into their respective array.
-		const inputAddresses = inputs.map((input) => input.address);
-		const outputAddresses = outputs.map((output) => output.address);
-
-		//No need for a change address when draining the wallet
-		if (changeAddress && !transaction.max) {
-			outputAddresses.push(changeAddress);
-		}
-
-		//Determine the address type of each address and construct the object for fee calculation
-		const inputParam = constructByteCountParam(inputAddresses);
-		const outputParam = constructByteCountParam(outputAddresses);
-		//Increase P2WPKH output address by one for lightning funding calculation.
-		if (fundingLightning) {
-			outputParam.P2WPKH = (outputParam.P2WPKH || 0) + 1;
-		}
-
-		const transactionByteCount = getByteCount(inputParam, outputParam, message);
-		return transactionByteCount * satsPerByte;
-	} catch {
-		return baseTransactionSize * satsPerByte;
-	}
+	const wallet = getOnChainWallet();
+	return wallet.transaction.getTotalFee({
+		satsPerByte,
+		message,
+		transaction,
+		fundingLightning,
+	});
 };
 
 interface ICreateTransaction {
@@ -452,61 +411,13 @@ export const autoCoinSelect = async ({
 	}
 };
 
-export interface ICanBoostResponse {
-	canBoost: boolean;
-	rbf: boolean;
-	cpfp: boolean;
-}
-
 /**
  * Used to determine if we're able to boost a transaction either by RBF or CPFP.
  * @param {string} txid
  */
 export const canBoost = (txid: string): ICanBoostResponse => {
-	const failure = { canBoost: false, rbf: false, cpfp: false };
-	try {
-		const settings = getSettingsStore();
-		const rbfEnabled = settings.rbf;
-		const transactionResponse = getTransactionById({ txid });
-		if (transactionResponse.isErr()) {
-			return failure;
-		}
-
-		const balance = getOnChainBalance();
-		const { currentWallet, selectedNetwork } = getCurrentWallet();
-
-		const hasUtxo = currentWallet.utxos[selectedNetwork].length > 0;
-
-		const { type, matchedOutputValue, totalOutputValue, fee, height } =
-			transactionResponse.value;
-
-		// transaction already confirmed
-		if (height && height > 0) {
-			return failure;
-		}
-
-		/*
-		 * For an RBF, technically we can reduce the output value and apply it to the fee,
-		 * but this might cause issues when paying a merchant that requested a specific amount.
-		 */
-		const rbf =
-			rbfEnabled &&
-			type === EPaymentType.sent &&
-			balance >= TRANSACTION_DEFAULTS.recommendedBaseFee &&
-			matchedOutputValue !== totalOutputValue &&
-			matchedOutputValue > fee &&
-			btcToSats(matchedOutputValue) > TRANSACTION_DEFAULTS.recommendedBaseFee;
-
-		// Performing a CPFP tx requires a new tx and higher fee.
-		const cpfp =
-			hasUtxo &&
-			btcToSats(matchedOutputValue) >=
-				TRANSACTION_DEFAULTS.recommendedBaseFee * 3;
-
-		return { canBoost: rbf || cpfp, rbf, cpfp };
-	} catch (e) {
-		return failure;
-	}
+	const wallet = getOnChainWallet();
+	return wallet.canBoost(txid);
 };
 
 // TODO: get actual routing fee (Currently generous with the fee for wiggle room to prevent routing failures)
@@ -949,40 +860,26 @@ export const setupBoost = async ({
 		return err('Unable to boost this transaction.');
 	}
 	if (canBoostResponse.rbf) {
-		return await setupRbf({ txid });
-	} else {
-		return await setupCpfp({ txid });
+		const rbf = await setupRbf({ txid });
+		if (rbf.isOk()) {
+			return rbf;
+		}
 	}
+	// fallback to CPFP
+	return await setupCpfp({ txid });
 };
 
 /**
  * Sets up a CPFP transaction.
  * @param {string} [txid]
- * @param {number} [satsPerByte]
  */
 export const setupCpfp = async ({
 	txid,
-	satsPerByte,
 }: {
-	txid?: string; // txid of utxo to include in the CPFP tx. Undefined will gather all utxo's.
-	satsPerByte?: number;
+	txid: string;
 }): Promise<Result<ISendTransaction>> => {
 	const transaction = getOnChainWalletTransaction();
-	// Set fastest fee-rate, if able. Otherwise, set the highest fee-rate.
-	if (!satsPerByte) {
-		const fees = getFeesStore().onchain;
-		satsPerByte = fees[ETransactionSpeed.fast];
-		const wallet = getOnChainWallet();
-		const feeInfo = wallet.getFeeInfo();
-		if (feeInfo.isErr()) {
-			return err(feeInfo.error.message);
-		}
-		const { maxSatPerByte } = feeInfo.value;
-		if (!satsPerByte || satsPerByte > maxSatPerByte) {
-			satsPerByte = maxSatPerByte;
-		}
-	}
-	return await transaction.setupCpfp({ txid, satsPerByte });
+	return await transaction.setupCpfp({ txid });
 };
 
 /**
@@ -993,76 +890,9 @@ export const setupRbf = async ({
 	txid,
 }: {
 	txid: string;
-}): Promise<Result<Partial<ISendTransaction>>> => {
-	try {
-		await setupOnChainTransaction({
-			rbf: true,
-		});
-		const response = await getRbfData({
-			txHash: { tx_hash: txid },
-		});
-		if (response.isErr()) {
-			if (response.error.message === 'cpfp') {
-				return await setupCpfp({
-					txid,
-				});
-			}
-			return err(response.error.message);
-		}
-		const transaction = response.value;
-		let newFee = transaction.fee;
-		let _satsPerByte = 1;
-		// Increment satsPerByte until the fee is greater than the previous + the default base fee.
-		while (
-			newFee <=
-			transaction.fee + TRANSACTION_DEFAULTS.recommendedBaseFee
-		) {
-			newFee = getTotalFee({
-				transaction,
-				satsPerByte: _satsPerByte,
-				message: transaction.message,
-			});
-			_satsPerByte++;
-		}
-		const inputTotal = getTransactionInputValue({
-			inputs: transaction.inputs,
-		});
-		// Ensure we have enough funds to perform an RBF transaction.
-		const outputTotal = getTransactionOutputValue({
-			outputs: transaction.outputs,
-		});
-		if (outputTotal + newFee >= inputTotal || newFee >= inputTotal / 2) {
-			/*
-			 * We could always pull the fee from the output total,
-			 * but this may negatively impact the transaction made by the user.
-			 * (Ex: Reducing the amount paid to the recipient).
-			 * We could always include additional unconfirmed utxo's to cover the fee as well,
-			 * but this may negatively impact the user's privacy by including sensitive utxos.
-			 * Instead of allowing either scenario, we attempt a CPFP instead.
-			 */
-			console.log(
-				'Not enough sats to support an RBF transaction. Attempting to CPFP instead.',
-			);
-			return await setupCpfp({
-				txid,
-			});
-		}
-		const newTransaction: Partial<ISendTransaction> = {
-			...transaction,
-			minFee: _satsPerByte,
-			fee: newFee,
-			satsPerByte: _satsPerByte,
-			rbf: true,
-			boostType: EBoostType.rbf,
-		};
-
-		updateSendTransaction({
-			transaction: newTransaction,
-		});
-		return ok(newTransaction);
-	} catch (e) {
-		return err(e);
-	}
+}): Promise<Result<ISendTransaction>> => {
+	const transaction = getOnChainWalletTransaction();
+	return await transaction.setupRbf({ txid });
 };
 
 /**
@@ -1070,19 +900,12 @@ export const setupRbf = async ({
  * @param {TWalletName} [selectedWallet]
  * @param {EAvailableNetwork} [selectedNetwork]
  * @param {string} oldTxId
- * @param {number} oldFee
  */
 export const broadcastBoost = async ({
-	selectedWallet = getSelectedWallet(),
-	selectedNetwork = getSelectedNetwork(),
 	oldTxId,
-	oldFee,
 }: {
-	selectedWallet?: TWalletName;
-	selectedNetwork?: EAvailableNetwork;
 	oldTxId: string;
-	oldFee: number;
-}): Promise<Result<Partial<TOnchainActivityItem>>> => {
+}): Promise<Result<String>> => {
 	try {
 		const transactionDataResponse = getOnchainTransactionData();
 		if (transactionDataResponse.isErr()) {
@@ -1103,32 +926,23 @@ export const broadcastBoost = async ({
 			return err(broadcastResult.error.message);
 		}
 		const newTxId = broadcastResult.value;
-		let transactions =
-			getWalletStore().wallets[selectedWallet].transactions[selectedNetwork];
-		await addBoostedTransaction({
+		const addBoost = await addBoostedTransaction({
 			newTxId,
 			oldTxId,
 			type: transaction.boostType,
 			fee: transaction.fee,
 		});
-
-		// Only delete the old transaction if it was an RBF, not a CPFP.
-		if (transaction.boostType === EBoostType.rbf && oldTxId in transactions) {
-			await deleteOnChainTransactionById({
-				txid: oldTxId,
-			});
+		if (addBoost.isErr()) {
+			return err(addBoost.error.message);
 		}
 
-		const updatedActivityItemData: Partial<TOnchainActivityItem> = {
-			txId: newTxId,
-			address: transaction.changeAddress,
-			fee: oldFee + transaction.fee,
-			isBoosted: true,
-			timestamp: new Date().getTime(),
-		};
+		// Only delete the old ActivityItem if it was an RBF
+		if (transaction.boostType === EBoostType.rbf) {
+			dispatch(removeActivityItem(oldTxId));
+		}
 
 		await refreshWallet();
-		return ok(updatedActivityItemData);
+		return ok('Successfully broadcasted boosted transaction.');
 	} catch (e) {
 		return err(e);
 	}
