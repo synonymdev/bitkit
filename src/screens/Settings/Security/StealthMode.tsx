@@ -1,7 +1,7 @@
 import React, { memo, ReactElement, useMemo } from 'react';
 import { Image, StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { changeIcon } from 'react-native-change-icon';
+import { changeIcon } from '@synonymdev/react-native-change-icon';
 
 import { BodyM } from '../../../styles/text';
 import GradientBackground from '../../../components/GradientBackground';

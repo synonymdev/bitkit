@@ -1,4 +1,4 @@
-import { changeIcon } from 'react-native-change-icon';
+import { changeIcon } from '@synonymdev/react-native-change-icon';
 import { resetKeychainValue, setKeychainValue } from '../keychain';
 import { dispatch, getSettingsStore } from '../../store/helpers';
 import { updateSettings } from '../../store/slices/settings';

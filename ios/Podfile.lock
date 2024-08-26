@@ -1411,7 +1411,7 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - RNKeychain (8.2.0):
+  - RNKeychain (8.2.2):
     - React-Core
   - RNLocalize (3.0.2):
     - React-Core
@@ -1549,7 +1549,7 @@ DEPENDENCIES:
   - react-native-address-generator (from `../node_modules/react-native-address-generator`)
   - react-native-biometrics (from `../node_modules/react-native-biometrics`)
   - "react-native-blur (from `../node_modules/@react-native-community/blur`)"
-  - react-native-change-icon (from `../node_modules/react-native-change-icon`)
+  - "react-native-change-icon (from `../node_modules/@synonymdev/react-native-change-icon`)"
   - react-native-image-picker (from `../node_modules/react-native-image-picker`)
   - "react-native-ldk (from `../node_modules/@synonymdev/react-native-ldk`)"
   - react-native-mmkv (from `../node_modules/react-native-mmkv`)
@@ -1590,7 +1590,7 @@ DEPENDENCIES:
   - RNExitApp (from `../node_modules/react-native-exit-app`)
   - RNFS (from `../node_modules/react-native-fs`)
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
-  - RNKeychain (from `../node_modules/react-native-keychain`)
+  - "RNKeychain (from `../node_modules/@synonymdev/react-native-keychain`)"
   - RNLocalize (from `../node_modules/react-native-localize`)
   - "RNNotifee (from `../node_modules/@notifee/react-native`)"
   - RNPermissions (from `../node_modules/react-native-permissions`)
@@ -1687,7 +1687,7 @@ EXTERNAL SOURCES:
   react-native-blur:
     :path: "../node_modules/@react-native-community/blur"
   react-native-change-icon:
-    :path: "../node_modules/react-native-change-icon"
+    :path: "../node_modules/@synonymdev/react-native-change-icon"
   react-native-image-picker:
     :path: "../node_modules/react-native-image-picker"
   react-native-ldk:
@@ -1769,7 +1769,7 @@ EXTERNAL SOURCES:
   RNGestureHandler:
     :path: "../node_modules/react-native-gesture-handler"
   RNKeychain:
-    :path: "../node_modules/react-native-keychain"
+    :path: "../node_modules/@synonymdev/react-native-keychain"
   RNLocalize:
     :path: "../node_modules/react-native-localize"
   RNNotifee:
@@ -1878,7 +1878,7 @@ SPEC CHECKSUMS:
   RNExitApp: 00036cabe7bacbb413d276d5520bf74ba39afa6a
   RNFS: 4ac0f0ea233904cb798630b3c077808c06931688
   RNGestureHandler: 9b113eb9b7a4cbe66e1dbf4d9914281863ee0703
-  RNKeychain: bfe3d12bf4620fe488771c414530bf16e88f3678
+  RNKeychain: 35f92386e7f8548e3e60e7441121afbe8c62d8e4
   RNLocalize: dbea38dcb344bf80ff18a1757b1becf11f70cae4
   RNNotifee: 8e2d3df3f0e9ce8f5d1fe4c967431138190b6175
   RNPermissions: 2c0eec471f4de66d04d226c339898d10a6e123c4
@@ -1893,7 +1893,7 @@ SPEC CHECKSUMS:
   SocketRocket: abac6f5de4d4d62d24e11868d7a2f427e0ef940d
   sodium-react-native-direct: 6bc246dbb4ec7c28093675e98b2846ce667f739d
   SSZipArchive: fe6a26b2a54d5a0890f2567b5cc6de5caa600aef
-  Yoga: 04f1db30bb810187397fa4c37dd1868a27af229c
+  Yoga: 88480008ccacea6301ff7bf58726e27a72931c8d
   ZXingObjC: 8898711ab495761b2dbbdec76d90164a6d7e14c5
 
 PODFILE CHECKSUM: 8c2c3949d19327675be00d5f066e8eab99dd1e04
