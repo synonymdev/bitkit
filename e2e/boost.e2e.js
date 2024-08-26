@@ -52,6 +52,15 @@ d('Boost', () => {
 			return;
 		}
 
+		// switch off RBF mode
+		await element(by.id('Settings')).tap();
+		if (!__DEV__) {
+			await element(by.id('DevOptions')).multiTap(5); // enable dev mode
+		}
+		await element(by.id('DevSettings')).tap();
+		await element(by.id('RBF')).tap();
+		await launchAndWait();
+
 		// fund the wallet
 		await element(by.id('Receive')).tap();
 		let { label: wAddress } = await element(by.id('QRCode')).getAttributes();
@@ -76,11 +85,10 @@ d('Boost', () => {
 		await sleep(500); // wait for keyboard to hide
 		await element(by.id('AddressContinue')).tap();
 		await element(by.id('N1').withAncestor(by.id('SendAmountNumberPad'))).tap();
-		for (let i = 0; i < 4; i++) {
-			await element(
-				by.id('N0').withAncestor(by.id('SendAmountNumberPad')),
-			).tap();
-		}
+		await element(by.id('N0').withAncestor(by.id('SendAmountNumberPad'))).tap();
+		await element(
+			by.id('N000').withAncestor(by.id('SendAmountNumberPad')),
+		).tap();
 		await expect(element(by.text('10 000'))).toBeVisible();
 		await element(by.id('ContinueAmount')).tap();
 		await element(by.id('GRAB')).swipe('right', 'slow', 0.95, 0.5, 0.5); // Swipe to confirm
@@ -164,15 +172,6 @@ d('Boost', () => {
 			return;
 		}
 
-		// switch to RBF mode
-		await element(by.id('Settings')).tap();
-		if (!__DEV__) {
-			await element(by.id('DevOptions')).multiTap(5); // enable dev mode
-		}
-		await element(by.id('DevSettings')).tap();
-		await element(by.id('RBF')).tap();
-		await launchAndWait();
-
 		// fund the wallet
 		await element(by.id('Receive')).tap();
 		let { label: wAddress } = await element(by.id('QRCode')).getAttributes();
@@ -197,11 +196,10 @@ d('Boost', () => {
 		await sleep(500); // wait for keyboard to hide
 		await element(by.id('AddressContinue')).tap();
 		await element(by.id('N1').withAncestor(by.id('SendAmountNumberPad'))).tap();
-		for (let i = 0; i < 4; i++) {
-			await element(
-				by.id('N0').withAncestor(by.id('SendAmountNumberPad')),
-			).tap();
-		}
+		await element(by.id('N0').withAncestor(by.id('SendAmountNumberPad'))).tap();
+		await element(
+			by.id('N000').withAncestor(by.id('SendAmountNumberPad')),
+		).tap();
 		await expect(element(by.text('10 000'))).toBeVisible();
 		await element(by.id('ContinueAmount')).tap();
 		await element(by.id('GRAB')).swipe('right', 'slow', 0.95, 0.5, 0.5); // Swipe to confirm
