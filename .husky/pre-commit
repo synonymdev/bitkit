@@ -1,6 +1,1 @@
-#!/usr/bin/env sh
-. "$(dirname -- "$0")/_/husky.sh"
-
 yarn nano-staged
-
-# yarn nano-staged && yarn tsc:check && yarn test
