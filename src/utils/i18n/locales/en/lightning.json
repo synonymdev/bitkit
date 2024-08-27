@@ -392,6 +392,12 @@
 	"channel_node_id": {
 		"string": "Peer ID"
 	},
+	"channel_id": {
+		"string": "Channel id"
+	},
+	"channel_point": {
+		"string": "Channel point"
+	},
 	"closure_reason": {
 		"string": "Closure reason"
 	},

@@ -470,6 +470,43 @@ const ChannelDetails = ({
 							value={<CaptionB>{channelCloseTime}</CaptionB>}
 						/>
 					)}
+					{channel.channel_id && (
+						<Section
+							name={t('channel_id')}
+							value={
+								<CaptionB ellipsizeMode="middle" numberOfLines={1}>
+									{channel.channel_id}
+								</CaptionB>
+							}
+							onPress={(): void => {
+								Clipboard.setString(channel.channel_id);
+								showToast({
+									type: 'success',
+									title: t('copied'),
+									description: channel.channel_id,
+								});
+							}}
+						/>
+					)}
+					{channel.funding_txid && (
+						<Section
+							name={t('channel_point')}
+							value={
+								<CaptionB ellipsizeMode="middle" numberOfLines={1}>
+									{channel.funding_txid}:{channel.funding_output_index}
+								</CaptionB>
+							}
+							onPress={(): void => {
+								const p = `${channel.funding_txid}:${channel.funding_output_index}`;
+								Clipboard.setString(p);
+								showToast({
+									type: 'success',
+									title: t('copied'),
+									description: p,
+								});
+							}}
+						/>
+					)}
 					{channel.counterparty_node_id && (
 						<Section
 							name={t('channel_node_id')}
