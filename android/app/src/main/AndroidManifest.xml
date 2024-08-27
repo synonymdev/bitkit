@@ -26,8 +26,8 @@
   <application
     android:name=".MainApplication"
     android:label="@string/app_name"
-    android:icon="@mipmap/ic_launcher_default"
-    android:roundIcon="@mipmap/ic_launcher_default_round"
+    android:icon="@mipmap/ic_launcher_orange"
+    android:roundIcon="@mipmap/ic_launcher_orange_round"
     android:allowBackup="false"
     android:usesCleartextTraffic="true"
     android:theme="@style/AppTheme"
@@ -41,6 +41,10 @@
       android:windowSoftInputMode="adjustPan"
       android:exported="true"
       android:theme="@style/SplashTheme">
+      <intent-filter>
+        <action android:name="android.intent.action.MAIN" />
+        <category android:name="android.intent.category.LAUNCHER" />
+      </intent-filter>
 
       <!-- Universal Links -->
       <intent-filter android:autoVerify="true">
@@ -92,30 +96,6 @@
       </intent-filter>
     </activity>
     <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" />
-
-    <!-- App Icons -->
-    <activity-alias
-      android:name=".MainActivityDefault"
-      android:enabled="true"
-      android:exported="true"
-      android:icon="@mipmap/ic_launcher_default"
-      android:targetActivity=".MainActivity">
-      <intent-filter>
-        <action android:name="android.intent.action.MAIN" />
-        <category android:name="android.intent.category.LAUNCHER" />
-      </intent-filter>
-    </activity-alias>
-    <activity-alias
-      android:name=".MainActivityCalculator"
-      android:enabled="false"
-      android:exported="true"
-      android:icon="@mipmap/ic_launcher_calculator"
-      android:targetActivity=".MainActivity">
-      <intent-filter>
-        <action android:name="android.intent.action.MAIN" />
-        <category android:name="android.intent.category.LAUNCHER" />
-      </intent-filter>
-    </activity-alias>
   </application>
 
   <queries>

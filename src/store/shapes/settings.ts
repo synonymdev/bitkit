@@ -76,7 +76,6 @@ const defaultReceivePreference = [
 export const initialSettingsState: TSettings = {
 	enableAutoReadClipboard: false,
 	enableSendAmountWarning: false,
-	enableStealthMode: false,
 	enableSwipeToHideBalance: true,
 	pin: false,
 	pinOnLaunch: true,

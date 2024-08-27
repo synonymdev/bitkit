@@ -108,15 +108,6 @@ import {
 	aboutIcon,
 	devSettingsIcon,
 } from '../assets/icons/settings';
-import {
-	addIcon,
-	divideIcon,
-	equalsIcon,
-	multiplyIcon,
-	negateIcon,
-	percentageIcon,
-	subtractIcon,
-} from '../assets/icons/calculator';
 
 type IconProps = {
 	color?: keyof IThemeColors;
@@ -1023,62 +1014,6 @@ export const AboutIcon = styled(SvgXml).attrs((props) => ({
 
 export const DevSettingsIcon = styled(SvgXml).attrs((props) => ({
 	xml: devSettingsIcon(props.color ? props.theme.colors[props.color] : 'white'),
-	height: props.height ?? '33px',
-	width: props.width ?? '32px',
-}))<IconProps>((props) => ({
-	color: props.color ? props.theme.colors[props.color] : 'white',
-}));
-
-export const NegateIcon = styled(SvgXml).attrs((props) => ({
-	xml: negateIcon(props.color ? props.theme.colors[props.color] : 'white'),
-	height: props.height ?? '40px',
-	width: props.width ?? '40px',
-}))<IconProps>((props) => ({
-	color: props.color ? props.theme.colors[props.color] : 'white',
-}));
-
-export const PercentageIcon = styled(SvgXml).attrs((props) => ({
-	xml: percentageIcon(props.color ? props.theme.colors[props.color] : 'white'),
-	height: props.height ?? '40px',
-	width: props.width ?? '40px',
-}))<IconProps>((props) => ({
-	color: props.color ? props.theme.colors[props.color] : 'white',
-}));
-
-export const DivideIcon = styled(SvgXml).attrs((props) => ({
-	xml: divideIcon(props.color ? props.theme.colors[props.color] : 'white'),
-	height: props.height ?? '33px',
-	width: props.width ?? '32px',
-}))<IconProps>((props) => ({
-	color: props.color ? props.theme.colors[props.color] : 'white',
-}));
-
-export const MultiplyIcon = styled(SvgXml).attrs((props) => ({
-	xml: multiplyIcon(props.color ? props.theme.colors[props.color] : 'white'),
-	height: props.height ?? '33px',
-	width: props.width ?? '32px',
-}))<IconProps>((props) => ({
-	color: props.color ? props.theme.colors[props.color] : 'white',
-}));
-
-export const SubtractIcon = styled(SvgXml).attrs((props) => ({
-	xml: subtractIcon(props.color ? props.theme.colors[props.color] : 'white'),
-	height: props.height ?? '33px',
-	width: props.width ?? '32px',
-}))<IconProps>((props) => ({
-	color: props.color ? props.theme.colors[props.color] : 'white',
-}));
-
-export const AddIcon = styled(SvgXml).attrs((props) => ({
-	xml: addIcon(props.color ? props.theme.colors[props.color] : 'white'),
-	height: props.height ?? '33px',
-	width: props.width ?? '32px',
-}))<IconProps>((props) => ({
-	color: props.color ? props.theme.colors[props.color] : 'white',
-}));
-
-export const EqualsIcon = styled(SvgXml).attrs((props) => ({
-	xml: equalsIcon(props.color ? props.theme.colors[props.color] : 'white'),
 	height: props.height ?? '33px',
 	width: props.width ?? '32px',
 }))<IconProps>((props) => ({

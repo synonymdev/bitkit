@@ -50,7 +50,6 @@
     "@synonymdev/blocktank-lsp-http-client": "1.5.0",
     "@synonymdev/feeds": "3.0.0",
     "@synonymdev/ledger": "0.0.5",
-    "@synonymdev/react-native-change-icon": "5.0.0",
     "@synonymdev/react-native-keychain": "8.2.2",
     "@synonymdev/react-native-ldk": "0.0.150",
     "@synonymdev/react-native-lnurl": "0.0.10",

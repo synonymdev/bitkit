@@ -24,7 +24,6 @@ import WidgetSettings from '../../screens/Settings/Widgets';
 import AuthCheck from '../../components/AuthCheck';
 import GeneralSettings from '../../screens/Settings/General';
 import SecuritySettings from '../../screens/Settings/Security';
-import StealthMode from '../../screens/Settings/Security/StealthMode';
 import ChangePin from '../../screens/Settings/PIN/ChangePin';
 import ChangePin2 from '../../screens/Settings/PIN/ChangePin2';
 import PinChanged from '../../screens/Settings/PIN/PinChanged';
@@ -69,7 +68,6 @@ export type SettingsStackParamList = {
 	MainSettings: undefined;
 	GeneralSettings: undefined;
 	SecuritySettings: undefined;
-	StealthMode: undefined;
 	ChangePin: undefined;
 	ChangePin2: { pin: string } | undefined;
 	PinChanged: undefined;
@@ -129,7 +127,6 @@ const SettingsNavigator = (): ReactElement => {
 			<Stack.Screen name="MainSettings" component={MainSettings} />
 			<Stack.Screen name="GeneralSettings" component={GeneralSettings} />
 			<Stack.Screen name="SecuritySettings" component={SecuritySettings} />
-			<Stack.Screen name="StealthMode" component={StealthMode} />
 			<Stack.Screen name="ChangePin" component={ChangePin} />
 			<Stack.Screen name="ChangePin2" component={ChangePin2} />
 			<Stack.Screen name="PinChanged" component={PinChanged} />

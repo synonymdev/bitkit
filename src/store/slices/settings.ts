@@ -16,7 +16,6 @@ import { EDenomination, EUnit } from '../types/wallet';
 export type TSettings = {
 	enableAutoReadClipboard: boolean;
 	enableSendAmountWarning: boolean;
-	enableStealthMode: boolean;
 	enableSwipeToHideBalance: boolean;
 	pin: boolean;
 	pinOnLaunch: boolean;

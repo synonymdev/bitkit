@@ -7,14 +7,9 @@ import Animated, { FadeOut } from 'react-native-reanimated';
 import { View as ThemedView } from '../styles/components';
 import Biometrics from './Biometrics';
 import PinPad from './PinPad';
-import Calculator from '../screens/Calculator';
-import {
-	biometricsSelector,
-	enableStealthModeSelector,
-} from '../store/reselect/settings';
+import { biometricsSelector } from '../store/reselect/settings';
 
 type AuthCheckProps = {
-	isAppStart?: boolean;
 	showBackNavigation?: boolean;
 	showLogoOnPIN?: boolean;
 	onSuccess?: () => void;
@@ -31,23 +26,17 @@ type AuthCheckProps = {
  * This component checks if the user has enabled pin or biometrics and runs through each check as needed before proceeding.
  */
 const AuthCheck = ({
-	isAppStart = false,
 	showBackNavigation = true,
 	showLogoOnPIN = false,
 	route,
 	onSuccess,
 }: AuthCheckProps): ReactElement => {
 	const biometrics = useAppSelector(biometricsSelector);
-	const stealthModeEnabled = useAppSelector(enableStealthModeSelector);
 	const [bioEnabled, setBioEnabled] = useState(biometrics);
 
 	const requirePin = route?.params?.requirePin ?? false;
 	const requireBiometrics = route?.params?.requireBiometrics ?? false;
 	onSuccess = route?.params?.onSuccess ?? onSuccess;
-
-	if (isAppStart && stealthModeEnabled) {
-		return <Calculator onSuccess={(): void => onSuccess?.()} />;
-	}
 
 	if ((bioEnabled && !requirePin) || requireBiometrics) {
 		return (

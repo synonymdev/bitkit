@@ -4663,15 +4663,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@synonymdev/react-native-change-icon@npm:5.0.0":
-  version: 5.0.0
-  resolution: "@synonymdev/react-native-change-icon@npm:5.0.0"
-  peerDependencies:
-    react-native: "*"
-  checksum: 01e049715dc01ffdb081badd1803fbbb3630037be526224ff0ccec8d7aea8495b49bbafc0ace0926c8fbc1ac416ec5976626527b786586334fa3a964805db2c8
-  languageName: node
-  linkType: hard
-
 "@synonymdev/react-native-keychain@npm:8.2.2":
   version: 8.2.2
   resolution: "@synonymdev/react-native-keychain@npm:8.2.2"
@@ -6330,7 +6321,6 @@ __metadata:
     "@synonymdev/blocktank-lsp-http-client": 1.5.0
     "@synonymdev/feeds": 3.0.0
     "@synonymdev/ledger": 0.0.5
-    "@synonymdev/react-native-change-icon": 5.0.0
     "@synonymdev/react-native-keychain": 8.2.2
     "@synonymdev/react-native-ldk": 0.0.150
     "@synonymdev/react-native-lnurl": 0.0.10

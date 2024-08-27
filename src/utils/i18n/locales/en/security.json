@@ -310,10 +310,5 @@
   },
   "wiped_message": {
     "string": "Bitkit has been reset and all wallet data has been deleted."
-  },
-  "calculator": {
-    "nav_title": {
-      "string": "Calculator"
-    }
   }
 }

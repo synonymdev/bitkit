@@ -16,15 +16,6 @@ const migrations = {
 			},
 		};
 	},
-	44: (state): PersistedState => {
-		return {
-			...state,
-			settings: {
-				...state.settings,
-				enableStealthMode: false,
-			},
-		};
-	},
 	45: (state): PersistedState => {
 		return {
 			...state,
