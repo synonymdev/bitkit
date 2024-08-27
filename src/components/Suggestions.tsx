@@ -73,7 +73,7 @@ const Suggestions = (): ReactElement => {
 			}
 
 			if (id === 'lightning') {
-				navigation.navigate('TransferRoot', { screen: 'Introduction' });
+				navigation.navigate('TransferRoot', { screen: 'TransferIntro' });
 			}
 
 			if (id === 'lightningSettingUp') {

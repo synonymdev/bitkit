@@ -7,21 +7,6 @@ type TextProps = {
 	color?: keyof IThemeColors;
 };
 
-export const DisplayT = styled.Text<TextProps & { lineHeight?: number }>(
-	({ theme, color, lineHeight = 48 }) => ({
-		...theme.fonts.bold,
-		fontSize: '48px',
-		color: theme.colors[color ?? 'primary'],
-		letterSpacing: 0,
-		// fix glyphs cut off at the top
-		lineHeight: `${lineHeight}px`,
-		paddingTop: lineHeight,
-		marginTop: -lineHeight,
-		// because of the negative margin, the component may overlap with other elements
-		pointerEvents: 'none',
-	}),
-);
-
 export const Display = styled.Text<TextProps & { lineHeight?: number }>(
 	({ theme, color, lineHeight = 44 }) => ({
 		...theme.fonts.black,

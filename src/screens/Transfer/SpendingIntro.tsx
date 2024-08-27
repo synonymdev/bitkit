@@ -5,31 +5,31 @@ import { Display } from '../../styles/text';
 import OnboardingScreen from '../../components/OnboardingScreen';
 import type { TransferScreenProps } from '../../navigation/types';
 
-const imageSrc = require('../../assets/illustrations/lightning.png');
+const imageSrc = require('../../assets/illustrations/coin-stack-x.png');
 
-const Introduction = ({
+const SpendingIntro = ({
 	navigation,
-}: TransferScreenProps<'Introduction'>): ReactElement => {
+}: TransferScreenProps<'SpendingIntro'>): ReactElement => {
 	const { t } = useTranslation('lightning');
 
 	const onContinue = (): void => {
-		navigation.navigate('Funding');
+		navigation.navigate('SpendingAmount');
 	};
 
 	return (
 		<OnboardingScreen
-			displayBackButton={false}
+			navTitle={t('transfer.nav_title')}
 			title={
 				<Trans
 					t={t}
-					i18nKey="introduction.title"
+					i18nKey="spending_intro.title"
 					components={{ accent: <Display color="purple" /> }}
 				/>
 			}
-			description={t('introduction.text')}
+			description={t('spending_intro.text')}
 			image={imageSrc}
-			buttonText={t('introduction.button')}
-			testID="LnIntroduction"
+			buttonText={t('spending_intro.button')}
+			testID="SpendingIntro"
 			onClosePress={(): void => {
 				navigation.navigate('Wallet');
 			}}
@@ -38,4 +38,4 @@ const Introduction = ({
 	);
 };
 
-export default Introduction;
+export default SpendingIntro;

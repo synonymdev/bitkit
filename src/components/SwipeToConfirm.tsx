@@ -28,7 +28,7 @@ interface ISwipeToConfirm {
 	color?: keyof IThemeColors;
 	icon?: ReactElement;
 	loading?: boolean;
-	confirmed: boolean;
+	confirmed?: boolean; // if true, the circle will be at the end
 	style?: StyleProp<ViewStyle>;
 	onConfirm: () => void;
 }

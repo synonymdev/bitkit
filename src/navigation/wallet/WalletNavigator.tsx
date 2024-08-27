@@ -17,7 +17,7 @@ import type { RootStackScreenProps } from '../types';
 import { __E2E__ } from '../../constants/env';
 
 export type WalletStackParamList = {
-	Wallets: { onFocus: (focused: boolean) => void };
+	Wallets: { onFocus: (focused: boolean) => void } | undefined;
 	ActivitySavings: undefined;
 	ActivitySpending: undefined;
 	ActivityFiltered: undefined;

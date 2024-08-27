@@ -8,7 +8,6 @@ import {
 	BodyMSB,
 	BodySSB,
 	Title,
-	DisplayT,
 } from '../styles/text';
 import { IThemeColors } from '../styles/themes';
 import { useAppSelector } from '../hooks/redux';
@@ -24,7 +23,6 @@ import {
 
 type TSize =
 	| 'display'
-	| 'displayT'
 	| 'title'
 	| 'bodyMSB'
 	| 'bodySSB'
@@ -80,8 +78,6 @@ const Money = (props: MoneyProps): ReactElement => {
 				return [BodySSB, 4];
 			case 'title':
 				return [Title, 6];
-			case 'displayT':
-				return [DisplayT, 6];
 			default:
 				return [Display, 6];
 		}

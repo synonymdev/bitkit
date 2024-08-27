@@ -100,7 +100,7 @@ export const createOrder = async ({
 		const buyRes = await bt.createOrder(lspBalance, channelExpiryWeeks, {
 			...options,
 			nodeId,
-			couponCode: options?.couponCode ?? 'bitkit',
+			source: options?.source ?? 'bitkit',
 			zeroReserve: true,
 		});
 		if (buyRes?.id) {
@@ -128,7 +128,7 @@ export const estimateOrderFee = async ({
 			channelExpiryWeeks,
 			{
 				...options,
-				couponCode: options?.couponCode ?? 'bitkit',
+				source: options?.source ?? 'bitkit',
 				zeroReserve: true,
 			},
 		);

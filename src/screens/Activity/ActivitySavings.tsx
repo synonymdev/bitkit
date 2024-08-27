@@ -45,7 +45,7 @@ const ActivitySavings = ({
 	const showOnboarding = onchainBalance === 0 && savingsItems.length === 0;
 
 	const onTransfer = (): void => {
-		navigation.navigate('TransferRoot', { screen: 'QuickSetup' });
+		navigation.navigate('TransferRoot', { screen: 'TransferIntro' });
 	};
 
 	const canTransfer = onchainBalance && !isGeoBlocked;
@@ -71,13 +71,15 @@ const ActivitySavings = ({
 				{balanceInTransferToSavings !== 0 && (
 					<View style={styles.transfer}>
 						<View style={styles.transferText}>
-							<TransferIcon style={styles.transferIcon} color="red" />
-							<CaptionB color="red">{t('details_transfer_subtitle')}</CaptionB>
+							<TransferIcon style={styles.transferIcon} color="white50" />
+							<CaptionB color="white50">
+								{t('details_transfer_subtitle')}
+							</CaptionB>
 						</View>
 						<Money
 							sats={balanceInTransferToSavings}
 							size="captionB"
-							color="red"
+							color="white50"
 						/>
 					</View>
 				)}
@@ -96,16 +98,17 @@ const ActivitySavings = ({
 					/>
 				) : (
 					<>
-						<Button
-							style={styles.button}
-							text="Transfer To Spending"
-							variant="secondary"
-							size="large"
-							icon={<TransferIcon height={16} width={16} />}
-							disabled={!canTransfer}
-							testID="TransferToSpending"
-							onPress={onTransfer}
-						/>
+						{canTransfer && (
+							<Button
+								style={styles.button}
+								text="Transfer To Spending"
+								variant="secondary"
+								size="large"
+								icon={<TransferIcon height={16} width={16} />}
+								testID="TransferToSpending"
+								onPress={onTransfer}
+							/>
+						)}
 						<View style={styles.activity}>
 							<ActivityList filter={filter} showFooterButton={true} />
 						</View>

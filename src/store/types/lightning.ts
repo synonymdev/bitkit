@@ -28,7 +28,6 @@ export enum EChannelStatus {
 // TODO: move to react-native-ldk
 export enum EChannelClosureReason {
 	CommitmentTxConfirmed = 'CommitmentTxConfirmed',
-	CooperativeClosure = 'CooperativeClosure',
 	CounterpartyCoopClosedUnfundedChannel = 'CounterpartyCoopClosedUnfundedChannel',
 	CounterpartyForceClosed = 'CounterpartyForceClosed',
 	DisconnectedPeer = 'DisconnectedPeer',
@@ -37,6 +36,10 @@ export enum EChannelClosureReason {
 	HolderForceClosed = 'HolderForceClosed',
 	OutdatedChannelManager = 'OutdatedChannelManager',
 	ProcessingError = 'ProcessingError',
+	CounterpartyInitiatedCooperativeClosure = 'CounterpartyInitiatedCooperativeClosure',
+	LegacyCooperativeClosure = 'LegacyCooperativeClosure',
+	LocallyInitiatedCooperativeClosure = 'LocallyInitiatedCooperativeClosure',
+	HTLCsTimedOut = 'HTLCsTimedOut',
 	Unknown = 'Unknown',
 }
 

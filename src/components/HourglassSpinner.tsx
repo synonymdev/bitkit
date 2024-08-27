@@ -17,14 +17,14 @@ const HourglassSpinner = ({
 	const entering = (): { initialValues: {}; animations: {} } => {
 		'worklet';
 		const initialValues = {
-			transform: [{ rotate: '0deg' }],
+			transform: [{ rotate: '-16deg' }],
 		};
 		const animations = {
 			transform: [
 				{
 					rotate: withRepeat(
-						withTiming('40deg', {
-							duration: 3500,
+						withTiming('16deg', {
+							duration: 3000,
 							easing: Easing.inOut(Easing.ease),
 						}),
 						-1,

@@ -1,4 +1,4 @@
-import React, { ReactElement, memo, useState } from 'react';
+import React, { ReactElement } from 'react';
 import { Image, StyleSheet, View } from 'react-native';
 import { Trans, useTranslation } from 'react-i18next';
 
@@ -7,12 +7,7 @@ import { View as ThemedView } from '../../styles/components';
 import SafeAreaInset from '../../components/SafeAreaInset';
 import NavigationHeader from '../../components/NavigationHeader';
 import Button from '../../components/buttons/Button';
-import { useAppDispatch } from '../../hooks/redux';
-import { refreshWallet } from '../../utils/wallet';
-import { closeAllChannels } from '../../utils/lightning';
-import { startCoopCloseTimer } from '../../store/slices/user';
 import type { TransferScreenProps } from '../../navigation/types';
-import { sleep } from '../../utils/helpers';
 
 const imageSrc = require('../../assets/illustrations/exclamation-mark.png');
 
@@ -20,47 +15,31 @@ const Availability = ({
 	navigation,
 }: TransferScreenProps<'Availability'>): ReactElement => {
 	const { t } = useTranslation('lightning');
-	const [isLoading, setIsLoading] = useState(false);
-	const dispatch = useAppDispatch();
 
 	const onCancel = (): void => {
-		navigation.goBack();
+		navigation.navigate('Wallet');
 	};
 
-	const onContinue = async (): Promise<void> => {
-		setIsLoading(true);
-		const closeResponse = await closeAllChannels();
-
-		if (closeResponse.isOk() && closeResponse.value.length === 0) {
-			await refreshWallet();
-			await sleep(5000); // give beignet some time to process
-			navigation.navigate('Success', { type: 'savings' });
-			return;
-		} else {
-			dispatch(startCoopCloseTimer());
-			navigation.navigate('Interrupted');
-		}
+	const onContinue = (): void => {
+		navigation.navigate('SavingsConfirm');
 	};
 
 	return (
 		<ThemedView style={styles.root}>
 			<SafeAreaInset type="top" />
-			<NavigationHeader
-				title={t('availability_title')}
-				displayBackButton={false}
-			/>
+			<NavigationHeader title={t('transfer.nav_title')} />
 			<View style={styles.content}>
 				<Display>
 					<Trans
 						t={t}
-						i18nKey="availability_header"
-						components={{ accent: <Display color="purple" /> }}
+						i18nKey="availability.title"
+						components={{ accent: <Display color="brand" /> }}
 					/>
 				</Display>
-				<BodyM color="secondary" style={styles.text}>
+				<BodyM style={styles.text} color="secondary">
 					<Trans
 						t={t}
-						i18nKey="availability_text"
+						i18nKey="availability.text"
 						components={{ accent: <BodyMB color="white" /> }}
 					/>
 				</BodyM>
@@ -79,9 +58,8 @@ const Availability = ({
 					/>
 					<Button
 						style={styles.button}
-						text={t('ok')}
+						text={t('continue')}
 						size="large"
-						loading={isLoading}
 						onPress={onContinue}
 					/>
 				</View>
@@ -126,4 +104,4 @@ const styles = StyleSheet.create({
 	},
 });
 
-export default memo(Availability);
+export default Availability;

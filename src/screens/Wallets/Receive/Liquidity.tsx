@@ -6,7 +6,7 @@ import { BodyM, BodyMB } from '../../../styles/text';
 import GradientView from '../../../components/GradientView';
 import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
 import SafeAreaInset from '../../../components/SafeAreaInset';
-import LightningChannel2 from '../../../components/LightningChannel';
+import LightningChannel from '../../../components/LightningChannel';
 import Button from '../../../components/buttons/Button';
 import type { ReceiveScreenProps } from '../../../navigation/types';
 
@@ -41,7 +41,7 @@ const Liquidity = ({
 				<BodyM color="secondary">{text}</BodyM>
 
 				<BodyMB style={styles.label}>{label}</BodyMB>
-				<LightningChannel2
+				<LightningChannel
 					capacity={channelSize}
 					localBalance={localBalance}
 					remoteBalance={remoteBalance}

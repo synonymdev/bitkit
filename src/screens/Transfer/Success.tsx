@@ -1,6 +1,7 @@
 import React, { ReactElement, memo } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
-import { BodyMB, Display } from '../../styles/text';
+
+import { Display } from '../../styles/text';
 import InfoScreen from '../../components/InfoScreen';
 import { getRandomOkText } from '../../utils/i18n/helpers';
 import type { TransferScreenProps } from '../../navigation/types';
@@ -15,33 +16,27 @@ const Success = ({
 	const { type } = route.params;
 
 	const onContinue = (): void => {
-		navigation.popToTop();
-		navigation.goBack();
+		navigation.navigate('Wallet', { screen: 'Wallets' });
 	};
 
 	const isTransferToSavings = type === 'savings';
-	const title = isTransferToSavings ? 'ts_savings_title' : 'result_header';
-	const description = isTransferToSavings ? 'ts_savings_text' : 'result_text';
+	const title = isTransferToSavings ? 'title_savings' : 'title_spending';
+	const description = isTransferToSavings ? 'text_savings' : 'text_spending';
 	const buttonText = isTransferToSavings ? t('ok') : getRandomOkText();
+	const accentColor = isTransferToSavings ? 'brand' : 'purple';
 
 	return (
 		<InfoScreen
-			navTitle={t('transfer.nav_successful')}
+			navTitle={t('transfer_success.nav_title')}
 			displayBackButton={false}
 			title={
 				<Trans
 					t={t}
-					i18nKey={title}
-					components={{ accent: <Display color="purple" /> }}
+					i18nKey={`transfer_success.${title}`}
+					components={{ accent: <Display color={accentColor} /> }}
 				/>
 			}
-			description={
-				<Trans
-					t={t}
-					i18nKey={description}
-					components={{ accent: <BodyMB color="white" /> }}
-				/>
-			}
+			description={t(`transfer_success.${description}`)}
 			image={imageSrc}
 			buttonText={buttonText}
 			testID="TransferSuccess"

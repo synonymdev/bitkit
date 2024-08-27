@@ -95,9 +95,11 @@ export const ScrollView = styled.ScrollView.attrs<ScrollViewProps & ColorProps>(
 	}),
 )<ScrollViewProps & ColorProps>(() => ({}));
 
-export const TouchableOpacity = styled(RNTouchableOpacity)<
+export const TouchableOpacity = styled(RNTouchableOpacity).attrs<
 	TouchableOpacityProps & ColorProps
->((props) => ({
+>((props) => {
+	return { activeOpacity: props.activeOpacity ?? 0.7 };
+})<TouchableHighlightProps>((props) => ({
 	backgroundColor: props.color
 		? props.theme.colors[props.color]
 		: props.theme.colors.background,

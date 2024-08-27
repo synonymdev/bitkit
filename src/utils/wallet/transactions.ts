@@ -452,7 +452,7 @@ export const getMaxSendAmount = ({
 	transaction?: ISendTransaction;
 	selectedNetwork?: EAvailableNetwork;
 	selectedWallet?: TWalletName;
-}): Result<{ amount: number; fee: number }> => {
+} = {}): Result<{ amount: number; fee: number }> => {
 	try {
 		if (!transaction) {
 			const transactionDataResponse = getOnchainTransactionData();

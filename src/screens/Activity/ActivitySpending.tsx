@@ -40,10 +40,13 @@ const ActivitySpending = ({
 		};
 	}, []);
 
-	const showOnboarding = lightningBalance === 0 && spendingItems.length === 0;
+	const showOnboarding =
+		lightningBalance === 0 &&
+		spendingItems.length === 0 &&
+		!balanceInTransferToSpending;
 
 	const onTransfer = (): void => {
-		navigation.navigate('TransferRoot', { screen: 'QuickSetup' });
+		navigation.navigate('TransferRoot', { screen: 'SavingsIntro' });
 	};
 
 	const canTransfer = !!lightningBalance;
@@ -96,16 +99,17 @@ const ActivitySpending = ({
 					/>
 				) : (
 					<>
-						<Button
-							style={styles.button}
-							text="Transfer To Savings"
-							variant="secondary"
-							size="large"
-							icon={<TransferIcon height={16} width={16} />}
-							disabled={!canTransfer}
-							testID="TransferToSavings"
-							onPress={onTransfer}
-						/>
+						{canTransfer && (
+							<Button
+								style={styles.button}
+								text="Transfer To Savings"
+								variant="secondary"
+								size="large"
+								icon={<TransferIcon height={16} width={16} />}
+								testID="TransferToSavings"
+								onPress={onTransfer}
+							/>
+						)}
 						<View style={styles.activity}>
 							<ActivityList filter={filter} showFooterButton={true} />
 						</View>

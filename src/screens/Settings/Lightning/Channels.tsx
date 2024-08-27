@@ -76,7 +76,6 @@ import { TPaidBlocktankOrders } from '../../../store/types/blocktank';
 import { EUnit } from '../../../store/types/wallet';
 import { showBottomSheet } from '../../../store/utils/ui';
 import { EChannelStatus, TChannel } from '../../../store/types/lightning';
-import { lnSetupSelector } from '../../../store/reselect/aggregations';
 
 /**
  * Convert pending (non-channel) blocktank orders to (fake) channels.
@@ -242,7 +241,6 @@ const Channels = ({
 	const openChannels = useAppSelector(openChannelsSelector);
 	const pendingChannels = useAppSelector(pendingChannelsSelector);
 	const closedChannels = useAppSelector(closedChannelsSelector);
-	const { canOnlyClose } = useAppSelector((state) => lnSetupSelector(state, 0));
 
 	const { pendingOrders, failedOrders } = getPendingBlocktankChannels(
 		blocktankOrders,
@@ -251,10 +249,7 @@ const Channels = ({
 	const pendingConnections = [...pendingOrders, ...pendingChannels];
 
 	const handleAdd = useCallback((): void => {
-		navigation.navigate('TransferRoot', {
-			screen: 'CustomSetup',
-			params: { spending: true },
-		});
+		navigation.navigate('TransferRoot', { screen: 'SpendingAmount' });
 
 		// TODO: Update this view once we enable creating channels with nodes other than Blocktank.
 		// navigation.navigate('LightningAddConnection');
@@ -359,10 +354,8 @@ const Channels = ({
 			<SafeAreaInset type="top" />
 			<NavigationHeader
 				title={t('connections')}
-				onActionPress={canOnlyClose ? undefined : handleAdd}
-				actionIcon={
-					canOnlyClose ? undefined : <PlusIcon width={24} height={24} />
-				}
+				onActionPress={handleAdd}
+				actionIcon={<PlusIcon width={24} height={24} />}
 			/>
 			<ScrollView
 				contentContainerStyle={styles.content}
@@ -666,7 +659,6 @@ const Channels = ({
 						style={styles.button}
 						text={t('conn_button_add')}
 						size="large"
-						disabled={canOnlyClose}
 						onPress={handleAdd}
 					/>
 				</View>

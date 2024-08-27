@@ -194,7 +194,9 @@ export const closeChannelThunk = async (
 		const amount = amountRes.isOk() ? amountRes.value : 0;
 
 		// add a transfer item for closed channels
-		if (res.reason === EChannelClosureReason.CooperativeClosure) {
+		if (
+			res.reason === EChannelClosureReason.LocallyInitiatedCooperativeClosure
+		) {
 			dispatch(
 				addTransfer({
 					type: ETransferType.coopClose,

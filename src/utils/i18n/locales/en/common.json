@@ -90,5 +90,14 @@
   },
   "connect": {
     "string": "Connect"
+  },
+  "min": {
+    "string": "Min"
+  },
+  "max": {
+    "string": "Max"
+  },
+  "default": {
+    "string": "Default"
   }
 }

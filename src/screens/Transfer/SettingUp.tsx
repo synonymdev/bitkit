@@ -35,7 +35,7 @@ const SettingUp = ({
 	}, [lightningSettingUpStep, navigation]);
 
 	const onClose = (): void => {
-		navigation.navigate('Wallet');
+		navigation.navigate('Wallet', { screen: 'Wallets' });
 	};
 
 	return (

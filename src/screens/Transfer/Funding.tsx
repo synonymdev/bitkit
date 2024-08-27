@@ -24,7 +24,7 @@ const Funding = ({
 	const isGeoBlocked = useAppSelector(isGeoBlockedSelector);
 
 	const onTransfer = (): void => {
-		navigation.navigate('QuickSetup');
+		navigation.navigate('SpendingIntro');
 	};
 
 	const onFund = (): void => {

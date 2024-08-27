@@ -227,7 +227,7 @@ export const startChannelPurchase = async ({
 	lspBalance,
 	channelExpiryWeeks = DEFAULT_CHANNEL_DURATION,
 	lspNodeId,
-	couponCode,
+	source,
 	turboChannel = true,
 	zeroConfPayment = false,
 	selectedWallet = getSelectedWallet(),
@@ -237,7 +237,7 @@ export const startChannelPurchase = async ({
 	lspBalance: number;
 	channelExpiryWeeks?: number;
 	lspNodeId?: string;
-	couponCode?: string;
+	source?: string;
 	turboChannel?: boolean;
 	zeroConfPayment?: boolean;
 	selectedWallet?: TWalletName;
@@ -249,7 +249,7 @@ export const startChannelPurchase = async ({
 		options: {
 			clientBalanceSat: clientBalance,
 			lspNodeId,
-			couponCode,
+			source,
 			turboChannel,
 			zeroConfPayment,
 		},

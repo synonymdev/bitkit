@@ -1298,23 +1298,22 @@ export const closeChannel = async ({
 };
 
 /**
- * Attempts to close all known channels.
+ * Attempts to close given channels.
  * It will always attempt to coop close channels first and only force close if set to true.
  * Returns an array of channels it was not able to successfully close.
  * @param {boolean} [force]
  * @returns {Promise<Result<TChannel[]>>}
  */
-export const closeAllChannels = async ({
+export const closeChannels = async ({
+	channels,
 	force = false,
 }: {
+	channels: TChannel[];
 	force?: boolean; // It will always try to coop close first and only force close if set to true.
-} = {}): Promise<Result<TChannel[]>> => {
-	const selectedWallet = getSelectedWallet();
-	const selectedNetwork = getSelectedNetwork();
-
+}): Promise<Result<TChannel[]>> => {
 	try {
 		// Ensure we're fully up-to-date.
-		const refreshRes = await refreshLdk({ selectedWallet, selectedNetwork });
+		const refreshRes = await refreshLdk();
 		if (refreshRes.isErr()) {
 			return err(refreshRes.error.message);
 		}
@@ -1322,7 +1321,6 @@ export const closeAllChannels = async ({
 		// Force update fees before closing channels
 		await refreshOnchainFeeEstimates({ forceUpdate: true });
 
-		const channels = getOpenChannels();
 		const channelsUnableToCoopClose: TChannel[] = [];
 		await Promise.all(
 			channels.map(async (channel) => {
@@ -1367,6 +1365,20 @@ export const closeAllChannels = async ({
 		console.log(e);
 		return err(e);
 	}
+};
+
+/**
+ * Attempts to close all known channels.
+ * @param {boolean} [force]
+ * @returns {Promise<Result<TChannel[]>>}
+ */
+export const closeAllChannels = async ({
+	force = false,
+}: {
+	force?: boolean;
+} = {}): Promise<Result<TChannel[]>> => {
+	const channels = getOpenChannels();
+	return closeChannels({ channels, force });
 };
 
 /**

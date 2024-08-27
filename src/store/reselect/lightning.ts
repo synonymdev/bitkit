@@ -120,8 +120,13 @@ export const claimableBalanceSelector = createSelector(
 	[closedChannelsSelector],
 	(closedChannels) => {
 		const forceClosed = closedChannels.filter((channel) => {
-			// TODO: Probably need to be more specific here
-			return channel.closureReason !== EChannelClosureReason.CooperativeClosure;
+			return (
+				channel.closureReason &&
+				[
+					EChannelClosureReason.HolderForceClosed,
+					EChannelClosureReason.CounterpartyForceClosed,
+				].includes(channel.closureReason)
+			);
 		});
 
 		const claimableBalances = forceClosed.reduce(

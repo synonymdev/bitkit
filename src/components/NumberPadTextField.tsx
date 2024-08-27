@@ -26,6 +26,7 @@ import {
 const NumberPadTextField = ({
 	value,
 	showPlaceholder = true,
+	showConversion = true,
 	reverse = false,
 	style,
 	testID,
@@ -33,6 +34,7 @@ const NumberPadTextField = ({
 }: {
 	value: string;
 	showPlaceholder?: boolean;
+	showConversion?: boolean;
 	reverse?: boolean;
 	style?: StyleProp<ViewStyle>;
 	testID?: string;
@@ -92,7 +94,7 @@ const NumberPadTextField = ({
 
 	return (
 		<Pressable style={style} testID={testID} onPress={onPress}>
-			{!reverse && (
+			{showConversion && !reverse && (
 				<Money
 					style={styles.secondary}
 					sats={satoshis}
@@ -115,7 +117,7 @@ const NumberPadTextField = ({
 				</Display>
 			</View>
 
-			{reverse && (
+			{showConversion && reverse && (
 				<Money
 					sats={satoshis}
 					size="bodyMSB"
