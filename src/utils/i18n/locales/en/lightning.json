@@ -393,7 +393,7 @@
 		"string": "Peer ID"
 	},
 	"channel_id": {
-		"string": "Channel id"
+		"string": "Channel ID"
 	},
 	"channel_point": {
 		"string": "Channel point"
