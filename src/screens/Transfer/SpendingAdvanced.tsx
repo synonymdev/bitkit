@@ -159,6 +159,7 @@ const SpendingAdvanced = ({
 	};
 
 	const fee = feeEstimate[`${clientBalance}-${lspBalance}`];
+	const isValid = lspBalance >= minLspBalance && lspBalance <= maxLspBalance;
 
 	return (
 		<ThemedView style={styles.root}>
@@ -251,7 +252,7 @@ const SpendingAdvanced = ({
 						text={t('continue')}
 						size="large"
 						loading={loading}
-						disabled={!clientBalance}
+						disabled={!isValid}
 						testID="SpendingAdvancedContinue"
 						onPress={onContinue}
 					/>

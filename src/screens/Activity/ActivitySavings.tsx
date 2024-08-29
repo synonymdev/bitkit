@@ -45,7 +45,7 @@ const ActivitySavings = ({
 	const showOnboarding = onchainBalance === 0 && savingsItems.length === 0;
 
 	const onTransfer = (): void => {
-		navigation.navigate('TransferRoot', { screen: 'TransferIntro' });
+		navigation.navigate('TransferRoot', { screen: 'SpendingIntro' });
 	};
 
 	const canTransfer = onchainBalance && !isGeoBlocked;

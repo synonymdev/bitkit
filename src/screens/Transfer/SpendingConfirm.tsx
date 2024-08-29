@@ -40,6 +40,10 @@ const SpendingConfirm = ({
 	const lspFee = order.feeSat - clientBalance;
 	const totalFee = order.feeSat + transactionFee;
 
+	const channelSize = clientBalance + lspBalance;
+	const remoteReserve = channelSize / 100;
+	const remoteBalance = Math.round(channelSize - clientBalance - remoteReserve);
+
 	const onMore = (): void => {
 		navigation.navigate('Liquidity', {
 			channelSize: clientBalance + lspBalance,
@@ -159,7 +163,7 @@ const SpendingConfirm = ({
 						style={styles.channel}
 						capacity={clientBalance + lspBalance}
 						localBalance={clientBalance}
-						remoteBalance={lspBalance}
+						remoteBalance={remoteBalance}
 						status="open"
 						showLabels={true}
 					/>

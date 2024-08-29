@@ -120,8 +120,6 @@ d('LN Channel Onboarding', () => {
 			await element(by.id('NavigationClose')).tap();
 			await element(by.id('ActivitySavings')).tap();
 			await element(by.id('TransferToSpending')).tap();
-			await element(by.id('TransferIntro-button')).tap();
-			await element(by.id('FundTransfer')).tap();
 			await element(by.id('SpendingIntro-button')).tap();
 			await element(by.id('N1').withAncestor(by.id('SpendingAmount'))).tap();
 			await element(by.id('N0').withAncestor(by.id('SpendingAmount'))).multiTap(
@@ -147,7 +145,8 @@ d('LN Channel Onboarding', () => {
 			await element(by.id('SpendingAdvancedContinue')).tap();
 			await element(by.id('SpendingAdvancedAmount')).tap();
 			await expect(element(by.text('100 000'))).toBeVisible();
-			await expect(element(by.text('150 000'))).toBeVisible();
+			// Receiving capacity minus reserve
+			await expect(element(by.text('147 500'))).toBeVisible();
 
 			// Swipe to confirm (set x offset to avoid navigating back)
 			await element(by.id('GRAB')).swipe('right', 'slow', 0.95, 0.5, 0.5);

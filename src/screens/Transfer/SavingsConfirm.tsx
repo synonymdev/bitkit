@@ -28,6 +28,7 @@ const SavingsConfirm = ({
 	const selectedChannels = route.params?.channels;
 	const hasSelected = selectedChannels && selectedChannels.length > 0;
 	const channels = selectedChannels ?? openChannels;
+	const hasMultiple = openChannels.length > 1;
 
 	const amount = channels.reduce((acc, channel) => {
 		return acc + channel.balance_sat;
@@ -71,21 +72,23 @@ const SavingsConfirm = ({
 					</TouchableOpacity>
 				</View>
 
-				<View style={styles.buttons}>
-					{hasSelected ? (
-						<Button
-							text={t('savings_confirm.transfer_all')}
-							testID="TransferSelectAll"
-							onPress={onSelectAll}
-						/>
-					) : (
-						<Button
-							text={t('advanced')}
-							testID="TransferAdvanced"
-							onPress={onAdvanced}
-						/>
-					)}
-				</View>
+				{hasMultiple && (
+					<View style={styles.buttons}>
+						{hasSelected ? (
+							<Button
+								text={t('savings_confirm.transfer_all')}
+								testID="TransferSelectAll"
+								onPress={onSelectAll}
+							/>
+						) : (
+							<Button
+								text={t('advanced')}
+								testID="TransferAdvanced"
+								onPress={onAdvanced}
+							/>
+						)}
+					</View>
+				)}
 
 				<View style={styles.imageContainer}>
 					<Image style={styles.image} source={image} />
@@ -132,6 +135,7 @@ const styles = StyleSheet.create({
 	image: {
 		flex: 1,
 		resizeMode: 'contain',
+		width: 256,
 	},
 	buttonContainer: {
 		marginTop: 'auto',
