@@ -3,7 +3,11 @@ import { StyleSheet, View } from 'react-native';
 import { Trans, useTranslation } from 'react-i18next';
 
 import { BodyM, Caption13Up, Display } from '../../styles/text';
-import { View as ThemedView, TouchableOpacity } from '../../styles/components';
+import {
+	View as ThemedView,
+	ScrollView,
+	TouchableOpacity,
+} from '../../styles/components';
 import SafeAreaInset from '../../components/SafeAreaInset';
 import NavigationHeader from '../../components/NavigationHeader';
 import SwitchRow from '../../components/SwitchRow';
@@ -88,7 +92,7 @@ const SavingsAdvanced = ({
 					{t('savings_advanced.text')}
 				</BodyM>
 
-				<View style={styles.channels}>
+				<ScrollView contentContainerStyle={styles.channels}>
 					{Object.values(channels).map((channel) => (
 						<Channel
 							key={channel.channel_id}
@@ -97,7 +101,7 @@ const SavingsAdvanced = ({
 							onPress={onToggle}
 						/>
 					))}
-				</View>
+				</ScrollView>
 
 				<View style={styles.amount}>
 					<Caption13Up style={styles.amountLabel} color="secondary">
@@ -134,17 +138,15 @@ const styles = StyleSheet.create({
 	},
 	text: {
 		marginTop: 4,
+		marginBottom: 32,
 	},
 	amountLabel: {
 		marginTop: 16,
 		marginBottom: 16,
 	},
-	amount: {
-		marginTop: 'auto',
-	},
 	channels: {
+		flexGrow: 1,
 		gap: 16,
-		marginTop: 32,
 	},
 	channel: {
 		borderBottomWidth: 1,
@@ -152,6 +154,9 @@ const styles = StyleSheet.create({
 	},
 	channelLabel: {
 		marginBottom: 8,
+	},
+	amount: {
+		marginTop: 'auto',
 	},
 	buttonContainer: {
 		marginTop: 32,
