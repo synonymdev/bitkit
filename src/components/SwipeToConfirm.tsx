@@ -55,6 +55,7 @@ const SwipeToConfirm = ({
 	const loadingOpacity = useSharedValue(loading ? 1 : 0);
 
 	const panGesture = Gesture.Pan()
+		.enabled(!loading && !confirmed) // disable so you can't swipe back
 		.onStart(() => {
 			prevPanX.value = panX.value;
 		})
@@ -86,14 +87,28 @@ const SwipeToConfirm = ({
 	});
 
 	const startIconOpacityStyle = useAnimatedStyle(() => {
-		const opacity = 1 - panX.value / (maxPanX / 2);
+		let opacity = 1 - panX.value / (maxPanX / 2) - loadingOpacity.value;
+
+		// FIXME: for some reason, the opacity is sometimes ~500
+		// it happens when maxPanX is 1, so we check for that
+		if (opacity > 2) {
+			opacity = 0;
+		}
+
 		return { opacity };
 	});
 
 	// hide if loading is visible
 	const endIconOpacityStyle = useAnimatedStyle(() => {
-		const opacity =
+		let opacity =
 			(panX.value - maxPanX / 2) / (maxPanX / 2) - loadingOpacity.value;
+
+		// FIXME: for some reason, the opacity is sometimes ~500
+		// it happens when maxPanX is 1, so we check for that
+		if (opacity > 2) {
+			opacity = 0;
+		}
+
 		return { opacity };
 	});
 
@@ -103,7 +118,7 @@ const SwipeToConfirm = ({
 
 	useEffect(() => {
 		loadingOpacity.value = withTiming(loading ? 1 : 0, {
-			duration: 300,
+			duration: 500,
 		});
 	}, [loading, loadingOpacity]);
 
@@ -183,6 +198,7 @@ const styles = StyleSheet.create({
 		borderRadius: CIRCLE_SIZE,
 	},
 	icon: {
+		opacity: 0,
 		position: 'absolute',
 		left: 0,
 		top: 0,
