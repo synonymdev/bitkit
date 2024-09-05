@@ -18,6 +18,7 @@ const LightningChannel = ({
 	status = 'pending',
 	showLabels = false,
 	style,
+	testID,
 }: {
 	capacity: number;
 	localBalance: number;
@@ -25,6 +26,7 @@ const LightningChannel = ({
 	status?: TStatus;
 	showLabels?: boolean;
 	style?: StyleProp<ViewStyle>;
+	testID?: string;
 }): ReactElement => {
 	const { t } = useTranslation('lightning');
 
@@ -49,7 +51,9 @@ const LightningChannel = ({
 	};
 
 	return (
-		<View style={[status === 'pending' && styles.pending, style]}>
+		<View
+			style={[status === 'pending' && styles.pending, style]}
+			testID={testID}>
 			{showLabels && (
 				<View style={styles.labels}>
 					<Caption13Up color="secondary">{t('spending_label')}</Caption13Up>

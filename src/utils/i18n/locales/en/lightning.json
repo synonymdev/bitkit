@@ -100,23 +100,17 @@
 		}
 	},
 	"spending_confirm": {
-		"label": {
-			"string": "Transfer to spending"
-		},
 		"network_fee": {
 			"string": "Network fees"
 		},
 		"lsp_fee": {
 			"string": "Service fees"
 		},
-		"total_fee": {
+		"amount": {
+			"string": "To spending"
+		},
+		"total": {
 			"string": "Total"
-		},
-		"duration": {
-			"string": "Duration"
-		},
-		"weeks": {
-			"string": "WEEKS"
 		},
 		"default": {
 			"string": "Use Defaults"

@@ -21,8 +21,7 @@ const Liquidity = ({
 		navigation.goBack();
 	};
 
-	const remoteReserve = channelSize / 100;
-	const remoteBalance = Math.round(channelSize - localBalance - remoteReserve);
+	const remoteBalance = Math.round(channelSize - localBalance);
 
 	return (
 		<ThemedView style={styles.root} testID="Liquidity">

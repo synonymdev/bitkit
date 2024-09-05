@@ -156,10 +156,16 @@ d('LN Channel Onboarding', () => {
 				by.id('N0').withAncestor(by.id('SpendingAdvanced')),
 			).multiTap(4);
 			await element(by.id('SpendingAdvancedContinue')).tap();
-			await element(by.id('SpendingAdvancedAmount')).tap();
-			await expect(element(by.text('100 000'))).toBeVisible();
-			// Receiving capacity minus reserve
-			await expect(element(by.text('147 500'))).toBeVisible();
+			await expect(
+				element(
+					by.text('100 000').withAncestor(by.id('SpendingConfirmChannel')),
+				),
+			).toBeVisible();
+			await expect(
+				element(
+					by.text('150 000').withAncestor(by.id('SpendingConfirmChannel')),
+				),
+			).toBeVisible();
 
 			// Swipe to confirm (set x offset to avoid navigating back)
 			await element(by.id('GRAB')).swipe('right', 'slow', 0.95, 0.5, 0.5);

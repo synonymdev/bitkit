@@ -10,7 +10,6 @@ import { createShallowEqualSelector } from './utils';
 import { activityItemsSelector } from './activity';
 import { EActivityType } from '../types/activity';
 import { blocktankInfoSelector } from './blocktank';
-import { MAX_SPENDING_PERCENTAGE } from '../../utils/wallet/constants';
 
 export type TBalance = {
 	/** Total onchain funds */
@@ -117,7 +116,7 @@ export const transferLimitsSelector = createShallowEqualSelector(
 		const maxChannelSize = Math.min(maxChannelSize1, maxChannelSize2);
 
 		// 80% cap to leave buffer for fees
-		const localLimit = Math.round(onchainBalance * MAX_SPENDING_PERCENTAGE);
+		const localLimit = Math.round(onchainBalance * 0.8);
 		// LSP balance must be at least 1.5% of the client balance
 		// const minLspBalance1 = Math.round(clientBalance * 0.02);
 		// const minLspBalance2 = Math.round(minChannelSize - clientBalance);

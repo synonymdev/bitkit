@@ -249,10 +249,7 @@ const Channels = ({
 	const pendingConnections = [...pendingOrders, ...pendingChannels];
 
 	const handleAdd = useCallback((): void => {
-		navigation.navigate('TransferRoot', { screen: 'SpendingAmount' });
-
-		// TODO: Update this view once we enable creating channels with nodes other than Blocktank.
-		// navigation.navigate('LightningAddConnection');
+		navigation.navigate('TransferRoot', { screen: 'Funding' });
 	}, [navigation]);
 
 	const handleExportLogs = useCallback(async (): Promise<void> => {
