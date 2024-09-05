@@ -16,15 +16,6 @@ const migrations = {
 			},
 		};
 	},
-	45: (state): PersistedState => {
-		return {
-			...state,
-			settings: {
-				...state.settings,
-				rbf: true,
-			},
-		};
-	},
 };
 
 export default migrations;
