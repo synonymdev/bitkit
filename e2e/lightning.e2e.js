@@ -92,9 +92,11 @@ d('Lightning', () => {
 			).getAttributes();
 			await element(by.id('NavigationBack')).atIndex(0).tap();
 			await sleep(100);
+			await element(by.id('NavigationBack')).atIndex(0).tap();
+			await element(by.id('DevSettings')).tap();
+			await element(by.id('LDKDebug')).tap();
 
 			// connect to LND
-			await element(by.id('Channels')).tap();
 			await element(by.id('AddPeerInput')).replaceText(
 				`${lndNodeID}@127.0.0.1:9735`,
 			);
@@ -145,6 +147,8 @@ d('Lightning', () => {
 			await sleep(500);
 			await element(by.id('NavigationBack')).atIndex(0).tap();
 			await sleep(100);
+			await element(by.id('NavigationBack')).atIndex(0).tap();
+			await element(by.id('AdvancedSettings')).atIndex(0).tap();
 			await element(by.id('Channels')).tap();
 			await element(by.id('Channel')).atIndex(0).tap();
 			await expect(

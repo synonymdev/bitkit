@@ -15,6 +15,7 @@ import CoinSelectPreference from '../../screens/Settings/CoinSelectPreference';
 import PaymentPreference from '../../screens/Settings/PaymentPreference';
 import AddressTypePreference from '../../screens/Settings/AddressTypePreference';
 import DevSettings from '../../screens/Settings/DevSettings';
+import LdkDebug from '../../screens/Settings/DevSettings/LdkDebug';
 import AddressViewer from '../../screens/Settings/AddressViewer';
 import LightningNodeInfo from '../../screens/Settings/Lightning/LightningNodeInfo';
 import UnitSettings from '../../screens/Settings/Unit';
@@ -91,6 +92,7 @@ export type SettingsStackParamList = {
 	PaymentPreference: undefined;
 	AddressTypePreference: undefined;
 	DevSettings: undefined;
+	LdkDebug: undefined;
 	ExportToPhone: undefined;
 	ResetAndRestore: undefined;
 	BitcoinNetworkSelection: undefined;
@@ -160,6 +162,7 @@ const SettingsNavigator = (): ReactElement => {
 				component={AddressTypePreference}
 			/>
 			<Stack.Screen name="DevSettings" component={DevSettings} />
+			<Stack.Screen name="LdkDebug" component={LdkDebug} />
 			<Stack.Screen name="AddressViewer" component={AddressViewer} />
 			<Stack.Screen name="ExportToPhone" component={ExportToPhone} />
 			<Stack.Screen name="ResetAndRestore" component={ResetAndRestore} />

@@ -9,15 +9,10 @@ import {
 import Share from 'react-native-share';
 import { FadeIn, FadeOut } from 'react-native-reanimated';
 import { useTranslation } from 'react-i18next';
-import Clipboard from '@react-native-clipboard/clipboard';
 import { IBtOrder } from '@synonymdev/blocktank-lsp-http-client';
 import { BtOrderState2 } from '@synonymdev/blocktank-lsp-http-client/dist/shared/BtOrderState2';
 
-import {
-	AnimatedView,
-	View as ThemedView,
-	TextInput,
-} from '../../../styles/components';
+import { AnimatedView, View as ThemedView } from '../../../styles/components';
 import { Caption13Up, BodyMSB } from '../../../styles/text';
 import {
 	ChevronRight,
@@ -36,27 +31,13 @@ import Money from '../../../components/Money';
 import useColors from '../../../hooks/colors';
 import { useAppSelector } from '../../../hooks/redux';
 import { refreshOrdersList } from '../../../store/utils/blocktank';
-import {
-	addPeer,
-	getNodeId,
-	payLightningInvoice,
-	rebroadcastAllKnownTransactions,
-	recoverOutputs,
-	recoverOutputsFromForceClose,
-	refreshLdk,
-	setupLdk,
-	removeUnusedPeers,
-} from '../../../utils/lightning';
+import { refreshLdk } from '../../../utils/lightning';
 import { showToast } from '../../../utils/notifications';
 import {
 	useLightningChannelName,
 	useLightningBalance,
 	useLightningChannelBalance,
 } from '../../../hooks/lightning';
-import {
-	createLightningInvoice,
-	savePeer,
-} from '../../../store/utils/lightning';
 import {
 	selectedNetworkSelector,
 	selectedWalletSelector,
@@ -66,7 +47,6 @@ import {
 	openChannelsSelector,
 	pendingChannelsSelector,
 } from '../../../store/reselect/lightning';
-import { enableDevOptionsSelector } from '../../../store/reselect/settings';
 import { zipLogs } from '../../../utils/lightning/logs';
 import { SettingsScreenProps } from '../../../navigation/types';
 import {
@@ -75,7 +55,6 @@ import {
 } from '../../../store/reselect/blocktank';
 import { TPaidBlocktankOrders } from '../../../store/types/blocktank';
 import { EUnit } from '../../../store/types/wallet';
-import { showBottomSheet } from '../../../store/utils/ui';
 import { EChannelStatus, TChannel } from '../../../store/types/lightning';
 
 /**
@@ -220,23 +199,16 @@ const Channels = ({
 	route,
 }: SettingsScreenProps<'Channels'>): ReactElement => {
 	const { t } = useTranslation('lightning');
-	const [peer, setPeer] = useState('');
+	const [refreshingLdk, setRefreshingLdk] = useState(false);
 	const [showClosed, setShowClosed] = useState(
 		route.params?.showClosed ?? false,
 	);
-	const [payingInvoice, setPayingInvoice] = useState(false);
-	const [refreshingLdk, setRefreshingLdk] = useState(false);
-	const [restartingLdk, setRestartingLdk] = useState(false);
-	const [rebroadcastingLdk, setRebroadcastingLdk] = useState(false);
-	const [spendingStuckOutputs, setSpendingStuckOutputs] = useState(false);
 
 	const colors = useColors();
 	const br = useBreakpoints();
 	const { localBalance, remoteBalance } = useLightningBalance();
 	const selectedWallet = useAppSelector(selectedWalletSelector);
 	const selectedNetwork = useAppSelector(selectedNetworkSelector);
-	const enableDevOptions = useAppSelector(enableDevOptionsSelector);
-
 	const blocktankOrders = useAppSelector(blocktankOrdersSelector);
 	const paidOrders = useAppSelector(blocktankPaidOrdersSelector);
 	const openChannels = useAppSelector(openChannelsSelector);
@@ -279,89 +251,11 @@ const Channels = ({
 		[navigation],
 	);
 
-	const createInvoice = async (amountSats = 100): Promise<void> => {
-		const createPaymentRequest = await createLightningInvoice({
-			amountSats,
-			description: '',
-			expiryDeltaSeconds: 99999,
-			selectedNetwork,
-			selectedWallet,
-		});
-		if (createPaymentRequest.isErr()) {
-			showToast({
-				type: 'warning',
-				title: t('error_invoice'),
-				description: createPaymentRequest.error.message,
-			});
-			return;
-		}
-		const { to_str } = createPaymentRequest.value;
-		console.log(to_str);
-		Clipboard.setString(to_str);
-		showToast({
-			type: 'success',
-			title: t('invoice_copied'),
-			description: to_str,
-		});
-	};
-
 	const onRefreshLdk = useCallback(async (): Promise<void> => {
 		setRefreshingLdk(true);
 		await refreshLdk({ selectedWallet, selectedNetwork });
 		await refreshOrdersList();
 		setRefreshingLdk(false);
-	}, [selectedNetwork, selectedWallet]);
-
-	const onAddPeer = useCallback(async () => {
-		if (!peer) {
-			// Attempt to grab and set peer string from clipboard.
-			const clipboardStr = await Clipboard.getString();
-			setPeer(clipboardStr);
-			return;
-		}
-		const addPeerRes = await addPeer({
-			peer,
-			timeout: 5000,
-		});
-		if (addPeerRes.isErr()) {
-			showToast({
-				type: 'warning',
-				title: t('error_add_title'),
-				description: addPeerRes.error.message,
-			});
-			return;
-		}
-		const savePeerRes = savePeer({ selectedWallet, selectedNetwork, peer });
-		if (savePeerRes.isErr()) {
-			showToast({
-				type: 'warning',
-				title: t('error_save_title'),
-				description: savePeerRes.error.message,
-			});
-			return;
-		}
-		showToast({
-			type: 'success',
-			title: savePeerRes.value,
-			description: t('peer_saved'),
-		});
-	}, [peer, selectedNetwork, selectedWallet, t]);
-
-	const onRemoveUnusedPeers = useCallback(async () => {
-		const res = await removeUnusedPeers({ selectedWallet, selectedNetwork });
-		if (res.isErr()) {
-			showToast({
-				type: 'warning',
-				title: 'No unused peers removed',
-				description: res.error.message,
-			});
-		} else {
-			showToast({
-				type: 'info',
-				title: 'Removed unused peers',
-				description: res.value,
-			});
-		}
 	}, [selectedNetwork, selectedWallet]);
 
 	return (
@@ -471,202 +365,6 @@ const Channels = ({
 					/>
 				)}
 
-				{enableDevOptions && (
-					<View style={styles.devButtons}>
-						<Caption13Up color="secondary" style={styles.sectionTitle}>
-							Dev Options
-						</Caption13Up>
-						<TextInput
-							autoCapitalize="none"
-							autoComplete="off"
-							autoCorrect={false}
-							autoFocus={false}
-							style={styles.textInput}
-							value={peer}
-							placeholder="publicKey@ip:port"
-							multiline={true}
-							onChangeText={(txt: string): void => {
-								setPeer(txt);
-							}}
-							blurOnSubmit
-							returnKeyType="done"
-							testID="AddPeerInput"
-						/>
-						<Button
-							style={styles.devButton}
-							text={
-								peer
-									? 'Add Lightning Peer'
-									: 'Paste Lightning Peer From Clipboard'
-							}
-							onPress={onAddPeer}
-							testID="AddPeerButton"
-						/>
-						<Button
-							style={styles.devButton}
-							text="Remove unused peers"
-							onPress={onRemoveUnusedPeers}
-						/>
-						<Button
-							style={styles.devButton}
-							text="Refresh LDK"
-							loading={refreshingLdk}
-							onPress={onRefreshLdk}
-							testID="RefreshLDK"
-						/>
-						<Button
-							style={styles.devButton}
-							text="Restart LDK"
-							loading={restartingLdk}
-							onPress={async (): Promise<void> => {
-								setRestartingLdk(true);
-								await setupLdk({ selectedWallet, selectedNetwork });
-								setRestartingLdk(false);
-							}}
-							testID="RestartLDK"
-						/>
-						<Button
-							style={styles.devButton}
-							text="Rebroadcast LDK TXS"
-							loading={rebroadcastingLdk}
-							onPress={async (): Promise<void> => {
-								setRebroadcastingLdk(true);
-								await rebroadcastAllKnownTransactions();
-								setRebroadcastingLdk(false);
-							}}
-							testID="RebroadcastLDKTXS"
-						/>
-						<Button
-							style={styles.devButton}
-							text="Spend stuck outputs"
-							loading={spendingStuckOutputs}
-							onPress={async (): Promise<void> => {
-								setSpendingStuckOutputs(true);
-								const res = await recoverOutputs();
-								if (res.isOk()) {
-									showToast({
-										type: 'info',
-										title: 'Stuck outputs recovered',
-										description: res.value,
-									});
-								} else {
-									showToast({
-										type: 'warning',
-										title: 'No stuck outputs recovered',
-										description: res.error.message,
-									});
-								}
-								setSpendingStuckOutputs(false);
-							}}
-						/>
-						<Button
-							style={styles.devButton}
-							text="Force close channels"
-							onPress={(): void => {
-								showBottomSheet('forceTransfer');
-							}}
-						/>
-						<Button
-							style={styles.devButton}
-							text="Spend outputs from force close"
-							loading={spendingStuckOutputs}
-							onPress={async (): Promise<void> => {
-								setSpendingStuckOutputs(true);
-								const res = await recoverOutputsFromForceClose();
-								if (res.isOk()) {
-									showToast({
-										type: 'info',
-										title: 'Completed',
-										description: res.value,
-									});
-								} else {
-									showToast({
-										type: 'warning',
-										title: 'No stuck outputs recovered',
-										description: res.error.message,
-									});
-								}
-								setSpendingStuckOutputs(false);
-							}}
-						/>
-						<Button
-							style={styles.devButton}
-							text="Get Node ID"
-							onPress={async (): Promise<void> => {
-								const nodeId = await getNodeId();
-								if (nodeId.isErr()) {
-									console.log(nodeId.error.message);
-									return;
-								}
-								console.log(nodeId.value);
-								Clipboard.setString(nodeId.value);
-								showToast({
-									type: 'success',
-									title: 'Copied Node ID to Clipboard',
-									description: nodeId.value,
-								});
-							}}
-							testID="CopyNodeId"
-						/>
-
-						{openChannels.length > 0 && (
-							<>
-								{remoteBalance > 100 && (
-									<Button
-										style={styles.devButton}
-										text="Create Invoice: 100 sats"
-										onPress={async (): Promise<void> => {
-											createInvoice(100).then();
-										}}
-									/>
-								)}
-								{remoteBalance > 5000 && (
-									<Button
-										style={styles.devButton}
-										text="Create Invoice: 5000 sats"
-										onPress={async (): Promise<void> => {
-											createInvoice(5000).then();
-										}}
-									/>
-								)}
-								{localBalance > 0 && (
-									<>
-										<Button
-											style={styles.devButton}
-											text="Pay Invoice From Clipboard"
-											loading={payingInvoice}
-											onPress={async (): Promise<void> => {
-												setPayingInvoice(true);
-												const invoice = await Clipboard.getString();
-												if (!invoice) {
-													showToast({
-														type: 'warning',
-														title: 'No Invoice Detected',
-														description:
-															'Unable to retrieve anything from the clipboard.',
-													});
-												}
-												const response = await payLightningInvoice({ invoice });
-												if (response.isErr()) {
-													showToast({
-														type: 'warning',
-														title: 'Invoice Payment Failed',
-														description: response.error.message,
-													});
-													setPayingInvoice(false);
-													return;
-												}
-												await refreshLdk({ selectedWallet, selectedNetwork });
-												setPayingInvoice(false);
-											}}
-										/>
-									</>
-								)}
-							</>
-						)}
-					</View>
-				)}
-
 				<View style={[styles.buttons, br.up('sm') && styles.buttonsRow]}>
 					<Button
 						style={styles.button}
@@ -728,25 +426,6 @@ const styles = StyleSheet.create({
 	},
 	nName: {
 		marginRight: 8,
-	},
-	textInput: {
-		width: '100%',
-		minHeight: 50,
-		borderRadius: 10,
-		padding: 10,
-		textAlign: 'left',
-		alignItems: 'center',
-		justifyContent: 'center',
-		fontWeight: 'bold',
-		fontSize: 16,
-		marginTop: 8,
-	},
-	devButtons: {
-		marginTop: 'auto',
-		marginBottom: 16,
-	},
-	devButton: {
-		marginTop: 8,
 	},
 	buttons: {
 		marginTop: 'auto',

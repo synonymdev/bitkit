@@ -407,8 +407,8 @@ d('Settings', () => {
 			if (!__DEV__) {
 				await element(by.id('DevOptions')).multiTap(5); // enable dev mode
 			}
-			await element(by.id('AdvancedSettings')).tap();
-			await element(by.id('Channels')).tap();
+			await element(by.id('DevSettings')).tap();
+			await element(by.id('LDKDebug')).tap();
 			await element(by.id('CopyNodeId')).tap();
 			await element(by.id('RefreshLDK')).tap();
 			await element(by.id('RestartLDK')).tap();
@@ -417,7 +417,8 @@ d('Settings', () => {
 				.toBeVisible()
 				.withTimeout(5000);
 			await element(by.id('NavigationBack')).atIndex(0).tap();
-
+			await element(by.id('NavigationBack')).atIndex(0).tap();
+			await element(by.id('AdvancedSettings')).tap();
 			await element(by.id('LightningNodeInfo')).tap();
 			// TODO: this fails too often on CI
 			// await waitFor(element(by.id('LDKNodeID')))

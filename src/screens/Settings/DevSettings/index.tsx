@@ -149,7 +149,16 @@ const DevSettings = ({
 		},
 		{
 			title: 'Debug',
-			data: [],
+			data: [
+				{
+					title: 'LDK',
+					type: EItemType.button,
+					testID: 'LDKDebug',
+					onPress: (): void => {
+						navigation.navigate('LdkDebug');
+					},
+				},
+			],
 		},
 		{
 			title: 'Wallet Checks',
