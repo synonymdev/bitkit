@@ -358,8 +358,12 @@ d('Lightning', () => {
 			await sleep(5000); // make sure everything is saved to cloud storage TODO: improve this
 			console.info('seed: ', seed);
 
-			// restore wallet
-			await device.launchApp({ delete: true });
+			// WIPE APP AND RESTORE FROM SEED
+			await element(by.id('Settings')).tap();
+			await element(by.id('BackupSettings')).tap();
+			await element(by.id('ResetAndRestore')).tap();
+			await element(by.id('ResetButton')).tap();
+			await element(by.id('DialogConfirm')).tap();
 
 			await waitFor(element(by.id('Check1'))).toBeVisible();
 			await element(by.id('Check1')).tap();

@@ -67,16 +67,21 @@ d('Onboarding', () => {
 		await element(by.id('NavigationClose')).atIndex(0).tap();
 		console.info('seed: ', seed);
 
-		// get receing address
+		// get receiving address
 		await element(by.id('Receive')).tap();
 		await waitFor(element(by.id('QRCode')))
 			.toBeVisible()
 			.withTimeout(30000);
 		const { label: address1 } = await element(by.id('QRCode')).getAttributes();
 		console.info('address', address1);
+		await element(by.id('ReceiveSlider')).swipe('down'); // Close Receive sheet
 
-		// wipe and restore wallet
-		await device.launchApp({ delete: true });
+		// WIPE APP AND RESTORE FROM SEED
+		await element(by.id('Settings')).tap();
+		await element(by.id('BackupSettings')).tap();
+		await element(by.id('ResetAndRestore')).tap();
+		await element(by.id('ResetButton')).tap();
+		await element(by.id('DialogConfirm')).tap();
 
 		await waitFor(element(by.id('Check1'))).toBeVisible();
 		await element(by.id('Check1')).tap();
@@ -107,7 +112,7 @@ d('Onboarding', () => {
 			} catch (e) {}
 		}
 
-		// get receing address
+		// get receiving address
 		await element(by.id('Receive')).tap();
 		await waitFor(element(by.id('QRCode')))
 			.toBeVisible()
