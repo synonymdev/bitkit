@@ -3,7 +3,6 @@ import { StyleSheet, View } from 'react-native';
 import { useAppSelector } from '../../hooks/redux';
 import Share from 'react-native-share';
 import { useTranslation } from 'react-i18next';
-import RNExitApp from 'react-native-exit-app';
 
 import { wipeApp } from '../../store/utils/settings';
 import { openURL } from '../../utils/helpers';
@@ -96,10 +95,6 @@ const Recovery = ({
 		setShowWipeDialog(false);
 	};
 
-	const onCloseApp = (): void => {
-		RNExitApp.exitApp();
-	};
-
 	return (
 		<ThemedView style={styles.root}>
 			<SafeAreaInset type="top" />
@@ -141,15 +136,6 @@ const Recovery = ({
 						onPress={onWipeApp}
 					/>
 				</View>
-
-				<View style={styles.footer}>
-					<Button
-						text={t('close_app')}
-						size="large"
-						disabled={locked}
-						onPress={onCloseApp}
-					/>
-				</View>
 			</View>
 
 			<Dialog
@@ -178,9 +164,6 @@ const styles = StyleSheet.create({
 	},
 	button: {
 		marginBottom: 16,
-	},
-	footer: {
-		marginTop: 'auto',
 	},
 });
 

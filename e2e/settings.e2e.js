@@ -640,7 +640,6 @@ d('Settings', () => {
 			}
 
 			await element(by.id('TriggerRenderError')).tap();
-			await expect(element(by.id('ErrorClose'))).toBeVisible();
 			await expect(element(by.id('ErrorReport'))).toBeVisible();
 
 			markComplete('settings-dev');
