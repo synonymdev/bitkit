@@ -82,7 +82,7 @@ export const initialSettingsState: TSettings = {
 	pinOnIdle: false,
 	pinForPayments: false,
 	biometrics: false,
-	rbf: false,
+	rbf: true,
 	theme: 'dark',
 	unit: EUnit.BTC,
 	denomination: EDenomination.modern,

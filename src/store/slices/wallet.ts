@@ -32,7 +32,6 @@ export const walletSlice = createSlice({
 	initialState: defaultWalletStoreShape,
 	reducers: {
 		createWallet: (state, action: PayloadAction<IWallets>) => {
-			state.walletExists = true;
 			state.wallets = {
 				...state.wallets,
 				...action.payload,
@@ -186,6 +185,9 @@ export const walletSlice = createSlice({
 		resetExchangeRates: (state) => {
 			state.exchangeRates = defaultWalletStoreShape.exchangeRates;
 		},
+		setWalletExits: (state) => {
+			state.walletExists = true;
+		},
 	},
 });
 
@@ -204,6 +206,7 @@ export const {
 	replaceImpactedAddresses,
 	resetSelectedWallet,
 	resetExchangeRates,
+	setWalletExits,
 } = actions;
 
 export default reducer;

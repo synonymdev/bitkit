@@ -50,6 +50,7 @@ import {
 	addUnconfirmedTransactions,
 	createWallet,
 	replaceImpactedAddresses,
+	setWalletExits,
 	updateHeader,
 	updateTransactions,
 	updateTransfer,
@@ -95,6 +96,7 @@ export const createWalletThunk = async ({
 			return err(response.error.message);
 		}
 		dispatch(createWallet(response.value));
+		dispatch(setWalletExits());
 		return ok('');
 	} catch (e) {
 		return err(e);
