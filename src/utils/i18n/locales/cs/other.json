@@ -276,5 +276,13 @@
   },
   "try_again": {
     "string": "Zkuste to prosím znovu."
+  },
+  "transfer_notification": {
+    "title": {
+      "string": "Důležité: Přenos BitKit"
+    },
+    "body": {
+      "string": "Otevřete Bitkit pro dokončení přenosu"
+    }
   }
 }

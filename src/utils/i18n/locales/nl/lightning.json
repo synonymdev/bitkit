@@ -1,5 +1,5 @@
 {
-  "introduction": {
+  "transfer_intro": {
     "title": {
       "string": "Bestedings\n<accent>Saldo</accent>"
     },
@@ -45,17 +45,13 @@
     "nav_title": {
       "string": "Geld Overboeken"
     },
-    "nav_successful": {
-      "string": "Overboeking Voltooid"
-    },
-    "title_slider": {
-      "string": "Geld\n<accent>overmaken</accent>"
-    },
-    "text_numpad": {
-      "string": "Voer het bedrag in wat uw direct wenst te kunnen uitgeven"
-    },
     "swipe": {
       "string": "Veeg om over te boeken"
+    }
+  },
+  "spending_intro": {
+    "button": {
+      "string": "Starten"
     }
   },
   "transfer_failed": {
@@ -70,6 +66,34 @@
     },
     "continue": {
       "string": "Opnieuw proberen"
+    }
+  },
+  "savings_intro": {
+    "button": {
+      "string": "Starten"
+    }
+  },
+  "availability": {
+    "text": {
+      "string": "Geld overmaken naar uw spaarsaldo is meestal direct, maar de overboeking kan tot <accent>14 dagen</accent> duren onder bepaalde netwerkvoorwaarden."
+    }
+  },
+  "savings_advanced": {
+    "total": {
+      "string": "Totaal geselecteerd"
+    }
+  },
+  "savings_interrupted": {
+    "text": {
+      "string": "Het geld is nog niet overgeboekt. Bitkit zal proberen de overboeking gedurende<accent>30 minuten</accent> te initiëren. Houd uw app open."
+    }
+  },
+  "transfer_success": {
+    "nav_title": {
+      "string": "Overboeking Voltooid"
+    },
+    "text_spending": {
+      "string": "Uw geld is overgeboekt en uw bestedingssaldo is klaar voor gebruik."
     }
   },
   "error_channel_purchase": {
@@ -87,35 +111,8 @@
   "spending_label": {
     "string": "Bestedingssaldo"
   },
-  "spending_label_additional": {
-    "string": "Aanvullend Bestedingssaldo"
-  },
   "receiving_label": {
     "string": "Ontvangstcapaciteit"
-  },
-  "note_blocktank_limit": {
-    "string": "De hoeveelheid die u momenteel kunt overboeken is maximaal {usdValue}"
-  },
-  "note_reserve_limit": {
-    "string": "Het bedrag dat u naar uw bestedingssaldo kunt overboeken is beperkt tot {percentage}%. U moet wat ₿ in reserve houden om de bitcoin terug te kunnen boeken naar uw spaartegoed."
-  },
-  "quick_setup": {
-    "string": "Snelle installatie"
-  },
-  "quick_confirm_cost": {
-    "string": "Het kost <accent>{txFee}</accent> aan netwerkkosten en <accent>{lspFee}</accent> aan servicekosten om uw geld over te boeken."
-  },
-  "receiving_amount_money": {
-    "string": "Kies hoeveel geld u direct wilt kunnen ontvangen. "
-  },
-  "receiving_amount_bitcoin": {
-    "string": "Geef de hoeveelheid bitcoin aan die u direct wilt kunnen ontvangen. "
-  },
-  "custom_confirm_cost": {
-    "string": "Het kost <accent>{txFee}</accent> aan netwerkkosten en <accent>{lspFee}</accent> aan servicekosten om uw geld over te boeken. Uw bestedingssaldo moet ten minste <accentWithKeyboard>{weeks, plural, one {# week} of {# weeks} <penIcon/>}</accentWithKeyboard> actief blijven."
-  },
-  "duration_week": {
-    "string": "{count, plural, one {week} other {weken}}"
   },
   "setting_up_header": {
     "string": "Onderweg"
@@ -131,30 +128,6 @@
   },
   "setting_up_step4": {
     "string": "Verbinding Wordt Gereed Gemaakt"
-  },
-  "result_text": {
-    "string": "Uw geld is overgeboekt en uw bestedingssaldo is klaar voor gebruik."
-  },
-  "timeout_text": {
-    "string": "Het geld is nog niet overgeboekt. Bitkit zal proberen de overboeking gedurende<accent>30 minuten</accent> te initiëren. Houd uw app open."
-  },
-  "transfer_close": {
-    "string": "Voor het terugboeken van uw bestedingssaldo naar uw spaarrekening worden netwerkkosten in rekening gebracht. De exacte kosten zijn afhankelijk van de drukte op het netwerk."
-  },
-  "ts_savings_title": {
-    "string": "Overmaken\n<accent>naar Spaargeld</accent>"
-  },
-  "ts_savings_text": {
-    "string": "Uw geld is overgeboekt naar uw spaarsaldo. U kunt dit geld onmiddellijk gebruiken."
-  },
-  "interrupted_title": {
-    "string": "Overdracht Onderbroken"
-  },
-  "availability_title": {
-    "string": "Beschikbare Balans"
-  },
-  "availability_text": {
-    "string": "Geld overmaken naar uw spaarsaldo is meestal direct, maar de overboeking kan tot <accent>14 dagen</accent> duren onder bepaalde netwerkvoorwaarden."
   },
   "node_info": {
     "string": "Lightning Node"
@@ -242,11 +215,6 @@
   },
   "support": {
     "string": "Ondersteuning"
-  },
-  "connection_closed": {
-    "description": {
-      "string": "Uw Lightning verbinding is gesloten. Uw geld is overgeboekt naar uw spaarsaldo."
-    }
   },
   "close_conn": {
     "string": "Verbinding Sluiten"

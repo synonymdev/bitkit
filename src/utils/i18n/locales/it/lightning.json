@@ -1,5 +1,5 @@
 {
-  "introduction": {
+  "transfer_intro": {
     "title": {
       "string": "Conto\n<accent>di Spesa</accent>"
     },
@@ -48,32 +48,16 @@
     "nav_title": {
       "string": "Trasferimento Fondi"
     },
-    "nav_successful": {
-      "string": "Trasferimento Riuscito"
-    },
-    "title_slider": {
-      "string": "Bilancia\n<accent>i tuoi fondi</accent>"
-    },
-    "title_numpad": {
-      "string": "Conto <accent>di Spesa</accent>"
-    },
-    "title_receive": {
-      "string": "Capacità di <accent>Ricezione</accent>"
-    },
-    "text_slider": {
-      "string": "Scegli quanti soldi vuoi poter spendere istantaneamente e quanto vuoi conservare come risparmio."
-    },
-    "text_numpad": {
-      "string": "Inserisci l'importo che vuoi poter spendere istantaneamente."
+    "confirm": {
+      "string": "Per favore\n<accent>conferma</accent>"
     },
     "swipe": {
       "string": "Swipe Per Trasferire"
-    },
-    "error_min_amount": {
-      "string": "L'importo della spesa deve essere almeno ₿ {amount}"
-    },
-    "error_max_amount": {
-      "string": "L'importo della spesa deve essere inferiore a ₿ {amount}"
+    }
+  },
+  "spending_intro": {
+    "button": {
+      "string": "Inizia"
     }
   },
   "transfer_failed": {
@@ -93,6 +77,34 @@
       "string": "Riprova"
     }
   },
+  "savings_intro": {
+    "button": {
+      "string": "Inizia"
+    }
+  },
+  "availability": {
+    "text": {
+      "string": "Il trasferimento dei fondi al conto di risparmio è solitamente istantaneo, ma il pagamento potrebbe richiedere fino a <accent>14 giorni</accent> in determinate condizioni di rete."
+    }
+  },
+  "savings_advanced": {
+    "total": {
+      "string": "Totale selezionato"
+    }
+  },
+  "savings_interrupted": {
+    "text": {
+      "string": "I fondi non sono stati ancora trasferiti. Bitkit tenterà di avviare il trasferimento durante i prossimi <accent>30 minuti</accent>.  Per favore mantieni l'app aperta."
+    }
+  },
+  "transfer_success": {
+    "nav_title": {
+      "string": "Trasferimento Riuscito"
+    },
+    "text_spending": {
+      "string": "I tuoi fondi sono stati trasferiti e il tuo conto di spesa è pronto per essere utilizzato."
+    }
+  },
   "error_channel_purchase": {
     "string": "Configurazione dei Pagamenti Istantanei Fallita"
   },
@@ -101,9 +113,6 @@
   },
   "error_channel_receiving": {
     "string": "L'importo da ricevere deve essere maggiore di ${usdValue}."
-  },
-  "enter_money": {
-    "string": "Inserisci la quantità di bitcoin che desideri poter spendere istantaneamente."
   },
   "spending": {
     "string": "Spesa"
@@ -114,59 +123,8 @@
   "spending_label": {
     "string": "Conto di spesa"
   },
-  "spending_label_additional": {
-    "string": "Conto di spesa aggiuntivo"
-  },
   "receiving_label": {
     "string": "Capacità di ricezione"
-  },
-  "receiving_label_additional": {
-    "string": "Capacità di ricezione aggiuntiva"
-  },
-  "note_blocktank_limit": {
-    "string": "L'importo che puoi trasferire al tuo conto di spesa è attualmente limitato a ${usdValue}."
-  },
-  "note_reserve_limit": {
-    "string": "L'importo che puoi trasferire sul tuo conto di spesa è limitato al {percentage}%. È necessario tenere i fondi di riserva per riportare questi bitcoin nei risparmi."
-  },
-  "quick_setup": {
-    "string": "Configurazione Rapida"
-  },
-  "quick_confirm_header": {
-    "string": "Per favore\n<accent>conferma</accent>"
-  },
-  "quick_confirm_cost": {
-    "string": "Il trasferimento dei fondi costa <accent>{txFee}</accent> in commissioni di rete e <accent>{lspFee}</accent> in commissioni del fornitore dei servizi."
-  },
-  "spending_amount_bitcoin": {
-    "string": "Scegli quanti soldi vuoi poter spendere istantaneamente."
-  },
-  "receiving_amount_money": {
-    "string": "Scegli la quantità di soldi che vuoi ricevere istantaneamente."
-  },
-  "receiving_amount_bitcoin": {
-    "string": "Inserisci l'importo di Bitcoin che vuoi ricevere istantaneamente."
-  },
-  "cost": {
-    "string": "(Costo: {amount})"
-  },
-  "enter_custom_amount": {
-    "string": "Inserire l'importo"
-  },
-  "custom_confirm_header": {
-    "string": "Per favore\n<accent>conferma</accent>"
-  },
-  "custom_confirm_cost": {
-    "string": "Il trasferimento dei fondi comporta un costo di <accent>{txFee}</accent> in commissioni di rete e <accent>{lspFee}</accent> in commissioni del fornitore di servizi. Il tuo conto di spesa dovrebbe rimanere attivo per almeno altri <accentWithKeyboard>{weeks, plural, one {# week} o {# weeks}}.<penIcon/></accentWithKeyboard>"
-  },
-  "duration_header": {
-    "string": "Saldo <accent>durata</accent>"
-  },
-  "duration_text": {
-    "string": "Scegli il numero minimo di settimane in cui desideri che questa parte del tuo conto di spesa (Canale Lightning) rimanga attiva."
-  },
-  "duration_week": {
-    "string": "{count, plural, one {settimane} many {Tuo nome} other {settimane}}"
   },
   "setting_up_header": {
     "string": "In trasferimento"
@@ -188,39 +146,6 @@
   },
   "setting_up_button": {
     "string": "Continua ad utilizzare Bitkit"
-  },
-  "result_header": {
-    "string": "<accent>Pronto</accent>"
-  },
-  "result_text": {
-    "string": "I tuoi fondi sono stati trasferiti e il tuo conto di spesa è pronto per essere utilizzato."
-  },
-  "timeout_header": {
-    "string": "<accent>Mantieni Bitkit</accent>aperto"
-  },
-  "timeout_text": {
-    "string": "I fondi non sono stati ancora trasferiti. Bitkit tenterà di avviare il trasferimento durante i prossimi <accent>30 minuti</accent>.  Per favore mantieni l'app aperta."
-  },
-  "transfer_close": {
-    "string": "Il trasferimento del tuo conto di spesa al tuo conto di risparmio richiede una commissione di rete. La tariffa esatta dipende dalle condizioni della rete."
-  },
-  "ts_savings_title": {
-    "string": "Transferimento\n<accent>a Risparmi</accent>"
-  },
-  "ts_savings_text": {
-    "string": "I tuoi fondi sono stati trasferiti ai tuoi risparmi. Puoi utilizzare questi fondi immediatamente."
-  },
-  "interrupted_title": {
-    "string": "Trasferimento Interrotto"
-  },
-  "availability_title": {
-    "string": "Disponibilità Fondi"
-  },
-  "availability_header": {
-    "string": "Disponibilità\n<accent>dei fondi</accent>"
-  },
-  "availability_text": {
-    "string": "Il trasferimento dei fondi al conto di risparmio è solitamente istantaneo, ma il pagamento potrebbe richiedere fino a <accent>14 giorni</accent> in determinate condizioni di rete."
   },
   "node_info": {
     "string": "Nodo Lightning"
@@ -351,9 +276,6 @@
   "connection_closed": {
     "title": {
       "string": "Connessione chiusa"
-    },
-    "description": {
-      "string": "La tua connessione Lightning è stata chiusa. I tuoi fondi sono stati trasferiti ai tuoi risparmi."
     }
   },
   "close_conn": {

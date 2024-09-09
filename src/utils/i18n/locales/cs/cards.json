@@ -73,7 +73,7 @@
   },
   "transferClosingChannel": {
     "title": {
-      "string": "Inicializace..."
+      "string": "Zahájení"
     },
     "description": {
       "string": "Nechte aplikaci otevřenou"

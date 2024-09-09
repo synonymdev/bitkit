@@ -72,9 +72,6 @@
     }
   },
   "transferClosingChannel": {
-    "title": {
-      "string": "Iniciando..."
-    },
     "description": {
       "string": "Mantenha o app aberto"
     }

@@ -88,5 +88,14 @@
   },
   "connect": {
     "string": "Připojit"
+  },
+  "min": {
+    "string": "Min"
+  },
+  "max": {
+    "string": "Max"
+  },
+  "default": {
+    "string": "Výchozí"
   }
 }

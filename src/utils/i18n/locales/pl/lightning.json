@@ -4,9 +4,6 @@
       "string": "Spróbuj ponownie"
     }
   },
-  "quick_setup": {
-    "string": "Szybka konfiguracja"
-  },
   "channel_node_id": {
     "string": "ID węzła"
   },

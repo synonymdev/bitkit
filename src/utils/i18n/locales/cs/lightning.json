@@ -1,5 +1,5 @@
 {
-  "introduction": {
+  "transfer_intro": {
     "title": {
       "string": "Disponibilní\n<accent>Zůstatek</accent>"
     },
@@ -48,32 +48,22 @@
     "nav_title": {
       "string": "Převést prostředky"
     },
-    "nav_successful": {
-      "string": "Přenos úspěšný"
-    },
-    "title_slider": {
-      "string": "Zůstatek\n<accent>vaše prostředky</accent>"
-    },
-    "title_numpad": {
-      "string": "Disponibilní <accent>Zůstatek</accent> "
-    },
-    "title_receive": {
-      "string": "Příchozí <accent>Kapacita</accent>"
-    },
-    "text_slider": {
-      "string": "Vyberte, kolik peněz chcete mít k dispozici k okamžitému utrácení a kolik chcete uspořit."
-    },
-    "text_numpad": {
-      "string": "Zadejte částku, kterou chcete mít k okamžitým platbám."
+    "confirm": {
+      "string": "Prosím,\n<accent>potvrďte</accent>"
     },
     "swipe": {
       "string": "Přejeďte prstem k provedení převodu"
+    }
+  },
+  "spending_intro": {
+    "title": {
+      "string": "Převést\n<accent>do výdajů</accent>"
     },
-    "error_min_amount": {
-      "string": "Částka na výdaje musí být alespoň ₿ {amount}"
+    "text": {
+      "string": "Převeďte peníze na svůj disponibilní zůstatek a využívejte okamžité a levné transakce s přáteli, rodinou a obchodníky."
     },
-    "error_max_amount": {
-      "string": "Částka na výdaje musí být menší než ₿ {amount}"
+    "button": {
+      "string": "Začít"
     }
   },
   "transfer_failed": {
@@ -93,6 +83,132 @@
       "string": "Zkusit znovu"
     }
   },
+  "spending_amount": {
+    "title": {
+      "string": "Převést\n<accent>do výdajů</accent>"
+    },
+    "quarter": {
+      "string": "25%"
+    },
+    "error_max": {
+      "title": {
+        "string": "Maximální disponibilní zůstatek"
+      },
+      "description": {
+        "string": "Částka, kterou můžete převést na svůj disponibilní zůstatek, je v současné době omezena na ₿ {amount}."
+      }
+    }
+  },
+  "spending_confirm": {
+    "network_fee": {
+      "string": "Síťové poplatky"
+    },
+    "lsp_fee": {
+      "string": "Poplatky za služby"
+    },
+    "amount": {
+      "string": "Do výdajů"
+    },
+    "total": {
+      "string": "Celkem"
+    },
+    "default": {
+      "string": "Použití výchozích nastavení"
+    }
+  },
+  "spending_advanced": {
+    "title": {
+      "string": "Příjímací\n<accent>kapacita</accent>"
+    },
+    "fee": {
+      "string": "Poplatek za likviditu"
+    }
+  },
+  "liquidity": {
+    "title": {
+      "string": "Likvidita\n<accent>& routing</accent>"
+    },
+    "text": {
+      "string": "Váš disponibilní zůstatek v síti Bitkit je jako vaše internetové připojení. Místo šířky pásma platíte za likviditu a směrování plateb.\n\nPlatby na váš disponibilní zůstatek a z něj jsou levnější, rychlejší a soukromější než běžné bitcoinové transakce.\n\nSíťový poplatek a poplatek poskytovateli služeb jsou jednorázové náklady na zřízení vašeho zůstatku."
+    },
+    "label": {
+      "string": "Likvidita disponibilního zůstatku"
+    }
+  },
+  "savings_intro": {
+    "title": {
+      "string": "Převést\n<accent>do úspor</accent>"
+    },
+    "text": {
+      "string": "Převeďte si disponibilní zůstatek na spoření, abyste si Bitcoiny uložili na delší dobu a zajistili si budoucnost."
+    },
+    "button": {
+      "string": "Začít"
+    }
+  },
+  "availability": {
+    "title": {
+      "string": "Finanční prostředky\n<accent>dostupnost</accent>"
+    },
+    "text": {
+      "string": "Převod peněz na spořicí účet je obvykle okamžitý, ale za určitých síťových podmínek může vypořádání trvat až <accent>14 dní</accent>."
+    }
+  },
+  "savings_confirm": {
+    "label": {
+      "string": "Převést do úspor"
+    },
+    "transfer_all": {
+      "string": "Převést vše"
+    }
+  },
+  "savings_advanced": {
+    "title": {
+      "string": "Vyberte prostředky\n<accent>k převodu</accent>"
+    },
+    "text": {
+      "string": "Část disponibilního zůstatku můžete převést na spoření, protože máte více aktivních lightning připojení."
+    },
+    "total": {
+      "string": "Celkem vybráno"
+    }
+  },
+  "savings_progress": {
+    "title": {
+      "string": "Finanční prostředky\n<accent>v převodu</accent>"
+    },
+    "text": {
+      "string": "Počkejte prosím, probíhá převod finančních prostředků. To by mělo trvat <accent>±10 sekund.</accent>"
+    }
+  },
+  "savings_interrupted": {
+    "nav_title": {
+      "string": "Převod\n<accent>přerušen</accent>"
+    },
+    "title": {
+      "string": "Ponechte Bitkit\n<accent>otevřený</accent>"
+    },
+    "text": {
+      "string": "Prostředky dosud nebyly převedeny. Bitkit se pokusí převod iniciovat během následujících <accent>30 minut</accent>. Nechte prosím aplikaci otevřenou."
+    }
+  },
+  "transfer_success": {
+    "nav_title": {
+      "string": "Přenos úspěšný"
+    },
+    "title_spending": {
+      "string": "Prostředky převedeny\n<accent>do výdajů</accent>"
+    },
+    "text_spending": {
+      "string": "Vaše prostředky byly převedeny a disponibilní zůstatek je připraven k použití."
+    },
+    "title_savings": {
+      "string": "Prostředky převedeny\n<accent>do úspor</accent>"
+    },
+    "text_savings": {
+      "string": "Vaše prostředky byly převedeny. Tyto prostředky můžete okamžitě použít."
+    }
+  },
   "error_channel_purchase": {
     "string": "Nastavení okamžitých plateb se nezdařilo"
   },
@@ -101,9 +217,6 @@
   },
   "error_channel_receiving": {
     "string": "Přijímaná částka musí být vyšší než ${usdValue}"
-  },
-  "enter_money": {
-    "string": "Zadejte množství bitcoinů, kterou chcete mít možnost okamžitě utratit."
   },
   "spending": {
     "string": "Útraty"
@@ -114,59 +227,8 @@
   "spending_label": {
     "string": "Disponibilní zůstatek"
   },
-  "spending_label_additional": {
-    "string": "Dodatečný disponibilní zůstatek"
-  },
   "receiving_label": {
     "string": "Kapacita příjmu"
-  },
-  "receiving_label_additional": {
-    "string": "Dodatečná přijímací kapacita"
-  },
-  "note_blocktank_limit": {
-    "string": "Částka, kterou můžete převést na svůj disponibilní zůstatek, je aktuálně omezena na ${usdValue}."
-  },
-  "note_reserve_limit": {
-    "string": "Částka, kterou můžete převést na svůj disponibilní zůstatek, je omezena na {percentage}%. Abyste mohli tyto bitcoiny přesunout zpět na spořicí účet, musíte si ponechat finanční prostředky v rezervě."
-  },
-  "quick_setup": {
-    "string": "Rychlé nastavení"
-  },
-  "quick_confirm_header": {
-    "string": "Prosím,\n<accent>potvrďte</accent>"
-  },
-  "quick_confirm_cost": {
-    "string": "Stojí to <accent>{txFee}</accent> na síťových poplatcích a <accent>{lspFee}</accent> na poplatky poskytovateli služeb za převod vašich prostředků."
-  },
-  "spending_amount_bitcoin": {
-    "string": "Zvolte si, kolik peněz chcete mít možnost utrácet okamžitě."
-  },
-  "receiving_amount_money": {
-    "string": "Vyberte si, kolik peněz chcete být schopni přijímat okamžitě."
-  },
-  "receiving_amount_bitcoin": {
-    "string": "Zadejte množství bitcoinů, které chcete být schopni přijímat okamžitě."
-  },
-  "cost": {
-    "string": "(Náklady: {amount})"
-  },
-  "enter_custom_amount": {
-    "string": "Zadejte částku"
-  },
-  "custom_confirm_header": {
-    "string": "Prosím,\n<accent>potvrďte</accent>"
-  },
-  "custom_confirm_cost": {
-    "string": "Stojí to <accent>{txFee}</accent> na síťových poplatcích a <accent>{lspFee}</accent> poplatcích poskytovateli služeb za převod vašich prostředků. Váš zůstatek na účtu by měl zůstat aktivní alespoň po dobu <accentWithKeyboard>{weeks, plural, one {# week} další {# weeks}</accentWithKeyboard> }. <accentWithKeyboard><penIcon/></accentWithKeyboard>"
-  },
-  "duration_header": {
-    "string": "Zůstatek <accent>doba trvání</accent>"
-  },
-  "duration_text": {
-    "string": "Zvolte si minimální počet týdnů, po které má být tato část vašeho disponibilního zůstatku (kanál Lightning) aktivní."
-  },
-  "duration_week": {
-    "string": "{count, plural, one {týden} few {týdny} many {týdny} other {týdnů}}"
   },
   "setting_up_header": {
     "string": "V převodu"
@@ -188,39 +250,6 @@
   },
   "setting_up_button": {
     "string": "Pokračujte v používání Bitkit"
-  },
-  "result_header": {
-    "string": "<accent>Připraveno</accent>"
-  },
-  "result_text": {
-    "string": "Vaše prostředky byly převedeny a disponibilní zůstatek je připraven k použití."
-  },
-  "timeout_header": {
-    "string": "<accent>Ponechte Bitkit</accent>\notevřený"
-  },
-  "timeout_text": {
-    "string": "Prostředky dosud nebyly převedeny. Bitkit se pokusí převod iniciovat během následujících <accent>30 minut</accent>. Nechte prosím aplikaci otevřenou."
-  },
-  "transfer_close": {
-    "string": "Převod disponibilního zůstatku zpět na spoření vyžaduje síťový poplatek. Přesná výše poplatku závisí na podmínkách sítě."
-  },
-  "ts_savings_title": {
-    "string": "Převést\n<accent>do úspor</accent>"
-  },
-  "ts_savings_text": {
-    "string": "Vaše prostředky byly převedeny na spořicí účet. Tyto prostředky můžete okamžitě použít."
-  },
-  "interrupted_title": {
-    "string": "Přenos přerušen"
-  },
-  "availability_title": {
-    "string": "Dostupnost prostředků"
-  },
-  "availability_header": {
-    "string": "Dostupnost\n<accent>prostředků</accent>"
-  },
-  "availability_text": {
-    "string": "Převod peněz na spořicí účet je obvykle okamžitý, ale za určitých síťových podmínek může vypořádání trvat až <accent>14 dní</accent>."
   },
   "node_info": {
     "string": "Lightning uzel"
@@ -357,6 +386,12 @@
   "channel_node_id": {
     "string": "ID uzlu"
   },
+  "channel_id": {
+    "string": "ID kanálu"
+  },
+  "channel_point": {
+    "string": "Bod kanálu"
+  },
   "closure_reason": {
     "string": "Důvod uzavření"
   },
@@ -368,7 +403,7 @@
       "string": "Připojení uzavřeno"
     },
     "description": {
-      "string": "Vaše připojení lightning bylo uzavřeno. Vaše prostředky byly převedeny na vaše spoření."
+      "string": "Prostředky z vašeho disponibilního zůstatku byly převedeny do úspor."
     }
   },
   "close_conn": {

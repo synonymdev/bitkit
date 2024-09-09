@@ -85,5 +85,8 @@
   },
   "connect": {
     "string": "Connetti"
+  },
+  "default": {
+    "string": "Predefinito"
   }
 }

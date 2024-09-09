@@ -16,9 +16,6 @@
     }
   },
   "transferClosingChannel": {
-    "title": {
-      "string": "Instaluję"
-    },
     "description": {
       "string": "Pozostaw aplikację włączoną"
     }

@@ -69,9 +69,6 @@
     }
   },
   "transferClosingChannel": {
-    "title": {
-      "string": "Démarrage..."
-    },
     "description": {
       "string": "Maintenir l'application ouverte"
     }

@@ -1,5 +1,5 @@
 {
-  "introduction": {
+  "transfer_intro": {
     "title": {
       "string": "Расходы\n<accent>Баланс</accent>"
     },
@@ -48,32 +48,16 @@
     "nav_title": {
       "string": "Перенос Средств"
     },
-    "nav_successful": {
-      "string": "Перенос выполнен успешно"
-    },
-    "title_slider": {
-      "string": "Баланс\n<accent>ваших средств</accent>"
-    },
-    "title_numpad": {
-      "string": "Баланс <accent>для расходов</accent>"
-    },
-    "title_receive": {
-      "string": "Входящая <accent>емкость</accent>"
-    },
-    "text_slider": {
-      "string": "Выберите, сколько денег вы хотите потратить мгновенно, и сколько вы хотите оставить в сбережениях."
-    },
-    "text_numpad": {
-      "string": "Введите сумму денег, которую вы хотите иметь возможность потратить мгновенно."
+    "confirm": {
+      "string": "Пожалуйста\n<accent>подтвердите</accent>"
     },
     "swipe": {
       "string": "Перенести"
-    },
-    "error_min_amount": {
-      "string": "Сумма для расходов должна быть не менее ₿ {amount}"
-    },
-    "error_max_amount": {
-      "string": "Сумма для расходов должна быть меньше, чем ₿ {amount}"
+    }
+  },
+  "spending_intro": {
+    "button": {
+      "string": "Начать"
     }
   },
   "transfer_failed": {
@@ -93,6 +77,34 @@
       "string": "Попробовать снова"
     }
   },
+  "savings_intro": {
+    "button": {
+      "string": "Начать"
+    }
+  },
+  "availability": {
+    "text": {
+      "string": "Перенос средств в сбережения обычно мгновенный, но расчет может занять до <accent>14 дней</accent> в определенных сетевых условиях."
+    }
+  },
+  "savings_advanced": {
+    "total": {
+      "string": "Всего выбрано"
+    }
+  },
+  "savings_interrupted": {
+    "text": {
+      "string": "Средства еще не переведены. Bitkit попытается инициировать перевод в течение следующих <accent>30 минут</accent>. Пожалуйста, держите приложение открытым."
+    }
+  },
+  "transfer_success": {
+    "nav_title": {
+      "string": "Перенос выполнен успешно"
+    },
+    "text_spending": {
+      "string": "Ваши средства переведены, и ваш баланс для расходов готов к использованию."
+    }
+  },
   "error_channel_purchase": {
     "string": "Ошибка Настройки Мгновенных Платежей"
   },
@@ -101,9 +113,6 @@
   },
   "error_channel_receiving": {
     "string": "Входящий Баланс должен быть больше ${usdValue}"
-  },
-  "enter_money": {
-    "string": "Введите сумму биткоина, которую вы хотите тратить мгновенно."
   },
   "spending": {
     "string": "Расходы"
@@ -114,50 +123,8 @@
   "spending_label": {
     "string": "Баланс Расходов"
   },
-  "spending_label_additional": {
-    "string": "Дополнительный баланс для расходов"
-  },
   "receiving_label": {
     "string": "Входящий Баланс"
-  },
-  "receiving_label_additional": {
-    "string": "Дополнительный Входящий Баланс"
-  },
-  "note_blocktank_limit": {
-    "string": "Сумма, которую вы можете перевести на ваш баланс для трат, в настоящее время ограничена ${usdValue}."
-  },
-  "note_reserve_limit": {
-    "string": "Сумма, которую вы можете перевести на ваш баланс для трат, ограничена {percentage}%. Вам нужно сохранить средства в резерве, чтобы переместить этот биткоин обратно в сбережения."
-  },
-  "quick_setup": {
-    "string": "Быстрая Настройка"
-  },
-  "quick_confirm_header": {
-    "string": "Пожалуйста\n<accent>подтвердите</accent>"
-  },
-  "quick_confirm_cost": {
-    "string": "Это стоит <accent>{txFee}</accent> в сетевых комиссиях и <accent>{lspFee}</accent> в комиссиях поставщика услуг для перевода ваших средств."
-  },
-  "spending_amount_bitcoin": {
-    "string": "Выберите, сколько денег вы хотите потратить мгновенно."
-  },
-  "receiving_amount_money": {
-    "string": "Выберите, сколько денег вы хотите получать мгновенно."
-  },
-  "receiving_amount_bitcoin": {
-    "string": "Введите сумму Биткоинов, которую вы хотите получать мгновенно."
-  },
-  "enter_custom_amount": {
-    "string": "Введите сумму"
-  },
-  "custom_confirm_header": {
-    "string": "Пожалуйста\n<accent>подтвердите</accent>"
-  },
-  "duration_header": {
-    "string": "Длительность <accent>баланса</accent>"
-  },
-  "duration_text": {
-    "string": "Выберите минимальное количество недель, на которое эта часть вашего баланса для расходов (Lightning Channel) останется активной."
   },
   "setting_up_header": {
     "string": "В процессе перевода"
@@ -179,39 +146,6 @@
   },
   "setting_up_button": {
     "string": "Продолжить использование Bitkit"
-  },
-  "result_header": {
-    "string": "<accent>Готово</accent>"
-  },
-  "result_text": {
-    "string": "Ваши средства переведены, и ваш баланс для расходов готов к использованию."
-  },
-  "timeout_header": {
-    "string": "<accent>Держите Bitkit</accent>\nоткрытым"
-  },
-  "timeout_text": {
-    "string": "Средства еще не переведены. Bitkit попытается инициировать перевод в течение следующих <accent>30 минут</accent>. Пожалуйста, держите приложение открытым."
-  },
-  "transfer_close": {
-    "string": "Для перевода вашего баланса для расходов обратно в сбережения требуется сетевая комиссия. Точная комиссия зависит от условий сети."
-  },
-  "ts_savings_title": {
-    "string": "Перевод\n<accent>в Сбережения</accent>"
-  },
-  "ts_savings_text": {
-    "string": "Ваши средства переведены в сбережения. Вы можете использовать эти средства немедленно."
-  },
-  "interrupted_title": {
-    "string": "Перенос Прерван"
-  },
-  "availability_title": {
-    "string": "Доступность Средств"
-  },
-  "availability_header": {
-    "string": "Доступность\n<accent>Средств</accent>"
-  },
-  "availability_text": {
-    "string": "Перенос средств в сбережения обычно мгновенный, но расчет может занять до <accent>14 дней</accent> в определенных сетевых условиях."
   },
   "node_info": {
     "string": "Лайтнинг Нода"
@@ -330,9 +264,6 @@
   "connection_closed": {
     "title": {
       "string": "Соединение Закрыто"
-    },
-    "description": {
-      "string": "Ваше соединение Lightning закрыто. Ваши средства переведены на ваш сберегательный баланс."
     }
   },
   "close_conn": {

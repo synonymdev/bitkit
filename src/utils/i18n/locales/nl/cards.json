@@ -69,9 +69,6 @@
     }
   },
   "transferClosingChannel": {
-    "title": {
-      "string": "Aan het opstarten..."
-    },
     "description": {
       "string": "Houd de app open"
     }

@@ -85,5 +85,8 @@
   },
   "connect": {
     "string": "Conectar"
+  },
+  "default": {
+    "string": "Padrão"
   }
 }

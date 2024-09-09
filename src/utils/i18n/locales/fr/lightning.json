@@ -1,5 +1,5 @@
 {
-  "introduction": {
+  "transfer_intro": {
     "title": {
       "string": "Compte de dépenses\n<accent>Solde</accent>"
     },
@@ -48,32 +48,16 @@
     "nav_title": {
       "string": "Transfert de fonds"
     },
-    "nav_successful": {
-      "string": "Transfert réussi"
-    },
-    "title_slider": {
-      "string": "Équilibrer\n<accent>vos fonds</accent>"
-    },
-    "title_numpad": {
-      "string": "<accent>Solde</accent> du compte de dépenses"
-    },
-    "title_receive": {
-      "string": "<accent>Capacité</accent> de réception"
-    },
-    "text_slider": {
-      "string": "Choisissez le montant que vous souhaitez pouvoir dépenser immédiatement et combien vous souhaitez conserver en épargne."
-    },
-    "text_numpad": {
-      "string": "Saisissez le montant que vous souhaitez pouvoir dépenser instantanément."
+    "confirm": {
+      "string": "Veuillez\n<accent>confirmer</accent>"
     },
     "swipe": {
       "string": "Glissez pour transférer"
-    },
-    "error_min_amount": {
-      "string": "Le montant des dépenses doit être d'au moins ₿ {amount}"
-    },
-    "error_max_amount": {
-      "string": "Le montant des dépenses doit être inférieur à ₿ {amount}"
+    }
+  },
+  "spending_intro": {
+    "button": {
+      "string": "Commencer"
     }
   },
   "transfer_failed": {
@@ -93,6 +77,34 @@
       "string": "Réessayer"
     }
   },
+  "savings_intro": {
+    "button": {
+      "string": "Commencer"
+    }
+  },
+  "availability": {
+    "text": {
+      "string": "Le transfert de fonds vers l'épargne est généralement instantané, mais la transaction peut prendre jusqu'à <accent>14 jours</accent> dans certaines conditions de réseau."
+    }
+  },
+  "savings_advanced": {
+    "total": {
+      "string": "Total sélectionné"
+    }
+  },
+  "savings_interrupted": {
+    "text": {
+      "string": "Les fonds n'ont pas encore été transférés. Bitkit va essayer d'initier le transfert au cours des <accent>30</accent> prochaines <accent>minutes</accent>. Veuillez garder votre application ouverte."
+    }
+  },
+  "transfer_success": {
+    "nav_title": {
+      "string": "Transfert réussi"
+    },
+    "text_spending": {
+      "string": "Vos fonds ont été transférés et votre solde de dépenses est prêt à être utilisé."
+    }
+  },
   "error_channel_purchase": {
     "string": "Échec de la configuration des paiements instantanés"
   },
@@ -101,9 +113,6 @@
   },
   "error_channel_receiving": {
     "string": "Le montant reçu doit être supérieur à $.{usdValue}"
-  },
-  "enter_money": {
-    "string": "Saisissez le montant de bitcoins que vous souhaitez pouvoir dépenser instantanément."
   },
   "spending": {
     "string": "Dépenser"
@@ -114,56 +123,8 @@
   "spending_label": {
     "string": "Solde du compte de dépenses"
   },
-  "spending_label_additional": {
-    "string": "Solde du compte de dépenses"
-  },
   "receiving_label": {
     "string": "Capacité de réception"
-  },
-  "receiving_label_additional": {
-    "string": "Capacité de réception supplémentaire"
-  },
-  "note_blocktank_limit": {
-    "string": "Le montant que vous pouvez transférer vers votre solde du compte de dépenses est actuellement limité à ${usdValue}."
-  },
-  "note_reserve_limit": {
-    "string": "Le montant que vous pouvez transférer vers votre compte courant est limité à {percentage}%. Vous devez garder des fonds en réserve pour transférer ce bitcoin vers l'épargne."
-  },
-  "quick_setup": {
-    "string": "Configuration rapide"
-  },
-  "quick_confirm_header": {
-    "string": "Veuillez\n<accent>confirmer</accent>"
-  },
-  "quick_confirm_cost": {
-    "string": "Il coûte <accent>{txFee}</accent> de frais de réseau et <accent>{lspFee}</accent> de frais de fournisseur de services pour le transfert de vos fonds."
-  },
-  "spending_amount_bitcoin": {
-    "string": "Choisissez le montant que vous souhaitez pouvoir dépenser instantanément."
-  },
-  "receiving_amount_money": {
-    "string": "Choisissez le montant de bitcoins que vous souhaitez recevoir instantanément."
-  },
-  "receiving_amount_bitcoin": {
-    "string": "Saisissez le montant de bitcoins que vous souhaitez recevoir instantanément."
-  },
-  "enter_custom_amount": {
-    "string": "Entrez le montant"
-  },
-  "custom_confirm_header": {
-    "string": "Veuillez\n<accent>confirmer</accent>"
-  },
-  "custom_confirm_cost": {
-    "string": "Il coûte <accent>{txFee}</accent> de frais de réseau et <accent>{lspFee}</accent> de frais de fournisseur de services pour le transfert de vos fonds. Votre solde du compte courant doit rester actif pendant au moins <accentWithKeyboard>{weeks, plural, one {# week} other {# weeks}</accentWithKeyboard> }. <accentWithKeyboard><penIcon/></accentWithKeyboard>"
-  },
-  "duration_header": {
-    "string": "<accent>Durée</accent> du solde"
-  },
-  "duration_text": {
-    "string": "Choisissez le nombre minimum de semaines pendant lesquelles vous souhaitez que cette partie de votre solde du compte courant (Lightning Channel) reste active."
-  },
-  "duration_week": {
-    "string": "{count, plural, one {semaine} many {semaines} other {semaines}}"
   },
   "setting_up_header": {
     "string": "En transfert"
@@ -185,39 +146,6 @@
   },
   "setting_up_button": {
     "string": "Continuer à utiliser Bitkit"
-  },
-  "result_header": {
-    "string": "<accent>Prêt</accent>"
-  },
-  "result_text": {
-    "string": "Vos fonds ont été transférés et votre solde de dépenses est prêt à être utilisé."
-  },
-  "timeout_header": {
-    "string": "<accent>Gardez Bitkit</accent>\nouvert"
-  },
-  "timeout_text": {
-    "string": "Les fonds n'ont pas encore été transférés. Bitkit va essayer d'initier le transfert au cours des <accent>30</accent> prochaines <accent>minutes</accent>. Veuillez garder votre application ouverte."
-  },
-  "transfer_close": {
-    "string": "Le transfert du solde de votre compte courant vers votre compte d'épargne est soumis à des frais de réseau. Le montant exact des frais dépend des conditions du réseau."
-  },
-  "ts_savings_title": {
-    "string": "Transfert\n<accent>vers l'épargne</accent>"
-  },
-  "ts_savings_text": {
-    "string": "Vos fonds ont été transférés sur votre épargne. Vous pouvez utiliser ces fonds immédiatement."
-  },
-  "interrupted_title": {
-    "string": "Transfert interrompu"
-  },
-  "availability_title": {
-    "string": "Fonds disponibles"
-  },
-  "availability_header": {
-    "string": "Disponibilité\n<accent>des fonds</accent>"
-  },
-  "availability_text": {
-    "string": "Le transfert de fonds vers l'épargne est généralement instantané, mais la transaction peut prendre jusqu'à <accent>14 jours</accent> dans certaines conditions de réseau."
   },
   "node_info": {
     "string": "Nœud Lightning"
@@ -336,9 +264,6 @@
   "connection_closed": {
     "title": {
       "string": "Connexion fermée"
-    },
-    "description": {
-      "string": "Votre connection Lightning est fermée. Vos fonds ont été transférés sur votre épargne."
     }
   },
   "close_conn": {

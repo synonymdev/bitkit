@@ -1,5 +1,5 @@
 {
-  "introduction": {
+  "transfer_intro": {
     "button": {
       "string": "Començar"
     }
@@ -16,19 +16,36 @@
     "nav_title": {
       "string": "Transferir fons"
     },
-    "nav_successful": {
-      "string": "Transferència realitzada"
-    },
-    "text_numpad": {
-      "string": "Introduïu la quantitat de diners que voleu poder gastar de forma instantània."
+    "confirm": {
+      "string": "Si us plau\n<accent>confirma</accent>"
     },
     "swipe": {
       "string": "Desplaçar per Transferir"
     }
   },
+  "spending_intro": {
+    "button": {
+      "string": "Començar"
+    }
+  },
   "transfer_failed": {
     "continue": {
       "string": "Torna a intentar"
+    }
+  },
+  "savings_intro": {
+    "button": {
+      "string": "Començar"
+    }
+  },
+  "savings_advanced": {
+    "total": {
+      "string": "Total seleccionat"
+    }
+  },
+  "transfer_success": {
+    "nav_title": {
+      "string": "Transferència realitzada"
     }
   },
   "error_channel_purchase": {
@@ -49,24 +66,6 @@
   "receiving_label": {
     "string": "Capacitat de recepció"
   },
-  "note_blocktank_limit": {
-    "string": "L'import que podeu transferir al vostre saldo de despeses està actualment limitat a ${usdValue}."
-  },
-  "quick_setup": {
-    "string": "Configuració ràpida"
-  },
-  "quick_confirm_header": {
-    "string": "Si us plau\n<accent>confirma</accent>"
-  },
-  "receiving_amount_money": {
-    "string": "Trieu la quantitat de diners que voleu poder rebre de forma immediata."
-  },
-  "receiving_amount_bitcoin": {
-    "string": "Introduïu la quantitat de Bitcoin que voleu poder rebre instantàniament."
-  },
-  "custom_confirm_header": {
-    "string": "Si us plau\n<accent>confirma</accent>"
-  },
   "setting_up_step2": {
     "string": "Pagament realitzat amb èxit"
   },
@@ -78,12 +77,6 @@
   },
   "setting_up_button": {
     "string": "Continua utilitzant Bitkit"
-  },
-  "interrupted_title": {
-    "string": "Transferència interrompuda"
-  },
-  "availability_title": {
-    "string": "Disponibilitat de fons"
   },
   "node_info": {
     "string": "Node de Lightning"

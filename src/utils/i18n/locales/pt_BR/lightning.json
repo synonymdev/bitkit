@@ -1,5 +1,5 @@
 {
-  "introduction": {
+  "transfer_intro": {
     "title": {
       "string": "Saldo de\n<accent>Gastos</accent>"
     },
@@ -48,32 +48,16 @@
     "nav_title": {
       "string": "Transferência de fundos"
     },
-    "nav_successful": {
-      "string": "Transferência bem-sucedida"
-    },
-    "title_slider": {
-      "string": "Gerencie\n<accent>seus saldos</accent>"
-    },
-    "title_numpad": {
-      "string": "<accent>Saldo</accent> de Gastos"
-    },
-    "title_receive": {
-      "string": "<accent>Limite</accent> de recebimento"
-    },
-    "text_slider": {
-      "string": "Escolha quanto prefer gastar instantaneamente e quanto deseja poupar."
-    },
-    "text_numpad": {
-      "string": "Digite a quantia de dinheiro que deseja poder gastar instantaneamente."
+    "confirm": {
+      "string": "Por favor\n<accent>confirme</accent>"
     },
     "swipe": {
       "string": "Deslizar Para Transferir"
-    },
-    "error_min_amount": {
-      "string": "O valor gasto precisa ser de pelo menos ₿ {amount}"
-    },
-    "error_max_amount": {
-      "string": "O valor gasto precisa ser menor do que ₿ {amount}"
+    }
+  },
+  "spending_intro": {
+    "button": {
+      "string": "Começar"
     }
   },
   "transfer_failed": {
@@ -93,6 +77,34 @@
       "string": "Tente novamente"
     }
   },
+  "savings_intro": {
+    "button": {
+      "string": "Começar"
+    }
+  },
+  "availability": {
+    "text": {
+      "string": "A transferência de fundos para a poupança geralmente é instantânea, mas pode levar até <accent>14 dias</accent> em determinadas condições da rede."
+    }
+  },
+  "savings_advanced": {
+    "total": {
+      "string": "Total selecionado"
+    }
+  },
+  "savings_interrupted": {
+    "text": {
+      "string": "Os fundos ainda não foram transferidos. A Bitkit tentará iniciar a transferência durante os próximos <accent>30 minutos</accent>. Por favor, mantenha o aplicativo aberto."
+    }
+  },
+  "transfer_success": {
+    "nav_title": {
+      "string": "Transferência bem-sucedida"
+    },
+    "text_spending": {
+      "string": "Seus fundos foram transferidos e seu saldo de gastos está pronto para ser usado."
+    }
+  },
   "error_channel_purchase": {
     "string": "Falha na Configuração de Pagamentos Instantâneos"
   },
@@ -101,9 +113,6 @@
   },
   "error_channel_receiving": {
     "string": "O valor a ser recebido precisa ser maior que ${usdValue}"
-  },
-  "enter_money": {
-    "string": "Digite a quantidade de bitcoin que deseja gastar instantaneamente."
   },
   "spending": {
     "string": "Gastos"
@@ -114,56 +123,8 @@
   "spending_label": {
     "string": "Saldo de gastos"
   },
-  "spending_label_additional": {
-    "string": "Saldo de gastos adicional"
-  },
   "receiving_label": {
     "string": "Capacidade de recebimento"
-  },
-  "receiving_label_additional": {
-    "string": "Capacidade de recebimento adicional"
-  },
-  "note_blocktank_limit": {
-    "string": "O valor que você pode transferir para seu saldo de gastos está atualmente limitado a US${usdValue}."
-  },
-  "note_reserve_limit": {
-    "string": "O valor que pode transferir para seu saldo de gastos é limitado a {percentage}%."
-  },
-  "quick_setup": {
-    "string": "Configuração Rápida"
-  },
-  "quick_confirm_header": {
-    "string": "Por favor\n<accent>confirme</accent>"
-  },
-  "quick_confirm_cost": {
-    "string": "Custa <accent>{txFee}</accent> em taxas de rede e <accent>{lspFee}</accent> em taxas de provedor de serviços para transferir seus fundos."
-  },
-  "spending_amount_bitcoin": {
-    "string": "Escolha quanto quer poder gastar instantaneamente."
-  },
-  "receiving_amount_money": {
-    "string": "Escolha quanto dinheiro você deseja receber instantaneamente."
-  },
-  "receiving_amount_bitcoin": {
-    "string": "Digite a quantidade de Bitcoin que você deseja receber instantaneamente."
-  },
-  "enter_custom_amount": {
-    "string": "Digite o Valor"
-  },
-  "custom_confirm_header": {
-    "string": "Por favor\n<accent>confirme</accent>"
-  },
-  "custom_confirm_cost": {
-    "string": "Custa <accent>{txFee}</accent> em taxas da rede e <accent>{lspFee}</accent> em taxas de provedor de serviços para transferir seus fundos. Seu saldo de gastos deve permanecer ativo por pelo menos <accentWithKeyboard>{weeks, plural, one {# week} outros {# weeks}}.<penIcon/></accentWithKeyboard>"
-  },
-  "duration_header": {
-    "string": "<accent>Duração</accent> do Saldo"
-  },
-  "duration_text": {
-    "string": "Escolha o número mínimo de semanas que o senhor deseja que essa parte do seu saldo de gastos (conexão Lightning) permaneça ativa."
-  },
-  "duration_week": {
-    "string": "{count, plural, one {semana} many {semanas} other {semanas}}"
   },
   "setting_up_header": {
     "string": "Em transferência"
@@ -185,39 +146,6 @@
   },
   "setting_up_button": {
     "string": "Continuar Usando o Bitkit"
-  },
-  "result_header": {
-    "string": "<accent>Pronto</accent>"
-  },
-  "result_text": {
-    "string": "Seus fundos foram transferidos e seu saldo de gastos está pronto para ser usado."
-  },
-  "timeout_header": {
-    "string": "<accent>Mantenha o app</accent>\naberto"
-  },
-  "timeout_text": {
-    "string": "Os fundos ainda não foram transferidos. A Bitkit tentará iniciar a transferência durante os próximos <accent>30 minutos</accent>. Por favor, mantenha o aplicativo aberto."
-  },
-  "transfer_close": {
-    "string": "A transferência do saldo de gastos de volta para a poupança exige uma tarifa de rede. A tarifa exata depende das condições da rede."
-  },
-  "ts_savings_title": {
-    "string": "Transferir\n<accent>para Poupança</accent>"
-  },
-  "ts_savings_text": {
-    "string": "Seus fundos foram transferidos para sua poupança. Você pode usar esses fundos imediatamente."
-  },
-  "interrupted_title": {
-    "string": "Transferência Interrompida"
-  },
-  "availability_title": {
-    "string": "Disponibilidade de Fundos"
-  },
-  "availability_header": {
-    "string": "Disponibilidade do\n<accent>saldo</accent>"
-  },
-  "availability_text": {
-    "string": "A transferência de fundos para a poupança geralmente é instantânea, mas pode levar até <accent>14 dias</accent> em determinadas condições da rede."
   },
   "node_info": {
     "string": "Nó Lightning"
@@ -342,9 +270,6 @@
   "connection_closed": {
     "title": {
       "string": "Conexão Desativada"
-    },
-    "description": {
-      "string": "Sua Lightning Connection foi desativada. Seus fundos foram transferidos para sua poupança."
     }
   },
   "close_conn": {

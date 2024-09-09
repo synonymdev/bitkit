@@ -1,5 +1,5 @@
 {
-  "introduction": {
+  "transfer_intro": {
     "button": {
       "string": "Empezar"
     }
@@ -13,19 +13,33 @@
     "nav_title": {
       "string": "Transferir fondos"
     },
-    "nav_successful": {
-      "string": "Transferencia exitosa"
-    },
-    "text_numpad": {
-      "string": "Introduzca la cantidad de dinero que desea poder gastar al instante."
-    },
     "swipe": {
       "string": "Deslizar para transferir"
+    }
+  },
+  "spending_intro": {
+    "button": {
+      "string": "Empezar"
     }
   },
   "transfer_failed": {
     "continue": {
       "string": "Inténtelo de nuevo"
+    }
+  },
+  "savings_intro": {
+    "button": {
+      "string": "Empezar"
+    }
+  },
+  "savings_advanced": {
+    "total": {
+      "string": "Total seleccionado"
+    }
+  },
+  "transfer_success": {
+    "nav_title": {
+      "string": "Transferencia exitosa"
     }
   },
   "error_channel_purchase": {
@@ -43,29 +57,11 @@
   "receiving_label": {
     "string": "Capacidad de recepción"
   },
-  "note_blocktank_limit": {
-    "string": "El importe que puede transferir a su saldo de gastos está limitado actualmente a ${usdValue}."
-  },
-  "quick_setup": {
-    "string": "Configuración rápida"
-  },
-  "receiving_amount_money": {
-    "string": "Elija cuánto dinero desea poder recibir al instante."
-  },
-  "receiving_amount_bitcoin": {
-    "string": "Introduzca la cantidad de Bitcoin que desea poder recibir al instante."
-  },
   "setting_up_step2": {
     "string": "Pago Efectuado"
   },
   "setting_up_step3": {
     "string": "En Cola Para la Apertura"
-  },
-  "interrupted_title": {
-    "string": "Transferencia interrumpida"
-  },
-  "availability_title": {
-    "string": "Disponibilidad de fondos"
   },
   "node_info": {
     "string": "Nodo Lightning"

@@ -16,9 +16,6 @@
     }
   },
   "transferClosingChannel": {
-    "title": {
-      "string": "Έναρξη..."
-    },
     "description": {
       "string": "Κρατήστε την εφαρμογή ανοιχτή"
     }

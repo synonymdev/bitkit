@@ -60,9 +60,6 @@
     }
   },
   "transferClosingChannel": {
-    "title": {
-      "string": "Arrancando"
-    },
     "description": {
       "string": "Mantenga la aplicación abierta"
     }
