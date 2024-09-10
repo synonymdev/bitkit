@@ -211,14 +211,14 @@ const LNURLConfirm = ({
 								value={
 									<View style={styles.textContainer}>
 										<BottomSheetTextInput
-											blurOnSubmit={false}
 											value={comment}
-											onChangeText={setComment}
 											returnKeyType="done"
-											testID="CommentInput"
 											multiline={true}
 											minHeight={100}
 											maxLength={pParams.commentAllowed}
+											blurOnSubmit={true}
+											testID="CommentInput"
+											onChangeText={setComment}
 										/>
 									</View>
 								}

@@ -189,6 +189,7 @@ d('LNURL', () => {
 
 		await element(by.id('ContinueAmount')).tap();
 		await element(by.id('CommentInput')).typeText('test comment');
+		await element(by.id('CommentInput')).tapReturnKey();
 		await element(by.id('GRAB')).swipe('right', 'slow', 0.95, 0.5, 0.5); // Swipe to confirm
 		await waitFor(element(by.id('SendSuccess')))
 			.toBeVisible()
