@@ -48,7 +48,7 @@ const LightningSyncing = ({
 		if (isLDKReady && !hidden) {
 			rootOpacity.value = withTiming(0, { duration: 200 }, () => {
 				cancelAnimation(glowOpacity);
-				runOnJS(() => setHidden(true));
+				runOnJS(setHidden)(true);
 			});
 		}
 
