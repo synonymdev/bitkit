@@ -1,4 +1,4 @@
-import { IFormattedTransaction } from 'beignet';
+import { EPaymentType, IFormattedTransaction } from 'beignet';
 import { getCurrentWallet } from '.';
 import { btcToSats } from '../conversion';
 import { getTransactions } from './electrum';
@@ -20,33 +20,36 @@ export const getTransferForTx = async (
 		return transferToSpending;
 	}
 
-	// if the funding tx is in the transfer list it's a mutual close
-	const transferToSavings = transfers.find((t) => {
-		const txInput = tx.vin.find((vin) => t.txId === vin.txid);
-		return !!txInput;
-	});
-	if (transferToSavings) {
-		return transferToSavings;
-	}
-
-	// If we haven't found a transfer yet, check if the tx is a sweep from a force close
-	// check that tx amount matches first to avoid unnecessary Electrum calls
-	const inputValue = btcToSats(tx.totalInputValue);
-	const matched = transfers.filter((t) => {
-		return t.type === ETransferType.forceClose && t.amount === inputValue;
-	});
-
-	if (matched.length > 0) {
-		// call Electrum to check if the tx has a parent that funded a channel
-		// if so the tx is probably a sweep from a force close
-		const txResponse = await getTransactions({
-			txHashes: [{ tx_hash: tx.vin[0].txid }],
+	// check if the tx is a transfer to savings
+	if (tx.type === EPaymentType.received) {
+		// if the funding tx is in the transfer list it's a mutual close
+		const transferToSavings = transfers.find((t) => {
+			const txInput = tx.vin.find((vin) => t.txId === vin.txid);
+			return !!txInput;
 		});
-		if (txResponse.isOk()) {
-			const txData = txResponse.value.data;
-			if (txData.length !== 0) {
-				const parentTx = txData[0].result;
-				return matched.find((t) => t.txId === parentTx.vin[0].txid);
+		if (transferToSavings) {
+			return transferToSavings;
+		}
+
+		// If we haven't found a transfer yet, check if the tx is a sweep from a force close
+		// check that tx amount matches first to avoid unnecessary Electrum calls
+		const inputValue = btcToSats(tx.totalInputValue);
+		const matched = transfers.filter((t) => {
+			return t.type === ETransferType.forceClose && t.amount === inputValue;
+		});
+
+		if (matched.length > 0) {
+			// call Electrum to check if the tx has a parent that funded a channel
+			// if so the tx is probably a sweep from a force close
+			const txResponse = await getTransactions({
+				txHashes: [{ tx_hash: tx.vin[0].txid }],
+			});
+			if (txResponse.isOk()) {
+				const txData = txResponse.value.data;
+				if (txData.length !== 0) {
+					const parentTx = txData[0].result;
+					return matched.find((t) => t.txId === parentTx.vin[0].txid);
+				}
 			}
 		}
 	}
