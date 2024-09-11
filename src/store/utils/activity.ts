@@ -6,14 +6,14 @@ import { EPaymentType } from 'beignet';
 import { onChainTransactionToActivityItem } from '../../utils/activity';
 import { formatBoostedActivityItems } from '../../utils/boost';
 import { sleep, vibrate } from '../../utils/helpers';
-import { getChannels } from '../../utils/lightning';
+import { getOpenChannels } from '../../utils/lightning';
 import { getCurrentWallet } from '../../utils/wallet';
 import { dispatch, getBlocktankStore } from '../helpers';
 import { addActivityItem, updateActivityItems } from '../slices/activity';
 import { updateSettings } from '../slices/settings';
 import { closeSheet } from '../slices/ui';
 import { EActivityType, TLightningActivityItem } from '../types/activity';
-import { checkPendingCJitEntries } from './blocktank';
+import { updatePendingCJitEntries } from './blocktank';
 import { showBottomSheet } from './ui';
 
 /**
@@ -22,36 +22,41 @@ import { showBottomSheet } from './ui';
  * @param {string} channelId
  */
 export const addCJitActivityItem = async (channelId: string): Promise<void> => {
-	const channels = getChannels();
+	const channels = getOpenChannels();
 	const channel = channels.find((c: TChannel) => c.channel_id === channelId);
 	if (!channel) {
-		return; // Channel not found.
+		console.warn('CJIT activity item not added. Channel not found.');
+		return;
 	}
 	if (channel.confirmations_required !== 0 || channel.balance_sat === 0) {
-		return; // No need to take action.
+		console.log('CJIT activity item not added. Channel empty.');
+		return;
 	}
+
+	const cJitEntries = getBlocktankStore().cJitEntries;
 
 	// Try to find the CJIT entry for this channel by funding_txid.
 	let cJitEntry: ICJitEntry | undefined;
 	let i = 0;
 	while (!cJitEntry && i < 5) {
 		await sleep(1000); // wait until Blocktank has updated its database.
-		await checkPendingCJitEntries(); // Update any pending CJIT entries.
-		cJitEntry = getBlocktankStore().cJitEntries.find((entry) => {
-			return entry?.channel?.fundingTx.id === channel.funding_txid;
+		await updatePendingCJitEntries();
+		cJitEntry = cJitEntries.find((entry) => {
+			return entry.channel?.fundingTx.id === channel.funding_txid;
 		});
 		i++;
 	}
 
 	// If not found by channel id, try to find it by channel size.
 	if (!cJitEntry) {
-		cJitEntry = getBlocktankStore().cJitEntries.find((entry) => {
+		console.log('No CJIT entry found for funding_txid. Trying channel size.');
+		cJitEntry = cJitEntries.find((entry) => {
 			return entry.channelSizeSat === channel.channel_value_satoshis;
 		});
 	}
 
 	if (!cJitEntry) {
-		// No CJIT entry found for this channel.
+		console.log('CJIT activity item not added. No entry found.');
 		// Most likely a normal channel open.
 		return;
 	}

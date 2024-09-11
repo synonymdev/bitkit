@@ -1,4 +1,4 @@
-import { EmitterSubscription, InteractionManager } from 'react-native';
+import { EmitterSubscription } from 'react-native';
 import Keychain from '@synonymdev/react-native-keychain';
 import * as bitcoin from 'bitcoinjs-lib';
 import RNFS from 'react-native-fs';
@@ -356,11 +356,6 @@ export const setupLdk = async ({
 };
 
 export const restartLdk = async (): Promise<Result<string>> => {
-	// wait for interactions/animations to be completed
-	await new Promise((resolve) => {
-		InteractionManager.runAfterInteractions(() => resolve(null));
-	});
-
 	return ldk.restart();
 };
 
@@ -505,7 +500,7 @@ export const subscribeToLightningPayments = ({
 		onChannelSubscription = ldk.onEvent(
 			EEventTypes.new_channel,
 			async (res: TChannelUpdate) => {
-				await refreshLdk({ selectedWallet, selectedNetwork });
+				await refreshLdk({ force: true });
 				updateSlashPayConfig({ selectedWallet, selectedNetwork });
 
 				const openChannels = getOpenChannels();
@@ -598,19 +593,19 @@ const handleRefreshError = (errorMessage: string): Result<string> => {
  * This method syncs LDK, re-adds peers & updates lightning channels.
  * @param {TWalletName} [selectedWallet]
  * @param {EAvailableNetwork} [selectedNetwork]
- * @param {boolean} [clearPendingRefreshPromises]
+ * @param {boolean} [force]
  * @returns {Promise<Result<string>>}
  */
 export const refreshLdk = async ({
 	selectedWallet = getSelectedWallet(),
 	selectedNetwork = getSelectedNetwork(),
-	clearPendingRefreshPromises = false,
+	force = false,
 }: {
 	selectedWallet?: TWalletName;
 	selectedNetwork?: EAvailableNetwork;
-	clearPendingRefreshPromises?: boolean;
+	force?: boolean;
 } = {}): Promise<Result<string>> => {
-	if (clearPendingRefreshPromises) {
+	if (force) {
 		pendingRefreshPromises = [];
 		isRefreshing = false;
 	}
@@ -622,10 +617,6 @@ export const refreshLdk = async ({
 	isRefreshing = true;
 
 	try {
-		// wait for interactions/animations to be completed
-		await new Promise((resolve) => {
-			InteractionManager.runAfterInteractions(() => resolve(null));
-		});
 		const isRunning = await isLdkRunning();
 		if (!isRunning) {
 			dispatch(updateUi({ isLDKReady: false }));
@@ -1242,12 +1233,8 @@ export const getChannels = (): TChannel[] => {
  * @returns {TChannel[]}
  */
 export const getOpenChannels = (): TChannel[] => {
-	const selectedWallet = getSelectedWallet();
-	const selectedNetwork = getSelectedNetwork();
-
-	const node = getLightningStore().nodes[selectedWallet];
-	const channels = node.channels[selectedNetwork];
-	const openChannels = Object.values(channels).filter((channel) => {
+	const channels = getChannels();
+	const openChannels = channels.filter((channel) => {
 		return channel.status === EChannelStatus.open;
 	});
 
@@ -1259,12 +1246,8 @@ export const getOpenChannels = (): TChannel[] => {
  * @returns {TChannel[]}
  */
 export const getClosedChannels = (): TChannel[] => {
-	const selectedWallet = getSelectedWallet();
-	const selectedNetwork = getSelectedNetwork();
-
-	const node = getLightningStore().nodes[selectedWallet];
-	const channels = node.channels[selectedNetwork];
-	const closedChannels = Object.values(channels).filter((channel) => {
+	const channels = getChannels();
+	const closedChannels = channels.filter((channel) => {
 		return channel.status === EChannelStatus.closed;
 	});
 

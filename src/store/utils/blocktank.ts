@@ -76,7 +76,7 @@ export const refreshOrdersList = async (): Promise<Result<string>> => {
  * Updates the status of pending CJIT entries that may have changed.
  * @returns {Promise<Result<string>>}
  */
-export const checkPendingCJitEntries = async (): Promise<Result<string>> => {
+export const updatePendingCJitEntries = async (): Promise<Result<string>> => {
 	const pendingCJitEntries = blocktank.getPendingCJitEntries();
 	try {
 		const promises = pendingCJitEntries.map((order) => {
