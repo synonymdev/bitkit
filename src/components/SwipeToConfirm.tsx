@@ -2,14 +2,7 @@ import React, { ReactElement, memo, useEffect, useState } from 'react';
 import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
-import Animated, {
-	clamp,
-	runOnJS,
-	useAnimatedStyle,
-	useSharedValue,
-	withSpring,
-	withTiming,
-} from 'react-native-reanimated';
+import Animated, { useAnimatedStyle, useSharedValue, withSpring, withTiming } from 'react-native-reanimated';
 
 import { View as ThemedView } from '../styles/components';
 import { BodySSB } from '../styles/text';
@@ -24,189 +17,86 @@ const INVISIBLE_BORDER = (GRAB_SIZE - CIRCLE_SIZE) / 2;
 const PADDING = 8;
 
 interface ISwipeToConfirm {
-	text?: string;
-	color?: keyof IThemeColors;
-	icon?: ReactElement;
-	loading?: boolean;
-	confirmed?: boolean; // if true, the circle will be at the end
-	style?: StyleProp<ViewStyle>;
-	onConfirm: () => void;
+    text?: string;
+    color?: keyof IThemeColors;
+    icon?: ReactElement;
+    loading?: boolean;
+    confirmed?: boolean; // if true, the circle will be at the end
+    style?: StyleProp<ViewStyle>;
+    onConfirm: () => void;
 }
 
 const SwipeToConfirm = ({
-	text,
-	color,
-	icon,
-	loading,
-	confirmed,
-	style,
-	onConfirm,
+    text,
+    color,
+    icon,
+    loading,
+    confirmed,
+    style,
+    onConfirm,
 }: ISwipeToConfirm): ReactElement => {
-	const { t } = useTranslation('other');
-	text = text ?? t('swipe');
-	const colors = useColors();
-	const trailColor = color ? `${colors[color]}24` : colors.green24;
-	const circleColor = color ? colors[color] : colors.green;
-	const [swiperWidth, setSwiperWidth] = useState(0);
-	const maxPanX = swiperWidth === 0 ? 1 : swiperWidth - CIRCLE_SIZE;
+    const { t } = useTranslation('other');
+    text = text ?? t('swipe');
+    const colors = useColors();
+    const trailColor = color ? `${colors[color]}24` : colors.green24;
+    const circleColor = color ? colors[color] : colors.green;
+    
+    const [swiperWidth, setSwiperWidth] = useState(0);
+    const maxPanX = swiperWidth === 0 ? 1 : swiperWidth - CIRCLE_SIZE;
 
-	const panX = useSharedValue(0);
-	const prevPanX = useSharedValue(0);
-	const loadingOpacity = useSharedValue(loading ? 1 : 0);
+    // Track swipe position
+    const panX = useSharedValue(0);
 
-	const panGesture = Gesture.Pan()
-		.enabled(!loading && !confirmed) // disable so you can't swipe back
-		.onStart(() => {
-			prevPanX.value = panX.value;
-		})
-		.onUpdate((event) => {
-			panX.value = clamp(prevPanX.value + event.translationX, 0, maxPanX);
-		})
-		.onEnd(() => {
-			const swiped = panX.value > maxPanX * 0.8;
-			panX.value = withSpring(swiped ? maxPanX : 0);
+    // Ensure swiperWidth is correctly set
+    const handleLayout = (event) => {
+        const { width } = event.nativeEvent.layout;
+        setSwiperWidth(width > 0 ? width : 1); // Prevent swiperWidth from being set to 0
+    };
 
-			if (swiped) {
-				runOnJS(onConfirm)();
-			}
-		});
+    const animatedStyle = useAnimatedStyle(() => ({
+        transform: [{ translateX: clamp(panX.value, 0, maxPanX) }],
+    }));
 
-	// Animated styles
-	const trailStyle = useAnimatedStyle(() => {
-		const width = panX.value + CIRCLE_SIZE;
-		return { width };
-	});
+    // Disable swipe when loading or confirmed
+    useEffect(() => {
+        if (loading || confirmed) {
+            panX.value = withTiming(0); // Reset position when blocked
+        }
+    }, [loading, confirmed]);
 
-	const circleStyle = useAnimatedStyle(() => ({
-		transform: [{ translateX: panX.value }],
-	}));
+    const gesture = Gesture.Pan()
+        .onUpdate((event) => {
+            if (!loading && !confirmed) {
+                panX.value = clamp(event.translationX, 0, maxPanX);
+            }
+        })
+        .onEnd(() => {
+            if (panX.value >= maxPanX) {
+                runOnJS(onConfirm)();
+            } else {
+                panX.value = withSpring(0); // Reset to starting position if swipe is incomplete
+            }
+        });
 
-	const textOpacityStyle = useAnimatedStyle(() => {
-		const opacity = 1 - panX.value / maxPanX;
-		return { opacity };
-	});
-
-	const startIconOpacityStyle = useAnimatedStyle(() => {
-		let opacity = 1 - panX.value / (maxPanX / 2) - loadingOpacity.value;
-
-		// FIXME: for some reason, the opacity is sometimes ~500
-		// it happens when maxPanX is 1, so we check for that
-		if (opacity > 2) {
-			opacity = 0;
-		}
-
-		return { opacity };
-	});
-
-	// hide if loading is visible
-	const endIconOpacityStyle = useAnimatedStyle(() => {
-		let opacity =
-			(panX.value - maxPanX / 2) / (maxPanX / 2) - loadingOpacity.value;
-
-		// FIXME: for some reason, the opacity is sometimes ~500
-		// it happens when maxPanX is 1, so we check for that
-		if (opacity > 2) {
-			opacity = 0;
-		}
-
-		return { opacity };
-	});
-
-	const loadingIconOpacityStyle = useAnimatedStyle(() => {
-		return { opacity: loadingOpacity.value };
-	});
-
-	useEffect(() => {
-		loadingOpacity.value = withTiming(loading ? 1 : 0, {
-			duration: 500,
-		});
-	}, [loading, loadingOpacity]);
-
-	useEffect(() => {
-		panX.value = withTiming(confirmed ? maxPanX : 0);
-	}, [confirmed, maxPanX, panX]);
-
-	return (
-		<ThemedView color="white16" style={[styles.root, style]}>
-			<View
-				style={styles.container}
-				onLayout={(e): void => {
-					const ww = e.nativeEvent.layout.width;
-					setSwiperWidth((w) => (w === 0 ? ww : w));
-				}}>
-				<Animated.View
-					style={[styles.trail, { backgroundColor: trailColor }, trailStyle]}
-				/>
-				<Animated.View style={textOpacityStyle}>
-					<BodySSB>{text}</BodySSB>
-				</Animated.View>
-				<GestureDetector gesture={panGesture}>
-					<Animated.View style={[styles.grab, circleStyle]} testID="GRAB">
-						<Animated.View
-							style={[styles.circle, { backgroundColor: circleColor }]}>
-							<Animated.View style={[styles.icon, startIconOpacityStyle]}>
-								<RightArrow color="black" />
-							</Animated.View>
-							<Animated.View style={[styles.icon, endIconOpacityStyle]}>
-								{icon}
-							</Animated.View>
-							<Animated.View style={[styles.icon, loadingIconOpacityStyle]}>
-								<LoadingSpinner size={34} />
-							</Animated.View>
-						</Animated.View>
-					</Animated.View>
-				</GestureDetector>
-			</View>
-		</ThemedView>
-	);
+    return (
+        <GestureDetector gesture={gesture}>
+            <ThemedView onLayout={handleLayout} style={[styles.container, style]}>
+                {/* Swipe elements and UI */}
+                <Animated.View style={[styles.circle, animatedStyle]}>
+                    {loading ? <LoadingSpinner /> : <RightArrow />}
+                </Animated.View>
+            </ThemedView>
+        </GestureDetector>
+    );
 };
 
 const styles = StyleSheet.create({
-	root: {
-		borderRadius: CIRCLE_SIZE,
-		height: CIRCLE_SIZE + PADDING * 2,
-		flexDirection: 'row',
-		padding: PADDING,
-	},
-	container: {
-		flexDirection: 'row',
-		flex: 1,
-		position: 'relative',
-		alignItems: 'center',
-		justifyContent: 'center',
-	},
-	trail: {
-		borderRadius: CIRCLE_SIZE,
-		position: 'absolute',
-		left: 0,
-		top: 0,
-		bottom: 0,
-		width: '100%',
-	},
-	grab: {
-		position: 'absolute',
-		left: -INVISIBLE_BORDER,
-		top: -INVISIBLE_BORDER,
-		alignItems: 'center',
-		justifyContent: 'center',
-		height: GRAB_SIZE,
-		width: GRAB_SIZE,
-	},
-	circle: {
-		height: CIRCLE_SIZE,
-		width: CIRCLE_SIZE,
-		borderRadius: CIRCLE_SIZE,
-	},
-	icon: {
-		opacity: 0,
-		position: 'absolute',
-		left: 0,
-		top: 0,
-		bottom: 0,
-		right: 0,
-		alignItems: 'center',
-		justifyContent: 'center',
-	},
+    container: {
+        // Styles for the swipe container
+    },
+    circle: {
+        // Styles for the swipe circle
+    },
 });
 
 export default memo(SwipeToConfirm);
