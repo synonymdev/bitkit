@@ -27,7 +27,7 @@ import {
 	TCoinSelectPreference,
 } from '../../store/types/settings';
 import { TWalletName } from '../../store/types/wallet';
-import { reduceValue } from '../helpers';
+import { promiseTimeout, reduceValue, sleep } from '../helpers';
 import i18n from '../i18n';
 import { EAvailableNetwork } from '../networks';
 import { showToast } from '../notifications';
@@ -941,7 +941,14 @@ export const broadcastBoost = async ({
 			dispatch(removeActivityItem(oldTxId));
 		}
 
-		await refreshWallet();
+		// wait for Beiget to begin refreshing the wallet. If it hasn't started,
+		// initiate the refresh manually. This should resolve the issue where UTXOs
+		// are not yet updated, preventing users from attempting to send again prematurely
+		await sleep(1000);
+		await promiseTimeout(
+			3000,
+			refreshWallet({ onchain: true, lightning: false }),
+		);
 		return ok('Successfully broadcasted boosted transaction.');
 	} catch (e) {
 		return err(e);

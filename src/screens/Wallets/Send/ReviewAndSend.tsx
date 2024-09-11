@@ -1,18 +1,56 @@
+import { TInvoice } from '@synonymdev/react-native-ldk';
+import { validateTransaction } from 'beignet';
 import React, {
 	ReactElement,
+	ReactNode,
 	memo,
 	useCallback,
+	useEffect,
 	useMemo,
 	useState,
-	useEffect,
-	ReactNode,
 } from 'react';
-import { StyleSheet, View, TouchableOpacity, Keyboard } from 'react-native';
-import { TInvoice } from '@synonymdev/react-native-ldk';
 import { useTranslation } from 'react-i18next';
-import { validateTransaction } from 'beignet';
+import { Keyboard, StyleSheet, TouchableOpacity, View } from 'react-native';
 
-import { Caption13Up, BodySSB } from '../../../styles/text';
+import AmountToggle from '../../../components/AmountToggle';
+import Biometrics from '../../../components/Biometrics';
+import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
+import ContactSmall from '../../../components/ContactSmall';
+import Dialog from '../../../components/Dialog';
+import GradientView from '../../../components/GradientView';
+import LightningSyncing from '../../../components/LightningSyncing';
+import SafeAreaInset from '../../../components/SafeAreaInset';
+import SwipeToConfirm from '../../../components/SwipeToConfirm';
+import Tag from '../../../components/Tag';
+import Button from '../../../components/buttons/Button';
+import useColors from '../../../hooks/colors';
+import { useDisplayValues } from '../../../hooks/displayValues';
+import { useLightningBalance } from '../../../hooks/lightning';
+import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
+import type { SendScreenProps } from '../../../navigation/types';
+import { removeTxTag } from '../../../store/actions/wallet';
+import { onChainFeesSelector } from '../../../store/reselect/fees';
+import {
+	enableSendAmountWarningSelector,
+	pinForPaymentsSelector,
+	pinSelector,
+} from '../../../store/reselect/settings';
+import {
+	exchangeRatesSelector,
+	onChainBalanceSelector,
+	selectedNetworkSelector,
+	selectedWalletSelector,
+	transactionSelector,
+} from '../../../store/reselect/wallet';
+import { addPendingPayment } from '../../../store/slices/lightning';
+import {
+	addMetaTxSlashtagsUrl,
+	updateMetaTxTags,
+} from '../../../store/slices/metadata';
+import { updateLastPaidContacts } from '../../../store/slices/slashtags';
+import { EActivityType } from '../../../store/types/activity';
+import { EFeeId } from '../../../store/types/fees';
+import { updateOnChainActivityList } from '../../../store/utils/activity';
 import {
 	Checkmark,
 	ClockIcon,
@@ -24,61 +62,23 @@ import {
 	SpeedSlowIcon,
 	TagIcon,
 } from '../../../styles/icons';
-import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
-import GradientView from '../../../components/GradientView';
-import SwipeToConfirm from '../../../components/SwipeToConfirm';
-import Tag from '../../../components/Tag';
-import ContactSmall from '../../../components/ContactSmall';
+import { BodySSB, Caption13Up } from '../../../styles/text';
+import { getFiatDisplayValues } from '../../../utils/displayValues';
+import { FeeText } from '../../../utils/fees';
+import { promiseTimeout, sleep, truncate } from '../../../utils/helpers';
+import { i18nTime } from '../../../utils/i18n';
+import {
+	decodeLightningInvoice,
+	payLightningInvoice,
+} from '../../../utils/lightning';
+import { showToast } from '../../../utils/notifications';
+import { refreshWallet } from '../../../utils/wallet';
 import {
 	broadcastTransaction,
 	createTransaction,
 	getTotalFee,
 	getTransactionOutputValue,
 } from '../../../utils/wallet/transactions';
-import { removeTxTag } from '../../../store/actions/wallet';
-import {
-	updateMetaTxTags,
-	addMetaTxSlashtagsUrl,
-} from '../../../store/slices/metadata';
-import useColors from '../../../hooks/colors';
-import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
-import { useDisplayValues } from '../../../hooks/displayValues';
-import { useLightningBalance } from '../../../hooks/lightning';
-import { EFeeId } from '../../../store/types/fees';
-import {
-	decodeLightningInvoice,
-	payLightningInvoice,
-} from '../../../utils/lightning';
-import { FeeText } from '../../../utils/fees';
-import { getFiatDisplayValues } from '../../../utils/displayValues';
-import { showToast } from '../../../utils/notifications';
-// import { refreshWallet } from '../../../utils/wallet';
-import type { SendScreenProps } from '../../../navigation/types';
-import SafeAreaInset from '../../../components/SafeAreaInset';
-import Dialog from '../../../components/Dialog';
-import Biometrics from '../../../components/Biometrics';
-import Button from '../../../components/buttons/Button';
-import {
-	exchangeRatesSelector,
-	onChainBalanceSelector,
-	selectedNetworkSelector,
-	selectedWalletSelector,
-	transactionSelector,
-} from '../../../store/reselect/wallet';
-import {
-	enableSendAmountWarningSelector,
-	pinForPaymentsSelector,
-	pinSelector,
-} from '../../../store/reselect/settings';
-import { onChainFeesSelector } from '../../../store/reselect/fees';
-import { addPendingPayment } from '../../../store/slices/lightning';
-import { updateOnChainActivityList } from '../../../store/utils/activity';
-import { updateLastPaidContacts } from '../../../store/slices/slashtags';
-import { truncate } from '../../../utils/helpers';
-import AmountToggle from '../../../components/AmountToggle';
-import LightningSyncing from '../../../components/LightningSyncing';
-import { i18nTime } from '../../../utils/i18n';
-import { EActivityType } from '../../../store/types/activity';
 
 const Section = memo(
 	({
@@ -308,6 +308,15 @@ const ReviewAndSend = ({
 				}),
 			);
 		}
+
+		// wait for Beiget to begin refreshing the wallet. If it hasn't started,
+		// initiate the refresh manually. This should resolve the issue where UTXOs
+		// are not yet updated, preventing users from attempting to send again prematurely
+		await sleep(1000);
+		await promiseTimeout(
+			3000,
+			refreshWallet({ onchain: true, lightning: false }),
+		);
 
 		updateOnChainActivityList();
 		setIsLoading(false);
