@@ -46,9 +46,9 @@ import { useDisplayValues } from '../../../hooks/displayValues';
 import { useLightningBalance } from '../../../hooks/lightning';
 import { EFeeId } from '../../../store/types/fees';
 import {
-	decodeLightningInvoice,
-	payLightningInvoice,
-} from '../../../utils/lightning';
+	decodeInvoice,
+	payInvoice,
+} from '../../../utils/';
 import { FeeText } from '../../../utils/fees';
 import { getFiatDisplayValues } from '../../../utils/displayValues';
 import { showToast } from '../../../utils/notifications';
@@ -71,12 +71,12 @@ import {
 	pinSelector,
 } from '../../../store/reselect/settings';
 import { onChainFeesSelector } from '../../../store/reselect/fees';
-import { addPendingPayment } from '../../../store/slices/lightning';
+import { addPendingPayment } from '../../../store/slices/';
 import { updateOnChainActivityList } from '../../../store/utils/activity';
 import { updateLastPaidContacts } from '../../../store/slices/slashtags';
 import { truncate } from '../../../utils/helpers';
 import AmountToggle from '../../../components/AmountToggle';
-import LightningSyncing from '../../../components/LightningSyncing';
+import Syncing from '../../../components/Syncing';
 import { i18nTime } from '../../../utils/i18n';
 import { EActivityType } from '../../../store/types/activity';
 
@@ -114,7 +114,7 @@ const ReviewAndSend = ({
 	const selectedNetwork = useAppSelector(selectedNetworkSelector);
 	const onChainBalance = useAppSelector(onChainBalanceSelector);
 	const transaction = useAppSelector(transactionSelector);
-	const lightningBalance = useLightningBalance(false);
+	const Balance = useBalance(false);
 	const dispatch = useAppDispatch();
 	const exchangeRates = useAppSelector(exchangeRatesSelector);
 	const feeEstimates = useAppSelector(onChainFeesSelector);
@@ -136,13 +136,13 @@ const ReviewAndSend = ({
 	const [rawTx, setRawTx] = useState<{ hex: string; id: string }>();
 	const [decodedInvoice, setDecodedInvoice] = useState<TInvoice>();
 
-	const decodeAndSetLightningInvoice = async (): Promise<void> => {
+	const decodeAndSetInvoice = async (): Promise<void> => {
 		try {
-			if (!transaction.lightningInvoice) {
+			if (!transaction.Invoice) {
 				return;
 			}
-			const decodeInvoiceResponse = await decodeLightningInvoice({
-				paymentRequest: transaction.lightningInvoice,
+			const decodeInvoiceResponse = await decodeInvoice({
+				paymentRequest: transaction.Invoice,
 			});
 			if (decodeInvoiceResponse.isErr()) {
 				return;
@@ -154,9 +154,9 @@ const ReviewAndSend = ({
 	};
 
 	useEffect(() => {
-		decodeAndSetLightningInvoice().then();
+		decodeAndSetInvoice().then();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [transaction.lightningInvoice]);
+	}, [transaction.Invoice]);
 
 	/*
 	 * Total value of all outputs. Excludes change address.
@@ -181,8 +181,8 @@ const ReviewAndSend = ({
 		[navigation],
 	);
 
-	const createLightningTransaction = useCallback(async () => {
-		if (!transaction.lightningInvoice || !decodedInvoice) {
+	const createTransaction = useCallback(async () => {
+		if (!transaction.Invoice || !decodedInvoice) {
 			setIsLoading(false);
 			onError(t('send_error_create_tx'));
 			return;
@@ -210,8 +210,8 @@ const ReviewAndSend = ({
 		// Determine if we should override the invoice amount
 		const paymentAmount = decodedInvoice.amount_satoshis ?? amount;
 
-		const payInvoiceResponse = await payLightningInvoice({
-			invoice: transaction.lightningInvoice,
+		const payInvoiceResponse = await payInvoice({
+			invoice: transaction.Invoice,
 			// If the invoice has an amount, leave undefined
 			amount: !decodedInvoice.amount_satoshis ? paymentAmount : undefined,
 		});
@@ -254,23 +254,25 @@ const ReviewAndSend = ({
 	]);
 
 	const createOnChainTransaction = useCallback(async (): Promise<void> => {
-		try {
-			setIsLoading(true);
-			const transactionIsValid = validateTransaction(transaction);
-			if (transactionIsValid.isErr()) {
-				throw Error(transactionIsValid.error.message);
-			}
-			const response = await createTransaction({});
-			if (response.isErr()) {
-				throw Error(response.error.message);
-			}
-			setRawTx(response.value);
-		} catch (error) {
-			setIsLoading(false);
-			console.error(error.message);
-			onError(t('send_error_create_tx'));
-		}
-	}, [transaction, onError, t]);
+    try {
+        setIsLoading(true);  // Set loading to true before transaction
+        const transactionIsValid = validateTransaction(transaction);
+        if (transactionIsValid.isErr()) {
+            throw Error(transactionIsValid.error.message);
+        }
+
+        const response = await createTransaction({});
+        if (response.isErr()) {
+            throw Error(response.error.message);
+        }
+
+        setRawTx(response.value);
+    } catch (error) {
+        onError(t('send_error_create_tx'));  // Handle error
+    } finally {
+        setIsLoading(false);  // Ensure isLoading is reset
+    }
+}, [transaction, onError, t]);
 
 	const _broadcast = useCallback(async () => {
 		if (!rawTx?.id || !rawTx?.hex) {
