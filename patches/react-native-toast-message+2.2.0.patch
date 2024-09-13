@@ -1,0 +1,20 @@
+diff --git a/node_modules/react-native-toast-message/lib/src/components/AnimatedContainer.js b/node_modules/react-native-toast-message/lib/src/components/AnimatedContainer.js
+index 1d469fd..ffbf98c 100644
+--- a/node_modules/react-native-toast-message/lib/src/components/AnimatedContainer.js
++++ b/node_modules/react-native-toast-message/lib/src/components/AnimatedContainer.js
+@@ -27,11 +27,14 @@ export function dampingFor(gesture, position) {
+ }
+ export function animatedValueFor(gesture, position, damping) {
+     const boundValue = (val) => bound(val, 0, 2);
+-    const { dy } = gesture;
++
++    const { dy, numberActiveTouches } = gesture;
+     switch (position) {
+         case 'bottom':
++            if (!numberActiveTouches) return boundValue(0);
+             return boundValue(1 - dy / damping);
+         case 'top':
++            if (!numberActiveTouches) return boundValue(0);
+             return boundValue(1 + dy / damping);
+         default:
+             throw new Error(`Toast position: ${position} not implemented`);
