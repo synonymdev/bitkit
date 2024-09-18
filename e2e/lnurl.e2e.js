@@ -186,6 +186,10 @@ d('LNURL', () => {
 		await element(by.id('ScanPrompt')).tap();
 		await element(by.id('QRInput')).replaceText(payRequest1.encoded);
 		await element(by.id('DialogConfirm')).tap();
+		await element(by.id('N1').withAncestor(by.id('SendAmountNumberPad'))).tap();
+		await element(
+			by.id('N0').withAncestor(by.id('SendAmountNumberPad')),
+		).multiTap(5);
 
 		await element(by.id('ContinueAmount')).tap();
 		await element(by.id('CommentInput')).typeText('test comment');
@@ -230,6 +234,12 @@ d('LNURL', () => {
 		await waitFor(
 			element(by.id('MoneyText').withAncestor(by.id('ReviewAmount-primary'))),
 		).toHaveText(minSendableSats.toString());
+		await element(by.id('N3').withAncestor(by.id('SendAmountNumberPad'))).tap();
+		await element(by.id('N2').withAncestor(by.id('SendAmountNumberPad'))).tap();
+		await element(by.id('N1').withAncestor(by.id('SendAmountNumberPad'))).tap();
+		await element(
+			by.id('N0').withAncestor(by.id('SendAmountNumberPad')),
+		).multiTap(3);
 		await waitFor(element(by.id('ContinueAmount'))).toBeVisible();
 		await element(by.id('ContinueAmount')).tap();
 		await element(by.id('GRAB')).swipe('right', 'slow', 0.95, 0.5, 0.5); // Swipe to confirm

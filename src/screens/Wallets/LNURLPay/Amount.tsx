@@ -4,7 +4,6 @@ import React, {
 	useCallback,
 	useMemo,
 	useState,
-	useEffect,
 } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
@@ -39,6 +38,7 @@ import { useBalance, useSwitchUnit } from '../../../hooks/wallet';
 import { getNumberPadText } from '../../../utils/numberpad';
 import { convertToSats } from '../../../utils/conversion';
 import type { SendScreenProps } from '../../../navigation/types';
+import { showToast } from '../../../utils/notifications';
 
 const LNURLAmount = ({
 	navigation,
@@ -57,12 +57,6 @@ const LNURLAmount = ({
 	const denomination = useAppSelector(denominationSelector);
 	const [text, setText] = useState('');
 	const [error, setError] = useState(false);
-
-	// Set initial text for NumberPadTextField
-	useEffect(() => {
-		const result = getNumberPadText(minSendable, denomination, unit);
-		setText(result);
-	}, [selectedWallet, selectedNetwork, minSendable, denomination, unit]);
 
 	const amount = useMemo((): number => {
 		return convertToSats(text, conversionUnit);
@@ -94,7 +88,22 @@ const LNURLAmount = ({
 		setTimeout(() => setError(false), 500);
 	};
 
-	const isValid = amount >= minSendable && amount <= max;
+	const onContinue = (): void => {
+		if (amount < minSendable) {
+			showToast({
+				type: 'error',
+				title: t('lnurl_pay.error_min.title'),
+				description: t('lnurl_pay.error_min.description', {
+					amount: minSendable,
+				}),
+			});
+			return;
+		}
+
+		navigation.navigate('LNURLConfirm', { amount, pParams, url });
+	};
+
+	const isValid = amount > 0 && amount <= max;
 
 	return (
 		<GradientView style={styles.container}>
@@ -153,9 +162,7 @@ const LNURLAmount = ({
 						text={t('continue')}
 						disabled={!isValid}
 						testID="ContinueAmount"
-						onPress={(): void => {
-							navigation.navigate('LNURLConfirm', { amount, pParams, url });
-						}}
+						onPress={onContinue}
 					/>
 				</View>
 			</View>

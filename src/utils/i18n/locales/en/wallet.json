@@ -637,6 +637,16 @@
 	"lnurl_p_title": {
 		"string": "Pay Bitcoin"
 	},
+	"lnurl_pay": {
+		"error_min": {
+			"title": {
+				"string": "Amount Too Low"
+			},
+			"description": {
+				"string": "The minimum amount for this invoice is ₿ {amount}."
+			}
+		}
+	},
 	"lnurl_p_max": {
 		"string": "Maximum amount"
 	},
