@@ -1,20 +1,19 @@
-import { ICJitEntry } from '@synonymdev/blocktank-lsp-http-client';
 import { TChannel } from '@synonymdev/react-native-ldk';
 import { ok, Result } from '@synonymdev/result';
 import { EPaymentType } from 'beignet';
 
 import { onChainTransactionToActivityItem } from '../../utils/activity';
 import { formatBoostedActivityItems } from '../../utils/boost';
-import { sleep, vibrate } from '../../utils/helpers';
-import { getOpenChannels } from '../../utils/lightning';
+import { vibrate } from '../../utils/helpers';
+import { getOpenChannels, getPendingChannels } from '../../utils/lightning';
 import { getCurrentWallet } from '../../utils/wallet';
 import { dispatch, getBlocktankStore } from '../helpers';
 import { addActivityItem, updateActivityItems } from '../slices/activity';
 import { updateSettings } from '../slices/settings';
 import { closeSheet } from '../slices/ui';
 import { EActivityType, TLightningActivityItem } from '../types/activity';
-import { updatePendingCJitEntries } from './blocktank';
 import { showBottomSheet } from './ui';
+import { persistor } from '..';
 
 /**
  * Attempts to determine if a given channel open was in response to
@@ -22,7 +21,9 @@ import { showBottomSheet } from './ui';
  * @param {string} channelId
  */
 export const addCJitActivityItem = async (channelId: string): Promise<void> => {
-	const channels = getOpenChannels();
+	const pendingChannels = getPendingChannels();
+	const openChannels = getOpenChannels();
+	const channels = [...pendingChannels, ...openChannels];
 	const channel = channels.find((c: TChannel) => c.channel_id === channelId);
 	if (!channel) {
 		console.warn('CJIT activity item not added. Channel not found.');
@@ -33,31 +34,15 @@ export const addCJitActivityItem = async (channelId: string): Promise<void> => {
 		return;
 	}
 
+	// Try to find the CJIT entry for this channel by channel size.
 	const cJitEntries = getBlocktankStore().cJitEntries;
-
-	// Try to find the CJIT entry for this channel by funding_txid.
-	let cJitEntry: ICJitEntry | undefined;
-	let i = 0;
-	while (!cJitEntry && i < 5) {
-		await sleep(1000); // wait until Blocktank has updated its database.
-		await updatePendingCJitEntries();
-		cJitEntry = cJitEntries.find((entry) => {
-			return entry.channel?.fundingTx.id === channel.funding_txid;
-		});
-		i++;
-	}
-
-	// If not found by channel id, try to find it by channel size.
-	if (!cJitEntry) {
-		console.log('No CJIT entry found for funding_txid. Trying channel size.');
-		cJitEntry = cJitEntries.find((entry) => {
-			return entry.channelSizeSat === channel.channel_value_satoshis;
-		});
-	}
+	const cJitEntry = cJitEntries.find((entry) => {
+		return entry.channelSizeSat === channel.channel_value_satoshis;
+	});
 
 	if (!cJitEntry) {
-		console.log('CJIT activity item not added. No entry found.');
 		// Most likely a normal channel open.
+		console.log('CJIT activity item not added. No entry found.');
 		return;
 	}
 
@@ -78,6 +63,11 @@ export const addCJitActivityItem = async (channelId: string): Promise<void> => {
 	dispatch(closeSheet('receiveNavigation'));
 	vibrate({ type: 'default' });
 	showBottomSheet('newTxPrompt', { activityItem });
+
+	// redux-persist doesn't save to MMKV when the app is backgrounded
+	// Quickfix: manually flush the store after adding the activity item
+	// TODO: fix setTimeout & setInterval to work in the background
+	await persistor.flush();
 };
 
 /**

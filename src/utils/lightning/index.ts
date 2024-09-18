@@ -500,7 +500,7 @@ export const subscribeToLightningPayments = ({
 		onChannelSubscription = ldk.onEvent(
 			EEventTypes.new_channel,
 			async (res: TChannelUpdate) => {
-				await refreshLdk({ force: true });
+				await updateChannelsThunk();
 				updateSlashPayConfig({ selectedWallet, selectedNetwork });
 
 				const openChannels = getOpenChannels();
@@ -518,7 +518,8 @@ export const subscribeToLightningPayments = ({
 
 				// Check if this is a CJIT Entry that needs to be added to the activity list.
 				addCJitActivityItem(res.channel_id).then();
-				syncLedger(); // we need to sync the ledger because TChannelUpdate doesn't have enough data
+				// we need to sync the ledger because TChannelUpdate doesn't have enough data
+				syncLedger();
 			},
 		);
 	}
@@ -1214,7 +1215,6 @@ export const getChannelMonitors = async (
 
 /**
  * Returns an array of unconfirmed/pending lightning channels from either storage or directly from the LDK node.
- * CURRENTLY UNUSED
  * @param {boolean} [fromStorage]
  * @param {TWalletName} [selectedWallet]
  * @param {EAvailableNetwork} [selectedNetwork]
@@ -1239,6 +1239,19 @@ export const getOpenChannels = (): TChannel[] => {
 	});
 
 	return openChannels;
+};
+
+/**
+ * Returns an array of pending (opening but not ready) lightning channels from redux store.
+ * @returns {TChannel[]}
+ */
+export const getPendingChannels = (): TChannel[] => {
+	const channels = getChannels();
+	const pendingChannels = channels.filter((channel) => {
+		return channel.status === EChannelStatus.pending;
+	});
+
+	return pendingChannels;
 };
 
 /**
