@@ -72,7 +72,7 @@ import {
 } from '../../store/slices/metadata';
 import { getTransactions } from '../../utils/wallet/electrum';
 import { ITransaction, ITxHash } from '../../utils/wallet';
-import { ellipsis, openURL } from '../../utils/helpers';
+import { ellipsis, getDurationForBlocks, openURL } from '../../utils/helpers';
 import { getBoostedTransactionParents } from '../../utils/boost';
 import { showToast } from '../../utils/notifications';
 import {
@@ -91,6 +91,7 @@ import type {
 import { i18nTime } from '../../utils/i18n';
 import { useSwitchUnit } from '../../hooks/wallet';
 import { contactsSelector } from '../../store/reselect/slashtags';
+import { ETransferStatus } from '../../store/types/wallet';
 
 const Section = memo(
 	({ title, value }: { title: string; value: ReactNode }) => {
@@ -312,28 +313,6 @@ const OnchainActivityDetail = ({
 		</ThemedView>
 	);
 
-	if (transfer) {
-		fees = value - transfer.amount + fee;
-		paymentAmount = transfer.amount;
-
-		if (!confirmed) {
-			const duration = 10;
-			status = (
-				<View style={styles.row}>
-					<HourglassIcon style={styles.rowIcon} color="brand" width={16} />
-					<BodySSB color="brand">
-						{t('activity_transfer_pending', { duration })}
-					</BodySSB>
-				</View>
-			);
-		}
-		icon = (
-			<ThemedView style={styles.icon} color="brand16">
-				<TransferIcon height={24} width={24} color="brand" />
-			</ThemedView>
-		);
-	}
-
 	if (isBoosted) {
 		status = (
 			<View testID="StatusBoosting" style={styles.row}>
@@ -349,6 +328,28 @@ const OnchainActivityDetail = ({
 				<CheckCircleIcon style={styles.rowIcon} color="green" />
 				<BodySSB color="green">{t('activity_confirmed')}</BodySSB>
 			</View>
+		);
+	}
+
+	if (transfer) {
+		fees = value - transfer.amount + fee;
+		paymentAmount = transfer.amount;
+
+		if (transfer.status !== ETransferStatus.done) {
+			const duration = getDurationForBlocks(transfer.confirmsIn);
+			status = (
+				<View style={styles.row}>
+					<HourglassIcon style={styles.rowIcon} color="brand" width={16} />
+					<BodySSB color="brand">
+						{t('activity_transfer_pending', { duration })}
+					</BodySSB>
+				</View>
+			);
+		}
+		icon = (
+			<ThemedView style={styles.icon} color="brand16">
+				<TransferIcon height={24} width={24} color="brand" />
+			</ThemedView>
 		);
 	}
 

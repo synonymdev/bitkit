@@ -1,6 +1,6 @@
 import { ETransferType } from '../types/wallet';
 import {
-	channelsSizeSelector,
+	blocktankChannelsSizeSelector,
 	lightningBalanceSelector,
 	pendingPaymentsSelector,
 } from './lightning';
@@ -96,7 +96,11 @@ export const balanceSelector = createShallowEqualSelector(
  * Returns limits for channel orders with the LSP
  */
 export const transferLimitsSelector = createShallowEqualSelector(
-	[blocktankInfoSelector, onChainBalanceSelector, channelsSizeSelector],
+	[
+		blocktankInfoSelector,
+		onChainBalanceSelector,
+		blocktankChannelsSizeSelector,
+	],
 	(
 		blocktankInfo,
 		onchainBalance,
@@ -108,11 +112,11 @@ export const transferLimitsSelector = createShallowEqualSelector(
 	} => {
 		const { minChannelSizeSat, maxChannelSizeSat } = blocktankInfo.options;
 		// Because LSP limits constantly change depending on network fees
-		// add a 10% buffer to avoid fluctuations while making the order
-		const minChannelSize = Math.round(minChannelSizeSat * 1.1);
-		const maxChannelSize1 = Math.round(maxChannelSizeSat * 0.9);
+		// add a 5% buffer to avoid fluctuations while making the order
+		const minChannelSize = Math.round(minChannelSizeSat * 1.05);
+		const maxChannelSize1 = Math.round(maxChannelSizeSat * 0.95);
 		// The maximum channel size the user can open including existing channels
-		const maxChannelSize2 = Math.max(0, maxChannelSizeSat - channelsSize);
+		const maxChannelSize2 = Math.max(0, maxChannelSize1 - channelsSize);
 		const maxChannelSize = Math.min(maxChannelSize1, maxChannelSize2);
 
 		// 80% cap to leave buffer for fees

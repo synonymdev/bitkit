@@ -14,18 +14,12 @@ import { __E2E__ } from '../../constants/env';
 import { addTransfer, removeTransfer } from '../slices/wallet';
 import { updateSendTransaction } from '../actions/wallet';
 import { setLightningSetupStep } from '../slices/user';
-import {
-	getBlocktankStore,
-	getWalletStore,
-	dispatch,
-	getFeesStore,
-} from '../helpers';
+import { getBlocktankStore, dispatch, getFeesStore } from '../helpers';
 import * as blocktank from '../../utils/blocktank';
 import {
 	createOrder,
 	getBlocktankInfo,
 	getCJitEntry,
-	getMin0ConfTxFee,
 	getOrder,
 	isGeoBlocked,
 	openChannel,
@@ -273,18 +267,6 @@ export const startChannelPurchase = async ({
 
 	const { onchainBalance } = getBalance({ selectedNetwork, selectedWallet });
 
-	// Get transaction fee
-	const fees = getFeesStore().onchain;
-	let satsPerByte = fees.fast;
-	if (clientBalance === 0) {
-		// For orders with 0 client balance, we use the min 0-conf tx fee from BT to get a turbo channel.
-		const min0ConfTxFee = await getMin0ConfTxFee(orderData.value.id);
-		if (min0ConfTxFee.isErr()) {
-			return err(min0ConfTxFee.error.message);
-		}
-		satsPerByte = Math.ceil(min0ConfTxFee.value.satPerVByte); // might be float
-	}
-
 	const amountToSend = Math.ceil(buyChannelData.feeSat);
 
 	// Ensure we have enough funds to pay for both the channel and the fee to broadcast the transaction.
@@ -311,7 +293,8 @@ export const startChannelPurchase = async ({
 		},
 	});
 
-	const feeRes = updateFee({ satsPerByte });
+	const fees = getFeesStore().onchain;
+	const feeRes = updateFee({ satsPerByte: fees.fast });
 	if (feeRes.isErr()) {
 		return err(feeRes.error.message);
 	}
@@ -334,16 +317,12 @@ export const confirmChannelPurchase = async ({
 	order: IBtOrder;
 	selectedNetwork?: EAvailableNetwork;
 	selectedWallet?: TWalletName;
-}): Promise<Result<{ txid: string; useUnconfirmedInputs: boolean }>> => {
+}): Promise<Result<string>> => {
 	const rawTx = await createTransaction();
 	if (rawTx.isErr()) {
 		// toast shown from createTransaction
 		return err(rawTx.error.message);
 	}
-
-	const useUnconfirmedInputs = getWalletStore().wallets[
-		selectedWallet!
-	].transaction[selectedNetwork!].inputs.some(({ height }) => height === 0);
 
 	const broadcastResponse = await broadcastTransaction({
 		rawTx: rawTx.value.hex,
@@ -367,8 +346,9 @@ export const confirmChannelPurchase = async ({
 			txId: broadcastResponse.value,
 			type: ETransferType.open,
 			status: ETransferStatus.pending,
-			orderId: order.id,
 			amount: order.clientBalanceSat,
+			confirmsIn: 1,
+			orderId: order.id,
 		}),
 	);
 
@@ -385,7 +365,7 @@ export const confirmChannelPurchase = async ({
 		await scheduleNotifications();
 	}
 
-	return ok({ txid: broadcastResponse.value, useUnconfirmedInputs });
+	return ok('success');
 };
 
 /**

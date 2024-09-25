@@ -137,8 +137,8 @@ describe('Reselect', () => {
 			const received1 = transferLimitsSelector(s1);
 			const expected1 = {
 				minChannelSize: 11,
-				maxChannelSize: 180,
-				maxClientBalance: 90,
+				maxChannelSize: 190,
+				maxClientBalance: 95,
 			};
 
 			expect(received1).toMatchObject(expected1);
@@ -156,7 +156,7 @@ describe('Reselect', () => {
 			const received2 = transferLimitsSelector(s2);
 			const expected2 = {
 				minChannelSize: 11,
-				maxChannelSize: 180,
+				maxChannelSize: 190,
 				maxClientBalance: 40,
 			};
 
@@ -164,14 +164,20 @@ describe('Reselect', () => {
 		});
 
 		it('should calculate limits with existing LN channels', () => {
+			const btNodeId =
+				'03b9a456fb45d5ac98c02040d39aec77fa3eeb41fd22cf40b862b393bcfc43473a';
 			// max value is limited by leftover node capacity
 			const s1 = cloneDeep(s);
 			s1.wallet.wallets.wallet0.balance.bitcoinRegtest = 1000;
+			s1.blocktank.info.nodes = [
+				{ alias: 'node1', pubkey: btNodeId, connectionStrings: [] },
+			];
 			s1.blocktank.info.options = {
 				...s1.blocktank.info.options,
 				minChannelSizeSat: 10,
 				maxChannelSizeSat: 200,
 			};
+
 			const channel1 = {
 				channel_id: 'channel1',
 				status: EChannelStatus.open,
@@ -179,6 +185,7 @@ describe('Reselect', () => {
 				outbound_capacity_sat: 1,
 				balance_sat: 2,
 				channel_value_satoshis: 100,
+				counterparty_node_id: btNodeId,
 			} as TChannel;
 			const lnWallet = s1.lightning.nodes.wallet0;
 			lnWallet.channels.bitcoinRegtest = { channel1 };
@@ -186,8 +193,8 @@ describe('Reselect', () => {
 			const received1 = transferLimitsSelector(s1);
 			const expected1 = {
 				minChannelSize: 11,
-				maxChannelSize: 100,
-				maxClientBalance: 50,
+				maxChannelSize: 90,
+				maxClientBalance: 45,
 			};
 
 			expect(received1).toMatchObject(expected1);

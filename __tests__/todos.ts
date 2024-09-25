@@ -119,6 +119,7 @@ describe('Todos selector', () => {
 			type: ETransferType.open,
 			status: ETransferStatus.pending,
 			amount: 100000,
+			confirmsIn: 1,
 			orderId: 'order1',
 		});
 		expect(todosFullSelector(state)).toEqual(
@@ -144,7 +145,7 @@ describe('Todos selector', () => {
 		);
 	});
 
-	it('should return lightningSettingUpTodo for addtional pending transfers to spending', () => {
+	it('should return lightningSettingUpTodo for additional pending transfers to spending', () => {
 		const state = cloneDeep(s);
 		const channel1: Partial<TChannel> = {
 			channel_id: 'channel1',
@@ -159,6 +160,7 @@ describe('Todos selector', () => {
 			type: ETransferType.open,
 			status: ETransferStatus.pending,
 			amount: 100000,
+			confirmsIn: 1,
 			orderId: 'order1',
 		});
 		expect(todosFullSelector(state)).toEqual(

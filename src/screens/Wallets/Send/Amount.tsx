@@ -88,6 +88,7 @@ const Amount = ({ navigation }: SendScreenProps<'Amount'>): ReactElement => {
 			return maxAmountResponse.value.amount;
 		}
 		return 0;
+		// recalculate max when utxos or fee change
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [
 		transaction.outputs,

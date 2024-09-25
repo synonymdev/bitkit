@@ -50,12 +50,8 @@ export const findlnurl = (text: string): string | null => {
  * @returns {boolean}
  */
 export const isLnurlAddress = (address: string): boolean => {
-	// ensure only 1 `@` present:
-	const splitted = address.split('@');
-	if (splitted.length !== 2) {
-		return false;
-	}
-	return !!splitted[0].trim() && !!splitted[1].trim();
+	const regex = /^[a-z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+	return regex.test(address);
 };
 
 /**

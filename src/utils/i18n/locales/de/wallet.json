@@ -363,7 +363,7 @@
     "string": "Zum Ausgabenkonto"
   },
   "activity_transfer_pending": {
-    "string": "Übertragung (±{duration}m)"
+    "string": "Übertragung (±{duration})"
   },
   "activity_confirms_in": {
     "string": "Bestätigungen in {feeRateDescription}"

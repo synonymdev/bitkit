@@ -8,7 +8,7 @@ import { Pressable } from '../../../styles/components';
 import { Caption13Up, BodyMSB } from '../../../styles/text';
 import {
 	UsersIcon,
-	PencileIcon,
+	PencilIcon,
 	ClipboardTextIcon,
 	ScanIcon,
 } from '../../../styles/icons';
@@ -149,7 +149,7 @@ const Recipient = ({
 						onPress={onPasteInvoice}
 					/>
 					<Button
-						icon={<PencileIcon color="brand" width={32} height={22} />}
+						icon={<PencilIcon color="brand" width={32} height={22} />}
 						text={t('recipient_manual')}
 						testID="RecipientManual"
 						onPress={onManual}

@@ -22,12 +22,7 @@ import {
 	View as ThemedView,
 } from '../../styles/components';
 import { BodyS } from '../../styles/text';
-import {
-	CopyIcon,
-	PencileIcon,
-	ShareIcon,
-	UsersIcon,
-} from '../../styles/icons';
+import { CopyIcon, PencilIcon, ShareIcon, UsersIcon } from '../../styles/icons';
 import { BasicProfile } from '../../store/types/slashtags';
 import { onboardingProfileStepSelector } from '../../store/reselect/slashtags';
 import { useProfile, useSlashtags } from '../../hooks/slashtags';
@@ -146,7 +141,7 @@ const ProfileScreen = ({
 							onPress={(): void => {
 								navigation.navigate('ProfileEdit');
 							}}>
-							<PencileIcon height={20} width={20} color="brand" />
+							<PencilIcon height={20} width={20} color="brand" />
 						</IconButton>
 					</View>
 					<View style={styles.qrContainer}>

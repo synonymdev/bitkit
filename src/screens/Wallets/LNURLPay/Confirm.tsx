@@ -207,11 +207,12 @@ const LNURLConfirm = ({
 					{pParams.commentAllowed > 0 && (
 						<View style={styles.sectionContainer}>
 							<Section
-								title={t('Comment')}
+								title={t('lnurl_pay_confirm.comment')}
 								value={
 									<View style={styles.textContainer}>
 										<BottomSheetTextInput
 											value={comment}
+											placeholder={t('lnurl_pay_confirm.comment_placeholder')}
 											returnKeyType="done"
 											multiline={true}
 											minHeight={100}

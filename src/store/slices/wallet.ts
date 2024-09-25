@@ -13,7 +13,6 @@ import {
 	IAddressTypeContent,
 } from '../shapes/wallet';
 import {
-	ETransferType,
 	ETransferStatus,
 	IWallets,
 	IWalletStore,
@@ -95,32 +94,27 @@ export const walletSlice = createSlice({
 			state,
 			action: PayloadAction<{
 				txId: string;
+				confirmsIn: number;
 				amount?: number;
-				confirmsIn?: number;
 			}>,
 		) => {
 			const { selectedWallet, selectedNetwork } = state;
-			const transfers =
-				state.wallets[selectedWallet].transfers[selectedNetwork];
+			const wallet = state.wallets[selectedWallet];
+			const transfers = wallet.transfers[selectedNetwork];
 			const { txId, amount, confirmsIn } = action.payload;
+
 			const updated = transfers.map((transfer) => {
-				if (transfer.txId === txId) {
+				if (
+					transfer.txId === txId &&
+					transfer.status !== ETransferStatus.done
+				) {
 					const updatedTransfer = {
 						...transfer,
-						status: ETransferStatus.done,
+						status: confirmsIn ? ETransferStatus.pending : ETransferStatus.done,
+						confirmsIn,
 						// don't overwrite amount if it's already set
 						amount: amount || transfer.amount,
 					};
-					if (transfer.type !== ETransferType.open) {
-						// for channel closes, also update confirmsIn
-						// eslint-disable-next-line dot-notation
-						updatedTransfer['confirmsIn'] = confirmsIn;
-					}
-					if (transfer.type === ETransferType.forceClose) {
-						// for force closes, set status to pending if confirmsIn is not 0
-						updatedTransfer.status =
-							confirmsIn !== 0 ? ETransferStatus.pending : ETransferStatus.done;
-					}
 					return updatedTransfer;
 				} else {
 					return transfer;

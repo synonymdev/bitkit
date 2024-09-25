@@ -1,8 +1,27 @@
-import { EPaymentType, IFormattedTransaction } from 'beignet';
-import { getCurrentWallet } from '.';
+import {
+	getAddressFromScriptPubKey,
+	EPaymentType,
+	IFormattedTransaction,
+	Result,
+} from 'beignet';
+import { err, ok } from '@synonymdev/result';
+import lm, { ldk } from '@synonymdev/react-native-ldk';
+
+import { getCurrentWallet, getSelectedNetwork, refreshWallet } from '.';
 import { btcToSats } from '../conversion';
 import { getTransactions } from './electrum';
-import { ETransferType, TTransfer } from '../../store/types/wallet';
+import {
+	ETransferStatus,
+	ETransferType,
+	TTransfer,
+} from '../../store/types/wallet';
+import { dispatch } from '../../store/helpers';
+import { createTransaction } from './transactions';
+import { addTransfer } from '../../store/slices/wallet';
+import {
+	getNetworkForBeignet,
+	updateSendTransaction,
+} from '../../store/actions/wallet';
 
 /**
  * Get the transfer object for a given transaction if it exists
@@ -14,16 +33,26 @@ export const getTransferForTx = async (
 	const { currentWallet, selectedNetwork } = getCurrentWallet();
 	const transfers = currentWallet.transfers[selectedNetwork];
 
-	// check if the tx is a transfer to spending
-	const transferToSpending = transfers.find((t) => t.txId === tx.txid);
-	if (transferToSpending) {
-		return transferToSpending;
+	if (tx.type === EPaymentType.sent) {
+		const transfersToSpending = transfers.filter(
+			(t) => t.type === ETransferType.open,
+		);
+		// check if the tx is a transfer to spending
+		const transferToSpending = transfersToSpending.find(
+			(t) => t.txId === tx.txid,
+		);
+		if (transferToSpending) {
+			return transferToSpending;
+		}
 	}
 
 	// check if the tx is a transfer to savings
 	if (tx.type === EPaymentType.received) {
+		const transfersToSavings = transfers.filter(
+			(t) => t.type !== ETransferType.open,
+		);
 		// if the funding tx is in the transfer list it's a mutual close
-		const transferToSavings = transfers.find((t) => {
+		const transferToSavings = transfersToSavings.find((t) => {
 			const txInput = tx.vin.find((vin) => t.txId === vin.txid);
 			return !!txInput;
 		});
@@ -34,7 +63,7 @@ export const getTransferForTx = async (
 		// If we haven't found a transfer yet, check if the tx is a sweep from a force close
 		// check that tx amount matches first to avoid unnecessary Electrum calls
 		const inputValue = btcToSats(tx.totalInputValue);
-		const matched = transfers.filter((t) => {
+		const matched = transfersToSavings.filter((t) => {
 			return t.type === ETransferType.forceClose && t.amount === inputValue;
 		});
 
@@ -53,4 +82,72 @@ export const getTransferForTx = async (
 			}
 		}
 	}
+};
+
+/**
+ * Creates, broadcasts a new funded channel.
+ * @param {EAvailableNetwork} [selectedNetwork]
+ * @param {TWalletName} [selectedWallet]
+ * @returns {Promise<Result<string>>}
+ */
+export const createFundedChannel = async ({
+	counterPartyNodeId,
+	localBalance,
+}: {
+	counterPartyNodeId: string;
+	localBalance: number;
+}): Promise<Result<string>> => {
+	const remoteBalance = 0;
+	const createRes = await lm.createChannel({
+		counterPartyNodeId,
+		channelValueSats: localBalance + remoteBalance,
+		pushSats: remoteBalance,
+	});
+
+	if (createRes.isErr()) {
+		return err(createRes.error.message);
+	}
+
+	const { value_satoshis, output_script, temp_channel_id } = createRes.value;
+
+	const selectedNetwork = getSelectedNetwork();
+	const network = getNetworkForBeignet(selectedNetwork);
+	const address = getAddressFromScriptPubKey(output_script, network);
+
+	updateSendTransaction({
+		transaction: { outputs: [{ address, value: value_satoshis, index: 0 }] },
+	});
+
+	const createTxResult = await createTransaction();
+	if (createTxResult.isErr()) {
+		// toast shown from createTransaction
+		return err(createTxResult.error.message);
+	}
+
+	const fundingTransaction = createTxResult.value.hex;
+
+	const fundRes = await ldk.fundChannel({
+		temporaryChannelId: temp_channel_id,
+		counterPartyNodeId,
+		fundingTransaction,
+	});
+
+	if (fundRes.isErr()) {
+		return err('fundRes.error.message');
+	}
+
+	dispatch(
+		addTransfer({
+			txId: createTxResult.value.id,
+			type: ETransferType.open,
+			status: ETransferStatus.pending,
+			amount: localBalance,
+			confirmsIn: 3,
+		}),
+	);
+
+	// Refresh onchain wallet
+	refreshWallet({ lightning: false }).then();
+
+	return ok('success');
 };

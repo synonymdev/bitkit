@@ -354,7 +354,7 @@
     "string": "Para o Saldo de Gastos"
   },
   "activity_transfer_pending": {
-    "string": "Transferir (±{duration}m)"
+    "string": "Transferir (±{duration})"
   },
   "activity_confirms_in": {
     "string": "Confirma em {feeRateDescription}"

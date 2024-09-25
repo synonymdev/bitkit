@@ -33,7 +33,6 @@ import {
 } from '../../utils/wallet';
 import {
 	dispatch,
-	getBlocktankStore,
 	getFeesStore,
 	getSettingsStore,
 	getWalletStore,
@@ -53,7 +52,6 @@ import {
 	setWalletExits,
 	updateHeader,
 	updateTransactions,
-	updateTransfer,
 	updateWallet,
 	updateWalletData,
 } from '../slices/wallet';
@@ -203,34 +201,6 @@ export const injectFakeTransaction = (
 	updateActivityList();
 
 	return ok('Successfully injected fake transactions.');
-};
-
-export const updateTransferThunk = ({
-	type,
-	txId,
-	amount,
-	confirmsIn,
-}: {
-	type: 'open' | 'close';
-	txId: string;
-	amount?: number;
-	confirmsIn?: number;
-}): void => {
-	switch (type) {
-		case 'open': {
-			const orders = getBlocktankStore().orders;
-			const order = orders.find((o) => o.channel?.fundingTx.id === txId);
-			if (order) {
-				const paymentTxId = order.payment.onchain.transactions[0].txId;
-				dispatch(updateTransfer({ txId: paymentTxId }));
-			}
-			break;
-		}
-		case 'close': {
-			dispatch(updateTransfer({ txId, amount, confirmsIn }));
-			break;
-		}
-	}
 };
 
 // /**
@@ -751,6 +721,19 @@ export const getNetworkFromBeignet = (
 		case EAvailableNetworks.regtest:
 		case EAvailableNetworks.bitcoinRegtest:
 			return EAvailableNetwork.bitcoinRegtest;
+	}
+};
+
+export const getNetworkForBeignet = (
+	network: EAvailableNetwork,
+): EAvailableNetworks => {
+	switch (network) {
+		case EAvailableNetwork.bitcoin:
+			return EAvailableNetworks.bitcoin;
+		case EAvailableNetwork.bitcoinTestnet:
+			return EAvailableNetworks.bitcoinTestnet;
+		case EAvailableNetwork.bitcoinRegtest:
+			return EAvailableNetworks.bitcoinRegtest;
 	}
 };
 

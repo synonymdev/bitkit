@@ -32,6 +32,10 @@ const Funding = ({
 		showBottomSheet('receiveNavigation', { receiveScreen: 'ReceiveAmount' });
 	};
 
+	const onAdvanced = (): void => {
+		navigation.navigate('FundingAdvanced');
+	};
+
 	const canTransfer = onchainBalance >= TRANSACTION_DEFAULTS.recommendedBaseFee;
 	const text = isGeoBlocked ? t('funding.text_blocked') : t('funding.text');
 
@@ -80,9 +84,8 @@ const Funding = ({
 									<ShareAndroidIcon color="purple" width={32} height={30} />
 								}
 								text={t('funding.button3')}
-								disabled={true}
 								testID="FundCustom"
-								onPress={(): void => {}}
+								onPress={onAdvanced}
 							/>
 						</>
 					)}

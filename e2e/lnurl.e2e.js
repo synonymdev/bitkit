@@ -170,10 +170,10 @@ d('LNURL', () => {
 			}
 		}
 
-		await waitFor(element(by.id('LNURLChannelSuccess')))
+		await waitFor(element(by.id('ExternalSuccess')))
 			.toBeVisible()
 			.withTimeout(30000);
-		await element(by.id('LNURLChannelSuccess-button')).tap();
+		await element(by.id('ExternalSuccess-button')).tap();
 
 		// test lnurl-pay, with min !== max amount and comment
 		const payRequest1 = await lnurl.generateNewUrl('payRequest', {

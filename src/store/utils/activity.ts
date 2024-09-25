@@ -25,7 +25,7 @@ export const addCJitActivityItem = async (channelId: string): Promise<void> => {
 	const channels = getOpenChannels();
 	const channel = channels.find((c: TChannel) => c.channel_id === channelId);
 	if (!channel) {
-		console.warn('CJIT activity item not added. Channel not found.');
+		console.log('CJIT activity item not added. Channel not found.');
 		return;
 	}
 	if (channel.confirmations_required !== 0 || channel.balance_sat === 0) {

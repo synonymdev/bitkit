@@ -27,7 +27,7 @@ const RectangleButton = ({
 		<Pressable
 			style={({ pressed }) => [styles.button, pressed && styles.buttonPressed]}
 			android_ripple={{ color: white16 }}
-			color="white06"
+			color="white10"
 			disabled={disabled}
 			testID={testID}
 			onPress={onPress}>

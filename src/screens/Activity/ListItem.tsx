@@ -24,7 +24,7 @@ import {
 import { useAppSelector } from '../../hooks/redux';
 import { useProfile } from '../../hooks/slashtags';
 import { useFeeText } from '../../hooks/fees';
-import { ETransferStatus, ETransferType } from '../../store/types/wallet';
+import { ETransferStatus } from '../../store/types/wallet';
 import { slashTagsUrlSelector } from '../../store/reselect/metadata';
 import { getDurationForBlocks, truncate } from '../../utils/helpers';
 import { getActivityItemDate } from '../../utils/activity';
@@ -132,20 +132,12 @@ const OnchainListItem = ({
 			</ThemedView>
 		);
 
-		if (transfer.type === ETransferType.open) {
-			if (confirmed) {
-				description = t('activity_transfer_spending_done');
-			} else {
-				const duration = getDurationForBlocks(1);
-				description = t('activity_transfer_spending_pending', { duration });
-			}
+		const type = isSend ? 'spending' : 'savings';
+		if (transfer.status === ETransferStatus.done) {
+			description = t(`activity_transfer_${type}_done`);
 		} else {
-			if (transfer.status === ETransferStatus.done) {
-				description = t('activity_transfer_savings_done');
-			} else {
-				const duration = getDurationForBlocks(transfer.confirmsIn);
-				description = t('activity_transfer_savings_pending', { duration });
-			}
+			const duration = getDurationForBlocks(transfer.confirmsIn);
+			description = t(`activity_transfer_${type}_pending`, { duration });
 		}
 	}
 

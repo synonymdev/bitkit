@@ -30,7 +30,7 @@ export const onChainTransactionToActivityItem = async ({
 			: transaction.value;
 
 	return {
-		id: transfer ? transfer.txId : transaction.txid,
+		id: transaction.txid,
 		exists: transaction.exists ?? true,
 		activityType: EActivityType.onchain,
 		txType: transaction.type,

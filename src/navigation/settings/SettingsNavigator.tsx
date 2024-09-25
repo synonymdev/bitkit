@@ -1,5 +1,4 @@
 import React, { ReactElement } from 'react';
-import { NavigatorScreenParams } from '@react-navigation/native';
 import {
 	createNativeStackNavigator,
 	NativeStackNavigationOptions,
@@ -41,15 +40,10 @@ import Channels from '../../screens/Settings/Lightning/Channels';
 import ChannelDetails from '../../screens/Settings/Lightning/ChannelDetails';
 import CloseConnection from '../../screens/Settings/Lightning/CloseConnection';
 import OpenConnectionSuccess from '../../screens/Settings/Lightning/OpenConnectionSuccess';
-import AddConnection from '../../screens/Settings/Lightning/AddConnection';
-import AddConnectionResult from '../../screens/Settings/Lightning/AddConnectionResult';
 import ExportToPhone from '../../screens/Settings/Backup/ExportToPhone';
 import ResetAndRestore from '../../screens/Settings/Backup/ResetAndRestore';
 import TagsSettings from '../../screens/Settings/Tags';
 import FeeSettings from '../../screens/Settings/Fee';
-import TransferNavigator, {
-	TransferStackParamList,
-} from '../transfer/TransferNavigator';
 import WebRelay from '../../screens/Settings/WebRelay';
 import Ledger from '../../screens/Settings/Ledger';
 import LedgerTransaction from '../../screens/Settings/Ledger/LedgerTransaction';
@@ -101,9 +95,6 @@ export type SettingsStackParamList = {
 	ChannelDetails: { channel: TChannel };
 	CloseConnection: { channelId: string };
 	OpenConnectionSuccess: { name: string };
-	LightningAddConnection: undefined;
-	LightningAddConnectionResult: undefined;
-	TransferRoot: NavigatorScreenParams<TransferStackParamList>;
 	TagsSettings: undefined;
 	WidgetSettings: undefined;
 	AddressViewer: undefined;
@@ -178,12 +169,6 @@ const SettingsNavigator = (): ReactElement => {
 				name="OpenConnectionSuccess"
 				component={OpenConnectionSuccess}
 			/>
-			<Stack.Screen name="LightningAddConnection" component={AddConnection} />
-			<Stack.Screen
-				name="LightningAddConnectionResult"
-				component={AddConnectionResult}
-			/>
-			<Stack.Screen name="TransferRoot" component={TransferNavigator} />
 			<Stack.Screen name="TagsSettings" component={TagsSettings} />
 			<Stack.Screen name="FeeSettings" component={FeeSettings} />
 			<Stack.Screen name="WebRelay" component={WebRelay} />

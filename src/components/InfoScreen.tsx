@@ -15,6 +15,7 @@ const InfoScreen = ({
 	buttonText,
 	displayBackButton = true,
 	testID,
+	onClosePress,
 	onButtonPress,
 }: {
 	navTitle: string;
@@ -24,6 +25,7 @@ const InfoScreen = ({
 	buttonText: string;
 	displayBackButton?: boolean;
 	testID?: string;
+	onClosePress?: () => void;
 	onButtonPress: () => void;
 }): ReactElement => {
 	return (
@@ -32,6 +34,7 @@ const InfoScreen = ({
 			<NavigationHeader
 				title={navTitle}
 				displayBackButton={displayBackButton}
+				onClosePress={onClosePress}
 			/>
 			<View style={styles.content} testID={testID}>
 				<Display>{title}</Display>

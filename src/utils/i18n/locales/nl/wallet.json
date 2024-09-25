@@ -354,7 +354,7 @@
     "string": "Naar Bestedingssaldo"
   },
   "activity_transfer_pending": {
-    "string": "Overboeking (±{duration}m)"
+    "string": "Overboeking (±{duration})"
   },
   "activity_confirms_in": {
     "string": "Zal bevestigen in {feeRateDescription}"

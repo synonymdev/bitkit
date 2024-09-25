@@ -14,10 +14,21 @@ export const blocktankInfoSelector = createSelector(
 	[blocktankState],
 	(blocktank): IBtInfo => blocktank.info,
 );
+
+export const blocktankNodeIdsSelector = createSelector(
+	[blocktankState],
+	(blocktank): string[] => {
+		const { nodes } = blocktank.info;
+		const nodeIds = nodes.map((node) => node.pubkey);
+		return nodeIds;
+	},
+);
+
 export const blocktankOrdersSelector = createSelector(
 	[blocktankState],
 	(blocktank): IBtOrder[] => blocktank.orders,
 );
+
 /**
  * Returns a blocktank order for a given order ID.
  */

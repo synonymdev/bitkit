@@ -34,13 +34,8 @@ import { closeSheet } from '../store/slices/ui';
 import { showBottomSheet } from '../store/utils/ui';
 import { handleSlashtagURL } from './slashtags';
 import { getSlashPayConfig } from './slashtags';
-import {
-	addPeer,
-	decodeLightningInvoice,
-	getLightningBalance,
-} from './lightning';
+import { decodeLightningInvoice, getLightningBalance } from './lightning';
 import { EAvailableNetwork } from './networks';
-import { savePeer } from '../store/utils/lightning';
 import { EDenomination, TWalletName } from '../store/types/wallet';
 import { sendNavigation } from '../navigation/bottom-sheet/SendNavigation';
 import { rootNavigation } from '../navigation/root/RootNavigator';
@@ -390,10 +385,10 @@ export const decodeQRData = async (
 	let lightningInvoice = '';
 	let error = '';
 
-	//Lightning URI
+	// Lightning URI
 	if (findlnurl(data)) {
 		const invoice = findlnurl(data)!;
-		//Attempt to handle any lnurl request.
+		// Attempt to handle any lnurl request.
 		const res = await getLNURLParams(invoice);
 		if (res.isOk()) {
 			const params = res.value;
@@ -533,7 +528,7 @@ export const decodeQRData = async (
 	}
 
 	if (!foundNetworksInQR.length) {
-		// Attempt to determine if it's a node id to connect with and add.
+		// Determine if it's a node connection string
 		const dataSplit = data.split(':');
 		if (dataSplit.length === 2 && dataSplit[0].includes('@')) {
 			foundNetworksInQR.push({
@@ -997,11 +992,7 @@ export const handleData = async ({
 			return ok({ type: EQRDataType.orangeTicket });
 		}
 		case EQRDataType.nodeId: {
-			const peer = data?.url;
-			if (!peer) {
-				return err('Unable to interpret peer information.');
-			}
-			if (peer.includes('onion')) {
+			if (data.url.includes('onion')) {
 				showToast({
 					type: 'warning',
 					title: i18n.t('lightning:error_add_title'),
@@ -1009,33 +1000,11 @@ export const handleData = async ({
 				});
 				return err('Unable to add tor nodes at this time.');
 			}
-			const addPeerRes = await addPeer({
-				peer,
-				timeout: 5000,
+			rootNavigation.navigate('TransferRoot', {
+				screen: 'ExternalConnection',
+				params: { peer: data.url },
 			});
-			if (addPeerRes.isErr()) {
-				showToast({
-					type: 'warning',
-					title: i18n.t('lightning:error_add'),
-					description: addPeerRes.error.message,
-				});
-				return err('Unable to add lightning peer.');
-			}
-			const savePeerRes = savePeer({ selectedWallet, selectedNetwork, peer });
-			if (savePeerRes.isErr()) {
-				showToast({
-					type: 'warning',
-					title: i18n.t('lightning:error_save_title'),
-					description: savePeerRes.error.message,
-				});
-				return err(savePeerRes.error.message);
-			}
 			dispatch(closeSheet('sendNavigation'));
-			showToast({
-				type: 'success',
-				title: savePeerRes.value,
-				description: i18n.t('lightning:peer_saved'),
-			});
 			return ok({ type: EQRDataType.nodeId });
 		}
 		case EQRDataType.treasureHunt: {

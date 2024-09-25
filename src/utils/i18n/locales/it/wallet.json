@@ -360,7 +360,7 @@
     "string": "A Saldo Spendibile"
   },
   "activity_transfer_pending": {
-    "string": "Transferimento (±{duration}m)"
+    "string": "Transferimento (±{duration})"
   },
   "activity_confirms_in": {
     "string": "Conferma in {feeRateDescription}"

@@ -78,17 +78,18 @@ export enum ETransferStatus {
 }
 
 export type TTransferToSpending = {
-	txId: string; // The txId of the transaction that paid for the channel.
 	type: ETransferType.open;
-	orderId: string;
-	status: ETransferStatus.pending | ETransferStatus.done;
+	txId: string; // The txId of the transaction that paid for the channel.
+	status: ETransferStatus;
 	amount: number;
+	confirmsIn: number;
+	orderId?: string;
 };
 
 export type TTransferToSavings = {
-	txId: string; // The txId of the transaction that closed the channel.
 	type: ETransferType.coopClose | ETransferType.forceClose;
-	status: ETransferStatus.pending | ETransferStatus.done;
+	txId: string; // The txId of the transaction that closed the channel.
+	status: ETransferStatus;
 	amount: number;
 	confirmsIn: number;
 };

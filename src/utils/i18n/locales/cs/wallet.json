@@ -383,7 +383,7 @@
     "string": "Do útrat"
   },
   "activity_transfer_pending": {
-    "string": "Převod (±{duration}m)"
+    "string": "Převod (±{duration})"
   },
   "activity_confirms_in": {
     "string": "Potvrzení během {feeRateDescription}"

@@ -354,7 +354,7 @@
     "string": "Vers le compte courant"
   },
   "activity_transfer_pending": {
-    "string": "Transfert (±{duration}m)"
+    "string": "Transfert (±{duration})"
   },
   "activity_confirms_in": {
     "string": "Confirmé dans {feeRateDescription}"

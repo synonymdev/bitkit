@@ -17,7 +17,7 @@ import {
 	Checkmark,
 	ClockIcon,
 	LightningHollow,
-	PencileIcon,
+	PencilIcon,
 	SettingsIcon,
 	SpeedFastIcon,
 	SpeedNormalIcon,
@@ -260,7 +260,7 @@ const ReviewAndSend = ({
 			if (transactionIsValid.isErr()) {
 				throw Error(transactionIsValid.error.message);
 			}
-			const response = await createTransaction({});
+			const response = await createTransaction();
 			if (response.isErr()) {
 				throw Error(response.error.message);
 			}
@@ -623,7 +623,7 @@ const ReviewAndSend = ({
 											{fiatTransactionFee.fiatSymbol}
 											{fiatTransactionFee.fiatFormatted})
 										</BodySSB>
-										<PencileIcon height={12} width={22} />
+										<PencilIcon height={12} width={22} />
 									</View>
 								}
 							/>

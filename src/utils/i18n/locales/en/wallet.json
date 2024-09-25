@@ -206,8 +206,13 @@
 	"note": {
 		"string": "Note"
 	},
-	"note": {
-		"string": "Comment"
+	"lnurl_pay_confirm": {
+		"comment": {
+			"string": "Comment"
+		},
+		"comment_placeholder": {
+			"string": "Optional comment to receiver"
+		}
 	},
 	"tags": {
 		"string": "Tags"
@@ -386,7 +391,7 @@
 		"string": "To Spending"
 	},
 	"activity_transfer_pending": {
-		"string": "Transfer (±{duration}m)"
+		"string": "Transfer (±{duration})"
 	},
 	"activity_confirms_in": {
 		"string": "Confirms in {feeRateDescription}"

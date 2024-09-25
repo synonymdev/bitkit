@@ -361,6 +361,7 @@ const Channels = ({
 						text={t(showClosed ? 'conn_closed_hide' : 'conn_closed_show')}
 						size="large"
 						variant="tertiary"
+						testID="ChannelsClosed"
 						onPress={(): void => setShowClosed((prevState) => !prevState)}
 					/>
 				)}

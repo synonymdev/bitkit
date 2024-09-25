@@ -46,11 +46,11 @@ const LNURLChannel = ({
 			return;
 		}
 		setLoading(false);
-		navigation.navigate('LNURLChannelSuccess');
+		navigation.navigate('ExternalSuccess');
 	};
 
-	const handleCancel = (): void => {
-		navigation.goBack();
+	const onClosePress = (): void => {
+		navigation.navigate('Wallet');
 	};
 
 	return (
@@ -58,8 +58,7 @@ const LNURLChannel = ({
 			<SafeAreaInset type="top" />
 			<NavigationHeader
 				title={t('lnurl_channel_header')}
-				onClosePress={handleCancel}
-				displayBackButton={false}
+				onClosePress={onClosePress}
 			/>
 			<View style={styles.content}>
 				<Display style={styles.title}>
@@ -96,7 +95,7 @@ const LNURLChannel = ({
 					variant="secondary"
 					size="large"
 					text={t('cancel')}
-					onPress={handleCancel}
+					onPress={onClosePress}
 				/>
 				<Button
 					style={styles.button}

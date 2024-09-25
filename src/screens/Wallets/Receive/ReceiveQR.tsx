@@ -32,7 +32,7 @@ import {
 	CopyIcon,
 	LightningCircleIcon,
 	LightningIcon,
-	PencileIcon,
+	PencilIcon,
 	ShareIcon,
 	UnifiedIcon,
 } from '../../../styles/icons';
@@ -402,7 +402,7 @@ const ReceiveQR = ({
 					<Button
 						style={styles.actionButton}
 						color="white10"
-						icon={<PencileIcon width={18} color="brand" />}
+						icon={<PencilIcon width={18} color="brand" />}
 						text={t('edit')}
 						testID="SpecifyInvoiceButton"
 						onPress={onEdit}

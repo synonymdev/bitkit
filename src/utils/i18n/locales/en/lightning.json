@@ -30,7 +30,24 @@
 			"string": "Use Other Wallet"
 		},
 		"button3": {
-			"string": "External Node (Advanced)"
+			"string": "Advanced"
+		}
+	},
+	"funding_advanced": {
+		"nav_title": {
+			"string": "Spending Balance"
+		},
+		"title": {
+			"string": "Advanced <accent>setup</accent>"
+		},
+		"text": {
+			"string": "Scan a QR to claim your LNURL Channel from another LSP, or choose manual setup."
+		},
+		"button1": {
+			"string": "LNURL Channel QR"
+		},
+		"button2": {
+			"string": "Manual Setup"
 		}
 	},
 	"no_funds": {
@@ -207,6 +224,47 @@
 		},
 		"text_savings": {
 			"string": "Your funds have been transferred. You are able to use these funds immediately."
+		}
+	},
+	"external": {
+		"nav_title": {
+			"string": "Lightning Connection"
+		}
+	},
+	"external_manual": {
+		"title": {
+			"string": "<accent>Manual setup</accent>"
+		},
+		"text": {
+			"string": "You can use an external node to manually open a Lightning connection. Enter the node details to continue."
+		},
+		"node_id": {
+			"string": "Node ID"
+		},
+		"host": {
+			"string": "Host"
+		},
+		"port": {
+			"string": "Port"
+		},
+		"paste": {
+			"string": "Paste Node URI"
+		},
+		"scan": {
+			"string": "Scan QR"
+		}
+	},
+	"external_amount": {
+		"title": {
+			"string": "Spending\n<accent>balance</accent>"
+		}
+	},
+	"external_success": {
+		"title": {
+			"string": "Connection\n<accent>initiated</accent>"
+		},
+		"text": {
+			"string": "Lightning connection initiated. You will be able to use your spending balance in <accent>±30 minutes</accent> (depends on node configuration)."
 		}
 	},
 	"error_channel_purchase": {

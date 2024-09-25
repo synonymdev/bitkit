@@ -60,6 +60,7 @@ const Availability = ({
 						style={styles.button}
 						text={t('continue')}
 						size="large"
+						testID="AvailabilityContinue"
 						onPress={onContinue}
 					/>
 				</View>

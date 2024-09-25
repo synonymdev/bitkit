@@ -33,7 +33,7 @@ import {
 	xIcon,
 	tagIcon,
 	penIcon,
-	pencileIcon,
+	pencilIcon,
 	infoIcon,
 	scanIcon,
 	cameraIcon,
@@ -348,8 +348,8 @@ export const PenIcon = styled(SvgXml).attrs((props) => ({
 	color: props.color ? props.theme.colors[props.color] : 'white',
 }));
 
-export const PencileIcon = styled(SvgXml).attrs((props) => ({
-	xml: pencileIcon(props.color ? props.theme.colors[props.color] : 'white'),
+export const PencilIcon = styled(SvgXml).attrs((props) => ({
+	xml: pencilIcon(props.color ? props.theme.colors[props.color] : 'white'),
 	height: props.height ?? '32px',
 	width: props.width ?? '32px',
 }))<IconProps>((props) => ({

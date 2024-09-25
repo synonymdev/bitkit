@@ -1,7 +1,7 @@
 import React, { memo, ReactElement } from 'react';
 import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import { BodyMSB, BodySSB } from '../styles/text';
-import { PencileIcon } from '../styles/icons';
+import { PencilIcon } from '../styles/icons';
 import Money from '../components/Money';
 
 const ImageText = ({
@@ -44,7 +44,7 @@ const ImageText = ({
 						symbol={true}
 						enableHide={true}
 					/>
-					<PencileIcon style={styles.valueIcon} height={13} width={13} />
+					<PencilIcon style={styles.valueIcon} height={13} width={13} />
 				</View>
 				<Money
 					style={styles.value}

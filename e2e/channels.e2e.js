@@ -1,9 +1,11 @@
+import createLnRpc from '@radar/lnrpc';
 import BitcoinJsonRpc from 'bitcoin-json-rpc';
 import jestExpect from 'expect';
 
 import initWaitForElectrumToSync from '../__tests__/utils/wait-for-electrum';
 import {
 	bitcoinURL,
+	lndConfig,
 	checkComplete,
 	completeOnboarding,
 	electrumHost,
@@ -14,15 +16,13 @@ import {
 	sleep,
 } from './helpers';
 
-const d = checkComplete('channels-1') ? describe.skip : describe;
+d = checkComplete(['transfer-1', 'transfer-2']) ? describe.skip : describe;
 
-d('LN Channel Onboarding', () => {
+d('Transfer', () => {
 	let waitForElectrum;
 	const rpc = new BitcoinJsonRpc(bitcoinURL);
 
 	beforeAll(async () => {
-		await completeOnboarding();
-
 		let balance = await rpc.getBalance();
 		const address = await rpc.getNewAddress();
 
@@ -38,6 +38,8 @@ d('LN Channel Onboarding', () => {
 	});
 
 	beforeEach(async () => {
+		await device.launchApp({ delete: true });
+		await completeOnboarding();
 		await launchAndWait();
 		await waitForElectrum();
 	});
@@ -46,134 +48,295 @@ d('LN Channel Onboarding', () => {
 		waitForElectrum?.close();
 	});
 
-	d('Lightning onboarding / Channel purchase', () => {
-		// Test plan
-		// - cannot continue with zero spending balance
-		// - can change amount
-		// Advanced
-		// - can change amount
+	// Test Plan
+	// Can buy a channel from Blocktank with default and custom receive capacity
+	// 	- cannot continue with zero spending balance
+	// 	- can change amount
+	// 	Advanced
+	// 	- can change amount
+	// Can open a channel to external node
+	// 	- open channel to LND
+	// 	- send payment
+	// 	- close the channel
 
-		it('Can buy a channel with default and custom receive capacity', async () => {
-			if (checkComplete('channels-1')) {
-				return;
+	it('Can buy a channel from Blocktank with default and custom receive capacity', async () => {
+		if (checkComplete('transfer-1')) {
+			return;
+		}
+
+		// receive BTC
+		await element(by.id('Receive')).tap();
+		// get address from qrcode
+		await waitFor(element(by.id('QRCode'))).toBeVisible();
+		await sleep(100); // wait for qr code to render
+		let { label: wAddress } = await element(by.id('QRCode')).getAttributes();
+		wAddress = wAddress.replace('bitcoin:', '');
+
+		await rpc.sendToAddress(wAddress, '0.01');
+		await rpc.generateToAddress(1, await rpc.getNewAddress());
+		await waitForElectrum();
+
+		await waitFor(element(by.id('NewTxPrompt')))
+			.toBeVisible()
+			.withTimeout(20000);
+		await element(by.id('NewTxPrompt')).swipe('down'); // close Receive screen
+
+		await element(by.id('Suggestion-lightning')).tap();
+		await element(by.id('TransferIntro-button')).tap();
+		await element(by.id('FundTransfer')).tap();
+		await element(by.id('SpendingIntro-button')).tap();
+
+		// default amount is 0
+		const button = element(by.id('SpendingAmountContinue'));
+		const buttonEnabled = await isButtonEnabled(button);
+		jestExpect(buttonEnabled).toBe(false);
+
+		// can continue with max amount
+		await element(by.id('SpendingAmountMax')).tap();
+		await element(by.id('SpendingAmountContinue')).tap();
+		await element(by.id('NavigationBack')).tap();
+
+		// can continue with 25% amount
+		await element(by.id('SpendingAmountQuarter')).tap();
+		await expect(element(by.text('250 000'))).toBeVisible();
+		await element(by.id('SpendingAmountContinue')).tap();
+		await expect(element(by.text('250 000'))).toBeVisible();
+		await element(by.id('NavigationBack')).tap();
+		await element(by.id('NavigationBack')).tap();
+		await element(by.id('SpendingIntro-button')).tap();
+
+		// can change amount
+		await element(by.id('N2').withAncestor(by.id('SpendingAmount'))).tap();
+		await element(by.id('N0').withAncestor(by.id('SpendingAmount'))).multiTap(
+			5,
+		);
+		await element(by.id('SpendingAmountContinue')).tap();
+		await expect(element(by.text('200 000'))).toBeVisible();
+		await element(by.id('SpendingConfirmMore')).tap();
+		await expect(element(by.text('200 000'))).toBeVisible();
+		await element(by.id('LiquidityContinue')).tap();
+
+		// Swipe to confirm (set x offset to avoid navigating back)
+		await element(by.id('GRAB')).swipe('right', 'slow', 0.95, 0.5, 0.5);
+		await waitFor(element(by.id('LightningSettingUp')))
+			.toBeVisible()
+			.withTimeout(10000);
+
+		// Get another channel with custom receiving capacity
+		await element(by.id('NavigationClose')).tap();
+		await element(by.id('ActivitySavings')).tap();
+		await element(by.id('TransferToSpending')).tap();
+		await element(by.id('SpendingIntro-button')).tap();
+		await element(by.id('N1').withAncestor(by.id('SpendingAmount'))).tap();
+		await element(by.id('N0').withAncestor(by.id('SpendingAmount'))).multiTap(
+			5,
+		);
+		await element(by.id('SpendingAmountContinue')).tap();
+		await expect(element(by.text('100 000'))).toBeVisible();
+		await element(by.id('SpendingConfirmAdvanced')).tap();
+
+		// Receiving Capacity
+		// can continue with min amount
+		await element(by.id('SpendingAdvancedMin')).tap();
+		await expect(element(by.text('105 000'))).toBeVisible();
+		await element(by.id('SpendingAdvancedContinue')).tap();
+		await element(by.id('SpendingConfirmDefault')).tap();
+		await element(by.id('SpendingConfirmAdvanced')).tap();
+
+		// can continue with default amount
+		await element(by.id('SpendingAdvancedDefault')).tap();
+		await element(by.id('SpendingAdvancedContinue')).tap();
+		await element(by.id('SpendingConfirmDefault')).tap();
+		await element(by.id('SpendingConfirmAdvanced')).tap();
+
+		// can continue with max amount
+		await element(by.id('SpendingAdvancedMax')).tap();
+		await element(by.id('SpendingAdvancedContinue')).tap();
+		await element(by.id('SpendingConfirmDefault')).tap();
+		await element(by.id('SpendingConfirmAdvanced')).tap();
+
+		// can set custom amount
+		await element(by.id('N1').withAncestor(by.id('SpendingAdvanced'))).tap();
+		await element(by.id('N5').withAncestor(by.id('SpendingAdvanced'))).tap();
+		await element(by.id('N0').withAncestor(by.id('SpendingAdvanced'))).multiTap(
+			4,
+		);
+		await element(by.id('SpendingAdvancedContinue')).tap();
+		await expect(
+			element(by.text('100 000').withAncestor(by.id('SpendingConfirmChannel'))),
+		).toBeVisible();
+		await expect(
+			element(by.text('150 000').withAncestor(by.id('SpendingConfirmChannel'))),
+		).toBeVisible();
+
+		// Swipe to confirm (set x offset to avoid navigating back)
+		await element(by.id('GRAB')).swipe('right', 'slow', 0.95, 0.5, 0.5);
+		await waitFor(element(by.id('LightningSettingUp')))
+			.toBeVisible()
+			.withTimeout(10000);
+
+		// check channel status
+		await element(by.id('NavigationClose')).tap();
+		await element(by.id('Settings')).tap();
+		await element(by.id('AdvancedSettings')).atIndex(0).tap();
+		await element(by.id('Channels')).tap();
+		await element(by.id('Channel')).atIndex(0).tap();
+		await expect(element(by.text('Processing payment'))).toBeVisible();
+		await expect(
+			element(by.id('MoneyText').withAncestor(by.id('TotalSize'))),
+		).toHaveText('250 000');
+
+		markComplete('transfer-1');
+	});
+
+	it('Can open a channel to external node', async () => {
+		if (checkComplete('transfer-2')) {
+			return;
+		}
+
+		// receive BTC
+		await element(by.id('Receive')).tap();
+		// get address from qrcode
+		await waitFor(element(by.id('QRCode'))).toBeVisible();
+		await sleep(100); // wait for qr code to render
+		let { label: wAddress } = await element(by.id('QRCode')).getAttributes();
+		wAddress = wAddress.replace('bitcoin:', '');
+
+		await rpc.sendToAddress(wAddress, '0.001');
+		await rpc.generateToAddress(1, await rpc.getNewAddress());
+
+		await waitFor(element(by.id('NewTxPrompt')))
+			.toBeVisible()
+			.withTimeout(20000);
+		await element(by.id('NewTxPrompt')).swipe('down');
+
+		// Get LND node id
+		const lnd = await createLnRpc(lndConfig);
+		const { identityPubkey: lndNodeId } = await lnd.getInfo();
+
+		// Connect to LND
+		await element(by.id('Settings')).tap();
+		await element(by.id('AdvancedSettings')).tap();
+		await element(by.id('Channels')).tap();
+		await element(by.id('NavigationAction')).tap();
+		await element(by.id('FundCustom')).tap();
+		await element(by.id('FundManual')).tap();
+		await element(by.id('NodeIdInput')).replaceText(lndNodeId);
+		await element(by.id('HostInput')).replaceText('0.0.0.0');
+		await element(by.id('PortInput')).replaceText('9735');
+		await element(by.id('PortInput')).tapReturnKey();
+		await element(by.id('ExternalContinue')).tap();
+
+		// wait for peer to be connected
+		let n = 0;
+		const maxRetries = 20;
+
+		while (n < maxRetries) {
+			await sleep(1000);
+			const { peers } = await lnd.listPeers();
+			if (peers.length > 0) {
+				break;
 			}
+			n++;
+		}
 
-			// receive BTC
-			await element(by.id('Receive')).tap();
-			// get address from qrcode
-			await waitFor(element(by.id('QRCode'))).toBeVisible();
-			await sleep(100); // wait for qr code to render
-			let { label: wAddress } = await element(by.id('QRCode')).getAttributes();
-			wAddress = wAddress.replace('bitcoin:', '');
+		if (n === maxRetries) {
+			throw new Error('Peer not connected');
+		}
 
-			await rpc.sendToAddress(wAddress, '0.01');
-			await rpc.generateToAddress(1, await rpc.getNewAddress());
-			await waitForElectrum();
+		// Set amount
+		await element(by.id('N2').withAncestor(by.id('ExternalAmount'))).tap();
+		await element(by.id('N0').withAncestor(by.id('ExternalAmount'))).multiTap(
+			4,
+		);
+		await element(by.id('ExternalAmountContinue')).tap();
+		// Swipe to confirm (set x offset to avoid navigating back)
+		await element(by.id('GRAB')).swipe('right', 'slow', 0.95, 0.5, 0.5);
+		await waitFor(element(by.id('ExternalSuccess')))
+			.toBeVisible()
+			.withTimeout(10000);
+		await element(by.id('ExternalSuccess-button')).tap();
 
-			await waitFor(element(by.id('NewTxPrompt')))
-				.toBeVisible()
-				.withTimeout(20000);
-			await element(by.id('NewTxPrompt')).swipe('down'); // close Receive screen
+		// check transfer card
+		await expect(element(by.id('Suggestion-lightningSettingUp'))).toBeVisible();
 
-			await element(by.id('Suggestion-lightning')).tap();
-			await element(by.id('TransferIntro-button')).tap();
-			await element(by.id('FundTransfer')).tap();
-			await element(by.id('SpendingIntro-button')).tap();
+		// check activity
+		await element(by.id('WalletsScrollView')).scrollTo('bottom', NaN, 0.85);
+		await expect(element(by.text('From Savings (±30m)'))).toBeVisible();
+		await element(by.id('ActivityShort-1')).tap();
+		await expect(element(by.text('Transfer (±30m)'))).toBeVisible();
+		await element(by.id('NavigationClose')).tap();
+		await element(by.id('WalletsScrollView')).scrollTo('top', NaN, 0.85);
 
-			// default amount is 0
-			const button = element(by.id('SpendingAmountContinue'));
-			const buttonEnabled = await isButtonEnabled(button);
-			jestExpect(buttonEnabled).toBe(false);
+		// Mine 3 blocks
+		await rpc.generateToAddress(3, await rpc.getNewAddress());
 
-			// can continue with max amount
-			await element(by.id('SpendingAmountMax')).tap();
-			await element(by.id('SpendingAmountContinue')).tap();
-			await element(by.id('NavigationBack')).tap();
+		// TODO: mine single blocks and check updated transfer time
 
-			// can continue with 25% amount
-			await element(by.id('SpendingAmountQuarter')).tap();
-			await expect(element(by.text('250 000'))).toBeVisible();
-			await element(by.id('SpendingAmountContinue')).tap();
-			await expect(element(by.text('250 000'))).toBeVisible();
-			await element(by.id('NavigationBack')).tap();
-			await element(by.id('NavigationBack')).tap();
-			await element(by.id('SpendingIntro-button')).tap();
+		// wait for channel to be opened
+		await sleep(5000);
 
-			// can change amount
-			await element(by.id('N2').withAncestor(by.id('SpendingAmount'))).tap();
-			await element(by.id('N0').withAncestor(by.id('SpendingAmount'))).multiTap(
-				5,
-			);
-			await element(by.id('SpendingAmountContinue')).tap();
-			await expect(element(by.text('200 000'))).toBeVisible();
-			await element(by.id('SpendingConfirmMore')).tap();
-			await expect(element(by.text('200 000'))).toBeVisible();
-			await element(by.id('LiquidityContinue')).tap();
+		await expect(
+			element(by.id('Suggestion-lightningSettingUp')),
+		).not.toBeVisible();
 
-			// Swipe to confirm (set x offset to avoid navigating back)
-			await element(by.id('GRAB')).swipe('right', 'slow', 0.95, 0.5, 0.5);
-			await waitFor(element(by.id('LightningSettingUp')))
-				.toBeVisible()
-				.withTimeout(10000);
+		// check channel status
+		await element(by.id('Settings')).tap();
+		await element(by.id('AdvancedSettings')).atIndex(0).tap();
+		await element(by.id('Channels')).tap();
+		await element(by.id('Channel')).atIndex(0).tap();
+		await expect(
+			element(by.id('MoneyText').withAncestor(by.id('TotalSize'))),
+		).toHaveText('20 000');
+		await element(by.id('ChannelScrollView')).scrollTo('bottom', NaN, 0.1);
+		await expect(element(by.id('IsUsableYes'))).toBeVisible();
+		await element(by.id('NavigationClose')).atIndex(0).tap();
 
-			// Get another channel with custom receiving capacity
-			await element(by.id('NavigationClose')).tap();
-			await element(by.id('ActivitySavings')).tap();
-			await element(by.id('TransferToSpending')).tap();
-			await element(by.id('SpendingIntro-button')).tap();
-			await element(by.id('N1').withAncestor(by.id('SpendingAmount'))).tap();
-			await element(by.id('N0').withAncestor(by.id('SpendingAmount'))).multiTap(
-				5,
-			);
-			await element(by.id('SpendingAmountContinue')).tap();
-			await expect(element(by.text('100 000'))).toBeVisible();
-			await element(by.id('SpendingConfirmAdvanced')).tap();
+		// get invoice
+		const { paymentRequest } = await lnd.addInvoice({ memo: 'zero' });
 
-			// Receiving Capacity
-			// can continue with min amount
-			await element(by.id('SpendingAdvancedMin')).tap();
-			await expect(element(by.text('110 000'))).toBeVisible();
-			await element(by.id('SpendingAdvancedContinue')).tap();
-			await element(by.id('SpendingConfirmDefault')).tap();
-			await element(by.id('SpendingConfirmAdvanced')).tap();
+		// send payment
+		await element(by.id('Send')).tap();
+		await element(by.id('RecipientManual')).tap();
+		await element(by.id('RecipientInput')).replaceText(paymentRequest);
+		await element(by.id('RecipientInput')).tapReturnKey();
+		// wait for keyboard to hide
+		await sleep(1000);
+		await element(by.id('AddressContinue')).tap();
+		await element(
+			by.id('N1').withAncestor(by.id('SendAmountNumberPad')),
+		).multiTap(3);
+		await element(by.id('ContinueAmount')).tap();
+		await element(by.id('GRAB')).swipe('right', 'slow', 0.95, 0.5, 0.5);
+		await waitFor(element(by.id('SendSuccess')))
+			.toBeVisible()
+			.withTimeout(10000);
+		await element(by.id('Close')).tap();
+		await waitFor(
+			element(by.id('MoneyText').withAncestor(by.id('TotalBalance'))),
+		)
+			.toHaveText('99 225')
+			.withTimeout(10000);
 
-			// can continue with default amount
-			await element(by.id('SpendingAdvancedDefault')).tap();
-			await element(by.id('SpendingAdvancedContinue')).tap();
-			await element(by.id('SpendingConfirmDefault')).tap();
-			await element(by.id('SpendingConfirmAdvanced')).tap();
+		// close the channel
+		await element(by.id('ActivitySpending')).tap();
+		await element(by.id('TransferToSavings')).tap();
+		await element(by.id('SavingsIntro-button')).tap();
+		await element(by.id('AvailabilityContinue')).tap();
+		await element(by.id('GRAB')).swipe('right', 'slow', 0.95, 0.5, 0.5);
+		await waitFor(element(by.id('TransferSuccess')))
+			.toBeVisible()
+			.withTimeout(10000);
+		await element(by.id('TransferSuccess-button')).tap();
 
-			// can continue with max amount
-			await element(by.id('SpendingAdvancedMax')).tap();
-			await element(by.id('SpendingAdvancedContinue')).tap();
-			await element(by.id('SpendingConfirmDefault')).tap();
-			await element(by.id('SpendingConfirmAdvanced')).tap();
+		// check channel is closed
+		await element(by.id('Settings')).tap();
+		await element(by.id('AdvancedSettings')).atIndex(0).tap();
+		await element(by.id('Channels')).tap();
+		await expect(element(by.text('Connection 1'))).not.toBeVisible();
+		await element(by.id('ChannelsClosed')).tap();
+		await expect(element(by.text('Connection 1'))).toBeVisible();
 
-			// can set custom amount
-			await element(by.id('N1').withAncestor(by.id('SpendingAdvanced'))).tap();
-			await element(by.id('N5').withAncestor(by.id('SpendingAdvanced'))).tap();
-			await element(
-				by.id('N0').withAncestor(by.id('SpendingAdvanced')),
-			).multiTap(4);
-			await element(by.id('SpendingAdvancedContinue')).tap();
-			await expect(
-				element(
-					by.text('100 000').withAncestor(by.id('SpendingConfirmChannel')),
-				),
-			).toBeVisible();
-			await expect(
-				element(
-					by.text('150 000').withAncestor(by.id('SpendingConfirmChannel')),
-				),
-			).toBeVisible();
-
-			// Swipe to confirm (set x offset to avoid navigating back)
-			await element(by.id('GRAB')).swipe('right', 'slow', 0.95, 0.5, 0.5);
-			await waitFor(element(by.id('LightningSettingUp')))
-				.toBeVisible()
-				.withTimeout(10000);
-
-			markComplete('channels-1');
-		});
+		markComplete('transfer-2');
 	});
 });

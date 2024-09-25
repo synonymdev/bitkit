@@ -5,6 +5,7 @@ import { device } from 'detox';
 import initWaitForElectrumToSync from '../__tests__/utils/wait-for-electrum';
 import {
 	bitcoinURL,
+	lndConfig,
 	checkComplete,
 	completeOnboarding,
 	electrumHost,
@@ -13,8 +14,6 @@ import {
 	markComplete,
 	sleep,
 } from './helpers';
-
-const __DEV__ = process.env.DEV === 'true';
 
 d = checkComplete('lighting-1') ? describe.skip : describe;
 
@@ -64,11 +63,7 @@ d('Lightning', () => {
 			}
 
 			// send funds to LND node and open a channel
-			const lnd = await createLndRpc({
-				server: 'localhost:10009',
-				tls: `${__dirname}/../docker/lnd/tls.cert`,
-				macaroonPath: `${__dirname}/../docker/lnd/data/chain/bitcoin/regtest/admin.macaroon`,
-			});
+			const lnd = await createLndRpc(lndConfig);
 			const { address: lndAddress } = await lnd.newAddress();
 			await rpc.sendToAddress(lndAddress, '1');
 			await rpc.generateToAddress(1, await rpc.getNewAddress());
@@ -77,9 +72,6 @@ d('Lightning', () => {
 
 			// get LDK Node id
 			await element(by.id('Settings')).tap();
-			if (!__DEV__) {
-				await element(by.id('DevOptions')).multiTap(5); // enable dev mode
-			}
 			await element(by.id('AdvancedSettings')).tap();
 			// wait for LDK to start
 			await sleep(5000);
@@ -91,30 +83,34 @@ d('Lightning', () => {
 				by.id('LDKNodeID'),
 			).getAttributes();
 			await element(by.id('NavigationBack')).atIndex(0).tap();
-			await sleep(100);
-			await element(by.id('NavigationBack')).atIndex(0).tap();
-			await element(by.id('DevSettings')).tap();
-			await element(by.id('LDKDebug')).tap();
 
 			// connect to LND
-			await element(by.id('AddPeerInput')).replaceText(
-				`${lndNodeID}@127.0.0.1:9735`,
-			);
-			await element(by.id('AddPeerInput')).tapReturnKey();
-			await element(by.id('AddPeerButton')).tap();
+			await element(by.id('Channels')).tap();
+			await element(by.id('NavigationAction')).tap();
+			await element(by.id('FundCustom')).tap();
+			await element(by.id('FundManual')).tap();
+			await element(by.id('NodeIdInput')).replaceText(lndNodeID);
+			await element(by.id('HostInput')).replaceText('0.0.0.0');
+			await element(by.id('PortInput')).replaceText('9735');
+			await element(by.id('PortInput')).tapReturnKey();
+			await element(by.id('ExternalContinue')).tap();
+			await element(by.id('NavigationClose')).tap();
 
 			// wait for peer to be connected
 			let n = 0;
-			while (n < 20) {
+			const maxRetries = 20;
+
+			while (n < maxRetries) {
 				await sleep(1000);
 				const { peers } = await lnd.listPeers();
 				if (peers.some((p) => p.pubKey === ldkNodeID)) {
 					break;
 				}
 				n++;
-				if (n === 0) {
-					throw new Error('Peer not connected');
-				}
+			}
+
+			if (n === maxRetries) {
+				throw new Error('Peer not connected');
 			}
 
 			// open a channel
@@ -144,10 +140,7 @@ d('Lightning', () => {
 			}
 
 			// check channel status
-			await sleep(500);
-			await element(by.id('NavigationBack')).atIndex(0).tap();
-			await sleep(100);
-			await element(by.id('NavigationBack')).atIndex(0).tap();
+			await element(by.id('Settings')).tap();
 			await element(by.id('AdvancedSettings')).atIndex(0).tap();
 			await element(by.id('Channels')).tap();
 			await element(by.id('Channel')).atIndex(0).tap();

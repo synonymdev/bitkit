@@ -8,7 +8,12 @@ import {
 import { getLNURLParams, lnurlChannel } from '@synonymdev/react-native-lnurl';
 import { EPaymentType } from 'beignet';
 
-import { dispatch, getLightningStore, getMetaDataStore } from '../helpers';
+import {
+	dispatch,
+	getBlocktankStore,
+	getLightningStore,
+	getMetaDataStore,
+} from '../helpers';
 import { updateActivityItems } from '../slices/activity';
 import {
 	removeLightningPeer,
@@ -20,7 +25,7 @@ import {
 	updateLightningNodeVersion,
 } from '../slices/lightning';
 import { moveMetaIncTxTag } from '../slices/metadata';
-import { addTransfer } from '../slices/wallet';
+import { addTransfer, updateTransfer } from '../slices/wallet';
 import { EAvailableNetwork } from '../../utils/networks';
 import { getSelectedNetwork, getSelectedWallet } from '../../utils/wallet';
 import {
@@ -45,7 +50,6 @@ import { ETransferStatus, ETransferType, TWalletName } from '../types/wallet';
 import { EActivityType, TLightningActivityItem } from '../types/activity';
 import { reduceValue } from '../../utils/helpers';
 import { getBlockHeader } from '../../utils/wallet/electrum';
-import { updateTransferThunk } from '../actions/wallet';
 
 /**
  * Attempts to update the node id for the selected wallet and network.
@@ -116,16 +120,25 @@ export const updateChannelsThunk = async (): Promise<Result<string>> => {
 
 	// Update the transfer status for pending channels.
 	channels.forEach((channel) => {
-		if (channel.is_channel_ready && channel.funding_txid) {
-			updateTransferThunk({
-				type: ETransferType.open,
-				txId: channel.funding_txid,
-			});
+		if (channel.funding_txid) {
+			let { funding_txid, confirmations, confirmations_required } = channel;
+			let txId = funding_txid;
+			const confirmsIn = Math.max(confirmations_required! - confirmations, 0);
+
+			// If the channel is opened by Blocktank, get the payment txId from the order.
+			const orders = getBlocktankStore().orders;
+			const order = orders.find((o) => o.channel?.fundingTx.id === txId);
+			if (order) {
+				txId = order.payment.onchain.transactions[0].txId;
+			}
+
+			dispatch(updateTransfer({ txId, confirmsIn }));
 		}
 	});
 
-	// Update the transfer for closed channels.
+	// Update transfers for closed channels
 	channelMonitors.forEach(({ funding_txo_txid, claimable_balances }) => {
+		const txId = funding_txo_txid;
 		const amountRes = reduceValue(claimable_balances, 'amount_satoshis');
 		const amount = amountRes.isOk() ? amountRes.value : 0;
 
@@ -135,13 +148,9 @@ export const updateChannelsThunk = async (): Promise<Result<string>> => {
 			confirmationHeight =
 				claimable_balances[0].confirmation_height ?? blockHeight + 6;
 		}
+		const confirmsIn = Math.max(confirmationHeight - blockHeight, 0);
 
-		updateTransferThunk({
-			type: 'close',
-			txId: funding_txo_txid,
-			amount,
-			confirmsIn: Math.max(confirmationHeight - blockHeight, 0),
-		});
+		dispatch(updateTransfer({ txId, confirmsIn, amount }));
 	});
 
 	dispatch(
@@ -189,45 +198,36 @@ export const closeChannelThunk = async (
 			}),
 		);
 
+		// Add a transfer for the closed channel
 		const claimableBalances = channelMonitor.claimable_balances;
 		const amountRes = reduceValue(claimableBalances, 'amount_satoshis');
 		const amount = amountRes.isOk() ? amountRes.value : 0;
 
-		// add a transfer item for closed channels
-		if (
+		const blockHeight = getBlockHeader().height;
+		const type =
 			res.reason === EChannelClosureReason.LocallyInitiatedCooperativeClosure
-		) {
-			dispatch(
-				addTransfer({
-					type: ETransferType.coopClose,
-					status: ETransferStatus.done,
-					txId: channelMonitor.funding_txo_txid,
-					amount,
-					confirmsIn: 0,
-				}),
-			);
-		} else {
-			const blockHeight = getBlockHeader().height;
+				? ETransferType.coopClose
+				: ETransferType.forceClose;
 
-			let confirmationHeight = 0;
-			if (claimableBalances.length > 0) {
-				// Default to 6 confirmations if no confirmation height (closing transaction has not yet appeared in a block)
-				confirmationHeight =
-					claimableBalances[0].confirmation_height ?? blockHeight + 6;
-			}
-
-			const confirmsIn = Math.max(confirmationHeight - blockHeight, 0);
-
-			dispatch(
-				addTransfer({
-					type: ETransferType.forceClose,
-					status: ETransferStatus.pending,
-					txId: channelMonitor.funding_txo_txid,
-					amount,
-					confirmsIn,
-				}),
-			);
+		let confirmationHeight = 0;
+		if (claimableBalances.length > 0) {
+			// Default to 6 confirmations if no confirmation height (closing transaction has not yet appeared in a block)
+			confirmationHeight =
+				claimableBalances[0].confirmation_height ?? blockHeight + 6;
 		}
+
+		let txId = channelMonitor.funding_txo_txid;
+		let status = ETransferStatus.pending;
+		let confirmsIn = Math.max(confirmationHeight - blockHeight, 0);
+
+		// for coop closes, ignore the anti reorg delay (6 blocks) from LDK
+		// consider funds as immediately available
+		if (type === ETransferType.coopClose) {
+			status = ETransferStatus.done;
+			confirmsIn = 0;
+		}
+
+		dispatch(addTransfer({ type, status, txId, amount, confirmsIn }));
 	}
 };
 

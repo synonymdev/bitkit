@@ -11,7 +11,7 @@ import { AnimatedView, View } from '../../styles/components';
 import {
 	CoinsIcon,
 	CopyIcon,
-	PencileIcon,
+	PencilIcon,
 	ShareIcon,
 	TrashIcon,
 } from '../../styles/icons';
@@ -171,7 +171,7 @@ const Contact = ({
 							onPress={(): void => {
 								navigation.navigate('ContactEdit', { url });
 							}}>
-							<PencileIcon height={20} width={20} color="brand" />
+							<PencilIcon height={20} width={20} color="brand" />
 						</IconButton>
 						<IconButton
 							style={styles.iconButton}

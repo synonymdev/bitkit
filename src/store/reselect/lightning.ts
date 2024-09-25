@@ -12,7 +12,7 @@ import {
 import { RootState } from '..';
 import { reduceValue } from '../../utils/helpers';
 import { selectedWalletSelector, selectedNetworkSelector } from './wallet';
-import { blocktankOrderSelector } from './blocktank';
+import { blocktankNodeIdsSelector, blocktankOrderSelector } from './blocktank';
 
 export const lightningState = (state: RootState): TLightningState => {
 	return state.lightning;
@@ -38,6 +38,17 @@ export const channelsSelector = createSelector(
 	},
 );
 
+export const blocktankChannelsSelector = createSelector(
+	[nodeSelector, blocktankNodeIdsSelector, selectedNetworkSelector],
+	(node, nodeIds, selectedNetwork): TChannel[] => {
+		const channels = node.channels[selectedNetwork];
+		const blocktankChannels = Object.values(channels).filter((channel) => {
+			return nodeIds.includes(channel.counterparty_node_id);
+		});
+		return blocktankChannels;
+	},
+);
+
 /**
  * Returns channel information for the provided channel ID.
  */
@@ -56,9 +67,25 @@ export const channelSelector = createSelector(
 export const openChannelsSelector = createSelector(
 	[channelsSelector],
 	(channels): TChannel[] => {
-		return Object.values(channels).filter((channel) => {
+		const openChannels = Object.values(channels).filter((channel) => {
 			return channel.status === EChannelStatus.open;
 		});
+		return openChannels;
+	},
+);
+
+/**
+ * Returns all open lightning channels to Blocktank.
+ * @param {RootState} state
+ * @returns {TChannel[]}
+ */
+export const openBtChannelsSelector = createSelector(
+	[blocktankChannelsSelector],
+	(channels): TChannel[] => {
+		const openChannels = Object.values(channels).filter((channel) => {
+			return channel.status === EChannelStatus.open;
+		});
+		return openChannels;
 	},
 );
 
@@ -70,9 +97,25 @@ export const openChannelsSelector = createSelector(
 export const pendingChannelsSelector = createSelector(
 	[channelsSelector],
 	(channels): TChannel[] => {
-		return Object.values(channels).filter((channel) => {
+		const pendingChannels = Object.values(channels).filter((channel) => {
 			return channel.status === EChannelStatus.pending;
 		});
+		return pendingChannels;
+	},
+);
+
+/**
+ * Returns all pending lightning channels to Blocktank.
+ * @param {RootState} state
+ * @returns {TChannel[]}
+ */
+export const pendingBtChannelsSelector = createSelector(
+	[blocktankChannelsSelector],
+	(channels): TChannel[] => {
+		const pendingChannels = Object.values(channels).filter((channel) => {
+			return channel.status === EChannelStatus.pending;
+		});
+		return pendingChannels;
 	},
 );
 
@@ -91,12 +134,12 @@ export const closedChannelsSelector = createSelector(
 );
 
 /**
- * Returns the summed up size of all open and pending channels.
+ * Returns the summed up size of all open and pending channels with Blocktank.
  * @param {RootState} state
  * @returns {number}
  */
-export const channelsSizeSelector = createSelector(
-	[openChannelsSelector, pendingChannelsSelector],
+export const blocktankChannelsSizeSelector = createSelector(
+	[openBtChannelsSelector, pendingBtChannelsSelector],
 	(openChannels, pendingChannels) => {
 		const openResult = reduceValue(openChannels, 'channel_value_satoshis');
 		const pendingResult = reduceValue(
