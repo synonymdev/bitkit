@@ -13,6 +13,8 @@ import {
 	launchAndWait,
 	markComplete,
 	sleep,
+	waitForActiveChannel,
+	waitForPeerConnection,
 } from './helpers';
 
 d = checkComplete('lighting-1') ? describe.skip : describe;
@@ -79,7 +81,7 @@ d('Lightning', () => {
 			await waitFor(element(by.id('LDKNodeID')))
 				.toBeVisible()
 				.withTimeout(60000);
-			let { label: ldkNodeID } = await element(
+			let { label: ldkNodeId } = await element(
 				by.id('LDKNodeID'),
 			).getAttributes();
 			await element(by.id('NavigationBack')).atIndex(0).tap();
@@ -97,25 +99,11 @@ d('Lightning', () => {
 			await element(by.id('NavigationClose')).tap();
 
 			// wait for peer to be connected
-			let n = 0;
-			const maxRetries = 20;
-
-			while (n < maxRetries) {
-				await sleep(1000);
-				const { peers } = await lnd.listPeers();
-				if (peers.some((p) => p.pubKey === ldkNodeID)) {
-					break;
-				}
-				n++;
-			}
-
-			if (n === maxRetries) {
-				throw new Error('Peer not connected');
-			}
+			await waitForPeerConnection(lnd, ldkNodeId);
 
 			// open a channel
 			await lnd.openChannelSync({
-				nodePubkeyString: ldkNodeID,
+				nodePubkeyString: ldkNodeId,
 				localFundingAmount: '100000',
 				private: true,
 			});
@@ -123,21 +111,7 @@ d('Lightning', () => {
 			await waitForElectrum();
 
 			// wait for channel to be active
-			let m = 0;
-			while (m < 20) {
-				await sleep(1000);
-				const { channels } = await lnd.listChannels({
-					peer: Buffer.from(ldkNodeID, 'hex'),
-					activeOnly: true,
-				});
-				if (channels?.length > 0) {
-					break;
-				}
-				m++;
-				if (m === 0) {
-					throw new Error('Channel not active');
-				}
-			}
+			await waitForActiveChannel(lnd, ldkNodeId);
 
 			// check channel status
 			await element(by.id('Settings')).tap();

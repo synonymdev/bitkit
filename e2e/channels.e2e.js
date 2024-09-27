@@ -14,6 +14,8 @@ import {
 	launchAndWait,
 	markComplete,
 	sleep,
+	waitForActiveChannel,
+	waitForPeerConnection,
 } from './helpers';
 
 d = checkComplete(['transfer-1', 'transfer-2']) ? describe.skip : describe;
@@ -210,6 +212,20 @@ d('Transfer', () => {
 			.withTimeout(20000);
 		await element(by.id('NewTxPrompt')).swipe('down');
 
+		// Get LDK node id
+		await element(by.id('Settings')).tap();
+		await element(by.id('AdvancedSettings')).tap();
+		// wait for LDK to start
+		await sleep(5000);
+		await element(by.id('LightningNodeInfo')).tap();
+		await waitFor(element(by.id('LDKNodeID')))
+			.toBeVisible()
+			.withTimeout(60000);
+		let { label: ldkNodeId } = await element(
+			by.id('LDKNodeID'),
+		).getAttributes();
+		await element(by.id('NavigationClose')).tap();
+
 		// Get LND node id
 		const lnd = await createLnRpc(lndConfig);
 		const { identityPubkey: lndNodeId } = await lnd.getInfo();
@@ -228,21 +244,7 @@ d('Transfer', () => {
 		await element(by.id('ExternalContinue')).tap();
 
 		// wait for peer to be connected
-		let n = 0;
-		const maxRetries = 20;
-
-		while (n < maxRetries) {
-			await sleep(1000);
-			const { peers } = await lnd.listPeers();
-			if (peers.length > 0) {
-				break;
-			}
-			n++;
-		}
-
-		if (n === maxRetries) {
-			throw new Error('Peer not connected');
-		}
+		await waitForPeerConnection(lnd, ldkNodeId);
 
 		// Set amount
 		await element(by.id('N2').withAncestor(by.id('ExternalAmount'))).tap();
@@ -274,7 +276,7 @@ d('Transfer', () => {
 		// TODO: mine single blocks and check updated transfer time
 
 		// wait for channel to be opened
-		await sleep(5000);
+		await waitForActiveChannel(lnd, ldkNodeId);
 
 		await expect(
 			element(by.id('Suggestion-lightningSettingUp')),

@@ -142,3 +142,42 @@ export const launchAndWait = async () => {
 		}
 	}
 };
+
+export const waitForPeerConnection = async (lnd, nodeId, maxRetries = 20) => {
+	let retries = 0;
+
+	while (retries < maxRetries) {
+		await sleep(1000);
+		const { peers } = await lnd.listPeers();
+		if (peers?.some((p) => p.pubKey === nodeId)) {
+			break;
+		}
+		retries++;
+	}
+
+	if (retries === maxRetries) {
+		throw new Error('Peer not connected');
+	}
+};
+
+export const waitForActiveChannel = async (lnd, nodeId, maxRetries = 20) => {
+	let retries = 0;
+
+	while (retries < maxRetries) {
+		await sleep(1000);
+		const { channels } = await lnd.listChannels({
+			peer: Buffer.from(nodeId, 'hex'),
+			activeOnly: true,
+		});
+
+		if (channels?.length > 0) {
+			break;
+		}
+
+		retries++;
+	}
+
+	if (retries === maxRetries) {
+		throw new Error('Channel not active');
+	}
+};
