@@ -73,6 +73,7 @@ const ExternalNode = ({
 				title: t('error_add_title'),
 				description: addPeerRes.error.message,
 			});
+			setLoading(false);
 			return;
 		}
 		const savePeerRes = savePeer({ peer: info });
@@ -82,11 +83,14 @@ const ExternalNode = ({
 				title: t('error_save_title'),
 				description: savePeerRes.error.message,
 			});
+			setLoading(false);
 			return;
 		}
 		setLoading(false);
 		navigation.navigate('ExternalAmount', { nodeId });
 	};
+
+	const isValid = nodeId.length === 66 && host && port;
 
 	return (
 		<ThemedView style={styles.root}>
@@ -118,6 +122,7 @@ const ExternalNode = ({
 					multiline={true}
 					underlineColorAndroid="transparent"
 					returnKeyType="done"
+					blurOnSubmit={true}
 					autoCapitalize="none"
 					autoComplete="off"
 					autoCorrect={false}
@@ -182,6 +187,7 @@ const ExternalNode = ({
 						text={t('continue')}
 						size="large"
 						loading={loading}
+						disabled={!isValid}
 						testID="ExternalContinue"
 						onPress={onContinue}
 					/>
