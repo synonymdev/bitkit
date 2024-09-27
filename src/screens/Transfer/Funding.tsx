@@ -9,7 +9,6 @@ import { View as ThemedView } from '../../styles/components';
 import RectangleButton from '../../components/buttons/RectangleButton';
 import SafeAreaInset from '../../components/SafeAreaInset';
 import NavigationHeader from '../../components/NavigationHeader';
-import Button from '../../components/buttons/Button';
 import { useBalance } from '../../hooks/wallet';
 import { isGeoBlockedSelector } from '../../store/reselect/user';
 import { TRANSACTION_DEFAULTS } from '../../utils/wallet/constants';
@@ -60,47 +59,28 @@ const Funding = ({
 					{text}
 				</BodyM>
 
-				<View style={styles.buttonContainer}>
-					{!isGeoBlocked && (
-						<>
-							<RectangleButton
-								icon={<TransferIcon color="purple" width={32} height={30} />}
-								text={t('funding.button1')}
-								disabled={!canTransfer || isGeoBlocked}
-								testID="FundTransfer"
-								onPress={onTransfer}
-							/>
+				<RectangleButton
+					icon={<TransferIcon color="purple" width={32} height={30} />}
+					text={t('funding.button1')}
+					disabled={!canTransfer || isGeoBlocked}
+					testID="FundTransfer"
+					onPress={onTransfer}
+				/>
 
-							<RectangleButton
-								icon={<QrIcon color="purple" width={32} height={30} />}
-								text={t('funding.button2')}
-								disabled={isGeoBlocked}
-								testID="FundReceive"
-								onPress={onFund}
-							/>
+				<RectangleButton
+					icon={<QrIcon color="purple" width={32} height={30} />}
+					text={t('funding.button2')}
+					disabled={isGeoBlocked}
+					testID="FundReceive"
+					onPress={onFund}
+				/>
 
-							<RectangleButton
-								icon={
-									<ShareAndroidIcon color="purple" width={32} height={30} />
-								}
-								text={t('funding.button3')}
-								testID="FundCustom"
-								onPress={onAdvanced}
-							/>
-						</>
-					)}
-				</View>
-
-				{isGeoBlocked && (
-					<Button
-						style={styles.button}
-						text={t('cancel')}
-						size="large"
-						onPress={(): void => {
-							navigation.navigate('Wallet');
-						}}
-					/>
-				)}
+				<RectangleButton
+					icon={<ShareAndroidIcon color="purple" width={32} height={30} />}
+					text={t('funding.button3')}
+					testID="FundCustom"
+					onPress={onAdvanced}
+				/>
 			</View>
 
 			{/* <Dialog
@@ -134,14 +114,7 @@ const styles = StyleSheet.create({
 	},
 	text: {
 		marginTop: 4,
-	},
-	buttonContainer: {
-		marginTop: 32,
-	},
-	button: {
-		flexDirection: 'row',
-		marginTop: 'auto',
-		marginHorizontal: 16,
+		marginBottom: 32,
 	},
 });
 
