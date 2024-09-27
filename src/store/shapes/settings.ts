@@ -104,6 +104,7 @@ export const initialSettingsState: TSettings = {
 	hideOnboardingMessage: false,
 	enableDevOptions: __DEV__,
 	treasureChests: [],
+	orangeTickets: [],
 	webRelay: __WEB_RELAY__,
 };
 

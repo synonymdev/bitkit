@@ -9,12 +9,12 @@ import ConnectionClosed from './ConnectionClosed';
 import ForceTransfer from './ForceTransfer';
 import LNURLWithdrawNavigation from './LNURLWithdrawNavigation';
 import NewTxPrompt from '../../screens/Wallets/NewTxPrompt';
-import OrangeTicket from '../../screens/OrangeTicket';
+import OrangeTicketNavigation from './OrangeTicketNavigation';
 import PINNavigation from './PINNavigation';
 import ReceiveNavigation from './ReceiveNavigation';
 import SendNavigation from './SendNavigation';
-import TreasureHuntNavigation from './TreasureHuntNavigation';
-import PubkyAuth from './PubkyAuth.tsx';
+// import TreasureHuntNavigation from './TreasureHuntNavigation';
+import PubkyAuth from './PubkyAuth';
 
 const BottomSheets = (): JSX.Element => {
 	const views = useAppSelector(viewControllersSelector);
@@ -27,11 +27,11 @@ const BottomSheets = (): JSX.Element => {
 			{views.forceTransfer.isMounted && <ForceTransfer />}
 			{views.lnurlWithdraw.isMounted && <LNURLWithdrawNavigation />}
 			{views.newTxPrompt.isMounted && <NewTxPrompt />}
-			{views.orangeTicket.isMounted && <OrangeTicket />}
+			{views.orangeTicket.isMounted && <OrangeTicketNavigation />}
 			{views.PINNavigation.isMounted && <PINNavigation />}
 			{views.receiveNavigation.isMounted && <ReceiveNavigation />}
 			{views.sendNavigation.isMounted && <SendNavigation />}
-			{views.treasureHunt.isMounted && <TreasureHuntNavigation />}
+			{/* {views.treasureHunt.isMounted && <TreasureHuntNavigation />} */}
 			{views.pubkyAuth.isMounted && <PubkyAuth />}
 		</>
 	);

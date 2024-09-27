@@ -20,6 +20,7 @@ import type { ProfileLinkStackParamList } from '../bottom-sheet/ProfileLinkNavig
 import type { ReceiveStackParamList } from '../bottom-sheet/ReceiveNavigation';
 import type { SendStackParamList } from '../bottom-sheet/SendNavigation';
 import type { LNURLWithdrawStackParamList } from '../bottom-sheet/LNURLWithdrawNavigation';
+import type { OrangeTicketStackParamList } from '../bottom-sheet/OrangeTicketNavigation';
 import type { TreasureHuntStackParamList } from '../bottom-sheet/TreasureHuntNavigation';
 
 // TODO: move all navigation related types here
@@ -102,6 +103,10 @@ export type SendScreenProps<T extends keyof SendStackParamList> =
 
 export type LNURLWithdrawProps<T extends keyof LNURLWithdrawStackParamList> =
 	NativeStackScreenProps<LNURLWithdrawStackParamList, T>;
+
+export type OrangeTicketScreenProps<
+	T extends keyof OrangeTicketStackParamList,
+> = NativeStackScreenProps<OrangeTicketStackParamList, T>;
 
 export type TreasureHuntScreenProps<
 	T extends keyof TreasureHuntStackParamList,

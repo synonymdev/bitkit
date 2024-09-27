@@ -44,6 +44,7 @@ export type TSettings = {
 	hideOnboardingMessage: boolean;
 	enableDevOptions: boolean;
 	treasureChests: TChest[];
+	orangeTickets: string[];
 	webRelay: string;
 };
 
@@ -78,6 +79,9 @@ export const settingsSlice = createSlice({
 				return chest === current ? updatedChest : chest;
 			});
 		},
+		addOrangeTicket: (state, action: PayloadAction<string>) => {
+			state.orangeTickets.push(action.payload);
+		},
 		resetSettingsState: () => initialSettingsState,
 	},
 });
@@ -89,6 +93,7 @@ export const {
 	addElectrumPeer,
 	addTreasureChest,
 	updateTreasureChest,
+	addOrangeTicket,
 	resetSettingsState,
 } = actions;
 
