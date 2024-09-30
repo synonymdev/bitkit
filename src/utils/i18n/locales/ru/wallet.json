@@ -353,9 +353,6 @@
   "activity_transfer_to_spending": {
     "string": "В Расходы"
   },
-  "activity_transfer_pending": {
-    "string": "Перенос (±{duration}м)"
-  },
   "activity_confirms_in": {
     "string": "Подтверждение через {feeRateDescription}"
   },
@@ -500,9 +497,6 @@
       "string": "Расходы"
     }
   },
-  "details_transfer_subtitle": {
-    "string": "Входящий Перенос"
-  },
   "tx_invalid": {
     "string": "Неверная Транзакция"
   },
@@ -592,9 +586,6 @@
   },
   "lnurl_w_success_description": {
     "string": "Запрос на вывод выполнен успешно"
-  },
-  "lnurl_p_title": {
-    "string": "Отправить Биткоин"
   },
   "lnurl_p_max": {
     "string": "Максимальная сумма"

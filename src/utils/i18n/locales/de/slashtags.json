@@ -80,6 +80,9 @@
   "contacts_no_found": {
     "string": "Keine Kontakte gefunden"
   },
+  "disabled": {
+    "string": "Slashtags deaktiviert"
+  },
   "onboarding_header": {
     "string": "Dynamische\n<accent>Kontakte</accent>"
   },
@@ -89,8 +92,14 @@
   "onboarding_button": {
     "string": "Ersten Kontakt hinzufügen"
   },
+  "onboarding_profile1_header": {
+    "string": "Besitzen Sie Ihr\n<accent>Profil</accent>"
+  },
   "onboarding_profile1_text": {
     "string": "Richte dein öffentliches Profil und Links ein, damit deine Bitkit-Kontakte dich erreichen oder bezahlen können, jederzeit und überall."
+  },
+  "onboarding_profile2_header": {
+    "string": "Bezahlen<accent>Bitkit\nKontakte</accent>"
   },
   "onboarding_profile2_text": {
     "string": "Du und deine Kontakte können Bitkit verwenden, um Zahlungen direkt zu senden, ohne Banken, jederzeit und überall."
@@ -228,9 +237,15 @@
     "string": "Fehler beim Speichern des Profils"
   },
   "error_pay_title": {
-    "string": "Fehler beim Bezahlen des Kontakts"
+    "string": "Kontakt konnte nicht bezahlt werden"
   },
   "error_pay_empty_msg": {
     "string": "Dieser Kontakt hat keine Zahlungsdaten."
+  },
+  "auth_depricated_title": {
+    "string": "Abgelehnt"
+  },
+  "auth_depricated_msg": {
+    "string": "Slashauth ist veraltet. Bitte verwenden Sie Bitkit Beta."
   }
 }

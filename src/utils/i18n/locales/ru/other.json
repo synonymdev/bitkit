@@ -184,12 +184,6 @@
   "lnurl_channel_port": {
     "string": "Порт"
   },
-  "lnurl_channel_connecting": {
-    "string": "Подключение\n<accent>инициировано</accent>"
-  },
-  "lnurl_channel_connecting_text": {
-    "string": "Лайтнинг подключение инициировано. Вы сможете использовать ваш баланс для расходов через <accent>±30 минут</accent> (зависит от конфигурации узла)."
-  },
   "lnurl_blocktank_error": {
     "string": "Bitkit не удалось подключиться к Blocktank."
   },

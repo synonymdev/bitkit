@@ -193,5 +193,10 @@
   },
   "wiped_title": {
     "string": "Dades de la cartera eliminades"
+  },
+  "authorization": {
+    "success": {
+      "string": "Èxit"
+    }
   }
 }

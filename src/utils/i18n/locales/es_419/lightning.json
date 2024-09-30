@@ -7,6 +7,14 @@
   "funding": {
     "nav_title": {
       "string": "Saldo de gastos"
+    },
+    "button3": {
+      "string": "Avanzado"
+    }
+  },
+  "funding_advanced": {
+    "nav_title": {
+      "string": "Saldo de gastos"
     }
   },
   "transfer": {
@@ -40,6 +48,14 @@
   "transfer_success": {
     "nav_title": {
       "string": "Transferencia exitosa"
+    }
+  },
+  "external_manual": {
+    "host": {
+      "string": "Anfitrión"
+    },
+    "port": {
+      "string": "Puerta"
     }
   },
   "error_channel_purchase": {

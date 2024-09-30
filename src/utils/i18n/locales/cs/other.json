@@ -190,12 +190,6 @@
   "lnurl_channel_port": {
     "string": "Port"
   },
-  "lnurl_channel_connecting": {
-    "string": "Připojení\n<accent>iniciováno</accent>"
-  },
-  "lnurl_channel_connecting_text": {
-    "string": "Iniciováno připojení lightning. Zůstatek na účtu budete moci použít do <accent>±30 minut</accent> (závisí na konfiguraci uzlu)."
-  },
   "lnurl_blocktank_error": {
     "string": "Bitkit se nepodařilo připojit k Blocktank."
   },

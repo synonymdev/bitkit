@@ -206,6 +206,14 @@
   "note": {
     "string": "Poznámka"
   },
+  "lnurl_pay_confirm": {
+    "comment": {
+      "string": "Komentář"
+    },
+    "comment_placeholder": {
+      "string": "Nepovinný komentář pro příjemce"
+    }
+  },
   "tags": {
     "string": "Tagy"
   },
@@ -539,7 +547,7 @@
     }
   },
   "details_transfer_subtitle": {
-    "string": "Příchozí převod"
+    "string": "Příchozí transakce: "
   },
   "tx_invalid": {
     "string": "Neplatná transakce"
@@ -632,7 +640,17 @@
     "string": "Úspěšná žádost o výběr"
   },
   "lnurl_p_title": {
-    "string": "Poslat bitcoin"
+    "string": "Platit bitcoinem"
+  },
+  "lnurl_pay": {
+    "error_min": {
+      "title": {
+        "string": "Příliš nízká částka"
+      },
+      "description": {
+        "string": "Minimální částka pro tuto fakturu je ₿ {amount}."
+      }
+    }
   },
   "lnurl_p_max": {
     "string": "Maximální částka"

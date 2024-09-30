@@ -1,4 +1,13 @@
 {
+  "beta": {
+    "string": "BETA"
+  },
+  "beta_software": {
+    "string": "Bitkit ist eine mobile Software."
+  },
+  "beta_warn": {
+    "string": "Bewahren Sie nicht Ihr ganzes Geld in Bitkit auf."
+  },
   "qr_scan": {
     "string": "QR-Code scannen"
   },
@@ -36,7 +45,7 @@
     "string": "Datenverbindungsproblem"
   },
   "error_keychain_msg": {
-    "string": "Ein Fehler ist aufgetreten: primaryKey konnte nicht geladen werden."
+    "string": "Der Primärschlüssel konnte nicht aus dem Schlüsselbund geladen werden."
   },
   "connection_restored_title": {
     "string": "Electrum-Verbindung wiederhergestellt"
@@ -181,12 +190,6 @@
   "lnurl_channel_port": {
     "string": "Port"
   },
-  "lnurl_channel_connecting": {
-    "string": "Verbindung\n<accent>initiiert</accent>"
-  },
-  "lnurl_channel_connecting_text": {
-    "string": "Lightning-Verbindung initiiert. Du kannst dein Guthaben in <accent>±30 Minuten</accent> verwenden (abhängig von der Node-Konfiguration)."
-  },
   "lnurl_blocktank_error": {
     "string": "Bitkit konnte keine Verbindung zu Blocktank herstellen."
   },
@@ -267,5 +270,13 @@
   },
   "try_again": {
     "string": "Bitte versuchen Sie es erneut."
+  },
+  "transfer_notification": {
+    "title": {
+      "string": "Important: Bitkit Transfer"
+    },
+    "body": {
+      "string": "Öffnen Sie Bitkit, um Ihre Übertragung abzuschließen"
+    }
   }
 }

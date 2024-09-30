@@ -30,7 +30,12 @@
       "string": "Utiliser un autre portefeuille"
     },
     "button3": {
-      "string": "Nœud externe (avancé)"
+      "string": "Avancé"
+    }
+  },
+  "funding_advanced": {
+    "nav_title": {
+      "string": "Solde des dépenses"
     }
   },
   "no_funds": {
@@ -103,6 +108,33 @@
     },
     "text_spending": {
       "string": "Vos fonds ont été transférés et votre solde de dépenses est prêt à être utilisé."
+    }
+  },
+  "external": {
+    "nav_title": {
+      "string": "Connexion Lightning"
+    }
+  },
+  "external_manual": {
+    "node_id": {
+      "string": "ID du nœud"
+    },
+    "host": {
+      "string": "Hôte"
+    },
+    "port": {
+      "string": "Port"
+    },
+    "scan": {
+      "string": "Scanner QR"
+    }
+  },
+  "external_success": {
+    "title": {
+      "string": "Connexion\n<accent>initiée</accent>"
+    },
+    "text": {
+      "string": "La connexion Lightning est initiée. Vous pourrez utiliser votre compte courant dans <accent>±30 minutes</accent> (en fonction de la configuration du nœud)."
     }
   },
   "error_channel_purchase": {

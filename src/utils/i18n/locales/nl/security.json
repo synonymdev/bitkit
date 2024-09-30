@@ -310,5 +310,10 @@
   },
   "wiped_message": {
     "string": "Bitkit is gereset en alle wallet gegevens zijn verwijderd."
+  },
+  "authorization": {
+    "success": {
+      "string": "Succes"
+    }
   }
 }

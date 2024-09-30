@@ -310,5 +310,10 @@
   },
   "wiped_message": {
     "string": "Bitkit a été réinitialisé et toutes les données du portefeuille ont été supprimées."
+  },
+  "authorization": {
+    "success": {
+      "string": "Succès"
+    }
   }
 }

@@ -1,5 +1,5 @@
 {
-  "introduction": {
+  "transfer_intro": {
     "title": {
       "string": "Spending\n<accent>Balance</accent>"
     },
@@ -7,7 +7,7 @@
       "string": "Fülle dein Guthaben auf, um sofortige und günstige Transaktionen mit Freunden, Familie und Händlern zu genießen."
     },
     "button": {
-      "string": "Lege los"
+      "string": "Los geht's"
     }
   },
   "funding": {
@@ -30,7 +30,24 @@
       "string": "Anderes Wallet verwenden"
     },
     "button3": {
-      "string": "Externe Node (Fortgeschritten)"
+      "string": "Fortgeschritten"
+    }
+  },
+  "funding_advanced": {
+    "nav_title": {
+      "string": "Ausgabenkonto"
+    },
+    "title": {
+      "string": "Fortgeschrittene<accent>setup</accent>"
+    },
+    "text": {
+      "string": "Scannen Sie einen QR-Code, um Ihren LNURL-Kanal von einem anderen LSP zu beanspruchen, oder wählen Sie die manuelle Einrichtung."
+    },
+    "button1": {
+      "string": "LNURL Channel QR"
+    },
+    "button2": {
+      "string": "Manuelle Einrichtung"
     }
   },
   "no_funds": {
@@ -38,7 +55,7 @@
       "string": "Keine verfügbaren Mittel"
     },
     "description": {
-      "string": "Bevor du Geld von deinem Sparkonto übertragen kannst, musst du Bitcoin in deine Bitkit-Wallet senden."
+      "string": "Bevor du Geld von deinem Sparkonto übertragen kannst, musst du Bitcoin zu deiner Bitkit Wallet senden."
     },
     "fund": {
       "string": "Wallet aufladen"
@@ -48,23 +65,22 @@
     "nav_title": {
       "string": "Übertrage Guthaben"
     },
-    "nav_successful": {
-      "string": "Übertragung erfolgreich"
-    },
-    "text_slider": {
-      "string": "Wähle, wie viel Geld du sofort ausgeben und wie viel du sparen möchtest."
-    },
-    "text_numpad": {
-      "string": "Gib den Betrag ein, den du zum sofortigen Bezahlen zur Verfügung haben möchtest."
+    "confirm": {
+      "string": "Bitte\n<accent>bestätige</accent>"
     },
     "swipe": {
       "string": "Swipe zum Übertragen"
+    }
+  },
+  "spending_intro": {
+    "title": {
+      "string": "<accent>zu den Ausgaben</accent>"
     },
-    "error_min_amount": {
-      "string": "Der Betrag muss mindestens ₿ {amount} betragen"
+    "text": {
+      "string": "Überweisen Sie Geld auf Ihr Guthaben, um sofortige und günstige Transaktionen mit Freunden, Familie und Händlern zu tätigen."
     },
-    "error_max_amount": {
-      "string": "Der Betrag muss kleiner als ₿ {amount} sein"
+    "button": {
+      "string": "Los geht's"
     }
   },
   "transfer_failed": {
@@ -84,6 +100,173 @@
       "string": "Erneut versuchen"
     }
   },
+  "spending_amount": {
+    "title": {
+      "string": "<accent>zu den Ausgaben</accent>"
+    },
+    "quarter": {
+      "string": "25%"
+    },
+    "error_max": {
+      "title": {
+        "string": "Maximaler Ausgabensaldo"
+      },
+      "description": {
+        "string": "Der Betrag, den Sie auf Ihr Ausgabenkonto übertragen können, ist derzeit auf ₿ {Betrag} begrenzt."
+      }
+    }
+  },
+  "spending_confirm": {
+    "network_fee": {
+      "string": "Netzgebühren"
+    },
+    "lsp_fee": {
+      "string": "Servicegebühren"
+    },
+    "amount": {
+      "string": "Zu den Ausgaben"
+    },
+    "total": {
+      "string": "Total"
+    },
+    "default": {
+      "string": "Standardwerte verwenden"
+    }
+  },
+  "spending_advanced": {
+    "title": {
+      "string": "Empfang von\n<accent>Kapazität</accent>"
+    },
+    "fee": {
+      "string": "Liquiditätsgebühr"
+    }
+  },
+  "liquidity": {
+    "title": {
+      "string": "Liquidität\n<accent>& Routenplanung</accent>"
+    },
+    "text": {
+      "string": "Ihr Guthaben in Bitkit ist wie Ihre Internetverbindung. Anstelle von Bandbreite zahlen Sie für Liquidität und Zahlungsrouting.\n\nZahlungen auf und von Ihrem Guthaben sind billiger, schneller und privater als normale Bitcoin-Transaktionen.\n\nDie Netzgebühr und die Gebühr des Dienstanbieters sind einmalige Kosten für die Einrichtung Ihres Guthabens."
+    },
+    "label": {
+      "string": "Ausgabensaldo Liquidität"
+    }
+  },
+  "savings_intro": {
+    "title": {
+      "string": "Übertragung\n<accent>zu den Einsparungen</accent>"
+    },
+    "text": {
+      "string": "Übertragen Sie Ihr Ausgabensaldo auf Ihr Sparguthaben, um Ihre Bitcoin langfristig zu speichern und Ihre Zukunft zu sichern."
+    },
+    "button": {
+      "string": "Los geht's"
+    }
+  },
+  "availability": {
+    "title": {
+      "string": "Funds\n<accent>Verfügbarkeit</accent>"
+    },
+    "text": {
+      "string": "Die Übertragung zu Ersparnissen ist normalerweise sofort, aber die Abwicklung kann unter bestimmten Netzwerkbedingungen bis zu <accent>14 Tage</accent> dauern."
+    }
+  },
+  "savings_confirm": {
+    "label": {
+      "string": "Überweisung zu den Ersparnissen"
+    },
+    "transfer_all": {
+      "string": "Transfer all"
+    }
+  },
+  "savings_advanced": {
+    "title": {
+      "string": "Fonds auswählen\n<accent>zu übertragen</accent>"
+    },
+    "text": {
+      "string": "Sie können einen Teil Ihres Ausgabensaldos auf ein Sparguthaben übertragen, da Sie mehrere aktive Blitzverbindungen haben."
+    },
+    "total": {
+      "string": "Gesamtausgewählt"
+    }
+  },
+  "savings_progress": {
+    "title": {
+      "string": "Mittel\n<accent>bei der Übertragung</accent>"
+    },
+    "text": {
+      "string": "Bitte warten Sie, Ihre Überweisung ist in Arbeit. Dies sollte dauern<accent>±10 Sekunden.</accent>"
+    }
+  },
+  "savings_interrupted": {
+    "nav_title": {
+      "string": "Transfer\n<accent>unterbrochen</accent>"
+    },
+    "title": {
+      "string": "Bitkit behalten\n<accent>open</accent>"
+    },
+    "text": {
+      "string": "Die Gelder wurden noch nicht übertragen. Bitkit wird versuchen, die Übertragung in den nächsten <accent>30 Minuten</accent> zu initiieren. Bitte halte deine App offen."
+    }
+  },
+  "transfer_success": {
+    "nav_title": {
+      "string": "Übertragung erfolgreich"
+    },
+    "title_spending": {
+      "string": "Bewegte Mittel\n<accent>zu den Ausgaben</accent>"
+    },
+    "text_spending": {
+      "string": "Deine Gelder wurden übertragen und dein Ausgabenguthaben ist einsatzbereit."
+    },
+    "title_savings": {
+      "string": "Bewegte Mittel\n<accent>zu den Einsparungen</accent>"
+    },
+    "text_savings": {
+      "string": "Ihr Geld wurde überwiesen. Sie können diese Mittel sofort verwenden."
+    }
+  },
+  "external": {
+    "nav_title": {
+      "string": "Lightning-Verbindung"
+    }
+  },
+  "external_manual": {
+    "title": {
+      "string": "<accent>Manuelle Einrichtung</accent>"
+    },
+    "text": {
+      "string": "Sie können einen externen Knoten verwenden, um eine Lightning-Verbindung manuell zu öffnen. Geben Sie die Details des Knotens ein, um fortzufahren."
+    },
+    "node_id": {
+      "string": "Node-ID"
+    },
+    "host": {
+      "string": "Host"
+    },
+    "port": {
+      "string": "Port"
+    },
+    "paste": {
+      "string": "Paste Node URI"
+    },
+    "scan": {
+      "string": "QR-Code scannen"
+    }
+  },
+  "external_amount": {
+    "title": {
+      "string": "Spending\n<accent>balance</accent>"
+    }
+  },
+  "external_success": {
+    "title": {
+      "string": "Verbindung\n<accent>initiiert</accent>"
+    },
+    "text": {
+      "string": "Lightning-Verbindung initiiert. Du kannst dein Guthaben in <accent>±30 Minuten</accent> verwenden (abhängig von der Node-Konfiguration)."
+    }
+  },
   "error_channel_purchase": {
     "string": "Einrichtung der Instant-Zahlungen fehlgeschlagen"
   },
@@ -93,11 +276,8 @@
   "error_channel_receiving": {
     "string": "Der Betrag muss größer sein als ${usdValue}"
   },
-  "enter_money": {
-    "string": "Gib den Betrag an Bitcoin ein, den du sofort ausgeben möchtest."
-  },
   "spending": {
-    "string": "Ausgaben"
+    "string": "Ausgabenkonto"
   },
   "savings": {
     "string": "Sparkonto"
@@ -107,48 +287,6 @@
   },
   "receiving_label": {
     "string": "Empfangskapazität"
-  },
-  "note_blocktank_limit": {
-    "string": "Der Betrag, den du auf dein Ausgabenguthaben übertragen kannst, ist derzeit auf ${usdValue} begrenzt."
-  },
-  "note_reserve_limit": {
-    "string": "Der Betrag, den du auf dein Ausgabenguthaben übertragen kannst, ist auf {percentage}% begrenzt. Du musst Mittel in Reserve halten, um dieses Bitcoin zurück in die Ersparnisse zu übertragen."
-  },
-  "quick_setup": {
-    "string": "Einfach"
-  },
-  "quick_confirm_header": {
-    "string": "Bitte\n<accent>bestätigen</accent>"
-  },
-  "quick_confirm_cost": {
-    "string": "Es kostet <accent>{txFee}</accent> an Netzwerkgebühren und <accent>{lspFee}</accent> an Dienstleistungsgebühren, um deine Gelder zu übertragen."
-  },
-  "spending_amount_bitcoin": {
-    "string": "Wähle, wie viel Geld du sofort ausgeben möchtest."
-  },
-  "receiving_amount_money": {
-    "string": "Wähle wie viel bitcoin du als Instant-Zahlungen empfangen können möchtest."
-  },
-  "receiving_amount_bitcoin": {
-    "string": "Gebe die Menge an bitcoin an, die du instant empfangen können möchtest."
-  },
-  "enter_custom_amount": {
-    "string": "Betrag eingeben"
-  },
-  "custom_confirm_header": {
-    "string": "Bitte\n<accent>bestätige</accent>"
-  },
-  "custom_confirm_cost": {
-    "string": "Es kostet <accent>{txFee}</accent> an Netzwerkgebühren und <accent>{lspFee}</accent> an Dienstleistungsgebühren, um deine Gelder zu übertragen. Dein Ausgabenguthaben sollte mindestens <accentWithKeyboard>{weeks, plural, one {# Woche} other {# Wochen}}.<penIcon/></accentWithKeyboard> aktiv bleiben."
-  },
-  "duration_header": {
-    "string": "Balance <accent>Dauer</accent>"
-  },
-  "duration_text": {
-    "string": "Wähle die Mindestanzahl an Wochen, die dieser Teil deines Ausgabenguthabens (Lightning Channel) aktiv bleiben soll."
-  },
-  "duration_week": {
-    "string": "{count, plural, one {Woche} other {Wochen}}"
   },
   "setting_up_header": {
     "string": "In Übertragung"
@@ -170,39 +308,6 @@
   },
   "setting_up_button": {
     "string": "Bitkit weiter verwenden"
-  },
-  "result_header": {
-    "string": "<accent>Bereit</accent>"
-  },
-  "result_text": {
-    "string": "Deine Gelder wurden übertragen und dein Ausgabenguthaben ist einsatzbereit."
-  },
-  "timeout_header": {
-    "string": "<accent>Bitkit</accent>\noffen lassen"
-  },
-  "timeout_text": {
-    "string": "Die Gelder wurden noch nicht übertragen. Bitkit wird versuchen, die Übertragung in den nächsten <accent>30 Minuten</accent> zu initiieren. Bitte halte deine App offen."
-  },
-  "transfer_close": {
-    "string": "Das Übertragen deines Ausgabenguthabens zurück zu deinen Ersparnissen erfordert eine Netzwerkgebühr. Die genaue Gebühr hängt von den Netzwerkbedingungen ab."
-  },
-  "ts_savings_title": {
-    "string": "Übertrage\n<accent>zu Ersparnissen</accent>"
-  },
-  "ts_savings_text": {
-    "string": "Deine Gelder wurden auf dein Sparkonto übertragen. Du kannst diese Gelder sofort verwenden."
-  },
-  "interrupted_title": {
-    "string": "Übertragung unterbrochen"
-  },
-  "availability_title": {
-    "string": "Verfügbarkeit der Mittel"
-  },
-  "availability_header": {
-    "string": "Verfügbarkeit\n<accent>der Mittel</accent>"
-  },
-  "availability_text": {
-    "string": "Die Übertragung zu Ersparnissen ist normalerweise sofort, aber die Abwicklung kann unter bestimmten Netzwerkbedingungen bis zu <accent>14 Tage</accent> dauern."
   },
   "node_info": {
     "string": "Lightning Node"
@@ -297,6 +402,9 @@
   "created_on": {
     "string": "Erstellt am"
   },
+  "order_expiry": {
+    "string": "Order Expiry"
+  },
   "transaction": {
     "string": "Transaktion"
   },
@@ -312,8 +420,20 @@
   "total_size": {
     "string": "Gesamtgröße des Channels"
   },
+  "fees": {
+    "string": "Gebühren"
+  },
+  "base_fee": {
+    "string": "Grundgebühr"
+  },
+  "fee_rate": {
+    "string": "Gebührensatz"
+  },
   "other": {
-    "string": "Andere"
+    "string": "Anderes"
+  },
+  "is_usable": {
+    "string": "Verwendbar"
   },
   "opened_on": {
     "string": "Geöffnet am"
@@ -322,16 +442,16 @@
     "string": "Geschlossen am"
   },
   "channel_node_id": {
-    "string": "Node-ID"
+    "string": "Peer ID"
   },
-  "debug": {
-    "string": "Debug"
+  "channel_id": {
+    "string": "Channel ID"
   },
-  "is_usable": {
-    "string": "Ist verwendbar?"
+  "channel_point": {
+    "string": "Kanalpunkt"
   },
-  "is_ready": {
-    "string": "Ist bereit?"
+  "closure_reason": {
+    "string": "Grund für die Schließung"
   },
   "support": {
     "string": "Support"
@@ -341,7 +461,7 @@
       "string": "Verbindung geschlossen"
     },
     "description": {
-      "string": "Deine Lightning-Verbindung wurde geschlossen. Deine Geld wurden auf deine Erspar"
+      "string": "Das Guthaben auf Ihrem Ausgabensaldo wurde auf Ihr Sparguthaben übertragen."
     }
   },
   "close_conn": {

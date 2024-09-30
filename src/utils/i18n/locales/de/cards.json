@@ -1,7 +1,7 @@
 {
   "backupSeedPhrase": {
     "title": {
-      "string": "Backup"
+      "string": "Sichern"
     },
     "description": {
       "string": "Sichere deine bitcoin"
@@ -41,7 +41,7 @@
   },
   "lightningSettingUp": {
     "title": {
-      "string": "Transfer"
+      "string": "Übertragung"
     },
     "description": {
       "string": "in Vorbereitung..."
@@ -65,7 +65,7 @@
   },
   "transferPending": {
     "title": {
-      "string": "Transfer"
+      "string": "Übertragung"
     },
     "description": {
       "string": "Bereit in ±{duration}"
@@ -73,7 +73,7 @@
   },
   "transferClosingChannel": {
     "title": {
-      "string": "Vorbereiten..."
+      "string": "Initiieren"
     },
     "description": {
       "string": "App geöffnet lassen"
@@ -113,13 +113,13 @@
   },
   "btFailed": {
     "title": {
-      "string": "Abgebrochen"
+      "string": "Fehlgeschlagen"
     },
     "description": {
       "string": "Versuche es erneut"
     }
   },
   "suggestions": {
-    "string": "Empfehlungen"
+    "string": "Vorschläge"
   }
 }

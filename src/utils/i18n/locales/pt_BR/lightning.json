@@ -30,7 +30,12 @@
       "string": "Transferir de Outra Carteira"
     },
     "button3": {
-      "string": "Nó Externo (Avançado)"
+      "string": "Avançado"
+    }
+  },
+  "funding_advanced": {
+    "nav_title": {
+      "string": "Saldo de Gastos"
     }
   },
   "no_funds": {
@@ -103,6 +108,33 @@
     },
     "text_spending": {
       "string": "Seus fundos foram transferidos e seu saldo de gastos está pronto para ser usado."
+    }
+  },
+  "external": {
+    "nav_title": {
+      "string": "Conexões Lightning"
+    }
+  },
+  "external_manual": {
+    "node_id": {
+      "string": "ID do nó"
+    },
+    "host": {
+      "string": "Host"
+    },
+    "port": {
+      "string": "Porta"
+    },
+    "scan": {
+      "string": "Escanear QR"
+    }
+  },
+  "external_success": {
+    "title": {
+      "string": "Conexão\n<accent>iniciada</accent>"
+    },
+    "text": {
+      "string": "Conexão Lightning iniciada. Você poderá usar seu saldo de gastos em <accent>±30 minutos</accent> (depende da configuração do nó)."
     }
   },
   "error_channel_purchase": {

@@ -30,7 +30,12 @@
       "string": "Gebruik Andere Wallet"
     },
     "button3": {
-      "string": "Externe Node (Geavanceerd)"
+      "string": "Geavanceerd"
+    }
+  },
+  "funding_advanced": {
+    "nav_title": {
+      "string": "Bestedingssaldo"
     }
   },
   "no_funds": {
@@ -94,6 +99,22 @@
     },
     "text_spending": {
       "string": "Uw geld is overgeboekt en uw bestedingssaldo is klaar voor gebruik."
+    }
+  },
+  "external": {
+    "nav_title": {
+      "string": "Lightning-verbinding"
+    }
+  },
+  "external_manual": {
+    "host": {
+      "string": "Hostcomputer"
+    },
+    "port": {
+      "string": "Poort"
+    },
+    "scan": {
+      "string": "Scan QR"
     }
   },
   "error_channel_purchase": {

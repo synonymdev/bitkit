@@ -310,5 +310,10 @@
   },
   "wiped_message": {
     "string": "Bitkit был сброшен, и все данные кошелька были удалены."
+  },
+  "authorization": {
+    "success": {
+      "string": "Успешно"
+    }
   }
 }

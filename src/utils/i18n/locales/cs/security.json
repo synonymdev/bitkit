@@ -310,5 +310,43 @@
   },
   "wiped_message": {
     "string": "Bitkit byla resetována a všechna data peněženky byla vymazána."
+  },
+  "authorization": {
+    "title": {
+      "string": "Autorizace"
+    },
+    "description": {
+      "string": "Před udělením povolení ke správě vašich dat se ujistěte, že této službě důvěřujete."
+    },
+    "authorize": {
+      "string": "Autorizovat"
+    },
+    "deny": {
+      "string": "Odmítnout"
+    },
+    "authorizing": {
+      "string": "Autorizování..."
+    },
+    "success": {
+      "string": "Úspěch"
+    },
+    "claims": {
+      "string": "Tato služba tvrdí, že je"
+    },
+    "requested_permissions": {
+      "string": "Požadovaná oprávnění"
+    },
+    "pubky_secret_error_title": {
+      "string": "Pubky Error"
+    },
+    "pubky_secret_error_description": {
+      "string": "Nelze načíst klíč Pubky"
+    },
+    "pubky_auth_error_title": {
+      "string": "Chyba ověření Pubky"
+    },
+    "pubky_auth_error_description": {
+      "string": "Nelze se přihlásit pomocí služby Pubky"
+    }
   }
 }

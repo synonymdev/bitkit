@@ -187,12 +187,6 @@
   "lnurl_channel_port": {
     "string": "Port"
   },
-  "lnurl_channel_connecting": {
-    "string": "Connexion\n<accent>initiée</accent>"
-  },
-  "lnurl_channel_connecting_text": {
-    "string": "La connexion Lightning est initiée. Vous pourrez utiliser votre compte courant dans <accent>±30 minutes</accent> (en fonction de la configuration du nœud)."
-  },
   "lnurl_blocktank_error": {
     "string": "Bitkit n'a pas pu se connecter à Blocktank."
   },

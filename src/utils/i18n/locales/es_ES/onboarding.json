@@ -2,8 +2,17 @@
   "tos_checkbox": {
     "string": "Condiciones de uso"
   },
+  "tos_checkbox_value": {
+    "string": "Declaro que he leído y acepto los <accent>términos de uso.</accent>"
+  },
   "pp_checkbox": {
     "string": "Política de privacidad"
+  },
+  "pp_checkbox_value": {
+    "string": "Declaro que he leído y acepto la <accent>política de privacidad.</accent>"
+  },
+  "welcome_text": {
+    "string": "Use Bitkit para pagar a cualquiera, en cualquier sitio, en cualquier momento, y gaste su bitcoin en las cosa que valora en la vida."
   },
   "get_started": {
     "string": "Empezar"
@@ -13,6 +22,18 @@
   },
   "skip": {
     "string": "Saltar"
+  },
+  "slide0_header": {
+    "string": "Libertad en\n<accent>tu bolsillo</accent>"
+  },
+  "slide2_header": {
+    "string": "Bitcoineros,\n<accent>sin fronteras</accent>"
+  },
+  "slide3_header": {
+    "string": "La privacidad\n<accent>no es un crimen</accent>"
+  },
+  "slide4_header": {
+    "string": "Sus claves,\n<accent>sus monedas</accent>"
   },
   "new_wallet": {
     "string": "Cartera nueva"
@@ -50,6 +71,12 @@
   "restore_passphrase_placeholder": {
     "string": "Frase de acesso*"
   },
+  "restore_error_title": {
+    "string": "Fallo de Restauración del Monedero"
+  },
+  "restore_success_header": {
+    "string": "Monedero <accent>restaurado</accent>"
+  },
   "restore_success_text": {
     "string": "Ha restaurado con éxito su cartera desde la copia de seguridad. ¡Disfrute de Bitkit!"
   },
@@ -58,5 +85,8 @@
   },
   "restore_no_backup_warn": {
     "string": "Si anteriormente tenía una copia de seguridad Lightning, ésta se sobrescribirá y se perderá. Esto podría provocar una pérdida de fondos."
+  },
+  "empty_wallet": {
+    "string": "Para\nempezar\n<accent>envíe\nBitcoin</accent>\na su\nmonedero"
   }
 }

@@ -190,12 +190,6 @@
   "lnurl_channel_port": {
     "string": "Porta"
   },
-  "lnurl_channel_connecting": {
-    "string": "Connessione\n<accent>avviata</accent>"
-  },
-  "lnurl_channel_connecting_text": {
-    "string": "Connessione Lightning avviata. Potrai utilizzare il tuo conto di spesa in <accent>±30 minuti</accent> (dipende dalla configurazione del nodo)."
-  },
   "lnurl_blocktank_error": {
     "string": "Bitkit non è riuscito a connettersi a Blocktank."
   },

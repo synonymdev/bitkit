@@ -353,9 +353,6 @@
   "activity_transfer_to_spending": {
     "string": "Naar Bestedingssaldo"
   },
-  "activity_transfer_pending": {
-    "string": "Overboeking (±{duration})"
-  },
   "activity_confirms_in": {
     "string": "Zal bevestigen in {feeRateDescription}"
   },
@@ -506,9 +503,6 @@
       "string": "<accent>Stuur\nbitcoin</accent>\nnaar uw\nbestedingssaldo"
     }
   },
-  "details_transfer_subtitle": {
-    "string": "Inkomende Overboeking"
-  },
   "tx_invalid": {
     "string": "Transactie Ongeldig"
   },
@@ -598,9 +592,6 @@
   },
   "lnurl_w_success_description": {
     "string": "Opname Succesvol Aangevraagd"
-  },
-  "lnurl_p_title": {
-    "string": "Bitcoin Versturen"
   },
   "lnurl_p_max": {
     "string": "Maximumbedrag"

@@ -30,7 +30,12 @@
       "string": "Usa un altro portafoglio"
     },
     "button3": {
-      "string": "Nodo esterno (avanzato)"
+      "string": "Avanzate"
+    }
+  },
+  "funding_advanced": {
+    "nav_title": {
+      "string": "Conto Spendibile"
     }
   },
   "no_funds": {
@@ -103,6 +108,33 @@
     },
     "text_spending": {
       "string": "I tuoi fondi sono stati trasferiti e il tuo conto di spesa è pronto per essere utilizzato."
+    }
+  },
+  "external": {
+    "nav_title": {
+      "string": "Connessione Lightning"
+    }
+  },
+  "external_manual": {
+    "node_id": {
+      "string": "ID del nodo"
+    },
+    "host": {
+      "string": "Host"
+    },
+    "port": {
+      "string": "Porta"
+    },
+    "scan": {
+      "string": "Scansiona QR"
+    }
+  },
+  "external_success": {
+    "title": {
+      "string": "Connessione\n<accent>avviata</accent>"
+    },
+    "text": {
+      "string": "Connessione Lightning avviata. Potrai utilizzare il tuo conto di spesa in <accent>±30 minuti</accent> (dipende dalla configurazione del nodo)."
     }
   },
   "error_channel_purchase": {

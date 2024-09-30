@@ -310,5 +310,10 @@
   },
   "wiped_message": {
     "string": "O Bitkit foi redefinido e todos os dados da carteira foram excluídos."
+  },
+  "authorization": {
+    "success": {
+      "string": "Sucesso"
+    }
   }
 }

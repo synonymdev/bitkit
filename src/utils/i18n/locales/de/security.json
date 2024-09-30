@@ -310,5 +310,43 @@
   },
   "wiped_message": {
     "string": "Bitkit wurde zurückgesetzt und alle Wallet-Daten wurden gelöscht."
+  },
+  "authorization": {
+    "title": {
+      "string": "Autorisierung"
+    },
+    "description": {
+      "string": "Vergewissern Sie sich, dass Sie diesem Dienst vertrauen, bevor Sie die Erlaubnis zur Verwaltung Ihrer Daten erteilen."
+    },
+    "authorize": {
+      "string": "Autorisieren Sie"
+    },
+    "deny": {
+      "string": "Deny"
+    },
+    "authorizing": {
+      "string": "Ermächtigung..."
+    },
+    "success": {
+      "string": "Erfolgreich"
+    },
+    "claims": {
+      "string": "Dieser Dienst behauptet, er sei"
+    },
+    "requested_permissions": {
+      "string": "Erforderliche Genehmigungen"
+    },
+    "pubky_secret_error_title": {
+      "string": "Pubky Error"
+    },
+    "pubky_secret_error_description": {
+      "string": "Pubky-Schlüssel kann nicht abgerufen werden"
+    },
+    "pubky_auth_error_title": {
+      "string": "Pubky Auth Fehler"
+    },
+    "pubky_auth_error_description": {
+      "string": "Authentifizierung mit Pubky-Dienst nicht möglich"
+    }
   }
 }

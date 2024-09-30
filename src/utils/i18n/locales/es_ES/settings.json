@@ -8,11 +8,17 @@
   "dev_disabled_title": {
     "string": "Opciones de desarrollo desactivadas"
   },
+  "general_title": {
+    "string": "General"
+  },
   "security_title": {
     "string": "Seguridad y Privacidad"
   },
   "advanced_title": {
     "string": "Avanzado"
+  },
+  "about_title": {
+    "string": "Acerca de"
   },
   "support_title": {
     "string": "Soporte"
@@ -21,11 +27,17 @@
     "title": {
       "string": "Sobre Bitkit"
     },
+    "text": {
+      "string": "Gracias por ser un Bitcoiner responsable.\nCambia tu monedero, cambia el mundo.\n\nBitkit te facilita las llaves a tu propio dinero, perfil, contactos y cuentas web.\n\nBitkit fue elaborado por Synonym Software Ltd."
+    },
     "share": {
       "string": "Compartir"
     },
     "version": {
       "string": "Versión"
+    },
+    "shareText": {
+      "string": "Cambia tu monedero, cambia el mundo. Descarga Bitkit para iPhone {appStoreUrl} o Android {playStoreUrl}"
     }
   },
   "dev_title": {
@@ -42,7 +54,7 @@
       "string": "Precios proporcionados por Bitfinex y CoinGecko."
     },
     "currency_most_used": {
-      "string": "Más utilizados"
+      "string": "Más utilizadas"
     },
     "currency_other": {
       "string": "Otras monedas"
@@ -59,6 +71,12 @@
     "unit_bitcoin": {
       "string": "Bitcoin"
     },
+    "unit_note": {
+      "string": "Truco: Cambia rápidamente entre Bitcoin y {currency} tocando sobre el balance del monedero."
+    },
+    "denomination_label": {
+      "string": "Denominación Bitcoin"
+    },
     "speed": {
       "string": "Velocidad de transacción"
     },
@@ -70,6 +88,12 @@
     },
     "speed_fee_custom": {
       "string": "Fijar tarifa personalizada"
+    },
+    "speed_fee_total": {
+      "string": "₿ {feeSats} para la transacción típica"
+    },
+    "speed_fee_total_fiat": {
+      "string": "₿ {feeSats} para la transacción típica ({fiatSymbol}{fiatFormatted})"
     },
     "tags": {
       "string": "Etiquetas"
@@ -84,6 +108,9 @@
     },
     "showWidgets": {
       "string": "Widgets"
+    },
+    "showWidgetTitles": {
+      "string": "Mostrar Títulos de Widgets"
     }
   },
   "security": {
@@ -95,6 +122,9 @@
     },
     "hide_balance_on_open": {
       "string": "Ocultar saldo al abrir"
+    },
+    "clipboard": {
+      "string": "Leer portapapeles para facilitar uso"
     },
     "warn_100": {
       "string": "Advertir al enviar más de $100"
@@ -163,14 +193,104 @@
     "title": {
       "string": "Soporte"
     },
+    "text": {
+      "string": "¿Necesita ayuda? Reporte su problema desde el propio Bitkit, visite el centro de ayuda, compruebe el estado o póngase en contacto con nosotros en nuestras redes sociales."
+    },
+    "report": {
+      "string": "Reportar Problema"
+    },
+    "help": {
+      "string": "Centro de Ayuda"
+    },
+    "status": {
+      "string": "Estado de la App"
+    },
+    "report_text": {
+      "string": "Por favor, describa el problema que está experimentando o haga una pregunta."
+    },
+    "label_address": {
+      "string": "Dirección Email"
+    },
+    "label_message": {
+      "string": "Problema o pregunta"
+    },
+    "placeholder_message": {
+      "string": "Describa el problema o haga una pregunta"
+    },
     "text_button": {
       "string": "Enviar"
+    },
+    "title_success": {
+      "string": "Enviado Satisfactoriamente"
+    },
+    "text_success": {
+      "string": "¡Gracias por contactar con nosotros! Intentaremos responderle lo antes posible."
     },
     "text_success_button": {
       "string": "OK"
     },
+    "text_unsuccess": {
+      "string": "Algo fue mal mientras se intentaba enviar su problema o pregunta. Por favor, pruebe de nuevo."
+    },
     "text_unsuccess_button": {
       "string": "Inténtelo de nuevo"
+    }
+  },
+  "status": {
+    "title": {
+      "string": "Estado de la App"
+    },
+    "internet": {
+      "title": {
+        "string": "Internet"
+      },
+      "ready": {
+        "string": "Conectado"
+      },
+      "pending": {
+        "string": "Reconectando..."
+      },
+      "error": {
+        "string": "Desconectado"
+      }
+    },
+    "bitcoin_node": {
+      "title": {
+        "string": "Nodo Bitcoin"
+      },
+      "ready": {
+        "string": "Conectado"
+      },
+      "pending": {
+        "string": "Conectando..."
+      }
+    },
+    "lightning_node": {
+      "title": {
+        "string": "Nodo Lightning"
+      },
+      "ready": {
+        "string": "Sincronizado"
+      },
+      "pending": {
+        "string": "Sincronizando..."
+      }
+    },
+    "lightning_connection": {
+      "title": {
+        "string": "Conexión Lightning"
+      },
+      "pending": {
+        "string": "Abriendo..."
+      }
+    },
+    "full_backup": {
+      "title": {
+        "string": "Último Backup de Datos Completo"
+      },
+      "error": {
+        "string": "Falló al hacer una copia de seguridad completa"
+      }
     }
   },
   "adv": {
@@ -234,8 +354,17 @@
     "reset_confirm": {
       "string": "Sí, restaurar"
     },
+    "lightning_connections": {
+      "string": "Conexiones Lightning"
+    },
+    "lightning_node": {
+      "string": "Nodo Lightning"
+    },
     "electrum_server": {
       "string": "Servidor Electrum"
+    },
+    "rgs_server": {
+      "string": "Rapid-Gossip-Sync"
     },
     "bitcoin_network": {
       "string": "Red Bitcoin"
@@ -299,6 +428,9 @@
     },
     "rescan_error_description": {
       "string": "Bitkit no ha podido comprobar los saldos de las direcciones."
+    },
+    "index": {
+      "string": "Índice: {index}"
     },
     "path": {
       "string": "Ruta: {path}"
@@ -381,11 +513,23 @@
     }
   },
   "rgs": {
+    "server_url": {
+      "string": "URL del Servidor Rapid-Gossip-Sync"
+    },
     "button_connect": {
       "string": "Conectar"
+    },
+    "update_success_title": {
+      "string": "Servidor Rapid-Gossip-Sync Actualizado"
     }
   },
   "wr": {
+    "error_url": {
+      "string": "Por favor, especifique una URL para conectarse."
+    },
+    "error_https": {
+      "string": "No es una url HTTPS válida."
+    },
     "url_updated_message": {
       "string": "Conexión exitosa a {url}"
     }

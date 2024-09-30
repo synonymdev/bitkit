@@ -30,7 +30,24 @@
       "string": "Použijte jinou peněženku"
     },
     "button3": {
-      "string": "Externí uzel (pokročilý)"
+      "string": "Pokročilé"
+    }
+  },
+  "funding_advanced": {
+    "nav_title": {
+      "string": "Dostupný zůstatek"
+    },
+    "title": {
+      "string": "Pokročilé <accent>nastavení</accent>"
+    },
+    "text": {
+      "string": "Naskenujte QR kód pro nárokování svého LNURL kanálu od jiného LSP nebo si vyberte ruční nastavení."
+    },
+    "button1": {
+      "string": "LNURL kanál QR"
+    },
+    "button2": {
+      "string": "Manuální nastavení"
     }
   },
   "no_funds": {
@@ -207,6 +224,47 @@
     },
     "text_savings": {
       "string": "Vaše prostředky byly převedeny. Tyto prostředky můžete okamžitě použít."
+    }
+  },
+  "external": {
+    "nav_title": {
+      "string": "Připojení lightning"
+    }
+  },
+  "external_manual": {
+    "title": {
+      "string": "<accent>Manuální nastavení</accent>"
+    },
+    "text": {
+      "string": "Můžete použít externí uzel k ručnímu otevření lightning připojení. Zadejte údaje o uzlu pro pokračování."
+    },
+    "node_id": {
+      "string": "ID uzlu"
+    },
+    "host": {
+      "string": "Host"
+    },
+    "port": {
+      "string": "Port"
+    },
+    "paste": {
+      "string": "Vložte URI uzlu"
+    },
+    "scan": {
+      "string": "Skenovat QR"
+    }
+  },
+  "external_amount": {
+    "title": {
+      "string": "Disponibilní\n<accent>zůstatek</accent>"
+    }
+  },
+  "external_success": {
+    "title": {
+      "string": "Připojení\n<accent>iniciováno</accent>"
+    },
+    "text": {
+      "string": "Iniciováno připojení lightning. Zůstatek na účtu budete moci použít do <accent>±30 minut</accent> (závisí na konfiguraci uzlu)."
     }
   },
   "error_channel_purchase": {

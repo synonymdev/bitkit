@@ -3,7 +3,7 @@
     "string": "Avanzado"
   },
   "continue": {
-    "string": "Continúe en"
+    "string": "Continuar"
   },
   "cancel": {
     "string": "Cancelar"
@@ -71,10 +71,19 @@
   "back": {
     "string": "Volver"
   },
+  "learn_more": {
+    "string": "Aprender Más"
+  },
   "understood": {
     "string": "Entendido"
   },
   "connect": {
     "string": "Conectar"
+  },
+  "min": {
+    "string": "Min"
+  },
+  "max": {
+    "string": "Max"
   }
 }

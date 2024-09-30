@@ -20,6 +20,9 @@
   "pass_text": {
     "string": "Añadiste una passphrase a tu frase de recuperación al configurar tu wallet."
   },
+  "pass_never_share": {
+    "string": "<accent>Nunca compartas</accent> tu contraseña con nadie, ya que estoy podría desembocar en la pérdida de fondos."
+  },
   "pass_confirm": {
     "string": "Confirmar frase de acesso"
   },
@@ -38,6 +41,9 @@
   "mnemonic_reveal": {
     "string": "Toque para revelar"
   },
+  "mnemonic_never_share": {
+    "string": "<accent>Nunca compartas</accent> tu frase de recuperación con nadie, ya que esto podría desembocar en la pérdida de fondos."
+  },
   "mnemonic_confirm": {
     "string": "Confirmar frase de recuperación"
   },
@@ -46,6 +52,9 @@
   },
   "mnemonic_result_header": {
     "string": "Éxito"
+  },
+  "mnemonic_keep_text": {
+    "string": "Recuerde, <accent>nunca comparta su frase de recuperación</accent> con nadie! Si lo hace, pueden robar su dinero, perfil y otros datos."
   },
   "mnemonic_data_header": {
     "string": "Datos del monedero"
@@ -59,8 +68,17 @@
   "pin_security_header": {
     "string": "Aumentar la seguridad"
   },
+  "pin_security_title": {
+    "string": "Protege\ntus bitcoin"
+  },
+  "pin_security_text": {
+    "string": "Para mejorar la seguridad del monedero, puede establecer un código PIN y Face ID."
+  },
+  "pin_security_button": {
+    "string": "Proteger Monedero"
+  },
   "pin_choose_header": {
-    "string": "Elija el PIN de 4 dígitos"
+    "string": "Elija un PIN de 4 dígitos"
   },
   "pin_choose_text": {
     "string": "Por favor, utilice un PIN que recuerde. Si olvida su PIN puede restablecerlo, pero para ello tendrá que restaurar su monedero."
@@ -88,6 +106,9 @@
   },
   "pin_last_attempt": {
     "string": "Último intento. Si vuelve a introducir un PIN erróneo, se reiniciará su monedero."
+  },
+  "pin_attempts": {
+    "string": "Quedan {attemptsRemaining} intentos. ¿Olvidó su PIN?"
   },
   "pin_forgot_title": {
     "string": "¿Ha olvidado el PIN?"
@@ -194,8 +215,17 @@
   "export_success_title": {
     "string": "Copia de seguridad exportada"
   },
+  "export_success_msg": {
+    "string": "Bikit exportó el fichero de copia de seguridad a su teléfono satisfactoriamente."
+  },
   "export_error_title": {
     "string": "Copia de seguridad fallida"
+  },
+  "export_error_msg": {
+    "string": "Bitkit no pudo exportar el fichero de copia de seguridad a su teléfono."
+  },
+  "export_error_file": {
+    "string": "Bitkit no pudo crear el fichero de backup."
   },
   "cp_title": {
     "string": "Cambiar PIN"
@@ -229,5 +259,11 @@
   },
   "use_pin": {
     "string": "Utilizar código PIN"
+  },
+  "wiped_title": {
+    "string": "Datos de Monedero Borrados"
+  },
+  "wiped_message": {
+    "string": "Bitkit ha sido restaurado y todos los datos de monedero han sido borrados."
   }
 }

@@ -24,7 +24,7 @@
     "string": "Bitte überprüfe deine Wiederherstellungsphrase auf Richtigkeit."
   },
   "send_bitcoin": {
-    "string": "Bitcoin Senden"
+    "string": "Bitcoin senden"
   },
   "send_to": {
     "string": "An"
@@ -122,9 +122,6 @@
   "send_error_tx_failed": {
     "string": "Transaktion fehlgeschlagen"
   },
-  "send_error_contact": {
-    "string": "Kann diesen Kontakt nicht bezahlen"
-  },
   "send_error_create_tx": {
     "string": "Die Transaktion konnte nicht gesendet werden. Bitte versuche es erneut."
   },
@@ -208,6 +205,14 @@
   },
   "note": {
     "string": "Notiz"
+  },
+  "lnurl_pay_confirm": {
+    "comment": {
+      "string": "Kommentar"
+    },
+    "comment_placeholder": {
+      "string": "Optionaler Kommentar zum Empfänger"
+    }
   },
   "tags": {
     "string": "Tags"
@@ -302,6 +307,26 @@
   "receive_connect_additional": {
     "string": "Um mehr sofortigen Bitcoin zu empfangen, muss Bitkit deine Liquidität erhöhen. Eine <accent>{lspFee}</accent> Dienstleistergebühr wird von dem angegebenen Betrag abgezogen."
   },
+  "receive_liquidity": {
+    "nav_title": {
+      "string": "Einrichtung des Ausgabensaldos"
+    },
+    "nav_title_additional": {
+      "string": "Erhöhung der Empfangskapazität"
+    },
+    "text": {
+      "string": "Ihr Guthaben in Bitkit ist wie Ihre Internetverbindung. Anstelle von Bandbreite zahlen Sie für Liquidität und Zahlungsrouting.\n\nZahlungen von Ihrem Guthaben sind billiger, schneller und privater als normale Bitcoin-Transaktionen.\n\nDie Netzgebühr und die Gebühr des Dienstanbieters sind einmalige Kosten für die Einrichtung Ihres Guthabens."
+    },
+    "text_additional": {
+      "string": "Ihr Guthaben in Bitkit ist wie Ihre Internetverbindung. Anstelle von Bandbreite zahlen Sie für Liquidität und Zahlungsrouting.\n\nZahlungen von Ihrem Guthaben sind billiger, schneller und privater als normale Bitcoin-Transaktionen.\n\nBitkit muss die Aufnahmekapazität Ihres Guthabens erhöhen, um diese Zahlung zu verarbeiten."
+    },
+    "label": {
+      "string": "Ausgabensaldo Liquidität"
+    },
+    "label_additional": {
+      "string": "Zusätzliche Ausgaben Saldo Liquidität"
+    }
+  },
   "receive_cjit_error": {
     "string": "CJIT Fehler"
   },
@@ -310,6 +335,9 @@
   },
   "receive_will": {
     "string": "Du wirst empfangen"
+  },
+  "receive_ldk_init": {
+    "string": "Ausgabensaldo Initialisierung..."
   },
   "minimum": {
     "string": "MINIMUM"
@@ -363,7 +391,7 @@
     "string": "Zum Ausgabenkonto"
   },
   "activity_transfer_pending": {
-    "string": "Übertragung (±{duration})"
+    "string": "Übertragung (±{Dauer})"
   },
   "activity_confirms_in": {
     "string": "Bestätigungen in {feeRateDescription}"
@@ -446,6 +474,9 @@
   "activity_tx_id": {
     "string": "Transaktions-ID"
   },
+  "activity_preimage": {
+    "string": "Preimage"
+  },
   "activity_payment_hash": {
     "string": "Zahlungs-Hash"
   },
@@ -516,7 +547,7 @@
     }
   },
   "details_transfer_subtitle": {
-    "string": "Eingehende Übertragung"
+    "string": "Eingehender Transfer:"
   },
   "tx_invalid": {
     "string": "Ungültige Transaktion"
@@ -607,6 +638,19 @@
   },
   "lnurl_w_success_description": {
     "string": "Abhebung erfolgreich angefordert"
+  },
+  "lnurl_p_title": {
+    "string": "Bitcoin bezahlen"
+  },
+  "lnurl_pay": {
+    "error_min": {
+      "title": {
+        "string": "Zu niedriger Betrag"
+      },
+      "description": {
+        "string": "Der Mindestbetrag für diese Rechnung beträgt ₿ {Betrag}."
+      }
+    }
   },
   "lnurl_p_max": {
     "string": "Maximaler Betrag"

@@ -359,9 +359,6 @@
   "activity_transfer_to_spending": {
     "string": "A Saldo Spendibile"
   },
-  "activity_transfer_pending": {
-    "string": "Transferimento (±{duration})"
-  },
   "activity_confirms_in": {
     "string": "Conferma in {feeRateDescription}"
   },
@@ -512,9 +509,6 @@
       "string": "<accent>Invia\nbitcoin</accent>\nal tuo\nconto di spesa"
     }
   },
-  "details_transfer_subtitle": {
-    "string": "Trasferimento in entrata"
-  },
   "tx_invalid": {
     "string": "Transazione non valida"
   },
@@ -604,9 +598,6 @@
   },
   "lnurl_w_success_description": {
     "string": "Prelievo richiesto con successo"
-  },
-  "lnurl_p_title": {
-    "string": "Invia Bitcoin"
   },
   "lnurl_p_max": {
     "string": "Importo massimo"

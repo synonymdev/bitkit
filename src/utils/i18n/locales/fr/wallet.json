@@ -353,9 +353,6 @@
   "activity_transfer_to_spending": {
     "string": "Vers le compte courant"
   },
-  "activity_transfer_pending": {
-    "string": "Transfert (±{duration})"
-  },
   "activity_confirms_in": {
     "string": "Confirmé dans {feeRateDescription}"
   },
@@ -506,9 +503,6 @@
       "string": "<accent>Envoyer\nles bitcoins</accent>\nsur votre\ncompte courant"
     }
   },
-  "details_transfer_subtitle": {
-    "string": "Transfert entrant"
-  },
   "tx_invalid": {
     "string": "Transaction invalide"
   },
@@ -598,9 +592,6 @@
   },
   "lnurl_w_success_description": {
     "string": "Retrait Demandé Réussi"
-  },
-  "lnurl_p_title": {
-    "string": "Envoyer des bitcoins"
   },
   "lnurl_p_max": {
     "string": "Montant maximum"

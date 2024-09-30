@@ -310,5 +310,10 @@
   },
   "wiped_message": {
     "string": "Bitkit è stato ripristinato e tutti i dati del portafoglio sono stati eliminati."
+  },
+  "authorization": {
+    "success": {
+      "string": "Successo"
+    }
   }
 }

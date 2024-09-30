@@ -353,9 +353,6 @@
   "activity_transfer_to_spending": {
     "string": "Para o Saldo de Gastos"
   },
-  "activity_transfer_pending": {
-    "string": "Transferir (±{duration})"
-  },
   "activity_confirms_in": {
     "string": "Confirma em {feeRateDescription}"
   },
@@ -506,9 +503,6 @@
       "string": "<accent>Transfira\nbitcoin</accent>\npara seu\nsaldo de gastos"
     }
   },
-  "details_transfer_subtitle": {
-    "string": "Transferência Pendente"
-  },
   "tx_invalid": {
     "string": "Transação Inválida"
   },
@@ -598,9 +592,6 @@
   },
   "lnurl_w_success_description": {
     "string": "Retirada solicitada bem-sucedida"
-  },
-  "lnurl_p_title": {
-    "string": "Enviar Bitcoin"
   },
   "lnurl_p_max": {
     "string": "Valor máximo"

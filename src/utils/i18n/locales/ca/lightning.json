@@ -10,6 +10,14 @@
     },
     "button2": {
       "string": "Utilitza un altre moneder"
+    },
+    "button3": {
+      "string": "Avançat"
+    }
+  },
+  "funding_advanced": {
+    "nav_title": {
+      "string": "Balanç de despesa"
     }
   },
   "transfer": {
@@ -46,6 +54,20 @@
   "transfer_success": {
     "nav_title": {
       "string": "Transferència realitzada"
+    }
+  },
+  "external_manual": {
+    "node_id": {
+      "string": "ID de Node"
+    },
+    "host": {
+      "string": "Amfitrió"
+    },
+    "port": {
+      "string": "Port"
+    },
+    "scan": {
+      "string": "Escanegi el codi QR"
     }
   },
   "error_channel_purchase": {

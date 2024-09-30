@@ -36,6 +36,9 @@
     "title": {
       "string": "Über Bitkit"
     },
+    "text": {
+      "string": "Danke, dass Sie ein verantwortungsvoller Bitcoiner sind.\nÄndern Sie Ihr Portemonnaie, ändern Sie die Welt.\n\nBitkit gibt Ihnen die Schlüssel zu Ihrem Geld, Profil, Kontakten und Webkonten.\n\nBitkit wurde von Synonym Software Ltd. entwickelt."
+    },
     "legal": {
       "string": "Rechtliches"
     },
@@ -44,6 +47,9 @@
     },
     "version": {
       "string": "Version"
+    },
+    "shareText": {
+      "string": "Ändern Sie Ihr Wallet, ändern Sie die Welt. Bitkit für iPhone herunterladen {appStoreUrl} oder Android {playStoreUrl}"
     }
   },
   "dev_title": {
@@ -99,7 +105,7 @@
       "string": "Transaktionsgeschwindigkeit"
     },
     "speed_fee_custom": {
-      "string": "Gebühr"
+      "string": "Benutzerdefinierte Gebühr festlegen"
     },
     "speed_fee_total": {
       "string": "₿ {feeSats} für die durschnittliche Transaktion"
@@ -111,7 +117,7 @@
       "string": "Tags"
     },
     "tags_previously": {
-      "string": "Zuvor benutzte Tags"
+      "string": "Früher verwendete Tags"
     }
   },
   "widgets": {
@@ -119,7 +125,7 @@
       "string": "Widgets"
     },
     "showWidgets": {
-      "string": "Widgets anzeigen"
+      "string": "Widgets"
     },
     "showWidgetTitles": {
       "string": "Titel anzeigen"
@@ -175,6 +181,9 @@
     },
     "wallet": {
       "string": "Sichere dein Wallet"
+    },
+    "export": {
+      "string": "Exportieren von Walletdaten auf das Telefon"
     },
     "reset": {
       "string": "Wallet zurücksetzen"
@@ -251,7 +260,7 @@
       "string": "Beschreibe das Problem oder stelle eine Frage"
     },
     "text_button": {
-      "string": "Absenden"
+      "string": "Senden"
     },
     "title_success": {
       "string": "Erfolgreich gesendet"
@@ -355,7 +364,7 @@
       "string": "Netzwerke"
     },
     "section_other": {
-      "string": "Anderes"
+      "string": "Andere"
     },
     "address_type": {
       "string": "Bitcoin Adressen-Typ"
@@ -421,7 +430,7 @@
       "string": "Zu/von Kontakten bezahlen"
     },
     "pp_contacts_switch": {
-      "string": "Zahlungen mit Kontakten aktivieren*"
+      "string": "Aktiviere Zahlungen mit Kontakten*"
     },
     "address_viewer": {
       "string": "Adressanzeige"
@@ -442,10 +451,10 @@
       "string": "Ja, zurücksetzen"
     },
     "lightning_connections": {
-      "string": "Lightning-Verbindungen"
+      "string": "Lightning Verbindungen"
     },
     "lightning_node": {
-      "string": "Lightning-Node"
+      "string": "Lightning Node"
     },
     "electrum_server": {
       "string": "Electrum-Server"
@@ -496,10 +505,10 @@
     },
     "custom": {
       "label": {
-        "string": "Benutzerdefiniert"
+        "string": "Benuzterdefiniert"
       },
       "value": {
-        "string": "Benutzerdefiniert"
+        "string": "Benuzterdefiniert"
       },
       "description": {
         "string": "Abhängig von der Gebühr"
@@ -629,13 +638,25 @@
       "string": "Speichern"
     },
     "reset": {
-      "string": "Zurücksetzen"
+      "string": "Reset"
     },
     "gap_limit_update_title": {
       "string": "Address Gap Limit aktualisiert"
     },
     "gap_limit_update_description": {
       "string": "Änderungen werden nach dem Neustart der App vollständig wirksam."
+    },
+    "look_behind": {
+      "string": "Blick zurück"
+    },
+    "look_ahead": {
+      "string": "Blick nach vorn"
+    },
+    "look_behind_change": {
+      "string": "Blick hinter den Wandel"
+    },
+    "look_ahead_change": {
+      "string": "Vorausschauend ändern"
     }
   },
   "rgs": {
@@ -650,6 +671,26 @@
     },
     "update_success_description": {
       "string": "Möglicherweise musst du die App ein- oder zweimal neu starten, damit diese Änderung wirksam wird."
+    }
+  },
+  "wr": {
+    "error_wr": {
+      "string": "Web-Relay-Fehler"
+    },
+    "error_url": {
+      "string": "Bitte geben Sie eine URL an, mit der Sie sich verbinden möchten."
+    },
+    "error_https": {
+      "string": "Keine gültige HTTPS-URL."
+    },
+    "error_healthcheck": {
+      "string": "Gesundheitscheck fehlgeschlagen"
+    },
+    "url_updated_title": {
+      "string": "Web-Relay aktualisiert"
+    },
+    "url_updated_message": {
+      "string": "Erfolgreich verbunden mit {url}"
     }
   }
 }
