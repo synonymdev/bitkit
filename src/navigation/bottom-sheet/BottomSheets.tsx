@@ -6,7 +6,6 @@ import { viewControllersSelector } from '../../store/reselect/ui';
 import BackupNavigation from './BackupNavigation';
 import BoostPrompt from '../../screens/Wallets/BoostPrompt';
 import ConnectionClosed from './ConnectionClosed';
-import ForceTransfer from './ForceTransfer';
 import LNURLWithdrawNavigation from './LNURLWithdrawNavigation';
 import NewTxPrompt from '../../screens/Wallets/NewTxPrompt';
 import OrangeTicketNavigation from './OrangeTicketNavigation';
@@ -24,7 +23,6 @@ const BottomSheets = (): JSX.Element => {
 			{views.backupNavigation.isMounted && <BackupNavigation />}
 			{views.boostPrompt.isMounted && <BoostPrompt />}
 			{views.connectionClosed.isMounted && <ConnectionClosed />}
-			{views.forceTransfer.isMounted && <ForceTransfer />}
 			{views.lnurlWithdraw.isMounted && <LNURLWithdrawNavigation />}
 			{views.newTxPrompt.isMounted && <NewTxPrompt />}
 			{views.orangeTicket.isMounted && <OrangeTicketNavigation />}

@@ -1,5 +1,4 @@
 import React, { memo, ReactElement, useEffect, useState } from 'react';
-import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { Trans, useTranslation } from 'react-i18next';
 
 import { Display } from '../../styles/text';
@@ -7,6 +6,7 @@ import BottomSheetWrapper from '../../components/BottomSheetWrapper';
 import BottomSheetScreen from '../../components/BottomSheetScreen';
 import { closeAllChannels } from '../../utils/lightning';
 import { showToast } from '../../utils/notifications';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import {
 	useBottomSheetBackPress,
 	useSnapPoints,

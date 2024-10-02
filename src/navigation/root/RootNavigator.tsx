@@ -45,11 +45,12 @@ import Widget from '../../screens/Widgets/Widget';
 import WidgetEdit from '../../screens/Widgets/WidgetEdit';
 import WidgetsSuggestions from '../../screens/Widgets/WidgetsSuggestions';
 import WidgetsOnboarding from '../../screens/Widgets/WidgetsOnboarding';
+import ForgotPIN from '../../screens/Settings/PIN/ForgotPIN';
 import BackupSubscriber from '../../utils/backup/backups-subscriber';
+import ForceTransfer from '../bottom-sheet/ForceTransfer';
+import BottomSheetsLazy from '../bottom-sheet/BottomSheetsLazy';
 import { __E2E__ } from '../../constants/env';
 import type { RootStackParamList } from '../types';
-import BottomSheetsLazy from '../bottom-sheet/BottomSheetsLazy';
-import ForgotPIN from '../../screens/Settings/PIN/ForgotPIN';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -228,6 +229,7 @@ const RootNavigator = (): ReactElement => {
 
 			<BottomSheetsLazy />
 			<BackupSubscriber />
+			<ForceTransfer />
 
 			<Dialog
 				visible={showDialog && isAuthenticated}
