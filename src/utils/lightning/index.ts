@@ -1,5 +1,5 @@
 import { EmitterSubscription } from 'react-native';
-import Keychain from '@synonymdev/react-native-keychain';
+import Keychain from 'react-native-keychain-manager';
 import * as bitcoin from 'bitcoinjs-lib';
 import RNFS from 'react-native-fs';
 import { err, ok, Result } from '@synonymdev/result';
