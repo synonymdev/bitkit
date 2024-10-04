@@ -275,7 +275,7 @@ d('Transfer', () => {
 
 		// TODO: mine single blocks and check updated transfer time
 
-		// Sometimes the channel is only opened after restart 
+		// Sometimes the channel is only opened after restart
 		await device.launchApp();
 
 		// wait for channel to be opened

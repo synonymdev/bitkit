@@ -1,46 +1,46 @@
+import * as bip39 from 'bip39';
 import React, {
 	ReactElement,
-	useState,
-	useRef,
 	useEffect,
 	useMemo,
+	useRef,
+	useState,
 } from 'react';
 import {
 	Keyboard,
 	NativeSyntheticEvent,
 	StyleSheet,
-	TextInputKeyPressEventData,
 	TextInput as TTextInput,
+	TextInputKeyPressEventData,
 	View,
 } from 'react-native';
-import * as bip39 from 'bip39';
-import rnAndroidKeyboardAdjust from 'rn-android-keyboard-adjust';
-import { KeyboardAccessoryView } from 'react-native-keyboard-accessory';
 import { Trans, useTranslation } from 'react-i18next';
+import { KeyboardAccessoryView } from 'react-native-keyboard-accessory';
+import rnAndroidKeyboardAdjust from 'rn-android-keyboard-adjust';
 
 import {
-	View as ThemedView,
 	ScrollView,
 	TextInput,
+	View as ThemedView,
 } from '../../styles/components';
-import { Display, BodyM, BodyS } from '../../styles/text';
+import NavigationHeader from '../../components/NavigationHeader';
 import SafeAreaInset from '../../components/SafeAreaInset';
 import SeedInput from '../../components/SeedInput';
 import SeedInputAccessory from '../../components/SeedInputAccessory';
 import VerticalShadow from '../../components/VerticalShadow';
 import Button from '../../components/buttons/Button';
 import { useAppDispatch } from '../../hooks/redux';
-import { validateMnemonic } from '../../utils/wallet';
-import { restoreSeed } from '../../utils/startup';
-import { showToast } from '../../utils/notifications';
-import NavigationHeader from '../../components/NavigationHeader';
+import { OnboardingStackScreenProps } from '../../navigation/types';
 import { updateUser, verifyBackup } from '../../store/slices/user';
+import { BodyM, BodyS, Display } from '../../styles/text';
+import { validateMnemonic } from '../../utils/wallet';
 
-const RestoreFromSeed = (): ReactElement => {
+const RestoreFromSeed = ({
+	navigation,
+}: OnboardingStackScreenProps<'RestoreFromSeed'>): ReactElement => {
 	const numberOfWords = 12;
 	const dispatch = useAppDispatch();
 	const [seed, setSeed] = useState(Array(numberOfWords).fill(undefined));
-	const [isRestoringWallet, setIsRestoringWallet] = useState(false);
 	const [validWords, setValidWords] = useState(Array(numberOfWords).fill(true));
 	const [focused, setFocused] = useState<number | null>(null);
 	const [showPassphrase, setShowPassphrase] = useState(false);
@@ -50,11 +50,10 @@ const RestoreFromSeed = (): ReactElement => {
 	const { t } = useTranslation('onboarding');
 	const enableButtons = useMemo(
 		() =>
-			!isRestoringWallet &&
 			!seed.includes(undefined) &&
 			!validWords.includes(false) &&
 			validateMnemonic(seed.join(' ')),
-		[isRestoringWallet, seed, validWords],
+		[seed, validWords],
 	);
 	const showRedExplanation = useMemo(
 		() => seed.some((word, index) => word !== undefined && !validWords[index]),
@@ -105,24 +104,14 @@ const RestoreFromSeed = (): ReactElement => {
 	};
 
 	const handleRestore = async (): Promise<void> => {
-		setIsRestoringWallet(true);
 		dispatch(verifyBackup());
-
 		// Tells component within slashtags provider that it needs to handle restoring from remote backup
 		dispatch(updateUser({ requiresRemoteRestore: true }));
-
-		const res = await restoreSeed({
+		navigation.navigate('CreateWallet', {
+			action: 'restore',
 			mnemonic: seed.join(' '),
 			bip39Passphrase,
 		});
-		if (res.isErr()) {
-			showToast({
-				type: 'warning',
-				title: t('restore_error_title'),
-				description: res.error.message,
-			});
-			return;
-		}
 	};
 
 	const handleAdvanced = (): void => {

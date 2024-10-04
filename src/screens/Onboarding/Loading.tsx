@@ -39,7 +39,7 @@ const LoadingWalletScreen = ({
 }): ReactElement => {
 	const { t } = useTranslation('onboarding');
 	const { width } = useWindowDimensions();
-	const animationDuration = isRestoring ? 16000 : 1500;
+	const animationDuration = isRestoring ? 20000 : 8000;
 
 	const progressValue = useSharedValue(0);
 	const progressText = useDerivedValue(() => {
@@ -54,8 +54,7 @@ const LoadingWalletScreen = ({
 			duration: animationDuration,
 			easing: Easing.linear,
 		});
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
+	}, [animationDuration, progressValue]);
 
 	const circleAnimation = (): { initialValues: {}; animations: {} } => {
 		'worklet';

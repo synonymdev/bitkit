@@ -30,12 +30,6 @@ import SafeAreaInset from '../../components/SafeAreaInset';
 import Dot from '../../components/SliderDots';
 import Button from '../../components/buttons/Button';
 import ButtonTertiary from '../../components/buttons/ButtonTertiary';
-import LoadingWalletScreen from './Loading';
-import { useAppDispatch } from '../../hooks/redux';
-import { createNewWallet } from '../../utils/startup';
-import { showToast } from '../../utils/notifications';
-import { sleep } from '../../utils/helpers';
-import { updateUser } from '../../store/slices/user';
 import type { OnboardingStackScreenProps } from '../../navigation/types';
 
 type Slide = {
@@ -140,12 +134,10 @@ const Slideshow = ({
 }: OnboardingStackScreenProps<'Slideshow'>): ReactElement => {
 	const skipIntro = route.params?.skipIntro ?? false;
 	const bip39Passphrase = route.params?.bip39Passphrase;
-	const dispatch = useAppDispatch();
 	const dimensions = useWindowDimensions();
 	const { t } = useTranslation('onboarding');
 	const ref = useRef<ICarouselInstance>(null);
 	const progressValue = useSharedValue(0);
-	const [isCreatingWallet, setIsCreatingWallet] = useState(false);
 	const [isLastSlide, setIsLastSlide] = useState(false);
 
 	// dots and 'skip' button should not be visible on last slide
@@ -177,20 +169,11 @@ const Slideshow = ({
 	};
 
 	const onCreateWallet = useCallback(async (): Promise<void> => {
-		setIsCreatingWallet(true);
-		await sleep(500); // wait for animation to be started
-		const res = await createNewWallet({ bip39Passphrase });
-		if (res.isErr()) {
-			setIsCreatingWallet(false);
-			showToast({
-				type: 'warning',
-				title: t('error_create'),
-				description: res.error.message,
-			});
-		}
-
-		dispatch(updateUser({ requiresRemoteRestore: false }));
-	}, [bip39Passphrase, t, dispatch]);
+		navigation.navigate('CreateWallet', {
+			action: 'create',
+			bip39Passphrase,
+		});
+	}, [bip39Passphrase, navigation]);
 
 	const onRestoreWallet = (): void => {
 		navigation.navigate('MultipleDevices');
@@ -204,66 +187,58 @@ const Slideshow = ({
 
 	return (
 		<ThemedView style={styles.root}>
-			{isCreatingWallet ? (
-				<LoadingWalletScreen />
-			) : (
-				<>
-					<Carousel
-						ref={ref}
-						loop={false}
-						width={dimensions.width}
-						data={slides}
-						defaultIndex={skipIntro ? slides.length - 1 : 0}
-						onProgressChange={(_, absoluteProgress): void => {
-							progressValue.value = absoluteProgress;
-							setIsLastSlide(absoluteProgress === slides.length - 1);
-						}}
-						renderItem={({ index }): ReactElement => (
-							<Slide
-								key={`slide-${index}`}
-								index={index}
-								color={slides[index].color}
-								image={slides[index].image}
-								onCreate={onCreateWallet}
-								onRestore={onRestoreWallet}
-							/>
-						)}
+			<Carousel
+				ref={ref}
+				loop={false}
+				width={dimensions.width}
+				data={slides}
+				defaultIndex={skipIntro ? slides.length - 1 : 0}
+				onProgressChange={(_, absoluteProgress): void => {
+					progressValue.value = absoluteProgress;
+					setIsLastSlide(absoluteProgress === slides.length - 1);
+				}}
+				renderItem={({ index }): ReactElement => (
+					<Slide
+						key={`slide-${index}`}
+						index={index}
+						color={slides[index].color}
+						image={slides[index].image}
+						onCreate={onCreateWallet}
+						onRestore={onRestoreWallet}
 					/>
+				)}
+			/>
 
-					<View style={styles.headerButtons}>
-						<SafeAreaInset type="top" />
-						<Animated.View style={[styles.headerButton, startOpacity]}>
-							<ButtonTertiary
-								text={t('skip')}
-								testID="SkipButton"
-								onPress={onHeaderButton}
-							/>
-						</Animated.View>
-						<Animated.View
-							style={[styles.headerButton, endOpacity]}
-							pointerEvents={isLastSlide ? 'auto' : 'none'}>
-							<ButtonTertiary
-								text={t('advanced_setup')}
-								testID="Passphrase"
-								onPress={onHeaderButton}
-							/>
-						</Animated.View>
-					</View>
+			<View style={styles.headerButtons}>
+				<SafeAreaInset type="top" />
+				<Animated.View style={[styles.headerButton, startOpacity]}>
+					<ButtonTertiary
+						text={t('skip')}
+						testID="SkipButton"
+						onPress={onHeaderButton}
+					/>
+				</Animated.View>
+				<Animated.View
+					style={[styles.headerButton, endOpacity]}
+					pointerEvents={isLastSlide ? 'auto' : 'none'}>
+					<ButtonTertiary
+						text={t('advanced_setup')}
+						testID="Passphrase"
+						onPress={onHeaderButton}
+					/>
+				</Animated.View>
+			</View>
 
-					<Animated.View
-						style={[styles.dots, startOpacity]}
-						pointerEvents="none">
-						{slides.map((_, i) => (
-							<Dot
-								key={i}
-								index={i}
-								animValue={progressValue}
-								length={slides.length}
-							/>
-						))}
-					</Animated.View>
-				</>
-			)}
+			<Animated.View style={[styles.dots, startOpacity]} pointerEvents="none">
+				{slides.map((_, i) => (
+					<Dot
+						key={i}
+						index={i}
+						animValue={progressValue}
+						length={slides.length}
+					/>
+				))}
+			</Animated.View>
 		</ThemedView>
 	);
 };

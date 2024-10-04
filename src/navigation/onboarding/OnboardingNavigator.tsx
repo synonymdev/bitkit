@@ -7,7 +7,12 @@ import SlideshowScreen from '../../screens/Onboarding/Slideshow';
 import RestoreFromSeed from '../../screens/Onboarding/RestoreFromSeed';
 import MultipleDevices from '../../screens/Onboarding/MultipleDevices';
 import Passphrase from '../../screens/Onboarding/Passphrase';
+import CreateWallet, {
+	TCreateWalletParams,
+} from '../../screens/Onboarding/CreateWallet';
 import { NavigationContainer } from '../../styles/components';
+import { useAppSelector } from '../../hooks/redux';
+import { requiresRemoteRestoreSelector } from '../../store/reselect/user';
 
 export type OnboardingStackParamList = {
 	TermsOfUse: undefined;
@@ -16,6 +21,7 @@ export type OnboardingStackParamList = {
 	RestoreFromSeed: undefined;
 	MultipleDevices: undefined;
 	Passphrase: undefined;
+	CreateWallet: TCreateWalletParams;
 };
 
 const Stack = createNativeStackNavigator<OnboardingStackParamList>();
@@ -25,10 +31,20 @@ const navOptionHandler = {
 	detachPreviousScreen: false,
 };
 
+const navOptionHandlerNoBack = {
+	...navOptionHandler,
+	gestureEnabled: false,
+};
+
 const OnboardingNavigator = (): ReactElement => {
+	const requiresRemoteRestore = useAppSelector(requiresRemoteRestoreSelector);
+
 	return (
 		<NavigationContainer>
-			<Stack.Navigator initialRouteName="TermsOfUse">
+			<Stack.Navigator
+				initialRouteName={
+					requiresRemoteRestore ? 'CreateWallet' : 'TermsOfUse'
+				}>
 				<Stack.Screen
 					name="TermsOfUse"
 					component={TermsOfUse}
@@ -58,6 +74,11 @@ const OnboardingNavigator = (): ReactElement => {
 					name="Passphrase"
 					component={Passphrase}
 					options={navOptionHandler}
+				/>
+				<Stack.Screen
+					name="CreateWallet"
+					component={CreateWallet}
+					options={navOptionHandlerNoBack}
 				/>
 			</Stack.Navigator>
 		</NavigationContainer>

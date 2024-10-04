@@ -20,7 +20,6 @@ import { SlashtagsProvider } from './components/SlashtagsProvider';
 import { toastConfig } from './components/Toast';
 import { useAppSelector } from './hooks/redux';
 import AppUpdate from './screens/AppUpdate';
-import RestoringScreen from './screens/Onboarding/Restoring';
 import { themeSelector } from './store/reselect/settings';
 import { criticalUpdateSelector } from './store/reselect/ui';
 import { requiresRemoteRestoreSelector } from './store/reselect/user';
@@ -79,9 +78,9 @@ const App = (): ReactElement => {
 					</Suspense>
 				) : hasCriticalUpdate ? (
 					<AppUpdate />
-				) : walletExists ? (
+				) : walletExists && !requiresRemoteRestore ? (
 					<SlashtagsProvider>
-						{requiresRemoteRestore ? <RestoringScreen /> : <AppOnboarded />}
+						<AppOnboarded />
 					</SlashtagsProvider>
 				) : (
 					<Suspense fallback={null}>
