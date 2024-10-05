@@ -240,7 +240,7 @@
     "string": "Unable To Pay Contact"
   },
   "error_pay_empty_msg": {
-    "string": "This contact has no payment data."
+    "string": "The contact you’re trying to send to hasn’t enabled payments."
   },
   "auth_depricated_title": {
     "string": "Deprecated"

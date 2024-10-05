@@ -94,7 +94,7 @@ const Contact = ({
 			showToast({
 				type: 'warning',
 				title: t('contact_pay_error'),
-				description: t('other:try_again'),
+				description: res.error.message,
 			});
 		}
 	};
