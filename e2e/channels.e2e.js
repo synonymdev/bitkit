@@ -275,11 +275,19 @@ d('Transfer', () => {
 
 		// TODO: mine single blocks and check updated transfer time
 
-		// Sometimes the channel is only opened after restart 
+		// Sometimes the channel is only opened after restart
 		await device.launchApp();
 
 		// wait for channel to be opened
-		await waitForActiveChannel(lnd, ldkNodeId);
+		try {
+			await waitForActiveChannel(lnd, ldkNodeId);
+		} catch (e) {
+			// let's try again one more time
+			console.info('TRY AGAIN');
+			await rpc.generateToAddress(3, await rpc.getNewAddress());
+			await device.launchApp();
+			await waitForActiveChannel(lnd, ldkNodeId);
+		}
 
 		await expect(
 			element(by.id('Suggestion-lightningSettingUp')),
