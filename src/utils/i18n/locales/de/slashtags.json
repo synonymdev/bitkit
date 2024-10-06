@@ -207,7 +207,7 @@
     "string": "Standard"
   },
   "widget_edit_custom": {
-    "string": "Benuzterdefiniert"
+    "string": "Benutzerdefiniert"
   },
   "widget_edit_description": {
     "string": "Bitte wähle die Felder aus, die du im {name} Widget anzeigen möchtest."
