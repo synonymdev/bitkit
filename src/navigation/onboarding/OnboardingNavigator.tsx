@@ -13,6 +13,7 @@ import CreateWallet, {
 import { NavigationContainer } from '../../styles/components';
 import { useAppSelector } from '../../hooks/redux';
 import { requiresRemoteRestoreSelector } from '../../store/reselect/user';
+import { walletExistsSelector } from '../../store/reselect/wallet';
 
 export type OnboardingStackParamList = {
 	TermsOfUse: undefined;
@@ -38,13 +39,15 @@ const navOptionHandlerNoBack = {
 
 const OnboardingNavigator = (): ReactElement => {
 	const requiresRemoteRestore = useAppSelector(requiresRemoteRestoreSelector);
+	const walletExists = useAppSelector(walletExistsSelector);
+
+	// If a wallet exists but remote LDK revocery is not complete, show the CreateWallet screen
+	const initialRouteName =
+		walletExists && requiresRemoteRestore ? 'CreateWallet' : 'TermsOfUse';
 
 	return (
 		<NavigationContainer>
-			<Stack.Navigator
-				initialRouteName={
-					requiresRemoteRestore ? 'CreateWallet' : 'TermsOfUse'
-				}>
+			<Stack.Navigator initialRouteName={initialRouteName}>
 				<Stack.Screen
 					name="TermsOfUse"
 					component={TermsOfUse}

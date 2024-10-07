@@ -1,36 +1,38 @@
 import React, {
-	memo,
 	ReactElement,
-	useState,
-	useRef,
-	useMemo,
-	useEffect,
+	memo,
 	useCallback,
+	useEffect,
+	useMemo,
+	useRef,
+	useState,
 } from 'react';
+import { Trans, useTranslation } from 'react-i18next';
 import {
 	Image,
 	ImageSourcePropType,
+	Platform,
 	StyleSheet,
 	View,
 	useWindowDimensions,
-	Platform,
 } from 'react-native';
-import Carousel, { ICarouselInstance } from 'react-native-reanimated-carousel';
 import Animated, {
 	interpolate,
 	useAnimatedStyle,
 	useSharedValue,
 } from 'react-native-reanimated';
-import { Trans, useTranslation } from 'react-i18next';
+import Carousel, { ICarouselInstance } from 'react-native-reanimated-carousel';
 
-import { View as ThemedView } from '../../styles/components';
-import { Display, BodyM, BodyMB } from '../../styles/text';
-import { IThemeColors } from '../../styles/themes';
 import SafeAreaInset from '../../components/SafeAreaInset';
 import Dot from '../../components/SliderDots';
 import Button from '../../components/buttons/Button';
 import ButtonTertiary from '../../components/buttons/ButtonTertiary';
+import { useAppDispatch } from '../../hooks/redux';
 import type { OnboardingStackScreenProps } from '../../navigation/types';
+import { updateUser } from '../../store/slices/user';
+import { View as ThemedView } from '../../styles/components';
+import { BodyM, BodyMB, Display } from '../../styles/text';
+import { IThemeColors } from '../../styles/themes';
 
 type Slide = {
 	color: keyof IThemeColors;
@@ -134,6 +136,7 @@ const Slideshow = ({
 }: OnboardingStackScreenProps<'Slideshow'>): ReactElement => {
 	const skipIntro = route.params?.skipIntro ?? false;
 	const bip39Passphrase = route.params?.bip39Passphrase;
+	const dispatch = useAppDispatch();
 	const dimensions = useWindowDimensions();
 	const { t } = useTranslation('onboarding');
 	const ref = useRef<ICarouselInstance>(null);
@@ -169,11 +172,12 @@ const Slideshow = ({
 	};
 
 	const onCreateWallet = useCallback(async (): Promise<void> => {
+		dispatch(updateUser({ requiresRemoteRestore: false }));
 		navigation.navigate('CreateWallet', {
 			action: 'create',
 			bip39Passphrase,
 		});
-	}, [bip39Passphrase, navigation]);
+	}, [bip39Passphrase, dispatch, navigation]);
 
 	const onRestoreWallet = (): void => {
 		navigation.navigate('MultipleDevices');

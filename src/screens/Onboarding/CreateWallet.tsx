@@ -120,7 +120,7 @@ const CreateWallet = ({
 			return;
 		}
 
-		if (params?.action === 'create') {
+		if (params.action === 'create') {
 			handleCreate(params.bip39Passphrase);
 		} else {
 			handleRestore(params.mnemonic, params.bip39Passphrase);
