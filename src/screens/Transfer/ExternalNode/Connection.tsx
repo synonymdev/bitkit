@@ -36,9 +36,7 @@ const ExternalNode = ({
 				setPort(info.port.toString());
 			}
 		}
-		// onMount
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
+	}, [peer]);
 
 	const navigateToScanner = (): void => {
 		navigation.navigate('Scanner');
