@@ -61,7 +61,7 @@ jobs:
           echo '    npmAuthToken: "${{ secrets.NPMJS_READ_RN_PUBKY }}"' >> .yarnrc.yml
 
       - name: Yarn Install
-        run: yarn --no-audit --prefer-offline || yarn --no-audit --prefer-offline || yarn
+        run: yarn || yarn
         env:
           HUSKY: 0
 
@@ -91,7 +91,10 @@ jobs:
       - name: Restart docker before last attempt
         if: steps.test1.outcome != 'success' && steps.test2.outcome != 'success' && steps.test3.outcome != 'success'
         run: |
-          cd docker && docker compose down -t 60 && docker compose up --force-recreate --quiet-pull -d && cd ..
+          cd docker
+          docker compose down -t 60
+          rm -rf lnd
+          docker compose up --force-recreate --quiet-pull -d
           while ! nc -z '127.0.0.1' 60001; do sleep 1; done
 
       - name: Test attempt 4

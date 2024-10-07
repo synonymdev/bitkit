@@ -276,7 +276,7 @@ d('Transfer', () => {
 		// TODO: mine single blocks and check updated transfer time
 
 		// Sometimes the channel is only opened after restart
-		await device.launchApp();
+		await launchAndWait();
 
 		// wait for channel to be opened
 		await waitForActiveChannel(lnd, ldkNodeId);

@@ -124,7 +124,7 @@ jobs:
         timeout-minutes: 10
         run: |
           while ! nc -z '127.0.0.1' 60001; do sleep 1; done
-          while ! nc -z '127.0.0.1' 10009; do sleep 1; done
+          sudo bash -c "while [ ! -f docker/lnd/data/chain/bitcoin/regtest/admin.macaroon ]; do sleep 1; done"
           sudo chmod -R 777 docker/lnd
 
       - name: Test attempt 1
@@ -173,9 +173,12 @@ jobs:
 
       - name: Restart docker before last attempt
         if: steps.test1.outcome != 'success' && steps.test2.outcome != 'success' && steps.test3.outcome != 'success'
+        timeout-minutes: 10
         run: |
           cd docker && docker compose down -t 60 && docker compose up --quiet-pull -d && cd ..
           while ! nc -z '127.0.0.1' 60001; do sleep 1; done
+          sudo bash -c "while [ ! -f docker/lnd/data/chain/bitcoin/regtest/admin.macaroon ]; do sleep 1; done"
+          sudo chmod -R 777 docker/lnd
 
       - name: Test attempt 4
         if: steps.test1.outcome != 'success' && steps.test2.outcome != 'success' && steps.test3.outcome != 'success'
