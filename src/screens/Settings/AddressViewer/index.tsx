@@ -644,10 +644,8 @@ const AddressViewer = ({
 				return;
 			}
 			updateSendTransaction({
-				transaction: {
-					...transactionRes.value,
-					outputs: [{ address: receiveAddress.value, value: 0, index: 0 }],
-				},
+				...transactionRes.value,
+				outputs: [{ address: receiveAddress.value, value: 0, index: 0 }],
 			});
 			dispatch(updateUi({ fromAddressViewer: true }));
 			sendMax({

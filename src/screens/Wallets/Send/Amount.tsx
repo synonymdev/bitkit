@@ -151,11 +151,11 @@ const Amount = ({ navigation }: SendScreenProps<'Amount'>): ReactElement => {
 			return;
 		}
 		if (isMaxSendAmount && amount !== availableAmount) {
-			updateSendTransaction({ transaction: { max: false } });
+			updateSendTransaction({ max: false });
 		}
 
 		if (!isMaxSendAmount && amount === availableAmount) {
-			updateSendTransaction({ transaction: { max: true } });
+			updateSendTransaction({ max: true });
 		}
 	}, [isMaxSendAmount, amount, availableAmount, transaction?.lightningInvoice]);
 

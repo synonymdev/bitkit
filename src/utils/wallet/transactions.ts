@@ -89,20 +89,14 @@ export const getTotalFee = ({
 	});
 };
 
-interface ICreateTransaction {
-	selectedWallet?: TWalletName;
-	selectedNetwork?: EAvailableNetwork;
-	transactionData?: ISendTransaction;
-}
-
 /**
  * Creates complete signed transaction using the transaction data store
  * @param {ISendTransaction} [transactionData]
  * @returns {Promise<Result<{id: string, hex: string}>>}
  */
-export const createTransaction = async ({
-	transactionData,
-}: ICreateTransaction = {}): Promise<Result<{ id: string; hex: string }>> => {
+export const createTransaction = async (
+	transactionData?: ISendTransaction,
+): Promise<Result<{ id: string; hex: string }>> => {
 	try {
 		const transaction = getOnChainWalletTransaction();
 		const createTxRes = await transaction.createTransaction({
@@ -690,10 +684,8 @@ export const updateSendAmount = ({
 	}
 
 	updateSendTransaction({
-		transaction: {
-			outputs: [{ ...currentOutput, value: amount }],
-			max,
-		},
+		outputs: [{ ...currentOutput, value: amount }],
+		max,
 	});
 
 	return ok('');
@@ -747,15 +739,11 @@ export const updateMessage = async ({
 	if (max) {
 		_transaction.outputs = [{ address, value: inputTotal - newFee, index }];
 		//Update the tx value with the new fee to continue sending the max amount.
-		updateSendTransaction({
-			transaction: _transaction,
-		});
+		updateSendTransaction(_transaction);
 		return ok('Successfully updated the message.');
 	}
 	if (totalNewAmount <= inputTotal) {
-		updateSendTransaction({
-			transaction: _transaction,
-		});
+		updateSendTransaction(_transaction);
 	}
 	return ok('Successfully updated the message.');
 };
@@ -816,11 +804,7 @@ const runCoinSelect = async ({
 				fee: autoCoinSelectResponse.value.fee,
 				inputs: autoCoinSelectResponse.value.inputs,
 			};
-			updateSendTransaction({
-				selectedWallet,
-				selectedNetwork,
-				transaction: updatedTx,
-			});
+			updateSendTransaction(updatedTx);
 			return ok('Successfully updated tx.');
 		}
 		return ok('No need to update transaction.');
@@ -913,7 +897,7 @@ export const broadcastBoost = async ({
 		}
 		const transaction = transactionDataResponse.value;
 
-		const rawTx = await createTransaction({});
+		const rawTx = await createTransaction();
 		if (rawTx.isErr()) {
 			return err(rawTx.error.message);
 		}

@@ -115,7 +115,8 @@ export const createFundedChannel = async ({
 	const address = getAddressFromScriptPubKey(output_script, network);
 
 	updateSendTransaction({
-		transaction: { outputs: [{ address, value: value_satoshis, index: 0 }] },
+		rbf: false,
+		outputs: [{ address, value: value_satoshis, index: 0 }],
 	});
 
 	const createTxResult = await createTransaction();

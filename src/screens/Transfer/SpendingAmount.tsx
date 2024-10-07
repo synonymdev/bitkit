@@ -66,7 +66,7 @@ const SpendingAmount = ({
 		useCallback(() => {
 			const setupTransfer = async (): Promise<void> => {
 				await resetSendTransaction();
-				await setupOnChainTransaction();
+				await setupOnChainTransaction({ rbf: false });
 				refreshBlocktankInfo().then();
 			};
 			setupTransfer();

@@ -843,12 +843,10 @@ export const handleData = async ({
 			sendNavigation.navigate('Amount');
 
 			updateSendTransaction({
-				transaction: {
-					label: message,
-					outputs: [{ address: address, value: sats, index: 0 }],
-					lightningInvoice: undefined,
-					slashTagsUrl: slashTagsUrl,
-				},
+				label: message,
+				outputs: [{ address: address, value: sats, index: 0 }],
+				lightningInvoice: undefined,
+				slashTagsUrl: slashTagsUrl,
 			});
 
 			return ok({
@@ -884,17 +882,15 @@ export const handleData = async ({
 			}
 
 			updateSendTransaction({
-				transaction: {
-					outputs: [
-						{
-							address: '',
-							value: invoiceAmount,
-							index: 0,
-						},
-					],
-					lightningInvoice: lightningPaymentRequest,
-					slashTagsUrl,
-				},
+				outputs: [
+					{
+						address: '',
+						value: invoiceAmount,
+						index: 0,
+					},
+				],
+				lightningInvoice: lightningPaymentRequest,
+				slashTagsUrl,
 			});
 
 			return ok({

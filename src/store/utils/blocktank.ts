@@ -282,15 +282,13 @@ export const startChannelPurchase = async ({
 	}
 
 	updateSendTransaction({
-		transaction: {
-			outputs: [
-				{
-					address: buyChannelData.payment.onchain.address,
-					value: amountToSend,
-					index: 0,
-				},
-			],
-		},
+		outputs: [
+			{
+				address: buyChannelData.payment.onchain.address,
+				value: amountToSend,
+				index: 0,
+			},
+		],
 	});
 
 	const fees = getFeesStore().onchain;

@@ -319,15 +319,11 @@ export const getChangeAddress = async ({
  * @param {Partial<ISendTransaction>} transaction
  * @returns {Promise<Result<string>>}
  */
-export const updateSendTransaction = ({
-	transaction,
-}: {
-	transaction: Partial<ISendTransaction>;
-}): Result<string> => {
+export const updateSendTransaction = (
+	transaction: Partial<ISendTransaction>,
+): Result<string> => {
 	const tx = getOnChainWalletTransaction();
-	return tx.updateSendTransaction({
-		transaction,
-	});
+	return tx.updateSendTransaction({ transaction });
 };
 
 /**
