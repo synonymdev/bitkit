@@ -4,6 +4,7 @@ import Share from 'react-native-share';
 import { useTranslation } from 'react-i18next';
 import Clipboard from '@react-native-clipboard/clipboard';
 import lm from '@synonymdev/react-native-ldk';
+import RNFS from 'react-native-fs';
 
 import { Caption13Up } from '../../../styles/text';
 import { View as ThemedView, TextInput } from '../../../styles/components';
@@ -176,6 +177,30 @@ const LdkDebug = (): ReactElement => {
 			type: 'application/zip',
 			url: `file://${result.value}`,
 			title: t('export_logs'),
+		});
+	};
+
+	const onSaveLogs = async (): Promise<void> => {
+		const result = await zipLogs();
+		if (result.isErr()) {
+			showToast({
+				type: 'warning',
+				title: t('error_logs'),
+				description: t('error_logs_description'),
+			});
+			return;
+		}
+
+		// Define the destination path in the Downloads folder
+		const downloadsDir = RNFS.DownloadDirectoryPath;
+		const destinationPath = `${downloadsDir}/bitkit_ldk_logs.zip`;
+
+		await RNFS.copyFile(result.value, destinationPath);
+
+		showToast({
+			type: 'success',
+			title: 'Logs saved', // todo: locale
+			description: `${destinationPath}`,
 		});
 	};
 
@@ -370,6 +395,12 @@ const LdkDebug = (): ReactElement => {
 					style={styles.button}
 					text="Export Logs"
 					onPress={onExportLogs}
+				/>
+				<Button
+					style={styles.button}
+					text="Save Logs"
+					onPress={onSaveLogs}
+					testID="SaveLogs"
 				/>
 
 				{openChannels.length > 0 && (
