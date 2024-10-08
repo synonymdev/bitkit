@@ -96,7 +96,8 @@ import { createWallet } from '../../store/slices/wallet';
 bitcoin.initEccLib(ecc);
 const bip32 = BIP32Factory(ecc);
 
-let wallet: TWallet;
+// let wallet: TWallet;
+let globalWallet: TWallet | undefined;
 let addressGenerator: BitcoinActions | undefined;
 
 export const setupAddressGenerator = async ({
@@ -135,15 +136,12 @@ export const setupAddressGenerator = async ({
 /*
  * Wait for wallet to be ready
  */
-export const waitForWallet = async (): Promise<void> => {
-	if (wallet) {
-		return;
+export const waitForWallet = async (timeout = 100) => {
+	// Return the wallet when it's defined
+	while (typeof globalWallet === 'undefined') {
+		await new Promise((resolve) => setTimeout(resolve, timeout));
 	}
-	return new Promise((resolve) => {
-		setTimeout(() => {
-			resolve(waitForWallet());
-		}, 100);
-	});
+	return globalWallet;
 };
 
 export const refreshWallet = async ({
@@ -167,7 +165,7 @@ export const refreshWallet = async ({
 			InteractionManager.runAfterInteractions(() => resolve(null));
 		});
 
-		await waitForWallet();
+		await getOnChainWallet();
 
 		let notificationTxid: string | undefined;
 
@@ -213,6 +211,7 @@ const refreshBeignet = async (
 		console.error('Error reading additional addresses from LDK:', e);
 	}
 
+	const wallet = await getOnChainWallet();
 	const refreshWalletRes = await wallet.refreshWallet({
 		scanAllAddresses,
 		additionalAddresses,
@@ -249,8 +248,9 @@ const handleRefreshError = (msg: string): void => {
 /**
  * In the event we temporarily changed the gap limit in Beignet when restoring Bitkit, we need to reset it back to Bitkit's default/saved values.
  */
-const checkGapLimit = (): void => {
+const checkGapLimit = async (): Promise<void> => {
 	const savedGapLimitOptions = getGapLimitOptions();
+	const wallet = await getOnChainWallet();
 	const beignetGapLimit = wallet.gapLimitOptions;
 	if (
 		beignetGapLimit.lookAhead !== savedGapLimitOptions.lookAhead ||
@@ -280,6 +280,7 @@ export const generateAddresses = async ({
 	addressType,
 }: IGenerateAddresses): Promise<Result<IGenerateAddressesResponse>> => {
 	try {
+		const wallet = await getOnChainWallet();
 		return await wallet.generateAddresses({
 			addressAmount,
 			changeAddressAmount,
@@ -810,6 +811,7 @@ export const getRbfData = async ({
 }: {
 	txHash: ITxHash;
 }): Promise<Result<IRbfData>> => {
+	const wallet = await getOnChainWallet();
 	return await wallet.getRbfData({ txHash });
 };
 
@@ -889,7 +891,7 @@ export const createDefaultWallet = async ({
 		const setupWalletRes = await setupOnChainWallet({
 			name: walletName,
 			selectedNetwork,
-			bip39Passphrase: bip39Passphrase,
+			bip39Passphrase,
 			addressType: selectedAddressType,
 			servers,
 			disableMessagesOnCreate: true,
@@ -1025,22 +1027,18 @@ const onMessage: TOnMessage = async (key, data): Promise<void> => {
 	switch (key) {
 		case 'transactionReceived': {
 			const txMsg = data as TTransactionMessage;
-			if (
-				wallet?.isSwitchingNetworks !== undefined &&
-				!wallet?.isSwitchingNetworks
-			) {
-				const { transaction } = txMsg;
-				const isDuplicate = receivedTxids.includes(transaction.txid);
-				const transfer = await getTransferForTx(transaction);
+			const { transaction } = txMsg;
+			const isDuplicate = receivedTxids.includes(transaction.txid);
+			const transfer = await getTransferForTx(transaction);
 
-				if (!transfer && !isDuplicate) {
-					showNewOnchainTxPrompt({
-						id: transaction.txid,
-						value: btcToSats(transaction.value),
-					});
-					receivedTxids.push(transaction.txid);
-				}
+			if (!transfer && !isDuplicate) {
+				showNewOnchainTxPrompt({
+					id: transaction.txid,
+					value: btcToSats(transaction.value),
+				});
+				receivedTxids.push(transaction.txid);
 			}
+
 			setTimeout(() => {
 				updateActivityList();
 			}, 500);
@@ -1114,6 +1112,7 @@ export const setupOnChainWallet = async ({
 	addressTypesToMonitor?: EAddressType[];
 	gapLimitOptions?: TGapLimitOptions;
 }): Promise<Result<Wallet>> => {
+	const startTime = performance.now();
 	if (!mnemonic) {
 		const mnemonicRes = await getMnemonicPhrase(name);
 		if (mnemonicRes.isErr()) {
@@ -1153,7 +1152,7 @@ export const setupOnChainWallet = async ({
 		gapLimitOptions,
 		storage,
 		addressType,
-		customGetAddress: customGetAddress,
+		customGetAddress,
 		customGetScriptHash: getCustomScriptHash,
 		disableMessagesOnCreate,
 		addressTypesToMonitor,
@@ -1161,8 +1160,10 @@ export const setupOnChainWallet = async ({
 	if (createWalletResponse.isErr()) {
 		return err(createWalletResponse.error.message);
 	}
-	wallet = createWalletResponse.value;
-	return ok(wallet);
+	globalWallet = createWalletResponse.value;
+	const endTime = performance.now();
+	console.log(`Took ${endTime - startTime}ms.`);
+	return ok(globalWallet);
 };
 
 /**
@@ -1413,6 +1414,7 @@ export const getReceiveAddress = async ({
 		if (!addressType) {
 			addressType = getSelectedAddressType({ selectedNetwork });
 		}
+		const wallet = await getOnChainWallet();
 		const address = await wallet.getAddress({ addressType });
 		return address ? ok(address) : err('Unable to get receive address.');
 	} catch (e) {
@@ -1430,6 +1432,7 @@ export const getCurrentAddressIndex = async ({
 	addressType?: EAddressType;
 }): Promise<Result<IAddress>> => {
 	try {
+		const wallet = await getOnChainWallet();
 		addressType = addressType ?? wallet.addressType;
 		const currentWallet = wallet.data;
 		const addressIndex = currentWallet.addressIndex[addressType];
@@ -1494,8 +1497,9 @@ export const getBalance = ({
 	const reserveBalance = getLightningReserveBalance();
 	const spendingBalance = localBalance - reserveBalance;
 
+	// const wallet = await getOnChainWallet();
 	const onchainBalance =
-		wallet.getBalance() ?? currentWallet.balance[selectedNetwork];
+		globalWallet?.getBalance() ?? currentWallet.balance[selectedNetwork];
 	// const lightningBalance = localBalance + claimableBalance;
 	const spendableBalance = onchainBalance + spendingBalance;
 	// const totalBalance = onchainBalance + lightningBalance;
@@ -1527,6 +1531,7 @@ export const rescanAddresses = async ({
 	shouldClearAddresses?: boolean;
 	shouldClearTransactions?: boolean;
 }): Promise<Result<IWalletData>> => {
+	const wallet = await getOnChainWallet();
 	const res = await wallet.rescanAddresses({
 		shouldClearAddresses,
 		shouldClearTransactions,
@@ -1564,24 +1569,30 @@ export const blockHeightToConfirmations = ({
 	return currentHeight - blockHeight + 1;
 };
 
-export const getOnChainWallet = (): Wallet => {
+export const getOnChainWallet = async (): Promise<Wallet> => {
+	const wallet = await waitForWallet();
 	return wallet;
 };
 
-export const getOnChainWalletTransaction = (): Transaction => {
+export const getOnChainWalletTransaction = async (): Promise<Transaction> => {
+	const wallet = await getOnChainWallet();
 	return wallet.transaction;
 };
 
-export const getOnChainWalletElectrum = (): Electrum => {
-	return wallet?.electrum;
+export const getOnChainWalletElectrum = async (): Promise<Electrum> => {
+	const wallet = await getOnChainWallet();
+	return wallet.electrum;
 };
 
-export const getOnChainWalletTransactionData = (): ISendTransaction => {
-	return wallet.transaction.data;
-};
+export const getOnChainWalletTransactionData =
+	async (): Promise<ISendTransaction> => {
+		const wallet = await getOnChainWallet();
+		return wallet.transaction.data;
+	};
 
-export const getOnChainWalletData = (): IWalletData => {
-	return wallet?.data;
+export const getOnChainWalletData = async (): Promise<IWalletData> => {
+	const wallet = await getOnChainWallet();
+	return wallet.data;
 };
 
 export const switchNetwork = async (
@@ -1597,6 +1608,7 @@ export const switchNetwork = async (
 	dispatch(resetActivityState());
 	// Switch to new network.
 	dispatch(updateWallet({ selectedNetwork }));
+	const wallet = await getOnChainWallet();
 	const response = await wallet.switchNetwork(
 		EAvailableNetworks[selectedNetwork],
 		servers,
@@ -1606,7 +1618,7 @@ export const switchNetwork = async (
 		console.error(response.error.message);
 		return err(response.error.message);
 	}
-	wallet = response.value;
+	globalWallet = response.value;
 	setTimeout(updateActivityList, 500);
 	return ok(true);
 };
@@ -1619,7 +1631,7 @@ export const switchNetwork = async (
  * @param {boolean} [fundingLightning]
  * @returns {Result<TGetTotalFeeObj>}
  */
-export const getFeeInfo = ({
+export const getFeeInfo = async ({
 	satsPerByte,
 	transaction,
 	message,
@@ -1629,7 +1641,8 @@ export const getFeeInfo = ({
 	message?: string;
 	transaction?: Partial<ISendTransaction>;
 	fundingLightning?: boolean;
-}): Result<TGetTotalFeeObj> => {
+}): Promise<Result<TGetTotalFeeObj>> => {
+	const wallet = await getOnChainWallet();
 	return wallet.getFeeInfo({
 		satsPerByte,
 		transaction,

@@ -59,7 +59,7 @@ export const getChannelCloseTime = async (
 
 	// we have to construct IAddress to get the history
 	const scriptHash = await getScriptHash(address, selectedNetwork);
-	const el = getOnChainWalletElectrum();
+	const el = await getOnChainWalletElectrum();
 	const scriptHashes: IAddress[] = [
 		{
 			index: 0,

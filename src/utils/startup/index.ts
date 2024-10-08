@@ -100,25 +100,21 @@ export const startWalletServices = async ({
 	selectedNetwork?: EAvailableNetwork;
 }): Promise<Result<string>> => {
 	try {
-		// wait for interactions/animations to be completed
-		await new Promise((resolve) => {
-			InteractionManager.runAfterInteractions(() => resolve(null));
-		});
 		promiseTimeout(2500, setupBlocktank(selectedNetwork)).then(() => {
 			refreshBlocktankInfo().then();
 		});
 
 		setupLedger({ selectedWallet, selectedNetwork });
 
-		const mnemonicResponse = await getMnemonicPhrase();
-		if (mnemonicResponse.isErr()) {
-			return err(mnemonicResponse.error.message);
-		}
-		const mnemonic = mnemonicResponse.value;
 		const bip39Passphrase = await getBip39Passphrase();
 
 		const walletExists = getWalletStore()?.walletExists;
 		if (!walletExists) {
+			const mnemonicResponse = await getMnemonicPhrase();
+			if (mnemonicResponse.isErr()) {
+				return err(mnemonicResponse.error.message);
+			}
+			const mnemonic = mnemonicResponse.value;
 			const createRes = await createWalletThunk({ mnemonic, bip39Passphrase });
 			if (createRes.isErr()) {
 				return err(createRes.error.message);

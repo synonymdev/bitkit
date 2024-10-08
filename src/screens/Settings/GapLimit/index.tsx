@@ -68,7 +68,7 @@ const GapLimit = ({}: SettingsScreenProps<'GapLimit'>): ReactElement => {
 
 	const saveGapLimit = async (): Promise<void> => {
 		setLoading(true);
-		const wallet = getOnChainWallet();
+		const wallet = await getOnChainWallet();
 		const res = wallet.updateGapLimit({
 			lookAhead: Number(lookAhead),
 			lookBehind: Number(lookBehind),

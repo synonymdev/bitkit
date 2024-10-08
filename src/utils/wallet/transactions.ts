@@ -74,7 +74,7 @@ export const constructByteCountParam = (
 /*
  * Attempt to estimate the current fee for a given wallet and its UTXO's
  */
-export const getTotalFee = ({
+export const getTotalFee = async ({
 	satsPerByte,
 	message = '',
 	transaction, // If left undefined, the method will retrieve the tx data from state.
@@ -84,8 +84,8 @@ export const getTotalFee = ({
 	message?: string;
 	transaction?: Partial<ISendTransaction>;
 	fundingLightning?: boolean;
-}): number => {
-	const wallet = getOnChainWallet();
+}): Promise<number> => {
+	const wallet = await getOnChainWallet();
 	return wallet.transaction.getTotalFee({
 		satsPerByte,
 		message,
@@ -103,7 +103,7 @@ export const createTransaction = async (
 	transactionData?: ISendTransaction,
 ): Promise<Result<{ id: string; hex: string }>> => {
 	try {
-		const transaction = getOnChainWalletTransaction();
+		const transaction = await getOnChainWalletTransaction();
 		const createTxRes = await transaction.createTransaction({
 			transactionData,
 		});
@@ -138,7 +138,7 @@ export const broadcastTransaction = async ({
 	rawTx: string;
 	subscribeToOutputAddress?: boolean;
 }): Promise<Result<string>> => {
-	const electrum = getOnChainWalletElectrum();
+	const electrum = await getOnChainWalletElectrum();
 	return await electrum.broadcastTransaction({
 		rawTx,
 		subscribeToOutputAddress,
@@ -150,11 +150,11 @@ export const broadcastTransaction = async ({
  * @param {IOutput[]} [outputs]
  * @returns {number}
  */
-export const getTransactionOutputValue = ({
+export const getTransactionOutputValue = async ({
 	outputs,
 }: {
 	outputs?: IOutput[];
-} = {}): number => {
+} = {}): Promise<number> => {
 	try {
 		if (!outputs) {
 			outputs = getOnchainTransactionData().outputs;
@@ -174,11 +174,11 @@ export const getTransactionOutputValue = ({
  * Returns total value of all utxos.
  * @param {IUtxo[]} [inputs]
  */
-export const getTransactionInputValue = ({
+export const getTransactionInputValue = async ({
 	inputs,
 }: {
 	inputs?: IUtxo[];
-}): number => {
+}): Promise<number> => {
 	try {
 		if (!inputs) {
 			inputs = getOnchainTransactionData().inputs;
@@ -202,7 +202,7 @@ export const getTransactionInputValue = ({
  * @param {number} [index]
  * @param {ISendTransaction} [transaction]
  */
-export const updateFee = ({
+export const updateFee = async ({
 	satsPerByte,
 	selectedFeeId = EFeeId.custom,
 	index = 0,
@@ -212,8 +212,8 @@ export const updateFee = ({
 	selectedFeeId?: EFeeId;
 	index?: number;
 	transaction?: ISendTransaction;
-}): Result<{ fee: number }> => {
-	const tx = getOnChainWalletTransaction();
+}): Promise<Result<{ fee: number }>> => {
+	const tx = await getOnChainWalletTransaction();
 	return tx.updateFee({
 		satsPerByte,
 		index,
@@ -398,8 +398,8 @@ export const autoCoinSelect = async ({
  * Used to determine if we're able to boost a transaction either by RBF or CPFP.
  * @param {string} txid
  */
-export const canBoost = (txid: string): ICanBoostResponse => {
-	const wallet = getOnChainWallet();
+export const canBoost = async (txid: string): Promise<ICanBoostResponse> => {
+	const wallet = await getOnChainWallet();
 	return wallet.canBoost(txid);
 };
 
@@ -425,7 +425,7 @@ export const getEstimatedRoutingFee = (amount: number): number => {
  * @param {ISendTransaction} [transaction]
  * @param {'onchain' | 'lightning'} [method
  */
-export const getMaxSendAmount = ({
+export const getMaxSendAmount = async ({
 	transaction,
 	method,
 }: {
@@ -450,7 +450,7 @@ export const getMaxSendAmount = ({
 			const maxAmount = { amount, fee };
 			return ok(maxAmount);
 		} else {
-			const wallet = getOnChainWallet();
+			const wallet = await getOnChainWallet();
 			const fees = getFeesStore().onchain;
 			const { transactionSpeed, customFeeRate } = getSettingsStore();
 
@@ -495,7 +495,7 @@ export const sendMax = async ({
 	const { paymentMethod } = getUiStore();
 
 	try {
-		const tx = getOnChainWalletTransaction();
+		const tx = await getOnChainWalletTransaction();
 		const transaction = tx.data;
 
 		// TODO: Re-work lightning transaction invoices once beignet migration is complete.
@@ -553,13 +553,13 @@ export const sendMax = async ({
  * @param {number} [adjustBy]
  * @param {ISendTransaction} [transaction]
  */
-export const adjustFee = ({
+export const adjustFee = async ({
 	adjustBy,
 	transaction,
 }: {
 	adjustBy: number;
 	transaction?: ISendTransaction;
-}): Result<{ fee: number }> => {
+}): Promise<Result<{ fee: number }>> => {
 	try {
 		if (!transaction) {
 			transaction = getOnchainTransactionData();
@@ -588,7 +588,7 @@ export const adjustFee = ({
  * @param {number} amount
  * @param {ISendTransaction} [transaction]
  */
-export const updateSendAmount = ({
+export const updateSendAmount = async ({
 	amount,
 	transaction,
 }: {
@@ -618,7 +618,7 @@ export const updateSendAmount = ({
 		}
 	} else {
 		// onchain transaction
-		const inputTotal = getTransactionInputValue({
+		const inputTotal = await getTransactionInputValue({
 			inputs: transaction.inputs,
 		});
 
@@ -790,7 +790,7 @@ export const setupBoost = async ({
 	if (refreshResponse.isErr()) {
 		return err(refreshResponse.error.message);
 	}
-	const canBoostResponse = canBoost(txid);
+	const canBoostResponse = await canBoost(txid);
 	if (!canBoostResponse.canBoost) {
 		return err('Unable to boost this transaction.');
 	}
@@ -813,7 +813,7 @@ export const setupCpfp = async ({
 }: {
 	txid: string;
 }): Promise<Result<ISendTransaction>> => {
-	const transaction = getOnChainWalletTransaction();
+	const transaction = await getOnChainWalletTransaction();
 	return await transaction.setupCpfp({ txid });
 };
 
@@ -826,7 +826,7 @@ export const setupRbf = async ({
 }: {
 	txid: string;
 }): Promise<Result<ISendTransaction>> => {
-	const transaction = getOnChainWalletTransaction();
+	const transaction = await getOnChainWalletTransaction();
 	return await transaction.setupRbf({ txid });
 };
 
@@ -901,7 +901,7 @@ export const getFeeEstimates = async (
 			});
 		}
 
-		const wallet = getOnChainWallet();
+		const wallet = await getOnChainWallet();
 		const feeRes = await wallet.getFeeEstimates();
 		if (!feeRes) {
 			return err('Unable to get fee estimates.');
@@ -927,7 +927,7 @@ export const getSelectedFeeId = (): EFeeId => {
  * @param outputIndex
  * @returns {Result<number>}
  */
-export const getTransactionOutputAmount = ({
+export const getTransactionOutputAmount = async ({
 	outputIndex = 0,
 }: {
 	outputIndex?: number;

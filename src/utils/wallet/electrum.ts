@@ -35,7 +35,7 @@ export type TUnspentAddressScriptHashData = {
  * @returns {Promise<boolean>}
  */
 export const isConnectedElectrum = async (): Promise<boolean> => {
-	const electrum = getOnChainWalletElectrum();
+	const electrum = await getOnChainWalletElectrum();
 	return electrum.isConnected();
 };
 
@@ -65,7 +65,7 @@ export const listUnspentAddressScriptHashes = async ({
 }: {
 	addresses: TUnspentAddressScriptHashData;
 }): Promise<Result<IGetUtxosResponse>> => {
-	const electrum = getOnChainWalletElectrum();
+	const electrum = await getOnChainWalletElectrum();
 	const unspentAddressResult = await electrum.listUnspentAddressScriptHashes({
 		addresses,
 	});
@@ -89,7 +89,7 @@ export const subscribeToAddresses = async ({
 	scriptHashes?: string[];
 	onReceive?: () => void;
 } = {}): Promise<Result<string>> => {
-	const electrum = getOnChainWalletElectrum();
+	const electrum = await getOnChainWalletElectrum();
 	return electrum.subscribeToAddresses({ scriptHashes, onReceive });
 };
 
@@ -132,7 +132,7 @@ export const getTransactions = async ({
 }: {
 	txHashes: ITxHash[];
 }): Promise<Result<IGetTransactions>> => {
-	const electrum = getOnChainWalletElectrum();
+	const electrum = await getOnChainWalletElectrum();
 	return await electrum.getTransactions({ txHashes });
 };
 
@@ -147,7 +147,7 @@ export interface IPeerData {
  * @return {Promise<Result<IPeerData>>}
  */
 export const getConnectedPeer = async (): Promise<Result<IPeerData>> => {
-	const electrum = getOnChainWalletElectrum();
+	const electrum = await getOnChainWalletElectrum();
 	const peerData = await electrum.getConnectedPeer();
 	return peerData as Result<IPeerData>;
 };
@@ -173,7 +173,7 @@ export const getTransactionsFromInputs = async ({
 }: {
 	txHashes: ITxHash[];
 }): Promise<Result<IGetTransactionsFromInputs>> => {
-	const electrum = getOnChainWalletElectrum();
+	const electrum = await getOnChainWalletElectrum();
 	return await electrum.getTransactionsFromInputs({ txHashes });
 };
 
@@ -197,7 +197,7 @@ export const getAddressHistory = async ({
 	scriptHashes?: IAddress[];
 	scanAllAddresses?: boolean;
 }): Promise<Result<IGetAddressHistoryResponse[]>> => {
-	const electrum = getOnChainWalletElectrum();
+	const electrum = await getOnChainWalletElectrum();
 	return await electrum.getAddressHistory({ scriptHashes, scanAllAddresses });
 };
 
@@ -217,7 +217,7 @@ export const connectToElectrum = async ({
 	showNotification?: boolean;
 	selectedNetwork?: EAvailableNetwork;
 } = {}): Promise<Result<string>> => {
-	const electrum = getOnChainWalletElectrum();
+	const electrum = await getOnChainWalletElectrum();
 
 	// Attempt to disconnect from any old/lingering connections
 	await electrum?.disconnect();
@@ -254,7 +254,7 @@ export const getAddressBalance = async ({
 }: {
 	addresses: string[];
 }): Promise<Result<number>> => {
-	const wallet = getOnChainWallet();
+	const wallet = await getOnChainWallet();
 	return await wallet.getAddressesBalance(addresses);
 };
 
@@ -269,7 +269,7 @@ export const getBlockHex = async ({
 }: {
 	height?: number;
 }): Promise<Result<string>> => {
-	const electrum = getOnChainWalletElectrum();
+	const electrum = await getOnChainWalletElectrum();
 	return await electrum.getBlockHex({ height });
 };
 
@@ -280,12 +280,12 @@ export const getBlockHex = async ({
  * @param {EAvailableNetwork} [selectedNetwork]
  * @returns {string}
  */
-export const getBlockHashFromHex = ({
+export const getBlockHashFromHex = async ({
 	blockHex,
 }: {
 	blockHex?: string;
-}): string => {
-	const electrum = getOnChainWalletElectrum();
+}): Promise<string> => {
+	const electrum = await getOnChainWalletElectrum();
 	return electrum.getBlockHashFromHex({ blockHex });
 };
 
@@ -293,8 +293,8 @@ export const getBlockHashFromHex = ({
  * Returns last known block height, and it's corresponding hex from local storage.
  * @returns {IHeader}
  */
-export const getBlockHeader = (): IHeader => {
-	const electrum = getOnChainWalletElectrum();
+export const getBlockHeader = async (): Promise<IHeader> => {
+	const electrum = await getOnChainWalletElectrum();
 	return electrum.getBlockHeader();
 };
 
@@ -305,7 +305,7 @@ export const getTransactionMerkle = async ({
 	tx_hash: string;
 	height: number;
 }): Promise<any> => {
-	const electrum = getOnChainWalletElectrum();
+	const electrum = await getOnChainWalletElectrum();
 	return electrum.getTransactionMerkle({
 		tx_hash,
 		height,

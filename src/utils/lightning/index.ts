@@ -214,7 +214,7 @@ export const setLdkStoragePath = (): Promise<Result<string>> =>
 const broadcastTransaction: TBroadcastTransaction = async (
 	rawTx: string,
 ): Promise<Result<string>> => {
-	const electrum = getOnChainWalletElectrum();
+	const electrum = await getOnChainWalletElectrum();
 	const res = await electrum.broadcastTransaction({
 		rawTx,
 		subscribeToOutputAddress: false,
@@ -229,7 +229,7 @@ const broadcastTransaction: TBroadcastTransaction = async (
 const getScriptPubKeyHistory = async (
 	scriptPubKey: string,
 ): Promise<TGetAddressHistory[]> => {
-	const electrum = getOnChainWalletElectrum();
+	const electrum = await getOnChainWalletElectrum();
 	return await electrum.getScriptPubKeyHistory(scriptPubKey);
 };
 
@@ -937,7 +937,7 @@ export const getTransactionData = async (
 	let transactionData = DefaultTransactionDataShape;
 	try {
 		const data = [{ tx_hash: txId }];
-		const electrum = getOnChainWalletElectrum();
+		const electrum = await getOnChainWalletElectrum();
 		const response = await electrum.getTransactions({
 			txHashes: data,
 		});

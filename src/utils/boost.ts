@@ -34,14 +34,15 @@ export const getBoostedTransactions = ({
  * @param {IBoostedTransactions} [boostedTransactions]
  * @returns {string[]}
  */
-export const getBoostedTransactionParents = ({
+export const getBoostedTransactionParents = async ({
 	txId,
 	boostedTransactions,
 }: {
 	txId: string;
 	boostedTransactions?: IBoostedTransactions;
-}): string[] => {
-	return getOnChainWallet().getBoostedTransactionParents({
+}): Promise<string[]> => {
+	const wallet = await getOnChainWallet();
+	return wallet.getBoostedTransactionParents({
 		txid: txId,
 		boostedTransactions,
 	});
@@ -56,7 +57,7 @@ export const getBoostedTransactionParents = ({
  * @param {EAvailableNetwork} [selectedNetwork]
  * @returns {boolean}
  */
-export const hasBoostedParents = ({
+export const hasBoostedParents = async ({
 	txId,
 	boostedTransactions,
 	selectedWallet = getSelectedWallet(),
@@ -66,14 +67,14 @@ export const hasBoostedParents = ({
 	boostedTransactions?: IBoostedTransactions;
 	selectedWallet?: TWalletName;
 	selectedNetwork?: EAvailableNetwork;
-}): boolean => {
+}): Promise<boolean> => {
 	if (!boostedTransactions) {
 		boostedTransactions = getBoostedTransactions({
 			selectedWallet,
 			selectedNetwork,
 		});
 	}
-	const boostedParents = getBoostedTransactionParents({
+	const boostedParents = await getBoostedTransactionParents({
 		txId,
 		boostedTransactions,
 	});
@@ -89,7 +90,7 @@ export const hasBoostedParents = ({
  * @param {EAvailableNetwork} [selectedNetwork]
  * @returns {TOnchainActivityItem|undefined}
  */
-export const getRootParentActivity = ({
+export const getRootParentActivity = async ({
 	txId,
 	items,
 	boostedTransactions,
@@ -101,14 +102,14 @@ export const getRootParentActivity = ({
 	boostedTransactions?: IBoostedTransactions;
 	selectedWallet?: TWalletName;
 	selectedNetwork?: EAvailableNetwork;
-}): TOnchainActivityItem | undefined => {
+}): Promise<TOnchainActivityItem | undefined> => {
 	if (!boostedTransactions) {
 		boostedTransactions = getBoostedTransactions({
 			selectedWallet,
 			selectedNetwork,
 		});
 	}
-	const boostedParents = getBoostedTransactionParents({
+	const boostedParents = await getBoostedTransactionParents({
 		txId,
 		boostedTransactions,
 	});
@@ -147,7 +148,7 @@ export const getParentsActivity = ({
  * @param {EAvailableNetwork} [selectedNetwork]
  * @returns {TOnchainActivityItem[]}
  */
-export const formatBoostedActivityItems = ({
+export const formatBoostedActivityItems = async ({
 	items,
 	boostedTransactions,
 	selectedWallet,
@@ -157,7 +158,7 @@ export const formatBoostedActivityItems = ({
 	boostedTransactions: IBoostedTransactions;
 	selectedWallet: TWalletName;
 	selectedNetwork: EAvailableNetwork;
-}): TOnchainActivityItem[] => {
+}): Promise<TOnchainActivityItem[]> => {
 	const formattedItems: TOnchainActivityItem[] = [];
 
 	items.forEach((item) => {
@@ -168,7 +169,7 @@ export const formatBoostedActivityItems = ({
 			return;
 		}
 
-		const rootParent = getRootParentActivity({
+		const rootParent = await getRootParentActivity({
 			txId,
 			items,
 			boostedTransactions,

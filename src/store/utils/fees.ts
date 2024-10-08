@@ -46,6 +46,6 @@ export const refreshOnchainFeeEstimates = async ({
 }: {
 	forceUpdate?: boolean;
 }): Promise<Result<IOnchainFees>> => {
-	const wallet = getOnChainWallet();
+	const wallet = await getOnChainWallet();
 	return await wallet.updateFeeEstimates(forceUpdate);
 };

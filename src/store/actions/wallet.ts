@@ -125,7 +125,7 @@ export const generateNewReceiveAddress = async ({
 	keyDerivationPath?: IKeyDerivationPath;
 }): Promise<Result<IAddress>> => {
 	try {
-		const wallet = getOnChainWallet();
+		const wallet = await getOnChainWallet();
 		return wallet.generateNewReceiveAddress({ addressType, keyDerivationPath });
 	} catch (e) {
 		console.log(e);
@@ -138,7 +138,7 @@ export const generateNewReceiveAddress = async ({
  * @returns {Promise<string>}
  */
 export const clearUtxos = async (): Promise<string> => {
-	const wallet = getOnChainWallet();
+	const wallet = await getOnChainWallet();
 	return await wallet.clearUtxos();
 };
 
@@ -148,7 +148,7 @@ export const updateWalletBalance = ({
 	balance: number;
 }): Result<string> => {
 	try {
-		const wallet = getOnChainWallet();
+		const wallet = await getOnChainWallet();
 		return wallet.updateWalletBalance({ balance });
 	} catch (e) {
 		return err(e);
@@ -216,7 +216,7 @@ export const injectFakeTransaction = (
 // 	scanAllAddresses?: boolean;
 // 	replaceStoredTransactions?: boolean;
 // }): Promise<Result<string | undefined>> => {
-// 	const wallet = getOnChainWallet();
+// 	const wallet = await getOnChainWallet();
 // 	return await wallet.updateTransactions({
 // 		scanAllAddresses,
 // 		replaceStoredTransactions,
@@ -233,7 +233,7 @@ export const deleteOnChainTransactionById = async ({
 }: {
 	txid: string;
 }): Promise<void> => {
-	const wallet = getOnChainWallet();
+	const wallet = await getOnChainWallet();
 	return await wallet.deleteOnChainTransactionById({ txid });
 };
 
@@ -255,7 +255,7 @@ export const addBoostedTransaction = async ({
 	type?: EBoostType;
 	fee: number;
 }): Promise<Result<IBoostedTransaction>> => {
-	const wallet = getOnChainWallet();
+	const wallet = await getOnChainWallet();
 	return await wallet.addBoostedTransaction({
 		newTxId,
 		oldTxId,
@@ -310,7 +310,7 @@ export const getChangeAddress = async ({
 }: {
 	addressType?: EAddressType;
 }): Promise<Result<IAddress>> => {
-	const wallet = getOnChainWallet();
+	const wallet = await getOnChainWallet();
 	return await wallet.getChangeAddress(addressType);
 };
 
@@ -341,7 +341,7 @@ export const updateSelectedAddressType = async ({
 }: {
 	addressType: EAddressType;
 }): Promise<void> => {
-	const wallet = getOnChainWallet();
+	const wallet = await getOnChainWallet();
 	const addressTypesToMonitor = wallet.addressTypesToMonitor;
 	if (!addressTypesToMonitor.includes(addressType)) {
 		// Append the new address type so we monitor it in subsequent sessions.
@@ -357,7 +357,7 @@ export const updateSelectedAddressType = async ({
  * @returns {Result<IUtxo[]>}
  */
 export const removeTxInput = ({ input }: { input: IUtxo }): Result<IUtxo[]> => {
-	const wallet = getOnChainWallet();
+	const wallet = await getOnChainWallet();
 	const removeRes = wallet.removeTxInput({
 		input,
 	});
@@ -395,7 +395,7 @@ export const removeTxInput = ({ input }: { input: IUtxo }): Result<IUtxo[]> => {
  * @returns {Result<IUtxo[]>}
  */
 export const addTxInput = ({ input }: { input: IUtxo }): Result<IUtxo[]> => {
-	const wallet = getOnChainWallet();
+	const wallet = await getOnChainWallet();
 	const addRes = wallet.addTxInput({
 		input,
 	});
@@ -433,7 +433,7 @@ export const addTxInput = ({ input }: { input: IUtxo }): Result<IUtxo[]> => {
  * @returns {Result<string>}
  */
 export const addTxTag = ({ tag }: { tag: string }): Result<string> => {
-	const wallet = getOnChainWallet();
+	const wallet = await getOnChainWallet();
 	return wallet.addTxTag({
 		tag,
 	});
@@ -444,7 +444,7 @@ export const addTxTag = ({ tag }: { tag: string }): Result<string> => {
  * @param {string} tag
  */
 export const removeTxTag = ({ tag }: { tag: string }): Result<string> => {
-	const wallet = getOnChainWallet();
+	const wallet = await getOnChainWallet();
 	return wallet.removeTxTag({
 		tag,
 	});
@@ -455,7 +455,7 @@ export const removeTxTag = ({ tag }: { tag: string }): Result<string> => {
  * @returns {Result<string>}
  */
 export const setupFeeForOnChainTransaction = (): Result<string> => {
-	const wallet = getOnChainWallet();
+	const wallet = await getOnChainWallet();
 	const transaction = wallet.transaction.data;
 	const fees = getFeesStore().onchain;
 	const { transactionSpeed, customFeeRate } = getSettingsStore();
