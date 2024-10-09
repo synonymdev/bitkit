@@ -27,15 +27,12 @@ const Channel = ({
 }: {
 	channel: TChannel;
 	isEnabled: boolean;
-	onPress: (channel: TChannel) => void;
+	onPress: () => void;
 }): ReactElement => {
 	const channelName = useLightningChannelName(channel);
 
 	return (
-		<SwitchRow
-			style={styles.channel}
-			isEnabled={isEnabled}
-			onPress={() => onPress(channel)}>
+		<SwitchRow style={styles.channel} isEnabled={isEnabled} onPress={onPress}>
 			<Caption13Up style={styles.channelLabel} color="secondary">
 				{channelName}
 			</Caption13Up>
@@ -50,13 +47,20 @@ const SavingsAdvanced = ({
 	const switchUnit = useSwitchUnit();
 	const { t } = useTranslation('lightning');
 	const channels = useAppSelector(openChannelsSelector);
-	const [selected, setSelected] = useState<TChannel[]>(channels);
+	const channelIds = channels.map((channel) => channel.channel_id);
+	const [selected, setSelected] = useState<string[]>(channelIds);
 
-	const onToggle = (channel: TChannel): void => {
+	const selectedChannels = channels.filter((channel) => {
+		return selected.includes(channel.channel_id);
+	});
+
+	const onToggle = (channelId: string): void => {
 		setSelected((prev) => {
-			return prev.includes(channel)
-				? prev.filter((c) => c !== channel)
-				: [...prev, channel];
+			if (prev.includes(channelId)) {
+				return prev.filter((id) => id !== channelId);
+			} else {
+				return [...prev, channelId];
+			}
 		});
 	};
 
@@ -64,13 +68,13 @@ const SavingsAdvanced = ({
 		if (selected.length === channels.length) {
 			navigation.navigate('SavingsConfirm');
 		} else {
-			navigation.navigate('SavingsConfirm', { channels: selected });
+			navigation.navigate('SavingsConfirm', { channels: selectedChannels });
 		}
 	};
 
-	const amount = channels
-		.filter((channel) => selected.includes(channel))
-		.reduce((acc, channel) => acc + channel.balance_sat, 0);
+	const amount = selectedChannels.reduce((acc, channel) => {
+		return acc + channel.balance_sat;
+	}, 0);
 
 	return (
 		<ThemedView style={styles.root}>
@@ -97,8 +101,8 @@ const SavingsAdvanced = ({
 						<Channel
 							key={channel.channel_id}
 							channel={channel}
-							isEnabled={selected.includes(channel)}
-							onPress={onToggle}
+							isEnabled={selected.includes(channel.channel_id)}
+							onPress={(): void => onToggle(channel.channel_id)}
 						/>
 					))}
 				</ScrollView>
