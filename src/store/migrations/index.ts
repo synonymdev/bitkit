@@ -34,6 +34,17 @@ const migrations = {
 			},
 		};
 	},
+	46: (state): PersistedState => {
+		return {
+			...state,
+			user: {
+				...state.user,
+				transferIntroSeen: false,
+				spendingIntroSeen: false,
+				savingsIntroSeen: false,
+			},
+		};
+	},
 };
 
 export default migrations;

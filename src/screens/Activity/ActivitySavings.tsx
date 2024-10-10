@@ -15,7 +15,10 @@ import ActivityList from './ActivityList';
 import { useBalance } from '../../hooks/wallet';
 import { useAppSelector } from '../../hooks/redux';
 import { EActivityType } from '../../store/types/activity';
-import { isGeoBlockedSelector } from '../../store/reselect/user';
+import {
+	isGeoBlockedSelector,
+	spendingIntroSeenSelector,
+} from '../../store/reselect/user';
 import { activityItemsSelector } from '../../store/reselect/activity';
 import { WalletScreenProps } from '../../navigation/types';
 
@@ -28,6 +31,7 @@ const ActivitySavings = ({
 	const { onchainBalance, balanceInTransferToSavings } = useBalance();
 	const items = useAppSelector(activityItemsSelector);
 	const isGeoBlocked = useAppSelector(isGeoBlockedSelector);
+	const spendingIntroSeen = useAppSelector(spendingIntroSeenSelector);
 
 	const savingsItems = useMemo(() => {
 		return items.filter((item) => {
@@ -45,7 +49,11 @@ const ActivitySavings = ({
 	const showOnboarding = onchainBalance === 0 && savingsItems.length === 0;
 
 	const onTransfer = (): void => {
-		navigation.navigate('TransferRoot', { screen: 'SpendingIntro' });
+		if (spendingIntroSeen) {
+			navigation.navigate('TransferRoot', { screen: 'SpendingAmount' });
+		} else {
+			navigation.navigate('TransferRoot', { screen: 'SpendingIntro' });
+		}
 	};
 
 	const canTransfer = onchainBalance && !isGeoBlocked;

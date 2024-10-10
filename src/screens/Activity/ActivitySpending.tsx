@@ -16,6 +16,7 @@ import { useBalance } from '../../hooks/wallet';
 import { useAppSelector } from '../../hooks/redux';
 import { EActivityType } from '../../store/types/activity';
 import { spendingOnboardingSelector } from '../../store/reselect/aggregations';
+import { savingsIntroSeenSelector } from '../../store/reselect/user';
 import { WalletScreenProps } from '../../navigation/types';
 
 const imageSrc = require('../../assets/illustrations/coin-stack-x-2.png');
@@ -26,6 +27,7 @@ const ActivitySpending = ({
 	const { t } = useTranslation('wallet');
 	const { lightningBalance, balanceInTransferToSpending } = useBalance();
 	const isSpendingOnboarding = useAppSelector(spendingOnboardingSelector);
+	const savingsIntroSeen = useAppSelector(savingsIntroSeenSelector);
 
 	const filter = useMemo(() => {
 		return {
@@ -35,7 +37,11 @@ const ActivitySpending = ({
 	}, []);
 
 	const onTransfer = (): void => {
-		navigation.navigate('TransferRoot', { screen: 'SavingsIntro' });
+		if (savingsIntroSeen) {
+			navigation.navigate('TransferRoot', { screen: 'Availability' });
+		} else {
+			navigation.navigate('TransferRoot', { screen: 'SavingsIntro' });
+		}
 	};
 
 	const canTransfer = !!lightningBalance;

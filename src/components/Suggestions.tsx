@@ -16,11 +16,12 @@ import SuggestionCard from './SuggestionCard';
 import { ITodo, TTodoType } from '../store/types/todos';
 import { channelsNotificationsShown, hideTodo } from '../store/slices/todos';
 import { showBottomSheet } from '../store/utils/ui';
+import { pinSelector } from '../store/reselect/settings';
+import { transferIntroSeenSelector } from '../store/reselect/user';
 import {
 	newChannelsNotificationsSelector,
 	todosFullSelector,
 } from '../store/reselect/todos';
-import { pinSelector } from '../store/reselect/settings';
 import { useAppDispatch, useAppSelector } from '../hooks/redux';
 import type { RootNavigationProp } from '../navigation/types';
 import { appName, appStoreUrl, playStoreUrl } from '../constants/app';
@@ -34,6 +35,7 @@ const Suggestions = (): ReactElement => {
 	const pinTodoDone = useAppSelector(pinSelector);
 	const suggestions = useAppSelector(todosFullSelector);
 	const newChannels = useAppSelector(newChannelsNotificationsSelector);
+	const transferIntroSeen = useAppSelector(transferIntroSeenSelector);
 	const [index, setIndex] = useState(0);
 
 	// this code is needed in order to avoid flashing wrong balance on channel open
@@ -73,7 +75,11 @@ const Suggestions = (): ReactElement => {
 			}
 
 			if (id === 'lightning') {
-				navigation.navigate('TransferRoot', { screen: 'TransferIntro' });
+				if (transferIntroSeen) {
+					navigation.navigate('TransferRoot', { screen: 'Funding' });
+				} else {
+					navigation.navigate('TransferRoot', { screen: 'TransferIntro' });
+				}
 			}
 
 			if (id === 'lightningSettingUp') {
@@ -111,7 +117,7 @@ const Suggestions = (): ReactElement => {
 				});
 			}
 		},
-		[navigation, pinTodoDone, onShare],
+		[navigation, transferIntroSeen, pinTodoDone, onShare],
 	);
 
 	const handleRenderItem = useCallback(

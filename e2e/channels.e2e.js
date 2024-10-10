@@ -128,7 +128,6 @@ d('Transfer', () => {
 		await element(by.id('NavigationClose')).tap();
 		await element(by.id('ActivitySavings')).tap();
 		await element(by.id('TransferToSpending')).tap();
-		await element(by.id('SpendingIntro-button')).tap();
 		await element(by.id('N1').withAncestor(by.id('SpendingAmount'))).tap();
 		await element(by.id('N0').withAncestor(by.id('SpendingAmount'))).multiTap(
 			5,

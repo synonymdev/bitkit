@@ -40,7 +40,6 @@ export type TSettings = {
 	customFeeRate: number;
 	hideBalance: boolean;
 	hideBalanceOnOpen: boolean;
-	hideBeta: boolean;
 	hideOnboardingMessage: boolean;
 	enableDevOptions: boolean;
 	treasureChests: TChest[];

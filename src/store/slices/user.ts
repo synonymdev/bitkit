@@ -15,6 +15,9 @@ export type TUser = {
 	ignoresHideBalanceToast: boolean;
 	ignoresSwitchUnitToast: boolean;
 	scanAllAddressesTimestamp: number;
+	transferIntroSeen: boolean;
+	spendingIntroSeen: boolean;
+	savingsIntroSeen: boolean;
 };
 
 export const initialUserState: TUser = {
@@ -30,6 +33,9 @@ export const initialUserState: TUser = {
 	ignoresHideBalanceToast: false,
 	ignoresSwitchUnitToast: false,
 	scanAllAddressesTimestamp: 0,
+	transferIntroSeen: false,
+	spendingIntroSeen: false,
+	savingsIntroSeen: false,
 };
 
 export const userSlice = createSlice({

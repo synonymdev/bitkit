@@ -10,7 +10,10 @@ import RectangleButton from '../../components/buttons/RectangleButton';
 import SafeAreaInset from '../../components/SafeAreaInset';
 import NavigationHeader from '../../components/NavigationHeader';
 import { useBalance } from '../../hooks/wallet';
-import { isGeoBlockedSelector } from '../../store/reselect/user';
+import {
+	isGeoBlockedSelector,
+	spendingIntroSeenSelector,
+} from '../../store/reselect/user';
 import { TRANSACTION_DEFAULTS } from '../../utils/wallet/constants';
 import { showBottomSheet } from '../../store/utils/ui';
 import type { TransferScreenProps } from '../../navigation/types';
@@ -21,9 +24,14 @@ const Funding = ({
 	const { t } = useTranslation('lightning');
 	const { onchainBalance } = useBalance();
 	const isGeoBlocked = useAppSelector(isGeoBlockedSelector);
+	const spendingIntroSeen = useAppSelector(spendingIntroSeenSelector);
 
 	const onTransfer = (): void => {
-		navigation.navigate('SpendingIntro');
+		if (spendingIntroSeen) {
+			navigation.navigate('SpendingAmount');
+		} else {
+			navigation.navigate('SpendingIntro');
+		}
 	};
 
 	const onFund = (): void => {

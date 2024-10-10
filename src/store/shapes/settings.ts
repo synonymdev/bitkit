@@ -100,7 +100,6 @@ export const initialSettingsState: TSettings = {
 	customFeeRate: 0,
 	hideBalance: false,
 	hideBalanceOnOpen: false,
-	hideBeta: false,
 	hideOnboardingMessage: false,
 	enableDevOptions: __DEV__,
 	treasureChests: [],

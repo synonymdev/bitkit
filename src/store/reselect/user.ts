@@ -63,3 +63,15 @@ export const scanAllAddressesTimestampSelector = createSelector(
 	[userState],
 	(user): number => user.scanAllAddressesTimestamp,
 );
+
+export const transferIntroSeenSelector = (state: RootState): boolean => {
+	return state.user.transferIntroSeen;
+};
+
+export const spendingIntroSeenSelector = (state: RootState): boolean => {
+	return state.user.spendingIntroSeen;
+};
+
+export const savingsIntroSeenSelector = (state: RootState): boolean => {
+	return state.user.savingsIntroSeen;
+};
