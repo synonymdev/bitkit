@@ -48,7 +48,7 @@ const ActivitySavings = ({
 		navigation.navigate('TransferRoot', { screen: 'SpendingIntro' });
 	};
 
-	const canTransfer = onchainBalance && !isGeoBlocked;
+	const canTransfer = !!onchainBalance && !isGeoBlocked;
 
 	return (
 		<ThemedView style={styles.root}>
