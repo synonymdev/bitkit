@@ -1,83 +1,32 @@
-import React, {
-	memo,
-	ReactElement,
-	useCallback,
-	useEffect,
-	useState,
-} from 'react';
+import React, { memo, ReactElement, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Pressable, StyleSheet, View } from 'react-native';
 import { FadeIn, FadeOut } from 'react-native-reanimated';
-import { useFocusEffect } from '@react-navigation/native';
-import { useTranslation } from 'react-i18next';
 
-import { View as ThemedView, AnimatedView } from '../../../styles/components';
-import { BodyM, BodyS } from '../../../styles/text';
-import SafeAreaInset from '../../../components/SafeAreaInset';
 import NavigationHeader from '../../../components/NavigationHeader';
 import NumberPad from '../../../components/NumberPad';
-import useColors from '../../../hooks/colors';
-import { vibrate } from '../../../utils/helpers';
-import { getKeychainValue } from '../../../utils/keychain';
-import { showBottomSheet } from '../../../store/utils/ui';
+import SafeAreaInset from '../../../components/SafeAreaInset';
+import { PIN_ATTEMPTS } from '../../../constants/app';
+import usePIN from '../../../hooks/pin';
 import type { SettingsScreenProps } from '../../../navigation/types';
+import { showBottomSheet } from '../../../store/utils/ui';
+import { AnimatedView, View as ThemedView } from '../../../styles/components';
+import { BodyM, BodyS } from '../../../styles/text';
 
 const ChangePin = ({
 	navigation,
 }: SettingsScreenProps<'ChangePin'>): ReactElement => {
 	const { t } = useTranslation('security');
-	const [pin, setPin] = useState<string>('');
-	const [wrongPin, setWrongPin] = useState(false);
-	const { brand, brand08 } = useColors();
+	const nextStep = useCallback(() => {
+		navigation.pop();
+		navigation.navigate('ChangePin2');
+	}, [navigation]);
+	const { attemptsRemaining, Dots, handleNumberPress, isLastAttempt, loading } =
+		usePIN(nextStep);
 
-	const handleOnPress = (key: string): void => {
-		vibrate();
-		if (key === 'delete') {
-			setPin((p) => {
-				return p.length === 0 ? '' : p.slice(0, -1);
-			});
-		} else {
-			setPin((p) => {
-				return p.length === 4 ? p : p + key;
-			});
-		}
-	};
-
-	// reset pin on back
-	useFocusEffect(useCallback(() => setPin(''), []));
-
-	// submit pin
-	useEffect(() => {
-		const timer = setTimeout(async () => {
-			if (pin.length !== 4) {
-				return;
-			}
-
-			const realPIN = await getKeychainValue({ key: 'pin' });
-
-			// error getting pin
-			if (realPIN.error) {
-				console.log('Error getting PIN: ', realPIN.error);
-				vibrate();
-				setPin('');
-				return;
-			}
-
-			// incorrect pin
-			if (pin !== realPIN?.data) {
-				vibrate();
-				setWrongPin(true);
-				setPin('');
-				return;
-			}
-
-			setPin('');
-			navigation.navigate('ChangePin2');
-		}, 500);
-
-		return (): void => {
-			clearTimeout(timer);
-		};
-	}, [pin, navigation]);
+	if (loading) {
+		return <ThemedView style={styles.container} />;
+	}
 
 	return (
 		<ThemedView style={styles.container} testID="ChangePIN">
@@ -85,7 +34,8 @@ const ChangePin = ({
 			<NavigationHeader
 				title={t('cp_title')}
 				onClosePress={(): void => {
-					navigation.navigate('Wallet');
+					navigation.popToTop();
+					navigation.pop();
 				}}
 			/>
 
@@ -94,14 +44,22 @@ const ChangePin = ({
 			</View>
 
 			<View style={styles.wrongPin}>
-				{wrongPin ? (
+				{attemptsRemaining !== Number(PIN_ATTEMPTS) ? (
 					<AnimatedView color="transparent" entering={FadeIn} exiting={FadeOut}>
-						<Pressable
-							onPress={(): void => {
-								showBottomSheet('forgotPIN');
-							}}>
-							<BodyS color="brand">{t('cp_forgot')}</BodyS>
-						</Pressable>
+						{isLastAttempt ? (
+							<BodyS style={styles.attemptsRemaining} color="brand">
+								{t('pin_last_attempt')}
+							</BodyS>
+						) : (
+							<Pressable
+								onPress={(): void => {
+									showBottomSheet('forgotPIN');
+								}}>
+								<BodyS testID="AttemptsRemaining" color="brand">
+									{t('pin_attempts', { attemptsRemaining })}
+								</BodyS>
+							</Pressable>
+						)}
 					</AnimatedView>
 				) : (
 					<BodyS> </BodyS>
@@ -109,26 +67,13 @@ const ChangePin = ({
 			</View>
 
 			<View style={styles.dots}>
-				{Array(4)
-					.fill(null)
-					.map((_, i) => (
-						<View
-							key={i}
-							style={[
-								styles.dot,
-								{
-									borderColor: brand,
-									backgroundColor: pin[i] === undefined ? brand08 : brand,
-								},
-							]}
-						/>
-					))}
+				<Dots />
 			</View>
 
 			<NumberPad
 				style={styles.numberpad}
 				type="simple"
-				onPress={handleOnPress}
+				onPress={handleNumberPress}
 			/>
 		</ThemedView>
 	);
@@ -150,19 +95,13 @@ const styles = StyleSheet.create({
 		marginBottom: 16,
 	},
 	dots: {
-		flexDirection: 'row',
-		justifyContent: 'center',
 		marginBottom: 'auto',
-	},
-	dot: {
-		width: 20,
-		height: 20,
-		borderRadius: 10,
-		marginHorizontal: 12,
-		borderWidth: 1,
 	},
 	numberpad: {
 		maxHeight: 350,
+	},
+	attemptsRemaining: {
+		textAlign: 'center',
 	},
 });
 

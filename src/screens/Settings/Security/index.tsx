@@ -127,14 +127,9 @@ const SecuritySettings = ({
 						title: t('security.pin_change'),
 						type: EItemType.button,
 						hide: !pin,
-						testID: 'ChangePIN',
+						testID: 'PINChange',
 						onPress: (): void => {
-							navigation.navigate('AuthCheck', {
-								onSuccess: () => {
-									navigation.pop();
-									navigation.navigate('ChangePin');
-								},
-							});
+							navigation.navigate('ChangePin');
 						},
 					},
 					{

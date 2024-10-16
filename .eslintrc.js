@@ -100,6 +100,9 @@ module.exports = {
 				additionalHooks: 'useDebouncedEffect',
 			},
 		],
+
+		// prettier
+		'no-mixed-spaces-and-tabs': 0,
 	},
 	overrides: [
 		// Disable type-aware linting for .js files

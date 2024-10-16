@@ -188,11 +188,10 @@ d('Settings Security And Privacy', () => {
 		await element(by.id('UseBiometryInstead')).tap();
 		await device.matchFace();
 		await sleep(1000);
-		await element(by.id('ChangePIN')).tap();
-		await element(by.id('N1').withAncestor(by.id('PinPad'))).multiTap(4);
-		await sleep(1000);
+		await element(by.id('PINChange')).tap();
+		await element(by.id('N3').withAncestor(by.id('ChangePIN'))).multiTap(4);
+		await expect(element(by.id('AttemptsRemaining'))).toBeVisible();
 		await element(by.id('N1').withAncestor(by.id('ChangePIN'))).multiTap(4);
-		await sleep(1000);
 		await element(by.id('N2').withAncestor(by.id('ChangePIN2'))).multiTap(4);
 		await element(by.id('N9').withAncestor(by.id('ChangePIN2'))).multiTap(4);
 		await expect(element(by.id('WrongPIN'))).toBeVisible();

@@ -1,13 +1,14 @@
 // https://help.transifex.com/en/articles/6220899-structured-json
-// prettier-ignore
-type SJItem = {
-	string: string;
-	context?: string;
-	developer_comment?: string;
-	character_limit?: number;
-} | {
-	[key: string]: SJItem;
-};
+type SJItem =
+	| {
+			string: string;
+			context?: string;
+			developer_comment?: string;
+			character_limit?: number;
+	  }
+	| {
+			[key: string]: SJItem;
+	  };
 
 type StructuredJson = {
 	[lang: string]: {

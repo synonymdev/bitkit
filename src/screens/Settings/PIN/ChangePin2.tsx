@@ -1,3 +1,4 @@
+import { useFocusEffect } from '@react-navigation/native';
 import React, {
 	memo,
 	ReactElement,
@@ -5,20 +6,19 @@ import React, {
 	useEffect,
 	useState,
 } from 'react';
-import { StyleSheet, View } from 'react-native';
-import { useFocusEffect } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
+import { StyleSheet, View } from 'react-native';
+import { FadeIn, FadeOut } from 'react-native-reanimated';
 
-import { View as ThemedView, AnimatedView } from '../../../styles/components';
-import { BodyM, BodyS } from '../../../styles/text';
-import SafeAreaInset from '../../../components/SafeAreaInset';
 import NavigationHeader from '../../../components/NavigationHeader';
 import NumberPad from '../../../components/NumberPad';
+import SafeAreaInset from '../../../components/SafeAreaInset';
 import useColors from '../../../hooks/colors';
-import { vibrate } from '../../../utils/helpers';
 import type { SettingsScreenProps } from '../../../navigation/types';
+import { AnimatedView, View as ThemedView } from '../../../styles/components';
+import { BodyM, BodyS } from '../../../styles/text';
+import { vibrate } from '../../../utils/helpers';
 import { editPin } from '../../../utils/settings';
-import { FadeIn, FadeOut } from 'react-native-reanimated';
 
 const ChangePin2 = ({
 	navigation,
@@ -76,7 +76,8 @@ const ChangePin2 = ({
 			<NavigationHeader
 				title={t(origPIN ? 'cp_retype_title' : 'cp_setnew_title')}
 				onClosePress={(): void => {
-					navigation.navigate('Wallet');
+					navigation.popToTop();
+					navigation.pop();
 				}}
 			/>
 

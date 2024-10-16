@@ -29,15 +29,17 @@ import LoadingWalletScreen from './Loading';
 const checkImageSrc = require('../../assets/illustrations/check.png');
 const crossImageSrc = require('../../assets/illustrations/cross.png');
 
-// prettier-ignore
-export type TCreateWalletParams = {
-		action: 'create';
-		bip39Passphrase?: string;
-	} | {
-		action: 'restore';
-		mnemonic: string;
-		bip39Passphrase?: string;
-	} | undefined;
+export type TCreateWalletParams =
+	| {
+			action: 'create';
+			bip39Passphrase?: string;
+	  }
+	| {
+			action: 'restore';
+			mnemonic: string;
+			bip39Passphrase?: string;
+	  }
+	| undefined;
 
 const CreateWallet = ({
 	navigation,

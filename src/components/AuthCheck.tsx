@@ -43,7 +43,7 @@ const AuthCheck = ({
 			<Animated.View style={StyleSheet.absoluteFillObject} exiting={FadeOut}>
 				<ThemedView style={styles.root}>
 					<Biometrics
-						onSuccess={(): void => onSuccess?.()}
+						onSuccess={onSuccess}
 						onFailure={(): void => setBioEnabled(false)}
 					/>
 				</ThemedView>
@@ -58,7 +58,7 @@ const AuthCheck = ({
 				showLogoOnPIN={showLogoOnPIN}
 				allowBiometrics={biometrics && !requirePin}
 				onShowBiotmetrics={(): void => setBioEnabled(true)}
-				onSuccess={(): void => onSuccess?.()}
+				onSuccess={onSuccess}
 			/>
 		</Animated.View>
 	);

@@ -41,7 +41,7 @@ const Biometrics = ({
 	style,
 	children,
 }: {
-	onSuccess: () => void;
+	onSuccess?: () => void;
 	onFailure?: () => void;
 	style?: StyleProp<ViewStyle>;
 	children?: ReactElement;
@@ -101,7 +101,7 @@ const Biometrics = ({
 				.then(({ success }) => {
 					if (success) {
 						dispatch(updateSettings({ biometrics: true }));
-						onSuccess();
+						onSuccess?.();
 					} else {
 						vibrate();
 						onFailure?.();

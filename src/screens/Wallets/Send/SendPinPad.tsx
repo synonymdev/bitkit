@@ -1,107 +1,58 @@
-import React, { memo, ReactElement, useState, useEffect } from 'react';
-import { StyleSheet, View, Pressable } from 'react-native';
-import { FadeIn, FadeOut } from 'react-native-reanimated';
+import React, { ReactElement, memo } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Pressable, StyleSheet, View } from 'react-native';
+import { FadeIn, FadeOut } from 'react-native-reanimated';
 
+import NumberPad from '../../../components/NumberPad';
+import { PIN_ATTEMPTS } from '../../../constants/app';
+import usePIN from '../../../hooks/pin';
+import { showBottomSheet } from '../../../store/utils/ui';
 import { AnimatedView } from '../../../styles/components';
 import { BodyS } from '../../../styles/text';
-import useColors from '../../../hooks/colors';
-import { vibrate } from '../../../utils/helpers';
-import { getKeychainValue } from '../../../utils/keychain';
-import { showBottomSheet } from '../../../store/utils/ui';
-import NumberPad from '../../../components/NumberPad';
 
 const SendPinPad = ({ onSuccess }: { onSuccess: () => void }): ReactElement => {
 	const { t } = useTranslation('security');
-	const [pin, setPin] = useState('');
-	const [wrongPin, setWrongPin] = useState(false);
-	const { brand, brand08 } = useColors();
+	const { attemptsRemaining, Dots, handleNumberPress, isLastAttempt, loading } =
+		usePIN(onSuccess);
 
-	const handleOnPress = (key: string): void => {
-		vibrate();
-		if (key === 'delete') {
-			setPin((p) => {
-				return p.length === 0 ? '' : p.slice(0, -1);
-			});
-		} else {
-			setPin((p) => {
-				return p.length === 4 ? p : p + key;
-			});
-		}
-	};
-
-	// submit pin
-	useEffect(() => {
-		const timer = setTimeout(async () => {
-			if (pin.length !== 4) {
-				return;
-			}
-
-			const realPIN = await getKeychainValue({ key: 'pin' });
-
-			// error getting pin
-			if (realPIN.error) {
-				vibrate();
-				setPin('');
-				return;
-			}
-
-			// incorrect pin
-			if (pin !== realPIN?.data) {
-				vibrate();
-				setWrongPin(true);
-				setPin('');
-				return;
-			}
-
-			setPin('');
-			onSuccess();
-		}, 500);
-
-		return (): void => {
-			clearTimeout(timer);
-		};
-	}, [pin, onSuccess]);
+	if (loading) {
+		return <></>;
+	}
 
 	return (
 		<View style={styles.container}>
 			<View style={styles.content}>
-				{wrongPin && (
+				{attemptsRemaining !== Number(PIN_ATTEMPTS) && (
 					<AnimatedView
-						style={styles.forgotPin}
+						style={styles.attempts}
 						color="transparent"
 						entering={FadeIn}
 						exiting={FadeOut}>
-						<Pressable
-							onPress={(): void => {
-								showBottomSheet('forgotPIN');
-							}}>
-							<BodyS color="brand">{t('cp_forgot')}</BodyS>
-						</Pressable>
+						{isLastAttempt ? (
+							<BodyS style={styles.attemptsRemaining} color="brand">
+								{t('pin_last_attempt')}
+							</BodyS>
+						) : (
+							<Pressable
+								onPress={(): void => {
+									showBottomSheet('forgotPIN');
+								}}>
+								<BodyS testID="AttemptsRemaining" color="brand">
+									{t('pin_attempts', { attemptsRemaining })}
+								</BodyS>
+							</Pressable>
+						)}
 					</AnimatedView>
 				)}
 
 				<View style={styles.dots}>
-					{Array(4)
-						.fill(null)
-						.map((_, i) => (
-							<View
-								key={i}
-								style={[
-									styles.dot,
-									{
-										borderColor: brand,
-										backgroundColor: pin[i] === undefined ? brand08 : brand,
-									},
-								]}
-							/>
-						))}
+					<Dots />
 				</View>
 
 				<NumberPad
 					style={styles.numberpad}
 					type="simple"
-					onPress={handleOnPress}
+					onPress={handleNumberPress}
 				/>
 			</View>
 		</View>
@@ -116,27 +67,22 @@ const styles = StyleSheet.create({
 		marginTop: 42,
 		flex: 1,
 	},
-	forgotPin: {
-		flexDirection: 'row',
-		flexWrap: 'wrap',
-		justifyContent: 'center',
-	},
 	dots: {
-		flexDirection: 'row',
-		justifyContent: 'center',
 		marginTop: 16,
 		marginBottom: 32,
-	},
-	dot: {
-		width: 20,
-		height: 20,
-		borderRadius: 10,
-		marginHorizontal: 12,
-		borderWidth: 1,
 	},
 	numberpad: {
 		marginTop: 'auto',
 		maxHeight: 350,
+	},
+	attempts: {
+		flexDirection: 'row',
+		flexWrap: 'wrap',
+		justifyContent: 'center',
+		paddingHorizontal: 16,
+	},
+	attemptsRemaining: {
+		textAlign: 'center',
 	},
 });
 

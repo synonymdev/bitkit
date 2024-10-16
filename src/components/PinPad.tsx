@@ -1,31 +1,21 @@
-import React, {
-	memo,
-	ReactElement,
-	useState,
-	useEffect,
-	useCallback,
-} from 'react';
-import { StyleSheet, View, Pressable } from 'react-native';
-import { FadeIn, FadeOut } from 'react-native-reanimated';
+import React, { ReactElement, memo, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Pressable, StyleSheet, View } from 'react-native';
+import { FadeIn, FadeOut } from 'react-native-reanimated';
 
-import { BodyS, Subtitle } from '../styles/text';
-import { View as ThemedView, AnimatedView } from '../styles/components';
-import { FaceIdIcon, TouchIdIcon } from '../styles/icons';
-import SafeAreaInset from './SafeAreaInset';
-import NavigationHeader from './NavigationHeader';
-import { IsSensorAvailableResult } from './Biometrics';
-import NumberPad from './NumberPad';
-import Button from './buttons/Button';
-import useColors from '../hooks/colors';
-import { wipeApp } from '../store/utils/settings';
-import { showBottomSheet } from '../store/utils/ui';
-import { vibrate } from '../utils/helpers';
-import rnBiometrics from '../utils/biometrics';
-import { showToast } from '../utils/notifications';
-import { setKeychainValue, getKeychainValue } from '../utils/keychain';
 import BitkitLogo from '../assets/bitkit-logo.svg';
 import { PIN_ATTEMPTS } from '../constants/app';
+import usePIN from '../hooks/pin';
+import { showBottomSheet } from '../store/utils/ui';
+import { AnimatedView, View as ThemedView } from '../styles/components';
+import { FaceIdIcon, TouchIdIcon } from '../styles/icons';
+import { BodyS, Subtitle } from '../styles/text';
+import rnBiometrics from '../utils/biometrics';
+import { IsSensorAvailableResult } from './Biometrics';
+import NavigationHeader from './NavigationHeader';
+import NumberPad from './NumberPad';
+import SafeAreaInset from './SafeAreaInset';
+import Button from './buttons/Button';
 
 const PinPad = ({
 	showLogoOnPIN,
@@ -37,121 +27,21 @@ const PinPad = ({
 	showLogoOnPIN: boolean;
 	allowBiometrics: boolean;
 	showBackNavigation?: boolean;
-	onSuccess: () => void;
+	onSuccess?: () => void;
 	onShowBiotmetrics?: () => void;
 }): ReactElement => {
 	const { t } = useTranslation('security');
-	const { brand, brand08 } = useColors();
-	const [pin, setPin] = useState('');
-	const [isLoading, setIsLoading] = useState(true);
-	const [attemptsRemaining, setAttemptsRemaining] = useState(0);
 	const [biometryData, setBiometricData] = useState<IsSensorAvailableResult>();
-
-	const handleOnPress = (key: string): void => {
-		vibrate();
-		if (key === 'delete') {
-			setPin((p) => {
-				return p.length === 0 ? '' : p.slice(0, -1);
-			});
-		} else {
-			setPin((p) => {
-				return p.length === 4 ? p : p + key;
-			});
-		}
-	};
-
-	// Reduce the amount of pin attempts remaining.
-	const reducePinAttemptsRemaining = useCallback(async (): Promise<void> => {
-		const _attemptsRemaining = attemptsRemaining - 1;
-		await setKeychainValue({
-			key: 'pinAttemptsRemaining',
-			value: `${_attemptsRemaining}`,
-		});
-		setAttemptsRemaining(_attemptsRemaining);
-	}, [attemptsRemaining]);
-
-	// init view
-	useEffect(() => {
-		(async (): Promise<void> => {
-			const attemptsRemainingResponse = await getKeychainValue({
-				key: 'pinAttemptsRemaining',
-			});
-
-			if (
-				!attemptsRemainingResponse.error &&
-				Number(attemptsRemainingResponse.data) !== Number(attemptsRemaining)
-			) {
-				let numAttempts =
-					attemptsRemainingResponse.data !== undefined
-						? Number(attemptsRemainingResponse.data)
-						: 5;
-				setAttemptsRemaining(numAttempts);
-			}
-		})();
-	}, [attemptsRemaining]);
+	const { attemptsRemaining, Dots, handleNumberPress, isLastAttempt, loading } =
+		usePIN(onSuccess);
 
 	// on mount
 	useEffect(() => {
 		(async (): Promise<void> => {
-			setIsLoading(true);
-			// wait for initial keychain read
-			await getKeychainValue({ key: 'pinAttemptsRemaining' });
-			// get available biometrics
 			const data = await rnBiometrics.isSensorAvailable();
 			setBiometricData(data);
-			setIsLoading(false);
 		})();
 	}, []);
-
-	// submit pin
-	useEffect(() => {
-		const timer = setTimeout(async () => {
-			if (pin.length !== 4) {
-				return;
-			}
-
-			const realPIN = await getKeychainValue({ key: 'pin' });
-
-			// error getting pin
-			if (realPIN.error) {
-				await reducePinAttemptsRemaining();
-				vibrate();
-				setPin('');
-				return;
-			}
-
-			// incorrect pin
-			if (pin !== realPIN?.data) {
-				if (attemptsRemaining <= 1) {
-					vibrate({ type: 'default' });
-					await wipeApp();
-					showToast({
-						type: 'warning',
-						title: t('wiped_title'),
-						description: t('wiped_message'),
-					});
-				} else {
-					await reducePinAttemptsRemaining();
-				}
-
-				vibrate();
-				setPin('');
-				return;
-			}
-
-			// correct pin
-			await setKeychainValue({
-				key: 'pinAttemptsRemaining',
-				value: PIN_ATTEMPTS,
-			});
-			setPin('');
-			onSuccess?.();
-		}, 500);
-
-		return (): void => clearTimeout(timer);
-	}, [pin, attemptsRemaining, onSuccess, reducePinAttemptsRemaining, t]);
-
-	const isLastAttempt = attemptsRemaining === 1;
 
 	const biometricsName =
 		biometryData?.biometryType === 'TouchID'
@@ -172,7 +62,7 @@ const PinPad = ({
 				</View>
 
 				<View style={styles.content}>
-					{!isLoading && (
+					{!loading && biometryData !== undefined && (
 						<AnimatedView
 							style={styles.contentInner}
 							color="transparent"
@@ -210,6 +100,7 @@ const PinPad = ({
 									<Button
 										style={styles.biometrics}
 										text={t('pin_use_biometrics', { biometricsName })}
+										onPress={onShowBiotmetrics}
 										icon={
 											biometryData?.biometryType === 'FaceID' ? (
 												<FaceIdIcon height={16} width={16} color="brand" />
@@ -217,33 +108,18 @@ const PinPad = ({
 												<TouchIdIcon height={16} width={16} color="brand" />
 											)
 										}
-										onPress={onShowBiotmetrics}
 									/>
 								)}
 							</View>
 
 							<View style={styles.dots}>
-								{Array(4)
-									.fill(null)
-									.map((_, i) => (
-										<View
-											key={i}
-											style={[
-												styles.dot,
-												{
-													borderColor: brand,
-													backgroundColor:
-														pin[i] === undefined ? brand08 : brand,
-												},
-											]}
-										/>
-									))}
+								<Dots />
 							</View>
 
 							<NumberPad
 								style={styles.numberpad}
 								type="simple"
-								onPress={handleOnPress}
+								onPress={handleNumberPress}
 							/>
 						</AnimatedView>
 					)}
@@ -302,13 +178,6 @@ const styles = StyleSheet.create({
 		marginBottom: 16,
 	},
 	dots: {
-		flexDirection: 'row',
-		justifyContent: 'center',
-		marginBottom: 48,
-	},
-	dot: {
-		width: 20,
-		height: 20,
 		borderRadius: 10,
 		marginHorizontal: 12,
 		borderWidth: 1,
