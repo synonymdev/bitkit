@@ -1,4 +1,4 @@
-import Keychain from '@synonymdev/react-native-keychain';
+import Keychain from 'react-native-keychain-manager';
 import { err, ok, Result } from '@synonymdev/result';
 import { IResponse } from './types';
 
