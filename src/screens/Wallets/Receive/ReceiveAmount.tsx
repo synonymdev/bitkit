@@ -23,6 +23,7 @@ import { updateInvoice } from '../../../store/slices/receive';
 import { receiveSelector } from '../../../store/reselect/receive';
 import { estimateOrderFee } from '../../../utils/blocktank';
 import { getNumberPadText } from '../../../utils/numberpad';
+import { showToast } from '../../../utils/notifications';
 import { blocktankInfoSelector } from '../../../store/reselect/blocktank';
 import { refreshBlocktankInfo } from '../../../store/utils/blocktank';
 import {
@@ -63,11 +64,17 @@ const ReceiveAmount = ({
 				// add 10% buffer and round up to the nearest 1000 to avoid fee fluctuations
 				const minimum = Math.ceil((feeResult.value * 1.1) / 1000) * 1000;
 				setMinimumAmount(minimum);
+			} else {
+				showToast({
+					type: 'error',
+					title: t('receive_cjit_error'),
+					description: feeResult.error.message,
+				});
 			}
 		};
 
 		getFeeEstimation();
-	}, [channelSize]);
+	}, [t, channelSize]);
 
 	const onMinimum = (): void => {
 		const result = getNumberPadText(minimumAmount, denomination, unit);
@@ -89,7 +96,9 @@ const ReceiveAmount = ({
 	};
 
 	const continueDisabled =
-		invoice.amount < minimumAmount || invoice.amount > channelSize;
+		invoice.amount < minimumAmount ||
+		invoice.amount > channelSize ||
+		minimumAmount === 0;
 
 	return (
 		<GradientView style={styles.container}>

@@ -1,5 +1,5 @@
 import React, { memo, ReactElement, useEffect, useState } from 'react';
-import { StyleSheet, View, Image } from 'react-native';
+import { StyleSheet, View, Image, ActivityIndicator } from 'react-native';
 import { Trans, useTranslation } from 'react-i18next';
 
 import { Caption13Up, BodyMB, BodyM } from '../../../styles/text';
@@ -33,6 +33,7 @@ const ReceiveConnect = ({
 	const lightningBalance = useLightningBalance(true);
 	const [feeEstimate, setFeeEstimate] = useState(0);
 	const [isLoading, setIsLoading] = useState(false);
+	const [isLoadingFee, setIsLoadingFee] = useState(false);
 	const dispatch = useAppDispatch();
 	const blocktank = useAppSelector(blocktankInfoSelector);
 	const { amount, message } = useAppSelector(receiveSelector);
@@ -47,14 +48,22 @@ const ReceiveConnect = ({
 
 	useEffect(() => {
 		const getFeeEstimation = async (): Promise<void> => {
+			setIsLoadingFee(true);
 			const estimate = await estimateOrderFee({ lspBalance });
 			if (estimate.isOk()) {
 				setFeeEstimate(estimate.value);
+			} else {
+				showToast({
+					type: 'error',
+					title: t('receive_cjit_error'),
+					description: estimate.error.message,
+				});
 			}
+			setIsLoadingFee(false);
 		};
 
 		getFeeEstimation();
-	}, [lspBalance]);
+	}, [t, lspBalance]);
 
 	const onMore = (): void => {
 		navigation.navigate('Liquidity', {
@@ -95,34 +104,44 @@ const ReceiveConnect = ({
 			<View style={styles.content}>
 				<AmountToggle amount={amount} />
 
-				<BodyM style={styles.text} color="secondary">
-					<Trans
-						t={t}
-						i18nKey={
-							isInitial
-								? 'receive_connect_initial'
-								: 'receive_connect_additional'
-						}
-						components={{ accent: <BodyMB color="white" /> }}
-						values={{ lspFee: `${fiatSymbol}${displayFee.fiatFormatted}` }}
-					/>
-				</BodyM>
+				{feeEstimate > 0 && (
+					<>
+						<BodyM style={styles.text} color="secondary">
+							<Trans
+								t={t}
+								i18nKey={
+									isInitial
+										? 'receive_connect_initial'
+										: 'receive_connect_additional'
+								}
+								components={{ accent: <BodyMB color="white" /> }}
+								values={{ lspFee: `${fiatSymbol}${displayFee.fiatFormatted}` }}
+							/>
+						</BodyM>
 
-				<View style={styles.payAmount}>
-					<Caption13Up style={styles.payAmountText} color="secondary">
-						{t('receive_will')}
-					</Caption13Up>
-					<Money
-						sats={payAmount}
-						size="title"
-						symbol={true}
-						testID="AvailableAmount"
-					/>
-				</View>
+						<View style={styles.payAmount}>
+							<Caption13Up style={styles.payAmountText} color="secondary">
+								{t('receive_will')}
+							</Caption13Up>
+							<Money
+								sats={payAmount}
+								size="title"
+								symbol={true}
+								testID="AvailableAmount"
+							/>
+						</View>
 
-				<View style={styles.imageContainer}>
-					<Image style={styles.image} source={imageSrc} />
-				</View>
+						<View style={styles.imageContainer}>
+							<Image style={styles.image} source={imageSrc} />
+						</View>
+					</>
+				)}
+
+				{isLoadingFee && (
+					<View style={styles.indicator}>
+						<ActivityIndicator color="white" size="large" />
+					</View>
+				)}
 
 				<View style={styles.buttonContainer}>
 					<Button
@@ -132,6 +151,7 @@ const ReceiveConnect = ({
 						variant="secondary"
 						testID="ReceiveConnectMore"
 						onPress={onMore}
+						disabled={feeEstimate === 0}
 					/>
 					<Button
 						style={styles.button}
@@ -140,6 +160,7 @@ const ReceiveConnect = ({
 						loading={isLoading}
 						testID="ReceiveConnectContinue"
 						onPress={onContinue}
+						disabled={feeEstimate === 0}
 					/>
 				</View>
 			</View>
@@ -176,6 +197,10 @@ const styles = StyleSheet.create({
 	image: {
 		flex: 1,
 		resizeMode: 'contain',
+	},
+	indicator: {
+		marginTop: 'auto',
+		marginBottom: 'auto',
 	},
 	buttonContainer: {
 		flexDirection: 'row',
