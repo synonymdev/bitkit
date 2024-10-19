@@ -547,7 +547,7 @@
       "string": "Índice: {index}"
     },
     "path": {
-      "string": "Caminho: {caminho}"
+      "string": "Caminho: {path}"
     },
     "private_hide": {
       "string": "Ocultar Chave Privada"

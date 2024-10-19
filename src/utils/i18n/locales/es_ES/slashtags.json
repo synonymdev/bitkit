@@ -9,7 +9,7 @@
     "string": "Nombre de contacto"
   },
   "contact": {
-    "string": "Contactar"
+    "string": "Contacto"
   },
   "contacts": {
     "string": "Contactos"
@@ -187,8 +187,5 @@
   },
   "widget_delete_desc": {
     "string": "¿Está seguro de querer borrar ‘{name}‘ de sus widgets?"
-  },
-  "error_pay_empty_msg": {
-    "string": "Este contacto no tiene información de pago"
   }
 }

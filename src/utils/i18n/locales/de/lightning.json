@@ -112,7 +112,7 @@
         "string": "Maximaler Ausgabensaldo"
       },
       "description": {
-        "string": "Der Betrag, den Sie auf Ihr Ausgabenkonto übertragen können, ist derzeit auf ₿ {Betrag} begrenzt."
+        "string": "Der Betrag, den Sie auf Ihr Ausgabenkonto übertragen können, ist derzeit auf ₿ {amount} begrenzt."
       }
     }
   },

@@ -278,9 +278,6 @@
   "cp_text": {
     "string": "Vous pouvez remplacer votre code PIN par une nouvelle\ncombinaison de 4 chiffres. Veuillez d'abord introduire votre code PIN actuel."
   },
-  "cp_forgot": {
-    "string": "Vous avez oublié votre code PIN ?"
-  },
   "cp_retype_title": {
     "string": "Confirmer le nouveau code PIN"
   },

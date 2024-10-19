@@ -149,6 +149,9 @@
   "pin_send": {
     "string": "Pro potvrzení a odeslání této platby prosím zadejte svůj PIN kód."
   },
+  "pin_send_title": {
+    "string": "Zadejte kód PIN"
+  },
   "pin_use_biometrics": {
     "string": "Použít {biometricsName}"
   },
@@ -277,9 +280,6 @@
   },
   "cp_text": {
     "string": "Svůj PIN kód můžete změnit na novou\n4místnou kombinaci. Nejprve zadejte svůj aktuální PIN kód."
-  },
-  "cp_forgot": {
-    "string": "Zapomněli jste svůj PIN?"
   },
   "cp_retype_title": {
     "string": "Znovu zadejte nový PIN"

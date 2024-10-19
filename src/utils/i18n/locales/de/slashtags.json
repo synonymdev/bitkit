@@ -240,7 +240,7 @@
     "string": "Kontakt konnte nicht bezahlt werden"
   },
   "error_pay_empty_msg": {
-    "string": "Dieser Kontakt hat keine Zahlungsdaten."
+    "string": "Der Kontakt, an den Sie zu senden versuchen, hat keine Zahlungen aktiviert."
   },
   "auth_depricated_title": {
     "string": "Abgelehnt"

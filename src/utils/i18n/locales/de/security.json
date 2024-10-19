@@ -149,6 +149,9 @@
   "pin_send": {
     "string": "Bitte gib deinen PIN-Code ein, um diese Zahlung zu bestätigen und zu senden."
   },
+  "pin_send_title": {
+    "string": "PIN-Code eingeben"
+  },
   "pin_use_biometrics": {
     "string": "Verwende {biometricsName}"
   },
@@ -277,9 +280,6 @@
   },
   "cp_text": {
     "string": "Du kannst deinen PIN-Code in eine neue\n4-Ziffern-Kombination ändern. Bitte gib zuerst deinen aktuellen PIN-Code ein."
-  },
-  "cp_forgot": {
-    "string": "PIN vergessen?"
   },
   "cp_retype_title": {
     "string": "Neuen PIN erneut eingeben"

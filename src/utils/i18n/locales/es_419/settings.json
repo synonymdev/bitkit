@@ -344,7 +344,7 @@
       "string": "Índice: {index}"
     },
     "path": {
-      "string": "Ruta: {ruta}"
+      "string": "Ruta: {path}"
     },
     "private_hide": {
       "string": "Ocultar clave privada"

@@ -391,7 +391,7 @@
     "string": "Zum Ausgabenkonto"
   },
   "activity_transfer_pending": {
-    "string": "Übertragung (±{Dauer})"
+    "string": "Übertragung (±{duration})"
   },
   "activity_confirms_in": {
     "string": "Bestätigungen in {feeRateDescription}"
@@ -648,7 +648,7 @@
         "string": "Zu niedriger Betrag"
       },
       "description": {
-        "string": "Der Mindestbetrag für diese Rechnung beträgt ₿ {Betrag}."
+        "string": "Der Mindestbetrag für diese Rechnung beträgt ₿ {amount}."
       }
     }
   },

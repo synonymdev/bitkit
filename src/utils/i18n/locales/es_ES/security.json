@@ -2,6 +2,9 @@
   "backup_wallet": {
     "string": "Copia de seguridad de la cartera"
   },
+  "backup_title": {
+    "string": "<accent>Resguarda</accent> tus Bitcoin"
+  },
   "backup_funds": {
     "string": "Ahora que tiene fondos en su cartera, ¡és el momento de hacer una copia de seguridad de su dinero!"
   },
@@ -117,7 +120,7 @@
     "string": "¿Ha olvidado su PIN? Reinicie y recupere su monedero Bitkit con su frase de recuperación. Establezca un nuevo PIN después de completar la recuperación."
   },
   "pin_forgot_reset": {
-    "string": "Reempezar a los padrones iniciales (requiere frase de recuperación)"
+    "string": "Restablecer (requiere frase de recuperación)"
   },
   "pin_send": {
     "string": "Por favor, introduzca su código PIN para confirmar y enviar este pago."
@@ -177,7 +180,7 @@
     "string": "Restablecer cartera"
   },
   "reset_dialog_title": {
-    "string": "¿Restablecer Bitkit a los padrones iniciales?"
+    "string": "¿Restablecer Bitkit a los parámetros iniciales?"
   },
   "reset_dialog_desc": {
     "string": "¿Está seguro de que desea restablecer su monedero Bitkit? ¿Tiene una copia de seguridad de su frase de recuperación y de los datos de su monedero?"
@@ -232,9 +235,6 @@
   },
   "cp_text": {
     "string": "Puede cambiar su código PIN por una nueva\ncombinación de 4 dígitos. Por favor, introduzca primero su código PIN actual."
-  },
-  "cp_forgot": {
-    "string": "¿Ha olvidado su PIN?"
   },
   "cp_retype_title": {
     "string": "Reintroducir nuevo PIN"

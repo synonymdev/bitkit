@@ -9,6 +9,11 @@
       "string": "Comparta Bitkit"
     }
   },
+  "lightning": {
+    "description": {
+      "string": "Pagos instantáneos"
+    }
+  },
   "lightningSettingUp": {
     "title": {
       "string": "Transferir"
@@ -47,6 +52,9 @@
     }
   },
   "pin": {
+    "title": {
+      "string": "PROTEGER"
+    },
     "description": {
       "string": "Establezca un código PIN"
     }

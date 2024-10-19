@@ -240,7 +240,7 @@
     "string": "Není možné zaplatit kontaktu"
   },
   "error_pay_empty_msg": {
-    "string": "Tento kontakt nemá žádné platební údaje."
+    "string": "Kontakt, kterému se snažíte odeslat platbu, nemá platby povolené."
   },
   "auth_depricated_title": {
     "string": "Nedoporučený"

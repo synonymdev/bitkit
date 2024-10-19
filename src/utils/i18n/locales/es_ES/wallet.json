@@ -238,6 +238,9 @@
   "receive_cjit_error": {
     "string": "Transacción ha fallado"
   },
+  "receive_cjit_error_msg": {
+    "string": "Fallo al enviar fondos a la cuenta de gastos."
+  },
   "receive_will": {
     "string": "Recibirás"
   },
@@ -401,7 +404,7 @@
       "string": "Ahorro"
     },
     "onboarding": {
-      "string": "1Envía\nbitcoin1\na tu\nsaldo de ahorros"
+      "string": "<accent>Envía\nbitcoin</accent>\na tu\nsaldo de ahorros"
     }
   },
   "spending": {

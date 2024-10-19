@@ -170,9 +170,6 @@
   "cp_title": {
     "string": "Canvia el PIN"
   },
-  "cp_forgot": {
-    "string": "Has oblidat el teu codi PIN?"
-  },
   "cp_retype_title": {
     "string": "Torna a escriure el nou PIN"
   },

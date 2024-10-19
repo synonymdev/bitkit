@@ -48,7 +48,7 @@
     "string": "O Bitkit não conseguiu ler sua frase de recuperação."
   },
   "mnemonic_write": {
-    "string": "Anote essas palavras {comprimento} na ordem correta e guarde-as em um local seguro."
+    "string": "Anote essas palavras {length} na ordem correta e guarde-as em um local seguro."
   },
   "mnemonic_use": {
     "string": "Use as 12 palavras abaixo para recuperar seu dinheiro em uma data posterior."
@@ -277,9 +277,6 @@
   },
   "cp_text": {
     "string": "Você pode alterar seu código PIN para uma nova\ncombinação de 4 dígitos. Primeiro, digite seu código PIN atual."
-  },
-  "cp_forgot": {
-    "string": "Esqueceu seu PIN?"
   },
   "cp_retype_title": {
     "string": "Digite novamente o novo PIN"

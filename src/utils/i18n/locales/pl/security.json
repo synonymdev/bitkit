@@ -203,9 +203,6 @@
   "cp_title": {
     "string": "Zmień kod PIN"
   },
-  "cp_forgot": {
-    "string": "Zapomniałeś kod PIN?"
-  },
   "cp_retype_title": {
     "string": "Wpisz ponownie kod PIN"
   },

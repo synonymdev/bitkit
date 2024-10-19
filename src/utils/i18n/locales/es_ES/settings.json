@@ -170,6 +170,9 @@
     "category_connections": {
       "string": "Conexiones"
     },
+    "category_connection_receipts": {
+      "string": "Registro de Conexiones"
+    },
     "category_transaction_log": {
       "string": "Registro de Transacciones"
     },
@@ -448,7 +451,7 @@
       "string": "Cambiar direcciones"
     },
     "addr_receiving": {
-      "string": "Direcciones de recibimiento"
+      "string": "Direcciones de recepción"
     },
     "gen_20": {
       "string": "Generar 20 más"
@@ -462,13 +465,13 @@
   },
   "es": {
     "error_host_port": {
-      "string": "Especifique un host y una puerta al que conectarse."
+      "string": "Especifique un servidor y un puerto al que conectarse."
     },
     "error_host": {
       "string": "Por favor, especifique un host para conectarse."
     },
     "error_port": {
-      "string": "Especifique una puerta para conectarse."
+      "string": "Especifique un puerto para conectarse."
     },
     "error_port_invalid": {
       "string": "Indica un puerto válido."
@@ -492,7 +495,7 @@
       "string": "desconectado"
     },
     "host": {
-      "string": "Anfitrión"
+      "string": "Servidor"
     },
     "port": {
       "string": "Puerta"
@@ -504,12 +507,12 @@
       "string": "Restablecer configuraciones iniciales"
     },
     "button_connect": {
-      "string": "Conectar con el anfitrión"
+      "string": "Conectar con el servidor"
     }
   },
   "gap": {
     "save": {
-      "string": "Guarde"
+      "string": "Guardar"
     }
   },
   "rgs": {

@@ -3,6 +3,9 @@
     "title": {
       "string": "Saldo de\n<accent>Gasto</accent>"
     },
+    "text": {
+      "string": "Rellene el saldo de gasto para disfrutar de transacciones baratas e instantáneas con amigos, familia y comerciantes."
+    },
     "button": {
       "string": "Empezar"
     }
@@ -12,7 +15,7 @@
       "string": "Saldo de gastos"
     },
     "title": {
-      "string": "Financie su <accent>saldo de gastos</accent>"
+      "string": "Rellene su <accent>saldo de gastos</accent>"
     },
     "text": {
       "string": "Puede usar sus ahorros en Bitkit o enviar bitcoin desde un monedero diferente."
@@ -55,6 +58,9 @@
     }
   },
   "spending_intro": {
+    "text": {
+      "string": "Transfiera fondos a su saldo de gasto para disfrutar de transacciones baratas e instantáneas con amigos, familia y comerciantes."
+    },
     "button": {
       "string": "Empezar"
     }

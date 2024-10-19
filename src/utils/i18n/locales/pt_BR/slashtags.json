@@ -239,9 +239,6 @@
   "error_pay_title": {
     "string": "Não foi Possível Pagar Contato"
   },
-  "error_pay_empty_msg": {
-    "string": "Esse contato não possui dados de pagamento."
-  },
   "auth_depricated_title": {
     "string": "Desativado"
   },

@@ -278,9 +278,6 @@
   "cp_text": {
     "string": "U kunt de 4 cijfers van uw pincode veranderen. Voer dan eerst uw huidige pincode in. "
   },
-  "cp_forgot": {
-    "string": "Pincode vergeten?"
-  },
   "cp_retype_title": {
     "string": "Voer De Nieuwe Pincode Nogmaals In"
   },
