@@ -33,7 +33,7 @@
     "string": "Вы не можете добавить себя."
   },
   "contact_error_key": {
-    "string": "Невалидный ключ."
+    "string": "Недействительный ключ."
   },
   "contact_edit_capital": {
     "string": "Изменить Контакт"
@@ -95,6 +95,9 @@
   "onboarding_profile1_header": {
     "string": "Владейте своим\n<accent>профилем</accent>"
   },
+  "onboarding_profile1_text": {
+    "string": "Настройте свой публичный профиль и ссылки, чтобы ваши контакты Bitkit могли связаться с вами или заплатить вам в любое время и в любом месте."
+  },
   "onboarding_profile2_header": {
     "string": "Платите <accent>контактам\nBitkit</accent>"
   },
@@ -150,7 +153,7 @@
     "string": "Рекомендации для добавления"
   },
   "profile_scan_to_add": {
-    "string": "Сканируйте чтобы добавить {name}"
+    "string": "Сканируйте, чтобы добавить {name}"
   },
   "profile_edit": {
     "string": "Редактировать Профиль"
@@ -219,13 +222,13 @@
     "string": "Предпросмотр"
   },
   "widget_delete_yes": {
-    "string": "Да,\nУдалить"
+    "string": "Да, Удалить"
   },
   "widget_delete_title": {
     "string": "Удалить виджет?"
   },
   "widget_delete_desc": {
-    "string": "Вы уверены, что хотите удалить {name} из виджетов?"
+    "string": "Вы уверены, что хотите удалить «{name}» из ваших виджетов?"
   },
   "error_saving_contact": {
     "string": "Не удалось сохранить контакт"

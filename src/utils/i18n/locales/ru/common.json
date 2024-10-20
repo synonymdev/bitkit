@@ -54,7 +54,7 @@
     "string": "Удалить"
   },
   "ok": {
-    "string": "Ок"
+    "string": "ОК"
   },
   "retry": {
     "string": "Повторить"
@@ -81,10 +81,16 @@
     "string": "Узнать больше"
   },
   "understood": {
-    "string": "Понял"
+    "string": "Понятно"
   },
   "connect": {
     "string": "Подключиться"
+  },
+  "min": {
+    "string": "Мин"
+  },
+  "max": {
+    "string": "Макс"
   },
   "default": {
     "string": "По умолчанию"
