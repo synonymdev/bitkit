@@ -519,7 +519,9 @@ export const subscribeToLightningPayments = ({
 
 				// Check if this is a CJIT Entry that needs to be added to the activity list.
 				addCJitActivityItem(res.channel_id).then();
-				// we need to sync the ledger because TChannelUpdate doesn't have enough data
+				// Refresh to update balance
+				refreshLdk();
+				// We need to sync the ledger because TChannelUpdate doesn't have enough data
 				syncLedger();
 			},
 		);
