@@ -7,6 +7,7 @@ import React, {
 } from 'react';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { FadeIn, FadeOut } from 'react-native-reanimated';
 
 import AmountToggle from '../../../components/AmountToggle';
 import Biometrics from '../../../components/Biometrics';
@@ -16,6 +17,7 @@ import LightningSyncing from '../../../components/LightningSyncing';
 import SafeAreaInset from '../../../components/SafeAreaInset';
 import SwipeToConfirm from '../../../components/SwipeToConfirm';
 import useColors from '../../../hooks/colors';
+import useKeyboard, { Keyboard } from '../../../hooks/keyboard';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 import type { SendScreenProps } from '../../../navigation/types';
 import {
@@ -25,7 +27,7 @@ import {
 } from '../../../store/reselect/settings';
 import { addPendingPayment } from '../../../store/slices/lightning';
 import { EActivityType } from '../../../store/types/activity';
-import { BottomSheetTextInput } from '../../../styles/components';
+import { AnimatedView, BottomSheetTextInput } from '../../../styles/components';
 import { Checkmark, LightningHollow } from '../../../styles/icons';
 import { BodySSB, Caption13Up } from '../../../styles/text';
 import { FeeText } from '../../../utils/fees';
@@ -34,7 +36,6 @@ import {
 	payLightningInvoice,
 } from '../../../utils/lightning';
 import { handleLnurlPay } from '../../../utils/lnurl';
-import { Keyboard } from '../../../hooks/keyboard';
 
 const Section = memo(
 	({
@@ -67,6 +68,7 @@ const LNURLConfirm = ({
 }: SendScreenProps<'LNURLConfirm'>): ReactElement => {
 	const { t } = useTranslation('wallet');
 	const { amount, pParams, url } = route.params;
+	const { keyboardShown } = useKeyboard();
 	const dispatch = useAppDispatch();
 	const pin = useAppSelector(pinSelector);
 	const pinForPayments = useAppSelector(pinForPaymentsSelector);
@@ -183,33 +185,43 @@ const LNURLConfirm = ({
 						onPress={fixedAmount ? undefined : handleGoBack}
 					/>
 
-					<View style={styles.sectionContainer}>
-						<Section
-							title={t('send_invoice')}
-							value={
-								<BodySSB numberOfLines={1} ellipsizeMode="middle">
-									{url}
-								</BodySSB>
-							}
-						/>
-					</View>
+					{!keyboardShown && (
+						<AnimatedView
+							style={styles.sectionContainer}
+							entering={FadeIn}
+							exiting={FadeOut}>
+							<Section
+								title={t('send_invoice')}
+								value={
+									<BodySSB numberOfLines={1} ellipsizeMode="middle">
+										{url}
+									</BodySSB>
+								}
+							/>
+						</AnimatedView>
+					)}
 
-					<View style={styles.sectionContainer}>
-						<Section
-							title={t('send_fee_and_speed')}
-							value={
-								<>
-									<LightningHollow
-										style={styles.icon}
-										color="purple"
-										height={16}
-										width={16}
-									/>
-									<BodySSB>{FeeText.instant.title} (±$0.01)</BodySSB>
-								</>
-							}
-						/>
-					</View>
+					{!keyboardShown && (
+						<AnimatedView
+							style={styles.sectionContainer}
+							entering={FadeIn}
+							exiting={FadeOut}>
+							<Section
+								title={t('send_fee_and_speed')}
+								value={
+									<>
+										<LightningHollow
+											style={styles.icon}
+											color="purple"
+											height={16}
+											width={16}
+										/>
+										<BodySSB>{FeeText.instant.title} (±$0.01)</BodySSB>
+									</>
+								}
+							/>
+						</AnimatedView>
+					)}
 
 					{pParams.commentAllowed > 0 && (
 						<View style={styles.sectionContainer}>
