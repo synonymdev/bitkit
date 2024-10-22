@@ -34,6 +34,7 @@ import {
 	payLightningInvoice,
 } from '../../../utils/lightning';
 import { handleLnurlPay } from '../../../utils/lnurl';
+import { Keyboard } from '../../../hooks/keyboard';
 
 const Section = memo(
 	({
@@ -160,6 +161,12 @@ const LNURLConfirm = ({
 		}
 	}, [pin, pinForPayments, biometrics, handlePay, navigateToPin]);
 
+	const handleGoBack = useCallback(async () => {
+		// make sure Keyboard is closed before navigating back to prevent layout bugs
+		await Keyboard.dismiss();
+		navigation.goBack();
+	}, [navigation]);
+
 	const fixedAmount = pParams.minSendable === pParams.maxSendable;
 
 	return (
@@ -173,7 +180,7 @@ const LNURLConfirm = ({
 					<AmountToggle
 						style={styles.amountToggle}
 						amount={amount}
-						onPress={fixedAmount ? undefined : navigation.goBack}
+						onPress={fixedAmount ? undefined : handleGoBack}
 					/>
 
 					<View style={styles.sectionContainer}>
