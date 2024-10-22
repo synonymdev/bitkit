@@ -94,9 +94,7 @@ const LNURLConfirm = ({
 			return;
 		}
 
-		const decodeInvoiceResponse = await decodeLightningInvoice({
-			paymentRequest: invoice.value,
-		});
+		const decodeInvoiceResponse = await decodeLightningInvoice(invoice.value);
 		if (decodeInvoiceResponse.isErr()) {
 			setIsLoading(false);
 			onError(decodeInvoiceResponse.error.message);

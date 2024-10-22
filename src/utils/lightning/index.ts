@@ -136,6 +136,40 @@ let onChannelClose: EmitterSubscription | undefined;
 let onBackupStateUpdate: EmitterSubscription | undefined;
 
 /**
+ * Checks if a string is a plain LN URI.
+ * @param {string} uri
+ * @returns {boolean}
+ */
+export const isLightningUri = (uri: string): boolean => {
+	return (
+		uri.toLowerCase().indexOf('lightning:') > -1 ||
+		uri.toLowerCase().startsWith('lntb') ||
+		uri.toLowerCase().startsWith('lnbc')
+	);
+};
+
+/**
+ * Strips only the invoice from a Lightning URI.
+ * @param {string} uri
+ * @returns {string} invoice
+ */
+export const getInvoiceFromUri = (uri: string): string => {
+	// remove "lightning:" and everything to the left of it.
+	let invoice = uri
+		.replace(/^.*?(lightning:)/i, '')
+		.trim()
+		.toLowerCase();
+
+	// Assume invoice
+	// Ignore params if there are any, all details can be derived from invoice
+	if (invoice.indexOf('?') > -1) {
+		invoice = invoice.split('?')[0];
+	}
+
+	return invoice;
+};
+
+/**
  * Wipes LDK data from storage
  * @returns {Promise<Result<string>>}
  */
@@ -1457,9 +1491,9 @@ export const getSentLightningPayments = async (): Promise<
 	TChannelManagerPaymentSent[]
 > => lm.getLdkPaymentsSent();
 
-export const decodeLightningInvoice = ({
-	paymentRequest,
-}: TPaymentReq): Promise<Result<TInvoice>> => {
+export const decodeLightningInvoice = (
+	paymentRequest: TPaymentReq['paymentRequest'],
+): Promise<Result<TInvoice>> => {
 	paymentRequest = paymentRequest.replace('lightning:', '').trim();
 	return ldk.decode({ paymentRequest });
 };

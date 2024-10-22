@@ -1,5 +1,6 @@
 // run iPhone 14 on local machine, iPhone 15 Pro on mac mini
-const iOSDevice = process.env.MACMINI ? 'iPhone 15 Pro' : 'iPhone 14';
+// const iOSDevice = process.env.MACMINI ? 'iPhone 15 Pro' : 'iPhone 14';
+const iOSDevice = 'iPhone 15 Pro';
 
 const reversePorts = [3003, 8080, 8081, 9735, 10009, 28334, 28335, 28336, 30001, 39388, 43782, 60001];
 
@@ -53,7 +54,7 @@ module.exports = {
 		emulator: {
 			type: 'android.emulator',
 			device: {
-				avdName: 'Pixel_API_31_AOSP',
+				avdName: 'Pixel_7_API_34',
 			},
 		},
 	},

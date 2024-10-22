@@ -62,11 +62,22 @@
 	"send_done": {
 		"string": "DONE"
 	},
-	"send_availabe_spending": {
+	"send_available": {
+		"string": "Available"
+	},
+	"send_available_spending": {
 		"string": "Available (spending)"
 	},
-	"send_availabe_savings": {
+	"send_available_savings": {
 		"string": "Available (savings)"
+	},
+	"send_max_spending": {
+		"title": {
+			"string": "Reserve Balance"
+		},
+		"description": {
+			"string": "The maximum spendable amount is a bit lower due to a required reserve balance."
+		}
 	},
 	"send_review": {
 		"string": "Review & Send"

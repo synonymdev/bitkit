@@ -8,7 +8,7 @@ import SafeAreaInset from '../../../components/SafeAreaInset';
 import GradientView from '../../../components/GradientView';
 import Button from '../../../components/buttons/Button';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
-import { processInputData } from '../../../utils/scanner';
+import { processUri } from '../../../utils/scanner/scanner';
 import { showToast } from '../../../utils/notifications';
 import type { SendScreenProps } from '../../../navigation/types';
 import {
@@ -18,7 +18,6 @@ import {
 import { closeSheet } from '../../../store/slices/ui';
 import {
 	selectedNetworkSelector,
-	selectedWalletSelector,
 	transactionSelector,
 } from '../../../store/reselect/wallet';
 
@@ -29,7 +28,6 @@ const Error = ({
 	const { t } = useTranslation('wallet');
 	let { errorMessage } = route.params;
 	const dispatch = useAppDispatch();
-	const selectedWallet = useAppSelector(selectedWalletSelector);
 	const selectedNetwork = useAppSelector(selectedNetworkSelector);
 	const transaction = useAppSelector(transactionSelector);
 	const [loading, setLoading] = useState(false);
@@ -63,11 +61,10 @@ const Error = ({
 			setLoading(true);
 			await resetSendTransaction();
 			await setupOnChainTransaction({});
-			const res = await processInputData({
-				data: transaction.slashTagsUrl,
+			const res = await processUri({
+				uri: transaction.slashTagsUrl,
 				source: 'send',
 				selectedNetwork,
-				selectedWallet,
 				skip: ['lightningPaymentRequest'],
 			});
 			setLoading(false);

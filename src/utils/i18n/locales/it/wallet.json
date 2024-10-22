@@ -62,10 +62,10 @@
   "send_done": {
     "string": "FATTO"
   },
-  "send_availabe_spending": {
+  "send_available_spending": {
     "string": "Disponibile (spendere)"
   },
-  "send_availabe_savings": {
+  "send_available_savings": {
     "string": "Disponibile (risparmio)"
   },
   "send_review": {

@@ -6,14 +6,11 @@ import NavigationHeader from '../../../components/NavigationHeader';
 import GradientView from '../../../components/GradientView';
 import ContactsList from '../../../components/ContactsList';
 import { useAppSelector } from '../../../hooks/redux';
-import { processInputData } from '../../../utils/scanner';
+import { processUri } from '../../../utils/scanner/scanner';
 import { showToast } from '../../../utils/notifications';
 import type { SendScreenProps } from '../../../navigation/types';
 import type { IContactRecord } from '../../../store/types/slashtags';
-import {
-	selectedNetworkSelector,
-	selectedWalletSelector,
-} from '../../../store/reselect/wallet';
+import { selectedNetworkSelector } from '../../../store/reselect/wallet';
 import {
 	resetSendTransaction,
 	setupOnChainTransaction,
@@ -24,7 +21,6 @@ const Contacts = ({
 }: SendScreenProps<'Contacts'>): ReactElement => {
 	const { t } = useTranslation('slashtags');
 	const [loading, setLoading] = useState(false);
-	const selectedWallet = useAppSelector(selectedWalletSelector);
 	const selectedNetwork = useAppSelector(selectedNetworkSelector);
 
 	const handlePress = async (contact: IContactRecord): Promise<void> => {
@@ -32,11 +28,10 @@ const Contacts = ({
 		await resetSendTransaction();
 		await setupOnChainTransaction({});
 		setLoading(true);
-		const res = await processInputData({
-			data: contact.url,
+		const res = await processUri({
+			uri: contact.url,
 			source: 'send',
 			selectedNetwork,
-			selectedWallet,
 		});
 		setLoading(false);
 		if (res.isOk()) {

@@ -19,7 +19,7 @@ import {
 } from '@react-navigation/native-stack';
 
 import { NavigationContainer } from '../../styles/components';
-import { processInputData } from '../../utils/scanner';
+import { processUri } from '../../utils/scanner/scanner';
 import { checkClipboardData } from '../../utils/clipboard';
 import { useRenderCount } from '../../hooks/helpers';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
@@ -111,7 +111,7 @@ const RootNavigator = (): ReactElement => {
 			// Deep linking if the app is already open
 			const onReceiveURL = ({ url }: { url: string }): void => {
 				rootNavigation.navigate('Wallet');
-				processInputData({ data: url });
+				processUri({ uri: url });
 				return listener(url);
 			};
 
@@ -135,7 +135,7 @@ const RootNavigator = (): ReactElement => {
 		// Deep linking if the app wasn't previously open
 		const initialUrl = await Linking.getInitialURL();
 		if (initialUrl) {
-			processInputData({ data: initialUrl });
+			processUri({ uri: initialUrl });
 			return;
 		}
 
@@ -147,7 +147,7 @@ const RootNavigator = (): ReactElement => {
 		const clipboardData = await Clipboard.getString();
 		await resetSendTransaction();
 		rootNavigation.navigate('Wallet');
-		await processInputData({ data: clipboardData, showErrors: false });
+		await processUri({ uri: clipboardData, showErrors: false });
 	};
 
 	const onAuthSuccess = useCallback((): void => {

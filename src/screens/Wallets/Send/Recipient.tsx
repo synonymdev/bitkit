@@ -15,7 +15,7 @@ import {
 import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
 import SafeAreaInset from '../../../components/SafeAreaInset';
 import ContactImage from '../../../components/ContactImage';
-import { processInputData } from '../../../utils/scanner';
+import { processUri } from '../../../utils/scanner/scanner';
 import { showToast } from '../../../utils/notifications';
 import useColors from '../../../hooks/colors';
 import { useAppSelector } from '../../../hooks/redux';
@@ -23,10 +23,7 @@ import { useScreenSize } from '../../../hooks/screen';
 import { useBottomSheetBackPress } from '../../../hooks/bottomSheet';
 import type { SendScreenProps } from '../../../navigation/types';
 import { lastPaidSelector } from '../../../store/reselect/slashtags';
-import {
-	selectedNetworkSelector,
-	selectedWalletSelector,
-} from '../../../store/reselect/wallet';
+import { selectedNetworkSelector } from '../../../store/reselect/wallet';
 
 const imageSrc = require('../../../assets/illustrations/coin-stack-logo.png');
 
@@ -63,7 +60,6 @@ const Recipient = ({
 }: SendScreenProps<'Recipient'>): ReactElement => {
 	const { t } = useTranslation('wallet');
 	const { isSmallScreen } = useScreenSize();
-	const selectedWallet = useAppSelector(selectedWalletSelector);
 	const selectedNetwork = useAppSelector(selectedNetworkSelector);
 	const lastPaidContacts = useAppSelector(lastPaidSelector);
 
@@ -73,12 +69,11 @@ const Recipient = ({
 		navigation.navigate('Contacts');
 	};
 
-	const onSendToContact = async (url: string): Promise<void> => {
-		await processInputData({
-			data: url,
+	const onSendToContact = async (uri: string): Promise<void> => {
+		await processUri({
+			uri,
 			source: 'send',
 			selectedNetwork,
-			selectedWallet,
 		});
 	};
 
@@ -96,11 +91,10 @@ const Recipient = ({
 		}
 
 		// parse data, update transaction and navigate to next screen
-		await processInputData({
-			data: text,
+		await processUri({
+			uri: text,
 			source: 'send',
 			selectedNetwork,
-			selectedWallet,
 		});
 	};
 

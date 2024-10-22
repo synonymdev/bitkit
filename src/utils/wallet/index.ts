@@ -1476,7 +1476,7 @@ export const getBalance = ({
 }: {
 	selectedWallet?: TWalletName;
 	selectedNetwork?: EAvailableNetwork;
-}): {
+} = {}): {
 	onchainBalance: number; // Total onchain funds
 	// lightningBalance: number; // Total lightning funds (spendable + reserved + claimable)
 	spendingBalance: number; // Share of lightning funds that are spendable

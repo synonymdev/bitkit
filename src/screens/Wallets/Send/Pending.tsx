@@ -49,7 +49,7 @@ const Pending = ({ route }: SendScreenProps<'Pending'>): ReactElement => {
 				{activityItem && (
 					<AmountToggle
 						amount={activityItem.value}
-						testID="NewTxPrompt"
+						testID="SendPendingAmount"
 						onPress={navigateToTxDetails}
 					/>
 				)}

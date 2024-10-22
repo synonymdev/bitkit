@@ -100,6 +100,7 @@ const Button = ({
 	return (
 		<Pressable
 			style={({ pressed }) => [buttonStyle, pressed && buttonPressedStyle]}
+			accessibilityLabel={disabled ? 'disabled' : 'enabled'}
 			disabled={loading || disabled}
 			{...props}>
 			{({ pressed }) => {

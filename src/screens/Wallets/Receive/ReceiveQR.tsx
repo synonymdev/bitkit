@@ -458,7 +458,7 @@ const ReceiveQR = ({
 			<View style={styles.slide}>
 				<ThemedView style={styles.invoices} color="white06">
 					{(!jitInvoice || !enableInstant) && (
-						<View testID="ReceiveOnchainInvoice">
+						<View>
 							<View style={styles.invoiceLabel}>
 								<Caption13Up color="secondary">
 									{t('receive_bitcoin_invoice')}
@@ -471,7 +471,11 @@ const ReceiveQR = ({
 								/>
 							</View>
 							<View style={styles.invoiceText}>
-								<BodyS>{ellipsis(receiveAddress, 25)}</BodyS>
+								<BodyS
+									accessibilityLabel={receiveAddress}
+									testID="ReceiveOnchainInvoice">
+									{ellipsis(receiveAddress, 25)}
+								</BodyS>
 								{showTooltip.onchain && (
 									<AnimatedView
 										style={styles.tooltip}

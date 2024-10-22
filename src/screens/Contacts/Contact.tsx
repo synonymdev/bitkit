@@ -19,7 +19,7 @@ import NavigationHeader from '../../components/NavigationHeader';
 import SafeAreaInset from '../../components/SafeAreaInset';
 import ProfileCard from '../../components/ProfileCard';
 import ProfileLinks from '../../components/ProfileLinks';
-import { processInputData } from '../../utils/scanner';
+import { processUri } from '../../utils/scanner/scanner';
 import { useProfile } from '../../hooks/slashtags';
 import { useBalance } from '../../hooks/wallet';
 import { truncate } from '../../utils/helpers';
@@ -29,10 +29,7 @@ import Dialog from '../../components/Dialog';
 import Tooltip from '../../components/Tooltip';
 import IconButton from '../../components/buttons/IconButton';
 import { deleteContact } from '../../store/slices/slashtags';
-import {
-	selectedNetworkSelector,
-	selectedWalletSelector,
-} from '../../store/reselect/wallet';
+import { selectedNetworkSelector } from '../../store/reselect/wallet';
 import { contactsSelector } from '../../store/reselect/slashtags';
 
 const Contact = ({
@@ -47,7 +44,6 @@ const Contact = ({
 	const [loading, setLoading] = useState(false);
 
 	const dispatch = useAppDispatch();
-	const selectedWallet = useAppSelector(selectedWalletSelector);
 	const selectedNetwork = useAppSelector(selectedNetworkSelector);
 	const contacts = useAppSelector(contactsSelector);
 
@@ -80,11 +76,10 @@ const Contact = ({
 
 	const handleSend = async (): Promise<void> => {
 		setLoading(true);
-		const res = await processInputData({
-			data: url,
+		const res = await processUri({
+			uri: url,
 			source: 'send',
 			selectedNetwork,
-			selectedWallet,
 		});
 		setLoading(false);
 		if (res.isOk()) {

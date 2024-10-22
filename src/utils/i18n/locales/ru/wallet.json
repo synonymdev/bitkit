@@ -62,10 +62,10 @@
   "send_done": {
     "string": "ГОТОВО"
   },
-  "send_availabe_spending": {
+  "send_available_spending": {
     "string": "Доступно (Баланс Расходов)"
   },
-  "send_availabe_savings": {
+  "send_available_savings": {
     "string": "Доступно (Сбережения)"
   },
   "send_review": {

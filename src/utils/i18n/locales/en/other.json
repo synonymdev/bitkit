@@ -1,13 +1,4 @@
 {
-	"beta": {
-		"string": "BETA"
-	},
-	"beta_software": {
-		"string": "Bitkit is mobile software."
-	},
-	"beta_warn": {
-		"string": "Don’t store all your money in Bitkit."
-	},
 	"qr_scan": {
 		"string": "Scan QR Code"
 	},
@@ -138,9 +129,6 @@
 	},
 	"scan_err_interpret_title": {
 		"string": "Unable To Interpret Provided Data"
-	},
-	"scan_err_interpret_msg": {
-		"string": "Bitkit is unable to interpret the provided data."
 	},
 	"scan_err_not_payable_msg": {
 		"string": "This QR code does not appear to contain payment data."
@@ -277,6 +265,16 @@
 		},
 		"body": {
 			"string": "Open Bitkit to complete your transfer"
+		}
+	},
+	"scan": {
+		"error": {
+			"generic": {
+				"string": "Bitkit is unable to read the provided data."
+			},
+			"expired": {
+				"string": "This Lightning invoice has expired."
+			}
 		}
 	}
 }

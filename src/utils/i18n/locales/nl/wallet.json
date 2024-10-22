@@ -62,10 +62,10 @@
   "send_done": {
     "string": "KLAAR"
   },
-  "send_availabe_spending": {
+  "send_available_spending": {
     "string": "Beschikbaar (bestedingssaldo)"
   },
-  "send_availabe_savings": {
+  "send_available_savings": {
     "string": "Beschikbaar (spaargeld)"
   },
   "send_review": {

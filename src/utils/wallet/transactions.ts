@@ -120,18 +120,10 @@ export const createTransaction = async (
 
 /**
  * Returns onchain transaction data related to the specified network and wallet.
- * @returns {Result<ISendTransaction>}
+ * @returns {ISendTransaction}
  */
-export const getOnchainTransactionData = (): Result<ISendTransaction> => {
-	try {
-		const transaction = getOnChainWalletTransaction().data;
-		if (transaction) {
-			return ok(transaction);
-		}
-		return err('Unable to get transaction data.');
-	} catch (e) {
-		return err(e);
-	}
+export const getOnchainTransactionData = (): ISendTransaction => {
+	return getOnChainWalletTransaction().data;
 };
 
 export const broadcastTransaction = async ({
@@ -160,11 +152,7 @@ export const getTransactionOutputValue = ({
 } = {}): number => {
 	try {
 		if (!outputs) {
-			const transaction = getOnchainTransactionData();
-			if (transaction.isErr()) {
-				return 0;
-			}
-			outputs = transaction.value.outputs;
+			outputs = getOnchainTransactionData().outputs;
 		}
 		const response = reduceValue(outputs, 'value');
 		if (response.isOk()) {
@@ -188,11 +176,7 @@ export const getTransactionInputValue = ({
 }): number => {
 	try {
 		if (!inputs) {
-			const transaction = getOnchainTransactionData();
-			if (transaction.isErr()) {
-				return 0;
-			}
-			inputs = transaction.value.inputs;
+			inputs = getOnchainTransactionData().inputs;
 		}
 		if (inputs) {
 			const response = reduceValue(inputs, 'value');
@@ -449,11 +433,7 @@ export const getMaxSendAmount = ({
 } = {}): Result<{ amount: number; fee: number }> => {
 	try {
 		if (!transaction) {
-			const transactionDataResponse = getOnchainTransactionData();
-			if (transactionDataResponse.isErr()) {
-				return err(transactionDataResponse.error.message);
-			}
-			transaction = transactionDataResponse.value;
+			transaction = getOnchainTransactionData();
 		}
 
 		if (transaction.lightningInvoice) {
@@ -584,11 +564,7 @@ export const adjustFee = ({
 }): Result<{ fee: number }> => {
 	try {
 		if (!transaction) {
-			const transactionDataResponse = getOnchainTransactionData();
-			if (transactionDataResponse.isErr()) {
-				return err(transactionDataResponse.error.message);
-			}
-			transaction = transactionDataResponse.value;
+			transaction = getOnchainTransactionData();
 		}
 		// const coinSelectPreference = getStore().settings.coinSelectPreference;
 		const newSatsPerByte = transaction.satsPerByte + adjustBy;
@@ -628,11 +604,7 @@ export const updateSendAmount = ({
 	selectedWallet?: TWalletName;
 }): Result<string> => {
 	if (!transaction) {
-		const transactionDataResponse = getOnchainTransactionData();
-		if (transactionDataResponse.isErr()) {
-			return err(transactionDataResponse.error.message);
-		}
-		transaction = transactionDataResponse.value;
+		transaction = getOnchainTransactionData();
 	}
 
 	// TODO: add support for multiple outputs
@@ -709,27 +681,15 @@ export const updateMessage = async ({
 	index?: number;
 }): Promise<Result<string>> => {
 	if (!transaction) {
-		const transactionDataResponse = getOnchainTransactionData();
-		if (transactionDataResponse.isErr()) {
-			return err(transactionDataResponse.error.message);
-		}
-		transaction = transactionDataResponse.value;
+		transaction = getOnchainTransactionData();
 	}
-	const max = transaction?.max;
-	const satsPerByte = transaction?.satsPerByte ?? 1;
-	const outputs = transaction?.outputs ?? [];
-	const inputs = transaction?.inputs ?? [];
-
+	const { max, satsPerByte, outputs, inputs } = transaction;
 	const newFee = getTotalFee({ satsPerByte, message });
-	const inputTotal = getTransactionInputValue({
-		inputs,
-	});
-	const outputTotal = getTransactionOutputValue({
-		outputs,
-	});
+	const inputTotal = getTransactionInputValue({ inputs });
+	const outputTotal = getTransactionOutputValue({ outputs });
 	const totalNewAmount = outputTotal + newFee;
 	let address = '';
-	if (outputs?.length > index) {
+	if (outputs.length > index) {
 		address = outputs[index].address ?? '';
 	}
 	const _transaction: Partial<ISendTransaction> = {
@@ -891,12 +851,7 @@ export const broadcastBoost = async ({
 	oldTxId: string;
 }): Promise<Result<String>> => {
 	try {
-		const transactionDataResponse = getOnchainTransactionData();
-		if (transactionDataResponse.isErr()) {
-			return err(transactionDataResponse.error.message);
-		}
-		const transaction = transactionDataResponse.value;
-
+		const transaction = getOnchainTransactionData();
 		const rawTx = await createTransaction();
 		if (rawTx.isErr()) {
 			return err(rawTx.error.message);
@@ -971,11 +926,8 @@ export const getFeeEstimates = async (
  * @returns {EFeeId}
  */
 export const getSelectedFeeId = (): EFeeId => {
-	const transaction = getOnchainTransactionData();
-	if (transaction.isErr()) {
-		return EFeeId.none;
-	}
-	return transaction.value.selectedFeeId;
+	const { selectedFeeId } = getOnchainTransactionData();
+	return selectedFeeId;
 };
 
 /**
@@ -990,15 +942,12 @@ export const getTransactionOutputAmount = ({
 	outputIndex?: number;
 }): Result<number> => {
 	const transaction = getOnchainTransactionData();
-	if (transaction.isErr()) {
-		return err(transaction.error.message);
-	}
 	if (
-		transaction.value.outputs?.length &&
-		transaction.value.outputs?.length >= outputIndex + 1 &&
-		transaction.value.outputs[outputIndex].value
+		transaction.outputs.length &&
+		transaction.outputs.length >= outputIndex + 1 &&
+		transaction.outputs[outputIndex].value
 	) {
-		return ok(transaction.value.outputs[outputIndex]?.value ?? 0);
+		return ok(transaction.outputs[outputIndex]?.value ?? 0);
 	}
 	return ok(0);
 };
