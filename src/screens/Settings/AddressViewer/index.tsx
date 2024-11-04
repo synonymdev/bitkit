@@ -637,9 +637,7 @@ const AddressViewer = ({
 			if (transactionRes.isErr()) {
 				return;
 			}
-			const receiveAddress = await getReceiveAddress({
-				selectedNetwork,
-			});
+			const receiveAddress = await getReceiveAddress({ selectedNetwork });
 			if (receiveAddress.isErr()) {
 				return;
 			}
@@ -648,13 +646,10 @@ const AddressViewer = ({
 				outputs: [{ address: receiveAddress.value, value: 0, index: 0 }],
 			});
 			dispatch(updateUi({ fromAddressViewer: true }));
-			sendMax({
-				selectedWallet,
-				selectedNetwork,
-			});
+			sendMax();
 			showBottomSheet('sendNavigation', { screen: 'ReviewAndSend' });
 		},
-		[selectedUtxos, utxos, selectedNetwork, dispatch, selectedWallet],
+		[selectedUtxos, utxos, selectedNetwork, dispatch],
 	);
 
 	/**

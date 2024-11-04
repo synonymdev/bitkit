@@ -24,10 +24,6 @@ import {
 	sendMax,
 } from '../../../utils/wallet/transactions';
 import {
-	selectedNetworkSelector,
-	selectedWalletSelector,
-} from '../../../store/reselect/wallet';
-import {
 	conversionUnitSelector,
 	denominationSelector,
 	nextUnitSelector,
@@ -49,8 +45,6 @@ const LNURLAmount = ({
 	const { minSendable, maxSendable } = pParams;
 	const { spendingBalance } = useBalance();
 	const switchUnit = useSwitchUnit();
-	const selectedWallet = useAppSelector(selectedWalletSelector);
-	const selectedNetwork = useAppSelector(selectedNetworkSelector);
 	const unit = useAppSelector(unitSelector);
 	const nextUnit = useAppSelector(nextUnitSelector);
 	const conversionUnit = useAppSelector(conversionUnitSelector);
@@ -80,8 +74,8 @@ const LNURLAmount = ({
 	const onMaxAmount = useCallback((): void => {
 		const result = getNumberPadText(max, denomination, unit);
 		setText(result);
-		sendMax({ selectedWallet, selectedNetwork });
-	}, [max, denomination, unit, selectedNetwork, selectedWallet]);
+		sendMax();
+	}, [max, denomination, unit]);
 
 	const onError = (): void => {
 		setError(true);
