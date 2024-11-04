@@ -26,7 +26,6 @@ import CoinSelection from '../../screens/Wallets/Send/CoinSelection';
 import LNURLAmount from '../../screens/Wallets/LNURLPay/Amount';
 import LNURLConfirm from '../../screens/Wallets/LNURLPay/Confirm';
 import { NavigationContainer } from '../../styles/components';
-import { TProcessedData } from '../../utils/scanner';
 import { useSnapPoints } from '../../hooks/bottomSheet';
 import { viewControllerSelector } from '../../store/reselect/ui';
 import {
@@ -52,7 +51,7 @@ export type SendStackParamList = {
 	Recipient: undefined;
 	Contacts: undefined;
 	Address: undefined;
-	Scanner: { onScan: (data: TProcessedData) => void } | undefined;
+	Scanner: undefined;
 	Amount: undefined;
 	CoinSelection: undefined;
 	FeeRate: undefined;
@@ -134,6 +133,7 @@ const SendNavigation = (): ReactElement => {
 		<BottomSheetWrapper
 			view="sendNavigation"
 			snapPoints={snapPoints}
+			testID="SendSheet"
 			onOpen={onOpen}>
 			<NavigationContainer key={isOpen.toString()} ref={navigationRef}>
 				<Stack.Navigator

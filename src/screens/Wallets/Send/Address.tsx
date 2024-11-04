@@ -11,24 +11,21 @@ import Button from '../../../components/buttons/Button';
 import GradientView from '../../../components/GradientView';
 import SafeAreaInset from '../../../components/SafeAreaInset';
 import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
-import { processInputData, validateInputData } from '../../../utils/scanner';
+import { processUri } from '../../../utils/scanner/scanner';
 import useColors from '../../../hooks/colors';
-import { useAppSelector } from '../../../hooks/redux';
 import useKeyboard, { Keyboard } from '../../../hooks/keyboard';
 import type { SendScreenProps } from '../../../navigation/types';
-import {
-	selectedNetworkSelector,
-	selectedWalletSelector,
-} from '../../../store/reselect/wallet';
+
+type TValidation = {
+	[x: string]: boolean;
+};
 
 const Address = ({}: SendScreenProps<'Address'>): ReactElement => {
 	const colors = useColors();
 	const { t } = useTranslation('wallet');
 	const { keyboardShown } = useKeyboard();
 	const [textFieldValue, setTextFieldValue] = useState('');
-	const [isValid, setIsValid] = useState({});
-	const selectedWallet = useAppSelector(selectedWalletSelector);
-	const selectedNetwork = useAppSelector(selectedNetworkSelector);
+	const [isValid, setIsValid] = useState<TValidation>({});
 
 	const onChangeText = async (text: string): Promise<void> => {
 		const diff = Math.abs(text.length - textFieldValue.length);
@@ -36,10 +33,11 @@ const Address = ({}: SendScreenProps<'Address'>): ReactElement => {
 
 		setTextFieldValue(text);
 
-		const result = await validateInputData({
-			data: text,
+		const result = await processUri({
+			uri: text,
 			source: 'send',
 			showErrors: hasPasted,
+			validateOnly: true,
 		});
 
 		setIsValid((s) => ({ ...s, [text]: !result.isErr() }));
@@ -47,13 +45,7 @@ const Address = ({}: SendScreenProps<'Address'>): ReactElement => {
 
 	const onContinue = async (): Promise<void> => {
 		await Keyboard.dismiss();
-
-		await processInputData({
-			data: textFieldValue,
-			source: 'send',
-			selectedNetwork,
-			selectedWallet,
-		});
+		await processUri({ uri: textFieldValue, source: 'send' });
 	};
 
 	return (

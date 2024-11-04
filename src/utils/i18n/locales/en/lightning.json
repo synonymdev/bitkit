@@ -370,7 +370,7 @@
 		"string": "The URI appears to be invalid."
 	},
 	"error_add_tor": {
-		"string": "Bitkit cannot add tor nodes."
+		"string": "Bitkit cannot add Tor nodes."
 	},
 	"error_save_title": {
 		"string": "Unable To Save Lightning Peer"

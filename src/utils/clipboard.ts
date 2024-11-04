@@ -2,7 +2,7 @@ import { Platform } from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
 import { Result, ok, err } from '@synonymdev/result';
 
-import { decodeQRData } from './scanner';
+import { parseUri } from './scanner/scanner';
 import { sleep } from './helpers';
 import { getSettingsStore } from '../store/helpers';
 
@@ -23,8 +23,8 @@ export const checkClipboardData = async (): Promise<Result<string>> => {
 		return err('Clipboard is empty');
 	}
 
-	const decodeRes = await decodeQRData(clipboardData);
-	if (decodeRes.isErr() || !decodeRes.value.length) {
+	const decodeRes = await parseUri(clipboardData);
+	if (decodeRes.isErr()) {
 		return err('Invalid clipboard data');
 	}
 

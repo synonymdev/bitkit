@@ -42,4 +42,5 @@ export const initialUiState: TUiState = {
 	// Used to control bottom-sheets throughout the app
 	viewControllers: defaultViewControllers,
 	fromAddressViewer: false, // When true, ensures tx inputs are not cleared when sweeping from address viewer.
+	paymentMethod: 'onchain',
 };

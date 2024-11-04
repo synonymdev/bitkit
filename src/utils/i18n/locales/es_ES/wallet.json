@@ -56,10 +56,10 @@
   "send_done": {
     "string": "HECHO"
   },
-  "send_availabe_spending": {
+  "send_available_spending": {
     "string": "Disponible (para gasto)"
   },
-  "send_availabe_savings": {
+  "send_available_savings": {
     "string": "Disponible (ahorro)"
   },
   "send_review": {

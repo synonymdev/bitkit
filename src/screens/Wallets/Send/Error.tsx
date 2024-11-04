@@ -1,5 +1,5 @@
-import React, { memo, ReactElement, useState } from 'react';
-import { StyleSheet, View, ActivityIndicator, Image } from 'react-native';
+import React, { memo, ReactElement } from 'react';
+import { StyleSheet, View, Image } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
 import { BodyM } from '../../../styles/text';
@@ -8,19 +8,18 @@ import SafeAreaInset from '../../../components/SafeAreaInset';
 import GradientView from '../../../components/GradientView';
 import Button from '../../../components/buttons/Button';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
-import { processInputData } from '../../../utils/scanner';
+import { processUri } from '../../../utils/scanner/scanner';
 import { showToast } from '../../../utils/notifications';
 import type { SendScreenProps } from '../../../navigation/types';
 import {
 	resetSendTransaction,
 	setupOnChainTransaction,
 } from '../../../store/actions/wallet';
-import { closeSheet } from '../../../store/slices/ui';
-import {
-	selectedNetworkSelector,
-	selectedWalletSelector,
-	transactionSelector,
-} from '../../../store/reselect/wallet';
+import { closeSheet, updateUi } from '../../../store/slices/ui';
+import { transactionSelector } from '../../../store/reselect/wallet';
+
+const imageCross = require('../../../assets/illustrations/cross.png');
+const imageExclamation = require('../../../assets/illustrations/exclamation-mark.png');
 
 const Error = ({
 	navigation,
@@ -29,29 +28,20 @@ const Error = ({
 	const { t } = useTranslation('wallet');
 	let { errorMessage } = route.params;
 	const dispatch = useAppDispatch();
-	const selectedWallet = useAppSelector(selectedWalletSelector);
-	const selectedNetwork = useAppSelector(selectedNetworkSelector);
 	const transaction = useAppSelector(transactionSelector);
-	const [loading, setLoading] = useState(false);
+	const { lightningInvoice, slashTagsUrl } = transaction;
 
-	const isSlashpay = transaction.lightningInvoice && transaction.slashTagsUrl;
+	const isSlashpayLightning = !!slashTagsUrl && !!lightningInvoice;
 
 	let navTitle = t('send_error_tx_failed');
-	let imageSrc = require('../../../assets/illustrations/cross.png');
-	let retryText: string | ReactElement = t('try_again');
+	let imageSrc = imageCross;
+	let retryText = t('try_again');
 
-	if (transaction.lightningInvoice && transaction.slashTagsUrl) {
-		imageSrc = require('../../../assets/illustrations/exclamation-mark.png');
+	if (isSlashpayLightning) {
+		imageSrc = imageExclamation;
 		navTitle = t('send_instant_failed');
 		errorMessage = t('send_error_slash_ln');
-		retryText = loading ? (
-			<>
-				<ActivityIndicator />
-				{t('send_regular')}
-			</>
-		) : (
-			t('send_regular')
-		);
+		retryText = t('send_regular');
 	}
 
 	const handleClose = (): void => {
@@ -59,28 +49,20 @@ const Error = ({
 	};
 
 	const handleRetry = async (): Promise<void> => {
-		if (transaction.lightningInvoice && transaction.slashTagsUrl) {
-			setLoading(true);
-			await resetSendTransaction();
-			await setupOnChainTransaction({});
-			const res = await processInputData({
-				data: transaction.slashTagsUrl,
+		if (isSlashpayLightning) {
+			dispatch(updateUi({ paymentMethod: 'onchain' }));
+			const res = await processUri({
+				uri: slashTagsUrl,
 				source: 'send',
-				selectedNetwork,
-				selectedWallet,
-				skip: ['lightningPaymentRequest'],
+				skipLightning: true,
 			});
-			setLoading(false);
-			if (res.isOk()) {
-				navigation.navigate('Amount');
-				return;
+			if (res.isErr()) {
+				showToast({
+					type: 'warning',
+					title: t('other:contact_pay_error'),
+					description: t('other:try_again'),
+				});
 			}
-			showToast({
-				type: 'warning',
-				title: t('other:contact_pay_error'),
-				description: t('other:try_again'),
-			});
-
 			return;
 		}
 
@@ -100,14 +82,13 @@ const Error = ({
 	return (
 		<GradientView style={styles.root}>
 			<BottomSheetNavigationHeader title={navTitle} />
-
 			<View style={styles.content}>
 				<BodyM color="secondary">{errorMessage}</BodyM>
 				<View style={styles.imageContainer}>
 					<Image style={styles.image} source={imageSrc} />
 				</View>
 				<View style={styles.buttonContainer}>
-					{isSlashpay && (
+					{isSlashpayLightning && (
 						<Button
 							style={styles.button}
 							variant="secondary"
@@ -122,7 +103,6 @@ const Error = ({
 						variant="primary"
 						size="large"
 						text={retryText}
-						disabled={loading}
 						onPress={handleRetry}
 					/>
 				</View>

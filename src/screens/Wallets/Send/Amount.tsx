@@ -6,11 +6,10 @@ import React, {
 	useState,
 	useEffect,
 } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, TouchableOpacity } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useFocusEffect, useRoute } from '@react-navigation/native';
 
-import { TouchableHighlight } from '../../../styles/components';
 import { Caption13Up } from '../../../styles/text';
 import { IColors } from '../../../styles/colors';
 import GradientView from '../../../components/GradientView';
@@ -21,6 +20,7 @@ import ContactImage from '../../../components/ContactImage';
 import NumberPadTextField from '../../../components/NumberPadTextField';
 import SendNumberPad from './SendNumberPad';
 import Button from '../../../components/buttons/Button';
+import AssetButton from '../AssetButton';
 import UnitButton from '../UnitButton';
 import {
 	getTransactionOutputValue,
@@ -73,35 +73,29 @@ const Amount = ({ navigation }: SendScreenProps<'Amount'>): ReactElement => {
 	const utxos = useAppSelector(utxosSelector);
 	const { onchainBalance } = useBalance();
 
+	const method = useAppSelector((state) => state.ui.paymentMethod);
+	const usesLightning = method === 'lightning';
+
 	const outputAmount = useMemo(() => {
-		return getTransactionOutputValue({
-			outputs: transaction.outputs,
-		});
+		const amount = getTransactionOutputValue({ outputs: transaction.outputs });
+		return amount;
 	}, [transaction.outputs]);
 
 	const availableAmount = useMemo(() => {
-		const maxAmountResponse = getMaxSendAmount({
-			selectedWallet,
-			selectedNetwork,
-		});
+		const maxAmountResponse = getMaxSendAmount({ method });
 		if (maxAmountResponse.isOk()) {
 			return maxAmountResponse.value.amount;
 		}
 		return 0;
-		// recalculate max when utxos or fee change
+		// recalculate max when utxos, fee or payment method change
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [
-		transaction.outputs,
-		transaction.satsPerByte,
-		selectedWallet,
-		selectedNetwork,
-	]);
+	}, [transaction.outputs, transaction.satsPerByte, method]);
 
 	useFocusEffect(
 		useCallback(() => {
 			// This is triggered when the user removes all inputs from the coin selection screen.
 			if (
-				!transaction.lightningInvoice &&
+				!usesLightning &&
 				onchainBalance > TRANSACTION_DEFAULTS.dustLimit &&
 				(availableAmount === 0 || !transaction.inputs.length)
 			) {
@@ -119,9 +113,8 @@ const Amount = ({ navigation }: SendScreenProps<'Amount'>): ReactElement => {
 		}, [
 			availableAmount,
 			onchainBalance,
+			usesLightning,
 			transaction.inputs.length,
-			transaction.lightningInvoice,
-			// transaction.outputs,
 			transaction.satsPerByte,
 			denomination,
 			unit,
@@ -166,18 +159,26 @@ const Amount = ({ navigation }: SendScreenProps<'Amount'>): ReactElement => {
 	};
 
 	const onMaxAmount = useCallback((): void => {
-		if (!transaction.lightningInvoice) {
+		if (!usesLightning) {
 			const result = getNumberPadText(availableAmount, denomination, unit);
 			setText(result);
+		} else {
+			showToast({
+				type: 'warning',
+				title: t('send_max_spending.title'),
+				description: t('send_max_spending.description'),
+			});
 		}
+
 		sendMax({ selectedWallet, selectedNetwork });
 	}, [
 		availableAmount,
 		selectedNetwork,
 		selectedWallet,
-		transaction.lightningInvoice,
+		usesLightning,
 		denomination,
 		unit,
+		t,
 	]);
 
 	const onError = (): void => {
@@ -201,11 +202,11 @@ const Amount = ({ navigation }: SendScreenProps<'Amount'>): ReactElement => {
 			return;
 		}
 
-		// If auto coin-select is disabled and there is no lightning invoice.
-		if (!coinSelectAuto && !transaction.lightningInvoice) {
+		// If coin selection is enabled and the user wants to pay onchain.
+		if (!coinSelectAuto && !usesLightning) {
 			navigation.navigate('CoinSelection');
 		} else {
-			if (!transaction.lightningInvoice) {
+			if (!usesLightning) {
 				const feeSetupRes = setupFeeForOnChainTransaction();
 				if (feeSetupRes.isErr()) {
 					showToast({
@@ -224,6 +225,7 @@ const Amount = ({ navigation }: SendScreenProps<'Amount'>): ReactElement => {
 		selectedNetwork,
 		coinSelectAuto,
 		transaction,
+		usesLightning,
 		navigation,
 		t,
 	]);
@@ -234,7 +236,7 @@ const Amount = ({ navigation }: SendScreenProps<'Amount'>): ReactElement => {
 		}
 
 		// onchain tx
-		if (!transaction.lightningInvoice) {
+		if (!usesLightning) {
 			// amount is below dust limit
 			if (amount <= TRANSACTION_DEFAULTS.dustLimit) {
 				return false;
@@ -247,9 +249,10 @@ const Amount = ({ navigation }: SendScreenProps<'Amount'>): ReactElement => {
 		}
 
 		return true;
-	}, [amount, transaction.lightningInvoice, availableAmount]);
+	}, [amount, usesLightning, availableAmount]);
 
 	const canGoBack = navigation.getState().routes[0]?.key !== route.key;
+	const hasOutput = !!transaction.outputs[0]?.address;
 
 	return (
 		<GradientView style={styles.container}>
@@ -271,31 +274,25 @@ const Amount = ({ navigation }: SendScreenProps<'Amount'>): ReactElement => {
 
 				<View style={styles.numberPad} testID="SendAmountNumberPad">
 					<View style={styles.actions}>
-						<View>
+						<TouchableOpacity activeOpacity={0.7} onPress={onMaxAmount}>
 							<Caption13Up style={styles.availableAmountText} color="secondary">
-								{t(
-									transaction.lightningInvoice
-										? 'send_availabe_spending'
-										: 'send_availabe_savings',
-								)}
+								{t('send_available')}
 							</Caption13Up>
 							<Money
 								sats={availableAmount}
 								size="bodySSB"
-								testID="AvailableAmount"
 								symbol={true}
+								testID="AvailableAmount"
 								{...availableAmountProps}
 							/>
-						</View>
+						</TouchableOpacity>
 						<View style={styles.actionButtons}>
 							<View style={styles.actionButtonContainer}>
-								<TouchableHighlight
+								<AssetButton
 									style={styles.actionButton}
-									color="white10"
-									testID="SendNumberPadMax"
-									onPress={onMaxAmount}>
-									<Caption13Up color="brand">{t('send_max')}</Caption13Up>
-								</TouchableHighlight>
+									savings={hasOutput}
+									spending={!!transaction.lightningInvoice}
+								/>
 							</View>
 
 							<View style={styles.actionButtonContainer}>

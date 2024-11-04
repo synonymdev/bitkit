@@ -26,10 +26,10 @@
   "send_done": {
     "string": "GOTOWE"
   },
-  "send_availabe_spending": {
+  "send_available_spending": {
     "string": "Dostępne (na wydawanie)"
   },
-  "send_availabe_savings": {
+  "send_available_savings": {
     "string": "Dostępne (oszczędności)"
   },
   "send_review": {

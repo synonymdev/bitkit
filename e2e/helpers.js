@@ -47,22 +47,9 @@ export const sleep = (ms) => {
 	});
 };
 
-export const isVisible = async (id) => {
-	try {
-		await expect(element(by.id(id))).toBeVisible();
-		return true;
-	} catch (e) {
-		return false;
-	}
-};
-
 export const isButtonEnabled = async (element) => {
-	try {
-		await expect(element).tap();
-		return true;
-	} catch (e) {
-		return false;
-	}
+	const attributes = await element.getAttributes();
+	return attributes.label !== 'disabled';
 };
 
 export async function waitForElementAttribute(
@@ -141,6 +128,25 @@ export const launchAndWait = async () => {
 			continue;
 		}
 	}
+};
+
+export const receiveOnchainFunds = async (rpc, amount = '0.001') => {
+	await element(by.id('Receive')).tap();
+	// Wait for animation
+	await sleep(1000);
+	// Get address from QR code
+	let { label: wAddress } = await element(by.id('QRCode')).getAttributes();
+	wAddress = wAddress.replace('bitcoin:', '');
+
+	// Send and mine
+	await rpc.sendToAddress(wAddress, amount);
+	await rpc.generateToAddress(1, await rpc.getNewAddress());
+
+	await waitFor(element(by.id('NewTxPrompt')))
+		.toBeVisible()
+		.withTimeout(10000);
+	await element(by.id('NewTxPrompt')).swipe('down');
+	await sleep(1000);
 };
 
 export const waitForPeerConnection = async (lnd, nodeId, maxRetries = 20) => {

@@ -90,4 +90,5 @@ export type TUiState = {
 	timeZone: string;
 	language: string;
 	fromAddressViewer: boolean;
+	paymentMethod: 'onchain' | 'lightning';
 };

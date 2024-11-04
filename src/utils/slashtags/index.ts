@@ -152,9 +152,7 @@ export const updateSlashPayConfig = debounce(
 			const currentInvoice =
 				payConfig.find(({ type }) => type === 'lightningInvoice')?.value ?? '';
 
-			const decodedInvoice = await decodeLightningInvoice({
-				paymentRequest: currentInvoice,
-			});
+			const decodedInvoice = await decodeLightningInvoice(currentInvoice);
 
 			const claimedPayments = await getClaimedLightningPayments();
 
@@ -233,11 +231,12 @@ export const updateSlashPayConfig = debounce(
 
 /** Get the slashpay.json of remote contact */
 export const getSlashPayConfig = async (
-	url: string,
+	profileUrl: string,
 ): Promise<SlashPayConfig> => {
-	const url2 = getSlashpayURLfromProfile(url);
+	const url = getSlashpayURLfromProfile(profileUrl);
 	const slashpay = new SlashpayConfig(webRelayClient);
-	return (await slashpay.get(url2)) || [];
+	const config = await slashpay.get(url);
+	return config || [];
 };
 
 export const getSlashpayURLfromProfile = (profileURL: string): string => {

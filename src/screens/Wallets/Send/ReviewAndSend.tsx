@@ -74,7 +74,7 @@ import { onChainFeesSelector } from '../../../store/reselect/fees';
 import { addPendingPayment } from '../../../store/slices/lightning';
 import { updateOnChainActivityList } from '../../../store/utils/activity';
 import { updateLastPaidContacts } from '../../../store/slices/slashtags';
-import { truncate } from '../../../utils/helpers';
+import { ellipsis, truncate } from '../../../utils/helpers';
 import AmountToggle from '../../../components/AmountToggle';
 import LightningSyncing from '../../../components/LightningSyncing';
 import { i18nTime } from '../../../utils/i18n';
@@ -124,6 +124,8 @@ const ReviewAndSend = ({
 	const pin = useAppSelector(pinSelector);
 	const pinForPayments = useAppSelector(pinForPaymentsSelector);
 	const biometrics = useAppSelector((state) => state.settings.biometrics);
+	const method = useAppSelector((state) => state.ui.paymentMethod);
+	const usesLightning = method === 'lightning';
 
 	const [isLoading, setIsLoading] = useState(false);
 	const [showBiotmetrics, setShowBiometrics] = useState(false);
@@ -138,16 +140,14 @@ const ReviewAndSend = ({
 
 	const decodeAndSetLightningInvoice = async (): Promise<void> => {
 		try {
-			if (!transaction.lightningInvoice) {
+			if (!usesLightning || !transaction.lightningInvoice) {
 				return;
 			}
-			const decodeInvoiceResponse = await decodeLightningInvoice({
-				paymentRequest: transaction.lightningInvoice,
-			});
-			if (decodeInvoiceResponse.isErr()) {
+			const result = await decodeLightningInvoice(transaction.lightningInvoice);
+			if (result.isErr()) {
 				return;
 			}
-			setDecodedInvoice(decodeInvoiceResponse.value);
+			setDecodedInvoice(result.value);
 		} catch (e) {
 			console.log(e);
 		}
@@ -170,9 +170,8 @@ const ReviewAndSend = ({
 
 	// TODO: add support for multiple outputs
 	const outputIndex = 0;
-	const selectedFeeId = transaction.selectedFeeId;
-	const satsPerByte = transaction.satsPerByte;
-	const address = transaction?.outputs[outputIndex]?.address ?? '';
+	const { selectedFeeId, satsPerByte } = transaction;
+	const address = transaction.outputs[outputIndex]?.address ?? '';
 
 	const onError = useCallback(
 		(errorMessage: string) => {
@@ -277,9 +276,7 @@ const ReviewAndSend = ({
 			onError(`${t('error_no_tx_title')}. ${t('error_no_tx_msg')}`);
 			return;
 		}
-		const response = await broadcastTransaction({
-			rawTx: rawTx.hex,
-		});
+		const response = await broadcastTransaction({ rawTx: rawTx.hex });
 		if (response.isErr()) {
 			// Check if it failed to broadcast due to low fee.
 			if (response.error.message.includes('min relay fee not met')) {
@@ -339,16 +336,12 @@ const ReviewAndSend = ({
 	const fiatTransactionFee = useDisplayValues(feeSats);
 
 	const runCreateTxMethods = useCallback((): void => {
-		if (transaction.lightningInvoice) {
+		if (usesLightning) {
 			createLightningTransaction().then();
 		} else {
 			createOnChainTransaction().then();
 		}
-	}, [
-		transaction.lightningInvoice,
-		createLightningTransaction,
-		createOnChainTransaction,
-	]);
+	}, [usesLightning, createLightningTransaction, createOnChainTransaction]);
 
 	const navigateToPin = useCallback(() => {
 		navigation.navigate('PinCheck', {
@@ -441,7 +434,7 @@ const ReviewAndSend = ({
 		});
 
 		// amount > 50% of total balance
-		if (transaction.lightningInvoice) {
+		if (usesLightning) {
 			// If lightning tx use lightning balance.
 			if (amount > lightningBalance.localBalance / 2) {
 				warnings.push('dialog2');
@@ -465,7 +458,7 @@ const ReviewAndSend = ({
 
 		// Check if the user is setting the minimum fee given the current fee environment.
 		if (
-			!transaction.lightningInvoice &&
+			!usesLightning &&
 			transaction.satsPerByte &&
 			// This check is to prevent situations where all values are set to 1sat/vbyte. Where setting 1sat/vbyte is perfectly fine.
 			feeEstimates.minimum < feeEstimates.slow &&
@@ -475,7 +468,7 @@ const ReviewAndSend = ({
 		}
 
 		// fee > 50% of send amount
-		if (!transaction.lightningInvoice && feeSats > amount / 2) {
+		if (!usesLightning && feeSats > amount / 2) {
 			warnings.push('dialog3');
 		}
 		confirmPayment(warnings);
@@ -483,7 +476,7 @@ const ReviewAndSend = ({
 		amount,
 		exchangeRates,
 		feeSats,
-		transaction.lightningInvoice,
+		usesLightning,
 		transaction.satsPerByte,
 		enableSendAmountWarning,
 		feeEstimates.minimum,
@@ -600,9 +593,7 @@ const ReviewAndSend = ({
 										{decodedInvoice ? (
 											<BodySSB>{truncate(decodedInvoice.to_str, 100)}</BodySSB>
 										) : (
-											<BodySSB numberOfLines={1} ellipsizeMode="middle">
-												{address}
-											</BodySSB>
+											<BodySSB>{ellipsis(address, 25)}</BodySSB>
 										)}
 									</>
 								)
@@ -610,7 +601,7 @@ const ReviewAndSend = ({
 						/>
 					</View>
 
-					{!transaction.lightningInvoice ? (
+					{!usesLightning ? (
 						<View style={styles.sectionContainer}>
 							<Section
 								title={t('send_fee_and_speed')}

@@ -99,7 +99,7 @@ d('Onchain', () => {
 			await element(by.id('AddressContinue')).tap();
 
 			// Amount / NumberPad
-			await element(by.id('SendNumberPadMax')).tap();
+			await element(by.id('AvailableAmount')).tap();
 			// cat't use .multitap here, doesn't work properly
 			// maybe some race condition in beignet library ?
 			await element(
@@ -112,7 +112,7 @@ d('Onchain', () => {
 				by.id('NRemove').withAncestor(by.id('SendAmountNumberPad')),
 			).tap();
 			await expect(element(by.text('199 999'))).toBeVisible();
-			await element(by.id('SendNumberPadMax')).tap();
+			await element(by.id('AvailableAmount')).tap();
 			await element(by.id('ContinueAmount')).tap();
 
 			// Review & Send

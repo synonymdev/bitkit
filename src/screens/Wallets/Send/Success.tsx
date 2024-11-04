@@ -63,7 +63,7 @@ const Success = ({ route }: SendScreenProps<'Success'>): ReactElement => {
 			<View style={styles.content}>
 				<AmountToggle
 					amount={amount}
-					testID="NewTxPrompt"
+					testID="SendSuccessAmount"
 					onPress={navigateToTxDetails}
 				/>
 

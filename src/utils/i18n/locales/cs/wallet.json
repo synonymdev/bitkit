@@ -62,10 +62,10 @@
   "send_done": {
     "string": "HOTOVO"
   },
-  "send_availabe_spending": {
+  "send_available_spending": {
     "string": "Dostupné (k útratě)"
   },
-  "send_availabe_savings": {
+  "send_available_savings": {
     "string": "Dostupné (úspory)"
   },
   "send_review": {

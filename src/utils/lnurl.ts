@@ -19,7 +19,6 @@ import {
 	getPeersFromStorage,
 } from './lightning';
 import { createLightningInvoice, savePeer } from '../store/utils/lightning';
-import { EQRDataType, TProcessedData } from './scanner';
 import { TWalletName } from '../store/types/wallet';
 import { EAvailableNetwork } from './networks';
 import {
@@ -35,11 +34,11 @@ import i18n from './i18n';
  * @param {string} text
  * @returns {string | null}
  */
-export const findlnurl = (text: string): string | null => {
-	const text2 = text.toLowerCase().trim();
+export const findLnUrl = (text: string): string | null => {
+	const trimmed = text.toLowerCase().trim();
 	const res =
 		/^(?:(http.*|bitcoin:.*)[&?]lightning=|lightning:)?(lnurl1[02-9ac-hj-np-z]+)/.exec(
-			text2,
+			trimmed,
 		);
 	return res ? res[2] : null;
 };
@@ -125,7 +124,7 @@ export const handleLnurlChannel = async ({
 	params: LNURLChannelParams;
 	selectedWallet?: TWalletName;
 	selectedNetwork?: EAvailableNetwork;
-}): Promise<Result<TProcessedData>> => {
+}): Promise<Result<string>> => {
 	const peer = params.uri;
 	if (peer.includes('onion')) {
 		const message = i18n.t('lightning:error_add_tor');
@@ -221,7 +220,7 @@ export const handleLnurlChannel = async ({
 			? i18n.t('other:lnurl_channel_success_msg_peer', { peer })
 			: i18n.t('other:lnurl_channel_success_msg_no_peer'),
 	});
-	return ok({ type: EQRDataType.lnurlChannel });
+	return ok('');
 };
 
 /**
@@ -229,7 +228,7 @@ export const handleLnurlChannel = async ({
  * @param {LNURLAuthParams} params
  * @param {TWalletName} [selectedWallet]
  * @param {EAvailableNetwork} [selectedNetwork]
- * @returns {Promise<Result<TProcessedData>>}
+ * @returns {Promise<Result<string>>}
  */
 export const handleLnurlAuth = async ({
 	params,
@@ -239,7 +238,7 @@ export const handleLnurlAuth = async ({
 	params: LNURLAuthParams;
 	selectedWallet?: TWalletName;
 	selectedNetwork?: EAvailableNetwork;
-}): Promise<Result<TProcessedData>> => {
+}): Promise<Result<string>> => {
 	const getMnemonicPhraseResponse = await getMnemonicPhrase(selectedWallet);
 	if (getMnemonicPhraseResponse.isErr()) {
 		return err(getMnemonicPhraseResponse.error.message);
@@ -270,7 +269,7 @@ export const handleLnurlAuth = async ({
 			? i18n.t('other:lnurl_auth_success_msg_domain', { domain: params.domain })
 			: i18n.t('other:lnurl_auth_success_msg_no_domain'),
 	});
-	return ok({ type: EQRDataType.lnurlAuth });
+	return ok('');
 };
 
 /**
@@ -279,7 +278,7 @@ export const handleLnurlAuth = async ({
  * @param {LNURLWithdrawParams} params
  * @param {TWalletName} [selectedWallet]
  * @param {EAvailableNetwork} [selectedNetwork]
- * @returns {Promise<Result<TProcessedData>>}
+ * @returns {Promise<Result<string>>}
  */
 export const handleLnurlWithdraw = async ({
 	amount,
@@ -291,11 +290,11 @@ export const handleLnurlWithdraw = async ({
 	params: LNURLWithdrawParams;
 	selectedWallet?: TWalletName;
 	selectedNetwork?: EAvailableNetwork;
-}): Promise<Result<TProcessedData>> => {
+}): Promise<Result<string>> => {
 	const invoice = await createLightningInvoice({
 		expiryDeltaSeconds: 3600,
 		amountSats: amount,
-		description: params.defaultDescription ?? '',
+		description: params.defaultDescription,
 		selectedWallet,
 		selectedNetwork,
 	});
@@ -342,7 +341,7 @@ export const handleLnurlWithdraw = async ({
 			description: i18n.t('other:lnurl_withdr_success_msg'),
 		});
 
-		return ok({ type: EQRDataType.lnurlWithdraw });
+		return ok('');
 	} catch (e) {
 		console.log(e.message);
 		showToast({
