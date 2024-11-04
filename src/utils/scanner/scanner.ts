@@ -476,7 +476,7 @@ export const processPaymentData = async ({
 
 		if (hasOnchain) {
 			// If we can't afford it, but we have on-chain balance, set amount to zero
-			return ok({ ...data, amount: 0 });
+			return ok({ ...data, type: EQRDataType.onchain, amount: 0 });
 		}
 	}
 

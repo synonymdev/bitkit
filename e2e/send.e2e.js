@@ -156,7 +156,6 @@ d('Send', () => {
 		await element(by.id('RecipientInput')).replaceText(unified2);
 		await element(by.id('RecipientInput')).tapReturnKey();
 		buttonEnabled = await isButtonEnabled(button);
-		// jestExpect(buttonEnabled).toBe(false);
 		jestExpect(buttonEnabled).toBe(true);
 
 		markComplete('send-1');
@@ -319,11 +318,17 @@ d('Send', () => {
 			.toHaveText('119 502')
 			.withTimeout(10000);
 
-		// send to unified invoice w/ expired invoice
-		const unified2 =
-			'bitcoin:bcrt1qaytrqsrgg75rtxrtr7ur6k75la8p3v95mey48z?lightning=LNBCRT1PN33T20DQQNP4QTNTQ4D2DHDYQ420HAUQF5TS7X32TNW9WGYEPQZQ6R9G69QPHW4RXPP5QU7UYXJYJA9PJV7H6JPEYEFFNZ98N686JDEAAK8AUD5AGC5X70HQSP54V5LEFATCQDEU8TLKAF6MDK3ZLU6MWUA52J4JEMD5XA85KGKMTTQ9QYYSGQCQPCXQRRSSRZJQWU6G4HMGH26EXXQYPQD8XHVWLARA66PL53V7S9CV2EE808UGDRN4APYQQQQQQQGRCQQQQLGQQQQQQGQ2QX7F74RT5SQE0KEYCU47LYMSVY2LM4QA4KLR65PPSY55M0H4VR8AN7WVM9EFVSPYJ5R8EFGVXTGVATAGFTC372VRJ3HEPSEELFZ7FQFCQ9XDU9X';
+		// send to unified invoice w/ amount exceeding balance(s)
+		const { paymentRequest: lnInvoice3 } = await lnd.addInvoice({
+			value: 200000,
+		});
+		const unified2 = encode(onchainAddress, {
+			lightning: lnInvoice3,
+			amount: 200000,
+		});
 
 		await enterAddress(unified2);
+		// should only allow spending from savings and sets invoice amount to 0
 		await expect(element(by.id('AssetButton-savings'))).toBeVisible();
 		await element(by.id('N1').withAncestor(by.id('SendAmountNumberPad'))).tap();
 		await element(
@@ -341,16 +346,38 @@ d('Send', () => {
 			.toHaveText('109 170')
 			.withTimeout(10000);
 
-		// send to unified invoice w/o amount (lightning)
-		const { paymentRequest: lnInvoice3 } = await lnd.addInvoice();
-		const unified3 = encode(onchainAddress, { lightning: lnInvoice3 });
+		// send to unified invoice w/ expired invoice
+		const unified3 =
+			'bitcoin:bcrt1qaytrqsrgg75rtxrtr7ur6k75la8p3v95mey48z?lightning=LNBCRT1PN33T20DQQNP4QTNTQ4D2DHDYQ420HAUQF5TS7X32TNW9WGYEPQZQ6R9G69QPHW4RXPP5QU7UYXJYJA9PJV7H6JPEYEFFNZ98N686JDEAAK8AUD5AGC5X70HQSP54V5LEFATCQDEU8TLKAF6MDK3ZLU6MWUA52J4JEMD5XA85KGKMTTQ9QYYSGQCQPCXQRRSSRZJQWU6G4HMGH26EXXQYPQD8XHVWLARA66PL53V7S9CV2EE808UGDRN4APYQQQQQQQGRCQQQQLGQQQQQQGQ2QX7F74RT5SQE0KEYCU47LYMSVY2LM4QA4KLR65PPSY55M0H4VR8AN7WVM9EFVSPYJ5R8EFGVXTGVATAGFTC372VRJ3HEPSEELFZ7FQFCQ9XDU9X';
 
 		await enterAddress(unified3);
+		await expect(element(by.id('AssetButton-savings'))).toBeVisible();
+		await element(by.id('N1').withAncestor(by.id('SendAmountNumberPad'))).tap();
+		await element(
+			by.id('N0').withAncestor(by.id('SendAmountNumberPad')),
+		).multiTap(4);
+		await element(by.id('ContinueAmount')).tap();
+		await element(by.id('GRAB')).swipe('right', 'slow', 0.95, 0.5, 0.5); // Swipe to confirm
+		await waitFor(element(by.id('SendSuccess')))
+			.toBeVisible()
+			.withTimeout(10000);
+		await element(by.id('Close')).tap();
+		await waitFor(
+			element(by.id('MoneyText').withAncestor(by.id('TotalBalance'))),
+		)
+			.toHaveText('98 838')
+			.withTimeout(10000);
+
+		// send to unified invoice w/o amount (lightning)
+		const { paymentRequest: lnInvoice4 } = await lnd.addInvoice();
+		const unified4 = encode(onchainAddress, { lightning: lnInvoice4 });
+
+		await enterAddress(unified4);
 		// max amount (lightning)
 		await expect(element(by.text('28 900'))).toBeVisible();
 		await element(by.id('AssetButton-switch')).tap();
 		// max amount (onchain)
-		await expect(element(by.text('78 838'))).toBeVisible();
+		await expect(element(by.text('68 506'))).toBeVisible();
 		await element(by.id('AssetButton-switch')).tap();
 		await element(by.id('N1').withAncestor(by.id('SendAmountNumberPad'))).tap();
 		await element(
@@ -365,14 +392,14 @@ d('Send', () => {
 		await waitFor(
 			element(by.id('MoneyText').withAncestor(by.id('TotalBalance'))),
 		)
-			.toHaveText('99 170')
+			.toHaveText('88 838')
 			.withTimeout(10000);
 
 		// send to unified invoice w/o amount (switch to onchain)
-		const { paymentRequest: lnInvoice4 } = await lnd.addInvoice();
-		const unified4 = encode(onchainAddress, { lightning: lnInvoice4 });
+		const { paymentRequest: lnInvoice5 } = await lnd.addInvoice();
+		const unified5 = encode(onchainAddress, { lightning: lnInvoice5 });
 
-		await enterAddress(unified4);
+		await enterAddress(unified5);
 
 		// max amount (lightning)
 		await element(by.id('AvailableAmount')).tap();
@@ -384,7 +411,7 @@ d('Send', () => {
 		await element(by.id('AssetButton-switch')).tap();
 		await element(by.id('AvailableAmount')).tap();
 		await element(by.id('ContinueAmount')).tap();
-		await expect(element(by.text('78 838'))).toBeVisible();
+		await expect(element(by.text('68 506'))).toBeVisible();
 		await element(by.id('NavigationBack')).atIndex(0).tap();
 
 		await element(
@@ -403,7 +430,7 @@ d('Send', () => {
 		await waitFor(
 			element(by.id('MoneyText').withAncestor(by.id('TotalBalance'))),
 		)
-			.toHaveText('88 838')
+			.toHaveText('78 506')
 			.withTimeout(10000);
 
 		markComplete('send-2');
