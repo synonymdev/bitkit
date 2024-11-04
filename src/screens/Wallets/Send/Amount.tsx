@@ -159,10 +159,10 @@ const Amount = ({ navigation }: SendScreenProps<'Amount'>): ReactElement => {
 	};
 
 	const onMaxAmount = useCallback((): void => {
-		if (!usesLightning) {
-			const result = getNumberPadText(availableAmount, denomination, unit);
-			setText(result);
-		} else {
+		const result = getNumberPadText(availableAmount, denomination, unit);
+		setText(result);
+
+		if (usesLightning) {
 			showToast({
 				type: 'warning',
 				title: t('send_max_spending.title'),
@@ -170,16 +170,8 @@ const Amount = ({ navigation }: SendScreenProps<'Amount'>): ReactElement => {
 			});
 		}
 
-		sendMax({ selectedWallet, selectedNetwork });
-	}, [
-		availableAmount,
-		selectedNetwork,
-		selectedWallet,
-		usesLightning,
-		denomination,
-		unit,
-		t,
-	]);
+		sendMax();
+	}, [availableAmount, usesLightning, denomination, unit, t]);
 
 	const onError = (): void => {
 		setError(true);
@@ -189,8 +181,6 @@ const Amount = ({ navigation }: SendScreenProps<'Amount'>): ReactElement => {
 	const onContinue = useCallback((): void => {
 		const result = updateSendAmount({
 			amount,
-			selectedWallet,
-			selectedNetwork,
 			transaction,
 		});
 		if (result.isErr()) {
@@ -219,16 +209,7 @@ const Amount = ({ navigation }: SendScreenProps<'Amount'>): ReactElement => {
 			}
 			navigation.navigate('ReviewAndSend');
 		}
-	}, [
-		amount,
-		selectedWallet,
-		selectedNetwork,
-		coinSelectAuto,
-		transaction,
-		usesLightning,
-		navigation,
-		t,
-	]);
+	}, [amount, coinSelectAuto, transaction, usesLightning, navigation, t]);
 
 	const isValid = useMemo(() => {
 		if (amount === 0) {

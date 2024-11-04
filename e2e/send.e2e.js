@@ -373,11 +373,23 @@ d('Send', () => {
 		const unified4 = encode(onchainAddress, { lightning: lnInvoice4 });
 
 		await enterAddress(unified4);
+
 		// max amount (lightning)
+		await element(by.id('AvailableAmount')).tap();
+		await element(by.id('ContinueAmount')).tap();
 		await expect(element(by.text('18 900'))).toBeVisible();
-		await element(by.id('AssetButton-switch')).tap();
+		await element(by.id('NavigationBack')).atIndex(0).tap();
+
 		// max amount (onchain)
+		await element(by.id('AssetButton-switch')).tap();
+		await element(by.id('AvailableAmount')).tap();
+		await element(by.id('ContinueAmount')).tap();
 		await expect(element(by.text('78 838'))).toBeVisible();
+		await element(by.id('NavigationBack')).atIndex(0).tap();
+
+		await element(
+			by.id('NRemove').withAncestor(by.id('SendAmountNumberPad')),
+		).multiTap(5);
 		await element(by.id('N1').withAncestor(by.id('SendAmountNumberPad'))).tap();
 		await element(
 			by.id('N0').withAncestor(by.id('SendAmountNumberPad')),

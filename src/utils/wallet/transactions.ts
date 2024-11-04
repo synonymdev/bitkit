@@ -19,7 +19,12 @@ import {
 	addBoostedTransaction,
 	updateSendTransaction,
 } from '../../store/actions/wallet';
-import { dispatch, getFeesStore, getSettingsStore } from '../../store/helpers';
+import {
+	dispatch,
+	getFeesStore,
+	getSettingsStore,
+	getUiStore,
+} from '../../store/helpers';
 import { removeActivityItem } from '../../store/slices/activity';
 import { initialFeesState } from '../../store/slices/fees';
 import {
@@ -418,7 +423,7 @@ export const getEstimatedRoutingFee = (amount: number): number => {
 /**
  * Calculates the max amount able to send for onchain/lightning
  * @param {ISendTransaction} [transaction]
- * @param {number} [index]
+ * @param {'onchain' | 'lightning'} [method
  */
 export const getMaxSendAmount = ({
 	transaction,
@@ -483,25 +488,20 @@ export const getMaxSendAmount = ({
 export const sendMax = async ({
 	address,
 	index = 0,
-	selectedWallet = getSelectedWallet(),
-	selectedNetwork = getSelectedNetwork(),
 }: {
 	address?: string;
 	index?: number;
-	selectedWallet?: TWalletName;
-	selectedNetwork?: EAvailableNetwork;
 } = {}): Promise<Result<string>> => {
+	const { paymentMethod } = getUiStore();
+
 	try {
 		const tx = getOnChainWalletTransaction();
 		const transaction = tx.data;
 
 		// TODO: Re-work lightning transaction invoices once beignet migration is complete.
 		// Handle max toggle for lightning invoice
-		if (transaction.lightningInvoice) {
-			const { spendingBalance } = getBalance({
-				selectedWallet,
-				selectedNetwork,
-			});
+		if (paymentMethod === 'lightning') {
+			const { spendingBalance } = getBalance();
 
 			const fee = getEstimatedRoutingFee(spendingBalance);
 			const amount = spendingBalance - fee;
@@ -587,20 +587,16 @@ export const adjustFee = ({
  * Updates the amount to send for the currently selected output.
  * @param {number} amount
  * @param {ISendTransaction} [transaction]
- * @param {EAvailableNetwork} [selectedNetwork]
- * @param {TWalletName} [selectedWallet]
  */
 export const updateSendAmount = ({
 	amount,
 	transaction,
-	selectedWallet = getSelectedWallet(),
-	selectedNetwork = getSelectedNetwork(),
 }: {
 	amount: number;
 	transaction?: ISendTransaction;
-	selectedNetwork?: EAvailableNetwork;
-	selectedWallet?: TWalletName;
 }): Result<string> => {
+	const { paymentMethod } = getUiStore();
+
 	if (!transaction) {
 		transaction = getOnchainTransactionData();
 	}
@@ -609,12 +605,9 @@ export const updateSendAmount = ({
 	const currentOutput = transaction.outputs[0];
 	let max = false;
 
-	if (transaction.lightningInvoice) {
+	if (paymentMethod === 'lightning') {
 		// lightning transaction
-		const { spendingBalance } = getBalance({
-			selectedWallet,
-			selectedNetwork,
-		});
+		const { spendingBalance } = getBalance();
 
 		if (amount > spendingBalance) {
 			return err(i18n.t('wallet:send_amount_error_balance'));
