@@ -450,22 +450,28 @@ export const processPaymentData = async ({
 
 		// If we can't afford it, show a warning
 		if (showErrors) {
-			const delta = data.amount - onchainBalance;
-			const { bitcoinFormatted } = getBitcoinDisplayValues({
-				satoshis: delta,
-				denomination: EDenomination.modern,
-			});
+			if (hasOnchain) {
+				const delta = data.amount - onchainBalance;
+				const { bitcoinFormatted } = getBitcoinDisplayValues({
+					satoshis: delta,
+					denomination: EDenomination.modern,
+				});
 
-			showToast({
-				type: 'warning',
-				title: i18n.t('other:pay_insufficient_savings'),
-				description: i18n.t(
-					'other:pay_insufficient_savings_amount_description',
-					{
-						amount: bitcoinFormatted,
-					},
-				),
-			});
+				showToast({
+					type: 'warning',
+					title: i18n.t('other:pay_insufficient_savings'),
+					description: i18n.t(
+						'other:pay_insufficient_savings_amount_description',
+						{ amount: bitcoinFormatted },
+					),
+				});
+			} else {
+				showToast({
+					type: 'warning',
+					title: i18n.t('other:pay_insufficient_savings'),
+					description: i18n.t('other:pay_insufficient_savings_description'),
+				});
+			}
 		}
 
 		if (hasOnchain) {
