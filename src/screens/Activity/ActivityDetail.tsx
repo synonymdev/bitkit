@@ -313,24 +313,6 @@ const OnchainActivityDetail = ({
 		</ThemedView>
 	);
 
-	if (isBoosted) {
-		status = (
-			<View testID="StatusBoosting" style={styles.row}>
-				<TimerIconAlt style={styles.rowIcon} color="yellow" height={14} />
-				<BodySSB color="yellow">{t('activity_boosting')}</BodySSB>
-			</View>
-		);
-	}
-
-	if (confirmed) {
-		status = (
-			<View testID="StatusConfirmed" style={styles.row}>
-				<CheckCircleIcon style={styles.rowIcon} color="green" />
-				<BodySSB color="green">{t('activity_confirmed')}</BodySSB>
-			</View>
-		);
-	}
-
 	if (transfer) {
 		fees = value - transfer.amount + fee;
 		paymentAmount = transfer.amount;
@@ -350,6 +332,24 @@ const OnchainActivityDetail = ({
 			<ThemedView style={styles.icon} color="brand16">
 				<TransferIcon height={24} width={24} color="brand" />
 			</ThemedView>
+		);
+	}
+
+	if (isBoosted) {
+		status = (
+			<View testID="StatusBoosting" style={styles.row}>
+				<TimerIconAlt style={styles.rowIcon} color="yellow" height={14} />
+				<BodySSB color="yellow">{t('activity_boosting')}</BodySSB>
+			</View>
+		);
+	}
+
+	if (confirmed) {
+		status = (
+			<View testID="StatusConfirmed" style={styles.row}>
+				<CheckCircleIcon style={styles.rowIcon} color="green" />
+				<BodySSB color="green">{t('activity_confirmed')}</BodySSB>
+			</View>
 		);
 	}
 

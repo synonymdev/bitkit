@@ -108,17 +108,7 @@ const OnchainListItem = ({
 	const amount = isSend ? value + fee : value;
 
 	let description;
-	if (confirmed) {
-		// NOTE: for users with earlier versions use the timestamp
-		description = getActivityItemDate(confirmTimestamp ?? timestamp);
-	} else if (isBoosted) {
-		description = t('activity_confirms_in_boosted', { feeRateDescription });
-		icon = (
-			<ThemedView testID="BoostingIcon" style={styles.icon} color="yellow16">
-				<TimerIconAlt height={13} color="yellow" />
-			</ThemedView>
-		);
-	} else if (feeRateDescription) {
+	if (feeRateDescription) {
 		description = t('activity_confirms_in', { feeRateDescription });
 	} else {
 		description = t('activity_low_fee');
@@ -138,6 +128,22 @@ const OnchainListItem = ({
 		} else {
 			const duration = getDurationForBlocks(transfer.confirmsIn);
 			description = t(`activity_transfer_${type}_pending`, { duration });
+		}
+	}
+
+	if (isBoosted && !confirmed) {
+		description = t('activity_confirms_in_boosted', { feeRateDescription });
+		icon = (
+			<ThemedView style={styles.icon} color="yellow16" testID="BoostingIcon">
+				<TimerIconAlt height={13} color="yellow" />
+			</ThemedView>
+		);
+	}
+
+	if (confirmed) {
+		if (!transfer) {
+			// NOTE: for users with earlier versions use the timestamp
+			description = getActivityItemDate(confirmTimestamp ?? timestamp);
 		}
 	}
 

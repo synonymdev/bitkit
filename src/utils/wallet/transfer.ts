@@ -9,6 +9,7 @@ import lm, { ldk } from '@synonymdev/react-native-ldk';
 
 import { getCurrentWallet, getSelectedNetwork, refreshWallet } from '.';
 import { btcToSats } from '../conversion';
+import { getBoostedTransactionParents } from '../boost';
 import { getTransactions } from './electrum';
 import {
 	ETransferStatus,
@@ -34,13 +35,29 @@ export const getTransferForTx = async (
 	const transfers = currentWallet.transfers[selectedNetwork];
 
 	if (tx.type === EPaymentType.sent) {
-		const transfersToSpending = transfers.filter(
-			(t) => t.type === ETransferType.open,
-		);
+		const transfersToSpending = transfers.filter((t) => {
+			return t.type === ETransferType.open;
+		});
+
 		// check if the tx is a transfer to spending
-		const transferToSpending = transfersToSpending.find(
-			(t) => t.txId === tx.txid,
-		);
+		let transferToSpending = transfersToSpending.find((t) => {
+			return t.txId === tx.txid;
+		});
+
+		// check if the tx is a transfer that was boosted
+		if (!transferToSpending) {
+			const boostedParents = getBoostedTransactionParents({ txId: tx.txid });
+			const isBoosted = boostedParents.length > 0;
+			if (isBoosted) {
+				transferToSpending = transfersToSpending.find((t) => {
+					const boostedParent = boostedParents.find((txId) => {
+						return t.txId === txId;
+					});
+					return t.txId === boostedParent;
+				});
+			}
+		}
+
 		if (transferToSpending) {
 			return transferToSpending;
 		}
