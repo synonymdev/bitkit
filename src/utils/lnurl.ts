@@ -334,13 +334,6 @@ export const handleLnurlWithdraw = async ({
 			});
 			return err(jsonRes.reason);
 		}
-
-		showToast({
-			type: 'success',
-			title: i18n.t('other:lnurl_withdr_success_title'),
-			description: i18n.t('other:lnurl_withdr_success_msg'),
-		});
-
 		return ok('');
 	} catch (e) {
 		console.log(e.message);

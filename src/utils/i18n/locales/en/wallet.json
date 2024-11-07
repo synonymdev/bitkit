@@ -644,12 +644,6 @@
 	"lnurl_w_button": {
 		"string": "Withdraw"
 	},
-	"lnurl_w_success_title": {
-		"string": "Success"
-	},
-	"lnurl_w_success_description": {
-		"string": "Withdraw Requested Successful"
-	},
 	"lnurl_p_title": {
 		"string": "Pay Bitcoin"
 	},

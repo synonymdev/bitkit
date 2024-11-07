@@ -224,7 +224,7 @@
 		"string": "Withdraw Requested"
 	},
 	"lnurl_withdr_success_msg": {
-		"string": "Your withdraw was successfully requested."
+		"string": "Your withdraw was successfully requested. Waiting for payment."
 	},
 	"phone_settings": {
 		"string": "Open Phone Settings"

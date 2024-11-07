@@ -44,9 +44,9 @@ const Confirm = ({ route }: LNURLWithdrawProps<'Confirm'>): ReactElement => {
 		}
 		dispatch(closeSheet('lnurlWithdraw'));
 		showToast({
-			type: 'success',
-			title: t('lnurl_w_success_title'),
-			description: t('lnurl_w_success_description'),
+			type: 'info',
+			title: t('other:lnurl_withdr_success_title'),
+			description: t('other:lnurl_withdr_success_msg'),
 		});
 	};
 
