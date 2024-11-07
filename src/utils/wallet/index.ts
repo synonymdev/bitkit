@@ -1041,17 +1041,14 @@ const onMessage: TOnMessage = async (key, data): Promise<void> => {
 					receivedTxids.push(transaction.txid);
 				}
 			}
-			setTimeout(() => {
-				updateActivityList();
-			}, 500);
+			refreshWallet({ lightning: false }).then();
+			setTimeout(updateActivityList, 500);
 			bitkitLedger?.handleOnchainTx(txMsg.transaction);
 			break;
 		}
 		case 'transactionSent':
 			const txMsg = data as TTransactionMessage;
-			setTimeout(() => {
-				updateActivityList();
-			}, 500);
+			setTimeout(updateActivityList, 500);
 			bitkitLedger?.handleOnchainTx(txMsg.transaction);
 			break;
 		case 'connectedToElectrum':
@@ -1084,9 +1081,8 @@ const onMessage: TOnMessage = async (key, data): Promise<void> => {
 			});
 			break;
 		case 'newBlock':
-			refreshWallet({
-				onchain: false, // Beignet will handle this.
-			}).then();
+			// Beignet will handle this.
+			refreshWallet({ onchain: false }).then();
 			syncLedger();
 	}
 };
