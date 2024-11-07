@@ -59,10 +59,7 @@ const ActivitySpending = ({
 			</View>
 
 			<View style={styles.content}>
-				<ActivityHeader
-					label={t('activity_transfer_spending')}
-					balance={lightningBalance}
-				/>
+				<ActivityHeader balance={lightningBalance} />
 
 				{balanceInTransferToSpending !== 0 && (
 					<View style={styles.transfer}>

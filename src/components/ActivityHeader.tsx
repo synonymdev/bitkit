@@ -7,7 +7,6 @@ import {
 	ViewStyle,
 } from 'react-native';
 
-import { Caption13Up } from '../styles/text';
 import { EyeIcon } from '../styles/icons';
 import Money from './Money';
 import DetectSwipe from './DetectSwipe';
@@ -21,11 +20,9 @@ import {
 
 const ActivityHeader = ({
 	balance,
-	label,
 	style,
 }: {
 	balance: number;
-	label?: string;
 	style?: StyleProp<ViewStyle>;
 }): ReactElement => {
 	const dispatch = useAppDispatch();
@@ -40,7 +37,14 @@ const ActivityHeader = ({
 	return (
 		<View style={style}>
 			<View style={styles.label}>
-				<Caption13Up color="secondary">{label}</Caption13Up>
+				<Money
+					sats={balance}
+					unitType="secondary"
+					color="secondary"
+					size="caption13Up"
+					enableHide={true}
+					symbol={true}
+				/>
 			</View>
 
 			<DetectSwipe

@@ -5,11 +5,8 @@
 	"receive": {
 		"string": "Receive"
 	},
-	"balance_total": {
-		"string": "Total balance"
-	},
 	"balance_total_pending": {
-		"string": "<text>Total balance (</text><pending/><text> pending)</text>"
+		"string": "<text> (</text><pending/><text> pending)</text>"
 	},
 	"create_wallet_error": {
 		"string": "Please reopen the app and try again."
@@ -379,12 +376,6 @@
 	},
 	"activity_transfer": {
 		"string": "Transfer"
-	},
-	"activity_transfer_spending": {
-		"string": "Spending Balance"
-	},
-	"activity_transfer_savings": {
-		"string": "Savings Balance"
 	},
 	"activity_transfer_savings_pending": {
 		"string": "From Spending (±{duration})"

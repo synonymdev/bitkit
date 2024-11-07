@@ -27,7 +27,16 @@ const BalanceHeader = (): ReactElement => {
 	return (
 		<View style={styles.container}>
 			<View style={styles.label}>
-				{pendingPaymentsBalance ? (
+				<Money
+					sats={totalBalance}
+					unitType="secondary"
+					color="secondary"
+					size="caption13Up"
+					enableHide={true}
+					symbol={true}
+				/>
+
+				{pendingPaymentsBalance !== 0 && (
 					<Trans
 						t={t}
 						i18nKey="balance_total_pending"
@@ -35,17 +44,16 @@ const BalanceHeader = (): ReactElement => {
 							text: <Caption13Up color="secondary" />,
 							pending: (
 								<Money
+									sats={pendingPaymentsBalance}
+									unitType="secondary"
 									color="secondary"
 									size="caption13Up"
-									sats={pendingPaymentsBalance}
 									enableHide={true}
 									symbol={false}
 								/>
 							),
 						}}
 					/>
-				) : (
-					<Caption13Up color="secondary">{t('balance_total')}</Caption13Up>
 				)}
 			</View>
 

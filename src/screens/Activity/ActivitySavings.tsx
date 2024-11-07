@@ -71,10 +71,7 @@ const ActivitySavings = ({
 			</View>
 
 			<View style={styles.content}>
-				<ActivityHeader
-					label={t('activity_transfer_savings')}
-					balance={onchainBalance}
-				/>
+				<ActivityHeader balance={onchainBalance} />
 
 				{balanceInTransferToSavings !== 0 && (
 					<View style={styles.transfer}>
