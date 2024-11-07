@@ -258,7 +258,11 @@ const ChannelDetails = ({
 					<View style={styles.sectionTitle}>
 						<Caption13Up color="secondary">{t('status')}</Caption13Up>
 					</View>
-					<ChannelStatus status={channel.status} order={blocktankOrder} />
+					<ChannelStatus
+						status={channel.status}
+						order={blocktankOrder}
+						isUsable={channel.is_usable}
+					/>
 				</View>
 
 				{order && (

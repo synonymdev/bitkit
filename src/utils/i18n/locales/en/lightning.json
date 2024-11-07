@@ -563,6 +563,9 @@
 		},
 		"open": {
 			"string": "Connection open"
+		},
+		"inactive": {
+			"string": "Connection inactive"
 		}
 	},
 	"wait_text_top": {

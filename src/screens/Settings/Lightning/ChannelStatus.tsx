@@ -23,9 +23,11 @@ import {
 
 const ChannelStatus = ({
 	status,
+	isUsable,
 	order,
 }: {
 	status: EChannelStatus;
+	isUsable: boolean;
 	order?: IBtOrder;
 }): ReactElement => {
 	const { t } = useTranslation('lightning');
@@ -33,6 +35,17 @@ const ChannelStatus = ({
 	// Use open/closed status from LDK if available
 	switch (status) {
 		case EChannelStatus.open: {
+			if (!isUsable) {
+				return (
+					<View style={styles.statusRow}>
+						<ThemedView style={styles.statusIcon} color="yellow16">
+							<LightningIcon color="yellow" width={16} height={16} />
+						</ThemedView>
+						<BodyMSB color="yellow">{t('order_state.inactive')}</BodyMSB>
+					</View>
+				);
+			}
+
 			return (
 				<View style={styles.statusRow}>
 					<ThemedView style={styles.statusIcon} color="green16">
