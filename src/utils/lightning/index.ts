@@ -536,7 +536,6 @@ export const subscribeToLightningPayments = ({
 			EEventTypes.new_channel,
 			async (res: TChannelUpdate) => {
 				await updateChannelsThunk();
-				updateSlashPayConfig({ selectedWallet, selectedNetwork });
 
 				const openChannels = getOpenChannels();
 				const closedChannels = getClosedChannels();
@@ -553,10 +552,11 @@ export const subscribeToLightningPayments = ({
 
 				// Check if this is a CJIT Entry that needs to be added to the activity list.
 				addCJitActivityItem(res.channel_id).then();
-				// Refresh to update balance
-				refreshLdk();
 				// We need to sync the ledger because TChannelUpdate doesn't have enough data
 				syncLedger();
+				// Refresh to update balance
+				await refreshLdk();
+				updateSlashPayConfig({ selectedWallet, selectedNetwork });
 			},
 		);
 	}
