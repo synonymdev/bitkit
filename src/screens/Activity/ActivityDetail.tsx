@@ -72,7 +72,12 @@ import {
 } from '../../store/slices/metadata';
 import { getTransactions } from '../../utils/wallet/electrum';
 import { ITransaction, ITxHash } from '../../utils/wallet';
-import { ellipsis, getDurationForBlocks, openURL } from '../../utils/helpers';
+import {
+	ellipsis,
+	getDurationForBlocks,
+	openURL,
+	vibrate,
+} from '../../utils/helpers';
 import { getBoostedTransactionParents } from '../../utils/boost';
 import { showToast } from '../../utils/notifications';
 import {
@@ -81,6 +86,7 @@ import {
 	transferSelector,
 } from '../../store/reselect/wallet';
 import {
+	commentSelector,
 	slashTagsUrlSelector,
 	tagSelector,
 } from '../../store/reselect/metadata';
@@ -684,6 +690,7 @@ const LightningActivityDetail = ({
 
 	const dispatch = useAppDispatch();
 	const tags = useAppSelector((state) => tagSelector(state, id));
+	const comment = useAppSelector((state) => commentSelector(state, id));
 	const slashTagsUrl = useAppSelector((state) => {
 		return slashTagsUrlSelector(state, id);
 	});
@@ -717,6 +724,7 @@ const LightningActivityDetail = ({
 
 	const onCopy = (text: string): void => {
 		Clipboard.setString(text);
+		vibrate();
 		showToast({
 			type: 'success',
 			title: t('copied'),
@@ -910,7 +918,9 @@ const LightningActivityDetail = ({
 					)}
 
 					{message ? (
-						<View style={styles.invoiceNote}>
+						<TouchableOpacity
+							style={styles.invoiceNote}
+							onPress={(): void => onCopy(message)}>
 							<Caption13Up style={styles.sText} color="secondary">
 								{t('activity_invoice_note')}
 							</Caption13Up>
@@ -922,7 +932,25 @@ const LightningActivityDetail = ({
 									<Title testID="InvoiceNote">{message}</Title>
 								</View>
 							</ThemedView>
-						</View>
+						</TouchableOpacity>
+					) : null}
+
+					{comment ? (
+						<TouchableOpacity
+							style={styles.invoiceNote}
+							onPress={(): void => onCopy(comment)}>
+							<Caption13Up style={styles.sText} color="secondary">
+								{t('activity_invoice_comment')}
+							</Caption13Up>
+							<ThemedView color="white10">
+								<Canvas style={styles.zRoot}>
+									<ZigZag color={colors.background} />
+								</Canvas>
+								<View style={styles.note}>
+									<Title testID="InvoiceComment">{comment}</Title>
+								</View>
+							</ThemedView>
+						</TouchableOpacity>
 					) : null}
 
 					<View>

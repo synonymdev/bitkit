@@ -506,6 +506,9 @@
 	"activity_invoice_note": {
 		"string": "Invoice note"
 	},
+	"activity_invoice_comment": {
+		"string": "Comment"
+	},
 	"activity_invoice": {
 		"string": "Invoice"
 	},

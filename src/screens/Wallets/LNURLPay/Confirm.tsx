@@ -26,6 +26,7 @@ import {
 	settingsSelector,
 } from '../../../store/reselect/settings';
 import { addPendingPayment } from '../../../store/slices/lightning';
+import { updateMetaTxComment } from '../../../store/slices/metadata';
 import { EActivityType } from '../../../store/types/activity';
 import { AnimatedView, BottomSheetTextInput } from '../../../styles/components';
 import { Checkmark, LightningHollow } from '../../../styles/icons';
@@ -110,6 +111,15 @@ const LNURLConfirm = ({
 		});
 
 		setIsLoading(false);
+
+		if (comment) {
+			dispatch(
+				updateMetaTxComment({
+					txId: decodedInvoice.payment_hash,
+					comment,
+				}),
+			);
+		}
 
 		if (payInvoiceResponse.isErr()) {
 			const errorMessage = payInvoiceResponse.error.message;

@@ -199,6 +199,11 @@ d('LNURL', () => {
 			.toBeVisible()
 			.withTimeout(10000);
 		await element(by.id('Close')).tap();
+		// check if comment is displayed
+		await element(by.id('WalletsScrollView')).scrollTo('bottom', NaN, 0.85);
+		await element(by.id('ActivityShort-1')).tap();
+		await expect(element(by.id('InvoiceComment'))).toHaveText('test comment');
+		await element(by.id('NavigationClose')).tap();
 
 		// test lnurl-pay, with min == max amount, no comment
 		const payRequest2 = await lnurl.generateNewUrl('payRequest', {

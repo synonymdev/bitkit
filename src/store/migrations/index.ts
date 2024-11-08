@@ -45,6 +45,15 @@ const migrations = {
 			},
 		};
 	},
+	47: (state): PersistedState => {
+		return {
+			...state,
+			metadata: {
+				...state.metadata,
+				comments: {},
+			},
+		};
+	},
 };
 
 export default migrations;

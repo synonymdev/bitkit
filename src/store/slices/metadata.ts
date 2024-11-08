@@ -7,6 +7,7 @@ export const initialMetadataState: TMetadataState = {
 	lastUsedTags: [],
 	pendingInvoices: [],
 	slashTagsUrls: {},
+	comments: {},
 };
 
 export const metadataSlice = createSlice({
@@ -24,6 +25,16 @@ export const metadataSlice = createSlice({
 				delete state.tags[action.payload.txId];
 			} else {
 				state.tags[action.payload.txId] = action.payload.tags;
+			}
+		},
+		updateMetaTxComment: (
+			state,
+			action: PayloadAction<{ txId: string; comment: string }>,
+		) => {
+			if (action.payload.comment.length === 0) {
+				delete state.comments[action.payload.txId];
+			} else {
+				state.comments[action.payload.txId] = action.payload.comment;
 			}
 		},
 		addMetaTxTag: (
@@ -120,6 +131,7 @@ const { actions, reducer } = metadataSlice;
 export const {
 	updateMetadata,
 	updateMetaTxTags,
+	updateMetaTxComment,
 	addMetaTxTag,
 	deleteMetaTxTag,
 	updatePendingInvoice,

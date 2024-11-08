@@ -33,3 +33,7 @@ export const slashTagsUrlSelector = createSelector(
 		return metadata.slashTagsUrls[id];
 	},
 );
+export const commentSelector = createSelector(
+	[metadataState, (_state, txId: string): string => txId],
+	(metadata, txId): string => metadata.comments[txId] ?? '',
+);
