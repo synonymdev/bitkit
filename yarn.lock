@@ -4931,10 +4931,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@synonymdev/react-native-keychain@npm:8.2.2":
-  version: 8.2.2
-  resolution: "@synonymdev/react-native-keychain@npm:8.2.2"
-  checksum: 90c16a7caec3ae648c2c9af3d87da4e7bd425719e528d2793345b73f4757ec6aeacbdb4126b77e6f3b4237d8e734d35d7769e7a2fda54caaaea8b97dc699f558
+"@synonymdev/react-native-keychain@npm:9.1.1":
+  version: 9.1.1
+  resolution: "@synonymdev/react-native-keychain@npm:9.1.1"
+  checksum: ec92ee34d1e61035bbbea8f7df93a0310cad6f55e4f2f23441b64e1092d00df5ff50d706318b8d45b16a6d300d2789ba7d651634313099bc356847f015529cfb
   languageName: node
   linkType: hard
 
@@ -6605,7 +6605,7 @@ __metadata:
     "@synonymdev/blocktank-lsp-http-client": 1.5.0
     "@synonymdev/feeds": 3.0.0
     "@synonymdev/ledger": 0.0.5
-    "@synonymdev/react-native-keychain": 8.2.2
+    "@synonymdev/react-native-keychain": 9.1.1
     "@synonymdev/react-native-ldk": 0.0.153
     "@synonymdev/react-native-lnurl": 0.0.10
     "@synonymdev/react-native-pubky": ^0.3.0

@@ -25,7 +25,7 @@ const Mnemonic = ({
 			const bip39Passphrase = await getBip39Passphrase();
 
 			if (mnemoncicResult.isErr()) {
-				console.log(mnemoncicResult.error.message);
+				console.log('getMnemonicPhrase error:', mnemoncicResult.error.message);
 				showToast({
 					type: 'warning',
 					title: t('mnemonic_error'),

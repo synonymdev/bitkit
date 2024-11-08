@@ -1,4 +1,4 @@
-import React, { memo, ReactElement, useMemo, useState, useEffect } from 'react';
+import React, { memo, ReactElement, useState, useEffect } from 'react';
 import { StyleSheet, View, Platform, TouchableOpacity } from 'react-native';
 import { Trans, useTranslation } from 'react-i18next';
 import Clipboard from '@react-native-clipboard/clipboard';
@@ -44,9 +44,12 @@ const ShowMnemonic = ({
 	useBottomSheetBackPress('backupNavigation');
 
 	useEffect(() => {
-		getMnemonicPhrase().then((res) => {
-			if (res.isErr()) {
-				console.log(res.error.message);
+		const getSeed = async (): Promise<void> => {
+			const mnemoncicResult = await getMnemonicPhrase();
+			const bip39PassphraseResult = await getBip39Passphrase();
+
+			if (mnemoncicResult.isErr()) {
+				console.log('getMnemonicPhrase error:', mnemoncicResult.error.message);
 				showToast({
 					type: 'warning',
 					title: t('mnemonic_error'),
@@ -54,15 +57,24 @@ const ShowMnemonic = ({
 				});
 				return;
 			}
-			setSeed(res.value.split(' '));
-		});
-		getBip39Passphrase().then(setPassphrase);
+
+			setSeed(mnemoncicResult.value.split(' '));
+			setPassphrase(bip39PassphraseResult);
+		};
+
+		getSeed();
 	}, [t]);
 
-	const seedToShow = useMemo(
-		() => (Platform.OS === 'android' && !show ? dummySeed : seed),
-		[seed, show],
-	);
+	const revealMnemonic = (): void => {
+		setShow(true);
+	};
+
+	const copyMnemonic = (): void => {
+		Clipboard.setString(seed.join(' '));
+		vibrate();
+	};
+
+	const seedToShow = Platform.OS === 'android' && !show ? dummySeed : seed;
 
 	return (
 		<View style={styles.container}>
@@ -85,10 +97,7 @@ const ShowMnemonic = ({
 					<TouchableOpacity
 						style={styles.seed2}
 						activeOpacity={1}
-						onLongPress={(): void => {
-							Clipboard.setString(seed.join(' '));
-							vibrate();
-						}}>
+						onLongPress={copyMnemonic}>
 						<View style={styles.col}>
 							{seedToShow.slice(0, seedToShow.length / 2).map((w, i) => (
 								<Word key={i} word={w} number={i + 1} />
@@ -108,7 +117,7 @@ const ShowMnemonic = ({
 							size="large"
 							text={t('mnemonic_reveal')}
 							color="black50"
-							onPress={(): void => setShow(true)}
+							onPress={revealMnemonic}
 							testID="TapToReveal"
 						/>
 					</BlurView>
