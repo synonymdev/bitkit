@@ -102,6 +102,7 @@ import {
 import { showToast } from '../notifications';
 import i18n from '../i18n';
 import { bitkitLedger, syncLedger } from '../ledger';
+import { sendNavigation } from '../../navigation/bottom-sheet/SendNavigation';
 
 const PAYMENT_TIMEOUT = 8 * 1000; // 8 seconds
 
@@ -492,6 +493,14 @@ export const subscribeToLightningPayments = ({
 						title: i18n.t('wallet:toast_payment_success_title'),
 						description: i18n.t('wallet:toast_payment_success_description'),
 					});
+
+					// If the send sheet is open, navigate to the success screen
+					sendNavigation.navigate('Success', {
+						type: EActivityType.lightning,
+						txId: found.payment_hash,
+						amount: found.amount,
+					});
+
 					await refreshLdk();
 					bitkitLedger?.handleLNTx({ ...res, amount_sat: found.amount });
 				} else {
@@ -508,7 +517,7 @@ export const subscribeToLightningPayments = ({
 				const found = pending.find((p) => p.payment_hash === res.payment_hash);
 
 				if (found) {
-					await refreshLdk({ selectedWallet, selectedNetwork });
+					await refreshLdk();
 					showToast({
 						type: 'error',
 						title: i18n.t('wallet:toast_payment_failed_title'),
