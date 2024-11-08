@@ -363,6 +363,11 @@ const performMetadataRestore = async (): Promise<
 			return ok({ backupExists: false });
 		}
 
+		// apply migrations
+		if (backupRes.value.metadata.version < 47) {
+			backup.comments = {};
+		}
+
 		dispatch(updateMetadata({ ...expectedBackupShape, ...backup }));
 		dispatch(backupSuccess({ category: EBackupCategories.metadata }));
 
