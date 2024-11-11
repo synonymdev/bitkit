@@ -1,4 +1,4 @@
-import React, { memo, ReactElement, useEffect, useRef } from 'react';
+import React, { memo, ReactElement, useEffect, useRef, useState } from 'react';
 import { AppState } from 'react-native';
 import NetInfo from '@react-native-community/netinfo';
 import { useTranslation } from 'react-i18next';
@@ -23,6 +23,7 @@ import {
 	selectedWalletSelector,
 } from './store/reselect/wallet';
 import { updateSettings } from './store/slices/settings';
+import WalletLoading from './WalletLoading';
 // import { updateExchangeRates } from './store/actions/wallet';
 
 const electrum = getOnChainWalletElectrum();
@@ -36,10 +37,16 @@ const AppOnboarded = (): ReactElement => {
 	const pin = useAppSelector(pinSelector);
 	const pinOnLaunch = useAppSelector(pinOnLaunchSelector);
 	const isOnline = useAppSelector(isOnlineSelector);
+	const [isLoading, setIsLoading] = useState(true);
 
 	// on App start
 	useEffect(() => {
-		startWalletServices({ selectedNetwork, selectedWallet });
+		const startWallet = async (): Promise<void> => {
+			await startWalletServices({ selectedNetwork, selectedWallet });
+			setIsLoading(false);
+		};
+
+		startWallet();
 
 		const needsAuth = pin && pinOnLaunch;
 		dispatch(updateUi({ isAuthenticated: !needsAuth }));
@@ -116,6 +123,10 @@ const AppOnboarded = (): ReactElement => {
 			unsubscribeNetInfo();
 		};
 	}, [isOnline, t]);
+
+	if (isLoading) {
+		return <WalletLoading />;
+	}
 
 	return (
 		<InactivityTracker>
