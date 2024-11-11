@@ -30,6 +30,7 @@ import lm, {
 	TPaymentReq,
 	TTransactionData,
 	TTransactionPosition,
+	ELdkLogLevels,
 } from '@synonymdev/react-native-ldk';
 
 import {
@@ -334,6 +335,8 @@ export const setupLdk = async ({
 		if (backupRes.isErr()) {
 			return err(backupRes.error);
 		}
+
+		await ldk.setLogLevel(ELdkLogLevels.trace, true);
 
 		const lmStart = await lm.start({
 			account: account.value,
