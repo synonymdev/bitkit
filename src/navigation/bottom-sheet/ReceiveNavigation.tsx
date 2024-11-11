@@ -11,6 +11,7 @@ import ReceiveQR from '../../screens/Wallets/Receive/ReceiveQR';
 import ReceiveDetails from '../../screens/Wallets/Receive/ReceiveDetails';
 import Tags from '../../screens/Wallets/Receive/Tags';
 import ReceiveAmount from '../../screens/Wallets/Receive/ReceiveAmount';
+import ReceiveGeoBlocked from '../../screens/Wallets/Receive/ReceiveGeoBlocked';
 import ReceiveConnect from '../../screens/Wallets/Receive/ReceiveConnect';
 import Liquidity from '../../screens/Wallets/Receive/Liquidity';
 import { useSnapPoints } from '../../hooks/bottomSheet';
@@ -31,6 +32,7 @@ export type ReceiveStackParamList = {
 	};
 	Tags: undefined;
 	ReceiveAmount: undefined;
+	ReceiveGeoBlocked: undefined;
 	ReceiveConnect: { isAdditional: boolean } | undefined;
 	Liquidity: {
 		channelSize: number;
@@ -73,6 +75,10 @@ const ReceiveNavigation = (): ReactElement => {
 					<Stack.Screen name="ReceiveDetails" component={ReceiveDetails} />
 					<Stack.Screen name="Tags" component={Tags} />
 					<Stack.Screen name="ReceiveAmount" component={ReceiveAmount} />
+					<Stack.Screen
+						name="ReceiveGeoBlocked"
+						component={ReceiveGeoBlocked}
+					/>
 					<Stack.Screen name="ReceiveConnect" component={ReceiveConnect} />
 					<Stack.Screen name="Liquidity" component={Liquidity} />
 				</Stack.Navigator>

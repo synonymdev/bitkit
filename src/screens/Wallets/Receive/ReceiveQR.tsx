@@ -280,7 +280,13 @@ const ReceiveQR = ({
 	]);
 
 	const onToggleInstant = useCallback((): void => {
-		if (!isGeoBlocked && !jitInvoice && lightningBalance.remoteBalance === 0) {
+		if (isGeoBlocked && lightningBalance.remoteBalance === 0) {
+			navigation.navigate('ReceiveGeoBlocked');
+		} else if (
+			!isGeoBlocked &&
+			!jitInvoice &&
+			lightningBalance.remoteBalance === 0
+		) {
 			navigation.navigate('ReceiveAmount');
 		} else {
 			setEnableInstant(!enableInstant);
@@ -582,10 +588,6 @@ const ReceiveQR = ({
 	const slides = useMemo((): Slide[] => [Slide1, Slide2], [Slide1, Slide2]);
 
 	const ReceiveInstantlySwitch = useCallback((): ReactElement => {
-		if (isGeoBlocked && !lightningBalance.remoteBalance) {
-			return <></>;
-		}
-
 		if (!isLDKReady) {
 			return (
 				<View style={styles.buttonContainer}>
@@ -622,14 +624,7 @@ const ReceiveQR = ({
 				</SwitchRow>
 			</View>
 		);
-	}, [
-		t,
-		isLDKReady,
-		enableInstant,
-		onToggleInstant,
-		isGeoBlocked,
-		lightningBalance.remoteBalance,
-	]);
+	}, [t, isLDKReady, enableInstant, onToggleInstant]);
 
 	return (
 		<>

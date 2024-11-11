@@ -23,6 +23,9 @@
 		"text_blocked": {
 			"string": "At this time, Bitkit cannot provide automatic Lightning connections to residents of the United States and Canada."
 		},
+		"text_blocked_cjit": {
+			"string": "Bitkit does not currently provide Lightning services to the USA or Canada, but you can still connect to other nodes directly."
+		},
 		"button1": {
 			"string": "Transfer from Savings"
 		},
