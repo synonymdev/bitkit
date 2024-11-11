@@ -96,8 +96,52 @@ import { createWallet } from '../../store/slices/wallet';
 bitcoin.initEccLib(ecc);
 const bip32 = BIP32Factory(ecc);
 
-let wallet: TWallet;
+// let wallet: TWallet;
 let addressGenerator: BitcoinActions | undefined;
+
+let _wallet: TWallet | undefined;
+let walletReady = false;
+
+type TWalletProxy = {
+	wallet: TWallet;
+};
+
+function blockUntilWalletReady() {
+	const start = Date.now();
+	const delay = 2000; // Wait for 2 seconds
+
+	// Block execution until 2 seconds have passed (or wallet is initialized)
+	while (!wallet && Date.now() - start < delay) {
+		// Busy-waiting (blocking the main thread, not ideal but hacky)
+	}
+}
+
+const walletProxy = new Proxy<TWalletProxy>({} as TWalletProxy, {
+	get: function (target, property) {
+		if (!_wallet) {
+			console.log('wallet is not ready yet', { property });
+			showToast({
+				type: 'warning',
+				title: 'Wallet not ready',
+				description: 'Wallet is not ready yet',
+			});
+			// throw new Error('wallet is not ready yet');
+			return;
+		}
+		return _wallet[property];
+	},
+	set: function (target, property, value) {
+		if (property === 'wallet') {
+			_wallet = value;
+			walletReady = true;
+		} else if (walletReady) {
+			_wallet![property] = value;
+		}
+		return true;
+	},
+});
+
+const wallet = walletProxy.wallet;
 
 export const setupAddressGenerator = async ({
 	selectedWallet = getSelectedWallet(),
@@ -1161,7 +1205,7 @@ export const setupOnChainWallet = async ({
 	if (createWalletResponse.isErr()) {
 		return err(createWalletResponse.error.message);
 	}
-	wallet = createWalletResponse.value;
+	walletProxy.wallet = createWalletResponse.value;
 	return ok(wallet);
 };
 
@@ -1581,6 +1625,7 @@ export const getOnChainWalletTransactionData = (): ISendTransaction => {
 };
 
 export const getOnChainWalletData = (): IWalletData => {
+	console.log({ wallet });
 	return wallet?.data;
 };
 
@@ -1606,7 +1651,7 @@ export const switchNetwork = async (
 		console.error(response.error.message);
 		return err(response.error.message);
 	}
-	wallet = response.value;
+	walletProxy.wallet = response.value;
 	setTimeout(updateActivityList, 500);
 	return ok(true);
 };
