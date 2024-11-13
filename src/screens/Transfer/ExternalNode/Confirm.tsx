@@ -1,10 +1,14 @@
-import React, { ReactElement, useState } from 'react';
+import React, { ReactElement, useCallback, useState } from 'react';
+import { useFocusEffect } from '@react-navigation/native';
 import { Image, StyleSheet, View } from 'react-native';
 import { Trans, useTranslation } from 'react-i18next';
 
-import { View as ThemedView } from '../../../styles/components';
+import {
+	View as ThemedView,
+	TouchableOpacity,
+} from '../../../styles/components';
 import { Caption13Up, Display } from '../../../styles/text';
-import { LightningIcon } from '../../../styles/icons';
+import { LightningIcon, PencilIcon } from '../../../styles/icons';
 import SafeAreaInset from '../../../components/SafeAreaInset';
 import NavigationHeader from '../../../components/NavigationHeader';
 import SwipeToConfirm from '../../../components/SwipeToConfirm';
@@ -14,6 +18,7 @@ import { createFundedChannel } from '../../../utils/wallet/transfer';
 import { useAppSelector } from '../../../hooks/redux';
 import { TransferScreenProps } from '../../../navigation/types';
 import { transactionFeeSelector } from '../../../store/reselect/wallet';
+import { updateSendTransaction } from '../../../store/actions/wallet';
 
 const image = require('../../../assets/illustrations/coin-stack-x.png');
 
@@ -28,6 +33,16 @@ const ExternalConfirm = ({
 
 	const lspFee = 0;
 	const totalFee = localBalance + transactionFee;
+
+	useFocusEffect(
+		useCallback(() => {
+			// Using a placeholder address here to enable the FeeCustom screen to function properly.
+			// The actual funding address will be updated later in createFundedChannel.
+			updateSendTransaction({
+				outputs: [{ address: 'xxx', value: localBalance, index: 0 }],
+			});
+		}, [localBalance]),
+	);
 
 	const onConfirm = async (): Promise<void> => {
 		setLoading(true);
@@ -50,6 +65,10 @@ const ExternalConfirm = ({
 		navigation.navigate('ExternalSuccess');
 	};
 
+	const onChangeFee = (): void => {
+		navigation.navigate('ExternalFeeCustom');
+	};
+
 	return (
 		<ThemedView style={styles.root}>
 			<SafeAreaInset type="top" />
@@ -68,12 +87,18 @@ const ExternalConfirm = ({
 
 				<View style={styles.fees}>
 					<View style={styles.feesRow}>
-						<View style={styles.feeItem}>
+						<TouchableOpacity
+							style={styles.feeItem}
+							onPress={onChangeFee}
+							testID="SetCustomFee">
 							<Caption13Up style={styles.feeItemLabel} color="secondary">
 								{t('spending_confirm.network_fee')}
 							</Caption13Up>
-							<Money sats={transactionFee} size="bodySSB" symbol={true} />
-						</View>
+							<View style={styles.networkFee}>
+								<Money sats={transactionFee} size="bodySSB" symbol={true} />
+								<PencilIcon height={13} width={13} />
+							</View>
+						</TouchableOpacity>
 						<View style={styles.feeItem}>
 							<Caption13Up style={styles.feeItemLabel} color="secondary">
 								{t('spending_confirm.lsp_fee')}
@@ -142,6 +167,11 @@ const styles = StyleSheet.create({
 	},
 	feeItemLabel: {
 		marginBottom: 8,
+	},
+	networkFee: {
+		flexDirection: 'row',
+		alignItems: 'center',
+		gap: 8,
 	},
 	imageContainer: {
 		flexShrink: 1,

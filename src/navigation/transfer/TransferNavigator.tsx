@@ -29,6 +29,7 @@ import ExternalConnection from '../../screens/Transfer/ExternalNode/Connection';
 import ExternalAmount from '../../screens/Transfer/ExternalNode/Amount';
 import ExternalConfirm from '../../screens/Transfer/ExternalNode/Confirm';
 import ExternalSuccess from '../../screens/Transfer/ExternalNode/Success';
+import ExternalFeeCustom from '../../screens/Transfer/ExternalNode/FeeCustom';
 import { TChannel } from '../../store/types/lightning';
 
 export type TransferNavigationProp =
@@ -59,6 +60,7 @@ export type TransferStackParamList = {
 	SavingsConfirm: { channels: TChannel[] } | undefined;
 	SavingsAdvanced: undefined;
 	SavingsProgress: { channels: TChannel[] };
+	ExternalFeeCustom: undefined;
 };
 
 const Stack = createNativeStackNavigator<TransferStackParamList>();
@@ -93,6 +95,7 @@ const Transfer = (): ReactElement => {
 			<Stack.Screen name="ExternalAmount" component={ExternalAmount} />
 			<Stack.Screen name="ExternalConfirm" component={ExternalConfirm} />
 			<Stack.Screen name="ExternalSuccess" component={ExternalSuccess} />
+			<Stack.Screen name="ExternalFeeCustom" component={ExternalFeeCustom} />
 		</Stack.Navigator>
 	);
 };

@@ -63,7 +63,7 @@ const ExternalAmount = ({
 		useCallback(() => {
 			const setupTransaction = async (): Promise<void> => {
 				await resetSendTransaction();
-				await setupOnChainTransaction({ satsPerByte: fees.fast });
+				await setupOnChainTransaction({ satsPerByte: fees.fast, rbf: false });
 			};
 			setupTransaction();
 
@@ -151,7 +151,7 @@ const ExternalAmount = ({
 					/>
 				</View>
 
-				<View style={styles.numberPad} testID="SendAmountNumberPad">
+				<View style={styles.numberPadContainer} testID="SendAmountNumberPad">
 					<View style={styles.actions}>
 						<View>
 							<Caption13Up style={styles.availableAmountText} color="secondary">
@@ -235,7 +235,7 @@ const styles = StyleSheet.create({
 	amountContainer: {
 		marginTop: 'auto',
 	},
-	numberPad: {
+	numberPadContainer: {
 		flex: 1,
 		marginTop: 'auto',
 		maxHeight: 435,

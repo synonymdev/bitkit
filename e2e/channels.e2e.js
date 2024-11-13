@@ -251,6 +251,16 @@ d('Transfer', () => {
 			4,
 		);
 		await element(by.id('ExternalAmountContinue')).tap();
+
+		// change fee
+		await element(by.id('SetCustomFee')).tap();
+		await element(
+			by.id('NRemove').withAncestor(by.id('FeeCustomNumberPad')),
+		).tap();
+		await element(by.id('FeeCustomContinue')).tap();
+		await element(by.id('N5').withAncestor(by.id('FeeCustomNumberPad'))).tap();
+		await element(by.id('FeeCustomContinue')).tap();
+
 		// Swipe to confirm (set x offset to avoid navigating back)
 		await element(by.id('GRAB')).swipe('right', 'slow', 0.95, 0.5, 0.5);
 		await waitFor(element(by.id('ExternalSuccess')))
@@ -319,7 +329,7 @@ d('Transfer', () => {
 		await waitFor(
 			element(by.id('MoneyText').withAncestor(by.id('TotalBalance'))),
 		)
-			.toHaveText('99 225')
+			.toHaveText('99 059')
 			.withTimeout(10000);
 
 		// close the channel

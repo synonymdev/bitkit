@@ -71,6 +71,9 @@
 		"confirm": {
 			"string": "Please\n<accent>confirm</accent>"
 		},
+		"custom_fee": {
+			"string": "Custom <accent>fee</accent>"
+		},
 		"swipe": {
 			"string": "Swipe To Transfer"
 		}
