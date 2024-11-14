@@ -1,13 +1,13 @@
 import {
 	BlocktankClient,
+	BtOrderState2,
+	CJitStateEnum,
+	IBt0ConfMinTxFeeWindow,
 	IBtInfo,
 	IBtOrder,
 	ICJitEntry,
 } from '@synonymdev/blocktank-lsp-http-client';
 import { err, ok, Result } from '@synonymdev/result';
-import { CJitStateEnum } from '@synonymdev/blocktank-lsp-http-client/dist/shared/CJitStateEnum';
-import { IBt0ConfMinTxFeeWindow } from '@synonymdev/blocktank-lsp-http-client/dist/shared/IBt0ConfMinTxFeeWindow';
-import { BtOrderState2 } from '@synonymdev/blocktank-lsp-http-client/dist/shared/BtOrderState2';
 
 import { EAvailableNetwork } from '../networks';
 import { addPeers, getNodeId, refreshLdk } from '../lightning';
@@ -102,6 +102,7 @@ export const createOrder = async ({
 			nodeId,
 			source: options?.source ?? 'bitkit',
 			zeroReserve: true,
+			announceChannel: false,
 		});
 		if (buyRes?.id) {
 			await refreshOrder(buyRes.id);
@@ -246,11 +247,7 @@ export const openChannel = async (
 		}
 		//Attempt to sync and re-add peers prior to channel open.
 		await refreshLdk();
-		const finalizeChannelResponse = await bt.openChannel(
-			orderId,
-			nodeId.value,
-			false,
-		);
+		const finalizeChannelResponse = await bt.openChannel(orderId, nodeId.value);
 		if (finalizeChannelResponse) {
 			// Once finalized, refresh on-chain & lightning.
 			await refreshWallet();

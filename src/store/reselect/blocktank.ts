@@ -1,8 +1,11 @@
 import { createSelector } from '@reduxjs/toolkit';
 import { RootState } from '..';
 import { IBlocktank, TPaidBlocktankOrders } from '../types/blocktank';
-import { IBtInfo, IBtOrder } from '@synonymdev/blocktank-lsp-http-client';
-import { BtOrderState2 } from '@synonymdev/blocktank-lsp-http-client/dist/shared/BtOrderState2';
+import {
+	BtOrderState2,
+	IBtInfo,
+	IBtOrder,
+} from '@synonymdev/blocktank-lsp-http-client';
 
 const blocktankState = (state: RootState): IBlocktank => state.blocktank;
 

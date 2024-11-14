@@ -3,10 +3,10 @@ import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import {
 	BtOpenChannelState,
+	BtOrderState2,
+	BtPaymentState2,
 	IBtOrder,
 } from '@synonymdev/blocktank-lsp-http-client';
-import { BtOrderState2 } from '@synonymdev/blocktank-lsp-http-client/dist/shared/BtOrderState2';
-import { BtPaymentState2 } from '@synonymdev/blocktank-lsp-http-client/dist/shared/BtPaymentState2';
 
 import { EChannelStatus } from '../../../store/types/lightning';
 import { View as ThemedView } from '../../../styles/components';

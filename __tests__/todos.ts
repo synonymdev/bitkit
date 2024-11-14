@@ -1,7 +1,6 @@
 import assert from 'node:assert';
 import cloneDeep from 'lodash/cloneDeep';
-import { IBtOrder } from '@synonymdev/blocktank-lsp-http-client';
-import { BtOrderState2 } from '@synonymdev/blocktank-lsp-http-client/dist/shared/BtOrderState2';
+import { IBtOrder, BtOrderState2 } from '@synonymdev/blocktank-lsp-http-client';
 
 import '../src/utils/i18n';
 import { todosFullSelector } from '../src/store/reselect/todos';

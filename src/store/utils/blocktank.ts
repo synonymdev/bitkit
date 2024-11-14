@@ -1,13 +1,13 @@
 import { err, ok, Result } from '@synonymdev/result';
-import { CJitStateEnum } from '@synonymdev/blocktank-lsp-http-client/dist/shared/CJitStateEnum';
 import {
-	BtBolt11PaymentState,
+	BtBolt11InvoiceState,
 	BtOpenChannelState,
+	BtOrderState2,
+	BtPaymentState2,
+	CJitStateEnum,
 	IBtOrder,
 	ICJitEntry,
 } from '@synonymdev/blocktank-lsp-http-client';
-import { BtOrderState2 } from '@synonymdev/blocktank-lsp-http-client/dist/shared/BtOrderState2';
-import { BtPaymentState2 } from '@synonymdev/blocktank-lsp-http-client/dist/shared/BtPaymentState2';
 import notifee, { TimestampTrigger, TriggerType } from '@notifee/react-native';
 
 import { __E2E__ } from '../../constants/env';
@@ -384,7 +384,7 @@ const handleOrderStateChange = (order: IBtOrder): void => {
 	}
 
 	// given up
-	if (order.payment.bolt11Invoice.state === BtBolt11PaymentState.FAILED) {
+	if (order.payment.bolt11Invoice.state === BtBolt11InvoiceState.CANCELED) {
 		showToast({
 			type: 'warning',
 			title: i18n.t('lightning:order_given_up_title'),

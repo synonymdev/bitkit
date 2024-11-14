@@ -1,11 +1,11 @@
 import Clipboard from '@react-native-clipboard/clipboard';
 import {
 	BtOpenChannelState,
+	BtOrderState2,
+	BtPaymentState2,
 	IBtOrder,
 	ICJitEntry,
 } from '@synonymdev/blocktank-lsp-http-client';
-import { BtOrderState2 } from '@synonymdev/blocktank-lsp-http-client/dist/shared/BtOrderState2';
-import { BtPaymentState2 } from '@synonymdev/blocktank-lsp-http-client/dist/shared/BtPaymentState2';
 import React, { ReactElement, memo, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {

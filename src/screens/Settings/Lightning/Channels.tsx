@@ -9,8 +9,7 @@ import {
 import Share from 'react-native-share';
 import { FadeIn, FadeOut } from 'react-native-reanimated';
 import { useTranslation } from 'react-i18next';
-import { IBtOrder } from '@synonymdev/blocktank-lsp-http-client';
-import { BtOrderState2 } from '@synonymdev/blocktank-lsp-http-client/dist/shared/BtOrderState2';
+import { IBtOrder, BtOrderState2 } from '@synonymdev/blocktank-lsp-http-client';
 
 import { AnimatedView, View as ThemedView } from '../../../styles/components';
 import { Caption13Up, BodyMSB } from '../../../styles/text';
