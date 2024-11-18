@@ -1,6 +1,7 @@
-import React, { ReactElement, memo, useState } from 'react';
+import React, { ReactElement, memo, useEffect, useState } from 'react';
 import Animated, {
 	useAnimatedStyle,
+	useSharedValue,
 	withTiming,
 } from 'react-native-reanimated';
 import {
@@ -18,12 +19,10 @@ import colors from '../styles/colors';
 import { CaptionB } from '../styles/text';
 import { TActivityFilter } from '../utils/activity';
 
-const tabsGap = 4;
-
-export type TTab = {
-	id: string;
-	filter: TActivityFilter;
-};
+export type TTab = { id: string; filter: TActivityFilter };
+type TTabLayout = { width: number; height: number; x: number; y: number };
+type TTabLayouts = Record<string, TTabLayout>;
+const initialTabLayout: TTabLayout = { width: 0, height: 0, x: 0, y: 0 };
 
 const Tab = ({
 	text,
@@ -62,28 +61,50 @@ const Tabs = ({
 	onPress: (index: number) => void;
 }): ReactElement => {
 	const { t } = useTranslation('wallet');
-	const [tabWidth, setTabWidth] = useState(0);
+	const activeTabLayout = useSharedValue<TTabLayout>(initialTabLayout);
+	const [layouts, setLayouts] = useState<TTabLayouts>({});
 
-	const animatedTabStyle = useAnimatedStyle(() => {
-		return { left: withTiming((tabWidth + tabsGap) * activeTab) };
-	}, [tabWidth, activeTab]);
+	useEffect(() => {
+		// Set the active tab layout when the active tab changes
+		const layout = layouts[tabs[activeTab].id];
+		if (layout) {
+			activeTabLayout.value = withTiming(layout);
+		}
+	}, [activeTab, layouts, tabs, activeTabLayout]);
 
-	const onLayout = (event: LayoutChangeEvent): void => {
-		setTabWidth(event.nativeEvent.layout.width);
+	const animatedStyle = useAnimatedStyle(() => {
+		return {
+			height: activeTabLayout.value.height,
+			top: activeTabLayout.value.y,
+			width: activeTabLayout.value.width,
+			left: activeTabLayout.value.x,
+		};
+	});
+
+	const handleLayout = (
+		id: string,
+		event: LayoutChangeEvent,
+		index: number,
+	): void => {
+		const { layout } = event.nativeEvent;
+		setLayouts((prevLayouts) => ({ ...prevLayouts, [id]: layout }));
+
+		if (index === activeTab) {
+			// Set the active tab layout on initial render
+			activeTabLayout.value = layout;
+		}
 	};
 
 	return (
 		<View style={[styles.root, style]} testID="Tabs">
-			<Animated.View
-				style={[styles.activeTab, animatedTabStyle, { width: tabWidth }]}
-			/>
+			<Animated.View style={[styles.activeTab, animatedStyle]} />
 			{tabs.map((tab, index) => (
 				<Tab
 					key={tab.id}
 					text={t('activity_tabs.' + tab.id)}
 					active={activeTab === index}
 					testID={`Tab-${tab.id}`}
-					onLayout={onLayout}
+					onLayout={(event) => handleLayout(tab.id, event, index)}
 					onPress={(): void => onPress(index)}
 				/>
 			))}
@@ -94,7 +115,7 @@ const Tabs = ({
 const styles = StyleSheet.create({
 	root: {
 		flexDirection: 'row',
-		gap: tabsGap,
+		gap: 4,
 	},
 	tab: {
 		flex: 1,
@@ -105,10 +126,9 @@ const styles = StyleSheet.create({
 		paddingVertical: 10,
 	},
 	activeTab: {
-		backgroundColor: colors.brand,
-		height: 2,
+		borderBottomWidth: 2,
+		borderColor: colors.brand,
 		position: 'absolute',
-		top: '95%',
 		zIndex: 1,
 	},
 });
