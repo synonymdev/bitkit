@@ -13,6 +13,7 @@ import { useTranslation } from 'react-i18next';
 import { ScrollView, View as ThemedView } from '../../styles/components';
 import { BodyS } from '../../styles/text';
 import { PlusIcon } from '../../styles/icons';
+import Dialog from '../../components/Dialog';
 import NavigationHeader from '../../components/NavigationHeader';
 import KeyboardAvoidingView from '../../components/KeyboardAvoidingView';
 import Button from '../../components/buttons/Button';
@@ -31,9 +32,10 @@ import { BasicProfile } from '../../store/types/slashtags';
 import { slashtagsLinksSelector } from '../../store/reselect/slashtags';
 import { onboardingProfileStepSelector } from '../../store/reselect/slashtags';
 import { arraysMatch } from '../../utils/helpers';
+import { deleteProfile, saveProfile } from '../../utils/slashtags';
+import { showToast } from '../../utils/notifications';
 import ProfileLinkNavigation from '../../navigation/bottom-sheet/ProfileLinkNavigation';
 import type { RootStackScreenProps } from '../../navigation/types';
-import { saveProfile } from '../../utils/slashtags';
 
 const ProfileEdit = ({
 	navigation,
@@ -42,7 +44,8 @@ const ProfileEdit = ({
 	const { url, profile: slashtagsProfile } = useSlashtags();
 	const { profile: savedProfile } = useProfile(url);
 	const [hasEdited, setHasEdited] = useState(false);
-	const [isSaving, setIsSaving] = useState(false);
+	const [isLoading, setIsLoading] = useState(false);
+	const [showDeleteDialog, setShowDeleteDialog] = useState(false);
 	const [fields, setFields] = useState<Omit<BasicProfile, 'links'>>({});
 	const dispatch = useAppDispatch();
 	const links = useAppSelector(slashtagsLinksSelector);
@@ -95,9 +98,9 @@ const ProfileEdit = ({
 	};
 
 	const onSave = async (): Promise<void> => {
-		setIsSaving(true);
+		setIsLoading(true);
 		const res = await saveProfile(url, profile, slashtagsProfile);
-		setIsSaving(false);
+		setIsLoading(false);
 		if (res.isErr()) {
 			return;
 		}
@@ -108,6 +111,23 @@ const ProfileEdit = ({
 		} else {
 			navigation.navigate('Profile');
 		}
+	};
+
+	const onDelete = async (): Promise<void> => {
+		setIsLoading(true);
+		const res = await deleteProfile(url, slashtagsProfile);
+		setIsLoading(false);
+		setShowDeleteDialog(false);
+		if (res.isErr()) {
+			return;
+		}
+		await Keyboard.dismiss();
+		navigation.popToTop();
+		showToast({
+			type: 'success',
+			title: t('profile_delete_success_title'),
+			description: t('profile_delete_success_msg'),
+		});
 	};
 
 	const isValid = useCallback(() => {
@@ -160,12 +180,28 @@ const ProfileEdit = ({
 					<BodyS color="secondary">{t('profile_public_warn')}</BodyS>
 
 					{/* leave button visible over keyboard for onboarding */}
-					<View style={onboardedProfile && styles.bottom}>
+					<View
+						style={[
+							styles.buttonsContainer,
+							onboardedProfile && styles.bottom,
+						]}>
+						{onboardedProfile && (
+							<Button
+								style={styles.button}
+								text={t('profile_delete')}
+								size="large"
+								variant="secondary"
+								loading={isLoading}
+								onPress={() => setShowDeleteDialog(true)}
+								testID="ProfileDeleteButton"
+							/>
+						)}
+
 						<Button
 							style={styles.button}
 							text={t(onboardedProfile ? 'profile_save' : 'continue')}
 							size="large"
-							loading={isSaving}
+							loading={isLoading}
 							disabled={!hasEdited || !isValid()}
 							onPress={onSave}
 							testID="ProfileSaveButton"
@@ -176,6 +212,17 @@ const ProfileEdit = ({
 			</KeyboardAvoidingView>
 
 			<ProfileLinkNavigation />
+
+			<Dialog
+				visible={showDeleteDialog}
+				title={t('profile_delete_dialogue_title')}
+				description={t('profile_delete_dialogue_msg')}
+				confirmText={t('profile_delete_dialogue_yes')}
+				visibleTestID="DeleteDialog"
+				onHide={(): void => setShowDeleteDialog(false)}
+				onConfirm={onDelete}
+				onCancel={(): void => setShowDeleteDialog(false)}
+			/>
 		</ThemedView>
 	);
 };
@@ -198,9 +245,13 @@ const styles = StyleSheet.create({
 	bottom: {
 		marginTop: 'auto',
 	},
+	buttonsContainer: {
+		flexDirection: 'row',
+		marginTop: 16,
+		gap: 16,
+	},
 	button: {
 		flex: 1,
-		marginTop: 16,
 	},
 });
 

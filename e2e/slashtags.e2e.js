@@ -80,6 +80,7 @@ d('Profile and Contacts', () => {
 		// - receive money and attach contact to the transaction
 		// - backup and restore wallet from the seed
 		// - check that everything is in place
+		// - delete profile
 
 		it('Can manage Slashtags Profile', async () => {
 			if (checkComplete('slash-1')) {
@@ -280,6 +281,19 @@ d('Profile and Contacts', () => {
 			await expect(
 				element(by.text(satoshi.name).withAncestor(by.id('ContactSmall'))),
 			).toBeVisible();
+
+			// DELETE PROFILE
+			await element(by.id('NavigationClose')).tap();
+			await element(by.id('Header')).tap();
+			await element(by.id('EditButton')).tap();
+			await element(by.id('ProfileDeleteButton')).tap();
+			await waitFor(element(by.id('DeleteDialog')))
+				.toBeVisible()
+				.withTimeout(10000);
+			await element(by.id('DialogConfirm')).tap();
+			await expect(element(by.id('EmptyProfileHeader'))).toBeVisible();
+			await element(by.id('Header')).tap();
+			await expect(element(by.id('OnboardingContinue'))).toBeVisible();
 
 			markComplete('slash-1');
 		});

@@ -6,7 +6,12 @@ import { format, parse } from '@synonymdev/slashtags-url';
 import i18n from '../i18n';
 import { showToast } from '../notifications';
 import { BasicProfile, SlashPayConfig } from '../../store/types/slashtags';
-import { cacheProfile } from '../../store/slices/slashtags';
+import {
+	cacheProfile,
+	deleteAllLinks,
+	deleteProfileCache,
+	setOnboardingProfileStep,
+} from '../../store/slices/slashtags';
 import { TWalletName } from '../../store/types/wallet';
 import { dispatch, getSettingsStore } from '../../store/helpers';
 import { createLightningInvoice } from '../../store/utils/lightning';
@@ -26,6 +31,7 @@ import {
 	getSelectedWallet,
 } from '../wallet';
 import SlashpayConfig from './slashpay';
+import { updateSettings } from '../../store/slices/settings';
 
 /**
  * Handles pasting or scanning a slash:// url
@@ -61,7 +67,7 @@ export const saveProfile = async (
 		console.log('profile saving error', e);
 		showToast({
 			type: 'warning',
-			title: i18n.t('slashtags:error_saving_contact'),
+			title: i18n.t('slashtags:error_saving_profile'),
 			description: i18n.t('other:try_again'),
 		});
 		return err(e);
@@ -72,6 +78,31 @@ export const saveProfile = async (
 	return ok('Profile saved');
 };
 
+export const deleteProfile = async (
+	url: string,
+	slashtagsProfile: SlashtagsProfile,
+): Promise<Result<string>> => {
+	try {
+		await slashtagsProfile.del({ awaitRelaySync: true });
+		await deleteSlashPayConfig();
+	} catch (e) {
+		console.log('profile delete error', e);
+		showToast({
+			type: 'warning',
+			title: i18n.t('slashtags:error_deleting_profile'),
+			description: i18n.t('other:try_again'),
+		});
+		return err(e);
+	}
+
+	dispatch(deleteProfileCache({ url }));
+	dispatch(deleteAllLinks());
+	dispatch(setOnboardingProfileStep('Intro'));
+	dispatch(updateSettings({ enableOfflinePayments: false }));
+
+	return ok('Profile deleted');
+};
+
 const INVOICE_EXPIRY_DELTA = 60 * 60 * 24 * 7; // one week
 
 export const getNewProfileUrl = (url: string, webRelayUrl: string): string => {
@@ -80,6 +111,19 @@ export const getNewProfileUrl = (url: string, webRelayUrl: string): string => {
 		query: { relay: webRelayUrl },
 	});
 	return res;
+};
+
+const deleteSlashPayConfig = async (): Promise<Result<string>> => {
+	try {
+		if (!webRelayClient) {
+			throw new Error('webRelayClient not ready yet');
+		}
+		const slashpay = new SlashpayConfig(webRelayClient);
+		await slashpay.del();
+		return ok('Deleted slashpay.json');
+	} catch (e) {
+		return err(e);
+	}
 };
 
 export const updateSlashPayConfig = debounce(

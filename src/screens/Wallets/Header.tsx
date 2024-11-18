@@ -50,7 +50,7 @@ const Header = (): ReactElement => {
 				{profile.name ? (
 					<Title>{truncate(profile?.name, 20)}</Title>
 				) : (
-					<Title>{t('your_name_capital')}</Title>
+					<Title testID="EmptyProfileHeader">{t('your_name_capital')}</Title>
 				)}
 			</Pressable>
 			<View style={styles.middleColumn} />

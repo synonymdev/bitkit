@@ -46,6 +46,9 @@ export const slashtagsSlice = createSlice({
 		deleteLink: (state, action: PayloadAction<string>) => {
 			state.links = state.links.filter((link) => link.id !== action.payload);
 		},
+		deleteAllLinks: (state) => {
+			state.links = [];
+		},
 		addContact: (
 			state,
 			action: PayloadAction<{ url: string; name: string }>,
@@ -79,6 +82,10 @@ export const slashtagsSlice = createSlice({
 			const { id } = parse(action.payload.url);
 			state.profilesCache[id] = action.payload.profile;
 		},
+		deleteProfileCache: (state, action: PayloadAction<{ url: string }>) => {
+			const { id } = parse(action.payload.url);
+			delete state.profilesCache[id];
+		},
 		resetSlashtagsState: () => initialSlashtagsState,
 	},
 });
@@ -92,11 +99,13 @@ export const {
 	addLink,
 	editLink,
 	deleteLink,
+	deleteAllLinks,
 	addContact,
 	addContacts,
 	deleteContact,
 	updateLastPaidContacts,
 	cacheProfile,
+	deleteProfileCache,
 	resetSlashtagsState,
 } = actions;
 
