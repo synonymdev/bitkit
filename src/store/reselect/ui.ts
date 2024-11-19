@@ -110,3 +110,5 @@ export const fromAddressViewerSelector = createSelector(
 	[uiState],
 	(ui) => ui.fromAddressViewer,
 );
+
+export const appStateSelector = createSelector([uiState], (ui) => ui.appState);

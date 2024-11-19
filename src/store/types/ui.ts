@@ -1,3 +1,4 @@
+import { AppStateStatus } from 'react-native';
 import { LNURLWithdrawParams, LNURLPayParams } from 'js-lnurl';
 import { EActivityType, TOnchainActivityItem } from './activity';
 import { ReceiveStackParamList } from '../../navigation/bottom-sheet/ReceiveNavigation';
@@ -91,4 +92,5 @@ export type TUiState = {
 	language: string;
 	fromAddressViewer: boolean;
 	paymentMethod: 'onchain' | 'lightning';
+	appState: AppStateStatus;
 };

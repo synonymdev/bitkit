@@ -60,6 +60,8 @@ const AppOnboarded = (): ReactElement => {
 		const appStateSubscription = AppState.addEventListener(
 			'change',
 			(nextAppState) => {
+				dispatch(updateUi({ appState: nextAppState }));
+
 				// on App to foreground
 				if (
 					appState.current.match(/inactive|background/) &&

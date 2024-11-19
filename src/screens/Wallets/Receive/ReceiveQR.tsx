@@ -41,6 +41,7 @@ import { createLightningInvoice } from '../../../store/utils/lightning';
 import { updatePendingInvoice } from '../../../store/slices/metadata';
 import { generateNewReceiveAddress } from '../../../store/actions/wallet';
 import {
+	appStateSelector,
 	isLDKReadySelector,
 	viewControllerIsOpenSelector,
 } from '../../../store/reselect/ui';
@@ -93,6 +94,7 @@ const ReceiveQR = ({
 	const addressType = useAppSelector(addressTypeSelector);
 	const isGeoBlocked = useAppSelector(isGeoBlockedSelector);
 	const isLDKReady = useAppSelector(isLDKReadySelector);
+	const appState = useAppSelector(appStateSelector);
 	const { id, amount, message, tags, jitOrder } =
 		useAppSelector(receiveSelector);
 	const lightningBalance = useLightningBalance(false);
@@ -243,6 +245,16 @@ const ReceiveQR = ({
 		receiveNavigationIsOpen,
 		dispatch,
 	]);
+
+	useEffect(() => {
+		if (receiveNavigationIsOpen && enableInstant && appState !== 'active') {
+			showToast({
+				type: 'error',
+				title: t('receive_foreground_title'),
+				description: t('receive_foreground_msg'),
+			});
+		}
+	}, [t, appState, enableInstant, receiveNavigationIsOpen]);
 
 	const uri = useMemo((): string => {
 		if (!receiveNavigationIsOpen) {

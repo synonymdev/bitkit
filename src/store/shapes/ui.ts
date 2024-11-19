@@ -43,4 +43,5 @@ export const initialUiState: TUiState = {
 	viewControllers: defaultViewControllers,
 	fromAddressViewer: false, // When true, ensures tx inputs are not cleared when sweeping from address viewer.
 	paymentMethod: 'onchain',
+	appState: 'active',
 };

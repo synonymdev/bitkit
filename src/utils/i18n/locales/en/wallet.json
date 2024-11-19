@@ -686,5 +686,13 @@
 	},
 	"receive_insufficient_text": {
 		"string": "Insufficient receiving capacity to receive this amount over Lightning."
+	},
+	"receive_foreground_title": {
+		"string": "Keep Bitkit In Foreground",
+		"developer_comment": "This message appears when the user is shown an LN invoice but tries to switch to another app"
+	},
+	"receive_foreground_msg": {
+		"string": "Payments to your spending balance might fail if you switch between apps.",
+		"developer_comment": "This message appears when the user is shown an LN invoice but tries to switch to another app"
 	}
 }
