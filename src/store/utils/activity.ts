@@ -101,7 +101,7 @@ export const updateOnChainActivityList = async (): Promise<Result<string>> => {
 	});
 	const activityItems = await Promise.all(promises);
 
-	const boostFormattedItems = formatBoostedActivityItems({
+	const boostFormattedItems = await formatBoostedActivityItems({
 		items: activityItems,
 		boostedTransactions,
 		selectedWallet,

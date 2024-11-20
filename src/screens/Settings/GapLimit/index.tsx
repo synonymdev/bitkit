@@ -12,7 +12,7 @@ import { gapLimitOptionsSelector } from '../../../store/reselect/wallet';
 import { ScrollView, TextInput, View } from '../../../styles/components';
 import { Caption13Up } from '../../../styles/text';
 import { showToast } from '../../../utils/notifications';
-import { getOnChainWallet, refreshWallet } from '../../../utils/wallet';
+import { getOnChainWalletAsync, refreshWallet } from '../../../utils/wallet';
 
 const GapLimit = ({}: SettingsScreenProps<'GapLimit'>): ReactElement => {
 	const { t } = useTranslation('settings');
@@ -68,7 +68,7 @@ const GapLimit = ({}: SettingsScreenProps<'GapLimit'>): ReactElement => {
 
 	const saveGapLimit = async (): Promise<void> => {
 		setLoading(true);
-		const wallet = getOnChainWallet();
+		const wallet = await getOnChainWalletAsync();
 		const res = wallet.updateGapLimit({
 			lookAhead: Number(lookAhead),
 			lookBehind: Number(lookBehind),

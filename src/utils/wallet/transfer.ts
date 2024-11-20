@@ -7,9 +7,13 @@ import {
 import { err, ok } from '@synonymdev/result';
 import lm, { ldk } from '@synonymdev/react-native-ldk';
 
-import { getCurrentWallet, getSelectedNetwork, refreshWallet } from '.';
+import {
+	getCurrentWallet,
+	getOnChainWalletAsync,
+	getSelectedNetwork,
+	refreshWallet,
+} from '.';
 import { btcToSats } from '../conversion';
-import { getBoostedTransactionParents } from '../boost';
 import { getTransactions } from './electrum';
 import {
 	ETransferStatus,
@@ -33,6 +37,7 @@ export const getTransferForTx = async (
 ): Promise<TTransfer | undefined> => {
 	const { currentWallet, selectedNetwork } = getCurrentWallet();
 	const transfers = currentWallet.transfers[selectedNetwork];
+	const wallet = await getOnChainWalletAsync();
 
 	if (tx.type === EPaymentType.sent) {
 		const transfersToSpending = transfers.filter((t) => {
@@ -46,7 +51,9 @@ export const getTransferForTx = async (
 
 		// check if the tx is a transfer that was boosted
 		if (!transferToSpending) {
-			const boostedParents = getBoostedTransactionParents({ txId: tx.txid });
+			const boostedParents = wallet.getBoostedTransactionParents({
+				txid: tx.txid,
+			});
 			const isBoosted = boostedParents.length > 0;
 			if (isBoosted) {
 				transferToSpending = transfersToSpending.find((t) => {

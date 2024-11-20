@@ -1,3 +1,5 @@
+import { Wallet as TWallet } from 'beignet';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { useAppDispatch, useAppSelector } from '../hooks/redux';
@@ -9,6 +11,7 @@ import { ignoreSwitchUnitToast } from '../store/slices/user';
 import { EUnit } from '../store/types/wallet';
 import i18n from '../utils/i18n';
 import { showToast } from '../utils/notifications';
+import { getOnChainWalletAsync } from '../utils/wallet';
 import { useCurrency } from './displayValues';
 
 /**
@@ -62,4 +65,24 @@ export const useSwitchUnitAnnounced = (): (() => void) => {
 	};
 
 	return switchUnitAnnounced;
+};
+
+/**
+ * Wait for the onchain wallet to be loaded.
+ */
+export const useOnchainWallet = (): { wallet: TWallet | null } => {
+	const [wallet, setWallet] = useState<TWallet | null>(null);
+
+	useEffect(() => {
+		const getWallet = async (): Promise<void> => {
+			const w = await getOnChainWalletAsync();
+			setWallet(w);
+		};
+
+		getWallet();
+	}, []);
+
+	return {
+		wallet,
+	};
 };

@@ -2,11 +2,12 @@ import { err, ok, Result } from '@synonymdev/result';
 
 import { EAvailableNetwork } from '../networks';
 import {
-	getCustomElectrumPeers,
-	getOnChainWallet,
-	getOnChainWalletElectrum,
-	getSelectedNetwork,
 	ITransaction,
+	getCustomElectrumPeers,
+	getOnChainWalletAsync,
+	getOnChainWalletElectrum,
+	getOnChainWalletElectrumAsync,
+	getSelectedNetwork,
 	refreshWallet,
 } from './index';
 import {
@@ -35,7 +36,7 @@ export type TUnspentAddressScriptHashData = {
  * @returns {Promise<boolean>}
  */
 export const isConnectedElectrum = async (): Promise<boolean> => {
-	const electrum = getOnChainWalletElectrum();
+	const electrum = await getOnChainWalletElectrumAsync();
 	return electrum.isConnected();
 };
 
@@ -65,7 +66,7 @@ export const listUnspentAddressScriptHashes = async ({
 }: {
 	addresses: TUnspentAddressScriptHashData;
 }): Promise<Result<IGetUtxosResponse>> => {
-	const electrum = getOnChainWalletElectrum();
+	const electrum = await getOnChainWalletElectrumAsync();
 	const unspentAddressResult = await electrum.listUnspentAddressScriptHashes({
 		addresses,
 	});
@@ -89,7 +90,7 @@ export const subscribeToAddresses = async ({
 	scriptHashes?: string[];
 	onReceive?: () => void;
 } = {}): Promise<Result<string>> => {
-	const electrum = getOnChainWalletElectrum();
+	const electrum = await getOnChainWalletElectrumAsync();
 	return electrum.subscribeToAddresses({ scriptHashes, onReceive });
 };
 
@@ -132,7 +133,7 @@ export const getTransactions = async ({
 }: {
 	txHashes: ITxHash[];
 }): Promise<Result<IGetTransactions>> => {
-	const electrum = getOnChainWalletElectrum();
+	const electrum = await getOnChainWalletElectrumAsync();
 	return await electrum.getTransactions({ txHashes });
 };
 
@@ -147,7 +148,7 @@ export interface IPeerData {
  * @return {Promise<Result<IPeerData>>}
  */
 export const getConnectedPeer = async (): Promise<Result<IPeerData>> => {
-	const electrum = getOnChainWalletElectrum();
+	const electrum = await getOnChainWalletElectrumAsync();
 	const peerData = await electrum.getConnectedPeer();
 	return peerData as Result<IPeerData>;
 };
@@ -173,7 +174,7 @@ export const getTransactionsFromInputs = async ({
 }: {
 	txHashes: ITxHash[];
 }): Promise<Result<IGetTransactionsFromInputs>> => {
-	const electrum = getOnChainWalletElectrum();
+	const electrum = await getOnChainWalletElectrumAsync();
 	return await electrum.getTransactionsFromInputs({ txHashes });
 };
 
@@ -197,7 +198,7 @@ export const getAddressHistory = async ({
 	scriptHashes?: IAddress[];
 	scanAllAddresses?: boolean;
 }): Promise<Result<IGetAddressHistoryResponse[]>> => {
-	const electrum = getOnChainWalletElectrum();
+	const electrum = await getOnChainWalletElectrumAsync();
 	return await electrum.getAddressHistory({ scriptHashes, scanAllAddresses });
 };
 
@@ -217,7 +218,7 @@ export const connectToElectrum = async ({
 	showNotification?: boolean;
 	selectedNetwork?: EAvailableNetwork;
 } = {}): Promise<Result<string>> => {
-	const electrum = getOnChainWalletElectrum();
+	const electrum = await getOnChainWalletElectrumAsync();
 
 	// Attempt to disconnect from any old/lingering connections
 	await electrum?.disconnect();
@@ -254,7 +255,7 @@ export const getAddressBalance = async ({
 }: {
 	addresses: string[];
 }): Promise<Result<number>> => {
-	const wallet = getOnChainWallet();
+	const wallet = await getOnChainWalletAsync();
 	return await wallet.getAddressesBalance(addresses);
 };
 
@@ -269,24 +270,8 @@ export const getBlockHex = async ({
 }: {
 	height?: number;
 }): Promise<Result<string>> => {
-	const electrum = getOnChainWalletElectrum();
+	const electrum = await getOnChainWalletElectrumAsync();
 	return await electrum.getBlockHex({ height });
-};
-
-/**
- * Returns the block hash given a block hex.
- * Leaving blockHex empty will return the last known block hash from storage.
- * @param {string} [blockHex]
- * @param {EAvailableNetwork} [selectedNetwork]
- * @returns {string}
- */
-export const getBlockHashFromHex = ({
-	blockHex,
-}: {
-	blockHex?: string;
-}): string => {
-	const electrum = getOnChainWalletElectrum();
-	return electrum.getBlockHashFromHex({ blockHex });
 };
 
 /**

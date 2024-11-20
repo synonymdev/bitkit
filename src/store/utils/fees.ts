@@ -4,7 +4,7 @@ import { dispatch, getFeesStore } from '../helpers';
 import { updateOnchainFees } from '../slices/fees';
 import { getFeeEstimates } from '../../utils/wallet/transactions';
 import { EAvailableNetwork } from '../../utils/networks';
-import { getOnChainWallet, getSelectedNetwork } from '../../utils/wallet';
+import { getOnChainWalletAsync, getSelectedNetwork } from '../../utils/wallet';
 import { IOnchainFees } from 'beignet';
 
 export const REFRESH_INTERVAL = 60 * 30; // in seconds, 30 minutes
@@ -46,6 +46,6 @@ export const refreshOnchainFeeEstimates = async ({
 }: {
 	forceUpdate?: boolean;
 }): Promise<Result<IOnchainFees>> => {
-	const wallet = getOnChainWallet();
+	const wallet = await getOnChainWalletAsync();
 	return await wallet.updateFeeEstimates(forceUpdate);
 };

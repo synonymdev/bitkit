@@ -42,8 +42,8 @@ import {
 	getBip39Passphrase,
 	getCurrentAddressIndex,
 	getMnemonicPhrase,
-	getOnChainWalletData,
-	getOnChainWalletElectrum,
+	getOnChainWalletDataAsync,
+	getOnChainWalletElectrumAsync,
 	getSelectedNetwork,
 	getSelectedWallet,
 	ldkSeed,
@@ -214,7 +214,7 @@ export const setLdkStoragePath = (): Promise<Result<string>> =>
 const broadcastTransaction: TBroadcastTransaction = async (
 	rawTx: string,
 ): Promise<Result<string>> => {
-	const electrum = getOnChainWalletElectrum();
+	const electrum = await getOnChainWalletElectrumAsync();
 	const res = await electrum.broadcastTransaction({
 		rawTx,
 		subscribeToOutputAddress: false,
@@ -229,7 +229,7 @@ const broadcastTransaction: TBroadcastTransaction = async (
 const getScriptPubKeyHistory = async (
 	scriptPubKey: string,
 ): Promise<TGetAddressHistory[]> => {
-	const electrum = getOnChainWalletElectrum();
+	const electrum = await getOnChainWalletElectrumAsync();
 	return await electrum.getScriptPubKeyHistory(scriptPubKey);
 };
 
@@ -913,7 +913,7 @@ export const getBestBlock = async (
 	selectedNetwork: EAvailableNetwork = getSelectedNetwork(),
 ): Promise<THeader> => {
 	try {
-		const beignetHeader = getOnChainWalletData().header;
+		const beignetHeader = (await getOnChainWalletDataAsync()).header;
 		const storageHeader = getWalletStore().header[selectedNetwork];
 		const header =
 			beignetHeader.height > storageHeader.height
@@ -937,7 +937,7 @@ export const getTransactionData = async (
 	let transactionData = DefaultTransactionDataShape;
 	try {
 		const data = [{ tx_hash: txId }];
-		const electrum = getOnChainWalletElectrum();
+		const electrum = await getOnChainWalletElectrumAsync();
 		const response = await electrum.getTransactions({
 			txHashes: data,
 		});

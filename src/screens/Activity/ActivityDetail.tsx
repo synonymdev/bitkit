@@ -95,7 +95,7 @@ import type {
 	RootStackScreenProps,
 } from '../../navigation/types';
 import { i18nTime } from '../../utils/i18n';
-import { useSwitchUnit } from '../../hooks/wallet';
+import { useOnchainWallet, useSwitchUnit } from '../../hooks/wallet';
 import { contactsSelector } from '../../store/reselect/slashtags';
 import { ETransferStatus } from '../../store/types/wallet';
 
@@ -157,6 +157,7 @@ const OnchainActivityDetail = ({
 	const isSend = txType === EPaymentType.sent;
 	const total = isSend ? fee + value : value;
 
+	const { wallet } = useOnchainWallet();
 	const { t } = useTranslation('wallet');
 	const { t: tTime } = useTranslation('intl', { i18n: i18nTime });
 	const switchUnit = useSwitchUnit();
@@ -210,17 +211,21 @@ const OnchainActivityDetail = ({
 	}, [confirmed, isBoosted, txId]);
 
 	const boostedParents = useMemo(() => {
+		if (!wallet) {
+			return [];
+		}
 		return getBoostedTransactionParents({
+			wallet,
 			txId,
 			boostedTransactions,
 		});
-	}, [boostedTransactions, txId]);
+	}, [boostedTransactions, txId, wallet]);
 
 	const hasBoostedParents = useMemo(() => {
 		return boostedParents.length > 0;
 	}, [boostedParents.length]);
 
-	const handleBoostParentPress = (parentTxId): void => {
+	const handleBoostParentPress = (parentTxId: string): void => {
 		const activityItem = activityItems.find((i) => {
 			return i.activityType === EActivityType.onchain && i.txId === parentTxId;
 		});
@@ -300,6 +305,10 @@ const OnchainActivityDetail = ({
 		}
 		return <View />;
 	}, [txDetails]);
+
+	if (!wallet) {
+		return <ActivityIndicator />;
+	}
 
 	let fees = fee;
 	let paymentAmount = value;

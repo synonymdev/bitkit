@@ -7,7 +7,7 @@ import RootNavigator from './navigation/root/RootNavigator';
 import InactivityTracker from './components/InactivityTracker';
 import { showToast } from './utils/notifications';
 import { startWalletServices } from './utils/startup';
-import { getOnChainWalletElectrum } from './utils/wallet';
+import { getOnChainWalletElectrumAsync } from './utils/wallet';
 import { unsubscribeFromLightningSubscriptions } from './utils/lightning';
 import { useAppSelector } from './hooks/redux';
 import { dispatch } from './store/helpers';
@@ -24,8 +24,6 @@ import {
 } from './store/reselect/wallet';
 import { updateSettings } from './store/slices/settings';
 // import { updateExchangeRates } from './store/actions/wallet';
-
-const electrum = getOnChainWalletElectrum();
 
 const AppOnboarded = (): ReactElement => {
 	const { t } = useTranslation('other');
@@ -59,16 +57,16 @@ const AppOnboarded = (): ReactElement => {
 		// on AppState change
 		const appStateSubscription = AppState.addEventListener(
 			'change',
-			(nextAppState) => {
+			async (nextAppState) => {
 				dispatch(updateUi({ appState: nextAppState }));
-
+				const electrum = await getOnChainWalletElectrumAsync();
 				// on App to foreground
 				if (
 					appState.current.match(/inactive|background/) &&
 					nextAppState === 'active'
 				) {
 					// resubscribe to electrum connection changes
-					electrum?.startConnectionPolling();
+					electrum.startConnectionPolling();
 				}
 
 				// on App to background
@@ -76,7 +74,7 @@ const AppOnboarded = (): ReactElement => {
 					appState.current.match(/active|inactive/) &&
 					nextAppState === 'background'
 				) {
-					electrum?.stopConnectionPolling();
+					electrum.stopConnectionPolling();
 				}
 
 				appState.current = nextAppState;

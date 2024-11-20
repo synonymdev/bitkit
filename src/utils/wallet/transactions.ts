@@ -40,8 +40,10 @@ import { TRANSACTION_DEFAULTS } from './constants';
 import {
 	getBalance,
 	getOnChainWallet,
+	getOnChainWalletAsync,
 	getOnChainWalletElectrum,
 	getOnChainWalletTransaction,
+	getOnChainWalletTransactionAsync,
 	getSelectedNetwork,
 	getSelectedWallet,
 	refreshWallet,
@@ -103,7 +105,7 @@ export const createTransaction = async (
 	transactionData?: ISendTransaction,
 ): Promise<Result<{ id: string; hex: string }>> => {
 	try {
-		const transaction = getOnChainWalletTransaction();
+		const transaction = await getOnChainWalletTransactionAsync();
 		const createTxRes = await transaction.createTransaction({
 			transactionData,
 		});
@@ -495,7 +497,7 @@ export const sendMax = async ({
 	const { paymentMethod } = getUiStore();
 
 	try {
-		const tx = getOnChainWalletTransaction();
+		const tx = await getOnChainWalletTransactionAsync();
 		const transaction = tx.data;
 
 		// TODO: Re-work lightning transaction invoices once beignet migration is complete.
@@ -813,7 +815,7 @@ export const setupCpfp = async ({
 }: {
 	txid: string;
 }): Promise<Result<ISendTransaction>> => {
-	const transaction = getOnChainWalletTransaction();
+	const transaction = await getOnChainWalletTransactionAsync();
 	return await transaction.setupCpfp({ txid });
 };
 
@@ -826,7 +828,7 @@ export const setupRbf = async ({
 }: {
 	txid: string;
 }): Promise<Result<ISendTransaction>> => {
-	const transaction = getOnChainWalletTransaction();
+	const transaction = await getOnChainWalletTransactionAsync();
 	return await transaction.setupRbf({ txid });
 };
 
@@ -901,7 +903,7 @@ export const getFeeEstimates = async (
 			});
 		}
 
-		const wallet = getOnChainWallet();
+		const wallet = await getOnChainWalletAsync();
 		const feeRes = await wallet.getFeeEstimates();
 		if (!feeRes) {
 			return err('Unable to get fee estimates.');

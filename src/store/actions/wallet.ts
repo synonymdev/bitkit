@@ -25,11 +25,12 @@ import {
 	createDefaultWallet,
 	getCurrentWallet,
 	getOnChainWallet,
+	getOnChainWalletAsync,
 	getOnChainWalletTransaction,
+	getOnChainWalletTransactionAsync,
 	getSelectedNetwork,
 	getSelectedWallet,
 	refreshWallet,
-	waitForWallet,
 } from '../../utils/wallet';
 import {
 	dispatch,
@@ -38,7 +39,7 @@ import {
 	getWalletStore,
 } from '../helpers';
 import { EAvailableNetwork } from '../../utils/networks';
-import { removeKeyFromObject } from '../../utils/helpers';
+import { removeKeyFromObject, sleep } from '../../utils/helpers';
 import { TGetImpactedAddressesRes } from '../types/checks';
 import { updateActivityList } from '../utils/activity';
 import { ETransactionSpeed } from '../types/settings';
@@ -94,6 +95,7 @@ export const createWalletThunk = async ({
 			return err(response.error.message);
 		}
 		dispatch(createWallet(response.value));
+		await sleep(1000); // give Beignet some time to propagate the data
 		dispatch(setWalletExits());
 		return ok('');
 	} catch (e) {
@@ -125,7 +127,7 @@ export const generateNewReceiveAddress = async ({
 	keyDerivationPath?: IKeyDerivationPath;
 }): Promise<Result<IAddress>> => {
 	try {
-		const wallet = getOnChainWallet();
+		const wallet = await getOnChainWalletAsync();
 		return wallet.generateNewReceiveAddress({ addressType, keyDerivationPath });
 	} catch (e) {
 		console.log(e);
@@ -138,21 +140,8 @@ export const generateNewReceiveAddress = async ({
  * @returns {Promise<string>}
  */
 export const clearUtxos = async (): Promise<string> => {
-	const wallet = getOnChainWallet();
+	const wallet = await getOnChainWalletAsync();
 	return await wallet.clearUtxos();
-};
-
-export const updateWalletBalance = ({
-	balance,
-}: {
-	balance: number;
-}): Result<string> => {
-	try {
-		const wallet = getOnChainWallet();
-		return wallet.updateWalletBalance({ balance });
-	} catch (e) {
-		return err(e);
-	}
 };
 
 /**
@@ -216,7 +205,7 @@ export const injectFakeTransaction = (
 // 	scanAllAddresses?: boolean;
 // 	replaceStoredTransactions?: boolean;
 // }): Promise<Result<string | undefined>> => {
-// 	const wallet = getOnChainWallet();
+// 	const wallet = async getOnChainWalletAsync();
 // 	return await wallet.updateTransactions({
 // 		scanAllAddresses,
 // 		replaceStoredTransactions,
@@ -233,7 +222,7 @@ export const deleteOnChainTransactionById = async ({
 }: {
 	txid: string;
 }): Promise<void> => {
-	const wallet = getOnChainWallet();
+	const wallet = await getOnChainWalletAsync();
 	return await wallet.deleteOnChainTransactionById({ txid });
 };
 
@@ -255,7 +244,7 @@ export const addBoostedTransaction = async ({
 	type?: EBoostType;
 	fee: number;
 }): Promise<Result<IBoostedTransaction>> => {
-	const wallet = getOnChainWallet();
+	const wallet = await getOnChainWalletAsync();
 	return await wallet.addBoostedTransaction({
 		newTxId,
 		oldTxId,
@@ -290,7 +279,7 @@ export const setupOnChainTransaction = async ({
 	outputs?: IOutput[]; // Used to pre-specify outputs to use.
 } = {}): Promise<TSetupTransactionResponse> => {
 	rbf = rbf ?? getSettingsStore().rbf;
-	const transaction = getOnChainWalletTransaction();
+	const transaction = await getOnChainWalletTransactionAsync();
 	return await transaction.setupTransaction({
 		inputTxHashes,
 		utxos,
@@ -310,7 +299,7 @@ export const getChangeAddress = async ({
 }: {
 	addressType?: EAddressType;
 }): Promise<Result<IAddress>> => {
-	const wallet = getOnChainWallet();
+	const wallet = await getOnChainWalletAsync();
 	return await wallet.getChangeAddress(addressType);
 };
 
@@ -331,8 +320,7 @@ export const updateSendTransaction = (
  * @returns {Result<string>}
  */
 export const resetSendTransaction = async (): Promise<Result<string>> => {
-	await waitForWallet();
-	const transaction = getOnChainWalletTransaction();
+	const transaction = await getOnChainWalletTransactionAsync();
 	return transaction.resetSendTransaction();
 };
 
@@ -341,7 +329,7 @@ export const updateSelectedAddressType = async ({
 }: {
 	addressType: EAddressType;
 }): Promise<void> => {
-	const wallet = getOnChainWallet();
+	const wallet = await getOnChainWalletAsync();
 	const addressTypesToMonitor = wallet.addressTypesToMonitor;
 	if (!addressTypesToMonitor.includes(addressType)) {
 		// Append the new address type so we monitor it in subsequent sessions.

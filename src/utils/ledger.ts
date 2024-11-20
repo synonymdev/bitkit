@@ -16,7 +16,7 @@ import {
 } from './lightning';
 import { EAvailableNetwork } from './networks';
 import {
-	getOnChainWalletElectrum,
+	getOnChainWalletElectrumAsync,
 	getScriptHash,
 	getSelectedNetwork,
 	getSelectedWallet,
@@ -59,7 +59,7 @@ export const getChannelCloseTime = async (
 
 	// we have to construct IAddress to get the history
 	const scriptHash = await getScriptHash(address, selectedNetwork);
-	const el = getOnChainWalletElectrum();
+	const el = await getOnChainWalletElectrumAsync();
 	const scriptHashes: IAddress[] = [
 		{
 			index: 0,

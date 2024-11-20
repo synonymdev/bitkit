@@ -1,11 +1,11 @@
-import { EBoostType, IBoostedTransactions } from 'beignet';
+import { EBoostType, IBoostedTransactions, Wallet as TWallet } from 'beignet';
 
 import { getActivityStore, getWalletStore } from '../store/helpers';
 import { IActivityItem, TOnchainActivityItem } from '../store/types/activity';
 import { TWalletName } from '../store/types/wallet';
 import { EAvailableNetwork } from './networks';
 import {
-	getOnChainWallet,
+	getOnChainWalletAsync,
 	getSelectedNetwork,
 	getSelectedWallet,
 } from './wallet';
@@ -30,18 +30,21 @@ export const getBoostedTransactions = ({
 
 /**
  * Returns an array of parents for a boosted transaction id.
+ * @param {TWallet} wallet
  * @param {string} txId
  * @param {IBoostedTransactions} [boostedTransactions]
  * @returns {string[]}
  */
 export const getBoostedTransactionParents = ({
+	wallet,
 	txId,
 	boostedTransactions,
 }: {
+	wallet: TWallet;
 	txId: string;
 	boostedTransactions?: IBoostedTransactions;
 }): string[] => {
-	return getOnChainWallet().getBoostedTransactionParents({
+	return wallet.getBoostedTransactionParents({
 		txid: txId,
 		boostedTransactions,
 	});
@@ -57,11 +60,13 @@ export const getBoostedTransactionParents = ({
  * @returns {boolean}
  */
 export const hasBoostedParents = ({
+	wallet,
 	txId,
 	boostedTransactions,
 	selectedWallet = getSelectedWallet(),
 	selectedNetwork = getSelectedNetwork(),
 }: {
+	wallet: TWallet;
 	txId: string;
 	boostedTransactions?: IBoostedTransactions;
 	selectedWallet?: TWalletName;
@@ -74,6 +79,7 @@ export const hasBoostedParents = ({
 		});
 	}
 	const boostedParents = getBoostedTransactionParents({
+		wallet,
 		txId,
 		boostedTransactions,
 	});
@@ -89,7 +95,7 @@ export const hasBoostedParents = ({
  * @param {EAvailableNetwork} [selectedNetwork]
  * @returns {TOnchainActivityItem|undefined}
  */
-export const getRootParentActivity = ({
+const getRootParentActivity = async ({
 	txId,
 	items,
 	boostedTransactions,
@@ -101,7 +107,8 @@ export const getRootParentActivity = ({
 	boostedTransactions?: IBoostedTransactions;
 	selectedWallet?: TWalletName;
 	selectedNetwork?: EAvailableNetwork;
-}): TOnchainActivityItem | undefined => {
+}): Promise<TOnchainActivityItem | undefined> => {
+	const wallet = await getOnChainWalletAsync();
 	if (!boostedTransactions) {
 		boostedTransactions = getBoostedTransactions({
 			selectedWallet,
@@ -109,6 +116,7 @@ export const getRootParentActivity = ({
 		});
 	}
 	const boostedParents = getBoostedTransactionParents({
+		wallet,
 		txId,
 		boostedTransactions,
 	});
@@ -147,7 +155,7 @@ export const getParentsActivity = ({
  * @param {EAvailableNetwork} [selectedNetwork]
  * @returns {TOnchainActivityItem[]}
  */
-export const formatBoostedActivityItems = ({
+export const formatBoostedActivityItems = async ({
 	items,
 	boostedTransactions,
 	selectedWallet,
@@ -157,18 +165,18 @@ export const formatBoostedActivityItems = ({
 	boostedTransactions: IBoostedTransactions;
 	selectedWallet: TWalletName;
 	selectedNetwork: EAvailableNetwork;
-}): TOnchainActivityItem[] => {
+}): Promise<TOnchainActivityItem[]> => {
 	const formattedItems: TOnchainActivityItem[] = [];
 
-	items.forEach((item) => {
+	for (const item of items) {
 		const { txId } = item;
 
 		// if boosted tx don't add for now
 		if (txId in boostedTransactions) {
-			return;
+			continue;
 		}
 
-		const rootParent = getRootParentActivity({
+		const rootParent = await getRootParentActivity({
 			txId,
 			items,
 			boostedTransactions,
@@ -179,7 +187,7 @@ export const formatBoostedActivityItems = ({
 		// if we can't find a parent tx leave as is
 		if (!rootParent) {
 			formattedItems.push(item);
-			return;
+			continue;
 		}
 
 		const parentBoostType = boostedTransactions[rootParent.txId].type;
@@ -187,10 +195,10 @@ export const formatBoostedActivityItems = ({
 		// if it's an RBF tx leave as is, only mark as boosted
 		if (parentBoostType === EBoostType.rbf) {
 			formattedItems.push({ ...item, isBoosted: true });
-			return;
+			continue;
 		}
 
-		const value = calculateBoostTransactionValue({
+		const value = await calculateBoostTransactionValue({
 			currentActivityItem: item,
 			items,
 			boostedTransactions,
@@ -207,7 +215,7 @@ export const formatBoostedActivityItems = ({
 			address: rootParent.address,
 			isBoosted: true,
 		});
-	});
+	}
 
 	return formattedItems;
 };
@@ -220,7 +228,7 @@ export const formatBoostedActivityItems = ({
  * @param {IBoostedTransactions} boostedTransactions
  * @returns {number}
  */
-export const calculateBoostTransactionValue = ({
+export const calculateBoostTransactionValue = async ({
 	currentActivityItem,
 	items,
 	boostedTransactions,
@@ -230,14 +238,14 @@ export const calculateBoostTransactionValue = ({
 	items: TOnchainActivityItem[];
 	boostedTransactions: IBoostedTransactions;
 	includeFee?: boolean;
-}): number => {
+}): Promise<number> => {
 	const boostedTransaction = Object.values(boostedTransactions).find(
 		(tx) => tx.childTransaction === currentActivityItem.txId,
 	);
 	if (!boostedTransaction) {
 		return currentActivityItem.value;
 	}
-	const rootParent = getRootParentActivity({
+	const rootParent = await getRootParentActivity({
 		txId: currentActivityItem.txId,
 		items,
 		boostedTransactions,
