@@ -1,10 +1,4 @@
 {
-  "beta": {
-    "string": "BETA"
-  },
-  "beta_warn": {
-    "string": "No guarde todo su dinero en Bitkit."
-  },
   "qr_scan": {
     "string": "Escanear código QR"
   },
@@ -54,9 +48,6 @@
   },
   "scan_err_interpret_title": {
     "string": "Incapaz de Interpretar los Datos Proporcionados"
-  },
-  "scan_err_interpret_msg": {
-    "string": "Bitkit no puede interpretar los datos proporcionados."
   },
   "lnurl_channel_host": {
     "string": "Anfitrión"

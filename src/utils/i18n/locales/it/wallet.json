@@ -5,12 +5,6 @@
   "receive": {
     "string": "Ricevi"
   },
-  "balance_total": {
-    "string": "Saldo totale"
-  },
-  "balance_total_pending": {
-    "string": "<text>Saldo totale (</text><pending/><text> in attesa)</text>"
-  },
   "create_wallet_error": {
     "string": "Riapri l'app e riprova."
   },
@@ -338,12 +332,6 @@
   "activity_transfer": {
     "string": "Trasferisci"
   },
-  "activity_transfer_spending": {
-    "string": "Conto Spendibile"
-  },
-  "activity_transfer_savings": {
-    "string": "Conto di Risparmio"
-  },
   "activity_transfer_savings_pending": {
     "string": "Dal conto di spesa (±{duration})"
   },
@@ -592,12 +580,6 @@
   },
   "lnurl_w_button": {
     "string": "Prelievo"
-  },
-  "lnurl_w_success_title": {
-    "string": "Successo"
-  },
-  "lnurl_w_success_description": {
-    "string": "Prelievo richiesto con successo"
   },
   "lnurl_p_max": {
     "string": "Importo massimo"

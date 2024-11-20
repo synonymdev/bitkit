@@ -5,9 +5,6 @@
   "receive": {
     "string": "Recibir"
   },
-  "balance_total": {
-    "string": "Saldo total"
-  },
   "send_bitcoin": {
     "string": "Enviar Bitcoin"
   },
@@ -193,12 +190,6 @@
   },
   "activity_transfer": {
     "string": "Transferir"
-  },
-  "activity_transfer_spending": {
-    "string": "Saldo de gastos"
-  },
-  "activity_transfer_savings": {
-    "string": "Saldo de ahorro"
   },
   "activity_confirms_in": {
     "string": "Confirma en {feeRateDescription}"

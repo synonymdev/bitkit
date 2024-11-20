@@ -5,11 +5,8 @@
   "receive": {
     "string": "Přijmout"
   },
-  "balance_total": {
-    "string": "Celkový zůstatek"
-  },
   "balance_total_pending": {
-    "string": "<text>Celkový zůstatek (</text><pending/><text> čeká na vyřízení)</text>"
+    "string": "<text> (</text><pending/><text> čeká na vyřízení)</text>"
   },
   "create_wallet_error": {
     "string": "Znovu otevřete aplikaci a zkuste to znovu."
@@ -62,11 +59,22 @@
   "send_done": {
     "string": "HOTOVO"
   },
+  "send_available": {
+    "string": "K dispozici"
+  },
   "send_available_spending": {
     "string": "Dostupné (k útratě)"
   },
   "send_available_savings": {
     "string": "Dostupné (úspory)"
+  },
+  "send_max_spending": {
+    "title": {
+      "string": "Zůstatek rezervy"
+    },
+    "description": {
+      "string": "Maximální částka, kterou lze utratit, je o něco nižší kvůli požadovanému zůstatku rezervy."
+    }
   },
   "send_review": {
     "string": "Zkontrolovat a odeslat"
@@ -315,10 +323,10 @@
       "string": "Zvýšení přijímací kapacity"
     },
     "text": {
-      "string": "Váš disponibilní zůstatek v síti Bitkit je jako vaše internetové připojení. Místo šířky pásma platíte za likviditu a směrování plateb.\n\nPlatby z vašeho disponibilního zůstatku jsou levnější, rychlejší a soukromější než běžné bitcoinové transakce.\n\nSíťový poplatek a poplatek poskytovateli služeb jsou jednorázové náklady na zřízení vašeho zůstatku."
+      "string": "Váš zůstatek na účtu využívá síť lightning network, aby byly vaše platby levnější, rychlejší a soukromější.\n\nFunguje to jako přístup k internetu, ale místo za šířku pásma platíte za likviditu a směrování.\n\nToto nastavení zahrnuje některé jednorázové náklady."
     },
     "text_additional": {
-      "string": "Váš disponibilní zůstatek v síti Bitkit je jako vaše internetové připojení. Místo šířky pásma platíte za likviditu a směrování plateb.\n\nPlatby z vašeho výdajového zůstatku jsou levnější, rychlejší a soukromější než běžné bitcoinové transakce.\n\nBitkit potřebuje zvýšit přijímací kapacitu vašeho disponibilního zůstatku, aby mohl tuto platbu zpracovat."
+      "string": "Váš zůstatek na účtu využívá síť lightning network, aby byly vaše platby levnější, rychlejší a soukromější.\n\nFunguje to jako přístup k internetu, ale místo za šířku pásma platíte za likviditu a směrování.\n\nBitkit potřebuje zvýšit přijímací kapacitu vašeho výdajového zůstatku, aby mohl tuto platbu zpracovat."
     },
     "label": {
       "string": "Likvidita disponibilního zůstatku"
@@ -368,12 +376,6 @@
   },
   "activity_transfer": {
     "string": "Převod"
-  },
-  "activity_transfer_spending": {
-    "string": "Dostupný zůstatek"
-  },
-  "activity_transfer_savings": {
-    "string": "Zůstatek úspor"
   },
   "activity_transfer_savings_pending": {
     "string": "Z disponibilního zůstatku (±{duration})"
@@ -504,6 +506,9 @@
   "activity_invoice_note": {
     "string": "Poznámka k faktuře"
   },
+  "activity_invoice_comment": {
+    "string": "Komentář"
+  },
   "activity_invoice": {
     "string": "Faktura"
   },
@@ -633,12 +638,6 @@
   "lnurl_w_button": {
     "string": "Výběr"
   },
-  "lnurl_w_success_title": {
-    "string": "Úspěch"
-  },
-  "lnurl_w_success_description": {
-    "string": "Úspěšná žádost o výběr"
-  },
   "lnurl_p_title": {
     "string": "Platit bitcoinem"
   },
@@ -687,5 +686,11 @@
   },
   "receive_insufficient_text": {
     "string": "Nedostatečná přijímací kapacita pro příjem této částky přes lightning."
+  },
+  "receive_foreground_title": {
+    "string": "Udržovat Bitkit na popředí"
+  },
+  "receive_foreground_msg": {
+    "string": "Při přepínání mezi aplikacemi může dojít k selhání plateb na váš disponibilní zůstatek."
   }
 }

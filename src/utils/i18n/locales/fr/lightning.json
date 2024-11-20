@@ -239,9 +239,6 @@
   "error_add_uri": {
     "string": "L'URI semble être invalide."
   },
-  "error_add_tor": {
-    "string": "Bitkit ne peut pas ajouter de nœuds tor."
-  },
   "error_save_title": {
     "string": "Impossible de sauvegarder le Pair Lightning"
   },

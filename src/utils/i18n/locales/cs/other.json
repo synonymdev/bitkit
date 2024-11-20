@@ -1,13 +1,4 @@
 {
-  "beta": {
-    "string": "BETA"
-  },
-  "beta_software": {
-    "string": "Bitkit je mobilní software."
-  },
-  "beta_warn": {
-    "string": "Neukládejte všechny své peníze v peněžence Bitkit."
-  },
   "qr_scan": {
     "string": "Naskenujte QR kód"
   },
@@ -139,9 +130,6 @@
   "scan_err_interpret_title": {
     "string": "Nelze interpretovat poskytnutá data"
   },
-  "scan_err_interpret_msg": {
-    "string": "Bitkit není schopen interpretovat poskytnutá data."
-  },
   "scan_err_not_payable_msg": {
     "string": "Tento QR kód zřejmě neobsahuje platební údaje."
   },
@@ -236,7 +224,7 @@
     "string": "Výběr vyžádán"
   },
   "lnurl_withdr_success_msg": {
-    "string": "Váš výběr byl úspěšně vyžádán."
+    "string": "Váš výběr byl úspěšně vyžádán. Čekání na platbu."
   },
   "phone_settings": {
     "string": "Otevřít nastavení telefonu"
@@ -277,6 +265,16 @@
     },
     "body": {
       "string": "Otevřete Bitkit pro dokončení přenosu"
+    }
+  },
+  "scan": {
+    "error": {
+      "generic": {
+        "string": "Bitkit není schopen přečíst zadaná data."
+      },
+      "expired": {
+        "string": "Platnost lightning faktury vypršela."
+      }
     }
   }
 }

@@ -23,6 +23,9 @@
     "text_blocked": {
       "string": "V současné době nemůže společnost Bitkit poskytovat automatické připojení Lightning obyvatelům Spojených států a Kanady."
     },
+    "text_blocked_cjit": {
+      "string": "Bitkit v současné době neposkytuje služby lightning do USA a Kanady, ale k ostatním uzlům se můžete připojit přímo."
+    },
     "button1": {
       "string": "Převod z úspor"
     },
@@ -67,6 +70,9 @@
     },
     "confirm": {
       "string": "Prosím,\n<accent>potvrďte</accent>"
+    },
+    "custom_fee": {
+      "string": "Vlastní <accent>poplatek</accent>"
     },
     "swipe": {
       "string": "Přejeďte prstem k provedení převodu"
@@ -146,7 +152,7 @@
       "string": "Likvidita\n<accent>& routing</accent>"
     },
     "text": {
-      "string": "Váš disponibilní zůstatek v síti Bitkit je jako vaše internetové připojení. Místo šířky pásma platíte za likviditu a směrování plateb.\n\nPlatby na váš disponibilní zůstatek a z něj jsou levnější, rychlejší a soukromější než běžné bitcoinové transakce.\n\nSíťový poplatek a poplatek poskytovateli služeb jsou jednorázové náklady na zřízení vašeho zůstatku."
+      "string": "Váš zůstatek na účtu využívá síť lightning network, aby byly vaše platby levnější, rychlejší a soukromější.\n\nFunguje to jako přístup k internetu, ale místo za šířku pásma platíte za likviditu a směrování.\n\nToto nastavení zahrnuje některé jednorázové náklady."
     },
     "label": {
       "string": "Likvidita disponibilního zůstatku"
@@ -370,7 +376,7 @@
     "string": "URI se zdá být neplatná."
   },
   "error_add_tor": {
-    "string": "Bitkit nemůže přidat uzly tor."
+    "string": "Bitkit nemůže přidat uzly Tor."
   },
   "error_save_title": {
     "string": "Nelze uložit Lightning Peer"
@@ -563,6 +569,9 @@
     },
     "open": {
       "string": "Spojení otevřeno"
+    },
+    "inactive": {
+      "string": "Připojení neaktivní"
     }
   },
   "wait_text_top": {

@@ -5,9 +5,6 @@
   "receive": {
     "string": "Otrzymaj"
   },
-  "balance_total": {
-    "string": "Saldo"
-  },
   "send_bitcoin": {
     "string": "Wyślij Bitcoin"
   },

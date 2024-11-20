@@ -37,9 +37,6 @@
   "scan_err_interpret_title": {
     "string": "Nie można zinterpretować dostarczonych danych"
   },
-  "scan_err_interpret_msg": {
-    "string": "Bitkit nie jest w stanie zinterpretować dostarczonych danych."
-  },
   "lnurl_pay_error_no_capacity": {
     "string": "Niewystarczająca pojemność wychodząca/wysyłająca, aby ukończyć żądanie lnurl-pay."
   },

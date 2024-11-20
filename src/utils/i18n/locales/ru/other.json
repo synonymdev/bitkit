@@ -1,13 +1,4 @@
 {
-  "beta": {
-    "string": "БЕТА"
-  },
-  "beta_software": {
-    "string": "Bitkit — это мобильное программное обеспечение."
-  },
-  "beta_warn": {
-    "string": "Не храните все свои деньги в Bitkit."
-  },
   "qr_scan": {
     "string": "Сканировать QR-код"
   },
@@ -139,9 +130,6 @@
   "scan_err_interpret_title": {
     "string": "Не Удалось Интерпретировать Предоставленные Данные"
   },
-  "scan_err_interpret_msg": {
-    "string": "Bitkit не может интерпретировать предоставленные данные."
-  },
   "scan_err_not_payable_msg": {
     "string": "Этот QR-код, похоже, не содержит данных для оплаты."
   },
@@ -234,9 +222,6 @@
   },
   "lnurl_withdr_success_title": {
     "string": "Запрос на Вывод"
-  },
-  "lnurl_withdr_success_msg": {
-    "string": "Ваш запрос на вывод успешно выполнен."
   },
   "phone_settings": {
     "string": "Открыть Настройки Телефона"

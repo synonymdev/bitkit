@@ -5,12 +5,6 @@
   "receive": {
     "string": "Recevoir"
   },
-  "balance_total": {
-    "string": "Solde total"
-  },
-  "balance_total_pending": {
-    "string": "<text>Solde total (</text><pending/><text> en attente)</text>"
-  },
   "create_wallet_error": {
     "string": "Veuillez rouvrir l'application et réessayer."
   },
@@ -332,12 +326,6 @@
   "activity_transfer": {
     "string": "Transfert"
   },
-  "activity_transfer_spending": {
-    "string": "Solde des dépenses"
-  },
-  "activity_transfer_savings": {
-    "string": "Solde de l'épargne"
-  },
   "activity_transfer_savings_pending": {
     "string": "Depuis le compte courant (±{duration})"
   },
@@ -586,12 +574,6 @@
   },
   "lnurl_w_button": {
     "string": "Retirer"
-  },
-  "lnurl_w_success_title": {
-    "string": "Succès"
-  },
-  "lnurl_w_success_description": {
-    "string": "Retrait Demandé Réussi"
   },
   "lnurl_p_max": {
     "string": "Montant maximum"

@@ -239,9 +239,6 @@
   "error_add_uri": {
     "string": "O URI parece ser inválido."
   },
-  "error_add_tor": {
-    "string": "Bitkit não pode adicionar pares que usam a rede TOR."
-  },
   "error_save_title": {
     "string": "Não foi possível salvar o par Lightning"
   },

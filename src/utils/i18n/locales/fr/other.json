@@ -1,13 +1,4 @@
 {
-  "beta": {
-    "string": "BETA"
-  },
-  "beta_software": {
-    "string": "Bitkit est un logiciel mobile."
-  },
-  "beta_warn": {
-    "string": "Ne stockez pas tout votre argent dans Bitkit."
-  },
   "qr_scan": {
     "string": "Scannez le QR code "
   },
@@ -136,9 +127,6 @@
   "scan_err_interpret_title": {
     "string": "Incapable d'interpréter les données fournies"
   },
-  "scan_err_interpret_msg": {
-    "string": "Bitkit n'est pas en mesure d'interpréter les données fournies."
-  },
   "scan_err_not_payable_msg": {
     "string": "Ce QR code ne semble pas contenir de données de paiement."
   },
@@ -231,9 +219,6 @@
   },
   "lnurl_withdr_success_title": {
     "string": "Retrait demandé"
-  },
-  "lnurl_withdr_success_msg": {
-    "string": "Votre retrait a été demandé avec succès."
   },
   "phone_settings": {
     "string": "Ouvrez les paramètres du téléphone"

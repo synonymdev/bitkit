@@ -145,9 +145,6 @@
   "error_invoice": {
     "string": "No s'ha pogut crear la factura."
   },
-  "error_add_tor": {
-    "string": "Bitkit no pot afegir nodes tor."
-  },
   "invoice_copied": {
     "string": "Factura copiada al porta-retalls"
   },

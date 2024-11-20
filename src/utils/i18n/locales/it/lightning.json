@@ -239,9 +239,6 @@
   "error_add_uri": {
     "string": "L'URI sembra non essere valido."
   },
-  "error_add_tor": {
-    "string": "Bitkit non può aggiungere nodi Tor."
-  },
   "error_save_title": {
     "string": "Impossibile salvare il peer Lightning"
   },

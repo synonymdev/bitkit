@@ -1,13 +1,4 @@
 {
-  "beta": {
-    "string": "BETA"
-  },
-  "beta_software": {
-    "string": "Bitkit ist eine mobile Software."
-  },
-  "beta_warn": {
-    "string": "Bewahren Sie nicht Ihr ganzes Geld in Bitkit auf."
-  },
   "qr_scan": {
     "string": "QR-Code scannen"
   },
@@ -139,9 +130,6 @@
   "scan_err_interpret_title": {
     "string": "Bereitgestellte Daten können nicht interpretiert werden"
   },
-  "scan_err_interpret_msg": {
-    "string": "Bitkit kann die bereitgestellten Daten nicht interpretieren."
-  },
   "scan_err_not_payable_msg": {
     "string": "Dieser QR-Code scheint keine Zahlungsdaten zu enthalten."
   },
@@ -236,7 +224,7 @@
     "string": "Abhebung angefordert"
   },
   "lnurl_withdr_success_msg": {
-    "string": "Deine Abhebung wurde erfolgreich angefordert."
+    "string": "Ihre Abhebung wurde erfolgreich beantragt. Ich warte auf die Zahlung."
   },
   "phone_settings": {
     "string": "Telefoneinstellungen öffnen"
@@ -277,6 +265,16 @@
     },
     "body": {
       "string": "Öffnen Sie Bitkit, um Ihre Übertragung abzuschließen"
+    }
+  },
+  "scan": {
+    "error": {
+      "generic": {
+        "string": "Bitkit ist nicht in der Lage, die bereitgestellten Daten zu lesen."
+      },
+      "expired": {
+        "string": "Diese Lightning-Rechnung ist abgelaufen."
+      }
     }
   }
 }

@@ -5,12 +5,6 @@
   "receive": {
     "string": "Ontvang"
   },
-  "balance_total": {
-    "string": "Totale saldo"
-  },
-  "balance_total_pending": {
-    "string": "<text>Totaal saldo (</text><pending/><text> onderweg)</text>"
-  },
   "create_wallet_error": {
     "string": "Open de app opnieuw en probeer het nogmaals."
   },
@@ -332,12 +326,6 @@
   "activity_transfer": {
     "string": "Overboeken"
   },
-  "activity_transfer_spending": {
-    "string": "Bestedingssaldo"
-  },
-  "activity_transfer_savings": {
-    "string": "Spaargeld"
-  },
   "activity_transfer_savings_pending": {
     "string": "Van Bestedingssaldo (±{duration})"
   },
@@ -586,12 +574,6 @@
   },
   "lnurl_w_button": {
     "string": "Opnemen"
-  },
-  "lnurl_w_success_title": {
-    "string": "Succes"
-  },
-  "lnurl_w_success_description": {
-    "string": "Opname Succesvol Aangevraagd"
   },
   "lnurl_p_max": {
     "string": "Maximumbedrag"

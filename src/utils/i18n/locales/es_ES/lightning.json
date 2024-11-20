@@ -86,11 +86,6 @@
       "string": "Total"
     }
   },
-  "liquidity": {
-    "text": {
-      "string": "Su balance de gastos en Bitkit es como su conexión de internet. En vez de ancho de banda, paga por la liquidez y enrutamiento de pagos.\n\nPagos desde y hacia su saldo de gastos son más baratos, rápidos y más privados que las transacciones normales de Bitcoin.\n\nLa comisión de red y la comisión del proveedor del servicio son costes únicos para configurar su saldo."
-    }
-  },
   "savings_intro": {
     "title": {
       "string": "Transferir\n<accent>a ahorros</accent>"
@@ -220,9 +215,6 @@
   },
   "error_add_uri": {
     "string": "La URI parece ser inválida."
-  },
-  "error_add_tor": {
-    "string": "Bitkit no puede añadir nodos tor."
   },
   "error_save_title": {
     "string": "Incapaz De Guardar Par Lightning"

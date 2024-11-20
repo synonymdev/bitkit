@@ -5,11 +5,8 @@
   "receive": {
     "string": "Empfangen"
   },
-  "balance_total": {
-    "string": "Gesamtguthaben"
-  },
   "balance_total_pending": {
-    "string": "<text>Gesamtguthaben (</text><pending/><text> ausstehend)</text>"
+    "string": "<text>(</text><pending/><text>anhängig)</text>"
   },
   "create_wallet_error": {
     "string": "Bitte öffne die App erneut und versuche es nochmal."
@@ -62,11 +59,22 @@
   "send_done": {
     "string": "FERTIG"
   },
+  "send_available": {
+    "string": "Verfügbar"
+  },
   "send_available_spending": {
     "string": "Verfügbar (ausgeben)"
   },
   "send_available_savings": {
     "string": "Verfügbar (sparen)"
+  },
+  "send_max_spending": {
+    "title": {
+      "string": "Reserve-Saldo"
+    },
+    "description": {
+      "string": "Der maximal auszahlbare Betrag ist etwas niedriger, da eine Reserve erforderlich ist."
+    }
   },
   "send_review": {
     "string": "Überprüfen & Senden"
@@ -315,10 +323,10 @@
       "string": "Erhöhung der Empfangskapazität"
     },
     "text": {
-      "string": "Ihr Guthaben in Bitkit ist wie Ihre Internetverbindung. Anstelle von Bandbreite zahlen Sie für Liquidität und Zahlungsrouting.\n\nZahlungen von Ihrem Guthaben sind billiger, schneller und privater als normale Bitcoin-Transaktionen.\n\nDie Netzgebühr und die Gebühr des Dienstanbieters sind einmalige Kosten für die Einrichtung Ihres Guthabens."
+      "string": "Your Spending Balance nutzt das Lightning Network, um Ihre Zahlungen günstiger, schneller und privater zu machen.\n\nDies funktioniert wie ein Internetzugang, aber Sie zahlen für Liquidität und Routing statt für Bandbreite.\n\nDiese Einrichtung umfasst einige einmalige Kosten."
     },
     "text_additional": {
-      "string": "Ihr Guthaben in Bitkit ist wie Ihre Internetverbindung. Anstelle von Bandbreite zahlen Sie für Liquidität und Zahlungsrouting.\n\nZahlungen von Ihrem Guthaben sind billiger, schneller und privater als normale Bitcoin-Transaktionen.\n\nBitkit muss die Aufnahmekapazität Ihres Guthabens erhöhen, um diese Zahlung zu verarbeiten."
+      "string": "Your Spending Balance nutzt das Lightning Network, um Ihre Zahlungen günstiger, schneller und privater zu machen.\n\nDies funktioniert wie ein Internetzugang, aber Sie zahlen für Liquidität und Routing statt für Bandbreite.\n\nBitkit muss die Aufnahmekapazität Ihres Guthabens erhöhen, um diese Zahlung zu verarbeiten."
     },
     "label": {
       "string": "Ausgabensaldo Liquidität"
@@ -368,12 +376,6 @@
   },
   "activity_transfer": {
     "string": "Übertragung"
-  },
-  "activity_transfer_spending": {
-    "string": "Ausgabenkonto"
-  },
-  "activity_transfer_savings": {
-    "string": "Sparkonto"
   },
   "activity_transfer_savings_pending": {
     "string": "Von Ausgabenkonto (±{duration})"
@@ -504,6 +506,9 @@
   "activity_invoice_note": {
     "string": "Rechnungsnotiz"
   },
+  "activity_invoice_comment": {
+    "string": "Kommentar"
+  },
   "activity_invoice": {
     "string": "Rechnung"
   },
@@ -633,12 +638,6 @@
   "lnurl_w_button": {
     "string": "Abheben"
   },
-  "lnurl_w_success_title": {
-    "string": "Erfolgreich"
-  },
-  "lnurl_w_success_description": {
-    "string": "Abhebung erfolgreich angefordert"
-  },
   "lnurl_p_title": {
     "string": "Bitcoin bezahlen"
   },
@@ -687,5 +686,11 @@
   },
   "receive_insufficient_text": {
     "string": "Unzureichende Empfangskapazität, um diesen Betrag über Lightning zu empfangen."
+  },
+  "receive_foreground_title": {
+    "string": "Bitkit im Vordergrund halten"
+  },
+  "receive_foreground_msg": {
+    "string": "Zahlungen auf Ihr Guthaben können fehlschlagen, wenn Sie zwischen Apps wechseln."
   }
 }

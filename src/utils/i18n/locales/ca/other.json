@@ -1,10 +1,4 @@
 {
-  "beta": {
-    "string": "BETA"
-  },
-  "beta_warn": {
-    "string": "No guardis tots els teus diners a Bitkit."
-  },
   "qr_scan": {
     "string": "Escanegi el codi QR"
   },
@@ -144,9 +138,6 @@
   },
   "lnurl_withdr_success_title": {
     "string": "Retirada sol·licitada"
-  },
-  "lnurl_withdr_success_msg": {
-    "string": "El teu retir s'ha sol·licitat amb èxit."
   },
   "phone_settings": {
     "string": "Obre la configuració del telèfon"

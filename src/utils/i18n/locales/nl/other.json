@@ -1,10 +1,4 @@
 {
-  "beta": {
-    "string": "BETA"
-  },
-  "beta_warn": {
-    "string": "Bewaar nooit al uw geld in Bitkit."
-  },
   "qr_scan": {
     "string": "QR Code Scannen"
   },
@@ -54,9 +48,6 @@
   },
   "scan_err_interpret_title": {
     "string": "De Ingevoerde Data Kan Niet Worden Gedecodeerd"
-  },
-  "scan_err_interpret_msg": {
-    "string": "Bitkit kan de ingevoerde data niet decoderen."
   },
   "lnurl_channel_header": {
     "string": "Lightning-verbinding"

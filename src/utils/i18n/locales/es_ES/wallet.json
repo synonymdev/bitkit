@@ -5,9 +5,6 @@
   "receive": {
     "string": "Recibir"
   },
-  "balance_total": {
-    "string": "Saldo total"
-  },
   "create_wallet_error": {
     "string": "Por favor, reabra la aplicación e intente de nuevo."
   },
@@ -230,9 +227,6 @@
   "receive_liquidity": {
     "nav_title_additional": {
       "string": "Incrementar Capacidad de Recepción"
-    },
-    "text": {
-      "string": "Su balance de gastos en Bitkit es como su conexión de internet. En vez de ancho de banda, paga por la liquidez y enrutamiento de pagos.\n\nPagos desde su saldo de gastos son más baratos, rápidos y más privados que las transacciones normales de Bitcoin.\n\nLa comisión de red y la comisión del proveedor del servicio son costes únicos para configurar su saldo."
     }
   },
   "receive_cjit_error": {
@@ -267,12 +261,6 @@
   },
   "activity_transfer": {
     "string": "Transferir"
-  },
-  "activity_transfer_spending": {
-    "string": "Saldo de gastos"
-  },
-  "activity_transfer_savings": {
-    "string": "Saldo de ahorro"
   },
   "activity_confirms_in": {
     "string": "Confirma en {feeRateDescription}"

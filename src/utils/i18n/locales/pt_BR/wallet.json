@@ -5,12 +5,6 @@
   "receive": {
     "string": "Receber"
   },
-  "balance_total": {
-    "string": "Saldo total"
-  },
-  "balance_total_pending": {
-    "string": "<text>Saldo total (</text><pending/><text> pendente)</text>"
-  },
   "create_wallet_error": {
     "string": "Reinicie o aplicativo e tente novamente."
   },
@@ -332,12 +326,6 @@
   "activity_transfer": {
     "string": "Transferência"
   },
-  "activity_transfer_spending": {
-    "string": "Saldo de Gastos"
-  },
-  "activity_transfer_savings": {
-    "string": "Saldo da Poupança"
-  },
   "activity_transfer_savings_pending": {
     "string": "Do Saldo de Gastos (±{duration})"
   },
@@ -586,12 +574,6 @@
   },
   "lnurl_w_button": {
     "string": "Retirada"
-  },
-  "lnurl_w_success_title": {
-    "string": "Sucesso"
-  },
-  "lnurl_w_success_description": {
-    "string": "Retirada solicitada bem-sucedida"
   },
   "lnurl_p_max": {
     "string": "Valor máximo"

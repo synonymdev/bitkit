@@ -23,6 +23,9 @@
     "text_blocked": {
       "string": "Derzeit kann Bitkit keine automatischen Lightning-Verbindungen für Einwohner der USA und Kanadas bereitstellen."
     },
+    "text_blocked_cjit": {
+      "string": "Bitkit bietet derzeit keine Lightning-Dienste in den USA oder Kanada an, aber Sie können sich trotzdem direkt mit anderen Knotenpunkten verbinden."
+    },
     "button1": {
       "string": "Von Sparkonto übertragen"
     },
@@ -67,6 +70,9 @@
     },
     "confirm": {
       "string": "Bitte\n<accent>bestätige</accent>"
+    },
+    "custom_fee": {
+      "string": "Benutzerdefiniert <accent>fee</accent>"
     },
     "swipe": {
       "string": "Swipe zum Übertragen"
@@ -146,7 +152,7 @@
       "string": "Liquidität\n<accent>& Routenplanung</accent>"
     },
     "text": {
-      "string": "Ihr Guthaben in Bitkit ist wie Ihre Internetverbindung. Anstelle von Bandbreite zahlen Sie für Liquidität und Zahlungsrouting.\n\nZahlungen auf und von Ihrem Guthaben sind billiger, schneller und privater als normale Bitcoin-Transaktionen.\n\nDie Netzgebühr und die Gebühr des Dienstanbieters sind einmalige Kosten für die Einrichtung Ihres Guthabens."
+      "string": "Your Spending Balance nutzt das Lightning Network, um Ihre Zahlungen günstiger, schneller und privater zu machen.\n\nDies funktioniert wie ein Internetzugang, aber Sie zahlen für Liquidität und Routing statt für Bandbreite.\n\nDiese Einrichtung umfasst einige einmalige Kosten."
     },
     "label": {
       "string": "Ausgabensaldo Liquidität"
@@ -370,7 +376,7 @@
     "string": "Die URI scheint ungültig zu sein."
   },
   "error_add_tor": {
-    "string": "Bitkit kann keine Tor-Nodes hinzufügen."
+    "string": "Bitkit kann keine Tor-Knoten hinzufügen."
   },
   "error_save_title": {
     "string": "Lightning-Peer konnte nicht gespeichert werden"
@@ -563,6 +569,9 @@
     },
     "open": {
       "string": "Verbindung offen"
+    },
+    "inactive": {
+      "string": "Verbindung inaktiv"
     }
   },
   "wait_text_top": {
