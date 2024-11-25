@@ -17,7 +17,10 @@ import { ITodo, TTodoType } from '../store/types/todos';
 import { channelsNotificationsShown, hideTodo } from '../store/slices/todos';
 import { showBottomSheet } from '../store/utils/ui';
 import { pinSelector } from '../store/reselect/settings';
-import { transferIntroSeenSelector } from '../store/reselect/user';
+import {
+	quickpayIntroSeenSelector,
+	transferIntroSeenSelector,
+} from '../store/reselect/user';
 import {
 	newChannelsNotificationsSelector,
 	todosFullSelector,
@@ -33,6 +36,7 @@ const Suggestions = (): ReactElement => {
 	const { width } = useWindowDimensions();
 	const dispatch = useAppDispatch();
 	const pinTodoDone = useAppSelector(pinSelector);
+	const quickpayIntroSeen = useAppSelector(quickpayIntroSeenSelector);
 	const suggestions = useAppSelector(todosFullSelector);
 	const newChannels = useAppSelector(newChannelsNotificationsSelector);
 	const transferIntroSeen = useAppSelector(transferIntroSeenSelector);
@@ -106,6 +110,14 @@ const Suggestions = (): ReactElement => {
 				onShare();
 			}
 
+			if (id === 'quickpay') {
+				if (quickpayIntroSeen) {
+					navigation.navigate('Settings', { screen: 'QuickpaySettings' });
+				} else {
+					navigation.navigate('Settings', { screen: 'QuickpayIntro' });
+				}
+			}
+
 			if (id === 'support') {
 				navigation.navigate('Settings', { screen: 'SupportSettings' });
 			}
@@ -117,7 +129,7 @@ const Suggestions = (): ReactElement => {
 				});
 			}
 		},
-		[navigation, transferIntroSeen, pinTodoDone, onShare],
+		[navigation, transferIntroSeen, quickpayIntroSeen, pinTodoDone, onShare],
 	);
 
 	const handleRenderItem = useCallback(

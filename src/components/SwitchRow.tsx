@@ -14,12 +14,14 @@ const SwitchRow = ({
 	color,
 	isEnabled,
 	style,
+	testID,
 	onPress,
 }: {
 	children: ReactNode;
 	color?: keyof IThemeColors;
 	isEnabled: boolean;
 	style?: StyleProp<ViewStyle>;
+	testID?: string;
 	onPress: () => void;
 }): ReactElement => {
 	return (
@@ -27,6 +29,7 @@ const SwitchRow = ({
 			<TouchableOpacity
 				style={[styles.container, style]}
 				activeOpacity={1}
+				testID={testID}
 				onPress={onPress}>
 				<View style={styles.leftColumn}>{children}</View>
 				<View style={styles.rightColumn}>

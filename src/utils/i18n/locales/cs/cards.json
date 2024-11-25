@@ -15,9 +15,9 @@
       "string": "Dostupný zůstatek"
     }
   },
-  "fastpay": {
+  "quickpay": {
     "title": {
-      "string": "Fastpay"
+      "string": "QuickPay"
     },
     "description": {
       "string": "Naskenuj a zaplať"

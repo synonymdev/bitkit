@@ -54,6 +54,20 @@ const migrations = {
 			},
 		};
 	},
+	48: (state): PersistedState => {
+		return {
+			...state,
+			settings: {
+				...state.settings,
+				enableQuickpay: false,
+				quickpayAmount: 5,
+			},
+			user: {
+				...state.user,
+				quickpayIntroSeen: false,
+			},
+		};
+	},
 };
 
 export default migrations;

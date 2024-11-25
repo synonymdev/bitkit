@@ -10,6 +10,7 @@ export type TUser = {
 	ignoreHighBalanceTimestamp: number;
 	isGeoBlocked: boolean;
 	lightningSettingUpStep: number;
+	quickpayIntroSeen: boolean;
 	requiresRemoteRestore: boolean;
 	startCoopCloseTimestamp: number;
 	ignoresHideBalanceToast: boolean;
@@ -28,6 +29,7 @@ export const initialUserState: TUser = {
 	ignoreHighBalanceTimestamp: 0,
 	isGeoBlocked: false,
 	lightningSettingUpStep: 0,
+	quickpayIntroSeen: false,
 	requiresRemoteRestore: false,
 	startCoopCloseTimestamp: 0,
 	ignoresHideBalanceToast: false,

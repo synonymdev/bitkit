@@ -172,6 +172,8 @@ d('Send', () => {
 		// - send to onchain address
 		// - send to lightning invoice
 		// - send to unified invoice
+		// - quickpay to lightning invoice
+		// - quickpay to unified invoice
 
 		if (checkComplete('send-2')) {
 			return;
@@ -243,9 +245,9 @@ d('Send', () => {
 
 		// receive lightning funds
 		await element(by.id('Receive')).tap();
-		let { label: invoice1 } = await element(by.id('QRCode')).getAttributes();
-		invoice1 = invoice1.replaceAll(/bitcoin.*=/gi, '').toLowerCase();
-		await lnd.sendPaymentSync({ paymentRequest: invoice1, amt: 50000 });
+		let { label: receive } = await element(by.id('QRCode')).getAttributes();
+		receive = receive.replaceAll(/bitcoin.*=/gi, '').toLowerCase();
+		await lnd.sendPaymentSync({ paymentRequest: receive, amt: 50000 });
 		await waitFor(element(by.id('NewTxPrompt')))
 			.toBeVisible()
 			.withTimeout(10000);
@@ -278,8 +280,8 @@ d('Send', () => {
 			.withTimeout(10000);
 
 		// send to lightning invoice
-		const { paymentRequest: lnInvoice1 } = await lnd.addInvoice();
-		await enterAddress(lnInvoice1);
+		const { paymentRequest: invoice1 } = await lnd.addInvoice();
+		await enterAddress(invoice1);
 		await expect(element(by.id('AssetButton-spending'))).toBeVisible();
 		await element(by.id('N1').withAncestor(by.id('SendAmountNumberPad'))).tap();
 		await element(
@@ -298,11 +300,9 @@ d('Send', () => {
 			.withTimeout(10000);
 
 		// send to unified invoice w/ amount
-		const { paymentRequest: lnInvoice2 } = await lnd.addInvoice({
-			value: 10000,
-		});
+		const { paymentRequest: invoice2 } = await lnd.addInvoice({ value: 10000 });
 		const unified1 = encode(onchainAddress, {
-			lightning: lnInvoice2,
+			lightning: invoice2,
 			amount: 10000,
 		});
 
@@ -319,11 +319,11 @@ d('Send', () => {
 			.withTimeout(10000);
 
 		// send to unified invoice w/ amount exceeding balance(s)
-		const { paymentRequest: lnInvoice3 } = await lnd.addInvoice({
+		const { paymentRequest: invoice3 } = await lnd.addInvoice({
 			value: 200000,
 		});
 		const unified2 = encode(onchainAddress, {
-			lightning: lnInvoice3,
+			lightning: invoice3,
 			amount: 200000,
 		});
 
@@ -369,8 +369,8 @@ d('Send', () => {
 			.withTimeout(10000);
 
 		// send to unified invoice w/o amount (lightning)
-		const { paymentRequest: lnInvoice4 } = await lnd.addInvoice();
-		const unified4 = encode(onchainAddress, { lightning: lnInvoice4 });
+		const { paymentRequest: invoice4 } = await lnd.addInvoice();
+		const unified4 = encode(onchainAddress, { lightning: invoice4 });
 
 		await enterAddress(unified4);
 		// max amount (lightning)
@@ -396,8 +396,8 @@ d('Send', () => {
 			.withTimeout(10000);
 
 		// send to unified invoice w/o amount (switch to onchain)
-		const { paymentRequest: lnInvoice5 } = await lnd.addInvoice();
-		const unified5 = encode(onchainAddress, { lightning: lnInvoice5 });
+		const { paymentRequest: invoice5 } = await lnd.addInvoice();
+		const unified5 = encode(onchainAddress, { lightning: invoice5 });
 
 		await enterAddress(unified5);
 
@@ -432,6 +432,52 @@ d('Send', () => {
 		)
 			.toHaveText('78 506')
 			.withTimeout(10000);
+
+		// send to lightning invoice w/ amount (quickpay)
+		const { paymentRequest: invoice6 } = await lnd.addInvoice({ value: 1000 });
+
+		// enable quickpay
+		await element(by.id('Settings')).tap();
+		await element(by.id('GeneralSettings')).tap();
+		await element(by.id('QuickpaySettings')).tap();
+		await element(by.id('QuickpayIntro-button')).tap();
+		await element(by.id('QuickpayToggle')).tap();
+		await element(by.id('NavigationClose')).tap();
+
+		await enterAddress(invoice6);
+		await waitFor(element(by.id('SendSuccess')))
+			.toBeVisible()
+			.withTimeout(10000);
+		await element(by.id('Close')).tap();
+		await waitFor(
+			element(by.id('MoneyText').withAncestor(by.id('TotalBalance'))),
+		)
+			.toHaveText('77 506')
+			.withTimeout(10000);
+
+		// send to unified invoice w/ amount (quickpay)
+		const { paymentRequest: invoice7 } = await lnd.addInvoice({ value: 1000 });
+		const unified7 = encode(onchainAddress, {
+			lightning: invoice7,
+			amount: 1000,
+		});
+
+		await enterAddress(unified7);
+		await waitFor(element(by.id('SendSuccess')))
+			.toBeVisible()
+			.withTimeout(10000);
+		await element(by.id('Close')).tap();
+		await waitFor(
+			element(by.id('MoneyText').withAncestor(by.id('TotalBalance'))),
+		)
+			.toHaveText('76 506')
+			.withTimeout(10000);
+
+		// send to lightning invoice w/ amount (skip quickpay for large amounts)
+		const { paymentRequest: invoice8 } = await lnd.addInvoice({ value: 10000 });
+		await enterAddress(invoice8);
+		await expect(element(by.id('ReviewAmount'))).toBeVisible();
+		await element(by.id('SendSheet')).swipe('down');
 
 		markComplete('send-2');
 	});

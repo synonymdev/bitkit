@@ -33,7 +33,10 @@ export type TSettings = {
 	coinSelectAuto: boolean;
 	coinSelectPreference: TCoinSelectPreference;
 	receivePreference: TReceiveOption[];
+	enableDevOptions: boolean;
 	enableOfflinePayments: boolean;
+	enableQuickpay: boolean;
+	quickpayAmount: number;
 	showWidgets: boolean;
 	showWidgetTitles: boolean;
 	transactionSpeed: ETransactionSpeed;
@@ -41,7 +44,6 @@ export type TSettings = {
 	hideBalance: boolean;
 	hideBalanceOnOpen: boolean;
 	hideOnboardingMessage: boolean;
-	enableDevOptions: boolean;
 	treasureChests: TChest[];
 	orangeTickets: string[];
 	webRelay: string;

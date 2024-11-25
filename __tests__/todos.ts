@@ -20,7 +20,7 @@ import {
 	transferClosingChannelTodo,
 	supportTodo,
 	inviteTodo,
-	// fastpayTodo,
+	quickpayTodo,
 	// discountTodo,
 } from '../src/store/shapes/todos';
 import { createNewWallet } from '../src/utils/startup';
@@ -50,7 +50,7 @@ describe('Todos selector', () => {
 			buyBitcoinTodo,
 			supportTodo,
 			inviteTodo,
-			// fastpayTodo,
+			quickpayTodo,
 			slashtagsProfileTodo,
 			// discountTodo,
 		]);
@@ -104,6 +104,7 @@ describe('Todos selector', () => {
 			invite: +new Date(),
 			lightning: +new Date(),
 			pin: +new Date(),
+			quickpay: +new Date(),
 			slashtagsProfile: +new Date(),
 			support: +new Date(),
 		};

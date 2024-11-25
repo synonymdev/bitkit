@@ -115,6 +115,14 @@
 	"send_pending": {
 		"string": "Payment Pending"
 	},
+	"send_quickpay": {
+		"nav_title": {
+			"string": "QuickPay"
+		},
+		"title": {
+			"string": "Paying\n<accent>invoice...</accent>"
+		}
+	},
 	"send_pending_note": {
 		"string": "This payment is taking a bit longer than expected. You can continue using Bitkit."
 	},

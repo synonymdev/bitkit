@@ -22,7 +22,7 @@ import {
 	getOnchainTransactionData,
 	getTransactionInputValue,
 } from '../wallet/transactions';
-import { dispatch } from '../../store/helpers';
+import { dispatch, getSettingsStore } from '../../store/helpers';
 import { showToast } from '../notifications';
 import {
 	resetSendTransaction,
@@ -46,6 +46,7 @@ import { rootNavigation } from '../../navigation/root/RootNavigator';
 import { findLnUrl, handleLnurlAuth, isLnurlAddress } from '../lnurl';
 import i18n from '../i18n';
 import { getBitcoinDisplayValues } from '../displayValues';
+import { fiatToBitcoinUnit } from '../conversion';
 import {
 	EQRDataType,
 	paymentTypes,
@@ -594,6 +595,7 @@ const handleData = async ({
 			return ok('');
 		}
 		case EQRDataType.unified: {
+			const { enableQuickpay, quickpayAmount } = getSettingsStore();
 			const {
 				address,
 				amount,
@@ -603,6 +605,22 @@ const handleData = async ({
 				preferredPaymentMethod,
 			} = data;
 
+			const quickpayAmountSats = fiatToBitcoinUnit({
+				amount: quickpayAmount,
+				currency: 'USD',
+			});
+
+			if (enableQuickpay && amount && amount < quickpayAmountSats) {
+				const screen = 'Quickpay';
+				const params = { invoice: lightningInvoice, amount };
+				// If BottomSheet is not open yet (MainScanner)
+				showBottomSheet('sendNavigation', { screen, ...params });
+				// If BottomSheet is already open (SendScanner)
+				sendNavigation.navigate(screen, params);
+
+				return ok('');
+			}
+
 			// Reset existing transaction state and prepare for a new one.
 			await resetSendTransaction();
 			await setupOnChainTransaction();
@@ -611,8 +629,7 @@ const handleData = async ({
 			const paymentMethod = preferredPaymentMethod ?? 'lightning';
 			dispatch(updateUi({ paymentMethod }));
 
-			const invoiceAmount = amount ?? 0;
-			const screen = invoiceAmount ? 'ReviewAndSend' : 'Amount';
+			const screen = amount ? 'ReviewAndSend' : 'Amount';
 			// If BottomSheet is not open yet (MainScanner)
 			showBottomSheet('sendNavigation', { screen });
 			// If BottomSheet is already open (SendScanner)
@@ -651,6 +668,22 @@ const handleData = async ({
 		}
 		case EQRDataType.lightning: {
 			const { lightningInvoice, amount, slashTagsUrl } = data;
+			const { enableQuickpay, quickpayAmount } = getSettingsStore();
+			const quickpayAmountSats = fiatToBitcoinUnit({
+				amount: quickpayAmount,
+				currency: 'USD',
+			});
+
+			if (enableQuickpay && amount && amount < quickpayAmountSats) {
+				const screen = 'Quickpay';
+				const params = { invoice: lightningInvoice, amount };
+				// If BottomSheet is not open yet (MainScanner)
+				showBottomSheet('sendNavigation', { screen, ...params });
+				// If BottomSheet is already open (SendScanner)
+				sendNavigation.navigate(screen, params);
+
+				return ok('');
+			}
 
 			dispatch(updateUi({ paymentMethod: 'lightning' }));
 
@@ -662,13 +695,7 @@ const handleData = async ({
 			sendNavigation.navigate(screen);
 
 			updateSendTransaction({
-				outputs: [
-					{
-						address: '',
-						value: invoiceAmount,
-						index: 0,
-					},
-				],
+				outputs: [{ address: '', value: invoiceAmount, index: 0 }],
 				lightningInvoice,
 				slashTagsUrl,
 			});

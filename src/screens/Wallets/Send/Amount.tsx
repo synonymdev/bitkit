@@ -256,7 +256,7 @@ const Amount = ({ navigation }: SendScreenProps<'Amount'>): ReactElement => {
 
 				<View style={styles.numberPad} testID="SendAmountNumberPad">
 					<View style={styles.actions}>
-						<TouchableOpacity onPress={onMaxAmount}>
+						<TouchableOpacity color="transparent" onPress={onMaxAmount}>
 							<Caption13Up style={styles.availableAmountText} color="secondary">
 								{t('send_available')}
 							</Caption13Up>

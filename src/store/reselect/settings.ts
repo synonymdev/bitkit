@@ -40,11 +40,17 @@ export const hideBalanceSelector = (state: RootState): boolean => {
 export const hideBalanceOnOpenSelector = (state: RootState): boolean => {
 	return state.settings.hideBalanceOnOpen;
 };
+export const enableDevOptionsSelector = (state: RootState): boolean => {
+	return state.settings.enableDevOptions;
+};
 export const enableOfflinePaymentsSelector = (state: RootState): boolean => {
 	return state.settings.enableOfflinePayments;
 };
-export const enableDevOptionsSelector = (state: RootState): boolean => {
-	return state.settings.enableDevOptions;
+export const enableQuickpaySelector = (state: RootState): boolean => {
+	return state.settings.enableQuickpay;
+};
+export const quickpayAmountSelector = (state: RootState): number => {
+	return state.settings.quickpayAmount;
 };
 export const pinSelector = (state: RootState): boolean => {
 	return state.settings.pin;

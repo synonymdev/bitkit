@@ -12,7 +12,7 @@
       "string": "Conto Spendibile"
     }
   },
-  "fastpay": {
+  "quickpay": {
     "title": {
       "string": "Pagamento veloce"
     },

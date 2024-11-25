@@ -17,6 +17,7 @@ import Tags from '../../screens/Wallets/Send/Tags';
 import AutoRebalance from '../../screens/Wallets/Send/AutoRebalance';
 import PinCheck from '../../screens/Wallets/Send/PinCheck';
 import Pending from '../../screens/Wallets/Send/Pending';
+import Quickpay from '../../screens/Wallets/Send/Quickpay';
 import Success from '../../screens/Wallets/Send/Success';
 import Error from '../../screens/Wallets/Send/Error';
 import Contacts from '../../screens/Wallets/Send/Contacts';
@@ -60,6 +61,7 @@ export type SendStackParamList = {
 	Tags: undefined;
 	AutoRebalance: undefined;
 	Pending: { txId: string };
+	Quickpay: { invoice: string; amount: number };
 	Success: { type: EActivityType; amount: number; txId: string };
 	Error: { errorMessage: string };
 	LNURLAmount: { pParams: LNURLPayParams; url: string };
@@ -108,9 +110,11 @@ const SendNavigation = (): ReactElement => {
 	const lightningBalance = useLightningBalance(false);
 	const selectedWallet = useAppSelector(selectedWalletSelector);
 	const selectedNetwork = useAppSelector(selectedNetworkSelector);
-	const { isOpen, screen, pParams, amount, url } = useAppSelector((state) => {
-		return viewControllerSelector(state, 'sendNavigation');
-	});
+	const { isOpen, screen, pParams, invoice, amount, url } = useAppSelector(
+		(state) => {
+			return viewControllerSelector(state, 'sendNavigation');
+		},
+	);
 	const transaction = useAppSelector(transactionSelector);
 
 	const initialRouteName = screen ?? 'Recipient';
@@ -152,6 +156,11 @@ const SendNavigation = (): ReactElement => {
 					<Stack.Screen name="AutoRebalance" component={AutoRebalance} />
 					<Stack.Screen name="PinCheck" component={PinCheck} />
 					<Stack.Screen name="Pending" component={Pending} />
+					<Stack.Screen
+						name="Quickpay"
+						component={Quickpay}
+						initialParams={{ invoice, amount }}
+					/>
 					<Stack.Screen name="Success" component={Success} />
 					<Stack.Screen name="Error" component={Error} />
 					<Stack.Screen

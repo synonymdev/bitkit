@@ -9,6 +9,7 @@ const imageLightbulb = require('../../assets/illustrations/lightbulb.png');
 const imageBitcoin = require('../../assets/illustrations/b-emboss.png');
 const imageGift = require('../../assets/illustrations/gift.png');
 const imageGroup = require('../../assets/illustrations/group.png');
+const imageFastForward = require('../../assets/illustrations/fast-forward.png');
 
 export const backupSeedPhraseTodo: ITodo = {
 	id: 'backupSeedPhrase',
@@ -20,12 +21,6 @@ export const discountTodo: ITodo = {
 	id: 'discount',
 	color: 'purple24',
 	image: imageGift,
-	dismissable: true,
-};
-export const fastpayTodo: ITodo = {
-	id: 'fastpay',
-	color: 'green24',
-	image: imageLightning,
 	dismissable: true,
 };
 export const inviteTodo: ITodo = {
@@ -51,6 +46,12 @@ export const lightningReadyTodo: ITodo = {
 	color: 'purple24',
 	image: imageLightning,
 	dismissable: false,
+};
+export const quickpayTodo: ITodo = {
+	id: 'quickpay',
+	color: 'green24',
+	image: imageFastForward,
+	dismissable: true,
 };
 export const transferPendingTodo: ITodo = {
 	id: 'transferPending',

@@ -15,9 +15,9 @@
       "string": "Ausgabenkonto"
     }
   },
-  "fastpay": {
+  "quickpay": {
     "title": {
-      "string": "Fastpay"
+      "string": "QuickPay"
     },
     "description": {
       "string": "Scanne und zahle"

@@ -25,6 +25,7 @@ export type ViewControllerParamList = {
 	receiveNavigation: { receiveScreen: keyof ReceiveStackParamList } | undefined;
 	sendNavigation:
 		| { screen: keyof SendStackParamList }
+		| { screen: 'Quickpay'; invoice: string; amount: number }
 		| { screen: 'LNURLAmount'; pParams: LNURLPayParams; url: string }
 		// prettier-ignore
 		| { screen: 'LNURLConfirm'; pParams: LNURLPayParams; url: string; amount?: number; }
@@ -62,6 +63,7 @@ export type IViewControllerData = {
 	url?: string;
 	wParams?: LNURLWithdrawParams;
 	pParams?: LNURLPayParams;
+	invoice?: string;
 	amount?: number;
 };
 

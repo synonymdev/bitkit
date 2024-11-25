@@ -21,6 +21,8 @@ import UnitSettings from '../../screens/Settings/Unit';
 import TransactionSpeedSettings from '../../screens/Settings/TransactionSpeed';
 import CustomFee from '../../screens/Settings/TransactionSpeed/CustomFee';
 import WidgetSettings from '../../screens/Settings/Widgets';
+import QuickpayIntro from '../../screens/Settings/Quickpay/QuickpayIntro';
+import QuickpaySettings from '../../screens/Settings/Quickpay/QuickpaySettings';
 import AuthCheck from '../../components/AuthCheck';
 import GeneralSettings from '../../screens/Settings/General';
 import SecuritySettings from '../../screens/Settings/Security';
@@ -97,6 +99,8 @@ export type SettingsStackParamList = {
 	OpenConnectionSuccess: { name: string };
 	TagsSettings: undefined;
 	WidgetSettings: undefined;
+	QuickpayIntro: undefined;
+	QuickpaySettings: undefined;
 	AddressViewer: undefined;
 	FeeSettings: undefined;
 	WebRelay: undefined;
@@ -140,6 +144,8 @@ const SettingsNavigator = (): ReactElement => {
 			/>
 			<Stack.Screen name="CustomFee" component={CustomFee} />
 			<Stack.Screen name="WidgetSettings" component={WidgetSettings} />
+			<Stack.Screen name="QuickpayIntro" component={QuickpayIntro} />
+			<Stack.Screen name="QuickpaySettings" component={QuickpaySettings} />
 			<Stack.Screen name="ElectrumConfig" component={ElectrumConfig} />
 			<Stack.Screen name="GapLimit" component={GapLimit} />
 			<Stack.Screen name="RGSServer" component={RGSServer} />

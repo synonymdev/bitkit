@@ -12,9 +12,9 @@
       "string": "Bestedingssaldo"
     }
   },
-  "fastpay": {
+  "quickpay": {
     "title": {
-      "string": "Fastpay"
+      "string": "QuickPay"
     },
     "description": {
       "string": "Scan en betaal"

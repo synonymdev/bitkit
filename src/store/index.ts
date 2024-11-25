@@ -32,7 +32,7 @@ const persistConfig = {
 	key: 'root',
 	storage: reduxStorage,
 	// increase version after store shape changes
-	version: 47,
+	version: 48,
 	stateReconciler: autoMergeLevel2,
 	blacklist: ['receive', 'ui'],
 	migrate: createMigrate(migrations, { debug: __ENABLE_MIGRATION_DEBUG__ }),

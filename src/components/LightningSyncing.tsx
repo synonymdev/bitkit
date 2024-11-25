@@ -1,13 +1,11 @@
 import React, { ReactElement, useEffect, useState } from 'react';
 import { Image, StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
-import Animated, {
+import {
 	Easing,
 	cancelAnimation,
 	runOnJS,
 	useSharedValue,
-	withDelay,
 	withRepeat,
-	withSequence,
 	withTiming,
 } from 'react-native-reanimated';
 import { useTranslation } from 'react-i18next';
@@ -17,13 +15,12 @@ import { AnimatedView } from '../styles/components';
 import SafeAreaInset from './SafeAreaInset';
 import BottomSheetNavigationHeader from './BottomSheetNavigationHeader';
 import GradientView from './GradientView';
+import SyncSpinner from './SyncSpinner';
 import { useAppSelector } from '../hooks/redux';
 import { isLDKReadySelector } from '../store/reselect/ui';
 import { __E2E__ } from '../constants/env';
 
 const imageSrc = require('../assets/illustrations/lightning.png');
-const imageSyncSmall = require('../assets/illustrations/ln-sync-small.png');
-const imageSyncLarge = require('../assets/illustrations/ln-sync-large.png');
 
 const LightningSyncing = ({
 	title,
@@ -69,62 +66,6 @@ const LightningSyncing = ({
 		return <></>;
 	}
 
-	const animationLarge = (): { initialValues: {}; animations: {} } => {
-		'worklet';
-		const initialValues = { transform: [{ rotate: '0deg' }] };
-		const animations = {
-			transform: [
-				{
-					rotate: withRepeat(
-						withSequence(
-							withTiming('-180deg', {
-								duration: 1500,
-								easing: Easing.inOut(Easing.ease),
-							}),
-							withDelay(
-								100,
-								withTiming('-360deg', {
-									duration: 1500,
-									easing: Easing.inOut(Easing.ease),
-								}),
-							),
-						),
-						-1,
-					),
-				},
-			],
-		};
-		return { initialValues, animations };
-	};
-
-	const animationSmall = (): { initialValues: {}; animations: {} } => {
-		'worklet';
-		const initialValues = { transform: [{ rotate: '0deg' }] };
-		const animations = {
-			transform: [
-				{
-					rotate: withRepeat(
-						withSequence(
-							withTiming('180deg', {
-								duration: 1500,
-								easing: Easing.inOut(Easing.ease),
-							}),
-							withDelay(
-								100,
-								withTiming('360deg', {
-									duration: 1500,
-									easing: Easing.inOut(Easing.ease),
-								}),
-							),
-						),
-						-1,
-					),
-				},
-			],
-		};
-		return { initialValues, animations };
-	};
-
 	return (
 		<AnimatedView
 			style={[style, { opacity: rootOpacity }]}
@@ -135,18 +76,7 @@ const LightningSyncing = ({
 					<BodyM color="secondary">{t('wait_text_top')}</BodyM>
 
 					<View style={styles.imageContainer}>
-						<View style={styles.animation}>
-							<Animated.Image
-								style={styles.circleSmall}
-								source={imageSyncSmall}
-								entering={__E2E__ ? undefined : animationSmall}
-							/>
-							<Animated.Image
-								style={styles.circleLarge}
-								source={imageSyncLarge}
-								entering={__E2E__ ? undefined : animationLarge}
-							/>
-						</View>
+						<SyncSpinner />
 						<Image style={styles.image} source={imageSrc} />
 					</View>
 
@@ -181,28 +111,6 @@ const styles = StyleSheet.create({
 	image: {
 		flex: 1,
 		resizeMode: 'contain',
-	},
-	animation: {
-		justifyContent: 'center',
-		alignItems: 'center',
-		alignSelf: 'center',
-		position: 'absolute',
-		width: 311,
-		aspectRatio: 1,
-	},
-	circleSmall: {
-		flex: 1,
-		position: 'absolute',
-		resizeMode: 'contain',
-		width: 207,
-		aspectRatio: 1,
-	},
-	circleLarge: {
-		flex: 1,
-		position: 'absolute',
-		resizeMode: 'contain',
-		width: 311,
-		aspectRatio: 1,
 	},
 	bottom: {
 		textAlign: 'center',

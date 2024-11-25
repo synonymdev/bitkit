@@ -24,6 +24,7 @@ import { useBottomSheetBackPress } from '../../../hooks/bottomSheet';
 import type { SendScreenProps } from '../../../navigation/types';
 import { lastPaidSelector } from '../../../store/reselect/slashtags';
 import { selectedNetworkSelector } from '../../../store/reselect/wallet';
+import GradientView from '../../../components/GradientView';
 
 const imageSrc = require('../../../assets/illustrations/coin-stack-logo.png');
 
@@ -107,7 +108,7 @@ const Recipient = ({
 	};
 
 	return (
-		<View style={styles.container}>
+		<GradientView style={styles.root}>
 			<BottomSheetNavigationHeader
 				title={t('send_bitcoin')}
 				displayBackButton={false}
@@ -165,12 +166,12 @@ const Recipient = ({
 				)}
 			</View>
 			<SafeAreaInset type="bottom" minPadding={16} />
-		</View>
+		</GradientView>
 	);
 };
 
 const styles = StyleSheet.create({
-	container: {
+	root: {
 		flex: 1,
 	},
 	content: {

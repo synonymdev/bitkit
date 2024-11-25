@@ -24,6 +24,10 @@ export const lightningSettingUpStepSelector = createSelector(
 	(user): number => user.lightningSettingUpStep,
 );
 
+export const quickpayIntroSeenSelector = (state: RootState): boolean => {
+	return state.user.quickpayIntroSeen;
+};
+
 export const requiresRemoteRestoreSelector = createSelector(
 	[userState],
 	(user): boolean => user.requiresRemoteRestore,

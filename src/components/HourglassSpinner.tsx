@@ -1,5 +1,12 @@
 import React, { ReactElement } from 'react';
-import { View, StyleSheet, StyleProp, ViewStyle, Image } from 'react-native';
+import {
+	View,
+	StyleSheet,
+	StyleProp,
+	ViewStyle,
+	Image,
+	ImageSourcePropType,
+} from 'react-native';
 import { Easing, withRepeat, withTiming } from 'react-native-reanimated';
 
 import { AnimatedView } from '../styles/components';
@@ -8,9 +15,11 @@ import { __E2E__ } from '../constants/env';
 const imageSrc = require('../assets/illustrations/hourglass.png');
 
 const HourglassSpinner = ({
+	image = imageSrc,
 	imageSize = 256,
 	style,
 }: {
+	image?: ImageSourcePropType;
 	imageSize?: number;
 	style?: StyleProp<ViewStyle>;
 }): ReactElement => {
@@ -47,7 +56,7 @@ const HourglassSpinner = ({
 			color="transparent"
 			testID="HourglassSpinner">
 			<View style={[styles.imageContainer, { width: imageSize }]}>
-				<Image style={styles.image} source={imageSrc} />
+				<Image style={styles.image} source={image} />
 			</View>
 		</AnimatedView>
 	);

@@ -12,7 +12,7 @@
       "string": "Saldo de gastos"
     }
   },
-  "fastpay": {
+  "quickpay": {
     "description": {
       "string": "Escanear y pagar"
     }

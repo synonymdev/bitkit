@@ -18,9 +18,9 @@
       "string": "Spending Balance"
     }
   },
-  "fastpay": {
+  "quickpay": {
     "title": {
-      "string": "Fastpay"
+      "string": "QuickPay"
     },
     "description": {
       "string": "Scan and pay"

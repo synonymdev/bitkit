@@ -9,6 +9,7 @@ import {
 	lightningSettingUpTodo,
 	lightningTodo,
 	pinTodo,
+	quickpayTodo,
 	slashtagsProfileTodo,
 	supportTodo,
 	transferPendingTodo,
@@ -136,9 +137,9 @@ export const todosFullSelector = createShallowEqualSelector(
 		if (!hide.invite) {
 			res.push(inviteTodo);
 		}
-		// if (!hide.fastpay) {
-		// 	res.push(fastpayTodo);
-		// }
+		if (!hide.quickpay) {
+			res.push(quickpayTodo);
+		}
 		if (!hide.slashtagsProfile && onboardingStep !== 'Done') {
 			res.push(slashtagsProfileTodo);
 		}
