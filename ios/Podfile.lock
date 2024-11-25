@@ -1740,7 +1740,7 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - RNKeychain (9.1.1):
+  - RNKeychain (9.2.2):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -1987,7 +1987,7 @@ DEPENDENCIES:
   - RNDeviceInfo (from `../node_modules/react-native-device-info`)
   - RNFS (from `../node_modules/react-native-fs`)
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
-  - "RNKeychain (from `../node_modules/@synonymdev/react-native-keychain`)"
+  - RNKeychain (from `../node_modules/react-native-keychain`)
   - RNLocalize (from `../node_modules/react-native-localize`)
   - "RNNotifee (from `../node_modules/@notifee/react-native`)"
   - RNPermissions (from `../node_modules/react-native-permissions`)
@@ -2178,7 +2178,7 @@ EXTERNAL SOURCES:
   RNGestureHandler:
     :path: "../node_modules/react-native-gesture-handler"
   RNKeychain:
-    :path: "../node_modules/@synonymdev/react-native-keychain"
+    :path: "../node_modules/react-native-keychain"
   RNLocalize:
     :path: "../node_modules/react-native-localize"
   RNNotifee:
@@ -2293,7 +2293,7 @@ SPEC CHECKSUMS:
   RNDeviceInfo: b899ce37a403a4dea52b7cb85e16e49c04a5b88e
   RNFS: 4ac0f0ea233904cb798630b3c077808c06931688
   RNGestureHandler: e80cae4246813ee7f667a2552012a6b7da5550a1
-  RNKeychain: 3ac3a44294d0b18492667ff87e4c50829cb35505
+  RNKeychain: 4cfd0dc8634c2dd81a4607c8299ed424bfdee1a7
   RNLocalize: dbea38dcb344bf80ff18a1757b1becf11f70cae4
   RNNotifee: 8e2d3df3f0e9ce8f5d1fe4c967431138190b6175
   RNPermissions: 2c0eec471f4de66d04d226c339898d10a6e123c4
@@ -2308,9 +2308,9 @@ SPEC CHECKSUMS:
   SocketRocket: abac6f5de4d4d62d24e11868d7a2f427e0ef940d
   sodium-react-native-direct: 8feb9a6d0d88ce65efa305d6cc774c11c62d9a15
   SSZipArchive: c69881e8ac5521f0e622291387add5f60f30f3c4
-  Yoga: 2a45d7e59592db061217551fd3bbe2dd993817ae
+  Yoga: a1d7895431387402a674fd0d1c04ec85e87909b8
   ZXingObjC: 8898711ab495761b2dbbdec76d90164a6d7e14c5
 
 PODFILE CHECKSUM: cb153cb4a39e6c92c8b869eafab65a4bba7b869f
 
-COCOAPODS: 1.15.2
+COCOAPODS: 1.16.2

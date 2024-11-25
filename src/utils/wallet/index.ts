@@ -344,13 +344,15 @@ export const getPrivateKeyFromPath = async ({
 	});
 };
 
-const slashtagsPrimaryKeyKeyChainName = (seedHash: string = ''): string =>
-	'SLASHTAGS_PRIMARYKEY/' + seedHash;
+const slashtagsPrimaryKeyKeyChainName = (seedHash: string): string => {
+	return `SLASHTAGS_PRIMARYKEY/${seedHash}`;
+};
 
 export const getSlashtagsPrimaryKey = async (
 	seedHash: string,
-): Promise<{ error: boolean; data: string }> => {
-	return getKeychainValue({ key: slashtagsPrimaryKeyKeyChainName(seedHash) });
+): Promise<Result<string>> => {
+	const key = slashtagsPrimaryKeyKeyChainName(seedHash);
+	return getKeychainValue(key);
 };
 
 export const slashtagsPrimaryKey = async (seed: Buffer): Promise<string> => {
@@ -414,15 +416,7 @@ export const getKeyDerivationAccount = (
 export const getMnemonicPhrase = async (
 	selectedWallet: TWalletName = getSelectedWallet(),
 ): Promise<Result<string>> => {
-	try {
-		const response = await getKeychainValue({ key: selectedWallet });
-		if (response.error) {
-			return err(response.data);
-		}
-		return ok(response.data);
-	} catch (e) {
-		return err(e);
-	}
+	return getKeychainValue(selectedWallet);
 };
 
 /**
@@ -434,16 +428,9 @@ export const getMnemonicPhrase = async (
 export const getBip39Passphrase = async (
 	selectedWallet: TWalletName = getSelectedWallet(),
 ): Promise<string> => {
-	try {
-		const key = `${selectedWallet}passphrase`;
-		const bip39PassphraseResult = await getKeychainValue({ key });
-		if (!bip39PassphraseResult.error && bip39PassphraseResult.data) {
-			return bip39PassphraseResult.data;
-		}
-		return '';
-	} catch {
-		return '';
-	}
+	const key = `${selectedWallet}passphrase`;
+	const result = await getKeychainValue(key);
+	return result.isOk() ? result.value : '';
 };
 
 /**
@@ -861,10 +848,13 @@ export const createDefaultWallet = async ({
 			return err(msg);
 		}
 		await setKeychainValue({ key: walletName, value: mnemonic });
-		await setKeychainValue({
-			key: `${walletName}passphrase`,
-			value: bip39Passphrase,
-		});
+
+		if (bip39Passphrase) {
+			await setKeychainValue({
+				key: `${walletName}passphrase`,
+				value: bip39Passphrase,
+			});
+		}
 
 		const seed = await bip39.mnemonicToSeed(mnemonic, bip39Passphrase);
 		await setKeychainSlashtagsPrimaryKey(seed);

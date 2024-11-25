@@ -66,11 +66,12 @@ const usePIN = (onSuccess?: () => void): UsePIN => {
 		(async (): Promise<void> => {
 			setLoading(true);
 			// wait for initial keychain read
-			const attemptsRemainingResponse = await getKeychainValue({
-				key: 'pinAttemptsRemaining',
-			});
-			setAttemptsRemaining(Number(attemptsRemainingResponse.data));
-			// get available biometrics
+			const attemptsResult = await getKeychainValue('pinAttemptsRemaining');
+			if (attemptsResult.isErr()) {
+				setLoading(false);
+				return;
+			}
+			setAttemptsRemaining(Number(attemptsResult.value));
 			setLoading(false);
 		})();
 	}, []);
@@ -82,10 +83,10 @@ const usePIN = (onSuccess?: () => void): UsePIN => {
 				return;
 			}
 
-			const realPIN = await getKeychainValue({ key: 'pin' });
+			const pinResult = await getKeychainValue('pin');
 
 			// error getting pin
-			if (realPIN.error) {
+			if (pinResult.isErr()) {
 				await reducePinAttemptsRemaining();
 				vibrate();
 				setPin('');
@@ -93,7 +94,7 @@ const usePIN = (onSuccess?: () => void): UsePIN => {
 			}
 
 			// incorrect pin
-			if (pin !== realPIN?.data) {
+			if (pin !== pinResult.value) {
 				if (attemptsRemaining <= 1) {
 					vibrate({ type: 'default' });
 					await wipeApp();

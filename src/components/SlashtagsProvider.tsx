@@ -51,10 +51,7 @@ export const SlashtagsProvider = ({
 
 		(async (): Promise<void> => {
 			const primaryKeyRes = await getSlashtagsPrimaryKey(seedHash);
-			if (
-				primaryKeyRes.error ||
-				(primaryKeyRes.data && primaryKeyRes.data.length === 0)
-			) {
+			if (primaryKeyRes.isErr() || primaryKeyRes.value.length === 0) {
 				showToast({
 					type: 'warning',
 					title: i18n.t('other:error_keychain'),
@@ -62,7 +59,7 @@ export const SlashtagsProvider = ({
 				});
 				return;
 			}
-			const primaryKey = b4a.from(primaryKeyRes.data, 'hex');
+			const primaryKey = b4a.from(primaryKeyRes.value, 'hex');
 			const keyPair = KeyChain.createKeyPair(primaryKey);
 
 			webRelayClient = new Client({

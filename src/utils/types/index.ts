@@ -5,11 +5,6 @@ import {
 } from '../../store/types/wallet';
 import { EAddressType, IKeyDerivationPath } from 'beignet';
 
-export interface IResponse<T> {
-	error: boolean;
-	data: T;
-}
-
 export interface IGetAddress {
 	path: string;
 	selectedNetwork?: EAvailableNetwork;

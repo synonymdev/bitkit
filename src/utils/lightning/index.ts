@@ -1,5 +1,5 @@
 import { EmitterSubscription } from 'react-native';
-import Keychain from '@synonymdev/react-native-keychain';
+import Keychain from 'react-native-keychain';
 import * as bitcoin from 'bitcoinjs-lib';
 import ecc from '@bitcoinerlab/secp256k1';
 import RNFS from 'react-native-fs';
@@ -100,6 +100,7 @@ import {
 	__TRUSTED_ZERO_CONF_PEERS__,
 } from '../../constants/env';
 import { showToast } from '../notifications';
+import { setKeychainValue } from '../keychain';
 import i18n from '../i18n';
 import { bitkitLedger, syncLedger } from '../ledger';
 import { sendNavigation } from '../../navigation/bottom-sheet/SendNavigation';
@@ -730,29 +731,16 @@ export const setAccount = async ({
 	name,
 	seed,
 }: TAccount): Promise<boolean> => {
-	try {
-		if (!name) {
-			name = getSelectedWallet();
-			name = `${name}${LDK_ACCOUNT_SUFFIX_V3}`;
-		}
-		const account: TAccount = {
-			name,
-			seed,
-		};
-		const setRes = await Keychain.setGenericPassword(
-			name,
-			JSON.stringify(account),
-			{
-				service: name,
-			},
-		);
-		if (!setRes) {
-			return false;
-		}
-		return true;
-	} catch {
-		return false;
+	if (!name) {
+		name = getSelectedWallet();
+		name = `${name}${LDK_ACCOUNT_SUFFIX_V3}`;
 	}
+	const account: TAccount = { name, seed };
+	const result = await setKeychainValue({
+		key: name,
+		value: JSON.stringify(account),
+	});
+	return result.isOk() ? true : false;
 };
 
 /**

@@ -4931,13 +4931,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@synonymdev/react-native-keychain@npm:9.1.1":
-  version: 9.1.1
-  resolution: "@synonymdev/react-native-keychain@npm:9.1.1"
-  checksum: ec92ee34d1e61035bbbea8f7df93a0310cad6f55e4f2f23441b64e1092d00df5ff50d706318b8d45b16a6d300d2789ba7d651634313099bc356847f015529cfb
-  languageName: node
-  linkType: hard
-
 "@synonymdev/react-native-ldk@npm:0.0.153":
   version: 0.0.153
   resolution: "@synonymdev/react-native-ldk@npm:0.0.153"
@@ -6605,7 +6598,6 @@ __metadata:
     "@synonymdev/blocktank-lsp-http-client": 2.0.0
     "@synonymdev/feeds": 3.0.0
     "@synonymdev/ledger": 0.0.5
-    "@synonymdev/react-native-keychain": 9.1.1
     "@synonymdev/react-native-ldk": 0.0.153
     "@synonymdev/react-native-lnurl": 0.0.10
     "@synonymdev/react-native-pubky": ^0.3.0
@@ -6675,6 +6667,7 @@ __metadata:
     react-native-haptic-feedback: 2.2.0
     react-native-image-picker: 7.1.2
     react-native-keyboard-accessory: 0.1.16
+    react-native-keychain: 9.2.2
     react-native-localize: 3.0.2
     react-native-mmkv: 2.12.2
     react-native-modal: 13.0.1
@@ -14348,6 +14341,13 @@ __metadata:
     react: ">= 16"
     react-native: ">= 0.46"
   checksum: fa10bb4e460a21adf0dfccab0597b47ff67f1cb466fae937dd73934c5ee193d2474246cd3ed7786bb1aabf5cb24d210f2f9add9ce4bf209dd03f2260c922d933
+  languageName: node
+  linkType: hard
+
+"react-native-keychain@npm:9.2.2":
+  version: 9.2.2
+  resolution: "react-native-keychain@npm:9.2.2"
+  checksum: e361df1e792766bb4d3f60b850608979667357365328d36e1665a077728b8d68f7d33de0d31e3c666f115a0f9e1f53be48b4e678bf73f07aecefcca35766d98d
   languageName: node
   linkType: hard
 

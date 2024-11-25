@@ -43,6 +43,6 @@ export const removePin = async (): Promise<void> => {
 	// reset PIN keychain data
 	await Promise.all([
 		setKeychainValue({ key: 'pinAttemptsRemaining', value: PIN_ATTEMPTS }),
-		resetKeychainValue({ key: 'pin' }),
+		resetKeychainValue('pin'),
 	]);
 };

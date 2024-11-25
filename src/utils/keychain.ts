@@ -1,20 +1,17 @@
-import Keychain from '@synonymdev/react-native-keychain';
+import Keychain from 'react-native-keychain';
 import { err, ok, Result } from '@synonymdev/result';
-import { IResponse } from './types';
 
-export const getKeychainValue = async ({
-	key,
-}: {
-	key: string;
-}): Promise<IResponse<string>> => {
+export const getKeychainValue = async (
+	key: string,
+): Promise<Result<string>> => {
 	try {
 		const result = await Keychain.getGenericPassword({ service: key });
 		if (!result || !result.password) {
-			return { error: true, data: '' };
+			return err('No password found');
 		}
-		return { error: false, data: result.password };
+		return ok(result.password);
 	} catch (e) {
-		return { error: true, data: e };
+		return err(e);
 	}
 };
 
@@ -24,29 +21,20 @@ export const setKeychainValue = async ({
 }: {
 	key: string;
 	value: string;
-}): Promise<IResponse<string>> => {
+}): Promise<Result<string>> => {
 	try {
 		await Keychain.setGenericPassword(key, value, { service: key });
-		return { error: false, data: '' };
+		return ok('');
 	} catch (e) {
-		return { error: true, data: e };
+		console.error('Error storing credentials:', e);
+		return err(e);
 	}
 };
 
-/**
- * Returns an array of all known Keychain keys.
- * @returns {Promise<string[]>}
- */
-export const getAllKeychainKeys = async (): Promise<string[]> => {
-	return await Keychain.getAllGenericPasswordServices();
-};
-
 //WARNING: This will wipe the specified key's value from storage
-export const resetKeychainValue = async ({
-	key,
-}: {
-	key: string;
-}): Promise<Result<boolean>> => {
+export const resetKeychainValue = async (
+	key: string,
+): Promise<Result<boolean>> => {
 	try {
 		const result = await Keychain.resetGenericPassword({ service: key });
 		return ok(result);
@@ -61,6 +49,6 @@ export const resetKeychainValue = async ({
  * @returns {Promise<void>}
  */
 export const wipeKeychain = async (): Promise<void> => {
-	const allServices = await getAllKeychainKeys();
-	await Promise.all(allServices.map((key) => resetKeychainValue({ key })));
+	const services = await Keychain.getAllGenericPasswordServices();
+	await Promise.all(services.map((key) => resetKeychainValue(key)));
 };
