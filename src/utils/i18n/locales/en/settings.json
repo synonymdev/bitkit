@@ -239,6 +239,9 @@
 		"category_transaction_log": {
 			"string": "Transaction Log"
 		},
+		"category_wallet": {
+			"string": "Boosts & Transfers"
+		},
 		"category_settings": {
 			"string": "Settings"
 		},

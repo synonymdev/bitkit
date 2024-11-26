@@ -5,7 +5,7 @@ import { __E2E__ } from '../../constants/env';
 import { useDebouncedEffect } from '../../hooks/helpers';
 import { useAppSelector } from '../../hooks/redux';
 import { backupSelector } from '../../store/reselect/backup';
-import { EBackupCategories, performBackup } from '../../store/utils/backup';
+import { EBackupCategory, performBackup } from '../../store/utils/backup';
 import { showToast } from '../notifications';
 
 const BACKUP_DEBOUNCE = 5000; // 5 seconds
@@ -13,24 +13,35 @@ const BACKUP_CHECK_INTERVAL = 60 * 1000; // 1 minute
 export const FAILED_BACKUP_CHECK_TIME = 30 * 60 * 1000; // 30 minutes
 const FAILED_BACKUP_NOTIFICATION_INTERVAL = 10 * 60 * 1000; // 10 minutes
 
-const EnabledSlashtag = (): ReactElement => {
+const BackupSubscriber = (): ReactElement => {
 	const { t } = useTranslation('settings');
 	const backup = useAppSelector(backupSelector);
 	const [now, setNow] = useState<number>(new Date().getTime());
 
-	const backupSettings = backup[EBackupCategories.settings];
-	const backupWidgets = backup[EBackupCategories.widgets];
-	const backupMetadata = backup[EBackupCategories.metadata];
-	const backupBlocktank = backup[EBackupCategories.blocktank];
-	const backupSlashtags = backup[EBackupCategories.slashtags];
-	const backupLDKActivity = backup[EBackupCategories.ldkActivity];
+	const backupWallet = backup[EBackupCategory.wallet];
+	const backupSettings = backup[EBackupCategory.settings];
+	const backupWidgets = backup[EBackupCategory.widgets];
+	const backupMetadata = backup[EBackupCategory.metadata];
+	const backupBlocktank = backup[EBackupCategory.blocktank];
+	const backupSlashtags = backup[EBackupCategory.slashtags];
+	const backupLDKActivity = backup[EBackupCategory.ldkActivity];
 
+	useDebouncedEffect(
+		() => {
+			if (backupWallet.synced > backupWallet.required) {
+				return;
+			}
+			performBackup(EBackupCategory.wallet);
+		},
+		[backupWallet.synced, backupWallet.required],
+		BACKUP_DEBOUNCE,
+	);
 	useDebouncedEffect(
 		() => {
 			if (backupSettings.synced > backupSettings.required) {
 				return;
 			}
-			performBackup(EBackupCategories.settings);
+			performBackup(EBackupCategory.settings);
 		},
 		[backupSettings.synced, backupSettings.required],
 		BACKUP_DEBOUNCE,
@@ -40,7 +51,7 @@ const EnabledSlashtag = (): ReactElement => {
 			if (backupWidgets.synced > backupWidgets.required) {
 				return;
 			}
-			performBackup(EBackupCategories.widgets);
+			performBackup(EBackupCategory.widgets);
 		},
 		[backupWidgets.synced, backupWidgets.required],
 		BACKUP_DEBOUNCE,
@@ -50,7 +61,7 @@ const EnabledSlashtag = (): ReactElement => {
 			if (backupMetadata.synced > backupMetadata.required) {
 				return;
 			}
-			performBackup(EBackupCategories.metadata);
+			performBackup(EBackupCategory.metadata);
 		},
 		[backupMetadata.synced, backupMetadata.required],
 		BACKUP_DEBOUNCE,
@@ -60,7 +71,7 @@ const EnabledSlashtag = (): ReactElement => {
 			if (backupBlocktank.synced > backupBlocktank.required) {
 				return;
 			}
-			performBackup(EBackupCategories.blocktank);
+			performBackup(EBackupCategory.blocktank);
 		},
 		[backupBlocktank.synced, backupBlocktank.required],
 		BACKUP_DEBOUNCE,
@@ -70,7 +81,7 @@ const EnabledSlashtag = (): ReactElement => {
 			if (backupSlashtags.synced > backupSlashtags.required) {
 				return;
 			}
-			performBackup(EBackupCategories.slashtags);
+			performBackup(EBackupCategory.slashtags);
 		},
 		[backupSlashtags.synced, backupSlashtags.required],
 		BACKUP_DEBOUNCE,
@@ -80,7 +91,7 @@ const EnabledSlashtag = (): ReactElement => {
 			if (backupLDKActivity.synced > backupLDKActivity.required) {
 				return;
 			}
-			performBackup(EBackupCategories.ldkActivity);
+			performBackup(EBackupCategory.ldkActivity);
 		},
 		[backupLDKActivity.synced, backupLDKActivity.required],
 		BACKUP_DEBOUNCE,
@@ -92,7 +103,7 @@ const EnabledSlashtag = (): ReactElement => {
 		}
 
 		// find if there are any backup categories that have been failing for more than 30 minutes
-		return Object.values(EBackupCategories).some((key) => {
+		return Object.values(EBackupCategory).some((key) => {
 			return (
 				backup[key].synced < backup[key].required &&
 				now - backup[key].required > FAILED_BACKUP_CHECK_TIME
@@ -131,10 +142,6 @@ const EnabledSlashtag = (): ReactElement => {
 	}, [t, shouldShowBackupWarning]);
 
 	return <></>;
-};
-
-const BackupSubscriber = (): ReactElement => {
-	return <EnabledSlashtag />;
 };
 
 export default BackupSubscriber;

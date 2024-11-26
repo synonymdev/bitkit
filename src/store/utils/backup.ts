@@ -1,18 +1,19 @@
-import lm, {
-	ENetworks,
-	ldk,
-	TBackupServerDetails,
-} from '@synonymdev/react-native-ldk';
+import lm, { ldk, TBackupServerDetails } from '@synonymdev/react-native-ldk';
 import { err, ok, Result } from '@synonymdev/result';
+import { IBoostedTransactions } from 'beignet';
 
 import {
 	__BACKUPS_SERVER_HOST__,
 	__BACKUPS_SERVER_PUBKEY__,
 } from '../../constants/env';
-import { isObjPartialMatch } from '../../utils/helpers';
-import { getLdkAccount, setLdkStoragePath } from '../../utils/lightning';
+import { deepCompareStructure, isObjPartialMatch } from '../../utils/helpers';
+import {
+	getLdkAccount,
+	getNetwork,
+	setLdkStoragePath,
+} from '../../utils/lightning';
 import { EAvailableNetwork } from '../../utils/networks';
-import { getSelectedNetwork } from '../../utils/wallet';
+import { getSelectedNetwork, getSelectedWallet } from '../../utils/wallet';
 import {
 	dispatch,
 	getActivityStore,
@@ -21,6 +22,7 @@ import {
 	getSettingsStore,
 	getSlashtagsStore,
 	getStore,
+	getWalletStore,
 	getWidgetsStore,
 } from '../helpers';
 import { getDefaultSettingsShape } from '../shapes/settings';
@@ -40,9 +42,12 @@ import { TBackupMetadata } from '../types/backup';
 import { IBlocktank } from '../types/blocktank';
 import { TMetadataState } from '../types/metadata';
 import { TSlashtagsState } from '../types/slashtags';
-import { EUnit } from '../types/wallet';
+import { getDefaultWalletShape } from '../shapes/wallet';
+import { IWalletItem, TTransfer } from '../types/wallet';
+import { restoreBoostedTransactions, restoreTransfers } from '../slices/wallet';
 
-export enum EBackupCategories {
+export enum EBackupCategory {
+	wallet = 'bitkit_wallet',
 	settings = 'bitkit_settings',
 	widgets = 'bitkit_widgets',
 	metadata = 'bitkit_metadata',
@@ -68,18 +73,7 @@ export const performLdkRestore = async ({
 		return err(lightningAccount.error);
 	}
 
-	let network: ENetworks;
-	switch (selectedNetwork) {
-		case 'bitcoin':
-			network = ENetworks.mainnet;
-			break;
-		case 'bitcoinTestnet':
-			network = ENetworks.testnet;
-			break;
-		default:
-			network = ENetworks.regtest;
-			break;
-	}
+	const network = getNetwork(selectedNetwork);
 
 	const backupSetupRes = await ldk.backupSetup({
 		seed: lightningAccount.value.seed,
@@ -129,7 +123,7 @@ export const performFullRestoreFromLatestBackup = async (): Promise<
 			serverPubKey: __BACKUPS_SERVER_PUBKEY__,
 		};
 
-		// ldk restore should be performed for all networks
+		// LDK restore should be performed for all networks
 		for (const network of Object.values(EAvailableNetwork)) {
 			const ldkBackupRes = await performLdkRestore({
 				backupServerDetails,
@@ -142,18 +136,7 @@ export const performFullRestoreFromLatestBackup = async (): Promise<
 
 		// reset backup settings once again before restoring all other backups
 		const selectedNetwork = getSelectedNetwork();
-		let network: ENetworks;
-		switch (selectedNetwork) {
-			case 'bitcoin':
-				network = ENetworks.mainnet;
-				break;
-			case 'bitcoinTestnet':
-				network = ENetworks.testnet;
-				break;
-			default:
-				network = ENetworks.regtest;
-				break;
-		}
+		const network = getNetwork(selectedNetwork);
 		const lightningAccount = await getLdkAccount({ selectedNetwork });
 		if (lightningAccount.isErr()) {
 			return err(lightningAccount.error);
@@ -169,6 +152,7 @@ export const performFullRestoreFromLatestBackup = async (): Promise<
 		}
 
 		const backups = [
+			['wallet', performWalletRestore],
 			['settings', performSettingsRestore],
 			['widgets', performWidgetsRestore],
 			['metadata', performMetadataRestore],
@@ -195,29 +179,35 @@ export const performFullRestoreFromLatestBackup = async (): Promise<
 };
 
 export const performBackup = async (
-	category: EBackupCategories,
+	category: EBackupCategory,
 ): Promise<Result<string>> => {
 	try {
 		let data: {};
 		switch (category) {
-			case EBackupCategories.settings:
+			case EBackupCategory.wallet:
+				const selectedWallet = getSelectedWallet();
+				const wallet = getWalletStore().wallets[selectedWallet];
+				const { transfers, boostedTransactions } = wallet;
+				data = { boostedTransactions, transfers };
+				break;
+			case EBackupCategory.settings:
 				data = getSettingsStore();
 				break;
-			case EBackupCategories.widgets:
+			case EBackupCategory.widgets:
 				data = getWidgetsStore();
 				break;
-			case EBackupCategories.metadata:
+			case EBackupCategory.metadata:
 				data = getMetaDataStore();
 				break;
-			case EBackupCategories.blocktank:
+			case EBackupCategory.blocktank:
 				const { paidOrders, orders } = getBlocktankStore();
 				data = { paidOrders, orders };
 				break;
-			case EBackupCategories.slashtags:
+			case EBackupCategory.slashtags:
 				const { contacts } = getSlashtagsStore();
 				data = { contacts };
 				break;
-			case EBackupCategories.ldkActivity:
+			case EBackupCategory.ldkActivity:
 				data = getActivityStore().items.filter(
 					(a) => a.activityType === EActivityType.lightning,
 				);
@@ -248,11 +238,11 @@ export const performBackup = async (
 
 /**
  * Retrieves the backup data for the provided backupCategory.
- * @param {EBackupCategories} category
+ * @param {EBackupCategory} category
  * @returns {Promise<Result<T | null>>}
  */
 const getBackup = async <T>(
-	category: EBackupCategories,
+	category: EBackupCategory,
 ): Promise<Result<{ data: T; metadata: TBackupMetadata }>> => {
 	try {
 		const fetchRes = await ldk.fetchBackupFile(category);
@@ -268,11 +258,50 @@ const getBackup = async <T>(
 	}
 };
 
+type TWalletBackup = {
+	boostedTransactions: IWalletItem<IBoostedTransactions>;
+	transfers: IWalletItem<TTransfer[]>;
+};
+
+const performWalletRestore = async (): Promise<
+	Result<{ backupExists: boolean }>
+> => {
+	try {
+		const backupRes = await getBackup<TWalletBackup>(EBackupCategory.wallet);
+		if (backupRes.isErr()) {
+			return err(backupRes.error.message);
+		}
+
+		const backup = backupRes.value.data;
+		const defaultWalletShape = getDefaultWalletShape();
+		const expectedBackupShape = {
+			boostedTransactions: defaultWalletShape.boostedTransactions,
+			transfers: defaultWalletShape.transfers,
+		};
+
+		// If the keys in the backup object are not found in the reference object assume the backup does not exist.
+		if (!deepCompareStructure(backup, expectedBackupShape, 1)) {
+			console.log('Backup does not exist');
+			return ok({ backupExists: false });
+		}
+
+		dispatch(restoreBoostedTransactions(backup.boostedTransactions));
+		dispatch(restoreTransfers(backup.transfers));
+		dispatch(backupSuccess({ category: EBackupCategory.wallet }));
+
+		// Restore success
+		return ok({ backupExists: true });
+	} catch (e) {
+		console.log(`Restore ${EBackupCategory.wallet} error`, e.message);
+		return err(e);
+	}
+};
+
 const performSettingsRestore = async (): Promise<
 	Result<{ backupExists: boolean }>
 > => {
 	try {
-		const backupRes = await getBackup<TSettings>(EBackupCategories.settings);
+		const backupRes = await getBackup<TSettings>(EBackupCategory.settings);
 		if (backupRes.isErr()) {
 			return err(backupRes.error.message);
 		}
@@ -282,12 +311,6 @@ const performSettingsRestore = async (): Promise<
 		//If the keys in the backup object are not found in the reference object assume the backup does not exist.
 		if (!isObjPartialMatch(backup, expectedBackupShape)) {
 			return ok({ backupExists: false });
-		}
-
-		// apply migrations
-		if (backupRes.value.metadata.version < 36) {
-			// @ts-ignore migrate unit
-			backup.unit = backup.unit === 'satoshi' ? EUnit.BTC : backup.unit;
 		}
 
 		dispatch(
@@ -300,12 +323,12 @@ const performSettingsRestore = async (): Promise<
 				pinOnLaunch: true,
 			}),
 		);
-		dispatch(backupSuccess({ category: EBackupCategories.settings }));
+		dispatch(backupSuccess({ category: EBackupCategory.settings }));
 
 		// Restore success
 		return ok({ backupExists: true });
 	} catch (e) {
-		console.log(`Restore ${EBackupCategories.settings} error`, e.message);
+		console.log(`Restore ${EBackupCategory.settings} error`, e.message);
 		return err(e);
 	}
 };
@@ -314,7 +337,7 @@ const performWidgetsRestore = async (): Promise<
 	Result<{ backupExists: boolean }>
 > => {
 	try {
-		const backupRes = await getBackup<TWidgetsState>(EBackupCategories.widgets);
+		const backupRes = await getBackup<TWidgetsState>(EBackupCategory.widgets);
 		if (backupRes.isErr()) {
 			return err(backupRes.error.message);
 		}
@@ -333,12 +356,12 @@ const performWidgetsRestore = async (): Promise<
 				onboardedWidgets: true,
 			}),
 		);
-		dispatch(backupSuccess({ category: EBackupCategories.widgets }));
+		dispatch(backupSuccess({ category: EBackupCategory.widgets }));
 
 		// Restore success
 		return ok({ backupExists: true });
 	} catch (e) {
-		console.log(`Restore ${EBackupCategories.widgets} error`, e.message);
+		console.log(`Restore ${EBackupCategory.widgets} error`, e.message);
 		return err(e);
 	}
 };
@@ -347,9 +370,7 @@ const performMetadataRestore = async (): Promise<
 	Result<{ backupExists: boolean }>
 > => {
 	try {
-		const backupRes = await getBackup<TMetadataState>(
-			EBackupCategories.metadata,
-		);
+		const backupRes = await getBackup<TMetadataState>(EBackupCategory.metadata);
 		if (backupRes.isErr()) {
 			return err(backupRes.error.message);
 		}
@@ -369,12 +390,12 @@ const performMetadataRestore = async (): Promise<
 		}
 
 		dispatch(updateMetadata({ ...expectedBackupShape, ...backup }));
-		dispatch(backupSuccess({ category: EBackupCategories.metadata }));
+		dispatch(backupSuccess({ category: EBackupCategory.metadata }));
 
 		// Restore success
 		return ok({ backupExists: true });
 	} catch (e) {
-		console.log(`Restore ${EBackupCategories.metadata} error`, e.message);
+		console.log(`Restore ${EBackupCategory.metadata} error`, e.message);
 		return err(e);
 	}
 };
@@ -384,7 +405,7 @@ const performBlocktankRestore = async (): Promise<
 > => {
 	try {
 		const backupRes = await getBackup<Partial<IBlocktank>>(
-			EBackupCategories.blocktank,
+			EBackupCategory.blocktank,
 		);
 		if (backupRes.isErr()) {
 			return err(backupRes.error.message);
@@ -397,12 +418,12 @@ const performBlocktankRestore = async (): Promise<
 		}
 
 		dispatch(updateBlocktank(backup));
-		dispatch(backupSuccess({ category: EBackupCategories.blocktank }));
+		dispatch(backupSuccess({ category: EBackupCategory.blocktank }));
 
 		// Restore success
 		return ok({ backupExists: true });
 	} catch (e) {
-		console.log(`Restore ${EBackupCategories.blocktank} error`, e.message);
+		console.log(`Restore ${EBackupCategory.blocktank} error`, e.message);
 		return err(e);
 	}
 };
@@ -412,7 +433,7 @@ const performSlashtagsRestore = async (): Promise<
 > => {
 	try {
 		const backupRes = await getBackup<Partial<TSlashtagsState>>(
-			EBackupCategories.slashtags,
+			EBackupCategory.slashtags,
 		);
 		if (backupRes.isErr()) {
 			return err(backupRes.error.message);
@@ -425,12 +446,12 @@ const performSlashtagsRestore = async (): Promise<
 		}
 
 		dispatch(addContacts(backup.contacts!));
-		dispatch(backupSuccess({ category: EBackupCategories.slashtags }));
+		dispatch(backupSuccess({ category: EBackupCategory.slashtags }));
 
 		// Restore success
 		return ok({ backupExists: true });
 	} catch (e) {
-		console.log(`Restore ${EBackupCategories.slashtags} error`, e.message);
+		console.log(`Restore ${EBackupCategory.slashtags} error`, e.message);
 		return err(e);
 	}
 };
@@ -440,7 +461,7 @@ const performLDKActivityRestore = async (): Promise<
 > => {
 	try {
 		const backupRes = await getBackup<TActivity['items']>(
-			EBackupCategories.ldkActivity,
+			EBackupCategory.ldkActivity,
 		);
 		if (backupRes.isErr()) {
 			return err(backupRes.error.message);
@@ -454,12 +475,12 @@ const performLDKActivityRestore = async (): Promise<
 		);
 
 		dispatch(addActivityItems(backup));
-		dispatch(backupSuccess({ category: EBackupCategories.ldkActivity }));
+		dispatch(backupSuccess({ category: EBackupCategory.ldkActivity }));
 
 		// Restore success
 		return ok({ backupExists: true });
 	} catch (e) {
-		console.log(`Restore ${EBackupCategories.ldkActivity} error`, e.message);
+		console.log(`Restore ${EBackupCategory.ldkActivity} error`, e.message);
 		return err(e);
 	}
 };

@@ -11,7 +11,7 @@ import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 import { closeSheet } from '../../../store/slices/ui';
 import { backupSelector } from '../../../store/reselect/backup';
 import { i18nTime } from '../../../utils/i18n';
-import { EBackupCategories } from '../../../store/utils/backup';
+import { EBackupCategory } from '../../../store/utils/backup';
 
 const imageSrc = require('../../../assets/illustrations/card.png');
 
@@ -22,7 +22,7 @@ const Metadata = (): ReactElement => {
 	const backup = useAppSelector(backupSelector);
 
 	const max = Math.max(
-		...Object.values(EBackupCategories).map((key) => {
+		...Object.values(EBackupCategory).map((key) => {
 			return backup[key].synced;
 		}),
 	);

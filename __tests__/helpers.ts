@@ -3,6 +3,7 @@ import {
 	reduceValue,
 	timeAgo,
 	isObjPartialMatch,
+	deepCompareStructure,
 	ellipsis,
 	generateCalendar,
 	getDurationForBlocks,
@@ -157,6 +158,77 @@ describe('isObjPartialMatch', () => {
 		expect(f({ a: { c: 1 } }, { a: { b: 1 } })).toEqual(false);
 
 		expect(f({ a: 1 }, { a: [] })).toEqual(true);
+	});
+});
+
+describe('deepCompareStructure', () => {
+	it('can perform match', () => {
+		const f = deepCompareStructure;
+		expect(f({}, {})).toEqual(true);
+		expect(f({}, [])).toEqual(false);
+		expect(f({ a: 1 }, {})).toEqual(false);
+		expect(f({ a: 1 }, { a: 2 })).toEqual(true);
+		expect(f({ a: 1 }, { b: 1 })).toEqual(false);
+		expect(f({ a: { b: 1 } }, { a: { b: 2 } })).toEqual(true);
+		expect(f({ a: { b: 1 } }, { a: { c: 1 } })).toEqual(false);
+		expect(f({ a: 1 }, { a: [] })).toEqual(false);
+		expect(f({ a: { b: [] } }, { a: { b: [] } })).toEqual(true);
+		expect(f({ a: { b: 1 } }, { a: { b: [] } })).toEqual(false);
+
+		const received = {
+			boostedTransactions: {
+				bitcoin: {},
+				bitcoinTestnet: {},
+				bitcoinRegtest: {
+					fff9398e30329ab0d4ae227c017b9c11537d6fadede4df402d3ae9bb854816f5: {
+						parentTransactions: [
+							'fff9398e30329ab0d4ae227c017b9c11537d6fadede4df402d3ae9bb854816f5',
+						],
+						childTransaction:
+							'ee459c02101cad9dbab8d0fc2fe55026130e7db4d88ca8892b9003167c787fa1',
+						type: 'cpfp',
+						fee: 664,
+					},
+					'415098a69d7b1c93b31b14625c4b7663a4bdeee5f15c5982083ac1c4ec14717b': {
+						parentTransactions: [
+							'415098a69d7b1c93b31b14625c4b7663a4bdeee5f15c5982083ac1c4ec14717b',
+						],
+						childTransaction:
+							'f7f0d6184818a9588633be608dc4d8f3510708c5946bea330c663a0bf8c334a2',
+						type: 'cpfp',
+						fee: 664,
+					},
+				},
+			},
+			transfers: {
+				bitcoin: [],
+				bitcoinTestnet: [],
+				bitcoinRegtest: [
+					{
+						txId: '67a7108cd434d8580a0295517df0c740b59e84e875284ac139717e4dda4da0f8',
+						type: 'open',
+						status: 'pending',
+						orderId: '5f95e1f5-26f9-4fb2-82e6-9ae602764d3b',
+						amount: 17602,
+					},
+				],
+			},
+		};
+
+		const expected = {
+			boostedTransactions: {
+				bitcoin: {},
+				bitcoinTestnet: {},
+				bitcoinRegtest: {},
+			},
+			transfers: {
+				bitcoin: [],
+				bitcoinTestnet: [],
+				bitcoinRegtest: [],
+			},
+		};
+
+		expect(f(received, expected, 1)).toEqual(true);
 	});
 });
 

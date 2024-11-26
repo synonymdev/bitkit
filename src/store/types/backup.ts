@@ -1,5 +1,5 @@
 import { ENetworks, TAccount } from '@synonymdev/react-native-ldk';
-import { EBackupCategories } from '../utils/backup';
+import { EBackupCategory } from '../utils/backup';
 
 export type TBackupItem = {
 	running: boolean;
@@ -8,7 +8,7 @@ export type TBackupItem = {
 };
 
 export type TBackupState = {
-	[key in EBackupCategories]: TBackupItem;
+	[key in EBackupCategory]: TBackupItem;
 };
 
 export declare type TAccountBackup<T> = {
@@ -19,7 +19,7 @@ export declare type TAccountBackup<T> = {
 };
 
 export type TBackupMetadata = {
-	category: EBackupCategories;
+	category: EBackupCategory;
 	timestamp: number;
 	version: number;
 };

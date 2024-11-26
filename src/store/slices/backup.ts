@@ -1,7 +1,7 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
 import { initialBackupState } from '../shapes/backup';
-import { EBackupCategories } from '../utils/backup';
+import { EBackupCategory } from '../utils/backup';
 import { addPaidBlocktankOrder, updateBlocktankOrder } from './blocktank';
 import {
 	addLastUsedTag,
@@ -17,6 +17,7 @@ import {
 } from './metadata';
 import { updateSettings } from './settings';
 import { addContact, addContacts, deleteContact } from './slashtags';
+import { addTransfer, removeTransfer, updateTransfer } from './wallet';
 import { setFeedWidget, deleteWidget } from './widgets';
 import { updateActivityItems } from './activity';
 import { EActivityType } from '../types/activity';
@@ -26,20 +27,35 @@ export const backupSlice = createSlice({
 	initialState: initialBackupState,
 	reducers: {
 		resetBackupState: () => initialBackupState,
-		backupStart: (state, action: PayloadAction<{ category: string }>) => {
+		requireBackup: (state, action: PayloadAction<EBackupCategory>) => {
+			state[action.payload].required = Date.now();
+		},
+		backupStart: (
+			state,
+			action: PayloadAction<{ category: EBackupCategory }>,
+		) => {
 			const { category } = action.payload;
 			state[category].running = true;
 		},
-		backupSuccess: (state, action: PayloadAction<{ category: string }>) => {
+		backupSuccess: (
+			state,
+			action: PayloadAction<{ category: EBackupCategory }>,
+		) => {
 			const { category } = action.payload;
 			state[category].running = false;
 			state[category].synced = Date.now();
 		},
-		backupError: (state, action: PayloadAction<{ category: string }>) => {
+		backupError: (
+			state,
+			action: PayloadAction<{ category: EBackupCategory }>,
+		) => {
 			const { category } = action.payload;
 			state[category].running = false;
 		},
-		forceBackup: (state, action: PayloadAction<{ category: string }>) => {
+		forceBackup: (
+			state,
+			action: PayloadAction<{ category: EBackupCategory }>,
+		) => {
 			const { category } = action.payload;
 			state[category].required = Date.now();
 			state[category].running = true;
@@ -47,19 +63,22 @@ export const backupSlice = createSlice({
 	},
 	extraReducers: (builder) => {
 		const blocktankReducer = (state): void => {
-			state[EBackupCategories.blocktank].required = Date.now();
+			state[EBackupCategory.blocktank].required = Date.now();
 		};
 		const metadataReducer = (state): void => {
-			state[EBackupCategories.metadata].required = Date.now();
+			state[EBackupCategory.metadata].required = Date.now();
 		};
 		const settingsReducer = (state): void => {
-			state[EBackupCategories.settings].required = Date.now();
+			state[EBackupCategory.settings].required = Date.now();
 		};
 		const slashtagsReducer = (state): void => {
-			state[EBackupCategories.slashtags].required = Date.now();
+			state[EBackupCategory.slashtags].required = Date.now();
+		};
+		const walletReducer = (state): void => {
+			state[EBackupCategory.wallet].required = Date.now();
 		};
 		const widgetsReducer = (state): void => {
-			state[EBackupCategories.widgets].required = Date.now();
+			state[EBackupCategory.widgets].required = Date.now();
 		};
 
 		builder
@@ -79,6 +98,9 @@ export const backupSlice = createSlice({
 			.addCase(addContact, slashtagsReducer)
 			.addCase(addContacts, slashtagsReducer)
 			.addCase(deleteContact, slashtagsReducer)
+			.addCase(addTransfer, walletReducer)
+			.addCase(updateTransfer, walletReducer)
+			.addCase(removeTransfer, walletReducer)
 			.addCase(setFeedWidget, widgetsReducer)
 			.addCase(deleteWidget, widgetsReducer)
 			.addCase(updateActivityItems, (state, action) => {
@@ -87,7 +109,7 @@ export const backupSlice = createSlice({
 					(item) => item.activityType === EActivityType.lightning,
 				);
 				if (hasLnActivity) {
-					state[EBackupCategories.ldkActivity].required = Date.now();
+					state[EBackupCategory.ldkActivity].required = Date.now();
 				}
 			});
 	},
@@ -97,6 +119,7 @@ const { actions, reducer } = backupSlice;
 
 export const {
 	resetBackupState,
+	requireBackup,
 	backupStart,
 	backupSuccess,
 	backupError,

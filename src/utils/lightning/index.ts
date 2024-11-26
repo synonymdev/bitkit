@@ -137,6 +137,20 @@ let onChannelClose: EmitterSubscription | undefined;
 // let onSpendableOutputsSubscription: EmitterSubscription | undefined;
 let onBackupStateUpdate: EmitterSubscription | undefined;
 
+export const getNetwork = (selectedNetwork: EAvailableNetwork): ENetworks => {
+	switch (selectedNetwork) {
+		case EAvailableNetwork.bitcoin: {
+			return ENetworks.mainnet;
+		}
+		case EAvailableNetwork.bitcoinTestnet: {
+			return ENetworks.testnet;
+		}
+		case EAvailableNetwork.bitcoinRegtest: {
+			return ENetworks.regtest;
+		}
+	}
+};
+
 /**
  * Checks if a string is a plain LN URI.
  * @param {string} uri

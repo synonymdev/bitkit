@@ -12,7 +12,7 @@ import { backupSelector } from '../../../store/reselect/backup';
 import { lightningBackupSelector } from '../../../store/reselect/lightning';
 import { forceBackup } from '../../../store/slices/backup';
 import { TBackupItem } from '../../../store/types/backup';
-import { EBackupCategories } from '../../../store/utils/backup';
+import { EBackupCategory } from '../../../store/utils/backup';
 import { toggleBottomSheet } from '../../../store/utils/ui';
 import {
 	ArrowClockwise,
@@ -21,6 +21,7 @@ import {
 	RectanglesTwo,
 	SettingsIcon,
 	TagIcon,
+	TimerIconAlt,
 	TransferIcon,
 	UsersIcon,
 } from '../../../styles/icons';
@@ -38,7 +39,7 @@ const Status = ({
 	Icon: React.FunctionComponent<any>;
 	title: ReactNode;
 	status: TBackupItem;
-	category?: EBackupCategories;
+	category?: EBackupCategory;
 	disableRetry?: boolean;
 }): ReactElement => {
 	const { t } = useTranslation('settings');
@@ -124,7 +125,7 @@ const Status = ({
 type TBackupCategory = {
 	Icon: React.FunctionComponent<any>;
 	title: string;
-	category?: EBackupCategories;
+	category?: EBackupCategory;
 	status: TBackupItem;
 	disableRetry?: boolean;
 };
@@ -154,32 +155,38 @@ const BackupSettings = ({
 		{
 			Icon: NoteIcon,
 			title: t('backup.category_connection_receipts'),
-			category: EBackupCategories.blocktank,
-			status: backup[EBackupCategories.blocktank],
+			category: EBackupCategory.blocktank,
+			status: backup[EBackupCategory.blocktank],
 		},
 		{
 			Icon: TransferIcon,
 			title: t('backup.category_transaction_log'),
-			category: EBackupCategories.ldkActivity,
-			status: backup[EBackupCategories.ldkActivity],
+			category: EBackupCategory.ldkActivity,
+			status: backup[EBackupCategory.ldkActivity],
+		},
+		{
+			Icon: TimerIconAlt,
+			title: t('backup.category_wallet'),
+			category: EBackupCategory.wallet,
+			status: backup[EBackupCategory.wallet],
 		},
 		{
 			Icon: SettingsIcon,
 			title: t('backup.category_settings'),
-			category: EBackupCategories.settings,
-			status: backup[EBackupCategories.settings],
+			category: EBackupCategory.settings,
+			status: backup[EBackupCategory.settings],
 		},
 		{
 			Icon: RectanglesTwo,
 			title: t('backup.category_widgets'),
-			category: EBackupCategories.widgets,
-			status: backup[EBackupCategories.widgets],
+			category: EBackupCategory.widgets,
+			status: backup[EBackupCategory.widgets],
 		},
 		{
 			Icon: TagIcon,
 			title: t('backup.category_tags'),
-			category: EBackupCategories.metadata,
-			status: backup[EBackupCategories.metadata],
+			category: EBackupCategory.metadata,
+			status: backup[EBackupCategory.metadata],
 		},
 		// {
 		// 	Icon: UserRectangleIcon,
@@ -190,8 +197,8 @@ const BackupSettings = ({
 		{
 			Icon: UsersIcon,
 			title: t('backup.category_contacts'),
-			category: EBackupCategories.slashtags,
-			status: backup[EBackupCategories.slashtags],
+			category: EBackupCategory.slashtags,
+			status: backup[EBackupCategory.slashtags],
 		},
 	];
 

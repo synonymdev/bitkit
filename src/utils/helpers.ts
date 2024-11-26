@@ -2,6 +2,9 @@ import { Linking, Vibration } from 'react-native';
 import NetInfo from '@react-native-community/netinfo';
 import { err, ok, Result } from '@synonymdev/result';
 import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
+import has from 'lodash/has';
+import keys from 'lodash/keys';
+import isPlainObject from 'lodash/isPlainObject';
 
 import { i18nTime } from '../utils/i18n';
 
@@ -240,6 +243,61 @@ export const isObjPartialMatch = (
 		}
 		return false;
 	});
+};
+
+export const deepCompareStructure = (
+	obj1: any,
+	obj2: any,
+	maxDepth: number = Infinity,
+	currentDepth: number = 0,
+): boolean => {
+	// Ensure both objects are plain objects
+	if (!isPlainObject(obj1) || !isPlainObject(obj2)) {
+		return false;
+	}
+
+	// Stop further comparison if max depth is exceeded
+	if (currentDepth > maxDepth) {
+		return true;
+	}
+
+	// Get keys from both objects
+	const keys1 = keys(obj1);
+	const keys2 = keys(obj2);
+
+	// Check if the number of keys is the same
+	if (keys1.length !== keys2.length) {
+		return false;
+	}
+
+	// Check if all keys from obj1 exist in obj2 and recursively compare their nested objects
+	for (const key of keys1) {
+		if (!has(obj2, key)) {
+			return false;
+		}
+
+		const value1 = obj1[key];
+		const value2 = obj2[key];
+
+		// If types are different, return false
+		if (typeof value1 !== typeof value2) {
+			return false;
+		}
+
+		// Skip arrays for deep comparison
+		if (Array.isArray(value1) && Array.isArray(value2)) {
+			continue;
+		}
+
+		// If both are plain objects, recurse; otherwise, continue
+		if (isPlainObject(value1) && isPlainObject(value2)) {
+			if (!deepCompareStructure(value1, value2, maxDepth, currentDepth + 1)) {
+				return false;
+			}
+		}
+	}
+
+	return true; // All keys and types match
 };
 
 /**

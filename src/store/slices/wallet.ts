@@ -2,6 +2,7 @@ import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import {
 	IAddress,
 	IAddresses,
+	IBoostedTransactions,
 	IFormattedTransactions,
 	IHeader,
 	IWalletData,
@@ -14,6 +15,7 @@ import {
 } from '../shapes/wallet';
 import {
 	ETransferStatus,
+	IWalletItem,
 	IWallets,
 	IWalletStore,
 	TTransfer,
@@ -123,6 +125,13 @@ export const walletSlice = createSlice({
 
 			state.wallets[selectedWallet].transfers[selectedNetwork] = updated;
 		},
+		restoreTransfers: (
+			state,
+			action: PayloadAction<IWalletItem<TTransfer[]>>,
+		) => {
+			const { selectedWallet } = state;
+			state.wallets[selectedWallet].transfers = action.payload;
+		},
 		removeTransfer: (state, action: PayloadAction<string>) => {
 			const { selectedWallet, selectedNetwork } = state;
 			const current = state.wallets[selectedWallet].transfers[selectedNetwork];
@@ -152,6 +161,13 @@ export const walletSlice = createSlice({
 				],
 				...action.payload,
 			};
+		},
+		restoreBoostedTransactions: (
+			state,
+			action: PayloadAction<IWalletItem<IBoostedTransactions>>,
+		) => {
+			const { selectedWallet } = state;
+			state.wallets[selectedWallet].boostedTransactions = action.payload;
 		},
 		replaceImpactedAddresses: (
 			state,
@@ -194,9 +210,11 @@ export const {
 	updateHeader,
 	addTransfer,
 	updateTransfer,
+	restoreTransfers,
 	removeTransfer,
 	updateTransactions,
 	addUnconfirmedTransactions,
+	restoreBoostedTransactions,
 	replaceImpactedAddresses,
 	resetSelectedWallet,
 	resetExchangeRates,

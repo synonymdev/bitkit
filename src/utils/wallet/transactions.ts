@@ -9,10 +9,8 @@ import {
 	IOutput,
 	ISendTransaction,
 	IUtxo,
-	TGetByteCountInputs,
-	TGetByteCountOutputs,
 } from 'beignet';
-import validate, { getAddressInfo } from 'bitcoin-address-validation';
+import { getAddressInfo } from 'bitcoin-address-validation';
 
 import { __E2E__ } from '../../constants/env';
 import {
@@ -27,11 +25,13 @@ import {
 } from '../../store/helpers';
 import { removeActivityItem } from '../../store/slices/activity';
 import { initialFeesState } from '../../store/slices/fees';
+import { requireBackup } from '../../store/slices/backup';
+import { TWalletName } from '../../store/types/wallet';
+import { EBackupCategory } from '../../store/utils/backup';
 import {
 	ETransactionSpeed,
 	TCoinSelectPreference,
 } from '../../store/types/settings';
-import { TWalletName } from '../../store/types/wallet';
 import { reduceValue } from '../helpers';
 import i18n from '../i18n';
 import { EAvailableNetwork } from '../networks';
@@ -48,30 +48,6 @@ import {
 	getSelectedWallet,
 	refreshWallet,
 } from './index';
-
-/**
- * Constructs the parameter for getByteCount via an array of addresses.
- * @param {string[]} addresses
- */
-export const constructByteCountParam = (
-	addresses: string[],
-): TGetByteCountInputs | TGetByteCountOutputs => {
-	try {
-		if (addresses.length <= 0) {
-			return { P2WPKH: 0 };
-		}
-		let param: TGetByteCountOutputs = {};
-		addresses.map((address) => {
-			if (validate(address)) {
-				const addressType = getAddressInfo(address).type.toUpperCase();
-				param[addressType] = param[addressType] ? param[addressType] + 1 : 1;
-			}
-		});
-		return param;
-	} catch {
-		return { P2WPKH: 0 };
-	}
-};
 
 /*
  * Attempt to estimate the current fee for a given wallet and its UTXO's
@@ -867,6 +843,8 @@ export const broadcastBoost = async ({
 		if (addBoost.isErr()) {
 			return err(addBoost.error.message);
 		}
+
+		dispatch(requireBackup(EBackupCategory.wallet));
 
 		// Only delete the old ActivityItem if it was an RBF
 		if (transaction.boostType === EBoostType.rbf) {

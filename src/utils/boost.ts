@@ -1,4 +1,4 @@
-import { EBoostType, IBoostedTransactions, Wallet as TWallet } from 'beignet';
+import { IBoostedTransactions, Wallet as TWallet } from 'beignet';
 
 import { getActivityStore, getWalletStore } from '../store/helpers';
 import { IActivityItem, TOnchainActivityItem } from '../store/types/activity';
@@ -22,7 +22,7 @@ export const getBoostedTransactions = ({
 }: {
 	selectedWallet?: TWalletName;
 	selectedNetwork?: EAvailableNetwork;
-}): IBoostedTransactions => {
+} = {}): IBoostedTransactions => {
 	return getWalletStore().wallets[selectedWallet]?.boostedTransactions[
 		selectedNetwork
 	];
@@ -166,16 +166,29 @@ export const formatBoostedActivityItems = async ({
 	selectedWallet: TWalletName;
 	selectedNetwork: EAvailableNetwork;
 }): Promise<TOnchainActivityItem[]> => {
+	const wallet = await getOnChainWalletAsync();
 	const formattedItems: TOnchainActivityItem[] = [];
 
-	for (const item of items) {
+	for (let item of items) {
 		const { txId } = item;
 
-		// if boosted tx don't add for now
+		// If boosted tx don't add for now
 		if (txId in boostedTransactions) {
 			continue;
 		}
 
+		const boostedParents = getBoostedTransactionParents({
+			wallet,
+			txId,
+			boostedTransactions,
+		});
+
+		// If the tx has boosted parents, mark it as boosted
+		if (boostedParents.length) {
+			item = { ...item, isBoosted: true };
+		}
+
+		// For CPFP we need to find the root parent tx
 		const rootParent = await getRootParentActivity({
 			txId,
 			items,
@@ -184,20 +197,13 @@ export const formatBoostedActivityItems = async ({
 			selectedNetwork,
 		});
 
-		// if we can't find a parent tx leave as is
+		// If no root parent (RBF), just add the item marked as boosted
 		if (!rootParent) {
 			formattedItems.push(item);
 			continue;
 		}
 
-		const parentBoostType = boostedTransactions[rootParent.txId].type;
-
-		// if it's an RBF tx leave as is, only mark as boosted
-		if (parentBoostType === EBoostType.rbf) {
-			formattedItems.push({ ...item, isBoosted: true });
-			continue;
-		}
-
+		// For CPFP we need to calculate the value of the boosted tx
 		const value = await calculateBoostTransactionValue({
 			currentActivityItem: item,
 			items,

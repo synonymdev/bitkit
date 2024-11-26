@@ -51,6 +51,7 @@ import {
 	IWallet,
 	IWallets,
 	TKeyDerivationAccountType,
+	TTransfer,
 	TWalletName,
 } from '../../store/types/wallet';
 import { IGetAddress, IGenerateAddresses } from '../types';
@@ -700,6 +701,15 @@ export const getOnChainTransactions = ({
 		getWalletStore().wallets[selectedWallet]?.transactions[selectedNetwork] ??
 		{}
 	);
+};
+
+export const getTransfers = (): TTransfer[] => {
+	const selectedWallet = getSelectedWallet();
+	const selectedNetwork = getSelectedNetwork();
+	const currentWallet = getWalletStore().wallets[selectedWallet];
+	const transfers = currentWallet.transfers[selectedNetwork];
+
+	return transfers;
 };
 
 /**

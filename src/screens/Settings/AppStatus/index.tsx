@@ -17,7 +17,7 @@ import {
 	isOnlineSelector,
 } from '../../../store/reselect/ui';
 import { TBackupItem } from '../../../store/types/backup';
-import { EBackupCategories } from '../../../store/utils/backup';
+import { EBackupCategory } from '../../../store/utils/backup';
 import { IColors } from '../../../styles/colors';
 import { ScrollView, View as ThemedView } from '../../../styles/components';
 import {
@@ -147,7 +147,7 @@ const AppStatus = ({}: SettingsScreenProps<'AppStatus'>): ReactElement => {
 			);
 		};
 
-		return Object.values(EBackupCategories).every((key) => {
+		return Object.values(EBackupCategory).every((key) => {
 			return isSyncOk(backup[key]);
 		});
 	}, [backup, now]);
@@ -157,7 +157,7 @@ const AppStatus = ({}: SettingsScreenProps<'AppStatus'>): ReactElement => {
 			if (!isBackupSyncOk) {
 				return { state: 'error' };
 			}
-			const syncTimes = Object.values(EBackupCategories).map((key) => {
+			const syncTimes = Object.values(EBackupCategory).map((key) => {
 				return backup[key].synced;
 			});
 			const max = Math.max(...syncTimes);

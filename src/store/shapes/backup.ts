@@ -1,5 +1,5 @@
 import { TBackupItem, TBackupState } from '../types/backup';
-import { EBackupCategories } from '../utils/backup';
+import { EBackupCategory } from '../utils/backup';
 
 const item: TBackupItem = {
 	required: Date.now() - 1000,
@@ -8,10 +8,11 @@ const item: TBackupItem = {
 };
 
 export const initialBackupState: TBackupState = {
-	[EBackupCategories.widgets]: { ...item },
-	[EBackupCategories.settings]: { ...item },
-	[EBackupCategories.metadata]: { ...item },
-	[EBackupCategories.blocktank]: { ...item },
-	[EBackupCategories.slashtags]: { ...item },
-	[EBackupCategories.ldkActivity]: { ...item },
+	[EBackupCategory.wallet]: { ...item },
+	[EBackupCategory.widgets]: { ...item },
+	[EBackupCategory.settings]: { ...item },
+	[EBackupCategory.metadata]: { ...item },
+	[EBackupCategory.blocktank]: { ...item },
+	[EBackupCategory.slashtags]: { ...item },
+	[EBackupCategory.ldkActivity]: { ...item },
 };
