@@ -1,7 +1,4 @@
 {
-  "settings": {
-    "string": "Instellingen"
-  },
   "dev_enabled_title": {
     "string": "Dev Instellingen ingeschakeld"
   },

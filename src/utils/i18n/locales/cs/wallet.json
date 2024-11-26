@@ -115,6 +115,14 @@
   "send_pending": {
     "string": "Platba čeká na vyřízení"
   },
+  "send_quickpay": {
+    "nav_title": {
+      "string": "QuickPay"
+    },
+    "title": {
+      "string": "Placení\n<accent>faktury...</accent>"
+    }
+  },
   "send_pending_note": {
     "string": "Tato platba trvá o něco déle, než se očekávalo. Bitkit můžete používat i nadále."
   },

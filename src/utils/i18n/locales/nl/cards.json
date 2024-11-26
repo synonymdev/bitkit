@@ -13,9 +13,6 @@
     }
   },
   "quickpay": {
-    "title": {
-      "string": "QuickPay"
-    },
     "description": {
       "string": "Scan en betaal"
     }

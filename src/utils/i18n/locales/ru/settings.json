@@ -1,7 +1,4 @@
 {
-  "settings": {
-    "string": "Настройки"
-  },
   "dev_enabled_title": {
     "string": "Режим Разработчика Включён"
   },

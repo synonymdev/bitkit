@@ -13,9 +13,6 @@
     }
   },
   "quickpay": {
-    "title": {
-      "string": "Pagamento veloce"
-    },
     "description": {
       "string": "Scansiona e paga"
     }

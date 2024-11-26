@@ -1,7 +1,4 @@
 {
-  "settings": {
-    "string": "Configuracions"
-  },
   "dev_enabled_title": {
     "string": "Opcions de Dev activades"
   },

@@ -13,9 +13,6 @@
     }
   },
   "quickpay": {
-    "title": {
-      "string": "Быстроплата"
-    },
     "description": {
       "string": "Сканируйте и платите"
     }

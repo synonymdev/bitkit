@@ -16,9 +16,6 @@
     }
   },
   "quickpay": {
-    "title": {
-      "string": "Pagamentos rápidos"
-    },
     "description": {
       "string": "Escanear e pagar"
     }
