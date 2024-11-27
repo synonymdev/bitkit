@@ -50,7 +50,29 @@ const Slider = ({
 		panX.value = stepPositions[valueIndex];
 	}, [sliderWidth, value, steps, stepPositions, panX]);
 
-	const gesture = Gesture.Pan()
+	const findClosestStep = (currentPosition: number): number => {
+		'worklet';
+		return stepPositions.reduce((closestStep, currentStep) => {
+			// Calculate the difference between the current step and the current position
+			const currentDifference = Math.abs(currentStep - currentPosition);
+			const closestDifference = Math.abs(closestStep - currentPosition);
+
+			// If the current step is closer, update the closest step
+			return currentDifference < closestDifference ? currentStep : closestStep;
+		});
+	};
+
+	const tapGesture = Gesture.Tap().onStart((event) => {
+		const closestStep = findClosestStep(event.x);
+		panX.value = closestStep;
+
+		if (onValueChange) {
+			const stepIndex = stepPositions.indexOf(closestStep);
+			runOnJS(onValueChange)(steps[stepIndex]);
+		}
+	});
+
+	const panGesture = Gesture.Pan()
 		.onStart(() => {
 			prevPanX.value = panX.value;
 		})
@@ -58,15 +80,6 @@ const Slider = ({
 			panX.value = clamp(prevPanX.value + event.translationX, 0, sliderWidth);
 		})
 		.onEnd(() => {
-			const findClosestStep = (currentPosition: number): number => {
-				return stepPositions.reduce((prev, curr) => {
-					return Math.abs(curr - currentPosition) <
-						Math.abs(prev - currentPosition)
-						? curr
-						: prev;
-				});
-			};
-
 			const closestStep = findClosestStep(panX.value);
 			panX.value = withSpring(closestStep);
 
@@ -90,19 +103,23 @@ const Slider = ({
 			style={styles.container}
 			onLayout={(e): void => setSliderWidth(e.nativeEvent.layout.width)}>
 			<View style={styles.sliderContainer}>
-				<ThemedView style={styles.track} color="green32" />
-				<Animated.View style={[styles.track, trailStyle]} />
-				{stepPositions.map((pos, index) => (
-					<View
-						key={`step-${index}`}
-						style={[styles.stepContainer, { left: pos - 2 }]}>
-						<ThemedView style={styles.stepMarker} color="white" />
-						<Text13UP style={styles.stepLabel} numberOfLines={1}>
-							${steps[index]}
-						</Text13UP>
+				<GestureDetector gesture={tapGesture}>
+					<View style={styles.trackHitbox}>
+						<ThemedView style={styles.track} color="green32" />
+						<Animated.View style={[styles.track, trailStyle]} />
+						{stepPositions.map((pos, index) => (
+							<View
+								key={`step-${index}`}
+								style={[styles.stepContainer, { left: pos - 2 }]}>
+								<ThemedView style={styles.stepMarker} color="white" />
+								<Text13UP style={styles.stepLabel} numberOfLines={1}>
+									${steps[index]}
+								</Text13UP>
+							</View>
+						))}
 					</View>
-				))}
-				<GestureDetector gesture={gesture}>
+				</GestureDetector>
+				<GestureDetector gesture={panGesture}>
 					<Animated.View style={[styles.knob, animatedStyle]}>
 						<ThemedView style={styles.knobOuter} color="green">
 							<ThemedView style={styles.knobInner} color="white" />
@@ -125,6 +142,11 @@ const styles = StyleSheet.create({
 		position: 'relative',
 		alignItems: 'center',
 		justifyContent: 'center',
+	},
+	trackHitbox: {
+		justifyContent: 'center',
+		height: 30,
+		width: '100%',
 	},
 	track: {
 		borderRadius: 3,
