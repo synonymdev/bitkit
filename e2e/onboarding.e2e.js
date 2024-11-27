@@ -1,6 +1,12 @@
 import jestExpect from 'expect';
 
-import { sleep, checkComplete, markComplete } from './helpers';
+import {
+	sleep,
+	checkComplete,
+	markComplete,
+	getSeed,
+	restoreWallet,
+} from './helpers';
 
 d = checkComplete('onboarding-1') ? describe.skip : describe;
 
@@ -31,8 +37,9 @@ d('Onboarding', () => {
 		await element(by.id('SkipButton')).tap();
 
 		// create new wallet with passphrase
+		const passphrase = 'supersecret';
 		await element(by.id('Passphrase')).tap();
-		await element(by.id('PassphraseInput')).typeText('supersecret');
+		await element(by.id('PassphraseInput')).typeText(passphrase);
 		await element(by.id('PassphraseInput')).tapReturnKey();
 		await element(by.id('CreateNewWallet')).tap();
 
@@ -54,20 +61,9 @@ d('Onboarding', () => {
 			}
 		}
 
-		// get seed
-		await element(by.id('Settings')).tap();
-		await element(by.id('BackupSettings')).tap();
-		await element(by.id('BackupWallet')).tap();
-		await element(by.id('TapToReveal')).tap();
-		// get the seed from SeedContaider
-		const { label: seed } = await element(
-			by.id('SeedContaider'),
-		).getAttributes();
-		await element(by.id('SeedContaider')).swipe('down');
-		await element(by.id('NavigationClose')).atIndex(0).tap();
-		console.info('seed: ', seed);
+		const seed = await getSeed();
 
-		// get receing address
+		// get receiving address
 		await element(by.id('Receive')).tap();
 		await waitFor(element(by.id('QRCode')))
 			.toBeVisible()
@@ -76,38 +72,9 @@ d('Onboarding', () => {
 		console.info('address', address1);
 
 		// wipe and restore wallet
-		await device.launchApp({ delete: true });
+		await restoreWallet(seed, passphrase);
 
-		await waitFor(element(by.id('Check1'))).toBeVisible();
-		await element(by.id('Check1')).tap();
-		await element(by.id('Check2')).tap();
-		await element(by.id('Continue')).tap();
-		await waitFor(element(by.id('SkipIntro'))).toBeVisible();
-		await element(by.id('SkipIntro')).tap();
-		await element(by.id('RestoreWallet')).tap();
-		await element(by.id('MultipleDevices-button')).tap();
-		await element(by.id('Word-0')).replaceText(seed);
-		await element(by.id('WordIndex-4')).swipe('up');
-		await element(by.id('AdvancedButton')).tap();
-		await element(by.id('PassphraseInput')).typeText('supersecret');
-		await element(by.id('PassphraseInput')).tapReturnKey();
-		await element(by.id('RestoreButton')).tap();
-
-		await waitFor(element(by.id('GetStartedButton')))
-			.toBeVisible()
-			.withTimeout(300000); // 5 min
-		await element(by.id('GetStartedButton')).tap();
-
-		// wait for SuggestionsLabel to appear and be accessible
-		for (let i = 0; i < 60; i++) {
-			await sleep(1000);
-			try {
-				await element(by.id('SuggestionsLabel')).tap();
-				break;
-			} catch (e) {}
-		}
-
-		// get receing address
+		// get receiving address
 		await element(by.id('Receive')).tap();
 		await waitFor(element(by.id('QRCode')))
 			.toBeVisible()

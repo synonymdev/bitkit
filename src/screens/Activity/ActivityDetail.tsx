@@ -335,7 +335,7 @@ const OnchainActivityDetail = ({
 		if (transfer.status !== ETransferStatus.done) {
 			const duration = getDurationForBlocks(transfer.confirmsIn);
 			status = (
-				<View style={styles.row}>
+				<View style={styles.row} testID="StatusTransfer">
 					<HourglassIcon style={styles.rowIcon} color="brand" width={16} />
 					<BodySSB color="brand">
 						{t('activity_transfer_pending', { duration })}

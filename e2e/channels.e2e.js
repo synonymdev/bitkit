@@ -16,6 +16,8 @@ import {
 	sleep,
 	waitForActiveChannel,
 	waitForPeerConnection,
+	getSeed,
+	restoreWallet,
 } from './helpers';
 
 d = checkComplete(['transfer-1', 'transfer-2']) ? describe.skip : describe;
@@ -186,6 +188,18 @@ d('Transfer', () => {
 		await expect(
 			element(by.id('MoneyText').withAncestor(by.id('TotalSize'))),
 		).toHaveText('250 000');
+		await element(by.id('NavigationClose')).tap();
+
+		const seed = await getSeed();
+		await restoreWallet(seed);
+
+		// check transfer card
+		await expect(element(by.id('Suggestion-lightningSettingUp'))).toBeVisible();
+
+		// check activity after restore
+		await element(by.id('WalletsScrollView')).scrollTo('bottom', NaN, 0.85);
+		await element(by.id('ActivityShort-1')).tap();
+		await expect(element(by.id('StatusTransfer'))).toBeVisible();
 
 		markComplete('transfer-1');
 	});

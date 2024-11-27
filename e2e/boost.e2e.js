@@ -11,6 +11,8 @@ import {
 	bitcoinURL,
 	electrumHost,
 	electrumPort,
+	getSeed,
+	restoreWallet,
 } from './helpers';
 import initWaitForElectrumToSync from '../__tests__/utils/wait-for-electrum';
 
@@ -267,10 +269,23 @@ d('Boost', () => {
 		assert(Number(oldFee.replace(' ', '')) < Number(newFee.replace(' ', '')));
 		assert(oldTxid !== newTxid);
 		await expect(element(by.id('RBFBoosted'))).toBeVisible();
+		await element(by.id('NavigationClose')).atIndex(0).tap();
+
+		// wipe & restore
+		const seed = await getSeed();
+		await restoreWallet(seed);
+
+		// check activity after restore
+		await element(by.id('WalletsScrollView')).scrollTo('bottom', NaN, 0.85);
+		await expect(element(by.id('BoostingIcon'))).toBeVisible();
+		await element(by.id('ActivityShort-1')).tap();
+		await expect(element(by.id('BoostedButton'))).toBeVisible();
+		await expect(element(by.id('StatusBoosting'))).toBeVisible();
 
 		// mine new block
-		await element(by.id('NavigationBack')).atIndex(0).tap();
 		await rpc.generateToAddress(1, await rpc.getNewAddress());
+
+		// check activity item after mine
 		await waitFor(element(by.id('StatusConfirmed')))
 			.toBeVisible()
 			.withTimeout(30000);

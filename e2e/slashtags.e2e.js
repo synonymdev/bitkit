@@ -9,6 +9,8 @@ import {
 	sleep,
 	electrumHost,
 	electrumPort,
+	getSeed,
+	restoreWallet,
 } from './helpers';
 import initWaitForElectrumToSync from '../__tests__/utils/wait-for-electrum';
 
@@ -33,16 +35,6 @@ const hal = {
 d('Profile and Contacts', () => {
 	let waitForElectrum;
 	const rpc = new BitcoinJsonRpc(bitcoinURL);
-
-	const waitForSuggestionsLabel = async () => {
-		for (let i = 0; i < 60; i++) {
-			await sleep(1000);
-			try {
-				await element(by.id('SuggestionsLabel')).tap();
-				break;
-			} catch (e) {}
-		}
-	};
 
 	beforeAll(async () => {
 		await completeOnboarding();
@@ -185,8 +177,7 @@ d('Profile and Contacts', () => {
 			await expect(element(by.text(hal.name2))).toBeVisible();
 
 			// RESTART APP
-			await device.launchApp({ newInstance: true, delete: false });
-			await waitForSuggestionsLabel();
+			await launchAndWait();
 
 			await waitFor(element(by.text('NewTestName')))
 				.toBeVisible()
@@ -233,37 +224,9 @@ d('Profile and Contacts', () => {
 			// give it time to perform the metadata backup
 			await sleep(5000);
 
-			// GET SEED
-			await element(by.id('Settings')).tap();
-			await element(by.id('BackupSettings')).tap();
-			await element(by.id('BackupWallet')).tap();
-			await element(by.id('TapToReveal')).tap();
-			const { label: seed } = await element(
-				by.id('SeedContaider'),
-			).getAttributes();
-			await element(by.id('SeedContaider')).swipe('down');
-			console.info('seed: ', seed);
-
 			// WIPE APP AND RESTORE FROM THE SEED
-			await device.launchApp({ delete: true });
-
-			await waitFor(element(by.id('Check1'))).toBeVisible();
-			await element(by.id('Check1')).tap();
-			await element(by.id('Check2')).tap();
-			await element(by.id('Continue')).tap();
-			await waitFor(element(by.id('SkipIntro'))).toBeVisible();
-			await element(by.id('SkipIntro')).tap();
-			await element(by.id('RestoreWallet')).tap();
-			await element(by.id('MultipleDevices-button')).tap();
-			await element(by.id('Word-0')).replaceText(seed);
-			await element(by.id('WordIndex-4')).swipe('up');
-			await element(by.id('RestoreButton')).tap();
-
-			await waitFor(element(by.id('GetStartedButton')))
-				.toBeVisible()
-				.withTimeout(300000); // 5 min
-			await element(by.id('GetStartedButton')).tap();
-			await waitForSuggestionsLabel();
+			const seed = await getSeed();
+			await restoreWallet(seed);
 
 			// CHECK PROFILE, CONTACTS, TRANSACTION
 			await waitFor(element(by.text('NewTestName')))

@@ -9,6 +9,8 @@ import {
 	bitcoinURL,
 	electrumHost,
 	electrumPort,
+	getSeed,
+	restoreWallet,
 } from './helpers';
 import initWaitForElectrumToSync from '../__tests__/utils/wait-for-electrum';
 
@@ -103,54 +105,9 @@ d('Backup', () => {
 		await element(by.id('WidgetsEdit')).tap();
 		await expect(element(by.id('PriceWidget'))).toBeVisible();
 
-		// get seed
-		await element(by.id('Settings')).tap();
-		await element(by.id('BackupSettings')).tap();
-		await element(by.id('BackupWallet')).tap();
-		await sleep(200); // animation
-		await element(by.id('TapToReveal')).tap();
-
-		// get the seed from SeedContaider
-		const { label: seed } = await element(
-			by.id('SeedContaider'),
-		).getAttributes();
-
-		await element(by.id('SeedContaider')).swipe('down');
-		await sleep(200); // animation
-		await element(by.id('NavigationClose')).atIndex(0).tap();
-
-		await sleep(5000); // make sure everything is saved to cloud storage TODO: improve this
-
-		console.info('seed: ', seed);
-
 		// restore wallet
-		await device.launchApp({ delete: true });
-
-		await waitFor(element(by.id('Check1'))).toBeVisible();
-		await element(by.id('Check1')).tap();
-		await element(by.id('Check2')).tap();
-		await element(by.id('Continue')).tap();
-		await waitFor(element(by.id('SkipIntro'))).toBeVisible();
-		await element(by.id('SkipIntro')).tap();
-		await element(by.id('RestoreWallet')).tap();
-		await element(by.id('MultipleDevices-button')).tap();
-		await element(by.id('Word-0')).replaceText(seed);
-		await element(by.id('WordIndex-4')).swipe('up');
-		await element(by.id('RestoreButton')).tap();
-
-		await waitFor(element(by.id('GetStartedButton')))
-			.toBeVisible()
-			.withTimeout(300000); // 5 min
-		await element(by.id('GetStartedButton')).tap();
-
-		// wait for SuggestionsLabel to appear and be accessible
-		for (let i = 0; i < 60; i++) {
-			await sleep(200);
-			try {
-				await element(by.id('SuggestionsLabel')).tap();
-				break;
-			} catch (e) {}
-		}
+		const seed = await getSeed();
+		await restoreWallet(seed);
 
 		// check settings
 		await expect(
