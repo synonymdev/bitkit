@@ -292,7 +292,14 @@ export const startChannelPurchase = async ({
 	});
 
 	const fees = getFeesStore().onchain;
-	const feeRes = updateFee({ satsPerByte: fees.fast });
+	let fee = fees.fast;
+	// in case of the low fee market, we bump fee by 5 sats
+	// details: https://github.com/synonymdev/bitkit/issues/2139
+	if (fee <= 10) {
+		fee += 5;
+	}
+
+	const feeRes = updateFee({ satsPerByte: fee });
 	if (feeRes.isErr()) {
 		return err(feeRes.error.message);
 	}
