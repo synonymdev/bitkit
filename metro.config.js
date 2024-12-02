@@ -21,12 +21,14 @@ const config = {
 		assetExts: assetExts.filter((ext) => ext !== 'svg'),
 		sourceExts: [...sourceExts, 'svg'],
 		extraNodeModules: {
+			bip39: path.resolve(__dirname, './node_modules/react-native-quick-bip39'),
 			buffer: path.resolve(__dirname, './node_modules/@craftzdog/react-native-buffer'),
 			crypto: path.resolve(__dirname, './node_modules/react-native-quick-crypto'),
 			stream: path.resolve(__dirname, './node_modules/readable-stream'),
 			'sodium-universal': path.resolve(__dirname, './node_modules/sodium-react-native-direct'),
 		},
 		blacklistRE: exclusionList([
+			/\/node_modules\/bip39\/.*/,
 			/\/node_modules\/sodium-universal\/.*/,
 			/\/android\/build\/*/,
 		]),

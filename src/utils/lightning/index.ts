@@ -1,6 +1,5 @@
 import { EmitterSubscription } from 'react-native';
 import Keychain from 'react-native-keychain';
-import * as bitcoin from 'bitcoinjs-lib';
 import ecc from '@bitcoinerlab/secp256k1';
 import RNFS from 'react-native-fs';
 import { err, ok, Result } from '@synonymdev/result';
@@ -1013,17 +1012,6 @@ export const getDefaultLdkAccount = async ({
 		name,
 		seed: await ldkSeed(mnemonic, bip39Passphrase),
 	};
-};
-
-/**
- * Get sha256 hash of a given string.
- * @param {string} str
- * @returns {string}
- */
-export const getSha256 = (str: string): string => {
-	const buffer = Buffer.from(str, 'utf8');
-	const hash = bitcoin.crypto.sha256(buffer);
-	return hash.toString('hex');
 };
 
 /**

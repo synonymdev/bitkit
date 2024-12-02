@@ -382,15 +382,16 @@ export const seedHash = (seed: Buffer): string => {
 };
 
 export const ldkSeed = async (
-	mnumonic: string,
+	mnemonic: string,
 	bip39Passphrase: string,
 	selectedNetwork: EAvailableNetwork = getSelectedNetwork(),
 ): Promise<string> => {
-	const mnemonicSeed = await bip39.mnemonicToSeed(mnumonic, bip39Passphrase);
+	const mnemonicSeed = await bip39.mnemonicToSeed(mnemonic, bip39Passphrase);
 	const network = networks[selectedNetwork];
 	const root = bip32.fromSeed(mnemonicSeed, network);
 	return root.privateKey!.toString('hex');
 };
+
 export const keyDerivationAccountTypes: {
 	onchain: TKeyDerivationAccount;
 } = {
