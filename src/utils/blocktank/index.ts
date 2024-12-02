@@ -43,7 +43,7 @@ export const setupBlocktank = async (
 			break;
 		case EAvailableNetwork.bitcoinRegtest:
 			dispatch(updateUser({ isGeoBlocked: false }));
-			bt.baseUrl = 'https://api.stag.blocktank.to/blocktank/api/v2';
+			bt.baseUrl = 'https://api.stag0.blocktank.to/blocktank/api/v2';
 			break;
 	}
 	if (isGeoBlocked) {
