@@ -129,14 +129,6 @@ const DevSettings = ({
 					},
 				},
 				{
-					title: 'Ledger',
-					type: EItemType.button,
-					testID: 'FeeSettings',
-					onPress: (): void => {
-						navigation.navigate('Ledger');
-					},
-				},
-				{
 					title: t('RBF'),
 					type: EItemType.switch,
 					testID: 'RBF',

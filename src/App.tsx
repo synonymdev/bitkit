@@ -14,7 +14,6 @@ import { ThemeProvider } from 'styled-components/native';
 
 import './utils/i18n';
 import './utils/quick-actions';
-import './utils/ledger';
 import AppOnboarded from './AppOnboarded';
 import { SlashtagsProvider } from './components/SlashtagsProvider';
 import { toastConfig } from './components/Toast';

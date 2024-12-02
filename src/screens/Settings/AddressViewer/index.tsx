@@ -15,6 +15,7 @@ import { err, ok, Result } from '@synonymdev/result';
 import Clipboard from '@react-native-clipboard/clipboard';
 import fuzzysort from 'fuzzysort';
 import { ldk } from '@synonymdev/react-native-ldk';
+import { EAddressType, IAddress, IUtxo } from 'beignet';
 
 import {
 	TouchableOpacity,
@@ -68,8 +69,6 @@ import { setupLdk } from '../../../utils/lightning';
 import { startWalletServices } from '../../../utils/startup';
 import { updateOnchainFeeEstimates } from '../../../store/utils/fees';
 import { viewControllerIsOpenSelector } from '../../../store/reselect/ui';
-import { EAddressType, IAddress, IUtxo } from 'beignet';
-import { setupLedger, syncLedger } from '../../../utils/ledger';
 
 export type TAddressViewerData = {
 	[EAddressType.p2tr]: {
@@ -743,7 +742,6 @@ const AddressViewer = ({
 		if (selectedNetwork !== config.selectedNetwork) {
 			// Wipe existing activity
 			dispatch(resetActivityState());
-			setupLedger({ selectedWallet, selectedNetwork });
 			ldk.stop();
 			// Switch to new network.
 			dispatch(updateWallet({ selectedNetwork: config.selectedNetwork }));
@@ -753,7 +751,6 @@ const AddressViewer = ({
 			await startWalletServices({ selectedNetwork: config.selectedNetwork });
 			await updateOnchainFeeEstimates({ forceUpdate: true });
 			updateActivityList();
-			await syncLedger();
 		}
 
 		let _utxos: IUtxo[] = [];

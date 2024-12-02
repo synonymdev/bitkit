@@ -24,7 +24,6 @@ import { promiseTimeout } from '../helpers';
 import { EAvailableNetwork } from '../networks';
 import { TWalletName } from '../../store/types/wallet';
 import { runChecks } from '../wallet/checks';
-import { setupLedger, syncLedger } from '../ledger';
 import i18n from '../i18n';
 import { showToast } from '../notifications';
 
@@ -109,8 +108,6 @@ export const startWalletServices = async ({
 			refreshBlocktankInfo().then();
 		});
 
-		setupLedger({ selectedWallet, selectedNetwork });
-
 		const bip39Passphrase = await getBip39Passphrase();
 
 		const walletExists = getWalletStore()?.walletExists;
@@ -179,8 +176,6 @@ export const startWalletServices = async ({
 
 		// Refresh slashpay config
 		updateSlashPayConfig({ selectedNetwork, forceUpdate: true });
-
-		syncLedger();
 
 		return ok('Wallet started');
 	} catch (e) {

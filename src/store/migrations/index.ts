@@ -1,6 +1,7 @@
 // Add migrations for every persisted store version change
 import { PersistedState } from 'redux-persist';
 import { getDefaultGapLimitOptions } from '../shapes/wallet';
+import { storage as mmkv } from '../../store/mmkv-storage';
 
 const migrations = {
 	43: (state): PersistedState => {
@@ -67,6 +68,17 @@ const migrations = {
 				quickpayIntroSeen: false,
 			},
 		};
+	},
+	49: (state): PersistedState => {
+		// only used to remove old Ledger data
+		try {
+			const keys = mmkv.getAllKeys().filter((k) => k.startsWith('ledger'));
+			for (const key of keys) {
+				mmkv.delete(key);
+			}
+		} catch (e) {}
+
+		return state;
 	},
 };
 
