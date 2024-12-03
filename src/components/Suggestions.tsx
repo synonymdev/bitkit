@@ -57,10 +57,7 @@ const Suggestions = (): ReactElement => {
 		return (): void => clearTimeout(timer);
 	}, [newChannels, dispatch]);
 
-	const panGestureHandlerProps = useMemo(
-		() => ({ activeOffsetX: [-10, 10] }),
-		[],
-	);
+	const panGestureHandlerProps = useMemo(() => ({ activeOffsetX: -10 }), []);
 
 	// reset index on focus
 	useFocusEffect(useCallback(() => setIndex(0), []));

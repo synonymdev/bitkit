@@ -40,6 +40,11 @@
 #endif
 }
 
+- (BOOL)bridgelessEnabled
+{
+    return NO;
+}
+
 // Deep Linking
 - (BOOL)application:(UIApplication *)application
    openURL:(NSURL *)url
