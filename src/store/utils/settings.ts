@@ -9,7 +9,7 @@ import { removePin } from '../../utils/settings';
 import { wipeKeychain } from '../../utils/keychain';
 import { showToast } from '../../utils/notifications';
 import { wipeLdkStorage } from '../../utils/lightning';
-import { getSelectedWallet } from '../../utils/wallet';
+import { getOnChainWallet, getSelectedWallet } from '../../utils/wallet';
 import { TWalletName } from '../types/wallet';
 import { __E2E__ } from '../../constants/env';
 
@@ -31,6 +31,12 @@ export const wipeApp = async ({
 	restartApp?: boolean;
 } = {}): Promise<Result<string>> => {
 	try {
+		// stop onchain wallet if it exists
+		try {
+			const wallet = getOnChainWallet();
+			await wallet.stop();
+		} catch (e) {}
+
 		// Reset Redux stores & persisted storage
 		dispatch({ type: actions.WIPE_APP });
 

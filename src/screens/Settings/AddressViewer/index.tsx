@@ -628,7 +628,7 @@ const AddressViewer = ({
 			if (utxosLength <= 0) {
 				return;
 			}
-			resetSendTransaction();
+			await resetSendTransaction();
 			const transactionRes = await setupOnChainTransaction({
 				utxos: selectedUtxosLength > 0 ? selectedUtxos : utxos,
 				rbf: true,
