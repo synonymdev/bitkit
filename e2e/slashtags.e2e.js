@@ -88,6 +88,8 @@ d('Profile and Contacts', () => {
 
 			await element(by.id('LinkLabelInput')).typeText('LINK-LABEL');
 			await element(by.id('LinkValueInput')).typeText('link-value');
+			await element(by.id('LinkLabelInput')).tapReturnKey();
+			await sleep(200); // keyboard animation
 			await element(by.id('SaveLink')).tap();
 			await waitFor(element(by.id('SaveLink'))).not.toBeVisible();
 			await expect(element(by.text('LINK-LABEL'))).toExist();
