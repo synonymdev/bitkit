@@ -1,6 +1,3 @@
-// run iPhone 14 on local machine, iPhone 15 Pro on mac mini
-const iOSDevice = process.env.MACMINI ? 'iPhone 15 Pro' : 'iPhone 14';
-
 const reversePorts = [3003, 8080, 8081, 9735, 10009, 28334, 28335, 28336, 30001, 39388, 43782, 60001];
 
 /** @type {Detox.DetoxConfig} */
@@ -47,7 +44,7 @@ module.exports = {
 		simulator: {
 			type: 'ios.simulator',
 			device: {
-				type: iOSDevice,
+				type: 'iPhone 15',
 			},
 		},
 		emulator: {
