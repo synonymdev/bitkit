@@ -1,6 +1,8 @@
 import React, { memo, ReactElement, useEffect, useState } from 'react';
-import { StyleSheet, View, Image, ActivityIndicator } from 'react-native';
+import { StyleSheet, View, Image } from 'react-native';
 import { Trans, useTranslation } from 'react-i18next';
+import { useNavigation } from '@react-navigation/native';
+import { IBtEstimateFeeResponse2 } from '@synonymdev/blocktank-lsp-http-client/dist/shared/IBtEstimateFeeResponse2';
 
 import { Caption13Up, BodyMB, BodyM } from '../../../styles/text';
 import GradientView from '../../../components/GradientView';
@@ -9,95 +11,159 @@ import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigati
 import SafeAreaInset from '../../../components/SafeAreaInset';
 import Button from '../../../components/buttons/Button';
 import Money from '../../../components/Money';
+import { ActivityIndicator } from '../../../components/ActivityIndicator';
+import { useTransfer } from '../../../hooks/transfer';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 import { useCurrency, useDisplayValues } from '../../../hooks/displayValues';
-import { useLightningBalance } from '../../../hooks/lightning';
 import { receiveSelector } from '../../../store/reselect/receive';
 import { addCjitEntry } from '../../../store/slices/blocktank';
 import { updateInvoice } from '../../../store/slices/receive';
 import { createCJitEntry, estimateOrderFee } from '../../../utils/blocktank';
 import { showToast } from '../../../utils/notifications';
-import { blocktankInfoSelector } from '../../../store/reselect/blocktank';
+import { ReceiveNavigationProp } from '../../../navigation/bottom-sheet/ReceiveNavigation';
 import type { ReceiveScreenProps } from '../../../navigation/types';
 
 const imageSrc = require('../../../assets/illustrations/lightning.png');
 
-const ReceiveConnect = ({
-	navigation,
-	route,
-}: ReceiveScreenProps<'ReceiveConnect'>): ReactElement => {
-	const isAdditional = route.params?.isAdditional ?? false;
+const FeeInfo = ({
+	fees,
+	isAdditional,
+}: {
+	fees: IBtEstimateFeeResponse2;
+	isAdditional: boolean;
+}): ReactElement => {
+	const navigation = useNavigation<ReceiveNavigationProp>();
 	const { t } = useTranslation('wallet');
-	// const { isSmallScreen } = useScreenSize();
 	const { fiatSymbol } = useCurrency();
-	const lightningBalance = useLightningBalance(true);
-	const [feeEstimate, setFeeEstimate] = useState(0);
 	const [isLoading, setIsLoading] = useState(false);
-	const [isLoadingFee, setIsLoadingFee] = useState(false);
 	const dispatch = useAppDispatch();
-	const blocktank = useAppSelector(blocktankInfoSelector);
 	const { amount, message } = useAppSelector(receiveSelector);
 
-	const { maxChannelSizeSat } = blocktank.options;
-	const minChannelSize = Math.round(amount * 2.5);
-	const maxChannelSize = Math.round(maxChannelSizeSat / 2);
-	const channelSize = Math.max(minChannelSize, maxChannelSize);
-	const lspBalance = channelSize - amount;
-	const payAmount = amount - feeEstimate;
-	const displayFee = useDisplayValues(feeEstimate);
-
-	useEffect(() => {
-		const getFeeEstimation = async (): Promise<void> => {
-			setIsLoadingFee(true);
-			const estimate = await estimateOrderFee({ lspBalance });
-			if (estimate.isOk()) {
-				setFeeEstimate(estimate.value);
-			} else {
-				showToast({
-					type: 'error',
-					title: t('receive_cjit_error'),
-					description: estimate.error.message,
-				});
-			}
-			setIsLoadingFee(false);
-		};
-
-		getFeeEstimation();
-	}, [t, lspBalance]);
+	const receiveAmount = amount - fees.feeSat;
+	const { defaultLspBalance: lspBalance } = useTransfer(receiveAmount);
+	const channelSize = receiveAmount + lspBalance;
+	const networkFee = useDisplayValues(fees.networkFeeSat);
+	const serviceFee = useDisplayValues(fees.serviceFeeSat);
 
 	const onMore = (): void => {
 		navigation.navigate('Liquidity', {
 			channelSize,
-			localBalance: payAmount,
+			localBalance: receiveAmount,
 			isAdditional,
 		});
 	};
 
 	const onContinue = async (): Promise<void> => {
 		setIsLoading(true);
-		const cJitEntryResponse = await createCJitEntry({
+		const result = await createCJitEntry({
 			channelSize,
 			invoiceAmount: amount,
 			invoiceDescription: message,
 		});
-		if (cJitEntryResponse.isErr()) {
+		if (result.isErr()) {
 			showToast({
 				type: 'warning',
 				title: t('receive_cjit_error'),
-				description: cJitEntryResponse.error.message,
+				description: result.error.message,
 			});
 			setIsLoading(false);
 			return;
 		}
-		const order = cJitEntryResponse.value;
-		dispatch(updateInvoice({ jitOrder: order }));
-		dispatch(addCjitEntry(order));
+		const jitOrder = result.value;
+		dispatch(updateInvoice({ jitOrder }));
+		dispatch(addCjitEntry(jitOrder));
 		setIsLoading(false);
 		navigation.navigate('ReceiveQR');
 	};
 
-	const isInitial = lightningBalance.localBalance === 0;
-	// const imageSize = isSmallScreen ? 130 : 192;
+	return (
+		<>
+			<BodyM style={styles.text} color="secondary">
+				<Trans
+					t={t}
+					i18nKey={
+						isAdditional
+							? 'receive_connect_additional'
+							: 'receive_connect_initial'
+					}
+					components={{ accent: <BodyMB color="white" /> }}
+					values={{
+						networkFee: `${fiatSymbol}${networkFee.fiatFormatted}`,
+						serviceFee: `${fiatSymbol}${serviceFee.fiatFormatted}`,
+					}}
+				/>
+			</BodyM>
+
+			<View style={styles.payAmount}>
+				<Caption13Up style={styles.payAmountText} color="secondary">
+					{t('receive_will')}
+				</Caption13Up>
+				<Money
+					sats={receiveAmount}
+					size="title"
+					symbol={true}
+					testID="ReceiveAmount"
+				/>
+			</View>
+
+			<View style={styles.imageContainer}>
+				<Image style={styles.image} source={imageSrc} />
+			</View>
+
+			<View style={styles.buttonContainer}>
+				<Button
+					style={styles.button}
+					size="large"
+					text={t('learn_more')}
+					variant="secondary"
+					testID="ReceiveConnectMore"
+					onPress={onMore}
+				/>
+				<Button
+					style={styles.button}
+					size="large"
+					text={t('continue')}
+					loading={isLoading}
+					testID="ReceiveConnectContinue"
+					onPress={onContinue}
+				/>
+			</View>
+		</>
+	);
+};
+
+const ReceiveConnect = ({
+	route,
+}: ReceiveScreenProps<'ReceiveConnect'>): ReactElement => {
+	const isAdditional = route.params?.isAdditional ?? false;
+	const { t } = useTranslation('wallet');
+	const [feeEstimate, setFeeEstimate] = useState<IBtEstimateFeeResponse2>();
+	const [isLoading, setIsLoading] = useState(false);
+	const { amount } = useAppSelector(receiveSelector);
+
+	const fee = feeEstimate?.feeSat ?? 0;
+	const receiveAmount = amount - fee;
+	const { defaultLspBalance: lspBalance } = useTransfer(receiveAmount);
+
+	useEffect(() => {
+		const getFeeEstimation = async (): Promise<void> => {
+			setIsLoading(true);
+			const feeResult = await estimateOrderFee({ lspBalance });
+			if (feeResult.isOk()) {
+				const fees = feeResult.value;
+				setFeeEstimate(fees);
+			} else {
+				showToast({
+					type: 'error',
+					title: t('receive_cjit_error'),
+					description: feeResult.error.message,
+				});
+			}
+			setIsLoading(false);
+		};
+
+		getFeeEstimation();
+	}, [t, lspBalance]);
 
 	return (
 		<GradientView style={styles.container}>
@@ -105,65 +171,13 @@ const ReceiveConnect = ({
 			<View style={styles.content}>
 				<AmountToggle amount={amount} />
 
-				{feeEstimate > 0 && (
-					<>
-						<BodyM style={styles.text} color="secondary">
-							<Trans
-								t={t}
-								i18nKey={
-									isInitial
-										? 'receive_connect_initial'
-										: 'receive_connect_additional'
-								}
-								components={{ accent: <BodyMB color="white" /> }}
-								values={{ lspFee: `${fiatSymbol}${displayFee.fiatFormatted}` }}
-							/>
-						</BodyM>
-
-						<View style={styles.payAmount}>
-							<Caption13Up style={styles.payAmountText} color="secondary">
-								{t('receive_will')}
-							</Caption13Up>
-							<Money
-								sats={payAmount}
-								size="title"
-								symbol={true}
-								testID="AvailableAmount"
-							/>
-						</View>
-
-						<View style={styles.imageContainer}>
-							<Image style={styles.image} source={imageSrc} />
-						</View>
-					</>
-				)}
-
-				{isLoadingFee && (
-					<View style={styles.indicator}>
-						<ActivityIndicator color="white" size="large" />
+				{!isLoading && feeEstimate ? (
+					<FeeInfo fees={feeEstimate} isAdditional={isAdditional} />
+				) : (
+					<View style={styles.loading}>
+						<ActivityIndicator />
 					</View>
 				)}
-
-				<View style={styles.buttonContainer}>
-					<Button
-						style={styles.button}
-						size="large"
-						text={t('learn_more')}
-						variant="secondary"
-						testID="ReceiveConnectMore"
-						onPress={onMore}
-						disabled={feeEstimate === 0}
-					/>
-					<Button
-						style={styles.button}
-						size="large"
-						text={t('continue')}
-						loading={isLoading}
-						testID="ReceiveConnectContinue"
-						onPress={onContinue}
-						disabled={feeEstimate === 0}
-					/>
-				</View>
 			</View>
 			<SafeAreaInset type="bottom" minPadding={16} />
 		</GradientView>
@@ -179,7 +193,7 @@ const styles = StyleSheet.create({
 		paddingHorizontal: 16,
 	},
 	text: {
-		marginTop: 32,
+		marginTop: 24,
 	},
 	payAmount: {
 		marginTop: 32,
@@ -199,9 +213,11 @@ const styles = StyleSheet.create({
 		flex: 1,
 		resizeMode: 'contain',
 	},
-	indicator: {
+	loading: {
 		marginTop: 'auto',
 		marginBottom: 'auto',
+		justifyContent: 'center',
+		alignItems: 'center',
 	},
 	buttonContainer: {
 		flexDirection: 'row',

@@ -141,7 +141,7 @@ d('Transfer', () => {
 		// Receiving Capacity
 		// can continue with min amount
 		await element(by.id('SpendingAdvancedMin')).tap();
-		await expect(element(by.text('105 000'))).toBeVisible();
+		await expect(element(by.text('2 000'))).toBeVisible();
 		await element(by.id('SpendingAdvancedContinue')).tap();
 		await element(by.id('SpendingConfirmDefault')).tap();
 		await element(by.id('SpendingConfirmAdvanced')).tap();

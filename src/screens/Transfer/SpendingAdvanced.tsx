@@ -15,12 +15,12 @@ import Button from '../../components/buttons/Button';
 import TransferNumberPad from './TransferNumberPad';
 import { useAppSelector } from '../../hooks/redux';
 import { useSwitchUnit } from '../../hooks/wallet';
+import { useTransfer } from '../../hooks/transfer';
 import { convertToSats } from '../../utils/conversion';
 import { showToast } from '../../utils/notifications';
 import { estimateOrderFee } from '../../utils/blocktank';
 import { getNumberPadText } from '../../utils/numberpad';
 import type { TransferScreenProps } from '../../navigation/types';
-import { transferLimitsSelector } from '../../store/reselect/aggregations';
 import { startChannelPurchase } from '../../store/utils/blocktank';
 import {
 	nextUnitSelector,
@@ -40,18 +40,14 @@ const SpendingAdvanced = ({
 	const nextUnit = useAppSelector(nextUnitSelector);
 	const conversionUnit = useAppSelector(conversionUnitSelector);
 	const denomination = useAppSelector(denominationSelector);
-	const limits = useAppSelector(transferLimitsSelector);
+	const transferValues = useTransfer(order.clientBalanceSat);
+	const { defaultLspBalance, minLspBalance, maxLspBalance } = transferValues;
 
 	const [textFieldValue, setTextFieldValue] = useState('');
 	const [loading, setLoading] = useState(false);
 	const [feeEstimate, setFeeEstimate] = useState<{ [key: string]: number }>({});
 
 	const clientBalance = order.clientBalanceSat;
-	const { minChannelSize, maxChannelSize } = limits;
-	// LSP balance should be at least half of the channel size
-	// TODO: get exact requirements from LSP
-	const minLspBalance = Math.max(minChannelSize, clientBalance);
-	const maxLspBalance = Math.round(maxChannelSize - clientBalance);
 
 	const lspBalance = useMemo((): number => {
 		return convertToSats(textFieldValue, conversionUnit);
@@ -80,9 +76,11 @@ const SpendingAdvanced = ({
 				return;
 			}
 
+			const fee = result.value.feeSat;
+
 			setFeeEstimate((value) => ({
 				...value,
-				[`${clientBalance}-${lspBalance}`]: result.value,
+				[`${clientBalance}-${lspBalance}`]: fee,
 			}));
 		};
 
@@ -98,7 +96,6 @@ const SpendingAdvanced = ({
 	};
 
 	const onDefault = (): void => {
-		const defaultLspBalance = Math.round(maxChannelSize / 2);
 		const result = getNumberPadText(defaultLspBalance, denomination, unit);
 		setTextFieldValue(result);
 	};

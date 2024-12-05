@@ -1,10 +1,4 @@
-import React, {
-	ReactElement,
-	memo,
-	useCallback,
-	useState,
-	useEffect,
-} from 'react';
+import React, { ReactElement, memo, useState, useEffect } from 'react';
 import { Image, StyleSheet, View } from 'react-native';
 import { FadeIn, FadeOut } from 'react-native-reanimated';
 import { useTranslation } from 'react-i18next';
@@ -25,27 +19,23 @@ import ReceiveNumberPad from './ReceiveNumberPad';
 import UnitButton from '../UnitButton';
 import { ReceiveScreenProps } from '../../../navigation/types';
 import { receiveSelector } from '../../../store/reselect/receive';
+import { useTransfer } from '../../../hooks/transfer';
+import { useSwitchUnit } from '../../../hooks/wallet';
 import { useScreenSize } from '../../../hooks/screen';
 import { getNumberPadText } from '../../../utils/numberpad';
-import { useSwitchUnit } from '../../../hooks/wallet';
+import { useLightningBalance } from '../../../hooks/lightning';
 import {
 	updatePendingInvoice,
 	deletePendingInvoice,
 } from '../../../store/slices/metadata';
-import { createCJitEntry } from '../../../utils/blocktank';
-import { blocktankInfoSelector } from '../../../store/reselect/blocktank';
+import { estimateOrderFee } from '../../../utils/blocktank';
 import { isGeoBlockedSelector } from '../../../store/reselect/user';
-import { useLightningBalance } from '../../../hooks/lightning';
 import {
 	denominationSelector,
 	nextUnitSelector,
 } from '../../../store/reselect/settings';
 
 const imageSrc = require('../../../assets/illustrations/coin-stack.png');
-
-// hardcoded to be above fee (1092)
-// TODO: fee is dynamic so this should be fetched from the API
-const MINIMUM_AMOUNT = 20000;
 
 const ReceiveDetails = ({
 	navigation,
@@ -61,79 +51,26 @@ const ReceiveDetails = ({
 	const nextUnit = useAppSelector(nextUnitSelector);
 	const denomination = useAppSelector(denominationSelector);
 	const { receiveAddress, lightningInvoice, enableInstant } = route.params;
-	const blocktank = useAppSelector(blocktankInfoSelector);
 	const lightningBalance = useLightningBalance(false);
 	const isGeoBlocked = useAppSelector(isGeoBlockedSelector);
+	const [minimumAmount, setMinimumAmount] = useState(0);
 
-	const { maxChannelSizeSat } = blocktank.options;
-	const minChannelSize = Math.round(2.5 * invoice.amount);
-	const maxChannelSize = Math.round(maxChannelSizeSat / 2);
-	const channelSize = Math.max(minChannelSize, maxChannelSize);
+	const { maxClientBalance, defaultLspBalance: lspBalance } = useTransfer(0);
 
-	const onChangeUnit = (): void => {
-		const result = getNumberPadText(invoice.amount, denomination, nextUnit);
-		dispatch(updateInvoice({ numberPadText: result }));
-		switchUnit();
-	};
-
-	// Determines if a CJIT entry can and should be created for the given invoice.
-	const createCJitIfNeeded = useCallback(async () => {
-		// Return if geo-blocked or if we have a large enough remote balance to satisfy the invoice.
-		if (
-			!enableInstant ||
-			isGeoBlocked ||
-			lightningBalance.remoteBalance >= invoice.amount
-		) {
-			return;
-		}
-
-		// channel size must be at least 2x the invoice amount
-		const maxAmount = maxChannelSizeSat / 2;
-
-		// Ensure the CJIT entry is within an acceptable range.
-		if (invoice.amount >= MINIMUM_AMOUNT && invoice.amount <= maxAmount) {
-			const cJitEntryResponse = await createCJitEntry({
-				channelSize: channelSize,
-				invoiceAmount: invoice.amount,
-				invoiceDescription: invoice.message,
-			});
-			if (cJitEntryResponse.isErr()) {
-				console.log({ error: cJitEntryResponse.error.message });
-				return;
+	useEffect(() => {
+		// The minimum amount is the fee for the channel plus a buffer
+		const getFeeEstimation = async (): Promise<void> => {
+			const feeResult = await estimateOrderFee({ lspBalance });
+			if (feeResult.isOk()) {
+				const fees = feeResult.value;
+				// add 10% buffer and round up to the nearest 1000 to avoid fee fluctuations
+				const minimum = Math.ceil((fees.feeSat * 1.1) / 1000) * 1000;
+				setMinimumAmount(minimum);
 			}
-			const order = cJitEntryResponse.value;
-			dispatch(updateInvoice({ jitOrder: order }));
-			navigation.navigate('ReceiveConnect', { isAdditional: true });
-		}
-	}, [
-		channelSize,
-		maxChannelSizeSat,
-		enableInstant,
-		invoice.amount,
-		invoice.message,
-		isGeoBlocked,
-		lightningBalance.remoteBalance,
-		navigation,
-		dispatch,
-	]);
+		};
 
-	const onNavigateBack = useCallback(async () => {
-		await Keyboard.dismiss();
-		navigation.navigate('ReceiveQR');
-	}, [navigation]);
-
-	const onContinue = useCallback(async () => {
-		await createCJitIfNeeded();
-		setShowNumberPad(false);
-	}, [createCJitIfNeeded]);
-
-	const onNumberPadPress = (): void => {
-		if (showNumberPad) {
-			onChangeUnit();
-		} else {
-			setShowNumberPad(true);
-		}
-	};
+		getFeeEstimation();
+	}, [lspBalance, t]);
 
 	useEffect(() => {
 		if (invoice.tags.length > 0) {
@@ -149,6 +86,53 @@ const ReceiveDetails = ({
 			dispatch(deletePendingInvoice(invoice.id));
 		}
 	}, [invoice.id, invoice.tags, receiveAddress, lightningInvoice, dispatch]);
+
+	// Determine if CJIT flow should be shown
+	const showCjitIfNeeded = (): void => {
+		// Return if:
+		if (
+			// instant payments are disabled
+			!enableInstant ||
+			// user is geo-blocked
+			isGeoBlocked ||
+			// failed to get minimum amount
+			minimumAmount === 0 ||
+			// there is enough inbound capacity
+			invoice.amount <= lightningBalance.remoteBalance ||
+			// amount is less than minimum CJIT amount
+			invoice.amount >= minimumAmount ||
+			// amount is below the maximum client balance
+			invoice.amount <= maxClientBalance
+		) {
+			return;
+		}
+
+		navigation.navigate('ReceiveConnect', { isAdditional: true });
+	};
+
+	const onChangeUnit = (): void => {
+		const result = getNumberPadText(invoice.amount, denomination, nextUnit);
+		dispatch(updateInvoice({ numberPadText: result }));
+		switchUnit();
+	};
+
+	const onNumberPadPress = (): void => {
+		if (showNumberPad) {
+			onChangeUnit();
+		} else {
+			setShowNumberPad(true);
+		}
+	};
+
+	const onNavigateBack = async (): Promise<void> => {
+		await Keyboard.dismiss();
+		navigation.navigate('ReceiveQR');
+	};
+
+	const onContinue = (): void => {
+		showCjitIfNeeded();
+		setShowNumberPad(false);
+	};
 
 	return (
 		<GradientView style={styles.container}>
