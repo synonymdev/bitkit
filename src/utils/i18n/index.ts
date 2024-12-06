@@ -1,13 +1,17 @@
 import i18n from 'i18next';
-import { initReactI18next } from 'react-i18next';
 import ICU from 'i18next-icu';
+import { initReactI18next } from 'react-i18next';
 import * as RNLocalize from 'react-native-localize';
 
 import { __ENABLE_I18NEXT_DEBUGGER__ } from '../../constants/env';
-import locales from './locales';
 import { dispatch } from '../../store/helpers';
 import { updateUi } from '../../store/slices/ui';
 import convert from './convert';
+import locales, {
+	numberFormatPolyfills,
+	pluralRulesPolyfills,
+	relativeTimeFormatPolyfills,
+} from './locales';
 
 const getDeviceLanguage = (): string => {
 	const lang =
@@ -58,7 +62,27 @@ i18nICU
 			}
 		}
 
-		dispatch(updateUi({ timeZone, language: i18n.language }));
+		dispatch(updateUi({ timeZone, language: i18nICU.language }));
+	})
+	.then(async () => {
+		// we need to load language related polyfill data
+		const lang = i18nICU.language;
+		try {
+			// @ts-ignore
+			if (NumberFormat.polyfilled) {
+				await numberFormatPolyfills[lang]?.();
+			}
+			// @ts-ignore
+			if (Intl.PluralRules.polyfilled) {
+				await pluralRulesPolyfills[lang]?.();
+			}
+			// @ts-ignore
+			if (Intl.RelativeTimeFormat.polyfilled) {
+				await relativeTimeFormatPolyfills[lang]?.();
+			}
+		} catch (e) {
+			console.warn('Error loading polyfill for language: ', lang);
+		}
 	});
 
 export default i18nICU;
