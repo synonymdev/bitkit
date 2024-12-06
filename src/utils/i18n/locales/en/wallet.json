@@ -318,10 +318,10 @@
 		"string": "Receive on Spending Balance"
 	},
 	"receive_connect_initial": {
-		"string": "To set up your spending balance, a <accent>{lspFee}</accent> service provider fee will be deducted."
+		"string": "To set up your spending balance, a <accent>{networkFee}</accent> network fee and <accent>{serviceFee}</accent> service provider fee will be deducted."
 	},
 	"receive_connect_additional": {
-		"string": "To receive more instant Bitcoin, Bitkit has to increase your liquidity. A <accent>{lspFee}</accent> service provider fee will be  deducted from the amount you specified."
+		"string": "To receive more instant Bitcoin, Bitkit has to increase your liquidity. A <accent>{networkFee}</accent> network fee and <accent>{serviceFee}</accent> service provider fee will be deducted from the amount you specified."
 	},
 	"receive_liquidity": {
 		"nav_title": {

@@ -13,10 +13,10 @@ import Money from '../../components/Money';
 import LightningChannel from '../../components/LightningChannel';
 import { sleep } from '../../utils/helpers';
 import { showToast } from '../../utils/notifications';
+import { useTransfer } from '../../hooks/transfer';
 import { useAppSelector } from '../../hooks/redux';
 import { TransferScreenProps } from '../../navigation/types';
 import { transactionFeeSelector } from '../../store/reselect/wallet';
-import { transferLimitsSelector } from '../../store/reselect/aggregations';
 import {
 	confirmChannelPurchase,
 	startChannelPurchase,
@@ -32,7 +32,7 @@ const SpendingConfirm = ({
 	const { t } = useTranslation('lightning');
 	const [loading, setLoading] = useState(false);
 	const transactionFee = useAppSelector(transactionFeeSelector);
-	const limits = useAppSelector(transferLimitsSelector);
+	const { defaultLspBalance } = useTransfer(order.clientBalanceSat);
 
 	const clientBalance = order.clientBalanceSat;
 	const lspBalance = order.lspBalanceSat;
@@ -51,9 +51,6 @@ const SpendingConfirm = ({
 	};
 
 	const onDefault = async (): Promise<void> => {
-		const { maxChannelSize } = limits;
-		const defaultLspBalance = Math.round(maxChannelSize / 2);
-
 		const response = await startChannelPurchase({
 			clientBalance,
 			lspBalance: defaultLspBalance,
