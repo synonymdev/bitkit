@@ -3,6 +3,7 @@ import { StyleSheet, View, Image } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import Lottie from 'lottie-react-native';
 import { useReducedMotion } from 'react-native-reanimated';
+import { UNSTABLE_usePreventRemove } from '@react-navigation/native';
 
 import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
 import SafeAreaInset from '../../../components/SafeAreaInset';
@@ -29,6 +30,8 @@ const Success = ({ route }: SendScreenProps<'Success'>): ReactElement => {
 	const activityItem = useAppSelector((state) => {
 		return activityItemSelector(state, txId);
 	});
+
+	UNSTABLE_usePreventRemove(true, () => {});
 
 	const isOnchain = type === EActivityType.onchain;
 
