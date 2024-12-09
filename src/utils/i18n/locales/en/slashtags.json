@@ -53,6 +53,9 @@
   "contact_pay_error": {
     "string": "Unable To Pay Contact"
   },
+  "contact_ldk_not_ready": {
+    "string": "Lightning is not ready yet"
+  },
   "contact_share": {
     "string": "Share Profile Key"
   },

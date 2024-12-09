@@ -1,12 +1,26 @@
-import React, { ReactElement, useCallback, useMemo, useState } from 'react';
-import { ActivityIndicator, StyleSheet } from 'react-native';
-import { useAppDispatch, useAppSelector } from '../../hooks/redux';
-import { FadeIn, FadeOut } from 'react-native-reanimated';
 import Clipboard from '@react-native-clipboard/clipboard';
-import Share from 'react-native-share';
-import { useTranslation } from 'react-i18next';
 import { parse } from '@synonymdev/slashtags-url';
+import React, { ReactElement, useCallback, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { ActivityIndicator, StyleSheet } from 'react-native';
+import { FadeIn, FadeOut } from 'react-native-reanimated';
+import Share from 'react-native-share';
 
+import Dialog from '../../components/Dialog';
+import NavigationHeader from '../../components/NavigationHeader';
+import ProfileCard from '../../components/ProfileCard';
+import ProfileLinks from '../../components/ProfileLinks';
+import SafeAreaInset from '../../components/SafeAreaInset';
+import Tooltip from '../../components/Tooltip';
+import IconButton from '../../components/buttons/IconButton';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux';
+import { useProfile } from '../../hooks/slashtags';
+import { useBalance } from '../../hooks/wallet';
+import { RootStackScreenProps } from '../../navigation/types';
+import { contactsSelector } from '../../store/reselect/slashtags';
+import { isLDKReadySelector } from '../../store/reselect/ui';
+import { selectedNetworkSelector } from '../../store/reselect/wallet';
+import { deleteContact } from '../../store/slices/slashtags';
 import { AnimatedView, View } from '../../styles/components';
 import {
 	CoinsIcon,
@@ -15,22 +29,9 @@ import {
 	ShareIcon,
 	TrashIcon,
 } from '../../styles/icons';
-import NavigationHeader from '../../components/NavigationHeader';
-import SafeAreaInset from '../../components/SafeAreaInset';
-import ProfileCard from '../../components/ProfileCard';
-import ProfileLinks from '../../components/ProfileLinks';
-import { processUri } from '../../utils/scanner/scanner';
-import { useProfile } from '../../hooks/slashtags';
-import { useBalance } from '../../hooks/wallet';
 import { truncate } from '../../utils/helpers';
 import { showToast } from '../../utils/notifications';
-import { RootStackScreenProps } from '../../navigation/types';
-import Dialog from '../../components/Dialog';
-import Tooltip from '../../components/Tooltip';
-import IconButton from '../../components/buttons/IconButton';
-import { deleteContact } from '../../store/slices/slashtags';
-import { selectedNetworkSelector } from '../../store/reselect/wallet';
-import { contactsSelector } from '../../store/reselect/slashtags';
+import { processUri } from '../../utils/scanner/scanner';
 
 const Contact = ({
 	navigation,
@@ -46,6 +47,7 @@ const Contact = ({
 	const dispatch = useAppDispatch();
 	const selectedNetwork = useAppSelector(selectedNetworkSelector);
 	const contacts = useAppSelector(contactsSelector);
+	const isLDKReady = useAppSelector(isLDKReadySelector);
 
 	const { profile } = useProfile(url);
 	const savedContact = useMemo(() => {
@@ -75,7 +77,20 @@ const Contact = ({
 	}, [navigation, url, dispatch]);
 
 	const handleSend = async (): Promise<void> => {
+		if (loading) {
+			return;
+		}
 		setLoading(true);
+
+		// if LDK is not ready yet, show a toast warning that it might take a few seconds
+		if (!isLDKReady) {
+			showToast({
+				type: 'info',
+				title: t('contact_ldk_not_ready'),
+				description: t('lightning:wait_text_top'),
+			});
+		}
+
 		const res = await processUri({
 			uri: url,
 			source: 'send',
