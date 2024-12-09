@@ -8,6 +8,7 @@ import {
 	ICJitEntry,
 } from '@synonymdev/blocktank-lsp-http-client';
 import { err, ok, Result } from '@synonymdev/result';
+import { IBtEstimateFeeResponse2 } from '@synonymdev/blocktank-lsp-http-client/dist/shared/IBtEstimateFeeResponse2';
 
 import { EAvailableNetwork } from '../networks';
 import { addPeers, getNodeId, refreshLdk } from '../lightning';
@@ -122,9 +123,9 @@ export const estimateOrderFee = async ({
 	lspBalance,
 	channelExpiryWeeks = DEFAULT_CHANNEL_DURATION,
 	options,
-}: ICreateOrderRequest): Promise<Result<number>> => {
+}: ICreateOrderRequest): Promise<Result<IBtEstimateFeeResponse2>> => {
 	try {
-		const estimateRes = await bt.estimateOrderFee(
+		const response = await bt.estimateOrderFeeFull(
 			lspBalance,
 			channelExpiryWeeks,
 			{
@@ -133,7 +134,7 @@ export const estimateOrderFee = async ({
 				zeroReserve: true,
 			},
 		);
-		return ok(estimateRes.feeSat);
+		return ok(response);
 	} catch (e) {
 		console.log(e);
 		return err(e);

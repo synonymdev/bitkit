@@ -5,11 +5,7 @@ import '../src/utils/i18n';
 import store, { RootState } from '../src/store';
 import { dispatch } from '../src/store/helpers';
 import { updateWallet } from '../src/store/slices/wallet';
-import {
-	TBalance,
-	balanceSelector,
-	transferLimitsSelector,
-} from '../src/store/reselect/aggregations';
+import { TBalance, balanceSelector } from '../src/store/reselect/aggregations';
 import {
 	EChannelClosureReason,
 	EChannelStatus,
@@ -119,85 +115,6 @@ describe('Reselect', () => {
 			};
 
 			assert.deepEqual(balanceSelector(state), balance);
-		});
-	});
-
-	describe('transferLimitsSelector', () => {
-		it('should calculate limits without LN channels', () => {
-			// max value is limited by maxChannelSize / 2
-			const s1 = cloneDeep(s);
-			s1.wallet.wallets.wallet0.balance.bitcoinRegtest = 1000;
-			s1.blocktank.info.options = {
-				...s1.blocktank.info.options,
-				minChannelSizeSat: 10,
-				maxChannelSizeSat: 200,
-				maxClientBalanceSat: 100,
-			};
-
-			const received1 = transferLimitsSelector(s1);
-			const expected1 = {
-				minChannelSize: 11,
-				maxChannelSize: 190,
-				maxClientBalance: 95,
-			};
-
-			expect(received1).toMatchObject(expected1);
-
-			// max value is limited by onchain balance
-			const s2 = cloneDeep(s);
-			s2.wallet.wallets.wallet0.balance.bitcoinRegtest = 50;
-			s2.blocktank.info.options = {
-				...s2.blocktank.info.options,
-				minChannelSizeSat: 10,
-				maxChannelSizeSat: 200,
-				maxClientBalanceSat: 100,
-			};
-
-			const received2 = transferLimitsSelector(s2);
-			const expected2 = {
-				minChannelSize: 11,
-				maxChannelSize: 190,
-				maxClientBalance: 40,
-			};
-
-			expect(received2).toMatchObject(expected2);
-		});
-
-		it('should calculate limits with existing LN channels', () => {
-			const btNodeId =
-				'03b9a456fb45d5ac98c02040d39aec77fa3eeb41fd22cf40b862b393bcfc43473a';
-			// max value is limited by leftover node capacity
-			const s1 = cloneDeep(s);
-			s1.wallet.wallets.wallet0.balance.bitcoinRegtest = 1000;
-			s1.blocktank.info.nodes = [
-				{ alias: 'node1', pubkey: btNodeId, connectionStrings: [] },
-			];
-			s1.blocktank.info.options = {
-				...s1.blocktank.info.options,
-				minChannelSizeSat: 10,
-				maxChannelSizeSat: 200,
-			};
-
-			const channel1 = {
-				channel_id: 'channel1',
-				status: EChannelStatus.open,
-				is_channel_ready: true,
-				outbound_capacity_sat: 1,
-				balance_sat: 2,
-				channel_value_satoshis: 100,
-				counterparty_node_id: btNodeId,
-			} as TChannel;
-			const lnWallet = s1.lightning.nodes.wallet0;
-			lnWallet.channels.bitcoinRegtest = { channel1 };
-
-			const received1 = transferLimitsSelector(s1);
-			const expected1 = {
-				minChannelSize: 11,
-				maxChannelSize: 90,
-				maxClientBalance: 45,
-			};
-
-			expect(received1).toMatchObject(expected1);
 		});
 	});
 });

@@ -124,7 +124,7 @@ const ReceiveQR = ({
 			return;
 		}
 
-		if (lightningBalance.remoteBalance < amount) {
+		if (lightningBalance.remoteBalance < amount && !jitInvoice) {
 			setLightningInvoice('');
 			showToast({
 				type: 'error',
@@ -151,7 +151,7 @@ const ReceiveQR = ({
 
 		setLightningInvoice(response.value.to_str);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [amount, message]);
+	}, [jitInvoice, amount, message]);
 
 	const getAddress = useCallback(async (): Promise<void> => {
 		if (!receiveNavigationIsOpen) {

@@ -22,6 +22,7 @@ import Button from '../../components/buttons/Button';
 import UnitButton from '../Wallets/UnitButton';
 import TransferNumberPad from './TransferNumberPad';
 import type { TransferScreenProps } from '../../navigation/types';
+import { useTransfer } from '../../hooks/transfer';
 import { useAppSelector } from '../../hooks/redux';
 import { useBalance, useSwitchUnit } from '../../hooks/wallet';
 import { convertToSats } from '../../utils/conversion';
@@ -30,7 +31,6 @@ import { getNumberPadText } from '../../utils/numberpad';
 import { getDisplayValues } from '../../utils/displayValues';
 import { getMaxSendAmount } from '../../utils/wallet/transactions';
 import { transactionSelector } from '../../store/reselect/wallet';
-import { transferLimitsSelector } from '../../store/reselect/aggregations';
 import {
 	resetSendTransaction,
 	setupOnChainTransaction,
@@ -57,7 +57,6 @@ const SpendingAmount = ({
 	const nextUnit = useAppSelector(nextUnitSelector);
 	const conversionUnit = useAppSelector(conversionUnitSelector);
 	const denomination = useAppSelector(denominationSelector);
-	const limits = useAppSelector(transferLimitsSelector);
 
 	const [textFieldValue, setTextFieldValue] = useState('');
 	const [loading, setLoading] = useState(false);
@@ -73,11 +72,12 @@ const SpendingAmount = ({
 		}, []),
 	);
 
-	const { maxChannelSize, maxClientBalance } = limits;
-
 	const clientBalance = useMemo((): number => {
 		return convertToSats(textFieldValue, conversionUnit);
 	}, [textFieldValue, conversionUnit]);
+
+	const transferValues = useTransfer(clientBalance);
+	const { defaultLspBalance, maxClientBalance } = transferValues;
 
 	const availableAmount = useMemo(() => {
 		const maxAmountResponse = getMaxSendAmount();
@@ -120,7 +120,7 @@ const SpendingAmount = ({
 	const onContinue = async (): Promise<void> => {
 		setLoading(true);
 
-		const lspBalance = Math.round(maxChannelSize / 2);
+		const lspBalance = defaultLspBalance;
 		const response = await startChannelPurchase({ clientBalance, lspBalance });
 
 		setLoading(false);
@@ -234,7 +234,6 @@ const SpendingAmount = ({
 						text={t('continue')}
 						size="large"
 						loading={loading}
-						disabled={!clientBalance}
 						testID="SpendingAmountContinue"
 						onPress={onContinue}
 					/>
