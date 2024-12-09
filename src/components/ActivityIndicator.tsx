@@ -16,7 +16,11 @@ import Animated, {
 	withTiming,
 } from 'react-native-reanimated';
 
-export const ActivityIndicator = ({ size }: { size: number }): ReactElement => {
+export const ActivityIndicator = ({
+	size = 32,
+}: {
+	size?: number;
+}): ReactElement => {
 	const strokeWidth = size / 12;
 	const radius = (size - strokeWidth) / 2;
 	const canvasSize = size + 30;
