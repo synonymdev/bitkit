@@ -93,7 +93,11 @@ const NumberPadTextField = ({
 	}
 
 	return (
-		<Pressable style={style} testID={testID} onPress={onPress}>
+		<Pressable
+			style={style}
+			accessibilityLabel={value}
+			testID={testID}
+			onPress={onPress}>
 			{showConversion && !reverse && (
 				<Money
 					style={styles.secondary}

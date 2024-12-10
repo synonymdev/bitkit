@@ -18,13 +18,14 @@ import Button from '../../../components/buttons/Button';
 import GradientView from '../../../components/GradientView';
 import ReceiveNumberPad from './ReceiveNumberPad';
 import UnitButton from '../UnitButton';
+import { useSwitchUnit } from '../../../hooks/wallet';
+import { useTransfer } from '../../../hooks/transfer';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 import { updateInvoice } from '../../../store/slices/receive';
 import { receiveSelector } from '../../../store/reselect/receive';
 import { estimateOrderFee } from '../../../utils/blocktank';
 import { getNumberPadText } from '../../../utils/numberpad';
 import { showToast } from '../../../utils/notifications';
-import { blocktankInfoSelector } from '../../../store/reselect/blocktank';
 import { refreshBlocktankInfo } from '../../../store/utils/blocktank';
 import {
 	nextUnitSelector,
@@ -32,7 +33,6 @@ import {
 	unitSelector,
 } from '../../../store/reselect/settings';
 import type { ReceiveScreenProps } from '../../../navigation/types';
-import { useSwitchUnit } from '../../../hooks/wallet';
 
 const ReceiveAmount = ({
 	navigation,
@@ -43,12 +43,10 @@ const ReceiveAmount = ({
 	const nextUnit = useAppSelector(nextUnitSelector);
 	const denomination = useAppSelector(denominationSelector);
 	const invoice = useAppSelector(receiveSelector);
-	const blocktank = useAppSelector(blocktankInfoSelector);
 	const switchUnit = useSwitchUnit();
 	const [minimumAmount, setMinimumAmount] = useState(0);
 
-	const { maxChannelSizeSat } = blocktank.options;
-	const channelSize = Math.round(maxChannelSizeSat / 2);
+	const { defaultLspBalance: lspBalance } = useTransfer(0);
 
 	useFocusEffect(
 		useCallback(() => {
@@ -59,10 +57,11 @@ const ReceiveAmount = ({
 	useEffect(() => {
 		// The minimum amount is the fee for the channel plus a buffer
 		const getFeeEstimation = async (): Promise<void> => {
-			const feeResult = await estimateOrderFee({ lspBalance: channelSize });
+			const feeResult = await estimateOrderFee({ lspBalance });
 			if (feeResult.isOk()) {
+				const fees = feeResult.value;
 				// add 10% buffer and round up to the nearest 1000 to avoid fee fluctuations
-				const minimum = Math.ceil((feeResult.value * 1.1) / 1000) * 1000;
+				const minimum = Math.ceil((fees.feeSat * 1.1) / 1000) * 1000;
 				setMinimumAmount(minimum);
 			} else {
 				showToast({
@@ -74,7 +73,7 @@ const ReceiveAmount = ({
 		};
 
 		getFeeEstimation();
-	}, [t, channelSize]);
+	}, [lspBalance, t]);
 
 	const onMinimum = (): void => {
 		const result = getNumberPadText(minimumAmount, denomination, unit);
@@ -96,9 +95,7 @@ const ReceiveAmount = ({
 	};
 
 	const continueDisabled =
-		invoice.amount < minimumAmount ||
-		invoice.amount > channelSize ||
-		minimumAmount === 0;
+		minimumAmount === 0 || invoice.amount < minimumAmount;
 
 	return (
 		<GradientView style={styles.container}>
@@ -142,9 +139,9 @@ const ReceiveAmount = ({
 						<Button
 							size="large"
 							text={t('continue')}
+							disabled={continueDisabled}
 							testID="ReceiveAmountContinue"
 							onPress={onContinue}
-							disabled={continueDisabled}
 						/>
 					</View>
 				</View>

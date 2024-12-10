@@ -1,6 +1,6 @@
+import jestExpect from 'expect';
 import createLnRpc from '@radar/lnrpc';
 import BitcoinJsonRpc from 'bitcoin-json-rpc';
-import jestExpect from 'expect';
 
 import initWaitForElectrumToSync from '../__tests__/utils/wait-for-electrum';
 import {
@@ -10,7 +10,6 @@ import {
 	completeOnboarding,
 	electrumHost,
 	electrumPort,
-	isButtonEnabled,
 	launchAndWait,
 	markComplete,
 	sleep,
@@ -85,22 +84,42 @@ d('Transfer', () => {
 			.withTimeout(20000);
 		await element(by.id('NewTxPrompt')).swipe('down'); // close Receive screen
 
+		// switch to USD
+		await element(by.id('Settings')).tap();
+		await element(by.id('GeneralSettings')).tap();
+		await element(by.id('CurrenciesSettings')).tap();
+		await element(by.text('EUR (€)')).tap();
+		await element(by.id('NavigationClose')).tap();
+
 		await element(by.id('Suggestion-lightning')).tap();
 		await element(by.id('TransferIntro-button')).tap();
 		await element(by.id('FundTransfer')).tap();
 		await element(by.id('SpendingIntro-button')).tap();
 
-		// default amount is 0
-		const button = element(by.id('SpendingAmountContinue'));
-		const buttonEnabled = await isButtonEnabled(button);
-		jestExpect(buttonEnabled).toBe(false);
+		// can continue with default client balance (0)
+		await element(by.id('SpendingAmountContinue')).tap();
+		await sleep(100);
+		await element(by.id('SpendingConfirmAdvanced')).tap();
+		await element(by.id('SpendingAdvancedMin')).tap();
+		await expect(element(by.text('100 000'))).toBeVisible();
+		await element(by.id('SpendingAdvancedDefault')).tap();
+		await element(by.id('SpendingAdvancedNumberField')).tap();
+		let { label } = await element(
+			by.id('SpendingAdvancedNumberField'),
+		).getAttributes();
+		const lspBalance = Number.parseInt(label);
+		jestExpect(lspBalance).toBeGreaterThan(440);
+		jestExpect(lspBalance).toBeLessThan(460);
+		await element(by.id('SpendingAdvancedNumberField')).tap();
+		await element(by.id('SpendingAdvancedContinue')).tap();
+		await element(by.id('NavigationBack')).tap();
 
-		// can continue with max amount
+		// can continue with max client balance
 		await element(by.id('SpendingAmountMax')).tap();
 		await element(by.id('SpendingAmountContinue')).tap();
 		await element(by.id('NavigationBack')).tap();
 
-		// can continue with 25% amount
+		// can continue with 25% client balance
 		await element(by.id('SpendingAmountQuarter')).tap();
 		await expect(element(by.text('250 000'))).toBeVisible();
 		await element(by.id('SpendingAmountContinue')).tap();
@@ -109,7 +128,7 @@ d('Transfer', () => {
 		await element(by.id('NavigationBack')).tap();
 		await element(by.id('SpendingIntro-button')).tap();
 
-		// can change amount
+		// can change client balance
 		await element(by.id('N2').withAncestor(by.id('SpendingAmount'))).tap();
 		await element(by.id('N0').withAncestor(by.id('SpendingAmount'))).multiTap(
 			5,
@@ -141,7 +160,7 @@ d('Transfer', () => {
 		// Receiving Capacity
 		// can continue with min amount
 		await element(by.id('SpendingAdvancedMin')).tap();
-		await expect(element(by.text('105 000'))).toBeVisible();
+		await expect(element(by.text('2 000'))).toBeVisible();
 		await element(by.id('SpendingAdvancedContinue')).tap();
 		await element(by.id('SpendingConfirmDefault')).tap();
 		await element(by.id('SpendingConfirmAdvanced')).tap();

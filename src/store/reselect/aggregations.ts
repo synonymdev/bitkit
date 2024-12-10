@@ -1,15 +1,10 @@
 import { ETransferType } from '../types/wallet';
-import {
-	blocktankChannelsSizeSelector,
-	lightningBalanceSelector,
-	pendingPaymentsSelector,
-} from './lightning';
+import { lightningBalanceSelector, pendingPaymentsSelector } from './lightning';
 import { newChannelsNotificationsSelector } from './todos';
 import { onChainBalanceSelector, pendingTransfersSelector } from './wallet';
 import { createShallowEqualSelector } from './utils';
 import { activityItemsSelector } from './activity';
 import { EActivityType } from '../types/activity';
-import { blocktankInfoSelector } from './blocktank';
 
 export type TBalance = {
 	/** Total onchain funds */
@@ -88,53 +83,6 @@ export const balanceSelector = createShallowEqualSelector(
 			balanceInTransferToSpending: inTransferToSpending,
 			balanceInTransferToSavings: claimableBalance,
 			totalBalance,
-		};
-	},
-);
-
-/**
- * Returns limits for channel orders with the LSP
- */
-export const transferLimitsSelector = createShallowEqualSelector(
-	[
-		blocktankInfoSelector,
-		onChainBalanceSelector,
-		blocktankChannelsSizeSelector,
-	],
-	(
-		blocktankInfo,
-		onchainBalance,
-		channelsSize,
-	): {
-		minChannelSize: number;
-		maxChannelSize: number;
-		maxClientBalance: number;
-	} => {
-		const { minChannelSizeSat, maxChannelSizeSat } = blocktankInfo.options;
-		// Because LSP limits constantly change depending on network fees
-		// add a 5% buffer to avoid fluctuations while making the order
-		const minChannelSize = Math.round(minChannelSizeSat * 1.05);
-		const maxChannelSize1 = Math.round(maxChannelSizeSat * 0.95);
-		// The maximum channel size the user can open including existing channels
-		const maxChannelSize2 = Math.max(0, maxChannelSize1 - channelsSize);
-		const maxChannelSize = Math.min(maxChannelSize1, maxChannelSize2);
-
-		// 80% cap to leave buffer for fees
-		const localLimit = Math.round(onchainBalance * 0.8);
-		// LSP balance must be at least 1.5% of the client balance
-		// const minLspBalance1 = Math.round(clientBalance * 0.02);
-		// const minLspBalance2 = Math.round(minChannelSize - clientBalance);
-		// const minLspBalance = Math.max(minLspBalance1, minLspBalance2);
-		// LSP balance must be at least half of the channel size
-		// The actual requirement is much lower, but we want to give the user a balanced channel.
-		// TODO: get exact requirements from LSP
-		const lspLimit = Math.round(maxChannelSize / 2);
-		const maxClientBalance = Math.min(localLimit, lspLimit);
-
-		return {
-			minChannelSize,
-			maxChannelSize,
-			maxClientBalance,
 		};
 	},
 );
