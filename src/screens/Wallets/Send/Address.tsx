@@ -20,12 +20,14 @@ type TValidation = {
 	[x: string]: boolean;
 };
 
-const Address = ({}: SendScreenProps<'Address'>): ReactElement => {
+const Address = ({ route }: SendScreenProps<'Address'>): ReactElement => {
+	const uri = route.params?.uri ?? '';
 	const colors = useColors();
 	const { t } = useTranslation('wallet');
 	const { keyboardShown } = useKeyboard();
-	const [textFieldValue, setTextFieldValue] = useState('');
-	const [isValid, setIsValid] = useState<TValidation>({});
+	const [textFieldValue, setTextFieldValue] = useState(uri);
+	// if a URI is passed in, we assume it's valid
+	const [isValid, setIsValid] = useState<TValidation>({ [uri]: !!uri });
 
 	const onChangeText = async (text: string): Promise<void> => {
 		const diff = Math.abs(text.length - textFieldValue.length);

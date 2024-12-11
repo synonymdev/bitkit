@@ -51,7 +51,7 @@ export type SendStackParamList = {
 	PinCheck: { onSuccess: () => void };
 	Recipient: undefined;
 	Contacts: undefined;
-	Address: undefined;
+	Address: { uri?: string } | undefined;
 	Scanner: undefined;
 	Amount: undefined;
 	CoinSelection: undefined;

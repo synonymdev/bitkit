@@ -12,7 +12,7 @@ import notifee, { TimestampTrigger, TriggerType } from '@notifee/react-native';
 
 import { __E2E__ } from '../../constants/env';
 import { addTransfer, removeTransfer } from '../slices/wallet';
-import { updateSendTransaction } from '../actions/wallet';
+import { updateBeignetSendTransaction } from '../actions/wallet';
 import { setLightningSetupStep } from '../slices/user';
 import { getBlocktankStore, dispatch, getFeesStore } from '../helpers';
 import * as blocktank from '../../utils/blocktank';
@@ -281,7 +281,7 @@ export const startChannelPurchase = async ({
 		);
 	}
 
-	updateSendTransaction({
+	updateBeignetSendTransaction({
 		outputs: [
 			{
 				address: buyChannelData.payment.onchain.address,

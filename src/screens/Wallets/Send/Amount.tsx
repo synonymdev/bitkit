@@ -48,13 +48,14 @@ import { useBalance, useSwitchUnit } from '../../../hooks/wallet';
 import {
 	setupFeeForOnChainTransaction,
 	setupOnChainTransaction,
-	updateSendTransaction,
+	updateBeignetSendTransaction,
 } from '../../../store/actions/wallet';
 import { getNumberPadText } from '../../../utils/numberpad';
 import { showToast } from '../../../utils/notifications';
 import { convertToSats } from '../../../utils/conversion';
 import { TRANSACTION_DEFAULTS } from '../../../utils/wallet/constants';
 import type { SendScreenProps } from '../../../navigation/types';
+import { sendTransactionSelector } from '../../../store/reselect/ui';
 
 const Amount = ({ navigation }: SendScreenProps<'Amount'>): ReactElement => {
 	const route = useRoute();
@@ -74,8 +75,8 @@ const Amount = ({ navigation }: SendScreenProps<'Amount'>): ReactElement => {
 	const utxos = useAppSelector(utxosSelector);
 	const { onchainBalance } = useBalance();
 
-	const method = useAppSelector((state) => state.ui.paymentMethod);
-	const usesLightning = method === 'lightning';
+	const { paymentMethod } = useAppSelector(sendTransactionSelector);
+	const usesLightning = paymentMethod === 'lightning';
 
 	const outputAmount = useMemo(() => {
 		const amount = getTransactionOutputValue({ outputs: transaction.outputs });
@@ -83,14 +84,14 @@ const Amount = ({ navigation }: SendScreenProps<'Amount'>): ReactElement => {
 	}, [transaction.outputs]);
 
 	const availableAmount = useMemo(() => {
-		const maxAmountResponse = getMaxSendAmount({ method });
+		const maxAmountResponse = getMaxSendAmount({ method: paymentMethod });
 		if (maxAmountResponse.isOk()) {
 			return maxAmountResponse.value.amount;
 		}
 		return 0;
 		// recalculate max when utxos, fee or payment method change
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [transaction.outputs, transaction.satsPerByte, method]);
+	}, [transaction.outputs, transaction.satsPerByte, paymentMethod]);
 
 	useFocusEffect(
 		useCallback(() => {
@@ -145,11 +146,11 @@ const Amount = ({ navigation }: SendScreenProps<'Amount'>): ReactElement => {
 			return;
 		}
 		if (isMaxSendAmount && amount !== availableAmount) {
-			updateSendTransaction({ max: false });
+			updateBeignetSendTransaction({ max: false });
 		}
 
 		if (!isMaxSendAmount && amount === availableAmount) {
-			updateSendTransaction({ max: true });
+			updateBeignetSendTransaction({ max: true });
 		}
 	}, [isMaxSendAmount, amount, availableAmount, transaction?.lightningInvoice]);
 

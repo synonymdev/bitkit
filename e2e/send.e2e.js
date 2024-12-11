@@ -299,10 +299,33 @@ d('Send', () => {
 			.toHaveText('129 502')
 			.withTimeout(10000);
 
-		// send to unified invoice w/ amount
+		// can edit invoice on the review screen
 		const { paymentRequest: invoice2 } = await lnd.addInvoice({ value: 10000 });
+		await enterAddress(invoice2);
+		let attributes = await element(
+			by.id('ReviewAmount-primary'),
+		).getAttributes();
+		let amount = attributes.label;
+		jestExpect(amount).toBe('10 000');
+		await element(by.id('ReviewUri')).tap();
+		await element(by.id('RecipientInput')).replaceText(onchainAddress);
+		await element(by.id('RecipientInput')).tapReturnKey();
+		await element(by.id('AddressContinue')).tap();
+		await expect(element(by.id('AssetButton-savings'))).toBeVisible();
+		await element(by.id('N2').withAncestor(by.id('SendAmountNumberPad'))).tap();
+		await element(
+			by.id('N0').withAncestor(by.id('SendAmountNumberPad')),
+		).multiTap(4);
+		await element(by.id('ContinueAmount')).tap();
+		attributes = await element(by.id('ReviewAmount-primary')).getAttributes();
+		amount = attributes.label;
+		jestExpect(amount).toBe('20 000');
+		await element(by.id('SendSheet')).swipe('down');
+
+		// send to unified invoice w/ amount
+		const { paymentRequest: invoice3 } = await lnd.addInvoice({ value: 10000 });
 		const unified1 = encode(onchainAddress, {
-			lightning: invoice2,
+			lightning: invoice3,
 			amount: 10000,
 		});
 
@@ -319,11 +342,11 @@ d('Send', () => {
 			.withTimeout(10000);
 
 		// send to unified invoice w/ amount exceeding balance(s)
-		const { paymentRequest: invoice3 } = await lnd.addInvoice({
+		const { paymentRequest: invoice4 } = await lnd.addInvoice({
 			value: 200000,
 		});
 		const unified2 = encode(onchainAddress, {
-			lightning: invoice3,
+			lightning: invoice4,
 			amount: 200000,
 		});
 
@@ -369,8 +392,8 @@ d('Send', () => {
 			.withTimeout(10000);
 
 		// send to unified invoice w/o amount (lightning)
-		const { paymentRequest: invoice4 } = await lnd.addInvoice();
-		const unified4 = encode(onchainAddress, { lightning: invoice4 });
+		const { paymentRequest: invoice5 } = await lnd.addInvoice();
+		const unified4 = encode(onchainAddress, { lightning: invoice5 });
 
 		await enterAddress(unified4);
 		// max amount (lightning)
@@ -396,8 +419,8 @@ d('Send', () => {
 			.withTimeout(10000);
 
 		// send to unified invoice w/o amount (switch to onchain)
-		const { paymentRequest: invoice5 } = await lnd.addInvoice();
-		const unified5 = encode(onchainAddress, { lightning: invoice5 });
+		const { paymentRequest: invoice6 } = await lnd.addInvoice();
+		const unified5 = encode(onchainAddress, { lightning: invoice6 });
 
 		await enterAddress(unified5);
 
@@ -434,7 +457,7 @@ d('Send', () => {
 			.withTimeout(10000);
 
 		// send to lightning invoice w/ amount (quickpay)
-		const { paymentRequest: invoice6 } = await lnd.addInvoice({ value: 1000 });
+		const { paymentRequest: invoice7 } = await lnd.addInvoice({ value: 1000 });
 
 		// enable quickpay
 		await element(by.id('Settings')).tap();
@@ -444,7 +467,7 @@ d('Send', () => {
 		await element(by.id('QuickpayToggle')).tap();
 		await element(by.id('NavigationClose')).tap();
 
-		await enterAddress(invoice6);
+		await enterAddress(invoice7);
 		await waitFor(element(by.id('SendSuccess')))
 			.toBeVisible()
 			.withTimeout(10000);
@@ -456,9 +479,9 @@ d('Send', () => {
 			.withTimeout(10000);
 
 		// send to unified invoice w/ amount (quickpay)
-		const { paymentRequest: invoice7 } = await lnd.addInvoice({ value: 1000 });
+		const { paymentRequest: invoice8 } = await lnd.addInvoice({ value: 1000 });
 		const unified7 = encode(onchainAddress, {
-			lightning: invoice7,
+			lightning: invoice8,
 			amount: 1000,
 		});
 
@@ -474,8 +497,8 @@ d('Send', () => {
 			.withTimeout(10000);
 
 		// send to lightning invoice w/ amount (skip quickpay for large amounts)
-		const { paymentRequest: invoice8 } = await lnd.addInvoice({ value: 10000 });
-		await enterAddress(invoice8);
+		const { paymentRequest: invoice9 } = await lnd.addInvoice({ value: 10000 });
+		await enterAddress(invoice9);
 		await expect(element(by.id('ReviewAmount'))).toBeVisible();
 		await element(by.id('SendSheet')).swipe('down');
 

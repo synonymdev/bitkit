@@ -27,10 +27,10 @@ import { showToast } from '../notifications';
 import {
 	resetSendTransaction,
 	setupOnChainTransaction,
-	updateSendTransaction,
+	updateBeignetSendTransaction,
 } from '../../store/actions/wallet';
 import { getBalance, getSelectedNetwork, getSelectedWallet } from '../wallet';
-import { closeSheet, updateUi } from '../../store/slices/ui';
+import { closeSheet, updateSendTransaction } from '../../store/slices/ui';
 import { showBottomSheet } from '../../store/utils/ui';
 import {
 	decodeLightningInvoice,
@@ -627,7 +627,7 @@ const handleData = async ({
 
 			// Determine initial payment method for 0 amount unified invoice
 			const paymentMethod = preferredPaymentMethod ?? 'lightning';
-			dispatch(updateUi({ paymentMethod }));
+			dispatch(updateSendTransaction({ paymentMethod, uri }));
 
 			const screen = amount ? 'ReviewAndSend' : 'Amount';
 			// If BottomSheet is not open yet (MainScanner)
@@ -635,7 +635,7 @@ const handleData = async ({
 			// If BottomSheet is already open (SendScanner)
 			sendNavigation.navigate(screen);
 
-			updateSendTransaction({
+			updateBeignetSendTransaction({
 				label: message,
 				outputs: [{ address, value: amount, index: 0 }],
 				lightningInvoice,
@@ -651,9 +651,9 @@ const handleData = async ({
 			await resetSendTransaction();
 			await setupOnChainTransaction();
 
-			dispatch(updateUi({ paymentMethod: 'onchain' }));
+			dispatch(updateSendTransaction({ paymentMethod: 'onchain', uri }));
 
-			updateSendTransaction({
+			updateBeignetSendTransaction({
 				label: message,
 				outputs: [{ address, value: amount, index: 0 }],
 				slashTagsUrl,
@@ -685,7 +685,7 @@ const handleData = async ({
 				return ok('');
 			}
 
-			dispatch(updateUi({ paymentMethod: 'lightning' }));
+			dispatch(updateSendTransaction({ paymentMethod: 'lightning', uri }));
 
 			const invoiceAmount = amount ?? 0;
 			const screen = invoiceAmount ? 'ReviewAndSend' : 'Amount';
@@ -694,7 +694,7 @@ const handleData = async ({
 			// If BottomSheet is already open (SendScanner)
 			sendNavigation.navigate(screen);
 
-			updateSendTransaction({
+			updateBeignetSendTransaction({
 				outputs: [{ address: '', value: invoiceAmount, index: 0 }],
 				lightningInvoice,
 				slashTagsUrl,

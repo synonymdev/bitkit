@@ -15,7 +15,7 @@ import { getAddressInfo } from 'bitcoin-address-validation';
 import { __E2E__ } from '../../constants/env';
 import {
 	addBoostedTransaction,
-	updateSendTransaction,
+	updateBeignetSendTransaction,
 } from '../../store/actions/wallet';
 import {
 	dispatch,
@@ -470,7 +470,7 @@ export const sendMax = async ({
 	address?: string;
 	index?: number;
 } = {}): Promise<Result<string>> => {
-	const { paymentMethod } = getUiStore();
+	const { paymentMethod } = getUiStore().sendTransaction;
 
 	try {
 		const tx = await getOnChainWalletTransactionAsync();
@@ -573,7 +573,7 @@ export const updateSendAmount = ({
 	amount: number;
 	transaction?: ISendTransaction;
 }): Result<string> => {
-	const { paymentMethod } = getUiStore();
+	const { paymentMethod } = getUiStore().sendTransaction;
 
 	if (!transaction) {
 		transaction = getOnchainTransactionData();
@@ -624,7 +624,7 @@ export const updateSendAmount = ({
 		return ok('No change detected. No need to update.');
 	}
 
-	updateSendTransaction({
+	updateBeignetSendTransaction({
 		outputs: [{ ...currentOutput, value: amount }],
 		max,
 	});
@@ -667,12 +667,12 @@ export const updateMessage = async ({
 	};
 	if (max) {
 		_transaction.outputs = [{ address, value: inputTotal - newFee, index }];
-		//Update the tx value with the new fee to continue sending the max amount.
-		updateSendTransaction(_transaction);
+		// Update the tx value with the new fee to continue sending the max amount.
+		updateBeignetSendTransaction(_transaction);
 		return ok('Successfully updated the message.');
 	}
 	if (totalNewAmount <= inputTotal) {
-		updateSendTransaction(_transaction);
+		updateBeignetSendTransaction(_transaction);
 	}
 	return ok('Successfully updated the message.');
 };
@@ -733,7 +733,7 @@ const runCoinSelect = async ({
 				fee: autoCoinSelectResponse.value.fee,
 				inputs: autoCoinSelectResponse.value.inputs,
 			};
-			updateSendTransaction(updatedTx);
+			updateBeignetSendTransaction(updatedTx);
 			return ok('Successfully updated tx.');
 		}
 		return ok('No need to update transaction.');

@@ -30,6 +30,7 @@ export const defaultViewControllers: TUiState['viewControllers'] = {
 };
 
 export const initialUiState: TUiState = {
+	appState: 'active',
 	availableUpdate: null,
 	isAuthenticated: false,
 	isConnectedToElectrum: true,
@@ -41,7 +42,9 @@ export const initialUiState: TUiState = {
 	timeZone: 'UTC',
 	// Used to control bottom-sheets throughout the app
 	viewControllers: defaultViewControllers,
-	fromAddressViewer: false, // When true, ensures tx inputs are not cleared when sweeping from address viewer.
-	paymentMethod: 'onchain',
-	appState: 'active',
+	sendTransaction: {
+		fromAddressViewer: false, // When true, ensures tx inputs are not cleared when sweeping from address viewer.
+		paymentMethod: 'onchain',
+		uri: '',
+	},
 };

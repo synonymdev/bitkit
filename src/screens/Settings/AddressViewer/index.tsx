@@ -56,9 +56,9 @@ import { updateWallet } from '../../../store/slices/wallet';
 import {
 	resetSendTransaction,
 	setupOnChainTransaction,
-	updateSendTransaction,
+	updateBeignetSendTransaction,
 } from '../../../store/actions/wallet';
-import { updateUi } from '../../../store/slices/ui';
+import { updateSendTransaction } from '../../../store/slices/ui';
 import { showBottomSheet } from '../../../store/utils/ui';
 import SearchInput from '../../../components/SearchInput';
 import AddressViewerListItem from './AddressViewerListItem';
@@ -640,11 +640,17 @@ const AddressViewer = ({
 			if (receiveAddress.isErr()) {
 				return;
 			}
-			updateSendTransaction({
+			updateBeignetSendTransaction({
 				...transactionRes.value,
 				outputs: [{ address: receiveAddress.value, value: 0, index: 0 }],
 			});
-			dispatch(updateUi({ fromAddressViewer: true }));
+			dispatch(
+				updateSendTransaction({
+					fromAddressViewer: true,
+					paymentMethod: 'onchain',
+					uri: receiveAddress.value,
+				}),
+			);
 			sendMax();
 			showBottomSheet('sendNavigation', { screen: 'ReviewAndSend' });
 		},

@@ -18,7 +18,7 @@ import { createFundedChannel } from '../../../utils/wallet/transfer';
 import { useAppSelector } from '../../../hooks/redux';
 import { TransferScreenProps } from '../../../navigation/types';
 import { transactionFeeSelector } from '../../../store/reselect/wallet';
-import { updateSendTransaction } from '../../../store/actions/wallet';
+import { updateBeignetSendTransaction } from '../../../store/actions/wallet';
 
 const image = require('../../../assets/illustrations/coin-stack-x.png');
 
@@ -38,7 +38,7 @@ const ExternalConfirm = ({
 		useCallback(() => {
 			// Using a placeholder address here to enable the FeeCustom screen to function properly.
 			// The actual funding address will be updated later in createFundedChannel.
-			updateSendTransaction({
+			updateBeignetSendTransaction({
 				outputs: [{ address: 'xxx', value: localBalance, index: 0 }],
 			});
 		}, [localBalance]),
