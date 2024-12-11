@@ -15,7 +15,7 @@ import {
 	resetSendTransaction,
 	setupOnChainTransaction,
 } from '../../../store/actions/wallet';
-import { closeSheet, updateUi } from '../../../store/slices/ui';
+import { closeSheet, updateSendTransaction } from '../../../store/slices/ui';
 import { transactionSelector } from '../../../store/reselect/wallet';
 
 const imageCross = require('../../../assets/illustrations/cross.png');
@@ -50,7 +50,7 @@ const Error = ({
 
 	const handleRetry = async (): Promise<void> => {
 		if (isSlashpayLightning) {
-			dispatch(updateUi({ paymentMethod: 'onchain' }));
+			dispatch(updateSendTransaction({ paymentMethod: 'onchain' }));
 			const res = await processUri({
 				uri: slashTagsUrl,
 				source: 'send',

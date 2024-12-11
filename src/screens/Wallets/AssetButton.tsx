@@ -7,7 +7,8 @@ import { Caption13Up } from '../../styles/text';
 import { SwitchIcon } from '../../styles/icons';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import useColors from '../../hooks/colors';
-import { updateUi } from '../../store/slices/ui';
+import { updateSendTransaction } from '../../store/slices/ui';
+import { sendTransactionSelector } from '../../store/reselect/ui';
 
 const AssetButton = ({
 	style,
@@ -21,9 +22,9 @@ const AssetButton = ({
 	const { t } = useTranslation('wallet');
 	const colors = useColors();
 	const dispatch = useAppDispatch();
-	const method = useAppSelector((state) => state.ui.paymentMethod);
+	const { paymentMethod } = useAppSelector(sendTransactionSelector);
 
-	const usesLightning = method === 'lightning';
+	const usesLightning = paymentMethod === 'lightning';
 
 	const canSwitch = savings && spending;
 	const text = usesLightning ? t('spending.title') : t('savings.title');
@@ -38,8 +39,8 @@ const AssetButton = ({
 	};
 
 	const onSwitch = (): void => {
-		const paymentMethod = usesLightning ? 'onchain' : 'lightning';
-		dispatch(updateUi({ paymentMethod }));
+		const method = paymentMethod === 'lightning' ? 'onchain' : 'lightning';
+		dispatch(updateSendTransaction({ paymentMethod: method }));
 	};
 
 	if (!canSwitch) {

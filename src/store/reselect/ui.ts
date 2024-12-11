@@ -5,6 +5,7 @@ import {
 	TViewController,
 	TUiViewController,
 	IViewControllerData,
+	TSendTransaction,
 } from '../types/ui';
 
 const uiState = (state: RootState): TUiState => state.ui;
@@ -92,6 +93,8 @@ export const isElectrumThrottledSelector = createSelector(
 	(ui): boolean => ui.isElectrumThrottled,
 );
 
+export const appStateSelector = createSelector([uiState], (ui) => ui.appState);
+
 export const availableUpdateSelector = createSelector(
 	[uiState],
 	(ui) => ui.availableUpdate,
@@ -106,9 +109,6 @@ export const timeZoneSelector = createSelector([uiState], (ui) => ui.timeZone);
 
 export const languageSelector = createSelector([uiState], (ui) => ui.language);
 
-export const fromAddressViewerSelector = createSelector(
-	[uiState],
-	(ui) => ui.fromAddressViewer,
-);
-
-export const appStateSelector = createSelector([uiState], (ui) => ui.appState);
+export const sendTransactionSelector = (state: RootState): TSendTransaction => {
+	return state.ui.sendTransaction;
+};

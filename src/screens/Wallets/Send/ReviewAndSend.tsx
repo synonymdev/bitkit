@@ -74,11 +74,12 @@ import { onChainFeesSelector } from '../../../store/reselect/fees';
 import { addPendingPayment } from '../../../store/slices/lightning';
 import { updateOnChainActivityList } from '../../../store/utils/activity';
 import { updateLastPaidContacts } from '../../../store/slices/slashtags';
+import { EActivityType } from '../../../store/types/activity';
+import { sendTransactionSelector } from '../../../store/reselect/ui';
 import { ellipsis, truncate } from '../../../utils/helpers';
 import AmountToggle from '../../../components/AmountToggle';
 import LightningSyncing from '../../../components/LightningSyncing';
 import { i18nTime } from '../../../utils/i18n';
-import { EActivityType } from '../../../store/types/activity';
 
 const Section = memo(
 	({
@@ -124,8 +125,8 @@ const ReviewAndSend = ({
 	const pin = useAppSelector(pinSelector);
 	const pinForPayments = useAppSelector(pinForPaymentsSelector);
 	const biometrics = useAppSelector((state) => state.settings.biometrics);
-	const method = useAppSelector((state) => state.ui.paymentMethod);
-	const usesLightning = method === 'lightning';
+	const { paymentMethod, uri } = useAppSelector(sendTransactionSelector);
+	const usesLightning = paymentMethod === 'lightning';
 
 	const [isLoading, setIsLoading] = useState(false);
 	const [showBiotmetrics, setShowBiometrics] = useState(false);
@@ -138,23 +139,22 @@ const ReviewAndSend = ({
 	const [rawTx, setRawTx] = useState<{ hex: string; id: string }>();
 	const [decodedInvoice, setDecodedInvoice] = useState<TInvoice>();
 
-	const decodeAndSetLightningInvoice = async (): Promise<void> => {
-		try {
+	useEffect(() => {
+		const decodeAndSetLightningInvoice = async (): Promise<void> => {
 			if (!usesLightning || !transaction.lightningInvoice) {
+				setDecodedInvoice(undefined);
 				return;
 			}
 			const result = await decodeLightningInvoice(transaction.lightningInvoice);
 			if (result.isErr()) {
+				setDecodedInvoice(undefined);
+				console.log(result.error.message);
 				return;
 			}
 			setDecodedInvoice(result.value);
-		} catch (e) {
-			console.log(e);
-		}
-	};
+		};
 
-	useEffect(() => {
-		decodeAndSetLightningInvoice().then();
+		decodeAndSetLightningInvoice();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [transaction.lightningInvoice]);
 
@@ -168,10 +168,7 @@ const ReviewAndSend = ({
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [transaction.outputs, selectedNetwork, selectedWallet]);
 
-	// TODO: add support for multiple outputs
-	const outputIndex = 0;
 	const { selectedFeeId, satsPerByte } = transaction;
-	const address = transaction.outputs[outputIndex]?.address ?? '';
 
 	const onError = useCallback(
 		(errorMessage: string) => {
@@ -484,6 +481,10 @@ const ReviewAndSend = ({
 		onChainBalance,
 	]);
 
+	const goToAddress = (): void => {
+		navigation.navigate('Address', { uri });
+	};
+
 	const goBackToAmount = useCallback(() => {
 		const { routes } = navigation.getState();
 		const amountIndex = routes.findLastIndex(
@@ -568,12 +569,14 @@ const ReviewAndSend = ({
 		<>
 			<GradientView style={styles.container}>
 				<BottomSheetNavigationHeader title={t('send_review')} />
-				<BottomSheetScrollView style={styles.content}>
+				<BottomSheetScrollView
+					contentContainerStyle={styles.content}
+					bounces={false}>
 					<AmountToggle
 						style={styles.amountToggle}
 						amount={amount}
-						onPress={goBackToAmount}
 						testID="ReviewAmount"
+						onPress={goBackToAmount}
 					/>
 
 					<View style={styles.sectionContainer}>
@@ -587,13 +590,9 @@ const ReviewAndSend = ({
 								transaction.slashTagsUrl ? (
 									<ContactSmall url={transaction.slashTagsUrl} size="large" />
 								) : (
-									<>
-										{decodedInvoice ? (
-											<BodySSB>{truncate(decodedInvoice.to_str, 100)}</BodySSB>
-										) : (
-											<BodySSB>{ellipsis(address, 25)}</BodySSB>
-										)}
-									</>
+									<BodySSB testID="ReviewUri" onPress={goToAddress}>
+										{ellipsis(uri, 30)}
+									</BodySSB>
 								)
 							}
 						/>
@@ -676,7 +675,9 @@ const ReviewAndSend = ({
 						<View style={styles.sectionContainer}>
 							<Section
 								title={t('note')}
-								value={<BodySSB>{decodedInvoice?.description}</BodySSB>}
+								value={
+									<BodySSB>{truncate(decodedInvoice.description, 100)}</BodySSB>
+								}
 							/>
 						</View>
 					) : null}
@@ -722,82 +723,83 @@ const ReviewAndSend = ({
 							onConfirm={onSwipeToPay}
 						/>
 					</View>
-				</BottomSheetScrollView>
 
-				<Dialog
-					visible={showDialog1}
-					title={t('are_you_sure')}
-					description={t('send_dialog1')}
-					confirmText={t('send_yes')}
-					visibleTestID="SendDialog1"
-					onHide={(): void => confirmPayment(dialogWarnings)}
-					onConfirm={(): void => setShowDialog1(false)}
-					onCancel={(): void => {
-						setShowDialog1(false);
-						setIsLoading(false);
-						setTimeout(() => navigation.goBack(), 300);
-					}}
-				/>
-				<Dialog
-					visible={showDialog2}
-					title={t('are_you_sure')}
-					description={t('send_dialog2')}
-					confirmText={t('send_yes')}
-					visibleTestID="SendDialog2"
-					onHide={(): void => confirmPayment(dialogWarnings)}
-					onConfirm={(): void => setShowDialog2(false)}
-					onCancel={(): void => {
-						setShowDialog2(false);
-						setIsLoading(false);
-						setTimeout(() => navigation.goBack(), 300);
-					}}
-				/>
-				<Dialog
-					visible={showDialog3}
-					title={t('are_you_sure')}
-					description={t('send_dialog3')}
-					confirmText={t('send_yes')}
-					visibleTestID="SendDialog3"
-					onHide={(): void => confirmPayment(dialogWarnings)}
-					onConfirm={(): void => setShowDialog3(false)}
-					onCancel={(): void => {
-						setShowDialog3(false);
-						setIsLoading(false);
-						setTimeout(() => navigation.goBack(), 300);
-					}}
-				/>
-				<Dialog
-					visible={showDialog4}
-					title={t('are_you_sure')}
-					description={t('send_dialog4')}
-					confirmText={t('send_yes')}
-					visibleTestID="SendDialog4"
-					onHide={(): void => confirmPayment(dialogWarnings)}
-					onConfirm={(): void => setShowDialog4(false)}
-					onCancel={(): void => {
-						setShowDialog4(false);
-						setIsLoading(false);
-						setTimeout(() => navigation.goBack(), 300);
-					}}
-				/>
-				<Dialog
-					visible={showDialog5}
-					title={t('send_dialog5_title')}
-					description={t('send_dialog5_description', {
-						minimumFee: feeEstimates.minimum,
-					})}
-					confirmText={t('continue')}
-					visibleTestID="SendDialog5"
-					onHide={(): void => confirmPayment(dialogWarnings)}
-					onConfirm={(): void => setShowDialog5(false)}
-					onCancel={(): void => {
-						setShowDialog5(false);
-						setIsLoading(false);
-						setTimeout(() => navigation.goBack(), 300);
-					}}
-				/>
-				<SafeAreaInset type="bottom" minPadding={16} />
+					<SafeAreaInset type="bottom" minPadding={16} />
+				</BottomSheetScrollView>
 			</GradientView>
+
+			<Dialog
+				visible={showDialog1}
+				title={t('are_you_sure')}
+				description={t('send_dialog1')}
+				confirmText={t('send_yes')}
+				visibleTestID="SendDialog1"
+				onHide={(): void => confirmPayment(dialogWarnings)}
+				onConfirm={(): void => setShowDialog1(false)}
+				onCancel={(): void => {
+					setShowDialog1(false);
+					setIsLoading(false);
+					setTimeout(() => navigation.goBack(), 300);
+				}}
+			/>
+			<Dialog
+				visible={showDialog2}
+				title={t('are_you_sure')}
+				description={t('send_dialog2')}
+				confirmText={t('send_yes')}
+				visibleTestID="SendDialog2"
+				onHide={(): void => confirmPayment(dialogWarnings)}
+				onConfirm={(): void => setShowDialog2(false)}
+				onCancel={(): void => {
+					setShowDialog2(false);
+					setIsLoading(false);
+					setTimeout(() => navigation.goBack(), 300);
+				}}
+			/>
+			<Dialog
+				visible={showDialog3}
+				title={t('are_you_sure')}
+				description={t('send_dialog3')}
+				confirmText={t('send_yes')}
+				visibleTestID="SendDialog3"
+				onHide={(): void => confirmPayment(dialogWarnings)}
+				onConfirm={(): void => setShowDialog3(false)}
+				onCancel={(): void => {
+					setShowDialog3(false);
+					setIsLoading(false);
+					setTimeout(() => navigation.goBack(), 300);
+				}}
+			/>
+			<Dialog
+				visible={showDialog4}
+				title={t('are_you_sure')}
+				description={t('send_dialog4')}
+				confirmText={t('send_yes')}
+				visibleTestID="SendDialog4"
+				onHide={(): void => confirmPayment(dialogWarnings)}
+				onConfirm={(): void => setShowDialog4(false)}
+				onCancel={(): void => {
+					setShowDialog4(false);
+					setIsLoading(false);
+					setTimeout(() => navigation.goBack(), 300);
+				}}
+			/>
+			<Dialog
+				visible={showDialog5}
+				title={t('send_dialog5_title')}
+				description={t('send_dialog5_description', {
+					minimumFee: feeEstimates.minimum,
+				})}
+				confirmText={t('continue')}
+				visibleTestID="SendDialog5"
+				onHide={(): void => confirmPayment(dialogWarnings)}
+				onConfirm={(): void => setShowDialog5(false)}
+				onCancel={(): void => {
+					setShowDialog5(false);
+					setIsLoading(false);
+					setTimeout(() => navigation.goBack(), 300);
+				}}
+			/>
 
 			{showBiotmetrics && (
 				<Biometrics
@@ -826,7 +828,8 @@ const styles = StyleSheet.create({
 		flex: 1,
 	},
 	content: {
-		flex: 1,
+		// flex: 1,
+		flexGrow: 1,
 		paddingHorizontal: 16,
 	},
 	amountToggle: {

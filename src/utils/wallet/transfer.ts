@@ -25,7 +25,7 @@ import { createTransaction } from './transactions';
 import { addTransfer } from '../../store/slices/wallet';
 import {
 	getNetworkForBeignet,
-	updateSendTransaction,
+	updateBeignetSendTransaction,
 } from '../../store/actions/wallet';
 
 /**
@@ -138,7 +138,7 @@ export const createFundedChannel = async ({
 	const network = getNetworkForBeignet(selectedNetwork);
 	const address = getAddressFromScriptPubKey(output_script, network);
 
-	updateSendTransaction({
+	updateBeignetSendTransaction({
 		outputs: [{ address, value: value_satoshis, index: 0 }],
 	});
 

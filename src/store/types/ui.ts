@@ -81,18 +81,23 @@ export type TAvailableUpdate = {
 	critical: boolean;
 };
 
+export type TSendTransaction = {
+	paymentMethod: 'onchain' | 'lightning';
+	uri: string;
+	fromAddressViewer?: boolean;
+};
+
 export type TUiState = {
+	appState: AppStateStatus;
 	availableUpdate: TAvailableUpdate | null;
 	isAuthenticated: boolean;
 	isConnectedToElectrum: boolean;
 	isElectrumThrottled: boolean;
 	isOnline: boolean;
 	isLDKReady: boolean;
-	profileLink: TProfileLink;
-	viewControllers: TUiViewController;
-	timeZone: string;
 	language: string;
-	fromAddressViewer: boolean;
-	paymentMethod: 'onchain' | 'lightning';
-	appState: AppStateStatus;
+	profileLink: TProfileLink;
+	timeZone: string;
+	viewControllers: TUiViewController;
+	sendTransaction: TSendTransaction;
 };

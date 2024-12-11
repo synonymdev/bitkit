@@ -7,6 +7,7 @@ import {
 	TAvailableUpdate,
 	TProfileLink,
 	ViewControllerParamList,
+	TSendTransaction,
 } from '../types/ui';
 
 export const uiSlice = createSlice({
@@ -57,6 +58,15 @@ export const uiSlice = createSlice({
 		updateProfileLink: (state, action: PayloadAction<TProfileLink>) => {
 			state.profileLink = Object.assign(state.profileLink, action.payload);
 		},
+		updateSendTransaction: (
+			state,
+			action: PayloadAction<Partial<TSendTransaction>>,
+		) => {
+			state.sendTransaction = Object.assign(
+				state.sendTransaction,
+				action.payload,
+			);
+		},
 		resetUiState: () => initialUiState,
 	},
 });
@@ -70,6 +80,7 @@ export const {
 	toggleSheet,
 	closeSheet,
 	updateProfileLink,
+	updateSendTransaction,
 	resetUiState,
 } = actions;
 

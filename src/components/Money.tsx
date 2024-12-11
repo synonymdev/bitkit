@@ -133,7 +133,10 @@ const Money = (props: MoneyProps): ReactElement => {
 	}
 
 	return (
-		<View style={[styles.root, props.style]} testID={testID}>
+		<View
+			style={[styles.root, props.style]}
+			accessibilityLabel={text}
+			testID={testID}>
 			{sign && (
 				<Text
 					style={styles.sign}
