@@ -148,3 +148,11 @@ export const Caption13Up = styled.Text<TextProps>(({ theme, color }) => ({
 	color: theme.colors[color ?? 'primary'],
 	letterSpacing: Platform.OS === 'ios' ? 0.8 : undefined,
 }));
+
+export const Footnote = styled.Text<TextProps>(({ theme, color }) => ({
+	...theme.fonts.medium,
+	fontSize: '12px',
+	lineHeight: '16px',
+	color: theme.colors[color ?? 'white32'],
+	letterSpacing: Platform.OS === 'ios' ? 0.4 : undefined,
+}));

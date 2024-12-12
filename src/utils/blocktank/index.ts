@@ -350,7 +350,7 @@ export const isGeoBlocked = async (fromStorage = false): Promise<boolean> => {
 	try {
 		let geoBlocked: boolean | undefined;
 		if (fromStorage) {
-			geoBlocked = getUserStore()?.isGeoBlocked;
+			geoBlocked = getUserStore().isGeoBlocked;
 			if (geoBlocked !== undefined) {
 				return geoBlocked;
 			}

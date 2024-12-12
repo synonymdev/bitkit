@@ -41,6 +41,9 @@
   "slide1_text": {
     "string": "Spend bitcoin faster than ever. Enjoy instant and cheap payments with friends, family, and merchants."
   },
+  "slide1_note": {
+    "string": "*Bitkit does not currently provide Lightning services in your country, but you can still connect to other nodes."
+  },
   "slide2_header": {
     "string": "Bitcoiners,\n<accent>borderless</accent>"
   },

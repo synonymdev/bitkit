@@ -3,7 +3,7 @@ import { updateUser } from '../slices/user';
 import { isGeoBlocked } from '../../utils/blocktank';
 
 export const setGeoBlock = async (): Promise<boolean> => {
-	const response = await isGeoBlocked();
-	dispatch(updateUser({ isGeoBlocked: response }));
-	return response;
+	const isBlocked = await isGeoBlocked();
+	dispatch(updateUser({ isGeoBlocked: isBlocked }));
+	return isBlocked;
 };

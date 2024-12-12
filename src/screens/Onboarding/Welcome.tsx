@@ -8,6 +8,7 @@ import { Display, BodyM } from '../../styles/text';
 import SafeAreaInset from '../../components/SafeAreaInset';
 import Button from '../../components/buttons/Button';
 import DetectSwipe from '../../components/DetectSwipe';
+import { setGeoBlock } from '../../store/utils/user';
 import type { OnboardingStackScreenProps } from '../../navigation/types';
 
 const backgroundSrc = require('../../assets/illustrations/figures.png');
@@ -19,6 +20,7 @@ const OnboardingWelcomeScreen = ({
 	const { t } = useTranslation('onboarding');
 
 	const onGetStarted = (): void => {
+		setGeoBlock();
 		navigation.navigate('Slideshow');
 	};
 

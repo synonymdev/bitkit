@@ -23,16 +23,17 @@ import Animated, {
 } from 'react-native-reanimated';
 import Carousel, { ICarouselInstance } from 'react-native-reanimated-carousel';
 
+import { IThemeColors } from '../../styles/themes';
+import { View as ThemedView } from '../../styles/components';
+import { BodyM, BodyMB, Display, Footnote } from '../../styles/text';
 import SafeAreaInset from '../../components/SafeAreaInset';
 import Dot from '../../components/SliderDots';
 import Button from '../../components/buttons/Button';
 import ButtonTertiary from '../../components/buttons/ButtonTertiary';
-import { useAppDispatch } from '../../hooks/redux';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import type { OnboardingStackScreenProps } from '../../navigation/types';
 import { updateUser } from '../../store/slices/user';
-import { View as ThemedView } from '../../styles/components';
-import { BodyM, BodyMB, Display } from '../../styles/text';
-import { IThemeColors } from '../../styles/themes';
+import { isGeoBlockedSelector } from '../../store/reselect/user';
 
 type Slide = {
 	color: keyof IThemeColors;
@@ -68,6 +69,7 @@ const Slide = ({
 }: SlideProps): ReactElement => {
 	const { t } = useTranslation('onboarding');
 	const dimensions = useWindowDimensions();
+	const isGeoBlocked = useAppSelector(isGeoBlockedSelector);
 
 	// because we can't properly scala image inside the <Swiper let's calculate with by hand
 	const imageStyles = useMemo(
@@ -93,14 +95,20 @@ const Slide = ({
 				parent={Display}
 				components={{ accent: <Display color={color} /> }}
 			/>
-			<Trans
-				style={styles.text}
-				t={t}
-				i18nKey={`slide${index}_text`}
-				parent={BodyM}
-				color="secondary"
-				components={{ accent: <BodyMB color="primary" /> }}
-			/>
+
+			<View style={styles.text}>
+				<Trans
+					t={t}
+					i18nKey={`slide${index}_text`}
+					parent={BodyM}
+					color="secondary"
+					components={{ accent: <BodyMB color="primary" /> }}
+				/>
+
+				{index === 1 && isGeoBlocked && (
+					<Footnote style={styles.note}>{t('slide1_note')}</Footnote>
+				)}
+			</View>
 
 			{isLast ? (
 				<View style={styles.buttonsContainer}>
@@ -276,7 +284,10 @@ const styles = StyleSheet.create({
 	},
 	text: {
 		marginTop: 4,
-		minHeight: 90,
+		minHeight: 110,
+	},
+	note: {
+		marginTop: 6,
 	},
 	buttonsContainer: {
 		flexDirection: 'row',
