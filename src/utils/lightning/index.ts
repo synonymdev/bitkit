@@ -647,6 +647,11 @@ export const subscribeToLightningPayments = ({
 						title: i18n.t('wallet:toast_payment_failed_title'),
 						description: i18n.t('wallet:toast_payment_failed_description'),
 					});
+
+					// If the send sheet is open, navigate to the error screen
+					sendNavigation.navigate('Error', {
+						errorMessage: i18n.t('wallet:toast_payment_failed_description'),
+					});
 				}
 			},
 		);
