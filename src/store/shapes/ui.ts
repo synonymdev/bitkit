@@ -20,6 +20,7 @@ export const defaultViewControllers: TUiState['viewControllers'] = {
 	PINNavigation: defaultViewController,
 	profileAddDataForm: defaultViewController,
 	pubkyAuth: defaultViewController,
+	quickPay: defaultViewController,
 	receiveNavigation: defaultViewController,
 	sendNavigation: defaultViewController,
 	timeRangePrompt: defaultViewController,
