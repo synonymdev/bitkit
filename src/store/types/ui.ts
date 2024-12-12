@@ -22,6 +22,7 @@ export type ViewControllerParamList = {
 	PINNavigation: { showLaterButton: boolean };
 	profileAddDataForm: undefined;
 	pubkyAuth: { url: string };
+	quickPay: undefined;
 	receiveNavigation: { receiveScreen: keyof ReceiveStackParamList } | undefined;
 	sendNavigation:
 		| { screen: keyof SendStackParamList }

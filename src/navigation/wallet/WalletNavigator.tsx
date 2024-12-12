@@ -12,6 +12,7 @@ import ActivityFiltered from '../../screens/Activity/ActivityFiltered';
 import BackupPrompt from '../../screens/Settings/Backup/BackupPrompt';
 import AppUpdatePrompt from '../bottom-sheet/AppUpdatePrompt';
 import HighBalanceWarning from '../bottom-sheet/HighBalanceWarning';
+import QuickPayPrompt from '../bottom-sheet/QuickPayPrompt';
 import TabBar from '../../components/TabBar';
 import type { RootStackScreenProps } from '../types';
 import { __E2E__ } from '../../constants/env';
@@ -57,6 +58,7 @@ const WalletsStack = ({
 			<BackupPrompt enabled={isWalletsScreenFocused} />
 			<HighBalanceWarning enabled={isWalletsScreenFocused} />
 			<AppUpdatePrompt enabled={isWalletsScreenFocused} />
+			<QuickPayPrompt enabled={isWalletsScreenFocused} />
 		</>
 	);
 };
