@@ -46,7 +46,7 @@ const ReceiveAmount = ({
 	const switchUnit = useSwitchUnit();
 	const [minimumAmount, setMinimumAmount] = useState(0);
 
-	const { defaultLspBalance: lspBalance } = useTransfer(0);
+	const { defaultLspBalance: lspBalance, maxClientBalance } = useTransfer(0);
 
 	useFocusEffect(
 		useCallback(() => {
@@ -95,7 +95,9 @@ const ReceiveAmount = ({
 	};
 
 	const continueDisabled =
-		minimumAmount === 0 || invoice.amount < minimumAmount;
+		minimumAmount === 0 ||
+		invoice.amount < minimumAmount ||
+		invoice.amount > maxClientBalance;
 
 	return (
 		<GradientView style={styles.container}>

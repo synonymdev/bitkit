@@ -65,13 +65,7 @@ const SpendingAdvanced = ({
 				return;
 			}
 
-			const result = await estimateOrderFee({
-				lspBalance,
-				options: {
-					clientBalanceSat: clientBalance,
-					turboChannel: false,
-				},
-			});
+			const result = await estimateOrderFee({ lspBalance, clientBalance });
 			if (result.isErr()) {
 				return;
 			}

@@ -14,19 +14,17 @@ import { __E2E__ } from '../../constants/env';
 import { addTransfer, removeTransfer } from '../slices/wallet';
 import { updateBeignetSendTransaction } from '../actions/wallet';
 import { setLightningSetupStep } from '../slices/user';
-import { getBlocktankStore, dispatch, getFeesStore } from '../helpers';
+import { getBlocktankStore, dispatch } from '../helpers';
 import * as blocktank from '../../utils/blocktank';
 import {
 	createOrder,
 	getBlocktankInfo,
 	getCJitEntry,
-	getOrder,
 	isGeoBlocked,
 	openChannel,
 	watchOrder,
 } from '../../utils/blocktank';
 import {
-	getBalance,
 	getSelectedNetwork,
 	getSelectedWallet,
 	refreshWallet,
@@ -35,10 +33,8 @@ import { EAvailableNetwork } from '../../utils/networks';
 import {
 	broadcastTransaction,
 	createTransaction,
-	updateFee,
 } from '../../utils/wallet/transactions';
 import { showToast } from '../../utils/notifications';
-import { getDisplayValues } from '../../utils/displayValues';
 import i18n from '../../utils/i18n';
 import { refreshLdk } from '../../utils/lightning';
 import { DEFAULT_CHANNEL_DURATION } from '../../utils/wallet/constants';
@@ -211,100 +207,38 @@ export const refreshBlocktankInfo = async (): Promise<Result<string>> => {
  * Attempts to start the purchase of a Blocktank channel.
  * @param {number} clientBalance
  * @param {number} lspBalance
- * @param {number} [channelExpiry]
- * @param {TWalletName} [selectedWallet]
- * @param {EAvailableNetwork} [selectedNetwork]
  * @returns {Promise<Result<string>>}
  */
 export const startChannelPurchase = async ({
 	clientBalance,
 	lspBalance,
-	channelExpiryWeeks = DEFAULT_CHANNEL_DURATION,
-	lspNodeId,
-	source,
-	turboChannel = true,
-	zeroConfPayment = false,
-	selectedWallet = getSelectedWallet(),
-	selectedNetwork = getSelectedNetwork(),
 }: {
 	clientBalance: number;
 	lspBalance: number;
-	channelExpiryWeeks?: number;
-	lspNodeId?: string;
-	source?: string;
-	turboChannel?: boolean;
-	zeroConfPayment?: boolean;
-	selectedWallet?: TWalletName;
-	selectedNetwork?: EAvailableNetwork;
 }): Promise<Result<IBtOrder>> => {
-	const buyChannelResponse = await createOrder({
+	const response = await createOrder({
 		lspBalance,
-		channelExpiryWeeks,
+		channelExpiryWeeks: DEFAULT_CHANNEL_DURATION,
 		options: {
 			clientBalanceSat: clientBalance,
-			lspNodeId,
-			source,
-			turboChannel,
-			zeroConfPayment,
+			turboChannel: true,
+			zeroConfPayment: false,
 		},
 	});
-	if (buyChannelResponse.isErr()) {
-		return err(buyChannelResponse.error.message);
+	if (response.isErr()) {
+		return err(response.error.message);
 	}
-	const buyChannelData = buyChannelResponse.value;
+	const order = response.value;
 
-	const orderData = await getOrder(buyChannelData.id);
-	if (orderData.isErr()) {
-		showToast({
-			type: 'warning',
-			title: i18n.t('other:bt_error_retrieve'),
-			description: i18n.t('other:bt_error_retrieve_msg', {
-				raw: orderData.error.message,
-			}),
-		});
-		return err(orderData.error.message);
-	}
+	const output = {
+		address: order.payment.onchain.address,
+		value: order.feeSat,
+		index: 0,
+	};
 
-	const { onchainBalance } = getBalance({ selectedNetwork, selectedWallet });
+	updateBeignetSendTransaction({ outputs: [output] });
 
-	const amountToSend = Math.ceil(buyChannelData.feeSat);
-
-	// Ensure we have enough funds to pay for both the channel and the fee to broadcast the transaction.
-	if (amountToSend > onchainBalance) {
-		// TODO: Attempt to re-calculate a lower fee channel-open that's not instant if unable to pay.
-		const delta = Math.abs(amountToSend - onchainBalance);
-		const cost = getDisplayValues({ satoshis: delta });
-		return err(
-			i18n.t('other:bt_channel_purchase_cost_error', {
-				delta: `${cost.fiatSymbol}${cost.fiatFormatted}`,
-			}),
-		);
-	}
-
-	updateBeignetSendTransaction({
-		outputs: [
-			{
-				address: buyChannelData.payment.onchain.address,
-				value: amountToSend,
-				index: 0,
-			},
-		],
-	});
-
-	const fees = getFeesStore().onchain;
-	let fee = fees.fast;
-	// in case of the low fee market, we bump fee by 5 sats
-	// details: https://github.com/synonymdev/bitkit/issues/2139
-	if (fee <= 10) {
-		fee += 5;
-	}
-
-	const feeRes = updateFee({ satsPerByte: fee });
-	if (feeRes.isErr()) {
-		return err(feeRes.error.message);
-	}
-
-	return ok(buyChannelData);
+	return ok(order);
 };
 
 /**

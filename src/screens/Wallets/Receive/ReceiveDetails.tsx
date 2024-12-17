@@ -70,7 +70,7 @@ const ReceiveDetails = ({
 		};
 
 		getFeeEstimation();
-	}, [lspBalance, t]);
+	}, [lspBalance]);
 
 	useEffect(() => {
 		if (invoice.tags.length > 0) {

@@ -148,7 +148,10 @@ const ReceiveConnect = ({
 	useEffect(() => {
 		const getFeeEstimation = async (): Promise<void> => {
 			setIsLoading(true);
-			const feeResult = await estimateOrderFee({ lspBalance });
+			const feeResult = await estimateOrderFee({
+				lspBalance,
+				clientBalance: amount,
+			});
 			if (feeResult.isOk()) {
 				const fees = feeResult.value;
 				setFeeEstimate(fees);
@@ -163,7 +166,7 @@ const ReceiveConnect = ({
 		};
 
 		getFeeEstimation();
-	}, [t, lspBalance]);
+	}, [t, lspBalance, amount]);
 
 	return (
 		<GradientView style={styles.container}>

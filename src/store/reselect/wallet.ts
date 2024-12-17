@@ -194,10 +194,8 @@ export const transactionFeeSelector = createSelector(
 	[walletState],
 	(wallet) => {
 		const { selectedWallet, selectedNetwork } = wallet;
-		return (
-			wallet.wallets[selectedWallet]?.transaction[selectedNetwork].fee ||
-			defaultSendTransaction.fee
-		);
+		const { transaction } = wallet.wallets[selectedWallet];
+		return transaction[selectedNetwork].fee;
 	},
 );
 

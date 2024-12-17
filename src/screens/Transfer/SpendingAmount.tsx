@@ -22,14 +22,13 @@ import Button from '../../components/buttons/Button';
 import UnitButton from '../Wallets/UnitButton';
 import TransferNumberPad from './TransferNumberPad';
 import type { TransferScreenProps } from '../../navigation/types';
-import { useTransfer } from '../../hooks/transfer';
+import { useTransfer, useTransferFee } from '../../hooks/transfer';
 import { useAppSelector } from '../../hooks/redux';
 import { useBalance, useSwitchUnit } from '../../hooks/wallet';
 import { convertToSats } from '../../utils/conversion';
 import { showToast } from '../../utils/notifications';
 import { getNumberPadText } from '../../utils/numberpad';
 import { getDisplayValues } from '../../utils/displayValues';
-import { getMaxSendAmount } from '../../utils/wallet/transactions';
 import { transactionSelector } from '../../store/reselect/wallet';
 import {
 	resetSendTransaction,
@@ -45,6 +44,7 @@ import {
 	conversionUnitSelector,
 	denominationSelector,
 } from '../../store/reselect/settings';
+import { onChainFeesSelector } from '../../store/reselect/fees';
 
 const SpendingAmount = ({
 	navigation,
@@ -57,36 +57,48 @@ const SpendingAmount = ({
 	const nextUnit = useAppSelector(nextUnitSelector);
 	const conversionUnit = useAppSelector(conversionUnitSelector);
 	const denomination = useAppSelector(denominationSelector);
+	const fees = useAppSelector(onChainFeesSelector);
 
 	const [textFieldValue, setTextFieldValue] = useState('');
 	const [loading, setLoading] = useState(false);
-
-	useFocusEffect(
-		useCallback(() => {
-			const setupTransfer = async (): Promise<void> => {
-				await resetSendTransaction();
-				await setupOnChainTransaction({ rbf: false });
-				refreshBlocktankInfo().then();
-			};
-			setupTransfer();
-		}, []),
-	);
 
 	const clientBalance = useMemo((): number => {
 		return convertToSats(textFieldValue, conversionUnit);
 	}, [textFieldValue, conversionUnit]);
 
 	const transferValues = useTransfer(clientBalance);
-	const { defaultLspBalance, maxClientBalance } = transferValues;
+	const { minLspBalance, defaultLspBalance, maxClientBalance } = transferValues;
 
-	const availableAmount = useMemo(() => {
-		const maxAmountResponse = getMaxSendAmount();
-		if (maxAmountResponse.isOk()) {
-			return maxAmountResponse.value.amount;
-		}
-		return 0;
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [transaction.outputs, transaction.satsPerByte]);
+	// Calculate the maximum amount that can be transferred
+	const availableAmount = onchainBalance - transaction.fee;
+	const { defaultLspBalance: maxLspBalance } = useTransfer(availableAmount);
+	const { fee: maxLspFee } = useTransferFee(maxLspBalance, availableAmount);
+	const feeMaximum = Math.floor(availableAmount - maxLspFee);
+	const maximum = Math.min(maxClientBalance, feeMaximum);
+
+	useFocusEffect(
+		useCallback(() => {
+			const setupTransfer = async (): Promise<void> => {
+				// In case of the low fee market, we bump fee by 5 sats
+				// details: https://github.com/synonymdev/bitkit/issues/2139
+				const getSatsPerByte = (fee: number): number => {
+					const MIN_FEE = 10;
+					const BUMP_FEE = 5;
+					return fee <= MIN_FEE ? fee + BUMP_FEE : fee;
+				};
+
+				const satsPerByte = getSatsPerByte(fees.fast);
+
+				await resetSendTransaction();
+				await setupOnChainTransaction({ satsPerByte, rbf: false });
+				refreshBlocktankInfo().then();
+			};
+			setupTransfer();
+
+			// onMount
+			// eslint-disable-next-line react-hooks/exhaustive-deps
+		}, []),
+	);
 
 	const onChangeUnit = (): void => {
 		const result = getNumberPadText(clientBalance, denomination, nextUnit);
@@ -96,37 +108,43 @@ const SpendingAmount = ({
 
 	const onQuarter = (): void => {
 		const quarter = Math.round(onchainBalance / 4);
-		const amount = Math.min(quarter, maxClientBalance);
+		const amount = Math.min(quarter, maximum);
 		const result = getNumberPadText(amount, denomination, unit);
 		setTextFieldValue(result);
 	};
 
 	const onMaxAmount = (): void => {
-		const result = getNumberPadText(maxClientBalance, denomination, unit);
+		const result = getNumberPadText(maximum, denomination, unit);
 		setTextFieldValue(result);
 	};
 
 	const onNumberPadError = (): void => {
-		const dv = getDisplayValues({ satoshis: maxClientBalance });
+		const dv = getDisplayValues({ satoshis: maximum });
+		let description = t('spending_amount.error_max.description', {
+			amount: dv.bitcoinFormatted,
+		});
+
+		if (maximum === 0) {
+			description = t('spending_amount.error_max.description_zero');
+		}
+
 		showToast({
 			type: 'warning',
 			title: t('spending_amount.error_max.title'),
-			description: t('spending_amount.error_max.description', {
-				amount: dv.bitcoinFormatted,
-			}),
+			description,
 		});
 	};
 
 	const onContinue = async (): Promise<void> => {
 		setLoading(true);
 
-		const lspBalance = defaultLspBalance;
-		const response = await startChannelPurchase({ clientBalance, lspBalance });
+		const lspBalance = Math.max(defaultLspBalance, minLspBalance);
+		const result = await startChannelPurchase({ clientBalance, lspBalance });
 
 		setLoading(false);
 
-		if (response.isErr()) {
-			const { message } = response.error;
+		if (result.isErr()) {
+			const { message } = result.error;
 			const nodeCapped = message.includes('channel size check');
 			const title = nodeCapped
 				? t('spending_amount.error_max.title')
@@ -143,7 +161,7 @@ const SpendingAmount = ({
 			return;
 		}
 
-		navigation.navigate('SpendingConfirm', { order: response.value });
+		navigation.navigate('SpendingConfirm', { order: result.value });
 	};
 
 	return (
@@ -222,7 +240,7 @@ const SpendingAmount = ({
 					<TransferNumberPad
 						style={styles.numberpad}
 						value={textFieldValue}
-						maxAmount={maxClientBalance}
+						maxAmount={maximum}
 						onChange={setTextFieldValue}
 						onError={onNumberPadError}
 					/>

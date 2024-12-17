@@ -119,6 +119,9 @@
 			},
 			"description": {
 				"string": "The amount you can transfer to your spending balance is currently limited to ₿ {amount}."
+			},
+			"description_zero": {
+				"string": "You've reached the maximum for your spending balance."
 			}
 		}
 	},

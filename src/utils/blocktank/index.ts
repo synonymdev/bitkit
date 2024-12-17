@@ -6,6 +6,7 @@ import {
 	IBtInfo,
 	IBtOrder,
 	ICJitEntry,
+	ICreateOrderOptions,
 } from '@synonymdev/blocktank-lsp-http-client';
 import { err, ok, Result } from '@synonymdev/result';
 import { IBtEstimateFeeResponse2 } from '@synonymdev/blocktank-lsp-http-client/dist/shared/IBtEstimateFeeResponse2';
@@ -121,15 +122,20 @@ export const createOrder = async ({
  */
 export const estimateOrderFee = async ({
 	lspBalance,
-	channelExpiryWeeks = DEFAULT_CHANNEL_DURATION,
+	clientBalance,
 	options,
-}: ICreateOrderRequest): Promise<Result<IBtEstimateFeeResponse2>> => {
+}: {
+	lspBalance: number;
+	clientBalance?: number;
+	options?: Partial<ICreateOrderOptions>;
+}): Promise<Result<IBtEstimateFeeResponse2>> => {
 	try {
 		const response = await bt.estimateOrderFeeFull(
 			lspBalance,
-			channelExpiryWeeks,
+			DEFAULT_CHANNEL_DURATION,
 			{
 				...options,
+				clientBalanceSat: clientBalance,
 				source: options?.source ?? 'bitkit',
 				zeroReserve: true,
 			},

@@ -1,8 +1,10 @@
+import { useEffect, useState } from 'react';
+
 import { useAppSelector } from './redux';
-import { onChainBalanceSelector } from '../store/reselect/wallet';
+import { estimateOrderFee } from '../utils/blocktank';
+import { fiatToBitcoinUnit } from '../utils/conversion';
 import { blocktankInfoSelector } from '../store/reselect/blocktank';
 import { blocktankChannelsSizeSelector } from '../store/reselect/lightning';
-import { fiatToBitcoinUnit } from '../utils/conversion';
 
 type TTransferValues = {
 	maxClientBalance: number;
@@ -36,25 +38,18 @@ const getMinLspBalance = (
 	clientBalance: number,
 	minChannelSize: number,
 ): number => {
-	// LSP balance must be at least 2% of the channel size for LDK to accept (reserve balance)
-	const ldkMinimum = Math.round(clientBalance * 0.02);
+	// LSP balance must be at least 2.5% of the channel size for LDK to accept (reserve balance)
+	const ldkMinimum = Math.round(clientBalance * 0.025);
 	// Channel size must be at least minChannelSize
 	const lspMinimum = Math.max(minChannelSize - clientBalance, 0);
 
 	return Math.max(ldkMinimum, lspMinimum);
 };
 
-const getMaxClientBalance = (
-	onchainBalance: number,
-	maxChannelSize: number,
-): number => {
-	// Remote balance must be at least 2% of the channel size for LDK to accept (reserve balance)
-	const minRemoteBalance = Math.round(maxChannelSize * 0.02);
-	// Cap client balance to 80% to leave buffer for fees
-	const feeMaximum = Math.round(onchainBalance * 0.8);
-	const ldkMaximum = maxChannelSize - minRemoteBalance;
-
-	return Math.min(feeMaximum, ldkMaximum);
+const getMaxClientBalance = (maxChannelSize: number): number => {
+	// Remote balance must be at least 2.5% of the channel size for LDK to accept (reserve balance)
+	const minRemoteBalance = Math.round(maxChannelSize * 0.025);
+	return maxChannelSize - minRemoteBalance;
 };
 
 /**
@@ -64,7 +59,6 @@ const getMaxClientBalance = (
  */
 export const useTransfer = (clientBalance: number): TTransferValues => {
 	const blocktankInfo = useAppSelector(blocktankInfoSelector);
-	const onchainBalance = useAppSelector(onChainBalanceSelector);
 	const channelsSize = useAppSelector(blocktankChannelsSizeSelector);
 
 	const { minChannelSizeSat, maxChannelSizeSat } = blocktankInfo.options;
@@ -77,9 +71,9 @@ export const useTransfer = (clientBalance: number): TTransferValues => {
 	const maxChannelSize = Math.min(maxChannelSize1, maxChannelSize2);
 
 	const minLspBalance = getMinLspBalance(clientBalance, minChannelSizeSat);
-	const maxLspBalance = maxChannelSize - clientBalance;
+	const maxLspBalance = Math.max(maxChannelSize - clientBalance, 0);
 	const defaultLspBalance = getDefaultLspBalance(clientBalance, maxLspBalance);
-	const maxClientBalance = getMaxClientBalance(onchainBalance, maxChannelSize);
+	const maxClientBalance = getMaxClientBalance(maxChannelSize);
 
 	return {
 		defaultLspBalance,
@@ -87,4 +81,46 @@ export const useTransfer = (clientBalance: number): TTransferValues => {
 		maxLspBalance,
 		maxClientBalance,
 	};
+};
+
+/**
+ * Returns limits and default values for channel orders with the LSP
+ * @param {number} lspBalance
+ * @param {number} clientBalance
+ * @returns {{ fee: number, loading: boolean, error: string | null }}
+ */
+export const useTransferFee = (
+	lspBalance: number,
+	clientBalance: number,
+): { fee: number; loading: boolean; error: string | null } => {
+	const [{ fee, loading, error }, setState] = useState<{
+		fee: number;
+		loading: boolean;
+		error: string | null;
+	}>({
+		fee: 0,
+		loading: true,
+		error: null,
+	});
+
+	useEffect(() => {
+		const getFeeEstimation = async (): Promise<void> => {
+			setState((prevState) => ({ ...prevState, loading: true }));
+			try {
+				const result = await estimateOrderFee({ lspBalance, clientBalance });
+				if (result.isOk()) {
+					const { feeSat } = result.value;
+					setState({ fee: feeSat, loading: false, error: null });
+				} else {
+					setState({ fee: 0, loading: false, error: result.error.message });
+				}
+			} catch (err) {
+				setState({ fee: 0, loading: false, error: err });
+			}
+		};
+
+		getFeeEstimation();
+	}, [lspBalance, clientBalance]);
+
+	return { fee, loading, error };
 };
