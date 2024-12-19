@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 
 import { BodyM, BodyS, Caption13Up } from '../../../styles/text';
 import { View as ThemedView, View } from '../../../styles/components';
+import Slider from '../../../components/Slider';
 import SwitchRow from '../../../components/SwitchRow';
 import SafeAreaInset from '../../../components/SafeAreaInset';
 import NavigationHeader from '../../../components/NavigationHeader';
@@ -13,14 +14,10 @@ import {
 	enableQuickpaySelector,
 	quickpayAmountSelector,
 } from '../../../store/reselect/settings';
-import { SettingsScreenProps } from '../../../navigation/types';
-import Slider from '../../../components/Slider';
 
 const imageSrc = require('../../../assets/illustrations/fast-forward.png');
 
-const QuickpaySettings = ({
-	navigation,
-}: SettingsScreenProps<'QuickpaySettings'>): ReactElement => {
+const QuickpaySettings = (): ReactElement => {
 	const { t } = useTranslation('settings');
 	const dispatch = useAppDispatch();
 	const enabledQuickpay = useAppSelector(enableQuickpaySelector);
@@ -39,12 +36,7 @@ const QuickpaySettings = ({
 	return (
 		<ThemedView style={styles.root}>
 			<SafeAreaInset type="top" />
-			<NavigationHeader
-				title={t('quickpay.nav_title')}
-				onClosePress={(): void => {
-					navigation.navigate('Wallet');
-				}}
-			/>
+			<NavigationHeader title={t('quickpay.nav_title')} />
 
 			<View style={styles.content}>
 				<SwitchRow

@@ -23,7 +23,6 @@ import {
 } from '../../../styles/components';
 import { Subtitle, BodyS } from '../../../styles/text';
 import SafeAreaInset from '../../../components/SafeAreaInset';
-import type { SettingsScreenProps } from '../../../navigation/types';
 import NavigationHeader from '../../../components/NavigationHeader';
 import {
 	generateAddresses,
@@ -224,9 +223,7 @@ const getAllAddresses = async ({
 	return ok(responseData);
 };
 
-const AddressViewer = ({
-	navigation,
-}: SettingsScreenProps<'AddressViewer'>): ReactElement => {
+const AddressViewer = (): ReactElement => {
 	const { t } = useTranslation('settings');
 	const dispatch = useAppDispatch();
 	const selectedWallet = useAppSelector(selectedWalletSelector);
@@ -852,13 +849,7 @@ const AddressViewer = ({
 	return (
 		<ThemedView style={styles.root}>
 			<SafeAreaInset type="top" />
-			<NavigationHeader
-				title={t('adv.address_viewer')}
-				displayBackButton={true}
-				onClosePress={(): void => {
-					navigation.navigate('Wallet');
-				}}
-			/>
+			<NavigationHeader title={t('adv.address_viewer')} />
 			<View style={styles.content}>
 				{displayQrCode && (
 					<View style={styles.qrCodeRow}>

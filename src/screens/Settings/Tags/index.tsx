@@ -22,10 +22,7 @@ const TagsSettings = ({
 	return (
 		<View style={styles.container}>
 			<SafeAreaInset type="top" />
-			<NavigationHeader
-				title={t('general.tags')}
-				onClosePress={(): void => navigation.navigate('Wallet')}
-			/>
+			<NavigationHeader title={t('general.tags')} />
 			<View style={styles.content}>
 				{lastUsedTags.length !== 0 && (
 					<>

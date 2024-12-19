@@ -106,6 +106,7 @@ const RGSServer = ({
 			<SafeAreaInset type="top" />
 			<NavigationHeader
 				title={t('adv.rgs_server')}
+				showCloseButton={false}
 				actionIcon={<ScanIcon color="white" width={20} height={20} />}
 				onActionPress={navigateToScanner}
 			/>

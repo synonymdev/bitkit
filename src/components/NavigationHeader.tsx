@@ -12,6 +12,7 @@ import { Subtitle, Title } from '../styles/text';
 import { BackIcon, XIcon } from '../styles/icons';
 import { Keyboard } from '../hooks/keyboard';
 import { Pressable } from '../styles/components';
+import { RootNavigationProp } from '../navigation/types';
 
 export const HEADER_HEIGHT = 46;
 
@@ -49,38 +50,55 @@ const ACTION_WIDTH = 45;
 export type NavigationHeaderProps = {
 	title?: string;
 	icon?: ReactElement;
-	displayBackButton?: boolean;
-	navigateBack?: boolean;
+	showBackButton?: boolean;
+	showCloseButton?: boolean;
 	actionIcon?: ReactElement;
 	size?: 'lg' | 'sm';
 	style?: StyleProp<ViewStyle>;
 	onBackPress?: () => void;
-	onClosePress?: () => void;
 	onActionPress?: () => void;
 };
 
 const NavigationHeader = ({
 	title = ' ',
 	icon,
-	displayBackButton = true,
-	navigateBack = true,
+	showBackButton = true,
+	showCloseButton = true,
 	size = 'lg',
 	actionIcon,
 	style,
 	onBackPress,
-	onClosePress,
 	onActionPress,
 }: NavigationHeaderProps): ReactElement => {
-	const navigation = useNavigation<any>();
+	const navigation = useNavigation<RootNavigationProp>();
 
 	const handleBackPress = useCallback(async () => {
-		onBackPress?.();
-		if (navigateBack) {
-			// make sure Keyboard is closed before navigating back to prevent layout bugs
-			await Keyboard.dismiss();
+		// make sure Keyboard is closed before navigating back to prevent layout bugs
+		await Keyboard.dismiss();
+
+		if (onBackPress) {
+			onBackPress();
+		} else {
 			navigation.goBack();
 		}
-	}, [navigation, navigateBack, onBackPress]);
+	}, [navigation, onBackPress]);
+
+	const handleClosePress = useCallback(async () => {
+		const parent = navigation.getParent?.();
+		const state = navigation.getState?.();
+		const routeNames = state?.routes.map((route) => route.name);
+		const hasWalletRoute = routeNames?.includes('Wallet');
+
+		// make sure Keyboard is closed before navigating back to prevent layout bugs
+		await Keyboard.dismiss();
+
+		if (hasWalletRoute || parent) {
+			// for nested navigators, pop to top of parent navigator
+			navigation.popTo('Wallet', { screen: 'Wallets' });
+		} else {
+			navigation.popToTop();
+		}
+	}, [navigation]);
 
 	const Text = useMemo(() => (size === 'lg' ? Title : Subtitle), [size]);
 	const container = useMemo(
@@ -92,18 +110,20 @@ const NavigationHeader = ({
 		[size, style],
 	);
 
-	// TODO: this doesn't have the right navigator
-	const showBack = Boolean(displayBackButton && navigation.canGoBack());
+	const state = navigation.getState?.();
+	const parent = navigation.getParent?.();
+	const canGoBack = state?.routes.length > 1 || parent;
+	const showBack = showBackButton && canGoBack;
 
 	const numberOfActions = useMemo(() => {
-		if (actionIcon && onClosePress) {
+		if (actionIcon && showCloseButton) {
 			return 2;
-		} else if (showBack || actionIcon || onClosePress) {
+		} else if (showBack || actionIcon || showCloseButton) {
 			return 1;
 		} else {
 			return 0;
 		}
-	}, [actionIcon, onClosePress, showBack]);
+	}, [actionIcon, showBack, showCloseButton]);
 
 	const actionColumn = useMemo(
 		() => [
@@ -146,11 +166,11 @@ const NavigationHeader = ({
 						{actionIcon}
 					</ActionButton>
 				)}
-				{onClosePress && (
+				{showCloseButton && (
 					<ActionButton
 						style={styles.actionRight}
 						testID="NavigationClose"
-						onPress={onClosePress}>
+						onPress={handleClosePress}>
 						<XIcon width={24} height={24} />
 					</ActionButton>
 				)}

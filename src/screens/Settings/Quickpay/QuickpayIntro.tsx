@@ -30,9 +30,6 @@ const QuickpayIntro = ({
 			imagePosition="center"
 			buttonText={t('continue')}
 			testID="QuickpayIntro"
-			onClosePress={(): void => {
-				navigation.navigate('Wallet');
-			}}
 			onButtonPress={(): void => {
 				dispatch(updateUser({ quickpayIntroSeen: true }));
 				navigation.navigate('QuickpaySettings');

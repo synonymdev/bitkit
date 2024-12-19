@@ -25,10 +25,7 @@ const UsedCard = ({
 
 	return (
 		<GradientView style={styles.root}>
-			<BottomSheetNavigationHeader
-				title="Used Card"
-				displayBackButton={false}
-			/>
+			<BottomSheetNavigationHeader title="Used Card" />
 
 			<View style={styles.content}>
 				<AmountToggle amount={amount} />

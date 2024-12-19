@@ -266,7 +266,7 @@ const BoostPrompt = (): ReactElement => {
 			<View style={styles.root}>
 				<BottomSheetNavigationHeader
 					title={t('boost_title')}
-					displayBackButton={false}
+					showBackButton={false}
 				/>
 
 				{isOpen && onchainActivityItem && (

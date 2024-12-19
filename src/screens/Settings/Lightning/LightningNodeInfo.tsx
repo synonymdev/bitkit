@@ -14,11 +14,8 @@ import { useAppSelector } from '../../../hooks/redux';
 import { getNodeId } from '../../../utils/lightning';
 import { showToast } from '../../../utils/notifications';
 import { selectedNetworkSelector } from '../../../store/reselect/wallet';
-import { SettingsScreenProps } from '../../../navigation/types';
 
-const LightningNodeInfo = ({
-	navigation,
-}: SettingsScreenProps<'LightningNodeInfo'>): ReactElement => {
+const LightningNodeInfo = (): ReactElement => {
 	const { t } = useTranslation('lightning');
 	const [nodeId, setNodeId] = useState('');
 	const [error, setError] = useState('');
@@ -48,13 +45,7 @@ const LightningNodeInfo = ({
 	return (
 		<ThemedView style={styles.root}>
 			<SafeAreaInset type="top" />
-			<NavigationHeader
-				title={t('node_info')}
-				displayBackButton
-				onClosePress={(): void => {
-					navigation.navigate('Wallet');
-				}}
-			/>
+			<NavigationHeader title={t('node_info')} />
 
 			<View style={styles.content}>
 				<View style={styles.label}>

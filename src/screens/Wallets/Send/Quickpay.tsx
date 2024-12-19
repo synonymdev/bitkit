@@ -74,7 +74,7 @@ const Quickpay = ({
 		<GradientView style={styles.root}>
 			<BottomSheetNavigationHeader
 				title={t('send_quickpay.nav_title')}
-				displayBackButton={false}
+				showBackButton={false}
 			/>
 
 			<View style={styles.content}>

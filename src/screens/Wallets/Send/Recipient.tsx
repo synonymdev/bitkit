@@ -111,7 +111,7 @@ const Recipient = ({
 		<GradientView style={styles.root}>
 			<BottomSheetNavigationHeader
 				title={t('send_bitcoin')}
-				displayBackButton={false}
+				showBackButton={false}
 			/>
 			<View style={styles.content}>
 				<Caption13Up color="secondary" style={styles.label} testID="Caption">

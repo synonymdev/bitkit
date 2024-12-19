@@ -73,7 +73,7 @@ const Contact = ({
 
 	const onDelete = useCallback(() => {
 		dispatch(deleteContact(url));
-		navigation.navigate('Contacts');
+		navigation.popTo('Contacts');
 	}, [navigation, url, dispatch]);
 
 	const handleSend = async (): Promise<void> => {
@@ -137,11 +137,7 @@ const Contact = ({
 			<SafeAreaInset type="top" />
 			<NavigationHeader
 				title={t('contact')}
-				navigateBack={false}
-				onBackPress={(): void => {
-					navigation.navigate('Contacts');
-				}}
-				onClosePress={navigation.popToTop}
+				onBackPress={(): void => navigation.navigate('Contacts')}
 			/>
 			<View style={styles.content}>
 				<ProfileCard

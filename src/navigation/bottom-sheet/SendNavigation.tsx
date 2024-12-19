@@ -1,5 +1,8 @@
 import React, { ReactElement, memo } from 'react';
-import { createNavigationContainerRef } from '@react-navigation/native';
+import {
+	createNavigationContainerRef,
+	NavigationIndependentTree,
+} from '@react-navigation/native';
 import {
 	createNativeStackNavigator,
 	NativeStackNavigationOptions,
@@ -139,42 +142,44 @@ const SendNavigation = (): ReactElement => {
 			snapPoints={snapPoints}
 			testID="SendSheet"
 			onOpen={onOpen}>
-			<NavigationContainer key={isOpen.toString()} ref={navigationRef}>
-				<Stack.Navigator
-					initialRouteName={initialRouteName}
-					screenOptions={screenOptions}>
-					<Stack.Screen name="Recipient" component={Recipient} />
-					<Stack.Screen name="Contacts" component={Contacts} />
-					<Stack.Screen name="Address" component={Address} />
-					<Stack.Screen name="Scanner" component={Scanner} />
-					<Stack.Screen name="Amount" component={Amount} />
-					<Stack.Screen name="CoinSelection" component={CoinSelection} />
-					<Stack.Screen name="FeeRate" component={FeeRate} />
-					<Stack.Screen name="FeeCustom" component={FeeCustom} />
-					<Stack.Screen name="ReviewAndSend" component={ReviewAndSend} />
-					<Stack.Screen name="Tags" component={Tags} />
-					<Stack.Screen name="AutoRebalance" component={AutoRebalance} />
-					<Stack.Screen name="PinCheck" component={PinCheck} />
-					<Stack.Screen name="Pending" component={Pending} />
-					<Stack.Screen
-						name="Quickpay"
-						component={Quickpay}
-						initialParams={{ invoice, amount }}
-					/>
-					<Stack.Screen name="Success" component={Success} />
-					<Stack.Screen name="Error" component={Error} />
-					<Stack.Screen
-						name="LNURLAmount"
-						component={LNURLAmount}
-						initialParams={{ pParams, url }}
-					/>
-					<Stack.Screen
-						name="LNURLConfirm"
-						component={LNURLConfirm}
-						initialParams={{ pParams, url, amount }}
-					/>
-				</Stack.Navigator>
-			</NavigationContainer>
+			<NavigationIndependentTree>
+				<NavigationContainer key={isOpen.toString()} ref={navigationRef}>
+					<Stack.Navigator
+						initialRouteName={initialRouteName}
+						screenOptions={screenOptions}>
+						<Stack.Screen name="Recipient" component={Recipient} />
+						<Stack.Screen name="Contacts" component={Contacts} />
+						<Stack.Screen name="Address" component={Address} />
+						<Stack.Screen name="Scanner" component={Scanner} />
+						<Stack.Screen name="Amount" component={Amount} />
+						<Stack.Screen name="CoinSelection" component={CoinSelection} />
+						<Stack.Screen name="FeeRate" component={FeeRate} />
+						<Stack.Screen name="FeeCustom" component={FeeCustom} />
+						<Stack.Screen name="ReviewAndSend" component={ReviewAndSend} />
+						<Stack.Screen name="Tags" component={Tags} />
+						<Stack.Screen name="AutoRebalance" component={AutoRebalance} />
+						<Stack.Screen name="PinCheck" component={PinCheck} />
+						<Stack.Screen name="Pending" component={Pending} />
+						<Stack.Screen
+							name="Quickpay"
+							component={Quickpay}
+							initialParams={{ invoice, amount }}
+						/>
+						<Stack.Screen name="Success" component={Success} />
+						<Stack.Screen name="Error" component={Error} />
+						<Stack.Screen
+							name="LNURLAmount"
+							component={LNURLAmount}
+							initialParams={{ pParams, url }}
+						/>
+						<Stack.Screen
+							name="LNURLConfirm"
+							component={LNURLConfirm}
+							initialParams={{ pParams, url, amount }}
+						/>
+					</Stack.Navigator>
+				</NavigationContainer>
+			</NavigationIndependentTree>
 		</BottomSheetWrapper>
 	);
 };

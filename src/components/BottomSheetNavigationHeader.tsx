@@ -5,10 +5,17 @@ import NavigationHeader, {
 	NavigationHeaderProps,
 } from '../components/NavigationHeader';
 
-type Props = Omit<NavigationHeaderProps, 'size'> & { title: string };
+type Props = Omit<NavigationHeaderProps, 'size' | 'showCloseButton'> & {
+	title: string;
+};
 
 const BottomSheetNavigationHeader = (props: Props): ReactElement => (
-	<NavigationHeader size="sm" style={styles.container} {...props} />
+	<NavigationHeader
+		style={styles.container}
+		size="sm"
+		{...props}
+		showCloseButton={false}
+	/>
 );
 
 const styles = StyleSheet.create({

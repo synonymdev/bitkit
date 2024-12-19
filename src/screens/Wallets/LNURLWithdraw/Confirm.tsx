@@ -55,9 +55,7 @@ const Confirm = ({ route }: LNURLWithdrawProps<'Confirm'>): ReactElement => {
 			<GradientView style={styles.container}>
 				<BottomSheetNavigationHeader
 					title={t('lnurl_w_title')}
-					displayBackButton={
-						wParams.minWithdrawable !== wParams.maxWithdrawable
-					}
+					showBackButton={wParams.minWithdrawable !== wParams.maxWithdrawable}
 				/>
 				<View style={styles.content}>
 					<AmountToggle style={styles.amountToggle} amount={amount} />

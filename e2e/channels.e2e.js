@@ -107,7 +107,7 @@ d('Transfer', () => {
 		let { label } = await element(
 			by.id('SpendingAdvancedNumberField'),
 		).getAttributes();
-		const lspBalance = Number.parseInt(label);
+		const lspBalance = Number.parseInt(label, 10);
 		jestExpect(lspBalance).toBeGreaterThan(440);
 		jestExpect(lspBalance).toBeLessThan(460);
 		await element(by.id('SpendingAdvancedNumberField')).tap();

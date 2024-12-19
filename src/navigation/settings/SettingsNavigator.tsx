@@ -41,7 +41,6 @@ import BitcoinNetworkSelection from '../../screens/Settings/Bitcoin/BitcoinNetwo
 import Channels from '../../screens/Settings/Lightning/Channels';
 import ChannelDetails from '../../screens/Settings/Lightning/ChannelDetails';
 import CloseConnection from '../../screens/Settings/Lightning/CloseConnection';
-import OpenConnectionSuccess from '../../screens/Settings/Lightning/OpenConnectionSuccess';
 import ExportToPhone from '../../screens/Settings/Backup/ExportToPhone';
 import ResetAndRestore from '../../screens/Settings/Backup/ResetAndRestore';
 import TagsSettings from '../../screens/Settings/Tags';
@@ -94,7 +93,6 @@ export type SettingsStackParamList = {
 	Channels?: { showClosed: boolean };
 	ChannelDetails: { channel: TChannel };
 	CloseConnection: { channelId: string };
-	OpenConnectionSuccess: { name: string };
 	TagsSettings: undefined;
 	WidgetSettings: undefined;
 	QuickpayIntro: undefined;
@@ -167,10 +165,6 @@ const SettingsNavigator = (): ReactElement => {
 			<Stack.Screen name="Channels" component={Channels} />
 			<Stack.Screen name="ChannelDetails" component={ChannelDetails} />
 			<Stack.Screen name="CloseConnection" component={CloseConnection} />
-			<Stack.Screen
-				name="OpenConnectionSuccess"
-				component={OpenConnectionSuccess}
-			/>
 			<Stack.Screen name="TagsSettings" component={TagsSettings} />
 			<Stack.Screen name="FeeSettings" component={FeeSettings} />
 			<Stack.Screen name="WebRelay" component={WebRelay} />

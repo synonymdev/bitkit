@@ -26,10 +26,7 @@ const Liquidity = ({
 	return (
 		<ThemedView style={styles.root} testID="Liquidity">
 			<SafeAreaInset type="top" />
-			<NavigationHeader
-				title={t('transfer.nav_title')}
-				onClosePress={() => navigation.navigate('Wallet')}
-			/>
+			<NavigationHeader title={t('transfer.nav_title')} />
 			<View style={styles.content}>
 				<Display>
 					<Trans

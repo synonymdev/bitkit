@@ -123,7 +123,7 @@ const SpendingAdvanced = ({
 			return;
 		}
 
-		navigation.navigate('SpendingConfirm', {
+		navigation.popTo('SpendingConfirm', {
 			order: response.value,
 			advanced: true,
 		});
@@ -135,10 +135,7 @@ const SpendingAdvanced = ({
 	return (
 		<ThemedView style={styles.root}>
 			<SafeAreaInset type="top" />
-			<NavigationHeader
-				title={t('transfer.nav_title')}
-				onClosePress={(): void => navigation.navigate('Wallet')}
-			/>
+			<NavigationHeader title={t('transfer.nav_title')} />
 
 			<View style={styles.content} testID="SpendingAdvanced">
 				<Display>

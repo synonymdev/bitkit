@@ -22,7 +22,6 @@ const TransferIntro = ({
 
 	return (
 		<OnboardingScreen
-			displayBackButton={false}
 			title={
 				<Trans
 					t={t}
@@ -33,10 +32,8 @@ const TransferIntro = ({
 			description={t('transfer_intro.text')}
 			image={imageSrc}
 			buttonText={t('transfer_intro.button')}
+			showBackButton={false}
 			testID="TransferIntro"
-			onClosePress={(): void => {
-				navigation.navigate('Wallet');
-			}}
 			onButtonPress={onContinue}
 		/>
 	);

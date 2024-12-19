@@ -31,9 +31,9 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - MMKV (1.3.7):
-    - MMKVCore (~> 1.3.7)
-  - MMKVCore (1.3.7)
+  - MMKV (2.0.0):
+    - MMKVCore (~> 2.0.0)
+  - MMKVCore (2.0.0)
   - OpenSSL-Universal (3.3.2000)
   - RCT-Folly (2024.01.01.00):
     - boost
@@ -1423,7 +1423,7 @@ PODS:
     - Yoga
   - react-native-restart (0.0.27):
     - React-Core
-  - react-native-safe-area-context (4.10.9):
+  - react-native-safe-area-context (5.0.0):
     - React-Core
   - react-native-skia (1.3.11):
     - DoubleConversion
@@ -1842,7 +1842,7 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - RNScreens (3.34.0):
+  - RNScreens (4.3.0):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -2216,8 +2216,8 @@ SPEC CHECKSUMS:
   hermes-engine: 3b6e0717ca847e2fc90a201e59db36caf04dee88
   lottie-ios: e047b1d2e6239b787cc5e9755b988869cf190494
   lottie-react-native: 31197e5c65aa7cb59e6affcefaf901588bb708c4
-  MMKV: 36a22a9ec84c9bb960613a089ddf6f48be9312b0
-  MMKVCore: 158e61c8516401a9fac730288acb29e6fc19bbf9
+  MMKV: f7d1d5945c8765f97f39c3d121f353d46735d801
+  MMKVCore: c04b296010fcb1d1638f2c69405096aac12f6390
   OpenSSL-Universal: b60a3702c9fea8b3145549d421fdb018e53ab7b4
   RCT-Folly: 4464f4d875961fce86008d45f4ecf6cef6de0740
   RCTDeprecation: 34cbf122b623037ea9facad2e92e53434c5c7422
@@ -2259,7 +2259,7 @@ SPEC CHECKSUMS:
   react-native-quick-base64: f98f17faf04c9779faf726921a2b389d4775e8b6
   react-native-quick-crypto: 12de8e1666ad3dab6339418c14f4a6de71716194
   react-native-restart: 7595693413fe3ca15893702f2c8306c62a708162
-  react-native-safe-area-context: ab8f4a3d8180913bd78ae75dd599c94cce3d5e9a
+  react-native-safe-area-context: ab7beb734b0f9f79f55ae144a6c946a6422f55d6
   react-native-skia: 68be40d53b1957f6c276cec19bcd50d293173868
   react-native-tcp-socket: e724380c910c2e704816ec817ed28f1342246ff7
   React-nativeconfig: 57781b79e11d5af7573e6f77cbf1143b71802a6d
@@ -2301,7 +2301,7 @@ SPEC CHECKSUMS:
   RNQuickAction: 6d404a869dc872cde841ad3147416a670d13fa93
   RNReactNativeHapticFeedback: ec56a5f81c3941206fd85625fa669ffc7b4545f9
   RNReanimated: 74413c59c47123d7144db601d065627c75c746a3
-  RNScreens: 19719a9c326e925498ac3b2d35c4e50fe87afc06
+  RNScreens: b03d696c70cc5235ce4587fcc27ae1a93a48f98c
   RNShare: 554a91f5cfbe4adac4cfe3654826ee8b299fe365
   RNSVG: 43b64ed39c14ce830d840903774154ca0c1f27ec
   RNZipArchive: 7bb4c70d6aa2dd235212c0a4a3de0a4e237e2569

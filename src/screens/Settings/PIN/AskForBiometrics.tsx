@@ -115,7 +115,7 @@ const AskForBiometrics = ({
 		<GradientView style={styles.root}>
 			<BottomSheetNavigationHeader
 				title={biometricsName}
-				displayBackButton={false}
+				showBackButton={false}
 			/>
 
 			<View style={styles.content}>

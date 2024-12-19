@@ -184,7 +184,7 @@ const LNURLConfirm = ({
 			<GradientView style={styles.container}>
 				<BottomSheetNavigationHeader
 					title={t('lnurl_p_title')}
-					displayBackButton={!fixedAmount}
+					showBackButton={!fixedAmount}
 				/>
 				<View style={styles.content}>
 					<AmountToggle

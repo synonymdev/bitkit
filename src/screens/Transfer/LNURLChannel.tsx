@@ -50,16 +50,13 @@ const LNURLChannel = ({
 	};
 
 	const onClosePress = (): void => {
-		navigation.navigate('Wallet');
+		navigation.popTo('Wallet', { screen: 'Wallets' });
 	};
 
 	return (
 		<ThemedView style={styles.root}>
 			<SafeAreaInset type="top" />
-			<NavigationHeader
-				title={t('lnurl_channel_header')}
-				onClosePress={onClosePress}
-			/>
+			<NavigationHeader title={t('lnurl_channel_header')} />
 			<View style={styles.content}>
 				<Display style={styles.title}>
 					<Trans
@@ -101,9 +98,9 @@ const LNURLChannel = ({
 					style={styles.button}
 					size="large"
 					text={t('common:connect')}
-					onPress={handleConnect}
 					loading={loading}
 					testID="ConnectButton"
+					onPress={handleConnect}
 				/>
 			</View>
 			<SafeAreaInset type="bottom" minPadding={16} />

@@ -2,7 +2,7 @@ import React, { memo, ReactElement, useState } from 'react';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
-import NavigationHeader from '../../../components/NavigationHeader';
+import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
 import GradientView from '../../../components/GradientView';
 import ContactsList from '../../../components/ContactsList';
 import { useAppSelector } from '../../../hooks/redux';
@@ -47,7 +47,7 @@ const Contacts = ({
 
 	return (
 		<GradientView style={styles.container}>
-			<NavigationHeader title={t('contact_select')} size="sm" />
+			<BottomSheetNavigationHeader title={t('contact_select')} />
 			<View style={styles.content}>
 				{loading ? (
 					<View style={styles.loading}>

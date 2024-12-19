@@ -10,9 +10,7 @@ import type { RootStackScreenProps } from '../navigation/types';
 
 const imageSrc = require('../assets/illustrations/bitcoin-emboss.png');
 
-const BuyBitcoin = ({
-	navigation,
-}: RootStackScreenProps<'BuyBitcoin'>): ReactElement => {
+const BuyBitcoin = ({}: RootStackScreenProps<'BuyBitcoin'>): ReactElement => {
 	const { t } = useTranslation('other');
 	const dispatch = useAppDispatch();
 
@@ -30,9 +28,6 @@ const BuyBitcoin = ({
 			imagePosition="center"
 			buttonText={t('buy_button')}
 			testID="BuyBitcoin"
-			onClosePress={(): void => {
-				navigation.navigate('Wallet');
-			}}
 			onButtonPress={(): void => {
 				dispatch(hideTodo('buyBitcoin'));
 				openURL('https://bitcoin.org/en/exchanges');

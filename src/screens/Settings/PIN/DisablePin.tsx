@@ -33,12 +33,7 @@ const DisablePin = ({
 	return (
 		<ThemedView style={styles.container}>
 			<SafeAreaInset type="top" />
-			<NavigationHeader
-				title={t('pin_disable_title')}
-				onClosePress={(): void => {
-					navigation.navigate('Wallet');
-				}}
-			/>
+			<NavigationHeader title={t('pin_disable_title')} />
 
 			<View style={styles.message}>
 				<BodyM color="secondary">{t('pin_disable_text')}</BodyM>

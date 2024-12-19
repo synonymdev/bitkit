@@ -1,19 +1,20 @@
 import React, { ReactElement, memo } from 'react';
-import { useAppSelector } from '../../hooks/redux';
+import { LNURLWithdrawParams } from 'js-lnurl';
+import { NavigationIndependentTree } from '@react-navigation/native';
 import {
 	NativeStackNavigationOptions,
 	NativeStackNavigationProp,
 	createNativeStackNavigator,
 } from '@react-navigation/native-stack';
-import { LNURLWithdrawParams } from 'js-lnurl';
 
+import { NavigationContainer } from '../../styles/components';
 import BottomSheetWrapper from '../../components/BottomSheetWrapper';
-import { __E2E__ } from '../../constants/env';
-import { useSnapPoints } from '../../hooks/bottomSheet';
 import Amount from '../../screens/Wallets/LNURLWithdraw/Amount';
 import Confirm from '../../screens/Wallets/LNURLWithdraw/Confirm';
+import { useSnapPoints } from '../../hooks/bottomSheet';
+import { useAppSelector } from '../../hooks/redux';
 import { viewControllerSelector } from '../../store/reselect/ui';
-import { NavigationContainer } from '../../styles/components';
+import { __E2E__ } from '../../constants/env';
 
 export type LNURLWithdrawNavigationProp =
 	NativeStackNavigationProp<LNURLWithdrawStackParamList>;
@@ -46,22 +47,24 @@ const LNURLWithdrawNavigation = (): ReactElement => {
 
 	return (
 		<BottomSheetWrapper view="lnurlWithdraw" snapPoints={snapPoints}>
-			<NavigationContainer key={isOpen.toString()}>
-				<Stack.Navigator
-					screenOptions={screenOptions}
-					initialRouteName={initialRouteName}>
-					<Stack.Screen
-						name="Amount"
-						component={Amount}
-						initialParams={{ wParams }}
-					/>
-					<Stack.Screen
-						name="Confirm"
-						component={Confirm}
-						initialParams={{ wParams, amount: wParams.minWithdrawable }}
-					/>
-				</Stack.Navigator>
-			</NavigationContainer>
+			<NavigationIndependentTree>
+				<NavigationContainer key={isOpen.toString()}>
+					<Stack.Navigator
+						screenOptions={screenOptions}
+						initialRouteName={initialRouteName}>
+						<Stack.Screen
+							name="Amount"
+							component={Amount}
+							initialParams={{ wParams }}
+						/>
+						<Stack.Screen
+							name="Confirm"
+							component={Confirm}
+							initialParams={{ wParams, amount: wParams.minWithdrawable }}
+						/>
+					</Stack.Navigator>
+				</NavigationContainer>
+			</NavigationIndependentTree>
 		</BottomSheetWrapper>
 	);
 };

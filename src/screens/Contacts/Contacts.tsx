@@ -54,9 +54,6 @@ const ContactsScreen = ({
 			<SafeAreaInset type="top" />
 			<NavigationHeader
 				title={t('contacts')}
-				onClosePress={(): void => {
-					navigation.navigate('Wallet');
-				}}
 				actionIcon={
 					<ProfileImage size={28} url={myProfileURL} image={profile?.image} />
 				}

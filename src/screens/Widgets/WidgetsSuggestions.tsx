@@ -31,10 +31,7 @@ const WidgetsSuggestions = ({
 	return (
 		<View style={styles.container}>
 			<SafeAreaInset type="top" />
-			<NavigationHeader
-				title={t('widget_add')}
-				onClosePress={(): void => navigation.navigate('Wallet')}
-			/>
+			<NavigationHeader title={t('widget_add')} />
 			<View style={styles.content}>
 				<ScrollView>
 					<Feed url={PriceFeedURL} testID="PriceWidget" />

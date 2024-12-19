@@ -13,13 +13,12 @@ const Interrupted = ({
 	const { t } = useTranslation('lightning');
 
 	const onContinue = (): void => {
-		navigation.navigate('Wallet', { screen: 'Wallets' });
+		navigation.popTo('Wallet', { screen: 'Wallets' });
 	};
 
 	return (
 		<InfoScreen
 			navTitle={t('savings_interrupted.nav_title')}
-			displayBackButton={false}
 			title={
 				<Trans
 					t={t}
@@ -36,6 +35,8 @@ const Interrupted = ({
 			}
 			image={imageSrc}
 			buttonText={t('ok')}
+			showBackButton={false}
+			showCloseButton={false}
 			testID="TransferInterrupted"
 			onButtonPress={onContinue}
 		/>

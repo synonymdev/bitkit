@@ -67,10 +67,7 @@ const WidgetEdit = ({
 	return (
 		<ThemedView style={styles.container}>
 			<SafeAreaInset type="top" />
-			<NavigationHeader
-				title={t('widget_edit')}
-				onClosePress={(): void => navigation.navigate('Wallet')}
-			/>
+			<NavigationHeader title={t('widget_edit')} />
 
 			{!config || loading ? (
 				<HourglassSpinner />

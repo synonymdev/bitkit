@@ -15,10 +15,6 @@ const SavingsIntro = ({
 	const { t } = useTranslation('lightning');
 	const dispatch = useAppDispatch();
 
-	const onClose = (): void => {
-		navigation.navigate('Wallet');
-	};
-
 	const onContinue = (): void => {
 		navigation.navigate('Availability');
 		dispatch(updateUser({ savingsIntroSeen: true }));
@@ -39,7 +35,6 @@ const SavingsIntro = ({
 			buttonText={t('savings_intro.button')}
 			mirrorImage={true}
 			testID="SavingsIntro"
-			onClosePress={onClose}
 			onButtonPress={onContinue}
 		/>
 	);

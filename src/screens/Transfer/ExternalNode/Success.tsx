@@ -14,13 +14,12 @@ const ExternalSuccess = ({
 	const { t } = useTranslation('lightning');
 
 	const onContinue = (): void => {
-		navigation.navigate('Wallet', { screen: 'Wallets' });
+		navigation.popTo('Wallet', { screen: 'Wallets' });
 	};
 
 	return (
 		<InfoScreen
 			navTitle={t('external.nav_title')}
-			displayBackButton={false}
 			title={
 				<Trans
 					t={t}
@@ -37,8 +36,8 @@ const ExternalSuccess = ({
 			}
 			image={imageSrc}
 			buttonText={getRandomOkText()}
+			showBackButton={false}
 			testID="ExternalSuccess"
-			onClosePress={onContinue}
 			onButtonPress={onContinue}
 		/>
 	);

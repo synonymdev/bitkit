@@ -138,7 +138,7 @@ const ReceiveDetails = ({
 		<GradientView style={styles.container}>
 			<BottomSheetNavigationHeader
 				title={t('receive_specify')}
-				displayBackButton={false}
+				showBackButton={false}
 			/>
 			<View style={styles.content}>
 				<NumberPadTextField

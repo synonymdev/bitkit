@@ -66,10 +66,7 @@ const CloseConnection = ({
 	return (
 		<ThemedView style={styles.root}>
 			<SafeAreaInset type="top" />
-			<NavigationHeader
-				title={t('close_conn')}
-				onClosePress={(): void => navigation.navigate('Wallet')}
-			/>
+			<NavigationHeader title={t('close_conn')} />
 			<View style={styles.content}>
 				<BodyM color="secondary">
 					<Trans

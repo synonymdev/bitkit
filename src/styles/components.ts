@@ -56,7 +56,6 @@ export const Container = styled.View`
 
 export const NavigationContainer = styled(_NavigationContainer).attrs(
 	(props) => ({
-		independent: true,
 		theme: {
 			...DefaultTheme,
 			colors: {

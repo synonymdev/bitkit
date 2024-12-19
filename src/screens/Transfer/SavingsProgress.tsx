@@ -41,17 +41,12 @@ const SavingsProgress = ({
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
-	const onClose = (): void => {
-		navigation.navigate('Wallet');
-	};
-
 	return (
 		<ThemedView style={styles.root}>
 			<SafeAreaInset type="top" />
 			<NavigationHeader
 				title={t('transfer.nav_title')}
-				displayBackButton={false}
-				onClosePress={onClose}
+				showBackButton={false}
 			/>
 			<View style={styles.content} testID="LightningSettingUp">
 				<Display>

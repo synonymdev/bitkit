@@ -149,9 +149,6 @@ const ProfileEdit = ({
 			<SafeAreaInset type="top" />
 			<NavigationHeader
 				title={t(onboardedProfile ? 'profile_edit' : 'profile_create')}
-				onClosePress={(): void => {
-					navigation.navigate(onboardedProfile ? 'Profile' : 'Wallet');
-				}}
 			/>
 			<KeyboardAvoidingView style={styles.content}>
 				<ScrollView

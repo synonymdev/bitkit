@@ -21,7 +21,6 @@ import TimeRangePrompt from './TimeRangePrompt';
 import { useAppDispatch } from '../../hooks/redux';
 import { closeSheet } from '../../store/slices/ui';
 import { showBottomSheet } from '../../store/utils/ui';
-import type { WalletScreenProps } from '../../navigation/types';
 
 const tabs: TTab[] = [
 	{ id: 'all', filter: { includeTransfers: true } },
@@ -47,9 +46,7 @@ const Glow = ({
 	);
 };
 
-const ActivityFiltered = ({
-	navigation,
-}: WalletScreenProps<'ActivityFiltered'>): ReactElement => {
+const ActivityFiltered = (): ReactElement => {
 	const { t } = useTranslation('wallet');
 	const dispatch = useAppDispatch();
 	const size = useSharedValue({ width: 0, height: 0 });
@@ -102,10 +99,7 @@ const ActivityFiltered = ({
 							<Glow size={size} />
 						</Canvas>
 						<SafeAreaInset type="top" />
-						<NavigationHeader
-							title={t('activity_all')}
-							onClosePress={navigation.popToTop}
-						/>
+						<NavigationHeader title={t('activity_all')} />
 						<View style={styles.formContainer}>
 							<SearchInput
 								style={styles.searchInput}

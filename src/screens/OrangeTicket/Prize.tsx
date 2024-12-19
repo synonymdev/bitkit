@@ -110,10 +110,7 @@ const Prize = ({
 
 	return (
 		<GradientView style={styles.root}>
-			<BottomSheetNavigationHeader
-				title="Won Bitcoin!"
-				displayBackButton={false}
-			/>
+			<BottomSheetNavigationHeader title="Won Bitcoin!" />
 
 			<View style={styles.content}>
 				<AmountToggle amount={amount} />

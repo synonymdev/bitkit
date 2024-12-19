@@ -94,12 +94,7 @@ const ReportIssue = ({
 					showsVerticalScrollIndicator={false}
 					bounces={false}>
 					<SafeAreaInset type="top" />
-					<NavigationHeader
-						title={t('support.report')}
-						onClosePress={(): void => {
-							navigation.navigate('Wallet');
-						}}
-					/>
+					<NavigationHeader title={t('support.report')} />
 					<View style={styles.form}>
 						<BodyM style={styles.text} color="secondary">
 							{t('support.report_text')}

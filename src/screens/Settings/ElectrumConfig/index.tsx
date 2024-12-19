@@ -276,6 +276,7 @@ const ElectrumConfig = ({
 			<SafeAreaInset type="top" />
 			<NavigationHeader
 				title={t('adv.electrum_server')}
+				showCloseButton={false}
 				actionIcon={<ScanIcon color="white" width={20} height={20} />}
 				onActionPress={navigateToScanner}
 			/>

@@ -19,7 +19,7 @@ const BottomSheetScreen = ({
 	image,
 	continueText,
 	cancelText,
-	displayBackButton = true,
+	showBackButton = true,
 	isLoading,
 	testID,
 	onCancel,
@@ -31,7 +31,7 @@ const BottomSheetScreen = ({
 	image: ImageSourcePropType;
 	continueText: string;
 	cancelText?: string;
-	displayBackButton?: boolean;
+	showBackButton?: boolean;
 	isLoading?: boolean;
 	testID?: string;
 	onCancel?: () => void;
@@ -50,7 +50,7 @@ const BottomSheetScreen = ({
 		<View style={styles.root} testID={testID} onLayout={onLayout}>
 			<BottomSheetNavigationHeader
 				title={navTitle}
-				displayBackButton={displayBackButton}
+				showBackButton={showBackButton}
 			/>
 			<View style={styles.content}>
 				<View

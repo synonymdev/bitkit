@@ -1,4 +1,10 @@
-import React, { memo, ReactElement, useCallback, useEffect, useMemo } from 'react';
+import React, {
+	memo,
+	ReactElement,
+	useCallback,
+	useEffect,
+	useMemo,
+} from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
@@ -8,9 +14,7 @@ import SafeAreaInset from '../../components/SafeAreaInset';
 import Button from '../../components/buttons/Button';
 import BottomSheetNavigationHeader from '../../components/BottomSheetNavigationHeader';
 import { useAppSelector } from '../../hooks/redux';
-import {
-	useSnapPoints,
-} from '../../hooks/bottomSheet';
+import { useSnapPoints } from '../../hooks/bottomSheet';
 import { viewControllerSelector } from '../../store/reselect/ui.ts';
 import { auth, parseAuthUrl } from '@synonymdev/react-native-pubky';
 import { getPubkySecretKey } from '../../utils/pubky';
@@ -22,10 +26,12 @@ import Animated, { FadeIn } from 'react-native-reanimated';
 
 const defaultParsedUrl: PubkyAuthDetails = {
 	relay: '',
-	capabilities: [{
-		path: '',
-		permission: '',
-	}],
+	capabilities: [
+		{
+			path: '',
+			permission: '',
+		},
+	],
 	secret: '',
 };
 
@@ -40,28 +46,37 @@ type PubkyAuthDetails = {
 	secret: string;
 };
 
-const Permission = memo(({ capability, authSuccess }: { capability: Capability; authSuccess: boolean }): ReactElement => {
-	return (
-		<View style={styles.row}>
-			<View style={styles.path}>
-				<CaptionB color={authSuccess ? 'green' : 'red'}>{capability.path}</CaptionB>
-			</View>
-			<View style={styles.permissionsRow}>
-				<View style={styles.permission}>
-					{capability.permission.includes('r') && (
-						<CaptionB color={authSuccess ? 'green' : 'red'}>Read</CaptionB>
-
-					)}
+const Permission = memo(
+	({
+		capability,
+		authSuccess,
+	}: {
+		capability: Capability;
+		authSuccess: boolean;
+	}): ReactElement => {
+		return (
+			<View style={styles.row}>
+				<View style={styles.path}>
+					<CaptionB color={authSuccess ? 'green' : 'red'}>
+						{capability.path}
+					</CaptionB>
 				</View>
-				<View style={styles.permission}>
-					{capability.permission.includes('w') && (
-						<CaptionB color={authSuccess ? 'green' : 'red'}>Write</CaptionB>
-					)}
+				<View style={styles.permissionsRow}>
+					<View style={styles.permission}>
+						{capability.permission.includes('r') && (
+							<CaptionB color={authSuccess ? 'green' : 'red'}>Read</CaptionB>
+						)}
+					</View>
+					<View style={styles.permission}>
+						{capability.permission.includes('w') && (
+							<CaptionB color={authSuccess ? 'green' : 'red'}>Write</CaptionB>
+						)}
+					</View>
 				</View>
 			</View>
-		</View>
-	);
-});
+		);
+	},
+);
 
 const PubkyAuth = (): ReactElement => {
 	const { t } = useTranslation('security');
@@ -69,7 +84,8 @@ const PubkyAuth = (): ReactElement => {
 	const { url = '' } = useAppSelector((state) => {
 		return viewControllerSelector(state, 'pubkyAuth');
 	});
-	const [parsed, setParsed] = React.useState<PubkyAuthDetails>(defaultParsedUrl);
+	const [parsed, setParsed] =
+		React.useState<PubkyAuthDetails>(defaultParsedUrl);
 	const [authorizing, setAuthorizing] = React.useState(false);
 	const [authSuccess, setAuthSuccess] = React.useState(false);
 
@@ -91,44 +107,50 @@ const PubkyAuth = (): ReactElement => {
 		};
 	}, [url]);
 
-	const onAuthorize = useMemo(() => async (): Promise<void> => {
-		try {
-			setAuthorizing(true);
-			const secretKey = await getPubkySecretKey();
-			if (secretKey.isErr()) {
-				showToast({
-					type: 'error',
-					title: t('authorization.pubky_secret_error_title'),
-					description: t('authorization.pubky_secret_error_description'),
-				});
+	const onAuthorize = useMemo(
+		() => async (): Promise<void> => {
+			try {
+				setAuthorizing(true);
+				const secretKey = await getPubkySecretKey();
+				if (secretKey.isErr()) {
+					showToast({
+						type: 'error',
+						title: t('authorization.pubky_secret_error_title'),
+						description: t('authorization.pubky_secret_error_description'),
+					});
+					setAuthorizing(false);
+					return;
+				}
+				const authRes = await auth(url, secretKey.value);
+				if (authRes.isErr()) {
+					showToast({
+						type: 'error',
+						title: t('authorization.pubky_auth_error_title'),
+						description: t('authorization.pubky_auth_error_description'),
+					});
+					setAuthorizing(false);
+					return;
+				}
+				setAuthSuccess(true);
 				setAuthorizing(false);
-				return;
-			}
-			const authRes = await auth(url, secretKey.value);
-			if (authRes.isErr()) {
+			} catch (e) {
 				showToast({
 					type: 'error',
 					title: t('authorization.pubky_auth_error_title'),
-					description: t('authorization.pubky_auth_error_description'),
+					description: JSON.stringify(e),
 				});
 				setAuthorizing(false);
-				return;
 			}
-			setAuthSuccess(true);
-			setAuthorizing(false);
-		} catch (e) {
-			showToast({
-				type: 'error',
-				title: t('authorization.pubky_auth_error_title'),
-				description: JSON.stringify(e),
-			});
-			setAuthorizing(false);
-		}
-	}, [t, url]);
+		},
+		[t, url],
+	);
 
-	const onClose = useMemo(() => (): void => {
-		dispatch(closeSheet('pubkyAuth'));
-	}, []);
+	const onClose = useMemo(
+		() => (): void => {
+			dispatch(closeSheet('pubkyAuth'));
+		},
+		[],
+	);
 
 	const Buttons = useCallback(() => {
 		if (authSuccess) {
@@ -152,7 +174,11 @@ const PubkyAuth = (): ReactElement => {
 				<Button
 					loading={authorizing}
 					style={styles.authorizeButton}
-					text={authorizing ? t('authorization.authorizing') : t('authorization.authorize')}
+					text={
+						authorizing
+							? t('authorization.authorizing')
+							: t('authorization.authorize')
+					}
 					size="large"
 					onPress={onAuthorize}
 				/>
@@ -174,10 +200,7 @@ const PubkyAuth = (): ReactElement => {
 	return (
 		<BottomSheetWrapper view="pubkyAuth" snapPoints={snapPoints}>
 			<View style={styles.container}>
-				<BottomSheetNavigationHeader
-					title={t('authorization.title')}
-					displayBackButton={false}
-				/>
+				<BottomSheetNavigationHeader title={t('authorization.title')} />
 				<Text13UP color="secondary">{t('authorization.claims')}</Text13UP>
 				<Title color="white">{parsed.relay}</Title>
 
@@ -187,18 +210,20 @@ const PubkyAuth = (): ReactElement => {
 
 				<View style={styles.buffer} />
 
-				<Text13UP color="secondary">{t('authorization.requested_permissions')}</Text13UP>
+				<Text13UP color="secondary">
+					{t('authorization.requested_permissions')}
+				</Text13UP>
 				{parsed.capabilities.map((capability) => {
-					return <Permission capability={capability} authSuccess={authSuccess} />;
+					return (
+						<Permission capability={capability} authSuccess={authSuccess} />
+					);
 				})}
 
 				<View style={styles.buffer} />
 
 				{SuccessCircle()}
 
-				<View style={styles.buttonContainer}>
-					{Buttons()}
-				</View>
+				<View style={styles.buttonContainer}>{Buttons()}</View>
 				<SafeAreaInset type="bottom" minPadding={16} />
 			</View>
 		</BottomSheetWrapper>

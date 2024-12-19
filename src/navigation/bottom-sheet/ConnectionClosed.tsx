@@ -30,10 +30,7 @@ const ConnectionClosed = (): ReactElement => {
 	return (
 		<BottomSheetWrapper view="connectionClosed" snapPoints={snapPoints}>
 			<View style={styles.container}>
-				<BottomSheetNavigationHeader
-					title={t('connection_closed.title')}
-					displayBackButton={false}
-				/>
+				<BottomSheetNavigationHeader title={t('connection_closed.title')} />
 				<BodyM color="secondary">{t('connection_closed.description')}</BodyM>
 
 				<View style={styles.imageContainer}>

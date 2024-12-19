@@ -14,11 +14,11 @@ const OnboardingScreen = ({
 	image,
 	imagePosition,
 	buttonText,
-	displayBackButton = true,
+	showBackButton = true,
+	showCloseButton = true,
 	disableNav = false,
 	mirrorImage = false,
 	testID,
-	onClosePress,
 	onButtonPress,
 }: {
 	navTitle?: string;
@@ -27,11 +27,11 @@ const OnboardingScreen = ({
 	image: ImageSourcePropType;
 	imagePosition?: 'center' | 'bottom';
 	buttonText: string;
-	displayBackButton?: boolean;
+	showBackButton?: boolean;
+	showCloseButton?: boolean;
 	disableNav?: boolean;
 	mirrorImage?: boolean;
 	testID?: string;
-	onClosePress?: () => void;
 	onButtonPress: () => void;
 }): ReactElement => {
 	return (
@@ -42,8 +42,8 @@ const OnboardingScreen = ({
 			) : (
 				<NavigationHeader
 					title={navTitle}
-					displayBackButton={displayBackButton}
-					onClosePress={onClosePress}
+					showBackButton={showBackButton}
+					showCloseButton={showCloseButton}
 				/>
 			)}
 

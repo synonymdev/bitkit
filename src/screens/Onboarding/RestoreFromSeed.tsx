@@ -163,7 +163,7 @@ const RestoreFromSeed = ({
 		<ThemedView style={styles.root}>
 			<View style={styles.header}>
 				<SafeAreaInset type="top" />
-				<NavigationHeader displayBackButton={true} />
+				<NavigationHeader showCloseButton={false} />
 			</View>
 
 			<ScrollView

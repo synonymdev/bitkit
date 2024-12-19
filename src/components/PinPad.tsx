@@ -54,7 +54,10 @@ const PinPad = ({
 		<ThemedView style={styles.root}>
 			<View style={styles.header}>
 				<SafeAreaInset type="top" />
-				<NavigationHeader displayBackButton={showBackNavigation} />
+				<NavigationHeader
+					showBackButton={showBackNavigation}
+					showCloseButton={false}
+				/>
 			</View>
 			<View style={styles.container} testID="PinPad">
 				<View style={styles.logo}>

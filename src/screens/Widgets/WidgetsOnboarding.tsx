@@ -34,9 +34,6 @@ const WidgetsOnboarding = ({
 			image={imageSrc}
 			buttonText={t('continue')}
 			testID="WidgetsOnboarding"
-			onClosePress={(): void => {
-				navigation.navigate('Wallet');
-			}}
 			onButtonPress={(): void => {
 				dispatch(setWidgetsOnboarding(true));
 				navigation.navigate('WidgetsSuggestions');
