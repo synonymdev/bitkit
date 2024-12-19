@@ -1,11 +1,8 @@
-const { types } = require('@babel/core');
 const { E2E_TESTS } = process.env;
 
 module.exports = {
 	presets: ['module:@react-native/babel-preset'],
 	plugins: [
-		// Support bigint literal `0n`
-		transformBigIntLiteral,
 		// Support `for await () {}`
 		'@babel/plugin-proposal-async-generator-functions',
 		[
@@ -25,17 +22,3 @@ module.exports = {
 		},
 	},
 };
-
-// Copied from unsupported https://github.com/babel/babel/pull/10102/files
-function transformBigIntLiteral() {
-	return {
-		visitor: {
-			BigIntLiteral(path) {
-				const bigintCall = types.callExpression(types.identifier('BigInt'), [
-					types.stringLiteral(path.node.value),
-				]);
-				path.replaceWith(bigintCall);
-			},
-		},
-	};
-}
