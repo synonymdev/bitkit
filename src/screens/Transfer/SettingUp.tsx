@@ -35,7 +35,7 @@ const SettingUp = ({
 	}, [lightningSettingUpStep, navigation]);
 
 	const onClose = (): void => {
-		navigation.navigate('Wallet', { screen: 'Wallets' });
+		navigation.popTo('Wallet', { screen: 'Wallets' });
 	};
 
 	return (
@@ -43,8 +43,7 @@ const SettingUp = ({
 			<SafeAreaInset type="top" />
 			<NavigationHeader
 				title={t('transfer.nav_title')}
-				displayBackButton={false}
-				onClosePress={onClose}
+				showBackButton={false}
 			/>
 			<View style={styles.content} testID="LightningSettingUp">
 				<Display color="purple">{t('setting_up_header')}</Display>

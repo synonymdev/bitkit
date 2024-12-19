@@ -1,11 +1,12 @@
 import React, { ReactElement, memo } from 'react';
-import { useAppSelector } from '../../hooks/redux';
+import { NavigationIndependentTree } from '@react-navigation/native';
 import {
 	createNativeStackNavigator,
 	NativeStackNavigationOptions,
 	NativeStackNavigationProp,
 } from '@react-navigation/native-stack';
 
+import { NavigationContainer } from '../../styles/components';
 import BottomSheetWrapper from '../../components/BottomSheetWrapper';
 import ShowMnemonic from '../../screens/Settings/Backup/ShowMnemonic';
 import ShowPassphrase from '../../screens/Settings/Backup/ShowPassphrase';
@@ -15,8 +16,8 @@ import Success from '../../screens/Settings/Backup/Success';
 import Warning from '../../screens/Settings/Backup/Warning';
 import MultipleDevices from '../../screens/Settings/Backup/MultipleDevices';
 import Metadata from '../../screens/Settings/Backup/Metadata';
-import { NavigationContainer } from '../../styles/components';
 import { useSnapPoints } from '../../hooks/bottomSheet';
+import { useAppSelector } from '../../hooks/redux';
 import { viewControllerIsOpenSelector } from '../../store/reselect/ui';
 import { __E2E__ } from '../../constants/env';
 
@@ -49,9 +50,9 @@ const BackupNavigation = (): ReactElement => {
 
 	return (
 		<BottomSheetWrapper view="backupNavigation" snapPoints={snapPoints}>
-			<NavigationContainer key={isOpen.toString()}>
-				<Stack.Navigator screenOptions={navOptions}>
-					<Stack.Group screenOptions={navOptions}>
+			<NavigationIndependentTree>
+				<NavigationContainer key={isOpen.toString()}>
+					<Stack.Navigator screenOptions={navOptions}>
 						<Stack.Screen name="ShowMnemonic" component={ShowMnemonic} />
 						<Stack.Screen name="ShowPassphrase" component={ShowPassphrase} />
 						<Stack.Screen name="ConfirmMnemonic" component={ConfirmMnemonic} />
@@ -63,9 +64,9 @@ const BackupNavigation = (): ReactElement => {
 						<Stack.Screen name="Success" component={Success} />
 						<Stack.Screen name="MultipleDevices" component={MultipleDevices} />
 						<Stack.Screen name="Metadata" component={Metadata} />
-					</Stack.Group>
-				</Stack.Navigator>
-			</NavigationContainer>
+					</Stack.Navigator>
+				</NavigationContainer>
+			</NavigationIndependentTree>
 		</BottomSheetWrapper>
 	);
 };

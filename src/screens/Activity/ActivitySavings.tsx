@@ -64,6 +64,7 @@ const ActivitySavings = ({
 			<NavigationHeader
 				title={t('savings.title')}
 				icon={<BitcoinCircleIcon width={32} height={32} />}
+				showCloseButton={false}
 			/>
 
 			<View style={styles.imageContainer} pointerEvents="none">

@@ -101,10 +101,7 @@ const ReceiveAmount = ({
 
 	return (
 		<GradientView style={styles.container}>
-			<BottomSheetNavigationHeader
-				title={t('receive_bitcoin')}
-				displayBackButton={true}
-			/>
+			<BottomSheetNavigationHeader title={t('receive_bitcoin')} />
 			<View style={styles.content}>
 				<NumberPadTextField
 					value={invoice.numberPadText}

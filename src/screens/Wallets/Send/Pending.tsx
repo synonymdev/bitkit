@@ -42,7 +42,7 @@ const Pending = ({ route }: SendScreenProps<'Pending'>): ReactElement => {
 		<GradientView style={styles.container}>
 			<BottomSheetNavigationHeader
 				title={t('send_pending')}
-				displayBackButton={false}
+				showBackButton={false}
 			/>
 
 			<View style={styles.content}>

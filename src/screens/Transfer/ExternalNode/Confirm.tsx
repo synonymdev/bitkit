@@ -72,10 +72,7 @@ const ExternalConfirm = ({
 	return (
 		<ThemedView style={styles.root}>
 			<SafeAreaInset type="top" />
-			<NavigationHeader
-				title={t('external.nav_title')}
-				onClosePress={(): void => navigation.navigate('Wallet')}
-			/>
+			<NavigationHeader title={t('external.nav_title')} />
 			<View style={styles.content}>
 				<Display>
 					<Trans

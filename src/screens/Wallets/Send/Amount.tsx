@@ -241,7 +241,7 @@ const Amount = ({ navigation }: SendScreenProps<'Amount'>): ReactElement => {
 		<GradientView style={styles.container}>
 			<BottomSheetNavigationHeader
 				title={t('send_amount')}
-				displayBackButton={canGoBack}
+				showBackButton={canGoBack}
 				actionIcon={
 					transaction.slashTagsUrl ? (
 						<ContactImage url={transaction.slashTagsUrl} />

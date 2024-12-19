@@ -10,23 +10,17 @@ import Dialog from '../../../components/Dialog';
 import Button from '../../../components/buttons/Button';
 import { wipeApp } from '../../../store/utils/settings';
 import { showBottomSheet } from '../../../store/utils/ui';
-import type { SettingsScreenProps } from '../../../navigation/types';
 
 const imageSrc = require('../../../assets/illustrations/restore.png');
 
-const ResetAndRestore = ({
-	navigation,
-}: SettingsScreenProps<'ResetAndRestore'>): ReactElement => {
+const ResetAndRestore = (): ReactElement => {
 	const { t } = useTranslation('security');
 	const [showDialog, setShowDialog] = useState(false);
 
 	return (
 		<View style={styles.root}>
 			<SafeAreaInset type="top" />
-			<NavigationHeader
-				title={t('reset_title')}
-				onClosePress={(): void => navigation.navigate('Wallet')}
-			/>
+			<NavigationHeader title={t('reset_title')} />
 			<View style={styles.container}>
 				<BodyM color="secondary">{t('reset_text')}</BodyM>
 

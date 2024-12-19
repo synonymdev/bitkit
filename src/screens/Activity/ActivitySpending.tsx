@@ -52,6 +52,7 @@ const ActivitySpending = ({
 			<NavigationHeader
 				title={t('spending.title')}
 				icon={<LightningCircleIcon width={32} height={32} />}
+				showCloseButton={false}
 			/>
 
 			<View style={styles.imageContainer} pointerEvents="none">

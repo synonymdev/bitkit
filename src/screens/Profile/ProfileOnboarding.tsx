@@ -125,19 +125,13 @@ const Layout = memo(
 		const dispatch = useAppDispatch();
 
 		const onSwipeLeft = (): void => {
-			navigation.navigate('Wallet');
+			navigation.popToTop();
 		};
 
 		return (
 			<ThemedView style={styles.root}>
 				<SafeAreaInset type="top" />
-				<NavigationHeader
-					title={header}
-					displayBackButton={true}
-					onClosePress={(): void => {
-						navigation.navigate('Wallet');
-					}}
-				/>
+				<NavigationHeader title={header} />
 				<DetectSwipe onSwipeLeft={onSwipeLeft}>
 					<View style={styles.content}>
 						<View style={styles.imageContainer}>

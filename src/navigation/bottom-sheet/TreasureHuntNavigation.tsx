@@ -5,6 +5,7 @@ import React, {
 	useEffect,
 	useState,
 } from 'react';
+import { NavigationIndependentTree } from '@react-navigation/native';
 import {
 	createNativeStackNavigator,
 	NativeStackNavigationProp,
@@ -130,29 +131,31 @@ const TreasureHuntNavigation = (): ReactElement => {
 
 	return (
 		<BottomSheetWrapper view="treasureHunt" snapPoints={snapPoints}>
-			<NavigationContainer key={isOpen.toString()}>
-				<Stack.Navigator
-					initialRouteName={initialScreen}
-					screenOptions={screenOptions}>
-					<Stack.Screen name="Chest" component={Chest} />
-					<Stack.Screen
-						name="Loading"
-						component={Loading}
-						initialParams={{ chestId }}
-					/>
-					<Stack.Screen
-						name="Prize"
-						component={Prize}
-						initialParams={{ chestId }}
-					/>
-					<Stack.Screen
-						name="Airdrop"
-						component={Airdrop}
-						initialParams={{ chestId }}
-					/>
-					<Stack.Screen name="Error" component={Error} />
-				</Stack.Navigator>
-			</NavigationContainer>
+			<NavigationIndependentTree>
+				<NavigationContainer key={isOpen.toString()}>
+					<Stack.Navigator
+						initialRouteName={initialScreen}
+						screenOptions={screenOptions}>
+						<Stack.Screen name="Chest" component={Chest} />
+						<Stack.Screen
+							name="Loading"
+							component={Loading}
+							initialParams={{ chestId }}
+						/>
+						<Stack.Screen
+							name="Prize"
+							component={Prize}
+							initialParams={{ chestId }}
+						/>
+						<Stack.Screen
+							name="Airdrop"
+							component={Airdrop}
+							initialParams={{ chestId }}
+						/>
+						<Stack.Screen name="Error" component={Error} />
+					</Stack.Navigator>
+				</NavigationContainer>
+			</NavigationIndependentTree>
 		</BottomSheetWrapper>
 	);
 };

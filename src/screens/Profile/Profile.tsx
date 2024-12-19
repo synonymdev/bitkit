@@ -68,7 +68,7 @@ const ProfileScreen = ({
 	const [isSharing, setIsSharing] = useState(false);
 
 	const onSwipeLeft = (): void => {
-		navigation.navigate('Wallet');
+		navigation.popToTop();
 	};
 
 	const handleCopy = useCallback((): void => {
@@ -110,12 +110,7 @@ const ProfileScreen = ({
 			<NavigationHeader
 				title={t('profile')}
 				actionIcon={<UsersIcon height={24} width={24} />}
-				onClosePress={(): void => {
-					navigation.navigate('Wallet');
-				}}
-				onActionPress={(): void => {
-					navigation.navigate('Contacts');
-				}}
+				onActionPress={(): void => navigation.navigate('Contacts')}
 			/>
 
 			<DetectSwipe onSwipeLeft={onSwipeLeft}>

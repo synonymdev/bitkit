@@ -13,9 +13,9 @@ const InfoScreen = ({
 	description,
 	image,
 	buttonText,
-	displayBackButton = true,
+	showBackButton = true,
+	showCloseButton = true,
 	testID,
-	onClosePress,
 	onButtonPress,
 }: {
 	navTitle: string;
@@ -23,9 +23,9 @@ const InfoScreen = ({
 	description: string | ReactElement;
 	image: ImageSourcePropType;
 	buttonText: string;
-	displayBackButton?: boolean;
+	showBackButton?: boolean;
+	showCloseButton?: boolean;
 	testID?: string;
-	onClosePress?: () => void;
 	onButtonPress: () => void;
 }): ReactElement => {
 	return (
@@ -33,8 +33,8 @@ const InfoScreen = ({
 			<SafeAreaInset type="top" />
 			<NavigationHeader
 				title={navTitle}
-				displayBackButton={displayBackButton}
-				onClosePress={onClosePress}
+				showBackButton={showBackButton}
+				showCloseButton={showCloseButton}
 			/>
 			<View style={styles.content} testID={testID}>
 				<Display>{title}</Display>

@@ -44,7 +44,7 @@ const Result = ({ route }: PinScreenProps<'Result'>): ReactElement => {
 		<GradientView style={styles.root}>
 			<BottomSheetNavigationHeader
 				title={t('success_title')}
-				displayBackButton={false}
+				showBackButton={false}
 			/>
 
 			<View style={styles.content}>

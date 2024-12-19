@@ -17,7 +17,7 @@ const Availability = ({
 	const { t } = useTranslation('lightning');
 
 	const onCancel = (): void => {
-		navigation.navigate('Wallet');
+		navigation.popTo('Wallet', { screen: 'Wallets' });
 	};
 
 	const onContinue = (): void => {

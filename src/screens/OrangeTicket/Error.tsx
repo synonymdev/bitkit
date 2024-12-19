@@ -43,7 +43,7 @@ const Error = ({ route }: OrangeTicketScreenProps<'Error'>): ReactElement => {
 
 	return (
 		<GradientView style={styles.root}>
-			<BottomSheetNavigationHeader title={title} displayBackButton={false} />
+			<BottomSheetNavigationHeader title={title} />
 
 			<View style={styles.content}>
 				<BodyM color="secondary">{text}</BodyM>

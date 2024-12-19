@@ -134,6 +134,7 @@ const WebRelay = ({
 			<SafeAreaInset type="top" />
 			<NavigationHeader
 				title={t('adv.web_relay')}
+				showCloseButton={false}
 				actionIcon={<ScanIcon color="white" width={20} height={20} />}
 				onActionPress={navigateToScanner}
 			/>

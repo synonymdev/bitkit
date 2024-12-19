@@ -69,7 +69,7 @@ const NewTxPrompt = (): ReactElement => {
 							? t('payment_received')
 							: t('instant_payment_received')
 					}
-					displayBackButton={false}
+					showBackButton={false}
 				/>
 
 				<View style={styles.content}>

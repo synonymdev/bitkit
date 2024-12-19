@@ -23,12 +23,7 @@ const FormSuccess = ({
 	return (
 		<ThemedView style={styles.root}>
 			<SafeAreaInset type="top" />
-			<NavigationHeader
-				title={t('support.title_success')}
-				onClosePress={(): void => {
-					navigation.navigate('Wallet');
-				}}
-			/>
+			<NavigationHeader title={t('support.title_success')} />
 			<View style={styles.content}>
 				<BodyM style={styles.text} color="secondary">
 					{t('support.text_success')}

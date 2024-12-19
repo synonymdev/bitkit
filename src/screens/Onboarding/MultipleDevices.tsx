@@ -25,6 +25,7 @@ const MultipleDevices = ({
 			image={imageSrc}
 			buttonText={t('understood')}
 			testID="MultipleDevices"
+			showCloseButton={false}
 			onButtonPress={(): void => {
 				navigation.navigate('RestoreFromSeed');
 			}}

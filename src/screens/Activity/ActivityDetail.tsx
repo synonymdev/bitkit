@@ -1069,13 +1069,7 @@ const ActivityDetail = ({
 	return (
 		<ThemedView style={styles.root}>
 			<SafeAreaInset type="top" />
-			<NavigationHeader
-				title={title}
-				onClosePress={(): void => {
-					navigation.goBack();
-					navigation.goBack();
-				}}
-			/>
+			<NavigationHeader title={title} />
 			<ScrollView
 				contentContainerStyle={styles.scrollContent}
 				showsVerticalScrollIndicator={false}>

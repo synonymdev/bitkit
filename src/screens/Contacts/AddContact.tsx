@@ -95,7 +95,7 @@ const AddContact = ({
 			<View style={styles.container}>
 				<BottomSheetNavigationHeader
 					title={t('contact_add_capital')}
-					displayBackButton={false}
+					showBackButton={false}
 				/>
 
 				<View style={styles.content}>

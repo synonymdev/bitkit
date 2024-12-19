@@ -121,6 +121,7 @@ d('Backup', () => {
 			element(by.id(`Tag-${tag}`).withAncestor(by.id('ActivityTags'))),
 		).toBeVisible();
 		await element(by.id('NavigationClose')).atIndex(0).tap();
+		await sleep(200); // animation
 
 		// check widgets
 		await element(by.id('WalletsScrollView')).scroll(300, 'down', NaN, 0.85);

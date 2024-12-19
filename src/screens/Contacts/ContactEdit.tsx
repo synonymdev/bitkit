@@ -76,13 +76,6 @@ const ContactEdit = ({
 			<SafeAreaInset type="top" />
 			<NavigationHeader
 				title={t(savedContact ? 'contact_edit_capital' : 'contact_add_capital')}
-				onClosePress={(): void => {
-					if (savedContact) {
-						navigation.navigate('Contact', { url });
-					} else {
-						navigation.navigate('Contacts');
-					}
-				}}
 			/>
 			<KeyboardAvoidingView style={styles.content}>
 				<ProfileCard

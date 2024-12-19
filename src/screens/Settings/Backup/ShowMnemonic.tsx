@@ -80,7 +80,7 @@ const ShowMnemonic = ({
 		<View style={styles.container}>
 			<BottomSheetNavigationHeader
 				title={t('mnemonic_your')}
-				displayBackButton={false}
+				showBackButton={false}
 			/>
 
 			<BodyM color="secondary">

@@ -35,7 +35,7 @@ const Funding = ({
 	};
 
 	const onFund = (): void => {
-		navigation.navigate('Wallet');
+		navigation.popTo('Wallet', { screen: 'Wallets' });
 		showBottomSheet('receiveNavigation', { receiveScreen: 'ReceiveAmount' });
 	};
 
@@ -49,12 +49,7 @@ const Funding = ({
 	return (
 		<ThemedView style={styles.root}>
 			<SafeAreaInset type="top" />
-			<NavigationHeader
-				title={t('funding.nav_title')}
-				onClosePress={(): void => {
-					navigation.navigate('Wallet');
-				}}
-			/>
+			<NavigationHeader title={t('funding.nav_title')} />
 			<View style={styles.content}>
 				<Display>
 					<Trans

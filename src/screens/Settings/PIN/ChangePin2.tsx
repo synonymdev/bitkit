@@ -75,10 +75,6 @@ const ChangePin2 = ({
 			<SafeAreaInset type="top" />
 			<NavigationHeader
 				title={t(origPIN ? 'cp_retype_title' : 'cp_setnew_title')}
-				onClosePress={(): void => {
-					navigation.popToTop();
-					navigation.pop();
-				}}
 			/>
 
 			<BodyM style={styles.text} color="secondary">

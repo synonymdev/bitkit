@@ -85,10 +85,7 @@ const SpendingConfirm = ({
 	return (
 		<ThemedView style={styles.root}>
 			<SafeAreaInset type="top" />
-			<NavigationHeader
-				title={t('transfer.nav_title')}
-				onClosePress={(): void => navigation.navigate('Wallet')}
-			/>
+			<NavigationHeader title={t('transfer.nav_title')} />
 			<View style={styles.content}>
 				<Display>
 					<Trans

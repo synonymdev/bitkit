@@ -46,7 +46,7 @@ const Mnemonic = ({
 	return (
 		<ThemedView style={styles.root}>
 			<SafeAreaInset type="top" />
-			<NavigationHeader title={t('mnemonic_phrase')} />
+			<NavigationHeader title={t('mnemonic_phrase')} showCloseButton={false} />
 			<View style={styles.content}>
 				<BodyM style={styles.text} color="secondary">
 					{t('mnemonic_write', { length: seed.length })}

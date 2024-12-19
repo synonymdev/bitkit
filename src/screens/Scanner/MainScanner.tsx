@@ -19,7 +19,7 @@ const ScannerScreen = ({
 	const onScan = route.params?.onScan;
 
 	const onSwipeRight = (): void => {
-		navigation.navigate('Wallet');
+		navigation.popToTop();
 	};
 
 	const onRead = (uri: string): void => {
@@ -51,7 +51,6 @@ const ScannerScreen = ({
 				<NavigationHeader
 					style={styles.navigationHeader}
 					title={t('qr_scan')}
-					onClosePress={(): void => navigation.pop()}
 				/>
 			</ScannerComponent>
 		</DetectSwipe>

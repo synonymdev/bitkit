@@ -23,7 +23,11 @@ const PinChanged = ({
 	return (
 		<ThemedView style={styles.container}>
 			<SafeAreaInset type="top" />
-			<NavigationHeader title={t('cp_changed_title')} />
+			<NavigationHeader
+				title={t('cp_changed_title')}
+				showBackButton={false}
+				showCloseButton={false}
+			/>
 
 			<View style={styles.message}>
 				<BodyM color="secondary">{t('cp_changed_text')}</BodyM>

@@ -15,9 +15,7 @@ type ContactsOnboardingProps = NativeStackScreenProps<
 	'Contacts'
 >;
 
-const ContactsOnboarding = ({
-	navigation,
-}: ContactsOnboardingProps): ReactElement => {
+const ContactsOnboarding = ({}: ContactsOnboardingProps): ReactElement => {
 	const { t } = useTranslation('slashtags');
 	const dispatch = useAppDispatch();
 
@@ -35,9 +33,6 @@ const ContactsOnboarding = ({
 			image={imageSrc}
 			buttonText={t('onboarding_button')}
 			testID="ContactsOnboarding"
-			onClosePress={(): void => {
-				navigation.navigate('Wallet');
-			}}
 			onButtonPress={(): void => {
 				dispatch(setOnboardedContacts(true));
 			}}

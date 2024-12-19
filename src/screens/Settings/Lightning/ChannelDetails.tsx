@@ -231,10 +231,7 @@ const ChannelDetails = ({
 	return (
 		<ThemedView style={styles.root}>
 			<SafeAreaInset type="top" />
-			<NavigationHeader
-				title={channelName}
-				onClosePress={(): void => navigation.navigate('Wallet')}
-			/>
+			<NavigationHeader title={channelName} />
 			<ScrollView
 				contentContainerStyle={styles.content}
 				testID="ChannelScrollView"

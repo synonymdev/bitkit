@@ -25,10 +25,7 @@ const ReceiveGeoBlocked =
 
 		return (
 			<GradientView style={styles.root}>
-				<BottomSheetNavigationHeader
-					title={t('wallet:receive_bitcoin')}
-					displayBackButton={true}
-				/>
+				<BottomSheetNavigationHeader title={t('wallet:receive_bitcoin')} />
 
 				<View style={styles.content}>
 					<BodyM color="white64">{t('funding.text_blocked_cjit')}</BodyM>

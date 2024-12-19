@@ -82,12 +82,7 @@ const ExportToPhone = ({
 
 	return (
 		<View style={styles.root}>
-			<NavigationHeader
-				title={t('export_title')}
-				onClosePress={(): void => {
-					navigation.navigate('Wallet');
-				}}
-			/>
+			<NavigationHeader title={t('export_title')} />
 			<KeyboardAvoidingView style={styles.content}>
 				<BodyM color="secondary">{t('export_text')}</BodyM>
 				<TextInput

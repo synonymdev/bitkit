@@ -64,7 +64,7 @@ const Widget = ({
 
 	const onDelete = (): void => {
 		dispatch(deleteWidget(url));
-		navigation.navigate('Wallet');
+		navigation.popToTop();
 	};
 
 	const onSave = (): void => {
@@ -81,16 +81,13 @@ const Widget = ({
 			);
 		}
 
-		navigation.navigate('Wallet');
+		navigation.popToTop();
 	};
 
 	return (
 		<ThemedView style={styles.container}>
 			<SafeAreaInset type="top" />
-			<NavigationHeader
-				title={t('widget_feed')}
-				onClosePress={(): void => navigation.navigate('Wallet')}
-			/>
+			<NavigationHeader title={t('widget_feed')} />
 
 			{!config ? (
 				<HourglassSpinner />

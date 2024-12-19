@@ -262,6 +262,7 @@ const Channels = ({
 			<SafeAreaInset type="top" />
 			<NavigationHeader
 				title={t('connections')}
+				showCloseButton={false}
 				onActionPress={handleAdd}
 				actionIcon={<PlusIcon width={24} height={24} />}
 			/>

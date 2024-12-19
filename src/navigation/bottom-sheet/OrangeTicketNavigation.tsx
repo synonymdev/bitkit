@@ -6,6 +6,7 @@ import React, {
 	useState,
 } from 'react';
 import { ldk } from '@synonymdev/react-native-ldk';
+import { NavigationIndependentTree } from '@react-navigation/native';
 import {
 	createNativeStackNavigator,
 	NativeStackNavigationProp,
@@ -157,27 +158,29 @@ const OrangeTicket = (): ReactElement => {
 
 	return (
 		<BottomSheetWrapper view="orangeTicket" snapPoints={snapPoints}>
-			<NavigationContainer key={isOpen.toString()}>
-				<Stack.Navigator
-					initialRouteName={initialScreen}
-					screenOptions={screenOptions}>
-					<Stack.Screen
-						name="Prize"
-						component={Prize}
-						initialParams={{ ticketId, amount }}
-					/>
-					<Stack.Screen
-						name="UsedCard"
-						component={UsedCard}
-						initialParams={{ amount }}
-					/>
-					<Stack.Screen
-						name="Error"
-						component={Error}
-						initialParams={{ errorCode }}
-					/>
-				</Stack.Navigator>
-			</NavigationContainer>
+			<NavigationIndependentTree>
+				<NavigationContainer key={isOpen.toString()}>
+					<Stack.Navigator
+						initialRouteName={initialScreen}
+						screenOptions={screenOptions}>
+						<Stack.Screen
+							name="Prize"
+							component={Prize}
+							initialParams={{ ticketId, amount }}
+						/>
+						<Stack.Screen
+							name="UsedCard"
+							component={UsedCard}
+							initialParams={{ amount }}
+						/>
+						<Stack.Screen
+							name="Error"
+							component={Error}
+							initialParams={{ errorCode }}
+						/>
+					</Stack.Navigator>
+				</NavigationContainer>
+			</NavigationIndependentTree>
 		</BottomSheetWrapper>
 	);
 };

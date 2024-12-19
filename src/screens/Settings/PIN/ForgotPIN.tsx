@@ -42,7 +42,7 @@ const ForgotPIN = (): ReactElement => {
 			<View style={styles.container}>
 				<BottomSheetNavigationHeader
 					title={t('pin_forgot_title')}
-					displayBackButton={false}
+					showBackButton={false}
 				/>
 				<BodyM testID="ForgotPIN" color="secondary">
 					{t('pin_forgot_text')}

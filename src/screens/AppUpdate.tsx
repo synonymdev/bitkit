@@ -33,6 +33,7 @@ const AppUpdate = (): ReactElement => {
 			imagePosition="center"
 			buttonText={t('update_critical_button')}
 			testID="CriticalUpdate"
+			showCloseButton={false}
 			onButtonPress={onUpdate}
 		/>
 	);

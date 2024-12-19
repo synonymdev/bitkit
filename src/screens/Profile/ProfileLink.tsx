@@ -40,7 +40,7 @@ const ProfileLink = ({
 		<View style={styles.content}>
 			<BottomSheetNavigationHeader
 				title={t('profile_add_link')}
-				displayBackButton={false}
+				showBackButton={false}
 			/>
 			<LabeledInput
 				style={styles.titleInput}

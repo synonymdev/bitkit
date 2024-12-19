@@ -46,7 +46,7 @@ const Passphrase = ({
 					bounces={false}>
 					<SafeAreaInset type="top" />
 					<View style={styles.navigationContainer}>
-						<NavigationHeader />
+						<NavigationHeader showCloseButton={false} />
 						<Flag text={t('advanced')} style={styles.flag} />
 					</View>
 					<View style={styles.imageContainer}>

@@ -34,9 +34,6 @@ const SpendingIntro = ({
 			image={imageSrc}
 			buttonText={t('spending_intro.button')}
 			testID="SpendingIntro"
-			onClosePress={(): void => {
-				navigation.navigate('Wallet');
-			}}
 			onButtonPress={onContinue}
 		/>
 	);

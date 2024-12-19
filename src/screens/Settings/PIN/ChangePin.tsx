@@ -31,13 +31,7 @@ const ChangePin = ({
 	return (
 		<ThemedView style={styles.container} testID="ChangePIN">
 			<SafeAreaInset type="top" />
-			<NavigationHeader
-				title={t('cp_title')}
-				onClosePress={(): void => {
-					navigation.popToTop();
-					navigation.pop();
-				}}
-			/>
+			<NavigationHeader title={t('cp_title')} />
 
 			<View style={styles.text}>
 				<BodyM color="secondary">{t('cp_text')}</BodyM>

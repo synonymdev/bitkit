@@ -98,7 +98,7 @@ const Recovery = ({
 	return (
 		<ThemedView style={styles.root}>
 			<SafeAreaInset type="top" />
-			<NavigationHeader title={t('recovery')} displayBackButton={false} />
+			<NavigationHeader title={t('recovery')} showCloseButton={false} />
 			<View style={styles.content}>
 				<BodyM color="secondary">{t('recovery_text')}</BodyM>
 

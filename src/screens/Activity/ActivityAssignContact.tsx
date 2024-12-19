@@ -20,12 +20,7 @@ const ActivityAssignContact = ({
 	return (
 		<ThemedView style={styles.container}>
 			<SafeAreaInset type="top" />
-			<NavigationHeader
-				title={t('contact_assign')}
-				onClosePress={(): void => {
-					navigation.navigate('Wallet');
-				}}
-			/>
+			<NavigationHeader title={t('contact_assign')} />
 			<View style={styles.content}>
 				<ContactsList
 					onPress={({ url }): void => {

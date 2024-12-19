@@ -23,12 +23,7 @@ const FormError = ({
 	return (
 		<ThemedView style={styles.root}>
 			<SafeAreaInset type="top" />
-			<NavigationHeader
-				title={t('support.title_unsuccess')}
-				onClosePress={(): void => {
-					navigation.navigate('Wallet');
-				}}
-			/>
+			<NavigationHeader title={t('support.title_unsuccess')} />
 			<View style={styles.content}>
 				<BodyM style={styles.text} color="secondary">
 					{t('support.text_unsuccess')}
