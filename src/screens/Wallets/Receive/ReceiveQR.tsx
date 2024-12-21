@@ -630,7 +630,8 @@ const ReceiveQR = ({
 					style={styles.switchRow}
 					color="purple"
 					isEnabled={enableInstant}
-					onPress={onToggleInstant}>
+					onPress={onToggleInstant}
+					testID="ReceiveInstantSwitch">
 					{!enableInstant && <ArrowLNFunds color="secondary" />}
 					<BodyM>{t('receive_spending')}</BodyM>
 				</SwitchRow>
