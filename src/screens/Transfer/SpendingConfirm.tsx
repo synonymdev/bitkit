@@ -100,13 +100,13 @@ const SpendingConfirm = ({
 
 				<View style={styles.fees}>
 					<View style={styles.feesRow}>
-						<View style={styles.feeItem}>
+						<View testID="SpendingConfirmNetworkFee" style={styles.feeItem}>
 							<Caption13Up style={styles.feeItemLabel} color="secondary">
 								{t('spending_confirm.network_fee')}
 							</Caption13Up>
 							<Money sats={transactionFee} size="bodySSB" symbol={true} />
 						</View>
-						<View style={styles.feeItem}>
+						<View testID="SpendingConfirmLspFee" style={styles.feeItem}>
 							<Caption13Up style={styles.feeItemLabel} color="secondary">
 								{t('spending_confirm.lsp_fee')}
 							</Caption13Up>
@@ -114,13 +114,13 @@ const SpendingConfirm = ({
 						</View>
 					</View>
 					<View style={styles.feesRow}>
-						<View style={styles.feeItem}>
+						<View testID="SpendingConfirmAmount" style={styles.feeItem}>
 							<Caption13Up style={styles.feeItemLabel} color="secondary">
 								{t('spending_confirm.amount')}
 							</Caption13Up>
 							<Money sats={clientBalance} size="bodySSB" symbol={true} />
 						</View>
-						<View style={styles.feeItem}>
+						<View testID="SpendingConfirmTotal" style={styles.feeItem}>
 							<Caption13Up style={styles.feeItemLabel} color="secondary">
 								{t('spending_confirm.total')}
 							</Caption13Up>

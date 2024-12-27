@@ -61,7 +61,7 @@ const LightningChannel = ({
 				</View>
 			)}
 			<View style={styles.amounts}>
-				<View style={styles.amount}>
+				<View testID="LightningChannelSpending" style={styles.amount}>
 					<UpArrow color={spendingAvailableColor} width={14} height={14} />
 					<Money
 						sats={localBalance}
@@ -70,7 +70,7 @@ const LightningChannel = ({
 						unit={EUnit.BTC}
 					/>
 				</View>
-				<View style={styles.amount}>
+				<View testID="LightningChannelReceiving" style={styles.amount}>
 					<DownArrow color={receivingAvailableColor} width={14} height={14} />
 					<Money
 						sats={remoteBalance}
