@@ -79,7 +79,7 @@ const FeeInfo = ({
 	return (
 		<>
 			<BodyM
-				testID="ReceiveReviewLspFeeText"
+				testID="ReceiveConnectLspFeeText"
 				style={styles.text}
 				color="secondary">
 				<Trans
@@ -175,7 +175,7 @@ const ReceiveConnect = ({
 		<GradientView style={styles.container}>
 			<BottomSheetNavigationHeader title={t('receive_bitcoin')} />
 			<View style={styles.content}>
-				<AmountToggle testID="Review" amount={amount} />
+				<AmountToggle testID="ReceiveConnectAmount" amount={amount} />
 
 				{!isLoading && feeEstimate ? (
 					<FeeInfo fees={feeEstimate} isAdditional={isAdditional} />

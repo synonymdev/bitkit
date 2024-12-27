@@ -119,7 +119,7 @@ const ReceiveAmount = ({
 								{t('minimum')}
 							</Caption13Up>
 							<Money
-								testID="Minimum"
+								testID="ReceiveAmountMinimum"
 								sats={minimumAmount}
 								size="bodySSB"
 								symbol={true}
