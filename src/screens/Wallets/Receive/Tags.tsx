@@ -14,6 +14,7 @@ import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 import { lastUsedTagsSelector } from '../../../store/reselect/metadata';
 import { updateInvoice } from '../../../store/slices/receive';
 import { ReceiveScreenProps } from '../../../navigation/types';
+import KeyboardSpacer from '../../../components/KeyboardSpacer';
 
 const Tags = ({ navigation }: ReceiveScreenProps<'Tags'>): ReactElement => {
 	const { t } = useTranslation('wallet');
@@ -43,6 +44,7 @@ const Tags = ({ navigation }: ReceiveScreenProps<'Tags'>): ReactElement => {
 		<GradientView style={styles.container}>
 			<BottomSheetNavigationHeader title={t('tags_add')} />
 			<View style={styles.content}>
+				{/* <KeyboardAvoidingView style={styles.content}> */}
 				{lastUsedTags.length !== 0 && (
 					<>
 						<Caption13Up color="secondary" style={styles.section}>
@@ -85,8 +87,10 @@ const Tags = ({ navigation }: ReceiveScreenProps<'Tags'>): ReactElement => {
 						onPress={handleSubmit}
 					/>
 				</View>
+				<SafeAreaInset type="bottom" minPadding={16} />
+				<KeyboardSpacer />
+				{/* </KeyboardAvoidingView> */}
 			</View>
-			<SafeAreaInset type="bottom" minPadding={16} />
 		</GradientView>
 	);
 };

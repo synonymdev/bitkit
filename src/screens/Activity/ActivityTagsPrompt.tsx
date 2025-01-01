@@ -102,7 +102,7 @@ const ActivityTagsPrompt = (): ReactElement => {
 								text={t('tags_add_button')}
 								size="large"
 								disabled={text.length === 0}
-								testID="ReceiveTagsSubmit"
+								testID="ActivityTagsSubmit"
 								onPress={handleSubmit}
 							/>
 						</View>
