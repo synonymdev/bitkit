@@ -189,6 +189,7 @@ const Suggestions = (): ReactElement => {
 					loop={false}
 					height={170}
 					width={167}
+					// @ts-ignore
 					panGestureHandlerProps={panGestureHandlerProps}
 					onSnapToItem={setIndex}
 					renderItem={handleRenderItem}
