@@ -16,7 +16,7 @@ fs.access(devEnvFile, fs.constants.F_OK, (err) => {
 if (os.type() === 'Darwin') {
 	let cmd = 'react-native setup-ios-permissions';
 	if (!process.env.CI) {
-		cmd += '&& pod install --project-directory=ios';
+		cmd += '&& RCT_NEW_ARCH_ENABLED=0 pod install --project-directory=ios';
 	}
 	exec(cmd);
 }
