@@ -15,6 +15,7 @@ import { processUri } from '../../../utils/scanner/scanner';
 import useColors from '../../../hooks/colors';
 import useKeyboard, { Keyboard } from '../../../hooks/keyboard';
 import type { SendScreenProps } from '../../../navigation/types';
+import KeyboardSpacer from '../../../components/KeyboardSpacer';
 
 type TValidation = {
 	[x: string]: boolean;
@@ -53,6 +54,8 @@ const Address = ({ route }: SendScreenProps<'Address'>): ReactElement => {
 	return (
 		<GradientView style={styles.container}>
 			<BottomSheetNavigationHeader title={t('send_bitcoin')} />
+
+			{/* <KeyboardAvoidingView style={styles.content}> */}
 			<View style={styles.content}>
 				<Caption13Up color="secondary" style={styles.label} testID="Caption">
 					{t('send_to')}
@@ -86,8 +89,10 @@ const Address = ({ route }: SendScreenProps<'Address'>): ReactElement => {
 						onPress={onContinue}
 					/>
 				</View>
+				<SafeAreaInset type="bottom" minPadding={16} />
+				<KeyboardSpacer />
+				{/* </KeyboardAvoidingView> */}
 			</View>
-			<SafeAreaInset type="bottom" minPadding={16} />
 		</GradientView>
 	);
 };

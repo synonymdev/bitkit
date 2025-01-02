@@ -34,6 +34,7 @@ import {
 	denominationSelector,
 	nextUnitSelector,
 } from '../../../store/reselect/settings';
+import KeyboardSpacer from '../../../components/KeyboardSpacer';
 
 const imageSrc = require('../../../assets/illustrations/coin-stack.png');
 
@@ -250,6 +251,7 @@ const ReceiveDetails = ({
 				)}
 			</View>
 			<SafeAreaInset type="bottom" minPadding={16} />
+			<KeyboardSpacer />
 		</GradientView>
 	);
 };

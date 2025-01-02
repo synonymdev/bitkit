@@ -169,9 +169,15 @@ const BottomSheetWrapper = forwardRef(
 				index={index}
 				snapPoints={snapPoints}
 				animateOnMount={!reducedMotion && !__E2E__}
+				enableDynamicSizing={false}
+				enableOverdrag={false}
 				enablePanDownToClose={true}
+				keyboardBehavior="extend"
+				// keyboardBehavior='fillParent'
 				keyboardBlurBehavior="restore"
+				// @ts-ignore
 				activeOffsetX={activeOffsetX}
+				// @ts-ignore
 				activeOffsetY={activeOffsetY}
 				onChange={handleSheetChanges}>
 				<BottomSheetView style={style} testID={testID}>

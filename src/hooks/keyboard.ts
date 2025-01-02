@@ -9,6 +9,8 @@ const useKeyboard = (): {
 	const [keyboardShown, setKeyboardShown] = useState(false);
 	const [keyboardHeight, setKeyboardHeight] = useState(0);
 
+	console.log({ keyboardHeight });
+
 	useEffect(() => {
 		const keyboardWillShowListener = RNKeyboard.addListener(
 			// ios has keyboardWillShow, android doesn't
@@ -20,7 +22,10 @@ const useKeyboard = (): {
 		const keyboardDidShowListener = RNKeyboard.addListener(
 			'keyboardDidShow',
 			(event: KeyboardEvent) => {
-				setKeyboardHeight(event.endCoordinates.height);
+				const { height, screenY } = event.endCoordinates;
+				console.log({ height, screenY });
+				setKeyboardHeight(height);
+				// setKeyboardHeight(screenY - height);
 			},
 		);
 		const keyboardDidHideListener = RNKeyboard.addListener(
