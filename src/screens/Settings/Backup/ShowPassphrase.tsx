@@ -9,7 +9,6 @@ import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigati
 import SafeAreaInset from '../../../components/SafeAreaInset';
 import GradientView from '../../../components/GradientView';
 import Button from '../../../components/buttons/Button';
-import { useBottomSheetBackPress } from '../../../hooks/bottomSheet';
 import type { BackupScreenProps } from '../../../navigation/types';
 
 const ShowPassphrase = ({
@@ -18,8 +17,6 @@ const ShowPassphrase = ({
 }: BackupScreenProps<'ShowPassphrase'>): ReactElement => {
 	const { t } = useTranslation('security');
 	const { bip39Passphrase, seed } = route.params;
-
-	useBottomSheetBackPress('backupNavigation');
 
 	return (
 		<GradientView style={styles.gradient}>

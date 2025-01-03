@@ -14,13 +14,12 @@ import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigati
 import GradientView from '../../../components/GradientView';
 import NumberPad from '../../../components/NumberPad';
 import useColors from '../../../hooks/colors';
+import { useAppDispatch } from '../../../hooks/redux';
 import { vibrate } from '../../../utils/helpers';
-import { useBottomSheetBackPress } from '../../../hooks/bottomSheet';
 import { addPin } from '../../../utils/settings';
 import { hideTodo } from '../../../store/slices/todos';
 import { pinTodo } from '../../../store/shapes/todos';
 import type { PinScreenProps } from '../../../navigation/types';
-import { useAppDispatch } from '../../../hooks/redux';
 
 const ChoosePIN = ({
 	navigation,
@@ -48,8 +47,6 @@ const ChoosePIN = ({
 
 	// reset pin on back
 	useFocusEffect(useCallback(() => setPin(''), []));
-
-	useBottomSheetBackPress('PINNavigation');
 
 	useEffect(() => {
 		const timer = setTimeout(async () => {

@@ -9,6 +9,9 @@ import { useTranslation } from 'react-i18next';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { FadeIn, FadeOut } from 'react-native-reanimated';
 
+import { BodySSB, Caption13Up } from '../../../styles/text';
+import { Checkmark, LightningHollow } from '../../../styles/icons';
+import { AnimatedView, BottomSheetTextInput } from '../../../styles/components';
 import AmountToggle from '../../../components/AmountToggle';
 import Biometrics from '../../../components/Biometrics';
 import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
@@ -19,6 +22,7 @@ import SwipeToConfirm from '../../../components/SwipeToConfirm';
 import useColors from '../../../hooks/colors';
 import useKeyboard, { Keyboard } from '../../../hooks/keyboard';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
+import { useBottomSheetScreenBackPress } from '../../../hooks/bottomSheet';
 import type { SendScreenProps } from '../../../navigation/types';
 import {
 	pinForPaymentsSelector,
@@ -28,9 +32,6 @@ import {
 import { addPendingPayment } from '../../../store/slices/lightning';
 import { updateMetaTxComment } from '../../../store/slices/metadata';
 import { EActivityType } from '../../../store/types/activity';
-import { AnimatedView, BottomSheetTextInput } from '../../../styles/components';
-import { Checkmark, LightningHollow } from '../../../styles/icons';
-import { BodySSB, Caption13Up } from '../../../styles/text';
 import { FeeText } from '../../../utils/fees';
 import {
 	decodeLightningInvoice,
@@ -77,6 +78,8 @@ const LNURLConfirm = ({
 	const [isLoading, setIsLoading] = useState(false);
 	const [showBiotmetrics, setShowBiometrics] = useState(false);
 	const [comment, setComment] = useState('');
+
+	useBottomSheetScreenBackPress();
 
 	const onError = useCallback(
 		(errorMessage: string) => {

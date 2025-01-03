@@ -9,7 +9,6 @@ import SafeAreaInset from '../../../components/SafeAreaInset';
 import GradientView from '../../../components/GradientView';
 import Button from '../../../components/buttons/Button';
 import { capitalize } from '../../../utils/helpers';
-import { useBottomSheetBackPress } from '../../../hooks/bottomSheet';
 import type { BackupScreenProps } from '../../../navigation/types';
 
 const ConfirmPassphrase = ({
@@ -19,8 +18,6 @@ const ConfirmPassphrase = ({
 	const { t } = useTranslation('security');
 	const { bip39Passphrase: origPass } = route.params;
 	const [bip39Passphrase, setPassphrase] = useState<string>('');
-
-	useBottomSheetBackPress('backupNavigation');
 
 	return (
 		<GradientView style={styles.gradient}>

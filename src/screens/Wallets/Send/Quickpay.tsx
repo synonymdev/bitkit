@@ -12,6 +12,7 @@ import SyncSpinner from '../../../components/SyncSpinner';
 import HourglassSpinner from '../../../components/HourglassSpinner';
 import LightningSyncing from '../../../components/LightningSyncing';
 import { useAppDispatch } from '../../../hooks/redux';
+import { useBottomSheetScreenBackPress } from '../../../hooks/bottomSheet';
 import { addPendingPayment } from '../../../store/slices/lightning';
 import { EActivityType } from '../../../store/types/activity';
 import type { SendScreenProps } from '../../../navigation/types';
@@ -29,6 +30,8 @@ const Quickpay = ({
 	const { t } = useTranslation('wallet');
 	const { invoice, amount } = route.params;
 	const dispatch = useAppDispatch();
+
+	useBottomSheetScreenBackPress();
 
 	useFocusEffect(
 		useCallback(() => {

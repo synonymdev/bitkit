@@ -11,7 +11,10 @@ import { NavigationContainer } from '../../styles/components';
 import BottomSheetWrapper from '../../components/BottomSheetWrapper';
 import Amount from '../../screens/Wallets/LNURLWithdraw/Amount';
 import Confirm from '../../screens/Wallets/LNURLWithdraw/Confirm';
-import { useSnapPoints } from '../../hooks/bottomSheet';
+import {
+	useBottomSheetBackPress,
+	useSnapPoints,
+} from '../../hooks/bottomSheet';
 import { useAppSelector } from '../../hooks/redux';
 import { viewControllerSelector } from '../../store/reselect/ui';
 import { __E2E__ } from '../../constants/env';
@@ -36,6 +39,8 @@ const LNURLWithdrawNavigation = (): ReactElement => {
 	const { isOpen, wParams } = useAppSelector((state) => {
 		return viewControllerSelector(state, 'lnurlWithdraw');
 	});
+
+	useBottomSheetBackPress('lnurlWithdraw');
 
 	if (!wParams) {
 		return <></>;

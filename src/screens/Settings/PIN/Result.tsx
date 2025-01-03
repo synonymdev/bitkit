@@ -9,6 +9,7 @@ import SafeAreaInset from '../../../components/SafeAreaInset';
 import GradientView from '../../../components/GradientView';
 import Button from '../../../components/buttons/Button';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
+import { useBottomSheetScreenBackPress } from '../../../hooks/bottomSheet';
 import { closeSheet } from '../../../store/slices/ui';
 import { updateSettings } from '../../../store/slices/settings';
 import { pinForPaymentsSelector } from '../../../store/reselect/settings';
@@ -21,6 +22,8 @@ const Result = ({ route }: PinScreenProps<'Result'>): ReactElement => {
 	const { t } = useTranslation('security');
 	const dispatch = useAppDispatch();
 	const pinForPayments = useAppSelector(pinForPaymentsSelector);
+
+	useBottomSheetScreenBackPress();
 
 	const biometricsName = useMemo(
 		() =>
