@@ -44,6 +44,7 @@ import {
 import useColors from '../../../hooks/colors';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 import { useLightningBalance } from '../../../hooks/lightning';
+import { useBottomSheetScreenBackPress } from '../../../hooks/bottomSheet';
 import { EFeeId } from '../../../store/types/fees';
 import {
 	decodeLightningInvoice,
@@ -138,6 +139,8 @@ const ReviewAndSend = ({
 	const [dialogWarnings, setDialogWarnings] = useState<string[]>([]);
 	const [rawTx, setRawTx] = useState<{ hex: string; id: string }>();
 	const [decodedInvoice, setDecodedInvoice] = useState<TInvoice>();
+
+	useBottomSheetScreenBackPress();
 
 	useEffect(() => {
 		const decodeAndSetLightningInvoice = async (): Promise<void> => {

@@ -45,6 +45,8 @@ import {
 } from '../../../store/reselect/settings';
 import { useAppSelector } from '../../../hooks/redux';
 import { useBalance, useSwitchUnit } from '../../../hooks/wallet';
+import { useBottomSheetScreenBackPress } from '../../../hooks/bottomSheet';
+import { sendTransactionSelector } from '../../../store/reselect/ui';
 import {
 	setupFeeForOnChainTransaction,
 	setupOnChainTransaction,
@@ -55,7 +57,6 @@ import { showToast } from '../../../utils/notifications';
 import { convertToSats } from '../../../utils/conversion';
 import { TRANSACTION_DEFAULTS } from '../../../utils/wallet/constants';
 import type { SendScreenProps } from '../../../navigation/types';
-import { sendTransactionSelector } from '../../../store/reselect/ui';
 
 const Amount = ({ navigation }: SendScreenProps<'Amount'>): ReactElement => {
 	const route = useRoute();
@@ -77,6 +78,8 @@ const Amount = ({ navigation }: SendScreenProps<'Amount'>): ReactElement => {
 
 	const { paymentMethod } = useAppSelector(sendTransactionSelector);
 	const usesLightning = paymentMethod === 'lightning';
+
+	useBottomSheetScreenBackPress();
 
 	const outputAmount = useMemo(() => {
 		const amount = getTransactionOutputValue({ outputs: transaction.outputs });

@@ -21,6 +21,7 @@ import UnitButton from '../UnitButton';
 import { useSwitchUnit } from '../../../hooks/wallet';
 import { useTransfer } from '../../../hooks/transfer';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
+import { useBottomSheetScreenBackPress } from '../../../hooks/bottomSheet';
 import { updateInvoice } from '../../../store/slices/receive';
 import { receiveSelector } from '../../../store/reselect/receive';
 import { estimateOrderFee } from '../../../utils/blocktank';
@@ -47,6 +48,8 @@ const ReceiveAmount = ({
 	const [minimumAmount, setMinimumAmount] = useState(0);
 
 	const { defaultLspBalance: lspBalance, maxClientBalance } = useTransfer(0);
+
+	useBottomSheetScreenBackPress();
 
 	useFocusEffect(
 		useCallback(() => {

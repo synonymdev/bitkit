@@ -14,7 +14,10 @@ import SafeAreaInset from '../../components/SafeAreaInset';
 import Button from '../../components/buttons/Button';
 import BottomSheetNavigationHeader from '../../components/BottomSheetNavigationHeader';
 import { useAppSelector } from '../../hooks/redux';
-import { useSnapPoints } from '../../hooks/bottomSheet';
+import {
+	useBottomSheetBackPress,
+	useSnapPoints,
+} from '../../hooks/bottomSheet';
 import { viewControllerSelector } from '../../store/reselect/ui.ts';
 import { auth, parseAuthUrl } from '@synonymdev/react-native-pubky';
 import { getPubkySecretKey } from '../../utils/pubky';
@@ -88,6 +91,8 @@ const PubkyAuth = (): ReactElement => {
 		React.useState<PubkyAuthDetails>(defaultParsedUrl);
 	const [authorizing, setAuthorizing] = React.useState(false);
 	const [authSuccess, setAuthSuccess] = React.useState(false);
+
+	useBottomSheetBackPress('pubkyAuth');
 
 	useEffect(() => {
 		const fetchParsed = async (): Promise<void> => {

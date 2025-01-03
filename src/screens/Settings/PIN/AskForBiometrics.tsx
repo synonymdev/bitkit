@@ -24,6 +24,7 @@ import GradientView from '../../../components/GradientView';
 import Button from '../../../components/buttons/Button';
 import { IsSensorAvailableResult } from '../../../components/Biometrics';
 import { useAppDispatch } from '../../../hooks/redux';
+import { useBottomSheetScreenBackPress } from '../../../hooks/bottomSheet';
 import rnBiometrics from '../../../utils/biometrics';
 import { showToast } from '../../../utils/notifications';
 import { updateSettings } from '../../../store/slices/settings';
@@ -38,6 +39,8 @@ const AskForBiometrics = ({
 	const dispatch = useAppDispatch();
 	const [biometryData, setBiometricData] = useState<IsSensorAvailableResult>();
 	const [shouldEnableBiometrics, setShouldEnableBiometrics] = useState(false);
+
+	useBottomSheetScreenBackPress();
 
 	useEffect(() => {
 		(async (): Promise<void> => {

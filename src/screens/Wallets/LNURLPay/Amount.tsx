@@ -31,10 +31,11 @@ import {
 } from '../../../store/reselect/settings';
 import { useAppSelector } from '../../../hooks/redux';
 import { useBalance, useSwitchUnit } from '../../../hooks/wallet';
+import { useBottomSheetScreenBackPress } from '../../../hooks/bottomSheet';
 import { getNumberPadText } from '../../../utils/numberpad';
 import { convertToSats } from '../../../utils/conversion';
-import type { SendScreenProps } from '../../../navigation/types';
 import { showToast } from '../../../utils/notifications';
+import type { SendScreenProps } from '../../../navigation/types';
 
 const LNURLAmount = ({
 	navigation,
@@ -51,6 +52,8 @@ const LNURLAmount = ({
 	const denomination = useAppSelector(denominationSelector);
 	const [text, setText] = useState('');
 	const [error, setError] = useState(false);
+
+	useBottomSheetScreenBackPress();
 
 	const amount = useMemo((): number => {
 		return convertToSats(text, conversionUnit);

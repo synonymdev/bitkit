@@ -12,6 +12,7 @@ import {
 	ClipboardTextIcon,
 	ScanIcon,
 } from '../../../styles/icons';
+import GradientView from '../../../components/GradientView';
 import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
 import SafeAreaInset from '../../../components/SafeAreaInset';
 import ContactImage from '../../../components/ContactImage';
@@ -20,11 +21,10 @@ import { showToast } from '../../../utils/notifications';
 import useColors from '../../../hooks/colors';
 import { useAppSelector } from '../../../hooks/redux';
 import { useScreenSize } from '../../../hooks/screen';
-import { useBottomSheetBackPress } from '../../../hooks/bottomSheet';
-import type { SendScreenProps } from '../../../navigation/types';
+import { useBottomSheetScreenBackPress } from '../../../hooks/bottomSheet';
 import { lastPaidSelector } from '../../../store/reselect/slashtags';
 import { selectedNetworkSelector } from '../../../store/reselect/wallet';
-import GradientView from '../../../components/GradientView';
+import type { SendScreenProps } from '../../../navigation/types';
 
 const imageSrc = require('../../../assets/illustrations/coin-stack-logo.png');
 
@@ -64,7 +64,7 @@ const Recipient = ({
 	const selectedNetwork = useAppSelector(selectedNetworkSelector);
 	const lastPaidContacts = useAppSelector(lastPaidSelector);
 
-	useBottomSheetBackPress('sendNavigation');
+	useBottomSheetScreenBackPress();
 
 	const onOpenContacts = (): void => {
 		navigation.navigate('Contacts');
