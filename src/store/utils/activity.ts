@@ -91,7 +91,7 @@ export const updateOnChainActivityList = async (): Promise<Result<string>> => {
 		);
 		return ok('');
 	}
-	const { selectedNetwork, selectedWallet } = getCurrentWallet();
+	const { selectedNetwork } = getCurrentWallet();
 	const boostedTransactions =
 		currentWallet.boostedTransactions[selectedNetwork];
 
@@ -104,8 +104,6 @@ export const updateOnChainActivityList = async (): Promise<Result<string>> => {
 	const boostFormattedItems = await formatBoostedActivityItems({
 		items: activityItems,
 		boostedTransactions,
-		selectedWallet,
-		selectedNetwork,
 	});
 	dispatch(updateActivityItems(boostFormattedItems));
 

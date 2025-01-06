@@ -51,42 +51,6 @@ export const getBoostedTransactionParents = ({
 };
 
 /**
- * Determines if a given txId has any boosted parents.
- * // TODO: Migrate to Beignet
- * @param {string} txId
- * @param {IBoostedTransactions} [boostedTransactions]
- * @param {TWalletName} [selectedWallet]
- * @param {EAvailableNetwork} [selectedNetwork]
- * @returns {boolean}
- */
-export const hasBoostedParents = ({
-	wallet,
-	txId,
-	boostedTransactions,
-	selectedWallet = getSelectedWallet(),
-	selectedNetwork = getSelectedNetwork(),
-}: {
-	wallet: TWallet;
-	txId: string;
-	boostedTransactions?: IBoostedTransactions;
-	selectedWallet?: TWalletName;
-	selectedNetwork?: EAvailableNetwork;
-}): boolean => {
-	if (!boostedTransactions) {
-		boostedTransactions = getBoostedTransactions({
-			selectedWallet,
-			selectedNetwork,
-		});
-	}
-	const boostedParents = getBoostedTransactionParents({
-		wallet,
-		txId,
-		boostedTransactions,
-	});
-	return boostedParents.length > 0;
-};
-
-/**
  * Returns the initially boosted transaction's activity item for a given txId.
  * @param {string} txId
  * @param {IActivityItem[]} [items]
@@ -99,21 +63,15 @@ const getRootParentActivity = async ({
 	txId,
 	items,
 	boostedTransactions,
-	selectedWallet = getSelectedWallet(),
-	selectedNetwork = getSelectedNetwork(),
 }: {
 	txId: string;
 	items: TOnchainActivityItem[];
 	boostedTransactions?: IBoostedTransactions;
-	selectedWallet?: TWalletName;
-	selectedNetwork?: EAvailableNetwork;
 }): Promise<TOnchainActivityItem | undefined> => {
 	const wallet = await getOnChainWalletAsync();
+
 	if (!boostedTransactions) {
-		boostedTransactions = getBoostedTransactions({
-			selectedWallet,
-			selectedNetwork,
-		});
+		boostedTransactions = getBoostedTransactions();
 	}
 	const boostedParents = getBoostedTransactionParents({
 		wallet,
@@ -158,13 +116,9 @@ export const getParentsActivity = ({
 export const formatBoostedActivityItems = async ({
 	items,
 	boostedTransactions,
-	selectedWallet,
-	selectedNetwork,
 }: {
 	items: TOnchainActivityItem[];
 	boostedTransactions: IBoostedTransactions;
-	selectedWallet: TWalletName;
-	selectedNetwork: EAvailableNetwork;
 }): Promise<TOnchainActivityItem[]> => {
 	const wallet = await getOnChainWalletAsync();
 	const formattedItems: TOnchainActivityItem[] = [];
@@ -193,8 +147,6 @@ export const formatBoostedActivityItems = async ({
 			txId,
 			items,
 			boostedTransactions,
-			selectedWallet,
-			selectedNetwork,
 		});
 
 		// If no root parent (RBF), just add the item marked as boosted

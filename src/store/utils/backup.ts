@@ -26,7 +26,11 @@ import {
 	getWidgetsStore,
 } from '../helpers';
 import { getDefaultSettingsShape } from '../shapes/settings';
-import { addActivityItems, TActivity } from '../slices/activity';
+import {
+	addActivityItems,
+	resetActivityState,
+	TActivity,
+} from '../slices/activity';
 import { backupError, backupStart, backupSuccess } from '../slices/backup';
 import { updateBlocktank } from '../slices/blocktank';
 import { initialMetadataState, updateMetadata } from '../slices/metadata';
@@ -45,6 +49,7 @@ import { TSlashtagsState } from '../types/slashtags';
 import { getDefaultWalletShape } from '../shapes/wallet';
 import { IWalletItem, TTransfer } from '../types/wallet';
 import { restoreBoostedTransactions, restoreTransfers } from '../slices/wallet';
+import { updateOnChainActivityList } from './activity';
 
 export enum EBackupCategory {
 	wallet = 'bitkit_wallet',
@@ -285,9 +290,13 @@ const performWalletRestore = async (): Promise<
 			return ok({ backupExists: false });
 		}
 
+		// because activity has been updated already before this point
+		// we need to reset the activity state to show boosts correctly
+		dispatch(resetActivityState());
 		dispatch(restoreBoostedTransactions(backup.boostedTransactions));
 		dispatch(restoreTransfers(backup.transfers));
 		dispatch(backupSuccess({ category: EBackupCategory.wallet }));
+		updateOnChainActivityList();
 
 		// Restore success
 		return ok({ backupExists: true });

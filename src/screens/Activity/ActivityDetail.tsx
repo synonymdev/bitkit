@@ -352,7 +352,7 @@ const OnchainActivityDetail = ({
 
 	if (isBoosted) {
 		status = (
-			<View testID="StatusBoosting" style={styles.row}>
+			<View style={styles.row} testID="StatusBoosting">
 				<TimerIconAlt style={styles.rowIcon} color="yellow" height={14} />
 				<BodySSB color="yellow">{t('activity_boosting')}</BodySSB>
 			</View>
@@ -361,7 +361,7 @@ const OnchainActivityDetail = ({
 
 	if (confirmed) {
 		status = (
-			<View testID="StatusConfirmed" style={styles.row}>
+			<View style={styles.row} testID="StatusConfirmed">
 				<CheckCircleIcon style={styles.rowIcon} color="green" />
 				<BodySSB color="green">{t('activity_confirmed')}</BodySSB>
 			</View>
@@ -455,7 +455,7 @@ const OnchainActivityDetail = ({
 								<Section
 									title={t('activity_transfer_to_spending')}
 									value={
-										<View testID="ActivityAmount" style={styles.row}>
+										<View style={styles.row} testID="ActivityAmount">
 											<LightningHollow
 												style={styles.rowIcon}
 												width={16}
@@ -474,7 +474,7 @@ const OnchainActivityDetail = ({
 								<Section
 									title={t('activity_payment')}
 									value={
-										<View testID="ActivityAmount" style={styles.row}>
+										<View style={styles.row} testID="ActivityAmount">
 											<UserIcon
 												style={styles.rowIcon}
 												width={16}
@@ -494,7 +494,7 @@ const OnchainActivityDetail = ({
 							<Section
 								title={t('activity_fee')}
 								value={
-									<View testID="ActivityFee" style={styles.row}>
+									<View style={styles.row} testID="ActivityFee">
 										<TimerIcon style={styles.rowIcon} color="brand" />
 										<Money
 											sats={fees}

@@ -221,7 +221,7 @@ const BoostForm = ({
 						title={t('boost')}
 						description={duration}
 						value={Number(boostFee.toFixed(0))}
-						testID="CostomFeeButton"
+						testID="CustomFeeButton"
 						icon={<TimerIconAlt color="yellow" width={26} height={26} />}
 						onPress={onSwitchView}
 					/>

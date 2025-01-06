@@ -31,9 +31,9 @@ const { actions, reducer } = activitySlice;
 export const {
 	addActivityItem,
 	addActivityItems,
+	updateActivityItems,
 	removeActivityItem,
 	resetActivityState,
-	updateActivityItems,
 } = actions;
 
 export default reducer;

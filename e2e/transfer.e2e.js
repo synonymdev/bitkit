@@ -199,6 +199,7 @@ d('Transfer', () => {
 
 		// check channel status
 		await element(by.id('NavigationClose')).tap();
+		await sleep(1000);
 		await element(by.id('Settings')).tap();
 		await element(by.id('AdvancedSettings')).atIndex(0).tap();
 		await element(by.id('Channels')).tap();
@@ -219,6 +220,27 @@ d('Transfer', () => {
 		await element(by.id('WalletsScrollView')).scrollTo('bottom', NaN, 0.85);
 		await element(by.id('ActivityShort-1')).tap();
 		await expect(element(by.id('StatusTransfer'))).toBeVisible();
+
+		// boost the transfer
+		await element(by.id('BoostButton')).tap();
+		await waitFor(element(by.id('CPFPBoost')))
+			.toBeVisible()
+			.withTimeout(30000);
+		await element(by.id('GRAB')).swipe('right', 'slow', 0.95, 0.5, 0.5); // Swipe to confirm
+
+		// check Activity
+		await waitFor(element(by.id('BoostingIcon')))
+			.toBeVisible()
+			.withTimeout(30000);
+
+		// reset & restore again
+		await restoreWallet(seed);
+
+		// check activity after restore
+		await element(by.id('WalletsScrollView')).scrollTo('bottom', NaN, 0.85);
+		await expect(element(by.id('BoostingIcon'))).toBeVisible();
+		await element(by.id('ActivityShort-1')).tap();
+		await expect(element(by.id('StatusBoosting'))).toBeVisible();
 
 		markComplete('transfer-1');
 	});

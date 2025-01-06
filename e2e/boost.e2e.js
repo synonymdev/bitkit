@@ -129,7 +129,7 @@ d('Boost', () => {
 		await waitFor(element(by.id('CPFPBoost')))
 			.toBeVisible()
 			.withTimeout(30000);
-		await element(by.id('CostomFeeButton')).tap();
+		await element(by.id('CustomFeeButton')).tap();
 		await element(by.id('Plus')).tap();
 		await element(by.id('Minus')).tap();
 		await element(by.id('RecomendedFeeButton')).tap();
@@ -240,7 +240,7 @@ d('Boost', () => {
 		await waitFor(element(by.id('RBFBoost')))
 			.toBeVisible()
 			.withTimeout(30000);
-		await element(by.id('CostomFeeButton')).tap();
+		await element(by.id('CustomFeeButton')).tap();
 		await element(by.id('Plus')).tap();
 		await element(by.id('Minus')).tap();
 		await element(by.id('RecomendedFeeButton')).tap();
