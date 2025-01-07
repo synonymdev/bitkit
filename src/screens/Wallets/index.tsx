@@ -5,6 +5,7 @@ import { RefreshControl, ScrollView } from 'react-native-gesture-handler';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
 
+import { View as ThemedView } from '../../styles/components';
 import { useBalance } from '../../hooks/wallet';
 import useColors from '../../hooks/colors';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
@@ -107,7 +108,7 @@ const Wallets = ({ navigation, onFocus }: Props): ReactElement => {
 		Object.keys(widgets).length > 0;
 
 	return (
-		<>
+		<ThemedView style={styles.root}>
 			<SafeAreaInset type="top" />
 			<View style={[styles.header, { top: insets.top }]}>
 				<Header />
@@ -154,11 +155,14 @@ const Wallets = ({ navigation, onFocus }: Props): ReactElement => {
 					)}
 				</ScrollView>
 			</DetectSwipe>
-		</>
+		</ThemedView>
 	);
 };
 
 const styles = StyleSheet.create({
+	root: {
+		flex: 1,
+	},
 	header: {
 		position: 'absolute',
 		left: 0,

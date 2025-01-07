@@ -117,7 +117,7 @@ const OnchainListItem = ({
 	if (transfer) {
 		title = t('activity_transfer');
 		icon = (
-			<ThemedView style={styles.icon} color="brand16">
+			<ThemedView style={styles.icon} color="brand16" testID="TransferIcon">
 				<TransferIcon color="brand" />
 			</ThemedView>
 		);

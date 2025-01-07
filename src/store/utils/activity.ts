@@ -97,7 +97,7 @@ export const updateOnChainActivityList = async (): Promise<Result<string>> => {
 
 	const transactions = currentWallet.transactions[selectedNetwork];
 	const promises = Object.values(transactions).map(async (tx) => {
-		return await onChainTransactionToActivityItem({ transaction: tx });
+		return onChainTransactionToActivityItem({ transaction: tx });
 	});
 	const activityItems = await Promise.all(promises);
 

@@ -21,13 +21,11 @@ export const onChainTransactionToActivityItem = async ({
 }: {
 	transaction: IFormattedTransaction;
 }): Promise<TOnchainActivityItem> => {
+	const { type, value, fee } = transaction;
 	const transfer = await getTransferForTx(transaction);
 
 	// subtract fee from amount if applicable
-	const amount =
-		transaction.type === 'sent'
-			? transaction.value + transaction.fee
-			: transaction.value;
+	const amount = type === 'sent' ? value + fee : value;
 
 	return {
 		id: transaction.txid,

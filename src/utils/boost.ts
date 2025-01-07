@@ -1,7 +1,7 @@
 import { IBoostedTransactions, Wallet as TWallet } from 'beignet';
 
-import { getActivityStore, getWalletStore } from '../store/helpers';
-import { IActivityItem, TOnchainActivityItem } from '../store/types/activity';
+import { getWalletStore } from '../store/helpers';
+import { TOnchainActivityItem } from '../store/types/activity';
 import { TWalletName } from '../store/types/wallet';
 import { EAvailableNetwork } from './networks';
 import {
@@ -86,26 +86,6 @@ const getRootParentActivity = async ({
 };
 
 /**
- * Returns an array of activity items for the provided array of parent txids.
- * CURRENTLY UNUSED
- * // TODO: Migrate to Beignet
- * @param {string[]} [parents]
- * @param {IActivityItem[]} [items]
- */
-export const getParentsActivity = ({
-	parents = [],
-	items = [],
-}: {
-	parents?: string[];
-	items?: IActivityItem[];
-}): IActivityItem[] => {
-	if (!items) {
-		items = getActivityStore().items;
-	}
-	return items.filter((i) => parents.includes(i.id));
-};
-
-/**
  * Loop through activity items and format them to be displayed as boosted if applicable.
  * @param {TOnchainActivityItem[]} [items]
  * @param {IBoostedTransactions} [boostedTransactions]
@@ -172,6 +152,8 @@ export const formatBoostedActivityItems = async ({
 			fee: rootParent.fee + item.fee,
 			address: rootParent.address,
 			isBoosted: true,
+			isTransfer: rootParent.isTransfer,
+			transferTxId: rootParent.transferTxId,
 		});
 	}
 
