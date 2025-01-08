@@ -2,12 +2,12 @@ import React, { memo, ReactElement, useMemo } from 'react';
 import { StyleSheet, View, Pressable, Image } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
-import { Switch } from '../../../styles/components';
 import { BodyM, BodyMSB } from '../../../styles/text';
 import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
 import SafeAreaInset from '../../../components/SafeAreaInset';
 import GradientView from '../../../components/GradientView';
 import Button from '../../../components/buttons/Button';
+import Switch from '../../../components/Switch';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 import { useBottomSheetScreenBackPress } from '../../../hooks/bottomSheet';
 import { closeSheet } from '../../../store/slices/ui';

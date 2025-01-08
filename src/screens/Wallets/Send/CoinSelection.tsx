@@ -3,12 +3,13 @@ import { StyleSheet, View } from 'react-native';
 import { BottomSheetScrollView } from '@gorhom/bottom-sheet';
 import { useTranslation } from 'react-i18next';
 
-import { ScrollView, Switch } from '../../../styles/components';
+import { ScrollView } from '../../../styles/components';
 import { Subtitle, BodyMSB, BodySSB, Caption13Up } from '../../../styles/text';
 import GradientView from '../../../components/GradientView';
 import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
 import SafeAreaInset from '../../../components/SafeAreaInset';
 import Button from '../../../components/buttons/Button';
+import Switch from '../../../components/Switch';
 import Tag from '../../../components/Tag';
 
 import useColors from '../../../hooks/colors';

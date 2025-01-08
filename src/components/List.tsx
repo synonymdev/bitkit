@@ -11,7 +11,6 @@ import {
 import { SvgProps } from 'react-native-svg';
 import isEqual from 'lodash/isEqual';
 
-import { Switch } from '../styles/components';
 import {
 	BodyM,
 	BodyMSB,
@@ -21,6 +20,7 @@ import {
 	Caption,
 } from '../styles/text';
 import { ChevronRight, Checkmark } from '../styles/icons';
+import Switch from '../components/Switch';
 import DraggableList from '../screens/Settings/PaymentPreference/DraggableList';
 
 const _SectionHeader = memo(
@@ -87,14 +87,14 @@ export type ItemData = SwitchItem | ButtonItem | TextButtonItem | DraggableItem;
 
 export type SwitchItem = {
 	type: EItemType.switch;
+	enabled: boolean;
 	title: string;
 	Icon?: React.FC<SvgProps>;
 	iconColor?: string;
-	enabled?: boolean;
 	disabled?: boolean;
 	hide?: boolean;
-	onPress?: () => void;
 	testID?: string;
+	onPress?: () => void;
 };
 
 export type ButtonItem = {
@@ -107,10 +107,10 @@ export type ButtonItem = {
 	iconColor?: string;
 	disabled?: boolean;
 	enabled?: boolean;
-	hide?: boolean;
-	onPress?: () => void;
-	testID?: string;
 	loading?: boolean;
+	hide?: boolean;
+	testID?: string;
+	onPress?: () => void;
 };
 
 export type TextButtonItem = {
@@ -122,8 +122,8 @@ export type TextButtonItem = {
 	iconColor?: string;
 	enabled?: boolean;
 	hide?: boolean;
-	onPress?: () => void;
 	testID?: string;
+	onPress?: () => void;
 };
 
 export type DraggableItem = {
@@ -131,8 +131,8 @@ export type DraggableItem = {
 	value: TItemDraggable[];
 	title: string;
 	hide?: boolean;
-	onDragEnd?: (data: TItemDraggable[]) => void;
 	testID?: string;
+	onDragEnd?: (data: TItemDraggable[]) => void;
 };
 
 const _Item = memo((item: ItemData): ReactElement => {

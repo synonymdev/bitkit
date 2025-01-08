@@ -2,7 +2,6 @@ import {
 	ColorValue,
 	Platform,
 	PressableProps,
-	Switch as RNSwitch,
 	ScrollViewProps,
 	TouchableOpacity as RNTouchableOpacity,
 	TouchableHighlight as RNTouchableHighlight,
@@ -12,7 +11,6 @@ import {
 	ViewProps,
 	TextInput as RNTextInput,
 	TextInputProps as RNTextInputProps,
-	SwitchProps,
 } from 'react-native';
 import Color from 'color';
 import Animated, { AnimatedProps } from 'react-native-reanimated';
@@ -125,20 +123,6 @@ export const Pressable = styled(RNPressable)<PressableProps & ColorProps>(
 		opacity: props.disabled ? 0.5 : 1,
 	}),
 );
-
-export const Switch = styled(RNSwitch).attrs<SwitchProps & ColorProps>(
-	(props) => ({
-		trackColor: {
-			false: '#3A3A3C',
-			true: props.color
-				? props.theme.colors[props.color]
-				: props.theme.colors.brand,
-		},
-		thumbColor: props.disabled ? '#A0A0A0' : 'white',
-		ios_backgroundColor: '#3A3A3C',
-		...props,
-	}),
-)<SwitchProps & ColorProps>(() => ({}));
 
 export const TextInput = styled(RNTextInput).attrs<TextInputProps>((props) => ({
 	keyboardAppearance: props.theme.id,
