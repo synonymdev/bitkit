@@ -74,6 +74,7 @@ const defaultReceivePreference = [
 ];
 
 export const initialSettingsState: TSettings = {
+	backupVerified: false,
 	enableAutoReadClipboard: false,
 	enableSendAmountWarning: false,
 	enableSwipeToHideBalance: true,
@@ -107,6 +108,10 @@ export const initialSettingsState: TSettings = {
 	treasureChests: [],
 	orangeTickets: [],
 	webRelay: __WEB_RELAY__,
+	quickpayIntroSeen: false,
+	transferIntroSeen: false,
+	spendingIntroSeen: false,
+	savingsIntroSeen: false,
 };
 
 export const getDefaultSettingsShape = (): TSettings => {

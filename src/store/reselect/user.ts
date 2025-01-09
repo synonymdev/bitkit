@@ -9,11 +9,6 @@ export const isGeoBlockedSelector = createSelector(
 	(user): boolean => user.isGeoBlocked ?? false,
 );
 
-export const backupVerifiedSelector = createSelector(
-	[userState],
-	(user): boolean => user.backupVerified,
-);
-
 export const ignoreBackupTimestampSelector = createSelector(
 	[userState],
 	(user): number => user.ignoreBackupTimestamp,
@@ -23,10 +18,6 @@ export const lightningSettingUpStepSelector = createSelector(
 	[userState],
 	(user): number => user.lightningSettingUpStep,
 );
-
-export const quickpayIntroSeenSelector = (state: RootState): boolean => {
-	return state.user.quickpayIntroSeen;
-};
 
 export const requiresRemoteRestoreSelector = createSelector(
 	[userState],
@@ -67,15 +58,3 @@ export const scanAllAddressesTimestampSelector = createSelector(
 	[userState],
 	(user): number => user.scanAllAddressesTimestamp,
 );
-
-export const transferIntroSeenSelector = (state: RootState): boolean => {
-	return state.user.transferIntroSeen;
-};
-
-export const spendingIntroSeenSelector = (state: RootState): boolean => {
-	return state.user.spendingIntroSeen;
-};
-
-export const savingsIntroSeenSelector = (state: RootState): boolean => {
-	return state.user.savingsIntroSeen;
-};

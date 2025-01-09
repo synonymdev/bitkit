@@ -16,11 +16,11 @@ import SuggestionCard from './SuggestionCard';
 import { ITodo, TTodoType } from '../store/types/todos';
 import { channelsNotificationsShown, hideTodo } from '../store/slices/todos';
 import { showBottomSheet } from '../store/utils/ui';
-import { pinSelector } from '../store/reselect/settings';
 import {
+	pinSelector,
 	quickpayIntroSeenSelector,
 	transferIntroSeenSelector,
-} from '../store/reselect/user';
+} from '../store/reselect/settings';
 import {
 	newChannelsNotificationsSelector,
 	todosFullSelector,

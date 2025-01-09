@@ -80,6 +80,19 @@ const migrations = {
 
 		return state;
 	},
+	50: (state): PersistedState => {
+		return {
+			...state,
+			settings: {
+				...state.settings,
+				backupVerified: state.user.backupVerified,
+				quickpayIntroSeen: state.user.quickpayIntroSeen,
+				transferIntroSeen: state.user.transferIntroSeen,
+				spendingIntroSeen: state.user.spendingIntroSeen,
+				savingsIntroSeen: state.user.savingsIntroSeen,
+			},
+		};
+	},
 };
 
 export default migrations;

@@ -67,7 +67,7 @@ describe('Todos selector', () => {
 
 	it('should not return backupSeedPhraseTodo if backup is verified', () => {
 		const state = cloneDeep(s);
-		state.user.backupVerified = true;
+		state.settings.backupVerified = true;
 
 		expect(todosFullSelector(state)).not.toEqual(
 			expect.arrayContaining([backupSeedPhraseTodo]),

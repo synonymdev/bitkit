@@ -23,6 +23,7 @@ import {
 	TextInput,
 	View as ThemedView,
 } from '../../styles/components';
+import { BodyM, BodyS, Display } from '../../styles/text';
 import NavigationHeader from '../../components/NavigationHeader';
 import SafeAreaInset from '../../components/SafeAreaInset';
 import SeedInput from '../../components/SeedInput';
@@ -31,8 +32,8 @@ import VerticalShadow from '../../components/VerticalShadow';
 import Button from '../../components/buttons/Button';
 import { useAppDispatch } from '../../hooks/redux';
 import { OnboardingStackScreenProps } from '../../navigation/types';
-import { updateUser, verifyBackup } from '../../store/slices/user';
-import { BodyM, BodyS, Display } from '../../styles/text';
+import { updateUser } from '../../store/slices/user';
+import { verifyBackup } from '../../store/slices/settings';
 import { validateMnemonic } from '../../utils/wallet';
 
 const RestoreFromSeed = ({

@@ -10,10 +10,8 @@ import RectangleButton from '../../components/buttons/RectangleButton';
 import SafeAreaInset from '../../components/SafeAreaInset';
 import NavigationHeader from '../../components/NavigationHeader';
 import { useBalance } from '../../hooks/wallet';
-import {
-	isGeoBlockedSelector,
-	spendingIntroSeenSelector,
-} from '../../store/reselect/user';
+import { isGeoBlockedSelector } from '../../store/reselect/user';
+import { spendingIntroSeenSelector } from '../../store/reselect/settings';
 import { TRANSACTION_DEFAULTS } from '../../utils/wallet/constants';
 import { showBottomSheet } from '../../store/utils/ui';
 import type { TransferScreenProps } from '../../navigation/types';

@@ -14,10 +14,10 @@ import {
 	useSnapPoints,
 } from '../../hooks/bottomSheet';
 import { closeSheet } from '../../store/slices/ui';
-import { updateUser } from '../../store/slices/user';
+import { updateSettings } from '../../store/slices/settings';
 import { showBottomSheet } from '../../store/utils/ui';
 import { viewControllersSelector } from '../../store/reselect/ui';
-import { quickpayIntroSeenSelector } from '../../store/reselect/user';
+import { quickpayIntroSeenSelector } from '../../store/reselect/settings';
 import { RootNavigationProp } from '../types';
 
 const imageSrc = require('../../assets/illustrations/fast-forward.png');
@@ -72,12 +72,12 @@ const QuickPayPrompt = ({ enabled }: { enabled: boolean }): ReactElement => {
 
 	const onMore = (): void => {
 		navigation.navigate('Settings', { screen: 'QuickpaySettings' });
-		dispatch(updateUser({ quickpayIntroSeen: true }));
+		dispatch(updateSettings({ quickpayIntroSeen: true }));
 		dispatch(closeSheet('quickPay'));
 	};
 
 	const onDismiss = (): void => {
-		dispatch(updateUser({ quickpayIntroSeen: true }));
+		dispatch(updateSettings({ quickpayIntroSeen: true }));
 		dispatch(closeSheet('quickPay'));
 	};
 
@@ -86,7 +86,7 @@ const QuickPayPrompt = ({ enabled }: { enabled: boolean }): ReactElement => {
 			view="quickPay"
 			snapPoints={snapPoints}
 			onClose={(): void => {
-				dispatch(updateUser({ quickpayIntroSeen: true }));
+				dispatch(updateSettings({ quickpayIntroSeen: true }));
 			}}>
 			<BottomSheetScreen
 				navTitle={t('quickpay.nav_title')}

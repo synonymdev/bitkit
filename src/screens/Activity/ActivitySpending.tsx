@@ -16,7 +16,7 @@ import { useBalance } from '../../hooks/wallet';
 import { useAppSelector } from '../../hooks/redux';
 import { EActivityType } from '../../store/types/activity';
 import { spendingOnboardingSelector } from '../../store/reselect/aggregations';
-import { savingsIntroSeenSelector } from '../../store/reselect/user';
+import { savingsIntroSeenSelector } from '../../store/reselect/settings';
 import { WalletScreenProps } from '../../navigation/types';
 
 const imageSrc = require('../../assets/illustrations/coin-stack-x-2.png');
