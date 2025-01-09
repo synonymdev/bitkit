@@ -90,7 +90,7 @@ export const initialSettingsState: TSettings = {
 	selectedCurrency: 'USD',
 	selectedLanguage: 'english',
 	customElectrumPeers: defaultElectrumPeer,
-	rapidGossipSyncUrl: 'https://rapidsync.lightningdevkit.org/snapshot/',
+	rapidGossipSyncUrl: 'https://rgs.blocktank.to/snapshot/',
 	coinSelectAuto: true,
 	coinSelectPreference: 'small',
 	receivePreference: defaultReceivePreference,

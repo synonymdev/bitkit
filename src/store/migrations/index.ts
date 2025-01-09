@@ -93,6 +93,15 @@ const migrations = {
 			},
 		};
 	},
+	51: (state): PersistedState => {
+		return {
+			...state,
+			settings: {
+				...state.settings,
+				rapidGossipSyncUrl: 'https://rgs.blocktank.to/snapshot/',
+			},
+		};
+	},
 };
 
 export default migrations;
