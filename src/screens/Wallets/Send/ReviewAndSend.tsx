@@ -142,6 +142,7 @@ const ReviewAndSend = ({
 
 	useBottomSheetScreenBackPress();
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
 	useEffect(() => {
 		const decodeAndSetLightningInvoice = async (): Promise<void> => {
 			if (!usesLightning || !transaction.lightningInvoice) {
@@ -158,17 +159,16 @@ const ReviewAndSend = ({
 		};
 
 		decodeAndSetLightningInvoice();
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [transaction.lightningInvoice]);
 
 	/*
 	 * Total value of all outputs. Excludes change address.
 	 */
+	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
 	const amount = useMemo((): number => {
 		return getTransactionOutputValue({
 			outputs: transaction.outputs,
 		});
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [transaction.outputs, selectedNetwork, selectedWallet]);
 
 	const { selectedFeeId, satsPerByte } = transaction;
@@ -180,6 +180,7 @@ const ReviewAndSend = ({
 		[navigation],
 	);
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
 	const createLightningTransaction = useCallback(async () => {
 		if (!transaction.lightningInvoice || !decodedInvoice) {
 			setIsLoading(false);
@@ -240,7 +241,6 @@ const ReviewAndSend = ({
 			amount,
 			txId: decodedInvoice.payment_hash,
 		});
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [
 		onError,
 		amount,
@@ -280,7 +280,7 @@ const ReviewAndSend = ({
 		if (response.isErr()) {
 			// Check if it failed to broadcast due to low fee.
 			if (response.error.message.includes('min relay fee not met')) {
-				onError(`${(t('error_min_fee_title'), t('error_min_fee_msg'))}`);
+				onError(`${t('error_min_fee_title')}. ${t('error_min_fee_msg')}`);
 			} else {
 				// Most likely a connection error with the Electrum server.
 				// TODO: Add a backup method to broadcast via an api if unable to broadcast through Electrum.

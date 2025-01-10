@@ -438,7 +438,7 @@ const _getMismatchedAddresses = ({
 	storedAddresses: IAddress[];
 	generatedAddresses: IAddress[];
 }): TImpactedAddressesData[] => {
-	let impactedAddresses: TImpactedAddressesData[] = [];
+	const impactedAddresses: TImpactedAddressesData[] = [];
 	storedAddresses.forEach((storedAddress) => {
 		const generatedAddress = generatedAddresses.find(
 			(a) => a.index === storedAddress.index,

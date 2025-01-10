@@ -15,10 +15,6 @@ import { closeSheet } from '../../store/slices/ui';
 import { showBottomSheet } from '../../store/utils/ui';
 import { clearCoopCloseTimer } from '../../store/slices/user';
 import { startCoopCloseTimestampSelector } from '../../store/reselect/user';
-import {
-	selectedNetworkSelector,
-	selectedWalletSelector,
-} from '../../store/reselect/wallet';
 
 const imageSrc = require('../../assets/illustrations/exclamation-mark.png');
 
@@ -30,14 +26,13 @@ const ForceTransfer = (): ReactElement => {
 	const snapPoints = useSnapPoints('large');
 	const dispatch = useAppDispatch();
 	const startTime = useAppSelector(startCoopCloseTimestampSelector);
-	const selectedWallet = useAppSelector(selectedWalletSelector);
-	const selectedNetwork = useAppSelector(selectedNetworkSelector);
 	const [isPending, setIsPending] = useState(false);
 
 	useBottomSheetBackPress('forceTransfer');
 
 	// try to cooperatively close the channel(s) for 30min
 	useEffect(() => {
+		// biome-ignore lint/style/useConst: false alarm
 		let interval: NodeJS.Timer;
 
 		if (!startTime) {
@@ -78,7 +73,7 @@ const ForceTransfer = (): ReactElement => {
 		return (): void => {
 			clearInterval(interval);
 		};
-	}, [selectedNetwork, selectedWallet, startTime, dispatch]);
+	}, [startTime, dispatch]);
 
 	const onCancel = (): void => {
 		dispatch(closeSheet('forceTransfer'));

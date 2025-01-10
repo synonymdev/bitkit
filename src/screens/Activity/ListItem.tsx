@@ -107,7 +107,7 @@ const OnchainListItem = ({
 	let title = t(isSend ? 'activity_sent' : 'activity_received');
 	const amount = isSend ? value + fee : value;
 
-	let description;
+	let description: string;
 	if (feeRateDescription) {
 		description = t('activity_confirms_in', { feeRateDescription });
 	} else {

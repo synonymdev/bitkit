@@ -22,10 +22,6 @@ import UnitButton from '../UnitButton';
 import SendNumberPad from '../Send/SendNumberPad';
 import { sendMax } from '../../../utils/wallet/transactions';
 import {
-	selectedNetworkSelector,
-	selectedWalletSelector,
-} from '../../../store/reselect/wallet';
-import {
 	conversionUnitSelector,
 	denominationSelector,
 	nextUnitSelector,
@@ -49,8 +45,6 @@ const Amount = ({
 	const nextUnit = useAppSelector(nextUnitSelector);
 	const conversionUnit = useAppSelector(conversionUnitSelector);
 	const denomination = useAppSelector(denominationSelector);
-	const selectedWallet = useAppSelector(selectedWalletSelector);
-	const selectedNetwork = useAppSelector(selectedNetworkSelector);
 	const [text, setText] = useState('');
 	const [error, setError] = useState(false);
 
@@ -58,7 +52,7 @@ const Amount = ({
 	useEffect(() => {
 		const result = getNumberPadText(minWithdrawable, denomination, unit);
 		setText(result);
-	}, [selectedWallet, selectedNetwork, minWithdrawable, denomination, unit]);
+	}, [minWithdrawable, denomination, unit]);
 
 	const amount = useMemo((): number => {
 		return convertToSats(text, conversionUnit);

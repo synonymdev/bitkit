@@ -254,9 +254,8 @@ export const updateSlashPayConfig = debounce(
 					receivePreference[0].key === 'lightning'
 				) {
 					return -1;
-				} else {
-					return 1;
 				}
+				return 1;
 			});
 
 			try {

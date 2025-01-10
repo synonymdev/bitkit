@@ -61,6 +61,7 @@ const Airdrop = ({
 
 	const dv = useDisplayValues(prize.amount);
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
 	const getLightningInvoice = useCallback(async (): Promise<string> => {
 		const response = await createLightningInvoice({
 			amountSats: 0,
@@ -74,9 +75,9 @@ const Airdrop = ({
 		}
 
 		return response.value.to_str;
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
 	useEffect(() => {
 		const openChest = async (): Promise<void> => {
 			await waitForLdk();
@@ -153,13 +154,13 @@ const Airdrop = ({
 				if (result.error) {
 					console.log(result.error);
 					return;
-				} else {
-					updateTreasureChest({
-						chestId,
-						state: 'claimed',
-						attemptId: result.attemptId,
-					});
 				}
+
+				updateTreasureChest({
+					chestId,
+					state: 'claimed',
+					attemptId: result.attemptId,
+				});
 			}
 		};
 
@@ -180,21 +181,21 @@ const Airdrop = ({
 			if (result.error) {
 				console.log(result.error);
 				return;
-			} else {
-				if (result.state === 'INFLIGHT') {
-					return;
-				}
+			}
 
-				clearTimeout(interval.current);
+			if (result.state === 'INFLIGHT') {
+				return;
+			}
 
-				updateTreasureChest({
-					chestId,
-					state: result.state === 'SUCCESS' ? 'success' : 'failed',
-				});
+			clearTimeout(interval.current);
 
-				if (result.state === 'FAILED') {
-					navigation.replace('Error');
-				}
+			updateTreasureChest({
+				chestId,
+				state: result.state === 'SUCCESS' ? 'success' : 'failed',
+			});
+
+			if (result.state === 'FAILED') {
+				navigation.replace('Error');
 			}
 		};
 
@@ -209,8 +210,6 @@ const Airdrop = ({
 		if (state === 'claimed') {
 			interval.current = setInterval(checkPayment, 20000);
 		}
-
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [state]);
 
 	return (

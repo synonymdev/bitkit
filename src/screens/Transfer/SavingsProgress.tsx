@@ -22,7 +22,7 @@ const SavingsProgress = ({
 	const dispatch = useAppDispatch();
 	const { t } = useTranslation('lightning');
 
-	// on mount
+	// biome-ignore lint/correctness/useExhaustiveDependencies: onMount
 	useEffect(() => {
 		const close = async (): Promise<void> => {
 			const response = await closeChannels({ channels });
@@ -38,7 +38,6 @@ const SavingsProgress = ({
 		};
 
 		close();
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	return (

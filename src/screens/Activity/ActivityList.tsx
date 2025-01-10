@@ -99,9 +99,7 @@ const ActivityList = ({
 			item,
 			index,
 		}: {
-			// eslint-disable-next-line react/no-unused-prop-types
 			item: string | IActivityItem;
-			// eslint-disable-next-line react/no-unused-prop-types
 			index: number;
 		}): ReactElement => {
 			if (typeof item === 'string') {

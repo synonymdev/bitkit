@@ -36,6 +36,7 @@ const AppOnboarded = (): ReactElement => {
 	const isOnline = useAppSelector(isOnlineSelector);
 
 	// on App start
+	// biome-ignore lint/correctness/useExhaustiveDependencies: onMount
 	useEffect(() => {
 		startWalletServices({ selectedNetwork, selectedWallet });
 
@@ -49,10 +50,9 @@ const AppOnboarded = (): ReactElement => {
 		return (): void => {
 			unsubscribeFromLightningSubscriptions();
 		};
-		// onMount
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: onMount
 	useEffect(() => {
 		// on AppState change
 		const appStateSubscription = AppState.addEventListener(
@@ -84,7 +84,6 @@ const AppOnboarded = (): ReactElement => {
 		return (): void => {
 			appStateSubscription.remove();
 		};
-		// onMount
 	}, [selectedNetwork]);
 
 	useEffect(() => {

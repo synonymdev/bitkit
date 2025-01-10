@@ -118,9 +118,9 @@ export const walletSlice = createSlice({
 						amount: amount || transfer.amount,
 					};
 					return updatedTransfer;
-				} else {
-					return transfer;
 				}
+
+				return transfer;
 			});
 
 			state.wallets[selectedWallet].transfers[selectedNetwork] = updated;

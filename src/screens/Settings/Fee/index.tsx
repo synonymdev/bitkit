@@ -3,7 +3,6 @@ import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
 import SettingsView from '../SettingsView';
-import { SettingsScreenProps } from '../../../navigation/types';
 import { Caption13Up, BodyM } from '../../../styles/text';
 import { ScrollView, View as ThemedView } from '../../../styles/components';
 import { i18nTime } from '../../../utils/i18n';
@@ -72,7 +71,7 @@ const FeeInput = ({
 	);
 };
 
-const FeeSettings = ({}: SettingsScreenProps<'FeeSettings'>): ReactElement => {
+const FeeSettings = (): ReactElement => {
 	const { t: tTime } = useTranslation('intl', { i18n: i18nTime });
 	const dispatch = useAppDispatch();
 	const fees = useAppSelector(onChainFeesSelector);

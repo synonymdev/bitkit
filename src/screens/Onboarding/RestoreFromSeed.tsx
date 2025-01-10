@@ -263,6 +263,7 @@ const RestoreFromSeed = ({
 
 			{showPassphrase ? (
 				<KeyboardAccessoryView hideBorder androidAdjustResize avoidKeyboard>
+					{/* biome-ignore lint/complexity/noUselessFragments: children expected */}
 					<></>
 				</KeyboardAccessoryView>
 			) : (

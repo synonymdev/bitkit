@@ -28,8 +28,12 @@ export type ViewControllerParamList = {
 		| { screen: keyof SendStackParamList }
 		| { screen: 'Quickpay'; invoice: string; amount: number }
 		| { screen: 'LNURLAmount'; pParams: LNURLPayParams; url: string }
-		// prettier-ignore
-		| { screen: 'LNURLConfirm'; pParams: LNURLPayParams; url: string; amount?: number; }
+		| {
+				screen: 'LNURLConfirm';
+				pParams: LNURLPayParams;
+				url: string;
+				amount?: number;
+		  }
 		| undefined;
 	timeRangePrompt: undefined;
 	transferFailed: undefined;

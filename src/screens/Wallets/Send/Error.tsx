@@ -21,7 +21,7 @@ import { transactionSelector } from '../../../store/reselect/wallet';
 const imageCross = require('../../../assets/illustrations/cross.png');
 const imageExclamation = require('../../../assets/illustrations/exclamation-mark.png');
 
-const Error = ({
+const ErrorScreen = ({
 	navigation,
 	route,
 }: SendScreenProps<'Error'>): ReactElement => {
@@ -144,4 +144,4 @@ const styles = StyleSheet.create({
 	},
 });
 
-export default memo(Error);
+export default memo(ErrorScreen);

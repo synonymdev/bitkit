@@ -200,9 +200,11 @@ export const parseUri = async (
 	// Slashtags
 	if (uri.startsWith('slashauth:')) {
 		return ok({ type: EQRDataType.slashAuth, url: uri });
-	} else if (uri.startsWith('slash:')) {
+	}
+	if (uri.startsWith('slash:')) {
 		return ok({ type: EQRDataType.slashtag, url: uri });
-	} else if (uri.startsWith('slashfeed:')) {
+	}
+	if (uri.startsWith('slashfeed:')) {
 		return ok({ type: EQRDataType.slashFeed, url: uri });
 	}
 
@@ -259,9 +261,8 @@ export const parseUri = async (
 				lnUrlParams: params as LNURLPayParams,
 				address: uri,
 			});
-		} else {
-			return err(res.error.message);
 		}
+		return err(res.error.message);
 	}
 
 	let error = i18n.t('other:scan.error.generic');
@@ -749,7 +750,7 @@ const handleData = async ({
 			return ok('');
 		}
 		case EQRDataType.lnurlWithdraw: {
-			let params = data.lnUrlParams as LNURLWithdrawParams;
+			const params = data.lnUrlParams as LNURLWithdrawParams;
 
 			//Convert msats to sats.
 			params.minWithdrawable = Math.floor(params.minWithdrawable / 1000);

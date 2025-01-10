@@ -106,9 +106,11 @@ const ContactsList = ({
 			const name = contact?.name ?? 'Contact Name';
 			const char = name.slice(0, 1);
 			if (char) {
-				sections[char]
-					? sections[char].push(contact)
-					: (sections[char] = [contact]);
+				if (sections[char]) {
+					sections[char].push(contact);
+				} else {
+					sections[char] = [contact];
+				}
 			}
 		});
 
@@ -130,7 +132,6 @@ const ContactsList = ({
 	const List = bottomSheet ? BottomSheetSectionList : SectionList;
 
 	const renderSectionHeader = useCallback(
-		// eslint-disable-next-line react/no-unused-prop-types
 		({ section: { title } }: { section: { title: string } }): ReactElement => {
 			const isFirst = title === sectionedContacts[0].title;
 			return (
@@ -145,7 +146,6 @@ const ContactsList = ({
 	);
 
 	const renderItem = useCallback(
-		// eslint-disable-next-line react/no-unused-prop-types
 		({ item }: { item: IContactRecord }): ReactElement => (
 			<ContactItem contact={item} onPress={onPress} />
 		),

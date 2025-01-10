@@ -29,7 +29,7 @@ export const convertToSats = (
 	value: number | string,
 	unit: EConversionUnit,
 ): number => {
-	let amount = Number(value);
+	const amount = Number(value);
 
 	if (unit === EConversionUnit.BTC) {
 		return btcToSats(amount);

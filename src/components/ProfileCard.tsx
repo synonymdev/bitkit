@@ -103,7 +103,7 @@ const ProfileCard = ({
 
 							const base64 = result.assets?.[0].base64;
 							const type = result.assets?.[0].type;
-							base64 && onChange?.('image', `data:${type};base64,` + base64);
+							base64 && onChange?.('image', `data:${type};base64,${base64}`);
 						}}>
 						<View style={styles.cameraIconOverlay}>
 							<CameraIcon />

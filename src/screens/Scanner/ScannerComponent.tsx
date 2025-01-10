@@ -75,7 +75,7 @@ const ScannerComponent = ({
 			});
 
 			if (result.assets?.[0]) {
-				const { uri } = result.assets?.[0];
+				const { uri } = result.assets[0];
 
 				try {
 					// Read QR from image

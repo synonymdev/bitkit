@@ -64,7 +64,7 @@ export const setupBlocktank = async (
  * @returns {Promise<IBtInfo>}
  */
 export const getBlocktankInfo = async (
-	fromStorage: boolean = false,
+	fromStorage = false,
 ): Promise<IBtInfo> => {
 	let blocktankInfo: IBtInfo | undefined;
 	if (fromStorage) {
@@ -324,7 +324,7 @@ export const watchOrder = async (
 	}
 	watchingOrders.push(orderId); // Add to watchingOrders
 	let settled = false;
-	let error: string = '';
+	let error = '';
 	while (!settled && !error) {
 		const res = await refreshOrder(orderId);
 		if (res.isErr()) {

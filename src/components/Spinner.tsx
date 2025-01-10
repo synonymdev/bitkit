@@ -23,6 +23,7 @@ const LoadingSpinner = memo(
 	}) => {
 		const spinValue = useSharedValue(0);
 
+		// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
 		useEffect(() => {
 			if (__E2E__) {
 				return;
@@ -35,7 +36,6 @@ const LoadingSpinner = memo(
 				-1,
 			);
 			return (): void => cancelAnimation(spinValue);
-			// eslint-disable-next-line react-hooks/exhaustive-deps
 		}, []);
 
 		const animatedStyle = useAnimatedStyle(() => {

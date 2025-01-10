@@ -70,16 +70,16 @@ export const RadioButtonGroup = memo(
 								style={styles.itemLast}
 							/>
 						);
-					} else {
-						return (
-							<RadioButton
-								key={item.value}
-								label={item.label}
-								checked={value === item.value}
-								onPress={(): void => onPress?.(item.value)}
-							/>
-						);
 					}
+
+					return (
+						<RadioButton
+							key={item.value}
+							label={item.label}
+							checked={value === item.value}
+							onPress={(): void => onPress?.(item.value)}
+						/>
+					);
 				})}
 			</>
 		);

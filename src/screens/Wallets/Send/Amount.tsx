@@ -86,17 +86,17 @@ const Amount = ({ navigation }: SendScreenProps<'Amount'>): ReactElement => {
 		return amount;
 	}, [transaction.outputs]);
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: recalculate max when utxos, fee or payment method change
 	const availableAmount = useMemo(() => {
 		const maxAmountResponse = getMaxSendAmount({ method: paymentMethod });
 		if (maxAmountResponse.isOk()) {
 			return maxAmountResponse.value.amount;
 		}
 		return 0;
-		// recalculate max when utxos, fee or payment method change
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [transaction.outputs, transaction.satsPerByte, paymentMethod]);
 
 	useFocusEffect(
+		// biome-ignore lint/correctness/useExhaustiveDependencies: ignore transaction.outputs here because it causes infinite loop
 		useCallback(() => {
 			// This is triggered when the user removes all inputs from the coin selection screen.
 			if (
@@ -113,8 +113,6 @@ const Amount = ({ navigation }: SendScreenProps<'Amount'>): ReactElement => {
 				const result = getNumberPadText(0, denomination, unit);
 				setText(result);
 			}
-			// ignore transaction.outputs here because it causes infinite loop
-			// eslint-disable-next-line react-hooks/exhaustive-deps
 		}, [
 			availableAmount,
 			onchainBalance,
@@ -128,11 +126,10 @@ const Amount = ({ navigation }: SendScreenProps<'Amount'>): ReactElement => {
 	);
 
 	// Set initial text for NumberPadTextField
+	// biome-ignore lint/correctness/useExhaustiveDependencies: only update if the outputAmount/wallet/network changes
 	useEffect(() => {
 		const result = getNumberPadText(outputAmount, denomination, unit);
 		setText(result);
-		// Only update this if the outputAmount/wallet/network changes, so we can ignore unit in the dependency array.
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [outputAmount, selectedWallet, selectedNetwork]);
 
 	const amount = useMemo((): number => {

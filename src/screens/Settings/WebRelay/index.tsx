@@ -20,9 +20,9 @@ import { useProfile, useSlashtags } from '../../../hooks/slashtags';
 
 const validateInput = (
 	url: string,
-	t: (error: string) => void,
+	t: (error: string) => string,
 ): Result<string> => {
-	let error;
+	let error = '';
 
 	if (!url) {
 		error = t('wr.error_url');
@@ -68,7 +68,7 @@ const WebRelay = ({
 			}
 
 			// query /healthcheck
-			const response = await fetch(newUrl + '/health-check?format=json');
+			const response = await fetch(`${newUrl}/health-check?format=json`);
 			if (response.status !== 200) {
 				showToast({
 					type: 'warning',
@@ -92,6 +92,7 @@ const WebRelay = ({
 	};
 
 	// update Profile and Slashpay when web relay changes
+	// biome-ignore lint/correctness/useExhaustiveDependencies: ignore "profile"
 	useEffect(() => {
 		// only run if updated
 		if (updated === 0) {
@@ -114,9 +115,6 @@ const WebRelay = ({
 		});
 
 		updateSlashPayConfig();
-
-		// ignore "profile" here
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [updated, webRelayClient, myProfileUrl, slashtagsProfile, t]);
 
 	const resetToDefault = (): void => {

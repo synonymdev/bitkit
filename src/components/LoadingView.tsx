@@ -29,6 +29,7 @@ const LoadingView = memo(
 		const spinValue = useSharedValue(0);
 		const [showLoading, setShowLoading] = useState(false);
 
+		// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
 		useEffect(() => {
 			if (__E2E__) {
 				return;
@@ -47,7 +48,6 @@ const LoadingView = memo(
 				clearTimeout(timeout);
 				cancelAnimation(spinValue);
 			};
-			// eslint-disable-next-line react-hooks/exhaustive-deps
 		}, []);
 
 		const animatedStyle = useAnimatedStyle(() => {

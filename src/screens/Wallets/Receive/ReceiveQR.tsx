@@ -119,6 +119,7 @@ const ReceiveQR = ({
 		setEnableInstant(!!jitInvoice || lightningBalance.remoteBalance > 0);
 	}, [jitInvoice, lightningBalance.remoteBalance]);
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
 	const getLightningInvoice = useCallback(async (): Promise<void> => {
 		if (!receiveNavigationIsOpen || !lightningBalance.remoteBalance) {
 			return;
@@ -150,7 +151,6 @@ const ReceiveQR = ({
 		}
 
 		setLightningInvoice(response.value.to_str);
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [jitInvoice, amount, message]);
 
 	const getAddress = useCallback(async (): Promise<void> => {
@@ -209,6 +209,7 @@ const ReceiveQR = ({
 		setLoading(false);
 	}, [getAddress, getLightningInvoice, loading, receiveNavigationIsOpen]);
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
 	useEffect(() => {
 		if (!receiveNavigationIsOpen) {
 			return;
@@ -217,7 +218,6 @@ const ReceiveQR = ({
 		sleep(50).then(() => {
 			setInvoiceDetails().then();
 		});
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [
 		amount,
 		message,
@@ -388,6 +388,7 @@ const ReceiveQR = ({
 		);
 	}, [jitInvoice, enableInstant, lightningInvoice]);
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
 	const Slide1 = useCallback((): ReactElement => {
 		return (
 			<View style={styles.slide}>
@@ -403,7 +404,9 @@ const ReceiveQR = ({
 						value={uri}
 						size={qrSize}
 						quietZone={16}
-						getRef={(c): void => (qrRef.current = c)}
+						getRef={(c): void => {
+							qrRef.current = c;
+						}}
 					/>
 					<QrIcon />
 
@@ -471,6 +474,7 @@ const ReceiveQR = ({
 		return '';
 	}, [jitInvoice, lightningInvoice]);
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
 	const Slide2 = useCallback((): ReactElement => {
 		return (
 			<View style={styles.slide}>

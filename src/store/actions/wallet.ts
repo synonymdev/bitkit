@@ -155,7 +155,7 @@ export const addUnconfirmedTransactionsThunk = (
 	transactions: IFormattedTransactions,
 ): Result<string> => {
 	try {
-		let unconfirmedTransactions: IFormattedTransactions = {};
+		const unconfirmedTransactions: IFormattedTransactions = {};
 		Object.keys(transactions).forEach((key) => {
 			const confirmations = blockHeightToConfirmations({
 				blockHeight: transactions[key].height,
@@ -615,10 +615,9 @@ export const getWalletData = async <K extends keyof IWalletData>(
 			const tArr = ['string', 'number', 'boolean', 'undefined'];
 			if (tArr.includes(keyValueType)) {
 				return ok(wallet[keyValue]);
-			} else {
-				const selectedNetwork = getSelectedNetwork();
-				return ok(wallet[keyValue][selectedNetwork]);
 			}
+			const selectedNetwork = getSelectedNetwork();
+			return ok(wallet[keyValue][selectedNetwork]);
 		}
 		const defaultWalletData = getDefaultWalletData();
 		return ok(defaultWalletData[keyValue]);

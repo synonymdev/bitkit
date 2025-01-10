@@ -8,10 +8,10 @@ export const useScreenSize = (): { isSmallScreen: boolean } => {
 		if (height > 812) {
 			// iPhone 11 Pro and larger
 			return false;
-		} else {
-			// iPhone SE and smaller
-			return true;
 		}
+
+		// iPhone SE and smaller
+		return true;
 	}, [height]);
 
 	return { isSmallScreen };

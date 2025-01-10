@@ -118,11 +118,11 @@ export const useLightningChannelName = (channel: TChannel): string => {
 			// If channel is found neither in open/closed channels nor in pending orders, show the channel id
 			const shortChannelId = ellipsis(channel.channel_id, 10);
 			return channel.inbound_scid_alias || shortChannelId;
-		} else {
-			const index = Object.values(channels).length + pendingIndex;
-			return `${t('connection')} ${index + 1}`;
 		}
-	} else {
-		return `${t('connection')} ${channelIndex + 1}`;
+
+		const index = Object.values(channels).length + pendingIndex;
+		return `${t('connection')} ${index + 1}`;
 	}
+
+	return `${t('connection')} ${channelIndex + 1}`;
 };

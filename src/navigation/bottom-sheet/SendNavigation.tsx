@@ -22,7 +22,7 @@ import PinCheck from '../../screens/Wallets/Send/PinCheck';
 import Pending from '../../screens/Wallets/Send/Pending';
 import Quickpay from '../../screens/Wallets/Send/Quickpay';
 import Success from '../../screens/Wallets/Send/Success';
-import Error from '../../screens/Wallets/Send/Error';
+import ErrorScreen from '../../screens/Wallets/Send/Error';
 import Contacts from '../../screens/Wallets/Send/Contacts';
 import Address from '../../screens/Wallets/Send/Address';
 import Scanner from '../../screens/Wallets/Send/Scanner';
@@ -166,7 +166,7 @@ const SendNavigation = (): ReactElement => {
 							initialParams={{ invoice, amount }}
 						/>
 						<Stack.Screen name="Success" component={Success} />
-						<Stack.Screen name="Error" component={Error} />
+						<Stack.Screen name="Error" component={ErrorScreen} />
 						<Stack.Screen
 							name="LNURLAmount"
 							component={LNURLAmount}

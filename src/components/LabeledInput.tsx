@@ -58,7 +58,7 @@ const LabeledInput = ({
 					<BodyS
 						color="brand"
 						style={styles.error}
-						testID={testID ? testID + '-error' : undefined}>
+						testID={testID ? `${testID}-error` : undefined}>
 						{error}
 					</BodyS>
 				)}

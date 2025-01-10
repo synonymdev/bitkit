@@ -195,10 +195,10 @@ const getAllAddresses = async ({
 				addressType: type,
 			});
 			if (generateAddressResponse.isOk()) {
-				let addresses = Object.values(
+				const addresses = Object.values(
 					generateAddressResponse.value.addresses,
 				).sort((a, b) => a.index - b.index);
-				let changeAddresses = Object.values(
+				const changeAddresses = Object.values(
 					generateAddressResponse.value.changeAddresses,
 				).sort((a, b) => a.index - b.index);
 
@@ -304,9 +304,9 @@ const AddressViewer = (): ReactElement => {
 		totalBalance,
 	]);
 
-	const scrollToEnd = (): void => {
+	const scrollToEnd = useCallback((): void => {
 		setTimeout(() => flatListRef?.current?.scrollToEnd(), 200);
-	};
+	}, []);
 
 	const scrollToTop = useCallback((): void => {
 		if (flatlistData.length > 0) {
@@ -322,7 +322,7 @@ const AddressViewer = (): ReactElement => {
 				scrollToEnd();
 			}
 		},
-		[scrollToTop],
+		[scrollToTop, scrollToEnd],
 	);
 
 	/**
@@ -362,6 +362,7 @@ const AddressViewer = (): ReactElement => {
 	/**
 	 * Generates a specified amount of addresses per address type. (addressAmount * addressTypes.length)
 	 */
+	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
 	const getMoreAddresses = useCallback(
 		async (addressAmount): Promise<void> => {
 			const getAllAddressesRes = await getAllAddresses({
@@ -548,7 +549,7 @@ const AddressViewer = (): ReactElement => {
 	 */
 	const getBalanceForAddress = useCallback(
 		(addr: string): number => {
-			let balance: number = 0;
+			let balance = 0;
 			if (utxos && addressesWithBalance.length > 0) {
 				utxos.map((u) => {
 					if (u.address === addr) {
@@ -567,7 +568,7 @@ const AddressViewer = (): ReactElement => {
 	 */
 	const getUtxoForAddress = useCallback(
 		(addr: string): IUtxo | undefined => {
-			let utxo;
+			let utxo: IUtxo | undefined;
 			if (utxos && addressesWithBalance.length > 0) {
 				utxo = utxos.find((u) => {
 					return u.address === addr;
@@ -811,7 +812,7 @@ const AddressViewer = (): ReactElement => {
 
 	const spendFundsButtonText = useMemo(() => {
 		let fundsToSpend = 0;
-		let uniqueAddresses: string[] = [];
+		const uniqueAddresses: string[] = [];
 		if (utxos) {
 			fundsToSpend = selectedUtxos.reduce((acc, cur) => {
 				return acc + cur.value;
@@ -828,14 +829,15 @@ const AddressViewer = (): ReactElement => {
 			: t('addr.spend_all', { count: uniqueAddresses.length });
 	}, [selectedUtxos, selectedUtxosLength, utxos, utxosLength, t]);
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
 	useEffect(() => {
 		const addressAmount =
 			currentAddressIndex + 1 < 20 ? 20 : currentAddressIndex + 1;
 		getMoreAddresses(addressAmount).then();
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	// Refresh balances after closing the send modal.
+	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
 	useEffect(() => {
 		if (sendNavigationIsOpen) {
 			setSendNavigationHasOpened(true);
@@ -843,7 +845,6 @@ const AddressViewer = (): ReactElement => {
 		if (sendNavigationHasOpened && !sendNavigationIsOpen) {
 			onCheckBalance().then();
 		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [sendNavigationHasOpened, sendNavigationIsOpen]);
 
 	return (
@@ -972,8 +973,8 @@ const AddressViewer = (): ReactElement => {
 					contentContainerStyle={styles.flatListContent}
 					data={flatlistData}
 					renderItem={({ item }): ReactElement => {
-						let balance;
-						let utxo;
+						let balance = 0;
+						let utxo: IUtxo | undefined;
 						let isSelected = false;
 						if (utxos) {
 							balance = getBalanceForAddress(item.address);
@@ -1003,23 +1004,22 @@ const AddressViewer = (): ReactElement => {
 					}}
 					keyExtractor={(item: IAddress): string => item.path}
 				/>
-				<>
-					{totalBalance > 0 && (
-						<View style={styles.spendFundsContainer}>
-							{selectedUtxosLength > 0 && (
-								<Button
-									text={spendFundsButtonText}
-									onPress={(): void => {
-										onSpendFundsPress(utxosLength, selectedUtxosLength).then();
-									}}
-								/>
-							)}
-							<Subtitle style={styles.spendFundsText}>
-								{t('addr.sats_found', { totalBalance })}
-							</Subtitle>
-						</View>
-					)}
-				</>
+
+				{totalBalance > 0 && (
+					<View style={styles.spendFundsContainer}>
+						{selectedUtxosLength > 0 && (
+							<Button
+								text={spendFundsButtonText}
+								onPress={(): void => {
+									onSpendFundsPress(utxosLength, selectedUtxosLength).then();
+								}}
+							/>
+						)}
+						<Subtitle style={styles.spendFundsText}>
+							{t('addr.sats_found', { totalBalance })}
+						</Subtitle>
+					</View>
+				)}
 
 				<View style={styles.footer}>
 					<Button style={styles.backToTop} text="↑" onPress={scrollToTop} />

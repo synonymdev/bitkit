@@ -36,9 +36,7 @@ const ActivityListShort = (): ReactElement => {
 			item,
 			index,
 		}: {
-			// eslint-disable-next-line react/no-unused-prop-types
 			item: string | IActivityItem;
-			// eslint-disable-next-line react/no-unused-prop-types
 			index: number;
 		}): ReactNode => {
 			if (typeof item === 'string') {

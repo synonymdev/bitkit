@@ -112,7 +112,8 @@ const RootNavigator = (): ReactElement => {
 			const onReceiveURL = ({ url }: { url: string }): void => {
 				rootNavigation.navigate('Wallet');
 				processUri({ uri: url });
-				return listener(url);
+				listener(url);
+				return;
 			};
 
 			// Listen to incoming links from deep linking
@@ -150,6 +151,7 @@ const RootNavigator = (): ReactElement => {
 		await processUri({ uri: clipboardData, showErrors: false });
 	};
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
 	const onAuthSuccess = useCallback((): void => {
 		if (shouldCheckClipboard) {
 			checkClipboard().then();
@@ -159,6 +161,7 @@ const RootNavigator = (): ReactElement => {
 		dispatch(updateUi({ isAuthenticated: true }));
 	}, [shouldCheckClipboard, dispatch]);
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
 	useEffect(() => {
 		// a bit hacky, but we want to only call this on launch / after launch AuthCheck
 		if (isAuthenticated && renderCount <= 2) {
@@ -188,8 +191,6 @@ const RootNavigator = (): ReactElement => {
 		return (): void => {
 			appStateSubscription.remove();
 		};
-
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [isAuthenticated]);
 
 	return (

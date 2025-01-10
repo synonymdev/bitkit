@@ -118,11 +118,11 @@ const NavigationHeader = ({
 	const numberOfActions = useMemo(() => {
 		if (actionIcon && showCloseButton) {
 			return 2;
-		} else if (showBack || actionIcon || showCloseButton) {
-			return 1;
-		} else {
-			return 0;
 		}
+		if (showBack || actionIcon || showCloseButton) {
+			return 1;
+		}
+		return 0;
 	}, [actionIcon, showBack, showCloseButton]);
 
 	const actionColumn = useMemo(

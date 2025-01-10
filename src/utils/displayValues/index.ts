@@ -50,7 +50,7 @@ export const getBitcoinDisplayValues = ({
 				.reverse()
 				.forEach((c, index) => {
 					if (index > 0 && index % 3 === 0) {
-						res = ' ' + res;
+						res = ` ${res}`;
 					}
 					res = c + res;
 				});

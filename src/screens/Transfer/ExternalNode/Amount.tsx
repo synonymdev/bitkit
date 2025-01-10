@@ -60,15 +60,13 @@ const ExternalAmount = ({
 	const [textFieldValue, setTextFieldValue] = useState('');
 
 	useFocusEffect(
+		// biome-ignore lint/correctness/useExhaustiveDependencies: onFocus
 		useCallback(() => {
 			const setupTransaction = async (): Promise<void> => {
 				await resetSendTransaction();
 				await setupOnChainTransaction({ satsPerByte: fees.fast, rbf: false });
 			};
 			setupTransaction();
-
-			// onMount
-			// eslint-disable-next-line react-hooks/exhaustive-deps
 		}, []),
 	);
 
@@ -76,15 +74,13 @@ const ExternalAmount = ({
 		return convertToSats(textFieldValue, conversionUnit);
 	}, [textFieldValue, conversionUnit]);
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: recalculate max when utxos or fee change
 	const availableAmount = useMemo(() => {
 		const maxAmountResponse = getMaxSendAmount();
 		if (maxAmountResponse.isOk()) {
 			return maxAmountResponse.value.amount;
 		}
 		return 0;
-
-		// recalculate max when utxos or fee change
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [transaction.outputs, transaction.satsPerByte]);
 
 	const maxClientBalance = availableAmount;

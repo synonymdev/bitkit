@@ -32,6 +32,7 @@ export const useSlashfeedConfig = (options: { url: string }): SlashFeedJSON => {
 		return new Reader(webRelayClient, `${options.url}?relay=${webRelayUrl}`);
 	}, [options.url, webRelayUrl, webRelayClient]);
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
 	useEffect(() => {
 		const getData = async (): Promise<void> => {
 			try {

@@ -143,9 +143,9 @@ export const lightningSlice = createSlice({
 			}>,
 		) => {
 			const { selectedWallet, selectedNetwork } = action.payload;
-			let filtered = state.nodes[selectedWallet].peers[selectedNetwork].filter(
-				(peer) => peer !== action.payload.peer,
-			);
+			const filtered = state.nodes[selectedWallet].peers[
+				selectedNetwork
+			].filter((peer) => peer !== action.payload.peer);
 			state.nodes[selectedWallet].peers[selectedNetwork] = filtered;
 		},
 		updateBackupState: (

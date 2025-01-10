@@ -37,6 +37,7 @@ const Chest = ({
 		right: isSmallScreen ? 90 : 80,
 	};
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: onMount
 	const onOpen = useCallback(async () => {
 		if (chestId) {
 			const hasFailed = chest?.state === 'failed';
@@ -52,9 +53,6 @@ const Chest = ({
 				navigation.replace('Loading', { chestId });
 			}
 		}
-
-		// onMount
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [chestId]);
 
 	return (

@@ -93,7 +93,7 @@ export const spendingOnboardingSelector = createShallowEqualSelector(
 	(lightningBalance, pendingTransfers, activityItems): boolean => {
 		const { spendingBalance } = lightningBalance;
 
-		let inTransferToSpending = pendingTransfers.reduce((acc, transfer) => {
+		const inTransferToSpending = pendingTransfers.reduce((acc, transfer) => {
 			if (transfer.type === ETransferType.open) {
 				acc += transfer.amount;
 			}

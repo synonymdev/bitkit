@@ -98,7 +98,7 @@ const LuganoWidget = ({
 						const minutes = time.getMinutes().toString().padStart(2, '0');
 
 						return {
-							time: hours + ':' + minutes,
+							time: `${hours}:${minutes}`,
 							location: event.location,
 							name: event.name,
 						};
@@ -166,7 +166,7 @@ const LuganoWidget = ({
 											openURL(
 												link.url.startsWith('http')
 													? link.url
-													: 'https://' + link.url,
+													: `https://${link.url}`,
 											);
 									}}
 								/>

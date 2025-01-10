@@ -217,15 +217,13 @@ export const getBlockExplorerLink = (
 		case 'blockstream':
 			if (selectedNetwork === 'bitcoinTestnet') {
 				return `https://blockstream.info/testnet/${type}/${id}`;
-			} else {
-				return `https://blockstream.info/${type}/${id}`;
 			}
+			return `https://blockstream.info/${type}/${id}`;
 		case 'mempool':
 			if (selectedNetwork === 'bitcoinTestnet') {
 				return `https://mempool.space/testnet/${type}/${id}`;
-			} else {
-				return `https://mempool.space/${type}/${id}`;
 			}
+			return `https://mempool.space/${type}/${id}`;
 	}
 };
 
@@ -282,7 +280,7 @@ export const autoCoinSelect = async ({
 		//Add UTXO's until we have more than the target amount to send.
 		let inputAmount = 0;
 		let newInputs: IUtxo[] = [];
-		let oldInputs: IUtxo[] = [];
+		const oldInputs: IUtxo[] = [];
 
 		//Consolidate UTXO's if unable to determine the amount to send.
 		if (sortMethod === 'consolidate' || !amountToSend) {
@@ -311,7 +309,7 @@ export const autoCoinSelect = async ({
 		}
 
 		// Get all input and output address types for fee calculation.
-		let addressTypes = {
+		const addressTypes = {
 			inputs: {},
 			outputs: {},
 		} as IAddressTypesIO;
@@ -386,16 +384,18 @@ export const getEstimatedRoutingFee = (amount: number): number => {
 	const fee = 100;
 	if (amount > fee) {
 		return fee;
-	} else if (amount > 25) {
-		return 25;
-	} else if (amount > 10) {
-		return 10;
-	} else if (amount > 3) {
-		return 1;
-	} else {
-		// Make an attempt to spend it all, but will likely fail without a proper routing fee allotment.
-		return 0;
 	}
+	if (amount > 25) {
+		return 25;
+	}
+	if (amount > 10) {
+		return 10;
+	}
+	if (amount > 3) {
+		return 1;
+	}
+	// Make an attempt to spend it all, but will likely fail without a proper routing fee allotment.
+	return 0;
 };
 
 /**
@@ -427,31 +427,31 @@ export const getMaxSendAmount = ({
 			const amount = spendingBalance - fee;
 			const maxAmount = { amount, fee };
 			return ok(maxAmount);
-		} else {
-			const wallet = getOnChainWallet();
-			const fees = getFeesStore().onchain;
-			const { transactionSpeed, customFeeRate } = getSettingsStore();
-
-			const preferredFeeRate =
-				transactionSpeed === ETransactionSpeed.custom
-					? customFeeRate
-					: fees[transactionSpeed];
-
-			const satsPerByte =
-				transaction.selectedFeeId === 'none'
-					? preferredFeeRate
-					: transaction.satsPerByte;
-			const selectedFeeId =
-				transaction.selectedFeeId === 'none'
-					? EFeeId[transactionSpeed]
-					: transaction.selectedFeeId;
-
-			return wallet.transaction.getMaxSendAmount({
-				satsPerByte,
-				selectedFeeId,
-				transaction,
-			});
 		}
+
+		const wallet = getOnChainWallet();
+		const fees = getFeesStore().onchain;
+		const { transactionSpeed, customFeeRate } = getSettingsStore();
+
+		const preferredFeeRate =
+			transactionSpeed === ETransactionSpeed.custom
+				? customFeeRate
+				: fees[transactionSpeed];
+
+		const satsPerByte =
+			transaction.selectedFeeId === 'none'
+				? preferredFeeRate
+				: transaction.satsPerByte;
+		const selectedFeeId =
+			transaction.selectedFeeId === 'none'
+				? EFeeId[transactionSpeed]
+				: transaction.selectedFeeId;
+
+		return wallet.transaction.getMaxSendAmount({
+			satsPerByte,
+			selectedFeeId,
+			transaction,
+		});
 	} catch (e) {
 		return err(e);
 	}
@@ -818,7 +818,7 @@ export const broadcastBoost = async ({
 	oldTxId,
 }: {
 	oldTxId: string;
-}): Promise<Result<String>> => {
+}): Promise<Result<string>> => {
 	try {
 		const transaction = getOnchainTransactionData();
 		const rawTx = await createTransaction();
@@ -853,37 +853,6 @@ export const broadcastBoost = async ({
 
 		await refreshWallet();
 		return ok('Successfully broadcasted boosted transaction.');
-	} catch (e) {
-		return err(e);
-	}
-};
-
-/**
- * Returns the current fee estimates for the provided network.
- * @param {EAvailableNetwork} [selectedNetwork]
- * @returns {Promise<IOnchainFees>}
- */
-export const getFeeEstimates = async (
-	selectedNetwork: EAvailableNetwork = getSelectedNetwork(),
-	forceUpdate: boolean,
-): Promise<Result<IOnchainFees>> => {
-	try {
-		if (__E2E__) {
-			return ok({
-				...initialFeesState.onchain,
-				timestamp: Date.now(),
-			});
-		}
-
-		if (selectedNetwork === EAvailableNetwork.bitcoinRegtest) {
-			return ok({
-				...initialFeesState.onchain,
-				timestamp: Date.now(),
-			});
-		}
-
-		const wallet = await getOnChainWalletAsync();
-		return wallet.updateFeeEstimates(forceUpdate);
 	} catch (e) {
 		return err(e);
 	}

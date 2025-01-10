@@ -201,7 +201,7 @@ const OnchainActivityDetail = ({
 			const data = txData[0].result;
 			setTxDetails(data);
 		});
-	}, [txId, activityType, extended, selectedNetwork, txDetails, t]);
+	}, [txId, extended, txDetails, t]);
 
 	const showBoost = useMemo(() => {
 		if (confirmed || isBoosted) {
@@ -577,8 +577,8 @@ const OnchainActivityDetail = ({
 									isBoosted
 										? 'BoostedButton'
 										: showBoost
-										? 'BoostButton'
-										: 'BoostDisabled'
+											? 'BoostButton'
+											: 'BoostDisabled'
 								}
 								onPress={handleBoost}
 							/>
@@ -628,35 +628,32 @@ const OnchainActivityDetail = ({
 						<ActivityIndicator size="small" />
 					)}
 
-					{hasBoostedParents && (
-						<>
-							{boostedParents.map((parent, i) => {
-								const rbf = boostedTransactions[parent].type === EBoostType.rbf;
-								const testID = rbf ? 'RBFBoosted' : 'CPFPBoosted';
-								const title = rbf
-									? t('activity_boosted_rbf', { num: i + 1 })
-									: t('activity_boosted_cpfp', { num: i + 1 });
+					{hasBoostedParents &&
+						boostedParents.map((parent, i) => {
+							const rbf = boostedTransactions[parent].type === EBoostType.rbf;
+							const testID = rbf ? 'RBFBoosted' : 'CPFPBoosted';
+							const title = rbf
+								? t('activity_boosted_rbf', { num: i + 1 })
+								: t('activity_boosted_cpfp', { num: i + 1 });
 
-								return (
-									<View
-										testID={testID}
-										key={parent}
-										style={styles.sectionContainer}>
-										<TouchableOpacity
-											activeOpacity={0.7}
-											onPress={(): void => {
-												handleBoostParentPress(parent);
-											}}>
-											<Section
-												title={title}
-												value={<BodySSB>{parent}</BodySSB>}
-											/>
-										</TouchableOpacity>
-									</View>
-								);
-							})}
-						</>
-					)}
+							return (
+								<View
+									testID={testID}
+									key={parent}
+									style={styles.sectionContainer}>
+									<TouchableOpacity
+										activeOpacity={0.7}
+										onPress={(): void => {
+											handleBoostParentPress(parent);
+										}}>
+										<Section
+											title={title}
+											value={<BodySSB>{parent}</BodySSB>}
+										/>
+									</TouchableOpacity>
+								</View>
+							);
+						})}
 
 					<View style={styles.buttonDetailsContainer}>
 						<Button
@@ -763,20 +760,12 @@ const LightningActivityDetail = ({
 		statusIcon = (
 			<HourglassSimpleIcon style={styles.rowIcon} color="purple" width={16} />
 		);
-		icon = (
-			<>
-				<HourglassSimpleIcon color="purple" width={24} />
-			</>
-		);
+		icon = <HourglassSimpleIcon color="purple" width={24} />;
 	}
 	if (status === 'failed') {
 		statusText = t('activity_failed');
 		statusIcon = <XIcon style={styles.rowIcon} color="purple" width={16} />;
-		icon = (
-			<>
-				<XIcon color="purple" width={24} />
-			</>
-		);
+		icon = <XIcon color="purple" width={24} />;
 	}
 
 	const StatusRow = (

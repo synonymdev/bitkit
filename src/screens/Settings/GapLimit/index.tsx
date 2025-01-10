@@ -6,7 +6,6 @@ import Button from '../../../components/buttons/Button';
 import NavigationHeader from '../../../components/NavigationHeader';
 import SafeAreaInset from '../../../components/SafeAreaInset';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
-import type { SettingsScreenProps } from '../../../navigation/types';
 import { updateWallet } from '../../../store/slices/wallet';
 import { gapLimitOptionsSelector } from '../../../store/reselect/wallet';
 import { ScrollView, TextInput, View } from '../../../styles/components';
@@ -14,7 +13,7 @@ import { Caption13Up } from '../../../styles/text';
 import { showToast } from '../../../utils/notifications';
 import { getOnChainWalletAsync, refreshWallet } from '../../../utils/wallet';
 
-const GapLimit = ({}: SettingsScreenProps<'GapLimit'>): ReactElement => {
+const GapLimit = (): ReactElement => {
 	const { t } = useTranslation('settings');
 	const dispatch = useAppDispatch();
 	const gapLimitOptions = useAppSelector(gapLimitOptionsSelector);

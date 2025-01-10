@@ -7,7 +7,7 @@ export interface IHeader {
 }
 
 export interface IGetHeaderResponse {
-	id: Number;
+	id: number;
 	error: boolean;
 	method: 'getHeader';
 	data: string;

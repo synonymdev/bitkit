@@ -56,17 +56,15 @@ const store = configureStore({
 
 		if (__DEV__ && !__JEST__) {
 			return defaultMiddleware.concat(devMiddleware);
-		} else {
-			return defaultMiddleware;
 		}
+		return defaultMiddleware;
 	},
 	enhancers: (getDefaultEnhancers) => {
 		if (__DEV__ && !__JEST__) {
 			const Reactotron = require('../../ReactotronConfig').default;
 			return getDefaultEnhancers().concat(Reactotron.createEnhancer());
-		} else {
-			return getDefaultEnhancers();
 		}
+		return getDefaultEnhancers();
 	},
 });
 

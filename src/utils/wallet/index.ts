@@ -39,7 +39,7 @@ import {
 import type { Electrum } from 'beignet/dist/types/electrum';
 import type { Transaction } from 'beignet/dist/types/transaction';
 import type { Wallet as TWallet } from 'beignet/dist/types/wallet';
-import { TGetTotalFeeObj } from 'beignet/dist/types/types';
+import { TGetTotalFeeObj, TStorage } from 'beignet/dist/types/types';
 
 import { EAvailableNetwork, networks } from '../networks';
 import {
@@ -138,7 +138,6 @@ export const setupAddressGenerator = async ({
 export const waitForWallet = async (): Promise<TWallet> => {
 	// Return the wallet when it's defined
 	while (typeof globalWallet === 'undefined') {
-		// eslint-disable-next-line no-promise-executor-return
 		await new Promise((resolve) => setTimeout(resolve, 10));
 	}
 	return globalWallet;
@@ -198,9 +197,7 @@ export const refreshWallet = async ({
  * @param {boolean} [scanAllAddresses] - If set to false, on-chain scanning will adhere to the saved gap limit.
  * @return {Promise<void>}
  */
-const refreshBeignet = async (
-	scanAllAddresses: boolean = false,
-): Promise<void> => {
+const refreshBeignet = async (scanAllAddresses = false): Promise<void> => {
 	// Read additional addresses from LDK. They are used for channel closure transactions.
 	let additionalAddresses: undefined | string[];
 	try {
@@ -631,9 +628,8 @@ export const getSelectedAddressType = ({
 	const storedWallet = getWalletStore().wallets[selectedWallet];
 	if (storedWallet?.addressType[selectedNetwork]) {
 		return storedWallet.addressType[selectedNetwork];
-	} else {
-		return getDefaultWalletShape().addressType[selectedNetwork];
 	}
+	return getDefaultWalletShape().addressType[selectedNetwork];
 };
 
 /**
@@ -733,9 +729,8 @@ export const getTransactionById = ({
 	});
 	if (txid in transactions) {
 		return ok(transactions[txid]);
-	} else {
-		return err('Unable to locate the specified txid.');
 	}
+	return err('Unable to locate the specified txid.');
 };
 
 export interface ITransaction<T> {
@@ -1019,9 +1014,8 @@ const onElectrumConnectionChange = (isConnected: boolean): void => {
 };
 
 // Used to prevent duplicate notifications for the same txid that seems to occur when Bitkit is brought from background to foreground.
-let receivedTxids: string[] = [];
+const receivedTxids: string[] = [];
 
-// eslint-disable-next-line @typescript-eslint/no-misused-promises
 const onMessage: TOnMessage = async (key, data): Promise<void> => {
 	switch (key) {
 		case 'transactionReceived': {
@@ -1047,13 +1041,15 @@ const onMessage: TOnMessage = async (key, data): Promise<void> => {
 			setTimeout(updateActivityList, 500);
 			break;
 		}
-		case 'transactionSent':
+		case 'transactionSent': {
 			setTimeout(updateActivityList, 500);
 			break;
-		case 'connectedToElectrum':
+		}
+		case 'connectedToElectrum': {
 			onElectrumConnectionChange(data as boolean);
 			break;
-		case 'reorg':
+		}
+		case 'reorg': {
 			const utxoArr = data as IUtxo[];
 			// Only notify users of reorg's that impact their transactions.
 			if (utxoArr.length) {
@@ -1068,7 +1064,8 @@ const onMessage: TOnMessage = async (key, data): Promise<void> => {
 				});
 			}
 			break;
-		case 'rbf':
+		}
+		case 'rbf': {
 			const rbfData = data as string[];
 			showToast({
 				type: 'warning',
@@ -1079,9 +1076,11 @@ const onMessage: TOnMessage = async (key, data): Promise<void> => {
 				autoHide: false,
 			});
 			break;
-		case 'newBlock':
+		}
+		case 'newBlock': {
 			// Beignet will handle this.
 			refreshWallet({ onchain: false }).then();
+		}
 	}
 };
 
@@ -1126,7 +1125,7 @@ export const setupOnChainWallet = async ({
 	});
 	// Fetch any stored custom peers.
 	const customPeers = servers ?? getCustomElectrumPeers({ selectedNetwork });
-	let storage;
+	let storage: TStorage | undefined;
 	if (setStorage) {
 		storage = {
 			getData: getWalletData,
@@ -1238,7 +1237,7 @@ export const autoCoinSelect = async ({
 		//Add UTXO's until we have more than the target amount to send.
 		let inputAmount = 0;
 		let newInputs: IUtxo[] = [];
-		let oldInputs: IUtxo[] = [];
+		const oldInputs: IUtxo[] = [];
 
 		//Consolidate UTXO's if unable to determine the amount to send.
 		if (sortMethod === 'consolidate' || !amountToSend) {
@@ -1456,9 +1455,8 @@ export const getCurrentAddressIndex = async ({
 		});
 		if (generatedAddress.isOk()) {
 			return ok(generatedAddress.value);
-		} else {
-			console.log(generatedAddress.error.message);
 		}
+		console.log(generatedAddress.error.message);
 		return err('No address index available.');
 	} catch (e) {
 		return err(e);
