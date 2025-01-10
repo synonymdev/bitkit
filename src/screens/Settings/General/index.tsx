@@ -7,7 +7,7 @@ import { useAppSelector } from '../../../hooks/redux';
 import type { SettingsScreenProps } from '../../../navigation/types';
 import { EUnit } from '../../../store/types/wallet';
 import { lastUsedTagsSelector } from '../../../store/reselect/metadata';
-import { quickpayIntroSeenSelector } from '../../../store/reselect/user';
+import { quickpayIntroSeenSelector } from '../../../store/reselect/settings';
 import {
 	unitSelector,
 	selectedCurrencySelector,

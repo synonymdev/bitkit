@@ -8,7 +8,7 @@ import SafeAreaInset from '../../../components/SafeAreaInset';
 import GradientView from '../../../components/GradientView';
 import Button from '../../../components/buttons/Button';
 import { useAppDispatch } from '../../../hooks/redux';
-import { verifyBackup } from '../../../store/slices/user';
+import { verifyBackup } from '../../../store/slices/settings';
 import { BackupScreenProps } from '../../../navigation/types';
 
 const imageSrc = require('../../../assets/illustrations/check.png');

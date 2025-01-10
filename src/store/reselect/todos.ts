@@ -17,11 +17,8 @@ import {
 	btFailedTodo,
 	inviteTodo,
 } from '../shapes/todos';
-import {
-	backupVerifiedSelector,
-	startCoopCloseTimestampSelector,
-} from './user';
-import { pinSelector } from './settings';
+import { startCoopCloseTimestampSelector } from './user';
+import { backupVerifiedSelector, pinSelector } from './settings';
 import { onboardingProfileStepSelector } from './slashtags';
 import { closedChannelsSelector, openChannelsSelector } from './lightning';
 import { blocktankPaidOrdersFullSelector } from './blocktank';

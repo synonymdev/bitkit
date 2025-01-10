@@ -4,7 +4,7 @@ import { Trans, useTranslation } from 'react-i18next';
 import { Display } from '../../styles/text';
 import OnboardingScreen from '../../components/OnboardingScreen';
 import { useAppDispatch } from '../../hooks/redux';
-import { updateUser } from '../../store/slices/user';
+import { updateSettings } from '../../store/slices/settings';
 import type { TransferScreenProps } from '../../navigation/types';
 
 const imageSrc = require('../../assets/illustrations/piggybank.png');
@@ -17,7 +17,7 @@ const SavingsIntro = ({
 
 	const onContinue = (): void => {
 		navigation.navigate('Availability');
-		dispatch(updateUser({ savingsIntroSeen: true }));
+		dispatch(updateSettings({ savingsIntroSeen: true }));
 	};
 
 	return (

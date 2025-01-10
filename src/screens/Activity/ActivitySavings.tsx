@@ -15,10 +15,8 @@ import ActivityList from './ActivityList';
 import { useBalance } from '../../hooks/wallet';
 import { useAppSelector } from '../../hooks/redux';
 import { EActivityType } from '../../store/types/activity';
-import {
-	isGeoBlockedSelector,
-	spendingIntroSeenSelector,
-} from '../../store/reselect/user';
+import { isGeoBlockedSelector } from '../../store/reselect/user';
+import { spendingIntroSeenSelector } from '../../store/reselect/settings';
 import { activityItemsSelector } from '../../store/reselect/activity';
 import { WalletScreenProps } from '../../navigation/types';
 

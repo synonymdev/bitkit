@@ -74,6 +74,7 @@ const defaultReceivePreference = [
 ];
 
 export const initialSettingsState: TSettings = {
+	backupVerified: false,
 	enableAutoReadClipboard: false,
 	enableSendAmountWarning: false,
 	enableSwipeToHideBalance: true,
@@ -89,7 +90,7 @@ export const initialSettingsState: TSettings = {
 	selectedCurrency: 'USD',
 	selectedLanguage: 'english',
 	customElectrumPeers: defaultElectrumPeer,
-	rapidGossipSyncUrl: 'https://rapidsync.lightningdevkit.org/snapshot/',
+	rapidGossipSyncUrl: 'https://rgs.blocktank.to/snapshot/',
 	coinSelectAuto: true,
 	coinSelectPreference: 'small',
 	receivePreference: defaultReceivePreference,
@@ -107,6 +108,10 @@ export const initialSettingsState: TSettings = {
 	treasureChests: [],
 	orangeTickets: [],
 	webRelay: __WEB_RELAY__,
+	quickpayIntroSeen: false,
+	transferIntroSeen: false,
+	spendingIntroSeen: false,
+	savingsIntroSeen: false,
 };
 
 export const getDefaultSettingsShape = (): TSettings => {

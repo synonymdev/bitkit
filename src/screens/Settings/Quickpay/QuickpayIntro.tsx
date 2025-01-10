@@ -4,7 +4,7 @@ import { Trans, useTranslation } from 'react-i18next';
 import { Display } from '../../../styles/text';
 import OnboardingScreen from '../../../components/OnboardingScreen';
 import { useAppDispatch } from '../../../hooks/redux';
-import { updateUser } from '../../../store/slices/user';
+import { updateSettings } from '../../../store/slices/settings';
 import type { SettingsScreenProps } from '../../../navigation/types';
 
 const imageSrc = require('../../../assets/illustrations/fast-forward.png');
@@ -31,7 +31,7 @@ const QuickpayIntro = ({
 			buttonText={t('continue')}
 			testID="QuickpayIntro"
 			onButtonPress={(): void => {
-				dispatch(updateUser({ quickpayIntroSeen: true }));
+				dispatch(updateSettings({ quickpayIntroSeen: true }));
 				navigation.navigate('QuickpaySettings');
 			}}
 		/>

@@ -5,21 +5,19 @@ import { __E2E__ } from '../../../constants/env';
 import { Display } from '../../../styles/text';
 import BottomSheetWrapper from '../../../components/BottomSheetWrapper';
 import BottomSheetScreen from '../../../components/BottomSheetScreen';
-import { closeSheet } from '../../../store/slices/ui';
-import { ignoreBackup } from '../../../store/slices/user';
-import { showBottomSheet } from '../../../store/utils/ui';
 import { useBalance } from '../../../hooks/wallet';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
-import { objectKeys } from '../../../utils/objectKeys';
-import { viewControllersSelector } from '../../../store/reselect/ui';
 import {
 	useBottomSheetBackPress,
 	useSnapPoints,
 } from '../../../hooks/bottomSheet';
-import {
-	backupVerifiedSelector,
-	ignoreBackupTimestampSelector,
-} from '../../../store/reselect/user';
+import { closeSheet } from '../../../store/slices/ui';
+import { ignoreBackup } from '../../../store/slices/user';
+import { showBottomSheet } from '../../../store/utils/ui';
+import { objectKeys } from '../../../utils/objectKeys';
+import { viewControllersSelector } from '../../../store/reselect/ui';
+import { ignoreBackupTimestampSelector } from '../../../store/reselect/user';
+import { backupVerifiedSelector } from '../../../store/reselect/settings';
 
 const imageSrc = require('../../../assets/illustrations/safe.png');
 
