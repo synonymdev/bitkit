@@ -1,0 +1,35 @@
+{
+	"files": {
+		"ignore": ["src/polyfills/**"]
+	},
+	"linter": {
+		"rules": {
+			"complexity": {
+				"noBannedTypes": "off",
+				"noForEach": "off"
+			},
+			"performance": {
+				"noAccumulatingSpread": "off"
+			},
+			"suspicious": {
+				"noExplicitAny": "off",
+				"noArrayIndexKey": "off"
+			},
+			"style": {
+				"noNonNullAssertion": "off",
+				"noParameterAssign": "off",
+				"useImportType": "off",
+				"useNodejsImportProtocol": "off"
+			}
+		}
+	},
+	"javascript": {
+		"formatter": {
+			"bracketSameLine": true,
+			"quoteStyle": "single"
+		}
+	},
+	"organizeImports": {
+		"enabled": false
+	}
+}
