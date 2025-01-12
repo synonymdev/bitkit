@@ -15,7 +15,7 @@ type ContactsOnboardingProps = NativeStackScreenProps<
 	'Contacts'
 >;
 
-const ContactsOnboarding = ({}: ContactsOnboardingProps): ReactElement => {
+const ContactsOnboarding = (_props: ContactsOnboardingProps): ReactElement => {
 	const { t } = useTranslation('slashtags');
 	const dispatch = useAppDispatch();
 

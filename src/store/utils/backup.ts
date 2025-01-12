@@ -189,34 +189,41 @@ export const performBackup = async (
 	try {
 		let data: {};
 		switch (category) {
-			case EBackupCategory.wallet:
+			case EBackupCategory.wallet: {
 				const selectedWallet = getSelectedWallet();
 				const wallet = getWalletStore().wallets[selectedWallet];
 				const { transfers, boostedTransactions } = wallet;
 				data = { boostedTransactions, transfers };
 				break;
-			case EBackupCategory.settings:
+			}
+			case EBackupCategory.settings: {
 				data = getSettingsStore();
 				break;
-			case EBackupCategory.widgets:
+			}
+			case EBackupCategory.widgets: {
 				data = getWidgetsStore();
 				break;
-			case EBackupCategory.metadata:
+			}
+			case EBackupCategory.metadata: {
 				data = getMetaDataStore();
 				break;
-			case EBackupCategory.blocktank:
+			}
+			case EBackupCategory.blocktank: {
 				const { paidOrders, orders } = getBlocktankStore();
 				data = { paidOrders, orders };
 				break;
-			case EBackupCategory.slashtags:
+			}
+			case EBackupCategory.slashtags: {
 				const { contacts } = getSlashtagsStore();
 				data = { contacts };
 				break;
-			case EBackupCategory.ldkActivity:
+			}
+			case EBackupCategory.ldkActivity: {
 				data = getActivityStore().items.filter(
 					(a) => a.activityType === EActivityType.lightning,
 				);
 				break;
+			}
 		}
 
 		const metadata: TBackupMetadata = {

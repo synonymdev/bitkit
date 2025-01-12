@@ -10,16 +10,13 @@ import {
 import { Subtitle, Caption13Up } from '../../../styles/text';
 import NavigationHeader from '../../../components/NavigationHeader';
 import SafeAreaInset from '../../../components/SafeAreaInset';
-import { useAppSelector } from '../../../hooks/redux';
 import { getNodeId } from '../../../utils/lightning';
 import { showToast } from '../../../utils/notifications';
-import { selectedNetworkSelector } from '../../../store/reselect/wallet';
 
 const LightningNodeInfo = (): ReactElement => {
 	const { t } = useTranslation('lightning');
 	const [nodeId, setNodeId] = useState('');
 	const [error, setError] = useState('');
-	const selectedNetwork = useAppSelector(selectedNetworkSelector);
 
 	useEffect(() => {
 		(async (): Promise<void> => {
@@ -31,7 +28,7 @@ const LightningNodeInfo = (): ReactElement => {
 				setError(t('node_failed'));
 			}
 		})();
-	}, [selectedNetwork, t]);
+	}, [t]);
 
 	const onCopy = (): void => {
 		Clipboard.setString(nodeId);

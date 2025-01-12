@@ -80,6 +80,6 @@ export const useCurrentDisplayValue = (
 	const unit = useAppSelector(unitSelector);
 	const dv = useDisplayValues(...props);
 	return unit === EUnit.BTC
-		? '₿' + dv.bitcoinFormatted
+		? `₿${dv.bitcoinFormatted}`
 		: dv.fiatSymbol + dv.fiatFormatted;
 };

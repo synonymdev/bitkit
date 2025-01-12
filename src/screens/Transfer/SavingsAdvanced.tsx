@@ -58,9 +58,8 @@ const SavingsAdvanced = ({
 		setSelected((prev) => {
 			if (prev.includes(channelId)) {
 				return prev.filter((id) => id !== channelId);
-			} else {
-				return [...prev, channelId];
 			}
+			return [...prev, channelId];
 		});
 	};
 

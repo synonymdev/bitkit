@@ -54,6 +54,7 @@ const SpendingAdvanced = ({
 	}, [textFieldValue, conversionUnit]);
 
 	// fetch LSP fee estimate
+	// biome-ignore lint/correctness/useExhaustiveDependencies: only fetch when balance changes
 	useEffect(() => {
 		// if fee exists in cache, do not fetch again
 		if (feeEstimate[`${clientBalance}-${lspBalance}`]) {
@@ -79,8 +80,6 @@ const SpendingAdvanced = ({
 		};
 
 		getChannelOpenCost();
-		// only fetch when balance changes
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [lspBalance, clientBalance, minLspBalance]);
 
 	const onChangeUnit = (): void => {

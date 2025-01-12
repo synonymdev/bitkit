@@ -9,7 +9,7 @@ import BitkitLogo from '../../assets/bitkit-logo.svg';
 
 const imageSrc = require('../../assets/treasure-hunt/error.jpg');
 
-const Error = (): ReactElement => (
+const ErrorScreen = (): ReactElement => (
 	<GradientView style={styles.container} image={imageSrc}>
 		<View style={styles.logo} pointerEvents="none">
 			<BitkitLogo height={32} width={90} />
@@ -57,4 +57,4 @@ const styles = StyleSheet.create({
 	},
 });
 
-export default memo(Error);
+export default memo(ErrorScreen);

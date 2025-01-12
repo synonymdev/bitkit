@@ -45,8 +45,8 @@ const SecuritySettings = ({
 		biometryData?.biometryType === 'TouchID'
 			? t('security:bio_touch_id')
 			: biometryData?.biometryType === 'FaceID'
-			? t('security:bio_face_id')
-			: biometryData?.biometryType ?? t('security:bio');
+				? t('security:bio_face_id')
+				: (biometryData?.biometryType ?? t('security:bio'));
 
 	const footerText =
 		pin && isBiometrySupported

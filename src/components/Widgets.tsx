@@ -68,7 +68,7 @@ const Widgets = (): ReactElement => {
 
 	const renderItem = useCallback(
 		({ item, drag }: RenderItemParams<[string, TWidget]>): ReactElement => {
-			let [url, widget] = item;
+			const [url, widget] = item;
 
 			const _drag = (): void => {
 				// only allow dragging if there are more than 1 widget

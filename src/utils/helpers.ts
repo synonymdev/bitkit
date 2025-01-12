@@ -7,6 +7,24 @@ import keys from 'lodash/keys';
 import isPlainObject from 'lodash/isPlainObject';
 
 import { i18nTime } from '../utils/i18n';
+import { TServer } from 'beignet';
+import {
+	TTags,
+	TLastUsedTags,
+	TPendingInvoice,
+	TSlashTagsUrls,
+	TTxComments,
+} from '../store/types/metadata';
+import {
+	TTheme,
+	TCoinSelectPreference,
+	TReceiveOption,
+	ETransactionSpeed,
+	TChest,
+} from '../store/types/settings';
+import { EUnit, EDenomination } from '../store/types/wallet';
+import { TWidgets } from '../store/types/widgets';
+import { EAvailableNetwork } from './networks';
 
 /**
  * Returns the result of a promise, or an error if the promise takes too long to resolve.
@@ -132,7 +150,7 @@ export const truncate = (text: string, length: number): string => {
  * @param {number} [maxLength]
  * @returns {string}
  */
-export const ellipsis = (text: string, maxLength: number = 15): string => {
+export const ellipsis = (text: string, maxLength = 15): string => {
 	if (!text) {
 		return text;
 	}
@@ -143,7 +161,7 @@ export const ellipsis = (text: string, maxLength: number = 15): string => {
 		return text;
 	}
 	if (maxLength === 1) {
-		return text.substring(0, 1) + '...';
+		return `${text.substring(0, 1)}...`;
 	}
 
 	const midpoint = Math.ceil(text.length / 2);
@@ -206,7 +224,10 @@ export const arraysMatch = (arr1: unknown[], arr2: unknown[]): boolean => {
  * @param obj2
  * @return boolean
  */
-export const objectsMatch = (obj1, obj2): boolean => {
+export const objectsMatch = (
+	obj1: { [x: string]: any },
+	obj2: { [x: string]: any },
+): boolean => {
 	if (!obj1 || !obj2) {
 		return false;
 	}
@@ -217,9 +238,9 @@ export const objectsMatch = (obj1, obj2): boolean => {
 		return Object.keys(obj1).every(
 			(key) => key in obj2 && obj2[key] === obj1[key],
 		);
-	} else {
-		return false;
 	}
+
+	return false;
 };
 
 /**
@@ -230,8 +251,94 @@ export const objectsMatch = (obj1, obj2): boolean => {
  * @returns boolean
  */
 export const isObjPartialMatch = (
-	testObj,
-	referenceObj,
+	testObj: {
+		[x: string]: any;
+		enableAutoReadClipboard?: boolean;
+		enableSendAmountWarning?: boolean;
+		enableSwipeToHideBalance?: boolean;
+		pin?: boolean;
+		pinOnLaunch?: boolean;
+		pinOnIdle?: boolean;
+		pinForPayments?: boolean;
+		biometrics?: boolean;
+		rbf?: boolean;
+		theme?: TTheme;
+		unit?: EUnit;
+		denomination?: EDenomination;
+		customElectrumPeers?: Record<EAvailableNetwork, TServer[]>;
+		rapidGossipSyncUrl?: string;
+		selectedCurrency?: string;
+		selectedLanguage?: string;
+		coinSelectAuto?: boolean;
+		coinSelectPreference?: TCoinSelectPreference;
+		receivePreference?: TReceiveOption[];
+		enableDevOptions?: boolean;
+		enableOfflinePayments?: boolean;
+		enableQuickpay?: boolean;
+		quickpayAmount?: number;
+		showWidgets?: boolean;
+		showWidgetTitles?: boolean;
+		transactionSpeed?: ETransactionSpeed;
+		customFeeRate?: number;
+		hideBalance?: boolean;
+		hideBalanceOnOpen?: boolean;
+		hideOnboardingMessage?: boolean;
+		treasureChests?: TChest[];
+		orangeTickets?: string[];
+		webRelay?: string;
+		widgets?: TWidgets;
+		onboardedWidgets?: boolean;
+		sortOrder?: string[];
+		tags?: TTags;
+		lastUsedTags?: TLastUsedTags;
+		pendingInvoices?: TPendingInvoice[];
+		slashTagsUrls?: TSlashTagsUrls;
+		comments?: TTxComments;
+	},
+	referenceObj: {
+		[x: string]: any;
+		enableAutoReadClipboard?: boolean;
+		enableSendAmountWarning?: boolean;
+		enableSwipeToHideBalance?: boolean;
+		pin?: boolean;
+		pinOnLaunch?: boolean;
+		pinOnIdle?: boolean;
+		pinForPayments?: boolean;
+		biometrics?: boolean;
+		rbf?: boolean;
+		theme?: TTheme;
+		unit?: EUnit;
+		denomination?: EDenomination;
+		customElectrumPeers?: Record<EAvailableNetwork, TServer[]>;
+		rapidGossipSyncUrl?: string;
+		selectedCurrency?: string;
+		selectedLanguage?: string;
+		coinSelectAuto?: boolean;
+		coinSelectPreference?: TCoinSelectPreference;
+		receivePreference?: TReceiveOption[];
+		enableDevOptions?: boolean;
+		enableOfflinePayments?: boolean;
+		enableQuickpay?: boolean;
+		quickpayAmount?: number;
+		showWidgets?: boolean;
+		showWidgetTitles?: boolean;
+		transactionSpeed?: ETransactionSpeed;
+		customFeeRate?: number;
+		hideBalance?: boolean;
+		hideBalanceOnOpen?: boolean;
+		hideOnboardingMessage?: boolean;
+		treasureChests?: TChest[];
+		orangeTickets?: string[];
+		webRelay?: string;
+		widgets?: TWidgets;
+		onboardedWidgets?: boolean;
+		sortOrder?: string[];
+		tags?: TTags;
+		lastUsedTags?: TLastUsedTags;
+		pendingInvoices?: TPendingInvoice[];
+		slashTagsUrls?: TSlashTagsUrls;
+		comments?: TTxComments;
+	},
 	keysToExclude: string[] = [],
 ): boolean => {
 	if (typeof testObj !== 'object' || typeof referenceObj !== 'object') {
@@ -254,8 +361,8 @@ export const isObjPartialMatch = (
 export const deepCompareStructure = (
 	obj1: any,
 	obj2: any,
-	maxDepth: number = Infinity,
-	currentDepth: number = 0,
+	maxDepth: number = Number.POSITIVE_INFINITY,
+	currentDepth = 0,
 ): boolean => {
 	// Ensure both objects are plain objects
 	if (!isPlainObject(obj1) || !isPlainObject(obj2)) {
@@ -316,7 +423,7 @@ export const removeKeysFromObject = (
 	object: object,
 	keysToRemove: string | string[],
 ): {} => {
-	let condition;
+	let condition: (key: string) => boolean;
 
 	if (typeof keysToRemove === 'string') {
 		condition = (key: string): boolean => !key.includes(keysToRemove);
@@ -408,31 +515,36 @@ export const timeAgo = (timestamp: string | number | Date): string => {
 			range: 'seconds',
 			numeric: 'auto',
 		});
-	} else if (seconds < 60) {
+	}
+	if (seconds < 60) {
 		return i18nTime.t('relativeTime', {
 			v: -seconds,
 			range: 'seconds',
 			numeric: 'auto',
 		});
-	} else if (minutes < 60) {
+	}
+	if (minutes < 60) {
 		return i18nTime.t('relativeTime', {
 			v: -minutes,
 			range: 'minute',
 			numeric: 'auto',
 		});
-	} else if (hours < 24) {
+	}
+	if (hours < 24) {
 		return i18nTime.t('relativeTime', {
 			v: -hours,
 			range: 'hour',
 			numeric: 'auto',
 		});
-	} else if (days < 10) {
+	}
+	if (days < 10) {
 		return i18nTime.t('relativeTime', {
 			v: -days,
 			range: 'day',
 			numeric: 'auto',
 		});
-	} else if (isThisYear) {
+	}
+	if (isThisYear) {
 		// January 1 at 12:00 AM
 		return i18nTime.t('dateTime', {
 			v: date,
@@ -470,10 +582,9 @@ export const openURL = async (url: string): Promise<boolean> => {
 		if (supported) {
 			await Linking.openURL(url);
 			return true;
-		} else {
-			console.log('Cannot open url: ', url);
-			return false;
 		}
+		console.log('Cannot open url: ', url);
+		return false;
 	} catch (e) {
 		console.log('Cannot open url: ', url);
 		console.error('Error open url: ', e);
@@ -596,7 +707,7 @@ export const generateCalendar = (
 	while (day <= daysInMonth) {
 		const week: Array<number | null> = [];
 
-		for (let i of weekDays) {
+		for (const i of weekDays) {
 			if (day === 0 && i === firstDayOfMonth) {
 				week.push(1);
 				day = 2;
@@ -636,7 +747,8 @@ export const getMinMaxObjects = <T extends object>({
 	arr: T[];
 	key: string;
 }): TGetMinMaxObject<T> => {
-	let min, max;
+	let min: T | undefined = undefined;
+	let max: T | undefined = undefined;
 	arr.forEach((item) => {
 		if (key in item && typeof item[key] === 'number') {
 			const index = item[key];

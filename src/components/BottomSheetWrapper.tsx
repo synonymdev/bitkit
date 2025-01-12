@@ -95,7 +95,7 @@ const BottomSheetWrapper = forwardRef(
 		}, [data.isOpen]);
 
 		useImperativeHandle(ref, () => ({
-			snapToIndex(index: number = 0): void {
+			snapToIndex(index = 0): void {
 				bottomSheetRef.current?.snapToIndex(index);
 			},
 			expand(): void {

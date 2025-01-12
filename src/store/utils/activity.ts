@@ -84,7 +84,7 @@ export const updateActivityList = (): Result<string> => {
  * @returns {Result<string>}
  */
 export const updateOnChainActivityList = async (): Promise<Result<string>> => {
-	let { currentWallet } = getCurrentWallet();
+	const { currentWallet } = getCurrentWallet();
 	if (!currentWallet) {
 		console.warn(
 			'No wallet found. Cannot update activity list with transactions.',

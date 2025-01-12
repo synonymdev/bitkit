@@ -869,7 +869,7 @@ export const setAccount = async ({
 		key: name,
 		value: JSON.stringify(account),
 	});
-	return result.isOk() ? true : false;
+	return result.isOk();
 };
 
 /**
@@ -933,9 +933,8 @@ export const createDefaultLdkAccount = async ({
 	const setAccountResponse = await setAccount(defaultAccount);
 	if (setAccountResponse) {
 		return ok(defaultAccount);
-	} else {
-		return err('Unable to set LDK account.');
 	}
+	return err('Unable to set LDK account.');
 };
 
 /**
@@ -1034,9 +1033,9 @@ const getBestBlock: TGetBestBlock = async () => {
  * @returns {Promise<TTransactionData>}
  */
 export const getTransactionData = async (
-	txId: string = '',
+	txId = '',
 ): Promise<TTransactionData | undefined> => {
-	let transactionData = DefaultTransactionDataShape;
+	const transactionData = DefaultTransactionDataShape;
 	try {
 		const data = [{ tx_hash: txId }];
 		const electrum = await getOnChainWalletElectrumAsync();
@@ -1105,7 +1104,11 @@ export const getTransactionPosition = async ({
 		tx_hash,
 		height,
 	});
-	if (response.error || isNaN(response.data?.pos) || response.data?.pos < 0) {
+	if (
+		response.error ||
+		Number.isNaN(response.data?.pos) ||
+		response.data?.pos < 0
+	) {
 		return -1;
 	}
 	return response.data.pos;
@@ -1123,9 +1126,9 @@ export const isLdkRunning = async (): Promise<boolean> => {
 
 	if (getNodeIdResponse.isOk()) {
 		return true;
-	} else {
-		return false;
 	}
+
+	return false;
 };
 
 /**
@@ -1373,7 +1376,7 @@ export const getLdkChannels = (): Promise<Result<TLdkChannel[]>> => {
  * @returns Promise<Result<TChannelMonitor[]>>
  */
 export const getChannelMonitors = async (
-	ignoreOpenChannels: boolean = true,
+	ignoreOpenChannels = true,
 ): Promise<Result<TChannelMonitor[]>> => {
 	return ldk.listChannelMonitors(ignoreOpenChannels);
 };
@@ -1628,11 +1631,10 @@ export const keepLdkSynced = async ({
 }): Promise<void> => {
 	if (LDKIsStayingSynced) {
 		return;
-	} else {
-		LDKIsStayingSynced = true;
 	}
+	LDKIsStayingSynced = true;
 
-	let error: string = '';
+	let error = '';
 	while (!error) {
 		const syncRes = await refreshLdk({ selectedNetwork, selectedWallet });
 		if (!syncRes) {

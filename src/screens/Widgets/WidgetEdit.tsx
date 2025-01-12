@@ -133,49 +133,46 @@ const WidgetEdit = ({
 										);
 									})}
 
-								{config.type === SUPPORTED_FEED_TYPES.PRICE_FEED && (
-									<>
-										{config.fields &&
-											Object.keys(config.fields[0].files).map((period) => {
-												const allowedPeriods = ['1D', '1W', '1M'];
-												const isSelected = settings.extras?.period === period;
+								{config.type === SUPPORTED_FEED_TYPES.PRICE_FEED &&
+									config.fields &&
+									Object.keys(config.fields[0].files).map((period) => {
+										const allowedPeriods = ['1D', '1W', '1M'];
+										const isSelected = settings.extras?.period === period;
 
-												if (!allowedPeriods.includes(period)) {
-													return;
-												}
+										if (!allowedPeriods.includes(period)) {
+											return;
+										}
 
-												return (
-													<Pressable
-														key={period}
-														testID={`PriceWidgetSetting-${period}`}
-														onPress={(): void => {
-															setSettings((prevState) => ({
-																...prevState,
-																extras: {
-																	...prevState.extras,
-																	period: period as TGraphPeriod,
-																},
-															}));
-														}}>
-														<View style={styles.fieldContainer}>
-															<PriceChart
-																url={url}
-																field={config.fields[0]}
-																period={period as TGraphPeriod}
-															/>
-															<Checkmark
-																style={styles.checkmark}
-																color={isSelected ? 'brand' : 'gray3'}
-																height={30}
-																width={30}
-															/>
-														</View>
-														<Divider />
-													</Pressable>
-												);
-											})}
-									</>
-								)}
+										return (
+											<Pressable
+												key={period}
+												testID={`PriceWidgetSetting-${period}`}
+												onPress={(): void => {
+													setSettings((prevState) => ({
+														...prevState,
+														extras: {
+															...prevState.extras,
+															period: period as TGraphPeriod,
+														},
+													}));
+												}}>
+												<View style={styles.fieldContainer}>
+													<PriceChart
+														url={url}
+														field={config.fields[0]}
+														period={period as TGraphPeriod}
+													/>
+													<Checkmark
+														style={styles.checkmark}
+														color={isSelected ? 'brand' : 'gray3'}
+														height={30}
+														width={30}
+													/>
+												</View>
+												<Divider />
+											</Pressable>
+										);
+									})}
 
 								{config.source && (
 									<Pressable

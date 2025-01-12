@@ -108,9 +108,8 @@ const CoinSelection = ({
 			);
 			if (!x) {
 				return acc.concat([current]);
-			} else {
-				return acc;
 			}
+			return acc;
 		}, []);
 		combinedAndUnique.sort((a, b) => b.value - a.value);
 		return combinedAndUnique;
@@ -135,7 +134,8 @@ const CoinSelection = ({
 
 	const onAutoSelectionPress = (): void => {
 		if (autoSelectionEnabled) {
-			return setAutoSelectionEnabled(false);
+			setAutoSelectionEnabled(false);
+			return;
 		}
 
 		// If disabled, iterate over all utxos and re-add them to inputs if previously removed.

@@ -82,9 +82,8 @@ export const getNumberPadText = (
 	if (unit === EUnit.fiat) {
 		if (shouldRound) {
 			return displayValue.fiatValue.toFixed(0);
-		} else {
-			return displayValue.fiatValue.toString();
 		}
+		return displayValue.fiatValue.toString();
 	}
 
 	return displayValue.bitcoinWhole;

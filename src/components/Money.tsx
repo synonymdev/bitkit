@@ -56,7 +56,7 @@ const Money = (props: MoneyProps): ReactElement => {
 	const size = props.size ?? 'display';
 	const unit =
 		props.unit ?? (props.unitType === 'secondary' ? nextUnit : primaryUnit);
-	const showSymbol = props.symbol ?? (unit === 'fiat' ? true : false);
+	const showSymbol = props.symbol ?? unit === 'fiat';
 	const color = props.color;
 	const symbolColor = props.symbolColor;
 	const hide = (props.enableHide ?? false) && hideBalance;

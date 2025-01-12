@@ -53,8 +53,8 @@ const AskForBiometrics = ({
 		biometryData?.biometryType === 'TouchID'
 			? t('bio_touch_id')
 			: biometryData?.biometryType === 'FaceID'
-			? t('bio_face_id')
-			: biometryData?.biometryType ?? t('bio');
+				? t('bio_face_id')
+				: (biometryData?.biometryType ?? t('bio'));
 
 	const handleTogglePress = (): void => {
 		setShouldEnableBiometrics((prevState) => !prevState);

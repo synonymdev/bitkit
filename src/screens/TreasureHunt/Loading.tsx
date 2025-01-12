@@ -31,6 +31,7 @@ const Loading = ({
 		right: isSmallScreen ? 90 : 80,
 	};
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: onMount
 	useEffect(() => {
 		const openChest = async (): Promise<void> => {
 			await waitForLdk();
@@ -82,9 +83,6 @@ const Loading = ({
 		};
 
 		setTimeout(openChest, 3000);
-
-		// onMount
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	return (

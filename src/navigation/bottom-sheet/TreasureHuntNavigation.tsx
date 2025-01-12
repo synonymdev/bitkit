@@ -19,7 +19,7 @@ import Chest from '../../screens/TreasureHunt/Chest';
 import Loading from '../../screens/TreasureHunt/Loading';
 import Prize from '../../screens/TreasureHunt/Prize';
 import Airdrop from '../../screens/TreasureHunt/Airdrop';
-import Error from '../../screens/TreasureHunt/Error';
+import ErrorScreen from '../../screens/TreasureHunt/Error';
 import { viewControllerSelector } from '../../store/reselect/ui';
 import { NavigationContainer } from '../../styles/components';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
@@ -100,6 +100,7 @@ const TreasureHuntNavigation = (): ReactElement => {
 		setIsLoading(false);
 	}, [chestId, dispatch]);
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: onOpen
 	useEffect(() => {
 		if (!isOpen) {
 			setIsLoading(true);
@@ -120,9 +121,6 @@ const TreasureHuntNavigation = (): ReactElement => {
 		} else {
 			getChest();
 		}
-
-		// onOpen
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [isOpen, getChest]);
 
 	if (!isOpen || isLoading) {
@@ -152,7 +150,7 @@ const TreasureHuntNavigation = (): ReactElement => {
 							component={Airdrop}
 							initialParams={{ chestId }}
 						/>
-						<Stack.Screen name="Error" component={Error} />
+						<Stack.Screen name="Error" component={ErrorScreen} />
 					</Stack.Navigator>
 				</NavigationContainer>
 			</NavigationIndependentTree>

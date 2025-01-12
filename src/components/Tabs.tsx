@@ -101,7 +101,7 @@ const Tabs = ({
 			{tabs.map((tab, index) => (
 				<Tab
 					key={tab.id}
-					text={t('activity_tabs.' + tab.id)}
+					text={t(`activity_tabs.${tab.id}`)}
 					active={activeTab === index}
 					testID={`Tab-${tab.id}`}
 					onLayout={(event) => handleLayout(tab.id, event, index)}

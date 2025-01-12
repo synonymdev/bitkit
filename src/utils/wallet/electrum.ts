@@ -50,7 +50,7 @@ export const getAddressUtxos = async ({
 }: {
 	allAddresses: IAddress[];
 }): Promise<Result<IGetUtxosResponse>> => {
-	let addresses: IAddresses = {};
+	const addresses: IAddresses = {};
 	allAddresses.map((a) => {
 		addresses[a.scriptHash] = a;
 	});

@@ -49,15 +49,20 @@ const classifyOutputScript = (script): string => {
 
 	if (isOutput(bitcoin.payments.p2pk)) {
 		return 'pubkey';
-	} else if (isOutput(bitcoin.payments.p2pkh)) {
+	}
+	if (isOutput(bitcoin.payments.p2pkh)) {
 		return 'pubkeyhash';
-	} else if (isOutput(bitcoin.payments.p2ms)) {
+	}
+	if (isOutput(bitcoin.payments.p2ms)) {
 		return 'multisig';
-	} else if (isOutput(bitcoin.payments.p2wpkh)) {
+	}
+	if (isOutput(bitcoin.payments.p2wpkh)) {
 		return 'pay-to-witness-pubkey-hash';
-	} else if (isOutput(bitcoin.payments.p2sh)) {
+	}
+	if (isOutput(bitcoin.payments.p2sh)) {
 		return 'scripthash';
-	} else if (isOutput(bitcoin.payments.p2tr)) {
+	}
+	if (isOutput(bitcoin.payments.p2tr)) {
 		return 'pay-to-taproot';
 	}
 
@@ -94,10 +99,11 @@ const formatOutput = (out: TxOutput, n: number, network: Network): VOut => {
 		case 'multisig':
 		case 'pay-to-witness-pubkey-hash':
 		case 'pay-to-taproot':
-		case 'scripthash':
+		case 'scripthash': {
 			const address = bitcoin.address.fromOutputScript(out.script, network);
 			vout.scriptPubKey.addresses.push(address);
 			break;
+		}
 	}
 	return vout;
 };
@@ -121,7 +127,9 @@ export const decodeRawTx = (rawTx: string, network: Network): Result => {
 	const outputs = decodeOutput(tx, network);
 
 	const result = {} as Result;
-	Object.keys(format).forEach((key) => (result[key] = format[key]));
+	for (const key of Object.keys(format)) {
+		result[key] = format[key];
+	}
 	result.inputs = inputs;
 	result.outputs = outputs;
 	return result;

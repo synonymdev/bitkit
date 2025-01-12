@@ -4,8 +4,8 @@ import { TChannel } from '@synonymdev/react-native-ldk';
 import { EAddressType, IAddress } from 'beignet';
 
 export enum EWarningIds {
-	'storageCheck' = 888,
-	'ldkMigration' = 999,
+	storageCheck = 888,
+	ldkMigration = 999,
 }
 
 export type TMinMaxAddressData = {

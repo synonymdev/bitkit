@@ -32,7 +32,9 @@ const getText = (errorCode: number): { title: string; text: string } => {
 	}
 };
 
-const Error = ({ route }: OrangeTicketScreenProps<'Error'>): ReactElement => {
+const ErrorScreen = ({
+	route,
+}: OrangeTicketScreenProps<'Error'>): ReactElement => {
 	const dispatch = useAppDispatch();
 	const { errorCode } = route.params;
 	const { title, text } = getText(errorCode);
@@ -98,4 +100,4 @@ const styles = StyleSheet.create({
 	},
 });
 
-export default memo(Error);
+export default memo(ErrorScreen);

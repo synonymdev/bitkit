@@ -6,11 +6,10 @@ import OnboardingScreen from '../components/OnboardingScreen';
 import { openURL } from '../utils/helpers';
 import { useAppDispatch } from '../hooks/redux';
 import { hideTodo } from '../store/slices/todos';
-import type { RootStackScreenProps } from '../navigation/types';
 
 const imageSrc = require('../assets/illustrations/bitcoin-emboss.png');
 
-const BuyBitcoin = ({}: RootStackScreenProps<'BuyBitcoin'>): ReactElement => {
+const BuyBitcoin = (): ReactElement => {
 	const { t } = useTranslation('other');
 	const dispatch = useAppDispatch();
 

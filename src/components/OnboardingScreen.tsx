@@ -51,7 +51,6 @@ const OnboardingScreen = ({
 				<View
 					style={[
 						styles.imageContainer,
-						// eslint-disable-next-line react-native/no-inline-styles
 						{ marginBottom: imagePosition === 'center' ? 'auto' : 48 },
 						mirrorImage ? { transform: [{ rotateY: '180deg' }] } : {},
 					]}>

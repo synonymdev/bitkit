@@ -220,7 +220,11 @@ const PubkyAuth = (): ReactElement => {
 				</Text13UP>
 				{parsed.capabilities.map((capability) => {
 					return (
-						<Permission capability={capability} authSuccess={authSuccess} />
+						<Permission
+							key={capability.path}
+							capability={capability}
+							authSuccess={authSuccess}
+						/>
 					);
 				})}
 

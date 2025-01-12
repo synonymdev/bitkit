@@ -120,9 +120,9 @@ const PriceWidget = ({
 
 								// replace old data while keeping the order
 								return prev.map((d) => (d !== pairData ? d : updated));
-							} else {
-								return prev;
 							}
+
+							return prev;
 						});
 					},
 				);

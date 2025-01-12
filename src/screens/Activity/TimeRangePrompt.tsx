@@ -29,8 +29,8 @@ const Day = ({
 	selection?: 'single' | 'start' | 'end' | 'middle' | 'today';
 	onPress?: () => void;
 }): ReactElement => {
-	let back;
-	let textColor;
+	let back: ReactElement | null = null;
+	let textColor: 'brand' | undefined;
 	let today = false;
 	switch (selection) {
 		case 'single':
@@ -207,7 +207,13 @@ const Calendar = ({
 								).getTime();
 							}
 
-							let selection;
+							let selection:
+								| 'single'
+								| 'start'
+								| 'end'
+								| 'middle'
+								| 'today'
+								| undefined;
 							if (dayDate === begin && !end) {
 								selection = 'single';
 							} else if (dayDate === begin) {
@@ -224,8 +230,8 @@ const Calendar = ({
 								<Day
 									key={j}
 									day={day}
-									onPress={(): void => handleSelect(day)}
 									selection={selection}
+									onPress={(): void => handleSelect(day)}
 								/>
 							);
 						})}

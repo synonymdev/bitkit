@@ -161,9 +161,7 @@ function validate(config: SlashPayConfig): void {
 			message = _validate.errors
 				.map((error) => {
 					let name = 'config';
-					// @ts-ignore
 					if (error.instancePath !== '') {
-						// @ts-ignore eslint-disable-next-line no-mixed-spaces-and-tabs
 						name = `Field '${error.instancePath.slice(1)}'`;
 					}
 
@@ -172,6 +170,6 @@ function validate(config: SlashPayConfig): void {
 				.join('\n');
 		}
 
-		throw new Error('Invalid slashpay config:\n' + message);
+		throw new Error(`Invalid slashpay config:\n${message}`);
 	}
 }

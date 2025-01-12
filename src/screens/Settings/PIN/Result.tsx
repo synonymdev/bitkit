@@ -30,8 +30,8 @@ const Result = ({ route }: PinScreenProps<'Result'>): ReactElement => {
 			type === 'TouchID'
 				? t('bio_touch_id')
 				: type === 'FaceID'
-				? t('bio_face_id')
-				: type ?? t('bio'),
+					? t('bio_face_id')
+					: (type ?? t('bio')),
 		[type, t],
 	);
 

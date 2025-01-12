@@ -121,7 +121,7 @@ export const updateChannelsThunk = async (): Promise<Result<string>> => {
 	// Update the transfer status for pending channels.
 	channels.forEach((channel) => {
 		if (channel.funding_txid) {
-			let { funding_txid, confirmations, confirmations_required } = channel;
+			const { funding_txid, confirmations, confirmations_required } = channel;
 			let txId = funding_txid;
 			const confirmsIn = Math.max(confirmations_required! - confirmations, 0);
 
@@ -216,7 +216,7 @@ export const closeChannelThunk = async (
 				claimableBalances[0].confirmation_height ?? blockHeight + 6;
 		}
 
-		let txId = channelMonitor.funding_txo_txid;
+		const txId = channelMonitor.funding_txo_txid;
 		let status = ETransferStatus.pending;
 		let confirmsIn = Math.max(confirmationHeight - blockHeight, 0);
 

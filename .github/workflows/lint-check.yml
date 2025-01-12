@@ -5,7 +5,7 @@ on:
   pull_request:
 
 jobs:
-  eslint:
+  lint:
     name: Run lint check
     runs-on: ubuntu-latest
 

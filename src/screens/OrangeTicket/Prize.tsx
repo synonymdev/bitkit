@@ -28,6 +28,7 @@ const Prize = ({
 	const dispatch = useAppDispatch();
 	const maxInboundCapacitySat = useLightningMaxInboundCapacity();
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: only when ticketId changes
 	const getPrize = useCallback(async (): Promise<void> => {
 		const getLightningInvoice = async (): Promise<string> => {
 			const response = await createLightningInvoice({
@@ -98,10 +99,8 @@ const Prize = ({
 		if (claimResponse.error) {
 			navigation.replace('Error', { errorCode: claimResponse.code });
 			return;
-		} else {
-			dispatch(addOrangeTicket(ticketId));
 		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
+		dispatch(addOrangeTicket(ticketId));
 	}, [ticketId]);
 
 	useEffect(() => {

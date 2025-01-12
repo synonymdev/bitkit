@@ -251,10 +251,7 @@ const _Item = memo((item: ItemData): ReactElement => {
 
 		return (
 			<TouchableOpacity
-				style={
-					// eslint-disable-next-line react-native/no-inline-styles
-					{ opacity: enabled ? 1 : 0.5 }
-				}
+				style={{ opacity: enabled ? 1 : 0.5 }}
 				activeOpacity={0.7}
 				disabled={disabled}
 				testID={testID}

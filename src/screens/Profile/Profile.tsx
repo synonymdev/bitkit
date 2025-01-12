@@ -50,7 +50,6 @@ const Profile = memo((props: RootStackScreenProps<'Profile'>): ReactElement => {
 			return <ProfileEdit {...props} />;
 		case 'OfflinePayments':
 			return <OfflinePayments {...props} />;
-		case 'Done':
 		default:
 			return <ProfileScreen {...props} />;
 	}
@@ -219,7 +218,9 @@ const QRView = ({
 					value={url}
 					size={qrSize}
 					quietZone={20}
-					getRef={(c): void => (qrRef.current = c)}
+					getRef={(c): void => {
+						qrRef.current = c;
+					}}
 				/>
 				<View style={styles.qrImageContainer}>
 					<ThemedView style={styles.qrImageOuter} color="white">

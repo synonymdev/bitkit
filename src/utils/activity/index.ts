@@ -228,7 +228,7 @@ export const groupActivityItems = (
 	const year: IActivityItem[] = [];
 	const earlier: IActivityItem[] = [];
 
-	for (let item of activityItems) {
+	for (const item of activityItems) {
 		if (item.timestamp >= beginningOfDay) {
 			today.push(item);
 		} else if (item.timestamp >= beginningOfYesterday) {

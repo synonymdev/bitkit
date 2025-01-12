@@ -45,7 +45,7 @@ const isValidURL = (data: string): boolean => {
 	// Add 'http://' if the protocol is missing to enable URL parsing
 	let normalizedData = data;
 	if (!/^https?:\/\//i.test(data)) {
-		normalizedData = 'http://' + data;
+		normalizedData = `http://${data}`;
 	}
 
 	try {
@@ -75,17 +75,17 @@ const isValidURL = (data: string): boolean => {
 
 const validateInput = (
 	{ host, port }: { host: string; port: string },
-	t: (error: string) => void,
+	t: (error: string) => string,
 ): Result<string> => {
 	//Ensure the user passed in a host & port to test.
-	let error;
+	let error = '';
 	if (host === '' && port === '') {
 		error = t('es.error_host_port');
 	} else if (host === '') {
 		error = t('es.error_host');
 	} else if (port === '') {
 		error = t('es.error_port');
-	} else if (isNaN(Number(port))) {
+	} else if (Number.isNaN(Number(port))) {
 		error = t('es.error_port_invalid');
 	}
 
@@ -116,6 +116,7 @@ const ElectrumConfig = ({
 	const [port, setPort] = useState(savedPeer[savedPeer.protocol].toString());
 	const [protocol, setProtocol] = useState(savedPeer.protocol);
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
 	useEffect(() => {
 		const getAndUpdateConnectedPeer = async (): Promise<void> => {
 			const peerInfo = await getConnectedPeer();
@@ -216,7 +217,7 @@ const ElectrumConfig = ({
 		let connectData: IPeerData;
 
 		if (!data.startsWith('http://') && !data.startsWith('https://')) {
-			let [_host, _port, shortProtocol] = data.split(':');
+			const [_host, _port, shortProtocol] = data.split(':');
 			let _protocol = EProtocol.tcp;
 
 			if (shortProtocol) {

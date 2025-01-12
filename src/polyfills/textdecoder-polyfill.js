@@ -1,15 +1,12 @@
 // TextDecoder polyfill taken from
 // https://github.com/anonyco/FastestSmallestTextEncoderDecoder/blob/master/individual/FastestTextDecoderPolyfill.src.js
 
-(function (window) {
-	'use strict';
+((window) => {
 	var log = Math.log;
 	var LN2 = Math.LN2;
 	var clz32 =
 		Math.clz32 ||
-		function (x) {
-			return (31 - log(x >>> 0) / LN2) | 0;
-		};
+		((x) => (31 - log(x >>> 0) / LN2) | 0);
 	var fromCharCode = String.fromCharCode;
 	var Object_prototype_toString = {}.toString;
 	var NativeSharedArrayBuffer = window['SharedArrayBuffer'];
@@ -73,7 +70,7 @@
 	function TextDecoder(_, opts) {
 		/*this["ignoreBOM"] = !!opts && !!opts["ignoreBOM"]*/
 	}
-	TextDecoder['prototype']['decode'] = function (inputArrayOrBuffer) {
+	TextDecoder['prototype']['decode'] = (inputArrayOrBuffer) => {
 		var buffer =
 			(inputArrayOrBuffer && inputArrayOrBuffer.buffer) || inputArrayOrBuffer;
 		var asObjectString = Object_prototype_toString.call(buffer);

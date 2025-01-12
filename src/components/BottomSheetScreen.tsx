@@ -54,7 +54,6 @@ const BottomSheetScreen = ({
 			/>
 			<View style={styles.content}>
 				<View
-					// eslint-disable-next-line react-native/no-inline-styles
 					style={[styles.imageContainer, { marginBottom: isLarge ? 32 : 0 }]}>
 					<Image style={styles.image} source={image} />
 				</View>

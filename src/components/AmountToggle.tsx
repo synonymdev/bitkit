@@ -34,14 +34,14 @@ const AmountToggle = ({
 				decimalLength={decimalLength}
 				unitType="secondary"
 				symbol={true}
-				testID={testID + '-secondary'}
+				testID={`${testID}-secondary`}
 			/>
 			<Money
 				sats={amount}
 				decimalLength={decimalLength}
 				unitType="primary"
 				symbol={true}
-				testID={testID + '-primary'}
+				testID={`${testID}-primary`}
 			/>
 		</Pressable>
 	);

@@ -23,7 +23,7 @@ export class WebRelayCache {
 	location: string;
 
 	constructor(location: string) {
-		this.location = 'WEB-RELAY-CLIENT!' + location + '!';
+		this.location = `WEB-RELAY-CLIENT!${location}!`;
 	}
 
 	private getKey(key: string): string {
@@ -34,7 +34,7 @@ export class WebRelayCache {
 		opts: IteratorOptions<string, Uint8Array>,
 	): AsyncIterable<[string, Uint8Array | undefined]> {
 		const allKeys = await storage.getAllKeys();
-		for (let key of allKeys) {
+		for (const key of allKeys) {
 			if (!key.startsWith(this.location)) {
 				continue;
 			}

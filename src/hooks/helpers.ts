@@ -21,12 +21,12 @@ export const useDebouncedEffect = (
 	deps: Array<any>,
 	delay: number,
 ): void => {
+	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
 	useEffect(() => {
 		const handler = setTimeout(effect, delay);
 
 		return (): void => {
 			clearTimeout(handler);
 		};
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [...(deps || []), delay]);
 };

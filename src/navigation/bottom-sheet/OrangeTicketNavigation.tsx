@@ -16,7 +16,7 @@ import {
 import { NavigationContainer } from '../../styles/components';
 import Prize from '../../screens/OrangeTicket/Prize';
 import UsedCard from '../../screens/OrangeTicket/UsedCard';
-import Error from '../../screens/OrangeTicket/Error';
+import ErrorScreen from '../../screens/OrangeTicket/Error';
 
 import BottomSheetWrapper from '../../components/BottomSheetWrapper';
 import { useAppSelector } from '../../hooks/redux';
@@ -59,6 +59,7 @@ const OrangeTicket = (): ReactElement => {
 
 	useBottomSheetBackPress('orangeTicket');
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: only when ticketId changes
 	const getPrize = useCallback(async (): Promise<void> => {
 		const getChest = async (): Promise<any> => {
 			const response = await fetch(__TREASURE_HUNT_HOST__, {
@@ -138,8 +139,6 @@ const OrangeTicket = (): ReactElement => {
 		}
 		setIsLoading(false);
 		setAmount(openResponse.amountSat);
-
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [ticketId]);
 
 	useEffect(() => {
@@ -175,7 +174,7 @@ const OrangeTicket = (): ReactElement => {
 						/>
 						<Stack.Screen
 							name="Error"
-							component={Error}
+							component={ErrorScreen}
 							initialParams={{ errorCode }}
 						/>
 					</Stack.Navigator>

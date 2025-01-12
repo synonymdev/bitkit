@@ -42,7 +42,7 @@ export const getChange = (pastValues: number[]): Change => {
 
 	return {
 		color,
-		formatted: sign + (_change * 100).toFixed(2) + '%',
+		formatted: `${sign}${(_change * 100).toFixed(2)}%`,
 	};
 };
 
@@ -71,7 +71,10 @@ export const Chart = ({
 	const step = chartWidth / (steps - 1);
 
 	const normalized = useMemo(() => {
-		const min = values.reduce((prev, curr) => Math.min(prev, curr), Infinity);
+		const min = values.reduce(
+			(prev, curr) => Math.min(prev, curr),
+			Number.POSITIVE_INFINITY,
+		);
 		const max = values.reduce((prev, curr) => Math.max(prev, curr), 0);
 
 		return values.map((value: number) => (value - min) / (max - min));

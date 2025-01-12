@@ -59,12 +59,11 @@ const Biometrics = ({
 				t('bio_confirm', { biometricsName: data.biometryType || t('bio') }),
 			);
 		})();
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [t]);
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
 	const Icon = useCallback(
 		() => getIcon(biometryData),
-		//eslint-disable-next-line react-hooks/exhaustive-deps
 		[biometryData?.biometryType],
 	);
 
@@ -87,6 +86,7 @@ const Biometrics = ({
 		}
 	}, [biometryData?.available, biometryData?.biometryType, t]);
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
 	const authenticate = useCallback(
 		(promptMessage?: string): void => {
 			if (!promptMessage) {
@@ -112,7 +112,6 @@ const Biometrics = ({
 					onFailure?.();
 				});
 		},
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 		[biometryData?.biometryType, t],
 	);
 

@@ -77,6 +77,7 @@ const SpendingAmount = ({
 	const maximum = Math.min(maxClientBalance, feeMaximum);
 
 	useFocusEffect(
+		// biome-ignore lint/correctness/useExhaustiveDependencies: onMount
 		useCallback(() => {
 			const setupTransfer = async (): Promise<void> => {
 				// In case of the low fee market, we bump fee by 5 sats
@@ -94,9 +95,6 @@ const SpendingAmount = ({
 				refreshBlocktankInfo().then();
 			};
 			setupTransfer();
-
-			// onMount
-			// eslint-disable-next-line react-hooks/exhaustive-deps
 		}, []),
 	);
 

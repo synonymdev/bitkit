@@ -133,7 +133,6 @@ const Suggestions = (): ReactElement => {
 	);
 
 	const handleRenderItem = useCallback(
-		// eslint-disable-next-line react/no-unused-prop-types
 		({ item }: { item: ITodo }): ReactElement => {
 			const title = t(`${item.id}.title`);
 			let description = t(`${item.id}.description`);

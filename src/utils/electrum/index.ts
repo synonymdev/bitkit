@@ -14,9 +14,8 @@ export const getDefaultPort = (
 ): number => {
 	if (protocol === EProtocol.ssl) {
 		return selectedNetwork === 'bitcoinTestnet' ? 51002 : 50002;
-	} else {
-		return selectedNetwork === 'bitcoinTestnet' ? 51001 : 50001;
 	}
+	return selectedNetwork === 'bitcoinTestnet' ? 51001 : 50001;
 };
 
 /**

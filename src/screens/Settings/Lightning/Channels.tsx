@@ -72,7 +72,7 @@ const getPendingBlocktankChannels = (
 	const failedOrders: TChannel[] = [];
 
 	Object.keys(paidOrders).forEach((orderId) => {
-		let order = orders.find((o) => o.id === orderId)!;
+		const order = orders.find((o) => o.id === orderId)!;
 		if (!order) {
 			return;
 		}
@@ -131,11 +131,11 @@ const Channel = memo(
 		const getChannelStatus = (): TStatus => {
 			if (pending) {
 				return 'pending';
-			} else if (closed) {
-				return 'closed';
-			} else {
-				return 'open';
 			}
+			if (closed) {
+				return 'closed';
+			}
+			return 'open';
 		};
 
 		return (
