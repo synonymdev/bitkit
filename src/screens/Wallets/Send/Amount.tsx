@@ -1,3 +1,4 @@
+import { useFocusEffect, useRoute } from '@react-navigation/native';
 import React, {
 	ReactElement,
 	memo,
@@ -6,29 +7,33 @@ import React, {
 	useState,
 	useEffect,
 } from 'react';
-import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { useFocusEffect, useRoute } from '@react-navigation/native';
+import { StyleSheet, View } from 'react-native';
 
-import { Caption13Up } from '../../../styles/text';
-import { IColors } from '../../../styles/colors';
-import { TouchableOpacity } from '../../../styles/components';
-import GradientView from '../../../components/GradientView';
 import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
-import SafeAreaInset from '../../../components/SafeAreaInset';
-import Money from '../../../components/Money';
 import ContactImage from '../../../components/ContactImage';
+import GradientView from '../../../components/GradientView';
+import Money from '../../../components/Money';
 import NumberPadTextField from '../../../components/NumberPadTextField';
-import SendNumberPad from './SendNumberPad';
+import SafeAreaInset from '../../../components/SafeAreaInset';
 import Button from '../../../components/buttons/Button';
-import AssetButton from '../AssetButton';
-import UnitButton from '../UnitButton';
+import { useBottomSheetScreenBackPress } from '../../../hooks/bottomSheet';
+import { useAppSelector } from '../../../hooks/redux';
+import { useBalance, useSwitchUnit } from '../../../hooks/wallet';
+import type { SendScreenProps } from '../../../navigation/types';
 import {
-	getTransactionOutputValue,
-	getMaxSendAmount,
-	sendMax,
-	updateSendAmount,
-} from '../../../utils/wallet/transactions';
+	setupFeeForOnChainTransaction,
+	setupOnChainTransaction,
+	updateBeignetSendTransaction,
+} from '../../../store/actions/wallet';
+import {
+	coinSelectAutoSelector,
+	conversionUnitSelector,
+	denominationSelector,
+	nextUnitSelector,
+	unitSelector,
+} from '../../../store/reselect/settings';
+import { sendTransactionSelector } from '../../../store/reselect/ui';
 import {
 	selectedNetworkSelector,
 	selectedWalletSelector,
@@ -36,27 +41,22 @@ import {
 	transactionSelector,
 	utxosSelector,
 } from '../../../store/reselect/wallet';
-import {
-	unitSelector,
-	coinSelectAutoSelector,
-	denominationSelector,
-	conversionUnitSelector,
-	nextUnitSelector,
-} from '../../../store/reselect/settings';
-import { useAppSelector } from '../../../hooks/redux';
-import { useBalance, useSwitchUnit } from '../../../hooks/wallet';
-import { useBottomSheetScreenBackPress } from '../../../hooks/bottomSheet';
-import { sendTransactionSelector } from '../../../store/reselect/ui';
-import {
-	setupFeeForOnChainTransaction,
-	setupOnChainTransaction,
-	updateBeignetSendTransaction,
-} from '../../../store/actions/wallet';
-import { getNumberPadText } from '../../../utils/numberpad';
-import { showToast } from '../../../utils/notifications';
+import { IColors } from '../../../styles/colors';
+import { TouchableOpacity } from '../../../styles/components';
+import { Caption13Up } from '../../../styles/text';
 import { convertToSats } from '../../../utils/conversion';
+import { showToast } from '../../../utils/notifications';
+import { getNumberPadText } from '../../../utils/numberpad';
 import { TRANSACTION_DEFAULTS } from '../../../utils/wallet/constants';
-import type { SendScreenProps } from '../../../navigation/types';
+import {
+	getMaxSendAmount,
+	getTransactionOutputValue,
+	sendMax,
+	updateSendAmount,
+} from '../../../utils/wallet/transactions';
+import AssetButton from '../AssetButton';
+import UnitButton from '../UnitButton';
+import SendNumberPad from './SendNumberPad';
 
 const Amount = ({ navigation }: SendScreenProps<'Amount'>): ReactElement => {
 	const route = useRoute();

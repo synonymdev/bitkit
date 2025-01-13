@@ -1,27 +1,27 @@
+import isEqual from 'lodash/isEqual';
 import React, { memo, ReactElement, useCallback } from 'react';
 import {
-	View,
+	ActivityIndicator,
 	SectionList,
 	StyleProp,
 	StyleSheet,
-	ViewStyle,
 	TouchableOpacity,
-	ActivityIndicator,
+	View,
+	ViewStyle,
 } from 'react-native';
 import { SvgProps } from 'react-native-svg';
-import isEqual from 'lodash/isEqual';
 
+import Switch from '../components/Switch';
+import DraggableList from '../screens/Settings/PaymentPreference/DraggableList';
+import { Checkmark, ChevronRight } from '../styles/icons';
 import {
 	BodyM,
 	BodyMSB,
 	BodyS,
 	BodySSB,
-	Caption13Up,
 	Caption,
+	Caption13Up,
 } from '../styles/text';
-import { ChevronRight, Checkmark } from '../styles/icons';
-import Switch from '../components/Switch';
-import DraggableList from '../screens/Settings/PaymentPreference/DraggableList';
 
 const _SectionHeader = memo(
 	({

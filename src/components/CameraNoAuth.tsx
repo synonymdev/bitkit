@@ -1,13 +1,13 @@
 import React, { ReactElement } from 'react';
-import { View, Linking, Platform, StyleSheet } from 'react-native';
 import { Trans, useTranslation } from 'react-i18next';
+import { Linking, Platform, StyleSheet, View } from 'react-native';
 
-import { BodyM, BodyMB } from '../styles/text';
 import { ExclamationIcon } from '../styles/icons';
-import SafeAreaView from './SafeAreaView';
-import NavigationHeader from './NavigationHeader';
+import { BodyM, BodyMB } from '../styles/text';
 import BottomSheetNavigationHeader from './BottomSheetNavigationHeader';
+import NavigationHeader from './NavigationHeader';
 import SafeAreaInset from './SafeAreaInset';
+import SafeAreaView from './SafeAreaView';
 import Button from './buttons/Button';
 
 const CameraNoAuth = ({

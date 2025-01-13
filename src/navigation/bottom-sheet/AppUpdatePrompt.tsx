@@ -1,25 +1,25 @@
 import React, { memo, ReactElement, useEffect, useMemo } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 
-import { __E2E__ } from '../../constants/env';
-import { Display } from '../../styles/text';
-import BottomSheetWrapper from '../../components/BottomSheetWrapper';
 import BottomSheetScreen from '../../components/BottomSheetScreen';
-import { openURL } from '../../utils/helpers';
-import { objectKeys } from '../../utils/objectKeys';
-import { useAppDispatch, useAppSelector } from '../../hooks/redux';
-import { ignoreAppUpdate } from '../../store/slices/user';
-import { closeSheet } from '../../store/slices/ui';
-import { showBottomSheet } from '../../store/utils/ui';
-import { ignoreAppUpdateTimestampSelector } from '../../store/reselect/user';
-import {
-	availableUpdateSelector,
-	viewControllersSelector,
-} from '../../store/reselect/ui';
+import BottomSheetWrapper from '../../components/BottomSheetWrapper';
+import { __E2E__ } from '../../constants/env';
 import {
 	useBottomSheetBackPress,
 	useSnapPoints,
 } from '../../hooks/bottomSheet';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux';
+import {
+	availableUpdateSelector,
+	viewControllersSelector,
+} from '../../store/reselect/ui';
+import { ignoreAppUpdateTimestampSelector } from '../../store/reselect/user';
+import { closeSheet } from '../../store/slices/ui';
+import { ignoreAppUpdate } from '../../store/slices/user';
+import { showBottomSheet } from '../../store/utils/ui';
+import { Display } from '../../styles/text';
+import { openURL } from '../../utils/helpers';
+import { objectKeys } from '../../utils/objectKeys';
 
 const imageSrc = require('../../assets/illustrations/wand.png');
 

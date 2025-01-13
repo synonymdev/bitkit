@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
 import { Platform, StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
-import { Headline, BodyMB } from '../styles/text';
 import { BitcoinCircleIcon, LightningCircleIcon } from '../styles/icons';
+import { BodyMB, Headline } from '../styles/text';
 
 type PercentageProps = {
 	value: number;

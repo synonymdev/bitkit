@@ -1,31 +1,31 @@
-import React, { memo, ReactElement, useState } from 'react';
-import { StyleSheet } from 'react-native';
-import { useTranslation } from 'react-i18next';
 import isEqual from 'lodash/isEqual';
+import React, { memo, ReactElement, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { StyleSheet } from 'react-native';
 
-import {
-	View,
-	TextInput,
-	ScrollView,
-	TouchableOpacity,
-} from '../../../styles/components';
-import { BodyM, Caption13Up } from '../../../styles/text';
-import { ScanIcon } from '../../../styles/icons';
+import NavigationHeader from '../../../components/NavigationHeader';
+import SafeAreaInset from '../../../components/SafeAreaInset';
+import Button from '../../../components/buttons/Button';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
-import { updateSettings } from '../../../store/slices/settings';
+import type { SettingsScreenProps } from '../../../navigation/types';
+import { rapidGossipSyncUrlSelector } from '../../../store/reselect/settings';
 import {
 	selectedNetworkSelector,
 	selectedWalletSelector,
 } from '../../../store/reselect/wallet';
-import { rapidGossipSyncUrlSelector } from '../../../store/reselect/settings';
 import { initialSettingsState } from '../../../store/shapes/settings';
-import NavigationHeader from '../../../components/NavigationHeader';
-import SafeAreaInset from '../../../components/SafeAreaInset';
-import Button from '../../../components/buttons/Button';
-import type { SettingsScreenProps } from '../../../navigation/types';
+import { updateSettings } from '../../../store/slices/settings';
+import useBreakpoints from '../../../styles/breakpoints';
+import {
+	ScrollView,
+	TextInput,
+	TouchableOpacity,
+	View,
+} from '../../../styles/components';
+import { ScanIcon } from '../../../styles/icons';
+import { BodyM, Caption13Up } from '../../../styles/text';
 import { setupLdk } from '../../../utils/lightning';
 import { showToast } from '../../../utils/notifications';
-import useBreakpoints from '../../../styles/breakpoints';
 
 const isValidURL = (data: string): boolean => {
 	const pattern = new RegExp(

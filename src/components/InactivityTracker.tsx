@@ -5,13 +5,13 @@ import React, {
 	useMemo,
 	useRef,
 } from 'react';
-import { View, PanResponder, StyleSheet, Keyboard } from 'react-native';
+import { Keyboard, PanResponder, StyleSheet, View } from 'react-native';
 import { useAppDispatch, useAppSelector } from '../hooks/redux';
 
-import { updateUi } from '../store/slices/ui';
+import { __E2E__ } from '../constants/env';
 import { pinOnIdleSelector, pinSelector } from '../store/reselect/settings';
 import { isAuthenticatedSelector } from '../store/reselect/ui';
-import { __E2E__ } from '../constants/env';
+import { updateUi } from '../store/slices/ui';
 
 const INACTIVITY_DELAY = __E2E__ ? 5000 : 1000 * 90; // 90 seconds;
 

@@ -1,15 +1,15 @@
 import React, { memo, ReactElement, ReactNode } from 'react';
 import {
-	View,
-	StyleSheet,
-	TouchableOpacity,
 	GestureResponderEvent,
 	StyleProp,
+	StyleSheet,
+	TouchableOpacity,
+	View,
 	ViewStyle,
 } from 'react-native';
 
-import { BodyM, Caption } from '../../styles/text';
 import { Checkmark } from '../../styles/icons';
+import { BodyM, Caption } from '../../styles/text';
 
 type RadioButtonProps = {
 	label: ReactNode;

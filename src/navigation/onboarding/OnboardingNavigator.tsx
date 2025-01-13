@@ -1,19 +1,19 @@
-import React, { ReactElement } from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import React, { ReactElement } from 'react';
 
-import TermsOfUse from '../../screens/Onboarding/TermsOfUse';
-import WelcomeScreen from '../../screens/Onboarding/Welcome';
-import SlideshowScreen from '../../screens/Onboarding/Slideshow';
-import RestoreFromSeed from '../../screens/Onboarding/RestoreFromSeed';
-import MultipleDevices from '../../screens/Onboarding/MultipleDevices';
-import Passphrase from '../../screens/Onboarding/Passphrase';
+import { useAppSelector } from '../../hooks/redux';
 import CreateWallet, {
 	TCreateWalletParams,
 } from '../../screens/Onboarding/CreateWallet';
-import { NavigationContainer } from '../../styles/components';
-import { useAppSelector } from '../../hooks/redux';
+import MultipleDevices from '../../screens/Onboarding/MultipleDevices';
+import Passphrase from '../../screens/Onboarding/Passphrase';
+import RestoreFromSeed from '../../screens/Onboarding/RestoreFromSeed';
+import SlideshowScreen from '../../screens/Onboarding/Slideshow';
+import TermsOfUse from '../../screens/Onboarding/TermsOfUse';
+import WelcomeScreen from '../../screens/Onboarding/Welcome';
 import { requiresRemoteRestoreSelector } from '../../store/reselect/user';
 import { walletExistsSelector } from '../../store/reselect/wallet';
+import { NavigationContainer } from '../../styles/components';
 
 export type OnboardingStackParamList = {
 	TermsOfUse: undefined;

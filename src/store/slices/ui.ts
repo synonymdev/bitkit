@@ -3,11 +3,11 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { initialUiState } from '../shapes/ui';
 import {
-	TUiState,
 	TAvailableUpdate,
 	TProfileLink,
-	ViewControllerParamList,
 	TSendTransaction,
+	TUiState,
+	ViewControllerParamList,
 } from '../types/ui';
 
 export const uiSlice = createSlice({

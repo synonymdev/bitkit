@@ -1,14 +1,14 @@
 import React, { memo, ReactElement, ReactNode } from 'react';
 import {
-	View,
 	StyleSheet,
 	TouchableOpacity,
 	TouchableOpacityProps,
+	View,
 } from 'react-native';
 
-import { BodyM, Caption } from '../../styles/text';
 import { View as StyledView } from '../../styles/components';
 import { Checkmark } from '../../styles/icons';
+import { BodyM, Caption } from '../../styles/text';
 
 interface CheckButtonProps extends TouchableOpacityProps {
 	label: ReactNode;

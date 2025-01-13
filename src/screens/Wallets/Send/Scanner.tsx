@@ -1,10 +1,10 @@
 import React, { memo, ReactElement } from 'react';
-import { StyleSheet } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import { StyleSheet } from 'react-native';
 
-import { processUri } from '../../../utils/scanner/scanner';
 import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
 import SafeAreaInset from '../../../components/SafeAreaInset';
+import { processUri } from '../../../utils/scanner/scanner';
 import ScannerComponent from '../../Scanner/ScannerComponent';
 
 const ScannerScreen = (): ReactElement => {

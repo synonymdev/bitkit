@@ -1,21 +1,21 @@
 import React, { memo, ReactElement, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import { StyleSheet, View } from 'react-native';
 
-import { BottomSheetTextInput } from '../../../styles/components';
-import { Caption13Up } from '../../../styles/text';
 import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
-import SafeAreaInset from '../../../components/SafeAreaInset';
 import GradientView from '../../../components/GradientView';
+import SafeAreaInset from '../../../components/SafeAreaInset';
 import Tag from '../../../components/Tag';
 import Button from '../../../components/buttons/Button';
-import { showToast } from '../../../utils/notifications';
 import { Keyboard } from '../../../hooks/keyboard';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
-import { addTxTag } from '../../../store/actions/wallet';
-import { addLastUsedTag } from '../../../store/slices/metadata';
-import { lastUsedTagsSelector } from '../../../store/reselect/metadata';
 import type { SendScreenProps } from '../../../navigation/types';
+import { addTxTag } from '../../../store/actions/wallet';
+import { lastUsedTagsSelector } from '../../../store/reselect/metadata';
+import { addLastUsedTag } from '../../../store/slices/metadata';
+import { BottomSheetTextInput } from '../../../styles/components';
+import { Caption13Up } from '../../../styles/text';
+import { showToast } from '../../../utils/notifications';
 
 const Tags = ({ navigation }: SendScreenProps<'Tags'>): ReactElement => {
 	const { t } = useTranslation('wallet');

@@ -1,17 +1,17 @@
-import React, { memo, ReactElement, useEffect, useState } from 'react';
-import { View, StyleProp, StyleSheet, ViewStyle } from 'react-native';
-import { useTranslation } from 'react-i18next';
 import { Reader } from '@synonymdev/slashtags-widget-price-feed';
 import { Pair } from '@synonymdev/slashtags-widget-price-feed/types/lib/reader';
+import React, { memo, ReactElement, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 
-import { CaptionB, BodySSB } from '../styles/text';
+import { __E2E__ } from '../constants/env';
+import { useSlashtags } from '../hooks/slashtags';
 import { useSlashfeed } from '../hooks/widgets';
 import { TFeedWidget } from '../store/types/widgets';
+import { BodySSB, CaptionB } from '../styles/text';
+import { SUPPORTED_FEED_TYPES, decodeWidgetFieldValue } from '../utils/widgets';
 import BaseFeedWidget from './BaseFeedWidget';
 import { Change, Chart, getChange } from './PriceChart';
-import { decodeWidgetFieldValue, SUPPORTED_FEED_TYPES } from '../utils/widgets';
-import { useSlashtags } from '../hooks/slashtags';
-import { __E2E__ } from '../constants/env';
 
 type TField = {
 	name: string;

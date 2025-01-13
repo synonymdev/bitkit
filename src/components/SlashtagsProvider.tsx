@@ -1,19 +1,19 @@
-import React, { ReactElement, useEffect, useState } from 'react';
-import { createContext } from 'react';
-import b4a from 'b4a';
 import KeyChain from '@synonymdev/slashtags-keychain';
-import type { Client as IWebRelayClient } from '@synonymdev/web-relay';
-import { Client, Store } from '@synonymdev/web-relay/lib/client';
 import SlashtagsProfile from '@synonymdev/slashtags-profile';
 import { format, parse } from '@synonymdev/slashtags-url';
+import type { Client as IWebRelayClient } from '@synonymdev/web-relay';
+import { Client, Store } from '@synonymdev/web-relay/lib/client';
+import b4a from 'b4a';
+import React, { ReactElement, useEffect, useState } from 'react';
+import { createContext } from 'react';
 
+import { useAppSelector } from '../hooks/redux';
+import { WebRelayCache } from '../store/mmkv-storage';
+import { webRelaySelector } from '../store/reselect/settings';
+import { seedHashSelector } from '../store/reselect/wallet';
 import i18n from '../utils/i18n';
 import { showToast } from '../utils/notifications';
 import { getSlashtagsPrimaryKey } from '../utils/wallet';
-import { WebRelayCache } from '../store/mmkv-storage';
-import { seedHashSelector } from '../store/reselect/wallet';
-import { webRelaySelector } from '../store/reselect/settings';
-import { useAppSelector } from '../hooks/redux';
 
 const store: Store = new WebRelayCache('slashtags.db');
 

@@ -1,16 +1,16 @@
 import React, { ReactElement } from 'react';
 import {
-	View,
-	StyleSheet,
-	StyleProp,
-	ViewStyle,
 	Image,
 	ImageSourcePropType,
+	StyleProp,
+	StyleSheet,
+	View,
+	ViewStyle,
 } from 'react-native';
 import { Easing, withRepeat, withTiming } from 'react-native-reanimated';
 
-import { AnimatedView } from '../styles/components';
 import { __E2E__ } from '../constants/env';
+import { AnimatedView } from '../styles/components';
 
 const imageSrc = require('../assets/illustrations/hourglass.png');
 

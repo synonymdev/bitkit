@@ -1,11 +1,11 @@
 import React, { memo, useMemo, ReactElement } from 'react';
 import { StyleProp, StyleSheet, ViewStyle } from 'react-native';
-import { useAppSelector } from '../hooks/redux';
 import {
 	Edge,
 	NativeSafeAreaViewProps,
 	SafeAreaView as SafeAreaViewRN,
 } from 'react-native-safe-area-context';
+import { useAppSelector } from '../hooks/redux';
 import { themeColorsSelector } from '../store/reselect/settings';
 
 type SafeAreaViewProps = NativeSafeAreaViewProps & {

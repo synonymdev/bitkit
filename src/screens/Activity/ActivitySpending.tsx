@@ -1,23 +1,23 @@
 import React, { ReactElement, memo, useMemo } from 'react';
-import { Image, StyleSheet, View } from 'react-native';
 import { Trans, useTranslation } from 'react-i18next';
+import { Image, StyleSheet, View } from 'react-native';
 
-import { CaptionB, Display } from '../../styles/text';
-import { LightningCircleIcon, TransferIcon } from '../../styles/icons';
-import { View as ThemedView } from '../../styles/components';
+import ActivityHeader from '../../components/ActivityHeader';
+import Money from '../../components/Money';
 import NavigationHeader from '../../components/NavigationHeader';
 import SafeAreaInset from '../../components/SafeAreaInset';
-import ActivityHeader from '../../components/ActivityHeader';
 import WalletOnboarding from '../../components/WalletOnboarding';
-import Money from '../../components/Money';
 import Button from '../../components/buttons/Button';
-import ActivityList from './ActivityList';
-import { useBalance } from '../../hooks/wallet';
 import { useAppSelector } from '../../hooks/redux';
-import { EActivityType } from '../../store/types/activity';
+import { useBalance } from '../../hooks/wallet';
+import { WalletScreenProps } from '../../navigation/types';
 import { spendingOnboardingSelector } from '../../store/reselect/aggregations';
 import { savingsIntroSeenSelector } from '../../store/reselect/settings';
-import { WalletScreenProps } from '../../navigation/types';
+import { EActivityType } from '../../store/types/activity';
+import { View as ThemedView } from '../../styles/components';
+import { LightningCircleIcon, TransferIcon } from '../../styles/icons';
+import { CaptionB, Display } from '../../styles/text';
+import ActivityList from './ActivityList';
 
 const imageSrc = require('../../assets/illustrations/coin-stack-x-2.png');
 

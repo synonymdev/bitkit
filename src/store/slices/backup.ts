@@ -1,7 +1,9 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
 import { initialBackupState } from '../shapes/backup';
+import { EActivityType } from '../types/activity';
 import { EBackupCategory } from '../utils/backup';
+import { updateActivityItems } from './activity';
 import { addPaidBlocktankOrder, updateBlocktankOrder } from './blocktank';
 import {
 	addLastUsedTag,
@@ -18,9 +20,7 @@ import {
 import { updateSettings } from './settings';
 import { addContact, addContacts, deleteContact } from './slashtags';
 import { addTransfer, removeTransfer, updateTransfer } from './wallet';
-import { setFeedWidget, deleteWidget } from './widgets';
-import { updateActivityItems } from './activity';
-import { EActivityType } from '../types/activity';
+import { deleteWidget, setFeedWidget } from './widgets';
 
 export const backupSlice = createSlice({
 	name: 'backup',

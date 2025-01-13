@@ -1,18 +1,18 @@
 import React, { ReactElement, useEffect } from 'react';
-import { StyleSheet, View } from 'react-native';
 import { Trans, useTranslation } from 'react-i18next';
+import { StyleSheet, View } from 'react-native';
 
-import { Display, BodyMB, BodyM } from '../../styles/text';
-import { View as ThemedView } from '../../styles/components';
-import SafeAreaInset from '../../components/SafeAreaInset';
-import NavigationHeader from '../../components/NavigationHeader';
 import HourglassSpinner from '../../components/HourglassSpinner';
+import NavigationHeader from '../../components/NavigationHeader';
+import SafeAreaInset from '../../components/SafeAreaInset';
 import { useAppDispatch } from '../../hooks/redux';
-import { sleep } from '../../utils/helpers';
-import { refreshWallet } from '../../utils/wallet';
-import { closeChannels } from '../../utils/lightning';
-import { startCoopCloseTimer } from '../../store/slices/user';
 import type { TransferScreenProps } from '../../navigation/types';
+import { startCoopCloseTimer } from '../../store/slices/user';
+import { View as ThemedView } from '../../styles/components';
+import { BodyM, BodyMB, Display } from '../../styles/text';
+import { sleep } from '../../utils/helpers';
+import { closeChannels } from '../../utils/lightning';
+import { refreshWallet } from '../../utils/wallet';
 
 const SavingsProgress = ({
 	navigation,

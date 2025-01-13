@@ -5,18 +5,18 @@ import React, {
 	useEffect,
 	useState,
 } from 'react';
-import { StyleProp, StyleSheet, ViewStyle } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { BiometryType } from 'react-native-biometrics';
 import { useTranslation } from 'react-i18next';
+import { StyleProp, StyleSheet, ViewStyle } from 'react-native';
+import { BiometryType } from 'react-native-biometrics';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { View, TouchableOpacity } from '../styles/components';
-import { Subtitle } from '../styles/text';
-import { FingerPrintIcon } from '../styles/icons';
 import { useAppDispatch } from '../hooks/redux';
 import { updateSettings } from '../store/slices/settings';
-import { vibrate } from '../utils/helpers';
+import { TouchableOpacity, View } from '../styles/components';
+import { FingerPrintIcon } from '../styles/icons';
+import { Subtitle } from '../styles/text';
 import rnBiometrics from '../utils/biometrics';
+import { vibrate } from '../utils/helpers';
 
 export interface IsSensorAvailableResult {
 	available: boolean;

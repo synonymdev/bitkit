@@ -1,15 +1,15 @@
-import React, { memo, ReactElement, useEffect, useState } from 'react';
-import { View, StyleSheet } from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
+import React, { memo, ReactElement, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { StyleSheet, View } from 'react-native';
 
+import NavigationHeader from '../../../components/NavigationHeader';
+import SafeAreaInset from '../../../components/SafeAreaInset';
 import {
 	View as ThemedView,
 	TouchableOpacity,
 } from '../../../styles/components';
-import { Subtitle, Caption13Up } from '../../../styles/text';
-import NavigationHeader from '../../../components/NavigationHeader';
-import SafeAreaInset from '../../../components/SafeAreaInset';
+import { Caption13Up, Subtitle } from '../../../styles/text';
 import { getNodeId } from '../../../utils/lightning';
 import { showToast } from '../../../utils/notifications';
 

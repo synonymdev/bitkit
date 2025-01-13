@@ -1,20 +1,20 @@
 import React, { memo, ReactElement } from 'react';
-import { Image, StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import { Image, StyleSheet, View } from 'react-native';
 
-import { BodyM } from '../../../styles/text';
-import BottomSheetWrapper from '../../../components/BottomSheetWrapper';
 import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
+import BottomSheetWrapper from '../../../components/BottomSheetWrapper';
 import SafeAreaInset from '../../../components/SafeAreaInset';
 import Button from '../../../components/buttons/Button';
-import { closeSheet } from '../../../store/slices/ui';
-import { wipeApp } from '../../../store/utils/settings';
-import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 import {
 	useBottomSheetBackPress,
 	useSnapPoints,
 } from '../../../hooks/bottomSheet';
+import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 import { viewControllerSelector } from '../../../store/reselect/ui';
+import { closeSheet } from '../../../store/slices/ui';
+import { wipeApp } from '../../../store/utils/settings';
+import { BodyM } from '../../../styles/text';
 
 const imageSrc = require('../../../assets/illustrations/restore.png');
 

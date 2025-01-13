@@ -1,4 +1,4 @@
-import { err, ok, Result } from '@synonymdev/result';
+import notifee, { TimestampTrigger, TriggerType } from '@notifee/react-native';
 import {
 	BtBolt11InvoiceState,
 	BtOpenChannelState,
@@ -8,13 +8,9 @@ import {
 	IBtOrder,
 	ICJitEntry,
 } from '@synonymdev/blocktank-lsp-http-client';
-import notifee, { TimestampTrigger, TriggerType } from '@notifee/react-native';
+import { Result, err, ok } from '@synonymdev/result';
 
 import { __E2E__ } from '../../constants/env';
-import { addTransfer, removeTransfer } from '../slices/wallet';
-import { updateBeignetSendTransaction } from '../actions/wallet';
-import { setLightningSetupStep } from '../slices/user';
-import { getBlocktankStore, dispatch } from '../helpers';
 import * as blocktank from '../../utils/blocktank';
 import {
 	createOrder,
@@ -24,21 +20,22 @@ import {
 	openChannel,
 	watchOrder,
 } from '../../utils/blocktank';
+import i18n from '../../utils/i18n';
+import { refreshLdk } from '../../utils/lightning';
+import { EAvailableNetwork } from '../../utils/networks';
+import { showToast } from '../../utils/notifications';
 import {
 	getSelectedNetwork,
 	getSelectedWallet,
 	refreshWallet,
 } from '../../utils/wallet';
-import { EAvailableNetwork } from '../../utils/networks';
+import { DEFAULT_CHANNEL_DURATION } from '../../utils/wallet/constants';
 import {
 	broadcastTransaction,
 	createTransaction,
 } from '../../utils/wallet/transactions';
-import { showToast } from '../../utils/notifications';
-import i18n from '../../utils/i18n';
-import { refreshLdk } from '../../utils/lightning';
-import { DEFAULT_CHANNEL_DURATION } from '../../utils/wallet/constants';
-import { ETransferStatus, ETransferType, TWalletName } from '../types/wallet';
+import { updateBeignetSendTransaction } from '../actions/wallet';
+import { dispatch, getBlocktankStore } from '../helpers';
 import {
 	addPaidBlocktankOrder,
 	resetBlocktankOrders,
@@ -46,6 +43,9 @@ import {
 	updateBlocktankOrder,
 	updateCjitEntry,
 } from '../slices/blocktank';
+import { setLightningSetupStep } from '../slices/user';
+import { addTransfer, removeTransfer } from '../slices/wallet';
+import { ETransferStatus, ETransferType, TWalletName } from '../types/wallet';
 
 /**
  * Retrieves & updates the status of stored orders that may have changed.

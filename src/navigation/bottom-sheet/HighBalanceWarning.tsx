@@ -1,28 +1,28 @@
 import React, { memo, ReactElement, useEffect, useMemo } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 
-import { __E2E__ } from '../../constants/env';
-import { BodyMB, Display } from '../../styles/text';
-import BottomSheetWrapper from '../../components/BottomSheetWrapper';
 import BottomSheetScreen from '../../components/BottomSheetScreen';
-import { openURL } from '../../utils/helpers';
-import { objectKeys } from '../../utils/objectKeys';
-import { getFiatDisplayValues } from '../../utils/displayValues';
-import { useBalance } from '../../hooks/wallet';
-import { useAppDispatch, useAppSelector } from '../../hooks/redux';
+import BottomSheetWrapper from '../../components/BottomSheetWrapper';
+import { __E2E__ } from '../../constants/env';
 import {
 	useBottomSheetBackPress,
 	useSnapPoints,
 } from '../../hooks/bottomSheet';
-import { closeSheet } from '../../store/slices/ui';
-import { showBottomSheet } from '../../store/utils/ui';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux';
+import { useBalance } from '../../hooks/wallet';
 import { viewControllersSelector } from '../../store/reselect/ui';
-import { exchangeRatesSelector } from '../../store/reselect/wallet';
-import { ignoreHighBalance, MAX_WARNINGS } from '../../store/slices/user';
 import {
 	ignoreHighBalanceCountSelector,
 	ignoreHighBalanceTimestampSelector,
 } from '../../store/reselect/user';
+import { exchangeRatesSelector } from '../../store/reselect/wallet';
+import { closeSheet } from '../../store/slices/ui';
+import { MAX_WARNINGS, ignoreHighBalance } from '../../store/slices/user';
+import { showBottomSheet } from '../../store/utils/ui';
+import { BodyMB, Display } from '../../styles/text';
+import { getFiatDisplayValues } from '../../utils/displayValues';
+import { openURL } from '../../utils/helpers';
+import { objectKeys } from '../../utils/objectKeys';
 
 const imageSrc = require('../../assets/illustrations/exclamation-mark.png');
 

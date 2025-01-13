@@ -1,22 +1,22 @@
-import React, { memo, ReactElement } from 'react';
-import { StyleSheet, View, Image } from 'react-native';
-import { useTranslation } from 'react-i18next';
-import Lottie from 'lottie-react-native';
-import { useReducedMotion } from 'react-native-reanimated';
 import { usePreventRemove } from '@react-navigation/native';
+import Lottie from 'lottie-react-native';
+import React, { memo, ReactElement } from 'react';
+import { useTranslation } from 'react-i18next';
+import { Image, StyleSheet, View } from 'react-native';
+import { useReducedMotion } from 'react-native-reanimated';
 
-import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
-import SafeAreaInset from '../../../components/SafeAreaInset';
-import GradientView from '../../../components/GradientView';
 import AmountToggle from '../../../components/AmountToggle';
+import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
+import GradientView from '../../../components/GradientView';
+import SafeAreaInset from '../../../components/SafeAreaInset';
 import Button from '../../../components/buttons/Button';
+import { __E2E__ } from '../../../constants/env';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
-import { closeSheet } from '../../../store/slices/ui';
-import { activityItemSelector } from '../../../store/reselect/activity';
 import { rootNavigation } from '../../../navigation/root/RootNavigator';
 import type { SendScreenProps } from '../../../navigation/types';
+import { activityItemSelector } from '../../../store/reselect/activity';
+import { closeSheet } from '../../../store/slices/ui';
 import { EActivityType } from '../../../store/types/activity';
-import { __E2E__ } from '../../../constants/env';
 
 const confettiOrangeSrc = require('../../../assets/lottie/confetti-orange.json');
 const confettiPurpleSrc = require('../../../assets/lottie/confetti-purple.json');

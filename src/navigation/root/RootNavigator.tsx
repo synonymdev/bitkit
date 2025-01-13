@@ -1,3 +1,12 @@
+import Clipboard from '@react-native-clipboard/clipboard';
+import {
+	LinkingOptions,
+	createNavigationContainerRef,
+} from '@react-navigation/native';
+import {
+	NativeStackNavigationOptions,
+	createNativeStackNavigator,
+} from '@react-navigation/native-stack';
 import React, {
 	ReactElement,
 	memo,
@@ -6,51 +15,42 @@ import React, {
 	useRef,
 	useState,
 } from 'react';
-import { AppState, Linking } from 'react-native';
-import {
-	LinkingOptions,
-	createNavigationContainerRef,
-} from '@react-navigation/native';
-import Clipboard from '@react-native-clipboard/clipboard';
 import { useTranslation } from 'react-i18next';
-import {
-	createNativeStackNavigator,
-	NativeStackNavigationOptions,
-} from '@react-navigation/native-stack';
+import { AppState, Linking } from 'react-native';
 
-import { NavigationContainer } from '../../styles/components';
-import { processUri } from '../../utils/scanner/scanner';
-import { checkClipboardData } from '../../utils/clipboard';
-import { useRenderCount } from '../../hooks/helpers';
-import { useAppDispatch, useAppSelector } from '../../hooks/redux';
-import { getStore } from '../../store/helpers';
-import { updateUi } from '../../store/slices/ui';
-import { resetSendTransaction } from '../../store/actions/wallet';
-import { isAuthenticatedSelector } from '../../store/reselect/ui';
 import AuthCheck from '../../components/AuthCheck';
 import Dialog from '../../components/Dialog';
-import WalletNavigator from '../wallet/WalletNavigator';
-import ActivityDetail from '../../screens/Activity/ActivityDetail';
+import { __E2E__ } from '../../constants/env';
+import { useRenderCount } from '../../hooks/helpers';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import ActivityAssignContact from '../../screens/Activity/ActivityAssignContact';
+import ActivityDetail from '../../screens/Activity/ActivityDetail';
 import BuyBitcoin from '../../screens/BuyBitcoin';
-import ScannerScreen from '../../screens/Scanner/MainScanner';
-import SettingsNavigator from '../settings/SettingsNavigator';
-import TransferNavigator from '../transfer/TransferNavigator';
-import Profile from '../../screens/Profile/Profile';
-import ProfileEdit from '../../screens/Profile/ProfileEdit';
-import Contacts from '../../screens/Contacts/Contacts';
 import Contact from '../../screens/Contacts/Contact';
 import ContactEdit from '../../screens/Contacts/ContactEdit';
+import Contacts from '../../screens/Contacts/Contacts';
+import Profile from '../../screens/Profile/Profile';
+import ProfileEdit from '../../screens/Profile/ProfileEdit';
+import ScannerScreen from '../../screens/Scanner/MainScanner';
+import ForgotPIN from '../../screens/Settings/PIN/ForgotPIN';
 import Widget from '../../screens/Widgets/Widget';
 import WidgetEdit from '../../screens/Widgets/WidgetEdit';
-import WidgetsSuggestions from '../../screens/Widgets/WidgetsSuggestions';
 import WidgetsOnboarding from '../../screens/Widgets/WidgetsOnboarding';
-import ForgotPIN from '../../screens/Settings/PIN/ForgotPIN';
+import WidgetsSuggestions from '../../screens/Widgets/WidgetsSuggestions';
+import { resetSendTransaction } from '../../store/actions/wallet';
+import { getStore } from '../../store/helpers';
+import { isAuthenticatedSelector } from '../../store/reselect/ui';
+import { updateUi } from '../../store/slices/ui';
+import { NavigationContainer } from '../../styles/components';
 import BackupSubscriber from '../../utils/backup/backups-subscriber';
-import ForceTransfer from '../bottom-sheet/ForceTransfer';
+import { checkClipboardData } from '../../utils/clipboard';
+import { processUri } from '../../utils/scanner/scanner';
 import BottomSheetsLazy from '../bottom-sheet/BottomSheetsLazy';
-import { __E2E__ } from '../../constants/env';
+import ForceTransfer from '../bottom-sheet/ForceTransfer';
+import SettingsNavigator from '../settings/SettingsNavigator';
+import TransferNavigator from '../transfer/TransferNavigator';
 import type { RootStackParamList } from '../types';
+import WalletNavigator from '../wallet/WalletNavigator';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 

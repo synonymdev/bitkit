@@ -2,14 +2,14 @@ import React, { memo, ReactElement } from 'react';
 import { StyleProp, StyleSheet, ViewStyle } from 'react-native';
 import { useAppSelector } from '../../hooks/redux';
 
-import { TouchableHighlight } from '../../styles/components';
-import { Caption13Up } from '../../styles/text';
-import { SwitchIcon } from '../../styles/icons';
 import { useCurrency } from '../../hooks/displayValues';
+import { useSwitchUnit } from '../../hooks/wallet';
 import { unitSelector } from '../../store/reselect/settings';
 import { EUnit } from '../../store/types/wallet';
+import { TouchableHighlight } from '../../styles/components';
+import { SwitchIcon } from '../../styles/icons';
+import { Caption13Up } from '../../styles/text';
 import { IThemeColors } from '../../styles/themes';
-import { useSwitchUnit } from '../../hooks/wallet';
 
 const UnitButton = ({
 	color = 'brand',

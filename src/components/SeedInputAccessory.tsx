@@ -1,11 +1,11 @@
+import * as bip39 from 'bip39';
 import React, { ReactElement, useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import * as bip39 from 'bip39';
 import { KeyboardAccessoryView } from 'react-native-keyboard-accessory';
 
-import Button, { ButtonProps } from './buttons/Button';
 import { Text13UP } from '../styles/text';
 import seedSuggestions from '../utils/seed-suggestions';
+import Button, { ButtonProps } from './buttons/Button';
 
 const Word = (props: ButtonProps): ReactElement => {
 	return <Button style={styles.wordContainer} {...props} />;

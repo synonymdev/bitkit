@@ -1,16 +1,16 @@
 import React, { ReactElement, useEffect, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
 import { Trans, useTranslation } from 'react-i18next';
+import { StyleSheet, View } from 'react-native';
 
-import { View as ThemedView } from '../../styles/components';
-import { BodyMSB, BodyM } from '../../styles/text';
-import { showToast } from '../../utils/notifications';
-import { getBip39Passphrase, getMnemonicPhrase } from '../../utils/wallet';
 import NavigationHeader from '../../components/NavigationHeader';
 import SafeAreaInset from '../../components/SafeAreaInset';
 import Button from '../../components/buttons/Button';
-import { Word } from '../Settings/Backup/ShowMnemonic';
 import { RecoveryStackScreenProps } from '../../navigation/types';
+import { View as ThemedView } from '../../styles/components';
+import { BodyM, BodyMSB } from '../../styles/text';
+import { showToast } from '../../utils/notifications';
+import { getBip39Passphrase, getMnemonicPhrase } from '../../utils/wallet';
+import { Word } from '../Settings/Backup/ShowMnemonic';
 
 const Mnemonic = ({
 	navigation,

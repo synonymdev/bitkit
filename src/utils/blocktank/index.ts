@@ -8,25 +8,25 @@ import {
 	ICJitEntry,
 	ICreateOrderOptions,
 } from '@synonymdev/blocktank-lsp-http-client';
-import { err, ok, Result } from '@synonymdev/result';
 import { IBtEstimateFeeResponse2 } from '@synonymdev/blocktank-lsp-http-client/dist/shared/IBtEstimateFeeResponse2';
+import { Result, err, ok } from '@synonymdev/result';
 
-import { EAvailableNetwork } from '../networks';
-import { addPeers, getNodeId, refreshLdk } from '../lightning';
+import { __BLOCKTANK_HOST__ } from '../../constants/env';
+import { dispatch, getBlocktankStore, getUserStore } from '../../store/helpers';
+import { updateUser } from '../../store/slices/user';
+import { ICreateOrderRequest } from '../../store/types/blocktank';
 import {
 	refreshAllBlocktankOrders,
 	refreshOrder,
 	refreshOrdersList,
 } from '../../store/utils/blocktank';
-import { sleep } from '../helpers';
-import { DEFAULT_CHANNEL_DURATION } from '../../utils/wallet/constants';
-import { dispatch, getBlocktankStore, getUserStore } from '../../store/helpers';
-import { ICreateOrderRequest } from '../../store/types/blocktank';
-import { updateUser } from '../../store/slices/user';
 import { setGeoBlock } from '../../store/utils/user';
-import { refreshWallet } from '../wallet';
-import { __BLOCKTANK_HOST__ } from '../../constants/env';
+import { DEFAULT_CHANNEL_DURATION } from '../../utils/wallet/constants';
+import { sleep } from '../helpers';
 import i18n from '../i18n';
+import { addPeers, getNodeId, refreshLdk } from '../lightning';
+import { EAvailableNetwork } from '../networks';
+import { refreshWallet } from '../wallet';
 
 const bt = new BlocktankClient();
 

@@ -1,13 +1,13 @@
 import React, { ReactElement } from 'react';
-import { Image, StyleSheet, View } from 'react-native';
 import { Trans, useTranslation } from 'react-i18next';
+import { Image, StyleSheet, View } from 'react-native';
 
-import { Display, BodyMB, BodyM } from '../../styles/text';
-import { View as ThemedView } from '../../styles/components';
-import SafeAreaInset from '../../components/SafeAreaInset';
 import NavigationHeader from '../../components/NavigationHeader';
+import SafeAreaInset from '../../components/SafeAreaInset';
 import Button from '../../components/buttons/Button';
 import type { TransferScreenProps } from '../../navigation/types';
+import { View as ThemedView } from '../../styles/components';
+import { BodyM, BodyMB, Display } from '../../styles/text';
 
 const imageSrc = require('../../assets/illustrations/exclamation-mark.png');
 

@@ -1,14 +1,14 @@
 import React, { memo, ReactElement } from 'react';
-import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import { StyleSheet, View } from 'react-native';
 
-import { View as ThemedView } from '../../styles/components';
-import NavigationHeader from '../../components/NavigationHeader';
 import ContactsList from '../../components/ContactsList';
+import NavigationHeader from '../../components/NavigationHeader';
 import SafeAreaInset from '../../components/SafeAreaInset';
 import { useAppDispatch } from '../../hooks/redux';
-import { addMetaTxSlashtagsUrl } from '../../store/slices/metadata';
 import { RootStackScreenProps } from '../../navigation/types';
+import { addMetaTxSlashtagsUrl } from '../../store/slices/metadata';
+import { View as ThemedView } from '../../styles/components';
 
 const ActivityAssignContact = ({
 	navigation,

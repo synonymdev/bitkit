@@ -1,15 +1,15 @@
 import React, { memo, ReactElement, useMemo } from 'react';
-import { useAppSelector } from '../../../hooks/redux';
 import { useTranslation } from 'react-i18next';
+import { useAppSelector } from '../../../hooks/redux';
 
 import { EItemType, IListData } from '../../../components/List';
-import SettingsView from '../SettingsView';
+import { SettingsScreenProps } from '../../../navigation/types';
 import { selectedNetworkSelector } from '../../../store/reselect/wallet';
 import { networkLabels } from '../../../utils/networks';
-import { switchNetwork } from '../../../utils/wallet';
-import { SettingsScreenProps } from '../../../navigation/types';
-import { startWalletServices } from '../../../utils/startup';
 import { showToast } from '../../../utils/notifications';
+import { startWalletServices } from '../../../utils/startup';
+import { switchNetwork } from '../../../utils/wallet';
+import SettingsView from '../SettingsView';
 
 const BitcoinNetworkSelection = ({
 	navigation,

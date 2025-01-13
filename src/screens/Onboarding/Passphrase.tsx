@@ -2,19 +2,19 @@ import React, { ReactElement, memo, useState, useMemo } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 import { Image, StyleSheet, View, useWindowDimensions } from 'react-native';
 
-import {
-	View as ThemedView,
-	ScrollView,
-	TextInput,
-} from '../../styles/components';
-import { Display, BodyM } from '../../styles/text';
-import SafeAreaInset from '../../components/SafeAreaInset';
-import NavigationHeader from '../../components/NavigationHeader';
-import KeyboardAvoidingView from '../../components/KeyboardAvoidingView';
-import Button from '../../components/buttons/Button';
 import Flag from '../../components/Flag';
+import KeyboardAvoidingView from '../../components/KeyboardAvoidingView';
+import NavigationHeader from '../../components/NavigationHeader';
+import SafeAreaInset from '../../components/SafeAreaInset';
+import Button from '../../components/buttons/Button';
 import { useScreenSize } from '../../hooks/screen';
 import type { OnboardingStackScreenProps } from '../../navigation/types';
+import {
+	ScrollView,
+	TextInput,
+	View as ThemedView,
+} from '../../styles/components';
+import { BodyM, Display } from '../../styles/text';
 
 const imageSrc = require('../../assets/illustrations/padlock2.png');
 

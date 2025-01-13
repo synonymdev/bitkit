@@ -1,9 +1,9 @@
-import React, { ReactElement } from 'react';
-import { View, StyleSheet } from 'react-native';
-import { PersistGate } from 'redux-persist/integration/react';
-import { enableScreens, enableFreeze } from 'react-native-screens';
-import { Provider } from 'react-redux';
 import { EventEmitter } from 'events';
+import React, { ReactElement } from 'react';
+import { StyleSheet, View } from 'react-native';
+import { enableFreeze, enableScreens } from 'react-native-screens';
+import { Provider } from 'react-redux';
+import { PersistGate } from 'redux-persist/integration/react';
 
 import App from './App';
 import ErrorBoundary from './ErrorBoundary';

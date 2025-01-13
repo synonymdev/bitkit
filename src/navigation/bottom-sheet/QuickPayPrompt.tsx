@@ -1,23 +1,23 @@
-import React, { memo, ReactElement, useEffect, useMemo } from 'react';
 import { useNavigation } from '@react-navigation/native';
+import React, { memo, ReactElement, useEffect, useMemo } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 
-import { __E2E__ } from '../../constants/env';
-import { BodyMB, Display } from '../../styles/text';
-import BottomSheetWrapper from '../../components/BottomSheetWrapper';
 import BottomSheetScreen from '../../components/BottomSheetScreen';
-import { objectKeys } from '../../utils/objectKeys';
-import { useBalance } from '../../hooks/wallet';
-import { useAppDispatch, useAppSelector } from '../../hooks/redux';
+import BottomSheetWrapper from '../../components/BottomSheetWrapper';
+import { __E2E__ } from '../../constants/env';
 import {
 	useBottomSheetBackPress,
 	useSnapPoints,
 } from '../../hooks/bottomSheet';
-import { closeSheet } from '../../store/slices/ui';
-import { updateSettings } from '../../store/slices/settings';
-import { showBottomSheet } from '../../store/utils/ui';
-import { viewControllersSelector } from '../../store/reselect/ui';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux';
+import { useBalance } from '../../hooks/wallet';
 import { quickpayIntroSeenSelector } from '../../store/reselect/settings';
+import { viewControllersSelector } from '../../store/reselect/ui';
+import { updateSettings } from '../../store/slices/settings';
+import { closeSheet } from '../../store/slices/ui';
+import { showBottomSheet } from '../../store/utils/ui';
+import { BodyMB, Display } from '../../styles/text';
+import { objectKeys } from '../../utils/objectKeys';
 import { RootNavigationProp } from '../types';
 
 const imageSrc = require('../../assets/illustrations/fast-forward.png');

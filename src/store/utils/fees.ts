@@ -1,5 +1,5 @@
-import { IOnchainFees } from 'beignet';
 import { Result, err, ok } from '@synonymdev/result';
+import { IOnchainFees } from 'beignet';
 
 import { getOnChainWalletAsync } from '../../utils/wallet';
 import { dispatch, getFeesStore } from '../helpers';

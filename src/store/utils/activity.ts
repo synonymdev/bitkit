@@ -1,7 +1,8 @@
 import { TChannel } from '@synonymdev/react-native-ldk';
-import { ok, Result } from '@synonymdev/result';
+import { Result, ok } from '@synonymdev/result';
 import { EPaymentType } from 'beignet';
 
+import { persistor } from '..';
 import { onChainTransactionToActivityItem } from '../../utils/activity';
 import { formatBoostedActivityItems } from '../../utils/boost';
 import { vibrate } from '../../utils/helpers';
@@ -13,7 +14,6 @@ import { updateSettings } from '../slices/settings';
 import { closeSheet } from '../slices/ui';
 import { EActivityType, TLightningActivityItem } from '../types/activity';
 import { showBottomSheet } from './ui';
-import { persistor } from '..';
 
 /**
  * Attempts to determine if a given channel open was in response to

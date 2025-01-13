@@ -1,19 +1,19 @@
 import React, { memo, ReactElement, useMemo } from 'react';
-import { StyleSheet, View, Pressable, Image } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import { Image, Pressable, StyleSheet, View } from 'react-native';
 
-import { BodyM, BodyMSB } from '../../../styles/text';
 import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
-import SafeAreaInset from '../../../components/SafeAreaInset';
 import GradientView from '../../../components/GradientView';
-import Button from '../../../components/buttons/Button';
+import SafeAreaInset from '../../../components/SafeAreaInset';
 import Switch from '../../../components/Switch';
-import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
+import Button from '../../../components/buttons/Button';
 import { useBottomSheetScreenBackPress } from '../../../hooks/bottomSheet';
-import { closeSheet } from '../../../store/slices/ui';
-import { updateSettings } from '../../../store/slices/settings';
-import { pinForPaymentsSelector } from '../../../store/reselect/settings';
+import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 import type { PinScreenProps } from '../../../navigation/types';
+import { pinForPaymentsSelector } from '../../../store/reselect/settings';
+import { updateSettings } from '../../../store/slices/settings';
+import { closeSheet } from '../../../store/slices/ui';
+import { BodyM, BodyMSB } from '../../../styles/text';
 
 const imageSrc = require('../../../assets/illustrations/check.png');
 

@@ -1,14 +1,14 @@
 import React, { memo, ReactElement } from 'react';
-import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import { StyleSheet, View } from 'react-native';
 
-import { BodyM, BodyMB } from '../../../styles/text';
-import GradientView from '../../../components/GradientView';
 import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
-import SafeAreaInset from '../../../components/SafeAreaInset';
+import GradientView from '../../../components/GradientView';
 import LightningChannel from '../../../components/LightningChannel';
+import SafeAreaInset from '../../../components/SafeAreaInset';
 import Button from '../../../components/buttons/Button';
 import type { ReceiveScreenProps } from '../../../navigation/types';
+import { BodyM, BodyMB } from '../../../styles/text';
 
 const Liquidity = ({
 	navigation,

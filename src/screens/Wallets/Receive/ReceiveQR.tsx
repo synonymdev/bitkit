@@ -1,3 +1,4 @@
+import Clipboard from '@react-native-clipboard/clipboard';
 import React, {
 	memo,
 	ReactElement,
@@ -7,23 +8,49 @@ import React, {
 	useRef,
 	useCallback,
 } from 'react';
+import { Trans, useTranslation } from 'react-i18next';
 import {
 	ActivityIndicator,
 	StyleSheet,
-	useWindowDimensions,
 	View,
+	useWindowDimensions,
 } from 'react-native';
 import QRCode from 'react-native-qrcode-svg';
 import { FadeIn, useSharedValue } from 'react-native-reanimated';
-import Clipboard from '@react-native-clipboard/clipboard';
-import Share from 'react-native-share';
 import Carousel, { ICarouselInstance } from 'react-native-reanimated-carousel';
-import { Trans, useTranslation } from 'react-i18next';
+import Share from 'react-native-share';
 
+import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
+import GradientView from '../../../components/GradientView';
+import SafeAreaInset from '../../../components/SafeAreaInset';
+import Dot from '../../../components/SliderDots';
+import SwitchRow from '../../../components/SwitchRow';
+import Tooltip from '../../../components/Tooltip';
+import Button from '../../../components/buttons/Button';
+import { useBottomSheetBackPress } from '../../../hooks/bottomSheet';
+import { useLightningBalance } from '../../../hooks/lightning';
+import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
+import { ReceiveScreenProps } from '../../../navigation/types';
+import { generateNewReceiveAddress } from '../../../store/actions/wallet';
+import { getWalletStore } from '../../../store/helpers';
+import { receiveSelector } from '../../../store/reselect/receive';
 import {
+	appStateSelector,
+	isLDKReadySelector,
+	viewControllerIsOpenSelector,
+} from '../../../store/reselect/ui';
+import { isGeoBlockedSelector } from '../../../store/reselect/user';
+import {
+	addressTypeSelector,
+	selectedNetworkSelector,
+	selectedWalletSelector,
+} from '../../../store/reselect/wallet';
+import { updatePendingInvoice } from '../../../store/slices/metadata';
+import { createLightningInvoice } from '../../../store/utils/lightning';
+import {
+	AnimatedView,
 	View as ThemedView,
 	TouchableOpacity,
-	AnimatedView,
 } from '../../../styles/components';
 import {
 	ArrowLNFunds,
@@ -36,39 +63,12 @@ import {
 	ShareIcon,
 	UnifiedIcon,
 } from '../../../styles/icons';
-import { Caption13Up, BodyM, BodyS, Headline } from '../../../styles/text';
-import { createLightningInvoice } from '../../../store/utils/lightning';
-import { updatePendingInvoice } from '../../../store/slices/metadata';
-import { generateNewReceiveAddress } from '../../../store/actions/wallet';
-import {
-	appStateSelector,
-	isLDKReadySelector,
-	viewControllerIsOpenSelector,
-} from '../../../store/reselect/ui';
-import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
-import { useLightningBalance } from '../../../hooks/lightning';
-import { useBottomSheetBackPress } from '../../../hooks/bottomSheet';
-import { waitForLdk } from '../../../utils/lightning';
-import { getUnifiedUri } from '../../../utils/receive';
+import { BodyM, BodyS, Caption13Up, Headline } from '../../../styles/text';
 import { ellipsis, sleep } from '../../../utils/helpers';
-import { getReceiveAddress } from '../../../utils/wallet';
-import GradientView from '../../../components/GradientView';
-import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
-import SafeAreaInset from '../../../components/SafeAreaInset';
-import Button from '../../../components/buttons/Button';
-import Tooltip from '../../../components/Tooltip';
-import Dot from '../../../components/SliderDots';
-import SwitchRow from '../../../components/SwitchRow';
-import {
-	addressTypeSelector,
-	selectedNetworkSelector,
-	selectedWalletSelector,
-} from '../../../store/reselect/wallet';
-import { receiveSelector } from '../../../store/reselect/receive';
-import { ReceiveScreenProps } from '../../../navigation/types';
-import { isGeoBlockedSelector } from '../../../store/reselect/user';
-import { getWalletStore } from '../../../store/helpers';
+import { waitForLdk } from '../../../utils/lightning';
 import { showToast } from '../../../utils/notifications';
+import { getUnifiedUri } from '../../../utils/receive';
+import { getReceiveAddress } from '../../../utils/wallet';
 
 type Slide = () => ReactElement;
 

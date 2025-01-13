@@ -1,9 +1,9 @@
-import React, { ReactElement, useState, useEffect } from 'react';
-import { StyleSheet, Platform, View } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
-import { check, request, PERMISSIONS, RESULTS } from 'react-native-permissions';
-import { Camera as CameraKit, CameraType } from 'react-native-camera-kit';
+import React, { ReactElement, useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Platform, StyleSheet, View } from 'react-native';
+import { Camera as CameraKit, CameraType } from 'react-native-camera-kit';
+import { PERMISSIONS, RESULTS, check, request } from 'react-native-permissions';
 
 import CameraNoAuth from './CameraNoAuth';
 import GradientView from './GradientView';

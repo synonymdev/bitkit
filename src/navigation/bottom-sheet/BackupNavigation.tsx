@@ -1,25 +1,25 @@
-import React, { ReactElement, memo } from 'react';
 import { NavigationIndependentTree } from '@react-navigation/native';
 import {
-	createNativeStackNavigator,
 	NativeStackNavigationOptions,
 	NativeStackNavigationProp,
+	createNativeStackNavigator,
 } from '@react-navigation/native-stack';
+import React, { ReactElement, memo } from 'react';
 
-import { NavigationContainer } from '../../styles/components';
 import BottomSheetWrapper from '../../components/BottomSheetWrapper';
-import ShowMnemonic from '../../screens/Settings/Backup/ShowMnemonic';
-import ShowPassphrase from '../../screens/Settings/Backup/ShowPassphrase';
-import ConfirmMnemonic from '../../screens/Settings/Backup/ConfirmMnemonic';
-import ConfirmPassphrase from '../../screens/Settings/Backup/ConfirmPassphrase';
-import Success from '../../screens/Settings/Backup/Success';
-import Warning from '../../screens/Settings/Backup/Warning';
-import MultipleDevices from '../../screens/Settings/Backup/MultipleDevices';
-import Metadata from '../../screens/Settings/Backup/Metadata';
+import { __E2E__ } from '../../constants/env';
 import { useSnapPoints } from '../../hooks/bottomSheet';
 import { useAppSelector } from '../../hooks/redux';
+import ConfirmMnemonic from '../../screens/Settings/Backup/ConfirmMnemonic';
+import ConfirmPassphrase from '../../screens/Settings/Backup/ConfirmPassphrase';
+import Metadata from '../../screens/Settings/Backup/Metadata';
+import MultipleDevices from '../../screens/Settings/Backup/MultipleDevices';
+import ShowMnemonic from '../../screens/Settings/Backup/ShowMnemonic';
+import ShowPassphrase from '../../screens/Settings/Backup/ShowPassphrase';
+import Success from '../../screens/Settings/Backup/Success';
+import Warning from '../../screens/Settings/Backup/Warning';
 import { viewControllerIsOpenSelector } from '../../store/reselect/ui';
-import { __E2E__ } from '../../constants/env';
+import { NavigationContainer } from '../../styles/components';
 
 export type BackupNavigationProp =
 	NativeStackNavigationProp<BackupStackParamList>;

@@ -1,6 +1,6 @@
+import { Canvas, LinearGradient, Rect, vec } from '@shopify/react-native-skia';
 import React, { ReactElement, useState } from 'react';
 import { LayoutChangeEvent, StyleProp, View, ViewStyle } from 'react-native';
-import { Canvas, LinearGradient, Rect, vec } from '@shopify/react-native-skia';
 
 type ToastGradientProps = {
 	color: string;

@@ -1,4 +1,3 @@
-import React, { ReactElement, useEffect, useMemo } from 'react';
 import {
 	Canvas,
 	Path,
@@ -6,6 +5,7 @@ import {
 	SweepGradient,
 	vec,
 } from '@shopify/react-native-skia';
+import React, { ReactElement, useEffect, useMemo } from 'react';
 import Animated, {
 	Easing,
 	FadeIn,

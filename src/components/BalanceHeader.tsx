@@ -1,14 +1,14 @@
 import React, { memo, ReactElement } from 'react';
+import { Trans, useTranslation } from 'react-i18next';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useAppDispatch, useAppSelector } from '../hooks/redux';
-import { Trans, useTranslation } from 'react-i18next';
 
-import { Caption13Up } from '../styles/text';
-import { EyeIcon } from '../styles/icons';
-import Money from './Money';
 import { useBalance, useSwitchUnitAnnounced } from '../hooks/wallet';
-import { updateSettings } from '../store/slices/settings';
 import { hideBalanceSelector } from '../store/reselect/settings';
+import { updateSettings } from '../store/slices/settings';
+import { EyeIcon } from '../styles/icons';
+import { Caption13Up } from '../styles/text';
+import Money from './Money';
 
 /**
  * Displays the total available balance for the current wallet & network.

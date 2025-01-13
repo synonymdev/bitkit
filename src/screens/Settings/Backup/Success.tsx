@@ -1,15 +1,15 @@
 import React, { memo, ReactElement } from 'react';
-import { Image, StyleSheet, View } from 'react-native';
 import { Trans, useTranslation } from 'react-i18next';
+import { Image, StyleSheet, View } from 'react-native';
 
-import { BodyMB, BodyM } from '../../../styles/text';
 import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
-import SafeAreaInset from '../../../components/SafeAreaInset';
 import GradientView from '../../../components/GradientView';
+import SafeAreaInset from '../../../components/SafeAreaInset';
 import Button from '../../../components/buttons/Button';
 import { useAppDispatch } from '../../../hooks/redux';
-import { verifyBackup } from '../../../store/slices/settings';
 import { BackupScreenProps } from '../../../navigation/types';
+import { verifyBackup } from '../../../store/slices/settings';
+import { BodyM, BodyMB } from '../../../styles/text';
 
 const imageSrc = require('../../../assets/illustrations/check.png');
 

@@ -1,11 +1,11 @@
 import React, { memo, ReactElement, useMemo } from 'react';
-import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 import { useTranslation } from 'react-i18next';
+import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 
 import { EItemType, IListData } from '../../../components/List';
-import SettingsView from '../SettingsView';
-import { updateSettings } from '../../../store/slices/settings';
 import { coinSelectAutoSelector } from '../../../store/reselect/settings';
+import { updateSettings } from '../../../store/slices/settings';
+import SettingsView from '../SettingsView';
 
 const CoinSelectSettings = (): ReactElement => {
 	const { t } = useTranslation('settings');

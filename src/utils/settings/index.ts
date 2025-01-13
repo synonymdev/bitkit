@@ -1,7 +1,7 @@
-import { resetKeychainValue, setKeychainValue } from '../keychain';
+import { PIN_ATTEMPTS } from '../../constants/app';
 import { dispatch } from '../../store/helpers';
 import { updateSettings } from '../../store/slices/settings';
-import { PIN_ATTEMPTS } from '../../constants/app';
+import { resetKeychainValue, setKeychainValue } from '../keychain';
 
 /**
  * @async

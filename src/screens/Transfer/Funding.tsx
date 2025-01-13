@@ -1,20 +1,20 @@
 import React, { ReactElement } from 'react';
-import { View, StyleSheet } from 'react-native';
-import { useAppSelector } from '../../hooks/redux';
 import { Trans, useTranslation } from 'react-i18next';
+import { StyleSheet, View } from 'react-native';
+import { useAppSelector } from '../../hooks/redux';
 
-import { TransferIcon, QrIcon, ShareAndroidIcon } from '../../styles/icons';
-import { Display, BodyM } from '../../styles/text';
-import { View as ThemedView } from '../../styles/components';
-import RectangleButton from '../../components/buttons/RectangleButton';
-import SafeAreaInset from '../../components/SafeAreaInset';
 import NavigationHeader from '../../components/NavigationHeader';
+import SafeAreaInset from '../../components/SafeAreaInset';
+import RectangleButton from '../../components/buttons/RectangleButton';
 import { useBalance } from '../../hooks/wallet';
-import { isGeoBlockedSelector } from '../../store/reselect/user';
-import { spendingIntroSeenSelector } from '../../store/reselect/settings';
-import { TRANSACTION_DEFAULTS } from '../../utils/wallet/constants';
-import { showBottomSheet } from '../../store/utils/ui';
 import type { TransferScreenProps } from '../../navigation/types';
+import { spendingIntroSeenSelector } from '../../store/reselect/settings';
+import { isGeoBlockedSelector } from '../../store/reselect/user';
+import { showBottomSheet } from '../../store/utils/ui';
+import { View as ThemedView } from '../../styles/components';
+import { QrIcon, ShareAndroidIcon, TransferIcon } from '../../styles/icons';
+import { BodyM, Display } from '../../styles/text';
+import { TRANSACTION_DEFAULTS } from '../../utils/wallet/constants';
 
 const Funding = ({
 	navigation,

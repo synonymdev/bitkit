@@ -1,5 +1,5 @@
+import { Result, err, ok } from '@synonymdev/result';
 import Keychain from 'react-native-keychain';
-import { err, ok, Result } from '@synonymdev/result';
 
 export const getKeychainValue = async (
 	key: string,

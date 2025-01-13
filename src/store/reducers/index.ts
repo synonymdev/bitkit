@@ -1,7 +1,7 @@
 import { UnknownAction, combineReducers } from 'redux';
 
-import { storage } from '../mmkv-storage';
 import actions from '../actions/actions';
+import { storage } from '../mmkv-storage';
 import activity from '../slices/activity';
 import backup from '../slices/backup';
 import blocktank from '../slices/blocktank';

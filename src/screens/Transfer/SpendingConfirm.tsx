@@ -1,26 +1,26 @@
 import React, { ReactElement, useState } from 'react';
-import { Image, StyleSheet, View } from 'react-native';
 import { Trans, useTranslation } from 'react-i18next';
+import { Image, StyleSheet, View } from 'react-native';
 
-import { View as ThemedView } from '../../styles/components';
-import { Caption13Up, Display } from '../../styles/text';
-import { LightningIcon } from '../../styles/icons';
-import SafeAreaInset from '../../components/SafeAreaInset';
+import LightningChannel from '../../components/LightningChannel';
+import Money from '../../components/Money';
 import NavigationHeader from '../../components/NavigationHeader';
+import SafeAreaInset from '../../components/SafeAreaInset';
 import SwipeToConfirm from '../../components/SwipeToConfirm';
 import Button from '../../components/buttons/Button';
-import Money from '../../components/Money';
-import LightningChannel from '../../components/LightningChannel';
-import { sleep } from '../../utils/helpers';
-import { showToast } from '../../utils/notifications';
-import { useTransfer } from '../../hooks/transfer';
 import { useAppSelector } from '../../hooks/redux';
+import { useTransfer } from '../../hooks/transfer';
 import { TransferScreenProps } from '../../navigation/types';
 import { transactionFeeSelector } from '../../store/reselect/wallet';
 import {
 	confirmChannelPurchase,
 	startChannelPurchase,
 } from '../../store/utils/blocktank';
+import { View as ThemedView } from '../../styles/components';
+import { LightningIcon } from '../../styles/icons';
+import { Caption13Up, Display } from '../../styles/text';
+import { sleep } from '../../utils/helpers';
+import { showToast } from '../../utils/notifications';
 
 const image = require('../../assets/illustrations/coin-stack-x.png');
 

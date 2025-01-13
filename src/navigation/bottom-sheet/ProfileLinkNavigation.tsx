@@ -1,19 +1,19 @@
-import React, { ReactElement, memo } from 'react';
 import { NavigationIndependentTree } from '@react-navigation/native';
 import {
 	NativeStackNavigationOptions,
 	NativeStackNavigationProp,
 	createNativeStackNavigator,
 } from '@react-navigation/native-stack';
+import React, { ReactElement, memo } from 'react';
 
-import { NavigationContainer } from '../../styles/components';
 import BottomSheetWrapper from '../../components/BottomSheetWrapper';
+import { __E2E__ } from '../../constants/env';
+import { useSnapPoints } from '../../hooks/bottomSheet';
+import { useAppSelector } from '../../hooks/redux';
 import ProfileLink from '../../screens/Profile/ProfileLink';
 import ProfileLinkSuggestions from '../../screens/Profile/ProfileLinkSuggestions';
-import { useAppSelector } from '../../hooks/redux';
-import { useSnapPoints } from '../../hooks/bottomSheet';
 import { viewControllerIsOpenSelector } from '../../store/reselect/ui';
-import { __E2E__ } from '../../constants/env';
+import { NavigationContainer } from '../../styles/components';
 
 export type ProfileLinkNavigationProp =
 	NativeStackNavigationProp<ProfileLinkStackParamList>;

@@ -1,11 +1,11 @@
 import React, { ReactElement, memo } from 'react';
 import { StyleProp, StyleSheet, ViewStyle } from 'react-native';
 
-import { TouchableHighlight, TouchableOpacity } from '../styles/components';
-import { BodySSB } from '../styles/text';
 import { useProfile } from '../hooks/slashtags';
-import ProfileImage from './ProfileImage';
+import { TouchableHighlight, TouchableOpacity } from '../styles/components';
 import { XIcon } from '../styles/icons';
+import { BodySSB } from '../styles/text';
+import ProfileImage from './ProfileImage';
 
 const ContactSmall = ({
 	url,

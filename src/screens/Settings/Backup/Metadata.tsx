@@ -1,17 +1,17 @@
 import React, { memo, ReactElement } from 'react';
-import { Image, StyleSheet, View } from 'react-native';
 import { Trans, useTranslation } from 'react-i18next';
+import { Image, StyleSheet, View } from 'react-native';
 
-import { BodyM, BodySB, BodyS } from '../../../styles/text';
-import GradientView from '../../../components/GradientView';
 import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
+import GradientView from '../../../components/GradientView';
 import SafeAreaInset from '../../../components/SafeAreaInset';
 import Button from '../../../components/buttons/Button';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
-import { closeSheet } from '../../../store/slices/ui';
 import { backupSelector } from '../../../store/reselect/backup';
-import { i18nTime } from '../../../utils/i18n';
+import { closeSheet } from '../../../store/slices/ui';
 import { EBackupCategory } from '../../../store/utils/backup';
+import { BodyM, BodyS, BodySB } from '../../../styles/text';
+import { i18nTime } from '../../../utils/i18n';
 
 const imageSrc = require('../../../assets/illustrations/card.png');
 

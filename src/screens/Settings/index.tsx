@@ -1,16 +1,14 @@
 import React, { memo, ReactElement, useMemo, useState } from 'react';
-import { Image, StyleSheet, TouchableOpacity } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import { Image, StyleSheet, TouchableOpacity } from 'react-native';
 
-import { View as ThemedView } from '../../styles/components';
 import { EItemType, IListData, ItemData } from '../../components/List';
 import SafeAreaInset from '../../components/SafeAreaInset';
-import SettingsView from './SettingsView';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
-import { updateSettings } from '../../store/slices/settings';
-import { showToast } from '../../utils/notifications';
 import { SettingsScreenProps } from '../../navigation/types';
 import { enableDevOptionsSelector } from '../../store/reselect/settings';
+import { updateSettings } from '../../store/slices/settings';
+import { View as ThemedView } from '../../styles/components';
 import {
 	AboutIcon,
 	AdvancedIcon,
@@ -20,6 +18,8 @@ import {
 	SecurityIcon,
 	SupportIcon,
 } from '../../styles/icons';
+import { showToast } from '../../utils/notifications';
+import SettingsView from './SettingsView';
 
 const imageSrc = require('./../../assets/illustrations/cog.png');
 

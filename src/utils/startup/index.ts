@@ -1,7 +1,19 @@
+import { Result, err, ok } from '@synonymdev/result';
+import { TServer, generateMnemonic } from 'beignet';
 import { InteractionManager } from 'react-native';
-import { err, ok, Result } from '@synonymdev/result';
-import { generateMnemonic, TServer } from 'beignet';
 
+import { createWalletThunk } from '../../store/actions/wallet';
+import { getWalletStore } from '../../store/helpers';
+import { TWalletName } from '../../store/types/wallet';
+import { performFullRestoreFromLatestBackup } from '../../store/utils/backup';
+import { refreshBlocktankInfo } from '../../store/utils/blocktank';
+import { setupBlocktank, watchPendingOrders } from '../blocktank';
+import { promiseTimeout } from '../helpers';
+import i18n from '../i18n';
+import { keepLdkSynced, setupLdk } from '../lightning';
+import { EAvailableNetwork } from '../networks';
+import { showToast } from '../notifications';
+import { updateSlashPayConfig } from '../slashtags';
 import {
 	getAddressTypesToMonitor,
 	getBip39Passphrase,
@@ -13,19 +25,7 @@ import {
 	refreshWallet,
 	setupOnChainWallet,
 } from '../wallet';
-import { createWalletThunk } from '../../store/actions/wallet';
-import { getWalletStore } from '../../store/helpers';
-import { refreshBlocktankInfo } from '../../store/utils/blocktank';
-import { keepLdkSynced, setupLdk } from '../lightning';
-import { setupBlocktank, watchPendingOrders } from '../blocktank';
-import { updateSlashPayConfig } from '../slashtags';
-import { performFullRestoreFromLatestBackup } from '../../store/utils/backup';
-import { promiseTimeout } from '../helpers';
-import { EAvailableNetwork } from '../networks';
-import { TWalletName } from '../../store/types/wallet';
 import { runChecks } from '../wallet/checks';
-import i18n from '../i18n';
-import { showToast } from '../notifications';
 
 /**
  * Creates a new wallet from scratch

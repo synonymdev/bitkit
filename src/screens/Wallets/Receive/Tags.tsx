@@ -1,19 +1,19 @@
 import React, { memo, ReactElement, useCallback, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import { StyleSheet, View } from 'react-native';
 
-import { BottomSheetTextInput } from '../../../styles/components';
-import { Caption13Up } from '../../../styles/text';
-import GradientView from '../../../components/GradientView';
 import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
+import GradientView from '../../../components/GradientView';
 import SafeAreaInset from '../../../components/SafeAreaInset';
-import Button from '../../../components/buttons/Button';
 import Tag from '../../../components/Tag';
+import Button from '../../../components/buttons/Button';
 import { Keyboard } from '../../../hooks/keyboard';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
+import { ReceiveScreenProps } from '../../../navigation/types';
 import { lastUsedTagsSelector } from '../../../store/reselect/metadata';
 import { updateInvoice } from '../../../store/slices/receive';
-import { ReceiveScreenProps } from '../../../navigation/types';
+import { BottomSheetTextInput } from '../../../styles/components';
+import { Caption13Up } from '../../../styles/text';
 
 const Tags = ({ navigation }: ReceiveScreenProps<'Tags'>): ReactElement => {
 	const { t } = useTranslation('wallet');

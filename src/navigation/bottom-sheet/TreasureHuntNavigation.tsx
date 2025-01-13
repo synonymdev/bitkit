@@ -1,3 +1,9 @@
+import { NavigationIndependentTree } from '@react-navigation/native';
+import {
+	NativeStackNavigationOptions,
+	NativeStackNavigationProp,
+	createNativeStackNavigator,
+} from '@react-navigation/native-stack';
 import React, {
 	ReactElement,
 	memo,
@@ -5,26 +11,20 @@ import React, {
 	useEffect,
 	useState,
 } from 'react';
-import { NavigationIndependentTree } from '@react-navigation/native';
-import {
-	createNativeStackNavigator,
-	NativeStackNavigationProp,
-	NativeStackNavigationOptions,
-} from '@react-navigation/native-stack';
 
 import BottomSheetWrapper from '../../components/BottomSheetWrapper';
 import { __E2E__ } from '../../constants/env';
+import { __TREASURE_HUNT_HOST__ } from '../../constants/env';
 import { useSnapPoints } from '../../hooks/bottomSheet';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux';
+import Airdrop from '../../screens/TreasureHunt/Airdrop';
 import Chest from '../../screens/TreasureHunt/Chest';
+import ErrorScreen from '../../screens/TreasureHunt/Error';
 import Loading from '../../screens/TreasureHunt/Loading';
 import Prize from '../../screens/TreasureHunt/Prize';
-import Airdrop from '../../screens/TreasureHunt/Airdrop';
-import ErrorScreen from '../../screens/TreasureHunt/Error';
 import { viewControllerSelector } from '../../store/reselect/ui';
-import { NavigationContainer } from '../../styles/components';
-import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { addTreasureChest } from '../../store/slices/settings';
-import { __TREASURE_HUNT_HOST__ } from '../../constants/env';
+import { NavigationContainer } from '../../styles/components';
 
 export type TreasureHuntNavigationProp =
 	NativeStackNavigationProp<TreasureHuntStackParamList>;

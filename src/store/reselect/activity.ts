@@ -1,8 +1,8 @@
 import { createSelector } from '@reduxjs/toolkit';
 import { RootState } from '..';
+import { TActivity } from '../slices/activity';
 import { IActivityItem } from '../types/activity';
 import { createShallowEqualSelector } from './utils';
-import { TActivity } from '../slices/activity';
 
 export const activitySelector = (state: RootState): TActivity => {
 	return state.activity;

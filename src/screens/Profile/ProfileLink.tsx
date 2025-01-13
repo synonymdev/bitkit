@@ -2,18 +2,18 @@ import React, { ReactElement } from 'react';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 
-import { BodySB, BodyS } from '../../styles/text';
 import BottomSheetNavigationHeader from '../../components/BottomSheetNavigationHeader';
-import Button from '../../components/buttons/Button';
 import LabeledInput from '../../components/LabeledInput';
 import SafeAreaInset from '../../components/SafeAreaInset';
-import { useAppDispatch, useAppSelector } from '../../hooks/redux';
+import Button from '../../components/buttons/Button';
 import { useBottomSheetBackPress } from '../../hooks/bottomSheet';
 import { Keyboard } from '../../hooks/keyboard';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { ProfileLinkScreenProps } from '../../navigation/types';
+import { profileLinkSelector } from '../../store/reselect/ui';
 import { addLink } from '../../store/slices/slashtags';
 import { closeSheet, updateProfileLink } from '../../store/slices/ui';
-import { profileLinkSelector } from '../../store/reselect/ui';
+import { BodyS, BodySB } from '../../styles/text';
 import { suggestions } from './ProfileLinkSuggestions';
 
 const ProfileLink = ({

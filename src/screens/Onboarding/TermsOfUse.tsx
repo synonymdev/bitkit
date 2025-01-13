@@ -1,16 +1,16 @@
 import React, { ReactElement, useState } from 'react';
-import { View, StyleSheet, ScrollView } from 'react-native';
 import { Trans, useTranslation } from 'react-i18next';
+import { ScrollView, StyleSheet, View } from 'react-native';
 
-import { Display, BodyMSB, BodySSB } from '../../styles/text';
+import TOS from '../../assets/tos';
 import SafeAreaInset from '../../components/SafeAreaInset';
+import VerticalShadow from '../../components/VerticalShadow';
 import Button from '../../components/buttons/Button';
 import CheckButton from '../../components/buttons/CheckButton';
-import VerticalShadow from '../../components/VerticalShadow';
-import { openURL } from '../../utils/helpers';
-import { wipeApp } from '../../store/utils/settings';
-import TOS from '../../assets/tos';
 import type { OnboardingStackScreenProps } from '../../navigation/types';
+import { wipeApp } from '../../store/utils/settings';
+import { BodyMSB, BodySSB, Display } from '../../styles/text';
+import { openURL } from '../../utils/helpers';
 
 const TermsOfUse = ({
 	navigation,

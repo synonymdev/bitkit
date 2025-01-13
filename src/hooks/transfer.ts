@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 
-import { useAppSelector } from './redux';
-import { estimateOrderFee } from '../utils/blocktank';
-import { fiatToBitcoinUnit } from '../utils/conversion';
 import { blocktankInfoSelector } from '../store/reselect/blocktank';
 import { blocktankChannelsSizeSelector } from '../store/reselect/lightning';
+import { estimateOrderFee } from '../utils/blocktank';
+import { fiatToBitcoinUnit } from '../utils/conversion';
+import { useAppSelector } from './redux';
 
 type TTransferValues = {
 	maxClientBalance: number;

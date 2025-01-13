@@ -1,11 +1,10 @@
 import React, { ReactElement, memo, useMemo, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import { StyleSheet, View } from 'react-native';
 
-import SettingsView from '../SettingsView';
-import { Caption13Up, BodyM } from '../../../styles/text';
-import { ScrollView, View as ThemedView } from '../../../styles/components';
-import { i18nTime } from '../../../utils/i18n';
+import { EItemType, IListData } from '../../../components/List';
+import SafeAreaInset from '../../../components/SafeAreaInset';
+import Button from '../../../components/buttons/Button';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 import {
 	onChainFeesSelector,
@@ -16,11 +15,12 @@ import {
 	updateOverrideFees,
 } from '../../../store/slices/fees';
 import { refreshOnchainFeeEstimates } from '../../../store/utils/fees';
-import { EItemType, IListData } from '../../../components/List';
-import Button from '../../../components/buttons/Button';
-import SafeAreaInset from '../../../components/SafeAreaInset';
+import { ScrollView, View as ThemedView } from '../../../styles/components';
+import { BodyM, Caption13Up } from '../../../styles/text';
 import { capitalize } from '../../../utils/helpers';
+import { i18nTime } from '../../../utils/i18n';
 import { refreshLdk } from '../../../utils/lightning';
+import SettingsView from '../SettingsView';
 
 const order = ['minimum', 'slow', 'normal', 'fast'];
 

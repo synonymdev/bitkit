@@ -1,5 +1,5 @@
-import { IBlocktank } from '../types/blocktank';
 import { IBtInfo } from '@synonymdev/blocktank-lsp-http-client';
+import { IBlocktank } from '../types/blocktank';
 
 export const defaultBlocktankInfoShape: IBtInfo = {
 	version: 2,

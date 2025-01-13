@@ -1,53 +1,53 @@
-import React, { ReactElement } from 'react';
 import {
-	createNativeStackNavigator,
 	NativeStackNavigationOptions,
 	NativeStackNavigationProp,
+	createNativeStackNavigator,
 } from '@react-navigation/native-stack';
+import React, { ReactElement } from 'react';
 
-import MainSettings from '../../screens/Settings';
-import CurrenciesSettings from '../../screens/Settings/Currencies';
-import ElectrumConfig from '../../screens/Settings/ElectrumConfig';
-import GapLimit from '../../screens/Settings/GapLimit';
-import RGSServer from '../../screens/Settings/RGSServer';
-import CoinSelectPreference from '../../screens/Settings/CoinSelectPreference';
-import PaymentPreference from '../../screens/Settings/PaymentPreference';
-import AddressTypePreference from '../../screens/Settings/AddressTypePreference';
-import DevSettings from '../../screens/Settings/DevSettings';
-import LdkDebug from '../../screens/Settings/DevSettings/LdkDebug';
-import AddressViewer from '../../screens/Settings/AddressViewer';
-import LightningNodeInfo from '../../screens/Settings/Lightning/LightningNodeInfo';
-import UnitSettings from '../../screens/Settings/Unit';
-import TransactionSpeedSettings from '../../screens/Settings/TransactionSpeed';
-import CustomFee from '../../screens/Settings/TransactionSpeed/CustomFee';
-import WidgetSettings from '../../screens/Settings/Widgets';
-import QuickpayIntro from '../../screens/Settings/Quickpay/QuickpayIntro';
-import QuickpaySettings from '../../screens/Settings/Quickpay/QuickpaySettings';
 import AuthCheck from '../../components/AuthCheck';
-import GeneralSettings from '../../screens/Settings/General';
-import SecuritySettings from '../../screens/Settings/Security';
-import ChangePin from '../../screens/Settings/PIN/ChangePin';
-import ChangePin2 from '../../screens/Settings/PIN/ChangePin2';
-import PinChanged from '../../screens/Settings/PIN/PinChanged';
-import DisablePin from '../../screens/Settings/PIN/DisablePin';
-import BackupSettings from '../../screens/Settings/BackupSettings';
-import AdvancedSettings from '../../screens/Settings/Advanced';
+import { __E2E__ } from '../../constants/env';
+import MainSettings from '../../screens/Settings';
 import AboutSettings from '../../screens/Settings/About';
-import SupportSettings from '../../screens/Settings/SupportSettings';
-import ReportIssue from '../../screens/Settings/ReportIssue';
-import FormSuccess from '../../screens/Settings/ReportIssue/FormSuccess';
-import FormError from '../../screens/Settings/ReportIssue/FormError';
-import BitcoinNetworkSelection from '../../screens/Settings/Bitcoin/BitcoinNetworkSelection';
-import Channels from '../../screens/Settings/Lightning/Channels';
-import ChannelDetails from '../../screens/Settings/Lightning/ChannelDetails';
-import CloseConnection from '../../screens/Settings/Lightning/CloseConnection';
+import AddressTypePreference from '../../screens/Settings/AddressTypePreference';
+import AddressViewer from '../../screens/Settings/AddressViewer';
+import AdvancedSettings from '../../screens/Settings/Advanced';
+import AppStatus from '../../screens/Settings/AppStatus';
 import ExportToPhone from '../../screens/Settings/Backup/ExportToPhone';
 import ResetAndRestore from '../../screens/Settings/Backup/ResetAndRestore';
-import TagsSettings from '../../screens/Settings/Tags';
+import BackupSettings from '../../screens/Settings/BackupSettings';
+import BitcoinNetworkSelection from '../../screens/Settings/Bitcoin/BitcoinNetworkSelection';
+import CoinSelectPreference from '../../screens/Settings/CoinSelectPreference';
+import CurrenciesSettings from '../../screens/Settings/Currencies';
+import DevSettings from '../../screens/Settings/DevSettings';
+import LdkDebug from '../../screens/Settings/DevSettings/LdkDebug';
+import ElectrumConfig from '../../screens/Settings/ElectrumConfig';
 import FeeSettings from '../../screens/Settings/Fee';
+import GapLimit from '../../screens/Settings/GapLimit';
+import GeneralSettings from '../../screens/Settings/General';
+import ChannelDetails from '../../screens/Settings/Lightning/ChannelDetails';
+import Channels from '../../screens/Settings/Lightning/Channels';
+import CloseConnection from '../../screens/Settings/Lightning/CloseConnection';
+import LightningNodeInfo from '../../screens/Settings/Lightning/LightningNodeInfo';
+import ChangePin from '../../screens/Settings/PIN/ChangePin';
+import ChangePin2 from '../../screens/Settings/PIN/ChangePin2';
+import DisablePin from '../../screens/Settings/PIN/DisablePin';
+import PinChanged from '../../screens/Settings/PIN/PinChanged';
+import PaymentPreference from '../../screens/Settings/PaymentPreference';
+import QuickpayIntro from '../../screens/Settings/Quickpay/QuickpayIntro';
+import QuickpaySettings from '../../screens/Settings/Quickpay/QuickpaySettings';
+import RGSServer from '../../screens/Settings/RGSServer';
+import ReportIssue from '../../screens/Settings/ReportIssue';
+import FormError from '../../screens/Settings/ReportIssue/FormError';
+import FormSuccess from '../../screens/Settings/ReportIssue/FormSuccess';
+import SecuritySettings from '../../screens/Settings/Security';
+import SupportSettings from '../../screens/Settings/SupportSettings';
+import TagsSettings from '../../screens/Settings/Tags';
+import TransactionSpeedSettings from '../../screens/Settings/TransactionSpeed';
+import CustomFee from '../../screens/Settings/TransactionSpeed/CustomFee';
+import UnitSettings from '../../screens/Settings/Unit';
 import WebRelay from '../../screens/Settings/WebRelay';
-import { __E2E__ } from '../../constants/env';
-import AppStatus from '../../screens/Settings/AppStatus';
+import WidgetSettings from '../../screens/Settings/Widgets';
 import { TChannel } from '../../store/types/lightning';
 
 export type SettingsNavigationProp =

@@ -1,24 +1,24 @@
 import React, { ReactElement, memo, useMemo } from 'react';
-import { Image, StyleSheet, View } from 'react-native';
 import { Trans, useTranslation } from 'react-i18next';
+import { Image, StyleSheet, View } from 'react-native';
 
-import { CaptionB, Display } from '../../styles/text';
-import { BitcoinCircleIcon, TransferIcon } from '../../styles/icons';
-import { View as ThemedView } from '../../styles/components';
+import ActivityHeader from '../../components/ActivityHeader';
+import Money from '../../components/Money';
 import NavigationHeader from '../../components/NavigationHeader';
 import SafeAreaInset from '../../components/SafeAreaInset';
-import ActivityHeader from '../../components/ActivityHeader';
-import Button from '../../components/buttons/Button';
 import WalletOnboarding from '../../components/WalletOnboarding';
-import Money from '../../components/Money';
-import ActivityList from './ActivityList';
-import { useBalance } from '../../hooks/wallet';
+import Button from '../../components/buttons/Button';
 import { useAppSelector } from '../../hooks/redux';
-import { EActivityType } from '../../store/types/activity';
-import { isGeoBlockedSelector } from '../../store/reselect/user';
-import { spendingIntroSeenSelector } from '../../store/reselect/settings';
-import { activityItemsSelector } from '../../store/reselect/activity';
+import { useBalance } from '../../hooks/wallet';
 import { WalletScreenProps } from '../../navigation/types';
+import { activityItemsSelector } from '../../store/reselect/activity';
+import { spendingIntroSeenSelector } from '../../store/reselect/settings';
+import { isGeoBlockedSelector } from '../../store/reselect/user';
+import { EActivityType } from '../../store/types/activity';
+import { View as ThemedView } from '../../styles/components';
+import { BitcoinCircleIcon, TransferIcon } from '../../styles/icons';
+import { CaptionB, Display } from '../../styles/text';
+import ActivityList from './ActivityList';
 
 const imageSrc = require('../../assets/illustrations/piggybank.png');
 

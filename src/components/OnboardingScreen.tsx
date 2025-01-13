@@ -1,11 +1,11 @@
 import React, { ReactElement } from 'react';
-import { View, Image, ImageSourcePropType, StyleSheet } from 'react-native';
+import { Image, ImageSourcePropType, StyleSheet, View } from 'react-native';
 
-import { Display, BodyM, Title } from '../styles/text';
 import { View as ThemedView } from '../styles/components';
+import { BodyM, Display, Title } from '../styles/text';
+import NavigationHeader from './NavigationHeader';
 import SafeAreaInset from './SafeAreaInset';
 import Button from './buttons/Button';
-import NavigationHeader from './NavigationHeader';
 
 const OnboardingScreen = ({
 	navTitle,

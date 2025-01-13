@@ -1,20 +1,20 @@
 import cloneDeep from 'lodash/cloneDeep';
 
 import store, { RootState } from '../store';
-import { IWalletStore } from './types/wallet';
-import { TSettings } from './slices/settings';
-import { TMetadataState } from './types/metadata';
 import { TActivity } from './slices/activity';
-import { TLightningState } from './types/lightning';
-import { IBlocktank } from './types/blocktank';
 import { TFeesState } from './slices/fees';
+import { TSettings } from './slices/settings';
+import { TUser } from './slices/user';
+import { TWidgetsState } from './slices/widgets';
+import { TBackupState } from './types/backup';
+import { IBlocktank } from './types/blocktank';
+import { IChecksShape } from './types/checks';
+import { TLightningState } from './types/lightning';
+import { TMetadataState } from './types/metadata';
 import { TSlashtagsState } from './types/slashtags';
 import { TTodosState } from './types/todos';
 import { TUiState } from './types/ui';
-import { TUser } from './slices/user';
-import { TWidgetsState } from './slices/widgets';
-import { IChecksShape } from './types/checks';
-import { TBackupState } from './types/backup';
+import { IWalletStore } from './types/wallet';
 
 /*
 Used to retrieve the store outside of a component.

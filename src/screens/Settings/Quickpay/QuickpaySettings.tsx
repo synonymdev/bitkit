@@ -1,19 +1,19 @@
 import React, { memo, ReactElement, useMemo } from 'react';
-import { Image, StyleSheet } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import { Image, StyleSheet } from 'react-native';
 
-import { BodyM, BodyS, Caption13Up } from '../../../styles/text';
-import { View as ThemedView, View } from '../../../styles/components';
+import NavigationHeader from '../../../components/NavigationHeader';
+import SafeAreaInset from '../../../components/SafeAreaInset';
 import Slider from '../../../components/Slider';
 import SwitchRow from '../../../components/SwitchRow';
-import SafeAreaInset from '../../../components/SafeAreaInset';
-import NavigationHeader from '../../../components/NavigationHeader';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
-import { updateSettings } from '../../../store/slices/settings';
 import {
 	enableQuickpaySelector,
 	quickpayAmountSelector,
 } from '../../../store/reselect/settings';
+import { updateSettings } from '../../../store/slices/settings';
+import { View as ThemedView, View } from '../../../styles/components';
+import { BodyM, BodyS, Caption13Up } from '../../../styles/text';
 
 const imageSrc = require('../../../assets/illustrations/fast-forward.png');
 

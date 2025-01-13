@@ -1,15 +1,15 @@
 import React, { ReactElement } from 'react';
-import { View, StyleSheet, Image, ImageBackground } from 'react-native';
-import { FadeIn } from 'react-native-reanimated';
 import { Trans, useTranslation } from 'react-i18next';
+import { Image, ImageBackground, StyleSheet, View } from 'react-native';
+import { FadeIn } from 'react-native-reanimated';
 
-import { AnimatedView } from '../../styles/components';
-import { Display, BodyM } from '../../styles/text';
+import DetectSwipe from '../../components/DetectSwipe';
 import SafeAreaInset from '../../components/SafeAreaInset';
 import Button from '../../components/buttons/Button';
-import DetectSwipe from '../../components/DetectSwipe';
-import { setGeoBlock } from '../../store/utils/user';
 import type { OnboardingStackScreenProps } from '../../navigation/types';
+import { setGeoBlock } from '../../store/utils/user';
+import { AnimatedView } from '../../styles/components';
+import { BodyM, Display } from '../../styles/text';
 
 const backgroundSrc = require('../../assets/illustrations/figures.png');
 const logoSrc = require('../../assets/logo.png');

@@ -1,19 +1,29 @@
 import React, { memo, ReactElement, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import RNFS, { unlink, writeFile } from 'react-native-fs';
 import Share from 'react-native-share';
-import { useTranslation } from 'react-i18next';
 
+import Dialog from '../../../components/Dialog';
+import { EItemType, IListData } from '../../../components/List';
+import { __E2E__ } from '../../../constants/env';
+import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
+import type { SettingsScreenProps } from '../../../navigation/types';
 import actions from '../../../store/actions/actions';
-import {
-	updateWallet,
-	resetSelectedWallet,
-} from '../../../store/slices/wallet';
 import {
 	clearUtxos,
 	injectFakeTransaction,
 } from '../../../store/actions/wallet';
-import { resetUserState } from '../../../store/slices/user';
+import { getStore, getWalletStore } from '../../../store/helpers';
+import { storage } from '../../../store/mmkv-storage';
+import { warningsSelector } from '../../../store/reselect/checks';
+import { settingsSelector } from '../../../store/reselect/settings';
+import {
+	addressTypeSelector,
+	selectedNetworkSelector,
+	selectedWalletSelector,
+} from '../../../store/reselect/wallet';
 import { resetActivityState } from '../../../store/slices/activity';
+import { resetBackupState } from '../../../store/slices/backup';
 import { resetBlocktankState } from '../../../store/slices/blocktank';
 import { resetFeesState } from '../../../store/slices/fees';
 import { resetLightningState } from '../../../store/slices/lightning';
@@ -23,30 +33,20 @@ import {
 	updateSettings,
 } from '../../../store/slices/settings';
 import { resetSlashtagsState } from '../../../store/slices/slashtags';
-import { resetWidgetsState } from '../../../store/slices/widgets';
 import { resetTodosState } from '../../../store/slices/todos';
-import { wipeApp } from '../../../store/utils/settings';
-import { getStore, getWalletStore } from '../../../store/helpers';
-import { warningsSelector } from '../../../store/reselect/checks';
+import { resetUserState } from '../../../store/slices/user';
 import {
-	addressTypeSelector,
-	selectedNetworkSelector,
-	selectedWalletSelector,
-} from '../../../store/reselect/wallet';
-import { settingsSelector } from '../../../store/reselect/settings';
-import SettingsView from './../SettingsView';
-import { EItemType, IListData } from '../../../components/List';
-import type { SettingsScreenProps } from '../../../navigation/types';
-import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
-import { refreshWallet } from '../../../utils/wallet';
+	resetSelectedWallet,
+	updateWallet,
+} from '../../../store/slices/wallet';
+import { resetWidgetsState } from '../../../store/slices/widgets';
+import { wipeApp } from '../../../store/utils/settings';
 import { zipLogs } from '../../../utils/lightning/logs';
-import { runChecks } from '../../../utils/wallet/checks';
 import { showToast } from '../../../utils/notifications';
+import { refreshWallet } from '../../../utils/wallet';
+import { runChecks } from '../../../utils/wallet/checks';
 import { getFakeTransaction } from '../../../utils/wallet/testing';
-import Dialog from '../../../components/Dialog';
-import { resetBackupState } from '../../../store/slices/backup';
-import { storage } from '../../../store/mmkv-storage';
-import { __E2E__ } from '../../../constants/env';
+import SettingsView from './../SettingsView';
 
 const DevSettings = ({
 	navigation,

@@ -1,8 +1,8 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { EAvailableNetwork } from '../../utils/networks';
 import { getNetworkContent } from '../shapes/wallet';
-import { TWalletName, IWallets } from '../types/wallet';
 import { IChecksContent, IChecksShape, TStorageWarning } from '../types/checks';
+import { IWallets, TWalletName } from '../types/wallet';
 import { createWallet } from './wallet';
 
 type TPayload = {

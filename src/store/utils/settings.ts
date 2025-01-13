@@ -1,17 +1,17 @@
-import { err, ok, Result } from '@synonymdev/result';
+import { Result, err, ok } from '@synonymdev/result';
 import RNRestart from 'react-native-restart';
 
+import { __E2E__ } from '../../constants/env';
+import { sleep } from '../../utils/helpers';
+import i18n from '../../utils/i18n';
+import { wipeKeychain } from '../../utils/keychain';
+import { wipeLdkStorage } from '../../utils/lightning';
+import { showToast } from '../../utils/notifications';
+import { removePin } from '../../utils/settings';
+import { getOnChainWallet, getSelectedWallet } from '../../utils/wallet';
 import actions from '../actions/actions';
 import { dispatch } from '../helpers';
-import i18n from '../../utils/i18n';
-import { sleep } from '../../utils/helpers';
-import { removePin } from '../../utils/settings';
-import { wipeKeychain } from '../../utils/keychain';
-import { showToast } from '../../utils/notifications';
-import { wipeLdkStorage } from '../../utils/lightning';
-import { getOnChainWallet, getSelectedWallet } from '../../utils/wallet';
 import { TWalletName } from '../types/wallet';
-import { __E2E__ } from '../../constants/env';
 
 /**
  * This method will wipe all data for the specified wallet.

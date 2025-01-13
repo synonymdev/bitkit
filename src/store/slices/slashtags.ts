@@ -1,11 +1,11 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { parse } from '@synonymdev/slashtags-url';
 import {
-	TSlashtagsState,
 	BasicProfile,
 	Link,
 	LocalLink,
 	TOnboardingProfileStep,
+	TSlashtagsState,
 } from '../types/slashtags';
 
 export const initialSlashtagsState: TSlashtagsState = {

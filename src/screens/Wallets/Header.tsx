@@ -1,16 +1,16 @@
-import React, { memo, ReactElement } from 'react';
-import { StyleSheet, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import React, { memo, ReactElement } from 'react';
 import { useTranslation } from 'react-i18next';
+import { StyleSheet, View } from 'react-native';
 
-import { Title } from '../../styles/text';
-import { Pressable } from '../../styles/components';
-import { ProfileIcon, SettingsIcon } from '../../styles/icons';
 import ProfileImage from '../../components/ProfileImage';
 import VerticalShadow from '../../components/VerticalShadow';
-import { truncate } from '../../utils/helpers';
 import { useProfile, useSlashtags } from '../../hooks/slashtags';
 import { RootNavigationProp } from '../../navigation/types';
+import { Pressable } from '../../styles/components';
+import { ProfileIcon, SettingsIcon } from '../../styles/icons';
+import { Title } from '../../styles/text';
+import { truncate } from '../../utils/helpers';
 
 const Header = (): ReactElement => {
 	const navigation = useNavigation<RootNavigationProp>();

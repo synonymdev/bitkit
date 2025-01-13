@@ -1,3 +1,4 @@
+import Clipboard from '@react-native-clipboard/clipboard';
 import React, {
 	memo,
 	MutableRefObject,
@@ -7,38 +8,37 @@ import React, {
 	useRef,
 	useState,
 } from 'react';
-import Clipboard from '@react-native-clipboard/clipboard';
-import { FadeIn, FadeOut } from 'react-native-reanimated';
-import { View, StyleSheet, useWindowDimensions } from 'react-native';
-import { useAppSelector } from '../../hooks/redux';
-import QRCode from 'react-native-qrcode-svg';
-import Share from 'react-native-share';
 import { useTranslation } from 'react-i18next';
+import { StyleSheet, View, useWindowDimensions } from 'react-native';
+import QRCode from 'react-native-qrcode-svg';
+import { FadeIn, FadeOut } from 'react-native-reanimated';
+import Share from 'react-native-share';
+import { useAppSelector } from '../../hooks/redux';
 
-import {
-	ScrollView,
-	AnimatedView,
-	TouchableOpacity,
-	View as ThemedView,
-} from '../../styles/components';
-import { BodyS } from '../../styles/text';
-import { CopyIcon, PencilIcon, ShareIcon, UsersIcon } from '../../styles/icons';
-import { BasicProfile } from '../../store/types/slashtags';
-import { onboardingProfileStepSelector } from '../../store/reselect/slashtags';
-import { useProfile, useSlashtags } from '../../hooks/slashtags';
-import { truncate } from '../../utils/helpers';
-import NavigationHeader from '../../components/NavigationHeader';
-import SafeAreaInset from '../../components/SafeAreaInset';
 import DetectSwipe from '../../components/DetectSwipe';
-import ProfileCard from '../../components/ProfileCard';
-import Tooltip from '../../components/Tooltip';
 import Divider from '../../components/Divider';
-import IconButton from '../../components/buttons/IconButton';
+import NavigationHeader from '../../components/NavigationHeader';
+import ProfileCard from '../../components/ProfileCard';
 import ProfileImage from '../../components/ProfileImage';
 import ProfileLinks from '../../components/ProfileLinks';
-import ProfileEdit from './ProfileEdit';
-import { ProfileIntro, OfflinePayments } from './ProfileOnboarding';
+import SafeAreaInset from '../../components/SafeAreaInset';
+import Tooltip from '../../components/Tooltip';
+import IconButton from '../../components/buttons/IconButton';
+import { useProfile, useSlashtags } from '../../hooks/slashtags';
 import type { RootStackScreenProps } from '../../navigation/types';
+import { onboardingProfileStepSelector } from '../../store/reselect/slashtags';
+import { BasicProfile } from '../../store/types/slashtags';
+import {
+	AnimatedView,
+	ScrollView,
+	View as ThemedView,
+	TouchableOpacity,
+} from '../../styles/components';
+import { CopyIcon, PencilIcon, ShareIcon, UsersIcon } from '../../styles/icons';
+import { BodyS } from '../../styles/text';
+import { truncate } from '../../utils/helpers';
+import ProfileEdit from './ProfileEdit';
+import { OfflinePayments, ProfileIntro } from './ProfileOnboarding';
 
 const Profile = memo((props: RootStackScreenProps<'Profile'>): ReactElement => {
 	const onboardingProfileStep = useAppSelector(onboardingProfileStepSelector);

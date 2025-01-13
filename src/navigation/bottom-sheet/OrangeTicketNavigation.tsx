@@ -1,3 +1,10 @@
+import { NavigationIndependentTree } from '@react-navigation/native';
+import {
+	NativeStackNavigationOptions,
+	NativeStackNavigationProp,
+	createNativeStackNavigator,
+} from '@react-navigation/native-stack';
+import { ldk } from '@synonymdev/react-native-ldk';
 import React, {
 	memo,
 	ReactElement,
@@ -5,29 +12,22 @@ import React, {
 	useEffect,
 	useState,
 } from 'react';
-import { ldk } from '@synonymdev/react-native-ldk';
-import { NavigationIndependentTree } from '@react-navigation/native';
-import {
-	createNativeStackNavigator,
-	NativeStackNavigationProp,
-	NativeStackNavigationOptions,
-} from '@react-navigation/native-stack';
 
-import { NavigationContainer } from '../../styles/components';
+import ErrorScreen from '../../screens/OrangeTicket/Error';
 import Prize from '../../screens/OrangeTicket/Prize';
 import UsedCard from '../../screens/OrangeTicket/UsedCard';
-import ErrorScreen from '../../screens/OrangeTicket/Error';
+import { NavigationContainer } from '../../styles/components';
 
 import BottomSheetWrapper from '../../components/BottomSheetWrapper';
-import { useAppSelector } from '../../hooks/redux';
+import { __TREASURE_HUNT_HOST__ } from '../../constants/env';
 import {
 	useBottomSheetBackPress,
 	useSnapPoints,
 } from '../../hooks/bottomSheet';
-import { showToast } from '../../utils/notifications';
-import { getNodeId, waitForLdk } from '../../utils/lightning';
+import { useAppSelector } from '../../hooks/redux';
 import { viewControllerSelector } from '../../store/reselect/ui';
-import { __TREASURE_HUNT_HOST__ } from '../../constants/env';
+import { getNodeId, waitForLdk } from '../../utils/lightning';
+import { showToast } from '../../utils/notifications';
 
 export type OrangeTicketNavigationProp =
 	NativeStackNavigationProp<OrangeTicketStackParamList>;

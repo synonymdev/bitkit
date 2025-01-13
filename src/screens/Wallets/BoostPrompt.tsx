@@ -1,22 +1,23 @@
-import React, { memo, ReactElement, useEffect, useMemo, useState } from 'react';
-import { ActivityIndicator, StyleSheet, View } from 'react-native';
-import { useTranslation } from 'react-i18next';
 import { EBoostType, validateTransaction } from 'beignet';
+import React, { memo, ReactElement, useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { ActivityIndicator, StyleSheet, View } from 'react-native';
 
 import AdjustValue from '../../components/AdjustValue';
 import BottomSheetNavigationHeader from '../../components/BottomSheetNavigationHeader';
 import BottomSheetWrapper from '../../components/BottomSheetWrapper';
-import Button from '../../components/buttons/Button';
 import ImageText from '../../components/ImageText';
 import Money from '../../components/Money';
 import SafeAreaInset from '../../components/SafeAreaInset';
 import SwipeToConfirm from '../../components/SwipeToConfirm';
+import Button from '../../components/buttons/Button';
 import {
 	useBottomSheetBackPress,
 	useSnapPoints,
 } from '../../hooks/bottomSheet';
 import { useFeeText } from '../../hooks/fees';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
+import { rootNavigation } from '../../navigation/root/RootNavigator';
 import { resetSendTransaction } from '../../store/actions/wallet';
 import { viewControllerSelector } from '../../store/reselect/ui';
 import {
@@ -38,7 +39,6 @@ import {
 	setupBoost,
 	updateFee,
 } from '../../utils/wallet/transactions';
-import { rootNavigation } from '../../navigation/root/RootNavigator';
 
 const BoostForm = ({
 	activityItem,

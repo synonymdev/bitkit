@@ -1,12 +1,12 @@
 import {
 	TBackupStateUpdate,
-	TChannel as TLdkChannel,
 	TClaimableBalance,
 	TCreatePaymentReq,
 	TInvoice,
+	TChannel as TLdkChannel,
 } from '@synonymdev/react-native-ldk';
-import { IWalletItem, TWalletName } from './wallet';
 import { EAvailableNetwork } from '../../utils/networks';
+import { IWalletItem, TWalletName } from './wallet';
 
 export type IInvoice = {
 	[key: string]: TInvoice;

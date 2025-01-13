@@ -1,15 +1,15 @@
-import React, { memo, ReactElement } from 'react';
-import { StyleSheet, View } from 'react-native';
 import { BottomSheetScrollView } from '@gorhom/bottom-sheet';
+import React, { memo, ReactElement } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
+import { StyleSheet, View } from 'react-native';
 
-import { View as ThemedView } from '../../../styles/components';
-import { BodyM, BodyMSB, BodyS } from '../../../styles/text';
 import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
-import SafeAreaInset from '../../../components/SafeAreaInset';
 import GradientView from '../../../components/GradientView';
+import SafeAreaInset from '../../../components/SafeAreaInset';
 import Button from '../../../components/buttons/Button';
 import type { BackupScreenProps } from '../../../navigation/types';
+import { View as ThemedView } from '../../../styles/components';
+import { BodyM, BodyMSB, BodyS } from '../../../styles/text';
 
 const ShowPassphrase = ({
 	navigation,

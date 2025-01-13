@@ -2,16 +2,16 @@ import React, { memo, ReactElement, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { EItemType, IListData } from '../../../components/List';
-import SettingsView from '../SettingsView';
-import { updateSettings } from '../../../store/slices/settings';
-import { UnitBitcoinIcon, UnitFiatIcon } from '../../../styles/icons';
+import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 import {
 	denominationSelector,
-	unitSelector,
 	selectedCurrencySelector,
+	unitSelector,
 } from '../../../store/reselect/settings';
+import { updateSettings } from '../../../store/slices/settings';
 import { EDenomination, EUnit } from '../../../store/types/wallet';
-import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
+import { UnitBitcoinIcon, UnitFiatIcon } from '../../../styles/icons';
+import SettingsView from '../SettingsView';
 
 const UnitSettings = (): ReactElement => {
 	const { t } = useTranslation('settings');

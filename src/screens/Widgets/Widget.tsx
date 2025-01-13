@@ -1,36 +1,36 @@
-import React, { ReactElement } from 'react';
-import { View, StyleSheet } from 'react-native';
-import { useTranslation } from 'react-i18next';
 import isEqual from 'lodash/isEqual';
+import React, { ReactElement } from 'react';
+import { useTranslation } from 'react-i18next';
+import { StyleSheet, View } from 'react-native';
 
+import BlocksWidget from '../../components/BlocksWidget';
+import FactsWidget from '../../components/FactsWidget';
+import FeedWidget from '../../components/FeedWidget';
+import HeadlinesWidget from '../../components/HeadlinesWidget';
+import HourglassSpinner from '../../components/HourglassSpinner';
+import LuganoFeedWidget from '../../components/LuganoFeedWidget';
+import NavigationHeader from '../../components/NavigationHeader';
+import PriceWidget from '../../components/PriceWidget';
+import SafeAreaInset from '../../components/SafeAreaInset';
+import SlashtagURL from '../../components/SlashtagURL';
+import Spinner from '../../components/Spinner';
+import SvgImage from '../../components/SvgImage';
+import Button from '../../components/buttons/Button';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux';
+import { useSlashfeed } from '../../hooks/widgets';
+import type { RootStackScreenProps } from '../../navigation/types';
+import { widgetSelector } from '../../store/reselect/widgets';
+import { deleteWidget, setFeedWidget } from '../../store/slices/widgets';
+import { TFeedWidget } from '../../store/types/widgets';
 import {
 	ScrollView,
 	View as ThemedView,
 	TouchableOpacity,
 } from '../../styles/components';
-import { Caption13Up, Headline, BodyM } from '../../styles/text';
 import { ChevronRight, QuestionMarkIcon } from '../../styles/icons';
-import { widgetSelector } from '../../store/reselect/widgets';
-import { deleteWidget, setFeedWidget } from '../../store/slices/widgets';
-import { TFeedWidget } from '../../store/types/widgets';
+import { BodyM, Caption13Up, Headline } from '../../styles/text';
 import { SUPPORTED_FEED_TYPES } from '../../utils/widgets';
-import { useAppDispatch, useAppSelector } from '../../hooks/redux';
-import { useSlashfeed } from '../../hooks/widgets';
 import { getDefaultSettings } from './WidgetEdit';
-import Button from '../../components/buttons/Button';
-import SvgImage from '../../components/SvgImage';
-import SafeAreaInset from '../../components/SafeAreaInset';
-import NavigationHeader from '../../components/NavigationHeader';
-import HourglassSpinner from '../../components/HourglassSpinner';
-import SlashtagURL from '../../components/SlashtagURL';
-import PriceWidget from '../../components/PriceWidget';
-import HeadlinesWidget from '../../components/HeadlinesWidget';
-import BlocksWidget from '../../components/BlocksWidget';
-import FeedWidget from '../../components/FeedWidget';
-import FactsWidget from '../../components/FactsWidget';
-import LuganoFeedWidget from '../../components/LuganoFeedWidget';
-import Spinner from '../../components/Spinner';
-import type { RootStackScreenProps } from '../../navigation/types';
 
 const Widget = ({
 	navigation,

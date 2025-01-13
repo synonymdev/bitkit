@@ -1,5 +1,5 @@
 import React, { ReactElement, memo, useEffect, useState } from 'react';
-import { View, StyleProp, StyleSheet, ViewStyle } from 'react-native';
+import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import Animated, {
 	cancelAnimation,
 	Easing,

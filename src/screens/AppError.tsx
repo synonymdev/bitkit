@@ -1,12 +1,12 @@
 import React, { ErrorInfo, ReactElement } from 'react';
 import {
-	View,
-	Text,
-	StyleSheet,
-	StatusBar,
-	TouchableOpacity,
 	Image,
 	Platform,
+	StatusBar,
+	StyleSheet,
+	Text,
+	TouchableOpacity,
+	View,
 } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 

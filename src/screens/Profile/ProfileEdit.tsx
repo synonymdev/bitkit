@@ -6,36 +6,36 @@ import React, {
 	memo,
 	ReactElement,
 } from 'react';
-import { View, StyleSheet } from 'react-native';
-import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { useTranslation } from 'react-i18next';
+import { StyleSheet, View } from 'react-native';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 
-import { ScrollView, View as ThemedView } from '../../styles/components';
-import { BodyS } from '../../styles/text';
-import { PlusIcon } from '../../styles/icons';
 import Dialog from '../../components/Dialog';
-import NavigationHeader from '../../components/NavigationHeader';
+import Divider from '../../components/Divider';
 import KeyboardAvoidingView from '../../components/KeyboardAvoidingView';
-import Button from '../../components/buttons/Button';
-import SafeAreaInset from '../../components/SafeAreaInset';
+import NavigationHeader from '../../components/NavigationHeader';
 import ProfileCard from '../../components/ProfileCard';
 import ProfileLinks from '../../components/ProfileLinks';
-import Divider from '../../components/Divider';
+import SafeAreaInset from '../../components/SafeAreaInset';
+import Button from '../../components/buttons/Button';
 import { Keyboard } from '../../hooks/keyboard';
 import { useProfile, useSlashtags } from '../../hooks/slashtags';
+import ProfileLinkNavigation from '../../navigation/bottom-sheet/ProfileLinkNavigation';
+import type { RootStackScreenProps } from '../../navigation/types';
+import { slashtagsLinksSelector } from '../../store/reselect/slashtags';
+import { onboardingProfileStepSelector } from '../../store/reselect/slashtags';
 import {
 	setLinks,
 	setOnboardingProfileStep,
 } from '../../store/slices/slashtags';
-import { showBottomSheet } from '../../store/utils/ui';
 import { BasicProfile } from '../../store/types/slashtags';
-import { slashtagsLinksSelector } from '../../store/reselect/slashtags';
-import { onboardingProfileStepSelector } from '../../store/reselect/slashtags';
+import { showBottomSheet } from '../../store/utils/ui';
+import { ScrollView, View as ThemedView } from '../../styles/components';
+import { PlusIcon } from '../../styles/icons';
+import { BodyS } from '../../styles/text';
 import { arraysMatch } from '../../utils/helpers';
-import { deleteProfile, saveProfile } from '../../utils/slashtags';
 import { showToast } from '../../utils/notifications';
-import ProfileLinkNavigation from '../../navigation/bottom-sheet/ProfileLinkNavigation';
-import type { RootStackScreenProps } from '../../navigation/types';
+import { deleteProfile, saveProfile } from '../../utils/slashtags';
 
 const ProfileEdit = ({
 	navigation,

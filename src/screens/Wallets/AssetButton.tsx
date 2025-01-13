@@ -1,14 +1,14 @@
 import React, { memo, ReactElement } from 'react';
-import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 
-import { TouchableHighlight } from '../../styles/components';
-import { Caption13Up } from '../../styles/text';
-import { SwitchIcon } from '../../styles/icons';
-import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import useColors from '../../hooks/colors';
-import { updateSendTransaction } from '../../store/slices/ui';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { sendTransactionSelector } from '../../store/reselect/ui';
+import { updateSendTransaction } from '../../store/slices/ui';
+import { TouchableHighlight } from '../../styles/components';
+import { SwitchIcon } from '../../styles/icons';
+import { Caption13Up } from '../../styles/text';
 
 const AssetButton = ({
 	style,

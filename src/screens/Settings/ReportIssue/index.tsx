@@ -1,25 +1,25 @@
-import React, { memo, ReactElement, useState } from 'react';
 import axios from 'axios';
-import RNFS from 'react-native-fs';
-import { View, StyleSheet, Platform } from 'react-native';
+import React, { memo, ReactElement, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { Platform, StyleSheet, View } from 'react-native';
 import {
 	getBuildNumber,
 	getSystemVersion,
 	getVersion,
 } from 'react-native-device-info';
-import { useTranslation } from 'react-i18next';
+import RNFS from 'react-native-fs';
 
-import { getNodeId, getNodeVersion } from '../../../utils/lightning';
-import { zipLogs } from '../../../utils/lightning/logs';
-import { BodyM } from '../../../styles/text';
-import { ScrollView, View as ThemedView } from '../../../styles/components';
+import KeyboardAvoidingView from '../../../components/KeyboardAvoidingView';
+import LabeledInput from '../../../components/LabeledInput';
 import NavigationHeader from '../../../components/NavigationHeader';
 import SafeAreaInset from '../../../components/SafeAreaInset';
-import type { SettingsScreenProps } from '../../../navigation/types';
-import LabeledInput from '../../../components/LabeledInput';
 import Button from '../../../components/buttons/Button';
 import { __CHATWOOT_API__ } from '../../../constants/env';
-import KeyboardAvoidingView from '../../../components/KeyboardAvoidingView';
+import type { SettingsScreenProps } from '../../../navigation/types';
+import { ScrollView, View as ThemedView } from '../../../styles/components';
+import { BodyM } from '../../../styles/text';
+import { getNodeId, getNodeVersion } from '../../../utils/lightning';
+import { zipLogs } from '../../../utils/lightning/logs';
 
 const ReportIssue = ({
 	navigation,

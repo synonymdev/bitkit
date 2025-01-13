@@ -1,13 +1,13 @@
 import React, { ReactElement, memo } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
+	Platform,
 	StyleProp,
 	StyleSheet,
-	Platform,
 	TextInputProps,
 	View,
 	ViewStyle,
 } from 'react-native';
-import { useTranslation } from 'react-i18next';
 
 import { TextInput, View as ThemedView } from '../styles/components';
 import { MagnifyingGlassIcon } from '../styles/icons';

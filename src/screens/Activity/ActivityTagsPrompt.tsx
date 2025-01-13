@@ -1,23 +1,23 @@
 import React, { memo, ReactElement, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import { StyleSheet, View } from 'react-native';
 
-import { BottomSheetTextInput } from '../../styles/components';
-import { Subtitle, Text13UP } from '../../styles/text';
 import BottomSheetWrapper from '../../components/BottomSheetWrapper';
 import SafeAreaInset from '../../components/SafeAreaInset';
 import Tag from '../../components/Tag';
 import Button from '../../components/buttons/Button';
-import { closeSheet } from '../../store/slices/ui';
-import { viewControllerSelector } from '../../store/reselect/ui';
-import { addMetaTxTag } from '../../store/slices/metadata';
-import { lastUsedTagsSelector } from '../../store/reselect/metadata';
-import { useAppDispatch, useAppSelector } from '../../hooks/redux';
-import { Keyboard } from '../../hooks/keyboard';
 import {
 	useBottomSheetBackPress,
 	useSnapPoints,
 } from '../../hooks/bottomSheet';
+import { Keyboard } from '../../hooks/keyboard';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux';
+import { lastUsedTagsSelector } from '../../store/reselect/metadata';
+import { viewControllerSelector } from '../../store/reselect/ui';
+import { addMetaTxTag } from '../../store/slices/metadata';
+import { closeSheet } from '../../store/slices/ui';
+import { BottomSheetTextInput } from '../../styles/components';
+import { Subtitle, Text13UP } from '../../styles/text';
 
 const ActivityTagsPrompt = (): ReactElement => {
 	const { t } = useTranslation('wallet');

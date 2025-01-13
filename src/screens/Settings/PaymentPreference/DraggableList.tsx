@@ -1,9 +1,9 @@
 import React, { memo, ReactElement, useCallback, useState } from 'react';
 import {
-	View,
 	StyleProp,
 	StyleSheet,
 	TouchableOpacity,
+	View,
 	ViewStyle,
 } from 'react-native';
 import DraggableFlatList, {
@@ -12,8 +12,8 @@ import DraggableFlatList, {
 	ScaleDecorator,
 } from 'react-native-draggable-flatlist';
 
-import { BodyM } from '../../../styles/text';
 import { ListIcon } from '../../../styles/icons';
+import { BodyM } from '../../../styles/text';
 
 type Item = {
 	key: string;

@@ -2,14 +2,14 @@ import { createSelector } from '@reduxjs/toolkit';
 import { parse } from '@synonymdev/slashtags-url';
 
 import { RootState } from '..';
+import { TContacts } from '../../store/types/slashtags';
 import {
 	BasicProfile,
 	IContactRecord,
-	TSlashtagsState,
 	LocalLink,
 	TOnboardingProfileStep,
+	TSlashtagsState,
 } from '../types/slashtags';
-import { TContacts } from '../../store/types/slashtags';
 
 const slashtagsState = (state: RootState): TSlashtagsState => state.slashtags;
 

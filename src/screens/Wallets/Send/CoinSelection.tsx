@@ -1,37 +1,37 @@
-import React, { ReactElement, memo, useMemo, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
 import { BottomSheetScrollView } from '@gorhom/bottom-sheet';
+import React, { ReactElement, memo, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { StyleSheet, View } from 'react-native';
 
-import { ScrollView } from '../../../styles/components';
-import { Subtitle, BodyMSB, BodySSB, Caption13Up } from '../../../styles/text';
-import GradientView from '../../../components/GradientView';
 import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
+import GradientView from '../../../components/GradientView';
 import SafeAreaInset from '../../../components/SafeAreaInset';
-import Button from '../../../components/buttons/Button';
 import Switch from '../../../components/Switch';
 import Tag from '../../../components/Tag';
+import Button from '../../../components/buttons/Button';
+import { ScrollView } from '../../../styles/components';
+import { BodyMSB, BodySSB, Caption13Up, Subtitle } from '../../../styles/text';
 
+import { IUtxo } from 'beignet';
 import useColors from '../../../hooks/colors';
-import { useAppSelector } from '../../../hooks/redux';
 import { useDisplayValues } from '../../../hooks/displayValues';
-import {
-	getTransactionInputValue,
-	getTransactionOutputValue,
-} from '../../../utils/wallet/transactions';
+import { useAppSelector } from '../../../hooks/redux';
+import type { SendScreenProps } from '../../../navigation/types';
 import {
 	addTxInput,
 	removeTxInput,
 	setupFeeForOnChainTransaction,
 } from '../../../store/actions/wallet';
-import type { SendScreenProps } from '../../../navigation/types';
 import {
 	transactionSelector,
 	utxosSelector,
 } from '../../../store/reselect/wallet';
-import { TRANSACTION_DEFAULTS } from '../../../utils/wallet/constants';
-import { IUtxo } from 'beignet';
 import { showToast } from '../../../utils/notifications';
+import { TRANSACTION_DEFAULTS } from '../../../utils/wallet/constants';
+import {
+	getTransactionInputValue,
+	getTransactionOutputValue,
+} from '../../../utils/wallet/transactions';
 
 /**
  * Some UTXO's may contain the same tx_hash.

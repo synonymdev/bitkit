@@ -1,11 +1,12 @@
 import React, { ReactElement, useEffect } from 'react';
+import { Trans, useTranslation } from 'react-i18next';
 import {
-	View,
-	StyleSheet,
 	Image,
-	useWindowDimensions,
-	TextInput,
 	Platform,
+	StyleSheet,
+	TextInput,
+	View,
+	useWindowDimensions,
 } from 'react-native';
 import Animated, {
 	Easing,
@@ -18,12 +19,11 @@ import Animated, {
 	withSequence,
 	withTiming,
 } from 'react-native-reanimated';
-import { Trans, useTranslation } from 'react-i18next';
 
-import { AnimatedView } from '../../styles/components';
-import { Display } from '../../styles/text';
 import SafeAreaInset from '../../components/SafeAreaInset';
 import { __E2E__ } from '../../constants/env';
+import { AnimatedView } from '../../styles/components';
+import { Display } from '../../styles/text';
 
 const circleSrc = require('../../assets/illustrations/loading-circle.png');
 const rocketSrc = require('../../assets/illustrations/rocket.png');

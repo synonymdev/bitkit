@@ -1,11 +1,11 @@
 import React, { ReactElement } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 
-import { Display } from '../../styles/text';
 import OnboardingScreen from '../../components/OnboardingScreen';
 import { useAppDispatch } from '../../hooks/redux';
-import { updateSettings } from '../../store/slices/settings';
 import type { TransferScreenProps } from '../../navigation/types';
+import { updateSettings } from '../../store/slices/settings';
+import { Display } from '../../styles/text';
 
 const imageSrc = require('../../assets/illustrations/lightning.png');
 

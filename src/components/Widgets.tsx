@@ -1,3 +1,4 @@
+import { useFocusEffect } from '@react-navigation/native';
 import React, {
 	ReactElement,
 	memo,
@@ -5,34 +6,33 @@ import React, {
 	useMemo,
 	useState,
 } from 'react';
-import { StyleSheet } from 'react-native';
-import { useFocusEffect } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
+import { StyleSheet } from 'react-native';
 import DraggableFlatList, {
 	RenderItemParams,
 	ScaleDecorator,
 } from 'react-native-draggable-flatlist';
 
-import { rootNavigation } from '../navigation/root/RootNavigator';
-import { Caption13Up } from '../styles/text';
-import { TouchableOpacity, View } from '../styles/components';
-import { PlusIcon, SortAscendingIcon, Checkmark } from '../styles/icons';
-import Button from './buttons/Button';
 import { useAppDispatch, useAppSelector } from '../hooks/redux';
-import { SUPPORTED_FEED_TYPES } from '../utils/widgets';
-import { setWidgetsSortOrder } from '../store/slices/widgets';
-import PriceWidget from './PriceWidget';
-import FeedWidget from './FeedWidget';
-import HeadlinesWidget from './HeadlinesWidget';
-import BlocksWidget from './BlocksWidget';
-import FactsWidget from './FactsWidget';
-import LuganoFeedWidget from './LuganoFeedWidget';
-import { TFeedWidget, TWidget } from '../store/types/widgets';
+import { rootNavigation } from '../navigation/root/RootNavigator';
 import {
 	onboardedWidgetsSelector,
 	widgetsOrderSelector,
 	widgetsSelector,
 } from '../store/reselect/widgets';
+import { setWidgetsSortOrder } from '../store/slices/widgets';
+import { TFeedWidget, TWidget } from '../store/types/widgets';
+import { TouchableOpacity, View } from '../styles/components';
+import { Checkmark, PlusIcon, SortAscendingIcon } from '../styles/icons';
+import { Caption13Up } from '../styles/text';
+import { SUPPORTED_FEED_TYPES } from '../utils/widgets';
+import BlocksWidget from './BlocksWidget';
+import FactsWidget from './FactsWidget';
+import FeedWidget from './FeedWidget';
+import HeadlinesWidget from './HeadlinesWidget';
+import LuganoFeedWidget from './LuganoFeedWidget';
+import PriceWidget from './PriceWidget';
+import Button from './buttons/Button';
 
 const Widgets = (): ReactElement => {
 	const { t } = useTranslation('slashtags');

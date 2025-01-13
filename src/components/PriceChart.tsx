@@ -1,30 +1,30 @@
-import React, { useState, ReactElement, useEffect, useMemo } from 'react';
 import {
-	View,
-	StyleProp,
-	StyleSheet,
-	ViewStyle,
-	useWindowDimensions,
-} from 'react-native';
-import {
-	Skia,
 	Canvas,
-	LinearGradient,
-	vec,
-	Path,
 	CornerPathEffect,
+	LinearGradient,
+	Mask,
+	Path,
+	Rect,
+	Skia,
 	Text,
 	useFont,
-	Mask,
-	Rect,
+	vec,
 } from '@shopify/react-native-skia';
 import { Reader } from '@synonymdev/slashtags-widget-price-feed';
 import { Pair } from '@synonymdev/slashtags-widget-price-feed/types/lib/reader';
+import React, { useState, ReactElement, useEffect, useMemo } from 'react';
+import {
+	StyleProp,
+	StyleSheet,
+	View,
+	ViewStyle,
+	useWindowDimensions,
+} from 'react-native';
 
-import { IThemeColors } from '../styles/themes';
-import { SlashFeedJSON, TGraphPeriod } from '../store/types/widgets';
 import useColors from '../hooks/colors';
 import { useSlashtags } from '../hooks/slashtags';
+import { SlashFeedJSON, TGraphPeriod } from '../store/types/widgets';
+import { IThemeColors } from '../styles/themes';
 
 export type Change = {
 	color: keyof IThemeColors;

@@ -1,18 +1,18 @@
-import { useContext, useEffect, useMemo, useState } from 'react';
 import SlashtagsProfile from '@synonymdev/slashtags-profile';
 import { format, parse } from '@synonymdev/slashtags-url';
+import { useContext, useEffect, useMemo, useState } from 'react';
 
-import { BasicProfile } from '../store/types/slashtags';
+import {
+	SlashtagsContext,
+	TSlashtagsStateContext,
+} from '../components/SlashtagsProvider';
+import { __E2E__ } from '../constants/env';
 import {
 	contactSelector,
 	profileCacheSelector,
 } from '../store/reselect/slashtags';
 import { cacheProfile } from '../store/slices/slashtags';
-import {
-	TSlashtagsStateContext,
-	SlashtagsContext,
-} from '../components/SlashtagsProvider';
-import { __E2E__ } from '../constants/env';
+import { BasicProfile } from '../store/types/slashtags';
 import { useAppDispatch, useAppSelector } from './redux';
 
 export const useSlashtags = (): TSlashtagsStateContext => {

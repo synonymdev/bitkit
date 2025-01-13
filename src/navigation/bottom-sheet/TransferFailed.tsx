@@ -1,13 +1,13 @@
 import React, { memo, ReactElement } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 
-import { Display } from '../../styles/text';
-import BottomSheetWrapper from '../../components/BottomSheetWrapper';
 import BottomSheetScreen from '../../components/BottomSheetScreen';
+import BottomSheetWrapper from '../../components/BottomSheetWrapper';
 import {
 	useBottomSheetBackPress,
 	useSnapPoints,
 } from '../../hooks/bottomSheet';
+import { Display } from '../../styles/text';
 
 const imageSrc = require('../../assets/illustrations/cross.png');
 

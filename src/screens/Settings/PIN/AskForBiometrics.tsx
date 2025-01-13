@@ -5,6 +5,7 @@ import React, {
 	useEffect,
 	useCallback,
 } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
 	Image,
 	Linking,
@@ -13,22 +14,21 @@ import {
 	StyleSheet,
 	View,
 } from 'react-native';
-import { useTranslation } from 'react-i18next';
 
-import { BodyMSB, BodyM } from '../../../styles/text';
-import { FaceIdIcon, TouchIdIcon } from '../../../styles/icons';
-import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
-import SafeAreaInset from '../../../components/SafeAreaInset';
-import GradientView from '../../../components/GradientView';
-import Button from '../../../components/buttons/Button';
-import Switch from '../../../components/Switch';
 import { IsSensorAvailableResult } from '../../../components/Biometrics';
-import { useAppDispatch } from '../../../hooks/redux';
+import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
+import GradientView from '../../../components/GradientView';
+import SafeAreaInset from '../../../components/SafeAreaInset';
+import Switch from '../../../components/Switch';
+import Button from '../../../components/buttons/Button';
 import { useBottomSheetScreenBackPress } from '../../../hooks/bottomSheet';
+import { useAppDispatch } from '../../../hooks/redux';
+import type { PinScreenProps } from '../../../navigation/types';
+import { updateSettings } from '../../../store/slices/settings';
+import { FaceIdIcon, TouchIdIcon } from '../../../styles/icons';
+import { BodyM, BodyMSB } from '../../../styles/text';
 import rnBiometrics from '../../../utils/biometrics';
 import { showToast } from '../../../utils/notifications';
-import { updateSettings } from '../../../store/slices/settings';
-import type { PinScreenProps } from '../../../navigation/types';
 
 const imageSrc = require('../../../assets/illustrations/cog.png');
 

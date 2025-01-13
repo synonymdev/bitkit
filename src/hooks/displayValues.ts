@@ -1,7 +1,5 @@
 import { useMemo } from 'react';
 import { useAppSelector } from '../hooks/redux';
-import { getDisplayValues } from '../utils/displayValues';
-import { IDisplayValues } from '../utils/displayValues/types';
 import {
 	denominationSelector,
 	selectedCurrencySelector,
@@ -12,6 +10,8 @@ import {
 	exchangeRatesSelector,
 } from '../store/reselect/wallet';
 import { EUnit } from '../store/types/wallet';
+import { getDisplayValues } from '../utils/displayValues';
+import { IDisplayValues } from '../utils/displayValues/types';
 
 export const useDisplayValues = (
 	satoshis: number,

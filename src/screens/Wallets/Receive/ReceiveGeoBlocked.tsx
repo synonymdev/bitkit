@@ -1,15 +1,15 @@
 import React, { memo, ReactElement } from 'react';
-import { StyleSheet, View, Image } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import { Image, StyleSheet, View } from 'react-native';
 
-import { BodyM } from '../../../styles/text';
 import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
-import SafeAreaInset from '../../../components/SafeAreaInset';
 import GradientView from '../../../components/GradientView';
+import SafeAreaInset from '../../../components/SafeAreaInset';
 import Button from '../../../components/buttons/Button';
 import { useAppDispatch } from '../../../hooks/redux';
-import { closeSheet } from '../../../store/slices/ui';
 import { rootNavigation } from '../../../navigation/root/RootNavigator';
+import { closeSheet } from '../../../store/slices/ui';
+import { BodyM } from '../../../styles/text';
 
 const imageSrc = require('../../../assets/illustrations/globe.png');
 

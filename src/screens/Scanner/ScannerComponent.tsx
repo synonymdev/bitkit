@@ -1,24 +1,24 @@
-import React, { ReactElement, ReactNode, useMemo, useState } from 'react';
-import { View, StyleSheet, useWindowDimensions } from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
-import { FadeIn, FadeOut } from 'react-native-reanimated';
-import { launchImageLibrary } from 'react-native-image-picker';
-import RNQRGenerator from 'rn-qr-generator';
+import React, { ReactElement, ReactNode, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { StyleSheet, View, useWindowDimensions } from 'react-native';
+import { launchImageLibrary } from 'react-native-image-picker';
+import { FadeIn, FadeOut } from 'react-native-reanimated';
+import RNQRGenerator from 'rn-qr-generator';
 
-import { AnimatedView, TextInput } from '../../styles/components';
-import { BodySSB } from '../../styles/text';
-import {
-	ClipboardTextIcon,
-	PictureIcon,
-	FlashlightIcon,
-} from '../../styles/icons';
+import BlurView from '../../components/BlurView';
 import Camera from '../../components/Camera';
 import GradientView from '../../components/CameraGradientView';
-import BlurView from '../../components/BlurView';
+import Dialog from '../../components/Dialog';
 import Button from '../../components/buttons/Button';
 import { __E2E__ } from '../../constants/env';
-import Dialog from '../../components/Dialog';
+import { AnimatedView, TextInput } from '../../styles/components';
+import {
+	ClipboardTextIcon,
+	FlashlightIcon,
+	PictureIcon,
+} from '../../styles/icons';
+import { BodySSB } from '../../styles/text';
 
 type ScannerComponentProps = {
 	children: ReactNode;

@@ -1,25 +1,25 @@
 import React, { memo, ReactElement, useMemo } from 'react';
 import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 
+import { useDisplayValues } from '../hooks/displayValues';
+import { useAppSelector } from '../hooks/redux';
 import {
-	CaptionB,
-	Caption13Up,
-	Display,
+	denominationSelector,
+	hideBalanceSelector,
+	nextUnitSelector,
+	unitSelector,
+} from '../store/reselect/settings';
+import { EDenomination, EUnit } from '../store/types/wallet';
+import {
 	BodyMSB,
 	BodySSB,
+	Caption13Up,
+	CaptionB,
+	Display,
 	Title,
 } from '../styles/text';
 import { IThemeColors } from '../styles/themes';
-import { useAppSelector } from '../hooks/redux';
-import { useDisplayValues } from '../hooks/displayValues';
 import { abbreviateNumber } from '../utils/helpers';
-import { EDenomination, EUnit } from '../store/types/wallet';
-import {
-	unitSelector,
-	hideBalanceSelector,
-	denominationSelector,
-	nextUnitSelector,
-} from '../store/reselect/settings';
 
 type TSize =
 	| 'display'

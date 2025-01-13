@@ -1,8 +1,8 @@
 import React, { memo, ReactElement } from 'react';
-import { View, TouchableOpacity, StyleSheet } from 'react-native';
-import { BodyMSB, BodySSB } from '../styles/text';
-import { PencilIcon } from '../styles/icons';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import Money from '../components/Money';
+import { PencilIcon } from '../styles/icons';
+import { BodyMSB, BodySSB } from '../styles/text';
 
 const ImageText = ({
 	title,

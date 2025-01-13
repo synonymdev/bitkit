@@ -1,7 +1,7 @@
 import React, { memo, MutableRefObject, ReactElement, useRef } from 'react';
 import {
-	GestureDetector,
 	Gesture,
+	GestureDetector,
 	GestureType,
 } from 'react-native-gesture-handler';
 

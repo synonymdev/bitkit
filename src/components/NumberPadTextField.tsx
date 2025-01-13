@@ -1,5 +1,4 @@
 import React, { memo, ReactElement } from 'react';
-import { useAppSelector } from '../hooks/redux';
 import {
 	Pressable,
 	StyleProp,
@@ -7,21 +6,22 @@ import {
 	View,
 	ViewStyle,
 } from 'react-native';
+import { useAppSelector } from '../hooks/redux';
 
-import { Display } from '../styles/text';
-import Money from './Money';
-import { EDenomination, EUnit } from '../store/types/wallet';
+import { useCurrency } from '../hooks/displayValues';
 import {
 	conversionUnitSelector,
 	denominationSelector,
 	unitSelector,
 } from '../store/reselect/settings';
+import { EDenomination, EUnit } from '../store/types/wallet';
+import { Display } from '../styles/text';
 import { convertToSats } from '../utils/conversion';
-import { useCurrency } from '../hooks/displayValues';
 import {
 	getDisplayValues,
 	getFiatDisplayValuesForFiat,
 } from '../utils/displayValues';
+import Money from './Money';
 
 const NumberPadTextField = ({
 	value,

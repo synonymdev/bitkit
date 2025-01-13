@@ -1,18 +1,18 @@
-import React, { memo, ReactElement } from 'react';
-import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import React, { memo, ReactElement } from 'react';
 import { useTranslation } from 'react-i18next';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 
+import { useBalance } from '../hooks/wallet';
+import { RootNavigationProp } from '../navigation/types';
+import { View as ThemedView } from '../styles/components';
 import {
 	BitcoinCircleIcon,
 	LightningCircleIcon,
 	TransferIcon,
 } from '../styles/icons';
 import { Caption13Up } from '../styles/text';
-import { View as ThemedView } from '../styles/components';
 import Money from './Money';
-import { useBalance } from '../hooks/wallet';
-import { RootNavigationProp } from '../navigation/types';
 
 const Balance = ({
 	label,

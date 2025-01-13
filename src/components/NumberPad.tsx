@@ -1,8 +1,8 @@
 import React, { memo, ReactElement } from 'react';
-import { View, StyleSheet, ViewStyle, StyleProp } from 'react-native';
+import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import { Pressable } from '../styles/components';
-import { Text } from '../styles/text';
 import { BackspaceIcon } from '../styles/icons';
+import { Text } from '../styles/text';
 import { vibrate } from '../utils/helpers';
 
 const ACTIVE_OPACITY = 0.2;

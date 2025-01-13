@@ -3,16 +3,16 @@ import { createSelector } from '@reduxjs/toolkit';
 import { RootState } from '..';
 import themes, { IThemeColors } from '../../styles/themes';
 import { TSettings } from '../slices/settings';
-import { selectedNetworkSelector } from './wallet';
-import { EConversionUnit, EDenomination, EUnit } from '../types/wallet';
 import {
+	ETransactionSpeed,
 	ICustomElectrumPeer,
 	TCoinSelectPreference,
 	TCustomElectrumPeers,
 	TReceiveOption,
 	TTheme,
-	ETransactionSpeed,
 } from '../types/settings';
+import { EConversionUnit, EDenomination, EUnit } from '../types/wallet';
+import { selectedNetworkSelector } from './wallet';
 
 export const settingsSelector = (state: RootState): TSettings => state.settings;
 

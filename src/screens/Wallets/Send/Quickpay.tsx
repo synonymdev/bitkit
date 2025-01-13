@@ -1,21 +1,21 @@
-import React, { memo, ReactElement, useCallback } from 'react';
-import { StyleSheet, View } from 'react-native';
-import { Trans, useTranslation } from 'react-i18next';
 import { useFocusEffect } from '@react-navigation/native';
+import React, { memo, ReactElement, useCallback } from 'react';
+import { Trans, useTranslation } from 'react-i18next';
+import { StyleSheet, View } from 'react-native';
 
-import { Display } from '../../../styles/text';
-import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
-import SafeAreaInset from '../../../components/SafeAreaInset';
-import GradientView from '../../../components/GradientView';
 import AmountToggle from '../../../components/AmountToggle';
-import SyncSpinner from '../../../components/SyncSpinner';
+import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
+import GradientView from '../../../components/GradientView';
 import HourglassSpinner from '../../../components/HourglassSpinner';
 import LightningSyncing from '../../../components/LightningSyncing';
-import { useAppDispatch } from '../../../hooks/redux';
+import SafeAreaInset from '../../../components/SafeAreaInset';
+import SyncSpinner from '../../../components/SyncSpinner';
 import { useBottomSheetScreenBackPress } from '../../../hooks/bottomSheet';
+import { useAppDispatch } from '../../../hooks/redux';
+import type { SendScreenProps } from '../../../navigation/types';
 import { addPendingPayment } from '../../../store/slices/lightning';
 import { EActivityType } from '../../../store/types/activity';
-import type { SendScreenProps } from '../../../navigation/types';
+import { Display } from '../../../styles/text';
 import {
 	decodeLightningInvoice,
 	payLightningInvoice,

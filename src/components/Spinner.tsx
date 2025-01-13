@@ -1,5 +1,5 @@
-import { ImageStyle } from 'react-native';
 import React, { memo, useEffect } from 'react';
+import { ImageStyle } from 'react-native';
 import Animated, {
 	cancelAnimation,
 	Easing,

@@ -1,19 +1,19 @@
-import React, { memo, ReactElement, useState, useEffect } from 'react';
-import { StyleSheet, View, Platform, TouchableOpacity } from 'react-native';
-import { Trans, useTranslation } from 'react-i18next';
 import Clipboard from '@react-native-clipboard/clipboard';
+import React, { memo, ReactElement, useState, useEffect } from 'react';
+import { Trans, useTranslation } from 'react-i18next';
+import { Platform, StyleSheet, TouchableOpacity, View } from 'react-native';
 
-import { View as ThemedView } from '../../../styles/components';
-import { BodyM, BodyMSB, BodyS } from '../../../styles/text';
+import BlurView from '../../../components/BlurView';
 import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
 import SafeAreaInset from '../../../components/SafeAreaInset';
 import Button from '../../../components/buttons/Button';
-import BlurView from '../../../components/BlurView';
-import { getMnemonicPhrase, getBip39Passphrase } from '../../../utils/wallet';
 import { useBottomSheetBackPress } from '../../../hooks/bottomSheet';
-import { showToast } from '../../../utils/notifications';
-import { vibrate } from '../../../utils/helpers';
 import type { BackupScreenProps } from '../../../navigation/types';
+import { View as ThemedView } from '../../../styles/components';
+import { BodyM, BodyMSB, BodyS } from '../../../styles/text';
+import { vibrate } from '../../../utils/helpers';
+import { showToast } from '../../../utils/notifications';
+import { getBip39Passphrase, getMnemonicPhrase } from '../../../utils/wallet';
 
 // Android doesn't have blur so we put a dummy mnemonic
 const dummySeed = Array.from({ length: 12 }, () => 'secret');

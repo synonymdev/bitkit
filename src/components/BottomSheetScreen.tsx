@@ -7,9 +7,9 @@ import {
 	View,
 } from 'react-native';
 
-import { BodyM, Display } from '../styles/text';
 import BottomSheetNavigationHeader from '../components/BottomSheetNavigationHeader';
 import SafeAreaInset from '../components/SafeAreaInset';
+import { BodyM, Display } from '../styles/text';
 import Button from './buttons/Button';
 
 const BottomSheetScreen = ({

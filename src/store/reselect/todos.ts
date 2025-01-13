@@ -1,10 +1,11 @@
 import { TChannel } from '@synonymdev/react-native-ldk';
 
 import { RootState } from '..';
-import { TTodosState, ITodo } from '../types/todos';
 import {
 	backupSeedPhraseTodo,
+	btFailedTodo,
 	buyBitcoinTodo,
+	inviteTodo,
 	lightningReadyTodo,
 	lightningSettingUpTodo,
 	lightningTodo,
@@ -12,19 +13,18 @@ import {
 	quickpayTodo,
 	slashtagsProfileTodo,
 	supportTodo,
-	transferPendingTodo,
 	transferClosingChannelTodo,
-	btFailedTodo,
-	inviteTodo,
+	transferPendingTodo,
 } from '../shapes/todos';
-import { startCoopCloseTimestampSelector } from './user';
+import { ITodo, TTodosState } from '../types/todos';
+import { ETransferType, TTransferToSavings } from '../types/wallet';
+import { blocktankPaidOrdersFullSelector } from './blocktank';
+import { closedChannelsSelector, openChannelsSelector } from './lightning';
 import { backupVerifiedSelector, pinSelector } from './settings';
 import { onboardingProfileStepSelector } from './slashtags';
-import { closedChannelsSelector, openChannelsSelector } from './lightning';
-import { blocktankPaidOrdersFullSelector } from './blocktank';
-import { pendingTransfersSelector } from './wallet';
-import { ETransferType, TTransferToSavings } from '../types/wallet';
+import { startCoopCloseTimestampSelector } from './user';
 import { createShallowEqualSelector } from './utils';
+import { pendingTransfersSelector } from './wallet';
 
 export const todosSelector = (state: RootState): TTodosState => state.todos;
 

@@ -1,13 +1,13 @@
 import React, { ReactElement, ReactNode } from 'react';
 import {
-	View,
-	TouchableOpacity,
-	StyleSheet,
 	StyleProp,
+	StyleSheet,
+	TouchableOpacity,
+	View,
 	ViewStyle,
 } from 'react-native';
-import { BodyMSB, BodySSB } from '../styles/text';
 import { MinusCircledIcon, PlusCircledIcon } from '../styles/icons';
+import { BodyMSB, BodySSB } from '../styles/text';
 
 type AdjustValueProps = {
 	value: ReactNode;

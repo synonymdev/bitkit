@@ -1,39 +1,39 @@
 import React, { ReactElement, memo, useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Image, StyleSheet, View } from 'react-native';
 import { FadeIn, FadeOut } from 'react-native-reanimated';
-import { useTranslation } from 'react-i18next';
 
-import { AnimatedView, BottomSheetTextInput } from '../../../styles/components';
-import { Caption13Up } from '../../../styles/text';
-import { TagIcon } from '../../../styles/icons';
 import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
+import GradientView from '../../../components/GradientView';
 import NumberPadTextField from '../../../components/NumberPadTextField';
 import SafeAreaInset from '../../../components/SafeAreaInset';
-import Button from '../../../components/buttons/Button';
 import Tag from '../../../components/Tag';
-import { updateInvoice, removeInvoiceTag } from '../../../store/slices/receive';
-import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
+import Button from '../../../components/buttons/Button';
 import useKeyboard, { Keyboard } from '../../../hooks/keyboard';
-import GradientView from '../../../components/GradientView';
-import ReceiveNumberPad from './ReceiveNumberPad';
-import UnitButton from '../UnitButton';
-import { ReceiveScreenProps } from '../../../navigation/types';
-import { receiveSelector } from '../../../store/reselect/receive';
+import { useLightningBalance } from '../../../hooks/lightning';
+import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
+import { useScreenSize } from '../../../hooks/screen';
 import { useTransfer } from '../../../hooks/transfer';
 import { useSwitchUnit } from '../../../hooks/wallet';
-import { useScreenSize } from '../../../hooks/screen';
-import { getNumberPadText } from '../../../utils/numberpad';
-import { useLightningBalance } from '../../../hooks/lightning';
-import {
-	updatePendingInvoice,
-	deletePendingInvoice,
-} from '../../../store/slices/metadata';
-import { estimateOrderFee } from '../../../utils/blocktank';
-import { isGeoBlockedSelector } from '../../../store/reselect/user';
+import { ReceiveScreenProps } from '../../../navigation/types';
+import { receiveSelector } from '../../../store/reselect/receive';
 import {
 	denominationSelector,
 	nextUnitSelector,
 } from '../../../store/reselect/settings';
+import { isGeoBlockedSelector } from '../../../store/reselect/user';
+import {
+	deletePendingInvoice,
+	updatePendingInvoice,
+} from '../../../store/slices/metadata';
+import { removeInvoiceTag, updateInvoice } from '../../../store/slices/receive';
+import { AnimatedView, BottomSheetTextInput } from '../../../styles/components';
+import { TagIcon } from '../../../styles/icons';
+import { Caption13Up } from '../../../styles/text';
+import { estimateOrderFee } from '../../../utils/blocktank';
+import { getNumberPadText } from '../../../utils/numberpad';
+import UnitButton from '../UnitButton';
+import ReceiveNumberPad from './ReceiveNumberPad';
 
 const imageSrc = require('../../../assets/illustrations/coin-stack.png');
 

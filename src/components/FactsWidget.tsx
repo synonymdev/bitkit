@@ -1,11 +1,11 @@
-import React, { memo, ReactElement, useEffect, useState } from 'react';
-import { StyleProp, ViewStyle } from 'react-native';
-import { useTranslation } from 'react-i18next';
 import { Reader } from '@synonymdev/slashtags-widget-facts-feed';
+import React, { memo, ReactElement, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { StyleProp, ViewStyle } from 'react-native';
 
+import { useSlashtags } from '../hooks/slashtags';
 import { Title } from '../styles/text';
 import { showToast } from '../utils/notifications';
-import { useSlashtags } from '../hooks/slashtags';
 import BaseFeedWidget from './BaseFeedWidget';
 
 const FactsWidget = ({

@@ -1,6 +1,6 @@
+import { Canvas, RadialGradient, Rect, vec } from '@shopify/react-native-skia';
 import React, { memo, ReactElement, useMemo, useEffect } from 'react';
 import { useSharedValue, withTiming } from 'react-native-reanimated';
-import { Canvas, RadialGradient, Rect, vec } from '@shopify/react-native-skia';
 
 import useColors from '../hooks/colors';
 import { IThemeColors } from '../styles/themes';

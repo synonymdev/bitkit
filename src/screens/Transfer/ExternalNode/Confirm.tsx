@@ -1,24 +1,24 @@
-import React, { ReactElement, useCallback, useState } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
-import { Image, StyleSheet, View } from 'react-native';
+import React, { ReactElement, useCallback, useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
+import { Image, StyleSheet, View } from 'react-native';
 
+import Money from '../../../components/Money';
+import NavigationHeader from '../../../components/NavigationHeader';
+import SafeAreaInset from '../../../components/SafeAreaInset';
+import SwipeToConfirm from '../../../components/SwipeToConfirm';
+import { useAppSelector } from '../../../hooks/redux';
+import { TransferScreenProps } from '../../../navigation/types';
+import { updateBeignetSendTransaction } from '../../../store/actions/wallet';
+import { transactionFeeSelector } from '../../../store/reselect/wallet';
 import {
 	View as ThemedView,
 	TouchableOpacity,
 } from '../../../styles/components';
-import { Caption13Up, Display } from '../../../styles/text';
 import { LightningIcon, PencilIcon } from '../../../styles/icons';
-import SafeAreaInset from '../../../components/SafeAreaInset';
-import NavigationHeader from '../../../components/NavigationHeader';
-import SwipeToConfirm from '../../../components/SwipeToConfirm';
-import Money from '../../../components/Money';
+import { Caption13Up, Display } from '../../../styles/text';
 import { showToast } from '../../../utils/notifications';
 import { createFundedChannel } from '../../../utils/wallet/transfer';
-import { useAppSelector } from '../../../hooks/redux';
-import { TransferScreenProps } from '../../../navigation/types';
-import { transactionFeeSelector } from '../../../store/reselect/wallet';
-import { updateBeignetSendTransaction } from '../../../store/actions/wallet';
 
 const image = require('../../../assets/illustrations/coin-stack-x.png');
 

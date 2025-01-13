@@ -1,8 +1,8 @@
-import { ok, Result } from '@synonymdev/result';
-import { dispatch, getMetaDataStore } from '../helpers';
-import { getCurrentWallet } from '../../utils/wallet';
-import { moveMetaIncTxTag } from '../slices/metadata';
+import { Result, ok } from '@synonymdev/result';
 import { EPaymentType } from 'beignet';
+import { getCurrentWallet } from '../../utils/wallet';
+import { dispatch, getMetaDataStore } from '../helpers';
+import { moveMetaIncTxTag } from '../slices/metadata';
 
 /**
  * Moves pending tags to metadata store linked to received transactions

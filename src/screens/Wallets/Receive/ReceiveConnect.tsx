@@ -1,27 +1,27 @@
-import React, { memo, ReactElement, useEffect, useState } from 'react';
-import { StyleSheet, View, Image } from 'react-native';
-import { Trans, useTranslation } from 'react-i18next';
 import { useNavigation } from '@react-navigation/native';
 import { IBtEstimateFeeResponse2 } from '@synonymdev/blocktank-lsp-http-client/dist/shared/IBtEstimateFeeResponse2';
+import React, { memo, ReactElement, useEffect, useState } from 'react';
+import { Trans, useTranslation } from 'react-i18next';
+import { Image, StyleSheet, View } from 'react-native';
 
-import { Caption13Up, BodyMB, BodyM } from '../../../styles/text';
-import GradientView from '../../../components/GradientView';
+import { ActivityIndicator } from '../../../components/ActivityIndicator';
 import AmountToggle from '../../../components/AmountToggle';
 import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
+import GradientView from '../../../components/GradientView';
+import Money from '../../../components/Money';
 import SafeAreaInset from '../../../components/SafeAreaInset';
 import Button from '../../../components/buttons/Button';
-import Money from '../../../components/Money';
-import { ActivityIndicator } from '../../../components/ActivityIndicator';
-import { useTransfer } from '../../../hooks/transfer';
-import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 import { useCurrency, useDisplayValues } from '../../../hooks/displayValues';
+import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
+import { useTransfer } from '../../../hooks/transfer';
+import { ReceiveNavigationProp } from '../../../navigation/bottom-sheet/ReceiveNavigation';
+import type { ReceiveScreenProps } from '../../../navigation/types';
 import { receiveSelector } from '../../../store/reselect/receive';
 import { addCjitEntry } from '../../../store/slices/blocktank';
 import { updateInvoice } from '../../../store/slices/receive';
+import { BodyM, BodyMB, Caption13Up } from '../../../styles/text';
 import { createCJitEntry, estimateOrderFee } from '../../../utils/blocktank';
 import { showToast } from '../../../utils/notifications';
-import { ReceiveNavigationProp } from '../../../navigation/bottom-sheet/ReceiveNavigation';
-import type { ReceiveScreenProps } from '../../../navigation/types';
 
 const imageSrc = require('../../../assets/illustrations/lightning.png');
 

@@ -1,38 +1,38 @@
-import React, { memo, ReactElement, useState, useCallback } from 'react';
-import { StyleSheet, View } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
+import React, { memo, ReactElement, useState, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
+import { StyleSheet, View } from 'react-native';
 import { RefreshControl, ScrollView } from 'react-native-gesture-handler';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useTranslation } from 'react-i18next';
 
-import { View as ThemedView } from '../../styles/components';
-import { useBalance } from '../../hooks/wallet';
-import useColors from '../../hooks/colors';
-import { useAppDispatch, useAppSelector } from '../../hooks/redux';
-import { updateSettings } from '../../store/slices/settings';
-import { widgetsSelector } from '../../store/reselect/widgets';
-import { refreshWallet } from '../../utils/wallet';
-import ActivityListShort from '../../screens/Activity/ActivityListShort';
-import DetectSwipe from '../../components/DetectSwipe';
 import BalanceHeader from '../../components/BalanceHeader';
+import Balances from '../../components/Balances';
+import DetectSwipe from '../../components/DetectSwipe';
+import SafeAreaInset from '../../components/SafeAreaInset';
 import Suggestions from '../../components/Suggestions';
 import Widgets from '../../components/Widgets';
-import SafeAreaInset from '../../components/SafeAreaInset';
-import Balances from '../../components/Balances';
-import Header from './Header';
+import useColors from '../../hooks/colors';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux';
+import { useBalance } from '../../hooks/wallet';
 import type { WalletScreenProps } from '../../navigation/types';
+import ActivityListShort from '../../screens/Activity/ActivityListShort';
 import {
 	enableSwipeToHideBalanceSelector,
 	hideBalanceSelector,
 	hideOnboardingMessageSelector,
 	showWidgetsSelector,
 } from '../../store/reselect/settings';
-import { showToast } from '../../utils/notifications';
 import {
 	ignoresHideBalanceToastSelector,
 	scanAllAddressesTimestampSelector,
 } from '../../store/reselect/user';
+import { widgetsSelector } from '../../store/reselect/widgets';
+import { updateSettings } from '../../store/slices/settings';
 import { ignoreHideBalanceToast, updateUser } from '../../store/slices/user';
+import { View as ThemedView } from '../../styles/components';
+import { showToast } from '../../utils/notifications';
+import { refreshWallet } from '../../utils/wallet';
+import Header from './Header';
 import MainOnboarding from './MainOnboarding';
 
 const HEADER_HEIGHT = 46;

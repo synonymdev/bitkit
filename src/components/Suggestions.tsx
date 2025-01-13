@@ -1,3 +1,4 @@
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import React, {
 	ReactElement,
 	useMemo,
@@ -6,16 +7,12 @@ import React, {
 	useEffect,
 } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Share, StyleSheet, useWindowDimensions } from 'react-native';
 import Carousel from 'react-native-reanimated-carousel';
-import { StyleSheet, useWindowDimensions, Share } from 'react-native';
-import { useFocusEffect, useNavigation } from '@react-navigation/native';
 
-import { Caption13Up } from '../styles/text';
-import { View as ThemedView } from '../styles/components';
-import SuggestionCard from './SuggestionCard';
-import { ITodo, TTodoType } from '../store/types/todos';
-import { channelsNotificationsShown, hideTodo } from '../store/slices/todos';
-import { showBottomSheet } from '../store/utils/ui';
+import { appName, appStoreUrl, playStoreUrl } from '../constants/app';
+import { useAppDispatch, useAppSelector } from '../hooks/redux';
+import type { RootNavigationProp } from '../navigation/types';
 import {
 	pinSelector,
 	quickpayIntroSeenSelector,
@@ -25,10 +22,13 @@ import {
 	newChannelsNotificationsSelector,
 	todosFullSelector,
 } from '../store/reselect/todos';
-import { useAppDispatch, useAppSelector } from '../hooks/redux';
-import type { RootNavigationProp } from '../navigation/types';
-import { appName, appStoreUrl, playStoreUrl } from '../constants/app';
+import { channelsNotificationsShown, hideTodo } from '../store/slices/todos';
+import { ITodo, TTodoType } from '../store/types/todos';
+import { showBottomSheet } from '../store/utils/ui';
+import { View as ThemedView } from '../styles/components';
+import { Caption13Up } from '../styles/text';
 import { getDurationForBlocks } from '../utils/helpers';
+import SuggestionCard from './SuggestionCard';
 
 const Suggestions = (): ReactElement => {
 	const { t } = useTranslation('cards');

@@ -1,12 +1,12 @@
 import React, { ReactElement } from 'react';
-import { Image, ImageSourcePropType, StyleSheet, View } from 'react-native';
 import { Trans, useTranslation } from 'react-i18next';
+import { Image, ImageSourcePropType, StyleSheet, View } from 'react-native';
 
-import { Display, BodyM } from '../styles/text';
+import { IColors } from '../styles/colors';
 import { View as ThemedView } from '../styles/components';
+import { BodyM, Display } from '../styles/text';
 import SafeAreaInset from './SafeAreaInset';
 import Button from './buttons/Button';
-import { IColors } from '../styles/colors';
 
 const IntroScreen = ({
 	accentColor,

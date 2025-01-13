@@ -1,22 +1,22 @@
-import React, { memo, ReactElement, useMemo, useState } from 'react';
-import { useAppSelector } from '../../../hooks/redux';
-import { useTranslation } from 'react-i18next';
 import { EAddressType } from 'beignet';
+import React, { memo, ReactElement, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useAppSelector } from '../../../hooks/redux';
 
 import { EItemType, IListData } from '../../../components/List';
-import SettingsView from '../SettingsView';
-import { refreshWallet } from '../../../utils/wallet';
-import { showToast } from '../../../utils/notifications';
-import { dispatch } from '../../../store/helpers';
-import { addressTypes } from '../../../store/shapes/wallet';
-import { updateWallet } from '../../../store/slices/wallet';
-import { enableDevOptionsSelector } from '../../../store/reselect/settings';
+import type { SettingsScreenProps } from '../../../navigation/types';
 import { updateSelectedAddressType } from '../../../store/actions/wallet';
+import { dispatch } from '../../../store/helpers';
+import { enableDevOptionsSelector } from '../../../store/reselect/settings';
 import {
 	addressTypeSelector,
 	addressTypesToMonitorSelector,
 } from '../../../store/reselect/wallet';
-import type { SettingsScreenProps } from '../../../navigation/types';
+import { addressTypes } from '../../../store/shapes/wallet';
+import { updateWallet } from '../../../store/slices/wallet';
+import { showToast } from '../../../utils/notifications';
+import { refreshWallet } from '../../../utils/wallet';
+import SettingsView from '../SettingsView';
 
 const AddressTypeSettings = ({
 	navigation,

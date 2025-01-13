@@ -16,13 +16,13 @@ import {
 	View,
 } from 'react-native';
 
-import Button from '../../../components/buttons/Button';
 import LightningChannel, {
 	TStatus,
 } from '../../../components/LightningChannel';
 import Money from '../../../components/Money';
 import NavigationHeader from '../../../components/NavigationHeader';
 import SafeAreaInset from '../../../components/SafeAreaInset';
+import Button from '../../../components/buttons/Button';
 import { usePaidBlocktankOrders } from '../../../hooks/blocktank';
 import useColors from '../../../hooks/colors';
 import {

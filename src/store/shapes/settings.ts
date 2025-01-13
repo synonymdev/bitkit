@@ -12,8 +12,8 @@ import {
 	__ELECTRUM_REGTEST_TCP_PORT__,
 	__WEB_RELAY__,
 } from '../../constants/env';
-import { TSettings } from '../slices/settings';
 import { EAvailableNetwork } from '../../utils/networks';
+import { TSettings } from '../slices/settings';
 import { ETransactionSpeed } from '../types/settings';
 import { EDenomination, EUnit } from '../types/wallet';
 

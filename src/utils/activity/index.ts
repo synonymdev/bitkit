@@ -1,15 +1,15 @@
-import { err, ok, Result } from '@synonymdev/result';
+import { Result, err, ok } from '@synonymdev/result';
 import { EPaymentType, IFormattedTransaction } from 'beignet';
 
-import { btcToSats } from '../conversion';
-import i18n, { i18nTime } from '../../utils/i18n';
-import { getTransferForTx } from '../wallet/transfer';
 import { getActivityStore } from '../../store/helpers';
 import {
 	EActivityType,
 	IActivityItem,
 	TOnchainActivityItem,
 } from '../../store/types/activity';
+import i18n, { i18nTime } from '../../utils/i18n';
+import { btcToSats } from '../conversion';
+import { getTransferForTx } from '../wallet/transfer';
 
 /**
  * Converts a formatted transaction to an activity item

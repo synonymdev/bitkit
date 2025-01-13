@@ -1,13 +1,8 @@
-import { InteractionManager } from 'react-native';
-import { getAddressInfo } from 'bitcoin-address-validation';
-import * as bitcoin from 'bitcoinjs-lib';
-import * as bip39 from 'bip39';
-import { BIP32Factory } from 'bip32';
-import ecc from '@bitcoinerlab/secp256k1';
-import { err, ok, Result } from '@synonymdev/result';
-import lm, { ldk } from '@synonymdev/react-native-ldk';
 import net from 'net';
 import tls from 'tls';
+import ecc from '@bitcoinerlab/secp256k1';
+import lm, { ldk } from '@synonymdev/react-native-ldk';
+import { Result, err, ok } from '@synonymdev/result';
 import {
 	EAddressType,
 	EAvailableNetworks,
@@ -38,26 +33,20 @@ import {
 } from 'beignet';
 import type { Electrum } from 'beignet/dist/types/electrum';
 import type { Transaction } from 'beignet/dist/types/transaction';
-import type { Wallet as TWallet } from 'beignet/dist/types/wallet';
 import { TGetTotalFeeObj, TStorage } from 'beignet/dist/types/types';
+import type { Wallet as TWallet } from 'beignet/dist/types/wallet';
+import { BIP32Factory } from 'bip32';
+import * as bip39 from 'bip39';
+import { getAddressInfo } from 'bitcoin-address-validation';
+import * as bitcoin from 'bitcoinjs-lib';
+import { InteractionManager } from 'react-native';
 
-import { EAvailableNetwork, networks } from '../networks';
 import {
-	getDefaultGapLimitOptions,
-	getDefaultWalletShape,
-	getDefaultWalletStoreShape,
-} from '../../store/shapes/wallet';
-import {
-	IWallet,
-	IWallets,
-	TKeyDerivationAccountType,
-	TTransfer,
-	TWalletName,
-} from '../../store/types/wallet';
-import { IGetAddress, IGenerateAddresses } from '../types';
-import i18n from '../i18n';
-import { btcToSats } from '../conversion';
-import { getKeychainValue, setKeychainValue } from '../keychain';
+	generateNewReceiveAddress,
+	getWalletData,
+	setWalletData,
+	updateExchangeRates,
+} from '../../store/actions/wallet';
 import {
 	dispatch,
 	getLightningStore,
@@ -65,33 +54,44 @@ import {
 	getStore,
 	getWalletStore,
 } from '../../store/helpers';
-import { updateWallet } from '../../store/slices/wallet';
 import {
-	generateNewReceiveAddress,
-	getWalletData,
-	setWalletData,
-	updateExchangeRates,
-} from '../../store/actions/wallet';
+	getDefaultGapLimitOptions,
+	getDefaultWalletShape,
+	getDefaultWalletStoreShape,
+} from '../../store/shapes/wallet';
+import { resetActivityState } from '../../store/slices/activity';
+import { updateUi } from '../../store/slices/ui';
+import { updateWallet } from '../../store/slices/wallet';
+import { createWallet } from '../../store/slices/wallet';
+import { TNode } from '../../store/types/lightning';
 import { TCoinSelectPreference } from '../../store/types/settings';
+import {
+	IWallet,
+	IWallets,
+	TKeyDerivationAccountType,
+	TTransfer,
+	TWalletName,
+} from '../../store/types/wallet';
 import { updateActivityList } from '../../store/utils/activity';
-import { getBlockHeader } from './electrum';
+import { refreshOrdersList } from '../../store/utils/blocktank';
+import { moveMetaIncTxTags } from '../../store/utils/metadata';
+import { showNewOnchainTxPrompt, showNewTxPrompt } from '../../store/utils/ui';
+import BitcoinActions from '../bitcoin-actions';
+import { btcToSats } from '../conversion';
+import { promiseTimeout } from '../helpers';
+import i18n from '../i18n';
+import { getKeychainValue, setKeychainValue } from '../keychain';
 import {
 	getLightningBalance,
 	getLightningReserveBalance,
 	refreshLdk,
 } from '../lightning';
-import { BITKIT_WALLET_SEED_HASH_PREFIX } from './constants';
-import { moveMetaIncTxTags } from '../../store/utils/metadata';
-import { refreshOrdersList } from '../../store/utils/blocktank';
-import { TNode } from '../../store/types/lightning';
-import { showNewOnchainTxPrompt, showNewTxPrompt } from '../../store/utils/ui';
-import { promiseTimeout } from '../helpers';
+import { EAvailableNetwork, networks } from '../networks';
 import { showToast } from '../notifications';
-import { updateUi } from '../../store/slices/ui';
-import { resetActivityState } from '../../store/slices/activity';
-import BitcoinActions from '../bitcoin-actions';
+import { IGenerateAddresses, IGetAddress } from '../types';
+import { BITKIT_WALLET_SEED_HASH_PREFIX } from './constants';
+import { getBlockHeader } from './electrum';
 import { getTransferForTx } from './transfer';
-import { createWallet } from '../../store/slices/wallet';
 
 bitcoin.initEccLib(ecc);
 const bip32 = BIP32Factory(ecc);

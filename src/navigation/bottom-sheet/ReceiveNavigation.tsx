@@ -1,25 +1,25 @@
-import React, { ReactElement, memo } from 'react';
 import { NavigationIndependentTree } from '@react-navigation/native';
 import {
-	createNativeStackNavigator,
 	NativeStackNavigationOptions,
 	NativeStackNavigationProp,
+	createNativeStackNavigator,
 } from '@react-navigation/native-stack';
+import React, { ReactElement, memo } from 'react';
 
-import { NavigationContainer } from '../../styles/components';
 import BottomSheetWrapper from '../../components/BottomSheetWrapper';
-import ReceiveQR from '../../screens/Wallets/Receive/ReceiveQR';
-import ReceiveDetails from '../../screens/Wallets/Receive/ReceiveDetails';
-import Tags from '../../screens/Wallets/Receive/Tags';
-import ReceiveAmount from '../../screens/Wallets/Receive/ReceiveAmount';
-import ReceiveGeoBlocked from '../../screens/Wallets/Receive/ReceiveGeoBlocked';
-import ReceiveConnect from '../../screens/Wallets/Receive/ReceiveConnect';
-import Liquidity from '../../screens/Wallets/Receive/Liquidity';
+import { __E2E__ } from '../../constants/env';
 import { useSnapPoints } from '../../hooks/bottomSheet';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
-import { resetInvoice } from '../../store/slices/receive';
+import Liquidity from '../../screens/Wallets/Receive/Liquidity';
+import ReceiveAmount from '../../screens/Wallets/Receive/ReceiveAmount';
+import ReceiveConnect from '../../screens/Wallets/Receive/ReceiveConnect';
+import ReceiveDetails from '../../screens/Wallets/Receive/ReceiveDetails';
+import ReceiveGeoBlocked from '../../screens/Wallets/Receive/ReceiveGeoBlocked';
+import ReceiveQR from '../../screens/Wallets/Receive/ReceiveQR';
+import Tags from '../../screens/Wallets/Receive/Tags';
 import { viewControllerSelector } from '../../store/reselect/ui';
-import { __E2E__ } from '../../constants/env';
+import { resetInvoice } from '../../store/slices/receive';
+import { NavigationContainer } from '../../styles/components';
 
 export type ReceiveNavigationProp =
 	NativeStackNavigationProp<ReceiveStackParamList>;

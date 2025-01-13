@@ -1,19 +1,19 @@
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { useCallback, useEffect, useMemo, useRef } from 'react';
 import { BackHandler, NativeEventSubscription } from 'react-native';
-import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import {
 	useSafeAreaFrame,
 	useSafeAreaInsets,
 } from 'react-native-safe-area-context';
 
-import { useAppDispatch, useAppSelector } from './redux';
-import { objectKeys } from '../utils/objectKeys';
-import { TViewController } from '../store/types/ui';
-import { closeAllSheets, closeSheet } from '../store/slices/ui';
 import {
 	viewControllerIsOpenSelector,
 	viewControllersSelector,
 } from '../store/reselect/ui';
+import { closeAllSheets, closeSheet } from '../store/slices/ui';
+import { TViewController } from '../store/types/ui';
+import { objectKeys } from '../utils/objectKeys';
+import { useAppDispatch, useAppSelector } from './redux';
 
 export const useSnapPoints = (
 	size: 'small' | 'medium' | 'large' | 'calendar',

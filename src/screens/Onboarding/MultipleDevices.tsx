@@ -1,9 +1,9 @@
 import React, { ReactElement } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 
-import { Display } from '../../styles/text';
 import OnboardingScreen from '../../components/OnboardingScreen';
 import type { OnboardingStackScreenProps } from '../../navigation/types';
+import { Display } from '../../styles/text';
 
 const imageSrc = require('../../assets/illustrations/phone.png');
 

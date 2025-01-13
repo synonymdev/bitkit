@@ -1,19 +1,19 @@
 import React, { ReactElement, memo, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import {
+	GestureResponderEvent,
+	LayoutChangeEvent,
+	StyleProp,
+	StyleSheet,
+	TouchableOpacity,
+	View,
+	ViewStyle,
+} from 'react-native';
 import Animated, {
 	useAnimatedStyle,
 	useSharedValue,
 	withTiming,
 } from 'react-native-reanimated';
-import {
-	StyleSheet,
-	TouchableOpacity,
-	View,
-	GestureResponderEvent,
-	StyleProp,
-	ViewStyle,
-	LayoutChangeEvent,
-} from 'react-native';
-import { useTranslation } from 'react-i18next';
 
 import colors from '../styles/colors';
 import { CaptionB } from '../styles/text';

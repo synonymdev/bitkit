@@ -1,33 +1,33 @@
 import React, { ReactElement, memo, useEffect, useMemo, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
 import { Trans, useTranslation } from 'react-i18next';
+import { StyleSheet, View } from 'react-native';
 
+import Money from '../../components/Money';
+import NavigationHeader from '../../components/NavigationHeader';
+import NumberPadTextField from '../../components/NumberPadTextField';
+import SafeAreaInset from '../../components/SafeAreaInset';
+import Button from '../../components/buttons/Button';
+import { useAppSelector } from '../../hooks/redux';
+import { useTransfer } from '../../hooks/transfer';
+import { useSwitchUnit } from '../../hooks/wallet';
+import type { TransferScreenProps } from '../../navigation/types';
+import {
+	conversionUnitSelector,
+	denominationSelector,
+	nextUnitSelector,
+	unitSelector,
+} from '../../store/reselect/settings';
+import { startChannelPurchase } from '../../store/utils/blocktank';
 import {
 	View as ThemedView,
 	TouchableHighlight,
 } from '../../styles/components';
-import { Display, Caption13Up } from '../../styles/text';
-import SafeAreaInset from '../../components/SafeAreaInset';
-import NavigationHeader from '../../components/NavigationHeader';
-import NumberPadTextField from '../../components/NumberPadTextField';
-import Money from '../../components/Money';
-import Button from '../../components/buttons/Button';
-import TransferNumberPad from './TransferNumberPad';
-import { useAppSelector } from '../../hooks/redux';
-import { useSwitchUnit } from '../../hooks/wallet';
-import { useTransfer } from '../../hooks/transfer';
+import { Caption13Up, Display } from '../../styles/text';
+import { estimateOrderFee } from '../../utils/blocktank';
 import { convertToSats } from '../../utils/conversion';
 import { showToast } from '../../utils/notifications';
-import { estimateOrderFee } from '../../utils/blocktank';
 import { getNumberPadText } from '../../utils/numberpad';
-import type { TransferScreenProps } from '../../navigation/types';
-import { startChannelPurchase } from '../../store/utils/blocktank';
-import {
-	nextUnitSelector,
-	unitSelector,
-	conversionUnitSelector,
-	denominationSelector,
-} from '../../store/reselect/settings';
+import TransferNumberPad from './TransferNumberPad';
 
 const SpendingAdvanced = ({
 	navigation,

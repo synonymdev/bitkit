@@ -1,9 +1,9 @@
-import { ok, err, Result } from '@synonymdev/result';
+import { Result, err, ok } from '@synonymdev/result';
 
-import i18n from '../i18n';
-import { timeAgo } from '../helpers';
-import { getWalletStore } from '../../store/helpers';
 import { __BACKEND_HOST__ } from '../../constants/env';
+import { getWalletStore } from '../../store/helpers';
+import { timeAgo } from '../helpers';
+import i18n from '../i18n';
 import { showToast } from '../notifications';
 
 export const mostUsedExchangeTickers = {

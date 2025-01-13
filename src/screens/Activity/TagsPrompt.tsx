@@ -1,18 +1,18 @@
 import React, { memo, ReactElement } from 'react';
-import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import { StyleSheet, View } from 'react-native';
 
-import { Subtitle, BodyS, Text13UP } from '../../styles/text';
 import BottomSheetWrapper from '../../components/BottomSheetWrapper';
 import SafeAreaInset from '../../components/SafeAreaInset';
 import Tag from '../../components/Tag';
-import { closeSheet } from '../../store/slices/ui';
-import { lastUsedTagsSelector } from '../../store/reselect/metadata';
-import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import {
 	useBottomSheetBackPress,
 	useSnapPoints,
 } from '../../hooks/bottomSheet';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux';
+import { lastUsedTagsSelector } from '../../store/reselect/metadata';
+import { closeSheet } from '../../store/slices/ui';
+import { BodyS, Subtitle, Text13UP } from '../../styles/text';
 
 const TagsPrompt = ({
 	tags,

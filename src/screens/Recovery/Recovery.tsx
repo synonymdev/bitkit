@@ -1,23 +1,23 @@
 import React, { ReactElement, useEffect, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
-import { useAppSelector } from '../../hooks/redux';
-import Share from 'react-native-share';
 import { useTranslation } from 'react-i18next';
+import { StyleSheet, View } from 'react-native';
+import Share from 'react-native-share';
+import { useAppSelector } from '../../hooks/redux';
 
-import { wipeApp } from '../../store/utils/settings';
-import { openURL } from '../../utils/helpers';
-import { zipLogs } from '../../utils/lightning/logs';
-import { createSupportLink } from '../../utils/support';
-import { showToast } from '../../utils/notifications';
-import { View as ThemedView } from '../../styles/components';
-import { BodyM } from '../../styles/text';
+import Dialog from '../../components/Dialog';
 import NavigationHeader from '../../components/NavigationHeader';
 import SafeAreaInset from '../../components/SafeAreaInset';
 import Button from '../../components/buttons/Button';
-import Dialog from '../../components/Dialog';
 import { RecoveryStackScreenProps } from '../../navigation/types';
-import { walletExistsSelector } from '../../store/reselect/wallet';
 import { pinSelector } from '../../store/reselect/settings';
+import { walletExistsSelector } from '../../store/reselect/wallet';
+import { wipeApp } from '../../store/utils/settings';
+import { View as ThemedView } from '../../styles/components';
+import { BodyM } from '../../styles/text';
+import { openURL } from '../../utils/helpers';
+import { zipLogs } from '../../utils/lightning/logs';
+import { showToast } from '../../utils/notifications';
+import { createSupportLink } from '../../utils/support';
 
 const Recovery = ({
 	navigation,

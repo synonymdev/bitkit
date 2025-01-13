@@ -1,20 +1,20 @@
 import React, { memo, ReactElement, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { StyleSheet } from 'react-native';
 import Share, { ShareOptions } from 'react-native-share';
-import { useTranslation } from 'react-i18next';
 
-import { TextInput, View } from '../../../styles/components';
-import { BodyM } from '../../../styles/text';
-import NavigationHeader from '../../../components/NavigationHeader';
 import KeyboardAvoidingView from '../../../components/KeyboardAvoidingView';
+import NavigationHeader from '../../../components/NavigationHeader';
 import SafeAreaInset from '../../../components/SafeAreaInset';
 import Button from '../../../components/buttons/Button';
-import { showToast } from '../../../utils/notifications';
+import type { SettingsScreenProps } from '../../../navigation/types';
+import { TextInput, View } from '../../../styles/components';
+import { BodyM } from '../../../styles/text';
 import {
 	cleanupBackupFiles,
 	createBackupFile,
 } from '../../../utils/backup/fileBackup';
-import type { SettingsScreenProps } from '../../../navigation/types';
+import { showToast } from '../../../utils/notifications';
 
 const ExportToPhone = ({
 	navigation,

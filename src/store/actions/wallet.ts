@@ -1,13 +1,9 @@
-import { AppState } from 'react-native';
-import { err, ok, Result } from '@synonymdev/result';
-import cloneDeep from 'lodash/cloneDeep';
+import { Result, err, ok } from '@synonymdev/result';
 import {
 	EAddressType,
 	EAvailableNetworks,
 	EBoostType,
 	EFeeId,
-	getDefaultWalletData,
-	getStorageKeyValues,
 	IAddress,
 	IBoostedTransaction,
 	IFormattedTransactions,
@@ -17,9 +13,15 @@ import {
 	IUtxo,
 	IWalletData,
 	TSetupTransactionResponse,
+	getDefaultWalletData,
+	getStorageKeyValues,
 } from 'beignet';
+import cloneDeep from 'lodash/cloneDeep';
+import { AppState } from 'react-native';
 
-import { ICreateWallet, TWalletName } from '../types/wallet';
+import { IExchangeRates, getExchangeRates } from '../../utils/exchange-rate';
+import { removeKeyFromObject, sleep } from '../../utils/helpers';
+import { EAvailableNetwork } from '../../utils/networks';
 import {
 	blockHeightToConfirmations,
 	createDefaultWallet,
@@ -32,20 +34,13 @@ import {
 	getSelectedWallet,
 	refreshWallet,
 } from '../../utils/wallet';
+import { getMaxSendAmount, updateFee } from '../../utils/wallet/transactions';
 import {
 	dispatch,
 	getFeesStore,
 	getSettingsStore,
 	getWalletStore,
 } from '../helpers';
-import { EAvailableNetwork } from '../../utils/networks';
-import { removeKeyFromObject, sleep } from '../../utils/helpers';
-import { TGetImpactedAddressesRes } from '../types/checks';
-import { updateActivityList } from '../utils/activity';
-import { ETransactionSpeed } from '../types/settings';
-import { updateOnchainFeeEstimates } from '../utils/fees';
-import { getMaxSendAmount, updateFee } from '../../utils/wallet/transactions';
-import { getExchangeRates, IExchangeRates } from '../../utils/exchange-rate';
 import {
 	addUnconfirmedTransactions,
 	createWallet,
@@ -56,6 +51,11 @@ import {
 	updateWallet,
 	updateWalletData,
 } from '../slices/wallet';
+import { TGetImpactedAddressesRes } from '../types/checks';
+import { ETransactionSpeed } from '../types/settings';
+import { ICreateWallet, TWalletName } from '../types/wallet';
+import { updateActivityList } from '../utils/activity';
+import { updateOnchainFeeEstimates } from '../utils/fees';
 
 /**
  * Creates and stores a newly specified wallet.

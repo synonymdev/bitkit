@@ -2,13 +2,13 @@ import React, { memo, ReactElement, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { EItemType, IListData, ItemData } from '../../../components/List';
-import SettingsView from './../SettingsView';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
-import { updateSettings } from '../../../store/slices/settings';
 import {
-	showWidgetsSelector,
 	showWidgetTitlesSelector,
+	showWidgetsSelector,
 } from '../../../store/reselect/settings';
+import { updateSettings } from '../../../store/slices/settings';
+import SettingsView from './../SettingsView';
 
 const WidgetSettings = (): ReactElement => {
 	const { t } = useTranslation('settings');

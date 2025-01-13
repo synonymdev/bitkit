@@ -1,18 +1,18 @@
 import React, { ReactElement } from 'react';
-import { StyleSheet } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import { StyleSheet } from 'react-native';
 
-import { CaptionB, BodyMSB } from '../../styles/text';
-import { ChevronRight, QuestionMarkIcon } from '../../styles/icons';
-import { View, ScrollView, TouchableOpacity } from '../../styles/components';
+import Divider from '../../components/Divider';
 import NavigationHeader from '../../components/NavigationHeader';
 import SafeAreaInset from '../../components/SafeAreaInset';
 import SvgImage from '../../components/SvgImage';
-import Divider from '../../components/Divider';
 import Button from '../../components/buttons/Button';
-import { handleSlashtagURL } from '../../utils/slashtags';
 import { useSlashfeed } from '../../hooks/widgets';
 import type { RootStackScreenProps } from '../../navigation/types';
+import { ScrollView, TouchableOpacity, View } from '../../styles/components';
+import { ChevronRight, QuestionMarkIcon } from '../../styles/icons';
+import { BodyMSB, CaptionB } from '../../styles/text';
+import { handleSlashtagURL } from '../../utils/slashtags';
 
 export const PriceFeedURL =
 	'slashfeed:9ckhj7ea31ugskdewy9eiod5trhtbgcu9juza8aypjyugsp5f4oo/Bitcoin Price';

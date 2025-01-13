@@ -1,8 +1,8 @@
 import React, { ReactElement, memo } from 'react';
 import { StyleProp, StyleSheet, ViewStyle } from 'react-native';
 import { TouchableOpacity } from '../styles/components';
-import { BodySSB } from '../styles/text';
 import { TrashIcon, XIcon } from '../styles/icons';
+import { BodySSB } from '../styles/text';
 
 interface ITag {
 	value: string;

@@ -1,11 +1,11 @@
 import { createSelector } from '@reduxjs/toolkit';
 import { RootState } from '..';
 import {
-	TUiState,
-	TViewController,
-	TUiViewController,
 	IViewControllerData,
 	TSendTransaction,
+	TUiState,
+	TUiViewController,
+	TViewController,
 } from '../types/ui';
 
 const uiState = (state: RootState): TUiState => state.ui;

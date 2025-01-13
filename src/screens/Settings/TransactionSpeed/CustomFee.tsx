@@ -1,22 +1,22 @@
 import React, { ReactElement, memo, useState, useMemo } from 'react';
-import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import { StyleSheet, View } from 'react-native';
 
-import { View as ThemedView } from '../../../styles/components';
-import { Caption13Up, BodyM } from '../../../styles/text';
+import Amount from '../../../components/Amount';
+import NavigationHeader from '../../../components/NavigationHeader';
+import NumberPad from '../../../components/NumberPad';
+import SafeAreaInset from '../../../components/SafeAreaInset';
+import Button from '../../../components/buttons/Button';
+import { useDisplayValues } from '../../../hooks/displayValues';
+import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
+import type { SettingsScreenProps } from '../../../navigation/types';
 import { customFeeRateSelector } from '../../../store/reselect/settings';
 import { updateSettings } from '../../../store/slices/settings';
 import { ETransactionSpeed } from '../../../store/types/settings';
+import { View as ThemedView } from '../../../styles/components';
+import { BodyM, Caption13Up } from '../../../styles/text';
 import { handleNumberPadPress } from '../../../utils/numberpad';
-import SafeAreaInset from '../../../components/SafeAreaInset';
-import NavigationHeader from '../../../components/NavigationHeader';
-import Amount from '../../../components/Amount';
-import NumberPad from '../../../components/NumberPad';
-import Button from '../../../components/buttons/Button';
-import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
-import { useDisplayValues } from '../../../hooks/displayValues';
 import { TRANSACTION_DEFAULTS } from '../../../utils/wallet/constants';
-import type { SettingsScreenProps } from '../../../navigation/types';
 
 const FeeCustom = ({
 	navigation,

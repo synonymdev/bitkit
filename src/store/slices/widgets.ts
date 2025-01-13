@@ -1,5 +1,5 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-import { TWidgets, SlashFeedJSON, TWidgetSettings } from '../types/widgets';
+import { SlashFeedJSON, TWidgetSettings, TWidgets } from '../types/widgets';
 
 export type TWidgetsState = {
 	widgets: TWidgets;

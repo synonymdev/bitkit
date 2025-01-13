@@ -1,22 +1,22 @@
+import { Result, err, ok } from '@synonymdev/result';
 import React, { memo, ReactElement, useEffect, useState } from 'react';
-import { StyleSheet } from 'react-native';
-import { err, ok, Result } from '@synonymdev/result';
-import Url from 'url-parse';
 import { useTranslation } from 'react-i18next';
+import { StyleSheet } from 'react-native';
+import Url from 'url-parse';
 
-import { View, TextInput, ScrollView } from '../../../styles/components';
-import { Caption13Up, BodyM } from '../../../styles/text';
-import { ScanIcon } from '../../../styles/icons';
-import { updateSettings } from '../../../store/slices/settings';
 import NavigationHeader from '../../../components/NavigationHeader';
 import SafeAreaInset from '../../../components/SafeAreaInset';
 import Button from '../../../components/buttons/Button';
-import { showToast } from '../../../utils/notifications';
-import { saveProfile, updateSlashPayConfig } from '../../../utils/slashtags';
-import type { SettingsScreenProps } from '../../../navigation/types';
 import { __WEB_RELAY__ } from '../../../constants/env';
 import { useAppDispatch } from '../../../hooks/redux';
 import { useProfile, useSlashtags } from '../../../hooks/slashtags';
+import type { SettingsScreenProps } from '../../../navigation/types';
+import { updateSettings } from '../../../store/slices/settings';
+import { ScrollView, TextInput, View } from '../../../styles/components';
+import { ScanIcon } from '../../../styles/icons';
+import { BodyM, Caption13Up } from '../../../styles/text';
+import { showToast } from '../../../utils/notifications';
+import { saveProfile, updateSlashPayConfig } from '../../../utils/slashtags';
 
 const validateInput = (
 	url: string,

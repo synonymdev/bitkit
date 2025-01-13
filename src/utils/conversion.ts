@@ -1,9 +1,9 @@
 import { default as bitcoinUnits } from 'bitcoin-units';
-import { EConversionUnit, EDenomination } from '../store/types/wallet';
 import { getSettingsStore } from '../store/helpers';
-import { getExchangeRate } from './exchange-rate';
-import { IFiatDisplayValues } from './displayValues/types';
+import { EConversionUnit, EDenomination } from '../store/types/wallet';
 import { getFiatDisplayValues } from './displayValues';
+import { IFiatDisplayValues } from './displayValues/types';
+import { getExchangeRate } from './exchange-rate';
 
 export const btcToSats = (balance: number): number => {
 	try {

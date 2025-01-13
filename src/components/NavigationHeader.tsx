@@ -1,18 +1,18 @@
+import { useNavigation } from '@react-navigation/native';
 import React, { memo, ReactElement, useCallback, useMemo } from 'react';
 import {
-	View,
+	GestureResponderEvent,
 	StyleProp,
 	StyleSheet,
+	View,
 	ViewStyle,
-	GestureResponderEvent,
 } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
 
-import { Subtitle, Title } from '../styles/text';
-import { BackIcon, XIcon } from '../styles/icons';
 import { Keyboard } from '../hooks/keyboard';
-import { Pressable } from '../styles/components';
 import { RootNavigationProp } from '../navigation/types';
+import { Pressable } from '../styles/components';
+import { BackIcon, XIcon } from '../styles/icons';
+import { Subtitle, Title } from '../styles/text';
 
 export const HEADER_HEIGHT = 46;
 

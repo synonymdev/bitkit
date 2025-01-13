@@ -1,24 +1,22 @@
-import { TWalletName } from '../../store/types/wallet';
-import { EAvailableNetwork } from '../networks';
-import { err, ok, Result } from '@synonymdev/result';
-import { getMinMaxObjects, TGetMinMaxObject } from '../helpers';
+import { Result, err, ok } from '@synonymdev/result';
 import isEqual from 'lodash/isEqual';
 import { v4 as uuidv4 } from 'uuid';
+import { TWalletName } from '../../store/types/wallet';
+import { TGetMinMaxObject, getMinMaxObjects } from '../helpers';
+import { EAvailableNetwork } from '../networks';
 
 import {
-	generateAddresses,
-	getAddressTypesToMonitor,
-	getCurrentWallet,
-	getKeyDerivationPathObject,
-	getSelectedAddressType,
-	getSelectedNetwork,
-	getSelectedWallet,
-	refreshWallet,
-} from './index';
+	EAddressType,
+	IAddress,
+	IAddressTypeData,
+	IKeyDerivationPath,
+} from 'beignet';
 import {
 	clearUtxos,
 	replaceImpactedAddressesThunk,
 } from '../../store/actions/wallet';
+import { dispatch } from '../../store/helpers';
+import { addressTypes } from '../../store/shapes/wallet';
 import { addWarning } from '../../store/slices/checks';
 import {
 	EWarningIds,
@@ -33,14 +31,16 @@ import {
 	reportImpactedAddressBalance,
 	reportUnreportedWarnings,
 } from '../checks';
-import { addressTypes } from '../../store/shapes/wallet';
-import { dispatch } from '../../store/helpers';
 import {
-	EAddressType,
-	IAddress,
-	IAddressTypeData,
-	IKeyDerivationPath,
-} from 'beignet';
+	generateAddresses,
+	getAddressTypesToMonitor,
+	getCurrentWallet,
+	getKeyDerivationPathObject,
+	getSelectedAddressType,
+	getSelectedNetwork,
+	getSelectedWallet,
+	refreshWallet,
+} from './index';
 
 export const runChecks = async ({
 	selectedWallet = getSelectedWallet(),

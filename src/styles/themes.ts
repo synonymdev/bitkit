@@ -1,7 +1,7 @@
 import baseStyled from 'styled-components/native';
 
-import colors, { IColors } from './colors';
 import { TTheme } from '../store/types/settings';
+import colors, { IColors } from './colors';
 
 export interface IDefaultColors extends IColors {
 	accent: string;

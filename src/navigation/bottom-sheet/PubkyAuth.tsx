@@ -5,27 +5,27 @@ import React, {
 	useEffect,
 	useMemo,
 } from 'react';
-import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import { StyleSheet, View } from 'react-native';
 
-import { BodyM, CaptionB, Text13UP, Title } from '../../styles/text';
+import { auth, parseAuthUrl } from '@synonymdev/react-native-pubky';
+import Animated, { FadeIn } from 'react-native-reanimated';
+import BottomSheetNavigationHeader from '../../components/BottomSheetNavigationHeader';
 import BottomSheetWrapper from '../../components/BottomSheetWrapper';
 import SafeAreaInset from '../../components/SafeAreaInset';
 import Button from '../../components/buttons/Button';
-import BottomSheetNavigationHeader from '../../components/BottomSheetNavigationHeader';
-import { useAppSelector } from '../../hooks/redux';
 import {
 	useBottomSheetBackPress,
 	useSnapPoints,
 } from '../../hooks/bottomSheet';
-import { viewControllerSelector } from '../../store/reselect/ui.ts';
-import { auth, parseAuthUrl } from '@synonymdev/react-native-pubky';
-import { getPubkySecretKey } from '../../utils/pubky';
-import { showToast } from '../../utils/notifications.ts';
+import { useAppSelector } from '../../hooks/redux';
 import { dispatch } from '../../store/helpers.ts';
+import { viewControllerSelector } from '../../store/reselect/ui.ts';
 import { closeSheet } from '../../store/slices/ui.ts';
 import { CheckCircleIcon } from '../../styles/icons.ts';
-import Animated, { FadeIn } from 'react-native-reanimated';
+import { BodyM, CaptionB, Text13UP, Title } from '../../styles/text';
+import { showToast } from '../../utils/notifications.ts';
+import { getPubkySecretKey } from '../../utils/pubky';
 
 const defaultParsedUrl: PubkyAuthDetails = {
 	relay: '',

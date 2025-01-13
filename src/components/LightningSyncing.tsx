@@ -1,4 +1,5 @@
 import React, { ReactElement, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Image, StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import {
 	Easing,
@@ -8,17 +9,16 @@ import {
 	withRepeat,
 	withTiming,
 } from 'react-native-reanimated';
-import { useTranslation } from 'react-i18next';
 
-import { BodyM, BodySSB } from '../styles/text';
-import { AnimatedView } from '../styles/components';
-import SafeAreaInset from './SafeAreaInset';
-import BottomSheetNavigationHeader from './BottomSheetNavigationHeader';
-import GradientView from './GradientView';
-import SyncSpinner from './SyncSpinner';
+import { __E2E__ } from '../constants/env';
 import { useAppSelector } from '../hooks/redux';
 import { isLDKReadySelector } from '../store/reselect/ui';
-import { __E2E__ } from '../constants/env';
+import { AnimatedView } from '../styles/components';
+import { BodyM, BodySSB } from '../styles/text';
+import BottomSheetNavigationHeader from './BottomSheetNavigationHeader';
+import GradientView from './GradientView';
+import SafeAreaInset from './SafeAreaInset';
+import SyncSpinner from './SyncSpinner';
 
 const imageSrc = require('../assets/illustrations/lightning.png');
 

@@ -1,21 +1,21 @@
-import React, { ReactElement, useState } from 'react';
 import {
-	createNativeStackNavigator,
 	NativeStackNavigationOptions,
 	NativeStackNavigationProp,
+	createNativeStackNavigator,
 } from '@react-navigation/native-stack';
+import React, { ReactElement, useState } from 'react';
 
-import WalletsScreen from '../../screens/Wallets';
+import TabBar from '../../components/TabBar';
+import { __E2E__ } from '../../constants/env';
+import ActivityFiltered from '../../screens/Activity/ActivityFiltered';
 import ActivitySavings from '../../screens/Activity/ActivitySavings';
 import ActivitySpending from '../../screens/Activity/ActivitySpending';
-import ActivityFiltered from '../../screens/Activity/ActivityFiltered';
 import BackupPrompt from '../../screens/Settings/Backup/BackupPrompt';
+import WalletsScreen from '../../screens/Wallets';
 import AppUpdatePrompt from '../bottom-sheet/AppUpdatePrompt';
 import HighBalanceWarning from '../bottom-sheet/HighBalanceWarning';
 import QuickPayPrompt from '../bottom-sheet/QuickPayPrompt';
-import TabBar from '../../components/TabBar';
 import type { RootStackScreenProps } from '../types';
-import { __E2E__ } from '../../constants/env';
 
 export type WalletStackParamList = {
 	Wallets: { onFocus: (focused: boolean) => void } | undefined;

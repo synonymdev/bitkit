@@ -1,6 +1,7 @@
-import { TServer } from 'beignet';
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+import { TServer } from 'beignet';
 
+import { EAvailableNetwork } from '../../utils/networks';
 import { initialSettingsState } from '../shapes/settings';
 import {
 	ETransactionSpeed,
@@ -10,7 +11,6 @@ import {
 	TReceiveOption,
 	TTheme,
 } from '../types/settings';
-import { EAvailableNetwork } from '../../utils/networks';
 import { EDenomination, EUnit } from '../types/wallet';
 
 export type TSettings = {

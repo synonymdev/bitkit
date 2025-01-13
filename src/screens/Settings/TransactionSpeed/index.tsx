@@ -1,19 +1,19 @@
 import React, { memo, ReactElement, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { EItemType, IListData } from '../../../components/List';
+import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
+import type { SettingsScreenProps } from '../../../navigation/types';
+import { transactionSpeedSelector } from '../../../store/reselect/settings';
+import { updateSettings } from '../../../store/slices/settings';
+import { ETransactionSpeed } from '../../../store/types/settings';
 import {
+	SettingsIcon,
 	SpeedFastIcon,
 	SpeedNormalIcon,
 	SpeedSlowIcon,
-	SettingsIcon,
 } from '../../../styles/icons';
-import { EItemType, IListData } from '../../../components/List';
 import SettingsView from '../SettingsView';
-import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
-import { updateSettings } from '../../../store/slices/settings';
-import { transactionSpeedSelector } from '../../../store/reselect/settings';
-import { ETransactionSpeed } from '../../../store/types/settings';
-import type { SettingsScreenProps } from '../../../navigation/types';
 
 const TransactionSpeedSettings = ({
 	navigation,

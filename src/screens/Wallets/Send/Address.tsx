@@ -1,20 +1,20 @@
 import React, { ReactElement, memo, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import { StyleSheet, View } from 'react-native';
 
+import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
+import GradientView from '../../../components/GradientView';
+import SafeAreaInset from '../../../components/SafeAreaInset';
+import Button from '../../../components/buttons/Button';
+import useColors from '../../../hooks/colors';
+import useKeyboard, { Keyboard } from '../../../hooks/keyboard';
+import type { SendScreenProps } from '../../../navigation/types';
 import {
 	BottomSheetTextInput,
 	View as ThemedView,
 } from '../../../styles/components';
 import { Caption13Up } from '../../../styles/text';
-import Button from '../../../components/buttons/Button';
-import GradientView from '../../../components/GradientView';
-import SafeAreaInset from '../../../components/SafeAreaInset';
-import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
 import { processUri } from '../../../utils/scanner/scanner';
-import useColors from '../../../hooks/colors';
-import useKeyboard, { Keyboard } from '../../../hooks/keyboard';
-import type { SendScreenProps } from '../../../navigation/types';
 
 type TValidation = {
 	[x: string]: boolean;

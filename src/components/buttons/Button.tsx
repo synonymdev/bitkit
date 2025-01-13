@@ -1,18 +1,18 @@
 import React, { memo, ReactElement, useMemo } from 'react';
 import {
-	StyleSheet,
 	ActivityIndicator,
 	Platform,
 	Pressable,
 	PressableProps,
 	StyleProp,
-	ViewStyle,
+	StyleSheet,
 	TextStyle,
+	ViewStyle,
 } from 'react-native';
-import { IThemeColors } from '../../styles/themes';
-import { CaptionB, BodySSB } from '../../styles/text';
-import { View } from '../../styles/components';
 import useColors from '../../hooks/colors';
+import { View } from '../../styles/components';
+import { BodySSB, CaptionB } from '../../styles/text';
+import { IThemeColors } from '../../styles/themes';
 import { lighten } from '../../utils/color';
 
 export interface ButtonProps extends PressableProps {

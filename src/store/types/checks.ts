@@ -1,7 +1,7 @@
-import { IWalletItem, TWalletName } from './wallet';
-import { EAvailableNetwork } from '../../utils/networks';
 import { TChannel } from '@synonymdev/react-native-ldk';
 import { EAddressType, IAddress } from 'beignet';
+import { EAvailableNetwork } from '../../utils/networks';
+import { IWalletItem, TWalletName } from './wallet';
 
 export enum EWarningIds {
 	storageCheck = 888,

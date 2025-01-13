@@ -1,23 +1,23 @@
 import React, { memo, ReactElement, useMemo, useEffect } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 
-import { __E2E__ } from '../../../constants/env';
-import { Display } from '../../../styles/text';
-import BottomSheetWrapper from '../../../components/BottomSheetWrapper';
 import BottomSheetScreen from '../../../components/BottomSheetScreen';
-import { useBalance } from '../../../hooks/wallet';
-import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
+import BottomSheetWrapper from '../../../components/BottomSheetWrapper';
+import { __E2E__ } from '../../../constants/env';
 import {
 	useBottomSheetBackPress,
 	useSnapPoints,
 } from '../../../hooks/bottomSheet';
+import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
+import { useBalance } from '../../../hooks/wallet';
+import { backupVerifiedSelector } from '../../../store/reselect/settings';
+import { viewControllersSelector } from '../../../store/reselect/ui';
+import { ignoreBackupTimestampSelector } from '../../../store/reselect/user';
 import { closeSheet } from '../../../store/slices/ui';
 import { ignoreBackup } from '../../../store/slices/user';
 import { showBottomSheet } from '../../../store/utils/ui';
+import { Display } from '../../../styles/text';
 import { objectKeys } from '../../../utils/objectKeys';
-import { viewControllersSelector } from '../../../store/reselect/ui';
-import { ignoreBackupTimestampSelector } from '../../../store/reselect/user';
-import { backupVerifiedSelector } from '../../../store/reselect/settings';
 
 const imageSrc = require('../../../assets/illustrations/safe.png');
 

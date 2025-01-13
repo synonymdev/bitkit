@@ -9,11 +9,11 @@ import {
 import { IExchangeRates, mostUsedExchangeTickers } from '../exchange-rate';
 import { roundUpToTwoDecimals } from '../helpers';
 import {
-	defaultFiatDisplayValues,
-	defaultBitcoinDisplayValues,
 	IBitcoinDisplayValues,
 	IDisplayValues,
 	IFiatDisplayValues,
+	defaultBitcoinDisplayValues,
+	defaultFiatDisplayValues,
 } from './types';
 
 export const getBitcoinDisplayValues = ({

@@ -1,4 +1,4 @@
-import { err, ok, Result } from '@synonymdev/result';
+import { Result, err, ok } from '@synonymdev/result';
 import RNFS from 'react-native-fs';
 import { zipWithPassword } from 'react-native-zip-archive';
 

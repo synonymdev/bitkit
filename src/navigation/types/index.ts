@@ -1,27 +1,27 @@
+import type {
+	CompositeScreenProps,
+	NavigatorScreenParams,
+} from '@react-navigation/native';
 import {
 	NativeStackNavigationProp,
 	NativeStackScreenProps,
 } from '@react-navigation/native-stack';
-import type {
-	NavigatorScreenParams,
-	CompositeScreenProps,
-} from '@react-navigation/native';
 
+import type { RecoveryStackParamList } from '../../screens/Recovery/RecoveryNavigator';
 import type { IActivityItem } from '../../store/types/activity';
 import type { TWidgetSettings } from '../../store/types/widgets';
-import type { OnboardingStackParamList } from '../onboarding/OnboardingNavigator';
-import type { RecoveryStackParamList } from '../../screens/Recovery/RecoveryNavigator';
-import type { WalletStackParamList } from '../wallet/WalletNavigator';
-import type { TransferStackParamList } from '../transfer/TransferNavigator';
-import type { SettingsStackParamList } from '../settings/SettingsNavigator';
 import type { BackupStackParamList } from '../bottom-sheet/BackupNavigation';
+import type { LNURLWithdrawStackParamList } from '../bottom-sheet/LNURLWithdrawNavigation';
+import type { OrangeTicketStackParamList } from '../bottom-sheet/OrangeTicketNavigation';
 import type { PinStackParamList } from '../bottom-sheet/PINNavigation';
 import type { ProfileLinkStackParamList } from '../bottom-sheet/ProfileLinkNavigation';
 import type { ReceiveStackParamList } from '../bottom-sheet/ReceiveNavigation';
 import type { SendStackParamList } from '../bottom-sheet/SendNavigation';
-import type { LNURLWithdrawStackParamList } from '../bottom-sheet/LNURLWithdrawNavigation';
-import type { OrangeTicketStackParamList } from '../bottom-sheet/OrangeTicketNavigation';
 import type { TreasureHuntStackParamList } from '../bottom-sheet/TreasureHuntNavigation';
+import type { OnboardingStackParamList } from '../onboarding/OnboardingNavigator';
+import type { SettingsStackParamList } from '../settings/SettingsNavigator';
+import type { TransferStackParamList } from '../transfer/TransferNavigator';
+import type { WalletStackParamList } from '../wallet/WalletNavigator';
 
 // TODO: move all navigation related types here
 // https://reactnavigation.org/docs/typescript#organizing-types

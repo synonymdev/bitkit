@@ -1,16 +1,16 @@
 import React, { ReactElement, memo, useState } from 'react';
-import { Image, StyleSheet, View } from 'react-native';
 import { Trans, useTranslation } from 'react-i18next';
+import { Image, StyleSheet, View } from 'react-native';
 
-import { View as ThemedView } from '../../../styles/components';
-import { BodyMB, BodyM } from '../../../styles/text';
-import SafeAreaInset from '../../../components/SafeAreaInset';
 import NavigationHeader from '../../../components/NavigationHeader';
+import SafeAreaInset from '../../../components/SafeAreaInset';
 import Button from '../../../components/buttons/Button';
 import { useAppSelector } from '../../../hooks/redux';
-import { showToast } from '../../../utils/notifications';
-import { closeChannel, refreshLdk } from '../../../utils/lightning';
 import { channelSelector } from '../../../store/reselect/lightning';
+import { View as ThemedView } from '../../../styles/components';
+import { BodyM, BodyMB } from '../../../styles/text';
+import { closeChannel, refreshLdk } from '../../../utils/lightning';
+import { showToast } from '../../../utils/notifications';
 
 import type { SettingsScreenProps } from '../../../navigation/types';
 import {

@@ -1,4 +1,4 @@
-import { err, Result } from '@synonymdev/result';
+import { Result, err } from '@synonymdev/result';
 
 import * as addressGenerator from 'react-native-address-generator';
 import { EAvailableNetwork } from '../networks.ts';

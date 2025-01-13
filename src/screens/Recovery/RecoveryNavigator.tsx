@@ -1,14 +1,14 @@
-import React, { ReactElement } from 'react';
 import {
-	createNativeStackNavigator,
 	NativeStackNavigationOptions,
+	createNativeStackNavigator,
 } from '@react-navigation/native-stack';
+import React, { ReactElement } from 'react';
 
-import { NavigationContainer } from '../../styles/components';
 import AuthCheck from '../../components/AuthCheck';
-import Recovery from '../../screens/Recovery/Recovery';
-import Mnemonic from '../../screens/Recovery/Mnemonic';
 import { __E2E__ } from '../../constants/env';
+import Mnemonic from '../../screens/Recovery/Mnemonic';
+import Recovery from '../../screens/Recovery/Recovery';
+import { NavigationContainer } from '../../styles/components';
 
 export type RecoveryStackParamList = {
 	AuthCheck: { onSuccess: () => void };

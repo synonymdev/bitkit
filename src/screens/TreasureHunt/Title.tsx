@@ -1,12 +1,12 @@
-import React, { ReactElement } from 'react';
-import { StyleSheet } from 'react-native';
 import {
 	Canvas,
-	Text,
 	LinearGradient,
+	Text,
 	useFont,
 	vec,
 } from '@shopify/react-native-skia';
+import React, { ReactElement } from 'react';
+import { StyleSheet } from 'react-native';
 import { useScreenSize } from '../../hooks/screen';
 
 export const Title = ({

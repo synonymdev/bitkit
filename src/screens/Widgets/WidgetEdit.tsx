@@ -1,27 +1,27 @@
-import React, { useState, ReactElement } from 'react';
-import { View, StyleSheet, Pressable } from 'react-native';
-import { useTranslation } from 'react-i18next';
 import isEqual from 'lodash/isEqual';
+import React, { useState, ReactElement } from 'react';
+import { useTranslation } from 'react-i18next';
+import { Pressable, StyleSheet, View } from 'react-native';
 
-import { ScrollView, View as ThemedView } from '../../styles/components';
-import { CaptionB, BodyM, BodySSB } from '../../styles/text';
-import { Checkmark } from '../../styles/icons';
-import { SUPPORTED_FEED_TYPES } from '../../utils/widgets';
+import Divider from '../../components/Divider';
+import HourglassSpinner from '../../components/HourglassSpinner';
+import NavigationHeader from '../../components/NavigationHeader';
+import PriceChart from '../../components/PriceChart';
+import SafeAreaInset from '../../components/SafeAreaInset';
+import Button from '../../components/buttons/Button';
 import { useAppDispatch } from '../../hooks/redux';
 import { useSlashfeed } from '../../hooks/widgets';
+import type { RootStackScreenProps } from '../../navigation/types';
 import { deleteWidget } from '../../store/slices/widgets';
 import {
 	SlashFeedJSON,
 	TGraphPeriod,
 	TWidgetSettings,
 } from '../../store/types/widgets';
-import NavigationHeader from '../../components/NavigationHeader';
-import HourglassSpinner from '../../components/HourglassSpinner';
-import SafeAreaInset from '../../components/SafeAreaInset';
-import Divider from '../../components/Divider';
-import Button from '../../components/buttons/Button';
-import PriceChart from '../../components/PriceChart';
-import type { RootStackScreenProps } from '../../navigation/types';
+import { ScrollView, View as ThemedView } from '../../styles/components';
+import { Checkmark } from '../../styles/icons';
+import { BodyM, BodySSB, CaptionB } from '../../styles/text';
+import { SUPPORTED_FEED_TYPES } from '../../utils/widgets';
 
 export const getDefaultSettings = (config?: SlashFeedJSON): TWidgetSettings => {
 	if (config) {

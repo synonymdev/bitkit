@@ -1,10 +1,10 @@
 import React, { memo, ReactElement } from 'react';
-import { View, StyleSheet, StyleProp, ViewStyle } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 
-import { CaptionB, BodyMSB, BodySSB } from '../styles/text';
-import { TFeedWidget } from '../store/types/widgets';
 import { useSlashfeed } from '../hooks/widgets';
+import { TFeedWidget } from '../store/types/widgets';
+import { BodyMSB, BodySSB, CaptionB } from '../styles/text';
 import BaseFeedWidget from './BaseFeedWidget';
 
 const FeedWidget = ({

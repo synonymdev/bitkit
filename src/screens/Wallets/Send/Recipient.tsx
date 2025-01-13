@@ -1,30 +1,30 @@
-import React, { ReactElement, memo } from 'react';
-import { View, Image, StyleSheet, Platform } from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
+import React, { ReactElement, memo } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Image, Platform, StyleSheet, View } from 'react-native';
 
-import colors from '../../../styles/colors';
-import { Pressable } from '../../../styles/components';
-import { Caption13Up, BodyMSB } from '../../../styles/text';
-import {
-	UsersIcon,
-	PencilIcon,
-	ClipboardTextIcon,
-	ScanIcon,
-} from '../../../styles/icons';
-import GradientView from '../../../components/GradientView';
 import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
-import SafeAreaInset from '../../../components/SafeAreaInset';
 import ContactImage from '../../../components/ContactImage';
-import { processUri } from '../../../utils/scanner/scanner';
-import { showToast } from '../../../utils/notifications';
+import GradientView from '../../../components/GradientView';
+import SafeAreaInset from '../../../components/SafeAreaInset';
+import { useBottomSheetScreenBackPress } from '../../../hooks/bottomSheet';
 import useColors from '../../../hooks/colors';
 import { useAppSelector } from '../../../hooks/redux';
 import { useScreenSize } from '../../../hooks/screen';
-import { useBottomSheetScreenBackPress } from '../../../hooks/bottomSheet';
+import type { SendScreenProps } from '../../../navigation/types';
 import { lastPaidSelector } from '../../../store/reselect/slashtags';
 import { selectedNetworkSelector } from '../../../store/reselect/wallet';
-import type { SendScreenProps } from '../../../navigation/types';
+import colors from '../../../styles/colors';
+import { Pressable } from '../../../styles/components';
+import {
+	ClipboardTextIcon,
+	PencilIcon,
+	ScanIcon,
+	UsersIcon,
+} from '../../../styles/icons';
+import { BodyMSB, Caption13Up } from '../../../styles/text';
+import { showToast } from '../../../utils/notifications';
+import { processUri } from '../../../utils/scanner/scanner';
 
 const imageSrc = require('../../../assets/illustrations/coin-stack-logo.png');
 

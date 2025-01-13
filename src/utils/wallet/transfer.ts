@@ -1,11 +1,11 @@
+import lm, { ldk } from '@synonymdev/react-native-ldk';
+import { err, ok } from '@synonymdev/result';
 import {
-	getAddressFromScriptPubKey,
 	EPaymentType,
 	IFormattedTransaction,
 	Result,
+	getAddressFromScriptPubKey,
 } from 'beignet';
-import { err, ok } from '@synonymdev/result';
-import lm, { ldk } from '@synonymdev/react-native-ldk';
 
 import {
 	getCurrentWallet,
@@ -13,20 +13,20 @@ import {
 	getSelectedNetwork,
 	refreshWallet,
 } from '.';
-import { btcToSats } from '../conversion';
-import { getTransactions } from './electrum';
+import {
+	getNetworkForBeignet,
+	updateBeignetSendTransaction,
+} from '../../store/actions/wallet';
+import { dispatch } from '../../store/helpers';
+import { addTransfer } from '../../store/slices/wallet';
 import {
 	ETransferStatus,
 	ETransferType,
 	TTransfer,
 } from '../../store/types/wallet';
-import { dispatch } from '../../store/helpers';
+import { btcToSats } from '../conversion';
+import { getTransactions } from './electrum';
 import { createTransaction } from './transactions';
-import { addTransfer } from '../../store/slices/wallet';
-import {
-	getNetworkForBeignet,
-	updateBeignetSendTransaction,
-} from '../../store/actions/wallet';
 
 /**
  * Get the transfer object for a given transaction if it exists

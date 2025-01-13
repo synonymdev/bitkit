@@ -1,10 +1,10 @@
 import React, { ReactElement } from 'react';
-import Animated from 'react-native-reanimated';
 import {
+	KeyboardAvoidingViewProps,
 	Platform,
 	KeyboardAvoidingView as RNKeyboardAvoidingView,
-	KeyboardAvoidingViewProps,
 } from 'react-native';
+import Animated from 'react-native-reanimated';
 
 import useKeyboard from '../hooks/keyboard';
 

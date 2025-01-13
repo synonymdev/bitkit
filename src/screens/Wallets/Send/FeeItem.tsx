@@ -1,22 +1,22 @@
 import React, { memo, ReactElement, useMemo } from 'react';
-import {
-	StyleSheet,
-	View,
-	TouchableOpacity,
-	GestureResponderEvent,
-} from 'react-native';
 import { useTranslation } from 'react-i18next';
+import {
+	GestureResponderEvent,
+	StyleSheet,
+	TouchableOpacity,
+	View,
+} from 'react-native';
 
-import { BodyMSB, BodySSB } from '../../../styles/text';
+import useColors from '../../../hooks/colors';
+import { useDisplayValues } from '../../../hooks/displayValues';
+import { EFeeId } from '../../../store/types/fees';
 import {
 	SettingsIcon,
 	SpeedFastIcon,
 	SpeedNormalIcon,
 	SpeedSlowIcon,
 } from '../../../styles/icons';
-import { EFeeId } from '../../../store/types/fees';
-import useColors from '../../../hooks/colors';
-import { useDisplayValues } from '../../../hooks/displayValues';
+import { BodyMSB, BodySSB } from '../../../styles/text';
 
 const FeeItem = ({
 	id,

@@ -1,8 +1,8 @@
 // based on https://github.com/synonymdev/slashtags-profile/blob/main/index.js
 
-import b4a from 'b4a';
-import { default as Ajv } from 'ajv';
 import Client from '@synonymdev/web-relay/types/lib/client/index';
+import { default as Ajv } from 'ajv';
+import b4a from 'b4a';
 
 import { SlashPayConfig } from '../../store/types/slashtags';
 

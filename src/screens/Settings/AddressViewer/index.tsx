@@ -1,3 +1,8 @@
+import Clipboard from '@react-native-clipboard/clipboard';
+import { ldk } from '@synonymdev/react-native-ldk';
+import { Result, err, ok } from '@synonymdev/result';
+import { EAddressType, IAddress, IUtxo } from 'beignet';
+import fuzzysort from 'fuzzysort';
 import React, {
 	memo,
 	ReactElement,
@@ -7,23 +12,49 @@ import React, {
 	useRef,
 	useState,
 } from 'react';
-import { FlatList, StyleSheet, View, ScrollView } from 'react-native';
-import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 import { useTranslation } from 'react-i18next';
+import { FlatList, ScrollView, StyleSheet, View } from 'react-native';
 import QRCode from 'react-native-qrcode-svg';
-import { err, ok, Result } from '@synonymdev/result';
-import Clipboard from '@react-native-clipboard/clipboard';
-import fuzzysort from 'fuzzysort';
-import { ldk } from '@synonymdev/react-native-ldk';
-import { EAddressType, IAddress, IUtxo } from 'beignet';
+import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 
-import {
-	TouchableOpacity,
-	View as ThemedView,
-} from '../../../styles/components';
-import { Subtitle, BodyS } from '../../../styles/text';
-import SafeAreaInset from '../../../components/SafeAreaInset';
 import NavigationHeader from '../../../components/NavigationHeader';
+import SafeAreaInset from '../../../components/SafeAreaInset';
+import SearchInput from '../../../components/SearchInput';
+import Button from '../../../components/buttons/Button';
+import {
+	resetSendTransaction,
+	setupOnChainTransaction,
+	updateBeignetSendTransaction,
+} from '../../../store/actions/wallet';
+import { viewControllerIsOpenSelector } from '../../../store/reselect/ui';
+import {
+	addressTypeSelector,
+	currentWalletSelector,
+	selectedNetworkSelector,
+	selectedWalletSelector,
+} from '../../../store/reselect/wallet';
+import {
+	addressTypes,
+	defaultAddressContent,
+} from '../../../store/shapes/wallet';
+import { resetActivityState } from '../../../store/slices/activity';
+import { updateSendTransaction } from '../../../store/slices/ui';
+import { updateWallet } from '../../../store/slices/wallet';
+import { TWalletName } from '../../../store/types/wallet';
+import { updateActivityList } from '../../../store/utils/activity';
+import { updateOnchainFeeEstimates } from '../../../store/utils/fees';
+import { showBottomSheet } from '../../../store/utils/ui';
+import {
+	View as ThemedView,
+	TouchableOpacity,
+} from '../../../styles/components';
+import { BodyS, Subtitle } from '../../../styles/text';
+import { IThemeColors } from '../../../styles/themes';
+import { openURL } from '../../../utils/helpers';
+import { setupLdk } from '../../../utils/lightning';
+import { EAvailableNetwork } from '../../../utils/networks';
+import { showToast } from '../../../utils/notifications';
+import { startWalletServices } from '../../../utils/startup';
 import {
 	generateAddresses,
 	getKeyDerivationPathObject,
@@ -31,43 +62,12 @@ import {
 	getReceiveAddress,
 	setupAddressGenerator,
 } from '../../../utils/wallet';
-import {
-	addressTypeSelector,
-	currentWalletSelector,
-	selectedNetworkSelector,
-	selectedWalletSelector,
-} from '../../../store/reselect/wallet';
-import { TWalletName } from '../../../store/types/wallet';
-import Button from '../../../components/buttons/Button';
-import {
-	defaultAddressContent,
-	addressTypes,
-} from '../../../store/shapes/wallet';
-import { EAvailableNetwork } from '../../../utils/networks';
-import { showToast } from '../../../utils/notifications';
+import { getAddressUtxos } from '../../../utils/wallet/electrum';
 import {
 	getBlockExplorerLink,
 	sendMax,
 } from '../../../utils/wallet/transactions';
-import { openURL } from '../../../utils/helpers';
-import { getAddressUtxos } from '../../../utils/wallet/electrum';
-import { updateWallet } from '../../../store/slices/wallet';
-import {
-	resetSendTransaction,
-	setupOnChainTransaction,
-	updateBeignetSendTransaction,
-} from '../../../store/actions/wallet';
-import { updateSendTransaction } from '../../../store/slices/ui';
-import { showBottomSheet } from '../../../store/utils/ui';
-import SearchInput from '../../../components/SearchInput';
 import AddressViewerListItem from './AddressViewerListItem';
-import { IThemeColors } from '../../../styles/themes';
-import { updateActivityList } from '../../../store/utils/activity';
-import { resetActivityState } from '../../../store/slices/activity';
-import { setupLdk } from '../../../utils/lightning';
-import { startWalletServices } from '../../../utils/startup';
-import { updateOnchainFeeEstimates } from '../../../store/utils/fees';
-import { viewControllerIsOpenSelector } from '../../../store/reselect/ui';
 
 export type TAddressViewerData = {
 	[EAddressType.p2tr]: {

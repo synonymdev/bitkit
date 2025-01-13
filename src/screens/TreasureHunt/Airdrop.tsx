@@ -1,3 +1,4 @@
+import { ldk } from '@synonymdev/react-native-ldk';
 import React, {
 	ReactElement,
 	memo,
@@ -7,23 +8,22 @@ import React, {
 } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { SvgXml } from 'react-native-svg';
-import { ldk } from '@synonymdev/react-native-ldk';
 
-import { CaptionB, BodyMSB } from '../../styles/text';
+import BitkitLogo from '../../assets/bitkit-logo.svg';
 import GradientView from '../../components/GradientView';
 import SafeAreaInset from '../../components/SafeAreaInset';
-import Title from './Title';
-import GradientText from './GradientText';
-import { useAppDispatch, useAppSelector } from '../../hooks/redux';
+import { __TREASURE_HUNT_HOST__ } from '../../constants/env';
 import { useDisplayValues } from '../../hooks/displayValues';
-import { airdrop } from './prizes';
 import { useLightningMaxInboundCapacity } from '../../hooks/lightning';
-import { getNodeIdFromStorage, waitForLdk } from '../../utils/lightning';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux';
+import type { TreasureHuntScreenProps } from '../../navigation/types';
 import { updateTreasureChest } from '../../store/slices/settings';
 import { createLightningInvoice } from '../../store/utils/lightning';
-import { __TREASURE_HUNT_HOST__ } from '../../constants/env';
-import BitkitLogo from '../../assets/bitkit-logo.svg';
-import type { TreasureHuntScreenProps } from '../../navigation/types';
+import { BodyMSB, CaptionB } from '../../styles/text';
+import { getNodeIdFromStorage, waitForLdk } from '../../utils/lightning';
+import GradientText from './GradientText';
+import Title from './Title';
+import { airdrop } from './prizes';
 
 const lightningIcon = `
   <svg width="14" height="16" viewBox="0 0 14 16">

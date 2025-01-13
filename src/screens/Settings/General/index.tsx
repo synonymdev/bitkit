@@ -2,17 +2,17 @@ import React, { memo, ReactElement, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { EItemType, IListData, ItemData } from '../../../components/List';
-import SettingsView from './../SettingsView';
 import { useAppSelector } from '../../../hooks/redux';
 import type { SettingsScreenProps } from '../../../navigation/types';
-import { EUnit } from '../../../store/types/wallet';
 import { lastUsedTagsSelector } from '../../../store/reselect/metadata';
 import { quickpayIntroSeenSelector } from '../../../store/reselect/settings';
 import {
-	unitSelector,
 	selectedCurrencySelector,
 	transactionSpeedSelector,
+	unitSelector,
 } from '../../../store/reselect/settings';
+import { EUnit } from '../../../store/types/wallet';
+import SettingsView from './../SettingsView';
 
 const GeneralSettings = ({
 	navigation,

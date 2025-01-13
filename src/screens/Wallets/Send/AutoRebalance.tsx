@@ -7,10 +7,10 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
 import GradientView from '../../../components/GradientView';
 import Button from '../../../components/buttons/Button';
-import { BodyM } from '../../../styles/text';
 import { useAppDispatch } from '../../../hooks/redux';
-import { closeSheet } from '../../../store/slices/ui';
 import type { SendScreenProps } from '../../../navigation/types';
+import { closeSheet } from '../../../store/slices/ui';
+import { BodyM } from '../../../styles/text';
 
 const imageSrc = require('../../../assets/illustrations/transfer.png');
 

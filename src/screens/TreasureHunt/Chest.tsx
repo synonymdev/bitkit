@@ -1,17 +1,17 @@
 import React, { ReactElement, memo, useCallback } from 'react';
-import { StyleSheet, Platform, View, TouchableOpacity } from 'react-native';
+import { Platform, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useAppSelector } from '../../hooks/redux';
 
-import { Subtitle, BodySSB } from '../../styles/text';
+import BitkitLogo from '../../assets/bitkit-logo.svg';
+import BlurView from '../../components/BlurView';
 import GradientView from '../../components/GradientView';
 import SafeAreaInset from '../../components/SafeAreaInset';
-import BlurView from '../../components/BlurView';
-import { useScreenSize } from '../../hooks/screen';
 import { useBottomSheetBackPress } from '../../hooks/bottomSheet';
+import { useScreenSize } from '../../hooks/screen';
 import { viewControllerSelector } from '../../store/reselect/ui';
+import { BodySSB, Subtitle } from '../../styles/text';
 import GradientText from './GradientText';
 import Title from './Title';
-import BitkitLogo from '../../assets/bitkit-logo.svg';
 
 import type { TreasureHuntScreenProps } from '../../navigation/types';
 

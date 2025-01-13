@@ -8,19 +8,19 @@ import {
 	IWalletData,
 } from 'beignet';
 
+import { EAvailableNetwork } from '../../utils/networks';
 import {
+	IAddressTypeContent,
 	defaultWalletStoreShape,
 	getDefaultWalletShape,
-	IAddressTypeContent,
 } from '../shapes/wallet';
 import {
 	ETransferStatus,
 	IWalletItem,
-	IWallets,
 	IWalletStore,
+	IWallets,
 	TTransfer,
 } from '../types/wallet';
-import { EAvailableNetwork } from '../../utils/networks';
 
 type TWalletDataKey = Exclude<
 	keyof IWalletData,

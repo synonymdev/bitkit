@@ -1,7 +1,7 @@
-import { getPrivateKeyFromPath, getSelectedNetwork } from '../wallet';
-import { EAvailableNetwork } from '../networks.ts';
-import { err, ok, Result } from '@synonymdev/result';
+import { Result, err, ok } from '@synonymdev/result';
 import { getSha256 } from 'beignet';
+import { EAvailableNetwork } from '../networks.ts';
+import { getPrivateKeyFromPath, getSelectedNetwork } from '../wallet';
 
 export const getPubkySecretKey = async ({
 	selectedNetwork = getSelectedNetwork(),

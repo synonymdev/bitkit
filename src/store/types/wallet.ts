@@ -1,7 +1,3 @@
-import { EAvailableNetwork } from '../../utils/networks';
-import { IExchangeRates } from '../../utils/exchange-rate';
-import { IAddressTypeContent } from '../shapes/wallet';
-import { IHeader } from '../../utils/types/electrum';
 import {
 	EAddressType,
 	IAddress,
@@ -9,10 +5,14 @@ import {
 	IBoostedTransactions,
 	IFormattedTransactions,
 	ISendTransaction,
-	TGapLimitOptions,
 	IUtxo,
+	TGapLimitOptions,
 	TServer,
 } from 'beignet';
+import { IExchangeRates } from '../../utils/exchange-rate';
+import { EAvailableNetwork } from '../../utils/networks';
+import { IHeader } from '../../utils/types/electrum';
+import { IAddressTypeContent } from '../shapes/wallet';
 
 export type TKeyDerivationAccountType = 'onchain';
 

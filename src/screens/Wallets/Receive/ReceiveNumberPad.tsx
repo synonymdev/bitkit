@@ -2,15 +2,15 @@ import React, { memo, ReactElement, useState } from 'react';
 
 import NumberPad from '../../../components/NumberPad';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
-import { convertToSats } from '../../../utils/conversion';
-import { handleNumberPadPress } from '../../../utils/numberpad';
+import { receiveSelector } from '../../../store/reselect/receive';
 import {
 	conversionUnitSelector,
 	numberPadSelector,
 } from '../../../store/reselect/settings';
 import { updateInvoice } from '../../../store/slices/receive';
-import { receiveSelector } from '../../../store/reselect/receive';
+import { convertToSats } from '../../../utils/conversion';
 import { vibrate } from '../../../utils/helpers';
+import { handleNumberPadPress } from '../../../utils/numberpad';
 
 // max amount to avoid breaking UI
 const MAX_AMOUNT = 999999999;

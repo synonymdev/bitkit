@@ -1,14 +1,14 @@
 import React, { memo, ReactElement, useMemo } from 'react';
-import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 import { useTranslation } from 'react-i18next';
+import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 
 import { EItemType, IListData } from '../../../components/List';
-import SettingsView from '../SettingsView';
-import { mostUsedExchangeTickers } from '../../../utils/exchange-rate';
-import { updateSettings } from '../../../store/slices/settings';
-import { exchangeRatesSelector } from '../../../store/reselect/wallet';
-import { selectedCurrencySelector } from '../../../store/reselect/settings';
 import type { SettingsScreenProps } from '../../../navigation/types';
+import { selectedCurrencySelector } from '../../../store/reselect/settings';
+import { exchangeRatesSelector } from '../../../store/reselect/wallet';
+import { updateSettings } from '../../../store/slices/settings';
+import { mostUsedExchangeTickers } from '../../../utils/exchange-rate';
+import SettingsView from '../SettingsView';
 
 const CurrenciesSettings = ({
 	navigation,

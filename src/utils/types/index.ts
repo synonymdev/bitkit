@@ -1,9 +1,9 @@
-import { EAvailableNetwork } from '../networks';
+import { EAddressType, IKeyDerivationPath } from 'beignet';
 import {
 	TKeyDerivationAccountType,
 	TWalletName,
 } from '../../store/types/wallet';
-import { EAddressType, IKeyDerivationPath } from 'beignet';
+import { EAvailableNetwork } from '../networks';
 
 export interface IGetAddress {
 	path: string;

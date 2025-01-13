@@ -1,3 +1,5 @@
+import { ldk } from '@synonymdev/react-native-ldk';
+import Lottie from 'lottie-react-native';
 import React, {
 	ReactElement,
 	memo,
@@ -6,27 +8,25 @@ import React, {
 	useRef,
 } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { SvgXml } from 'react-native-svg';
-import Lottie from 'lottie-react-native';
-import { ldk } from '@synonymdev/react-native-ldk';
 import { useReducedMotion } from 'react-native-reanimated';
+import { SvgXml } from 'react-native-svg';
 
-import { CaptionB, BodyMSB } from '../../styles/text';
+import BitkitLogo from '../../assets/bitkit-logo.svg';
 import GradientView from '../../components/GradientView';
 import SafeAreaInset from '../../components/SafeAreaInset';
-import Title from './Title';
-import GradientText from './GradientText';
-import { emptyPrize, prizes } from './prizes';
-import BitkitLogo from '../../assets/bitkit-logo.svg';
-import { useAppDispatch, useAppSelector } from '../../hooks/redux';
-import { useScreenSize } from '../../hooks/screen';
+import { __E2E__, __TREASURE_HUNT_HOST__ } from '../../constants/env';
 import { useDisplayValues } from '../../hooks/displayValues';
 import { useLightningMaxInboundCapacity } from '../../hooks/lightning';
-import { getNodeIdFromStorage, waitForLdk } from '../../utils/lightning';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux';
+import { useScreenSize } from '../../hooks/screen';
+import type { TreasureHuntScreenProps } from '../../navigation/types';
 import { updateTreasureChest } from '../../store/slices/settings';
 import { createLightningInvoice } from '../../store/utils/lightning';
-import { __E2E__, __TREASURE_HUNT_HOST__ } from '../../constants/env';
-import type { TreasureHuntScreenProps } from '../../navigation/types';
+import { BodyMSB, CaptionB } from '../../styles/text';
+import { getNodeIdFromStorage, waitForLdk } from '../../utils/lightning';
+import GradientText from './GradientText';
+import Title from './Title';
+import { emptyPrize, prizes } from './prizes';
 
 const confettiSrc = require('../../assets/lottie/confetti-yellow.json');
 

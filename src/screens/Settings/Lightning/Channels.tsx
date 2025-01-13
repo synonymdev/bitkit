@@ -1,60 +1,60 @@
+import { BtOrderState2, IBtOrder } from '@synonymdev/blocktank-lsp-http-client';
 import React, { ReactElement, memo, useState, useCallback } from 'react';
-import {
-	StyleSheet,
-	View,
-	ScrollView,
-	TouchableOpacity,
-	RefreshControl,
-} from 'react-native';
-import Share from 'react-native-share';
-import { FadeIn, FadeOut } from 'react-native-reanimated';
 import { useTranslation } from 'react-i18next';
-import { IBtOrder, BtOrderState2 } from '@synonymdev/blocktank-lsp-http-client';
-
-import { AnimatedView, View as ThemedView } from '../../../styles/components';
-import { Caption13Up, BodyMSB } from '../../../styles/text';
 import {
-	ChevronRight,
-	DownArrow,
-	UpArrow,
-	PlusIcon,
-} from '../../../styles/icons';
-import useBreakpoints from '../../../styles/breakpoints';
-import SafeAreaInset from '../../../components/SafeAreaInset';
-import Button from '../../../components/buttons/Button';
-import NavigationHeader from '../../../components/NavigationHeader';
+	RefreshControl,
+	ScrollView,
+	StyleSheet,
+	TouchableOpacity,
+	View,
+} from 'react-native';
+import { FadeIn, FadeOut } from 'react-native-reanimated';
+import Share from 'react-native-share';
+
 import LightningChannel, {
 	TStatus,
 } from '../../../components/LightningChannel';
 import Money from '../../../components/Money';
+import NavigationHeader from '../../../components/NavigationHeader';
+import SafeAreaInset from '../../../components/SafeAreaInset';
+import Button from '../../../components/buttons/Button';
 import useColors from '../../../hooks/colors';
-import { useAppSelector } from '../../../hooks/redux';
-import { refreshOrdersList } from '../../../store/utils/blocktank';
-import { refreshLdk } from '../../../utils/lightning';
-import { showToast } from '../../../utils/notifications';
 import {
-	useLightningChannelName,
 	useLightningBalance,
 	useLightningChannelBalance,
+	useLightningChannelName,
 } from '../../../hooks/lightning';
-import {
-	selectedNetworkSelector,
-	selectedWalletSelector,
-} from '../../../store/reselect/wallet';
-import {
-	closedChannelsSelector,
-	openChannelsSelector,
-	pendingChannelsSelector,
-} from '../../../store/reselect/lightning';
-import { zipLogs } from '../../../utils/lightning/logs';
+import { useAppSelector } from '../../../hooks/redux';
 import { SettingsScreenProps } from '../../../navigation/types';
 import {
 	blocktankOrdersSelector,
 	blocktankPaidOrdersSelector,
 } from '../../../store/reselect/blocktank';
+import {
+	closedChannelsSelector,
+	openChannelsSelector,
+	pendingChannelsSelector,
+} from '../../../store/reselect/lightning';
+import {
+	selectedNetworkSelector,
+	selectedWalletSelector,
+} from '../../../store/reselect/wallet';
 import { TPaidBlocktankOrders } from '../../../store/types/blocktank';
-import { EUnit } from '../../../store/types/wallet';
 import { EChannelStatus, TChannel } from '../../../store/types/lightning';
+import { EUnit } from '../../../store/types/wallet';
+import { refreshOrdersList } from '../../../store/utils/blocktank';
+import useBreakpoints from '../../../styles/breakpoints';
+import { AnimatedView, View as ThemedView } from '../../../styles/components';
+import {
+	ChevronRight,
+	DownArrow,
+	PlusIcon,
+	UpArrow,
+} from '../../../styles/icons';
+import { BodyMSB, Caption13Up } from '../../../styles/text';
+import { refreshLdk } from '../../../utils/lightning';
+import { zipLogs } from '../../../utils/lightning/logs';
+import { showToast } from '../../../utils/notifications';
 
 /**
  * Convert pending (non-channel) blocktank orders to (fake) channels.

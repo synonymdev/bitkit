@@ -1,6 +1,6 @@
 import React, { forwardRef } from 'react';
 import { StyleSheet, TextInputProps } from 'react-native';
-import { View as ThemedView, TextInput } from '../styles/components';
+import { TextInput, View as ThemedView } from '../styles/components';
 import { BodyMSB } from '../styles/text';
 
 type SeedInputProps = TextInputProps & { index: number; valid?: boolean };

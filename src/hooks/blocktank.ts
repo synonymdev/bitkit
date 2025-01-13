@@ -1,9 +1,9 @@
+import { IBtOrder } from '@synonymdev/blocktank-lsp-http-client';
 import { useAppSelector } from '../hooks/redux';
 import {
 	blocktankOrdersSelector,
 	blocktankPaidOrdersSelector,
 } from '../store/reselect/blocktank';
-import { IBtOrder } from '@synonymdev/blocktank-lsp-http-client';
 
 /**
  * Returns the list of blocktank orders that have been paid.

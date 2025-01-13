@@ -1,14 +1,14 @@
-import { useMemo } from 'react';
 import { TChannel } from '@synonymdev/react-native-ldk';
+import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { ellipsis } from '../utils/helpers';
 import { useAppSelector } from '../hooks/redux';
-import { usePaidBlocktankOrders } from './blocktank';
 import {
 	channelsSelector,
 	openChannelsSelector,
 } from '../store/reselect/lightning';
+import { ellipsis } from '../utils/helpers';
+import { usePaidBlocktankOrders } from './blocktank';
 
 /**
  * Returns the lightning balance of all known open channels.

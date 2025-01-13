@@ -1,20 +1,20 @@
 import React, { memo, ReactElement, useMemo, useState } from 'react';
-import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 import { useTranslation } from 'react-i18next';
+import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 
-import { EItemType, IListData, ItemData } from '../../../components/List';
 import Dialog from '../../../components/Dialog';
-import SettingsView from '../SettingsView';
+import { EItemType, IListData, ItemData } from '../../../components/List';
+import type { SettingsScreenProps } from '../../../navigation/types';
 import { enableDevOptionsSelector } from '../../../store/reselect/settings';
-import { resetHiddenTodos } from '../../../store/slices/todos';
-import { addressTypes } from '../../../store/shapes/wallet';
 import {
 	addressTypeSelector,
 	selectedNetworkSelector,
 } from '../../../store/reselect/wallet';
-import { rescanAddresses } from '../../../utils/wallet';
+import { addressTypes } from '../../../store/shapes/wallet';
+import { resetHiddenTodos } from '../../../store/slices/todos';
 import { networkLabels } from '../../../utils/networks';
-import type { SettingsScreenProps } from '../../../navigation/types';
+import { rescanAddresses } from '../../../utils/wallet';
+import SettingsView from '../SettingsView';
 
 const AdvancedSettings = ({
 	navigation,

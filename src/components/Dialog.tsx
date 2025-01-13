@@ -1,13 +1,13 @@
 import React, { memo, ReactElement, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
+	Platform,
 	StyleSheet,
 	Text,
-	View,
-	Platform,
 	TouchableOpacity,
+	View,
 } from 'react-native';
 import Modal from 'react-native-modal';
-import { useTranslation } from 'react-i18next';
 
 import colors from '../styles/colors';
 import { IThemeColors } from '../styles/themes';

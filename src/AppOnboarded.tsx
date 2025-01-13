@@ -1,28 +1,28 @@
-import React, { memo, ReactElement, useEffect, useRef } from 'react';
-import { AppState } from 'react-native';
 import NetInfo from '@react-native-community/netinfo';
+import React, { memo, ReactElement, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
+import { AppState } from 'react-native';
 
-import RootNavigator from './navigation/root/RootNavigator';
 import InactivityTracker from './components/InactivityTracker';
-import { showToast } from './utils/notifications';
-import { startWalletServices } from './utils/startup';
-import { getOnChainWalletElectrumAsync } from './utils/wallet';
-import { unsubscribeFromLightningSubscriptions } from './utils/lightning';
 import { useAppSelector } from './hooks/redux';
+import RootNavigator from './navigation/root/RootNavigator';
 import { dispatch } from './store/helpers';
-import { updateUi } from './store/slices/ui';
-import { isOnlineSelector } from './store/reselect/ui';
 import {
 	hideBalanceOnOpenSelector,
 	pinOnLaunchSelector,
 	pinSelector,
 } from './store/reselect/settings';
+import { isOnlineSelector } from './store/reselect/ui';
 import {
 	selectedNetworkSelector,
 	selectedWalletSelector,
 } from './store/reselect/wallet';
 import { updateSettings } from './store/slices/settings';
+import { updateUi } from './store/slices/ui';
+import { unsubscribeFromLightningSubscriptions } from './utils/lightning';
+import { showToast } from './utils/notifications';
+import { startWalletServices } from './utils/startup';
+import { getOnChainWalletElectrumAsync } from './utils/wallet';
 // import { updateExchangeRates } from './store/actions/wallet';
 
 const AppOnboarded = (): ReactElement => {

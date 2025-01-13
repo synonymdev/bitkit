@@ -3,6 +3,7 @@ import {
 	BACKUPS_SERVER_HOST,
 	BACKUPS_SERVER_PUBKEY,
 	BLOCKTANK_HOST,
+	CHATWOOT_API,
 	E2E,
 	ELECTRUM_BITCOIN_HOST,
 	ELECTRUM_BITCOIN_PROTO,
@@ -21,7 +22,6 @@ import {
 	TRUSTED_ZERO_CONF_PEERS,
 	WALLET_DEFAULT_SELECTED_NETWORK,
 	WEB_RELAY,
-	CHATWOOT_API,
 } from '@env';
 import { isProtocol } from '../store/types/settings';
 import { isBitcoinNetwork } from '../utils/networks';

@@ -1,17 +1,17 @@
-import { EAvailableNetwork } from './networks';
-import { getSelectedNetwork, getSelectedWallet } from './wallet';
+import { Result, err, ok } from '@synonymdev/result';
+import { Platform } from 'react-native';
+import { version } from '../../package.json';
+import { dispatch, getChecksStore } from '../store/helpers';
+import { updateWarning } from '../store/slices/checks';
 import {
 	EWarningIds,
 	TGetImpactedAddressesRes,
 	TStorageWarning,
 } from '../store/types/checks';
-import { getAddressBalance } from './wallet/electrum';
-import { err, ok, Result } from '@synonymdev/result';
 import { TWalletName } from '../store/types/wallet';
-import { updateWarning } from '../store/slices/checks';
-import { dispatch, getChecksStore } from '../store/helpers';
-import { Platform } from 'react-native';
-import { version } from '../../package.json';
+import { EAvailableNetwork } from './networks';
+import { getSelectedNetwork, getSelectedWallet } from './wallet';
+import { getAddressBalance } from './wallet/electrum';
 
 /**
  * Reports the balance of all impacted addresses stored on the device.

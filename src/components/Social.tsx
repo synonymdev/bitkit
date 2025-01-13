@@ -1,7 +1,5 @@
 import React, { ReactElement } from 'react';
 import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
-import Button from './buttons/Button';
-import { openAppURL } from '../utils/helpers';
 import {
 	DiscordIcon,
 	GithubIcon,
@@ -10,6 +8,8 @@ import {
 	TelegramIcon,
 	TwitterIcon,
 } from '../styles/icons';
+import { openAppURL } from '../utils/helpers';
+import Button from './buttons/Button';
 
 const Social = ({ style }: { style?: StyleProp<ViewStyle> }): ReactElement => {
 	return (

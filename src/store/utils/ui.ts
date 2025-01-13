@@ -1,14 +1,14 @@
 import { Platform } from 'react-native';
 import { getBuildNumber } from 'react-native-device-info';
 
-import { getActivityStore, dispatch } from '../helpers';
+import { vibrate } from '../../utils/helpers';
+import { dispatch, getActivityStore } from '../helpers';
 import {
 	closeSheet,
 	setAppUpdateInfo,
 	showSheet,
 	toggleSheet,
 } from '../slices/ui';
-import { vibrate } from '../../utils/helpers';
 import { EActivityType } from '../types/activity';
 import { TAvailableUpdate, ViewControllerParamList } from '../types/ui';
 

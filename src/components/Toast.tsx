@@ -1,13 +1,13 @@
 import React, { ReactElement, useMemo } from 'react';
 import { StyleSheet, useWindowDimensions } from 'react-native';
-import { ToastConfig, ToastConfigParams } from 'react-native-toast-message';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { ToastConfig, ToastConfigParams } from 'react-native-toast-message';
 
-import colors from '../styles/colors';
-import { IThemeColors } from '../styles/themes';
-import { BodyMSB, Caption } from '../styles/text';
-import ToastGradient from '../components/ToastGradient';
 import BlurView from '../components/BlurView';
+import ToastGradient from '../components/ToastGradient';
+import colors from '../styles/colors';
+import { BodyMSB, Caption } from '../styles/text';
+import { IThemeColors } from '../styles/themes';
 
 const Toast = ({
 	type,

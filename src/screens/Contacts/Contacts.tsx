@@ -1,28 +1,28 @@
 import React, { ReactElement, useState } from 'react';
-import { View, StyleSheet, Keyboard } from 'react-native';
-import { useAppSelector } from '../../hooks/redux';
 import { useTranslation } from 'react-i18next';
+import { Keyboard, StyleSheet, View } from 'react-native';
+import { useAppSelector } from '../../hooks/redux';
 
+import { parse } from '@synonymdev/slashtags-url';
+import ContactsList from '../../components/ContactsList';
+import NavigationHeader from '../../components/NavigationHeader';
+import ProfileImage from '../../components/ProfileImage';
+import SafeAreaInset from '../../components/SafeAreaInset';
+import SearchInput from '../../components/SearchInput';
+import { useProfile, useSlashtags } from '../../hooks/slashtags';
+import { RootStackScreenProps } from '../../navigation/types';
+import {
+	contactsSelector,
+	onboardedContactsSelector,
+} from '../../store/reselect/slashtags';
+import { showBottomSheet } from '../../store/utils/ui';
 import {
 	View as ThemedView,
 	TouchableHighlight,
 } from '../../styles/components';
 import { PlusIcon } from '../../styles/icons';
-import ContactsOnboarding from './ContactsOnboarding';
-import NavigationHeader from '../../components/NavigationHeader';
-import SafeAreaInset from '../../components/SafeAreaInset';
-import SearchInput from '../../components/SearchInput';
-import ContactsList from '../../components/ContactsList';
-import { showBottomSheet } from '../../store/utils/ui';
-import { useProfile, useSlashtags } from '../../hooks/slashtags';
-import { RootStackScreenProps } from '../../navigation/types';
 import AddContact from './AddContact';
-import {
-	contactsSelector,
-	onboardedContactsSelector,
-} from '../../store/reselect/slashtags';
-import ProfileImage from '../../components/ProfileImage';
-import { parse } from '@synonymdev/slashtags-url';
+import ContactsOnboarding from './ContactsOnboarding';
 
 const Contacts = (props: RootStackScreenProps<'Contacts'>): ReactElement => {
 	const onboarded = useAppSelector(onboardedContactsSelector);

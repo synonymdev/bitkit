@@ -1,10 +1,10 @@
+import Clipboard from '@react-native-clipboard/clipboard';
+import { parse } from '@synonymdev/slashtags-url';
 import React, { ReactElement, useMemo } from 'react';
 import { StyleProp, ViewStyle } from 'react-native';
-import { parse } from '@synonymdev/slashtags-url';
 import { TouchableOpacity } from 'react-native';
-import Clipboard from '@react-native-clipboard/clipboard';
 
-import { Caption, BodyMSB, BodySSB } from '../styles/text';
+import { BodyMSB, BodySSB, Caption } from '../styles/text';
 import { IThemeColors } from '../styles/themes';
 import { ellipsis } from '../utils/helpers';
 

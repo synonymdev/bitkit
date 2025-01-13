@@ -1,14 +1,14 @@
-import { err, ok, Result } from '@synonymdev/result';
+import { Result, err, ok } from '@synonymdev/result';
 import {
 	EAddressType,
 	EBoostType,
 	EFeeId,
-	getByteCount,
 	ICanBoostResponse,
 	IOnchainFees,
 	IOutput,
 	ISendTransaction,
 	IUtxo,
+	getByteCount,
 } from 'beignet';
 import { getAddressInfo } from 'bitcoin-address-validation';
 
@@ -24,14 +24,14 @@ import {
 	getUiStore,
 } from '../../store/helpers';
 import { removeActivityItem } from '../../store/slices/activity';
-import { initialFeesState } from '../../store/slices/fees';
 import { requireBackup } from '../../store/slices/backup';
-import { TWalletName } from '../../store/types/wallet';
-import { EBackupCategory } from '../../store/utils/backup';
+import { initialFeesState } from '../../store/slices/fees';
 import {
 	ETransactionSpeed,
 	TCoinSelectPreference,
 } from '../../store/types/settings';
+import { TWalletName } from '../../store/types/wallet';
+import { EBackupCategory } from '../../store/utils/backup';
 import { reduceValue } from '../helpers';
 import i18n from '../i18n';
 import { EAvailableNetwork } from '../networks';

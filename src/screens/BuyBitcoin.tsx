@@ -1,11 +1,11 @@
 import React, { ReactElement } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 
-import { Display } from '../styles/text';
 import OnboardingScreen from '../components/OnboardingScreen';
-import { openURL } from '../utils/helpers';
 import { useAppDispatch } from '../hooks/redux';
 import { hideTodo } from '../store/slices/todos';
+import { Display } from '../styles/text';
+import { openURL } from '../utils/helpers';
 
 const imageSrc = require('../assets/illustrations/bitcoin-emboss.png');
 

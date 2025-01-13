@@ -6,29 +6,29 @@ import React, {
 	useState,
 	useEffect,
 } from 'react';
-import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import { StyleSheet, View } from 'react-native';
 
-import { Caption13Up } from '../../../styles/text';
 import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
 import GradientView from '../../../components/GradientView';
 import Button from '../../../components/buttons/Button';
+import { Caption13Up } from '../../../styles/text';
 
-import { useBalance } from '../../../hooks/wallet';
+import { EFeeId } from 'beignet';
+import SafeAreaInset from '../../../components/SafeAreaInset';
 import { useAppSelector } from '../../../hooks/redux';
+import { useBalance } from '../../../hooks/wallet';
+import type { SendScreenProps } from '../../../navigation/types';
+import { onChainFeesSelector } from '../../../store/reselect/fees';
+import { transactionSelector } from '../../../store/reselect/wallet';
 import { showToast } from '../../../utils/notifications';
+import { getFeeInfo } from '../../../utils/wallet';
 import {
 	getTotalFee,
 	getTransactionOutputValue,
 	updateFee,
 } from '../../../utils/wallet/transactions';
 import FeeItem from './FeeItem';
-import type { SendScreenProps } from '../../../navigation/types';
-import { transactionSelector } from '../../../store/reselect/wallet';
-import { onChainFeesSelector } from '../../../store/reselect/fees';
-import SafeAreaInset from '../../../components/SafeAreaInset';
-import { EFeeId } from 'beignet';
-import { getFeeInfo } from '../../../utils/wallet';
 
 const FeeRate = ({ navigation }: SendScreenProps<'FeeRate'>): ReactElement => {
 	const { t } = useTranslation('wallet');

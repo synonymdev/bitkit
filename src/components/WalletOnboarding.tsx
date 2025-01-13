@@ -1,5 +1,4 @@
 import React, { memo, ReactElement, useMemo, useState, useEffect } from 'react';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import {
 	LayoutChangeEvent,
 	StyleProp,
@@ -8,11 +7,12 @@ import {
 	View,
 	ViewStyle,
 } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { Display } from '../styles/text';
-import { XIcon } from '../styles/icons';
 import Arrow from '../assets/dotted-arrow.svg';
 import { __E2E__ } from '../constants/env';
+import { XIcon } from '../styles/icons';
+import { Display } from '../styles/text';
 
 const WalletOnboarding = ({
 	text,

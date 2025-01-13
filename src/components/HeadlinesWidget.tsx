@@ -1,18 +1,18 @@
+import Reader from '@synonymdev/slashtags-widget-news-feed/lib/reader';
 import React, { memo, ReactElement, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
-	View,
-	TouchableOpacity,
-	StyleSheet,
 	StyleProp,
+	StyleSheet,
+	TouchableOpacity,
+	View,
 	ViewStyle,
 } from 'react-native';
-import { useTranslation } from 'react-i18next';
-import Reader from '@synonymdev/slashtags-widget-news-feed/lib/reader';
 
+import { useSlashtags } from '../hooks/slashtags';
 import { BodyM, CaptionB, Title } from '../styles/text';
 import { openAppURL, timeAgo } from '../utils/helpers';
 import { showToast } from '../utils/notifications';
-import { useSlashtags } from '../hooks/slashtags';
 import BaseFeedWidget from './BaseFeedWidget';
 
 type Article = {

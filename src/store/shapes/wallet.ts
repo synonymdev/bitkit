@@ -1,9 +1,3 @@
-import cloneDeep from 'lodash/cloneDeep';
-import { __WALLET_DEFAULT_SELECTED_NETWORK__ } from '../../constants/env';
-import { IHeader } from '../../utils/types/electrum';
-import { EAvailableNetwork } from '../../utils/networks';
-import { objectKeys } from '../../utils/objectKeys';
-import { IWallet, IWalletItem, IWalletStore } from '../types/wallet';
 import {
 	EAddressType,
 	EBoostType,
@@ -14,6 +8,12 @@ import {
 	TAddressTypes,
 	TGapLimitOptions,
 } from 'beignet';
+import cloneDeep from 'lodash/cloneDeep';
+import { __WALLET_DEFAULT_SELECTED_NETWORK__ } from '../../constants/env';
+import { EAvailableNetwork } from '../../utils/networks';
+import { objectKeys } from '../../utils/objectKeys';
+import { IHeader } from '../../utils/types/electrum';
+import { IWallet, IWalletItem, IWalletStore } from '../types/wallet';
 
 export const addressTypes: Readonly<TAddressTypes> = {
 	[EAddressType.p2tr]: {

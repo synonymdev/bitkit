@@ -1,59 +1,59 @@
-import bip21 from 'bip21';
+import {
+	getLNURLParams,
+	lnurlAddress as processLnurlAddress,
+} from '@synonymdev/react-native-lnurl';
+import { Result, err, ok } from '@synonymdev/result';
 import {
 	EAddressType,
 	EAvailableNetworks,
 	parseOnChainPaymentRequest,
 	validateAddress,
 } from 'beignet';
-import { err, ok, Result } from '@synonymdev/result';
-import {
-	getLNURLParams,
-	lnurlAddress as processLnurlAddress,
-} from '@synonymdev/react-native-lnurl';
-import URLParse from 'url-parse';
+import bip21 from 'bip21';
 import {
 	LNURLAuthParams,
 	LNURLChannelParams,
 	LNURLPayParams,
 	LNURLWithdrawParams,
 } from 'js-lnurl';
+import URLParse from 'url-parse';
 
-import {
-	getOnchainTransactionData,
-	getTransactionInputValue,
-} from '../wallet/transactions';
-import { dispatch, getSettingsStore } from '../../store/helpers';
-import { showToast } from '../notifications';
+import { sendNavigation } from '../../navigation/bottom-sheet/SendNavigation';
+import { rootNavigation } from '../../navigation/root/RootNavigator';
 import {
 	resetSendTransaction,
 	setupOnChainTransaction,
 	updateBeignetSendTransaction,
 } from '../../store/actions/wallet';
-import { getBalance, getSelectedNetwork, getSelectedWallet } from '../wallet';
+import { dispatch, getSettingsStore } from '../../store/helpers';
 import { closeSheet, updateSendTransaction } from '../../store/slices/ui';
+import { EDenomination } from '../../store/types/wallet';
 import { showBottomSheet } from '../../store/utils/ui';
+import { fiatToBitcoinUnit } from '../conversion';
+import { getBitcoinDisplayValues } from '../displayValues';
+import i18n from '../i18n';
 import {
 	decodeLightningInvoice,
 	getInvoiceFromUri,
 	getLightningBalance,
 	isLightningUri,
 } from '../lightning';
-import { getSlashPayConfig, handleSlashtagURL } from '../slashtags';
-import { EAvailableNetwork } from '../networks';
-import { EDenomination } from '../../store/types/wallet';
-import { sendNavigation } from '../../navigation/bottom-sheet/SendNavigation';
-import { rootNavigation } from '../../navigation/root/RootNavigator';
 import { findLnUrl, handleLnurlAuth, isLnurlAddress } from '../lnurl';
-import i18n from '../i18n';
-import { getBitcoinDisplayValues } from '../displayValues';
-import { fiatToBitcoinUnit } from '../conversion';
+import { EAvailableNetwork } from '../networks';
+import { showToast } from '../notifications';
+import { getSlashPayConfig, handleSlashtagURL } from '../slashtags';
+import { getBalance, getSelectedNetwork, getSelectedWallet } from '../wallet';
+import {
+	getOnchainTransactionData,
+	getTransactionInputValue,
+} from '../wallet/transactions';
 import {
 	EQRDataType,
-	paymentTypes,
 	QRData,
 	TBitcoinData,
 	TLightningData,
 	TPaymentUri,
+	paymentTypes,
 } from './types';
 
 /**

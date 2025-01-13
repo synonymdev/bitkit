@@ -1,38 +1,38 @@
-import React, { memo, ReactElement, useEffect, useState } from 'react';
-import { StyleSheet } from 'react-native';
-import { err, ok, Result } from '@synonymdev/result';
-import parseUrl from 'url-parse';
-import { useTranslation } from 'react-i18next';
-import isEqual from 'lodash/isEqual';
+import { Result, err, ok } from '@synonymdev/result';
 import { EProtocol } from 'beignet';
+import isEqual from 'lodash/isEqual';
+import React, { memo, ReactElement, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { StyleSheet } from 'react-native';
+import parseUrl from 'url-parse';
 
-import { View, TextInput, ScrollView } from '../../../styles/components';
-import { BodyM, Caption13Up } from '../../../styles/text';
-import { ScanIcon } from '../../../styles/icons';
-import useBreakpoints from '../../../styles/breakpoints';
-import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
-import { updateUi } from '../../../store/slices/ui';
-import { addElectrumPeer } from '../../../store/slices/settings';
-import { selectedNetworkSelector } from '../../../store/reselect/wallet';
-import { customElectrumPeersSelector } from '../../../store/reselect/settings';
-import { defaultElectrumPeer } from '../../../store/shapes/settings';
-import { connectToElectrum } from '../../../utils/wallet/electrum';
 import NavigationHeader from '../../../components/NavigationHeader';
 import SafeAreaInset from '../../../components/SafeAreaInset';
-import { RadioButtonGroup } from '../../../components/buttons/RadioButton';
 import Button from '../../../components/buttons/Button';
+import { RadioButtonGroup } from '../../../components/buttons/RadioButton';
+import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
+import type { SettingsScreenProps } from '../../../navigation/types';
+import { customElectrumPeersSelector } from '../../../store/reselect/settings';
+import { isConnectedToElectrumSelector } from '../../../store/reselect/ui';
+import { selectedNetworkSelector } from '../../../store/reselect/wallet';
+import { defaultElectrumPeer } from '../../../store/shapes/settings';
+import { addElectrumPeer } from '../../../store/slices/settings';
+import { updateUi } from '../../../store/slices/ui';
+import { updateActivityList } from '../../../store/utils/activity';
+import useBreakpoints from '../../../styles/breakpoints';
+import { ScrollView, TextInput, View } from '../../../styles/components';
+import { ScanIcon } from '../../../styles/icons';
+import { BodyM, Caption13Up } from '../../../styles/text';
 import {
 	defaultElectrumPorts,
 	getDefaultPort,
 	getProtocolForPort,
 } from '../../../utils/electrum';
-import { showToast } from '../../../utils/notifications';
-import { getConnectedPeer, IPeerData } from '../../../utils/wallet/electrum';
-import { refreshWallet, rescanAddresses } from '../../../utils/wallet';
 import { EAvailableNetwork } from '../../../utils/networks';
-import { updateActivityList } from '../../../store/utils/activity';
-import { isConnectedToElectrumSelector } from '../../../store/reselect/ui';
-import type { SettingsScreenProps } from '../../../navigation/types';
+import { showToast } from '../../../utils/notifications';
+import { refreshWallet, rescanAddresses } from '../../../utils/wallet';
+import { connectToElectrum } from '../../../utils/wallet/electrum';
+import { IPeerData, getConnectedPeer } from '../../../utils/wallet/electrum';
 
 type RadioButtonItem = { label: string; value: EProtocol };
 

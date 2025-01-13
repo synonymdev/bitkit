@@ -1,16 +1,15 @@
-import React, { ReactElement, memo } from 'react';
-import { StyleSheet, View } from 'react-native';
-import { useTranslation } from 'react-i18next';
 import {
 	BtOpenChannelState,
 	BtOrderState2,
 	BtPaymentState2,
 	IBtOrder,
 } from '@synonymdev/blocktank-lsp-http-client';
+import React, { ReactElement, memo } from 'react';
+import { useTranslation } from 'react-i18next';
+import { StyleSheet, View } from 'react-native';
 
 import { EChannelStatus } from '../../../store/types/lightning';
 import { View as ThemedView } from '../../../styles/components';
-import { BodyMSB } from '../../../styles/text';
 import {
 	ArrowCounterClock,
 	Checkmark,
@@ -20,6 +19,7 @@ import {
 	TimerSpeedIcon,
 	XIcon,
 } from '../../../styles/icons';
+import { BodyMSB } from '../../../styles/text';
 
 const ChannelStatus = ({
 	status,

@@ -1,11 +1,11 @@
 import React, { memo, ReactElement } from 'react';
-import { View, StyleSheet } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import { StyleSheet, View } from 'react-native';
 
+import { IColors } from '../../styles/colors';
 import { TouchableHighlight } from '../../styles/components';
 import { Caption13Up } from '../../styles/text';
 import UnitButton from './UnitButton';
-import { IColors } from '../../styles/colors';
 
 type NumberPadButtons = {
 	color?: keyof IColors;

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Keyboard as RNKeyboard, Platform, KeyboardEvent } from 'react-native';
+import { KeyboardEvent, Platform, Keyboard as RNKeyboard } from 'react-native';
 import { sleep } from '../utils/helpers';
 
 const useKeyboard = (): {

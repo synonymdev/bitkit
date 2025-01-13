@@ -28,8 +28,5 @@
 			"bracketSameLine": true,
 			"quoteStyle": "single"
 		}
-	},
-	"organizeImports": {
-		"enabled": false
 	}
 }

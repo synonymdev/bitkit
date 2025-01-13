@@ -1,25 +1,25 @@
-import React, { memo, ReactElement, useMemo } from 'react';
-import { Image, StyleSheet, View } from 'react-native';
 import Lottie from 'lottie-react-native';
+import React, { memo, ReactElement, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Image, StyleSheet, View } from 'react-native';
 import { useReducedMotion } from 'react-native-reanimated';
 
-import BottomSheetWrapper from '../../components/BottomSheetWrapper';
 import AmountToggle from '../../components/AmountToggle';
-import { closeSheet } from '../../store/slices/ui';
 import BottomSheetNavigationHeader from '../../components/BottomSheetNavigationHeader';
+import BottomSheetWrapper from '../../components/BottomSheetWrapper';
 import SafeAreaInset from '../../components/SafeAreaInset';
-import { rootNavigation } from '../../navigation/root/RootNavigator';
-import { getRandomOkText } from '../../utils/i18n/helpers';
-import { useAppDispatch, useAppSelector } from '../../hooks/redux';
+import Button from '../../components/buttons/Button';
+import { __E2E__ } from '../../constants/env';
 import {
 	useBottomSheetBackPress,
 	useSnapPoints,
 } from '../../hooks/bottomSheet';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux';
+import { rootNavigation } from '../../navigation/root/RootNavigator';
 import { viewControllerSelector } from '../../store/reselect/ui';
+import { closeSheet } from '../../store/slices/ui';
 import { EActivityType } from '../../store/types/activity';
-import Button from '../../components/buttons/Button';
-import { __E2E__ } from '../../constants/env';
+import { getRandomOkText } from '../../utils/i18n/helpers';
 
 const confettiOrangeSrc = require('../../assets/lottie/confetti-orange.json');
 const confettiPurpleSrc = require('../../assets/lottie/confetti-purple.json');

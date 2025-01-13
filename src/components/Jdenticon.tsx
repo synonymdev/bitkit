@@ -1,5 +1,5 @@
-import React, { ReactElement } from 'react';
 import jdenticon, { JdenticonConfig } from 'jdenticon';
+import React, { ReactElement } from 'react';
 import { SvgXml } from 'react-native-svg';
 
 const Jdenticon = ({

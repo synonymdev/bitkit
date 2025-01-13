@@ -1,3 +1,4 @@
+import { useNavigation } from '@react-navigation/native';
 import React, {
 	memo,
 	ReactElement,
@@ -5,19 +6,18 @@ import React, {
 	useCallback,
 	useMemo,
 } from 'react';
-import { View, StyleSheet } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
+import { StyleSheet, View } from 'react-native';
 
-import { Caption13Up } from '../../styles/text';
-import { useAppSelector } from '../../hooks/redux';
-import { groupActivityItems } from '../../utils/activity';
-import { showBottomSheet } from '../../store/utils/ui';
-import { IActivityItem } from '../../store/types/activity';
-import { activityItemsSelector } from '../../store/reselect/activity';
 import Button from '../../components/buttons/Button';
-import ListItem, { EmptyItem } from './ListItem';
+import { useAppSelector } from '../../hooks/redux';
 import type { RootNavigationProp } from '../../navigation/types';
+import { activityItemsSelector } from '../../store/reselect/activity';
+import { IActivityItem } from '../../store/types/activity';
+import { showBottomSheet } from '../../store/utils/ui';
+import { Caption13Up } from '../../styles/text';
+import { groupActivityItems } from '../../utils/activity';
+import ListItem, { EmptyItem } from './ListItem';
 
 const MAX_ACTIVITY_ITEMS = 3;
 

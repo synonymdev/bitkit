@@ -1,20 +1,20 @@
 import React, { memo, ReactElement, useState } from 'react';
-import { ActivityIndicator, StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import { ActivityIndicator, StyleSheet, View } from 'react-native';
 
 import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
-import GradientView from '../../../components/GradientView';
 import ContactsList from '../../../components/ContactsList';
+import GradientView from '../../../components/GradientView';
 import { useAppSelector } from '../../../hooks/redux';
-import { processUri } from '../../../utils/scanner/scanner';
-import { showToast } from '../../../utils/notifications';
 import type { SendScreenProps } from '../../../navigation/types';
-import type { IContactRecord } from '../../../store/types/slashtags';
-import { selectedNetworkSelector } from '../../../store/reselect/wallet';
 import {
 	resetSendTransaction,
 	setupOnChainTransaction,
 } from '../../../store/actions/wallet';
+import { selectedNetworkSelector } from '../../../store/reselect/wallet';
+import type { IContactRecord } from '../../../store/types/slashtags';
+import { showToast } from '../../../utils/notifications';
+import { processUri } from '../../../utils/scanner/scanner';
 
 const Contacts = ({
 	navigation,

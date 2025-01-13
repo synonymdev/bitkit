@@ -26,7 +26,7 @@ import {
 	GlobeSimpleIcon,
 	LightningHollow,
 } from '../../../styles/icons';
-import { CaptionB, BodyMSB } from '../../../styles/text';
+import { BodyMSB, CaptionB } from '../../../styles/text';
 import { FAILED_BACKUP_CHECK_TIME } from '../../../utils/backup/backups-subscriber';
 import { i18nTime } from '../../../utils/i18n';
 import SettingsView from '../SettingsView';

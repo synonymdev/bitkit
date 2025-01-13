@@ -5,18 +5,18 @@ import React, {
 	useMemo,
 	// useState,
 } from 'react';
-// import Rate, { AndroidMarket } from 'react-native-rate';
-import { View, Image, Share, StyleSheet } from 'react-native';
-import { getBuildNumber, getVersion } from 'react-native-device-info';
 import { useTranslation } from 'react-i18next';
+// import Rate, { AndroidMarket } from 'react-native-rate';
+import { Image, Share, StyleSheet, View } from 'react-native';
+import { getBuildNumber, getVersion } from 'react-native-device-info';
 
-import { View as ThemedView } from '../../../styles/components';
 import { EItemType, IListData } from '../../../components/List';
 import SafeAreaInset from '../../../components/SafeAreaInset';
 import Social from '../../../components/Social';
-import SettingsView from '../SettingsView';
-import { openURL } from '../../../utils/helpers';
 import { appName, appStoreUrl, playStoreUrl } from '../../../constants/app';
+import { View as ThemedView } from '../../../styles/components';
+import { openURL } from '../../../utils/helpers';
+import SettingsView from '../SettingsView';
 
 const imageSrc = require('../../../assets/logo.png');
 

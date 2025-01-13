@@ -1,13 +1,13 @@
 import React, { memo, ReactElement } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 
-import { Display } from '../../../styles/text';
 import BottomSheetScreen from '../../../components/BottomSheetScreen';
-import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 import { useBottomSheetBackPress } from '../../../hooks/bottomSheet';
-import { closeSheet } from '../../../store/slices/ui';
-import { showLaterButtonSelector } from '../../../store/reselect/ui';
+import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 import { PinScreenProps } from '../../../navigation/types';
+import { showLaterButtonSelector } from '../../../store/reselect/ui';
+import { closeSheet } from '../../../store/slices/ui';
+import { Display } from '../../../styles/text';
 
 const imageSrc = require('../../../assets/illustrations/shield.png');
 

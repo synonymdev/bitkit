@@ -1,6 +1,6 @@
+import { Canvas, LinearGradient, Rect, vec } from '@shopify/react-native-skia';
 import React, { ReactElement, useState } from 'react';
 import { LayoutChangeEvent, StyleSheet, View } from 'react-native';
-import { Canvas, LinearGradient, Rect, vec } from '@shopify/react-native-skia';
 
 /**
  * This component draws vertical gradient, it has opacity animation on mount

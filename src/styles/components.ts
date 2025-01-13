@@ -1,29 +1,29 @@
-import {
-	ColorValue,
-	Platform,
-	PressableProps,
-	ScrollViewProps,
-	TouchableOpacity as RNTouchableOpacity,
-	TouchableHighlight as RNTouchableHighlight,
-	TouchableOpacityProps,
-	TouchableHighlightProps,
-	Pressable as RNPressable,
-	ViewProps,
-	TextInput as RNTextInput,
-	TextInputProps as RNTextInputProps,
-} from 'react-native';
-import Color from 'color';
-import Animated, { AnimatedProps } from 'react-native-reanimated';
-import { SafeAreaProvider as _SafeAreaProvider } from 'react-native-safe-area-context';
 import { BottomSheetTextInput as _BottomSheetTextInput } from '@gorhom/bottom-sheet';
 import {
 	DefaultTheme,
 	NavigationContainer as _NavigationContainer,
 } from '@react-navigation/native';
+import Color from 'color';
+import {
+	ColorValue,
+	Platform,
+	PressableProps,
+	Pressable as RNPressable,
+	TextInput as RNTextInput,
+	TextInputProps as RNTextInputProps,
+	TouchableHighlight as RNTouchableHighlight,
+	TouchableOpacity as RNTouchableOpacity,
+	ScrollViewProps,
+	TouchableHighlightProps,
+	TouchableOpacityProps,
+	ViewProps,
+} from 'react-native';
+import Animated, { AnimatedProps } from 'react-native-reanimated';
+import { SafeAreaProvider as _SafeAreaProvider } from 'react-native-safe-area-context';
 
 import _SafeAreaView from '../components/SafeAreaView';
-import styled from './styled-components';
 import colors from './colors';
+import styled from './styled-components';
 import { IThemeColors } from './themes';
 
 type ColorProps = {

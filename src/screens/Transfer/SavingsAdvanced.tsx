@@ -1,24 +1,24 @@
 import React, { ReactElement, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
 import { Trans, useTranslation } from 'react-i18next';
+import { StyleSheet, View } from 'react-native';
 
-import { BodyM, Caption13Up, Display } from '../../styles/text';
+import Money from '../../components/Money';
+import NavigationHeader from '../../components/NavigationHeader';
+import SafeAreaInset from '../../components/SafeAreaInset';
+import SwitchRow from '../../components/SwitchRow';
+import Button from '../../components/buttons/Button';
+import { useLightningChannelName } from '../../hooks/lightning';
+import { useAppSelector } from '../../hooks/redux';
+import { useSwitchUnit } from '../../hooks/wallet';
+import type { TransferScreenProps } from '../../navigation/types';
+import { openChannelsSelector } from '../../store/reselect/lightning';
+import { TChannel } from '../../store/types/lightning';
 import {
-	View as ThemedView,
 	ScrollView,
+	View as ThemedView,
 	TouchableOpacity,
 } from '../../styles/components';
-import SafeAreaInset from '../../components/SafeAreaInset';
-import NavigationHeader from '../../components/NavigationHeader';
-import SwitchRow from '../../components/SwitchRow';
-import Money from '../../components/Money';
-import Button from '../../components/buttons/Button';
-import { useSwitchUnit } from '../../hooks/wallet';
-import { useAppSelector } from '../../hooks/redux';
-import { useLightningChannelName } from '../../hooks/lightning';
-import { TChannel } from '../../store/types/lightning';
-import { openChannelsSelector } from '../../store/reselect/lightning';
-import type { TransferScreenProps } from '../../navigation/types';
+import { BodyM, Caption13Up, Display } from '../../styles/text';
 
 const Channel = ({
 	channel,

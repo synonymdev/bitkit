@@ -1,10 +1,10 @@
+import { EActivityType } from '../types/activity';
 import { ETransferType } from '../types/wallet';
+import { activityItemsSelector } from './activity';
 import { lightningBalanceSelector, pendingPaymentsSelector } from './lightning';
 import { newChannelsNotificationsSelector } from './todos';
-import { onChainBalanceSelector, pendingTransfersSelector } from './wallet';
 import { createShallowEqualSelector } from './utils';
-import { activityItemsSelector } from './activity';
-import { EActivityType } from '../types/activity';
+import { onChainBalanceSelector, pendingTransfersSelector } from './wallet';
 
 export type TBalance = {
 	/** Total onchain funds */

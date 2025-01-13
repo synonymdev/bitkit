@@ -1,8 +1,8 @@
+import { LNURLPayParams, LNURLWithdrawParams } from 'js-lnurl';
 import { AppStateStatus } from 'react-native';
-import { LNURLWithdrawParams, LNURLPayParams } from 'js-lnurl';
-import { EActivityType, TOnchainActivityItem } from './activity';
 import { ReceiveStackParamList } from '../../navigation/bottom-sheet/ReceiveNavigation';
 import { SendStackParamList } from '../../navigation/bottom-sheet/SendNavigation';
+import { EActivityType, TOnchainActivityItem } from './activity';
 
 export type ViewControllerParamList = {
 	activityTagsPrompt: { id: string };

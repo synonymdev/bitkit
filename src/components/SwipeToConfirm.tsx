@@ -1,6 +1,6 @@
 import React, { ReactElement, memo, useEffect, useState } from 'react';
-import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Animated, {
 	clamp,
@@ -11,11 +11,11 @@ import Animated, {
 	withTiming,
 } from 'react-native-reanimated';
 
-import { View as ThemedView } from '../styles/components';
-import { BodySSB } from '../styles/text';
-import { RightArrow } from '../styles/icons';
-import { IThemeColors } from '../styles/themes';
 import useColors from '../hooks/colors';
+import { View as ThemedView } from '../styles/components';
+import { RightArrow } from '../styles/icons';
+import { BodySSB } from '../styles/text';
+import { IThemeColors } from '../styles/themes';
 import LoadingSpinner from './Spinner';
 
 const CIRCLE_SIZE = 60;

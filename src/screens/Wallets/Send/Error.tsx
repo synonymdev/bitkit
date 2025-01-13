@@ -1,22 +1,22 @@
 import React, { memo, ReactElement } from 'react';
-import { StyleSheet, View, Image } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import { Image, StyleSheet, View } from 'react-native';
 
-import { BodyM } from '../../../styles/text';
 import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
-import SafeAreaInset from '../../../components/SafeAreaInset';
 import GradientView from '../../../components/GradientView';
+import SafeAreaInset from '../../../components/SafeAreaInset';
 import Button from '../../../components/buttons/Button';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
-import { processUri } from '../../../utils/scanner/scanner';
-import { showToast } from '../../../utils/notifications';
 import type { SendScreenProps } from '../../../navigation/types';
 import {
 	resetSendTransaction,
 	setupOnChainTransaction,
 } from '../../../store/actions/wallet';
-import { closeSheet, updateSendTransaction } from '../../../store/slices/ui';
 import { transactionSelector } from '../../../store/reselect/wallet';
+import { closeSheet, updateSendTransaction } from '../../../store/slices/ui';
+import { BodyM } from '../../../styles/text';
+import { showToast } from '../../../utils/notifications';
+import { processUri } from '../../../utils/scanner/scanner';
 
 const imageCross = require('../../../assets/illustrations/cross.png');
 const imageExclamation = require('../../../assets/illustrations/exclamation-mark.png');

@@ -1,5 +1,5 @@
 import lm, { ldk, TBackupServerDetails } from '@synonymdev/react-native-ldk';
-import { err, ok, Result } from '@synonymdev/result';
+import { Result, err, ok } from '@synonymdev/result';
 import { IBoostedTransactions } from 'beignet';
 
 import {
@@ -26,19 +26,21 @@ import {
 	getWidgetsStore,
 } from '../helpers';
 import { getDefaultSettingsShape } from '../shapes/settings';
+import { getDefaultWalletShape } from '../shapes/wallet';
 import {
+	TActivity,
 	addActivityItems,
 	resetActivityState,
-	TActivity,
 } from '../slices/activity';
 import { backupError, backupStart, backupSuccess } from '../slices/backup';
 import { updateBlocktank } from '../slices/blocktank';
 import { initialMetadataState, updateMetadata } from '../slices/metadata';
 import { TSettings, updateSettings } from '../slices/settings';
 import { addContacts } from '../slices/slashtags';
+import { restoreBoostedTransactions, restoreTransfers } from '../slices/wallet';
 import {
-	initialWidgetsState,
 	TWidgetsState,
+	initialWidgetsState,
 	updateWidgets,
 } from '../slices/widgets';
 import { EActivityType } from '../types/activity';
@@ -46,9 +48,7 @@ import { TBackupMetadata } from '../types/backup';
 import { IBlocktank } from '../types/blocktank';
 import { TMetadataState } from '../types/metadata';
 import { TSlashtagsState } from '../types/slashtags';
-import { getDefaultWalletShape } from '../shapes/wallet';
 import { IWalletItem, TTransfer } from '../types/wallet';
-import { restoreBoostedTransactions, restoreTransfers } from '../slices/wallet';
 import { updateOnChainActivityList } from './activity';
 
 export enum EBackupCategory {

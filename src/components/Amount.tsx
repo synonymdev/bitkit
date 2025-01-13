@@ -1,9 +1,9 @@
 import React, { ReactElement } from 'react';
-import { View, StyleSheet, StyleProp, ViewStyle } from 'react-native';
+import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 
-import { Display } from '../styles/text';
 import { useCurrency } from '../hooks/displayValues';
 import { EUnit } from '../store/types/wallet';
+import { Display } from '../styles/text';
 
 const Amount = ({
 	value,

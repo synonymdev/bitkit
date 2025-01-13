@@ -1,27 +1,27 @@
+import { createSelector } from '@reduxjs/toolkit';
 import {
 	EAddressType,
 	IBoostedTransactions,
 	IFormattedTransaction,
 	IFormattedTransactions,
 	ISendTransaction,
-	TGapLimitOptions,
 	IUtxo,
+	TGapLimitOptions,
 } from 'beignet';
-import { createSelector } from '@reduxjs/toolkit';
 
 import { RootState } from '..';
+import { IExchangeRates } from '../../utils/exchange-rate';
+import { EAvailableNetwork } from '../../utils/networks';
+import { defaultSendTransaction } from '../shapes/wallet';
+import { TSettings } from '../slices/settings';
+import { EFeeId } from '../types/fees';
 import {
+	ETransferStatus,
+	IWallet,
 	IWalletStore,
 	IWallets,
-	IWallet,
 	TWalletName,
-	ETransferStatus,
 } from '../types/wallet';
-import { defaultSendTransaction } from '../shapes/wallet';
-import { EAvailableNetwork } from '../../utils/networks';
-import { IExchangeRates } from '../../utils/exchange-rate';
-import { EFeeId } from '../types/fees';
-import { TSettings } from '../slices/settings';
 
 export const walletState = (state: RootState): IWalletStore => state.wallet;
 export const walletsState = (state: RootState): IWallets => {

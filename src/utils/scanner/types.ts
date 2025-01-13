@@ -1,10 +1,10 @@
-import { EAvailableNetwork } from '../networks';
 import {
 	LNURLAuthParams,
 	LNURLChannelParams,
 	LNURLPayParams,
 	LNURLWithdrawParams,
 } from 'js-lnurl';
+import { EAvailableNetwork } from '../networks';
 
 export enum EQRDataType {
 	unified = 'unified',

@@ -1,20 +1,29 @@
-import React, { ReactElement, memo, useState } from 'react';
-import { StyleSheet, ScrollView } from 'react-native';
-import Share from 'react-native-share';
-import { useTranslation } from 'react-i18next';
 import Clipboard from '@react-native-clipboard/clipboard';
 import lm from '@synonymdev/react-native-ldk';
+import React, { ReactElement, memo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { ScrollView, StyleSheet } from 'react-native';
 import RNFS from 'react-native-fs';
+import Share from 'react-native-share';
 
-import { Caption13Up } from '../../../styles/text';
-import { View as ThemedView, TextInput } from '../../../styles/components';
+import NavigationHeader from '../../../components/NavigationHeader';
 import SafeAreaInset from '../../../components/SafeAreaInset';
 import Button from '../../../components/buttons/Button';
-import NavigationHeader from '../../../components/NavigationHeader';
 import { useLightningBalance } from '../../../hooks/lightning';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
-import { zipLogs } from '../../../utils/lightning/logs';
-import { showToast } from '../../../utils/notifications';
+import { openChannelsSelector } from '../../../store/reselect/lightning';
+import {
+	selectedNetworkSelector,
+	selectedWalletSelector,
+} from '../../../store/reselect/wallet';
+import { removeLightningPeer } from '../../../store/slices/lightning';
+import {
+	createLightningInvoice,
+	savePeer,
+} from '../../../store/utils/lightning';
+import { showBottomSheet } from '../../../store/utils/ui';
+import { TextInput, View as ThemedView } from '../../../styles/components';
+import { Caption13Up } from '../../../styles/text';
 import {
 	addPeer,
 	getNodeId,
@@ -23,20 +32,11 @@ import {
 	recoverOutputs,
 	recoverOutputsFromForceClose,
 	refreshLdk,
-	setupLdk,
 	removeUnusedPeers,
+	setupLdk,
 } from '../../../utils/lightning';
-import { openChannelsSelector } from '../../../store/reselect/lightning';
-import { showBottomSheet } from '../../../store/utils/ui';
-import { removeLightningPeer } from '../../../store/slices/lightning';
-import {
-	createLightningInvoice,
-	savePeer,
-} from '../../../store/utils/lightning';
-import {
-	selectedNetworkSelector,
-	selectedWalletSelector,
-} from '../../../store/reselect/wallet';
+import { zipLogs } from '../../../utils/lightning/logs';
+import { showToast } from '../../../utils/notifications';
 
 const LdkDebug = (): ReactElement => {
 	const { t } = useTranslation('lightning');

@@ -1,8 +1,8 @@
 import React, { memo, ReactElement } from 'react';
 import { StyleProp, StyleSheet, ViewStyle } from 'react-native';
 
-import { Pressable } from '../styles/components';
 import Money from '../components/Money';
+import { Pressable } from '../styles/components';
 
 /**
  * Displays the total amount of sats specified and it's corresponding fiat value.

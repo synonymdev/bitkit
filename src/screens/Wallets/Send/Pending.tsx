@@ -1,19 +1,19 @@
 import React, { memo, ReactElement } from 'react';
-import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import { StyleSheet, View } from 'react-native';
 
-import { BodyM } from '../../../styles/text';
-import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
 import AmountToggle from '../../../components/AmountToggle';
-import SafeAreaInset from '../../../components/SafeAreaInset';
+import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
 import GradientView from '../../../components/GradientView';
 import HourglassSpinner from '../../../components/HourglassSpinner';
+import SafeAreaInset from '../../../components/SafeAreaInset';
 import Button from '../../../components/buttons/Button';
-import { rootNavigation } from '../../../navigation/root/RootNavigator';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
-import { closeSheet } from '../../../store/slices/ui';
-import { activityItemSelector } from '../../../store/reselect/activity';
+import { rootNavigation } from '../../../navigation/root/RootNavigator';
 import type { SendScreenProps } from '../../../navigation/types';
+import { activityItemSelector } from '../../../store/reselect/activity';
+import { closeSheet } from '../../../store/slices/ui';
+import { BodyM } from '../../../styles/text';
 
 const Pending = ({ route }: SendScreenProps<'Pending'>): ReactElement => {
 	const dispatch = useAppDispatch();

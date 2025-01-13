@@ -3,13 +3,13 @@ import { StyleProp, ViewStyle } from 'react-native';
 
 import NumberPad from '../../../components/NumberPad';
 import { useAppSelector } from '../../../hooks/redux';
-import { vibrate } from '../../../utils/helpers';
-import { convertToSats } from '../../../utils/conversion';
-import { handleNumberPadPress } from '../../../utils/numberpad';
 import {
 	conversionUnitSelector,
 	numberPadSelector,
 } from '../../../store/reselect/settings';
+import { convertToSats } from '../../../utils/conversion';
+import { vibrate } from '../../../utils/helpers';
+import { handleNumberPadPress } from '../../../utils/numberpad';
 
 const SendNumberPad = ({
 	value,

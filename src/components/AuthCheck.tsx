@@ -1,13 +1,13 @@
+import { RouteProp } from '@react-navigation/native';
 import React, { memo, ReactElement, useState } from 'react';
 import { StyleSheet } from 'react-native';
-import { useAppSelector } from '../hooks/redux';
-import { RouteProp } from '@react-navigation/native';
 import Animated, { FadeOut } from 'react-native-reanimated';
+import { useAppSelector } from '../hooks/redux';
 
+import { biometricsSelector } from '../store/reselect/settings';
 import { View as ThemedView } from '../styles/components';
 import Biometrics from './Biometrics';
 import PinPad from './PinPad';
-import { biometricsSelector } from '../store/reselect/settings';
 
 type AuthCheckProps = {
 	showBackNavigation?: boolean;

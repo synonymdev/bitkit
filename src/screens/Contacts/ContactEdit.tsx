@@ -1,22 +1,22 @@
-import React, { useState, useMemo, useEffect, ReactElement } from 'react';
-import { View, StyleSheet } from 'react-native';
-import { useTranslation } from 'react-i18next';
 import { parse } from '@synonymdev/slashtags-url';
+import React, { useState, useMemo, useEffect, ReactElement } from 'react';
+import { useTranslation } from 'react-i18next';
+import { StyleSheet, View } from 'react-native';
 
-import { BodyS } from '../../styles/text';
-import { View as ThemedView } from '../../styles/components';
-import Button from '../../components/buttons/Button';
 import Divider from '../../components/Divider';
-import SafeAreaInset from '../../components/SafeAreaInset';
 import HourglassSpinner from '../../components/HourglassSpinner';
-import NavigationHeader from '../../components/NavigationHeader';
 import KeyboardAvoidingView from '../../components/KeyboardAvoidingView';
+import NavigationHeader from '../../components/NavigationHeader';
 import ProfileCard, { MAX_NAME_LENGTH } from '../../components/ProfileCard';
-import { RootStackScreenProps } from '../../navigation/types';
+import SafeAreaInset from '../../components/SafeAreaInset';
+import Button from '../../components/buttons/Button';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { useProfile, useSlashtags } from '../../hooks/slashtags';
-import { addContact } from '../../store/slices/slashtags';
+import { RootStackScreenProps } from '../../navigation/types';
 import { contactSelector } from '../../store/reselect/slashtags';
+import { addContact } from '../../store/slices/slashtags';
+import { View as ThemedView } from '../../styles/components';
+import { BodyS } from '../../styles/text';
 
 const ContactEdit = ({
 	navigation,

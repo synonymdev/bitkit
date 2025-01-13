@@ -1,21 +1,21 @@
 import React, { memo, ReactElement, useEffect, useState } from 'react';
 import {
-	View,
-	StyleSheet,
-	StyleProp,
-	ViewStyle,
 	Image,
+	StyleProp,
+	StyleSheet,
 	TouchableOpacity,
+	View,
+	ViewStyle,
 } from 'react-native';
 
-import { CaptionB, BodyMSB, BodySSB } from '../styles/text';
-import BaseFeedWidget from './BaseFeedWidget';
+import { BodyMSB, BodySSB, CaptionB } from '../styles/text';
 import { openURL } from '../utils/helpers';
+import BaseFeedWidget from './BaseFeedWidget';
 
-import { useSlashfeed } from '../hooks/widgets';
-import Button from './buttons/Button';
-import { CalendarIcon, MapPinLineIcon, MapTrifoldIcon } from '../styles/icons';
 import { useAppSelector } from '../hooks/redux';
+import { useSlashfeed } from '../hooks/widgets';
+import { CalendarIcon, MapPinLineIcon, MapTrifoldIcon } from '../styles/icons';
+import Button from './buttons/Button';
 
 const cache = {
 	banner: '',

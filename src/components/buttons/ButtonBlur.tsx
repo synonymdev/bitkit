@@ -1,14 +1,14 @@
-import React, { ReactElement } from 'react';
-import { SvgXml } from 'react-native-svg';
 import { BlurView } from '@react-native-community/blur';
+import React, { ReactElement } from 'react';
 import {
-	StyleSheet,
 	Platform,
-	StyleProp,
-	ViewStyle,
 	Pressable,
+	StyleProp,
+	StyleSheet,
 	View,
+	ViewStyle,
 } from 'react-native';
+import { SvgXml } from 'react-native-svg';
 import { BodySSB } from '../../styles/text';
 import { lighten } from '../../utils/color';
 

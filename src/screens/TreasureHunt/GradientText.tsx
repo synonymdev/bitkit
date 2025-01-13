@@ -1,12 +1,12 @@
-import React, { ReactElement } from 'react';
-import { StyleProp, ViewStyle } from 'react-native';
 import {
 	Canvas,
-	Text,
 	LinearGradient,
+	Text,
 	useFont,
 	vec,
 } from '@shopify/react-native-skia';
+import React, { ReactElement } from 'react';
+import { StyleProp, ViewStyle } from 'react-native';
 
 export const GradientText = ({
 	text,

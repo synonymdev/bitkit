@@ -1,22 +1,22 @@
 import React, { ReactElement } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
-	View,
-	TouchableOpacity,
 	StyleProp,
 	StyleSheet,
+	TouchableOpacity,
+	View,
 	ViewStyle,
 } from 'react-native';
-import { useTranslation } from 'react-i18next';
 
-import { Caption13Up, BodySSB, BodyS } from '../styles/text';
-import { TrashIcon } from '../styles/icons';
-import { LocalLink } from '../store/types/slashtags';
 import { useAppDispatch } from '../hooks/redux';
-import { editLink, deleteLink } from '../store/slices/slashtags';
-import LabeledInput from './LabeledInput';
-import Divider from './Divider';
 import { suggestions } from '../screens/Profile/ProfileLinkSuggestions';
+import { deleteLink, editLink } from '../store/slices/slashtags';
+import { LocalLink } from '../store/types/slashtags';
+import { TrashIcon } from '../styles/icons';
+import { BodyS, BodySSB, Caption13Up } from '../styles/text';
 import { openAppURL } from '../utils/helpers';
+import Divider from './Divider';
+import LabeledInput from './LabeledInput';
 
 const trimLink = (link: LocalLink): string => {
 	let trimmedUrl = link.url;

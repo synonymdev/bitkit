@@ -1,23 +1,23 @@
 import React, { ReactElement, memo, useMemo, useState, useEffect } from 'react';
-import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import { StyleSheet, View } from 'react-native';
 
-import { Caption13Up, BodyM } from '../../../styles/text';
-import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
-import SafeAreaInset from '../../../components/SafeAreaInset';
-import GradientView from '../../../components/GradientView';
-import Button from '../../../components/buttons/Button';
 import Amount from '../../../components/Amount';
+import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
+import GradientView from '../../../components/GradientView';
 import NumberPad from '../../../components/NumberPad';
-import { getTotalFee, updateFee } from '../../../utils/wallet/transactions';
-import { handleNumberPadPress } from '../../../utils/numberpad';
-import { showToast } from '../../../utils/notifications';
-import { useAppSelector } from '../../../hooks/redux';
+import SafeAreaInset from '../../../components/SafeAreaInset';
+import Button from '../../../components/buttons/Button';
 import { useDisplayValues } from '../../../hooks/displayValues';
-import { transactionSelector } from '../../../store/reselect/wallet';
-import { onChainFeesSelector } from '../../../store/reselect/fees';
+import { useAppSelector } from '../../../hooks/redux';
 import type { SendScreenProps } from '../../../navigation/types';
+import { onChainFeesSelector } from '../../../store/reselect/fees';
+import { transactionSelector } from '../../../store/reselect/wallet';
+import { BodyM, Caption13Up } from '../../../styles/text';
+import { showToast } from '../../../utils/notifications';
+import { handleNumberPadPress } from '../../../utils/numberpad';
 import { getFeeInfo } from '../../../utils/wallet';
+import { getTotalFee, updateFee } from '../../../utils/wallet/transactions';
 
 const FeeCustom = ({
 	navigation,

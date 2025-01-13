@@ -1,29 +1,29 @@
-import { Linking, Vibration } from 'react-native';
 import NetInfo from '@react-native-community/netinfo';
-import { err, ok, Result } from '@synonymdev/result';
-import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
+import { Result, err, ok } from '@synonymdev/result';
 import has from 'lodash/has';
-import keys from 'lodash/keys';
 import isPlainObject from 'lodash/isPlainObject';
+import keys from 'lodash/keys';
+import { Linking, Vibration } from 'react-native';
+import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
 
-import { i18nTime } from '../utils/i18n';
 import { TServer } from 'beignet';
 import {
-	TTags,
 	TLastUsedTags,
 	TPendingInvoice,
 	TSlashTagsUrls,
+	TTags,
 	TTxComments,
 } from '../store/types/metadata';
 import {
-	TTheme,
-	TCoinSelectPreference,
-	TReceiveOption,
 	ETransactionSpeed,
 	TChest,
+	TCoinSelectPreference,
+	TReceiveOption,
+	TTheme,
 } from '../store/types/settings';
-import { EUnit, EDenomination } from '../store/types/wallet';
+import { EDenomination, EUnit } from '../store/types/wallet';
 import { TWidgets } from '../store/types/widgets';
+import { i18nTime } from '../utils/i18n';
 import { EAvailableNetwork } from './networks';
 
 /**

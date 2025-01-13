@@ -1,3 +1,4 @@
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import React, {
 	memo,
 	ReactElement,
@@ -5,21 +6,15 @@ import React, {
 	useCallback,
 	useState,
 } from 'react';
-import { View, StyleSheet, Image, ImageSourcePropType } from 'react-native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { Trans, useTranslation } from 'react-i18next';
+import { Image, ImageSourcePropType, StyleSheet, View } from 'react-native';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 
-import { Display, BodyM, BodyS } from '../../styles/text';
-import { View as ThemedView } from '../../styles/components';
-import NavigationHeader from '../../components/NavigationHeader';
-import Button from '../../components/buttons/Button';
-import SafeAreaInset from '../../components/SafeAreaInset';
-import { TSlashtagsState } from '../../store/types/slashtags';
-import SwitchRow from '../../components/SwitchRow';
-import { updateSettings } from '../../store/slices/settings';
-import { setOnboardingProfileStep } from '../../store/slices/slashtags';
 import DetectSwipe from '../../components/DetectSwipe';
+import NavigationHeader from '../../components/NavigationHeader';
+import SafeAreaInset from '../../components/SafeAreaInset';
+import SwitchRow from '../../components/SwitchRow';
+import Button from '../../components/buttons/Button';
 import type {
 	RootStackParamList,
 	RootStackScreenProps,
@@ -28,6 +23,11 @@ import {
 	selectedNetworkSelector,
 	selectedWalletSelector,
 } from '../../store/reselect/wallet';
+import { updateSettings } from '../../store/slices/settings';
+import { setOnboardingProfileStep } from '../../store/slices/slashtags';
+import { TSlashtagsState } from '../../store/types/slashtags';
+import { View as ThemedView } from '../../styles/components';
+import { BodyM, BodyS, Display } from '../../styles/text';
 import { updateSlashPayConfig } from '../../utils/slashtags';
 
 const crownImageSrc = require('../../assets/illustrations/crown.png');

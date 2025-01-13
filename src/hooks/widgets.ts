@@ -1,6 +1,6 @@
-import { useEffect, useMemo, useState } from 'react';
 import { Reader } from '@synonymdev/feeds';
 import b4a from 'b4a';
+import { useEffect, useMemo, useState } from 'react';
 
 import { SlashFeedJSON } from '../store/types/widgets';
 import { SUPPORTED_FEED_TYPES, decodeWidgetFieldValue } from '../utils/widgets';

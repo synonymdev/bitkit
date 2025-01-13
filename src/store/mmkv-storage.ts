@@ -1,6 +1,6 @@
-import { Storage } from 'redux-persist';
-import { MMKV } from 'react-native-mmkv';
 import type { IteratorOptions } from 'level';
+import { MMKV } from 'react-native-mmkv';
+import { Storage } from 'redux-persist';
 
 export const storage = new MMKV();
 

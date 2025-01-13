@@ -1,5 +1,5 @@
-import { RootState } from '..';
 import { createSelector } from '@reduxjs/toolkit';
+import { RootState } from '..';
 import { IChecksShape, TStorageWarning } from '../types/checks';
 import { selectedNetworkSelector, selectedWalletSelector } from './wallet';
 

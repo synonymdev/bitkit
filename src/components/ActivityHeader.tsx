@@ -7,16 +7,16 @@ import {
 	ViewStyle,
 } from 'react-native';
 
-import { EyeIcon } from '../styles/icons';
-import Money from './Money';
-import DetectSwipe from './DetectSwipe';
-import { useSwitchUnitAnnounced } from '../hooks/wallet';
 import { useAppDispatch, useAppSelector } from '../hooks/redux';
-import { updateSettings } from '../store/slices/settings';
+import { useSwitchUnitAnnounced } from '../hooks/wallet';
 import {
 	enableSwipeToHideBalanceSelector,
 	hideBalanceSelector,
 } from '../store/reselect/settings';
+import { updateSettings } from '../store/slices/settings';
+import { EyeIcon } from '../styles/icons';
+import DetectSwipe from './DetectSwipe';
+import Money from './Money';
 
 const ActivityHeader = ({
 	balance,

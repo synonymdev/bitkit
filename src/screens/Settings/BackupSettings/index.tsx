@@ -2,10 +2,8 @@ import React, { ReactElement, ReactNode, memo, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet, View } from 'react-native';
 
-import { IThemeColors } from '../../../styles/themes';
-import { CaptionB, Caption13Up, BodyMSB } from '../../../styles/text';
-import { ScrollView, View as ThemedView } from '../../../styles/components';
 import { EItemType, IListData } from '../../../components/List';
+import Button from '../../../components/buttons/Button';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 import { SettingsScreenProps } from '../../../navigation/types';
 import { backupSelector } from '../../../store/reselect/backup';
@@ -14,6 +12,7 @@ import { forceBackup } from '../../../store/slices/backup';
 import { TBackupItem } from '../../../store/types/backup';
 import { EBackupCategory } from '../../../store/utils/backup';
 import { toggleBottomSheet } from '../../../store/utils/ui';
+import { ScrollView, View as ThemedView } from '../../../styles/components';
 import {
 	ArrowClockwise,
 	LightningHollow,
@@ -25,9 +24,10 @@ import {
 	TransferIcon,
 	UsersIcon,
 } from '../../../styles/icons';
+import { BodyMSB, Caption13Up, CaptionB } from '../../../styles/text';
+import { IThemeColors } from '../../../styles/themes';
 import { i18nTime } from '../../../utils/i18n';
 import SettingsView from '../SettingsView';
-import Button from '../../../components/buttons/Button';
 
 const Status = ({
 	Icon,

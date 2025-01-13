@@ -1,6 +1,6 @@
-import React, { ReactElement, ReactNode } from 'react';
-import { StyleSheet, Platform, StyleProp, ViewStyle } from 'react-native';
 import { BlurView as Blur } from '@react-native-community/blur';
+import React, { ReactElement, ReactNode } from 'react';
+import { Platform, StyleProp, StyleSheet, ViewStyle } from 'react-native';
 import { View } from '../styles/components';
 
 type BlurViewProps = {

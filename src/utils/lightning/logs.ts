@@ -1,7 +1,7 @@
-import RNFS, { copyFile, exists, mkdir, unlink } from 'react-native-fs';
 import lm from '@synonymdev/react-native-ldk';
+import { Result, err, ok } from '@synonymdev/result';
+import RNFS, { copyFile, exists, mkdir, unlink } from 'react-native-fs';
 import { zip } from 'react-native-zip-archive';
-import { err, ok, Result } from '@synonymdev/result';
 
 /**
  * Zips up the newest LDK logs and returns base64 of zip file

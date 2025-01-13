@@ -1,9 +1,9 @@
 import React, { Fragment, ReactElement } from 'react';
 import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 
-import { BodySSB } from '../styles/text';
-import { Checkmark } from '../styles/icons';
 import useColors from '../hooks/colors';
+import { Checkmark } from '../styles/icons';
+import { BodySSB } from '../styles/text';
 
 type Step = { title: string };
 

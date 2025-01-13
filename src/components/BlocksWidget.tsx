@@ -1,15 +1,15 @@
-import React, { memo, ReactElement, useEffect, useState } from 'react';
-import { View, StyleSheet, StyleProp, ViewStyle } from 'react-native';
-import { useTranslation } from 'react-i18next';
 import { Reader } from '@synonymdev/slashtags-widget-bitcoin-feed';
+import React, { memo, ReactElement, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 
-import { CaptionB, BodyMSB, BodySSB } from '../styles/text';
-import BaseFeedWidget from './BaseFeedWidget';
-import { TFeedWidget } from '../store/types/widgets';
-import { useSlashfeed } from '../hooks/widgets';
-import { decodeWidgetFieldValue, SUPPORTED_FEED_TYPES } from '../utils/widgets';
-import { useSlashtags } from '../hooks/slashtags';
 import { __E2E__ } from '../constants/env';
+import { useSlashtags } from '../hooks/slashtags';
+import { useSlashfeed } from '../hooks/widgets';
+import { TFeedWidget } from '../store/types/widgets';
+import { BodyMSB, BodySSB, CaptionB } from '../styles/text';
+import { SUPPORTED_FEED_TYPES, decodeWidgetFieldValue } from '../utils/widgets';
+import BaseFeedWidget from './BaseFeedWidget';
 
 const mapping = {
 	Block: 'height',

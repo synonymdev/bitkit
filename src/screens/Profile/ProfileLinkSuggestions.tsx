@@ -1,14 +1,14 @@
 import React, { memo, ReactElement } from 'react';
-import { View, StyleSheet } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import { StyleSheet, View } from 'react-native';
 
-import Button from '../../components/buttons/Button';
 import BottomSheetNavigationHeader from '../../components/BottomSheetNavigationHeader';
 import GradientView from '../../components/GradientView';
+import Button from '../../components/buttons/Button';
 import { useAppDispatch } from '../../hooks/redux';
+import type { ProfileLinkScreenProps } from '../../navigation/types';
 import { updateProfileLink } from '../../store/slices/ui';
 import { TProfileLink } from '../../store/types/ui';
-import type { ProfileLinkScreenProps } from '../../navigation/types';
 
 type TSuggestion = {
 	prefix: string;

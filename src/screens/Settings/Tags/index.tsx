@@ -1,16 +1,16 @@
 import React, { ReactElement } from 'react';
-import { StyleSheet } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import { StyleSheet } from 'react-native';
 
-import { View } from '../../../styles/components';
-import { Caption13Up } from '../../../styles/text';
 import NavigationHeader from '../../../components/NavigationHeader';
 import SafeAreaInset from '../../../components/SafeAreaInset';
 import Tag from '../../../components/Tag';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
+import { SettingsScreenProps } from '../../../navigation/types';
 import { lastUsedTagsSelector } from '../../../store/reselect/metadata';
 import { deleteLastUsedTag } from '../../../store/slices/metadata';
-import { SettingsScreenProps } from '../../../navigation/types';
+import { View } from '../../../styles/components';
+import { Caption13Up } from '../../../styles/text';
 
 const TagsSettings = ({
 	navigation,

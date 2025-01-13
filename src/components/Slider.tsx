@@ -1,5 +1,5 @@
 import React, { ReactElement, useEffect, useMemo, useState } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Animated, {
 	useSharedValue,
@@ -10,9 +10,9 @@ import Animated, {
 	runOnJS,
 } from 'react-native-reanimated';
 
-import { Text13UP } from '../styles/text';
-import { View as ThemedView } from '../styles/components';
 import useColors from '../hooks/colors';
+import { View as ThemedView } from '../styles/components';
+import { Text13UP } from '../styles/text';
 
 const KNOB_SIZE = 32;
 

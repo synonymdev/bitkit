@@ -4,29 +4,29 @@ import {
 	lnurlAuth as lnAuth,
 	lnurlPay,
 } from '@synonymdev/react-native-lnurl';
+import { Result, err, ok } from '@synonymdev/result';
 import {
 	LNURLAuthParams,
 	LNURLChannelParams,
 	LNURLPayParams,
 	LNURLWithdrawParams,
 } from 'js-lnurl';
-import { err, ok, Result } from '@synonymdev/result';
 
-import { showToast } from './notifications';
+import { TWalletName } from '../store/types/wallet';
+import { createLightningInvoice, savePeer } from '../store/utils/lightning';
+import i18n from './i18n';
 import {
 	addPeer,
 	getNodeIdFromStorage,
 	getPeersFromStorage,
 } from './lightning';
-import { createLightningInvoice, savePeer } from '../store/utils/lightning';
-import { TWalletName } from '../store/types/wallet';
 import { EAvailableNetwork } from './networks';
+import { showToast } from './notifications';
 import {
 	getMnemonicPhrase,
 	getSelectedNetwork,
 	getSelectedWallet,
 } from './wallet';
-import i18n from './i18n';
 
 /**
  * Finds an LNURL in a string.

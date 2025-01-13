@@ -1,18 +1,18 @@
 import { createSelector } from '@reduxjs/toolkit';
 import { TClaimableBalance } from '@synonymdev/react-native-ldk';
 
+import { RootState } from '..';
+import { reduceValue } from '../../utils/helpers';
 import {
-	TChannel,
+	EChannelClosureReason,
 	EChannelStatus,
+	TChannel,
 	TLightningState,
 	TNode,
 	TNodes,
-	EChannelClosureReason,
 } from '../types/lightning';
-import { RootState } from '..';
-import { reduceValue } from '../../utils/helpers';
-import { selectedWalletSelector, selectedNetworkSelector } from './wallet';
 import { blocktankNodeIdsSelector, blocktankOrderSelector } from './blocktank';
+import { selectedNetworkSelector, selectedWalletSelector } from './wallet';
 
 export const lightningState = (state: RootState): TLightningState => {
 	return state.lightning;

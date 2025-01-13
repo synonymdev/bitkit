@@ -1,14 +1,9 @@
 import React, { memo, ReactElement, useMemo } from 'react';
-import { StyleSheet } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import { StyleSheet } from 'react-native';
 
-import { View as ThemedView } from '../../../styles/components';
 import { EItemType, IListData } from '../../../components/List';
-import SettingsView from '../SettingsView';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
-import { arraysMatch } from '../../../utils/helpers';
-import { updateSlashPayConfig } from '../../../utils/slashtags';
-import { updateSettings } from '../../../store/slices/settings';
 import {
 	enableOfflinePaymentsSelector,
 	receivePreferenceSelector,
@@ -17,6 +12,11 @@ import {
 	selectedNetworkSelector,
 	selectedWalletSelector,
 } from '../../../store/reselect/wallet';
+import { updateSettings } from '../../../store/slices/settings';
+import { View as ThemedView } from '../../../styles/components';
+import { arraysMatch } from '../../../utils/helpers';
+import { updateSlashPayConfig } from '../../../utils/slashtags';
+import SettingsView from '../SettingsView';
 
 const PaymentPreference = (): ReactElement => {
 	const { t } = useTranslation('settings');

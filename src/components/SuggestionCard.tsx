@@ -1,29 +1,29 @@
+import {
+	Box,
+	BoxShadow,
+	Canvas,
+	LinearGradient,
+	RadialGradient,
+	RoundedRect,
+	rect,
+	rrect,
+	vec,
+} from '@shopify/react-native-skia';
 import React, { memo, ReactElement, useEffect, useMemo } from 'react';
-import { StyleSheet, Image, View } from 'react-native';
+import { Image, StyleSheet, View } from 'react-native';
 import Animated, {
 	useSharedValue,
 	withRepeat,
 	withTiming,
 } from 'react-native-reanimated';
-import {
-	Canvas,
-	RadialGradient,
-	vec,
-	Box,
-	BoxShadow,
-	rrect,
-	rect,
-	RoundedRect,
-	LinearGradient,
-} from '@shopify/react-native-skia';
 
-import { XIcon } from '../styles/icons';
-import { IColors } from '../styles/colors';
-import { BodyMSB, CaptionB } from '../styles/text';
-import { View as ThemedView, Pressable } from '../styles/components';
-import useColors from '../hooks/colors';
 import { __E2E__ } from '../constants/env';
+import useColors from '../hooks/colors';
 import { ITodo, TTodoType } from '../store/types/todos';
+import { IColors } from '../styles/colors';
+import { Pressable, View as ThemedView } from '../styles/components';
+import { XIcon } from '../styles/icons';
+import { BodyMSB, CaptionB } from '../styles/text';
 
 const CARD_SIZE = 152;
 const CARD_BORDER_RADIUS = 16;

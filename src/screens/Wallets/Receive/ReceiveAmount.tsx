@@ -1,3 +1,4 @@
+import { useFocusEffect } from '@react-navigation/native';
 import React, {
 	ReactElement,
 	memo,
@@ -5,35 +6,34 @@ import React, {
 	useEffect,
 	useState,
 } from 'react';
-import { StyleSheet, View, TouchableOpacity } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { useFocusEffect } from '@react-navigation/native';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 
-import { Caption13Up } from '../../../styles/text';
 import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
+import GradientView from '../../../components/GradientView';
+import Money from '../../../components/Money';
 import NumberPadTextField from '../../../components/NumberPadTextField';
 import SafeAreaInset from '../../../components/SafeAreaInset';
-import Money from '../../../components/Money';
 import Button from '../../../components/buttons/Button';
-import GradientView from '../../../components/GradientView';
-import ReceiveNumberPad from './ReceiveNumberPad';
-import UnitButton from '../UnitButton';
-import { useSwitchUnit } from '../../../hooks/wallet';
-import { useTransfer } from '../../../hooks/transfer';
-import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 import { useBottomSheetScreenBackPress } from '../../../hooks/bottomSheet';
-import { updateInvoice } from '../../../store/slices/receive';
+import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
+import { useTransfer } from '../../../hooks/transfer';
+import { useSwitchUnit } from '../../../hooks/wallet';
+import type { ReceiveScreenProps } from '../../../navigation/types';
 import { receiveSelector } from '../../../store/reselect/receive';
-import { estimateOrderFee } from '../../../utils/blocktank';
-import { getNumberPadText } from '../../../utils/numberpad';
-import { showToast } from '../../../utils/notifications';
-import { refreshBlocktankInfo } from '../../../store/utils/blocktank';
 import {
-	nextUnitSelector,
 	denominationSelector,
+	nextUnitSelector,
 	unitSelector,
 } from '../../../store/reselect/settings';
-import type { ReceiveScreenProps } from '../../../navigation/types';
+import { updateInvoice } from '../../../store/slices/receive';
+import { refreshBlocktankInfo } from '../../../store/utils/blocktank';
+import { Caption13Up } from '../../../styles/text';
+import { estimateOrderFee } from '../../../utils/blocktank';
+import { showToast } from '../../../utils/notifications';
+import { getNumberPadText } from '../../../utils/numberpad';
+import UnitButton from '../UnitButton';
+import ReceiveNumberPad from './ReceiveNumberPad';
 
 const ReceiveAmount = ({
 	navigation,

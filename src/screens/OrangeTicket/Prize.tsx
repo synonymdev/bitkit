@@ -1,22 +1,22 @@
+import { ldk } from '@synonymdev/react-native-ldk';
 import React, { ReactElement, memo, useCallback, useEffect } from 'react';
 import { Image, StyleSheet, View } from 'react-native';
-import { ldk } from '@synonymdev/react-native-ldk';
 
-import { BodyM } from '../../styles/text';
-import AmountToggle from '../../components/AmountToggle';
-import SafeAreaInset from '../../components/SafeAreaInset';
-import GradientView from '../../components/GradientView';
-import BottomSheetNavigationHeader from '../../components/BottomSheetNavigationHeader';
 import { ActivityIndicator } from '../../components/ActivityIndicator';
-import { useAppDispatch } from '../../hooks/redux';
+import AmountToggle from '../../components/AmountToggle';
+import BottomSheetNavigationHeader from '../../components/BottomSheetNavigationHeader';
+import GradientView from '../../components/GradientView';
+import SafeAreaInset from '../../components/SafeAreaInset';
+import { __TREASURE_HUNT_HOST__ } from '../../constants/env';
 import { useLightningMaxInboundCapacity } from '../../hooks/lightning';
-import { sleep } from '../../utils/helpers';
-import { showToast } from '../../utils/notifications';
-import { getNodeIdFromStorage } from '../../utils/lightning';
+import { useAppDispatch } from '../../hooks/redux';
+import type { OrangeTicketScreenProps } from '../../navigation/types';
 import { addOrangeTicket } from '../../store/slices/settings';
 import { createLightningInvoice } from '../../store/utils/lightning';
-import { __TREASURE_HUNT_HOST__ } from '../../constants/env';
-import type { OrangeTicketScreenProps } from '../../navigation/types';
+import { BodyM } from '../../styles/text';
+import { sleep } from '../../utils/helpers';
+import { getNodeIdFromStorage } from '../../utils/lightning';
+import { showToast } from '../../utils/notifications';
 
 const imageSrc = require('../../assets/illustrations/bitcoin-emboss.png');
 

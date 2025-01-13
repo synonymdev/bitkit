@@ -1,3 +1,4 @@
+import { Canvas, LinearGradient, Rect, vec } from '@shopify/react-native-skia';
 import React, { ReactElement, ReactNode, useState } from 'react';
 import {
 	LayoutChangeEvent,
@@ -5,7 +6,6 @@ import {
 	StyleSheet,
 	ViewStyle,
 } from 'react-native';
-import { Canvas, LinearGradient, Rect, vec } from '@shopify/react-native-skia';
 import { View as ThemedView } from '../styles/components';
 
 const GradientBackground = ({

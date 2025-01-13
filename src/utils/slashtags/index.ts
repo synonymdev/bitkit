@@ -1,29 +1,30 @@
-import debounce from 'lodash/debounce';
-import { ok, err, Result } from '@synonymdev/result';
+import { Result, err, ok } from '@synonymdev/result';
 import SlashtagsProfile from '@synonymdev/slashtags-profile';
 import { format, parse } from '@synonymdev/slashtags-url';
+import debounce from 'lodash/debounce';
 
-import i18n from '../i18n';
-import { showToast } from '../notifications';
-import { BasicProfile, SlashPayConfig } from '../../store/types/slashtags';
+import { webRelayClient } from '../../components/SlashtagsProvider';
+import { rootNavigation } from '../../navigation/root/RootNavigator';
+import { dispatch, getSettingsStore } from '../../store/helpers';
+import { updateSettings } from '../../store/slices/settings';
 import {
 	cacheProfile,
 	deleteAllLinks,
 	deleteProfileCache,
 	setOnboardingProfileStep,
 } from '../../store/slices/slashtags';
+import { BasicProfile, SlashPayConfig } from '../../store/types/slashtags';
 import { TWalletName } from '../../store/types/wallet';
-import { dispatch, getSettingsStore } from '../../store/helpers';
 import { createLightningInvoice } from '../../store/utils/lightning';
-import { EAvailableNetwork } from '../networks';
-import { webRelayClient } from '../../components/SlashtagsProvider';
-import { rootNavigation } from '../../navigation/root/RootNavigator';
+import i18n from '../i18n';
 import {
 	decodeLightningInvoice,
 	getClaimedLightningPayments,
 	getOpenChannels,
 	waitForLdk,
 } from '../lightning';
+import { EAvailableNetwork } from '../networks';
+import { showToast } from '../notifications';
 import {
 	getReceiveAddress,
 	getSelectedAddressType,
@@ -31,7 +32,6 @@ import {
 	getSelectedWallet,
 } from '../wallet';
 import SlashpayConfig from './slashpay';
-import { updateSettings } from '../../store/slices/settings';
 
 /**
  * Handles pasting or scanning a slash:// url

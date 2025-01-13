@@ -1,10 +1,10 @@
 import React, { ReactElement, memo } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 
-import { BodyMB, Display } from '../../../styles/text';
 import InfoScreen from '../../../components/InfoScreen';
-import { getRandomOkText } from '../../../utils/i18n/helpers';
 import type { TransferScreenProps } from '../../../navigation/types';
+import { BodyMB, Display } from '../../../styles/text';
+import { getRandomOkText } from '../../../utils/i18n/helpers';
 
 const imageSrc = require('../../../assets/illustrations/switch.png');
 

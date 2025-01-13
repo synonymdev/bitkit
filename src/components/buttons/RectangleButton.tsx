@@ -1,10 +1,10 @@
 import React, { ReactElement } from 'react';
 import { Platform, StyleSheet, View } from 'react-native';
 
-import colors from '../../styles/colors';
-import { BodyMB } from '../../styles/text';
-import { Pressable } from '../../styles/components';
 import useColors from '../../hooks/colors';
+import colors from '../../styles/colors';
+import { Pressable } from '../../styles/components';
+import { BodyMB } from '../../styles/text';
 
 const RectangleButton = ({
 	icon,

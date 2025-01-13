@@ -1,14 +1,14 @@
 import React, { ReactElement } from 'react';
-import { StyleSheet, View } from 'react-native';
 import { Trans, useTranslation } from 'react-i18next';
+import { StyleSheet, View } from 'react-native';
 
-import { View as ThemedView } from '../../styles/components';
-import { Display, BodyM, BodyMB } from '../../styles/text';
-import SafeAreaInset from '../../components/SafeAreaInset';
-import NavigationHeader from '../../components/NavigationHeader';
-import Button from '../../components/buttons/Button';
 import LightningChannel from '../../components/LightningChannel';
+import NavigationHeader from '../../components/NavigationHeader';
+import SafeAreaInset from '../../components/SafeAreaInset';
+import Button from '../../components/buttons/Button';
 import type { TransferScreenProps } from '../../navigation/types';
+import { View as ThemedView } from '../../styles/components';
+import { BodyM, BodyMB, Display } from '../../styles/text';
 
 const Liquidity = ({
 	navigation,

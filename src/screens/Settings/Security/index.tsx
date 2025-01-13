@@ -1,17 +1,17 @@
 import React, { memo, ReactElement, useMemo, useState, useEffect } from 'react';
-import { StyleSheet } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import { StyleSheet } from 'react-native';
 
 import { View as ThemedView } from '../../../styles/components';
 
-import { EItemType, IListData } from '../../../components/List';
 import { IsSensorAvailableResult } from '../../../components/Biometrics';
-import { showBottomSheet } from '../../../store/utils/ui';
-import { updateSettings } from '../../../store/slices/settings';
-import SettingsView from '../SettingsView';
+import { EItemType, IListData } from '../../../components/List';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
-import rnBiometrics from '../../../utils/biometrics';
 import type { SettingsScreenProps } from '../../../navigation/types';
+import { updateSettings } from '../../../store/slices/settings';
+import { showBottomSheet } from '../../../store/utils/ui';
+import rnBiometrics from '../../../utils/biometrics';
+import SettingsView from '../SettingsView';
 
 const SecuritySettings = ({
 	navigation,

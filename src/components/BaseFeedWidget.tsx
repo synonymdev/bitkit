@@ -1,24 +1,24 @@
 import React, { memo, ReactElement, useState } from 'react';
-import { View, StyleSheet, StyleProp, ViewStyle } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 
-import { rootNavigation } from '../navigation/root/RootNavigator';
-import { TouchableOpacity } from '../styles/components';
-import { BodyMSB } from '../styles/text';
-import {
-	SettingsIcon,
-	ListIcon,
-	TrashIcon,
-	QuestionMarkIcon,
-} from '../styles/icons';
 import { useAppDispatch, useAppSelector } from '../hooks/redux';
 import { useSlashfeed } from '../hooks/widgets';
-import { truncate } from '../utils/helpers';
-import { deleteWidget } from '../store/slices/widgets';
+import { rootNavigation } from '../navigation/root/RootNavigator';
 import { showWidgetTitlesSelector } from '../store/reselect/settings';
+import { deleteWidget } from '../store/slices/widgets';
+import { TouchableOpacity } from '../styles/components';
+import {
+	ListIcon,
+	QuestionMarkIcon,
+	SettingsIcon,
+	TrashIcon,
+} from '../styles/icons';
+import { BodyMSB } from '../styles/text';
+import { truncate } from '../utils/helpers';
 import Dialog from './Dialog';
-import SvgImage from './SvgImage';
 import LoadingView from './LoadingView';
+import SvgImage from './SvgImage';
 
 const BaseFeedWidget = ({
 	url,

@@ -23,17 +23,17 @@ import Animated, {
 } from 'react-native-reanimated';
 import Carousel, { ICarouselInstance } from 'react-native-reanimated-carousel';
 
-import { IThemeColors } from '../../styles/themes';
-import { View as ThemedView } from '../../styles/components';
-import { BodyM, BodyMB, Display, Footnote } from '../../styles/text';
 import SafeAreaInset from '../../components/SafeAreaInset';
 import Dot from '../../components/SliderDots';
 import Button from '../../components/buttons/Button';
 import ButtonTertiary from '../../components/buttons/ButtonTertiary';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import type { OnboardingStackScreenProps } from '../../navigation/types';
-import { updateUser } from '../../store/slices/user';
 import { isGeoBlockedSelector } from '../../store/reselect/user';
+import { updateUser } from '../../store/slices/user';
+import { View as ThemedView } from '../../styles/components';
+import { BodyM, BodyMB, Display, Footnote } from '../../styles/text';
+import { IThemeColors } from '../../styles/themes';
 
 type Slide = {
 	color: keyof IThemeColors;

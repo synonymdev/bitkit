@@ -4,8 +4,8 @@ import {
 	getSystemVersion,
 	getVersion,
 } from 'react-native-device-info';
-import { getNodeId, getNodeVersion } from './lightning';
 import { getStore } from '../store/helpers';
+import { getNodeId, getNodeVersion } from './lightning';
 
 const SUPPORT_EMAIL = 'support@synonym.to';
 

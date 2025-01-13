@@ -1,10 +1,10 @@
 import React, { memo, ReactElement, ReactNode } from 'react';
 import {
-	View,
 	Image,
 	ImageSourcePropType,
 	StyleProp,
 	StyleSheet,
+	View,
 	ViewStyle,
 } from 'react-native';
 

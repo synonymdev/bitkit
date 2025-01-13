@@ -1,20 +1,20 @@
 import React, { memo, ReactElement, useEffect, useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 
-import { Display } from '../../styles/text';
-import BottomSheetWrapper from '../../components/BottomSheetWrapper';
 import BottomSheetScreen from '../../components/BottomSheetScreen';
-import { closeAllChannels } from '../../utils/lightning';
-import { showToast } from '../../utils/notifications';
-import { useAppDispatch, useAppSelector } from '../../hooks/redux';
+import BottomSheetWrapper from '../../components/BottomSheetWrapper';
 import {
 	useBottomSheetBackPress,
 	useSnapPoints,
 } from '../../hooks/bottomSheet';
-import { closeSheet } from '../../store/slices/ui';
-import { showBottomSheet } from '../../store/utils/ui';
-import { clearCoopCloseTimer } from '../../store/slices/user';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { startCoopCloseTimestampSelector } from '../../store/reselect/user';
+import { closeSheet } from '../../store/slices/ui';
+import { clearCoopCloseTimer } from '../../store/slices/user';
+import { showBottomSheet } from '../../store/utils/ui';
+import { Display } from '../../styles/text';
+import { closeAllChannels } from '../../utils/lightning';
+import { showToast } from '../../utils/notifications';
 
 const imageSrc = require('../../assets/illustrations/exclamation-mark.png');
 

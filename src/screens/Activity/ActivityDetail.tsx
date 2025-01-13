@@ -1,3 +1,7 @@
+import Clipboard from '@react-native-clipboard/clipboard';
+import { Canvas, Path, Skia } from '@shopify/react-native-skia';
+import { parse } from '@synonymdev/slashtags-url';
+import { EBoostType, EPaymentType } from 'beignet';
 import React, {
 	ReactElement,
 	memo,
@@ -7,21 +11,29 @@ import React, {
 	useState,
 	ReactNode,
 } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
 	ActivityIndicator,
 	ScrollView,
 	StyleSheet,
-	View,
 	TouchableOpacity,
+	View,
 } from 'react-native';
-import { Canvas, Path, Skia } from '@shopify/react-native-skia';
-import Clipboard from '@react-native-clipboard/clipboard';
-import { useTranslation } from 'react-i18next';
-import { parse } from '@synonymdev/slashtags-url';
-import { EBoostType, EPaymentType } from 'beignet';
 
+import ContactSmall from '../../components/ContactSmall';
+import Money from '../../components/Money';
+import NavigationHeader from '../../components/NavigationHeader';
+import SafeAreaInset from '../../components/SafeAreaInset';
+import Tag from '../../components/Tag';
+import Button from '../../components/buttons/Button';
+import useColors from '../../hooks/colors';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux';
+import {
+	EActivityType,
+	TLightningActivityItem,
+	TOnchainActivityItem,
+} from '../../store/types/activity';
 import { View as ThemedView } from '../../styles/components';
-import { Caption13Up, BodySSB, Title } from '../../styles/text';
 import {
 	CalendarIcon,
 	CheckCircleIcon,
@@ -42,62 +54,50 @@ import {
 	UserPlusIcon,
 	XIcon,
 } from '../../styles/icons';
-import Button from '../../components/buttons/Button';
-import Money from '../../components/Money';
-import ContactSmall from '../../components/ContactSmall';
-import NavigationHeader from '../../components/NavigationHeader';
-import SafeAreaInset from '../../components/SafeAreaInset';
-import Tag from '../../components/Tag';
-import ActivityTagsPrompt from './ActivityTagsPrompt';
-import {
-	EActivityType,
-	TLightningActivityItem,
-	TOnchainActivityItem,
-} from '../../store/types/activity';
+import { BodySSB, Caption13Up, Title } from '../../styles/text';
 import {
 	canBoost,
 	getBlockExplorerLink,
 } from '../../utils/wallet/transactions';
-import useColors from '../../hooks/colors';
-import { useAppDispatch, useAppSelector } from '../../hooks/redux';
+import ActivityTagsPrompt from './ActivityTagsPrompt';
 
-import { showBottomSheet } from '../../store/utils/ui';
+import { useOnchainWallet, useSwitchUnit } from '../../hooks/wallet';
+import type {
+	RootNavigationProp,
+	RootStackScreenProps,
+} from '../../navigation/types';
 import {
 	activityItemSelector,
 	activityItemsSelector,
 } from '../../store/reselect/activity';
 import {
-	deleteMetaTxTag,
-	deleteMetaTxSlashtagsUrl,
-} from '../../store/slices/metadata';
-import { getTransactions } from '../../utils/wallet/electrum';
-import { ITransaction, ITxHash } from '../../utils/wallet';
-import {
-	ellipsis,
-	getDurationForBlocks,
-	openURL,
-	vibrate,
-} from '../../utils/helpers';
-import { getBoostedTransactionParents } from '../../utils/boost';
-import { showToast } from '../../utils/notifications';
+	commentSelector,
+	slashTagsUrlSelector,
+	tagSelector,
+} from '../../store/reselect/metadata';
+import { contactsSelector } from '../../store/reselect/slashtags';
 import {
 	boostedTransactionsSelector,
 	selectedNetworkSelector,
 	transferSelector,
 } from '../../store/reselect/wallet';
 import {
-	commentSelector,
-	slashTagsUrlSelector,
-	tagSelector,
-} from '../../store/reselect/metadata';
-import type {
-	RootNavigationProp,
-	RootStackScreenProps,
-} from '../../navigation/types';
-import { i18nTime } from '../../utils/i18n';
-import { useOnchainWallet, useSwitchUnit } from '../../hooks/wallet';
-import { contactsSelector } from '../../store/reselect/slashtags';
+	deleteMetaTxSlashtagsUrl,
+	deleteMetaTxTag,
+} from '../../store/slices/metadata';
 import { ETransferStatus } from '../../store/types/wallet';
+import { showBottomSheet } from '../../store/utils/ui';
+import { getBoostedTransactionParents } from '../../utils/boost';
+import {
+	ellipsis,
+	getDurationForBlocks,
+	openURL,
+	vibrate,
+} from '../../utils/helpers';
+import { i18nTime } from '../../utils/i18n';
+import { showToast } from '../../utils/notifications';
+import { ITransaction, ITxHash } from '../../utils/wallet';
+import { getTransactions } from '../../utils/wallet/electrum';
 
 const Section = memo(
 	({ title, value }: { title: string; value: ReactNode }) => {

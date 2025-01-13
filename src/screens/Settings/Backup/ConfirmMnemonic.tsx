@@ -1,14 +1,14 @@
 import React, { memo, ReactElement, useMemo, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import { StyleSheet, View } from 'react-native';
 
-import { BodyM, BodyMSB } from '../../../styles/text';
-import { shuffleArray } from '../../../utils/helpers';
 import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
-import SafeAreaInset from '../../../components/SafeAreaInset';
 import GradientView from '../../../components/GradientView';
+import SafeAreaInset from '../../../components/SafeAreaInset';
 import Button from '../../../components/buttons/Button';
 import type { BackupScreenProps } from '../../../navigation/types';
+import { BodyM, BodyMSB } from '../../../styles/text';
+import { shuffleArray } from '../../../utils/helpers';
 
 const Word = ({
 	number,

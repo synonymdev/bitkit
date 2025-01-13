@@ -1,12 +1,12 @@
 import React, { memo, ReactElement, useMemo, useState } from 'react';
-import { View, StyleSheet, StyleProp, ViewStyle } from 'react-native';
+import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 
-import { View as ThemedView } from '../../styles/components';
-import { BodyM, BodyS } from '../../styles/text';
-import SearchInput from '../../components/SearchInput';
 import List, { IListData } from '../../components/List';
 import NavigationHeader from '../../components/NavigationHeader';
 import SafeAreaInset from '../../components/SafeAreaInset';
+import SearchInput from '../../components/SearchInput';
+import { View as ThemedView } from '../../styles/components';
+import { BodyM, BodyS } from '../../styles/text';
 
 const SettingsView = ({
 	title = ' ',

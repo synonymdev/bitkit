@@ -1,14 +1,14 @@
 import React, { ReactElement, memo } from 'react';
 import { Image, StyleSheet, View } from 'react-native';
 
-import { BodyM } from '../../styles/text';
-import Button from '../../components/buttons/Button';
+import BottomSheetNavigationHeader from '../../components/BottomSheetNavigationHeader';
 import GradientView from '../../components/GradientView';
 import SafeAreaInset from '../../components/SafeAreaInset';
-import BottomSheetNavigationHeader from '../../components/BottomSheetNavigationHeader';
+import Button from '../../components/buttons/Button';
 import { useAppDispatch } from '../../hooks/redux';
-import { closeSheet } from '../../store/slices/ui';
 import type { OrangeTicketScreenProps } from '../../navigation/types';
+import { closeSheet } from '../../store/slices/ui';
+import { BodyM } from '../../styles/text';
 
 const imageSrc = require('../../assets/illustrations/exclamation-mark.png');
 

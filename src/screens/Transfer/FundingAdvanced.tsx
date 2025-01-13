@@ -1,14 +1,14 @@
 import React, { ReactElement } from 'react';
-import { View, StyleSheet } from 'react-native';
 import { Trans, useTranslation } from 'react-i18next';
+import { StyleSheet, View } from 'react-native';
 
-import { ScanIcon, PencilIcon } from '../../styles/icons';
-import { Display, BodyM } from '../../styles/text';
-import { View as ThemedView } from '../../styles/components';
-import RectangleButton from '../../components/buttons/RectangleButton';
-import SafeAreaInset from '../../components/SafeAreaInset';
 import NavigationHeader from '../../components/NavigationHeader';
+import SafeAreaInset from '../../components/SafeAreaInset';
+import RectangleButton from '../../components/buttons/RectangleButton';
 import type { TransferScreenProps } from '../../navigation/types';
+import { View as ThemedView } from '../../styles/components';
+import { PencilIcon, ScanIcon } from '../../styles/icons';
+import { BodyM, Display } from '../../styles/text';
 
 const FundingAdvanced = ({
 	navigation,

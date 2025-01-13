@@ -1,8 +1,8 @@
-import { RootState } from '..';
 import { createSelector } from '@reduxjs/toolkit';
+import { RootState } from '..';
 import {
-	TMetadataState,
 	TLastUsedTags,
+	TMetadataState,
 	TSlashTagsUrls,
 	TTags,
 } from '../types/metadata';

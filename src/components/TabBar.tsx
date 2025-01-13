@@ -1,27 +1,27 @@
 import React, { ReactElement, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
-	Pressable,
-	StyleSheet,
 	Platform,
+	Pressable,
 	StyleProp,
+	StyleSheet,
 	ViewStyle,
 } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useTranslation } from 'react-i18next';
 import { FadeIn } from 'react-native-reanimated';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { receiveIcon, sendIcon } from '../assets/icons/tabs';
-import { toggleBottomSheet } from '../store/utils/ui';
-import { resetSendTransaction } from '../store/actions/wallet';
-import { viewControllersSelector } from '../store/reselect/ui';
-import { spendingOnboardingSelector } from '../store/reselect/aggregations';
 import useColors from '../hooks/colors';
 import { useAppSelector } from '../hooks/redux';
-import { ScanIcon } from '../styles/icons';
-import { AnimatedView } from '../styles/components';
-import ButtonBlur from './buttons/ButtonBlur';
 import { rootNavigation } from '../navigation/root/RootNavigator';
 import type { RootNavigationProp } from '../navigation/types';
+import { resetSendTransaction } from '../store/actions/wallet';
+import { spendingOnboardingSelector } from '../store/reselect/aggregations';
+import { viewControllersSelector } from '../store/reselect/ui';
+import { toggleBottomSheet } from '../store/utils/ui';
+import { AnimatedView } from '../styles/components';
+import { ScanIcon } from '../styles/icons';
+import ButtonBlur from './buttons/ButtonBlur';
 
 const TabBar = ({
 	navigation,

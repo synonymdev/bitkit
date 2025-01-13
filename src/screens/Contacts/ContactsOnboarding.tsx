@@ -1,12 +1,12 @@
-import React, { ReactElement } from 'react';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import React, { ReactElement } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 
-import { Display } from '../../styles/text';
-import { useAppDispatch } from '../../hooks/redux';
-import { setOnboardedContacts } from '../../store/slices/slashtags';
-import { RootStackParamList } from '../../navigation/types';
 import OnboardingScreen from '../../components/OnboardingScreen';
+import { useAppDispatch } from '../../hooks/redux';
+import { RootStackParamList } from '../../navigation/types';
+import { setOnboardedContacts } from '../../store/slices/slashtags';
+import { Display } from '../../styles/text';
 
 const imageSrc = require('../../assets/illustrations/group.png');
 

@@ -1,18 +1,18 @@
 import React, { memo, ReactElement } from 'react';
-import { Image, StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import { Image, StyleSheet, View } from 'react-native';
 
-import { BodyM } from '../../styles/text';
+import BottomSheetNavigationHeader from '../../components/BottomSheetNavigationHeader';
 import BottomSheetWrapper from '../../components/BottomSheetWrapper';
 import SafeAreaInset from '../../components/SafeAreaInset';
 import Button from '../../components/buttons/Button';
-import BottomSheetNavigationHeader from '../../components/BottomSheetNavigationHeader';
-import { closeSheet } from '../../store/slices/ui';
-import { useAppDispatch } from '../../hooks/redux';
 import {
 	useBottomSheetBackPress,
 	useSnapPoints,
 } from '../../hooks/bottomSheet';
+import { useAppDispatch } from '../../hooks/redux';
+import { closeSheet } from '../../store/slices/ui';
+import { BodyM } from '../../styles/text';
 
 const imageSrc = require('../../assets/illustrations/switch.png');
 
