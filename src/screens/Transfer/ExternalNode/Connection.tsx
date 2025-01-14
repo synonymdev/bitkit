@@ -1,5 +1,5 @@
 import React, { memo, ReactElement, useEffect, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { ScrollView, StyleSheet, View } from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
 import { Trans, useTranslation } from 'react-i18next';
 
@@ -94,7 +94,7 @@ const ExternalNode = ({
 		<ThemedView style={styles.root}>
 			<SafeAreaInset type="top" />
 			<NavigationHeader title={t('external.nav_title')} />
-			<View style={styles.content} testID="ExternalNode">
+			<ScrollView contentContainerStyle={styles.content} testID="ExternalNode">
 				<Display>
 					<Trans
 						t={t}
@@ -187,7 +187,7 @@ const ExternalNode = ({
 						onPress={onContinue}
 					/>
 				</View>
-			</View>
+			</ScrollView>
 			<SafeAreaInset type="bottom" minPadding={16} />
 		</ThemedView>
 	);
@@ -198,7 +198,7 @@ const styles = StyleSheet.create({
 		flex: 1,
 	},
 	content: {
-		flex: 1,
+		flexGrow: 1,
 		paddingTop: 16,
 		paddingHorizontal: 16,
 	},
@@ -226,6 +226,7 @@ const styles = StyleSheet.create({
 	},
 	button: {
 		flex: 1,
+		marginTop: 32,
 	},
 });
 
