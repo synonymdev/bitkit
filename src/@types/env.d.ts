@@ -5,9 +5,9 @@ declare module '@env' {
 	export const ENABLE_MIGRATION_DEBUG: string;
 	export const ENABLE_LDK_LOGS: string;
 
+	export const BACKEND_HOST: string;
 	export const BACKUPS_SERVER_HOST: string;
 	export const BACKUPS_SERVER_PUBKEY: string;
-
 	export const BLOCKTANK_HOST: string;
 
 	export const ELECTRUM_BITCOIN_HOST: string;
@@ -18,10 +18,6 @@ declare module '@env' {
 	export const ELECTRUM_REGTEST_SSL_PORT: number;
 	export const ELECTRUM_REGTEST_TCP_PORT: number;
 	export const ELECTRUM_REGTEST_PROTO: string;
-	export const ELECTRUM_SIGNET_HOST: string;
-	export const ELECTRUM_SIGNET_SSL_PORT: number;
-	export const ELECTRUM_SIGNET_TCP_PORT: number;
-	export const ELECTRUM_SIGNET_PROTO: string;
 
 	export const TREASURE_HUNT_HOST: string;
 
