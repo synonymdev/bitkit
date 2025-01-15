@@ -60,3 +60,9 @@ file_filter  = src/utils/i18n/locales/<lang>/wallet.json
 source_file  = src/utils/i18n/locales/en/wallet.json
 source_lang  = en
 type         = STRUCTURED_JSON
+
+[o:synonym:p:bitkit:r:widgets]
+file_filter  = src/utils/i18n/locales/<lang>/widgets.json
+source_file  = src/utils/i18n/locales/en/widgets.json
+source_lang  = en
+type         = STRUCTURED_JSON

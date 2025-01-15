@@ -3,17 +3,17 @@ import { Trans, useTranslation } from 'react-i18next';
 import { StyleProp, ViewStyle } from 'react-native';
 
 import WalletOnboarding from '../../components/WalletOnboarding';
+import {
+	blocksFeedUrl,
+	newsFeedUrl,
+	priceFeedUrl,
+} from '../../constants/widgets';
 import { useAppDispatch } from '../../hooks/redux';
 import { useSlashfeedConfig } from '../../hooks/widgets';
 import { updateSettings } from '../../store/slices/settings';
-import { setFeedWidget } from '../../store/slices/widgets';
+import { saveWidget } from '../../store/slices/widgets';
 import { Display } from '../../styles/text';
 import { SUPPORTED_FEED_TYPES } from '../../utils/widgets';
-import {
-	BlocksFeedURL,
-	NewsFeedURL,
-	PriceFeedURL,
-} from '../Widgets/WidgetsSuggestions';
 
 const MainOnboarding = ({
 	style,
@@ -22,29 +22,35 @@ const MainOnboarding = ({
 }): ReactElement => {
 	const dispatch = useAppDispatch();
 	const { t } = useTranslation('onboarding');
-	const priceConfig = useSlashfeedConfig({ url: PriceFeedURL });
-	const newsConfig = useSlashfeedConfig({ url: NewsFeedURL });
-	const blocksConfig = useSlashfeedConfig({ url: BlocksFeedURL });
+	const priceConfig = useSlashfeedConfig({ url: priceFeedUrl });
+	const newsConfig = useSlashfeedConfig({ url: newsFeedUrl });
+	const blocksConfig = useSlashfeedConfig({ url: blocksFeedUrl });
 
 	const onHideOnboarding = (): void => {
 		// add default widgets
 		if (priceConfig) {
 			dispatch(
-				setFeedWidget({
-					url: PriceFeedURL,
-					type: SUPPORTED_FEED_TYPES.PRICE_FEED,
-					fields: priceConfig.fields.filter((f) => f.name === 'BTC/USD'),
-					extras: { period: '1D', showSource: false },
+				saveWidget({
+					id: priceFeedUrl,
+					options: {
+						url: priceFeedUrl,
+						type: SUPPORTED_FEED_TYPES.PRICE_FEED,
+						fields: priceConfig.fields.filter((f) => f.name === 'BTC/USD'),
+						extras: { period: '1D', showSource: false },
+					},
 				}),
 			);
 		}
 
 		if (newsConfig) {
 			dispatch(
-				setFeedWidget({
-					url: NewsFeedURL,
-					type: SUPPORTED_FEED_TYPES.HEADLINES_FEED,
-					fields: newsConfig.fields,
+				saveWidget({
+					id: newsFeedUrl,
+					options: {
+						url: newsFeedUrl,
+						type: SUPPORTED_FEED_TYPES.HEADLINES_FEED,
+						fields: newsConfig.fields,
+					},
 				}),
 			);
 		}
@@ -55,10 +61,13 @@ const MainOnboarding = ({
 			});
 
 			dispatch(
-				setFeedWidget({
-					url: BlocksFeedURL,
-					type: SUPPORTED_FEED_TYPES.BLOCKS_FEED,
-					fields,
+				saveWidget({
+					id: blocksFeedUrl,
+					options: {
+						url: blocksFeedUrl,
+						type: SUPPORTED_FEED_TYPES.BLOCKS_FEED,
+						fields,
+					},
 				}),
 			);
 		}

@@ -15,15 +15,17 @@ import type { RootStackScreenProps } from '../../navigation/types';
 import { deleteWidget } from '../../store/slices/widgets';
 import {
 	SlashFeedJSON,
+	TFeedWidgetOptions,
 	TGraphPeriod,
-	TWidgetSettings,
 } from '../../store/types/widgets';
 import { ScrollView, View as ThemedView } from '../../styles/components';
 import { Checkmark } from '../../styles/icons';
 import { BodyM, BodySSB, CaptionB } from '../../styles/text';
 import { SUPPORTED_FEED_TYPES } from '../../utils/widgets';
 
-export const getDefaultSettings = (config?: SlashFeedJSON): TWidgetSettings => {
+export const getDefaultSettings = (
+	config?: SlashFeedJSON,
+): TFeedWidgetOptions => {
 	if (config) {
 		if (config.type === SUPPORTED_FEED_TYPES.PRICE_FEED) {
 			return {
@@ -56,7 +58,7 @@ const WidgetEdit = ({
 	const hasEdited = !isEqual(settings, defaultSettings);
 
 	const onSave = (): void => {
-		navigation.navigate('Widget', { url, preview: settings });
+		navigation.navigate('FeedWidget', { url, preview: settings });
 	};
 
 	const onReset = (): void => {

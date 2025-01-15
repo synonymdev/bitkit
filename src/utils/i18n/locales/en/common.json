@@ -53,6 +53,9 @@
   "delete": {
     "string": "Delete"
   },
+  "delete_yes": {
+    "string": "Yes, Delete"
+  },
   "ok": {
     "string": "OK"
   },
@@ -99,5 +102,8 @@
   },
   "default": {
     "string": "Default"
+  },
+  "preview": {
+    "string": "Preview"
   }
 }

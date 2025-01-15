@@ -21,7 +21,7 @@ import {
 	widgetsSelector,
 } from '../store/reselect/widgets';
 import { setWidgetsSortOrder } from '../store/slices/widgets';
-import { TFeedWidget, TWidget } from '../store/types/widgets';
+import { TFeedWidget } from '../store/types/widgets';
 import { TouchableOpacity, View } from '../styles/components';
 import { Checkmark, PlusIcon, SortAscendingIcon } from '../styles/icons';
 import { Caption13Up } from '../styles/text';
@@ -33,10 +33,12 @@ import HeadlinesWidget from './HeadlinesWidget';
 import LuganoFeedWidget from './LuganoFeedWidget';
 import PriceWidget from './PriceWidget';
 import Button from './buttons/Button';
+import CalculatorWidget from './widgets/CalculatorWidget';
 
 const Widgets = (): ReactElement => {
 	const { t } = useTranslation('slashtags');
 	const dispatch = useAppDispatch();
+
 	const widgets = useAppSelector(widgetsSelector);
 	const sortOrder = useAppSelector(widgetsOrderSelector);
 	const onboardedWidgets = useAppSelector(onboardedWidgetsSelector);
@@ -45,15 +47,20 @@ const Widgets = (): ReactElement => {
 	useFocusEffect(useCallback(() => setEditing(false), []));
 
 	const sortedWidgets = useMemo(() => {
-		const savedWidgets = Object.entries(widgets) as [string, TWidget][];
-		return savedWidgets.sort(
-			([a], [b]) => sortOrder.indexOf(a) - sortOrder.indexOf(b),
-		);
+		const savedWidgets = Object.keys(widgets);
+
+		const sorted = savedWidgets.sort((a, b) => {
+			const indexA = sortOrder.indexOf(a);
+			const indexB = sortOrder.indexOf(b);
+			return indexA - indexB;
+		});
+
+		return sorted;
 	}, [widgets, sortOrder]);
 
 	const onDragEnd = useCallback(
 		({ data }) => {
-			const order = data.map((i): string => i[0]);
+			const order = data.map((id): string => id);
 			dispatch(setWidgetsSortOrder(order));
 		},
 		[dispatch],
@@ -67,17 +74,13 @@ const Widgets = (): ReactElement => {
 	};
 
 	const renderItem = useCallback(
-		({ item, drag }: RenderItemParams<[string, TWidget]>): ReactElement => {
-			const [url, widget] = item;
-
-			const _drag = (): void => {
+		({ item: id, drag }: RenderItemParams<string>): ReactElement => {
+			const initiateDrag = (): void => {
 				// only allow dragging if there are more than 1 widget
 				if (sortedWidgets.length > 1 && editing) {
 					drag();
 				}
 			};
-
-			const feedWidget = widget as TFeedWidget;
 
 			let testID: string;
 			let Component:
@@ -85,7 +88,27 @@ const Widgets = (): ReactElement => {
 				| typeof HeadlinesWidget
 				| typeof BlocksWidget
 				| typeof FactsWidget
-				| typeof FeedWidget;
+				| typeof FeedWidget
+				| typeof CalculatorWidget;
+
+			if (id === 'calculator') {
+				Component = CalculatorWidget;
+				testID = 'CalculatorWidget';
+
+				return (
+					<ScaleDecorator>
+						<Component
+							style={styles.widget}
+							isEditing={editing}
+							testID={testID}
+							onLongPress={initiateDrag}
+							onPressIn={initiateDrag}
+						/>
+					</ScaleDecorator>
+				);
+			}
+
+			const feedWidget = widgets[id] as TFeedWidget;
 
 			switch (feedWidget.type) {
 				case SUPPORTED_FEED_TYPES.PRICE_FEED:
@@ -117,17 +140,17 @@ const Widgets = (): ReactElement => {
 				<ScaleDecorator>
 					<Component
 						style={styles.widget}
-						url={url}
+						url={id}
 						widget={feedWidget}
 						isEditing={editing}
-						onLongPress={_drag}
-						onPressIn={_drag}
 						testID={testID}
+						onLongPress={initiateDrag}
+						onPressIn={initiateDrag}
 					/>
 				</ScaleDecorator>
 			);
 		},
-		[editing, sortedWidgets.length],
+		[editing, widgets, sortedWidgets.length],
 	);
 
 	return (
@@ -136,7 +159,6 @@ const Widgets = (): ReactElement => {
 				<Caption13Up color="secondary">{t('widgets')}</Caption13Up>
 				{sortedWidgets.length > 0 && (
 					<TouchableOpacity
-						activeOpacity={0.7}
 						hitSlop={{ top: 15, right: 15, bottom: 15, left: 15 }}
 						testID="WidgetsEdit"
 						onPress={(): void => setEditing(!editing)}>
@@ -151,7 +173,7 @@ const Widgets = (): ReactElement => {
 
 			<DraggableFlatList
 				data={sortedWidgets}
-				keyExtractor={(item): string => item[0]}
+				keyExtractor={(id): string => id}
 				renderItem={renderItem}
 				scrollEnabled={false}
 				activationDistance={editing ? 0 : 100}

@@ -102,6 +102,22 @@ const migrations = {
 			},
 		};
 	},
+	52: (state): PersistedState => {
+		// add 'url' to all widgets
+		const newWidgets = { ...state.widgets.widgets };
+
+		for (const url of Object.keys(newWidgets)) {
+			newWidgets[url].url = url;
+		}
+
+		return {
+			...state,
+			widgets: {
+				...state.widgets,
+				widgets: newWidgets,
+			},
+		};
+	},
 };
 
 export default migrations;

@@ -16,6 +16,7 @@ export interface IColors {
 	gray5: string;
 	gray3: string;
 	gray2: string;
+	gray1: string;
 
 	// Alpha
 	black50: string;
@@ -65,6 +66,7 @@ const colors: IColors = {
 	gray5: '#1C1C1D',
 	gray3: '#48484A',
 	gray2: '#636366',
+	gray1: '#8E8E93',
 
 	// Alpha
 	black50: 'rgba(0, 0, 0, 0.5)',

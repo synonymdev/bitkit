@@ -1,5 +1,5 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-import { SlashFeedJSON, TWidgetSettings, TWidgets } from '../types/widgets';
+import { TWidgets } from '../types/widgets';
 
 export type TWidgetsState = {
 	widgets: TWidgets;
@@ -20,18 +20,13 @@ export const widgetsSlice = createSlice({
 		updateWidgets: (state, action: PayloadAction<Partial<TWidgetsState>>) => {
 			state = Object.assign(state, action.payload);
 		},
-		setFeedWidget: (
+		saveWidget: (
 			state,
-			action: PayloadAction<{
-				url: string;
-				type: string;
-				fields: SlashFeedJSON['fields'];
-				extras?: TWidgetSettings['extras'];
-			}>,
+			action: PayloadAction<{ id: string; options?: any }>,
 		) => {
-			const { url, ...widget } = action.payload;
-			state.sortOrder.push(url);
-			state.widgets[url] = widget;
+			const { id, options } = action.payload;
+			state.sortOrder.push(id);
+			state.widgets[id] = options ?? null;
 		},
 		deleteWidget: (state, action: PayloadAction<string>) => {
 			delete state.widgets[action.payload];
@@ -51,7 +46,7 @@ const { actions, reducer } = widgetsSlice;
 
 export const {
 	updateWidgets,
-	setFeedWidget,
+	saveWidget,
 	deleteWidget,
 	setWidgetsOnboarding,
 	setWidgetsSortOrder,

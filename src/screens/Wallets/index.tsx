@@ -26,7 +26,7 @@ import {
 	ignoresHideBalanceToastSelector,
 	scanAllAddressesTimestampSelector,
 } from '../../store/reselect/user';
-import { widgetsSelector } from '../../store/reselect/widgets';
+import { hasWidgetsSelector } from '../../store/reselect/widgets';
 import { updateSettings } from '../../store/slices/settings';
 import { ignoreHideBalanceToast, updateUser } from '../../store/slices/user';
 import { View as ThemedView } from '../../styles/components';
@@ -57,8 +57,8 @@ const Wallets = ({ navigation, onFocus }: Props): ReactElement => {
 		scanAllAddressesTimestampSelector,
 	);
 	const hideOnboardingSetting = useAppSelector(hideOnboardingMessageSelector);
+	const hasWidgets = useAppSelector(hasWidgetsSelector);
 	const showWidgets = useAppSelector(showWidgetsSelector);
-	const widgets = useAppSelector(widgetsSelector);
 	const insets = useSafeAreaInsets();
 	const { t } = useTranslation('wallet');
 
@@ -103,9 +103,7 @@ const Wallets = ({ navigation, onFocus }: Props): ReactElement => {
 	};
 
 	const hideOnboarding =
-		hideOnboardingSetting ||
-		totalBalance > 0 ||
-		Object.keys(widgets).length > 0;
+		hideOnboardingSetting || totalBalance > 0 || hasWidgets;
 
 	return (
 		<ThemedView style={styles.root}>

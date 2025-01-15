@@ -2,29 +2,22 @@ import React, { memo, ReactElement, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 
-import { useAppDispatch, useAppSelector } from '../hooks/redux';
-import { useSlashfeed } from '../hooks/widgets';
-import { rootNavigation } from '../navigation/root/RootNavigator';
-import { showWidgetTitlesSelector } from '../store/reselect/settings';
-import { deleteWidget } from '../store/slices/widgets';
-import { TouchableOpacity } from '../styles/components';
-import {
-	ListIcon,
-	QuestionMarkIcon,
-	SettingsIcon,
-	TrashIcon,
-} from '../styles/icons';
-import { BodyMSB } from '../styles/text';
-import { truncate } from '../utils/helpers';
-import Dialog from './Dialog';
-import LoadingView from './LoadingView';
-import SvgImage from './SvgImage';
+import { useNavigation } from '@react-navigation/native';
+import { widgets } from '../../constants/widgets';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux';
+import { RootNavigationProp } from '../../navigation/types';
+import { showWidgetTitlesSelector } from '../../store/reselect/settings';
+import { deleteWidget } from '../../store/slices/widgets';
+import { TouchableOpacity } from '../../styles/components';
+import { ListIcon, SettingsIcon, TrashIcon } from '../../styles/icons';
+import { BodyMSB } from '../../styles/text';
+import { truncate } from '../../utils/helpers';
+import Dialog from '../Dialog';
+import SvgImage from '../SvgImage';
 
-const BaseFeedWidget = ({
-	url,
-	name,
+const BaseWidget = ({
+	id,
 	children,
-	isLoading,
 	isEditing,
 	style,
 	testID,
@@ -32,10 +25,8 @@ const BaseFeedWidget = ({
 	onPressIn,
 	onLongPress,
 }: {
-	url: string;
-	name?: string;
+	id: string;
 	children: ReactElement;
-	isLoading?: boolean;
 	isEditing?: boolean;
 	style?: StyleProp<ViewStyle>;
 	testID?: string;
@@ -43,16 +34,19 @@ const BaseFeedWidget = ({
 	onPressIn?: () => void;
 	onLongPress?: () => void;
 }): ReactElement => {
-	const { t } = useTranslation('slashtags');
+	const { t } = useTranslation('widgets');
+	const navigation = useNavigation<RootNavigationProp>();
 	const dispatch = useAppDispatch();
-	const { config, icon } = useSlashfeed({ url });
 	const [showDialog, setShowDialog] = useState(false);
 	const showTitle = useAppSelector(showWidgetTitlesSelector);
 
-	const widgetName = name ?? config?.name ?? url;
+	const widget = {
+		name: t(`${id}.name`),
+		icon: widgets[id].icon,
+	};
 
 	const onEdit = (): void => {
-		rootNavigation.navigate('FeedWidget', { url });
+		navigation.navigate('Widget', { id });
 	};
 
 	const onDelete = (): void => {
@@ -73,15 +67,11 @@ const BaseFeedWidget = ({
 					<View style={styles.header}>
 						<View style={styles.title}>
 							<View style={styles.icon}>
-								{icon ? (
-									<SvgImage image={icon} size={32} />
-								) : (
-									<QuestionMarkIcon width={32} height={32} />
-								)}
+								<SvgImage image={widget.icon} size={32} />
 							</View>
 
 							<BodyMSB style={styles.name} numberOfLines={1}>
-								{truncate(widgetName, 18)}
+								{truncate(widget.name, 18)}
 							</BodyMSB>
 						</View>
 
@@ -119,26 +109,19 @@ const BaseFeedWidget = ({
 
 				{showTitle && !isEditing && <View style={styles.spacer} />}
 
-				{!isEditing && (
-					<LoadingView
-						style={styles.content}
-						loading={!!isLoading}
-						delay={1000}>
-						{children}
-					</LoadingView>
-				)}
+				{!isEditing && children}
 			</TouchableOpacity>
 
 			<Dialog
 				visible={showDialog}
-				title={t('widget_delete_title')}
-				description={t('widget_delete_desc', { name })}
-				confirmText={t('widget_delete_yes')}
+				title={t('delete.title')}
+				description={t('delete.description', { name: widget.name })}
+				confirmText={t('delete_yes')}
 				onCancel={(): void => {
 					setShowDialog(false);
 				}}
 				onConfirm={(): void => {
-					dispatch(deleteWidget(url));
+					dispatch(deleteWidget(id));
 					setShowDialog(false);
 				}}
 			/>
@@ -190,4 +173,4 @@ const styles = StyleSheet.create({
 	},
 });
 
-export default memo(BaseFeedWidget);
+export default memo(BaseWidget);

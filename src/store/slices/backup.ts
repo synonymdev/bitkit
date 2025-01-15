@@ -20,7 +20,7 @@ import {
 import { updateSettings } from './settings';
 import { addContact, addContacts, deleteContact } from './slashtags';
 import { addTransfer, removeTransfer, updateTransfer } from './wallet';
-import { deleteWidget, setFeedWidget } from './widgets';
+import { deleteWidget, saveWidget } from './widgets';
 
 export const backupSlice = createSlice({
 	name: 'backup',
@@ -101,7 +101,7 @@ export const backupSlice = createSlice({
 			.addCase(addTransfer, walletReducer)
 			.addCase(updateTransfer, walletReducer)
 			.addCase(removeTransfer, walletReducer)
-			.addCase(setFeedWidget, widgetsReducer)
+			.addCase(saveWidget, widgetsReducer)
 			.addCase(deleteWidget, widgetsReducer)
 			.addCase(updateActivityItems, (state, action) => {
 				// we only listen for LN activity here

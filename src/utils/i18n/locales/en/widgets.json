@@ -1,0 +1,58 @@
+{
+  "widgets": {
+    "string": "Widgets"
+  },
+  "widget": {
+    "nav_title": {
+      "string": "Widget"
+    }
+  },
+  "delete": {
+    "title": {
+      "string": "Delete Widget?"
+    },
+    "description": {
+      "string": "Are you sure you want to delete ‘{name}‘ from your widgets?"
+    }
+  },
+  "price": {
+    "name": {
+      "string": "Bitcoin Price"
+    },
+    "description": {
+      "string": "Check the latest Bitcoin exchange rates for a variety of fiat currencies."
+    }
+  },
+  "headlines": {
+    "name": {
+      "string": "Bitcoin Headlines"
+    },
+    "description": {
+      "string": "Read the latest & greatest Bitcoin headlines from various news sites."
+    }
+  },
+  "blocks": {
+    "name": {
+      "string": "Bitcoin Blocks"
+    },
+    "description": {
+      "string": "Examine various statistics on newly mined Bitcoin Blocks."
+    }
+  },
+  "facts": {
+    "name": {
+      "string": "Bitcoin Facts"
+    },
+    "description": {
+      "string": "Discover fun facts about Bitcoin, every time you open your wallet."
+    }
+  },
+  "calculator": {
+    "name": {
+      "string": "Bitcoin Calculator"
+    },
+    "description": {
+      "string": "Convert ₿ amounts to {fiatSymbol} or vice versa."
+    }
+  }
+}
