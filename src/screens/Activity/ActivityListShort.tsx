@@ -13,7 +13,7 @@ import Button from '../../components/buttons/Button';
 import { useAppSelector } from '../../hooks/redux';
 import type { RootNavigationProp } from '../../navigation/types';
 import { activityItemsSelector } from '../../store/reselect/activity';
-import { IActivityItem } from '../../store/types/activity';
+import { EActivityType, IActivityItem } from '../../store/types/activity';
 import { showBottomSheet } from '../../store/utils/ui';
 import { Caption13Up } from '../../styles/text';
 import { groupActivityItems } from '../../utils/activity';
@@ -27,8 +27,15 @@ const ActivityListShort = (): ReactElement => {
 	const items = useAppSelector(activityItemsSelector);
 
 	const groupedItems = useMemo(() => {
-		const activityItems = items.slice(0, MAX_ACTIVITY_ITEMS);
-		return groupActivityItems(activityItems);
+		const sliced = items.slice(0, MAX_ACTIVITY_ITEMS);
+		return groupActivityItems(sliced);
+	}, [items]);
+
+	const droppedItems = useMemo(() => {
+		const dropped = items.filter((item) => {
+			return item.activityType === EActivityType.onchain && !item.exists;
+		});
+		return dropped;
 	}, [items]);
 
 	const renderItem = useCallback(
@@ -67,8 +74,15 @@ const ActivityListShort = (): ReactElement => {
 
 	return (
 		<View style={styles.content}>
-			<Caption13Up color="secondary" style={styles.title}>
+			<Caption13Up style={styles.title} color="secondary">
 				{t('activity')}
+
+				{droppedItems.length !== 0 && (
+					<Caption13Up color="red">
+						{' '}
+						({droppedItems.length} {t('activity_removed')})
+					</Caption13Up>
+				)}
 			</Caption13Up>
 
 			{groupedItems.length === 0 ? (
