@@ -35,7 +35,7 @@ export const wipeApp = async ({
 		try {
 			const wallet = getOnChainWallet();
 			await wallet.stop();
-		} catch (e) {}
+		} catch (_e) {}
 
 		// Reset Redux stores & persisted storage
 		dispatch({ type: actions.WIPE_APP });

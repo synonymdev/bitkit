@@ -76,7 +76,7 @@ const migrations = {
 			for (const key of keys) {
 				mmkv.delete(key);
 			}
-		} catch (e) {}
+		} catch (_e) {}
 
 		return state;
 	},

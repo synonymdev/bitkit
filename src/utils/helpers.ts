@@ -191,19 +191,6 @@ export const capitalize = (text: string): string => {
 	return text.charAt(0).toUpperCase() + text.slice(1);
 };
 
-/**
- * Returns the last word in a string.
- * @param {string} phrase
- */
-export const getLastWordInString = (phrase: string): string => {
-	try {
-		const n = phrase.split(' ');
-		return n[n.length - 1];
-	} catch (e) {
-		return phrase;
-	}
-};
-
 export const roundUpToTwoDecimals = (num: number): number => {
 	return Math.ceil(num * 100) / 100;
 };
@@ -509,7 +496,7 @@ export const openURL = async (url: string): Promise<boolean> => {
 export const openAppURL = async (url: string): Promise<void> => {
 	try {
 		await Linking.openURL(url);
-	} catch (error) {
+	} catch (_e) {
 		console.log('Cannot open url: ', url);
 	}
 };

@@ -13,7 +13,7 @@ export const btcToSats = (balance: number): number => {
 				.value()
 				.toFixed(0),
 		);
-	} catch (e) {
+	} catch (_e) {
 		return 0;
 	}
 };
@@ -75,7 +75,7 @@ export const fiatToBitcoinUnit = ({
 			.toFixed(denomination === EDenomination.modern ? 0 : 8); // satoshi cannot be a fractional number
 
 		return Number(value);
-	} catch (e) {
+	} catch (_e) {
 		return 0;
 	}
 };

@@ -45,7 +45,7 @@ const ContactEdit = ({
 	const myProfile = useMemo(() => {
 		try {
 			return parse(myProfileUrl).id === parse(url).id;
-		} catch (e) {
+		} catch (_e) {
 			return false;
 		}
 	}, [myProfileUrl, url]);

@@ -173,5 +173,5 @@ const unlinkIfExists = async (path: string): Promise<void> => {
 		if (await exists(path)) {
 			await unlink(path);
 		}
-	} catch (e) {}
+	} catch (_e) {}
 };

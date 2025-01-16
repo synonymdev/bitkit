@@ -44,7 +44,7 @@ const classifyOutputScript = (script): string => {
 	const isOutput = (paymentFn: PaymentFn): bitcoin.Payment | undefined => {
 		try {
 			return paymentFn({ output: script });
-		} catch (e) {}
+		} catch (_e) {}
 	};
 
 	if (isOutput(bitcoin.payments.p2pk)) {

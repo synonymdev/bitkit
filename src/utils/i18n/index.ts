@@ -54,7 +54,7 @@ i18nICU
 			try {
 				// @ts-ignore __setDefaultTimeZone doesn't exist in native API
 				Intl.DateTimeFormat.__setDefaultTimeZone(timeZone);
-			} catch (e) {
+			} catch (_e) {
 				console.log(`error settings timezone to: ${timeZone} fallback to UTC`);
 				// @ts-ignore __setDefaultTimeZone doesn't exist in native API
 				Intl.DateTimeFormat.__setDefaultTimeZone('UTC');
@@ -80,7 +80,7 @@ i18nICU
 			if (Intl.RelativeTimeFormat.polyfilled) {
 				await relativeTimeFormatPolyfills[lang]?.();
 			}
-		} catch (e) {
+		} catch (_e) {
 			console.warn('Error loading polyfill for language: ', lang);
 		}
 	});

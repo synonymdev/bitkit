@@ -168,7 +168,7 @@ export const getTransactionInputValue = ({
 			}
 		}
 		return 0;
-	} catch (e) {
+	} catch (_e) {
 		return 0;
 	}
 };

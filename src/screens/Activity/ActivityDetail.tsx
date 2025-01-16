@@ -164,7 +164,6 @@ const OnchainActivityDetail = ({
 	const dispatch = useAppDispatch();
 	const contacts = useAppSelector(contactsSelector);
 	const tags = useAppSelector((state) => tagSelector(state, id));
-	const selectedNetwork = useAppSelector(selectedNetworkSelector);
 	const activityItems = useAppSelector(activityItemsSelector);
 	const boostedTransactions = useAppSelector(boostedTransactionsSelector);
 	const transfer = useAppSelector((state) => {

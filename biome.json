@@ -8,6 +8,10 @@
 				"noBannedTypes": "off",
 				"noForEach": "off"
 			},
+			"correctness": {
+				"noUnusedFunctionParameters": "error",
+				"noUnusedVariables": "error"
+			},
 			"performance": {
 				"noAccumulatingSpread": "off"
 			},

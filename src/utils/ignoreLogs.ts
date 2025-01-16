@@ -24,7 +24,7 @@ if (__DEV__) {
 			let output: string;
 			try {
 				output = args.join(' ');
-			} catch (err) {
+			} catch (_err) {
 				// if we can't check if the log should be ignored, just log it
 				logger(...args);
 				return;

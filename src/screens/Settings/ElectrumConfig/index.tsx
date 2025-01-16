@@ -67,7 +67,7 @@ const isValidURL = (data: string): boolean => {
 		}
 
 		return isValidDomainOrIP;
-	} catch (e) {
+	} catch (_e) {
 		// If URL constructor fails, it's not a valid URL
 		return false;
 	}

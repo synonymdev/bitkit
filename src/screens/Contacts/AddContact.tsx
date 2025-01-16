@@ -50,7 +50,7 @@ const AddContact = ({
 
 		try {
 			parse(contactUrl);
-		} catch (e) {
+		} catch (_e) {
 			setError(t('contact_error_key'));
 			return;
 		}
@@ -60,7 +60,7 @@ const AddContact = ({
 				setError(t('contact_error_yourself'));
 				return;
 			}
-		} catch (e) {}
+		} catch (_e) {}
 
 		const onError = (): void => {
 			setError(t('contact_error_key'));
