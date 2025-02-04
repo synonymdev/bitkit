@@ -73,8 +73,9 @@ const SpendingAmount = ({
 	const availableAmount = onchainBalance - transaction.fee;
 	const { defaultLspBalance: maxLspBalance } = useTransfer(availableAmount);
 	const { fee: maxLspFee } = useTransferFee(maxLspBalance, availableAmount);
-	const feeMaximum = Math.floor(availableAmount - maxLspFee);
+	const feeMaximum = Math.max(0, Math.floor(availableAmount - maxLspFee));
 	const maximum = Math.min(maxClientBalance, feeMaximum);
+	const fee = transaction.fee + maxLspFee;
 
 	useFocusEffect(
 		// biome-ignore lint/correctness/useExhaustiveDependencies: onMount
@@ -116,7 +117,30 @@ const SpendingAmount = ({
 		setTextFieldValue(result);
 	};
 
+	const checkFeeMinimum = (): boolean => {
+		if (fee > availableAmount) {
+			const roundedFee = Math.ceil(fee / 1000) * 1000;
+			const dv = getDisplayValues({ satoshis: roundedFee });
+			const description = t('spending_amount.error_min.description', {
+				amount: dv.bitcoinFormatted,
+			});
+
+			showToast({
+				type: 'warning',
+				title: t('spending_amount.error_min.title'),
+				description,
+			});
+
+			return true;
+		}
+		return false;
+	};
+
 	const onNumberPadError = (): void => {
+		if (checkFeeMinimum()) {
+			return;
+		}
+
 		const dv = getDisplayValues({ satoshis: maximum });
 		let description = t('spending_amount.error_max.description', {
 			amount: dv.bitcoinFormatted,
@@ -134,6 +158,10 @@ const SpendingAmount = ({
 	};
 
 	const onContinue = async (): Promise<void> => {
+		if (checkFeeMinimum()) {
+			return;
+		}
+
 		setLoading(true);
 
 		const lspBalance = Math.max(defaultLspBalance, minLspBalance);
