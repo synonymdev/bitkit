@@ -1,5 +1,11 @@
 {
+  "profile_save": {
+    "string": "Zapisz"
+  },
   "profile_link_suggestions": {
     "string": "Sugestie"
+  },
+  "profile_delete": {
+    "string": "Usuń"
   }
 }

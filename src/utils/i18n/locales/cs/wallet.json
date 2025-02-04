@@ -318,10 +318,10 @@
     "string": "Příijmout na disponibilní zůstatek"
   },
   "receive_connect_initial": {
-    "string": "Chcete-li nastavit svůj disponibilní zůstatek, bude odečten poplatek <accent>{lspFee}</accent> pro poskytovatele služeb."
+    "string": "Chcete-li nastavit disponibilní zůstatek, bude odečten síťový poplatek <accent>{networkFee}</accent>  a <accent>{serviceFee}</accent> poplatek poskytovateli služeb."
   },
   "receive_connect_additional": {
-    "string": "Chcete-li získat více okamžitých bitcoinů, musí Bitkit zvýšit vaši likviditu. Bude odečten poplatek <accent>{lspFee}</accent> z vámi zadané částky pro poskytovatele služeb."
+    "string": "Chcete-li získat více okamžitých bitcoinů, musí Bitkit navýšit vaši likviditu. Od vámi zadané částky bude odečten síťový poplatek <accent>{networkFee}</accent> a <accent>{serviceFee}</accent> poplatek poskytovatele služeb  ."
   },
   "receive_liquidity": {
     "nav_title": {
@@ -688,6 +688,9 @@
   },
   "ldk_sync_error_title": {
     "string": "Chyba synchronizace lightning"
+  },
+  "ldk_start_error_title": {
+    "string": "Chyba při spuštění lightning"
   },
   "receive_insufficient_title": {
     "string": "Nedostatečný zůstatek na příjmovém účtu."

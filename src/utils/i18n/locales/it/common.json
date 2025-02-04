@@ -53,8 +53,14 @@
   "delete": {
     "string": "Elimina"
   },
+  "delete_yes": {
+    "string": "Si, Elimina"
+  },
   "ok": {
     "string": "OK"
+  },
+  "reset": {
+    "string": "Ripristino"
   },
   "retry": {
     "string": "Riprova"
@@ -88,5 +94,8 @@
   },
   "default": {
     "string": "Predefinito"
+  },
+  "preview": {
+    "string": "Anteprima"
   }
 }

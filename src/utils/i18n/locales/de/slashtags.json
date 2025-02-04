@@ -117,7 +117,7 @@
     "string": "Profil"
   },
   "profile_save": {
-    "string": "Profile speichern"
+    "string": "Speichern"
   },
   "profile_pay_contacts": {
     "string": "Kontakte Bezahlen"
@@ -157,6 +157,12 @@
   },
   "profile_edit": {
     "string": "Profil bearbeiten"
+  },
+  "profile_delete": {
+    "string": "Löschen"
+  },
+  "profile_delete_dialogue_yes": {
+    "string": "Ja, Löschen"
   },
   "offline_enable": {
     "string": "Aktiviere Zahlungen mit Kontakten*"

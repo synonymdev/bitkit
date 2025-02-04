@@ -68,6 +68,9 @@
   "contact_select": {
     "string": "اختر جهة اتصال"
   },
+  "profile_delete_dialogue_yes": {
+    "string": "نعم، احذف"
+  },
   "widget_delete_yes": {
     "string": "نعم، احذف"
   }

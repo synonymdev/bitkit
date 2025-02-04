@@ -21,10 +21,10 @@
       "string": "Můžete použít své úspory na BitKitu nebo poslat bitcoin z jiné peněženky."
     },
     "text_blocked": {
-      "string": "V současné době nemůže společnost Bitkit poskytovat automatické připojení Lightning obyvatelům Spojených států a Kanady."
+      "string": "Bitkit v současné době neposkytuje služby lightning ve vaší zemi, ale stále se můžete připojit k jiným uzlům přímo."
     },
     "text_blocked_cjit": {
-      "string": "Bitkit v současné době neposkytuje služby lightning do USA a Kanady, ale k ostatním uzlům se můžete připojit přímo."
+      "string": "Bitkit v současné době neposkytuje služby lightning ve vaší zemi, ale stále se můžete připojit k jiným uzlům přímo."
     },
     "button1": {
       "string": "Převod z úspor"
@@ -119,6 +119,9 @@
       },
       "description": {
         "string": "Částka, kterou můžete převést na svůj disponibilní zůstatek, je v současné době omezena na ₿ {amount}."
+      },
+      "description_zero": {
+        "string": "Váš převod do disponibilního zůstatku je omezen z důvodu pravidel likvidity. Podrobnosti naleznete v Centru nápovědy."
       }
     }
   },

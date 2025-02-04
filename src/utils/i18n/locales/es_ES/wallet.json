@@ -221,9 +221,6 @@
   "receive_show_qr": {
     "string": "Mostrar código QR"
   },
-  "receive_connect_initial": {
-    "string": "Para configurar su saldo de gastos, se deducirá una comisión de proveedor de servicio de <accent>{lspFee}</accent>."
-  },
   "receive_liquidity": {
     "nav_title_additional": {
       "string": "Incrementar Capacidad de Recepción"

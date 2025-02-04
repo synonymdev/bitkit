@@ -20,12 +20,6 @@
     "text": {
       "string": "Du kannst dein Bitkit-Sparkonto verwenden oder Bitcoin aus einer anderen Wallet senden."
     },
-    "text_blocked": {
-      "string": "Derzeit kann Bitkit keine automatischen Lightning-Verbindungen für Einwohner der USA und Kanadas bereitstellen."
-    },
-    "text_blocked_cjit": {
-      "string": "Bitkit bietet derzeit keine Lightning-Dienste in den USA oder Kanada an, aber Sie können sich trotzdem direkt mit anderen Knotenpunkten verbinden."
-    },
     "button1": {
       "string": "Von Sparkonto übertragen"
     },

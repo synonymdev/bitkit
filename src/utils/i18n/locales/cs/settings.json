@@ -239,6 +239,9 @@
     "category_transaction_log": {
       "string": "Transakční protokol"
     },
+    "category_wallet": {
+      "string": "Posílení a převody"
+    },
     "category_settings": {
       "string": "Nastavení"
     },

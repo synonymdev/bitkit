@@ -20,9 +20,6 @@
     "text": {
       "string": "Use seu saldo de poupança ou receba bitcoin de outra carteira."
     },
-    "text_blocked": {
-      "string": "No momento, a Bitkit não pode fornecer conexões Lightning para residentes dos Estados Unidos e do Canadá."
-    },
     "button1": {
       "string": "Transferir do Saldo de Poupança"
     },

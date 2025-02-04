@@ -131,6 +131,33 @@
       "string": "Titel anzeigen"
     }
   },
+  "quickpay": {
+    "nav_title": {
+      "string": "QuickPay"
+    },
+    "intro": {
+      "title": {
+        "string": "<accent>Reibungslos</accent>\nZahlungen"
+      },
+      "description": {
+        "string": "Bitkit QuickPay beschleunigt den Bezahlvorgang, indem es QR-Codes beim Scannen automatisch bezahlt."
+      }
+    },
+    "settings": {
+      "toggle": {
+        "string": "QuickPay aktivieren"
+      },
+      "text": {
+        "string": "Wenn diese Option aktiviert ist, werden gescannte Rechnungen unter ${Betrag} automatisch bezahlt, ohne dass Sie eine Bestätigung oder PIN* benötigen."
+      },
+      "label": {
+        "string": "Quickpay-Schwelle"
+      },
+      "note": {
+        "string": "* Bitkit QuickPay unterstützt ausschließlich Zahlungen von Ihrem Guthaben."
+      }
+    }
+  },
   "security": {
     "title": {
       "string": "Sicherheit Und Privatsphäre"
@@ -211,6 +238,9 @@
     },
     "category_transaction_log": {
       "string": "Transaktionshistorie"
+    },
+    "category_wallet": {
+      "string": "Boosts & Übertragungen"
     },
     "category_settings": {
       "string": "Einstellungen"

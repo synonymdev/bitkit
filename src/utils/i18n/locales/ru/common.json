@@ -53,8 +53,14 @@
   "delete": {
     "string": "Удалить"
   },
+  "delete_yes": {
+    "string": "Да, Удалить"
+  },
   "ok": {
     "string": "ОК"
+  },
+  "reset": {
+    "string": "Сбросить"
   },
   "retry": {
     "string": "Повторить"
@@ -94,5 +100,8 @@
   },
   "default": {
     "string": "По умолчанию"
+  },
+  "preview": {
+    "string": "Предпросмотр"
   }
 }

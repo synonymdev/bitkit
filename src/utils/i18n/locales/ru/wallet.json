@@ -295,12 +295,6 @@
   "receive_spending": {
     "string": "Получить на Баланс Расходов"
   },
-  "receive_connect_initial": {
-    "string": "Чтобы настроить ваш Баланс Расходов, будет вычтена плата за услуги <accent>{lspFee}</accent>."
-  },
-  "receive_connect_additional": {
-    "string": "Чтобы получить больше мгновенных биткоинов, Bitkit должен увеличить вашу ликвидность. Плата за услуги <accent>{lspFee}</accent> будет вычтена из указанной суммы."
-  },
   "receive_liquidity": {
     "nav_title": {
       "string": "Настройка Баланса Расходов"

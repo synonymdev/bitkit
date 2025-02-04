@@ -287,12 +287,6 @@
   "receive_spending": {
     "string": "Ricevi sul saldo delle spese"
   },
-  "receive_connect_initial": {
-    "string": "Per impostare il tuo saldo spendibile, <accent>{lspFee}</accent> verrà detratta una commissione del fornitore di servizi."
-  },
-  "receive_connect_additional": {
-    "string": "Per ricevere più Bitcoin istantanei, Bitkit deve aumentare la tua liquidità. Una <accent>{lspFee}</accent> commissione del fornitore di servizi verrà detratta dall'importo specificato."
-  },
   "receive_cjit_error": {
     "string": "Transazione Fallita"
   },

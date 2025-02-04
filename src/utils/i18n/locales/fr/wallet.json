@@ -284,12 +284,6 @@
   "receive_spending": {
     "string": "Recevoir sur le compte de dépenses"
   },
-  "receive_connect_initial": {
-    "string": "Pour établir votre solde de dépenses, des <accent>{lspFee}</accent> frais du fournisseur de services seront déduits."
-  },
-  "receive_connect_additional": {
-    "string": "Pour recevoir plus de bitcoins instantanés, Bitkit doit augmenter vos liquidités. A <accent>{lspFee}</accent> frais de fournisseur de services seront déduits du montant que vous avez spécifié."
-  },
   "receive_cjit_error": {
     "string": "Échec de la transaction"
   },

@@ -53,11 +53,17 @@
   "delete": {
     "string": "Löschen"
   },
+  "delete_yes": {
+    "string": "Ja, Löschen"
+  },
   "ok": {
     "string": "OK"
   },
   "ok_random": {
     "string": "Fantastisch!\nSchön!\nCool!\nGroßartig!\nFantastisch!\nSüß!\nAusgezeichnet!\nGroßartig!\nWunderbar!"
+  },
+  "reset": {
+    "string": "Reset"
   },
   "retry": {
     "string": "Wiederholen"
@@ -97,5 +103,8 @@
   },
   "default": {
     "string": "Standard"
+  },
+  "preview": {
+    "string": "Vorschau"
   }
 }

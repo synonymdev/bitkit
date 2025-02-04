@@ -117,7 +117,7 @@
     "string": "Профиль"
   },
   "profile_save": {
-    "string": "Сохранить Профиль"
+    "string": "Сохранить"
   },
   "profile_pay_contacts": {
     "string": "Платите Контактам"
@@ -157,6 +157,12 @@
   },
   "profile_edit": {
     "string": "Редактировать Профиль"
+  },
+  "profile_delete": {
+    "string": "Удалить"
+  },
+  "profile_delete_dialogue_yes": {
+    "string": "Да, Удалить"
   },
   "offline_enable": {
     "string": "Включить платежи с контактами*"

@@ -53,6 +53,9 @@
   "contact_pay_error": {
     "string": "Není možné zaplatit kontaktu"
   },
+  "contact_ldk_not_ready": {
+    "string": "Lightning ještě není připraven"
+  },
   "contact_share": {
     "string": "Sdílet profilový klíč"
   },
@@ -117,7 +120,7 @@
     "string": "Profil"
   },
   "profile_save": {
-    "string": "Uložit profil"
+    "string": "Uložit"
   },
   "profile_pay_contacts": {
     "string": "Zaplaťte svým kontaktům"
@@ -157,6 +160,24 @@
   },
   "profile_edit": {
     "string": "Upravit profil"
+  },
+  "profile_delete": {
+    "string": "Smazat"
+  },
+  "profile_delete_dialogue_title": {
+    "string": "Odstranit profilové informace?"
+  },
+  "profile_delete_dialogue_msg": {
+    "string": "Jste si jisti, že chcete odstranit všechny informace ze svého profilu Bitkit?"
+  },
+  "profile_delete_dialogue_yes": {
+    "string": "Ano, smazat"
+  },
+  "profile_delete_success_title": {
+    "string": "Profil odstraněn"
+  },
+  "profile_delete_success_msg": {
+    "string": "Vaše profilové informace Bitkit byly odstraněny."
   },
   "offline_enable": {
     "string": "Povolit platby s kontakty*"
@@ -235,6 +256,9 @@
   },
   "error_saving_profile": {
     "string": "Nelze uložit profil"
+  },
+  "error_deleting_profile": {
+    "string": "Nelze odstranit profil"
   },
   "error_pay_title": {
     "string": "Není možné zaplatit kontaktu"
