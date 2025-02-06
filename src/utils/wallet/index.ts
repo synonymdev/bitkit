@@ -39,7 +39,6 @@ import { BIP32Factory } from 'bip32';
 import * as bip39 from 'bip39';
 import { getAddressInfo } from 'bitcoin-address-validation';
 import * as bitcoin from 'bitcoinjs-lib';
-import { InteractionManager } from 'react-native';
 
 import {
 	generateNewReceiveAddress,
@@ -54,6 +53,7 @@ import {
 	getStore,
 	getWalletStore,
 } from '../../store/helpers';
+import { receivedTxIds } from '../../store/mmkv-storage';
 import {
 	getDefaultGapLimitOptions,
 	getDefaultWalletShape,
@@ -75,7 +75,7 @@ import {
 import { updateActivityList } from '../../store/utils/activity';
 import { refreshOrdersList } from '../../store/utils/blocktank';
 import { moveMetaIncTxTags } from '../../store/utils/metadata';
-import { showNewOnchainTxPrompt, showNewTxPrompt } from '../../store/utils/ui';
+import { showNewOnchainTxPrompt } from '../../store/utils/ui';
 import BitcoinActions from '../bitcoin-actions';
 import { btcToSats } from '../conversion';
 import { promiseTimeout } from '../helpers';
@@ -147,25 +147,16 @@ export const refreshWallet = async ({
 	onchain = true,
 	lightning = true,
 	scanAllAddresses = false, // If set to false, on-chain scanning will adhere to the gap limit (20).
-	showNotification = true, // Whether to show newTxPrompt on new incoming transactions.
 	selectedWallet = getSelectedWallet(),
 	selectedNetwork = getSelectedNetwork(),
 }: {
 	onchain?: boolean;
 	lightning?: boolean;
 	scanAllAddresses?: boolean;
-	showNotification?: boolean;
 	selectedWallet?: TWalletName;
 	selectedNetwork?: EAvailableNetwork;
 } = {}): Promise<Result<string>> => {
 	try {
-		// wait for interactions/animations to be completed
-		await new Promise((resolve) => {
-			InteractionManager.runAfterInteractions(() => resolve(null));
-		});
-
-		let notificationTxid: string | undefined;
-
 		if (onchain) {
 			await refreshBeignet(scanAllAddresses);
 		}
@@ -178,10 +169,6 @@ export const refreshWallet = async ({
 		if (onchain || lightning) {
 			updateActivityList();
 			moveMetaIncTxTags();
-		}
-
-		if (showNotification && notificationTxid) {
-			showNewTxPrompt(notificationTxid);
 		}
 
 		return ok('');
@@ -1013,9 +1000,6 @@ const onElectrumConnectionChange = (isConnected: boolean): void => {
 	}
 };
 
-// Used to prevent duplicate notifications for the same txid that seems to occur when Bitkit is brought from background to foreground.
-const receivedTxids: string[] = [];
-
 const onMessage: TOnMessage = async (key, data): Promise<void> => {
 	switch (key) {
 		case 'transactionReceived': {
@@ -1026,7 +1010,7 @@ const onMessage: TOnMessage = async (key, data): Promise<void> => {
 				!wallet?.isSwitchingNetworks
 			) {
 				const { transaction } = txMsg;
-				const isDuplicate = receivedTxids.includes(transaction.txid);
+				const isDuplicate = receivedTxIds.has(transaction.txid);
 				const transfer = await getTransferForTx(transaction);
 
 				if (!transfer && !isDuplicate) {
@@ -1034,7 +1018,7 @@ const onMessage: TOnMessage = async (key, data): Promise<void> => {
 						id: transaction.txid,
 						value: btcToSats(transaction.value),
 					});
-					receivedTxids.push(transaction.txid);
+					receivedTxIds.add(transaction.txid);
 				}
 			}
 			refreshWallet({ lightning: false }).then();

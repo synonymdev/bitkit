@@ -279,7 +279,7 @@ const DevSettings = ({
 					const fakeTx = getFakeTransaction(id);
 					fakeTx[id].height = 0;
 					injectFakeTransaction(fakeTx);
-					refreshWallet({ selectedWallet, selectedNetwork }).then();
+					refreshWallet().then();
 				},
 			},
 			{

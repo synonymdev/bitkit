@@ -165,7 +165,6 @@ export const startWalletServices = async ({
 				onchain: restore,
 				lightning,
 				scanAllAddresses: restore,
-				showNotification: !restore,
 			});
 			await runChecks({ selectedWallet, selectedNetwork });
 		}

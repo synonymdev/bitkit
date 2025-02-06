@@ -76,11 +76,7 @@ const GapLimit = (): ReactElement => {
 		});
 		if (res.isOk()) {
 			dispatch(updateWallet({ gapLimitOptions: res.value }));
-			await refreshWallet({
-				lightning: false,
-				onchain: true,
-				scanAllAddresses: true,
-			});
+			await refreshWallet({ lightning: false, scanAllAddresses: true });
 			showToast({
 				type: 'success',
 				title: t('gap.gap_limit_update_title'),

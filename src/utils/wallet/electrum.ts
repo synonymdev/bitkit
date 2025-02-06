@@ -211,11 +211,9 @@ export const getAddressHistory = async ({
  */
 export const connectToElectrum = async ({
 	customPeers,
-	showNotification = true,
 	selectedNetwork = getSelectedNetwork(),
 }: {
 	customPeers?: TServer[];
-	showNotification?: boolean;
 	selectedNetwork?: EAvailableNetwork;
 } = {}): Promise<Result<string>> => {
 	const electrum = await getOnChainWalletElectrumAsync();
@@ -240,7 +238,7 @@ export const connectToElectrum = async ({
 	}
 
 	// Check for any new transactions that we might have missed while disconnected.
-	refreshWallet({ showNotification }).then();
+	refreshWallet().then();
 
 	return ok(connectRes.value);
 };
