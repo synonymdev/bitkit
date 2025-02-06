@@ -800,6 +800,10 @@ export const refreshLdk = async ({
 				shouldPreemptivelyStopLdk: false,
 			});
 			if (setupResponse.isErr()) {
+				if (setupResponse.error.message.includes('already_init')) {
+					return ok('');
+				}
+
 				showToast({
 					type: 'error',
 					title: i18n.t('wallet:ldk_start_error_title'),
