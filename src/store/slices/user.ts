@@ -5,6 +5,7 @@ import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 export const MAX_WARNINGS = 3; // how many times to show high balance warning
 
 export type TUser = {
+	backupVerified: boolean;
 	ignoreAppUpdateTimestamp: number;
 	ignoreBackupTimestamp: number;
 	ignoreHighBalanceCount: number;
@@ -19,6 +20,7 @@ export type TUser = {
 };
 
 export const initialUserState: TUser = {
+	backupVerified: false,
 	ignoreAppUpdateTimestamp: 0,
 	ignoreBackupTimestamp: 0,
 	ignoreHighBalanceCount: 0,
@@ -65,6 +67,9 @@ export const userSlice = createSlice({
 		ignoreSwitchUnitToast: (state) => {
 			state.ignoresSwitchUnitToast = true;
 		},
+		verifyBackup: (state) => {
+			state.backupVerified = true;
+		},
 		resetUserState: () => initialUserState,
 	},
 });
@@ -81,6 +86,7 @@ export const {
 	clearCoopCloseTimer,
 	ignoreHideBalanceToast,
 	ignoreSwitchUnitToast,
+	verifyBackup,
 	resetUserState,
 } = actions;
 

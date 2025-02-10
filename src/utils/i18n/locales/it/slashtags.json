@@ -117,7 +117,7 @@
     "string": "Profilo"
   },
   "profile_save": {
-    "string": "Salva Profilo"
+    "string": "Salva"
   },
   "profile_pay_contacts": {
     "string": "Paga i tuoi Contatti"
@@ -157,6 +157,12 @@
   },
   "profile_edit": {
     "string": "Modifica Profilo"
+  },
+  "profile_delete": {
+    "string": "Elimina"
+  },
+  "profile_delete_dialogue_yes": {
+    "string": "Si, Elimina"
   },
   "offline_enable": {
     "string": "Abilita i pagamenti con i contatti*"

@@ -1,4 +1,4 @@
-import React, { ReactElement, useState } from 'react';
+import React, { ReactElement, useEffect, useState } from 'react';
 import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 
 import { useCurrency } from '../../hooks/displayValues';
@@ -8,6 +8,8 @@ import { BodyMSB, CaptionB } from '../../styles/text';
 import { fiatToBitcoinUnit } from '../../utils/conversion';
 import { getDisplayValues } from '../../utils/displayValues';
 import BaseWidget from './BaseWidget';
+
+const MAX_BITCOIN = 2_100_000_000_000_000; // Maximum bitcoin amount in sats
 
 const CalculatorWidget = ({
 	isEditing = false,
@@ -30,16 +32,58 @@ const CalculatorWidget = ({
 		return dv.fiatValue.toString();
 	});
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: update fiat amount when currency changes
+	useEffect(() => {
+		updateFiatAmount(bitcoinAmount);
+	}, [fiatTicker]);
+
 	const updateFiatAmount = (bitcoin: string) => {
-		const amount = Number(bitcoin);
-		const dv = getDisplayValues({ satoshis: amount, shouldRoundUpFiat: true });
+		// Remove leading zeros for positive numbers
+		const sanitizedBitcoin = bitcoin.replace(/^0+(?=\d)/, '');
+		const amount = Number(sanitizedBitcoin);
+		// Cap the amount at maximum bitcoin
+		const cappedAmount = Math.min(amount, MAX_BITCOIN);
+		const dv = getDisplayValues({
+			satoshis: cappedAmount,
+			shouldRoundUpFiat: true,
+		});
 		setFiatAmount(dv.fiatValue.toString());
+		// Update bitcoin amount if it was capped
+		if (cappedAmount !== amount) {
+			setBitcoinAmount(cappedAmount.toString());
+		}
 	};
 
 	const updateBitcoinAmount = (fiat: string) => {
-		const amount = Number(fiat.replace(',', '.'));
+		// Remove leading zeros and handle decimal separator
+		const sanitizedFiat = fiat.replace(/^0+(?=\d)/, '');
+		// Only convert to number if it's not just a decimal point
+		const amount = sanitizedFiat === '.' ? 0 : Number(sanitizedFiat);
 		const sats = fiatToBitcoinUnit({ amount });
-		setBitcoinAmount(sats.toString());
+		// Cap the amount at maximum bitcoin
+		const cappedSats = Math.min(sats, MAX_BITCOIN);
+		setBitcoinAmount(cappedSats.toString());
+		// Update fiat amount if bitcoin was capped
+		if (cappedSats !== sats) {
+			const dv = getDisplayValues({
+				satoshis: cappedSats,
+				shouldRoundUpFiat: true,
+			});
+			setFiatAmount(dv.fiatValue.toString());
+		}
+	};
+
+	const formatNumberWithSeparators = (value: string): string => {
+		const endsWithDecimal = value.endsWith('.');
+		const cleanNumber = value.replace(/[^\d.]/g, '');
+		const [integer, decimal] = cleanNumber.split('.');
+		const formattedInteger = integer.replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+
+		if (decimal !== undefined) {
+			return `${formattedInteger}.${decimal}`;
+		}
+
+		return endsWithDecimal ? `${formattedInteger}.` : formattedInteger;
 	};
 
 	return (
@@ -56,13 +100,16 @@ const CalculatorWidget = ({
 					<View style={styles.amount}>
 						<TextInput
 							style={styles.input}
-							value={bitcoinAmount}
+							value={formatNumberWithSeparators(bitcoinAmount)}
 							placeholder="0"
 							keyboardType="number-pad"
 							returnKeyType="done"
 							onChangeText={(text) => {
-								setBitcoinAmount(text);
-								updateFiatAmount(text);
+								// Remove any spaces before processing
+								const rawText = text.replace(/\s/g, '');
+								const sanitizedText = rawText.replace(/^0+(?=\d)/, '');
+								setBitcoinAmount(sanitizedText);
+								updateFiatAmount(sanitizedText);
 							}}
 						/>
 					</View>
@@ -75,13 +122,36 @@ const CalculatorWidget = ({
 					<View style={styles.amount}>
 						<TextInput
 							style={styles.input}
-							value={fiatAmount}
+							value={formatNumberWithSeparators(fiatAmount)}
 							placeholder="0"
 							keyboardType="decimal-pad"
 							returnKeyType="done"
 							onChangeText={(text) => {
-								setFiatAmount(text);
-								updateBitcoinAmount(text);
+								// Process the input text
+								const processedText = text
+									.replace(',', '.') // Convert comma to dot
+									.replace(/\s/g, ''); // Remove spaces
+
+								// Split and clean the number parts
+								const [integer, decimal] = processedText.split('.');
+								const cleanInteger = integer.replace(/^0+(?=\d)/, '') || '0';
+
+								// Construct the final number
+								const finalText =
+									decimal !== undefined
+										? `${cleanInteger}.${decimal.slice(0, 2)}`
+										: cleanInteger;
+
+								// Update state if valid
+								if (
+									finalText === '' ||
+									finalText === '.' ||
+									finalText === '0.' ||
+									/^\d*\.?\d{0,2}$/.test(finalText)
+								) {
+									setFiatAmount(finalText);
+									updateBitcoinAmount(finalText);
+								}
 							}}
 						/>
 					</View>

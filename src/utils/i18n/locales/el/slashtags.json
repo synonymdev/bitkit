@@ -1,6 +1,12 @@
 {
+  "profile_save": {
+    "string": "Καταχώρηση"
+  },
   "profile_link_suggestions": {
     "string": "Προτάσεις"
+  },
+  "profile_delete": {
+    "string": "Διαγραφή"
   },
   "widget_edit_custom": {
     "string": "Προσαρμοσμένο"

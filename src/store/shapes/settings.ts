@@ -74,7 +74,6 @@ const defaultReceivePreference = [
 ];
 
 export const initialSettingsState: TSettings = {
-	backupVerified: false,
 	enableAutoReadClipboard: false,
 	enableSendAmountWarning: false,
 	enableSwipeToHideBalance: true,

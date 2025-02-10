@@ -122,7 +122,7 @@ const WidgetEdit = ({
 		{
 			key: 'showNextBlockFee' as const,
 			title: t('weather.next_block'),
-			value: `${nextBlockFee} bitcoin/vB`,
+			value: `${nextBlockFee} ₿/vByte`,
 		},
 	];
 

@@ -47,6 +47,9 @@
   "delete": {
     "string": "Borrar"
   },
+  "delete_yes": {
+    "string": "Sí, Borrar"
+  },
   "ok": {
     "string": "OK"
   },

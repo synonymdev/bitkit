@@ -120,14 +120,16 @@ const Widget = ({
 						{renderWidget()}
 
 						<View style={styles.buttonsContainer}>
-							<Button
-								style={styles.button}
-								text={t('common:delete')}
-								size="large"
-								variant="secondary"
-								testID="WidgetDelete"
-								onPress={onDelete}
-							/>
+							{savedWidget && (
+								<Button
+									style={styles.button}
+									text={t('common:delete')}
+									size="large"
+									variant="secondary"
+									testID="WidgetDelete"
+									onPress={onDelete}
+								/>
+							)}
 							<Button
 								style={styles.button}
 								text={t('save')}

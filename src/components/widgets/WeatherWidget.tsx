@@ -87,7 +87,7 @@ const WeatherWidget = ({
 									</BodySSB>
 								</View>
 								<View style={styles.columnRight}>
-									<BodyMSB numberOfLines={1}>{nextBlockFee} bitcoin/vB</BodyMSB>
+									<BodyMSB numberOfLines={1}>{nextBlockFee} ₿/vByte</BodyMSB>
 								</View>
 							</View>
 						)}

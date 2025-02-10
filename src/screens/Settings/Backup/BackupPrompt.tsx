@@ -10,8 +10,8 @@ import {
 } from '../../../hooks/bottomSheet';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 import { useBalance } from '../../../hooks/wallet';
-import { backupVerifiedSelector } from '../../../store/reselect/settings';
 import { viewControllersSelector } from '../../../store/reselect/ui';
+import { backupVerifiedSelector } from '../../../store/reselect/user';
 import { ignoreBackupTimestampSelector } from '../../../store/reselect/user';
 import { closeSheet } from '../../../store/slices/ui';
 import { ignoreBackup } from '../../../store/slices/user';

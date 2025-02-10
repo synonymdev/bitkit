@@ -71,7 +71,7 @@ const BUI = ({ children }: Props): ReactElement => {
 const TOS = (): ReactElement => (
 	<View style={s.root}>
 		<P>
-			<B>Effective date: June 7, 2024</B>
+			<B>Effective date: February 4, 2025</B>
 		</P>
 		<P>
 			<B>
@@ -113,10 +113,9 @@ const TOS = (): ReactElement => (
 		</P>
 		<P>
 			<B>
-				FUNDS TRANSFERRED USING CAVEMAN JUST-IN-TIME CHANNELS BY THIRD PARTIES
-				MAY NOT BE DELIVERED TO YOU BY THE THIRD PARTY. YOU ARE REFERRED TO
-				CLAUSE 9.3 OF THE TERMS AS TO SYNONYM’S LIABILITY FOR THIRD PARTY
-				SERVICES.
+				FUNDS TRANSFERRED USING JUST-IN-TIME CHANNELS BY THIRD PARTIES MAY NOT
+				BE DELIVERED TO YOU BY THE THIRD PARTY. YOU ARE REFERRED TO CLAUSE 9.3
+				OF THE TERMS AS TO SYNONYM’S LIABILITY FOR THIRD PARTY SERVICES.
 			</B>
 		</P>
 		<P>

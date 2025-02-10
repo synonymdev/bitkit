@@ -53,8 +53,14 @@
   "delete": {
     "string": "Verwijderen"
   },
+  "delete_yes": {
+    "string": "Ja, Verwijder"
+  },
   "ok": {
     "string": "OK"
+  },
+  "reset": {
+    "string": "Resetten"
   },
   "retry": {
     "string": "Opnieuw proberen"

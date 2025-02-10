@@ -53,11 +53,17 @@
   "delete": {
     "string": "Smazat"
   },
+  "delete_yes": {
+    "string": "Ano, smazat"
+  },
   "ok": {
     "string": "OK"
   },
   "ok_random": {
     "string": "Úžasné!\nPěkné!\nFajn!\nSkvělé!\nFantastické!\nMilé!\nMimořádné!\nOhromující!"
+  },
+  "reset": {
+    "string": "Obnovit"
   },
   "retry": {
     "string": "Opakovat"
@@ -97,5 +103,8 @@
   },
   "default": {
     "string": "Výchozí"
+  },
+  "preview": {
+    "string": "Náhled"
   }
 }

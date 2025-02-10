@@ -145,13 +145,7 @@ export const runStorageCheck = async ({
 	);
 
 	await clearUtxos();
-
-	await refreshWallet({
-		onchain: true,
-		lightning: true,
-		scanAllAddresses: true,
-		showNotification: false,
-	});
+	await refreshWallet({ scanAllAddresses: true });
 
 	return ok('Replaced Impacted Addresses');
 };

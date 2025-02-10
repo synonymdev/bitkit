@@ -20,9 +20,6 @@
     "text": {
       "string": "Vous pouvez utiliser votre épargne Bitkit ou envoyer des bitcoins à partir d'un autre portefeuille."
     },
-    "text_blocked": {
-      "string": "À l'heure actuelle, Bitkit ne peut pas fournir de connexions Lightning automatiques aux résidents des États-Unis et du Canada."
-    },
     "button1": {
       "string": "Transfert depuis l'épargne"
     },

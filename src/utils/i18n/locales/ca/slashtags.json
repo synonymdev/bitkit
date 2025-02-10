@@ -93,7 +93,7 @@
     "string": "Perfil"
   },
   "profile_save": {
-    "string": "Desar perfil"
+    "string": "Guardar"
   },
   "profile_pay_contacts": {
     "string": "Paga als teus contactes"
@@ -133,6 +133,12 @@
   },
   "profile_edit": {
     "string": "Editar perfil"
+  },
+  "profile_delete": {
+    "string": "Suprimir"
+  },
+  "profile_delete_dialogue_yes": {
+    "string": "Sí, Elimina"
   },
   "offline_enable": {
     "string": "Habilitar pagaments amb contactes*"

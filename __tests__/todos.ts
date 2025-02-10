@@ -32,7 +32,7 @@ describe('Todos selector', () => {
 	let s: RootState;
 
 	beforeAll(async () => {
-		let res = await createNewWallet();
+		const res = await createNewWallet();
 		if (res.isErr()) {
 			throw res.error;
 		}
@@ -67,7 +67,7 @@ describe('Todos selector', () => {
 
 	it('should not return backupSeedPhraseTodo if backup is verified', () => {
 		const state = cloneDeep(s);
-		state.settings.backupVerified = true;
+		state.user.backupVerified = true;
 
 		expect(todosFullSelector(state)).not.toEqual(
 			expect.arrayContaining([backupSeedPhraseTodo]),

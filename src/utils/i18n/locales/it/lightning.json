@@ -20,9 +20,6 @@
     "text": {
       "string": "Puoi utilizzare i tuoi risparmi Bitkit o inviare bitcoin da un portafoglio diverso."
     },
-    "text_blocked": {
-      "string": "Al momento, Bitkit non può fornire connessioni Lightning automatiche ai residenti negli Stati Uniti e in Canada."
-    },
     "button1": {
       "string": "Trasferimento da risparmio"
     },

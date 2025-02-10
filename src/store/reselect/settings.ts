@@ -19,10 +19,6 @@ export const settingsSelector = (state: RootState): TSettings => state.settings;
 const customElectrumPeersState = (state: RootState): TCustomElectrumPeers => {
 	return state.settings.customElectrumPeers;
 };
-
-export const backupVerifiedSelector = (state: RootState): boolean => {
-	return state.settings.backupVerified;
-};
 export const selectedCurrencySelector = (state: RootState): string => {
 	return state.settings.selectedCurrency;
 };

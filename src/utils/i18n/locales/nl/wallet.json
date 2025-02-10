@@ -284,12 +284,6 @@
   "receive_spending": {
     "string": "Ontvang op Bestedingssaldo"
   },
-  "receive_connect_initial": {
-    "string": "Voor het opzetten van uw bestedingssaldo wordt <accent>{lspFee}</accent> aan servicekosten ingehouden."
-  },
-  "receive_connect_additional": {
-    "string": "Om meer Bitcoin op uw bestedingssaldo te ontvangen, moet Bitkit uw liquiditeit verhogen. Er wordt <accent>{lspFee}</accent> aan servicekosten ingehouden."
-  },
   "receive_cjit_error": {
     "string": "Transactie Mislukt"
   },

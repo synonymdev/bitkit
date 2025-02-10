@@ -244,14 +244,10 @@ export const startChannelPurchase = async ({
 /**
  * Creates, broadcasts and confirms a given Blocktank channel purchase by orderId.
  * @param {string} orderId
- * @param {EAvailableNetwork} [selectedNetwork]
- * @param {TWalletName} [selectedWallet]
  * @returns {Promise<Result<string>>}
  */
 export const confirmChannelPurchase = async ({
 	order,
-	selectedWallet = getSelectedWallet(),
-	selectedNetwork = getSelectedNetwork(),
 }: {
 	order: IBtOrder;
 	selectedNetwork?: EAvailableNetwork;
@@ -293,12 +289,8 @@ export const confirmChannelPurchase = async ({
 
 	watchOrder(order.id).then();
 	dispatch(setLightningSetupStep(0));
-	refreshWallet({
-		onchain: true,
-		lightning: false, // No need to refresh lightning wallet at this time.
-		selectedWallet,
-		selectedNetwork,
-	}).then();
+	// No need to refresh lightning wallet at this time.
+	refreshWallet({ lightning: false }).then();
 
 	if (!__E2E__) {
 		await scheduleNotifications();

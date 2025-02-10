@@ -20,11 +20,7 @@ import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { rootNavigation } from '../../navigation/root/RootNavigator';
 import { resetSendTransaction } from '../../store/actions/wallet';
 import { viewControllerSelector } from '../../store/reselect/ui';
-import {
-	selectedNetworkSelector,
-	selectedWalletSelector,
-	transactionSelector,
-} from '../../store/reselect/wallet';
+import { transactionSelector } from '../../store/reselect/wallet';
 import { closeSheet } from '../../store/slices/ui';
 import { TOnchainActivityItem } from '../../store/types/activity';
 import { EUnit } from '../../store/types/wallet';
@@ -48,8 +44,6 @@ const BoostForm = ({
 	const { t } = useTranslation('wallet');
 	const dispatch = useAppDispatch();
 	const transaction = useAppSelector(transactionSelector);
-	const selectedNetwork = useAppSelector(selectedNetworkSelector);
-	const selectedWallet = useAppSelector(selectedWalletSelector);
 
 	const [preparing, setPreparing] = useState(true);
 	const [loading, setLoading] = useState(false);
@@ -69,8 +63,6 @@ const BoostForm = ({
 	useEffect(() => {
 		(async (): Promise<void> => {
 			const res = await setupBoost({
-				selectedWallet,
-				selectedNetwork,
 				txid: activityItem.txId,
 			});
 			setPreparing(false);
@@ -84,7 +76,7 @@ const BoostForm = ({
 		return (): void => {
 			resetSendTransaction();
 		};
-	}, [activityItem.txId, selectedNetwork, selectedWallet, dispatch]);
+	}, [activityItem.txId, dispatch]);
 
 	const onSwitchView = (): void => {
 		if (showCustom) {

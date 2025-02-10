@@ -4,6 +4,9 @@ import { TUser } from '../slices/user';
 
 const userState = (state: RootState): TUser => state.user;
 
+export const backupVerifiedSelector = (state: RootState): boolean => {
+	return state.user.backupVerified;
+};
 export const isGeoBlockedSelector = createSelector(
 	[userState],
 	(user): boolean => user.isGeoBlocked ?? false,

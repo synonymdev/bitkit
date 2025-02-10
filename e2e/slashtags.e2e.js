@@ -144,6 +144,7 @@ d('Profile and Contacts', () => {
 			await expect(element(by.text('WEBSITE'))).toExist();
 			await expect(element(by.text(satoshi.website))).toExist();
 			await element(by.id('NavigationBack')).tap();
+			await element(by.id('NavigationBack')).tap();
 
 			if (device.getPlatform() === 'ios') {
 				// FIXME: this bottom sheet should not appear

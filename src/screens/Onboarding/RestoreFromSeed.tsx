@@ -26,8 +26,7 @@ import VerticalShadow from '../../components/VerticalShadow';
 import Button from '../../components/buttons/Button';
 import { useAppDispatch } from '../../hooks/redux';
 import { OnboardingStackScreenProps } from '../../navigation/types';
-import { verifyBackup } from '../../store/slices/settings';
-import { updateUser } from '../../store/slices/user';
+import { updateUser, verifyBackup } from '../../store/slices/user';
 import {
 	ScrollView,
 	TextInput,

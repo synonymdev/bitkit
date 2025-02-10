@@ -48,18 +48,7 @@ export const showNewOnchainTxPrompt = ({
 			value,
 		},
 	});
-
 	dispatch(closeSheet('receiveNavigation'));
-};
-
-export const showNewTxPrompt = (txId: string): void => {
-	const activityItem = getActivityStore().items.find(({ id }) => id === txId);
-
-	if (activityItem) {
-		vibrate({ type: 'default' });
-		showBottomSheet('newTxPrompt', { activityItem });
-		dispatch(closeSheet('receiveNavigation'));
-	}
 };
 
 export const checkForAppUpdate = async (): Promise<void> => {

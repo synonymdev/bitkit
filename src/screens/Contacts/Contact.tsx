@@ -135,10 +135,7 @@ const Contact = ({
 	return (
 		<View style={styles.root}>
 			<SafeAreaInset type="top" />
-			<NavigationHeader
-				title={t('contact')}
-				onBackPress={(): void => navigation.navigate('Contacts')}
-			/>
+			<NavigationHeader title={t('contact')} />
 			<View style={styles.content}>
 				<ProfileCard
 					url={url}

@@ -101,7 +101,7 @@
       }
     },
     "current_fee": {
-      "string": "Current fee"
+      "string": "Current average fee"
     },
     "next_block": {
       "string": "Next block inclusion"

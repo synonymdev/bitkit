@@ -20,9 +20,6 @@
     "text": {
       "string": "Puede usar sus ahorros en Bitkit o enviar bitcoin desde un monedero diferente."
     },
-    "text_blocked": {
-      "string": "En este momento, Bitkit no puede proveer conexiones automáticas Lightning a residentes de los Estados Unidos y Canadá."
-    },
     "button1": {
       "string": "Transferir desde Ahorros"
     },

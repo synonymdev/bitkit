@@ -284,12 +284,6 @@
   "receive_spending": {
     "string": "Receber no Saldo de Gastos"
   },
-  "receive_connect_initial": {
-    "string": "Para configurar seu saldo de gastos, uma taxa de <accent>{lspFee}</accent> será deduzida."
-  },
-  "receive_connect_additional": {
-    "string": "Para continuar recebendo instantaneamente, você precisa aumentar o limite de recebimento instantâneo. Para isso, a taxa de <accent>{lspFee}</accent> do provedor de serviços será deduzida."
-  },
   "receive_cjit_error": {
     "string": "Falha na Transação"
   },

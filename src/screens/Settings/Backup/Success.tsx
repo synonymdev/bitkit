@@ -8,7 +8,7 @@ import SafeAreaInset from '../../../components/SafeAreaInset';
 import Button from '../../../components/buttons/Button';
 import { useAppDispatch } from '../../../hooks/redux';
 import { BackupScreenProps } from '../../../navigation/types';
-import { verifyBackup } from '../../../store/slices/settings';
+import { verifyBackup } from '../../../store/slices/user';
 import { BodyM, BodyMB } from '../../../styles/text';
 
 const imageSrc = require('../../../assets/illustrations/check.png');

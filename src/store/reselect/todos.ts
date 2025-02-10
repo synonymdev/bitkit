@@ -20,9 +20,12 @@ import { ITodo, TTodosState } from '../types/todos';
 import { ETransferType, TTransferToSavings } from '../types/wallet';
 import { blocktankPaidOrdersFullSelector } from './blocktank';
 import { closedChannelsSelector, openChannelsSelector } from './lightning';
-import { backupVerifiedSelector, pinSelector } from './settings';
+import { pinSelector } from './settings';
 import { onboardingProfileStepSelector } from './slashtags';
-import { startCoopCloseTimestampSelector } from './user';
+import {
+	backupVerifiedSelector,
+	startCoopCloseTimestampSelector,
+} from './user';
 import { createShallowEqualSelector } from './utils';
 import { pendingTransfersSelector } from './wallet';
 

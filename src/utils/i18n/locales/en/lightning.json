@@ -113,6 +113,14 @@
 		"quarter": {
 			"string": "25%"
 		},
+		"error_min": {
+			"title": {
+				"string": "Savings Balance Minimum"
+			},
+			"description": {
+				"string": "A minimum of ₿ {amount} is needed to set up your spending balance."
+			}
+		},
 		"error_max": {
 			"title": {
 				"string": "Spending Balance Maximum"

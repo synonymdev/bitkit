@@ -14,7 +14,6 @@ import {
 import { EDenomination, EUnit } from '../types/wallet';
 
 export type TSettings = {
-	backupVerified: boolean;
 	enableAutoReadClipboard: boolean;
 	enableSendAmountWarning: boolean;
 	enableSwipeToHideBalance: boolean;
@@ -88,9 +87,6 @@ export const settingsSlice = createSlice({
 		addOrangeTicket: (state, action: PayloadAction<string>) => {
 			state.orangeTickets.push(action.payload);
 		},
-		verifyBackup: (state) => {
-			state.backupVerified = true;
-		},
 		resetSettingsState: () => initialSettingsState,
 	},
 });
@@ -103,7 +99,6 @@ export const {
 	addTreasureChest,
 	updateTreasureChest,
 	addOrangeTicket,
-	verifyBackup,
 	resetSettingsState,
 } = actions;
 

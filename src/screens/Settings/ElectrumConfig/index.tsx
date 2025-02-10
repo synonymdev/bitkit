@@ -308,9 +308,9 @@ const ElectrumConfig = ({
 					autoComplete="off"
 					keyboardType="default"
 					autoCorrect={false}
-					onChangeText={setHost}
 					returnKeyType="done"
 					testID="HostInput"
+					onChangeText={setHost}
 				/>
 
 				<Caption13Up style={styles.label} color="secondary">
@@ -326,8 +326,9 @@ const ElectrumConfig = ({
 					autoComplete="off"
 					keyboardType="number-pad"
 					autoCorrect={false}
-					onChangeText={setPort}
+					returnKeyType="done"
 					testID="PortInput"
+					onChangeText={setPort}
 				/>
 
 				<View

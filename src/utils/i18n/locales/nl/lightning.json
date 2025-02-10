@@ -20,9 +20,6 @@
     "text": {
       "string": "U kunt uw Bitkit spaargeld gebruiken of bitcoin versturen vanaf een andere wallet."
     },
-    "text_blocked": {
-      "string": "Bitkit kan momenteel geen automatische Lightning-verbindingen leveren aan inwoners van de VS en Canada."
-    },
     "button1": {
       "string": "Overboeking van Spaargeld"
     },

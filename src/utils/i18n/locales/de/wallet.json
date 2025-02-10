@@ -115,6 +115,14 @@
   "send_pending": {
     "string": "Zahlung ausstehend"
   },
+  "send_quickpay": {
+    "nav_title": {
+      "string": "QuickPay"
+    },
+    "title": {
+      "string": "Bezahlen\n<accent>Rechnung...</accent>"
+    }
+  },
   "send_pending_note": {
     "string": "Diese Zahlung dauert länger als erwartet. Du kannst Bitkit weiterhin verwenden."
   },
@@ -308,12 +316,6 @@
   },
   "receive_spending": {
     "string": "Auf Ausgabenkonto empfangen"
-  },
-  "receive_connect_initial": {
-    "string": "Um dein Ausgabenkonto einzurichten, wird eine <accent>{lspFee}</accent> Dienstleistergebühr abgezogen."
-  },
-  "receive_connect_additional": {
-    "string": "Um mehr sofortigen Bitcoin zu empfangen, muss Bitkit deine Liquidität erhöhen. Eine <accent>{lspFee}</accent> Dienstleistergebühr wird von dem angegebenen Betrag abgezogen."
   },
   "receive_liquidity": {
     "nav_title": {
