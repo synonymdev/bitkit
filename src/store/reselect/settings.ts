@@ -1,12 +1,12 @@
 import { createSelector } from '@reduxjs/toolkit';
 
+import { ECoinSelectPreference } from 'beignet';
 import { RootState } from '..';
 import themes, { IThemeColors } from '../../styles/themes';
 import { TSettings } from '../slices/settings';
 import {
 	ETransactionSpeed,
 	ICustomElectrumPeer,
-	TCoinSelectPreference,
 	TCustomElectrumPeers,
 	TReceiveOption,
 	TTheme,
@@ -63,7 +63,7 @@ export const pinOnIdleSelector = (state: RootState): boolean => {
 };
 export const coinSelectPreferenceSelector = (
 	state: RootState,
-): TCoinSelectPreference => {
+): ECoinSelectPreference => {
 	return state.settings.coinSelectPreference;
 };
 export const rapidGossipSyncUrlSelector = (state: RootState): string => {

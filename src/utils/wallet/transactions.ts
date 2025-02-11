@@ -22,9 +22,7 @@ import {
 } from '../../store/helpers';
 import { removeActivityItem } from '../../store/slices/activity';
 import { requireBackup } from '../../store/slices/backup';
-import {
-	ETransactionSpeed,
-} from '../../store/types/settings';
+import { ETransactionSpeed } from '../../store/types/settings';
 import { TWalletName } from '../../store/types/wallet';
 import { EBackupCategory } from '../../store/utils/backup';
 import { reduceValue } from '../helpers';
@@ -96,22 +94,28 @@ export const createTransaction = async (
 	}
 };
 
-export const autoCoinSelect = async (txData: ISendTransaction): Promise<Result<ICoinSelectResponse>> => {
+export const autoCoinSelect = async (
+	txData: ISendTransaction,
+): Promise<Result<ICoinSelectResponse>> => {
 	const transaction = await getOnChainWalletTransactionAsync();
-	const { coinSelectAuto, coinSelectPreference} = getSettingsStore();
+	const { coinSelectAuto, coinSelectPreference } = getSettingsStore();
 	return await transaction.autoCoinSelect({
 		inputs: txData.inputs,
 		outputs: txData.outputs,
 		satsPerByte: txData.satsPerByte,
 		message: txData.message,
-		coinSelectPreference: coinSelectAuto ? coinSelectPreference : ECoinSelectPreference.consolidate,
+		coinSelectPreference: coinSelectAuto
+			? coinSelectPreference
+			: ECoinSelectPreference.consolidate,
 	});
-}
+};
 
-export const applyAutoCoinSelect = async (coinSelectRes: ICoinSelectResponse): Promise<Result<ISendTransaction>> => {
+export const applyAutoCoinSelect = async (
+	coinSelectRes: ICoinSelectResponse,
+): Promise<Result<ISendTransaction>> => {
 	const transaction = await getOnChainWalletTransactionAsync();
 	return await transaction.applyAutoCoinSelect({ coinSelectRes });
-}
+};
 
 /**
  * Returns onchain transaction data related to the specified network and wallet.

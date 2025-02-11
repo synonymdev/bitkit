@@ -5,26 +5,7 @@ import isPlainObject from 'lodash/isPlainObject';
 import keys from 'lodash/keys';
 import { Linking, Vibration } from 'react-native';
 import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
-
-import { TServer } from 'beignet';
-import {
-	TLastUsedTags,
-	TPendingInvoice,
-	TSlashTagsUrls,
-	TTags,
-	TTxComments,
-} from '../store/types/metadata';
-import {
-	ETransactionSpeed,
-	TChest,
-	TCoinSelectPreference,
-	TReceiveOption,
-	TTheme,
-} from '../store/types/settings';
-import { EDenomination, EUnit } from '../store/types/wallet';
-import { TWidgets } from '../store/types/widgets';
 import { i18nTime } from '../utils/i18n';
-import { EAvailableNetwork } from './networks';
 
 /**
  * Returns the result of a promise, or an error if the promise takes too long to resolve.

@@ -17,7 +17,6 @@ export enum ETransactionSpeed {
 	custom = 'custom',
 }
 
-
 export interface ICustomElectrumPeer {
 	host: string;
 	ssl: number; //ssl port

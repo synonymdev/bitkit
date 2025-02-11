@@ -2,16 +2,16 @@ import React, { memo, ReactElement, useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 
+import { ECoinSelectPreference } from 'beignet';
 import { EItemType, IListData } from '../../../components/List';
-import { updateSettings } from '../../../store/slices/settings';
 import {
 	coinSelectAutoSelector,
 	coinSelectPreferenceSelector,
 } from '../../../store/reselect/settings';
-import  { ECoinSelectPreference } from "beignet";
-import { updateCoinSelectPreference } from "../../../utils/settings";
+import { updateSettings } from '../../../store/slices/settings';
+import { updateCoinSelectPreference } from '../../../utils/settings';
+import { getOnChainWalletAsync } from '../../../utils/wallet';
 import SettingsView from '../SettingsView';
-import { getOnChainWalletAsync } from "../../../utils/wallet";
 
 const CoinSelectSettings = (): ReactElement => {
 	const { t } = useTranslation('settings');
@@ -32,7 +32,9 @@ const CoinSelectSettings = (): ReactElement => {
 							// Update the coin selection preference in beignet.
 							const wallet = await getOnChainWalletAsync();
 							// Set beignet to consolidate if manual coin control is enabled in Bitkit.
-							wallet.updateCoinSelectPreference(ECoinSelectPreference.consolidate);
+							wallet.updateCoinSelectPreference(
+								ECoinSelectPreference.consolidate,
+							);
 							dispatch(updateSettings({ coinSelectAuto: false }));
 						},
 					},
@@ -85,7 +87,8 @@ const CoinSelectSettings = (): ReactElement => {
 					{
 						title: t('adv.cs_first_in_first_out'),
 						description: t('adv.cs_first_in_first_out_description'),
-						value: coinSelectPreference === ECoinSelectPreference.firstInFirstOut,
+						value:
+							coinSelectPreference === ECoinSelectPreference.firstInFirstOut,
 						type: EItemType.button,
 						hide: !selectedAutoPilot,
 						onPress: (): void => {
@@ -95,7 +98,8 @@ const CoinSelectSettings = (): ReactElement => {
 					{
 						title: t('adv.cs_last_in_last_out'),
 						description: t('adv.cs_last_in_last_out_description'),
-						value: coinSelectPreference === ECoinSelectPreference.lastInFirstOut,
+						value:
+							coinSelectPreference === ECoinSelectPreference.lastInFirstOut,
 						type: EItemType.button,
 						hide: !selectedAutoPilot,
 						onPress: (): void => {

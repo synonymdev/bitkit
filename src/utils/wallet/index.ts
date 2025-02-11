@@ -6,6 +6,7 @@ import { Result, err, ok } from '@synonymdev/result';
 import {
 	EAddressType,
 	EAvailableNetworks,
+	ECoinSelectPreference,
 	EElectrumNetworks,
 	IAddress,
 	ICustomGetAddress,
@@ -28,7 +29,6 @@ import {
 	TServer,
 	TTransactionMessage,
 	Wallet,
-	ECoinSelectPreference
 } from 'beignet';
 import type { Electrum } from 'beignet/dist/types/electrum';
 import type { Transaction } from 'beignet/dist/types/transaction';
@@ -1114,11 +1114,7 @@ export const setupOnChainWallet = async ({
 		};
 	}
 	updateExchangeRates();
-	const {
-		coinSelectAuto,
-		coinSelectPreference,
-		rbf
-	} = getSettingsStore();
+	const { coinSelectAuto, coinSelectPreference, rbf } = getSettingsStore();
 	const createWalletResponse = await Wallet.create({
 		rbf,
 		name,
@@ -1138,7 +1134,9 @@ export const setupOnChainWallet = async ({
 		customGetScriptHash: getCustomScriptHash,
 		disableMessagesOnCreate,
 		addressTypesToMonitor,
-		coinSelectPreference: coinSelectAuto ? coinSelectPreference : ECoinSelectPreference.consolidate // Use consolidate if manual coin control is enabled.
+		coinSelectPreference: coinSelectAuto
+			? coinSelectPreference
+			: ECoinSelectPreference.consolidate, // Use consolidate if manual coin control is enabled.
 	});
 	if (createWalletResponse.isErr()) {
 		return err(createWalletResponse.error.message);
