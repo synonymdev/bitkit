@@ -113,7 +113,7 @@ const CalculatorWidget = ({
 							}}
 						/>
 					</View>
-					<CaptionB color="gray1">bitcoin</CaptionB>
+					<CaptionB color="gray1">BTC</CaptionB>
 				</ThemedView>
 				<ThemedView style={styles.row} color="white06">
 					<ThemedView style={styles.icon} color="white10">
