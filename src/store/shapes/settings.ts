@@ -1,4 +1,4 @@
-import { EProtocol, TServer } from 'beignet';
+import { ECoinSelectPreference, EProtocol, TServer } from 'beignet';
 import cloneDeep from 'lodash/cloneDeep';
 
 import {
@@ -91,7 +91,7 @@ export const initialSettingsState: TSettings = {
 	customElectrumPeers: defaultElectrumPeer,
 	rapidGossipSyncUrl: 'https://rgs.blocktank.to/snapshot/',
 	coinSelectAuto: true,
-	coinSelectPreference: 'small',
+	coinSelectPreference: ECoinSelectPreference.small,
 	receivePreference: defaultReceivePreference,
 	enableDevOptions: __DEV__,
 	enableOfflinePayments: false,

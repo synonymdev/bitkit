@@ -1,17 +1,23 @@
-import React, { memo, ReactElement, useMemo } from 'react';
+import React, { memo, ReactElement, useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 
 import { EItemType, IListData } from '../../../components/List';
-import { coinSelectAutoSelector } from '../../../store/reselect/settings';
 import { updateSettings } from '../../../store/slices/settings';
+import {
+	coinSelectAutoSelector,
+	coinSelectPreferenceSelector,
+} from '../../../store/reselect/settings';
+import  { ECoinSelectPreference } from "beignet";
+import { updateCoinSelectPreference } from "../../../utils/settings";
 import SettingsView from '../SettingsView';
+import { getOnChainWalletAsync } from "../../../utils/wallet";
 
 const CoinSelectSettings = (): ReactElement => {
 	const { t } = useTranslation('settings');
 	const dispatch = useAppDispatch();
 	const selectedAutoPilot = useAppSelector(coinSelectAutoSelector);
-	//const coinSelectPreference = useAppSelector(coinSelectPreferenceSelector);
+	const coinSelectPreference = useAppSelector(coinSelectPreferenceSelector);
 
 	const settingsListData: IListData[] = useMemo(
 		() => [
@@ -22,7 +28,11 @@ const CoinSelectSettings = (): ReactElement => {
 						title: t('adv.cs_manual'),
 						value: !selectedAutoPilot,
 						type: EItemType.button,
-						onPress: (): void => {
+						onPress: async (): Promise<void> => {
+							// Update the coin selection preference in beignet.
+							const wallet = await getOnChainWalletAsync();
+							// Set beignet to consolidate if manual coin control is enabled in Bitkit.
+							wallet.updateCoinSelectPreference(ECoinSelectPreference.consolidate);
 							dispatch(updateSettings({ coinSelectAuto: false }));
 						},
 					},
@@ -30,65 +40,72 @@ const CoinSelectSettings = (): ReactElement => {
 						title: t('adv.cs_auto'),
 						value: selectedAutoPilot,
 						type: EItemType.button,
-						onPress: (): void => {
+						onPress: async (): Promise<void> => {
+							// Update the coin selection preference in beignet.
+							const wallet = await getOnChainWalletAsync();
+							wallet.updateCoinSelectPreference(coinSelectPreference);
 							dispatch(updateSettings({ coinSelectAuto: true }));
 						},
 					},
 				],
 			},
-			/*{
-			// TODO: Re-Add and enable this feature once thoroughly tested in Beignet.
-			title: selectedAutoPilot ? t('adv.cs_auto_mode') : '',
-			data: [
-				{
-					title: t('adv.cs_max'),
-					description: t('adv.cs_max_description'),
-					value: coinSelectPreference === 'large',
-					type: EItemType.button,
-					hide: !selectedAutoPilot,
-					onPress: (): void => {
-						dispatch(
-							updateSettings({
-								coinSelectAuto: true,
-								coinSelectPreference: 'large',
-							}),
-						);
+			{
+				title: selectedAutoPilot ? t('adv.cs_auto_mode') : '',
+				data: [
+					{
+						title: t('adv.cs_max'),
+						description: t('adv.cs_max_description'),
+						value: coinSelectPreference === ECoinSelectPreference.small,
+						type: EItemType.button,
+						hide: !selectedAutoPilot,
+						onPress: (): void => {
+							updateCoinSelectPreference(ECoinSelectPreference.small);
+						},
 					},
-				},
-				{
-					title: t('adv.cs_min'),
-					description: t('adv.cs_min_description'),
-					value: coinSelectPreference === 'small',
-					type: EItemType.button,
-					hide: !selectedAutoPilot,
-					onPress: (): void => {
-						dispatch(
-							updateSettings({
-								coinSelectAuto: true,
-								coinSelectPreference: 'small',
-							}),
-						);
+					{
+						title: t('adv.cs_min'),
+						description: t('adv.cs_min_description'),
+						value: coinSelectPreference === ECoinSelectPreference.large,
+						type: EItemType.button,
+						hide: !selectedAutoPilot,
+						onPress: (): void => {
+							updateCoinSelectPreference(ECoinSelectPreference.large);
+						},
 					},
-				},
-				{
-					title: t('adv.cs_consolidate'),
-					description: t('adv.cs_consolidate_description'),
-					value: coinSelectPreference === 'consolidate',
-					type: EItemType.button,
-					hide: !selectedAutoPilot,
-					onPress: (): void => {
-						dispatch(
-							updateSettings({
-								coinSelectAuto: true,
-								coinSelectPreference: 'consolidate',
-							}),
-						);
+					{
+						title: t('adv.cs_consolidate'),
+						description: t('adv.cs_consolidate_description'),
+						value: coinSelectPreference === ECoinSelectPreference.consolidate,
+						type: EItemType.button,
+						hide: !selectedAutoPilot,
+						onPress: (): void => {
+							updateCoinSelectPreference(ECoinSelectPreference.consolidate);
+						},
 					},
-				},
-			],
-			},*/
+					{
+						title: t('adv.cs_first_in_first_out'),
+						description: t('adv.cs_first_in_first_out_description'),
+						value: coinSelectPreference === ECoinSelectPreference.firstInFirstOut,
+						type: EItemType.button,
+						hide: !selectedAutoPilot,
+						onPress: (): void => {
+							updateCoinSelectPreference(ECoinSelectPreference.firstInFirstOut);
+						},
+					},
+					{
+						title: t('adv.cs_last_in_last_out'),
+						description: t('adv.cs_last_in_last_out_description'),
+						value: coinSelectPreference === ECoinSelectPreference.lastInFirstOut,
+						type: EItemType.button,
+						hide: !selectedAutoPilot,
+						onPress: (): void => {
+							updateCoinSelectPreference(ECoinSelectPreference.lastInFirstOut);
+						},
+					},
+				],
+			},
 		],
-		[selectedAutoPilot, t, dispatch],
+		[selectedAutoPilot, coinSelectPreference, t, dispatch],
 	);
 
 	return (

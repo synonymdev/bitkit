@@ -6011,9 +6011,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"beignet@npm:0.0.51":
-  version: 0.0.51
-  resolution: "beignet@npm:0.0.51"
+"beignet@npm:0.0.52":
+  version: 0.0.52
+  resolution: "beignet@npm:0.0.52"
   dependencies:
     "@bitcoinerlab/secp256k1": 1.0.5
     bech32: 2.0.0
@@ -6027,7 +6027,7 @@ __metadata:
     lodash.clonedeep: 4.5.0
     net: 1.0.2
     rn-electrum-client: 0.0.21
-  checksum: 5746286fad3d16374ccf33b7ae17ca921c23369b7755ff52bc212155b5c578d03a2cb953a1389017e8d27aa9054a7cb833e2afe82d321975d2c9a0ca05921625
+  checksum: 912fc18f707ffc9e1b65838f0f03396afaa3f1101211997b731deac22d2d2c06307daa9ae0013c9ad9cb2611dbc5d205f112175d57d504cabb53b06ec0b30c9c
   languageName: node
   linkType: hard
 
@@ -6271,7 +6271,7 @@ __metadata:
     "@types/uuid": ^9.0.8
     babel-jest: ^29.7.0
     babel-plugin-transform-remove-console: ^6.9.4
-    beignet: 0.0.51
+    beignet: 0.0.52
     bip21: 2.0.3
     bip32: 4.0.0
     bitcoin-address-validation: 2.2.3

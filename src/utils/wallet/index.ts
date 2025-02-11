@@ -15,7 +15,6 @@ import {
 	IGenerateAddressesResponse,
 	IGetAddressResponse,
 	IKeyDerivationPath,
-	IOutput,
 	IRbfData,
 	ISendTransaction,
 	IUtxo,
@@ -29,7 +28,7 @@ import {
 	TServer,
 	TTransactionMessage,
 	Wallet,
-	getByteCount,
+	ECoinSelectPreference
 } from 'beignet';
 import type { Electrum } from 'beignet/dist/types/electrum';
 import type { Transaction } from 'beignet/dist/types/transaction';
@@ -37,7 +36,6 @@ import { TGetTotalFeeObj, TStorage } from 'beignet/dist/types/types';
 import type { Wallet as TWallet } from 'beignet/dist/types/wallet';
 import { BIP32Factory } from 'bip32';
 import * as bip39 from 'bip39';
-import { getAddressInfo } from 'bitcoin-address-validation';
 import * as bitcoin from 'bitcoinjs-lib';
 
 import {
@@ -64,7 +62,6 @@ import { updateUi } from '../../store/slices/ui';
 import { updateWallet } from '../../store/slices/wallet';
 import { createWallet } from '../../store/slices/wallet';
 import { TNode } from '../../store/types/lightning';
-import { TCoinSelectPreference } from '../../store/types/settings';
 import {
 	IWallet,
 	IWallets,
@@ -1117,7 +1114,11 @@ export const setupOnChainWallet = async ({
 		};
 	}
 	updateExchangeRates();
-	const rbf = getSettingsStore().rbf;
+	const {
+		coinSelectAuto,
+		coinSelectPreference,
+		rbf
+	} = getSettingsStore();
 	const createWalletResponse = await Wallet.create({
 		rbf,
 		name,
@@ -1137,6 +1138,7 @@ export const setupOnChainWallet = async ({
 		customGetScriptHash: getCustomScriptHash,
 		disableMessagesOnCreate,
 		addressTypesToMonitor,
+		coinSelectPreference: coinSelectAuto ? coinSelectPreference : ECoinSelectPreference.consolidate // Use consolidate if manual coin control is enabled.
 	});
 	if (createWalletResponse.isErr()) {
 		return err(createWalletResponse.error.message);
@@ -1144,171 +1146,6 @@ export const setupOnChainWallet = async ({
 	globalWallet = createWalletResponse.value;
 	await globalWallet.refreshWallet({}); // wait for wallet to load it's balance
 	return ok(globalWallet);
-};
-
-/**
- * large = Sort by and use largest UTXO first. Lowest fee, but reveals your largest UTXO's and reduces privacy.
- * small = Sort by and use smallest UTXO first. Higher fee, but hides your largest UTXO's and increases privacy.
- * consolidate = Use all available UTXO's regardless of the amount being sent. Preferable to use this method when fees are low in order to reduce fees in future transactions.
- */
-export interface IAddressIOTypes {
-	inputs: {
-		[key in EAddressType]: number;
-	};
-	outputs: {
-		[key in EAddressType]: number;
-	};
-}
-/**
- * Returns the transaction fee and outputs along with the inputs that best fit the sort method.
- * @async
- * @param {IAddress[]} inputs
- * @param {IAddress[]} outputs
- * @param {number} [satsPerByte]
- * @param {sortMethod}
- * @return {Promise<number>}
- */
-export interface ICoinSelectResponse {
-	fee: number;
-	inputs: IUtxo[];
-	outputs: IOutput[];
-}
-
-/**
- * This method will do its best to select only the necessary inputs that are provided base on the selected sortMethod.
- * // TODO: Migrate to Beignet
- * @param {IUtxo[]} [inputs]
- * @param {IUtxo[]} [outputs]
- * @param {number} [satsPerByte]
- * @param {TCoinSelectPreference} [sortMethod]
- * @param {number} [amountToSend]
- */
-export const autoCoinSelect = async ({
-	inputs = [],
-	outputs = [],
-	satsPerByte = 1,
-	sortMethod = 'small',
-	amountToSend = 0,
-}: {
-	inputs?: IUtxo[];
-	outputs?: IOutput[];
-	satsPerByte?: number;
-	sortMethod?: TCoinSelectPreference;
-	amountToSend?: number;
-}): Promise<Result<ICoinSelectResponse>> => {
-	try {
-		if (!inputs) {
-			return err('No inputs provided');
-		}
-		if (!outputs) {
-			return err('No outputs provided');
-		}
-		if (!amountToSend) {
-			//If amountToSend is not specified, attempt to determine how much to send from the output values.
-			amountToSend = outputs.reduce((acc, cur) => {
-				return acc + Number(cur?.value) || 0;
-			}, 0);
-		}
-
-		//Sort by the largest UTXO amount (Lowest fee, but reveals your largest UTXO's)
-		if (sortMethod === 'large') {
-			inputs.sort((a, b) => Number(b.value) - Number(a.value));
-		} else {
-			//Sort by the smallest UTXO amount (Highest fee, but hides your largest UTXO's)
-			inputs.sort((a, b) => Number(a.value) - Number(b.value));
-		}
-
-		//Add UTXO's until we have more than the target amount to send.
-		let inputAmount = 0;
-		let newInputs: IUtxo[] = [];
-		const oldInputs: IUtxo[] = [];
-
-		//Consolidate UTXO's if unable to determine the amount to send.
-		if (sortMethod === 'consolidate' || !amountToSend) {
-			//Add all inputs
-			newInputs = [...inputs];
-			inputAmount = newInputs.reduce((acc, cur) => {
-				return acc + Number(cur.value);
-			}, 0);
-		} else {
-			//Add only the necessary inputs based on the amountToSend.
-			await Promise.all(
-				inputs.map((input) => {
-					if (inputAmount < amountToSend) {
-						inputAmount += input.value;
-						newInputs.push(input);
-					} else {
-						oldInputs.push(input);
-					}
-				}),
-			);
-
-			//The provided UTXO's do not have enough to cover the transaction.
-			if ((amountToSend && inputAmount < amountToSend) || !newInputs?.length) {
-				return err('Not enough funds.');
-			}
-		}
-
-		// Get all input and output address types for fee calculation.
-		const addressIOTypes = {
-			inputs: {},
-			outputs: {},
-		} as IAddressIOTypes;
-
-		await Promise.all([
-			newInputs.map(({ address }) => {
-				const validateResponse = getAddressInfo(address);
-				if (!validateResponse) {
-					return;
-				}
-				const type = validateResponse.type.toUpperCase();
-				if (type in addressIOTypes.inputs) {
-					addressIOTypes.inputs[type] = addressIOTypes.inputs[type] + 1;
-				} else {
-					addressIOTypes.inputs[type] = 1;
-				}
-			}),
-			outputs.map(({ address }) => {
-				if (!address) {
-					return;
-				}
-				const validateResponse = getAddressInfo(address);
-				if (!validateResponse) {
-					return;
-				}
-				const type = validateResponse.type.toUpperCase();
-				if (type in addressIOTypes.outputs) {
-					addressIOTypes.outputs[type] = addressIOTypes.outputs[type] + 1;
-				} else {
-					addressIOTypes.outputs[type] = 1;
-				}
-			}),
-		]);
-
-		const baseFee = getByteCount(addressIOTypes.inputs, addressIOTypes.outputs);
-		const fee = baseFee * satsPerByte;
-
-		//Ensure we can still cover the transaction with the previously selected UTXO's. Add more UTXO's if not.
-		const totalTxCost = amountToSend + fee;
-		if (amountToSend && inputAmount < totalTxCost) {
-			await Promise.all(
-				oldInputs.map((input) => {
-					if (inputAmount < totalTxCost) {
-						inputAmount += input.value;
-						newInputs.push(input);
-					}
-				}),
-			);
-		}
-
-		//The provided UTXO's do not have enough to cover the transaction.
-		if (inputAmount < totalTxCost || !newInputs?.length) {
-			return err('Not enough funds');
-		}
-		return ok({ inputs: newInputs, outputs, fee });
-	} catch (e) {
-		return err(e);
-	}
 };
 
 /**

@@ -60,7 +60,7 @@
     "@synonymdev/slashtags-widget-news-feed": "1.1.0",
     "@synonymdev/slashtags-widget-price-feed": "1.1.0",
     "@synonymdev/web-relay": "1.0.7",
-    "beignet": "0.0.51",
+    "beignet": "0.0.52",
     "bip21": "2.0.3",
     "bip32": "4.0.0",
     "bitcoin-address-validation": "2.2.3",

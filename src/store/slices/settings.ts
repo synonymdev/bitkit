@@ -1,5 +1,5 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-import { TServer } from 'beignet';
+import { ECoinSelectPreference, TServer } from 'beignet';
 
 import { EAvailableNetwork } from '../../utils/networks';
 import { initialSettingsState } from '../shapes/settings';
@@ -7,7 +7,6 @@ import {
 	ETransactionSpeed,
 	ICustomElectrumPeer,
 	TChest,
-	TCoinSelectPreference,
 	TReceiveOption,
 	TTheme,
 } from '../types/settings';
@@ -31,7 +30,7 @@ export type TSettings = {
 	selectedCurrency: string;
 	selectedLanguage: string;
 	coinSelectAuto: boolean;
-	coinSelectPreference: TCoinSelectPreference;
+	coinSelectPreference: ECoinSelectPreference;
 	receivePreference: TReceiveOption[];
 	enableDevOptions: boolean;
 	enableOfflinePayments: boolean;

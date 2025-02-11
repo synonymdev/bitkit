@@ -1,18 +1,15 @@
 import { Result, err, ok } from '@synonymdev/result';
 import {
-	EAddressType,
 	EBoostType,
+	ECoinSelectPreference,
 	EFeeId,
 	ICanBoostResponse,
-	IOnchainFees,
+	ICoinSelectResponse,
 	IOutput,
 	ISendTransaction,
 	IUtxo,
-	getByteCount,
 } from 'beignet';
-import { getAddressInfo } from 'bitcoin-address-validation';
 
-import { __E2E__ } from '../../constants/env';
 import {
 	addBoostedTransaction,
 	updateBeignetSendTransaction,
@@ -25,10 +22,8 @@ import {
 } from '../../store/helpers';
 import { removeActivityItem } from '../../store/slices/activity';
 import { requireBackup } from '../../store/slices/backup';
-import { initialFeesState } from '../../store/slices/fees';
 import {
 	ETransactionSpeed,
-	TCoinSelectPreference,
 } from '../../store/types/settings';
 import { TWalletName } from '../../store/types/wallet';
 import { EBackupCategory } from '../../store/utils/backup';
@@ -40,12 +35,10 @@ import { TRANSACTION_DEFAULTS } from './constants';
 import {
 	getBalance,
 	getOnChainWallet,
-	getOnChainWalletAsync,
 	getOnChainWalletElectrum,
 	getOnChainWalletTransaction,
 	getOnChainWalletTransactionAsync,
 	getSelectedNetwork,
-	getSelectedWallet,
 	refreshWallet,
 } from './index';
 
@@ -82,8 +75,10 @@ export const createTransaction = async (
 ): Promise<Result<{ id: string; hex: string }>> => {
 	try {
 		const transaction = await getOnChainWalletTransactionAsync();
+		const coinSelectAuto = getSettingsStore().coinSelectAuto;
 		const createTxRes = await transaction.createTransaction({
 			transactionData,
+			runCoinSelect: coinSelectAuto,
 		});
 		if (createTxRes.isErr()) {
 			showToast({
@@ -100,6 +95,23 @@ export const createTransaction = async (
 		return err(e);
 	}
 };
+
+export const autoCoinSelect = async (txData: ISendTransaction): Promise<Result<ICoinSelectResponse>> => {
+	const transaction = await getOnChainWalletTransactionAsync();
+	const { coinSelectAuto, coinSelectPreference} = getSettingsStore();
+	return await transaction.autoCoinSelect({
+		inputs: txData.inputs,
+		outputs: txData.outputs,
+		satsPerByte: txData.satsPerByte,
+		message: txData.message,
+		coinSelectPreference: coinSelectAuto ? coinSelectPreference : ECoinSelectPreference.consolidate,
+	});
+}
+
+export const applyAutoCoinSelect = async (coinSelectRes: ICoinSelectResponse): Promise<Result<ISendTransaction>> => {
+	const transaction = await getOnChainWalletTransactionAsync();
+	return await transaction.applyAutoCoinSelect({ coinSelectRes });
+}
 
 /**
  * Returns onchain transaction data related to the specified network and wallet.
@@ -227,149 +239,6 @@ export const getBlockExplorerLink = (
 	}
 };
 
-export interface IAddressTypesIO {
-	inputs: {
-		[key in EAddressType]: number;
-	};
-	outputs: {
-		[key in EAddressType]: number;
-	};
-}
-
-export interface ICoinSelectResponse {
-	fee: number;
-	inputs: IUtxo[];
-	outputs: IOutput[];
-}
-// TODO: Migrate to Beignet
-export const autoCoinSelect = async ({
-	inputs = [],
-	outputs = [],
-	satsPerByte = 1,
-	sortMethod = 'small',
-	amountToSend = 0,
-}: {
-	inputs?: IUtxo[];
-	outputs?: IOutput[];
-	satsPerByte?: number;
-	sortMethod?: TCoinSelectPreference;
-	amountToSend?: number;
-}): Promise<Result<ICoinSelectResponse>> => {
-	try {
-		if (!inputs) {
-			return err('No inputs provided');
-		}
-		if (!outputs) {
-			return err('No outputs provided');
-		}
-		if (!amountToSend) {
-			//If amountToSend is not specified, attempt to determine how much to send from the output values.
-			amountToSend = outputs.reduce((acc, cur) => {
-				return acc + Number(cur?.value) || 0;
-			}, 0);
-		}
-
-		//Sort by the largest UTXO amount (Lowest fee, but reveals your largest UTXO's)
-		if (sortMethod === 'large') {
-			inputs.sort((a, b) => Number(b.value) - Number(a.value));
-		} else {
-			//Sort by the smallest UTXO amount (Highest fee, but hides your largest UTXO's)
-			inputs.sort((a, b) => Number(a.value) - Number(b.value));
-		}
-
-		//Add UTXO's until we have more than the target amount to send.
-		let inputAmount = 0;
-		let newInputs: IUtxo[] = [];
-		const oldInputs: IUtxo[] = [];
-
-		//Consolidate UTXO's if unable to determine the amount to send.
-		if (sortMethod === 'consolidate' || !amountToSend) {
-			//Add all inputs
-			newInputs = [...inputs];
-			inputAmount = newInputs.reduce((acc, cur) => {
-				return acc + Number(cur.value);
-			}, 0);
-		} else {
-			//Add only the necessary inputs based on the amountToSend.
-			await Promise.all(
-				inputs.map((input) => {
-					if (inputAmount < amountToSend) {
-						inputAmount += input.value;
-						newInputs.push(input);
-					} else {
-						oldInputs.push(input);
-					}
-				}),
-			);
-
-			//The provided UTXO's do not have enough to cover the transaction.
-			if ((amountToSend && inputAmount < amountToSend) || !newInputs?.length) {
-				return err('Not enough funds.');
-			}
-		}
-
-		// Get all input and output address types for fee calculation.
-		const addressTypes = {
-			inputs: {},
-			outputs: {},
-		} as IAddressTypesIO;
-
-		await Promise.all([
-			newInputs.map(({ address }) => {
-				const validateResponse = getAddressInfo(address);
-				if (!validateResponse) {
-					return;
-				}
-				const type = validateResponse.type.toUpperCase();
-				if (type in addressTypes.inputs) {
-					addressTypes.inputs[type] = addressTypes.inputs[type] + 1;
-				} else {
-					addressTypes.inputs[type] = 1;
-				}
-			}),
-			outputs.map(({ address }) => {
-				if (!address) {
-					return;
-				}
-				const validateResponse = getAddressInfo(address);
-				if (!validateResponse) {
-					return;
-				}
-				const type = validateResponse.type.toUpperCase();
-				if (type in addressTypes.outputs) {
-					addressTypes.outputs[type] = addressTypes.outputs[type] + 1;
-				} else {
-					addressTypes.outputs[type] = 1;
-				}
-			}),
-		]);
-
-		const baseFee = getByteCount(addressTypes.inputs, addressTypes.outputs);
-		const fee = baseFee * satsPerByte;
-
-		//Ensure we can still cover the transaction with the previously selected UTXO's. Add more UTXO's if not.
-		const totalTxCost = amountToSend + fee;
-		if (amountToSend && inputAmount < totalTxCost) {
-			await Promise.all(
-				oldInputs.map((input) => {
-					if (inputAmount < totalTxCost) {
-						inputAmount += input.value;
-						newInputs.push(input);
-					}
-				}),
-			);
-		}
-
-		//The provided UTXO's do not have enough to cover the transaction.
-		if (inputAmount < totalTxCost || !newInputs?.length) {
-			return err('Not enough funds');
-		}
-		return ok({ inputs: newInputs, outputs, fee });
-	} catch (e) {
-		return err(e);
-	}
-};
-
 /**
  * Used to determine if we're able to boost a transaction either by RBF or CPFP.
  * @param {string} txid
@@ -401,7 +270,7 @@ export const getEstimatedRoutingFee = (amount: number): number => {
 /**
  * Calculates the max amount able to send for onchain/lightning
  * @param {ISendTransaction} [transaction]
- * @param {'onchain' | 'lightning'} [method
+ * @param {'onchain' | 'lightning'} [method]
  */
 export const getMaxSendAmount = ({
 	transaction,
