@@ -656,10 +656,9 @@ const ReceiveQR = ({
 						<ActivityIndicator color="white" />
 					</View>
 				) : (
-					<View style={styles.carouselWrapper}>
+					<View style={{ height: qrMaxHeight + 64 }}>
 						<Carousel
 							ref={carouselRef}
-							style={styles.carousel}
 							data={slides}
 							width={dimensions.width}
 							height={qrMaxHeight + 64}
@@ -703,16 +702,14 @@ const styles = StyleSheet.create({
 	loading: {
 		justifyContent: 'center',
 	},
-	carouselWrapper: {
-		flex: 1,
-		alignItems: 'center',
-	},
-	carousel: {
-		alignItems: 'center',
-	},
 	slide: {
 		paddingHorizontal: 16,
 		alignItems: 'center',
+	},
+	dots: {
+		flexDirection: 'row',
+		alignSelf: 'center',
+		width: 27,
 	},
 	qrCode: {
 		borderRadius: 10,
@@ -759,13 +756,6 @@ const styles = StyleSheet.create({
 	},
 	divider: {
 		height: 32,
-	},
-	dots: {
-		flexDirection: 'row',
-		justifyContent: 'space-between',
-		alignSelf: 'center',
-		marginTop: 16,
-		width: 27,
 	},
 	tooltip: {
 		position: 'absolute',
