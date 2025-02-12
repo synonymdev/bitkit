@@ -312,8 +312,12 @@ d('Transfer', () => {
 		await element(
 			by.id('NRemove').withAncestor(by.id('FeeCustomNumberPad')),
 		).tap();
+		// wait for input to register
+		await sleep(1000);
 		await element(by.id('FeeCustomContinue')).tap();
 		await element(by.id('N5').withAncestor(by.id('FeeCustomNumberPad'))).tap();
+		// wait for input to register
+		await sleep(1000);
 		await element(by.id('FeeCustomContinue')).tap();
 
 		// Swipe to confirm (set x offset to avoid navigating back)
