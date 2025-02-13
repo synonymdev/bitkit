@@ -36,10 +36,10 @@ const ExternalConfirm = ({
 
 	useFocusEffect(
 		useCallback(() => {
-			// Using a placeholder address here to enable the FeeCustom screen to function properly.
+			// Using an empty address here to enable the FeeCustom screen to function properly.
 			// The actual funding address will be updated later in createFundedChannel.
 			updateBeignetSendTransaction({
-				outputs: [{ address: 'xxx', value: localBalance, index: 0 }],
+				outputs: [{ address: '', value: localBalance, index: 0 }],
 			});
 		}, [localBalance]),
 	);
