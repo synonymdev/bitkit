@@ -4129,13 +4129,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-native-community/blur@npm:4.4.0":
-  version: 4.4.0
-  resolution: "@react-native-community/blur@npm:4.4.0"
+"@react-native-community/blur@npm:4.4.1":
+  version: 4.4.1
+  resolution: "@react-native-community/blur@npm:4.4.1"
   peerDependencies:
     react: "*"
     react-native: "*"
-  checksum: 907adeba48ce148f7ba55791011e2cb4ede5c7b6a11497cc9631ad345e865a817dae23f066a39b75ac5fd15d4cbc1f03f4b2d2f0fd8c6a6084a11649c842698a
+  checksum: 1e47144b0c00dce562e72ea9f6c3e93d3bb392ec0ea001ce37ff801d9a496c9801927033ee4800bf92ea2ece9de0abe596715add3b7afe3c5d1533e260f5e09e
   languageName: node
   linkType: hard
 
@@ -6236,7 +6236,7 @@ __metadata:
     "@ptsecurity/commitlint-config": ^2.0.0
     "@radar/lnrpc": ^0.11.1-beta.1
     "@react-native-clipboard/clipboard": 1.14.1
-    "@react-native-community/blur": 4.4.0
+    "@react-native-community/blur": 4.4.1
     "@react-native-community/netinfo": 11.3.1
     "@react-native/babel-preset": ^0.75.2
     "@react-native/metro-config": ^0.75.2

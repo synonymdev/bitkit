@@ -31,9 +31,9 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - MMKV (2.0.0):
-    - MMKVCore (~> 2.0.0)
-  - MMKVCore (2.0.0)
+  - MMKV (2.0.2):
+    - MMKVCore (~> 2.0.2)
+  - MMKVCore (2.0.2)
   - OpenSSL-Universal (3.3.2000)
   - RCT-Folly (2024.01.01.00):
     - boost
@@ -1288,7 +1288,7 @@ PODS:
     - Yoga
   - react-native-biometrics (3.0.1):
     - React-Core
-  - react-native-blur (4.4.0):
+  - react-native-blur (4.4.1):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -2216,8 +2216,8 @@ SPEC CHECKSUMS:
   hermes-engine: 3b6e0717ca847e2fc90a201e59db36caf04dee88
   lottie-ios: e047b1d2e6239b787cc5e9755b988869cf190494
   lottie-react-native: 31197e5c65aa7cb59e6affcefaf901588bb708c4
-  MMKV: f7d1d5945c8765f97f39c3d121f353d46735d801
-  MMKVCore: c04b296010fcb1d1638f2c69405096aac12f6390
+  MMKV: 3eacda84cd1c4fc95cf848d3ecb69d85ed56006c
+  MMKVCore: 508b4d3a8ce031f1b5c8bd235f0517fb3f4c73a9
   OpenSSL-Universal: b60a3702c9fea8b3145549d421fdb018e53ab7b4
   RCT-Folly: 4464f4d875961fce86008d45f4ecf6cef6de0740
   RCTDeprecation: 34cbf122b623037ea9facad2e92e53434c5c7422
@@ -2250,7 +2250,7 @@ SPEC CHECKSUMS:
   React-microtasksnativemodule: 87b8de96f937faefece8afd2cb3a518321b2ef99
   react-native-address-generator: 06f3ba094377dac5a1b472dd1daabf4ce0580807
   react-native-biometrics: 352e5a794bfffc46a0c86725ea7dc62deb085bdc
-  react-native-blur: 42522e76bf44daf9a16d341408caeb900b5f9424
+  react-native-blur: a1bf334589f44658a58a859b1f3defe28e367fcf
   react-native-image-picker: 2fbbafdae7a7c6db9d25df2f2b1db4442d2ca2ad
   react-native-ldk: 9ea2f29a6f96cc55f839ee180caf8dc9e58cd6eb
   react-native-mmkv: 7d0b6c2a79e73100b933f2947a9c8741d664e18b
