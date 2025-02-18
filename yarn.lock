@@ -3324,9 +3324,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@gorhom/bottom-sheet@npm:4.6.3":
-  version: 4.6.3
-  resolution: "@gorhom/bottom-sheet@npm:4.6.3"
+"@gorhom/bottom-sheet@npm:5.0.6":
+  version: 5.0.6
+  resolution: "@gorhom/bottom-sheet@npm:5.0.6"
   dependencies:
     "@gorhom/portal": 1.0.14
     invariant: ^2.2.4
@@ -3335,14 +3335,14 @@ __metadata:
     "@types/react-native": "*"
     react: "*"
     react-native: "*"
-    react-native-gesture-handler: ">=1.10.1"
-    react-native-reanimated: ">=2.2.0"
+    react-native-gesture-handler: ">=2.16.1"
+    react-native-reanimated: ">=3.16.0"
   peerDependenciesMeta:
     "@types/react":
       optional: true
     "@types/react-native":
       optional: true
-  checksum: 718c55a89b0e18581eae6080d1d21caabf4895088e01f0dfe17b5891835a110d7aee1d0cb1b9e623efc16b598fdb28c2ec929e0ed74bfbca283306191d8a5c41
+  checksum: 46e25c973763afab7532386b2624e4a6d08c732691dad7c93a2325d9f4f84ba1b65262ee0f43a104f7c01a94a5cfcb4195483784fa7a86609de42c3f4ae0bbd6
   languageName: node
   linkType: hard
 
@@ -6231,7 +6231,7 @@ __metadata:
     "@formatjs/intl-numberformat": 8.10.1
     "@formatjs/intl-pluralrules": 5.2.12
     "@formatjs/intl-relativetimeformat": 11.2.12
-    "@gorhom/bottom-sheet": 4.6.3
+    "@gorhom/bottom-sheet": 5.0.6
     "@notifee/react-native": 7.8.2
     "@ptsecurity/commitlint-config": ^2.0.0
     "@radar/lnrpc": ^0.11.1-beta.1
@@ -6307,7 +6307,7 @@ __metadata:
     react-native-draggable-flatlist: 4.0.1
     react-native-fetch-api: 3.0.0
     react-native-fs: 2.20.0
-    react-native-gesture-handler: 2.15.0
+    react-native-gesture-handler: 2.21.2
     react-native-haptic-feedback: 2.2.0
     react-native-image-picker: 7.1.2
     react-native-keyboard-accessory: 0.1.16
@@ -6322,7 +6322,7 @@ __metadata:
     react-native-quick-base64: 2.1.2
     react-native-quick-bip39: 0.0.9
     react-native-quick-crypto: 0.7.1
-    react-native-reanimated: 3.15.0
+    react-native-reanimated: 3.16.5
     react-native-reanimated-carousel: 3.5.1
     react-native-restart: 0.0.27
     react-native-safe-area-context: 5.0.0
@@ -13050,19 +13050,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-gesture-handler@npm:2.15.0":
-  version: 2.15.0
-  resolution: "react-native-gesture-handler@npm:2.15.0"
+"react-native-gesture-handler@npm:2.21.2":
+  version: 2.21.2
+  resolution: "react-native-gesture-handler@npm:2.21.2"
   dependencies:
     "@egjs/hammerjs": ^2.0.17
     hoist-non-react-statics: ^3.3.0
     invariant: ^2.2.4
-    lodash: ^4.17.21
     prop-types: ^15.7.2
   peerDependencies:
     react: "*"
     react-native: "*"
-  checksum: 4db52e7b38b047bad677ed570a0ef4c2ddfc413bbbce5ed21f487c9d86c60588ee6b2c9f74bb842e5654284b0d1e6a8af81f68000e737d8a7f1e030b6d3fe6b6
+  checksum: 0a42cedb8860a326b465085d0f7622ba03f038b0f0bdd1b1fe5703e58d62cb08bfb82a686c069a1a1410705c2ae0d82971b0449d83796fdd6d071131cf88e68b
   languageName: node
   linkType: hard
 
@@ -13264,9 +13263,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-reanimated@npm:3.15.0":
-  version: 3.15.0
-  resolution: "react-native-reanimated@npm:3.15.0"
+"react-native-reanimated@npm:3.16.5":
+  version: 3.16.5
+  resolution: "react-native-reanimated@npm:3.16.5"
   dependencies:
     "@babel/plugin-transform-arrow-functions": ^7.0.0-0
     "@babel/plugin-transform-class-properties": ^7.0.0-0
@@ -13283,7 +13282,7 @@ __metadata:
     "@babel/core": ^7.0.0-0
     react: "*"
     react-native: "*"
-  checksum: fad4f54d7f005f4fb3d90d983bedcf1ec7de936259b8e286feb35edaa9d1ac16d8b927fcd59eeea7f91446310432b342fd9785301a304955844785fef52a3e31
+  checksum: 29d28dcf99acb2e3928963106a2860d15c9929712832d8d8437fb563691d0199884a63e925548fe5e4b6fc7a9008eadec3e0294b521d9466c875caf16de9c303
   languageName: node
   linkType: hard
 
