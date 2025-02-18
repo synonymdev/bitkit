@@ -1,38 +1,36 @@
-// TODO(slashtags): move somewhere else? slashtags-feeds?
-export interface SlashFeedJSON {
-	name: string;
-	type: string;
-	description: string;
-	icons: {
-		[size: string]: string;
-	};
-	fields: Array<{
-		name: string;
-		main: string;
-		files: {
-			[key: string]: string;
-		};
-		[key: string]: any;
-	}>;
-	[key: string]: any;
-}
+import { widgets } from '../../constants/widgets';
 
-export type TGraphPeriod = '1D' | '1W' | '1M';
+export type TWidgetId = keyof typeof widgets;
 
-export type TFeedWidgetOptions = {
-	fields: string[];
-	extras?: {
-		period?: TGraphPeriod;
-		showSource?: boolean;
-		showTitle?: boolean;
-	};
+export type TGraphPeriod = '1D' | '1W' | '1M' | '1Y';
+
+export type TBlocksWidgetOptions = {
+	height: boolean;
+	time: boolean;
+	date: boolean;
+	transactionCount: boolean;
+	size: boolean;
+	weight: boolean;
+	difficulty: boolean;
+	hash: boolean;
+	merkleRoot: boolean;
+	showSource: boolean;
 };
 
-export type TFeedWidget = {
-	url: string;
-	type: string;
-	fields: SlashFeedJSON['fields'];
-	extras?: TFeedWidgetOptions['extras'];
+export type TFactsWidgetOptions = {
+	showSource: boolean;
+};
+
+export type TNewsWidgetOptions = {
+	showDate: boolean;
+	showTitle: boolean;
+	showSource: boolean;
+};
+
+export type TPriceWidgetOptions = {
+	pairs: string[];
+	period: TGraphPeriod;
+	showSource: boolean;
 };
 
 export type TWeatherWidgetOptions = {
@@ -42,10 +40,14 @@ export type TWeatherWidgetOptions = {
 	showNextBlockFee: boolean;
 };
 
-export type TWidgetOptions = TWeatherWidgetOptions;
-
-export type TWidget = TFeedWidget | TWidgetOptions;
+export type TWidgetOptions =
+	| TBlocksWidgetOptions
+	| TFactsWidgetOptions
+	| TNewsWidgetOptions
+	| TPriceWidgetOptions
+	| TWeatherWidgetOptions
+	| Record<string, never>;
 
 export type TWidgets = {
-	[id: string]: TWidget | undefined;
+	[id: string]: TWidgetOptions | undefined;
 };

@@ -33,8 +33,6 @@ import Profile from '../../screens/Profile/Profile';
 import ProfileEdit from '../../screens/Profile/ProfileEdit';
 import ScannerScreen from '../../screens/Scanner/MainScanner';
 import ForgotPIN from '../../screens/Settings/PIN/ForgotPIN';
-import FeedWidgetEdit from '../../screens/Widgets/FeedWidgetEdit';
-import FeedWidget from '../../screens/Widgets/SlashfeedWidget';
 import Widget from '../../screens/Widgets/Widget';
 import WidgetEdit from '../../screens/Widgets/WidgetEdit';
 import WidgetsOnboarding from '../../screens/Widgets/WidgetsOnboarding';
@@ -228,8 +226,6 @@ const RootNavigator = (): ReactElement => {
 				/>
 				<Stack.Screen name="Widget" component={Widget} />
 				<Stack.Screen name="WidgetEdit" component={WidgetEdit} />
-				<Stack.Screen name="FeedWidget" component={FeedWidget} />
-				<Stack.Screen name="FeedWidgetEdit" component={FeedWidgetEdit} />
 			</Stack.Navigator>
 
 			<BottomSheetsLazy />

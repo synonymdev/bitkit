@@ -2,6 +2,14 @@
   "widgets": {
     "string": "Widgets"
   },
+  "onboarding": {
+    "title": {
+      "string": "Hello,\n<accent>Widgets</accent>"
+    },
+    "description": {
+      "string": "Enjoy decentralized feeds from your favorite web services, by adding fun and useful widgets to your Bitkit wallet."
+    }
+  },
   "widget": {
     "nav_title": {
       "string": "Widget"
@@ -17,7 +25,13 @@
     },
     "edit_description": {
       "string": "Please select which fields you want to display in the {name} widget."
+    },
+    "source": {
+      "string": "Source"
     }
+  },
+  "add": {
+    "string": "Add Widget"
   },
   "delete": {
     "title": {
@@ -33,14 +47,20 @@
     },
     "description": {
       "string": "Check the latest Bitcoin exchange rates for a variety of fiat currencies."
+    },
+    "error": {
+      "string": "Couldn't get price data"
     }
   },
-  "headlines": {
+  "news": {
     "name": {
       "string": "Bitcoin Headlines"
     },
     "description": {
       "string": "Read the latest & greatest Bitcoin headlines from various news sites."
+    },
+    "error": {
+      "string": "Couldn't get the latest news"
     }
   },
   "blocks": {
@@ -49,6 +69,9 @@
     },
     "description": {
       "string": "Examine various statistics on newly mined Bitcoin Blocks."
+    },
+    "error": {
+      "string": "Couldn't get blocks data"
     }
   },
   "facts": {
@@ -105,6 +128,9 @@
     },
     "next_block": {
       "string": "Next block inclusion"
+    },
+    "error": {
+      "string": "Couldn't get current fee weather"
     }
   }
 }

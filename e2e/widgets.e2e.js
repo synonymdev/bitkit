@@ -28,7 +28,7 @@ d('Widgets', () => {
 
 		// delete all default widgets
 		await element(by.id('WidgetsEdit')).tap();
-		for (const w of ['PriceWidget', 'HeadlinesWidget', 'BlocksWidget']) {
+		for (const w of ['PriceWidget', 'NewsWidget', 'BlocksWidget']) {
 			await element(by.id('WidgetActionDelete').withAncestor(by.id(w))).tap();
 			await element(by.text('Yes, Delete')).tap();
 			await expect(element(by.id(w))).not.toBeVisible();
@@ -38,7 +38,7 @@ d('Widgets', () => {
 		await element(by.id('WalletsScrollView')).scroll(300, 'down', NaN, 0.85);
 		await element(by.id('WidgetsAdd')).tap();
 		await element(by.id('WidgetsOnboarding-button')).tap();
-		await element(by.id('PriceWidget')).tap();
+		await element(by.id('WidgetListItem-price')).tap();
 		await waitFor(element(by.id('WidgetEdit')))
 			.toBeVisible()
 			.withTimeout(20000);
@@ -46,8 +46,8 @@ d('Widgets', () => {
 		await element(by.id('WidgetEdit')).tap();
 		await element(by.id('WidgetEditField-BTC/EUR')).tap();
 		await element(by.id('WidgetEditScrollView')).scrollTo('bottom');
-		await element(by.id('PriceWidgetSetting-1W')).tap();
-		await element(by.id('WidgetEditSource')).tap();
+		await element(by.id('WidgetEditField-1W')).tap();
+		await element(by.id('WidgetEditField-showSource')).tap();
 		await element(by.id('WidgetEditPreview')).tap();
 		await element(by.id('WidgetSave')).tap();
 		await element(by.id('WalletsScrollView')).scroll(200, 'down', NaN, 0.85);

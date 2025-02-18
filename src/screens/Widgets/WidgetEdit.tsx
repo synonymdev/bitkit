@@ -1,133 +1,61 @@
-import isEqual from 'lodash/isEqual';
-import React, { useState, ReactElement } from 'react';
+import React, { ReactElement } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Pressable, StyleSheet, View } from 'react-native';
-
-import Divider from '../../components/Divider';
+import { StyleSheet, View } from 'react-native';
 import NavigationHeader from '../../components/NavigationHeader';
 import SafeAreaInset from '../../components/SafeAreaInset';
 import Button from '../../components/buttons/Button';
-import { useDisplayValues } from '../../hooks/displayValues';
+import { getBlocksItems } from '../../components/widgets/edit/BlocksItems';
+import { getFactsItems } from '../../components/widgets/edit/FactsItems';
+import Item from '../../components/widgets/edit/Item';
+import { getNewsItems } from '../../components/widgets/edit/NewsItems';
+import { getPriceItems } from '../../components/widgets/edit/PriceItems';
+import { getWeatherItems } from '../../components/widgets/edit/WeatherItems';
 import { useAppDispatch } from '../../hooks/redux';
-import type { RootStackScreenProps } from '../../navigation/types';
+import { useWidgetOptions } from '../../hooks/useWidgetOptions';
+import { RootStackScreenProps } from '../../navigation/types';
 import { deleteWidget } from '../../store/slices/widgets';
-import { TWidgetOptions } from '../../store/types/widgets';
+import {
+	TBlocksWidgetOptions,
+	TFactsWidgetOptions,
+	TNewsWidgetOptions,
+	TPriceWidgetOptions,
+	TWeatherWidgetOptions,
+} from '../../store/types/widgets';
 import { ScrollView, View as ThemedView } from '../../styles/components';
-import { Checkmark } from '../../styles/icons';
-import { BodyM, BodySSB, Title } from '../../styles/text';
-
-export const getDefaultOptions = (_id: string): TWidgetOptions => {
-	return {
-		showStatus: true,
-		showText: true,
-		showMedian: true,
-		showNextBlockFee: true,
-	};
-};
-
-interface ItemProps {
-	title: string | ReactElement;
-	value?: string;
-	isChecked: boolean;
-	onToggle: () => void;
-}
-
-const Item = ({
-	title,
-	value,
-	isChecked,
-	onToggle,
-}: ItemProps): ReactElement => (
-	<Pressable onPress={onToggle}>
-		<View style={styles.row}>
-			<View style={styles.rowLeft}>
-				{typeof title === 'string' ? (
-					<BodySSB color="secondary">{title}</BodySSB>
-				) : (
-					title
-				)}
-			</View>
-			{value && (
-				<View style={styles.rowRight}>
-					<BodySSB numberOfLines={1} ellipsizeMode="middle">
-						{value}
-					</BodySSB>
-				</View>
-			)}
-			<Checkmark
-				style={styles.checkmark}
-				color={isChecked ? 'brand' : 'gray3'}
-				height={30}
-				width={30}
-			/>
-		</View>
-		<Divider />
-	</Pressable>
-);
-
-const useWidgetOptions = (id: string, initialFields: TWidgetOptions) => {
-	const [options, setOptions] = useState(initialFields);
-	const defaultOptions = getDefaultOptions(id);
-	const hasEdited = !isEqual(options, defaultOptions);
-	const hasEnabledOption = Object.values(options).some(Boolean);
-
-	const toggleOption = (key: keyof TWidgetOptions) => {
-		setOptions((prevState) => ({
-			...prevState,
-			[key]: !prevState[key],
-		}));
-	};
-
-	const resetOptions = () => {
-		setOptions(defaultOptions);
-	};
-
-	return { options, hasEdited, hasEnabledOption, toggleOption, resetOptions };
-};
+import { BodyM } from '../../styles/text';
 
 const WidgetEdit = ({
-	navigation,
 	route,
+	navigation,
 }: RootStackScreenProps<'WidgetEdit'>): ReactElement => {
 	const { id, initialFields } = route.params;
 	const { t } = useTranslation('widgets');
 	const dispatch = useAppDispatch();
+
 	const { options, hasEdited, hasEnabledOption, toggleOption, resetOptions } =
 		useWidgetOptions(id, initialFields);
 
-	const widget = { name: t(`${id}.name`) };
-
-	const data = {
-		condition: 'good',
-		currentFee: 342,
-		nextBlockFee: 8,
+	const getItems = () => {
+		switch (id) {
+			case 'blocks':
+				return getBlocksItems(options as TBlocksWidgetOptions);
+			case 'facts':
+				return getFactsItems(options as TFactsWidgetOptions);
+			case 'news':
+				return getNewsItems(options as TNewsWidgetOptions);
+			case 'price':
+				return getPriceItems(options as TPriceWidgetOptions);
+			case 'weather':
+				return getWeatherItems(options as TWeatherWidgetOptions);
+			default:
+				return [];
+		}
 	};
-	const { condition, currentFee, nextBlockFee } = data;
-	const currentFeeFiat = useDisplayValues(currentFee);
 
-	const items = [
-		{
-			key: 'showStatus' as const,
-			title: <Title>{t(`weather.condition.${condition}.title`)}</Title>,
-		},
-		{
-			key: 'showText' as const,
-			title: <BodyM>{t(`weather.condition.${condition}.description`)}</BodyM>,
-		},
-		{
-			key: 'showMedian' as const,
-			title: t('weather.current_fee'),
-			value: `${currentFeeFiat.fiatSymbol} ${currentFeeFiat.fiatFormatted}`,
-		},
-		{
-			key: 'showNextBlockFee' as const,
-			title: t('weather.next_block'),
-			value: `${nextBlockFee} ₿/vByte`,
-		},
-	];
+	const items = getItems();
 
 	const onSave = (): void => {
-		navigation.navigate('Widget', { id, preview: options });
+		navigation.popTo('Widget', { id, preview: options });
 	};
 
 	const onReset = (): void => {
@@ -142,23 +70,22 @@ const WidgetEdit = ({
 
 			<View style={styles.content}>
 				<BodyM style={styles.description} color="secondary">
-					{t('widget.edit_description', { name: widget.name })}
+					{t('widget.edit_description', { name: t(`${id}.name`) })}
 				</BodyM>
 
 				<ScrollView
 					showsVerticalScrollIndicator={false}
 					testID="WidgetEditScrollView">
-					<View style={styles.fields}>
-						{items.map((item) => (
-							<Item
-								key={item.key}
-								title={item.title}
-								value={item.value}
-								isChecked={options[item.key]}
-								onToggle={() => toggleOption(item.key)}
-							/>
-						))}
-					</View>
+					{items.map((item) => (
+						<Item
+							key={item.key}
+							title={item.title}
+							value={item.value}
+							isChecked={!!item.isChecked}
+							testID={`WidgetEditField-${item.key}`}
+							onToggle={() => toggleOption(item)}
+						/>
+					))}
 				</ScrollView>
 
 				<View style={styles.buttonsContainer}>
@@ -175,9 +102,9 @@ const WidgetEdit = ({
 						style={styles.button}
 						text={t('preview')}
 						size="large"
+						disabled={!hasEnabledOption}
 						testID="WidgetEditPreview"
 						onPress={onSave}
-						disabled={!hasEnabledOption}
 					/>
 				</View>
 			</View>
@@ -197,31 +124,6 @@ const styles = StyleSheet.create({
 	},
 	description: {
 		marginBottom: 32,
-	},
-	loading: {
-		marginTop: 16,
-	},
-	fields: {
-		paddingBottom: 16,
-	},
-	row: {
-		flexDirection: 'row',
-		justifyContent: 'space-between',
-		alignItems: 'center',
-	},
-	rowLeft: {
-		flex: 1,
-		flexDirection: 'row',
-		alignItems: 'center',
-	},
-	rowRight: {
-		flex: 1,
-		flexDirection: 'row',
-		alignItems: 'center',
-		justifyContent: 'flex-end',
-	},
-	checkmark: {
-		marginLeft: 16,
 	},
 	buttonsContainer: {
 		flexDirection: 'row',

@@ -8,7 +8,11 @@ import NavigationHeader from '../../components/NavigationHeader';
 import SafeAreaInset from '../../components/SafeAreaInset';
 import SvgImage from '../../components/SvgImage';
 import Button from '../../components/buttons/Button';
+import BlocksWidget from '../../components/widgets/BlocksWidget';
 import CalculatorWidget from '../../components/widgets/CalculatorWidget';
+import FactsWidget from '../../components/widgets/FactsWidget';
+import NewsWidget from '../../components/widgets/NewsWidget';
+import PriceWidget from '../../components/widgets/PriceWidget';
 import WeatherWidget from '../../components/widgets/WeatherWidget';
 import { widgets } from '../../constants/widgets';
 import { useCurrency } from '../../hooks/displayValues';
@@ -16,7 +20,14 @@ import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import type { RootStackScreenProps } from '../../navigation/types';
 import { widgetSelector } from '../../store/reselect/widgets';
 import { deleteWidget, saveWidget } from '../../store/slices/widgets';
-import { TWidgetOptions } from '../../store/types/widgets';
+import {
+	TBlocksWidgetOptions,
+	TFactsWidgetOptions,
+	TNewsWidgetOptions,
+	TPriceWidgetOptions,
+	TWeatherWidgetOptions,
+	TWidgetOptions,
+} from '../../store/types/widgets';
 import {
 	ScrollView,
 	View as ThemedView,
@@ -24,7 +35,7 @@ import {
 } from '../../styles/components';
 import { ChevronRight } from '../../styles/icons';
 import { BodyM, Caption13Up, Headline } from '../../styles/text';
-import { getDefaultOptions } from './WidgetEdit';
+import { getDefaultOptions } from '../../utils/widgets';
 
 const Widget = ({
 	navigation,
@@ -45,6 +56,7 @@ const Widget = ({
 	};
 
 	const defaultOptions = getDefaultOptions(id);
+	const hasOptions = Object.keys(defaultOptions).length > 0;
 	const options = preview ?? savedWidget ?? defaultOptions;
 	const hasEdited = !isEqual(options, defaultOptions);
 
@@ -64,12 +76,29 @@ const Widget = ({
 
 	const renderWidget = (): ReactElement => {
 		switch (id) {
-			case 'calculator':
+			case 'blocks': {
+				const blocksOptions = options as TBlocksWidgetOptions;
+				return <BlocksWidget options={blocksOptions} />;
+			}
+			case 'calculator': {
 				return <CalculatorWidget />;
-			case 'weather':
-				return <WeatherWidget options={options} />;
-			default:
-				return <></>;
+			}
+			case 'facts': {
+				const factsOptions = options as TFactsWidgetOptions;
+				return <FactsWidget options={factsOptions} />;
+			}
+			case 'news': {
+				const newsOptions = options as TNewsWidgetOptions;
+				return <NewsWidget options={newsOptions} />;
+			}
+			case 'price': {
+				const priceOptions = options as TPriceWidgetOptions;
+				return <PriceWidget options={priceOptions} />;
+			}
+			case 'weather': {
+				const weatherOptions = options as TWeatherWidgetOptions;
+				return <WeatherWidget options={weatherOptions} />;
+			}
 		}
 	};
 
@@ -82,7 +111,9 @@ const Widget = ({
 				<ScrollView contentContainerStyle={styles.scrollContent}>
 					<View style={styles.header}>
 						<View style={styles.headerText}>
-							<Headline numberOfLines={2}>{widget.name}</Headline>
+							<Headline numberOfLines={2}>
+								{widget.name.split(' ').join('\n')}
+							</Headline>
 						</View>
 						<View style={styles.headerImage}>
 							<SvgImage image={widget.icon} size={64} />
@@ -93,7 +124,7 @@ const Widget = ({
 						{widget.description}
 					</BodyM>
 
-					{id === 'weather' && (
+					{hasOptions && (
 						<TouchableOpacity
 							style={styles.item}
 							testID="WidgetEdit"
@@ -165,16 +196,12 @@ const styles = StyleSheet.create({
 	},
 	headerText: {
 		justifyContent: 'center',
-		maxWidth: '75%',
 	},
 	headerImage: {
 		borderRadius: 8,
 		overflow: 'hidden',
 		height: 64,
 		width: 64,
-	},
-	url: {
-		marginTop: 4,
 	},
 	caption: {
 		marginBottom: 16,
@@ -183,12 +210,12 @@ const styles = StyleSheet.create({
 		paddingTop: 16,
 		marginTop: 'auto',
 	},
-	previewLoading: {
-		borderRadius: 16,
-		justifyContent: 'center',
-		alignItems: 'center',
-		minHeight: 180,
-	},
+	// previewLoading: {
+	// 	borderRadius: 16,
+	// 	justifyContent: 'center',
+	// 	alignItems: 'center',
+	// 	minHeight: 180,
+	// },
 	buttonsContainer: {
 		flexDirection: 'row',
 		justifyContent: 'space-between',

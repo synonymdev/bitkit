@@ -204,9 +204,6 @@ export const parseUri = async (
 	if (uri.startsWith('slash:')) {
 		return ok({ type: EQRDataType.slashtag, url: uri });
 	}
-	if (uri.startsWith('slashfeed:')) {
-		return ok({ type: EQRDataType.slashFeed, url: uri });
-	}
 
 	// Pubky Auth
 	if (uri.startsWith('pubkyauth:')) {
@@ -581,10 +578,6 @@ const handleData = async ({
 		case EQRDataType.slashtag: {
 			handleSlashtagURL(data.url);
 			dispatch(closeSheet('addContactModal'));
-			return ok('');
-		}
-		case EQRDataType.slashFeed: {
-			handleSlashtagURL(decodeURIComponent(data.url));
 			return ok('');
 		}
 		case EQRDataType.slashAuth: {

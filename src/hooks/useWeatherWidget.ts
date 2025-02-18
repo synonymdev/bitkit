@@ -1,29 +1,6 @@
 import { useEffect, useState } from 'react';
 import { refreshOnchainFeeEstimates } from '../store/utils/fees';
-import { getFiatDisplayValues } from '../utils/displayValues';
-
-enum EFeeCondition {
-	Good = 'good',
-	Average = 'average',
-	Poor = 'poor',
-}
-
-type TWeatherWidgetData = {
-	condition: EFeeCondition;
-	currentFee: number;
-	nextBlockFee: number;
-};
-
-enum EWidgetStatus {
-	Loading = 'loading',
-	Error = 'error',
-	Ready = 'ready',
-}
-
-type TWeatherWidgetResponse = {
-	data: TWeatherWidgetData;
-	status: EWidgetStatus;
-};
+import { getDisplayValues, getFiatDisplayValues } from '../utils/displayValues';
 
 type TBlockFeeRates = {
 	avgHeight: number;
@@ -36,6 +13,41 @@ type TBlockFeeRates = {
 	avgFee_90: number;
 	avgFee_100: number;
 };
+
+enum EFeeCondition {
+	Good = 'good',
+	Average = 'average',
+	Poor = 'poor',
+}
+
+type TWidgetData = {
+	condition: EFeeCondition;
+	currentFee: string;
+	nextBlockFee: number;
+};
+
+enum EWidgetStatus {
+	Loading = 'loading',
+	Error = 'error',
+	Ready = 'ready',
+}
+
+type LoadingState = {
+	status: EWidgetStatus.Loading;
+	data: null;
+};
+
+type ErrorState = {
+	status: EWidgetStatus.Error;
+	data: null;
+};
+
+type ReadyState = {
+	status: EWidgetStatus.Ready;
+	data: TWidgetData;
+};
+
+type TWidgetState = LoadingState | ErrorState | ReadyState;
 
 const BASE_URL = 'https://mempool.space/api/v1';
 const REFRESH_INTERVAL = 1000 * 60 * 2; // 2 minutes
@@ -83,12 +95,10 @@ const calculateCondition = (
 	return EFeeCondition.Average;
 };
 
-const useWeatherWidget = (): TWeatherWidgetResponse => {
-	const [status, setStatus] = useState<EWidgetStatus>(EWidgetStatus.Loading);
-	const [data, setData] = useState<TWeatherWidgetData>({
-		condition: EFeeCondition.Good,
-		currentFee: 342,
-		nextBlockFee: 8,
+const useWeatherWidget = (): TWidgetState => {
+	const [state, setState] = useState<TWidgetState>({
+		status: EWidgetStatus.Loading,
+		data: null,
 	});
 
 	useEffect(() => {
@@ -106,7 +116,6 @@ const useWeatherWidget = (): TWeatherWidgetResponse => {
 		};
 
 		const fetchData = async () => {
-			setStatus(EWidgetStatus.Loading);
 			try {
 				const [feesResult, history] = await Promise.all([
 					refreshOnchainFeeEstimates({ forceUpdate: true }),
@@ -114,7 +123,7 @@ const useWeatherWidget = (): TWeatherWidgetResponse => {
 				]);
 
 				if (feesResult.isErr()) {
-					setStatus(EWidgetStatus.Error);
+					setState({ status: EWidgetStatus.Error, data: null });
 					return;
 				}
 
@@ -123,16 +132,14 @@ const useWeatherWidget = (): TWeatherWidgetResponse => {
 
 				// Total fee based on average native segwit transaction of 140 vBytes
 				const avgFee = fees.normal * VBYTES_SIZE;
+				const dv = getDisplayValues({ satoshis: avgFee });
+				const currentFee = `${dv.fiatSymbol} ${dv.fiatFormatted}`;
+				const data = { condition, currentFee, nextBlockFee: fees.fast };
 
-				setData({
-					condition,
-					currentFee: avgFee,
-					nextBlockFee: fees.fast,
-				});
-				setStatus(EWidgetStatus.Ready);
+				setState({ status: EWidgetStatus.Ready, data });
 			} catch (error) {
 				console.error('Failed to fetch fee data:', error);
-				setStatus(EWidgetStatus.Error);
+				setState({ status: EWidgetStatus.Error, data: null });
 			}
 		};
 
@@ -146,7 +153,7 @@ const useWeatherWidget = (): TWeatherWidgetResponse => {
 		};
 	}, []);
 
-	return { data, status };
+	return state;
 };
 
 export default useWeatherWidget;

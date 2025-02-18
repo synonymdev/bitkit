@@ -18,7 +18,6 @@ export enum EQRDataType {
 	orangeTicket = 'orangeTicket',
 	slashAuth = 'slashAuth',
 	slashtag = 'slashURL',
-	slashFeed = 'slashFeed',
 	nodeId = 'nodeId',
 	treasureHunt = 'treasureHunt',
 	pubkyAuth = 'pubkyAuth',
@@ -40,7 +39,6 @@ export type QRData =
 	| TNodeId
 	| TSlashTagUrl
 	| TSlashAuthUrl
-	| TSlashFeedUrl
 	| TTreasureChestUrl
 	| TPubkyAuthUrl;
 
@@ -113,11 +111,6 @@ export type TSlashTagUrl = {
 
 export type TSlashAuthUrl = {
 	type: EQRDataType.slashAuth;
-	url: string;
-};
-
-export type TSlashFeedUrl = {
-	type: EQRDataType.slashFeed;
 	url: string;
 };
 

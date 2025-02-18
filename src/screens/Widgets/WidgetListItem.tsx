@@ -8,17 +8,12 @@ import SvgImage from '../../components/SvgImage';
 import { widgets } from '../../constants/widgets';
 import { useCurrency } from '../../hooks/displayValues';
 import { RootNavigationProp } from '../../navigation/types';
+import { TWidgetId } from '../../store/types/widgets';
 import { TouchableOpacity, View } from '../../styles/components';
 import { ChevronRight } from '../../styles/icons';
 import { BodyMSB, CaptionB } from '../../styles/text';
 
-const WidgetListItem = ({
-	id,
-	testID,
-}: {
-	id: string;
-	testID?: string;
-}): ReactElement => {
+const WidgetListItem = ({ id }: { id: TWidgetId }): ReactElement => {
 	const navigation = useNavigation<RootNavigationProp>();
 	const { t } = useTranslation('widgets');
 	const { fiatSymbol } = useCurrency();
@@ -34,7 +29,7 @@ const WidgetListItem = ({
 	};
 
 	return (
-		<TouchableOpacity testID={testID} onPress={onPress}>
+		<TouchableOpacity testID={`WidgetListItem-${id}`} onPress={onPress}>
 			<View style={styles.feed}>
 				<View style={styles.icon}>
 					<SvgImage image={widget.icon} size={48} />

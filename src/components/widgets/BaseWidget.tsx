@@ -1,4 +1,4 @@
-import React, { memo, ReactElement, useState } from 'react';
+import React, { memo, ReactElement, ReactNode, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 
@@ -8,6 +8,7 @@ import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { RootNavigationProp } from '../../navigation/types';
 import { showWidgetTitlesSelector } from '../../store/reselect/settings';
 import { deleteWidget } from '../../store/slices/widgets';
+import { TWidgetId } from '../../store/types/widgets';
 import { TouchableOpacity } from '../../styles/components';
 import { ListIcon, SettingsIcon, TrashIcon } from '../../styles/icons';
 import { BodyMSB } from '../../styles/text';
@@ -27,8 +28,8 @@ const BaseWidget = ({
 	onPressIn,
 	onLongPress,
 }: {
-	id: string;
-	children: ReactElement;
+	id: TWidgetId;
+	children: ReactNode;
 	// isLoading?: boolean;
 	isEditing?: boolean;
 	style?: StyleProp<ViewStyle>;

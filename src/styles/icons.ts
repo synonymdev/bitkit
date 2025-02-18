@@ -105,7 +105,6 @@ import {
 	usersIcon,
 	xIcon,
 } from '../assets/icons/wallet';
-import { bitfinexIcon } from '../assets/icons/widgets';
 import styled from './styled-components';
 import { IThemeColors } from './themes';
 
@@ -797,14 +796,6 @@ export const HeartbeatIcon = styled(SvgXml).attrs((props) => ({
 	xml: heartbeatIcon(props.color ? props.theme.colors[props.color] : 'white'),
 	height: props.height ?? '25px',
 	width: props.width ?? '24px',
-}))<IconProps>((props) => ({
-	color: props.color ? props.theme.colors[props.color] : 'white',
-}));
-
-export const BitfinexIcon = styled(SvgXml).attrs((props) => ({
-	xml: bitfinexIcon(),
-	height: props.height ?? '32px',
-	width: props.width ?? '32px',
 }))<IconProps>((props) => ({
 	color: props.color ? props.theme.colors[props.color] : 'white',
 }));

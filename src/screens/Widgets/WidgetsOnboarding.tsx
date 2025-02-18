@@ -18,7 +18,7 @@ type WidgetsOnboardingProps = NativeStackScreenProps<
 const WidgetsOnboarding = ({
 	navigation,
 }: WidgetsOnboardingProps): ReactElement => {
-	const { t } = useTranslation('slashtags');
+	const { t } = useTranslation('widgets');
 	const dispatch = useAppDispatch();
 
 	return (
@@ -26,11 +26,11 @@ const WidgetsOnboarding = ({
 			title={
 				<Trans
 					t={t}
-					i18nKey="onboarding_widgets_header"
+					i18nKey="onboarding.title"
 					components={{ accent: <Display color="brand" /> }}
 				/>
 			}
-			description={t('onboarding_widgets_text')}
+			description={t('onboarding.description')}
 			image={imageSrc}
 			buttonText={t('continue')}
 			testID="WidgetsOnboarding"

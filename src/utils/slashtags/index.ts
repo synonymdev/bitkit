@@ -46,8 +46,9 @@ export const handleSlashtagURL = (
 
 		if (parsed.protocol === 'slash:') {
 			rootNavigation.navigate('ContactEdit', { url });
-		} else if (parsed.protocol === 'slashfeed:') {
-			rootNavigation.navigate('FeedWidget', { url });
+		} else {
+			onError?.('Invalid URL' as unknown as Error);
+			return;
 		}
 
 		onSuccess?.(url);

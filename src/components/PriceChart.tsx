@@ -10,9 +10,7 @@ import {
 	useFont,
 	vec,
 } from '@shopify/react-native-skia';
-import { Reader } from '@synonymdev/slashtags-widget-price-feed';
-import { Pair } from '@synonymdev/slashtags-widget-price-feed/types/lib/reader';
-import React, { useState, ReactElement, useEffect, useMemo } from 'react';
+import React, { ReactElement, useMemo } from 'react';
 import {
 	StyleProp,
 	StyleSheet,
@@ -22,29 +20,8 @@ import {
 } from 'react-native';
 
 import useColors from '../hooks/colors';
-import { useSlashtags } from '../hooks/slashtags';
-import { SlashFeedJSON, TGraphPeriod } from '../store/types/widgets';
-import { IThemeColors } from '../styles/themes';
-
-export type Change = {
-	color: keyof IThemeColors;
-	formatted: string;
-};
-
-export const getChange = (pastValues: number[]): Change => {
-	if (pastValues.length < 2) {
-		return { color: 'green', formatted: '+0%' };
-	}
-
-	const _change = pastValues[pastValues.length - 1] / pastValues[0] - 1;
-	const sign = _change >= 0 ? '+' : '';
-	const color = _change >= 0 ? 'green' : 'red';
-
-	return {
-		color,
-		formatted: `${sign}${(_change * 100).toFixed(2)}%`,
-	};
-};
+import usePriceWidget from '../hooks/usePriceWidget';
+import { TGraphPeriod } from '../store/types/widgets';
 
 const chartHeight = 96;
 
@@ -142,59 +119,24 @@ export const Chart = ({
 	);
 };
 
-type THistory = {
-	pair: string;
-	change: Change;
-	pastValues: number[];
-};
-
 const PriceChart = ({
-	url,
-	field,
 	period,
 	style,
 }: {
-	url: string;
-	field: SlashFeedJSON['fields'][0];
 	period: TGraphPeriod;
 	style?: StyleProp<ViewStyle>;
 }): ReactElement => {
-	const { webRelayClient, webRelayUrl } = useSlashtags();
-	const [history, setHistory] = useState<THistory>();
+	const { data, status } = usePriceWidget(['BTC/USD'], period);
 
-	useEffect(() => {
-		let unmounted = false;
-
-		const feedUrl = `${url}?relay=${webRelayUrl}`;
-		const reader = new Reader(webRelayClient, feedUrl);
-
-		const getHistory = async (): Promise<void> => {
-			const pair = `${field.base}${field.quote}` as Pair;
-			const candles = (await reader.getPastCandles(pair, period)) ?? [];
-			const pastValues: number[] = candles.map((candle) => candle.close);
-			const change = getChange(pastValues);
-
-			if (!unmounted) {
-				setHistory({ pair: field.name, change, pastValues });
-			}
-		};
-
-		getHistory();
-
-		return (): void => {
-			unmounted = true;
-		};
-	}, [url, field, period, webRelayClient, webRelayUrl]);
-
-	if (!history) {
+	if (status !== 'ready') {
 		return <></>;
 	}
 
 	return (
 		<View style={[styles.root, style]}>
 			<Chart
-				values={history.pastValues}
-				positive={history.change.color === 'green'}
+				values={data[0].pastValues}
+				positive={data[0].change.color === 'green'}
 				period={period}
 			/>
 		</View>

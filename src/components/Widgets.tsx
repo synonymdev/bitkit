@@ -21,23 +21,26 @@ import {
 	widgetsSelector,
 } from '../store/reselect/widgets';
 import { setWidgetsSortOrder } from '../store/slices/widgets';
-import { TFeedWidget, TWeatherWidgetOptions } from '../store/types/widgets';
+import {
+	TBlocksWidgetOptions,
+	TFactsWidgetOptions,
+	TNewsWidgetOptions,
+	TPriceWidgetOptions,
+	TWeatherWidgetOptions,
+} from '../store/types/widgets';
 import { TouchableOpacity, View } from '../styles/components';
 import { Checkmark, PlusIcon, SortAscendingIcon } from '../styles/icons';
 import { Caption13Up } from '../styles/text';
-import { SUPPORTED_FEED_TYPES } from '../utils/widgets';
-import BlocksWidget from './BlocksWidget';
-import FactsWidget from './FactsWidget';
-import FeedWidget from './FeedWidget';
-import HeadlinesWidget from './HeadlinesWidget';
-import LuganoFeedWidget from './LuganoFeedWidget';
-import PriceWidget from './PriceWidget';
 import Button from './buttons/Button';
+import BlocksWidget from './widgets/BlocksWidget';
 import CalculatorWidget from './widgets/CalculatorWidget';
+import FactsWidget from './widgets/FactsWidget';
+import NewsWidget from './widgets/NewsWidget';
+import PriceWidget from './widgets/PriceWidget';
 import WeatherWidget from './widgets/WeatherWidget';
 
 const Widgets = (): ReactElement => {
-	const { t } = useTranslation('slashtags');
+	const { t } = useTranslation('widgets');
 	const dispatch = useAppDispatch();
 
 	const widgets = useAppSelector(widgetsSelector);
@@ -83,12 +86,54 @@ const Widgets = (): ReactElement => {
 				}
 			};
 
+			if (id === 'blocks') {
+				const options = widgets[id] as TBlocksWidgetOptions;
+				return (
+					<BlocksWidget
+						style={styles.widget}
+						options={options}
+						isEditing={editing}
+						testID="BlocksWidget"
+						onLongPress={initiateDrag}
+						onPressIn={initiateDrag}
+					/>
+				);
+			}
+
 			if (id === 'calculator') {
 				return (
 					<CalculatorWidget
 						style={styles.widget}
 						isEditing={editing}
 						testID="CalculatorWidget"
+						onLongPress={initiateDrag}
+						onPressIn={initiateDrag}
+					/>
+				);
+			}
+
+			if (id === 'facts') {
+				const options = widgets[id] as TFactsWidgetOptions;
+				return (
+					<FactsWidget
+						style={styles.widget}
+						options={options}
+						isEditing={editing}
+						testID="FactsWidget"
+						onLongPress={initiateDrag}
+						onPressIn={initiateDrag}
+					/>
+				);
+			}
+
+			if (id === 'news') {
+				const options = widgets[id] as TNewsWidgetOptions;
+				return (
+					<NewsWidget
+						style={styles.widget}
+						options={options}
+						isEditing={editing}
+						testID="NewsWidget"
 						onLongPress={initiateDrag}
 						onPressIn={initiateDrag}
 					/>
@@ -109,48 +154,13 @@ const Widgets = (): ReactElement => {
 				);
 			}
 
-			const feedWidget = widgets[id] as TFeedWidget;
-			let testID: string;
-			let Component:
-				| typeof PriceWidget
-				| typeof HeadlinesWidget
-				| typeof BlocksWidget
-				| typeof FactsWidget
-				| typeof FeedWidget;
-
-			switch (feedWidget.type) {
-				case SUPPORTED_FEED_TYPES.PRICE_FEED:
-					Component = PriceWidget;
-					testID = 'PriceWidget';
-					break;
-				case SUPPORTED_FEED_TYPES.HEADLINES_FEED:
-					Component = HeadlinesWidget;
-					testID = 'HeadlinesWidget';
-					break;
-				case SUPPORTED_FEED_TYPES.BLOCKS_FEED:
-					Component = BlocksWidget;
-					testID = 'BlocksWidget';
-					break;
-				case SUPPORTED_FEED_TYPES.FACTS_FEED:
-					Component = FactsWidget;
-					testID = 'FactsWidget';
-					break;
-				case SUPPORTED_FEED_TYPES.LUGANO_FEED:
-					Component = LuganoFeedWidget;
-					testID = 'LuganoWidget';
-					break;
-				default:
-					Component = FeedWidget;
-					testID = 'FeedWidget';
-			}
-
+			const options = widgets[id] as TPriceWidgetOptions;
 			return (
-				<Component
+				<PriceWidget
 					style={styles.widget}
-					url={id}
-					widget={feedWidget}
+					options={options}
 					isEditing={editing}
-					testID={testID}
+					testID="PriceWidget"
 					onLongPress={initiateDrag}
 					onPressIn={initiateDrag}
 				/>
@@ -190,7 +200,7 @@ const Widgets = (): ReactElement => {
 
 			<Button
 				style={styles.button}
-				text={t('widget_add')}
+				text={t('add')}
 				size="large"
 				variant="tertiary"
 				icon={<PlusIcon height={16} width={16} />}

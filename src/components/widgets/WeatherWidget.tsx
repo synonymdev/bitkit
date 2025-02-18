@@ -1,18 +1,11 @@
 import React, { ReactElement } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Platform, StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 
-import { useTranslation } from 'react-i18next';
-import { useDisplayValues } from '../../hooks/displayValues';
-import useWeatherWidget from '../../hooks/weatherWidget';
-import { BodyM, BodyMSB, BodySSB, Title } from '../../styles/text';
+import useWeatherWidget from '../../hooks/useWeatherWidget';
+import { TWeatherWidgetOptions } from '../../store/types/widgets';
+import { BodyM, BodyMSB, BodySSB, CaptionB, Title } from '../../styles/text';
 import BaseWidget from './BaseWidget';
-
-type TWeatherWidgetOptions = {
-	showStatus: boolean;
-	showText: boolean;
-	showMedian: boolean;
-	showNextBlockFee: boolean;
-};
 
 const WeatherWidget = ({
 	options,
@@ -30,9 +23,7 @@ const WeatherWidget = ({
 	onLongPress?: () => void;
 }): ReactElement => {
 	const { t } = useTranslation('widgets');
-	const { data } = useWeatherWidget();
-	const { condition, currentFee, nextBlockFee } = data;
-	const currentFeeFiat = useDisplayValues(currentFee);
+	const { data, status } = useWeatherWidget();
 
 	return (
 		<BaseWidget
@@ -43,57 +34,71 @@ const WeatherWidget = ({
 			testID={testID}
 			onPressIn={onPressIn}
 			onLongPress={onLongPress}>
-			<View style={styles.container}>
-				{options.showStatus && (
-					<View style={styles.condition}>
-						<Title style={styles.conditionText}>
-							{t(`weather.condition.${condition}.title`)}
-						</Title>
-
-						<Title style={styles.conditionIcon}>
-							{condition === 'good' && '☀️'}
-							{condition === 'average' && '⛅'}
-							{condition === 'poor' && '⛈️'}
-						</Title>
+			{status === 'error' && (
+				<View style={styles.row}>
+					<View style={styles.columnLeft}>
+						<CaptionB color="secondary" numberOfLines={1}>
+							{t('weather.error')}
+						</CaptionB>
 					</View>
-				)}
+				</View>
+			)}
 
-				{options.showText && (
-					<BodyM>{t(`weather.condition.${condition}.description`)}</BodyM>
-				)}
+			{status === 'ready' && (
+				<View style={styles.container}>
+					{options.showStatus && (
+						<View style={styles.condition}>
+							<Title style={styles.conditionText}>
+								{t(`weather.condition.${data.condition}.title`)}
+							</Title>
 
-				{(options.showMedian || options.showNextBlockFee) && (
-					<View style={styles.rows}>
-						{options.showMedian && (
-							<View style={styles.row}>
-								<View style={styles.columnLeft}>
-									<BodySSB color="secondary" numberOfLines={1}>
-										{t('weather.current_fee')}
-									</BodySSB>
-								</View>
-								<View style={styles.columnRight}>
-									<BodyMSB numberOfLines={1}>
-										{currentFeeFiat.fiatSymbol} {currentFeeFiat.fiatFormatted}
-									</BodyMSB>
-								</View>
-							</View>
-						)}
+							<Title style={styles.conditionIcon}>
+								{data.condition === 'good' && '☀️'}
+								{data.condition === 'average' && '⛅'}
+								{data.condition === 'poor' && '⛈️'}
+							</Title>
+						</View>
+					)}
 
-						{options.showNextBlockFee && (
-							<View style={styles.row}>
-								<View style={styles.columnLeft}>
-									<BodySSB color="secondary" numberOfLines={1}>
-										{t('weather.next_block')}
-									</BodySSB>
+					{options.showText && (
+						<BodyM>
+							{t(`weather.condition.${data.condition}.description`)}
+						</BodyM>
+					)}
+
+					{(options.showMedian || options.showNextBlockFee) && (
+						<View style={styles.rows}>
+							{options.showMedian && (
+								<View style={styles.row}>
+									<View style={styles.columnLeft}>
+										<BodySSB color="secondary" numberOfLines={1}>
+											{t('weather.current_fee')}
+										</BodySSB>
+									</View>
+									<View style={styles.columnRight}>
+										<BodyMSB numberOfLines={1}>{data.currentFee}</BodyMSB>
+									</View>
 								</View>
-								<View style={styles.columnRight}>
-									<BodyMSB numberOfLines={1}>{nextBlockFee} ₿/vByte</BodyMSB>
+							)}
+
+							{options.showNextBlockFee && (
+								<View style={styles.row}>
+									<View style={styles.columnLeft}>
+										<BodySSB color="secondary" numberOfLines={1}>
+											{t('weather.next_block')}
+										</BodySSB>
+									</View>
+									<View style={styles.columnRight}>
+										<BodyMSB numberOfLines={1}>
+											{data.nextBlockFee} ₿/vByte
+										</BodyMSB>
+									</View>
 								</View>
-							</View>
-						)}
-					</View>
-				)}
-			</View>
+							)}
+						</View>
+					)}
+				</View>
+			)}
 		</BaseWidget>
 	);
 };

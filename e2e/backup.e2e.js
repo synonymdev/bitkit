@@ -97,7 +97,7 @@ d('Backup', () => {
 		// remove 2 default widgets, leave PriceWidget
 		await element(by.id('WalletsScrollView')).scroll(200, 'down', NaN, 0.85);
 		await element(by.id('WidgetsEdit')).tap();
-		for (const w of ['HeadlinesWidget', 'BlocksWidget']) {
+		for (const w of ['NewsWidget', 'BlocksWidget']) {
 			await element(by.id('WidgetActionDelete').withAncestor(by.id(w))).tap();
 			await element(by.text('Yes, Delete')).tap();
 			await expect(element(by.id(w))).not.toBeVisible();
@@ -126,7 +126,7 @@ d('Backup', () => {
 		// check widgets
 		await element(by.id('WalletsScrollView')).scroll(300, 'down', NaN, 0.85);
 		await expect(element(by.id('PriceWidget'))).toExist();
-		await expect(element(by.id('HeadlinesWidget'))).not.toExist();
+		await expect(element(by.id('NewsWidget'))).not.toExist();
 		await expect(element(by.id('BlocksWidget'))).not.toExist();
 
 		markComplete('backup-1');
