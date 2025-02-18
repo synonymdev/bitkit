@@ -1,6 +1,7 @@
 // Add migrations for every persisted store version change
 import { PersistedState } from 'redux-persist';
 import { storage as mmkv } from '../../store/mmkv-storage';
+import { getDefaultOptions } from '../../utils/widgets';
 import { getDefaultGapLimitOptions } from '../shapes/wallet';
 
 const migrations = {
@@ -108,6 +109,40 @@ const migrations = {
 
 		for (const url of Object.keys(newWidgets)) {
 			newWidgets[url].url = url;
+		}
+
+		return {
+			...state,
+			widgets: {
+				...state.widgets,
+				widgets: newWidgets,
+			},
+		};
+	},
+	53: (state): PersistedState => {
+		const newWidgets = { ...state.widgets.widgets };
+
+		// migrate slashfeed widgets
+		for (const key of Object.keys(newWidgets)) {
+			if (key.includes('Bitcoin Price')) {
+				delete newWidgets[key];
+				newWidgets.price = getDefaultOptions('price');
+			} else if (key.includes('Bitcoin Headlines')) {
+				delete newWidgets[key];
+				newWidgets.news = getDefaultOptions('news');
+			} else if (key.includes('Bitcoin Blocks')) {
+				delete newWidgets[key];
+				newWidgets.blocks = getDefaultOptions('blocks');
+			} else if (key.includes('Bitcoin Facts')) {
+				delete newWidgets[key];
+				newWidgets.facts = getDefaultOptions('facts');
+			} else if (key === 'calculator') {
+				delete newWidgets[key];
+				newWidgets.calculator = getDefaultOptions('calculator');
+			} else if (key === 'weather') {
+				delete newWidgets[key];
+				newWidgets.weather = getDefaultOptions('weather');
+			}
 		}
 
 		return {
