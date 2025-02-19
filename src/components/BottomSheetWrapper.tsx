@@ -171,7 +171,9 @@ const BottomSheetWrapper = forwardRef(
 				animateOnMount={!reducedMotion && !__E2E__}
 				enablePanDownToClose={true}
 				keyboardBlurBehavior="restore"
+				// @ts-ignore
 				activeOffsetX={activeOffsetX}
+				// @ts-ignore
 				activeOffsetY={activeOffsetY}
 				onChange={handleSheetChanges}>
 				<BottomSheetView style={style} testID={testID}>

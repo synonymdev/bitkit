@@ -374,8 +374,11 @@ const ReviewAndSend = ({
 	const confirmPayment = useCallback(
 		(warnings: string[] = []) => {
 			if (warnings.length > 0) {
-				showDialogWarning(warnings[0]);
-				setDialogWarnings(warnings.slice(1));
+				// Timeout needed to fix bug with multiple modals
+				setTimeout(() => {
+					showDialogWarning(warnings[0]);
+					setDialogWarnings(warnings.slice(1));
+				});
 				return;
 			}
 

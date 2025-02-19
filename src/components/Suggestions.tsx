@@ -1,11 +1,5 @@
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
-import React, {
-	ReactElement,
-	useMemo,
-	useState,
-	useCallback,
-	useEffect,
-} from 'react';
+import React, { ReactElement, useState, useCallback, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Share, StyleSheet, useWindowDimensions } from 'react-native';
 import Carousel from 'react-native-reanimated-carousel';
@@ -56,11 +50,6 @@ const Suggestions = (): ReactElement => {
 
 		return (): void => clearTimeout(timer);
 	}, [newChannels, dispatch]);
-
-	const panGestureHandlerProps = useMemo(
-		() => ({ activeOffsetX: [-10, 10] }),
-		[],
-	);
 
 	// reset index on focus
 	useFocusEffect(useCallback(() => setIndex(0), []));
@@ -188,9 +177,12 @@ const Suggestions = (): ReactElement => {
 					loop={false}
 					height={170}
 					width={167}
-					panGestureHandlerProps={panGestureHandlerProps}
-					onSnapToItem={setIndex}
 					renderItem={handleRenderItem}
+					onSnapToItem={setIndex}
+					onConfigurePanGesture={(gesture) => {
+						'worklet';
+						gesture.activeOffsetX([-10, 10]);
+					}}
 				/>
 			</ThemedView>
 		</>

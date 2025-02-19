@@ -83,7 +83,7 @@ const ReceiveQR = ({
 }: ReceiveScreenProps<'ReceiveQR'>): ReactElement => {
 	const { t } = useTranslation('wallet');
 	const dimensions = useWindowDimensions();
-	const progressValue = useSharedValue(0);
+	const progress = useSharedValue(0);
 	const carouselRef = useRef<ICarouselInstance>(null);
 	const qrRef = useRef<any>('');
 
@@ -665,14 +665,15 @@ const ReceiveQR = ({
 							height={qrMaxHeight + 64}
 							loop={false}
 							scrollAnimationDuration={100}
-							panGestureHandlerProps={{ activeOffsetX: [-10, 10] }}
 							testID="ReceiveSlider"
 							renderItem={({ index }): ReactElement => {
 								const Slide = slides[index];
 								return <Slide key={index} />;
 							}}
-							onProgressChange={(_, absoluteProgress): void => {
-								progressValue.value = absoluteProgress;
+							onProgressChange={progress}
+							onConfigurePanGesture={(gesture) => {
+								'worklet';
+								gesture.activeOffsetX([-10, 10]);
 							}}
 						/>
 						<View style={styles.dots} pointerEvents="none">
@@ -680,7 +681,7 @@ const ReceiveQR = ({
 								<Dot
 									key={index}
 									index={index}
-									animValue={progressValue}
+									animValue={progress}
 									length={slides.length}
 								/>
 							))}
