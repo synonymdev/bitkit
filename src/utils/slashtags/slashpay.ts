@@ -2,7 +2,6 @@
 
 import Client from '@synonymdev/web-relay/types/lib/client/index';
 import { default as Ajv } from 'ajv';
-import b4a from 'b4a';
 
 import { SlashPayConfig } from '../../store/types/slashtags';
 
@@ -130,7 +129,7 @@ export default class SlashpayConfig {
  * @returns {Uint8Array}
  */
 function encode(config: SlashPayConfig): Uint8Array {
-	return b4a.from(JSON.stringify(config));
+	return Uint8Array.from(Buffer.from(JSON.stringify(config)));
 }
 
 /**
@@ -142,8 +141,10 @@ function encode(config: SlashPayConfig): Uint8Array {
  */
 function decode(buf: Uint8Array): SlashPayConfig | null {
 	try {
-		return JSON.parse(b4a.toString(buf));
-	} catch {
+		const text = Buffer.from(buf).toString();
+		return JSON.parse(text);
+	} catch (e) {
+		console.log('Error decoding slashpay config', e);
 		return null;
 	}
 }

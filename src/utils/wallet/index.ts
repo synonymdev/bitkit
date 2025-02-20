@@ -356,9 +356,10 @@ const setKeychainSlashtagsPrimaryKey = async (seed: Buffer): Promise<void> => {
 };
 
 export const seedHash = (seed: Buffer): string => {
-	return bitcoin.crypto
-		.sha256(Buffer.concat([BITKIT_WALLET_SEED_HASH_PREFIX, seed]))
-		.toString('hex');
+	const prefix = new Uint8Array(BITKIT_WALLET_SEED_HASH_PREFIX);
+	const seedArray = new Uint8Array(seed);
+	const buffer = Buffer.concat([prefix, seedArray]);
+	return bitcoin.crypto.sha256(buffer).toString('hex');
 };
 
 export const ldkSeed = async (

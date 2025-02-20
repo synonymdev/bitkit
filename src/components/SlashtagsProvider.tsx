@@ -3,7 +3,6 @@ import SlashtagsProfile from '@synonymdev/slashtags-profile';
 import { format, parse } from '@synonymdev/slashtags-url';
 import type { Client as IWebRelayClient } from '@synonymdev/web-relay';
 import { Client, Store } from '@synonymdev/web-relay/lib/client';
-import b4a from 'b4a';
 import React, { ReactElement, useEffect, useState } from 'react';
 import { createContext } from 'react';
 
@@ -59,7 +58,8 @@ export const SlashtagsProvider = ({
 				});
 				return;
 			}
-			const primaryKey = b4a.from(primaryKeyRes.value, 'hex');
+			const primaryKeyBuffer = Buffer.from(primaryKeyRes.value, 'hex');
+			const primaryKey = new Uint8Array(primaryKeyBuffer);
 			const keyPair = KeyChain.createKeyPair(primaryKey);
 
 			webRelayClient = new Client({

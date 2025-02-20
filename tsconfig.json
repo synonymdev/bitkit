@@ -5,8 +5,9 @@
 		"alwaysStrict": true,
 		"forceConsistentCasingInFileNames": true,
 		"lib": ["esnext"],
+		"module": "esnext",
+		"noEmit": true,
 		"noImplicitThis": true,
-		"removeComments": true,
 		"strictNullChecks": true,
 		"strictFunctionTypes": true,
 		"strictPropertyInitialization": true,
@@ -17,6 +18,6 @@
 		// TODO: remove these rules & add types
 		"noImplicitAny": false,
 		"useUnknownInCatchVariables": false,
-		"module": "esnext",
-	}
+	},
+	"exclude": ["**/node_modules", "**/.*/"],
 }

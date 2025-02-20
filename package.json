@@ -19,7 +19,7 @@
     "e2e:test:android-release": "detox test --configuration android.release",
     "lint:check": "biome check ./src/**/*.{js,jsx,ts,tsx}",
     "lint:fix": "biome check --write ./src/**/*.{js,jsx,ts,tsx}",
-    "tsc:check": "tsc -p tsconfig.json --noEmit",
+    "tsc:check": "tsc",
     "clean": "yarn clean:rn && yarn clean:ios && yarn clean:android && yarn start --reset-cache",
     "clean:rn": "watchman watch-del-all && npx del-cli node_modules && yarn && npx del-cli /tmp/metro-*",
     "clean:android": "cd android && npx del-cli build app/build app/release",
@@ -135,7 +135,6 @@
     "@react-native/babel-preset": "^0.76.7",
     "@react-native/metro-config": "^0.76.7",
     "@react-native/typescript-config": "^0.76.7",
-    "@types/b4a": "^1.6.4",
     "@types/bip21": "^2.0.3",
     "@types/jest": "^29.5.12",
     "@types/lodash": "^4.17.0",
@@ -162,7 +161,7 @@
     "reactotron-react-native": "^5.1.10",
     "reactotron-react-native-mmkv": "^0.2.7",
     "reactotron-redux": "^3.1.9",
-    "typescript": "5.4.5"
+    "typescript": "5.7.3"
   },
   "react-native": {
     "net": "react-native-tcp-socket",
