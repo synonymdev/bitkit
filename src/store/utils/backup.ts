@@ -5,6 +5,7 @@ import { IBoostedTransactions } from 'beignet';
 import {
 	__BACKUPS_SERVER_HOST__,
 	__BACKUPS_SERVER_PUBKEY__,
+	__DEFAULT_BITCOIN_NETWORK__,
 } from '../../constants/env';
 import { deepCompareStructure, isObjPartialMatch } from '../../utils/helpers';
 import {
@@ -128,14 +129,21 @@ export const performFullRestoreFromLatestBackup = async (): Promise<
 			serverPubKey: __BACKUPS_SERVER_PUBKEY__,
 		};
 
-		// LDK restore should be performed for all networks
 		for (const network of Object.values(EAvailableNetwork)) {
-			const ldkBackupRes = await performLdkRestore({
-				backupServerDetails,
-				selectedNetwork: network,
-			});
-			if (ldkBackupRes.isErr()) {
-				return err(ldkBackupRes.error.message);
+			// Always run for mainnet, but only run for test networks if in dev mode
+			// or if it matches the default network
+			if (
+				network === EAvailableNetwork.bitcoin ||
+				network === __DEFAULT_BITCOIN_NETWORK__ ||
+				__DEV__
+			) {
+				const ldkBackupRes = await performLdkRestore({
+					backupServerDetails,
+					selectedNetwork: network,
+				});
+				if (ldkBackupRes.isErr()) {
+					return err(ldkBackupRes.error.message);
+				}
 			}
 		}
 
