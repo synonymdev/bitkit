@@ -7,6 +7,7 @@ module.exports = {
 		'./node_modules/react-native-gesture-handler/jestSetup.js',
 		'dotenv/config',
 	],
+	testMatch: ["**/?(*.)+(spec|test).[jt]s?(x)"],
 	moduleNameMapper: {
 		'\\.(jpg|jpeg|svg|png)$': '<rootDir>/__mocks__/fileMock.js',
 	},

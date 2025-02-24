@@ -3,7 +3,7 @@ import ICU from 'i18next-icu';
 import { initReactI18next } from 'react-i18next';
 import * as RNLocalize from 'react-native-localize';
 
-import { __ENABLE_I18NEXT_DEBUGGER__ } from '../../constants/env';
+import { __ENABLE_I18NEXT_DEBUGGER__, __JEST__ } from '../../constants/env';
 import { dispatch } from '../../store/helpers';
 import { updateUi } from '../../store/slices/ui';
 import convert from './convert';
@@ -65,6 +65,10 @@ i18nICU
 		dispatch(updateUi({ timeZone, language: i18nICU.language }));
 	})
 	.then(async () => {
+		if (__JEST__) {
+			return;
+		}
+
 		// we need to load language related polyfill data
 		const lang = i18nICU.language;
 		try {

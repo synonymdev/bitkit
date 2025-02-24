@@ -1,9 +1,8 @@
 import * as bip39 from 'bip39';
-
-// Fix 'getDispatch is not a function'
-import '../src/store/utils/ui';
 import { slashtagsPrimaryKey } from '../src/utils/wallet';
-import { mnemonic } from './utils/dummy-wallet';
+
+const mnemonic =
+	'soon engine text scissors ready twelve paper raven merge skate north park broccoli acquire result broom ozone rigid huge taxi celery history sudden anchor';
 
 describe('Wallet Methods', () => {
 	it('Derive slashtags primay key from the Seed', async () => {
