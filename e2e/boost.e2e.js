@@ -9,19 +9,17 @@ import {
 	launchAndWait,
 	completeOnboarding,
 	bitcoinURL,
-	electrumHost,
-	electrumPort,
 	getSeed,
 	restoreWallet,
 } from './helpers';
-import initWaitForElectrumToSync from '../__tests__/utils/wait-for-electrum';
+import initElectrum from './electrum';
 
 const __DEV__ = process.env.DEV === 'true';
 
 d = checkComplete(['boost-1', 'boost-2']) ? describe.skip : describe;
 
 d('Boost', () => {
-	let waitForElectrum;
+	let electrum;
 	const rpc = new BitcoinJsonRpc(bitcoinURL);
 
 	beforeAll(async () => {
@@ -33,14 +31,11 @@ d('Boost', () => {
 			balance = await rpc.getBalance();
 		}
 
-		waitForElectrum = await initWaitForElectrumToSync(
-			{ host: electrumHost, port: electrumPort },
-			bitcoinURL,
-		);
+		electrum = await initElectrum();
 	});
 
 	afterAll(() => {
-		waitForElectrum?.close();
+		electrum?.stop();
 	});
 
 	beforeEach(async () => {
@@ -69,7 +64,7 @@ d('Boost', () => {
 		wAddress = wAddress.replace('bitcoin:', '');
 		await rpc.sendToAddress(wAddress, '0.001');
 		await rpc.generateToAddress(1, await rpc.getNewAddress());
-		await waitForElectrum();
+		await electrum?.waitForSync();
 		await waitFor(element(by.id('NewTxPrompt')))
 			.toBeVisible()
 			.withTimeout(10000);
@@ -180,7 +175,7 @@ d('Boost', () => {
 		wAddress = wAddress.replace('bitcoin:', '');
 		await rpc.sendToAddress(wAddress, '0.001');
 		await rpc.generateToAddress(1, await rpc.getNewAddress());
-		await waitForElectrum();
+		await electrum?.waitForSync();
 		await waitFor(element(by.id('NewTxPrompt')))
 			.toBeVisible()
 			.withTimeout(10000);

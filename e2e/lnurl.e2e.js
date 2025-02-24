@@ -9,11 +9,9 @@ import {
 	launchAndWait,
 	completeOnboarding,
 	bitcoinURL,
-	electrumHost,
-	electrumPort,
 	waitForElementAttribute,
 } from './helpers';
-import initWaitForElectrumToSync from '../__tests__/utils/wait-for-electrum';
+import initElectrum from './electrum';
 
 const __DEV__ = process.env.DEV === 'true';
 
@@ -40,7 +38,7 @@ const waitForEvent = (lnurl, name) => {
 };
 
 d('LNURL', () => {
-	let waitForElectrum;
+	let electrum;
 	let lnurl;
 	const rpc = new BitcoinJsonRpc(bitcoinURL);
 
@@ -53,10 +51,7 @@ d('LNURL', () => {
 			balance = await rpc.getBalance();
 		}
 
-		waitForElectrum = await initWaitForElectrumToSync(
-			{ host: electrumHost, port: electrumPort },
-			bitcoinURL,
-		);
+		electrum = await initElectrum();
 
 		lnurl = LNURL.createServer({
 			host: 'localhost',
@@ -72,14 +67,14 @@ d('LNURL', () => {
 	});
 
 	afterAll(async () => {
-		waitForElectrum?.close();
+		electrum?.stop();
 		lnurl.app.webServer.close();
 		await sleep(1000);
 	});
 
 	beforeEach(async () => {
 		await launchAndWait();
-		await waitForElectrum();
+		await electrum?.waitForSync();
 	});
 
 	it('Can process lnurl channel, withdraw, pay and login requests', async () => {
@@ -118,7 +113,7 @@ d('LNURL', () => {
 		const { address: lndAddress } = await lnd.newAddress();
 		await rpc.sendToAddress(lndAddress, '1');
 		await rpc.generateToAddress(1, await rpc.getNewAddress());
-		await waitForElectrum();
+		await electrum?.waitForSync();
 
 		// test lnurl-channel
 		const channelReq = await lnurl.generateNewUrl('channelRequest', {
@@ -152,7 +147,7 @@ d('LNURL', () => {
 		}
 
 		await rpc.generateToAddress(6, await rpc.getNewAddress());
-		await waitForElectrum();
+		await electrum?.waitForSync();
 
 		// wait for channel to be active
 		n = 0;

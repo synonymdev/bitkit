@@ -4,14 +4,12 @@ import { device } from 'detox';
 import jestExpect from 'expect';
 import { encode } from 'bip21';
 
-import initWaitForElectrumToSync from '../__tests__/utils/wait-for-electrum';
+import initElectrum from './electrum';
 import {
 	bitcoinURL,
 	lndConfig,
 	checkComplete,
 	completeOnboarding,
-	electrumHost,
-	electrumPort,
 	launchAndWait,
 	markComplete,
 	sleep,
@@ -34,7 +32,7 @@ const enterAddress = async (address) => {
 };
 
 d('Send', () => {
-	let waitForElectrum;
+	let electrum;
 	const rpc = new BitcoinJsonRpc(bitcoinURL);
 
 	beforeAll(async () => {
@@ -46,21 +44,18 @@ d('Send', () => {
 			balance = await rpc.getBalance();
 		}
 
-		waitForElectrum = await initWaitForElectrumToSync(
-			{ host: electrumHost, port: electrumPort },
-			bitcoinURL,
-		);
+		electrum = await initElectrum();
 	});
 
 	beforeEach(async () => {
 		await device.launchApp({ delete: true });
 		await completeOnboarding();
 		await launchAndWait();
-		await waitForElectrum();
+		await electrum?.waitForSync();
 	});
 
 	afterAll(() => {
-		waitForElectrum?.close();
+		electrum?.stop();
 	});
 
 	it('Validates payment data in the manual input', async () => {
@@ -186,7 +181,7 @@ d('Send', () => {
 		const { address: lndAddress } = await lnd.newAddress();
 		await rpc.sendToAddress(lndAddress, '1');
 		await rpc.generateToAddress(1, await rpc.getNewAddress());
-		await waitForElectrum();
+		await electrum?.waitForSync();
 		const { identityPubkey: lndNodeID } = await lnd.getInfo();
 
 		// get LDK Node id
@@ -225,7 +220,7 @@ d('Send', () => {
 			private: true,
 		});
 		await rpc.generateToAddress(6, await rpc.getNewAddress());
-		await waitForElectrum();
+		await electrum?.waitForSync();
 
 		// wait for channel to be active
 		await waitForActiveChannel(lnd, ldkNodeId);

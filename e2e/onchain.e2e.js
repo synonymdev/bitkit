@@ -7,15 +7,13 @@ import {
 	launchAndWait,
 	completeOnboarding,
 	bitcoinURL,
-	electrumHost,
-	electrumPort,
 } from './helpers';
-import initWaitForElectrumToSync from '../__tests__/utils/wait-for-electrum';
+import initElectrum from './electrum';
 
 d = checkComplete(['onchain-1', 'onchain-2']) ? describe.skip : describe;
 
 d('Onchain', () => {
-	let waitForElectrum;
+	let electrum;
 	const rpc = new BitcoinJsonRpc(bitcoinURL);
 
 	beforeAll(async () => {
@@ -27,21 +25,18 @@ d('Onchain', () => {
 			balance = await rpc.getBalance();
 		}
 
-		waitForElectrum = await initWaitForElectrumToSync(
-			{ host: electrumHost, port: electrumPort },
-			bitcoinURL,
-		);
+		electrum = await initElectrum();
 
 		await completeOnboarding();
 	});
 
 	beforeEach(async () => {
 		await launchAndWait();
-		await waitForElectrum();
+		await electrum?.waitForSync();
 	});
 
 	afterEach(() => {
-		waitForElectrum?.close();
+		electrum?.stop();
 	});
 
 	d('Receive and Send', () => {
@@ -76,7 +71,7 @@ d('Onchain', () => {
 
 				await rpc.sendToAddress(wAddress, '1');
 				await rpc.generateToAddress(1, await rpc.getNewAddress());
-				await waitForElectrum();
+				await electrum?.waitForSync();
 
 				await waitFor(element(by.id('NewTxPrompt')))
 					.toBeVisible()
@@ -136,7 +131,7 @@ d('Onchain', () => {
 			await element(by.id('Close')).tap();
 
 			await rpc.generateToAddress(1, await rpc.getNewAddress());
-			await waitForElectrum();
+			await electrum?.waitForSync();
 			await sleep(1000); // animation
 
 			// balance should be 0
@@ -240,7 +235,7 @@ d('Onchain', () => {
 
 			await rpc.sendToAddress(wAddress, '1');
 			// await rpc.generateToAddress(1, await rpc.getNewAddress());
-			// await waitForElectrum();
+			// await electrum?.waitForSync();
 
 			await waitFor(element(by.id('NewTxPrompt')))
 				.toBeVisible()

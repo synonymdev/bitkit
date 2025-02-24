@@ -5944,7 +5944,6 @@ __metadata:
     bitcoinjs-lib: 6.1.7
     color: 4.2.3
     detox: 20.23.1
-    electrum-client: "BlueWallet/rn-electrum-client#47acb51149e97fab249c3f8a314f708dbee4fb6e"
     events: 3.3.0
     fuzzysort: 1.9.0
     husky: ^9.1.5
@@ -6007,6 +6006,7 @@ __metadata:
     redux-logger: 3.0.6
     redux-persist: 6.0.0
     rn-android-keyboard-adjust: 2.1.2
+    rn-electrum-client: ^0.0.21
     rn-qr-generator: 1.4.3
     sodium-react-native-direct: 0.4.4
     styled-components: 5.3.11
@@ -7672,13 +7672,6 @@ __metadata:
   version: 1.5.102
   resolution: "electron-to-chromium@npm:1.5.102"
   checksum: b16781303a09a7dcbede15cba4ed47e34c867070575e4b2045449fd5627395dcd6dee32028f7b9fc92081eac636771c8accf8c078fcbc0fed79dc14125ec0f7f
-  languageName: node
-  linkType: hard
-
-"electrum-client@BlueWallet/rn-electrum-client#47acb51149e97fab249c3f8a314f708dbee4fb6e":
-  version: 2.0.0
-  resolution: "electrum-client@https://github.com/BlueWallet/rn-electrum-client.git#commit=47acb51149e97fab249c3f8a314f708dbee4fb6e"
-  checksum: 227ff604773a9acaf441c85190344be2bb0c8bd5a38a97b0e07c3018898a48d8516de8215ddbda4e44d1c6729561758fb71279568a80fdb43150437290a34872
   languageName: node
   linkType: hard
 
@@ -13571,7 +13564,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"rn-electrum-client@npm:0.0.21":
+"rn-electrum-client@npm:0.0.21, rn-electrum-client@npm:^0.0.21":
   version: 0.0.21
   resolution: "rn-electrum-client@npm:0.0.21"
   checksum: 7aeb73f36fb2133d0bed77c6a907a8f8cc508913ff90dcb5494db067db63df9a747e978592df2ca06c0077ab9b39822d8a0bc7fdf52e4fe6ee83c546878cbbbf

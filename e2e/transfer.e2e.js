@@ -2,14 +2,12 @@ import jestExpect from 'expect';
 import createLnRpc from '@radar/lnrpc';
 import BitcoinJsonRpc from 'bitcoin-json-rpc';
 
-import initWaitForElectrumToSync from '../__tests__/utils/wait-for-electrum';
+import initElectrum from './electrum';
 import {
 	bitcoinURL,
 	lndConfig,
 	checkComplete,
 	completeOnboarding,
-	electrumHost,
-	electrumPort,
 	launchAndWait,
 	markComplete,
 	sleep,
@@ -22,7 +20,7 @@ import {
 d = checkComplete(['transfer-1', 'transfer-2']) ? describe.skip : describe;
 
 d('Transfer', () => {
-	let waitForElectrum;
+	let electrum;
 	const rpc = new BitcoinJsonRpc(bitcoinURL);
 
 	beforeAll(async () => {
@@ -34,21 +32,18 @@ d('Transfer', () => {
 			balance = await rpc.getBalance();
 		}
 
-		waitForElectrum = await initWaitForElectrumToSync(
-			{ host: electrumHost, port: electrumPort },
-			bitcoinURL,
-		);
+		electrum = await initElectrum();
 	});
 
 	beforeEach(async () => {
 		await device.launchApp({ delete: true });
 		await completeOnboarding();
 		await launchAndWait();
-		await waitForElectrum();
+		await electrum?.waitForSync();
 	});
 
 	afterEach(() => {
-		waitForElectrum?.close();
+		electrum?.stop();
 	});
 
 	// Test Plan
@@ -77,7 +72,7 @@ d('Transfer', () => {
 
 		await rpc.sendToAddress(wAddress, '0.01');
 		await rpc.generateToAddress(1, await rpc.getNewAddress());
-		await waitForElectrum();
+		await electrum?.waitForSync();
 
 		await waitFor(element(by.id('NewTxPrompt')))
 			.toBeVisible()

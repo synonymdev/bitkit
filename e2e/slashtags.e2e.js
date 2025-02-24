@@ -7,12 +7,10 @@ import {
 	launchAndWait,
 	markComplete,
 	sleep,
-	electrumHost,
-	electrumPort,
 	getSeed,
 	restoreWallet,
 } from './helpers';
-import initWaitForElectrumToSync from '../__tests__/utils/wait-for-electrum';
+import initElectrum from './electrum';
 
 const d = checkComplete('slash-1') ? describe.skip : describe;
 
@@ -33,7 +31,7 @@ const hal = {
 };
 
 d('Profile and Contacts', () => {
-	let waitForElectrum;
+	let electrum;
 	const rpc = new BitcoinJsonRpc(bitcoinURL);
 
 	beforeAll(async () => {
@@ -47,19 +45,16 @@ d('Profile and Contacts', () => {
 			balance = await rpc.getBalance();
 		}
 
-		waitForElectrum = await initWaitForElectrumToSync(
-			{ host: electrumHost, port: electrumPort },
-			bitcoinURL,
-		);
+		electrum = await initElectrum();
 	});
 
 	beforeEach(async () => {
 		await launchAndWait();
-		await waitForElectrum();
+		await electrum?.waitForSync();
 	});
 
 	afterEach(() => {
-		waitForElectrum?.close();
+		electrum?.stop();
 	});
 
 	d('Slashtags', () => {
@@ -206,7 +201,7 @@ d('Profile and Contacts', () => {
 			wAddress = wAddress.replace('bitcoin:', '');
 			await rpc.sendToAddress(wAddress, '1');
 			await rpc.generateToAddress(1, await rpc.getNewAddress());
-			await waitForElectrum();
+			await electrum?.waitForSync();
 			await waitFor(element(by.id('NewTxPrompt')))
 				.toBeVisible()
 				.withTimeout(10000);

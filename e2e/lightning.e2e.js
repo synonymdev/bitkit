@@ -2,14 +2,12 @@ import createLndRpc from '@radar/lnrpc';
 import BitcoinJsonRpc from 'bitcoin-json-rpc';
 import { device } from 'detox';
 
-import initWaitForElectrumToSync from '../__tests__/utils/wait-for-electrum';
+import initElectrum from './electrum';
 import {
 	bitcoinURL,
 	lndConfig,
 	checkComplete,
 	completeOnboarding,
-	electrumHost,
-	electrumPort,
 	launchAndWait,
 	markComplete,
 	sleep,
@@ -22,7 +20,7 @@ import {
 d = checkComplete('lighting-1') ? describe.skip : describe;
 
 d('Lightning', () => {
-	let waitForElectrum;
+	let electrum;
 	const rpc = new BitcoinJsonRpc(bitcoinURL);
 
 	beforeAll(async () => {
@@ -34,21 +32,18 @@ d('Lightning', () => {
 			balance = await rpc.getBalance();
 		}
 
-		waitForElectrum = await initWaitForElectrumToSync(
-			{ host: electrumHost, port: electrumPort },
-			bitcoinURL,
-		);
+		electrum = await initElectrum();
 
 		await completeOnboarding();
 	});
 
 	beforeEach(async () => {
 		await launchAndWait();
-		await waitForElectrum();
+		await electrum?.waitForSync();
 	});
 
 	afterEach(() => {
-		waitForElectrum?.close();
+		electrum?.stop();
 	});
 
 	d('Receive and Send', () => {
@@ -71,7 +66,7 @@ d('Lightning', () => {
 			const { address: lndAddress } = await lnd.newAddress();
 			await rpc.sendToAddress(lndAddress, '1');
 			await rpc.generateToAddress(1, await rpc.getNewAddress());
-			await waitForElectrum();
+			await electrum?.waitForSync();
 			const { identityPubkey: lndNodeID } = await lnd.getInfo();
 
 			// get LDK Node id
@@ -110,7 +105,7 @@ d('Lightning', () => {
 				private: true,
 			});
 			await rpc.generateToAddress(6, await rpc.getNewAddress());
-			await waitForElectrum();
+			await electrum?.waitForSync();
 
 			// wait for channel to be active
 			await waitForActiveChannel(lnd, ldkNodeId);
@@ -353,7 +348,7 @@ d('Lightning', () => {
 			}
 
 			await rpc.generateToAddress(6, await rpc.getNewAddress());
-			await waitForElectrum();
+			await electrum?.waitForSync();
 			await expect(element(by.id('Channel')).atIndex(0)).not.toExist();
 			await element(by.id('NavigationBack')).atIndex(0).tap();
 			await element(by.id('NavigationClose')).atIndex(0).tap();

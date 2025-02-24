@@ -8,10 +8,8 @@ import {
 	launchAndWait,
 	completeOnboarding,
 	bitcoinURL,
-	electrumHost,
-	electrumPort,
 } from './helpers';
-import initWaitForElectrumToSync from '../__tests__/utils/wait-for-electrum';
+import initElectrum from './electrum';
 
 const d = checkComplete(['security-1']) ? describe.skip : describe;
 
@@ -28,7 +26,7 @@ const waitForPinScreen = async () => {
 };
 
 d('Settings Security And Privacy', () => {
-	let waitForElectrum;
+	let electrum;
 	const rpc = new BitcoinJsonRpc(bitcoinURL);
 
 	beforeAll(async () => {
@@ -40,10 +38,7 @@ d('Settings Security And Privacy', () => {
 			balance = await rpc.getBalance();
 		}
 
-		waitForElectrum = await initWaitForElectrumToSync(
-			{ host: electrumHost, port: electrumPort },
-			bitcoinURL,
-		);
+		electrum = await initElectrum();
 
 		await completeOnboarding();
 	});
@@ -53,7 +48,7 @@ d('Settings Security And Privacy', () => {
 	});
 
 	afterEach(() => {
-		waitForElectrum?.close();
+		electrum?.stop();
 	});
 
 	it('Can setup PIN and Biometrics', async () => {
@@ -135,7 +130,7 @@ d('Settings Security And Privacy', () => {
 		wAddress = wAddress.replace('bitcoin:', '');
 		await rpc.sendToAddress(wAddress, '1');
 		await rpc.generateToAddress(1, await rpc.getNewAddress());
-		await waitForElectrum();
+		await electrum?.waitForSync();
 		await waitFor(element(by.id('NewTxPrompt')))
 			.toBeVisible()
 			.withTimeout(10000);

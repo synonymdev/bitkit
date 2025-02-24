@@ -7,17 +7,15 @@ import {
 	launchAndWait,
 	completeOnboarding,
 	bitcoinURL,
-	electrumHost,
-	electrumPort,
 	getSeed,
 	restoreWallet,
 } from './helpers';
-import initWaitForElectrumToSync from '../__tests__/utils/wait-for-electrum';
+import initElectrum from './electrum';
 
 d = checkComplete('backup-1') ? describe.skip : describe;
 
 d('Backup', () => {
-	let waitForElectrum;
+	let electrum;
 	const rpc = new BitcoinJsonRpc(bitcoinURL);
 
 	beforeAll(async () => {
@@ -31,19 +29,16 @@ d('Backup', () => {
 			balance = await rpc.getBalance();
 		}
 
-		waitForElectrum = await initWaitForElectrumToSync(
-			{ host: electrumHost, port: electrumPort },
-			bitcoinURL,
-		);
+		electrum = await initElectrum();
 	});
 
 	beforeEach(async () => {
 		await launchAndWait();
-		await waitForElectrum();
+		await electrum?.waitForSync();
 	});
 
 	afterEach(() => {
-		waitForElectrum?.close();
+		electrum?.stop();
 	});
 
 	it('Can backup metadata, widget, settings and restore them', async () => {
@@ -68,7 +63,7 @@ d('Backup', () => {
 
 		await rpc.sendToAddress(wAddress, '1');
 		await rpc.generateToAddress(1, await rpc.getNewAddress());
-		await waitForElectrum();
+		await electrum?.waitForSync();
 
 		await waitFor(element(by.id('NewTxPrompt')))
 			.toBeVisible()
