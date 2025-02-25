@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { __E2E__ } from '../constants/env';
 import { i18nTime } from '../utils/i18n';
 
 type TBlocksWidgetData = {
@@ -131,6 +132,11 @@ const useBlocksWidget = (): TWidgetState => {
 		};
 
 		fetchData();
+
+		// Don't start polling in E2E tests
+		if (__E2E__) {
+			return;
+		}
 
 		const interval = setInterval(fetchData, REFRESH_INTERVAL);
 

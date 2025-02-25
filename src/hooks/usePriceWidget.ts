@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { __E2E__ } from '../constants/env';
 import { tradingPairs } from '../constants/widgets';
 import { TGraphPeriod } from '../store/types/widgets';
 import { IThemeColors } from '../styles/themes';
@@ -154,6 +155,11 @@ const usePriceWidget = (
 				});
 				const data = await Promise.all(promises);
 				setState({ status: EWidgetStatus.Ready, data });
+
+				// Don't start polling in E2E tests
+				if (__E2E__) {
+					return;
+				}
 
 				// Start polling for updates
 				intervalId = setInterval(async () => {

@@ -11,6 +11,7 @@ import {
 	electrumPort,
 	getSeed,
 	restoreWallet,
+	waitForBackup,
 } from './helpers';
 import initWaitForElectrumToSync from '../__tests__/utils/wait-for-electrum';
 
@@ -95,7 +96,7 @@ d('Backup', () => {
 		await element(by.id('NavigationClose')).atIndex(0).tap();
 
 		// remove 2 default widgets, leave PriceWidget
-		await element(by.id('WalletsScrollView')).scroll(200, 'down', NaN, 0.85);
+		await element(by.id('WalletsScrollView')).scroll(200, 'down', 0);
 		await element(by.id('WidgetsEdit')).tap();
 		for (const w of ['NewsWidget', 'BlocksWidget']) {
 			await element(by.id('WidgetActionDelete').withAncestor(by.id(w))).tap();
@@ -107,6 +108,7 @@ d('Backup', () => {
 
 		// restore wallet
 		const seed = await getSeed();
+		await waitForBackup();
 		await restoreWallet(seed);
 
 		// check settings
@@ -124,7 +126,7 @@ d('Backup', () => {
 		await sleep(200); // animation
 
 		// check widgets
-		await element(by.id('WalletsScrollView')).scroll(300, 'down', NaN, 0.85);
+		await element(by.id('WalletsScrollView')).scroll(300, 'down', 0);
 		await expect(element(by.id('PriceWidget'))).toExist();
 		await expect(element(by.id('NewsWidget'))).not.toExist();
 		await expect(element(by.id('BlocksWidget'))).not.toExist();

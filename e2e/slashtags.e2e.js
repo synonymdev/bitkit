@@ -11,6 +11,7 @@ import {
 	electrumPort,
 	getSeed,
 	restoreWallet,
+	waitForBackup,
 } from './helpers';
 import initWaitForElectrumToSync from '../__tests__/utils/wait-for-electrum';
 
@@ -227,6 +228,7 @@ d('Profile and Contacts', () => {
 
 			// WIPE APP AND RESTORE FROM THE SEED
 			const seed = await getSeed();
+			await waitForBackup();
 			await restoreWallet(seed);
 
 			// CHECK PROFILE, CONTACTS, TRANSACTION

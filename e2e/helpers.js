@@ -23,7 +23,7 @@ export const checkComplete = (name) => {
 	}
 
 	for (const n of name) {
-		if (!fs.existsSync(path.join(LOCK_PATH, 'lock-' + n))) {
+		if (!fs.existsSync(path.join(LOCK_PATH, `lock-${n}`))) {
 			return false;
 		}
 	}
@@ -38,7 +38,7 @@ export const markComplete = (name) => {
 	}
 
 	fs.mkdirSync(LOCK_PATH, { recursive: true });
-	fs.writeFileSync(path.join(LOCK_PATH, 'lock-' + name), '1');
+	fs.writeFileSync(path.join(LOCK_PATH, `lock-${name}`), '1');
 };
 
 export const sleep = (ms) => {
@@ -63,15 +63,13 @@ export async function waitForElementAttribute(
 		if (attributes[attribute] === expectedValue) {
 			console.log(`${elementId} has attribute ${attribute}=${expectedValue}`);
 			break;
-		} else {
-			console.log(
-				`Waiting for ${elementId} to have attribute ${attribute}=${expectedValue}...`,
-			);
-			await new Promise((resolve) => {
-				setTimeout(resolve, 1000);
-			});
-			timeout--;
 		}
+
+		console.log(
+			`Waiting for ${elementId} to have attribute ${attribute}=${expectedValue}...`,
+		);
+		await sleep(1000);
+		timeout--;
 	}
 }
 
@@ -102,7 +100,7 @@ export const completeOnboarding = async () => {
 			await element(by.id('WalletOnboardingClose')).tap();
 			await sleep(3000); // wait for redux-persist to save state
 			return;
-		} catch (e) {}
+		} catch (_e) {}
 	}
 
 	throw new Error('Tapping "WalletOnboardingClose" timeout');
@@ -124,9 +122,7 @@ export const launchAndWait = async () => {
 			await element(by.id('SuggestionsLabel')).tap();
 			await sleep(1000);
 			break;
-		} catch (e) {
-			continue;
-		}
+		} catch (_e) {}
 	}
 };
 
@@ -246,6 +242,15 @@ export const restoreWallet = async (seed, passphrase) => {
 		try {
 			await element(by.id('SuggestionsLabel')).tap();
 			break;
-		} catch (e) {}
+		} catch (_e) {}
 	}
+};
+
+export const waitForBackup = async () => {
+	await element(by.id('Settings')).tap();
+	await element(by.id('BackupSettings')).tap();
+	await waitFor(element(by.id('AllSynced')))
+		.toBeVisible()
+		.withTimeout(40000);
+	await element(by.id('NavigationClose')).atIndex(0).tap();
 };

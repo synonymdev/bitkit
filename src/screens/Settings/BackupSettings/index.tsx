@@ -4,6 +4,7 @@ import { StyleSheet, View } from 'react-native';
 
 import { EItemType, IListData } from '../../../components/List';
 import Button from '../../../components/buttons/Button';
+import { __E2E__ } from '../../../constants/env';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 import { SettingsScreenProps } from '../../../navigation/types';
 import { backupSelector } from '../../../store/reselect/backup';
@@ -151,7 +152,7 @@ const BackupSettings = ({
 		}, channels[0][1]);
 	}, [lightningBackup]);
 
-	const categories: Array<TBackupCategory> = [
+	const categories: TBackupCategory[] = [
 		{
 			Icon: NoteIcon,
 			title: t('backup.category_connection_receipts'),
@@ -215,6 +216,10 @@ const BackupSettings = ({
 		});
 	}
 
+	const allSynced = categories.every(
+		(c) => c.status.synced >= c.status.required,
+	);
+
 	const settingsListData: IListData[] = useMemo(
 		() => [
 			{
@@ -269,7 +274,13 @@ const BackupSettings = ({
 				listData={settingsListData}
 				fullHeight={false}
 			/>
+
 			<ScrollView style={styles.statusRoot}>
+				{__E2E__ && allSynced && (
+					<Caption13Up style={styles.caption} color="green" testID="AllSynced">
+						All Synced
+					</Caption13Up>
+				)}
 				<Caption13Up style={styles.caption} color="secondary">
 					{t('backup.latest')}
 				</Caption13Up>

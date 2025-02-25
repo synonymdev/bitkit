@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { __E2E__ } from '../constants/env';
 import { timeAgo } from '../utils/helpers';
 
 type TArticle = {
@@ -94,6 +95,11 @@ const useNewsWidget = (): TWidgetState => {
 		};
 
 		fetchData();
+
+		// Don't start polling in E2E tests
+		if (__E2E__) {
+			return;
+		}
 
 		const interval = setInterval(fetchData, REFRESH_INTERVAL);
 

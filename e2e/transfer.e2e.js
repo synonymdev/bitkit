@@ -17,6 +17,7 @@ import {
 	waitForPeerConnection,
 	getSeed,
 	restoreWallet,
+	waitForBackup,
 } from './helpers';
 
 d = checkComplete(['transfer-1', 'transfer-2']) ? describe.skip : describe;
@@ -104,7 +105,7 @@ d('Transfer', () => {
 		await expect(element(by.text('100 000'))).toBeVisible();
 		await element(by.id('SpendingAdvancedDefault')).tap();
 		await element(by.id('SpendingAdvancedNumberField')).tap();
-		let { label } = await element(
+		const { label } = await element(
 			by.id('SpendingAdvancedNumberField'),
 		).getAttributes();
 		const lspBalance = Number.parseInt(label, 10);
@@ -211,13 +212,14 @@ d('Transfer', () => {
 		await element(by.id('NavigationClose')).tap();
 
 		const seed = await getSeed();
+		await waitForBackup();
 		await restoreWallet(seed);
 
 		// check transfer card
 		await expect(element(by.id('Suggestion-lightningSettingUp'))).toBeVisible();
 
 		// check activity after restore
-		await element(by.id('WalletsScrollView')).scrollTo('bottom', NaN, 0.85);
+		await element(by.id('WalletsScrollView')).scrollTo('bottom', 0);
 		await element(by.id('ActivityShort-1')).tap();
 		await expect(element(by.id('StatusTransfer'))).toBeVisible();
 
@@ -234,10 +236,11 @@ d('Transfer', () => {
 			.withTimeout(30000);
 
 		// reset & restore again
+		await waitForBackup();
 		await restoreWallet(seed);
 
 		// check activity after restore
-		await element(by.id('WalletsScrollView')).scrollTo('bottom', NaN, 0.85);
+		await element(by.id('WalletsScrollView')).scrollTo('bottom', 0);
 		await expect(element(by.id('BoostingIcon'))).toBeVisible();
 		await element(by.id('ActivityShort-1')).tap();
 		await expect(element(by.id('StatusBoosting'))).toBeVisible();
@@ -275,9 +278,7 @@ d('Transfer', () => {
 		await waitFor(element(by.id('LDKNodeID')))
 			.toBeVisible()
 			.withTimeout(60000);
-		let { label: ldkNodeId } = await element(
-			by.id('LDKNodeID'),
-		).getAttributes();
+		const { label: ldkNodeId } = await element(by.id('LDKNodeID')).getAttributes();
 		await element(by.id('NavigationClose')).tap();
 
 		// Get LND node id
@@ -331,12 +332,10 @@ d('Transfer', () => {
 		await expect(element(by.id('Suggestion-lightningSettingUp'))).toBeVisible();
 
 		// check activity
-		await element(by.id('WalletsScrollView')).scrollTo('bottom', NaN, 0.85);
+		await element(by.id('WalletsScrollView')).scrollTo('bottom', 0);
 		await expect(element(by.text('From Savings (±30m)'))).toBeVisible();
 		await element(by.id('ActivityShort-1')).tap();
 		await expect(element(by.text('Transfer (±30m)'))).toBeVisible();
-		await element(by.id('NavigationClose')).tap();
-		await element(by.id('WalletsScrollView')).scrollTo('top', NaN, 0.85);
 
 		// Mine 3 blocks
 		await rpc.generateToAddress(3, await rpc.getNewAddress());
@@ -361,7 +360,7 @@ d('Transfer', () => {
 		await expect(
 			element(by.id('MoneyText').withAncestor(by.id('TotalSize'))),
 		).toHaveText('20 000');
-		await element(by.id('ChannelScrollView')).scrollTo('bottom', NaN, 0.1);
+		await element(by.id('ChannelScrollView')).scrollTo('bottom', Number.NaN, 0.1);
 		await expect(element(by.id('IsUsableYes'))).toBeVisible();
 		await element(by.id('NavigationClose')).atIndex(0).tap();
 

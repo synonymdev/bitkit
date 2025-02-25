@@ -198,7 +198,7 @@ d('Send', () => {
 		await waitFor(element(by.id('LDKNodeID')))
 			.toBeVisible()
 			.withTimeout(60000);
-		let { label: ldkNodeId } = await element(
+		const { label: ldkNodeId } = await element(
 			by.id('LDKNodeID'),
 		).getAttributes();
 		await element(by.id('NavigationBack')).atIndex(0).tap();
@@ -238,7 +238,7 @@ d('Send', () => {
 		await expect(
 			element(by.id('MoneyText').withAncestor(by.id('TotalSize'))),
 		).toHaveText('100 000');
-		await element(by.id('ChannelScrollView')).scrollTo('bottom', NaN, 0.1);
+		await element(by.id('ChannelScrollView')).scrollTo('bottom', Number.NaN, 0.1);
 		await expect(element(by.id('IsUsableYes'))).toBeVisible();
 		await element(by.id('NavigationClose')).atIndex(0).tap();
 		await sleep(500);

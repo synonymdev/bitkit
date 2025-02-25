@@ -104,7 +104,7 @@ d('LNURL', () => {
 		await waitFor(element(by.id('LDKNodeID')))
 			.toBeVisible()
 			.withTimeout(60000);
-		let { label: ldkNodeID } = await element(
+		const { label: ldkNodeID } = await element(
 			by.id('LDKNodeID'),
 		).getAttributes();
 		await element(by.id('NavigationClose')).atIndex(0).tap();
@@ -200,7 +200,7 @@ d('LNURL', () => {
 			.withTimeout(10000);
 		await element(by.id('Close')).tap();
 		// check if comment is displayed
-		await element(by.id('WalletsScrollView')).scrollTo('bottom', NaN, 0.85);
+		await element(by.id('WalletsScrollView')).scrollTo('bottom', 0);
 		await element(by.id('ActivityShort-1')).tap();
 		await expect(element(by.id('InvoiceComment'))).toHaveText('test comment');
 		await element(by.id('NavigationClose')).tap();
