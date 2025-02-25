@@ -1,0 +1,62 @@
+diff --git a/node_modules/@synonymdev/react-native-ldk/android/src/main/java/com/reactnativeldk/Helpers.kt b/node_modules/@synonymdev/react-native-ldk/android/src/main/java/com/reactnativeldk/Helpers.kt
+index 8d2e618..8c374ab 100644
+--- a/node_modules/@synonymdev/react-native-ldk/android/src/main/java/com/reactnativeldk/Helpers.kt
++++ b/node_modules/@synonymdev/react-native-ldk/android/src/main/java/com/reactnativeldk/Helpers.kt
+@@ -530,8 +530,8 @@ fun currencyString(currency: Currency): String {
+     }
+ }
+ 
+-fun mergeObj(obj1: JSONObject, obj2: HashMap<String, Any>): HashMap<String, Any> {
+-    val newObj = HashMap<String, Any>()
++fun mergeObj(obj1: JSONObject, obj2: HashMap<String, Any?>): HashMap<String, Any?> {
++    val newObj = HashMap<String, Any?>()
+ 
+     obj1.keys().forEach { key ->
+         newObj[key] = obj1[key]
+diff --git a/node_modules/@synonymdev/react-native-ldk/android/src/main/java/com/reactnativeldk/classes/LdkChannelManagerPersister.kt b/node_modules/@synonymdev/react-native-ldk/android/src/main/java/com/reactnativeldk/classes/LdkChannelManagerPersister.kt
+index 71ecb7a..2dc12b6 100644
+--- a/node_modules/@synonymdev/react-native-ldk/android/src/main/java/com/reactnativeldk/classes/LdkChannelManagerPersister.kt
++++ b/node_modules/@synonymdev/react-native-ldk/android/src/main/java/com/reactnativeldk/classes/LdkChannelManagerPersister.kt
+@@ -254,7 +254,7 @@ class LdkChannelManagerPersister: ChannelManagerConstructor.EventHandler {
+             return
+         }
+ 
+-        var payments: Array<HashMap<String, Any>> = arrayOf()
++        var payments: Array<HashMap<String, Any?>> = arrayOf()
+         var paymentReplaced = false
+ 
+         try {
+@@ -275,7 +275,7 @@ class LdkChannelManagerPersister: ChannelManagerConstructor.EventHandler {
+                         continue
+                     }
+ 
+-                    val map = HashMap<String, Any>()
++                    val map = HashMap<String, Any?>()
+                     for (key in existingPayment.keys()) {
+                         map[key] = existingPayments.getJSONObject(i).get(key)
+                     }
+@@ -296,13 +296,13 @@ class LdkChannelManagerPersister: ChannelManagerConstructor.EventHandler {
+         File(LdkModule.accountStoragePath + "/" + LdkFileNames.PaymentsClaimed.fileName).writeText(JSONArray(payments).toString())
+     }
+ 
+-    fun persistPaymentSent(payment: HashMap<String, Any>) {
++    fun persistPaymentSent(payment: HashMap<String, Any?>) {
+         if (LdkModule.accountStoragePath == "") {
+             LdkEventEmitter.send(EventTypes.native_log, "Error. Failed to persist sent payment to disk (No set storage)")
+             return
+         }
+ 
+-        var payments: Array<HashMap<String, Any>> = arrayOf()
++        var payments: Array<HashMap<String, Any?>> = arrayOf()
+         var paymentReplaced = false
+ 
+         try {
+@@ -319,7 +319,7 @@ class LdkChannelManagerPersister: ChannelManagerConstructor.EventHandler {
+                         continue
+                     }
+ 
+-                    val map = HashMap<String, Any>()
++                    val map = HashMap<String, Any?>()
+                     for (key in existingPayment.keys()) {
+                         map[key] = existingPayment.get(key)
+                     }

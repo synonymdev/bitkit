@@ -85,8 +85,6 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 144
         versionName "1.0.8"
-        multiDexEnabled true
-        missingDimensionStrategy 'react-native-camera', 'general'
         testBuildType System.getProperty('testBuildType', 'debug')
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
@@ -149,7 +147,6 @@ dependencies {
     // The version of react-native is set by the React Native Gradle Plugin
     implementation("com.facebook.react:react-android")
     implementation files("../../node_modules/@synonymdev/react-native-ldk/android/libs/LDK-release.aar")
-    implementation "androidx.multidex:multidex:2.0.1"
 
     if (hermesEnabled.toBoolean()) {
         implementation("com.facebook.react:hermes-android")
