@@ -23,10 +23,6 @@ export const widgetsOrderSelector = createSelector(
 	(widgets) => widgets.sortOrder,
 );
 
-export const hasWidgetsSelector = (state: RootState): boolean => {
-	return Object.keys(state.widgets.widgets).length > 0;
-};
-
 export const onboardedWidgetsSelector = (state: RootState): boolean => {
 	return state.widgets.onboardedWidgets;
 };

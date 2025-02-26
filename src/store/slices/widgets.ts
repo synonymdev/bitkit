@@ -1,4 +1,5 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+import { getDefaultOptions } from '../../utils/widgets';
 import { TWidgets } from '../types/widgets';
 
 export type TWidgetsState = {
@@ -8,7 +9,11 @@ export type TWidgetsState = {
 };
 
 export const initialWidgetsState: TWidgetsState = {
-	widgets: {},
+	widgets: {
+		price: getDefaultOptions('price'),
+		news: getDefaultOptions('news'),
+		blocks: getDefaultOptions('blocks'),
+	},
 	onboardedWidgets: false,
 	sortOrder: [],
 };

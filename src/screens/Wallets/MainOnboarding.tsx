@@ -5,9 +5,7 @@ import { StyleProp, ViewStyle } from 'react-native';
 import WalletOnboarding from '../../components/WalletOnboarding';
 import { useAppDispatch } from '../../hooks/redux';
 import { updateSettings } from '../../store/slices/settings';
-import { saveWidget } from '../../store/slices/widgets';
 import { Display } from '../../styles/text';
-import { getDefaultOptions } from '../../utils/widgets';
 
 const MainOnboarding = ({
 	style,
@@ -16,14 +14,8 @@ const MainOnboarding = ({
 }): ReactElement => {
 	const dispatch = useAppDispatch();
 	const { t } = useTranslation('onboarding');
-	const priceOptions = getDefaultOptions('price');
-	const newsOptions = getDefaultOptions('news');
-	const blocksOptions = getDefaultOptions('blocks');
 
 	const onHideOnboarding = (): void => {
-		dispatch(saveWidget({ id: 'price', options: priceOptions }));
-		dispatch(saveWidget({ id: 'news', options: newsOptions }));
-		dispatch(saveWidget({ id: 'blocks', options: blocksOptions }));
 		dispatch(updateSettings({ hideOnboardingMessage: true }));
 	};
 
