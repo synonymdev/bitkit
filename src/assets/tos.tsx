@@ -1,75 +1,53 @@
-import React, { ReactElement } from 'react';
-import { StyleSheet, View } from 'react-native';
-
+import React, { memo, ReactElement, ReactNode } from 'react';
+import { StyleProp, StyleSheet, TextStyle, View } from 'react-native';
 import { BodyM } from '../styles/text';
 
 const T = ({
 	children,
 	style,
 }: {
-	children: React.ReactNode;
-	style: any;
-}): ReactElement => {
-	return (
-		<BodyM color="secondary" style={style}>
-			{children}
-		</BodyM>
-	);
-};
-
-const s = StyleSheet.create({
-	root: {
-		marginTop: 8,
-		marginBottom: 300,
-	},
-	i: {
-		fontStyle: 'italic',
-	},
-	u: {
-		textDecorationLine: 'underline',
-	},
-	b: {
-		fontWeight: 'bold',
-	},
-	p: {
-		marginTop: 10,
-	},
-});
+	children: ReactNode;
+	style: StyleProp<TextStyle>;
+}): ReactElement => (
+	<BodyM style={style} color="secondary">
+		{children}
+	</BodyM>
+);
 
 type Props = {
-	children: React.ReactNode;
+	children: ReactNode;
 };
 
 const B = ({ children }: Props): ReactElement => {
-	return <T style={s.b}>{children}</T>;
+	return <T style={styles.b}>{children}</T>;
 };
 
 const U = ({ children }: Props): ReactElement => {
-	return <T style={s.u}>{children}</T>;
+	return <T style={styles.u}>{children}</T>;
 };
 
 const I = ({ children }: Props): ReactElement => {
-	return <T style={s.i}>{children}</T>;
+	return <T style={styles.i}>{children}</T>;
 };
 
 const BU = ({ children }: Props): ReactElement => {
-	return <T style={[s.b, s.u]}>{children}</T>;
+	return <T style={[styles.b, styles.u]}>{children}</T>;
 };
 
 const P = ({ children }: Props): ReactElement => {
-	return <T style={s.p}>{children}</T>;
+	return <T style={styles.p}>{children}</T>;
 };
 
 const BI = ({ children }: Props): ReactElement => {
-	return <T style={[s.b, s.i]}>{children}</T>;
+	return <T style={[styles.b, styles.i]}>{children}</T>;
 };
 
 const BUI = ({ children }: Props): ReactElement => {
-	return <T style={[s.b, s.u, s.i]}>{children}</T>;
+	return <T style={[styles.b, styles.u, styles.i]}>{children}</T>;
 };
 
 const TOS = (): ReactElement => (
-	<View style={s.root}>
+	<View style={styles.root}>
 		<P>
 			<B>Effective date: February 4, 2025</B>
 		</P>
@@ -1898,4 +1876,23 @@ const TOS = (): ReactElement => (
 	</View>
 );
 
-export default TOS;
+const styles = StyleSheet.create({
+	root: {
+		marginTop: 8,
+		marginBottom: 300,
+	},
+	i: {
+		fontStyle: 'italic',
+	},
+	u: {
+		textDecorationLine: 'underline',
+	},
+	b: {
+		fontWeight: 'bold',
+	},
+	p: {
+		marginTop: 10,
+	},
+});
+
+export default memo(TOS);
