@@ -2,8 +2,8 @@ import React, { memo, ReactElement } from 'react';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet, View } from 'react-native';
 
-import BottomSheetWrapper from '../../components/BottomSheetWrapper';
 import SafeAreaInset from '../../components/SafeAreaInset';
+import Sheet from '../../components/Sheet';
 import Tag from '../../components/Tag';
 import {
 	useBottomSheetBackPress,
@@ -34,10 +34,7 @@ const TagsPrompt = ({
 	};
 
 	return (
-		<BottomSheetWrapper
-			view="tagsPrompt"
-			snapPoints={snapPoints}
-			onClose={handleClose}>
+		<Sheet id="tagsPrompt" snapPoints={snapPoints} onClose={handleClose}>
 			<View style={styles.root}>
 				<Subtitle style={styles.title}>{t('tags_filter_title')}</Subtitle>
 
@@ -59,7 +56,7 @@ const TagsPrompt = ({
 
 				<SafeAreaInset type="bottom" minPadding={16} />
 			</View>
-		</BottomSheetWrapper>
+		</Sheet>
 	);
 };
 

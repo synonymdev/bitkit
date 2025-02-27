@@ -9,7 +9,7 @@ import SafeAreaInset from '../../../components/SafeAreaInset';
 import { PIN_ATTEMPTS } from '../../../constants/app';
 import usePIN from '../../../hooks/pin';
 import type { SettingsScreenProps } from '../../../navigation/types';
-import { showBottomSheet } from '../../../store/utils/ui';
+import { showSheet } from '../../../store/utils/ui';
 import { AnimatedView, View as ThemedView } from '../../../styles/components';
 import { BodyM, BodyS } from '../../../styles/text';
 
@@ -47,7 +47,7 @@ const ChangePin = ({
 						) : (
 							<Pressable
 								onPress={(): void => {
-									showBottomSheet('forgotPIN');
+									showSheet('forgotPIN');
 								}}>
 								<BodyS testID="AttemptsRemaining" color="brand">
 									{t('pin_attempts', { attemptsRemaining })}

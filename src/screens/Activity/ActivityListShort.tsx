@@ -14,7 +14,7 @@ import { useAppSelector } from '../../hooks/redux';
 import type { RootNavigationProp } from '../../navigation/types';
 import { activityItemsSelector } from '../../store/reselect/activity';
 import { IActivityItem } from '../../store/types/activity';
-import { showBottomSheet } from '../../store/utils/ui';
+import { showSheet } from '../../store/utils/ui';
 import { Caption13Up } from '../../styles/text';
 import { groupActivityItems } from '../../utils/activity';
 import ListItem, { EmptyItem } from './ListItem';
@@ -58,7 +58,7 @@ const ActivityListShort = (): ReactElement => {
 	);
 
 	const navigateToReceive = useCallback((): void => {
-		showBottomSheet('receiveNavigation');
+		showSheet('receiveNavigation');
 	}, []);
 
 	const navigateToActivityFiltered = useCallback((): void => {

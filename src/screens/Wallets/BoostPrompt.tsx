@@ -5,10 +5,10 @@ import { ActivityIndicator, StyleSheet, View } from 'react-native';
 
 import AdjustValue from '../../components/AdjustValue';
 import BottomSheetNavigationHeader from '../../components/BottomSheetNavigationHeader';
-import BottomSheetWrapper from '../../components/BottomSheetWrapper';
 import ImageText from '../../components/ImageText';
 import Money from '../../components/Money';
 import SafeAreaInset from '../../components/SafeAreaInset';
+import Sheet from '../../components/Sheet';
 import SwipeToConfirm from '../../components/SwipeToConfirm';
 import Button from '../../components/buttons/Button';
 import {
@@ -254,7 +254,7 @@ const BoostPrompt = (): ReactElement => {
 	useBottomSheetBackPress('boostPrompt');
 
 	return (
-		<BottomSheetWrapper view="boostPrompt" snapPoints={snapPoints}>
+		<Sheet id="boostPrompt" snapPoints={snapPoints}>
 			<View style={styles.root}>
 				<BottomSheetNavigationHeader
 					title={t('boost_title')}
@@ -267,7 +267,7 @@ const BoostPrompt = (): ReactElement => {
 
 				<SafeAreaInset type="bottom" minPadding={16} />
 			</View>
-		</BottomSheetWrapper>
+		</Sheet>
 	);
 };
 

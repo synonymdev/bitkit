@@ -10,7 +10,7 @@ import {
 import { LNURLPayParams } from 'js-lnurl';
 import React, { ReactElement, memo } from 'react';
 
-import BottomSheetWrapper from '../../components/BottomSheetWrapper';
+import Sheet from '../../components/Sheet';
 import { __E2E__ } from '../../constants/env';
 import { useSnapPoints } from '../../hooks/bottomSheet';
 import { useLightningBalance } from '../../hooks/lightning';
@@ -137,8 +137,8 @@ const SendNavigation = (): ReactElement => {
 	};
 
 	return (
-		<BottomSheetWrapper
-			view="sendNavigation"
+		<Sheet
+			id="sendNavigation"
 			snapPoints={snapPoints}
 			testID="SendSheet"
 			onOpen={onOpen}>
@@ -180,7 +180,7 @@ const SendNavigation = (): ReactElement => {
 					</Stack.Navigator>
 				</NavigationContainer>
 			</NavigationIndependentTree>
-		</BottomSheetWrapper>
+		</Sheet>
 	);
 };
 

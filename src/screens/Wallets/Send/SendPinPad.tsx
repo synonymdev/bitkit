@@ -6,7 +6,7 @@ import { FadeIn, FadeOut } from 'react-native-reanimated';
 import NumberPad from '../../../components/NumberPad';
 import { PIN_ATTEMPTS } from '../../../constants/app';
 import usePIN from '../../../hooks/pin';
-import { showBottomSheet } from '../../../store/utils/ui';
+import { showSheet } from '../../../store/utils/ui';
 import { AnimatedView } from '../../../styles/components';
 import { BodyS } from '../../../styles/text';
 
@@ -35,7 +35,7 @@ const SendPinPad = ({ onSuccess }: { onSuccess: () => void }): ReactElement => {
 						) : (
 							<Pressable
 								onPress={(): void => {
-									showBottomSheet('forgotPIN');
+									showSheet('forgotPIN');
 								}}>
 								<BodyS testID="AttemptsRemaining" color="brand">
 									{t('pin_attempts', { attemptsRemaining })}

@@ -86,7 +86,7 @@ import {
 	deleteMetaTxTag,
 } from '../../store/slices/metadata';
 import { ETransferStatus } from '../../store/types/wallet';
-import { showBottomSheet } from '../../store/utils/ui';
+import { showSheet } from '../../store/utils/ui';
 import { getBoostedTransactionParents } from '../../utils/boost';
 import {
 	ellipsis,
@@ -236,11 +236,11 @@ const OnchainActivityDetail = ({
 	};
 
 	const handleBoost = (): void => {
-		showBottomSheet('boostPrompt', { onchainActivityItem: item });
+		showSheet('boostPrompt', { onchainActivityItem: item });
 	};
 
 	const handleAddTag = (): void => {
-		showBottomSheet('activityTagsPrompt', { id });
+		showSheet('activityTagsPrompt', { id });
 	};
 
 	const handleRemoveTag = (tag: string): void => {
@@ -701,7 +701,7 @@ const LightningActivityDetail = ({
 	});
 
 	const handleAddTag = (): void => {
-		showBottomSheet('activityTagsPrompt', { id });
+		showSheet('activityTagsPrompt', { id });
 	};
 
 	const handleRemoveTag = (tag: string): void => {

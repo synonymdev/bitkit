@@ -18,6 +18,7 @@ import React, {
 import { useTranslation } from 'react-i18next';
 import { AppState, Linking } from 'react-native';
 
+import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import AuthCheck from '../../components/AuthCheck';
 import Dialog from '../../components/Dialog';
 import { __E2E__ } from '../../constants/env';
@@ -195,53 +196,58 @@ const RootNavigator = (): ReactElement => {
 
 	return (
 		<NavigationContainer ref={navigationRef} linking={linking}>
-			<Stack.Navigator screenOptions={screenOptions}>
-				<Stack.Screen name="Wallet" component={WalletNavigator} />
-				<Stack.Screen name="ActivityDetail" component={ActivityDetail} />
-				<Stack.Screen
-					name="ActivityAssignContact"
-					component={ActivityAssignContact}
+			<BottomSheetModalProvider>
+				<Stack.Navigator screenOptions={screenOptions}>
+					<Stack.Screen name="Wallet" component={WalletNavigator} />
+					<Stack.Screen name="ActivityDetail" component={ActivityDetail} />
+					<Stack.Screen
+						name="ActivityAssignContact"
+						component={ActivityAssignContact}
+					/>
+					<Stack.Screen name="Scanner" component={ScannerScreen} />
+					<Stack.Screen name="TransferRoot" component={TransferNavigator} />
+					<Stack.Screen name="Settings" component={SettingsNavigator} />
+					<Stack.Screen name="Profile" component={Profile} />
+					<Stack.Screen name="ProfileEdit" component={ProfileEdit} />
+					<Stack.Screen name="Contacts" component={Contacts} />
+					<Stack.Screen name="ContactEdit" component={ContactEdit} />
+					<Stack.Screen name="Contact" component={Contact} />
+					<Stack.Screen name="BuyBitcoin" component={BuyBitcoin} />
+					<Stack.Screen
+						name="WidgetsOnboarding"
+						component={WidgetsOnboarding}
+					/>
+					<Stack.Screen
+						name="WidgetsSuggestions"
+						component={WidgetsSuggestions}
+					/>
+					<Stack.Screen name="Widget" component={Widget} />
+					<Stack.Screen name="WidgetEdit" component={WidgetEdit} />
+				</Stack.Navigator>
+
+				<BottomSheetsLazy />
+				<BackupSubscriber />
+				<ForceTransfer />
+
+				<Dialog
+					visible={showDialog && isAuthenticated}
+					title={t('clipboard_redirect_title')}
+					description={t('clipboard_redirect_msg')}
+					onCancel={(): void => setShowDialog(false)}
+					onConfirm={onConfirmClipboardRedirect}
 				/>
-				<Stack.Screen name="Scanner" component={ScannerScreen} />
-				<Stack.Screen name="TransferRoot" component={TransferNavigator} />
-				<Stack.Screen name="Settings" component={SettingsNavigator} />
-				<Stack.Screen name="Profile" component={Profile} />
-				<Stack.Screen name="ProfileEdit" component={ProfileEdit} />
-				<Stack.Screen name="Contacts" component={Contacts} />
-				<Stack.Screen name="ContactEdit" component={ContactEdit} />
-				<Stack.Screen name="Contact" component={Contact} />
-				<Stack.Screen name="BuyBitcoin" component={BuyBitcoin} />
-				<Stack.Screen name="WidgetsOnboarding" component={WidgetsOnboarding} />
-				<Stack.Screen
-					name="WidgetsSuggestions"
-					component={WidgetsSuggestions}
-				/>
-				<Stack.Screen name="Widget" component={Widget} />
-				<Stack.Screen name="WidgetEdit" component={WidgetEdit} />
-			</Stack.Navigator>
 
-			<BottomSheetsLazy />
-			<BackupSubscriber />
-			<ForceTransfer />
+				{!isAuthenticated && (
+					<AuthCheck
+						showBackNavigation={false}
+						showLogoOnPIN={true}
+						onSuccess={onAuthSuccess}
+					/>
+				)}
 
-			<Dialog
-				visible={showDialog && isAuthenticated}
-				title={t('clipboard_redirect_title')}
-				description={t('clipboard_redirect_msg')}
-				onCancel={(): void => setShowDialog(false)}
-				onConfirm={onConfirmClipboardRedirect}
-			/>
-
-			{!isAuthenticated && (
-				<AuthCheck
-					showBackNavigation={false}
-					showLogoOnPIN={true}
-					onSuccess={onAuthSuccess}
-				/>
-			)}
-
-			{/* Should be above AuthCheck */}
-			<ForgotPIN />
+				{/* Should be above AuthCheck */}
+				<ForgotPIN />
+			</BottomSheetModalProvider>
 		</NavigationContainer>
 	);
 };

@@ -3,8 +3,8 @@ import { useTranslation } from 'react-i18next';
 import { Image, StyleSheet, View } from 'react-native';
 
 import BottomSheetNavigationHeader from '../../components/BottomSheetNavigationHeader';
-import BottomSheetWrapper from '../../components/BottomSheetWrapper';
 import SafeAreaInset from '../../components/SafeAreaInset';
+import Sheet from '../../components/Sheet';
 import Button from '../../components/buttons/Button';
 import {
 	useBottomSheetBackPress,
@@ -28,7 +28,7 @@ const ConnectionClosed = (): ReactElement => {
 	};
 
 	return (
-		<BottomSheetWrapper view="connectionClosed" snapPoints={snapPoints}>
+		<Sheet id="connectionClosed" snapPoints={snapPoints}>
 			<View style={styles.container}>
 				<BottomSheetNavigationHeader
 					title={t('connection_closed.title')}
@@ -50,7 +50,7 @@ const ConnectionClosed = (): ReactElement => {
 				</View>
 				<SafeAreaInset type="bottom" minPadding={16} />
 			</View>
-		</BottomSheetWrapper>
+		</Sheet>
 	);
 };
 

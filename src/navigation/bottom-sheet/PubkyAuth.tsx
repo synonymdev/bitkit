@@ -11,8 +11,8 @@ import { StyleSheet, View } from 'react-native';
 import { auth, parseAuthUrl } from '@synonymdev/react-native-pubky';
 import Animated, { FadeIn } from 'react-native-reanimated';
 import BottomSheetNavigationHeader from '../../components/BottomSheetNavigationHeader';
-import BottomSheetWrapper from '../../components/BottomSheetWrapper';
 import SafeAreaInset from '../../components/SafeAreaInset';
+import Sheet from '../../components/Sheet';
 import Button from '../../components/buttons/Button';
 import {
 	useBottomSheetBackPress,
@@ -203,7 +203,7 @@ const PubkyAuth = (): ReactElement => {
 	}, [authSuccess]);
 
 	return (
-		<BottomSheetWrapper view="pubkyAuth" snapPoints={snapPoints}>
+		<Sheet id="pubkyAuth" snapPoints={snapPoints}>
 			<View style={styles.container}>
 				<BottomSheetNavigationHeader title={t('authorization.title')} />
 				<Text13UP color="secondary">{t('authorization.claims')}</Text13UP>
@@ -235,7 +235,7 @@ const PubkyAuth = (): ReactElement => {
 				<View style={styles.buttonContainer}>{Buttons()}</View>
 				<SafeAreaInset type="bottom" minPadding={16} />
 			</View>
-		</BottomSheetWrapper>
+		</Sheet>
 	);
 };
 

@@ -6,18 +6,18 @@ import { useReducedMotion } from 'react-native-reanimated';
 
 import AmountToggle from '../../components/AmountToggle';
 import BottomSheetNavigationHeader from '../../components/BottomSheetNavigationHeader';
-import BottomSheetWrapper from '../../components/BottomSheetWrapper';
 import SafeAreaInset from '../../components/SafeAreaInset';
+import Sheet from '../../components/Sheet';
 import Button from '../../components/buttons/Button';
 import { __E2E__ } from '../../constants/env';
 import {
 	useBottomSheetBackPress,
 	useSnapPoints,
 } from '../../hooks/bottomSheet';
-import { useAppDispatch, useAppSelector } from '../../hooks/redux';
+import { useAppSelector } from '../../hooks/redux';
+import { useSheetRef } from '../../navigation/bottom-sheet/SheetRefsProvider';
 import { rootNavigation } from '../../navigation/root/RootNavigator';
 import { viewControllerSelector } from '../../store/reselect/ui';
-import { closeSheet } from '../../store/slices/ui';
 import { EActivityType } from '../../store/types/activity';
 import { getRandomOkText } from '../../utils/i18n/helpers';
 
@@ -28,8 +28,8 @@ const imageSrc = require('../../assets/illustrations/coin-stack-x.png');
 const NewTxPrompt = (): ReactElement => {
 	const reducedMotion = useReducedMotion();
 	const { t } = useTranslation('wallet');
+	const sheetRef = useSheetRef('newTxPrompt');
 	const snapPoints = useSnapPoints('large');
-	const dispatch = useAppDispatch();
 	const { activityItem } = useAppSelector((state) => {
 		return viewControllerSelector(state, 'newTxPrompt');
 	});
@@ -37,12 +37,12 @@ const NewTxPrompt = (): ReactElement => {
 	useBottomSheetBackPress('newTxPrompt');
 
 	const onAmountPress = (): void => {
-		dispatch(closeSheet('newTxPrompt'));
+		sheetRef.current?.close();
 		rootNavigation.navigate('ActivityDetail', { id: activityItem!.id });
 	};
 
 	const onButtonPress = (): void => {
-		dispatch(closeSheet('newTxPrompt'));
+		sheetRef.current?.close();
 	};
 
 	const isOnchainItem = activityItem?.activityType === EActivityType.onchain;
@@ -50,7 +50,7 @@ const NewTxPrompt = (): ReactElement => {
 	const buttonText = useMemo(() => getRandomOkText(), []);
 
 	return (
-		<BottomSheetWrapper view="newTxPrompt" snapPoints={snapPoints}>
+		<Sheet id="newTxPrompt" snapPoints={snapPoints}>
 			<View style={styles.root}>
 				{activityItem && (
 					<View style={styles.confetti} pointerEvents="none">
@@ -100,7 +100,7 @@ const NewTxPrompt = (): ReactElement => {
 				</View>
 				<SafeAreaInset type="bottom" minPadding={16} />
 			</View>
-		</BottomSheetWrapper>
+		</Sheet>
 	);
 };
 

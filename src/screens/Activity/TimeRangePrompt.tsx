@@ -2,8 +2,8 @@ import React, { memo, ReactElement, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 
-import BottomSheetWrapper from '../../components/BottomSheetWrapper';
 import SafeAreaInset from '../../components/SafeAreaInset';
+import Sheet from '../../components/Sheet';
 import Button from '../../components/buttons/Button';
 import {
 	useBottomSheetBackPress,
@@ -308,10 +308,7 @@ const TimeRangePrompt = ({
 	};
 
 	return (
-		<BottomSheetWrapper
-			view="timeRangePrompt"
-			snapPoints={snapPoints}
-			onClose={handleClose}>
+		<Sheet id="timeRangePrompt" snapPoints={snapPoints} onClose={handleClose}>
 			<View style={styles.root}>
 				<Subtitle style={styles.title}>{t('filter_title')}</Subtitle>
 
@@ -319,7 +316,7 @@ const TimeRangePrompt = ({
 
 				<SafeAreaInset type="bottom" minPadding={16} />
 			</View>
-		</BottomSheetWrapper>
+		</Sheet>
 	);
 };
 

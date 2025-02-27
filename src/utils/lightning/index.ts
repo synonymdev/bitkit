@@ -79,7 +79,7 @@ import {
 	updateLightningNodeIdThunk,
 	updateLightningNodeVersionThunk,
 } from '../../store/utils/lightning';
-import { showBottomSheet } from '../../store/utils/ui';
+import { showSheet } from '../../store/utils/ui';
 import { getBlocktankInfo, isGeoBlocked, logToBlocktank } from '../blocktank';
 import {
 	promiseTimeout,
@@ -573,7 +573,7 @@ export const handleLightningPaymentSubscription = async ({
 	};
 
 	vibrate({ type: 'default' });
-	showBottomSheet('newTxPrompt', { activityItem });
+	showSheet('newTxPrompt', { activityItem });
 	dispatch(closeSheet('receiveNavigation'));
 	dispatch(closeSheet('orangeTicket'));
 	dispatch(addActivityItem(activityItem));
@@ -701,7 +701,7 @@ export const subscribeToLightningPayments = ({
 				await closeChannelThunk(res);
 				if (res.reason === EChannelClosureReason.CommitmentTxConfirmed) {
 					// counterparty force closed the channel
-					showBottomSheet('connectionClosed');
+					showSheet('connectionClosed');
 				}
 				updateSlashPayConfig({ selectedWallet, selectedNetwork });
 			},

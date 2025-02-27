@@ -29,7 +29,7 @@ import {
 	setOnboardingProfileStep,
 } from '../../store/slices/slashtags';
 import { BasicProfile } from '../../store/types/slashtags';
-import { showBottomSheet } from '../../store/utils/ui';
+import { showSheet } from '../../store/utils/ui';
 import { ScrollView, View as ThemedView } from '../../styles/components';
 import { PlusIcon } from '../../styles/icons';
 import { BodyS } from '../../styles/text';
@@ -94,7 +94,7 @@ const ProfileEdit = ({
 
 	const onAddLink = async (): Promise<void> => {
 		await Keyboard.dismiss();
-		showBottomSheet('profileAddDataForm');
+		showSheet('profileAddDataForm');
 	};
 
 	const onSave = async (): Promise<void> => {

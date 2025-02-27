@@ -7,7 +7,7 @@ import NavigationHeader from '../../../components/NavigationHeader';
 import SafeAreaInset from '../../../components/SafeAreaInset';
 import Button from '../../../components/buttons/Button';
 import { wipeApp } from '../../../store/utils/settings';
-import { showBottomSheet } from '../../../store/utils/ui';
+import { showSheet } from '../../../store/utils/ui';
 import { View } from '../../../styles/components';
 import { BodyM } from '../../../styles/text';
 
@@ -35,7 +35,7 @@ const ResetAndRestore = (): ReactElement => {
 						style={styles.button}
 						text={t('reset_button_backup')}
 						onPress={(): void => {
-							showBottomSheet('backupNavigation');
+							showSheet('backupNavigation');
 						}}
 					/>
 					<Button

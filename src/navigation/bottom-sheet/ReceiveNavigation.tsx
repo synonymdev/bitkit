@@ -6,7 +6,7 @@ import {
 } from '@react-navigation/native-stack';
 import React, { ReactElement, memo } from 'react';
 
-import BottomSheetWrapper from '../../components/BottomSheetWrapper';
+import Sheet from '../../components/Sheet';
 import { __E2E__ } from '../../constants/env';
 import { useSnapPoints } from '../../hooks/bottomSheet';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
@@ -51,7 +51,10 @@ const screenOptions: NativeStackNavigationOptions = {
 const ReceiveNavigation = (): ReactElement => {
 	const snapPoints = useSnapPoints('large');
 	const dispatch = useAppDispatch();
-	const { isOpen, receiveScreen } = useAppSelector((state) => {
+	// const { isOpen, receiveScreen } = useAppSelector((state) => {
+	// 	return viewControllerSelector(state, 'receiveNavigation');
+	// });
+	const { receiveScreen } = useAppSelector((state) => {
 		return viewControllerSelector(state, 'receiveNavigation');
 	});
 
@@ -62,14 +65,14 @@ const ReceiveNavigation = (): ReactElement => {
 	};
 
 	return (
-		<BottomSheetWrapper
-			view="receiveNavigation"
+		<Sheet
+			id="receiveNavigation"
 			snapPoints={snapPoints}
 			testID="ReceiveScreen"
 			onOpen={reset}
 			onClose={reset}>
 			<NavigationIndependentTree>
-				<NavigationContainer key={isOpen.toString()}>
+				<NavigationContainer>
 					<Stack.Navigator
 						initialRouteName={initialRouteName}
 						screenOptions={screenOptions}>
@@ -86,7 +89,7 @@ const ReceiveNavigation = (): ReactElement => {
 					</Stack.Navigator>
 				</NavigationContainer>
 			</NavigationIndependentTree>
-		</BottomSheetWrapper>
+		</Sheet>
 	);
 };
 

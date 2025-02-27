@@ -18,6 +18,7 @@ import AppOnboarded from './AppOnboarded';
 import { SlashtagsProvider } from './components/SlashtagsProvider';
 import { toastConfig } from './components/Toast';
 import { useAppSelector } from './hooks/redux';
+import { SheetRefsProvider } from './navigation/bottom-sheet/SheetRefsProvider';
 import AppUpdate from './screens/AppUpdate';
 import { themeSelector } from './store/reselect/settings';
 import { criticalUpdateSelector } from './store/reselect/ui';
@@ -79,7 +80,9 @@ const App = (): ReactElement => {
 					<AppUpdate />
 				) : walletExists && !requiresRemoteRestore ? (
 					<SlashtagsProvider>
-						<AppOnboarded />
+						<SheetRefsProvider>
+							<AppOnboarded />
+						</SheetRefsProvider>
 					</SlashtagsProvider>
 				) : (
 					<Suspense fallback={null}>

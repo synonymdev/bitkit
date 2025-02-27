@@ -20,19 +20,22 @@ export const uiSlice = createSlice({
 		setAppUpdateInfo: (state, action: PayloadAction<TAvailableUpdate>) => {
 			state.availableUpdate = action.payload;
 		},
-		toggleSheet: (
-			state,
-			action: PayloadAction<{
-				view: keyof ViewControllerParamList;
-				params: any;
-			}>,
-		) => {
-			state.viewControllers[action.payload.view] = {
-				...action.payload.params,
-				isOpen: !state.viewControllers[action.payload.view].isOpen,
-				isMounted: true,
-			};
-		},
+		// showSheet: (
+		// 	state,
+		// 	action: PayloadAction<{
+		// 		view: keyof ViewControllerParamList;
+		// 		params: any;
+		// 	}>,
+		// ) => {
+		// 	const isOpen = state.viewControllers[action.payload.view]?.isOpen;
+		// 	if (!isOpen) {
+		// 		state.viewControllers[action.payload.view] = {
+		// 			...action.payload.params,
+		// 			isOpen: true,
+		// 			isMounted: true,
+		// 		};
+		// 	}
+		// },
 		showSheet: (
 			state,
 			action: PayloadAction<{
@@ -40,11 +43,14 @@ export const uiSlice = createSlice({
 				params: any;
 			}>,
 		) => {
-			state.viewControllers[action.payload.view] = {
-				...action.payload.params,
-				isOpen: true,
-				isMounted: true,
-			};
+			const isOpen = state.viewControllers[action.payload.view]?.isOpen;
+			if (!isOpen) {
+				state.viewControllers[action.payload.view] = {
+					...action.payload.params,
+					isOpen: true,
+					isMounted: true,
+				};
+			}
 		},
 		closeSheet: (
 			state,
@@ -82,7 +88,6 @@ export const {
 	updateUi,
 	setAppUpdateInfo,
 	showSheet,
-	toggleSheet,
 	closeSheet,
 	closeAllSheets,
 	updateProfileLink,

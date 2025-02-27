@@ -12,7 +12,7 @@ import React, {
 	useState,
 } from 'react';
 
-import BottomSheetWrapper from '../../components/BottomSheetWrapper';
+import Sheet from '../../components/Sheet';
 import { __E2E__ } from '../../constants/env';
 import { __TREASURE_HUNT_HOST__ } from '../../constants/env';
 import { useSnapPoints } from '../../hooks/bottomSheet';
@@ -128,7 +128,7 @@ const TreasureHuntNavigation = (): ReactElement => {
 	}
 
 	return (
-		<BottomSheetWrapper view="treasureHunt" snapPoints={snapPoints}>
+		<Sheet id="treasureHunt" snapPoints={snapPoints}>
 			<NavigationIndependentTree>
 				<NavigationContainer key={isOpen.toString()}>
 					<Stack.Navigator
@@ -154,7 +154,7 @@ const TreasureHuntNavigation = (): ReactElement => {
 					</Stack.Navigator>
 				</NavigationContainer>
 			</NavigationIndependentTree>
-		</BottomSheetWrapper>
+		</Sheet>
 	);
 };
 

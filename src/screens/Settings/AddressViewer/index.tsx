@@ -43,7 +43,7 @@ import { updateWallet } from '../../../store/slices/wallet';
 import { TWalletName } from '../../../store/types/wallet';
 import { updateActivityList } from '../../../store/utils/activity';
 import { updateOnchainFeeEstimates } from '../../../store/utils/fees';
-import { showBottomSheet } from '../../../store/utils/ui';
+import { showSheet } from '../../../store/utils/ui';
 import {
 	View as ThemedView,
 	TouchableOpacity,
@@ -650,7 +650,7 @@ const AddressViewer = (): ReactElement => {
 				}),
 			);
 			sendMax();
-			showBottomSheet('sendNavigation', { screen: 'ReviewAndSend' });
+			showSheet('sendNavigation', { screen: 'ReviewAndSend' });
 		},
 		[selectedUtxos, utxos, selectedNetwork, dispatch],
 	);

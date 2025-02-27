@@ -3,8 +3,8 @@ import { useTranslation } from 'react-i18next';
 import { Image, StyleSheet, View } from 'react-native';
 
 import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
-import BottomSheetWrapper from '../../../components/BottomSheetWrapper';
 import SafeAreaInset from '../../../components/SafeAreaInset';
+import Sheet from '../../../components/Sheet';
 import Button from '../../../components/buttons/Button';
 import {
 	useBottomSheetBackPress,
@@ -22,9 +22,9 @@ const ForgotPIN = (): ReactElement => {
 	const { t } = useTranslation('security');
 	const snapPoints = useSnapPoints('large');
 	const dispatch = useAppDispatch();
-	const { isMounted } = useAppSelector((state) => {
-		return viewControllerSelector(state, 'forgotPIN');
-	});
+	// const { isMounted } = useAppSelector((state) => {
+	// 	return viewControllerSelector(state, 'forgotPIN');
+	// });
 
 	useBottomSheetBackPress('forgotPIN');
 
@@ -33,12 +33,12 @@ const ForgotPIN = (): ReactElement => {
 		dispatch(closeSheet('forgotPIN'));
 	};
 
-	if (!isMounted) {
-		return <></>;
-	}
+	// if (!isMounted) {
+	// 	return <></>;
+	// }
 
 	return (
-		<BottomSheetWrapper view="forgotPIN" snapPoints={snapPoints}>
+		<Sheet id="forgotPIN" snapPoints={snapPoints}>
 			<View style={styles.container}>
 				<BottomSheetNavigationHeader
 					title={t('pin_forgot_title')}
@@ -62,7 +62,7 @@ const ForgotPIN = (): ReactElement => {
 				</View>
 				<SafeAreaInset type="bottom" minPadding={16} />
 			</View>
-		</BottomSheetWrapper>
+		</Sheet>
 	);
 };
 

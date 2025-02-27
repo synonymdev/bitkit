@@ -6,9 +6,9 @@ import { useTranslation } from 'react-i18next';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 
 import BottomSheetNavigationHeader from '../../components/BottomSheetNavigationHeader';
-import BottomSheetWrapper from '../../components/BottomSheetWrapper';
 import LabeledInput from '../../components/LabeledInput';
 import SafeAreaInset from '../../components/SafeAreaInset';
+import Sheet from '../../components/Sheet';
 import Button from '../../components/buttons/Button';
 import {
 	useBottomSheetBackPress,
@@ -91,7 +91,7 @@ const AddContact = ({
 	};
 
 	return (
-		<BottomSheetWrapper view="addContactModal" snapPoints={snapPoints}>
+		<Sheet id="addContactModal" snapPoints={snapPoints}>
 			<View style={styles.container}>
 				<BottomSheetNavigationHeader
 					title={t('contact_add_capital')}
@@ -140,7 +140,7 @@ const AddContact = ({
 
 				<SafeAreaInset type="bottom" minPadding={16} />
 			</View>
-		</BottomSheetWrapper>
+		</Sheet>
 	);
 };
 

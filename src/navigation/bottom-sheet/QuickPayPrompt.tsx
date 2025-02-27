@@ -3,7 +3,7 @@ import React, { memo, ReactElement, useEffect, useMemo } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 
 import BottomSheetScreen from '../../components/BottomSheetScreen';
-import BottomSheetWrapper from '../../components/BottomSheetWrapper';
+import Sheet from '../../components/Sheet';
 import { __E2E__ } from '../../constants/env';
 import {
 	useBottomSheetBackPress,
@@ -15,7 +15,7 @@ import { quickpayIntroSeenSelector } from '../../store/reselect/settings';
 import { viewControllersSelector } from '../../store/reselect/ui';
 import { updateSettings } from '../../store/slices/settings';
 import { closeSheet } from '../../store/slices/ui';
-import { showBottomSheet } from '../../store/utils/ui';
+import { showSheet } from '../../store/utils/ui';
 import { BodyMB, Display } from '../../styles/text';
 import { objectKeys } from '../../utils/objectKeys';
 import { RootNavigationProp } from '../types';
@@ -61,7 +61,7 @@ const QuickPayPrompt = (): ReactElement => {
 		}
 
 		const timer = setTimeout(() => {
-			showBottomSheet('quickPay');
+			showSheet('quickPay');
 		}, CHECK_DELAY);
 
 		return (): void => {
@@ -81,8 +81,8 @@ const QuickPayPrompt = (): ReactElement => {
 	};
 
 	return (
-		<BottomSheetWrapper
-			view="quickPay"
+		<Sheet
+			id="quickPay"
 			snapPoints={snapPoints}
 			onClose={(): void => {
 				dispatch(updateSettings({ quickpayIntroSeen: true }));
@@ -111,7 +111,7 @@ const QuickPayPrompt = (): ReactElement => {
 				onContinue={onMore}
 				onCancel={onDismiss}
 			/>
-		</BottomSheetWrapper>
+		</Sheet>
 	);
 };
 

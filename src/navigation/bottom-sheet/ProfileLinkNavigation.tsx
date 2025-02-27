@@ -6,7 +6,7 @@ import {
 } from '@react-navigation/native-stack';
 import React, { ReactElement, memo } from 'react';
 
-import BottomSheetWrapper from '../../components/BottomSheetWrapper';
+import Sheet from '../../components/Sheet';
 import { __E2E__ } from '../../constants/env';
 import { useSnapPoints } from '../../hooks/bottomSheet';
 import { useAppSelector } from '../../hooks/redux';
@@ -37,7 +37,7 @@ const ProfileLinkNavigation = (): ReactElement => {
 	});
 
 	return (
-		<BottomSheetWrapper view="profileAddDataForm" snapPoints={snapPoints}>
+		<Sheet id="profileAddDataForm" snapPoints={snapPoints}>
 			<NavigationIndependentTree>
 				<NavigationContainer key={isOpen.toString()}>
 					<Stack.Navigator screenOptions={screenOptions}>
@@ -49,7 +49,7 @@ const ProfileLinkNavigation = (): ReactElement => {
 					</Stack.Navigator>
 				</NavigationContainer>
 			</NavigationIndependentTree>
-		</BottomSheetWrapper>
+		</Sheet>
 	);
 };
 

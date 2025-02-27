@@ -7,7 +7,7 @@ import {
 import { LNURLWithdrawParams } from 'js-lnurl';
 import React, { ReactElement, memo } from 'react';
 
-import BottomSheetWrapper from '../../components/BottomSheetWrapper';
+import Sheet from '../../components/Sheet';
 import { __E2E__ } from '../../constants/env';
 import {
 	useBottomSheetBackPress,
@@ -51,7 +51,7 @@ const LNURLWithdrawNavigation = (): ReactElement => {
 		wParams.minWithdrawable === wParams.maxWithdrawable ? 'Confirm' : 'Amount';
 
 	return (
-		<BottomSheetWrapper view="lnurlWithdraw" snapPoints={snapPoints}>
+		<Sheet id="lnurlWithdraw" snapPoints={snapPoints}>
 			<NavigationIndependentTree>
 				<NavigationContainer key={isOpen.toString()}>
 					<Stack.Navigator
@@ -70,7 +70,7 @@ const LNURLWithdrawNavigation = (): ReactElement => {
 					</Stack.Navigator>
 				</NavigationContainer>
 			</NavigationIndependentTree>
-		</BottomSheetWrapper>
+		</Sheet>
 	);
 };
 

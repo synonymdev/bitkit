@@ -2,7 +2,7 @@ import React, { memo, ReactElement, useEffect, useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 
 import BottomSheetScreen from '../../components/BottomSheetScreen';
-import BottomSheetWrapper from '../../components/BottomSheetWrapper';
+import Sheet from '../../components/Sheet';
 import {
 	useBottomSheetBackPress,
 	useSnapPoints,
@@ -11,7 +11,7 @@ import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { startCoopCloseTimestampSelector } from '../../store/reselect/user';
 import { closeSheet } from '../../store/slices/ui';
 import { clearCoopCloseTimer } from '../../store/slices/user';
-import { showBottomSheet } from '../../store/utils/ui';
+import { showSheet } from '../../store/utils/ui';
 import { Display } from '../../styles/text';
 import { closeAllChannels } from '../../utils/lightning';
 import { showToast } from '../../utils/notifications';
@@ -63,7 +63,7 @@ const ForceTransfer = (): ReactElement => {
 				console.log('giving up on coop close.');
 				dispatch(clearCoopCloseTimer());
 				clearInterval(interval);
-				showBottomSheet('forceTransfer');
+				showSheet('forceTransfer');
 				return;
 			}
 
@@ -114,7 +114,7 @@ const ForceTransfer = (): ReactElement => {
 	};
 
 	return (
-		<BottomSheetWrapper view="forceTransfer" snapPoints={snapPoints}>
+		<Sheet id="forceTransfer" snapPoints={snapPoints}>
 			<BottomSheetScreen
 				navTitle={t('force_nav_title')}
 				title={
@@ -133,7 +133,7 @@ const ForceTransfer = (): ReactElement => {
 				onContinue={onContinue}
 				onCancel={onCancel}
 			/>
-		</BottomSheetWrapper>
+		</Sheet>
 	);
 };
 

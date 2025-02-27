@@ -15,7 +15,7 @@ import {
 	contactsSelector,
 	onboardedContactsSelector,
 } from '../../store/reselect/slashtags';
-import { showBottomSheet } from '../../store/utils/ui';
+import { showSheet } from '../../store/utils/ui';
 import {
 	View as ThemedView,
 	TouchableHighlight,
@@ -73,7 +73,7 @@ const ContactsScreen = ({
 						testID="AddContact"
 						onPress={(): void => {
 							Keyboard.dismiss();
-							showBottomSheet('addContactModal');
+							showSheet('addContactModal');
 						}}>
 						<PlusIcon width={24} height={24} color="brand" />
 					</TouchableHighlight>

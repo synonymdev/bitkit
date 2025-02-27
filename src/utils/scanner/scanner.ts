@@ -33,7 +33,7 @@ import {
 } from '../../store/helpers';
 import { closeSheet, updateSendTransaction } from '../../store/slices/ui';
 import { EDenomination } from '../../store/types/wallet';
-import { showBottomSheet } from '../../store/utils/ui';
+import { showSheet } from '../../store/utils/ui';
 import { fiatToBitcoinUnit } from '../conversion';
 import { getBitcoinDisplayValues } from '../displayValues';
 import i18n from '../i18n';
@@ -620,7 +620,7 @@ const handleData = async ({
 				const screen = 'Quickpay';
 				const params = { invoice: lightningInvoice, amount };
 				// If BottomSheet is not open yet (MainScanner)
-				showBottomSheet('sendNavigation', { screen, ...params });
+				showSheet('sendNavigation', { screen, ...params });
 				// If BottomSheet is already open (SendScanner)
 				sendNavigation.navigate(screen, params);
 
@@ -637,7 +637,7 @@ const handleData = async ({
 
 			const screen = amount ? 'ReviewAndSend' : 'Amount';
 			// If BottomSheet is not open yet (MainScanner)
-			showBottomSheet('sendNavigation', { screen });
+			showSheet('sendNavigation', { screen });
 			// If BottomSheet is already open (SendScanner)
 			sendNavigation.navigate(screen);
 
@@ -666,7 +666,7 @@ const handleData = async ({
 			});
 
 			// If BottomSheet is not open yet (MainScanner)
-			showBottomSheet('sendNavigation', { screen: 'Amount' });
+			showSheet('sendNavigation', { screen: 'Amount' });
 			// If BottomSheet is already open (SendScanner)
 			sendNavigation.navigate('Amount');
 
@@ -684,7 +684,7 @@ const handleData = async ({
 				const screen = 'Quickpay';
 				const params = { invoice: lightningInvoice, amount };
 				// If BottomSheet is not open yet (MainScanner)
-				showBottomSheet('sendNavigation', { screen, ...params });
+				showSheet('sendNavigation', { screen, ...params });
 				// If BottomSheet is already open (SendScanner)
 				sendNavigation.navigate(screen, params);
 
@@ -696,7 +696,7 @@ const handleData = async ({
 			const invoiceAmount = amount ?? 0;
 			const screen = invoiceAmount ? 'ReviewAndSend' : 'Amount';
 			// If BottomSheet is not open yet (MainScanner)
-			showBottomSheet('sendNavigation', { screen });
+			showSheet('sendNavigation', { screen });
 			// If BottomSheet is already open (SendScanner)
 			sendNavigation.navigate(screen);
 
@@ -732,7 +732,7 @@ const handleData = async ({
 
 			if (pParams.minSendable === pParams.maxSendable) {
 				const amount = pParams.minSendable;
-				showBottomSheet('sendNavigation', {
+				showSheet('sendNavigation', {
 					screen: 'LNURLConfirm',
 					pParams,
 					amount,
@@ -744,7 +744,7 @@ const handleData = async ({
 					url: uri,
 				});
 			} else {
-				showBottomSheet('sendNavigation', {
+				showSheet('sendNavigation', {
 					screen: 'LNURLAmount',
 					pParams: pParams,
 					url: uri,
@@ -786,7 +786,7 @@ const handleData = async ({
 				);
 			}
 
-			showBottomSheet('lnurlWithdraw', { wParams: params });
+			showSheet('lnurlWithdraw', { wParams: params });
 			return ok('');
 		}
 		case EQRDataType.lnurlChannel: {
@@ -803,7 +803,7 @@ const handleData = async ({
 			return ok('');
 		}
 		case EQRDataType.orangeTicket: {
-			showBottomSheet('orangeTicket', { ticketId: data.ticketId });
+			showSheet('orangeTicket', { ticketId: data.ticketId });
 			return ok('');
 		}
 		case EQRDataType.nodeId: {
@@ -815,11 +815,11 @@ const handleData = async ({
 			return ok('');
 		}
 		case EQRDataType.treasureHunt: {
-			showBottomSheet('treasureHunt', { chestId: data.chestId });
+			showSheet('treasureHunt', { chestId: data.chestId });
 			return ok('');
 		}
 		case EQRDataType.pubkyAuth: {
-			showBottomSheet('pubkyAuth', { url: data.url });
+			showSheet('pubkyAuth', { url: data.url });
 			return ok('');
 		}
 	}

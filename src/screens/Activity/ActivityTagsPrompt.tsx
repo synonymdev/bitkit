@@ -2,8 +2,8 @@ import React, { memo, ReactElement, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet, View } from 'react-native';
 
-import BottomSheetWrapper from '../../components/BottomSheetWrapper';
 import SafeAreaInset from '../../components/SafeAreaInset';
+import Sheet from '../../components/Sheet';
 import Tag from '../../components/Tag';
 import Button from '../../components/buttons/Button';
 import {
@@ -51,8 +51,8 @@ const ActivityTagsPrompt = (): ReactElement => {
 	};
 
 	return (
-		<BottomSheetWrapper
-			view="activityTagsPrompt"
+		<Sheet
+			id="activityTagsPrompt"
 			snapPoints={snapPoints}
 			onClose={closeBottomSheet}>
 			<View style={styles.root}>
@@ -111,7 +111,7 @@ const ActivityTagsPrompt = (): ReactElement => {
 
 				<SafeAreaInset type="bottom" minPadding={16} />
 			</View>
-		</BottomSheetWrapper>
+		</Sheet>
 	);
 };
 

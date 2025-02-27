@@ -8,7 +8,7 @@ import React, { ReactElement, memo } from 'react';
 import { BiometryType } from 'react-native-biometrics';
 import { useAppSelector } from '../../hooks/redux';
 
-import BottomSheetWrapper from '../../components/BottomSheetWrapper';
+import Sheet from '../../components/Sheet';
 import { __E2E__ } from '../../constants/env';
 import { useSnapPoints } from '../../hooks/bottomSheet';
 import AskForBiometrics from '../../screens/Settings/PIN/AskForBiometrics';
@@ -41,7 +41,7 @@ const PINNavigation = (): ReactElement => {
 	});
 
 	return (
-		<BottomSheetWrapper view="PINNavigation" snapPoints={snapPoints}>
+		<Sheet id="PINNavigation" snapPoints={snapPoints}>
 			<NavigationIndependentTree>
 				<NavigationContainer key={isOpen.toString()}>
 					<Stack.Navigator screenOptions={screenOptions}>
@@ -55,7 +55,7 @@ const PINNavigation = (): ReactElement => {
 					</Stack.Navigator>
 				</NavigationContainer>
 			</NavigationIndependentTree>
-		</BottomSheetWrapper>
+		</Sheet>
 	);
 };
 

@@ -18,7 +18,7 @@ import Prize from '../../screens/OrangeTicket/Prize';
 import UsedCard from '../../screens/OrangeTicket/UsedCard';
 import { NavigationContainer } from '../../styles/components';
 
-import BottomSheetWrapper from '../../components/BottomSheetWrapper';
+import Sheet from '../../components/Sheet';
 import { __TREASURE_HUNT_HOST__ } from '../../constants/env';
 import {
 	useBottomSheetBackPress,
@@ -156,7 +156,7 @@ const OrangeTicket = (): ReactElement => {
 	}
 
 	return (
-		<BottomSheetWrapper view="orangeTicket" snapPoints={snapPoints}>
+		<Sheet id="orangeTicket" snapPoints={snapPoints}>
 			<NavigationIndependentTree>
 				<NavigationContainer key={isOpen.toString()}>
 					<Stack.Navigator
@@ -180,7 +180,7 @@ const OrangeTicket = (): ReactElement => {
 					</Stack.Navigator>
 				</NavigationContainer>
 			</NavigationIndependentTree>
-		</BottomSheetWrapper>
+		</Sheet>
 	);
 };
 

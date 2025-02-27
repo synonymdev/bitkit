@@ -15,7 +15,7 @@ import Tabs, { TTab } from '../../components/Tabs';
 import Tag from '../../components/Tag';
 import { useAppDispatch } from '../../hooks/redux';
 import { closeSheet } from '../../store/slices/ui';
-import { showBottomSheet } from '../../store/utils/ui';
+import { showSheet } from '../../store/utils/ui';
 import { ScrollView, View as ThemedView } from '../../styles/components';
 import { CalendarIcon, TagIcon } from '../../styles/icons';
 import ActivityList from './ActivityList';
@@ -128,7 +128,7 @@ const ActivityFiltered = (): ReactElement => {
 										testID="TagsPrompt"
 										onPress={(): void => {
 											Keyboard.dismiss();
-											showBottomSheet('tagsPrompt');
+											showSheet('tagsPrompt');
 										}}>
 										<TagIcon
 											height={25}
@@ -142,7 +142,7 @@ const ActivityFiltered = (): ReactElement => {
 										testID="TimeRangePrompt"
 										onPress={(): void => {
 											Keyboard.dismiss();
-											showBottomSheet('timeRangePrompt');
+											showSheet('timeRangePrompt');
 										}}>
 										<CalendarIcon
 											height={25}

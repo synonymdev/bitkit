@@ -18,7 +18,7 @@ import {
 } from '../store/reselect/todos';
 import { channelsNotificationsShown, hideTodo } from '../store/slices/todos';
 import { ITodo, TTodoType } from '../store/types/todos';
-import { showBottomSheet } from '../store/utils/ui';
+import { showSheet } from '../store/utils/ui';
 import { View as ThemedView } from '../styles/components';
 import { Caption13Up } from '../styles/text';
 import { getDurationForBlocks } from '../utils/helpers';
@@ -64,7 +64,7 @@ const Suggestions = (): ReactElement => {
 	const handleOnPress = useCallback(
 		(id: TTodoType): void => {
 			if (id === 'backupSeedPhrase') {
-				showBottomSheet('backupPrompt');
+				showSheet('backupPrompt');
 			}
 
 			if (id === 'lightning') {
@@ -81,7 +81,7 @@ const Suggestions = (): ReactElement => {
 
 			if (id === 'pin') {
 				if (!pinTodoDone) {
-					showBottomSheet('PINNavigation', { showLaterButton: true });
+					showSheet('PINNavigation', { showLaterButton: true });
 				} else {
 					navigation.navigate('Settings', { screen: 'DisablePin' });
 				}

@@ -2,7 +2,7 @@ import React, { memo, ReactElement, useEffect, useMemo } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 
 import BottomSheetScreen from '../../components/BottomSheetScreen';
-import BottomSheetWrapper from '../../components/BottomSheetWrapper';
+import Sheet from '../../components/Sheet';
 import { __E2E__ } from '../../constants/env';
 import {
 	useBottomSheetBackPress,
@@ -18,7 +18,7 @@ import {
 import { exchangeRatesSelector } from '../../store/reselect/wallet';
 import { closeSheet } from '../../store/slices/ui';
 import { MAX_WARNINGS, ignoreHighBalance } from '../../store/slices/user';
-import { showBottomSheet } from '../../store/utils/ui';
+import { showSheet } from '../../store/utils/ui';
 import { BodyMB, Display } from '../../styles/text';
 import { getFiatDisplayValues } from '../../utils/displayValues';
 import { openURL } from '../../utils/helpers';
@@ -84,7 +84,7 @@ const HighBalanceWarning = (): ReactElement => {
 		}
 
 		const timer = setTimeout(() => {
-			showBottomSheet('highBalance');
+			showSheet('highBalance');
 		}, CHECK_DELAY);
 
 		return (): void => {
@@ -102,8 +102,8 @@ const HighBalanceWarning = (): ReactElement => {
 	};
 
 	return (
-		<BottomSheetWrapper
-			view="highBalance"
+		<Sheet
+			id="highBalance"
 			snapPoints={snapPoints}
 			onClose={(): void => {
 				dispatch(ignoreHighBalance(false));
@@ -132,7 +132,7 @@ const HighBalanceWarning = (): ReactElement => {
 				onContinue={onDismiss}
 				onCancel={onMore}
 			/>
-		</BottomSheetWrapper>
+		</Sheet>
 	);
 };
 

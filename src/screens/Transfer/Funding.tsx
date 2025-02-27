@@ -10,7 +10,7 @@ import { useBalance } from '../../hooks/wallet';
 import type { TransferScreenProps } from '../../navigation/types';
 import { spendingIntroSeenSelector } from '../../store/reselect/settings';
 import { isGeoBlockedSelector } from '../../store/reselect/user';
-import { showBottomSheet } from '../../store/utils/ui';
+import { showSheet } from '../../store/utils/ui';
 import { View as ThemedView } from '../../styles/components';
 import { QrIcon, ShareAndroidIcon, TransferIcon } from '../../styles/icons';
 import { BodyM, Display } from '../../styles/text';
@@ -34,7 +34,7 @@ const Funding = ({
 
 	const onFund = (): void => {
 		navigation.popTo('Wallet', { screen: 'Home' });
-		showBottomSheet('receiveNavigation', { receiveScreen: 'ReceiveAmount' });
+		showSheet('receiveNavigation', { receiveScreen: 'ReceiveAmount' });
 	};
 
 	const onAdvanced = (): void => {
@@ -96,7 +96,7 @@ const Funding = ({
 				}}
 				onConfirm={(): void => {
 					setShowDialog(false);
-					showBottomSheet('receiveNavigation');
+					showSheet('receiveNavigation');
 				}}
 			/> */}
 			<SafeAreaInset type="bottom" minPadding={16} />

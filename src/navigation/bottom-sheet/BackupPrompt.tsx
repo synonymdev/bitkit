@@ -2,7 +2,7 @@ import React, { memo, ReactElement, useMemo, useEffect } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 
 import BottomSheetScreen from '../../components/BottomSheetScreen';
-import BottomSheetWrapper from '../../components/BottomSheetWrapper';
+import Sheet from '../../components/Sheet';
 import { __E2E__ } from '../../constants/env';
 import {
 	useBottomSheetBackPress,
@@ -13,43 +13,46 @@ import { useBalance } from '../../hooks/wallet';
 import { viewControllersSelector } from '../../store/reselect/ui';
 import { backupVerifiedSelector } from '../../store/reselect/user';
 import { ignoreBackupTimestampSelector } from '../../store/reselect/user';
-import { closeSheet } from '../../store/slices/ui';
 import { ignoreBackup } from '../../store/slices/user';
-import { showBottomSheet } from '../../store/utils/ui';
 import { Display } from '../../styles/text';
 import { objectKeys } from '../../utils/objectKeys';
+import { useSheetRef } from './SheetRefsProvider';
 
 const imageSrc = require('../../assets/illustrations/safe.png');
 
 const ASK_INTERVAL = 1000 * 60 * 60 * 24; // 1 day - how long this prompt will be hidden if user taps Later
 const CHECK_DELAY = 2000; // how long user needs to stay on Wallets screen before he will see this prompt
 
+const sheetId = 'backupPrompt';
+
 const BackupPrompt = (): ReactElement => {
-	const { t } = useTranslation('security');
-	const snapPoints = useSnapPoints('medium');
 	const dispatch = useAppDispatch();
+	const { t } = useTranslation('security');
+	const sheetRef = useSheetRef(sheetId);
+	const backupNavigationSheetRef = useSheetRef('backupNavigation');
+	const snapPoints = useSnapPoints('medium');
 	const viewControllers = useAppSelector(viewControllersSelector);
 	const ignoreTimestamp = useAppSelector(ignoreBackupTimestampSelector);
 	const backupVerified = useAppSelector(backupVerifiedSelector);
 	const { totalBalance } = useBalance();
 
-	useBottomSheetBackPress('backupPrompt');
+	useBottomSheetBackPress(sheetId);
 
 	const anyBottomSheetIsOpen = useMemo(() => {
 		const viewControllerKeys = objectKeys(viewControllers);
 		return viewControllerKeys
-			.filter((view) => view !== 'backupPrompt')
+			.filter((view) => view !== sheetId)
 			.some((view) => viewControllers[view].isOpen);
 	}, [viewControllers]);
 
 	const handleLater = (): void => {
 		dispatch(ignoreBackup());
-		dispatch(closeSheet('backupPrompt'));
+		sheetRef.current?.close();
 	};
 
 	const handleBackup = (): void => {
-		dispatch(closeSheet('backupPrompt'));
-		showBottomSheet('backupNavigation');
+		sheetRef.current?.close();
+		backupNavigationSheetRef.current?.present();
 	};
 
 	// if backup has not been verified
@@ -68,13 +71,14 @@ const BackupPrompt = (): ReactElement => {
 		);
 	}, [backupVerified, totalBalance, ignoreTimestamp, anyBottomSheetIsOpen]);
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: sheetRef doesn't change
 	useEffect(() => {
 		if (!shouldShowBottomSheet) {
 			return;
 		}
 
 		const timer = setTimeout(() => {
-			showBottomSheet('backupPrompt');
+			sheetRef.current?.present();
 		}, CHECK_DELAY);
 
 		return (): void => {
@@ -85,8 +89,8 @@ const BackupPrompt = (): ReactElement => {
 	const text = totalBalance > 0 ? t('backup_funds') : t('backup_funds_no');
 
 	return (
-		<BottomSheetWrapper
-			view="backupPrompt"
+		<Sheet
+			id={sheetId}
 			snapPoints={snapPoints}
 			onClose={(): void => {
 				dispatch(ignoreBackup());
@@ -109,7 +113,7 @@ const BackupPrompt = (): ReactElement => {
 				onContinue={handleBackup}
 				onCancel={handleLater}
 			/>
-		</BottomSheetWrapper>
+		</Sheet>
 	);
 };
 

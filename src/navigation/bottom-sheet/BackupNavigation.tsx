@@ -6,7 +6,7 @@ import {
 } from '@react-navigation/native-stack';
 import React, { ReactElement, memo } from 'react';
 
-import BottomSheetWrapper from '../../components/BottomSheetWrapper';
+import Sheet from '../../components/Sheet';
 import { __E2E__ } from '../../constants/env';
 import { useSnapPoints } from '../../hooks/bottomSheet';
 import { useAppSelector } from '../../hooks/redux';
@@ -49,7 +49,7 @@ const BackupNavigation = (): ReactElement => {
 	});
 
 	return (
-		<BottomSheetWrapper view="backupNavigation" snapPoints={snapPoints}>
+		<Sheet id="backupNavigation" snapPoints={snapPoints}>
 			<NavigationIndependentTree>
 				<NavigationContainer key={isOpen.toString()}>
 					<Stack.Navigator screenOptions={navOptions}>
@@ -67,7 +67,7 @@ const BackupNavigation = (): ReactElement => {
 					</Stack.Navigator>
 				</NavigationContainer>
 			</NavigationIndependentTree>
-		</BottomSheetWrapper>
+		</Sheet>
 	);
 };
 

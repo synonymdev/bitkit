@@ -16,21 +16,21 @@ import ReceiveNavigation from './ReceiveNavigation';
 import SendNavigation from './SendNavigation';
 
 const BottomSheets = (): JSX.Element => {
-	const views = useAppSelector(viewControllersSelector);
+	// const views = useAppSelector(viewControllersSelector);
 
 	return (
 		<>
-			{views.backupNavigation.isMounted && <BackupNavigation />}
-			{views.boostPrompt.isMounted && <BoostPrompt />}
-			{views.connectionClosed.isMounted && <ConnectionClosed />}
-			{views.lnurlWithdraw.isMounted && <LNURLWithdrawNavigation />}
-			{views.newTxPrompt.isMounted && <NewTxPrompt />}
-			{views.orangeTicket.isMounted && <OrangeTicketNavigation />}
-			{views.PINNavigation.isMounted && <PINNavigation />}
-			{views.receiveNavigation.isMounted && <ReceiveNavigation />}
-			{views.sendNavigation.isMounted && <SendNavigation />}
-			{/* {views.treasureHunt.isMounted && <TreasureHuntNavigation />} */}
-			{views.pubkyAuth.isMounted && <PubkyAuth />}
+			<BackupNavigation />
+			<BoostPrompt />
+			<ConnectionClosed />
+			<LNURLWithdrawNavigation />
+			<NewTxPrompt />
+			<OrangeTicketNavigation />
+			<PINNavigation />
+			<ReceiveNavigation />
+			<SendNavigation />
+			{/* <TreasureHuntNavigation /> */}
+			<PubkyAuth />
 		</>
 	);
 };

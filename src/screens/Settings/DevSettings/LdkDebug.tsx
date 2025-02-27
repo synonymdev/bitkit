@@ -21,7 +21,7 @@ import {
 	createLightningInvoice,
 	savePeer,
 } from '../../../store/utils/lightning';
-import { showBottomSheet } from '../../../store/utils/ui';
+import { showSheet } from '../../../store/utils/ui';
 import { TextInput, View as ThemedView } from '../../../styles/components';
 import { Caption13Up } from '../../../styles/text';
 import {
@@ -263,7 +263,7 @@ const LdkDebug = (): ReactElement => {
 	};
 
 	const onForceCloseChannels = (): void => {
-		showBottomSheet('forceTransfer');
+		showSheet('forceTransfer');
 	};
 
 	const onSpendOutputsFromForceClose = async (): Promise<void> => {

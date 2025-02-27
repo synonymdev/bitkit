@@ -2,7 +2,7 @@ import React, { memo, ReactElement } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 
 import BottomSheetScreen from '../../components/BottomSheetScreen';
-import BottomSheetWrapper from '../../components/BottomSheetWrapper';
+import Sheet from '../../components/Sheet';
 import {
 	useBottomSheetBackPress,
 	useSnapPoints,
@@ -22,7 +22,7 @@ const TransferFailed = (): ReactElement => {
 	const onContinue = async (): Promise<void> => {};
 
 	return (
-		<BottomSheetWrapper view="transferFailed" snapPoints={snapPoints}>
+		<Sheet id="transferFailed" snapPoints={snapPoints}>
 			<BottomSheetScreen
 				navTitle={t('transfer_failed.nav_title')}
 				title={
@@ -40,7 +40,7 @@ const TransferFailed = (): ReactElement => {
 				onContinue={onContinue}
 				onCancel={onCancel}
 			/>
-		</BottomSheetWrapper>
+		</Sheet>
 	);
 };
 

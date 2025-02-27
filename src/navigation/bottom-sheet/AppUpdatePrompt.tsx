@@ -2,7 +2,7 @@ import React, { memo, ReactElement, useEffect, useMemo } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 
 import BottomSheetScreen from '../../components/BottomSheetScreen';
-import BottomSheetWrapper from '../../components/BottomSheetWrapper';
+import Sheet from '../../components/Sheet';
 import { __E2E__ } from '../../constants/env';
 import {
 	useBottomSheetBackPress,
@@ -16,7 +16,7 @@ import {
 import { ignoreAppUpdateTimestampSelector } from '../../store/reselect/user';
 import { closeSheet } from '../../store/slices/ui';
 import { ignoreAppUpdate } from '../../store/slices/user';
-import { showBottomSheet } from '../../store/utils/ui';
+import { showSheet } from '../../store/utils/ui';
 import { Display } from '../../styles/text';
 import { openURL } from '../../utils/helpers';
 import { objectKeys } from '../../utils/objectKeys';
@@ -64,7 +64,7 @@ const AppUpdatePrompt = (): ReactElement => {
 		}
 
 		const timer = setTimeout(() => {
-			showBottomSheet('appUpdatePrompt');
+			showSheet('appUpdatePrompt');
 		}, CHECK_DELAY);
 
 		return (): void => {
@@ -88,10 +88,7 @@ const AppUpdatePrompt = (): ReactElement => {
 	};
 
 	return (
-		<BottomSheetWrapper
-			view="appUpdatePrompt"
-			snapPoints={snapPoints}
-			onClose={onClose}>
+		<Sheet id="appUpdatePrompt" snapPoints={snapPoints} onClose={onClose}>
 			<BottomSheetScreen
 				navTitle={t('update_nav_title')}
 				title={
@@ -110,7 +107,7 @@ const AppUpdatePrompt = (): ReactElement => {
 				onContinue={onUpdate}
 				onCancel={onCancel}
 			/>
-		</BottomSheetWrapper>
+		</Sheet>
 	);
 };
 
