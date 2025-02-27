@@ -91,7 +91,7 @@ const Sheet = ({
 				style={styles.container}
 				testID={testID}
 				onLayout={() => {
-					console.log('Sheet ref is available:', id);
+					// console.log('Sheet ref is available:', id);
 				}}>
 				{children}
 			</BottomSheetView>

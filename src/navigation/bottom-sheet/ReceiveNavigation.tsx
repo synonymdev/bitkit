@@ -69,6 +69,7 @@ const ReceiveNavigation = (): ReactElement => {
 			id="receiveNavigation"
 			snapPoints={snapPoints}
 			testID="ReceiveScreen"
+			// NOTE: this reset it twice?
 			onOpen={reset}
 			onClose={reset}>
 			<NavigationIndependentTree>

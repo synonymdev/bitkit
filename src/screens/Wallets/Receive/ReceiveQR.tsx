@@ -114,6 +114,8 @@ const ReceiveQR = ({
 		!!jitInvoice || lightningBalance.remoteBalance > 0,
 	);
 
+	console.log({ id });
+
 	useBottomSheetBackPress('receiveNavigation');
 
 	useEffect(() => {
