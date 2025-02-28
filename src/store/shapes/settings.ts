@@ -1,17 +1,35 @@
 import { ECoinSelectPreference, EProtocol, TServer } from 'beignet';
 import cloneDeep from 'lodash/cloneDeep';
+import { getCurrencies } from 'react-native-localize';
 
 import {
+	__E2E__,
 	__ELECTRUM_REGTEST_HOST__,
 	__ELECTRUM_REGTEST_PROTO__,
 	__ELECTRUM_REGTEST_SSL_PORT__,
 	__ELECTRUM_REGTEST_TCP_PORT__,
 	__WEB_RELAY__,
 } from '../../constants/env';
+import { currencies } from '../../utils/exchange-rate/currencies';
 import { EAvailableNetwork } from '../../utils/networks';
 import { TSettings } from '../slices/settings';
 import { ETransactionSpeed } from '../types/settings';
 import { EDenomination, EUnit } from '../types/wallet';
+
+const getDefaultCurrency = (): string => {
+	if (__E2E__) {
+		return 'USD';
+	}
+
+	const localCurrencies = getCurrencies();
+
+	// Find the first currency that matches the user's preference
+	const preferredCurrency = localCurrencies.find((currency) => {
+		return currencies.includes(currency);
+	});
+
+	return preferredCurrency ?? 'USD';
+};
 
 export const defaultElectrumPeer: Record<EAvailableNetwork, TServer[]> = {
 	bitcoin: [
@@ -82,7 +100,7 @@ export const initialSettingsState: TSettings = {
 	theme: 'dark',
 	unit: EUnit.BTC,
 	denomination: EDenomination.modern,
-	selectedCurrency: 'USD',
+	selectedCurrency: getDefaultCurrency(),
 	selectedLanguage: 'english',
 	customElectrumPeers: defaultElectrumPeer,
 	rapidGossipSyncUrl: 'https://rgs.blocktank.to/snapshot/',

@@ -535,14 +535,14 @@ d('Settings', () => {
 				by.id('ConnectedUrl'),
 			).getAttributes();
 
-			const alteredRelay = origRelay + '/';
+			const alteredRelay = `${origRelay}/`;
 			await element(by.id('UrlInput')).replaceText(alteredRelay);
 			await element(by.id('WebRelayStatus')).tap(); // close keyboard
 			await element(by.id('ConnectToUrl')).tap();
 			await sleep(1000);
 
 			// url should be updated
-			let { label: newRelay } = await element(
+			const { label: newRelay } = await element(
 				by.id('ConnectedUrl'),
 			).getAttributes();
 
@@ -570,14 +570,14 @@ d('Settings', () => {
 			).getAttributes();
 
 			// add slash at the end
-			const newUrl = origValue + '/';
+			const newUrl = `${origValue}/`;
 			await element(by.id('RGSUrl')).replaceText(newUrl);
 			await element(by.id('RGSUrl')).tapReturnKey();
 			await element(by.id('ConnectToHost')).tap();
 			await sleep(1000);
 
 			// url should be updated
-			let { label: newValue } = await element(
+			const { label: newValue } = await element(
 				by.id('ConnectedUrl'),
 			).getAttributes();
 
@@ -587,7 +587,7 @@ d('Settings', () => {
 			await element(by.id('ResetToDefault')).tap();
 			await element(by.id('ConnectToHost')).tap();
 
-			let { label: resetValue } = await element(
+			const { label: resetValue } = await element(
 				by.id('ConnectedUrl'),
 			).getAttributes();
 
