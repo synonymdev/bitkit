@@ -19,6 +19,8 @@ const CurrenciesSettings = ({
 	const selectedCurrency = useAppSelector(selectedCurrencySelector);
 
 	const currencyListData: IListData[] = useMemo(() => {
+		const currencies = Object.keys(exchangeRates).sort();
+
 		const onSetCurrency = (currency: string): void => {
 			dispatch(updateSettings({ selectedCurrency: currency }));
 		};
@@ -40,17 +42,15 @@ const CurrenciesSettings = ({
 			},
 			{
 				title: t('general.currency_other'),
-				data: Object.keys(exchangeRates)
-					.sort()
-					.map((ticker) => ({
-						title: ticker,
-						value: selectedCurrency === ticker,
-						type: EItemType.button,
-						onPress: (): void => {
-							navigation.goBack();
-							onSetCurrency(ticker);
-						},
-					})),
+				data: currencies.map((ticker) => ({
+					title: ticker,
+					value: selectedCurrency === ticker,
+					type: EItemType.button,
+					onPress: (): void => {
+						navigation.goBack();
+						onSetCurrency(ticker);
+					},
+				})),
 			},
 		];
 	}, [selectedCurrency, exchangeRates, navigation, t, dispatch]);

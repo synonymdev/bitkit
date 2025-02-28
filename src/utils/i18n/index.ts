@@ -1,7 +1,7 @@
 import i18n from 'i18next';
 import ICU from 'i18next-icu';
 import { initReactI18next } from 'react-i18next';
-import * as RNLocalize from 'react-native-localize';
+import { findBestLanguageTag, getTimeZone } from 'react-native-localize';
 
 import { __ENABLE_I18NEXT_DEBUGGER__, __JEST__ } from '../../constants/env';
 import { dispatch } from '../../store/helpers';
@@ -14,9 +14,7 @@ import locales, {
 } from './locales';
 
 const getDeviceLanguage = (): string => {
-	const lang =
-		RNLocalize.findBestLanguageTag(Object.keys(locales))?.languageTag ?? 'en';
-	return lang;
+	return findBestLanguageTag(Object.keys(locales))?.languageTag ?? 'en';
 };
 
 const resources = convert(locales);
@@ -41,7 +39,7 @@ i18nICU
 		returnNull: false,
 	})
 	.then(() => {
-		let timeZone = RNLocalize.getTimeZone();
+		let timeZone = getTimeZone();
 
 		// if polyfill is used, we need to set default timezone
 		// https://formatjs.io/docs/polyfills/intl-datetimeformat/#default-timezone

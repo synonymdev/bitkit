@@ -5889,7 +5889,7 @@ __metadata:
     react-native-image-picker: 8.1.0
     react-native-keyboard-accessory: 0.1.16
     react-native-keychain: 9.2.3
-    react-native-localize: 3.0.2
+    react-native-localize: 3.4.1
     react-native-mmkv: 2.12.2
     react-native-modal: 13.0.1
     react-native-permissions: 5.2.5
@@ -12640,9 +12640,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-localize@npm:3.0.2":
-  version: 3.0.2
-  resolution: "react-native-localize@npm:3.0.2"
+"react-native-localize@npm:3.4.1":
+  version: 3.4.1
+  resolution: "react-native-localize@npm:3.4.1"
   peerDependencies:
     react: ">=18.1.0"
     react-native: ">=0.70.0"
@@ -12650,7 +12650,7 @@ __metadata:
   peerDependenciesMeta:
     react-native-macos:
       optional: true
-  checksum: 46abd6046dfb1fb5426f9e51971894e893556646206b7fa387c5eb9394a3f3b9ddce190bc94ffc9c51c65326f60bbad57219d8330b4a1dcfaf46dd2eb4ef43ae
+  checksum: 2ec4c1992d88c208af3688e9be128ef16c293280677d5493bcae7cee7f66f59c73b91db2370b1879383b9ae5618caab3d569e51024b11d976a732afd5440e87d
   languageName: node
   linkType: hard
 
