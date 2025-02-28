@@ -214,7 +214,7 @@ d('Transfer', () => {
 		await expect(element(by.id('Suggestion-lightningSettingUp'))).toBeVisible();
 
 		// check activity after restore
-		await element(by.id('WalletsScrollView')).scrollTo('bottom', 0);
+		await element(by.id('HomeScrollView')).scrollTo('bottom', 0);
 		await element(by.id('ActivityShort-1')).tap();
 		await expect(element(by.id('StatusTransfer'))).toBeVisible();
 
@@ -235,7 +235,7 @@ d('Transfer', () => {
 		await restoreWallet(seed);
 
 		// check activity after restore
-		await element(by.id('WalletsScrollView')).scrollTo('bottom', 0);
+		await element(by.id('HomeScrollView')).scrollTo('bottom', 0);
 		await expect(element(by.id('BoostingIcon'))).toBeVisible();
 		await element(by.id('ActivityShort-1')).tap();
 		await expect(element(by.id('StatusBoosting'))).toBeVisible();
@@ -327,7 +327,7 @@ d('Transfer', () => {
 		await expect(element(by.id('Suggestion-lightningSettingUp'))).toBeVisible();
 
 		// check activity
-		await element(by.id('WalletsScrollView')).scrollTo('bottom', 0);
+		await element(by.id('HomeScrollView')).scrollTo('bottom', 0);
 		await expect(element(by.text('From Savings (±30m)'))).toBeVisible();
 		await element(by.id('ActivityShort-1')).tap();
 		await expect(element(by.text('Transfer (±30m)'))).toBeVisible();

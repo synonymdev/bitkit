@@ -16,7 +16,7 @@ const Success = ({
 	const { type } = route.params;
 
 	const onContinue = (): void => {
-		navigation.popTo('Wallet', { screen: 'Wallets' });
+		navigation.popTo('Wallet', { screen: 'Home' });
 	};
 
 	const isTransferToSavings = type === 'savings';

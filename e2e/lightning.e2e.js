@@ -230,7 +230,7 @@ d('Lightning', () => {
 				.withTimeout(10000);
 
 			// check tx history
-			await element(by.id('WalletsScrollView')).scroll(1000, 'down', 0);
+			await element(by.id('HomeScrollView')).scroll(1000, 'down', 0);
 			await expect(
 				element(by.text('1 000').withAncestor(by.id('ActivityShort-1'))),
 			).toBeVisible();
@@ -322,7 +322,7 @@ d('Lightning', () => {
 				.withTimeout(10000);
 
 			// check tx history
-			await element(by.id('WalletsScrollView')).scroll(1000, 'down', 0);
+			await element(by.id('HomeScrollView')).scroll(1000, 'down', 0);
 			await expect(
 				element(by.text('111').withAncestor(by.id('ActivityShort-2'))),
 			).toBeVisible();

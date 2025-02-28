@@ -24,7 +24,7 @@ const imageSrc = require('../../assets/illustrations/fast-forward.png');
 
 const CHECK_DELAY = 3000; // how long user needs to stay on Wallets screen before he will see this prompt
 
-const QuickPayPrompt = ({ enabled }: { enabled: boolean }): ReactElement => {
+const QuickPayPrompt = (): ReactElement => {
 	const { t } = useTranslation('settings');
 	const navigation = useNavigation<RootNavigationProp>();
 	const { spendingBalance } = useBalance();
@@ -48,13 +48,12 @@ const QuickPayPrompt = ({ enabled }: { enabled: boolean }): ReactElement => {
 	// and user on "Wallets" screen for CHECK_DELAY
 	const shouldShowBottomSheet = useMemo(() => {
 		return (
-			enabled &&
 			!__E2E__ &&
 			!anyBottomSheetIsOpen &&
 			!quickpayIntroSeen &&
 			spendingBalance > 0
 		);
-	}, [enabled, anyBottomSheetIsOpen, quickpayIntroSeen, spendingBalance]);
+	}, [anyBottomSheetIsOpen, quickpayIntroSeen, spendingBalance]);
 
 	useEffect(() => {
 		if (!shouldShowBottomSheet) {
@@ -105,6 +104,7 @@ const QuickPayPrompt = ({ enabled }: { enabled: boolean }): ReactElement => {
 					/>
 				}
 				image={imageSrc}
+				showBackButton={false}
 				continueText={t('learn_more')}
 				cancelText={t('later')}
 				testID="QuickPayPrompt"

@@ -1,5 +1,4 @@
-import { useFocusEffect } from '@react-navigation/native';
-import React, { memo, ReactElement, useState, useCallback } from 'react';
+import React, { memo, ReactElement, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet, View } from 'react-native';
 import { RefreshControl, ScrollView } from 'react-native-gesture-handler';
@@ -14,7 +13,10 @@ import Widgets from '../../components/Widgets';
 import useColors from '../../hooks/colors';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { useBalance } from '../../hooks/wallet';
-import type { WalletScreenProps } from '../../navigation/types';
+import AppUpdatePrompt from '../../navigation/bottom-sheet/AppUpdatePrompt';
+import BackupPrompt from '../../navigation/bottom-sheet/BackupPrompt';
+import HighBalanceWarning from '../../navigation/bottom-sheet/HighBalanceWarning';
+import QuickPayPrompt from '../../navigation/bottom-sheet/QuickPayPrompt';
 import ActivityListShort from '../../screens/Activity/ActivityListShort';
 import {
 	enableSwipeToHideBalanceSelector,
@@ -36,11 +38,7 @@ import MainOnboarding from './MainOnboarding';
 
 const HEADER_HEIGHT = 46;
 
-type Props = WalletScreenProps<'Wallets'> & {
-	onFocus: (isFocused: boolean) => void;
-};
-
-const Wallets = ({ onFocus }: Props): ReactElement => {
+const Home = (): ReactElement => {
 	const [refreshing, setRefreshing] = useState(false);
 	const colors = useColors();
 	const dispatch = useAppDispatch();
@@ -59,14 +57,6 @@ const Wallets = ({ onFocus }: Props): ReactElement => {
 	const showWidgets = useAppSelector(showWidgetsSelector);
 	const insets = useSafeAreaInsets();
 	const { t } = useTranslation('wallet');
-
-	// tell WalletNavigator that this screen is focused
-	useFocusEffect(
-		useCallback(() => {
-			onFocus(true);
-			return (): void => onFocus(false);
-		}, [onFocus]),
-	);
 
 	const toggleHideBalance = (): void => {
 		const enabled = !hideBalance;
@@ -95,50 +85,60 @@ const Wallets = ({ onFocus }: Props): ReactElement => {
 	const hideOnboarding = hideOnboardingSetting || totalBalance > 0;
 
 	return (
-		<ThemedView style={styles.root}>
-			<SafeAreaInset type="top" />
-			<View style={[styles.header, { top: insets.top }]}>
-				<Header />
-			</View>
-			<ScrollView
-				contentContainerStyle={[
-					styles.content,
-					hideOnboarding && styles.scrollView,
-				]}
-				disableScrollViewPanResponder={true}
-				showsVerticalScrollIndicator={false}
-				testID="WalletsScrollView"
-				refreshControl={
-					<RefreshControl
-						refreshing={refreshing}
-						tintColor={colors.refreshControl}
-						progressViewOffset={HEADER_HEIGHT}
-						onRefresh={onRefresh}
-					/>
-				}>
-				<DetectSwipe
-					enabled={enableSwipeToHideBalance}
-					onSwipeLeft={toggleHideBalance}
-					onSwipeRight={toggleHideBalance}>
-					<View>
-						<BalanceHeader />
-					</View>
-				</DetectSwipe>
+		<>
+			<ThemedView style={styles.root}>
+				<SafeAreaInset type="top" />
+				{/* Need this wrapper for Android e2e tests */}
+				<View style={[styles.header, { top: insets.top }]}>
+					<Header />
+				</View>
 
-				{hideOnboarding ? (
-					<>
-						<Balances />
-						<Suggestions />
-						<View style={styles.contentPadding}>
-							{showWidgets && <Widgets />}
-							<ActivityListShort />
+				<ScrollView
+					contentContainerStyle={[
+						styles.content,
+						hideOnboarding && styles.scrollView,
+					]}
+					disableScrollViewPanResponder={true}
+					showsVerticalScrollIndicator={false}
+					testID="HomeScrollView"
+					refreshControl={
+						<RefreshControl
+							refreshing={refreshing}
+							tintColor={colors.refreshControl}
+							progressViewOffset={HEADER_HEIGHT}
+							onRefresh={onRefresh}
+						/>
+					}>
+					<DetectSwipe
+						enabled={enableSwipeToHideBalance}
+						onSwipeLeft={toggleHideBalance}
+						onSwipeRight={toggleHideBalance}>
+						<View>
+							<BalanceHeader />
 						</View>
-					</>
-				) : (
-					<MainOnboarding style={styles.contentPadding} />
-				)}
-			</ScrollView>
-		</ThemedView>
+					</DetectSwipe>
+
+					{hideOnboarding ? (
+						<>
+							<Balances />
+							<Suggestions />
+							<View style={styles.contentPadding}>
+								{showWidgets && <Widgets />}
+								<ActivityListShort />
+							</View>
+						</>
+					) : (
+						<MainOnboarding style={styles.contentPadding} />
+					)}
+				</ScrollView>
+			</ThemedView>
+
+			{/* Timed/conditional bottom-sheets */}
+			<BackupPrompt />
+			<HighBalanceWarning />
+			<AppUpdatePrompt />
+			<QuickPayPrompt />
+		</>
 	);
 };
 
@@ -164,4 +164,4 @@ const styles = StyleSheet.create({
 	},
 });
 
-export default memo(Wallets);
+export default memo(Home);

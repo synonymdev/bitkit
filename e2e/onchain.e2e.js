@@ -140,7 +140,7 @@ d('Onchain', () => {
 			).toHaveText('0');
 
 			// check Activity
-			await element(by.id('WalletsScrollView')).scroll(1000, 'down', 0);
+			await element(by.id('HomeScrollView')).scroll(1000, 'down', 0);
 			await expect(element(by.id('ActivityShort-1'))).toBeVisible();
 			await expect(element(by.id('ActivityShort-2'))).toBeVisible();
 			await expect(element(by.id('ActivityShort-3'))).toBeVisible();
@@ -306,7 +306,7 @@ d('Onchain', () => {
 			).toHaveText('0');
 
 			// check number of outputs for send tx
-			await element(by.id('WalletsScrollView')).scroll(1000, 'down', 0);
+			await element(by.id('HomeScrollView')).scroll(1000, 'down', 0);
 			await expect(element(by.id('ActivityShort-1'))).toBeVisible();
 			await expect(element(by.id('ActivityShort-2'))).toBeVisible();
 			await element(by.id('ActivityShowAll')).tap();

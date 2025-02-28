@@ -50,7 +50,7 @@ const LNURLChannel = ({
 	};
 
 	const onClosePress = (): void => {
-		navigation.popTo('Wallet', { screen: 'Wallets' });
+		navigation.popTo('Wallet', { screen: 'Home' });
 	};
 
 	return (

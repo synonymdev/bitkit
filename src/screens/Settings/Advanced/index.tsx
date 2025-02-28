@@ -160,7 +160,7 @@ const AdvancedSettings = ({
 				onConfirm={(): void => {
 					dispatch(resetHiddenTodos());
 					setShowDialog(false);
-					navigation.popTo('Wallet', { screen: 'Wallets' });
+					navigation.popTo('Wallet', { screen: 'Home' });
 				}}
 			/>
 		</>

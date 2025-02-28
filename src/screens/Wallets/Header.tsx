@@ -1,7 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { memo, ReactElement } from 'react';
 import { useTranslation } from 'react-i18next';
-import { StyleSheet, View } from 'react-native';
+import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 
 import ProfileImage from '../../components/ProfileImage';
 import VerticalShadow from '../../components/VerticalShadow';
@@ -12,7 +12,7 @@ import { ProfileIcon, SettingsIcon } from '../../styles/icons';
 import { Title } from '../../styles/text';
 import { truncate } from '../../utils/helpers';
 
-const Header = (): ReactElement => {
+const Header = ({ style }: { style?: StyleProp<ViewStyle> }): ReactElement => {
 	const navigation = useNavigation<RootNavigationProp>();
 	const { t } = useTranslation('slashtags');
 	const { url } = useSlashtags();
@@ -31,7 +31,7 @@ const Header = (): ReactElement => {
 	};
 
 	return (
-		<View style={styles.container}>
+		<View style={[styles.container, style]}>
 			<View style={styles.shadowContainer}>
 				<VerticalShadow />
 			</View>

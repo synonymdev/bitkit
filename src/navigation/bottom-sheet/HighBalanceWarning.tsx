@@ -31,11 +31,7 @@ const BALANCE_THRESHOLD_SATS = 700000; // how high the balance must be to show t
 const ASK_INTERVAL = 1000 * 60 * 60 * 24; // 1 day - how long this prompt will be hidden if user taps Later
 const CHECK_DELAY = 3000; // how long user needs to stay on Wallets screen before he will see this prompt
 
-const HighBalanceWarning = ({
-	enabled,
-}: {
-	enabled: boolean;
-}): ReactElement => {
+const HighBalanceWarning = (): ReactElement => {
 	const { t } = useTranslation('other');
 	const { totalBalance } = useBalance();
 	const snapPoints = useSnapPoints('large');
@@ -74,21 +70,13 @@ const HighBalanceWarning = ({
 		const belowMaxWarnings = count < MAX_WARNINGS;
 		const isTimeoutOver = Number(new Date()) - ignoreTimestamp > ASK_INTERVAL;
 		return (
-			enabled &&
 			!__E2E__ &&
 			thresholdReached &&
 			belowMaxWarnings &&
 			isTimeoutOver &&
 			!anyBottomSheetIsOpen
 		);
-	}, [
-		enabled,
-		fiatValue,
-		totalBalance,
-		count,
-		ignoreTimestamp,
-		anyBottomSheetIsOpen,
-	]);
+	}, [fiatValue, totalBalance, count, ignoreTimestamp, anyBottomSheetIsOpen]);
 
 	useEffect(() => {
 		if (!shouldShowBottomSheet) {
@@ -137,6 +125,7 @@ const HighBalanceWarning = ({
 					/>
 				}
 				image={imageSrc}
+				showBackButton={false}
 				continueText={t('high_balance.continue')}
 				cancelText={t('high_balance.cancel')}
 				testID="HighBalance"

@@ -30,7 +30,10 @@ const ConnectionClosed = (): ReactElement => {
 	return (
 		<BottomSheetWrapper view="connectionClosed" snapPoints={snapPoints}>
 			<View style={styles.container}>
-				<BottomSheetNavigationHeader title={t('connection_closed.title')} />
+				<BottomSheetNavigationHeader
+					title={t('connection_closed.title')}
+					showBackButton={false}
+				/>
 				<BodyM color="secondary">{t('connection_closed.description')}</BodyM>
 
 				<View style={styles.imageContainer}>
@@ -54,7 +57,7 @@ const ConnectionClosed = (): ReactElement => {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		marginHorizontal: 32,
+		marginHorizontal: 16,
 	},
 	imageContainer: {
 		flexShrink: 1,

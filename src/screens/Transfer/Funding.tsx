@@ -33,7 +33,7 @@ const Funding = ({
 	};
 
 	const onFund = (): void => {
-		navigation.popTo('Wallet', { screen: 'Wallets' });
+		navigation.popTo('Wallet', { screen: 'Home' });
 		showBottomSheet('receiveNavigation', { receiveScreen: 'ReceiveAmount' });
 	};
 

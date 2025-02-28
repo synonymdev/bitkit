@@ -94,7 +94,7 @@ const NavigationHeader = ({
 
 		if (hasWalletRoute || parent) {
 			// for nested navigators, pop to top of parent navigator
-			navigation.popTo('Wallet', { screen: 'Wallets' });
+			navigation.popTo('Wallet', { screen: 'Home' });
 		} else {
 			navigation.popToTop();
 		}

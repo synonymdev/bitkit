@@ -7,7 +7,7 @@ import {
 	StyleSheet,
 	ViewStyle,
 } from 'react-native';
-import { FadeIn } from 'react-native-reanimated';
+import Animated, { FadeIn } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { receiveIcon, sendIcon } from '../assets/icons/tabs';
@@ -18,8 +18,8 @@ import type { RootNavigationProp } from '../navigation/types';
 import { resetSendTransaction } from '../store/actions/wallet';
 import { spendingOnboardingSelector } from '../store/reselect/aggregations';
 import { viewControllersSelector } from '../store/reselect/ui';
+import { TViewController } from '../store/types/ui';
 import { toggleBottomSheet } from '../store/utils/ui';
-import { AnimatedView } from '../styles/components';
 import { ScanIcon } from '../styles/icons';
 import ButtonBlur from './buttons/ButtonBlur';
 
@@ -35,8 +35,15 @@ const TabBar = ({
 	const isSpendingOnboarding = useAppSelector(spendingOnboardingSelector);
 
 	const shouldHide = useMemo(() => {
-		const activityFilterSheets = ['timeRangePrompt', 'tagsPrompt'];
-		return activityFilterSheets.some((view) => viewControllers[view].isOpen);
+		const viewControllerKeys: TViewController[] = [
+			'backupPrompt',
+			'PINNavigation',
+			'highBalance',
+			'appUpdatePrompt',
+			'timeRangePrompt',
+			'tagsPrompt',
+		];
+		return viewControllerKeys.some((view) => viewControllers[view].isOpen);
 	}, [viewControllers]);
 
 	const onReceivePress = (): void => {
@@ -73,19 +80,16 @@ const TabBar = ({
 		return Platform.OS === 'android' ? androidStyles : iosStyles;
 	}, [white10]);
 
-	const bottom = useMemo(() => Math.max(insets.bottom, 16), [insets.bottom]);
-	const sendXml = useMemo(() => sendIcon('white'), []);
-	const receiveXml = useMemo(() => receiveIcon('white'), []);
+	const bottom = Math.max(insets.bottom, 16);
+	const sendXml = sendIcon('white');
+	const receiveXml = receiveIcon('white');
 
 	if (shouldHide) {
 		return <></>;
 	}
 
 	return (
-		<AnimatedView
-			style={[styles.tabRoot, { bottom }]}
-			color="transparent"
-			entering={FadeIn}>
+		<Animated.View style={[styles.tabRoot, { bottom }]} entering={FadeIn}>
 			<ButtonBlur
 				style={styles.send}
 				text={t('send')}
@@ -110,7 +114,7 @@ const TabBar = ({
 				testID="Receive"
 				onPress={onReceivePress}
 			/>
-		</AnimatedView>
+		</Animated.View>
 	);
 };
 

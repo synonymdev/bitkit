@@ -13,7 +13,7 @@ const Interrupted = ({
 	const { t } = useTranslation('lightning');
 
 	const onContinue = (): void => {
-		navigation.popTo('Wallet', { screen: 'Wallets' });
+		navigation.popTo('Wallet', { screen: 'Home' });
 	};
 
 	return (

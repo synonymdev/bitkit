@@ -26,7 +26,7 @@ const imageSrc = require('../../assets/illustrations/wand.png');
 const ASK_INTERVAL = 1000 * 60 * 60 * 12; // 12h - how long this prompt will be hidden if user taps Later
 const CHECK_DELAY = 2500; // how long user needs to stay on Wallets screen before he will see this prompt
 
-const AppUpdatePrompt = ({ enabled }: { enabled: boolean }): ReactElement => {
+const AppUpdatePrompt = (): ReactElement => {
 	const { t } = useTranslation('other');
 	const snapPoints = useSnapPoints('large');
 	const dispatch = useAppDispatch();
@@ -50,14 +50,13 @@ const AppUpdatePrompt = ({ enabled }: { enabled: boolean }): ReactElement => {
 	const shouldShowBottomSheet = useMemo(() => {
 		const isTimeoutOver = Number(new Date()) - ignoreTimestamp > ASK_INTERVAL;
 		return (
-			enabled &&
 			!__E2E__ &&
 			updateInfo !== null &&
 			!updateInfo.critical &&
 			isTimeoutOver &&
 			!anyBottomSheetIsOpen
 		);
-	}, [enabled, updateInfo, ignoreTimestamp, anyBottomSheetIsOpen]);
+	}, [updateInfo, ignoreTimestamp, anyBottomSheetIsOpen]);
 
 	useEffect(() => {
 		if (!shouldShowBottomSheet) {
@@ -104,6 +103,7 @@ const AppUpdatePrompt = ({ enabled }: { enabled: boolean }): ReactElement => {
 				}
 				description={t('update_text')}
 				image={imageSrc}
+				showBackButton={false}
 				continueText={t('update_button')}
 				cancelText={t('cancel')}
 				testID="AppUpdatePrompt"
