@@ -1,3 +1,4 @@
+import { useNavigation } from '@react-navigation/native';
 import React, { ReactElement, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
@@ -13,7 +14,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { receiveIcon, sendIcon } from '../assets/icons/tabs';
 import useColors from '../hooks/colors';
 import { useAppSelector } from '../hooks/redux';
-import { rootNavigation } from '../navigation/root/RootNavigator';
+import { rootNavigation } from '../navigation/root/RootNavigationContainer';
 import type { RootNavigationProp } from '../navigation/types';
 import { resetSendTransaction } from '../store/actions/wallet';
 import { spendingOnboardingSelector } from '../store/reselect/aggregations';
@@ -23,14 +24,11 @@ import { toggleBottomSheet } from '../store/utils/ui';
 import { ScanIcon } from '../styles/icons';
 import ButtonBlur from './buttons/ButtonBlur';
 
-const TabBar = ({
-	navigation,
-}: {
-	navigation: RootNavigationProp;
-}): ReactElement => {
+const TabBar = (): ReactElement => {
 	const { white10 } = useColors();
 	const insets = useSafeAreaInsets();
 	const { t } = useTranslation('wallet');
+	const navigation = useNavigation<RootNavigationProp>();
 	const viewControllers = useAppSelector(viewControllersSelector);
 	const isSpendingOnboarding = useAppSelector(spendingOnboardingSelector);
 
@@ -47,7 +45,7 @@ const TabBar = ({
 	}, [viewControllers]);
 
 	const onReceivePress = (): void => {
-		const currentRoute = rootNavigation.getCurrenRoute();
+		const currentRoute = rootNavigation.getCurrentRoute();
 
 		// if we are on the spending screen and the user has not yet received funds
 		if (currentRoute === 'ActivitySpending' && isSpendingOnboarding) {

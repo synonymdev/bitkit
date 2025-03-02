@@ -329,7 +329,7 @@
         "string": "Odpojeno"
       }
     },
-    "bitcoin_node": {
+    "electrum": {
       "title": {
         "string": "Bitcoinový uzel"
       },
@@ -371,7 +371,7 @@
         "string": "Žádná otevřená spojení"
       }
     },
-    "full_backup": {
+    "backup": {
       "title": {
         "string": "Nejnovější úplná záloha dat"
       },

@@ -92,6 +92,8 @@ export type TSendTransaction = {
 	fromAddressViewer?: boolean;
 };
 
+export type THealthState = 'ready' | 'pending' | 'error';
+
 export type TUiState = {
 	appState: AppStateStatus;
 	availableUpdate: TAvailableUpdate | null;

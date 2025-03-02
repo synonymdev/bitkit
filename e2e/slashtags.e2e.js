@@ -119,7 +119,8 @@ d('Profile and Contacts', () => {
 			await element(by.id('NavigationClose')).tap();
 
 			// ADD CONTACTS
-			await element(by.id('HeaderContactsButton')).tap();
+			await element(by.id('HeaderMenu')).tap();
+			await element(by.id('DrawerContacts')).tap();
 			await element(by.id('ContactsOnboarding-button')).tap();
 
 			// self
@@ -162,7 +163,8 @@ d('Profile and Contacts', () => {
 			await element(by.id('NavigationClose')).tap();
 
 			// FILTER CONTACTS
-			await element(by.id('HeaderContactsButton')).tap();
+			await element(by.id('HeaderMenu')).tap();
+			await element(by.id('DrawerContacts')).tap();
 			await expect(element(by.text(satoshi.name))).toBeVisible();
 			await expect(element(by.text(hal.name2))).toBeVisible();
 			await element(by.id('ContactsSearchInput')).typeText('Satoshi\n');
@@ -180,7 +182,8 @@ d('Profile and Contacts', () => {
 				.toBeVisible()
 				.withTimeout(60000);
 
-			await element(by.id('HeaderContactsButton')).tap();
+			await element(by.id('HeaderMenu')).tap();
+			await element(by.id('DrawerContacts')).tap();
 			// check un-edited contact
 			await expect(element(by.text(satoshi.name))).toBeVisible();
 			// check edited contact retains new name
@@ -231,7 +234,8 @@ d('Profile and Contacts', () => {
 				.toBeVisible()
 				.withTimeout(60000);
 
-			await element(by.id('HeaderContactsButton')).tap();
+			await element(by.id('HeaderMenu')).tap();
+			await element(by.id('DrawerContacts')).tap();
 			await expect(element(by.text(satoshi.name))).toBeVisible();
 			await expect(element(by.text(hal.name1))).not.toBeVisible();
 			await expect(element(by.text(hal.name2))).not.toBeVisible();

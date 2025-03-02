@@ -1,12 +1,10 @@
 // NOTE: import order matters
-
+import 'react-native-gesture-handler' // must be first
 import './shim';
 import './src/utils/fetch';
 import './src/utils/ignoreLogs';
 
 import { AppRegistry, Text, TextInput } from 'react-native';
-import { gestureHandlerRootHOC } from 'react-native-gesture-handler';
-
 import Root from './src/Root';
 import { name as appName } from './app.json';
 import './src/utils/fetch-polyfill';
@@ -22,4 +20,4 @@ if (__DEV__ && !__JEST__ && !__E2E__) {
 	require('./ReactotronConfig');
 }
 
-AppRegistry.registerComponent(appName, () => gestureHandlerRootHOC(Root));
+AppRegistry.registerComponent(appName, () => Root);
