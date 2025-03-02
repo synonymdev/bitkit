@@ -1,5 +1,4 @@
-import { TBackupItem, TBackupState } from '../types/backup';
-import { EBackupCategory } from '../utils/backup';
+import { EBackupCategory, TBackupItem, TBackupState } from '../types/backup';
 
 const item: TBackupItem = {
 	required: Date.now() - 1000,

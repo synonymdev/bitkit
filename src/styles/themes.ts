@@ -14,8 +14,6 @@ export interface IThemeColors extends IDefaultColors {
 	primary: string;
 	secondary: string;
 	background: string;
-	surface: string;
-	onBackground: string;
 	onSurface: string;
 	refreshControl: string;
 }
@@ -69,8 +67,6 @@ const light: ITheme = {
 		primary: '#121212',
 		secondary: '#121212',
 		background: colors.white80,
-		surface: '#E8E8E8',
-		onBackground: '#121212',
 		onSurface: '#D6D6D6',
 		refreshControl: '#121212',
 	},
@@ -84,8 +80,6 @@ const dark: ITheme = {
 		primary: colors.white,
 		secondary: colors.white64,
 		background: colors.black,
-		surface: '#101010',
-		onBackground: '#FFFFFF',
 		onSurface: colors.gray6,
 		refreshControl: '#FFFFFF',
 	},

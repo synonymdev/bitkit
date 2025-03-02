@@ -119,7 +119,7 @@ export const Pressable = styled(RNPressable)<PressableProps & ColorProps>(
 	(props) => ({
 		backgroundColor: props.color
 			? props.theme.colors[props.color]
-			: props.theme.colors.background,
+			: 'transparent',
 		opacity: props.disabled ? 0.5 : 1,
 	}),
 );

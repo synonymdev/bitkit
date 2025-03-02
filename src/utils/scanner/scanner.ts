@@ -20,7 +20,7 @@ import {
 import URLParse from 'url-parse';
 
 import { sendNavigation } from '../../navigation/bottom-sheet/SendNavigation';
-import { rootNavigation } from '../../navigation/root/RootNavigator';
+import { rootNavigation } from '../../navigation/root/RootNavigationContainer';
 import {
 	resetSendTransaction,
 	setupOnChainTransaction,

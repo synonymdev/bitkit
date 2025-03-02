@@ -296,7 +296,7 @@
         "string": "Disconnesso"
       }
     },
-    "bitcoin_node": {
+    "electrum": {
       "title": {
         "string": "Nodo Bitcoin"
       },
@@ -338,7 +338,7 @@
         "string": "Nessuna connessione aperta"
       }
     },
-    "full_backup": {
+    "backup": {
       "title": {
         "string": "Ultimo backup completo dei dati"
       },

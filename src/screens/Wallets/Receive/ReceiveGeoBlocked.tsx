@@ -7,7 +7,7 @@ import GradientView from '../../../components/GradientView';
 import SafeAreaInset from '../../../components/SafeAreaInset';
 import Button from '../../../components/buttons/Button';
 import { useAppDispatch } from '../../../hooks/redux';
-import { rootNavigation } from '../../../navigation/root/RootNavigator';
+import { rootNavigation } from '../../../navigation/root/RootNavigationContainer';
 import { closeSheet } from '../../../store/slices/ui';
 import { BodyM } from '../../../styles/text';
 

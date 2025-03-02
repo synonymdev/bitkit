@@ -15,7 +15,7 @@ import {
 	useSnapPoints,
 } from '../../hooks/bottomSheet';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
-import { rootNavigation } from '../../navigation/root/RootNavigator';
+import { rootNavigation } from '../../navigation/root/RootNavigationContainer';
 import { viewControllerSelector } from '../../store/reselect/ui';
 import { closeSheet } from '../../store/slices/ui';
 import { EActivityType } from '../../store/types/activity';

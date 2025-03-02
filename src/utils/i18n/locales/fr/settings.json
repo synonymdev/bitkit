@@ -293,7 +293,7 @@
         "string": "Déconnecté"
       }
     },
-    "bitcoin_node": {
+    "electrum": {
       "title": {
         "string": "Nœud Bitcoin"
       },
@@ -335,7 +335,7 @@
         "string": "Pas de connexions ouvertes"
       }
     },
-    "full_backup": {
+    "backup": {
       "title": {
         "string": "Dernière sauvegarde complète"
       },

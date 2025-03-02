@@ -2,7 +2,7 @@ import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
 import { initialBackupState } from '../shapes/backup';
 import { EActivityType } from '../types/activity';
-import { EBackupCategory } from '../utils/backup';
+import { EBackupCategory } from '../types/backup';
 import { updateActivityItems } from './activity';
 import { addPaidBlocktankOrder, updateBlocktankOrder } from './blocktank';
 import {

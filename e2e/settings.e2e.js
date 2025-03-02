@@ -58,7 +58,8 @@ d('Settings', () => {
 			).toHaveText('$');
 
 			// switch to GBP
-			await element(by.id('Settings')).tap();
+			await element(by.id('HeaderMenu')).tap();
+			await element(by.id('DrawerSettings')).tap();
 			await element(by.id('GeneralSettings')).tap();
 			await element(by.id('CurrenciesSettings')).tap();
 			await element(by.text('GBP (£)')).tap();
@@ -72,7 +73,8 @@ d('Settings', () => {
 			await element(by.id('TotalBalance')).tap();
 
 			// switch to USD
-			await element(by.id('Settings')).tap();
+			await element(by.id('HeaderMenu')).tap();
+			await element(by.id('DrawerSettings')).tap();
 			await element(by.id('GeneralSettings')).tap();
 			await element(by.id('CurrenciesSettings')).tap();
 			await element(by.text('USD ($)')).tap();
@@ -95,7 +97,8 @@ d('Settings', () => {
 				by.id('Value').withAncestor(by.id('UnitSettings')),
 			);
 
-			await element(by.id('Settings')).tap();
+			await element(by.id('HeaderMenu')).tap();
+			await element(by.id('DrawerSettings')).tap();
 			await element(by.id('GeneralSettings')).tap();
 			// check default unit
 			await expect(unitRow).toHaveText('Bitcoin');
@@ -110,7 +113,8 @@ d('Settings', () => {
 			await expect(balance).toHaveText('0.00');
 
 			// switch back to BTC
-			await element(by.id('Settings')).tap();
+			await element(by.id('HeaderMenu')).tap();
+			await element(by.id('DrawerSettings')).tap();
 			await element(by.id('GeneralSettings')).tap();
 			await element(by.id('UnitSettings')).tap();
 			await element(by.id('Bitcoin')).tap();
@@ -120,7 +124,8 @@ d('Settings', () => {
 			await expect(balance).toHaveText('0');
 
 			// switch to classic denomination
-			await element(by.id('Settings')).tap();
+			await element(by.id('HeaderMenu')).tap();
+			await element(by.id('DrawerSettings')).tap();
 			await element(by.id('GeneralSettings')).tap();
 			await element(by.id('UnitSettings')).tap();
 			await element(by.id('DenominationClassic')).tap();
@@ -137,7 +142,8 @@ d('Settings', () => {
 				return;
 			}
 
-			await element(by.id('Settings')).tap();
+			await element(by.id('HeaderMenu')).tap();
+			await element(by.id('DrawerSettings')).tap();
 			await element(by.id('GeneralSettings')).tap();
 
 			// switch to Fast
@@ -172,7 +178,8 @@ d('Settings', () => {
 			}
 
 			// no tags, menu entry should be hidden
-			await element(by.id('Settings')).tap();
+			await element(by.id('HeaderMenu')).tap();
+			await element(by.id('DrawerSettings')).tap();
 			await element(by.id('GeneralSettings')).tap();
 			await expect(element(by.id('TagsSettings'))).not.toBeVisible();
 			await element(by.id('NavigationClose')).atIndex(0).tap();
@@ -191,7 +198,8 @@ d('Settings', () => {
 			await sleep(1000);
 
 			// open tag manager, delete tag
-			await element(by.id('Settings')).tap();
+			await element(by.id('HeaderMenu')).tap();
+			await element(by.id('DrawerSettings')).tap();
 			await element(by.id('GeneralSettings')).tap();
 			await element(by.id('TagsSettings')).tap();
 			await expect(element(by.text(tag))).toBeVisible();
@@ -214,7 +222,8 @@ d('Settings', () => {
 					return;
 				}
 
-				await element(by.id('Settings')).tap();
+				await element(by.id('HeaderMenu')).tap();
+				await element(by.id('DrawerSettings')).tap();
 				await element(by.id('About')).tap();
 				await expect(element(by.id('AboutLogo'))).toBeVisible();
 
@@ -242,7 +251,8 @@ d('Settings', () => {
 			await expect(element(by.id('ShowBalance'))).toBeVisible();
 
 			// Disable 'swipe to hide balance'
-			await element(by.id('Settings')).tap();
+			await element(by.id('HeaderMenu')).tap();
+			await element(by.id('DrawerSettings')).tap();
 			await element(by.id('SecuritySettings')).tap();
 			await element(by.id('SwipeBalanceToHide')).tap();
 			await element(by.id('NavigationClose')).atIndex(0).tap();
@@ -255,7 +265,8 @@ d('Settings', () => {
 			await expect(element(by.id('ShowBalance'))).not.toBeVisible();
 
 			// Enable 'hide balance on open'
-			await element(by.id('Settings')).tap();
+			await element(by.id('HeaderMenu')).tap();
+			await element(by.id('DrawerSettings')).tap();
 			await element(by.id('SecuritySettings')).tap();
 			await element(by.id('SwipeBalanceToHide')).tap();
 			await element(by.id('HideBalanceOnOpen')).tap();
@@ -275,7 +286,8 @@ d('Settings', () => {
 				return;
 			}
 
-			await element(by.id('Settings')).tap();
+			await element(by.id('HeaderMenu')).tap();
+			await element(by.id('DrawerSettings')).tap();
 			await element(by.id('BackupSettings')).tap();
 			await element(by.id('ResetAndRestore')).tap(); // just check if this screen can be opened
 			await element(by.id('NavigationBack')).atIndex(0).tap();
@@ -327,7 +339,8 @@ d('Settings', () => {
 			await sleep(1000);
 
 			// check same address in Address Viewer
-			await element(by.id('Settings')).tap();
+			await element(by.id('HeaderMenu')).tap();
+			await element(by.id('DrawerSettings')).tap();
 			await element(by.id('AdvancedSettings')).tap();
 			await element(by.id('WebRelay')).swipe('up');
 			await element(by.id('AddressViewer')).tap();
@@ -389,7 +402,8 @@ d('Settings', () => {
 			await sleep(1000);
 
 			// switch back to Native segwit
-			await element(by.id('Settings')).tap();
+			await element(by.id('HeaderMenu')).tap();
+			await element(by.id('DrawerSettings')).tap();
 			await element(by.id('AdvancedSettings')).tap();
 			await element(by.id('AddressTypePreference')).tap();
 			await element(by.id('p2wpkh')).tap();
@@ -403,7 +417,8 @@ d('Settings', () => {
 				return;
 			}
 
-			await element(by.id('Settings')).tap();
+			await element(by.id('HeaderMenu')).tap();
+			await element(by.id('DrawerSettings')).tap();
 			if (!__DEV__) {
 				await element(by.id('DevOptions')).multiTap(5); // enable dev mode
 			}
@@ -438,7 +453,8 @@ d('Settings', () => {
 				return;
 			}
 
-			await element(by.id('Settings')).tap();
+			await element(by.id('HeaderMenu')).tap();
+			await element(by.id('DrawerSettings')).tap();
 			await element(by.id('AdvancedSettings')).tap();
 			await element(by.id('ElectrumConfig')).tap();
 
@@ -527,7 +543,8 @@ d('Settings', () => {
 				return;
 			}
 
-			await element(by.id('Settings')).tap();
+			await element(by.id('HeaderMenu')).tap();
+			await element(by.id('DrawerSettings')).tap();
 			await element(by.id('AdvancedSettings')).tap();
 			await element(by.id('WebRelay')).tap();
 
@@ -535,14 +552,14 @@ d('Settings', () => {
 				by.id('ConnectedUrl'),
 			).getAttributes();
 
-			const alteredRelay = origRelay + '/';
+			const alteredRelay = `${origRelay}/`;
 			await element(by.id('UrlInput')).replaceText(alteredRelay);
 			await element(by.id('WebRelayStatus')).tap(); // close keyboard
 			await element(by.id('ConnectToUrl')).tap();
 			await sleep(1000);
 
 			// url should be updated
-			let { label: newRelay } = await element(
+			const { label: newRelay } = await element(
 				by.id('ConnectedUrl'),
 			).getAttributes();
 
@@ -561,7 +578,8 @@ d('Settings', () => {
 				return;
 			}
 
-			await element(by.id('Settings')).tap();
+			await element(by.id('HeaderMenu')).tap();
+			await element(by.id('DrawerSettings')).tap();
 			await element(by.id('AdvancedSettings')).tap();
 			await element(by.id('RGSServer')).tap();
 
@@ -570,14 +588,14 @@ d('Settings', () => {
 			).getAttributes();
 
 			// add slash at the end
-			const newUrl = origValue + '/';
+			const newUrl = `${origValue}/`;
 			await element(by.id('RGSUrl')).replaceText(newUrl);
 			await element(by.id('RGSUrl')).tapReturnKey();
 			await element(by.id('ConnectToHost')).tap();
 			await sleep(1000);
 
 			// url should be updated
-			let { label: newValue } = await element(
+			const { label: newValue } = await element(
 				by.id('ConnectedUrl'),
 			).getAttributes();
 
@@ -587,7 +605,7 @@ d('Settings', () => {
 			await element(by.id('ResetToDefault')).tap();
 			await element(by.id('ConnectToHost')).tap();
 
-			let { label: resetValue } = await element(
+			const { label: resetValue } = await element(
 				by.id('ConnectedUrl'),
 			).getAttributes();
 
@@ -610,7 +628,8 @@ d('Settings', () => {
 			await expect(element(by.id('Suggestion-lightning'))).not.toBeVisible();
 
 			// reset suggestions
-			await element(by.id('Settings')).tap();
+			await element(by.id('HeaderMenu')).tap();
+			await element(by.id('DrawerSettings')).tap();
 			await element(by.id('AdvancedSettings')).tap();
 			await element(by.id('WebRelay')).swipe('up');
 			await element(by.id('ResetSuggestions')).tap();
@@ -628,7 +647,8 @@ d('Settings', () => {
 				return;
 			}
 
-			await element(by.id('Settings')).tap();
+			await element(by.id('HeaderMenu')).tap();
+			await element(by.id('DrawerSettings')).tap();
 			if (!__DEV__) {
 				await element(by.id('DevOptions')).multiTap(5); // enable dev mode
 			}
@@ -653,15 +673,16 @@ d('Settings', () => {
 				return;
 			}
 
-			await element(by.id('Settings')).tap();
+			await element(by.id('HeaderMenu')).tap();
+			await element(by.id('DrawerSettings')).tap();
 			await element(by.id('Support')).tap();
 			await element(by.id('AppStatus')).tap();
 
 			await expect(element(by.id('Status-internet'))).toBeVisible();
-			await expect(element(by.id('Status-bitcoin_node'))).toBeVisible();
+			await expect(element(by.id('Status-electrum'))).toBeVisible();
 			await expect(element(by.id('Status-lightning_node'))).toBeVisible();
 			await expect(element(by.id('Status-lightning_connection'))).toBeVisible();
-			await expect(element(by.id('Status-full_backup'))).toBeVisible();
+			await expect(element(by.id('Status-backup'))).toBeVisible();
 
 			await element(by.id('NavigationClose')).atIndex(0).tap();
 

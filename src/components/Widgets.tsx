@@ -1,4 +1,5 @@
 import { useFocusEffect } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import React, {
 	ReactElement,
 	memo,
@@ -14,7 +15,7 @@ import DraggableFlatList, {
 } from 'react-native-draggable-flatlist';
 
 import { useAppDispatch, useAppSelector } from '../hooks/redux';
-import { rootNavigation } from '../navigation/root/RootNavigator';
+import { RootNavigationProp } from '../navigation/types';
 import {
 	onboardedWidgetsSelector,
 	widgetsOrderSelector,
@@ -42,6 +43,7 @@ import WeatherWidget from './widgets/WeatherWidget';
 const Widgets = (): ReactElement => {
 	const { t } = useTranslation('widgets');
 	const dispatch = useAppDispatch();
+	const navigation = useNavigation<RootNavigationProp>();
 
 	const widgets = useAppSelector(widgetsSelector);
 	const sortOrder = useAppSelector(widgetsOrderSelector);
@@ -74,7 +76,7 @@ const Widgets = (): ReactElement => {
 		const screen = onboardedWidgets
 			? 'WidgetsSuggestions'
 			: 'WidgetsOnboarding';
-		rootNavigation.navigate(screen);
+		navigation.navigate(screen);
 	};
 
 	const renderItem = useCallback(
