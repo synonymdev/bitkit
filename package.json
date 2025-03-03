@@ -20,10 +20,10 @@
     "lint:check": "biome check ./src/**/*.{js,jsx,ts,tsx}",
     "lint:fix": "biome check --write ./src/**/*.{js,jsx,ts,tsx}",
     "tsc:check": "tsc",
-    "clean": "yarn clean:rn && yarn clean:ios && yarn clean:android && yarn start --reset-cache",
-    "clean:rn": "watchman watch-del-all && npx del-cli node_modules && yarn && npx del-cli /tmp/metro-*",
+    "clean": "yarn clean:rn && yarn clean:ios && yarn clean:android",
+    "clean:rn": "watchman watch-del-all && npx del-cli node_modules && yarn",
     "clean:android": "cd android && npx del-cli build app/build app/release",
-    "clean:ios": "cd ios && npx del-cli Pods Podfile.lock build && pod deintegrate && pod install",
+    "clean:ios": "cd ios && npx del-cli Pods build && pod install",
     "bundle": "yarn clean:android && react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.jsbundle --assets-dest android/app/build/intermediates/res/merged/release/ && cd android && ./gradlew assembleRelease --no-daemon",
     "prepare": "husky",
     "postinstall": "node postinstall.js; yarn patch-package"
