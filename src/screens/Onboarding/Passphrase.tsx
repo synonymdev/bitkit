@@ -36,6 +36,10 @@ const Passphrase = ({
 		[dimensions.width, isSmallScreen],
 	);
 
+	const onCreateWallet = (): void => {
+		navigation.navigate('CreateWallet', { action: 'create', bip39Passphrase });
+	};
+
 	return (
 		<ThemedView style={styles.root}>
 			<KeyboardAvoidingView style={styles.content}>
@@ -70,8 +74,7 @@ const Passphrase = ({
 							onChangeText={setPassphrase}
 							returnKeyType="done"
 							autoCapitalize="none"
-							// @ts-ignore autoCompleteType -> autoComplete in newer version
-							autoCompleteType="off"
+							autoComplete="off"
 							autoCorrect={false}
 							placeholder={t('passphrase')}
 							testID="PassphraseInput"
@@ -84,9 +87,7 @@ const Passphrase = ({
 							text={t('create_new_wallet')}
 							size="large"
 							testID="CreateNewWallet"
-							onPress={(): void => {
-								navigation.navigate('Slideshow', { bip39Passphrase });
-							}}
+							onPress={onCreateWallet}
 						/>
 					</View>
 				</ScrollView>

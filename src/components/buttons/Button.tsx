@@ -1,7 +1,6 @@
 import React, { memo, ReactElement, useMemo } from 'react';
 import {
 	ActivityIndicator,
-	Platform,
 	Pressable,
 	PressableProps,
 	StyleProp,
@@ -33,7 +32,7 @@ const Button = ({
 	size = 'small',
 	disabled = false,
 	loading = false,
-	textStyle = {},
+	textStyle,
 	style,
 	icon,
 	...props
@@ -81,13 +80,8 @@ const Button = ({
 			...(text && !icon && { maxWidth: '100%', textAlign: 'center' }), // on android text sometimes get shrinked. So if there is no icon, make sure it takes the full width
 			...(variant === 'primary' ? {} : { color: white80 }),
 			...(disabled && !icon && { color: white32 }),
-			...Platform.select({
-				android: {
-					lineHeight: size === 'small' ? 15 : 18,
-				},
-			}),
 		};
-	}, [textStyle, text, icon, variant, disabled, size, white32, white80]);
+	}, [textStyle, text, icon, variant, disabled, white32, white80]);
 
 	const textPressedStyles = useMemo(() => {
 		return {
@@ -106,14 +100,7 @@ const Button = ({
 			{({ pressed }) => {
 				return (
 					<>
-						{icon && (
-							<View color="transparent">
-								{icon}
-								{/* {React.cloneElement(icon, {
-									...{ ...(disabled && { color: 'white32' }) },
-								})} */}
-							</View>
-						)}
+						{icon && <View color="transparent">{icon}</View>}
 
 						<Text
 							style={[textStyles, pressed && textPressedStyles]}
