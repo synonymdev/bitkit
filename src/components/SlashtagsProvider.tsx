@@ -7,7 +7,7 @@ import React, { ReactElement, useEffect, useState } from 'react';
 import { createContext } from 'react';
 
 import { useAppSelector } from '../hooks/redux';
-import { WebRelayCache } from '../store/mmkv-storage';
+import { WebRelayCache } from '../storage';
 import { webRelaySelector } from '../store/reselect/settings';
 import { seedHashSelector } from '../store/reselect/wallet';
 import i18n from '../utils/i18n';

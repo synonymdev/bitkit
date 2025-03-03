@@ -18,8 +18,8 @@ import {
 	__ENABLE_REDUX_LOGGER__,
 	__JEST__,
 } from '../constants/env';
+import { reduxStorage } from '../storage';
 import migrations from './migrations';
-import { reduxStorage } from './mmkv-storage';
 import rootReducer, { RootReducer } from './reducers';
 
 const devMiddleware: Middleware[] = [];

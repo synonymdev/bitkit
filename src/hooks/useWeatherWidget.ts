@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { __E2E__ } from '../constants/env';
+import { widgetsCache } from '../storage/widgets-cache';
 import { refreshOnchainFeeEstimates } from '../store/utils/fees';
 import { getDisplayValues, getFiatDisplayValues } from '../utils/displayValues';
 
@@ -56,6 +57,15 @@ const VBYTES_SIZE = 140; // average native segwit transaction size
 const USD_GOOD_THRESHOLD = 1; // $1 USD threshold for good condition
 const PERCENTILE_LOW = 0.33;
 const PERCENTILE_HIGH = 0.66;
+const CACHE_KEY = 'weather';
+
+const cacheData = (data: TWidgetData) => {
+	widgetsCache.set(CACHE_KEY, data);
+};
+
+const getCachedData = (): TWidgetData | null => {
+	return widgetsCache.get<TWidgetData>(CACHE_KEY);
+};
 
 const calculateCondition = (
 	currentFeeRate: number,
@@ -97,9 +107,11 @@ const calculateCondition = (
 };
 
 const useWeatherWidget = (): TWidgetState => {
-	const [state, setState] = useState<TWidgetState>({
-		status: EWidgetStatus.Loading,
-		data: null,
+	const [state, setState] = useState<TWidgetState>(() => {
+		const cached = getCachedData();
+		return cached
+			? { status: EWidgetStatus.Ready, data: cached }
+			: { status: EWidgetStatus.Loading, data: null };
 	});
 
 	useEffect(() => {
@@ -137,6 +149,7 @@ const useWeatherWidget = (): TWidgetState => {
 				const currentFee = `${dv.fiatSymbol} ${dv.fiatFormatted}`;
 				const data = { condition, currentFee, nextBlockFee: fees.fast };
 
+				cacheData(data);
 				setState({ status: EWidgetStatus.Ready, data });
 			} catch (error) {
 				console.error('Failed to fetch fee data:', error);

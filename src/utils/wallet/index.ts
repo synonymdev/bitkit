@@ -38,6 +38,7 @@ import { BIP32Factory } from 'bip32';
 import * as bip39 from 'bip39';
 import * as bitcoin from 'bitcoinjs-lib';
 
+import { receivedTxIds } from '../../storage';
 import {
 	generateNewReceiveAddress,
 	getWalletData,
@@ -51,7 +52,6 @@ import {
 	getStore,
 	getWalletStore,
 } from '../../store/helpers';
-import { receivedTxIds } from '../../store/mmkv-storage';
 import {
 	getDefaultGapLimitOptions,
 	getDefaultWalletShape,

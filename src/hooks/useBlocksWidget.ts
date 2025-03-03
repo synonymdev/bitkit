@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
 import { __E2E__ } from '../constants/env';
+import { widgetsCache } from '../storage/widgets-cache';
 import { i18nTime } from '../utils/i18n';
 
-type TBlocksWidgetData = {
+type TWidgetData = {
 	height: string;
 	time: string;
 	date: string;
@@ -32,15 +33,24 @@ type ErrorState = {
 
 type ReadyState = {
 	status: EWidgetStatus.Ready;
-	data: TBlocksWidgetData;
+	data: TWidgetData;
 };
 
 type TWidgetState = LoadingState | ErrorState | ReadyState;
 
 const BASE_URL = 'https://mempool.space/api';
 const REFRESH_INTERVAL = 1000 * 60 * 2; // 2 minutes
+const CACHE_KEY = 'blocks';
 
-const formatBlockInfo = (blockInfo): TBlocksWidgetData => {
+const cacheData = (data: TWidgetData) => {
+	widgetsCache.set(CACHE_KEY, data);
+};
+
+const getCachedData = (): TWidgetData | null => {
+	return widgetsCache.get<TWidgetData>(CACHE_KEY);
+};
+
+const formatBlockInfo = (blockInfo): TWidgetData => {
 	const { format } = new Intl.NumberFormat('en-US');
 
 	const difficulty = (blockInfo.difficulty / 1000000000000).toFixed(2);
@@ -88,9 +98,11 @@ const formatBlockInfo = (blockInfo): TBlocksWidgetData => {
 };
 
 const useBlocksWidget = (): TWidgetState => {
-	const [state, setState] = useState<TWidgetState>({
-		status: EWidgetStatus.Loading,
-		data: null,
+	const [state, setState] = useState<TWidgetState>(() => {
+		const cached = getCachedData();
+		return cached
+			? { status: EWidgetStatus.Ready, data: cached }
+			: { status: EWidgetStatus.Loading, data: null };
 	});
 
 	useEffect(() => {
@@ -122,9 +134,10 @@ const useBlocksWidget = (): TWidgetState => {
 			try {
 				const hash = await fetchTipHash();
 				const blockInfo = await fetchBlockInfo(hash);
-				const formatted = formatBlockInfo(blockInfo);
+				const data = formatBlockInfo(blockInfo);
 
-				setState({ status: EWidgetStatus.Ready, data: formatted });
+				cacheData(data);
+				setState({ status: EWidgetStatus.Ready, data });
 			} catch (error) {
 				console.error('Failed to fetch block data:', error);
 				setState({ status: EWidgetStatus.Error, data: null });

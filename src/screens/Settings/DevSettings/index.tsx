@@ -8,13 +8,14 @@ import { EItemType, IListData } from '../../../components/List';
 import { __E2E__ } from '../../../constants/env';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 import type { SettingsScreenProps } from '../../../navigation/types';
+import { widgetsCache } from '../../../storage';
+import { storage } from '../../../storage';
 import actions from '../../../store/actions/actions';
 import {
 	clearUtxos,
 	injectFakeTransaction,
 } from '../../../store/actions/wallet';
 import { getStore, getWalletStore } from '../../../store/helpers';
-import { storage } from '../../../store/mmkv-storage';
 import { warningsSelector } from '../../../store/reselect/checks';
 import { settingsSelector } from '../../../store/reselect/settings';
 import {
@@ -170,6 +171,11 @@ const DevSettings = ({
 					title: 'Clear WebRelay Cache',
 					type: EItemType.button,
 					onPress: clearWebRelayCache,
+				},
+				{
+					title: 'Clear Widgets Cache',
+					type: EItemType.button,
+					onPress: widgetsCache.clear,
 				},
 				{
 					title: "Clear UTXO's",
