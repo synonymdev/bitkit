@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { __E2E__ } from '../constants/env';
 import { tradingPairs } from '../constants/widgets';
+import { widgetsCache } from '../storage/widgets-cache';
 import { TGraphPeriod } from '../store/types/widgets';
 import { IThemeColors } from '../styles/themes';
 
@@ -94,13 +95,42 @@ export const formatPrice = (pair: TradingPair, price: number): string => {
 	}
 };
 
+const cacheData = (
+	pairName: string,
+	period: TGraphPeriod,
+	data: TWidgetData,
+) => {
+	const cacheKey = `${pairName}_${period}`;
+	widgetsCache.set(cacheKey, data);
+};
+
+const getCachedData = (
+	pairs: string[],
+	period: TGraphPeriod,
+): TWidgetData[] | null => {
+	const data = pairs.map((pairName) => {
+		const cacheKey = `${pairName}_${period}`;
+		const cached = widgetsCache.get<TWidgetData>(cacheKey);
+		return cached;
+	});
+
+	const allCached = data.every((d) => d !== null);
+	if (allCached) {
+		return data;
+	}
+
+	return null;
+};
+
 const usePriceWidget = (
 	pairs: string[],
 	period: TGraphPeriod,
 ): TWidgetState => {
-	const [state, setState] = useState<TWidgetState>({
-		status: EWidgetStatus.Loading,
-		data: null,
+	const [state, setState] = useState<TWidgetState>(() => {
+		const cached = getCachedData(pairs, period);
+		return cached
+			? { status: EWidgetStatus.Ready, data: cached }
+			: { status: EWidgetStatus.Loading, data: null };
 	});
 
 	// biome-ignore lint/correctness/useExhaustiveDependencies: pairs is an array so deep check it
@@ -146,12 +176,16 @@ const usePriceWidget = (
 					const change = getChange(updatedPastValues);
 					const price = formatPrice(pair, latestPrice);
 
-					return {
+					const data = {
 						name: pairName,
 						price,
 						change,
 						pastValues: updatedPastValues,
 					};
+
+					cacheData(pairName, period, data);
+
+					return data;
 				});
 				const data = await Promise.all(promises);
 				setState({ status: EWidgetStatus.Ready, data });
@@ -179,12 +213,16 @@ const usePriceWidget = (
 								const change = getChange(newPastValues);
 								const price = formatPrice(pair, latestPrice);
 
-								return {
+								const data = {
 									...pairData,
 									price,
 									change,
 									pastValues: newPastValues,
 								};
+
+								cacheData(pairData.name, period, data);
+
+								return data;
 							}),
 						);
 						setState({ status: EWidgetStatus.Ready, data: updatedData });

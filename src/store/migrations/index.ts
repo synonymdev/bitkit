@@ -1,6 +1,6 @@
 // Add migrations for every persisted store version change
 import { PersistedState } from 'redux-persist';
-import { storage as mmkv } from '../../store/mmkv-storage';
+import { storage as mmkv } from '../../storage';
 import { getDefaultOptions } from '../../utils/widgets';
 import { getDefaultGapLimitOptions } from '../shapes/wallet';
 

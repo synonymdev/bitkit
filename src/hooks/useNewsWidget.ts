@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { __E2E__ } from '../constants/env';
+import { widgetsCache } from '../storage/widgets-cache';
 import { timeAgo } from '../utils/helpers';
 
 type TArticle = {
@@ -18,7 +19,7 @@ type TArticle = {
 	};
 };
 
-type TWidgetArticle = {
+type TWidgetData = {
 	title: string;
 	timeAgo: string;
 	link: string;
@@ -43,18 +44,29 @@ type ErrorState = {
 
 type ReadyState = {
 	status: EWidgetStatus.Ready;
-	data: TWidgetArticle;
+	data: TWidgetData;
 };
 
 type TWidgetState = LoadingState | ErrorState | ReadyState;
 
 const BASE_URL = 'https://feeds.synonym.to/news-feed/api';
 const REFRESH_INTERVAL = 1000 * 60 * 2; // 2 minutes
+const CACHE_KEY = 'news';
+
+const cacheData = (data: TWidgetData) => {
+	widgetsCache.set(CACHE_KEY, data);
+};
+
+const getCachedData = (): TWidgetData | null => {
+	return widgetsCache.get<TWidgetData>(CACHE_KEY);
+};
 
 const useNewsWidget = (): TWidgetState => {
-	const [state, setState] = useState<TWidgetState>({
-		status: EWidgetStatus.Loading,
-		data: null,
+	const [state, setState] = useState<TWidgetState>(() => {
+		const cached = getCachedData();
+		return cached
+			? { status: EWidgetStatus.Ready, data: cached }
+			: { status: EWidgetStatus.Loading, data: null };
 	});
 
 	useEffect(() => {
@@ -71,7 +83,6 @@ const useNewsWidget = (): TWidgetState => {
 		};
 
 		const fetchData = async (): Promise<void> => {
-			setState({ status: EWidgetStatus.Loading, data: null });
 			try {
 				const articles = await fetchArticles();
 
@@ -87,6 +98,7 @@ const useNewsWidget = (): TWidgetState => {
 					publisher: article.publisher.title,
 				};
 
+				cacheData(data);
 				setState({ status: EWidgetStatus.Ready, data });
 			} catch (error) {
 				console.error('Failed to fetch news data:', error);
