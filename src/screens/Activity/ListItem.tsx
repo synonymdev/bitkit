@@ -1,4 +1,4 @@
-import React, { memo, ReactElement, ReactNode } from 'react';
+import React, { JSX, memo, ReactElement, ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet, View } from 'react-native';
 

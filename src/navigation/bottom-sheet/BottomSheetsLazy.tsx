@@ -1,4 +1,4 @@
-import React, { Suspense, lazy } from 'react';
+import React, { JSX, Suspense, lazy } from 'react';
 
 const BottomSheets = lazy(() => import('./BottomSheets'));
 

@@ -1,4 +1,4 @@
-import React, { memo, MutableRefObject, ReactElement, useRef } from 'react';
+import React, { memo, RefObject, ReactElement, useRef } from 'react';
 import {
 	Gesture,
 	GestureDetector,
@@ -8,7 +8,7 @@ import {
 export interface IDetectSwipe {
 	children: ReactElement;
 	enabled?: boolean;
-	panGestureRef?: MutableRefObject<GestureType>;
+	panGestureRef?: RefObject<GestureType>;
 	onSwipeLeft?: () => void;
 	onSwipeRight?: () => void;
 	onSwipeUp?: () => void;

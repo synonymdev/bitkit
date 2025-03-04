@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { memo, ReactElement, useCallback, useMemo } from 'react';
+import React, { JSX, memo, ReactElement, useCallback, useMemo } from 'react';
 import {
 	GestureResponderEvent,
 	StyleProp,
