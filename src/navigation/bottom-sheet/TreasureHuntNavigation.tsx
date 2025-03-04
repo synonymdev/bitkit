@@ -24,7 +24,7 @@ import Loading from '../../screens/TreasureHunt/Loading';
 import Prize from '../../screens/TreasureHunt/Prize';
 import { viewControllerSelector } from '../../store/reselect/ui';
 import { addTreasureChest } from '../../store/slices/settings';
-import { NavigationContainer } from '../../styles/components';
+import BottomSheetNavigationContainer from './BottomSheetNavigationContainer';
 
 export type TreasureHuntNavigationProp =
 	NativeStackNavigationProp<TreasureHuntStackParamList>;
@@ -130,7 +130,7 @@ const TreasureHuntNavigation = (): ReactElement => {
 	return (
 		<BottomSheetWrapper view="treasureHunt" snapPoints={snapPoints}>
 			<NavigationIndependentTree>
-				<NavigationContainer key={isOpen.toString()}>
+				<BottomSheetNavigationContainer key={isOpen.toString()}>
 					<Stack.Navigator
 						initialRouteName={initialScreen}
 						screenOptions={screenOptions}>
@@ -152,7 +152,7 @@ const TreasureHuntNavigation = (): ReactElement => {
 						/>
 						<Stack.Screen name="Error" component={ErrorScreen} />
 					</Stack.Navigator>
-				</NavigationContainer>
+				</BottomSheetNavigationContainer>
 			</NavigationIndependentTree>
 		</BottomSheetWrapper>
 	);

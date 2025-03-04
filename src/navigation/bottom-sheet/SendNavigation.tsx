@@ -45,8 +45,8 @@ import {
 } from '../../store/reselect/wallet';
 import { EActivityType } from '../../store/types/activity';
 import { updateOnchainFeeEstimates } from '../../store/utils/fees';
-import { NavigationContainer } from '../../styles/components';
 import { refreshLdk } from '../../utils/lightning';
+import BottomSheetNavigationContainer from './BottomSheetNavigationContainer';
 
 export type SendNavigationProp = NativeStackNavigationProp<SendStackParamList>;
 
@@ -143,7 +143,9 @@ const SendNavigation = (): ReactElement => {
 			testID="SendSheet"
 			onOpen={onOpen}>
 			<NavigationIndependentTree>
-				<NavigationContainer key={isOpen.toString()} ref={navigationRef}>
+				<BottomSheetNavigationContainer
+					key={isOpen.toString()}
+					ref={navigationRef}>
 					<Stack.Navigator
 						initialRouteName={initialRouteName}
 						screenOptions={screenOptions}>
@@ -178,7 +180,7 @@ const SendNavigation = (): ReactElement => {
 							initialParams={{ pParams, url, amount }}
 						/>
 					</Stack.Navigator>
-				</NavigationContainer>
+				</BottomSheetNavigationContainer>
 			</NavigationIndependentTree>
 		</BottomSheetWrapper>
 	);

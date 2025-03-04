@@ -17,7 +17,7 @@ import {
 } from '../../hooks/bottomSheet';
 import { useFeeText } from '../../hooks/fees';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
-import { rootNavigation } from '../../navigation/root/RootNavigator';
+import { rootNavigation } from '../../navigation/root/RootNavigationContainer';
 import { resetSendTransaction } from '../../store/actions/wallet';
 import { viewControllerSelector } from '../../store/reselect/ui';
 import { transactionSelector } from '../../store/reselect/wallet';

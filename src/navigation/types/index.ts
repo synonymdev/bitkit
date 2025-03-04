@@ -10,6 +10,10 @@ import {
 import type { RecoveryStackParamList } from '../../screens/Recovery/RecoveryNavigator';
 import type { IActivityItem } from '../../store/types/activity';
 import type { TWidgetId, TWidgetOptions } from '../../store/types/widgets';
+import type { OnboardingStackParamList } from '../OnboardingNavigator';
+import type { SettingsStackParamList } from '../SettingsNavigator';
+import type { TransferStackParamList } from '../TransferNavigator';
+import type { WalletStackParamList } from '../WalletNavigator';
 import type { BackupStackParamList } from '../bottom-sheet/BackupNavigation';
 import type { LNURLWithdrawStackParamList } from '../bottom-sheet/LNURLWithdrawNavigation';
 import type { OrangeTicketStackParamList } from '../bottom-sheet/OrangeTicketNavigation';
@@ -18,10 +22,6 @@ import type { ProfileLinkStackParamList } from '../bottom-sheet/ProfileLinkNavig
 import type { ReceiveStackParamList } from '../bottom-sheet/ReceiveNavigation';
 import type { SendStackParamList } from '../bottom-sheet/SendNavigation';
 import type { TreasureHuntStackParamList } from '../bottom-sheet/TreasureHuntNavigation';
-import type { OnboardingStackParamList } from '../onboarding/OnboardingNavigator';
-import type { SettingsStackParamList } from '../settings/SettingsNavigator';
-import type { TransferStackParamList } from '../transfer/TransferNavigator';
-import type { WalletStackParamList } from '../wallet/WalletNavigator';
 
 // TODO: move all navigation related types here
 // https://reactnavigation.org/docs/typescript#organizing-types

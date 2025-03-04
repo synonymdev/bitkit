@@ -31,7 +31,7 @@ const RecoveryNavigator = lazy(
 	() => import('./screens/Recovery/RecoveryNavigator'),
 );
 const OnboardingNavigator = lazy(
-	() => import('./navigation/onboarding/OnboardingNavigator'),
+	() => import('./navigation/OnboardingNavigator'),
 );
 
 const App = (): ReactElement => {

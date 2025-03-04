@@ -1,216 +1,195 @@
-import React, { memo, ReactElement, useEffect, useMemo, useState } from 'react';
+import React, { memo, ReactElement, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { StyleSheet, View } from 'react-native';
+import {
+	Linking,
+	Platform,
+	Pressable,
+	StyleProp,
+	StyleSheet,
+	View,
+	ViewStyle,
+} from 'react-native';
 
 import { useAppSelector } from '../../../hooks/redux';
+import { SettingsScreenProps } from '../../../navigation/types';
 import { backupSelector } from '../../../store/reselect/backup';
-import { blocktankPaidOrdersFullSelector } from '../../../store/reselect/blocktank';
 import {
-	openChannelsSelector,
-	pendingChannelsSelector,
-} from '../../../store/reselect/lightning';
-import {
-	isConnectedToElectrumSelector,
-	isElectrumThrottledSelector,
-	isLDKReadySelector,
-	isOnlineSelector,
+	backupStatusSelector,
+	channelsStatusSelector,
+	electrumStatusSelector,
+	internetStatusSelector,
+	nodeStatusSelector,
 } from '../../../store/reselect/ui';
-import { TBackupItem } from '../../../store/types/backup';
-import { EBackupCategory } from '../../../store/utils/backup';
-import { IColors } from '../../../styles/colors';
+import { EBackupCategory } from '../../../store/types/backup';
+import { THealthState } from '../../../store/types/ui';
+import colors, { IColors } from '../../../styles/colors';
 import { ScrollView, View as ThemedView } from '../../../styles/components';
 import {
 	BitcoinSlantedIcon,
 	BroadcastIcon,
 	CloudCheckIcon,
 	GlobeSimpleIcon,
-	LightningHollow,
+	LightningHollowIcon,
 } from '../../../styles/icons';
 import { BodyMSB, CaptionB } from '../../../styles/text';
-import { FAILED_BACKUP_CHECK_TIME } from '../../../utils/backup/backups-subscriber';
 import { i18nTime } from '../../../utils/i18n';
 import SettingsView from '../SettingsView';
 
-type TStatusItem =
+type TStatusId =
 	| 'internet'
-	| 'bitcoin_node'
+	| 'electrum'
 	| 'lightning_node'
 	| 'lightning_connection'
-	| 'full_backup';
-
-type TItemState = 'ready' | 'pending' | 'error';
+	| 'backup';
 
 interface IStatusItemProps {
+	id: TStatusId;
 	Icon: React.FunctionComponent<any>;
-	item: TStatusItem;
-	state: TItemState;
+	state: THealthState;
 	subtitle?: string;
+	style?: StyleProp<ViewStyle>;
+	onPress?: () => void;
 }
 
 const Status = ({
+	id,
 	Icon,
-	item,
 	state,
 	subtitle,
+	style,
+	onPress,
 }: IStatusItemProps): ReactElement => {
 	const { t } = useTranslation('settings');
-	const { bg, fg }: { fg: keyof IColors; bg: keyof IColors } = useMemo(() => {
-		switch (state) {
-			case 'ready':
-				return { bg: 'green16', fg: 'green' };
-			case 'pending':
-				return { bg: 'yellow16', fg: 'yellow' };
-			case 'error':
-				return { bg: 'red16', fg: 'red' };
-		}
-	}, [state]);
+	const {
+		backgroundColor,
+		foregroundColor,
+	}: { foregroundColor: keyof IColors; backgroundColor: keyof IColors } =
+		React.useMemo(() => {
+			switch (state) {
+				case 'ready':
+					return { backgroundColor: 'green16', foregroundColor: 'green' };
+				case 'pending':
+					return { backgroundColor: 'yellow16', foregroundColor: 'yellow' };
+				case 'error':
+					return { backgroundColor: 'red16', foregroundColor: 'red' };
+			}
+		}, [state]);
 
-	subtitle = subtitle || t(`status.${item}.${state}`);
+	subtitle = subtitle || t(`status.${id}.${state}`);
 
 	return (
-		<View style={styles.status} testID={`Status-${item}`}>
+		<Pressable
+			style={[styles.status, style]}
+			testID={`Status-${id}`}
+			onPress={onPress}>
 			<View style={styles.iconContainer}>
-				<ThemedView color={bg} style={styles.icon}>
-					<Icon width={16} height={16} color={fg} />
+				<ThemedView style={styles.icon} color={backgroundColor}>
+					<Icon color={foregroundColor} width={16} height={16} />
 				</ThemedView>
 			</View>
-			<View style={styles.desc}>
-				<BodyMSB>{t(`status.${item}.title`)}</BodyMSB>
+			<View style={styles.description}>
+				<BodyMSB>{t(`status.${id}.title`)}</BodyMSB>
 				<CaptionB color="secondary">{subtitle}</CaptionB>
 			</View>
-		</View>
+		</Pressable>
 	);
 };
 
-const AppStatus = (): ReactElement => {
+const AppStatus = ({
+	navigation,
+}: SettingsScreenProps<'AppStatus'>): ReactElement => {
 	const { t } = useTranslation('settings');
 	const { t: tTime } = useTranslation('intl', { i18n: i18nTime });
-	const isOnline = useAppSelector(isOnlineSelector);
-	const isConnectedToElectrum = useAppSelector(isConnectedToElectrumSelector);
-	const isElectrumThrottled = useAppSelector(isElectrumThrottledSelector);
-	const isLDKReady = useAppSelector(isLDKReadySelector);
-	const openChannels = useAppSelector(openChannelsSelector);
-	const pendingChannels = useAppSelector(pendingChannelsSelector);
-	const paidOrders = useAppSelector(blocktankPaidOrdersFullSelector);
+
+	const internetState = useAppSelector(internetStatusSelector);
+	const electrumState = useAppSelector(electrumStatusSelector);
+	const nodeState = useAppSelector(nodeStatusSelector);
+	const channelsState = useAppSelector(channelsStatusSelector);
+	const backupState = useAppSelector(backupStatusSelector);
 	const backup = useAppSelector(backupSelector);
-	const [now, setNow] = useState<number>(new Date().getTime());
 
-	const internetState: TItemState = useMemo(() => {
-		return isOnline ? 'ready' : 'error';
-	}, [isOnline]);
-
-	const bitcoinNodeState: TItemState = useMemo(() => {
-		if (isOnline && !isConnectedToElectrum && !isElectrumThrottled) {
-			return 'pending';
+	const backupSubtitle = useMemo(() => {
+		if (backupState === 'error') {
+			return t('status.backup.error');
 		}
-		return isConnectedToElectrum ? 'ready' : 'error';
-	}, [isOnline, isConnectedToElectrum, isElectrumThrottled]);
-
-	const lightningNodeState: TItemState = useMemo(() => {
-		return isOnline && isLDKReady ? 'ready' : 'error';
-	}, [isOnline, isLDKReady]);
-
-	const lightningConnectionState: TItemState = useMemo(() => {
-		if (!isOnline) {
-			return 'error';
-		}
-		if (openChannels.length > 0) {
-			return 'ready';
-		}
-		if (
-			pendingChannels.length > 0 ||
-			Object.keys(paidOrders.created).length > 0
-		) {
-			return 'pending';
-		}
-		return 'error';
-	}, [
-		isOnline,
-		openChannels.length,
-		pendingChannels.length,
-		paidOrders.created,
-	]);
-
-	// Keep checking backup status
-	useEffect(() => {
-		const timer = setInterval(() => {
-			setNow(new Date().getTime());
-		}, FAILED_BACKUP_CHECK_TIME);
-
-		return (): void => clearInterval(timer);
-	}, []);
-
-	const isBackupSyncOk = useMemo(() => {
-		const isSyncOk = (b: TBackupItem): boolean => {
-			return (
-				b.synced > b.required || now - b.required < FAILED_BACKUP_CHECK_TIME
-			);
-		};
-
-		return Object.values(EBackupCategory).every((key) => {
-			return isSyncOk(backup[key]);
+		const syncTimes = Object.values(EBackupCategory).map((key) => {
+			return backup[key].synced;
 		});
-	}, [backup, now]);
-
-	const fullBackupState: { state: TItemState; subtitle?: string } =
-		useMemo(() => {
-			if (!isBackupSyncOk) {
-				return { state: 'error' };
-			}
-			const syncTimes = Object.values(EBackupCategory).map((key) => {
-				return backup[key].synced;
-			});
-			const max = Math.max(...syncTimes);
-			const subtitle = tTime('dateTime', {
-				v: new Date(max),
-				formatParams: {
-					v: {
-						year: 'numeric',
-						month: 'long',
-						day: 'numeric',
-						hour: 'numeric',
-						minute: 'numeric',
-					},
+		const max = Math.max(...syncTimes);
+		return tTime('dateTime', {
+			v: new Date(max),
+			formatParams: {
+				v: {
+					year: 'numeric',
+					month: 'long',
+					day: 'numeric',
+					hour: 'numeric',
+					minute: 'numeric',
 				},
-			});
-			return { state: 'ready', subtitle };
-		}, [tTime, backup, isBackupSyncOk]);
+			},
+		});
+	}, [backup, backupState, t, tTime]);
 
 	const items: IStatusItemProps[] = [
 		{
+			id: 'internet',
 			Icon: GlobeSimpleIcon,
-			item: 'internet',
 			state: internetState,
+			onPress: () => {
+				const goToSettings = (): void => {
+					Platform.OS === 'ios'
+						? Linking.openURL('App-Prefs:Settings')
+						: Linking.sendIntent('android.settings.SETTINGS');
+				};
+				goToSettings();
+			},
 		},
 		{
+			id: 'electrum',
 			Icon: BitcoinSlantedIcon,
-			item: 'bitcoin_node',
-			state: bitcoinNodeState,
+			state: electrumState,
+			onPress: () => navigation.navigate('ElectrumConfig'),
 		},
 		{
+			id: 'lightning_node',
 			Icon: BroadcastIcon,
-			item: 'lightning_node',
-			state: lightningNodeState,
+			state: nodeState,
+			onPress: () => navigation.navigate('LightningNodeInfo'),
 		},
 		{
-			Icon: LightningHollow,
-			item: 'lightning_connection',
-			state: lightningConnectionState,
+			id: 'lightning_connection',
+			Icon: LightningHollowIcon,
+			state: channelsState,
+			onPress: () => navigation.navigate('Channels'),
 		},
 		{
+			id: 'backup',
 			Icon: CloudCheckIcon,
-			item: 'full_backup',
-			state: fullBackupState.state,
-			subtitle: fullBackupState.subtitle,
+			state: backupState,
+			subtitle: backupSubtitle,
+			onPress: () => navigation.navigate('BackupSettings'),
 		},
 	];
 
 	return (
 		<SettingsView title={t('status.title')} fullHeight={true}>
 			<ScrollView style={styles.statusRoot}>
-				{items.map((it) => (
-					<Status key={it.item} {...it} />
-				))}
+				{items.map((item, index) => {
+					const { id, Icon, state, subtitle } = item;
+					const isLast = index === items.length - 1;
+
+					return (
+						<Status
+							key={id}
+							id={id}
+							style={isLast && { borderBottomWidth: 0 }}
+							Icon={Icon}
+							state={state}
+							subtitle={subtitle}
+							onPress={item.onPress}
+						/>
+					);
+				})}
 			</ScrollView>
 		</SettingsView>
 	);
@@ -223,8 +202,8 @@ const styles = StyleSheet.create({
 	status: {
 		marginHorizontal: 16,
 		borderBottomWidth: 1,
-		borderBottomColor: 'rgba(255, 255, 255, 0.1)',
-		height: 76,
+		borderBottomColor: colors.white10,
+		height: 72,
 		flexDirection: 'row',
 		alignItems: 'center',
 	},
@@ -239,7 +218,7 @@ const styles = StyleSheet.create({
 		width: 32,
 		height: 32,
 	},
-	desc: {
+	description: {
 		flex: 1,
 	},
 });

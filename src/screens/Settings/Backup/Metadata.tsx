@@ -9,7 +9,7 @@ import Button from '../../../components/buttons/Button';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 import { backupSelector } from '../../../store/reselect/backup';
 import { closeSheet } from '../../../store/slices/ui';
-import { EBackupCategory } from '../../../store/utils/backup';
+import { EBackupCategory } from '../../../store/types/backup';
 import { BodyM, BodyS, BodySB } from '../../../styles/text';
 import { i18nTime } from '../../../utils/i18n';
 

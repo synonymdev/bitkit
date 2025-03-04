@@ -1,4 +1,27 @@
 {
+	"drawer": {
+		"wallet": {
+			"string": "Wallet"
+		},
+		"activity": {
+			"string": "Activity"
+		},
+		"contacts": {
+			"string": "Contacts"
+		},
+		"profile": {
+			"string": "Profile"
+		},
+		"widgets": {
+			"string": "Widgets"
+		},
+		"settings": {
+			"string": "Settings"
+		},
+		"status": {
+			"string": "App Status"
+		}
+	},
 	"send": {
 		"string": "Send"
 	},

@@ -3,17 +3,18 @@ import React, { memo, ReactElement } from 'react';
 import { useTranslation } from 'react-i18next';
 import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 
+import AppStatus from '../../components/AppStatus';
 import ProfileImage from '../../components/ProfileImage';
 import VerticalShadow from '../../components/VerticalShadow';
 import { useProfile, useSlashtags } from '../../hooks/slashtags';
-import { RootNavigationProp } from '../../navigation/types';
+import { DrawerStackNavigationProp } from '../../navigation/root/DrawerNavigator';
 import { Pressable } from '../../styles/components';
-import { ProfileIcon, SettingsIcon } from '../../styles/icons';
+import { BurgerIcon } from '../../styles/icons';
 import { Title } from '../../styles/text';
 import { truncate } from '../../utils/helpers';
 
 const Header = ({ style }: { style?: StyleProp<ViewStyle> }): ReactElement => {
-	const navigation = useNavigation<RootNavigationProp>();
+	const navigation = useNavigation<DrawerStackNavigationProp>();
 	const { t } = useTranslation('slashtags');
 	const { url } = useSlashtags();
 	const { profile } = useProfile(url);
@@ -22,12 +23,12 @@ const Header = ({ style }: { style?: StyleProp<ViewStyle> }): ReactElement => {
 		navigation.navigate('Profile');
 	};
 
-	const openContacts = (): void => {
-		navigation.navigate('Contacts');
+	const openAppStatus = (): void => {
+		navigation.navigate('Settings', { screen: 'AppStatus' });
 	};
 
-	const openSettings = (): void => {
-		navigation.navigate('Settings');
+	const openDrawer = (): void => {
+		navigation.openDrawer();
 	};
 
 	return (
@@ -36,40 +37,35 @@ const Header = ({ style }: { style?: StyleProp<ViewStyle> }): ReactElement => {
 				<VerticalShadow />
 			</View>
 			<Pressable
-				style={[styles.leftColumn, styles.pressed]}
-				color="transparent"
-				onPressIn={openProfile}
+				style={styles.leftColumn}
 				hitSlop={{ top: 15, bottom: 15, left: 5, right: 5 }}
-				testID="Header">
+				testID="Header"
+				onPressIn={openProfile}>
 				<ProfileImage
-					size={32}
-					url={url}
-					image={profile.image}
 					style={styles.profileImage}
+					url={url}
+					size={32}
+					image={profile.image}
 				/>
 				{profile.name ? (
-					<Title>{truncate(profile?.name, 20)}</Title>
+					<Title>{truncate(profile?.name, 18)}</Title>
 				) : (
 					<Title testID="EmptyProfileHeader">{t('your_name_capital')}</Title>
 				)}
 			</Pressable>
-			<View style={styles.middleColumn} />
 			<View style={styles.rightColumn}>
-				<Pressable
-					style={[styles.profileIcon, styles.pressed]}
-					color="transparent"
+				<AppStatus
+					style={styles.appStatus}
 					hitSlop={{ top: 15, bottom: 15, left: 5, right: 5 }}
-					onPressIn={openContacts}
-					testID="HeaderContactsButton">
-					<ProfileIcon width={24} height={24} />
-				</Pressable>
+					testID="HeaderAppStatus"
+					onPress={openAppStatus}
+				/>
 				<Pressable
-					style={[styles.cogIcon, styles.pressed]}
-					color="transparent"
+					style={styles.menuIcon}
 					hitSlop={{ top: 15, bottom: 15, left: 5, right: 5 }}
-					onPressIn={openSettings}
-					testID="Settings">
-					<SettingsIcon width={24} height={24} />
+					testID="HeaderMenu"
+					onPressIn={openDrawer}>
+					<BurgerIcon width={24} height={24} />
 				</Pressable>
 			</View>
 		</View>
@@ -88,29 +84,11 @@ const styles = StyleSheet.create({
 	shadowContainer: {
 		...StyleSheet.absoluteFillObject,
 	},
-	cogIcon: {
-		alignItems: 'center',
-		justifyContent: 'center',
-		minHeight: 32,
-		paddingLeft: 10,
-		paddingRight: 16,
-	},
-	profileIcon: {
-		alignItems: 'center',
-		justifyContent: 'center',
-		minHeight: 32,
-		paddingRight: 10,
-	},
 	leftColumn: {
 		flex: 6,
 		flexDirection: 'row',
 		alignItems: 'center',
 		paddingLeft: 16,
-	},
-	middleColumn: {
-		flex: 1,
-		justifyContent: 'center',
-		alignItems: 'center',
 	},
 	rightColumn: {
 		flex: 1,
@@ -121,8 +99,14 @@ const styles = StyleSheet.create({
 	profileImage: {
 		marginRight: 16,
 	},
-	pressed: {
-		opacity: 1,
+	appStatus: {
+		marginRight: 4,
+	},
+	menuIcon: {
+		alignItems: 'center',
+		justifyContent: 'center',
+		paddingLeft: 10,
+		paddingRight: 16,
 	},
 });
 

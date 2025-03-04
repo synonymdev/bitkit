@@ -13,7 +13,7 @@ import { useAppSelector } from '../../hooks/redux';
 import ProfileLink from '../../screens/Profile/ProfileLink';
 import ProfileLinkSuggestions from '../../screens/Profile/ProfileLinkSuggestions';
 import { viewControllerIsOpenSelector } from '../../store/reselect/ui';
-import { NavigationContainer } from '../../styles/components';
+import BottomSheetNavigationContainer from './BottomSheetNavigationContainer';
 
 export type ProfileLinkNavigationProp =
 	NativeStackNavigationProp<ProfileLinkStackParamList>;
@@ -39,7 +39,7 @@ const ProfileLinkNavigation = (): ReactElement => {
 	return (
 		<BottomSheetWrapper view="profileAddDataForm" snapPoints={snapPoints}>
 			<NavigationIndependentTree>
-				<NavigationContainer key={isOpen.toString()}>
+				<BottomSheetNavigationContainer key={isOpen.toString()}>
 					<Stack.Navigator screenOptions={screenOptions}>
 						<Stack.Screen name="ProfileLink" component={ProfileLink} />
 						<Stack.Screen
@@ -47,7 +47,7 @@ const ProfileLinkNavigation = (): ReactElement => {
 							component={ProfileLinkSuggestions}
 						/>
 					</Stack.Navigator>
-				</NavigationContainer>
+				</BottomSheetNavigationContainer>
 			</NavigationIndependentTree>
 		</BottomSheetWrapper>
 	);

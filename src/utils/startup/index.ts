@@ -98,7 +98,7 @@ export const startWalletServices = async ({
 	staleBackupRecoveryMode?: boolean;
 	selectedWallet?: TWalletName;
 	selectedNetwork?: EAvailableNetwork;
-}): Promise<Result<string>> => {
+} = {}): Promise<Result<string>> => {
 	try {
 		// wait for interactions/animations to be completed
 		await new Promise((resolve) => {

@@ -45,22 +45,12 @@ import {
 	updateWidgets,
 } from '../slices/widgets';
 import { EActivityType } from '../types/activity';
-import { TBackupMetadata } from '../types/backup';
+import { EBackupCategory, TBackupMetadata } from '../types/backup';
 import { IBlocktank } from '../types/blocktank';
 import { TMetadataState } from '../types/metadata';
 import { TSlashtagsState } from '../types/slashtags';
 import { IWalletItem, TTransfer } from '../types/wallet';
 import { updateOnChainActivityList } from './activity';
-
-export enum EBackupCategory {
-	wallet = 'bitkit_wallet',
-	settings = 'bitkit_settings',
-	widgets = 'bitkit_widgets',
-	metadata = 'bitkit_metadata',
-	blocktank = 'bitkit_blocktank_orders',
-	slashtags = 'bitkit_slashtags_contacts',
-	ldkActivity = 'bitkit_lightning_activity',
-}
 
 export const performLdkRestore = async ({
 	backupServerDetails,

@@ -185,7 +185,8 @@ export const waitForActiveChannel = async (lnd, nodeId, maxRetries = 20) => {
 };
 
 export const getSeed = async () => {
-	await element(by.id('Settings')).tap();
+	await element(by.id('HeaderMenu')).tap();
+	await element(by.id('DrawerSettings')).tap();
 	await element(by.id('BackupSettings')).tap();
 	await element(by.id('BackupWallet')).tap();
 	// animation
@@ -247,7 +248,8 @@ export const restoreWallet = async (seed, passphrase) => {
 };
 
 export const waitForBackup = async () => {
-	await element(by.id('Settings')).tap();
+	await element(by.id('HeaderMenu')).tap();
+	await element(by.id('DrawerSettings')).tap();
 	await element(by.id('BackupSettings')).tap();
 	await waitFor(element(by.id('AllSynced')))
 		.toBeVisible()

@@ -39,6 +39,13 @@ export const Headline = styled.Text<TextProps & { lineHeight?: number }>(
 	}),
 );
 
+export const DrawerText = styled.Text<TextProps>(({ theme, color }) => ({
+	...theme.fonts.black,
+	fontSize: '24px',
+	color: theme.colors[color ?? 'primary'],
+	letterSpacing: -1,
+}));
+
 export const Title = styled.Text<TextProps & { lineHeight?: number }>(
 	({ theme, color, lineHeight = 26 }) => ({
 		...theme.fonts.bold,

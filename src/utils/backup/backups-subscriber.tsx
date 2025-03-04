@@ -5,7 +5,8 @@ import { __E2E__ } from '../../constants/env';
 import { useDebouncedEffect } from '../../hooks/helpers';
 import { useAppSelector } from '../../hooks/redux';
 import { backupSelector } from '../../store/reselect/backup';
-import { EBackupCategory, performBackup } from '../../store/utils/backup';
+import { EBackupCategory } from '../../store/types/backup';
+import { performBackup } from '../../store/utils/backup';
 import { showToast } from '../notifications';
 
 const BACKUP_DEBOUNCE = 5000; // 5 seconds

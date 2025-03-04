@@ -57,7 +57,7 @@ import { updateOnChainActivityList } from '../../../store/utils/activity';
 import {
 	Checkmark,
 	ClockIcon,
-	LightningHollow,
+	LightningHollowIcon,
 	PencilIcon,
 	SettingsIcon,
 	SpeedFastIcon,
@@ -641,7 +641,7 @@ const ReviewAndSend = ({
 								title={t('send_fee_and_speed')}
 								value={
 									<>
-										<LightningHollow
+										<LightningHollowIcon
 											style={styles.icon}
 											color="purple"
 											height={16}

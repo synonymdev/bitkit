@@ -17,7 +17,7 @@ import { useAppSelector } from '../../hooks/redux';
 import Amount from '../../screens/Wallets/LNURLWithdraw/Amount';
 import Confirm from '../../screens/Wallets/LNURLWithdraw/Confirm';
 import { viewControllerSelector } from '../../store/reselect/ui';
-import { NavigationContainer } from '../../styles/components';
+import BottomSheetNavigationContainer from './BottomSheetNavigationContainer';
 
 export type LNURLWithdrawNavigationProp =
 	NativeStackNavigationProp<LNURLWithdrawStackParamList>;
@@ -53,7 +53,7 @@ const LNURLWithdrawNavigation = (): ReactElement => {
 	return (
 		<BottomSheetWrapper view="lnurlWithdraw" snapPoints={snapPoints}>
 			<NavigationIndependentTree>
-				<NavigationContainer key={isOpen.toString()}>
+				<BottomSheetNavigationContainer key={isOpen.toString()}>
 					<Stack.Navigator
 						screenOptions={screenOptions}
 						initialRouteName={initialRouteName}>
@@ -68,7 +68,7 @@ const LNURLWithdrawNavigation = (): ReactElement => {
 							initialParams={{ wParams, amount: wParams.minWithdrawable }}
 						/>
 					</Stack.Navigator>
-				</NavigationContainer>
+				</BottomSheetNavigationContainer>
 			</NavigationIndependentTree>
 		</BottomSheetWrapper>
 	);
