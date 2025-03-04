@@ -22,8 +22,8 @@ import {
 } from '../../store/helpers';
 import { removeActivityItem } from '../../store/slices/activity';
 import { requireBackup } from '../../store/slices/backup';
+import { EBackupCategory } from '../../store/types/backup';
 import { ETransactionSpeed } from '../../store/types/settings';
-import { EBackupCategory } from '../../store/utils/backup';
 import { reduceValue } from '../helpers';
 import i18n from '../i18n';
 import { EAvailableNetwork } from '../networks';

@@ -19,7 +19,7 @@ import ShowPassphrase from '../../screens/Settings/Backup/ShowPassphrase';
 import Success from '../../screens/Settings/Backup/Success';
 import Warning from '../../screens/Settings/Backup/Warning';
 import { viewControllerIsOpenSelector } from '../../store/reselect/ui';
-import { NavigationContainer } from '../../styles/components';
+import BottomSheetNavigationContainer from './BottomSheetNavigationContainer';
 
 export type BackupNavigationProp =
 	NativeStackNavigationProp<BackupStackParamList>;
@@ -51,7 +51,7 @@ const BackupNavigation = (): ReactElement => {
 	return (
 		<BottomSheetWrapper view="backupNavigation" snapPoints={snapPoints}>
 			<NavigationIndependentTree>
-				<NavigationContainer key={isOpen.toString()}>
+				<BottomSheetNavigationContainer key={isOpen.toString()}>
 					<Stack.Navigator screenOptions={navOptions}>
 						<Stack.Screen name="ShowMnemonic" component={ShowMnemonic} />
 						<Stack.Screen name="ShowPassphrase" component={ShowPassphrase} />
@@ -65,7 +65,7 @@ const BackupNavigation = (): ReactElement => {
 						<Stack.Screen name="MultipleDevices" component={MultipleDevices} />
 						<Stack.Screen name="Metadata" component={Metadata} />
 					</Stack.Navigator>
-				</NavigationContainer>
+				</BottomSheetNavigationContainer>
 			</NavigationIndependentTree>
 		</BottomSheetWrapper>
 	);

@@ -1,9 +1,5 @@
 import Clipboard from '@react-native-clipboard/clipboard';
 import {
-	LinkingOptions,
-	createNavigationContainerRef,
-} from '@react-navigation/native';
-import {
 	NativeStackNavigationOptions,
 	createNativeStackNavigator,
 } from '@react-navigation/native-stack';
@@ -41,57 +37,22 @@ import { resetSendTransaction } from '../../store/actions/wallet';
 import { getStore } from '../../store/helpers';
 import { isAuthenticatedSelector } from '../../store/reselect/ui';
 import { updateUi } from '../../store/slices/ui';
-import { NavigationContainer } from '../../styles/components';
 import BackupSubscriber from '../../utils/backup/backups-subscriber';
 import { checkClipboardData } from '../../utils/clipboard';
 import { processUri } from '../../utils/scanner/scanner';
+import SettingsNavigator from '../SettingsNavigator';
+import TransferNavigator from '../TransferNavigator';
+import WalletNavigator from '../WalletNavigator';
 import BottomSheetsLazy from '../bottom-sheet/BottomSheetsLazy';
 import ForceTransfer from '../bottom-sheet/ForceTransfer';
-import SettingsNavigator from '../settings/SettingsNavigator';
-import TransferNavigator from '../transfer/TransferNavigator';
 import type { RootStackParamList } from '../types';
-import WalletNavigator from '../wallet/WalletNavigator';
+import { rootNavigation } from './RootNavigationContainer';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 const screenOptions: NativeStackNavigationOptions = {
 	headerShown: false,
 	animation: __E2E__ ? 'none' : 'default',
-};
-
-/**
- * Helper function to navigate from outside components.
- */
-export const navigationRef = createNavigationContainerRef<RootStackParamList>();
-export const rootNavigation = {
-	getCurrenRoute: (): string | undefined => {
-		if (navigationRef.isReady()) {
-			const route = navigationRef.getCurrentRoute();
-			return route ? route.name : undefined;
-		}
-		return undefined;
-	},
-	navigate<RouteName extends keyof RootStackParamList>(
-		...args: RouteName extends unknown
-			? undefined extends RootStackParamList[RouteName]
-				?
-						| [screen: RouteName]
-						| [screen: RouteName, params: RootStackParamList[RouteName]]
-				: [screen: RouteName, params: RootStackParamList[RouteName]]
-			: never
-	): void {
-		if (navigationRef.isReady()) {
-			navigationRef.navigate(...args);
-		} else {
-			// Decide what to do if react navigation is not ready
-			console.log('rootNavigation not ready');
-		}
-	},
-	goBack(): void {
-		if (navigationRef.isReady()) {
-			navigationRef.goBack();
-		}
-	},
 };
 
 const RootNavigator = (): ReactElement => {
@@ -102,28 +63,6 @@ const RootNavigator = (): ReactElement => {
 	const dispatch = useAppDispatch();
 	const isAuthenticated = useAppSelector(isAuthenticatedSelector);
 	const renderCount = useRenderCount();
-
-	const linking: LinkingOptions<{}> = {
-		prefixes: ['bitkit', 'slash', 'bitcoin', 'lightning'],
-		// This is just here to prevent a warning
-		config: { screens: { Wallet: '' } },
-		subscribe(listener): () => void {
-			// Deep linking if the app is already open
-			const onReceiveURL = ({ url }: { url: string }): void => {
-				rootNavigation.navigate('Wallet');
-				processUri({ uri: url });
-				listener(url);
-				return;
-			};
-
-			// Listen to incoming links from deep linking
-			const subscription = Linking.addEventListener('url', onReceiveURL);
-
-			return () => {
-				subscription.remove();
-			};
-		},
-	};
 
 	const checkClipboard = async (): Promise<void> => {
 		const result = await checkClipboardData();
@@ -194,7 +133,7 @@ const RootNavigator = (): ReactElement => {
 	}, [isAuthenticated]);
 
 	return (
-		<NavigationContainer ref={navigationRef} linking={linking}>
+		<>
 			<Stack.Navigator screenOptions={screenOptions}>
 				<Stack.Screen name="Wallet" component={WalletNavigator} />
 				<Stack.Screen name="ActivityDetail" component={ActivityDetail} />
@@ -242,7 +181,7 @@ const RootNavigator = (): ReactElement => {
 
 			{/* Should be above AuthCheck */}
 			<ForgotPIN />
-		</NavigationContainer>
+		</>
 	);
 };
 

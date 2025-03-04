@@ -329,7 +329,7 @@
         "string": "Nicht verbunden"
       }
     },
-    "bitcoin_node": {
+    "electrum": {
       "title": {
         "string": "Bitcoin Node"
       },
@@ -371,7 +371,7 @@
         "string": "Keine offenen Verbindungen"
       }
     },
-    "full_backup": {
+    "backup": {
       "title": {
         "string": "Vollständiges Backup"
       },

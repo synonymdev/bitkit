@@ -1,19 +1,19 @@
+import { DarkTheme, NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React, { ReactElement } from 'react';
 
-import { useAppSelector } from '../../hooks/redux';
+import { useAppSelector } from '../hooks/redux';
 import CreateWallet, {
 	TCreateWalletParams,
-} from '../../screens/Onboarding/CreateWallet';
-import MultipleDevices from '../../screens/Onboarding/MultipleDevices';
-import Passphrase from '../../screens/Onboarding/Passphrase';
-import RestoreFromSeed from '../../screens/Onboarding/RestoreFromSeed';
-import SlideshowScreen from '../../screens/Onboarding/Slideshow';
-import TermsOfUse from '../../screens/Onboarding/TermsOfUse';
-import WelcomeScreen from '../../screens/Onboarding/Welcome';
-import { requiresRemoteRestoreSelector } from '../../store/reselect/user';
-import { walletExistsSelector } from '../../store/reselect/wallet';
-import { NavigationContainer } from '../../styles/components';
+} from '../screens/Onboarding/CreateWallet';
+import MultipleDevices from '../screens/Onboarding/MultipleDevices';
+import Passphrase from '../screens/Onboarding/Passphrase';
+import RestoreFromSeed from '../screens/Onboarding/RestoreFromSeed';
+import SlideshowScreen from '../screens/Onboarding/Slideshow';
+import TermsOfUse from '../screens/Onboarding/TermsOfUse';
+import WelcomeScreen from '../screens/Onboarding/Welcome';
+import { requiresRemoteRestoreSelector } from '../store/reselect/user';
+import { walletExistsSelector } from '../store/reselect/wallet';
 
 export type OnboardingStackParamList = {
 	TermsOfUse: undefined;
@@ -46,7 +46,7 @@ const OnboardingNavigator = (): ReactElement => {
 		walletExists && requiresRemoteRestore ? 'CreateWallet' : 'TermsOfUse';
 
 	return (
-		<NavigationContainer>
+		<NavigationContainer theme={DarkTheme}>
 			<Stack.Navigator initialRouteName={initialRouteName}>
 				<Stack.Screen
 					name="TermsOfUse"

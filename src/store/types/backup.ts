@@ -1,5 +1,14 @@
 import { ENetworks, TAccount } from '@synonymdev/react-native-ldk';
-import { EBackupCategory } from '../utils/backup';
+
+export enum EBackupCategory {
+	wallet = 'bitkit_wallet',
+	settings = 'bitkit_settings',
+	widgets = 'bitkit_widgets',
+	metadata = 'bitkit_metadata',
+	blocktank = 'bitkit_blocktank_orders',
+	slashtags = 'bitkit_slashtags_contacts',
+	ldkActivity = 'bitkit_lightning_activity',
+}
 
 export type TBackupItem = {
 	running: boolean;

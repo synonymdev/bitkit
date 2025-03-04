@@ -179,7 +179,7 @@
         "string": "Conectado"
       }
     },
-    "bitcoin_node": {
+    "electrum": {
       "ready": {
         "string": "Conectado"
       }

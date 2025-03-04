@@ -85,7 +85,8 @@ d('NumberPad', () => {
 		}
 
 		// switch to classic denomination
-		await element(by.id('Settings')).tap();
+		await element(by.id('HeaderMenu')).tap();
+		await element(by.id('DrawerSettings')).tap();
 		await element(by.id('GeneralSettings')).tap();
 		await element(by.id('UnitSettings')).tap();
 		await element(by.id('DenominationClassic')).tap();

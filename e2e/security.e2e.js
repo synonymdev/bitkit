@@ -71,7 +71,8 @@ d('Settings Security And Privacy', () => {
 
 		await device.setBiometricEnrollment(true);
 
-		await element(by.id('Settings')).tap();
+		await element(by.id('HeaderMenu')).tap();
+		await element(by.id('DrawerSettings')).tap();
 		await element(by.id('SecuritySettings')).tap();
 		await element(by.id('PINCode')).tap();
 		await element(by.id('SecureWallet-button-continue')).tap();
@@ -164,7 +165,8 @@ d('Settings Security And Privacy', () => {
 		await element(by.id('Close')).tap();
 
 		// test PIN on idle and disable it after
-		await element(by.id('Settings')).tap();
+		await element(by.id('HeaderMenu')).tap();
+		await element(by.id('DrawerSettings')).tap();
 		await element(by.id('SecuritySettings')).tap();
 
 		// FIXME: this fails too often
@@ -223,7 +225,8 @@ d('Settings Security And Privacy', () => {
 		await element(by.id('Close')).tap();
 
 		// disable PIN, restart the app, it should not ask for it
-		await element(by.id('Settings')).tap();
+		await element(by.id('HeaderMenu')).tap();
+		await element(by.id('DrawerSettings')).tap();
 		await element(by.id('SecuritySettings')).tap();
 		await element(by.id('PINCode')).tap();
 		await element(by.id('DisablePin')).tap();
@@ -235,7 +238,8 @@ d('Settings Security And Privacy', () => {
 			.withTimeout(10000);
 
 		// enable PIN for last test
-		await element(by.id('Settings')).tap();
+		await element(by.id('HeaderMenu')).tap();
+		await element(by.id('DrawerSettings')).tap();
 		await element(by.id('SecuritySettings')).tap();
 		await element(by.id('PINCode')).tap();
 		await element(by.id('SecureWallet-button-continue')).tap();

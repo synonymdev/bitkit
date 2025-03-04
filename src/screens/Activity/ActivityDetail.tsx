@@ -41,7 +41,7 @@ import {
 	GitBranchIcon,
 	HourglassIcon,
 	HourglassSimpleIcon,
-	LightningHollow,
+	LightningHollowIcon,
 	LightningIcon,
 	ReceiveIcon,
 	SendIcon,
@@ -454,7 +454,7 @@ const OnchainActivityDetail = ({
 									title={t('activity_transfer_to_spending')}
 									value={
 										<View style={styles.row} testID="ActivityAmount">
-											<LightningHollow
+											<LightningHollowIcon
 												style={styles.rowIcon}
 												width={16}
 												height={16}

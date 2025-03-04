@@ -1,12 +1,12 @@
 import { Platform } from 'react-native';
 import { SvgXml } from 'react-native-svg';
 
-import { profileIcon, settings } from '../assets/icons/header';
 import {
 	aboutIcon,
 	advancedIcon,
 	arrowClockwise,
 	arrowCounterClock,
+	arrowsClockwise,
 	backupIcon,
 	broadcastIcon,
 	checkmarkIcon,
@@ -16,7 +16,6 @@ import {
 	devSettingsIcon,
 	discordIcon,
 	downArrowIcon,
-	emailIcon,
 	faceIdIcon,
 	generalSettingsIcon,
 	githubIcon,
@@ -43,16 +42,14 @@ import {
 	backspaceIcon,
 	bitcoinCircleIcon,
 	bitcoinSlantedIcon,
-	brokenLinkIcon,
+	burgerIcon,
 	calendarIcon,
 	cameraIcon,
-	chartLineIcon,
 	checkCircleIcon,
 	clipboardTextIcon,
 	clockIcon,
 	coinsIcon,
 	cornersOut,
-	cubeIcon,
 	exclamationIcon,
 	eyeIcon,
 	fingerPrintIcon,
@@ -61,34 +58,27 @@ import {
 	heartbeatIcon,
 	hourglassIcon,
 	hourglassSimpleIcon,
-	infoIcon,
-	keyIcon,
-	lightbulbIcon,
 	lightningCircleIcon,
 	lightningIcon,
-	lockIcon,
 	magnifyingGlassIcon,
-	mapPinLineIcon,
-	mapTrifoldIcon,
 	minusCircledIcon,
-	newspaperIcon,
 	noteIcon,
-	penIcon,
 	pencilIcon,
 	pictureIcon,
 	plusCircledIcon,
 	plusIcon,
+	powerIcon,
 	qrIcon,
-	questionMarkIcon,
 	receivedIcon,
-	savingsIcon,
 	scanIcon,
 	sentIcon,
+	settingsIcon,
 	shareAndroidIcon,
 	shareIosIcon,
 	speedFastIcon,
 	speedNormalIcon,
 	speedSlowIcon,
+	stackIcon,
 	switchIcon,
 	tagIcon,
 	timerIcon,
@@ -102,7 +92,9 @@ import {
 	userIcon,
 	userMinusIcon,
 	userPlusIcon,
+	userSquareIcon,
 	usersIcon,
+	warningIcon,
 	xIcon,
 } from '../assets/icons/wallet';
 import styled from './styled-components';
@@ -111,6 +103,12 @@ import { IThemeColors } from './themes';
 type IconProps = {
 	color?: keyof IThemeColors;
 };
+
+export const BurgerIcon = styled(SvgXml).attrs((props) => ({
+	xml: burgerIcon(),
+	height: props.height ?? '24px',
+	width: props.width ?? '24px',
+}))<IconProps>(() => ({}));
 
 export const ScanIcon = styled(SvgXml).attrs((props) => ({
 	xml: scanIcon(props.color ? props.theme.colors[props.color] : 'white'),
@@ -121,7 +119,15 @@ export const ScanIcon = styled(SvgXml).attrs((props) => ({
 }));
 
 export const SettingsIcon = styled(SvgXml).attrs((props) => ({
-	xml: settings(props.color ? props.theme.colors[props.color] : 'white'),
+	xml: settingsIcon(props.color ? props.theme.colors[props.color] : 'white'),
+	height: props.height ?? '24px',
+	width: props.width ?? '24px',
+}))<IconProps>((props) => ({
+	color: props.color ? props.theme.colors[props.color] : 'white',
+}));
+
+export const StackIcon = styled(SvgXml).attrs((props) => ({
+	xml: stackIcon(props.color ? props.theme.colors[props.color] : 'white'),
 	height: props.height ?? '24px',
 	width: props.width ?? '24px',
 }))<IconProps>((props) => ({
@@ -339,24 +345,8 @@ export const ShareAndroidIcon = styled(SvgXml).attrs((props) => ({
 export const ShareIcon =
 	Platform.OS === 'ios' ? ShareIosIcon : ShareAndroidIcon;
 
-export const PenIcon = styled(SvgXml).attrs((props) => ({
-	xml: penIcon(props.color ? props.theme.colors[props.color] : 'white'),
-	height: props.height ?? '32px',
-	width: props.width ?? '32px',
-}))<IconProps>((props) => ({
-	color: props.color ? props.theme.colors[props.color] : 'white',
-}));
-
 export const PencilIcon = styled(SvgXml).attrs((props) => ({
 	xml: pencilIcon(props.color ? props.theme.colors[props.color] : 'white'),
-	height: props.height ?? '32px',
-	width: props.width ?? '32px',
-}))<IconProps>((props) => ({
-	color: props.color ? props.theme.colors[props.color] : 'white',
-}));
-
-export const SavingsIcon = styled(SvgXml).attrs((props) => ({
-	xml: savingsIcon(props.color ? props.theme.colors[props.color] : 'white'),
 	height: props.height ?? '32px',
 	width: props.width ?? '32px',
 }))<IconProps>((props) => ({
@@ -441,14 +431,6 @@ export const UnitFiatIcon = styled(SvgXml).attrs((props) => ({
 
 export const LightningIcon = styled(SvgXml).attrs((props) => ({
 	xml: lightningIcon(props.color ? props.theme.colors[props.color] : 'white'),
-	height: props.height ?? '16px',
-	width: props.width ?? '16px',
-}))<IconProps>((props) => ({
-	color: props.color ? props.theme.colors[props.color] : 'white',
-}));
-
-export const LockIcon = styled(SvgXml).attrs((props) => ({
-	xml: lockIcon(props.color ? props.theme.colors[props.color] : 'white'),
 	height: props.height ?? '16px',
 	width: props.width ?? '16px',
 }))<IconProps>((props) => ({
@@ -580,14 +562,6 @@ export const SwitchIcon = styled(SvgXml).attrs((props) => ({
 	color: props.color ? props.theme.colors[props.color] : 'white',
 }));
 
-export const ProfileIcon = styled(SvgXml).attrs((props) => ({
-	xml: profileIcon(props.color ? props.theme.colors[props.color] : 'white'),
-	height: props.height ?? '24px',
-	width: props.width ?? '24px',
-}))<IconProps>((props) => ({
-	color: props.color ? props.theme.colors[props.color] : 'white',
-}));
-
 export const ListIcon = styled(SvgXml).attrs((props) => ({
 	xml: listIcon(
 		props.color
@@ -606,14 +580,6 @@ export const SortAscendingIcon = styled(SvgXml).attrs((props) => ({
 	),
 	height: props.height ?? '24px',
 	width: props.width ?? '24px',
-}))<IconProps>((props) => ({
-	color: props.color ? props.theme.colors[props.color] : 'white',
-}));
-
-export const InfoIcon = styled(SvgXml).attrs((props) => ({
-	xml: infoIcon(props.color ? props.theme.colors[props.color] : 'white'),
-	height: props.height ?? '32px',
-	width: props.width ?? '32px',
 }))<IconProps>((props) => ({
 	color: props.color ? props.theme.colors[props.color] : 'white',
 }));
@@ -654,16 +620,6 @@ export const CornersOutIcon = styled(SvgXml).attrs((props) => ({
 	xml: cornersOut(props.color ? props.theme.colors[props.color] : 'white'),
 	height: props.height ?? '32px',
 	width: props.width ?? '32px',
-}))<IconProps>((props) => ({
-	color: props.color ? props.theme.colors[props.color] : 'white',
-}));
-
-export const EmailIcon = styled(SvgXml).attrs((props) => ({
-	xml: emailIcon(
-		props.color ? props.theme.colors[props.color] : props.theme.colors.brand,
-	),
-	height: props.height ?? '24px',
-	width: props.width ?? '24px',
 }))<IconProps>((props) => ({
 	color: props.color ? props.theme.colors[props.color] : 'white',
 }));
@@ -774,16 +730,6 @@ export const FlashlightIcon = styled(SvgXml).attrs((props) => ({
 	color: props.color ? props.theme.colors[props.color] : 'white',
 }));
 
-export const BrokenLinkIcon = styled(SvgXml).attrs((props) => ({
-	xml: brokenLinkIcon(
-		props.color ? props.theme.colors[props.color] : props.theme.colors.brand,
-	),
-	height: props.height ?? '32px',
-	width: props.width ?? '32px',
-}))<IconProps>((props) => ({
-	color: props.color ? props.theme.colors[props.color] : 'white',
-}));
-
 export const EyeIcon = styled(SvgXml).attrs((props) => ({
 	xml: eyeIcon(props.color ? props.theme.colors[props.color] : 'white'),
 	height: props.height ?? '24px',
@@ -818,63 +764,8 @@ export const PlusCircledIcon = styled(SvgXml).attrs((props) => ({
 	color: props.color ? props.theme.colors[props.color] : 'white',
 }));
 
-export const KeyIcon = styled(SvgXml).attrs((props) => ({
-	xml: keyIcon(props.color ? props.theme.colors[props.color] : 'white'),
-	height: props.height ?? '24px',
-	width: props.width ?? '24px',
-}))<IconProps>((props) => ({
-	color: props.color ? props.theme.colors[props.color] : 'white',
-}));
-
-// Widget icons
-export const ChartLineIcon = styled(SvgXml).attrs((props) => ({
-	xml: chartLineIcon(
-		props.color ? props.theme.colors[props.color] : props.theme.colors.brand,
-	),
-	height: props.height ?? '64px',
-	width: props.width ?? '64px',
-}))<IconProps>((props) => ({
-	color: props.color ? props.theme.colors[props.color] : 'white',
-}));
-
-export const NewspaperIcon = styled(SvgXml).attrs((props) => ({
-	xml: newspaperIcon(
-		props.color ? props.theme.colors[props.color] : props.theme.colors.brand,
-	),
-	height: props.height ?? '64px',
-	width: props.width ?? '64px',
-}))<IconProps>((props) => ({
-	color: props.color ? props.theme.colors[props.color] : 'white',
-}));
-
 export const QrIcon = styled(SvgXml).attrs((props) => ({
 	xml: qrIcon(
-		props.color ? props.theme.colors[props.color] : props.theme.colors.brand,
-	),
-	height: props.height ?? '64px',
-	width: props.width ?? '64px',
-}))<IconProps>((props) => ({
-	color: props.color ? props.theme.colors[props.color] : 'white',
-}));
-
-export const QuestionMarkIcon = styled(SvgXml).attrs((props) => ({
-	xml: questionMarkIcon(),
-	height: props.height ?? '30px',
-	width: props.width ?? '30px',
-}))<IconProps>(() => ({}));
-
-export const CubeIcon = styled(SvgXml).attrs((props) => ({
-	xml: cubeIcon(
-		props.color ? props.theme.colors[props.color] : props.theme.colors.brand,
-	),
-	height: props.height ?? '64px',
-	width: props.width ?? '64px',
-}))<IconProps>((props) => ({
-	color: props.color ? props.theme.colors[props.color] : 'white',
-}));
-
-export const LightBulbIcon = styled(SvgXml).attrs((props) => ({
-	xml: lightbulbIcon(
 		props.color ? props.theme.colors[props.color] : props.theme.colors.brand,
 	),
 	height: props.height ?? '64px',
@@ -913,6 +804,16 @@ export const ArrowClockwise = styled(SvgXml).attrs((props) => ({
 	color: props.color ? props.theme.colors[props.color] : 'white',
 }));
 
+export const ArrowsClockwiseIcon = styled(SvgXml).attrs((props) => ({
+	xml: arrowsClockwise(
+		props.color ? props.theme.colors[props.color] : props.theme.colors.white,
+	),
+	height: props.height ?? '24px',
+	width: props.width ?? '24px',
+}))<IconProps>((props) => ({
+	color: props.color ? props.theme.colors[props.color] : 'white',
+}));
+
 export const RectanglesTwo = styled(SvgXml).attrs((props) => ({
 	xml: rectanglesTwo(
 		props.color ? props.theme.colors[props.color] : props.theme.colors.white,
@@ -923,32 +824,12 @@ export const RectanglesTwo = styled(SvgXml).attrs((props) => ({
 	color: props.color ? props.theme.colors[props.color] : 'white',
 }));
 
-export const LightningHollow = styled(SvgXml).attrs((props) => ({
+export const LightningHollowIcon = styled(SvgXml).attrs((props) => ({
 	xml: lightningHollow(
 		props.color ? props.theme.colors[props.color] : props.theme.colors.white,
 	),
 	height: props.height ?? '24px',
 	width: props.width ?? '24px',
-}))<IconProps>((props) => ({
-	color: props.color ? props.theme.colors[props.color] : 'white',
-}));
-
-export const MapTrifoldIcon = styled(SvgXml).attrs((props) => ({
-	xml: mapTrifoldIcon(
-		props.color ? props.theme.colors[props.color] : props.theme.colors.white,
-	),
-	height: props.height ?? '16px',
-	width: props.width ?? '16px',
-}))<IconProps>((props) => ({
-	color: props.color ? props.theme.colors[props.color] : 'white',
-}));
-
-export const MapPinLineIcon = styled(SvgXml).attrs((props) => ({
-	xml: mapPinLineIcon(
-		props.color ? props.theme.colors[props.color] : props.theme.colors.white,
-	),
-	height: props.height ?? '16px',
-	width: props.width ?? '16px',
 }))<IconProps>((props) => ({
 	color: props.color ? props.theme.colors[props.color] : 'white',
 }));
@@ -1007,6 +888,30 @@ export const DevSettingsIcon = styled(SvgXml).attrs((props) => ({
 	xml: devSettingsIcon(props.color ? props.theme.colors[props.color] : 'white'),
 	height: props.height ?? '33px',
 	width: props.width ?? '32px',
+}))<IconProps>((props) => ({
+	color: props.color ? props.theme.colors[props.color] : 'white',
+}));
+
+export const PowerIcon = styled(SvgXml).attrs((props) => ({
+	xml: powerIcon(props.color ? props.theme.colors[props.color] : 'white'),
+	height: props.height ?? '24px',
+	width: props.width ?? '24px',
+}))<IconProps>((props) => ({
+	color: props.color ? props.theme.colors[props.color] : 'white',
+}));
+
+export const UserSquareIcon = styled(SvgXml).attrs((props) => ({
+	xml: userSquareIcon(props.color ? props.theme.colors[props.color] : 'white'),
+	height: props.height ?? '24px',
+	width: props.width ?? '24px',
+}))<IconProps>((props) => ({
+	color: props.color ? props.theme.colors[props.color] : 'white',
+}));
+
+export const WarningIcon = styled(SvgXml).attrs((props) => ({
+	xml: warningIcon(props.color ? props.theme.colors[props.color] : 'white'),
+	height: props.height ?? '24px',
+	width: props.width ?? '24px',
 }))<IconProps>((props) => ({
 	color: props.color ? props.theme.colors[props.color] : 'white',
 }));

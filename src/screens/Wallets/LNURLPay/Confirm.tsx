@@ -30,7 +30,7 @@ import { addPendingPayment } from '../../../store/slices/lightning';
 import { updateMetaTxComment } from '../../../store/slices/metadata';
 import { EActivityType } from '../../../store/types/activity';
 import { AnimatedView, BottomSheetTextInput } from '../../../styles/components';
-import { Checkmark, LightningHollow } from '../../../styles/icons';
+import { Checkmark, LightningHollowIcon } from '../../../styles/icons';
 import { BodySSB, Caption13Up } from '../../../styles/text';
 import { FeeText } from '../../../utils/fees';
 import {
@@ -221,7 +221,7 @@ const LNURLConfirm = ({
 								title={t('send_fee_and_speed')}
 								value={
 									<>
-										<LightningHollow
+										<LightningHollowIcon
 											style={styles.icon}
 											color="purple"
 											height={16}
