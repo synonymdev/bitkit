@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { ReactElement, useMemo } from 'react';
 import { Image, StyleProp, View, ViewStyle } from 'react-native';
 import { SvgXml } from 'react-native-svg';
 
@@ -16,7 +16,7 @@ const ProfileImage = ({
 	image?: BasicProfile['image'];
 	style?: StyleProp<ViewStyle>;
 	size: number;
-}): JSX.Element => {
+}): ReactElement => {
 	const { gray5 } = useColors();
 
 	// Support svg data urls

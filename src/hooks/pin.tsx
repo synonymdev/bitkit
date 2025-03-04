@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { ReactElement, useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet, View } from 'react-native';
 
@@ -20,7 +20,7 @@ export type UsePIN =
 	  }
 	| {
 			attemptsRemaining: number;
-			Dots: () => JSX.Element;
+			Dots: () => ReactElement;
 			handleNumberPress: (key: string) => void;
 			isLastAttempt: boolean;
 			loading: false;

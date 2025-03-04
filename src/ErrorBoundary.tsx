@@ -11,10 +11,11 @@ type State = {
 	error: ReactError | null;
 };
 
-export default class ErrorBoundary extends Component<PropsWithChildren, State> {
-	state: State = {
-		error: null,
-	};
+class ErrorBoundary extends Component<PropsWithChildren, State> {
+	constructor(props) {
+		super(props);
+		this.state = { error: null };
+	}
 
 	static getDerivedStateFromError(error: Error): { error: Error } {
 		return { error };
@@ -34,3 +35,5 @@ export default class ErrorBoundary extends Component<PropsWithChildren, State> {
 		return <AppError error={error} />;
 	}
 }
+
+export default ErrorBoundary;

@@ -1,8 +1,8 @@
 import Clipboard from '@react-native-clipboard/clipboard';
 import React, {
 	memo,
-	MutableRefObject,
 	ReactElement,
+	RefObject,
 	useCallback,
 	useMemo,
 	useRef,
@@ -60,7 +60,7 @@ const ProfileScreen = ({
 	const { t } = useTranslation('slashtags');
 	const { url } = useSlashtags();
 	const { profile } = useProfile(url);
-	const qrRef = useRef<any>();
+	const qrRef = useRef<any>(undefined);
 
 	const [showCopy, setShowCopy] = useState(false);
 	const [isSharing, setIsSharing] = useState(false);
@@ -167,7 +167,7 @@ const QRView = ({
 }: {
 	url: string;
 	profile?: BasicProfile;
-	qrRef: MutableRefObject<string | undefined>;
+	qrRef: RefObject<string | undefined>;
 	onPress?: () => void;
 }): ReactElement => {
 	const { t } = useTranslation('slashtags');

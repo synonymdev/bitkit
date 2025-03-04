@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import React, {
-	MutableRefObject,
+	RefObject,
 	ReactElement,
 	memo,
 	useCallback,
@@ -72,7 +72,7 @@ const ActivityList = ({
 	onScroll,
 }: {
 	style?: StyleProp<ViewStyle>;
-	panGestureRef?: MutableRefObject<GestureType>;
+	panGestureRef?: RefObject<GestureType>;
 	contentContainerStyle?: StyleProp<ViewStyle>;
 	progressViewOffset?: number;
 	filter?: TActivityFilter;

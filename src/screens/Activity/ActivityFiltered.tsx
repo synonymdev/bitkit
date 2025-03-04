@@ -178,6 +178,8 @@ const ActivityFiltered = (): ReactElement => {
 					</View>
 				</DetectSwipe>
 			</ThemedView>
+
+			{/* TODO: move these up the tree, causing slow down when navigating */}
 			<TimeRangePrompt onChange={setTimerange} />
 			<TagsPrompt tags={tags} onAddTag={addTag} />
 		</>

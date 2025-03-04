@@ -1,4 +1,4 @@
-import React, { ReactElement, RefObject } from 'react';
+import React, { JSX, ReactElement, RefObject } from 'react';
 import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import { BottomSheetTextInput, TextInput } from '../styles/components';
 import { BodyS, Caption13Up } from '../styles/text';

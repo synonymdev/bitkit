@@ -206,7 +206,7 @@
         "string": "Desconectat"
       }
     },
-    "bitcoin_node": {
+    "electrum": {
       "title": {
         "string": "Node Bitcoin"
       },

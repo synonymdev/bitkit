@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { JSX, memo } from 'react';
 import { useAppSelector } from '../../hooks/redux';
 import { viewControllersSelector } from '../../store/reselect/ui';
 // import TransferFailed from '../bottom-sheet/TransferFailed';

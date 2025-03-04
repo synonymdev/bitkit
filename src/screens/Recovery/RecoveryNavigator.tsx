@@ -1,3 +1,4 @@
+import { DarkTheme, NavigationContainer } from '@react-navigation/native';
 import {
 	NativeStackNavigationOptions,
 	createNativeStackNavigator,
@@ -8,7 +9,6 @@ import AuthCheck from '../../components/AuthCheck';
 import { __E2E__ } from '../../constants/env';
 import Mnemonic from '../../screens/Recovery/Mnemonic';
 import Recovery from '../../screens/Recovery/Recovery';
-import { NavigationContainer } from '../../styles/components';
 
 export type RecoveryStackParamList = {
 	AuthCheck: { onSuccess: () => void };
@@ -25,7 +25,7 @@ const screenOptions: NativeStackNavigationOptions = {
 
 const RecoveryNavigator = (): ReactElement => {
 	return (
-		<NavigationContainer>
+		<NavigationContainer theme={DarkTheme}>
 			<Stack.Navigator
 				screenOptions={screenOptions}
 				initialRouteName="Recovery">

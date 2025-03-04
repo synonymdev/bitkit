@@ -11,12 +11,12 @@ import { backupSelector } from '../../../store/reselect/backup';
 import { lightningBackupSelector } from '../../../store/reselect/lightning';
 import { forceBackup } from '../../../store/slices/backup';
 import { TBackupItem } from '../../../store/types/backup';
-import { EBackupCategory } from '../../../store/utils/backup';
+import { EBackupCategory } from '../../../store/types/backup';
 import { toggleBottomSheet } from '../../../store/utils/ui';
 import { ScrollView, View as ThemedView } from '../../../styles/components';
 import {
 	ArrowClockwise,
-	LightningHollow,
+	LightningHollowIcon,
 	NoteIcon,
 	RectanglesTwo,
 	SettingsIcon,
@@ -205,7 +205,7 @@ const BackupSettings = ({
 
 	if (lightning) {
 		categories.unshift({
-			Icon: LightningHollow,
+			Icon: LightningHollowIcon,
 			title: t('backup.category_connections'),
 			status: {
 				running: false,

@@ -90,7 +90,8 @@ d('LNURL', () => {
 		}
 
 		// get LDK Node id
-		await element(by.id('Settings')).tap();
+		await element(by.id('HeaderMenu')).tap();
+		await element(by.id('DrawerSettings')).tap();
 		if (!__DEV__) {
 			await element(by.id('DevOptions')).multiTap(5); // enable dev mode
 		}

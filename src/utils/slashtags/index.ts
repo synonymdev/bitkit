@@ -4,7 +4,7 @@ import { format, parse } from '@synonymdev/slashtags-url';
 import debounce from 'lodash/debounce';
 
 import { webRelayClient } from '../../components/SlashtagsProvider';
-import { rootNavigation } from '../../navigation/root/RootNavigator';
+import { rootNavigation } from '../../navigation/root/RootNavigationContainer';
 import { dispatch, getSettingsStore } from '../../store/helpers';
 import { updateSettings } from '../../store/slices/settings';
 import {

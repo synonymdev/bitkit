@@ -246,7 +246,8 @@ d('Onchain', () => {
 			const coreAddress = await rpc.getNewAddress();
 
 			// enable warning for sending over 100$ to test multiple warning dialogs
-			await element(by.id('Settings')).tap();
+			await element(by.id('HeaderMenu')).tap();
+			await element(by.id('DrawerSettings')).tap();
 			await element(by.id('SecuritySettings')).tap();
 			await element(by.id('SendAmountWarning')).tap();
 			await element(by.id('NavigationClose')).atIndex(0).tap();

@@ -71,7 +71,8 @@ d('Lightning', () => {
 			const { identityPubkey: lndNodeID } = await lnd.getInfo();
 
 			// get LDK Node id
-			await element(by.id('Settings')).tap();
+			await element(by.id('HeaderMenu')).tap();
+			await element(by.id('DrawerSettings')).tap();
 			await element(by.id('AdvancedSettings')).tap();
 			// wait for LDK to start
 			await sleep(5000);
@@ -112,7 +113,8 @@ d('Lightning', () => {
 			await waitForActiveChannel(lnd, ldkNodeId);
 
 			// check channel status
-			await element(by.id('Settings')).tap();
+			await element(by.id('HeaderMenu')).tap();
+			await element(by.id('DrawerSettings')).tap();
 			await element(by.id('AdvancedSettings')).atIndex(0).tap();
 			await element(by.id('Channels')).tap();
 			await element(by.id('Channel')).atIndex(0).tap();
@@ -331,7 +333,8 @@ d('Lightning', () => {
 			await element(by.id('NavigationClose')).tap();
 
 			// check channel status
-			await element(by.id('Settings')).tap();
+			await element(by.id('HeaderMenu')).tap();
+			await element(by.id('DrawerSettings')).tap();
 			await element(by.id('AdvancedSettings')).tap();
 			await sleep(100);
 			await element(by.id('Channels')).tap();

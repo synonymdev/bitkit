@@ -81,7 +81,8 @@ d('Transfer', () => {
 		await element(by.id('NewTxPrompt')).swipe('down'); // close Receive screen
 
 		// switch to USD
-		await element(by.id('Settings')).tap();
+		await element(by.id('HeaderMenu')).tap();
+		await element(by.id('DrawerSettings')).tap();
 		await element(by.id('GeneralSettings')).tap();
 		await element(by.id('CurrenciesSettings')).tap();
 		await element(by.text('EUR (€)')).tap();
@@ -196,7 +197,8 @@ d('Transfer', () => {
 		// check channel status
 		await element(by.id('NavigationClose')).tap();
 		await sleep(1000);
-		await element(by.id('Settings')).tap();
+		await element(by.id('HeaderMenu')).tap();
+		await element(by.id('DrawerSettings')).tap();
 		await element(by.id('AdvancedSettings')).atIndex(0).tap();
 		await element(by.id('Channels')).tap();
 		await element(by.id('Channel')).atIndex(0).tap();
@@ -265,7 +267,8 @@ d('Transfer', () => {
 		await element(by.id('NewTxPrompt')).swipe('down');
 
 		// Get LDK node id
-		await element(by.id('Settings')).tap();
+		await element(by.id('HeaderMenu')).tap();
+		await element(by.id('DrawerSettings')).tap();
 		await element(by.id('AdvancedSettings')).tap();
 		// wait for LDK to start
 		await sleep(5000);
@@ -281,7 +284,8 @@ d('Transfer', () => {
 		const { identityPubkey: lndNodeId } = await lnd.getInfo();
 
 		// Connect to LND
-		await element(by.id('Settings')).tap();
+		await element(by.id('HeaderMenu')).tap();
+		await element(by.id('DrawerSettings')).tap();
 		await element(by.id('AdvancedSettings')).tap();
 		await element(by.id('Channels')).tap();
 		await element(by.id('NavigationAction')).tap();
@@ -348,7 +352,8 @@ d('Transfer', () => {
 		).not.toBeVisible();
 
 		// check channel status
-		await element(by.id('Settings')).tap();
+		await element(by.id('HeaderMenu')).tap();
+		await element(by.id('DrawerSettings')).tap();
 		await element(by.id('AdvancedSettings')).atIndex(0).tap();
 		await element(by.id('Channels')).tap();
 		await element(by.id('Channel')).atIndex(0).tap();
@@ -397,7 +402,8 @@ d('Transfer', () => {
 		await element(by.id('TransferSuccess-button')).tap();
 
 		// check channel is closed
-		await element(by.id('Settings')).tap();
+		await element(by.id('HeaderMenu')).tap();
+		await element(by.id('DrawerSettings')).tap();
 		await element(by.id('AdvancedSettings')).atIndex(0).tap();
 		await element(by.id('Channels')).tap();
 		await expect(element(by.text('Connection 1'))).not.toBeVisible();
