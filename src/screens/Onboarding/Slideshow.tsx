@@ -183,7 +183,7 @@ const Slideshow = ({
 		}
 	};
 
-	const onCreateWallet = useCallback(async (): Promise<void> => {
+	const onCreateWallet = useCallback((): void => {
 		dispatch(updateUser({ requiresRemoteRestore: false }));
 		navigation.navigate('CreateWallet', {
 			action: 'create',
