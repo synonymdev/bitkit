@@ -95,3 +95,6 @@ docker/lnd/
 
 #Build
 android/app/release/
+
+# Optimized SVGs
+src/assets/svgs/optimized/

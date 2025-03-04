@@ -18,7 +18,7 @@ import {
 	ArrowClockwise,
 	LightningHollowIcon,
 	NoteIcon,
-	RectanglesTwo,
+	RectanglesTwoIcon,
 	SettingsIcon,
 	TagIcon,
 	TimerIconAlt,
@@ -178,7 +178,7 @@ const BackupSettings = ({
 			status: backup[EBackupCategory.settings],
 		},
 		{
-			Icon: RectanglesTwo,
+			Icon: RectanglesTwoIcon,
 			title: t('backup.category_widgets'),
 			category: EBackupCategory.widgets,
 			status: backup[EBackupCategory.widgets],

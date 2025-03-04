@@ -11,7 +11,7 @@ import {
 import Animated, { FadeIn } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { receiveIcon, sendIcon } from '../assets/icons/tabs';
+import { receiveIcon, sendIcon } from '../assets/icons';
 import useColors from '../hooks/colors';
 import { useAppSelector } from '../hooks/redux';
 import { rootNavigation } from '../navigation/root/RootNavigationContainer';

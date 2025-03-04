@@ -4,63 +4,51 @@ import { SvgXml } from 'react-native-svg';
 import {
 	aboutIcon,
 	advancedIcon,
-	arrowClockwise,
-	arrowCounterClock,
-	arrowsClockwise,
-	backupIcon,
-	broadcastIcon,
-	checkmarkIcon,
-	chevronRightIcon,
-	cloudCheckIcon,
-	copyIcon,
-	devSettingsIcon,
-	discordIcon,
-	downArrowIcon,
-	faceIdIcon,
-	generalSettingsIcon,
-	githubIcon,
-	globeIcon,
-	globeSimpleIcon,
-	leftSign,
-	lightningHollow,
-	listIcon,
-	mediumIcon,
-	rectanglesTwo,
-	rightArrowIcon,
-	rightSign,
-	securityIcon,
-	sortAscendingIcon,
-	supportIcon,
-	telegramIcon,
-	touchIdIcon,
-	twitterIcon,
-	upArrowIcon,
-} from '../assets/icons/settings';
-import {
-	arrowLNfunds,
+	arrowClockwiseIcon,
+	arrowCounterClockIcon,
+	arrowLNfundsIcon,
+	arrowsClockwiseIcon,
 	backIcon,
 	backspaceIcon,
+	backupIcon,
 	bitcoinCircleIcon,
 	bitcoinSlantedIcon,
+	broadcastIcon,
 	burgerIcon,
 	calendarIcon,
 	cameraIcon,
 	checkCircleIcon,
+	checkmarkIcon,
+	chevronRightIcon,
 	clipboardTextIcon,
 	clockIcon,
+	cloudCheckIcon,
 	coinsIcon,
-	cornersOut,
+	copyIcon,
+	cornersOutIcon,
+	devSettingsIcon,
+	discordIcon,
+	downArrowIcon,
 	exclamationIcon,
 	eyeIcon,
+	faceIdIcon,
 	fingerPrintIcon,
 	flashlightIcon,
+	generalSettingsIcon,
 	gitBranchIcon,
+	githubIcon,
+	globeIcon,
+	globeSimpleIcon,
 	heartbeatIcon,
 	hourglassIcon,
 	hourglassSimpleIcon,
+	leftSignIcon,
 	lightningCircleIcon,
+	lightningHollowIcon,
 	lightningIcon,
+	listIcon,
 	magnifyingGlassIcon,
+	mediumIcon,
 	minusCircledIcon,
 	noteIcon,
 	pencilIcon,
@@ -70,25 +58,35 @@ import {
 	powerIcon,
 	qrIcon,
 	receivedIcon,
+	rectanglesTwoIcon,
+	rightArrowIcon,
+	rightSignIcon,
 	scanIcon,
+	securityIcon,
 	sentIcon,
 	settingsIcon,
 	shareAndroidIcon,
 	shareIosIcon,
+	sortAscendingIcon,
 	speedFastIcon,
 	speedNormalIcon,
 	speedSlowIcon,
 	stackIcon,
-	switchIcon,
+	supportIcon,
 	tagIcon,
+	telegramIcon,
 	timerIcon,
-	timerIconAlt,
+	timerIconAltIcon,
 	timerSpeedIcon,
+	toggleIcon,
+	touchIdIcon,
 	transferIcon,
 	trashIcon,
+	twitterIcon,
 	unifiedCircleIcon,
 	unitBitcoinIcon,
 	unitFiatIcon,
+	upArrowIcon,
 	userIcon,
 	userMinusIcon,
 	userPlusIcon,
@@ -96,7 +94,7 @@ import {
 	usersIcon,
 	warningIcon,
 	xIcon,
-} from '../assets/icons/wallet';
+} from '../assets/icons';
 import styled from './styled-components';
 import { IThemeColors } from './themes';
 
@@ -233,7 +231,9 @@ export const TimerIcon = styled(SvgXml).attrs((props) => ({
 }));
 
 export const TimerIconAlt = styled(SvgXml).attrs((props) => ({
-	xml: timerIconAlt(props.color ? props.theme.colors[props.color] : 'white'),
+	xml: timerIconAltIcon(
+		props.color ? props.theme.colors[props.color] : 'white',
+	),
 	height: props.height ?? '17px',
 	width: props.width ?? '16px',
 }))<IconProps>((props) => ({
@@ -482,7 +482,7 @@ export const UpArrow = styled(SvgXml).attrs((props) => ({
 }));
 
 export const ArrowLNFunds = styled(SvgXml).attrs((props) => ({
-	xml: arrowLNfunds(
+	xml: arrowLNfundsIcon(
 		props.color ? props.theme.colors[props.color] : props.theme.colors.white,
 	),
 	height: props.height ?? '20px',
@@ -505,7 +505,7 @@ export const DownArrow = styled(SvgXml).attrs((props) => ({
 }));
 
 export const ArrowCounterClock = styled(SvgXml).attrs((props) => ({
-	xml: arrowCounterClock(
+	xml: arrowCounterClockIcon(
 		props.color ? props.theme.colors[props.color] : props.theme.colors.white,
 	),
 	height: props.height ?? '24px',
@@ -555,7 +555,7 @@ export const TouchIdIcon = styled(SvgXml).attrs((props) => ({
 }));
 
 export const SwitchIcon = styled(SvgXml).attrs((props) => ({
-	xml: switchIcon(props.color ? props.theme.colors[props.color] : 'white'),
+	xml: toggleIcon(props.color ? props.theme.colors[props.color] : 'white'),
 	height: props.height ?? '16px',
 	width: props.width ?? '16px',
 }))<IconProps>((props) => ({
@@ -617,7 +617,7 @@ export const BackIcon = styled(SvgXml).attrs((props) => ({
 }));
 
 export const CornersOutIcon = styled(SvgXml).attrs((props) => ({
-	xml: cornersOut(props.color ? props.theme.colors[props.color] : 'white'),
+	xml: cornersOutIcon(props.color ? props.theme.colors[props.color] : 'white'),
 	height: props.height ?? '32px',
 	width: props.width ?? '32px',
 }))<IconProps>((props) => ({
@@ -775,7 +775,7 @@ export const QrIcon = styled(SvgXml).attrs((props) => ({
 }));
 
 export const LeftSign = styled(SvgXml).attrs((props) => ({
-	xml: leftSign(
+	xml: leftSignIcon(
 		props.color ? props.theme.colors[props.color] : props.theme.colors.white,
 	),
 	height: props.height ?? '18px',
@@ -785,7 +785,7 @@ export const LeftSign = styled(SvgXml).attrs((props) => ({
 }));
 
 export const RightSign = styled(SvgXml).attrs((props) => ({
-	xml: rightSign(
+	xml: rightSignIcon(
 		props.color ? props.theme.colors[props.color] : props.theme.colors.white,
 	),
 	height: props.height ?? '18px',
@@ -795,7 +795,7 @@ export const RightSign = styled(SvgXml).attrs((props) => ({
 }));
 
 export const ArrowClockwise = styled(SvgXml).attrs((props) => ({
-	xml: arrowClockwise(
+	xml: arrowClockwiseIcon(
 		props.color ? props.theme.colors[props.color] : props.theme.colors.white,
 	),
 	height: props.height ?? '24px',
@@ -805,7 +805,7 @@ export const ArrowClockwise = styled(SvgXml).attrs((props) => ({
 }));
 
 export const ArrowsClockwiseIcon = styled(SvgXml).attrs((props) => ({
-	xml: arrowsClockwise(
+	xml: arrowsClockwiseIcon(
 		props.color ? props.theme.colors[props.color] : props.theme.colors.white,
 	),
 	height: props.height ?? '24px',
@@ -814,8 +814,8 @@ export const ArrowsClockwiseIcon = styled(SvgXml).attrs((props) => ({
 	color: props.color ? props.theme.colors[props.color] : 'white',
 }));
 
-export const RectanglesTwo = styled(SvgXml).attrs((props) => ({
-	xml: rectanglesTwo(
+export const RectanglesTwoIcon = styled(SvgXml).attrs((props) => ({
+	xml: rectanglesTwoIcon(
 		props.color ? props.theme.colors[props.color] : props.theme.colors.white,
 	),
 	height: props.height ?? '24px',
@@ -825,7 +825,7 @@ export const RectanglesTwo = styled(SvgXml).attrs((props) => ({
 }));
 
 export const LightningHollowIcon = styled(SvgXml).attrs((props) => ({
-	xml: lightningHollow(
+	xml: lightningHollowIcon(
 		props.color ? props.theme.colors[props.color] : props.theme.colors.white,
 	),
 	height: props.height ?? '24px',

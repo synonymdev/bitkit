@@ -1,6 +1,6 @@
 {
 	"files": {
-		"ignore": ["src/polyfills/**"]
+		"ignore": ["src/polyfills/**", "src/assets/icons/index.ts"]
 	},
 	"linter": {
 		"rules": {

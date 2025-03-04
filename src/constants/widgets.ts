@@ -5,7 +5,7 @@ import {
 	newsIcon,
 	priceIcon,
 	weatherIcon,
-} from '../assets/icons/widgets';
+} from '../assets/icons';
 
 export const widgets = {
 	blocks: { id: 'blocks', icon: blocksIcon() },
