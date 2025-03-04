@@ -24,11 +24,7 @@ import i18n from '../../utils/i18n';
 import { refreshLdk } from '../../utils/lightning';
 import { EAvailableNetwork } from '../../utils/networks';
 import { showToast } from '../../utils/notifications';
-import {
-	getSelectedNetwork,
-	getSelectedWallet,
-	refreshWallet,
-} from '../../utils/wallet';
+import { refreshWallet } from '../../utils/wallet';
 import { DEFAULT_CHANNEL_DURATION } from '../../utils/wallet/constants';
 import {
 	broadcastTransaction,

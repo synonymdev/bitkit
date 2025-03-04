@@ -23,7 +23,6 @@ import {
 import { removeActivityItem } from '../../store/slices/activity';
 import { requireBackup } from '../../store/slices/backup';
 import { ETransactionSpeed } from '../../store/types/settings';
-import { TWalletName } from '../../store/types/wallet';
 import { EBackupCategory } from '../../store/utils/backup';
 import { reduceValue } from '../helpers';
 import i18n from '../i18n';

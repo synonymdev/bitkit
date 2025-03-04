@@ -13,6 +13,7 @@
 			},
 			"correctness": {
 				"noUnusedFunctionParameters": "error",
+				"noUnusedImports": "error",
 				"noUnusedVariables": "error"
 			},
 			"performance": {
@@ -34,6 +35,7 @@
 		"formatter": {
 			"bracketSameLine": true,
 			"quoteStyle": "single"
-		}
+		},
+		"jsxRuntime": "reactClassic"
 	}
 }
