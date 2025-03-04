@@ -13,11 +13,6 @@ import React, {
 	useState,
 } from 'react';
 
-import ErrorScreen from '../../screens/OrangeTicket/Error';
-import Prize from '../../screens/OrangeTicket/Prize';
-import UsedCard from '../../screens/OrangeTicket/UsedCard';
-import { NavigationContainer } from '../../styles/components';
-
 import BottomSheetWrapper from '../../components/BottomSheetWrapper';
 import { __TREASURE_HUNT_HOST__ } from '../../constants/env';
 import {
@@ -25,9 +20,13 @@ import {
 	useSnapPoints,
 } from '../../hooks/bottomSheet';
 import { useAppSelector } from '../../hooks/redux';
+import ErrorScreen from '../../screens/OrangeTicket/Error';
+import Prize from '../../screens/OrangeTicket/Prize';
+import UsedCard from '../../screens/OrangeTicket/UsedCard';
 import { viewControllerSelector } from '../../store/reselect/ui';
 import { getNodeId, waitForLdk } from '../../utils/lightning';
 import { showToast } from '../../utils/notifications';
+import BottomSheetNavigationContainer from './BottomSheetNavigationContainer';
 
 export type OrangeTicketNavigationProp =
 	NativeStackNavigationProp<OrangeTicketStackParamList>;
@@ -158,7 +157,7 @@ const OrangeTicket = (): ReactElement => {
 	return (
 		<BottomSheetWrapper view="orangeTicket" snapPoints={snapPoints}>
 			<NavigationIndependentTree>
-				<NavigationContainer key={isOpen.toString()}>
+				<BottomSheetNavigationContainer key={isOpen.toString()}>
 					<Stack.Navigator
 						initialRouteName={initialScreen}
 						screenOptions={screenOptions}>
@@ -178,7 +177,7 @@ const OrangeTicket = (): ReactElement => {
 							initialParams={{ errorCode }}
 						/>
 					</Stack.Navigator>
-				</NavigationContainer>
+				</BottomSheetNavigationContainer>
 			</NavigationIndependentTree>
 		</BottomSheetWrapper>
 	);

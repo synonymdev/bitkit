@@ -1,6 +1,7 @@
 import { EventEmitter } from 'events';
 import React, { ReactElement } from 'react';
 import { StyleSheet, View } from 'react-native';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { enableFreeze, enableScreens } from 'react-native-screens';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
@@ -17,13 +18,15 @@ enableFreeze(true);
 const Root = (): ReactElement => {
 	return (
 		<ErrorBoundary>
-			<Provider store={store}>
-				<PersistGate
-					loading={<View style={styles.container} />}
-					persistor={persistor}>
-					<App />
-				</PersistGate>
-			</Provider>
+			<GestureHandlerRootView>
+				<Provider store={store}>
+					<PersistGate
+						loading={<View style={styles.container} />}
+						persistor={persistor}>
+						<App />
+					</PersistGate>
+				</Provider>
+			</GestureHandlerRootView>
 		</ErrorBoundary>
 	);
 };

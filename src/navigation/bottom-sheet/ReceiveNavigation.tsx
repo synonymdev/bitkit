@@ -19,7 +19,7 @@ import ReceiveQR from '../../screens/Wallets/Receive/ReceiveQR';
 import Tags from '../../screens/Wallets/Receive/Tags';
 import { viewControllerSelector } from '../../store/reselect/ui';
 import { resetInvoice } from '../../store/slices/receive';
-import { NavigationContainer } from '../../styles/components';
+import BottomSheetNavigationContainer from './BottomSheetNavigationContainer';
 
 export type ReceiveNavigationProp =
 	NativeStackNavigationProp<ReceiveStackParamList>;
@@ -69,7 +69,7 @@ const ReceiveNavigation = (): ReactElement => {
 			onOpen={reset}
 			onClose={reset}>
 			<NavigationIndependentTree>
-				<NavigationContainer key={isOpen.toString()}>
+				<BottomSheetNavigationContainer key={isOpen.toString()}>
 					<Stack.Navigator
 						initialRouteName={initialRouteName}
 						screenOptions={screenOptions}>
@@ -84,7 +84,7 @@ const ReceiveNavigation = (): ReactElement => {
 						<Stack.Screen name="ReceiveConnect" component={ReceiveConnect} />
 						<Stack.Screen name="Liquidity" component={Liquidity} />
 					</Stack.Navigator>
-				</NavigationContainer>
+				</BottomSheetNavigationContainer>
 			</NavigationIndependentTree>
 		</BottomSheetWrapper>
 	);

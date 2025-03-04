@@ -1,8 +1,4 @@
 import { BottomSheetTextInput as _BottomSheetTextInput } from '@gorhom/bottom-sheet';
-import {
-	DefaultTheme,
-	NavigationContainer as _NavigationContainer,
-} from '@react-navigation/native';
 import Color from 'color';
 import {
 	ColorValue,
@@ -51,22 +47,6 @@ export const Container = styled.View`
 	flex: 1;
 	background-color: ${(props): string => props.theme.colors.background};
 `;
-
-export const NavigationContainer = styled(_NavigationContainer).attrs(
-	(props) => ({
-		theme: {
-			...DefaultTheme,
-			colors: {
-				...DefaultTheme.colors,
-				card: 'transparent',
-				text: props.theme.colors.primary,
-				background: 'transparent',
-				primary: 'transparent',
-				border: 'transparent',
-			},
-		},
-	}),
-)({});
 
 export const View = styled.View<ViewProps & ColorProps>((props) => ({
 	backgroundColor: props.color
@@ -119,7 +99,7 @@ export const Pressable = styled(RNPressable)<PressableProps & ColorProps>(
 	(props) => ({
 		backgroundColor: props.color
 			? props.theme.colors[props.color]
-			: props.theme.colors.background,
+			: 'transparent',
 		opacity: props.disabled ? 0.5 : 1,
 	}),
 );

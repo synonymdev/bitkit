@@ -6,17 +6,17 @@ import {
 } from '@react-navigation/native-stack';
 import React, { ReactElement, memo } from 'react';
 import { BiometryType } from 'react-native-biometrics';
-import { useAppSelector } from '../../hooks/redux';
 
 import BottomSheetWrapper from '../../components/BottomSheetWrapper';
 import { __E2E__ } from '../../constants/env';
 import { useSnapPoints } from '../../hooks/bottomSheet';
+import { useAppSelector } from '../../hooks/redux';
 import AskForBiometrics from '../../screens/Settings/PIN/AskForBiometrics';
 import ChoosePIN from '../../screens/Settings/PIN/ChoosePIN';
 import PINPrompt from '../../screens/Settings/PIN/PINPrompt';
 import Result from '../../screens/Settings/PIN/Result';
 import { viewControllerIsOpenSelector } from '../../store/reselect/ui';
-import { NavigationContainer } from '../../styles/components';
+import BottomSheetNavigationContainer from './BottomSheetNavigationContainer';
 
 export type PinNavigationProp = NativeStackNavigationProp<PinStackParamList>;
 
@@ -43,7 +43,7 @@ const PINNavigation = (): ReactElement => {
 	return (
 		<BottomSheetWrapper view="PINNavigation" snapPoints={snapPoints}>
 			<NavigationIndependentTree>
-				<NavigationContainer key={isOpen.toString()}>
+				<BottomSheetNavigationContainer key={isOpen.toString()}>
 					<Stack.Navigator screenOptions={screenOptions}>
 						<Stack.Screen name="PINPrompt" component={PINPrompt} />
 						<Stack.Screen name="ChoosePIN" component={ChoosePIN} />
@@ -53,7 +53,7 @@ const PINNavigation = (): ReactElement => {
 						/>
 						<Stack.Screen name="Result" component={Result} />
 					</Stack.Navigator>
-				</NavigationContainer>
+				</BottomSheetNavigationContainer>
 			</NavigationIndependentTree>
 		</BottomSheetWrapper>
 	);

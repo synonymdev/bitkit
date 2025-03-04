@@ -84,7 +84,8 @@ d('Backup', () => {
 
 		// change currency to GBP
 		await element(by.id('TotalBalance')).tap(); // switch to local currency
-		await element(by.id('Settings')).tap();
+		await element(by.id('HeaderMenu')).tap();
+		await element(by.id('DrawerSettings')).tap();
 		await element(by.id('GeneralSettings')).tap();
 		await element(by.id('CurrenciesSettings')).tap();
 		await element(by.text('GBP (£)')).tap();
