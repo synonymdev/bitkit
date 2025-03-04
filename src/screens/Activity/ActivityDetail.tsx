@@ -78,7 +78,6 @@ import {
 import { contactsSelector } from '../../store/reselect/slashtags';
 import {
 	boostedTransactionsSelector,
-	selectedNetworkSelector,
 	transferSelector,
 } from '../../store/reselect/wallet';
 import {

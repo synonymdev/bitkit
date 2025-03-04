@@ -2,7 +2,7 @@ import { Platform } from 'react-native';
 import { getBuildNumber } from 'react-native-device-info';
 
 import { vibrate } from '../../utils/helpers';
-import { dispatch, getActivityStore } from '../helpers';
+import { dispatch } from '../helpers';
 import {
 	closeSheet,
 	setAppUpdateInfo,
