@@ -1,5 +1,5 @@
 import React, { memo, ReactElement } from 'react';
-import { StyleProp, StyleSheet, ViewStyle } from 'react-native';
+import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import { useAppSelector } from '../../hooks/redux';
 
 import { useCurrency } from '../../hooks/displayValues';
@@ -37,12 +37,12 @@ const UnitButton = ({
 			color="white10"
 			testID={testID}
 			onPressIn={onSwitchUnit}>
-			<>
+			<View style={styles.container}>
 				<SwitchIcon color={color} width={16.44} height={13.22} />
 				<Caption13Up style={styles.text} color={color}>
 					{unit === EUnit.BTC ? 'BTC' : fiatTicker}
 				</Caption13Up>
-			</>
+			</View>
 		</TouchableHighlight>
 	);
 };
@@ -52,6 +52,10 @@ const styles = StyleSheet.create({
 		paddingVertical: 5,
 		paddingHorizontal: 8,
 		borderRadius: 8,
+		flexDirection: 'row',
+		alignItems: 'center',
+	},
+	container: {
 		flexDirection: 'row',
 		alignItems: 'center',
 	},

@@ -20,7 +20,7 @@ const InactivityTracker = ({
 }: {
 	children: ReactElement;
 }): ReactElement => {
-	const timeout = useRef<NodeJS.Timeout>();
+	const timeout = useRef<NodeJS.Timeout>(undefined);
 	const dispatch = useAppDispatch();
 	const pin = useAppSelector(pinSelector);
 	const pinOnIdle = useAppSelector(pinOnIdleSelector);
