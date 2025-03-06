@@ -14,10 +14,9 @@ import {
 	useBottomSheetBackPress,
 	useSnapPoints,
 } from '../../hooks/bottomSheet';
-import { useAppDispatch } from '../../hooks/redux';
 import { useSlashtags } from '../../hooks/slashtags';
 import type { RootStackParamList } from '../../navigation/types';
-import { closeSheet } from '../../store/slices/ui';
+import { closeSheet } from '../../store/utils/ui';
 import { ClipboardTextIcon, CornersOutIcon } from '../../styles/icons';
 import { BodyM } from '../../styles/text';
 import { handleSlashtagURL } from '../../utils/slashtags';
@@ -29,7 +28,6 @@ const AddContact = ({
 }): ReactElement => {
 	const { t } = useTranslation('slashtags');
 	const snapPoints = useSnapPoints('small');
-	const dispatch = useAppDispatch();
 	const [url, setUrl] = useState('');
 	const [error, setError] = useState<undefined | string>();
 	const { url: myProfileURL } = useSlashtags();
@@ -69,7 +67,8 @@ const AddContact = ({
 		const onContact = (): void => {
 			setUrl('');
 			// Add delay to prevent sheet from staying open
-			setTimeout(() => dispatch(closeSheet('addContactModal')), 500);
+			// setTimeout(() => dispatch(closeSheet('addContactModal')), 500);
+			closeSheet('addContactModal');
 		};
 
 		handleSlashtagURL(contactUrl, onError, onContact);

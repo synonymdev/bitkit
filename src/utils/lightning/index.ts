@@ -52,7 +52,7 @@ import {
 import { addActivityItem } from '../../store/slices/activity';
 import { initialFeesState } from '../../store/slices/fees';
 import { updateBackupState } from '../../store/slices/lightning';
-import { closeSheet, updateUi } from '../../store/slices/ui';
+import { updateUi } from '../../store/slices/ui';
 import {
 	EActivityType,
 	TLightningActivityItem,
@@ -79,7 +79,7 @@ import {
 	updateLightningNodeIdThunk,
 	updateLightningNodeVersionThunk,
 } from '../../store/utils/lightning';
-import { showBottomSheet } from '../../store/utils/ui';
+import { closeSheet, showBottomSheet } from '../../store/utils/ui';
 import { getBlocktankInfo, isGeoBlocked, logToBlocktank } from '../blocktank';
 import {
 	promiseTimeout,
@@ -574,8 +574,8 @@ export const handleLightningPaymentSubscription = async ({
 
 	vibrate({ type: 'default' });
 	showBottomSheet('newTxPrompt', { activityItem });
-	dispatch(closeSheet('receiveNavigation'));
-	dispatch(closeSheet('orangeTicket'));
+	closeSheet('receiveNavigation');
+	closeSheet('orangeTicket');
 	dispatch(addActivityItem(activityItem));
 
 	await refreshLdk({ selectedWallet, selectedNetwork });

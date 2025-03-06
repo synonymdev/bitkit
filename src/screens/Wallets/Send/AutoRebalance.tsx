@@ -7,9 +7,8 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
 import GradientView from '../../../components/GradientView';
 import Button from '../../../components/buttons/Button';
-import { useAppDispatch } from '../../../hooks/redux';
 import type { SendScreenProps } from '../../../navigation/types';
-import { closeSheet } from '../../../store/slices/ui';
+import { closeSheet } from '../../../store/utils/ui';
 import { BodyM } from '../../../styles/text';
 
 const imageSrc = require('../../../assets/illustrations/transfer.png');
@@ -18,7 +17,6 @@ const AutoRebalance = ({
 	navigation,
 }: SendScreenProps<'AutoRebalance'>): ReactElement => {
 	const insets = useSafeAreaInsets();
-	const dispatch = useAppDispatch();
 
 	const buttonContainer = useMemo(
 		() => ({
@@ -33,7 +31,7 @@ const AutoRebalance = ({
 	};
 
 	const onContinue = (): void => {
-		dispatch(closeSheet('sendNavigation'));
+		closeSheet('sendNavigation');
 	};
 
 	// TODO: get rebalance fee

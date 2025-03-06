@@ -9,9 +9,8 @@ import {
 } from '../../hooks/bottomSheet';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { startCoopCloseTimestampSelector } from '../../store/reselect/user';
-import { closeSheet } from '../../store/slices/ui';
 import { clearCoopCloseTimer } from '../../store/slices/user';
-import { showBottomSheet } from '../../store/utils/ui';
+import { closeSheet, showBottomSheet } from '../../store/utils/ui';
 import { Display } from '../../styles/text';
 import { closeAllChannels } from '../../utils/lightning';
 import { showToast } from '../../utils/notifications';
@@ -76,7 +75,7 @@ const ForceTransfer = (): ReactElement => {
 	}, [startTime, dispatch]);
 
 	const onCancel = (): void => {
-		dispatch(closeSheet('forceTransfer'));
+		closeSheet('forceTransfer');
 	};
 
 	const onContinue = async (): Promise<void> => {
@@ -102,7 +101,7 @@ const ForceTransfer = (): ReactElement => {
 					title: t('force_init_title'),
 					description: t('force_init_msg'),
 				});
-				dispatch(closeSheet('forceTransfer'));
+				closeSheet('forceTransfer');
 			} else {
 				showToast({
 					type: 'warning',

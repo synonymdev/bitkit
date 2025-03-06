@@ -10,21 +10,19 @@ import {
 	useBottomSheetBackPress,
 	useSnapPoints,
 } from '../../hooks/bottomSheet';
-import { useAppDispatch } from '../../hooks/redux';
-import { closeSheet } from '../../store/slices/ui';
+import { closeSheet } from '../../store/utils/ui';
 import { BodyM } from '../../styles/text';
 
 const imageSrc = require('../../assets/illustrations/switch.png');
 
 const ConnectionClosed = (): ReactElement => {
 	const { t } = useTranslation('lightning');
-	const dispatch = useAppDispatch();
 	const snapPoints = useSnapPoints('medium');
 
 	useBottomSheetBackPress('backupPrompt');
 
 	const onContinue = (): void => {
-		dispatch(closeSheet('connectionClosed'));
+		closeSheet('connectionClosed');
 	};
 
 	return (

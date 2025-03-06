@@ -6,18 +6,17 @@ import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigati
 import GradientView from '../../../components/GradientView';
 import SafeAreaInset from '../../../components/SafeAreaInset';
 import Button from '../../../components/buttons/Button';
-import { useAppDispatch } from '../../../hooks/redux';
 import { rootNavigation } from '../../../navigation/root/RootNavigationContainer';
-import { closeSheet } from '../../../store/slices/ui';
+import { closeSheet } from '../../../store/utils/ui';
 import { BodyM } from '../../../styles/text';
 
 const imageSrc = require('../../../assets/illustrations/globe.png');
 
 const ReceiveGeoBlocked = (): ReactElement => {
 	const { t } = useTranslation('lightning');
-	const dispatch = useAppDispatch();
+
 	const handleManual = (): void => {
-		dispatch(closeSheet('receiveNavigation'));
+		closeSheet('receiveNavigation');
 		rootNavigation.navigate('TransferRoot', { screen: 'FundingAdvanced' });
 	};
 

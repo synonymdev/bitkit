@@ -12,7 +12,7 @@ import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 import type { PinScreenProps } from '../../../navigation/types';
 import { pinForPaymentsSelector } from '../../../store/reselect/settings';
 import { updateSettings } from '../../../store/slices/settings';
-import { closeSheet } from '../../../store/slices/ui';
+import { closeSheet } from '../../../store/utils/ui';
 import { BodyM, BodyMSB } from '../../../styles/text';
 
 const imageSrc = require('../../../assets/illustrations/check.png');
@@ -40,7 +40,7 @@ const Result = ({ route }: PinScreenProps<'Result'>): ReactElement => {
 	};
 
 	const handleButtonPress = (): void => {
-		dispatch(closeSheet('PINNavigation'));
+		closeSheet('PINNavigation');
 	};
 
 	return (
