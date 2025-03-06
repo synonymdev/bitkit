@@ -1,0 +1,32 @@
+diff --git a/node_modules/@gorhom/bottom-sheet/lib/typescript/types.d.ts b/node_modules/@gorhom/bottom-sheet/lib/typescript/types.d.ts
+index 27f39a1..74223d9 100644
+--- a/node_modules/@gorhom/bottom-sheet/lib/typescript/types.d.ts
++++ b/node_modules/@gorhom/bottom-sheet/lib/typescript/types.d.ts
+@@ -91,6 +91,14 @@ export interface BottomSheetModalMethods extends BottomSheetMethods {
+    * @see {WithTimingConfig}
+    */
+   dismiss: (animationConfigs?: WithSpringConfig | WithTimingConfig) => void;
++  /**
++   * Get the current index of the bottom sheet modal.
++   */
++  getCurrentIndex: () => number;
++  /**
++   * Check if the bottom sheet modal is open.
++   */
++  isOpen: boolean;
+ }
+ //#endregion
+ 
+diff --git a/node_modules/@gorhom/bottom-sheet/src/components/bottomSheetModal/BottomSheetModal.tsx b/node_modules/@gorhom/bottom-sheet/src/components/bottomSheetModal/BottomSheetModal.tsx
+index 275ce50..80cd2b8 100644
+--- a/node_modules/@gorhom/bottom-sheet/src/components/bottomSheetModal/BottomSheetModal.tsx
++++ b/node_modules/@gorhom/bottom-sheet/src/components/bottomSheetModal/BottomSheetModal.tsx
+@@ -363,6 +363,8 @@ const BottomSheetModalComponent = forwardRef<
+     // internal
+     minimize: handleMinimize,
+     restore: handleRestore,
++    getCurrentIndex: () => currentIndexRef.current,
++    isOpen: animateOnMount ? currentIndexRef.current !== -1 : false,
+   }));
+   //#endregion
+ 

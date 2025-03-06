@@ -14,9 +14,8 @@ import {
 	viewControllersSelector,
 } from '../../store/reselect/ui';
 import { ignoreAppUpdateTimestampSelector } from '../../store/reselect/user';
-import { closeSheet } from '../../store/slices/ui';
 import { ignoreAppUpdate } from '../../store/slices/user';
-import { showBottomSheet } from '../../store/utils/ui';
+import { closeSheet, showBottomSheet } from '../../store/utils/ui';
 import { Display } from '../../styles/text';
 import { openURL } from '../../utils/helpers';
 import { objectKeys } from '../../utils/objectKeys';
@@ -78,13 +77,13 @@ const AppUpdatePrompt = (): ReactElement => {
 
 	const onCancel = (): void => {
 		dispatch(ignoreAppUpdate());
-		dispatch(closeSheet('appUpdatePrompt'));
+		closeSheet('appUpdatePrompt');
 	};
 
 	const onUpdate = async (): Promise<void> => {
 		dispatch(ignoreAppUpdate());
 		await openURL(updateInfo?.url!);
-		dispatch(closeSheet('appUpdatePrompt'));
+		closeSheet('appUpdatePrompt');
 	};
 
 	return (

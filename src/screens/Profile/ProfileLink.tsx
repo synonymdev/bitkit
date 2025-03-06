@@ -7,12 +7,12 @@ import LabeledInput from '../../components/LabeledInput';
 import SafeAreaInset from '../../components/SafeAreaInset';
 import Button from '../../components/buttons/Button';
 import { useBottomSheetBackPress } from '../../hooks/bottomSheet';
-import { Keyboard } from '../../hooks/keyboard';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { ProfileLinkScreenProps } from '../../navigation/types';
 import { profileLinkSelector } from '../../store/reselect/ui';
 import { addLink } from '../../store/slices/slashtags';
-import { closeSheet, updateProfileLink } from '../../store/slices/ui';
+import { updateProfileLink } from '../../store/slices/ui';
+import { closeSheet } from '../../store/utils/ui';
 import { BodyS, BodySB } from '../../styles/text';
 import { suggestions } from './ProfileLinkSuggestions';
 
@@ -26,10 +26,9 @@ const ProfileLink = ({
 	useBottomSheetBackPress('profileAddDataForm');
 
 	const onSave = async (): Promise<void> => {
+		closeSheet('profileAddDataForm');
 		dispatch(addLink(form));
 		dispatch(updateProfileLink({ title: '', url: '' }));
-		await Keyboard.dismiss();
-		dispatch(closeSheet('profileAddDataForm'));
 	};
 
 	const isValid = form.title && form.url;

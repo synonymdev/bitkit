@@ -12,7 +12,7 @@ import { lightningBackupSelector } from '../../../store/reselect/lightning';
 import { forceBackup } from '../../../store/slices/backup';
 import { TBackupItem } from '../../../store/types/backup';
 import { EBackupCategory } from '../../../store/types/backup';
-import { toggleBottomSheet } from '../../../store/utils/ui';
+import { showBottomSheet } from '../../../store/utils/ui';
 import { ScrollView, View as ThemedView } from '../../../styles/components';
 import {
 	ArrowClockwise,
@@ -229,7 +229,7 @@ const BackupSettings = ({
 						type: EItemType.button,
 						testID: 'BackupWallet',
 						onPress: (): void => {
-							toggleBottomSheet('backupNavigation');
+							showBottomSheet('backupNavigation');
 						},
 					},
 					{

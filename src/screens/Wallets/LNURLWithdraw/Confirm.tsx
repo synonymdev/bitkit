@@ -8,13 +8,13 @@ import GradientView from '../../../components/GradientView';
 import LightningSyncing from '../../../components/LightningSyncing';
 import SafeAreaInset from '../../../components/SafeAreaInset';
 import Button from '../../../components/buttons/Button';
-import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
+import { useAppSelector } from '../../../hooks/redux';
 import type { LNURLWithdrawProps } from '../../../navigation/types';
 import {
 	selectedNetworkSelector,
 	selectedWalletSelector,
 } from '../../../store/reselect/wallet';
-import { closeSheet } from '../../../store/slices/ui';
+import { closeSheet } from '../../../store/utils/ui';
 import { BodyM } from '../../../styles/text';
 import { handleLnurlWithdraw } from '../../../utils/lnurl';
 import { showToast } from '../../../utils/notifications';
@@ -24,7 +24,6 @@ const imageSrc = require('../../../assets/illustrations/transfer.png');
 const Confirm = ({ route }: LNURLWithdrawProps<'Confirm'>): ReactElement => {
 	const { t } = useTranslation('wallet');
 	const { amount, wParams } = route.params;
-	const dispatch = useAppDispatch();
 	const selectedWallet = useAppSelector(selectedWalletSelector);
 	const selectedNetwork = useAppSelector(selectedNetworkSelector);
 
@@ -42,7 +41,7 @@ const Confirm = ({ route }: LNURLWithdrawProps<'Confirm'>): ReactElement => {
 		if (res.isErr()) {
 			return;
 		}
-		dispatch(closeSheet('lnurlWithdraw'));
+		closeSheet('lnurlWithdraw');
 		showToast({
 			type: 'info',
 			title: t('other:lnurl_withdr_success_title'),

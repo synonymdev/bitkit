@@ -37,7 +37,6 @@ import { receiveSelector } from '../../../store/reselect/receive';
 import {
 	appStateSelector,
 	isLDKReadySelector,
-	viewControllerIsOpenSelector,
 } from '../../../store/reselect/ui';
 import { isGeoBlockedSelector } from '../../../store/reselect/user';
 import {
@@ -98,9 +97,10 @@ const ReceiveQR = ({
 	const { id, amount, message, tags, jitOrder } =
 		useAppSelector(receiveSelector);
 	const lightningBalance = useLightningBalance(false);
-	const receiveNavigationIsOpen = useAppSelector((state) =>
-		viewControllerIsOpenSelector(state, 'receiveNavigation'),
-	);
+	// const receiveNavigationIsOpen = useAppSelector((state) =>
+	// 	viewControllerIsOpenSelector(state, 'receiveNavigation'),
+	// );
+	const receiveNavigationIsOpen = true;
 
 	const jitInvoice = jitOrder?.invoice.request;
 
@@ -113,6 +113,8 @@ const ReceiveQR = ({
 		!!jitInvoice || lightningBalance.remoteBalance > 0,
 	);
 
+	console.log({ id });
+
 	useBottomSheetBackPress('receiveNavigation');
 
 	useEffect(() => {
@@ -121,7 +123,10 @@ const ReceiveQR = ({
 
 	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
 	const getLightningInvoice = useCallback(async (): Promise<void> => {
-		if (!receiveNavigationIsOpen || !lightningBalance.remoteBalance) {
+		// if (!receiveNavigationIsOpen || !lightningBalance.remoteBalance) {
+		// 	return;
+		// }
+		if (!lightningBalance.remoteBalance) {
 			return;
 		}
 
@@ -154,9 +159,10 @@ const ReceiveQR = ({
 	}, [jitInvoice, amount, message]);
 
 	const getAddress = useCallback(async (): Promise<void> => {
-		if (!receiveNavigationIsOpen) {
-			return;
-		}
+		console.log('getAddress');
+		// if (!receiveNavigationIsOpen) {
+		// 	return;
+		// }
 		if (amount > 0) {
 			console.info('getting fresh address');
 			const response = await generateNewReceiveAddress({
@@ -187,7 +193,7 @@ const ReceiveQR = ({
 			}
 		}
 	}, [
-		receiveNavigationIsOpen,
+		// receiveNavigationIsOpen,
 		amount,
 		selectedNetwork,
 		selectedWallet,
@@ -196,9 +202,10 @@ const ReceiveQR = ({
 	]);
 
 	const setInvoiceDetails = useCallback(async (): Promise<void> => {
-		if (!receiveNavigationIsOpen) {
-			return;
-		}
+		console.log('setInvoiceDetails');
+		// if (!receiveNavigationIsOpen) {
+		// 	return;
+		// }
 		if (!loading) {
 			setLoading(true);
 		}
@@ -207,7 +214,7 @@ const ReceiveQR = ({
 		await Promise.all([getAddress()]);
 		await sleep(200);
 		setLoading(false);
-	}, [getAddress, getLightningInvoice, loading, receiveNavigationIsOpen]);
+	}, [getAddress, getLightningInvoice, loading]);
 
 	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
 	useEffect(() => {
@@ -227,6 +234,7 @@ const ReceiveQR = ({
 	]);
 
 	useEffect(() => {
+		console.log('updatePendingInvoice');
 		if (id && tags.length !== 0 && receiveAddress && receiveNavigationIsOpen) {
 			dispatch(
 				updatePendingInvoice({
@@ -242,11 +250,12 @@ const ReceiveQR = ({
 		receiveAddress,
 		lightningInvoice,
 		tags,
-		receiveNavigationIsOpen,
+		// receiveNavigationIsOpen,
 		dispatch,
 	]);
 
 	useEffect(() => {
+		console.log('show foreground toast');
 		if (receiveNavigationIsOpen && enableInstant && appState !== 'active') {
 			showToast({
 				type: 'error',
@@ -254,12 +263,13 @@ const ReceiveQR = ({
 				description: t('receive_foreground_msg'),
 			});
 		}
-	}, [t, appState, enableInstant, receiveNavigationIsOpen]);
+	}, [t, appState, enableInstant]);
 
 	const uri = useMemo((): string => {
-		if (!receiveNavigationIsOpen) {
-			return '';
-		}
+		console.log('get uri');
+		// if (!receiveNavigationIsOpen) {
+		// 	return '';
+		// }
 
 		if (enableInstant && jitInvoice) {
 			return jitInvoice;
@@ -288,7 +298,7 @@ const ReceiveQR = ({
 		lightningInvoice,
 		message,
 		receiveAddress,
-		receiveNavigationIsOpen,
+		// receiveNavigationIsOpen,
 	]);
 
 	const onToggleInstant = useCallback((): void => {

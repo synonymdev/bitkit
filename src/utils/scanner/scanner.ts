@@ -31,9 +31,9 @@ import {
 	getSettingsStore,
 	getSlashtagsStore,
 } from '../../store/helpers';
-import { closeSheet, updateSendTransaction } from '../../store/slices/ui';
+import { updateSendTransaction } from '../../store/slices/ui';
 import { EDenomination } from '../../store/types/wallet';
-import { showBottomSheet } from '../../store/utils/ui';
+import { closeSheet, showBottomSheet } from '../../store/utils/ui';
 import { fiatToBitcoinUnit } from '../conversion';
 import { getBitcoinDisplayValues } from '../displayValues';
 import i18n from '../i18n';
@@ -589,7 +589,7 @@ const handleData = async ({
 	switch (type) {
 		case EQRDataType.slashtag: {
 			handleSlashtagURL(data.url);
-			dispatch(closeSheet('addContactModal'));
+			closeSheet('addContactModal');
 			return ok('');
 		}
 		case EQRDataType.slashAuth: {
@@ -811,7 +811,7 @@ const handleData = async ({
 				screen: 'ExternalConnection',
 				params: { peer: data.uri },
 			});
-			dispatch(closeSheet('sendNavigation'));
+			closeSheet('sendNavigation');
 			return ok('');
 		}
 		case EQRDataType.treasureHunt: {

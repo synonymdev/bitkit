@@ -15,7 +15,6 @@ import { ThemeProvider } from 'styled-components/native';
 import './utils/i18n';
 import './utils/quick-actions';
 import AppOnboarded from './AppOnboarded';
-import { SlashtagsProvider } from './components/SlashtagsProvider';
 import { toastConfig } from './components/Toast';
 import { useAppSelector } from './hooks/redux';
 import AppUpdate from './screens/AppUpdate';
@@ -78,9 +77,7 @@ const App = (): ReactElement => {
 				) : hasCriticalUpdate ? (
 					<AppUpdate />
 				) : walletExists && !requiresRemoteRestore ? (
-					<SlashtagsProvider>
-						<AppOnboarded />
-					</SlashtagsProvider>
+					<AppOnboarded />
 				) : (
 					<Suspense fallback={null}>
 						<OnboardingNavigator />

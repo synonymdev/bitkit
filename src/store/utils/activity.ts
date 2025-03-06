@@ -11,9 +11,8 @@ import { getCurrentWallet } from '../../utils/wallet';
 import { dispatch, getBlocktankStore } from '../helpers';
 import { addActivityItem, updateActivityItems } from '../slices/activity';
 import { updateSettings } from '../slices/settings';
-import { closeSheet } from '../slices/ui';
 import { EActivityType, TLightningActivityItem } from '../types/activity';
-import { showBottomSheet } from './ui';
+import { closeSheet, showBottomSheet } from './ui';
 
 /**
  * Attempts to determine if a given channel open was in response to
@@ -60,7 +59,7 @@ export const addCJitActivityItem = async (channelId: string): Promise<void> => {
 
 	dispatch(addActivityItem(activityItem));
 	dispatch(updateSettings({ hideOnboardingMessage: true }));
-	dispatch(closeSheet('receiveNavigation'));
+	closeSheet('receiveNavigation');
 	vibrate({ type: 'default' });
 	showBottomSheet('newTxPrompt', { activityItem });
 

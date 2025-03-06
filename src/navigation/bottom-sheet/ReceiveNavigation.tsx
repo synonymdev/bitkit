@@ -51,7 +51,10 @@ const screenOptions: NativeStackNavigationOptions = {
 const ReceiveNavigation = (): ReactElement => {
 	const snapPoints = useSnapPoints('large');
 	const dispatch = useAppDispatch();
-	const { isOpen, receiveScreen } = useAppSelector((state) => {
+	// const { isOpen, receiveScreen } = useAppSelector((state) => {
+	// 	return viewControllerSelector(state, 'receiveNavigation');
+	// });
+	const { receiveScreen } = useAppSelector((state) => {
 		return viewControllerSelector(state, 'receiveNavigation');
 	});
 
@@ -66,10 +69,11 @@ const ReceiveNavigation = (): ReactElement => {
 			view="receiveNavigation"
 			snapPoints={snapPoints}
 			testID="ReceiveScreen"
+			// NOTE: this resets it twice?
 			onOpen={reset}
 			onClose={reset}>
 			<NavigationIndependentTree>
-				<BottomSheetNavigationContainer key={isOpen.toString()}>
+				<BottomSheetNavigationContainer>
 					<Stack.Navigator
 						initialRouteName={initialRouteName}
 						screenOptions={screenOptions}>

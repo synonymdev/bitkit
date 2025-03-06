@@ -5,9 +5,8 @@ import BottomSheetNavigationHeader from '../../components/BottomSheetNavigationH
 import GradientView from '../../components/GradientView';
 import SafeAreaInset from '../../components/SafeAreaInset';
 import Button from '../../components/buttons/Button';
-import { useAppDispatch } from '../../hooks/redux';
 import type { OrangeTicketScreenProps } from '../../navigation/types';
-import { closeSheet } from '../../store/slices/ui';
+import { closeSheet } from '../../store/utils/ui';
 import { BodyM } from '../../styles/text';
 
 const imageSrc = require('../../assets/illustrations/exclamation-mark.png');
@@ -35,12 +34,11 @@ const getText = (errorCode: number): { title: string; text: string } => {
 const ErrorScreen = ({
 	route,
 }: OrangeTicketScreenProps<'Error'>): ReactElement => {
-	const dispatch = useAppDispatch();
 	const { errorCode } = route.params;
 	const { title, text } = getText(errorCode);
 
 	const onContinue = (): void => {
-		dispatch(closeSheet('orangeTicket'));
+		closeSheet('orangeTicket');
 	};
 
 	return (

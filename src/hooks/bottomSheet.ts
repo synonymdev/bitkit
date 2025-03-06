@@ -10,10 +10,11 @@ import {
 	viewControllerIsOpenSelector,
 	viewControllersSelector,
 } from '../store/reselect/ui';
-import { closeAllSheets, closeSheet } from '../store/slices/ui';
 import { TViewController } from '../store/types/ui';
+// import { closeAllSheets, closeSheet } from '../store/slices/ui';
+import { closeAllSheets, closeSheet } from '../store/utils/ui';
 import { objectKeys } from '../utils/objectKeys';
-import { useAppDispatch, useAppSelector } from './redux';
+import { useAppSelector } from './redux';
 
 export const useSnapPoints = (
 	size: 'small' | 'medium' | 'large' | 'calendar',
@@ -56,7 +57,7 @@ export const useSnapPoints = (
 export const useBottomSheetBackPress = (
 	viewController: TViewController,
 ): void => {
-	const dispatch = useAppDispatch();
+	// const dispatch = useAppDispatch();
 	const isBottomSheetOpen = useAppSelector((state) => {
 		return viewControllerIsOpenSelector(state, viewController);
 	});
@@ -73,7 +74,8 @@ export const useBottomSheetBackPress = (
 		backHandlerSubscriptionRef.current = BackHandler.addEventListener(
 			'hardwareBackPress',
 			() => {
-				dispatch(closeSheet(viewController));
+				// dispatch(closeSheet(viewController));
+				closeSheet(viewController);
 				return true;
 			},
 		);
@@ -82,7 +84,7 @@ export const useBottomSheetBackPress = (
 			backHandlerSubscriptionRef.current?.remove();
 			backHandlerSubscriptionRef.current = null;
 		};
-	}, [isBottomSheetOpen, viewController, dispatch]);
+	}, [isBottomSheetOpen, viewController]);
 };
 
 /**
@@ -90,7 +92,7 @@ export const useBottomSheetBackPress = (
  * for screens that are part of a navigator nested in a bottom sheet
  */
 export const useBottomSheetScreenBackPress = (): void => {
-	const dispatch = useAppDispatch();
+	// const dispatch = useAppDispatch();
 	const navigation = useNavigation();
 	const viewControllers = useAppSelector(viewControllersSelector);
 
@@ -115,7 +117,7 @@ export const useBottomSheetScreenBackPress = (): void => {
 					if (navigation.canGoBack()) {
 						navigation.goBack();
 					} else {
-						dispatch(closeAllSheets());
+						closeAllSheets();
 					}
 					return true;
 				},
@@ -125,6 +127,6 @@ export const useBottomSheetScreenBackPress = (): void => {
 				backHandlerSubscriptionRef.current?.remove();
 				backHandlerSubscriptionRef.current = null;
 			};
-		}, [dispatch, isBottomSheetOpen, navigation]),
+		}, [isBottomSheetOpen, navigation]),
 	);
 };

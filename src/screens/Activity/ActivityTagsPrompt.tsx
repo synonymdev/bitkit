@@ -10,12 +10,11 @@ import {
 	useBottomSheetBackPress,
 	useSnapPoints,
 } from '../../hooks/bottomSheet';
-import { Keyboard } from '../../hooks/keyboard';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { lastUsedTagsSelector } from '../../store/reselect/metadata';
 import { viewControllerSelector } from '../../store/reselect/ui';
 import { addMetaTxTag } from '../../store/slices/metadata';
-import { closeSheet } from '../../store/slices/ui';
+import { closeSheet } from '../../store/utils/ui';
 import { BottomSheetTextInput } from '../../styles/components';
 import { Subtitle, Text13UP } from '../../styles/text';
 
@@ -31,10 +30,9 @@ const ActivityTagsPrompt = (): ReactElement => {
 
 	useBottomSheetBackPress('activityTagsPrompt');
 
-	const closeBottomSheet = async (): Promise<void> => {
+	const closeBottomSheet = (): void => {
 		setText('');
-		await Keyboard.dismiss();
-		dispatch(closeSheet('activityTagsPrompt'));
+		closeSheet('activityTagsPrompt');
 	};
 
 	const handleTagChoose = async (tag: string): Promise<void> => {
@@ -89,12 +87,12 @@ const ActivityTagsPrompt = (): ReactElement => {
 							minHeight={52}
 							blurOnSubmit={true}
 							value={text}
-							onChangeText={setText}
-							onBlur={handleSubmit}
 							autoFocus={true}
 							maxLength={15}
 							returnKeyType="done"
 							testID="TagInput"
+							onChangeText={setText}
+							onBlur={handleSubmit}
 						/>
 
 						<View style={styles.buttonContainer}>

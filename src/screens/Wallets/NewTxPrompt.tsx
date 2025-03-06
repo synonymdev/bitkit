@@ -14,10 +14,10 @@ import {
 	useBottomSheetBackPress,
 	useSnapPoints,
 } from '../../hooks/bottomSheet';
-import { useAppDispatch, useAppSelector } from '../../hooks/redux';
+import { useAppSelector } from '../../hooks/redux';
+import { useSheetRef } from '../../navigation/bottom-sheet/SheetRefsProvider';
 import { rootNavigation } from '../../navigation/root/RootNavigationContainer';
 import { viewControllerSelector } from '../../store/reselect/ui';
-import { closeSheet } from '../../store/slices/ui';
 import { EActivityType } from '../../store/types/activity';
 import { getRandomOkText } from '../../utils/i18n/helpers';
 
@@ -28,8 +28,8 @@ const imageSrc = require('../../assets/illustrations/coin-stack-x.png');
 const NewTxPrompt = (): ReactElement => {
 	const reducedMotion = useReducedMotion();
 	const { t } = useTranslation('wallet');
+	const sheetRef = useSheetRef('newTxPrompt');
 	const snapPoints = useSnapPoints('large');
-	const dispatch = useAppDispatch();
 	const { activityItem } = useAppSelector((state) => {
 		return viewControllerSelector(state, 'newTxPrompt');
 	});
@@ -37,12 +37,12 @@ const NewTxPrompt = (): ReactElement => {
 	useBottomSheetBackPress('newTxPrompt');
 
 	const onAmountPress = (): void => {
-		dispatch(closeSheet('newTxPrompt'));
+		sheetRef.current?.close();
 		rootNavigation.navigate('ActivityDetail', { id: activityItem!.id });
 	};
 
 	const onButtonPress = (): void => {
-		dispatch(closeSheet('newTxPrompt'));
+		sheetRef.current?.close();
 	};
 
 	const isOnchainItem = activityItem?.activityType === EActivityType.onchain;

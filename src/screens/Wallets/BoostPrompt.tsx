@@ -16,14 +16,14 @@ import {
 	useSnapPoints,
 } from '../../hooks/bottomSheet';
 import { useFeeText } from '../../hooks/fees';
-import { useAppDispatch, useAppSelector } from '../../hooks/redux';
+import { useAppSelector } from '../../hooks/redux';
 import { rootNavigation } from '../../navigation/root/RootNavigationContainer';
 import { resetSendTransaction } from '../../store/actions/wallet';
 import { viewControllerSelector } from '../../store/reselect/ui';
 import { transactionSelector } from '../../store/reselect/wallet';
-import { closeSheet } from '../../store/slices/ui';
 import { TOnchainActivityItem } from '../../store/types/activity';
 import { EUnit } from '../../store/types/wallet';
+import { closeSheet } from '../../store/utils/ui';
 import colors from '../../styles/colors';
 import { TimerIconAlt } from '../../styles/icons';
 import { BodyMSB, BodyS, BodySSB } from '../../styles/text';
@@ -42,7 +42,6 @@ const BoostForm = ({
 	activityItem: TOnchainActivityItem;
 }): ReactElement => {
 	const { t } = useTranslation('wallet');
-	const dispatch = useAppDispatch();
 	const transaction = useAppSelector(transactionSelector);
 
 	const [preparing, setPreparing] = useState(true);
@@ -67,7 +66,7 @@ const BoostForm = ({
 			});
 			setPreparing(false);
 			if (res.isErr()) {
-				dispatch(closeSheet('boostPrompt'));
+				closeSheet('boostPrompt');
 				return;
 			}
 			setOrigFee(res.value.satsPerByte!);
@@ -76,7 +75,7 @@ const BoostForm = ({
 		return (): void => {
 			resetSendTransaction();
 		};
-	}, [activityItem.txId, dispatch]);
+	}, [activityItem.txId]);
 
 	const onSwitchView = (): void => {
 		if (showCustom) {
@@ -132,7 +131,7 @@ const BoostForm = ({
 				oldTxId: activityItem.txId,
 			});
 			if (response.isOk()) {
-				dispatch(closeSheet('boostPrompt'));
+				closeSheet('boostPrompt');
 				showToast({
 					type: 'success',
 					title: t('boost_success_title'),

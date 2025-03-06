@@ -1,15 +1,16 @@
+import { auth, parseAuthUrl } from '@synonymdev/react-native-pubky';
 import React, {
 	memo,
 	ReactElement,
 	useCallback,
 	useEffect,
 	useMemo,
+	useState,
 } from 'react';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet, View } from 'react-native';
-
-import { auth, parseAuthUrl } from '@synonymdev/react-native-pubky';
 import Animated, { FadeIn } from 'react-native-reanimated';
+
 import BottomSheetNavigationHeader from '../../components/BottomSheetNavigationHeader';
 import BottomSheetWrapper from '../../components/BottomSheetWrapper';
 import SafeAreaInset from '../../components/SafeAreaInset';
@@ -19,12 +20,11 @@ import {
 	useSnapPoints,
 } from '../../hooks/bottomSheet';
 import { useAppSelector } from '../../hooks/redux';
-import { dispatch } from '../../store/helpers.ts';
-import { viewControllerSelector } from '../../store/reselect/ui.ts';
-import { closeSheet } from '../../store/slices/ui.ts';
-import { CheckCircleIcon } from '../../styles/icons.ts';
+import { viewControllerSelector } from '../../store/reselect/ui';
+import { closeSheet } from '../../store/utils/ui';
+import { CheckCircleIcon } from '../../styles/icons';
 import { BodyM, CaptionB, Text13UP, Title } from '../../styles/text';
-import { showToast } from '../../utils/notifications.ts';
+import { showToast } from '../../utils/notifications';
 import { getPubkySecretKey } from '../../utils/pubky';
 
 const defaultParsedUrl: PubkyAuthDetails = {
@@ -87,10 +87,9 @@ const PubkyAuth = (): ReactElement => {
 	const { url = '' } = useAppSelector((state) => {
 		return viewControllerSelector(state, 'pubkyAuth');
 	});
-	const [parsed, setParsed] =
-		React.useState<PubkyAuthDetails>(defaultParsedUrl);
-	const [authorizing, setAuthorizing] = React.useState(false);
-	const [authSuccess, setAuthSuccess] = React.useState(false);
+	const [parsed, setParsed] = useState<PubkyAuthDetails>(defaultParsedUrl);
+	const [authorizing, setAuthorizing] = useState(false);
+	const [authSuccess, setAuthSuccess] = useState(false);
 
 	useBottomSheetBackPress('pubkyAuth');
 
@@ -150,13 +149,6 @@ const PubkyAuth = (): ReactElement => {
 		[t, url],
 	);
 
-	const onClose = useMemo(
-		() => (): void => {
-			dispatch(closeSheet('pubkyAuth'));
-		},
-		[],
-	);
-
 	const Buttons = useCallback(() => {
 		if (authSuccess) {
 			return (
@@ -164,7 +156,7 @@ const PubkyAuth = (): ReactElement => {
 					style={styles.authorizeButton}
 					text={t('authorization.success')}
 					size="large"
-					onPress={onClose}
+					onPress={() => closeSheet('pubkyAuth')}
 				/>
 			);
 		}
@@ -174,7 +166,7 @@ const PubkyAuth = (): ReactElement => {
 					style={styles.closeButton}
 					text={t('authorization.deny')}
 					size="large"
-					onPress={onClose}
+					onPress={() => closeSheet('pubkyAuth')}
 				/>
 				<Button
 					loading={authorizing}
@@ -189,7 +181,7 @@ const PubkyAuth = (): ReactElement => {
 				/>
 			</>
 		);
-	}, [authSuccess, authorizing, onAuthorize, onClose, t]);
+	}, [authSuccess, authorizing, onAuthorize, t]);
 
 	const SuccessCircle = useCallback(() => {
 		if (authSuccess) {
