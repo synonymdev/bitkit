@@ -8,7 +8,7 @@ import React, {
 	useEffect,
 } from 'react';
 import { useTranslation } from 'react-i18next';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 
 import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
 import ContactImage from '../../../components/ContactImage';
@@ -42,7 +42,6 @@ import {
 	utxosSelector,
 } from '../../../store/reselect/wallet';
 import { IColors } from '../../../styles/colors';
-import { TouchableOpacity } from '../../../styles/components';
 import { Caption13Up } from '../../../styles/text';
 import { convertToSats } from '../../../utils/conversion';
 import { showToast } from '../../../utils/notifications';
@@ -257,7 +256,7 @@ const Amount = ({ navigation }: SendScreenProps<'Amount'>): ReactElement => {
 
 				<View style={styles.numberPad} testID="SendAmountNumberPad">
 					<View style={styles.actions}>
-						<TouchableOpacity color="transparent" onPress={onMaxAmount}>
+						<TouchableOpacity onPress={onMaxAmount}>
 							<Caption13Up style={styles.availableAmountText} color="secondary">
 								{t('send_available')}
 							</Caption13Up>

@@ -1288,13 +1288,13 @@ export const getCurrentAddressIndex = async ({
  * @param {TWalletName} [selectedWallet]
  * @param {EAvailableNetwork} [selectedNetwork]
  */
-export const getBalance = ({
+export const getBalance = async ({
 	selectedWallet = getSelectedWallet(),
 	selectedNetwork = getSelectedNetwork(),
 }: {
 	selectedWallet?: TWalletName;
 	selectedNetwork?: EAvailableNetwork;
-} = {}): {
+} = {}): Promise<{
 	onchainBalance: number; // Total onchain funds
 	// lightningBalance: number; // Total lightning funds (spendable + reserved + claimable)
 	spendingBalance: number; // Share of lightning funds that are spendable
@@ -1302,13 +1302,13 @@ export const getBalance = ({
 	// claimableBalance: number; // Funds that will be available after a channel opens/closes
 	spendableBalance: number; // Total spendable funds (onchain + spendable lightning)
 	// totalBalance: number; // Total funds (all of the above)
-} => {
+}> => {
 	const { currentWallet } = getCurrentWallet({
 		selectedWallet,
 		selectedNetwork,
 	});
 
-	const wallet = getOnChainWallet();
+	const wallet = await getOnChainWalletAsync();
 	const { localBalance } = getLightningBalance();
 	const reserveBalance = getLightningReserveBalance();
 	const spendingBalance = localBalance - reserveBalance;

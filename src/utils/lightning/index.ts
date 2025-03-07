@@ -1664,17 +1664,6 @@ export const recoverOutputsFromForceClose = async (): Promise<
 };
 
 /**
- * Returns total reserve balance for all open lightning channels.
- * @returns {number}
- */
-export const getLightningReserveBalance = (): number => {
-	const openChannels = getOpenChannels();
-	const result = reduceValue(openChannels, 'unspendable_punishment_reserve');
-	const reserveBalance = result.isOk() ? result.value : 0;
-	return reserveBalance;
-};
-
-/**
  * Returns the claimable balance for all lightning channels.
  * @param {boolean} [ignoreOpenChannels]
  * @returns {Promise<number>}
@@ -1796,4 +1785,25 @@ export const getLightningBalance = ({
 	});
 
 	return { localBalance, remoteBalance };
+};
+
+/**
+ * Returns total reserve balance for all open lightning channels.
+ * @returns {number}
+ */
+export const getLightningReserveBalance = (): number => {
+	const openChannels = getOpenChannels();
+	const result = reduceValue(openChannels, 'unspendable_punishment_reserve');
+	const reserveBalance = result.isOk() ? result.value : 0;
+	return reserveBalance;
+};
+
+/**
+ * Returns total spending balance for all open lightning channels.
+ * @returns {number}
+ */
+export const getSpendingBalance = (): number => {
+	const { localBalance } = getLightningBalance();
+	const reserveBalance = getLightningReserveBalance();
+	return localBalance - reserveBalance;
 };

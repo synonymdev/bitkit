@@ -26,11 +26,11 @@ import { EBackupCategory } from '../../store/types/backup';
 import { ETransactionSpeed } from '../../store/types/settings';
 import { reduceValue } from '../helpers';
 import i18n from '../i18n';
+import { getSpendingBalance } from '../lightning';
 import { EAvailableNetwork } from '../networks';
 import { showToast } from '../notifications';
 import { TRANSACTION_DEFAULTS } from './constants';
 import {
-	getBalance,
 	getOnChainWallet,
 	getOnChainWalletElectrum,
 	getOnChainWalletTransaction,
@@ -294,7 +294,7 @@ export const getMaxSendAmount = ({
 
 		if (method === 'lightning') {
 			// lightning transaction
-			const { spendingBalance } = getBalance();
+			const spendingBalance = getSpendingBalance();
 			const fee = getEstimatedRoutingFee(spendingBalance);
 			const amount = spendingBalance - fee;
 			const maxAmount = { amount, fee };
@@ -351,8 +351,7 @@ export const sendMax = async ({
 		// TODO: Re-work lightning transaction invoices once beignet migration is complete.
 		// Handle max toggle for lightning invoice
 		if (paymentMethod === 'lightning') {
-			const { spendingBalance } = getBalance();
-
+			const spendingBalance = getSpendingBalance();
 			const fee = getEstimatedRoutingFee(spendingBalance);
 			const amount = spendingBalance - fee;
 
@@ -457,7 +456,7 @@ export const updateSendAmount = ({
 
 	if (paymentMethod === 'lightning') {
 		// lightning transaction
-		const { spendingBalance } = getBalance();
+		const spendingBalance = getSpendingBalance();
 
 		if (amount > spendingBalance) {
 			return err(i18n.t('wallet:send_amount_error_balance'));
