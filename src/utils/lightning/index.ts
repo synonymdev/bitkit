@@ -348,7 +348,6 @@ export const getFees: TGetFees = async () => {
 
 	return {
 		//https://github.com/lightningdevkit/rust-lightning/blob/main/CHANGELOG.md#api-updates
-		onChainSweep: fees.fast,
 		maxAllowedNonAnchorChannelRemoteFee: Math.max(25, fees.fast * 10),
 		minAllowedAnchorChannelRemoteFee: fees.minimum,
 		minAllowedNonAnchorChannelRemoteFee: Math.max(fees.minimum - 1, 0),
@@ -356,6 +355,8 @@ export const getFees: TGetFees = async () => {
 		nonAnchorChannelFee: fees.normal,
 		channelCloseMinimum: fees.minimum,
 		outputSpendingFee: fees.fast,
+		maximumFeeEstimate: fees.fast,
+		urgentOnChainSweep: fees.fast,
 	};
 };
 

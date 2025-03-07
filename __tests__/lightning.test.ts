@@ -49,7 +49,6 @@ describe('getFees', () => {
 		const result = await getFees();
 
 		expect(result).toEqual({
-			onChainSweep: 111,
 			maxAllowedNonAnchorChannelRemoteFee: Math.max(25, 111 * 10),
 			minAllowedAnchorChannelRemoteFee: 108,
 			minAllowedNonAnchorChannelRemoteFee: 107,
@@ -57,6 +56,8 @@ describe('getFees', () => {
 			nonAnchorChannelFee: 110,
 			channelCloseMinimum: 108,
 			outputSpendingFee: 111,
+			maximumFeeEstimate: 111,
+			urgentOnChainSweep: 111,
 		});
 		expect(fetch).toHaveBeenCalledTimes(2);
 		expect(fetch).toHaveBeenCalledWith(MEMPOOL_URL);
@@ -79,7 +80,6 @@ describe('getFees', () => {
 
 		const result = await getFees();
 		expect(result).toEqual({
-			onChainSweep: 999,
 			maxAllowedNonAnchorChannelRemoteFee: Math.max(25, 999 * 10),
 			minAllowedAnchorChannelRemoteFee: 997,
 			minAllowedNonAnchorChannelRemoteFee: 996,
@@ -87,6 +87,8 @@ describe('getFees', () => {
 			nonAnchorChannelFee: 998,
 			channelCloseMinimum: 997,
 			outputSpendingFee: 999,
+			maximumFeeEstimate: 999,
+			urgentOnChainSweep: 999,
 		});
 		expect(fetch).toHaveBeenCalledTimes(3);
 	});
@@ -110,7 +112,7 @@ describe('getFees', () => {
 		});
 
 		const result = await getFees();
-		expect(result.onChainSweep).toBe(111);
+		expect(result.urgentOnChainSweep).toBe(111);
 		expect(fetch).toHaveBeenCalledTimes(4);
 		expect(fetch).toHaveBeenCalledWith(MEMPOOL_URL);
 		expect(fetch).toHaveBeenCalledWith(BLOCKTANK_URL);
@@ -146,7 +148,7 @@ describe('getFees', () => {
 		});
 
 		const result = await getFees();
-		expect(result.onChainSweep).toBe(999);
+		expect(result.urgentOnChainSweep).toBe(999);
 	});
 
 	it('should handle invalid blocktank response', async () => {
@@ -167,7 +169,7 @@ describe('getFees', () => {
 		});
 
 		const result = await getFees();
-		expect(result.onChainSweep).toBe(111);
+		expect(result.urgentOnChainSweep).toBe(111);
 	});
 
 	it('should handle timeout errors gracefully', async () => {
