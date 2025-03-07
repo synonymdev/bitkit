@@ -1331,7 +1331,7 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - react-native-ldk (0.0.155):
+  - react-native-ldk (0.0.156):
     - React
   - react-native-mmkv (2.12.2):
     - DoubleConversion
@@ -2405,7 +2405,7 @@ SPEC CHECKSUMS:
   react-native-biometrics: 43ed5b828646a7862dbc7945556446be00798e7d
   react-native-blur: b06c3fe88680beac622d8d13b8c36ec15c50383b
   react-native-image-picker: 037a6ccde76aa165446e1eaeb8866cb00f461916
-  react-native-ldk: 6f12cfcabb910cb88478768d02d7345775289c21
+  react-native-ldk: dc072f8da905c392fdde4b1e1059404ef18c223f
   react-native-mmkv: a6e08ad1b51b84af075f91798f8a92c878472265
   react-native-netinfo: cec9c4e86083cb5b6aba0e0711f563e2fbbff187
   react-native-pubky: 54d37810f35d9da11f8c199a6036e5729081951b
