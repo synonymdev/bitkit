@@ -8,16 +8,16 @@ import GradientView from '../../../components/GradientView';
 import HourglassSpinner from '../../../components/HourglassSpinner';
 import SafeAreaInset from '../../../components/SafeAreaInset';
 import Button from '../../../components/buttons/Button';
-import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
+import { useAppSelector } from '../../../hooks/redux';
+import { useSheetRef } from '../../../navigation/bottom-sheet/SheetRefsProvider';
 import { rootNavigation } from '../../../navigation/root/RootNavigationContainer';
 import type { SendScreenProps } from '../../../navigation/types';
 import { activityItemSelector } from '../../../store/reselect/activity';
-import { closeSheet } from '../../../store/slices/ui';
 import { BodyM } from '../../../styles/text';
 
 const Pending = ({ route }: SendScreenProps<'Pending'>): ReactElement => {
-	const dispatch = useAppDispatch();
 	const { t } = useTranslation('wallet');
+	const sheetRef = useSheetRef('sendNavigation');
 	const { txId } = route.params;
 
 	const activityItem = useAppSelector((state) => {
@@ -26,7 +26,7 @@ const Pending = ({ route }: SendScreenProps<'Pending'>): ReactElement => {
 
 	const navigateToTxDetails = (): void => {
 		if (activityItem) {
-			dispatch(closeSheet('sendNavigation'));
+			sheetRef.current?.close();
 			rootNavigation.navigate('ActivityDetail', {
 				id: activityItem.id,
 				extended: false,
@@ -35,7 +35,7 @@ const Pending = ({ route }: SendScreenProps<'Pending'>): ReactElement => {
 	};
 
 	const handleClose = (): void => {
-		dispatch(closeSheet('sendNavigation'));
+		sheetRef.current?.close();
 	};
 
 	return (

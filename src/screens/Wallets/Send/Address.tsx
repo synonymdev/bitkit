@@ -7,7 +7,7 @@ import GradientView from '../../../components/GradientView';
 import SafeAreaInset from '../../../components/SafeAreaInset';
 import Button from '../../../components/buttons/Button';
 import useColors from '../../../hooks/colors';
-import useKeyboard, { Keyboard } from '../../../hooks/keyboard';
+import useKeyboard from '../../../hooks/keyboard';
 import type { SendScreenProps } from '../../../navigation/types';
 import {
 	BottomSheetTextInput,
@@ -46,7 +46,7 @@ const Address = ({ route }: SendScreenProps<'Address'>): ReactElement => {
 	};
 
 	const onContinue = async (): Promise<void> => {
-		await Keyboard.dismiss();
+		// await Keyboard.dismiss();
 		await processUri({ uri: textFieldValue, source: 'send' });
 	};
 

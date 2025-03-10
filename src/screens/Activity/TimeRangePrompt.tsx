@@ -9,9 +9,9 @@ import {
 	useBottomSheetBackPress,
 	useSnapPoints,
 } from '../../hooks/bottomSheet';
-import { useAppDispatch, useAppSelector } from '../../hooks/redux';
+import { useAppSelector } from '../../hooks/redux';
 import { languageSelector, timeZoneSelector } from '../../store/reselect/ui';
-import { closeSheet } from '../../store/slices/ui';
+import { closeSheet } from '../../store/utils/ui';
 import { View as ThemedView } from '../../styles/components';
 import { LeftSign, RightSign } from '../../styles/icons';
 import { BodyMSB, Caption13Up, Subtitle } from '../../styles/text';
@@ -97,7 +97,6 @@ const Calendar = ({
 }): ReactElement => {
 	const { t } = useTranslation('wallet');
 	const { t: tTime } = useTranslation('intl', { i18n: i18nTime });
-	const dispatch = useAppDispatch();
 	const timeZone = useAppSelector(timeZoneSelector);
 	const language = useAppSelector(languageSelector);
 	const [monthDate, setMonthDate] = useState(() => {
@@ -154,7 +153,7 @@ const Calendar = ({
 		const begin = range[0].getTime();
 		const end = (range[1] ?? range[0]).getTime() + 1000 * 60 * 60 * 24; // 24 hours
 		onChange([begin, end]);
-		dispatch(closeSheet('timeRangePrompt'));
+		closeSheet('timeRangePrompt');
 	};
 
 	return (
@@ -299,12 +298,11 @@ const TimeRangePrompt = ({
 }): ReactElement => {
 	const { t } = useTranslation('wallet');
 	const snapPoints = useSnapPoints('calendar');
-	const dispatch = useAppDispatch();
 
 	useBottomSheetBackPress('timeRangePrompt');
 
 	const handleClose = (): void => {
-		dispatch(closeSheet('timeRangePrompt'));
+		closeSheet('timeRangePrompt');
 	};
 
 	return (

@@ -10,10 +10,8 @@ import {
 	useBottomSheetBackPress,
 	useSnapPoints,
 } from '../../../hooks/bottomSheet';
-import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
-import { viewControllerSelector } from '../../../store/reselect/ui';
-import { closeSheet } from '../../../store/slices/ui';
 import { wipeApp } from '../../../store/utils/settings';
+import { closeSheet } from '../../../store/utils/ui';
 import { BodyM } from '../../../styles/text';
 
 const imageSrc = require('../../../assets/illustrations/restore.png');
@@ -21,21 +19,20 @@ const imageSrc = require('../../../assets/illustrations/restore.png');
 const ForgotPIN = (): ReactElement => {
 	const { t } = useTranslation('security');
 	const snapPoints = useSnapPoints('large');
-	const dispatch = useAppDispatch();
-	const { isMounted } = useAppSelector((state) => {
-		return viewControllerSelector(state, 'forgotPIN');
-	});
+	// const { isMounted } = useAppSelector((state) => {
+	// 	return viewControllerSelector(state, 'forgotPIN');
+	// });
 
 	useBottomSheetBackPress('forgotPIN');
 
 	const handlePress = (): void => {
 		wipeApp();
-		dispatch(closeSheet('forgotPIN'));
+		closeSheet('forgotPIN');
 	};
 
-	if (!isMounted) {
-		return <></>;
-	}
+	// if (!isMounted) {
+	// 	return <></>;
+	// }
 
 	return (
 		<BottomSheetWrapper view="forgotPIN" snapPoints={snapPoints}>

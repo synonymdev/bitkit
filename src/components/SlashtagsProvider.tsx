@@ -3,8 +3,7 @@ import SlashtagsProfile from '@synonymdev/slashtags-profile';
 import { format, parse } from '@synonymdev/slashtags-url';
 import type { Client as IWebRelayClient } from '@synonymdev/web-relay';
 import { Client, Store } from '@synonymdev/web-relay/lib/client';
-import React, { ReactElement, useEffect, useState } from 'react';
-import { createContext } from 'react';
+import React, { ReactElement, createContext, useEffect, useState } from 'react';
 
 import { useAppSelector } from '../hooks/redux';
 import { WebRelayCache } from '../storage';

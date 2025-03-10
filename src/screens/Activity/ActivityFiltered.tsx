@@ -13,9 +13,7 @@ import SafeAreaInset from '../../components/SafeAreaInset';
 import SearchInput from '../../components/SearchInput';
 import Tabs, { TTab } from '../../components/Tabs';
 import Tag from '../../components/Tag';
-import { useAppDispatch } from '../../hooks/redux';
-import { closeSheet } from '../../store/slices/ui';
-import { showBottomSheet } from '../../store/utils/ui';
+import { closeSheet, showBottomSheet } from '../../store/utils/ui';
 import { ScrollView, View as ThemedView } from '../../styles/components';
 import { CalendarIcon, TagIcon } from '../../styles/icons';
 import ActivityList from './ActivityList';
@@ -48,7 +46,6 @@ const Glow = ({
 
 const ActivityFiltered = (): ReactElement => {
 	const { t } = useTranslation('wallet');
-	const dispatch = useAppDispatch();
 	const size = useSharedValue({ width: 0, height: 0 });
 	const panGestureRef = useRef<GestureType>(Gesture.Pan());
 	const [radiusContainerHeight, setRadiusContainerHeight] = useState(0);
@@ -67,8 +64,9 @@ const ActivityFiltered = (): ReactElement => {
 
 	const addTag = (tag: string): void => {
 		setTags((tg) => [...tg, tag]);
-		dispatch(closeSheet('tagsPrompt'));
+		closeSheet('tagsPrompt');
 	};
+
 	const removeTag = (tag: string): void => {
 		setTags((tg) => tg.filter((x) => x !== tag));
 	};

@@ -14,8 +14,7 @@ import { useBalance } from '../../hooks/wallet';
 import { quickpayIntroSeenSelector } from '../../store/reselect/settings';
 import { viewControllersSelector } from '../../store/reselect/ui';
 import { updateSettings } from '../../store/slices/settings';
-import { closeSheet } from '../../store/slices/ui';
-import { showBottomSheet } from '../../store/utils/ui';
+import { closeSheet, showBottomSheet } from '../../store/utils/ui';
 import { BodyMB, Display } from '../../styles/text';
 import { objectKeys } from '../../utils/objectKeys';
 import { RootNavigationProp } from '../types';
@@ -72,12 +71,12 @@ const QuickPayPrompt = (): ReactElement => {
 	const onMore = (): void => {
 		navigation.navigate('Settings', { screen: 'QuickpaySettings' });
 		dispatch(updateSettings({ quickpayIntroSeen: true }));
-		dispatch(closeSheet('quickPay'));
+		closeSheet('quickPay');
 	};
 
 	const onDismiss = (): void => {
 		dispatch(updateSettings({ quickpayIntroSeen: true }));
-		dispatch(closeSheet('quickPay'));
+		closeSheet('quickPay');
 	};
 
 	return (

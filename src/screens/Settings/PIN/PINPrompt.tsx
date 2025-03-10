@@ -3,10 +3,10 @@ import { Trans, useTranslation } from 'react-i18next';
 
 import BottomSheetScreen from '../../../components/BottomSheetScreen';
 import { useBottomSheetBackPress } from '../../../hooks/bottomSheet';
-import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
+import { useAppSelector } from '../../../hooks/redux';
 import { PinScreenProps } from '../../../navigation/types';
 import { showLaterButtonSelector } from '../../../store/reselect/ui';
-import { closeSheet } from '../../../store/slices/ui';
+import { closeSheet } from '../../../store/utils/ui';
 import { Display } from '../../../styles/text';
 
 const imageSrc = require('../../../assets/illustrations/shield.png');
@@ -15,7 +15,6 @@ const PINPrompt = ({
 	navigation,
 }: PinScreenProps<'PINPrompt'>): ReactElement => {
 	const { t } = useTranslation('security');
-	const dispatch = useAppDispatch();
 	const showLaterButton = useAppSelector(showLaterButtonSelector);
 
 	useBottomSheetBackPress('PINNavigation');
@@ -25,7 +24,7 @@ const PINPrompt = ({
 	};
 
 	const onDismiss = (): void => {
-		dispatch(closeSheet('PINNavigation'));
+		closeSheet('PINNavigation');
 	};
 
 	return (

@@ -4,9 +4,10 @@ import {
 	NavigationContainer,
 	createNavigationContainerRef,
 } from '@react-navigation/native';
-import React, { ReactElement } from 'react';
+import React, { ReactElement, useEffect } from 'react';
 import { Linking } from 'react-native';
 
+import { closeAllSheets } from '../../store/utils/ui';
 import { processUri } from '../../utils/scanner/scanner';
 import { RootStackParamList } from '../types';
 
@@ -63,6 +64,15 @@ const RootNavigationContainer = ({
 			};
 		},
 	};
+
+	// Close any open sheets when navigating to a new screen
+	useEffect(() => {
+		const unsubscribe = navigationRef.addListener('state', () => {
+			closeAllSheets();
+		});
+
+		return unsubscribe;
+	}, []);
 
 	return (
 		<NavigationContainer

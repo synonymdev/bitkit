@@ -6,10 +6,10 @@ import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigati
 import GradientView from '../../../components/GradientView';
 import SafeAreaInset from '../../../components/SafeAreaInset';
 import Button from '../../../components/buttons/Button';
-import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
+import { useAppSelector } from '../../../hooks/redux';
 import { backupSelector } from '../../../store/reselect/backup';
-import { closeSheet } from '../../../store/slices/ui';
 import { EBackupCategory } from '../../../store/types/backup';
+import { closeSheet } from '../../../store/utils/ui';
 import { BodyM, BodyS, BodySB } from '../../../styles/text';
 import { i18nTime } from '../../../utils/i18n';
 
@@ -18,7 +18,6 @@ const imageSrc = require('../../../assets/illustrations/card.png');
 const Metadata = (): ReactElement => {
 	const { t } = useTranslation('security');
 	const { t: tTime } = useTranslation('intl', { i18n: i18nTime });
-	const dispatch = useAppDispatch();
 	const backup = useAppSelector(backupSelector);
 
 	const max = Math.max(
@@ -28,7 +27,7 @@ const Metadata = (): ReactElement => {
 	);
 
 	const handleButtonPress = (): void => {
-		dispatch(closeSheet('backupNavigation'));
+		closeSheet('backupNavigation');
 	};
 
 	return (

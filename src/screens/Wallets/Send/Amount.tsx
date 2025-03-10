@@ -234,8 +234,15 @@ const Amount = ({ navigation }: SendScreenProps<'Amount'>): ReactElement => {
 		return true;
 	}, [amount, usesLightning, availableAmount]);
 
+	const state = navigation.getState();
+	const routes = state.routes;
 	const canGoBack = navigation.getState().routes[0]?.key !== route.key;
 	const hasOutput = !!transaction.outputs[0]?.address;
+
+	// console.log({ state });
+	console.log({ route });
+	console.log({ routes });
+	console.log({ canGoBack });
 
 	return (
 		<GradientView style={styles.container}>

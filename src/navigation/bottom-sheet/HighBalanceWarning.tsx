@@ -16,9 +16,8 @@ import {
 	ignoreHighBalanceTimestampSelector,
 } from '../../store/reselect/user';
 import { exchangeRatesSelector } from '../../store/reselect/wallet';
-import { closeSheet } from '../../store/slices/ui';
 import { MAX_WARNINGS, ignoreHighBalance } from '../../store/slices/user';
-import { showBottomSheet } from '../../store/utils/ui';
+import { closeSheet, showBottomSheet } from '../../store/utils/ui';
 import { BodyMB, Display } from '../../styles/text';
 import { getFiatDisplayValues } from '../../utils/displayValues';
 import { openURL } from '../../utils/helpers';
@@ -98,7 +97,7 @@ const HighBalanceWarning = (): ReactElement => {
 
 	const onDismiss = (): void => {
 		dispatch(ignoreHighBalance(true));
-		dispatch(closeSheet('highBalance'));
+		closeSheet('highBalance');
 	};
 
 	return (

@@ -13,7 +13,8 @@ import {
 	setupOnChainTransaction,
 } from '../../../store/actions/wallet';
 import { transactionSelector } from '../../../store/reselect/wallet';
-import { closeSheet, updateSendTransaction } from '../../../store/slices/ui';
+import { updateSendTransaction } from '../../../store/slices/ui';
+import { closeSheet } from '../../../store/utils/ui';
 import { BodyM } from '../../../styles/text';
 import { showToast } from '../../../utils/notifications';
 import { processUri } from '../../../utils/scanner/scanner';
@@ -45,7 +46,7 @@ const ErrorScreen = ({
 	}
 
 	const handleClose = (): void => {
-		dispatch(closeSheet('sendNavigation'));
+		closeSheet('sendNavigation');
 	};
 
 	const handleRetry = async (): Promise<void> => {

@@ -9,9 +9,9 @@ import {
 	useBottomSheetBackPress,
 	useSnapPoints,
 } from '../../hooks/bottomSheet';
-import { useAppDispatch, useAppSelector } from '../../hooks/redux';
+import { useAppSelector } from '../../hooks/redux';
 import { lastUsedTagsSelector } from '../../store/reselect/metadata';
-import { closeSheet } from '../../store/slices/ui';
+import { closeSheet } from '../../store/utils/ui';
 import { BodyS, Subtitle, Text13UP } from '../../styles/text';
 
 const TagsPrompt = ({
@@ -23,14 +23,13 @@ const TagsPrompt = ({
 }): ReactElement => {
 	const { t } = useTranslation('wallet');
 	const snapPoints = useSnapPoints('medium');
-	const dispatch = useAppDispatch();
 	const lastUsed = useAppSelector(lastUsedTagsSelector);
 	const suggestions = lastUsed.filter((tg) => !tags.includes(tg));
 
 	useBottomSheetBackPress('tagsPrompt');
 
 	const handleClose = (): void => {
-		dispatch(closeSheet('tagsPrompt'));
+		closeSheet('tagsPrompt');
 	};
 
 	return (
