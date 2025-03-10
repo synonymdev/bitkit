@@ -7,7 +7,7 @@ import React, {
 	useEffect,
 } from 'react';
 import { useTranslation } from 'react-i18next';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 
 import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
 import GradientView from '../../../components/GradientView';
@@ -25,11 +25,11 @@ import {
 	unitSelector,
 } from '../../../store/reselect/settings';
 import { IColors } from '../../../styles/colors';
-import { TouchableOpacity } from '../../../styles/components';
 import { Caption13Up } from '../../../styles/text';
 import { convertToSats } from '../../../utils/conversion';
 import { getNumberPadText } from '../../../utils/numberpad';
 import { sendMax } from '../../../utils/wallet/transactions';
+import AssetButton from '../AssetButton';
 import SendNumberPad from '../Send/SendNumberPad';
 import UnitButton from '../UnitButton';
 
@@ -103,6 +103,9 @@ const Amount = ({
 							/>
 						</TouchableOpacity>
 						<View style={styles.actionButtons}>
+							<View style={styles.actionButtonContainer}>
+								<AssetButton style={styles.actionButton} spending={true} />
+							</View>
 							<View style={styles.actionButtonContainer}>
 								<UnitButton
 									style={styles.actionButton}

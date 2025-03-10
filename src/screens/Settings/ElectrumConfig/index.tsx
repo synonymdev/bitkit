@@ -53,7 +53,7 @@ const isValidURL = (data: string): boolean => {
 
 		// Allow standard domains, custom TLDs like .local, and IPv4 addresses
 		const isValidDomainOrIP = !!url.hostname.match(
-			/^([a-z\d]([a-z\d-]*[a-z\d])*\.[a-z\d-]+|(\d{1,3}\.){3}\d{1,3})$/i,
+			/^([a-z\d]([a-z\d-]*[a-z\d])*\.)+[a-z\d-]+|(\d{1,3}\.){3}\d{1,3}$/i,
 		);
 
 		// Always allow .local domains

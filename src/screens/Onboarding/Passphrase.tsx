@@ -105,7 +105,6 @@ const styles = StyleSheet.create({
 		flexGrow: 1,
 	},
 	scrollContent: {
-		flex: 1,
 		flexGrow: 1,
 	},
 	navigationContainer: {

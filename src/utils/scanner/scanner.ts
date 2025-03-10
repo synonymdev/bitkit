@@ -386,7 +386,7 @@ export const processPaymentData = async ({
 	skipLightning?: boolean;
 	showErrors?: boolean;
 }): Promise<Result<TPaymentUri>> => {
-	let { onchainBalance, spendingBalance } = getBalance();
+	let { onchainBalance, spendingBalance } = await getBalance();
 	const isUnified = data.type === EQRDataType.unified;
 	const isOnchain = data.type === EQRDataType.onchain;
 	const isLightning = data.type === EQRDataType.lightning;
