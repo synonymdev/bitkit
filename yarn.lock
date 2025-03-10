@@ -4585,16 +4585,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@synonymdev/react-native-ldk@npm:0.0.156":
-  version: 0.0.156
-  resolution: "@synonymdev/react-native-ldk@npm:0.0.156"
+"@synonymdev/react-native-ldk@npm:0.0.158":
+  version: 0.0.158
+  resolution: "@synonymdev/react-native-ldk@npm:0.0.158"
   dependencies:
     "@synonymdev/raw-transaction-decoder": 1.1.0
     bech32: ^2.0.0
     bitcoinjs-lib: ^6.0.2
   peerDependencies:
     react-native: "*"
-  checksum: dbf828f48f25bf33c0be2b852c162aab69f85f43d931969ed82660ff5ce5d17b816ccce3e9b7567c6094a09ceb16bb444941cc41dce39e9a47973e0359a1e29a
+  checksum: e93fccadea4def04e9b1232070af0019ebfc0996cee1595738e83b8d9e3e00a64491b5366116a57f65b053732efe6903ff8df61c9fe4c5891f82bf17abaefed5
   languageName: node
   linkType: hard
 
@@ -5826,7 +5826,7 @@ __metadata:
     "@reduxjs/toolkit": 2.2.6
     "@shopify/react-native-skia": next
     "@synonymdev/blocktank-lsp-http-client": 2.2.0
-    "@synonymdev/react-native-ldk": 0.0.156
+    "@synonymdev/react-native-ldk": 0.0.158
     "@synonymdev/react-native-lnurl": 0.0.10
     "@synonymdev/react-native-pubky": ^0.3.0
     "@synonymdev/result": 0.0.2
