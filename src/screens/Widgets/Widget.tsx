@@ -1,12 +1,12 @@
+import { isEqual } from 'lodash';
 import React, { ReactElement } from 'react';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet, View } from 'react-native';
+import { SvgXml } from 'react-native-svg';
 
-import { isEqual } from 'lodash';
 import KeyboardAvoidingView from '../../components/KeyboardAvoidingView';
 import NavigationHeader from '../../components/NavigationHeader';
 import SafeAreaInset from '../../components/SafeAreaInset';
-import SvgImage from '../../components/SvgImage';
 import Button from '../../components/buttons/Button';
 import BlocksWidget from '../../components/widgets/BlocksWidget';
 import CalculatorWidget from '../../components/widgets/CalculatorWidget';
@@ -115,9 +115,7 @@ const Widget = ({
 								{widget.name.split(' ').join('\n')}
 							</Headline>
 						</View>
-						<View style={styles.headerImage}>
-							<SvgImage image={widget.icon} size={64} />
-						</View>
+						<SvgXml style={styles.headerImage} xml={widget.icon} />
 					</View>
 
 					<BodyM style={styles.description} color="secondary">

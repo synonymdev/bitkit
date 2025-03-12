@@ -1,10 +1,10 @@
 import React, { ReactElement } from 'react';
 import { StyleSheet } from 'react-native';
+import { SvgXml } from 'react-native-svg';
 
 import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import Divider from '../../components/Divider';
-import SvgImage from '../../components/SvgImage';
 import { widgets } from '../../constants/widgets';
 import { useCurrency } from '../../hooks/displayValues';
 import { RootNavigationProp } from '../../navigation/types';
@@ -31,9 +31,7 @@ const WidgetListItem = ({ id }: { id: TWidgetId }): ReactElement => {
 	return (
 		<TouchableOpacity testID={`WidgetListItem-${id}`} onPress={onPress}>
 			<View style={styles.feed}>
-				<View style={styles.icon}>
-					<SvgImage image={widget.icon} size={48} />
-				</View>
+				<SvgXml style={styles.icon} xml={widget.icon} />
 				<View style={styles.text}>
 					<BodyMSB numberOfLines={1}>{widget.name}</BodyMSB>
 					<CaptionB color="secondary" numberOfLines={1}>

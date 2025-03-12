@@ -1,8 +1,9 @@
+import { useNavigation } from '@react-navigation/native';
 import React, { memo, ReactElement, ReactNode, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
+import { SvgXml } from 'react-native-svg';
 
-import { useNavigation } from '@react-navigation/native';
 import { widgets } from '../../constants/widgets';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { RootNavigationProp } from '../../navigation/types';
@@ -15,7 +16,6 @@ import { BodyMSB } from '../../styles/text';
 import { truncate } from '../../utils/helpers';
 import Dialog from '../Dialog';
 // import LoadingView from '../LoadingView';
-import SvgImage from '../SvgImage';
 
 const BaseWidget = ({
 	id,
@@ -70,10 +70,12 @@ const BaseWidget = ({
 				{(showTitle || isEditing) && (
 					<View style={styles.header}>
 						<View style={styles.title}>
-							<View style={styles.icon}>
-								<SvgImage image={widget.icon} size={32} />
-							</View>
-
+							<SvgXml
+								style={styles.icon}
+								xml={widget.icon}
+								width={32}
+								height={32}
+							/>
 							<BodyMSB style={styles.name} numberOfLines={1}>
 								{truncate(widget.name, 18)}
 							</BodyMSB>
