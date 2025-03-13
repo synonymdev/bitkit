@@ -7,12 +7,11 @@ import GradientView from '../../../components/GradientView';
 import SafeAreaInset from '../../../components/SafeAreaInset';
 import Switch from '../../../components/Switch';
 import Button from '../../../components/buttons/Button';
-import { useBottomSheetScreenBackPress } from '../../../hooks/bottomSheet';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 import type { PinScreenProps } from '../../../navigation/types';
+import { useSheetRef } from '../../../sheets/SheetRefsProvider';
 import { pinForPaymentsSelector } from '../../../store/reselect/settings';
 import { updateSettings } from '../../../store/slices/settings';
-import { closeSheet } from '../../../store/slices/ui';
 import { BodyM, BodyMSB } from '../../../styles/text';
 
 const imageSrc = require('../../../assets/illustrations/check.png');
@@ -20,10 +19,9 @@ const imageSrc = require('../../../assets/illustrations/check.png');
 const Result = ({ route }: PinScreenProps<'Result'>): ReactElement => {
 	const { bio, type } = route.params;
 	const { t } = useTranslation('security');
+	const sheetRef = useSheetRef('pinNavigation');
 	const dispatch = useAppDispatch();
 	const pinForPayments = useAppSelector(pinForPaymentsSelector);
-
-	useBottomSheetScreenBackPress();
 
 	const biometricsName = useMemo(
 		() =>
@@ -40,7 +38,7 @@ const Result = ({ route }: PinScreenProps<'Result'>): ReactElement => {
 	};
 
 	const handleButtonPress = (): void => {
-		dispatch(closeSheet('PINNavigation'));
+		sheetRef.current?.close();
 	};
 
 	return (

@@ -1,19 +1,11 @@
-import { useFocusEffect, useNavigation } from '@react-navigation/native';
-import { useCallback, useEffect, useMemo, useRef } from 'react';
-import { BackHandler, NativeEventSubscription } from 'react-native';
+import { useEffect, useMemo } from 'react';
+import { BackHandler } from 'react-native';
 import {
 	useSafeAreaFrame,
 	useSafeAreaInsets,
 } from 'react-native-safe-area-context';
 
-import {
-	viewControllerIsOpenSelector,
-	viewControllersSelector,
-} from '../store/reselect/ui';
-import { closeAllSheets, closeSheet } from '../store/slices/ui';
-import { TViewController } from '../store/types/ui';
-import { objectKeys } from '../utils/objectKeys';
-import { useAppDispatch, useAppSelector } from './redux';
+import { useAllSheetRefs } from '../sheets/SheetRefsProvider';
 
 export const useSnapPoints = (
 	size: 'small' | 'medium' | 'large' | 'calendar',
@@ -50,81 +42,32 @@ export const useSnapPoints = (
 };
 
 /**
- * Hook to handle hardware back press (Android) when bottom sheet is open
- * for simple one-sheet screens
+ * Hook to handle hardware back press (Android) when a bottom sheet is open
  */
-export const useBottomSheetBackPress = (
-	viewController: TViewController,
-): void => {
-	const dispatch = useAppDispatch();
-	const isBottomSheetOpen = useAppSelector((state) => {
-		return viewControllerIsOpenSelector(state, viewController);
-	});
+export const useBottomSheetBackPress = (): void => {
+	const sheetRefs = useAllSheetRefs();
 
-	const backHandlerSubscriptionRef = useRef<NativeEventSubscription | null>(
-		null,
-	);
-
+	// biome-ignore lint/correctness/useExhaustiveDependencies: sheetRefs don't change
 	useEffect(() => {
-		if (!isBottomSheetOpen) {
-			return;
-		}
+		const backAction = () => {
+			const openSheets = sheetRefs.filter(({ ref }) => {
+				return ref.current?.isOpen();
+			});
 
-		backHandlerSubscriptionRef.current = BackHandler.addEventListener(
-			'hardwareBackPress',
-			() => {
-				dispatch(closeSheet(viewController));
+			if (openSheets.length !== 0) {
+				openSheets.forEach(({ ref }) => ref.current?.close());
 				return true;
-			},
-		);
-
-		return (): void => {
-			backHandlerSubscriptionRef.current?.remove();
-			backHandlerSubscriptionRef.current = null;
-		};
-	}, [isBottomSheetOpen, viewController, dispatch]);
-};
-
-/**
- * Hook to handle hardware back press (Android) when bottom sheet is open
- * for screens that are part of a navigator nested in a bottom sheet
- */
-export const useBottomSheetScreenBackPress = (): void => {
-	const dispatch = useAppDispatch();
-	const navigation = useNavigation();
-	const viewControllers = useAppSelector(viewControllersSelector);
-
-	const isBottomSheetOpen = useMemo(() => {
-		const viewControllerKeys = objectKeys(viewControllers);
-		return viewControllerKeys.some((view) => viewControllers[view].isOpen);
-	}, [viewControllers]);
-
-	const backHandlerSubscriptionRef = useRef<NativeEventSubscription | null>(
-		null,
-	);
-
-	useFocusEffect(
-		useCallback(() => {
-			if (!isBottomSheetOpen) {
-				return;
 			}
 
-			backHandlerSubscriptionRef.current = BackHandler.addEventListener(
-				'hardwareBackPress',
-				() => {
-					if (navigation.canGoBack()) {
-						navigation.goBack();
-					} else {
-						dispatch(closeAllSheets());
-					}
-					return true;
-				},
-			);
+			// if no sheets are open, let the event to bubble up
+			return false;
+		};
 
-			return (): void => {
-				backHandlerSubscriptionRef.current?.remove();
-				backHandlerSubscriptionRef.current = null;
-			};
-		}, [dispatch, isBottomSheetOpen, navigation]),
-	);
+		const backHandler = BackHandler.addEventListener(
+			'hardwareBackPress',
+			backAction,
+		);
+
+		return () => backHandler.remove();
+	}, []);
 };

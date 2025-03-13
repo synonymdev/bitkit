@@ -17,7 +17,6 @@ import Money from '../../../components/Money';
 import NumberPadTextField from '../../../components/NumberPadTextField';
 import SafeAreaInset from '../../../components/SafeAreaInset';
 import Button from '../../../components/buttons/Button';
-import { useBottomSheetScreenBackPress } from '../../../hooks/bottomSheet';
 import { useAppSelector } from '../../../hooks/redux';
 import { useBalance, useSwitchUnit } from '../../../hooks/wallet';
 import type { SendScreenProps } from '../../../navigation/types';
@@ -77,8 +76,6 @@ const Amount = ({ navigation }: SendScreenProps<'Amount'>): ReactElement => {
 
 	const { paymentMethod } = useAppSelector(sendTransactionSelector);
 	const usesLightning = paymentMethod === 'lightning';
-
-	useBottomSheetScreenBackPress();
 
 	const outputAmount = useMemo(() => {
 		const amount = getTransactionOutputValue({ outputs: transaction.outputs });

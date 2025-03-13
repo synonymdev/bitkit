@@ -21,7 +21,6 @@ import GradientView from '../../../components/GradientView';
 import SafeAreaInset from '../../../components/SafeAreaInset';
 import Switch from '../../../components/Switch';
 import Button from '../../../components/buttons/Button';
-import { useBottomSheetScreenBackPress } from '../../../hooks/bottomSheet';
 import { useAppDispatch } from '../../../hooks/redux';
 import type { PinScreenProps } from '../../../navigation/types';
 import { updateSettings } from '../../../store/slices/settings';
@@ -39,8 +38,6 @@ const AskForBiometrics = ({
 	const dispatch = useAppDispatch();
 	const [biometryData, setBiometricData] = useState<IsSensorAvailableResult>();
 	const [shouldEnableBiometrics, setShouldEnableBiometrics] = useState(false);
-
-	useBottomSheetScreenBackPress();
 
 	useEffect(() => {
 		(async (): Promise<void> => {

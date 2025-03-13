@@ -261,10 +261,10 @@ d('LNURL', () => {
 		await element(by.id('DialogConfirm')).tap();
 		await element(by.id('ContinueAmount')).tap();
 		await element(by.id('WithdrawConfirmButton')).tap();
-		await waitFor(element(by.id('NewTxPrompt')))
+		await waitFor(element(by.id('ReceivedTransaction')))
 			.toBeVisible()
 			.withTimeout(10000);
-		await element(by.id('NewTxPrompt')).swipe('down');
+		await element(by.id('ReceivedTransaction')).swipe('down');
 
 		// test lnurl-withdraw, with min !== max amount
 		const withdrawRequest2 = await lnurl.generateNewUrl('withdrawRequest', {
@@ -277,10 +277,10 @@ d('LNURL', () => {
 		await element(by.id('QRInput')).replaceText(withdrawRequest2.encoded);
 		await element(by.id('DialogConfirm')).tap();
 		await element(by.id('WithdrawConfirmButton')).tap();
-		await waitFor(element(by.id('NewTxPrompt')))
+		await waitFor(element(by.id('ReceivedTransaction')))
 			.toBeVisible()
 			.withTimeout(10000);
-		await element(by.id('NewTxPrompt')).swipe('down');
+		await element(by.id('ReceivedTransaction')).swipe('down');
 
 		// test lnurl-auth
 		const loginRequest1 = await lnurl.generateNewUrl('login');

@@ -88,13 +88,14 @@ d('Receive', () => {
 		const note = 'iPhone Refurbished';
 		await element(by.id('ReceiveNote')).typeText(note);
 		await element(by.id('ReceiveNote')).tapReturnKey();
-		await sleep(200);
+		await sleep(300); // wait for keyboard to hide
 
 		// Tags
 		const tag = 'test123';
 		await element(by.id('TagsAdd')).tap();
 		await element(by.id('TagInputReceive')).typeText(tag);
 		await element(by.id('ReceiveTagsSubmit')).tap();
+		await sleep(300); // wait for keyboard to hide
 
 		// Show QR
 		await element(by.id('ShowQrReceive')).tap();

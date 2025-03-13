@@ -14,7 +14,6 @@ import Money from '../../../components/Money';
 import NumberPadTextField from '../../../components/NumberPadTextField';
 import SafeAreaInset from '../../../components/SafeAreaInset';
 import Button from '../../../components/buttons/Button';
-import { useBottomSheetScreenBackPress } from '../../../hooks/bottomSheet';
 import { useAppSelector } from '../../../hooks/redux';
 import { useBalance, useSwitchUnit } from '../../../hooks/wallet';
 import type { SendScreenProps } from '../../../navigation/types';
@@ -52,8 +51,6 @@ const LNURLAmount = ({
 	const denomination = useAppSelector(denominationSelector);
 	const [text, setText] = useState('');
 	const [error, setError] = useState(false);
-
-	useBottomSheetScreenBackPress();
 
 	const amount = useMemo((): number => {
 		return convertToSats(text, conversionUnit);
@@ -197,7 +194,7 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 	},
 	actionButton: {
-		paddingVertical: 7,
+		paddingVertical: 5,
 		paddingHorizontal: 8,
 		borderRadius: 8,
 		flexDirection: 'row',

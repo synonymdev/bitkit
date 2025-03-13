@@ -1,28 +1,23 @@
+// NOTE: currently not used
+
 import React, { memo, ReactElement } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 
-import BottomSheetScreen from '../../components/BottomSheetScreen';
-import BottomSheetWrapper from '../../components/BottomSheetWrapper';
-import {
-	useBottomSheetBackPress,
-	useSnapPoints,
-} from '../../hooks/bottomSheet';
-import { Display } from '../../styles/text';
+import BottomSheet from '../components/BottomSheet';
+import BottomSheetScreen from '../components/BottomSheetScreen';
+import { Display } from '../styles/text';
 
 const imageSrc = require('../../assets/illustrations/cross.png');
 
 const TransferFailed = (): ReactElement => {
 	const { t } = useTranslation('lightning');
-	const snapPoints = useSnapPoints('large');
-
-	useBottomSheetBackPress('transferFailed');
 
 	const onCancel = (): void => {};
 
 	const onContinue = async (): Promise<void> => {};
 
 	return (
-		<BottomSheetWrapper view="transferFailed" snapPoints={snapPoints}>
+		<BottomSheet id="transferFailed" size="large">
 			<BottomSheetScreen
 				navTitle={t('transfer_failed.nav_title')}
 				title={
@@ -40,7 +35,7 @@ const TransferFailed = (): ReactElement => {
 				onContinue={onContinue}
 				onCancel={onCancel}
 			/>
-		</BottomSheetWrapper>
+		</BottomSheet>
 	);
 };
 

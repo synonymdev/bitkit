@@ -6,13 +6,12 @@ import BottomSheetNavigationHeader from '../../components/BottomSheetNavigationH
 import LabeledInput from '../../components/LabeledInput';
 import SafeAreaInset from '../../components/SafeAreaInset';
 import Button from '../../components/buttons/Button';
-import { useBottomSheetBackPress } from '../../hooks/bottomSheet';
-import { Keyboard } from '../../hooks/keyboard';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { ProfileLinkScreenProps } from '../../navigation/types';
+import { useSheetRef } from '../../sheets/SheetRefsProvider';
 import { profileLinkSelector } from '../../store/reselect/ui';
 import { addLink } from '../../store/slices/slashtags';
-import { closeSheet, updateProfileLink } from '../../store/slices/ui';
+import { updateProfileLink } from '../../store/slices/ui';
 import { BodyS, BodySB } from '../../styles/text';
 import { suggestions } from './ProfileLinkSuggestions';
 
@@ -21,15 +20,13 @@ const ProfileLink = ({
 }: ProfileLinkScreenProps<'ProfileLink'>): ReactElement => {
 	const { t } = useTranslation('slashtags');
 	const dispatch = useAppDispatch();
+	const sheetRef = useSheetRef('profileLink');
 	const form = useAppSelector(profileLinkSelector);
 
-	useBottomSheetBackPress('profileAddDataForm');
-
-	const onSave = async (): Promise<void> => {
+	const onSave = (): void => {
+		sheetRef.current?.close();
 		dispatch(addLink(form));
 		dispatch(updateProfileLink({ title: '', url: '' }));
-		await Keyboard.dismiss();
-		dispatch(closeSheet('profileAddDataForm'));
 	};
 
 	const isValid = form.title && form.url;

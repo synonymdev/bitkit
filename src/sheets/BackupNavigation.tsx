@@ -6,19 +6,16 @@ import {
 } from '@react-navigation/native-stack';
 import React, { ReactElement, memo } from 'react';
 
-import BottomSheetWrapper from '../../components/BottomSheetWrapper';
-import { __E2E__ } from '../../constants/env';
-import { useSnapPoints } from '../../hooks/bottomSheet';
-import { useAppSelector } from '../../hooks/redux';
-import ConfirmMnemonic from '../../screens/Settings/Backup/ConfirmMnemonic';
-import ConfirmPassphrase from '../../screens/Settings/Backup/ConfirmPassphrase';
-import Metadata from '../../screens/Settings/Backup/Metadata';
-import MultipleDevices from '../../screens/Settings/Backup/MultipleDevices';
-import ShowMnemonic from '../../screens/Settings/Backup/ShowMnemonic';
-import ShowPassphrase from '../../screens/Settings/Backup/ShowPassphrase';
-import Success from '../../screens/Settings/Backup/Success';
-import Warning from '../../screens/Settings/Backup/Warning';
-import { viewControllerIsOpenSelector } from '../../store/reselect/ui';
+import BottomSheet from '../components/BottomSheet';
+import { __E2E__ } from '../constants/env';
+import ConfirmMnemonic from '../screens/Settings/Backup/ConfirmMnemonic';
+import ConfirmPassphrase from '../screens/Settings/Backup/ConfirmPassphrase';
+import Metadata from '../screens/Settings/Backup/Metadata';
+import MultipleDevices from '../screens/Settings/Backup/MultipleDevices';
+import ShowMnemonic from '../screens/Settings/Backup/ShowMnemonic';
+import ShowPassphrase from '../screens/Settings/Backup/ShowPassphrase';
+import Success from '../screens/Settings/Backup/Success';
+import Warning from '../screens/Settings/Backup/Warning';
 import BottomSheetNavigationContainer from './BottomSheetNavigationContainer';
 
 export type BackupNavigationProp =
@@ -43,15 +40,10 @@ const navOptions: NativeStackNavigationOptions = {
 };
 
 const BackupNavigation = (): ReactElement => {
-	const snapPoints = useSnapPoints('medium');
-	const isOpen = useAppSelector((state) => {
-		return viewControllerIsOpenSelector(state, 'backupNavigation');
-	});
-
 	return (
-		<BottomSheetWrapper view="backupNavigation" snapPoints={snapPoints}>
+		<BottomSheet id="backupNavigation" size="medium">
 			<NavigationIndependentTree>
-				<BottomSheetNavigationContainer key={isOpen.toString()}>
+				<BottomSheetNavigationContainer>
 					<Stack.Navigator screenOptions={navOptions}>
 						<Stack.Screen name="ShowMnemonic" component={ShowMnemonic} />
 						<Stack.Screen name="ShowPassphrase" component={ShowPassphrase} />
@@ -67,7 +59,7 @@ const BackupNavigation = (): ReactElement => {
 					</Stack.Navigator>
 				</BottomSheetNavigationContainer>
 			</NavigationIndependentTree>
-		</BottomSheetWrapper>
+		</BottomSheet>
 	);
 };
 

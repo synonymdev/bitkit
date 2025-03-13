@@ -9,7 +9,7 @@ import { EItemType, IListData } from '../../../components/List';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 import type { SettingsScreenProps } from '../../../navigation/types';
 import { updateSettings } from '../../../store/slices/settings';
-import { showBottomSheet } from '../../../store/utils/ui';
+import { showSheet } from '../../../store/utils/ui';
 import rnBiometrics from '../../../utils/biometrics';
 import SettingsView from '../SettingsView';
 
@@ -119,7 +119,7 @@ const SecuritySettings = ({
 							if (pin) {
 								navigation.navigate('DisablePin');
 							} else {
-								showBottomSheet('PINNavigation', { showLaterButton: false });
+								showSheet('pinNavigation', { showLaterButton: false });
 							}
 						},
 					},

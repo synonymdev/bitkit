@@ -6,9 +6,9 @@ import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigati
 import GradientView from '../../../components/GradientView';
 import SafeAreaInset from '../../../components/SafeAreaInset';
 import Button from '../../../components/buttons/Button';
-import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
+import { useAppSelector } from '../../../hooks/redux';
+import { useSheetRef } from '../../../sheets/SheetRefsProvider';
 import { backupSelector } from '../../../store/reselect/backup';
-import { closeSheet } from '../../../store/slices/ui';
 import { EBackupCategory } from '../../../store/types/backup';
 import { BodyM, BodyS, BodySB } from '../../../styles/text';
 import { i18nTime } from '../../../utils/i18n';
@@ -18,7 +18,7 @@ const imageSrc = require('../../../assets/illustrations/card.png');
 const Metadata = (): ReactElement => {
 	const { t } = useTranslation('security');
 	const { t: tTime } = useTranslation('intl', { i18n: i18nTime });
-	const dispatch = useAppDispatch();
+	const sheetRef = useSheetRef('backupNavigation');
 	const backup = useAppSelector(backupSelector);
 
 	const max = Math.max(
@@ -27,8 +27,8 @@ const Metadata = (): ReactElement => {
 		}),
 	);
 
-	const handleButtonPress = (): void => {
-		dispatch(closeSheet('backupNavigation'));
+	const onContinue = (): void => {
+		sheetRef.current?.close();
 	};
 
 	return (
@@ -67,12 +67,7 @@ const Metadata = (): ReactElement => {
 						/>
 					</BodyS>
 				)}
-				<Button
-					size="large"
-					text={t('ok')}
-					onPress={handleButtonPress}
-					testID="OK"
-				/>
+				<Button size="large" text={t('ok')} testID="OK" onPress={onContinue} />
 			</View>
 			<SafeAreaInset type="bottom" minPadding={16} />
 		</GradientView>

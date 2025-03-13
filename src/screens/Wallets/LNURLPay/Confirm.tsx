@@ -7,7 +7,7 @@ import React, {
 } from 'react';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
-import { FadeIn, FadeOut } from 'react-native-reanimated';
+import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
 
 import AmountToggle from '../../../components/AmountToggle';
 import Biometrics from '../../../components/Biometrics';
@@ -16,7 +16,6 @@ import GradientView from '../../../components/GradientView';
 import LightningSyncing from '../../../components/LightningSyncing';
 import SafeAreaInset from '../../../components/SafeAreaInset';
 import SwipeToConfirm from '../../../components/SwipeToConfirm';
-import { useBottomSheetScreenBackPress } from '../../../hooks/bottomSheet';
 import useColors from '../../../hooks/colors';
 import useKeyboard, { Keyboard } from '../../../hooks/keyboard';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
@@ -29,7 +28,7 @@ import {
 import { addPendingPayment } from '../../../store/slices/lightning';
 import { updateMetaTxComment } from '../../../store/slices/metadata';
 import { EActivityType } from '../../../store/types/activity';
-import { AnimatedView, BottomSheetTextInput } from '../../../styles/components';
+import { BottomSheetTextInput } from '../../../styles/components';
 import { Checkmark, LightningHollowIcon } from '../../../styles/icons';
 import { BodySSB, Caption13Up } from '../../../styles/text';
 import { FeeText } from '../../../utils/fees';
@@ -78,8 +77,6 @@ const LNURLConfirm = ({
 	const [isLoading, setIsLoading] = useState(false);
 	const [showBiotmetrics, setShowBiometrics] = useState(false);
 	const [comment, setComment] = useState('');
-
-	useBottomSheetScreenBackPress();
 
 	const onError = useCallback(
 		(errorMessage: string) => {
@@ -197,7 +194,7 @@ const LNURLConfirm = ({
 					/>
 
 					{!keyboardShown && (
-						<AnimatedView
+						<Animated.View
 							style={styles.sectionContainer}
 							entering={FadeIn}
 							exiting={FadeOut}>
@@ -209,11 +206,11 @@ const LNURLConfirm = ({
 									</BodySSB>
 								}
 							/>
-						</AnimatedView>
+						</Animated.View>
 					)}
 
 					{!keyboardShown && (
-						<AnimatedView
+						<Animated.View
 							style={styles.sectionContainer}
 							entering={FadeIn}
 							exiting={FadeOut}>
@@ -231,7 +228,7 @@ const LNURLConfirm = ({
 									</>
 								}
 							/>
-						</AnimatedView>
+						</Animated.View>
 					)}
 
 					{pParams.commentAllowed > 0 && (

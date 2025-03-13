@@ -11,11 +11,11 @@ import GradientView from '../../../components/GradientView';
 import SafeAreaInset from '../../../components/SafeAreaInset';
 import Button from '../../../components/buttons/Button';
 import { __E2E__ } from '../../../constants/env';
-import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
+import { useAppSelector } from '../../../hooks/redux';
 import { rootNavigation } from '../../../navigation/root/RootNavigationContainer';
 import type { SendScreenProps } from '../../../navigation/types';
+import { useSheetRef } from '../../../sheets/SheetRefsProvider';
 import { activityItemSelector } from '../../../store/reselect/activity';
-import { closeSheet } from '../../../store/slices/ui';
 import { EActivityType } from '../../../store/types/activity';
 
 const confettiOrangeSrc = require('../../../assets/lottie/confetti-orange.json');
@@ -26,24 +26,25 @@ const Success = ({ route }: SendScreenProps<'Success'>): ReactElement => {
 	const { t } = useTranslation('wallet');
 	const { type, amount, txId } = route.params;
 	const reducedMotion = useReducedMotion();
-	const dispatch = useAppDispatch();
+	const sheetRef = useSheetRef('send');
 	const activityItem = useAppSelector((state) => {
 		return activityItemSelector(state, txId);
 	});
 
+	// Prevent back navigation
 	usePreventRemove(true, () => {});
 
 	const isOnchain = type === EActivityType.onchain;
 
 	const navigateToTxDetails = (): void => {
 		if (activityItem) {
-			dispatch(closeSheet('sendNavigation'));
+			sheetRef.current?.close();
 			rootNavigation.navigate('ActivityDetail', { id: activityItem.id });
 		}
 	};
 
 	const handleClose = (): void => {
-		dispatch(closeSheet('sendNavigation'));
+		sheetRef.current?.close();
 	};
 
 	return (

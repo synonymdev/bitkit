@@ -27,7 +27,6 @@ import Dot from '../../../components/SliderDots';
 import SwitchRow from '../../../components/SwitchRow';
 import Tooltip from '../../../components/Tooltip';
 import Button from '../../../components/buttons/Button';
-import { useBottomSheetBackPress } from '../../../hooks/bottomSheet';
 import { useLightningBalance } from '../../../hooks/lightning';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 import { ReceiveScreenProps } from '../../../navigation/types';
@@ -37,7 +36,6 @@ import { receiveSelector } from '../../../store/reselect/receive';
 import {
 	appStateSelector,
 	isLDKReadySelector,
-	viewControllerIsOpenSelector,
 } from '../../../store/reselect/ui';
 import { isGeoBlockedSelector } from '../../../store/reselect/user';
 import {
@@ -98,9 +96,6 @@ const ReceiveQR = ({
 	const { id, amount, message, tags, jitOrder } =
 		useAppSelector(receiveSelector);
 	const lightningBalance = useLightningBalance(false);
-	const receiveNavigationIsOpen = useAppSelector((state) =>
-		viewControllerIsOpenSelector(state, 'receiveNavigation'),
-	);
 
 	const jitInvoice = jitOrder?.invoice.request;
 
@@ -113,15 +108,13 @@ const ReceiveQR = ({
 		!!jitInvoice || lightningBalance.remoteBalance > 0,
 	);
 
-	useBottomSheetBackPress('receiveNavigation');
-
 	useEffect(() => {
 		setEnableInstant(!!jitInvoice || lightningBalance.remoteBalance > 0);
 	}, [jitInvoice, lightningBalance.remoteBalance]);
 
 	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
 	const getLightningInvoice = useCallback(async (): Promise<void> => {
-		if (!receiveNavigationIsOpen || !lightningBalance.remoteBalance) {
+		if (!lightningBalance.remoteBalance) {
 			return;
 		}
 
@@ -154,9 +147,6 @@ const ReceiveQR = ({
 	}, [jitInvoice, amount, message]);
 
 	const getAddress = useCallback(async (): Promise<void> => {
-		if (!receiveNavigationIsOpen) {
-			return;
-		}
 		if (amount > 0) {
 			console.info('getting fresh address');
 			const response = await generateNewReceiveAddress({
@@ -187,7 +177,6 @@ const ReceiveQR = ({
 			}
 		}
 	}, [
-		receiveNavigationIsOpen,
 		amount,
 		selectedNetwork,
 		selectedWallet,
@@ -196,9 +185,6 @@ const ReceiveQR = ({
 	]);
 
 	const setInvoiceDetails = useCallback(async (): Promise<void> => {
-		if (!receiveNavigationIsOpen) {
-			return;
-		}
 		if (!loading) {
 			setLoading(true);
 		}
@@ -207,27 +193,15 @@ const ReceiveQR = ({
 		await Promise.all([getAddress()]);
 		await sleep(200);
 		setLoading(false);
-	}, [getAddress, getLightningInvoice, loading, receiveNavigationIsOpen]);
+	}, [getAddress, getLightningInvoice, loading]);
 
 	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
 	useEffect(() => {
-		if (!receiveNavigationIsOpen) {
-			return;
-		}
-		// Gives the modal animation time to start.
-		sleep(50).then(() => {
-			setInvoiceDetails().then();
-		});
-	}, [
-		amount,
-		message,
-		selectedNetwork,
-		selectedWallet,
-		receiveNavigationIsOpen,
-	]);
+		setInvoiceDetails().then();
+	}, [amount, message, selectedNetwork, selectedWallet]);
 
 	useEffect(() => {
-		if (id && tags.length !== 0 && receiveAddress && receiveNavigationIsOpen) {
+		if (id && tags.length !== 0 && receiveAddress) {
 			dispatch(
 				updatePendingInvoice({
 					id,
@@ -237,30 +211,19 @@ const ReceiveQR = ({
 				}),
 			);
 		}
-	}, [
-		id,
-		receiveAddress,
-		lightningInvoice,
-		tags,
-		receiveNavigationIsOpen,
-		dispatch,
-	]);
+	}, [id, receiveAddress, lightningInvoice, tags, dispatch]);
 
 	useEffect(() => {
-		if (receiveNavigationIsOpen && enableInstant && appState !== 'active') {
+		if (enableInstant && appState !== 'active') {
 			showToast({
 				type: 'error',
 				title: t('receive_foreground_title'),
 				description: t('receive_foreground_msg'),
 			});
 		}
-	}, [t, appState, enableInstant, receiveNavigationIsOpen]);
+	}, [t, appState, enableInstant]);
 
 	const uri = useMemo((): string => {
-		if (!receiveNavigationIsOpen) {
-			return '';
-		}
-
 		if (enableInstant && jitInvoice) {
 			return jitInvoice;
 		}
@@ -288,7 +251,6 @@ const ReceiveQR = ({
 		lightningInvoice,
 		message,
 		receiveAddress,
-		receiveNavigationIsOpen,
 	]);
 
 	const onToggleInstant = useCallback((): void => {

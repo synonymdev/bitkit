@@ -11,9 +11,8 @@ import { getCurrentWallet } from '../../utils/wallet';
 import { dispatch, getBlocktankStore } from '../helpers';
 import { addActivityItem, updateActivityItems } from '../slices/activity';
 import { updateSettings } from '../slices/settings';
-import { closeSheet } from '../slices/ui';
 import { EActivityType, TLightningActivityItem } from '../types/activity';
-import { showBottomSheet } from './ui';
+import { closeSheet, showSheet } from './ui';
 
 /**
  * Attempts to determine if a given channel open was in response to
@@ -60,9 +59,13 @@ export const addCJitActivityItem = async (channelId: string): Promise<void> => {
 
 	dispatch(addActivityItem(activityItem));
 	dispatch(updateSettings({ hideOnboardingMessage: true }));
-	dispatch(closeSheet('receiveNavigation'));
+	closeSheet('receive');
 	vibrate({ type: 'default' });
-	showBottomSheet('newTxPrompt', { activityItem });
+	showSheet('receivedTx', {
+		id: activityItem.id,
+		activityType: EActivityType.lightning,
+		value: activityItem.value,
+	});
 
 	// redux-persist doesn't save to MMKV when the app is backgrounded
 	// Quickfix: manually flush the store after adding the activity item

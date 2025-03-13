@@ -1,30 +1,57 @@
 import { LNURLPayParams, LNURLWithdrawParams } from 'js-lnurl';
 import { AppStateStatus } from 'react-native';
-import { ReceiveStackParamList } from '../../navigation/bottom-sheet/ReceiveNavigation';
-import { SendStackParamList } from '../../navigation/bottom-sheet/SendNavigation';
+import { ReceiveStackParamList } from '../../sheets/ReceiveNavigation';
+import { SendStackParamList } from '../../sheets/SendNavigation';
 import { EActivityType, TOnchainActivityItem } from './activity';
 
-export type ViewControllerParamList = {
-	activityTagsPrompt: { id: string };
-	addContactModal: undefined;
-	appUpdatePrompt: undefined;
+// Used to ensure all sheet refs are registered
+export const sheetIds: SheetId[] = [
+	'activityTags',
+	'addContact',
+	'appUpdate',
+	'backupNavigation',
+	'backupPrompt',
+	'boost',
+	'connectionClosed',
+	'datePicker',
+	'forceTransfer',
+	'forgotPin',
+	'highBalance',
+	'lnurlWithdraw',
+	'orangeTicket',
+	'pinNavigation',
+	'profileLink',
+	'pubkyAuth',
+	'quickPay',
+	'receive',
+	'receivedTx',
+	'send',
+	'tags',
+	'transferFailed',
+	'treasureHunt',
+];
+
+export type SheetsParamList = {
+	addContact: undefined;
+	activityTags: { id: string };
+	appUpdate: undefined;
 	backupNavigation: undefined;
 	backupPrompt: undefined;
-	boostPrompt: { onchainActivityItem: TOnchainActivityItem };
+	boost: { activityItem: TOnchainActivityItem };
 	connectionClosed: undefined;
+	datePicker: undefined;
 	forceTransfer: undefined;
-	forgotPIN: undefined;
+	forgotPin: undefined;
 	highBalance: undefined;
-	newTxPrompt: {
-		activityItem: { id: string; activityType: EActivityType; value: number };
-	};
+	lnurlWithdraw: LNURLWithdrawParams;
 	orangeTicket: { ticketId: string };
-	PINNavigation: { showLaterButton: boolean };
-	profileAddDataForm: undefined;
+	pinNavigation: { showLaterButton: boolean };
+	profileLink: undefined;
 	pubkyAuth: { url: string };
 	quickPay: undefined;
-	receiveNavigation: { receiveScreen: keyof ReceiveStackParamList } | undefined;
-	sendNavigation:
+	receive: { screen: keyof ReceiveStackParamList } | undefined;
+	receivedTx: { id: string; activityType: EActivityType; value: number };
+	send:
 		| { screen: keyof SendStackParamList }
 		| { screen: 'Quickpay'; invoice: string; amount: number }
 		| { screen: 'LNURLAmount'; pParams: LNURLPayParams; url: string }
@@ -35,42 +62,12 @@ export type ViewControllerParamList = {
 				amount?: number;
 		  }
 		| undefined;
-	timeRangePrompt: undefined;
+	tags: undefined;
 	transferFailed: undefined;
 	treasureHunt: { chestId: string };
-	tagsPrompt: undefined;
-	lnurlWithdraw: { wParams: LNURLWithdrawParams };
 };
 
-export type TViewController = keyof ViewControllerParamList;
-
-type TViewProps = { isOpen: boolean; isMounted: boolean };
-
-export type TUiViewController = {
-	[key in TViewController]: undefined extends ViewControllerParamList[key]
-		? TViewProps
-		: Partial<ViewControllerParamList[key]> & TViewProps;
-};
-
-// this type is needed because reselect doesn't offer good parameter typing
-export type IViewControllerData = {
-	isOpen: boolean;
-	isMounted: boolean;
-	activityItem?: { id: string; activityType: EActivityType; value: number };
-	chestId?: string;
-	onchainActivityItem?: TOnchainActivityItem;
-	id?: string;
-	screen?: keyof SendStackParamList;
-	receiveScreen?: keyof ReceiveStackParamList;
-	showLaterButton?: boolean;
-	ticketId?: string;
-	txId?: string;
-	url?: string;
-	wParams?: LNURLWithdrawParams;
-	pParams?: LNURLPayParams;
-	invoice?: string;
-	amount?: number;
-};
+export type SheetId = keyof SheetsParamList;
 
 export type TProfileLink = {
 	title: string;
@@ -105,6 +102,5 @@ export type TUiState = {
 	language: string;
 	profileLink: TProfileLink;
 	timeZone: string;
-	viewControllers: TUiViewController;
 	sendTransaction: TSendTransaction;
 };

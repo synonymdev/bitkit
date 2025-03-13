@@ -17,7 +17,7 @@ import SafeAreaInset from '../../../components/SafeAreaInset';
 import Button from '../../../components/buttons/Button';
 import { useAppSelector } from '../../../hooks/redux';
 import { useSwitchUnit } from '../../../hooks/wallet';
-import type { LNURLWithdrawProps } from '../../../navigation/types';
+import type { LNURLWithdrawScreenProps } from '../../../navigation/types';
 import {
 	conversionUnitSelector,
 	denominationSelector,
@@ -36,10 +36,10 @@ import UnitButton from '../UnitButton';
 const Amount = ({
 	navigation,
 	route,
-}: LNURLWithdrawProps<'Amount'>): ReactElement => {
+}: LNURLWithdrawScreenProps<'Amount'>): ReactElement => {
 	const { t } = useTranslation('wallet');
-	const { wParams } = route.params;
-	const { minWithdrawable, maxWithdrawable } = wParams;
+	const { params } = route.params;
+	const { minWithdrawable, maxWithdrawable } = params;
 	const switchUnit = useSwitchUnit();
 	const unit = useAppSelector(unitSelector);
 	const nextUnit = useAppSelector(nextUnitSelector);
@@ -131,7 +131,7 @@ const Amount = ({
 						disabled={!isValid}
 						testID="ContinueAmount"
 						onPress={(): void => {
-							navigation.navigate('Confirm', { amount, wParams });
+							navigation.navigate('Confirm', { amount, params });
 						}}
 					/>
 				</View>
@@ -177,7 +177,7 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 	},
 	actionButton: {
-		paddingVertical: 7,
+		paddingVertical: 5,
 		paddingHorizontal: 8,
 		borderRadius: 8,
 		flexDirection: 'row',

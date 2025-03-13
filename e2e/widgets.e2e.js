@@ -35,7 +35,7 @@ d('Widgets', () => {
 		}
 
 		// add price widget
-		await element(by.id('HomeScrollView')).scroll(300, 'down', 0);
+		await element(by.id('HomeScrollView')).scroll(300, 'down', 0, 0.5);
 		await element(by.id('WidgetsAdd')).tap();
 		await element(by.id('WidgetsOnboarding-button')).tap();
 		await element(by.id('WidgetListItem-price')).tap();
@@ -50,7 +50,7 @@ d('Widgets', () => {
 		await element(by.id('WidgetEditField-showSource')).tap();
 		await element(by.id('WidgetEditPreview')).tap();
 		await element(by.id('WidgetSave')).tap();
-		await element(by.id('HomeScrollView')).scroll(200, 'down', 0);
+		await element(by.id('HomeScrollView')).scroll(200, 'down', 0, 0.5);
 		await expect(element(by.id('PriceWidget'))).toBeVisible();
 		await expect(element(by.id('PriceWidgetRow-BTC/EUR'))).toBeVisible();
 		await expect(element(by.id('PriceWidgetSource'))).toBeVisible();

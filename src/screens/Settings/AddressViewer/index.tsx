@@ -15,18 +15,18 @@ import React, {
 import { useTranslation } from 'react-i18next';
 import { FlatList, ScrollView, StyleSheet, View } from 'react-native';
 import QRCode from 'react-native-qrcode-svg';
-import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 
 import NavigationHeader from '../../../components/NavigationHeader';
 import SafeAreaInset from '../../../components/SafeAreaInset';
 import SearchInput from '../../../components/SearchInput';
 import Button from '../../../components/buttons/Button';
+import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
+import { useSheetRef } from '../../../sheets/SheetRefsProvider';
 import {
 	resetSendTransaction,
 	setupOnChainTransaction,
 	updateBeignetSendTransaction,
 } from '../../../store/actions/wallet';
-import { viewControllerIsOpenSelector } from '../../../store/reselect/ui';
 import {
 	addressTypeSelector,
 	currentWalletSelector,
@@ -43,7 +43,7 @@ import { updateWallet } from '../../../store/slices/wallet';
 import { TWalletName } from '../../../store/types/wallet';
 import { updateActivityList } from '../../../store/utils/activity';
 import { updateOnchainFeeEstimates } from '../../../store/utils/fees';
-import { showBottomSheet } from '../../../store/utils/ui';
+import { showSheet } from '../../../store/utils/ui';
 import {
 	View as ThemedView,
 	TouchableOpacity,
@@ -226,6 +226,7 @@ const getAllAddresses = async ({
 const AddressViewer = (): ReactElement => {
 	const { t } = useTranslation('settings');
 	const dispatch = useAppDispatch();
+	const sendSheetRef = useSheetRef('send');
 	const selectedWallet = useAppSelector(selectedWalletSelector);
 	const selectedNetwork = useAppSelector(selectedNetworkSelector);
 	const addressType = useAppSelector(addressTypeSelector);
@@ -233,9 +234,7 @@ const AddressViewer = (): ReactElement => {
 		currentWalletSelector(state, selectedWallet),
 	);
 	const [sendNavigationHasOpened, setSendNavigationHasOpened] = useState(false);
-	const sendNavigationIsOpen = useAppSelector((state) =>
-		viewControllerIsOpenSelector(state, 'sendNavigation'),
-	);
+	const sendNavigationIsOpen = sendSheetRef.current?.isOpen();
 
 	const flatListRef = useRef<FlatList>(null);
 	const scrollViewRef = useRef<ScrollView>(null);
@@ -650,7 +649,7 @@ const AddressViewer = (): ReactElement => {
 				}),
 			);
 			sendMax();
-			showBottomSheet('sendNavigation', { screen: 'ReviewAndSend' });
+			showSheet('send', { screen: 'ReviewAndSend' });
 		},
 		[selectedUtxos, utxos, selectedNetwork, dispatch],
 	);

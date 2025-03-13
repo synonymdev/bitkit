@@ -86,7 +86,7 @@ const Dialog = ({
 							activeOpacity={0.7}
 							testID="DialogConfirm"
 							onPress={onConfirm}>
-							<Text style={[buttonStyles, {}]}>{confirmText}</Text>
+							<Text style={buttonStyles}>{confirmText}</Text>
 						</TouchableOpacity>
 					)}
 				</View>

@@ -5,22 +5,17 @@ import React, { ReactElement, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 
-import BottomSheetNavigationHeader from '../../components/BottomSheetNavigationHeader';
-import BottomSheetWrapper from '../../components/BottomSheetWrapper';
-import LabeledInput from '../../components/LabeledInput';
-import SafeAreaInset from '../../components/SafeAreaInset';
-import Button from '../../components/buttons/Button';
-import {
-	useBottomSheetBackPress,
-	useSnapPoints,
-} from '../../hooks/bottomSheet';
-import { useAppDispatch } from '../../hooks/redux';
-import { useSlashtags } from '../../hooks/slashtags';
-import type { RootStackParamList } from '../../navigation/types';
-import { closeSheet } from '../../store/slices/ui';
-import { ClipboardTextIcon, CornersOutIcon } from '../../styles/icons';
-import { BodyM } from '../../styles/text';
-import { handleSlashtagURL } from '../../utils/slashtags';
+import BottomSheet from '../components/BottomSheet';
+import BottomSheetNavigationHeader from '../components/BottomSheetNavigationHeader';
+import LabeledInput from '../components/LabeledInput';
+import SafeAreaInset from '../components/SafeAreaInset';
+import Button from '../components/buttons/Button';
+import { Keyboard } from '../hooks/keyboard';
+import { useSlashtags } from '../hooks/slashtags';
+import type { RootStackParamList } from '../navigation/types';
+import { ClipboardTextIcon, CornersOutIcon } from '../styles/icons';
+import { BodyM } from '../styles/text';
+import { handleSlashtagURL } from '../utils/slashtags';
 
 const AddContact = ({
 	navigation,
@@ -28,13 +23,9 @@ const AddContact = ({
 	navigation: NativeStackNavigationProp<RootStackParamList, 'Contacts'>;
 }): ReactElement => {
 	const { t } = useTranslation('slashtags');
-	const snapPoints = useSnapPoints('small');
-	const dispatch = useAppDispatch();
 	const [url, setUrl] = useState('');
-	const [error, setError] = useState<undefined | string>();
+	const [error, setError] = useState<string>();
 	const { url: myProfileURL } = useSlashtags();
-
-	useBottomSheetBackPress('addContactModal');
 
 	const handleChangeUrl = (contactUrl: string): void => {
 		setUrl(contactUrl);
@@ -66,13 +57,12 @@ const AddContact = ({
 			setError(t('contact_error_key'));
 		};
 
-		const onContact = (): void => {
+		const onSuccess = async (): Promise<void> => {
+			navigation.navigate('ContactEdit', { url });
 			setUrl('');
-			// Add delay to prevent sheet from staying open
-			setTimeout(() => dispatch(closeSheet('addContactModal')), 500);
 		};
 
-		handleSlashtagURL(contactUrl, onError, onContact);
+		handleSlashtagURL(contactUrl, onSuccess, onError);
 	};
 
 	const updateContactID = async (contactUrl: string): Promise<void> => {
@@ -86,12 +76,13 @@ const AddContact = ({
 		updateContactID(contactUrl);
 	};
 
-	const handleScanner = (): void => {
+	const handleScanner = async (): Promise<void> => {
+		await Keyboard.dismiss();
 		navigation.navigate('Scanner', { onScan: updateContactID });
 	};
 
 	return (
-		<BottomSheetWrapper view="addContactModal" snapPoints={snapPoints}>
+		<BottomSheet id="addContact" size="small">
 			<View style={styles.container}>
 				<BottomSheetNavigationHeader
 					title={t('contact_add_capital')}
@@ -103,15 +94,15 @@ const AddContact = ({
 						{t('contact_add_explain')}
 					</BodyM>
 					<LabeledInput
-						bottomSheet={true}
-						label={t('contact_add')}
-						error={error}
 						value={url}
 						placeholder={t('contact_key_paste')}
+						label={t('contact_add')}
+						color={error ? 'brand' : 'white'}
+						bottomSheet={true}
 						multiline={true}
-						onChange={handleChangeUrl}
+						error={error}
 						testID="ContactURLInput"
-						color={error ? 'brand' : undefined}>
+						onChange={handleChangeUrl}>
 						<TouchableOpacity
 							style={styles.action}
 							activeOpacity={0.7}
@@ -140,7 +131,7 @@ const AddContact = ({
 
 				<SafeAreaInset type="bottom" minPadding={16} />
 			</View>
-		</BottomSheetWrapper>
+		</BottomSheet>
 	);
 };
 

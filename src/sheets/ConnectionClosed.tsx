@@ -2,33 +2,25 @@ import React, { memo, ReactElement } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Image, StyleSheet, View } from 'react-native';
 
-import BottomSheetNavigationHeader from '../../components/BottomSheetNavigationHeader';
-import BottomSheetWrapper from '../../components/BottomSheetWrapper';
-import SafeAreaInset from '../../components/SafeAreaInset';
-import Button from '../../components/buttons/Button';
-import {
-	useBottomSheetBackPress,
-	useSnapPoints,
-} from '../../hooks/bottomSheet';
-import { useAppDispatch } from '../../hooks/redux';
-import { closeSheet } from '../../store/slices/ui';
-import { BodyM } from '../../styles/text';
+import BottomSheet from '../components/BottomSheet';
+import BottomSheetNavigationHeader from '../components/BottomSheetNavigationHeader';
+import SafeAreaInset from '../components/SafeAreaInset';
+import Button from '../components/buttons/Button';
+import { BodyM } from '../styles/text';
+import { useSheetRef } from './SheetRefsProvider';
 
-const imageSrc = require('../../assets/illustrations/switch.png');
+const imageSrc = require('../assets/illustrations/switch.png');
 
 const ConnectionClosed = (): ReactElement => {
 	const { t } = useTranslation('lightning');
-	const dispatch = useAppDispatch();
-	const snapPoints = useSnapPoints('medium');
-
-	useBottomSheetBackPress('backupPrompt');
+	const sheetRef = useSheetRef('connectionClosed');
 
 	const onContinue = (): void => {
-		dispatch(closeSheet('connectionClosed'));
+		sheetRef.current?.close();
 	};
 
 	return (
-		<BottomSheetWrapper view="connectionClosed" snapPoints={snapPoints}>
+		<BottomSheet id="connectionClosed" size="medium">
 			<View style={styles.container}>
 				<BottomSheetNavigationHeader
 					title={t('connection_closed.title')}
@@ -50,7 +42,7 @@ const ConnectionClosed = (): ReactElement => {
 				</View>
 				<SafeAreaInset type="bottom" minPadding={16} />
 			</View>
-		</BottomSheetWrapper>
+		</BottomSheet>
 	);
 };
 

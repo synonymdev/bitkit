@@ -67,16 +67,17 @@ d('Onchain', () => {
 				await element(by.id('TagsAdd')).tap();
 				await element(by.id('TagInputReceive')).typeText(`rtag${i}`);
 				await element(by.id('TagInputReceive')).tapReturnKey();
+				await sleep(300); // wait for keyboard to hide
 				await element(by.id('ShowQrReceive')).tap();
 
 				await rpc.sendToAddress(wAddress, '1');
 				await rpc.generateToAddress(1, await rpc.getNewAddress());
 				await electrum?.waitForSync();
 
-				await waitFor(element(by.id('NewTxPrompt')))
+				await waitFor(element(by.id('ReceivedTransaction')))
 					.toBeVisible()
 					.withTimeout(10000);
-				await element(by.id('NewTxPrompt')).swipe('down'); // close Receive screen
+				await element(by.id('ReceivedTransaction')).swipe('down'); // close Receive screen
 				await sleep(1000); // animation
 			}
 
@@ -140,7 +141,7 @@ d('Onchain', () => {
 			).toHaveText('0');
 
 			// check Activity
-			await element(by.id('HomeScrollView')).scroll(1000, 'down', 0);
+			await element(by.id('HomeScrollView')).scroll(1000, 'down', 0, 0.5);
 			await expect(element(by.id('ActivityShort-1'))).toBeVisible();
 			await expect(element(by.id('ActivityShort-2'))).toBeVisible();
 			await expect(element(by.id('ActivityShort-3'))).toBeVisible();
@@ -200,7 +201,7 @@ d('Onchain', () => {
 			await element(by.id('Tag-stag-delete')).tap();
 
 			// calendar, previous month, 0 transactions
-			await element(by.id('TimeRangePrompt')).tap();
+			await element(by.id('DatePicker')).tap();
 			await expect(element(by.id('Today'))).toBeVisible();
 			await element(by.id('PrevMonth')).tap();
 			await expect(element(by.id('Today'))).not.toExist();
@@ -210,7 +211,7 @@ d('Onchain', () => {
 			await expect(element(by.id('Activity-1'))).not.toExist();
 
 			// calendar, current date, 3 transactions
-			await element(by.id('TimeRangePrompt')).tap();
+			await element(by.id('DatePicker')).tap();
 			await element(by.id('CalendarClearButton')).tap();
 			await element(by.id('NextMonth')).tap();
 			await element(by.id('Today')).tap();
@@ -237,10 +238,10 @@ d('Onchain', () => {
 			// await rpc.generateToAddress(1, await rpc.getNewAddress());
 			// await electrum?.waitForSync();
 
-			await waitFor(element(by.id('NewTxPrompt')))
+			await waitFor(element(by.id('ReceivedTransaction')))
 				.toBeVisible()
 				.withTimeout(10000);
-			await element(by.id('NewTxPrompt')).swipe('down'); // close Receive screen
+			await element(by.id('ReceivedTransaction')).swipe('down'); // close Receive screen
 			await sleep(1000); // animation
 
 			const coreAddress = await rpc.getNewAddress();
@@ -307,7 +308,7 @@ d('Onchain', () => {
 			).toHaveText('0');
 
 			// check number of outputs for send tx
-			await element(by.id('HomeScrollView')).scroll(1000, 'down', 0);
+			await element(by.id('HomeScrollView')).scroll(1000, 'down', 0, 0.5);
 			await expect(element(by.id('ActivityShort-1'))).toBeVisible();
 			await expect(element(by.id('ActivityShort-2'))).toBeVisible();
 			await element(by.id('ActivityShowAll')).tap();

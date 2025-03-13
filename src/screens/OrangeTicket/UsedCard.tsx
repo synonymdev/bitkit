@@ -6,9 +6,8 @@ import BottomSheetNavigationHeader from '../../components/BottomSheetNavigationH
 import GradientView from '../../components/GradientView';
 import SafeAreaInset from '../../components/SafeAreaInset';
 import Button from '../../components/buttons/Button';
-import { useAppDispatch } from '../../hooks/redux';
 import type { OrangeTicketScreenProps } from '../../navigation/types';
-import { closeSheet } from '../../store/slices/ui';
+import { useSheetRef } from '../../sheets/SheetRefsProvider';
 import { BodyM } from '../../styles/text';
 
 const imageSrc = require('../../assets/illustrations/exclamation-mark.png');
@@ -17,10 +16,10 @@ const UsedCard = ({
 	route,
 }: OrangeTicketScreenProps<'UsedCard'>): ReactElement => {
 	const { amount } = route.params;
-	const dispatch = useAppDispatch();
+	const sheetRef = useSheetRef('orangeTicket');
 
 	const onContinue = (): void => {
-		dispatch(closeSheet('orangeTicket'));
+		sheetRef.current?.close();
 	};
 
 	return (

@@ -1,0 +1,30 @@
+diff --git a/node_modules/@gorhom/bottom-sheet/lib/typescript/types.d.ts b/node_modules/@gorhom/bottom-sheet/lib/typescript/types.d.ts
+index 27f39a1..914efc6 100644
+--- a/node_modules/@gorhom/bottom-sheet/lib/typescript/types.d.ts
++++ b/node_modules/@gorhom/bottom-sheet/lib/typescript/types.d.ts
+@@ -91,6 +91,10 @@ export interface BottomSheetModalMethods extends BottomSheetMethods {
+    * @see {WithTimingConfig}
+    */
+   dismiss: (animationConfigs?: WithSpringConfig | WithTimingConfig) => void;
++  /**
++   * Check if the bottom sheet modal is open.
++   */
++  isOpen: () => boolean;
+ }
+ //#endregion
+ 
+diff --git a/node_modules/@gorhom/bottom-sheet/src/components/bottomSheetModal/BottomSheetModal.tsx b/node_modules/@gorhom/bottom-sheet/src/components/bottomSheetModal/BottomSheetModal.tsx
+index 275ce50..2d5ea19 100644
+--- a/node_modules/@gorhom/bottom-sheet/src/components/bottomSheetModal/BottomSheetModal.tsx
++++ b/node_modules/@gorhom/bottom-sheet/src/components/bottomSheetModal/BottomSheetModal.tsx
+@@ -363,6 +363,10 @@ const BottomSheetModalComponent = forwardRef<
+     // internal
+     minimize: handleMinimize,
+     restore: handleRestore,
++    isOpen: () => {
++      // If animateOnMount is disabled, the sheet is open if it's mounted
++      return animateOnMount ? currentIndexRef.current !== -1 : mounted.current;
++    },
+   }));
+   //#endregion
+ 

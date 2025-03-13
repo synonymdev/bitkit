@@ -1,14 +1,14 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { ReactElement, useMemo } from 'react';
+import React, { ReactElement, useMemo, memo } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
 	Platform,
 	Pressable,
 	StyleProp,
 	StyleSheet,
+	View,
 	ViewStyle,
 } from 'react-native';
-import Animated, { FadeIn } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { receiveIcon, sendIcon } from '../assets/icons';
@@ -16,11 +16,10 @@ import useColors from '../hooks/colors';
 import { useAppSelector } from '../hooks/redux';
 import { rootNavigation } from '../navigation/root/RootNavigationContainer';
 import type { RootNavigationProp } from '../navigation/types';
+import { useSheetRef } from '../sheets/SheetRefsProvider';
 import { resetSendTransaction } from '../store/actions/wallet';
 import { spendingOnboardingSelector } from '../store/reselect/aggregations';
-import { viewControllersSelector } from '../store/reselect/ui';
-import { TViewController } from '../store/types/ui';
-import { toggleBottomSheet } from '../store/utils/ui';
+import { showSheet } from '../store/utils/ui';
 import { ScanIcon } from '../styles/icons';
 import ButtonBlur from './buttons/ButtonBlur';
 
@@ -29,38 +28,25 @@ const TabBar = (): ReactElement => {
 	const insets = useSafeAreaInsets();
 	const { t } = useTranslation('wallet');
 	const navigation = useNavigation<RootNavigationProp>();
-	const viewControllers = useAppSelector(viewControllersSelector);
+	const sendSheetRef = useSheetRef('send');
+	const receiveSheetRef = useSheetRef('receive');
 	const isSpendingOnboarding = useAppSelector(spendingOnboardingSelector);
-
-	const shouldHide = useMemo(() => {
-		const viewControllerKeys: TViewController[] = [
-			'backupPrompt',
-			'PINNavigation',
-			'highBalance',
-			'appUpdatePrompt',
-			'timeRangePrompt',
-			'tagsPrompt',
-		];
-		return viewControllerKeys.some((view) => viewControllers[view].isOpen);
-	}, [viewControllers]);
 
 	const onReceivePress = (): void => {
 		const currentRoute = rootNavigation.getCurrentRoute();
 
 		// if we are on the spending screen and the user has not yet received funds
 		if (currentRoute === 'ActivitySpending' && isSpendingOnboarding) {
-			toggleBottomSheet('receiveNavigation', {
-				receiveScreen: 'ReceiveAmount',
-			});
+			showSheet('receive', { screen: 'ReceiveAmount' });
 		} else {
-			toggleBottomSheet('receiveNavigation');
+			receiveSheetRef.current?.present();
 		}
 	};
 
 	const onSendPress = (): void => {
 		// make sure we start with a clean transaction state
 		resetSendTransaction();
-		toggleBottomSheet('sendNavigation');
+		sendSheetRef.current?.present();
 	};
 
 	const onScanPress = (): void => navigation.navigate('Scanner');
@@ -82,12 +68,8 @@ const TabBar = (): ReactElement => {
 	const sendXml = sendIcon('white');
 	const receiveXml = receiveIcon('white');
 
-	if (shouldHide) {
-		return <></>;
-	}
-
 	return (
-		<Animated.View style={[styles.tabRoot, { bottom }]} entering={FadeIn}>
+		<View style={[styles.tabRoot, { bottom }]}>
 			<ButtonBlur
 				style={styles.send}
 				text={t('send')}
@@ -112,7 +94,7 @@ const TabBar = (): ReactElement => {
 				testID="Receive"
 				onPress={onReceivePress}
 			/>
-		</Animated.View>
+		</View>
 	);
 };
 
@@ -149,4 +131,4 @@ const styles = StyleSheet.create({
 	},
 });
 
-export default TabBar;
+export default memo(TabBar);

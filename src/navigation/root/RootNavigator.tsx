@@ -17,6 +17,7 @@ import { AppState, Linking } from 'react-native';
 import AuthCheck from '../../components/AuthCheck';
 import Dialog from '../../components/Dialog';
 import { __E2E__ } from '../../constants/env';
+import { useBottomSheetBackPress } from '../../hooks/bottomSheet';
 import { useRenderCount } from '../../hooks/helpers';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import ActivityAssignContact from '../../screens/Activity/ActivityAssignContact';
@@ -28,11 +29,13 @@ import Contacts from '../../screens/Contacts/Contacts';
 import Profile from '../../screens/Profile/Profile';
 import ProfileEdit from '../../screens/Profile/ProfileEdit';
 import ScannerScreen from '../../screens/Scanner/MainScanner';
-import ForgotPIN from '../../screens/Settings/PIN/ForgotPIN';
 import Widget from '../../screens/Widgets/Widget';
 import WidgetEdit from '../../screens/Widgets/WidgetEdit';
 import WidgetsOnboarding from '../../screens/Widgets/WidgetsOnboarding';
 import WidgetsSuggestions from '../../screens/Widgets/WidgetsSuggestions';
+import BottomSheetsLazy from '../../sheets/BottomSheetsLazy';
+import ForceTransfer from '../../sheets/ForceTransfer';
+import ForgotPIN from '../../sheets/ForgotPIN';
 import { resetSendTransaction } from '../../store/actions/wallet';
 import { getStore } from '../../store/helpers';
 import { isAuthenticatedSelector } from '../../store/reselect/ui';
@@ -43,8 +46,6 @@ import { processUri } from '../../utils/scanner/scanner';
 import SettingsNavigator from '../SettingsNavigator';
 import TransferNavigator from '../TransferNavigator';
 import WalletNavigator from '../WalletNavigator';
-import BottomSheetsLazy from '../bottom-sheet/BottomSheetsLazy';
-import ForceTransfer from '../bottom-sheet/ForceTransfer';
 import type { RootStackParamList } from '../types';
 import { rootNavigation } from './RootNavigationContainer';
 
@@ -63,6 +64,8 @@ const RootNavigator = (): ReactElement => {
 	const dispatch = useAppDispatch();
 	const isAuthenticated = useAppSelector(isAuthenticatedSelector);
 	const renderCount = useRenderCount();
+
+	useBottomSheetBackPress();
 
 	const checkClipboard = async (): Promise<void> => {
 		const result = await checkClipboardData();

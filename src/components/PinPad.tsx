@@ -6,7 +6,7 @@ import { FadeIn, FadeOut } from 'react-native-reanimated';
 import BitkitLogo from '../assets/bitkit-logo.svg';
 import { PIN_ATTEMPTS } from '../constants/app';
 import usePIN from '../hooks/pin';
-import { showBottomSheet } from '../store/utils/ui';
+import { useSheetRef } from '../sheets/SheetRefsProvider';
 import { AnimatedView, View as ThemedView } from '../styles/components';
 import { FaceIdIcon, TouchIdIcon } from '../styles/icons';
 import { BodyS, Subtitle } from '../styles/text';
@@ -31,6 +31,7 @@ const PinPad = ({
 	onShowBiotmetrics?: () => void;
 }): ReactElement => {
 	const { t } = useTranslation('security');
+	const sheetRef = useSheetRef('forgotPin');
 	const [biometryData, setBiometricData] = useState<IsSensorAvailableResult>();
 	const { attemptsRemaining, Dots, handleNumberPress, isLastAttempt, loading } =
 		usePIN(onSuccess);
@@ -89,7 +90,7 @@ const PinPad = ({
 										) : (
 											<Pressable
 												onPress={(): void => {
-													showBottomSheet('forgotPIN');
+													sheetRef.current?.present();
 												}}>
 												<BodyS testID="AttemptsRemaining" color="brand">
 													{t('pin_attempts', { attemptsRemaining })}

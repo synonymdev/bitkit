@@ -13,19 +13,15 @@ import React, {
 	useState,
 } from 'react';
 
-import BottomSheetWrapper from '../../components/BottomSheetWrapper';
-import { __TREASURE_HUNT_HOST__ } from '../../constants/env';
-import {
-	useBottomSheetBackPress,
-	useSnapPoints,
-} from '../../hooks/bottomSheet';
-import { useAppSelector } from '../../hooks/redux';
-import ErrorScreen from '../../screens/OrangeTicket/Error';
-import Prize from '../../screens/OrangeTicket/Prize';
-import UsedCard from '../../screens/OrangeTicket/UsedCard';
-import { viewControllerSelector } from '../../store/reselect/ui';
-import { getNodeId, waitForLdk } from '../../utils/lightning';
-import { showToast } from '../../utils/notifications';
+import BottomSheet from '../components/BottomSheet';
+import { __TREASURE_HUNT_HOST__ } from '../constants/env';
+import { useAppSelector } from '../hooks/redux';
+import ErrorScreen from '../screens/OrangeTicket/Error';
+import Prize from '../screens/OrangeTicket/Prize';
+import UsedCard from '../screens/OrangeTicket/UsedCard';
+import { SheetsParamList } from '../store/types/ui';
+import { getNodeId, waitForLdk } from '../utils/lightning';
+import { showToast } from '../utils/notifications';
 import BottomSheetNavigationContainer from './BottomSheetNavigationContainer';
 
 export type OrangeTicketNavigationProp =
@@ -44,19 +40,19 @@ const screenOptions: NativeStackNavigationOptions = {
 	headerShown: false,
 };
 
-const OrangeTicket = (): ReactElement => {
-	const snapPoints = useSnapPoints('large');
+const SheetContent = ({
+	data,
+}: {
+	data: SheetsParamList['orangeTicket'];
+}): ReactElement => {
 	const [isLoading, setIsLoading] = useState(true);
 	const [amount, setAmount] = useState<number>();
 	const [errorCode, setErrorCode] = useState<number>();
 	const orangeTickets = useAppSelector((state) => state.settings.orangeTickets);
 	const [initialScreen, setInitialScreen] =
 		useState<keyof OrangeTicketStackParamList>('Prize');
-	const { isOpen, ticketId } = useAppSelector((state) => {
-		return viewControllerSelector(state, 'orangeTicket');
-	});
 
-	useBottomSheetBackPress('orangeTicket');
+	const { ticketId } = data;
 
 	// biome-ignore lint/correctness/useExhaustiveDependencies: only when ticketId changes
 	const getPrize = useCallback(async (): Promise<void> => {
@@ -141,45 +137,47 @@ const OrangeTicket = (): ReactElement => {
 	}, [ticketId]);
 
 	useEffect(() => {
-		if (!isOpen) {
-			setInitialScreen('Prize');
-			setIsLoading(true);
-			return;
-		}
-
 		getPrize();
-	}, [isOpen, getPrize]);
+	}, [getPrize]);
 
 	if (isLoading) {
 		return <></>;
 	}
 
 	return (
-		<BottomSheetWrapper view="orangeTicket" snapPoints={snapPoints}>
-			<NavigationIndependentTree>
-				<BottomSheetNavigationContainer key={isOpen.toString()}>
-					<Stack.Navigator
-						initialRouteName={initialScreen}
-						screenOptions={screenOptions}>
-						<Stack.Screen
-							name="Prize"
-							component={Prize}
-							initialParams={{ ticketId, amount }}
-						/>
-						<Stack.Screen
-							name="UsedCard"
-							component={UsedCard}
-							initialParams={{ amount }}
-						/>
-						<Stack.Screen
-							name="Error"
-							component={ErrorScreen}
-							initialParams={{ errorCode }}
-						/>
-					</Stack.Navigator>
-				</BottomSheetNavigationContainer>
-			</NavigationIndependentTree>
-		</BottomSheetWrapper>
+		<NavigationIndependentTree>
+			<BottomSheetNavigationContainer>
+				<Stack.Navigator
+					initialRouteName={initialScreen}
+					screenOptions={screenOptions}>
+					<Stack.Screen
+						name="Prize"
+						component={Prize}
+						initialParams={{ ticketId, amount }}
+					/>
+					<Stack.Screen
+						name="UsedCard"
+						component={UsedCard}
+						initialParams={{ amount }}
+					/>
+					<Stack.Screen
+						name="Error"
+						component={ErrorScreen}
+						initialParams={{ errorCode }}
+					/>
+				</Stack.Navigator>
+			</BottomSheetNavigationContainer>
+		</NavigationIndependentTree>
+	);
+};
+
+const OrangeTicket = (): ReactElement => {
+	return (
+		<BottomSheet id="orangeTicket" size="large">
+			{({ data }: { data: SheetsParamList['orangeTicket'] }) => {
+				return <SheetContent data={data} />;
+			}}
+		</BottomSheet>
 	);
 };
 

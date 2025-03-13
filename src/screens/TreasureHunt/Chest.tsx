@@ -6,9 +6,7 @@ import BitkitLogo from '../../assets/bitkit-logo.svg';
 import BlurView from '../../components/BlurView';
 import GradientView from '../../components/GradientView';
 import SafeAreaInset from '../../components/SafeAreaInset';
-import { useBottomSheetBackPress } from '../../hooks/bottomSheet';
 import { useScreenSize } from '../../hooks/screen';
-import { viewControllerSelector } from '../../store/reselect/ui';
 import { BodySSB, Subtitle } from '../../styles/text';
 import GradientText from './GradientText';
 import Title from './Title';
@@ -19,18 +17,15 @@ const imageSrc = require('../../assets/treasure-hunt/treasure.jpg');
 
 const Chest = ({
 	navigation,
+	route,
 }: TreasureHuntScreenProps<'Chest'>): ReactElement => {
+	const { chestId } = route.params;
 	const { isSmallScreen } = useScreenSize();
 	const { treasureChests } = useAppSelector((state) => state.settings);
-	const { chestId } = useAppSelector((state) => {
-		return viewControllerSelector(state, 'treasureHunt');
-	});
 
 	const chests = treasureChests.filter((c) => !c.isAirdrop);
 	const chest = chests.find((c) => c.chestId === chestId)!;
 	const chestIndex = chest ? chests.indexOf(chest) : treasureChests.length;
-
-	useBottomSheetBackPress('treasureHunt');
 
 	const chestNameStyle = {
 		top: isSmallScreen ? 100 : 126,

@@ -7,7 +7,6 @@ import BlurView from '../../../components/BlurView';
 import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
 import SafeAreaInset from '../../../components/SafeAreaInset';
 import Button from '../../../components/buttons/Button';
-import { useBottomSheetBackPress } from '../../../hooks/bottomSheet';
 import type { BackupScreenProps } from '../../../navigation/types';
 import { View as ThemedView } from '../../../styles/components';
 import { BodyM, BodyMSB, BodyS } from '../../../styles/text';
@@ -40,8 +39,6 @@ const ShowMnemonic = ({
 	const [show, setShow] = useState(false);
 	const [seed, setSeed] = useState<string[]>([]);
 	const [bip39Passphrase, setPassphrase] = useState<string>('');
-
-	useBottomSheetBackPress('backupNavigation');
 
 	useEffect(() => {
 		const getSeed = async (): Promise<void> => {

@@ -132,10 +132,10 @@ d('Settings Security And Privacy', () => {
 		await rpc.sendToAddress(wAddress, '1');
 		await rpc.generateToAddress(1, await rpc.getNewAddress());
 		await electrum?.waitForSync();
-		await waitFor(element(by.id('NewTxPrompt')))
+		await waitFor(element(by.id('ReceivedTransaction')))
 			.toBeVisible()
 			.withTimeout(10000);
-		await element(by.id('NewTxPrompt')).swipe('down'); // close Receive screen
+		await element(by.id('ReceivedTransaction')).swipe('down'); // close Receive screen
 
 		// send, using FaceID
 		const coreAddress = await rpc.getNewAddress();

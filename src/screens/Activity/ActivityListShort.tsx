@@ -12,9 +12,9 @@ import { StyleSheet, View } from 'react-native';
 import Button from '../../components/buttons/Button';
 import { useAppSelector } from '../../hooks/redux';
 import type { RootNavigationProp } from '../../navigation/types';
+import { useSheetRef } from '../../sheets/SheetRefsProvider';
 import { activityItemsSelector } from '../../store/reselect/activity';
 import { IActivityItem } from '../../store/types/activity';
-import { showBottomSheet } from '../../store/utils/ui';
 import { Caption13Up } from '../../styles/text';
 import { groupActivityItems } from '../../utils/activity';
 import ListItem, { EmptyItem } from './ListItem';
@@ -24,6 +24,7 @@ const MAX_ACTIVITY_ITEMS = 3;
 const ActivityListShort = (): ReactElement => {
 	const { t } = useTranslation('wallet');
 	const navigation = useNavigation<RootNavigationProp>();
+	const sheetRef = useSheetRef('receive');
 	const items = useAppSelector(activityItemsSelector);
 
 	const groupedItems = useMemo(() => {
@@ -57,8 +58,9 @@ const ActivityListShort = (): ReactElement => {
 		[navigation],
 	);
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: sheetRef doesn't change
 	const navigateToReceive = useCallback((): void => {
-		showBottomSheet('receiveNavigation');
+		sheetRef.current?.present();
 	}, []);
 
 	const navigateToActivityFiltered = useCallback((): void => {

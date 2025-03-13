@@ -6,8 +6,8 @@ import Dialog from '../../../components/Dialog';
 import NavigationHeader from '../../../components/NavigationHeader';
 import SafeAreaInset from '../../../components/SafeAreaInset';
 import Button from '../../../components/buttons/Button';
+import { useSheetRef } from '../../../sheets/SheetRefsProvider';
 import { wipeApp } from '../../../store/utils/settings';
-import { showBottomSheet } from '../../../store/utils/ui';
 import { View } from '../../../styles/components';
 import { BodyM } from '../../../styles/text';
 
@@ -15,6 +15,7 @@ const imageSrc = require('../../../assets/illustrations/restore.png');
 
 const ResetAndRestore = (): ReactElement => {
 	const { t } = useTranslation('security');
+	const sheetRef = useSheetRef('backupNavigation');
 	const [showDialog, setShowDialog] = useState(false);
 
 	return (
@@ -35,7 +36,7 @@ const ResetAndRestore = (): ReactElement => {
 						style={styles.button}
 						text={t('reset_button_backup')}
 						onPress={(): void => {
-							showBottomSheet('backupNavigation');
+							sheetRef.current?.present();
 						}}
 					/>
 					<Button

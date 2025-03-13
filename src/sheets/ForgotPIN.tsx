@@ -2,43 +2,29 @@ import React, { memo, ReactElement } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Image, StyleSheet, View } from 'react-native';
 
-import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
-import BottomSheetWrapper from '../../../components/BottomSheetWrapper';
-import SafeAreaInset from '../../../components/SafeAreaInset';
-import Button from '../../../components/buttons/Button';
-import {
-	useBottomSheetBackPress,
-	useSnapPoints,
-} from '../../../hooks/bottomSheet';
-import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
-import { viewControllerSelector } from '../../../store/reselect/ui';
-import { closeSheet } from '../../../store/slices/ui';
-import { wipeApp } from '../../../store/utils/settings';
-import { BodyM } from '../../../styles/text';
+import BottomSheet from '../components/BottomSheet';
+import BottomSheetNavigationHeader from '../components/BottomSheetNavigationHeader';
+import SafeAreaInset from '../components/SafeAreaInset';
+import Button from '../components/buttons/Button';
+import { wipeApp } from '../store/utils/settings';
+import { BodyM } from '../styles/text';
+import { useSheetRef } from './SheetRefsProvider';
 
-const imageSrc = require('../../../assets/illustrations/restore.png');
+const imageSrc = require('../assets/illustrations/restore.png');
+
+const sheetId = 'forgotPin';
 
 const ForgotPIN = (): ReactElement => {
 	const { t } = useTranslation('security');
-	const snapPoints = useSnapPoints('large');
-	const dispatch = useAppDispatch();
-	const { isMounted } = useAppSelector((state) => {
-		return viewControllerSelector(state, 'forgotPIN');
-	});
-
-	useBottomSheetBackPress('forgotPIN');
+	const sheetRef = useSheetRef(sheetId);
 
 	const handlePress = (): void => {
 		wipeApp();
-		dispatch(closeSheet('forgotPIN'));
+		sheetRef.current?.close();
 	};
 
-	if (!isMounted) {
-		return <></>;
-	}
-
 	return (
-		<BottomSheetWrapper view="forgotPIN" snapPoints={snapPoints}>
+		<BottomSheet id={sheetId} size="large">
 			<View style={styles.container}>
 				<BottomSheetNavigationHeader
 					title={t('pin_forgot_title')}
@@ -62,7 +48,7 @@ const ForgotPIN = (): ReactElement => {
 				</View>
 				<SafeAreaInset type="bottom" minPadding={16} />
 			</View>
-		</BottomSheetWrapper>
+		</BottomSheet>
 	);
 };
 

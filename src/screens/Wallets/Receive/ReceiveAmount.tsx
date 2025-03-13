@@ -15,7 +15,6 @@ import Money from '../../../components/Money';
 import NumberPadTextField from '../../../components/NumberPadTextField';
 import SafeAreaInset from '../../../components/SafeAreaInset';
 import Button from '../../../components/buttons/Button';
-import { useBottomSheetScreenBackPress } from '../../../hooks/bottomSheet';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 import { useTransfer } from '../../../hooks/transfer';
 import { useSwitchUnit } from '../../../hooks/wallet';
@@ -48,8 +47,6 @@ const ReceiveAmount = ({
 	const [minimumAmount, setMinimumAmount] = useState(0);
 
 	const { defaultLspBalance: lspBalance, maxClientBalance } = useTransfer(0);
-
-	useBottomSheetScreenBackPress();
 
 	useFocusEffect(
 		useCallback(() => {
